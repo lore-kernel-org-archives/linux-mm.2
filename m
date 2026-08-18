@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA489C5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 00:56:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BAC0C5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 01:01:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724AF6B0125; Mon, 17 Aug 2026 20:55:59 -0400 (EDT)
+	id 078386B0127; Mon, 17 Aug 2026 21:01:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D5E36B0126; Mon, 17 Aug 2026 20:55:59 -0400 (EDT)
+	id 04F3A6B0128; Mon, 17 Aug 2026 21:01:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C5786B0127; Mon, 17 Aug 2026 20:55:59 -0400 (EDT)
+	id ECFC76B0129; Mon, 17 Aug 2026 21:01:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 31DEC6B0125
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:55:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBDD6C09E1
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:55:58 +0000 (UTC)
-X-FDA: 85112573196.30.CDEA312
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id ED5A140005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:55:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BAnFOCrs;
-	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787014557;
-	b=QO4c3o4gUn79PuCWS3vf4s//Sj02FORWiDPXYze2HBVoyiEvsT578PfI3sxGLig3YD8xm4
-	nSf+RBKnE0n/nUFPTkglOLDL0AuBXgyXEJTv4RRnsR4LuStUfiuUZdeg9fa7Duy2PSZ6Gm
-	3I6EKOBTPKYPqzmKR+DECA9iA20AlWo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BAnFOCrs;
-	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BAD086B0127
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 21:01:21 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3AAD71C1AB3
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:01:21 +0000 (UTC)
+X-FDA: 85112586762.06.6C186DF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A00AF180010
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 01:01:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aKnLqSYG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787014557;
+	s=arc-20220608; t=1787014879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=822anQ6V2pFJxV3J/pyPbt95JgcT2z7Mv+mmnIRM7r8=;
-	b=o2/ykes3mHLElMB/v/pbmzPDk+wA553keyg22yN0INcb1I5EYNxnmval3NnVZu1T9LKya3
-	L8x8glLmfvJxC/xvvVn4e+hYPFHLiIGqvpzOuSUyhKvpIelufzXCmuCOuoN+t2CGHoEKns
-	jQ+rKtAilPUSGRwoZxwaUigQYl92XQ4=
+	bh=+QD5d267PH0IMQTt0pb3tQZChKremBcVsncH9JWPYf0=;
+	b=Cm++CX+LSDwzGK6vSJyEN5avwS+a2aaIDU1yXUHHq8NrxGYdHZ0WXnRE/4Jj0UBAyWD+Ib
+	7kikkMZIKOMsJBP0wQ9XlvsMEYNbu//Kb4KK4Lt+WXTZEpC+EMwDTw28Oq9/Hk61N4NVtD
+	FtDqS56THBeJC52zrBW85w4sFy0gX4A=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aKnLqSYG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787014879;
+	b=idmXSB8OXtAXbN5Z79SOCXxzNgh701ZmrgL0T7KC6ZowF4/cOLHJXGYfvGO+kbZ4zgqRi6
+	LRU7AZNFD+2AivFG+06k6UfyyGVCfVKabc++qgbt4a2Q5m6ltl8W0PLuRD1Uo5mOHbQEca
+	mscKqKC4naA1o1x8CoMrjEosH26of3o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0CB904385C;
-	Tue, 18 Aug 2026 00:55:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C6D1F000E9;
-	Tue, 18 Aug 2026 00:55:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2F07A601DE;
+	Tue, 18 Aug 2026 01:01:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17081F000E9;
+	Tue, 18 Aug 2026 01:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787014555;
-	bh=822anQ6V2pFJxV3J/pyPbt95JgcT2z7Mv+mmnIRM7r8=;
+	s=k20260515; t=1787014878;
+	bh=+QD5d267PH0IMQTt0pb3tQZChKremBcVsncH9JWPYf0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BAnFOCrsGbiqPxHNFDh7Jz+59C0+i4VzYx81GlGcvUPCXQA147o1RyrY6zkHm3gZo
-	 aOzZXDwQTvpT/rUMI3rclVQ2hC/JkKRE3mvai2Yah9wEl1YR3JBWp4GCp5mfloGBPQ
-	 sbCliKRfy//ez30QQY2/TWKmP7MX9pH+39oUQMxIIsoLjuni7Y3tIk1jHUTg/f4xOO
-	 alW+BOe54vyfNArwWgE7JIankDSzbso4yXZrzv2VO3bs4JdKdlUg9SM43aoFaXIjwK
-	 4hzrwpsP5yRdtp83CQWr5sgfgdjwkkG1vcfIKIpPxqwKDsCZLQ5VDDdZJ/u1G751WG
-	 d2T8EALaKBTuQ==
-Date: Tue, 18 Aug 2026 00:55:53 +0000
+	b=aKnLqSYGDe6Pt2Gz6AXtiX+qNyYEIoBO8XbsbQrp56ap0mXJ0rG65QGZiS3IPKo29
+	 z8cbPpo2p045dfHPZyZ/B+2B1jc4M+iaw+MUuTNbfZuL88m6PWrpBlCpzDtxs1UGTQ
+	 +6vfDHpVVHlHWfyiMrmFVkkx3XfHvfUFGpuFwBDv0pCXRbOq1KCdCjPD5/9brfymvz
+	 ptO/glLoHVTl25cUT/Goq84B3fZsPXLtBowEIt8tGCIcMSXjaP0V7PlS4wm8U9wDfS
+	 XRFkV0O+SSNKjRSldLb77tKWlERbudVShJ4d0d48aiRCqbi39GjXC5k/RCMNGrYpuo
+	 V6daW+bEvGpDg==
+Date: Tue, 18 Aug 2026 01:01:16 +0000
 From: Yosry Ahmed <yosry@kernel.org>
-To: Brendan Jackman <brendan.jackman@linux.dev>
+To: Brendan Jackman <jackmanb@google.com>
 Cc: Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
 	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
@@ -73,29 +73,27 @@ Cc: Borislav Petkov <bp@alien8.de>,
 	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
 	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
 	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
 	Thomas Gleixner <tglx@kernel.org>, Patrick Bellasi <derkling@google.com>, 
 	Reiji Watanabe <reijiw@google.com>, Sean Christopherson <seanjc@google.com>
 Subject: Re: [PATCH v3 21/26] mm/page_alloc: implement FREETYPE_UNMAPPED
  allocations
-Message-ID: <aoOsiMyfWbkCbV8F@google.com>
+Message-ID: <aoOt7-tBEHp_3Bnt@google.com>
 References: <20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com>
  <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
- <anJ45UK0MWvskzlK@google.com>
- <DKPL6YQLP6NT.1747A5QR1D8VH@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DKPL6YQLP6NT.1747A5QR1D8VH@linux.dev>
+In-Reply-To: <20260726-page_alloc-unmapped-v3-21-6f5729aa9832@google.com>
+X-Stat-Signature: s8htsnyzcpcqcr1ezwgrzco41tp8pg3p
+X-Rspamd-Queue-Id: A00AF180010
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ED5A140005
-X-Stat-Signature: p9kz5qji47otqxhy5me6c7m3qieaktrg
-X-HE-Tag: 1787014556-230793
-X-HE-Meta: U2FsdGVkX193txugzP8jAUF19UbJRN8BtTjbnxQgxF5PbAytse4CAiNcGSJ/Y1D3l3o0leJxulit+iJEDwWRtK74ECgPPH0tNTtYty4aUymR4Qa/+yUfybkHKvYCO49hjShqcy3jPBWXVTrU7aC6v80PpVlD2YZPync97Oat+s3i5CtiZTa1vVpllSbkeVP2rbUkU6UXZlgqs23sflSIMEzrvq33MgH/79mywhf8iz7uj6p68Wu2JntO0kLJl2slhKwgayPB2pTyXDOqMQ6ysD2OmvKxUvxqZ0SU1pAcQpZdAGmO5t5nKbV9cZmVntW6f0PgtM5lMCo0zpGLTeInO/9SLh3RsxXgYkYFP2myXBrSimAowlq9rtk/mdVc+FMpTN7Rpzr/r8hd3CqpLxEiL/k5eQlNGR8alVkPH6TA7ePy0qS9JljLMzrX9dKDKTpVqJzYvVYNkRaWLx57Np9RjIHknreECxikS3cr1woS7oFZ1Z6r39SOq66s7S+XuKu8N2e3QIQ0z/spQ7idPHhVWGCgJGbPg5lFnIpFJFwJqeHnmRk5BpWn/5OxA8xD/fuMGmsys34PFaXpX16jDfyI1nl3txBg1Q8SSvcNBF1ZQSfWtU+D2u2f/A17GeTI43x9xofMwj0tMs5Ez6R+sMFakuiNyHpkaaRam1bcp5yxruo4on5/5rogDw9jLczmzwCx4chEND9dKXi/Yi40vU+olvbEra76Nuo++vzkr5zFpT12NAQxoEKUE0WivV/QerVTII9np/qc8g2MFloV/+K2j80Royh6eV74HYFT3IQpGjlOJmKmefKk1y0Vnmdsg28+4TebuP6K0bn8dmJYBgAhpHd76O/aGsKSzLEyRAQvkHV8u4F4SQJFcnzUlpyPIp1FU5KvAQDWIgTai+Md3yb9RRJ397nGwS6W5Uk+uT4LJ5GEu/n5r3y0VY2MWrU5T8TIdH2vnSYa2k0gbCJn5E2
- mdFq9NKT
- IjIP9Re8cRbIoExCLk2mxg7sKh8+q/2KksBp6tVveT/bZ697FVdH2on7fZlFeG/zx3kc55WNh/k5ON7PO7zExrK/GPb9wEXgP790QjZ/J2CKMu+/lDNQhxVeXV/GaDBhaNdyFnCGNq6hHc0SNo4lEE6vWKP/55FSBefW9l07sDoMYiE1llcRGafB7Tx41hSw1VdQyZKlqRDwmVzcsIo86IuGf9SDNef6E4M9XmgYU69tVPBCDWRnYPhubfrCCFxAj/P733VI3VzHZEKee8INeELvy8DdTQ7CrHW0BEI4ZPhGLU9soHz0hUdbXcFxgy+W3ujfg2M6rSQ+VE3KnV8D3+b9H2JmC6KINSML2
+X-HE-Tag: 1787014879-930778
+X-HE-Meta: U2FsdGVkX19KYkbXixq0YIXXY82CEz8Satg0DJKhE2pAx8dOsyVXtrH38qTk1DcIAFzNICxrz1N4Rezr9Rdez8BCGPPyXiXncL7THI9SJYEeNfrONuXuLQVlHUI4Azi3HtTHjYqDXkmUkW3wyiNStSFsh99nH4G270v+Vnj4kJKBqvZ1lFd6rQ30FQU+8f8QFxoyu1RFs2HK0aP+SJz2NxKjUZxy27HYkSSyllgJzJWJGok6aO5fCot5emsKIW+nGBCKKwH7lWoITOSmAWiiYJazyhQh12P8cIYE3Wimzpn9GpZXXmPSkTweMBY/UTMz87DvKJKvGnJi4w5AGIkZonIlH24T4Jphx1To/KRy8RzgeXWYn0yDpzBPa3Q+L1r8dU9irC8rwKXXBdvkmny3xYribB7qs4qTXV5aT6GtktR0iBGtb+JNVRR1fzw8PQybvvg+EVZbcNmOltfL1ZXI43SOD5fGzzK2kDol6Ej/sLYCaorV1yHn1JS2Fpaqy5WS7u13KEwWVjkgaAmEzRajraEUF2VhQcp/UNmuylSfThpVm9lcAhuN11hM9y8PX1GKrHIUnh4+ud+ev+v8DXFEjnqgFGS1Fm7isrdbf79jkL2RD2E17pGEt4TBnqYdxw+8rKrX0mHNvPIrImtSvsihTH6MfQzqZltLsnYRztIWkq8Sm4JK4MDqTetQAsPjuN2vdtSWu/tvKXm+ru7NjF61O1c86JkCtWS5J62PJco0qbYP1nyqa4Cf2C6Z76kv+odIySKNpCNhtpH1QjjD/io8rrekjiroMj3c2qZ8Zn50AlFq9eQnm9cxqyzp2WV53xse1CP66OP9stuTh7flh8RIo4QbALJZtrVENirPaMnh8E7h1o+F5JTMzjNVIIitgIhpD1jz2H6Y6qk+AOwCGXII6TrUMukYyiDwxHKTp5A88smcHB5JtgGPNlz0TpFRboEaxs7XAtl4u3cQH/yFooG
+ eX0tyvok
+ hCId70MQ+6tbETPw+jbX6cn46HBLOSBdVmBirgvOMcV0+iMKGMbVEcfyZJraVRV7b5BDEXnb8ciiY47Ulaa0e3k1J8NFlNUKvZi5Epj5011RQnBXncFSpYrBDpgvK2xukuMlbxKvvlF0UTxHCd2X6q1Xbi/9ooYDJPD7y0ddAyjpiIfcK927qFWZscKPoNljRPNEGFxS0YWxenU8yobPa9whHdCQyVkXwYcr5JWgCMjboPqxHOFGvw9RoNPbeCZZvcLumnRKtzenJzgeUa6V+xc8tsvHqOSlvVUPsF/t/e8iizWVccsbciB2NuYacrVf0IK/66pLmANY//Q8XqaCPw7zFvLKPZLvPpDwq09/1tnzGajk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,155 +101,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 15, 2026 at 03:28:26PM +0100, Brendan Jackman wrote:
-> On Wed Aug 5, 2026 at 12:53 AM BST, Yosry Ahmed wrote:
-> >> @@ -3400,6 +3426,127 @@ static inline void zone_statistics(struct zone *preferred_zone, struct zone *z,
-> >>  #endif
-> >>  }
-> >>  
-> >> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
-> >> +/* Try to allocate a page by mapping/unmapping a block from the direct map. */
-> >> +static inline struct page *
-> >> +__rmqueue_direct_map(struct zone *zone, unsigned int request_order,
-> >> +		     unsigned int alloc_flags, freetype_t freetype)
-> >> +{
-> >> +	unsigned int ft_flags_other = freetype_flags(freetype) ^ FREETYPE_UNMAPPED;
-> >> +	freetype_t ft_other = migrate_to_freetype(free_to_migratetype(freetype),
-> >> +						  ft_flags_other);
-> >> +	bool want_mapped = !(freetype_flags(freetype) & FREETYPE_UNMAPPED);
-> >> +	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
-> >> +	unsigned long irq_flags;
-> >> +	int nr_pageblocks, nr_freed;
-> >> +	struct page *page;
-> >> +	int alloc_order;
-> >> +	int err;
-> >> +
-> >> +	if (freetype_idx(ft_other) < 0)
-> >> +		return NULL;
-> >> +
-> >> +	/*
-> >> +	 * Might need a TLB shootdown. Even if IRQs are on this isn't
-> >> +	 * safe if the caller holds a lock (in case the other CPUs need that
-> >> +	 * lock to handle the shootdown IPI).
-> >> +	 */
-> >> +	if (alloc_flags & ALLOC_NOBLOCK)
-> >> +		return NULL;
-> >> +
-> >> +	if (!can_set_direct_map() || alloc_flags & ALLOC_NOLOCK)
-> >> +		return NULL;
-> >> +
-> >> +	lockdep_assert(!irqs_disabled() || unlikely(early_boot_irqs_disabled));
-> >> +
-> >> +	/*
-> >> +	 * Need to [un]map a whole pageblock (otherwise it might require
-> >> +	 * allocating pagetables). First allocate it.
-> >> +	 */
-> >> +	alloc_order = max(request_order, pageblock_order);
-> >> +	nr_pageblocks = 1 << (alloc_order - pageblock_order);
-> >> +	spin_lock_irqsave(&zone->lock, irq_flags);
-> >> +	/* First try a block that already has the right migratetype. */
-> >> +	page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
-> >> +	if (!page) {
-> >> +		/* Fallback to changing a block's migratetype. */
-> >> +		rmqm = RMQUEUE_CLAIM;
-> >> +		page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
-> >> +	}
-> >> +	spin_unlock_irqrestore(&zone->lock, irq_flags);
-> >> +	if (!page)
-> >> +		return NULL;
-> >
-> > IIUC we only try to change an entire pageblock here, but what if we
-> > can't? If memory is fragmented enough that many pageblocks have few
-> > unmapped pages in them, how do we serve a mapped allocation (e.g. a slab
-> > allocation)?
-> >
-> > We'll go into reclaim/compaction, but there's a chance we'll end up with
-> > unexpected allocation failures or OOM kills even though we have free
-> > memory, because unmapped memory is not movable or reclaimable (as of
-> > now, at least).
-> >
-> > The same could happen if many pageblocks have few mapped but unmovable
-> > pages in them, and we make an unmapped allocation.
+On Sun, Jul 26, 2026 at 10:22:54PM +0000, Brendan Jackman wrote:
+> Currently FREETYPE_UNMAPPED allocs will always fail because, although the
+> lists exist to hold them, there is no way to actually create an unmapped
+> page block. This commit adds one, and also the logic to map it back
+> again when that's needed.
 > 
-> Yeah, although just to be clear: those unmovable/unreclaimable pages
-> are _already_ un{mov,reclaim}able, ALLOC_UNMAPPED doesn't change that.
-> So in the situation where they prevent compaction, we were already
-> somewhat in trouble re memory pressure. It's just that, with
-> ALLOC_UNMAPPED, the allocation failures can start hitting us for
-> lower-order allocations whereas before they only mattered for
-> higher-order ones.
-
-I think that's actually a big deal. Especially for kernel allocations.
-For example, allocation failures in the reclaim path can be pretty
-detrimintal. Higher-order alloactions are usually expected to fail in
-some cases, but order-0 allocations, especially from the kernel, are
-assumed to almost always succeed.
-
+> Doing this at pageblock granularity ensures that the pageblock flags can
+> be used to infer which freetype a page belongs to. It also provides nice
+> batching of TLB flushes, and also avoids creating too much unnecessary
+> TLB fragmentation in the physmap.
 > 
-> How much worse is that? I'm not sure - my understanding from working
-> with GCE people was that if fragmentation prevents allocating hugetlb
-> pages for guest memory, yes in theory the system can fall back to base
-> pages, but in practice the perf hit from doing that is intolerable, i.e.
-> successful higher-order allocations are basically a hard requirement in
-> the real world already. Is that unique to GCE or are other workloads
-> like that too? I don't really know :/
+> There are some functional requirements for flipping a block:
 > 
-> The OTHER thing, trying to see this as zoomed-out as possible, is that
-> the "unmapped pages are un{mov,reclaim}able" thing is hopefully very
-> temporary? I'm pretty sure we want at least compaction for guest_memfd
-> [0]. If we extend ALLOC_UNMAPPED into any other areas I also expect that
-> to be the same. Secretmem is... well, whatever. So I think the "real"
-> fix is to support compaction.
-
-We'll still always have unmovable or unreclaimable pages. Even with ASI,
-some userspace memory may be pinned or mlocked. The fact that some
-memory can simply be un-allocatable by the kernel is.. scary, especially
-without watermark awareness (see my other response to patch 24).
-
+>  - Unmapping requires a TLB shootdown, meaning IRQs must be enabled.
 > 
-> [0]: https://lore.kernel.org/all/20260805-shivank-gmem-migrate-v3-9-00d8bdec4e1d@amd.com/
+>  - Updating the pagetables might require allocating a pagetable to break
+>    down a huge page. This would deadlock if the zone lock was held.
 > 
-> > I wonder if we still need a fallback case where a pageblock contains a
-> > mix of mapped and unmapped pages. We need to carefully handle such
-> > pageblocks:
-> > - For unmapped allocations, we need to unmap the relevant PTEs and
-> >   potentially do a TLB shootdown (if they were previously mapped). Maybe
-> >   we should always flush the TLB for simplicity for now.
-> > - For mapped allocations, we need to map the relevant PTEs. No TLB
-> >   shootdown should be needed.
-> >
-> > Assuming unmapped allocations are always zeroed by the users on alloc
-> > and free, we don't need to worry about zeroing pages either way.
-> >
-> > We may want to track the number of unmapped pages in such page blocks to
-> > now when it's fully mapped or fully unmapped and change its type, but
-> > maybe this can be a followup if needed.
+> This makes allocations that need to change sensitivity _somewhat_
+> similar to those that need to fallback to a different migratetype. But,
+> the locking requirements mean that this can't just be squashed into the
+> existing "fallback" allocator logic, instead a new allocator path just
+> for this purpose is needed.
 > 
-> ... However, yes this might be unavoidable despite what I said above.
-> This was also DavidH's feeling when I chatted to him a few months back.
-> The hard parts of it are a) the tracking as you hinted at and b) in the
-> general case that means allocating pagetables. 
-
-I am considering a simple-ish scheme to avoid per-page tracking and
-potential TLB shootdowns in the freeing path (which prompted async
-freeing internally).
-
-What if we just always map pages in such tainted/mixed pageblocks when
-they are freed? If they are already mapped, nothing to do. If unmapped,
-we map them and zero them. No TLB shootdown required.
-
-We also shouldn't ever need to allocate. If the pages were previously
-unmapped, we should have already allocated any necessary page tables.
-Right?
-
-Zeroing on free may still be bad, but not prohibitive, and hopefully
-this is only a fallback. We'll need to figure out where this fallback
-fits (e.g. before or after reclaim/compaction).
-
+> The new path is assumed to be much cheaper than the really heavyweight
+> stuff like compaction and reclaim. But at present it is treated as less
+> desirable than the mobility-related "fallback" and "stealing" logic.
+> This might turn out to need revision (in particular, maybe it's a
+> problem that __rmqueue_steal(), which causes fragmentation, happens
+> before __rmqueue_direct_map()), but that should be treated as a subsequent
+> optimisation project.
 > 
-> So yeah I think it's probably doable but I _really_ want to avoid doing
-> it in this series if we possibly can.
+> Adding alloc_flags to gfp_freetype() requires moving it to
+> mm/page_alloc.h so it can refer to ALLOC_UNMAPPED. It was already only
+> used in internal mm code.
+> 
+> Now that unmapped pageblocks actually exist, exclude them from
+> migration. Migrating unmapped pages via the mermap should be possible
+> but that's something to be added later when needed.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  mm/Kconfig      |   7 +-
+>  mm/compaction.c |   8 ++-
+>  mm/page_alloc.c | 214 +++++++++++++++++++++++++++++++++++++++++++++++++-------
+>  mm/page_alloc.h |  13 +++-
+>  mm/page_owner.c |   6 +-
+>  5 files changed, 215 insertions(+), 33 deletions(-)
+> 
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index aa5f041ce1a67..6a89cbf8e8c6e 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1527,9 +1527,10 @@ config MERMAP_KUNIT_TEST
+>  
+>  	  If unsure, say N.
+>  
+> +config PAGE_ALLOC_UNMAPPED
+> +	bool
+> +	depends on !HIGHMEM
+> +
+>  source "mm/damon/Kconfig"
+>  
+>  endmenu
+> -
+> -config PAGE_ALLOC_UNMAPPED
+> -	bool
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index 67b01af024e17..c9eb3947ffc79 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -1393,6 +1393,9 @@ static bool suitable_migration_source(struct compact_control *cc,
 
-Yeah I am trying to figure out whether the issue is theoretical enough
-that we can do it in a follow up.
+There is a direct compaction check above the context lines:
+
+	/*
+         * Background compaction produces blocks for the zone at
+         * large, with no particular allocation context. Allow all
+         * block types, including CMA.
+         */
+        if (!cc->direct_compaction)
+                return true;
+
+>  	block_ft = get_pageblock_freetype(page);
+>  	block_mt = free_to_migratetype(block_ft);
+>  
+> +	if (freetype_unmapped(get_pageblock_freetype(page)))
+> +		return false;
+
+..and I think this freetype_unmapped() check should be moved above it.
+Otherwise kcompactd (for e.g.) won't check for unmapped pages and
+crashes.
+
+[..]
+
+> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
+> +/* Try to allocate a page by mapping/unmapping a block from the direct map. */
+> +static inline struct page *
+> +__rmqueue_direct_map(struct zone *zone, unsigned int request_order,
+> +		     unsigned int alloc_flags, freetype_t freetype)
+> +{
+> +	unsigned int ft_flags_other = freetype_flags(freetype) ^ FREETYPE_UNMAPPED;
+> +	freetype_t ft_other = migrate_to_freetype(free_to_migratetype(freetype),
+> +						  ft_flags_other);
+> +	bool want_mapped = !(freetype_flags(freetype) & FREETYPE_UNMAPPED);
+> +	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
+> +	unsigned long irq_flags;
+> +	int nr_pageblocks, nr_freed;
+> +	struct page *page;
+> +	int alloc_order;
+> +	int err;
+> +
+> +	if (freetype_idx(ft_other) < 0)
+> +		return NULL;
+
+For a movable mapped allocation, ft_other will end up being movable
+unmapped, which will immediately fail this check before trying to
+convert a pageblock. This leads to premature OOM kills.
+
+> +
+> +	/*
+> +	 * Might need a TLB shootdown. Even if IRQs are on this isn't
+> +	 * safe if the caller holds a lock (in case the other CPUs need that
+> +	 * lock to handle the shootdown IPI).
+> +	 */
+> +	if (alloc_flags & ALLOC_NOBLOCK)
+> +		return NULL;
+> +
+> +	if (!can_set_direct_map() || alloc_flags & ALLOC_NOLOCK)
+> +		return NULL;
+> +
+> +	lockdep_assert(!irqs_disabled() || unlikely(early_boot_irqs_disabled));
+> +
+> +	/*
+> +	 * Need to [un]map a whole pageblock (otherwise it might require
+> +	 * allocating pagetables). First allocate it.
+> +	 */
+> +	alloc_order = max(request_order, pageblock_order);
+> +	nr_pageblocks = 1 << (alloc_order - pageblock_order);
+> +	spin_lock_irqsave(&zone->lock, irq_flags);
+> +	/* First try a block that already has the right migratetype. */
+> +	page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
+> +	if (!page) {
+> +		/* Fallback to changing a block's migratetype. */
+> +		rmqm = RMQUEUE_CLAIM;
+> +		page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
+
+IIUC, the first call to __rmqueue() will already try RMQUEUE_CLAIM. Is
+this redundant?
 
