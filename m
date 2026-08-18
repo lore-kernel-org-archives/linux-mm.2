@@ -4,94 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 464CFC5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 15:53:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F400C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 15:57:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 424206B018D; Tue, 18 Aug 2026 11:53:18 -0400 (EDT)
+	id 9A9256B02A5; Tue, 18 Aug 2026 11:57:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FC1F6B02A1; Tue, 18 Aug 2026 11:53:18 -0400 (EDT)
+	id 95A346B06EF; Tue, 18 Aug 2026 11:57:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 312706B046B; Tue, 18 Aug 2026 11:53:18 -0400 (EDT)
+	id 897026B077B; Tue, 18 Aug 2026 11:57:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 079966B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:53:17 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 609DA1401F6
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:53:17 +0000 (UTC)
-X-FDA: 85114834434.22.866A0D1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3FAD8100003
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:53:15 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EAE06B02A5
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 11:57:18 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB4DE160116
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:57:17 +0000 (UTC)
+X-FDA: 85114844514.08.733F6E5
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2174D100007
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 15:57:15 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KiMNDdqo;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GHCrDmW2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787068395;
+	s=arc-20220608; t=1787068636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=geXWrV0/2z0kpozDGOhKEC+5F4VQGLvn66X7G1ETdLM=;
-	b=he4S6iHbpqskUL34c9XNx8ykU9hUHRZXQrasT2HoKKOJedOnuC6qLIL7Z6gHOig4PnKdTo
-	N1SXRjyxT+2tXE8Decq9Sw2xwyrP75T7ocvMQweWHYXlJX6boAqXZY47dm9WSI2XlnF7sC
-	0d+tl2/T42ugvYW/jE4d8ounZWkk3S8=
+	bh=aJsNbFhcAvc23yP9oB4/NO35b1/oluJDB0GRajdvh5k=;
+	b=bi0TBhLzz+Gz2Vkr37Ha70o6rHYb52G27tG4SvkZAn69NOzUOGnxydGu05b3CKF1OhFwAp
+	V14//yV9mAQlPohy0uqBpzoHlh/E/4+zFdEV0nphBjWjS5DGEcOWtWfHhty0DKZFMr2YHu
+	r8fe+wmJlDkkPDX+3muCdfYAsLkSZXE=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KiMNDdqo;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GHCrDmW2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787068395;
-	b=LRcSUBPjFt4R2pMEekaAs8bQeCJcXW7mp8Uc5YpfIUEoG2z4EyjBfLVM5gQlK88s/qqS+n
-	i0s9S7N5IPENSKUES/LKwm7kB2E179knxlTKVsJh2Af56/b8fT1ZVUY8lbC64/V+wUd64N
-	VVDZC7XGTzMsOjX0J6BKHfkGADOLCVw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3316B1A00;
-	Tue, 18 Aug 2026 08:53:10 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9AEF53F763;
-	Tue, 18 Aug 2026 08:53:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787068394; bh=n5Pn/EgrqrIEFc5DK4mgxFWT/9EScWqa5GcuyDfAyeo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KiMNDdqo79AFXbKqbuzUTJzNZjfCcxsyG80l6DMNVWk3SK8nXkyidq4VEkkObM4lg
-	 2k296O5lKEZVD5XqetWIn+E/GvtX7ic8xbAsx7MBDnbniwPndVR5pUbaKDi8vAr2ak
-	 /6nbyhSweQ+975pWMIkNhvlMelJpufEsIPDC/zOk=
-Date: Tue, 18 Aug 2026 16:53:08 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: James Houghton <jthoughton@google.com>
-Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Nikos Nikoleris <nikos.nikoleris@arm.com>,
-	Linu Cherian <linu.cherian@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Nanyong Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>,
-	Frank van der Linden <fvdl@google.com>,
-	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH 11/18] hugetlb_vmemmap: Use try_populate_vmemmap_pmd for
- replacing in-use PMDs
-Message-ID: <aoR_5LHPsVXUnxt6@arm.com>
-References: <20260708031129.3503195-1-jthoughton@google.com>
- <20260708031129.3503195-12-jthoughton@google.com>
+	t=1787068636;
+	b=H0FXiqu0JzPeXgE8jnDF7WNe5I+V4uhvoG6DJ/VCG45P/Zkc4h9cgXgy4q6ZaTyYkifbKD
+	IaZU2z3tE3kYBlDHc+fPgHXObgMK22NLbDy7iMTpWIFD85BZxnOmCJ7xyHsdGVXp72A3Yw
+	B+fSWyLsx3eae4jUqvscLEgIDgNpxL0=
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7eb1dc6bd53so3486151a34.2
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:57:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787068635; x=1787673435; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aJsNbFhcAvc23yP9oB4/NO35b1/oluJDB0GRajdvh5k=;
+        b=GHCrDmW2rXYIxfP4pZpmjqQh826hYiprywvtYwM7lFdYOUKjO4hwS3K/ejvRvkr3wQ
+         cYWgNFD74fwchyTzU+jwb7HKvMMICRH+PYu2U7yOpMLidLxP7qGpqnk4LDhKKN4s8TJZ
+         SWeDDP7miH/RwqakeKRhMAUsASO+cFBiPcUAWTVFsqB3FkM5KNPWoOGGZU5dhtjzwCj6
+         tqiMnYTOxJ6AFE04kWoXJ5/2qF94dQGnYKUBiDjhapXyQrJ4sTjtquawOC1pTJutl2hr
+         0hziR4BG6HzI67COqBBsIw9RYlz/EfJdf+7vLCA9iSnz1gxSulTNuNv/kGeHCw4xctZi
+         tqxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787068635; x=1787673435;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aJsNbFhcAvc23yP9oB4/NO35b1/oluJDB0GRajdvh5k=;
+        b=LpbAJzXo0RyyjKAB9mMjnLV/hXBE/INo0L3I77mnYg6JNXy/6ZQ8bIwSA4nQTAEoW6
+         ayf1Z8CBWy53LV3J+VYFNw9fanPClAw3sNnSM4+N5fuJpdWuNUiv3t5/JlQcYy7r+Phd
+         3io9xHfZ27HInmzrFD960/mQRhYlZAqqpko5D4mGokXNwmVR+Kgu4fQvZH6HJMMXxbad
+         +AUnQlsJHhYMsS6cRawbOgiVisYYJ1pigdQuoZntFEpJWjQ315IaXdRExJ9SNj59XgaK
+         uwVDnISxFRbemm/DwGerwG78zQbtkn2flSXkxnzBu8fNL7HkeodHyK/MNI4mFEMozbHb
+         CGgQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrL+3j1zdhPw3JlHxsbyyzJNohT2G61l2xZuGVPAnBIZQ3C8aAU441yo/ioMy6Lkq3zaZg9X/N6DA==@kvack.org
+X-Gm-Message-State: AOJu0Yx95drE5XiE7kp2eLH5oKDePjqzsWMuyjjwhv+VwxXWeCq2pq6u
+	q01Z00zIztUlIQ48Eo1/1g6yuuy29RKEVCP5OMb2+yK/l4aP6rDqRGHa
+X-Gm-Gg: AR+sD111XrQZUNK47kr0lA5h8HE7KQCBwOdpDvpNHiBkFsU3G8g1oofhrppJTN6T/91
+	3ni4GNZsPWHq9EjEbTj7uaGS0vU2Hal74iiwbqBV+ne8n30GPt5rq/E9/ax+4msDdV78CnwHsQJ
+	rDpAolCvVa+p5rKCKeUB1tL9xR/bQKytIR8IvLV6SIpo2S7PCnCPnofnBUbXPozVg7Jq8VgJKay
+	43OnRtgHrxgOCqqhWFwdc+POXdZBvqYDIyuEgzY6kuSNDlkIUpyuPdYWkVINDKoskA3WSOEOe1G
+	VqhwHPspcPsiZAJ2B+MxUirRZe4vA4R4aR2qIqGDsuEam0hcBaww/R2kKRdKpfdntsWkkCX/iIT
+	yqK0N2wvgF2cD8lKLKm4feMr/NT0GCQ4rEXhj0PVhQxJKYS3EcPnFfUZmxaIlfMgizHBc6xsdB8
+	TIuwJeEyFwSxUBMNv7lbtj5EdBBYqPKQr6m0n+blp4QiNPgo7kWEBoY+dNHjaTYWxKBzHcA/I3q
+	zttZxgxOq8tFe5IfOtuxp+qLPQ+/sYXPRZgx3961lSc
+X-Received: by 2002:a05:6830:63cc:b0:7e6:f7fb:9678 with SMTP id 46e09a7af769-7f423c38469mr9469536a34.1.1787068634964;
+        Tue, 18 Aug 2026 08:57:14 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:49::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f41c0f3598sm5379975a34.20.2026.08.18.08.57.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 08:57:14 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: liuqiqi@kylinos.cn,
+	linux-mm@kvack.org,
+	tj@kernel.org,
+	mkoutny@suse.com,
+	hannes@cmpxchg.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/8] mm/memcontrol: introduce per-tier memory accounting and control
+Date: Tue, 18 Aug 2026 08:57:12 -0700
+Message-ID: <20260818155712.882286-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <aoQT45_Vu8KZ9rjk@tiehlicka>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708031129.3503195-12-jthoughton@google.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1p3kacagw8u8wb6wfjpxax7s8cupya63
+X-Rspamd-Queue-Id: 2174D100007
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: z8iawb9jqkx6hnjesg6mf9yksb1docut
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3FAD8100003
-X-HE-Tag: 1787068395-828603
-X-HE-Meta: U2FsdGVkX19AYDJ10kZa3ys+EtRRhHI3y23hM+dvq+dTKZxJ6y/US+qpWJ43Qghhy9fgnTQ/43KXpzpm1tYiRuMN45uiV5HafCqIB7Fo4M/aURuRlbGMMQkLckqhfh1wr7qy/q3jUW1eNUXRynyC5UfAkM0fIO2G5C0aoO5zrengrzJcNO1mcopXI9vZhQfxYDl1CIwjb0t5YIC2MQFMzoVVHyRSi9uHzBZAHhz8hQODJ4csDVTONtupJA7XHCzyY5xurx94gfm+wSc0WYTSX/ptrCqhHibZKkFVeMt9XNuiL/O4pXYKrQnPgIMVQFYr+pL0Fj00NeYWSPGwA7MZyU9am3z5cwX079bY0R6e+SnU7jiC4zxEeSbgmpd3I+ja6WBOVNBR264dwr6g7om1KlC3Na8Ca5qf4707zsLNXa4YMXij0gEkqkDaxV1YApH2OwSj+ADjsofti7Tsp0LAbTQ7YNml0ALpIxeNTn7azVPZLfYrWh2usKUMIWlsKjD+oseHU1NF1bUbQpCnRza1cofJJYDD7xwuPVSnAjv5g6sTPqJA+1AX8dP5sqDCZWM/5H2bXihKhqvvt3sOmaRraKdSnVC72yUZd7fZwk9U1kM3/cq/epRd4z0kZz5gYhC+C1CSMeof/qLTsFdbIsVdA8bd0bKSGnRTiCeQ+8AgFoToRU2ciAm6gfCYu0ltrfQ2+ieMKyTZgGD5yn+/XX+Y6aYzJkNhpcoY+ScqToQD9WcCtd89wvYZ8nocdZZOizFRgfdBdbKie6jSaWNw246dLHCZWz0TMfwY8RUCvYlJJHlszg+QJj122DR+TM7JYH3Ph5dOzyJ1SoDE0VvNMT3eB3C17Ca35ezXLinJz1Cum/Qk5NiZ10+Z+BQ6ipACcqFi4qElGyVVvRHrdsfOBFa4Fjifl/jj8e2I3EuUBQ/SqAmpImeo4y4lU0zHnZnsVDscDK8rsW3rawvmOJt0k+0
- TIIIkIsn
- nh7SrK5pFDuwVXkr3bKYe8pxpyN+f6eiD0NQ8TsSClyNcUGZYy1aLnKdTSzPleXdgmSJL43eaTCu/KU2gVBjrEnTKv2WhAKBM2ai1j9+YmheRsQKxr2scpc9sXjuN7a1QwGwNMx/Dxd8PqBsY5oP6EYxCEsj71rBGyNLAo5yj0ly63/XpU0JDpZxVO10Sxgq7hhXOPLPBGdhDIlBrV1Sx7Qt6RKxMxX9s2ITJPcr4XOgAO/+Rduvk1tp9nQ8CWrX57Wjb/NmKIihh1iojeCSBGcDixg==
+X-HE-Tag: 1787068635-468083
+X-HE-Meta: U2FsdGVkX1/Cj9cvQZ0iHbnadQu3y4dKJBZNIMp8NjIZG33S4OQ/HuuCRyRjpHJ1zIvIOVYPERv3nqrut0qUDOaH4cBdhbztFLohA07TzhpbgOvkxyeldWtBKVlg1gEAa9V+tV/c7kK20XhSTHJfjW7oS04dS99M5ePYeCg0mTmmkdaIXuhigDl/wfpO/4HjtdMcJaIWH7nKp5vFpABWbbiLi7NqjuaFK84Qpzh9Jh8kCA+xj95ZbhW325zVwpFjGPuGsuIDkxpFdVTFIKZef9Z5s+V8zlNLXFq2D2qceURLNYE8PzgFz1d5ciiYkxWnWkye7FHQlEfu9IpbYNtmOuVKgasmziTwXYKLIiaeVu2UZfjYWDZkesQHKefuW4VwWoSrUTXt2m5vppZkIs8+6Otxa4bGcKadVVUV5KJGPUdkzZBEjyRXYFAUR8iZtVrD4zwMIJA3M+wJoEQObJkGhOyTuBcfqOqB4CkHJZZmW7iTgPYSK89VolYJ6UjoQYTwpRyyULt/1v6sbCKFYn7XUQZyQRnY43uTUgZfHX3cajwWXXfV2pTRDF6ESLY2j8I6y+S8A1/rMQU8KtwIXAjpSDPdJ/6R+/brS3z3bSb4D7u4bXgdSIZ8d+uONMk1PT7uYsp9KhdnHLyz5a1+GwODRFMUez83Zj9M0P4a1fM1Lm0Fi5GO47MWrz9gyTAq1e6D3mToVqVQmSHhL30wZwwYUisUcJ0Ndv4mYM78Guu5iqXcOeJUbBwGNIpgH03ilFUeuu3oYJTZ0VguIP7OmFQLJrWJT+z7iO/CIexxVpQHv6SQ9YJlcTewAmhn0PmWX2iQ++Zcjbg46/EIgq6NY21OD9itR82M3GwhjkSiaidO97PReAhOr7xQIm1+wsNkoWRM8YmC29RVdkD2X6Ncj8ljFmy7hyCbYNt//mEK302WIx1fgRx1R5UMtcSwUoJq1fi0Tz1qEcCTtCHmd41NBIp
+ Lji8H0p+
+ KMq4glsiVxNcDf4XhCBs+4OcqmHsFTxxl4LEpIi7OV5Q1RIxm7aCoimqaJRgQg2t80MYVOvkcaIRVKW8u0+h95eQ1v5cIQjJHL/WFNHVk3kNuGQdfe8qt6ieB3i43tzPBRTPYRdjbOQV+pIRyiBJLGSgATeJG7ahRakrVeTu9mELzQjC+knJXMnCfQKUaMyMPQNaLwbYaiSTVxrpb2EYLalQYjVPkXsHFspfjjPEdTe3H4kh8gaB3naQItrpnK7IfnxW8IyFyI2+YT/wYFlZj0r46A/zeYzV7AChw4HaC1n98sRwgRJBlRIrNckMVReiQ68+j17vkcvzFe39MfT1k/9URFXeWLW26LEG2kReAhUIVtIZIoAujpD3bTwcuGNqIQEMrwFtmcj9HBr3lgqHxc7PmZNOPgzD+pQWFR5sI/MCP1kqnWYtd1kAanef/GCSUsBXh0V9u1TqW+Fh60ZHfWsHzwBdq2JfuLYx8fmhQGTd91HuMMSsktqlsIX+v9Yq9XKeTvM8zpUPr6QCNq2CEHCD+goHIW2pjQB6Ck7oBLEZVNyM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,123 +127,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 03:11:21AM +0000, James Houghton wrote:
-> diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
-> index 1b4509d3382c..c8946250d431 100644
-> --- a/arch/arm64/include/asm/pgalloc.h
-> +++ b/arch/arm64/include/asm/pgalloc.h
-> @@ -121,4 +121,13 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pgtable_t ptep)
->  		       PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_PXN);
->  }
->  
-> +#define __HAVE_ARCH_TRY_POPULATE_VMEMMAP_PMD
-> +static inline int try_populate_vmemmap_pmd(pmd_t *pmdp, pte_t *pgtable,
-> +					   unsigned long addr)
-> +{
-> +	/* BBML2_NOABORT is required. Its presence has been checked. */
-> +	pmd_populate_kernel(&init_mm, pmdp, pgtable);
-> +	return 0;
-> +}
+On Tue, 18 Aug 2026 10:12:19 +0200 Michal Hocko <mhocko@suse.com> wrote:
 
-This patch adds the same function in 4 different arch files. Can we not
-have a single generic implementation in linux/pgalloc.h, bracketed by
-some ARCH_WANTS_* (macro or config)?
+> Are you aware of a similar work in this area by Joshua
+> https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/T/#u?
+> We owe Joshua review feedback for quite some time but if I have to be
+> honest the most impeding factor on my end is that I am not really
+> convinced tier aware controlling is the right direction. I have
+> expressed some concerns on one of the earlier proposal by Joshua
+> https://lore.kernel.org/all/aZ2LC0KPF0xsAwAL@tiehlicka/T/#u
+> 
+> In any way it would be great to talk and compare your approaches see
+> where they align and the discuss further.
 
-I think the same goes for patch 4 with try_update_vmemmap_pte(), we can
-reduce the code duplication.
+Hi Michal,
 
-> diff --git a/include/linux/pgalloc.h b/include/linux/pgalloc.h
-> index 9174fa59bbc5..ed446d95ca37 100644
-> --- a/include/linux/pgalloc.h
-> +++ b/include/linux/pgalloc.h
-> @@ -26,4 +26,24 @@
->  			arch_sync_kernel_mappings(addr, addr);		\
->  	} while (0)
->  
-> +#ifndef __HAVE_ARCH_TRY_POPULATE_VMEMMAP_PMD
-> +/*
-> + * try_populate_vmemmap_pmd - Populate a PMD that is in use by the vmemmap.
-> + * @addr: Base address of the remapped PMD.
-> + * @pmdp: Page table pointer to be overwritten.
-> + * @pgtable: Pointer to the page table that the new PMD will point to.
-> + *
-> + * This function is only to be used to update PMDs that map the vmemmap to
-> + * point to a page of already-populated PTEs that map the same pages.
-> + *
-> + * Implementations of this function must ensure that, while the update is taking
-> + * place, CPUs will not fault on the remapped virtual address range.
-> + */
-> +static inline int try_populate_vmemmap_pmd(pmd_t *pmdp, pte_t *pgtable,
-> +					   unsigned long addr)
+I hope you have been doing well! Maybe this is a good opportunity to
+squash concerns about the series : -) I've sent a new version which
+addresses a lot of the concerns that David Hildenbrand had previously
+brought up [1]. This implementation is as transparent as can be to the
+user. I hope that this makes sense to you! 
 
-Nit: if we follow try_update_vmemmap_pte(), we could place 'addr' first.
-It matches pgd_populate_kernel() as well in this file.
+IIRC you had some concerns about getting the interface right the first
+time we introduce this feature. Hopefully with no user-visible features
+(and only a mount option) your concerns there are resolved and hopefully
+we can work to figure out what remaining concerns there are.
 
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +#endif
-> +
->  #endif /* _LINUX_PGALLOC_H */
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index 977249e22ed0..b445febac0d2 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -55,6 +55,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
->  			     struct vmemmap_remap_walk *walk)
->  {
->  	pmd_t __pmd;
-> +	int ret;
->  	int i;
->  	unsigned long addr = start;
->  	pte_t *pgtable;
-> @@ -74,8 +75,15 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
->  		set_pte_at(&init_mm, addr, pte, entry);
->  	}
->  
-> +	ret = 0;
->  	spin_lock(&init_mm.page_table_lock);
->  	if (likely(pmd_leaf(*pmd))) {
-> +		/* Make pte visible before pmd. See comment in pmd_install(). */
-> +		smp_wmb();
-> +		ret = try_populate_vmemmap_pmd(pmd, pgtable, start);
-> +		if (ret)
-> +			goto free;
-> +
->  		/*
->  		 * Higher order allocations from buddy allocator must be able to
->  		 * be treated as independent small pages (as they can be freed
-> @@ -84,21 +92,17 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
->  		if (!PageReserved(head))
->  			split_page(head, get_order(PMD_SIZE));
->  
-> -		/* Make pte visible before pmd. See comment in pmd_install(). */
-> -		smp_wmb();
-> -		/*
-> -		 * On arm64, this requires BBML2_NOABORT. Its support has
-> -		 * already been checked.
-> -		 */
-> -		pmd_populate_kernel(&init_mm, pmd, pgtable);
->  		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
->  			flush_tlb_kernel_range(start, start + PMD_SIZE);
-> -	} else {
-> -		pte_free_kernel(&init_mm, pgtable);
-> -	}
-> -	spin_unlock(&init_mm.page_table_lock);
-> +	} else
-> +		goto free;
->  
-> -	return 0;
-> +out:
-> +	spin_unlock(&init_mm.page_table_lock);
-> +	return ret;
-> +free:
-> +	pte_free_kernel(&init_mm, pgtable);
-> +	goto out;
->  }
+Thank you as always for your time. I hope you have a great day!
+Joshua
 
-Would 'free' first with fall through 'out' read better?
-
--- 
-Catalin
+[1] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/
 
