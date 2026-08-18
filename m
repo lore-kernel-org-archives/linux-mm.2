@@ -4,108 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFE42C5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:16:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C73C5DF7E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 12:39:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9F836B0187; Tue, 18 Aug 2026 08:16:14 -0400 (EDT)
+	id C53AA6B07C7; Tue, 18 Aug 2026 08:39:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C77046B0188; Tue, 18 Aug 2026 08:16:14 -0400 (EDT)
+	id C05026B07C9; Tue, 18 Aug 2026 08:39:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B65CD6B018A; Tue, 18 Aug 2026 08:16:14 -0400 (EDT)
+	id B1DE36B07CA; Tue, 18 Aug 2026 08:39:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 987786B0187
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:16:14 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FD6AA0BD3
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:16:14 +0000 (UTC)
-X-FDA: 85114287468.24.E3976CD
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3F0CB180008
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:16:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=CtkBOOzd;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9093C6B07C7
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 08:39:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13F9080C2F
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:39:46 +0000 (UTC)
+X-FDA: 85114346772.01.16A419F
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 61EC2A0013
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 12:39:41 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=cJGXOOz7;
+	spf=pass (imf15.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787056784;
+	b=BlfAe49nbgXdzrnJlabWXP985SHlAcnFM/5dUIzBjGSUvmODAgbdOW1A1HFmLgknLJMXe0
+	B+6PCBmy+pQkYGf33cYiDB30UNJJMCd/n60jLe8EYGIOAXIJa9uzrzAkAIRLXdg9YmKJjV
+	tqAgcM0TymZYTFTMTptDXVbS/81xuJU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=cJGXOOz7;
+	spf=pass (imf15.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787055372;
+	s=arc-20220608; t=1787056784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJN1XNbV1kVG2NQ3eF3Cz0aSxHqvy1o4DerQ17ykIz0=;
-	b=JzO9jHLxgRKRBOSmwuScVgTxIQFOBORDwIK3tt5c2ka/RhbSmDCXNZ2UMcwOr5iMPje6W/
-	i1maan64xkwBBAwUb22ndxb82Marj00WNACITCUsGb1ByPuId3bDRDrv7AGu/b4u3P8yQI
-	zKH+l9HqSpNyU/goR790ymuBmzdg4QQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=CtkBOOzd;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787055372;
-	b=GwGX5MEBho19sLPApEuphTz8sgPqyUbb8dM3JAruzmWgiN0ovUBHBVdfMtyaxC3GlspXAa
-	/aEIN3epvzpCdm3kTQU2dXsNvaRqzd9FhFENXux4cGbFBqGh4IPwBncZsREJr5JBQZUcEq
-	yWAFrG6aCw/Y8agKPknZwqvS8Jm3Ta4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=61EB7xd78VmsW3Vtne3/GVzkEJHCsedf1b4wP+cKgAc=;
+	b=tMX3a9jds/11pVBU2PWUcuD9z3kxboaRH9bKmouqS2Ie1XStBqGVKovMxiTYAqQZDPPTFq
+	e+qsIJgeNL0ZoFLzf3L/kw9Xr9HLup341khkKntmy5Gc+wHSm75WhQCgcmlFJwFvhM3h/X
+	xLkDusY06CjBjaqWFEX/J+LBc+Cpli4=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=YJN1XNbV1kVG2NQ3eF3Cz0aSxHqvy1o4DerQ17ykIz0=;
-	b=CtkBOOzdgvQOOkYQfbKQ9+0f6okaXLJPPYPMqpbF8rpax8HOWbesMuK28GuLhRD77zlNyyGCc
-	b1Rvju6IUfwQKh/prrn2V54H+ShXHIpbM34dNJzEFASE4P+GnwduddcihO2hS+GFEcb+eDFnQkh
-	xK3Kz/K/Mlck3bzypEjgXFU=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hPT0x3MLnzRhQt;
-	Tue, 18 Aug 2026 20:05:21 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6B8D14057D;
-	Tue, 18 Aug 2026 20:16:00 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 18 Aug 2026 20:16:00 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 18 Aug 2026 20:15:58 +0800
-Subject: Re: [PATCH v6 2/2] kexec: keep the next kernel off hardware-poisoned
- pages
-To: Breno Leitao <leitao@debian.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<kexec@lists.infradead.org>, <rmikey@meta.com>, <riel@surriel.com>,
-	<kernel-team@meta.com>, Kiryl Shutsemau <kas@kernel.org>, Bradley Morgan
-	<include@grrlz.net>, Andrew Morton <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, Pasha Tatashin
-	<pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, "Naoya
- Horiguchi" <nao.horiguchi@gmail.com>
-References: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
- <20260812-kexec_posioned-v6-2-e477887086f0@debian.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <f794a7b8-ea8b-ef21-5bf7-de36f3210837@huawei.com>
-Date: Tue, 18 Aug 2026 20:15:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=61EB7xd78VmsW3Vtne3/GVzkEJHCsedf1b4wP+cKgAc=;
+	b=cJGXOOz7g4QJkUJsl3S6q/OHVIO2OpSQ12Gwnvx/LDfB7j2e9EmtE+wl+FvTTaNmlXxPZBSoM
+	KNe7EYBgpJaWfulSYLlXHEJmvcN4dYRcyiGIBUJ8QEQpm3tmfYJh6RI69VsVdB7Pf0ztoogoZH+
+	DH6PmEGQgvfg2NxnkDJIw3E=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hPTX46pPgz1prKd;
+	Tue, 18 Aug 2026 20:28:52 +0800 (CST)
+Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
+	by mail.maildlp.com (Postfix) with ESMTPS id BC10A4058C;
+	Tue, 18 Aug 2026 20:39:35 +0800 (CST)
+Received: from huawei.com (10.44.142.85) by kwepemo200010.china.huawei.com
+ (7.202.195.178) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 18 Aug
+ 2026 20:39:34 +0800
+From: Qi Xi <xiqi2@huawei.com>
+To: <akpm@linux-foundation.org>, <vbabka@kernel.org>
+CC: <longli@microsoft.com>, <kotaranov@microsoft.com>,
+	<jan.kiszka@siemens.com>, <kbingham@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <linux-hyperv@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <sunnanyong@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <xiqi2@huawei.com>
+Subject: [PATCH] mm: drop stale MAX_ORDER references
+Date: Tue, 18 Aug 2026 20:24:08 +0800
+Message-ID: <20260818122408.4182417-1-xiqi2@huawei.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-In-Reply-To: <20260812-kexec_posioned-v6-2-e477887086f0@debian.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: 3F0CB180008
-X-Stat-Signature: cnsi4amsa7xoy5cwiqqqpqwi6pd11wjt
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.44.142.85]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemo200010.china.huawei.com (7.202.195.178)
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787055370-483308
-X-HE-Meta: U2FsdGVkX19hYDJq/rd9fJjK6jUzWuJP2dEDpnvGnFC2c6KbcmTR328EjBx/QIgg22T88yLcdzR8pT4ZNv0UxM5N4eHauclK7yS9j1Z9TqQoo1FkN8ev1VQSOE8lpE78VpmVNRd6rCslt/rUO5U6G8n5JVEJXzC5C3rACUiy5ZUs0ujF7fARiCMQNqIQ1GpodkB8/bQfKfJs1EH8vlcdI+yse5DSUHqhGY9UKeCUx+6OcvAhdfKcIopRwI6kZLQz91U52oxRnHI8aTs65c14lcfsgkQH9S0QQ14a5yWDct3+cSJLeaLsIJ7lTSSH9rLLkZWxKuB6mPIzp44Ra0JrdlOAyA1yQ1iiPnXwi+uHjsxhheNH2Ic8LaGnpK+9mBl7lpQUjMyfSaSHfxR82eSV64UebHUqw2g+My+ms+U4vyS5u3toCaWczovnkbdxS4F2YWuV0j+hsxYd5m7ZYszF7PBUNTajlmo3JM5lx/4zJ754jFu1xS0c+lM5XkFVjdOCKMt8MdomjSGajusBOTqnwETmm8t751BIocU1UiFWlcGqpTfmvR4jK3+9cPlxarKGyG90aEXCp59aSQ+B9WifVbxlarCeJxoc8A2GumtCMjfVCccyTu6Iph8GgaX+KIUVls2FghvE7BfP3mFUkEUyav8ZJKD+gHhmfQHZ2j7jXc7YDcdJt1ipNsdQor5hCs3+QGuZ3F4W0BNYdjJFjc0wUIsYiTqmOSDVNsRFh2Bx8Ogr7TbKHG4obnAs1hP6VXR2N97JDlj3U+y++ZCiJItS4sHwNg5uDV1UlqZA4YpwPTT+zYdTO9rzJ4jZ9QBGz1f7icSNYyfUxvHYCMEoVQA4vL91fL9nz1xiYQAdZdJYNKdAQ3IStOyRpCw7B8G/owabry2Mh+J2StBouFAuvApLwi7lRtJRurMYeWC/MMyryYGERitRkcxgNJV+cus3YpxK92tmvQRGF4naOKYdKVz
- j1xmB23o
- j92C2//x1emESD03R3ffFb/43P9QCluUdy2o/NtTJLUfFDlfsfvYip3660OE+f8y8Gs9Eywit1FOu0stMjOxhnmOluhbph6MUgkuKeSgUACuWUxSvxeZSSQnbJRQQRP5gwNkdgI4QdhYOPYLra38eShMwxBPYpwGfBHn4W0kuaHqwysacIjBGDOnNsn/V5m1yot1IngAwtCgdCTjOp8gcVEuCqqLfb4QYNVypFtkScjX9LIWUzp+W5fMC2dLwfk94Dvrw4Pq25GCU9R6Ty47cymU9N0jm9Ez0Q3fhGa8brh7XA0+4bLpIw0sTEnsi9f85PnbBQwHSu7bsT7Alyyx17Z4SZzC/V8S+bClXwwkqm+0MQ/IKOAi0r8aIee8IOBNx3PFEzF/Ti4WPo2nQB4W5IHJ+uXFSL4kv84QeV4H7TjhhjwuwiBKNdhxd0YchYJdoSfYYtbghVvQmJmweUQddJUlFGvUB1y2AvOlO
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 61EC2A0013
+X-Stat-Signature: u7ercixjaur8kjgmj1h68gomhqyjd17x
+X-HE-Tag: 1787056781-139323
+X-HE-Meta: U2FsdGVkX1+OLYhdQMzoB7a5qAtfJ8sPancDWglsfMWhWjQ8k3Hl/WvmHoP214JAFH2fXxvYVv9hSTlYq3kExHOzWIk7AnqIZ1wjGnq310Km37AlkjPA2CQkXtHozZ4ERc67aQKBdouukIpJO2cyO3NjxI/GIIocAIrk1qus7hIXGrRpwK33FnuHdMOkfYY0NMUOn42jcz9MdOUOfiZY97l3bQYcBI3LF8OiMufhhkYqplkPuzoQBKmryXIdpMoKFXfAsqP9SJBOnZWZKDidyjD8XlQqyEVJsxc+XX+ksm+4aGOm8rT2lYAq3Yti9zwciUP2jklu0/0TqWSl9Pn0sjUZhPwfJoisyu1pG2yMW0EG3bc5vtlwwHWR1GHcjqynonM5YH8Fb9+fo1qJWqRIMXApAPRSuhAUxUetQEg5hwHQfevgUiDFLk4HTyamaqHKBmHAfFHlQFGlVxVOesYLa0ixAlfIOozFP5rRMPqsYGmXhvJHtzxc2BjCxgBh3Xp8PdZSHVbB7iXuvEGXgrC0ydGzb9pM+NO5sfJvg9f5xLANTDwe2hDu4sGTEyT4A6s7NOrWshyy23fRMFxqkuZ0gCpZTChVVi5f8QDN1XaT/iCRaUVC29HX9Jkh4aA5+xNreWd6Yv8hocQrRfVsNswo9TQFOLToZzDS/cSEZ6Ie1kM1GStJZFhe836QciOFHjXmWV71PB62J1ac/s9Zp7sVRctCTs/x02x0oBXMRqBCkagDNOIDKeSDDwdN7KJosvW2A56+tN/hT5H9TseY4G0rl4abkkAfMAO6yFhGrlA8LT/PXz4MpDB0/IPFeYuw+u+FCcP/wrRoOlN2jQrcChdBhftmTZ0Van6hx+HtHknRPXTOiVsQ0P9Q0XLfFMW9pTb1wkfAyU1CJNIboAVZ5LkMATIL2JjoimGbo+AHWEadiW5+aE+ZnjmDSOvqZ5+V6WXVdbRQr1L1V788RD7GaOu
+ vL4m8yKH
+ hsISKZitUbNE4RS6yPEcZrAdFuSCNS1rlyB4XsZRriq0Ncprq1B0cy9wj2rTsooKYFuhZ48XAj4+C31hkVoSTTs8NLeCHPQWbu6Vjka6n86NB1Gf6LU9owH4lT02z6qzYDnBTQEE791dPnNZi1q4rZCz97Q7tHwHg5e4n49xd9xzDIBSjLLHIftb3pb4C4PYsLYJf/MaTyeS0vpZh6JjGIwwFWeJoRyNtjybTTN7I6xVZ2FqK5C+lT9uxOKU4zXqVxjnubY7BkG3gA0k/fJypV2YEfYSoRyupC+76a1QbjHLwLjltBAJWeu/9mktl7se2+2/wncS0mZfhx6p5+ss1tHnZYA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,43 +99,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/8/12 19:31, Breno Leitao wrote:
-> Memory failures (such as unrecoverable ECCs errors) are getting more and
-> more common. The kernel knows how to handle it while running, marking it
-> as poisoned (and SIGBUS user tasks).
-> 
-> Poisoned memory is removed from the buddy allocator, but, not from
-> other places. A current problem is that kexec will load new kernel
-> on top of a bad/poisoned memory, which is undesirable.
-> 
-> If the next kernel's image, initrd or purgatory lands on a poisoned
-> frame, the relocation copy puts it on memory that is known bad. The
-> error happens on the first read from a bad page, and that is what we
-> want to avoid.
-> 
-> Skip hardware-poisoned frames that were detected by the memory failure
-> subsystem earlier when placing kexec segments.
-> 
-> To do so, add a helper that reports the first or the last poisoned page
-> in a range: memory is walked top-down by locate_mem_hole_top_down() and
-> bottom-up by locate_mem_hole_bottom_up(), so each direction needs a
-> different answer to stay clear of the poison.
-> 
-> kexec_load() gets its destinations from userspace and cannot move them,
-> so there sanity_check_segment_list() just rejects a segment that happens
-> to have a poisoned page.
-> 
-> is_page_hwpoison() also covers hugetlb, so a poisoned hugetlb folio is
-> skipped as a whole.
-> 
-> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> Reviewed-by: Bradley Morgan <include@grrlz.net>
+The treewide rename in commit 5e0a760b4441 ("mm, treewide: rename
+MAX_ORDER to MAX_PAGE_ORDER") left a few spots still using the old
+name:
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+  - two comments in include/net/mana/mana.h and mm/page_alloc.c;
+  - the gdb helper scripts/gdb/linux/mm.py, where self.MAX_ORDER is
+    a local mirror of the kernel's MAX_ORDER define.
 
-Thanks.
-.
+Rename the leftover instances to MAX_PAGE_ORDER so the tree is
+consistent.
+
+No functional changes.
+
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+---
+ include/net/mana/mana.h | 4 ++--
+ mm/page_alloc.c         | 2 +-
+ scripts/gdb/linux/mm.py | 8 ++++----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 04acb6791dbd..1d5bed71d6a7 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -40,8 +40,8 @@ enum TRI_STATE {
+ #define COMP_ENTRY_SIZE 64
+ 
+ /* This Max value for RX buffers is derived from __alloc_page()'s max page
+- * allocation calculation. It allows maximum 2^(MAX_ORDER -1) pages. RX buffer
+- * size beyond this value gets rejected by __alloc_page() call.
++ * allocation calculation. It allows maximum 2^(MAX_PAGE_ORDER -1) pages. RX
++ * buffer size beyond this value gets rejected by __alloc_page() call.
+  */
+ #define MAX_RX_BUFFERS_PER_QUEUE 8192
+ #define DEF_RX_BUFFERS_PER_QUEUE 1024
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ee902a468c2f..42b5b41432c5 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7803,7 +7803,7 @@ static bool cond_accept_memory(struct zone *zone, unsigned int order,
+ 	/*
+ 	 * Watermarks have not been initialized yet.
+ 	 *
+-	 * Accepting one MAX_ORDER page to ensure progress.
++	 * Accepting one MAX_PAGE_ORDER page to ensure progress.
+ 	 */
+ 	if (!wmark)
+ 		return try_to_accept_memory_one(zone);
+diff --git a/scripts/gdb/linux/mm.py b/scripts/gdb/linux/mm.py
+index dffadccbb01d..28d33624c38b 100644
+--- a/scripts/gdb/linux/mm.py
++++ b/scripts/gdb/linux/mm.py
+@@ -56,7 +56,7 @@ class x86_page_ops():
+ 
+         self.MAX_PHYSMEM_BITS = 46
+         self.SECTION_SIZE_BITS = 27
+-        self.MAX_ORDER = 10
++        self.MAX_PAGE_ORDER = 10
+ 
+         self.SECTIONS_SHIFT = self.MAX_PHYSMEM_BITS - self.SECTION_SIZE_BITS
+         self.NR_MEM_SECTIONS = 1 << self.SECTIONS_SHIFT
+@@ -233,11 +233,11 @@ class aarch64_page_ops():
+         self.SECTIONS_SHIFT = self.MAX_PHYSMEM_BITS - self.SECTION_SIZE_BITS
+ 
+         if str(constants.LX_CONFIG_ARCH_FORCE_MAX_ORDER).isdigit():
+-            self.MAX_ORDER = constants.LX_CONFIG_ARCH_FORCE_MAX_ORDER
++            self.MAX_PAGE_ORDER = constants.LX_CONFIG_ARCH_FORCE_MAX_ORDER
+         else:
+-            self.MAX_ORDER = 10
++            self.MAX_PAGE_ORDER = 10
+ 
+-        self.MAX_ORDER_NR_PAGES = 1 << (self.MAX_ORDER)
++        self.MAX_ORDER_NR_PAGES = 1 << (self.MAX_PAGE_ORDER)
+         self.PFN_SECTION_SHIFT = self.SECTION_SIZE_BITS - self.PAGE_SHIFT
+         self.NR_MEM_SECTIONS = 1 << self.SECTIONS_SHIFT
+         self.PAGES_PER_SECTION = 1 << self.PFN_SECTION_SHIFT
+-- 
+2.33.0
+
 
