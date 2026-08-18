@@ -4,138 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A9DDC5DF7D
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:12:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38E08C5DF7D
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:12:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C6AD6B018E; Tue, 18 Aug 2026 09:12:01 -0400 (EDT)
+	id 4EE286B0191; Tue, 18 Aug 2026 09:12:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 429596B018F; Tue, 18 Aug 2026 09:12:01 -0400 (EDT)
+	id 478116B0195; Tue, 18 Aug 2026 09:12:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F11C6B0190; Tue, 18 Aug 2026 09:12:01 -0400 (EDT)
+	id 367FB6B0197; Tue, 18 Aug 2026 09:12:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 016FD6B018E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:12:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8B1FC14012E
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:12:00 +0000 (UTC)
-X-FDA: 85114428000.06.58D61B9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C483C40005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:11:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aNrYpejp;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787058718;
-	b=G6uSWh7/KPaO3S0Wgjl38r8z4ON1vGXW5ZcTOH1Zt5llH/j5PxODcM/mw05vzai0X3inr+
-	/0l37qmmNUpmm1qztbS6ivR73Isa6iFZELXxp9zdplohgCK2hfs6CKVHgyqBbz2Mv6A6Pa
-	xU5HQ6hMf9hMP2UM7jyMv7Il7lnzd28=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aNrYpejp;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 08DDA6B0191
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:12:11 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 81DFC8010A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:12:10 +0000 (UTC)
+X-FDA: 85114428420.24.DA0A3AA
+Received: from mta0.migadu.com (out-67.mta0.migadu.com [91.218.175.67])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E58261C0006
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:12:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ku2ZoUne;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787058718;
+	s=arc-20220608; t=1787058728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6h2owgxuSrSq50nmTZy/3ZcRtlZHDF5Xk8R/h5i6bZI=;
-	b=pae2GKfbAsc0pLTU0cfwR4fOBZfyz/NQfn3XIoB/mkWIftTfEcqUA7QNl+J0gA9LUJyrY1
-	z/mBr8JVAsvyVnULGSjcume1/EFApu4UtWHxB7elwRI+ffuey+SdO1UheYqxvJy9RaSOLb
-	vxJdctgrQ/5vp9Y73K4BfEgGf/OHUDk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52B6C6020E;
-	Tue, 18 Aug 2026 13:11:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599521F000E9;
-	Tue, 18 Aug 2026 13:11:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787058718;
-	bh=6h2owgxuSrSq50nmTZy/3ZcRtlZHDF5Xk8R/h5i6bZI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aNrYpejpA0/PYDjoTrJu4ltXby89EraHWwucnYYvReADSf6HMr8EqJHBKWipyAuV+
-	 TxWbEc95Is8kRzwf8Pdgn+qLZrqqY6XGmMhJfcWzEXPY2fhK9/dNI006bFvZkSPd44
-	 SB0L8lSsmG4nO7huQUVWWJifX3OTwHYs43zjJAjWIXXGmGKE5NCQnI+LPTJarGvaK2
-	 2JKLX7G83xLF/+7XHkaodPWTWUqQmvMy985mTuwG7XdhF5AmNb5Tz7dasaYQ713FLy
-	 AZoRqD3kmt91XLsQb+GjWhg9jdyTdsogdlcaHf+4zujQ6kuvmwfo2SZjLfwd99StEn
-	 cfVQWt3j+Tglw==
-Message-ID: <9e533fcd-c80f-42df-847c-c15c4e3a1a70@kernel.org>
-Date: Tue, 18 Aug 2026 15:11:50 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=WBtwBngwOWzMFkFBBi3B8045d+kUJ8Qyb7IqyQk9qqY=;
+	b=c43E6IOB6zt0aCVgfUj6tqkmWHaUj6eIYhOLWkdXGRt9F0nqunMkIKkIlXctAfIgswRkxe
+	RgNQ5GAfWCiERbjiDq3Pxgja0ieeSJfDMaA1RNRW+j6vvBoQX52FdJY5awCxTySIoyHlwm
+	2dfwa/TFL3ROT844UaPE98tRkUDrdLU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ku2ZoUne;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787058728;
+	b=45ZLuMkk2VKOxPU5hZqxe0asvotnQdapG8qMqWMBLuxNXS/9Ko6BKpg3hz6VhDjKmai/Wo
+	IJjJ9r7YP37HUubegqM3hiz35qCOCfaqkmZG7XNrMRpDDQCe9mlXttp5SRYGFfX2rSBO7m
+	Q6itzdZhqCPwlBjZbprxZJmnkXrTZ+w=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=H2/+wtN9OZQjU11sS1a2j8mSL4quqo+cOA9lVD9ohS4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787058725; v=1; x=1787663525;
+ b=ku2ZoUnehm336yKMuQNr5DY27yXMgOH2RDIN9l/CTMjeK7gPltOYth0fQotoCsGgoe6cBGY/
+ fTDc0pNsr9NNnNUbdxc+Y5dbrp2rbfW7tbhv1X81KAepEQdlXxeHWIVgl0b+8Ng5HM5M87CfHTJ
+ 2Dphxv8bHcK+mmvv18S4tDag=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:19::)
+	by mta12.migadu.com with ESMTPS id 9dd65e571bfab312;
+	Tue, 18 Aug 2026 13:12:05 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com,
+	Baoquan He <baoquan.he@linux.dev>,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	Nico Pache <nico.pache@linux.dev>,
+	Liam R. Howlett <liam@infradead.org>,
+	ryan.roberts@arm.com,
+	Vlastimil Babka <vbabka@kernel.org>,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	yosry@kernel.org,
+	kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v6 00/12] mm: PMD-level swap entries for anonymous THPs
+Date: Tue, 18 Aug 2026 06:09:41 -0700
+Message-ID: <20260818131202.494754-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: remove the local PKEY_UNRESTRICTED fallback
-To: Hemanth Selam <hemanth.selam@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: Yury Khrustalev <yury.khrustalev@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260818114945.1312987-1-hemanth.selam@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260818114945.1312987-1-hemanth.selam@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C483C40005
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: j4sqko3diconbxntuaeub53ptn74ermp
+X-Rspamd-Queue-Id: E58261C0006
 X-Rspam-User: 
-X-Stat-Signature: p7tuwgtqxnk9qq5w8eri45jqnrenp8sz
-X-HE-Tag: 1787058718-819374
-X-HE-Meta: U2FsdGVkX1/c2RToF3s/fFadAg2OpAmOAgrExsfkYx7OQ9FUYWrsI4p8qfPXIx/nhXII/onQV3eRRfX2HMaVOPNIExPJcok2U3bc7JFbcqQ/kQMC7zR9CvoAaaimxdR7f8yipubOq1sWkXLXdQbTN02YX78lBOQYUY3bejPdlAPZNaFgaGYlIBtycD9OLw0FF5aCHV+ZDP74cWqKc8WDUW5H/20ZNiSCxydePVlHclf28P5C954v1iPkUksjI8Xrq5WslM8xPTaaFBVMMuOEAC9nTD1mTd1diqXfVC5R8pCrF3MZW9RNU3wg25v6Yq8tsmLUGsX9siX6IUM7AZbkvh7qexNzd1ASDMMww7z9HQPy4noQFcOaNqR5LwWyq7HX21efe9Hv+ttIMa9GQWJoiJgWSgZMb9nIZimqZWqy9fg7600QjUGV4qlhX3UWD/WxKATPVka6y45xPYFvhUZfM268Z/5pzxWPsOp4zKYrhet14NZZyB46fjjiMqC+YQlZA9P/w1svHClJ6t+rXFVMZGC8eSeR7iVYg22fncM+7QcjnCpy3I0/MuhQGe0clk+F4UNkFjUDfo6ARnWTOEjrgX6z2MebakAAMolTcB7AD5ZqaPdYA6NaAsaOL+mZcvVFFgYNCgnusCTjODvB40q+/MQbrmCsPQq3JKCCcVWz99JPE3JSMBS8wIBR+HeluWFcLCOIZzu9KDVAG1Te5/dvMRysoLhKHvJpDal8F05JC1zY0WC3eTKW/YM7j+9TxkYV01MrFjDwVXeMdcXIi4/yLMR6WkSXXRxMXsAehF/8AZmKmqFejKu9piPpdo3FZzbiZshXmJ6X44QNtQkqIBwvUp6TohozVTxwOIz+WcooW53683eTNk80qgJE40Bdygpelt7xwpL6IX20HK/KftkqAP7nexBpfrHyNBw4pjcCX55FHwDQRMcYBWp8FgKkxtC/Fq9hJ+4M9AoAhOZO1WJ
- q+FgK71g
- OCl/kp8R3bGv6kwDIA42P+M8hD1cAoQnM9xJzv7W/HckkjL6BRJD86CFYKtT1pmOJOvANzpvAUl70rJVmaSbATlYt4CgsbfNdM2ty9lSOgXBfD1whYYVl1q0b7vi/a2g3TXniByyECdO5XN4im1shZI+C1yMp5F3DkhRhI5IZaov8udfC5HW1XB8dK7hi4pY9OMVtsfmyvS/cF6oe8UlzU8cBnvyBCogAunyJ8iYms+Potam69HHr+9XkmzeIBv7n57tqBcArXFbO8p3RKXPC1i9upK2TgaqpV723IoTq2LFPwOpuEMcOf29G9JlzbVvZF7SX0A1aMHEzqS9ONmJsdYb859Dnxg7KYKpeWWj3zRIabasF/RPf0ltHg3+k5gWFhGos57wvmvm9TT0uUBgf8eQEWA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787058726-967461
+X-HE-Meta: U2FsdGVkX1+hTEQL2LXlLrGZnC8BUdsSLOESmFDvYIFZyIAY+d6KxPhcjVIuCPJQ7fe8cmWwQPJdbJxp81VczZOYkB+bNXXJiiBStea87vIsYzAADRn10M5WAxUYRvODSBtytSgIq8Vzu9H1M2O5GIyAfRTAjbuWj1f3f8rmIE7XeCOxlMVe1+it6CSuHA0qnpfoyT9/5hJvSywn6t2OiVY+U/EfaXFkLQw0CMXrD+v10kpSnF2KOhSrvnB8PyDAv2ZYgttl+h1VSX5AcLmPZPYkicQqqFCMfgOGvyqb6iATXhIu2eXynwBXs8oyaATKdWSNyoxTzYHCRq5cI7PvuPycUNrL4WhGgoXC8lSvUsmV5GKcARqjBVYSzleTuZfF6hhmJI6z1grczV/L5AfWz0m/sh8LRokTEGsfoeNP5OR9nC9yj3K8D5i68QAk2d9tLbGuHRariLVfpmvTr3bCUlVl3qt5nERDvZwp92mBWA/jPIaokge1N9aCQsC99FASY1SQKr4yEYxHDDYG9dKWSQWi6geEzgthrs8FMGSgwFORb5j8930kweaSRN4U5xDrGjJwat2Ohv96GVos/nTaUUiN/Z5n593ZDrHsUKjD4f/EEypgwhgvsqxG2YZrxT3rizHJukKk4FoILBbJZ/oT2EdcvnBtAvcyj+eTryI50OQWztnVo7Fx9YJX/rxC2D2pTWvSMPKHzUy6gnQnuYvgt5a2EQAUhYeuUrZepRUeK+jQSTxfgCwu852IZwV16Bv5FzAHMdjpbYfs2vIa+A9jKnH0OQIr0HWKnphs+0Dv5k6p61n7N/ABcrwuZktObEhsxdJGmowb2tmLw2Y/bwP4rufdcBoa67lT2ufhkZGOgZqABEs6s+XaMcEtFQ9WIxKQ+cM4uucLyiPdJ1vKj6FmtPv4vUODlLwaLkdi4xDKM9j5uayNm1Jaab7dbHEtt36mhevDOegTXuxygI6qRXB
+ 7c8WvOfj
+ 6urXol5+S3Wfa7ZPYoMg74DsLSmu5u+kCNf/sUNMUgo4h+tqAB3y/Hjy5iyJntMGB8x+eUglpd2geGSeVBXUbPEtkQv24GrruJCs4M1nZTUhio3YtYPLXHkFHGMnQCvk3trrlFtQvhHPuOolKfVXPd7/cwKPOzdlRbBJ0GCXkqVW54jlJUFw6vVJGeMK7bcVrKa1YdKaM5ICzmPAnX8w8DU4/a8aWIrWyWUJD/aVqeQkew/N/fsU1cTm8looKfVHzJ6cv9TmwtCeXN+JqbsfeK6lctwjFHh0qCfxw1EZISmwIrf0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,56 +113,305 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/26 13:49, Hemanth Selam wrote:
-> pkey-helpers.h defines PKEY_UNRESTRICTED itself when the macro is not
-> already known, a stopgap from when the generic definition was still
-> under review.  It has been merged since, commit 6d61527d931b ("mm/pkey:
-> Add PKEY_UNRESTRICTED macro"), and pkey-helpers.h already includes
-> <linux/mman.h>, so the guard is never taken.  Honour the FIXME and drop
-> it.
-> 
-> The mm selftests build against the headers of the kernel source, see
-> Documentation/dev-tools/kselftest.rst.  Building them without "make
-> headers", against system headers predating the macro, now fails to
-> compile instead of quietly falling back.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
-> ---
->  tools/testing/selftests/mm/pkey-helpers.h | 7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
-> index 2c377f4e9df1..626c2e1655dc 100644
-> --- a/tools/testing/selftests/mm/pkey-helpers.h
-> +++ b/tools/testing/selftests/mm/pkey-helpers.h
-> @@ -112,13 +112,6 @@ void record_pkey_malloc(void *ptr, long size, int prot);
->  #define PKEY_MASK	(PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE)
->  #endif
->  
-> -/*
-> - * FIXME: Remove once the generic PKEY_UNRESTRICTED definition is merged.
-> - */
-> -#ifndef PKEY_UNRESTRICTED
-> -#define PKEY_UNRESTRICTED 0x0
-> -#endif
-> -
->  #ifndef set_pkey_bits
->  static inline u64 set_pkey_bits(u64 reg, int pkey, u64 flags)
->  {
+When reclaim swaps out a PMD-mapped anonymous THP today, the PMD is
+split into HPAGE_PMD_NR PTE-level swap entries via TTU_SPLIT_HUGE_PMD
+before unmap.  This series introduces a PMD-level swap entry so the
+huge mapping can survive the swap round-trip and do_huge_pmd_swap_page()
+can restore the PMD mapping directly on swap-in, without waiting for
+khugepaged to collapse the range later.
 
-tools/include/uapi/asm-generic/mman-common.h:#define PKEY_UNRESTRICTED  0x0
+The PMD swap entry is a compact page-table encoding for HPAGE_PMD_NR
+consecutive swap slots.  swap_map accounting remains per-slot and is
+unchanged.  Importantly, a PMD swap entry does not promise that the swap
+cache always contains one PMD-sized folio.  While the cache is empty or
+contains one PMD-sized folio, PMD-level handling can proceed.  Once the
+cache has split/per-slot state, users either inspect the individual
+slots directly (mincore) or split the PMD swap entry and retry through
+the PTE path (fault, swapoff, MADV_WILLNEED, UFFDIO_MOVE).  Likewise,
+if any slot is still backed by zswap's per-page store, PMD-order
+swap-in consumers split and let the PTE path load the range page by page;
+an all-on-disk range can still be read back as one PMD-sized folio.
 
-So that looks good.
+The series is ordered so every consumer can handle PMD swap entries
+before the swap-out producer starts installing them.  The swap-out patch
+is the last functional change.
 
-But we seem to have the same ifdef also in
-tools/testing/selftests/powerpc/include/pkeys.h.
+Notes on zswap:
 
-So likely that should be removed as well (after making sure that it compiles?)
+  Native PMD-order zswap load/store is intentionally left for a follow-up.
+  Alexandre Ghiti is currently working this.
+  This series can still preserve PMD swap entries while zswap is enabled:
+  zswap stores the THP as order-0 entries, and PMD-order swap-in
+  consumers split any range that has zswap entries before reading it.  If
+  zswap has written the whole range back to disk, or the swap cache still
+  contains one PMD-sized folio, PMD-level handling can proceed.
+
+Testing:
+
+  The 16 pmd_swap selftests pass on x86_64 with zswap both disabled and
+  enabled.  PMD_SWAP_DEVICE was set, so the swapoff test ran in both
+  configurations.
+
+v5 -> v6: https://lore.kernel.org/all/20260722152043.2273289-1-usama.arif@linux.dev/
+- Add patch 1 to rename pmd_to_softleaf_folio() to
+  pmd_softleaf_to_folio().  No functional change. (Dev Jain)
+- Patch 2: warn when pmd_softleaf_to_folio() is given a non-PFN
+  softleaf rather than silently returning NULL. (Dev Jain)
+- Patch 4: bound the fork extend-table fallback to one retry, re-read
+  the PMD under its lock, normalize unrecoverable copy_huge_pmd() errors
+  to -ENOMEM so copy_pmd_range() cannot clear and leak the source swap
+  PMD, and drop a redundant thp_migration_supported() gate.
+- Patch 5: check multi-page swap-cache insertions for zswap-backed slots
+  in __swap_cache_add_check() under the cluster lock, both before
+  allocation and before insertion, and reject mixed zswap/disk state
+  with -EBUSY. (Yosry Ahmed, Nhat Pham)
+- Patch 6: on a failed non-uptodate PMD-order read, remove the large
+  folio from swap cache before splitting so order-0
+  fallback retries individual slots rather than poisoning the whole
+  2 MiB range; retain hardware-poisoned folios for per-subpage handling.
+- Patch 7: make HMM snapshot mode report a PMD swap entry as non-resident,
+  matching PTE swap entries, rather than HMM_PFN_ERROR.  Drop redundant
+  thp_migration_supported() gates and simplify non-present PMD handling.
+- Patch 8: factor PMD MADV_WILLNEED prefetch into
+  swapin_pmd_swap_entry(), split and retry through PTEs after any
+  PMD-order swapin failure, and replace the racy folio_test_locked()
+  plus folio_lock() sequence with folio_trylock().
+- Patch 9: guard PMD-swap UFFDIO_MOVE code with CONFIG_THP_SWAP, clarify
+  RWP marker propagation, and reject a PMD swap entry at the destination
+  with -EEXIST so UFFDIO_MOVE cannot loop forever on -EAGAIN.
+- Patch 10: honor current THP/VMA policy before PMD-order swap-in, recheck
+  that the PMD is still the original swap entry before splitting for PTE
+  fallback, and provide the CONFIG_TRANSPARENT_HUGEPAGE wp_huge_pmd()
+  declaration/stub needed by THP=n builds.
+- Patch 11: make an invalid set_pmd_swap_entry() walk context warn and
+  return -EINVAL instead of falsely reporting success and corrupting the
+  MM_ANONPAGES/MM_SWAPENTS accounting, and add an exact PMD-size folio
+  precondition check. (Luiz Capitulino)
+- Patch 12: use /proc/swaps for prerequisite detection, check
+  MADV_HUGEPAGE, and distinguish an environment that cannot allocate a
+  PMD THP (SKIP) from a swap-out validation failure (FAIL).  Add
+  partial-mprotect and partial-munmap split coverage.  Strengthen
+  munmap/MADV_FREE VmSwap accounting, pagemap slot-offset checks, and
+  mprotect/mremap swapped-state checks; force mremap to move, check
+  munmap()'s return, and mark the UFFDIO_MOVE destination MADV_HUGEPAGE
+  before asserting PMD restoration.  Move common setup and cleanup into
+  one fixture, merge the swapoff fixture, remove the redundant cycles
+  test, and make the data pattern differ between base pages so the split
+  tests can detect incorrect slot ordering.  Order fork-COW so the parent
+  writes while the child still holds the untouched shared swap entry.
+  (Luiz Capitulino)
+- Clarify commit messages throughout.  Retain TTU_SPLIT_HUGE_PMD after
+  prototyping its removal: removing it here requires an extra rmap walk
+  and broadens the series beyond PMD swap entries. (Matthew Wilcox)
+- Rebase onto akpm/mm-new from 15 August (4b65683fd25f).
+
+v4 -> v5: https://lore.kernel.org/all/20260713133613.2707815-1-usama.arif@linux.dev/
+- Commit message improvements for almost all patches (Yosry for zswap patch)
+- Patch 1: make pmd_to_softleaf_folio() reject softleaf entries that do
+  not encode a PFN, so a PMD swap offset is never interpreted as one.
+  PMD swap entries remain valid softleaf entries for classification.
+  (sashiko)
+- Patch 2: use the existing pmd_swp_uffd() helper and force freeze=false
+  for PMD swap entries, which have no struct page for the migration-entry
+  freeze path. (sashiko)
+- Patch 3: document that the caller's page-table or swap-cache reference
+  pins every source slot while a partial PMD-sized duplication is rolled
+  back.  Keep the pre-existing PTE fork retry behavior outside this
+  series. (sashiko)
+- Patch 5: split to the PTE path rather than mapping a PMD-sized folio
+  containing a hardware-poisoned subpage, and restore PAGE_NONE when
+  swapoff restores a UFFD marker in an RWP VMA. (sashiko)
+- Patch 6: account SwapPss for a PMD swap entry one slot at a time because
+  the slots can have different swap reference counts.
+- Patch 7: if PMD-order MADV_WILLNEED encounters newly populated per-page
+  zswap state, revalidate and remove the failed clean PMD-sized cache
+  folio before retrying through PTEs.
+- Patch 8: mark a moved PMD swap entry for UFFD when the UFFDIO_MOVE
+  destination VMA is RWP-registered. (sashiko)
+- Patch 9: restore PAGE_NONE for UFFD RWP swap-in, preserve the original
+  write-fault state through swap-slot release and COW handling, remove
+  the unnecessary LRU drain, and prevent PTE batching from mapping a
+  poisoned subpage. (sashiko)
+- Patch 10: add and document thp_swpout_pmd, which counts PMD mappings
+  replaced by PMD-level swap entries rather than swapped folios.
+- Patch 11: register pmd_swap with the default mm selftest runner, preserve
+  errno across UFFDIO_MOVE cleanup, check swapoff residency before the
+  first memory access, add a parent-side write and verification to the
+  fork+COW test, and add RWP regression coverage for swap-in, UFFDIO_MOVE,
+  and swapoff. (sashiko)
+- Keep do_huge_pmd_swap_page() in patch 9.  Patches 6 and 7 only add
+  consumers; patch 10 remains the first producer, so no PMD swap entry
+  can reach those paths before the fault handler is present. (sashiko)
+- Rebase onto latest akpm/mm-new from 22 July (5e0603ba185a)
+
+v3 -> v4: https://lore.kernel.org/all/20260703173903.3789516-1-usama.arif@linux.dev/
+- Patch 1: guard the new arch-specific pmd_swp_mkexclusive /
+  pmd_swp_exclusive / pmd_swp_clear_exclusive helpers on arm64,
+  loongarch, powerpc, riscv, s390, and x86 with
+  CONFIG_ARCH_HAS_PMD_SOFTLEAVES, matching the pattern already
+  used for pmd_swp_soft_dirty.  Also fixes the redefinition-vs-
+  generic-fallback build errors kernel test robot reported on
+  i386-allnoconfig-bpf and riscv-allnoconfig-bpf, and rewraps
+  the patch 1 commit message paragraphs to ~75 columns.
+  (sashiko, kernel test robot, Usama Arif)
+- Patch 2: switch the trailing folio_remove_rmap_pmd() gate in
+  __split_huge_pmd_locked() from *pmd to old_pmd, old_pmd retains
+  the original present-or-non-present classification for every
+  branch above. (sashiko)
+- Patch 3: teach swap_retry_table_alloc() (and the underlying
+  swap_extend_table_alloc()) to accept an nr parameter and scan
+  every slot in [ci_off, ci_off + nr) before committing an
+  extend-table allocation.  (sashiko)
+- Patch 4: rename zswap_range_has_entry() to zswap_is_present() so
+  the same helper serves both single-slot (nr=1) and range queries,
+  and switch the implementation from XA_STATE + xas_find() to
+  xa_find(), which handles RCU locking and internal-retry markers
+  itself.  Rename the callers in patches 5, 7, 9. (Yosry)
+- Patch 9: refuse to map a swap-cache folio in do_huge_pmd_swap_page()
+  when folio_contain_hwpoisoned_page() reports a poisoned subpage;
+  split the PMD swap entry so do_swap_page() can return
+  VM_FAULT_HWPOISON per subpage instead of the PMD handler mapping
+  the corrupted memory as one THP.  Mirrors the PageHWPoison check
+  the PTE swap-in path already performs. (sashiko)
+- Patch 9: note explicitly in the commit message that PMD-order
+  swap-in deliberately skips the order-0 readahead paths, order-0
+  readahead would populate per-page swap-cache state and force the
+  PMD swap entry to split before the fault could finish. (Kairui)
+- Patch 10: move mm_prepare_for_swap_entries() into
+  set_pmd_swap_entry() between folio_dup_swap() and set_pmd_at()
+  so this mm is on init_mm.mmlist before any swap PMD referencing
+  slots with a non-zero swap_map becomes visible.  Matches the PTE
+  swap-out ordering. (sashiko)
+- rebase onto latest akpm/mm-new (61cccb8363fcc282d4ae0555b8739dd227f5ad0b)
+
+
+v2 -> v3: https://lore.kernel.org/all/20260602142537.198755-1-usama.arif@linux.dev/
+- Clarified the PMD swap entry rule: it is a compact encoding for
+  HPAGE_PMD_NR swap slots, not a guarantee that swap cache always has
+  one PMD-sized folio. (Lance Yang)
+- Swapoff, fault, MADV_WILLNEED, and UFFDIO_MOVE now classify the
+  whole PMD swap-cache range and split/retry through the PTE path for
+  split/per-slot cache state. (Lance Yang)
+- mincore handles PMD swap entries without assuming one lookup covers
+  a split swap-cache range. (Lance Yang)
+- UFFDIO_MOVE rechecks all HPAGE_PMD_NR slots before moving an empty
+  PMD swap-cache range, avoiding stale rmap metadata for per-slot
+  cached folios.
+- Added a standalone zswap prerequisite patch from Alexandre that
+  distinguishes all-on-disk large-folio ranges from ranges with
+  per-page zswap entries.
+- Replaced the global zswap-ever-enabled policy with per-range zswap
+  checks: PMD swap entries can still be installed while zswap is
+  enabled, and PMD-order swap-in consumers split when the range has
+  per-page zswap state.
+- Added a mincore selftest and updated MADV_WILLNEED coverage so the
+  test checks that the PMD swap entry remains in place until first
+  touch.  Total pmd_swap coverage is now 14 tests.
+
+
+v1 -> v2: https://lore.kernel.org/all/20260427100553.2754667-1-usama.arif@linux.dev/
+- Patch 1: convert two additional softleaf_to_pmd() callers that
+  landed in mm-unstable since v1 (mm/debug_vm_pgtable.c,
+  mm/migrate_device.c) (Dev)
+- Patch 2: rename helper ensure_on_mmlist() to
+  mm_prepare_for_swap_entries() to better describe its purpose
+  (David)
+- Patch 3: drop VM_WARN_ON_ONCE(!pmd_is_migration_entry) as
+  Dev posted it as a separate patch.
+- Patch 5 (new): move softleaf_to_folio() inside the device-private
+  branch in migrate_vma_collect_pmd(); same class of fix as patch 4
+  but for the migrate-device PMD walker.
+- Patch 6 (new): rename CONFIG_ARCH_ENABLE_THP_MIGRATION to
+  CONFIG_ARCH_HAS_PMD_SOFTLEAVES so the gate that now drives
+  swap-entry support too is named for what it actually controls
+  (PMD softleaf entries), not just migration. (Dev)
+- Patch 7: add the missing pmd_swp_exclusive / mkexclusive /
+  clear_exclusive helpers for powerpc.
+- Patches 10 and 14: use upstream swapin_sync() (bundles
+  swap_cache_alloc_folio + swap_read_folio + the -EEXIST race
+  retry) instead of the bespoke swapin_alloc_pmd_folio() helper
+  from v1; do_swap_page and shmem_swapin_folio use the same
+  helper (Kairui)
+- Patch 10: construct a stack vm_fault for the swapoff swap-in so
+  the allocator can resolve a mempolicy, mirroring how the PTE
+  swapoff path (unuse_pte_range) already does it.
+- Patch 11: extend coverage to check_pmd_state() in khugepaged so a
+  swapped-out PMD-mapped THP is treated as SCAN_PMD_MAPPED (matches
+  the existing migration-entry handling). Route PMD swap entries in the
+  pmd_trans_huge_lock() branch of mincore_pte_range() through
+  mincore_pmd_swap() so a swapped-out PMD-mapped THP isn't reported as
+  resident.
+- Patch 12 (new): handle PMD swap entries in MADV_WILLNEED via
+  swapin_sync(BIT(HPAGE_PMD_ORDER)); a naive order-0 read-ahead
+  would force the subsequent fault to split.
+- Patch 13: refuse UFFDIO_MOVE with -EBUSY if the swap-cache folio
+  was split between swap-out and the move, matching
+  move_pages_pte()'s rejection of large folios; otherwise only one
+  of the 512 anon-rmaps would be re-anchored to dst_vma.
+- Patch 16: alloc_fill_swap_thp() now uses the existing
+  mmap_pmd_aligned() helper so tests don't flake/skip based on VA
+  placement; new MADV_WILLNEED test that watches the PMD-order
+  mTHP swpin counter; swapoff test restructured to use the
+  kselftest_harness ASSERT cleanup blocks (no double swapoff, no
+  verify-after-munmap).
+- Collected Acks and Reviews.
+
+[1] https://lore.kernel.org/all/20260630164143.1595669-1-usama.arif@linux.dev/ 
+ 
+Alexandre Ghiti (1):
+  mm: zswap: add range lookup for large-folio swapin
+
+Usama Arif (11):
+  mm: rename pmd_to_softleaf_folio() to pmd_softleaf_to_folio()
+  mm: add PMD swap entry detection support
+  mm: add PMD swap entry splitting support
+  mm: handle PMD swap entries in fork path
+  mm: swap in PMD swap entries as whole THPs during swapoff
+  mm: handle PMD swap entries in non-present PMD walkers
+  mm: handle PMD swap entries in MADV_WILLNEED
+  mm: handle PMD swap entries in UFFDIO_MOVE
+  mm: handle PMD swap entry faults on swap-in
+  mm: install PMD swap entries on swap-out
+  selftests/mm: add PMD swap entry tests
+
+ Documentation/admin-guide/mm/transhuge.rst   |   5 +
+ arch/arm64/include/asm/pgtable.h             |   6 +
+ arch/loongarch/include/asm/pgtable.h         |  19 +
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  17 +
+ arch/riscv/include/asm/pgtable.h             |  15 +
+ arch/s390/include/asm/pgtable.h              |  17 +
+ arch/x86/include/asm/pgtable.h               |  17 +
+ fs/proc/task_mmu.c                           |  46 +-
+ include/linux/huge_mm.h                      |  16 +
+ include/linux/leafops.h                      |  30 +-
+ include/linux/pgtable.h                      |  17 +
+ include/linux/swap.h                         |   4 +-
+ include/linux/vm_event_item.h                |   1 +
+ include/linux/zswap.h                        |   6 +
+ mm/hmm.c                                     |  11 +-
+ mm/huge_memory.c                             | 607 ++++++++++++++-
+ mm/internal.h                                |  42 ++
+ mm/khugepaged.c                              |   6 +
+ mm/madvise.c                                 | 120 ++-
+ mm/memory.c                                  |  47 +-
+ mm/mincore.c                                 |  45 +-
+ mm/rmap.c                                    |  19 +
+ mm/swap.h                                    |  22 +-
+ mm/swap_state.c                              |  54 ++
+ mm/swapfile.c                                | 209 +++++-
+ mm/userfaultfd.c                             |  14 +
+ mm/vmscan.c                                  |   9 +-
+ mm/vmstat.c                                  |   1 +
+ mm/zswap.c                                   |  46 +-
+ tools/testing/selftests/mm/Makefile          |   2 +
+ tools/testing/selftests/mm/ksft_pmd_swap.sh  |   4 +
+ tools/testing/selftests/mm/pmd_swap.c        | 742 +++++++++++++++++++
+ tools/testing/selftests/mm/run_vmtests.sh    |   4 +
+ 33 files changed, 2104 insertions(+), 116 deletions(-)
+ create mode 100755 tools/testing/selftests/mm/ksft_pmd_swap.sh
+ create mode 100644 tools/testing/selftests/mm/pmd_swap.c
 
 -- 
-Cheers,
+2.53.0-Meta
 
-David
 
