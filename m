@@ -4,105 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189DAC5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 131BFC5DF7E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 13:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2AD06B018D; Tue, 18 Aug 2026 09:43:27 -0400 (EDT)
+	id 15E7C6B0273; Tue, 18 Aug 2026 09:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E02526B018E; Tue, 18 Aug 2026 09:43:27 -0400 (EDT)
+	id 1360A6B05EE; Tue, 18 Aug 2026 09:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D16EC6B018F; Tue, 18 Aug 2026 09:43:27 -0400 (EDT)
+	id 0733D6B07CE; Tue, 18 Aug 2026 09:46:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A7A036B018D
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:43:27 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25690801F3
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:43:27 +0000 (UTC)
-X-FDA: 85114507254.24.5F7B9A0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 533B980008
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:43:25 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CNqkvMTJ;
-	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787060605;
-	b=0DSnaY9hz/eq3eYOaYCCVrijSinVPdAt7AotE7bnp2XyCEsfBYVEMFBQzdrd9atSxExFnZ
-	3Y23CJ16OLMs089NY2vjlaV60s6I7AQjKl8Z9ocYxJf5wpt+RW1VZ29lnAV0WqCIyXC+xt
-	Bwq5659bsZY/7jgKo+BpRPouimuYyYA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CNqkvMTJ;
-	spf=pass (imf02.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D77976B0273
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 09:46:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 73AC380216
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:46:16 +0000 (UTC)
+X-FDA: 85114514352.15.36423EA
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2660A1C000C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 13:46:12 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf18.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787060605;
+	s=arc-20220608; t=1787060774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nCaPyvw2iFSAtJp+/S0lPXfdeu+F7EyJ6au4lKiWYEc=;
-	b=qkCxQEJ/Q1SbkD7mnN1jSDyVTLHIJ5Eum5Wpfzsgqp/so6rMRAnIKA61ZZtuamD7vqUgu1
-	sa6Q+WK7kB//x5ohJJ9SPa+1eBivjWThYuQHGB06OQsPv7j4Ll2D2tGFA+E0h1CaQQF4vp
-	Y8NNpJolPLSqIB2APZXmdVnAp8i3v0A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 58DE6436AF;
-	Tue, 18 Aug 2026 13:43:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0CB1F000E9;
-	Tue, 18 Aug 2026 13:43:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787060604;
-	bh=nCaPyvw2iFSAtJp+/S0lPXfdeu+F7EyJ6au4lKiWYEc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=CNqkvMTJLXNXiEeYKsDcJ5vMCl9APuMbVQIu0B3nogx96ycdVcxhEfA8Y935rOFQB
-	 DwbNjFOYTMnBcvSeBREzeVOMYq7oUx9+JWYNVQm4Q0PKS+TKPkUhGIwiw2tE5w+5Ve
-	 LAEdg6oApkQLyaWE+1c4QN377ZwYbBFYC0UH/Ok81z64U3FaYuILqh5ogSr2NI8qW5
-	 Ege/V5Ma8jQasI6rRqF3rtGgJBIUlCgSKy5x8PZPaKbx9kzGG3jWEalwW+u9kH3QZa
-	 hA+6ZSEFatqG59DQNkEy9P9hX2+kEigKQsIcMrgm1kYnd9bXj74pxxwXASSs+5JduV
-	 qiO3xv/HZavsA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Tarun Sahu
- <tarunsahu@google.com>,  ackerleytng@google.com,  fuad.tabba@linux.dev,
-  Andrew Morton <akpm@linux-foundation.org>,  dmatlack@google.com,  Shuah
- Khan <skhan@linuxfoundation.org>,  Jonathan Corbet <corbet@lwn.net>,
-  david@redhat.com,  Pasha Tatashin <pasha.tatashin@soleen.com>,
-  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
- <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
-  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
-  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
-  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
-  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
-  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
- <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
-  suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live
- updates
-In-Reply-To: <aoMcqp0gr06YXAPU@google.com> (Sean Christopherson's message of
-	"Mon, 17 Aug 2026 07:37:30 -0700")
-References: <20260728121138.1103610-1-tarunsahu@google.com>
-	<20260728121138.1103610-6-tarunsahu@google.com>
-	<anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
-	<anssOQFNZ2LfihbU@google.com> <2vxzik5f311e.fsf@kernel.org>
-	<anyObKiZIhfok5mk@google.com> <2vxzqzjz1x5f.fsf@kernel.org>
-	<aoMcqp0gr06YXAPU@google.com>
-Date: Tue, 18 Aug 2026 15:43:16 +0200
-Message-ID: <2vxzy0e3zgqz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 in-reply-to:in-reply-to:references:references;
+	bh=H9/yfIxKGlFLrjkwiZ99rT9j4Xw6K6i24/KVAfdfuxM=;
+	b=f22V9EFfLv1NkrhTd+aioRj1baTn/I4VJGuhjQ3tYNFQjHzvoZeFd41xkM1TVuDpk3m0c1
+	XA2EgZQoN2R2nvL8vLVi0XZDHuINKKHarzH/CgEoGmz8f3LDYEi9Tz5theitJkKUbhelg8
+	BgNVfP2ZUIf8JCNqPiyK02Q9Y4qSVOk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf18.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787060774;
+	b=uigboP74DfSg21KVD5497YJ5M3l9WdHwqUSC1p1PHVKQf+G29If1HcTZov+z7Qrd6dcinM
+	PGAT93OEBvFQZcbWS/m/dJnzHix7psjWomW0SGwt51yQeF0lpUR9PICMNi9X0MJoEsXedO
+	Lf2/nAHahMFEeq8Dw5VxrzxaBvmnuKA=
+X-CSE-ConnectionGUID: zHpmyftjS5meh8YbGukPzQ==
+X-CSE-MsgGUID: LwEaQv6vSuGJ4eV474/+Yw==
+X-IronPort-AV: E=Sophos;i="6.25,230,1779120000"; 
+   d="scan'208,217";a="186015492"
+From: =?utf-8?B?6auY57+U?= <gaoxiang17@xiaomi.com>
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>, "David Hildenbrand (Arm)"
+	<david@kernel.org>
+CC: Xiang Gao <gxxa03070307@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+	Andrew Morton <akpm@linux-foundation.org>, =?utf-8?B?5Y2w6Zev?=
+	<yinchuang1@xiaomi.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: =?utf-8?B?562U5aSNOiBbRXh0ZXJuYWwgTWFpbF1SZTogW1JGQ10gYnBmOiBhY2NvdW50?=
+ =?utf-8?B?IHJpbmcgYnVmZmVyIGJhY2tpbmcgcGFnZXMgc2VwYXJhdGVseSBmcm9tIExv?=
+ =?utf-8?Q?st_RAM?=
+Thread-Topic: [External Mail]Re: [RFC] bpf: account ring buffer backing pages
+ separately from Lost RAM
+Thread-Index: AQHdLnO0vp+9vKINVk+yn4wgODeHX7aiB5uAgAHLMqo=
+Date: Tue, 18 Aug 2026 13:46:09 +0000
+Message-ID: <8d2e20842c24460296e4c83e6dc0dde3@xiaomi.com>
+References: <20260815091819.3651099-1-gaoxiang17@xiaomi.com>
+ <04f3ce2f-67f5-4829-9551-a69b9df29854@kernel.org>,<CAEf4BzbwZkoacX-iP1j4+p8YNbWsq0pc3eTermh2uT5ir66zbw@mail.gmail.com>
+In-Reply-To: <CAEf4BzbwZkoacX-iP1j4+p8YNbWsq0pc3eTermh2uT5ir66zbw@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.237.8.165]
+Content-Type: multipart/alternative;
+	boundary="_000_8d2e20842c24460296e4c83e6dc0dde3xiaomicom_"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 533B980008
 X-Rspam-User: 
-X-Stat-Signature: 331s7i1n5bgttkdwnyr36xkf7og9eqx5
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787060605-611961
-X-HE-Meta: U2FsdGVkX1+8lgi8So2putgU9fz8Y8xcdLB1gczlhWGaH5RfGgLtHcEz6sE9ooxDdv0gBxqnLM0wv8suBHiTED6k3+g8p7GmUQFzrn0VmfSOVPKTg7A+YF3/G0ca8o0PkDYr+Pt4tJRYC030MO56ppOcgDdKKnYNYaUSwMg7PaBxxr15Jzxpm9ilJXNRqoZyh0oQNCnwgErWNeb5uX9LsSFSkVwMFlHzLfQ9dvjgQiVe+zNr2Kx1SukMAHoKDEFaOQecEyZjxhHrFcz1PVXLs2HwWc4m3Q9GL93cM2OKtyDM/Pe3hWcTOm8V21zBHwApI/qaI4oQkVEoVy2iVQ0s5gVAIxHY6aCaH6i595l/0ZNVL3wTnEIYkLvUqhyvIbxUyeBb0+VU/YfXiKXYaiAjsqgi5dN5cCMJuGjiR3UwZORb6ZiZ8D2h7Y/aDvRGOn0VHL7nYkioQ0/eV0HeOUbG4NMKTgSgyzEVh7xTotTBiFbAdJYZtUnPbCJ482vzfMkbzuNpB0Jew9ZO+33H96gM3sx7TiC07smxysofMz0N8hmlRk1TkGyRP9k3z0ANZSoxALSNiBs9e5R5S3OT/qp97URyb+JN8dCoFU4BALshDMsptevnhK9jFQx946b0lirJoErTl+oYjb7t3lWwnA/cLwsNxgH8z1PPLGybul9YuhgV1iZyS694vxq+WxdMvgU2aG8/IQmBasfP2WN3IZ+yorI5ygMlxn/SfUXzp1b6uwkL1pB0og+cFxzZ4VSSQ//b4k/rfpJs2Z3KayzR4NCGfpWJXOJ0HvnNbf5gFyxA8so0F71nUvhC41MRoI6eEVSlS48HV1Sz/WJQp2joZ6YIedXachVJHKJisvzPvyqTzv1s67/bEFQfoZBXcIax/mnGQDaq8VgTzsv25nDDydymf6H4o6klqd9IIFHeeh7/wW1mPQrIN6qiNVToSNoH/hgH9ei68HyyJ3vjQkHTU5Z
- 4JfIE2IN
- AGZ38YvTUHEWhzvt+okmr5PngNipT6W3OMlRCvDpYoxiu2yp7DFgd7o+ELRkNiPyy/u39ru9jhWcfkL0NaN0jRrZxnbyhte7mgD6uVFdVq7rWSk7MhHtaIkDVc3C9StIU9HWWEo4cPp+wRCMlxFZ/aO3B8BuLdKFAeXoIk9Y29Q9uZ8Dtgt7+neH2DOuG5LXJ2N5l3cdyZL5b3cGKCmRnklKd9Tuv9ZA3zXfDIwSMO4Hxmx0NoVt1cPf4ljBJTJY2V4Ww0v1rD2k8/kDICJ25IpLJeMknTOWw4zoz77Hr1qCW2WeHWwGndEOS1YDpLZvYamuOJq4D4WSx7Tq7Sv5iM1XJ+A==
+X-Stat-Signature: nagjyjps4jeqzitpsutqdbcpg1drfb96
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2660A1C000C
+X-HE-Tag: 1787060772-79857
+X-HE-Meta: U2FsdGVkX1/Du+5EWuMwzD/HQoVOOZgPh05kdLHufRSfxh2x/I2w8PeN++UdMPBo12B7Up1QmutGe04HCGq51YlEBBj7Ie6WFOYAMnjrW/xtGAIncxo+z7lBW1b77m0zzKa50yLNDSjsmiRt33EB9UK00fuSFcyY/dl2TTiCI8JRwEvc9+OBWLdDQ2wk/PRusSQM/FrWFLBtr4KF1RRvAZTQoYl+I55Y9yVSEjSLhSUUGND46iuWOS928kaAdl3SY0AMvEDzmI+F7uKS5hPvDC4UIoDVDLHUqulwDds6Dn7uSha2r3DdS1o9AhJNf+BkUyA5DGVZK2QRtsZr3vNcbeFbB1O3vVMaaBzFXiTY+lIzu7N7n9UNM5z7i91FTlHZ2dsyMCKXg1g6or08WqmNPuPplervuNr3cRoxGjQkugir7TDBHzBfb2e1sJqslLzOx9masMkIpTBN4sbDl38JrXKnBl36k7GixRv+/XUI3enCxi4ftpJuCTa3/91CXTyoDklg8OY+RZKf36lvENgfcVz23P/mr9adi5v4iWyDKHs/g8w1xCQNVYrHWxIPNC2xQa1fHLlcmUD9PAhfDHAi0upAluwYZbQeXUeH6ztf4YYFDCX/DaYoOfwJH6skTit8T3JL+OxJfEmOX0aBAc29jZQTA8kOExEDFOyZrR5OxLJZjn5EpsUc80Y/CUpZTp7FZ2d2AkMr9JFyL4m6Q4hlLt4j8AfKDOl1tJtbmYxeZAUj3UdjXUpZdRTHrp8HHtr5PDdLdfxBevkX73XEMGuJGaWPitp0+UqRUHrFwb76B9ivsf96tr/cIAkOIAfjpYQdrguz3OJSvg3vir/9VHW7Hqm6GIQPXh9Gk0G5SIZyf5SEgsFL5eprUIez9EZVA9CeythYYtT7AyR4PLfd4511gn4owdZn5NYdkDRdm5elPsAUFLt8U9WYcqyMGCas0sSz4WRtgeB8NJHi5r5ymC4
+ hnMvCTV1
+ RiiPyMIHA3H3JOPJnfhFUIIECtQS/BUF/jpyY9stlzbgAEBHRtEmuH8RUvxEl7Tr13ut1QEMoIyP2Q5vvJfSIj4v7at/Wn7HOp92LosbpfmPhPahT1nK6I/YoA3I5OALD+OJIr9X3iZ5nviA/k6o9/DmfIAPb10jENDGteuS1gC21vLABH9wZLzmEMmX8oGelcLoh98KNOd4uErcFDm8ItpEiwgMHtB9ZlkZTLbIKSyPhc4SfbQGL/9413KgWqmrhJ7Um7L49aVQkdmqaqxg4ErkUdEXpl9u8lS5OgrczL27g1U0RmzaYAXksGqT6Yd50T1wYvAgOPu4VTqYOoOTIpffTnjvHoZkR+lcNu5k12VWnZc7zXtwD7N3wqUa23vPnUa5+5xx+lzna2kMYm7WT4WANGOThWo2K4bKtWUWu8Y4dfTBLWgQjWSBU09BXpodC4Q/0ICuMfxgGsaGRJG760mVU0o6y2W78m9gLXJl6dk75TXeeUst1uB2kgrxbHxj06xSR2Ta8HW7qVW0VQHX5BOsy0hfcEaQgtssJMX8MlHPFby+ZM19+WvftDwvoQkKGjOXyowXZEXyBzTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,127 +97,251 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sean,
+--_000_8d2e20842c24460296e4c83e6dc0dde3xiaomicom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Mon, Aug 17 2026, Sean Christopherson wrote:
+VGhhbmtzIGZvciB0aGUgcG9pbnRlci4gVW5kZXJzdG9vZCDigJQgbm8gbmV3IE5SXyogY291bnRl
+ciBvcg0KL3Byb2MvbWVtaW5mbyBlbnRyeS4NCg0KDQpUaGUgcmVtYWluaW5nIHF1ZXN0aW9uIGlz
+IG9uIHRoZSBjb25zdW1lciBzaWRlOiBBbmRyb2lkJ3MgTG9zdCBSQU0NCmFjY291bnRpbmcgd291
+bGQgbmVlZCB0byBlbnVtZXJhdGUgYWxsIGxpdmUgQlBGIHJpbmdidWYgbWFwcw0KKEJQRl9NQVBf
+R0VUX05FWFRfSUQpIGFuZCByZWFkIGVhY2ggbWFwJ3MgZmRpbmZvIG1lbWxvY2sgdG8gc3VtIHRo
+ZW0uDQoNCg0KSXMgcGVyLW1hcCBmZGluZm8gZW51bWVyYXRpb24gdGhlIGludGVuZGVkIHdheSBm
+b3IgdXNlcnNwYWNlIHRvIGdldCB0aGUNCmFnZ3JlZ2F0ZSwgb3IgaXMgdGhlcmUgYSBtb3JlIGVm
+ZmljaWVudCBCUEYtc3BlY2lmaWMgYWdncmVnYXRlIGludGVyZmFjZQ0KdGhhdCBJJ20gbWlzc2lu
+Zz8NCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQrlj5Hku7bkuro6IEFu
+ZHJpaSBOYWtyeWlrbyA8YW5kcmlpLm5ha3J5aWtvQGdtYWlsLmNvbT4NCuWPkemAgeaXtumXtDog
+MjAyNuW5tDjmnIgxOOaXpSAyOjIyOjA3DQrmlLbku7bkuro6IERhdmlkIEhpbGRlbmJyYW5kIChB
+cm0pDQrmioTpgIE6IFhpYW5nIEdhbzsgQW5kcmlpIE5ha3J5aWtvOyBBbGV4ZWkgU3Rhcm92b2l0
+b3Y7IERhbmllbCBCb3JrbWFubjsgQW5kcmV3IE1vcnRvbjsg5Y2w6ZevOyBicGZAdmdlci5rZXJu
+ZWwub3JnOyBsaW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LWZzZGV2ZWxAdmdlci5rZXJuZWwub3Jn
+OyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyDpq5jnv5Q7IExvcmVuem8gU3RvYWtlcyAo
+QXJtKTsgU3RldmVuIFJvc3RlZHQNCuS4u+mimDogW0V4dGVybmFsIE1haWxdUmU6IFtSRkNdIGJw
+ZjogYWNjb3VudCByaW5nIGJ1ZmZlciBiYWNraW5nIHBhZ2VzIHNlcGFyYXRlbHkgZnJvbSBMb3N0
+IFJBTQ0KDQpb5aSW6YOo6YKu5Lu2XSDmraTpgq7ku7bmnaXmupDkuo7lsI/nsbPlhazlj7jlpJbp
+g6jvvIzor7fosKjmhY7lpITnkIbjgILoi6Xlr7npgq7ku7blronlhajmgKflrZjnlpHvvIzor7fl
+sIbpgq7ku7bovazlj5Hnu5ltaXNlY0B4aWFvbWkuY29t6L+b6KGM5Y+N6aaIDQoNCk9uIE1vbiwg
+QXVnIDE3LCAyMDI2IGF0IDExOjEw4oCvQU0gRGF2aWQgSGlsZGVuYnJhbmQgKEFybSkNCjxkYXZp
+ZEBrZXJuZWwub3JnPiB3cm90ZToNCj4NCj4gT24gOC8xNS8yNiAxMToxOCwgWGlhbmcgR2FvIHdy
+b3RlOg0KPiA+IEhpLA0KPg0KPiBIaSwNCj4NCj4gPg0KPiA+IEkgd291bGQgbGlrZSB0byBkaXNj
+dXNzIGFjY291bnRpbmcgQlBGIHJpbmcgYnVmZmVyIGJhY2tpbmcgcGFnZXMgaW4NCj4gPiBzeXN0
+ZW0td2lkZSBtZW1vcnkgcmVwb3J0cy4NCj4gPg0KPiA+IEJQRiByaW5nIGJ1ZmZlcnMgYWxsb2Nh
+dGUgdGhlaXIgZGF0YSBhbmQgbWV0YWRhdGEgYXMgb3JkZXItMCBwYWdlcyBkaXJlY3RseQ0KPiA+
+IGZyb20gdGhlIGJ1ZGR5IGFsbG9jYXRvciwgYW5kIHRoZW4gbWFwIHRob3NlIHBhZ2VzIHdpdGgg
+dm1hcCgpLg0KPg0KPiBJIGFzc3VtZSB0aGVyZSBpcyBhIHJlYXNvbiB0aGUgc2xhYiBpc24ndCB1
+c2VkLCByaWdodD8gQXJlIHRoZXNlIHBhZ2VzIG1hcHBlZA0KPiBpbnRvIHVzZXIgc3BhY2Ugc3Vj
+aCB0aGF0IHBhZ2UtPm1hcGNvdW50IHdvdWxkIGdldCB1c2VkPw0KPg0KPiBDYW4geW91IHBvaW50
+IG1lIGF0IHJlbGV2YW50IGNvZGU/DQoNClNlZSBjb2RlIGluIFswXS4gQW5kIHllcywgdGhlc2Ug
+cGFnZXMgYXJlIG1lYW50IHRvIGJlIG1hcHBlZCBpbnRvIHVzZXIgc3BhY2UuDQoNCiAgWzBdIGh0
+dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L2JwZi9icGYtbmV4
+dC5naXQvdHJlZS9rZXJuZWwvYnBmL3JpbmdidWYuYyNuOTMNCg0KPg0KPiA+DQo+ID4gQmVjYXVz
+ZSB2bWFwKCkgbWFwcyBjYWxsZXItb3duZWQgcGFnZXMsIHRoZXNlIGJhY2tpbmcgcGFnZXMgYXJl
+IG5vdCBjb3VudGVkDQo+ID4gYnkgVm1hbGxvY1VzZWQuIFRoZXkgYXJlIGFsc28gbm90IHNsYWIg
+cGFnZXMuIEFzIGEgcmVzdWx0LCBtb3N0IEJQRiByaW5nDQo+ID4gYnVmZmVyIG1lbW9yeSBpcyBu
+b3QgcmVwcmVzZW50ZWQgYnkgYW4gZXhpc3RpbmcgbmFtZWQgL3Byb2MvbWVtaW5mbyBjYXRlZ29y
+eQ0KPiA+IGFuZCBhcHBlYXJzIGFzIExvc3QgUkFNIGluIEFuZHJvaWQgbWVtb3J5IHJlcG9ydHMu
+DQo+ID4NCj4gPiBXZSBtZWFzdXJlZCB0aGlzIG9uIGFuIEFuZHJvaWQgNi4xOCBrZXJuZWwuDQo+
+ID4NCj4gPiBUZXN0IGNhc2U6DQo+ID4NCj4gPiAgIDMyIEJQRiByaW5nIGJ1ZmZlciBtYXBzDQo+
+ID4gICAxNiBNaUIgZGF0YSBhcmVhIHBlciBtYXANCj4gPiAgIDUxMiBNaUIgdG90YWwgZGF0YSBh
+cmVhDQo+ID4NCj4gPiBPYnNlcnZlZCBjaGFuZ2VzOg0KPiA+DQo+ID4gICBMb3N0IFJBTTogICAg
+ICAgYXBwcm94aW1hdGVseSArNTI5IE1pQg0KPiA+ICAgVm1hbGxvY1VzZWQ6ICAgICAgYXBwcm94
+aW1hdGVseSArMiBNaUINCj4gPiAgIFNsYWI6ICAgICAgICBhcHByb3hpbWF0ZWx5IHVuY2hhbmdl
+ZA0KPiA+DQo+ID4gQWZ0ZXIgZGVzdHJveWluZyBhbGwgbWFwcywgdGhlIHZhbHVlcyByZXR1cm5l
+ZCBjbG9zZSB0byBiYXNlbGluZS4NCj4gPg0KPiA+IFRoZSBxdWVzdGlvbiBpcyB3aGV0aGVyIHRo
+ZSBrZXJuZWwgc2hvdWxkIGV4cG9zZSB0aGUgdW5pcXVlIHBoeXNpY2FsIGJhY2tpbmcNCj4gPiBw
+YWdlcyBvZiBsaXZlIEJQRiByaW5nIGJ1ZmZlcnMgdGhyb3VnaCBhIGRlZGljYXRlZCBnbG9iYWwg
+Y291bnRlciBhbmQgYQ0KPiA+IC9wcm9jL21lbWluZm8gZW50cnksIGZvciBleGFtcGxlOg0KPiA+
+DQo+ID4gICBCcGZSaW5nYnVmOiA8dmFsdWUgaW4ga0I+DQo+DQo+IFRoaXMgbG9va3MgYSBiaXQg
+dG9vIHNwZWNpZmljIGZvciBteSB0YXN0ZS4gQW5kIEkgdGhpbmsgd2Ugc2hvdWxkIHRyeSB0byBu
+bw0KPiBpbmZsYXRlIHRoZXNlIHN0YXRpc3RpY3MgaGVyZSB0b28gbXVjaC4NCj4NCg0KKzEsIHdh
+eSB0b28gc3BlY2lmaWMNCg0KPiA+DQo+ID4gVGhlIHByb3Bvc2VkIGNvdW50ZXIgd291bGQgaW5j
+bHVkZToNCj4gPg0KPiA+ICAgKiByaW5nIGJ1ZmZlciBkYXRhIHBhZ2VzOw0KPiA+ICAgKiBtZXRh
+ZGF0YSBwYWdlczsNCj4gPiAgICogY29uc3VtZXIgYW5kIHByb2R1Y2VyIHBvc2l0aW9uIHBhZ2Vz
+Lg0KPiA+DQo+ID4gSXQgd291bGQgZXhjbHVkZToNCj4gPg0KPiA+ICAgKiB0aGUgc2Vjb25kIHZp
+cnR1YWwgbWFwcGluZyBvZiBkYXRhIHBhZ2VzOw0KPiA+ICAgKiB0aGUgcGFnZXNbXSBwb2ludGVy
+IGFycmF5Ow0KPiA+ICAgKiBtYXAgbWV0YWRhdGEgYWxsb2NhdGlvbnM7DQo+ID4gICAqIHZtYXAg
+cGFnZSB0YWJsZXMuDQo+ID4NCj4gPiBUaGUgZ29hbCBpcyB0byBhY2NvdW50IGZvciB0aGUgY3Vy
+cmVudGx5IHVuY2xhc3NpZmllZCBkaXJlY3QgYmFja2luZyBwYWdlcy4NCj4gPiBTbGFiLSBhbmQg
+dm1hbGxvYy1iYWNrZWQgYXV4aWxpYXJ5IGFsbG9jYXRpb25zIGFyZSBhbHJlYWR5IHJlcHJlc2Vu
+dGVkIGJ5DQo+ID4gZXhpc3RpbmcgbWVtb3J5IGNhdGVnb3JpZXMgYW5kIHNob3VsZCBub3QgYmUg
+Y291bnRlZCBhZ2Fpbi4NCj4gPg0KPiA+IEEgcG9zc2libGUgaW1wbGVtZW50YXRpb24gaXMgYW4g
+TlJfQlBGX1JJTkdCVUYgdm1zdGF0IGNvdW50ZXIgbWFpbnRhaW5lZCBieQ0KPiA+IHRoZSByaW5n
+IGJ1ZmZlciBhbGxvY2F0aW9uIGFuZCBmcmVlIHBhdGhzLCB3aXRoIHRoZSBhZ2dyZWdhdGUgZXhw
+b3NlZCB0aHJvdWdoDQo+ID4gL3Byb2MvbWVtaW5mby4NCj4gPg0KPiA+IFF1ZXN0aW9uczoNCj4g
+Pg0KPiA+IDEuIElzIGEgZGVkaWNhdGVkIEJQRiByaW5nIGJ1ZmZlciBjb3VudGVyIGFwcHJvcHJp
+YXRlPw0KPg0KPiBJIGRvbid0IHRoaW5rIHNvLg0KPg0KPiBTZWUgWzFdIHdoZXJlIHdlIGp1c3Qg
+aGFkIHRoZSBzYW1lIGRpc2N1c3Npb24gZm9yIHRyYWNpbmcgYnVmZmVycy4gRm9yIHRoZW0sDQo+
+IFN0ZXZlIFsyXSBoYWQgYW4gaWRlYSBvbiBob3cgdG8gZXhwb3NlIHRoZW0gbW9yZSBmaW5lLWdy
+YWluZWQgYW5kIHRyYWNpbmcgc3BlY2lmaWMuDQo+DQo+IFsxXSBodHRwczovL2xvcmUua2VybmVs
+Lm9yZy9yLzIwMjYwODEwMDk0MDI1LjEzNjcwNS0xLWdhb3hpYW5nMTdAeGlhb21pLmNvbQ0KPiBb
+Ml0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDI2MDgxMDEwNTcxMC42ZWU1ZTQ5M0BnYW5k
+YWxmLmxvY2FsLmhvbWUNCj4NCg0KV2UgYWxyZWFkeSByZXBvcnQgcGVyLUJQRiByaW5nYnVmIG1l
+bW9yeSB1c2FnZSBlaXRoZXIgdGhyb3VnaCBicGYoKQ0Kc3lzY2FsbCBvciBtYXAncyBmZGluZm8u
+IEUuZy4sIHdpdGggYHN1ZG8gYnBmdG9vbCBtYXAgc2hvd2AgeW91J2xsDQpzZWUiDQoNCjE0NTU3
+MzM6IHJpbmdidWYgIG5hbWUgZXZlbnRfcmluZ2J1ZiAgZmxhZ3MgMHgwDQogICAgICAgIGtleSAw
+QiAgdmFsdWUgMEIgIG1heF9lbnRyaWVzIDI2MjE0NCAgbWVtbG9jayAyNzU3NzZCDQogICAgICAg
+IGJ0Zl9pZCAyMTkzNDM0DQogICAgICAgIHBpZHMgdGNwZXZlbnRkKDI1NDk4MTIpDQoNCndoZXJl
+IG1lbWxvY2sgaXMgaG93IG11Y2ggbWVtb3J5IGlzIGFsbG9jYXRlZCBmb3IgdGhlIHJpbmdidWYg
+ZGF0YSBhcmVhLg0KDQo+ID4gMi4gU2hvdWxkIHRoaXMgYmUgcmVwcmVzZW50ZWQgYXMgYW4gTlJf
+KiB2bXN0YXQgY291bnRlcj8NCj4NCj4gSSBkb24ndCB0aGluayBzby4NCj4NCj4gPiAzLiBJcyAv
+cHJvYy9tZW1pbmZvIGFuIGFjY2VwdGFibGUgaW50ZXJmYWNlIGZvciB0aGlzIGluZm9ybWF0aW9u
+Pw0KPg0KPiBBZ2FpbiwgSSBkb24ndCB0aGluayBzby4gIkxvc3QgUkFNIiByZWFsbHkgaXMganVz
+dCAiZXhjZXNzaXZlIG1lbW9yeSBhbGxvY2F0ZWQNCj4gYnkgc29tZSBvdGhlciBzdWJzeXN0ZW0i
+Lg0KPg0KPiBJIGFncmVlIHRoYXQgc29tZSB1c2VycyBtaWdodCB3YW50IHRvIGZpZ3VyZSBvdXQg
+d2hhdCBpcyBjb25zdW1pbmcgdGhhdCBtdWNoDQo+IG1lbW9yeSwgYnV0IEkgZG9uJ3QgdGhpbmsg
+Z3Jvd2luZyAvcHJvYy9tZW1pbmZvIGluIHRoYXQgd2F5IGlzIHJlYWxseSB3aGF0IHdlIHdhbnQu
+DQo+DQo+ID4gNC4gSXMgY291bnRpbmcgb25seSB1bmlxdWUgcGh5c2ljYWwgYmFja2luZyBwYWdl
+cyB0aGUgY29ycmVjdCBhY2NvdW50aW5nIHVuaXQ/DQo+DQo+IEknZCBhc3N1bWUgdGhlICJJdCB3
+b3VsZCBleGNsdWRlIiBwYXJ0IGFib3ZlIHNob3VsZCBub3QgYmUgYWNjb3VudGVkIHRoZXJlLCBp
+Zg0KPiB0aGF0J3Mgd2hhdCB5b3UgbWVhbi4NCj4NCj4gLS0NCj4gQ2hlZXJzLA0KPg0KPiBEYXZp
+ZA0K
 
-> On Sat, Aug 15, 2026, Pratyush Yadav wrote:
->> On Wed, Aug 12 2026, Sean Christopherson wrote:
->> > On Wed, Aug 12, 2026, Pratyush Yadav wrote:
->> >> This is ABI between kernels. It needs to be stable-ish so you can move
->> >> from one kernel version to another. At the same time, unlike userspace
->> >> ABI, it can change.
->> >
->> > Uh, yeah, so KVM has been managing such immutable ABI for practically its entire
->> > existence.  KVM's save/restore uAPI has exactly what you're describing: serialization
->> > ABI that needs to be backwards and forwards compatible between different kernels
->> > in order to support both upgrade and rollback scenarios via live migration.
->> 
->> I think there is a slight difference between KVM's save/resture uAPI and
->> live update's ABI. With KVM's uAPI, you need to maintain strict
->> backwards compatibility because userspace reads what you output. So if
->> you change the layout, userspace will interpret it wrong and might
->> break.
->> 
->> With live update, the ABI never gets to userspace. It is used to talk
->> between kernels directly. So if you do break that, your userspace keeps
->> working fine, you just might not be able to live update to the
->> incompatible kernel.
->> 
->> So with live update, we don't need to keep backwards compatibility in
->> the ABI forever. Of course, it is good to minimize changes, but we have
->> more freedom to change it.
->
-> Ah.  So this is the heart of the disconnect.  I very strongly disagree with the
-> statement that live update doesn't need to support backwards compatibility.  I
-> can totally believe that the folks working on live update are ok breaking backwards
-> compatibility because their use cases are "fine" with such breakage.  And I can
-> also believe live update as an upstream kernel feature being developed by those
-> same folks is also ok with breaking backwards compatibility.
->
-> But with my upstream KVM maintainer hat on, I am not ok with that.  I did not agree
-> to support a world where KVM is allowed to break backwards compatibility, so long
-> as it's done "carefully" or whatever.  If y'all want to deal with the resulting
-> complexity, that's fine by me, but you'll be doing it without KVM.
+--_000_8d2e20842c24460296e4c83e6dc0dde3xiaomicom_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Let's step back a bit. I don't think backwards compatibility in the
-_ABI_ is all that important in live update's context. What is important
-is that our users are able to live update from kernel version X to Y.
-The line format the kernel uses to describe its state is an
-implementation detail. Our users never see it.
+PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
+dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRvciIgY29udGVu
+dD0iTWljcm9zb2Z0IEV4Y2hhbmdlIFNlcnZlciI+DQo8IS0tIGNvbnZlcnRlZCBmcm9tIHRleHQg
+LS0+PHN0eWxlPjwhLS0gLkVtYWlsUXVvdGUgeyBtYXJnaW4tbGVmdDogMXB0OyBwYWRkaW5nLWxl
+ZnQ6IDRwdDsgYm9yZGVyLWxlZnQ6ICM4MDAwMDAgMnB4IHNvbGlkOyB9IC0tPjwvc3R5bGU+DQo8
+L2hlYWQ+DQo8Ym9keT4NCjxtZXRhIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1VVEYtOCI+
+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiIHN0eWxlPSIiPg0KPCEtLQ0KcA0KCXttYXJnaW4tdG9w
+OjA7DQoJbWFyZ2luLWJvdHRvbTowfQ0KLS0+DQo8L3N0eWxlPg0KPGRpdiBkaXI9Imx0ciI+DQo8
+ZGl2IGlkPSJ4X2RpdnRhZ2RlZmF1bHR3cmFwcGVyIiBkaXI9Imx0ciIgc3R5bGU9ImZvbnQtc2l6
+ZToxMnB0OyBjb2xvcjojMDAwMDAwOyBmb250LWZhbWlseTpDYWxpYnJpLEhlbHZldGljYSxzYW5z
+LXNlcmlmIj4NCjxwPjwvcD4NCjxkaXY+VGhhbmtzIGZvciB0aGUgcG9pbnRlci4gVW5kZXJzdG9v
+ZCDigJQgbm8gbmV3IE5SXyogY291bnRlciBvcjxicj4NCi9wcm9jL21lbWluZm8gZW50cnkuPGJy
+Pg0KPGJyPg0KPGJyPg0KVGhlIHJlbWFpbmluZyBxdWVzdGlvbiBpcyBvbiB0aGUgY29uc3VtZXIg
+c2lkZTogQW5kcm9pZCdzIExvc3QgUkFNPGJyPg0KYWNjb3VudGluZyB3b3VsZCBuZWVkIHRvIGVu
+dW1lcmF0ZSBhbGwgbGl2ZSBCUEYgcmluZ2J1ZiBtYXBzPGJyPg0KKEJQRl9NQVBfR0VUX05FWFRf
+SUQpIGFuZCByZWFkIGVhY2ggbWFwJ3MgZmRpbmZvIG1lbWxvY2sgdG8gc3VtIHRoZW0uPGJyPg0K
+PGJyPg0KPGJyPg0KSXMgcGVyLW1hcCBmZGluZm8gZW51bWVyYXRpb24gdGhlIGludGVuZGVkIHdh
+eSBmb3IgdXNlcnNwYWNlIHRvIGdldCB0aGU8YnI+DQphZ2dyZWdhdGUsIG9yIGlzIHRoZXJlIGEg
+bW9yZSBlZmZpY2llbnQgQlBGLXNwZWNpZmljIGFnZ3JlZ2F0ZSBpbnRlcmZhY2U8YnI+DQp0aGF0
+IEknbSBtaXNzaW5nPzxicj4NCjxicj4NCjwvZGl2Pg0KPGJyPg0KPHA+PC9wPg0KPC9kaXY+DQo8
+aHIgdGFiaW5kZXg9Ii0xIiBzdHlsZT0iZGlzcGxheTppbmxpbmUtYmxvY2s7IHdpZHRoOjk4JSI+
+DQo8ZGl2IGlkPSJ4X2RpdlJwbHlGd2RNc2ciIGRpcj0ibHRyIj48Zm9udCBmYWNlPSJDYWxpYnJp
+LCBzYW5zLXNlcmlmIiBjb2xvcj0iIzAwMDAwMCIgc3R5bGU9ImZvbnQtc2l6ZToxMXB0Ij48Yj7l
+j5Hku7bkuro6PC9iPiBBbmRyaWkgTmFrcnlpa28gJmx0O2FuZHJpaS5uYWtyeWlrb0BnbWFpbC5j
+b20mZ3Q7PGJyPg0KPGI+5Y+R6YCB5pe26Ze0OjwvYj4gMjAyNuW5tDjmnIgxOOaXpSAyOjIyOjA3
+PGJyPg0KPGI+5pS25Lu25Lq6OjwvYj4gRGF2aWQgSGlsZGVuYnJhbmQgKEFybSk8YnI+DQo8Yj7m
+ioTpgIE6PC9iPiBYaWFuZyBHYW87IEFuZHJpaSBOYWtyeWlrbzsgQWxleGVpIFN0YXJvdm9pdG92
+OyBEYW5pZWwgQm9ya21hbm47IEFuZHJldyBNb3J0b247IOWNsOmXrzsgYnBmQHZnZXIua2VybmVs
+Lm9yZzsgbGludXgtbW1Aa3ZhY2sub3JnOyBsaW51eC1mc2RldmVsQHZnZXIua2VybmVsLm9yZzsg
+bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsg6auY57+UOyBMb3JlbnpvIFN0b2FrZXMgKEFy
+bSk7IFN0ZXZlbiBSb3N0ZWR0PGJyPg0KPGI+5Li76aKYOjwvYj4gW0V4dGVybmFsIE1haWxdUmU6
+IFtSRkNdIGJwZjogYWNjb3VudCByaW5nIGJ1ZmZlciBiYWNraW5nIHBhZ2VzIHNlcGFyYXRlbHkg
+ZnJvbSBMb3N0IFJBTTwvZm9udD4NCjxkaXY+Jm5ic3A7PC9kaXY+DQo8L2Rpdj4NCjwvZGl2Pg0K
+PGZvbnQgc2l6ZT0iMiI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMHB0OyI+DQo8ZGl2IGNsYXNz
+PSJQbGFpblRleHQiPlvlpJbpg6jpgq7ku7ZdIOatpOmCruS7tuadpea6kOS6juWwj+exs+WFrOWP
+uOWklumDqO+8jOivt+iwqOaFjuWkhOeQhuOAguiLpeWvuemCruS7tuWuieWFqOaAp+WtmOeWke+8
+jOivt+WwhumCruS7tui9rOWPkee7mW1pc2VjQHhpYW9taS5jb23ov5vooYzlj43ppog8YnI+DQo8
+YnI+DQpPbiBNb24sIEF1ZyAxNywgMjAyNiBhdCAxMToxMOKAr0FNIERhdmlkIEhpbGRlbmJyYW5k
+IChBcm0pPGJyPg0KJmx0O2RhdmlkQGtlcm5lbC5vcmcmZ3Q7IHdyb3RlOjxicj4NCiZndDs8YnI+
+DQomZ3Q7IE9uIDgvMTUvMjYgMTE6MTgsIFhpYW5nIEdhbyB3cm90ZTo8YnI+DQomZ3Q7ICZndDsg
+SGksPGJyPg0KJmd0Ozxicj4NCiZndDsgSGksPGJyPg0KJmd0Ozxicj4NCiZndDsgJmd0Ozxicj4N
+CiZndDsgJmd0OyBJIHdvdWxkIGxpa2UgdG8gZGlzY3VzcyBhY2NvdW50aW5nIEJQRiByaW5nIGJ1
+ZmZlciBiYWNraW5nIHBhZ2VzIGluPGJyPg0KJmd0OyAmZ3Q7IHN5c3RlbS13aWRlIG1lbW9yeSBy
+ZXBvcnRzLjxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsgJmd0OyBCUEYgcmluZyBidWZmZXJzIGFs
+bG9jYXRlIHRoZWlyIGRhdGEgYW5kIG1ldGFkYXRhIGFzIG9yZGVyLTAgcGFnZXMgZGlyZWN0bHk8
+YnI+DQomZ3Q7ICZndDsgZnJvbSB0aGUgYnVkZHkgYWxsb2NhdG9yLCBhbmQgdGhlbiBtYXAgdGhv
+c2UgcGFnZXMgd2l0aCB2bWFwKCkuPGJyPg0KJmd0Ozxicj4NCiZndDsgSSBhc3N1bWUgdGhlcmUg
+aXMgYSByZWFzb24gdGhlIHNsYWIgaXNuJ3QgdXNlZCwgcmlnaHQ/IEFyZSB0aGVzZSBwYWdlcyBt
+YXBwZWQ8YnI+DQomZ3Q7IGludG8gdXNlciBzcGFjZSBzdWNoIHRoYXQgcGFnZS0mZ3Q7bWFwY291
+bnQgd291bGQgZ2V0IHVzZWQ/PGJyPg0KJmd0Ozxicj4NCiZndDsgQ2FuIHlvdSBwb2ludCBtZSBh
+dCByZWxldmFudCBjb2RlPzxicj4NCjxicj4NClNlZSBjb2RlIGluIFswXS4gQW5kIHllcywgdGhl
+c2UgcGFnZXMgYXJlIG1lYW50IHRvIGJlIG1hcHBlZCBpbnRvIHVzZXIgc3BhY2UuPGJyPg0KPGJy
+Pg0KJm5ic3A7IFswXSA8YSBocmVmPSJodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGlu
+dXgva2VybmVsL2dpdC9icGYvYnBmLW5leHQuZ2l0L3RyZWUva2VybmVsL2JwZi9yaW5nYnVmLmMj
+bjkzIj4NCmh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L2Jw
+Zi9icGYtbmV4dC5naXQvdHJlZS9rZXJuZWwvYnBmL3JpbmdidWYuYyNuOTM8L2E+PGJyPg0KPGJy
+Pg0KJmd0Ozxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsgJmd0OyBCZWNhdXNlIHZtYXAoKSBtYXBz
+IGNhbGxlci1vd25lZCBwYWdlcywgdGhlc2UgYmFja2luZyBwYWdlcyBhcmUgbm90IGNvdW50ZWQ8
+YnI+DQomZ3Q7ICZndDsgYnkgVm1hbGxvY1VzZWQuIFRoZXkgYXJlIGFsc28gbm90IHNsYWIgcGFn
+ZXMuIEFzIGEgcmVzdWx0LCBtb3N0IEJQRiByaW5nPGJyPg0KJmd0OyAmZ3Q7IGJ1ZmZlciBtZW1v
+cnkgaXMgbm90IHJlcHJlc2VudGVkIGJ5IGFuIGV4aXN0aW5nIG5hbWVkIC9wcm9jL21lbWluZm8g
+Y2F0ZWdvcnk8YnI+DQomZ3Q7ICZndDsgYW5kIGFwcGVhcnMgYXMgTG9zdCBSQU0gaW4gQW5kcm9p
+ZCBtZW1vcnkgcmVwb3J0cy48YnI+DQomZ3Q7ICZndDs8YnI+DQomZ3Q7ICZndDsgV2UgbWVhc3Vy
+ZWQgdGhpcyBvbiBhbiBBbmRyb2lkIDYuMTgga2VybmVsLjxicj4NCiZndDsgJmd0Ozxicj4NCiZn
+dDsgJmd0OyBUZXN0IGNhc2U6PGJyPg0KJmd0OyAmZ3Q7PGJyPg0KJmd0OyAmZ3Q7Jm5ic3A7Jm5i
+c3A7IDMyIEJQRiByaW5nIGJ1ZmZlciBtYXBzPGJyPg0KJmd0OyAmZ3Q7Jm5ic3A7Jm5ic3A7IDE2
+IE1pQiBkYXRhIGFyZWEgcGVyIG1hcDxicj4NCiZndDsgJmd0OyZuYnNwOyZuYnNwOyA1MTIgTWlC
+IHRvdGFsIGRhdGEgYXJlYTxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsgJmd0OyBPYnNlcnZlZCBj
+aGFuZ2VzOjxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsgJmd0OyZuYnNwOyZuYnNwOyBMb3N0IFJB
+TTombmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgYXBwcm94aW1hdGVseSAmIzQz
+OzUyOSBNaUI8YnI+DQomZ3Q7ICZndDsmbmJzcDsmbmJzcDsgVm1hbGxvY1VzZWQ6Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IGFwcHJveGltYXRlbHkgJiM0MzsyIE1pQjxicj4NCiZndDsg
+Jmd0OyZuYnNwOyZuYnNwOyBTbGFiOiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyBhcHByb3hpbWF0ZWx5IHVuY2hhbmdlZDxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsg
+Jmd0OyBBZnRlciBkZXN0cm95aW5nIGFsbCBtYXBzLCB0aGUgdmFsdWVzIHJldHVybmVkIGNsb3Nl
+IHRvIGJhc2VsaW5lLjxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsgJmd0OyBUaGUgcXVlc3Rpb24g
+aXMgd2hldGhlciB0aGUga2VybmVsIHNob3VsZCBleHBvc2UgdGhlIHVuaXF1ZSBwaHlzaWNhbCBi
+YWNraW5nPGJyPg0KJmd0OyAmZ3Q7IHBhZ2VzIG9mIGxpdmUgQlBGIHJpbmcgYnVmZmVycyB0aHJv
+dWdoIGEgZGVkaWNhdGVkIGdsb2JhbCBjb3VudGVyIGFuZCBhPGJyPg0KJmd0OyAmZ3Q7IC9wcm9j
+L21lbWluZm8gZW50cnksIGZvciBleGFtcGxlOjxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsgJmd0
+OyZuYnNwOyZuYnNwOyBCcGZSaW5nYnVmOiAmbHQ7dmFsdWUgaW4ga0ImZ3Q7PGJyPg0KJmd0Ozxi
+cj4NCiZndDsgVGhpcyBsb29rcyBhIGJpdCB0b28gc3BlY2lmaWMgZm9yIG15IHRhc3RlLiBBbmQg
+SSB0aGluayB3ZSBzaG91bGQgdHJ5IHRvIG5vPGJyPg0KJmd0OyBpbmZsYXRlIHRoZXNlIHN0YXRp
+c3RpY3MgaGVyZSB0b28gbXVjaC48YnI+DQomZ3Q7PGJyPg0KPGJyPg0KJiM0MzsxLCB3YXkgdG9v
+IHNwZWNpZmljPGJyPg0KPGJyPg0KJmd0OyAmZ3Q7PGJyPg0KJmd0OyAmZ3Q7IFRoZSBwcm9wb3Nl
+ZCBjb3VudGVyIHdvdWxkIGluY2x1ZGU6PGJyPg0KJmd0OyAmZ3Q7PGJyPg0KJmd0OyAmZ3Q7Jm5i
+c3A7Jm5ic3A7ICogcmluZyBidWZmZXIgZGF0YSBwYWdlczs8YnI+DQomZ3Q7ICZndDsmbmJzcDsm
+bmJzcDsgKiBtZXRhZGF0YSBwYWdlczs8YnI+DQomZ3Q7ICZndDsmbmJzcDsmbmJzcDsgKiBjb25z
+dW1lciBhbmQgcHJvZHVjZXIgcG9zaXRpb24gcGFnZXMuPGJyPg0KJmd0OyAmZ3Q7PGJyPg0KJmd0
+OyAmZ3Q7IEl0IHdvdWxkIGV4Y2x1ZGU6PGJyPg0KJmd0OyAmZ3Q7PGJyPg0KJmd0OyAmZ3Q7Jm5i
+c3A7Jm5ic3A7ICogdGhlIHNlY29uZCB2aXJ0dWFsIG1hcHBpbmcgb2YgZGF0YSBwYWdlczs8YnI+
+DQomZ3Q7ICZndDsmbmJzcDsmbmJzcDsgKiB0aGUgcGFnZXNbXSBwb2ludGVyIGFycmF5Ozxicj4N
+CiZndDsgJmd0OyZuYnNwOyZuYnNwOyAqIG1hcCBtZXRhZGF0YSBhbGxvY2F0aW9uczs8YnI+DQom
+Z3Q7ICZndDsmbmJzcDsmbmJzcDsgKiB2bWFwIHBhZ2UgdGFibGVzLjxicj4NCiZndDsgJmd0Ozxi
+cj4NCiZndDsgJmd0OyBUaGUgZ29hbCBpcyB0byBhY2NvdW50IGZvciB0aGUgY3VycmVudGx5IHVu
+Y2xhc3NpZmllZCBkaXJlY3QgYmFja2luZyBwYWdlcy48YnI+DQomZ3Q7ICZndDsgU2xhYi0gYW5k
+IHZtYWxsb2MtYmFja2VkIGF1eGlsaWFyeSBhbGxvY2F0aW9ucyBhcmUgYWxyZWFkeSByZXByZXNl
+bnRlZCBieTxicj4NCiZndDsgJmd0OyBleGlzdGluZyBtZW1vcnkgY2F0ZWdvcmllcyBhbmQgc2hv
+dWxkIG5vdCBiZSBjb3VudGVkIGFnYWluLjxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsgJmd0OyBB
+IHBvc3NpYmxlIGltcGxlbWVudGF0aW9uIGlzIGFuIE5SX0JQRl9SSU5HQlVGIHZtc3RhdCBjb3Vu
+dGVyIG1haW50YWluZWQgYnk8YnI+DQomZ3Q7ICZndDsgdGhlIHJpbmcgYnVmZmVyIGFsbG9jYXRp
+b24gYW5kIGZyZWUgcGF0aHMsIHdpdGggdGhlIGFnZ3JlZ2F0ZSBleHBvc2VkIHRocm91Z2g8YnI+
+DQomZ3Q7ICZndDsgL3Byb2MvbWVtaW5mby48YnI+DQomZ3Q7ICZndDs8YnI+DQomZ3Q7ICZndDsg
+UXVlc3Rpb25zOjxicj4NCiZndDsgJmd0Ozxicj4NCiZndDsgJmd0OyAxLiBJcyBhIGRlZGljYXRl
+ZCBCUEYgcmluZyBidWZmZXIgY291bnRlciBhcHByb3ByaWF0ZT88YnI+DQomZ3Q7PGJyPg0KJmd0
+OyBJIGRvbid0IHRoaW5rIHNvLjxicj4NCiZndDs8YnI+DQomZ3Q7IFNlZSBbMV0gd2hlcmUgd2Ug
+anVzdCBoYWQgdGhlIHNhbWUgZGlzY3Vzc2lvbiBmb3IgdHJhY2luZyBidWZmZXJzLiBGb3IgdGhl
+bSw8YnI+DQomZ3Q7IFN0ZXZlIFsyXSBoYWQgYW4gaWRlYSBvbiBob3cgdG8gZXhwb3NlIHRoZW0g
+bW9yZSBmaW5lLWdyYWluZWQgYW5kIHRyYWNpbmcgc3BlY2lmaWMuPGJyPg0KJmd0Ozxicj4NCiZn
+dDsgWzFdIDxhIGhyZWY9Imh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3IvMjAyNjA4MTAwOTQwMjUu
+MTM2NzA1LTEtZ2FveGlhbmcxN0B4aWFvbWkuY29tIj4NCmh0dHBzOi8vbG9yZS5rZXJuZWwub3Jn
+L3IvMjAyNjA4MTAwOTQwMjUuMTM2NzA1LTEtZ2FveGlhbmcxN0B4aWFvbWkuY29tPC9hPjxicj4N
+CiZndDsgWzJdIDxhIGhyZWY9Imh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3IvMjAyNjA4MTAxMDU3
+MTAuNmVlNWU0OTNAZ2FuZGFsZi5sb2NhbC5ob21lIj4NCmh0dHBzOi8vbG9yZS5rZXJuZWwub3Jn
+L3IvMjAyNjA4MTAxMDU3MTAuNmVlNWU0OTNAZ2FuZGFsZi5sb2NhbC5ob21lPC9hPjxicj4NCiZn
+dDs8YnI+DQo8YnI+DQpXZSBhbHJlYWR5IHJlcG9ydCBwZXItQlBGIHJpbmdidWYgbWVtb3J5IHVz
+YWdlIGVpdGhlciB0aHJvdWdoIGJwZigpPGJyPg0Kc3lzY2FsbCBvciBtYXAncyBmZGluZm8uIEUu
+Zy4sIHdpdGggYHN1ZG8gYnBmdG9vbCBtYXAgc2hvd2AgeW91J2xsPGJyPg0Kc2VlJnF1b3Q7PGJy
+Pg0KPGJyPg0KMTQ1NTczMzogcmluZ2J1ZiZuYnNwOyBuYW1lIGV2ZW50X3JpbmdidWYmbmJzcDsg
+ZmxhZ3MgMHgwPGJyPg0KJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+IGtleSAwQiZuYnNwOyB2YWx1ZSAwQiZuYnNwOyBtYXhfZW50cmllcyAyNjIxNDQmbmJzcDsgbWVt
+bG9jayAyNzU3NzZCPGJyPg0KJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7IGJ0Zl9pZCAyMTkzNDM0PGJyPg0KJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7IHBpZHMgdGNwZXZlbnRkKDI1NDk4MTIpPGJyPg0KPGJyPg0Kd2hlcmUgbWVtbG9j
+ayBpcyBob3cgbXVjaCBtZW1vcnkgaXMgYWxsb2NhdGVkIGZvciB0aGUgcmluZ2J1ZiBkYXRhIGFy
+ZWEuPGJyPg0KPGJyPg0KJmd0OyAmZ3Q7IDIuIFNob3VsZCB0aGlzIGJlIHJlcHJlc2VudGVkIGFz
+IGFuIE5SXyogdm1zdGF0IGNvdW50ZXI/PGJyPg0KJmd0Ozxicj4NCiZndDsgSSBkb24ndCB0aGlu
+ayBzby48YnI+DQomZ3Q7PGJyPg0KJmd0OyAmZ3Q7IDMuIElzIC9wcm9jL21lbWluZm8gYW4gYWNj
+ZXB0YWJsZSBpbnRlcmZhY2UgZm9yIHRoaXMgaW5mb3JtYXRpb24/PGJyPg0KJmd0Ozxicj4NCiZn
+dDsgQWdhaW4sIEkgZG9uJ3QgdGhpbmsgc28uICZxdW90O0xvc3QgUkFNJnF1b3Q7IHJlYWxseSBp
+cyBqdXN0ICZxdW90O2V4Y2Vzc2l2ZSBtZW1vcnkgYWxsb2NhdGVkPGJyPg0KJmd0OyBieSBzb21l
+IG90aGVyIHN1YnN5c3RlbSZxdW90Oy48YnI+DQomZ3Q7PGJyPg0KJmd0OyBJIGFncmVlIHRoYXQg
+c29tZSB1c2VycyBtaWdodCB3YW50IHRvIGZpZ3VyZSBvdXQgd2hhdCBpcyBjb25zdW1pbmcgdGhh
+dCBtdWNoPGJyPg0KJmd0OyBtZW1vcnksIGJ1dCBJIGRvbid0IHRoaW5rIGdyb3dpbmcgL3Byb2Mv
+bWVtaW5mbyBpbiB0aGF0IHdheSBpcyByZWFsbHkgd2hhdCB3ZSB3YW50Ljxicj4NCiZndDs8YnI+
+DQomZ3Q7ICZndDsgNC4gSXMgY291bnRpbmcgb25seSB1bmlxdWUgcGh5c2ljYWwgYmFja2luZyBw
+YWdlcyB0aGUgY29ycmVjdCBhY2NvdW50aW5nIHVuaXQ/PGJyPg0KJmd0Ozxicj4NCiZndDsgSSdk
+IGFzc3VtZSB0aGUgJnF1b3Q7SXQgd291bGQgZXhjbHVkZSZxdW90OyBwYXJ0IGFib3ZlIHNob3Vs
+ZCBub3QgYmUgYWNjb3VudGVkIHRoZXJlLCBpZjxicj4NCiZndDsgdGhhdCdzIHdoYXQgeW91IG1l
+YW4uPGJyPg0KJmd0Ozxicj4NCiZndDsgLS08YnI+DQomZ3Q7IENoZWVycyw8YnI+DQomZ3Q7PGJy
+Pg0KJmd0OyBEYXZpZDxicj4NCjwvZGl2Pg0KPC9zcGFuPjwvZm9udD4NCjwvYm9keT4NCjwvaHRt
+bD4NCg==
 
-The high level idea is that when you need to make a change to the ABI so
-the kernel can better describe the objects/resources/files it is
-passing, you create a new version of the ABI and allow transitions from
-older versions.
-
-Say you make some changes and need an ABI version v5. You don't get rid
-of v4. You keep it around. LUO core will facilitate picking the right
-version for the next kernel. So it will be possible to seamlessly
-upgrade your kernel that speaks v4 to a new kernel that speaks v4 and
-v5. Now this kernel can start speaking v5 if its successor speaks v5
-too. And so on for going to v6 and v7, etc.
-
-After a "reasonable" time given for upgrades, you deprecate v4. v4 has
-been around long enough and our users have had a chance to go to kernels
-speaking newer versions. That's when you remove the code for v4 from the
-kernel.
-
-We can argue what "reasonable" means, but the core idea stays. 
-
-It will still be possible to go back to v4 or earlier, but you'd need an
-extra stop along the way. And of course, vendors can keep a wider
-support matrix downstream if they see the need for it.
-
-Does this idea of "backwards compatibility" sound acceptable to you, at
-least at a high level?
-
-Now coming back to today's reality. We don't yet support this version
-transition. I proposed the idea at LPC 2025 [0]. Logan Odell has taken
-over the work since I have other things on my plate, but it is something
-being actively developed. Logan recently sent some RFCs [1] for this
-too, though TBH I haven't yet gotten to those patches. We also have
-proposed a talk about this at LPC 2026, it would be great if you could
-attend (if the talk gets accepted).
-
-If you say that we should figure this version transition out and land it
-upstream before we land the KVM code, I think that's a fair ask. I can
-work with that.
-
-But I think we first need to agree on the principles of the
-compatibility model I described above.
-
-[0] https://lpc.events/event/19/contributions/2049/
-[1] https://lore.kernel.org/kexec/20260731215224.831696-1-loganodell@google.com/T/#u
-
->
-> I totally understand that exploratory work and initial development is best done
-> in private and/or in a small working groups.  But decisions that will significantly
-> impact multiple subsystems need to be made *with* those subystems.  I mean,
-> obviously it's possible to make a decision in a small group and then "publish"
-> the result later, but then as is happening here, the community and subsystem
-> maintainers like me may refuse to play ball if they disagree.
-
-The design of live update was discussed and agreed upon in the open.
-David Rientjes (and now Pasha) has been hosting the live update
-biweeklies [2] from the very start of the project. The series is open to
-everyone and notes shared for those who couldn't join. This meeting was
-attended by a lot of people from different companies and different
-subsystem backgrounds.
-
-There have also been a microconference at LPC 2025 where topics around
-live update in PCI, MM, VFIO, IOMMU, etc. were discussed, along with
-presentations at subsystem tracks in other conferences.
-
-Of course, it is impossible to get all maintainers of all subsystems to
-attend these sessions or conferences. That's fine.
-
-But I think it is quite unfair to say that live update is developed in
-private or in small groups.
-
-[2] https://lore.kernel.org/all/?q=s%3A%22%5BHypervisor+Live+Update%5D%22
-
--- 
-Regards,
-Pratyush Yadav
+--_000_8d2e20842c24460296e4c83e6dc0dde3xiaomicom_--
 
