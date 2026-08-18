@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AE6BC5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 04:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87C03C5DF74
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 04:46:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45E016B0395; Tue, 18 Aug 2026 00:32:52 -0400 (EDT)
+	id 622C96B0142; Tue, 18 Aug 2026 00:46:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 435416B0399; Tue, 18 Aug 2026 00:32:52 -0400 (EDT)
+	id 5D4446B0143; Tue, 18 Aug 2026 00:46:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 324076B039B; Tue, 18 Aug 2026 00:32:52 -0400 (EDT)
+	id 4C45B6B0144; Tue, 18 Aug 2026 00:46:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 123006B0395
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:32:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F784140AC4
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:32:51 +0000 (UTC)
-X-FDA: 85113119742.27.B163C9A
-Received: from mta1.migadu.com (out-109.mta1.migadu.com [95.215.58.109])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4956B20006
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:32:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="HGopUP2/";
-	spf=pass (imf03.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.109 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 2BCC16B0142
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:46:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A4877140AC9
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:46:45 +0000 (UTC)
+X-FDA: 85113154770.15.3D7BBC1
+Received: from mta1.migadu.com (out-232.mta1.migadu.com [95.215.58.232])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5F1BA180003
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 04:46:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ha/shQ8W";
+	spf=pass (imf24.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.232 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787027569;
+	s=arc-20220608; t=1787028402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P+cg+mHVWxa2H5q2cXNZ8NujXu7ELUrJOrsxU2k1HZA=;
-	b=sS7FbOcH4/3J3vf3ytHs+M8RcdFkzbyxWPLqcQJGrrdzvJbk79I//XoRzi0iEggq+8WROr
-	BQ/YQQK3SHhNcmITuiQyRt48DneUURlcQx/oEJD5k5H3EfH4BNukgHB/89cMWJWn9bAYYO
-	7WgOIP8iruQdoUr10bGUINAhRih6GZc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787027569;
-	b=nlQR18jFTd4inLM6+wclBN+PvYOhXce0ntrLZe5QAd0uAzymsDx28B1n/NBjJpBnqGCvXS
-	5vIkbHP3Pu7h2vzDE8rPFwcMD9XZgEw3OBXTb/osUbid52MdOCUx9t89T/GdGjvOSIqqcW
-	zFB0UeT/u6pZGAe6tp7Y4+NJsjb6ENI=
+	bh=grcNJ2O2+zS4/q+8vhgQnjpwokL9wlhxSy7ukitZo4M=;
+	b=P3v3UhMzSaqgamLcZmGGigwtm4HIlqbSpntKNHu3TCyFQU6V3EpjVbxoOZt+PMdCpZJTj0
+	M0Qrj1Ov7vHmvtnxQyFel8aJRDrgUikXMbDbfAXLBpMIOopcl3Nqi+nry9Cksgi4cs8sL0
+	Fy7Bf8NPj5c0OHaGgAhm3E1jDheV5rg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="HGopUP2/";
-	spf=pass (imf03.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.109 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Ha/shQ8W";
+	spf=pass (imf24.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.232 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787028402;
+	b=vViNDn3vvLYe3z0tpxNcfWocx6X08CMq0/KAi4Gc85/3kqZZz73a6OHHNCkxmOpiBQvI25
+	L3bY0eUqZ6bhLM6+JwCtxDU/zdJTHF44dpq3klP6SiSMGbXFccnwkNzsbvJ5pEWfNUjSni
+	ax2v4AWJJ8HuW8STi7MhdW0eOt2j/ls=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=0Aeu40CJPGg7YRxdQERUwajbl2h/m9U4sdY8I6B0VYI=;
+DKIM-Signature: a=rsa-sha256; bh=aoRSl6zLoS1EPxpniD4JoWgk8WZKpF5vaB2DWbIEuqk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787027568; v=1; x=1787632368;
- b=HGopUP2/F+uKWqEig+66rbj55FW/4Xtb8zqBR+V2aGujRikZ2ewOGYV9sx/X8N9KGevlIVUu
- MGdMSBdjJ+17Ywi8DG5DDHUrbJVU1faCC9+A8sb+dO1wZHDek4cpq9Ks0w9hLcTmkKPS9odE8gb
- q8GDUp8QhNWf2IJfZUVgleOo=
+ t=1787028400; v=1; x=1787633200;
+ b=Ha/shQ8W2reTh9fXPNFHEzoAJ7U3LxIAZmkFfNPGZM8m8eG9H3e7AnSwSaXZ4e8gEuYStauu
+ F7xq0vgyji9ZsPz7P8+7EC3CycY6iCio5l7dxYkviBWVK/UXOma0X1+/wTdZkuHmFAjXUCF4e6R
+ +kYgrFDrIwfkOYNgVjSDG8oI=
 X-Envelope-To: linux-mm@kvack.org
 Received: from [192.168.110.173] (223.70.160.239)
-	by smtp.migadu.com with ESMTPS id 7e9ddfa9cc62e64c;
-	Tue, 18 Aug 2026 04:32:48 +0000
+	by smtp.migadu.com with ESMTPS id a065b74329657e33;
+	Tue, 18 Aug 2026 04:46:40 +0000
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <ebffdd23-5291-47f8-88e7-0f10d5f7d3b2@linux.dev>
-Date: Tue, 18 Aug 2026 12:32:42 +0800
+Message-ID: <749beeb5-cc97-42ab-b3a4-aeee378fbb12@linux.dev>
+Date: Tue, 18 Aug 2026 12:46:35 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: cui.tao@linux.dev, tj@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org,
  mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
  muchun.song@linux.dev, akpm@linux-foundation.org, cgroups@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 4/8] mm/memcontrol: add per-tier charge and uncharge
+Subject: Re: [RFC PATCH 7/8] mm/memcontrol: auto-derive tier high/max from
+ memory.high/max
 To: liuqiqi@kylinos.cn, linux-mm@kvack.org
 References: <20260818023121.100613-1-liuqiqi@kylinos.cn>
- <20260818023121.100613-5-liuqiqi@kylinos.cn>
+ <20260818023121.100613-8-liuqiqi@kylinos.cn>
 From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20260818023121.100613-5-liuqiqi@kylinos.cn>
+In-Reply-To: <20260818023121.100613-8-liuqiqi@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5F1BA180003
+X-Stat-Signature: h9wqic8e3xdxs4j5yxwjjwefu368ikbk
 X-Rspam-User: 
-X-Stat-Signature: k8y5at7o3upr3b3krjin4uroncmp9w64
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4956B20006
-X-HE-Tag: 1787027569-60343
-X-HE-Meta: U2FsdGVkX18PsB25mBgXfBJyJH6LamrkPjxJ/JN9yZ/l8JyxWuygn3oa6K5E9Z/ZSi7dbTSMebT1Yn99xACLvlONiysUnyt/iWlIA9nj7Tkml9zPuIxeB81gms+qu7U9lDWskkjvLAYv5FmlTrvgXu6gl/ITr+6uTUerpwFjThBa99LhGvrm/wkYU5wa5dS1ljIrHUm3sCV2lx1Wjm8+uWtR1PhMM+0bp7eJlpygXaH9Mhc+nX+yoUG7C9XyR4FfKeUXcL0skI5QFoy7JtRD4qMnCp94Xr5Q0ARhtKxfqJgi3v8jp0hx29Q4zJVDiiupNMDtm1o8SE599QecCuFPdHZ85tK4GQrgtoLENKwTbxqgXCjgKx7XNKUkpwSmYtc1Dvh3gWrXWbxVBd8yd+bSjjiYMVMqX5zIq6aXarX6tKeMWK/qZIkiWAqtGKwEmXZVGH3QEq4lJ+zQyGB/mE3dJH8doUxNplNQd0/J4CX98ctRjMsvVjLhC5nS4zMJ9y6owFM3YSjfFUJYhlbUb1Ck60NJ0Kn0EovTUgp66iIvlovRs6w+DD+byLFLdQOjZjqTWDmZaYCjD6E/wsbHFliIqRC3jNbct7zrxoinCOVf+Ef3GZRGJ3GdsGSAS9L4o45/8yknPfgDa/kEQkjFv7WY3k4fBeE6js5+Oh3wNvhBFmbfZg/woKhnV1Bmyf9Y0Jy5aYhME5hDNrPH+rFLfM3I+JdoVmpfjsWFFnJ9d4xEbI52vAvaGyn4X4EzyA572mWtsMr0+8HT6ROd5hrpJxJ0CM+qw1w3GOQkqqu7zEFd4JG8zc3Hyod60XTuLRc4VxJsu2KBYrbcnvL+S74XIlLfaKjG8ZVprCREV64EDR3vT50On+fjqgkONq1u4HRr9V+zygzzrERQi+k/LSgdFEFWRQ+yugPUDi4Ggtr9xXJlJxHkXVkqQJ6TMiyXfWTBPvH3N4WEDq4zj8zynpTmOyl
- 3aTvYxVF
- CAyjnRU/7VdSpXWYRs+Z6CUwIhXMaU+RV0JYdXyD7io9Sy64m33wZF33MwAWftrV8nXXOSwXZlyvmlDG+FnqgC486fSdHNN3clTsHYr2IeVYxnSIUSSjzG5+AAucbqbgZkad9kwEU4FJDFHzsoeYNHUQxoz34sj4jekaQXZgCrriYelUVVvPggjcwaK08k9+ybvVIpACB7EVkCB1mLYAobti1y/hl/r4R62siXm/a4wvO3tHAv0CAKYD+pc7hYg5PI7Gchlt973NcPNXpXqu8NjN1EqqVp49tZhyrpeora8fBf/nrX0O3iEA1FA==
+X-HE-Tag: 1787028402-862385
+X-HE-Meta: U2FsdGVkX19UmU9w3KKIU08+jKINdg3VCV2JiIoCq4EfPI9ZqBOXPUsOMULBVzBDgzdvjlcsJ2KzY2J/wT7kJZtPPKes74sVM/MMqNBNfJQIUYSTPagN5BZ78Xpn8DF4599gHBZui/pFwLCv1caHDbqYYtHn/50DaDrWGa2hHrDsAtqwhIW5/9ZWn7pUtK3coBqWuBhkOO4oMEtWGu8OIHbyliB++K7mKAGPDs+I3+9UMxppmRlBLT9oStg07u+sZbCJc9SI30ionldyu0hdnWIF95uHbkb0BKX9dy/mwL4IHgYT9Pa+ReaQRL3eADAmIaZ/mvx60xEWjzrlZWNujzGrkUt9xdoYdd0O9TiEn4uXtDOatxT3tluGJaU9l/qaIkDawpXao/Ls9rswFkVe69DlC3sWCXnBewF8SwmW+0XbRAV23GDIKUapyUvWZ6LWHvc9AKz9aWQJ+mZ6jsewUbNzR2KP0BTkF1ADPIfmvgDV+gwR1aQvFmWyv9LAqeGmfq6FFCVfEUlGIG8qqXwOf9Pa/TFUiYNJyTGdP4nSJwhmWiHE+EV/noVAhjJV0RR8KCmt8gGH53+sgoUT74YW2+kxU6yA/jvkdzTSessoRGBFCPYQLaANbMENU5nbi9R7zjuc8FLI2dPJ98agYbcXJMdlO5Q7ALnPCpAC31ahHqv8wURNRrFLgTPHkMYUbm5twIE6lpGip6GuRo5QjS63mU2WnXetiqwCdB8DiW/N+fi4njHU8ZwmCQ4R6wP4qD34NWM5PENSpGUkwF9xDaQBI60QBIGXvKG2xhAT8VNJwgoEvrHarFx5GJN4WDmAeqzDkKA14JHEQ36LM+7TDCMBglE6pqmYNV8TU9g8xH3vw8kzLf5XQ7pvrKNLQwcaG35TTkvE6/8UZCHKzShr1t0VMWoNrk06CSzqAUAbr5X1LdhYaUTg5MkawhF1QlX0dKLMhfeW+LrGKkYXs03y+2g
+ 5sTdQDth
+ KvJjTi5hY82aPILTgZqSukWqWFQy1ZokZtHZzMpxSmjBU+T5+9qcYVUphqZCQuCXiT6Bwib13echYIge0z/2DP9IxEXzPcdjXXS/d9uy5cEQQZ62HCZvfJz9clTMDlqykyanUbUQdXFKLJz1s4SsAL/CrGX6evfPPu6nojDFM4c0A0YVxrEUextrhmfuXVoqkfMuor11QXsfarJsX7NhIiTUvpj6O4iLBOBkOYopQlV+oVvR0JZnjk8MQdTCRhNKAhZNh+2SPLfamRURUG7IbzelmddbIeu2e3yXng2nI72gdrkA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,339 +94,286 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,Qiqi
+
 
 在 2026/8/18 10:31, liuqiqi@kylinos.cn 写道:
 > From: Qiqi Liu <liuqiqi@kylinos.cn>
 > 
-> Extend the memcg charging infrastructure to support per-tier accounting.
-> After a successful global charge (try_charge_memcg), charge_memcg()
-> attempts per-tier charging. If the tier charge fails, the global charge
-> is rolled back via refill_stock() to maintain a consistent state.
+> Per-tier limits are derived by default from the cgroup-wide memory.high
+> and memory.max knobs based on the tier's capacity ratio:
 > 
-> Per-tier limits are enforced via dedicated page_counter objects with
-> both a hard limit (max) and a soft limit (high):
+>   tierN.high = memory.high * tierN_capacity / total_capacity
+>   tierN.max  = memory.max  * tierN_capacity / total_capacity
 > 
->   - Hard limit: Charging beyond the tier's max triggers reclaim scoped
->     to that tier's NUMA nodes and retries the charge. If reclaim fails,
->     OOM is invoked, mirroring memory.max behavior. PF_MEMALLOC
->     allocations force-charge past the tier max without reclaim (recursion
->     guard); __GFP_NOFAIL/__GFP_HIGH allocations are force-charged past
->     the tier max only after reclaim and OOM both fail.
+> This provides zero-config tier partitioning. Setting memory.high or
+> memory.max automatically splits the budget across tiers proportionally
+> to their physical size. For instance, a 4G cgroup on a system with a
+> 75%/25% DRAM/CXL split automatically receives ~3G DRAM and ~1G CXL.
 > 
->   - Soft limit: The charge always succeeds, but if a tier exceeds its
->     high watermark, the charge path schedules tier_high_work to perform
->     asynchronous reclaim.
+> The capacity cache and the derived limits are refreshed on node memory
+> hotplug, both when node memory is added and when it is removed.
 > 
-> The folio lifecycle is updated accordingly:
-> 
->   - Charging: Attempt per-tier charging after global success; roll back
->     the global charge on tier failure.
->   - Uncharging: Directly uncharge the tier counter.
->   - Replacement: Force-charge the new folio to its tier; the old folio
->     is uncharged upon freeing.
->   - Migration: Keep the global usage unchanged; uncharge the old tier
->     and charge the new tier to reflect the folio's new location.
-> 
-> This patch implements per-tier accounting for LRU folios (anon and file).
+> Writing an explicit value pins the limit and disables auto-derivation
+> for that tier, decoupling it from subsequent memory.high/max updates.
 > 
 > Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
 > ---
->  include/linux/memcontrol.h |   1 +
->  mm/memcontrol.c            | 198 ++++++++++++++++++++++++++++++++++++-
->  2 files changed, 197 insertions(+), 2 deletions(-)
+>  include/linux/memcontrol.h |   2 +
+>  mm/memcontrol.c            | 162 +++++++++++++++++++++++++++++++++----
+>  2 files changed, 150 insertions(+), 14 deletions(-)
 > 
 > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index c0f5929a87bf..fa944e4bc5ad 100644
+> index fa944e4bc5ad..8848bc5eeb24 100644
 > --- a/include/linux/memcontrol.h
 > +++ b/include/linux/memcontrol.h
-> @@ -330,6 +330,7 @@ struct mem_cgroup {
->  
->  	spinlock_t tier_lock;
->  	struct list_head tier_counters;
-> +	struct work_struct tier_high_work;
->  
->  	struct mem_cgroup_per_node *nodeinfo[];
+> @@ -205,6 +205,8 @@ struct memcg_tier_counter {
+>  	int tier_id;
+>  	struct list_head list;
+>  	struct rcu_head rcu;
+> +	bool max_derived;	/* true: derive from memory.max by capacity ratio */
+> +	bool high_derived;	/* true: derive from memory.high by capacity ratio */
 >  };
+>  
+>  struct mem_cgroup {
 > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 70efe01bc36f..30f24604010c 100644
+> index a6c6057f0e4f..f39a702d2301 100644
 > --- a/mm/memcontrol.c
 > +++ b/mm/memcontrol.c
-> @@ -2433,6 +2433,46 @@ static int memcg_tier_counter_create(struct mem_cgroup *memcg,
->  	return 0;
+> @@ -2443,6 +2443,8 @@ static int memcg_tier_counter_create(struct mem_cgroup *memcg,
+>  	page_counter_init(&new->counter, parent_cnt, false);
+>  	page_counter_set_high(&new->counter, PAGE_COUNTER_MAX);
+>  	INIT_LIST_HEAD(&new->list);
+> +	new->max_derived = true;
+> +	new->high_derived = true;
+>  
+>  	spin_lock(&memcg->tier_lock);
+>  	if (memcg_tier_counter_find(memcg, tier_id)) {
+> @@ -2514,6 +2516,115 @@ reclaim_tier(struct mem_cgroup *memcg, unsigned int nr_pages, gfp_t gfp_mask,
+>  	return nr_reclaimed;
 >  }
 >  
-> +static void memcg_charge_tier_id(struct mem_cgroup *memcg, int tier_id,
-> +				 unsigned long nr_pages)
+> +/* Global per-tier capacity cache.
+> + * Populated at boot and on node hotplug (walks online nodes only, no memcg touch).
+> + * Stores (tier_id, capacity) pairs to support sparse tier IDs (e.g., 4, 22, 52)
+> + * without requiring a dense index.
+> + */
+> +#define NR_TIER_CAP_ENTRIES 16
+> +struct tier_cap_entry {
+> +	int tier_id;
+> +	unsigned long capacity;
+> +};
+> +static struct tier_cap_entry tier_cap_entries[NR_TIER_CAP_ENTRIES];
+> +static int nr_tier_entries;
+> +static unsigned long tier_total_capacity;
+> +/* Guards the per-tier capacity cache. */
+> +static DEFINE_SPINLOCK(tier_cap_lock);
+> +
+
+"Populated at boot" doesn't hold: the boot-time call sits in
+mem_cgroup_init(), which runs from start_kernel() (init/main.c:1177),
+before any initcall. Nodes are assigned tiers in
+memory_tier_late_init() (late_initcall), which fires no node notifier.
+So tier_total_capacity stays 0 and every memory.high/max write hits
+the early return in tier_update_derived_limits(). The hotplug
+callback is the only other refresh point - your QEMU setup likely
+works because the CXL tier comes up through it.
+
+Either hook a refresh into the tier-assignment path in memory-tiers,
+or compute lazily when the cache is empty.
+
+Thanks,
+Tao 
+
+> +static void update_tier_capacity_cache(void)
 > +{
-> +	struct memcg_tier_counter *tc;
-> +
-> +	if (tier_id < 0)
-> +		return;
-> +	rcu_read_lock();
-> +	tc = memcg_tier_counter_find(memcg, tier_id);
-> +	if (tc)
-> +		page_counter_charge(&tc->counter, nr_pages);
-> +	rcu_read_unlock();
-> +}
-> +
-> +static void memcg_uncharge_tier_id(struct mem_cgroup *memcg, int tier_id,
-> +				   unsigned long nr_pages)
-> +{
-> +	struct memcg_tier_counter *tc;
-> +
-> +	if (tier_id < 0)
-> +		return;
-> +	rcu_read_lock();
-> +	tc = memcg_tier_counter_find(memcg, tier_id);
-> +	if (tc)
-> +		page_counter_uncharge(&tc->counter, nr_pages);
-> +	rcu_read_unlock();
-> +}
-> +
-> +static void memcg_charge_tier(struct mem_cgroup *memcg, struct folio *folio,
-> +			     unsigned long nr_pages)
-> +{
-> +	memcg_charge_tier_id(memcg, node_to_tier_id(folio_nid(folio)), nr_pages);
-> +}
-> +
-> +static void memcg_uncharge_tier(struct mem_cgroup *memcg, struct folio *folio,
-> +			       unsigned long nr_pages)
-> +{
-> +	memcg_uncharge_tier_id(memcg, node_to_tier_id(folio_nid(folio)), nr_pages);
-> +}
-> +
->  static void memcg_free_tier_counters(struct mem_cgroup *memcg)
->  {
->  	struct memcg_tier_counter *tc, *tmp;
-> @@ -2445,6 +2485,49 @@ static void memcg_free_tier_counters(struct mem_cgroup *memcg)
->  	spin_unlock(&memcg->tier_lock);
->  }
->  
-> +static unsigned long
-> +reclaim_tier(struct mem_cgroup *memcg, unsigned int nr_pages, gfp_t gfp_mask,
-> +	     nodemask_t *nmp)
-> +{
-> +	unsigned long nr_reclaimed, pflags;
-> +
-> +	psi_memstall_enter(&pflags);
-> +	nr_reclaimed = try_to_free_mem_cgroup_pages_nodemask(memcg, nr_pages, gfp_mask,
-> +							    MEMCG_RECLAIM_MAY_SWAP, NULL, nmp);
-> +	psi_memstall_leave(&pflags);
-> +	return nr_reclaimed;
-> +}
-> +
-> +static void tier_high_work_func(struct work_struct *work)
-> +{
-> +	struct mem_cgroup *memcg;
-> +	struct memcg_tier_counter *tc;
-> +	/* Few tiers in practice (2-4); cap is generous. */
-> +	int over_ids[16];
-> +	int nr_over = 0;
+> +	int nid;
 > +	int i;
 > +
-> +	memcg = container_of(work, struct mem_cgroup, tier_high_work);
+> +	spin_lock(&tier_cap_lock);
+> +	nr_tier_entries = 0;
+> +	tier_total_capacity = 0;
+> +	for (i = 0; i < NR_TIER_CAP_ENTRIES; i++) {
+> +		tier_cap_entries[i].tier_id = -1;
+> +		tier_cap_entries[i].capacity = 0;
+> +	}
 > +
+> +	for_each_online_node(nid) {
+> +		int tid = node_to_tier_id(nid);
+> +		unsigned long cap;
+> +
+> +		if (tid < 0)
+> +			continue;
+> +		cap = node_present_pages(nid);
+> +		for (i = 0; i < nr_tier_entries; i++)
+> +			if (tier_cap_entries[i].tier_id == tid) {
+> +				tier_cap_entries[i].capacity += cap;
+> +				tier_total_capacity += cap;
+> +				break;
+> +			}
+> +		if (i == nr_tier_entries && nr_tier_entries < NR_TIER_CAP_ENTRIES) {
+> +			tier_cap_entries[nr_tier_entries].tier_id = tid;
+> +			tier_cap_entries[nr_tier_entries].capacity = cap;
+> +			nr_tier_entries++;
+> +			tier_total_capacity += cap;
+> +		} else if (i == nr_tier_entries) {
+> +			pr_warn_ratelimited("memcg: tier capacity cache full (>%d tiers), tier %d not tracked\n",
+> +					    NR_TIER_CAP_ENTRIES, tid);
+> +		}
+> +	}
+> +	spin_unlock(&tier_cap_lock);
+> +}
+> +
+> +/* Push derived high/max limits to tier counters of @memcg.
+> + * Invoked on memory.high/max writes and capacity changes (hotplug).
+> + */
+> +static void tier_update_derived_limits(struct mem_cgroup *memcg)
+> +{
+> +	struct memcg_tier_counter *tc;
+> +	struct tier_cap_entry local_entries[NR_TIER_CAP_ENTRIES];
+> +	unsigned long total;
+> +	int i, nr_entries;
+> +
+> +	spin_lock(&tier_cap_lock);
+> +	total = tier_total_capacity;
+> +	nr_entries = nr_tier_entries;
+> +	memcpy(local_entries, tier_cap_entries, sizeof(local_entries));
+> +	spin_unlock(&tier_cap_lock);
+> +
+> +	if (total == 0)
+> +		return;
+> +
+> +	/* Serialize flag check + limit store against memory.tier writes. */
 > +	spin_lock(&memcg->tier_lock);
-> +	list_for_each_entry(tc, &memcg->tier_counters, list) {
-> +		if (page_counter_read(&tc->counter) > READ_ONCE(tc->counter.high)) {
-> +			if (nr_over < ARRAY_SIZE(over_ids))
-> +				over_ids[nr_over++] = tc->tier_id;
+> +	list_for_each_entry_rcu(tc, &memcg->tier_counters, list,
+> +				lockdep_is_held(&memcg->tier_lock)) {
+> +		unsigned long cap = 0;
+> +
+> +		for (i = 0; i < nr_entries; i++)
+> +			if (local_entries[i].tier_id == tc->tier_id) {
+> +				cap = local_entries[i].capacity;
+> +				break;
+> +			}
+> +		if (cap == 0)
+> +			continue;
+> +		if (READ_ONCE(tc->max_derived)) {
+> +			unsigned long mem_max = READ_ONCE(memcg->memory.max);
+> +
+> +			if (mem_max == PAGE_COUNTER_MAX)
+> +				xchg(&tc->counter.max, PAGE_COUNTER_MAX);
+> +			else
+> +				xchg(&tc->counter.max,
+> +				     mul_u64_u64_div_u64(mem_max, cap, total));
+> +		}
+> +		if (READ_ONCE(tc->high_derived)) {
+> +			unsigned long mem_high = READ_ONCE(memcg->memory.high);
+> +
+> +			if (mem_high == PAGE_COUNTER_MAX)
+> +				xchg(&tc->counter.high, PAGE_COUNTER_MAX);
+> +			else
+> +				xchg(&tc->counter.high,
+> +				     mul_u64_u64_div_u64(mem_high, cap, total));
 > +		}
 > +	}
 > +	spin_unlock(&memcg->tier_lock);
-> +
-> +	for (i = 0; i < nr_over; i++) {
-> +		nodemask_t nodes;
-> +
-> +		if (tier_id_to_nodemask(over_ids[i], &nodes) ||
-> +		    nodes_empty(nodes))
-> +			continue;
-> +		reclaim_tier(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL, &nodes);
-> +	}
 > +}
 > +
->  /*
->   * Clamp the maximum sleep time per allocation batch to 2 seconds. This is
->   * enough to still cause a significant slowdown in most cases, while still
-> @@ -2873,6 +2956,90 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  	return 0;
->  }
->  
-> +static int try_charge_memcg_tier(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> +	unsigned int nr_pages, int tier_id)
-> +{
-> +	struct memcg_tier_counter *tc;
-> +	struct page_counter *counter;
-> +	int nr_retries = MAX_RECLAIM_RETRIES;
-> +	unsigned long nr_reclaimed = 0;
-> +	bool passed_oom = false;
-> +	nodemask_t nodes, *nmp = NULL;
-> +
-> +	if (tier_id < 0)
-> +		return 0;
-> +
-> +	rcu_read_lock();
-> +	tc = memcg_tier_counter_find(memcg, tier_id);
-> +	rcu_read_unlock();
-> +	if (!tc)
-> +		return 0;
-> +
-> +retry:
-> +	if (page_counter_try_charge(&tc->counter, nr_pages, &counter))
-> +		goto success;
-> +
-> +	/* Over max -> reclaim. */
-> +	if (unlikely(current->flags & PF_MEMALLOC))
-> +		goto force;
-> +	if (unlikely(task_in_memcg_oom(current)))
-> +		goto nomem;
-> +	if (!gfpflags_allow_blocking(gfp_mask))
-> +		goto nomem;
-> +
-> +	if (!tier_id_to_nodemask(tier_id, &nodes) && !nodes_empty(nodes))
-> +		nmp = &nodes;
-> +
-> +	nr_reclaimed = reclaim_tier(memcg, nr_pages, gfp_mask, nmp);
-> +
-
-If the nodemask lookup fails, nmp stays NULL and reclaim scans all
-nodes - enforcing tier4.max evicts from tier22, and the freed pages
-are on the wrong tier so it doesn't even help. I'd goto nomem here.
-
-Also two nits: struct page_counter *counter is never read; and the
-function relies on the caller's css reference to keep tc valid across
-reclaim_tier()/mem_cgroup_oom() (the RCU lock only covers the list
-walk) - worth a comment before someone adds a new caller.
-
-Thanks,
-Tao
-
-> +	if (page_counter_read(&tc->counter) + nr_pages <= READ_ONCE(tc->counter.max))
-> +		goto retry;
-> +	if (gfp_mask & __GFP_NORETRY)
-> +		goto nomem;
-> +	if (nr_reclaimed && nr_pages <= (1 << PAGE_ALLOC_COSTLY_ORDER))
-> +		goto retry;
-> +	if (nr_retries--)
-> +		goto retry;
-> +	if (gfp_mask & __GFP_RETRY_MAYFAIL)
-> +		goto nomem;
-> +	if (passed_oom && task_is_dying())
-> +		goto nomem;
-> +	if (mem_cgroup_oom(memcg, gfp_mask, get_order(nr_pages * PAGE_SIZE))) {
-> +		passed_oom = true;	/* tier max is a hard limit: OOM, like memory.max */
-> +		nr_retries = MAX_RECLAIM_RETRIES;
-> +		goto retry;
-> +	}
-> +	goto nomem;
-> +success:
-> +	do {
-> +		struct memcg_tier_counter *tc_this;
-> +
-> +		rcu_read_lock();
-> +		tc_this = memcg_tier_counter_find(memcg, tier_id);
-> +		if (tc_this &&
-> +		    page_counter_read(&tc_this->counter) > READ_ONCE(tc_this->counter.high) &&
-> +		    !work_pending(&memcg->tier_high_work)) {
-> +			schedule_work(&memcg->tier_high_work);
-> +			rcu_read_unlock();
-> +			break;
-> +		}
-> +		rcu_read_unlock();
-> +	} while ((memcg = parent_mem_cgroup(memcg)));
-> +	return 0;
-> +nomem:
-> +	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH)))
-> +		return -ENOMEM;
-> +
-> +force:
-> +	/*
-> +	 * Force-charge past the tier max for reclaim/privileged allocations
-> +	 * (PF_MEMALLOC, or __GFP_NOFAIL/__GFP_HIGH that fell through from
-> +	 * nomem) -- not skip -- so the page is in tier.current too.
-> +	 */
-> +	page_counter_charge(&tc->counter, nr_pages);
-> +	return 0;
-> +}
-> +
->  static inline int try_charge(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  			     unsigned int nr_pages)
+>  static void tier_high_work_func(struct work_struct *work)
 >  {
-> @@ -4216,6 +4383,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
->  	INIT_WORK(&memcg->high_work, high_work_func);
->  	spin_lock_init(&memcg->tier_lock);
->  	INIT_LIST_HEAD(&memcg->tier_counters);
-> +	INIT_WORK(&memcg->tier_high_work, tier_high_work_func);
->  	vmpressure_init(&memcg->vmpressure);
->  	INIT_LIST_HEAD(&memcg->memory_peaks);
->  	INIT_LIST_HEAD(&memcg->swap_peaks);
-> @@ -4439,6 +4607,7 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
->  
->  	vmpressure_cleanup(&memcg->vmpressure);
->  	cancel_work_sync(&memcg->high_work);
-> +	cancel_work_sync(&memcg->tier_high_work);
->  	memcg_free_tier_counters(memcg);
->  	memcg1_remove_from_trees(memcg);
->  	free_shrinker_info(memcg);
-> @@ -5224,8 +5393,17 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
->  
->  	objcg = get_obj_cgroup_from_memcg(memcg);
->  	/* Do not account at the root objcg level. */
-> -	if (!obj_cgroup_is_root(objcg))
-> +	if (!obj_cgroup_is_root(objcg)) {
->  		ret = try_charge_memcg(memcg, gfp, folio_nr_pages(folio));
-> +		if (!ret) {
-> +			int tid = node_to_tier_id(folio_nid(folio));
-> +
-> +			ret = try_charge_memcg_tier(memcg, gfp, folio_nr_pages(folio), tid);
-> +			/* tier over max / OOM: undo the memory charge */
-> +			if (ret)
-> +				refill_stock(memcg, folio_nr_pages(folio));
-> +		}
-> +	}
->  	if (ret) {
->  		obj_cgroup_put(objcg);
->  		return ret;
-> @@ -5385,8 +5563,11 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
->  		ug->nr_kmem += nr_pages;
->  	} else {
->  		/* LRU pages aren't accounted at the root level */
-> -		if (!obj_cgroup_is_root(objcg))
-> +		if (!obj_cgroup_is_root(objcg)) {
->  			ug->nr_memory += nr_pages;
-> +			memcg_uncharge_tier(obj_cgroup_memcg(objcg), folio,
-> +				nr_pages);
-> +		}
->  		ug->pgpgout++;
->  
->  		WARN_ON_ONCE(folio_unqueue_deferred_split(folio));
-> @@ -5461,6 +5642,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
->  		page_counter_charge(&memcg->memory, nr_pages);
->  		if (do_memsw_account())
->  			page_counter_charge(&memcg->memsw, nr_pages);
-> +		memcg_charge_tier(memcg, new, nr_pages);
+>  	struct mem_cgroup *memcg;
+> @@ -4841,6 +4952,8 @@ static void mem_cgroup_css_reset(struct cgroup_subsys_state *css)
+>  	list_for_each_entry_rcu(tc, &memcg->tier_counters, list) {
+>  		page_counter_set_max(&tc->counter, PAGE_COUNTER_MAX);
+>  		page_counter_set_high(&tc->counter, PAGE_COUNTER_MAX);
+> +		WRITE_ONCE(tc->max_derived, true);
+> +		WRITE_ONCE(tc->high_derived, true);
 >  	}
+>  	rcu_read_unlock();
+>  }
+> @@ -5251,6 +5364,7 @@ static ssize_t memory_high_write(struct kernfs_open_file *of,
+>  		return err;
 >  
->  	obj_cgroup_get(objcg);
-> @@ -5503,6 +5685,18 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
->  	if (!objcg)
->  		return;
+>  	page_counter_set_high(&memcg->memory, high);
+> +	tier_update_derived_limits(memcg);
 >  
-> +	/* Re-account the per-tier breakdown if the folio moved across tiers. */
-> +	if (!obj_cgroup_is_root(objcg)) {
-> +		struct mem_cgroup *memcg = obj_cgroup_memcg(objcg);
-> +		int old_tier = node_to_tier_id(folio_nid(old));
-> +		int new_tier = node_to_tier_id(folio_nid(new));
-> +
-> +		if (old_tier != new_tier) {
-> +			memcg_uncharge_tier_id(memcg, old_tier, folio_nr_pages(old));
-> +			memcg_charge_tier_id(memcg, new_tier, folio_nr_pages(new));
-> +		}
+>  	if (of->file->f_flags & O_NONBLOCK)
+>  		goto out;
+> @@ -5303,6 +5417,7 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
+>  		return err;
+>  
+>  	xchg(&memcg->memory.max, max);
+> +	tier_update_derived_limits(memcg);
+>  
+>  	if (of->file->f_flags & O_NONBLOCK)
+>  		goto out;
+> @@ -5390,10 +5505,17 @@ static ssize_t memory_tier_write(struct kernfs_open_file *of,
+>  	if (!tier_id_to_nodemask(tier_id, &nodes) && !nodes_empty(nodes))
+>  		nmp = &nodes;
+>  
+> -	if (!strcmp(knob, "high"))
+> +	if (!strcmp(knob, "high")) {
+> +		spin_lock(&memcg->tier_lock);
+> +		WRITE_ONCE(tc->high_derived, false);
+>  		page_counter_set_high(&tc->counter, val);
+> -	else
+> +		spin_unlock(&memcg->tier_lock);
+> +	} else {
+> +		spin_lock(&memcg->tier_lock);
+> +		WRITE_ONCE(tc->max_derived, false);
+>  		xchg(&tc->counter.max, val);
+> +		spin_unlock(&memcg->tier_lock);
 > +	}
-> +
->  	/* Transfer the charge and the objcg ref */
->  	commit_charge(new, objcg);
 >  
+>  	if (of->file->f_flags & O_NONBLOCK)
+>  		return nbytes;
+> @@ -6145,18 +6267,28 @@ static int __meminit memcg_tier_hotplug_cb(struct notifier_block *self,
+>  	struct mem_cgroup *memcg;
+>  	int tid;
+>  
+> -	if (action != NODE_ADDED_FIRST_MEMORY)
+> -		return notifier_from_errno(0);
+> -
+> -	tid = node_to_tier_id(nn->nid);
+> -	if (tid < 0)
+> -		return notifier_from_errno(0);
+> -
+> -	for_each_mem_cgroup(memcg) {
+> -		if (!mem_cgroup_is_root(memcg) &&
+> -		    memcg_tier_counter_create(memcg, parent_mem_cgroup(memcg), tid))
+> -			pr_warn_ratelimited("memcg: tier %d counter alloc failed;"
+> -					     " tier accounting degraded\n", tid);
+> +	switch (action) {
+> +	case NODE_ADDED_FIRST_MEMORY:
+> +		tid = node_to_tier_id(nn->nid);
+> +		if (tid < 0)
+> +			return notifier_from_errno(0);
+> +
+> +		update_tier_capacity_cache();
+> +		for_each_mem_cgroup(memcg) {
+> +			if (!mem_cgroup_is_root(memcg) &&
+> +			    memcg_tier_counter_create(memcg, parent_mem_cgroup(memcg), tid))
+> +				pr_warn_ratelimited("memcg: tier %d counter alloc failed;"
+> +						     " tier accounting degraded\n", tid);
+> +		}
+> +		for_each_mem_cgroup(memcg)
+> +			tier_update_derived_limits(memcg);
+> +		break;
+> +	case NODE_REMOVED_LAST_MEMORY:
+> +		/* Node memory removed: refresh capacity and derived limits. */
+> +		update_tier_capacity_cache();
+> +		for_each_mem_cgroup(memcg)
+> +			tier_update_derived_limits(memcg);
+> +		break;
+>  	}
+>  	return notifier_from_errno(0);
+>  }
+> @@ -6181,6 +6313,8 @@ int __init mem_cgroup_init(void)
+>  	memcg_wq = alloc_workqueue("memcg", WQ_PERCPU, 0);
+>  	WARN_ON(!memcg_wq);
+>  
+> +	update_tier_capacity_cache();
+> +
+>  #if defined(CONFIG_MEMORY_HOTPLUG) && defined(CONFIG_NUMA)
+>  	hotplug_node_notifier(memcg_tier_hotplug_cb, MEMCG_TIER_NODE_PRI);
+>  #endif
 
 
