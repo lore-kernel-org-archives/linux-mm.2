@@ -4,128 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 616D3C5DF70
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E564C5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 07:41:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6994C6B03E1; Tue, 18 Aug 2026 03:36:34 -0400 (EDT)
+	id 2AB656B08EF; Tue, 18 Aug 2026 03:41:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 649D66B03F1; Tue, 18 Aug 2026 03:36:34 -0400 (EDT)
+	id 25C166B08F2; Tue, 18 Aug 2026 03:41:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 511C76B08EF; Tue, 18 Aug 2026 03:36:34 -0400 (EDT)
+	id 0FD0E6B08F3; Tue, 18 Aug 2026 03:41:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 257046B03E1
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:36:34 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9B54680AFD
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:36:33 +0000 (UTC)
-X-FDA: 85113582666.12.E94ACA0
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B0269100008
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:36:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cjmt0fNl;
-	spf=pass (imf14.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D09C66B08EF
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:41:38 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FC8DA0B57
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:41:38 +0000 (UTC)
+X-FDA: 85113595476.15.C20E32C
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7DB68140005
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 07:41:36 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TYsiERAh;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787038591;
-	b=ORWhBG286JK8qLV1g67URBbsjD3hDp2BdZ3Ke8Q7NamphiwxCQ4ueNUPIPHlTQpGktWTat
-	p7W7Zqavna17pySO8Ljnirm4fOc5gURV9btHMBC4Y3jl5evRT3Y54Itq1xf2pPadz3Npyt
-	oeL6iziZ/YM4t4MXYdbPhB1/4wFFjf0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cjmt0fNl;
-	spf=pass (imf14.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787038591;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787038896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xA4rXRC20PbN1YuS6wZOV6o++xOt0Zef10yjQF/tkVk=;
-	b=i8dDMWyfatFfCOzeLY6o51u3F7F651Y3ZidBnMVhN3sSIxzq4LYahYkIwzpMzmUYYekpW8
-	2Fb2go1chQ3JCBcZtB1p2GilkvACGHXSx8R5k9o54WE/5cUQwQ0ur88ymiQCCPa1BbgnCT
-	bfowIebLbal/CmQa/NrwiIT/Bam2Qhc=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-ca00f126b7eso2838597a12.2
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:36:31 -0700 (PDT)
+	bh=VahNcEYmw+mGcn7LtyCZe2us9vTkZlTxAEikuZwKYxg=;
+	b=CZ7Uy67wdI3suZ6V0oDQDHFXl4ljf7mCA+bZ3Cn8KuprIiHrEIIoUY/kCZPft9V92Sy+51
+	BkV4RR6izzCRzYEeBrN4gH3hfqUZLR4IdVwzavLt9H57m9IiSYpkOECNPR0IbSOBLP6sF/
+	52JnTyw7r7b3+GZSgG5OSwbqkXHuGlE=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TYsiERAh;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787038896;
+	b=gf8/kJzMMSC0oJcbVHBgSnHqYPpY5SRC7iLoUDHZAtFj49HaJFCDvOSiSrBWxNGecME77b
+	yu7meZMuqkGZ4zuiSw8ozB//JRb7b2NtIsWAd5QOajWOzdmujLsvAWKzmCQ9r0G++LOtbE
+	B9rqYmnz3l/2kh+JXwzYDPJ8LuRzABg=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a0794669a6so7161591a12.2
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 00:41:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787038895; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rugb9U7cAKqeczXb5PvIYZSfCC//KdqQd7IwHj9FxvtWxjv6i38oCPQlJ9C7yKQKEh
+         xWT8PfA7rQdmsBoQi/xotAZlzg9ibvoQsh2C06VN2IQNlPF0o6rLOt/Pqk7uMwNKY4ol
+         C+yTOPHII6AZpoe0hsO1CBx8SA7I4W3wSaMeYrZn8WIv2OY9iatVQ7p5qF4JBXQiOPww
+         OdiRseIDFWK2qRG9uV8V/YCDp02MQorUdqbPANfSbeIUhGLiQwnzjTSu0qPG33sW8Eth
+         saCNncv23z3CBFTLRlN9Q+gCb5biJjUHRQH/g75RLiNBTkc+V+3yxI5CbHH3E7kGjEMg
+         srKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VahNcEYmw+mGcn7LtyCZe2us9vTkZlTxAEikuZwKYxg=;
+        fh=Ig90bcx6qOexKJCJoXpsNu2qlrCnTN35tWkrCKDUqE0=;
+        b=noJT4dfL/SNvTGrp5FUC2I99XhTg0fNnpwAYAn5NesjqPZiFYCp01te2jb0PVcRNW0
+         +LcPM2cl5bKnbzxEFHr8Iwf6qigibNHZrvJ2FSy9N13GGDzYltAjvfnj0CfXtuXoMAZm
+         U6d+MXonZKxtvIUcawS0AA2YnwEaAIALR6qC4rTyC1CG6b805Qg4LGo9m5Om9RmWTZSj
+         noKmdfmNWtAVt5Qsn8TkAqi5IdNd/Q8PuxgLHkR6micCULHwQMM2bE3zhk/Ceqost7PD
+         PBu3oj8m21vK3+SRQIXmXXn0tVRQ6E7YT1XllOI2G86FVoopN/q13YVLse7Z1Uz40qdL
+         Sw9A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787038590; x=1787643390; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1787038895; x=1787643695; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=xA4rXRC20PbN1YuS6wZOV6o++xOt0Zef10yjQF/tkVk=;
-        b=cjmt0fNl/Hs6elD+2n7e1HXuRroku3EEFRIi96D7A3xyHe/bLGF/TAgU3zYUQUlwtx
-         cPAS0cshiI33xtw3YBnHQ/pnCryRO/LwKoyNKG1XGb0T0rGIQsg7VXZ1qqzvdFBkIRGO
-         6tmCqfCZ+Cr9+UepUks8v2LrJVAwe0GbWE0Loh0xHER78LNdXNrRQixiTuCXfFXZwxgA
-         Rtt/UuFPIb2jweVQ9M5dX7HW9pszwy2p8S1PNE2puOdXDvmpfPqHiRAr21LiOpSnWaK3
-         jbKqfREpZvtskOLKv1v3pOGCneRY4hA0IoeVmzDfJfyDlOosBUX983+MlsWR3JjzjlUO
-         fV4g==
+        bh=VahNcEYmw+mGcn7LtyCZe2us9vTkZlTxAEikuZwKYxg=;
+        b=TYsiERAhWZ+K33sMtcBmrTOkyxFQq+TKjEdp9/k/neqmQdITWe7jqJ6w9y0zt1EG4s
+         6DEFZg0TZ70y6MXj/qs5nQuyYE0XO4sAVeQSDRIkgJYCl03Kr0wlw2WUAhEsqS4SVbn0
+         8ydgVRJWwXQyBzW6Qqbyhg5dhMoKgMsm2RTyc7j1KrndfinU/xUcdfXl+d1zbiebuWy3
+         BKaI5hjI77rLm4V3n6ZJxganqVAlzdURMLA8kVquAIqQXu1KCSUcagt9MsyX3LLlnlR6
+         oaqd/1Ci+2xlSZdG9JiwGfemXZLIk5Uwc7h3CGKPRfWo+7ye45hmD8y2mnNUJetsws5C
+         5j8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787038590; x=1787643390;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1787038895; x=1787643695;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xA4rXRC20PbN1YuS6wZOV6o++xOt0Zef10yjQF/tkVk=;
-        b=Ka+Vvvywn34Ek7fy2CWSQqQu+ShZgjYdBcFTGFGwqIxXJEvkAdOAtoVDawgXRkCHQ6
-         xCZV92q5R50kjnV+l0n4jIKPVaLb/f/RByqor8cSk/L+N1slUnZYl1t7uBybsjqGzc8t
-         XdDrnNlogc3GTrJ+mAWRQXuLx04xq7rZ3elTh03L5yULYCJUn1TsfqEkuQvhvuSSHKcX
-         oSTA8SqiantUudL2sS6HYpr/oNo+ZGnlFfivlV3wJjA7DZXRNN9f53UfPLIQFt8+ArV4
-         knxuvPFYupjlFqZa9s+A2F02dfiY/05XeJ3pMOK19GJyn2AkWDRcSnON0QlXfOsH68OR
-         jiLw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro3PWnPOo8YzarLzW4MiBmepeR5qiJDePzAOyN94nRwtFdPM1JkOxpcQabmOEJuxhWc9Pz8HDOC+A==@kvack.org
-X-Gm-Message-State: AOJu0YxepZwXIKwK4R5XvluiCvVFGeirvJTsL+6pvIJGXphHOpKT8TGU
-	cBTX1q/WxFHTkRm09jJxzNQbezYiwITtiHG4C9/A2xEQli9HePdVehub
-X-Gm-Gg: AR+sD10sbQt9NtFzuYuYuadcishsiRgz0nN0S2kXoqsMeokPJwH0fHz41oAaseZCYlF
-	knarNw/gS0fM6FwcbPfuH16WEZL8JrMWNwxCdn3Gq8aI8Rs835bzEm1WeT9EhjYcwDP9U/BqYH5
-	NxQwj8jljoOa+SWjKjLyP9aGUIE/eN7d7uUga9b8BrQuBjrRzZFaFMkIrSgpxlpPLajD/nfWE/q
-	jMijp8B0Xg3KxocGYrGMgGqPzlQCgt/sODV1WUN8VwQip8c6h3brYFbgEqSMAokp7BNByDQXa0q
-	2CNJRFs23UOF5tuSYw+T8omU88KS1gu5MOiDTbUVZAmBhXQnpBj5DRsoetEw7wPdu2UbYjvNDbz
-	7R5wrbqqeB5UhJBLkBb2ij7kjQtDWoWTzyoquUf+X9a7p8I0TE5ky0RxlpN/LWrvE0PafIRhTsX
-	K3BQuDTz3bw6yHxiBi9+iiSXFptesoznLgfhXGC865dIr65/yYH0FMz0llXQug6EBXM36r+U9uC
-	UPEXX0=
-X-Received: by 2002:a05:6a00:408b:b0:82f:2b0:2809 with SMTP id d2e1a72fcca58-84fde3651cemr32909513b3a.1.1787038589851;
-        Tue, 18 Aug 2026 00:36:29 -0700 (PDT)
-Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851c2fc690bsm306141b3a.14.2026.08.18.00.36.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 00:36:29 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>,
-	sj@kernel.org,
-	akinobu.mita@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH 0/6] mm/damon: hardware-sampled access reports
-Date: Tue, 18 Aug 2026 15:35:21 +0800
-Message-ID: <20260818073546.832476-1-kunwu.chan@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260529165640.820-1-ravis.opensrc@gmail.com>
-References: 
+        bh=VahNcEYmw+mGcn7LtyCZe2us9vTkZlTxAEikuZwKYxg=;
+        b=WONliH8OKLMNkdXd8EsTCS/x4YqEqPFGfEGCf8ydWgo0qdSa96T8roLfIztI2sbqrT
+         CJ9qemhJ8trCO3aCJXEhZu2WvNPF5SY5BWALWMxkrjqpWBUSt1a4SV/VwojopC2YApZg
+         TNzkO/FAXBmzcSi7Qwnv2nV7jXPhz3HA056EVxBHmoSi2Ba7P4HO5ApoYu1bQm2INEro
+         mq9xVXHFekZqlGlbtb89Kmc/QPr6580+GLRH3cRkbtVIWPh6M4GlwcKNqVV0PZQr2HLA
+         XaMk19q+8ugThhqkqT433Ye241f1FZeTKQuoQUJhCRbl/uHKZFUXrrhcISQVSStHk+4Q
+         0i4Q==
+X-Gm-Message-State: AOJu0YwxR2dkvSS2mk9esk82d5Krlk4wd1tKpMESfEuPJDEOYNGMn8rj
+	ngOCn2wT2/9HRfeIgch0bU0SXkHEVz4oM17MWT4SFtw7KRzROCPCErKF8WzxWZJzIgrVeHWGbQZ
+	lATTuCzbCaHQ075ar5U9N1GwPtQUE0FY=
+X-Gm-Gg: AR+sD13o4H3xTNoYWVOgRc3APUw3NtYk3rQNVQyjT0465lzxGEndefGK3PGs/eFLuCX
+	d5ybvDlGr9XUA4HEqmsqg3Zs7/1lDpyL2gV1k27Wpq/1/PhIHD0MgOC7m0psG42bkvop7Z2Wrfe
+	76t0yWOZZRgRlGi0SXdz3FydTxzvOW3aB2WZFvCSJ2WGMnHgBUv1WyklMgaG2P6yHU6pdrFz3bM
+	32mY712eUtEjcfIDANbEwzhPy+pl3lGerCLZzCZWvvDQIEhDYqF+bZEOCg898r5bn6HB0/oylL8
+	+fE1sGD7gU67N+tloHjV1XRR7LpNPZNeDTcxJ804iv0JjnjaU4lRjnjW6fQGVvjYALRBVd5xlwH
+	Cjg==
+X-Received: by 2002:a05:6402:3250:b0:6a1:df2c:cfa3 with SMTP id
+ 4fb4d7f45d1cf-6a38a8d884cmr12171377a12.4.1787038894697; Tue, 18 Aug 2026
+ 00:41:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B0269100008
-X-Rspamd-Server: rspam10
+References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
+ <20260804-mglru-fg-v1-9-4d8dad39dad6@tencent.com> <aoQFw_SWJBAdO8w-@MiWiFi-R3L-srv>
+In-Reply-To: <aoQFw_SWJBAdO8w-@MiWiFi-R3L-srv>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 18 Aug 2026 15:40:57 +0800
+X-Gm-Features: AcwNN1VRYTzbtiXYoU92qfjSmVzpQzxLtJTMmiPxSS8NOzR75LT-X-q805MIN_s
+Message-ID: <CAMgjq7C1nFb92FGE+uSapZZS+14R95OG9w8ji+ZBkF=fOQ2Eag@mail.gmail.com>
+Subject: Re: [PATCH RFC 09/15] mm/mglru: frequency guided workingset promotion (MGLRU-FG)
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Chris Li <chrisl@kernel.org>, Nico Pache <nico.pache@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	SeongJae Park <sj@kernel.org>, David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: zbn8xq8oxtuxprujgddw5ok3f65xp1gp
+X-Rspamd-Queue-Id: 7DB68140005
 X-Rspam-User: 
-X-Stat-Signature: jbtsuj4ubcodfhr7uu6wbs5879ckpts6
-X-HE-Tag: 1787038591-366245
-X-HE-Meta: U2FsdGVkX1+wZJFZAhjKLTLYPQhcmeJlyZ5FRvPdFVjeX1i9cWWPii0pzW6eqAf81GR5d5Uf70700LYK2E7fNxlt+5pMoka3XIN2UxQh9C7eHI0nssEOqmuXCcdvkByyIlzq2WkDWlwPr4GLbKcZDQSfGdkbB/COazy/MPAQ1Fw540vnkIX/50nceVPRHY7joDPsqGwTDeWXPMtDOeKDA6DNCuQRlbOnNjiI6V61k6Cn9gGLckrMkOAsBq5H/VHswRRbenUf6pWB1S1J296LNhi1BNyY6wxtiNE69lAwDN1qpwK5TQ/sRjO2iqOWm9hUhpF65bwiG2aWSz6TVDfxmufIznlKlNgEqOGpIVAkTZeT11gggBTmfRGHnE1OTaSfjcapz+e7Pi7we+hQjp4n9c4b0L1VvmHy054+buq72uhn3TLnOjcW3iIi1hMt3p46NYqQUK3/csbSFMnTYPeYJKrViXHPXjvPH2Uso3LSnqtfc4SReAklYjm4pq/0eb0+YAnnjljO3A7N/AWT7/wK6bxiHeZjLu7xPfpobJlhxh6t+EjBcTsN/rdzQ24DTK49LP82UcZ6TAvJfdeUhMv4zpMpKDWAh9GmR3SjzjLcAUnnW61k1qhviVpYfjhQvi/zeXnHhuwNXtG4NMSbppG8rRxQZrAQw4EM4Sm6jqAhx0jTxw4niazkXaNfjKCUGSFngiuC982HnJSFYWpey6Y6rNwH2BDfrus1uWR6wsUb9EF6C6TQtNvXyqRVJgXjUd6D8ZyBCX9gT5+vpN8oTnhiUvb8g/FPMkQtmLCBjlasLKDu/6OjOLYkAL0TNthWl+1pDcTDqieS0zsm9e6PRSibe2/28xCYr8q2cswTtXp6uRQa8swvu/L/HSLvDA12I4YomxyKqT/FNWOk5Os4CnLkaSdWzjp7bRJPgd0QNsqSLYbHgf+Dz0NbVv0jNTpjC+9uGGAxZWUgds8zHC/F7VT
- XcfmCnhe
- i4RHVr/yZMdjBcYImAJi5bBJ6GeckZdApQW/gttx9vUTpKKCkw+FYvAHRucK1WzvgvMTJRQsS6WXCogUY0U7uSjx+Dmyoo6d2YuwSHcWb4yFEvLyO8o+Dx68F9NlJ0I3D16lHiiRt0pAzs0QXAqY5onAtbyppKsO6W8Ta5WZMNxCkiwPPwx8TligCoLeajC1GqtdABTtwo8vFVVT7Imwkd4i1Y/x9jZAlpw4S6ejVfV91vgWFoCEQHVm/hpeHjNha35YXerWJY+PF0Z4ArN2UvG563nVdtnz1zTbgAXkQlJ/nPNObx+QMwZTjBl50KHjToJ0BDcJOTEPWUh1ZdAs75tilyGH5dUnq9Gaf9blusg96znHAfN1aYAzigvX+ftLPkaTHXjSZZ3zON1wNIpSmoWsucWeFAls4401dsjh7O7bSoOCKz8LrJacHXyxBe9Umk4UTNQockTnn9xFvnHJGSKMnQZe/DuzJILok/bWqkS8wfolvgCLpD4aOIg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787038896-53668
+X-HE-Meta: U2FsdGVkX1+Ryj7EO0z1hpD62aKgB33YaBpLoeZeP1Xc1hiqQVooH9wy3R7q6CdyKDoTuETIo8C1QSC57KrAsZnQtLp1tUY3BrTwZJ+Y+r8bBmRPQdr7tE9sxbcMVTnHSQdYiafJnxzz54ugpUBuXKR2QdDucW7WLMo+RXkH5acj5vyNzaoO7kdZB75IJBF34pCVemRavgYIvMKDMXzqmVFogc0Ajpg9io7p+Exh2yeSdsIva1d9huVmkEzPZVnir0G5f8HDb8NXf7ts8lAUmfNvw0RX66IO/mjY/zneiffl2FOkSDXkNhdR11icKklRs+fdJoeT4YaWjM0J+x6S6CnopT7sWgO13G7MYKZ2KB1mCFRl+7IZ7/oSVlOYimRg63TxHQzuf/j5ltKHlWrLsENY1LXrr32DiCl3kEWC6WLVeTMXlHdgbjTovI0ow/9EnYM7zVlKm20ue50DSRYW4KPTnia1lMvt992EblJ1X5KGwbPam5YZg5NkMVmkMiHe3Grw4FMd/0jc9BObOiKeVjEzChiR83cGFJcJroPOtD4mPpRjXk66UKOlwVz8xzS4+h0gzJFNy8IxPwqWmNcJ3rGxHIzNPrfaQWMk2Wi8kQ93pfOSrGRaolkAkyDsFY8HIfJTyDbK5RXWQBTk+cpPbqCqupOEVliPon4ifbtMM9D97PYpBraPRDTScz6HnU93KGPMOKjqDPifIHIMCaJUqfHm5EO1FuD8vkjFl5d9TJ0oWUOfzV5kv2X9TQ+qWnbcHmOIXNNtctYnLAb6a+3kI0aIX669ZWgw+G4ps5Ki+zJp4OV4ahE8ddcuBXJU0pWlyTAAG8dvegJ7uGNSaVBAqlrtUf/t8yLAwGG3FDC7RbKoS2fh7O2pR/lY5caWiF2/SXW+4PIZG7u0dG08XwFcJUN1CxgO2UnIyZ4Fz7guZ7TqgZ8T98xxyYv/7cXhCX8pexdNqc5cCqU0rOBBOl2
+ UrItRJnU
+ 6DYeGomCPW8FDQSxhs3+HGx5f4EiarKkYJ5DL9kasK6cSKJ29jjeFmfCbEHk6WI9svLC8TC+peNRLsSaLkHCcTEmvhtuJQ8m0Z3PB9mI6n+ldZD2w3gtNJe3rxXl70nMHcyUpEJRnYFXdzU/cwnfg+h+dtXv1vF63GNJurT+7CCKoGW4U6W76hHf4uIOmXQNJBMdxGzdCnps3XjiLZjJzPNRN/fGAk21p3ZwL4y1f8p/NvmiZfjDyu5ShIVEHS7S9LSBACOWcyq5sVGMT85olGTlFmDpGojEcc6ynPa5EjZFa5mrXMr/Skcs2XJxzcwaJ+0C4m1oA/5S/MGUDwaTkFyKmX4RDwsvCl7yF0/wHKJOOfYshg6x/KbEeiApSdDfskrm8DuBhI9OXOXjimUSiOqxp4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,300 +156,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 29 May 2026 09:56:34 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+On Tue, Aug 18, 2026 at 3:12=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
+rote:
+>
+> On 08/04/26 at 03:47am, Kairui Song via B4 Relay wrote:
+> ...snip...
+> > +int folio_inc_lru_refs(struct folio *folio, bool is_fault, bool is_exe=
+c)
+> > +{
+> > +     int max_gen, min_gen;
+> > +     int type, refs, gen, new_gen;
+> > +     unsigned long new_flags, old_flags, max_seq;
+> > +     struct lru_gen_folio *lrugen;
+> > +     struct lruvec *lruvec;
+> > +
+> > +     type =3D folio_is_file_lru(folio);
+> > +     lruvec =3D folio_lruvec_live_get(folio);
+> > +     lrugen =3D &lruvec->lrugen;
+> > +
+> > +     old_flags =3D READ_ONCE(*folio_flags(folio, 0));
+> > +     do {
+> > +             new_flags =3D old_flags;
+> > +             gen =3D lru_gen_from_flags(old_flags);
+> > +             refs =3D lru_refs_from_flags(old_flags) + 1;
+> > +             new_gen =3D gen;
+> > +             if (!(old_flags & BIT(PG_lru)) || gen < 0)
+> > +                     goto out;
+> > +
+> > +             max_seq =3D READ_ONCE(lrugen->max_seq);
+> > +             max_gen =3D lru_gen_from_seq(max_seq);
+> > +             min_gen =3D lru_gen_from_seq(READ_ONCE(lrugen->min_seq[ty=
+pe]));
+> > +             if (gen =3D=3D max_gen)
+> > +                     goto out;
+> > +
+>
+> I am a little confused about the new mechanism. In the current mglru, it
+> does have the issue both mm walk and fd read set PG_referenced at the
+> 1st access, this is a obvious drawback. Now with the change, the ref
+> count is clearer, while the mm walk and fd read accessing is still mixed.
+> Imagine the cases below:
+>  - one fd read; then mm walk; directly move to max_gen;
+>  - one mm walk; then several times fd read; promote to next gen;
+>
+> Can I understand the final effect as:
+> 1) explicti ref count;
+> 2) more drastically promote mm walk based on the mixing ref counting;
+>    - compared with the old behaviour: move to next gen when 2nd mm walk
 
-Hi Ravi,
+Hi Baoquan, Thanks a lot for the review!
 
-I've been building on your RFC [1] to add ARM SPE support to DAMON,
-and wanted to share what we've implemented and where things stand.
+The old behavior is move to max_gen on walk access (unless it's the
+first access of a folio), and only protect non-mapped folios with PID
+refaults. Now, the non-mapped folios are also promoted after multiple
+accesses.
 
-Your series provides the vendor- and PMU-agnostic reporting substrate,
-including the per-CPU SPSC ring and kdamond drain:
+The promotion is more proactive but not that drastic; it still
+requires 8 accesses (2^3, which overflows tier 4) to force promote one
+folio.
 
-> This series introduces a vendor and PMU-agnostic substrate inside DAMON
-> that consumes hardware-sampled access reports through the standard
-> perf-event interface.  Userspace selects the PMU through sysfs (raw
-> type/config knobs), driving either Intel PEBS L3-miss sampling or AMD
-> IBS Op sampling.
-> 
-> Why a unified perf-event substrate
-> 
-> Earlier hardware-sampled access-monitoring proposal [1] took an AMD IBS
-> specific module path backend, owning its own probe configuration,
-> sysfs knobs, and lifecycle.
-> 
-> SeongJae Park has previously highlighted the advantage of Akinobu
-> Mita's perf-event proposal [2]: let DAMON register kernel-counter perf
-> events and consume samples from any sampling PMU that perf core knows
-> about.  This series builds on that direction with the changes we
-> needed to run it cross-vendor:
-> 
->   - a per-CPU lockless ring between the NMI sample handler and the
->     kdamond drain,
->   - per-CPU events that follow CPU hotplug cleanly,
->   - events fire only while the monitor is running -- created disabled,
->     armed when kdamond starts, disarmed and drained when it stops,
->   - all-or-nothing init across CPUs: a partial-CPU create failure rolls
->     the whole event back rather than leaving silent gaps,
->   - safe handling of vendor sample-validity flags so a stale or
->     unpopulated address is never mistaken for a valid sample.
-> 
-> What the series adds
-> 
-> Patch 1 introduces the substrate's data types: a per-event
-> configuration struct and a per-context list to hang them on.  A
-> CONFIG_PERF_EVENTS=n build folds to no-op stubs.
-> 
-> Patch 2 exposes those types through sysfs.  Each entry maps to one
-> perf event and lets userspace pick the PMU and how to sample it: the
-> raw PMU type/config, addressing flags, and period or frequency.  The
-> defaults are tuned for Intel PEBS; userspace overrides them for other
-> PMUs.
-> 
-> Patch 3 wires the sysfs apply path so configured events get attached
-> to the running monitoring context.
-> 
-> Patch 4 is the core of the series.  It replaces the mutex-protected
-> report queue with a per-CPU lockless ring fed from NMI by the perf
-> overflow handler and drained once per sample tick by the kdamond.
-> Drained reports are matched to monitored regions by binary search
-> over a per-tick snapshot.  The patch also wires the per-event
-> lifecycle into kdamond: events arm when the monitor starts, disarm
-> and drain when it stops, roll back cleanly when per-CPU init fails on
-> some CPUs, and a second context that asks for the substrate while
-> it is in use is rejected with -EBUSY.
+For anonymous pages, this also provides a more consistent and explicit
+reference count mechanism, and you will see folios distributed fairly
+among tiers now, as repeated page table access will increase the refs
+above LRU_REFS_PROTECTED. Previously, all anon folios were stuck at
+tiers 0, 1, and mostly 3, skipping tier 2 completely.
 
-ARM SPE delivers samples through the AUX trace buffer rather than the
-regular perf overflow callback, so `perf_event_create_kernel_counter()`
-does not provide a way to consume the SPE AUX trace stream directly.
-To close this gap, we developed two pieces:
+Also we reduced the bit usage by 1.
 
-1. A perf AUX kernel-consumer API [2] that allows in-kernel code to
-   consume AUX trace data.
+This new mechanism is supposed to work as a whole, This new mechanism
+is supposed to work as a whole; it is documented and described in the
+chunk of comments in mmzone.h (maybe not the best place but old
+MGLRU's comments are there so I just updated it inplace). I tried to
+split it into smaller parts, which doesn't seem doable.
 
-2. A DAMON ARM SPE AUX backend [3] that feeds the decoded access reports
-   into `damon_report_access()`.  This is a transport layer and does not
-   change DAMON's matching logic; it provides another way for hardware
-   samples to enter the existing reporting pipeline.
+And I think the three folio_inc_lru_refs* helper are also kind of self
+explaining on this.
 
-While bringing up the SPE backend, we kept hitting the same question:
-"why does the PMU report zero accesses?"  The answer could be anywhere in
-the pipeline — event creation, binding, enabling, the PMU itself, the
-ring, or the drain — and without per-stage visibility, the only practical
-way to debug this was to add printk instrumentation throughout the
-pipeline.
+> I can only see one benefit and one significant change. Do I understand
+> it correctly, and is it worth?
 
-So we also developed a lightweight PMU-agnostic observability framework
-[4] that instruments the pipeline with per-CPU monotonic counters and
-tracepoints.  It immediately helped diagnose the initial SPE issue:
-event creation, binding and enabling all passed, while the PMU produced
-no samples.  This pointed to a PMU-level issue rather than a DAMON
-pipeline issue, and confirmed that SPE needed an AUX-based backend.
+I think it's definitely worth it, if you look at the results in the
+cover letter :), especially the zipf access test (1.2, 1.1, 0.9, 0.8
+have similar results, zipf is commonly used standard to simulate
+realworld access patterns) and a few other cases; 90% of the
+performance gain comes from this design. I tweaked the refs &
+promotion rule many times to double check and ensure it fits well for
+different workloads.
 
-We used the framework throughout the AUX backend development to verify
-each stage of the pipeline.  With the completed AUX backend, the same
-framework showed a functional end-to-end pipeline: 27/0/0 selftest
-results, 47,248 callbacks, with all seven stages observed as expected.
+And note that this is not an anon/file reclaim balance tradeoff issue,
+both anon refaults, file refaults, and pgpgins are reduced, meaning
+MGLRU is doing better at protecting both hotter anon and hotter files.
 
-One interesting observation is that the framework's ring counters showed
-32,087 dropped reports.  This is about 68% of the 47,248 callbacks.  The
-current `DAMON_REPORT_RING_SIZE=256` and drain interval were designed
-around much lower sampling rates, while SPE can produce
-samples at a much higher rate.  On the current Kunpeng 920 setup, the SPE
-sample rate can fill the 256-entry ring much faster than the
-current drain interval.
+It's widely complaines that MGLRU was actually performing poor on
+unmapped folio protection, worse than classical LRU in many workloads
+(Not the LRU overhead, MGLRU had lower overhead, but the actual
+ability to protect the hotter cache is not good, provable with the
+zipf test in the cover letter). After this change, its performance is
+obviously better than that of classical LRU.
 
-This looks more like a throughput/rate mismatch than a correctness
-issue with the reporting path.  For high-rate PMUs such as SPE, do you
-think the ring size or drain interval should eventually be tunable?
+Attachment: a typical tier layout of a workload before this change:
+ node     0
+         35       3910      37524           0x
+                     0        238r      15596e          0p          0x
+         0x          0x
+                     1        409r       6429e       6211p          0x
+         0x          0x
+                     2          0r          0e          0p          0x
+         0x          0x
+                     3        895r      39182e       8588p          0x
+         0x          0x
+                                0x          0x          0x          0x
+         36       3244      84684           0
+                     0          0x          0x          0x       2882r
+      6059e          0p
+                     1          0x          0x          0x        448r
+       964e          0p
+                     2          0x          0x          0x        298r
+       439e          0p
+                     3          0x          0x          0x        416r
+       721e          0p
+                                0x          0x          0x          0x
+         37       2858     221580        4269
+                     0          0x          0x          0x          0x
+         0x          0x
+                     1          0x          0x          0x          0x
+         0x          0x
+                     2          0x          0x          0x          0x
+         0x          0x
+                     3          0x          0x          0x          0x
+         0x          0x
+                                0x          0x          0x          0x
+         38       2183      29167         242
+                     0         12R       2499T          0x       2496R
+      4101T          0x
+                     1        322R      29241T          0x         92R
+       156T          0x
+                     2          0R          0T          0x        100R
+       144T          0x
+                     3        150R      75764T          0x        741R
+      1161T          0x
+                         20903930T    5439295Y      48822F      19595A
 
-The observability framework is PMU-agnostic and is posted as a standalone
-series [4], so that other PMU backends can reuse the same instrumentation.
+And after:
+ node     0
+         47       3227     197247           0x
+                     0        967r      35231e          0p          0x
+         0x          0x
+                     1        412r       6871e       1051p          0x
+         0x          0x
+                     2         12r        639e       2319p          0x
+         0x          0x
+                     3          0r          0e         49p          0x
+         0x          0x
+                                0x          0x          0x          0x
+         48       1623      49290           0
+                     0          0x          0x          0x       2065r
+      3586e          0p
+                     1          0x          0x          0x        338r
+       836e          0p
+                     2          0x          0x          0x        352r
+       817e          0p
+                     3          0x          0x          0x        107r
+       139e          0p
+                                0x          0x          0x          0x
+         49       1491      91927        4865
+                     0          0x          0x          0x          0x
+         0x          0x
+                     1          0x          0x          0x          0x
+         0x          0x
+                     2          0x          0x          0x          0x
+         0x          0x
+                     3          0x          0x          0x          0x
+         0x          0x
+                                0x          0x          0x          0x
+         50       1305      10444         674
+                     0         69R       6630T          0x       1082R
+      2586T          0x
+                     1         21R       2509T          0x         55R
+       168T          0x
+                     2         71R       2322T          0x        111R
+       288T          0x
+                     3          0R          6T          0x        114R
+       619T          0x
+                         31126090T    7780753Y      72142F      27409A
 
-The relationship between the pieces is roughly:
-
-Ravi's hardware-sampled reporting infrastructure
-                    |
-          +---------+---------+
-          |                   |
-    perf overflow        ARM SPE AUX
-          |                   |
-          |             AUX kernel consumer
-          |                   |
-          |              SPE AUX backend
-          |                   |
-          +---------+---------+
-                    |
-          damon_report_access()
-                    |
-                report ring
-                    |
-                kdamond drain
-
-The observability framework is orthogonal to these transport paths and
-can observe both of them.
-
-Everything has been tested on Kunpeng 920 (256 CPUs, ARM SPE).  The DAMON
-AUX backend [3] and the observability framework [4] are separate RFC
-series, both based on the infrastructure from [1].
-
-Would appreciate any feedback on the approach, especially on extending
-the reporting infrastructure from perf overflow samples to AUX-based
-PMUs.
-
-Thanks for the foundation — the per-CPU reporting and drain
-infrastructure provided a useful base for the AUX path.
-
-[1] https://lore.kernel.org/linux-mm/20260529165640.820-1-ravis.opensrc@gmail.com/
-[2] https://lore.kernel.org/all/20260814144927.489172-1-kunwu.chan@linux.dev/
-[3] https://lore.kernel.org/all/20260816142222.689624-1-kunwu.chan@linux.dev/
-[4] https://lore.kernel.org/all/20260818061031.827057-1-kunwu.chan@linux.dev/
-
-
-> 
-> Patch 5 is the perf-event backend.  Two stateless overflow handlers
-> (one vaddr-keyed, one paddr-keyed) are picked at event creation time
-> and submit samples into the per-CPU ring.  Vendor-specific sample
-> validity is honored at this layer.
-> 
-> Patch 6 adds a tracepoint at every node_eligible_mem_bp quota-goal
-> evaluation so userspace can watch goal convergence without polling
-> sysfs.
-> 
-> Userspace setup model
-> 
-> Userspace selects the sampling PMU by pointing the perf event's
-> `type` / `config` at it, and chooses the scheme topology that suits
-> the address space the PMU reports on.  No module load or unload step
-> is involved; `echo on > state` arms the substrate, `echo off > state`
-> disarms it.
-> 
-> Two configurations were used for validation.
-> 
-> Configuration A: AMD IBS Op, paddr ops, system-wide PULL+PUSH tiering
-> 
->   IBS Op stamps samples with physical addresses, so DAMON reasons over
->   every backing page in the system regardless of which task or guest
->   touched it -- the substrate becomes a system-wide tiering controller.
-> 
->   Setup (abridged; `D=/sys/kernel/mm/damon/admin/kdamonds/0`):
-> 
->     echo 1     > /sys/kernel/mm/damon/admin/kdamonds/nr_kdamonds
->     echo 1     > $D/contexts/nr_contexts
->     echo paddr > $D/contexts/0/operations
-> 
->     # Two regions, one per NUMA node (DRAM + CXL).  PA ranges
->     # are derived per host from /proc/iomem; omitted here.
->     echo 1 > $D/contexts/0/targets/nr_targets
->     echo 2 > $D/contexts/0/targets/0/regions/nr_regions
->     echo <DRAM_LO> > $D/contexts/0/targets/0/regions/0/start
->     echo <DRAM_HI> > $D/contexts/0/targets/0/regions/0/end
->     echo <CXL_LO>  > $D/contexts/0/targets/0/regions/1/start
->     echo <CXL_HI>  > $D/contexts/0/targets/0/regions/1/end
-> 
->     # IBS Op event, period-based, paddr-stamped:
->     PE=$D/contexts/0/monitoring_attrs/sample/perf_events
->     echo 1 > $PE/nr_perf_events
->     echo $(cat /sys/bus/event_source/devices/ibs_op/type) > $PE/0/type
->     echo 0      > $PE/0/config
->     echo 1      > $PE/0/sample_phys_addr
->     echo 0      > $PE/0/freq
->     echo 262144 > $PE/0/sample_period
->     echo 0      > $PE/0/exclude_kernel
->     echo 0      > $PE/0/exclude_hv
-> 
->     # PULL scheme: migrate_hot toward DRAM, gated on
->     # node_eligible_mem_bp(nid=DRAM) goal target_value=TARGET_BP.
->     # addr filter restricts source to the CXL range.
->     # PUSH scheme: migrate_hot toward CXL, gated on
->     # node_eligible_mem_bp(nid=CXL) target_value=10000-TARGET_BP.
->     # addr filter restricts source to the DRAM range.
->     # Both schemes are migrate_hot; they converge from opposite
->     # directions on the same hot working set.
-> 
->     echo on > $D/state
-> 
->   Userspace tunes the steady-state DRAM:CXL split by writing the goal
->   `target_value`s; DAMON's quota autotuner drives migration intensity
->   to match.
-> 
->   Workload: a QEMU/KVM guest pinned to one NUMA node, running 32
->   multichase multiload threads each touching a 4 GiB working set
->   (~128 GiB aggregate) with the memcpy-libc kernel.  The guest sees
->   a flat single-NUMA layout and has no direct view of the host's
->   tiering topology, yet its hot pages are migrated to DRAM and cold
->   pages pushed to CXL by host-side DAMON acting on IBS-stamped
->   physical addresses -- the application inside the guest benefits
->   from tiering it never had to be aware of.  Validated on AMD Turin
->   (132-CPU EPYC).  The configuration converged to its target ratio
->   in seconds and remained stable for 7+ hours continuously, with no
->   perf core auto-throttle and no measurable drift in the achieved
->   interleave ratio.
-> 
-> Configuration B: Intel PEBS L3-miss, vaddr ops, per-PID weighted-dest
-> 
->   PEBS reports vaddr samples in the context of the running task.
->   DAMON's vaddr ops monitors a specific PID.
-> 
->   Setup (abridged):
-> 
->     echo 1     > /sys/kernel/mm/damon/admin/kdamonds/nr_kdamonds
->     echo 1     > $D/contexts/nr_contexts
->     echo vaddr > $D/contexts/0/operations
-> 
->     echo 1     > $D/contexts/0/targets/nr_targets
->     echo $PID  > $D/contexts/0/targets/0/pid_target
->     echo 0     > $D/contexts/0/targets/0/regions/nr_regions
-> 
->     # PEBS MEM_LOAD_RETIRED.L3_MISS, frequency-based, vaddr-stamped:
->     echo 1      > $PE/nr_perf_events
->     echo 4      > $PE/0/type           # PERF_TYPE_RAW
->     echo 0x20d1 > $PE/0/config         # umask=0x20 event=0xd1
->     echo 0      > $PE/0/sample_phys_addr
->     echo 1      > $PE/0/freq
->     echo 5003   > $PE/0/sample_freq
->     echo 2      > $PE/0/precise_ip
->     echo 1      > $PE/0/wakeup_events
-> 
->     # Single migrate_hot scheme with two weighted destinations
->     # (DRAM + CXL).  Userspace tunes the steady-state interleave by
->     # writing dests/{0,1}/weight.
-> 
->     echo on > $D/state
-> 
->   Workload: 32 multichase multiload threads with a 4 GiB working set
->   each (~128 GiB aggregate) running directly on the host, monitored
->   by DAMON via the multiload PID.  Validated on Intel Granite Rapids
->   (144-CPU).  Convergence is fast and the system is stable.
-> 
-> [1] https://lore.kernel.org/linux-mm/20260516223439.4033-1-ravis.opensrc@gmail.com/
-> [2] https://lore.kernel.org/20260423004211.7037-1-akinobu.mita@gmail.com
-> 
-> Ravi Jonnalagadda (6):
->   mm/damon: add struct damon_perf_event{,_attr} and per-ctx perf_events
->     list
->   mm/damon/sysfs-sample: expose perf_events configuration via sysfs
->   mm/damon/sysfs: install perf_events on apply
->   mm/damon/core: per-CPU SPSC ring drain and damon_perf_event lifecycle
->   mm/damon/vaddr: implement perf-event access check
->   mm/damon: add damos_node_eligible_mem_bp tracepoint
-> 
->  include/linux/damon.h        |  80 +++++
->  include/trace/events/damon.h |  49 +++
->  mm/damon/core.c              | 403 ++++++++++++++++++++----
->  mm/damon/ops-common.h        |  39 +++
->  mm/damon/sysfs-common.h      |   6 +
->  mm/damon/sysfs-sample.c      | 579 +++++++++++++++++++++++++++++++++++
->  mm/damon/sysfs.c             |   3 +
->  mm/damon/vaddr.c             | 267 ++++++++++++++++
->  8 files changed, 1370 insertions(+), 56 deletions(-)
-> 
-> 
-> base-commit: 4c8ad15abf15eb480d3ad85f902001e35465ef18
-> -- 
-> 2.43.0
-> 
-> 
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+For file heavy workloads, the file folios are also now fairly
+distributed amon gens instead of being stuck at tail gen. And it's not
+just looks prettier, the performance is indeed better.
 
