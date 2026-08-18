@@ -4,76 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C05CEC5DF74
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:23:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E55FC5DF7E
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 14:24:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17236B03B9; Tue, 18 Aug 2026 10:23:36 -0400 (EDT)
+	id 74C0D6B0452; Tue, 18 Aug 2026 10:24:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEEAB6B0452; Tue, 18 Aug 2026 10:23:36 -0400 (EDT)
+	id 7232C6B07B4; Tue, 18 Aug 2026 10:24:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C032A6B07B4; Tue, 18 Aug 2026 10:23:36 -0400 (EDT)
+	id 639096B07B5; Tue, 18 Aug 2026 10:24:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 98AA96B03B9
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:23:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40C2A1A02CE
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:23:36 +0000 (UTC)
-X-FDA: 85114608432.09.FF38DA7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 64AEF40009
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:23:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1b6Dg3a;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3985D6B0452
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 10:24:18 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D382840251
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:24:17 +0000 (UTC)
+X-FDA: 85114610154.07.B35EE5D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 290E5C0013
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 14:24:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d1OKS0Z0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787063014;
+	s=arc-20220608; t=1787063056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h880+CPRpSv4AV1jDBV+Jr+Z/juMTH5NojBRxANXwVA=;
-	b=Xd+85mLJAkmEWaV7opXh8ILQK0OZMmpckRK0RwJ0HMNTr3VAiP16fzyuQfR4KjvCY0U2Vl
-	dOT5sUY0TkXdQWE4JS13nHJkXAJ3sdntrdpHBiQ6UYrvy8lePWLXfU+YL77fPnMlyedbeY
-	VZxJeJ6eEM6K4RRjsusz0tBDtRt7Yu4=
+	bh=qdnTLQo/JmtvFPoN/P8a1r2fGcYFe6HoNSfexnuyDrI=;
+	b=xCzpn2wP0TGsraFLBIBtplpfccySt22kkLJ+Urb7moDkzRZN2B1tYvdEdo9hK2ZjQceFFd
+	Rm7FBvmDqumiCNlKNuE3PC8Z4bW2KzhCp8YQBYro+8eSE/JmVhMaHjM0a6ZronrYkbYanr
+	xhBSvgZYDVdbEa1PRdQ2e3xQsWvhGY4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1b6Dg3a;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d1OKS0Z0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787063014;
-	b=yVGzrbSkf17Hw6mGWtM1fyI/M4Sgi4K4DxUIYtm/GqSQJLOD2TGRGDH3tyt9XJVlLkZnK1
-	gx+k5hqENzDw9pgmFJ+r4xcGL+zOdvnHo5eufEF3TAI2ONtBTODR6Xg6HhpomOnci/8jsE
-	1vqWB1HKCOPc26A7lQ5PKvdZEZ46cIw=
+	t=1787063056;
+	b=IdubVM4oZ1blGOXLbl46e0ts3pQa5cj7DYQLhfSvzsWfqx2hDL0XXbwvjFWTIy6qpcMSAy
+	gHc+Mk/NopDsX20quC72tzhH8x60hoFsxgamEr+7cF5UyGYRhwe3Ba2OQIj1hau2Q+XZYK
+	RfBQOieyv1VjXbfmMj5s+ErhfuUYQZQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F1AF43A00;
-	Tue, 18 Aug 2026 14:23:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE1D1F000E9;
-	Tue, 18 Aug 2026 14:23:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B4330600AD;
+	Tue, 18 Aug 2026 14:24:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DFB71F000E9;
+	Tue, 18 Aug 2026 14:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787063013;
-	bh=h880+CPRpSv4AV1jDBV+Jr+Z/juMTH5NojBRxANXwVA=;
+	s=k20260515; t=1787063055;
+	bh=qdnTLQo/JmtvFPoN/P8a1r2fGcYFe6HoNSfexnuyDrI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=j1b6Dg3aZ/8bvBGwgc+wHk+4pe/7FqbVkNBUpIkinH92Sq48jGFvgW0PvZY2EKP4F
-	 VPi2slutiS03hYcTkO4b7VMDL9Cy4029nQqHht5bAltYO35DZbpHQhxaYDfkdGXmyU
-	 d7mp2SrQrrIBQ9zjdrlp858WDIS2AB2TdP8OLDLDYPgpkN060waU+EelgU14pAz94+
-	 EEgTaG60FPSDCzubaikqveSexJSCIBQ/7a6cH1W0+TV/nKQCEokV6McdnNHbo1rqTm
-	 PT2T3D2Py9wQFVCHs4iwPVWc/41mgPfCbIOTSZ38TD/AhtiAHiPRevutGTGeN3HawO
-	 1vGbxP7bvcjXg==
-Message-ID: <3dadebb3-7e2a-459c-a5e8-b375faf89938@kernel.org>
-Date: Tue, 18 Aug 2026 16:23:29 +0200
+	b=d1OKS0Z0U3TyofFGmLpXX6S4zM3Mnt6Xc/k//ojKe8nA06JMjPQ1T2/6wESpnVuaW
+	 kjVFCYi4MmPTP7cLLb8jg0jRy3aeJgLBXppgzdmJUl/mpLtnQUB7YGNBtqiwDai+uv
+	 uU2k1twoWYIl5n4P3K9W7PLm028CNP9RhsH3UQyC3xeGDbH3FhYCG1I8DRL1lefa6F
+	 chn55mS5ZaPkP6tKWoRRsz1BmWwUqdBy9/oj7SuvZN1slt8hoQZ5K2SiW3krd2FNCL
+	 yx0HhfQ0z/WlJV9hjbh9oFvKfGdHbw/lv4an+xlQ8JwFcafcRuf+HJDv/Fcp9qi0eS
+	 pxXA1wlF/Zftw==
+Message-ID: <06664eab-cf05-4666-af37-e1b51f395d32@kernel.org>
+Date: Tue, 18 Aug 2026 16:24:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlb: add cond_resched() to __unmap_hugepage_range()
-To: Leon Hwang <leon.hwang@linux.dev>, linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- Lance Yang <lance.yang@linux.dev>
-References: <20260818135029.93288-1-leon.hwang@linux.dev>
+Subject: Re: [PATCH v6 01/12] mm: rename pmd_to_softleaf_folio() to
+ pmd_softleaf_to_folio()
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
+References: <20260818131202.494754-1-usama.arif@linux.dev>
+ <20260818131202.494754-2-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260818135029.93288-1-leon.hwang@linux.dev>
+In-Reply-To: <20260818131202.494754-2-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fgq5hy7odcuezffwrby6cczywh31p6cf
-X-Rspamd-Queue-Id: 64AEF40009
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787063014-248006
-X-HE-Meta: U2FsdGVkX19Bs/UpLH+CQh8qQiihiAK2RcEt2qW79n4Z+syIbiZU7fTdSfF+AW5KY5yT6K6f1i1a7iqr8VFggTlaEqp6iSx7Ud5ueYHSGMGvSof7f0jPyjJK21Sfpe8KGtVvMxUEB2Dt3rJJjaiFi4a4FfkbHI2TidAsDBqXWicfEQjELR+aLXAoNPHtpfkxB9uadJQI+EKDeaKDr5af1Jew/b0OLT8UJMTMhz+W8XfBPvrv34roWSQmzJM5zezTcjrxiV7HgXpumhzlVOTyNyp4UJzrogB7CucPS47GwJky4jW08o25lpOjX4/KkTjQLhBH7cETMS6NpS8Phn6LupVkBZC8Kt3EwMcFnW4EZBbD/hI+nnDYT6huRuuP3kgD2/OMsBqac8kuF2t5CNtJJu5abY94q2XXfb6ekzzHbYoEvNk6HREr7rgtk16CGJn7zqLw+1U9Aig1Zkl0HFuBKSS97oKbfhRB40Z3hElZtEPi5bFH4LW075H15Dyl6UcyNR3fyTcjJxW7Aub+uxkxwFUBhRC/16CsClMFTQeq269m6umWgEBEXrAySptWtSZbQM/haLarfqnDf9DxcDOOlcWZFYWDMwvc9Ngwa2locMX6snfnKhlHxET2Fr42lkTn4xpzMnjjF4+oHlKpQYS5WO5q5rA21xpDt+BAbrkBcHsQEJ1IoHsLCSTk65fvXfJCm6YDgxb3JUhDR7drgjApukMAm1WKUUQnroxVZhAE+IPoDrB0H0a7x9g9eKf5ANwObceDfuy12q7f1V5TQUza6Fd87AhA0WiXat6P1y3j0DKsClfGXYnYo7NqPlwxFLCVgR7Tz6/TgD+xSzBIMhyzd2vWZgKyp3bwTSyc17+SZKNmNAeMDrACMyE0Aig+LawqUGUKOfXeP04p8xOvUuEYxzKa5OdlhfXtletf1VioKKzx+5n3JzR65ooJelsCtDc6c7k7W5IXf+1RUb/cI1z
- DYohMPZU
- kWEB1n7SeJoRXgOhaA+dCfloi/yldAk+4W8jlDTMQ8QyMzPlf9fyNPbmYs2s96K/Y362Z9S9xgzw+N7IVsRooqFm5h81TsvZntPB/cA4BAVJ8MfHj7LL2wDCAdSp1hqU4iC8tENeQqStNz+ACq/8jgew6yjpr32bZoqDsINjt4ImzPiORjB83W6Q1QNqgqPLz7jdyUxzp9p3bLVLjcIVvaQ6WNUKvh7q5IM0UcENKWjoavKFV+XvkQkWa2jNwlQoTZMlNHCKXs5mqVOQFY029NXfFYcMzpuAzp2ZkYHbV7pwCfNovfdBwe9SeqLV6Kh/grqr91zre7uYIIgEug5sJF/Cbfm6DCK18mJbCFZXoiRq0iUY=
+X-Rspamd-Queue-Id: 290E5C0013
+X-Rspamd-Server: rspam07
+X-Stat-Signature: a4fb5gg51ckmrxib8k7zoj7dmb77ot8t
+X-HE-Tag: 1787063056-350364
+X-HE-Meta: U2FsdGVkX1/g1/a7oUyz1CudAYEBVj29A2/3i4aeht/bWCQx6E5rMAPNVwlwNtOsWCamO7X7WbndD73RDpU6nbt62dWm+EJLbL1SSjyaCnqmxKzKaqZ2HJd/jbP1+JURr1rQwVM/pKtVGY2g67NgDHaxDElwClnWBLhQPxN31poVnA0kGZp9h2gIdvm9WDKAMUaN9bVpcFjGxD1AUSTU68l6KHkKVGqQkRLxpq/OOEEDYSmvNuHJ9AvxcIoTglpAjVr0TJbweXLygrYKWkmDAWC8o50Zlp4cR09naooYeQpC4xTZdw5qnATzwYUpuwzpHCzdj7tu64F6+fzKRYyk76gZc/NpyVwY+NEwV4aVxph14piWA+ylFO0aoihVz//G/LCG5uM3p863s0gw+c3D8pUy47BuRgDZ8NbQ//R74CV8BTPD7ps43Qj4x7pKfkGYzaGdpQplZfUZutS0qUv1d/bPjUths+2s6P8TrZCQAZggysDVZolpzlNSfGnfWznfvrskQ+qilNpemsBJRSXu45d8z+eVyjyUvYWFqVkWYweIPA14YIvmj+tJEutDYq0WLQa9BOa1xbLWV05cV26UZsqoB0E+sn9/beHJpG1Be5oNexCZaibWSfcihi7X+3bmqcT5/SBN44G36OcEQKJI4xL4IXgzGuXbdiljJkQMy9yBa4/XvQ627RAVLzNiUH8JXd/SFjvd5Hf9f+IRxTYcL88u6puoJMAfC6E2xk8Q8TEWtk6JrJuYXy9w9RwBfEg83vo/+R0+VqK8MJAZTSni5y6Dn5uRFmKYhtM+csQCy40jn87lo5Hdda3dW5BiBr62Va5chd7oHItvZU+fLlgyjd9NWMWyrh/GeIgWcMFkv0TgGxtXfTdTTAXfJmUGu9UE9ZiwZU1WjELhOJs2vMvjXvNk1aIh5K6UTCWUSJ5DztlVrASG+S914GBmseNxXyJm1PcQBkmKyZUrBPmpF4K
+ shgYZozn
+ eJkoojdyC+UTZBX3qvrsClHIi7KAYGjNqQhrgww9hHQW20O/f4Yp60jRmsjMBRAe/mfk6U+mxo4Lh1lwX/w4Dml/W3DJnPM2frVPzzCQkiRZCgOOJSjvNwW/LtYwlBDXtOhk+4wUzPDVfkCBbSPa9PuNeL70FZUrUJeJadu5oIHbkzsvtxR5NR6JYs6i9rDOpA6vWUM3tW+Nv/l5tsd5GoyzrSe3Rf1AMooZnHbtSWbnm/4OvxMTf07wzOdY2psGBUbTCr2muZcUkWtbZpql29/RU3Yirk6WPU8w8S6lk4KL7NIYFMGv2/8nGVMuqx3eUmXO9+QjTPBIC6EaKuMYJBrxFp8M0beVglgVoy/fxEKBuR1n+k8nLPfEnMeU5iMznePUAP1aYYBPeEjM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,49 +147,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/26 15:50, Leon Hwang wrote:
-> Packet receive timeouts were traced to sparse HugeTLB unmapping in
-> production. A task unmapping a sparse 2.5 TiB HugeTLB mapping could
-> remain in kernel context for over 40 ms without reaching a scheduling
-> point while walking empty huge PTEs. Although hard IRQs could still be
-> handled, the per-CPU ksoftirqd thread and other runnable tasks could not
-> run during that interval, delaying NET_RX softirq work queued to
-> ksoftirqd.
+On 8/18/26 15:09, Usama Arif wrote:
+> pmd_to_softleaf_folio() converts the softleaf entry encoded by a PMD
+> to a folio. Rename it to pmd_softleaf_to_folio() to make the conversion
+> direction explicit and align it with softleaf_to_folio().
 > 
-> Add cond_resched() at the beginning of the hugepage loop so ksoftirqd
-> and other runnable tasks can run between iterations. Testing with
-> PREEMPT_NONE showed that the maximum interval between scheduling points
-> fell from over 40 ms to below 2.5 ms. Total time spent in
-> __unmap_hugepage_range() remained about 36 ms.
+> No functional change.
 > 
-> Reported-by: Lance Yang <lance.yang@linux.dev>
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> Suggested-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
->  mm/hugetlb.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index dded1768193a..0a91aac2369f 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5233,6 +5233,8 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	last_addr_mask = hugetlb_mask_last_page(h);
->  	address = start;
->  	for (; address < end; address += sz) {
-> +		cond_resched();
-> +
->  		ptep = hugetlb_walk(vma, address, sz);
->  		if (!ptep) {
->  			address |= last_addr_mask;
 
-As Michal just put it:
-
-"PREEMPT_NONE is effectivelly dead and most cond_resched will/should be
-removed. Is there any reason why you are not using full preemption when
-requiring low latencies?"
-
-https://lore.kernel.org/r/aoRnUxUlgf_kRlm8@tiehlicka
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
