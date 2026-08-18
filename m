@@ -4,118 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1058EC5DF67
-	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B4A1C5DF67
+	for <linux-mm@archiver.kernel.org>; Tue, 18 Aug 2026 03:54:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA3536B0140; Mon, 17 Aug 2026 23:46:20 -0400 (EDT)
+	id 9B7896B0145; Mon, 17 Aug 2026 23:54:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B54296B0141; Mon, 17 Aug 2026 23:46:20 -0400 (EDT)
+	id 98F4F6B0146; Mon, 17 Aug 2026 23:54:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1DE46B0142; Mon, 17 Aug 2026 23:46:20 -0400 (EDT)
+	id 87EBD6B0147; Mon, 17 Aug 2026 23:54:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 70EA96B0140
-	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:46:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5F7AC0975
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:46:19 +0000 (UTC)
-X-FDA: 85113002478.17.F0B40E8
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0B74040005
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:46:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=g-ucla-edu.20251104.gappssmtp.com header.s=20251104 header.b=YREg2AK6;
-	dmarc=pass (policy=none) header.from=ucla.edu;
-	spf=pass (imf27.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 209.85.214.176 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EE996B0145
+	for <linux-mm@kvack.org>; Mon, 17 Aug 2026 23:54:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 58FC3409D6
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:54:28 +0000 (UTC)
+X-FDA: 85113023016.22.B65DD43
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C755420006
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 03:54:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=eIPkgRsq;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787024778;
+	s=arc-20220608; t=1787025266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fDkagHVNS2LJhNT8XESQiKeoHr8QVrsAQC8Ivqfl/sw=;
-	b=eoXf5qHeyCDsGtHHS1bwrWmluHSHexUPxIvesvi2WhRvRjbT3OUI189Rrjiz/mdF1gEMu+
-	8obznEneMLlhxzls6YB5j5xYBldIWzr+UIKv4KKiR3Gn+2VComycWcPTrEk0YkreI5nySR
-	K30UNNY6/mBP5g8Iz3Wsf5hCQCsISqY=
+	bh=VoCWHLN0b2TBHZx2AKnPa0V1F1II07CEG4GPygei01o=;
+	b=1tamVdGIVi5i2nAtljhk6QL4G43hmFM3Fkpxpzz3fgFdIPF9u5bFYaPLtXsyT+CoRBRt4U
+	I8NLe6c8zlSSebjo816vd/0YJoG8RcWN1TQN3NprUkqQdEqYhwNPoRQq2S/jJIsJPPkfQA
+	pz/fahVwRiQNo2dmjVDVw4Oq/H3wqx8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=g-ucla-edu.20251104.gappssmtp.com header.s=20251104 header.b=YREg2AK6;
-	dmarc=pass (policy=none) header.from=ucla.edu;
-	spf=pass (imf27.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 209.85.214.176 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=eIPkgRsq;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787024778;
-	b=Wofw48H1ZtbRUsEdHUAn9MV7zURwqQzLtfpDNGlVKj5H1A3JhMwfzh1nXeVgzwuuf1gpRi
-	6IcOhC9eVZjMCRYkBrHcDFi9YPPmBJ9K9pHTdAfbOK1eMIJu2L/jpY+Jfib1/zaIPfDurd
-	fcbxJlXcm5kqZYQaYHTkrs30ha4IMT4=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d01663d816so37161015ad.1
-        for <linux-mm@kvack.org>; Mon, 17 Aug 2026 20:46:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=g-ucla-edu.20251104.gappssmtp.com; s=20251104; t=1787024777; x=1787629577; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fDkagHVNS2LJhNT8XESQiKeoHr8QVrsAQC8Ivqfl/sw=;
-        b=YREg2AK6RebCEfxC/TVhl68s2uih44JpxKY9FjNfBLl1y8w3RHNemDxafM4uhp1Lzt
-         6VUf6L/DWGdWddBnLklBEeeCwrdpSLHNbL20v2Rqgnyf5QOBqIZtNyQKvsukOQnnwGKx
-         sBcswN/Nf+JnVcrPqnu9yt6EqYTHBcuQd1mRiHpH4Bs6O0HZxGIH/yqjvJDb9j6e31Vr
-         nNjKrHc44V0y+fp2PJbNpiGJ5y4WbZ1SzBxuX2sbZnYUuA1PKXyjrQbY7STC9UQuuEGi
-         rm5SUHPwT+6kya3USTrcef390jwCUnOfUYVO6yWyCk/7JOCj+1l0bWLEzUKr2c/tbC8z
-         yvzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787024777; x=1787629577;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fDkagHVNS2LJhNT8XESQiKeoHr8QVrsAQC8Ivqfl/sw=;
-        b=OWGdjdbw05Ha5Y4zG5RpZI77VXA9ei9smkhPH2yi4haXG7YNrqMAD1t4+J+Gmx7DzR
-         1i0z95HmWP5gTSRoQJheUNvjpBaSA8rELuNObKB9mnBSsTCfTVQ3mvjNtdaOTDMfXpA8
-         ab6WX3VitpTAs+5yyRdlMlIeN12LCbuMXDmdZvtrVYlGSYs5RyB0mX1mEmVrICwp3JJv
-         +dKTgrA8hfcfHXMK29tN0L7FSW6y5Z/fQ7w8ORn/njverYpH0Olyk9CWNL2cybng/cKY
-         fiyIw336z8z9QM4nO9lJK9gTWPe7CBQyP9ee1DDVsRXPWf1Akb/a/wqo4u6Q2EkwiQsq
-         cM1A==
-X-Forwarded-Encrypted: i=1; AHgh+RoCUaIkqkqioLyWI7xvLZJB05cW3kv8pZifidbNSZX6EPLEPxjV9HWy6vXDNXwyh4WishURyUDrlA==@kvack.org
-X-Gm-Message-State: AOJu0YzBZquetMz3upkHkBLYvvoihzsVdqsn4NA+dboXjlQsGYvKCLNb
-	Ep3sIcncMniyt9ZDVmJPcm9EQObYRvyh6LWMNK5XovCX3BRyU8+ESoRd/dIJrZ9f7Sg=
-X-Gm-Gg: AR+sD12hffNn5ZFcGfd+QRjcRWehPntAjbQvXEfVKxX/DWqYAccr/YwRR5HjJ+sTUTz
-	zPtnteZub0iV++so1CIimvUgO3CzgHyxK2rfhBPJ35eeRvSiZpPmLkG5Y5rtR7syfrQDlYFFdwy
-	1RMx1QKPASOasZ+RpXPQMJAPM/c+BkFXE6/d0hewVApprV7OXFL7DdE/ZL7PCk4b6LoGWnxMFJ6
-	Ept3wpcwaTEgHpM3gFSeoBtxui5AbRbPsQlEw+pYXrReeru13f9UHXrtPypdPKPXtn06bySmkGE
-	N7JLt2ljkkuDW2+gSoi1Q5oiwKZzlSlSR7NdEILgNXN0wrPX+sBbgy3wEvdDMU9dm7okGRWbjre
-	VxYD8D8yXuwMSAnbvlf6WEb7CKOGmm643l1pYo8erP3IinQnSrU/R02P4dSIKY4bfYMz/5YeSGM
-	glzLe4CfU5iWCebp0wpWNi6mcge/VuzyTmvqH2D/FGkzN0OC1xCCGNWc2xszx6pkFWlaw/NKu9O
-	jt0dqH1wpuBbbJV
-X-Received: by 2002:a17:903:37c4:b0:2d2:da8e:9017 with SMTP id d9443c01a7336-2d3b0c5437dmr334519695ad.8.1787024776791;
-        Mon, 17 Aug 2026 20:46:16 -0700 (PDT)
-Received: from damon-kunit-dev.tailb106f5.ts.net ([73.93.135.51])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3267be8e35bsm11453293eec.14.2026.08.17.20.46.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 20:46:16 -0700 (PDT)
-From: Jason Angelov <jasonangelov@ucla.edu>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: shu17az@gmail.com,
-	jiayuan.chen@shopee.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Jason Angelov <jasonangelov@ucla.edu>
-Subject: [PATCH 2/2] mm/damon/core-kunit: test damon_valid_probe_params()
-Date: Tue, 18 Aug 2026 03:45:52 +0000
-Message-ID: <20260818034552.11975-3-jasonangelov@ucla.edu>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260818034552.11975-1-jasonangelov@ucla.edu>
-References: <20260818034552.11975-1-jasonangelov@ucla.edu>
+	t=1787025266;
+	b=crK86bUda2mJf+ktbd5EiP8g71IAAo3fKtWhakuXli5bAKRQ3h8dKENtb6ehed+oTTxjxB
+	WdgpINS0lg5fJcA1rBD5/ANjJkIfgIVfLXWcQLZWWnxW8MQn3xaycW+TgYlyK71wwBK/Jo
+	sBSQzHrNuqS8oBye6LlS3AWTT9a8/r0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787025262; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=VoCWHLN0b2TBHZx2AKnPa0V1F1II07CEG4GPygei01o=;
+	b=eIPkgRsq47HtKi+cHjNG81pxUOqxIG1OVNHkJDCqAxv0Us0E9VXum0M1rt/WFEq3/bqw3Ri+4CDXcy/KU9b7CnUO9dxKDlRwhuq9/U02fEEcb8yp22fYIcj5nER4jn5pD/eXqYDjuUuwieQw7jbmaRGatnOG95ErK5SayK1rsIE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X9BvG2d_1787025258;
+Received: from 30.74.144.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9BvG2d_1787025258 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 18 Aug 2026 11:54:19 +0800
+Message-ID: <5e409803-f69e-4f09-bb15-9c2a7e85ac92@linux.alibaba.com>
+Date: Tue, 18 Aug 2026 11:54:18 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m73t6jxfiord54x7exhzgrsa4i6rpw6k
-X-Rspamd-Queue-Id: 0B74040005
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/4] mm: shmem: make unused huge shrinker memcg aware
+To: Qi Zheng <qi.zheng@linux.dev>, hughd@google.com, usama.arif@linux.dev,
+ brauner@kernel.org, akpm@linux-foundation.org, david@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1786955972.git.zhengqi.arch@bytedance.com>
+ <94cc7fe1fd645254ae90effc1c0687678438d940.1786955972.git.zhengqi.arch@bytedance.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <94cc7fe1fd645254ae90effc1c0687678438d940.1786955972.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787024777-435453
-X-HE-Meta: U2FsdGVkX1/HIt7U5mFOtUwh8HykF+7BAtKg8Y4NxQCwQZZ+jl9c4aMDhaH+BWqfu2lix9tQ/ZUHG4i/J7V+uXtSV0AligRhwxm8HZ1WeqVQkiOXrgSIqsBQaQ5ND31KVNpTCS6DlBk6z35bvy0U7JLrey1XKtVzOQY84RqMaTXz+/JxtHQchVQOLbzKYL1mh/vw/J4UcV2CwhY1Qq9CBNFyNjkv/l2W0Re+ICJUpM9H5ScViWZk7WeE5KQnCR26YtdyW7sGwrmdc2F0js2/brcF30ZTikwf2AMUlJH+iplbLNEw/tHqTLWSpRt1oK0qvTymHGnkk4/MlGRKGDjpSia0lvU18ZkuNwXc+Foq54/1AHesl2ERxWpdVlBwVT1wnLDRR63uZcW2SDCrygz53VUobXZG1Bz50fF/XriHEwYVOa9Hrb/BbWg0+kw/XWfNZZza+3+pHXf1iROFN+fKCYrU9W5DlIxybYeKBjdgaAbK87onwQ4FhQ68EHTtt9SooIHbmJ7daUuPaz9gNh36VwCVbf63dtNTn46Lle1d0zjQlWordCMQ4FjZZyoxU/qeYo83yk1M+d5h0jB7+M1F9eTME4qBihCnzonp6LP3vfnfwBdo08nenfZCdAvhhfKr6dgp7OjSuihxjXyznqiEDB1oeN6QW4+iSVeSaff0O4lsmun1fld2AjKD9k/ulCDnwKrXi36LGEpagFGZAuDl1mrG+5CYxZFEi+HPugot2H435UfLowEStOTE4fnuRFU3MiUG9q5Q67WeTNy/KjY5W80L5GoWYck5PYjw7tcL3rjXqojKclWSZNsjzZqP1fBvDqdefndgUNw8WYKjJ5j+lYEGlTYJGHtoF4Nur6iZgdlQWfM1zN601Nm2hwufHP5gX3o/K9ekRxtxO7rDQ9B+3SlPVDg5wxSqU/BZ0baosyVM38ApibWCR5oiHWx+YGI1oKn47aUO0iH8EEqg4Cn
- 9SejbWDZ
- NfOEArSzZIyymNiZS3v6813IqOmfzJ8s2maCppyBguSEqfIk/SHrrflqaJM8PkS/gB+et8Zv7RjKnNz2n573DguWXFxAborMuRTBWWhzWNbV/nGwV0ek5pseGHqNsP1raWcEuEVax4Hrs3V1XAEcKEGI6f9uWaA72xMBsO7Bjjn/TGDCPZoDFKK3IOcdm34ftg/eKNx3/GBP5lgURe3mpepxsr/vBNgrNRyqfkWlxMbKlFyop7+8JGPVRFaaMopUf/dSEDaN80P3WoybqJtnucox/fn35Wj5/Z6aVU7E1e2WijTiWwFA+HjmlIfyvncYTUFVRPlsGUtJDkkFi+WSo60INt25ABR01vhJQWSqctT1HldGr61p/XjMKHnnQm8o3KwHyYrzOx6d2wH59h3E3JQ18qoLD3I0cA5afCqxgwoQxsy1HPkT+/iAi1qcs3CliShA2D8AKEI4ymcnJ8YUR51Agmp9MWYPL0oFS41MxugQd4q2AF8NbIGTqtzs/saH4c8z6xF0o/lXFkCFsHggxsP+IfGwWgSv0KaUP0r7QZ7pTNThPXHlyDZq78OZiCbp/98QYRNl6b+MCxwU=
+X-Stat-Signature: ntfxre5k5jrpnsqhzwfugdxoesnxubkm
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C755420006
+X-HE-Tag: 1787025264-333561
+X-HE-Meta: U2FsdGVkX1+45pDk1Fn9rSLqbnSdOxVOEYOg5lMABvWliKVOJLa4btN/EhcLSkMikAKfPjsE0UCnYdcdTW7MKv1+EHsRUm+nzNWxcN1hgoGqzXOKWQiwFL9uygNN1neH8zKE2xij6XbazjTn/1eiY61YGPtUjcHOAG4Xu0FDu5s2B6MHAi246FSBOgD7vw8U7ayhqBs5Uv91B4gtpprMsW6i6PQ06an660eQMebYsiaqm8Jg+Ex2jtJPe9YbSDL4N0wDXFf1GRzFflWzSIi6nrB4ipE8de3gR9bdRzacKvEo1b4PT6diaGyfvmMigt9sJdwUh6VL8OHKgp3S5ZWk56QmAD9Fey0gn3yDzquhomB14lNqDhfiW5gGPvseY/eBCGyyPcND2KsGvLuIQsGDuxArbtU/ruCe7AGCyr2UqyB6QHy0O0qeQaOE7oub57+f4ushINTu8FH6C8I2LtJdpB1ll0gQ8KOZjQ/1ce0oV8s2Ii6SSalBRaXbTdeUyk5IrF32gYDGRkCROWsX0Sa8GrvsNsalfQXdJf2jb/UyJA9APyhilZfXg6vB+9zF7soNb2LNar5ISjCp+eArJFJIDcjXYN3ZMcDqVsHHYeJL1Ipsu2yDLRuqkHoka15u+Es7+d00QI1BLDjGdRvODj3Uze3rpMQjRR2ZRLvmBvV9cx5RHsPTdyusmFnSj4hE2sFva73s5SSHPPJmf9/bb/PoORB9o/TNQcOULAzPrvH9p+9gHX124q0hicycKT6yurZcWL5/QKlzKxSyFC6BZ5JkjeIQBjk5IFyxQFTVOKyzjDZzPMuBOeQbdT1DfzucA2GGlOBBlfD8KQcS6SGEHCCUsf3oKLFcKH1E3JTCvTK5FwDrBej276Jla+1TFcV8bM+gTpp1b4TLg5PVkHS9BsEVWazaAoq89K72bx/D4Rzjq1K5YQvIr0U8yxl/etka9bwfYs1mltY+lVtLqZUi//U
+ AmZl96KZ
+ YOU/2MZ7RzHoyiJDXhwtXNTq/noI1Ymu9uFENLQaYrvxeWQaAC2PL8iZyipcs1buI77ozJTDSgxXBAfemjIJpfWk1sWbwaQpo+GEgw58knGZdsUqQ9598hxutibxR14FhIRaq+qdXACbP7NmClxNbHGVwyKuXVyGFLF5g871/bjoWfzHkCPzihWQoI16cJwAdpQ7ad19gBC50fHRgg51/5OL4cpkCQ4uhztfSCeA1wOaWAFGkjYPooSb5hCHj8NCYU5F3Id7LQU7Pt/SL/W6sHh8+ZyYjT01B6rO517OlD53uBjr8sfUMxRmT0K/rFgsVzQN3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,100 +88,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_valid_probe_params() makes damon_commit_ctx() reject probe
-configurations that could overflow a probe_hits counter, a single
-(weight * probe_hits) product, or the sum of those products.
 
-Add a kunit test covering each rejection at its boundary:
 
-- samples per aggregation interval: U8_MAX is allowed, one more could
-  overflow a probe_hits counter
-- single weight: the largest whose product fits in unsigned int is
-  allowed, one larger is rejected
-- multiple probes: each product fits, but their sum overflows
-- no weight set: the validation is skipped
+On 8/17/26 5:03 PM, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> The shmem unused huge shrinker keeps a per-superblock list of inodes whose
+> tail huge folio extends beyond i_size. Since that list is not memcg aware,
+> reclaim triggered by one memcg can scan inodes from the whole superblock
+> and split shmem huge folios charged to unrelated memcgs.
+> 
+> Convert the shrink list to a memcg-aware list_lru. Queue each inode on the
+> list_lru sublist matching the memcg and node of the current tail huge
+> folio, so non-root memcg reclaim only walks candidates charged to the
+> reclaiming memcg. Global reclaim, root memcg reclaim and shmem quota
+> reclaim keep global semantics.
+> 
+> Rather than pinning a struct mem_cgroup reference in shmem_inode_info,
+> store a struct obj_cgroup reference instead.  The list_lru add and delete
+> paths resolve the current memcg from the objcg under RCU, so that memcg
+> offline and list_lru entry migration remain consistent: list_lru migrates
+> entries to the parent memcg sublist on offline, and obj_cgroup_memcg()
+> follows the same reparenting, ensuring the correct sublist is always found
+> at delete time.  This avoids pinning a dying memcg through a long-lived
+> CSS reference.
+> 
+> The list_lru still tracks inodes while the actual split target is the
+> current tail huge folio, so validate the folio memcg/node during scan. If
+> the folio no longer matches the reclaim context or splitting cannot
+> proceed, requeue the inode according to the current tail folio; if the
+> inode is no longer shrinkable, drop the scan entry.
+> 
+> This can be tested with the shrinker debugfs interface by allocating 32
+> tmpfs tail THPs in each of two memcgs, then scanning the sb-tmpfs shrinker
+> with memcg A's cgroup id:
+> 
+>                 before A scan    after A scan
+>    base         A=64M, B=64M     A=64M, B=64M (per-memcg count is skipped)
+>    patched      A=64M, B=64M     A=0,   B=64M
+> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
 
-Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
----
- mm/damon/tests/core-kunit.h | 57 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
-
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 2db94d49c9ba..b1ca4c8e03f0 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1338,6 +1338,62 @@ static void damon_test_commit_ctx(struct kunit *test)
- 	damon_destroy_ctx(dst);
- }
- 
-+static void damon_test_valid_probe_params(struct kunit *test)
-+{
-+	struct damon_ctx *ctx;
-+	struct damon_probe *probe, *probe2;
-+
-+	ctx = damon_new_ctx();
-+	if (!ctx)
-+		kunit_skip(test, "ctx alloc fail");
-+	probe = damon_new_probe();
-+	if (!probe) {
-+		damon_destroy_ctx(ctx);
-+		kunit_skip(test, "probe alloc fail");
-+	}
-+	damon_add_probe(ctx, probe);
-+
-+	/* Parameters are validated only if any probe weight is set. */
-+	ctx->attrs.sample_interval = 1;
-+	ctx->attrs.aggr_interval = 1000000;
-+	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
-+
-+	/* Up to U8_MAX samples per aggregation interval are allowed. */
-+	probe->weight = 100;
-+	ctx->attrs.aggr_interval = 255;
-+	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
-+
-+	/* More samples could overflow the probe_hits counters. */
-+	ctx->attrs.aggr_interval = 256;
-+	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
-+
-+	/* The largest weight whose weighted hit count fits in unsigned int. */
-+	ctx->attrs.aggr_interval = 255;
-+	probe->weight = UINT_MAX / 255;
-+	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
-+
-+	/* Any larger weight could overflow its weighted hit count. */
-+	probe->weight = UINT_MAX / 255 + 1;
-+	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
-+
-+	/* With one sample per aggregation, even the largest weight fits. */
-+	ctx->attrs.aggr_interval = 1;
-+	probe->weight = UINT_MAX;
-+	KUNIT_EXPECT_TRUE(test, damon_valid_probe_params(ctx));
-+
-+	/* The sum of all probes' weighted hit counts could also overflow. */
-+	probe2 = damon_new_probe();
-+	if (!probe2) {
-+		damon_destroy_ctx(ctx);
-+		kunit_skip(test, "probe2 alloc fail");
-+	}
-+	probe2->weight = 1;
-+	damon_add_probe(ctx, probe2);
-+	KUNIT_EXPECT_FALSE(test, damon_valid_probe_params(ctx));
-+
-+	damon_destroy_ctx(ctx);
-+}
-+
- static void damos_test_filter_out(struct kunit *test)
- {
- 	struct damon_target *t;
-@@ -1664,6 +1720,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damos_test_commit_migrate_hot),
- 	KUNIT_CASE(damon_test_commit_target_regions),
- 	KUNIT_CASE(damon_test_commit_ctx),
-+	KUNIT_CASE(damon_test_valid_probe_params),
- 	KUNIT_CASE(damos_test_filter_out),
- 	KUNIT_CASE(damon_test_feed_loop_next_input),
- 	KUNIT_CASE(damon_test_set_filters_default_reject),
--- 
-2.43.0
-
+Nothing else jumped out at me. Thanks.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
