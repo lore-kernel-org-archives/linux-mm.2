@@ -4,80 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFBDEC5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64B7CC5DF96
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:58:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A18626B0092; Wed, 19 Aug 2026 11:53:55 -0400 (EDT)
+	id 739F86B0093; Wed, 19 Aug 2026 11:58:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C9886B0093; Wed, 19 Aug 2026 11:53:55 -0400 (EDT)
+	id 6EB8F6B0095; Wed, 19 Aug 2026 11:58:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B7AC6B009D; Wed, 19 Aug 2026 11:53:55 -0400 (EDT)
+	id 5B2866B0098; Wed, 19 Aug 2026 11:58:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 65F106B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:53:55 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 326A46B0093
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:58:03 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C562EC0439
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:53:54 +0000 (UTC)
-X-FDA: 85118464788.16.D1BD527
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB0C3C02CC
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:58:02 +0000 (UTC)
+X-FDA: 85118475204.16.C8DA3CE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F19D120008
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:53:52 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oGEaAZsL;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id CDA81140005
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:58:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C0fgsA+2;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787155080;
+	b=VX6X4147CAYcPUbkHDlw4hZ/BLfPzTb82oBykv6Tb0TTLv8a9P+lQaGbmtUE6EctPhm9E3
+	m/tGkoYkp+/sHEgRAzHZjkbBABR4rAUniPd2XFkD72JehvKqg+5jBAntjQwsl4JgdEv9q/
+	8U/XV0Tg2IwNO+wRwILeQm3FESSZHLs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C0fgsA+2;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787154833;
+	s=arc-20220608; t=1787155080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QLHvEXhl7bh0vVvB52S7db8GJd87oXRQT+N5wVcQ1Ws=;
-	b=D6Jifsq3GyhZvQ50xutvev/910VJx1nufURfWfEp1G68SSKSGmT00XTBK8DNuRI/iDypyz
-	FzAR5+QHK7k587+9u5a7KTzuRgKp8IyJfwhLFFo6H0y4l2P+V+fsnMJcD9mKyKRharQd+f
-	qQ11UFdq2RBy+Zkhp8qOExttM2/t588=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oGEaAZsL;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787154833;
-	b=rhN54ZcwlzeeGXlR/J5lqGmvKGkhoqTWmw54I+4jYJG0rct3esD7rlYH4MiZ8zqXG+fWdM
-	WNM/nfv2GqSv9yK6E6ZFOYnaRbSf4A+OPoNia2Wd+fWZdiMjVHDa2Nff6j0deHGhQHbhyK
-	xX66JgDn3cyhshaaoP6ji56YKhH8fyY=
+	bh=pgQJx1AdlduwHjKt1bqT1KprZQI76dNWF4lNFIEKvWk=;
+	b=qHB4e4S7IlDyy9XRNeegFm4h9i/8vv4ADTo9B7oAKzGO4NFE+nE5os0DzGUvthWGZeDxLs
+	AV20LHFaahIifehbXGbzlb0vzHgCtXb0unHtyYZ0gaeBdUBRKM4BQFk1mJDamaP0rhEjYb
+	et7ujt3yMmTNYTcIHWXZs98aKOJHHoY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13D20416BB;
-	Wed, 19 Aug 2026 15:53:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5631F000E9;
-	Wed, 19 Aug 2026 15:53:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F3741413C7;
+	Wed, 19 Aug 2026 15:57:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EA01F00A3D;
+	Wed, 19 Aug 2026 15:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787154832;
-	bh=QLHvEXhl7bh0vVvB52S7db8GJd87oXRQT+N5wVcQ1Ws=;
+	s=k20260515; t=1787155079;
+	bh=pgQJx1AdlduwHjKt1bqT1KprZQI76dNWF4lNFIEKvWk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oGEaAZsLUiOpJaCVmkYmiTswK1xknZbj0vjIV5zZsc7E6d0UpT2EhwqajNnX9CTDx
-	 clsyRk+c5aszdB0sdGkj2MwkAj47YUPGM2xS98Vc2RAPPam+Z0GAwg/DrstZ0Kz7yX
-	 yrh41chB/jZcKZpz84nhP+H7xMDPQRAhLbToA8Ga2Gr4PRpEyfHK5W44tYLki3Ey1x
-	 AnUEUKUknX2PrTQY+fLdA1c2mnIoqTj7XuT+pRCIUNfEm2wNLJmHyO7zkxg5mF6EsG
-	 Ylkuolzme/9nR60/L4lDSzBc5S0FhBY514UPxGCxCBWMShNXgd1MTeuK6r4dWyI3MH
-	 nKuXqk3wSrTDA==
-Message-ID: <ac77571f-4a10-4511-83e0-c6372d5b4a09@kernel.org>
-Date: Wed, 19 Aug 2026 17:53:45 +0200
+	b=C0fgsA+2ztb2d9rph6EjHyxIYz1Iz0QdEDMFkrqatm+trbZdkCl61C1tA0EGPVX9M
+	 vcSQ5TVgr19KbZMVffQLAXugJVTWq4L33vBRDuLZJB9uas/Nadhwr0OjE3Y8T4JdZ4
+	 m/7ThuYfPZHhl2r4gin88rouDtF158cCt1yFM0c05cgryYi6RYwa5WH1bhvfzbEKVp
+	 DPwtlzdc8zLWf91dftIY+6n170P1SVIpJfoTkMEtp579rJSMGnmoRrNK0yQdCign+G
+	 vKnto5ZVO05M29TCjkrn0mFdEPUGvKDPIXudi1kdB4+8sNq29qRFOP/PmW1hDmzr7P
+	 7aIU1KJcGZPMg==
+Message-ID: <0a6186b2-0e0c-4d6b-a3e1-c5e5cb75d669@kernel.org>
+Date: Wed, 19 Aug 2026 17:57:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] mm/memory_hotplug: optimize zone contiguous check
+Subject: Re: [PATCH v6 1/2] mm/memory_hotplug: optimize zone contiguous check
  when changing pfn range
-To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
- Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
-References: <20260818085702.3395529-1-yuan1.liu@intel.com>
- <20260818085702.3395529-3-yuan1.liu@intel.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: "Liu, Yuan1" <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "Zou, Nanhai" <nanhai.zou@intel.com>, "Deng, Pan" <pan.deng@intel.com>,
+ "Li, Tianyou" <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ "Zeng, Jason" <jason.zeng@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260723084946.189392-1-yuan1.liu@intel.com>
+ <20260723084946.189392-2-yuan1.liu@intel.com>
+ <a15107de-ab16-433a-a504-72c3e8dbf2a6@kernel.org>
+ <PH7PR11MB6932A554A6D18A4F1A29E90DA3D22@PH7PR11MB6932.namprd11.prod.outlook.com>
+ <2cbd42e1-b5bb-474c-b0e7-ce3f46541891@kernel.org>
+ <MW4PR11MB6936594CC6B15968AAB781DCA3D22@MW4PR11MB6936.namprd11.prod.outlook.com>
+ <0b02ef3e-363f-4b49-a208-54cdfea56c75@kernel.org>
+ <MW4PR11MB69363CCE15647FD7D85542B6A3D12@MW4PR11MB6936.namprd11.prod.outlook.com>
+ <f0593f56-870e-4e79-8552-1760fad255bc@kernel.org>
+ <01795519-54e8-4ed8-a94e-2b77780abc3a@kernel.org>
+ <20260815015532.ei4abygk4erdtlhh@master>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260818085702.3395529-3-yuan1.liu@intel.com>
+In-Reply-To: <20260815015532.ei4abygk4erdtlhh@master>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F19D120008
-X-Stat-Signature: mdgfjikiikwd44yfe4czkecnhgo5h7he
+X-Rspamd-Queue-Id: CDA81140005
 X-Rspam-User: 
-X-HE-Tag: 1787154832-532542
-X-HE-Meta: U2FsdGVkX19VzZ/qCHZVMEuJmFmxz0I9SDjRjoa8AxH27DvWw2VvC++dTMD9M7B74bYLVZvdX2cJbnPJN/QyxhVwzSv4YAyGEdh97FomFYLe/Tw9UP3LLZIl9KyDip1UhNsXcf2rEUyaqCJhqb3lJdOvqv32G5uoi8+POXwoKv59W97Hb7X3XcF/pr7lQmL5y1k7MUjyk140uLC0BI90cDic3ko+hSurgFhLb9LMk+HFF4ZupgqeeDkGrS2xkhW9u3Rta6s1MXs5XWQBsJ/+MRzO42HBHjZSomGv0XCL+NDTxPk5ltbKxN0y8xD29wCbMe1MgLCBeS+kwiC7+XS6xck9C57ULCPc3t5yD/bM1MEb1GnMfdhme2mtn3l5hixzVwo/PF+GtaXTgksHs1+ycxPSx036qQiNl6LMZyx2rVrgjz70WHQE+UuJTYOkARkw7zwRXCQKR9HaPpXHyHXjtREvuuL7AS51HYLXbZK9K1MibYvERdJvMRcvavaj4JHl0XAaRhPJ6NThUtZVaZs5PrEBCgI/UapQDxbeJVujxwnuHqwcPepwWaKjtPYFJ/CCtHTW/hiDHCZDN9d9buKrWH1iw95EtmdWGXyE6ujCpewo8cqxqpH5HJ5AdAfGUDoIZHX4TW+DzGytPQTwfxRSZDFxEpHzrIbmPVJtWqdulVF0mNwzQ/efCgDqdsD1arFe/xxjkS/ZVC47x/2TWYAEYsfAKdjvKsaeGfHJaXNma4YQSsjl2v3jXxzj6eRSKpnOnWlN9X6hpitSeTsAt6tMCITsEJNfQB7Rh6dGxOEJ5YHSLV0EVGmAJIu9ciuaoERKpGi4EQJ23p5UJ1qGtobgysAlVo7sHRr5N6G/BNUOGj/P6RPfto38rAUHF3Nvkz8ZABaP5qshn+77rFUpZGXRZRAxJkIlucDipdhBuWFa45WDQLyp6DcG2rFmOMpjw7GChn+xiu3MnhMw8pRhWy2
- gyZkvViK
- JM0sZK2advy//absj332XV3yV/uAzYJJov1TShGQrrAYYoqC+1Ow950j9Dcm079xQWOO+6ZhTQV3K40YrFR805DCdoGuX/jBS3wCPqb+xlxiGObMwniyZhuiLDfT76s8DP+HAVLgN88qeZB3Ecdo0U66hHk9vQC2tm1LsRjnmOS758YEEpST51P9YqFArxCBSJznT5RoQSqbL4Efao1QGqZblSzBNWxCwJEl7KPeOBX5rib9+ydtnAeMG9E2YcnNBpsYCgvEsfBEcwnSO3A1/WTauh+drcHV/DzlW8gZUlwFTtoPZeNq1YlpTFucL/bv1H9yuODhMrEOKiIDCsWHhLYroxr9lJ1EniHvWA43OF14OwGYFXtnt4KO2qLApTe17LWsL
+X-Stat-Signature: 6d99yz3wk9b8aha1zs4chomw3ahicpzr
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787155080-17085
+X-HE-Meta: U2FsdGVkX1+TwIG+GxsHBwY9kmlCjdqRlPjVt6euQZtCsVAnIFiROdSj8Z5EfPOOwcbwTYGlntpKI2pixVfcFTYmgvbKOYnRo2ucP/CIBnxunzCejHJQJ9hmP1K4kWIe3MHIfWKnAs0mMUwUuXWQADNyHp48xNwzApD7WB3K+H9GmiTh35urrtM7m1welLg4nDl5nqyYj9c08eNR3ambJ14bDT+Soqoxm1L7Mv55jw/7m45KvdoDAYUU7d0BqL6bfeHLR6yU2MXp0YQuydN3hgZvVJFfjVkhVxU4OaClFNxw4R1MxvRP9X5wnlCg/OEgy7OwVKsYDs2RclXTkK/w6eMQYPRPmo7z2Ej1JNVmSb8jFIl2HjNZhnXpgCg9WY5YT7jlJVgEUcb90fRRQIRB0cbAGog22BiXI8G8uYC2kI1Nnoh5UwuB+OEIFikcjRvwRm7I/J+QIx/nHawdNYhaCdvUpU2b2zdKhfolk9amaRQ1IOWsXAIvU9HPl9qDRPIl9hk+4lAjewNREk97XRL3g+gcEZQTxeAZ202o6VjwVwylqpxypS9CyQmwpXM3/iHOKuVmt7eQO6AkNSzrBFgByV6iSm0ZBOQja6IxKouraNqXlYwAJjwgI6vUu0YoiWhbDgYK0xmLmtXkqXM2SvbW1tN4Sw6DRir3JoioTH9L2bUYu9e4ma8ozo48Q+kXWNCDrZ/Rx9XySXvvlCo3wpm7LZQC8nVLrGmDhjQCtiT4USmLG6KabqHkp+gDV1fvKdbfMemf1f8ISZpmKD/pQar+3uNPxb9o6MDTxGxMF9huUAJ16mYT80s2gV+Vse3/EqLQ8Xn3Y+vR7uIX9Mk6xv9HWYXWRsTefr1tYKUH//Yqveqtb8TaOYY5azM9iugm7StK1vjQEnYBAlgn5REo6w74ov+XM5f7DYQqIvx9U81tkXr9UMqGSc7f/AK3sOsRt3ehhw4xPK2jPhL0qZU0sIp
+ iJU242MZ
+ 8FmUCjW5M1B1glTUtdiV6X3oyT3WNqND24P7pxMDIiP/a+KP/SE8gLNoB0klRvRzfPFG2J468xPJXDpD3EyMb3n/pg3EfgVFl4g6g9K7B0pxsajLDry3reXVlkFDIOi2A646u65dJySagcmRg+/COGSFSiOK3HnBrdAfmxYSTk8KNX9CtK0xcSCpAX4IU37UTjn547U+cF5jjyWrV8vp6s/tHYv5sHyVZX4G0T2PnyWwPJDSF9jbE9TgfbMPppnbS8yCGu3jd3AqBINHLPciE4Uey+ZSnSiibTcqDIHZWd1K53RtYjUnbI4XP3O6alwu3QiZJS4IopwSqiuJXRBQSh+SraIkNIJIKoV/c3ybavUq6z6CGlWzFxlL4IoBcHsjRsDZP/liq03oqFzm3B0DDY5yKuevUwyBn3bqdppoRDKFSO24=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,55 +152,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/15/26 03:55, Wei Yang wrote:
+> On Tue, Aug 11, 2026 at 02:23:18PM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/10/26 16:04, David Hildenbrand (Arm) wrote:
+>>>
+>>> Thanks for reminding me. I think the right direction is to finally clean up the
+>>> pfn_valid() handling.
+>>>
+>>> Let me take a stab at just having pfn_valid() / for_each_valid_pfn() respecting
+>>> the subsection map.
+>>
+>> ... and that turns complicated very quickly. The problem is that we have some users,
+>> in particular the buddy, that just assumes that MAX_PAGE_ORDER regions are fully
+>> accessible.
+>>
+>> The fun begins once we have MAX_PAGE_ORDER span multiple subsections. So we'd actually
+>> want to initialize the memmap.
+>>
+>> The pfn_valid() vs. pfn_to_online_page() inconsistency is really nasty :(
+>>
+> 
+> One thing I'd like to confirm.
+> 
+> pfn_to_online_page() is expected to return an "online page", which is in
+> buddy, right?
+> 
+>> I mean, in init_unavailable_range() we could actually figure out fairly easily
+>> whether we are dealing with holes where pfn_to_online_page() would succeed.
+>>
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index e9c4204b73adb..54e71e17f2c3c 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -843,11 +843,13 @@ static void __init init_unavailable_range(unsigned long spfn,
+>>                                          int zone, int node)
+>> {
+>>        unsigned long pfn;
+>> -       u64 pgcnt = 0;
+>> +       u64 pgcnt = 0, online_pgcnt = 0;
+>>
+>>        for_each_valid_pfn(pfn, spfn, epfn) {
+>>                __init_single_page(pfn_to_page(pfn), pfn, zone, node);
+>>                __SetPageReserved(pfn_to_page(pfn));
+>> +               if (pfn_to_online_page(pfn))
+>> +                       online_pgcnt++;
+> 
+> But a hole in early section could still return a valid page if the hole
+> is less than a subsection.
+> 
+> Is this an expected behavior?
 
->  /*
->   * Only struct pages that correspond to ranges defined by memblock.memory
->   * are zeroed and initialized by going through __init_single_page() during
-> @@ -822,22 +844,27 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
->   *   zone/node above the hole except for the trailing pages in the last
->   *   section that will be appended to the zone/node below.
->   */
-> -static void __init init_unavailable_range(unsigned long spfn,
-> -					  unsigned long epfn,
-> -					  int zone, int node)
-> +static unsigned long __init init_unavailable_range(unsigned long spfn,
-> +						   unsigned long epfn,
-> +						   int zone, int node)
->  {
->  	unsigned long pfn;
-> -	u64 pgcnt = 0;
-> +	u64 pgcnt = 0, online_pgcnt = 0;
-> +	unsigned long last_subsection = -1;
-> +	bool is_online = false;
->  
->  	for_each_valid_pfn(pfn, spfn, epfn) {
->  		__init_single_page(pfn_to_page(pfn), pfn, zone, node);
->  		__SetPageReserved(pfn_to_page(pfn));
-> +		if (unavailable_pfn_is_online(pfn, &last_subsection, &is_online))
-> +			online_pgcnt++;
+Essentially, pfn_valid() is always true for early sections.
 
-Can we avoid these helpers?
+pfn_to_online_page() is only true in only section only for parts marked in the
+subsection map.
 
-		const unsigned long subsection = pfn & PAGE_SUBSECTION_MASK;
+So if you have a hole that covers a subsection, it is not marked in the
+subsection map, pfn_valid() would be true and for_each_valid_pfn() would iterate
+it, whereby pfn_to_online_page() will reject it.
 
-		/* We can have section-sized online holes with VMEMMAP. */
-		if (IS_ENMABLED(CONFIG_SPARSEMEM_VMEMMAP) &&
-		    subsection != last_subsection) {
-			is_online = pfn_to_online_page(pfn);
-			last_subsection = subsection;
-		}
-		if (is_online)
-			online_pgcnt++;
-
-An alternative is an inner loop that just walks in SUBSECTION chunks until epfn.
-That would probably be even cleaner and faster.
-
-I remember !vmemmap always only has early sections when they are actually
-online. We could extent the comment to clarify that.
-
-
-(I have patches to clean that init code up)
-
+Zone shrinking will later simply skip that hole, because !pfn_to_online_page().
 
 -- 
 Cheers,
