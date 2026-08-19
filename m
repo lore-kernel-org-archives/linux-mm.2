@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77F2EC5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 14:13:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08763C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 14:15:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 651266B0093; Wed, 19 Aug 2026 10:13:56 -0400 (EDT)
+	id 0AEB36B0095; Wed, 19 Aug 2026 10:15:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 628476B0095; Wed, 19 Aug 2026 10:13:56 -0400 (EDT)
+	id 0869E6B0098; Wed, 19 Aug 2026 10:15:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53E866B0098; Wed, 19 Aug 2026 10:13:56 -0400 (EDT)
+	id EDDBA6B009B; Wed, 19 Aug 2026 10:15:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 24D836B0093
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:13:56 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A153640185
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:13:55 +0000 (UTC)
-X-FDA: 85118212830.17.77C042F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C741B6B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:15:13 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A3B680402
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:15:13 +0000 (UTC)
+X-FDA: 85118216106.07.0CEB09A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DD4098000A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:13:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n7I8mRiz;
+	by imf13.hostedemail.com (Postfix) with ESMTP id A14FB20006
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:15:11 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QTXh/QVJ";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787148833;
+	s=arc-20220608; t=1787148911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZAcPVYBwCwlRbFWasg8/xtIg2Y5PLtEjTE2sgm9V8K0=;
-	b=YbrlhbNyjdjbW+2CHCwNHjEWTQJL/UEjl7THHbJpbDvWF6RxjfeinaosU98KohBIprpp4X
-	4E6gJMEHmXXkX5rPwDP5FBpUumwhYQ8Le4/AOQPwXBzkCXHRhTmx0TlrudIuiB2QGcmFPe
-	6F9K5mJPp5GYhJiHzuoF/UnLJ+3er1U=
+	bh=HbjD9W4dRfx8l1kqG4kJeNBsdhV6MaFUnq+9/t5i+o0=;
+	b=bNFpq0F2pNwpvvK3E5mnr61QP8lx2b8ZD5Z8EOPANTFybBMQ6d4AVyh01+pswgNMK8Rf7k
+	sITjg5cBKNlY9rAHSRDITPqxPCiextq2ZtGYJQaCoI0PRDrgkhPJ/HDnez/hnZUutFbRnu
+	jnK/VoQHjsI1xAx4B1tscNSeY4+dvD0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n7I8mRiz;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QTXh/QVJ";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787148833;
-	b=SA6HSP/lYHxXpahuMNH2+KTVxVMqHLANHpuAK2qTN8/8O+mOdm0MzlFUT38e4X5mLQxhZw
-	RQnI5yKRsO0pA6cckKNfziiLPZ5pSKLOEmnlIrKuSuY2m4hhB5svLMDa7Thp+hIY8NnApM
-	inHx346kRCdrDcZNuAMm8zShHZ5AUDE=
+	t=1787148911;
+	b=pulnoXPZaOiyp3Js3RgrNmbodLjCfpResfdNOhfsYDFu+TAmhoCzS3BwRjKC9Jnr0k/jIt
+	7xAyM9OkbHFtzcdoQ3xyddKIFmCplUqT6rE7tx1Yh56jpqJW9ZFgUaQK9SuVZCcC6lh3Q5
+	eTi7eb26/DqCGvPXq2IRNbiwkNWSbw0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6181E60A88;
-	Wed, 19 Aug 2026 14:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18ABC1F000E9;
-	Wed, 19 Aug 2026 14:13:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D24E60A88;
+	Wed, 19 Aug 2026 14:15:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898B41F000E9;
+	Wed, 19 Aug 2026 14:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787148833;
-	bh=ZAcPVYBwCwlRbFWasg8/xtIg2Y5PLtEjTE2sgm9V8K0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=n7I8mRiztlyvV8aXq8zcIvHLh0wxIwAIpvk6GPsebAgpC+B6T0Df7rQN1t1WELX2r
-	 a4nyQKh2iWEN3pREWaFH4b9ED1H6Ht02QEnWDsZwaOswqv5w1sKwJ0nMFvwdgZsVz6
-	 gxWmK8QnxknJlysgG5ab3tUnrF1uk7e5+c1j65v/fc3uxqu8+5OyLbyF9JMpql36eL
-	 dnzq3oSCYmzCi/SIAqyzfTLItMNuOUpj1m6cZIO5cQSwSdcy536jNfyZNsLid4FTGk
-	 he8/ceCooMLT9bT1L7EtGCzCMAbYnAAyw3xIdFkceD60o4jQcIcrAfQ/79BgFB+h3D
-	 c5Ki05VjckAXg==
-Message-ID: <cb75b0b5-02f1-4173-a689-5a7af3262a87@kernel.org>
-Date: Wed, 19 Aug 2026 16:13:45 +0200
+	s=k20260515; t=1787148910;
+	bh=HbjD9W4dRfx8l1kqG4kJeNBsdhV6MaFUnq+9/t5i+o0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QTXh/QVJwMCExZF6s89mCLjRqntA4DdohNZhzzkfOnCJ3ULmc/CidTZ+uJ1+rTBC0
+	 4k5kPBkXY8a1mdbbp1RGUT8DgikRp0dd+1vdEhEcdCmipmYYr8RKlj46FUxRyD3Hv5
+	 nA/sRH69Lx3Ff7MNIxafyvTyvY7OERSCWVD5O5AZPoZkTotx0BtjW8ab94WQZtlpj9
+	 IAGuoEQ3JLhBygWyJ2FCKLLeHLuPLn0J7z3jX7z233+En4dVT5NTdqTHmiKajyI0Pz
+	 zOP/f7UgzCkW8NG/ApgpXNWCWXkspwyQK2iz83C/ZcwHXPUMesbb8o+D+NAbNx4CiK
+	 mAib6M3bJid1Q==
+Message-ID: <fd193070-af97-497d-82dc-1f0fa1172fd7@kernel.org>
+Date: Wed, 19 Aug 2026 16:15:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
- on zap
+Subject: Re: [PATCH v2] selftests/mm: remove the local PKEY_UNRESTRICTED
+ fallback
+To: Hemanth Selam <hemanth.selam@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+ Yury Khrustalev <yury.khrustalev@arm.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260818114945.1312987-1-hemanth.selam@gmail.com>
+ <20260819074717.1345749-1-hemanth.selam@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev,
- liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, nico.pache@linux.dev, ryan.roberts@arm.com, ziy@nvidia.com,
- kas@kernel.org, nphamcs@gmail.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kernel-team@meta.com
-Cc: stable@vger.kernel.org
-References: <20260819101222.3732660-1-usama.arif@linux.dev>
- <54d45248-1a06-43db-b71b-3d5e0fda9de4@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -126,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <54d45248-1a06-43db-b71b-3d5e0fda9de4@kernel.org>
+In-Reply-To: <20260819074717.1345749-1-hemanth.selam@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cpz9d899nzq1i4n9r3zwcu7m7ajgpjq1
-X-Rspamd-Queue-Id: DD4098000A
+X-Stat-Signature: e5bstozpnhw6mabw4y75sui4atpidkxd
+X-Rspamd-Queue-Id: A14FB20006
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787148833-594227
-X-HE-Meta: U2FsdGVkX1/yQ0m5fvEBK1JG48iij+At1VhvcX8jqnEOPB58dGOiuwgpLDmO844ZOcY5tpAEuptb7Bul19nObmI1DVmepfQBHdJYba0lH6FZ/rEiIgc386C6MC1oU8J6lE3cdbxdQtV3C/R/N95tFu9jUjM2dg0kfTcbsi0T3kB8xXfjIDXQ7oPj29fDx/VHDKykOTQOCLq7mvjc44drPYIXOJuhrHoR4bCYToda1COhkP5t7D68EdxH9aH/ZpXNVQf1w53ZCsefSmU8RaK0pp0151C2DXpInTTiGw3+iPB07uLp898lR/pifn2l9KTVXlgVDFLeK0E8lw4z5zz/2hwU6A/S/9zZKNfHaPpG1GC1O8J6FYVdTHlBc42k/FNN0kEt9gZIikYpgzE7xDZPb/3dkuS3BpqTOJvjQdIckM+H9OtUcA6W7p5zyW/hDLlLQGlC8Mpf8gs5e4mIh546Pl1j3MQ95iMOnl8D1LpFzPSt5Xf1nQ5k6ed20vhfFqIk7cKx6YQd84wuZttGVdVcWcM/mHBj2VvsrFKtxTSN7Jv0F5sdbn97SEfCE7+pdKRypTSwXapmg28fEirrVnaXqkL3lRNRJrlacwGxrVMtURzOA46jzxUgW9NrKwycUCKd7v1VeHWzo2yJiLLZcBW5lzVsxJph3SaWDq6eqX7Rad0wiEGhYkJ7N6sn4ZnH3pxxSmidYVIBOL6gWTgX1i1Ea+IWz87bSu90Due8mChdl1I2xl+57AF+tyQqUvF1JAC+9rZUqx4hY/68bEPf75rtfJ0Y5gkkn6fyR0FIxBIgg7pqrzwBIN2wPf6zQUHVMak7wyRS5sxz8nXSYAfSrP+Xym+xmZMBwP/GSfHpgIfdqpqGWIZCGVkGSRScX1vBUNs3s3zl+gFh3cXzAw+V2+EKgIqZzy9jW9H3JiXtx67GRtT0OQN5REEIKWpOypvRNArKy5YEeg6csZxwarjCxK9
- Pb8YZQAE
- xv5IWoISBIHqAvHz7CQU/vFJOxQCQLk4ClVT6sdcdx/o2mIccsBx33YSt4wFx+VAI/tJTSb+aBr6VaJTvqg2K1bGe/aaxhtp6pZ5BcWEsnG0pdTiHQs+ceaa/2O46g9mNKXgIWnXaDy+OiDcW8SrrZyqAXnNf+knZfc7E81/X//lQoCG+/Mf4Pt/v0gniAfgAY3pp2zu3F9K/Bzn2YJJL7ter5ff6YC/m44/PB1s3ZEN27tzsbQGhPGqFUO8fPyIVcqb0ttT2rl9mUHGVSmJ9cCzFUQaC2hlDUsWaVGnD4Y3FomVoOpYGqjLq6AHikvp9tzHU/PvVf3pZOsI=
+X-HE-Tag: 1787148911-833853
+X-HE-Meta: U2FsdGVkX1+afusFrKXnCp72C01GNXUQFJ5zIyvgiPgHj9tXVyiTG/h6KGv1/kSRtDZ+o7FMUkeyWGMepWKD//oMk6BXZ/6wnX3Fz/UQSndMgh1jWkGOVSoweOWM97dCzQerGT2X4iiA3u9OWcytN9vGmhdz5jb8xqUcGM35aEYCB8F62eubqbbqTfiM1aQAqXdrhCSDauLMPav1WXR0RFyTWoVTRA8Eiqqlmn0Bcuc8AkhRhzY8RqzL3p6qVAhbE4GvvM5XTDPe4v0lanMXY1etgrNMiGZgXVYq7MwZjXmBIh9xaX6Z16Oc/sQiozOzGPvGGkQSkVV+7JSJK27Sf2eDnA1faHzETIAbrwECoCoXcMer22ZL9JFwoYK3Z49Ec0c5s+2SedxD3fNw1kGn9Eh9OFJHd487/KYs/WW87Hx4a9sQFaj874phf+E2X5Bs9m9b5Uh54mr/bkDDuAObXdKF5cLMf6wUbHOxSu2CuRx+zqmk+SOxLqsqJE7djucYI9hPBrGT6ksOGxPzLpigUDTY56Oy/lwy5YPsq5poZtxfo4u9te0tGO5Qj4aK+lplGjKL78J250n80wJEjFmm8pVWqPT0QahqVlX4ZWgPDlI2tHS4d3PZrjJPocDVSOANSWVxJKk9YmN3cUiYrvB/+ebUfQfS8l2vjrAvBIVLJVEsgUFSG6MwqInN1vkjs++2IpPB8NS2c7cD5A8oJPPQRYi40dsdncxQSiScgCs6eIGYTVKbzAzRGRnfChQrpOj/28ttWBtYaJHIHBVIbO/IiWi1ENP8vOGtfaAs2lhkqmDwY2rYt0IB+aSilKoBcFwQrpC6trl+dsixmBDydCmEGGybB+TIZGKz0axbI5+0QnERltaq3EtzflvpvqD1SHUPdROXwZpT2hlFtLIYomqKyEwdSFaq1RJEoRJGq/2S4xLU+XlA7dPg4kRuoGw4OZDxyL3H2ms3JsjLE+Nic1Q
+ q+Ui+uMv
+ kACJ7RujNsUXuWaXIn0HQEDc7wNoh2SVaea3M+1p5Fr/jTaRkUgvvKfJMC4b5aLNGXZZfDmlSKf/9eyOWFAmqIAMnqlnofuoaXBTaMSoPTfLBGXM8ssmGhrYKh0IkSv2JuK7zbVS/HHNn2MpR+aI8cBeiK/CK6HWHRn3NA5TME68dynWh2jf73CmELTb3Cw5BS+zHFYWo5Aivx83ulOixE8UeqXHetWLmoO20ox2jA4vEisRbUO/J1ZuVXcdeUtuzD8A2N2TFm1FhxGjzhVNAlZhdCBRwUYE+txRf7Kk7+1oV2yL0H17iLE388FHqLqLddtwbJawaG3LS6uaqBraf1e+DDTNMMNDT134iqBcjEaqsCCv8cK+wihxu3kcW8KkXJFqRqkKnvBgNak6b+3vjX/K/vQ9+sF25b1GaRU5kPTH4EvM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,79 +145,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/19/26 16:13, David Hildenbrand (Arm) wrote:
-> On 8/19/26 12:12, Usama Arif wrote:
->> zap_huge_pmd_folio() propagates the pmd young bit to the folio for the
->> file case, but not the dirty bit.  The pte path does propagate it, in
->> zap_present_folio_ptes() and so does the pmd split path, in
->> __split_huge_pmd_locked().
->>
->> For most file mappings the omission is harmless, because writing to a
->> shared file mapping goes through page_mkwrite(), which dirties the
->> folio.  tmpfs is different: it has no page_mkwrite(), and
->> vma_wants_writenotify() is false for it, so a *read* fault on a
->> MAP_SHARED tmpfs mapping installs a writable pmd via do_read_fault().
->> do_read_fault() does not call fault_dirty_shared_page(), so subsequent
->> stores through that mapping set only the hardware dirty bit in the pmd
->> and never call folio_mark_dirty().  A shmem folio allocated by a fault
->> is marked uptodate but not dirty (see the clear: block in
->> shmem_get_folio_gfp()), so PG_dirty is never set at all.
->>
->> Unmapping such a folio - munmap(), or exit_mmap() when the process dies
->> - then loses the only record that it was written, because zap_huge_pmd()
->> drops the pmd without transferring the dirty bit.  Reclaim afterwards
->> sees a clean shmem folio: the whole swap-out block in
->> shrink_folio_list() is inside "if (folio_test_dirty(folio))", so
->> pageout() is skipped and the folio falls into __remove_mapping().
->> There, folio_is_file_lru() is false for a swapbacked folio, so no shadow
->> entry is created and __filemap_remove_folio(folio, NULL) simply empties
->> the i_pages slot.  The data is freed without ever being written to swap,
->> and the next fault on that index returns a freshly zeroed folio.
->>
->> This is silent data loss for any process that keeps state in a
->> MAP_SHARED tmpfs segment across an unmap - for example a cache handed
->> from one process generation to the next through /dev/shm.  It requires
->> the folio to be PMD-mapped, so it only shows up once shmem THP is
->> enabled (which is what we did in Meta fleet and started noticing crashes);
->> with THP off the pte path transfers the dirty bit correctly.
->> It also only becomes visible when swap is enabled, because with no swap
->> device shmem folios (which are on the anon LRU) are not scanned by
->> reclaim at all, so the clean folio is never dropped.
->>
->> Reproduced on x86_64 with a tmpfs mounted huge=within_size: read-fault a
->> 2MB-backed region, write a known pattern through the resulting mapping,
->> munmap, force reclaim of the cgroup, then re-map and read back.  Without
->> this patch the region reads back as zeros and vmstat shows zswpout 0 -
->> the data was discarded rather than swapped.  With this patch the region
->> reads back correctly and the pages are swapped out as expected.  With
->> huge=never, or when the first touch is a write, the test passes either
->> way.
->>
->> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> ---
->>  mm/huge_memory.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index ced400f72d43a..afbb5974bd225 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -2449,6 +2449,8 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
->>  		add_mm_counter(mm, mm_counter_file(folio),
->>  			       -HPAGE_PMD_NR);
->>  
->> +		if (is_present && pmd_dirty(pmdval))
->> +			folio_mark_dirty(folio);
+On 8/19/26 09:47, Hemanth Selam wrote:
+> pkey-helpers.h defines PKEY_UNRESTRICTED itself when the macro is not
+> already known, a stopgap from when the generic definition was still
+> under review.  It has been merged since, commit 6d61527d931b ("mm/pkey:
+> Add PKEY_UNRESTRICTED macro"), so the guard is never taken and the FIXME
+> can be honoured.
 > 
-> We don't need that for anon folios, though. So best to just resemble
-> zap_present_folio_ptes() logic and do it only for !anon folios?
+> The definition comes from tools/include/uapi/asm-generic/mman-common.h
+> via TOOLS_INCLUDES, which commit e076eaca5906 ("selftests: break the
+> dependency upon local header files") added so that the mm selftests
+> build without "make headers".  It is reached through the
+> <asm-generic/mman.h> that the system <asm/mman.h> includes.  Building
+> the pkey tests with KHDR_INCLUDES pointing at an empty directory
+> confirms that; emptying TOOLS_INCLUDES as well is what makes the macro
+> go missing.
 > 
+> No functional change intended.
+> 
+> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 
-I'm stupid, that check is not visible in the diff above :)
+Hi,
 
-Thanks!
+please prefer not sending new revisions in reply to old revisions the next time.
+
+[...]
+
+>  tools/testing/selftests/mm/pkey-helpers.h | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
+> index 2c377f4e9df1..626c2e1655dc 100644
+> --- a/tools/testing/selftests/mm/pkey-helpers.h
+> +++ b/tools/testing/selftests/mm/pkey-helpers.h
+> @@ -112,13 +112,6 @@ void record_pkey_malloc(void *ptr, long size, int prot);
+>  #define PKEY_MASK	(PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE)
+>  #endif
+>  
+> -/*
+> - * FIXME: Remove once the generic PKEY_UNRESTRICTED definition is merged.
+> - */
+> -#ifndef PKEY_UNRESTRICTED
+> -#define PKEY_UNRESTRICTED 0x0
+> -#endif
+> -
+>  #ifndef set_pkey_bits
+>  static inline u64 set_pkey_bits(u64 reg, int pkey, u64 flags)
+>  {
+
+Hoping this indeed compiles ;)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
