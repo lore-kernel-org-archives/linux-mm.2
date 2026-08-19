@@ -4,83 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08763C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 14:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50A43C5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 14:19:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AEB36B0095; Wed, 19 Aug 2026 10:15:14 -0400 (EDT)
+	id 1C87E6B0093; Wed, 19 Aug 2026 10:19:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0869E6B0098; Wed, 19 Aug 2026 10:15:14 -0400 (EDT)
+	id 179636B0098; Wed, 19 Aug 2026 10:19:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDDBA6B009B; Wed, 19 Aug 2026 10:15:13 -0400 (EDT)
+	id 06B9D6B009B; Wed, 19 Aug 2026 10:19:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C741B6B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:15:13 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A3B680402
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:15:13 +0000 (UTC)
-X-FDA: 85118216106.07.0CEB09A
+	by kanga.kvack.org (Postfix) with ESMTP id DBFDA6B0093
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:19:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6EB4180165
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:19:55 +0000 (UTC)
+X-FDA: 85118227950.27.7219C80
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A14FB20006
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:15:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QTXh/QVJ";
+	by imf28.hostedemail.com (Postfix) with ESMTP id AA2A8C0004
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:19:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xc+GCmXX;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787148911;
+	s=arc-20220608; t=1787149193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HbjD9W4dRfx8l1kqG4kJeNBsdhV6MaFUnq+9/t5i+o0=;
-	b=bNFpq0F2pNwpvvK3E5mnr61QP8lx2b8ZD5Z8EOPANTFybBMQ6d4AVyh01+pswgNMK8Rf7k
-	sITjg5cBKNlY9rAHSRDITPqxPCiextq2ZtGYJQaCoI0PRDrgkhPJ/HDnez/hnZUutFbRnu
-	jnK/VoQHjsI1xAx4B1tscNSeY4+dvD0=
+	bh=GOsETi3yZCXmrX9YQrYtabDAuoutuTIBcppaw8Vqk6w=;
+	b=ri15wDgLRu4XhcV6OPZ8XWHmAafjXFYsP2ORlIO+PfPhlR8Z9WA8Se3doPbc2X1jlzxEVC
+	Djz7p+DveMBFF2Ye/vZz43WAV56YRV+5S1tb9dGrDB40FK0zKf1sl6HWo9fdwafR95vFGn
+	T9iqBpVYikct4nr3J0RbAnfSPOTqbcE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QTXh/QVJ";
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xc+GCmXX;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787148911;
-	b=pulnoXPZaOiyp3Js3RgrNmbodLjCfpResfdNOhfsYDFu+TAmhoCzS3BwRjKC9Jnr0k/jIt
-	7xAyM9OkbHFtzcdoQ3xyddKIFmCplUqT6rE7tx1Yh56jpqJW9ZFgUaQK9SuVZCcC6lh3Q5
-	eTi7eb26/DqCGvPXq2IRNbiwkNWSbw0=
+	t=1787149193;
+	b=TE95YMqfCrUTmaZYxzLrQX/gSJcneXbYA/XBG2pEUOTYFhi06afh5zJljZoQPel3A3RKef
+	PaaYEBIWhysyVwZ7cpTr5WJ+oo7F73+n+R1+z4N0p56Xh+ag8lsvVq4t6jop0rs/z9kw6n
+	1miu65zXH5N0dsy3eEJtI0NWkl7EFk0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2D24E60A88;
-	Wed, 19 Aug 2026 14:15:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898B41F000E9;
-	Wed, 19 Aug 2026 14:15:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 21F5360DBF;
+	Wed, 19 Aug 2026 14:19:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F20E1F000E9;
+	Wed, 19 Aug 2026 14:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787148910;
-	bh=HbjD9W4dRfx8l1kqG4kJeNBsdhV6MaFUnq+9/t5i+o0=;
+	s=k20260515; t=1787149192;
+	bh=GOsETi3yZCXmrX9YQrYtabDAuoutuTIBcppaw8Vqk6w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QTXh/QVJwMCExZF6s89mCLjRqntA4DdohNZhzzkfOnCJ3ULmc/CidTZ+uJ1+rTBC0
-	 4k5kPBkXY8a1mdbbp1RGUT8DgikRp0dd+1vdEhEcdCmipmYYr8RKlj46FUxRyD3Hv5
-	 nA/sRH69Lx3Ff7MNIxafyvTyvY7OERSCWVD5O5AZPoZkTotx0BtjW8ab94WQZtlpj9
-	 IAGuoEQ3JLhBygWyJ2FCKLLeHLuPLn0J7z3jX7z233+En4dVT5NTdqTHmiKajyI0Pz
-	 zOP/f7UgzCkW8NG/ApgpXNWCWXkspwyQK2iz83C/ZcwHXPUMesbb8o+D+NAbNx4CiK
-	 mAib6M3bJid1Q==
-Message-ID: <fd193070-af97-497d-82dc-1f0fa1172fd7@kernel.org>
-Date: Wed, 19 Aug 2026 16:15:04 +0200
+	b=Xc+GCmXXjO7SWndjDHOMYXk4f3YbiyFouGV1Haxakt28T/a0hPCWi75njYqq9lrpg
+	 jVHZUoqXeajh7HibO9BnjItpPccS4yS0A48lVecHXa2WGu9PpTHpVW1zxnuZZwfgwX
+	 1jPzc9K04ceG8+g0zLdC+GoRkSzHvxieohtDKTrLEPjAQXWtWw1PH+nIi4g/Ohj8N5
+	 KiJg3E+ojnsoj1hbF/NXn93eLMrXOkXUsnsdfjrTP1+3yhATIcPp2NggQgQRcVkvAq
+	 Z8AfcmLB2cd26sfAN8nBzILxYZPDuPvf78VG8dT5oUdOrL4hjKmvoA14whUplp9QA2
+	 ShfzjJhXpvoTg==
+Message-ID: <3113ac8b-c1ce-4577-9e93-449b70818918@kernel.org>
+Date: Wed, 19 Aug 2026 16:19:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] selftests/mm: remove the local PKEY_UNRESTRICTED
- fallback
-To: Hemanth Selam <hemanth.selam@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- Yury Khrustalev <yury.khrustalev@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260818114945.1312987-1-hemanth.selam@gmail.com>
- <20260819074717.1345749-1-hemanth.selam@gmail.com>
+Subject: Re: [RFC PATCH 03/57] mm/collapse: add collapse.h for the shared
+ collapse state
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
+ ljs@kernel.org, nico.pache@linux.dev
+Cc: baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
+ rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com,
+ usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kas@kernel.org, jannh@google.com, willy@infradead.org, pfalcato@suse.de,
+ rostedt@goodmis.org, mhiramat@kernel.org,
+ linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260816224609.308019-1-kirill@shutemov.name>
+ <20260816224609.308019-4-kirill@shutemov.name>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260819074717.1345749-1-hemanth.selam@gmail.com>
+In-Reply-To: <20260816224609.308019-4-kirill@shutemov.name>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e5bstozpnhw6mabw4y75sui4atpidkxd
-X-Rspamd-Queue-Id: A14FB20006
-X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787148911-833853
-X-HE-Meta: U2FsdGVkX1+afusFrKXnCp72C01GNXUQFJ5zIyvgiPgHj9tXVyiTG/h6KGv1/kSRtDZ+o7FMUkeyWGMepWKD//oMk6BXZ/6wnX3Fz/UQSndMgh1jWkGOVSoweOWM97dCzQerGT2X4iiA3u9OWcytN9vGmhdz5jb8xqUcGM35aEYCB8F62eubqbbqTfiM1aQAqXdrhCSDauLMPav1WXR0RFyTWoVTRA8Eiqqlmn0Bcuc8AkhRhzY8RqzL3p6qVAhbE4GvvM5XTDPe4v0lanMXY1etgrNMiGZgXVYq7MwZjXmBIh9xaX6Z16Oc/sQiozOzGPvGGkQSkVV+7JSJK27Sf2eDnA1faHzETIAbrwECoCoXcMer22ZL9JFwoYK3Z49Ec0c5s+2SedxD3fNw1kGn9Eh9OFJHd487/KYs/WW87Hx4a9sQFaj874phf+E2X5Bs9m9b5Uh54mr/bkDDuAObXdKF5cLMf6wUbHOxSu2CuRx+zqmk+SOxLqsqJE7djucYI9hPBrGT6ksOGxPzLpigUDTY56Oy/lwy5YPsq5poZtxfo4u9te0tGO5Qj4aK+lplGjKL78J250n80wJEjFmm8pVWqPT0QahqVlX4ZWgPDlI2tHS4d3PZrjJPocDVSOANSWVxJKk9YmN3cUiYrvB/+ebUfQfS8l2vjrAvBIVLJVEsgUFSG6MwqInN1vkjs++2IpPB8NS2c7cD5A8oJPPQRYi40dsdncxQSiScgCs6eIGYTVKbzAzRGRnfChQrpOj/28ttWBtYaJHIHBVIbO/IiWi1ENP8vOGtfaAs2lhkqmDwY2rYt0IB+aSilKoBcFwQrpC6trl+dsixmBDydCmEGGybB+TIZGKz0axbI5+0QnERltaq3EtzflvpvqD1SHUPdROXwZpT2hlFtLIYomqKyEwdSFaq1RJEoRJGq/2S4xLU+XlA7dPg4kRuoGw4OZDxyL3H2ms3JsjLE+Nic1Q
- q+Ui+uMv
- kACJ7RujNsUXuWaXIn0HQEDc7wNoh2SVaea3M+1p5Fr/jTaRkUgvvKfJMC4b5aLNGXZZfDmlSKf/9eyOWFAmqIAMnqlnofuoaXBTaMSoPTfLBGXM8ssmGhrYKh0IkSv2JuK7zbVS/HHNn2MpR+aI8cBeiK/CK6HWHRn3NA5TME68dynWh2jf73CmELTb3Cw5BS+zHFYWo5Aivx83ulOixE8UeqXHetWLmoO20ox2jA4vEisRbUO/J1ZuVXcdeUtuzD8A2N2TFm1FhxGjzhVNAlZhdCBRwUYE+txRf7Kk7+1oV2yL0H17iLE388FHqLqLddtwbJawaG3LS6uaqBraf1e+DDTNMMNDT134iqBcjEaqsCCv8cK+wihxu3kcW8KkXJFqRqkKnvBgNak6b+3vjX/K/vQ9+sF25b1GaRU5kPTH4EvM=
+X-Rspamd-Queue-Id: AA2A8C0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7hr1tawnn7mwyb6szdozzdn315hih3z3
+X-HE-Tag: 1787149193-314909
+X-HE-Meta: U2FsdGVkX1/69hM8CniQ2dOgkyH/A7H2g3zyFSDa3X8hnBmShcC7IoYmDwZuSx9NZOemSZoo0xdajz3jPpxxSbm9FMtZj4JJYn+51CUGsE0aLOMjkv/Dz6F6yvijio1GiRho4D4vKj9FYfNxbslmGuTyu7oiQ06NjVf/4AVmp5YzjTfgTBmDGozfMz7j/g9HC/2MUwVBzBoII50PMrPfQPeainCmb1ePyYj+wPmUR/+18Td+P3sUg1oKZvHakos3K/Tj4SjLGO6m/qu7sa302Y3sN1A9zIPwf31gPaIo3Rgq9mFnCjH32xd6QOfOo3mldXup0rnMhxssxzcjJBzTq01SWKD5/ZDIBmxeMpSQEr2979MvhwMp/RHksOT90PJ0lfFE4R3LSDL2vZcbb/V+ndW4JY8k4BJ2AFXBhyZUp5G6HBsqbd7XJtNJtovravY04aNBp/+ZeLYiFayQvLszTm27U0TwzwFwFLyhL/AkBDLv8M/uy33AM+lwgjrSV0ZqThaZqJnzJ/4GZ7jLRWPlEiG/ZPVydaMaikqKdq0IA6BLaRyZ/xcE6Ur2WcDKCvKK+oGFzxOxSEz8VGh9PMNEBcwSVbamDoWbBItQohIBWwO/IyFOTaW1880ug0V1RQuHuntvzGtNCP7B8dxxkC/Xm7JhNBxV7jCgEoeXVUGb/kIC+Maj2UJVVh98Ac6vI7uhw2R0Bvfif2PWfK7bNo0u9iZuj/O43OJ2ZdKrxv3TibvfqRR9sG6S3y3jm7SU6iC7JG2gOH0EFS3fTQQ9ssaKVd3H39sbY6iVCYVwOpO+MngSXWHlZiUufQ1u/ru7O9wRgxsWDf/TT6snMuy37P0sfiXu56nAh1qmCqeVRNlFKAY7+ecOFTurkwXXyj4WlhYrpDmk75DuYIRsF/IggKsTtM1N9pybd9QeMcGif7j0C6kAzzYZxrg5jVHMvDVINVxm2cU7Jy9iPIeN2m9fH3+
+ LZmfOSKl
+ HcqyW23Rmr/jxr9ksNOX2P+vjTF13aq5CEAFDyPXT81m9BPkbnEWAAB/nDDpbfsOZ3BQbnirlJetkbcE10gcGB5JUNho/PlA47PWNJXcJLWhp82vzeFCQaTIUO1MLSmAkmOjo6AyNFGynJ9ZNkU0HnNCzGF3oIUMuOe1jcY5LO+LRVDzPeDMBbhsNb2DgC/QxLw9i6fMV1gshLmK43LvTvcg2Vmq04XSFMDKZRb4L8JATSIabO4ZArj6maU9kWcND3gGoSnOaXOTMDJvt7wbPLGhiqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,57 +147,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/19/26 09:47, Hemanth Selam wrote:
-> pkey-helpers.h defines PKEY_UNRESTRICTED itself when the macro is not
-> already known, a stopgap from when the generic definition was still
-> under review.  It has been merged since, commit 6d61527d931b ("mm/pkey:
-> Add PKEY_UNRESTRICTED macro"), so the guard is never taken and the FIXME
-> can be honoured.
+On 8/17/26 00:45, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> The definition comes from tools/include/uapi/asm-generic/mman-common.h
-> via TOOLS_INCLUDES, which commit e076eaca5906 ("selftests: break the
-> dependency upon local header files") added so that the mm selftests
-> build without "make headers".  It is reached through the
-> <asm-generic/mman.h> that the system <asm/mman.h> includes.  Building
-> the pkey tests with KHDR_INCLUDES pointing at an empty directory
-> confirms that; emptying TOOLS_INCLUDES as well is what makes the macro
-> go missing.
+> Preparation for building the new collapse engine in its own file.  The
+> engine and khugepaged.c need to agree on what a collapse result is and
+> what state a scan carries.
+> 
+> Move enum scan_result and struct collapse_control into a new
+> mm/collapse.h.
 > 
 > No functional change intended.
 > 
-> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+> Assisted-by: Claude-Code:claude-opus-5
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
 
-Hi,
+BTW, I'm wondering whether it would result in less churn (independent of the
+other changes) to
 
-please prefer not sending new revisions in reply to old revisions the next time.
+a) Rename mm/khugeapged.c to mm/collapse.c
 
-[...]
+b) Move stuff into mm/collapse.h that a new ...
 
->  tools/testing/selftests/mm/pkey-helpers.h | 7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
-> index 2c377f4e9df1..626c2e1655dc 100644
-> --- a/tools/testing/selftests/mm/pkey-helpers.h
-> +++ b/tools/testing/selftests/mm/pkey-helpers.h
-> @@ -112,13 +112,6 @@ void record_pkey_malloc(void *ptr, long size, int prot);
->  #define PKEY_MASK	(PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE)
->  #endif
->  
-> -/*
-> - * FIXME: Remove once the generic PKEY_UNRESTRICTED definition is merged.
-> - */
-> -#ifndef PKEY_UNRESTRICTED
-> -#define PKEY_UNRESTRICTED 0x0
-> -#endif
-> -
->  #ifndef set_pkey_bits
->  static inline u64 set_pkey_bits(u64 reg, int pkey, u64 flags)
->  {
-
-Hoping this indeed compiles ;)
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+c) mm/khugapegd.c will need.
 
 -- 
 Cheers,
