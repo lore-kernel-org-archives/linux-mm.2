@@ -4,128 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41D7DC5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 16:23:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F20FC5DF85
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 16:32:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 175436B0095; Wed, 19 Aug 2026 12:23:26 -0400 (EDT)
+	id EA6E96B0092; Wed, 19 Aug 2026 12:32:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1266A6B0098; Wed, 19 Aug 2026 12:23:26 -0400 (EDT)
+	id E56CD6B0093; Wed, 19 Aug 2026 12:32:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0145E6B009B; Wed, 19 Aug 2026 12:23:25 -0400 (EDT)
+	id D6C716B0095; Wed, 19 Aug 2026 12:32:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C305A6B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:23:25 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4805F80414
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:23:25 +0000 (UTC)
-X-FDA: 85118539170.27.9079C8F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A1BE6140012
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:23:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lBP0ue9a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B0EDB6B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:32:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C95180347
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:32:39 +0000 (UTC)
+X-FDA: 85118562438.02.C2AFF43
+Received: from mta1.migadu.com (out-220.mta1.migadu.com [95.215.58.220])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C8736140003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:32:36 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kauuV0qv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787156603;
+	s=arc-20220608; t=1787157157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Ldb5dOInQjpEK8qwvxT9Fxl21ZWTetKva/zFZH6RD8s=;
-	b=7XhCWV533cxznSqbQmq3Hgqv8Dn9jn4WPCrJaiON/ViJQnqGpzgsurec1QkoEk1gGtXfeR
-	/LJ/wxvQv5DxDrLy9NJaegc0EJZ/FxtQtS6oV8CutNKRzO4iCgMGfaaQ2bER0gO5DL+m9A
-	dRqcMTykT6qGD4G6El55E61USs/xlk0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dVf9kZHC2vP/Q5JzpuKDJBCYmkPvlYjBfOky0SRaL3s=;
+	b=2lt+m4g99kgeTVbog/HV12hBDChpXyu5WltPX6UdYsVEvL3IrIS0l1S3n8Zt0shqT2nBLa
+	8KiizEfeBsZYMNdHojqquZuBTw/ST2S1akCz0YJPeebTQTZzWBtQ0XFfEKqct8qmQjBZX2
+	Lf62sxiaV1PYqewcQzSzdJ2snxXhqQ4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lBP0ue9a;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kauuV0qv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787156603;
-	b=fzYO7hxSY6nAd+tPmSCsvRHy+H/qKTygHwj/D2DCAbaXg0mC5yrk37e9Sw7rODKt1IybyE
-	FVBU2PSJomgkehrBKEswrmdWsgo5ZO6NutPG90pewIIJgtEVy3oVWqRJLDQmFhjakGCnJC
-	IsGEl3oBrVNfJepeAu3f6fvpit16D9Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 34F4D60A92;
-	Wed, 19 Aug 2026 16:23:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E5C1F000E9;
-	Wed, 19 Aug 2026 16:23:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787156602;
-	bh=Ldb5dOInQjpEK8qwvxT9Fxl21ZWTetKva/zFZH6RD8s=;
-	h=Date:From:To:Subject;
-	b=lBP0ue9ah1+okMOcT36Fha7BZdKb2IlP+/SzvGEBaCA0QksCErIjOZj/cy0EMqKPU
-	 FrKt6tsFzlGjsSwMrayIUZxjiIra7KCfqzVpTL/iSX9MC5murtY5Ul7qr8MuS05UPN
-	 18szLcbk6ml9B+yfJAh29inPNBA+X1MMyW8kT38T8Dncb+hM6ps3RHGd3tjSqzGzcX
-	 FLzzEVL6xnZuu662fwfUXe1HglWjI+GtIgliN9l5D/Lxnml1e6G4iHhMv6bbXwGC4H
-	 yS5NnQ0L5IK66XxrVjasds2fArlqvLiQKPxGFwk6RHW5bAiBUAdejr17flNmArXJeJ
-	 agC9bNzFcz3Iw==
-Message-ID: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
-Date: Wed, 19 Aug 2026 18:23:09 +0200
+	t=1787157157;
+	b=TuVT668W3MnxXkRGYYS9Iyat2QhqhJdZa10E5aq0neCnEbv7veGwz7WFhXV1m3NNIQsdc0
+	oa6zW679v7EI+bZDSzQqehnftfNiVzHAgnYaAI7p8wXyna8gZQ5GfdNpZK+HW6DodRv2mf
+	IyL8oSNrxcCNT85xVU+F1Bv/33nFnpo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=zxkoUC4bgxUtiTO0LYujsc/ZDtFLJGnt/5/oXxFaLqo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787157155; v=1; x=1787761955;
+ b=kauuV0qvk+nddmk8N88Tg4r9m+tmv11v81X1/Ote7n7vArJhi78VlCePe4bCi6wipuBNmBqJ
+ Oemk6UdiCpOOGRG/8KPlgCxKr3DI76E7nV60SkZfCqGckQRYxL12QATKpLoKrGCeJ776cpoqm38
+ QENTxzivd8lKC/ZFizop58tQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [IPV6:2a03:83e0:1126:4:9d:a05e:5bd8:c200] (2620:10d:c092:500::4:a428)
+	by smtp.migadu.com with ESMTPS id f5385ad13ce1f56a;
+	Wed, 19 Aug 2026 16:32:35 +0000
+X-Mizu-Trace-ID: f5385ad13ce1f56a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <1d0271fc-9f60-4b7f-8b89-e82a4f7034d5@linux.dev>
+Date: Wed, 19 Aug 2026 17:32:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
+ on zap
+To: Lance Yang <lance.yang@linux.dev>, kas@kernel.org
+Cc: hughd@google.com, akpm@linux-foundation.org, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com,
+ liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ljs@kernel.org, nico.pache@linux.dev, ryan.roberts@arm.com, ziy@nvidia.com,
+ nphamcs@gmail.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kernel-team@meta.com, stable@vger.kernel.org
+References: <aoWw_iKEDLjKL2jr@thinkstation>
+ <20260819161728.70270-1-lance.yang@linux.dev>
 Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-08-19
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260819161728.70270-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C8736140003
+X-Stat-Signature: xowoqtrbm94wwz4gcwwf45hi1494a39s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A1BE6140012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hmd1z1suuzkmg1osan87nqxwfnijy5d9
-X-HE-Tag: 1787156603-795097
-X-HE-Meta: U2FsdGVkX19tA/p9UbLcZyRuf9fv40ECYnldObZMhTTDA3d/peFQVmAicpRgFGsV/XHCYO3x2XdCqxBmW8lQh8gqffYM6C9iDebWrNmBkc4uPeicMpEPdxyQzI934db8IUjpBvEgarMjKyDj799cHJnE5m+tnzS2bYros6AZYFkW2Kw2j++sbwKFs2ImDY9BSa7tf6mrv8qODDnVlCKhWx3ao1KuAG/Qii6S1zq0FHupuTuIrKkbIOiiv4ezo3Zq1tebk72BKtjc33W4z6EVtV1OKvbqdBDyYHH0dpM/z6+D8w83Suh3ye07K4OZB4j770pL8B0KEoh7vkLdy8PY/XMy0Vlqf/VsSx263ZU31A+f/dg6C+x6EamCyY0GrN9PQpjYo2YqI5KiI2//mB0+i/lDA0APR6EcEPy0nc2ftj8rEv/s4hffzEBRkf6+iXG/RS/24QYo3ydTtSGb4E9VJDYwX+tMvrh0K0l9BqzRy8RZs+X2I/5O8AB5I118C0kV0BtBtUI5FEFsMudU4l37uxvYWvuk24hfLr72v7AfpH6nYFI7Jd0uj9Dj8lZJx8dGzIwK0Go2kj/qNkYB+lyNVgmzE5L9KO0e6e4wzDLbUWYCtq37M6wTrRla/47ocblvVUmmiLBoQ3N4LSV5R6GPB05YXZOhyzyi+Jt/FqZaadOt7eAG7mlWXRaVJzktx8Ie0Oeyey//MoHjwHUet1YBYwdphHfikrmJbrDn70/UaD/kth4vUGK0zAp2rJ5+kakJ/2A6R1RmnG28q6Te29nXreowlbW2E9FEmiif61smfZNGYe94Z3+b6LANTJ8FVrOrXjPCE3PFxP21awVRV4yivUPFhxXoVKJewieV1XKYOLLL/7AmQw6DcN4rC16WBeo/JtgEKrJLlUeqP4egpA8eh4iMKs5YcawcQGrGnNd7LK8TAbRyemlQKzn3zAsuXv8oQn5fsk0wDDYw1Nx5ZqJ
- VDBPmB7F
- STmLT9N0ILynJu1M3zSbganS15oiZfxhEoIHWFYYNay8CPE8zP//xvA1LxLi7VPZwZdmPARoJeui1VrK72CMl118b3Ng3Ew/4I40+dOv3TQQmULOfVza/ZdePt3XuWWesEgWcy8WJHoQzN7mjmpSRTgwo+xlnhhFCDl4aCNrEEHk2t2pOqdmRwWAweAWSulfH78gLxRuyTBh7fECHYrh4+TJZCQkPgLvgz0Yl89pnkV46jF00XeEh5q+5Xem8g8K4IWR2Ke47iYCs+kcdZxkxnbiifD63VcXts3OkylFWnPoePrlkg+swAjYJcKaEGDbqQLJqxRjEw8r/DZD3hmDB+qe2J36789reAUoOh+9kTDUGzQlcFouqW1rfqXw2FYPJrsW0/IBSJ8u0ctg=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787157156-127108
+X-HE-Meta: U2FsdGVkX1+eY59Snw5rkm1SkTNl6dlh1jxgqA9DKuKD50L8fmpOgkgfZoCt5hZYPBfzHyB3dErf+NHTixuTMgpKhi6borA8YawAHjkXXySXhFHupvr1TQp4Jomfy+S2Tk7RpDxuzBfdF9nmspFawaOtCfOu9TnBoMc6U5Rd0fwO4K5iCb/rkfjYxEp4CGi8wFFr8Ep2Jk6VreokPZi0VieGFpz9hfQHSjml95H+IQNqTNhAhz7nAPJnu6VxxeIUmQ7RqgVdzeZZ7/UG3v+OekLicgOljqktBBwGR3VH7Aw50bCVBzbvbpMo3pvqJjsedzH3N7vbaZNF+8MCueH/4qqTaOyLqrNzdp1CsI6WOe7kvu3gQT1UiKdjSzMrXvUifsq73lUd2aysbXD9I89R7S3OR84SHtrj0ajw4nGtrOHRK7PhWTM+dfwgep4btZfudEmqUlXxJktRdTLBoX2eB4AQ2ORusgN3/MkslsKOd3so+sVSzFR7No3Bq7l0O06btjLLCfWkmvxWFYanTx6wCcCm8NCtHC6iVWp8a7v6T96vymRy1vI4NrqIDvYOjme75H4N/a3Q4BvG7JjdBzueePPStrCqclQEJML9h0HawgLX4h4LDMw1LUUH2hzfT45G8W6083wCtGpbkTuvlxDkZ54qyFU379q5yt3ZzXweYSRN/p7ILtPwoJVybwtNgIhnhRyZi/bbbLkmiKjJfXO5lcjACUttQLKbWMExPDe6JNDL0fJXY71UY29CEFYK06hx/zaDDkqUPPqSG0RQBES9l/UPoaqdT5q3nCjbVq088w5QrTaVDMwb2Ew3ygaSImSpL8UixWbSBgvbeQroEhUfIitIHA6Yw7dkgA/PS80f2n39kM1KIZjmqhXKz7tT6pBVC4PFIQoMeuWgzI3z7xBq2qBd9XfEa88eTAB1lVZokSdfXgJ8QftznDKRqSzTWY6RrdTAIwsRgnLrE6OcAX1
+ ei/i9SUY
+ 1e3vZtwsxiaeM19ec/jLDJkY/6WmQr5gqumvkl4kt/y9u9/Np9HPNuoQrfCH7Ehx3EGfXX5m9EEjOWpd+qb97ojAdNJBr85zvKwotcAOjNXbczobq8iqSkhAeFBr3mPc+pnRDrcr9vKu+WGh/sg1LeHXQmzDI4fM5BPQdAE1PVBSpRvuBnXgoECfm8Zyl1svTer4zhIJCvlouErUtK2M2hn1/2S+EEFTeCY6FPUjjjeQdqBD2EofAjsIvXMdOecO51mJX08ik8b4oF3kFs+annHBgNys7Z9DRSd5261SroRak0LZ7BhhVOK0URrHNC3CjiUxgSbbgBQkIYGWhNWp/x1iGPGME/oFUigYb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,40 +98,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2026-08-19 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
-
-Note that we will be skipping the meeting in two weeks (2026-09-03) as both
-Ackerley and me will be traveling. So if you have something urgent to discuss,
-please speak up :)
-
-In this meeting, I think we should sync on the recent developemnts regarding
-in-place conversion. I don't know whether David Woodhouse will make this
-meeting, but if so, we will also talk about guest_memfd+VFIO.
-
-So this meeting could either be extremely short or very long :)
 
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+On 19/08/2026 17:17, Lance Yang wrote:
+> 
+> On Wed, Aug 19, 2026 at 03:31:40PM +0100, Kiryl Shutsemau wrote:
+>> On Wed, Aug 19, 2026 at 03:12:22AM -0700, Usama Arif wrote:
+> [...]
+>>> ---
+>>>  mm/huge_memory.c | 2 ++
+>>>  1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index ced400f72d43a..afbb5974bd225 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -2449,6 +2449,8 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
+>>>  		add_mm_counter(mm, mm_counter_file(folio),
+>>>  			       -HPAGE_PMD_NR);
+>>>  
+>>> +		if (is_present && pmd_dirty(pmdval))
+>>> +			folio_mark_dirty(folio);
+>>
+>> Unrelated to your patch, but noticed while looking at it: we drop the rmap
+>> here under the pmd lock, while the TLB flush is deferred to
+>> tlb_finish_mmu(). The pte path handles this with
+>> tlb_delay_rmap()/force_flush (5df397dec7c4), but there's no pmd equivalent:
+>> tlb_flush_rmap_batch() only knows folio_remove_rmap_ptes(), and
+>> zap_huge_pmd() uses tlb_remove_page_size(), which takes no delay_rmap.
+> 
+> Well spotted!
+> 
+>> Doesn't matter for shmem, but xfs & friends do get PMD-order folios, and
+> 
+> Right. pageout() cannot pass its refcount check while PMD mapping still
+> holds an extra folio ref, and mmu_gather drops that ref only after TLB
+> flush.
+> 
+>> do_set_pmd() makes the pmd dirty+writable once page_mkwrite() has run. So
+>> folio_mkclean() can clean the folio while another CPU still stores through a
+>> stale TLB entry -- silently lost write, no PG_dirty left behind.
+> 
+> Yep. Writeback can run folio_mkclean() while that ref is still held,
+> though, and with rmap already gone it misses the PMD ...
+> 
+>> I think we need to fix this too.
+> 
+> +1
+> 
+>> Wanna give it a try?
+> 
+> zap_huge_pmd() only handles one PMD under PTL anyway ... how about just
+> flushing before folio_remove_rmap_pmd()?
+> 
+> ---8<---
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index afbb5974bd22..6fb34924ef66 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2531,6 +2531,14 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  	is_present = pmd_present(orig_pmd);
+>  	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
+>  	has_deposit = has_deposited_pgtable(vma, orig_pmd, folio);
+> +	/*
+> +	 * folio_mkclean() relies on the rmap to find writable mappings.
+> +	 * Flush stale TLB entries before removing it below.
+> +	 */
+> +	if (folio && is_present && !folio_test_anon(folio) &&
+> +	    pmd_dirty(orig_pmd))
+> +		tlb_flush_mmu_tlbonly(tlb);
+> +
+>  	if (folio)
+>  		zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
+>  	if (has_deposit)
+> ---
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
+I am currently at below to reduce tlb flushes, but still WIP
 
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
--- 
-Cheers,
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index bdcc2778ac64f..60bdd6287b5a9 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -301,6 +301,12 @@ bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
+  * function, except we define it before the 'struct mmu_gather'.
+  */
+ #define tlb_delay_rmap(tlb) (((tlb)->delayed_rmap = 1), true)
++/*
++ * Like tlb_delay_rmap() but without the side effect, for callers that must
++ * flush rather than delay: can another CPU still reach this mapping through a
++ * stale TLB entry once its rmap entry is gone? Not during fullmm teardown.
++ */
++#define tlb_rmap_needs_flush(tlb) (!(tlb)->fullmm)
+ extern void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma);
+ #endif
 
-David
+@@ -315,6 +321,7 @@ extern void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma);
+  */
+ #ifndef tlb_delay_rmap
+ #define tlb_delay_rmap(tlb) (false)
++#define tlb_rmap_needs_flush(tlb) (false)
+ static inline void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma) { }
+ #endif
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index afbb5974bd225..76d8d5cf92ee0 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2493,6 +2493,33 @@ static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
+        return folio && folio_test_anon(folio);
+ }
+
+
++static bool pmd_zap_needs_tlb_flush(struct mmu_gather *tlb, pmd_t pmdval,
++                                   struct folio *folio, bool is_present)
++{
++       struct address_space *mapping;
++
++       if (!is_present || !pmd_dirty(pmdval) || folio_test_anon(folio))
++               return false;
++       if (!tlb_rmap_needs_flush(tlb))
++               return false;
++
++       mapping = folio_mapping(folio);
++       return mapping && mapping_can_writeback(mapping);
++}
++
+ /**
+  * zap_huge_pmd - Zap a huge THP which is of PMD size.
+  * @tlb: The MMU gather TLB state associated with the operation.
+@@ -2531,8 +2558,15 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+        is_present = pmd_present(orig_pmd);
+        folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
+        has_deposit = has_deposited_pgtable(vma, orig_pmd, folio);
+-       if (folio)
++       if (folio) {
++               /* Flush before zap_huge_pmd_folio() drops the rmap entry. */
++               if (pmd_zap_needs_tlb_flush(tlb, orig_pmd, folio, is_present)) {
++                       tlb_flush_mmu_tlbonly(tlb);
++                       /* Re-arm: tlb_remove_page_size() needs tlb->end set. */
++                       tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
++               }
+                zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
++       }
+        if (has_deposit)
+                zap_deposited_table(mm, pmd);
+
+> 
+> Cheers, Lance
+> 
+>>
+>>>  		if (is_present && pmd_young(pmdval) &&
+>>>  		    likely(vma_has_recency(vma)))
+>>>  			folio_mark_accessed(folio);
+>>> -- 
+>>> 2.53.0-Meta
+>>>
+>>
+>> -- 
+>>  Kiryl Shutsemau / Kirill A. Shutemov
+>>
 
 
