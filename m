@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68336C5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:17:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1830BC5DF7D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A93A6B009B; Tue, 18 Aug 2026 23:17:10 -0400 (EDT)
+	id 035B16B008C; Tue, 18 Aug 2026 23:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15A4F6B009D; Tue, 18 Aug 2026 23:17:10 -0400 (EDT)
+	id F28926B0092; Tue, 18 Aug 2026 23:27:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0704F6B009E; Tue, 18 Aug 2026 23:17:10 -0400 (EDT)
+	id E3EC06B0093; Tue, 18 Aug 2026 23:27:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEC196B009B
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:17:09 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4C0104040A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:17:09 +0000 (UTC)
-X-FDA: 85116557778.04.32D8FED
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C42FC6B008C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:27:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A0341C0F93
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:27:00 +0000 (UTC)
+X-FDA: 85116582600.03.E579CE4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 761D240005
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:17:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=W3HBMWD0;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9F94340007
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:26:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IVOBb5xL;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787109427;
+	s=arc-20220608; t=1787110018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aJlpKyqUKzat34dlX1t84ExmqJi5Z0mvjSOZBisUEqc=;
-	b=HGYgOrgc7TGB4ZATOeohozPAGLFWUswO9iAIpXLPAZ/mEJXVtpEcxsrjuTV2OeKuiGV0IZ
-	s/wjhZeXqiuTdj0/Q9/yJq9ATYdUJj49w1VS3GNTig7HM1AUIad7lM4kbNuHg4YlebrD0W
-	2jTIXHkvWAMvRUfE6O8teM+VSj6vLf8=
+	bh=DZsR5sCGflKVZsWluYOj7yhh9p4oVHlhw6wAcEQCGCw=;
+	b=mRcFaYXan3GNnCkUPgbDjVwUk92ejmSBGIGMq6PBHgG0xREybBuEtr2+/vHgm6YBoTyQcy
+	AwqByIS3zhcSglPIHeVWGTr/JzA3iROP3ox7YC9okxVhhsIVsEI8FwYNSj0dZYWDgMpnr0
+	nD03C5NkxC9nMtfyr9BWCliodl7WEpI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=W3HBMWD0;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IVOBb5xL;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787109427;
-	b=qrKxymnumXDzO6MqzJxoIuy/iCY6A5zeAZiUs9crTahV78fXSpnax1DCpMa7+rWcrMYLPX
-	pvfxchZWEgo8hSQAbZMu6zrG9VkdB/6NTdMPp74ZpV3GlYLEtb9M1wUg22wMJNHImnksAU
-	kTbTkiFcH7JfseAdYzlwPjC1vxB8NJ8=
+	t=1787110018;
+	b=yyy3eDQeA340C+Ks6XUCdOHyLOjV/4G7rxQmLBjDwcqO0Fud0KHHeTWPsHwGZFchUPCY5w
+	FDOOP09yp0wffTtxFsQX/wvHsZJY6+/x4QNkehpEc/zEuReugJZl4ugLsa4alFo/Sth3q6
+	ui+5NylMkfw8wUG+6424WBvQ1Tu8S+Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27E3C436CB;
-	Wed, 19 Aug 2026 03:17:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4261F000E9;
-	Wed, 19 Aug 2026 03:17:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B4ED5438D7;
+	Wed, 19 Aug 2026 03:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A191F000E9;
+	Wed, 19 Aug 2026 03:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787109426;
-	bh=aJlpKyqUKzat34dlX1t84ExmqJi5Z0mvjSOZBisUEqc=;
+	d=linux-foundation.org; s=korg; t=1787110017;
+	bh=DZsR5sCGflKVZsWluYOj7yhh9p4oVHlhw6wAcEQCGCw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=W3HBMWD0Q9VSIhbqG4DPn2GUiZMNe6rN9/BjyNlsenWV4WggdD/iMUOhpD5LhcznH
-	 2QCR4dnt6UY+HVYpvNHV7tAM1Isg5qOfqkGVgsxx2Y88IEbfnM7SUO9z51v8djVNIN
-	 2ndvAEzrSqZUzveXa3T43akZ2qc0A0KgGMukBWyE=
-Date: Tue, 18 Aug 2026 20:17:04 -0700
+	b=IVOBb5xLR1QWeHHyFIp07pXoOjRkmb5kH1NbLK7HXNbjx7bAtJgGk1uxE1ho3RaSS
+	 FZrAX8RDckayMIYgBSLQmXglvM9NPhEy5Yhl5k8WbY0T2gk2Vk4OURTuQq1HqAKe3Y
+	 30Wl9nEjJPf16sjghMpQ7nOcEnGDuijTHmFNNX5o=
+Date: Tue, 18 Aug 2026 20:26:56 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Ye Liu <liuye@kylinos.cn>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan
- Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] tools/mm/page_owner_sort: fix --sort, add module
- filter, improve usage
-Message-Id: <20260818201704.26f48cb26420ad8ec00fd226@linux-foundation.org>
-In-Reply-To: <20260819021611.2910835-1-ye.liu@linux.dev>
-References: <20260819021611.2910835-1-ye.liu@linux.dev>
+To: Foxie Flakey <foxieflakey@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, Suren
+ Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] userfaultfd: reset err to be 0 when move_pages_ptes
+ succeeded
+Message-Id: <20260818202656.f7a248b33f6130d06b4cf83e@linux-foundation.org>
+In-Reply-To: <e1e0b5f8-c3c6-0537-670b-4397f822f980@gmail.com>
+References: <e1e0b5f8-c3c6-0537-670b-4397f822f980@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 761D240005
-X-Stat-Signature: ihqewoa7m5ujjgwa3fmycehp4fb61g9q
+X-Stat-Signature: qqsc9hmkkf6pm8jynojymkc7nf1hsyt8
+X-Rspamd-Queue-Id: 9F94340007
 X-Rspam-User: 
-X-HE-Tag: 1787109427-525337
-X-HE-Meta: U2FsdGVkX19KL6tAqYDUdjl2R3IB5bFWjea7kVZhFwPfFlSw3QlZAwlsCCXtOS273cmWQb+eaMgWXq28lEpdr/HCDXIny//ciRoHUEfxv4Yxb9hRcTRepDtKUiGgMSRYahSUGltzJCghKjhaabRsZt5D0OiTyPZg/NX8ZHTnSGmX6GXd6oCbpL1rCKgMnFWWUfHDzQoB3Ol2l5oPVYauC5h5tH3B3lYuPj9kYUZdvRXlr7iLcJKyBavAmz6/hc5pLUnTbRVeheiJplSV+q/L5KcHEHKJpQ3nxdXeSr54AiNQ7wY1HBU/5Zv353a93fRbxxv+ji5Okt9lVy3pcLHxUcIWly5U2e6OWPxkLWJoPjcbGpWxVTS3hNCWF6WUOYrest76HisAYIvCLf6DT9GzmwtyF9/CwPN8mkinVD1OMK9KbHPojEbpT6GLnJIQ1zLRkv3aqfIpM0YUsU+6TCk39brZJGTmfdk2o7M2n0rBdc1K4JZLdUNq4VuuIRXSfO8S106SSK2KI4vXrNFH9JJTuN/rCisM7LlcQouGMxtaagKnm/DzLwdC1YrlxDjxkm21O2x8C9jttKb7p3Mn1voWQ422VDHEFMvlK9OjCjRwIngcyRZYX8BeCrswj2P3YY7n/Usrcorfxq/6kvlDBwwpugiQxaIQJr3DUkiOVhSMqSbooxOXmL3Y1SeSwJKInrXALh43NmG7YoNX+lDVzmT8oC6bdvzIplX8+VKxp0DNzLpBWf9uDcD+0G4v6VKPnWhThKf8eZ/bgBZXsbxOHX7KRtgwCpR4NBBVmZ3B7Ih3GTIQHLqo5M9+t8Qx87HUfB4kakHbkkeV7Jde4jMVR8HEo4u5XqKCBp620x5mPRYpGIAZh0nw4SIBvs+5xZTsXqSD2LrCwo73ooV0rsSBlr7km4sNhw1Dovnq730NvRaZ6hYlc68u1/HGJZOPKIm3ORLLSeMQEhrrJVdwz5pBU1y
- V+kP8xgy
- o8GaTmqkH5HhNESkrJEV2U5rlBUdyFIzuGUj4G6dSDgsKWgiZ2vkJANLJIkYjX8YJk7keN8IWd+0UtdkpRD8dBUPY7C1tmQLbatvjL6bvlGqN/SYTHbflw6yrsoBMYJs/TxRx0PJJMZvvteeACMEOiOS0MOMsLXyoIhLvrPl3syPE/VrMBI1Q+CIUzS1fX2o891b/u355lkg1xtr1XhdFZJ5kFU9/iYgs1odeU0wmCCvohPq/zUzlEju/HJrJNX5414fgIicNlUgVx8wZIPdRPjjGpMJdPOKzuZVMY3cotzSww3Ke/PubfxT01wge+am2ysrCMXczvnJ0qJZWsxsNKdMf0NubkKCZM5frGvDD+up8FpE=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787110018-589101
+X-HE-Meta: U2FsdGVkX19Mp9CffPPl/S3yTYNe3S94zwuIp1GS6Uk+/KK9FQuDQ0Ma2/QctEv2jcungj4gF2JeQS7PHcOUV09Xj0sLYXvHaRVQ0VW2CaybIGViX+p8EhlIlrZJ8qjLNsA6BUhJLvv97hCi/ylzWVNywbfRbz7TxD1ajGwmPhYkkrpFBxt8ho8rqbRNphVYEFyZqr8/R094tP1ZOG7HTL5CHkJpmMQwfTvDeNTOKWtiPwU0q3vty+l8w60SR1meaFjOHN4fguvs0jECXUJ5aJIzO1k5foyN3dGB0aZ/l4gUkRXcXeNDwPJGqrTU5O8aqwb2UmrME13VcAKCRVHRC46TgfwJzptetGfBc8U8BVsiAzREbPzYOebGME7NpgntCVC8DaL4kR27ZVqCU7mb/XXLkfTWBBp3xCGaMrLw0HrEbIheGeyIUAP6WJ1qIQgtKnUSXWSjwYyoYTGRB5SbZMGiIotCAdeMGkkP+TrdnojIDhCLSHRn2f+GyDpljKt9seFS3FboVjNsCHuov8kyfeTNobmoT0yj4f0HpNIcCtMlH4W0WFi1DgqXcUk3CtuRGqTWwPPcLV4X1fBbFzloYZL+IltHSHsgp4OPjBMuBnjpTtKBF2AtYl4onME0Qt9k1tbfOy3yebOAeQzINcfAUl+24Z0ingZZ2ezAeiR8SbnqOwjRmA7sIskSMWh/N3OG7Bcch4XJ5c4wdviigQp3ylST9bp9I8Jm9iAn4PxBCtcrMRfzpa+dUQrMEvIkmJSX3lPGk0OGUaiLTOFv3ymurRIDN/0kHA8VgaAbM/X/c4FomqII1bOwM6Gbikb6jW2hy7otDZBAEiS/mPPpgoxANVI0YaeAwQF1ahbho74a8WfQEX43a+Tsh3DqlMC+ygzTvQZ61Hx2Cn4xGiTrUUUWXHL65MOWxYZnA3g5kpbRKY7zhGwvYXtEhy6Oc5zrq7Wbwo13NQg2kxCpcptqxeG
+ BR3Jk/ja
+ G4uhzd9bGV6jCVvExoqi6tz3kw7tNItd7uJb1clbYn0emxt9RqKZEEXzHM4zUI/I1UnQhqOOGh1k7FPsGXIv/7Nn9YFsXJINPLGhVL3Uyz/31SQRWiVIJoDo7+itHexaGGtFhMcHXgmU3pHsrKpuHEgboe1Z0oxrP9dupvidRdIoUoNW1MVO7a+AVEIR9463bUsoOzDsDoNf9B9XPiwcVa7in/Ypn338KgqMbs+M+BH88hNjFk3Cky4RyHMUv9puT5N7jbdILbR69V32HvTO70Pz5qDwracjH27TLcAGa55c+6A/VvhRFpfXC/9Elif/Q7iWK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,18 +91,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 19 Aug 2026 10:16:08 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+On Wed, 19 Aug 2026 10:08:24 +0700 (WIB) Foxie Flakey <foxieflakey@gmail.com> wrote:
 
-> This series improves the page_owner_sort tool with a bug fix, a new
-> module-name feature, and better usage text.
+> 
+> During move_pages() operation, when move_pages_ptes() returns EAGAIN,
+> the error code is not cleared even after we processed it. This leads
+> to a successful retry but then the same pages are retried again due to
+> the stale error code. This time move fails because pages are already
+> moved, loop is terminated and move_pages() reports a failure.
+> Clear the error code once we processes EAGAIN.
+> 
+> Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
+> Assisted-by: ChatGPT:GPT-5.6-Luna
+> Signed-off-by: Bryan Lim <foxieflakey@gmail.com>
 
-Cool, thanks.  I remain mystified about the recent flurry of work on
-page_owner.  But I'm glad that people are obviously finding it useful!
+Thanks, Bryan.
 
-I'll stash your series away for consideration after 7.3-rc1.
+More paperwork: the signoff is supposed to match the Author:.  The way
+to do this is to add an explicit From: line at start-of-changelog.  If
+this is not present, we fall back to the email envelope's From:.
 
-Sashiko claims to have found something rather obscure, but it's
-probably worth cleaning that up:
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2085,8 +2085,10 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+>  		}
+> 
+>  		if (err) {
+> -			if (err == -EAGAIN)
+> +			if (err == -EAGAIN) {
+> +				err = 0;
+>  				continue;
+> +			}
+>  			break;
+>  		}
 
-	https://sashiko.dev/#/patchset/20260819021611.2910835-1-ye.liu@linux.dev
+I'll queue it, with an adjusted From:, as above.
+
+Could reviewers please advise on whether we should backport this into
+-stable kernels?
+
 
