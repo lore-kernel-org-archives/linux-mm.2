@@ -4,140 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6753FC5DF85
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 08:54:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 401C8C5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:03:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44B306B0095; Wed, 19 Aug 2026 04:54:19 -0400 (EDT)
+	id F31626B0092; Wed, 19 Aug 2026 05:03:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D5426B0098; Wed, 19 Aug 2026 04:54:19 -0400 (EDT)
+	id EE2376B0098; Wed, 19 Aug 2026 05:03:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29C4C6B009B; Wed, 19 Aug 2026 04:54:19 -0400 (EDT)
+	id DF7906B009B; Wed, 19 Aug 2026 05:03:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F12396B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 04:54:18 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74638A1D63
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:54:18 +0000 (UTC)
-X-FDA: 85117407396.10.6BD4973
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C4FC240003
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:54:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bOu4u+EX;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 93EE46B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:03:16 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E769BA04BB
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:03:15 +0000 (UTC)
+X-FDA: 85117429950.29.73144C8
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3C0E518000E
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:03:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VN3rR5hI;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787130193;
+	b=sscQKbpZOOEAV/KV42BqRbcT44ZOaihc+5qUjo+ZG/akKaX/xxhnBkDwFQtVVph/GhXmPK
+	6MJZJFMMWcWW0/miP4X4pueKvkEZPM9zsXd7W0Qf4CZtQchHUegyjmqbVWWZI4v6XcV3j0
+	Y0IBVV97Uf/Z27zD3324+Ii6ULpdubI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VN3rR5hI;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787129656;
+	s=arc-20220608; t=1787130193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZUHE8vO3mY8kflzEgME4ShNYgQSCxic+3gn46iev0wU=;
-	b=UgFs76ODnhiHgclxpH/egeOqgnou5zxe7icEzLJ0A0zQpRjII+76/nrsK7BaalU0ogeXh1
-	fZ+BZFDBXErBg1UIwY8jIXhz4oyr6kZ3ZYJjsRToD99mepuLeNcXW5w/vghx0vdAC50+Pt
-	OhB+Ft2RRrRtKLzuioH2d59R8ongW2E=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bOu4u+EX;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787129656;
-	b=pcpVa+OQ0H6ZttsdbCA1MqZWlKwNN4IWVVjZIHtGs8SDYwggje60bbwadPKX5Br0s7YJfw
-	XHsfel5FAd34D+CDGfQKythonG45TlwcWKoXzbVTsWPGYO4Uy88wfXgAe2rdp7ewEeLX5a
-	Ck/mcLsy9WdM7DeuAcDVK49qjsvKefA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 397B760A59;
-	Wed, 19 Aug 2026 08:54:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676DB1F00A3D;
-	Wed, 19 Aug 2026 08:54:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787129655;
-	bh=ZUHE8vO3mY8kflzEgME4ShNYgQSCxic+3gn46iev0wU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bOu4u+EXZIJ4fb6yNHV+gptSogl76KO/z7YS7VyCLtNbuPTYm9sbElAv5PW+QJL3X
-	 HK0AE5wTQw90HqGxM4Vkedz2bNGaHl6PLY13MJ4mG1a7Y0UxSBtqllCoB81I36rFEt
-	 HSv23G4jXYEpkjx2/+THqkADbffM30vgR810HCBijXTaO6YWmv5aDkkD/OsDlQHBiz
-	 q4TWRvAdufwtBofTyhKN7EveHSNYzQEoIQN6nLqUKVnWJZHqTFhrzcd/O5cD2P6OXS
-	 jkn4UfbGDusx5i1T1mG6f9pKS6nmBHGhYlrJl5w7ZDgCqEzyxim84xTaoX8Yqb5AZ2
-	 sYOV4SsdB4RfA==
-Message-ID: <68cb43c6-6ed2-488f-916a-b22bb956adcf@kernel.org>
-Date: Wed, 19 Aug 2026 10:54:11 +0200
+	bh=mD/Cl50XWzys0id4X5RVAR1gGagtP2IYMFAaW4ejKq4=;
+	b=DOcbLqFcQLaKaFUVOPDYr2+WRwZI8H9lyBY0RBisK9AqGKhb9ciA4NsTZ9Xp66rgkHSD/M
+	L7yb470v6bKSB2is1X6vgLDstbJ262k3aLVUaivMMvVdZTdN0cT/OzE+OwO1qHbDLXzXSC
+	Y8TmGK196VsgUVvdg18Zs3S9fDVlwa4=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787130187; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=mD/Cl50XWzys0id4X5RVAR1gGagtP2IYMFAaW4ejKq4=;
+	b=VN3rR5hIe2U2m+praqeDru6HfciQ+HdGqhDfWO/Rm+dz4aC7fACGfbM60HJzEOSiaQdGBpMexIJyglKmNxgGkkUDQsqrC7cRCdiQ3V7lF+8bjFwQRAij/RRTzdsKqN/X6UW+TecwEDkLndibAornQEYXBywSjn0J/4OXImofnVs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X9GF3bp_1787130184;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9GF3bp_1787130184 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 19 Aug 2026 17:03:05 +0800
+Message-ID: <167ad235-253b-4bfe-9b60-265262be34f8@linux.alibaba.com>
+Date: Wed, 19 Aug 2026 17:03:04 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlb: add cond_resched() to __unmap_hugepage_range()
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Leon Hwang <leon.hwang@linux.dev>, linux-mm@kvack.org,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
-References: <20260818135029.93288-1-leon.hwang@linux.dev>
- <3dadebb3-7e2a-459c-a5e8-b375faf89938@kernel.org>
- <20260818111756.6b0e347db3170bc22cc3c5af@linux-foundation.org>
- <2a523945-825c-45a5-a680-37e941e092d3@kernel.org>
- <20260818115526.654d7311366b66cd031c67e4@linux-foundation.org>
- <35cca76a-4d3a-451a-b492-dd4423ac3e63@kernel.org>
- <aoVuRWz0VkKiJPzd@tiehlicka>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aoVuRWz0VkKiJPzd@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 2/7] mm/mglru: introduce helpers for manipulating gen and
+ refs flags
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Barry Song
+ <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>,
+ Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
+ <20260818-mglru-flags-cleanup-v1-2-8dbbdac0d28c@tencent.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260818-mglru-flags-cleanup-v1-2-8dbbdac0d28c@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C4FC240003
-X-Stat-Signature: dkrdzg3446ab3d7cextd745ue13o79fd
 X-Rspam-User: 
-X-HE-Tag: 1787129656-302062
-X-HE-Meta: U2FsdGVkX18A0Kkjkkvp4C3tLGCDVbJyxejKbo1/emMDcGit7tg0dFBLErxT3Gr95sVfkBXr+Qn5fiWtDHnuG0sh0ERiU4ZS9xmF9LSdL2BQQER69lyrVEAoP2QaPVWctDvy2TLQzdoYZRqBvz1oFUv7knNaGz1s9utGNXYAThTyqDpOXSXeh22o20cOYeSKF6jHRWNGE8lRttvPHRy/XLObhoGd7eWERqr2az4m1i48AQg/A9qcTOsovbUZegedOgSTGdYD2DIWqo1Tu59OJMwxViIzPrpHctu2CMG57Cq7/w43wz0jRSYWIXj7Pf3J6AabqOyuuYf0iDkQfVrfG5UyhsuNO3hBklC4V4mYbL8pD7ov483LdzYwwmVTn4H06p1E+dU5ARH4gMc5aG/OAq/X9VsNZdpHf3mPyWlmcsuyIiDRUHqSl6MyLYGHc7V/Jl4k6RLonPLFuDtGsD9vStKlPztoFAMxeqFKOwITyoZ15qzP6J9JnigzDvkpCfz/O8pxUrFVqOsx0t1WQLN45RXhdmk7+IjNFoOmigUlxK8pJ5WEFDy1cESra6Pk3b7eFX5wrNlx+Ivrx1d0PJDRoIGJ1k4PExEDUEkAa14vlA6Bzf175jADA26F7U6P5FPHgl8iyS2oHmEBJdoTW6X5eMVkykHATV7Z1vytvVjAT1tTHo+CbqRVbfinffykdSBVp8dzSE7+ZwusJR2aUVEfeb7CsC1TXQHhgMFOe51UgDdjhOfPdwoCNHnCa8HA7VBH0dwBn8LiHXiiAy4cGophii3P0ltmnldO7amMBGn+k5ay+ZldsaVXCoD6LiwQOYHfi9e3VvejoE3iujKzB6lE8pmdndLhAzVWAnqkBScu+7Uncnxu1k0M2zK5+dwOjhzh4gol8Z/q7PENsjgstFI+vlssNhes4rdyRE/v1cKOKc6rbk4NiyFoxld7fdlYvrNI/RjernSFFNwV/sqvp0L
- EiMtNwXD
- AUWGgeHrGpaFYKmirlazLTDO3Fbc0j09MblsWoLT8VokYgwm/TchHG73IJ1ZhnRJ0VwklNqWL09KUeefhKLWZQXKceNcBo9kvbnJA3zhcOKtP1wtP4qWNoQsHU8HMzP2KYeDMFGQ4Pj2RrGNranlArsV9ON/ElJBsBCBBJNM6XR37kFKVLs0/NdEz3pb1t9/cQT7GMy5jrN0p+lNh0Jx0ThhwqLqG/NY+u6lSush9bQZ7GropK3pQvxhnFUC34qOBA2mHAGlIQZxYZ5imM41EDLpQTIzsgSb6y92zoSPAygYwZNFb4EOyTERCVgWF7xUlrP9rwlOvmSDmyN4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3C0E518000E
+X-Stat-Signature: zuq7djs5m4fgzg5rbt6n3bj68cr3ojb5
+X-HE-Tag: 1787130191-429799
+X-HE-Meta: U2FsdGVkX19BMH88lmlNLysH2h6SgZzkXFK3kvxfmaohGPP5tY9+UGiVdhiwuObmH4JmTLAAnDGe7DhloRoh3rD1rY1Zz0l/8PWxPu/SFzYIhtRwqUaKbk8u2jhie+rzoE5DV5z+JE6kDlGEErZZwQdbD9cdr0JH064Kt0uBpKSzGW64DbPnMsGhmkZtwyFjUEjCqJWiVxcY9httpN9kvQD0s5QSxDlo9FYcKzSvGey1RpIt+fE4JT3c7takdAvRXbYM96sWf+20SWCGrD3c+SDm8M6i/QEvoy2+4wd+3KKU1zhg81vUyZpGfp7SIabX5dmoi1YxnPRFgWdbiNwaWIxo2SEYclR1zUO2XITNJt+49fKSLayczku+4jC+1MZ9sy5OAKD8HAE5fRRBBUUMu0CGI98CmkAW7gUbyt+3zqMJQJTHIo6YBH5w7ZHx82rk8gW0d97Ryd+w8TdXbvlpq2xeuCDEwq63Mdqtn5TaL5MOYH89ODdkhemZY8BIRkt41FOBO2kazC7qBsFx8/3UDi0DD2pyfm9NQfGH+dCU5d/sfioAiPR2+xk6euLE1RpuXrEMphic434qpm0GJsvvRK/qCMAXsd1FQind+Hv8nkgpO4DD2JmhD42Ka9KlytQeQk83Sdxosk+yyWNLhc+CRS+MQBkGQp9VIL6r+Lfe9vjCLgbPEfRnJtEr4B2chcn+Bp0MpuYvVu3LQ7VawIJXYnd57OdmA7udPNQGfUK+Xb8//0rq1oATODl+jQ9T3GWxMsBhrTgEC5oNto/lIydBZzI9GDlsPzmSpnUB/yu7Pm3bpNAehIJD17oCmnCIjyPmXDS8rKmuu/ZfbxkzV8WxHtWPlagqPLNSmK5sNj/7VD1MvIcv+MaLIXT8yBPOtzy2+UdlXhnujOCcEZw32B0AkXw9vz33P+MI92Bv+AF43BFAgHg4W4X7Z0Ghbxp3pNE1EoZXy28oTb0/ERCzThq
+ Yw2N3rdK
+ UE2Bjy/Bo3XVafjlvX8lLrtsNPB2dsoKXGk+Y1Y38QMqRbM580xuaSx1hhgSBrSyzKeKuft+JLCrIJ64X0I//zsT3ogPrWDp9yjzYa/He4KDNXikLSUkMNCfyIq9vDd9hea2jn1OK4pUi+ucFXyAr0SvobzL96W+KewtyQryDWsnN195xADINJJHzAkVw25aoRn2ImZTUnpDGEZw5hQQ0eQH/daBghfwxPKKeQKyU45T+QPiYm7OhR7dG2r96s923VawHqaEBkUYrbvWADMKhOaGYsPnsNG5LO9VZQbpGDAEXO4mWo6pSPXyvPI+xQxT/gaUymIHBuyQu0MO2iD2qDLzdqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,34 +98,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/19/26 10:50, Michal Hocko wrote:
-> On Wed 19-08-26 09:53:25, David Hildenbrand wrote:
->> On 8/18/26 20:55, Andrew Morton wrote:
->>>
->>>
->>> Not understanding.
->>>
->>> Maybe you refer to adding a patch to -stable but not to -linus?  That's
->>> against the -stable rules
->>> (Documentation/process/stable-kernel-rules.rst).
->>
->> It's tricky: if a problem only exists in stable (there is nothing to fix in
->> Linus' tree), then a stable-only fix is acceptable.
+
+
+On 8/18/26 1:38 PM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> The crucial quiestion is whether this is something that needs a code fix
-> or a configuration fix. Really fighting for low latencies with
-> PREEMPT_NONE is a kinda lost battle. You might want to play whack a
-> mole...
+> Instead of doing bit ops on folio->flags.f, introduce helpers for
+> adjusting folio's refs and gen info, make the code easier to debug and
+> understand.
+> 
+> No functional change is intended: some combined atomic operations are
+> split into two, which only creates harmless transient states.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
 
-Yes, I read your comment on the other thread afterwards and I agree.
+Thanks for the cleanups. One comment below.
 
-The whole reason we added cond_resched() all over the place over the years was
-to avoid splats from false detected hung tasks (e.g., 30s ...).
+>   include/linux/mm_inline.h | 79 +++++++++++++++++++++++++++++++++++++++++------
+>   include/linux/mmzone.h    |  2 ++
+>   mm/folio.c                | 19 +++++++-----
+>   mm/vmscan.c               | 61 ++++++++++++++++++++----------------
+>   4 files changed, 117 insertions(+), 44 deletions(-)
+> 
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index 621c8653d8f7..93bf3fa221f8 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -142,10 +142,43 @@ static inline int lru_tier_from_refs(int refs, bool workingset)
+>   	return workingset ? MAX_NR_TIERS - 1 : order_base_2(refs);
+>   }
+>   
+> -static inline int folio_lru_refs(const struct folio *folio)
+> +/**
+> + * lru_gen_from_flags - Return the LRU generation number from folio flags.
+> + * @flags: folio flags
+> + *
+> + * Returns: A number between 0 and LRU_GEN_MAX, inclusive. Returns -1 if the
+> + * flags indicate the folio is off the list (e.g., isolated).
+> + */
+> +static inline int lru_gen_from_flags(unsigned long flags)
+> +{
+> +	int gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF);
+> +
+> +	BUILD_BUG_ON(LRU_GEN_MASK & LRU_REFS_MASK);
+> +	gen -= 1;
+> +	VM_WARN_ON_ONCE(gen != -1 && gen > LRU_GEN_MAX);
+> +	return gen;
+> +}
+> +
+> +/**
+> + * lru_gen_set_flags - Set the LRU generation number to specified folio flags.
+> + * @flags: pointer to the folio flags
+> + * @gen: generation number, between 0 and LRU_GEN_MAX, inclusive.
+> + */
+> +static inline void lru_gen_set_flags(unsigned long *flags, int gen)
+>   {
+> -	unsigned long flags = READ_ONCE(folio->flags.f);
+> +	VM_WARN_ON_ONCE(gen > LRU_GEN_MAX || gen < 0);
+> +	BUILD_BUG_ON((LRU_GEN_MAX + 1) != MAX_NR_GENS);
+> +
+> +	*flags &= ~LRU_GEN_MASK;
+> +	*flags |= (gen + 1UL) << LRU_GEN_PGOFF;
+> +}
+>   
+> +/**
+> + * lru_refs_from_flags - Return LRU referenced / access count from folio flags.
+> + * @flags: folio flags
+> + */
+> +static inline int lru_refs_from_flags(unsigned long flags)
+> +{
+>   	if (!(flags & BIT(PG_referenced)))
+>   		return 0;
+>   	/*
+> @@ -155,18 +188,47 @@ static inline int folio_lru_refs(const struct folio *folio)
+>   	return ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) + 1;
+>   }
+>   
+> -static inline int folio_lru_gen(const struct folio *folio)
+> +/**
+> + * lru_refs_set_flags - Set the LRU referenced / access count to specified folio flags.
+> + * @flags: pointer to the folio flags
+> + * @refs: referenced / access count number, between 0 and LRU_REFS_MAX, inclusive.
+> + */
+> +static inline void lru_refs_set_flags(unsigned long *flags, unsigned int refs)
+> +{
+> +	VM_WARN_ON_ONCE(refs > LRU_REFS_MAX);
+> +	BUILD_BUG_ON(LRU_REFS_MAX != (LRU_REFS_MASK >> LRU_REFS_PGOFF) + 1);
+> +
+> +	*flags &= ~LRU_REFS_FLAGS;
+> +	if (!refs)
+> +		return;
+> +	*flags |= (BIT(PG_referenced) | ((refs - 1UL) << LRU_REFS_PGOFF));
+> +}
+> +
+> +static inline int folio_lru_refs(const struct folio *folio)
+>   {
+> -	unsigned long flags = READ_ONCE(folio->flags.f);
+> +	return lru_refs_from_flags(READ_ONCE(*const_folio_flags(folio, 0)));
+> +}
+> +
+> +static inline void folio_set_lru_refs(struct folio *folio, unsigned int refs)
+> +{
+> +	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
+> +
+> +	do {
+> +		new_flags = old_flags;
+> +		lru_refs_set_flags(&new_flags, refs);
+> +	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
+> +}
+>   
+> -	return ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+> +static inline int folio_lru_gen(const struct folio *folio)
+> +{
+> +	return lru_gen_from_flags(READ_ONCE(*const_folio_flags(folio, 0)));
+>   }
+>   
+>   static inline bool lru_gen_is_active(const struct lruvec *lruvec, int gen)
+>   {
+>   	unsigned long max_seq = lruvec->lrugen.max_seq;
+>   
+> -	VM_WARN_ON_ONCE(gen >= MAX_NR_GENS);
+> +	VM_WARN_ON_ONCE(gen > LRU_GEN_MAX);
+>   
+>   	/* see the comment on MIN_NR_GENS */
+>   	return gen == lru_gen_from_seq(max_seq) || gen == lru_gen_from_seq(max_seq - 1);
+> @@ -270,7 +332,7 @@ static inline bool lru_gen_add_folio(struct lruvec *lruvec, struct folio *folio,
+>   	gen = lru_gen_from_seq(seq);
+>   	flags = (gen + 1UL) << LRU_GEN_PGOFF;
+>   	/* see the comment on MIN_NR_GENS about PG_active */
+> -	set_mask_bits(&folio->flags.f, LRU_GEN_MASK | BIT(PG_active), flags);
+> +	set_mask_bits(folio_flags(folio, 0), LRU_GEN_MASK | BIT(PG_active), flags);
+>   
+>   	lru_gen_update_size(lruvec, folio, -1, gen);
+>   	/* for folio_rotate_reclaimable() */
+> @@ -295,7 +357,7 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+>   
+>   	/* for folio_migrate_flags() */
+>   	flags = !reclaiming && lru_gen_is_active(lruvec, gen) ? BIT(PG_active) : 0;
+> -	flags = set_mask_bits(&folio->flags.f, LRU_GEN_MASK, flags);
+> +	flags = set_mask_bits(folio_flags(folio, 0), LRU_GEN_MASK, flags);
+>   	gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+>   
+>   	lru_gen_update_size(lruvec, folio, gen, -1);
+> @@ -339,7 +401,6 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+>   
+>   static inline void folio_migrate_refs(struct folio *new, const struct folio *old)
+>   {
+> -
+>   }
+>   #endif /* CONFIG_LRU_GEN */
+>   
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 94f9c3ff5416..32d9354a754f 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -496,7 +496,9 @@ enum lruvec_flags {
+>   #ifndef __GENERATING_BOUNDS_H
+>   
+>   #define LRU_GEN_MASK		((BIT(LRU_GEN_WIDTH) - 1) << LRU_GEN_PGOFF)
+> +#define LRU_GEN_MAX		(BIT(LRU_GEN_WIDTH - 1) - 1)
 
-Not to optimize latency in the ms range.
-
--- 
-Cheers,
-
-David
+There are still many places using MAX_NR_GENS to compare gen counters, 
+so I'm concerned that introducing a new macro would make the use of the 
+max gen counter even more confusing.
 
