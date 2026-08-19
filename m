@@ -4,125 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36758C5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14A25C5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 333EB6B008A; Wed, 19 Aug 2026 03:47:37 -0400 (EDT)
+	id 030AA6B009E; Wed, 19 Aug 2026 03:53:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30A8F6B008C; Wed, 19 Aug 2026 03:47:37 -0400 (EDT)
+	id F247F6B009F; Wed, 19 Aug 2026 03:53:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24CB96B0098; Wed, 19 Aug 2026 03:47:37 -0400 (EDT)
+	id DEE626B00A0; Wed, 19 Aug 2026 03:53:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E81416B008A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:47:36 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7504EA0A4A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:47:36 +0000 (UTC)
-X-FDA: 85117239312.17.4CA5A63
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A67F94000C
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:47:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=k2LZ5Q2i;
-	spf=pass (imf01.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AB6106B009E
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:53:32 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 330F81C1701
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:53:32 +0000 (UTC)
+X-FDA: 85117254264.24.7FBEF45
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7ACD11C0003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:53:30 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eWcQU0Tf;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787126010;
+	b=Y0d5J1O7neSum0y2tFiaOhgqPZnokyn7TztpET3Bbh1kUBWlP1yfHkf08nzlIQfnFzHYjf
+	fpRM2A+6AQ2qAdXONsshhA9PnYw0efaAIIiFqR+extxURtcnxAj0UNs5+J/K+oh8LQXWZd
+	m1VFwVky8oHc19parDcMD3gSdoDkJsI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eWcQU0Tf;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787125654;
+	s=arc-20220608; t=1787126010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EM9mPI9yixDIV/dQKvKcahELWkdUTMep2I+eKhwYYKU=;
-	b=0uxePtKQdm91ta/wcgHzt6APJIwM0lmwLMkoSMynp/GT1/wd691Kv1iGDQo2+Y+aCfNrLb
-	jzHG30R8c5FMgms6GbwgVsZS/zm/xv7PCspj2l5j0n5VqeWwubcJGagdEddVH/YS7nwqKR
-	dt5y1zMl4KXEM4tiQIEgIZxIgC11+nU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=k2LZ5Q2i;
-	spf=pass (imf01.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787125654;
-	b=AIpX2NHYkt2hJgFNUAbKCdX/8kd3ijZyUUei2gRUIYsOSvtZwR3j37NjTNmHToYsl/tMNN
-	nzH7LzDtTztT7v1XpJROCEzCB22zqRkCC6OKMaTE4EZHFzEwipRvBWjD97gsz5Z7wDwwo5
-	gBxuVAW5NWMlir0gOp94JnZu/s6Y7CI=
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-382ef647e20so814056a91.1
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:47:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787125653; x=1787730453; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EM9mPI9yixDIV/dQKvKcahELWkdUTMep2I+eKhwYYKU=;
-        b=k2LZ5Q2iSyfSBwJyNAqIiR47NY6TJi0apmMuPAzYFs6zD2ZBFr8/SQKtB6wgGVx3uW
-         a+VvLBOGass8oUQE+f+b8e/1foFNaELCVbiIVSa24IIfl+of5pEE1JZYCobd2rVKUrY2
-         bKZfV9Si4NY5Pk/nL6fC6pwLOkBfd/qsXNec2JDQmmm8sef7eZixbRNGoIGmSOeFzrRw
-         qwaV4eSx90dXurFUSz029dSW+n1hZqYhX4FhS+bjajaPbNrEOWcLA1e8hI3hR065excW
-         dD7Xbcnb3IvIx8G32pFUbeTznCqnRwwgHPou8ahFA1q5k2nJ0oWiqFCcVnd9bfEt6vG2
-         qg+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787125653; x=1787730453;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EM9mPI9yixDIV/dQKvKcahELWkdUTMep2I+eKhwYYKU=;
-        b=seqWdePhS/fizpVhpTDS/mq91JWssHlMNkKPp3jj181DBbvFZ99GV3+WNoeARilOo2
-         wj5FpV5uirAa14pS6hhXSwhLj0pAUzZYGlQnbva1p6U15Raukc3qDN1qPvyh7yhEvMUy
-         J05divrLrMhJq0MoQy0ieUAbF8WsZeEt9ajH9LB2mwi8egdki0S9HNRMmwrePYyct2Bp
-         maygKn3LGCFERHIWk+yP5s+LOLjs/D9h6dlsbueIPwpd9jFqkPzt4QJT5OTd6HYofLUB
-         pe4kMR1kFuZ6YOpUAnSAqWJ3Eq+ZZt9W9KgT5WQ3+fYZUk63yN5y+vkK15gvyUdpcx6y
-         Djlw==
-X-Forwarded-Encrypted: i=1; AHgh+RqcmFEDYFn6f0h3dNamGdhVj6pAiHvlYPmT8gzn/iKb18b9oNp8p2nH7QlPuMNadCfUIO8zOxpgNQ==@kvack.org
-X-Gm-Message-State: AOJu0YxOzbvC9J9ukOl0xwnVg6tGSzU4nuUqXyq/zSm6j7ebWyTXaKtI
-	0cEHmnHem/x5CWFgImLgYsUUJ6zaFORGHsT7hywOJITHjZkk8MoWxBfg
-X-Gm-Gg: AR+sD11wWNSlYxFTy3bISh+1TaAGPul5sCdeD8dRCPLC7rsB0pwOClROleSk7BdOQFI
-	2CgENyUBJ6X8A8w+mCmghsNu3MYzfciEWN2IfoTtHK+hRLe2VWPto8T9o64F5DtOQRxLm1okLL0
-	iN/R6UGsJBmnFJtT2KpE833zeG/EhTNQdeYAjLYrw6hAFweBv9CPds/Hn49lmcrZSvbu218lcLJ
-	0Z7kxscMoZEvK8WLvoaG9xJH916S/PR7afX7tCZXFK6RRUCIZRfSa6VN0RibeETGfLC99tB+W2q
-	eK+CYlUCtJgwf2+zpwUccjnbSwHCgvQ3DEY/nWqD1U0KmIbc7ifAeBNa1okyun4WMeYc3kzTXb0
-	waolrD2lbQY2nQZSBYXxD1B7ISnBl5uk8jYk+SJF2YlkldhuLwZejyAU7P+Ii0RtLuhjmyzpnee
-	7Lv9RQ4vpdVvbvdOwOIzycHiExJmSNnhof4uhU9eZi/Qn5smbPr5IgI+xr1o2FxDgZPoKhqixGB
-	0Zc8qiPf+Lstdp7QGwi5w==
-X-Received: by 2002:a17:90b:5250:b0:381:9028:5945 with SMTP id 98e67ed59e1d1-3958125375amr5603472a91.14.1787125653369;
-        Wed, 19 Aug 2026 00:47:33 -0700 (PDT)
-Received: from volcano9f8e-host.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ad3dd15sm3927299c88.2.2026.08.19.00.47.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 00:47:33 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	Yury Khrustalev <yury.khrustalev@arm.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hemanth Selam <hemanth.selam@gmail.com>
-Subject: [PATCH v2] selftests/mm: remove the local PKEY_UNRESTRICTED fallback
-Date: Wed, 19 Aug 2026 13:17:17 +0530
-Message-ID: <20260819074717.1345749-1-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260818114945.1312987-1-hemanth.selam@gmail.com>
-References: <20260818114945.1312987-1-hemanth.selam@gmail.com>
+	bh=IOVnAzrtzMZry52kAtJbyAWqgqvrP9lIJJ3RCLrpCZo=;
+	b=IO574GWVWumG8/z6AUCCRIbJCOdrdqqwA2Ki35YzqrfAUmnin1uKO1c8oj43Nh3UlnX7E1
+	iXMaN1w3sVWmZBkfdi6PGB0rhx/co6GQ2CG4i7/28tVpbckWqXnpqxAny2CXjSCdsSCDN8
+	coNa38eeGX8SXkNpl8omnF0RxZTnl0k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1D4D760A5B;
+	Wed, 19 Aug 2026 07:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315F51F00A3A;
+	Wed, 19 Aug 2026 07:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787126008;
+	bh=IOVnAzrtzMZry52kAtJbyAWqgqvrP9lIJJ3RCLrpCZo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=eWcQU0TfxIXjvxi/EgDAtwrxXGiGGUEUm0JmfaavjmD/GlHAnV/Va6QAXcquMuJ09
+	 RV7Iu/9IJuFonJiSo0szpDVf5YP6uoQJD+TTD6DXRwwPQTGNbBWYaYv0hPDGbAfi2I
+	 gKBKKoVi/Hxscz4recgIOokI7wSxcDAd0AWRhv1WaEeXCEAGhYaYzIZevc1v+POmiy
+	 nwL5PB/+MtENHwYdx3Lkqfc4VK2Ar/kJgKCyItZNsioxwmBD+dNpKCQgvD/2dt3Xqf
+	 j/MPZI/mX/wVHNudeSFg6FTbsi3heYKqz4GMPTClpTm4oGQxn3kfulatHh8feGOPL0
+	 UIt7M05rfTn8A==
+Message-ID: <35cca76a-4d3a-451a-b492-dd4423ac3e63@kernel.org>
+Date: Wed, 19 Aug 2026 09:53:25 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A67F94000C
-X-Stat-Signature: k8ga9we7f3u7rpce1ai4m46jc8cxqd46
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hugetlb: add cond_resched() to __unmap_hugepage_range()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Leon Hwang <leon.hwang@linux.dev>, linux-mm@kvack.org,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
+References: <20260818135029.93288-1-leon.hwang@linux.dev>
+ <3dadebb3-7e2a-459c-a5e8-b375faf89938@kernel.org>
+ <20260818111756.6b0e347db3170bc22cc3c5af@linux-foundation.org>
+ <2a523945-825c-45a5-a680-37e941e092d3@kernel.org>
+ <20260818115526.654d7311366b66cd031c67e4@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260818115526.654d7311366b66cd031c67e4@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787125654-760041
-X-HE-Meta: U2FsdGVkX1+TD8jiOXbkq59lencv3nbm/SjQFFmQ3VOGGM39neWmIQIROD/Oo5SfPm2MilnKE1gMvGP+vz0CpHZWNdQBa2garZ/Ym9V8l77MCYZQpe9FXAd6oqRs7NHjfQYJ7wvyXATWIqq7sQrOFaLrtpSDql/gmra+k8S00TJVXbWKLs7Xx318P2Myb9nh2oiGJlMKu+fb8nbnJehBsNVtKw8nNs/rK3qSQXXAE3SqE6/269FOPJOiiIBSRnRE8LZW/Ds4B86FjqQpLfvzmq9y3UTEdt2+GtPowhnQp7smsB9Cec7MgnlFvt7cc6CFkkzBDEfiOimupRbdbjnnlRtFDaPFJsZdOz9hrx3PzN55wOAZcbCWc5DbpADyUlmzKtfx9wO03S4XOA74uHhw5874t7fMSHQgGf9ZCVigjLlrbDxmuF5zfnizP+7YJVI4zP+hNvWwVuNLHBkeaEOWxfV1epz959OjdG23pgGQwoOWQb0zXEyuT1UMrtWz0C62j1dpkxToaCcIS+si1xUNCb9E9QMK5TFL0uBcOZZndDRLMQHYKzidZNXqHt4tinlPcne9/BDMyvTK2+NXGzIqjwVNrUd7EjRKHV5SG+j1+W1e41dL5R+BOFHxdHVvD9ArTIyOUlAcViwy7VWU9g4Afe4i8N/NbMvBsu53LPSLG87Hq7j6NGPUQoldwkzBtGFjHcNP0w5uISHP2TuuQwtt20gjiXYK9/4A/PNDYfAPNQU0kShQnSJzCfIMvE4enEBJoCC0i+KGs7Tv2KzrakAYcVHfHc20voubIZTJRFjSfUsGPUCoYLgph1gVuF/U5vZ7w2jVhe00byAMM6AXSwK04FK8HIbkuQELIZyN3to3id5zUvhUiAUOYMACi29kQk0+0U14a3uqdIUkqzPxFzy8isuB3ZYuUagdwbvLDpuRuzltIfXXcIwWpeGtsHfZUIjkMsoQbDSvhOD40vavE84
- 2lSeRxHV
- xePRZjGhRxJwnICyglrWmDbIt93jgl2aBGclsiO5CuHNlxh1yU56KJLSFdcvjWPeYgZwPk+gtCKBmnl/AaBTkNsxz5n34Z4Eh4Q7Jm7D29Oac2yi90R+1IzoP7IJ4N+9d4zdDPvpBd/WS5embNHowefgkNfyNeCXwImquuX/AJz/w327Cxz/gGghPrUK2L6xlrtLggsH/Mf87r2eK7+iUbV4CoheXdodAKbQ7lQdI6EWStOzlUm1MyB2oHPf6vrQOcRDVedFsci9vVoiaA4KZ+n2eJ707Z++ZoE+MvKe/e9AjV8ezB+nqPrhpRaHOQdgpjyJjAaLyi0hJ6zXQd4Qp4wRwDdjqdk+sO8/aZcc5qPcKmzjmNsLFzbAgsdytV/yR4QIQmoXO0S61I1ONpGo8U1xXc6X7fPtkQvPve2axvy0c7rgOf/pk9dwz5+6jik3coWFfh1XJcoibRXLoKCDHogzgwTKlrzEUn2Bekzga0oK/Eya9zCXv76eafJpNyoH8YKb7REqD/qSuaMFodgDpIrdaxbKj9Aenf+9WgFm4GyCwj4P5nRVxm0vjxA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7ACD11C0003
+X-Stat-Signature: zxtcziezk4s7x137dps8fqqerf996rbp
+X-HE-Tag: 1787126010-178000
+X-HE-Meta: U2FsdGVkX1+KN/crUXYbcOIszzZX5XF3ghNqA+bFLm3sc8jH4XUPey5Qk4xDKH4h/7ASrdkwGUtnsJIuLbWk4+p5Vs52ECx/k/SE/ngda47uXGeZDmO65yqZeyJSuDfy5KNdntqhUvav82bmORq/+vLgEXGXpZl2TdHLZDHEM2unRIcA/rHRILngcERabSWmvrwqfwlmZawMkq99hb3mpYsq2pYqZC9mvQk+1rgxggslsPnZ84LHOG59k/v6J3IUCcGmdMi0sYyIi259DHalZ3aGmhRVlxxwH4aYadvMmubMRBc1MefwazsLUEOMgdrx+64pOhpuKD7Zp2DsWChsJWEJNs09qKYLReNUEJ12qqiavY0yszMNG7BSt3RIm+klrOjPt6lKrAUAaG6Wsht8MhgOK1z53vyLE+uk+AozSkdv0l+iKN6i3ZvCRH/AF9LejskRJfhHopMMsGOy+KvciCcm1AaUE8P0iQ1Dc8Peuli+qFtGM0iodw9pDn3B+jAhMD98HENpXwwWeVbFRH73GLBgwWPXFymVDCM9wz+iIEb8HPTWs+oA/g7xBIJczGrJ3EzMatooOr/0yOuY/ttsTPJw8B0WqPw19Q06DOSiwSabDJ6zmkjVtc5v/S8LUhH5fLgT/h3B7gijEd7nE9y2lI/Po0LSApPxwKw2j4jfCTU+tu0ZSTr16mdFaoITm/1smYypKeteX24Vd+aboR1mYSVhSwHgA7OS97xQENrye1L/trvTo6eJMIFvbmLdLuFjo6EuO8mDdb0p9uvMDmgYseKXPyZZlqf5Xq3/ytLVLgpMKM2zVY3gdWNzIOzQppZTVhvJSlhUtt2zhT/vYqqFW+siBkkpF7koU+0eQX5L1xC4s1EYq5/mzVaBkXKyxN+fbVCzI3wgYmAN4bB+8038d58vgS2enPIOJ1f3w3Cx6eOjrEPdZdtuCKZGBy5y7N1yKdf4biU4QJ6RVWGB6EH
+ Sa32wdhf
+ p3zC6rExMH8N2VsNf+HqEpbK4WhA5IORvHN9DbZv/hqt4O0cBCvK9dGU///LfxE+AJ53m0t7/Qye7AJhcj667z6x1QUW76GY9e0MFzxJ3xYaDrbDGgD6wa0JuxDgQgrYvHYfXD2kDJdohKC3miJpVxTSO4AtS9091wUkbSlESxHmhK4D2d5FphHSlJMrgpWeQ6D1sYUeee31RvduREKnnfRpwJsJX0JR06TpvPgayf6+KYQC8ukY/9d5BDCoezdqwbLVdIUPk6G7NhkD+W5xiGIrJnYmLRVtXqjB7mtsxdV1c8ydAotNfiWvcxd3KZY4/LbY0KQdXTcFSIKY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,81 +142,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-pkey-helpers.h defines PKEY_UNRESTRICTED itself when the macro is not
-already known, a stopgap from when the generic definition was still
-under review.  It has been merged since, commit 6d61527d931b ("mm/pkey:
-Add PKEY_UNRESTRICTED macro"), so the guard is never taken and the FIXME
-can be honoured.
+On 8/18/26 20:55, Andrew Morton wrote:
+> On Tue, 18 Aug 2026 20:21:37 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>>>
+>>> That's pretty bad behavior and we might want to fix it in earlier
+>>> kernels.  Is PREEMPT_NONE effectively dead in 6.18.x and its
+>>> existing users?
+>>>
+>>> If yes, we do want to fix older kernels then we should merge this.
+>>>
+>>
+>> Okay, but that would be stable-only fixes?
+> 
+> Not understanding.
+> 
+> Maybe you refer to adding a patch to -stable but not to -linus?  That's
+> against the -stable rules
+> (Documentation/process/stable-kernel-rules.rst).
 
-The definition comes from tools/include/uapi/asm-generic/mman-common.h
-via TOOLS_INCLUDES, which commit e076eaca5906 ("selftests: break the
-dependency upon local header files") added so that the mm selftests
-build without "make headers".  It is reached through the
-<asm-generic/mman.h> that the system <asm/mman.h> includes.  Building
-the pkey tests with KHDR_INCLUDES pointing at an empty directory
-confirms that; emptying TOOLS_INCLUDES as well is what makes the macro
-go missing.
+It's tricky: if a problem only exists in stable (there is nothing to fix in
+Linus' tree), then a stable-only fix is acceptable.
 
-No functional change intended.
+Otherwise we'd have to route unnecessary churn through upstream just for it to
+reach stable, which doesn't make any sense.
 
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
-Changes in v2:
- - Drop the incorrect claim that the mm selftests are built against the
-   headers of the kernel source and would fail without "make headers".
-   They are not, as Lorenzo pointed out; describe where the definition
-   really comes from instead.
- - Leave tools/testing/selftests/powerpc/include/pkeys.h alone, as
-   discussed with David on v1.  Unlike the mm one it is an unconditional
-   #undef/#define next to other powerpc specific overrides, and that
-   header only includes <sys/mman.h>, which does not provide
-   PKEY_UNRESTRICTED with or without TOOLS_INCLUDES, so its definition
-   is load bearing.
+When sending a stable patch, it should document how this is only a stable
+problem and why no corresponding upstream fix is required (or how the actual fix
+for upstream is actually deprecating the relevant config).
 
-The full include path, for reference:
-
-  pkey-helpers.h
-    -> <linux/mman.h>           tools/include/uapi/linux/mman.h
-      -> <asm/mman.h>           /usr/include/asm/mman.h
-                                (tools/include/uapi/asm/mman.h does not exist)
-        -> <asm-generic/mman.h> tools/include/uapi/asm-generic/mman.h
-          -> <asm-generic/mman-common-tools.h>
-            -> <asm-generic/mman-common.h>      PKEY_UNRESTRICTED
-
-With KHDR_INCLUDES pointing at an empty directory the tests still build,
-and cpp -dD reports the macro coming from
-tools/include/uapi/asm-generic/mman-common.h.  Emptying TOOLS_INCLUDES
-as well gives:
-
-  pkey-helpers.h:188:30: error: 'PKEY_UNRESTRICTED' undeclared
-
-pkey_sighandler_tests and mseal_test are byte identical before and
-after; protection_keys differs only in the __LINE__ values that
-pkey-helpers.h embeds into its debug output.
-
-v1: https://lore.kernel.org/all/20260818114945.1312987-1-hemanth.selam@gmail.com/
- tools/testing/selftests/mm/pkey-helpers.h | 7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
-index 2c377f4e9df1..626c2e1655dc 100644
---- a/tools/testing/selftests/mm/pkey-helpers.h
-+++ b/tools/testing/selftests/mm/pkey-helpers.h
-@@ -112,13 +112,6 @@ void record_pkey_malloc(void *ptr, long size, int prot);
- #define PKEY_MASK	(PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE)
- #endif
- 
--/*
-- * FIXME: Remove once the generic PKEY_UNRESTRICTED definition is merged.
-- */
--#ifndef PKEY_UNRESTRICTED
--#define PKEY_UNRESTRICTED 0x0
--#endif
--
- #ifndef set_pkey_bits
- static inline u64 set_pkey_bits(u64 reg, int pkey, u64 flags)
- {
 -- 
-2.43.7
+Cheers,
 
+David
 
