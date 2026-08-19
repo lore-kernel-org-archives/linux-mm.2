@@ -4,91 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 718BEC5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C59C5C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CF7A6B009B; Wed, 19 Aug 2026 11:32:31 -0400 (EDT)
+	id 54A3E6B0092; Wed, 19 Aug 2026 11:43:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A73C6B009D; Wed, 19 Aug 2026 11:32:31 -0400 (EDT)
+	id 4FAED6B0093; Wed, 19 Aug 2026 11:43:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BD256B009E; Wed, 19 Aug 2026 11:32:31 -0400 (EDT)
+	id 3E9136B0095; Wed, 19 Aug 2026 11:43:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4911E6B009B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:32:31 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C916A12035E
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:32:30 +0000 (UTC)
-X-FDA: 85118410860.09.C51C757
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 245AE80009
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:32:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 167416B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:43:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9BEF74026D
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:43:40 +0000 (UTC)
+X-FDA: 85118439000.27.0560041
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D812980002
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:43:38 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksX2KKDB;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VJgTEOEc;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787153549;
+	s=arc-20220608; t=1787154218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ewKOz5SEkfcTwwQGB2UX2B+VSVTOT4ozicerKMh6CdA=;
-	b=27iXxHQrnviS22tQaHuUbe0zgQ7u/itgKznRXeygTApd+iA5YFggtmd9Uy0n13sllzsnJe
-	59M7y0wrpPzGX2ez9U8zA8hPb+GTvrBlmBhnBKwZo6h3ESmqnMAbB7ztug1HE+7+fRj7Du
-	7gLO2sefSgPk0Rlo22aFNarh1Bl06DQ=
+	bh=38JhnhHXecQ6hRRQfHnTqEwVWVkxH6ubOJI2lsidQN0=;
+	b=1g6LJKi+gieJEwmMiT5EmQ7aUsjK1BDYV2plNroAbFhkMaHr6nWgP0aFXEPxkNLo48aEhX
+	8Q6Nj2zLc0tSEdIB15Xc3a/aqyiqkmYHWfGFKbJVjGp1x/21YOGiTJMJk9RUWITvEf/Yma
+	IOpI8pF06bNrfv3yxbJ6wscJgin4RsA=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksX2KKDB;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VJgTEOEc;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787153549;
-	b=uGpaPdZrrNsK8IVKt3oZHhdcIaoxKPKjzqxnVmEMnngeDOCgsaRaX1pIvR5MtE+FoMM7lZ
-	3vw8r+NJSEEu6gmG3q8leAt5ufvtoFLD6mFn9GjQPvO6OnfVqEBqRas3yt7j+xO+5tmTRt
-	UPH3HrND6rgmaabb4dn+skD7OuwqxeA=
+	t=1787154218;
+	b=al01Cy/DPtvg+fExyOKcyQtmWM9rgt04uRUZEFaZmhXO+o0tM/lVwu9M+eo8M3YmZ67IMN
+	HHl/rZgElVlaOJEYQQwGviACrboiJT9e2/BTQQPi56JW2KviqYrY6NiiKrmWVqzusTFt6d
+	qIzRwKNYM/d2Xyib9DH5lKKRSGU4pzI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9722840678;
-	Wed, 19 Aug 2026 15:32:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF391F000E9;
-	Wed, 19 Aug 2026 15:32:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3DF2760DB5;
+	Wed, 19 Aug 2026 15:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511971F000E9;
+	Wed, 19 Aug 2026 15:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787153547;
-	bh=ewKOz5SEkfcTwwQGB2UX2B+VSVTOT4ozicerKMh6CdA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ksX2KKDBevRjIArd5K+oDP+xXE64NaOZcoDHn57mmXP6WWGdCPv9ZRXJmeO4nWm/5
-	 Fv3YZgHej98bbOnqAEM1erRVyXF1CMKhUENRKBeVorw1GSi229KF8G8Xt6xqFk5ybN
-	 zsGwJV/5M7o38gYcyhmE9zLMSyTd2lSMPLQ5k5hGOWlw0Zt9yBMwitWRlTs5tspTUP
-	 8HxBGvCO+QZoUgpsD624bDILD0ZnkbT9Wc+RHmQRBud5OxmGaMCWtLFoVR6F3sObW8
-	 +czo1pROU9p06c+Hzrm+axPJdMHCf3ZkayAKH9Qm8ORxcyYXKq0Y5uBjIoErIJpXjQ
-	 P3ewdnP4eCn9Q==
-Date: Wed, 19 Aug 2026 16:32:23 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org, 
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] mm: include swap.h in swapops.h
-Message-ID: <aoXMc9bbZ21qfVSP@gremlin>
-References: <20260818115026.656406-1-kirill@shutemov.name>
- <CAGsJ_4z_+Z_VppY3ravJxTgguK=m_pcYcbrogoOR2BdC6D-o7Q@mail.gmail.com>
- <aoXB5vZf_vwB-FOT@thinkstation>
+	s=k20260515; t=1787154218;
+	bh=38JhnhHXecQ6hRRQfHnTqEwVWVkxH6ubOJI2lsidQN0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=VJgTEOEcslv7heA9gjgAu/iGr2yaBO6vB/pN2zKgXLJhTIgm94p5S0H/kvBwGj5+q
+	 m/DYpEd/YI7DwEGcll0WxUCvGPohSWN8IuSLwPjy7SqncmGauBYgy8b2QgF+3g5UV5
+	 KbaSZ4Fdm+DluAgWk4O8iGc3rf7giL/kRYGz0xQHvTE+tL3apP5cmXyns1WwZu8eSx
+	 QkxgEQ3gskFSf5eXEscBm5FLz/R3EGBY8oxKkEPpoSD8Tc/Tcg167y5yzbrWk14Pt8
+	 q1RAGvhQuMoOHs1L2phIvgtKADNze9FVY14/L9nsAiJu6VK0zCs9CL21TgZanRarNw
+	 Av+Vg0Iu2QV+w==
+Message-ID: <dfdacdac-fa1d-47c3-8d22-abdbd8c43ab8@kernel.org>
+Date: Wed, 19 Aug 2026 17:43:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aoXB5vZf_vwB-FOT@thinkstation>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 245AE80009
-X-Stat-Signature: 86gusf47rdiwg6ng7f4343kr78674b8t
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+To: Mike Rapoport <rppt@kernel.org>, Yuan Liu <yuan1.liu@intel.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
+ linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
+ Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
+References: <20260818085702.3395529-1-yuan1.liu@intel.com>
+ <20260818085702.3395529-3-yuan1.liu@intel.com> <aoXEBCWQ-a9OB_YE@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aoXEBCWQ-a9OB_YE@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D812980002
+X-Stat-Signature: kibfg88efggaghbnw4qszgqkmyftocnx
 X-Rspam-User: 
-X-HE-Tag: 1787153548-764128
-X-HE-Meta: U2FsdGVkX1/C/JKoXa3LgKmaAjoIg+JHiJhcda93433cc/dPHby3KIKA06PrIHkfxfCf7FUvLvbkmbN7F3uL4QtMMOSB4jdKkB2/N2JO4U8XaKvvxtw1iR4Ic2k0qNR0u3H29OjtsbdwAT/QbzuRIj0L+7/pBRkmyQBfPDQcJ6BuksEckCUcSr+0tDeem4c8N3c3lUKlGMbmff8XKhriJ0clJhYVhGCxBWKipZWUgjr4ovaIQseW+AGxBQb67pcjEjqqvvLNyF563+upQfgE0ZpQ4dqsMuAdYGJQVqAzSuy2KhLg1ByldWrIHluooZC3ThWP/T3QU9MY5C0HreDO3AS2ovDx6zBjW8mOa0K15cxA4fWAgBvIr1SALTP1KCIChMcfZ4xcbVz2YdbgBkN9PmSfMB1ztGUJy17+5mPEs0brmIjok4dpjdeDe6mGrxYMtU+KY2ILRn3wH97DiGcjMyhQ7FlV2+WLrafA7LHOTdrra+v1dPt5ur31Mfk2pEWMREPMBY24ppjhoGMUHUDqjKTRXwNuwwWiP4MeHJ3SLpWwi1RTDHFdU/NhcJ/g/7Hq4x9pp1mbpZw9HesGl5C3/B8qazgyggBg4un3J24WEgH/IuTX5mAxs1Z4S1wGH1+2ON2XieScDa947NXncbUQVlncbAmUCzBo6m1+kTrdH9HAU4JF0F4sOeu6MqB2L3uaCfBCUrzsKFlic1s6QzFO0FAyNQT0Vnx9Y/khXZnnBfoaYZvil5ktXUomTDD/8rgfplOkN4vazuB2xHEjfKJ3IwEcqGQEzLyoSsEPmNOvJOyJpB7pkK5nbGJLzbSaqfMZkMHZ04/FilzqrWOwHSmXsVxhndSDYhkl+tlKpM/kfVxrGaWr38PqNz1TXdYfcDpJ8I3fSuYrVKp1oMjTZlMpL8v4OaaLQCnlebMD7Dq/a+b+aPkodJirczibEIIrSF/v/eaiFJEV3PVZSC31VwA
- jhYXlM0p
- HmSrg7ISecoA1bYTMjPyVkdLt2QJ89Po2znbu+bSt/yfLdbA5XSn4GCiutxfJoX11dK8ib4eAdEQw0rkizDOvVfIbtvAN6wFxODkfFkeBP2OxbFwF5F3jZnAwIR2KIkd6cexcfA31EL2ektPX4wvWY3axIOR6WXsGlTGVDJqitqV/poNSHmrk+HIWkSrE0LSKoN/J9VN2/02Fdbw7s+wqUVPzBAYBAWaJR5BqISZEI1hrT1CCGv3ch2+5xJ6hkI17JBgIj8Ki1Gxj74ilijLIDvOOwkaDh58NIG2qcN4nGjO8Rps2gFAp83itwu4LCD3ItLeA3YE4zXU5Edc=
+X-HE-Tag: 1787154218-95188
+X-HE-Meta: U2FsdGVkX19/++DLZwLmDVldxy9P4TDmgCe6gjp9dhCl5sC1igN5uQDb/JLojE7RL2N9hSPZdSCCf5TuvcbRz4kzOmpAd8Zne5vWgXPZ43SBkRi4Zt18VAddA2GFYIWnHfmTKi1I2t6bgJZ75rNKsIXtkb9Xr8E0mS77UWH93JhuMd3eiW4bKaJ6bClAJfvE53PYKY8Ohd1O8zmZNhGQ7XKXKUnAml1Rs4qBPqVpyZIzlBFFxEnLpUPuvAnD9r0s8KuUMTT+oRkQmTK/6TXJNgdpvQza17nRkxgzN1UA3I89OWZjGnHKrp8/2BYdDyKlFnCAIZeA6i8boZ6mSRbTgx81YJMDVXzP+Od8AckfoxvK/ovWAKFmmqcN3No6cQoXfOHGIyCUFRDm5DKM667JwUboTLZ23Dgh2dHMvcI2I62/FH1eNkK7bjJDe3Xw0kvYBkpW/zXExWnvQ4NbY5mmHn3747lwWb0y6cVN2ofktuOQFftqvqvoxfN4O+XrRDVwGc0GCwikkVOh2VgamfVvTCRy66PnW+C0KaYuC9zLROj9ELurRblRMgZBGJlUyhKbEvb2OO0ebhgkts8OuQQlLNjuilS27p1R4XEQYQD4/EVUxhETWaVeyH+KABAp+Q8oHIrR3Fv/aAgFHWDcVB9zu03YNMOyyOKkZeh0HW+sLHT38z4e18yOYkz5VrYdXpkslHz9gPg3wSc7o/qM1Hov4PqfTSYJ/wd3dk7PkRSLpjzDhQ/5Bp9VBmyxvGRbc/vpMcbQRZMYD4pk3/zd2Hh4hXBWpcwhMTcBVpRKj6AbDAO8kSSMNq5Eq8XwMFPDn2KnBB352ZaXVNPqC2fA7vX/0ltLDkgEDRRcz8s1fNxy5j4psuQcLIxFgJ76hcHexQzzFbHEDzpq284RWkQeEGOQbkgw+PYjTx1lnnpTwuNLd0rxz2gYSBvrmv+U3zGGlZ9EUmqlq42NrpmJzJNeyFg
+ dG+dpbbs
+ O2mi3E74piNDp4l866pkwRmKblUh0IE7CvAv8cxD3jRf5YEW3fABeV1dcgEzyfoTa8Y3Pq0FaqLb681Q8BGxd/OjmegKjKoIRR45jqnSBkR9sl1rLNkEChzy6ul3BpWwISnzqrYdNxD8DkpP6uJk1VTSFgN1uLcM/BtOisvIxnbxKzNYg1A6rI2SaCivXDETWd4TfTizrCJ0+ger+pJ0rfCarx6fyMgEZSzoRUmOzqXSaK2XbxLYgBE1m+/jg6kyX1TrmHaW3jKzMUx+227+9e075LAlMZ/mHJWKzEQQato4h5+oahosvDEzWK/H0X1yAorz4p36qJUQ09SBFUaOeWndTsZFbUkBCw9XR4MZYEB/ZtEWAJNSBRpUmwNKImcGvYZ2a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,45 +142,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 19, 2026 at 03:47:33PM +0100, Kiryl Shutsemau wrote:
-> On Wed, Aug 19, 2026 at 01:26:07PM +0800, Barry Song wrote:
-> > On Tue, Aug 18, 2026 at 7:50 PM Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> > >
-> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > >
-> > > swapops.h uses MAX_SWAPFILES_SHIFT, SWP_MIGRATION_READ and SWP_PTE_MARKER,
-> > > all of which swap.h defines, but does not include swap.h.  It compiles only
-> > > where the translation unit pulled swap.h in first.  leafops.h includes
-> > > swapops.h on the line above swap.h, so a file whose include list reaches
-> > > leafops.h before swap.h gets:
-> > >
-> > >     In file included from include/linux/leafops.h:11:
-> > >     include/linux/swapops.h:88:21: error: use of undeclared
-> > >     identifier 'MAX_SWAPFILES_SHIFT'
-> > >
-> > > A header that uses a definition has to include the header that provides it.
-> > >
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202608181757.mza9RRj7-lkp@intel.com/
-> > > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > > ---
-> >
-> > Basically, is this preparing for the patchset below?
-> >
-> > https://lore.kernel.org/linux-mm/20260816224609.308019-1-kirill@shutemov.name/
->
-> My patchset just triggered inert bug.
->
-> > Reviewed-by: Barry Song <baohua@kernel.org>
->
-> Thanks!
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+On 8/19/26 16:56, Mike Rapoport wrote:
+> On Tue, Aug 18, 2026 at 04:57:02AM -0400, Yuan Liu wrote:
+>> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
+>> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
+>> to rebuild zone->contiguous. For large zones this is a significant cost
+>> during memory hotplug and hot-unplug.
+>>
+>> Add a new zone member, pages_with_online_memmap, that tracks the
+>> number of pages within the zone span that have an online memory map,
+>> including present pages and memory holes whose memory map has been
+>> initialized and for which pfn_to_online_page() succeeds.
+>>
+>> For early boot memory, pages_with_online_memmap is calculated in
+>> memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
+>> included in pages_with_online_memmap, and hole PFNs for which
+>> pfn_to_online_page() succeeds are also counted in
+>> init_unavailable_range().
+> 
+> In what scenario it is possible that pfn_to_online_page() would fail at
+> that point?
+pfn_to_online_page()==false even though pfn_valid()==true in case we have a
+subsection-sized hole in an early section.
 
-Yeah, see my reply, but this is more like 'Lorenzo's unfinished work and a
-mistake in his includes' :)
+-- 
+Cheers,
 
---
-Cheers, Lorenzo
+David
 
