@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D79B4C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F97C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52E4A6B00A3; Wed, 19 Aug 2026 19:10:32 -0400 (EDT)
+	id 8D80C6B00A4; Wed, 19 Aug 2026 19:10:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8E96B00A4; Wed, 19 Aug 2026 19:10:32 -0400 (EDT)
+	id 8B0086B00A5; Wed, 19 Aug 2026 19:10:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F4A46B00A5; Wed, 19 Aug 2026 19:10:32 -0400 (EDT)
+	id 7C5D86B00A6; Wed, 19 Aug 2026 19:10:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CE5D6B00A3
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 778571A066B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:31 +0000 (UTC)
-X-FDA: 85119565062.02.FD44099
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5057D6B00A4
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBD8280379
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:36 +0000 (UTC)
+X-FDA: 85119565272.23.C933922
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B25AA2000B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:29 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QyZeAj5g;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787181029;
-	b=OsMgb9Zp/EBSWFWt6RqO8UyvrgXB11lP5txeKldegNH68+E1h4zoEy13lxVk63LPcxaC3W
-	FHqWUB1h4U5KYfdd0YX2qCkY7vXcHQiQJiD47f0KtDEapa/vylm+2a9jdQDCE2Z1vHdcQ2
-	fvL2UqzP9mB5pP6FaukA+wcOJcIeJ1o=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QyZeAj5g;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id EEEE24000A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aheTWAgb;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787181029;
+	s=arc-20220608; t=1787181035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YdXiWhIfB4/T9Skkykrd3/nKKqeoThgdVH++ESCo2VU=;
-	b=ZzaR3PYixBEWXKAeamVUpyPXzsLE5zAI3DdMaZgiXvnfUAmD6rOIsdlxWSqpuYHQWDx+0C
-	8n7LgnVWyQ85F2k+bOud+Emal13p3KrVez34InR9QMG9zzL7zFIctb7KdYCx797sdUe7so
-	nzbfGHueMjEK7GOQsclbY0zEPR2tZpY=
+	bh=fv8QyTU4RY8EKIZbQbAauqSD2AILso9hb2wl7UK1viQ=;
+	b=ut4R/PkYXlO7xm2P0D9f2amWuW2w4xqLWKR4i8M5mMyEkkzHuuMoI/BDD1sOSDzfZt2gDR
+	pS5PaCk3Pz1IikutNpoAGnWfyTX6VHVsSI6eIZ+ksHPDYYSes+/0bfNa2llR9/J1KBz1nB
+	BdeohNByCaxw5fXxX7F/cs6tqXgPYWw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787181035;
+	b=UApTmKAWKfVRnd5E6brQW7E3DwenH+Io4Sk1IUGTXIIYmJERgT6yOT9c4VLF4jujnVZVvR
+	c4afSgIiBdP4q8SQwRlQbVEMu91+QXFMMFmJ+WTNSKaVuYhja8/kwNFkbChCJAybJ8zike
+	MD6xTlgjONCQVbT06a1qeSNAaI8sc0k=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aheTWAgb;
+	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B53E44016;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B34C43628;
+	Wed, 19 Aug 2026 23:10:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781B71F00A3A;
 	Wed, 19 Aug 2026 23:10:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170201F000E9;
-	Wed, 19 Aug 2026 23:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787181028;
-	bh=YdXiWhIfB4/T9Skkykrd3/nKKqeoThgdVH++ESCo2VU=;
+	s=k20260515; t=1787181034;
+	bh=fv8QyTU4RY8EKIZbQbAauqSD2AILso9hb2wl7UK1viQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=QyZeAj5glCUzDjsxZE4JmbH5umochvY1cH28IICIMq+PVSNqs9f6uqzC3leCeKYeB
-	 rfl/IBBdVwxU7IoZVCZk5U9aoMplnYPpsIRtSkZukDs9OzsIxCLpUdPh0RvEOuVohi
-	 aPrB8VGlKZcBGkxy+NdZblHbunV0YNE0LJJngP4XBwkFXWjRgVDsk++j9VDR4YCUIP
-	 F3a5HrJBM/Q/lJcKDMFOf5fWOe2ji9o/OeX3mhG8bepd2E0y5DVtZ2ONC5k+5VT52i
-	 MDtcev4gHFqi35z6p3F3Ciy87B0Vi5vrvLU9DBq2wPALAkbyuovP9CBjRVq7gdXamp
-	 /jf8Dukonc+rA==
+	b=aheTWAgbYI11sVETqvJK2lIN/QCtKk+jUTksr8d38BZ1G7LXn5ciJU2kV1FMfrtmE
+	 x5Nnq5XYF01D52VOCaFlhDDagPSgLf9ydeEXG3GKOAegFGirsAEQjyZMqmBVaqlSwI
+	 pMwAwjK2lfA2z4C2jvG+KW1viiMGa5Sao32Hs3etES+osbUfbaYKUfkHjbsNwJnxAi
+	 i3AtybIxeJJE8yvuUcmJNRePJL+PQ7fBmXoSEKynClLfVT3MSCErW7T8lCghlChbMP
+	 tXhBq+ZxGanb0v3pCy6LWkCR8ljc2M14p/psUqtZ+tN63jM9P5d7T7xF9Alu0yONal
+	 4itgWc3EmpRiQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 20 Aug 2026 01:09:23 +0200
-Subject: [PATCH v2 06/22] selftests/coredump: add a separate helper header
+Date: Thu, 20 Aug 2026 01:09:24 +0200
+Subject: [PATCH v2 07/22] coredump: pin the protocol struct sizes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-work-coredump-sparse-v2-6-ba32dd718c51@kernel.org>
+Message-Id: <20260820-work-coredump-sparse-v2-7-ba32dd718c51@kernel.org>
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 In-Reply-To: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -86,22 +86,22 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4984; i=brauner@kernel.org;
- h=from:subject:message-id; bh=nsuGWse/lAGPONW5/zPiRodF4aWWrgZOlUZ3HMqmnYU=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me+7qZKzWDv62wNhQ4FbqkVrA5z2f2iLbmV44Hffz
- 2jyP3O/jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInIpjAyLPfN5Nk1U+fxDK+7
- ldo5fxJlvIJ871syHZ0lp/tU/In3E0aG3SmJPrszs04dFfu1f//hXI2t9wwsN1ir/97jk/ticbE
- KLwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1921; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=hNfZLj4wkqR4WNDayaZ8RfIqHIoYlqBK8NeplKQdya8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me+ruPdQcu/KV3delZuzLP6zVCXY77RHyZG1qzuUp
+ 7bbKjst6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI6nWMDKdaPMNPTbgbYhLi
+ tExpbXfZXqfH7+b3BPyeeS3zD8esc7cZ/rvKPeP89C9O42WYhdi3Scq7956uZNLizXY+om1dYc9
+ Swg4A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: B25AA2000B
 X-Rspam-User: 
-X-Stat-Signature: wihcsj6r9wtk5jq4ad67fjjmt6hn8akd
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787181029-675629
-X-HE-Meta: U2FsdGVkX19f9+/QVSIyzCtfJteqOqrFIAsYy/7ejb6jUkbAyRaFZDUrqZ+TWE8vpLgZNzHjEqwTyU815l59+hICx+ctczgf4ZE0xS2Jr/E7j02T6MYv7kL6ePnIjzmYYqV/MxvYTQwLDzfvUdO7VUzs+ksL8tROk18e4zlrT1Ksf8QzdhMh/D+ekr9HC7s2OXOOyHO4LKzjqAq20h6jPKFNij3hT1WsC5RvLxx6LOZoZ+2BX6HUG4BT3TljMvbRKuuoa6GSiHKI6+z+7F1TlABcDqIcIlgyPuOFr9XStbHqdgu7ZjWrfKv2LYZqWL1wsdYrBltVsr3s0uUnG4uVl0P8Bk2m1BXVou7Rg9z0l+iXVKLp0Os+WS3U2p8fslTMGdN49MhkZeeUJotd7AVAnRSGUU+TGbVcs7RPFlYLqXUyV3HAkzLJCq2Ra34IbMvN20W7dC2pidDKtGt9z1i+604gAH+jtisUMebr8NIR/i69ZuF0wQ3giOBpLQ4YgD+0vpvD14r6O0wKjJ7Ct4bDK30FP3KMeErK8ar9GwKtao+uQqjSBGfgmO4OE8G/HzXvD2IsR47XgZyzlqbwMsY6q9EArQRTUTBjo8Eet1/KI6FAdtnMmpV0dgu10SBPfA5linpZ3z31xiXqGdmbDpWVhHugHkTMOcN2Wk9bkmoMiD1jmpVjon6Ypsu/S1+epypkfOy0OhrvUETMSrnUoeO/HOvxJffD4grsJV+/ZCwsQ5lGXezMYt74lb9hKHkTt5rQU+CJLlzAqkGc7AcbnbY8EUaN2Q6jMnBYjMiJYkaOJWasjd1Q5LNLyoOO+rkNWDWvSfp8FRfZepDGaO0WA9VglaCc7LW8NxQ3ZBTYe4LDF7rnZoFl6iMNFkwDQGQXuikMnROrsTDaqklS6B/wzOKzdalGVnS2oVTotnBYeE0MLuf/fx96TjcF4O+J/CWBSh5ygWk/Q1v4Elr/1zUYz3D
- CQ5KikvB
- IIa7Kx44BF56E7Li2T7CdQAc72tYWPt9aoQckpffiqAFnq82eAvcRCbE/iy1CtTwOEC+ZoLtxyjLT84pqExJBP90+ZJtG6Z79lyVDXUjEWpvxXGOED1cwKfObvy+z8LLIInZm7DlYgVo0dyrUp6U7IIIpa1Q3i4JaaJYH/OHt0xo3WDOEwOJ/21cEfiVhyaKN4CwHm+At/3KZfa6u5sW4/ZlObHWdhqlTNwjZikJzHZVB6B/FDlKCjyT64wDpUr7P7b7vdqdjRvfmVoAsAbEW20sSeA==
+X-Stat-Signature: 4ujw7unmsmtkpggsb8qfqsnjfdhf7aiz
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EEEE24000A
+X-HE-Tag: 1787181034-495191
+X-HE-Meta: U2FsdGVkX1+pJA/9U2paeRyFdS5Ld72JiMz9g6VwbDo+gI/YsJvemnQzSC9Wg9h3N2Y47Q0Od9yvjC2u/Pe27cojPZNQSPXBaCP49391ePfVKx/HVmaVBicULg9Jd+KqwOJxGHuDwhlQFReJP0Yl2UzaddbcBkPDyLUFYGUF2BgxTdjZ+ldmLpjOjT5Pb+dzMLfYcjgdGYU1zbVFoh7NZxXA7rTjaaeMxD3H8fpjk/gAjbjp2fZwHbKhs9T8jXPtZFs5GKd8YW5wgdYJztIDrgwiy+XUEopOpthTidjfY058xGbdTkskR6csANhfL/xnIhEhW+eijFGw1ExpROj+xxdwdkc7pZc7vjv6+C7Xcbd7O/xcahxyTCSV53p0ZdGJiOslSXjQ9bCk9YavTCKSb9ZCJsWf0oRcmgicXAVcKHRKRSuLGhnWaPuzygrS2mkMVoD7xIl0U6Jmn2eUrkx5/S1IOCnRuesUHQKqEFSKNal1Eq38eZsTBbYjkDEV/fyb8wWBAJlTu9ywQFD8iY1SR7SL9dXWGc1LHqrxhN3aYKbzZgXdJRoEvd3kEOUJPK28Co8GXbfliAhv+AHWJeast5QF84CL3NRn0Snyp05jkiNAAJ80iG4UgKMAIrbbktEcMS3WVZ3XtolabM7+FPAqURPUQxpyoZIfhBjBcBTr855e6VEh5cvIsF7aVhG4VVJb8WG3egqRnEqoma9AAYH+ygRvrt9Xj+tU8sLUZz/d0sbJFqz/25K95D42EkcVdnsq3ZLjrd+pQIk0DfGdWE/o0jaWgbbnlGJ7ll/MmVRpMChX9oBctljihCCGbtCbXyxzkp+Ih0q9riAJwEn0Y9FAAUKIh2m8p6AB3P1VlbgXUvmCK4e0EKjvhTrFKw0ESetgmzqlNU7n/ZBiItTUvkBTcXSv7+3z3MPzWEJymVQGPM8FIxxuDz9zrsY5EjRWfS86HX5sde6Hzh4zQ8luwKO
+ aGMqkH1V
+ aB4CkNcWWqcpX4C6vhOxvyUSroODS9gkFCLOavTRKriLPf5pcmwqlgt8HWpj6QoUjB8BNKGicyUVcQ0hztkWFF5tx3O4/vOg/naiy6zjqm+a3l4SGRGC1iUy7X/IOsOr4V3/FxP/WvKhNrHglazR6vz3vQAsqtguEDUOkHQpWpkd4RRvJphgGHidpBQvRfwEJrGYcUaBEZVnF4gli8AbTCyytytVI7Uk57snuGHeuM2ljJu6nc5k74kzsMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,148 +109,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Right now we have coredump_test.h which pulls in the test harness.
-So it can't be included in coredump_test_helpers.c and it hand-rolls a
-bunch of stuff that is not needed.
+COREDUMP_REQ_SIZE_VER0 and COREDUMP_ACK_SIZE_VER0 define the initial
+struct sizes.
 
-Instead of this mess, split everything out into a separate
-coredump_test_helpers.h header and make both coredump_test.h and
-coredump_test_helpers.c include it.
+Assert that both published sizes still match their structs. While at it
+fix some issues with docs.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/coredump/coredump_test.h   | 30 +-----------------
- .../selftests/coredump/coredump_test_helpers.c     | 17 +---------
- .../selftests/coredump/coredump_test_helpers.h     | 37 ++++++++++++++++++++++
- 3 files changed, 39 insertions(+), 45 deletions(-)
+ fs/coredump.c                 | 2 ++
+ include/uapi/linux/coredump.h | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/coredump/coredump_test.h b/tools/testing/selftests/coredump/coredump_test.h
-index a02809145e2d..8d99b5cb2f12 100644
---- a/tools/testing/selftests/coredump/coredump_test.h
-+++ b/tools/testing/selftests/coredump/coredump_test.h
-@@ -3,18 +3,9 @@
- #ifndef __COREDUMP_TEST_H
- #define __COREDUMP_TEST_H
- 
--#include <stdbool.h>
--#include <sys/types.h>
--#include <linux/coredump.h>
--
- #include "../kselftest_harness.h"
--#include "../pidfd/pidfd.h"
--
--#ifndef PAGE_SIZE
--#define PAGE_SIZE 4096
--#endif
- 
--#define NUM_THREAD_SPAWN 128
-+#include "coredump_test_helpers.h"
- 
- /* Coredump fixture */
- FIXTURE(coredump)
-@@ -24,15 +15,6 @@ FIXTURE(coredump)
- 	int fd_tmpfs_detached;
- };
- 
--/* Shared helper function declarations */
--void *do_nothing(void *arg);
--void crashing_child(void);
--int create_detached_tmpfs(void);
--int create_and_listen_unix_socket(const char *path);
--bool set_core_pattern(const char *pattern);
--int get_peer_pidfd(int fd);
--bool get_pidfd_info(int fd_peer_pidfd, struct pidfd_info *info);
--
- /* Inline helper that uses harness types */
- static inline void wait_and_check_coredump_server(pid_t pid_coredump_server,
- 						   struct __test_metadata *const _metadata,
-@@ -45,14 +27,4 @@ static inline void wait_and_check_coredump_server(pid_t pid_coredump_server,
- 	ASSERT_EQ(WEXITSTATUS(status), 0);
+diff --git a/fs/coredump.c b/fs/coredump.c
+index 24a6405ea242..c696b46c97ff 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -759,6 +759,8 @@ static inline bool coredump_sock_send(struct file *file, struct coredump_req *re
+ 	return ret == sizeof(*req);
  }
  
--/* Protocol helper function declarations */
--ssize_t recv_marker(int fd);
--bool read_marker(int fd, enum coredump_mark mark);
--bool read_coredump_req(int fd, struct coredump_req *req);
--bool send_coredump_ack(int fd, const struct coredump_req *req,
--		       __u64 mask, size_t size_ack);
--bool check_coredump_req(const struct coredump_req *req);
--int open_coredump_tmpfile(int fd_tmpfs_detached);
--void process_coredump_worker(int fd_coredump, int fd_peer_pidfd, int fd_core_file);
--
- #endif /* __COREDUMP_TEST_H */
-diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.c b/tools/testing/selftests/coredump/coredump_test_helpers.c
-index 306711e1b24d..570fc2e005c2 100644
---- a/tools/testing/selftests/coredump/coredump_test_helpers.c
-+++ b/tools/testing/selftests/coredump/coredump_test_helpers.c
-@@ -20,23 +20,8 @@
- #include <unistd.h>
++static_assert(sizeof(struct coredump_req) == COREDUMP_REQ_SIZE_VER0);
++static_assert(sizeof(struct coredump_ack) == COREDUMP_ACK_SIZE_VER0);
+ static_assert(sizeof(enum coredump_mark) == sizeof(__u32));
  
- #include "../filesystems/wrappers.h"
--#include "../pidfd/pidfd.h"
- 
--/* Forward declarations to avoid including harness header */
--struct __test_metadata;
--
--/* Match the fixture definition from coredump_test.h */
--struct _fixture_coredump_data {
--	char original_core_pattern[256];
--	pid_t pid_coredump_server;
--	int fd_tmpfs_detached;
--};
--
--#ifndef PAGE_SIZE
--#define PAGE_SIZE 4096
--#endif
--
--#define NUM_THREAD_SPAWN 128
-+#include "coredump_test_helpers.h"
- 
- void *do_nothing(void *arg)
- {
-diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.h b/tools/testing/selftests/coredump/coredump_test_helpers.h
-new file mode 100644
-index 000000000000..45904bd177b8
---- /dev/null
-+++ b/tools/testing/selftests/coredump/coredump_test_helpers.h
-@@ -0,0 +1,37 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef __COREDUMP_TEST_HELPERS_H
-+#define __COREDUMP_TEST_HELPERS_H
-+
-+#include <stdbool.h>
-+#include <sys/types.h>
-+#include <linux/coredump.h>
-+
-+#include "../pidfd/pidfd.h"
-+
-+#ifndef PAGE_SIZE
-+#define PAGE_SIZE 4096
-+#endif
-+
-+#define NUM_THREAD_SPAWN 128
-+
-+/* Shared helper function declarations */
-+void *do_nothing(void *arg);
-+void crashing_child(void);
-+int create_detached_tmpfs(void);
-+int create_and_listen_unix_socket(const char *path);
-+bool set_core_pattern(const char *pattern);
-+int get_peer_pidfd(int fd);
-+bool get_pidfd_info(int fd_peer_pidfd, struct pidfd_info *info);
-+
-+/* Protocol helper function declarations */
-+ssize_t recv_marker(int fd);
-+bool read_marker(int fd, enum coredump_mark mark);
-+bool read_coredump_req(int fd, struct coredump_req *req);
-+bool send_coredump_ack(int fd, const struct coredump_req *req,
-+		       __u64 mask, size_t size_ack);
-+bool check_coredump_req(const struct coredump_req *req);
-+int open_coredump_tmpfile(int fd_tmpfs_detached);
-+void process_coredump_worker(int fd_coredump, int fd_peer_pidfd, int fd_core_file);
-+
-+#endif /* __COREDUMP_TEST_HELPERS_H */
+ static inline bool coredump_sock_mark(struct file *file, enum coredump_mark mark)
+diff --git a/include/uapi/linux/coredump.h b/include/uapi/linux/coredump.h
+index dc3789b78af0..662e0468da6e 100644
+--- a/include/uapi/linux/coredump.h
++++ b/include/uapi/linux/coredump.h
+@@ -30,11 +30,11 @@ enum {
+  * member is set to the size of struct coredump_req and provides a hint
+  * to userspace how much data can be read. Userspace may use MSG_PEEK to
+  * peek the size of struct coredump_req and then choose to consume it in
+- * one go. Userspace may also simply read a COREDUMP_ACK_SIZE_VER0
++ * one go. Userspace may also simply read a COREDUMP_REQ_SIZE_VER0
+  * request. If the size the kernel sends is larger userspace simply
+  * discards any remaining data.
+  *
+- * The coredump_req->mask member is set to the currently know features.
++ * The coredump_req->mask member is set to the currently known features.
+  * Userspace may only set coredump_ack->mask to the bits raised by the
+  * kernel in coredump_req->mask.
+  *
 
 -- 
 2.53.0
