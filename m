@@ -4,137 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C59C5C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF8A2C5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:46:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54A3E6B0092; Wed, 19 Aug 2026 11:43:41 -0400 (EDT)
+	id 688606B0095; Wed, 19 Aug 2026 11:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FAED6B0093; Wed, 19 Aug 2026 11:43:41 -0400 (EDT)
+	id 65F1A6B0098; Wed, 19 Aug 2026 11:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9136B0095; Wed, 19 Aug 2026 11:43:41 -0400 (EDT)
+	id 5749A6B009B; Wed, 19 Aug 2026 11:46:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 167416B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:43:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9BEF74026D
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:43:40 +0000 (UTC)
-X-FDA: 85118439000.27.0560041
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D812980002
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:43:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VJgTEOEc;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787154218;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=38JhnhHXecQ6hRRQfHnTqEwVWVkxH6ubOJI2lsidQN0=;
-	b=1g6LJKi+gieJEwmMiT5EmQ7aUsjK1BDYV2plNroAbFhkMaHr6nWgP0aFXEPxkNLo48aEhX
-	8Q6Nj2zLc0tSEdIB15Xc3a/aqyiqkmYHWfGFKbJVjGp1x/21YOGiTJMJk9RUWITvEf/Yma
-	IOpI8pF06bNrfv3yxbJ6wscJgin4RsA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VJgTEOEc;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3550C6B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:46:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 588DDA30F9
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:46:16 +0000 (UTC)
+X-FDA: 85118445552.03.E6B0FA8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 45C7340008
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:46:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TWFdlP3C;
+	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787154218;
-	b=al01Cy/DPtvg+fExyOKcyQtmWM9rgt04uRUZEFaZmhXO+o0tM/lVwu9M+eo8M3YmZ67IMN
-	HHl/rZgElVlaOJEYQQwGviACrboiJT9e2/BTQQPi56JW2KviqYrY6NiiKrmWVqzusTFt6d
-	qIzRwKNYM/d2Xyib9DH5lKKRSGU4pzI=
+	t=1787154374;
+	b=sBDl0cdLC/ev32FbV5mcudeXTDuOeLMnFnNAmsuF3DwH2B9IZZFJ6Vtdsvv9a753iPkZdx
+	yHCvLqSUOrd0Wr6fKV8z4DJhqK8fQFuqrbnKMYJPxgxtBnpK/vmMxUQXiq0c1MmwilfHnS
+	NJ+SPDxTmyDDUYi+KXJ1VyQIOQT2KV0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TWFdlP3C;
+	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787154374;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FF4elongAZg7/M4cE7UQIpRWN92NIlJQ0JhAOJdFdWo=;
+	b=DbhefllJGQCc4Z/9hy9yOpmkE9HlYoNMlE6pAChHerCaNLVwj2U6q15kJdMWYNouza2DPK
+	8a4xMIc4X+dhQzmIOle+3qyAzkBUbNPAR6HBquXzg98vEhzTZMxgo9gSyloSV0n8sMxHkb
+	VSahn2b4hYfXJoqyZmzBKSncyatsIrI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DF2760DB5;
-	Wed, 19 Aug 2026 15:43:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511971F000E9;
-	Wed, 19 Aug 2026 15:43:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B5B543C6F;
+	Wed, 19 Aug 2026 15:46:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB5C1F000E9;
+	Wed, 19 Aug 2026 15:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787154218;
-	bh=38JhnhHXecQ6hRRQfHnTqEwVWVkxH6ubOJI2lsidQN0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VJgTEOEcslv7heA9gjgAu/iGr2yaBO6vB/pN2zKgXLJhTIgm94p5S0H/kvBwGj5+q
-	 m/DYpEd/YI7DwEGcll0WxUCvGPohSWN8IuSLwPjy7SqncmGauBYgy8b2QgF+3g5UV5
-	 KbaSZ4Fdm+DluAgWk4O8iGc3rf7giL/kRYGz0xQHvTE+tL3apP5cmXyns1WwZu8eSx
-	 QkxgEQ3gskFSf5eXEscBm5FLz/R3EGBY8oxKkEPpoSD8Tc/Tcg167y5yzbrWk14Pt8
-	 q1RAGvhQuMoOHs1L2phIvgtKADNze9FVY14/L9nsAiJu6VK0zCs9CL21TgZanRarNw
-	 Av+Vg0Iu2QV+w==
-Message-ID: <dfdacdac-fa1d-47c3-8d22-abdbd8c43ab8@kernel.org>
-Date: Wed, 19 Aug 2026 17:43:31 +0200
+	s=k20260515; t=1787154373;
+	bh=FF4elongAZg7/M4cE7UQIpRWN92NIlJQ0JhAOJdFdWo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TWFdlP3C/pUSFUyS4z0RosyUzwRkBJ7n3YSwFwIspeM6G/dODiGy9Fl743wq4vWTg
+	 hWGfXFxMwQ6kmZuYua5g5r7n2e4gUxONQY3uNTZeXoQXYTCpyw+B2cOTefJjfnlEU7
+	 dxGIlqVnMFMq5UJFtUyvH58joiDQxTU4P59ubz7coxHbyIscx82nO33iAAvfmWz2pc
+	 xORtnV3dSj5nIhU5BAx2z6dbYwBbjOCPjFmxW8W+FCI8F6aHJHEaF2XvGowk6cPwns
+	 0Q8+D+Fy3ctbJao7MpQVVZPw+IeUcGjLI28eWBcx3RGINGClFg8WZY079Dx6TBYVs8
+	 OMmeq6YU1QOPQ==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id A7CC11980075;
+	Wed, 19 Aug 2026 11:46:05 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 19 Aug 2026 11:46:10 -0400
+X-ME-Sender: <xms:vc-Falh56FLkDh3Mo--mQabb8Afh9sK9pellib-FS6fek1NN-bbejw>
+    <xme:vc-FagylgBShoX3Sa_Q-ysYAqxFBaqXoxWZ62gHj2oa8ZAG4V4Tb58ZVo2wl6hdPZ
+    jwR4Ti7WT1dY3q6r8dVMbH-iA6S6WH3QS1UHx9PRwc-azyKp9BITN0>
+X-ME-Received: <xmr:vc-FatMC0cNRul-zookULN9hbKKPKGvWcJtURu7tUomJcLjBc6US9Nt0Oc8>
+X-ME-Proxy-Cause: dmFkZTFbQc/DxeUvuB0ahiyLxyyzwA7xvHem8nISRpZYhrkBn90a3JvF73UYxxLmxqP6gl
+    HAD13bvVkUVYopLRFEOet4GfhE73tEpKnye8r+on/mQ2oQQ+M7IVk2wJUbxzISfh8HmLr8
+    ahbajLBp9qphjB2cSdNgglL7+2My4LcMn6kBE2LUDggd692MQSAE3K1URYroIcKnEegv41
+    javIZkHHFTEOx/alKV/4o+HgJgprEyz6hYOWI/vwwUWTNVTUBg+cM0wfOAhH6r03rR6cNx
+    MGdC9xzMsa/69UOJgaYjdxb9+/s6rLmig4carmArzqPZKWvhju0iHPG4dUHViA8GYSEYY9
+    JUxg8/ABPgb3SMJZvYAycam3gpIJLA2cJmr5tssdDzRoaIjnMRqrafkG93Ta74eq0bASIR
+    a5ky8gbmDFEnx4GAJw+laGz2qmrkp1rpRF0P/2Mkm8fNxtVhamxAjhnmWDCLPWgNJF/hoa
+    2NsDZz27A5VHlr9lZKZeaMStg5cgqTSyh+14cwQsEH+cWBnf/LXMnrv9AwSOeu8Dj8sTIT
+    o/Kwtipfs7cc4rg0QVYOK5r5Iid7oCt58naSjMN4bYfNgJxYc8FSzOe3pJOnPn+RiVZaGs
+    htoUGWSlG2RucRmSAAFVbcpVLQoNZYjl1xfBbyUxB3Y6455NAT/VzUDJYM+A
+X-ME-Proxy: <xmx:vc-FarHrhyMLPaVk7d80SJ3h0SpXvJdPJmEUWLXZdOCQQO99QLW86Q>
+    <xmx:vc-Fahp7Vi5ArGd84ii5Ed7qVGe5T73InDTJAbdmPOxYCxU9QpJjVQ>
+    <xmx:vc-FapiFqXWA--vRgIBr-sAbqW4msvFuWBThsRvqSflCsIhxPmTRFw>
+    <xmx:vc-FagqSHPs4fuUr6lVz_CZG8Oc7XtNWwyodrVGoJJXT-w1MCE0IyA>
+    <xmx:vc-FauDv6xyFNjwEck4sgsY0jQk6CEpu2j-PIojcGSgMhEvkwcJyvY7A>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 19 Aug 2026 11:46:04 -0400 (EDT)
+Date: Wed, 19 Aug 2026 16:46:03 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
+	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
+	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, dev.jain@arm.com, 
+	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, 
+	lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
+	shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v6 04/12] mm: handle PMD swap entries in fork path
+Message-ID: <aoXNs-v5SQ4Nx4WU@thinkstation>
+References: <20260818131202.494754-1-usama.arif@linux.dev>
+ <20260818131202.494754-5-usama.arif@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-To: Mike Rapoport <rppt@kernel.org>, Yuan Liu <yuan1.liu@intel.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
- linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
- Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
-References: <20260818085702.3395529-1-yuan1.liu@intel.com>
- <20260818085702.3395529-3-yuan1.liu@intel.com> <aoXEBCWQ-a9OB_YE@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aoXEBCWQ-a9OB_YE@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D812980002
-X-Stat-Signature: kibfg88efggaghbnw4qszgqkmyftocnx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260818131202.494754-5-usama.arif@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1787154218-95188
-X-HE-Meta: U2FsdGVkX19/++DLZwLmDVldxy9P4TDmgCe6gjp9dhCl5sC1igN5uQDb/JLojE7RL2N9hSPZdSCCf5TuvcbRz4kzOmpAd8Zne5vWgXPZ43SBkRi4Zt18VAddA2GFYIWnHfmTKi1I2t6bgJZ75rNKsIXtkb9Xr8E0mS77UWH93JhuMd3eiW4bKaJ6bClAJfvE53PYKY8Ohd1O8zmZNhGQ7XKXKUnAml1Rs4qBPqVpyZIzlBFFxEnLpUPuvAnD9r0s8KuUMTT+oRkQmTK/6TXJNgdpvQza17nRkxgzN1UA3I89OWZjGnHKrp8/2BYdDyKlFnCAIZeA6i8boZ6mSRbTgx81YJMDVXzP+Od8AckfoxvK/ovWAKFmmqcN3No6cQoXfOHGIyCUFRDm5DKM667JwUboTLZ23Dgh2dHMvcI2I62/FH1eNkK7bjJDe3Xw0kvYBkpW/zXExWnvQ4NbY5mmHn3747lwWb0y6cVN2ofktuOQFftqvqvoxfN4O+XrRDVwGc0GCwikkVOh2VgamfVvTCRy66PnW+C0KaYuC9zLROj9ELurRblRMgZBGJlUyhKbEvb2OO0ebhgkts8OuQQlLNjuilS27p1R4XEQYQD4/EVUxhETWaVeyH+KABAp+Q8oHIrR3Fv/aAgFHWDcVB9zu03YNMOyyOKkZeh0HW+sLHT38z4e18yOYkz5VrYdXpkslHz9gPg3wSc7o/qM1Hov4PqfTSYJ/wd3dk7PkRSLpjzDhQ/5Bp9VBmyxvGRbc/vpMcbQRZMYD4pk3/zd2Hh4hXBWpcwhMTcBVpRKj6AbDAO8kSSMNq5Eq8XwMFPDn2KnBB352ZaXVNPqC2fA7vX/0ltLDkgEDRRcz8s1fNxy5j4psuQcLIxFgJ76hcHexQzzFbHEDzpq284RWkQeEGOQbkgw+PYjTx1lnnpTwuNLd0rxz2gYSBvrmv+U3zGGlZ9EUmqlq42NrpmJzJNeyFg
- dG+dpbbs
- O2mi3E74piNDp4l866pkwRmKblUh0IE7CvAv8cxD3jRf5YEW3fABeV1dcgEzyfoTa8Y3Pq0FaqLb681Q8BGxd/OjmegKjKoIRR45jqnSBkR9sl1rLNkEChzy6ul3BpWwISnzqrYdNxD8DkpP6uJk1VTSFgN1uLcM/BtOisvIxnbxKzNYg1A6rI2SaCivXDETWd4TfTizrCJ0+ger+pJ0rfCarx6fyMgEZSzoRUmOzqXSaK2XbxLYgBE1m+/jg6kyX1TrmHaW3jKzMUx+227+9e075LAlMZ/mHJWKzEQQato4h5+oahosvDEzWK/H0X1yAorz4p36qJUQ09SBFUaOeWndTsZFbUkBCw9XR4MZYEB/ZtEWAJNSBRpUmwNKImcGvYZ2a
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 45C7340008
+X-Stat-Signature: mp6sxwrg88orpqoh1tt8ehou68rj7de7
+X-HE-Tag: 1787154374-657067
+X-HE-Meta: U2FsdGVkX1+aaXPZiZnb5qzCseOjysIv4wnI9Y45hsE0ZRtMKWVUu0ZnR4ir7WZB6pMDK2HxK0IpXVFnUWkki2VAZWxWPShoCr7kpPfQvWX5yj2+/ZfCUPk8ywetU7/QZsaGb0irrpFkRM/r926lWGIjjRk5vhbgaOinwjLZQLIwTPombUAsYCmg8lJ07WD1InVA9C/qD4D1aDnr2iaOSYbl7sdL7vDS3/NN/z8iv8QM4lLzBWUVTNnrgvixeSoLmQucjGmHbj7JfPZm2SR+N+m2lEAflkLMU1Ezr3FqpnvwNaxLEZk7bsKzqarbtvgqUQftTay8e6/rdNyyY5Hw6mLGGX64Hs2ZG0w5Ch270J8SklT465Cv5FyxpFKtOBKQqmKeToHgJeM6mWHZudES9zRWqN1rRA0S8fdOWS/HoibXr4yJy5n0wyq1Hq7nYRLOGxbQSlDCck7sVtR+d2XWFDdxtwktGnWGWvO9OjZMTtGaPIc5eYHLctknjj5YH0iXwawyea1NJmft6/bRon6sFpYeY95raNUoH/DKcS2C9l97XE4RbBGm/7sFAsS9EI4G/2lEzOS5wBMRAkE2OnWOPjp33LmoMXe7Zkhei8OQKcnIS7/FsullmZU1rnZuJvepD0ilqrdf9QI25bdbbF3SlbVMydHC+61D8DPInSCjtZAsF8BBpsSxxhSMxt2OCyLEicd6omd7cqrCm8RPojWgsxyuq/kc6vMYMTV8sFXXnAdkUbmiByKm/0RipXfdwQnnU1R8p2y5Jkn53+W9CvD+WsxNT36ybm3cbtEYkHtDGNcSK95kOExH/+kn6UsnLeHZyNxWdrRBCk/AumcOFKieSyefp86HMShJkAlO3I5HD0FKojHFK/9dpwYm2omPeN3YxHhcqZNEuJ0G3tJuG3xLQT+OdSYpgxyClP2ICoCH+geCxcFV51jWRj8tGFB5ND6fM8uspK+jmG9T35ym7LM
+ Q5A0LRtG
+ zwG3zAmZn9Aoo000B5L5zVntiVikZAqybBYa3ATU79Q4U/Yd4cbQxc2Xh4zOq/n7C4uAsmzRDdNfWEsMNBnS70cJYzCRnTcYLK3ZfH2pUmIEIN895BWheoZcJnx+3i6KGRMsvlyNhjsTKykxp44BiyOr3/ryypkqgXPyOvH9zSvINWLI7oPa5ovagILykN+8njX10Pci2EnJw3gi5ZnE6uiNGIxdl9kZ7eAm6vVw2NfOEqzjNknOhi06TpbOJtBEVwegFPJYPa9O2/mxh7seNf77ydw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,31 +125,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/19/26 16:56, Mike Rapoport wrote:
-> On Tue, Aug 18, 2026 at 04:57:02AM -0400, Yuan Liu wrote:
->> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
->> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
->> to rebuild zone->contiguous. For large zones this is a significant cost
->> during memory hotplug and hot-unplug.
->>
->> Add a new zone member, pages_with_online_memmap, that tracks the
->> number of pages within the zone span that have an online memory map,
->> including present pages and memory holes whose memory map has been
->> initialized and for which pfn_to_online_page() succeeds.
->>
->> For early boot memory, pages_with_online_memmap is calculated in
->> memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
->> included in pages_with_online_memmap, and hole PFNs for which
->> pfn_to_online_page() succeeds are also counted in
->> init_unavailable_range().
+On Tue, Aug 18, 2026 at 06:09:45AM -0700, Usama Arif wrote:
+> Teach copy_huge_pmd()/copy_huge_non_present_pmd() about swap entries,
+> mirroring copy_nonpresent_pte().
 > 
-> In what scenario it is possible that pfn_to_online_page() would fail at
-> that point?
-pfn_to_online_page()==false even though pfn_valid()==true in case we have a
-subsection-sized hole in an early section.
+> swap_dup_entry_direct() gains a nr parameter (and is renamed to
+> swap_dup_entries_direct()) so it can duplicate a contiguous range of
+> swap slots in one call, matching the existing
+> swap_put_entries_direct(entry, nr) API.  Existing callers pass 1.
+
+...
+
+> @@ -3955,7 +3967,7 @@ int swap_dup_entry_direct(swp_entry_t entry)
+>  	 */
+>  	VM_WARN_ON_ONCE(!swap_entry_swapped(si, entry));
+>  
+> -	return swap_dup_entries_cluster(si, swp_offset(entry), 1);
+> +	return swap_dup_entries_cluster(si, swp_offset(entry), nr);
+>  }
+
+swap_put_entries_direct() bounds end_offset against si->max and walks the
+range cluster by cluster. Here nr goes straight into the cluster helper,
+which does ci_end = offset % SWAPFILE_CLUSTER + nr and indexes up to
+ci_end - 1. __swap_table_get() VM_WARN_ON_ONCE()s on off >=
+SWAPFILE_CLUSTER, but still reads table[off].
+
+So is the range required to sit inside one cluster? I assume it works out
+because a PMD swap entry is cluster-aligned and SWAPFILE_CLUSTER ==
+HPAGE_PMD_NR, but I don't see it stated anywhere.
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
