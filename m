@@ -4,97 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 961B3C5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:55:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C880BC5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:57:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D6616B0098; Wed, 19 Aug 2026 03:55:27 -0400 (EDT)
+	id D09BA6B00A9; Wed, 19 Aug 2026 03:57:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7872A6B009B; Wed, 19 Aug 2026 03:55:27 -0400 (EDT)
+	id CE1346B00AA; Wed, 19 Aug 2026 03:57:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69C816B00A5; Wed, 19 Aug 2026 03:55:27 -0400 (EDT)
+	id BF7186B00AB; Wed, 19 Aug 2026 03:57:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EECF16B0098
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:55:26 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7B0E3160276
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:55:26 +0000 (UTC)
-X-FDA: 85117259052.14.345EE4C
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9B6E6C0007
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:55:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="cw8D7L//";
-	spf=pass (imf28.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C4416B00A9
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:57:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F625A049E
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:57:25 +0000 (UTC)
+X-FDA: 85117264050.11.8D3AF39
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4F6CF40005
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:57:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XclZTENh;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787126124;
+	s=arc-20220608; t=1787126243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8lNMdlW0Nw6U6jz4ZvINzApTzItfPmk1qUKo/jVdrSU=;
-	b=KSilM2k29musUJ5f456mWi/qLiDeklBfJWt0mas9DGE7hMIS5D1F7MMI9rlyG2VNSU+UE2
-	PvWN41y1Pv1/1tycwgFu38fc2tSE3x6h3r7UzEmcyp45hVG0nIITYU2N6nNGutZNjSWx5q
-	AHh39YYF9bwmw8s6gjnV751Mf/6M4oE=
+	bh=MI6YQwP4SWJEe9zoMRqOZtzYnGrY3Rx8FpYxOJDFbeM=;
+	b=6i4Id7RyjRYJ/RbATfEY4B3mo2gTgiwsQIjRX9+heUmG06EI36iTF+SBgBQkFWn2j469f/
+	ACVsVqGAfLDLRkuZkGm5RV0J2CIiFZGwlRNzFZ+hfaAHp1AqkHhWySii5mPeegvQXSuIaN
+	KBYH/QKSyv69J9hf89R3x7/uenZdU2U=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="cw8D7L//";
-	spf=pass (imf28.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XclZTENh;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787126124;
-	b=0zxaxIpOds3ipnjvNegjW2x6YldeoF2buMXYYctXmN7njnT4jUB9Hd443VPZjmqsxe/Mz0
-	q16DSxxhZ3se0uagtSVQ+5+n0Ayz4bWnldWf/NP5pUvtpZAAkkGIH2vu5AMwdIfIQ9tXgI
-	k4I8SQbcxH1g0bViuBJoQX+nwXmDd8o=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=8lNMdlW0Nw6U6jz4ZvINzApTzItfPmk1qUKo/jVdrSU=;
-	b=cw8D7L//tUx1Bzw65IYvCu3OHY9pN2GcdbUf9Wqd9JCppaldu1inmwMg59R6hLQqHoJOkVB4z
-	4aa8dCm9mY2q0i2lCOYqv63PRRh0Qe69D3hsaoY9gzxcjjabUNV6ywl1SFjPbJTGNRZ2EDNYOLl
-	qGITRrTHNMzhioXF0h3Asbo=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hPz9x2vDVz12LHh;
-	Wed, 19 Aug 2026 15:44:53 +0800 (CST)
-Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8744040537;
-	Wed, 19 Aug 2026 15:55:14 +0800 (CST)
-Received: from [10.174.178.56] (10.174.178.56) by
- kwepemo200010.china.huawei.com (7.202.195.178) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 15:55:13 +0800
-Message-ID: <ad225cf4-143e-4c6d-9fe9-8c6fe8c621a1@huawei.com>
-Date: Wed, 19 Aug 2026 15:55:13 +0800
+	t=1787126243;
+	b=gTAMmhTyXbUftAvdDmkFtiDhn5MZCJBnkRygVW/cs2Pr32Z5DxvYyhsWiVfL0ixg5xehWc
+	8vmX9XNIJIScJH6jWkn6Ec5PC3W82qAq4ODmUcMIiXWloYb18i81x+i312GZ4zM5sCbeI8
+	Ng3Y359rbWjJRmePHCJryEAiKkvmEdU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 28DCD41AD7;
+	Wed, 19 Aug 2026 07:57:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F67F1F000E9;
+	Wed, 19 Aug 2026 07:57:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787126242;
+	bh=MI6YQwP4SWJEe9zoMRqOZtzYnGrY3Rx8FpYxOJDFbeM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XclZTENhz4WuwaHYEbQt4QCMy8qz6n8allqXp109CpNeGNQuRxbrm2KAesDgES/Gm
+	 HU8Qmct9zfEMFub3+Rc9FHj8GhivKIbgCpzmRKiLvOGbsTHTNOcDq6g2J9iCVolevJ
+	 iyowr83xc3X2mSv0NU3ksdaUJE1UfPwjAKXy2q8YU8mtrW2ujRFrL4r9epR28CTVZ9
+	 b7fDFWpRQLqqQriqnckobQ04hyOQs9j4R3Nrl7MOJipq8Jq5hb7HzhBQMKxGT8GfOO
+	 oIM0AfINe6xqwdqpbbx8l1E422TJwoW0FwuIUPB0uv/CDbqWIewiJM9+LlB4vKzf39
+	 TUy5KR9OXVhPw==
+Message-ID: <41da530d-c3fb-471a-90ba-ab4d9b58829f@kernel.org>
+Date: Wed, 19 Aug 2026 09:57:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_isolation: fix UBSAN shift-out-of-bounds warning
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-CC: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner
-	<hannes@cmpxchg.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<sunnanyong@huawei.com>, <wangkefeng.wang@huawei.com>
-References: <20260818112855.3831692-1-xiqi2@huawei.com>
- <DKSB5XV53PQN.2G3U9Z7HJFLNO@nvidia.com>
-Content-Language: en-GB
-From: Qi Xi <xiqi2@huawei.com>
-In-Reply-To: <DKSB5XV53PQN.2G3U9Z7HJFLNO@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.56]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemo200010.china.huawei.com (7.202.195.178)
-X-Stat-Signature: egf6nnzhpjngbtfssyihua8zd37qhz8f
-X-Rspamd-Queue-Id: 9B6E6C0007
+Subject: Re: [RFC PATCH 01/57] mm: add pte_folio()
+To: Rik van Riel <riel@surriel.com>, Kiryl Shutsemau <kirill@shutemov.name>,
+ akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev
+Cc: baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
+ rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com,
+ usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kas@kernel.org, jannh@google.com, willy@infradead.org, pfalcato@suse.de,
+ rostedt@goodmis.org, mhiramat@kernel.org,
+ linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260816224609.308019-1-kirill@shutemov.name>
+ <20260816224609.308019-2-kirill@shutemov.name>
+ <905d08d102e56a026a5ad69573c507d2d9becc37.camel@surriel.com>
+ <c05f7bfb-c84b-4c36-8091-5ec7721a658b@kernel.org>
+ <edcebef940c262a83421666de67e8a07ca93e85d.camel@surriel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <edcebef940c262a83421666de67e8a07ca93e85d.camel@surriel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 7s59xpz93muujf51u6pm8pbzdmnp7ybc
+X-Rspamd-Queue-Id: 4F6CF40005
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1787126122-986496
-X-HE-Meta: U2FsdGVkX194OcbPjTaQ7tQ3VaoB2zCKdNwvAMDDKjG6s7DomK5tMtgK6nXF4rmxwdhKaUELEHAF0s3GjZj/USRzdlKFxMLFmaeL485vJ8ILeXwm6w7BhXcQXIv7/YX4O1cQ/WB8EXhVdwp3YC3FPzI5O0Zj2pvcNs7g1lodFT6+cGXu0RW1mRY7gdH06utrfj86nSAQgorOb82zlYp6H/rzsKL0UwohoAGYJiB4VT1vfukUK2UuS4vnBqHdU2p9dHZ+SxSrNU9nHvFRvGrQXjmS59Z+lzsNoJWSWV1sqFtyFNcENgCv+5pdC1Ii1db5aWSuCNPUjYLaPuev1Aia9xrH7ckVn1CDP/321cW69tngk9q+DK+T/Yb9oktYramItw8ZFVi/v3GnPLfw2ayzzsmJqMVs93Ko0QvLOe8pZlbeEnIMgfRxxbygpdtU4oPJPpCCsCsSep64ktcXuNGPh0pOR31sd9dn5zJfd9vzhyvPunz90yZHPh75GuzzEgdQb2jdAT78UFFobEKbwhHZazuz6kCkGCZ0yGtiQG6WqlB9DbNaaK9QLzpJ6DJtcFv+UezmlVsEd3RaMqCZ6EawmeOruQ7u4D4tdd86r/WECPIES51BuKH+1YoUQpe8oaJMhBjkbD5j0h2dgQ19yV4oT5QKhAaJM/vPjgU+vB0cV/pdvqkAFs0BC81CFHMGGrf9M8YmUGvtBdIHvZ+p4to3Y32ZdeAbh9np+iTMgixwWwOFlxJnemVIfpRwFW3lNw45du3CTc9bxAYq4jD0uUhst3tg2qD34hLkhz4D6elxRcDt6nYqG9/CJ2CiA/AJKpYyDBgIBv1bOvaZvom1rxTtAb4UgISqxFpPveUsaF0GAk6c89gE/KeJw7ecaQYfQPsUtYmJ5XNKF2ecmlYjgnYQtrXxyiBwoDO31XPdLezHY85WA4PuddjeeB8xT+b9H5NiHwRAnKTq5E6mF1hv8av
- VbekuxDw
- 7HTuiReVyiMmaI/ey1EOdoTEfvBOLkLsW4b9MW8sOmkAcE2YYpGAg6Njt1RvYgTp0FSZybdAxRMKIaMEuKOvlMDiuhZODZI+hvBG0y3aRq88AcFNtDbySfVeDfM+WCiJcskiHAC6yR10snksEV+2mTOXl9k4Azzjbbe+8Lm3QoFtYwWjcpCzp7r+lJsONeGeg/YrRI4/9GgCzmR9/HSIF+q9zYeBSWbsvWSw81V7MoRiOoTRfMxi1to9GyqAD7V/8Gkqcl388inX0bVo/H9a7s2llVVQyB1Q8yrLllb4/h2hYTKa/3FP2KIoo7xsjdJuAHAhjl8SW+xhCN52rRLgE0GjcaWmfdsfdmkVXTstmqnlbGgxznzWzWzT2t+NtkxIGAR7dGG2E5Tay+pIPiYBXfnbNPaoZVHX1J+hIHoFJM0JrlZzS0SjF+tcSFWUXz1OXniqxGAkDWv4j07o=
+X-HE-Tag: 1787126243-488008
+X-HE-Meta: U2FsdGVkX18W/YZK4sgJ7N67UMlATSQQ0GjGL+um/A4J4seok1QQzkbDwjU25Weu3jByEd/+JL1lxi+Q1CZZevgC5ZkDIL5FA5ijWGhjfV1GVSMmdRvftgjz9qjFx681oPwunrLz0cWG7QJMfp2TRZbxRAwlP9BGmLqngb4AQgRZvHBGbs4UjJ0psyUSynY8sjkwNTZonfcqrukUVDRMeY8c8DEgy3wE7jIsWpD02Z3Eq0eZh5rt+7YE8m5fJCOBY8yqGaRNdewQkmh2rjyK379JvKKnVbul6OPhA6+WQNm813gamsE+p/rmDCwnO54oaAzYg0Gvcy0RaR9SYoCiwQD8Po98wv5bX6e25+EOowm/jWuWIoOSBPKzUNLpwT7uVe+04op2NWMnowojpvIUhzP47aFMXlBNE9HgUiTHu+bGHrelXZVuAs5QTjjfC9c44rD0q8ovN99LJGXb6HFvrUykAKut3cqRZvbmDDjm0mNmcE2d9fnwhiUjvVpQFXYn34X7FZpTit6exWaHoyCZoCOeN65OPIyZD1lSYqUnCaEk4ww6CXlBbn2F9HMSTK7TZDRoipE6cLPRBMSBKPdPVLgRrmoZAuUhP8ruqXOUemQyOTJmiOI6siPLn2gS1YGgcRZg25cSI+SWcUxZMGP89OB06W/+uOqBNukLhQdKIBxYnlBsitVxdsVdbk16c96zMtsrBvLVNGnf2lDegB0BNBxVIUwn3tH3JTV5dqli82MjE3TkQS3KTuBAwsN+zHOUcRy9vI1xidmX5XJpi3pb2oqbYPReGZyFmxFfsTLm3LEVwZGw2dxJUsN3m2OckACZbt2Wgcu3rZtPX1NpMRBGVEGSwFXE0ftr8cE4R7nokftRa/zw9wBmNgCOoqlOBqvcvYahvEqvACkgrODzr8pEklVKSLF1CSOd4g9UjWHRi4fX9ZwfHNasOkPQLZKoh96Hu9AX0Vz6WmWrjUjfV0S
+ Lb7UBn58
+ YYdqwY0OimjrjIdb2bTzC8GMCcouqSuA4ERcidflB/oEYIhu2EFC5wxAcbS/S/+s9mIgEOVv6rk5xhto+4IwUxyUmtFJ/EFgqU6KCnxKumiw16Rbk6BB8VoBkrxnaE+DZ/29FxL9rgJ1POU2ayNRIR3uyXKbt1ox6MrXKduQExTZbEaM5SdUywhkKGjDSBP9/gCBul1Yg9EKIEPRIs2+axy6K/hSx4yu5rMGRQOVC+J4abIH/cDaD1POTFKhH1CHadkP8/JZXMn/nRf4Vu42fj8dbbGS8bP8qpS3L++7/CBdpOqZdqdAWlR1UMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,80 +149,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/18/26 22:04, Rik van Riel wrote:
+> On Tue, 2026-08-18 at 20:13 +0200, David Hildenbrand (Arm) wrote:
+>> On 8/18/26 18:38, Rik van Riel wrote:
+>>>
+>>> Oh nice, this could clean up some things in the
+>>> get_user_pages code too, when we get around to
+>>> tech debt there.
+>>
+>> We really need the page in GUP code ...
+> 
+> Ugh, indeed. COW can create "holes" in the middle of
+> a large folio, so even __access_remote_vm() will
+> continue to need pages.
+> 
+> I guess we'll continue to look up both page and
+> folio in that code, then :/
+> 
 
-On 19/08/2026 03:14, Zi Yan wrote:
-> On Tue Aug 18, 2026 at 7:28 AM EDT, Qi Xi wrote:
->> A contig-range allocation racing with buddy allocation on the adjacent
->> pageblock can trigger:
->>
->>   UBSAN: shift-out-of-bounds in mm/page_isolation.c:393:15
->>   shift exponent -749042176 is negative
->>   Call trace:
->>    isolate_single_pageblock
->>    start_isolate_page_range
->>    alloc_contig_frozen_range_noprof
->>    alloc_contig_range_noprof
->>
->> isolate_single_pageblock() first calls set_migratetype_isolate() with
->> zone->lock held, which marks the pageblock MIGRATE_ISOLATE and moves any
->> free page straddling the boundary out of the way.  Once the lock is
->> dropped, it scans the MAX_ORDER_NR_PAGES-aligned window [start_pfn,
->> boundary_pfn) locklessly, only to skip the free pages already handled
->> above and to detect in-use pages straddling the boundary.  Since this
->> scan only reads page state to decide how far to skip and returns -EBUSY
->> on a straddling in-use page, it does not take the lock.
->>
->> The window also covers the adjacent pageblock, whose free pages stay on
->> the normal movable/CMA freelist and can be allocated concurrently.  So
->> after the scan observes PageBuddy(page), another CPU can allocate the
->> page, leaving a stale value in page->private that makes "1 << order" shift
->> out of range.
->>
->> Use buddy_order_unsafe() to read the order exactly once (READ_ONCE), and
->> guard the shift with an order <= MAX_PAGE_ORDER check so it is never
->> performed with a bogus value.
->>
->> Fixes: b2c9e2fbba32 ("mm: make alloc_contig_range work at pageblock granularity")
->> Signed-off-by: Qi Xi <xiqi2@huawei.com>
->> ---
->>   mm/page_isolation.c | 13 ++++++++-----
->>   1 file changed, 8 insertions(+), 5 deletions(-)
->>
-> The fix makes sense to me.
-> Please Cc stable for this. Thanks.
->
-> Sashiko has two more concerns:
->
-> 1. order can still be bogus even if it is within MAX_PAGE_ORDER.
->      a. it can trigger VM_WARN_ON_ONCE();
->      b. it can skip arbitrary pages and miss an in-use compound page.
->
-> For 1a, we can remove VM_WARN_ON_ONCE() and just fail
-> isolate_single_pageblock() if PageBuddy crosses the boundary, since
-> pageblock_isolate_and_move_free_pages() handles it.
->
-> For 1b, after we makes the change in 1a, PageBuddy skip cannot land us
-> beyond the boundary, so the concern is gone.
->
->
-> 2. In PageCompound() branch, a bogus nr_pages can also cause the
-> shift-out-of-bounds.
->
-> It will need a different fix.
->
->
-> Hi Qi,
->
-> Do you mind fixing 1a along with this patch?
->
-> For this patch alone,
->
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-Thanks for the review and suggestions.  I'll address them in a
-follow-up: fold concern 1a into a v2, and send a separate patch
-for concern 2.  Both will carry Cc: stable.
+Yeah, and it will be more fun once we decouple pages from folios, because then a
+page_folio() will be allowed to fail.
 
-Qi
+(more GUP work, including in GUP users, is required to support that)
 
+-- 
+Cheers,
 
+David
 
