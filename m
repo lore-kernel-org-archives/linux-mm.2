@@ -4,131 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8EFC5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 10:38:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6DBEC5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 11:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AFAD6B0095; Wed, 19 Aug 2026 06:38:53 -0400 (EDT)
+	id C43316B0092; Wed, 19 Aug 2026 07:24:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 360A86B0098; Wed, 19 Aug 2026 06:38:53 -0400 (EDT)
+	id BF3AA6B0093; Wed, 19 Aug 2026 07:24:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24F746B009B; Wed, 19 Aug 2026 06:38:53 -0400 (EDT)
+	id ABC996B0095; Wed, 19 Aug 2026 07:24:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E9C5E6B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:38:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5F1F5404DF
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:38:52 +0000 (UTC)
-X-FDA: 85117670904.16.5287DE5
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 083BD40004
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:38:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="iVD/4Cp5";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aTzsLFv3;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Mgovgj49;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NFjcIplH;
-	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E9486B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:24:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 170F280512
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:24:30 +0000 (UTC)
+X-FDA: 85117785900.05.5846BD5
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4BDE71A0005
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:24:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EYM+FNCr;
+	spf=pass (imf19.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787138668;
+	b=x9XMpaPjNEsH+BGoFd23AaJIulxQx/H4gmKCH0P4LDh+iFSnYcMyHqEmZhzwj4GRpP9g6y
+	pEQDqMqSYdFHqG/leJmJRv85LpA0hGI+jlctJd3fbsfQO+4OIFeCio2RrdtxSc5QHlvMP7
+	YnyqNVON+ymi38KsEr5gsWHy0RVkFhQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EYM+FNCr;
+	spf=pass (imf19.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787135930;
+	s=arc-20220608; t=1787138668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
-	b=rcghc8pqdRFTdRI4cDIcXOC+UTdRyepaCZOllgMykldV9bOXGXI8K6MxndbvrDAo01/jq5
-	oQwE/f8L3v6GUxINengRqKSGcLkMf0TWVfjo8zdGYD5ttHZHsWsGw32IZwZzM+s1FZiESJ
-	SuJBSjpKAx6fgPd+kj29+Z0xFnAl2h8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787135930;
-	b=48nl91mggaG0AFu2/st/deleWSOaz0nLjfbGIwrO/lY7jNPVjGHE7PVGuR8jZnTq0CwuT6
-	ApESgH04NDKUx4PBGThK15DS/TqkhkAS9sqS0qd/SnLWfwoD9gfyQMlmXHx6C0hEyyoOWs
-	oWBt6oessdnH1uJL7g8LddolWPpSSLo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="iVD/4Cp5";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aTzsLFv3;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Mgovgj49;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NFjcIplH;
-	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 44FB084A92;
-	Wed, 19 Aug 2026 10:38:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1787135924; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
-	b=iVD/4Cp5MgtI2q2JRuXglb5i4OnjDtOiZVe6SZ1x+dzgwnTF+WWSW9hVinnLTt/PMIOLTN
-	gdSm89HoGec20DHHV8H5eRlguDFN9mSbRIhM/2t1N7Tsotdb5hrCdTJcbr25zfBcj5Kj2U
-	x0AlBzMwc6zN5AH7vSJxRa4t4rWtBQs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1787135924;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
-	b=aTzsLFv3IOizPYI3W2zd7k2xaqckTMkDZRGW95KjcDYXdeSYjwTvS4YC8r6IJuup8l8Xmv
-	eDSqdYjh8EF9KMCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1787135920; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
-	b=Mgovgj49FAimkPaIFmHfqixuZgisNSBeepX6UN6oao0XCucPh7ffnbdT7JVvOHE/QrDNY7
-	GWewaWJBl+oHa3iO2v/j9njRRMykIVYTULd+qsHlcrhhTrc8h1M13DdoBkMNiu68c507OU
-	alY8PKhtlpTtLhgfTKvNEtplzVOs33Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1787135920;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
-	b=NFjcIplHV8Lp3d9H4cKbPfbeV4oejIsUoDs49NZduCozj+A0rzjS5N/nT6bwWBxJoHvfvd
-	vX56Hcbe1Vrw2wDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3C0B62F81;
-	Wed, 19 Aug 2026 10:38:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GoWjDrCHhWrqIAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 19 Aug 2026 10:38:40 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id CF662A13B2; Wed, 19 Aug 2026 12:38:35 +0200 (CEST)
-Date: Wed, 19 Aug 2026 12:38:35 +0200
-From: Jan Kara <jack@suse.cz>
-To: Ayhan Aydin <nsd.project.dev@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/3] Neural Storage Driver - learning page cache
- prefetcher
-Message-ID: <w7vte4itudtkw2yf4vbmuofiumfffmp2y52dpu2bqvqtdgjvpd@5femyiozss3e>
-References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
- <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
- <anlByPDZmvEhWeXI@casper.infradead.org>
- <ffcij36vnozf3rginqd2opd2dwqyki7xhtdo4veuty734hhgba@utjav2k263o6>
- <nsd.1787001235.35928@mail.gmail.com>
+	bh=F3NgZBE9hRs9qXlD6E6LALHZpzbe9DU4fqAWKNGx43k=;
+	b=7Gj/QWAjhUwRjHAw3gctxeYAXl84rA3y7mMVdmw4H0CDNjyJ5qfQgjNFywsgwTS4g/Brs/
+	qipSrlbNse/PVYr5oDJtPyv256d57XnS4Crz+gBHujBKIqoCel0EYyI3TnWgvb5RNaONnK
+	3+xUWmW3lmJfFp1mzBOZSmCzxXf8RA0=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso7371475e9.0
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 04:24:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787138667; x=1787743467; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=F3NgZBE9hRs9qXlD6E6LALHZpzbe9DU4fqAWKNGx43k=;
+        b=EYM+FNCrTRv+le9GkWbAXQTsXYb3LLGlvd2YcBuG0YoyY+lvwkGSJd9pJbCpQmsfO6
+         3i90zI6omejWWbgvh1IqEusB38huGOZ1BbdTXx0C55usMk7yucAPZ7Ml+0FgQEMjp03q
+         8oMEHb5V/vSPjsuFnaJdhQEtp1oDm34sM5GaYLUqyfzeIylNszKHHrdCwmAg7XS03/gz
+         VZ4tGxsHAF3hxYKpIw8nJbwl9IkrB8z2WWITDp5cokm8DKqSldAthcjD1JL5Q3vsIxey
+         nrtfQExhuv6XFIxFXM9407sZul7uPPoIr13zYOpF0u7A+0i+6gVz2b7cDV3PxBNFdyac
+         mWuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787138667; x=1787743467;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F3NgZBE9hRs9qXlD6E6LALHZpzbe9DU4fqAWKNGx43k=;
+        b=jWf3qmCOYxnexK9QFW2pGlX7OEKQ09C42YnxWwXrB5UeYdTUXyTtqlush0P/HwQlKk
+         jfWiv2cPsy7QKV0WPmk0+xxKyj0s4B3VXbPnfqHZwhoapQTLp+h/dJqPMvxd0UlDBkK7
+         8Ntq1cPeR9r3hTVyohIdVtwY5fncC9UVMz2qkXUIGv/jlHCxe6Qq+FshaJ42wzrAtE0D
+         EMai/YNbboGnWSztzPuZ8R6hE5UncPZE1Pf/i+EGuylANABd1GZ058LEEag8l07sfy8L
+         uVeMQXUf75KlJdWSJ/bg7ui4V/4yQCDQ7vKw0+7Hj6EfdGv51DvnjzcJEYtos+iVPVJV
+         6NjQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrAoUeHqiIJC5w0AmVGIx7sRCuj2K/+1xastHQtmrD2FL6xTrZVgxEEvcFkKRVhfdPdW9/YoWi+bQ==@kvack.org
+X-Gm-Message-State: AOJu0YxVFeLvIjQNtCv9Un8c8adyywshXaYQOl8ihAS8M+VV/bb/jrvi
+	HY1kbivcy04vxAQXV7SWPtwVXKQjLGMBkbWln1KtL0/d+8YUuCgm1cUV
+X-Gm-Gg: AR+sD132oflP25kAUS5pSW10+Ry9K+hP2rKQyBN4lxogukjUIDubUZOgZXzz9V9zHwU
+	/0XcjED1YlhaNCzKC4rJjZPrNXwXEmq1Axu4BVshZytA4xXsw285bXyrwhaO7edTmyaUou6+ux8
+	ELSO6sniY0dmrj7g4aODNwhPNk0+p/TFL6iMlNtTUJy/+/35hkisNXfZR5hHOxzs8BAFNCZhb5o
+	CmPD0PsgVzg5i8UUiZSmVJkIEJ+9mriHGgGH4gJcCNs5BQmebopYr2klnMVaI2BO4d8JEd8dkjw
+	0OQ4rm8RliR9vKQMmqNUc3qaVTlKYeRkesc6EYDtiXnrqSQdz+iYSfs0xJwzzT+MRpa8kP5SqPh
+	jBW1GdPcFRHvy9SA3MVu49xigFfT5uCOrwV1VrDNx2+HbiNR1F8VHCoMD7Mc/Qa8iZmcD+fCHPD
+	BmFO0xlDlgKLXb7ePc3YQs4bDRFa6h6mgOgMrpKggXdkuZnk6V/ZfcH2JbXiVMSQWeH/69KZj7n
+	EMc+Jce7rTBno7uv8UzF2UjaLW557XjAcvPmXh8FkcwbU+edsgPRviymJAMKus8zn5y5u6b
+X-Received: by 2002:a05:600c:a05:b0:495:3da3:beb with SMTP id 5b1f17b1804b1-499aa1b6a02mr61478655e9.10.1787138666712;
+        Wed, 19 Aug 2026 04:24:26 -0700 (PDT)
+Received: from localhost (pat-125-254.wlan.net.ed.ac.uk. [192.41.125.254])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482b1441753sm5668998f8f.5.2026.08.19.04.24.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 04:24:25 -0700 (PDT)
+Date: Wed, 19 Aug 2026 12:24:19 +0100
+From: Karim Manaouil <kmanaouil.dev@gmail.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Frank van der Linden <fvdl@google.com>,
+	Kinsey Ho <kinseyho@google.com>, Wei Xu <weixugc@google.com>,
+	Bharata B Rao <bharata@amd.com>,
+	David Rientjes <rientjes@google.com>, Dev Jain <dev.jain@arm.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/7] mm/migrate: split remove_migration_pte_hugetlb()
+ out of remove_migration_pte()
+Message-ID: <20260819112419.n4fkhvbxxfhsyhun@wrangler>
+References: <20260813-migrate-rmap-batch-v2-0-3c5424c555c7@amd.com>
+ <20260813-migrate-rmap-batch-v2-3-3c5424c555c7@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <nsd.1787001235.35928@mail.gmail.com>
+In-Reply-To: <20260813-migrate-rmap-batch-v2-3-3c5424c555c7@amd.com>
 X-Rspam-User: 
-X-Stat-Signature: n93tf174qosencrk88wqdur7pa1bx7ye
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 083BD40004
-X-HE-Tag: 1787135929-847394
-X-HE-Meta: U2FsdGVkX1+aiiggUTpjpQPm8fevX1idU909YawrKPBBMXBHA04QcYascaDQ5uO1s81IQHhMwPatiXzfspn0wUKY8U96ayg32QPp9C+y6QwX9jJey0HzcjL8qan5jWhGrwH7I+kuA9FpUCJWH28gko/usvhVSCvOv9X5tzHH4QFSMgCNTfRMtPePWyzVVeG8nJSc1+P396t/QfYQpN6+ef9HhJNXxws9lYLM7vr6yLZxaXismJrVhefBg8XrPbWCzd0Dfr1u0lq2z32zEDeCSMQO2eJhAMyDnotFKSWmExd/JvSrhPM4zdtcK40oE1fhIXabs7z4GKKqCJrryTKDw8lTBr1mXe9bL/MNWtXbcO4gr8HRSYbL0FBEfO27bMKOGJaAgx6WZFPDL7BVvUgs6GOZQyHM5R1E2MY5Pv6Z5X7CO0LrefUQyx1uD9UrHGcfzUtUtTcBiXvkwzz87nsWtdvzYzDDm6Q5c2AzPoGyUmgPUnrE1JH2YZ+DBz4K0a7yVxafp0FEWB4cH4o6HsVTym3PaojYuiiAyyDBZfew11BWzMVakA1XdgSdslKTi4CekUrUdvbitv45sH8EWNwZexYqeGDFyEIZY2S35vLMrlHVv2rAjHck24CJ7lcAygToRqP5EUlSnOffbsWAvL89Ag5UXRESKUKY2P3wboLfzekpmU5nIhMtaSaWJvsDnqJPxw7Gq41KhmNJCYBKBPcTwD3FFhFUYkJUYP4e8xmR6C44BkTAv+Ra+2I62JBJTxstzCQaNCj71ym6CcA98EJnB+a82lEu1TzCLr9kyNkyeIOCDDjiKCK3FN7KkdkE+zwI/gnrZPTfI+t4rI1msz/juOsAo//xWqJs+iODa08/OkYjK2gB5foEnsNUs4bO+U0FPNHn2Namm1/LMc9MzRu43aolHfykP3bTcTXHH3vqBBlzkr4UJmgP2K/tBIbyDAp7jkpaOl/JnPWwdrKDxWG
- YuDGDEHD
- 62gkEhBgFfTg5HUtl4QXh7Mbijy+I+L+DgSchCSfO5Mjm3eox76Pjja8awDlvKmuw6+asqotq/IbP+wj2DdYJ8OcMl6D5bK7zC84e8RTiy+S3fnC9KcJxH3rFAZshX7aMMqIPAZoQiY9ZbVOgYLmk5dDfPQm+e662IygiUBW3JkvEtsLB/NlwONQEt7wR2mkbit9tSlpCeJOXeAloc+Oc/wztFnj59q17RXiHcY2SG2tkTiKSInmI9fNcESGG/719P6lpybe19/mq91I17+YxvliviM+iG6XHfGTEV4+nygTIuDgt8WQ1ZurGkUvDPLadBeXLfo41xW7y4GHcQprVcGhOxeG3lnYnVoIqTDwxVGSO2kAMjzxD+CFwI+DDJz+DEJqQntKwv+WxrNlxhXR6VCdAwgxp7yKkyPVi
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4BDE71A0005
+X-Stat-Signature: 6xtghog1a6tgsn3oh5gwpa5wqjbqn3bj
+X-HE-Tag: 1787138668-297271
+X-HE-Meta: U2FsdGVkX19+zlBKcntdIJhHfWsa8PotOX/7Df9GYPuFDcHjm2eCnwBT5VT8O5z6aoZOwicb7t97WThrslvW52iSTdozXjhuUX9E+t+GIbv5fsbf8EtjEAt44Kd/cYkSknHtoy4C4+BMGx96GCSvY8PRgDudt/vtMGPWF6v7cFG3EAIl/yC+6XpyKVFbu34z0vtRRbrtg952FzEdsrnQOBiB5n58x41loGtM5CETVXaKWO3TLH2AG6TgAM5jXAfTFKtjmrTTqPruZU4iJ8kPR+bhlh/068OJpiD7RuZ84QcqVXD4qb/Pv7vxkt1PUjnsB33rmaJ1HqhrL0I5YJYO1Lp9ln3hL60x4QqZ/Lt/0S56RSax5URkTpADvA04LEPzndnF8DtXh6Zi3it/lbpPmDRZ/kn4et4Wmn83SAmoG7iFohkHkBCcYdPNQG8mRYqA93i9Xgd+q1//JeMIw65Dlycx1yycz9cVla44W6mY/NfgfWqaeF4SnNeTaLCNiV9Lue95jyKfWWs9oyuXHoKxnQ1FVCtSRki6bcSgJCBMnUdOMeyqINWwXuzld9O1UuqOBcin0eoOR7QsPB9K8gq+ADfMpw5HTQ2zcgXHBKYdyT5PgqH+WUqThfNIa+3/CC1iw91lMHHE6r6lix8fZ4Mo74JOw/WUkeTVYBf/48JSlrK0p6R/xGhYwboNpKqZ6l04HbGJ8LBbyM+3rz8N2ZJtwLnY6Tnu8iXz9mumujod3MVPo4rkvsT0Ty7wBObPuMEc4SEnzlUkWsniq2RUmLOGzWU+dU7pds5DRxgq2HWI2ky9YUAXjkVzUBB0dUmci3eYnKRUo5t0gCOq5D0uxwZWlFusRRcX9g2/rBpNjqG5dhbrK1GZhSIhtwaMlpfZOzn2ksUmw6is2eFuL/vp5Kg9lmVZxRl8TVAT+PxTBwRtptC8/Ri3HNzxut+zt+ziHz7gxrCDKTqqDy65NW4TL9w
+ sxA28brS
+ VtJ80LJ4bE4PYw8PQ/u9ZbQqZVtYEu1aiHmSDIBDeefLC6El2DUb056PSCfV/68LrPlSnYVhkiV1qIy9fQ0bXtC7dMYxlxgeOnlInDa8H+We+tQXoV6wrFYFDjxZ4euRpuIY9aByqTlJHDmf25LGBz267kyg8n9+vGZiMB4sbCNkpQr7I3C5pmi89fjiS/TnRKUQv7kxX4X/A7KxUrUxT89IVp2a3xa2cq/CEM1oONP96ER//wcUDgZq5GNiApClMuxSGQHWBYFc67muXTTHdn0vq+X94zZPGeUyIC5BOSpC31FsSWD+3FBQOqFs6XUJ3XvbTO6ajwgVkt7E37QProC4GvLmMbhMfR5UPNDPZYJbyi0igwiaTkf/nejvlDNOmRkWZhKMmqZJQh0Ec76MFAqWJwKYhmlMplIQzkUh5iiQEXY7zLtjjN9rxM0f6BYpnBkOD8noO1dNFKw/xy9Qdz+OVAM0ZcqZANMJ9Vfk9/N28/Nj6Vbcrw8F84PE21SmXapJZaa70/siY2w4PeaPXZkX8VUPWvHIVr6QlhLg+gosj6TIvqXJG2A49pdG3Dkc2hRZkjoNPHvDbyAbYCpom1n25wWgpruvuPGGGf6RIXxiufQ2VVjSttEYhKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,58 +139,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 17-08-26 21:13:55, Ayhan Aydin wrote:
-> On Mon, Aug 17, 2026 at 06:22:46PM +0200, Jan Kara wrote:
-> > I can see how SQLite table scans could be improved but I'm really surprised
-> > by the 64k sequential buffered read. That's basically what the current
-> > readahead logic is built for. So how is the sync readahead you trigger
-> > better than what generic async readahead does?
-> 
-> Hi Honza,
-> 
-> Thanks for the careful question. This is exactly the workload the
-> generic readahead was built for, so I was equally surprised at first.
-> Let me share what we measured and how we explain it.
-> 
-> We reran the benchmarks with a strict A/B methodology: interleaved
-> ON/OFF passes on the same machine, drop_caches before every pass, and
-> the OFF state verified through the module's own counters (no prefetch
-> activity during OFF passes).
-> 
-> Seq 64K buffered read (2 GB file, 3 interleaved passes):
-> 
->   OFF: 396, 400, 396 MB/s   (avg 397 MB/s)
->   ON:  483, 507, 508 MB/s   (avg 499 MB/s)  -> +25.7%
-> 
-> To answer how the sync readahead we trigger can beat generic async
-> readahead, we traced the IO requests actually submitted to the device
-> (block_rq_issue, filtered to the reader task) in both modes:
-> 
->   OFF: 16,385 requests, median size 128 KiB  (100% in the 64 to 128 KiB band)
->   ON:   8,195 requests, median size 256 KiB  (100% above 128 KiB)
-> 
-> In the OFF case, the generic readahead keeps issuing fixed 128 KiB
-> windows (the default read_ahead_kb) for the entire 2 GB run. It never
-> grows beyond that. When NSD is enabled, it detects the sequential
-> pattern and expands the readahead window to 256 KiB, then delegates
-> the actual page insertion to page_cache_sync_readahead(). The kernel
-> then issues half the requests, each twice as large, which is what this
-> SSD prefers (about +27% throughput here).
+Hi Shivank,
 
-Ah, OK, thanks for the details. So the default 128k read_ahead_kb is the
-culprit. We know it for a long time this default is too low for modern HW
-so most distro's actually tune this to 1m or similar in their default
-configurations. If you tune read_ahead_kb to 1m, does the difference for
-sequential read go away? And what about SQLite?
+On Thu, Aug 13, 2026 at 04:23:14AM +0000, Shivank Garg wrote:
+> remove_migration_pte() interleaves hugetlb handling with the regular
+> folio path. Move it into a dedicated callback selected by
+> remove_migration_ptes(), leaving the generic callback focused on regular
+> folios ahead of PTE batching.
+> 
+> With hugetlb folios routed separately, simplify the PMD mapping check to
+> a one-time warning.
+> 
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>  mm/migrate.c | 97 +++++++++++++++++++++++++++++++++++++++---------------------
+>  1 file changed, 63 insertions(+), 34 deletions(-)
+> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index a3362cc9ef66..ee1b8a55a2a4 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -375,6 +375,57 @@ static pte_t migration_entry_to_pte(struct folio *folio, struct page *new,
+>  	return pte;
+>  }
+>  
+> +/*
+> + * Restore a potential migration pte to a working pte entry for hugetlb folios.
+> + */
+> +#ifdef CONFIG_HUGETLB_PAGE
+> +static bool remove_migration_pte_hugetlb(struct folio *folio,
+> +		struct vm_area_struct *vma, unsigned long addr, void *arg)
+> +{
+> +	struct rmap_walk_arg *rmap_walk_arg = arg;
+> +	DEFINE_FOLIO_VMA_WALK(pvmw, rmap_walk_arg->folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
+> +	struct hstate *h = hstate_vma(vma);
+> +	unsigned int shift = huge_page_shift(h);
+> +	unsigned long psize = huge_page_size(h);
+> +	struct page *new = folio_page(folio, 0);
+> +	rmap_t rmap_flags = RMAP_NONE;
+> +	pte_t old_pte, pte;
+> +	softleaf_t entry;
+> +
+> +	/* There is only a single mapping in a VMA. */
 
-> In other words, NSD does not bypass or reimplement the kernel
-> machinery. It tunes the ra_state window that the existing readahead
-> code then acts upon.
+I don't think this comment is necessary. page_vma_mapped_walk() clearly
+explains what happens with HugeTLB entries.
 
-Yes, understood.
+> +	if (!page_vma_mapped_walk(&pvmw))
+> +		return true;
+> +
+> +	old_pte = huge_ptep_get(vma->vm_mm, pvmw.address, pvmw.pte);
+> +	entry = softleaf_from_pte(old_pte);
+> +	folio_get(folio);
+> +	pte = migration_entry_to_pte(folio, new, entry, old_pte, vma, &rmap_flags);
+> +	pte = arch_make_huge_pte(pte, shift, vma->vm_flags);
+> +	if (folio_test_anon(folio))
+> +		hugetlb_add_anon_rmap(folio, vma, pvmw.address, rmap_flags);
+> +	else
+> +		hugetlb_add_file_rmap(folio);
+> +	set_huge_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte, psize);
 
-								Honza
+I know nothing in HugeTLB, but can't they be mapped as 4KiB entries? In
+which case we have to use
+
+	while (page_vma_mapped_walk(&pvmw)) {
+		...
+	}
+
+It seems like it's not the case from my little investigation, but
+I'll keep it here just to be sure.
+
+> +	if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
+> +		mlock_drain_local();
+> +
+> +	trace_remove_migration_pte(pvmw.address, pte_val(pte), compound_order(new));
+> +
+> +	/* No need to invalidate - it was non-present before */
+> +	update_mmu_cache(vma, pvmw.address, pvmw.pte);
+> +	page_vma_mapped_walk_done(&pvmw);
+> +
+> +	return true;
+> +}
+> +#else
+> +static bool remove_migration_pte_hugetlb(struct folio *folio,
+> +		struct vm_area_struct *vma, unsigned long addr, void *arg)
+> +{
+> +	return false;
+> +}
+> +#endif /* CONFIG_HUGETLB_PAGE */
+> +
+>  /*
+>   * Restore a potential migration pte to a working pte entry
+>   */
+> @@ -395,20 +446,14 @@ static bool remove_migration_pte(struct folio *folio,
+>  #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+>  		/* PMD-mapped THP migration entry */
+>  		if (!pvmw.pte) {
+> -			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+> -					!folio_test_pmd_mappable(folio), folio);
+> +			VM_WARN_ON_ONCE_FOLIO(!folio_test_pmd_mappable(folio), folio);
+>  			remove_migration_pmd(&pvmw, folio);
+>  			continue;
+>  		}
+>  #endif
+> -		if (folio_test_hugetlb(folio))
+> -			old_pte = huge_ptep_get(vma->vm_mm, pvmw.address,
+> -						pvmw.pte);
+> -		else
+> -			old_pte = ptep_get(pvmw.pte);
+> -
+> +		old_pte = ptep_get(pvmw.pte);
+>  		entry = softleaf_from_pte(old_pte);
+> -		if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+> +		if (folio_test_large(folio))
+>  			idx = softleaf_to_pfn(entry) - pvmw.pfn;
+>  
+>  		if (rmap_walk_arg->map_unused_to_zeropage &&
+> @@ -434,30 +479,12 @@ static bool remove_migration_pte(struct folio *folio,
+>  				pte = pte_swp_mkuffd(pte);
+>  		}
+>  
+> -#ifdef CONFIG_HUGETLB_PAGE
+> -		if (folio_test_hugetlb(folio)) {
+> -			struct hstate *h = hstate_vma(vma);
+> -			unsigned int shift = huge_page_shift(h);
+> -			unsigned long psize = huge_page_size(h);
+> -
+> -			pte = arch_make_huge_pte(pte, shift, vma->vm_flags);
+> -			if (folio_test_anon(folio))
+> -				hugetlb_add_anon_rmap(folio, vma, pvmw.address,
+> -						      rmap_flags);
+> -			else
+> -				hugetlb_add_file_rmap(folio);
+> -			set_huge_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte,
+> -					psize);
+> -		} else
+> -#endif
+> -		{
+> -			if (folio_test_anon(folio))
+> -				folio_add_anon_rmap_pte(folio, new, vma,
+> -							pvmw.address, rmap_flags);
+> -			else
+> -				folio_add_file_rmap_pte(folio, new, vma);
+> -			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
+> -		}
+> +		if (folio_test_anon(folio))
+> +			folio_add_anon_rmap_pte(folio, new, vma,
+> +						pvmw.address, rmap_flags);
+> +		else
+> +			folio_add_file_rmap_pte(folio, new, vma);
+> +		set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
+>  		if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
+>  			mlock_drain_local();
+>  
+> @@ -484,7 +511,9 @@ void remove_migration_ptes(struct folio *src, struct folio *dst,
+>  	};
+>  
+>  	struct rmap_walk_control rwc = {
+> -		.rmap_one = remove_migration_pte,
+> +		.rmap_one = folio_test_hugetlb(src) ?
+> +				remove_migration_pte_hugetlb :
+> +				remove_migration_pte,
+>  		.arg = &rmap_walk_arg,
+>  	};
+>  
+> 
+> -- 
+> 2.43.0
+> 
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+~karim
 
