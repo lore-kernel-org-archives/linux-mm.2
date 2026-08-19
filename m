@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9FF2C5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D4D3C5DF86
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A10826B00A5; Wed, 19 Aug 2026 19:10:42 -0400 (EDT)
+	id 72B0F6B00A9; Wed, 19 Aug 2026 19:10:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E86A6B00A6; Wed, 19 Aug 2026 19:10:42 -0400 (EDT)
+	id 704086B00AB; Wed, 19 Aug 2026 19:10:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D8196B00A7; Wed, 19 Aug 2026 19:10:42 -0400 (EDT)
+	id 618F26B00AC; Wed, 19 Aug 2026 19:10:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66AED6B00A5
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:42 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E7D47160433
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:41 +0000 (UTC)
-X-FDA: 85119565482.05.2E0CD0F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2D441120003
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Heen4TOm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C8DF6B00A9
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B9BAB80479
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:49 +0000 (UTC)
+X-FDA: 85119565818.29.E7907A1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D39D340003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=npJLhXeQ;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787181040;
+	s=arc-20220608; t=1787181045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aaMUb6PaGUkY1uYWWgN3cAeUq6l9h+PWt5o9AmFAt0E=;
-	b=8nfDqigY2mc7y1/iuf5wern8NPh+hnGSe3yRVUnaQP+iLsY7dHeQaIBtU5dl8lobjxcmDj
-	Bva0R4q5crKzJ3J2oJ5NHxP5yA0pD6uO5B7jBjmW3Wvac/sn4JZfr5o7I0ey7pN/KGvDb6
-	cicaXHiupfHsLDVgvHAvTbPZgZsKUp8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Heen4TOm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=aXCeFRO1r0hB0+8jo/097AeX5zU9p1RIeHyMY6Gqagw=;
+	b=kN5hnpJ+4zLlNAq0DRSq8P8cCP3YJr+VUVau57IutO+cSaNudHl+6g3SdSs30m2iqCnh0Y
+	TmPfThn6Jn8UAzUF6w1lRis9jKFpwZSjBOja5NzQKcCNeaMp7KQ4dGQj9AynO3O63kfvLm
+	2TOL/Ku3kItKH9fgWMVNrjz99b+NT5U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787181040;
-	b=gZeoAs5VmqGBI2Uy1xd6g0FFesraOPfQ7HY4OzCR9VetP+yNTHXb8cLai/Cp5fRHllkrv3
-	SkL5FqWzujf6pjDvo611iTlQA2ggnHindRkdRYcUf6mH9Wr7f8eoVEzJlk8yXIt/930TkT
-	eOZsTdFFHRh/MyNzTYqvabx9C3V9Xyc=
+	t=1787181045;
+	b=vExDt2ULP3PSiSgQFXu1hqU6FveqMqewFD534gOLPNOdJaSJLlxk0rZIYjVwoqfY96uBvX
+	mhRoEUvWPb1deHKIfTUahhZXTTE91EVSGvizPlrAr0U8WFNuZN6hYHd5/sZUcuGLUyvBuj
+	76z8xdSz0JBuVduM+qAe8RdiDL31A30=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=npJLhXeQ;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C6F940876;
+	by tor.source.kernel.org (Postfix) with ESMTP id 6BCB361890;
+	Wed, 19 Aug 2026 23:10:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76061F00A3A;
 	Wed, 19 Aug 2026 23:10:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49BC1F000E9;
-	Wed, 19 Aug 2026 23:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787181039;
-	bh=aaMUb6PaGUkY1uYWWgN3cAeUq6l9h+PWt5o9AmFAt0E=;
+	s=k20260515; t=1787181045;
+	bh=aXCeFRO1r0hB0+8jo/097AeX5zU9p1RIeHyMY6Gqagw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Heen4TOmnIFtyQjYyv7+PIzwbbZz42Npc0GW51hx4ud6x7Rqf5vC43y2nUEyf6ECq
-	 pcOtUTCa4JHCyEcCor01N2FsrVzY4Xjm7i7SOASr/nhmsgg1panWWpwognCtck7bki
-	 amyCR7G/xgubDR7CnBmNhnmShiSOXhCZV/EmhjyDGMOd6gpBaEBfm+7WrYTH4VOLe6
-	 tXsyvPISipyoCmNDuotbnVIf6lTR6kOjJNL3xCZyYHZMVbKMd4DQD80VHObnZVHCMI
-	 1Y1SlAo5BoouEupVho6PfMbHhNiwNVamHrCRweaUELDn/awZxVfgZVA4v7U39hHat8
-	 ey9XD16ZR5ocA==
+	b=npJLhXeQ/IhG/+xAo/mjKtSc3G9BXlgXjQH4PjRqutdnX5peq2Nb0g350sJgmLW31
+	 s7nW1fZTCAWEOV02aDamCCA7OnVHMt3/8PYOv+2ooyKorkp92y3M1IbvY+2VOhnn3c
+	 Rql9x/J8AT1PJmW7lYRZFVbrrxMjFU6ss2GHkylFXuw9vHwOhtyccBcOiHWKseSBir
+	 bDadGtBVR5S+Y0CToo2UjrcVSJgqPxHoB1NfH4+TIfRbf1uuSnt9x0aJmbxBdMndTY
+	 Bdf2XQEqKWgZ/t9qiKUtbN/s0s3uiyg5QyQMLAkfn34/IOWtw3b+svvtxJyFoPE6QJ
+	 5WVqP1YzDqhwg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 20 Aug 2026 01:09:25 +0200
-Subject: [PATCH v2 08/22] coredump: move the negotiated mask into struct
- coredump_params
+Date: Thu, 20 Aug 2026 01:09:26 +0200
+Subject: [PATCH v2 09/22] coredump: deduplicate the to_skip flush
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-work-coredump-sparse-v2-8-ba32dd718c51@kernel.org>
+Message-Id: <20260820-work-coredump-sparse-v2-9-ba32dd718c51@kernel.org>
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 In-Reply-To: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -87,22 +86,22 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3018; i=brauner@kernel.org;
- h=from:subject:message-id; bh=xonH5OEmjGZ0T+LJRAZWyQJ2cLCDz3LlxuOJfpmUo8A=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me978e91/5SSmW3Hd9p4NXx6qdCyYpr/+dqUjoUst
- 1Q28tkKd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkdCIjw42MXtMq5yP82dzF
- ZmKXY/pZpcJSc2XNFfnOrl+sa7iJkeF/EmfJzMjNwrER+n7NRrdtNXuSDntrCy5pULGROCMwcx0
- HAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1473; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=QcTKefttEJ4tcHQFZJxvLhTEIvEaSI31GPP914rVvoI=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me/b2di18GR/1eFdZf0CM6pf/jhn7NE3o91oG/ulh
+ feNfzwQ6ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiI/1WGfyrqXP6z/RRY9dJf
+ npzw5vKU39nneQTWthU/DeTov3ansoXhn+LSGdNrfecfqOB3WFNjfEAna8Jk5fzD2TenGXde8Th
+ 8lR0A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D441120003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: gyoxrcn8eey9rdty75t3xzhwctx5nms6
-X-HE-Tag: 1787181040-628957
-X-HE-Meta: U2FsdGVkX18/LG1Ifz3dJ3LAqeAHOf1kM08SajI8tAlAX7gdjGLEMwPPsBuMciWGSowGW8U2ow/ekC/sHWUnsTySLUrNtWUPFD+PfKWwgYgDmPJxNkJ6m6x54tg9PBv4SHttWJC48sKv/11WvyWnxpEpDZ3EIhc/anqNchlFVeBRAtP81CDJTgCWB6rzE3RWq+mEQvfDL3V3qaGbmuFMs5jJru0kp6HYxWbGgc0z1ODvO2phx0MvI0QxTiByi4aPHLcI/KzYmPHMm3tcjIytEX88clswZJGAjn0Xhe7WuCzfYlq3hnGA65ohNfxqrshx+f5pGmho12JUxiCVQjSZf1jKggvmxMe5bZej5nWTVVZlbg18o2HxMLcYdaCNQpH5cKkrLOcBnbrRnymZrrWhLLdrUoKbpV1SbC6F+S88fJtWT9tc3ql6dPVYQN4UdK1F5UtBxfFwe4Bya5vHnAu7565LjaGCkkZ8gVqUbQVEbF0WRydnOEK1Vs7jwPAVWmn922HS0dleYI0pY1dRI/mUSs1ZOC0aWyhrmrJv6AVgm9eRprHEMqqGyrnVgA9nbf0nl98tFgqpuVJvpqTZXT8sq+5tEl9hKjP92EabDS01TcZwGhQ7qlAUW8pwFpjcoOnvwRUnt78t8dBv2pAyCbXcwDLsj4e3eQiQ5AL4k5HMQrfn90P8VLK1fekth9QGK8YVeH5fB/rBPNXtQNplpHEnS7B0afxJIxLjwATYV7JxPvZhm0ZT8fCVuJ6MFunPTJSqADEF5Imj7ZY5aOOml7TmuQmeiC8irvR/qCofkmnDkIle6920KWsBGzJ/TTyOUefWU4qCmGFYPXEQiI7jx/IKVQk/xSNhtP/T4PhiiCHlmMQzd9BfyaWYnPjbwHQ2iFvqQ3Dhz38h+RyXVjVmOUW2CwwneLXvFx9xLiy+l9xfGkUtG+2iRyFGp8koOIwBIBV6u9CmzYkoFXDzJgHz87Z
- dNaET13e
- UbOKCidu0qil3mH07HCgjXxEDSWWXtWpdOVarL6AlAZXAUndm6wG3Epsvij7HMBoUIZVDj14H7f/nD5mQtJIaZKsfWr7OKPO0EKf3uw3zWPB7J0AHBVpxZqe5jjFM+Q2px2yHxqwsGKQM6aPozQ6lyPPi0CrzP91ydllDuiszSk7v1cbRI7CeW47UouVbd1IU9zhOAKSzY1kjwt3pwycVBXA5RDorXpKrm0wgOVge3ppwr++v3dgq/6eHJH6M50zv6aX7CeOAMyDsE9Nlcsevh/JabILThmFMBLfA
+X-Stat-Signature: ydfybr7x9rgqri8xxqtc7xw5icjeid6a
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D39D340003
+X-HE-Tag: 1787181045-798910
+X-HE-Meta: U2FsdGVkX1+wmO2JaM4mdiceuVwzMEXjZcyydcczf8KxOzL1A/U/VCYGj7P0++JlJQrsGsL/DVYx/Xk/YfWUPOxHxyxLA+YsT9lRWF7W1K3/4WdDpRrrmjxX4/hBtA0jf0aki/WiNwVIwgJfgrehC6oOJAXC/v5oP3geu8rQRQeNmkd5pcd8P3ZCYYk9Rd2kZ8w+4h5NadNH7tLibPFKToPI/lnZRQbZ//2i3MulwxrfTT7Cn34rgnhY7iHQBJCS3C6T8Uu/teZWAVSfVQaZtBQodXUmVFeZ5nILh7AV6KXb+N6tyPWKpyucTROn7c5WcUud8lSYXKDxVqZZtKQmVUnf4Z/gfRsNVb4D468WHOljqC6TYmM0ZZ8FcL2qfMo0+qKdOrvE7ly81l4SiyMsOmLlUAjo6QTG21LoJq/bzCNoCT2yJD/j/XgOFO5BEC89xsXizjM0xZ3Tb45J172Yad1Eo2C0XrsG0NyVIPZzNBHumgvIblPv0yUF82H5aeMas/ApD12+7wN+CbvtrUxQDiLDl4AtiOFrWuBPwIOtm0PZlnISiIte4CtHHFGn785uoqvoNhhTZkGVTsobP8J8DojMvo95+8Npae4bDOW/G+HkdgzS5eGVIv5ShBKjGhe4yMxptX5xelscX3K0xLtM2m5wFrK4ZV3AK6l/dAx7sy3J9GnLbVnHeLOl8D6XCHso6k9Odj0p8d5S5qx3UJ2+vk79RgHm96MMmRA/ToWKLrIc28XK205A66JjcqA5+4kDU7w2VnCI4HAyPVbiRP31Dz/uN4tmhQZmHtHlkCXqAEH/IeDQctnvAcNQGtXb0zhicX71K4eXdbDmzC8MqZTUauhKGtpeUz4nz+Uc0gCwchymJbMVHxdv9PC09aCds2PJsPuK3mqj5RQIPCkCbEgfzvTJUPsVizFkluygHF4UG0l9ewAMB9UQpz7GsrMzOkxj328DxClehiPtC6P4kr1
+ dQffFrzd
+ B1WvezGw7b4xs9qih/zbP7KYKs/YtbfDcpKc20+6xHnGYhq6GIpzyxPX7ZSJQG1oQZRqRS8cgMhiB1LSOB97C7icECI4P6Aj+9cPBXFJ/grt+aD6S96zOPkfmBtQpM8cZrue39rtzf8s+7QrX1WDTfHPc/yEPOQM/D70Z7TFLABmegh0dlNpaJ1zG096m4pNOMKilpG1bKYZegpnSQge2b+6/9y5MpUfdKqG6RFSZsAJnpUQYX8myb0mCYIT/f9rM7mx8Imy6KPADAyIUIz4pmnd5+kiaYJAj6F6u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,99 +109,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The coredump server negotiates a set of COREDUMP_* options with the
-kernel. The core dump path cannot see them though.
-
-Move the mask into struct coredump_params to make them available.
+dump_emit() and dump_emit_page() open-code the same flush of the
+accumulated cprm->to_skip. Move it into a helper.
 
 No functional change.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c            | 15 +++++++--------
- include/linux/coredump.h |  2 ++
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ fs/coredump.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/fs/coredump.c b/fs/coredump.c
-index c696b46c97ff..156688be3df0 100644
+index 156688be3df0..cd36a72be445 100644
 --- a/fs/coredump.c
 +++ b/fs/coredump.c
-@@ -100,7 +100,6 @@ struct core_name {
- 	unsigned int core_pipe_limit;
- 	bool core_dumped;
- 	enum coredump_type_t core_type;
--	u64 mask;
- };
- 
- static int expand_corename(struct core_name *cn, int size)
-@@ -245,9 +244,9 @@ static bool coredump_parse(struct core_name *cn, struct coredump_params *cprm,
- 	int pid_in_pattern = 0;
- 	int err = 0;
- 
--	cn->mask = COREDUMP_KERNEL;
-+	cprm->mask = COREDUMP_KERNEL;
- 	if (core_pipe_limit)
--		cn->mask |= COREDUMP_WAIT;
-+		cprm->mask |= COREDUMP_WAIT;
- 	cn->used = 0;
- 	cn->corename = NULL;
- 	cn->core_pipe_limit = 0;
-@@ -860,7 +859,7 @@ static bool coredump_sock_request(struct core_name *cn, struct coredump_params *
- 		return false;
- 	}
- 
--	cn->mask = ack.mask;
-+	cprm->mask = ack.mask;
- 	return coredump_sock_mark(cprm->file, COREDUMP_MARK_REQACK);
+@@ -1256,13 +1256,21 @@ static int __dump_skip(struct coredump_params *cprm, size_t nr)
+ 	return __dump_emit(cprm, zeroes, nr);
  }
  
-@@ -1129,7 +1128,7 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
+-int dump_emit(struct coredump_params *cprm, const void *addr, int nr)
++/* Flush the accumulated hole before writing data. */
++static int dump_flush_skip(struct coredump_params *cprm)
+ {
+ 	if (cprm->to_skip) {
+ 		if (!__dump_skip(cprm, cprm->to_skip))
+ 			return 0;
+ 		cprm->to_skip = 0;
  	}
++	return 1;
++}
++
++int dump_emit(struct coredump_params *cprm, const void *addr, int nr)
++{
++	if (!dump_flush_skip(cprm))
++		return 0;
+ 	return __dump_emit(cprm, addr, nr);
+ }
+ EXPORT_SYMBOL(dump_emit);
+@@ -1293,11 +1301,8 @@ static int dump_emit_page(struct coredump_params *cprm, struct page *page)
+ 	if (!page)
+ 		return 0;
  
- 	/* Don't even generate the coredump. */
--	if (cn->mask & COREDUMP_REJECT)
-+	if (cprm->mask & COREDUMP_REJECT)
- 		return;
- 
- 	/* get us an unshared descriptor table; almost always a no-op */
-@@ -1137,13 +1136,13 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
- 	if (unshare_files())
- 		return;
- 
--	if ((cn->mask & COREDUMP_KERNEL) && !coredump_write(cn, cprm, binfmt))
-+	if ((cprm->mask & COREDUMP_KERNEL) && !coredump_write(cn, cprm, binfmt))
- 		return;
- 
- 	coredump_sock_shutdown(cprm->file);
- 
- 	/* Let the parent know that a coredump was generated. */
--	if (cn->mask & COREDUMP_USERSPACE)
-+	if (cprm->mask & COREDUMP_USERSPACE)
- 		cn->core_dumped = true;
- 
- 	/*
-@@ -1151,7 +1150,7 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
- 	 * or usermodehelper to finish before exiting so it can e.g.,
- 	 * inspect /proc/<pid>.
- 	 */
--	if (cn->mask & COREDUMP_WAIT) {
-+	if (cprm->mask & COREDUMP_WAIT) {
- 		switch (cn->core_type) {
- 		case COREDUMP_PIPE:
- 			wait_for_dump_helpers(cprm->file);
-diff --git a/include/linux/coredump.h b/include/linux/coredump.h
-index 7b38ee2e7913..dc7a05b1bb0a 100644
---- a/include/linux/coredump.h
-+++ b/include/linux/coredump.h
-@@ -26,6 +26,8 @@ struct coredump_params {
- 	/* Snapshot of dumpable at dump start. */
- 	enum task_dumpable dumpable;
- 	int cpu;
-+	/* COREDUMP_* options negotiated with the coredump server. */
-+	u64 mask;
- 	loff_t written;
- 	loff_t pos;
- 	loff_t to_skip;
+-	if (cprm->to_skip) {
+-		if (!__dump_skip(cprm, cprm->to_skip))
+-			return 0;
+-		cprm->to_skip = 0;
+-	}
++	if (!dump_flush_skip(cprm))
++		return 0;
+ 	if (cprm->written + PAGE_SIZE > cprm->limit)
+ 		return 0;
+ 	if (dump_interrupted())
 
 -- 
 2.53.0
