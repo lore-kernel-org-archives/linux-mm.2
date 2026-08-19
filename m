@@ -4,83 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E480C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:16:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3295C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:45:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 010B06B0092; Wed, 19 Aug 2026 03:16:50 -0400 (EDT)
+	id 41F3A6B0092; Wed, 19 Aug 2026 03:45:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F03B06B0093; Wed, 19 Aug 2026 03:16:49 -0400 (EDT)
+	id 3C92D6B0093; Wed, 19 Aug 2026 03:45:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D07CA6B0095; Wed, 19 Aug 2026 03:16:49 -0400 (EDT)
+	id 2B88D6B0095; Wed, 19 Aug 2026 03:45:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 656B76B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:16:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC8EC16035D
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:16:48 +0000 (UTC)
-X-FDA: 85117161696.05.AFCA83B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5A8BA160008
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:16:47 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jimDSjAv;
-	spf=pass (imf08.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787123807;
-	b=SedoonG0LeXrptekmsprfpgcdDdw/xYTHuNiPNQF3u23nqF9uqLp0XRcYqHjbSwEWwxQHH
-	PdOqMARtMETlu/ce0r6qIyGBYkl4jL7y5ZByEt4I+Ji46kBTQGW2cuehrbU6OZcO8/ix2f
-	uc9Op//vEB7Po61wLGQQNhFeVKtEZyM=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jimDSjAv;
-	spf=pass (imf08.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EF7B76B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:45:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EADDAA2912
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:45:06 +0000 (UTC)
+X-FDA: 85117233012.29.B5FD647
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2B4E720004
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:45:05 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHxuvZtc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787123807;
+	s=arc-20220608; t=1787125505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hELGPib/uH3jPFvdTEiadn+HQnK3QW+avnxHHcXWrcE=;
-	b=B8Hes0lbdjNBecORHPgV5SgLztPbxVpTnkeHKYQqOBWCeXVbSEM8q7c+CXpx9NAn9IwzD3
-	oCUDRlH4mJr8wdBt++u1y0D0RzQsA1deFdXe+1y5UDkMphUCA0th6spHukKX8Z8Syxh8P/
-	minETPieD186drC5cURLlPISjn5roTk=
+	bh=sUGls/TPzkFWI3c1olei1087Mv7gZNyunUb3au02oYU=;
+	b=TKWeBxHIz/Bje6GDZJSfsI7jKFqBLTUVaGCSIOojs854R8mp+Sg1TAbitN5IHnfY0V79kq
+	51FbvRsGKK5zT/Hj/yXdEy/0p6cT53W2iCtvFRG47ngMYyBgVIOYvcsCVbClo2UzcQ0f9A
+	HZBYVXjlX8x93SC7hUj+UtmMpb4MIKo=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHxuvZtc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787125505;
+	b=qZmB/WqAIvyLCAyJXTLhQxklHIEQLmU9jNPJqsMQfGuRQ44rCeo1FzvmxYwcrSonkK6aPx
+	oE4+g8P5/fyedEQi3+3RRFL58t3vBr+6bZq+8iJTfYzObPcYMp5mvVNNQeO0cQb8fgo30V
+	feFoUt3k3VHvl/iymvu7cLNuTTpkU/U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EE24160A61;
-	Wed, 19 Aug 2026 07:16:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364661F00A3A;
-	Wed, 19 Aug 2026 07:16:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4BE6840A0B;
+	Wed, 19 Aug 2026 07:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2570A1F000E9;
+	Wed, 19 Aug 2026 07:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787123806;
-	bh=hELGPib/uH3jPFvdTEiadn+HQnK3QW+avnxHHcXWrcE=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=jimDSjAvJfZoTLMtIC0ThiUVmvCu8Vs72gsJczOMZPS0siLynXOz1CIRuMRugJXJk
-	 xX4XP352evKC8B9jSbOHdjlBpfuIUTGaa3gnxqKU3G35O9L92Mh4jIHbRvW0mrAYPf
-	 WHdp4ivAfDbKTJ/aZmyqscdNqtnq2yeixGL0pxhTsEpaFR7gjYgR5blkOwLFX8yEpo
-	 lNePHXGhZGwVSu8l932rl9ls+MC1R1ELISDQGOqkhGfhjqSB9JDm+vHKsZUYQVxy/f
-	 fAHk3JdLq1U+9OMgiVq6Ux4uCaYkLFiZ1qhbmzxo9eaafqokoYQxyZJao+oXkQaA4u
-	 ZA2exkXVQtpJA==
-Content-Type: multipart/mixed; boundary="===============5324425049345538991=="
+	s=k20260515; t=1787125504;
+	bh=sUGls/TPzkFWI3c1olei1087Mv7gZNyunUb3au02oYU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=aHxuvZtc8P9UeTJfS021vS1NUxKIeuMkXI5RU0z5dIYjl8Go8g6mGvRPGZmX1VOrW
+	 go9gUSKU8K9e/u7kbqBqw/TSMz9Jw5RmCrgSq/CkFlu7+c2OQ4ciQWRoosbL5zAo3A
+	 TgpkT43Bu09XDBxrOa9a9N80xSIR7o52tjDxg7uk0aQMuwq1aLVFK9rNEtd8Mz+qHn
+	 79bn0cBSEiP/FTm8YKUky7qkTKrsNKILMrwvobon2G8UvOfl6GkoTiSxLzjIyyLDsk
+	 QnqYpT5itVfydMgw6MytOHqFeokcasdlCXsaiwvPYxpcPweKD5gfL7ybkATh9zLUWn
+	 GTU3NUdDwTbHA==
+Message-ID: <1bc39fcf-6fb1-49a9-a30a-8289ed9a524d@kernel.org>
+Date: Wed, 19 Aug 2026 09:44:55 +0200
 MIME-Version: 1.0
-Message-Id: <5e8780b47d3ea4ea88bc54e5f3171e54adfb868a694d857d838ce28319598915@mail.kernel.org>
-In-Reply-To: <0a2355a169c0900427b6e3c0d73ca6ae1be56f13.1787120833.git.zhuhui@kylinos.cn>
-References: <0a2355a169c0900427b6e3c0d73ca6ae1be56f13.1787120833.git.zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next v3 1/2] mm/bpf: Add bpf_proactive_reclaim kfuncs
-From: bot+bpf-ci@kernel.org
-To: hui.zhu@linux.dev,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,andrii@kernel.org,eddyz87@gmail.com,ihor.solodrai@linux.dev,ast@kernel.org,daniel@iogearbox.net,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,baohua@kernel.org,geliang@kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org
-Cc: zhuhui@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Wed, 19 Aug 2026 07:16:46 +0000 (UTC)
-X-Rspamd-Queue-Id: 5A8BA160008
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] Optimize anonymous swapbacked large folio unmapping
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260723070905.3422276-1-dev.jain@arm.com>
+ <80632d25-df40-475b-b7d0-912d657a977e@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <80632d25-df40-475b-b7d0-912d657a977e@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: gz3z45p7zzqhx3sxhzfojtt9n64hoy5q
+X-Rspamd-Queue-Id: 2B4E720004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: x3zi4gipd74du8mjrcyyg58e4ejb9cj8
-X-HE-Tag: 1787123807-282189
-X-HE-Meta: U2FsdGVkX1+ejE8ECwzBmdFLp3S8qxtO2ehlw6r3MaJwJIAEIy8rhiijdGh0azv08SBno+/vzOvBJAoDJ5pSkIGyfqFVWmQfiXhzCILMJBoGw8WIh0PJuOd5b+pPjGkfuQ0D3/cHpNOBy1UiNJ/lNc5LGgTIY8U7yEN/BbrZ+R+3x2syRpItZH6Ba+aa55XR6PvXYYGji6C6CXw+SOyUSjyz4PBuP9MGiUWKUoohvCuPcb9xQqYAdnhiwdWs2EsleKX9rkzrvf5G72znFHhHix9ZkEFNvnzbsK6aP9lEF+t0BnFsV6N75+3IXXBRWlxjjFqPHajSZPMPobe08LpRr7Bti1BGB+YADVNUeOdubahgLBCcegaew59OkpQJiaXinL5qzWgirij/aT6TKjKUYwqPavClH25VZhGID9eYn21gN9tTuQBcHsZqzTWRaUpfSRFWD/NRhX8N1lBRw6iG6JI/UTdmWTvfeOAw6zNwTH6Te5uIDi7+TcPk+BqtNJ7J/Q7JJ22EkRL9AcXuaHQB9BqfM50323nBxrD6f2J4ITJmzN6M9XQyN2wgQV1+W4PIp10TCGrjfD0debItzLSshvrNLPTBr3x8dTfwRSH5LJsCJc7ahtcC4KuD1djIiHsO4SF5rlUiZvhv0TcaDPKObg2lZmXkBBSYTavPxlI8VqdJGOnkZcgB1/SPBfKE9zF3BHPoID5L7HNWszKvu6qD6kQEr5xJz4PfDH+MdFHJmi2L11od2MBaYt1LJ0oACgsBafUPxHbq6oBkhqFtz3fqYRIFvDF21xAM31tIbVETATwXM+N/54iVWmpHaymYhpEqj0vcc1Ax9hpNpe2syLxOzvYDzmRrEylxdorU0l5A3jWlrM7fJjMp1iJW/ZKJ/7W9LPY18jhEBAWvN44m3Q7pONrXut1JVNSOIZevwOING5tT6rh31vSmg8XTsKTUU3PgEjFYK6EernEwg1x9GmN
- 8Cex0AJm
- J0Zw/TsuysL2KxNTMbzIm2IAaedthAn43BOIfF7HPsBfho9rxrB1c8Qbami6fr0diWaN73vrCInRuN/UWV3muNdI5qaOM1pkyqGi1X5F8aGSwr1oVwK2gydv+3KTSNVLreirgy55KKRS4LPPn/Cuxy+iLTbtjKOZvnTETQV2lT2TKaHxnfonNXP8GsX1LUGcr7ovOLnsn7UDZ5HBuluEw7hqGWPs/JHydQysS4d6qOkctibg5d0zzwDlvdqV0YBGsKum3uv+fTMhZ54WkmYDFSiH1x4j502btOuXjkhLXkI0MOCz38yFkMQbaX5HCGXqQjctwVW9ylRcNdLJukx2OaKF3RrnpimWCc8M4XxNjGgxVfxDmOm6BGvmjMe9mb8HOwkXwZMogEjOXbvr1HSefls6zqQNYoS7/rGemqnKzTQ2KhPdlsfu530Kcieb2mJlrNvkR1S8W40NgkCRXF5uiyTcJQuB1NfJmvHDZ+Hskt5u24Q+zCVHQW2GZJR/W3fpR+BvunYSqHl0rsCCaD8Rw0J7uSVWgt3TUhyLL
+X-HE-Tag: 1787125505-357277
+X-HE-Meta: U2FsdGVkX18LjnNukCUCN1xq53KG7WOiEz3XuRtI2KO2ZU3Gu3QedH4NFHK07mrXWQLDn7TRF9A5UcFefj5GpVM798s0NUxFAqHc/lnVqaRncI621ZWORG2yLnOCGWj8XHVIhOZzhW6/FSAO4oDlqVEwBEWwdGZunVWKeUY4djxgErd3rGYWtEnb3twcokMdUag6EoIVMsTUZs8LKC6Vyz8xz7oUpsP+K4cX/uBL+iMp8F2mnKxknEYyi67yr2+OXKDxcGWQHvf49fEyBl27U7KmT87nzpwyOUQN3fxEFopVLLyfJwxEwU+p28YNewKUZJmGU5ChpDIK1ttFiusY20zhr/8lmDq/jGb8HyUThcYnuxFJSPml6LIqcclHjMWCPNYPds+Ufyxr6wtnQ/VyeClAHdaJFnUkiFqXqzkx4Vw7xaTfsl9OyGbjvri8LgUItKT9odjeXDrfH8XPbH4dxDV6zyasYuEEdOw8wjDB76AaP4wzu9a1d4vtTpvFJ0LlKKARbydLG07zCJ3f0TGLfHBhevf77EXV0z9dxX8AynVl6qbkwf7lYqeXFiNaK2DZcZK09a4ahvDbc+hH+JQhHs/pORl3pTGi150nB3hUm815H2Hp4iB7RcaB6RcCV/G/9Z6l6ir8J903FDltOdk+GgManwCEziHbbDi41wMjpqYNr+pdWvbULrPMxvzKehH/Kg1hcg1i4n9NUC3foFxkMghbAxgSsNFTfFXh0hQGnok0S1NhR2pu5PsEjw5FTD2O8qGPjWEgdX9kgxTjGcUla479iaAUIuZKEfORZYslYK7awMT37Oo5ghh1cmD/3gBgrXGIljrDKwhMGbSm/eJt73Na1KW9CIdo5iBGIO1BEGbOHzMactCEUHnR0njPi5RrFzKR+selhgH/YWaujc8U/C1vtU9+XfHu8A344HnDfc4h0KFpV+ZwZZQGSAaQAbRAcCpA+YP7cEdZg01+Vds
+ modfPN03
+ Jv2rY/E0qKvRSlhJMephB7M7Td5dhs2+4SCSLKKd6Z8205fSucQ24KKBljgdkUrOjd/RmJjnZMi3wf7J+VOMOIO77JrTOoI+NYAvzpKDCppIZy26MqESaJGzTgLEGwkqw8sPySKqinh6KpM3AhZbDniYZZWYzl08h386ZNG4bikTV8sqwnvyXXec4TqQGxkaVTurGPBvA1KwPUKlsdXhR6mgr88T/Kc9PmkjjrG12Y9xEiXHZ7r3KaFDlpWmjn91ZSLyh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,238 +144,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============5324425049345538991==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 8/19/26 08:50, Dev Jain wrote:
+> 
+> 
+> On 23/07/26 12:38 pm, Dev Jain wrote:
+>> Speed up unmapping of anonymous swapbacked large folios by clearing
+>> the ptes, and setting swap ptes, in one go.
+>>
+>> The following benchmark (stolen from Barry) is used to measure the
+>> time taken to swapout 256M worth of memory backed by 64K large folios:
+>>
+>>  #define _GNU_SOURCE
+>>  #include <stdio.h>
+>>  #include <stdlib.h>
+>>  #include <sys/mman.h>
+>>  #include <string.h>
+>>  #include <time.h>
+>>  #include <unistd.h>
+>>  #include <errno.h>
+>>
+>>  #define SIZE_MB 256
+>>  #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
+>>
+>>  int main() {
+>>      void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
+>>                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>>      if (addr == MAP_FAILED) {
+>>          perror("mmap failed");
+>>          return 1;
+>>      }
+>>
+>>      memset(addr, 0, SIZE_BYTES);
+>>
+>>      struct timespec start, end;
+>>      clock_gettime(CLOCK_MONOTONIC, &start);
+>>
+>>      if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
+>>          perror("madvise(MADV_PAGEOUT) failed");
+>>          munmap(addr, SIZE_BYTES);
+>>          return 1;
+>>      }
+>>
+>>      clock_gettime(CLOCK_MONOTONIC, &end);
+>>
+>>      long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
+>>                         (end.tv_nsec - start.tv_nsec);
+>>      printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
+>>             duration_ns, duration_ns / 1e6);
+>>
+>>      munmap(addr, SIZE_BYTES);
+>>      return 0;
+>>  }
+>>
+>> Performance as measured on a Linux VM on Apple M3 (arm64):
+>>
+>> Vanilla - Mean: 37401913 ns, std dev: 12%
+>> Patched - Mean: 17420282 ns, std dev: 11%
+>>
+>> resulting in more than 2x speedup.
+>>
+>> No regression observed on 4K folios.
+>>
+>> Performance as measured on bare metal x86:
+>>
+>> Vanilla - mean: 54986286 ns, std dev: 1.5%
+>> Patched - mean: 51930795 ns, std dev: 3%
+>>
+>> I tried magnifying the difference on x86 by using 1M large folios, but
+>> can't spot an obvious improvement (looks like my system is too fast to
+>> benefit from batched atomic operations!), hinting that the benefit lies
+>> mainly in the reduction of ptep_get() calls and the reduction of TLB
+>> flushes during contpte-unfolding, on arm64.
+>>
+>> No regression is observed on 4K folios on x86 too.
+>>
+>> ---
+> 
+> 
+> Hi Andrew,
+> 
+> I am not sure what is the current process in mm regarding sending patches during
+> merge window - would you prefer seeing v2 after merge window or shall I respin?
+> 
+> 
 
-> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> index 716df49d7647..b0a0d4c55dc4 100644
-> --- a/mm/bpf_memcontrol.c
-> +++ b/mm/bpf_memcontrol.c
-> @@ -6,6 +6,7 @@
->   */
->
->  #include <linux/memcontrol.h>
-> +#include <linux/swap.h>
->  #include <linux/bpf.h>
->
->  __bpf_kfunc_start_defs();
+Let's wait for more review first. Most of the patches have not been reviewed and
+there is no time to rush at this point.
 
-[ ... ]
+-- 
+Cheers,
 
-> +/*
-> + * Reclaim must not recurse. try_to_free_mem_cgroup_pages() unconditionally
-> + * overwrites current->reclaim_state on entry and resets it to NULL on exit.
-> + * So invoking it from an in-flight reclaim would clobber the outer reclaim
-> + * state and corrupt its accounting.
-> + *
-> + * The guard is PF_MEMALLOC. Every reclaim entry point marks the current
-> + * task with it for the whole reclaim window: try_to_free_mem_cgroup_pages()
-> + * and __perform_reclaim() do so via memalloc_noreclaim_save(), and kswapd
-> + * keeps it set for its entire lifetime. A hook inside the reclaim path
-> + * (shrink_node, shrink_slab, ...) executes in the context of the
-> + * reclaiming task, where current->flags already carries the flag. The page
-> + * allocator, the memcg charging path and node_reclaim() rely on the same
-> + * flag to avoid reclaim recursion.
-> + *
-> + * In try_to_free_mem_cgroup_pages(), reclaim_state is set slightly before
-> + * PF_MEMALLOC, with only a tracepoint in between, which a sleepable BPF
-> + * program cannot attach to.
-> + * Also, PF_MEMALLOC is set in some non-reclaim contexts (e.g. direct compaction
-> + * and vmalloc), where the kfunc conservatively refuses to reclaim as well.
-> + */
-> +static bool bpf_in_reclaim_context(void)
-> +{
-> +	return current->flags & PF_MEMALLOC;
-> +}
-> +
-> +/*
-> + * Shared implementation of the proactive reclaim kfuncs: performs one
-> + * reclaim pass on @memcg with @nr_pages as the goal, allowing swap, and
-> + * @swappiness as the anon/file balance override (NULL to follow the
-> + * cgroup's own swappiness setting).
-> + */
-> +static unsigned long
-> +bpf_proactive_reclaim_pages(struct mem_cgroup *memcg, unsigned long nr_pages,
-> +			    int *swappiness)
-> +{
-> +	if (!nr_pages || unlikely(bpf_in_reclaim_context()))
-> +		return 0;
-> +
-> +	return try_to_free_mem_cgroup_pages(memcg, nr_pages, GFP_KERNEL,
-> +					    MEMCG_RECLAIM_MAY_SWAP |
-> +					    MEMCG_RECLAIM_PROACTIVE,
-> +					    swappiness);
-> +}
-
-Does the PF_MEMALLOC-only guard fully close the recursion window?
-
-The comment states "In try_to_free_mem_cgroup_pages(), reclaim_state
-is set slightly before PF_MEMALLOC, with only a tracepoint in between,
-which a sleepable BPF program cannot attach to."
-
-The restriction on tracepoint attachment is accurate - sleepable BPF
-programs cannot attach to non-faultable tracepoints like
-mm_vmscan_memcg_reclaim_begin. But the tracepoint dispatcher itself is
-attachable:
-
-Looking at mm/vmscan.c:try_to_free_mem_cgroup_pages():
-
-    set_task_reclaim_state(current, &sc.reclaim_state);
-    trace_mm_vmscan_memcg_reclaim_begin(sc.gfp_mask, 0, memcg);
-    noreclaim_flag = memalloc_noreclaim_save();
-
-The trace_mm_vmscan_memcg_reclaim_begin() macro expands to a call to
-__traceiter_mm_vmscan_memcg_reclaim_begin(), which is a plain global
-function generated by __DEFINE_TRACE_EXT(). It carries no notrace
-attribute, mm/Makefile doesn't remove ftrace flags from vmscan.o, and
-it isn't in btf_id_deny, making it fentry-attachable.
-
-can_be_sleepable() in kernel/bpf/verifier.c returns true for
-BPF_TRACE_FENTRY, and check_attach_btf_id() applies no further
-restriction beyond btf_id_deny. So a sleepable fentry program on
-__traceiter_mm_vmscan_memcg_reclaim_begin would be accepted by the
-verifier.
-
-Since the kfuncs are registered for BPF_PROG_TYPE_UNSPEC, such a program
-can call bpf_proactive_reclaim().
-
-In that window, current->reclaim_state points to the outer reclaim's
-state but PF_MEMALLOC is still clear, so bpf_in_reclaim_context()
-returns false. The nested try_to_free_mem_cgroup_pages() would then:
-
-  - Trip the WARN_ON_ONCE(rs && task->reclaim_state) in
-    set_task_reclaim_state()
-
-  - On exit, execute set_task_reclaim_state(current, NULL), leaving
-    current->reclaim_state == NULL for the rest of the outer reclaim
-
-The outer reclaim continues and under MGLRU, shrink_lruvec() calls
-lru_gen_shrink_lruvec() which calls set_mm_walk() in mm/vmscan.c:
-
-    struct lru_gen_mm_walk *walk = current->reclaim_state->mm_walk;
-    ...
-    current->reclaim_state->mm_walk = walk;
-
-evict_folios() has the same pattern. Result: NULL pointer dereference.
-
-On the classic LRU path the outcome would be lost reclaim accounting in
-flush_reclaim_state(), plus the WARN_ON_ONCE on the outer exit.
-
-Would testing current->reclaim_state in addition to PF_MEMALLOC close
-this window?
-
-> +/**
-> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
-> + *                         cgroup
-> + * @memcg: the target memory cgroup to reclaim from
-> + * @size:  the amount of memory to reclaim, in bytes
-> + *
-> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
-> + * the memory.reclaim cgroup file: pages are reclaimed according to the
-> + * cgroup's own swappiness setting and swap is allowed. Note that,
-> + * unlike memory.reclaim, this does not retry until @size is reached;
-> + * callers can invoke it again if needed.
-> + *
-> + * Return:
-> + *   The number of pages actually reclaimed, or 0 if @size is smaller
-> + *   than a page or the calling task is already in a reclaim/freeing
-> + *   context (PF_MEMALLOC).
-> + */
-> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memcg,
-> +						unsigned long size)
-> +{
-> +	return bpf_proactive_reclaim_pages(memcg, size / PAGE_SIZE, NULL);
-> +}
-
-The kfunc takes @size in bytes but returns a count in pages
-(try_to_free_mem_cgroup_pages() returns nr_reclaimed in pages). Input
-and output use different units.
-
-Every other kfunc in this file normalizes to bytes:
-bpf_mem_cgroup_usage() returns page_counter_read(&memcg->memory) *
-PAGE_SIZE and is documented as "The current memory cgroup size in
-bytes"; bpf_mem_cgroup_page_state() documents "The output is in bytes."
-
-A natural BPF loop like:
-
-    usage = bpf_mem_cgroup_usage(memcg);
-    while (usage > target)
-            usage -= bpf_proactive_reclaim(memcg, usage - target);
-
-would be off by PAGE_SIZE. The kdoc does say "The number of pages
-actually reclaimed", but since this is UAPI-visible the unit asymmetry
-is worth resolving before it freezes. Would it make sense to return
-nr * PAGE_SIZE, or take @nr_pages instead?
-
-> +/**
-> + * bpf_proactive_reclaim_swappiness - proactively reclaim memory from a
-> + *                                    memory cgroup with an explicit
-> + *                                    swappiness
-> + * @memcg:      the target memory cgroup to reclaim from
-> + * @size:       the amount of memory to reclaim, in bytes
-> + * @swappiness: swappiness override for this reclaim pass
-> + *
-> + * Same as bpf_proactive_reclaim(), except that the anon/file reclaim
-> + * balance is controlled by @swappiness instead of the cgroup's
-> + * swappiness setting. Valid values are [MIN_SWAPPINESS, MAX_SWAPPINESS]
-> + * and SWAPPINESS_ANON_ONLY, which restricts reclaim to anon folios.
-> + *
-> + * Return:
-> + *   The number of pages actually reclaimed, or 0 if @size is smaller
-> + *   than a page, @swappiness is out of range, or the calling task is
-> + *   already in a reclaim/freeing context (PF_MEMALLOC).
-> + */
-> +__bpf_kfunc unsigned long
-> +bpf_proactive_reclaim_swappiness(struct mem_cgroup *memcg, unsigned long size,
-> +				 int swappiness)
-> +{
-> +	if (swappiness < MIN_SWAPPINESS || swappiness > SWAPPINESS_ANON_ONLY)
-> +		return 0;
-> +
-> +	return bpf_proactive_reclaim_pages(memcg, size / PAGE_SIZE,
-> +					   &swappiness);
-> +}
-
-An out-of-range @swappiness returns 0, the same value as a successful
-call that reclaimed nothing, and the same as a call refused due to
-PF_MEMALLOC context. A BPF program cannot distinguish a programming
-error from legitimate lack of progress.
-
-The sibling kfuncs in this file use a distinguishable sentinel for
-invalid parameters:
-
-    bpf_mem_cgroup_vm_events():   if (unlikely(!memcg_vm_event_item_valid(event)))
-                                      return (unsigned long)-1;
-
-    bpf_mem_cgroup_page_state():  if (unlikely(!memcg_stat_item_valid(idx)))
-                                      return (unsigned long)-1;
-
-The userspace equivalent also rejects rather than ignores:
-user_proactive_reclaim() returns -EINVAL for out-of-range swappiness in
-mm/vmscan.c. Would returning (unsigned long)-1 here match both this
-file's convention and the write(2) behaviour of memory.reclaim?
-
-> +__bpf_kfunc_end_defs();
->
->  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-> @@ -172,6 +270,9 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
->  BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
->  BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
->
-> +BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
-> +BTF_ID_FLAGS(func, bpf_proactive_reclaim_swappiness, KF_SLEEPABLE)
-> +
->  BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
->
->  static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32224943030
---===============5324425049345538991==--
+David
 
