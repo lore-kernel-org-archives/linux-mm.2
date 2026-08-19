@@ -4,89 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DB57C5DF7D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:00:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E71A2C5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:03:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09FEF6B0095; Tue, 18 Aug 2026 23:00:18 -0400 (EDT)
+	id C8BC56B0096; Tue, 18 Aug 2026 23:03:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04F766B0096; Tue, 18 Aug 2026 23:00:17 -0400 (EDT)
+	id C62946B0098; Tue, 18 Aug 2026 23:03:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA6F96B0098; Tue, 18 Aug 2026 23:00:17 -0400 (EDT)
+	id B9F086B0099; Tue, 18 Aug 2026 23:03:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B9D076B0095
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:00:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4060C120402
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:00:17 +0000 (UTC)
-X-FDA: 85116515274.17.6CC0C2B
-Received: from mta1.migadu.com (out-79.mta1.migadu.com [95.215.58.79])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 24B75180003
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:00:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=F8MdRUmZ;
-	spf=pass (imf16.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.79 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B7316B0096
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:03:00 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 35854803F5
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:03:00 +0000 (UTC)
+X-FDA: 85116522120.12.ABDB53E
+Received: from mta1.migadu.com (out-129.mta1.migadu.com [95.215.58.129])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 48246140006
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:02:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DtKIy20N;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787108415;
+	s=arc-20220608; t=1787108578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6IJg50H+2le4KufY8/xS2ADQyYDxpzy6IAT16/xW0X0=;
-	b=b7ewEijHVB1EihTxAfYxPQlUWIYnjl2CZWadzgqQX/JQDEZ0fUzUaa/r/jRw0JFLZOV5vw
-	eJtgC7TTBte9SexfkPAyDsd/0sq52uN2xCoz/bj+vAZ768ZOxD38SHumKIhczR7jAypcb7
-	7UlcZMAfU8nU9x2YgHrDzIgtkEBG/nU=
+	bh=hbEPc2Yny4QkZNn/OaySZ9eHHjMZyZ3itROegWg/+mU=;
+	b=BRolqoaucIvZoKm5ez9zzYApmATLVq7x5c1JK4uYoD6WucL1BpbcrZtIXv67r45yaEiYY6
+	MHqbYQcGyNwDxmmlttPzsIu6wwzBQ9ztXxWm+S86U9OlxTAfjcvNzHzF8T67IA+rtOHG7C
+	ck1GofbqPstjzd8nDJqopB9bF9g96/U=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=F8MdRUmZ;
-	spf=pass (imf16.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.79 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DtKIy20N;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.129 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787108415;
-	b=E1fUNzZxhWnYTYcPkC5ENl1VPCC/E5UFPFQxf7E6y9KZkfWyXOLmQgjBRL2t0DO4pkDLdd
-	yESlcGehXIWmzP6fSFq7QGvQ1KcO6c6Tfcx69CLXKafYGSQytPilUE/WX/2eVczqM60pR1
-	DJVasMZnDZomRv8bU4ZD7va4OszX4qU=
+	t=1787108578;
+	b=WEQSzfnk3Z3UWQjZ6EcP0hg+uqnbhnwUg5Ed4bVSHhQ2Cv9VjpknbcLO6gyL1u5Hz9wF6k
+	bpvkwp3RexGXt2cIe5BAuUEZL19PrLgCdD6FcPSI8XOqBo+NZO3PZuec0hbLj0w8T9m7Z2
+	qVaIg6wr9c9VqgMlDsxZLnaw8+mw020=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xPmnBPJ28zrY6uvYpdGY3wel6+VuX1OFUcFOxEaeTdU=;
+DKIM-Signature: a=rsa-sha256; bh=IRZQaGjJQtn0dDu7VssqvMPb2YwnLqTZZKLH7W11Xyk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787108413; v=1; x=1787713213;
- b=F8MdRUmZC8v4mx9zU/ExpMgxZWjgn/2JB4G+w534apYpqubjDJ9+M200HPU64H/iC5sgqUsr
- aVK4Jhk2S9GAl9y5XJlg8KPKXU/Csckd2S2M7fSVyv5Nmaa8sdznULH0N5Xo+++UhzvjJEtvy3y
- oAH+Hw3136hvXtK1uayD+uhY=
+ t=1787108577; v=1; x=1787713377;
+ b=DtKIy20NuesmRtb0pNmaNhQx/15KOSQK/Gmd0Rae5f+wEs57e2dkmF9e4gOZrm+8StED2wc4
+ RsvfiGg2bdtglp3dut6Y6nrf2CAHQd/lhMdgpvrequ0XFqxzmqm5JGyynuyBHxJQua8LEXd/SoV
+ N14+PewkyOGEolGdOHFfNcQ4=
 X-Envelope-To: linux-mm@kvack.org
-Received: from [192.168.110.173] (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id a0a07108882060cb;
-	Wed, 19 Aug 2026 03:00:13 +0000
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id 3a28c889ab346ce6;
+	Wed, 19 Aug 2026 03:02:56 +0000
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <9bd74181-2ce4-4d69-a353-614685559ceb@linux.dev>
-Date: Wed, 19 Aug 2026 11:00:09 +0800
+From: Lance Yang <lance.yang@linux.dev>
+To: baohua@kernel.org
+Cc: akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	npache@redhat.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	surenb@google.com,
+	vbabka@kernel.org,
+	ziy@nvidia.com,
+	hughd@google.com,
+	ackerleytng@google.com,
+	usama.arif@linux.dev,
+	joannelkoong@gmail.com,
+	hannes@cmpxchg.org
+Subject: Re: [RFC PATCH v3 0/4] mm: enable lru cache for smaller large folios
+Date: Wed, 19 Aug 2026 11:02:49 +0800
+Message-Id: <20260819030249.96570-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260818225904.55236-1-baohua@kernel.org>
+References: <20260818225904.55236-1-baohua@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, hannes@cmpxchg.org,
- roman.gushchin@linux.dev, muchun.song@linux.dev, Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [PATCH] mm: page_counter: reject empty string in
- page_counter_memparse()
-To: Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>
-References: <20260817042652.74136-1-cui.tao@linux.dev>
- <aoMzchLCCz5hiFHp@linux.dev> <aoQNtIRvqXRh-x4u@tiehlicka>
- <aoRz72_zdMai_RNV@linux.dev> <aoSLxSBUPbEqimJq@tiehlicka>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <aoSLxSBUPbEqimJq@tiehlicka>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 24B75180003
-X-Stat-Signature: qa9fudoi8amgh89pyyq58zqbbgb4byox
 X-Rspam-User: 
-X-HE-Tag: 1787108414-599583
-X-HE-Meta: U2FsdGVkX1/PPPomXtH2CEk5FzfOUbI6ccz9MDvP2Pjgtq3Aop/au556cNqSKq+6eOmbCR/ll08FBSNUKMl05M0nbI430TvSX/wqUqrQO+6/vlLqLqv7RAfBqgh00dVvWYX9i2NTc25qTHSTcunBRDjbQm6VrgiyP/7lBx11Eh3O+uMVXyHheX91tuGQmIFOpSA/oiGgNglf5uSx9aE+tvRSdiqXl+qQxAl1vRd5i/mkxegAI2DYj1r7pPIqmBQrLBncW5djljQpLdvY+OzhQXmnL3adE3gJsCN8Q2k9ydq95APTj1A6mFRHuXS0X7yfIbcZzYSOq3bQbqa1x02doPu5f5zBBO0Xc5VUQYpVYq90/MXbv4SGuG6S5Oe5iMQK4mz2L6zLETrXHuku9ziUnZ4k19iwk3SZibxmO6bhj6NCFySX2TuCYW8RkbxRq234QkHSX9jw0UwDm/GXzZHkYVg0GDY+gp7WtbVy0rlU0llVPeUG+QM9UclMiYkNQ/qLaIQ5l/iDj+j5nomJqL22iEaLZRJisXMgIBRRWkaB+6ymQLv7D5ty/ortkP5ZOrMjYglnSILMxng0+DiHrW3uBhIr7ssIaqp2c6sSgJ+JEUiv0phwPqDnbc42LJLTBTI9WzXvif5b9IhKie3R/PnDNiZkJlcYTG9fiMuqoiBNKRp1ykLdaz5roV8PX+jyeYHGIRMYsd7e02UsO6unXFyfIMNymXToMiADnRAFknATCSlSsI3sdBJm5Ky2bUEyBMWCZegm9WoB4aglw6EcxBCQml5SsMiDwSV6OPJv1dgU9VGgQkMVMk74++h8rBF+BB9C13lAc0cRBCAblRJbbiXDaZy8ZJ00N+u36vT2opKnUkR1GzKDuYjwluB3HQnpOGApWttzBmk8UoeRufodi3GcuIB5dGmZpoD2a/3AYdz3QjMFBKRwgS0v60jVaWznfYO3lGP5vQWLUBF/t4gTeMi
- 3svE9uCt
- DwqtK6dxWxGUeUm0c7nSb+le+NgcaOnlidpyYlmJD9j2C+n9BSWudstq21V7XUwUUREn9/dEN2n5m8R2iDj+Z+w6AnL8Nqy2R4cpIM3NoYD6M0qvAx4nWaTgnAhDkZZsgOO4ebT8kos+Ismgt5ALUxjK+Te07cZIIubCE8jpH52HyTyOa5+xRpH/koz1KezPoebjIJKyFZEmoZIcwsuc4vA3k3GaClyrKNwVqCTq06cFKFl3MHxC4AemXB29452P/m7gTvkf+jaQH54tXrPuWpoy00jgLS/5UxGRtkZo3D/Wop+5BhNLRNNRC44rf8qtfUYIY+3s3WBaSo0SX5e6CbaCLL6v5ELpSfrjB
+X-Stat-Signature: kb974xk3qt117z4aijbkdumosahmpuor
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 48246140006
+X-HE-Tag: 1787108578-78338
+X-HE-Meta: U2FsdGVkX1/zgDdx19+T9N1SEx3hHzfj63leK9ttogB+/JS+SKCFxwb4CNQ3++Ni2hFuyWocWGAVJNtBQ/hJdZT53T/mDUP8PBfvdzQPqvwvmLKFHAty42u7QkFuHbTP+sJOTpDfDM3W6uinIrXl7KfRMSqd/K6RKzyRKr4ObSmR4BXhqozlWYubDl3CCMSttVHYpX1dFMtoJ7OQV93ioSPd1hYWqGLg2VIozFDj4lL8ktYrR+ulvhuegP9zhXj1DSuD5bIYdcn52z4mFsHVU7490dT/KhuEsKdHyFymtpJQF7BwOr51JMmbnYoY8rc0mHyR0lnT+85PlB84/FsWHPi6HdAVUcsLkYNJ7rq7HFzeGL6Qx66QVbK0vws4imHGFo4qKGxUw8xCzZzey3YcFGBVO5eU4ow7vhjB8T6uBBDNOxaeRBOGBGDaP/dN/65BThy+J8WvZwQdJt7zn2EljD4U7lHNAyKxuV1w+H6j+AFZ8+EOAAbFYntb/5FKBzL3hJpcHtctR5S5YuzY9HqNBLJq7qjVeVCbW1LPQ/SJ2QW2kce/2RpUnqEBBKYjm/+ngZNa+3umfQPZcBQdINAN6ECjx9AVJAUlK8BfcOM25RYoGQa+ehpRBZTEbb1TCQATxL7Ug9m8B8v6xBwaakrfrqmFrKOoD0+kl784HYZ/MA6niHO94lUOHLJBLQF0vkteSt4lp+i3sq4JTS3FeD6+DG05+PBV6AZTFiC6wICedoU82bSxBFe2WoOZ69TcSudao5wjiNMHBYSHTOjrf1HlYNDNRb4oG3x8t4hUisVa044J0Lg+0tz2ADcbitn3vG0T4aCggVQQUuci56fVGzmx8DrrP53YXjsQO6uf4u/b+6rOxQUyWhsgHxaYQe/N8tb5YwAIyXpF+cMioAs0pbfqeqZTsFLl9OFm4L77mPNk7ZNHAZ8WlFKUhbSI7Ze4z4ju8okmdijvvepKKPCbHBI
+ e84MdkmO
+ WAPBBJLGfWliaKSm4ptyjEsnYjwTf+BCxpWEmzr7jrM9r6+8RmgLcjzfxPzsaFOv8GH4+GCd+lcD5Gh+wFQUhW7B92POCeFyQSjezsyFSQE7Vl1RZ3F9MZJSHs6a6x0cIWQqKDBGALXe4qRlh21HYWRGWrOkY5zc1xsnxRE1nhenD6IjCg9C4mcy371foJ1OdR6507q23cdNj9ynVWzFubukcGNfdeoJIGQYEJaFKfXvypO3tf3dT/YcbHmuQf9XYLPbdkN+DV0qJ8xe06VpDw+4Bp5jMnfGoaeDD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,129 +109,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Michal, Shakeel
 
-在 2026/8/19 00:43, Michal Hocko 写道:
-> On Tue 18-08-26 08:06:22, Shakeel Butt wrote:
->> On Tue, Aug 18, 2026 at 09:45:56AM +0200, Michal Hocko wrote:
->>> On Mon 17-08-26 09:16:40, Shakeel Butt wrote:
->>>> On Mon, Aug 17, 2026 at 12:26:52PM +0800, Tao Cui wrote:
->>>>> From: Tao Cui <cuitao@kylinos.cn>
->>>>>
->>>>> memparse() consumes no characters on an empty input and leaves the
->>>>> end pointer at the terminating NUL.  The only validation in
->>>>> page_counter_memparse() checks for trailing characters, so an empty
->>>>> input slips through and the limit becomes 0.
->>>>>
->>>>> All limit write callbacks of the memory controller strstrip() the
->>>>> input before calling this helper, so a script that writes an unset
->>>>> variable hits this path:
->>>>>
->>>>>   LIMIT=
->>>>>   echo "$LIMIT" > $CG/memory.max
->>>>>   echo $?
->>>>>   0
->>>>>   cat $CG/memory.max
->>>>>   0
->>>>>
->>>>> Nothing reports the mistake: the limit is now 0 and the OOM killer
->>>>> goes after every task in the cgroup.  The same happens for
->>>>> memory.min, memory.low, memory.high, memory.swap.high,
->>>>> memory.swap.max and memory.zswap.max, where 0 silently removes the
->>>>> protection or disables swap and zswap.
->>>>>
->>>>> Reject the input when no characters were consumed, which is the one
->>>>> case the trailing-character check cannot catch.
->>>>>
->>>>> Fixes: 3e32cb2e0a12 ("mm: memcontrol: lockless page counters")
->>>>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
->>>>> ---
->>>>>  mm/page_counter.c | 2 +-
->>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/mm/page_counter.c b/mm/page_counter.c
->>>>> index 661e0f2a5127..d14db705b04f 100644
->>>>> --- a/mm/page_counter.c
->>>>> +++ b/mm/page_counter.c
->>>>> @@ -281,7 +281,7 @@ int page_counter_memparse(const char *buf, const char *max,
->>>>>  	}
->>>>>  
->>>>>  	bytes = memparse(buf, &end);
->>>>> -	if (*end != '\0')
->>>>> +	if (*end != '\0' || end == buf)
->>>>>  		return -EINVAL;
->>>>
->>>> I wonder if someone started depending on this behavior. In that case it is
->>>> better to return error instead of silently ignore, so we will hear complains
->>>> loudly. This looks good to me.
->>>
->>> This is backward incompatible change and I am wondering why should we
->>> even risk regression.
->>
->> Mainly I was wondering if this is intentional or unintentional. If this us
->> unintentional, can we fix it without anyone noticing?
-> 
-> My guess would be this was just omission. Those happen and over years we
-> have learned that userspace is quite creative at using those.
-> 
->> However if we are ok with this then let's make is formal and make this a
->> documented behavior. I don't have any strong opinion either way but I think you
->> are saying it safer to just assume this is intentional. Fine with me.
-> 
-> My main question is why should we even bother to change this in the
-> first place? Is that reason stronger than a theoretical breakage of
-> userspace that we might learn much later?
+On Wed, Aug 19, 2026 at 06:59:00AM +0800, Barry Song (Xiaomi) wrote:
+[...]
+>
+>-RFC v3:
+>  * Rather than hard-coding `< COSTLY_ORDER` to enable the lru_cache,
+>    allow the lru_cache for larger orders as long as the folio contains
+>    fewer than `FOLIO_BATCH_LRU` pages. Also limit the total number of
 
-Since you asked "why bother", here's how I ran into it.
-
-The patch actually came from a production incident rather than a code
-audit.
-
-A maintenance script on a cluster accidentally wrote an unset variable
-into memory.max of a workload cgroup. The write succeeded, and the
-workload in the cgroup was subsequently OOM-killed. There was no
-indication that the successful write had caused it, so it took quite
-some time to trace the OOMs back to that script.
-
-When I checked the documentation, I noticed that the cpuset controller
-explicitly documents the semantics of empty writes ("An empty value
-indicates that the cgroup is using the same setting as the nearest
-cgroup ancestor..."), while the memory controller documentation says
-nothing about empty input.
-
-I reproduced the same behavior in isolation on a Kubernetes cluster
-(v1.29, cgroup v2, two-container pod, 384M pod limit):
-
-  # LIMIT=
-  # echo "$LIMIT" > $CG/memory.max
-  # echo $?
-  0
-
-  m6demo   0/2     OOMKilled   0
-
-  oom-kill: constraint=CONSTRAINT_MEMCG,
-            oom_memcg=/kubepods.slice/.../kubepods-burstable-pod....slice
-  Memory cgroup out of memory: Killed process 339529 (sleep) ...
-            anon-rss:32kB, file-rss:452kB
-
-The process selected by the OOM killer had less than 1 MB resident
-under a 384M pod limit, but the empty write was accepted as 0,
-immediately triggering a memcg OOM. From the caller's perspective, the
-write simply succeeded.
-
-One caveat is that kubelet reconciles the pod-level memory.max within
-seconds, so the window is short there, although container-level files
-are not reconciled.
-
-So the patch came out of that incident and the documentation gap it
-exposed. My thinking was that rejecting an empty input would make such
-mistakes fail immediately instead of silently changing the limit to 0.
-
-Whether that benefit outweighs the compatibility risk is not mine to
-decide. If it doesn't, then documenting the current empty-write
-behavior, similar to cpuset, would also address the ambiguity that led
-me to investigate this in the first place.
-
-Thanks,
-Tao
+Tiny typo ... should FOLIO_BATCH_LRU be FOLIO_BATCH_SIZE here?
 
