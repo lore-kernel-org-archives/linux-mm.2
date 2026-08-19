@@ -4,91 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BD9EC5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 06:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03B9EC5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 06:52:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C78F6B0098; Wed, 19 Aug 2026 02:50:40 -0400 (EDT)
+	id EFBF36B009D; Wed, 19 Aug 2026 02:52:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 079516B009B; Wed, 19 Aug 2026 02:50:40 -0400 (EDT)
+	id EAD736B009E; Wed, 19 Aug 2026 02:52:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED1BD6B009D; Wed, 19 Aug 2026 02:50:39 -0400 (EDT)
+	id D9B756B009F; Wed, 19 Aug 2026 02:52:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B783D6B0098
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:50:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 285321C0919
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:50:39 +0000 (UTC)
-X-FDA: 85117095798.20.7952799
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DE338C000B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:50:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qd6JsvZR;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B33D76B009D
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:52:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 38FAA40450
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:52:40 +0000 (UTC)
+X-FDA: 85117100880.29.EF2FA0F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8B0611C0008
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:52:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WkLTMf+q;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787122358;
+	b=CpnH+82efWagWSaMJqLmyFSgDku1rI6F5n5PhfG+/b1ZmrXKBlR4SdWeuj8TjrCKupaiiM
+	ANWSxGolOQKHr2Ih0hpiF0d4b5DY+8XrRt5cgeGvNThEIHzMdSWGIL9xFLhzldkVrreImW
+	YJgisSLIRFlcVqX99lHDfQfR/PnpUzQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WkLTMf+q;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787122237;
+	s=arc-20220608; t=1787122358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V4ctjB3/w3vT5kTPDD7B+zd7eRwflmO6cSm8OC9rye4=;
-	b=YQw1K+rr+C4b1oIQO1dGOhs8IQRMoXkrEo6pLiYsZ+QkROIC60iejFgdZn7gjJ4FD8W2Xq
-	r7ZG9WfG5dF34GkTpFVy6EaI00FD7EqHv73NaRug3+Kwaeqd2m4VVsTiVJgxBfsLXFvvCR
-	Q0o48uydVeBhtJT53zFEvGcPaALio6w=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qd6JsvZR;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787122237;
-	b=R+cm2d7XLYnPvQfV2wok4rQFhw8Y2IM0l4ztpKiLON3PmZKASl8bzbRUeezVf4h7Ic1sWj
-	K0Fpq5wwcOV23R+LzjQ+Pwqiq4wHsb3OQGmMMdzllhl74lKwMrCOprOYhRmgTYJoCt/+KI
-	VPe1gjVU1ivv8lycKzYXuLRKUxj23Fs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF72514BF;
-	Tue, 18 Aug 2026 23:50:31 -0700 (PDT)
-Received: from [10.163.138.181] (unknown [10.163.138.181])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 201FF3F66F;
-	Tue, 18 Aug 2026 23:50:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787122235; bh=hzyGyhdGrUBLrpKdCTeSQJcY1CtIsQebRKlFpcJXqno=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qd6JsvZR1+bVNlqKjQsejmd57DcATLi+C5moZwtk0ZQv8bPuz2aLXiXQfeAwWX2h5
-	 +kHySCsMVOUow5PJOaR9MCUfjK+hEB5fuyM+BT3YQIi9O2FzCv/JHhoytWiZOt397j
-	 l8NRF0u4evNo9er1Itl7gN+C3BIaQaVVWt6QxyrI=
-Message-ID: <80632d25-df40-475b-b7d0-912d657a977e@arm.com>
-Date: Wed, 19 Aug 2026 12:20:24 +0530
+	bh=7d351kwETeBhwKUAevfFIdhiS/3pPYk4RDmKm2u9Xu0=;
+	b=oHuuhvH9ryZLHxsBeuwGCyvYRtt4DK7BCenXhbxZ1FWZc9QfZIjpJpHR2BHVXX2TWkhbOS
+	vuIKUG9pr+6ACu6QBhDtpCy/21Z2mXvbQpzcmcouP+ab9Qjji6ZG86BiAiqIbdkxrSOzv7
+	BssDVNJfaKsLW8EMV4pLC2IL8bzgsSs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id ACAF0436FF;
+	Wed, 19 Aug 2026 06:52:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7811F000E9;
+	Wed, 19 Aug 2026 06:52:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787122357;
+	bh=7d351kwETeBhwKUAevfFIdhiS/3pPYk4RDmKm2u9Xu0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WkLTMf+qpN/io805Y+2gkeOkMbkpIKzf/6QzY2J/6Bl2FWOx3hYwxZqHUNh5M4dgw
+	 NmuyAHXcBRvh2GxscHJW61nXGUBR8lNKbUmLxqWPpQcQgLHWUAVlSWz6LVoosdqCUL
+	 ZEmosEMGQfwSgXLsUlMUGHaMqKfk3Jvw8lbWY34WrNbJ3DRB7qmc/YZZa7OShj2kZU
+	 9F9gzCeo4nBVxNMDWaMYPftvg52ti3BnqeVARRjJq5cVbN2pVAHAoYGhFw0l1dFtDu
+	 nWSAaMBzSD2S1DqUVmDAMWvEN7eDywpx8rVr2/eMxUkxs3qh6vnl3GoJDWDRt0ReB8
+	 kGYH6E45e0M5Q==
+Date: Wed, 19 Aug 2026 09:52:22 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Len Brown <lenb@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pm@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	loongarch@lists.linux.dev
+Subject: Re: [PATCH 1/6] set_memory: add number of pages parameter to
+ set_direct_map APIs
+Message-ID: <aoVSpnf-b-btyHR9@kernel.org>
+References: <20260816-execmem-set-vm-perms-v0-2-v1-0-90944a3ad43f@kernel.org>
+ <20260816-execmem-set-vm-perms-v0-2-v1-1-90944a3ad43f@kernel.org>
+ <DKR7IK0VAERF.3ALVHRNQMSXZU@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] Optimize anonymous swapbacked large folio unmapping
-To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- hughd@google.com, chrisl@kernel.org, kasong@tencent.com
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260723070905.3422276-1-dev.jain@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260723070905.3422276-1-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DKR7IK0VAERF.3ALVHRNQMSXZU@linux.dev>
+X-Rspamd-Queue-Id: 8B0611C0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DE338C000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: pu44daxydp1c74fk5rxwnz3rb9t8zbs3
-X-HE-Tag: 1787122236-710895
-X-HE-Meta: U2FsdGVkX1/NpLHclWNnt1NVDXfivYABFEB+jrvby/sET81p1wjzGppPjRsmXiTiRJfvhT43orcxe6MtNJU+7GS6wYDNHCUYk3X/icjzaOexYZMeCvJ78kXBx+NH1Pj91dLIV9Kn+x2WzV5iqmH/h1CsXLVaEQ5eapC4YSmDrJ/BV9/C4/MIZBOWwo2FlXsQ3RGCBKk/t+CCkwIFaULLEzTSkq4wg5Ru/Xdt4N5mOvwLBjPcPsj02JXLZdpGSurGs2rdqitYAoJbUqrHox93qq4lnzAVUnr4+ZR2naxJ4wSPsVQpJhsjIw773RACuFkhLwGh+FlHu2QX1RlFZ37rJAKsUzb6qgBqJWX+Ze8J3DSVtkfYaloJyCGKSgEOT7BEHbdvGv88IV6jTb0uOR1Nfvn6EfuwNxAIPnenQ2LRK/6RN22gYuE2mgE/PiL3EvCP1BB90zz5UzquXjBOGXnZPd2Xu2rJeTCuDog++Y4eKQPg8doa3fBIux27gbdO+rKd3dtr/DETq1CeZGkzJ1Dcx/xIEF6Y2LqU+LqQYWhU4kLiYEevsU4G5IehHUe+s+On+oCivp7teTbF6FdXRJyqrmsNmkzPASVUyK1dRZShxmRElQikp6uEKc4YtkYEYs40WdV4EXEKcIuVpk1SgFbOWl4Vk3HZulMZ8PIqljNBVZo7SJROd7yvODkTe7ubPku3lGoA3zwhEZe4ZXO+vxfbrYMV2Qvnk3ZPBke0Lvr08JyTOf/J2ZW0nILroydvguQfK2Rtm0JPU4tX0go8quvKTQi+UPzZWmKvhZeoYsI4D98AGPe4bju4YzJ52QfwU/uPqWjlWsQ0iLzzE0dKw8IgKGk6GeYPUAoqp0BMvxM3o7sjT3UOAqEMVM4uduik7r/Efq2uIX+ka9k4vlC8AJvDczm4AyoDpJFjecdsV0RwHbRcvdCEuhe2loPYJ4EUuFcE36AGXubHdc14nNh/VCs
- 4egOWX6T
- 8kA2T3e77JQl1p/ubuvLvyilfcD0zcOqfrU4jClqzJyRzMocsijZ7QeTZ3QRK1CsI7nnxUAYKPLKE8FB3i3HdtkKpg/vdJ0W80SlUAg7QHpootqLUCkNDwHHYmPOfIfpEMW430/uXkheJty1q4QIa2aEe8kG4RD0FlR/dyoB6BFRIl6MEwjNZ8wgLIROKQVP+t1lGFC/0h0iX3aR/VJ05jH1mSZw6T062PeewAIFOSmfpinQ=
+X-Stat-Signature: kr5w6d4ubt6ytbjqjmnrhab7nckza34h
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787122358-47984
+X-HE-Meta: U2FsdGVkX1/6bu6U8S9ZlHgnnrxlXvD7vbsefaoMK3tDk1/2z+qEcNupF3fhY7fUIpkrK1rgS6rlr4duwumCNpiw2MZp6GestTMOdTt6ua6U+vxUB3WvibPnCrG+RSnMnzZbiUCmd/MQ6rUO+j8BGAqcM2zq2IDDap9wIBdy3wO53386aSg33Gj2OR6WlW1nBo6v47o9YbwsQhc7KA/Wm1o/rDtiVEGUkZPVy/BItz6RyMqgS8NTAlzK4dk6h/nlV3RFcFT7cN1LG1IhyZrO/E/jT9nPs7aMh1Eq2JH0EiR22JcFM45FFOf6isKlHw82xY8v4zxJCsquEXTojrvFNcxGRZPNnzCJcxIR76/tWFl/NkcRrZBh2ll+Od07SWnRQw2L+kS/PHvVx+5ehHds4nk+rft0NGzLUCYhE6uOuLIFNpl5yLkGodk6pPC6Jg8KfxEhCEobPWy5oOne1Axuf0lSCfOnG6nWRsAv+ZC2SP5a6zqjlOcGD9EPxam1fd2gZrcl+H8qAhV1y5am8upQQdrl5wOeO7He4Aa2Z8ubrA4qTaDRwrD78qVGkqD2SK4W6Ks8QOf/y2FgLOnbf/ZSDSrqlP+uW62fAKyUYyLbf8n/jwKo1MTp9m8vKRdBZQnuSq1bvNAdor55C8VBvm6nN/SpNdk7eSyk2rJkuqa1i7ke1d8HxrVBoTnpmNG20IeQDWEtZ5GACjxS+WMi9uzxWiRti0L8v5we2GCY9CuVm5nItsyUtaScAUeg2UkL4iBF05vxsPC/Yem/i32y9SYSLy3KHVDg1ORbfPc1ZuLHbPpmuABvqANe+0YzUn4p/2RL/Sh1YJ311nF3N6OD4Tr0kL11uoMjhmn7GefmWfFJ69I9WcavsfhsvVUg695jzIR+WMA+KAb0LhY4M9h9IEJdFD0BU67xtTwO41hoBIF7C3Uiwew2v6ii0x0XgjfKk1le9XsTPKAym3GNqmMIc3X
+ I+3fTXhX
+ zfN7C0QORS7xEQgO7oRTIYi/B02BuwQxJqZoik/eaLusMQdbMIfWkDc9W2msxIRcDpXSAV2+UlvlHQ3PGh4bMPh9iA9HzMLwMtxp2KIlKwupmm63hhZDG7Vl8BsSehHCREr29w9cgkZExSYEoKZZ7cioSuM+d9ZDvx/Vf8WZaXnuDPdM1++1htRPHKtZaXVKWAzOzzdoX0mdEvUC/8lEU5diVP3uYvCRCxz1DjkyvovucGhksJKa+3sYXtozF5ySITXOD73ASpX94gio/m/vCappLoAFQuL+1h69tx+Zvcs6yYNP1UcAdqDX65+zYp/pfIRKM+dFQIlWWnsQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,86 +119,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 17, 2026 at 02:10:39PM +0200, Brendan Jackman wrote:
+> On Sun Aug 16, 2026 at 12:59 PM CEST, Mike Rapoport (Microsoft) wrote:
+> > When set_direct_map APIs were introduced by the commit d253ca0c3865
+> > ("x86/mm/cpa: Add set_direct_map_*() functions") the single page
+> > parameter made sense because the initial callers (vmalloc and
+> > hibernation) had sets of unsorted struct pages that required changes of
+> > their mappings in the direct map.
+> >
+> > Since there is an increasing demand for direct map manipulation and it
+> > is also desirable to be able to update larger physically contiguous
+> > mappings, for example an entire large folio, extend set_direct_map APIs
+> > to receive number of pages parameter.
+> >
+> > As there is still only a handful of callers, change the existing
+> > functions directly and update all the call sites rather than adding
+> > wrappers for single page case.
+> >
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> I think if we add this arg we also need to specify how the
+> implementations are supposed to behave when they fail midway?
 
+This is the same as set_memory, I don't think it deserves a special care
+right now.
 
-On 23/07/26 12:38 pm, Dev Jain wrote:
-> Speed up unmapping of anonymous swapbacked large folios by clearing
-> the ptes, and setting swap ptes, in one go.
+> IIUC the incumbent answer for stuff like this is:
 > 
-> The following benchmark (stolen from Barry) is used to measure the
-> time taken to swapout 256M worth of memory backed by 64K large folios:
+> - The implementation might leave partial modifications behind when it
+>   fails. The caller needs to deal with that.
 > 
->  #define _GNU_SOURCE
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <sys/mman.h>
->  #include <string.h>
->  #include <time.h>
->  #include <unistd.h>
->  #include <errno.h>
+> - ... But, that's gonna be due to allocation failure. So the caller can
+>   just do the inverse operation in the failure path as a cleanup, and
+>   assume that inverse operation succeeds since the pagetables are
+>   already allocated up to the failure point.
 > 
->  #define SIZE_MB 256
->  #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
+> I guess it's worth making that a sort of explicit contract since it
+> makes certain implementation details load-bearing, e.g. I think...
 > 
->  int main() {
->      void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
->                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->      if (addr == MAP_FAILED) {
->          perror("mmap failed");
->          return 1;
->      }
+> - It forces the pagetable update algorithm to work in a fixed order.
 > 
->      memset(addr, 0, SIZE_BYTES);
-> 
->      struct timespec start, end;
->      clock_gettime(CLOCK_MONOTONIC, &start);
-> 
->      if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
->          perror("madvise(MADV_PAGEOUT) failed");
->          munmap(addr, SIZE_BYTES);
->          return 1;
->      }
-> 
->      clock_gettime(CLOCK_MONOTONIC, &end);
-> 
->      long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
->                         (end.tv_nsec - start.tv_nsec);
->      printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
->             duration_ns, duration_ns / 1e6);
-> 
->      munmap(addr, SIZE_BYTES);
->      return 0;
->  }
-> 
-> Performance as measured on a Linux VM on Apple M3 (arm64):
-> 
-> Vanilla - Mean: 37401913 ns, std dev: 12%
-> Patched - Mean: 17420282 ns, std dev: 11%
-> 
-> resulting in more than 2x speedup.
-> 
-> No regression observed on 4K folios.
-> 
-> Performance as measured on bare metal x86:
-> 
-> Vanilla - mean: 54986286 ns, std dev: 1.5%
-> Patched - mean: 51930795 ns, std dev: 3%
-> 
-> I tried magnifying the difference on x86 by using 1M large folios, but
-> can't spot an obvious improvement (looks like my system is too fast to
-> benefit from batched atomic operations!), hinting that the benefit lies
-> mainly in the reduction of ptep_get() calls and the reduction of TLB
-> flushes during contpte-unfolding, on arm64.
-> 
-> No regression is observed on 4K folios on x86 too.
-> 
-> ---
+> - it forbids us to e.g. merge PTEs into a PMD if the region might be
+>   pending such a cleanup, since it would force that cleanup to
+>   reallocate a PTE table.
 
+I'd leave the load-bearing parts for now ;-)
 
-Hi Andrew,
+I'm going to resend the patches that generalise CPA and I'll add some docs
+to that set.
 
-I am not sure what is the current process in mm regarding sending patches during
-merge window - would you prefer seeing v2 after merge window or shall I respin?
+[1] https://lore.kernel.org/linux-mm/20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org/
 
-
+-- 
+Sincerely yours,
+Mike.
 
