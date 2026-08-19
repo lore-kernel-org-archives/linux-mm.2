@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3AC3C5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 21:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07D2CC5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 22:02:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 845AD6B008A; Wed, 19 Aug 2026 17:31:11 -0400 (EDT)
+	id C9CEF6B008C; Wed, 19 Aug 2026 18:02:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F69B6B0092; Wed, 19 Aug 2026 17:31:11 -0400 (EDT)
+	id C4E086B0092; Wed, 19 Aug 2026 18:02:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70E736B0095; Wed, 19 Aug 2026 17:31:11 -0400 (EDT)
+	id B3C976B0095; Wed, 19 Aug 2026 18:02:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A71C6B008A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:31:11 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6244160620
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:31:10 +0000 (UTC)
-X-FDA: 85119314700.10.CEC8D2D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 86B1C6B008C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 18:02:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 785DB120660
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 22:02:02 +0000 (UTC)
+X-FDA: 85119392484.07.30F6A5E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C723A80005
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:31:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BYQfE0qB;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6C9EB180004
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 22:02:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G1Mw2L0m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787175068;
+	s=arc-20220608; t=1787176920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ghs6iPSRrZGeJwUGIyYt5eVaUbmSLLAA1KH//Wk5utk=;
-	b=jgSMb3PKksuqzpl1/or6NaV/bQ9tqTc6SdyMrM1ACQqdhDGR7AVB+cTUeTYVOqN7amA73S
-	jkPnTFZ3VVnFjtSk8rkS+dIHyh/+C3M/WSUXz0zXLC8APEyEQB4KsRQGTyZvVN9Iu77A3E
-	kFffA7vlehEuiTnDbuwdyziZ+yRZBOo=
+	bh=oKjxAGc7CF63avf73E5SrR0usloMlm5s7Y37wLgMAAU=;
+	b=EPHBraURFQlJODcYXxw9u/9u2Y8gbGV99DN/6yOkzGH22OCYlhyZWK3s5MtYNNClu+SzUU
+	FjpexY37Z6IsktdHX0Y7P/3ZYFjKnkUl64jqX1agKabSPXND0FuA29z583abXbShZEBuZ/
+	ykYrTudZtnZk1dFrEPLckEJxPyei1bQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BYQfE0qB;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G1Mw2L0m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787175068;
-	b=ccRWrPo43tMYHQCe+GeeFBq8n8I14oxUFSukrzTNHR78piRe72UG5kuzDo1JjM3qQBEDIL
-	PBxOPeTkqbdyrFqWdHQ0an7XadrHHGNvi3QkevBRRI7V79ijcfnK3n8KFyUl6Tl2sJ9E2I
-	6o1gi/wezu+/ehjBpjhMYXshSLeHmAg=
+	t=1787176920;
+	b=fORIfBV6t2Osv8boW+OvUh+egKmx5rfzmt73LtlBigddejfF0lkq2EKKL2QgL0illiuPYB
+	tZkOJrsm4RUL4Mz/5yqIvSZdT/xVHB0FHxDNS3gR3A9H4ucGxX2aoOs/1+SupqLKTrC9A1
+	GJtw6RViPAOwGGnD3W1UvSOs04MHGhI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E459F40558
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:31:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FF01F000E9
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:31:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 884AE43F49
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 22:01:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618D41F00ACA
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 22:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787175067;
-	bh=ghs6iPSRrZGeJwUGIyYt5eVaUbmSLLAA1KH//Wk5utk=;
+	s=k20260515; t=1787176919;
+	bh=oKjxAGc7CF63avf73E5SrR0usloMlm5s7Y37wLgMAAU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BYQfE0qBn6RQTOJEi/H5ED7wk4DSJu3aU94pOT1Ga3wT9ZlVjFXZz66cHn/I6HI6U
-	 gXkI80jZOhcbS8ofV9XsokHHtoW6uK5HUpY+WeC+3clBY5wAd/SP38zgm9C/0o0O8e
-	 zhkVBzKH3CbLe9ZQgK+JfaIGSbG47BlPa58qgl6EmMCbBfp6j6d+3ckmn2h0TxXRiv
-	 r2kM2SeSfWg91KwMSWTothUM68f6KEbl7atEnG5y3bW8ypnzzJ2jxqInVGZs+vKvT+
-	 eQnk3S0AeDx6HynmdtoB8lq1KdAmFkOJaw5Ai4CPzw/hG3nP1+3hMCMKfb2bcsDEG+
-	 R3K70Ysw19s4A==
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e6391b114so132186585a.3
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:31:07 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yw72xm/AOhc5YH+/qaRdeBFw4MWqf0Vud9fii2SV+iYtPisVzJR
-	+K3C4BeQFJuYYFSTQci9lxGBtTew1W+EWl2nU/8vWmjABRJWQLHXaJbsMx6dysmHC7V8Af+OGEH
-	C1/AhMukNkTBwllXY7zAupH27NxstzA0=
-X-Received: by 2002:a05:620a:404a:b0:932:d9c4:3bec with SMTP id
- af79cd13be357-9371e74b03cmr764971685a.38.1787175067210; Wed, 19 Aug 2026
- 14:31:07 -0700 (PDT)
+	b=G1Mw2L0mIBkzsWeD7c9ra8pKCUyWLO6bxgXd1vapUifjHi1SMXt4YlHZYz9v/Xk47
+	 oCSdtDljuzZUjQvdns/MkPbSV66Rk+7qDRV5Pana1ol7fk35N416iZw6fMrLaK1ra1
+	 TR6gnX0EwgZ5lzsaFIm9TUsvPn8CzBuI6GIv0LvdKcDwJNPrlfhKlegfjo2NE6L/ZW
+	 ZWfKcf/a0pQZ465rD1R9KweqF2BaN9wOZLkKeD8/7Bbp+d0nZ411XxRHmuO1ZJLHoz
+	 z2cm8R18ZJWGmoDQRo7hqCqN/EZ7UZQfLQOZmkY2zI6J7F81IbKVvjA+vjXzAu6AtE
+	 SmXEiAA9TW88g==
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e512a9a6bso88311185a.2
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:01:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoGJDOEP+jd3NK7/yG1S1qBGG8h6Fwux1PpbU5i3Rm8cJtg0BSs+YBImYWi2ywCgQJ3uhQy2vv5UQ==@kvack.org
+X-Gm-Message-State: AOJu0YzrLHDsxo9qb2UQDioGCFA/eKcCh1lTbVPtYT70w6f9txkXomQ9
+	PSLPUAGAwsE3D6DcomPbtxJb4G//eXMEn3ibNxoXFVtFXUQomIX4xcnqXrbEP1hoo7usWOuTQo8
+	myxDb6+Df3evb+XM5yUVZBwMjoj3Yj/Y=
+X-Received: by 2002:a05:620a:2683:b0:915:fb92:d599 with SMTP id
+ af79cd13be357-9371e309098mr801633685a.25.1787176918711; Wed, 19 Aug 2026
+ 15:01:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com> <20260818-mglru-flags-cleanup-v1-7-8dbbdac0d28c@tencent.com>
-In-Reply-To: <20260818-mglru-flags-cleanup-v1-7-8dbbdac0d28c@tencent.com>
+References: <cover.1787056208.git.zhuhui@kylinos.cn> <4b4d4e3065e36f1b60dd69e8276cb92082f393a6.1787056208.git.zhuhui@kylinos.cn>
+ <CAGsJ_4xKM1R95TEpKoicGYQB8Qafez6hKJF=Z98A_2j43X5GAA@mail.gmail.com>
+ <39871dbf-25e3-4518-9942-a733dbb6acf5@linux.alibaba.com> <CAMgjq7D0KMdg0fKMx=i90b=F-ZEW8+UziiE12fCGxKOtiMn1Ww@mail.gmail.com>
+In-Reply-To: <CAMgjq7D0KMdg0fKMx=i90b=F-ZEW8+UziiE12fCGxKOtiMn1Ww@mail.gmail.com>
 From: Barry Song <baohua@kernel.org>
-Date: Thu, 20 Aug 2026 05:30:55 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zNZLOs_w1XazV471d66BVaNq9bVj5=2ZjT2u_NX=XmAg@mail.gmail.com>
-X-Gm-Features: AcwNN1WZoGwAs-dfgWVX34j6qNueiuUcgi24sPh1f1Z4XRF1e7IHP_M-JHHISY4
-Message-ID: <CAGsJ_4zNZLOs_w1XazV471d66BVaNq9bVj5=2ZjT2u_NX=XmAg@mail.gmail.com>
-Subject: Re: [PATCH 7/7] mm/mglru: improve code readability and harden folio_inc_gen
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Kairui Song <ryncsn@gmail.com>
+Date: Thu, 20 Aug 2026 06:01:47 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z4_+T3x0vHdKzZTjA_ewB2KTvLiOwQdrv6uSJ2N5aP-A@mail.gmail.com>
+X-Gm-Features: AcwNN1UR_JrJi0IeO1OyPeBhFTeBIHTBKdMnnPsTyWogCQHl4Ozef7xIMoTJOHQ
+Message-ID: <CAGsJ_4z4_+T3x0vHdKzZTjA_ewB2KTvLiOwQdrv6uSJ2N5aP-A@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v3 2/2] mm/vmscan: apply too_many_isolated()
+ throttling to MGLRU eviction
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Hui Zhu <hui.zhu@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Hui Zhu <zhuhui@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C723A80005
-X-Stat-Signature: s34p81gogs4ukuk7r8461djapkgt4wq9
+X-Stat-Signature: w6bbi46dr8qsazw587bmb5qk7upagz5f
+X-Rspamd-Queue-Id: 6C9EB180004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787175068-439332
-X-HE-Meta: U2FsdGVkX18NtdxxMhuoRCQvysV+VLrA2Xjt2XqXbkbifkpC4fLhQPRW+8F1MIz5p1VbSgCcJO/StjHQZTG/5f+HZchmJszkDqxBT/eqnInxoVip7rbUJvA0YzRsMcfUVpdacqAmBmMxAnnjaMSGJxdGGhaF9CLAyQyehFWkhtyN4l6b4c40eC6Z0KFAYsfHVSkdztzutomAGJLUXsurnXCVyZlFeF9pXMx2/TInPXCvfZrDrRs6Fk4XWvTzyff9TH7ZcxbL53WH6V31BhmvFtj5p05pqDmeQvdUBitXtjzkK/dTInjkKx7nzHTmWTjTWrGr3Yyw4j7P2il9A2q3LVsVegGM1X9HRBmOrOzRtQQNn1qfvPSqpiox4jctSljbd+FlGSAmmqLRkNXzjBWvzdiqFWOwa7Aj0QfQ/amYT1ifBPHtS9XJ+vWU95JxnUdiAnY0Rjk2uGuOI7mW6X3X6/JS3HE23wxy5C6OBSLM8XJrjTVYE39mToFh+hLRAGYWPkj0o3qTjz+bHzCtWLpYatzdrm80iIKfQ/CqDxSKmEvbXzyd1gmCattjaQy3e/RH6u4AUxpLk+PWVJ8H2yd97B9NNQ0MlvHOE9xxK1xXL0E6ygR2YCe5dqQfONs33oV5GeciNEL0O5Ddc6VqZb4lCjYOzkFu+ziyG/P7jKJoMSSYtIKJJqC7BBJI0LPUII2OJ//4+Axlsixv0I9a/ay5p093xyu/tFrxxwjzbFe+qcPXG5xWQ1arYUrcUwUZ1Ben1KVNqBQnj8hiEjbHj2OPjushISaG8xCbkQGdV1JQyAUzjMQXNId+SHbxZ/BjZApoQkk2efeB5i1DpkeHuMcWUWa0IIotkOaQTaWrDgRZQwzTXiwQtc+dGM3FfYhZtUzJW+0wXe5+4ij0g4iq7kREzXyiLTTYNDftk6X76Jah/d6r2tNyR5em3BN/YGghQfuAm2Khspa/C1FEjU7IHvc
- QtBDvXTM
- ecLudC40KFF1RIQJFrkFysP28DizcKiTlfm1fLZQZBiZgNIs657dwM4nj/B1tt488jVolE2o8YDt+uHq1pLyFz0zaan/5jV7F4lD8FpGdWWemFDGVbCzNaGkyd1ndb9WTXXiKJUQKYIKM/iBGcFDHyjlMe4d8qyTQg/0VCJtaio3ZgCcWr0vLAIscebIwudSAVQIu8eqN0XYixYnG2++PMbKyrsIy1QsvziSuM3Vssd4fjcUtTHS4POR9lkN7H0JkgqYjybVxHoTRIlP37qwrOenzb/js63F6/rzT/nQkHAIxKwT9Dc7bJEe/bAaEFit72PVNVbGXKPf+KBpJjJVaMhaUoRLjthBjJhZZrcB9FnG4RlUx0ynIJ6uk3pH3vOMRTtx3
+X-HE-Tag: 1787176920-719653
+X-HE-Meta: U2FsdGVkX18reuULCSLS1c52MEQ20DOyDgE0PRzZ8ZPsMn2G44Vse1h5WAaiIwcNJhuiMBX3iZ2Ht5QSclM7qwlXdhU7s5OFvnBPzm/dZW1E4nj8WYsJK+zDPnQoXwkU+1Ux1HZxlHJ1jUrd/7HGcw56SmjgP9Z8xpL7cwA7FEVns/gp/z8qfNlhS8UzVRL2CBwA4DrbXhxH16cv/KcNo8O29ebFtTiqJ6oCGtibICWjAEeTLfr5banI3mj7cKmmD274tVtOd/QE1FTOY7j+SIp5lzGpwT39iawP/dSYNTB55GTgSHGKmIxGE2bkHtIKASLKAP5h7Ss1qnJyM/3y0tDodq+dW6xQrTpA4dUVbu8ryGTYwyf9RvnFGqweyUb2UANdyTrJjNWjL1lbeJkr+0O62SdlSqCx6gkPsTbVrT4C+Dmi1TWTP0PmijpyOZ1EutoaV2+8Uug66HCDFSBuhiKbfEC/0TOgKBhrrVsN00QnQfMXDVx29SzP/TZroAY0UuHoYIKOWPUQA1OVfiU9uvIXAmu+RXKYj7RLfSGGkblHYPJMsrNk53xzfFf9rNTOCFIanFvtS1z6woHRgfVNpCKuoXat3hXD/EMqWeuKC3xr40CV7eCPjYeHh4XvLwLhlMijcn1TdcCNfFaPvlM0bgzl+fuiXtNvLaW//on93VQrGyirkp1tgWyWbFgSN8AtRDfnIm11GMmKvRhgMidWaQCjOr0c+9rnkiKIR1R+N92ZpZf42CFPy/quxr5cKMZOfB/GK4lHGo96NWiqr+sroeHeQv9By6st8r8dIXbvdOo+5RBtnPWDnHVSgYfIUJldCkC95k9Mg931WGrIVriXtnA7Gb+QNo2jrulaQQlsFCo54r+fBpnK5Z4FGxxRCvu4IpqvCci/HFXcCp7sFbu+PllKWF+7wmRHRact9JlBmsgN+vgf+8aOlNIQpn33KRfT0N2GfjDpHZ+jlBYPewX
+ PCSbRWoF
+ tv9pOber9IrNscY9j7szyMBZxJ3HiGX5t2VRF05X4bMT4EDwcaUb1T5/kpecLbVyEded6/X869B3BUS1NpZj3pDN/2qtaG+s2IX1GtxLG1pQTe40YvYnPiw+iCx2SXn/VOo1K3tH/a++Ixmev7uT1vawCUzf7ix9OBAvee2VQAjwbu0KoGMjW9LCflz15pchdxYEBoMCsQe63pBjUSaM4ttCK5fO3VC+wz4k2E7R0kP+34Y0WmLwafIlghznji46905thKFXK30RDCDxp6gd2TRQoZsA2+QtKZx4wG4iB75gw81iWthPn+nxLBK6N6rS2+xo9mHEA7m/GwJGEs846FGXyQCylis3UHpp+kG4tIXD+1WOxKckmjGF7BlftMS5beXiHHKAFC+tDYEtmXfR22KVzyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,34 +110,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 1:38=E2=80=AFPM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
+On Wed, Aug 19, 2026 at 5:30=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
-> From: Kairui Song <kasong@tencent.com>
+> On Wed, Aug 19, 2026 at 10:15=E2=80=AFAM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
+> > On 8/19/26 6:06 AM, Barry Song wrote:
+> > > On Tue, Aug 18, 2026 at 8:49=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> w=
+rote:
+> > >>
+> > >> From: Hui Zhu <zhuhui@kylinos.cn>
+> > >>
+> > >> The legacy path throttles direct reclaim in shrink_inactive_list()
+> > >> when too many isolated folios pile up, but MGLRU's evict_folios()
+> > >> isolates folios without this check, which can lead to unnecessary
+> > >> swapping, thrashing and OOM.
+> > >>
+> > >> With the NR_ISOLATED counters now updated in evict_folios(), extract
+> > >> the throttling loop from shrink_inactive_list() into
+> > >> throttle_is_throttled() and reuse it in evict_folios(). Since the
+> > >> type to isolate is unknown until isolation and isolate_folios() may
+> > >> fall back to the other type, check all evictable types with
+> > >> for_each_evictable_type() and throttle if any of them has too many
+> > >> isolated folios.
+> > >>
+> > >
+> > > I feel this is unlikely to work. MGLRU behaves quite differently from=
+ the
+> > > active/inactive LRU, and its `NR_INACTIVE_FILE` accounting is also ve=
+ry
+> > > different.
+> > >
+> > > With the active/inactive LRU, shrink_inactive_list() ensures that we
+> > > always have an inactive list with pages available for reclaim. With M=
+GLRU,
+> > > however, a generation can legitimately point to an empty list, so thi=
+s
+> > > assumption does not hold.
+> > >
+> > > try_to_inc_min_seq:
+> > >
+> > >          /* see the comment on lru_gen_folio */
+> > >          if (swappiness && swappiness <=3D MAX_SWAPPINESS) {
+> > >                  unsigned long seq =3D lrugen->max_seq - MIN_NR_GENS;
+> > >
+> > >                  if (min_seq[LRU_GEN_ANON] > seq && min_seq[LRU_GEN_F=
+ILE] < seq)
+> > >                          min_seq[LRU_GEN_ANON] =3D seq;
+> > >                  else if (min_seq[LRU_GEN_FILE] > seq &&
+> > > min_seq[LRU_GEN_ANON] < seq)
+> > >                          min_seq[LRU_GEN_FILE] =3D seq;
+> > >          }
+> > >
+> > > At that point, we have no inactive pages for the type, so the
+> > > throttle will take effect when the following condition is true:
+> > >
+> > > too_many =3D isolated > inactive;
+> > >
+> > > With MGLRU, however, we can still fall back to the other type even
+> > > when there are no inactive pages for the current type.
 >
-> The helper should never be called for an off-list folio, and it always
-> expects the folio to be in the oldest generation before doing any
+> Hi All, that's a very insightful concern.
+>
+> But on a higher level, you can fall back to the other type regardless
+> of the LRU? That's not something limited to MGLRU I think? I mean
+> throttling on one type seems like a good idea if the other type is
+> very reclaimable.
 
-I'm really not sure whether that's true. Could the folios have been
-found to be young more than once during the last two or three (or more)
-aging cycles?
-
-> cmpxchg. Add a sanity check for the off-list case: if it is ever
-> violated, bail out and keep the folio flags untouched to minimize the
-> damage, instead of silently treating the folio as if it were in the
-> oldest generation and promoting it updating the flags to an unexpected
-> status.
-
-My printk shows that a folio can be promoted two or three times.
-If a folio is promoted too many times, is that the cold/hot inversion
-you are trying to fix?
+I don't know how to throttle a type, since the throttle applies to a
+thread rather than a type. Once the thread goes to sleep, it has no way
+to fall back to the other type until it wakes up again.
 
 >
-> Also rename the variables to clearly distinguish the folio's current
-> gen from the oldest gen.
+> >
+> > Yes, that's a valid concern. So I think we can check the isolation of
+> > both types for MGLRU to avoid this case:
 >
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+> ...
+>
+> >
+> > The typical 'isolated > inactive' case is that we've tried our best wit=
+h
+> > aging, but cold pages production can't keep up with isolation speed,
+> > especially under concurrent reclaim from multiple processes. In this
+> > case, I think throttling is reasonable.
+>
+> Just an idea... How about we simplify this: just check the isolated vs
+> total memory size? At least for MGLRU. MGLRU maintains NR_INACTIVE_*
+> only as a compatibility shim for reporting meminfo, so it does not
+> track the immediately reclaimable set the way the active/inactive LRU
+> does, so the inactive value is a poor trigger for MGLRU: Aging moves
+> the folios in batches so anonymous reading can be very jumpy. For file
+> folios, PID can only promote unmapped page cache to the second oldest
+> generation, meaning most file folios are considered inactive. This has
+> been causing trouble for our dashboards for a long time and I think we
+> can fix this by using the tier number intead of gen number as the
+> inactive / active reading, that 's a different topic though.
+>
+> And in fact I don't quite get why classical LRU only compares that
+> isolated number to the inactive count only. The reclamer can move
+> active folios to the inactive part anytime, so throttling when we are
+> low on inactive doesn't always seem like a good idea?
+>
+> I remember this was discussed sometime ago that in the long term we
+> might better throttle it in a different way, it was once mentioned by
+> Shakeel:
+> https://lore.kernel.org/linux-mm/ahncWUAJlPZhNGr8@linux.dev/
+>
+> So perhaps we can throttle MGLRU more gently? e.g. just compare to the
+> total number / MIN_NR_GENS, which means half of the memory is isolated
+> for MGLRU? This doesn't look too pretty but I think it's better than
+> using the inactive count for MGLRU. And if we introduce some
+> gen-balance-based aging (whether that is a good idea is also another
+> topic), the ideal goal of MGLRU will be evenly ditribute folios among
+> gens so the current inactive reading will always target half of the
+> total memory.
+
+Yep, I think we can probably find a way:
+
+* Throttle if the total number of isolated file and anon folios is too
+high compared with their combined totals.
+* Throttle if both file and anon have too many isolated folios compared
+with their respective totals.
+
+Either approach sounds good to me. Also I agree that inactive
+accounting is really unreliable in MGLRU.
+
+>
+> Another thing btw is that the function name throttle_is_throttled
+> reads a bit strange to me :)
 
 Best Regards
 Barry
