@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07E50C5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:11:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74840C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:11:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2714C6B00B9; Wed, 19 Aug 2026 19:11:37 -0400 (EDT)
+	id 753326B0088; Wed, 19 Aug 2026 19:11:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 248DA6B00BA; Wed, 19 Aug 2026 19:11:37 -0400 (EDT)
+	id 72B3E6B00BA; Wed, 19 Aug 2026 19:11:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15EFD6B00BB; Wed, 19 Aug 2026 19:11:37 -0400 (EDT)
+	id 642286B00BB; Wed, 19 Aug 2026 19:11:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E3CBB6B00B9
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:11:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75533C0678
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:11:36 +0000 (UTC)
-X-FDA: 85119567792.11.747187D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B84B72000C
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:11:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l/gkZ57m";
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3725A6B00BA
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:11:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B56B48049B
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:11:42 +0000 (UTC)
+X-FDA: 85119568044.08.C3354D2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 02CAF20002
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:11:40 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ai4y0Ksr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787181094;
+	s=arc-20220608; t=1787181101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=72gFO+JEMFm/mE5KyMl3szngZahRJUcU2+ZTWkuKUzQ=;
-	b=GedaPn+TmD0AugApaeu5vYWywfno2UVUcKgLmsxVixsLXwlWbnxtncIKBIYMcIMxDMi2fD
-	RDla1/5s8DbR1c7MeDlsiU7Fw5H6idp0KDY/HdW7+OEajbQtTd76I92JLRTONrKBi2JYzt
-	mJ0NFzpWHWpI+baQ1AmZbP9iikgmI0w=
+	bh=8/dZRQuMzP9Hzjr65eI75u+N7atv415intEiHoxjlmo=;
+	b=yWyLEoODWG6iVxx+HeoZdajWKMA4mmFVJjJtTpApFDyEkhaAw6TWCmf9+Bo/aLmOg07qwq
+	l0Gmuh4UK9knqHRHChSKvsTutz6IRuALQHm2J+z6J7IAtKVG2Kgv7/oALo/3WPPbYlNNfI
+	xCNDZoLmf5Jils6MNAkh5wvUEDJvQY0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l/gkZ57m";
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ai4y0Ksr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787181094;
-	b=UXY/sA4MhLOtv2+cLglAJQuiv/TStZotZECmky1bBs4uQh54F9UVF0Gwj6fYcrTrSr0XEb
-	A6wqfI2TFphZk34m1tSE9lLN8qKkBc25Eit8QGr5veCq32ujxm6HLWGJR9eg0sGKroQKmg
-	wBVVDptgLtwwtVYzgguBaq+ZQRlF+Qs=
+	t=1787181101;
+	b=TGJh2OcGVfUNCGu45hiXIgp46XdZYey/pAQZVqlbk/pCWcYr32FAUIqQYpO9JF09ey+8ZD
+	lyx4OXrK9x5isT0s1L3DU2z578/MxedVbHKJwzwm1rSfzHgMaQsj3qpJV0lsXzQpqc/3fm
+	oytTSMlx9qEZ5AfraCuVzLlCrMGQUVQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D7B661899;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B71040876;
+	Wed, 19 Aug 2026 23:11:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5171F00A3D;
 	Wed, 19 Aug 2026 23:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3351F000E9;
-	Wed, 19 Aug 2026 23:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787181094;
-	bh=72gFO+JEMFm/mE5KyMl3szngZahRJUcU2+ZTWkuKUzQ=;
+	s=k20260515; t=1787181100;
+	bh=8/dZRQuMzP9Hzjr65eI75u+N7atv415intEiHoxjlmo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=l/gkZ57m6x0MVqexlIB/w3JhkEQ/mTP5nyLhU30ic1zHxAyQpA+y+AVskrHJNhiWL
-	 SI2jlxBw1EjdpadUcI/2A7P8ClVic3G3yU1pobKVs/z5WXqAjKd4IdFfkSWWCM6h6Q
-	 gABt5r1yAPuoRGCmxDtpQ/1Y4zl4lgYSUaQBbpMdeMQiTN/zx4rXCp1j6VuKKU73Go
-	 bomiUP0HgV4440yO+vYhzrgBbGT2GMZE+iJhtzEq0RnQoCRguvwdYV2qkC58iZfyZ1
-	 NxsO7LrU+v7+V4jutQEHM5GJ/MMyOXp4cjQg6nVnOrDFHGiB7iIIkE6sktM2WpceL3
-	 Y4sF9a5Hopcog==
+	b=ai4y0Ksri+atGcnLlZi35XChT8fsG4OTn09VpOStrUGeToNPSQu2aF18PZZrITltj
+	 VpOu8eIQbPVn3Y1m2OuW0ZKlq8Teu5jo2jQJ67RuEms5tuZyb+/wrp42EiNORWlZBn
+	 x86KZQbBZc5VYGWo3AP11rTTb6K8/fyRy0fWU9UaaG/3sX6J7cdf3f4i11tYPgtZey
+	 t45ju00YO8ME3wECwtOczckrI7sc+RJk+CnXEKjQVXP84vH5h0Jon/a37sTHLox1tT
+	 6QloIUMNNXdEjZVsKmkUoVQ+swD7O5Ng5U9L5TgeBZwm50ydmIXYmVEUa49uzJQuQF
+	 uDkApgjool/hg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 20 Aug 2026 01:09:34 +0200
-Subject: [PATCH v2 17/22] coredump: describe the holes when COREDUMP_SPARSE
- is negotiated
+Date: Thu, 20 Aug 2026 01:09:35 +0200
+Subject: [PATCH v2 18/22] selftests/coredump: test COREDUMP_RECORDS and
+ COREDUMP_SPARSE
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-work-coredump-sparse-v2-17-ba32dd718c51@kernel.org>
+Message-Id: <20260820-work-coredump-sparse-v2-18-ba32dd718c51@kernel.org>
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 In-Reply-To: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -87,22 +87,22 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4977; i=brauner@kernel.org;
- h=from:subject:message-id; bh=SaaeoMeiN9Mzcytct1cOKja7m2Y3FzATAK/meN2hUkQ=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me+PdVFZciP6KiOziPLkjCPrt4aY2OkX5d9iajx34
- WHpM9v0jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInMWM/I8Ko0T+d2zco97zmF
- vm1mDJ1xNqjz4AbuFR6Feh1RpamLORkZVrqnlC9Qy/36LDrokmhKV7HBSe1XSXxH/U5vuqau7ri
- UCQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=21632; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=KGhH0y6sYut8V3smoQ1J6RzT5y+nhXB9gW0T39mWjtw=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me933SJn8C9Hufazwq6vlh7RWzu33382cVLiAVHrp
+ rVLsuLPdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEyEWZeRYdmiG/fKfa5de3Cj
+ 7DbH3yd7vHwdI288uqJ58Ovy0+JP1s1n+Ke03fvBvX+3Fp3rMDrZZab99pbdokaeRUUqbD6Z/6Y
+ +cOMBAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: d4zkrss9t17u6tj4pncfqdmtt1y67sxr
-X-Rspamd-Queue-Id: B84B72000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787181094-672188
-X-HE-Meta: U2FsdGVkX18/ZPZ9ug5Z37U+QwWnZwXyakBPsiLc5yQyK+jZlz3E1w6CyVbFhhTu/MUsw/zjacWf3HN3Pt152jfL8mEbR9lctMBCdHoJ88bo8h1bVplkg3JasvkB8wYIe5ATcGNnwNj02M0LVmCP6aaa1ACnT21MvsFw7r4LvOHOA03DNctmT5v43xYI+IY0qa+OIzwtYVxddrmgiBn4DmHEGCbqlZtUae1xNVtwtQNez2FVM68d+Ny2HlyTinu6j0qvS7/5zj/o9coW8JcEVRUi1mmpJF+VwA8b2nwy3y0cTu2dVkSAg+x/jpYTIO/+28Rt1gh6npH3WGmZwVMUl1WHvWEhVMKtepeEkR5ROL6YwYb8S+f59d94pkX92xpE22J1InOATar8h5fgR7sPkMgi9YRQfwdknVOULQeM/26FOM4s4V6yl7bevcdqm1QDRn2Q5eblSYIkxe9ehksMhLXx+lqKtT1OaGg69tOayK8+Yc2fgtvXW6FAjYLPzSgZ7+R5FTP6AsqDvGGBC8Df5VmxvBwIYcLVKV0RROJ/EqqQpM3QfB91aySreUpC/yY2QmG+pLrf0TmJfPkg+J9CUnG9meV8moQ+LMPnTNdhhtpHrXNIyhPQ/YIWAw7HuUJTlYYIrdkokNIFdbpfe9tVTCF5rxBesShM8k9fySw4ttaKyJS1bD3GwHTGDaeTKvHR1ZfE2ITsHrRPN4RlojKT08lzfu9qMAXEMDwl4LY4w0JJoEz+enk6FVgwDekvYMGSCRSelCKs8Og3V9jdnn6C2G77MOMLOMV9XvF86nDuK2qjfLIWV53HawkeOxBLX9NMuRoHYL3YDMxRFUeXOSSGY1Dp7rzkQGoKpHngWgXctFAmwDtIaexCCcDkDvfITKsP/GwAS2JwvtQKIeBOqJvm0jJxLaZJx4iYyOnDwRV2nPt9mbsvln73dkwwG10OoOYnNtUoaIY90fPm1aCVbPY
- bLsSVwOS
- N6RSIV8FHgK/wiHl+b/RufgdolZTvysK1bKzz9ON/175+/tRTnH+2IuJ4GD8jXxtBXhL/DgqLc+oTWpcp4aVMpO3TvnQAp5vQW2cjc5nSZr38HVISM1JuGfim0nk+faUDEnsI1nLHVXVPOraT8UI0dSSSkdlm9bsiAh64fXqDYDGtJBgLRnB+bdIb5L1sBkwB4pOm0EAOB81TVtUxn+65jsyuNvBORS6yz5VaSecGGZs1q7+Rv6fKnVnU60mEB9K7lIgSK95ktEBfB3IdZTQiGB5leLIUpLnBiyHn
+X-Rspamd-Queue-Id: 02CAF20002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: y5zpjwk3dc9wny85rka6snnprihe6h3k
+X-HE-Tag: 1787181100-729870
+X-HE-Meta: U2FsdGVkX182SDzPA3I/5Xog+YAxV1KEj3qHz6mCiRJzm0eyxWY0uux5PDQ/+EtIHETfMgxri2e/o+l8mY3JU6VnzcS2BflJ7Fnf8Vtyl+mZHgrAx97jbA/fuXkzUYQZSwQoUbLnMDWMLW3xkQbThPxWAxcZkEdh9KGp2TRJkZvIdDvMmifWdXuqYjcEKOCU4S81rYyyFjxZ5eR/S49xmRyJjLQ4qvIO7ii8AF4YBCww8rsuBZZmLxyfxG2Y4OhudSmygB9/NZmG/X0MZ5mC7WIWxiw1IPFAPKTUnb1Dc6W4BB1S5G/ZQgqQqvBOs18tj575OPDW5WG1zfRHTeWWPjtj52Ezf3mu7lck+Ch68IG6bkkNLsb1lqW5yYa32ETN3eyrlux2fRtoLU7+hmjmQ87wyGf4dgUnhbXhOJPROzABKsdyXCv4uWYg9JU+8B3wwxPzy9f1Axg12O6kW5LDckbG+Svw13lZx9jFh3pe1bceovmTJ66UH5hHxHaCTrGCNpOkzVe4HgOY49UxAL/Ed9zuRkCe7epsrXP4zOwEYHNhY4pTTyaI4oiD3JC5o5fq75xPYPikLIFb3FoYeduWbAWGhwZAUKlrOd95JpZa2X0qwaWye9KprXlf/7HmgBNhOTaLK+4LturH6nK3zN1h5RsMJC7eJwdt3TCBdQAJAFeMiSblkgb2JJ4lwDfDjZxW6jOEU6KvY8V7ePIPVZQhb3L31aAIYAa6hKpiBunPNSv4diDKCzi2urnbYf3bblHs9le7wcNPgKBIrRR9R5yLppg5e7AIzwWR6BK5kFX01mDcOWqhg2FBrA0GFnf6+Tvq7t3LArcf3/dlER9iTCWc9gI1Z384uCbOzdoYElBthekRX41aommsWnQT2CqA8MtEVMVzktxHnKIuK/l42AcUawOdRuMFjI2qNzlqEAQvYizbABcbY/yFt/1lMQ5GdBT11T8fdT0Y+nkBx/ZQB4w
+ xKe90Skt
+ NNsj6Cmpn7XkU82ETV8w2Ylq4w4TcSkyjwUiYMdRtoRChT+yuS0w4Gc5IW5TekYN2NVCtuCGx8Q1G9JcATyrCt233xUMFLrnWBofxM+6/qIbVX+F9PSF9NWPq/77o31SHtR8NPvPzXIZGx6gZVDhGoWMaFEU1bz1EloYhFfNoAyiipLSqcVcV0mECyX6soKJt2kPJYLhCBg1uWnOtWUXmIexOI750Kr7n19J/pee1U4yWE/EoJ3xZU0lM9c2Gc1HRcSHqRpFOB0J6/ZGqq/l5bxedYKGKRhmvQUDjPKlL62zOkuU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,127 +110,739 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make use of COREDUMP_SPARSE. Refuse it without COREDUMP_RECORDS.
-
-Actual holes are sent as a record with length indicating how much zero
-data there was.
-
-coredump_write() flushes a trailing hole if the coredump is done.
-Instead of writing the actual byte for pipes and sockets, collapse it.
-This stops wasting a header with coredump records for a single byte. So
-we now only write it when the coredump can be seeked. TL;DR a trailing
-hole is a zero record like any other and the records still cover the
-whole coredump.
+Test the new COREDUMP_RECORDS and COREDUMP_SPARSE flags.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c                                      | 41 +++++++++++++++++-----
- .../selftests/coredump/coredump_test_helpers.c     |  3 +-
- 2 files changed, 35 insertions(+), 9 deletions(-)
+ .../coredump/coredump_socket_protocol_test.c       | 407 +++++++++++++++++++++
+ .../selftests/coredump/coredump_test_helpers.c     | 236 +++++++++++-
+ .../selftests/coredump/coredump_test_helpers.h     |   8 +
+ 3 files changed, 650 insertions(+), 1 deletion(-)
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index b1679930094c..7b568d25887c 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -68,6 +68,7 @@
- static bool dump_vma_snapshot(struct coredump_params *cprm);
- static void free_vma_snapshot(struct coredump_params *cprm);
- static void dump_end_record(struct coredump_params *cprm);
-+static bool dump_flush_skip(struct coredump_params *cprm);
+diff --git a/tools/testing/selftests/coredump/coredump_socket_protocol_test.c b/tools/testing/selftests/coredump/coredump_socket_protocol_test.c
+index 60a357e628eb..abf6e2c4c354 100644
+--- a/tools/testing/selftests/coredump/coredump_socket_protocol_test.c
++++ b/tools/testing/selftests/coredump/coredump_socket_protocol_test.c
+@@ -1573,4 +1573,411 @@ TEST_F_TIMEOUT(coredump, socket_multiple_crashing_coredumps_epoll_workers, 500)
+ 	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
+ }
  
- #define CORE_FILE_NOTE_SIZE_DEFAULT (4*1024*1024)
- /* Define a reasonable max cap */
-@@ -806,7 +807,7 @@ static bool coredump_sock_request(struct core_name *cn, struct coredump_params *
- 		.size		= sizeof(struct coredump_req),
- 		.mask		= COREDUMP_KERNEL | COREDUMP_USERSPACE |
- 				  COREDUMP_REJECT | COREDUMP_WAIT |
--				  COREDUMP_RECORDS,
-+				  COREDUMP_RECORDS | COREDUMP_SPARSE,
- 		.size_ack	= sizeof(struct coredump_ack),
- 	};
- 	struct coredump_ack ack = {};
-@@ -866,6 +867,12 @@ static bool coredump_sock_request(struct core_name *cn, struct coredump_params *
- 		return false;
- 	}
++/*
++ * Reassemble a record stream and check that what comes out is an ELF
++ * core file. The records themselves are validated by recv_coredump_records().
++ */
++TEST_F(coredump, socket_request_sparse_reassemble)
++{
++	int fd_core_file, pidfd, status;
++	pid_t pid, pid_coredump_server;
++	struct pidfd_info info = {};
++	int ipc_sockets[2];
++	char c;
++
++	ASSERT_EQ(socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, ipc_sockets), 0);
++	ASSERT_TRUE(set_core_pattern("@@/tmp/coredump.socket"));
++
++	pid_coredump_server = fork();
++	ASSERT_GE(pid_coredump_server, 0);
++	if (pid_coredump_server == 0) {
++		int fd_server = -1, fd_coredump = -1, fd_peer_pidfd = -1;
++		int fd_file = -1;
++		int exit_code = EXIT_FAILURE;
++		struct coredump_req req = {};
++
++		close(ipc_sockets[0]);
++
++		fd_server = create_and_listen_unix_socket("/tmp/coredump.socket");
++		if (fd_server < 0)
++			goto out;
++
++		if (write_nointr(ipc_sockets[1], "1", 1) < 0)
++			goto out;
++
++		close(ipc_sockets[1]);
++
++		fd_coredump = accept4(fd_server, NULL, NULL, SOCK_CLOEXEC);
++		if (fd_coredump < 0)
++			goto out;
++
++		fd_peer_pidfd = get_peer_pidfd(fd_coredump);
++		if (fd_peer_pidfd < 0)
++			goto out;
++
++		fd_file = creat("/tmp/coredump.file", 0644);
++		if (fd_file < 0)
++			goto out;
++
++		if (!read_coredump_req(fd_coredump, &req))
++			goto out;
++
++		if (!check_coredump_req(&req))
++			goto out;
++
++		if (!send_coredump_ack(fd_coredump, &req,
++				       COREDUMP_KERNEL | COREDUMP_RECORDS |
++				       COREDUMP_SPARSE | COREDUMP_WAIT, 0))
++			goto out;
++
++		if (!read_marker(fd_coredump, COREDUMP_MARK_REQACK))
++			goto out;
++
++		if (recv_coredump_records(fd_coredump, fd_file, NULL, NULL, -1) < 0)
++			goto out;
++
++		exit_code = EXIT_SUCCESS;
++out:
++		if (fd_file >= 0)
++			close(fd_file);
++		if (fd_peer_pidfd >= 0)
++			close(fd_peer_pidfd);
++		if (fd_coredump >= 0)
++			close(fd_coredump);
++		if (fd_server >= 0)
++			close(fd_server);
++		_exit(exit_code);
++	}
++	self->pid_coredump_server = pid_coredump_server;
++
++	EXPECT_EQ(close(ipc_sockets[1]), 0);
++	ASSERT_EQ(read_nointr(ipc_sockets[0], &c, 1), 1);
++	EXPECT_EQ(close(ipc_sockets[0]), 0);
++
++	pid = fork();
++	ASSERT_GE(pid, 0);
++	if (pid == 0)
++		crashing_child();
++
++	pidfd = sys_pidfd_open(pid, 0);
++	ASSERT_GE(pidfd, 0);
++
++	waitpid(pid, &status, 0);
++	ASSERT_TRUE(WIFSIGNALED(status));
++	ASSERT_TRUE(WCOREDUMP(status));
++
++	ASSERT_TRUE(get_pidfd_info(pidfd, &info));
++	ASSERT_GT((info.mask & PIDFD_INFO_COREDUMP), 0);
++	ASSERT_GT((info.coredump_mask & PIDFD_COREDUMPED), 0);
++
++	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
++
++	/* What the records reassemble into has to be an ELF core file. */
++	fd_core_file = open("/tmp/coredump.file", O_RDONLY | O_CLOEXEC);
++	ASSERT_GE(fd_core_file, 0);
++	ASSERT_TRUE(is_elf_core(fd_core_file));
++	EXPECT_EQ(close(fd_core_file), 0);
++}
++
++/*
++ * Crash a child with a mostly-unpopulated mapping and reassemble its
++ * record stream, reporting what crossed the socket and the coredump
++ * size the records describe. With @kill_peer the server kills the task
++ * once the coredump is under way so the kernel has to cut it short.
++ */
++static void check_record_dump(struct __test_metadata *const _metadata,
++			      FIXTURE_DATA(coredump) *self, __u64 ack_mask,
++			      bool kill_peer, ssize_t *received,
++			      off_t *coredump_size)
++{
++	bool truncated = false;
++	int pidfd, status;
++	pid_t pid, pid_coredump_server;
++	struct pidfd_info info = {};
++	int ipc_sockets[2];
++	int pipefds[2];
++	char c;
++
++	ASSERT_EQ(socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, ipc_sockets), 0);
++	ASSERT_EQ(pipe(pipefds), 0);
++	ASSERT_TRUE(set_core_pattern("@@/tmp/coredump.socket"));
++
++	pid_coredump_server = fork();
++	ASSERT_GE(pid_coredump_server, 0);
++	if (pid_coredump_server == 0) {
++		int fd_server = -1, fd_coredump = -1, fd_peer_pidfd = -1;
++		int fd_file = -1;
++		int exit_code = EXIT_FAILURE;
++		struct coredump_req req = {};
++		bool is_truncated = false;
++		off_t size = 0;
++		ssize_t ret;
++
++		close(ipc_sockets[0]);
++		close(pipefds[0]);
++
++		fd_server = create_and_listen_unix_socket("/tmp/coredump.socket");
++		if (fd_server < 0)
++			goto out;
++
++		if (write_nointr(ipc_sockets[1], "1", 1) < 0)
++			goto out;
++
++		close(ipc_sockets[1]);
++
++		fd_coredump = accept4(fd_server, NULL, NULL, SOCK_CLOEXEC);
++		if (fd_coredump < 0)
++			goto out;
++
++		fd_peer_pidfd = get_peer_pidfd(fd_coredump);
++		if (fd_peer_pidfd < 0)
++			goto out;
++
++		/*
++		 * The reassembled coredump is bigger than the mapping the
++		 * child made, so keep it on the detached tmpfs and sparse.
++		 */
++		fd_file = open_coredump_tmpfile(self->fd_tmpfs_detached);
++		if (fd_file < 0)
++			goto out;
++
++		if (!read_coredump_req(fd_coredump, &req))
++			goto out;
++
++		if (!check_coredump_req(&req))
++			goto out;
++
++		if (!send_coredump_ack(fd_coredump, &req, ack_mask, 0))
++			goto out;
++
++		if (!read_marker(fd_coredump, COREDUMP_MARK_REQACK))
++			goto out;
++
++		ret = recv_coredump_records(fd_coredump, fd_file, &size, &is_truncated,
++					    kill_peer ? fd_peer_pidfd : -1);
++		if (ret < 0)
++			goto out;
++
++		if (write_nointr(pipefds[1], &ret, sizeof(ret)) != sizeof(ret))
++			goto out;
++		if (write_nointr(pipefds[1], &size, sizeof(size)) != sizeof(size))
++			goto out;
++		if (write_nointr(pipefds[1], &is_truncated,
++				 sizeof(is_truncated)) != sizeof(is_truncated))
++			goto out;
++
++		exit_code = EXIT_SUCCESS;
++out:
++		close(pipefds[1]);
++		if (fd_file >= 0)
++			close(fd_file);
++		if (fd_peer_pidfd >= 0)
++			close(fd_peer_pidfd);
++		if (fd_coredump >= 0)
++			close(fd_coredump);
++		if (fd_server >= 0)
++			close(fd_server);
++		_exit(exit_code);
++	}
++	self->pid_coredump_server = pid_coredump_server;
++
++	EXPECT_EQ(close(ipc_sockets[1]), 0);
++	EXPECT_EQ(close(pipefds[1]), 0);
++	ASSERT_EQ(read_nointr(ipc_sockets[0], &c, 1), 1);
++	EXPECT_EQ(close(ipc_sockets[0]), 0);
++
++	pid = fork();
++	ASSERT_GE(pid, 0);
++	if (pid == 0)
++		crashing_child_sparse(SPARSE_MAPPING_SIZE);
++
++	pidfd = sys_pidfd_open(pid, 0);
++	ASSERT_GE(pidfd, 0);
++
++	waitpid(pid, &status, 0);
++	ASSERT_TRUE(WIFSIGNALED(status));
++
++	ASSERT_EQ(read_nointr(pipefds[0], received, sizeof(*received)),
++		  sizeof(*received));
++	ASSERT_EQ(read_nointr(pipefds[0], coredump_size, sizeof(*coredump_size)),
++		  sizeof(*coredump_size));
++	ASSERT_EQ(read_nointr(pipefds[0], &truncated, sizeof(truncated)),
++		  sizeof(truncated));
++	EXPECT_EQ(close(pipefds[0]), 0);
++
++	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
++
++	if (kill_peer) {
++		/* The kernel gave up partway, so no end record closed the stream. */
++		ASSERT_TRUE(truncated);
++		ASSERT_FALSE(WCOREDUMP(status));
++		ASSERT_LT(*coredump_size, (off_t)SPARSE_MAPPING_SIZE);
++		return;
++	}
++
++	ASSERT_FALSE(truncated);
++	ASSERT_TRUE(WCOREDUMP(status));
++
++	ASSERT_TRUE(get_pidfd_info(pidfd, &info));
++	ASSERT_GT((info.mask & PIDFD_INFO_COREDUMP), 0);
++	ASSERT_GT((info.coredump_mask & PIDFD_COREDUMPED), 0);
++
++	/* The mapping is in the coredump, holes included. */
++	ASSERT_GT(*coredump_size, (off_t)SPARSE_MAPPING_SIZE);
++}
++
++/*
++ * A mapping that has been written to is dumped whole, including the parts
++ * of it that were never faulted in. With COREDUMP_SPARSE the holes stay
++ * off the wire.
++ */
++TEST_F(coredump, socket_request_sparse_hole)
++{
++	off_t coredump_size = 0;
++	ssize_t received = 0;
++
++	check_record_dump(_metadata, self,
++			  COREDUMP_KERNEL | COREDUMP_RECORDS |
++			  COREDUMP_SPARSE | COREDUMP_WAIT,
++			  false, &received, &coredump_size);
++
++	/* The holes didn't have to go over the socket. */
++	ASSERT_LT(received, coredump_size / 8);
++}
++
++/*
++ * COREDUMP_RECORDS alone splits the stream into records but elides
++ * nothing: the holes cross the socket as data records.
++ */
++TEST_F(coredump, socket_request_records_hole)
++{
++	off_t coredump_size = 0;
++	ssize_t received = 0;
++
++	check_record_dump(_metadata, self,
++			  COREDUMP_KERNEL | COREDUMP_RECORDS | COREDUMP_WAIT,
++			  false, &received, &coredump_size);
++
++	/* Records alone elide nothing, so everything crossed the socket. */
++	ASSERT_GT(received, coredump_size);
++}
++
++/*
++ * A coredump the kernel gives up on halfway still ends in an end record,
++ * and that record says the coredump is incomplete. COREDUMP_SPARSE is left
++ * out on purpose: the holes have to cross the socket so the coredump is
++ * far larger than the socket buffer and the kernel is still writing it
++ * when the kill lands.
++ */
++TEST_F(coredump, socket_request_records_truncated)
++{
++	off_t coredump_size = 0;
++	ssize_t received = 0;
++
++	check_record_dump(_metadata, self,
++			  COREDUMP_KERNEL | COREDUMP_RECORDS | COREDUMP_WAIT,
++			  true, &received, &coredump_size);
++
++	/* The end record crossed the socket even though the task was killed. */
++	ASSERT_GT(received, 0);
++}
++
++/* Ack @ack_mask, expect the kernel to refuse it as conflicting. */
++static void check_conflicting_ack(struct __test_metadata *const _metadata,
++				  FIXTURE_DATA(coredump) *self, __u64 ack_mask)
++{
++	int pidfd, status;
++	pid_t pid, pid_coredump_server;
++	struct pidfd_info info = {};
++	int ipc_sockets[2];
++	char c;
++
++	ASSERT_EQ(socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, ipc_sockets), 0);
++	ASSERT_TRUE(set_core_pattern("@@/tmp/coredump.socket"));
++
++	pid_coredump_server = fork();
++	ASSERT_GE(pid_coredump_server, 0);
++	if (pid_coredump_server == 0) {
++		int fd_server = -1, fd_coredump = -1, fd_peer_pidfd = -1;
++		int exit_code = EXIT_FAILURE;
++		struct coredump_req req = {};
++
++		close(ipc_sockets[0]);
++
++		fd_server = create_and_listen_unix_socket("/tmp/coredump.socket");
++		if (fd_server < 0)
++			goto out;
++
++		if (write_nointr(ipc_sockets[1], "1", 1) < 0)
++			goto out;
++
++		close(ipc_sockets[1]);
++
++		fd_coredump = accept4(fd_server, NULL, NULL, SOCK_CLOEXEC);
++		if (fd_coredump < 0)
++			goto out;
++
++		fd_peer_pidfd = get_peer_pidfd(fd_coredump);
++		if (fd_peer_pidfd < 0)
++			goto out;
++
++		if (!read_coredump_req(fd_coredump, &req))
++			goto out;
++
++		if (!check_coredump_req(&req))
++			goto out;
++
++		if (!send_coredump_ack(fd_coredump, &req, ack_mask, 0))
++			goto out;
++
++		if (!read_marker(fd_coredump, COREDUMP_MARK_CONFLICTING))
++			goto out;
++
++		exit_code = EXIT_SUCCESS;
++out:
++		if (fd_peer_pidfd >= 0)
++			close(fd_peer_pidfd);
++		if (fd_coredump >= 0)
++			close(fd_coredump);
++		if (fd_server >= 0)
++			close(fd_server);
++		_exit(exit_code);
++	}
++	self->pid_coredump_server = pid_coredump_server;
++
++	EXPECT_EQ(close(ipc_sockets[1]), 0);
++	ASSERT_EQ(read_nointr(ipc_sockets[0], &c, 1), 1);
++	EXPECT_EQ(close(ipc_sockets[0]), 0);
++
++	pid = fork();
++	ASSERT_GE(pid, 0);
++	if (pid == 0)
++		crashing_child();
++
++	pidfd = sys_pidfd_open(pid, 0);
++	ASSERT_GE(pidfd, 0);
++
++	waitpid(pid, &status, 0);
++	ASSERT_TRUE(WIFSIGNALED(status));
++	ASSERT_FALSE(WCOREDUMP(status));
++
++	ASSERT_TRUE(get_pidfd_info(pidfd, &info));
++	ASSERT_GT((info.mask & PIDFD_INFO_COREDUMP), 0);
++	ASSERT_GT((info.coredump_mask & PIDFD_COREDUMPED), 0);
++
++	wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
++}
++
++/* COREDUMP_RECORDS applies to a coredump the kernel writes, nothing else. */
++TEST_F(coredump, socket_request_records_without_kernel)
++{
++	check_conflicting_ack(_metadata, self, COREDUMP_USERSPACE | COREDUMP_RECORDS);
++}
++
++/* A zero record can't exist outside a record stream. */
++TEST_F(coredump, socket_request_sparse_without_records)
++{
++	check_conflicting_ack(_metadata, self, COREDUMP_KERNEL | COREDUMP_SPARSE);
++}
++
+ TEST_HARNESS_MAIN
+diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.c b/tools/testing/selftests/coredump/coredump_test_helpers.c
+index a5b9cde47239..5b2ffe17f7b7 100644
+--- a/tools/testing/selftests/coredump/coredump_test_helpers.c
++++ b/tools/testing/selftests/coredump/coredump_test_helpers.c
+@@ -1,9 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0
  
-+	/* Zero records only exist inside a record stream. */
-+	if ((ack.mask & COREDUMP_SPARSE) && !(ack.mask & COREDUMP_RECORDS)) {
-+		coredump_sock_mark(cprm->file, COREDUMP_MARK_CONFLICTING);
+ #include <assert.h>
++#include <elf.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <limits.h>
++#include <link.h>
+ #include <linux/coredump.h>
+ #include <linux/fs.h>
+ #include <pthread.h>
+@@ -13,6 +15,7 @@
+ #include <string.h>
+ #include <sys/epoll.h>
+ #include <sys/ioctl.h>
++#include <sys/mman.h>
+ #include <sys/socket.h>
+ #include <sys/types.h>
+ #include <sys/un.h>
+@@ -23,6 +26,12 @@
+ 
+ #include "coredump_test_helpers.h"
+ 
++#if __ELF_NATIVE_CLASS == 64
++#define COREDUMP_ELFCLASS ELFCLASS64
++#else
++#define COREDUMP_ELFCLASS ELFCLASS32
++#endif
++
+ void *do_nothing(void *arg)
+ {
+ 	(void)arg;
+@@ -44,6 +53,228 @@ void crashing_child(void)
+ 	i = *(volatile int *)NULL;
+ }
+ 
++void crashing_child_sparse(size_t size)
++{
++	char *p;
++
++	/*
++	 * Touch the first page only. The whole mapping is dumped because
++	 * it has been written to, but all of it save that one page is a
++	 * hole.
++	 */
++	p = mmap(NULL, size, PROT_READ | PROT_WRITE,
++		 MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
++	if (p != MAP_FAILED)
++		p[0] = 'x';
++
++	/* crash on purpose */
++	*(volatile int *)NULL = 0;
++}
++
++/* Read @len bytes off the socket, writing them at @offset if @fd_out >= 0. */
++static ssize_t recv_record_bytes(int fd_coredump, __u64 len, int fd_out,
++				 off_t offset)
++{
++	ssize_t received = 0;
++
++	while (len) {
++		char buffer[PAGE_SIZE];
++		size_t chunk = len < sizeof(buffer) ? len : sizeof(buffer);
++		ssize_t ret;
++
++		ret = recv(fd_coredump, buffer, chunk, MSG_WAITALL);
++		if (ret <= 0) {
++			fprintf(stderr, "%s: short read %zd: %m\n",
++				__func__, ret);
++			return -1;
++		}
++
++		if (fd_out >= 0 &&
++		    pwrite(fd_out, buffer, ret, offset + received) != ret) {
++			fprintf(stderr, "%s: pwrite failed: %m\n", __func__);
++			return -1;
++		}
++
++		received += ret;
++		len -= ret;
++	}
++
++	return received;
++}
++
++/*
++ * Reassemble a record stream. If @fd_peer_pidfd is valid the task behind
++ * it is killed once a data record has arrived, so the kernel has to cut
++ * the coredump short with the stream already under way.
++ */
++ssize_t recv_coredump_records(int fd_coredump, int fd_core_file,
++			      off_t *coredump_size, bool *truncated,
++			      int fd_peer_pidfd)
++{
++	ssize_t received = 0;
++	off_t size = 0;
++	bool is_truncated = false;
++	bool ended = false;
++	char trailing;
++
++	while (!ended) {
++		struct coredump_record_header record = {};
++		size_t known_size;
++		ssize_t ret;
++
++		/* Peek the header size the way read_coredump_req() does. */
++		ret = recv(fd_coredump, &record, sizeof(record.size),
++			   MSG_PEEK | MSG_WAITALL);
++		if (ret == 0) {
++			/* Nothing closed the stream, so the coredump was cut short. */
++			if (truncated) {
++				is_truncated = true;
++				break;
++			}
++			fprintf(stderr, "%s: stream ended without an end record\n",
++				__func__);
++			return -1;
++		}
++		if (ret != sizeof(record.size)) {
++			fprintf(stderr, "%s: short record peek %zd: %m\n",
++				__func__, ret);
++			return -1;
++		}
++
++		if (record.size < COREDUMP_RECORD_HEADER_SIZE_VER0) {
++			fprintf(stderr, "%s: header size %u below minimum %u\n",
++				__func__, record.size,
++				COREDUMP_RECORD_HEADER_SIZE_VER0);
++			return -1;
++		}
++
++		/* Consume as much of the header as we know about. */
++		known_size = record.size < sizeof(record) ? record.size : sizeof(record);
++		ret = recv(fd_coredump, &record, known_size, MSG_WAITALL);
++		if (ret != (ssize_t)known_size) {
++			fprintf(stderr, "%s: short record read %zd: %m\n",
++				__func__, ret);
++			return -1;
++		}
++		received += ret;
++
++		/*
++		 * A flag changes what the record means, so refuse one we
++		 * don't know rather than guess.
++		 */
++		if (record.flags) {
++			fprintf(stderr, "%s: unknown header flags 0x%llx\n",
++				__func__, (unsigned long long)record.flags);
++			return -1;
++		}
++
++		/* Discard any part of the header we have no use for. */
++		ret = recv_record_bytes(fd_coredump, record.size - known_size, -1, 0);
++		if (ret < 0)
++			return -1;
++		received += ret;
++
++		/* Records are sent in order and they don't leave gaps. */
++		if (record.offset != (__u64)size) {
++			fprintf(stderr, "%s: record at %llu, expected %llu\n",
++				__func__, (unsigned long long)record.offset,
++				(unsigned long long)size);
++			return -1;
++		}
++
++		switch (record.type) {
++		case COREDUMP_RECORD_ZERO:
++			/* A hole. It comes with no data and needs none. */
++			break;
++		case COREDUMP_RECORD_DATA:
++			ret = recv_record_bytes(fd_coredump, record.len,
++						fd_core_file, size);
++			if (ret < 0)
++				return -1;
++			received += ret;
++			if (fd_peer_pidfd >= 0) {
++				if (sys_pidfd_send_signal(fd_peer_pidfd, SIGKILL,
++							  NULL, 0)) {
++					fprintf(stderr, "%s: kill failed: %m\n",
++						__func__);
++					return -1;
++				}
++				fd_peer_pidfd = -1;
++			}
++			break;
++		case COREDUMP_RECORD_END:
++			/* The coredump ends here and nothing follows it. */
++			if (record.len) {
++				fprintf(stderr, "%s: end record covers %llu bytes\n",
++					__func__,
++					(unsigned long long)record.len);
++				return -1;
++			}
++			ended = true;
++			break;
++		default:
++			fprintf(stderr, "%s: unknown record type %u\n",
++				__func__, record.type);
++			return -1;
++		}
++
++		size += record.len;
++	}
++
++	/* The end record is the last thing on the wire. */
++	if (recv(fd_coredump, &trailing, sizeof(trailing), MSG_DONTWAIT) > 0) {
++		fprintf(stderr, "%s: data after the end record\n", __func__);
++		return -1;
++	}
++
++	if (truncated)
++		*truncated = is_truncated;
++
++	/*
++	 * Nothing is written for a hole, so grow the file to the size the
++	 * records describe in case the coredump ended in one.
++	 */
++	if (ftruncate(fd_core_file, size) < 0) {
++		fprintf(stderr, "%s: ftruncate to %llu failed: %m\n",
++			__func__, (unsigned long long)size);
++		return -1;
++	}
++
++	if (coredump_size)
++		*coredump_size = size;
++
++	fprintf(stderr, "Received %zd bytes for a %s coredump of %llu bytes\n",
++		received, is_truncated ? "truncated" : "complete",
++		(unsigned long long)size);
++	return received;
++}
++
++/* The ELF header of a native core file. */
++static bool is_core_ehdr(const ElfW(Ehdr) *ehdr)
++{
++	return !memcmp(ehdr->e_ident, ELFMAG, SELFMAG) &&
++	       ehdr->e_ident[EI_CLASS] == COREDUMP_ELFCLASS &&
++	       ehdr->e_type == ET_CORE;
++}
++
++/* Whatever the server ends up with has to be an ELF core file. */
++bool is_elf_core(int fd)
++{
++	ElfW(Ehdr) ehdr;
++
++	if (pread(fd, &ehdr, sizeof(ehdr), 0) != sizeof(ehdr)) {
++		fprintf(stderr, "%s: short read: %m\n", __func__);
 +		return false;
 +	}
 +
- 	/* Record header scratch; a bvec can't point at the stack. */
- 	if (ack.mask & COREDUMP_RECORDS) {
- 		cprm->record_hdr = kmalloc_obj(*cprm->record_hdr);
-@@ -1076,15 +1083,21 @@ static bool coredump_write(struct coredump_params *cprm,
- 	if (!binfmt->core_dump(cprm))
- 		cprm->state |= COREDUMP_STATE_TRUNCATED;
- 	/*
--	 * Ensures that file size is big enough to contain the current
--	 * file position. This prevents gdb from complaining about
--	 * a truncated file if the last "write" to the file was
--	 * dump_skip. A record stream relies on it too: the flush
--	 * emits the records that cover a trailing hole.
-+	 * A trailing hole still has to land in the coredump. Seeking over
-+	 * it doesn't grow the file, so the last byte of it is written
-+	 * instead and gdb doesn't see a truncated file. Everything else
-+	 * puts the hole on the wire as it flushes it.
- 	 */
- 	if (cprm->to_skip) {
--		cprm->to_skip--;
--		if (!dump_emit(cprm, "", 1))
-+		bool flushed;
-+
-+		if (cprm->file->f_mode & FMODE_LSEEK) {
-+			cprm->to_skip--;
-+			flushed = dump_emit(cprm, "", 1);
-+		} else {
-+			flushed = dump_flush_skip(cprm);
-+		}
-+		if (!flushed)
- 			cprm->state |= COREDUMP_STATE_TRUNCATED;
- 	}
- 	dump_end_record(cprm);
-@@ -1241,6 +1254,11 @@ static bool dump_records(const struct coredump_params *cprm)
- 	return cprm->mask & COREDUMP_RECORDS;
- }
- 
-+static bool dump_sparse(const struct coredump_params *cprm)
-+{
-+	return cprm->mask & COREDUMP_SPARSE;
-+}
-+
- /* Describe the next @len bytes of the coredump. Returns the header size. */
- static size_t dump_record_init(struct coredump_params *cprm,
- 			       enum coredump_record_type type, u64 flags,
-@@ -1357,6 +1375,13 @@ static bool __dump_skip(struct coredump_params *cprm, size_t nr)
- 	static char zeroes[PAGE_SIZE];
- 	struct file *file = cprm->file;
- 
-+	if (dump_sparse(cprm)) {
-+		/* Hand the server the length of the hole instead of the hole itself. */
-+		if (dump_interrupted())
-+			return false;
-+		return dump_emit_record(cprm, COREDUMP_RECORD_ZERO, 0, nr);
++	if (!is_core_ehdr(&ehdr)) {
++		fprintf(stderr, "%s: not an ELF core file\n", __func__);
++		return false;
 +	}
 +
- 	if (file->f_mode & FMODE_LSEEK) {
- 		if (dump_interrupted() || vfs_llseek(file, nr, SEEK_CUR) < 0)
- 			return false;
-diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.c b/tools/testing/selftests/coredump/coredump_test_helpers.c
-index 1c8658f35735..a5b9cde47239 100644
---- a/tools/testing/selftests/coredump/coredump_test_helpers.c
-+++ b/tools/testing/selftests/coredump/coredump_test_helpers.c
-@@ -275,7 +275,8 @@ bool send_coredump_ack(int fd, const struct coredump_req *req,
- /* Every option the kernel is expected to advertise in coredump_req->mask. */
- #define TEST_REQ_MASK_ALL					\
- 	(COREDUMP_KERNEL | COREDUMP_USERSPACE |			\
--	 COREDUMP_REJECT | COREDUMP_WAIT | COREDUMP_RECORDS)
-+	 COREDUMP_REJECT | COREDUMP_WAIT |			\
-+	 COREDUMP_RECORDS | COREDUMP_SPARSE)
- 
- bool check_coredump_req(const struct coredump_req *req)
++	return true;
++}
++
+ int create_detached_tmpfs(void)
  {
+ 	int fd_context, fd_tmpfs;
+@@ -86,6 +317,7 @@ int create_and_listen_unix_socket(const char *path)
+ 	return fd;
+ 
+ out:
++	fprintf(stderr, "%s: %s: %m\n", __func__, path);
+ 	if (fd >= 0)
+ 		close(fd);
+ 	return -1;
+@@ -264,8 +496,10 @@ bool send_coredump_ack(int fd, const struct coredump_req *req,
+ 	large_ack.ack.mask = mask;
+ 	large_ack.ack.size = size_ack;
+ 	ret = send(fd, &large_ack, size_ack, MSG_NOSIGNAL);
+-	if (ret != size_ack)
++	if (ret != size_ack) {
++		fprintf(stderr, "%s: short send %zd: %m\n", __func__, ret);
+ 		return false;
++	}
+ 
+ 	fprintf(stderr, "Sent coredump ack with size %zu and mask 0x%llx\n",
+ 		size_ack, (unsigned long long)mask);
+diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.h b/tools/testing/selftests/coredump/coredump_test_helpers.h
+index 45904bd177b8..fe0a88a71b05 100644
+--- a/tools/testing/selftests/coredump/coredump_test_helpers.h
++++ b/tools/testing/selftests/coredump/coredump_test_helpers.h
+@@ -15,9 +15,17 @@
+ 
+ #define NUM_THREAD_SPAWN 128
+ 
++/* Size of the mostly unpopulated mapping the sparse coredump test maps. */
++#define SPARSE_MAPPING_SIZE (256 * 1024 * 1024)
++
+ /* Shared helper function declarations */
+ void *do_nothing(void *arg);
+ void crashing_child(void);
++void crashing_child_sparse(size_t size);
++ssize_t recv_coredump_records(int fd_coredump, int fd_core_file,
++			      off_t *coredump_size, bool *truncated,
++			      int fd_peer_pidfd);
++bool is_elf_core(int fd);
+ int create_detached_tmpfs(void);
+ int create_and_listen_unix_socket(const char *path);
+ bool set_core_pattern(const char *pattern);
 
 -- 
 2.53.0
