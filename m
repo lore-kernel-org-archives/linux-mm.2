@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B1F6C5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:54:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81D5BC5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 451616B00A1; Wed, 19 Aug 2026 03:54:36 -0400 (EDT)
+	id 8706E6B00A3; Wed, 19 Aug 2026 03:54:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 401D76B00A3; Wed, 19 Aug 2026 03:54:36 -0400 (EDT)
+	id 848A56B00A5; Wed, 19 Aug 2026 03:54:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27BBB6B00A4; Wed, 19 Aug 2026 03:54:36 -0400 (EDT)
+	id 7364D6B00A6; Wed, 19 Aug 2026 03:54:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 00F246B00A1
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:54:35 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89F434042C
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:54:35 +0000 (UTC)
-X-FDA: 85117256910.12.A9084B8
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C980E120002
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:54:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="byqkAa/1";
-	spf=pass (imf29.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 37A7E6B00A3
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:54:39 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B282AC04AB
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:54:38 +0000 (UTC)
+X-FDA: 85117257036.10.168DB63
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F328A8000C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:54:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PyGO8RCw;
+	spf=pass (imf30.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787126073;
-	b=6Jk0RoDHyfIxp+5Jx1si/+jo35fzWzfHDJzFUS+FDg+1XXBveqfMBxME2rjq+9rqMtWOGf
-	9mqGyfW7DwCMx3PYU9O7Gc+LTSO8QKrfCkZzMTdGzvREkRQqkTJLVQOdwd+nrNGTkY+Q0p
-	D7FtaZ9geyEOM8MBTYDi6/7diN0Ji6c=
+	t=1787126077;
+	b=lv0/O2+qKBCzgACWAtgLTC5VB1yv+8bacV3Wd9wttk+NksfwS8uKm21AjkeyAyj5QbqB5p
+	ihhvMeEd1kUCYazalP5IyyDpttquwzlMKlYbkeo+Nam8REuNrCl87putFJzj34D9J92OpJ
+	8KnJ8LrpdDHv9m1cHNLn1BbEF1F6sYY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="byqkAa/1";
-	spf=pass (imf29.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PyGO8RCw;
+	spf=pass (imf30.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787126073;
+	s=arc-20220608; t=1787126077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y5VObEqVOp99ppCJ9xRs38fsUMieel2e53/fex25hio=;
-	b=rN3KSC2hD+aV3fRgC6rM1sn7ynda99LmDVqH39x8Ic41kZEnU5Tk/qAPhMdUjHiuFx7Dac
-	D92mMZ9FmfCf2pcyVEkScm6aGzrKOt557qX2U9KwPSdbKScCojO8d4ANaZ5Zaoetgzwe4z
-	cwY+Om3jhUIIPTdqJky/jNnaHdWBjiA=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cbb8b54fcf8so586324a12.0
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:54:33 -0700 (PDT)
+	bh=1St7cJMFBwCWDrIWciZLSeyUk7ee+DohomwT0PVBa0c=;
+	b=NEdyEJPsepeYEDWlz6mnL68HN7VFdlt1s7jyEwTKYrrXWUphnESZPR4LxZgvw74yEbs07M
+	4nLs0ROejlmC0hXtT5JHHKnqDFnevAzY1r0dGjG/ffyMMfAJrtcMlhKjHmOMRVNIgBHTwC
+	d13qy6lucflA1v08+1NWE0wd9KqGctI=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d5335cf904so5818135ad.2
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787126073; x=1787730873; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1787126076; x=1787730876; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=y5VObEqVOp99ppCJ9xRs38fsUMieel2e53/fex25hio=;
-        b=byqkAa/1qgmLULto2isYF0Ac6iofBly9pPsSNAJ7LicYvdIjSc5WLXp31P5dwmuLNS
-         0snjJH3GcpEvqvjsH15Huxnwjm18rC7tq1m4/5iv4+npCmEhTPCkSwcG2365o+hrCqag
-         pTjFG5haDpo//RDCuTXWRuOpVJakW5RNQU9y15Dz9X6kiNET7TcWwE1wqDdSYsKhuH1T
-         BSm9DCC3OBga0DsfxDeTTmJO9/wAOe7cudhRmpRVfk6XeV62eEX15HsPH4ab86VY8dSm
-         azkIDkYf8QS46NDAwJ6F21YYypqp2Rw9hDEKLMizyGNjWh2LwlNFV/jAYJtE5+ETRHMm
-         Ekvw==
+        bh=1St7cJMFBwCWDrIWciZLSeyUk7ee+DohomwT0PVBa0c=;
+        b=PyGO8RCwi9Yw9Tl/Mi2tpN0zALwELWDKS6JNO1Hl46AXJ9mv8s+3fGN4VLeo256sD0
+         DsE/7aeNV/kbHZaGDk0hwxUaZy7tMYwHu3whWhM+Altf0OZWNCC8n0ttG1ZanZEI5RK1
+         Ye68b7a50PMHDsut7hJWZDNmsMdiWMZvE0kugv+k4e36xq6OUW6vbFy5gM5w0smL51UN
+         wQvmCJ0jVv6JYty8cQxno7SsNtakGWllbU4UTJ7rBfn4qN9TsTlXxMBJBgF6gkDbtx+C
+         N7Y+MZPbmHX9nSFqaYhO4XXWlPg/X1Px4pOsjWFhVR8g2iRUi6BJ9hL6JDDyf/ZBkqSI
+         LG7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787126073; x=1787730873;
+        d=1e100.net; s=20251104; t=1787126076; x=1787730876;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=y5VObEqVOp99ppCJ9xRs38fsUMieel2e53/fex25hio=;
-        b=sS4lcdfcVpgA6O2goKljqvfwFrMmiZNfHpmmmvVns23q58ztRG9AEKSnW3GLlW1D0z
-         DfND00Ij3+iFFwW1kbBNzjb7hXIfzLPfhQwueOgIO9pG/ySA426FA1PCBB6B+2LeO6vO
-         SMU3mI4y8y8k/pByu5YoGPQYJo0K2yJiCo+ZKQew83jI1VUwF+aGCdXDGJtMS8yhXV1n
-         /K6LgllIXZtf6e+yNINVFmZ69uN0ADsgmOJxSDv+oF104edNYljDc6Ug0VyVoLKdjQbP
-         Rjaf3zW47/V9I5A2eDrYH4xjzLR6kiUTqpS+eMPquJ2y8OIdQ0ryTmGcptkcEC4puLss
-         TCEA==
-X-Gm-Message-State: AFuF++nHARbj/909nhHijBquwzD5sgT5BKwVJwMLFwRkFD0UXaW+Oa52
-	jO/5ckjWahPT9qbtoFG+LuVsiFpA9/QrBSiLxyGrwpMgw+F8E3dZWriC
-X-Gm-Gg: AR+sD12oKYfYARDukIjp1uXTvXUoGJhpzzhmXXSR/QHnCwiXfMB1lrxzs6kTUasHBu9
-	ElE8ZGC4Xbk1MMXBxe2bsIb7TCQP2nBa3HMs0KoFLXjwpvXm/E+foGCQZ+isaHAGp5gIT39OrE1
-	CyPdIjfwpTSrS/RQsh38PqAaVq8Gg12UcVB9tl11wWpmDamJt5v6XLkI0LlDA0f6bvdQ/yXmfBS
-	BcL8snPML1rjlsASnjXUCZx72Qj4Z6XEzzl54l0S4Y5rXmMT6gDypBUyEsAsrB0amgqivhqRhXP
-	84cOgYdrUbVLNzMEY6kUqmPLfKNRhXWTPkMmCL6OZfG6BLOt2WAVDCQYblQ30VAd7C0clO4wFQK
-	bl4k85uCgKVBd1I7hucEG3Usk4FUYP5Vb5V2vv6jHXTaAFglgYoJ9Metn69q/X820OBq0pL5rjJ
-	r4UXpCp9DhAdX/8GsORjWtn1Y8VUVuLPAeu7jqSeON9/Tt4XtW/YygP6AuVjWP/fs8mWmMYWIXr
-	E/0YClZDQrObpXcurGVYBvXlwc2
-X-Received: by 2002:a17:90a:d60d:b0:390:8361:a532 with SMTP id 98e67ed59e1d1-39580bc9ad4mr5475274a91.7.1787126072381;
-        Wed, 19 Aug 2026 00:54:32 -0700 (PDT)
+        bh=1St7cJMFBwCWDrIWciZLSeyUk7ee+DohomwT0PVBa0c=;
+        b=F+/3ybAWLvL51x4/jUEbPF6B3KaWyNYAy6phzNHTytR2f/Giqu0APePX2Y6NfQRAAp
+         0L7I95wmsI9ZiBW8k9Dx99nwj8T89+I3gI4nZB1O+jYBWVnZ5ltEOUnMUpNUMOL7r8oK
+         QE2+bph8P2v1YG6GVrPlLBfv8VN9cmiOTVb2yirCnV0/p2hgkyhRR36qLVjFX418iDkL
+         QXAblbN8+SQWwoDEtY/6sH1z2XfJcC9GGu+UZK4b58O9RUVLWUbTmVInQaIa/R6fa/PP
+         ms8hbTPp6C8p1K9gSTZ7D3GvWfbhy/CMsEQGzpx10TFZi3rr53QoYXnC2G2TrA3KFaEF
+         IXNQ==
+X-Gm-Message-State: AOJu0YzRwPW+lKE51Uz0ELrx+4cgT2aFCC3yMqadnypl4Z3+rhBKs9Sh
+	9vrua88cr6pTgLCwqDU7j5uaaslK/XIXKAOQAfJF1BdvLHfsBydcgzFY
+X-Gm-Gg: AR+sD115uLxub/krHMa5YDpaxRtHJnvBu/bjAkgOzhwHi12y1oBD3cyEfc041MVg8oQ
+	8a10ViV6k66e2M1F7I5NQ0hGXzAzoPKE4FTi+/bMiVG1HhsbVI8L2Sja+fg0CyYaUsgIAw3VLB2
+	e8hxjo9mvsFCoYHVABAJwRKImbCFg6FAht8MyVO7TXiHpMPa9Itlb+zAiPVZ3YE1RPYhNs0TiKg
+	SWtLad9RvVi2BwNSyyz6BtSVggVXQKrwbHOLj0CAym/vHfUWF2/PMAN2s87m4c7vlwo0/bmbsMr
+	jClucE7/PPZE2vwgE0lJYPY3VHyI/6RJFa4TouHRUoG6E0hkLzz7eKJYOWAYfDxxdGa+8dIFvC+
+	6hLBY0GzwAIzgEB0cjDuf0RNup9MzDKYIE1SgajUW95U8Mc9WC5nrjLGcFvdk3AtCuQa3NdeEUp
+	5kaYdZJYHg39j3/dCGST+1xSPdXpfVf/s9XoRwDWR1YHh91DLN7od7e6XddjH7HKK4RGlcuRDzU
+	K7es8LGTb18OerP7vVRWbtNguUH
+X-Received: by 2002:a17:90b:3910:b0:38e:4cb:51f with SMTP id 98e67ed59e1d1-39581088755mr5432845a91.11.1787126075786;
+        Wed, 19 Aug 2026 00:54:35 -0700 (PDT)
 Received: from PC-2B0BA31200898.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957faf596fsm1668929a91.11.2026.08.19.00.54.29
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957faf596fsm1668929a91.11.2026.08.19.00.54.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 00:54:31 -0700 (PDT)
+        Wed, 19 Aug 2026 00:54:35 -0700 (PDT)
 From: Meijing Zhao <zhaomeijing100@gmail.com>
 To: Mike Rapoport <rppt@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -97,22 +97,22 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Wandun Chen <chenwandun@lixiang.com>,
 	Meijing Zhao <zhaomeijing@lixiang.com>
-Subject: [PATCH 1/2] mm: memblock: add missing HugeTLB flag name
-Date: Wed, 19 Aug 2026 15:54:21 +0800
-Message-Id: <20260819075422.2387980-2-zhaomeijing100@gmail.com>
+Subject: [PATCH 2/2] mm: memblock: show all region flags in debugfs
+Date: Wed, 19 Aug 2026 15:54:22 +0800
+Message-Id: <20260819075422.2387980-3-zhaomeijing100@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260819075422.2387980-1-zhaomeijing100@gmail.com>
 References: <20260819075422.2387980-1-zhaomeijing100@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C980E120002
+X-Rspamd-Queue-Id: F328A8000C
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: r6jndiih9zpkeqn3np6e1bxw8smnjehe
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787126073-964723
-X-HE-Meta: U2FsdGVkX1/G8EFoAGg3w8Hpb6zmFqKug67zG/Ug1hRTuOYfSaI3FAUfThc1ux3gVIO3px3ExK01GSh3JaeXo7rZZAKABFDp7GrpYsVzZlDpB4SklGQALeDblz5BazXSEi+N73FSRC66PhegSsXuzeR/P7+FWvywI0HT6xv04ZFxDP9W2dt/XOCBahDMhCH1LFOC7gyPdYOzjWRodJytZgajLU2ulVGfF3RVt4I48OfTDLb2bCmuy1eU9wStHR2PMzg/Nhc3S+I4M2XFC+Vdo5gUNLuz664Pj8tBDTbfviDz5SxoMD45vBfgRxl4F4W6C+XG0zlsjDyZrUzPTTwW+0Zj83tV+z8psAEoahIXJuylgTf+44TAQIRwiHm+bN+4al8OopFauPIez6lPA/b7OR7VXwBPFlgapl3rgiod36wylHHchkqPXy6RmMYmxH0yoXLIeizD2bipymrPTTZe6jIZjxVcDW980Svtm9N09En02nGIvs5UP3m79mSnhIgJtB7MROglLbeiTGdag9HligBue9Nh3c7Fwy2TgAuyqx08Nowyy1HdIf5mrZKTU7YrR4R7Ji2zq6aaYXEQnV6U8tRKarUevsCZGCnag8BH+S18GUKdbq6V2NRbrnTaQXYr/aUhlvHh8C5AwDAnqeDLKp6R98sRj/QCRqx+aere9DErjEgmc5WgdTikWDHQ7sISgI7Yj5Ea1kRFONI+0Xn6pK3CW6v6vyYnm7ZozU05nFsDxbu5xcQmFcaxtRo+96HrmQdoBoKYcuG4vySUg0g+6QDBd4gzGGbdfPT/Sri1n4TaMvJBfsDp34A3D3vlLqm+5ftvcb1wU9XPZi9yS+644ni/SKYmPzL5iTINJhAozxvfFBeZl+gBOqhVenCSX5+Tiw69430F/IC37XWp7sd7/np+vY2brQf0BwZdObTm8nqrr4bHXqQincUJwxtWsMBl6GkV6j6tili5N7QTTTU
- OLvEcNQh
- z2nMlWHIS1LVGlZJw0qltVuxUtV5nzJoLd5gxKPyWvB64wrjLCzESfDIIiE+ingTLW9ModFcVQ/VqEe/GLL84shp2NOjRtGTxlH5MWskRXF7stOQ9mWTllbZF0fs+HOTecwz2ZPJMxjtzx9Msvh6A7foup2LjJp37Vgiu/XWqymfyjncniPWzCugBsaPaQotknZwYe7vvumcNyUa83h7Q3CF68rtnA57G7L/mOhYn4GIThiPU0OUVwbqAXzsN69I1RGCkl4YIK65hJfpOAE2X9jW1Q4y0Zt3c8VapaYcZ23NIt8jPrH7BGHUtC0250shfMB41UqiZSJ6+CSpwDhqNQSmrEp86zdRgcA4Errcke5vJk0jLxi8EONyurzPfIQMOXSU8xUL1dkxrVBsFZQVhlRcRrLokoAapKU4sSCyopt5z88iq0cbjn3vVBrwH0/NjEsdebibx6qJcbf0IEhdrLo70gw==
+X-Stat-Signature: 6ggakhx7f4g8goktk5ffz4ky1kj177o1
+X-HE-Tag: 1787126076-930889
+X-HE-Meta: U2FsdGVkX18tiHU1WnfaBpJ/pNiL8m2tE3FHpAxS13FlyJgQkpYDogzCnVY1uVRKRo4K63hkLtNMmLFaFNQrJ8RV4/nl49vkW43oJw/SQqXmws46tZplq3CDFMnwMusTaBG9LW+OZb5ScAzZmGbqfW9jadqgpDJGBLIxDal/sGF18mfFbZU94d6j3Q6/jDCg56ZfwQqrVFcYiyYzDEUDc4+kSd1EnBcRNkMqsFjlCHymutZM3yJ3E02VIsfKXQvbP/SczLfpHf3mMbTq9cbVaJja6KOmf/ZQFlZBV0etqs6PUOiklQiAy4Ma1BH8Sxwe8Ff0IgLWIhNpqDm0Lc38GjY6a3gVTZaVNKEPKzUcnI6DyonFB4yD7RPj5xS+BjB1CXlOOqNqvWfqGL3P5awwUKVMcSHF4qgPuiM5cEE/RWSsEDk3B01TFQZafCk6ybwMPkJh3ucZ8/Rka7PiibtFGEnxzigG8IJgDMVlngG2OQA/gB/gTZAt1l2aqEuuvFiCzPKOfyirGnSuB8tUyb0byzAhESL/WUKSBTcNonIW/010aVs/ujOAJ3RQmKC2EBKI4SFFOHv/+lZNtdIhJDgG8e/yOgLFDLbAG85BILz22GEr3IhY0fnDl9gHJZStpgnXYNpfyFYZit5+Bb7Cdg4gICq9ugFuhyoc5Tn19zVkQ+1trAcDiNcyBaJH2LelVozU1iMA7yiF4HCKOb4rbUFyGaVvZgiH+4x/yTbEXvNX/1WsTnKYkns3w02H3IhQUBSpp/Tnxm6xVo2AgNNfGbcdP14OURTxO+EPCMGSKlFSV3FkYVHuPw5seEH7csJZ9T4ONV4blzZoVHGsHql+LzYbG+FuJQqWthiYBi3QGTcyKVjn1nZ9b3awK+NSI8tKDG2wkrfLZvtYYOcvrjl0tn+0RV2a+cYPsX7z+k/kiVzUQukKUkf187cYWmCi31pi/biqhstBDKWURpK37taoZlq
+ /eqNmdn9
+ UpJLZvqcgDvqyLWZ6aOOsXLmi49aaxJc8c6XqHLXx7tI7OHtjXA6tQsmMVYvLa9USeJyxF8Cx07YGHjO55PLJ8riZnLW8KMVOaw1qoT5IPHTSfxJ36IjgPb7iDodtPrBikhEC1gu+nFK3o65+lbUb/xoeeGKEv1LoQ+TKpqLguGT+iYjG20a+asdN1BKJyW1XgIHEIOk0yUqiLP7k3K83r9WYdKS54aT2ZuLMnk+UO6K8wV0DLvxYmeiHwrOvKvEYENtAf43LLoNCkJimfBKVhtqAlF7JvoG1t18lifpojvpMIFqsysdWHK6hzs3H1l+50m3Fzu0z9veazQWkyrD8XBWBI7rzcAstLeDXIRPS7ShwyFhfIZiiWJmVdADA9AxXvY/ep6ymdFPZelRmkaUVZ/jA4DZvo2p+4Z3C0RGhEkB6lgfUoYxG1Eorsj1F6dOqHsTdV0ofqiY9dOFGO23dLlhQPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,31 +122,67 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Meijing Zhao <zhaomeijing@lixiang.com>
 
-Commit 7d163a75f821 ("memblock: make HugeTLB bootmem allocation work
-with KHO") added MEMBLOCK_RSRV_HUGETLB but did not add the corresponding
-entry to flagname[]. As a result, memblock debugfs cannot report the
-flag by name.
+Commit 493f349e38d0 ("memblock: Add flags and nid info in memblock
+debugfs") made memblock_debug_show() stop after finding the first set
+flag. A memblock region can carry multiple flags, so debugfs hides all
+but the lowest set bit.
 
-Add the missing RSV_HUGETLB entry.
+In particular, memory allocated for HugeTLB pages is reserved with both
+MEMBLOCK_RSRV_KERN and MEMBLOCK_RSRV_HUGETLB, but debugfs only reports
+RSV_KERN.
 
-Fixes: 7d163a75f821 ("memblock: make HugeTLB bootmem allocation work with KHO")
+Print every set flag separated by '|'. A HugeTLB reservation is now
+shown as:
+
+  RSV_KERN|RSV_HUGETLB
+
+instead of:
+
+  RSV_KERN
+
+Fixes: 493f349e38d0 ("memblock: Add flags and nid info in memblock debugfs")
 Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
 ---
- mm/memblock.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/memblock.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/mm/memblock.c b/mm/memblock.c
-index 9ce86349a29f..f2952d725c10 100644
+index f2952d725c10..5d806fe92cd7 100644
 --- a/mm/memblock.c
 +++ b/mm/memblock.c
-@@ -2886,6 +2886,7 @@ static const char * const flagname[] = {
- 	[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
- 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
- 	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
-+	[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
- };
+@@ -2896,6 +2896,7 @@ static int memblock_debug_show(struct seq_file *m, void *private)
+ 	int i, j, nid;
+ 	unsigned int count = ARRAY_SIZE(flagname);
+ 	phys_addr_t end;
++	bool first;
  
- static int memblock_debug_show(struct seq_file *m, void *private)
+ 	for (i = 0; i < type->cnt; i++) {
+ 		reg = &type->regions[i];
+@@ -2909,14 +2910,18 @@ static int memblock_debug_show(struct seq_file *m, void *private)
+ 		else
+ 			seq_printf(m, "%4c ", 'x');
+ 		if (reg->flags) {
++			first = true;
+ 			for (j = 0; j < count; j++) {
+-				if (reg->flags & (1U << j)) {
+-					seq_printf(m, "%s\n", flagname[j]);
+-					break;
+-				}
++				if (!(reg->flags & (1U << j)))
++					continue;
++				if (!first)
++					seq_putc(m, '|');
++				seq_puts(m, flagname[j] ?: "UNKNOWN");
++				first = false;
+ 			}
+-			if (j == count)
+-				seq_printf(m, "%s\n", "UNKNOWN");
++			if (first)
++				seq_puts(m, "UNKNOWN");
++			seq_putc(m, '\n');
+ 		} else {
+ 			seq_printf(m, "%s\n", "NONE");
+ 		}
 -- 
 2.25.1
 
