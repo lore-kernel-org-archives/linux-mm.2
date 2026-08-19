@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20581C5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:53:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2EDDC5DF87
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:53:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A2DB6B00A2; Wed, 19 Aug 2026 05:53:18 -0400 (EDT)
+	id 493A66B00A3; Wed, 19 Aug 2026 05:53:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52DCB6B00A3; Wed, 19 Aug 2026 05:53:18 -0400 (EDT)
+	id 46AB56B00A4; Wed, 19 Aug 2026 05:53:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46ABD6B00A4; Wed, 19 Aug 2026 05:53:18 -0400 (EDT)
+	id 35A326B00A5; Wed, 19 Aug 2026 05:53:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 134746B00A2
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:53:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7260CC04F0
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:53:17 +0000 (UTC)
-X-FDA: 85117556034.12.097D722
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3C37BA0003
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:53:15 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=FFRWKfBP;
-	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787133195;
-	b=XK8qByOAxdKPFqad3JwzvalTqwD4mW2Kuzi58YV9pb5a+Yc60q/OJ6lF4A1g7vDJxfu+lp
-	bNr6vOabTto6jKxFipsoc+22iKwW9MXSh3S9URhbzyww9PKFsU+RyFeMoVTkAfPJThLGR6
-	14z8nMmoX7dl9vNWGqP9KIwt/lT2htU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=FFRWKfBP;
-	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BD906B00A3
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:53:23 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01A681404B8
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:53:20 +0000 (UTC)
+X-FDA: 85117556202.14.2ACD995
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2CADD1C0008
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:53:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Q0PylrEZ;
+	spf=pass (imf21.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787133195;
+	s=arc-20220608; t=1787133199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bOzdkIPPNoupexe8+AVOrQT3DBRmXPJ6Kybkle+RLi4=;
-	b=z6aTmFDgmTr4l7VHham5+k09gmSkIl4MbJBxsM2iCW9BW66a2uDkMvmVjMATUqFoXX2x9e
-	t9z7DAruuchusQcHcg0JhZdWk7msl0rppbSbcjaPYdl32H6H/F4TxxWLGHuthNQeo9E7kx
-	+0JVwCOW4Zu7jvs8ONQjdJlrDaa7S+o=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ce87c7e3bbso9354805ad.1
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:53:14 -0700 (PDT)
+	bh=s4XhcWcLOxh7vr8ZmuE0kXQ1fb1jPl0YDGFVXv1M41Y=;
+	b=RBStF4ui+MKkDN2BvfcGkODnIgxgh9L3t4+S8M+FCWoTr9W1HLyJMzlYat/K+Kaw8Wp9LI
+	5t6gY/rei/LToqTRugTQoKdFKjbvcvD0Nz87XAlGb2JmoSjsRDmanN6e/3R7AmuMxM7Lbf
+	RjdSEiTsqtJbgq+rU9Aq0paBtjlXhpI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Q0PylrEZ;
+	spf=pass (imf21.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787133199;
+	b=Zbb4UI02u1HPjii6QN7uHQI3WL/jGfAQ4qmk9M9lZnQBH1nmc4LVJRDgDqNhlUftM6xw60
+	PO8IR7EEArwN/bKiT45xJIh7zRLPJKlnjL5vLj0K4MLdDByY/hkwzAKJU65So9Tfjku1NX
+	kYRb/KAu/AwM/K+LJzxyF4j5irFE3PM=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cab973140bso10378675ad.3
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:53:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1787133194; x=1787737994; darn=kvack.org;
+        d=bytedance.com; s=google; t=1787133198; x=1787737998; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bOzdkIPPNoupexe8+AVOrQT3DBRmXPJ6Kybkle+RLi4=;
-        b=FFRWKfBPxbfk71xtETPIBGbhbfXwmdcu3RNMQhDkvQZM6OGMG2dpgOrH3OVxFmzEwo
-         oYdor09z7U6mMih5NIQpAgQ/rLOJIRgKrM14giw6tPjf89Qq2e8RQHRQ6loNchYR3+pA
-         dc9BhPizl3+Ss3a84rRJgxKZfD3Me9yVUpH/RT3PYC4tkzh7YWAPXniqZ6P+svcVD0R5
-         qDKS4rGta7Hvd6EJKpKZsYD4haKmVP+++5cU1F/xmyRVSKhqXPkYuCXlNN0Cc4yJAiaV
-         P9HdzB8KyHPf/gioXvBHqyHG9L7lgNalghJgxf3YWWEzLeNwSHDFiG9TRgdj41Gfbq/a
-         tBIQ==
+        bh=s4XhcWcLOxh7vr8ZmuE0kXQ1fb1jPl0YDGFVXv1M41Y=;
+        b=Q0PylrEZyezROwr0miwWVwdx9yg0IWbAeMtUXenJ8jaRyCpevWAj5G+LaO4ouGiyX0
+         G29CJ5xWdqf1/kt7cUDH1SDO4CZlTe+C1tDMBK18yvhZZM8vBwN98BpOGWx63KOTwGvi
+         13Qh9D8Eqk/1Zw59Xj6INa8hsXQmeppIIGtQUKFNS2k4xo9LbFI4TB42yLd0TFlmnXyb
+         0OZuleYR0gJyRJLrCLyFzfA/NrTGqj3klYDcUSEd5JCjEL6hp+18BGLMrZA0Y4tMl5xC
+         lvWh0cr7SDUodG6dujojfV9b2NK7Py2/JbCQYJnym0RYQOJCTaK3MeNzS7Eve4E5lxyp
+         UJeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787133194; x=1787737994;
+        d=1e100.net; s=20251104; t=1787133198; x=1787737998;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bOzdkIPPNoupexe8+AVOrQT3DBRmXPJ6Kybkle+RLi4=;
-        b=HYdYFPX14HAtnB3vw/dguleHfLH0z0QKDJwhbU7vWVDF1jrurv5hEf2V1fToTqqfOZ
-         CfqZInRg+m3jFSLdNYPBJeX8M3SlMpbEYA8fcAaBajeIammR6PIVsB9gXBrEY22SWE/9
-         BVEOIMJ3z3QTLAUF212fSAduYDXk0B8mAK3r3G1MG4THNEoksi0wkHMJwlQnc4jmD2YM
-         F2UoT6yOo4+lTyAGkPRAaowqJQd7vhEXyC41pNkmmDjntfX77BgFJdFaXHr+VNmQ6QqV
-         b5PJxhFA6lUfJOYDax6yrkPSsW1Gm+/cxOOVkSUFc4X4anewP+TQDmAQnp2HeDzjP1yC
-         qYfQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrz2D+j492W6XhxFB4meFeGfKgrZ0sGhRK98S8NU/u2UoA8mx/K15RhVcJTZ6V3vcXUidQaVcN1dA==@kvack.org
-X-Gm-Message-State: AFuF++kiAVa+NSeYNa+oISNtzZ4ke035/9OBrgZvU5C4yj3fTC6jbcLR
-	d6toCSQ0uIa8jfWFANmIWFYb3O/Yh4do02+zd2hYydLRaBm4/cRlroGe+i3EJLmDru0=
-X-Gm-Gg: AR+sD11Q6YqPHPbfdJiIkUixkL9pwCxoItnEN8CQKUJJ/ABXnOmjGCkT0qkimOncP9D
-	3FG1VWNff/LRT7nkuWrFsyl36HrSCCWxQIJpf016TxYeTsue178nD+CsO+6G5giM5D/DwOMmcyE
-	qtMDMs+tB1+46nWk5u6Xp/ooBXgcoMJpvDT0ae7f0NmE1+N7dd2Kz6WiyZU2PsGqMgohJF9HwbX
-	ZLOEyDDL6HV/pFE2H/cb/4fvfEdYmr4uDP8AJrTRmc/TRqWoSVCHQ5gr7TsfXEYx4KYBXKdlVIq
-	MSFQJMlQTLHhOc84MrprIU0/zKhDwuXD/fROhUKzCp329rnzwX84sFRXEanEMlojZYPjSW8Y6xy
-	5d5EjAsuPmTb5mv84o70naZAceRWkcDo9b8vHR2itnf3XY3X7kCGhGUpYOT1da5ucYja8n41Hwr
-	T3iQ3ELNBRIylfqMleYbahPc9Zz7Mwo2RIWJYehfyrC83ABSZSlQTCENcLcCnW3+60kdfFwkyF+
-	cIYlFCVFt6dKvQ5X0QWOE7+jg==
-X-Received: by 2002:a17:903:b4e:b0:2c8:4c29:afeb with SMTP id d9443c01a7336-2d5fd674a51mr64709405ad.8.1787133194077;
-        Wed, 19 Aug 2026 02:53:14 -0700 (PDT)
+        bh=s4XhcWcLOxh7vr8ZmuE0kXQ1fb1jPl0YDGFVXv1M41Y=;
+        b=kyFIbb9z6gef9gKDLU+8eHU0HfSd4/uWFwj68qzqzNAdNaik+U/XnyC7kPf6334r3T
+         hAk8bLbql9bNw3ApfVSFb8e1R1o52VfHGkO3Qn0v50EazQmOKK4dVg0Hh2v0c/CDScD8
+         CIpohfCRXyzQYNuwgOepxCHFc1yh7xyhhWOY5mmstM0oxcjDDwpmPQuKNT9LfFzhjFTt
+         DipLTJjA/PFjm3pct5J41BLV/4QD8Xywt0A6aEsSKgS0/s2tCaV0yr+R8Yii+3gq9+vO
+         g8RqrMLOdiTCQtMYD1bQT70+UpdgDFvCg+KfyggzooSDY+x20VmPHVenriXq5adglSYn
+         4q4Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rrf4PkNMX28lwK3eowPqTkOnodhmYOfzYV8KAq0thGVOJz7P+9y8qFHQ+1IRJPjerERFUkM0TYDJw==@kvack.org
+X-Gm-Message-State: AFuF++lERfFxOfdedr/ko96jPKpmHQzQxiWLEQNXLP4SYhLuIiJIF0s+
+	nBc1IVetLG4/dXqxV/Id/oGtClOoENedJgHD3GsY1/QPooR2Rr/pqNyyzXADc8ONO7o=
+X-Gm-Gg: AR+sD13saSO4Ase+/6t0L0zUwnQV5u3aeQvHQorwI6F52xjPG1qZE3oQllnc6QLmw3p
+	zhvtDLPGQ9f85l17WqPhe6mvkzbZwYI1JHDpsZUGwacbeD4xi+CpGpBEtt4q8sMGRRPDGd0YYqE
+	DV8LCsWjudTD2SLwkxO2XGGlGoGNEH4Ahe+4cGKlf8C9Q3Cv47dhkbdft222blSUwTis/w2k8w1
+	5ISXXiz14ljCLNCT01cMXvuan4i+DMSlzStjIu6LSolqExVrMcc+ICh++yZKluvtZznLQnooAUa
+	ng7ZOCEOnkDaQ0UQUd3UI8shmfvqBH4zZgQQdkHsjWBE5IZtF2nUsKFyo2gmBDB14RDpEhx9gEX
+	EmmxXvjsOHaTfwktgllKyxisb9j+hgrCFDeGGND0OK6eOmpxbQj8toU1zMiqArAuHfW9lUPs3oQ
+	8SeEKfgldSzalWIIRUewE4LhLgKZCRkVyDcsojXyg7EgKhEk8WgoOltcZesI60VPgvlj3RCEo4n
+	dK3FtA4oIgqVXIQEJM8vtEfAbU1iv8HHO32
+X-Received: by 2002:a17:902:d4c4:b0:2d3:89fb:35fb with SMTP id d9443c01a7336-2d5fd3df2bbmr55030125ad.0.1787133197688;
+        Wed, 19 Aug 2026 02:53:17 -0700 (PDT)
 Received: from G6L4RL2QG9.bytedance.net ([61.213.176.10])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5c1e5434esm22504235ad.51.2026.08.19.02.53.10
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5c1e5434esm22504235ad.51.2026.08.19.02.53.14
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 19 Aug 2026 02:53:13 -0700 (PDT)
+        Wed, 19 Aug 2026 02:53:17 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Oscar Salvador <osalvador@suse.de>,
@@ -106,22 +106,22 @@ Cc: Mike Rapoport <rppt@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
 	Muchun Song <muchun.song@linux.dev>
-Subject: [PATCH v4 04/17] mm/sparse-vmemmap: initialize shared tail vmemmap pages on allocation
-Date: Wed, 19 Aug 2026 17:51:26 +0800
-Message-ID: <20260819095140.17252-5-songmuchun@bytedance.com>
+Subject: [PATCH v4 05/17] mm/sparse-vmemmap: support section-based vmemmap accounting
+Date: Wed, 19 Aug 2026 17:51:27 +0800
+Message-ID: <20260819095140.17252-6-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260819095140.17252-1-songmuchun@bytedance.com>
 References: <20260819095140.17252-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2CADD1C0008
+X-Stat-Signature: j1g7tqznxhs8oanrijgef7qyuwcs3zsw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3C37BA0003
-X-Stat-Signature: xsi35zknrftbw58ewnrggo1ynxnmjkn4
-X-HE-Tag: 1787133195-93506
-X-HE-Meta: U2FsdGVkX1+zou1yGEFBvPDtU95r8cisC/mal/LlnLZPDzAOnpqMhTLKX/x1kSA9SFzKqUth8NRlE0e/fF/9NGPbbx3OOLztZJQGb2rIrsZwjRDoAdhbjWp4qAXyj6KkwVoIlY3yd+Ffq5i4nCmDp75CpA3SE6SbS1u2UjPLZLv+zefSqTwgXnw64m6c83ssozEYoE2jNRr7IY/PMEScpeQDAImQFp0e22HIlFcCDK3yEjcXCpeHNAudJgFhdcDc8vYWMt4jd/+Td4+uwxdspzRHWsc0qSODNV4vLX6dcUmmXVY/rWZ9+TX9/v+3nW9S1vHYt+WkxBBg8OFDKPhSLsCTVvEd6hiVIibGWhRYOBZdlnpwuQ7oIYCUUFJ8wkEk8lJSnZnSNYYC/9VVTeT42HlR8yB6X4ZtfRMIOcofSe338Kbj2LAu3XFKIjbb8x9/iAoVVrJlWsgwJhs9Mr+FzfFFh82TJN/E0fJBaKeDtBhDwhNRQ4h5hrsNp4u4sz2oIdEPsyEEQah+OWNLEcOCQe/4fpQOGZpvU/g6UAOZtwhqwaI1Gkh37vVMGjUx4oY0gMXxFFewatQW0A1D0NkZPCeFDNkRTo3C86YeO3gIAmb5DmmiYQQvSga6ZV273Q8/5IIGeHjL3W6DnuimPRu28PDL1LkMA6tFIuDxveiBAlkGw+N/1Q6Q1uVfyKw/4lQj44lzCuiDm23GfH/d6po0x9IRBK5/5MwyJ9+WHfpOK3KdyAWsAmUIFzu4XwkbHGow7QNs/28Fowz4+6J4NcswHqvbSHFrSY8EhKZE6uCquc7ln+DFu0WGDIEHMBruu5awYsL/UL092RVZnd+AqennkOBKN/Zk2OtAiafzDwvNJV8TwH79BL2Wm3bksTG7PLhrMoSsYyxNykW3F5UrMVBi7UqnbvnL0kq61XVfXy7vB3xldBAgWIGDHlmB56lZUfp1L4MFZes48SmPXh5SdmB
- v84ZSdNp
- Li7yeRPMZ6q3NQJjOzfnAQlrmnMEwPdr7r4PTN52TTZvIPVfm1XgiLS1wuFIMvlkBSFXKDmh3Iv2/FpBx0/utrunn+DShQxlQ33k/a5e5U8Akl6SM8mR3aoaGrU9MhgrwNgVw5ujRjk7/Dt4YUHQpjy7U80tEFkMZ/927doxPDBQjYhoaE/O05gq2S2A98LU0q7zQXVvOFf91/HnQyEm1D0Hb2uaIwHCCinkTiFuwA55K3ivfIJJ/bfn3yAM3rFnoMseQ4MM5pDrZkCpeOen7LGcZ/Y4tcfT3wHXyT2lv6ibCh3L56GAnNj8sHXY8Wo0HMIWsUVyhHE4YdIigZCvuZ6PDVlhG/bswqzsBzSgj8J6RfkbO9brLAC/1XMAlSXJDPHgU2X17iGOZ/zLIMqZV5RhhjJ6QVS7rwvak+AE1aVrrF10=
+X-HE-Tag: 1787133199-734894
+X-HE-Meta: U2FsdGVkX1+y706a5cjDXYuXODZlsXW/EtxBaojHRTL0b2pzL0Pb1NutO8FNmqWp/VWzCa8H+yZtvS8MNDdBusYs3ghE3yCSiKhuCvzqxCrSJmkyQZui1XXZzciyTke+5Fpu5ua/PIMYhRhOwa5EA1CpBA85ueBCpviHWfQL7fdwqF2WekvNRUU6lRROxt/2gWMtFj9wH+G6ZQHGypwkRXidLBemdnIvLSxqzOcuMXHkf9tbRASHLY9UUTOaiLms6IAVhtIn/Dq2iuTfGZDVnh5P0jiS44bApdUxc+JDUCBpgIc7A5328ofzrl3rb44WwYLgni6Eg5uzszJuNjVKl+ZqMVEA5iN5i4LX1L6lU1dy/EITAil3ou+uSQDMGb87nTn6qyXGzjgQGAO0c3Xu5OBXFEhqImAcE2g+JQm0cZUL/dzfDAeoDYZKsjV0kB5IPJi5InctunwYXQbyCqLeh7oXYbXyImUopKdGLf2TzsUlIDfaL3rrV7kezOMEUxCOJ0xXAxSJAFbBvot3Wo5E7qLUpxTKEFkW30icbAciJwVowv7JvYN71mL9C7+/X1pa4qVnwQgF2v/2CimU+HrpIL5ik5xyebAjh1bSe7FzAjL5GsLMx+gpKfDecMvbCIIdhUKW1Hpu85yRrVMsTpNtH8Xcjldw0lXFAHeZDbkcwLgOauYTTh/jxZdlcvN05EYDD5IpimPqphikCJ+TEXcP9NUKi3/82/o3NQz/Ao8G4iJdeLCRq6XLHdC6tyb+64tIY+LyNJztGR4cprLdziPqgJAzsHpSHoXZAQCYA2ZIi6deC7qJyO2Ng5TjNl6/h6y4Q1+QqexbsncQibVHukEfkOegKcxbSlENaS7kX0uQrVvq7d4Gv6uCzd+5XJYysxU9L+MQa2E/TxRDitWSKEPM/BBRnUhiWSErPOec/fLXZJzf8mwRMyzsSEBICvUBxUIr59uK+VevlQrkPDBcnaT
+ vl+LwRBt
+ uB9JcG2OFKsxTz6aZePIOIviVc6dYpaBqFleLPCe7u8/KdO8i+ioE0a+MEdZe2FeJpWvte9rC6DUdLkEHTxz5gHlclvm9TF3L9Hf+YavssvjtB5OtNstsxNJIZgjRsW+xgrG9P8NiB/GaPiyp6CM9JDkg7BUwRnuMS5t2xw3n7gG3oPc642IGNrR25j+RTajukoFlmqb7oKfMI6mu9Uxl3ZDLoq1uSQ4GQRhsRLXXSefUyiWWafsLTQtNpU5k56lrVZHtoJ71YXs3JHd21IVubqwumSYMXNldD5sT2oi6Kc8f5qANzx86sbhz5EEIMtoZDlro569UI+qTLDrVJAW7KCLZtl8W8EfItO+82us7uIphSrHBjJRYiLvjTQPU4BpE8W0f8XgvzyrV1OE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,51 +129,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The shared tail vmemmap page allocated in vmemmap_get_tail() used to be
-left uninitialized, because memmap_init_range() would later overwrite
-it.  That forced users such as HugeTLB to defer the initialization to
-their own setup paths.
+section_nr_vmemmap_pages() can account ordinary sections and DAX sections,
+but section-based vmemmap optimization keeps its compound order in struct
+mem_section and retains a different number of vmemmap pages.
 
-Now that memmap_init_range() skips shared tail vmemmap pages, initialize
-them immediately in vmemmap_get_tail() with init_compound_tail()
-instead.
-
-This moves the initialization to the point where the shared tail page is
-allocated and avoids relying on deferred handling in individual users.
-The remaining deferred initialization in HugeTLB will be removed once it
-switches to the section-based vmemmap optimization mechanism.
+Teach section_nr_vmemmap_pages() to recognize section-based optimized
+sections and calculate their vmemmap page count from the section order
+and the HVO retained page count.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- mm/sparse-vmemmap.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+v3:
+- Add vmemmap_optimizable_order() for order-based optimization checks
 
+v2:
+- Remove an unnecessary vmemmap_can_optimize() call to simplify the code
+  (suggested by Mike Rapoport).
+- Rewrite the commit message for better understanding.
+---
+ include/linux/mmzone.h |  6 ++++--
+ mm/sparse-vmemmap.c    | 10 ++++++----
+ mm/sparse.h            | 16 ++++++++++++++++
+ 3 files changed, 26 insertions(+), 6 deletions(-)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index df31cac12311..177455d98064 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -107,8 +107,10 @@
+ 	 is_power_of_2(sizeof(struct page)) ? \
+ 	 MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
+ 
+-/* The number of struct pages covered by the retained vmemmap pages with HVO enabled. */
+-#define VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES	(PAGE_SIZE / sizeof(struct page))
++/* The number of retained vmemmap pages with HVO enabled. */
++#define VMEMMAP_OPTIMIZATION_PAGES		1
++#define VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES	\
++	(VMEMMAP_OPTIMIZATION_PAGES * PAGE_SIZE / sizeof(struct page))
+ #define VMEMMAP_OPTIMIZATION_MIN_ORDER		(ilog2(VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) + 1)
+ 
+ #define __VMEMMAP_OPTIMIZATION_NR_ORDERS	\
 diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index aa6a4a2fae98..107215cf8488 100644
+index 107215cf8488..b7abc5494bb9 100644
 --- a/mm/sparse-vmemmap.c
 +++ b/mm/sparse-vmemmap.c
-@@ -338,19 +338,11 @@ static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *
- 	tail = zone->vmemmap_tails[idx];
- 	if (tail)
- 		return tail;
--
--	/*
--	 * Only allocate the page, but do not initialize it.
--	 *
--	 * Any initialization done here will be overwritten by memmap_init().
--	 *
--	 * hugetlb_bootmem_struct_page_init() will take care of initialization
--	 * after memmap_init().
--	 */
--
- 	p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
- 	if (!p)
- 		return NULL;
-+	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
-+		init_compound_tail(p + i, NULL, order, zone);
+@@ -649,24 +649,26 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
+ static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
+ 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+ {
+-	const unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
++	const struct mem_section *ms = __pfn_to_section(pfn);
++	const int order = pgmap ? pgmap->vmemmap_shift : section_order(ms);
++	const int vmemmap_pages = pgmap ? VMEMMAP_RESERVE_NR : VMEMMAP_OPTIMIZATION_PAGES;
+ 	const unsigned long pages_per_compound = 1UL << order;
  
- 	tail = virt_to_page(p);
- 	zone->vmemmap_tails[idx] = tail;
+ 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION));
+ 	VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION);
+ 
+-	if (!vmemmap_can_optimize(altmap, pgmap))
++	if (!vmemmap_can_optimize(altmap, pgmap) && !section_vmemmap_optimizable(ms))
+ 		return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
+ 
+ 	if (order < PFN_SECTION_SHIFT) {
+ 		VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound));
+-		return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
++		return vmemmap_pages * nr_pages / pages_per_compound;
+ 	}
+ 
+ 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
+ 
+ 	if (IS_ALIGNED(pfn, pages_per_compound))
+-		return VMEMMAP_RESERVE_NR;
++		return vmemmap_pages;
+ 
+ 	return 0;
+ }
+diff --git a/mm/sparse.h b/mm/sparse.h
+index 1fcda8a1c270..02ed0f34eac8 100644
+--- a/mm/sparse.h
++++ b/mm/sparse.h
+@@ -43,6 +43,17 @@ static inline bool vmemmap_optimizable_pfn(unsigned long pfn)
+ 	return (pfn & (nr_pages - 1)) >= VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES;
+ }
+ 
++static inline bool vmemmap_optimizable_order(unsigned int order)
++{
++	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
++		return false;
++
++	if (!is_power_of_2(sizeof(struct page)))
++		return false;
++
++	return order >= VMEMMAP_OPTIMIZATION_MIN_ORDER;
++}
++
+ /*
+  * mm/sparse.c
+  */
+@@ -86,6 +97,11 @@ static inline size_t mem_section_usage_size(void)
+ 	return struct_size_t(struct mem_section_usage, pageblock_flags,
+ 			     BITS_TO_LONGS(SECTION_BLOCKFLAGS_BITS));
+ }
++
++static inline bool section_vmemmap_optimizable(const struct mem_section *ms)
++{
++	return vmemmap_optimizable_order(section_order(ms));
++}
+ #else
+ static inline void sparse_init(void) {}
+ #endif /* CONFIG_SPARSEMEM */
 -- 
 2.54.0
 
