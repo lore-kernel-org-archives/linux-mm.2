@@ -4,139 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3295C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3576CC5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41F3A6B0092; Wed, 19 Aug 2026 03:45:09 -0400 (EDT)
+	id D1DF86B0095; Wed, 19 Aug 2026 03:47:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C92D6B0093; Wed, 19 Aug 2026 03:45:09 -0400 (EDT)
+	id CF5C26B0098; Wed, 19 Aug 2026 03:47:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B88D6B0095; Wed, 19 Aug 2026 03:45:09 -0400 (EDT)
+	id C323D6B009B; Wed, 19 Aug 2026 03:47:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF7B76B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:45:08 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EADDAA2912
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:45:06 +0000 (UTC)
-X-FDA: 85117233012.29.B5FD647
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2B4E720004
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:45:05 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHxuvZtc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FB406B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:47:29 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF6FB40463
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:47:28 +0000 (UTC)
+X-FDA: 85117238976.26.B6F5E4C
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1E7ED80009
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:47:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UkUFSdjR;
+	spf=pass (imf30.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787125505;
+	s=arc-20220608; t=1787125647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sUGls/TPzkFWI3c1olei1087Mv7gZNyunUb3au02oYU=;
-	b=TKWeBxHIz/Bje6GDZJSfsI7jKFqBLTUVaGCSIOojs854R8mp+Sg1TAbitN5IHnfY0V79kq
-	51FbvRsGKK5zT/Hj/yXdEy/0p6cT53W2iCtvFRG47ngMYyBgVIOYvcsCVbClo2UzcQ0f9A
-	HZBYVXjlX8x93SC7hUj+UtmMpb4MIKo=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHxuvZtc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=CWkEyoxZps0PdiXw6wwCg4ciwx9ABuctTL6IGXUaTDg=;
+	b=sLvBmiR6R4KNTXQlGYh7EvL2iDwEOq4wE8Ta5nNI8qLCtz0gX6s+Aee0ei6n4jMT0h0+Qg
+	9f72JITQPO9TynsF1zG1vDf0CxwaC2EoyTo3Jmk1r6iRHKlLvTNd+eVYzjCWWzkgm11YBl
+	Ym13YhNDv0kM7c4tuTbApW+eKyHepX8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787125505;
-	b=qZmB/WqAIvyLCAyJXTLhQxklHIEQLmU9jNPJqsMQfGuRQ44rCeo1FzvmxYwcrSonkK6aPx
-	oE4+g8P5/fyedEQi3+3RRFL58t3vBr+6bZq+8iJTfYzObPcYMp5mvVNNQeO0cQb8fgo30V
-	feFoUt3k3VHvl/iymvu7cLNuTTpkU/U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BE6840A0B;
-	Wed, 19 Aug 2026 07:45:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2570A1F000E9;
-	Wed, 19 Aug 2026 07:44:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787125504;
-	bh=sUGls/TPzkFWI3c1olei1087Mv7gZNyunUb3au02oYU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aHxuvZtc8P9UeTJfS021vS1NUxKIeuMkXI5RU0z5dIYjl8Go8g6mGvRPGZmX1VOrW
-	 go9gUSKU8K9e/u7kbqBqw/TSMz9Jw5RmCrgSq/CkFlu7+c2OQ4ciQWRoosbL5zAo3A
-	 TgpkT43Bu09XDBxrOa9a9N80xSIR7o52tjDxg7uk0aQMuwq1aLVFK9rNEtd8Mz+qHn
-	 79bn0cBSEiP/FTm8YKUky7qkTKrsNKILMrwvobon2G8UvOfl6GkoTiSxLzjIyyLDsk
-	 QnqYpT5itVfydMgw6MytOHqFeokcasdlCXsaiwvPYxpcPweKD5gfL7ybkATh9zLUWn
-	 GTU3NUdDwTbHA==
-Message-ID: <1bc39fcf-6fb1-49a9-a30a-8289ed9a524d@kernel.org>
-Date: Wed, 19 Aug 2026 09:44:55 +0200
+	t=1787125647;
+	b=gazt35KitEEXKaQUtyNB45d5+8Mu9LT80MQJ/qRIFDRF5P/neswW2DZ/MG3FXsISkFho6z
+	Rwtg96sip7wqlO+zKDyQktp3fO33Xx/s/uinbUaX0vThNzXLX1/QMoyQu3TMphP5lR9lHa
+	RPU3/KQCsAS11bMhjkjk001dbf0qd9Y=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UkUFSdjR;
+	spf=pass (imf30.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9e7391839cso632386a12.0
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:47:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787125646; x=1787730446; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CWkEyoxZps0PdiXw6wwCg4ciwx9ABuctTL6IGXUaTDg=;
+        b=UkUFSdjRdfWM8mQXI5KDSlMSbkyF7sjnxJAxRPAkqVx9xSQdqlZrA7KxHpAOpAxUI9
+         PvNFEECV8clzcg4VR+3aeSBqkYN7aWjJ+yNAzGeYptSVLGx7m/6qc5jQHjM/+Q5MmWdW
+         +ywfqFKIgavYT0nusnHl0uDFeAlUAocCeu1Zs8+YUxuDD1a34vSqDTC7ucoLIbKanXmT
+         510YI48V4g8P5FznbH+yD4vRppQJCL26oL55dgHWecX1cOjEbcR9G09kQwLROJ5pRG5H
+         4KmOMZaktb4iNGwNIvZfmTOpc7RwF2miPhMTWj2FUMMl46JU1IL/MZsoRcKYvnYWcI7i
+         yVmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787125646; x=1787730446;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CWkEyoxZps0PdiXw6wwCg4ciwx9ABuctTL6IGXUaTDg=;
+        b=WLj7L8Tb9HyxfhMHw0B3e+/qnLinmGXu5b9ZDT3jtOuK0D3faBnG2e839IOw0Ovpr6
+         IyJNDZ5NFH8PX6AIIdvC6vgRCLhXbO8KyO4xrX61Whbkqd12gHLCKHgLTWJohBEF5O/z
+         MFj2s3l/C0x5gETauTqICze4Ltgu/DTwUQx04McPQ862Fz1F6vyiyI5RsHCjzwNJ9vC/
+         2cu/y8GWSMMy1Z5jWQsUNPomB6ziYV5+YvbdNBLrvQPEVFULWUmW76w3E2vNAKsoV2HT
+         weG+vzuSLPzi5vpFZBsxweYOlr4UTIzn+EFF4HMTqhcOogc5BLc6bOLzf4qacPM94y9a
+         bivg==
+X-Forwarded-Encrypted: i=1; AHgh+RojLH44CcpwlhtqO5IRY7iPD52C3Oba0XnRDUwpwpWqz4SXIGubSJlDtHVJwztL4z4wTRZuXzOYmA==@kvack.org
+X-Gm-Message-State: AOJu0YxJiVE91n2YfvVEEuxscwiYYacDU3sZWiZuyDgb/TIwVQS7yDQb
+	YEK48AeJp5lIq6LxSwv49acPoWQLRV8u+m3ii/mfm+g54To1zdAWXqtp
+X-Gm-Gg: AR+sD128aqmVJa5h+sbkbQ0esXPpbar5NJi/EDFwvypWoOzdBj5G0P24iwKtDmDSYzy
+	ZqwXcZso00vJxmELCva9xGn3PVMuO/+V7Erx56ZYmF/d/UQ5/OV63ba+UKBi0481p7Pmd/+gD/u
+	UxEOSI9HkwLOXpcTgI6dinaCNbhLHIaJsytE/+aLV563GKObkoK6aeEMgxvKtvpBc5bfansNnTo
+	ML0XqBAyxBus1pB9Ud8Dn9GHZIQ20++muIN4qOwziNYNKAqKY0H7q24KvO7M6FLa88dDAXFL2h6
+	3L8p0WNO++1nbPJhQZtyJ6s7bwH/0R/OpTeLwczMorqj7XjdX12DIvQpPHUYm6K0qaJGbxEn4As
+	EO0srjZgTMo75qnxhM7XhYVH334tNLVTOOnJ5yZzk4PPpSaKBogDK/DXALgtVzUNF/PGECOJSwN
+	ifMg/kFURHlUfP/AMGq0WC86uWuPY8UoFBcUyTezBRXcApcLpeH3pSeRc65NTFjY3U4XmVG5Zz8
+	7EKwbZHEjc=
+X-Received: by 2002:a05:6300:4c:b0:3c3:88a5:83e4 with SMTP id adf61e73a8af0-3cd011b1b48mr6380483637.10.1787125645848;
+        Wed, 19 Aug 2026 00:47:25 -0700 (PDT)
+Received: from volcano9f8e-host.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bef77be3sm4151708eec.10.2026.08.19.00.47.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 00:47:25 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Yury Khrustalev <yury.khrustalev@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hemanth Selam <hemanth.selam@gmail.com>
+Subject: Re: [PATCH] selftests/mm: remove the local PKEY_UNRESTRICTED fallback
+Date: Wed, 19 Aug 2026 13:17:09 +0530
+Message-ID: <20260819074709.1345730-1-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <aoRto6bT3Fv0jm7k@lucifer>
+References: <20260818114945.1312987-1-hemanth.selam@gmail.com> <9e533fcd-c80f-42df-847c-c15c4e3a1a70@kernel.org> <aoRcdLGWaNhUFIPU@lucifer> <277db0f6-6161-4ff1-9540-7b1eb5f7924b@kernel.org> <aoRto6bT3Fv0jm7k@lucifer>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] Optimize anonymous swapbacked large folio unmapping
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
- hughd@google.com, chrisl@kernel.org, kasong@tencent.com
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260723070905.3422276-1-dev.jain@arm.com>
- <80632d25-df40-475b-b7d0-912d657a977e@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <80632d25-df40-475b-b7d0-912d657a977e@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gz3z45p7zzqhx3sxhzfojtt9n64hoy5q
-X-Rspamd-Queue-Id: 2B4E720004
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1787125505-357277
-X-HE-Meta: U2FsdGVkX18LjnNukCUCN1xq53KG7WOiEz3XuRtI2KO2ZU3Gu3QedH4NFHK07mrXWQLDn7TRF9A5UcFefj5GpVM798s0NUxFAqHc/lnVqaRncI621ZWORG2yLnOCGWj8XHVIhOZzhW6/FSAO4oDlqVEwBEWwdGZunVWKeUY4djxgErd3rGYWtEnb3twcokMdUag6EoIVMsTUZs8LKC6Vyz8xz7oUpsP+K4cX/uBL+iMp8F2mnKxknEYyi67yr2+OXKDxcGWQHvf49fEyBl27U7KmT87nzpwyOUQN3fxEFopVLLyfJwxEwU+p28YNewKUZJmGU5ChpDIK1ttFiusY20zhr/8lmDq/jGb8HyUThcYnuxFJSPml6LIqcclHjMWCPNYPds+Ufyxr6wtnQ/VyeClAHdaJFnUkiFqXqzkx4Vw7xaTfsl9OyGbjvri8LgUItKT9odjeXDrfH8XPbH4dxDV6zyasYuEEdOw8wjDB76AaP4wzu9a1d4vtTpvFJ0LlKKARbydLG07zCJ3f0TGLfHBhevf77EXV0z9dxX8AynVl6qbkwf7lYqeXFiNaK2DZcZK09a4ahvDbc+hH+JQhHs/pORl3pTGi150nB3hUm815H2Hp4iB7RcaB6RcCV/G/9Z6l6ir8J903FDltOdk+GgManwCEziHbbDi41wMjpqYNr+pdWvbULrPMxvzKehH/Kg1hcg1i4n9NUC3foFxkMghbAxgSsNFTfFXh0hQGnok0S1NhR2pu5PsEjw5FTD2O8qGPjWEgdX9kgxTjGcUla479iaAUIuZKEfORZYslYK7awMT37Oo5ghh1cmD/3gBgrXGIljrDKwhMGbSm/eJt73Na1KW9CIdo5iBGIO1BEGbOHzMactCEUHnR0njPi5RrFzKR+selhgH/YWaujc8U/C1vtU9+XfHu8A344HnDfc4h0KFpV+ZwZZQGSAaQAbRAcCpA+YP7cEdZg01+Vds
- modfPN03
- Jv2rY/E0qKvRSlhJMephB7M7Td5dhs2+4SCSLKKd6Z8205fSucQ24KKBljgdkUrOjd/RmJjnZMi3wf7J+VOMOIO77JrTOoI+NYAvzpKDCppIZy26MqESaJGzTgLEGwkqw8sPySKqinh6KpM3AhZbDniYZZWYzl08h386ZNG4bikTV8sqwnvyXXec4TqQGxkaVTurGPBvA1KwPUKlsdXhR6mgr88T/Kc9PmkjjrG12Y9xEiXHZ7r3KaFDlpWmjn91ZSLyh
+X-Stat-Signature: xbb4aqz71ns5kn6oums8ohkztdjp4w45
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1E7ED80009
+X-HE-Tag: 1787125646-67150
+X-HE-Meta: U2FsdGVkX18lQqxPfyqEs51STyFu0Pj3haJ4p5Y8/WJnzhgIM6J0dmbBvys8wfrSWEAG+yQVV0tpPPkAsfbWkouJ2QLZ4Kg+0CskjutA7J6EFy3c9A77UqWI2zFw00nGeSOx9+6WfxcFJB5nB58t0W37Bc9U31uG5gHvC12aQR6zeCbcTB00bIbo3lRvaAAnSFwv6Ju14yP8uiFngXrHR9DTq8rURbhZONLm/Bbl2WabnUwaxLC/+Ebcz5BF3voS8+EpUcyZuQLWF+SC6QIsjA0/smxejGk9QvPuhcUtPf0synqKSPW9yfpnZ7NuEg7el7iaYfb9za0BQ7hucn3Yn3ZOL6yqIzRvktuY72Y+K+gePiGDAzWjcSGBwAiZAfPiuwH/xE7WlORHHc/8jENW4gKGNQtjxBqYdYJ10v29JUaoFf/n92al9+z98/Q7gPRfzTMoRi5ut84ASJhFJT0/I6R5MXj9VRD8FEJnylFuxZ4JwQEjNg7XlHJtPrFi8HSjmOg4tRhBJLjlSOCx2jN7KZZul/gfrwfuKVq+/sjz64q+Sh+Kdsnbg3moX10nhqLpS0zMD5Lf8MWLhgmgl/DDObJRjp+KyiF9Ek6b31i7J8KbwvAVRC9YqVX+cSVlgRWcsY+aMhG2k7aiNNDjqtsPagm9sumsMijHUeBWPoyfVyyaHRd1JIFMmR2G85SK3hpcQQm8At5pdxhHZotGU2XDJ28XT8Eluzkqkt2vjvwSxnjnTMJVIYYOcuWOX4gWOavFfL5HRfXZMPdOvKZEp48u/nwmmbug3C6b+EmITFkW7yI24fkqZoMBzF/HHplcpVdtb0SbvkX6bHyf5xHkYIeSG9H3+pv4zTyBOhNNEcojMr3fPaLoL95VeuMZNPsV/tCadaKw0FHgTKuynS296ls09y3jXPyAEhX5fzpEvf4jFtgpEJncreanHNwGNn0tTd/FkSU9c4Z5qjkItd1Yira
+ ePSP2CfV
+ 2ZVZFwhUEiiEt8dF1d5w5KPFhPGRPEkEKi+psxz1HOVfuRuuNvQjbSDqjlrp+IW27UHCVSdj82OD5jk2vKN9CM2rZr/U8T87O5PzFevw0R1C+ku/hzBlvHXfILXOsjZhbWZUk/I1ICpi0I1gBKQRV1qSAgXYUv9lB99RaRCyJcdHsSfmH++ZBmk8gH7n8zqGzZm803ORL/4PVosedpeh1s55n8qBfTBIIgebN+y4LswdSF7F3QKK1lPwDwhldgBhT/8QlfmlTpAyJhVL9pUw3H3nvFNLshnb2hFV2lHhoxGeSBS2syqu21sxQZM1pxrN7gWRVeQhRR+6m9zccZGBAq8Zlj7AGG3YkNCEUQomIy+zf52j8ExJj7IVUYtMdeR2C7YQ4lah21ENTenikzoa7wMFPPnqLbDb9oEJ3rIGrU/mRHL3PlJ8ImD0PAyZioRj8yjZuoIrHXUEGokt6v7+o02UEzejGNH20p94ArLHzOEVL3PxZ2i7N93ivHvg9A3ZVf6Nn/3NZFNS7xhA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,95 +130,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/19/26 08:50, Dev Jain wrote:
-> 
-> 
-> On 23/07/26 12:38 pm, Dev Jain wrote:
->> Speed up unmapping of anonymous swapbacked large folios by clearing
->> the ptes, and setting swap ptes, in one go.
->>
->> The following benchmark (stolen from Barry) is used to measure the
->> time taken to swapout 256M worth of memory backed by 64K large folios:
->>
->>  #define _GNU_SOURCE
->>  #include <stdio.h>
->>  #include <stdlib.h>
->>  #include <sys/mman.h>
->>  #include <string.h>
->>  #include <time.h>
->>  #include <unistd.h>
->>  #include <errno.h>
->>
->>  #define SIZE_MB 256
->>  #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
->>
->>  int main() {
->>      void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
->>                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->>      if (addr == MAP_FAILED) {
->>          perror("mmap failed");
->>          return 1;
->>      }
->>
->>      memset(addr, 0, SIZE_BYTES);
->>
->>      struct timespec start, end;
->>      clock_gettime(CLOCK_MONOTONIC, &start);
->>
->>      if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
->>          perror("madvise(MADV_PAGEOUT) failed");
->>          munmap(addr, SIZE_BYTES);
->>          return 1;
->>      }
->>
->>      clock_gettime(CLOCK_MONOTONIC, &end);
->>
->>      long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
->>                         (end.tv_nsec - start.tv_nsec);
->>      printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
->>             duration_ns, duration_ns / 1e6);
->>
->>      munmap(addr, SIZE_BYTES);
->>      return 0;
->>  }
->>
->> Performance as measured on a Linux VM on Apple M3 (arm64):
->>
->> Vanilla - Mean: 37401913 ns, std dev: 12%
->> Patched - Mean: 17420282 ns, std dev: 11%
->>
->> resulting in more than 2x speedup.
->>
->> No regression observed on 4K folios.
->>
->> Performance as measured on bare metal x86:
->>
->> Vanilla - mean: 54986286 ns, std dev: 1.5%
->> Patched - mean: 51930795 ns, std dev: 3%
->>
->> I tried magnifying the difference on x86 by using 1M large folios, but
->> can't spot an obvious improvement (looks like my system is too fast to
->> benefit from batched atomic operations!), hinting that the benefit lies
->> mainly in the reduction of ptep_get() calls and the reduction of TLB
->> flushes during contpte-unfolding, on arm64.
->>
->> No regression is observed on 4K folios on x86 too.
->>
->> ---
-> 
-> 
-> Hi Andrew,
-> 
-> I am not sure what is the current process in mm regarding sending patches during
-> merge window - would you prefer seeing v2 after merge window or shall I respin?
-> 
-> 
+On Tue, Aug 18, 2026 at 02:36:00PM +0000, Lorenzo Stoakes (ARM) wrote:
+> But it might be worth checking in this case to see whether the problem here
+> is in fact that we need PKEY_UNRESTRICTED defined over there?
+>
+> Hemanth - could you check please?
 
-Let's wait for more review first. Most of the patches have not been reviewed and
-there is no time to rush at this point.
+Checked.  It is already defined over there:
 
--- 
-Cheers,
+  tools/include/uapi/asm-generic/mman-common.h:88:#define PKEY_UNRESTRICTED	0x0
 
-David
+and it does reach the mm selftests without "make headers", through
+TOOLS_INCLUDES.  The path is not obvious, so for the record:
+
+  pkey-helpers.h
+    -> <linux/mman.h>           tools/include/uapi/linux/mman.h
+      -> <asm/mman.h>           /usr/include/asm/mman.h
+                                (tools/include/uapi/asm/mman.h does not exist)
+        -> <asm-generic/mman.h> tools/include/uapi/asm-generic/mman.h
+                                (-isystem puts it ahead of the system one)
+          -> <asm-generic/mman-common-tools.h>
+            -> <asm-generic/mman-common.h>	PKEY_UNRESTRICTED
+
+I built the pkey tests with KHDR_INCLUDES pointing at an empty directory,
+that is, as if "make headers" had never run.  They build, and cpp -dD
+says:
+
+  defined in: tools/include/uapi/asm-generic/mman-common.h
+
+Pointing TOOLS_INCLUDES at an empty directory as well is what breaks it:
+
+  pkey-helpers.h:188:30: error: 'PKEY_UNRESTRICTED' undeclared
+
+So that is where the definition comes from, and dropping the local
+#ifndef does not depend on "make headers" being run.
+
+The one thing worth being aware of is that the redirection into
+tools/include/uapi only happens because the system <asm/mman.h> includes
+<asm-generic/mman.h>.
+
+I had a look at the history you pointed at, thanks, that was the part I
+had wrong.  If I read it right this is exactly the mechanism from commit
+e076eaca5906 ("selftests: break the dependency upon local header
+files"), which added TOOLS_INCLUDES to the mm selftests so they build
+without "make headers".  So for this particular macro the value comes
+from the in-tree snapshot rather than from whatever the build host has
+installed, which is why it does not vary per system here.
+
+That said, if you would still rather keep the #ifndef as a matter of
+course, I have no objection to dropping the patch, the guard costs
+nothing.  I mainly wanted to answer the question with something
+measured rather than assumed.
+
+> This is incorrect. We explicitly do not have this requirement in mm selftests,
+> and they're often built without having to do this step and tooling has been
+> provided _explicitly_ to allow for that, which is why this kind of thing exists
+> right now.
+
+You are right, the commit message was wrong on that point.  v2 drops
+that paragraph and describes the above instead.
+
+On the powerpc header David mentioned, I would rather leave
+tools/testing/selftests/powerpc/include/pkeys.h alone.  It is not the
+same construct: it is an unconditional
+
+  #undef PKEY_UNRESTRICTED
+  #define PKEY_UNRESTRICTED	0x0
+
+next to other powerpc specific overrides such as PKEY_DISABLE_EXECUTE
+0x4, and that header only includes <sys/mman.h>, never <linux/mman.h>.
+A probe including just <sys/mman.h> does not find PKEY_UNRESTRICTED,
+with or without TOOLS_INCLUDES, so the definition there is load bearing
+and removing it would break the build.
+
+Thanks,
+Hemanth
 
