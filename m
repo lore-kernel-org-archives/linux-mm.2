@@ -4,118 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 209A1C5DF86
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 10:20:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CADAC5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 10:28:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22DB76B0093; Wed, 19 Aug 2026 06:20:11 -0400 (EDT)
+	id 76B686B0092; Wed, 19 Aug 2026 06:28:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DD106B009E; Wed, 19 Aug 2026 06:20:11 -0400 (EDT)
+	id 71CE66B0093; Wed, 19 Aug 2026 06:28:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A54C6B009F; Wed, 19 Aug 2026 06:20:11 -0400 (EDT)
+	id 632D66B0095; Wed, 19 Aug 2026 06:28:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C68CC6B0093
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:20:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 671921604D7
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:20:10 +0000 (UTC)
-X-FDA: 85117623780.04.46CADE4
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3EADE80005
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:20:08 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b="Ip3l/sK0";
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf30.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787134808;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 43E1B6B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:28:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5CFF804D1
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:28:31 +0000 (UTC)
+X-FDA: 85117644822.08.49B3C26
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 377B940004
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:28:30 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=vrFq7bGg;
+	spf=pass (imf27.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787135310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xVE/TCa3FajtK4vZ9pzEwtCdg70Sj2GwjXUwN4Rwvtg=;
-	b=61yDjvHvcQDOSyYINkof+TsyyWlpjhNbpRYhMz2VWOn9uHYtmkZH6idJAHLZ9Rq3SGxtUl
-	mZFMl9ZmgdAR0XwY4hy6B5O5AtMLNMvF7YmEMJPhpKtYmrPiP1qqiaWFiKFp5MhwIM/T0B
-	7cLO55ald3hQ/gYjnHA0BPMG/Ah7cAo=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b="Ip3l/sK0";
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf30.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787134808;
-	b=I6QxV2Eo4XHKb+8+ECc5lZRdmSBfz678D4oA/PSLzUvJflPPrL9QU5zjPQMPb/Z+aMv9wI
-	R8YGvRmIQvSVwICrR2z+m1dM430Hs43WfebaVz0FPvkqca5y1Q5j239WaidvhrWt7uAmGJ
-	sgTxlfxip1m8Z0gUhfTOum0BasQgJFE=
-ARC-Seal: i=1; a=rsa-sha256; t=1787134793; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=WNX19sQNfm9NLQmLvSi+kOC6ZCmTbJJ7WAVY89yP7PTkGWzI48mF+DZEo/5SsPfs5tlb4yuNiWbI8whaohcLtGM2LqnZrmG767uXf79yXwmVAB7O77r7oXZGIBJwqMB8isAop3UQDm++jthDlgiG547f9WvjtvGPheZBrO0zZIM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1787134793; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xVE/TCa3FajtK4vZ9pzEwtCdg70Sj2GwjXUwN4Rwvtg=; 
-	b=m1yDPOiyrtBnVbwlCc4yAMvn9OuMq60JTYwKYRz96dPuRsHkh9JWEw9jRJLH3KzrYFhz6ZsgmyU4Ktd4Fnar6xtmdHKBdg+FLg6+i/yGf57NH2YOrjMvHpBZ61cXZLwpIjQKTgbmlC7P0LNCnVBro/Xy32P4nrAZOB7taA09dKM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787134793;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=xVE/TCa3FajtK4vZ9pzEwtCdg70Sj2GwjXUwN4Rwvtg=;
-	b=Ip3l/sK0bMz2+Y8wX+yCZDGEhK2CXsJvKXXR7Xd+ofltThaYy/FvuKj3spwT7Ap1
-	weE5M/KPPWjWCyFh68NS7xH94NEyG9FJ4Pjo5kahcKAJNReqm9UeS4NZJjb8BVFjZgq
-	VGFBd45ONz+KGEc8vertMQ4mjLlGQRozXLe/zm3w=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1787134793322567.9703421532414; Wed, 19 Aug 2026 03:19:53 -0700 (PDT)
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1787134791630896.7239743078507; Wed, 19 Aug 2026 03:19:51 -0700 (PDT)
-Date: Wed, 19 Aug 2026 18:19:51 +0800
-From: Li Chen <me@linux.beauty>
-To: "Andy Lutomirski" <luto@kernel.org>
-Cc: "Christian Brauner" <brauner@kernel.org>, "Kees Cook" <kees@kernel.org>,
-	"Gabriel Krisman Bertazi" <krisman@kernel.org>,
-	"Josh Triplett" <josh@joshtriplett.org>,
-	"Mateusz Guzik" <mjguzik@gmail.com>,
-	"John Ericson" <mail@johnericson.me>,
-	"Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <shuah@kernel.org>,
-	"Arnd Bergmann" <arnd@arndb.de>, "Oleg Nesterov" <oleg@redhat.com>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	"Paul Moore" <paul@paul-moore.com>, "Eric Paris" <eparis@redhat.com>,
-	=?UTF-8?Q?=22Micka=C3=ABl_Sala=C3=BCn=22?= <mic@digikod.net>,
-	=?UTF-8?Q?=22G=C3=BCnther_Noack=22?= <gnoack@google.com>,
-	"Alexander Viro" <viro@zeniv.linux.org.uk>,
-	"Jan Kara" <jack@suse.cz>, "linux-api" <linux-api@vger.kernel.org>,
-	"linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"linux-kselftest" <linux-kselftest@vger.kernel.org>,
-	"linux-doc" <linux-doc@vger.kernel.org>,
-	"audit" <audit@vger.kernel.org>,
-	"linux-security-module" <linux-security-module@vger.kernel.org>,
-	"linux-arch" <linux-arch@vger.kernel.org>,
-	"linux-mm" <linux-mm@kvack.org>
-Message-ID: <1a01988cfb7.7f8bf9df842660.5856426206659756785@linux.beauty>
-In-Reply-To: <CALCETrU2sCf_Ab2oDcUuJV53mhaDHTtf7QNqPJuFxV_ESHkbtg@mail.gmail.com>
-References: <cover.1784204592.git.me@linux.beauty> <538e494dd8fcc677da24ec985c6e90dde554e7f3.1784204592.git.me@linux.beauty> <CALCETrU2sCf_Ab2oDcUuJV53mhaDHTtf7QNqPJuFxV_ESHkbtg@mail.gmail.com>
-Subject: Re: [RFC PATCH 12/24] fork: let kernel callers create embryonic
- tasks
+	bh=5xhsxQv3y79BoPZ1auAVTOrY0Ii21yucenX1lTIQciM=;
+	b=gVZkE5NsPg+5ihjS0L/Cs3tbO42pFe7VgeAvEESx9uluf/F7Kz74uVY1ALHWsO/3n/cZsU
+	BhKqQorhQlvt+EJ4E0YYwtJy75bvwnpKqqz1Ms30uBjicwj7L//neK/+av1hNp36hKhJjE
+	fp9veEOmiDb6orpwXWG1XEZjsR7F4Go=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=vrFq7bGg;
+	spf=pass (imf27.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787135310;
+	b=Is7jiN2WUKCSkyW9qkfP4VerHB0K+3AIr+uGmtMLRESsrZQyC0ilZ5hlCQymtCqHlyPtbx
+	FnsY0nj56Wy75JisnV/3B5Y4BrUp26ZiIMl7HVRtWr7VvQ9PiVr3zOlRfHvLQ+qVhvucP4
+	KVGEZWZbJSYjjz2wh7TYAGa2qxN2/V8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5xhsxQv3y79BoPZ1auAVTOrY0Ii21yucenX1lTIQciM=; b=vrFq7bGgZ8OVvCCw7E7GGeyQ9o
+	8BKhCVCvJVQM37dcZrFzK2Fwta26qOB/tl/4c8EQ/Qejg8tbDm6dFi9LvvdWeHxA9tfC2tXa0iBUC
+	bb3NFM6YPczL1dcm1aGnzlyAzT2dO2F246MkH7nXhWUYeOfCN95+PVOfFc+NlobQN5a/QJTK4G6OB
+	aKVq4a85UqxfotRiM7ZeNXtBDOZ+DQ2XxDdQY1jW33unn522df++A5CqtwsJlPr8kw29OBUwrdbcF
+	u+kaezwZFiW4xmWm6TgFMV1C2jZqNhZmidbxcsuxYluseRKZ33ZnRJeRo4BXTQ76Xu+9Ht6naH3qS
+	a0ukrU/w==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wwdWi-009j7Y-22;
+	Wed, 19 Aug 2026 10:28:08 +0000
+Date: Wed, 19 Aug 2026 03:28:02 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, rmikey@meta.com, riel@surriel.com, kernel-team@meta.com, 
+	Kiryl Shutsemau <kas@kernel.org>, Bradley Morgan <include@grrlz.net>
+Subject: Re: [PATCH v6 0/2] kexec: keep the next kernel off hardware-poisoned
+ pages
+Message-ID: <aoWEmbTWYU7wSQWb@gmail.com>
+References: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
+ <aoV5EfBtlWcyf51E@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Stat-Signature: zg9cscqskz7bf6pb3tdc8ng4rs1u9gor
-X-Rspamd-Queue-Id: 3EADE80005
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoV5EfBtlWcyf51E@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 377B940004
+X-Stat-Signature: depb9znfja47jhmt41ococm7d4p8khfo
 X-Rspam-User: 
-X-HE-Tag: 1787134808-374176
-X-HE-Meta: U2FsdGVkX1/3B6R4Ur0RAgq772Pnv+DqSdahRAtedA6mTUN/aU36sE0yMVVfW9Bi/6da8PaSvGnBJD0fDHyNgn12m2ufdx0GpoFrDhnyByThrl85JpNqDDPm0Cl1+3kXk65hQ+8So+5wKACcuyIk0rrKCNQsHOrMKyCyA0IYSzoxHvMhaLwOEUVUcSMTiutwE/2dWKgih6y/jf72srJ3H0/78mFNKKoOdtLYR6DcwcdB4Q4rzoE3T1GweeF1MVlXmb6ecoPQyEe0M4R5L6MvxNSv22VqsC71kdBRBFsXnxPWSNcLwawuuNBwMMOCEILbWTtEis4jXYipivxC9MvEiZvCfJmL4sYdKm/O93kUPYYlg9Jt7vPV7c13DcT1tg88t8v7zwOaozEwuwcLP0yoijGbaQy3xY0IMRG7aH2WqveUcCzuUpLfahKRjeYBT+njoZvfTwnargoZekZkKzVv3ToxeG5a4MCffb31IcjJn6PEKV/1xErgvC9yFkzy1tdj7Y+G52mRmc6CwuGRvYr0VT+a0SOaz+cGpWW+DnmQhy1Sxi1LgSxzvw+rlSqcufKyyO1Yb1+xj0WeT2hbHvcbpFb6L+oelcNBN/7oYjfejswCrBVO6cYFAfhpudhoDhLnf15BFAY/moX24HvhWkS3g0e7B4+LqQcJAg4+WMPbe3I8q8iQRIuV+D3cbAz/3NxNYurtBPmND8I9Xo1auFfyj8kvxuhLUg1xulk2gslawmN0Tu4Q/8UoIrYFHafHB+up6MshCa9xSWvYH6UgLtCi6w/52shxWuWDyHWZhK1j1e8DeM0CuDUxHnmNTwkygtDQ0nyD+je8YkoZAdQ8qCae3AqUaFT6kBOnT1C2MODGCedkaCb3FsSB20/GtJgd4+N0DQSn6K1tMzzoqE3MZq40M3HEq4GIA7UerUVW5ZLa3BMQ6c5DBzEBKwkd1QYhrWHNPYDIhoGCc55bAv4TJbF
- odGAKLfN
- CAbH1CUtG9g6muCqzoNZKdS+A13u4bux/2WACWuViQLlr/3ZtauseZIZeFIZoPWedkIhQ3hUfM4nks7LBPOKzB6LF8zTJTOjQ8uUoNBD+9pI6Ne+MojTuBA+vJkRgHPOT3FMjVxQBOdPpqSXyyS9w8SOUr5wJGs3O7yxhKS7IViMF/t7cF0J21tRjS7lF78cxTU0z8xj+EnQXUwXrjpWnLf+qfKUtgiX6PFNNjsa3H+RrFS+4xK7t3IUqclwx+vhaJRZO1Hh3uIOwDc5JTpRR2yOwmukmA7HbOT6ucUuQpeUbnmMt4WFQ6Bnalr9Z1PVPWj3LI/1dhlbAvyNFeXhnofxJIPXQnyEH2GLgEGqve5VZYM6BsAJ8J8LUCDW2j0f932rZ8mNf7C2u8vQEH5oqZS4wvuErn1d7nPj5ApnU+Bo4RdLc/GyvqbVjfzanwCAS4qY9we9E6RtK0p85ITK0oksLqAN18hOc8/65iUbrOwSYDqH/G6xBe6Z1PrJLZdzqsKy0GNMuiwSJ+ehBDD6/83mVbWBXSrX3KqXz
+X-HE-Tag: 1787135310-893268
+X-HE-Meta: U2FsdGVkX19r4bIL9rva8Azu7A5+9lYGlP/ne4105lvFuh+IJU5Gd2G5NVepxhO4mlXCmq3Qvp6aOikV1wZxFR7Evdd+neQZj9Ll7Jx1BvlObO7+6KuMEQS5NJxuOrop9IC7FvOAv6eAVQwGl6Fwth7padGzcvVc3tM0kPGvpOSpoj/PVRjaEO2VgcVnavPkrHcwP4MaZCpEAWCBP5/3RPXdl+dxiBY7lU+PLO4bJGqzxGCvrmNanX4dponV3VM8445rHXgPRZxXv1zNuXnPY4Z4DZiovAPnlZSbccqn54SqMSHgZRuRuhBire4wxnAO8Rn9FraSEwurzdd/PRBJmvj5DcPPovXZyHvOajEEHa0FIJnf2661ClRpOrd46GD70dxN9jbERV/hl87VyCcIKbON7fxbo1lYLFQTJSpp1bXDCuiq084kSwC/dlf3KMCJAhQrqDUIFFbZUjbHc50tupDTe7rde5FPYFuTdQVvTgd2TuuEtaDHwtWoyfe5b0MVu3dS+Ykn2pnRdASUJHcVCzT3cZodarVSShNcJhPmta/uUM9sqOaymYng39R6IP7icriteTMnrNh1GA3aOtb12rJKS6Wk0OC+4wEfdiZ+ee46IkyJLF8kS6TxCQqfeksq19xxG3RT2cTx3njWVsi0m7/rCA6fjWYP3dYzyNhOgcGEv3BTSvyRX/pA9KZLb/ayJDO7YhK51fbJCYL8hkhna2kEFfNTsmAdoe27i4iu29O7Ts8DnzX+jtJuu9MGm2eMemC0ksTDEsZeccyV1d+E/uoeFrZvadck+TM3x1pf5wG/E3p1nwmZljX613iCG2g4TxaEpyOupZGWsGTeaeW4IUkZy2TQrjnsN6Rpm9lZMFB1ZJdsWYGduco85ksrMlV4k2Rp80ZdqQTyuOj9cL34s7ssJGyf+iFL7nTjLvm/bRMoK6aiOBmcZOGw0p4ElDHqAFVUhj37HbvHubNSHJN
+ SpeqojZD
+ ltZhAGo3YEN4hjIIYZdfp5jmVXTg1AUqXBkfL6IAoJR7HP61+jb1HVgbB0paDRfsycaC6WmnIhEMjhQtex346O5NLXtDzJU166e/n8NibBnzy5ajyS7ch0vLB4cDu2DAUCDIGEsE/ZE45F3Yz9sgNhm90oxbxNzwiC6hK1fBfJwt3utj3nnjJJwAI0lb4G/QUwAFL08E9qZT61CV2v+MGZo3ilFHBEw9SsztP+kNWNilU+7aaxKzRDxWIUgedAVk+7C1S1xTxX0DnbY8KVs0nwz1/KPqiG7xICYfw9YqsZZjGmMSWO1UeuFJ8gOiWmbWQWJTEuhqEhOgFusXitYkaimcFnIBWjjcKujehB5j2a01wU/qZnIczIl8HWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,75 +101,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andy,
+On Wed, Aug 19, 2026 at 12:36:17PM +0300, Mike Rapoport wrote:
+> On Wed, Aug 12, 2026 at 04:31:50AM -0700, Breno Leitao wrote:
+> > Memory failures are common enough on large fleets that kexec regularly
+> > lands the next kernel on a frame the memory failure subsystem has already
+> > marked bad. Patch 2 teaches the segment placement to avoid those frames.
+> > 
+> > Patch 1 is a prerequisite. locate_mem_hole_top_down() walks candidates
+> > downwards without ever checking that the subtraction stays above zero, so
+> > the walk can wrap and report success with a destination outside of RAM.
+> > Patch 2 adds one more downward step to that loop, so the bug is fixed
+> > first and both patches rely on the same bail-out.
+> 
+> I queued this for v7.4, the patches will appear in the liveupdate tree
+> after the merge window.
 
- ---- On Thu, 16 Jul 2026 23:57:58 +0800  Andy Lutomirski <luto@kernel.org>=
- wrote ---=20
- > On Thu, Jul 16, 2026 at 8:52=E2=80=AFAM Li Chen <me@linux.beauty> wrote:
- > >
- > > A kernel-created task can become visible before it has installed a new
- > > executable image or a valid userspace register frame. Exposing such a =
-task
- > > through ptrace can disclose kernel setup state.
- > >
- > > Add a task-local embryonic flag and an internal clone argument for cal=
-lers
- > > that need this lifecycle. Reject ptrace access until the creator clear=
-s the
- > > flag. Clear it with release ordering and observe it with acquire order=
-ing.
- > > This orders visibility of the completed exec state with the transition=
-.
- > >
- > > Existing fork, vfork, clone, and kernel-thread callers leave the argum=
-ent
- > > unset and retain their current behavior.
- > >
- >=20
- > > --- a/kernel/ptrace.c
- > > +++ b/kernel/ptrace.c
- > > @@ -56,6 +56,8 @@ bool ptracer_access_allowed(struct task_struct *tsk)
- > >         guard(rcu)();
- > >         if (ptrace_parent(tsk) !=3D current)
- > >                 return false;
- > > +       if (task_is_embryonic_exec(tsk))
- > > +               return false;
- > >         es =3D task_exec_state_rcu(tsk);
- > >         return READ_ONCE(es->dumpable) =3D=3D TASK_DUMPABLE_OWNER ||
- > >                ptracer_capable(tsk, es->user_ns);
- > > @@ -312,6 +314,8 @@ static int __ptrace_may_access(struct task_struct =
-*task, unsigned int mode)
- > >                 WARN(1, "denying ptrace access check without PTRACE_MO=
-DE_*CREDS\n");
- > >                 return -EPERM;
- > >         }
- > > +       if (task_is_embryonic_exec(task))
- > > +               return -EPERM;
- >=20
- > Would it be better to use a different error code?  -ECONNREFUSED?
- > After all, this isn't a permission failure per se.
+Thanks Mike.
 
-Good point. I'm not sure ECONNREFUSED fits outside connection setup,
-though. ESRCH may make more sense if the task is meant to appear hidden.
-I'll think about this some more.
- =20
- > There's a not-locally-obvious gotcha here: reading other process
- > attributes prior to calling task_is_embryonic_exec may result in
- > (security-relevant!) data races.  This should at least be documented
- > -- it's critical to check task_is_embryonic_exec *before* trying to
- > read credentials.  Also, I think /proc and many pidfd APIs have the
- > same issue.
+I'll now get back to the most ambicious patchset that carries poisoned
+page information over to the next kernel, so memory failure information
+survive across kexec:
 
-Agreed. Patch 15 later in the series already applies this ordering to procf=
-s,
-including cached dentry revalidation, and to PIDFD_GET_INFO.
-
-The ordering requirement still needs to be made more explicit. I'll
-document it, move the check ahead of ptrace_parent() in
-ptracer_access_allowed(), and audit the remaining pidfd users before the
-next version.
-
-Regards,
-Li=E2=80=8B
-
+https://lore.kernel.org/all/20260717-hwpoison-kho-v1-0-9c5eda551998@debian.org/
 
