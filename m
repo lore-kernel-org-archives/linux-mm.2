@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F790C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 16:01:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E18A0C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 16:04:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCF8A6B0092; Wed, 19 Aug 2026 12:01:07 -0400 (EDT)
+	id D88156B008A; Wed, 19 Aug 2026 12:04:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA7346B0095; Wed, 19 Aug 2026 12:01:07 -0400 (EDT)
+	id D5F3E6B008C; Wed, 19 Aug 2026 12:04:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBE0A6B0098; Wed, 19 Aug 2026 12:01:07 -0400 (EDT)
+	id C772A6B0093; Wed, 19 Aug 2026 12:04:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 91DE66B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:01:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD1ED1C1786
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:01:06 +0000 (UTC)
-X-FDA: 85118482932.02.6BFBC5B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E6740A000A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:01:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rrrnsl9W;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 90CF26B008A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:04:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 25D6FA21EC
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:04:30 +0000 (UTC)
+X-FDA: 85118491500.04.6D320B1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3B6D61C0013
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:04:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hcr0xUY3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787155264;
+	s=arc-20220608; t=1787155468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zv0hA6gazg9s+4AojA0xHWuEoRgwcHIQASoG+FMGHeU=;
-	b=z31cOT2OkGRb9TzyGXRV7Nw4hSqE15DRtEszooBpL3pKJwcCX0Rk7FKYmtL7jpRcGpF8p8
-	rSZHQv8mqs0g5oAzKNe4osrb5C4Lq596f8Bkx51DiAcHrplrrNqmM3t0ZV8qJKSnRAkd3q
-	lpL21tYsTnjUKDWEM0KhGRh2y7KwlVY=
+	bh=M5kAxKnh+shNjKHhIlDBGkRziYRxhPK0Hcw4pJBYv6o=;
+	b=p3zQwcyO1QBCNsXVMqdtQu14fDSv0JIiSu3fHkqJC5NfRIjigKyq7VJ98/l1wpn0NBW3eV
+	ShMSxpGIfrw8WRBOkr8PXOgEMQ7rvwSl35YpUBYAL3QiTYlUiHWntw4Baa3NTlc+kMXog9
+	54e111xwrCRnlcEClmVk1vKD+op6vOw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rrrnsl9W;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hcr0xUY3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787155264;
-	b=IHG3j5cATI3lM2z0XAlkt8KyqUNOM5s23FDHCxTI36jwT6+r24fEgLwVFnmRDy9y0QoBXj
-	eM1HarFMdKy42qMdixMMGYb+5tqrGLBntPOAjWYFoz9Ckl2nRDMIPQqwqLunIA6PsHFPzI
-	no4Ltm+H0JrRh2fAebzz+EcAfy8xKPM=
+	t=1787155468;
+	b=eoSyE4Ogf0+1k+Cm35m1Xm9vUhcs+nQLL3Nrg+1zBzS6pjdvmhsKXMsbhd3EtYmumvvVQW
+	qFg18rRW898UaQq2QxIffkYSSUOW45Odhgqpe398n+O/mlIgkjiF+EwM5CtTySHUvl9syx
+	lJujLsWYlSivoTMyEkH1U42ZOcvKPnY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5E4F260DBF;
-	Wed, 19 Aug 2026 16:01:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069461F000E9;
-	Wed, 19 Aug 2026 16:00:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A7A9414CE;
+	Wed, 19 Aug 2026 16:04:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9145A1F000E9;
+	Wed, 19 Aug 2026 16:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787155264;
-	bh=zv0hA6gazg9s+4AojA0xHWuEoRgwcHIQASoG+FMGHeU=;
+	s=k20260515; t=1787155467;
+	bh=M5kAxKnh+shNjKHhIlDBGkRziYRxhPK0Hcw4pJBYv6o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Rrrnsl9WjiIvcnbhE0PlpfvBFZD0qNCbsP/c2kYs4pJu7h0kPrDAL0FH/DMQl2lBY
-	 e3Iju7wXcbBeXMbD7vfwcntq93zF4BbImeE28mmYLJKf4n6hGAluaROMJlZISvoQvX
-	 m0rVkQhNqH5wFYphWS0sTQ/4Fgw9onWD1szzkgjhXGp8sct2N8iLPz4+4hjVGBtCdh
-	 24/dBv4aNhWaYoHdl3Mu+emVp5XutFnmyXZhTDo4PHyV9MLWwlkreFbIMRF0+DWEiR
-	 TlE2ateTbv0wIw2mDKO7/alPn1WMJBDC63iYV7FikegUf8dDNMykd/ozA1mg2gRLFd
-	 ylkoxTqDQOIaA==
-Message-ID: <5e321f3f-d636-4baa-825c-adb8f0dfa23c@kernel.org>
-Date: Wed, 19 Aug 2026 18:00:52 +0200
+	b=Hcr0xUY3rZmYo43FngWYFt1EkBIEHXypw9lDw1uMYkfhY/YvviBtuS+sPTVnjKLsh
+	 2RDVTKVsjSy+OMY29ql5oAsOJgr5NmEE70oq+MY57yMlkBwoN3GgaMCDDryXJ/6z5g
+	 IyCMfwLzTUka+Pgkeqi0ZABqB47mVCLdIFFRizdA0K5KHpi8mnIu0bdkxJdGWCojRI
+	 96148+u3C3+5n9ZjWhwRiHrz94ydcwNyu1IYYffXnT32/Ki+VDHpNyX1vCNm6/I91h
+	 uTaWhEhKMaXxpAV9DH2gC3em2ziJmcYjOiNETzATAbsbkydQXuUSZM8+Y7a7VrKdM8
+	 jxrtF0TzG3R6Q==
+Message-ID: <ff19ed22-72b5-4c6e-9fe1-de780c9c6bf9@kernel.org>
+Date: Wed, 19 Aug 2026 18:04:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 02/12] mm: add PMD swap entry detection support
-To: Usama Arif <usama.arif@linux.dev>,
+Subject: Re: [PATCH v6 03/12] mm: add PMD swap entry splitting support
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
+ ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
  willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com,
  Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
  ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
  lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
  shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
 References: <20260818131202.494754-1-usama.arif@linux.dev>
- <20260818131202.494754-3-usama.arif@linux.dev>
- <69e8469c-aa7f-4141-be3c-796c9cf11f2f@kernel.org>
- <5baead5e-b9e9-4850-9ce3-e48a2e5db2ca@linux.dev>
+ <20260818131202.494754-4-usama.arif@linux.dev>
+ <a5c3a93d-fcc5-4fc1-a764-726ca1d0185a@kernel.org>
+ <aoXIQWO6NEfEKipn@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5baead5e-b9e9-4850-9ce3-e48a2e5db2ca@linux.dev>
+In-Reply-To: <aoXIQWO6NEfEKipn@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E6740A000A
-X-Stat-Signature: o3e4waxd1xwd4kmmdzehuyt7wdgznxin
 X-Rspam-User: 
-X-HE-Tag: 1787155264-394458
-X-HE-Meta: U2FsdGVkX18Az5ulT2JUyOSppjWF8MHcV4KCO7JY9hw9uR0BTtzq/RcZpyR7/TbT7O/pVYv83YMXzkAFrzyzoBtKBci0sv97OlMNrLDdzlXu/7nGIxv3r5ej9XF/lgdn8H4Gf7rqIRY6WKjX+awwSnSqrWI9rvxrySiFLB9W3mXAJlSrsa4HUpEB1KlIw7arUChHaKFcION/bjYO/cJzdaCxQV0q9WvYflbixTiOxtOyCjxlVW8pstEHAz2Tqu/LkbW5xM0vvWekP9VrxBxXCDgxMlaSiY8GpWnGj1grdUgs4o4t0uDUZCEpCq3IB5fSiKdExHDY4wPL3UQHN+csOTSLxTpXQW1Sh9Bq8lQUf8zuVlf0fKMfJu4nnUoP9Jtmaue0ihmCrHuXLB6Ac8pgZ9a0l00EsZyxmEmECNgDIZ4PFhyOrqgAZqlpNjwbF+NudSLJB6UkXVm/aDGnK8s8AZhb5X5aYORL23Bdb1lfqV7RGAFhzizDObcl13IEpd3qIvvW7deYBiLIW0Q6Hxo8+IohhiH3LO7AEkGfFVfTxMATQboyZmh6QQ/lSrR4S+V5zfMfmPdgVwkM6DORi4fO6OuxWEfqL7o5OaSZ7fLhBepK5wh1otIhBQvRcN3ktQNdt6XvFCgQLLki26y3Z6DgNeZ5GjU83lMGqpDVOGw6K4KwxJF0D+35gYZNoLMGIEUoXmkg6x4YAMs3WYNHrq9hlGoaVV4V5U6JBXvyrkCYJBvNzVHpyepHUVsyRS2n++n+Ols/pYA03PXKtpLeBA7hezK5lGIWE+8SbMgZuJMBg9rnDuPzGNcaUyU+3qL2zVuzlOdBN27+3YLY11ufGqjTHHQ8EIOMvwahoWqV8A75rHmDewbJPPikEUq77wFVyNPQaYGvcizCQYpPNgtD5YnK9GbS5ilJ1h5GWRl8xk+lscqftDQ2ro8yYVIIS/hR+S13LJoFnC05TQw+bCfzQov
- Ls7L+57+
- xhkYwV6hHwuL7lvuy7nuP9AHRuIbzESIJt71zkF7sIHE+N1nnbcI4XapqopzZvsgpmOkwrYyM3kVf8PL6pu9ao6EQ0p70w/HU1Erpf4HuzevdBshbU18POPFKBW18sVJlH2BGeU+tAbMNeUJqWgQpLbasXdGcIpVF0lVM5ZxLTUHjtSrsWFxCvAjBG81hTjMRs7w45HKTOdTUgjJxL+R3pDpqXtWlS+harG0L+BK48oDdqCdc0XmvHt1qH6Rx9UxSGb8Y
+X-Stat-Signature: onuwbrnkmmkr7qo5qeygck43ooiqizyg
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3B6D61C0013
+X-HE-Tag: 1787155468-279747
+X-HE-Meta: U2FsdGVkX19wOvsjisnJP6NBx9G/0snLMHN/f8t2cOuKNI+QFSGAhXJp5tjYhH9kRoKF2pELiqOMjX8VYcdBxacTv4WYIlahXvHp8GeXMNkmxXK2Uy1lkhnEToolkGY9OAtNZPU5jc6dCTbFGGtMVaFseDL9NPv4xBidvxbFxfTrif0EyRyuvvVVYEPAbmKZuI2BIvareca0qq6V1ItvrVLYbkQrOmvaruCH1Y0rQBHkOiuKvKXHPOzE8JGz/s28g97z83A3VuW/p7uVBxVF3g9S6oft9sp3Kez36Y5f8VzI9+j+gOgEW+fZ/Ql400+TrcUh4i+iE8b4Vq0D1sZUqcIbsWA+g22vYW3+drmTeeT4QyUYEqxMhcJn2BI/bi0YzEQMLDy2hxNHeM0BmSX0ST4vmvt6hc3sZrpu9zvs5/CGdbzEPE5+7ydhAwMdjnG3498BsudIx5ioMVfTLNwfX1l9Qu3WNmhjCcFExxHNI3+PABlGcU1NlJmlGKaBm9cvK1nUtb3r26VF2rHmgs0jJJcHO+0utURAp1t/jjeCJS4jSYkNm+zb0W2KnxoOSt2Aa1Zdq20JZs3HaCdFITjRQpKWHuIlzLoQrwGCKTNLFav3reBGYPwutSnIkp9a+6kwbwSOCOJgHFZdsTNHVtjoA97sxZmKTGpCxgaRYNpzao3w5KTYnBhD9mETEo5nGcng6j8kFMFVAnLkHfj3G78YAJCUCmCf6pUIOqPO0LIcRVWbUvfaayR3L7w7SncCpz+b+cxIIWcxf8k4Z/QaabQIYS4CBUTF24rNooFPp7sEZIRId49GlP1XEosTW/77hFqJIxWaEKJtyAP5PZm5luDoNAYvLtD1ppMDRVrVp/p6L7EySsWVj2+Yl3Cz5Gf9hKdIH8x44XOEDpHgxi0Mgasizwle+/PohmKIsjI/y//zIR4XPfYjWt6Xcq3EVuvzZvFsK7a05Ptv9K023X9PpGo
+ 2+nKMf55
+ Mrxh2yL5KbHUXzEH3sVLG/QW7anru6friIwBlbFHKskB/DX5bciwnYWmnnduoRBPrMzSbNjl62Z5S8lZ8RntnrXDUHKbxQbWifBfNFfvAzKHmmO1GqpweHfaKBcNzy6OKmeUh173mqKVb0y2O+1PtAAWXgPYib75Z8UHwhInYYWa/YbSjO+TE3CpaBj8ZpLdfgHy+MlnMOaMmdBEGLx6otzR9XOgj14yE0ayXLfLi46+ZKm2Z9TOmDRbZqn0FCPTX89sqDMwpkQM+fKY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,27 +149,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/19/26 17:16, Kiryl Shutsemau wrote:
+> On Tue, Aug 18, 2026 at 07:53:48PM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/18/26 15:09, Usama Arif wrote:
+>>> Add a swap branch in __split_huge_pmd_locked() that splits a PMD swap
+>>> entry into 512 PTE swap entries. No folio reference is needed because
+>>> swap entries point to swap slots rather than pages. Each PTE inherits
+>>> the correct sub-slot offset and preserves soft_dirty, uffd_wp, and
+>>> exclusive flags.
+>>>
+>>> The folio_remove_rmap_pmd() gate at the end must inspect old_pmd
+>>> rather than *pmd: for a present THP split, *pmd has already been
+>>> cleared by pmdp_invalidate(), and that invalidated bit pattern can
+>>> decode as a plausible swap entry.
+>>>
+>>> This branch is reached from the explicit __split_huge_pmd() callers
+>>> that hit a non-present PMD: partial-range mprotect / munmap, the
+>>> wp_huge_pmd() PMD-COW fallback, and the swap-in / swapoff fallbacks
+>>> added in later patches when the cached folio is no longer PMD-sized.
+>>> page_vma_mapped_walk() does not iterate PMD swap entries, so
+>>> try_to_unmap_one() and try_to_migrate_one() do not reach this branch
+>>> and freeze=true cannot occur in this branch today.  page and folio
+>>> are therefore left uninitialized in the swap branch; a
+>>> VM_WARN_ON_ONCE(freeze) catches any future caller that breaks this
+>>> invariant before the freeze path dereferences page_to_pfn(page + i)
+>>> or put_page(page).
+>>>
 >>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 >>> ---
->>>  arch/arm64/include/asm/pgtable.h             |  6 +++++
->>>  arch/loongarch/include/asm/pgtable.h         | 19 ++++++++++++++
->>>  arch/powerpc/include/asm/book3s/64/pgtable.h | 17 +++++++++++++
->>>  arch/riscv/include/asm/pgtable.h             | 15 +++++++++++
->>>  arch/s390/include/asm/pgtable.h              | 17 +++++++++++++
->>>  arch/x86/include/asm/pgtable.h               | 17 +++++++++++++
+>>>  mm/huge_memory.c | 29 ++++++++++++++++++++++++++++-
+>>>  1 file changed, 28 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 1b6b0aa2baa3b..a473e85d30f51 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -3252,6 +3252,14 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>>  			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
+>>>  						 vma, haddr, rmap_flags);
+>>>  		}
+>>> +	} else if (pmd_is_swap_entry(*pmd)) {
+>>> +		VM_WARN_ON_ONCE(freeze);
+>>> +		/* Swap entries have no page for the migration freeze path. */
+>>> +		freeze = false;
 >>
->> I'm sorry for asking you to compete with Kiryll's series by creating one patch
->> for each architecture that directly jumps at arch maintainers :)
+>> It's odd to VM_WARN_ON_ONCE() and then set freeze=false;
 >>
+>> I'd just add the comment above the VM_WARN_ON_ONCE() and drop the =false.
 > 
-> I have now split the architecture helpers into separate patches, followed by generic
-> support for the next revision. I think I will need split patch 7 and patch 12 into
-> several independent patches as well? This will significantly grow the patch count
-> which is what I was trying to avoid as I feel that makes it more daunting to review
-> (atleast for me), but I will try and keep it under 57 patches to not beat Kiryl :)
+> VM_WARN_ON_ONCE() is compiled out without DEBUG_VM. The freeze = false is
+> what actually keeps the swap entry out of
+> 
+>       if (freeze || pmd_is_migration_entry(old_pmd)) {
+>               ...
+>               make_writable_migration_entry(page_to_pfn(page + i));
+> 
+> and out of the put_page(page) below it, where page is uninitialized in the
+> swap branch. Dropping it leaves nothing on production builds.
 
-Note that such mechanical arch patches are extremely easy to review. Doing it
-per arch is the clearest ask from arch maintainers to ack a little patch :)
+Right, because it's a condition you shouldn't hit on production builds.
+
+And I raised how we can restructure the code to make it clear that we are being
+overly cautions here.
+
+Let's not add unnecessary code just because the existing code is hard to follow.
+
 -- 
 Cheers,
 
