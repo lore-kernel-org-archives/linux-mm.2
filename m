@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D83CC5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 02:16:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6151EC5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 02:16:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBB996B0096; Tue, 18 Aug 2026 22:16:30 -0400 (EDT)
+	id 30C316B0099; Tue, 18 Aug 2026 22:16:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B20F16B0098; Tue, 18 Aug 2026 22:16:30 -0400 (EDT)
+	id 294EB6B009B; Tue, 18 Aug 2026 22:16:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E85C6B0099; Tue, 18 Aug 2026 22:16:30 -0400 (EDT)
+	id 15CCB6B009D; Tue, 18 Aug 2026 22:16:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 729066B0096
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 22:16:30 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFFD4C03EB
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:16:29 +0000 (UTC)
-X-FDA: 85116404898.01.78E5B84
-Received: from mta1.migadu.com (out-133.mta1.migadu.com [95.215.58.133])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 278AB20006
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:16:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xLERms1Z;
-	spf=pass (imf13.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.133 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D35586B0099
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 22:16:32 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6028340383
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:16:32 +0000 (UTC)
+X-FDA: 85116405024.09.DBFF9E3
+Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 81D11180002
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:16:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Zfqpwbf5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787105788;
+	s=arc-20220608; t=1787105790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Ph3PoeSehbKJc7yMBqellxAJIZ/Uys+u6YbOsWtBIPs=;
-	b=qqGNP3HjEXoSlpRq45QEfe2mmBv4aawV4BFB92dNEScWFNQJ6/REtKDFlPJza+sOY/wdxZ
-	k6vCeHsEraSF4YnDMv9JXiioeUj9+cegWuRXaGY2fouU+wk0gaDd3YkU0gOo+OU61r+eFS
-	PmgqhwF45dBehsqSyNU8hJtf9Cxs3Hg=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=I1shSzmFovxJ9e821em400uZT++kwT5wukUXXYKqPG8=;
+	b=GzrzvqWhXJwiKwSHYSDlC2i0JiwFp/c18xJ9cAhuFQDwg8MR4dt+G3rrYYnrqxejyqgllm
+	FJsthNIJA2atVF4Siop1P5AHKcaCR8Tjoae5xgJlpOP/0eXFbzKvS6SnFJurZkYsgXNLd0
+	kUPEH4tTrEMXon+RbVxBV5fCJ6irhqs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xLERms1Z;
-	spf=pass (imf13.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.133 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Zfqpwbf5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787105788;
-	b=INf6kjcZOYvTUDJk7MCtNuMVQ5dbSqe+Bqt3Zv1QqdOuxC9TqOf4nBvJJ8T3GnC7hPUQ+Z
-	usCgX5HQEZdwPJxVmkUQ8BZTgTMUe+jHE/Q6Akqg0Widb3i0g8WfMCUZKlq4VsHT4MUAq2
-	7/rarEqVGLJFHfSlO/SKBYz/RE3I6Hc=
+	t=1787105790;
+	b=0fY5BlOf+njnVlJvPcS1+2uiqj6+bFKFcAxIyvaGEmm1UrXWLcoOc3LCnKlbEpUMLp6kFd
+	k4IPwg8W69trbiQEA6nGO+Zye5/8feUTDLOutqBWNbk5Z/MnomCwcl6fIDxnKt6YUiPEHg
+	a7ArCrg+wRsTKRtYTCRyzcUI56ZxZd8=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4q4HADBiida0K9D2Blnlucj+RLJw1l5XMARr9t3DAZU=;
+DKIM-Signature: a=rsa-sha256; bh=+IgmQ3QdqUivnU4s8tJXVFnhCQ/DhysrQg5XBqnFDwM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787105786; v=1; x=1787710586;
- b=xLERms1ZStVNyJECqcs+S38NM+juZSWlJ4+IVPrMDDmXKQSUpr0vw2s1mgwLYZ/+SDIRQMjY
- q9/OuH80KdbSRlf+b6WLqqBU7TITJVIgMfp6ClrVs8D22F0j5KY8TGak/GwbmmzhS3EUFfs32a6
- w3PdNrfB1LYzuLAF/qcMXrhs=
+ t=1787105789; v=1; x=1787710589;
+ b=Zfqpwbf5U/5+irehiTBSG3Xey7pY7NKYFdg6tnFtteZLpxydiOEdTn8EVH9W2Ebsm1h6fVsP
+ DoJmwSDWj/Lw/AnW+LRvMX29gBxEnYtBMBvv0S7VNPcHdjqHy9H2mdTz8TXiBpXTmuHuybj0KXr
+ U5txFejm6WFKmpE1e5vMuR1k=
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost.localdomain (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id 817f9be3478d872c;
-	Wed, 19 Aug 2026 02:16:16 +0000
+	by smtp.migadu.com with ESMTPS id 3ab2666dcb9d8750;
+	Wed, 19 Aug 2026 02:16:29 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Ye Liu <ye.liu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
@@ -76,20 +76,22 @@ Cc: Ye Liu <liuye@kylinos.cn>,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/3] tools/mm/page_owner_sort: fix --sort, add module filter, improve usage
-Date: Wed, 19 Aug 2026 10:16:08 +0800
-Message-Id: <20260819021611.2910835-1-ye.liu@linux.dev>
+Subject: [PATCH v3 3/3] tools/mm/page_owner_sort: show available sort keys in usage text
+Date: Wed, 19 Aug 2026 10:16:11 +0800
+Message-Id: <20260819021611.2910835-4-ye.liu@linux.dev>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260819021611.2910835-1-ye.liu@linux.dev>
+References: <20260819021611.2910835-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 278AB20006
-X-Stat-Signature: yr7cpqxwwcfscupe9jgkqh79ncyji1h6
+X-Stat-Signature: c4be8h8ey59o8wrtme1t8834zje1fmid
+X-Rspamd-Queue-Id: 81D11180002
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787105787-9432
-X-HE-Meta: U2FsdGVkX1+ZRn0OO/q9dukpWwZQfkW88IoO0Cb5RhThZOM3f7o0dE3AD/weOzCfwNNzf1r0KWplPjgwAmojWMGalXQ1XrIdNr+PxpgOo4BGI8n8iaEJ2J8vyHCZmyEqBIZ6twUoBCqBl9eMrvibPQkV5pYgiGMxUTB5tig7MbONpDmwKGr7t0Wip6uYuFsMl7D+8kj630kFyJp7m51WAWU4OKlJQ+lg2XQhlEw7I4GJwQDHtg0q+7Lb3zpmTD6PuWPxneR7rUPerr14eE3fGbrgrRSL6d8BCHiAzp5J8ns3Mk+33+5UbLdrZjJbj2TvPbQtskhKgOux4ru7MZolFrmvUCosLnplB6rksdE8BFY+hU/rgSSwitxUgMdtedc/6Yed2Xrt+7msXlaIsWeP78d/FDZNuzLRc7Ms8mtjY3E3Il3D+7Ch7C/RqfZHhIT0q6h2BR8fLYnntv+xsupA1AEvCCjlZcv3d7KA5qDGzmjLdmBwGVF0WZ1nJTkUFdS6y+t7zeV64XImak7UDjAtMmyWDmzXFdMdHMVREf9TwpJUgIgvi+OLZeJnpWtMOKeEgpHcFFyqvoXY9ycy+mRZFIWVtayb6+GZw9GlumsuHlc4CPAVcKkx4UHQ4xAqQJpcvY8veboeALpuPkH6DHGdV1RgJX4FpaPPY9Cziek8eGn0NfCc/yQvj7UWQsN+BWwS5p98JVFB2uQKSyqk9FuzAblCEbEO1rMmOs+kDzq+n1dwQEUMMj16ZhUSyG7GgL3lJyqCQFZaq7vjjKUfi/8VwL514TCZZD7Cd225O0Xyqgfn7OqnHva0xgqVOO5mfskHXD6iZV3YJpIehFTTMXSbH/h3jF3HJ5sNF74Be+rPPUqUcfmj5/QQTTslJ8nCrVN27bTt2bSoIEl3Xux5VfzZ/9KiTl/uUtMMF0pzElaPiipfa/OeZLemQvf+8AYKOv8t2yEOBsEZq24HGBoWloT
- VNoz5GDq
- 6LYOSguegb73if4Nvv7/Qwmf5QIuFiFwKLovzKRL1tqpo4Q0wS/SYAWbwcbeAFoPyXDGssbHej7iGX50hB9yfhYcTOpfSEJUQwpNz2RX5ZznyDfszefgw/86255szoF1cOZIpkbcKrjyvG9z3BD1vT4npVsoXFiuFhjOf7iLjwAW1NlaXEZwQ+riEN5NyPvS61wW3CEnUAzwkulapG+XKvLABgnP7pQlosRdopwjSHO/nNZWuZC02ZLU/HYLKxcIAuwypbWG69jyJ3YiFgeyUURTCK5nbiGG7kWQSxRVsY1Ik+jRpdXkN1SlSeo8ArptwEibY
+X-HE-Tag: 1787105790-723444
+X-HE-Meta: U2FsdGVkX19JHroWWWblZTNgbqEh/LR8HMuK6zAg8le2LRPyYF79W02qdi+dNbjTwkcRIRb1hNpQMAeABuVEGpxgPeTK4gBUDfWoIF/GeHfPF/cJdXLfkpZs5UVfHfQND4Iewe0+oP8itb8UTg3gtJgXAdNzkF0yjASl7XW+bwVMd2ELlFTa5XHqj2WTnFSUyVwtCP6Dm/djUuN5LmvnrFTXidbhJ52sjGhaoWnNTf/T+i52u48gY7YSsM7U5gC52dNdDQIDOgDx5S2dBuwyr2vfDNAW+ZzXmscIwfFVGt4glKYVqM6Rg8CGLnwvFbR4WISAz7MSYl60efElUKBZDQoJP3KZwHcEKBRcx7KIhvCQDSgOeqM2FADridrmycOTyUUXT0jkQG/qhOPsENMuPvgbwD2B/P0Lnvzrr7wZsqWCJlDa7+0AUGKAXubT0NNPBqrKhZ+ym/0Xj3KDiEDP6DjzleIOabyES8WTnLdDNqVaHlxtOi1q7YFNPWSoPSjdRVL49Jh9i4KRaTcv0Pr9ykFYsBOC1vvvasQSwas3DVsN0SYH2dvDH9WZPcuGUkoL5BCp629L3jWQwuJRd8VsTeVF83c9uvmljlMS/KOulCrrAhYC3Jwzu23SnvB68I/gZuRrKCerkW3LknmYMdbQBV4elKcX8ciGuctgtdHUATTfj0utYvVZoKBWS6CbGfEiq/u15N0kSyPy3FIppjZtX0RjNAVG4grDs1aRXEEhpmWNNa3V1SHJXS0sh4mkpCXvAdrIj6cJE8b+UuWTRqQ90tHj1o+0hNLh4Eh6l3NUSYu8xjWNjbsybzQYZhH58xMgAXqdnTPN16yVEdCN6w7xOR9Zj6NGeyIgOHSlpgxs9kSJSvVu6Bi1SkmAxf72wi27E9owpyMvFySjmybsBLI7kIv82shivaMTOEhsk1H5aByIoZcs8zR4qqIfs5eIEDw0LCaHjuYbaNkZECNKPmF
+ EKEg0st4
+ BmKuIQtKc1aIfxhla1Ojdy8KZ7cDywUYER2uRkgSNaVp3CUwsBZfrEzxe1Crmd07ZcHtyoJHqBICCAV4Qu8DMGVjp8XhNbRCDNxoa/a4mVQXO2Tr3IGGs+PJ9X4mbb5g5Faaj3JILv6tcKq4z4qzzD+xnhe3Az8h+giSXDR5VrUOtjaZ/YK/5Ciq8it0ipmf1JahMCSAt7h2o59pUN/ysyJsi4a81fiSMN74bFmGZOc5W5QzLTk6ChzNfgEBf+J36zDvaeuziTMDQJ6t1TcOlTcFI7XFJRiZrtnkt9HZNpIeIUaU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,53 +101,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ye Liu <liuye@kylinos.cn>
 
-This series improves the page_owner_sort tool with a bug fix, a new
-module-name feature, and better usage text.
+The --sort option accepts abbreviated or complete key names, but the
+usage text never listed them.  Users had to read the source or the
+documentation to discover valid keys.
 
-Patch 1 fixes a long-standing bug where --sort was silently ignored
-when used without a short option (-a, -m, -p, etc.).  The COMP_NO_FLAG
-case fell through to COMP_NUM and overwrote the sort conditions
-configured by parse_sort_args().
+List all available keys (full form and abbreviation) with a brief
+description and examples directly in the --sort help section.
 
-Patch 2 adds kernel module name support for sort, cull, and filter
-operations.  Page owner stack traces already contain module names in
-the "function+0xNN/0xNN [module]" format produced by %pS, but
-page_owner_sort had no way to use them.  Records without module frames
-are assigned "vmlinux".
-
-  # Aggregate page usage per module
-  ./page_owner_sort input.txt output.txt --cull=mod
-
-  # Filter to records from xfs module only
-  ./page_owner_sort input.txt output.txt --module xfs
-
-  # Sort by module name, then by pid descending
-  ./page_owner_sort input.txt output.txt --sort=mod,-pid
-
-Patch 3 lists all available sort keys with abbreviations and examples
-directly in the --sort help section so users no longer need to read
-the source to discover valid keys.
-
-Ye Liu (3):                                                            
-  tools/mm/page_owner_sort: fix --sort option being silently ignored
-  tools/mm/page_owner_sort: add module name sort/cull/filter support
-  tools/mm/page_owner_sort: show available sort keys in usage text
-
- Documentation/mm/page_owner.rst |   8 +-
- tools/mm/page_owner_sort.c      | 134 +++++++++++++++++++++++++++-----
- 2 files changed, 122 insertions(+), 20 deletions(-)
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-v3:
- - Patch 1: Use fallthrough to COMP_NUM per David's review.
- - Link:https://lore.kernel.org/all/20260803062056.1518070-1-ye.liu@linux.dev/
-v2:
- - Patch 2: use regexec() directly in get_module() instead of search_pattern()
-   to avoid excessive debug spam for the common vmlinux case when debug_on is true
- - Patch 2: anchor module regex to stack trace format "+0xNN/0xNN [module]" to
-   prevent false matches on kernel thread comm names like [khugepaged]
- - Patch 2: add '-' to regex character class to support modules with hyphens
-   (e.g. aa-bb-cc)
- - Link:https://lore.kernel.org/all/20260722023726.600200-1-ye.liu@linux.dev/
+ tools/mm/page_owner_sort.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+index 10a814ba5301..5c1b23c0ed8c 100644
+--- a/tools/mm/page_owner_sort.c
++++ b/tools/mm/page_owner_sort.c
+@@ -772,6 +772,15 @@ static void usage(void)
+ 		"\t\t\targument in the form of a comma-separated list with some\n"
+ 		"\t\t\tcommon fields predefined (pid, tgid, comm, stacktrace, allocator, module)\n"
+ 		"--sort <order>\t\tSpecify sort order as: [+|-]key[,[+|-]key[,...]]\n"
++		"\t\t\tAvailable keys:\n"
++		"\t\t\t  pid(p), tgid(tg), name(n), stacktrace(st),\n"
++		"\t\t\t  txt(T), alloc_ts(at), allocator(ator), module(mod)\n"
++		"\t\t\tThe \"+\" is optional since default direction is\n"
++		"\t\t\tincreasing numerical or lexicographic order.\n"
++		"\t\t\tMixed use of abbreviated and complete-form is allowed.\n"
++		"\t\t\tExamples:\n"
++		"\t\t\t  --sort=n,+pid,-tgid\n"
++		"\t\t\t  --sort=mod,at\n"
+ 	);
+ }
+ 
 -- 
 2.25.1
 
