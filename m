@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D38BAC5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 12:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72F17C5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 12:39:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEA3C6B0095; Wed, 19 Aug 2026 08:34:08 -0400 (EDT)
+	id 8F99A6B0095; Wed, 19 Aug 2026 08:39:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9B0C6B0098; Wed, 19 Aug 2026 08:34:08 -0400 (EDT)
+	id 8A9FD6B0098; Wed, 19 Aug 2026 08:39:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B12B6B009B; Wed, 19 Aug 2026 08:34:08 -0400 (EDT)
+	id 7BF796B009B; Wed, 19 Aug 2026 08:39:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D21C6B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:34:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E61D514054B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:34:07 +0000 (UTC)
-X-FDA: 85117961334.03.4EF6DD3
-Received: from mta1.migadu.com (out-28.mta1.migadu.com [95.215.58.28])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B02A22000F
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:34:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A46HJ2pj;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787142846;
-	b=fPc1siY21IViUWy0z8cIvSXao0KKxXgOl0xr4WKUDgDL7qdZhqkiCE/MqvBUI+o1o4KXkA
-	/wfpak5py3zhz+RMpMb8/Nv0dI9RUILMvD9bCzGX7VlgjBjIVVZ02hU3e7dH6eaePbM0pz
-	amL0raIsGbKX7hueEB25P+HNSJyWYTE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A46HJ2pj;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.28 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 522AF6B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:39:38 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CEEB980539
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:39:37 +0000 (UTC)
+X-FDA: 85117975194.16.A9002F1
+Received: from mta0.migadu.com (out-233.mta0.migadu.com [91.218.175.233])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 949FF1C0008
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:39:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GC5g6UdI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.233 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787142846;
+	s=arc-20220608; t=1787143176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2BZYK8AHt9k4bE0RHXY1aSuWkhvRVrO3B5R/AbwY+lM=;
-	b=8EPwUstl3WPbHc2F6LMiH4UJyDZdNUX6PoZBKbq59obR47Nscn+ZeUlaOv/UNW00P2YEcX
-	vPJe/cXVF3EGyKtE+5ywEwSVK/0zeySvDIdHF2pLhTT1PqWQ7PY382S2N4f/OJh7QVSiWs
-	gwbCz5CMhhgOvsLIhBBTHj9EvyneJQ4=
+	bh=UWCUpVIDPzuqHSVP9xG3cjGcnL4Xb+7VXybcdiWk178=;
+	b=1uLOg6t+aAwQ1jTnj/RduSf5ZIKkjNarW4Mv5crxQPrZMDccgWI9H2hDOIQ83D+qMqHAjG
+	1ZO3h1zHIlEKM4AiitpSuSBFLUHZ9fS1QX7JC9DfqwGee0n+SNditEQUQXbVLNWTDor5nS
+	Wg2vfjYwliOmy1UksvpJYpE5bmvouTM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GC5g6UdI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.233 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787143176;
+	b=R5i+EZCO/F+VwjB9gNmpzy0DGSHUskrGELo5CVtr/kMTf24kX+ANM6798ALY6OY2BJgT9V
+	Q/4QNJDq4O+3W4l8r5k6OJJuu4HH7AgPtmeR7ithvhQ1hA0hz3CEXKE5XQfbPDapffD9pI
+	htWlISuBQF0DI3ufrrAyh0KszfKtKNA=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1Mi6ywisfNPGRA43uZhTcAwin6zOWap1I65ss7T8AI0=;
+DKIM-Signature: a=rsa-sha256; bh=/0QneJV1g4MfxResLf7BWzX48FMJzvzv6CTUChLrIPM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787142844; v=1; x=1787747644;
- b=A46HJ2pj64npg82sCkXrs/oN3zXYhC0M8eZXuqJqnXnkua3btMTRXvoK+O/KkPdhjy/nEvkZ
- W7tFAKC5abb1tF3MRbJLIJu4/JApnnarxo9EOKr0M5vOFDTnjehkhX3ubZbYaqDTAh/5Fb/tsRq
- Nf/xS5sVMofmGtE+Ky637kpo=
+ t=1787143174; v=1; x=1787747974;
+ b=GC5g6UdIAH+tCxgWyPzCLKp10meDvd9x6w+B4ACF00UNifqAWZtc2zVy+tcHN3klWrB0Tmax
+ wiD6Mg9P5tzHa2+UwAnPFVfBE70GF/AKNnRWDhvsAAEfujRVJHAKZieFnsCcjMfeICnYZQ26ejT
+ mEQW7ZXV3BfWf4mYRdoYnYQ8=
 X-Envelope-To: linux-mm@kvack.org
 Received: from [IPV6:2a03:83e0:1126:4:9d:a05e:5bd8:c200] (2620:10d:c092:500::4:a428)
-	by smtp.migadu.com with ESMTPS id 8e3edf76e993b089;
-	Wed, 19 Aug 2026 12:34:04 +0000
+	by smtp.migadu.com with ESMTPS id d88dfc952275f4b9;
+	Wed, 19 Aug 2026 12:39:34 +0000
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <fbbb6dab-71c2-4f8b-b7f0-6c7f73ddaddb@linux.dev>
-Date: Wed, 19 Aug 2026 13:33:57 +0100
+Message-ID: <4300a9b5-4423-4299-af54-e88bcca5432d@linux.dev>
+Date: Wed, 19 Aug 2026 13:39:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 02/12] mm: add PMD swap entry detection support
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ziy@nvidia.com, linux-mm@kvack.org,
- ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+Subject: Re: [PATCH v6 03/12] mm: add PMD swap entry splitting support
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
  willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
  riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
  baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
@@ -80,21 +79,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
  lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
  shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
 References: <20260818131202.494754-1-usama.arif@linux.dev>
- <20260818131202.494754-3-usama.arif@linux.dev>
- <69e8469c-aa7f-4141-be3c-796c9cf11f2f@kernel.org> <aoSmlTH8e26xAYLp@gremlin>
+ <20260818131202.494754-4-usama.arif@linux.dev>
+ <a5c3a93d-fcc5-4fc1-a764-726ca1d0185a@kernel.org>
 Content-Language: en-US
 From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <aoSmlTH8e26xAYLp@gremlin>
+In-Reply-To: <a5c3a93d-fcc5-4fc1-a764-726ca1d0185a@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B02A22000F
 X-Rspam-User: 
-X-Stat-Signature: 7m8nahm1nmyurgmn1w4xudeyu5dg91hu
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787142845-835740
-X-HE-Meta: U2FsdGVkX1/CHyHgffIN89pC12zwqrPVTlwQQM8gdre61K+nIXjnnMOedsf1pWCOtlLJBBNBALymesUhvtEwwC+pIdmambpDhPQIRmHXGW/jeDw7vDM6K4yRBVCb35EFwVvCfSWrtU7xpF563k3ZzhF/Q0MO+1TVW84cDr6m8xMMBb7HvWBJSFCj4pDRKuJNwsQTvPLP9PFl4J0PIJg0hTT1g8WhftwPvphR9L/nAfc/P9gkRfnwPtrtH5U4V4qN8AXP5StDSzuSlMYXGUA1VtvXQ9XahKoOZv6OVeLV6i8qaD7hyYZM49SzKQOksphs/3cCWWcpRWakHgzqvitmNSRCvEeU8Q20rGQRTVdign2BhQldPMhZrOpPNiqO7xiXbwRmdiktPOWaGIMMF4uH5oEfIrmkgKtC/rVgTbwEygY6VKh+Rwzuh0ZvESuOI8RuW6zZiiKdXS9ahH6N6f/ZL90KYPUCOhl+KIO307ha6JzjK2A9G2uVY/+lFb6MKk4U/nQx224a2gOtgc/Kkb7L1X0ioxA8vAffRq/gFQ++E35GL71phoAMwSaeLzfYlPU3y3esxewDvYTZc7myvzoGRQZgFXWZa/yZgCdTIoaccue3LiArZqhx+qeHJzKzwsFCbf7cE7P1PyrWMzfgo94kscpBBjmVOGM1ZEA7ePiuR6848uWysA+aDxGjEdajZfwPj+NUr5dd0qlpKXfhYFbNYDkrpbpuZc+mIy8ZluHYnEynpRNRt97jhfUJC+Ngz2pcO6G7/GADuL490DcJt4e2zU+YOc8Lj+QyS3EvgBi9vdPMFsus9oeeHqENMeEmTj1kEFbNSdzFS7/SQO5RDi/g28WIjwc2Mr5C0emGLo1fw6Hj/NckSNcVal9+kpD0Ye6iEZykzR4oo0O7HWTT1kB1g3VXpeUlXjzmpWTZQ+RcdDaB4vXFacqajvg1/v04pEKgnI9OrdlN5KTMGkuVrZj
- pyRHuNp0
- QYpKVYLU8YqFTKkhL2PfGdv3G6Yogr+0blAB5LWjoEz7UvssPauYj0Fz6syEukXrMeyKZsfb/B63I5i+rE2wh+PWW0DVwMIIsCtwjdbk3O8Ubj4/b8vexGDuOz+HIFd7+nTW67tZKmQIxppGCfaK0XLm9lrNPaZ2J2LtLxNTlgWjleusAiYbgcoeRegypnUazxk/0R2iIjArb513LC0/taYPQ2QjGjGGfgjX1Sim5o0Edh32FZyZqymlO2wpH3uX4nKlMLbr3yCagrRXnaRFldWt1HUBhRxsS4kHwiXQuNxbE5SLLGrGlNQuO8WLdmhBm8zjfPsZwq06heqY=
+X-Stat-Signature: cof54zs3ss8bhuq8edwf37htg75cge5i
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 949FF1C0008
+X-HE-Tag: 1787143175-81182
+X-HE-Meta: U2FsdGVkX1879wZd6jFtYmsIUyZ7hcZuDKnlHbrbv5HEbcPrT6PlDvCFeTW4MoYpJEC3jtzJfCBwkN8HWl+GthRNHGkyeveVyq1qDthwvH5n7a8bQlcE9XQVpTpf91e9i02VvTxfVnZp5ua/gUBIWCeHfn/D+ASPopjWIdQPBWusiRa3RyL3qWWdrnC3G+eFdJ/7JOtnrM/8upiNVO2sVtsvyBwjiRZbbd5MfjaAxXYsQxKuz1vSZPB/AyoimMRUUTF85c23si/T0SwLqSdU2zIpyBluKzZeQa74l3gEUfcCvauozDDC8LPAYjWat2gtNuf0tNkCTWFDKfsDCcRvG2R3aBTP7jMQQA7hYK8wbLn9xmpnrrjqkC9B0yuJrbnGYpdyjMH84ClHK+jXjppYRHRcgs6ssmJMjloayM3xuD/YjPOvmqVNKf8PLavhA7/b7ih0WUyNjirV+4k3DF7Qf11bz/Y2qpKAxmntDT7F5KAf9qcYmOs57Oox+EqV5RyxtEok+M47NGQEJoW2r8323Nja+s6KipeX985ZsnSuecveWfdFcyNXIx1ux0hk3Bf3dbJ3Yc80AAPUciviXFO/hODHmhVw2nLFGhUQ9Ki7YFyrOSTKmyYzd0ucC7gf8z4V5zJTKayD1lanbirroVRgfp3GWwEtBH3YKAfjk4dAjN3TC/lwC5O5eRw8jE5QsSRQU2pGbINRPlmYadXrjI4gWzlq9spLPOt+VY+M6aYKJJafZonp+5bzdhp/CBHg8PWziSYqwgiAvMaBdf0Y7TzzB90ZSxh5+rMIEv5Qm+4kRnBOC6zKJJ4MrPpH+m7GESaocXM5+OvZ7k8deuAZEAAdGz9VedoSgZ1ZR0CAs7zkqn7EB3OoiMAZzWU2E4iU5lYHa7Yez1RBmAzSQjtSZ7Yy/Smw20xl05YuqLzdVLKyKiQOs6dy4SqZMGT8oAoBPIPIWAYOt2e/UaVQTdyJF79
+ YoqjEJ38
+ zndwXvF4RBIY3OaVrYqz7sXdKOFgMv1j04mXZB1qTMULQnDbxKjgibH6eJgi9RyjHWl4RN/YMov92jkxaArvl+pJ/Zzon5v4VbOFtCRgaSgD6r7HJYDG7RrJ0eaBIAxEJTFQTT3SePsNKih5YPnrtGfxDE33/IhHr8a/vgHveY0bYiB4na86y++S1HKS/3zlhOtTSRwEWUppH+fSrTjtEHz3xU2afzu2Tyr7LIsEyNdP3Q4bJ4ezwlfriYMBsq5cCBWnQmuny+sDTURb5Kn4DxpyNwcXaakNTbHFQHF7JoI9kQUk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,130 +103,103 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 18/08/2026 19:42, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Aug 18, 2026 at 04:40:25PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/18/26 15:09, Usama Arif wrote:
->>> Currently when a PMD-mapped THP is swapped out, the PMD is always
->>> split into HPAGE_PMD_NR PTE-level swap entries. To preserve huge
->>> page information across swap cycles, later patches will install a
->>> single PMD-level swap entry instead. Add the infrastructure to detect
->>> those entries.
->>>
->>> Teach the softleaf layer to recognise PMD swap entries:
->>> pmd_is_swap_entry() detects them and softleaf_is_valid_pmd_entry()
->>> accepts them as a valid non-present type. Because swap entries do not
->>> encode a PFN, make pmd_softleaf_to_folio() warn and return NULL for them
->>> instead of passing the swap offset to softleaf_to_folio(). Clear the
->>> exclusive overlay bit in softleaf_from_pmd() before decoding, matching
->>> how soft_dirty and uffd bits are already stripped.
->>>
->>> Add pmd_swp_mkexclusive(), pmd_swp_exclusive(), and
->>> pmd_swp_clear_exclusive() helpers to each architecture that supports
->>> PMD softleaf entries (x86, arm64, s390, riscv, loongarch, powerpc),
->>> mirroring the existing PTE swap exclusive helpers in each arch's
->>> pgtable.h.
+On 18/08/2026 18:53, David Hildenbrand (Arm) wrote:
+> On 8/18/26 15:09, Usama Arif wrote:
+>> Add a swap branch in __split_huge_pmd_locked() that splits a PMD swap
+>> entry into 512 PTE swap entries. No folio reference is needed because
+>> swap entries point to swap slots rather than pages. Each PTE inherits
+>> the correct sub-slot offset and preserves soft_dirty, uffd_wp, and
+>> exclusive flags.
 >>
->> Ah, for migration entries we still use a dedicated migratetype. I actually have
->> on my todo list to move to PTE bits as well.
-> 
-> We do seem to have rather hacked in PMD level stuff across the board
-> previously :)
-> 
+>> The folio_remove_rmap_pmd() gate at the end must inspect old_pmd
+>> rather than *pmd: for a present THP split, *pmd has already been
+>> cleared by pmdp_invalidate(), and that invalidated bit pattern can
+>> decode as a plausible swap entry.
 >>
->> (likely the _swp_ part should then be renamed to indicate that this is for
->> softdirty entries, not just swap entries)
-> 
-> You mean softleaf?
-> 
-
-Yes, I read that as softleaf as well.>>
->>> Provide generic no-op PMD swap exclusive fallbacks for
->>> architectures without PMD softleaf support, matching the generic PMD
->>> swap soft-dirty fallbacks.
+>> This branch is reached from the explicit __split_huge_pmd() callers
+>> that hit a non-present PMD: partial-range mprotect / munmap, the
+>> wp_huge_pmd() PMD-COW fallback, and the swap-in / swapoff fallbacks
+>> added in later patches when the cached folio is no longer PMD-sized.
+>> page_vma_mapped_walk() does not iterate PMD swap entries, so
+>> try_to_unmap_one() and try_to_migrate_one() do not reach this branch
+>> and freeze=true cannot occur in this branch today.  page and folio
+>> are therefore left uninitialized in the swap branch; a
+>> VM_WARN_ON_ONCE(freeze) catches any future caller that breaks this
+>> invariant before the freeze path dereferences page_to_pfn(page + i)
+>> or put_page(page).
 >>
->> No softleaf implies to migration and no swap, so this would work.
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  mm/huge_memory.c | 29 ++++++++++++++++++++++++++++-
+>>  1 file changed, 28 insertions(+), 1 deletion(-)
 >>
->> You should extend mm/debug_vm_pgtable.c in a separate commit to test what
->> pte_swap_exclusive_tests() tests for PMDs.
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 1b6b0aa2baa3b..a473e85d30f51 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3252,6 +3252,14 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>  			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
+>>  						 vma, haddr, rmap_flags);
+>>  		}
+>> +	} else if (pmd_is_swap_entry(*pmd)) {
+>> +		VM_WARN_ON_ONCE(freeze);
+>> +		/* Swap entries have no page for the migration freeze path. */
+>> +		freeze = false;
 > 
-> BTW one thing I should maybe mention here is that I never quite _finished_
-> the softleaf thing, so there's some awkward overlap between swap stuff and
-> softleaf stuff (swap entries _are_ softleaf entries, just a specific kind).
+> It's odd to VM_WARN_ON_ONCE() and then set freeze=false;
 > 
-> Infinite TODO list etc. (maybe this is a hint/nudge to somebody else to do
-> it ;)
+> I'd just add the comment above the VM_WARN_ON_ONCE() and drop the =false.
+> 
+> freeze=true really only applies during page migration, where swap entries don't
+> apply.
 > 
 
-I kind of tried to tackle some this along the way, with the prep series in
-[1]
+Ack
 
-[1] https://lore.kernel.org/all/20260706114320.1643046-1-usama.arif@linux.dev/#t
-
-
->>
->>>
->>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->>> ---
->>>  arch/arm64/include/asm/pgtable.h             |  6 +++++
->>>  arch/loongarch/include/asm/pgtable.h         | 19 ++++++++++++++
->>>  arch/powerpc/include/asm/book3s/64/pgtable.h | 17 +++++++++++++
->>>  arch/riscv/include/asm/pgtable.h             | 15 +++++++++++
->>>  arch/s390/include/asm/pgtable.h              | 17 +++++++++++++
->>>  arch/x86/include/asm/pgtable.h               | 17 +++++++++++++
->>
->> I'm sorry for asking you to compete with Kiryll's series by creating one patch
->> for each architecture that directly jumps at arch maintainers :)
->>
->> [...]
->>
->>>  #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
->>>  static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
->>>  {
->>> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
->>> index 7c13c58a5e218..4a6c52974b305 100644
->>> --- a/include/linux/leafops.h
->>> +++ b/include/linux/leafops.h
->>> @@ -102,6 +102,8 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
->>>  		pmd = pmd_swp_clear_soft_dirty(pmd);
->>>  	if (pmd_swp_uffd(pmd))
->>>  		pmd = pmd_swp_clear_uffd(pmd);
->>> +	if (pmd_swp_exclusive(pmd))
->>> +		pmd = pmd_swp_clear_exclusive(pmd);
->>
->> Can't we just unconditionally clear these flags?
->>
->> pmd = pmd_swp_clear_uffd(pmd);
->> pmd = pmd_swp_clear_exclusive(pmd);
->>
->> Avoids these rather unnecessary conditionals unless I am missing something.
->>
->>
->>>  	arch_entry = __pmd_to_swp_entry(pmd);
->>>
->>>  	/* Temporary until swp_entry_t eliminated. */
->>> @@ -634,18 +636,30 @@ static inline bool pmd_is_migration_entry(pmd_t pmd)
->>>   */
->>>  static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
->>>  {
->>> -	/* Only device private, migration entries valid for PMD. */
->>> +	/* Device private, migration, and swap entries valid for PMD. */
->>
->> Can we just drop that comment? I mean, it's as clear as it gets in the code
->> immediately below :)
->>
->>>  	return softleaf_is_device_private(entry) ||
->>> -		softleaf_is_migration(entry);
->>> +		softleaf_is_migration(entry) ||
->>> +		softleaf_is_swap(entry);
->>> +}
->>> +
->>
->> --
->> Cheers,
->>
->> David
+> I think it's time to clean that up ... that is
 > 
-> --
-> Cheers, Lorenzo
+> a) Expose a helper called split_pmd_to_migration_entries() that is only used by
+> code that installs migration entries.
+> 
+> b) Hide that "freeze" flag from all other file-external functions
+> 
+> c) Rename the boolean to "use_migration_entries"
+> 
+> Then it's rather clear in this code that this should never happen.
+> 
 
+
+Thanks! I have done this now for next revision. The migration choice is now private as
+use_migration_entries, the normal split APIs no longer expose it, and the rmap migration
+path uses split_pmd_to_migration_entries().
+
+m
+> 
+> 
+>> +		old_pmd = *pmd;
+>> +		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+>> +		uffd_wp = pmd_swp_uffd(old_pmd);
+>> +		anon_exclusive = pmd_swp_exclusive(old_pmd);
+>>  	} else {
+>>  		/*
+>>  		 * Up to this point the pmd is present and huge and userland has
+>> @@ -3388,6 +3396,25 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>  			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
+>>  			set_pte_at(mm, addr, pte + i, entry);
+>>  		}
+>> +	} else if (pmd_is_swap_entry(old_pmd)) {
+>> +		softleaf_t sl_entry = softleaf_from_pmd(old_pmd);
+> 
+> No existing code uses "sl_entry". Maybe just call it "pmd_swp_entry"/"swp_entry"
+> and below "pte_swp_entry".
+> 
+
+Thanks! Will do in next revision
+
+> 
+> 
+> Apart from that nothing jumped at me :)
+> 
+
+Thanks for the review!
 
