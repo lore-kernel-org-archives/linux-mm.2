@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3576CC5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36758C5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:47:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1DF86B0095; Wed, 19 Aug 2026 03:47:29 -0400 (EDT)
+	id 333EB6B008A; Wed, 19 Aug 2026 03:47:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5C26B0098; Wed, 19 Aug 2026 03:47:29 -0400 (EDT)
+	id 30A8F6B008C; Wed, 19 Aug 2026 03:47:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C323D6B009B; Wed, 19 Aug 2026 03:47:29 -0400 (EDT)
+	id 24CB96B0098; Wed, 19 Aug 2026 03:47:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FB406B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:47:29 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF6FB40463
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:47:28 +0000 (UTC)
-X-FDA: 85117238976.26.B6F5E4C
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1E7ED80009
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:47:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UkUFSdjR;
-	spf=pass (imf30.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E81416B008A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:47:36 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7504EA0A4A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:47:36 +0000 (UTC)
+X-FDA: 85117239312.17.4CA5A63
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A67F94000C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:47:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=k2LZ5Q2i;
+	spf=pass (imf01.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787125647;
+	s=arc-20220608; t=1787125654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CWkEyoxZps0PdiXw6wwCg4ciwx9ABuctTL6IGXUaTDg=;
-	b=sLvBmiR6R4KNTXQlGYh7EvL2iDwEOq4wE8Ta5nNI8qLCtz0gX6s+Aee0ei6n4jMT0h0+Qg
-	9f72JITQPO9TynsF1zG1vDf0CxwaC2EoyTo3Jmk1r6iRHKlLvTNd+eVYzjCWWzkgm11YBl
-	Ym13YhNDv0kM7c4tuTbApW+eKyHepX8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787125647;
-	b=gazt35KitEEXKaQUtyNB45d5+8Mu9LT80MQJ/qRIFDRF5P/neswW2DZ/MG3FXsISkFho6z
-	Rwtg96sip7wqlO+zKDyQktp3fO33Xx/s/uinbUaX0vThNzXLX1/QMoyQu3TMphP5lR9lHa
-	RPU3/KQCsAS11bMhjkjk001dbf0qd9Y=
+	bh=EM9mPI9yixDIV/dQKvKcahELWkdUTMep2I+eKhwYYKU=;
+	b=0uxePtKQdm91ta/wcgHzt6APJIwM0lmwLMkoSMynp/GT1/wd691Kv1iGDQo2+Y+aCfNrLb
+	jzHG30R8c5FMgms6GbwgVsZS/zm/xv7PCspj2l5j0n5VqeWwubcJGagdEddVH/YS7nwqKR
+	dt5y1zMl4KXEM4tiQIEgIZxIgC11+nU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UkUFSdjR;
-	spf=pass (imf30.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=k2LZ5Q2i;
+	spf=pass (imf01.hostedemail.com: domain of hemanth.selam@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=hemanth.selam@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9e7391839cso632386a12.0
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:47:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787125654;
+	b=AIpX2NHYkt2hJgFNUAbKCdX/8kd3ijZyUUei2gRUIYsOSvtZwR3j37NjTNmHToYsl/tMNN
+	nzH7LzDtTztT7v1XpJROCEzCB22zqRkCC6OKMaTE4EZHFzEwipRvBWjD97gsz5Z7wDwwo5
+	gBxuVAW5NWMlir0gOp94JnZu/s6Y7CI=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-382ef647e20so814056a91.1
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:47:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787125646; x=1787730446; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1787125653; x=1787730453; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CWkEyoxZps0PdiXw6wwCg4ciwx9ABuctTL6IGXUaTDg=;
-        b=UkUFSdjRdfWM8mQXI5KDSlMSbkyF7sjnxJAxRPAkqVx9xSQdqlZrA7KxHpAOpAxUI9
-         PvNFEECV8clzcg4VR+3aeSBqkYN7aWjJ+yNAzGeYptSVLGx7m/6qc5jQHjM/+Q5MmWdW
-         +ywfqFKIgavYT0nusnHl0uDFeAlUAocCeu1Zs8+YUxuDD1a34vSqDTC7ucoLIbKanXmT
-         510YI48V4g8P5FznbH+yD4vRppQJCL26oL55dgHWecX1cOjEbcR9G09kQwLROJ5pRG5H
-         4KmOMZaktb4iNGwNIvZfmTOpc7RwF2miPhMTWj2FUMMl46JU1IL/MZsoRcKYvnYWcI7i
-         yVmQ==
+        bh=EM9mPI9yixDIV/dQKvKcahELWkdUTMep2I+eKhwYYKU=;
+        b=k2LZ5Q2iSyfSBwJyNAqIiR47NY6TJi0apmMuPAzYFs6zD2ZBFr8/SQKtB6wgGVx3uW
+         a+VvLBOGass8oUQE+f+b8e/1foFNaELCVbiIVSa24IIfl+of5pEE1JZYCobd2rVKUrY2
+         bKZfV9Si4NY5Pk/nL6fC6pwLOkBfd/qsXNec2JDQmmm8sef7eZixbRNGoIGmSOeFzrRw
+         qwaV4eSx90dXurFUSz029dSW+n1hZqYhX4FhS+bjajaPbNrEOWcLA1e8hI3hR065excW
+         dD7Xbcnb3IvIx8G32pFUbeTznCqnRwwgHPou8ahFA1q5k2nJ0oWiqFCcVnd9bfEt6vG2
+         qg+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787125646; x=1787730446;
+        d=1e100.net; s=20251104; t=1787125653; x=1787730453;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CWkEyoxZps0PdiXw6wwCg4ciwx9ABuctTL6IGXUaTDg=;
-        b=WLj7L8Tb9HyxfhMHw0B3e+/qnLinmGXu5b9ZDT3jtOuK0D3faBnG2e839IOw0Ovpr6
-         IyJNDZ5NFH8PX6AIIdvC6vgRCLhXbO8KyO4xrX61Whbkqd12gHLCKHgLTWJohBEF5O/z
-         MFj2s3l/C0x5gETauTqICze4Ltgu/DTwUQx04McPQ862Fz1F6vyiyI5RsHCjzwNJ9vC/
-         2cu/y8GWSMMy1Z5jWQsUNPomB6ziYV5+YvbdNBLrvQPEVFULWUmW76w3E2vNAKsoV2HT
-         weG+vzuSLPzi5vpFZBsxweYOlr4UTIzn+EFF4HMTqhcOogc5BLc6bOLzf4qacPM94y9a
-         bivg==
-X-Forwarded-Encrypted: i=1; AHgh+RojLH44CcpwlhtqO5IRY7iPD52C3Oba0XnRDUwpwpWqz4SXIGubSJlDtHVJwztL4z4wTRZuXzOYmA==@kvack.org
-X-Gm-Message-State: AOJu0YxJiVE91n2YfvVEEuxscwiYYacDU3sZWiZuyDgb/TIwVQS7yDQb
-	YEK48AeJp5lIq6LxSwv49acPoWQLRV8u+m3ii/mfm+g54To1zdAWXqtp
-X-Gm-Gg: AR+sD128aqmVJa5h+sbkbQ0esXPpbar5NJi/EDFwvypWoOzdBj5G0P24iwKtDmDSYzy
-	ZqwXcZso00vJxmELCva9xGn3PVMuO/+V7Erx56ZYmF/d/UQ5/OV63ba+UKBi0481p7Pmd/+gD/u
-	UxEOSI9HkwLOXpcTgI6dinaCNbhLHIaJsytE/+aLV563GKObkoK6aeEMgxvKtvpBc5bfansNnTo
-	ML0XqBAyxBus1pB9Ud8Dn9GHZIQ20++muIN4qOwziNYNKAqKY0H7q24KvO7M6FLa88dDAXFL2h6
-	3L8p0WNO++1nbPJhQZtyJ6s7bwH/0R/OpTeLwczMorqj7XjdX12DIvQpPHUYm6K0qaJGbxEn4As
-	EO0srjZgTMo75qnxhM7XhYVH334tNLVTOOnJ5yZzk4PPpSaKBogDK/DXALgtVzUNF/PGECOJSwN
-	ifMg/kFURHlUfP/AMGq0WC86uWuPY8UoFBcUyTezBRXcApcLpeH3pSeRc65NTFjY3U4XmVG5Zz8
-	7EKwbZHEjc=
-X-Received: by 2002:a05:6300:4c:b0:3c3:88a5:83e4 with SMTP id adf61e73a8af0-3cd011b1b48mr6380483637.10.1787125645848;
-        Wed, 19 Aug 2026 00:47:25 -0700 (PDT)
+        bh=EM9mPI9yixDIV/dQKvKcahELWkdUTMep2I+eKhwYYKU=;
+        b=seqWdePhS/fizpVhpTDS/mq91JWssHlMNkKPp3jj181DBbvFZ99GV3+WNoeARilOo2
+         wj5FpV5uirAa14pS6hhXSwhLj0pAUzZYGlQnbva1p6U15Raukc3qDN1qPvyh7yhEvMUy
+         J05divrLrMhJq0MoQy0ieUAbF8WsZeEt9ajH9LB2mwi8egdki0S9HNRMmwrePYyct2Bp
+         maygKn3LGCFERHIWk+yP5s+LOLjs/D9h6dlsbueIPwpd9jFqkPzt4QJT5OTd6HYofLUB
+         pe4kMR1kFuZ6YOpUAnSAqWJ3Eq+ZZt9W9KgT5WQ3+fYZUk63yN5y+vkK15gvyUdpcx6y
+         Djlw==
+X-Forwarded-Encrypted: i=1; AHgh+RqcmFEDYFn6f0h3dNamGdhVj6pAiHvlYPmT8gzn/iKb18b9oNp8p2nH7QlPuMNadCfUIO8zOxpgNQ==@kvack.org
+X-Gm-Message-State: AOJu0YxOzbvC9J9ukOl0xwnVg6tGSzU4nuUqXyq/zSm6j7ebWyTXaKtI
+	0cEHmnHem/x5CWFgImLgYsUUJ6zaFORGHsT7hywOJITHjZkk8MoWxBfg
+X-Gm-Gg: AR+sD11wWNSlYxFTy3bISh+1TaAGPul5sCdeD8dRCPLC7rsB0pwOClROleSk7BdOQFI
+	2CgENyUBJ6X8A8w+mCmghsNu3MYzfciEWN2IfoTtHK+hRLe2VWPto8T9o64F5DtOQRxLm1okLL0
+	iN/R6UGsJBmnFJtT2KpE833zeG/EhTNQdeYAjLYrw6hAFweBv9CPds/Hn49lmcrZSvbu218lcLJ
+	0Z7kxscMoZEvK8WLvoaG9xJH916S/PR7afX7tCZXFK6RRUCIZRfSa6VN0RibeETGfLC99tB+W2q
+	eK+CYlUCtJgwf2+zpwUccjnbSwHCgvQ3DEY/nWqD1U0KmIbc7ifAeBNa1okyun4WMeYc3kzTXb0
+	waolrD2lbQY2nQZSBYXxD1B7ISnBl5uk8jYk+SJF2YlkldhuLwZejyAU7P+Ii0RtLuhjmyzpnee
+	7Lv9RQ4vpdVvbvdOwOIzycHiExJmSNnhof4uhU9eZi/Qn5smbPr5IgI+xr1o2FxDgZPoKhqixGB
+	0Zc8qiPf+Lstdp7QGwi5w==
+X-Received: by 2002:a17:90b:5250:b0:381:9028:5945 with SMTP id 98e67ed59e1d1-3958125375amr5603472a91.14.1787125653369;
+        Wed, 19 Aug 2026 00:47:33 -0700 (PDT)
 Received: from volcano9f8e-host.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bef77be3sm4151708eec.10.2026.08.19.00.47.21
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ad3dd15sm3927299c88.2.2026.08.19.00.47.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 00:47:25 -0700 (PDT)
+        Wed, 19 Aug 2026 00:47:33 -0700 (PDT)
 From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	Yury Khrustalev <yury.khrustalev@arm.com>,
 	Kevin Brodsky <kevin.brodsky@arm.com>,
 	"Liam R . Howlett" <liam@infradead.org>,
@@ -107,22 +107,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hemanth Selam <hemanth.selam@gmail.com>
-Subject: Re: [PATCH] selftests/mm: remove the local PKEY_UNRESTRICTED fallback
-Date: Wed, 19 Aug 2026 13:17:09 +0530
-Message-ID: <20260819074709.1345730-1-hemanth.selam@gmail.com>
+Subject: [PATCH v2] selftests/mm: remove the local PKEY_UNRESTRICTED fallback
+Date: Wed, 19 Aug 2026 13:17:17 +0530
+Message-ID: <20260819074717.1345749-1-hemanth.selam@gmail.com>
 X-Mailer: git-send-email 2.43.7
-In-Reply-To: <aoRto6bT3Fv0jm7k@lucifer>
-References: <20260818114945.1312987-1-hemanth.selam@gmail.com> <9e533fcd-c80f-42df-847c-c15c4e3a1a70@kernel.org> <aoRcdLGWaNhUFIPU@lucifer> <277db0f6-6161-4ff1-9540-7b1eb5f7924b@kernel.org> <aoRto6bT3Fv0jm7k@lucifer>
+In-Reply-To: <20260818114945.1312987-1-hemanth.selam@gmail.com>
+References: <20260818114945.1312987-1-hemanth.selam@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A67F94000C
+X-Stat-Signature: k8ga9we7f3u7rpce1ai4m46jc8cxqd46
 X-Rspam-User: 
-X-Stat-Signature: xbb4aqz71ns5kn6oums8ohkztdjp4w45
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1E7ED80009
-X-HE-Tag: 1787125646-67150
-X-HE-Meta: U2FsdGVkX18lQqxPfyqEs51STyFu0Pj3haJ4p5Y8/WJnzhgIM6J0dmbBvys8wfrSWEAG+yQVV0tpPPkAsfbWkouJ2QLZ4Kg+0CskjutA7J6EFy3c9A77UqWI2zFw00nGeSOx9+6WfxcFJB5nB58t0W37Bc9U31uG5gHvC12aQR6zeCbcTB00bIbo3lRvaAAnSFwv6Ju14yP8uiFngXrHR9DTq8rURbhZONLm/Bbl2WabnUwaxLC/+Ebcz5BF3voS8+EpUcyZuQLWF+SC6QIsjA0/smxejGk9QvPuhcUtPf0synqKSPW9yfpnZ7NuEg7el7iaYfb9za0BQ7hucn3Yn3ZOL6yqIzRvktuY72Y+K+gePiGDAzWjcSGBwAiZAfPiuwH/xE7WlORHHc/8jENW4gKGNQtjxBqYdYJ10v29JUaoFf/n92al9+z98/Q7gPRfzTMoRi5ut84ASJhFJT0/I6R5MXj9VRD8FEJnylFuxZ4JwQEjNg7XlHJtPrFi8HSjmOg4tRhBJLjlSOCx2jN7KZZul/gfrwfuKVq+/sjz64q+Sh+Kdsnbg3moX10nhqLpS0zMD5Lf8MWLhgmgl/DDObJRjp+KyiF9Ek6b31i7J8KbwvAVRC9YqVX+cSVlgRWcsY+aMhG2k7aiNNDjqtsPagm9sumsMijHUeBWPoyfVyyaHRd1JIFMmR2G85SK3hpcQQm8At5pdxhHZotGU2XDJ28XT8Eluzkqkt2vjvwSxnjnTMJVIYYOcuWOX4gWOavFfL5HRfXZMPdOvKZEp48u/nwmmbug3C6b+EmITFkW7yI24fkqZoMBzF/HHplcpVdtb0SbvkX6bHyf5xHkYIeSG9H3+pv4zTyBOhNNEcojMr3fPaLoL95VeuMZNPsV/tCadaKw0FHgTKuynS296ls09y3jXPyAEhX5fzpEvf4jFtgpEJncreanHNwGNn0tTd/FkSU9c4Z5qjkItd1Yira
- ePSP2CfV
- 2ZVZFwhUEiiEt8dF1d5w5KPFhPGRPEkEKi+psxz1HOVfuRuuNvQjbSDqjlrp+IW27UHCVSdj82OD5jk2vKN9CM2rZr/U8T87O5PzFevw0R1C+ku/hzBlvHXfILXOsjZhbWZUk/I1ICpi0I1gBKQRV1qSAgXYUv9lB99RaRCyJcdHsSfmH++ZBmk8gH7n8zqGzZm803ORL/4PVosedpeh1s55n8qBfTBIIgebN+y4LswdSF7F3QKK1lPwDwhldgBhT/8QlfmlTpAyJhVL9pUw3H3nvFNLshnb2hFV2lHhoxGeSBS2syqu21sxQZM1pxrN7gWRVeQhRR+6m9zccZGBAq8Zlj7AGG3YkNCEUQomIy+zf52j8ExJj7IVUYtMdeR2C7YQ4lah21ENTenikzoa7wMFPPnqLbDb9oEJ3rIGrU/mRHL3PlJ8ImD0PAyZioRj8yjZuoIrHXUEGokt6v7+o02UEzejGNH20p94ArLHzOEVL3PxZ2i7N93ivHvg9A3ZVf6Nn/3NZFNS7xhA=
+X-HE-Tag: 1787125654-760041
+X-HE-Meta: U2FsdGVkX1+TD8jiOXbkq59lencv3nbm/SjQFFmQ3VOGGM39neWmIQIROD/Oo5SfPm2MilnKE1gMvGP+vz0CpHZWNdQBa2garZ/Ym9V8l77MCYZQpe9FXAd6oqRs7NHjfQYJ7wvyXATWIqq7sQrOFaLrtpSDql/gmra+k8S00TJVXbWKLs7Xx318P2Myb9nh2oiGJlMKu+fb8nbnJehBsNVtKw8nNs/rK3qSQXXAE3SqE6/269FOPJOiiIBSRnRE8LZW/Ds4B86FjqQpLfvzmq9y3UTEdt2+GtPowhnQp7smsB9Cec7MgnlFvt7cc6CFkkzBDEfiOimupRbdbjnnlRtFDaPFJsZdOz9hrx3PzN55wOAZcbCWc5DbpADyUlmzKtfx9wO03S4XOA74uHhw5874t7fMSHQgGf9ZCVigjLlrbDxmuF5zfnizP+7YJVI4zP+hNvWwVuNLHBkeaEOWxfV1epz959OjdG23pgGQwoOWQb0zXEyuT1UMrtWz0C62j1dpkxToaCcIS+si1xUNCb9E9QMK5TFL0uBcOZZndDRLMQHYKzidZNXqHt4tinlPcne9/BDMyvTK2+NXGzIqjwVNrUd7EjRKHV5SG+j1+W1e41dL5R+BOFHxdHVvD9ArTIyOUlAcViwy7VWU9g4Afe4i8N/NbMvBsu53LPSLG87Hq7j6NGPUQoldwkzBtGFjHcNP0w5uISHP2TuuQwtt20gjiXYK9/4A/PNDYfAPNQU0kShQnSJzCfIMvE4enEBJoCC0i+KGs7Tv2KzrakAYcVHfHc20voubIZTJRFjSfUsGPUCoYLgph1gVuF/U5vZ7w2jVhe00byAMM6AXSwK04FK8HIbkuQELIZyN3to3id5zUvhUiAUOYMACi29kQk0+0U14a3uqdIUkqzPxFzy8isuB3ZYuUagdwbvLDpuRuzltIfXXcIwWpeGtsHfZUIjkMsoQbDSvhOD40vavE84
+ 2lSeRxHV
+ xePRZjGhRxJwnICyglrWmDbIt93jgl2aBGclsiO5CuHNlxh1yU56KJLSFdcvjWPeYgZwPk+gtCKBmnl/AaBTkNsxz5n34Z4Eh4Q7Jm7D29Oac2yi90R+1IzoP7IJ4N+9d4zdDPvpBd/WS5embNHowefgkNfyNeCXwImquuX/AJz/w327Cxz/gGghPrUK2L6xlrtLggsH/Mf87r2eK7+iUbV4CoheXdodAKbQ7lQdI6EWStOzlUm1MyB2oHPf6vrQOcRDVedFsci9vVoiaA4KZ+n2eJ707Z++ZoE+MvKe/e9AjV8ezB+nqPrhpRaHOQdgpjyJjAaLyi0hJ6zXQd4Qp4wRwDdjqdk+sO8/aZcc5qPcKmzjmNsLFzbAgsdytV/yR4QIQmoXO0S61I1ONpGo8U1xXc6X7fPtkQvPve2axvy0c7rgOf/pk9dwz5+6jik3coWFfh1XJcoibRXLoKCDHogzgwTKlrzEUn2Bekzga0oK/Eya9zCXv76eafJpNyoH8YKb7REqD/qSuaMFodgDpIrdaxbKj9Aenf+9WgFm4GyCwj4P5nRVxm0vjxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,79 +130,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 02:36:00PM +0000, Lorenzo Stoakes (ARM) wrote:
-> But it might be worth checking in this case to see whether the problem here
-> is in fact that we need PKEY_UNRESTRICTED defined over there?
->
-> Hemanth - could you check please?
+pkey-helpers.h defines PKEY_UNRESTRICTED itself when the macro is not
+already known, a stopgap from when the generic definition was still
+under review.  It has been merged since, commit 6d61527d931b ("mm/pkey:
+Add PKEY_UNRESTRICTED macro"), so the guard is never taken and the FIXME
+can be honoured.
 
-Checked.  It is already defined over there:
+The definition comes from tools/include/uapi/asm-generic/mman-common.h
+via TOOLS_INCLUDES, which commit e076eaca5906 ("selftests: break the
+dependency upon local header files") added so that the mm selftests
+build without "make headers".  It is reached through the
+<asm-generic/mman.h> that the system <asm/mman.h> includes.  Building
+the pkey tests with KHDR_INCLUDES pointing at an empty directory
+confirms that; emptying TOOLS_INCLUDES as well is what makes the macro
+go missing.
 
-  tools/include/uapi/asm-generic/mman-common.h:88:#define PKEY_UNRESTRICTED	0x0
+No functional change intended.
 
-and it does reach the mm selftests without "make headers", through
-TOOLS_INCLUDES.  The path is not obvious, so for the record:
+Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+---
+Changes in v2:
+ - Drop the incorrect claim that the mm selftests are built against the
+   headers of the kernel source and would fail without "make headers".
+   They are not, as Lorenzo pointed out; describe where the definition
+   really comes from instead.
+ - Leave tools/testing/selftests/powerpc/include/pkeys.h alone, as
+   discussed with David on v1.  Unlike the mm one it is an unconditional
+   #undef/#define next to other powerpc specific overrides, and that
+   header only includes <sys/mman.h>, which does not provide
+   PKEY_UNRESTRICTED with or without TOOLS_INCLUDES, so its definition
+   is load bearing.
+
+The full include path, for reference:
 
   pkey-helpers.h
     -> <linux/mman.h>           tools/include/uapi/linux/mman.h
       -> <asm/mman.h>           /usr/include/asm/mman.h
                                 (tools/include/uapi/asm/mman.h does not exist)
         -> <asm-generic/mman.h> tools/include/uapi/asm-generic/mman.h
-                                (-isystem puts it ahead of the system one)
           -> <asm-generic/mman-common-tools.h>
-            -> <asm-generic/mman-common.h>	PKEY_UNRESTRICTED
+            -> <asm-generic/mman-common.h>      PKEY_UNRESTRICTED
 
-I built the pkey tests with KHDR_INCLUDES pointing at an empty directory,
-that is, as if "make headers" had never run.  They build, and cpp -dD
-says:
-
-  defined in: tools/include/uapi/asm-generic/mman-common.h
-
-Pointing TOOLS_INCLUDES at an empty directory as well is what breaks it:
+With KHDR_INCLUDES pointing at an empty directory the tests still build,
+and cpp -dD reports the macro coming from
+tools/include/uapi/asm-generic/mman-common.h.  Emptying TOOLS_INCLUDES
+as well gives:
 
   pkey-helpers.h:188:30: error: 'PKEY_UNRESTRICTED' undeclared
 
-So that is where the definition comes from, and dropping the local
-#ifndef does not depend on "make headers" being run.
+pkey_sighandler_tests and mseal_test are byte identical before and
+after; protection_keys differs only in the __LINE__ values that
+pkey-helpers.h embeds into its debug output.
 
-The one thing worth being aware of is that the redirection into
-tools/include/uapi only happens because the system <asm/mman.h> includes
-<asm-generic/mman.h>.
+v1: https://lore.kernel.org/all/20260818114945.1312987-1-hemanth.selam@gmail.com/
+ tools/testing/selftests/mm/pkey-helpers.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
-I had a look at the history you pointed at, thanks, that was the part I
-had wrong.  If I read it right this is exactly the mechanism from commit
-e076eaca5906 ("selftests: break the dependency upon local header
-files"), which added TOOLS_INCLUDES to the mm selftests so they build
-without "make headers".  So for this particular macro the value comes
-from the in-tree snapshot rather than from whatever the build host has
-installed, which is why it does not vary per system here.
+diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
+index 2c377f4e9df1..626c2e1655dc 100644
+--- a/tools/testing/selftests/mm/pkey-helpers.h
++++ b/tools/testing/selftests/mm/pkey-helpers.h
+@@ -112,13 +112,6 @@ void record_pkey_malloc(void *ptr, long size, int prot);
+ #define PKEY_MASK	(PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE)
+ #endif
+ 
+-/*
+- * FIXME: Remove once the generic PKEY_UNRESTRICTED definition is merged.
+- */
+-#ifndef PKEY_UNRESTRICTED
+-#define PKEY_UNRESTRICTED 0x0
+-#endif
+-
+ #ifndef set_pkey_bits
+ static inline u64 set_pkey_bits(u64 reg, int pkey, u64 flags)
+ {
+-- 
+2.43.7
 
-That said, if you would still rather keep the #ifndef as a matter of
-course, I have no objection to dropping the patch, the guard costs
-nothing.  I mainly wanted to answer the question with something
-measured rather than assumed.
-
-> This is incorrect. We explicitly do not have this requirement in mm selftests,
-> and they're often built without having to do this step and tooling has been
-> provided _explicitly_ to allow for that, which is why this kind of thing exists
-> right now.
-
-You are right, the commit message was wrong on that point.  v2 drops
-that paragraph and describes the above instead.
-
-On the powerpc header David mentioned, I would rather leave
-tools/testing/selftests/powerpc/include/pkeys.h alone.  It is not the
-same construct: it is an unconditional
-
-  #undef PKEY_UNRESTRICTED
-  #define PKEY_UNRESTRICTED	0x0
-
-next to other powerpc specific overrides such as PKEY_DISABLE_EXECUTE
-0x4, and that header only includes <sys/mman.h>, never <linux/mman.h>.
-A probe including just <sys/mman.h> does not find PKEY_UNRESTRICTED,
-with or without TOOLS_INCLUDES, so the definition there is load bearing
-and removing it would break the build.
-
-Thanks,
-Hemanth
 
