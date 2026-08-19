@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F97C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9FF2C5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D80C6B00A4; Wed, 19 Aug 2026 19:10:37 -0400 (EDT)
+	id A10826B00A5; Wed, 19 Aug 2026 19:10:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B0086B00A5; Wed, 19 Aug 2026 19:10:37 -0400 (EDT)
+	id 9E86A6B00A6; Wed, 19 Aug 2026 19:10:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C5D86B00A6; Wed, 19 Aug 2026 19:10:37 -0400 (EDT)
+	id 8D8196B00A7; Wed, 19 Aug 2026 19:10:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5057D6B00A4
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBD8280379
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:36 +0000 (UTC)
-X-FDA: 85119565272.23.C933922
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 66AED6B00A5
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:42 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E7D47160433
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:41 +0000 (UTC)
+X-FDA: 85119565482.05.2E0CD0F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EEEE24000A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aheTWAgb;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2D441120003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:40 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Heen4TOm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787181035;
+	s=arc-20220608; t=1787181040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fv8QyTU4RY8EKIZbQbAauqSD2AILso9hb2wl7UK1viQ=;
-	b=ut4R/PkYXlO7xm2P0D9f2amWuW2w4xqLWKR4i8M5mMyEkkzHuuMoI/BDD1sOSDzfZt2gDR
-	pS5PaCk3Pz1IikutNpoAGnWfyTX6VHVsSI6eIZ+ksHPDYYSes+/0bfNa2llR9/J1KBz1nB
-	BdeohNByCaxw5fXxX7F/cs6tqXgPYWw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787181035;
-	b=UApTmKAWKfVRnd5E6brQW7E3DwenH+Io4Sk1IUGTXIIYmJERgT6yOT9c4VLF4jujnVZVvR
-	c4afSgIiBdP4q8SQwRlQbVEMu91+QXFMMFmJ+WTNSKaVuYhja8/kwNFkbChCJAybJ8zike
-	MD6xTlgjONCQVbT06a1qeSNAaI8sc0k=
+	bh=aaMUb6PaGUkY1uYWWgN3cAeUq6l9h+PWt5o9AmFAt0E=;
+	b=8nfDqigY2mc7y1/iuf5wern8NPh+hnGSe3yRVUnaQP+iLsY7dHeQaIBtU5dl8lobjxcmDj
+	Bva0R4q5crKzJ3J2oJ5NHxP5yA0pD6uO5B7jBjmW3Wvac/sn4JZfr5o7I0ey7pN/KGvDb6
+	cicaXHiupfHsLDVgvHAvTbPZgZsKUp8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aheTWAgb;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Heen4TOm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787181040;
+	b=gZeoAs5VmqGBI2Uy1xd6g0FFesraOPfQ7HY4OzCR9VetP+yNTHXb8cLai/Cp5fRHllkrv3
+	SkL5FqWzujf6pjDvo611iTlQA2ggnHindRkdRYcUf6mH9Wr7f8eoVEzJlk8yXIt/930TkT
+	eOZsTdFFHRh/MyNzTYqvabx9C3V9Xyc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4B34C43628;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C6F940876;
+	Wed, 19 Aug 2026 23:10:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49BC1F000E9;
 	Wed, 19 Aug 2026 23:10:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781B71F00A3A;
-	Wed, 19 Aug 2026 23:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787181034;
-	bh=fv8QyTU4RY8EKIZbQbAauqSD2AILso9hb2wl7UK1viQ=;
+	s=k20260515; t=1787181039;
+	bh=aaMUb6PaGUkY1uYWWgN3cAeUq6l9h+PWt5o9AmFAt0E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aheTWAgbYI11sVETqvJK2lIN/QCtKk+jUTksr8d38BZ1G7LXn5ciJU2kV1FMfrtmE
-	 x5Nnq5XYF01D52VOCaFlhDDagPSgLf9ydeEXG3GKOAegFGirsAEQjyZMqmBVaqlSwI
-	 pMwAwjK2lfA2z4C2jvG+KW1viiMGa5Sao32Hs3etES+osbUfbaYKUfkHjbsNwJnxAi
-	 i3AtybIxeJJE8yvuUcmJNRePJL+PQ7fBmXoSEKynClLfVT3MSCErW7T8lCghlChbMP
-	 tXhBq+ZxGanb0v3pCy6LWkCR8ljc2M14p/psUqtZ+tN63jM9P5d7T7xF9Alu0yONal
-	 4itgWc3EmpRiQ==
+	b=Heen4TOmnIFtyQjYyv7+PIzwbbZz42Npc0GW51hx4ud6x7Rqf5vC43y2nUEyf6ECq
+	 pcOtUTCa4JHCyEcCor01N2FsrVzY4Xjm7i7SOASr/nhmsgg1panWWpwognCtck7bki
+	 amyCR7G/xgubDR7CnBmNhnmShiSOXhCZV/EmhjyDGMOd6gpBaEBfm+7WrYTH4VOLe6
+	 tXsyvPISipyoCmNDuotbnVIf6lTR6kOjJNL3xCZyYHZMVbKMd4DQD80VHObnZVHCMI
+	 1Y1SlAo5BoouEupVho6PfMbHhNiwNVamHrCRweaUELDn/awZxVfgZVA4v7U39hHat8
+	 ey9XD16ZR5ocA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 20 Aug 2026 01:09:24 +0200
-Subject: [PATCH v2 07/22] coredump: pin the protocol struct sizes
+Date: Thu, 20 Aug 2026 01:09:25 +0200
+Subject: [PATCH v2 08/22] coredump: move the negotiated mask into struct
+ coredump_params
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-work-coredump-sparse-v2-7-ba32dd718c51@kernel.org>
+Message-Id: <20260820-work-coredump-sparse-v2-8-ba32dd718c51@kernel.org>
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 In-Reply-To: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -86,22 +87,22 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1921; i=brauner@kernel.org;
- h=from:subject:message-id; bh=hNfZLj4wkqR4WNDayaZ8RfIqHIoYlqBK8NeplKQdya8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me+ruPdQcu/KV3delZuzLP6zVCXY77RHyZG1qzuUp
- 7bbKjst6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI6nWMDKdaPMNPTbgbYhLi
- tExpbXfZXqfH7+b3BPyeeS3zD8esc7cZ/rvKPeP89C9O42WYhdi3Scq7956uZNLizXY+om1dYc9
- Swg4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3018; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=xonH5OEmjGZ0T+LJRAZWyQJ2cLCDz3LlxuOJfpmUo8A=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me978e91/5SSmW3Hd9p4NXx6qdCyYpr/+dqUjoUst
+ 1Q28tkKd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkdCIjw42MXtMq5yP82dzF
+ ZmKXY/pZpcJSc2XNFfnOrl+sa7iJkeF/EmfJzMjNwrER+n7NRrdtNXuSDntrCy5pULGROCMwcx0
+ HAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Stat-Signature: 4ujw7unmsmtkpggsb8qfqsnjfdhf7aiz
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EEEE24000A
-X-HE-Tag: 1787181034-495191
-X-HE-Meta: U2FsdGVkX1+pJA/9U2paeRyFdS5Ld72JiMz9g6VwbDo+gI/YsJvemnQzSC9Wg9h3N2Y47Q0Od9yvjC2u/Pe27cojPZNQSPXBaCP49391ePfVKx/HVmaVBicULg9Jd+KqwOJxGHuDwhlQFReJP0Yl2UzaddbcBkPDyLUFYGUF2BgxTdjZ+ldmLpjOjT5Pb+dzMLfYcjgdGYU1zbVFoh7NZxXA7rTjaaeMxD3H8fpjk/gAjbjp2fZwHbKhs9T8jXPtZFs5GKd8YW5wgdYJztIDrgwiy+XUEopOpthTidjfY058xGbdTkskR6csANhfL/xnIhEhW+eijFGw1ExpROj+xxdwdkc7pZc7vjv6+C7Xcbd7O/xcahxyTCSV53p0ZdGJiOslSXjQ9bCk9YavTCKSb9ZCJsWf0oRcmgicXAVcKHRKRSuLGhnWaPuzygrS2mkMVoD7xIl0U6Jmn2eUrkx5/S1IOCnRuesUHQKqEFSKNal1Eq38eZsTBbYjkDEV/fyb8wWBAJlTu9ywQFD8iY1SR7SL9dXWGc1LHqrxhN3aYKbzZgXdJRoEvd3kEOUJPK28Co8GXbfliAhv+AHWJeast5QF84CL3NRn0Snyp05jkiNAAJ80iG4UgKMAIrbbktEcMS3WVZ3XtolabM7+FPAqURPUQxpyoZIfhBjBcBTr855e6VEh5cvIsF7aVhG4VVJb8WG3egqRnEqoma9AAYH+ygRvrt9Xj+tU8sLUZz/d0sbJFqz/25K95D42EkcVdnsq3ZLjrd+pQIk0DfGdWE/o0jaWgbbnlGJ7ll/MmVRpMChX9oBctljihCCGbtCbXyxzkp+Ih0q9riAJwEn0Y9FAAUKIh2m8p6AB3P1VlbgXUvmCK4e0EKjvhTrFKw0ESetgmzqlNU7n/ZBiItTUvkBTcXSv7+3z3MPzWEJymVQGPM8FIxxuDz9zrsY5EjRWfS86HX5sde6Hzh4zQ8luwKO
- aGMqkH1V
- aB4CkNcWWqcpX4C6vhOxvyUSroODS9gkFCLOavTRKriLPf5pcmwqlgt8HWpj6QoUjB8BNKGicyUVcQ0hztkWFF5tx3O4/vOg/naiy6zjqm+a3l4SGRGC1iUy7X/IOsOr4V3/FxP/WvKhNrHglazR6vz3vQAsqtguEDUOkHQpWpkd4RRvJphgGHidpBQvRfwEJrGYcUaBEZVnF4gli8AbTCyytytVI7Uk57snuGHeuM2ljJu6nc5k74kzsMQ==
+X-Rspamd-Queue-Id: 2D441120003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gyoxrcn8eey9rdty75t3xzhwctx5nms6
+X-HE-Tag: 1787181040-628957
+X-HE-Meta: U2FsdGVkX18/LG1Ifz3dJ3LAqeAHOf1kM08SajI8tAlAX7gdjGLEMwPPsBuMciWGSowGW8U2ow/ekC/sHWUnsTySLUrNtWUPFD+PfKWwgYgDmPJxNkJ6m6x54tg9PBv4SHttWJC48sKv/11WvyWnxpEpDZ3EIhc/anqNchlFVeBRAtP81CDJTgCWB6rzE3RWq+mEQvfDL3V3qaGbmuFMs5jJru0kp6HYxWbGgc0z1ODvO2phx0MvI0QxTiByi4aPHLcI/KzYmPHMm3tcjIytEX88clswZJGAjn0Xhe7WuCzfYlq3hnGA65ohNfxqrshx+f5pGmho12JUxiCVQjSZf1jKggvmxMe5bZej5nWTVVZlbg18o2HxMLcYdaCNQpH5cKkrLOcBnbrRnymZrrWhLLdrUoKbpV1SbC6F+S88fJtWT9tc3ql6dPVYQN4UdK1F5UtBxfFwe4Bya5vHnAu7565LjaGCkkZ8gVqUbQVEbF0WRydnOEK1Vs7jwPAVWmn922HS0dleYI0pY1dRI/mUSs1ZOC0aWyhrmrJv6AVgm9eRprHEMqqGyrnVgA9nbf0nl98tFgqpuVJvpqTZXT8sq+5tEl9hKjP92EabDS01TcZwGhQ7qlAUW8pwFpjcoOnvwRUnt78t8dBv2pAyCbXcwDLsj4e3eQiQ5AL4k5HMQrfn90P8VLK1fekth9QGK8YVeH5fB/rBPNXtQNplpHEnS7B0afxJIxLjwATYV7JxPvZhm0ZT8fCVuJ6MFunPTJSqADEF5Imj7ZY5aOOml7TmuQmeiC8irvR/qCofkmnDkIle6920KWsBGzJ/TTyOUefWU4qCmGFYPXEQiI7jx/IKVQk/xSNhtP/T4PhiiCHlmMQzd9BfyaWYnPjbwHQ2iFvqQ3Dhz38h+RyXVjVmOUW2CwwneLXvFx9xLiy+l9xfGkUtG+2iRyFGp8koOIwBIBV6u9CmzYkoFXDzJgHz87Z
+ dNaET13e
+ UbOKCidu0qil3mH07HCgjXxEDSWWXtWpdOVarL6AlAZXAUndm6wG3Epsvij7HMBoUIZVDj14H7f/nD5mQtJIaZKsfWr7OKPO0EKf3uw3zWPB7J0AHBVpxZqe5jjFM+Q2px2yHxqwsGKQM6aPozQ6lyPPi0CrzP91ydllDuiszSk7v1cbRI7CeW47UouVbd1IU9zhOAKSzY1kjwt3pwycVBXA5RDorXpKrm0wgOVge3ppwr++v3dgq/6eHJH6M50zv6aX7CeOAMyDsE9Nlcsevh/JabILThmFMBLfA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,49 +110,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-COREDUMP_REQ_SIZE_VER0 and COREDUMP_ACK_SIZE_VER0 define the initial
-struct sizes.
+The coredump server negotiates a set of COREDUMP_* options with the
+kernel. The core dump path cannot see them though.
 
-Assert that both published sizes still match their structs. While at it
-fix some issues with docs.
+Move the mask into struct coredump_params to make them available.
+
+No functional change.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c                 | 2 ++
- include/uapi/linux/coredump.h | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ fs/coredump.c            | 15 +++++++--------
+ include/linux/coredump.h |  2 ++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/fs/coredump.c b/fs/coredump.c
-index 24a6405ea242..c696b46c97ff 100644
+index c696b46c97ff..156688be3df0 100644
 --- a/fs/coredump.c
 +++ b/fs/coredump.c
-@@ -759,6 +759,8 @@ static inline bool coredump_sock_send(struct file *file, struct coredump_req *re
- 	return ret == sizeof(*req);
+@@ -100,7 +100,6 @@ struct core_name {
+ 	unsigned int core_pipe_limit;
+ 	bool core_dumped;
+ 	enum coredump_type_t core_type;
+-	u64 mask;
+ };
+ 
+ static int expand_corename(struct core_name *cn, int size)
+@@ -245,9 +244,9 @@ static bool coredump_parse(struct core_name *cn, struct coredump_params *cprm,
+ 	int pid_in_pattern = 0;
+ 	int err = 0;
+ 
+-	cn->mask = COREDUMP_KERNEL;
++	cprm->mask = COREDUMP_KERNEL;
+ 	if (core_pipe_limit)
+-		cn->mask |= COREDUMP_WAIT;
++		cprm->mask |= COREDUMP_WAIT;
+ 	cn->used = 0;
+ 	cn->corename = NULL;
+ 	cn->core_pipe_limit = 0;
+@@ -860,7 +859,7 @@ static bool coredump_sock_request(struct core_name *cn, struct coredump_params *
+ 		return false;
+ 	}
+ 
+-	cn->mask = ack.mask;
++	cprm->mask = ack.mask;
+ 	return coredump_sock_mark(cprm->file, COREDUMP_MARK_REQACK);
  }
  
-+static_assert(sizeof(struct coredump_req) == COREDUMP_REQ_SIZE_VER0);
-+static_assert(sizeof(struct coredump_ack) == COREDUMP_ACK_SIZE_VER0);
- static_assert(sizeof(enum coredump_mark) == sizeof(__u32));
+@@ -1129,7 +1128,7 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
+ 	}
  
- static inline bool coredump_sock_mark(struct file *file, enum coredump_mark mark)
-diff --git a/include/uapi/linux/coredump.h b/include/uapi/linux/coredump.h
-index dc3789b78af0..662e0468da6e 100644
---- a/include/uapi/linux/coredump.h
-+++ b/include/uapi/linux/coredump.h
-@@ -30,11 +30,11 @@ enum {
-  * member is set to the size of struct coredump_req and provides a hint
-  * to userspace how much data can be read. Userspace may use MSG_PEEK to
-  * peek the size of struct coredump_req and then choose to consume it in
-- * one go. Userspace may also simply read a COREDUMP_ACK_SIZE_VER0
-+ * one go. Userspace may also simply read a COREDUMP_REQ_SIZE_VER0
-  * request. If the size the kernel sends is larger userspace simply
-  * discards any remaining data.
-  *
-- * The coredump_req->mask member is set to the currently know features.
-+ * The coredump_req->mask member is set to the currently known features.
-  * Userspace may only set coredump_ack->mask to the bits raised by the
-  * kernel in coredump_req->mask.
-  *
+ 	/* Don't even generate the coredump. */
+-	if (cn->mask & COREDUMP_REJECT)
++	if (cprm->mask & COREDUMP_REJECT)
+ 		return;
+ 
+ 	/* get us an unshared descriptor table; almost always a no-op */
+@@ -1137,13 +1136,13 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
+ 	if (unshare_files())
+ 		return;
+ 
+-	if ((cn->mask & COREDUMP_KERNEL) && !coredump_write(cn, cprm, binfmt))
++	if ((cprm->mask & COREDUMP_KERNEL) && !coredump_write(cn, cprm, binfmt))
+ 		return;
+ 
+ 	coredump_sock_shutdown(cprm->file);
+ 
+ 	/* Let the parent know that a coredump was generated. */
+-	if (cn->mask & COREDUMP_USERSPACE)
++	if (cprm->mask & COREDUMP_USERSPACE)
+ 		cn->core_dumped = true;
+ 
+ 	/*
+@@ -1151,7 +1150,7 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
+ 	 * or usermodehelper to finish before exiting so it can e.g.,
+ 	 * inspect /proc/<pid>.
+ 	 */
+-	if (cn->mask & COREDUMP_WAIT) {
++	if (cprm->mask & COREDUMP_WAIT) {
+ 		switch (cn->core_type) {
+ 		case COREDUMP_PIPE:
+ 			wait_for_dump_helpers(cprm->file);
+diff --git a/include/linux/coredump.h b/include/linux/coredump.h
+index 7b38ee2e7913..dc7a05b1bb0a 100644
+--- a/include/linux/coredump.h
++++ b/include/linux/coredump.h
+@@ -26,6 +26,8 @@ struct coredump_params {
+ 	/* Snapshot of dumpable at dump start. */
+ 	enum task_dumpable dumpable;
+ 	int cpu;
++	/* COREDUMP_* options negotiated with the coredump server. */
++	u64 mask;
+ 	loff_t written;
+ 	loff_t pos;
+ 	loff_t to_skip;
 
 -- 
 2.53.0
