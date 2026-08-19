@@ -4,123 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D2A1C5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:02:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A620C5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:05:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD80B6B009B; Wed, 19 Aug 2026 03:02:25 -0400 (EDT)
+	id B1FB16B0095; Wed, 19 Aug 2026 03:05:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D88366B00A4; Wed, 19 Aug 2026 03:02:25 -0400 (EDT)
+	id ACEE26B0098; Wed, 19 Aug 2026 03:05:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC4936B00A5; Wed, 19 Aug 2026 03:02:25 -0400 (EDT)
+	id 9E4EF6B009D; Wed, 19 Aug 2026 03:05:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AC9A66B009B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:02:25 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4E4741A04A1
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:02:25 +0000 (UTC)
-X-FDA: 85117125450.22.532AD65
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 69D1740003
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:02:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=c7x7+LxZ;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7099B6B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:05:46 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECABD80451
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:05:45 +0000 (UTC)
+X-FDA: 85117133850.30.75A8029
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 478CA40002
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:05:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Mcp69lZs;
+	spf=pass (imf17.hostedemail.com: domain of 3xlWFaggKCOEMDVRQPLXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jasonmiu.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3xlWFaggKCOEMDVRQPLXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jasonmiu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787122943;
+	s=arc-20220608; t=1787123144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DKZ7k5xuvKelkXAPGEl7SiL7VHybzzQJ3aLjy7GPMSg=;
-	b=X2JYuJNr+zUpNwGoi9Ad02PiiLSVNG0Jn3YbM2eGDQLN7TtYK1EY5w4ayk1dR43kANXOLf
-	A7Y69njgK7HanvyGJ7fZIgQoohTs1Qsd+Aq0xUx62FocCopENMhHkbhJHAQvKUJ9ChmIFA
-	DLBCrCav+kJryY0R9PkryoY/ADBf5lQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=c7x7+LxZ;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/5Ut30PM1D32BzO4CJAfeJOZxs3sCO17fFGXnkufLgM=;
+	b=BIePjjfXm4j3bMrorc7bRzNgGhiI3GvdxC8phBKQzX4zG/CXwjyhodoZb2chVq/kfvYG2X
+	CWCEsUAhIRRR/Ec5DKB/z8Hu/tMFagzBi+3J9B8ejkreBUuC10IjwV48Wiqug/cpRoMBsB
+	LwAFC/zA/8cI5FPP9jhshUv2H//33HA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787122943;
-	b=v9fQsRzBz7evPUEF9+tX+TFaFd78sPLKlZABrKBVwkvkT56iLcirtWF2WJa5LQiwDiG5LP
-	tlyBMo4EJODAwnEtCNebCmW34pUqH5Wgqsrvk5qQ0OprYfaBmvRT1CbBNznMbNtUOyb0Pc
-	BgzvQMd+nI30jcnP3+UlkB7iZrZQtwA=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47f3b39f2a1so515768f8f.2
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:02:23 -0700 (PDT)
+	t=1787123144;
+	b=YSi39e5q2bzVrwyomgU1vevmGd6mAHAyUKqXvg1lSDQcgRR5cOMjhZB9quLAmys3mOFnkJ
+	KU445zSZGrAVkmahV8cKswrf85Vt/F8nM7eez/gHNZyn/yeX5GwHOIrcTHriYoB3BxJO6Z
+	8qABj/Oygc/OR9XPYMMGYls1QVn7ILY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Mcp69lZs;
+	spf=pass (imf17.hostedemail.com: domain of 3xlWFaggKCOEMDVRQPLXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jasonmiu.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=3xlWFaggKCOEMDVRQPLXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jasonmiu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e54b6556aso1010396a91.2
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:05:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787122942; x=1787727742; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DKZ7k5xuvKelkXAPGEl7SiL7VHybzzQJ3aLjy7GPMSg=;
-        b=c7x7+LxZ9aYgsv5FuDdzro5EaiqSvUPZSuPLDyiL9BTd3ZVoiov/mnIR6H2YRWuopB
-         HKpVuNuYLA9Y4HfGhCPLzZ0flNgYY3wdV2gvwrfO0M3rwrSsollUuIDWgJ63uYS4j6ms
-         +NDFhjCaPBepxBHeYYIRKcWJPVN/4IjpNooOxdOzGich9DJAmr1PhgSDeiwI52TMHDR6
-         7eB32T7dAksxPXya8zHHUc9VVOMune9wRP8//QKL3dEkSgm765CxZJ7fZMCzlMlAN9sX
-         zUh7Y1faaAeR2/J2Ug8CKFI8TM/Vybzy2aC8zOiwvf442hwUyRCarFqMXl0dWPX02C5J
-         GJ+A==
+        d=google.com; s=20251104; t=1787123143; x=1787727943; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/5Ut30PM1D32BzO4CJAfeJOZxs3sCO17fFGXnkufLgM=;
+        b=Mcp69lZs9GMmkhaqUiRLNcA1zq0FyarcNMZau9Y1IraNhe6xpYWolKyknk+oBHFw2l
+         PVEExtkajhSIMt1Ik/Pfo6wX/YNbDm6axw3hOeOkQe7arvNHX0Z7oPPyQd/7nOtZXn2Y
+         KTLi+KJKn2/ZglK3tLd0XROo3PmZy+FImUBw/dAhUpXVBypqFaRVsnfh+njhvDXjEVyT
+         mECTao4PKn7U6PveARt3rohwFcg0UBfpcZxprcKHJf5Sh4oL407zeyodVaNIFmUXevRh
+         oOGhc3DvrLXd9z2N0jgLQvehWgUe9bOME0uIABlZzheDkWSpWlwqKiYmXchOVoGRvBat
+         tSqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787122942; x=1787727742;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1787123143; x=1787727943;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DKZ7k5xuvKelkXAPGEl7SiL7VHybzzQJ3aLjy7GPMSg=;
-        b=U8eI8MnlFUl5pqTfjpN1Y+aKk4cdSxhboD3pfamVkcshD09IIacWtgF9HtUbLETJPh
-         08y9A16akqNQgt2BvyabpI4MaJaYi/N5pILWnjVG8ax4C5V3Hs9EdeCOri8rgRX1jB6m
-         wEJNrwwkfPdeMmx9tEGc/lISyhz+DujugIp0dg0W4W6TxZax8Rq0vTBI5t8K89Qf/D+N
-         T9TgAd00Z4u5My+A3sz6O4OpwyvJ7KCUNAhssfIoaQv+XEUvMOfe/IpWd+PV3rIALOob
-         kHUiNijCYI33WXcE1dLnmWiBq+nEvJXGpapgGYnGGFZsSdKqGWIvhnEFTA92zW8cEKXa
-         33hQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpsQlD3HNtNRg6SL7nXfGvLYikqR6x7OdkVUhepJT8gg6lkjIpBnijgbioDPkkPVuYERUj98eZxQg==@kvack.org
-X-Gm-Message-State: AOJu0YyrBTc4c3U9yVw2OBSWn5ZLt6HHP1HHRuLqAgoafuu4aWjO64Bu
-	TmHZIcMvauXR1DMc8v5Ls+zZfj1eRG6lxUgw4hFHwLFnPW7sC3hD31QStF1Dq9AcvRM=
-X-Gm-Gg: AR+sD13f1chCNEPp7ShlDeC4DGPzX1vMiaIyKKCXJrwzFGhq2eD8nfvyticDMq0gokw
-	3utVJuB7vdlWqpHhD35IXh/wkEM7Q++/zZ4Pb7+M0+hurC/Yip3pYxXK4W+18M4iXIiSLFJCqc1
-	Ed6vmZFr+vxgevZSQ5lS3ZDZeEqgM+QZJx4+Hsg3ldJRTKKs5eLmRz0wLtJG0UNUeozmD4lnHP/
-	zAqwvHFy6w/ZgwoNef/et00JxayuiTynXprbdY1trRpLJlOtckMie/IxwqWpOJ/3LjHOiln9ltQ
-	tuVlD2Un2jVXItcvx8A5+Gkan8p8rGVrRRDOVezEE/jVFpsb5t48RC85VxiuZHpJqYise2flqfi
-	tbwJGrHCxZWXxoPy6xUemUPFx28dpH/CMeqFJXoLIH8hc8BvEo4Hc9k8eyApHhyGrMDVVoBkYYU
-	keYJSToBwTB1AA6s+qKTmXk/6wfZgf9PfmI82ee9sNT/sLipcRdlFwO9CBYOZG+1KEdFYKz4xXQ
-	A==
-X-Received: by 2002:a05:600c:37c6:b0:499:8f9f:e9ee with SMTP id 5b1f17b1804b1-499aa173a16mr44660575e9.7.1787122942071;
-        Wed, 19 Aug 2026 00:02:22 -0700 (PDT)
-Received: from localhost (109-81-87-166.rct.o2.cz. [109.81.87.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499aa0fd7a9sm51540595e9.2.2026.08.19.00.02.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 00:02:21 -0700 (PDT)
-Date: Wed, 19 Aug 2026 09:02:20 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Joy Chaoyue Xiong <joyxiong@yahoo.com>
-Subject: Re: [PATCH] memcg: trim the per-cpu charge stock instead of draining
- it
-Message-ID: <aoVU_OV777Xgascf@tiehlicka>
-References: <aoQt2zKsQT-rvjd6@tiehlicka>
- <20260819041747.1111965-1-joshua.hahnjy@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260819041747.1111965-1-joshua.hahnjy@gmail.com>
+        bh=/5Ut30PM1D32BzO4CJAfeJOZxs3sCO17fFGXnkufLgM=;
+        b=e+MQRlEeussWKzTWOVex8HL0ccmWXQYlZD+OPs2itZBR91xUYudCfBCqeOuEZxA9KJ
+         vpy0IjXGwol8xly8ecytvHghj3Q99mZU2681trZQW1W8EAxATHtyQFk/ltHnrhB9R9ZV
+         dPMc+PzQgXLC6p+CoX5Gax8JjGYYDjKtvqpTBsR18R6+3VrHNTkx9DVSNdIfgN1aEjme
+         6aF+9Uqy+imr1fZbF62PeEhTPfLBX/mmz/Z1HHfAe0m3dmPM7uY9uVnrN7It1zwmdOv1
+         ev2gLItM5yE2OTTmy58vhOJTK5wXbrb1s0Fbhm4lMK+0wsenmxo9Jg/1JojLB/nm/c0h
+         sX8w==
+X-Forwarded-Encrypted: i=1; AHgh+RrPEBEYDqMFvDjAI5tqf/8zkFR0rQaEc6KdizECHrdyUApE7mi+xww+Eqc1xBmFsheAiU4f94Nd1A==@kvack.org
+X-Gm-Message-State: AOJu0Yzd6yuTQToRi75VWP+rM20Uw4tGEpkEVFQHmhWq2tXOtHG59tgO
+	EEdCA3r9x17nNfbDPDCVLHC7akLslrhoXMkiDs1PDI/00issf38eYJsZ3kYy93T7E8NovxsQ6kM
+	r3A2eYcYY75YhVg==
+X-Received: from dleg1.prod.google.com ([2002:a05:701b:4301:b0:13d:2ef5:67be])
+ (user=jasonmiu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:2d85:b0:385:393e:7124 with SMTP id 98e67ed59e1d1-3958127ae44mr4871724a91.14.1787123142847;
+ Wed, 19 Aug 2026 00:05:42 -0700 (PDT)
+Date: Wed, 19 Aug 2026 00:05:35 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.737.g08866a6d13-goog
+Message-ID: <20260819070538.2404983-1-jasonmiu@google.com>
+Subject: [RFC PATCH 0/3] selftests: mm: introduce page allocation stall reproducer
+From: Jason Miu <jasonmiu@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Greg Thelen <gthelen@google.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, Jason Miu <jasonmiu@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 69D1740003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: m7m3i7cohzo4jt47grmjgujdo5d4bzst
-X-HE-Tag: 1787122943-81493
-X-HE-Meta: U2FsdGVkX1+jMR2k/CimyId87wQoiFXs5E562tGu8aF3Gwos7DUZsOWCeH9IYpIHbGJcKUiyXxAQWxtPfJGQQm8jHM7J8kuZrKRZEsM15+pM0kUaKcyU151hSYs1AZNfVhKYsl2AxtNYu/ZfQljQ52iAbhwISCjpK9NYciFpQK88iJ4FRNqirKyQLK1j7SaWqqI3dGXghGX296StFDkeTkOQY1JrDgEoLuulIi2p8Q/rGbHBJ0N8SV8do3InfGdg/irXAUlTDE9bXO5i+0eJvF0g5ddCMQAgfaJSQYe9lHw0zGqOIg3CsZYlVIAYM1YrCdRHkbGGSyHvsx1viUJhfLHiizCspbB9ERWc6xelac3OdG3MCcNNoCgY8jSREQ+aIeTeKM2AccXFwl6HSkmLjJHH0alIrSHstMZGf7c3U1EfxXsa+HhNsu2X6WwBPA2Z/w9MpB+tOHXrFXZZ+0+Ar8uzIazhBUXJiq2p9/Cnsu4nUdxRbSLOvSqQHDCUSlyoXS6uCX6aIEM+7vZiJN01HCT6XzLF1aYDBvA+O1XqDcLdHhLGM/vxvRrEFTc90WUSZd7FSS2lfrabkVtuoGyfx46YXqpIPHc9JEgAZRCeFOgdHdpSWh4hbaJPvLojz/yfuSyV7nP6onB1xCkuXS2NPm4siDE+uRm2ta3xNxKXpcuElZHS4UDk2dg8Y9txZAFl0dT+w7rXomchH+PkjEestFIVrsj6aXyjwvIofNPHoIJF7ypDhyRuWkfn1ngNqN6+eZzBChpH6nXn4VAi5KNU9cnBigtWoOE757KvxoPSZND6U8tbxT1yMfmL15Anyf85eB4WAFK3k2ABpGQNwnJ7ugkhyI4fCZAoWY4/hQSzbpSUsAuDguAOpbX62HPOnKYx1vrjoX4BYtYNzmFjnxlOnrCTDWEKkdP9sGItVAH+N3s4dXgBY5J0bU1gUncHM6cYA+Dz8hyaz2ICxvq4Cm/
- zSbwSuzo
- cw0KwskZdUIX/Iin7/c0PfZrniPImAY5raPjG/wKjA+M9hWSK/ERU9nZAzgz6GHEscp8zEXWE2Tq4aw1/Fa9uymxgdACadXfZjVt/zSmyK0FZVQFAdHDkNaITqitBFzx2iBnifAf0RhzTVdwZqvPS4Bz2XmubaqchQ1bimkPOqUR5ZVa+dMdFHBmFC6/3v0nUd71xUB1lEyMms17aHSr3ZEnfw0s055aFO93+hC5k3P/cw2AM6BdwiB8HMuAalvO9qZGDAPDbfSNwrx7t7GW+o49bY7B2NWAYg2vTdjA2abrT5HvL73OzIEbPtLag570UM2mcfdg2X4kk40O0mGSt/1oxG9CLChNf919Mh/SHQGDVa5ZNU7qDhY+kCd53AFqJgOSgNi04IHT6wFBG24iUD3HjUk+pPtlLDsLZYrEvYw+erO2TgnCm4pYE1ND2EIPk5i8MTUxsuDr6SkN0ewPji8p4su5xffZVAT7ERw441r1oTq4=
+X-Stat-Signature: r1qjqi8ds4b87jbhf5tgp3xp93dft946
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 478CA40002
+X-HE-Tag: 1787123144-745496
+X-HE-Meta: U2FsdGVkX19tCUEZ3uAK8Z3LmbLMhbEZTy4FsykoZhwVWuPVg9lbNT24VsmAS6Oq8AvsHEznN1aArWfj9tUJxMrp8PQ+Fh2NFWQjaxGS5RuprnOUex6D8QJpDDAqJjlv/ldsMl4rapkGViMUpcNrmDSu8+XnpbKYL8WVt2/dz2gGZvI5tlgZlkYBiMsIi7SsJNr7af3bdbenndFkQ5mhmIxPF2e/kTvNHkm/5/0jjXVZxl80RicTB6JPQVOWVyNy4Gyzlsno26q0kdy6/riA4JYawOwqp3ni03UcSnSO4jThhGeerkME6QY64w7kdG7U9BI+bF42/jeQGVRqro8b9S5vR3OmZL10jtO7Gd6JUu8BNTMwQDzi61UUzeWtdq1MUXZaeyeeYb+qlIc+V3JpwcvyAG9rwmKJJ1tGQXwhi+ta9LedqujN5ruNwMjTGrDnjp++kBLUkwg4UtLWs9UVlRsM0OAcWaoKjb+TuhRnH6SHLRK1FcrGVOULfdFfCgKonP8oa3K7kEstsxpS73Jz4UxlgMAmCdh8J0lI5c3dnlTCRfd9vXcR7By180RT5bECIIJVnT8mCKzI9XB2vcJ8LHjPJwWUaO1HLizJijNzuAuM1yntdooF14GOXYBWzLvISMuCHhMxgu3OoE9so7I7Cuk0NHc50jOZ0iFqV3lqLerYcwTIIaJXB3KxZDb21cTf6sbVOiWltLtGnM5hgp0oF9GBKgCyjZqkrv4RmDsNmfJA1/YXiYzeS372AbE25kvuo5WdNkZkMBtsGj5rZ3yX+E+CQOoCwZXEfdCV8jXIB5+4Yk+SPJbRo1ZkBRQgi5HYdeIIp7NtHImQ+ScRRbE7MUM2fLy7G5t7UvuNLNFL27c8ITTzZDsU4ZLRzbQjn0BqHi4rJJUe4/g2K0bZ40yVZmBWFhI+5dJPWOyhud72AGh3DYsYhmXd0qqK1S8T8Ec/NbyYnSr5P4l8awErPzP
+ KoAWG9Jv
+ dC3BfDnxKH9Vn0zjIhWsXPf35atnqQPBYbTgY8eJGsNsTzs8B6cMSuzjTOKHWtaeB8/xqV5Cpoa8q6EJV37d8Iz4YZRGJj4EpMkH2goSeqgg14Q6XWNlQMChNaphMRiGpw0OZovt37zpn4nNU3G4I1tQE7V6Sc5ljYjqZjawygsxi5DQk7zE0PeG9zZ9gbtEvR6EuUQnrcvtDGArqos2tF9ktKmEJMa5WiJug4HyfuuwF1o9f9PHkp7Ve0TbPxpetrCkIW6/77Nxzj1vtQMHsuP3sMnHC6sUiW5yrlMEpuhz+BoPpuAejrquBxIaHhALwAn5Tv5/wDy8zyW4e5OAcxT7QntBB9qmRWfMl3Bw6CIrRRANM3DGNbZRw3bhPfoUbEunt7qYF1A7fZgwnEeU3i0zyJRpIHbDfpq1CXoyDjA6Dd4LEfa432slN4v/WJ9cv4i3uSRZX31oQASjxLIT57NS1JnEgrx+YcuTZMEQwELOzb2I3znghCksnhHZJa46d+BHOoIdmyXBVFIwOEAobxftSSF5e09eOPBWSqHH7MGiPPWJaCSiEZkBWNb1hP5JDczcZwY/iCJovfc5p9je9xFrJETp/7Ns0qmsEaN+wccmJpZVa0H4oARjR3fknvgcrajaS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,22 +110,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 18-08-26 21:17:46, Joshua Hahn wrote:
-> On Tue, 18 Aug 2026 12:03:07 +0200 Michal Hocko <mhocko@suse.com> wrote:
-> > The idea is sound. I would just not increase the overall stock size in
-> > the same patch. Fine tuning can be done independently and ideally with
-> > some numbers.
-> > Would it make sense to start with MEMCG_STOCK_HIGH := MEMCG_CHARGE_BATCH 
-> > and  MEMCG_CHARGE_BATCH := MEMCG_CHARGE_BATCH / 2. That would preserve
-> > the maximum stock size while preventing all or nothing behavior which is
-> > indeed suboptimal and pushing charging path to a slower path way too
-> > aggressively.
-> 
-> I like this idea and I think you meant { MEMCG_CHARGE_LOW :=
-> MEMCG_CHARGE_BATCH / 2 } right?
+Background
+==========
+Under severe system memory pressure, system unresponsiveness often 
+occurs due to page allocation stalls. In commit 94e0bcde055e ("mm, 
+page_alloc: reintroduce page allocation stall warning"), David Rientjes 
+introduced a warning mechanism to emit a kernel log when a page 
+allocation takes longer than 10 seconds. This log is used to correlate
+a frozen system with the system memory state at the time of failure.
 
-Correct. Wrong auto-completion on my end.
+To further debug and analyze these allocation stalls, we need a 
+reproducible test case. This patch series introduces a new selftest 
+designed to artificially mimic the severe memory pressure scenarios 
+seen in production, allowing us to observe the resulting allocation 
+stalls.
+
+Patch Series Architecture
+=========================
+This selftest creates memory contention by saturating both userspace 
+and kernelspace:
+
+1. Kernelspace: A generic kernel module (test_mempress_timer.ko) binds
+   timers to every online CPU, continuously executing atomic page 
+   allocations (GFP_ATOMIC | __GFP_NOWARN) from a timer. This behavior
+   simulates a massive influx of networking allocations. However, such
+   stalls can be triggered by any mechanism that allocates below the 
+   per-zone min watermarks, which forces the page allocator to 
+   continuously loop when servicing user allocations.
+2. Userspace: A Python script creates a memory pressure scenario by 
+   spawning a primary memory hogger process to lock a percentage of 
+   system memory, driving the system to a low-watermark state. It 
+   simultaneously spawns concurrent worker processes that intentionally 
+   overcommit the remaining memory to churn anonymous pages.
+3. Orchestration: A Bash script constructs a loopback zswap device and
+   coordinates the execution of both workloads. The memory pressure 
+   situation is designed to last for 15 minutes by default.
+
+Experimental Results
+====================
+We executed this test on a bare-metal node with the following 
+specifications:
+- CPU: 224-core Intel(R) Xeon(R) Platinum 8481C (2 Sockets, 2 NUMA)
+- Memory: 503 GiB RAM
+
+Test parameters used in the orchestrator script:
+  ./page_alloc_stall.sh 80 64 2.5 50 memtoy/memtoy
+  
+- 80: Primary memory hogger limits memory by locking 80% of RAM.
+- 64: Spawns 64 concurrent memory worker processes.
+- 2.5: Workers overcommit the remaining freely available memory by 2.5x.
+- 50: Allocates 50 GiB for the synthetic loopback zswap device.
+- memtoy/memtoy: Path to the external binary used to allocate memory.
+
+During execution, we mimicked the memory pressure scenario observed on
+production systems. Under these conditions, we observed page allocation
+stalls occurring across various processes, highlighting the resulting 
+system unresponsiveness:
+
+  [ 7467.002149] watchdog: BUG: soft lockup - CPU#156 stuck for 21s!
+  ...
+  [ 7561.805279] cron: page allocation stall for 566 secs...
+  [ 7668.275609] systemd: page allocation stall for 673 secs...
+
+Test Execution
+==============
+This is submitted as an RFC. We are actively seeking feedback from the 
+community on this testing methodology and integration.
+
+The primary objective of this selftest is to establish a measurable 
+baseline for page allocator responsiveness. This baseline will be used 
+to validate upcoming improvements to the allocator, and will serve as 
+a permanent framework to prevent future regressions.
+
+To run the selftest:
+1. Compile the kernel with CONFIG_TEST_MEMPRESS_TIMER=m, 
+   CONFIG_MEMCG=y, and CONFIG_ZSWAP=y.
+2. Execute with default parameter values:
+   ./tools/testing/selftests/mm/page_alloc_stall.sh
+
+WARNING: This selftest is explicitly designed to exhaust system 
+resources and heavily saturate the CPU. The machine will become highly 
+unresponsive. If executed remotely, active SSH/network connections are 
+expected to drop.
+
+Credits and Dependencies
+========================
+This test depends on an external memory allocation tool, memtoy, 
+written by KOSAKI Motohiro (https://github.com/kosaki/memtoy), which we 
+utilize for handling the underlying anonymous mappings.
+
+We would like to extend our thankfulness to Shakeel Butt 
+<shakeel.butt@linux.dev> for graciously allowing us to reuse some of 
+his original ideas and module implementations in this test.
+
+---
+
+Jason Miu (3):
+  lib/test_mempress_timer: add module to generate kernel allocation
+    pressure
+  selftests: mm: add script to induce userspace memory contention
+  selftests: mm: add script for memory allocation stall test
+
+ lib/Kconfig.debug                             |  11 +
+ lib/Makefile                                  |   1 +
+ lib/test_mempress_timer.c                     | 140 +++++++++++
+ .../testing/selftests/mm/page_alloc_stall.sh  |  80 ++++++
+ .../selftests/mm/page_alloc_stall_pressure.py | 235 ++++++++++++++++++
+ 5 files changed, 467 insertions(+)
+ create mode 100644 lib/test_mempress_timer.c
+ create mode 100644 tools/testing/selftests/mm/page_alloc_stall.sh
+ create mode 100644 tools/testing/selftests/mm/page_alloc_stall_pressure.py
+
 -- 
-Michal Hocko
-SUSE Labs
+2.55.0.691.gc56d675ccc-goog
+
 
