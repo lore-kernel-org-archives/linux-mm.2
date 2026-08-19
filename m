@@ -4,128 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9E6DC5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 14:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAE4BC5DF86
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 14:54:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A163E6B008A; Wed, 19 Aug 2026 10:47:39 -0400 (EDT)
+	id 910516B0095; Wed, 19 Aug 2026 10:54:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C63A6B008C; Wed, 19 Aug 2026 10:47:39 -0400 (EDT)
+	id 899F56B0098; Wed, 19 Aug 2026 10:54:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DC3C6B0092; Wed, 19 Aug 2026 10:47:39 -0400 (EDT)
+	id 73B0A6B009B; Wed, 19 Aug 2026 10:54:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 56FF86B008A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:47:39 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD9811A012F
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:47:38 +0000 (UTC)
-X-FDA: 85118297796.14.C14D058
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B2580100004
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:47:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=VtH5Myjf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W MISdAP";
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787150856;
+	by kanga.kvack.org (Postfix) with ESMTP id 35D916B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:54:16 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C01BF40255
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:54:15 +0000 (UTC)
+X-FDA: 85118314470.08.0E15374
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BC75540005
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:54:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PAjuV8t1;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787151253;
+	b=2uUk57Hrg5PCMnbD5wNmIviozLiNoT4yXDdhrDsAyt0POLwhZr/5e5f+/pFabhRUFpSzDj
+	CnyOBA5VUl8Xwx/KU+6NPlxkexPokL6cyFH1cAAaVhEIH61qXL5k/A4XSNzMKlZtJNkVly
+	4GWp+nSbIgLjWZNtmnaUw3feZfu6Ca0=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PAjuV8t1;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787151253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UonL2h5MQ2AxCpmdIS2MMrVR/omeEZrCxIjmbzCsxdk=;
-	b=hwTF5VbQWYQCMweyUkkw5dp6Y178n7sQJFPxWjG6PZ0zx2QDJhB/ZdYchGk09W/c/Gr+Pp
-	QJ54Z/eASvkr3uj5nU9g1/ZlZdJWTwQzXLRmjtfmJDrzRnteYpmhvpBFaAYE3M8JhVZwde
-	P0o4hc0sqfSgHFJvrwraGzXk+3T1TYY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=VtH5Myjf;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="W MISdAP";
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787150856;
-	b=7J2rEJXRTGzIQCuj2os0QNwpQHCblF8PhEEGyG7/bzOIeN9swLIGxByO0k08tH00h3yHUM
-	RyOfpd8c4MRMd0UqdiUYjMhceWX5OwmxCJqWFYgWEGH3EpGpmpQwqhhMOVedR7is/0vUlF
-	rHXAaCuIkfob+A3Zn9XQFsM7Uzj5Ox8=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.phl.internal (Postfix) with ESMTP id 125371380212;
-	Wed, 19 Aug 2026 10:47:36 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 19 Aug 2026 10:47:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1787150856; x=1787158056; bh=UonL2h5MQ2AxCpmdIS2MMrVR/omeEZrC
-	xIjmbzCsxdk=; b=VtH5MyjfZERrSnlCK/tHd76sNRNLWsBcJQ6EZUJryrrjzPAm
-	nc3FtmqnXPUTOQZLuqNA/Jr2SQUhhb4kmnyCdXBT+kSirnErt+E6LoYdcroMbH1s
-	9kjw+FrA43VoSEu1dEIqgdkvmqkFg4FyBsixflIbhZ6/hB1tMfXBldUG7CBp94Q9
-	6lg8A/hXVDFC9Oon4+LMKgYAr+/PC7CmmBK/B0MadIxblEzL80/p6unj4ryRap8d
-	uOOA+AtNLDAKMq1vAJiUzX9x9VxM7GIvU5UZIxhkVjNs0zOwKG5xjYswqDYUoRFI
-	drJmX7pAG8DtWqgkaBb9uncX1w0pGGbJEXt+lA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787150856; x=
-	1787158056; bh=UonL2h5MQ2AxCpmdIS2MMrVR/omeEZrCxIjmbzCsxdk=; b=W
-	MISdAPic10bsGcEIlkzD91PsB26EFyQC3R8WpmyiYMoZBCBghS0dgJbk0Bc78hAF
-	cTB3oAyj6zFjpGMuYE28HwfeQ/qNhmolmVgRI2/Gpvgbs0H9J4wYuqUaYsoZIq26
-	fLLT/BPNKdQktCAokCJqBtTfJdwfpxOEReX2N04e/HMJDBwW17g0yzzkGlcMMdUB
-	JogKJNZClDvB5Vs3aHz7jzmq/0dgoYS/nzfxhUwFANr7+3d6pdPorVGTinK/uR35
-	pr4gov4b+l0YgYPWDO++SbxNvqMl4v19dPa41AWWZaCGZllMLY58+0rRnHT4fGHQ
-	8PBtRistOXlOzTF6SDeEA==
-X-ME-Sender: <xms:B8KFakLrWdEIcyzoS2Q6_LzFyOD0GhlZbTcstUoDkpmMVdBatZWPEg>
-    <xme:B8KFapBqzwsoxpQj68Uwo_gD-okcQaeTiy3jSxFqopOamFqIJY5ecmrex-VwqBw6t
-    BYXKfU91jJkG1DU8JZg8hST-ozWvwzCiUonPe-8CvGSb-Ewr5BuoVA>
-X-ME-Received: <xmr:B8KFaiTQ-dXnOYg1CorVe3ey7qp5D8bcfdpJagiW393TFZdOwDbvGwbwwZA>
-X-ME-Proxy-Cause: dmFkZTG4UQS/DVUAK5X00HSGpN6xmMu8uBi5bskMhLAP0oEuwAkNxTjLWFc3XzHZWIojDa
-    s6HUbu4KlljgoIHpmjjTOx4CskWkaz7H+bLQyr6BFagYbQ5ilNbxpyk92OO/wSomoPYLSu
-    alFr2PpG5Tgpfykgu2ThxJDFTikEpxo1DG0ZXxsvjS2CBtvS207bGrONdLVrlkZIpNIgZy
-    Cys6AQnVD7k1LeiOWl8R1+zfKatmgbdACZjUwLulVROccyM2RRCINtUhMKfYPJuqXePvdH
-    KEu67YHmszJuxP4JkxeKwBoZQB24kQIiPlGXynhOfDWu+wNDbKwex7TQYI+4bJDJ1+Z9Kv
-    mxAA8RzQ7ay6y+WsDyCh0749nUMJHjutpz/uYHRyuyvzFeXSVfCRqtOSFD59kMpzjNxvHB
-    auLWTsdK/mG1rmryINKYTezrVxxu/VXB97HFl9yBsTeYVjc+qTLgjd7kaTem6vQEAcwAG1
-    lMStUDjJTdaDvrtdT4Wu3csq8jGvSkPkKXhhNKSDf/zoau7PF+y5KB2PF5oREXov+OVi7V
-    64dKi0h/MLf5D7wsE1ZgxlcY0EJtYF6C3XdD6hEIvGAtkO554SPq0Ve4O3p7EVkKdoxtS9
-    NaRUyWBfTJunetDnecaSNHIj7D7nFJmdwaW8w9bH3UT0IDMWQOChbjkWMXSg
-X-ME-Proxy: <xmx:B8KFajfHMLKqyaUMxX9ZDud3UoQr6FObdqy7iBpk9Zpq2PdkzO36pw>
-    <xmx:B8KFaqiVvKb72fzaCJxLABXDWLRmy1M1JYatMbQcfFv34p0YGXZg7Q>
-    <xmx:B8KFau_vyuF5mdd-hdDU8hQDg7x5C5aQfdWf0RJiiGwS5ASo3gujrw>
-    <xmx:B8KFaqkiCjIbrQgA7Ebo9cdzHdFMR8UOPJODPDZvuaLNlNZxm-15aQ>
-    <xmx:CMKFamxuUAKuT2HAGrvLWLoETuYTE0NYUqjXOExsM5qBkrwp0c47e3Ls>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 19 Aug 2026 10:47:34 -0400 (EDT)
-Date: Wed, 19 Aug 2026 15:47:33 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
-	ljs@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] mm: include swap.h in swapops.h
-Message-ID: <aoXB5vZf_vwB-FOT@thinkstation>
-References: <20260818115026.656406-1-kirill@shutemov.name>
- <CAGsJ_4z_+Z_VppY3ravJxTgguK=m_pcYcbrogoOR2BdC6D-o7Q@mail.gmail.com>
+	bh=mhvw/FgE5+XsocfZbB7wjswP5NddcYAmLYZePhCxoG4=;
+	b=VYelvLg7b6qlsaDAyPHBtuMtP3twgYdavmVTXADSa07PffxgMGitD2ifafEN6BxguyXbBz
+	AzI7ulKcAq82YI3krsoXAh029zNrP51ly3ezAFL+QKIm8+a+hX6iBpmlLZnNpK/IS7RG4L
+	Fzm4JtxehFYZFkYTLx4q6/d8MVyRDwE=
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-456395f4e7bso644823fac.0
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:54:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787151253; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jkVA3F2dAprJvBqJGAbT4iRp04r+OzU5QsIAwEi58FjBxtCcyzvy1tMjzlIlbG41HS
+         6VXiEgNuZKnCY4Qfpm2JXmQ/djthYxykfgY+PRJlP00vV18GRn77OnoyfoHxzuA0bSzA
+         HqZOri0onWXRu0W7CjULK+a8E/SgZACzyn2jcnMwuzA6kD71fUwkl6eQDDtBdivcTm+C
+         DheKW+mvnrb8Hul52NeGImoteX1dPUHJbOdSHyDXc7GVz7VGALxW/GLvagn8hGguK9De
+         OmzXX3D9PPXKIiPzo3wNHh9/Tyd7ulyUOHNHQeWJ7TQPbsxNjeFQscWP9N4aPMu63G1a
+         2cyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mhvw/FgE5+XsocfZbB7wjswP5NddcYAmLYZePhCxoG4=;
+        fh=wZwHeDhF3wlAb87Uyvhj1flPN0Gl3TmoniC8Vqr8ZF8=;
+        b=RFXIvG1RpCGKrmAqPTI55Lnvj1+gFtpwt6fXgD1727yNeACB1Cqyhq8ka+SIicLUYM
+         zAATPEgGaPfl6qjvjnHbtwkTw3MWFtNhL0eoXipV9uuf2bo9raywNxAr5pXAORpBKP+V
+         0Y/g3YOf5A/qMyySSYQwr5k3f19WtVvcu0eRF6ad41Uum8ZH3Es7JO9tKlRRC4Y4TmlK
+         z85rQ5p0hePJFKNNF0Z9rWozzxEQZkxTp6hMMP+e32+WUKz0kr/np1KmjhfHWs1p2ieZ
+         Q3Qp7lYfTc0qmS9PnlJkHcEOoTu8FEFWk9bvQYOymVRIsgpZ0tvIVrQn5qxqAgPcOc/d
+         iaTg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787151253; x=1787756053; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mhvw/FgE5+XsocfZbB7wjswP5NddcYAmLYZePhCxoG4=;
+        b=PAjuV8t1DppI9BMebPc5fwri1y8PnCf8zVzLOTpAxVfEIebavijE/z7xiRFXz73spL
+         zcN5376aVOmy0Os1Tf/LX0DAIsX+CWRhyYuVf6n4dHSEtHODUS493HKwwAlk2KTp06W1
+         H18G81iWmwupFry88mo0t5GZe+YnqGoLDSDJmQN0e/Qefcj5gNHBn7Ovagcmf8FFHNEG
+         iqKloINoaTdQCZB52Jd/NVfYWT/hNcEakS/RwYhhR6qNzUZjkU8oL94mWzLx1+VENiFX
+         22vB7Xo6P5NRRt84ZmgZpVbMRB4yoqxstEyqZrj1EAx4sOAMJmeiIDNuIFNJc0d44WL0
+         Q75w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787151253; x=1787756053;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mhvw/FgE5+XsocfZbB7wjswP5NddcYAmLYZePhCxoG4=;
+        b=BC0pqeaPM80e/2phkqAeJyyEFwN///TQYhyl0NKOkjxdG2ema7+XoygyH46HDU1Osn
+         1BK+3lC2B6ODXKo8xExcrFNeivVOI15tRyLz8w6TstY5Zjfi64arb0D/m1dMSjDD5m1c
+         +ZCkM2FJTV/ZetjPHT47D5qKjC9tBEbfZ6LIql9cjv6aVQYoB4+rX6DpIzEyRud9cjOf
+         dPa05mdK7Io9oZs5Mpk1VyhKGTL9nzDcP08dveZ2l3s9P2QGurP2XyE8jOguZ/hwPVFk
+         mEvos8VsvJLNzRTV5Sy+ngE4xr8LIvhW4qMdt6t7/DMMr28UFS5efqhMZjpgQd5ijwtt
+         hsAw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9D3bGh168+R8qRMeZ7AGjq3uTmr4MnOpp+8SDOh/UEyxKFe6+ansqi44WXkcPm7RrlioHUoKDzg==@kvack.org
+X-Gm-Message-State: AOJu0Yw7KgaaZaBZ/EEwN9DAiNgu9B0X2/XPdqqkRAt3XH3o+2sZKFM5
+	+6c4G1ni4FLqaiZFSLumlTae9zR1Z3NN2g5Yl2QExL2YvjYB54BF6JnILPAXWf3KWqC0MquVco0
+	LaqbVkD9MA+j0XixA1RdkpoMm+0hex7E=
+X-Gm-Gg: AR+sD11BL5cndrqJQbJInq6Aj4fiZilcJVglQxkzufLAHeJlQKClxIUJsquq8FeOCZs
+	/V946igv53mEpm/Vr8zRuWL2O09X1bws/1Q5W83nFlhr8eZHRyT6gBxGDojtvkn9gr90OfexVcu
+	s6lAzjFZYQF1TYAFgX22ooviTuah2n4UcCNbiAiz+IGRM90W6zoJjnyReqXat1jQn7DiEqK96mj
+	xkRSex7222SRA8SpIf3RR3BbqZ9WWYb9TsVaq1Tm0OMCNIuGOvHMM+s3TGQ4atvr1kYs+4HulI2
+	Wv0aZpT7NO8wwgfPnnweDCghpY7hDP4P//GUKdlG7VZ3
+X-Received: by 2002:a05:6871:287:b0:447:a201:4a5a with SMTP id
+ 586e51a60fabf-462f64be287mr5194131fac.8.1787151252623; Wed, 19 Aug 2026
+ 07:54:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4z_+Z_VppY3ravJxTgguK=m_pcYcbrogoOR2BdC6D-o7Q@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B2580100004
-X-Stat-Signature: qe8rjm8gmpgg61eoaqfdwg5ixt7hfrxw
+References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com> <20260818-selinux-pokemem-v1-3-90cd2357ee05@google.com>
+In-Reply-To: <20260818-selinux-pokemem-v1-3-90cd2357ee05@google.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Wed, 19 Aug 2026 10:54:01 -0400
+X-Gm-Features: AcwNN1Vv0YORuTgO6puZkVyho68XY6ndF-y47mMS-AkDlVErDtFxI6gIHPST0Qw
+Message-ID: <CAEjxPJ714iCMiQRVAN6MQoOyNx998MS5Xfhbhmugcwz+gWYAuQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] selinux: require EXECMEM or PTRACE for FOLL_FORCE introspection
+To: Jann Horn <jannh@google.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Jeff Xu <jeffxu@google.com>, 
+	=?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: BC75540005
 X-Rspam-User: 
-X-HE-Tag: 1787150856-268672
-X-HE-Meta: U2FsdGVkX19y4n0kofg6nxBK3syIewFtVKrFqo/orKS3hX3AXlMu4VhB7HKjvn7jVdascCMrwM3nzku27PC7Wppd7q47+j+5/jOsBL8Y7SUQjZFpVtMJ5B5LDOTGmKLpMU1LZ8QBTHdVsbpu3mcVaoJpsNaQ2DmtfRR1oUfQlK5vmNzz6QTLh2o9X49i7rpTOoQeUppwVej0MYVo2vv4juwdG48YrX86siBR+HKA09uCu8eH9+QcV0v1morYysyG/X40ezDnrLg0VdH0fWcAZS3trFJgUAqYUxjgIo6Lnv8RHl9rNCmvOCypr0nCukRek4Vd0+2l3Z7uy59+l+7MfiNsf26IWEQ2I58GCQmv2/ORA8hyfYeqrpkO750BJ06/zGXcGNbNtnjExZSJ/YM/Vtmwqa4vagqLvS4ZZOuz1cFmG47ekCeikgrsir1cqHbYu/jCskwbk2jLNISaCfNSbgsJs/bAaVKZevc/usEapxMRQ0BM2iGe+53rXSkLodS+wbyeAUxUJxoWL5teZyb1JUhBJq6yH0Ky0aQyVSIE78v+1K0sZ5D9FdPb7aLQpU8T1/mnQ9sA/ms1QUUvPzrDiUklwB0IAGOXrR2Enjy4VTjqi9ZmoiwNg/6IUa1hhAqO09WgaDggwj/oB0+iPhbCs/RzvJxCKAq5rMUPloDt//goAKhnL0YupTHLui/puVhdjCi8JgcwkJJLusfBpk91oyxtiIvwSG7nI/gCvewUUaPyhDIr/9N0kNaKG1kh5erZCnUNFsp9RPTrsz4h5+9LF+1tKQ3eP2GVGw15A9y66KVrghaWu4LbxxbK43SA6ZYVw8jeHpXW8Qqs90jJY9fPO+suaiqwuVnY/5th3hAvQPP3pKgkgvNq+slkmUXhR8XG2swg59XKauVDKwHm0L9ngEXmdEQ1EYAmp4Fzov0MLV3b7gqKXiJHWaXX//+/begDUXBlzjk2cLQfGXXgOZR
- Qkeyz44N
- jQRlgaIKSCu1Z8Rx9b3tbvyAAhpYtppwk2rtGH0LWmBobRTXqsjVDCTVCFDKCNoJIwXpT3uEPIyJVT4+k62RW82VUW1g8oeIFM8YgysE+2o0fa+hL775AOkua7bKMio2nrhUmOQnJB3wStwPx790WkCzinJy3lqlKY98cOrNbWTVktqQXALpMJV8RjT7hQuTT9yLibXzNOI0hPOv+OvDnVQ2HTKf8Mo2jJnAIECvZiEnJieuNWz6X2zcTT61/sLT18UnLvGgdqLh4tqUNxTjTDnjUt//e09mKikVgzAWwKshAcUctxFsBmSKej21TSzWkzrHDmRtRxA8IwrbxcuqoF6zRT8EyKubhhfY47nRSvowWF0NVwXuN7cl6qxT8PjT7u8nn3K2e5CGimYun0zc/J0W1hwOXwKmxtdkETILv5D2YGqyS2gXXAbidrPI1SYK6ZZIo4UkJf86VHGtdCAd9x3cAywYOH1WulDi3Qs5ljwbmvpPoJbQu5ETF0pF0Zm2Q8HiMO8QhYwM4Veg=
+X-Stat-Signature: mqioc7pjp1gfqo86cgcjdsfwspepd5qw
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787151253-823180
+X-HE-Meta: U2FsdGVkX18EBqZjHbLQTGF1ClTcT/UoHw9UOK5zqaW1RHtp57efWZWM3Mny59fHTIR2m82XHxJ5AYyFOzARBIVhhRp8VxY8Et2WsTDo9xQ1NqVXCGzLW15z1rpZ+q0ebj2Y4z0l0EImS5NxgGWsmIlml0YHZqc0OJL7RgDuiIIinPJICsQ4oy0tZO7krm/gdCeCgxTsJ/uahTIL3JOzGkCiK8Lvlghn9ybpgMW2x3qZ8r8EkERzQvyJy24oX9Csw+rgpbhG8mnwB1BXN/wkzSxua6DMkhz/HIDdlPBfG8MU477lwNUYReaP+yZNpV1XwsxliO7ymH6KD3et1V6YJz2KwGhx+acdwnLFc+f8pGkhKXAmofnqmQZZepQVKjoNM05bjvv0QEGA7Eto+gYWmY9i8MjxAbKVZw+Etc1h//J7MBXD1VRg5CGbCrf3/lozR/S5GasYw8Fr7Ch3GJ2tKp3IjT3vRk/YiLCtCDp5pBNYtXGDtXBlEnRfVZG/Bc1o0z7YyF60FABdkL/IaoQB23hgE5ZN3byYmZNvmACnNlituGe1imc3VgjB7xnyLtK0KpY5Nuhj2ISaTaGfylAXXC6jAjhKg+IzBkK3dj1pggSazjfY5v6GKQX+bAFF1H54PRuE/iq9I7GaIxSzJd9VOmx1fKNSSOoPwKHtbz/QXWeLA1AmBd3CiGPJXce1oPSmcW+otARZv3Ao+8oe6D2DjGAxYLiOj0pCH0K4fWNxhP1Q4c0hUKH8np6ylI1LxELzgkK0FJJOs3I1byfCUTPVzVXqni/ipRdDiA1OvLPkyDc4roQ9fFvVdbL58d26kGKK13JQ6rV+SAX5lXyiXEX+qUsPM+AEvPke1OXh7hYPl16+qHMHW0sbUqeh3bxDPaIO+TPFETuoeNW4gHtcDY20v8Ko8cVYquUwS6oggA8mpNhGPgxTuQ0bZMHVZBK8Em9E6hZeAaeXlteA0AlwyFr
+ t0JSt2VB
+ XfU+2bjdS2ea63gdjqnkhtB6fo+e/J1+PsGwmwrKHTS89pZCAMGWNFeCLc0TyXp2cO+yMG7otzeHsvf+HkzVqK33n6kl9Hms/Z7Sf/EOclsTgAMQ4o3O6I8VjEIsEohWwy93sltyv9+EgBCqH02qGdLrZEqwFbtsY61lhJxddZ6ho9/HUYqLpiz1lecWUKEiGCTpDLWB8+xJi4Qu/cqp7oo6pKbxm2qmljkWxb49dY0xVxZATPZlm4CNKcQBadyYJkWDe9NzKqPlde/vWFcszzu1OWUNrmJnYMQt+cdPrbmT5Dieaa326HLyYIWg6A8Rlxe43ceK3C6xTW1VqNiBqU+a3uI8RUdhtcOFZHkSIcu4Z0ohX91D7tITBaoJ5nBCEiScuuVONuXjgELkNgLjw4IaCkBrN4Ht9EphHwRY5gzgINqKLGJpr1IR2b83QOJ2v2EznNWXVJ9fF3dfWnXwf867h7fqHGuivW5lQL+DhtcwwEfNYVhyhjCfFMsPkf77YYhbx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,38 +146,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 19, 2026 at 01:26:07PM +0800, Barry Song wrote:
-> On Tue, Aug 18, 2026 at 7:50 PM Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> >
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> >
-> > swapops.h uses MAX_SWAPFILES_SHIFT, SWP_MIGRATION_READ and SWP_PTE_MARKER,
-> > all of which swap.h defines, but does not include swap.h.  It compiles only
-> > where the translation unit pulled swap.h in first.  leafops.h includes
-> > swapops.h on the line above swap.h, so a file whose include list reaches
-> > leafops.h before swap.h gets:
-> >
-> >     In file included from include/linux/leafops.h:11:
-> >     include/linux/swapops.h:88:21: error: use of undeclared
-> >     identifier 'MAX_SWAPFILES_SHIFT'
-> >
-> > A header that uses a definition has to include the header that provides it.
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202608181757.mza9RRj7-lkp@intel.com/
-> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > ---
-> 
-> Basically, is this preparing for the patchset below?
-> 
-> https://lore.kernel.org/linux-mm/20260816224609.308019-1-kirill@shutemov.name/
+On Tue, Aug 18, 2026 at 3:51=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+>
+> On systems configured with PROC_MEM_FORCE_ALWAYS, ensure that a process c=
+an
+> only create anonymous executable memory via /proc/self/mem if it has one
+> of:
+>
+>  - EXECMEM (like for other methods of creating anonymous executable pages=
+)
+>  - PTRACE (like when using /proc/$pid/mem of another process)
 
-My patchset just triggered inert bug.
+Allowing it if _either_ permission is allowed is unusual in SELinux
+and seems prone to errors.
+Is there a reason to not just require PTRACE always?
 
-> Reviewed-by: Barry Song <baohua@kernel.org>
-
-Thanks!
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>
+> This closes a hole in EXECMEM enforcement that Project Zero has used in a
+> remote Android exploit chain:
+> It was possible to use a memory corruption bug in a service without EXECM=
+EM
+> permission to overwrite executable code via /proc/self/mem, which made it
+> possible to load and run shellcode with a kernel exploit.
+>
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+>  security/selinux/hooks.c | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 18dd28b2bb13..905137c47321 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -2157,6 +2157,32 @@ static int selinux_ptrace_traceme(struct task_stru=
+ct *parent)
+>                             SECCLASS_PROCESS, PROCESS__PTRACE, NULL);
+>  }
+>
+> +/*
+> + * Decide whether it should be possible to read non-readable VMAs and wr=
+ite
+> + * non-writable VMAs via /proc/self/mem.
+> + * This only applies to systems configured with PROC_MEM_FORCE_ALWAYS, a=
+nd only
+> + * triggers on accesses that are not visible to selinux_ptrace_access_ch=
+eck().
+> + *
+> + * This allows a process to overwrite read-only code in its own address =
+space.
+> + *
+> + * Creating an audit record on denial doesn't make sense here, since we =
+can't
+> + * tell whether FOLL_FORCE matters for the accessed VMAs.
+> + */
+> +static int selinux_introspect_mem_foll_force(const struct cred *subject)
+> +{
+> +       struct av_decision avd;
+> +       int rc;
+> +       u32 sid =3D cred_sid(subject);
+> +
+> +       /* Allow if the process is generally allowed to have executable a=
+nonymous memory. */
+> +       rc =3D avc_has_perm_noaudit(sid, sid, SECCLASS_PROCESS, PROCESS__=
+EXECMEM, 0, &avd);
+> +
+> +       /* Also allow if selinux_ptrace_access_check() would allow it. */
+> +       if (rc)
+> +               rc =3D avc_has_perm_noaudit(sid, sid, SECCLASS_PROCESS, P=
+ROCESS__PTRACE, 0, &avd);
+> +       return rc;
+> +}
+> +
+>  static int selinux_capget(const struct task_struct *target, kernel_cap_t=
+ *effective,
+>                           kernel_cap_t *inheritable, kernel_cap_t *permit=
+ted)
+>  {
+> @@ -7558,6 +7584,7 @@ static struct security_hook_list selinux_hooks[] __=
+ro_after_init =3D {
+>
+>         LSM_HOOK_INIT(ptrace_access_check, selinux_ptrace_access_check),
+>         LSM_HOOK_INIT(ptrace_traceme, selinux_ptrace_traceme),
+> +       LSM_HOOK_INIT(introspect_mem_foll_force, selinux_introspect_mem_f=
+oll_force),
+>         LSM_HOOK_INIT(capget, selinux_capget),
+>         LSM_HOOK_INIT(capset, selinux_capset),
+>         LSM_HOOK_INIT(capable, selinux_capable),
+>
+> --
+> 2.55.0.737.g08866a6d13-goog
+>
 
