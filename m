@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA1EDC5DF86
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD2C6C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F0BD6B009D; Wed, 19 Aug 2026 19:10:11 -0400 (EDT)
+	id B21076B009F; Wed, 19 Aug 2026 19:10:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C97F6B009E; Wed, 19 Aug 2026 19:10:11 -0400 (EDT)
+	id AF94A6B00A0; Wed, 19 Aug 2026 19:10:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F4806B009F; Wed, 19 Aug 2026 19:10:11 -0400 (EDT)
+	id A36266B00A1; Wed, 19 Aug 2026 19:10:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 19E146B009D
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C04E40458
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:10 +0000 (UTC)
-X-FDA: 85119564180.30.5B204AD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DA750180006
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:08 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C2AD6B009F
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:16 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D87B58049B
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:15 +0000 (UTC)
+X-FDA: 85119564390.28.DBB7966
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0936C180003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:13 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LEuB932n;
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787181008;
-	b=3wTdXPWzibDFKCH+IggDoztAAqqg0dOEN9xGMuiGZzn13GmwKw5ngUSK7oalinT8a5f4cj
-	QgT6S/aPnHsu/UQvxn6/CjGSC0dMhYXhguKs9TsErYRMjps02FBeQS9CCGO44F8AFT8EIi
-	QsWI737nPut4a1LypdX+tvSdLnA3MtU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LEuB932n;
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oAI6Ih3E;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787181008;
+	s=arc-20220608; t=1787181014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0bW5IEgJKmSIJtwmTEEMkv73JLFJ3IXzsjpXfuyidoc=;
-	b=eixBt3B/4Q7IuoVj3Tu0u8UsAbnWqwUFJdbNdQpOh/K1cApYHJqqS6PUq+t96omujcQYtc
-	5q1LDMeAqBXldIcpM5zuAHY1kWnjSehOetJaxyegKHiWLVGW5xa3k1CdYWmFjRGkUSJJRB
-	cJFZ15BJJdjs8qlO5zvIXw5jAXnj6ws=
+	bh=0RC2YxYzQBAU6npYN6xnbM7sVbfE8POELBDVIx12dQs=;
+	b=OiPQoTnVbImEv8mTJUzdD8W1uzV+NkbuyE5yEndgYwURNgMZ7HA1bDHfsrVqTSQyokEdMg
+	0kXFHTiuDJPsatkk5Iwn+KTwTSVJJxgvTDLLoOahe4OL2p+PR6KjpdxYvH176I1MhbNaMY
+	hjOVtfHJ2Rqa2YT4UVsMu5hk9+2Vqgc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oAI6Ih3E;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787181014;
+	b=h/60tRC4sVW9RU9vHY0ElJxNht9pyXbXMxCaOYE4Rbp3XiZUr669WEaJlvB0Yc/ppgXclZ
+	lJkbLDaUlG/x9htvLChPmtueQ8NBgcnqem169lQaBkZvCMQO7iFSckdycVO8NNjqH/iFIs
+	LcK+R537htf3d/1blkOKl4hBgiuRGTY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5858061887;
+	by sea.source.kernel.org (Postfix) with ESMTP id 526D240524;
+	Wed, 19 Aug 2026 23:10:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ABF1F00A3D;
 	Wed, 19 Aug 2026 23:10:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D71A1F000E9;
-	Wed, 19 Aug 2026 23:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787181008;
-	bh=0bW5IEgJKmSIJtwmTEEMkv73JLFJ3IXzsjpXfuyidoc=;
+	s=k20260515; t=1787181013;
+	bh=0RC2YxYzQBAU6npYN6xnbM7sVbfE8POELBDVIx12dQs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=LEuB932nM/UQEfWfWfw+dOgybuedzZaOhO1071ixqoQoMGoiYm2QscBoR/y1Lezs+
-	 NvT56PSoLqff/NUiucZuYKdzV49MAfi00OrwzpOdkarTrTs7Pry9k1zO3t1p9eF89Y
-	 awmjvXy/9IWizfJB3QQe5eIL2qWXTcU0fV+UNqvKIzzwNT2mbySQ19T8c/NqinCiLA
-	 ow6UDBbGwBpzydM9cL+k3npIWi4glJWVz4PlywMdvwup0S5lpZwSBYlnLwxAiLfFAu
-	 WeJ6kcitLnoLnFQxYwGiquxV/WtjI0r396xQBGdFFvQMjxH6aFWOLhRaa3lLWqgBcJ
-	 Dmx30y1DHJEUA==
+	b=oAI6Ih3ES/uFGIJgmiQTn7WY/aZkn/AmM5u9fkKnyStjUi5sXMyjRKOtSV5LDe940
+	 7wihflb810Z+L9Ww4j7YrE8EejKnI6YrxR4rECv8TzgORD9meFSPK+LjfG/oSYFWLC
+	 6vsnvLC4hn1ofgJ7jtXSxaJL35SXJnVtwb4tWWg/egX0jbQmfm7BhPxfbbRF8iiVZw
+	 PalTaJOSi03ConwvdOQZfr0rrSv8vPIXC7y4mv38CBQxMR5h4+4LjCxroelASoaXzv
+	 9zh1A+0jgLLMWzoIQoZ9mKRhWi/Fo/js7nQJb+oLreuUtRaSdzXx90mtVuRx/bt2T4
+	 yPwURA42dZGog==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 20 Aug 2026 01:09:19 +0200
-Subject: [PATCH v2 02/22] coredump: refuse negative skips
+Date: Thu, 20 Aug 2026 01:09:20 +0200
+Subject: [PATCH v2 03/22] coredump: set the minimum send buffer size
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-work-coredump-sparse-v2-2-ba32dd718c51@kernel.org>
+Message-Id: <20260820-work-coredump-sparse-v2-3-ba32dd718c51@kernel.org>
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 In-Reply-To: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -86,22 +86,22 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=906; i=brauner@kernel.org;
- h=from:subject:message-id; bh=g0a1kYV53viXcxL/lVIPR2fuUykenxBNOGfzhwh0UJQ=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me9TP7f+9yQT8+WvJ+wQ0jY2mNB/LONcQnJeyOkDJ
- 24lCISXdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExE/xrD/0q2Cxy3aozfKVUX
- 5X0+Zqu+eOeEHYf2dJ5SnJnv351ec5eR4fgWa6cL2ksdZ3KVXt50XN92X1DWlz9iInYXiq5Kt3w
- /zQwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1451; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=5Qwhyl+9KLUXcn7sqhHlco4XV14G2yqAc5quiUYCHt8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me8TeBZ77qmlydyE53qlJxOEfibmzdt/tU1OvC3v2
+ LHf31YrdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzEVISRoVPG1XmbU4xXxda6
+ P7ovat3kLVoWdwuXsnMvDFOOcrv1iOEXs+T5eW+uTLjurOJqYFRRsmHCi7ULJ++9HRoYU2ka8iW
+ fFQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: DA750180006
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0936C180003
+X-Stat-Signature: enr3m95s1ou5ot3uhn9od1xyziczgnsf
 X-Rspam-User: 
-X-Stat-Signature: qhrz9bdd5jd3xcpyctuq4uiirr41aune
-X-HE-Tag: 1787181008-174532
-X-HE-Meta: U2FsdGVkX1+bLYzfICLE0LUYRpIxDg61RRW9nZAfvxkxvCphfL1hCr+DGffuWtwZIhdQ+hRD77QkGCU69ixu65Lj368yys9xHcT9ErRrUHWC0XDBFFgLHlByY//B4dCZ+4KjeieMiCC+YFxWZV47zxFNC65EYBZ0v8Vp8NX37b3/R6oiLONmPrUCXjOiNDokdLxAFHjb3NRBSwyn6gm8iSgSpHx9k7Cbba/VxiYJSdA5k3C8buq9EDIfGsDUE85T7TlMYBcRT4HZzpqroBUVu6AzC0i1UAI0fvdfZbANx15ujuXScSdyp8KjLjhXCY1OJN30FDJ3xi/pIwZoFFlkl+tLTMc2Eb+zQUuWBejSabV2wI/nAFOUbWw5f4VimmhoVq+STKcXQUdbvV+4RIJjtp87kf6oYDxJiPqzHdIciTsW1FXrb3PC/EEAPTvviMXS5AByXrL9VMFaJiTcikMpeCxw1xhcbMtvZQQN4rztcFbhiInSLzuIGEkkaxcBmWty45Dby0tBU59k4JGpH8hxpGkXLhXWEQ4xfHVrNgFJM199xHtjoVSuqK6IGIxNCg0mBOJmnxBKUccw0rWcRvx9UzfdDcwBWZQpjWe1hyudevSThsaFsMbNCcR8BsJFDvAmcQjgE1kLFBdHtP5kyry3x6WufFqVFflXEvM0M5+/B3E7U0GkbKXf6zCGiKK13z/v1tlNkdpQHfGFDzmu8IyowCTkQp3VeuOPaQfdcg2DMpkDah4/r+j9IxWlKser/wztK4fGmTBLklCv8U4fGC4ZiAJtzcSmlXWKoN/O0DOHbN2091wD5hIYOrcyoMDkkrpbVbuh2SShqt+ZT4d5OkkxA220EEIR/FpEVRh0AtlXOFfwk/pezdWUD4z+xl/D3MyOlz9H9lr4IC4xzSosiqiAbEHfSDnOytnY957OgToRtdAlc+lKewhOdEG6QYMel4YfVnHVdhBN+mXih/YtUCY
- ESFHoQ/Q
- wOc/hB2N82xU14xcAt9PUnIbNgL/Cl1iIvaI3rrQ4LltKf4RrkyNgnBZadrXqLaslflC1/HE6ai9tRzqgaxtl3T724tf3ty6IUz14ys6YTDv+Qwmfh+8Ne1aeXBWMIJSkHR/SbYmmrNTOdh57aMbZ5oo7yYAAEFLR9uHWeaKQwIO7AoZVRsiY4nfI2iYg6IuGXMtYBoR0jHPeFpPemAA2V+tinzT8b7LGCuCWL3qZnlCNKQq3nVwERa0LKg==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787181013-66956
+X-HE-Meta: U2FsdGVkX18J2yODTEJ2jKKwF7a5pEmfFCpIV3ZUnIhq+gAQq0bDgLHZxhBs3TA0pTRfYdNo+88B9mCVxxaoHIU3RMrSc+11MuWA7i9DkJpiPzhO+TfaHLRWDk+0HOEqPsiN0Rc5IXN/uy44r3x096VqAwV9Au/jLBLOA930fQf3rC/TuYWpjxWsFQaCyrOdIKOIoqOQ7xfAps+KPJg4jee1YWcshXSfO+X8UVWuomyMlukZ0QDToHiR8mtGRzYiQPIFCaK5evcsLEiOyW5cmwWBJq0PCiC4Fn8pr06y0tWvu3j/oZ8JnPoXC9sOtw7JEMzSCMedwviNoTBIDZHb4YmecK3VR+z0KaBqYGtufVd13QxWwrH1/FS8kQOtFj6GpjaA3BsendvzdcV/zvcAEj3Oqv7BMxb0+ULkmVAHjFl6KQ2Y8xbmFl/Evs/9ZMfvdbdokLphnylGms4jcMKN0O/QnRxboRxJolz/XQNspS+9hlNXOzvjcE9KvwuOyQPAoxWgzWjgiPCWXaVZ0NDGxEFtdun6y+j/kCtFCIZ1wf9ZCMbCBfpBgz9ve+2dNkOvRV7xs2cflMgvxJDw1Na2PjPz4RQiXHe3KHW2Hhwsb3QDMGaviXmKREOrN4cAn7FYPCNfVr76mYR0SXEXqNAJqsIKspt+KlsQhtcuISOYWK105IxQHtYmQj4Xy0xAD+O5Pj7NzvKVbVu/diUGxZREgD02YXf0o5VGjG7EoV1mZShxSKw2Xzk6MPyM/+NsKCHKzfQTw+dVT11iVFB9tZQX10PrksYdE7DiqQw8x8hXa2UVBvOI6e/kylPZwXdcP9K8BPkDDhtPyvPQ5U8u/pfTVAfIjVW3K8dykfMV3FfXvKWTtETaiHrZ94fM1LA1t2EIOowwsAvSmsHLP5Cuf7zfNGghw0iZ+HJXdkUOnEFLuar0K+XDv5XO8znGkW/O5+/thvUu7YfVc4tKuszTvEA
+ rV8sq8d2
+ IMdAUfRlH//IsfDdDuNOCLqu3e0HNOXHKC7WI/9Xo1sN/hMf3FHXvWgIwMWUKXkFvDGonC08703aeUFbVhDxOp1chBCQL59JISH7FSHn01IhZBxyv31WiZQh3vRJOs/K8WQAFJ3nemZaO2uRP8QR+H+OUYAHCWDNAt/jopT5i+lbomRP7Pn02km7muO+8aV/vsuxAkBRWfvvIQmUqh6NyKCaw5GR0OCTOdSLyQaFkmhSq6gTkgGSEhUCI5TpnYkhgAeycXfkU6wFdjdsTAOct8tb63Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,35 +109,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The dump_skip_to() helper calculates a relative skip based on the
-absolute positon of the coredump:
-
-	cprm->to_skip = pos - cprm->pos;
-
-That's easy to mess up for callers and one already did. This risk
-endless zero PAGE_SIZE loops or overwriting already written coredump
-data thereby corrupting the dump.
-
-I don't think skipping backwards has any meaning. So warn and refuse.
+The send buffer of the coredump socket is subject to the limit in
+net.core.wmem_default. af_unix uses sk_sndbuf / 2 - 64 bytes for a
+single skb. That means a send buffer below that would split a page-sized
+write into multiple skbs. Raise the send buffer to leave room for a
+page-sized write plus the header. The default value is well above that.
+So we really change it when it's below our minimum.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/coredump.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/fs/coredump.c b/fs/coredump.c
-index e68a76ff92a3..ac4e922c9cb9 100644
+index ac4e922c9cb9..24a6405ea242 100644
 --- a/fs/coredump.c
 +++ b/fs/coredump.c
-@@ -1261,6 +1261,8 @@ EXPORT_SYMBOL(dump_emit);
- 
- void dump_skip_to(struct coredump_params *cprm, unsigned long pos)
- {
-+	if (WARN_ON_ONCE(pos < cprm->pos))
-+		return;
- 	cprm->to_skip = pos - cprm->pos;
+@@ -665,6 +665,9 @@ static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
  }
- EXPORT_SYMBOL(dump_skip_to);
+ 
+ #ifdef CONFIG_UNIX
++/* af_unix halves the send buffer to size a single skb. */
++#define COREDUMP_SOCK_SNDBUF_MIN (3 * PAGE_SIZE)
++
+ static bool coredump_sock_connect(struct core_name *cn, struct coredump_params *cprm)
+ {
+ 	struct file *file __free(fput) = NULL;
+@@ -690,6 +693,10 @@ static bool coredump_sock_connect(struct core_name *cn, struct coredump_params *
+ 	if (retval < 0)
+ 		return false;
+ 
++	/* Don't let a page-sized write split into several skbs. */
++	socket->sk->sk_sndbuf = max_t(int, socket->sk->sk_sndbuf,
++				      COREDUMP_SOCK_SNDBUF_MIN);
++
+ 	file = sock_alloc_file(socket, 0, NULL);
+ 	if (IS_ERR(file))
+ 		return false;
 
 -- 
 2.53.0
