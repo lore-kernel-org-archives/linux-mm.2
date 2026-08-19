@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFBBFC5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 21:25:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3AC3C5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 21:31:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 555C76B008A; Wed, 19 Aug 2026 17:24:59 -0400 (EDT)
+	id 845AD6B008A; Wed, 19 Aug 2026 17:31:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 505B06B008C; Wed, 19 Aug 2026 17:24:59 -0400 (EDT)
+	id 7F69B6B0092; Wed, 19 Aug 2026 17:31:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41C196B0092; Wed, 19 Aug 2026 17:24:59 -0400 (EDT)
+	id 70E736B0095; Wed, 19 Aug 2026 17:31:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 239116B008A
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:24:59 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 18D1B1A064F
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:24:57 +0000 (UTC)
-X-FDA: 85119299034.01.7B2BC68
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A71C6B008A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:31:11 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6244160620
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:31:10 +0000 (UTC)
+X-FDA: 85119314700.10.CEC8D2D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4047140008
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:24:55 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SUI3IiA/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id C723A80005
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:31:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BYQfE0qB;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787174695;
+	s=arc-20220608; t=1787175068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zNqmDH6Jq1rIZyagW0x3hDwfycUXlIykI4fUBBHVlfw=;
-	b=AX09/QPqOPBIt46lo2lLt3FiU0ZomjxsHhtz3X4T4NPSyjhtgnO/X1C+Oa0Mnxej3kW7Dg
-	lIr/B/vi17OR3oDbVMofZn4wEEYC4V5eHvUnN9f7+RrSf4v8/8FjVgUF6Otxl8OGcmUkk3
-	vTKSgLQFgnzuJSAAvRDuzZdRvJr2ezg=
+	bh=ghs6iPSRrZGeJwUGIyYt5eVaUbmSLLAA1KH//Wk5utk=;
+	b=jgSMb3PKksuqzpl1/or6NaV/bQ9tqTc6SdyMrM1ACQqdhDGR7AVB+cTUeTYVOqN7amA73S
+	jkPnTFZ3VVnFjtSk8rkS+dIHyh/+C3M/WSUXz0zXLC8APEyEQB4KsRQGTyZvVN9Iu77A3E
+	kFffA7vlehEuiTnDbuwdyziZ+yRZBOo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SUI3IiA/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BYQfE0qB;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787174695;
-	b=GI75O5fedVZeug2FLv0+szSsRkMEgQyzgbBWi5+TJtdISUe7HoeTspnKRNCmjuKRcY4pBk
-	GqSmbeUIzYX9cO7TgqSfxMtVnOXqcXlDH8euhJpbcaT03+6E/0gC6J5elbWF39uJeJltCs
-	O3/DbrTLCbOq1xyOTUsbYigWGNpgKLs=
+	t=1787175068;
+	b=ccRWrPo43tMYHQCe+GeeFBq8n8I14oxUFSukrzTNHR78piRe72UG5kuzDo1JjM3qQBEDIL
+	PBxOPeTkqbdyrFqWdHQ0an7XadrHHGNvi3QkevBRRI7V79ijcfnK3n8KFyUl6Tl2sJ9E2I
+	6o1gi/wezu+/ehjBpjhMYXshSLeHmAg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6DE7143E23
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:24:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D871F00ADB
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:24:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E459F40558
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:31:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FF01F000E9
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787174693;
-	bh=zNqmDH6Jq1rIZyagW0x3hDwfycUXlIykI4fUBBHVlfw=;
+	s=k20260515; t=1787175067;
+	bh=ghs6iPSRrZGeJwUGIyYt5eVaUbmSLLAA1KH//Wk5utk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SUI3IiA/1vevgZp9vqFX8HwwBHOS2iwj0lvrt/dLO/QHDWVPR7WoxRa3vauhhymbt
-	 FmZlir2JsgFBd0JtVWMWcrPR2o3EI35HCIZWJJrOHitsWT2xnLydWu3POjklIYSRLP
-	 LREGAlvahABDbjFU6PZqVPco+hD6HQhu7ULgtECMbNE0sCwYLk8rsKXuICPGQ+GJHS
-	 S4E1KE2b3mSUCEgFoIAqrZcOPogRMgtlqVL0uhpabsbDRsvd2bbjGPFT0WKAD8QlyC
-	 pzXq7siuDG91CfPYh1ttNNgq687VMtRHU5JOBg5ULNtaoUCHVHjRZcDXpT12E+wRkk
-	 ZHREQEj6jG6AQ==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e50a650a0so91853485a.1
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:24:53 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzB6PSvhZM+ie6hsaD41GRRb2g3Vx2l74+GqljYEY5n+LZDZvIe
-	SAosjrGWIP0g2+12My7+rMeKPzN1i561eCkUSacCRtc/QY57LRdI4eu4g9888/rvCxjU1/5A1uE
-	0zDz8XDDgjirjI97SjOzQmTwFSQfEUNM=
-X-Received: by 2002:a05:620a:1a02:b0:936:eb7f:d2c7 with SMTP id
- af79cd13be357-9371e309725mr741046285a.27.1787174692543; Wed, 19 Aug 2026
- 14:24:52 -0700 (PDT)
+	b=BYQfE0qBn6RQTOJEi/H5ED7wk4DSJu3aU94pOT1Ga3wT9ZlVjFXZz66cHn/I6HI6U
+	 gXkI80jZOhcbS8ofV9XsokHHtoW6uK5HUpY+WeC+3clBY5wAd/SP38zgm9C/0o0O8e
+	 zhkVBzKH3CbLe9ZQgK+JfaIGSbG47BlPa58qgl6EmMCbBfp6j6d+3ckmn2h0TxXRiv
+	 r2kM2SeSfWg91KwMSWTothUM68f6KEbl7atEnG5y3bW8ypnzzJ2jxqInVGZs+vKvT+
+	 eQnk3S0AeDx6HynmdtoB8lq1KdAmFkOJaw5Ai4CPzw/hG3nP1+3hMCMKfb2bcsDEG+
+	 R3K70Ysw19s4A==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e6391b114so132186585a.3
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 14:31:07 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw72xm/AOhc5YH+/qaRdeBFw4MWqf0Vud9fii2SV+iYtPisVzJR
+	+K3C4BeQFJuYYFSTQci9lxGBtTew1W+EWl2nU/8vWmjABRJWQLHXaJbsMx6dysmHC7V8Af+OGEH
+	C1/AhMukNkTBwllXY7zAupH27NxstzA0=
+X-Received: by 2002:a05:620a:404a:b0:932:d9c4:3bec with SMTP id
+ af79cd13be357-9371e74b03cmr764971685a.38.1787175067210; Wed, 19 Aug 2026
+ 14:31:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com> <20260818-mglru-flags-cleanup-v1-5-8dbbdac0d28c@tencent.com>
-In-Reply-To: <20260818-mglru-flags-cleanup-v1-5-8dbbdac0d28c@tencent.com>
+References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com> <20260818-mglru-flags-cleanup-v1-7-8dbbdac0d28c@tencent.com>
+In-Reply-To: <20260818-mglru-flags-cleanup-v1-7-8dbbdac0d28c@tencent.com>
 From: Barry Song <baohua@kernel.org>
-Date: Thu, 20 Aug 2026 05:24:41 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zC7-8OgMEep58TEt0gfcShUSsKeYBGUW5BGEk8U+m8Jw@mail.gmail.com>
-X-Gm-Features: AcwNN1UbkL73D6-D0dw7N0OHp_q_gWFKVpfZWkoMrTN9W6bJic7KHpRg9Xi_EFw
-Message-ID: <CAGsJ_4zC7-8OgMEep58TEt0gfcShUSsKeYBGUW5BGEk8U+m8Jw@mail.gmail.com>
-Subject: Re: [PATCH 5/7] mm/mglru: use explicit tier range in read_ctrl_pos()
+Date: Thu, 20 Aug 2026 05:30:55 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zNZLOs_w1XazV471d66BVaNq9bVj5=2ZjT2u_NX=XmAg@mail.gmail.com>
+X-Gm-Features: AcwNN1WZoGwAs-dfgWVX34j6qNueiuUcgi24sPh1f1Z4XRF1e7IHP_M-JHHISY4
+Message-ID: <CAGsJ_4zNZLOs_w1XazV471d66BVaNq9bVj5=2ZjT2u_NX=XmAg@mail.gmail.com>
+Subject: Re: [PATCH 7/7] mm/mglru: improve code readability and harden folio_inc_gen
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
@@ -95,14 +95,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Kairui Song <ryncsn@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4047140008
-X-Stat-Signature: 5nuhrqbugw4i51orf9ubqsubds5ucujm
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C723A80005
+X-Stat-Signature: s34p81gogs4ukuk7r8461djapkgt4wq9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787174695-14709
-X-HE-Meta: U2FsdGVkX19JGgEeBwUXIJy7xfXmdL2lgzJZT8bvJ/d2WZvBkFM8W3qwADWwWB2lBvlB25vite0IaCNhftAHA0G8Omd5j018tdQAo8/iQSLMTY5zo6cIrTrQ/yk+g/z+k0i8yWEwqOyA6gaCnzqS7fbcUcqYC8le+SaNbJPlHHVIaVIwP/FhP43V63nLiMNYLZ6zp0pEFDDd1Wgv+fVBWyN0lHzPHYhWTWjjFpz9spdOcJMmG8l+GoGASyoEAT7TSo781RqWYTYPsICitV591X5Gad99UHapZF18hY7/uX+BceHtKWi7ePuj/AijdDqeS/od9RevXpZ9+jajyy+GiPBk3GzdJte/+OEKbFDXOLUbwFmwno67dA0eiva8Xn4I8H60ToiEVNjihVWlVlpZwnK4Zm1ve9MecQhLAuGRLwTq4FGxLskWNaRWiPmp7GBcrNyQHEchK/CiVwIIqumi+9RSatFCscP2hlUtRv/48xI+qlxj1uOEBBRKZuhuMX4TNwTJE/D7Nl/OhhHx4afP6mYIvCzkceHtL8xpoO779B31kiL5rPd5Yz+eEAT0sAnPOYY6WWEQu5lCdLBX9sp4+4DqEX4+nQszp5EGb4dm2T8bAe3ZIGO0vcliOUpcNOu0niwNWoacIaKw8KBi/ZXcbr/HvqKwEvowtwxP1nSQ/xpzhz23VMA9qtG8/+syBYzcKa6DH3Xx+AdujZl1Dl3FBYlXYDDSApDsplHLob1EzDfC5J6fEG+E5D/YLMLd2qbeMV/g8QVbbhCJPoTgJecfttQJ1yA4LJgyXnO4yNF0jQHkCyIsLnH68t7OPzal5PwqxWTlRky+FvKHf+31PXdjLNWGTfwrOsbFniAeS5ag8m9+BrPZM8RNr2Jc14g1+qCgucCdCJfjulHOsqDQeK394G4ea4B+U93hUytaCenJmoxYEVU6XIiiHlrulojG+eOR+tCxy5HOTH2QQeSuzma
- GaA5kB3R
- uc7eCcfdes5Jo+Ypss0R28CqcH3VVw13icSSCsQNqLEioJ4iW4LnOrJqkwVDYqQyX7JfN+0ttomDJI/oM9LadsHPSZdHqt4m1eGKEyqEDm5gE/5+qnvYc1VOBMom2Bq5E1+yrzNlRPJDUf8xzuXU5Rz0i/HAAlE943RSzXiiu6kqeHIf303VGM8Ra0VMPxeGaQ3ILAo5vs4RrQPX5HtA0uQjp6wWKPSIeQzp7hn372NTzCNrGx7Jkesr58X3RuL9hTwQTlyxdAlJRu3qWjhtuSie/filY2M9binrXnQaQxUeVI0nZy7ctC8GzBZy/c0mFoHmDOPRprbEOWLZrE7iWVVUYJ6HBbCInuDyk3aueNGV1ezGBnc7KsrfeAOFfSk/MQG0v
+X-HE-Tag: 1787175068-439332
+X-HE-Meta: U2FsdGVkX18NtdxxMhuoRCQvysV+VLrA2Xjt2XqXbkbifkpC4fLhQPRW+8F1MIz5p1VbSgCcJO/StjHQZTG/5f+HZchmJszkDqxBT/eqnInxoVip7rbUJvA0YzRsMcfUVpdacqAmBmMxAnnjaMSGJxdGGhaF9CLAyQyehFWkhtyN4l6b4c40eC6Z0KFAYsfHVSkdztzutomAGJLUXsurnXCVyZlFeF9pXMx2/TInPXCvfZrDrRs6Fk4XWvTzyff9TH7ZcxbL53WH6V31BhmvFtj5p05pqDmeQvdUBitXtjzkK/dTInjkKx7nzHTmWTjTWrGr3Yyw4j7P2il9A2q3LVsVegGM1X9HRBmOrOzRtQQNn1qfvPSqpiox4jctSljbd+FlGSAmmqLRkNXzjBWvzdiqFWOwa7Aj0QfQ/amYT1ifBPHtS9XJ+vWU95JxnUdiAnY0Rjk2uGuOI7mW6X3X6/JS3HE23wxy5C6OBSLM8XJrjTVYE39mToFh+hLRAGYWPkj0o3qTjz+bHzCtWLpYatzdrm80iIKfQ/CqDxSKmEvbXzyd1gmCattjaQy3e/RH6u4AUxpLk+PWVJ8H2yd97B9NNQ0MlvHOE9xxK1xXL0E6ygR2YCe5dqQfONs33oV5GeciNEL0O5Ddc6VqZb4lCjYOzkFu+ziyG/P7jKJoMSSYtIKJJqC7BBJI0LPUII2OJ//4+Axlsixv0I9a/ay5p093xyu/tFrxxwjzbFe+qcPXG5xWQ1arYUrcUwUZ1Ben1KVNqBQnj8hiEjbHj2OPjushISaG8xCbkQGdV1JQyAUzjMQXNId+SHbxZ/BjZApoQkk2efeB5i1DpkeHuMcWUWa0IIotkOaQTaWrDgRZQwzTXiwQtc+dGM3FfYhZtUzJW+0wXe5+4ij0g4iq7kREzXyiLTTYNDftk6X76Jah/d6r2tNyR5em3BN/YGghQfuAm2Khspa/C1FEjU7IHvc
+ QtBDvXTM
+ ecLudC40KFF1RIQJFrkFysP28DizcKiTlfm1fLZQZBiZgNIs657dwM4nj/B1tt488jVolE2o8YDt+uHq1pLyFz0zaan/5jV7F4lD8FpGdWWemFDGVbCzNaGkyd1ndb9WTXXiKJUQKYIKM/iBGcFDHyjlMe4d8qyTQg/0VCJtaio3ZgCcWr0vLAIscebIwudSAVQIu8eqN0XYixYnG2++PMbKyrsIy1QsvziSuM3Vssd4fjcUtTHS4POR9lkN7H0JkgqYjybVxHoTRIlP37qwrOenzb/js63F6/rzT/nQkHAIxKwT9Dc7bJEe/bAaEFit72PVNVbGXKPf+KBpJjJVaMhaUoRLjthBjJhZZrcB9FnG4RlUx0ynIJ6uk3pH3vOMRTtx3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,25 +115,30 @@ On Tue, Aug 18, 2026 at 1:38=E2=80=AFPM Kairui Song via B4 Relay
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> read_ctrl_pos() encodes the tier range in a single "tier" parameter
-> via "tier % MAX_NR_TIERS" as the start and "min(tier, MAX_NR_TIERS-1)"
-> as the end. This is hard to follow, maintain, or extend. Tier values
-> 0..3 select a single tier, while tier =3D=3D MAX_NR_TIERS selects the
-> full range.
+> The helper should never be called for an off-list folio, and it always
+> expects the folio to be in the oldest generation before doing any
+
+I'm really not sure whether that's true. Could the folios have been
+found to be young more than once during the last two or three (or more)
+aging cycles?
+
+> cmpxchg. Add a sanity check for the off-list case: if it is ever
+> violated, bail out and keep the folio flags untouched to minimize the
+> damage, instead of silently treating the folio as if it were in the
+> oldest generation and promoting it updating the flags to an unexpected
+> status.
+
+My printk shows that a folio can be promoted two or three times.
+If a folio is promoted too many times, is that the cold/hot inversion
+you are trying to fix?
+
 >
-> Replace it with explicit (tier_min, tier_max) parameters using a
-> closed [tier_min, tier_max] interval, and add LRU_TIER_MIN and
-> LRU_TIER_MAX for the tier bounds. The call sites now become
-> self-documenting:
->
->   - get_tier_idx:   (LRU_TIER_MIN, LRU_TIER_MIN) for the first tier,
->                     (tier, tier) for each subsequent tier
->   - get_type_to_scan: (LRU_TIER_MIN, LRU_TIER_MAX) for the full range
->
-> No functional change.
+> Also rename the variables to clearly distinguish the folio's current
+> gen from the oldest gen.
 >
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Best Regards
+Barry
 
