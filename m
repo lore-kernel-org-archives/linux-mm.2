@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C90E2C5DF7D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 02:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B12D2C5DF7D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 02:15:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B82056B0092; Tue, 18 Aug 2026 22:05:29 -0400 (EDT)
+	id 9E6F86B008A; Tue, 18 Aug 2026 22:15:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B32F56B0093; Tue, 18 Aug 2026 22:05:29 -0400 (EDT)
+	id 996E56B008C; Tue, 18 Aug 2026 22:15:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A48EE6B0095; Tue, 18 Aug 2026 22:05:29 -0400 (EDT)
+	id 886426B0092; Tue, 18 Aug 2026 22:15:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F5D96B0092
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 22:05:29 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E88C014038D
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:05:28 +0000 (UTC)
-X-FDA: 85116377136.04.AD55648
-Received: from mta0.migadu.com (out-155.mta0.migadu.com [91.218.175.155])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6A40980002
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:05:25 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nsrlyR68;
-	spf=pass (imf02.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.155 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 3EB096B008A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 22:15:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 888CA1403B8
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:15:12 +0000 (UTC)
+X-FDA: 85116401664.25.87301AA
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 823A2100009
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:15:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XKTy7Be9;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787105127;
+	s=arc-20220608; t=1787105710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6IJ+udYeSVoBfiYYNpFEoyjlx1n46S2SQFcy+SEEuRY=;
-	b=JcUGle21eopbjfobI21qHKqUZrp0I4ZFSmrxVyCvmihO0OnqY4uW1sKM9U9s8A0KZQEB4h
-	qA0q1LeZbWdTeyGOqlZ/C6C3eDjKFKRnrA7pqKWrpjvJUayPwUeY7+3jcUQ6L6PWrYTa/E
-	sQCWz92MQxKZjK19eDtuE75dfwLqNxA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nsrlyR68;
-	spf=pass (imf02.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.155 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=02UHFtSIN6JDJ4bj3MePIt9/xxUXCOrrST878CoL+Xw=;
+	b=gURhPSKK9GEW+keMnVJztTM3tQYk+JWvp2KT2Y4wSSxY5sDjhgEDbdIDzkJHWQl0WuSkld
+	M7Dtz9LBrdcM3dQsjZiYvrJfpJDEpYAkFk0XMji5S128iEn7bz9W0p8wiEnpdRDRCVlquX
+	ee+WV2pwwTlv/qdLfRGRL8XVN6tS2Ew=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787105127;
-	b=HpKkK7UBTfFDriTA7B85w4opjvmSp3i1a0KfAnQePV9l4FDhQDnLkZNfuXZ0i61z5U5xeF
-	ykgl07doCeMtU/vykTpSTVheAdMJtownlPLUD7UMCcRgK67Ecyt+GDy6IKDdYl4A0k1fQG
-	4CSkH7ORhrJzuG7xJfHIiKxpq0Vumhg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=22tSUCGFrD68K1lRH+RPcG9Hyj3wJxpH/fb0Ypvsvz0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787105124; v=1; x=1787709924;
- b=nsrlyR68i6A5Q4oTHUqZn3S8b5Mce7piUJRhfM2cTSU5pqJspNY0X1jG4SyDTLnKLj+sGHfV
- GYMmIBZ5ipnpDBITbmBoGMwEI6VU6CoS9u57x4YAz7TJLfJf3UwbYqiUQviBXKvDFQLn+zjxglr
- PXc+/sqq92qm7dm7iwNoX2aQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.63.107.123] (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id 6217c15f338751e5;
-	Wed, 19 Aug 2026 02:05:14 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <aa2507d8-8476-4090-b4a9-1cbd7225009b@linux.dev>
-Date: Wed, 19 Aug 2026 10:05:04 +0800
+	t=1787105710;
+	b=t7I8U0+krd9Swx6bcmQ7lmxLgr+v0TXCJc8Ow8sDPyXC/Y6HiQDW4BqEMaGSQsT+o4Jm67
+	b0b8m9dxfZEnIvnYz7z69EmKkgjJ9HXClsUxMgFKuZ/xCNIxEAWqhWSQa8v5WsL7785P3G
+	KzynRM4KbARynjz6P3CG2yz6mvYGINk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XKTy7Be9;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787105707; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=02UHFtSIN6JDJ4bj3MePIt9/xxUXCOrrST878CoL+Xw=;
+	b=XKTy7Be94qIqNCA6ACv9ElxRRjneTViBrD90loccZ74qwwrMf4xdFA0EHKG7PtFueReWJLY1K4LJfig3KhG05OFeAEUTyAqQBjSPRv27pNthvfesY/4zY1RPAagBm9a7X7S1+Vdo03XGF0vp1iiOmN9cfev80EAyTmvEh2hAVx4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R941e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X9F2Zqi_1787105704;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9F2Zqi_1787105704 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 19 Aug 2026 10:15:05 +0800
+Message-ID: <39871dbf-25e3-4518-9942-a733dbb6acf5@linux.alibaba.com>
+Date: Wed, 19 Aug 2026 10:15:03 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] mm/memcontrol: make lru_zone_size atomic and simplify
- sanity check
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Barry Song
- <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>,
- Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
-References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
- <20260818-mglru-flags-cleanup-v1-1-8dbbdac0d28c@tencent.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260818-mglru-flags-cleanup-v1-1-8dbbdac0d28c@tencent.com>
+Subject: Re: [PATCH mm-unstable v3 2/2] mm/vmscan: apply too_many_isolated()
+ throttling to MGLRU eviction
+To: Barry Song <baohua@kernel.org>, Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+References: <cover.1787056208.git.zhuhui@kylinos.cn>
+ <4b4d4e3065e36f1b60dd69e8276cb92082f393a6.1787056208.git.zhuhui@kylinos.cn>
+ <CAGsJ_4xKM1R95TEpKoicGYQB8Qafez6hKJF=Z98A_2j43X5GAA@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAGsJ_4xKM1R95TEpKoicGYQB8Qafez6hKJF=Z98A_2j43X5GAA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6A40980002
-X-Stat-Signature: s67wq6fgm9a44yrid685r1n9ndffi8kz
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1787105125-949976
-X-HE-Meta: U2FsdGVkX1+YalDOBXto4nrNRYN7ap17ZMByFpZCWztAdFYhPa1zIEqVzedORN72Wm6kvXYJS4fxipe6ms3787durbBLIppYXOsP9HqHOmvedsBYXR9FUaZ9Gwa08ePV4XT91qJqSiodl0V23tBQEL6mFmoTr6BD4mvj/k6UZw+ATm0rFsnWPPA/26gWd8HeBzqTJVm1kdMSDLH5zdrclDwB76s09vRzG8Rs0oW4EsO2pINiKvBvZi5O2fvhgOIaTTmWAJyxGUxMFmxM6eyX4NCSf+I6e4qQu4HZVvJxLGo7rczfoRyDPrrSnCw5T9dx2zX/hHTJbUIZ1tTlthNwj8FobH/4+Pd5iEls2a8lHBdE+U7tmv3qN3VjVMqG1w7njKhf779b2/MDjU+0cZ6BloEJFuicKXi80QWtuG94WGj61P5uc+qaZMJRRb2PWvwo02dSpdZiIoHUgQb5FoXYQqs6XNql8UpSjF6d9KvdT+5daRVY8iKohVBspbPEqXr90mD46Tf0JSxV4dQG+nZt2WCsHFJ6Z03QYOnrK4QeDi/XsXT6N3trXdv91ZJ9t562kfcgb2k3uABYNeKKJw4CGMnXetpK4T05FriFE0T8vyEpxqq1gl22uVOzur7LulFfO9oFJWo4V7ewyUwoQ2iUZvzxeiGR/RNiHOj87O+SQUI5WA8yqE5zWPouEOsTXto3KwRIQfyktOCrNEjUkAHzvwKzdoq57XLP26eiL7tZuubThXgrBGzEB6xvK/V8SmLWmcGi2N5i0C/Imc64+tr0/He7brcVh4xyVZ6RBhng9YG9E3qj3I9KZ9EsF6b50HlkKL523w3dbrZKpymtO1WB4ANs1A4Qnj6PS46og+Hu8R6eKKJcjYEaUHZKxkEUaJAC43yhXYvGp88I8RLgXJDBlccWIfqlvu/YEY2vO6LHdl6ADnGg/FkpkrOO6Lx64cc6f/DswQHPOHT8kqxQ/MB
- Nfm1L1DP
- WBDJf3d9B7cUkcQgvLk+mN3Ojnn+IomCU3X3DpirpXlN0Q5ap91PzKbUQSY9rc+qoQLZx6OhmbdLfSv4mujEKVNMKNVp8Y3WJPXhY9buFufwUYOY2c2Qn53gdnBvsO60RbC40SOHdy9N5thNl1dquM6aYn1aP52Vktlzd2/8f0nSqUv2tM0UbUMY0I6RzbAExBv7widAnjj/UDZLLw247fvWd/fy2Oo+xYLj2OnyqMURUrAlCv0pNZW/YsTlejy4ThUMm9UJ4aM3nkPH11db/RbOMY2yTUfQqe35MMkUI+IOsR6GT8QIXCw/EoFm/wTbw2muNv/PrK85akjtwSjkkzgMrbXwRaZzhWkMA
+X-Stat-Signature: 47n46yykufqei8dqctbd3hh376fikq55
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 823A2100009
+X-HE-Tag: 1787105709-822711
+X-HE-Meta: U2FsdGVkX1+N4phCLHFbO1CXDF5T6gsfd9FZgQEZDwyWFSZpmCfQkNb7UoAxwhFMmC5ZpldeRnmwojmv2h64QX4PFPaTSr4vuLzxXc4RfhR7VU5VpyosOJCjpXw+lOq+yFLpZi/aU/Pj1CnTuwY22cioR6IWKvk6uhMdx1hj7kgowCgHAaqhW/lN5IwpBp/HcVK05Ag2h76va9lRxuxe0LBUiMvSm+RNJ0AKKrsEI+4d9RyKuNb2NsXVNixjUOeK1UVj5cA8rUWT+GaXaLHPRO35yoA0oNfh4HKODYRNgXhETdDfRVH8E9tSAZsrCSJt7aE/xdYD2BZpqXgyMRL0FM9/KXP8DTEJBlEJYtQk69fYeICv2B3PX9HfX7sVdIO6iE1Z1C6l1bU0APAbinzRqg9mdMjrLZ5rwYiQERm8YUkWm1VBs/UUt+vIki+8E9T9PdyBRU7HKovX2Rvch6yC7py21cjzYSZ9x/Py7f4uuNogX55yowr+KN8RZW9lPa018bH4NkE4LlLn5Xr2tMPAHsa+SoAdHtYGSD5fFeS1TDgBn7X5+SxEhX5tu+RQVTuZoj+fyZhfwyw0Q2qP5njv/EsfPpGLnSRxauXlkitCLmXsIlldJOGA2d8FTxwMnArmBJMdrvKFMlyFWzfw9aut4kuXC+adWQ82cfknmFEpLLTi/1emhnZMu3YMy6oUlxpPKtdcBWhwGqifC1MzN0iD0IKDlBpl0LnPD0DJb0cXvKAHfQU3xTTLCQ/Ya5eQntm5P8WampgxddUwZ9tleIwxyfqqqm0RIYGswo4g694/QtYFpGxa63VwHR721q+OJLM7jf9PYTf+D3e0qq81x+h93e0dNV8pHKaJJL330jXmtIpvUvLAvU9iXXgoBUY0QHUWngcMgCGueGJLnpyomarUmXtUPnb/kxO84JaAkcPXJvqvpFIEUJLWVdrWEL5ImfT3n7jmjdG8EuWHH2NreX9
+ RkKuQfWH
+ g9TuRnnm0W8qPwv6wQhv6DCevoayLE7agc1uHubfWlTWUgkSJwVds/pmyy41kCLZABsdOquS8yEa3fvNs4Q8x9vjV1RSiYBwoNuS3KB6N1qHUJsj/zhm3XE3aFpcmFas4C0JZmGfG8Il/CgtdmKRQekJQkXnixB1CvXmVuqcujQENhfveH2ZVGEmFuq6Oe5tHOOcVGHVVa6tyN/WCoQhJ5+Crodfd5lX/yE2B/SmeG5owpZAvbU/1wr2hn52NX3/mMvdmgkIU8aAx1QendYbUQqtxfVRMBQDpwUBzKR+L2yeZrswJx3zK2YSKWy2HVdhousjibWIwFDriEquIYgE7uFJqMs+5p4XfMyGJg1l0evOWlrtIFQsa4wm6H3ECbtfbSQ1mpdT/z9ymTKY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,117 +97,162 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 8/18/2026 1:38 PM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 8/19/26 6:06 AM, Barry Song wrote:
+> On Tue, Aug 18, 2026 at 8:49 PM Hui Zhu <hui.zhu@linux.dev> wrote:
+>>
+>> From: Hui Zhu <zhuhui@kylinos.cn>
+>>
+>> The legacy path throttles direct reclaim in shrink_inactive_list()
+>> when too many isolated folios pile up, but MGLRU's evict_folios()
+>> isolates folios without this check, which can lead to unnecessary
+>> swapping, thrashing and OOM.
+>>
+>> With the NR_ISOLATED counters now updated in evict_folios(), extract
+>> the throttling loop from shrink_inactive_list() into
+>> throttle_is_throttled() and reuse it in evict_folios(). Since the
+>> type to isolate is unknown until isolation and isolate_folios() may
+>> fall back to the other type, check all evictable types with
+>> for_each_evictable_type() and throttle if any of them has too many
+>> isolated folios.
+>>
 > 
-> commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
-> introduced a sanity check to catch memcg counter underflow, which was
-> more of a workaround for another bug: lru_zone_size is unsigned, so
-> underflow wraps it around and returns an enormously large number, then
-> the memcg shrinker loops almost forever as the calculated number of
-> folios to shrink is huge. That commit also checked if a zero value
-> matches the empty LRU list, so we have to hold the LRU lock, and
-> handle the positive and negative deltas separately.
+> I feel this is unlikely to work. MGLRU behaves quite differently from the
+> active/inactive LRU, and its `NR_INACTIVE_FILE` accounting is also very
+> different.
 > 
-> But later commit b4536f0c829c ("mm, memcg: fix the active list aging
-> for lowmem requests when memcg is enabled") already removed the LRU
-> emptiness check, so handling the deltas separately is no longer
-> needed. And if we just turn it into an atomic long, underflow isn't a
-> big issue either, and can be checked at the reader side, which is
-> called much less frequently than the updater.
+> With the active/inactive LRU, shrink_inactive_list() ensures that we
+> always have an inactive list with pages available for reclaim. With MGLRU,
+> however, a generation can legitimately point to an empty list, so this
+> assumption does not hold.
 > 
-> So let's turn the counter into an atomic long and check at the reader
-> side instead, which has a smaller overhead. The underflow correction
-> is removed: a massive leak of the LRU size counter would indicate
-> that something else has gone very wrong, and one should fix that
-> leaking site instead. Besides, the updater-side sanity check is
-> unlikely to catch the leaking site anyway: if a folio was removed
-> without updating the counter while other folios remain on the LRU,
-> the WARN only triggers much later, from a likely innocent callsite.
+> try_to_inc_min_seq:
 > 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   include/linux/memcontrol.h |  9 +++++++--
->   mm/memcontrol.c            | 18 +-----------------
->   2 files changed, 8 insertions(+), 19 deletions(-)
+>          /* see the comment on lru_gen_folio */
+>          if (swappiness && swappiness <= MAX_SWAPPINESS) {
+>                  unsigned long seq = lrugen->max_seq - MIN_NR_GENS;
 > 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index e78bc98ab229..b13e3f056319 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -113,7 +113,7 @@ struct mem_cgroup_per_node {
->   	/* Fields which get updated often at the end. */
->   	struct lruvec		lruvec;
->   	CACHELINE_PADDING(_pad2_);
-> -	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
-> +	atomic_long_t		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
->   	struct mem_cgroup_reclaim_iter	iter;
->   
->   	/*
-> @@ -897,10 +897,15 @@ static inline
->   unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
->   		enum lru_list lru, int zone_idx)
->   {
-> +	long val;
->   	struct mem_cgroup_per_node *mz;
->   
->   	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
-> +	val = atomic_long_read(&mz->lru_zone_size[zone_idx][lru]);
-> +	if (WARN_ON_ONCE(val < 0))
-> +		return 0;
-> +
-> +	return val;
->   }
->   
->   void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 1d3339520809..9d0ee3d3bda7 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -1529,28 +1529,12 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
->   				int zid, long nr_pages)
->   {
->   	struct mem_cgroup_per_node *mz;
-> -	unsigned long *lru_size;
-> -	long size;
->   
->   	if (mem_cgroup_disabled())
->   		return;
->   
->   	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	lru_size = &mz->lru_zone_size[zid][lru];
-> -
-> -	if (nr_pages < 0)
-> -		*lru_size += nr_pages;
-> -
-> -	size = *lru_size;
-> -	if (WARN_ONCE(size < 0,
-> -		"%s(%p, %d, %ld): lru_size %ld\n",
-> -		__func__, lruvec, lru, nr_pages, size)) {
-> -		VM_BUG_ON(1);
-> -		*lru_size = 0;
-> -	}
-> -
-
-This code is confusing, I used to try to remove it.
-
-Well done.
-
-
-> -	if (nr_pages > 0)
-> -		*lru_size += nr_pages;
-> +	atomic_long_add(nr_pages, &mz->lru_zone_size[zid][lru]);
->   }
->   
->   /**
+>                  if (min_seq[LRU_GEN_ANON] > seq && min_seq[LRU_GEN_FILE] < seq)
+>                          min_seq[LRU_GEN_ANON] = seq;
+>                  else if (min_seq[LRU_GEN_FILE] > seq &&
+> min_seq[LRU_GEN_ANON] < seq)
+>                          min_seq[LRU_GEN_FILE] = seq;
+>          }
 > 
+> At that point, we have no inactive pages for the type, so the
+> throttle will take effect when the following condition is true:
+> 
+> too_many = isolated > inactive;
+> 
+> With MGLRU, however, we can still fall back to the other type even
+> when there are no inactive pages for the current type.
 
-Looks good to me.
+Yes, that's a valid concern. So I think we can check the isolation of 
+both types for MGLRU to avoid this case:
 
-Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
--- 
-Best regards
-Ridong
+static bool check_need_throttle()
+{
+         bool need_throttle = true;
+
+         for_each_evictable_type(i, swappiness) {
+                 if (!too_many_isolated(pgdat, i, sc))
+                         need_throttle = false;
+         }
+
+         return need_throttle;
+}
+
+In evict_folios():
+	......
+	while (unlikely(check_need_throttle())) {
+                 if (stalled)
+                         return 0;
+
+                 /* wait a bit for the reclaimer. */
+                 stalled = true;
+                 reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
+
+                 /* We are about to die and free our memory. Return now. */
+                 if (fatal_signal_pending(current))
+                         return SWAP_CLUSTER_MAX;
+         }
+
+> BTW, if we are hitting isolated > inactive with MGLRU, it probably
+> means the generations are quite imbalanced—we are running out of
+> reclaimable generations. In that case, we may actually want
+> reclamation to proceed with aging instead.
+
+The typical 'isolated > inactive' case is that we've tried our best with 
+aging, but cold pages production can't keep up with isolation speed, 
+especially under concurrent reclaim from multiple processes. In this 
+case, I think throttling is reasonable.
+
+>> If a fatal signal is pending, fake reclaim progress the same way the
+>> legacy path does, so the dying task exits reclaim quickly instead of
+>> being held in the throttle.
+>>
+>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+>> ---
+>>   mm/vmscan.c | 71 ++++++++++++++++++++++++++++++++++++++++++++---------
+>>   1 file changed, 59 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 98226bb021f3..6fe8824430ac 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -1819,7 +1819,7 @@ bool folio_isolate_lru(struct folio *folio)
+>>    * the LRU list will go small and be scanned faster than necessary, leading to
+>>    * unnecessary swapping, thrashing and OOM.
+>>    */
+>> -static bool too_many_isolated(struct pglist_data *pgdat, int file,
+>> +static bool too_many_isolated(struct pglist_data *pgdat, bool file,
+>>                  struct scan_control *sc)
+>>   {
+>>          unsigned long inactive, isolated;
+>> @@ -1856,6 +1856,37 @@ static bool too_many_isolated(struct pglist_data *pgdat, int file,
+>>          return too_many;
+>>   }
+>>
+>> +/*
+>> + * Throttle reclaim if too many isolated folios are piling up. If this makes
+>> + * no progress, the caller is probably looping on unevictable folios, so give
+>> + * up. Returns true to tell the caller to stop reclaiming, and sets @fatal
+>> + * if the task received a fatal signal while waiting, so that the caller can
+>> + * bail out faster.
+>> + */
+>> +static bool throttle_is_throttled(struct pglist_data *pgdat, bool file,
+>> +                                 struct scan_control *sc, bool *fatal)
+>> +{
+>> +       bool stalled = false;
+>> +
+>> +       *fatal = false;
+> 
+> TBH, I find the name quite weird :-)
+
+Yes, that is not what I meant. :) What I mean is to use a readable 
+variable to return instead of 'true' or 'false':
+
+static bool throttle_isolated(struct pglist_data *pgdat, bool file,
+                 struct scan_control *sc, bool *fatal)
+{
+         bool stalled = false;
+
+         *fatal = false;
+         while (unlikely(too_many_isolated(pgdat, file, sc))) {
+                 if (stalled)
+                         return stalled;
+
+                 /* wait a bit for the reclaimer. */
+                 stalled = true;
+                 reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
+
+                 /* We are about to die and free our memory. Return now. */
+                 if (fatal_signal_pending(current)) {
+                         *fatal = true;
+                         return stalled;
+                 }
+         }
+
+         return stalled;
+}
 
 
