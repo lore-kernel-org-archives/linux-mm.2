@@ -4,120 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00BE3C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 06:55:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3934DC5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 06:57:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16E746B0092; Wed, 19 Aug 2026 02:55:56 -0400 (EDT)
+	id 36CCA6B008A; Wed, 19 Aug 2026 02:57:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1462B6B0093; Wed, 19 Aug 2026 02:55:56 -0400 (EDT)
+	id 320086B00A0; Wed, 19 Aug 2026 02:57:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 033C06B00A0; Wed, 19 Aug 2026 02:55:55 -0400 (EDT)
+	id 25A666B008C; Wed, 19 Aug 2026 02:57:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA74A6B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:55:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5960B140459
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:55:55 +0000 (UTC)
-X-FDA: 85117109070.30.5EE9176
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5A28F40006
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:55:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=S2qSPev+;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787122553;
-	b=5p4fVHmy9XJcVVqRtCPsS6xY7gfkLGhPtU0YU6/INxA6sT8jmsLE6/V2mGpFK72gT5tqr7
-	lauC8noiAa15KYfHFOtaN/Qtgs3kZh5OTuwVlmGaKnJXtFKARmzmmpalqGstnWZBkEQJFC
-	zWZrQXYHdd6iA4ZgA0otvJJVK/2azJQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=S2qSPev+;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 036146B00A0
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:57:25 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7BF58A046A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:57:25 +0000 (UTC)
+X-FDA: 85117112850.24.7E5B67F
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3AEF34000A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:57:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=f3H1WtXX;
+	spf=none (imf04.hostedemail.com: domain of BATV+4a1be12ea4fa2434960b+8396+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a1be12ea4fa2434960b+8396+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787122553;
+	s=arc-20220608; t=1787122642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hYNBkArvM0Cl5ZB89avtYxazzho2TcwquWjPuU3Io9Y=;
-	b=4ITJIdwymIqzJ63NCRrryYOvPheOdEJ8luAVSLhM5zS8Km2JL/8vpILc2XEPbmlMorzczz
-	U3UnFFBLqOP6RgZp/uuWc+Ud701MjG3eaVxcORLjAO7TMUTm54b0TOffcBtUq/H5maCQuv
-	uW0JjJkg2dzcjPSw1NYFb+j6I2o1Wzo=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4956869750eso3765675e9.2
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:55:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787122552; x=1787727352; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hYNBkArvM0Cl5ZB89avtYxazzho2TcwquWjPuU3Io9Y=;
-        b=S2qSPev+CYzFVqy15SSfBAqCp8c2P1yt3QcgreypkTgXXsbCR/t/xdR9KzLdKQGISs
-         jrredPshrF9NBwUCMjiQKsXZmCRBKs9kiAbfpGLF0E5QtN3j0xguQYFEe2wTva26eJgV
-         ENr88yGnUWjjyqV4Ce06xiv8KCgpP0LGyBDF0+t88OV0ckS8xDtEzpaJoKzfOvfuScoP
-         3II5h0JFd7eVS7WtvvKO9MGVWASbXRYELD0KT61eCLRqpcS6aUyLDGXaCs6sNmqnTe+w
-         X/s72Gs4AGpP5WC6LRjyvU65AYppwpqV/7QVVDSwGo310/OtXhyxgXCTnm6dNC/axmGs
-         zi4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787122552; x=1787727352;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hYNBkArvM0Cl5ZB89avtYxazzho2TcwquWjPuU3Io9Y=;
-        b=fh5cw9rVW6ROA3a8yqIbsjL9RCIXSsV5PusOq5SY2ea0hS0NILV2eNRQ9AdA+P3SYr
-         qbxFY+Gj9lMkE0kIPkVlgRNf5URNu6FwrI4e+3MNdVSw8rqr1+SpAiUUB0l7Eb63kKCT
-         hjwE94FMLEmp2hwtul4v5OBA7Egy3YQcBJDOtjY791+qnYC/1cjW3G9XUMQQeVPlEhOh
-         nrSynajBAXJYjs3JDeslqjEruX5ObFRuIWzBbI0U77rCHFiFK/rGu55G0WmQi05BhK9D
-         ASOs/Ym8XnHMKT/uMNL1egND8AydTGcVOCUmSX9LitZdufbiy8XVF9oApATDCJDMrS7+
-         LoRw==
-X-Forwarded-Encrypted: i=1; AHgh+Rogv301/r4nGf650TGr4NJBNUR2emgcw+L+IzpGm+BMmhpIAIv59VBtCRHDQ2oQZ+eXBdVREAtWIA==@kvack.org
-X-Gm-Message-State: AOJu0YyZiCLYbb0be0HBiy96lB71j/1jQsxQp/GibPSW5kuga8uC7kK0
-	LDwioHr1SqxFgCcO1FGCWu36L7SCNfmgZV6OlFiF+rzynUpGjvBjHf4VuiUlbTfVuis=
-X-Gm-Gg: AR+sD12mfrN/JqsMIm6BFYDfOlL/cEBuEdrtIx+8I3JhZTZP573TnyLMRfcC88RfMFz
-	6k1V/SyBnXVIysfRO/0heCO1JP1OadHk7B8bxl35vJF81J612Ww5YzLWpA0PZgdKmVsjqyxBiF7
-	DerwOq1LmspRgtT+RseaN74j2o5WwSYk0q1Iro+IhHDlsL6e2hcb0x3U8kCKtEWjiqKh2n6g+P3
-	ViGPAJFBDUg38pEk//lsGD1Y2MRlL1p7Ddq83xZJ4S5nmM9/eo+oY6zx95565hLuegXTC2Cq8me
-	xMcVW1LkCSVceUpBrtz/SvJ+Vu0IOjyHZBFpiFk/wgvb+wAwJQgAxIlpAFvp/0rK7mY4m+Ydorj
-	MRsHPD/cQmdJtIvkN9ahCGu0+LePEqeDIZMlC4tqFLaNZ6DmSyyX6bSps/Oa+9kGya6L5vbIRnA
-	xMpaKYb72l+TpVXGSJTO/3HUsMEO71Orp2qZYnhhdNLDu8KuDTfLRxOztLiJNobJ1qvcnPkZbhr
-	AfWEWMnybmL
-X-Received: by 2002:a05:600c:4e8e:b0:493:aa0a:45ad with SMTP id 5b1f17b1804b1-499aa17dd15mr37042295e9.2.1787122552092;
-        Tue, 18 Aug 2026 23:55:52 -0700 (PDT)
-Received: from localhost (109-81-87-166.rct.o2.cz. [109.81.87.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499a9aa1594sm36622845e9.0.2026.08.18.23.55.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 23:55:51 -0700 (PDT)
-Date: Wed, 19 Aug 2026 08:55:50 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Lance Yang <lance.yang@linux.dev>,
-	david@kernel.org, leon.hwang@linux.dev, linux-mm@kvack.org,
-	muchun.song@linux.dev, osalvador@suse.de,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hugetlb: add cond_resched() to __unmap_hugepage_range()
-Message-ID: <aoVTdhq3UJKn-7_W@tiehlicka>
-References: <20260818115526.654d7311366b66cd031c67e4@linux-foundation.org>
- <20260818221858.86452-1-lance.yang@linux.dev>
- <20260818162430.0a51522ac9bd671cce62650f@linux-foundation.org>
- <aoTuwV76Sd0ahBEC@casper.infradead.org>
- <20260818165938.243ead051f792ee1519a5c79@linux-foundation.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Q0IdqFnVkqkF5q9pk5IoXLZATdgqmwUq+XC4q3t22bs=;
+	b=nv4BNqBWVMgiWPUmhUZTiV4FnRt2JJd/uhFYmlpbod/3NJ6ddCvwWMNStrC7mgRXe8B78e
+	GhbGqx/M2aNDuWJ/Mue72EXReHFHsxNq8I88c0/fLT+nPRcZhShtziP/nkJNzUju3JpFpA
+	e3NFYX8etLQ6wJxIPLP4LXAqKCm1ZQ8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787122642;
+	b=r0EKwxzwPNvneZKpZtjSuQ91lwhhmKwkUfJG0DcN+6OfjykqX2BHXXEL2xcXrSKu9rRzTm
+	5II+9MEXlK+LGCUDca8Qo1Yj+1r8Umabll+kqeKLnhRs4CFuB5mHWdENcVzMuyWs7C7co2
+	sIbyJIywV2xR4PMuJN1egygbCpVfzUI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=f3H1WtXX;
+	spf=none (imf04.hostedemail.com: domain of BATV+4a1be12ea4fa2434960b+8396+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4a1be12ea4fa2434960b+8396+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=Q0IdqFnVkqkF5q9pk5IoXLZATdgqmwUq+XC4q3t22bs=; b=f3H1WtXXpW3AKBooPYiQgk+IWC
+	SO8y8uXhKiPyf/6BN28IuNcQJ9yBfHrNh0nx09zpU7JuOCuhTfBp9iQUPSIKNDxQuQHfBXiHrt/u+
+	0YB584pQNd0b3FAWIctBx+iVjmx+jAz7m7iqhkPz5CZxEB5I3OhC/fdl0hjRg5c5A5ZYH5H95kw6b
+	JXPUG7YoN4qdrQZFmJydSjB9ZyrqsE70Eh/JQY1ttyAPCcdYsY0C8w79qPtLjVyMK0T4h6YNUKFzE
+	mCp8Dpvrsn3WzypJSqFxBr3TkRuKPTYILZUTiXRdjtNTUcGEtjwOQvEUDJvsoDXrUVzbTtaeInYJD
+	4R8WdgUw==;
+Received: from 2a02-8389-2301-9f00-b711-947d-6c5b-1af5.cable.dynamic.v6.surfer.at ([2a02:8389:2301:9f00:b711:947d:6c5b:1af5] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wwaEg-000000098qY-2lF7;
+	Wed, 19 Aug 2026 06:57:19 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: willy@infradead.org,
+	corbet@lwn.net
+Cc: skhan@linuxfoundation.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH] XArray: document that tags persist after storing new elements
+Date: Wed, 19 Aug 2026 08:57:14 +0200
+Message-ID: <20260819065714.1358822-1-hch@lst.de>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818165938.243ead051f792ee1519a5c79@linux-foundation.org>
-X-Rspamd-Queue-Id: 5A28F40006
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Stat-Signature: zan394h5iqup65cf6gjtxmq1xwj9pged
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787122553-458339
-X-HE-Meta: U2FsdGVkX192meoG/G8cEZaLnycofrQ0hcYFpB59UD/RaygwElsG4AXNQlUXPpqbucWc6RwudSXcrIxqotAK2Hab0Ff1WayZtFQhxC2BFZEQQ/oWVJRC1iNc9rFw8GeYD36RXdY0T9j7OlUQnDAUA/xTpOtzjYCPSo32PQ5bppj65upzbOdobtKwO9UATAqXUXKRWW1nQdhXfBwJSx0BoPtJVchTcAkrlCajf7qXv6eCL16MFrPioiqgDCkQtojY3fExwL3zbdOsw9+9eGholNHAoyeZe+ImpCTRWbXnU+y5uTbNF0fQTc5JVKrv3RGUFTOmICQl9+M9fnoZj9N4fdALRD898DXmNjlu/QBotct+kxyiGBUF7OlLEqG8ywpVbM+Oze6FD/9ZWQ7B8ouh8SGDvxzR/NtLNfa+F/VVi21sLsHrn6q/7Lef9q2Ri5idSLxVqKzM5luX6H/gXAkOA9QtddOanWJHOydSN38r7FtLR+E4dKatuxAcldTTCQjLJEAEZnE/ONu74jZueNr7e6b7bB3yaPOH/Kpr5ZXxOKVFp9v9PRhYsx+46Zc1cPHv6cIas3RVB39tpXsTzV9J4lI1F7w/OtRIK3tCFURVIrqMLvfDBYxCowwc6Cfjr2v0LYwaJvZL6QY077qXXCk203mHd+6TXVNCYEmVQBPugWTH63VqvHTTNq2PABYio+NgH26gZBo1DOLta5iEkinWHU071iH3sxPaoSgH+vZhWmPF2uJCI63OwBX35JbcL983VrQTWM6iZ30lrpGuHrysKtH6XFRGUMFKWkzrBVBxmW0x0AsdbmCquQh/UbdP2X1GWwBMSvY4g4zzRM5qJXaq5FAn/En6tod6HU+0+QTF31pKMRnikm6a6/aRgRh7ZJg5FVpddhwHnv3zm/t8JxLiHcWkrcvYN9oM1BYSDqSv51uGKGI9688WNFpSsE+vltxaiirj9glXgVwqPZcBUBd
- XUDFzGE6
- JJhY3ES+kI/sG5LplV43aLUQsQXPCRE3d7RnBKjTy2JcBw3PDgUApcWmNaWbQGeuUsw2/0nSaSCgjixfZzXTn96WrHDrYV6886E5tlJJMYUoPLHiiIjQ7rjD4pNwvxbXbMadVolf8Bb9IVDnHSl8NDJ+NjSMRusUhLk5EuV3GXavUngk25uV8EN0VI0hRtVpUza1AFWay1nfoTKPq/PkWIbBwizfNLal8MWC8hr015+HnqFaseZX8gqBBV/ADgfQBJCBeneZv70/aBpjrlcRSpJZCK6lSBPYipX5yStf9tIFXHIU0jMnn1rcAGlyhq8gmUbU+/7nXU4xoJF6unuPfg1hM6thSjs6FDYK1EwVGlnehCxZ3If4GwxYEErvDamLlvGF9H+IDjnah9SBZrUhMmE5LluNV6YoMDCn5AxNsw8Wekgv15Hj2pXgSyT6NMRESBK0VQ3gqJlKb+6k=
+X-Stat-Signature: jdhj58bbdd1mwt3m71zoctx5uzf9fopn
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3AEF34000A
+X-HE-Tag: 1787122642-207920
+X-HE-Meta: U2FsdGVkX1+KSdhxhyQLzNc8UNF/BZEDORxmZ7r16qtMrbZQ41TjWzsM1Au11BJv/nP9lgf1hITGhwG8WScy4rM/3jM/GgElaSI+punv4jduEslSynNqdOVfaPmzefOvPY5DjPr3EIApb1H/WfSXgPQT7asVScNy3C8qq1CjffVszM/ey6B5HT9vzAyoaNGEAaupc+AsS/4Gj6PZSqMgqnYv8U6n7KLVU5vKe/xLcjtFYp/O7O9kUDWz6yofiht3feC/Fc3MT16ZNziucLOreD5ejMjdMq22g8WgEgC8ZAxcXstS3hBXBIAxOoNX+wXp0PcvixUgbdr3AlJ6Gat5lf0fXOFBqFY9FJNFlL0EHheZtY5JMkZVW5y2UO4mHZwYDxJKfK11KvhAB/KA4TVF3O3osyh8f4W0/36RoZAA4ribhyrbqUN6KishD8lYmlpZCjobTkdcH1O270QefIk0DpUReqPS1LvzQe+a/BvCxo46lZJxXKu672HoUmJlUNdkZ5HJAYk+GEqspjBUacjy5lFJAV2xJGvC7Is30/+I00a8pvXLLYlHTZMNO2Myq+xLDNmajTLJdcpcwk7vVldH81HcwObwW9+8Kul3UQSJbs8AwOW9rObc0WKcOHdbKV4Ls8G5Yo0gdtAWcEX1hJwtiCKyDfxpQurjqLpZUK8C3oainuEIgG7ayzb7LyYh2TndEuZx5cYUJ47V/VCJEDdN/ou0MO4LfmD7gedNBjizP+znIPl2E7o1wRHXw+lkJJ8XDzL/0ArN6ueFsyGC9aGYXhbyIAD7pJpyxLg0lYk7fcsAk9NOKo/cF1P7MsWecuziP7bQLafte90YA8vk0yqRDdJfpg3/h/EBemo5wm2OvQclIS7fuxEcDE5QPS329ovA+oqoSHIzqE4Rhq9KAVHjI3h2gKbq6IfBcN6usna1L0QTQqwXT81C/rLbMSQirLWB+ekTfS0R3kCOJn+m6uF
+ Nqj4Gu+j
+ dTOoaqwace5I7O4Z7PCWuSore6cp66bVM2ax53I/0V/50wU99HygMP6Ly7UeFlb2YeyS6yCfTJybkZ/7HTjs+WUoLjyb3zkucVPIZiyUDeuf0Rsiu3hDEVbP+TnvkJ0nkhk//zlffYwwkoNFTBrdJ9uV+4ZoFXRCMimqkGJYzrrKLEZ54+JNki3a1gc/dLh1ZXsggMPISzxI7U/HDxu8yfu4Bn86Uk+zpvTZEEGwURVYBKaZgwKTMgvc4SebXuXoJD9TT7BObYI0PC2+SNkE9Fqrm8qtqrRdIx3jaRlsXr8Q3FgTQYjLgMSEAp103x7DL2WiR34Y0hEn2DBYbno9x4KWHGzaXNhJl9ZgzE2R2CFoDihC14t99tLLx6uroGh5AV81MGPZzN/5oUnm81T+TPLzpw21WwFsV2IZWPhTePCNfXcvNYdy0FePRAvZIMAhiyeWJmUE90YB0nKG3kpM2riZjP3twN8I/qOWfyBpe9pmCLvrlFy6gvLw3j8qCRbi1d29pQKmqKQFzpQdorOHpv6Lf/tfkNh5A5yP1j4oP4Hf3tZGn9ZS0SRQ4Bjq5jY3jEhH/sA6E8BpQTho=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,53 +91,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 18-08-26 16:59:38, Andrew Morton wrote:
-> On Wed, 19 Aug 2026 00:46:09 +0100 Matthew Wilcox <willy@infradead.org> wrote:
-> 
-> > On Tue, Aug 18, 2026 at 04:24:30PM -0700, Andrew Morton wrote:
-> > > On Wed, 19 Aug 2026 06:18:58 +0800 Lance Yang <lance.yang@linux.dev> wrote:
-> > > 
-> > > > >> > 
-> > > > >> > That's pretty bad behavior and we might want to fix it in earlier
-> > > > >> > kernels.  Is PREEMPT_NONE effectively dead in 6.18.x and its
-> > > > >> > existing users?
-> > > > >> > 
-> > > > >> > If yes, we do want to fix older kernels then we should merge this.
-> > > > >> > 
-> > > > >> 
-> > > > >> Okay, but that would be stable-only fixes?
-> > > > >
-> > > > >Not understanding.
-> > > > >
-> > > > >Maybe you refer to adding a patch to -stable but not to -linus?  That's
-> > > > >against the -stable rules
-> > > > >(Documentation/process/stable-kernel-rules.rst).
-> > > > 
-> > > > Since cond_resched() is a scheduling no-op under LAZY/FULL anyway (only
-> > > > the __might_resched() debug check remains), why not take this upstream
-> > > > with Cc: stable?
-> > > 
-> > > I think so - as long as PREEPMT_NONE exists we should support it as
-> > > well as we can.  If the day comes that PREEMPT_NONE is removed, then we
-> > > get to remove lots of cond_resched()s.  mm/ has 200 of the things.
-> > > 
-> > > > Mainline scheduling stays unchanged, and stable can pick it up for old
-> > > > PREEMPT_NONE kernels. wdyt?
-> > > 
-> > > Addressing this issue in older kernels is another reason.
-> > 
-> > That is not the direction that the scheduler developers wish us to take.
-> 
-> Well back luck.
-> 
-> "Packet receive timeouts were traced to sparse HugeTLB unmapping in
-> production".  Do sched developers have a proposal to fix that in
-> year-old kernels?
+This is a very useful feature, document it.
 
-Yes, do not use PREEMPT_NONE in anything that is latency sensitive.
-It makes very little sense to add more cond_resched, just to be
-removed later.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ Documentation/core-api/xarray.rst | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/core-api/xarray.rst b/Documentation/core-api/xarray.rst
+index c6c91cbd0c3c..9a0d930a8c79 100644
+--- a/Documentation/core-api/xarray.rst
++++ b/Documentation/core-api/xarray.rst
+@@ -127,6 +127,8 @@ by using xa_set_mark() and remove the mark from an entry by calling
+ xa_clear_mark().  You can ask whether any entry in the XArray has a
+ particular mark set by calling xa_marked().  Erasing an entry from the
+ XArray causes all marks associated with that entry to be cleared.
++Storing a new entry that replaces an existing entry keeps the marks
++associated with the index intact.
+ 
+ Setting or clearing a mark on any index of a multi-index entry will
+ affect all indices covered by that entry.  Querying the mark on any
 -- 
-Michal Hocko
-SUSE Labs
+2.53.0
+
 
