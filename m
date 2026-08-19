@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2F42C5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 02:55:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DB57C5DF7D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A81496B0092; Tue, 18 Aug 2026 22:55:38 -0400 (EDT)
+	id 09FEF6B0095; Tue, 18 Aug 2026 23:00:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0AD86B0093; Tue, 18 Aug 2026 22:55:38 -0400 (EDT)
+	id 04F766B0096; Tue, 18 Aug 2026 23:00:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D27C6B0095; Tue, 18 Aug 2026 22:55:38 -0400 (EDT)
+	id EA6F96B0098; Tue, 18 Aug 2026 23:00:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 61BA46B0092
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 22:55:38 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E7762803E3
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:55:37 +0000 (UTC)
-X-FDA: 85116503514.10.AE926D4
-Received: from mta1.migadu.com (out-37.mta1.migadu.com [95.215.58.37])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DBDA6100007
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:55:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sWzsNKUY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.37 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B9D076B0095
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:00:17 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4060C120402
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:00:17 +0000 (UTC)
+X-FDA: 85116515274.17.6CC0C2B
+Received: from mta1.migadu.com (out-79.mta1.migadu.com [95.215.58.79])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 24B75180003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:00:14 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=F8MdRUmZ;
+	spf=pass (imf16.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.79 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787108136;
+	s=arc-20220608; t=1787108415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vQmUlerGIfmDflb91fg4O+jH4m7vxFQJPaUYGL93Kk0=;
-	b=T/GstHK+VExnprgaYtg8gbDYKyLiYPqRvmTUnQ7ATpbqRpBHRLowOx1VeJefvu5ZBQmYwz
-	duGlmRL3YokauCEOgL1hcK9lHLrAUOlDczTzk3Di/T/w/mL0w0TLEw/aNApKg4tPo4BeJX
-	HvoD//Tfb/z+mhz0/JU1j6+4L38LHnU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6IJg50H+2le4KufY8/xS2ADQyYDxpzy6IAT16/xW0X0=;
+	b=b7ewEijHVB1EihTxAfYxPQlUWIYnjl2CZWadzgqQX/JQDEZ0fUzUaa/r/jRw0JFLZOV5vw
+	eJtgC7TTBte9SexfkPAyDsd/0sq52uN2xCoz/bj+vAZ768ZOxD38SHumKIhczR7jAypcb7
+	7UlcZMAfU8nU9x2YgHrDzIgtkEBG/nU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sWzsNKUY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.37 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=F8MdRUmZ;
+	spf=pass (imf16.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.79 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787108136;
-	b=XF84FuCH8AEPI2KUh84kHTpzpJfYt56j7ix6HpgZ5WARQFEiMUHxa4PbxMhxucXECnMYXM
-	3DBEIyNkcN690D1t/TcrzM4lpnvGWxVWdAtbOtisM9Svra0cegvraOQSwKv5/CbbEHmwbi
-	ZttO+lem/24Q9Xj4mul2FB0ja4pXkJA=
+	t=1787108415;
+	b=E1fUNzZxhWnYTYcPkC5ENl1VPCC/E5UFPFQxf7E6y9KZkfWyXOLmQgjBRL2t0DO4pkDLdd
+	yESlcGehXIWmzP6fSFq7QGvQ1KcO6c6Tfcx69CLXKafYGSQytPilUE/WX/2eVczqM60pR1
+	DJVasMZnDZomRv8bU4ZD7va4OszX4qU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=3S5O+WmFCYTlfNAAGG8hR3gIY7XgRoq+MHcx43aEOyU=;
+DKIM-Signature: a=rsa-sha256; bh=xPmnBPJ28zrY6uvYpdGY3wel6+VuX1OFUcFOxEaeTdU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787108134; v=1; x=1787712934;
- b=sWzsNKUYwhwa2tA4WrFgkElEP4ujCKXDuzDgc1GltC7mQYovHgzLz2bkceKAJzisJRLwGdTK
- 8wcZvn0dxi2NXWkKw+dTxr+5Z6Ch2KeQmqZ0EoZCQNqGEsEaCBPMZWy9yU+VZxkBfl25YOYz1+Q
- sThh9w+IToPJBpApEU1LGv+Y=
+ t=1787108413; v=1; x=1787713213;
+ b=F8MdRUmZC8v4mx9zU/ExpMgxZWjgn/2JB4G+w534apYpqubjDJ9+M200HPU64H/iC5sgqUsr
+ aVK4Jhk2S9GAl9y5XJlg8KPKXU/Csckd2S2M7fSVyv5Nmaa8sdznULH0N5Xo+++UhzvjJEtvy3y
+ oAH+Hw3136hvXtK1uayD+uhY=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id ab08ddb189ee31a0;
-	Wed, 19 Aug 2026 02:55:24 +0000
+Received: from [192.168.110.173] (223.70.159.239)
+	by smtp.migadu.com with ESMTPS id a0a07108882060cb;
+	Wed, 19 Aug 2026 03:00:13 +0000
 X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: [RESEND PATCH] mm/page_table_check: add explicit pmd_none check in pte_clear_range
-Date: Wed, 19 Aug 2026 10:55:15 +0800
-Message-Id: <20260819025516.2967199-1-ye.liu@linux.dev>
-X-Mailer: git-send-email 2.25.1
+Message-ID: <9bd74181-2ce4-4d69-a353-614685559ceb@linux.dev>
+Date: Wed, 19 Aug 2026 11:00:09 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: cui.tao@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, hannes@cmpxchg.org,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH] mm: page_counter: reject empty string in
+ page_counter_memparse()
+To: Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>
+References: <20260817042652.74136-1-cui.tao@linux.dev>
+ <aoMzchLCCz5hiFHp@linux.dev> <aoQNtIRvqXRh-x4u@tiehlicka>
+ <aoRz72_zdMai_RNV@linux.dev> <aoSLxSBUPbEqimJq@tiehlicka>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <aoSLxSBUPbEqimJq@tiehlicka>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DBDA6100007
-X-Stat-Signature: aoz63j98jywj1eq3u51gfotbxch17awf
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 24B75180003
+X-Stat-Signature: qa9fudoi8amgh89pyyq58zqbbgb4byox
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787108135-109337
-X-HE-Meta: U2FsdGVkX18ZuF8wFXrNBbtxldlxVOcoKdxDqVnC/YWL8q6gYpG46IP6UI62jwW8ZrzLURHaOBP6dygpsX9jByrI6+1Fau6949ZG4aEh9p8Ggp0fbX8+YlHo0wrE06zmpxMHSpSPiMK7Z7078NH/8GACtTbNvSMuSKlS/6VNqEQ/TfbGM7y6gZiBlNXFU3ysYwYxb4/zOgdZkQKI9CPaKshlUPPjhiriwCZ4luRqSyHhiUqltOlSD1OGj4AukUCcv5jYFktpNW8KT+wvuZShR1vgLynJOFc4t1Ckz5nBMWyTEGltr0qfqKHnx2wfiXw1lspNeePZgbkgIwsNNtp2uOkEn8rEYSqVSye5KGL79u+XLdMq5BKuupCo3YGHSU4lcAUfko/5ZnTHFilHqb2BS/praANkZz4P+hV+c7rD9lLFh+l/MGsG5vRbXv+Pw9csD9pK/s0Ri70GpR5gcWKokbWzV9CR2vjejvlEAUcDlYLXJAxnU5HEHxA/0TtNoDpg132MqqA93sF4Yri1uCQ6yeVaOYxHQMoxiAeH+8uj5irKWeNIm0YqNmWlPMtQ/Y4Yjt5J8fGvxghKJMy9bVE6mOUzbRxnOcUorEQa4WFGP6zeiurE4uThK05ef+1BH9vxQHOY6/6Fygy6mE3QIZZoR//2JsoFJfLUQyVdON6ZEgWjBYTzEc3iagmjaO5JCNKRsUbE0tu8McB2wP4jlt6sRooPpYQRgPNIwjuRstnFPjH9XE8d1zEANGz7W2YuhIz+iIXsN+7H6exrZaXQ6GhV3Bjz5zOeJxgSc1QI53feAAZwcFHJHlDx0ofEjRDqjIxettetsFkuj0zZT/YKqE4la1cIg5MjJCDUrTIc2UHAykFxpmBwr12ssNsp5e7CFIbNv/XfODiXLR54dqknParJroWWXaJvH/KChIv1zY25qzqaRhujV/IHPFVyjTrO4FIp4HdidJ2w9GT5JxMBFHt
- fqzZDF3M
- pKEXh+4m2H2AEU0sSFeNy2KErCE+eA7PuyfVSQnZiEcpW9V/7/VCuiNjrpDiKrz/F5TNKb+bwDApYW7kAwiJLTdPeNupZnBJ2mg+fhjh2A/XnV4tEvbFfmE33aIU9KzXNknCD71Q9sL70NBhk3PWBYfmOaSePEB8zzVwxCF2Q/XEykSb1h+KMdv/icoZbC9QLtP+mCyw4AyL2LKgswQc8MXgOIeuVN318V3pp8sCVZiR3soMI4XNVpgBo/OySH1gadcRD5JK/NGXOEL+x6AXXIOdsqw==
+X-HE-Tag: 1787108414-599583
+X-HE-Meta: U2FsdGVkX1/PPPomXtH2CEk5FzfOUbI6ccz9MDvP2Pjgtq3Aop/au556cNqSKq+6eOmbCR/ll08FBSNUKMl05M0nbI430TvSX/wqUqrQO+6/vlLqLqv7RAfBqgh00dVvWYX9i2NTc25qTHSTcunBRDjbQm6VrgiyP/7lBx11Eh3O+uMVXyHheX91tuGQmIFOpSA/oiGgNglf5uSx9aE+tvRSdiqXl+qQxAl1vRd5i/mkxegAI2DYj1r7pPIqmBQrLBncW5djljQpLdvY+OzhQXmnL3adE3gJsCN8Q2k9ydq95APTj1A6mFRHuXS0X7yfIbcZzYSOq3bQbqa1x02doPu5f5zBBO0Xc5VUQYpVYq90/MXbv4SGuG6S5Oe5iMQK4mz2L6zLETrXHuku9ziUnZ4k19iwk3SZibxmO6bhj6NCFySX2TuCYW8RkbxRq234QkHSX9jw0UwDm/GXzZHkYVg0GDY+gp7WtbVy0rlU0llVPeUG+QM9UclMiYkNQ/qLaIQ5l/iDj+j5nomJqL22iEaLZRJisXMgIBRRWkaB+6ymQLv7D5ty/ortkP5ZOrMjYglnSILMxng0+DiHrW3uBhIr7ssIaqp2c6sSgJ+JEUiv0phwPqDnbc42LJLTBTI9WzXvif5b9IhKie3R/PnDNiZkJlcYTG9fiMuqoiBNKRp1ykLdaz5roV8PX+jyeYHGIRMYsd7e02UsO6unXFyfIMNymXToMiADnRAFknATCSlSsI3sdBJm5Ky2bUEyBMWCZegm9WoB4aglw6EcxBCQml5SsMiDwSV6OPJv1dgU9VGgQkMVMk74++h8rBF+BB9C13lAc0cRBCAblRJbbiXDaZy8ZJ00N+u36vT2opKnUkR1GzKDuYjwluB3HQnpOGApWttzBmk8UoeRufodi3GcuIB5dGmZpoD2a/3AYdz3QjMFBKRwgS0v60jVaWznfYO3lGP5vQWLUBF/t4gTeMi
+ 3svE9uCt
+ DwqtK6dxWxGUeUm0c7nSb+le+NgcaOnlidpyYlmJD9j2C+n9BSWudstq21V7XUwUUREn9/dEN2n5m8R2iDj+Z+w6AnL8Nqy2R4cpIM3NoYD6M0qvAx4nWaTgnAhDkZZsgOO4ebT8kos+Ismgt5ALUxjK+Te07cZIIubCE8jpH52HyTyOa5+xRpH/koz1KezPoebjIJKyFZEmoZIcwsuc4vA3k3GaClyrKNwVqCTq06cFKFl3MHxC4AemXB29452P/m7gTvkf+jaQH54tXrPuWpoy00jgLS/5UxGRtkZo3D/Wop+5BhNLRNNRC44rf8qtfUYIY+3s3WBaSo0SX5e6CbaCLL6v5ELpSfrjB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,38 +94,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+Hi, Michal, Shakeel
 
-In __page_table_check_pte_clear_range(), the condition to determine
-whether to iterate over PTEs only checked pmd_bad() and pmd_leaf().
-This relies on the implicit assumption that pmd_none() is always a
-subset of pmd_bad() on all architectures supporting PAGE_TABLE_CHECK.
+在 2026/8/19 00:43, Michal Hocko 写道:
+> On Tue 18-08-26 08:06:22, Shakeel Butt wrote:
+>> On Tue, Aug 18, 2026 at 09:45:56AM +0200, Michal Hocko wrote:
+>>> On Mon 17-08-26 09:16:40, Shakeel Butt wrote:
+>>>> On Mon, Aug 17, 2026 at 12:26:52PM +0800, Tao Cui wrote:
+>>>>> From: Tao Cui <cuitao@kylinos.cn>
+>>>>>
+>>>>> memparse() consumes no characters on an empty input and leaves the
+>>>>> end pointer at the terminating NUL.  The only validation in
+>>>>> page_counter_memparse() checks for trailing characters, so an empty
+>>>>> input slips through and the limit becomes 0.
+>>>>>
+>>>>> All limit write callbacks of the memory controller strstrip() the
+>>>>> input before calling this helper, so a script that writes an unset
+>>>>> variable hits this path:
+>>>>>
+>>>>>   LIMIT=
+>>>>>   echo "$LIMIT" > $CG/memory.max
+>>>>>   echo $?
+>>>>>   0
+>>>>>   cat $CG/memory.max
+>>>>>   0
+>>>>>
+>>>>> Nothing reports the mistake: the limit is now 0 and the OOM killer
+>>>>> goes after every task in the cgroup.  The same happens for
+>>>>> memory.min, memory.low, memory.high, memory.swap.high,
+>>>>> memory.swap.max and memory.zswap.max, where 0 silently removes the
+>>>>> protection or disables swap and zswap.
+>>>>>
+>>>>> Reject the input when no characters were consumed, which is the one
+>>>>> case the trailing-character check cannot catch.
+>>>>>
+>>>>> Fixes: 3e32cb2e0a12 ("mm: memcontrol: lockless page counters")
+>>>>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+>>>>> ---
+>>>>>  mm/page_counter.c | 2 +-
+>>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/mm/page_counter.c b/mm/page_counter.c
+>>>>> index 661e0f2a5127..d14db705b04f 100644
+>>>>> --- a/mm/page_counter.c
+>>>>> +++ b/mm/page_counter.c
+>>>>> @@ -281,7 +281,7 @@ int page_counter_memparse(const char *buf, const char *max,
+>>>>>  	}
+>>>>>  
+>>>>>  	bytes = memparse(buf, &end);
+>>>>> -	if (*end != '\0')
+>>>>> +	if (*end != '\0' || end == buf)
+>>>>>  		return -EINVAL;
+>>>>
+>>>> I wonder if someone started depending on this behavior. In that case it is
+>>>> better to return error instead of silently ignore, so we will hear complains
+>>>> loudly. This looks good to me.
+>>>
+>>> This is backward incompatible change and I am wondering why should we
+>>> even risk regression.
+>>
+>> Mainly I was wondering if this is intentional or unintentional. If this us
+>> unintentional, can we fix it without anyone noticing?
+> 
+> My guess would be this was just omission. Those happen and over years we
+> have learned that userspace is quite creative at using those.
+> 
+>> However if we are ok with this then let's make is formal and make this a
+>> documented behavior. I don't have any strong opinion either way but I think you
+>> are saying it safer to just assume this is intentional. Fine with me.
+> 
+> My main question is why should we even bother to change this in the
+> first place? Is that reason stronger than a theoretical breakage of
+> userspace that we might learn much later?
 
-While this assumption currently holds for x86_64, arm64, s390, riscv,
-and powerpc, it is an architecture-dependent behavior that may not
-hold for future architectures. Add an explicit pmd_none() check to
-make the intent clear and avoid calling pte_offset_map() on an empty
-PMD, which could lead to undefined behavior.
+Since you asked "why bother", here's how I ran into it.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/page_table_check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The patch actually came from a production incident rather than a code
+audit.
 
-diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-index 6ffc536359cd..ed3e1a76f266 100644
---- a/mm/page_table_check.c
-+++ b/mm/page_table_check.c
-@@ -278,7 +278,7 @@ void __page_table_check_pte_clear_range(struct mm_struct *mm,
- 	if (&init_mm == mm)
- 		return;
- 
--	if (!pmd_bad(pmd) && !pmd_leaf(pmd)) {
-+	if (!pmd_none(pmd) && !pmd_bad(pmd) && !pmd_leaf(pmd)) {
- 		pte_t *ptep = pte_offset_map(&pmd, addr);
- 		unsigned long i;
- 
--- 
-2.25.1
+A maintenance script on a cluster accidentally wrote an unset variable
+into memory.max of a workload cgroup. The write succeeded, and the
+workload in the cgroup was subsequently OOM-killed. There was no
+indication that the successful write had caused it, so it took quite
+some time to trace the OOMs back to that script.
 
+When I checked the documentation, I noticed that the cpuset controller
+explicitly documents the semantics of empty writes ("An empty value
+indicates that the cgroup is using the same setting as the nearest
+cgroup ancestor..."), while the memory controller documentation says
+nothing about empty input.
+
+I reproduced the same behavior in isolation on a Kubernetes cluster
+(v1.29, cgroup v2, two-container pod, 384M pod limit):
+
+  # LIMIT=
+  # echo "$LIMIT" > $CG/memory.max
+  # echo $?
+  0
+
+  m6demo   0/2     OOMKilled   0
+
+  oom-kill: constraint=CONSTRAINT_MEMCG,
+            oom_memcg=/kubepods.slice/.../kubepods-burstable-pod....slice
+  Memory cgroup out of memory: Killed process 339529 (sleep) ...
+            anon-rss:32kB, file-rss:452kB
+
+The process selected by the OOM killer had less than 1 MB resident
+under a 384M pod limit, but the empty write was accepted as 0,
+immediately triggering a memcg OOM. From the caller's perspective, the
+write simply succeeded.
+
+One caveat is that kubelet reconciles the pod-level memory.max within
+seconds, so the window is short there, although container-level files
+are not reconciled.
+
+So the patch came out of that incident and the documentation gap it
+exposed. My thinking was that rejecting an empty input would make such
+mistakes fail immediately instead of silently changing the limit to 0.
+
+Whether that benefit outweighs the compatibility risk is not mine to
+decide. If it doesn't, then documenting the current empty-write
+behavior, similar to cpuset, would also address the ambiguity that led
+me to investigate this in the first place.
+
+Thanks,
+Tao
 
