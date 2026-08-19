@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D3E3C5DF85
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:42:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BED60C5DF88
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:46:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 590E96B0092; Wed, 19 Aug 2026 05:42:38 -0400 (EDT)
+	id B16F26B0093; Wed, 19 Aug 2026 05:46:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 542786B0095; Wed, 19 Aug 2026 05:42:38 -0400 (EDT)
+	id AC8296B0098; Wed, 19 Aug 2026 05:46:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 431446B0098; Wed, 19 Aug 2026 05:42:38 -0400 (EDT)
+	id 9B6C96B009B; Wed, 19 Aug 2026 05:46:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 125AF6B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:42:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69C394048D
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:42:37 +0000 (UTC)
-X-FDA: 85117529154.22.BD869DE
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DA13C140009
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:42:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KBjAvsHg;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf26.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 755166B0093
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:46:48 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C38201204EF
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:46:47 +0000 (UTC)
+X-FDA: 85117539654.11.CE0FF14
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E4FFB40008
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:46:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GU3t5IHf;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787132555;
+	s=arc-20220608; t=1787132806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dffCyQdhxpyTf0QdT24ZzmspKjAdOG5vF+UT74r+vrg=;
-	b=zZdOp+xC3nO7MnDwKscgwHmLnk44aH82z+DHUTBh0nWTzqunw5WR6m0LHNx5jY1swCK6Qb
-	qcA6TRbEY78WvQi1ljp3EFDna/tU1rqg5GFAMJQTJfPgdCGTU0QrzPC+kQVnVBAZa1IgW2
-	dz88xVocUD3/k5kd4DQN0e4ljilv1oA=
+	bh=LjAzNT6vBtj9gmZbzdnPdbmcTF5paC7A92/5+0dRtBU=;
+	b=EZ3/H6KRSaNW+00HXinwh79mqp3Yp2Il1GTeBaar9R910lPCGg6VC2ELYYI49f5m2kffeE
+	kFTJNTf0ZlAP3+CHw/hDlezquaecuUNXr+Iaix/Ve28l13kWId+Yq/dW0VFwimdIUA+wiM
+	hrJqeLrg8rnUgI3sA6UtwErn4wOKpng=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KBjAvsHg;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf26.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GU3t5IHf;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787132555;
-	b=yCJvwGnnxAJQk9cmmvax6j7fJe5wZQstf68ewgtG3yJdLWOPO/C2N/bBwUx8hYPso4fYGz
-	RsxyNUdhR9YFhtT/l+kSQCFmEmYBfr0eZkp02u7NTdy/cGucdhK86y2LhIOTp+b1K6MZfg
-	8LIM8PrVz5sE9MGqPPPoVdxItHsmopY=
+	t=1787132806;
+	b=W4JVIJhQxOoLMhAOd1RGn1uNzlsew+EFtOy7VLVt6u870Cufk/CikuwgMdkqAWz68/ZgyK
+	TbTwnueOhGK6MVj4EVzC2LUWpDqU82XVNdADWhyQWPu595iok0Edf5Cst+ZbFG89dWwv7Z
+	43WZ1/GfNW+XHE9XHQ9e1pNbM26L0Wk=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1787132550; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=dffCyQdhxpyTf0QdT24ZzmspKjAdOG5vF+UT74r+vrg=;
-	b=KBjAvsHgEskz9IBsGzcttCfVnpcOTkZsTxUEtTRJY9ZiFxxdpBGQb9Fjh0y8YYvZOk2n8QbYnqwRJUY7ecdv82JUTUB+McXHifdrrPumpbHnrP3KuG4EnmEwnxtVb8y840bsu2yBCs2W8INnWohkK/aG856CeyCvcu37DtPSxC8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0X9GGn5p_1787132538;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X9GGn5p_1787132538 cluster:ay36)
+	t=1787132801; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=LjAzNT6vBtj9gmZbzdnPdbmcTF5paC7A92/5+0dRtBU=;
+	b=GU3t5IHfMIqa3Omb74Cclr3ysdw8IwSVyaLOvDyyALwoktEE4gzcrrUiR5fPBPPcNFWh/j0RvYYRCkCP6OUb9YOZAXu1m8SIfq4e+uk6uFyHcSzA50f4bWvhfdRAjWTYuWgja7ahA8hgnwPCqW0Jp0ueI/n9mrtu8uCVWMo3vW0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0X9GFJ5v_1787132798;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9GFJ5v_1787132798 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 19 Aug 2026 17:42:26 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: linmiaohe@huawei.com,  shivankg@amd.com,  akpm@linux-foundation.org,
-  david@kernel.org,  ljs@kernel.org,  riel@surriel.com,
-  liam@infradead.org,  vbabka@kernel.org,  harry@kernel.org,
-  jannh@google.com,  rppt@kernel.org,  surenb@google.com,  mhocko@suse.com,
-  ziy@nvidia.com,  matthew.brost@intel.com,  joshua.hahnjy@gmail.com,
-  rakie.kim@sk.com,  byungchul@sk.com,  gourry@gourry.net,
-  apopple@nvidia.com,  kmanaouil.dev@gmail.com,  fvdl@google.com,
-  kinseyho@google.com,  weixugc@google.com,  bharata@amd.com,
-  rientjes@google.com,  dev.jain@arm.com,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 7/7] mm/rmap: batch the unmap of large folios in
- try_to_migrate_one()
-In-Reply-To: <20260818092032.47670-1-lance.yang@linux.dev> (Lance Yang's
-	message of "Tue, 18 Aug 2026 17:20:32 +0800")
-References: <860941c2-287f-f88f-920c-6d99e2cd4483@huawei.com>
-	<20260818092032.47670-1-lance.yang@linux.dev>
-Date: Wed, 19 Aug 2026 17:42:17 +0800
-Message-ID: <87tsoq5tvq.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+          Wed, 19 Aug 2026 17:46:40 +0800
+Message-ID: <e143d790-fa3f-4b68-84e7-91199d8dbb54@linux.alibaba.com>
+Date: Wed, 19 Aug 2026 17:46:38 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] mm/mglru: introduce helpers for manipulating gen and
+ refs flags
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>,
+ Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
+ <20260818-mglru-flags-cleanup-v1-2-8dbbdac0d28c@tencent.com>
+ <167ad235-253b-4bfe-9b60-265262be34f8@linux.alibaba.com>
+ <CAMgjq7A1nK5EiRvN-o1Lg_Q2+Ek7oj4Fnm1qAy5A=ULfLz+t+w@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAMgjq7A1nK5EiRvN-o1Lg_Q2+Ek7oj4Fnm1qAy5A=ULfLz+t+w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rges7116akzjqa4aa8ccasyphhuwfzd7
+X-Rspamd-Queue-Id: E4FFB40008
 X-Rspam-User: 
-X-Stat-Signature: t8opnatnhruxco41rwke6895qcpjhjp3
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DA13C140009
-X-HE-Tag: 1787132553-424481
-X-HE-Meta: U2FsdGVkX1/vkKvk9pQtidQ1ZD8JzFQCM+9HIMQyvQJviBcQw8+x5Ljzf8RsmWuUnTvdq9HbO4MbgLBI0vGRFnyCBua36kP2MbK2amNMz7llbtstOuNzzNu1I/Le/noUcJ6bDQnaWVRmBIWgjBYMsxB9swsv5m5LN0jyTHmSFnxj1h1ImzGCmQbvJnyqn/lRM1IPUZ9XkjpGc0lTLW7XX1JRqIoea3Kn0uA2KAHiU62sH7xFtwivNPXgy7/SUB2gBvVd31IXa6V0DWVyK11y4Y9LlpwDsiwRYI1tg3JJZfOZro3BhMoR0iZowzatuiqNYgl9TY90VMzyCRcpElqcVwRcR4Vf+qDArQZMHhfZADjezQd3p4zBVDVFElu+UV7eEnsxbivephJ8szZpHICTOrXZKgFMpiYEzsoSQSFJAwUNtx0wmg56OZpINxLnmL0O/HY7jsEEH4yS0K9LNbGm3jsm/WU0lsG8VC8nV4FWdECYxolCLd+NxBEzOXpU/aVQbUPRG+zBBQZuGvOqF2N9IkiNOLM+4T/kSlmBTx2v+B9l2jmpYYMQm33qFJwIrQ1fkhEW032bPCOZHwO4IUtRCN4GZkfMX6InCWURlsnV1GSugNr75KFjLx9OThXlEDNRsELNuehW+c04blEDVxw3TpMHgyRmXW041CztUUA1TWQOLh24WyZjRDXwqkeXaqPAWuFUCsQAK1Ls8gyXdD7gBbB/jAmwbqc9Pr/iyXMURTloveyEPZjVZkYe2xGOSjhyzbqE3HVM3nK7jHVhaSblFtA+DkkvqWSrZGEMjMoBo9/xEB+ruYGLRvbO8oL5czfgmibZnQs7pToRrRuZH0HwFrpfAWwhnjd5hbpxMY7jaf9cpQ9BV1oF3wnwK4kQhvuIhiZ/3InZ4zsjbsPvYyRGYG93bAtZzENegNrb/qmbTgZmKU1F5reCB1Wt5Cil+lMYmguUZ1k6ji32gySKb+w
- EK8s1m75
- W9eGZjy/nll8i8xhAbqSIx6ACUmyUL0YsthR5yv1GpxPcKf/DmwR7vJ5MOjNEdd2SRUQWRxQR4kEdYDDqcdwkgx77zqInyZaJOrjiD3eh+xQyAVwRLGsktLHCud0gXvE+67tDNwNxDmsutMW6SMb6lPTYuUSuiGszH5r6Op0sgo54ydFLZZnNTcQUsAQyE3cAu7K0MBqEL97HXn2LM/Q7z3XrpAFBn2U7i4KVFteQEOpyAP2RUMy/bQ1FSWPAXWJhAAoi4F8+Ws50tZD5yy46XKLdw21ZByqiremgfeAcqhiajVPnBzMoWZgd3uPVrIe9J96zRl02NWRzkTcSZTZqlZitTaBPMmRLxBoXOmrk3kAfsrOLSUh7jdJ1/Ns96WhJLk8oJi+4wi/czpuC2DiwU5GSWAB2y12FGc/xrW6cmk/uyOo=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787132803-75847
+X-HE-Meta: U2FsdGVkX1+3foO+Q9d01oHAPueh/H+74Yrxjtz12z6lD4ntFQK8jMFQYdIRpSxd1uifMseh2f1OGrKLvXlDLb5xZGNUW59KIP27LvwIYKr4zOm2p7Oa7/Pt6ytatUmrWh4wURKM7EL5ShgvoqgPCJzq/Ry/IdmkWNBAXw55tp3MnNSpPeW7/cEeQhOrafVDJCmEw9NtcwwzqIKCl0vmMmhTkyrm1RvIHwK58t0prx4hgPg5syYKKXWJ6XNQJg6pUJxFoiMFlcxubRVEbjjwfrT+6AVf5+4T5aqGGiR5L7SduE1niqEm1mmIoimt0ZTxhwEJkHZy43+1GhkAmlR3SmJCfxMAc67JA4vt+mVW0mIPbzW2SkTxHfz5Bg5zN2Oko1CK/DxDUuTFURcSyIHj2NK8yIrLUyQVfIGh1BWEDFEq2GNEy1Z0lsCsIrTsOtbW5axWHLdJnmMma6nsUN1qhwLmBJulcu+04LG88A0L8WIkLLRd3nBDziLZGpHzpMjojzGJ8xmm2W6cf+aRHiF7urqOiYudDZvJilTObXCcVrjWcg1HSAs8TwNfVFpD+z65OP4Jlc4e5uiEWaSQsgJSfuf8sbqe1TMeUvySBL7l5oWsU+f5DKQdvMOBGM4kfCGgblEW98w3MvxtWukqnQCEgj2MGrlUntzs+sNRQXzJPEeDWRXxZngtKaXzIAE35ZqKz0/CNTNGhEeN5epyHnwqsHXgs/juS32PfCLCKA6Xvp7MqODpg1gG1+m5wmgX7iI3l1l4nZSs1m/3gZURgL/Nv6T9fG/crSkTkAP8rPaqrR+WxJhZ0T5MZVZUSeNPYF4tVhevqNHELtt9AJ2AabACvSDoNMdUm7uyx1Vp9HnDpi47ErLSxJGFoT1AXCTAlbA3ZWbd8lJmSzloAHHBOMCMtE8vmZPdQI7Gr9d2ul6Y4O5IoMmBekKBOSYLJoqUNWf1Iu74rZqSwyCEuyv7U3j
+ 5rfhBSn1
+ aRUd6eHAFVI+Rt33e/A67FmQteJyYmfoRuzedor1fPp7S5XNDPeuAOrCiT6oyjiXyY30HTLrzY3s9pDlg9l4PGFzXpXs9As/0zM/YuKfKInpsEeM2jOQZQHagqmPZRVmntkbGB+Vu+UiTKLIpbO13IOqs6cgHx8eKGr2OKmlme3TdswyE6v++QFl95QIRixtHXSR9oJ2G2DARdqYfmiYhizGHjj4adaUtOqmnqmY1wG7Hl4qKew7yn4OYDEET/dO5fM2lzE0Du71z9Q0kNT7AS1TKJJu2KKH0puMvMsQUEZRbaR9iBR+RJMrq3CHIFq8zEs/YV4mVJ3o4GGL4Yzgk1HsdrKesuxC+6jAr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,288 +100,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Lance Yang <lance.yang@linux.dev> writes:
 
-> On Tue, Aug 18, 2026 at 04:55:06PM +0800, Miaohe Lin wrote:
->>On 2026/8/17 17:14, Lance Yang wrote:
->>> +Cc Miaohe
->>> 
->>> On Thu, Aug 13, 2026 at 04:23:18AM +0000, Shivank Garg wrote:
->>>> try_to_migrate_one() converts present PTEs to migration entries one at a
->>>> time. For a PTE-mapped large folio, this repeat calls to ptep clear+flush,
->>>> the migration entry build and set, folio_remove_rmap_pte() and folio_put(),
->>>> each re-entering page_vma_mapped_walk() once per base page (256 times for
->>>> 1M folio).
->>>>
->>>> Mirror try_to_unmap_one() to introduce folio_migrate_pte_batch() to detect
->>>> eligible batch for PTEs mapping conseuctive subpages of a large folios,
->>>> and convert the whole batch in one shot using the batched helpers.
->>>>
->>>> A side-effect of this change is trace_set_migration_pte() will record
->>>> one event per batched run instead of earlier behavior of one per base page.
->>>>
->>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
->>>> ---
->>>> mm/rmap.c | 115 ++++++++++++++++++++++++++++++++++++++++++++++----------------
->>>> 1 file changed, 86 insertions(+), 29 deletions(-)
->>>>
->>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>> index 35752a70f3a0..63b885c0b7ef 100644
->>>> --- a/mm/rmap.c
->>>> +++ b/mm/rmap.c
->>>> @@ -2675,6 +2675,44 @@ static bool try_to_migrate_hugetlb_one(struct folio *folio,
->>>> 	return ret;
->>>> }
->>>>
->>>> +static inline unsigned int folio_migrate_pte_batch(struct folio *folio,
->>>> +		struct page_vma_mapped_walk *pvmw, pte_t pte,
->>>> +		struct page *subpage, bool anon_exclusive)
->>>> +{
->>>> +	unsigned long end_addr, addr = pvmw->address;
->>>> +	struct vm_area_struct *vma = pvmw->vma;
->>>> +	unsigned int max_nr, nr;
->>>> +
->>>> +#ifdef __HAVE_ARCH_UNMAP_ONE
->>>> +	/* Cannot batch unmap if arch_unmap_one() is defined. */
->>>> +	return 1;
->>>> +#endif
->>>> +
->>>> +	if (!folio_test_large(folio))
->>>> +		return 1;
->>>> +	if (folio_is_zone_device(folio) || folio_test_has_hwpoisoned(folio))
->>>> +		return 1;
->>>> +	if (pte_unused(pte))
->>>> +		return 1;
->>>> +
->>>> +	/* We may only batch within a single VMA and a single page table. */
->>>> +	end_addr = pmd_addr_end(addr, vma->vm_end);
->>>> +	max_nr = (end_addr - addr) >> PAGE_SHIFT;
->>> 
->>> Hmm ... can this still batch over a poisoned tail page?
->>> 
->>> memory_failure() sets PageHWPoison() before taking folio lock, but
->>> cannot set PG_has_hwpoisoned until it acquires and releases that lock.
->>> 
->>> So tail page can already be poisoned while folio_test_has_hwpoisoned()
->>> still returns false ... no?
->>
->>When memory error hits thp pages, memory_failure() first set PG_has_hwpoisoned and
->>then tries to split thp pages. And try_to_migrate() will be called to set migration
->>entries for anon pages. Does folio_migrate_pte_batch() work on this case? If so, the
->>folio_test_has_hwpoisoned() check above could catch the bad pages?
->>
->>Or do you worry about the scene that meory error hits a thp while it's under migration?
->
-> Yeah, latter case is exactly what I meant.
->
-> try_to_migrate() is called with folio lock held. If migration already
-> owns the lock, memory_failure() can set PageHWPoison() on a tail page and
-> then block in folio_lock(), before reaching folio_set_has_hwpoisoned().
-> try_to_migrate_one() may meanwhile start from a healthy subpage, see
-> PageHWPoison(subpage) clear and PG_has_hwpoisoned still clear, then batch
-> across poisoned tail and install a normal migration entry for it.
->
-> Once memory_failure() publishes PG_has_hwpoisoned, the folio-level check
-> does stop batching, as you said. It's just this window before publication
-> that worries me ...
 
-I agree with you that we should check PageHWPoison() for each subpage
-before batching.
-
-However, IIUC, your suggestion can only reduce the race window instead
-of avoiding it completely. PageHWPoison() may be set even after checking
-it anyway.
-
----
-Best Regards,
-Huang, Ying
-
-> Thanks, Lance
->
->>Thanks both.
->>.
+On 8/19/26 5:37 PM, Kairui Song wrote:
+> On Wed, Aug 19, 2026 at 5:03 PM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
+>> On 8/18/26 1:38 PM, Kairui Song via B4 Relay wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> Instead of doing bit ops on folio->flags.f, introduce helpers for
+>>> adjusting folio's refs and gen info, make the code easier to debug and
+>>> understand.
+>>>
+>>> No functional change is intended: some combined atomic operations are
+>>> split into two, which only creates harmless transient states.
+>>>
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> ---
 >>
->>> 
->>> Starting from a healthy first subpage, folio_migrate_pte_batch() can
->>> then batch across poisoned tail page. hwpoison only describes first
->>> subpage, so set_softleaf_ptes() installs a normal migration entry for
->>> poisoned page instead of an HWPoison entry ...
->>> 
->>> Should folio_migrate_pte_batch() check PageHWPoison() on every candidate
->>> subpage and stop before a poisoned one?
->>> 
->>> Cheers, Lance
->>> 
->>> 
->>>> +	/*
->>>> +	 * If unmap fails, we need to restore the ptes. To avoid accidentally
->>>> +	 * upgrading write permissions for ptes that were not originally writable,
->>>> +	 * and to avoid losing the soft-dirty bit, use the appropriate FPB flags.
->>>> +	 */
->>>> +	nr = folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
->>>> +				   FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
->>>> +
->>>> +	/* Limit possible batch count to a uniform PageAnonExclusive value */
->>>> +	if (folio_test_anon(folio))
->>>> +		nr = page_anon_exclusive_batch(0, nr, subpage, anon_exclusive);
->>>> +
->>>> +	return nr;
->>>> +}
->>>> +
->>>> /*
->>>>  * @arg: enum ttu_flags will be passed to this argument.
->>>>  *
->>>> @@ -2686,12 +2724,12 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>> {
->>>> 	struct mm_struct *mm = vma->vm_mm;
->>>> 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
->>>> -	bool anon_exclusive, writable, ret = true;
->>>> +	bool anon_exclusive, hwpoison, writable, ret = true;
->>>> 	pte_t pteval;
->>>> 	struct page *subpage;
->>>> 	struct mmu_notifier_range range;
->>>> 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
->>>> -	unsigned long pfn;
->>>> +	unsigned long pfn, end_addr, nr_pages;
->>>>
->>>> 	/*
->>>> 	 * When racing against e.g. zap_pte_range() on another cpu,
->>>> @@ -2744,11 +2782,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>> 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
->>>> 					!folio_test_pmd_mappable(folio), folio);
->>>>
->>>> -			if (set_pmd_migration_entry(&pvmw, subpage)) {
->>>> -				ret = false;
->>>> -				page_vma_mapped_walk_done(&pvmw);
->>>> -				break;
->>>> -			}
->>>> +			if (set_pmd_migration_entry(&pvmw, subpage))
->>>> +				goto walk_abort;
->>>> 			continue;
->>>> #endif
->>>> 		}
->>>> @@ -2773,10 +2808,25 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>> 		subpage = folio_page(folio, pfn - folio_pfn(folio));
->>>> 		anon_exclusive = folio_test_anon(folio) &&
->>>> 				 PageAnonExclusive(subpage);
->>>> +		/*
->>>> +		 * memory_failure() can set PageHWPoison concurrently without holding
->>>> +		 * the folio lock. Snapshot the flag here to decide whether to batch
->>>> +		 * PTEs or install hwpoison entry.
->>>> +		 */
->>>> +		hwpoison = PageHWPoison(subpage);
->>>>
->>>> +		nr_pages = 1;
->>>> 		if (likely(pte_present(pteval))) {
->>>> -			flush_cache_page(vma, address, pfn);
->>>> -			/* Nuke the page table entry. */
->>>> +			if (!hwpoison)
->>>> +				nr_pages = folio_migrate_pte_batch(folio, &pvmw,
->>>> +								   pteval, subpage,
->>>> +								   anon_exclusive);
->>>> +
->>>> +			end_addr = address + nr_pages * PAGE_SIZE;
->>>> +			flush_cache_range(vma, address, end_addr);
->>>> +
->>>> +			/* Nuke the page table entries. */
->>>> +			pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
->>>> 			if (should_defer_flush(mm, flags)) {
->>>> 				/*
->>>> 				 * We clear the PTE but do not flush so potentially
->>>> @@ -2786,11 +2836,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>> 				 * transition on a cached TLB entry is written through
->>>> 				 * and traps if the PTE is unmapped.
->>>> 				 */
->>>> -				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
->>>> -
->>>> -				set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
->>>> +				set_tlb_ubc_flush_pending(mm, pteval, address, end_addr);
->>>> 			} else {
->>>> -				pteval = ptep_clear_flush(vma, address, pvmw.pte);
->>>> +				flush_tlb_range(vma, address, end_addr);
->>>> 			}
->>>> 			if (pte_dirty(pteval))
->>>> 				folio_mark_dirty(folio);
->>>> @@ -2809,7 +2857,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>> 		/* Update high watermark before we lower rss */
->>>> 		update_hiwater_rss(mm);
->>>>
->>>> -		if (PageHWPoison(subpage)) {
->>>> +		if (hwpoison) {
->>>> +			VM_WARN_ON_ONCE(nr_pages != 1);
->>>> 			VM_WARN_ON_FOLIO(folio_is_device_private(folio), folio);
->>>>
->>>> 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
->>>> @@ -2837,19 +2886,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>> 			 * so we'll not check/care.
->>>> 			 */
->>>> 			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
->>>> -				set_pte_at(mm, address, pvmw.pte, pteval);
->>>> -				ret = false;
->>>> -				page_vma_mapped_walk_done(&pvmw);
->>>> -				break;
->>>> +				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
->>>> +				goto walk_abort;
->>>> 			}
->>>>
->>>> -			/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
->>>> +			/* See folio_try_share_anon_rmap_ptes(): clear PTE first. */
->>>> 			if (anon_exclusive &&
->>>> -			    folio_try_share_anon_rmap_pte(folio, subpage)) {
->>>> -				set_pte_at(mm, address, pvmw.pte, pteval);
->>>> -				ret = false;
->>>> -				page_vma_mapped_walk_done(&pvmw);
->>>> -				break;
->>>> +			    folio_try_share_anon_rmap_ptes(folio, subpage, nr_pages)) {
->>>> +				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
->>>> +				goto walk_abort;
->>>> 			}
->>>>
->>>> 			/*
->>>> @@ -2859,19 +2904,31 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>> 			 */
->>>> 			swp_pte = make_migration_pte(subpage, pteval,
->>>> 						     writable, anon_exclusive);
->>>> -			set_pte_at(mm, address, pvmw.pte, swp_pte);
->>>> 			trace_set_migration_pte(address, pte_val(swp_pte),
->>>> 						folio_order(folio));
->>>> +
->>>> +			/* Set nr_pages migration entries, advancing the PFN. */
->>>> +			set_softleaf_ptes(mm, address, pvmw.pte, swp_pte, nr_pages);
->>>> 			/*
->>>> 			 * No need to invalidate here it will synchronize on
->>>> 			 * against the special swap migration pte.
->>>> 			 */
->>>> 		}
->>>>
->>>> -		folio_remove_rmap_pte(folio, subpage, vma);
->>>> -		if (vma->vm_flags & VM_LOCKED)
->>>> -			mlock_drain_local();
->>>> -		folio_put(folio);
->>>> +		finish_folio_unmap(vma, folio, subpage, nr_pages);
->>>> +
->>>> +		/*
->>>> +		 * If we batched the entire folio, there is nothing left to
->>>> +		 * walk; stop right here.
->>>> +		 */
->>>> +		if (nr_pages == folio_nr_pages(folio))
->>>> +			goto walk_done;
->>>> +		continue;
->>>> +walk_abort:
->>>> +		ret = false;
->>>> +walk_done:
->>>> +		page_vma_mapped_walk_done(&pvmw);
->>>> +		break;
->>>> 	}
->>>>
->>>> 	mmu_notifier_invalidate_range_end(&range);
->>>>
->>>> -- 
->>>> 2.43.0
->>>>
->>>>
->>> .
->>> 
+>> Thanks for the cleanups. One comment below.
 >>
+> 
+> Thanks for the review!
+> 
+>>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>>> index 94f9c3ff5416..32d9354a754f 100644
+>>> --- a/include/linux/mmzone.h
+>>> +++ b/include/linux/mmzone.h
+>>> @@ -496,7 +496,9 @@ enum lruvec_flags {
+>>>    #ifndef __GENERATING_BOUNDS_H
+>>>
+>>>    #define LRU_GEN_MASK                ((BIT(LRU_GEN_WIDTH) - 1) << LRU_GEN_PGOFF)
+>>> +#define LRU_GEN_MAX          (BIT(LRU_GEN_WIDTH - 1) - 1)
 >>
+>> There are still many places using MAX_NR_GENS to compare gen counters,
+>> so I'm concerned that introducing a new macro would make the use of the
+>> max gen counter even more confusing.
+> 
+> I think I'd like to get rid of all LRU_GEN_MASK and LRU_REFS_MASK
+> users, MAX_NR_GENS is fine I think? Manipulating the bitmask looks a
+> bit hard to follow for me since:
+> 
+> set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
+> set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
+> set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, <number>);
+> set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_active));
+> set_mask_bits(&folio->flags.f, LRU_REFS_MASK, <number>);
+> new_flags = old_flags & ~(LRU_GEN_MASK | LRU_REFS_FLAGS);
+> new_flags |= ((gen + 1UL) << LRU_GEN_PGOFF) | BIT(PG_workingset);
+> 
+> Things like this are everywhere and I found it really hard to follow
+> what is actually going on. And adding more operations to refs/gen
+> looks ugly and painful to do, and, it's impossible to add any sanity
+> check. With proper gen and refs helpers, we can ensure every time
+> gen/refs is modified, the value is valid (in debug builds).
+
+I agree LRU_GEN_MASK and LRU_REFS_MASK can be cleaned up further.
+
+> 
+> Mean while, a "% MAX_NR_GENS" or "/ MIN_NR_GEN" seems not hard to understand.
+> 
+> Oh and this LRU_GEN_MAX is only used for sanity check for now.
+
+But my point is that people may not know when to use LRU_GEN_MAX vs. 
+MAX_NR_GENS, since they seem to have the same semantics.
 
