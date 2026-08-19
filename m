@@ -4,78 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96C74C5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 08:52:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6753FC5DF85
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 08:54:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 978346B0093; Wed, 19 Aug 2026 04:52:24 -0400 (EDT)
+	id 44B306B0095; Wed, 19 Aug 2026 04:54:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 929166B0095; Wed, 19 Aug 2026 04:52:24 -0400 (EDT)
+	id 3D5426B0098; Wed, 19 Aug 2026 04:54:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83E266B0098; Wed, 19 Aug 2026 04:52:24 -0400 (EDT)
+	id 29C4C6B009B; Wed, 19 Aug 2026 04:54:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F9C46B0093
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 04:52:24 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5EC91A04B9
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:52:22 +0000 (UTC)
-X-FDA: 85117402524.08.ED7EDB4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F12396B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 04:54:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74638A1D63
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:54:18 +0000 (UTC)
+X-FDA: 85117407396.10.6BD4973
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 93F0D140004
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:52:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lcPJ0O2C;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id C4FC240003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:54:16 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bOu4u+EX;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787129540;
+	s=arc-20220608; t=1787129656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jZI4offE5WoxR6EMeCVcpsyDREl1sgoUCN9PBz2GkfM=;
-	b=tgCeY5bxyHr5pLP2bBDuPsdMfPtSsYlWregvZc24AMLx/qLrzzoFTb/N1AjP03QbWAYeBq
-	hcvBK3MQ8OP1NUx+MHL94z6Vu0dHLEIfXrZ0NR3u8TOq9X8R5NYio4jmHy7e9JAfLkf7gi
-	HFtSmYd4R0G136LCC4ZcVVZcqBHW4CE=
+	bh=ZUHE8vO3mY8kflzEgME4ShNYgQSCxic+3gn46iev0wU=;
+	b=UgFs76ODnhiHgclxpH/egeOqgnou5zxe7icEzLJ0A0zQpRjII+76/nrsK7BaalU0ogeXh1
+	fZ+BZFDBXErBg1UIwY8jIXhz4oyr6kZ3ZYJjsRToD99mepuLeNcXW5w/vghx0vdAC50+Pt
+	OhB+Ft2RRrRtKLzuioH2d59R8ongW2E=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lcPJ0O2C;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bOu4u+EX;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787129540;
-	b=sices2CDk5tHIWotOqyfvFFQXx46dH+f77i1EiyhKUrJ7KS2oEYiCpXbASZFutmP3RvAff
-	30bldQpiHvYTxdYoNBjlUCnG/XP89NM9Z2Lu2HN7/N0UR7TCUGc5OjCsLiAP+ETnlQ8sRm
-	hYHBT18Z3kbh9YvnbMz0dQMaD/j6Cg4=
+	t=1787129656;
+	b=pcpVa+OQ0H6ZttsdbCA1MqZWlKwNN4IWVVjZIHtGs8SDYwggje60bbwadPKX5Br0s7YJfw
+	XHsfel5FAd34D+CDGfQKythonG45TlwcWKoXzbVTsWPGYO4Uy88wfXgAe2rdp7ewEeLX5a
+	Ck/mcLsy9WdM7DeuAcDVK49qjsvKefA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D4AE6020E;
-	Wed, 19 Aug 2026 08:52:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1501F000E9;
-	Wed, 19 Aug 2026 08:52:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 397B760A59;
+	Wed, 19 Aug 2026 08:54:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676DB1F00A3D;
+	Wed, 19 Aug 2026 08:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787129539;
-	bh=jZI4offE5WoxR6EMeCVcpsyDREl1sgoUCN9PBz2GkfM=;
+	s=k20260515; t=1787129655;
+	bh=ZUHE8vO3mY8kflzEgME4ShNYgQSCxic+3gn46iev0wU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lcPJ0O2CtA4m74gXkH/+Iyua7pASmkdKrnCwlXwSWNuTLcOUBk62ZfzhZSzhE80IF
-	 +WCy+AMjcf40XHPXFilSdUxHh+IS++czStwkvZmFu8pcvYMwIHhTPBPyCXsKvbIDHU
-	 X2IAwPa7fu26g+beKAjFvJi4H9CRas0KKzKYmO9xca3+OXB9cLr3CgKz4X1ENmjdy2
-	 0Y6RXFVO7JbTXxzTs/MnxAPiVsxolveaZ4DHt4yiCPBm60+m/oHWpgtVsi653VYcLK
-	 oV7eDkbWwKO2G2BEX9NPH1glf3jkHoTEgUau0yYuMDIsk+RCgaM2BOxAR4AfcR/tw9
-	 hvoPaoF7d3VAQ==
-Message-ID: <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
-Date: Wed, 19 Aug 2026 10:52:13 +0200
+	b=bOu4u+EXZIJ4fb6yNHV+gptSogl76KO/z7YS7VyCLtNbuPTYm9sbElAv5PW+QJL3X
+	 HK0AE5wTQw90HqGxM4Vkedz2bNGaHl6PLY13MJ4mG1a7Y0UxSBtqllCoB81I36rFEt
+	 HSv23G4jXYEpkjx2/+THqkADbffM30vgR810HCBijXTaO6YWmv5aDkkD/OsDlQHBiz
+	 q4TWRvAdufwtBofTyhKN7EveHSNYzQEoIQN6nLqUKVnWJZHqTFhrzcd/O5cD2P6OXS
+	 jkn4UfbGDusx5i1T1mG6f9pKS6nmBHGhYlrJl5w7ZDgCqEzyxim84xTaoX8Yqb5AZ2
+	 sYOV4SsdB4RfA==
+Message-ID: <68cb43c6-6ed2-488f-916a-b22bb956adcf@kernel.org>
+Date: Wed, 19 Aug 2026 10:54:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/hugetlb: do not dissolve gigantic pages without
- runtime support
-To: Longlong Xia <xialonglong2025@163.com>, muchun.song@linux.dev,
- osalvador@suse.de, akpm@linux-foundation.org
-Cc: mike.kravetz@oracle.com, mhocko@suse.com, linmiaohe@huawei.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Longlong Xia <xialonglong@kylinos.cn>
-References: <20260817162039.1511838-1-xialonglong2025@163.com>
+Subject: Re: [PATCH] hugetlb: add cond_resched() to __unmap_hugepage_range()
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Leon Hwang <leon.hwang@linux.dev>, linux-mm@kvack.org,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
+References: <20260818135029.93288-1-leon.hwang@linux.dev>
+ <3dadebb3-7e2a-459c-a5e8-b375faf89938@kernel.org>
+ <20260818111756.6b0e347db3170bc22cc3c5af@linux-foundation.org>
+ <2a523945-825c-45a5-a680-37e941e092d3@kernel.org>
+ <20260818115526.654d7311366b66cd031c67e4@linux-foundation.org>
+ <35cca76a-4d3a-451a-b492-dd4423ac3e63@kernel.org>
+ <aoVuRWz0VkKiJPzd@tiehlicka>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260817162039.1511838-1-xialonglong2025@163.com>
+In-Reply-To: <aoVuRWz0VkKiJPzd@tiehlicka>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: f4y45qhiu7m67k3t4gsrncdihxcb6a75
-X-Rspamd-Queue-Id: 93F0D140004
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C4FC240003
+X-Stat-Signature: dkrdzg3446ab3d7cextd745ue13o79fd
 X-Rspam-User: 
-X-HE-Tag: 1787129540-347621
-X-HE-Meta: U2FsdGVkX194zAqEsCFuQNBS6V1upIuSaKB1as872YOKTUqt5G2JsrddqOMqh9gt4o1N6lgfTAtnQMh9kxvFw59rV1mxqWLFP0B6Q4CDvdD1iGP9I4rrqu5mNELPdbarcj7MFlQsmWUPzkmENyWkQ/QcLcDHBrtZ3sbjd88dVvZjiTdtRQ+C6xW4YaOxaffzLPyEpSVdaOy1ReYItWOKxKIyovMggtJhP8auuU877r/rxMnxptwTEip1xE+NiL79pB4CGtpm+pP96vrsF21eXdSRvvAmu3dUnEJ2N9KTBndUwmzRLQgRNAq8vkPrftLMb3SF/cepnXj2B86PyCkTfY+tnD4L0iYy2a6lyFJOjIp1A/HBxu0Avk4IB0la+g/NMvBxjllo6GXGfjRyEykWzjqay8i78cW4eBxRpXEyvj04dA9HYMfs1w+waV3qvElOmB4eDIiFSkMix13C7kPgMfjfZ7XZpa6dZpVsNtFUXlLBDKvPj6fKsv9mBNQ8ezBa+zi8dA1Iw16nuz0IrMv9lXUpFwSSFoByhUxIxkMMbQuaeJC8lIIafNyy0IDrPv/j2YAYBn6Ostcwlw7GCj0VppP2uXFGLPZzJ1C6NP5DtBLMCRgrZcgTkeBMLCWaNZYabVypuNMe96rolG1w/1pgnu1TlJI0RG7oWR7s8Zp33oOfwzCZLE5rJCMIOjhZCXr2OWY0svOeM8Q0QgJ2Z6IoUfrRWY7vbntXa4ZoZvOBQ0zeb0Pk+dlpt2mEXTojIa7P8ro1U5/BJL74HBTSBhgi8DxxnA93LOH5GKJ6DvdCCsqLyu6WmDe2omqy6hWh82XTul5mJAtNiJIDBO8gsp0C+mnseE+RFeAyaZu7oaXW02OIDomWDtV6MW1bpPdKlS08qBuUBpZqX93q/TTSgRyGDzfg5+k1EYylk5RYwWSudgS3qwiE7KHE29TqhLUc++KVH48+z8tTmCMYu2Ojyh+
- riSmlC47
- y5xaAdw2s1opEwzFJDBVYlYyCE21Rl5pRnMXbT/ON8nH17YVjBQGzy1QIw+n9pOAnXXhijdpv2VG3D1M5FmxQeh/Vz62N1TXRo0s0EQoiOp1b63Av+UBBhMmRcpjLZIm4DXOQGOY6OCP/DFYvBQkNgec1EUTUfE9Ca/Qz6E0ilX/j0pd7V4tOaNp5HC9Ri44wKGuFn8hQ7oVrIQecjkpoRoD6ReYuDDZwiLYhDxbZbysxEsA1OPWpDW0ERl0nsUA3Q631
+X-HE-Tag: 1787129656-302062
+X-HE-Meta: U2FsdGVkX18A0Kkjkkvp4C3tLGCDVbJyxejKbo1/emMDcGit7tg0dFBLErxT3Gr95sVfkBXr+Qn5fiWtDHnuG0sh0ERiU4ZS9xmF9LSdL2BQQER69lyrVEAoP2QaPVWctDvy2TLQzdoYZRqBvz1oFUv7knNaGz1s9utGNXYAThTyqDpOXSXeh22o20cOYeSKF6jHRWNGE8lRttvPHRy/XLObhoGd7eWERqr2az4m1i48AQg/A9qcTOsovbUZegedOgSTGdYD2DIWqo1Tu59OJMwxViIzPrpHctu2CMG57Cq7/w43wz0jRSYWIXj7Pf3J6AabqOyuuYf0iDkQfVrfG5UyhsuNO3hBklC4V4mYbL8pD7ov483LdzYwwmVTn4H06p1E+dU5ARH4gMc5aG/OAq/X9VsNZdpHf3mPyWlmcsuyIiDRUHqSl6MyLYGHc7V/Jl4k6RLonPLFuDtGsD9vStKlPztoFAMxeqFKOwITyoZ15qzP6J9JnigzDvkpCfz/O8pxUrFVqOsx0t1WQLN45RXhdmk7+IjNFoOmigUlxK8pJ5WEFDy1cESra6Pk3b7eFX5wrNlx+Ivrx1d0PJDRoIGJ1k4PExEDUEkAa14vlA6Bzf175jADA26F7U6P5FPHgl8iyS2oHmEBJdoTW6X5eMVkykHATV7Z1vytvVjAT1tTHo+CbqRVbfinffykdSBVp8dzSE7+ZwusJR2aUVEfeb7CsC1TXQHhgMFOe51UgDdjhOfPdwoCNHnCa8HA7VBH0dwBn8LiHXiiAy4cGophii3P0ltmnldO7amMBGn+k5ay+ZldsaVXCoD6LiwQOYHfi9e3VvejoE3iujKzB6lE8pmdndLhAzVWAnqkBScu+7Uncnxu1k0M2zK5+dwOjhzh4gol8Z/q7PENsjgstFI+vlssNhes4rdyRE/v1cKOKc6rbk4NiyFoxld7fdlYvrNI/RjernSFFNwV/sqvp0L
+ EiMtNwXD
+ AUWGgeHrGpaFYKmirlazLTDO3Fbc0j09MblsWoLT8VokYgwm/TchHG73IJ1ZhnRJ0VwklNqWL09KUeefhKLWZQXKceNcBo9kvbnJA3zhcOKtP1wtP4qWNoQsHU8HMzP2KYeDMFGQ4Pj2RrGNranlArsV9ON/ElJBsBCBBJNM6XR37kFKVLs0/NdEz3pb1t9/cQT7GMy5jrN0p+lNh0Jx0ThhwqLqG/NY+u6lSush9bQZ7GropK3pQvxhnFUC34qOBA2mHAGlIQZxYZ5imM41EDLpQTIzsgSb6y92zoSPAygYwZNFb4EOyTERCVgWF7xUlrP9rwlOvmSDmyN4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,17 +145,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/17/26 18:20, Longlong Xia wrote:
-> From: Longlong Xia <xialonglong@kylinos.cn>
+On 8/19/26 10:50, Michal Hocko wrote:
+> On Wed 19-08-26 09:53:25, David Hildenbrand wrote:
+>> On 8/18/26 20:55, Andrew Morton wrote:
+>>>
+>>>
+>>> Not understanding.
+>>>
+>>> Maybe you refer to adding a patch to -stable but not to -linus?  That's
+>>> against the -stable rules
+>>> (Documentation/process/stable-kernel-rules.rst).
+>>
+>> It's tricky: if a problem only exists in stable (there is nothing to fix in
+>> Linus' tree), then a stable-only fix is acceptable.
 > 
-> dissolve_free_hugetlb_folio() doesn't check hstate_is_gigantic_no_runtime(h)
-> though remove_hugetlb_folio()/update_and_free_hugetlb_folio() silently
-> bail for such folios
+> The crucial quiestion is whether this is something that needs a code fix
+> or a configuration fix. Really fighting for low latencies with
+> PREEMPT_NONE is a kinda lost battle. You might want to play whack a
+> mole...
 
-That's odd. Why do they silently skip such folios instead of warning that
-something unexpected is happening?
+Yes, I read your comment on the other thread afterwards and I agree.
 
-This screams for a cleanup unless I am missing something :)
+The whole reason we added cond_resched() all over the place over the years was
+to avoid splats from false detected hung tasks (e.g., 30s ...).
+
+Not to optimize latency in the ms range.
 
 -- 
 Cheers,
