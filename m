@@ -4,86 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B4CC5DF85
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 17:03:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D64DC5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 17:09:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1666B0095; Wed, 19 Aug 2026 13:03:58 -0400 (EDT)
+	id 240856B0092; Wed, 19 Aug 2026 13:09:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 962776B0098; Wed, 19 Aug 2026 13:03:58 -0400 (EDT)
+	id 1F1706B0093; Wed, 19 Aug 2026 13:09:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 878396B009B; Wed, 19 Aug 2026 13:03:58 -0400 (EDT)
+	id 107206B0095; Wed, 19 Aug 2026 13:09:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5446C6B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 13:03:58 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D08D01405C0
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:03:57 +0000 (UTC)
-X-FDA: 85118641314.02.0C83A7C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2D357140010
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:03:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=qxGLbODb;
-	spf=none (imf23.hostedemail.com: domain of BATV+e526d06549997cf3c023+8396+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+e526d06549997cf3c023+8396+infradead.org+dwmw2@casper.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D74566B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 13:09:18 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DA96A05B3
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:09:18 +0000 (UTC)
+X-FDA: 85118654796.18.A195D7C
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5FAD114000C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:09:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="X kXQWv4";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=B56neHLq;
+	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787159036;
+	s=arc-20220608; t=1787159356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X2JPIRj5Cm1Euel970r+5c+HZVSWkuYLsHyJPoO4csg=;
-	b=UzuarG10yFxNrcKkbxmkQxqiTdHRPBVbaWW+pZNpQOXbH++/JP/iVQiRrlgAKA4BgTYQQ0
-	TdDj1OdgxiqyoTjG6M95U5ba/sT6UBDT257cZL/CzbObuV32UJV4v9UZGD7uX3J5o+GmcF
-	/OBIjK7HOHv9KbN66l27cX6dynzpwMI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787159036;
-	b=VwFhfzW87hrTchTJy6M2YEMOmMxNY5EDKfe1D2+Mfl+209CQM2YtaM3XltYZcYGNba5gFk
-	6qMGSnzWTEKrIksySuosMQ5NhKHIQJbFYtIZO14LPR0GgwQvzBY6/OBdA128aHCIb3zkgq
-	fXMi+fdOIquNDvMoNS+1yMcgJBn6FcM=
+	bh=rngWsIbqp4UM0fSmr3ndBU+ttc5Nai8HRxYczVDElJk=;
+	b=rXJD8RGShhR+fwn537VtHumZAVNURtSlo+4y9iGposzbtEJM8YQMeCCoC/cBvD+7Kro5K/
+	ka8QJW1jzLnVb/R/WE8vT2b27QCcA4Qf6UhIiq9bZ0dIvpv1a6fSwFXPPfsrM30cZ+mVWF
+	7p2UnwPh+wXwKOJIQ/c9h7A5ZwVPt5U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=qxGLbODb;
-	spf=none (imf23.hostedemail.com: domain of BATV+e526d06549997cf3c023+8396+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+e526d06549997cf3c023+8396+infradead.org+dwmw2@casper.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=X2JPIRj5Cm1Euel970r+5c+HZVSWkuYLsHyJPoO4csg=; b=qxGLbODb8bUHyyhOXdEevrYVfl
-	5XJEUjT6wwIsRGsmccW2iTOJi7R09FpY3hdHrc5RiXr35f4iHwBtSqONtB7M7Rtyox6HfF5YMaZke
-	SysRoSWKMjSMlayPg3ml2Quu1Bl3rdeb4udJUa/c3od5lWvz2QTcAk/OADBUIYU1i0FllLWdxP5X/
-	rRngdnodoHOiTtqO4xADnNSCe5F7L3T6wsyzByfyJOyJn4gQSjD6mv3kuxXh1nLsJsSZ/EhcfWoFI
-	C8il7bc/XFtgpVncOeA541aQYow3Clmtg9X1nthQSkJNKRh8OUzlK8Obi6XWz6vNjC9fCP6eL0GAh
-	+UN6Ytng==;
-Received: from [2001:8b0:10b:5:f6c4:be10:4885:f95e] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwjhg-0000000EA2h-1fOQ;
-	Wed, 19 Aug 2026 17:03:52 +0000
-Message-ID: <caf4476c54f0db4b5de8753749c89e5735886b59.camel@infradead.org>
-Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-08-19
-From: David Woodhouse <dwmw2@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
- "linux-coco@lists.linux.dev"	 <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM	 <kvm@vger.kernel.org>
-Date: Wed, 19 Aug 2026 18:03:40 +0100
-In-Reply-To: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
-References: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-B+HdHmc5L0yljg7tDt7J"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	imf09.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="X kXQWv4";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=B56neHLq;
+	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787159356;
+	b=iW+U3spBY1fnT4bTJFIv40gnl6fat9TRG1JZH5eL8KSBYxFQGxAzNGtUAQZHVlCJAOp2MZ
+	Oti8VjaY1JWvuPlIqc6V0W0qW0qvckCf7NoSAWAIKYnnJwJcwNwgu3imgFd6JqjEKbf0GL
+	355+nQooNv/iVDdALKxD+4idzfNCl0s=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id B412913801E1;
+	Wed, 19 Aug 2026 13:09:15 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Wed, 19 Aug 2026 13:09:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1787159355; x=
+	1787166555; bh=rngWsIbqp4UM0fSmr3ndBU+ttc5Nai8HRxYczVDElJk=; b=X
+	kXQWv4mldgxmebPhO5HInIrxwEyXD7vdckRHaKRDChcdEPNbk3qUOf9dnVbAxlMk
+	az0p914xNSD65d/CambQfN2m53NBgSIkHBnSKTXEIclH4UOt4ibk3DKjRnU5yycs
+	W7gDD2J/wOyvepAeEmZgp9k0q7alDQtUKYNLYKWaqLBHf+QG8jqy7cMnTfj+GAuu
+	7MQ1r1ZnLMcfU8hBJlRrigPUfjmRCFrQRm1vdhOQQL6UeeoG4NjPyKihvsxb0bkG
+	Phm8LO8GScuNqukHYN3lMaQr3SwfMpvPpHZKUKrOTPc05t8FaOh2Z2Kj0H+zOP5p
+	KsvUp92DdQ24UqVFIDM1Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787159355; x=1787166555; bh=rngWsIbqp4UM0fSmr3ndBU+ttc5Nai8HRxY
+	czVDElJk=; b=B56neHLq7er86+lmQ2V++BpiXFLH6WkSpfWF4TZ53vg1yUV4AW3
+	9SQBlGGfqGGcpFkq6dQTt6aFnKNJyxn/7BSYUTvQ/RvRsnElNoxGCBrhrEgXXGNx
+	qaLVSl81xjPChjmV16jkux7Sty6758SxBluBXpK3eOQc2e/ch2GoUONBIbKngSxX
+	VTFwZOhvh75/cYypXnDj/c3zTm6u3IU6xugzHtJSGDWIihvQp8e9exTT0PNm3hPS
+	AFDhWChONL8lNT/KUfGjOf6u9qK7vuwlLP89Lciv856uSXuvtWMdER5nTWhkOdt6
+	9bBIctLhJPJTTOE0ghgRBVHd3JpYVHw4FNw==
+X-ME-Sender: <xms:OuOFahdNPCaQTr9ES9HTrKEi-_OhwFcGJL2Y1JwhYpfj-YN4SSFw6g>
+    <xme:OuOFahgThiTOZcJOBYBmDOPIsCJPcyiNaEmsn_nBDnF1DRh1ms9OGeDMtwbdJHfre
+    WAo6GPgUePt_ZD9Nqo--RmJ2IR64gmxMOv77SrY4-0mt22qpyh0nvgT>
+X-ME-Received: <xmr:OuOFapTYCJl9yzGlAvik790RSVDJbcQrwMvOhgXHFHBDFlO5GI5Aj2H_MyY>
+X-ME-Proxy-Cause: dmFkZTF2hJnMxPlMk/jfavBtLUpTUzRd98wV0yj6Xt/Tg57fveFXbfrnoCBHAhwoJSnwvc
+    MtBG50RSMfmClpPI3x6CkcWZCyQvMgs1EZ/KW76Yapbv4d0vUdc6gFqdtYBxQZoYDkSqYD
+    2YcaHdEdQfhRcwKftYsqzXEfDtHBoWdxBFtT8n56HAZST46t7Dn270fSXfsHXaq5JKYPDD
+    JoKvC7wqN5tCFOmjr9104dGNuRhfDkdXo/k1uVDYnCrgfsZx1Du/6tDXbC34XfACrLwl8p
+    prfw7PeES/yEPXECxT/4GTheYyqLa/iux7yvt2JLPJJHC1s6Kbpk2oi4ksERMJCH47snQd
+    o5MgcUNJ9MgaGAfFhljde5JsdiLa7vnywvzsFsEsyh6/jENVfGHBB4NYMoCHdzyeFT8lW6
+    yYx1d6atj2GRUwmmZRZCOxWT0OhZjWhxDuT3G55syUAHSF2ICY/molwLA0RFftwTEOY5DZ
+    vg1rRhzPDm2Yibh8HWbghC4+BGr6CwebgdS5VlYpB58QAw8wmG5zI94Pi9k6Zwc8qPqzi4
+    pLEXAvi5grHrQtpdHqLnZkW8cxNCm4EgsEziTB0bvXmJoMSqnaJDLH4LM2KDB4EHumeg05
+    Oe+IYAPb9sqnI6CCz8ZB7kaLsW4wP+oI0J46P6EySsDJt/Gtpr2OyCnJpRuQ
+X-ME-Proxy: <xmx:OuOFalKbWCWCI4ZXnZ6o2x7NBHXHelXnP4ynvixvbIEXdrgu7mryRA>
+    <xmx:OuOFagQJaZaqTXceo5AM0IZ8hNjlHfdFY2va7llJmUBU9sg0iUsbxA>
+    <xmx:OuOFaiuBACucNMmEX4x_pO3FXL942oTmUfqnR8DAtclVKO7yjC8cgw>
+    <xmx:OuOFal-067q4FSkBuyRRGIfsvMUFjGtdxbPfuJaiDhQe6psxBq8www>
+    <xmx:O-OFas-OgkCIQ2NKZkmWqu2BlJxVNaFGk9Y2qaKYd5zBQIs3fM20His3>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 19 Aug 2026 13:09:13 -0400 (EDT)
+Date: Wed, 19 Aug 2026 18:09:12 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev, 
+	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
+	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
+	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
+	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	jannh@google.com, willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
+	mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
+ primitives
+Message-ID: <aoXRi3ngBhO54Akk@thinkstation>
+References: <20260816224609.308019-1-kirill@shutemov.name>
+ <9f51ac27-24b2-495b-b397-84865f977d24@kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9f51ac27-24b2-495b-b397-84865f977d24@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5FAD114000C
+X-Stat-Signature: mtmjiqopwwbq9xbpgph56dxkdhumxunr
 X-Rspam-User: 
-X-Stat-Signature: tf1dqzhwngk99kfx5egzeid4hjnzhfzx
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2D357140010
-X-HE-Tag: 1787159035-600098
-X-HE-Meta: U2FsdGVkX1/1GJmX3JGvjBOUIvicJ2s7AHMp6bEd7+ADuk5NMVoc5r/hOPpZ1zffch2ZrxuIABSJzsHpVVwQA4N1yUavonrQTOndM0bOvszVH2g+BaA4HEty40wnknN5pJwUJ6S4CRI4Uv/cDNZjudScRShiuJrs305+mIM56b+rr8KKl85R+LmVvt8aK/czZkWxFp8TrV9eICX3tIyDsjOQcJlWiJ8JdXzaoKBXAGyEsmupAIDz0TXP7Lpebs8tz5DnsbDUxC5s/TOsaKBOtLa+GsVYZrA1Q5HtOmxdBGru7gjABY0hy913165qH88l6SmN10v54FM6sq4qaXNNqQlPDfWNfZ9bZXipTJvi/B7neGTlwihkbLl8cZjYWQpTCWM/z6xethaDt/MpQ60173ayUOVXo8UJpkwy0QTM5pvK6lwN7OCEP31VRil4fqjGfrzAqFixp1uT9uDh635JzqqAELYWawM1MPi08efHm+8FxsX4AJykdf/ou7UNHZVYQ8Epy1kCehqdHxFxf4IB6CGGrR/LOP+InrbJCK7s576uJh7mGtegf8idbWZwijgKksSFpy4IJlKIujG7UBWQq+THW9SGIwFZJIw5DeBqXAhvI+voY5ckRR78gKyuXR8QHHRP5YELKyQ2Irs3aS3xAJUqu9D4Vst7P4L6QJR7tFwocmK4pt/UlBpd9OSSk6dv1om7pFJn9Xgp5EwtYYBaFDyiR3yRKLIAM+9l6beFGeBL6fPqSSMlxPZl0LP+eSMteqaMyOS9mCWbVf3qVbe9EU98jWWdoDNRGBoNXMweMaQK3PPrDntdA9HkQgOa8H3KE/+LQWqtfVIips1V4gOxeTyxJdAKccvw6IwIUpntkZyJdwwjmCzJ8GRiwMZ9ySrfB0ldznFbYxH1rM0ExsgLopG/PPtAZL992IZk7f5dBsB5Jom3SzE+GyPY+RxWctM2dqnLO8y/BCYj1wujRs1
- Um/euHbP
- 1QhnNLemLs02UZtntPINedAAO0x5JS+h8H2KWG4bDVk815qTNCCzUvxJySG+nrrLSGLZP5uhiGauceiqV+eRrlqu/dZHPNJkjjj39WHY1qmCf1s6G+zr0QY1GwWLLY1wqOw2Pzbd2Fe/1TBLind11s2Y1tOJwrh+htdhy4XOOvcuFwdN/KWg/OaodNBlvvapHAHR+lHAM8Azj96/A3oWsKaZ8moNBiHMVnR2L/vwEVWqbeD9+X8s2OWP1jU1k+0FlK6DMiABHgpvzfHXA8t4sH8ivjQ9Plnh8mttEULh80/uead53Uo+FqvED0Lfca91gTlXycMhhtU67lWPeIO7OyqBptruBg865v95V5Hf6GPmCqfKUh1dw+UGVvSy5BdYxZpEfxnDd2vhh8pz7pT2vrfFnMAIt4tzGCB7Pt6skEj+w8Zq4orOBldoDxY6fmVHJYKmCeY2rganLeU52+FARsyxDOM65TEGAl29baRs2Zi2JT4ZoAI/PKCbaG6iMsY615VoE9I95295vZrqaEq7sc3+d0cRr0HuTLdMsQ8GI0jW/3N1iXUdhy3/cWFDb59hRFcFMr4Tjx4dU+X9CUx10328QambtXpqpCnFrjD+TKP5Q5o7Et87371iryAhRaha8IClPDRUk1nU8K+xWcgYJtB4/ZAAnt8saivNUOsF0kTOW+Dj1mwqL1U8Z+o/Mtkgdmu9QoiHHnBSKzrzCTyx7PyEwE62a3BaZ9xNZCkjLMqapoUFVG3JWepPa02ko0R+XuJ0zKY8Q2/XBIGuBymvIPxAIwqKOD8Chy8F8sQ9psXa9auk/X8wXx+rLnQ==
+X-HE-Tag: 1787159356-879170
+X-HE-Meta: U2FsdGVkX19Fe0F5Rli3n9cWCTO8pumz3zBZff1bja3q1Ck6VO4Ny/J2318dXW7dWwUhbcCOiFS7L/8qH/rx5+J/H49oVWLpa6Ws1XUnFMGsknxUVu0+0IuDhahp/imAPmK3j+w7GZU1t8N5VEWEdUCSO8kuRwMEThf7m/n8S/QXSxvsEMdP5AHiDr72joY5YCTrRUY0FXLnaFN3pTv1d3AAHU8VUbsnRUeUcxzi3EQOVL0z5oVawooFwrr197ALE8pvWfpVtYihlv8K74a1oyeHlQB2fqGLEoRDCbMI0TXaWKcztXGDIn2Cop1dY0R32MNeB7AvkAdOdN+h52iojIofeevUjrQo96Kl30ekuoLoGfWfs1sH1giGOSZoGWstW9xPC0idiSoN2Yya5JNbvCvctx1fJ6vXvfKOR+h0JB321e7K+Lz6ku+s2nQGq3uXHPZE+EoyP8P0gPr/orQNSkO5o/eT9eTSx5n9er8h5eHTFmXIOvyJbxH12HkKxkfAZ/tds1SAiVqbOLAwi4rgn5vmWsAuYqEbYUfAs/YhjfFKy+2q3jFQZ8pwcsjjkZxYkVPgkyINOR0mr+HTO7WzAcjuD4+i8d0RuFkhGuljVX3SzLAdqZHGNs/6YVQhXgq9pFsu+AT2fwCzcsypflg8sH2AthY49C7k32IOgmBAJuQo8sb57J2uYSAQZO0T9MEusANPq1YN/DfBTDocLWerLzWdJSAI3HaB75Yrt0qQDApdNdA8eAErsoYqaQYfNldfG43CZXj0zn/6dJwELEPpPFu+7jAFkALDLcfERLuinKgWiGk4jL6ObLIzP44myPZrm3UQVjxg7T9XggRvwdoJpzBjh8FPToYZnaiEOVEQhkGToaOnKGD+Qa/qX1/h+yA4aYQWFWIqgloJTjO5lAbOO+ZjPBEazldRrZzCNt6+w5IHV8xO88qtBWiGFmWpl4tXS6cWuz03JgsmgsoD0JQ
+ E2Yzyaaf
+ rUBCHBOHGgf5mWzwhHQuKWyrgHeeWAY7MNHcRs8sXsKHJXR7MCt4vayGaemoK7IehSMlmEiu6rqPYXNBXxG8seh2BwJt4bZge4BRzHnyTm5CZ40NLVAO8gFfO9aUEhDf8KLd6MQneWfKjSdRzc9nuKjtLdzHEsKdhXsjmu3k8VAFlsblcFVn/41h6H+CcNSyXhtMbJPGPymLQmnbaGn+EbGrB2nLGYwsXxNV/XZTbKBpUkdas8SFLzPv0RT1E1x1ZIPGxLqM61g5HTwivZ3GjUGahA3kV+ov8JpEQOgiWaGeWMUQRZSqsVOAx1Rn76cd0+zELo9N5Nv1jdowSORC3I+xCwCj2+81GW6GjmSGm6KUalQMI45d91hWIjXbWEA1A45Jo2qwRnmKL88mLBs6y4ZcxpQyUv1576hi/V2qaR4U7UWHBHvW+qttRRWwJvR12PBIC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,147 +135,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Aug 18, 2026 at 03:55:55PM +0200, David Hildenbrand (Arm) wrote:
+> > This replaces khugepaged's anonymous collapse with an engine that
+> > can collapse sub-PMD ranges. It is built around migration entries and
+> > frozen folios instead of heavy locking and isolation, aiming for better
+> > scalability and less disruption to the workload being collapsed.
+> 
+> I recall us discussing something around using some PTE/PMD markers (e.g.,
+> migration entries) in the past.
+> 
+> One thing that needed care is handling concurrent MADV_DONTNEED + faultin after
+> dropping relevant locks.
 
---=-B+HdHmc5L0yljg7tDt7J
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Handled at install time.
 
-On Wed, 2026-08-19 at 18:23 +0200, David Hildenbrand (Arm) wrote:
-> Hi,
->=20
-> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-> 2026-08-19 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+I drop the PTL after the freeze to allow allocation and copy, but sample
+the PTE values (see saved_ptes) at freeze time. If something changed
+under us by the time we install the new page table entries, we give up
+on that candidate and roll it back; the rest of the round still
+installs. We allow harmless transitions: zero page to none.
 
-Tomorrow is Thursday 20th?
+> > Which is why hugepage_vma_revalidate() demands that the VMA span the
+> > whole PMD even for an mTHP order -- "we'd need to lock all VMAs in the
+> > PMD range to support this", as the comment there puts it.  A PMD-granular
+> > operation is only safe when one VMA owns the PMD, and that is exactly the
+> > restriction in the way.  The alignment is the symptom; the PMD is the
+> > design.
+> 
+> I disagree with "A PMD-granular operation is only safe when one VMA owns the
+> PMD". It's safe when all page table walkers can be stopped (see above).
 
-> Note that we will be skipping the meeting in two weeks (2026-09-03) as bo=
-th
-> Ackerley and me will be traveling. So if you have something urgent to dis=
-cuss,
-> please speak up :)
->=20
-> In this meeting, I think we should sync on the recent developemnts regard=
-ing
-> in-place conversion. I don't know whether David Woodhouse will make this
-> meeting, but if so, we will also talk about guest_memfd+VFIO.
+Fair, the sentence is too strong.  mmap_write_lock plus a VMA write lock on
+every VMA the PMD covers, plus their rmap locks, would make it safe.
 
-I should be.
+But the mechanism still clears the whole PMD, flushes, IPIs and
+repopulates it to collapse each 16-page window. That's very noisy to the
+workload.
 
---=-B+HdHmc5L0yljg7tDt7J
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+And I am not sure how to deal with rmap locking here.  Nothing in mm
+holds two unrelated anon_vma rwsems: vma_prepare() takes one for both VMAs
+it touches, because a merge requires them to share the anon_vma, and
+anon_vma_clone() takes one because "all anon_vma's share the same root".
+The lock ordering in mm/rmap.c has a single anon_vma->rwsem level, so a PMD
+spanning unrelated mappings would need an ordering rule that does not exist
+today.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-qrKGjzwL1k0xQK8kF/RxXcgAAAAAAAA=
+> > Between the two, nothing can reach a source, so the copy runs with no
+> > lock held at all -- and the address space is left alone while it does.
+> 
+> Right. Concurrent MADV_DONTNEED can zap migration PTEs and other faults even
+> re-fault fresh anon folios. So that must be detected before replacing migration
+> entries again I guess.
 
+Yes, that is the install-time check above.
 
---=-B+HdHmc5L0yljg7tDt7J--
+The copy itself is safe: a zap of a migration entry only clears the slot
+and adjusts rss -- see zap_nonpresent_ptes(), which neither puts the
+folio nor drops its rmap -- so a frozen, locked source cannot go away
+under the copy.
+
+The rollback does the rest: it leaves a foreign slot as found and drops
+the rmap the freeze kept, which is the half of the teardown the zapper
+could not do.
+
+> 
+> > 
+> > What that removes from every collapse path:
+> > 
+> >   mmap_write_lock              -> mmap_read
+> >   anon_vma_lock_write()        -> nothing: an rmap walk needs the folio
+> >                                   locked, and the engine holds that lock
+> >                                   from freeze to putback
+> >   tlb_remove_table_sync_one()  -> nothing: one ranged flush per round
+> >   LRU isolation                -> nothing: sources are inert in place
+> > 
+> 
+> Not sure how you handle PMD collapse. I recall problems with migration entries
+> on the PMD level for non-folio things (we discussed something along these lines
+> also in the past).
+
+There are no PMD-level migration entries here.
+
+The freeze is always at PTE level, so the pmd keeps pointing at the
+table until the last step, and the PMD leaf goes in as the terminal
+layer: verify, pmdp_collapse_flush(), deposit a fresh table, set the
+leaf, all in one section under the pmd lock with the pte ptl nested
+inside.
+
+A pmd-level walker sees the old table or the leaf and never pmd_none,
+and faults stay held at pte level by the migration entries throughout,
+which is what lets PMD collapse run under a VMA read lock like
+everything else.
+
+> 
+> > Working in windows rather than whole PMDs takes care of the other root.
+> > A sub-PMD window is collapsed under the page table lock, so a collapse
+> > disturbs only the window it collapses, and each candidate is validated
+> 
+> I recall us discussing that holding the PT lock for a longer collapse operation
+> (especially on 64k) is problematic. But I don't get all the details from your
+> description here.
+
+As I mentioned above, we drop the ptl after the freeze. And take it a
+second time for the install.  Allocation and the copy run in between with
+no lock held -- on 64K the copy at PMD order is 512M of it, which is why
+it cannot sit under either lock.
+
+> 
+> > at its own order -- a window need only fit its own VMA.  A PMD-order
+> > candidate still has to own the whole PMD, which is the old rule kept
+> > where it is still needed.
+> > 
+> > Candidates are carried through the passes a batch at a time rather than
+> > one window at a time, so a round pays for its flush and its lock
+> > acquisitions once.
+> 
+> Now I am starting to feel that there are too many changes packed in a single
+> series :)
+
+Batching is not an extra here, it is the only way collapse works at mTHP
+sizes.  What a round pays once -- lru_add_drain(), the mmu_notifier
+invalidate window, the two ptl acquisitions and the TLB flush -- would
+otherwise be paid per collapse.  A 2M PMD is 32 collapses at order-4, and
+a gigabyte collapsed into 64K mTHP is 16384 of them: the serialization
+would dominate, and the workload would feel every one.
+
+> > Reading the series
+> > ==================
+> > 
+> > 57 patches is a lot to land on a list.  They go in blocks:
+> > 
+> >   1-6    helpers and shared state: pte_folio(), pte_none_or_zero(),
+> >          mm/collapse.h, and the policy that replaces asking whether
+> >          khugepaged started a collapse
+> >   7-8    the engine's shape: entry points, a call-tree comment naming
+> >          every pass, and the scan filled in
+> >   9-23   the collapse half, top down: the round frame, then each pass
+> >          in turn, then selection and the retry store
+> 
+> I fail to parse this sentence.
+
+Bad wording.  The engine is introduced in a top-down manner:
+
+  - patch 7 adds the external interface and a comment naming every pass
+  - 8 the scan
+  - 9-11 how candidates become a round and which passes the round has
+  - 12-21 fill in one pass per patch in the order they run
+  - 22-23 add the cursor that picks the windows and the second chance
+    for the refused ones.
+
+I'll spell that out in the next iteration.
+
+> > So I wrote "perf bench mem usemem" for this.  It touches a region while
+> > khugepaged works on it and reports the workload's own latency
+> > percentiles and throughput, against per-size counters that can see
+> > sub-PMD folios.  The branch is above; it is unposted and not a
+> > dependency.
+> 
+> Something more realistic might be running some workload in a VM whereby the VM
+> is getting collapsed by khugepaged.
+
+Fair, I'll run that: a guest touching its memory while the host collapses
+the backing mapping, measured from inside the guest.
+
+> 
+> [...]
+> 
+> > There may be a way out -- a PMD migration entry over the table during
+> > the window, so the CPU never caches a walk to shoot down -- but that
+> > means teaching every pmd-level walker a new kind of entry, and I have
+> > not tried it.
+> 
+> I think we discussed that in the past and it's absolutely nasty.
+
+Let's leave this for now. I will give it a try when it gets its turn.
+
+> 
+> [...]
+> 
+> > Size
+> > ====
+> > 
+> > mm/ grows by 1915 lines net: 4475 added against 2560 deleted.
+> > 
+> That's quite a lot for something that reads like a cleanup at first.
+
+About half of that is comments. :)
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
