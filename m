@@ -4,114 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 951F9C5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 291D9C5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:16:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E5B86B009B; Wed, 19 Aug 2026 03:13:57 -0400 (EDT)
+	id 281FD6B008C; Wed, 19 Aug 2026 03:16:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BC6D6B009E; Wed, 19 Aug 2026 03:13:57 -0400 (EDT)
+	id 259CD6B0092; Wed, 19 Aug 2026 03:16:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D2FC6B009F; Wed, 19 Aug 2026 03:13:57 -0400 (EDT)
+	id 197AF6B0093; Wed, 19 Aug 2026 03:16:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 564F26B009B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:13:57 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id EAAB46B008C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:16:47 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DF42CA2EC5
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:13:56 +0000 (UTC)
-X-FDA: 85117154472.02.8016BBB
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A75FA2FB4
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:16:47 +0000 (UTC)
+X-FDA: 85117161654.02.E0E06AA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3319E1C0009
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:13:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jJV0OzwV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id D3F0D180004
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:16:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OUajSmkx;
+	spf=pass (imf06.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787123805;
+	b=d09rnNda4Eu5i1lmzmZEyWCjlueXJKFNYVrzhiRh3zwFb5xlNdof4LySPEis1LqgMKuJag
+	l7PnZ0m6C6ce/mxaF56g4TCFpTUxcuy6RXiKfb4CFvgMuQnHwgaOQdvDguWTz3adnbCKdS
+	yDV9lhibd3I/1d5JxbI2TSJR+K7UINg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OUajSmkx;
+	spf=pass (imf06.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787123635;
+	s=arc-20220608; t=1787123805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MEh93umEkAdwM7W7h5DMLx7l0jri6Tex4Ey3QmOKRt0=;
-	b=ya3MsAA4QiBFJ0Pfw7Jy72jKdihsLP+4dijAiCf4K1Gue/nRc+aPO4yy0MQfyGBo8fa/iy
-	Ri88z7jJY0swCNuTn1650C3Nak8MVxSMiTdMiRQG99zNBvT4VOhFPuAOgm6nq9Ri7YWp6N
-	NlDsWgquiIEGw/x9j0e5MjrVd6cHREg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jJV0OzwV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787123635;
-	b=KTzU1ePVZVlcreejprJd8UOyExYyCShlOGJuBC/HOn0j+E99t7QoHA1ejZ+HYmjcQxkUy+
-	X7ixB//lUruvmf/tngBiv9c5TwL3o3MCfzoM92ayVp8Tivd6J0QdvM9V1KiQXh5apUcA5W
-	6Z3ONQhjC8gn4gYADobZPckaUdA9Loo=
+	bh=RR+5oC+JwEK6fu7HwCFjTcfa8i7lkxeot1UpnC7rJoo=;
+	b=W1GWfJog18XSIkXr8KRn6NKl4ajdUQ8sk5ecqsygvMz0cZfnB/aO18KDrC/Wqc01V0Hqwn
+	VWCPRD191yMxYXYiYL4zM+jsWGN473iTcsGkH2llrM+QePEqhsBdzuuc6baHKgUtO0uVU5
+	S0R0LUrs7XOqBANPJlVqj5IMHT9Ae4g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B0871601FB;
-	Wed, 19 Aug 2026 07:13:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCAB1F000E9;
-	Wed, 19 Aug 2026 07:13:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5D8946020E;
+	Wed, 19 Aug 2026 07:16:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA801F000E9;
+	Wed, 19 Aug 2026 07:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787123634;
-	bh=MEh93umEkAdwM7W7h5DMLx7l0jri6Tex4Ey3QmOKRt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jJV0OzwVbpNuL1O7IKYFMOfkJNn5jUunHF3YbR6s3DRCL2TlLVhLPBotWdiGtRokA
-	 tmvHyqyp+imK+t1Fq3nxpk977s16W+HIjEKyInWVUV1oA//lPAb6rPWocpZquA5Ccm
-	 bgwCf3DzoBtBiJCPGwlFz9HjCr/lq2MMwhpgdxHoSsupRhmU3NSJ07HL6c5BUc2jmQ
-	 uN/InEQopdQkSXzswZqrN8YxkDoenas2ccCQodY70U8cWRig2OBGou4vh1U4PakYtX
-	 vAKsses0e/ZiFmKxHArYa8yhDZVE4w8x5VBUX22681OzmQsFslwRWWGAKw1WggWAbV
-	 zsPrgq11T43eA==
-Date: Wed, 19 Aug 2026 10:13:38 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandre Ghiti <alex@ghiti.fr>, Andy Lutomirski <luto@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Len Brown <lenb@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <pjw@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
-	Will Deacon <will@kernel.org>, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-pm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	loongarch@lists.linux.dev, yosry@kernel.org
-Subject: Re: [PATCH 6/6] Revert "arch: introduce
- set_direct_map_valid_noflush()"
-Message-ID: <aoVXolZ1pEJBZNjF@kernel.org>
-References: <20260816-execmem-set-vm-perms-v0-2-v1-0-90944a3ad43f@kernel.org>
- <20260816-execmem-set-vm-perms-v0-2-v1-6-90944a3ad43f@kernel.org>
- <DKRBF6LQY1L7.13CIBHAU0A87D@linux.dev>
+	s=k20260515; t=1787123805;
+	bh=RR+5oC+JwEK6fu7HwCFjTcfa8i7lkxeot1UpnC7rJoo=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=OUajSmkxxgSJUvX0P3OusAk2BNV325fQGca5SN3s6/V96Ce7eVvnOpfFSlVJvY7gP
+	 OLcbdjuecaEpIX33FG0TYzfccpcbsV0SvqQc5MWsmJp0uPnerx0TagmFMK9ymEnYiA
+	 P09sk8Yo8t/5tpF28Wlzg7TG4P/q6i/GAweT6P4vZ6CsPHMmtO/cNaaSinWR6j8ssD
+	 HTsJ/JlwyRikT9jGp7qo871NF8cVqf7euQ+s4rzjU1XLmlV4G/guYGXoemlvLEcPAm
+	 VeyDGQ1E3bMml5Vs6ILfRTTw7ikvwENUI5AvsezA1RfyjNQxaJ2MpGt5DZGwpSXP0s
+	 IKr9uYWiZdpfA==
+Content-Type: multipart/mixed; boundary="===============9008457374577010211=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DKRBF6LQY1L7.13CIBHAU0A87D@linux.dev>
-X-Rspamd-Queue-Id: 3319E1C0009
-X-Stat-Signature: kwhm8k7kg3anfdibidbtwceabqzmf3nt
+Message-Id: <1a9245ed6391fb99efab25910fda1e140d54305c58a2ffbaebb785010c0a9f26@mail.kernel.org>
+In-Reply-To: <052d445fe9d7741729447f1b90277dcdc6541b4f.1787120833.git.zhuhui@kylinos.cn>
+References: <052d445fe9d7741729447f1b90277dcdc6541b4f.1787120833.git.zhuhui@kylinos.cn>
+Subject: Re: [PATCH bpf-next v3 2/2] selftests/bpf: add memcg async reclaim test
+From: bot+bpf-ci@kernel.org
+To: hui.zhu@linux.dev,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,andrii@kernel.org,eddyz87@gmail.com,ihor.solodrai@linux.dev,ast@kernel.org,daniel@iogearbox.net,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,baohua@kernel.org,geliang@kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org
+Cc: zhuhui@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed, 19 Aug 2026 07:16:44 +0000 (UTC)
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787123635-139526
-X-HE-Meta: U2FsdGVkX1+8lnWtqx3UGrWTFp98c9VKCmCDjPuOTI1o4tB3BCtALpjg6NTrVA7qVdl7GU/0Hbo04KvNnmrWkpEmSxDQJ64zekNJPSX/jXsFo4173dmZuQrlrU3NZw7OmPo8NEgle4hik+rxoJhqZ0hiROnZMOCsTA27miBEUqiI7x4Fuhqq2Shn/5YFYIWKWZUuJ4E3963yM+Q2BZ7tMGs8+Te9QNjQGOXTwMokJCF0Rg9ctjGFla00vdNeMm2KapXz0/HMKiEbSPrXMeJA2n+2YksyRio5rtiJYnSvYd4pfQ89uHKUis8ExnMIkPbaWGw42tiUOJfkexkkxkan6TgUMkVX4Fy9K6iILIJNDh7qIfPhuMOqdzDyye6cVWNdHzMJ1XoLbYn+NDyzXDx4npoAv4KxxcIafoCQUBg2T2rZ0cfGB3j4Y7UizWJtEJtzR6+G0w5twiASDtGfKrQnwwupmEIYVlNzELigHKgn9knyz55Uu+jK1TTIkfGdyJdJdxKPJJ51W/RGNeTnCWa2D5UcICaPfQrpXg0kQJgKxl3RvGU8DxUREoNW/e9BaqzNQ24rx4k16BNI1rexRT5uBiEWT2BT4rMfUME5wgPw6uNbsYD646PBXSnytvfmlETB4dIzQbuXep6Z+FLypJUt/1MW5y2J7taNPY4d1oTs9r1P4SrXZB/7QkG9T69ax5rnkhULZydR6jVDeO+AA57a8AYzG2m7hh4u2irjiLPh0iRMBy/iz9/DSzWr5pmVIF4mmSbfZhVAHvpCAdapDTV2IqXiGPSZWV0AacotA6QW4MmWToKrOxJFrHoM6F6/LsTzJDBT22HYfRYT0QWFbLCopX2MdfMjfF56TmjtS39VHOVobw3wOUGfh67I1+A3rMteOPQRT1K/SFVxBWNmD0WJOoBFI0eZPoPINQJ7fJQ5vuAdaFJAh5wRGlINSV7CMrgpzRoDqIu/TEoxLjokN2h
- 87sS5pRt
- Hl20KTToOh9VAUQyRfZhO0LedEKZpJx0Aao2KMAPEtv8m8SY+eEQwptaRNPOo8PCXGIk6vN2DyJIS4oMUQWGM2jmJ81diyp7AROYxwGChX+zScCsHsmiaiDjojNyf2njZnFl5O7do/lTz9fsBN1Qoh9GmJ/Rsgu0ZpeRZumMWvCIx2aqC55G5W7ky9BvXhhd1LyOdEQLYXb5rCA0FKnT0x38ogiYpCQKN4nY7ctSSciIAc2acdb7rimHB/XfgcfkOFBQPXcPphMPYsuRh1w4/JmwSdyMlnFlRJG4/szdGwQ60d+VgINLs6YzQP6qxTHtvMrCNZCaTU4LSTUY=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D3F0D180004
+X-Stat-Signature: mhbnxdhpaqdcc983k9jkms7eft8gmmqh
+X-HE-Tag: 1787123805-130643
+X-HE-Meta: U2FsdGVkX19wtiRAPenfkRcwTLuGmGcvB2uRlOFB4Ko3cDMG4hFgQwBrlrP4eL4uJUbAT+wN1QWcU41ALSzZxVfstcF3l1e1BYM5zVZ/A5k+8TWEpBndY6krXTTvlTcio7FoDSMYDtiaEl4kdayM2z0GdHQRRjKU0Bt3nzpwd7C9ZaPuHtKzOLs+QOf8JkU/l8EOnEj3uaLWBfk7+2/eJ4B2UFwgWG3bFBfsTG3BTK921h3OrW72sVG83nNCvQ3XpBTFlcTz5Lh7ff/oVPyy7eJ+xrbi0TrhrOH7NQ4SMIjLKrqDcaRLKgBgjU3Obtx9jx0OoVOoGqW8QV5C7mXKbcFY3/ETI1jvEMFNZssCzHc35AzMR8v1PWpPvlKMFs1U/2IqspEdnvena6jm9tbb4+2g7m8iTNQA5yFbsRsxvGhRKc3V3pFy0PCsnGZzMohdx7Q2DlKE8wLxgizZP/N/9zuqlv0LHHKo6w4TFexhAy4+OLUkcgmPvX8Bh5fP55dXUsFY7b2DdFGSwRIMb1Ns5XlhVoa3Alx0kT8OJjvmxHPfXloO5tcybft/Dq27ZqW+mSzU52zFEigJVMfGWzyEjDRP2G4Yiol6ndsX39a3xKXtdqTk0zoW02yZ8f8M22smzqHC2SC9L3KCH6fwRaHgf8cF88dWDkI+WV6b/KOmdUcAAykTGp3VstM12yOfNVEAKzj7vF/OEGCd4CznJH9ZbAqUuvvGGs+AD5XI4FxjFU7TLnieqcL5L+B6n9U0Rh+1uEkwNWhl4DQYoLzVWJbGOGSh2flv6rx4W73M73En/+4ba343ufbiRUKyEKt/rfOPjc2HnGE9zJTX1DMlbCVFEcecEOjaJFG/+5bcM1FBYY1XYQ7We8QxJCh1Dis9MYcSLS6lYmw42L3JwQGI65sD+fWOxE8NbzoPfbMXzaSV1SeIhggdEFWI7EwG8A6Rzz3rKsyJoy/zcnBFzsbuObJ
+ +q/ePOG+
+ YLk7gbumb6ESmuIBLfB6mEZ5jFWtx8b12it6gOnYnhH0etAJNuI2XSacGWjDfpX1jr0E6Wc+dPAV2G3tVTcb3g2r4aHDdFZ4kLfwU0zzLIV9vFLjm2iKUxm9J2ys1w8j1cGXYCdggan2iFH6VQZCPYp83/4RWhUU9h8K8PlfpcTtbcHX7l5Hiu4A1DZAE92SFmI8oiGXQha2AOxa+5nfGbUFceeuTVrzVsEueRwtyrJGHUJkuuaLXZ1sP8aP2OwPtyfYQiLi2CvOopuOVENVW3uJCBMOi50CnMavRSoTudE5A4EYHCPv361Bpw9KbLQoUhUmNIQwsjwwh8vK3K4xc/1g0qQNQ3eZlBc4HvOEz3/z+G8/EKvnsNPwoKiruNt6Mz4DL3UbwnvmHbdTNpoiCbr3Mye7LYsrt7orL0e0psYGa5uNenPuG2IavleifSfe928CWQ5vXIU1potSjnR1kCcxzF/1aen8Tb/b+MdIv2yJm1h3bvLzCGk+c/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,65 +88,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 05:14:19PM +0200, Brendan Jackman wrote:
-> On Sun Aug 16, 2026 at 12:59 PM CEST, Mike Rapoport (Microsoft) wrote:
-> > Commit 0c6378a71574 ("arch: introduce set_direct_map_valid_noflush()")
-> > added set_direct_map_valid_noflush() to allow updating the direct map
-> > for a physically contiguous range in execmem.
-> >
-> > As Brendan recently pointed out [1], this API is confusing because on
-> > arm64 it means that is sets VALID bit in ptes, while on other
-> > architectures it is an analog of set_direct_map_default_noflush().
-> >
-> > The only user of set_direct_map_valid_noflush() was execmem's ROX cache
-> > freeing path and it was switched to utilize VM_FLUSH_RESET_PERMS for
-> > resetting permissions of the direct map alias.
-> >
-> > With the last user gone and with set_direct_map_{invalid,default}_noflush()
-> > accepting number of pages as a parameter, set_direct_map_valid_noflush()
-> > become a copy of set_memory_valid() on arm64 and a duplicate of
-> > set_direct_map_{invalid,default}_noflush() on other architecture, it is
-> > safe to remove set_direct_map_valid_noflush().
-> >
-> > Also drop a stale comment in arm64::__kernel_map_pages() that Linus
-> > bothered to add when merging changes containing set_direct_map_valid_noflush()
-> > to his tree.
-> >
-> > This reverts commit 0c6378a71574daa6cd1534ad42a956e3262756c7.
-> >
-> > [1] https://lore.kernel.org/all/DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev
-> >
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> So basically the big issue here is specifically that
-> set_direct_map_valid_noflush(..., true) is special on arm64 and not x86.
+--===============9008457374577010211==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-More precisely arm64 differers from all the rest.
- 
-> And we fix that by jut deleting the API. SGTM!
-> 
-> The other issue I can see here is that set_direct_map_invalid_noflush()
-> clears RW on x86 but doesn't set RDONLY on arm64. So if you unmap
-> something using set_direct_map_invalid_noflush(), then map it again
-> using something other than set_direct_map_default_noflush(), you get
-> different behaviour between the archs.
-> 
-> I think the answer to that is probably: doing that is a bug, i.e.
-> _invalid_noflush() and _default_noflush() are a pair that you have to
-> use together. But I haven't checked if this is currently the case. Maybe
-> it would still make sense to just align these fully?
+> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+> new file mode 100644
+> index 000000000000..e990d1fdc79f
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
 
-All set_memory + set_direct_map functions very much rely on caller to know
-how to use them right. There were only handful of users outside of arch/ so
-it was kinda sustainable. With the increased demand for those, security and
-whatnot, the whole bunch of set_memory functions needs some love.
- 
-> Anyway, aside from all this yapping, getting rid of _valid_noflush()
-> seems like an unambiguous win here so thanks for the cleanup!
-> 
-> Reviewed-by: Brendan Jackman <brendan.jackman@linux.dev>
+[ ... ]
 
--- 
-Sincerely yours,
-Mike.
+> +static int
+> +run_high_low_workload(double *high_elapsed, double *low_elapsed, int read_times)
+> +{
+> +	char high_data_file[PATH_MAX];
+> +	char low_data_file[PATH_MAX];
+> +	char high_time_file[PATH_MAX];
+> +	char low_time_file[PATH_MAX];
+> +	const char *dir = workload_files_dir();
+> +	pid_t high_pid = -1, low_pid = -1;
+> +	int fd, status;
+> +	int ret = -1;
+
+[ ... ]
+
+> +	low_pid = fork();
+> +	if (!ASSERT_GE(low_pid, 0, "fork low"))
+> +		goto cleanup;
+> +	if (low_pid == 0)
+> +		exit(real_test_child_work(CG_LOW_DIR, low_data_file,
+> +					  low_time_file, read_times));
+> +
+> +	high_pid = fork();
+> +	if (!ASSERT_GE(high_pid, 0, "fork high"))
+> +		goto cleanup;
+> +	if (high_pid == 0)
+> +		exit(real_test_child_work(CG_HIGH_DIR, high_data_file,
+> +					  high_time_file, read_times));
+
+Should these forked children use _exit() rather than exit()?
+
+exit() runs atexit handlers and flushes every stdio stream the child
+inherited from test_progs, including whatever the parent had buffered but
+not yet written at the moment of the fork. Where the buffer is a real file
+descriptor this duplicates the parent's pending output once per child.
+
+The hijack body in test_progs.c is inside #ifdef __GLIBC__, so on a
+non-glibc build stdout is never hijacked at all. Also, stdio_hijack_init()
+is skipped when running with verbose output:
+
+  if (verbose() && env.worker_id == -1)
+          return;   /* output to stdout by default */
+
+So `./test_progs -v > log` (fully buffered pipe/file, no -j) and any
+musl-based build get duplicated log fragments plus the child's own printf.
+
+Other forking tests in this directory already use _exit():
+prog_tests/bpf_iter.c, prog_tests/exhandler.c, prog_tests/cpumask.c,
+prog_tests/task_kfunc.c, prog_tests/deny_namespace.c, and
+prog_tests/uprobe_syscall.c.
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32224943030
+--===============9008457374577010211==--
 
