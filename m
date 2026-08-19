@@ -4,109 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BE15C5DF85
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 16:59:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B4CC5DF85
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 17:03:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 710B06B0092; Wed, 19 Aug 2026 12:59:41 -0400 (EDT)
+	id 9B1666B0095; Wed, 19 Aug 2026 13:03:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69AB66B0093; Wed, 19 Aug 2026 12:59:41 -0400 (EDT)
+	id 962776B0098; Wed, 19 Aug 2026 13:03:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 561ED6B0095; Wed, 19 Aug 2026 12:59:41 -0400 (EDT)
+	id 878396B009B; Wed, 19 Aug 2026 13:03:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 32E6C6B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:59:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5A91A2DD7
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:59:40 +0000 (UTC)
-X-FDA: 85118630520.25.2C2EA84
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0E7FC20004
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 16:59:37 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OG6XR9qt;
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5446C6B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 13:03:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D08D01405C0
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:03:57 +0000 (UTC)
+X-FDA: 85118641314.02.0C83A7C
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2D357140010
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 17:03:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=qxGLbODb;
+	spf=none (imf23.hostedemail.com: domain of BATV+e526d06549997cf3c023+8396+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+e526d06549997cf3c023+8396+infradead.org+dwmw2@casper.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787158778;
+	s=arc-20220608; t=1787159036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ul8sL4o49VwrfdmFYNMm1nJQlfGW7WlZrpLS1SW87Ns=;
-	b=G3ifFpeFhIRNX/JN5SUn5ySjvKwDRSq1T7bqyWVZkeX0SoSz3ikic5pkKc5Ro3oJ9fCKU2
-	ZKK0J72QbLsHx7B5wE0GJpLfzennx1h1qpI0C0lXx5juRvjf9Sl/GFMHqi3ckiFWLfxBJL
-	FFzbBPT2pwBTl9COvdtroKBBgUYqbs8=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OG6XR9qt;
-	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	bh=X2JPIRj5Cm1Euel970r+5c+HZVSWkuYLsHyJPoO4csg=;
+	b=UzuarG10yFxNrcKkbxmkQxqiTdHRPBVbaWW+pZNpQOXbH++/JP/iVQiRrlgAKA4BgTYQQ0
+	TdDj1OdgxiqyoTjG6M95U5ba/sT6UBDT257cZL/CzbObuV32UJV4v9UZGD7uX3J5o+GmcF
+	/OBIjK7HOHv9KbN66l27cX6dynzpwMI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787158778;
-	b=lRAsqVCezDtjQjdA7nq5BDkU/En9RzodR9A6C49EH1WCxtKs8V5xl5hSYtDgh8VJZDqLGZ
-	5FpPVP5cYX/yj72JnAf1dA4QD8PWs9WDT5QS70HSxsDLLYL8D1UHdSNGbUWOTPOod1FagB
-	jypj161uIMoSvQgzfFALhKwCnJA1mgs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787158778; x=1818694778;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IOTVPUO0ZiUEmg41bEMQ7kpDRfBcTt+r8BmdyGIX5b8=;
-  b=OG6XR9qt/qLRTwqFDlnl8FO1jmwr20t1TytNEN6aW5asisTE1/pHKCub
-   5WvmKwIlRwswzBDD0W1If+ECJaTQXqQq5+kcWCjqJTSZhbR9pbfWZKm1K
-   Ye+8iYJokHiG+eCobic7aEhA5LXrGDjiHa1aY7rmrvOTaDmDjpziXn5lR
-   gUF7WcAQDBYKQvryHHpcxLt26LBP9VTD1s69R0CHXVEiNvA4Nn177K8dj
-   7sJ12pwPQG8nl4F8KPlRp/VX8wIx1rpwNXKgiWovfcmwAMstdo6fHJ8NK
-   k1TIztihzYW7S4x1B1I+BYh4wXqkzIqaqedeGvO4XMsJKyN1As/PrzxpR
-   w==;
-X-CSE-ConnectionGUID: 2z2shECPSMGEo/wz2E6ipw==
-X-CSE-MsgGUID: PA6O8/1WQlezoLZ5U7sWvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="98352304"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="98352304"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 09:59:37 -0700
-X-CSE-ConnectionGUID: UL1gamXjRPOcD03otLMATg==
-X-CSE-MsgGUID: i6PhILTnTgKZeR+SeSVNgA==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 19 Aug 2026 09:59:33 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wwjdS-00000000fqn-15qv;
-	Wed, 19 Aug 2026 16:59:30 +0000
-Date: Thu, 20 Aug 2026 00:59:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Konstantin Fastov <kfastov@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Cc: oe-kbuild-all@lists.linux.dev, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Hildenbrand <david@kernel.org>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org,
-	Konstantin Fastov <kfastov@gmail.com>
-Subject: Re: [PATCH] drm/gem-shmem: Install writable PTEs for write faults
-Message-ID: <202608200018.9K0vPu3P-lkp@intel.com>
-References: <20260804140403.16337-1-kfastov@gmail.com>
+	t=1787159036;
+	b=VwFhfzW87hrTchTJy6M2YEMOmMxNY5EDKfe1D2+Mfl+209CQM2YtaM3XltYZcYGNba5gFk
+	6qMGSnzWTEKrIksySuosMQ5NhKHIQJbFYtIZO14LPR0GgwQvzBY6/OBdA128aHCIb3zkgq
+	fXMi+fdOIquNDvMoNS+1yMcgJBn6FcM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=qxGLbODb;
+	spf=none (imf23.hostedemail.com: domain of BATV+e526d06549997cf3c023+8396+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+e526d06549997cf3c023+8396+infradead.org+dwmw2@casper.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=X2JPIRj5Cm1Euel970r+5c+HZVSWkuYLsHyJPoO4csg=; b=qxGLbODb8bUHyyhOXdEevrYVfl
+	5XJEUjT6wwIsRGsmccW2iTOJi7R09FpY3hdHrc5RiXr35f4iHwBtSqONtB7M7Rtyox6HfF5YMaZke
+	SysRoSWKMjSMlayPg3ml2Quu1Bl3rdeb4udJUa/c3od5lWvz2QTcAk/OADBUIYU1i0FllLWdxP5X/
+	rRngdnodoHOiTtqO4xADnNSCe5F7L3T6wsyzByfyJOyJn4gQSjD6mv3kuxXh1nLsJsSZ/EhcfWoFI
+	C8il7bc/XFtgpVncOeA541aQYow3Clmtg9X1nthQSkJNKRh8OUzlK8Obi6XWz6vNjC9fCP6eL0GAh
+	+UN6Ytng==;
+Received: from [2001:8b0:10b:5:f6c4:be10:4885:f95e] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wwjhg-0000000EA2h-1fOQ;
+	Wed, 19 Aug 2026 17:03:52 +0000
+Message-ID: <caf4476c54f0db4b5de8753749c89e5735886b59.camel@infradead.org>
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-08-19
+From: David Woodhouse <dwmw2@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+ "linux-coco@lists.linux.dev"	 <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM	 <kvm@vger.kernel.org>
+Date: Wed, 19 Aug 2026 18:03:40 +0100
+In-Reply-To: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+References: <54d375aa-8362-4e1c-8f76-bae1eb9f4f76@kernel.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-B+HdHmc5L0yljg7tDt7J"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804140403.16337-1-kfastov@gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0E7FC20004
-X-Stat-Signature: hrzar8gisk3pzjtptsbqeidee6qppj9j
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-HE-Tag: 1787158777-606847
-X-HE-Meta: U2FsdGVkX1+mZEf33onld/zwATYGdcoLsy5Un65hQzDDpcqNwdvIp8CbCA6xUW/WO75ZOj0BeBNBf0+WBhuWJ+XDdmNLIxIuAIeVkeYi4U7kh7QZM57PEgsgS6No4gHV+gjAkZJL/AM+ZtbrMPJGGr/NdkkDAqWN3LYXGlkcVYsVFGOyF/g2Rh7ob2STjxa8ZzCp5dr+xuu5gQyXIP1APzi44pOt6hY7GDJ4FJiM/vQRy6agmeNpfTFtswNBCdiBCLhxB9zbXGDjORFCmZRA63Eb83qIMlQcmbgFPvl1lvRS4r9yPesM+JN5sPDaKGYoaPUG5Uez2mk+znPbdsUGBrM2Ua/xTqgA80fbvWOa9GcbobxiUtwe3zRlue5OUhGVver9nEpYynEutPWfWLB6t+MmcVgkuOZSX5QPN7Dj9Sdjg0wrUl0wjh2qNCnkvNJCA9Xgyvu1j71K7n90NvCN89MHX1a7Z4wr/7jH8P67O5ASq0XPTNfz33BeWY0641mP3A9U+cGZKqIfNycVot2hhGQVJbLaQMcQKpU3hH9AmPvLo44UYHpV1hy0pw92OKA17Xu5v8+DRAQy91fb9/L8ZWnFCG/RiEfqoBulsVgh0XXlm6PZwsT5+ae+3qRQtN99Kgig0XTx5E2e1xs6l3rU+RjJvLeXiMrWcHRgowiKrPBJakS+4x1zeHPAB5M1Q0jLwjI3byETv63GPLUOQgqcn4VoNpLN45ejUc4FAKjyCFRLW1VW3kc8oiZQZelZ5OrWcH7dctWxabKbd34DkGTvAQyKrWySkvMTxacI/v8eLrpRnZtBP/y0CwI5B24jF56jd6/s0qUELu+Iw4REBeWMJw0QZMKza8/BEypVE7CxKQQ3HwIC+jWRZvJdK/q0Vd7bm2BszR7W4hAGMhVPv/KslMdgw1Fz1yWGPeh9jsz2XNZfcLxluQMJNfRRop6+t7Rck8KlIRSZ+cMQROLGm9K
- 2G9fqE2A
- 99siJwNXyLngQ6B5/XJEwhnz2aBnOdEfJklgTdUo1AhEyAvCIMACNFm+LmGhlLC+yyezkcD5OVWqKTAOVG0vxuLqCSdez6wiIVSaAXiWKwhkgdbH47Vq0NiRgnwsHU6bDiOCtyB5GOb8jhdFQ6LcCMjBQcm8NLAxa9qh52n/8HeiCELYTmeL1rmWeRhvYu95HvsiV5fGUxEBy0oF0INeR5QLraTAbidVQMwi0JaUeDIvoaqJLhIKmattP+vEd8lwxPz6MDBJ/7//8HgjnQ3SkEYKltXPu+is0rDgISC5HJEBWI+tGcS0QWwnOygsMjKjMlvpWY9E+w0/U41u1F/tRnsuqJg1bTUrXS3mGyeS8IiHsMLTZdZmm071GIFo1G2f4xwok
+X-Stat-Signature: tf1dqzhwngk99kfx5egzeid4hjnzhfzx
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2D357140010
+X-HE-Tag: 1787159035-600098
+X-HE-Meta: U2FsdGVkX1/1GJmX3JGvjBOUIvicJ2s7AHMp6bEd7+ADuk5NMVoc5r/hOPpZ1zffch2ZrxuIABSJzsHpVVwQA4N1yUavonrQTOndM0bOvszVH2g+BaA4HEty40wnknN5pJwUJ6S4CRI4Uv/cDNZjudScRShiuJrs305+mIM56b+rr8KKl85R+LmVvt8aK/czZkWxFp8TrV9eICX3tIyDsjOQcJlWiJ8JdXzaoKBXAGyEsmupAIDz0TXP7Lpebs8tz5DnsbDUxC5s/TOsaKBOtLa+GsVYZrA1Q5HtOmxdBGru7gjABY0hy913165qH88l6SmN10v54FM6sq4qaXNNqQlPDfWNfZ9bZXipTJvi/B7neGTlwihkbLl8cZjYWQpTCWM/z6xethaDt/MpQ60173ayUOVXo8UJpkwy0QTM5pvK6lwN7OCEP31VRil4fqjGfrzAqFixp1uT9uDh635JzqqAELYWawM1MPi08efHm+8FxsX4AJykdf/ou7UNHZVYQ8Epy1kCehqdHxFxf4IB6CGGrR/LOP+InrbJCK7s576uJh7mGtegf8idbWZwijgKksSFpy4IJlKIujG7UBWQq+THW9SGIwFZJIw5DeBqXAhvI+voY5ckRR78gKyuXR8QHHRP5YELKyQ2Irs3aS3xAJUqu9D4Vst7P4L6QJR7tFwocmK4pt/UlBpd9OSSk6dv1om7pFJn9Xgp5EwtYYBaFDyiR3yRKLIAM+9l6beFGeBL6fPqSSMlxPZl0LP+eSMteqaMyOS9mCWbVf3qVbe9EU98jWWdoDNRGBoNXMweMaQK3PPrDntdA9HkQgOa8H3KE/+LQWqtfVIips1V4gOxeTyxJdAKccvw6IwIUpntkZyJdwwjmCzJ8GRiwMZ9ySrfB0ldznFbYxH1rM0ExsgLopG/PPtAZL992IZk7f5dBsB5Jom3SzE+GyPY+RxWctM2dqnLO8y/BCYj1wujRs1
+ Um/euHbP
+ 1QhnNLemLs02UZtntPINedAAO0x5JS+h8H2KWG4bDVk815qTNCCzUvxJySG+nrrLSGLZP5uhiGauceiqV+eRrlqu/dZHPNJkjjj39WHY1qmCf1s6G+zr0QY1GwWLLY1wqOw2Pzbd2Fe/1TBLind11s2Y1tOJwrh+htdhy4XOOvcuFwdN/KWg/OaodNBlvvapHAHR+lHAM8Azj96/A3oWsKaZ8moNBiHMVnR2L/vwEVWqbeD9+X8s2OWP1jU1k+0FlK6DMiABHgpvzfHXA8t4sH8ivjQ9Plnh8mttEULh80/uead53Uo+FqvED0Lfca91gTlXycMhhtU67lWPeIO7OyqBptruBg865v95V5Hf6GPmCqfKUh1dw+UGVvSy5BdYxZpEfxnDd2vhh8pz7pT2vrfFnMAIt4tzGCB7Pt6skEj+w8Zq4orOBldoDxY6fmVHJYKmCeY2rganLeU52+FARsyxDOM65TEGAl29baRs2Zi2JT4ZoAI/PKCbaG6iMsY615VoE9I95295vZrqaEq7sc3+d0cRr0HuTLdMsQ8GI0jW/3N1iXUdhy3/cWFDb59hRFcFMr4Tjx4dU+X9CUx10328QambtXpqpCnFrjD+TKP5Q5o7Et87371iryAhRaha8IClPDRUk1nU8K+xWcgYJtB4/ZAAnt8saivNUOsF0kTOW+Dj1mwqL1U8Z+o/Mtkgdmu9QoiHHnBSKzrzCTyx7PyEwE62a3BaZ9xNZCkjLMqapoUFVG3JWepPa02ko0R+XuJ0zKY8Q2/XBIGuBymvIPxAIwqKOD8Chy8F8sQ9psXa9auk/X8wXx+rLnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,35 +91,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Konstantin,
 
-kernel test robot noticed the following build warnings:
+--=-B+HdHmc5L0yljg7tDt7J
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on drm-misc/drm-misc-next linus/master v7.2 next-20260818]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On Wed, 2026-08-19 at 18:23 +0200, David Hildenbrand (Arm) wrote:
+> Hi,
+>=20
+> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+> 2026-08-19 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Konstantin-Fastov/drm-gem-shmem-Install-writable-PTEs-for-write-faults/20260804-170403
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260804140403.16337-1-kfastov%40gmail.com
-patch subject: [PATCH] drm/gem-shmem: Install writable PTEs for write faults
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260820/202608200018.9K0vPu3P-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260820/202608200018.9K0vPu3P-lkp@intel.com/reproduce)
+Tomorrow is Thursday 20th?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608200018.9K0vPu3P-lkp@intel.com/
+> Note that we will be skipping the meeting in two weeks (2026-09-03) as bo=
+th
+> Ackerley and me will be traveling. So if you have something urgent to dis=
+cuss,
+> please speak up :)
+>=20
+> In this meeting, I think we should sync on the recent developemnts regard=
+ing
+> in-place conversion. I don't know whether David Woodhouse will make this
+> meeting, but if so, we will also talk about guest_memfd+VFIO.
 
-All warnings (new ones prefixed by >>):
+I should be.
 
->> Warning: mm/memory.c:2887 function parameter 'mkwrite' not described in '__vmf_insert_pfn_prot'
->> Warning: mm/memory.c:2887 expecting prototype for vmf_insert_pfn_prot(). Prototype was for __vmf_insert_pfn_prot() instead
+--=-B+HdHmc5L0yljg7tDt7J
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+qrKGjzwL1k0xQK8kF/RxXcgAAAAAAAA=
+
+
+--=-B+HdHmc5L0yljg7tDt7J--
 
