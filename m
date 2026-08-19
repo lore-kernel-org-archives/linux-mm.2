@@ -4,133 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A901C5DF86
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 10:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8EFC5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 10:38:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44A656B0092; Wed, 19 Aug 2026 06:38:10 -0400 (EDT)
+	id 3AFAD6B0095; Wed, 19 Aug 2026 06:38:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FB446B0093; Wed, 19 Aug 2026 06:38:10 -0400 (EDT)
+	id 360A86B0098; Wed, 19 Aug 2026 06:38:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E9116B0095; Wed, 19 Aug 2026 06:38:10 -0400 (EDT)
+	id 24F746B009B; Wed, 19 Aug 2026 06:38:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 04F3A6B0092
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:38:09 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2043804FA
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:38:08 +0000 (UTC)
-X-FDA: 85117669056.19.6B56CBE
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C1B22A0008
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:38:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WhC6KDyr;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787135886;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E9C5E6B0095
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 06:38:52 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5F1F5404DF
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:38:52 +0000 (UTC)
+X-FDA: 85117670904.16.5287DE5
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 083BD40004
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 10:38:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="iVD/4Cp5";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aTzsLFv3;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Mgovgj49;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NFjcIplH;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787135930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4uGMAeF78x6SQDnW8np9tL2cp3RlbjSltpHkb8/9kJI=;
-	b=xMkVuMjIPt/N2cz4KxNjLx9SHRbIFbCrAnvnXK5OWPsZhKUVRcsxuwnmwsCxXtbPeZ7gWZ
-	cOCj2wyV1TqIl3MrD9aEz4GBoxjBrQqxrdCs/Im7pD5GgvEYLae2n5WDJUHtNtaJf03b4v
-	TctojvVvqx8HlpZvckkZWGu8n0Y+R9o=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WhC6KDyr;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf15.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787135886;
-	b=2zukVn2tk999w0VXXkz98Z98rnCD5ZZBXpO7K4drW2oScj3UfJMjtxo42g0Z7tBcR5vNKE
-	GMwbEO9Idr/cjN6dqtMqYrZVZZvWWizPHsgcZZeOKyzr+r+K9KjiiYAE2q/Z83LeL/mEQM
-	dDtFRI8y2Td+Lzi87HW8SeYRhetJIag=
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3810c5d691bso639549a91.1
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:38:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787135885; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ONY6+jXWAT5Q36ctYF7k2Cyrij4X3P4aGIZPX+QIEw1Qr6/Bo2R5gynlyZOydhWLnW
-         AwzkdpAkaZYzIWaxz91IrRqCAsOts8hfwv8GKNxuzZugpnAlS9fmqausvAOMWKmbEkk8
-         fMs+QX4vAJlCIOi7FGXyAyneFicQYOJwGe/fy7iR18/eh+tG0fUUJlOuPOBpbt5BIW4I
-         c3zetrY0ORdGEE2788PKc5P3nr+PbzRvmcvD1otLEz0ss1nRBo8SyUmQNYvQDCgInpqs
-         XhUdKAN4qM/YyDUsC5tIwhMw25L43RD2RM+Owv9faY2+qR9wQKIL+xbLD2DmOXuaG+ly
-         lYTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=4uGMAeF78x6SQDnW8np9tL2cp3RlbjSltpHkb8/9kJI=;
-        fh=NcGfxy7Eh1m0McDhAzO1IiIQTnZKa1o9LNzjf3ueTBE=;
-        b=EitS8SOK5GygFGWatinGZmIsN/Wy/5dc6Oc0JURXpfyW+fyuSlDbDgb6lTzncAyQPA
-         /+aFJuvrwx4Pr16si/3PAfyjna9urSt7uZzT9uNlLwH7IqudwsXYi18fVVD2ah8lfNUp
-         oO1HuuQtDH8AAwWpmuNbbFPyMTRfze5y41ujUXraLFqKXhjBi21e/ipD10253uIxN061
-         bMb+1VkPAVbWpQwI14LDZuOaQ4knt1xl4/i1Q5RFT0Lh3G1Odqa6ToHqiqTcbdqMgD2V
-         m+864Q4qo57y/7Z1Nmr+M0q4LAl4t6HtdwgCY3/wm+bu18DjSIKd1LNRVVieNW6eUGg0
-         6R9A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787135885; x=1787740685; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4uGMAeF78x6SQDnW8np9tL2cp3RlbjSltpHkb8/9kJI=;
-        b=WhC6KDyr35pt2tKzoZel9Zrk9UsnG0FdYX0wWNuDlM/NsK//vrUlZ/gTt2Mfw80wc4
-         VpybRHZGMa902dVDi0MFEoDMK7TlKKtXCx4S5RrHN1Z6VPDXy3cCKgkOe/0gbTFyctyv
-         EVjogZpxPyF9lRVlko4SxuSCOrKqfiGUxvqXoSjfTTaG3EBmanRZV2ST6hQi54JdVwNN
-         GjaOojQfIgcb+5d8F0a4L5zr/y8+yimiMsL4rdLMguBf7o9eubwVmbIdzi1ShsuFfuKP
-         X40pAVjEIPRbG7eEkeLY+4TeOwuUWq5mRTRaXEmAz8DY1SZ+2oKtynEZ68gkBAuCcVw5
-         v19g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787135885; x=1787740685;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=4uGMAeF78x6SQDnW8np9tL2cp3RlbjSltpHkb8/9kJI=;
-        b=kl60ikDcu7peR7AIDaE7PcDmcmBBXwSGM9qzS/F8HAeY3MdYh08xwz61N8jt+XcyVK
-         6HBFMM5QpmmBWvw4LCGyCLTfJD+dNt7PaLr6JUFbE4KmYehLoIqqTBhIUp4o3iwjYqKA
-         cFHBFlPUwYcxWI6ClDr3QxcRw7lK5theaTb+1X7TfB4jvRXdgFnH3zrIdJ4o4qVtscEU
-         QKfIVUmKadSvInBvgU76Ps2YyqwcdJYehT+KF3umqkiN02sZsX5p+KYfWgvFzHhGn2Gl
-         7KBZWoi6j1YFPr6KHvcSYwrTsJLbxSXT6vDEKkKKYYtnO/QXsmqve4NN3SvMO3Y+ZauQ
-         W5kQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpBcyJZCtlkP3iFxBrCyk4Z4tDgTE2OrbU4lmQJpyTxAQK7th7kh+67v5R9Y2CArZIZRgV6YU6OkA==@kvack.org
-X-Gm-Message-State: AFuF++lkUrufKwkT1wxluQI6X7HlxMWA8M0W5oR8Al+4MsBVQPu/32CZ
-	dZpi2kq5D0PFTEMhulqoIYGWvJ/Ff2j5JoJlZBNSGvRni4Iy50c7d0vAgFYxvEjSSLwk/oG7ocq
-	lT3wc08disTQ0jNJhRLD5MCMr1TqjKeg=
-X-Gm-Gg: AR+sD10joAhSQV6eg+97YPu3eCNRs9Z57uF7yoJyNraSz0jIvKDi5aaIN9wEzIrk8ai
-	B1W1INHKUbA+xIIoRKqnXwpHSw2C+o9XLQ5+NxWNH00txemusjWEdwWzemNdJkeJW98VPvuSeBy
-	Zmh7y/98LvzySxxnub/7tkz5DeVsgP6mkPttxkBFkgaIXTv1Ro3NTh7QUIS0hI3NqzHWd/6X+nk
-	wdMjsI2tpW9CmxTOlKDRXScgwoZtIORHO70ls6Ug2vDOqPM+L9zyMIogVcFRUE+YhqGASIPWe+3
-	91PvvhkAQj5i/VX6nqzTxyzmM/5SHA38wg71/UyX8T/cFg==
-X-Received: by 2002:a17:90b:1f8f:b0:38d:f5bb:e0f4 with SMTP id
- 98e67ed59e1d1-39580840520mr7436125a91.1.1787135885419; Wed, 19 Aug 2026
- 03:38:05 -0700 (PDT)
+	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
+	b=rcghc8pqdRFTdRI4cDIcXOC+UTdRyepaCZOllgMykldV9bOXGXI8K6MxndbvrDAo01/jq5
+	oQwE/f8L3v6GUxINengRqKSGcLkMf0TWVfjo8zdGYD5ttHZHsWsGw32IZwZzM+s1FZiESJ
+	SuJBSjpKAx6fgPd+kj29+Z0xFnAl2h8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787135930;
+	b=48nl91mggaG0AFu2/st/deleWSOaz0nLjfbGIwrO/lY7jNPVjGHE7PVGuR8jZnTq0CwuT6
+	ApESgH04NDKUx4PBGThK15DS/TqkhkAS9sqS0qd/SnLWfwoD9gfyQMlmXHx6C0hEyyoOWs
+	oWBt6oessdnH1uJL7g8LddolWPpSSLo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="iVD/4Cp5";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aTzsLFv3;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Mgovgj49;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NFjcIplH;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 44FB084A92;
+	Wed, 19 Aug 2026 10:38:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1787135924; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
+	b=iVD/4Cp5MgtI2q2JRuXglb5i4OnjDtOiZVe6SZ1x+dzgwnTF+WWSW9hVinnLTt/PMIOLTN
+	gdSm89HoGec20DHHV8H5eRlguDFN9mSbRIhM/2t1N7Tsotdb5hrCdTJcbr25zfBcj5Kj2U
+	x0AlBzMwc6zN5AH7vSJxRa4t4rWtBQs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1787135924;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
+	b=aTzsLFv3IOizPYI3W2zd7k2xaqckTMkDZRGW95KjcDYXdeSYjwTvS4YC8r6IJuup8l8Xmv
+	eDSqdYjh8EF9KMCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1787135920; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
+	b=Mgovgj49FAimkPaIFmHfqixuZgisNSBeepX6UN6oao0XCucPh7ffnbdT7JVvOHE/QrDNY7
+	GWewaWJBl+oHa3iO2v/j9njRRMykIVYTULd+qsHlcrhhTrc8h1M13DdoBkMNiu68c507OU
+	alY8PKhtlpTtLhgfTKvNEtplzVOs33Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1787135920;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v++ePnllGB7jQcdK/4IlYL0dLfyVmV3SrOMPLDqxA/Q=;
+	b=NFjcIplHV8Lp3d9H4cKbPfbeV4oejIsUoDs49NZduCozj+A0rzjS5N/nT6bwWBxJoHvfvd
+	vX56Hcbe1Vrw2wDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3C0B62F81;
+	Wed, 19 Aug 2026 10:38:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GoWjDrCHhWrqIAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 19 Aug 2026 10:38:40 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id CF662A13B2; Wed, 19 Aug 2026 12:38:35 +0200 (CEST)
+Date: Wed, 19 Aug 2026 12:38:35 +0200
+From: Jan Kara <jack@suse.cz>
+To: Ayhan Aydin <nsd.project.dev@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/3] Neural Storage Driver - learning page cache
+ prefetcher
+Message-ID: <w7vte4itudtkw2yf4vbmuofiumfffmp2y52dpu2bqvqtdgjvpd@5femyiozss3e>
+References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
+ <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
+ <anlByPDZmvEhWeXI@casper.infradead.org>
+ <ffcij36vnozf3rginqd2opd2dwqyki7xhtdo4veuty734hhgba@utjav2k263o6>
+ <nsd.1787001235.35928@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260818133206.39503-1-anshumantewari123@gmail.com> <9efc3c26-61fd-4bf4-bc0a-cb3e4b6120cc@arm.com>
-In-Reply-To: <9efc3c26-61fd-4bf4-bc0a-cb3e4b6120cc@arm.com>
-From: Anshuman Tewari <anshumantewari123@gmail.com>
-Date: Wed, 19 Aug 2026 16:07:53 +0530
-X-Gm-Features: AcwNN1Wy0jWe1F80pKg1gxUdzA-UOcRCb9WNGiSKiSRcU4wjYml7Eqm2n0GT6pI
-Message-ID: <CAJqi8kL8ttTA=_uuqSoegDpdJvXvn62vN5uv60i37ukS-0PFyQ@mail.gmail.com>
-Subject: Re: [PATCH] selftests/mm: fix unchecked ftruncate return value in
- soft-dirty test
-To: Sarthak Sharma <sarthak.sharma@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary="0000000000009da674065963ff31"
-X-Stat-Signature: 7rnes3atf4gk1g4dc8qrb1rmypy4qg1g
-X-Rspamd-Queue-Id: C1B22A0008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <nsd.1787001235.35928@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787135886-80812
-X-HE-Meta: U2FsdGVkX18LJkfzaxJlA0L9eZVttR5BydzXDYlStsLnSnCY8gyepnJg3fQGsdsB0DcVSKZmrxaouDrbth8Xr6e6r2X5qs03IQTJLv6tSyGxJT3VZfA++ZkYBjVBGuwqlb/kP/74LhanD6noH+lVaFZz1am6FPpAAEgvDc6YufrqGD8jWVxVkcnR0JyUSvDjXCUrAyMOYTVRlUumZxBuzymHeMdztinfWN0CYnZB0i+aL4COVtCnp/nyZbQXeqGoEeJfFFGaIAoOYGrOkinK+Qdg0rsoP4TbZe1UuFuo0Q/chtEfrqRgL33GtE0D3ua22ltaqWOI1oXsV1e0F96vXe/l1lJr1Dm4H3tvffszuqqMUnRcgnKed249tSxTeQwHnb490Ab+El59nVO/LvwHO7bvn2P8RTdo0ceWzNkEKWoYaHzAmYwNpqtA6mkZA4LEa2SYfwcE3A2c3uDdxtXRL7Z19Hf9ZWPQzu5789doWxwzPrJma36n1QMv77jhhNhWLIEbmvlCcNy5xzlSUO6US9Ffb/a/iBm3Pm/ziZKktUccvQQ7iZsCg1KXqwhRROj8MEyEBN7Yg4ynBXlB2bYjqGKOReKbnspEvIpCKOjRH8dl5nPqjmeB9IjKD4h7dvx5LS8dVIgAbZQ9iosMXk6hbJTUwx/tWrO4yxXoggCyo59KBXdIlPwBQOv3qaQHnk87FckkjRVSJd7EiHLplbgcNgcogbAa9A1hLym4kd95gy7UBTOvJIJ+GCM0e7TZe7rSHwQpyRxVhhk/T7Dfy0RbJCoU5upvFwySiN5Vd2WIT3WbjBwGWbWPkMy15ZBuSDMpbYFSkN6gWUJj0uCC1vXsCKm8SIV4jp2OfSg6DcXuXebi6SQwB1udQomws2P5yXQRy5cw37dFHpd3h8gSDY8lK6yScZZJIBmsSqi8WqK9lPyxVuwHCto905G8+ANNoeqbesWCdIfnzoj20TYDhH4
- nLgavKe5
- BYJZk/2jc45SFjNipMi1WXez5pciRDbuvoYOjRn4T3yfgmsOijPL0bpVa2jmtEo8TU2fbMReGWqXHgo7AougRSPg0DYlzEFyQf5Cgbu0+vT8pbzchCNYHFvGlmOO6LfMFhbybkoiv7BVA/ndJoNdcL/lnCsa8ZrHpPv356EaHGcHHDcuCY+c+aS4rfjVo2Zqh4ZrjQ061svsrEPdcHpF1lQVtfFkxr/Y03JIn7kafJ5zJfpmsQIRIi9GCiT7uAkCVJNdZvoC4q6OY5Q5v+2JDF8McUEEXTkDm7B0ZmO6i9mpRJwH9ZY9RLMrJbBWDiXNot7Cbvf1dJzyR3D9YiRInHl34EBKwcImr3o4m+fyzq/oPVaQ7PIrlCGpVipd/85f3WsTWlmeW4K0qp+QDeFhiuxMcOTc3nQeFTwnlmnZxTtKTVQJKGjnRG10Z613SlS3T63r6Xh2y8cjE81D+X7vlbTG8V5Ryqnf8O5ktZxV0Q66L7X74M0JTOoes3u6P4dqjLwgACaglb3F0m8NJ0AuUqJA5WUwwNLzF2oH5ccxPDzTWwjvbjUf4Ml8tvgfmDU6N4Svy6WJYqWyVLYPXQwMkWNkYB5lwZVcGHWKQrGyMB4UELdQ=
+X-Stat-Signature: n93tf174qosencrk88wqdur7pa1bx7ye
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 083BD40004
+X-HE-Tag: 1787135929-847394
+X-HE-Meta: U2FsdGVkX1+aiiggUTpjpQPm8fevX1idU909YawrKPBBMXBHA04QcYascaDQ5uO1s81IQHhMwPatiXzfspn0wUKY8U96ayg32QPp9C+y6QwX9jJey0HzcjL8qan5jWhGrwH7I+kuA9FpUCJWH28gko/usvhVSCvOv9X5tzHH4QFSMgCNTfRMtPePWyzVVeG8nJSc1+P396t/QfYQpN6+ef9HhJNXxws9lYLM7vr6yLZxaXismJrVhefBg8XrPbWCzd0Dfr1u0lq2z32zEDeCSMQO2eJhAMyDnotFKSWmExd/JvSrhPM4zdtcK40oE1fhIXabs7z4GKKqCJrryTKDw8lTBr1mXe9bL/MNWtXbcO4gr8HRSYbL0FBEfO27bMKOGJaAgx6WZFPDL7BVvUgs6GOZQyHM5R1E2MY5Pv6Z5X7CO0LrefUQyx1uD9UrHGcfzUtUtTcBiXvkwzz87nsWtdvzYzDDm6Q5c2AzPoGyUmgPUnrE1JH2YZ+DBz4K0a7yVxafp0FEWB4cH4o6HsVTym3PaojYuiiAyyDBZfew11BWzMVakA1XdgSdslKTi4CekUrUdvbitv45sH8EWNwZexYqeGDFyEIZY2S35vLMrlHVv2rAjHck24CJ7lcAygToRqP5EUlSnOffbsWAvL89Ag5UXRESKUKY2P3wboLfzekpmU5nIhMtaSaWJvsDnqJPxw7Gq41KhmNJCYBKBPcTwD3FFhFUYkJUYP4e8xmR6C44BkTAv+Ra+2I62JBJTxstzCQaNCj71ym6CcA98EJnB+a82lEu1TzCLr9kyNkyeIOCDDjiKCK3FN7KkdkE+zwI/gnrZPTfI+t4rI1msz/juOsAo//xWqJs+iODa08/OkYjK2gB5foEnsNUs4bO+U0FPNHn2Namm1/LMc9MzRu43aolHfykP3bTcTXHH3vqBBlzkr4UJmgP2K/tBIbyDAp7jkpaOl/JnPWwdrKDxWG
+ YuDGDEHD
+ 62gkEhBgFfTg5HUtl4QXh7Mbijy+I+L+DgSchCSfO5Mjm3eox76Pjja8awDlvKmuw6+asqotq/IbP+wj2DdYJ8OcMl6D5bK7zC84e8RTiy+S3fnC9KcJxH3rFAZshX7aMMqIPAZoQiY9ZbVOgYLmk5dDfPQm+e662IygiUBW3JkvEtsLB/NlwONQEt7wR2mkbit9tSlpCeJOXeAloc+Oc/wztFnj59q17RXiHcY2SG2tkTiKSInmI9fNcESGG/719P6lpybe19/mq91I17+YxvliviM+iG6XHfGTEV4+nygTIuDgt8WQ1ZurGkUvDPLadBeXLfo41xW7y4GHcQprVcGhOxeG3lnYnVoIqTDwxVGSO2kAMjzxD+CFwI+DDJz+DEJqQntKwv+WxrNlxhXR6VCdAwgxp7yKkyPVi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,124 +136,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000009da674065963ff31
-Content-Type: text/plain; charset="UTF-8"
+On Mon 17-08-26 21:13:55, Ayhan Aydin wrote:
+> On Mon, Aug 17, 2026 at 06:22:46PM +0200, Jan Kara wrote:
+> > I can see how SQLite table scans could be improved but I'm really surprised
+> > by the 64k sequential buffered read. That's basically what the current
+> > readahead logic is built for. So how is the sync readahead you trigger
+> > better than what generic async readahead does?
+> 
+> Hi Honza,
+> 
+> Thanks for the careful question. This is exactly the workload the
+> generic readahead was built for, so I was equally surprised at first.
+> Let me share what we measured and how we explain it.
+> 
+> We reran the benchmarks with a strict A/B methodology: interleaved
+> ON/OFF passes on the same machine, drop_caches before every pass, and
+> the OFF state verified through the module's own counters (no prefetch
+> activity during OFF passes).
+> 
+> Seq 64K buffered read (2 GB file, 3 interleaved passes):
+> 
+>   OFF: 396, 400, 396 MB/s   (avg 397 MB/s)
+>   ON:  483, 507, 508 MB/s   (avg 499 MB/s)  -> +25.7%
+> 
+> To answer how the sync readahead we trigger can beat generic async
+> readahead, we traced the IO requests actually submitted to the device
+> (block_rq_issue, filtered to the reader task) in both modes:
+> 
+>   OFF: 16,385 requests, median size 128 KiB  (100% in the 64 to 128 KiB band)
+>   ON:   8,195 requests, median size 256 KiB  (100% above 128 KiB)
+> 
+> In the OFF case, the generic readahead keeps issuing fixed 128 KiB
+> windows (the default read_ahead_kb) for the entire 2 GB run. It never
+> grows beyond that. When NSD is enabled, it detects the sequential
+> pattern and expands the readahead window to 256 KiB, then delegates
+> the actual page insertion to page_cache_sync_readahead(). The kernel
+> then issues half the requests, each twice as large, which is what this
+> SSD prefers (about +27% throughput here).
 
-Thanks for the review , Sarthak - I apologize for delayed reply . Good news
-: Andrew picked it up into mm-unstable .
+Ah, OK, thanks for the details. So the default 128k read_ahead_kb is the
+culprit. We know it for a long time this default is too low for modern HW
+so most distro's actually tune this to 1m or similar in their default
+configurations. If you tune read_ahead_kb to 1m, does the difference for
+sequential read go away? And what about SQLite?
 
-Anshuman
+> In other words, NSD does not bypass or reimplement the kernel
+> machinery. It tunes the ra_state window that the existing readahead
+> code then acts upon.
 
-On Wed, 19 Aug 2026 at 09:35, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+Yes, understood.
 
->
->
-> On 8/18/26 7:02 PM, Anshuman wrote:
-> > test_mprotect() calls ftruncate() to resize the backing file
-> > before mmap()'ing it, but never checks the return value. If
-> > ftruncate() fails, the file may remain shorter than the requested
-> > mapping size. The subsequent mmap() with MAP_SHARED can still
-> > succeed in this case, but the very next line writes directly into
-> > the mapped memory (*map = 1), which can trigger SIGBUS if the
-> > mapping extends beyond the actual file size.
-> >
-> > Check the return value and fail cleanly with ksft_exit_fail_msg() if
-> > ftruncate() fails, matching the error-handling style already used
-> > for the mmap() call immediately below it.
-> >
-> > Signed-off-by: Anshuman <anshumantewari123@gmail.com>
-> > ---
->
-> Looks good to me.
->
-> Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
->
-> >  tools/testing/selftests/mm/soft-dirty.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tools/testing/selftests/mm/soft-dirty.c
-> b/tools/testing/selftests/mm/soft-dirty.c
-> > index fb1864a68..a52ef79dd 100644
-> > --- a/tools/testing/selftests/mm/soft-dirty.c
-> > +++ b/tools/testing/selftests/mm/soft-dirty.c
-> > @@ -152,7 +152,8 @@ static void test_mprotect(int pagemap_fd, int
-> pagesize, bool anon)
-> >                       return;
-> >               }
-> >               unlink(fname);
-> > -             ftruncate(test_fd, pagesize);
-> > +             if (ftruncate(test_fd, pagesize) != 0)
-> > +                     ksft_exit_fail_msg("ftruncate failed\n");
-> >               map = mmap(NULL, pagesize, PROT_READ|PROT_WRITE,
-> >                          MAP_SHARED, test_fd, 0);
-> >               if (map == MAP_FAILED)
->
->
-
---0000000000009da674065963ff31
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Thanks for the review , Sarthak - I apologize for delayed =
-reply . Good news : Andrew picked it up into mm-unstable .<br><br>Anshuman<=
-/div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Wed, 19 Aug 2026 at 09:35, Sarthak Sharma &lt;<a hr=
-ef=3D"mailto:sarthak.sharma@arm.com">sarthak.sharma@arm.com</a>&gt; wrote:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
-<br>
-On 8/18/26 7:02 PM, Anshuman wrote:<br>
-&gt; test_mprotect() calls ftruncate() to resize the backing file<br>
-&gt; before mmap()&#39;ing it, but never checks the return value. If<br>
-&gt; ftruncate() fails, the file may remain shorter than the requested<br>
-&gt; mapping size. The subsequent mmap() with MAP_SHARED can still<br>
-&gt; succeed in this case, but the very next line writes directly into<br>
-&gt; the mapped memory (*map =3D 1), which can trigger SIGBUS if the<br>
-&gt; mapping extends beyond the actual file size.<br>
-&gt; <br>
-&gt; Check the return value and fail cleanly with ksft_exit_fail_msg() if<b=
-r>
-&gt; ftruncate() fails, matching the error-handling style already used<br>
-&gt; for the mmap() call immediately below it.<br>
-&gt; <br>
-&gt; Signed-off-by: Anshuman &lt;<a href=3D"mailto:anshumantewari123@gmail.=
-com" target=3D"_blank">anshumantewari123@gmail.com</a>&gt;<br>
-&gt; ---<br>
-<br>
-Looks good to me.<br>
-<br>
-Reviewed-by: Sarthak Sharma &lt;<a href=3D"mailto:sarthak.sharma@arm.com" t=
-arget=3D"_blank">sarthak.sharma@arm.com</a>&gt;<br>
-<br>
-&gt;=C2=A0 tools/testing/selftests/mm/soft-dirty.c | 3 ++-<br>
-&gt;=C2=A0 1 file changed, 2 insertions(+), 1 deletion(-)<br>
-&gt; <br>
-&gt; diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/s=
-elftests/mm/soft-dirty.c<br>
-&gt; index fb1864a68..a52ef79dd 100644<br>
-&gt; --- a/tools/testing/selftests/mm/soft-dirty.c<br>
-&gt; +++ b/tools/testing/selftests/mm/soft-dirty.c<br>
-&gt; @@ -152,7 +152,8 @@ static void test_mprotect(int pagemap_fd, int page=
-size, bool anon)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0return;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0unlink(fname);<b=
-r>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ftruncate(test_fd, pa=
-gesize);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (ftruncate(test_fd=
-, pagesize) !=3D 0)<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0ksft_exit_fail_msg(&quot;ftruncate failed\n&quot;);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0map =3D mmap(NUL=
-L, pagesize, PROT_READ|PROT_WRITE,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 MAP_SHARED, test_fd, 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (map =3D=3D M=
-AP_FAILED)<br>
-<br>
-</blockquote></div>
-
---0000000000009da674065963ff31--
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
