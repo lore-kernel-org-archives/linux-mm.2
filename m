@@ -4,89 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A7EFC5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7082C5DF7D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:08:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19A2E6B008A; Tue, 18 Aug 2026 23:08:28 -0400 (EDT)
+	id AC1886B0095; Tue, 18 Aug 2026 23:08:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 149E76B008C; Tue, 18 Aug 2026 23:08:28 -0400 (EDT)
+	id A71066B009B; Tue, 18 Aug 2026 23:08:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0872F6B0095; Tue, 18 Aug 2026 23:08:28 -0400 (EDT)
+	id 987216B0099; Tue, 18 Aug 2026 23:08:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D2DD96B008A
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:08:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5ED17A03E2
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:08:27 +0000 (UTC)
-X-FDA: 85116535854.01.E5A62AA
-Received: from mta1.migadu.com (out-216.mta1.migadu.com [95.215.58.216])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3B674100009
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:08:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fFQ4ly0E;
-	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.216 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 73C2E6B008C
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:08:31 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 02A15403F4
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:08:30 +0000 (UTC)
+X-FDA: 85116536022.11.A67678C
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4D7DE80002
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:08:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fkhkitnF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787108905;
+	s=arc-20220608; t=1787108909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1PLqwH+pRc4V/+v0YoUGMSqF0/0UHRZfN4gb6Q8yd6s=;
-	b=euRPpk7W7ZpNkaXNeXJGATpHn0NYKpuL5/8bNER6IDtPQes0P2+MwkwzDxEapYvBKUoord
-	RHt3Y4apbd8o1WGO13Bjjaz5+gVKVLlgDloX+HAXGYyjePfWBvd71TWnJBz1xjwQ9yQQDV
-	fv0bR22GtwSfSXof7SrfFKh4R1+hsMc=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rXzKtO8OrurlIHWuszvLdX1cu4RIAlIwbm6k6jmZ/EA=;
+	b=24vnL8VtYCg69/MXURYiSvFPJs9NK1eQZFvEvkP3mcBpglll/eRSApYR/7vMrxWoH4QFPw
+	6XRq/yyMduluCwR5+3kBfdTHGO+E6lHB+1IVK7Hz3gMryrcGwn5Z2Sxsaqp2ZKzoDhRGMN
+	rygW8RMTCKmnv384XHpmbiP+LpXiO3o=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fFQ4ly0E;
-	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.216 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fkhkitnF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787108905;
-	b=OsavH/Wyd5SmwSrrd7I2cDGFVAgiPThenOY7YiYVPWrnI+2neKQsiSxd5p7lvZLLdHIMhx
-	YCYQtgNCV8Ad4sCxvt8QU4tJqMp5sQpDhBMYCdXuECWwM3DCM3hmAsacHhxLOFrDVB0Cg5
-	X1SyGsCRt49WyMGbp3FMYrf9zoV119M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=R9RPGX4W2sdBcGuw43AbX2HspDw/jr2m/4vM7rUIR8A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787108902; v=1; x=1787713702;
- b=fFQ4ly0EECinPEQPKHFAsHVJHxOXnQrGluH4aOPmgo75c54QJxuVY7VQMteQ4qu8RDiXyAmg
- cbDv06006mJNyXOq4cKZcPEiCzWQ2yFKVQai1Jk7BhHUN1Qja4R8yF8nC4A1Dh6oATf6t6FcdYq
- E8FswRXEwdRyQA8NRBWWeiHw=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [192.168.111.29] (223.70.160.239)
-	by smtp.migadu.com with ESMTPS id 96bebe67628b13f6;
-	Wed, 19 Aug 2026 03:08:12 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <56052cbe-463d-4dbd-aa43-11f66232680c@linux.dev>
-Date: Wed, 19 Aug 2026 11:08:00 +0800
+	t=1787108909;
+	b=8DV6kwtBuWC2Roz3ltjeFOe2unW5cJzeCf3xEMmLp1Vz9RLRIaBrO5nWNl9RW8gxSQzO0L
+	2iFTUmJtQyfq6EknBTtVuUXTwHW2pQtE3y/AMxo7oC5HHqV9ON48Rmj4B/fdygXc2GpWlF
+	vf+4igZNq3tT0+hQVnw66NJQWcccKgU=
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2cf5e516e67so2424325ad.1
+        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 20:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787108908; x=1787713708; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:date:from:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rXzKtO8OrurlIHWuszvLdX1cu4RIAlIwbm6k6jmZ/EA=;
+        b=fkhkitnFXKGmfSoX2wrWaVcIUge0GXH5FOVfPbSVEMrhgfB0FMe1w3cJcmpMDa2pgb
+         rsRP40jWmJPr4lcd1PrAPndP46KK7Cn0lIRmO/ZDgD/OiHfrvz1s+5TTccl46Emot6La
+         4Urm80wnd3AoF9ZE+kdeAexL8hArOww8UCpOuNzvtyGMws4yT8qpTz3T6Z7M7fPSmgL0
+         g0jSFQB1iA0zIZdxjQi9yrBJRE7pwbyFXvq0PcOr39/k/5hzR2Cr9Rd+LGHCdDNymdAD
+         /qk2A8s5rgQ6EmQzLYl4XLM2lbFjWBpCVhvErPpqQkHipIE7qvr2YXvR5JDM3lYNp1Hf
+         9tZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787108908; x=1787713708;
+        h=content-type:mime-version:message-id:subject:cc:to:date:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=rXzKtO8OrurlIHWuszvLdX1cu4RIAlIwbm6k6jmZ/EA=;
+        b=saSZfaBCWLTgNmMd+J3Urd7EsD1VLHIzAmaSDiAguZWw4cLcLCjFswByITdW32ygZG
+         tHSz4U9tEIo6DiJoatYJX7duetyNBqwcO96PzuNsTX16LcyPL9hfQhSFlEBIKTOul8DB
+         qUBdh731payX/JwK2AqfMHeaLyjncuIOQo244wcbrTSHCfxLpvSGtGbl+dfXST0GZLEz
+         onMykBvsQrl0dybCNufu25GkqRi1lHl66DAvIG4iwniPpwWHjRbyrotbTLC/4ehWO8VE
+         GkFTf+FHdDWI29H5HaYjv+WgAStUbiVZhJ9Vuz/EJdSFAu2pUsvHLzp4g09CDtN+Ud5L
+         wvXQ==
+X-Gm-Message-State: AOJu0YwWUfZMUQ2wN4pacCEkmr7kUiZxNNI1Aw/sMiJIjiYxwOWlP/Za
+	Y1HsBntr8MWz2kqKo+IT8KEhl3JmvKMeCFvDfkn+jWlq9W63sPr7HSo7
+X-Gm-Gg: AR+sD10Pr+R36qqwomuqlh7sp0B8A6hWLOEmbuofWmMa8vf+HUfUlLGi6OrXcpM13c9
+	CvNDvrPR6KZStsv065M7LnpQcu0yAJZpnr6mjZoUNHZ0jGdwkLp0swm/iYASuUB6suaGSSCNbbt
+	GTRA5t7N0aPuco8xNUdMoCG7K2vnJqj+TPuo8GK/2laqEWCPwwmsEv0i1JKIyrOXEyfsk/lpGHy
+	SX4U0duIbcJ2eM/5U59ts8tsEGUSsO1gMqGpO7/xAiqhlrSyq2l2Y2Bf7BBVYvPvKt+557kZ+h9
+	XCMouhGux9ZdNkz6j9pS0HvIrSeRLlvNSouG/ix3NqpJvcOARHUh/POH0xED/Jdq/QGv9Vao1mW
+	xMbAyOxt3RusxtQG5lbmC5U18RJBEkt23IurdTswaBrqPHeW3AwrXnOwmAUFEQHjr9TGZ4WmYZ+
+	47aRGvTrSdS0jJ+DQCOgrMWp+lbsRzpBRAUjzkAkDq4uZHZ0Ko5ORwo0Gq
+X-Received: by 2002:a05:6a20:2d13:b0:3b2:a809:1000 with SMTP id adf61e73a8af0-3cd014aacfemr3505581637.3.1787108908068;
+        Tue, 18 Aug 2026 20:08:28 -0700 (PDT)
+Received: from 192.168.1.6 ([140.213.202.182])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327c2a92406sm127304eec.11.2026.08.18.20.08.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 20:08:27 -0700 (PDT)
+From: Foxie Flakey <foxieflakey@gmail.com>
+X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
+Date: Wed, 19 Aug 2026 10:08:24 +0700 (WIB)
+To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+    Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>
+cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] userfaultfd: reset err to be 0 when move_pages_ptes
+ succeeded
+Message-ID: <e1e0b5f8-c3c6-0537-670b-4397f822f980@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/oom_kill: simplify remaining RCU sections with
- scoped_guard(rcu)
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
- David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260813092933.562028-1-ye.liu@linux.dev>
- <an2tQ90mloFCU9T0@tiehlicka>
-Content-Language: en-US
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <an2tQ90mloFCU9T0@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ze4n3t3gh8ggdoagfdisgfsiaghpfyon
-X-Rspamd-Queue-Id: 3B674100009
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787108905-341550
-X-HE-Meta: U2FsdGVkX1/YnrPWTm+mulcb1mSGbwxAPzMX2zZW0fwb2LbcSa/2WQA9JeCU7oMdceav1Z+IuTxFLg0Z0Qjg7eIXG8oEMMy1UuO67DHN+jaeOTQ2mGoR/0b9788AQfe02HvCrNopkMMzXijnMy63GnIS9v2efaplFb+BVITi1RXejOhD84j7YW3AoFnlpgWlyV3CZsPCRAUnPDHp0X6JiKKXzT6Rfl22wpYj2lytancACU+fXZkWIX+JWSG99a9ccLMBrHkzZxEBGViCRjLaMIQK/xbH9Ar/2cLcGrRjA2vHEjCT0DbgY2fwaI8OdPNbKJVyl7WJtnwT9dJx2MczclQ80iw6UQMuxX8G6ZwuKhFTBcPHsKa7466FBdGG+1PbD400vKRQ0D690FRbFgobH3pym33XuRDRedMOXD5vv67xhx+9U9KOr4XkdZF+yTEP12EZF1UVej4UOu9/hC65G0OlNFpsEgb4fD4snz174c7ry02c2W1qJBlDxJWrRH7NaxajvKc88Y62nmZ3TWKH3z9ZI6onpB2dI8JzHg01QKMn98+uW5hjsaIh32fNJKsWy917oXvdf5hu+mVtRux/UKz/tdBjcJ1oMQ++nWOscT4t/aGV+vvVavL0ibV51ifevtvXjwbhAPoPEXK57PA5ggXgdKRAppd+tGIHJ2yl0mrPjcCgs/WehgEzQwvtB/eWN5qwrOUX9wkMCrx93FWCNjXMksLxGJmTl31feoOP81AUkfPa+r7AOQRtnDS0w63CDg7xEob40SjenKlizW+OsJ+e6hyIaiCEDkjCRz9KEffr1AB/ZlldGyO9rQnScAMbjCmN00Eu8JEbaI5CR6uNHgMhBKbTJ3ElWjJjjbvonNwpPcVeBrUOQ5s1pdgkKXo9Tj9dMsSC2w2XxovZg7wxhnNW5uE+NQCMSELHMtRPsmn0jSh0mTB5zILytcw+9BZOHG/j7zh538t94Jc0iRI
- +XJIGcPB
- Imh8q8KnP+Gow0CEalf1KmEyTzD/Oleo07Y3651u/P/zWFmR0swhhVCX0hx54jD2mBH5uMUePRHWgxKV3zMLh6kQT61DY5PwvtDugIdGqw8oOv3VkgZBm2tJmsmygbqoxVH17InOmlLuLoAZU3zKoaPCn5hJvZVvpQkMPtK6iyYVMBiz69KJBkZ6vJp7AtYp3NztGayDezTjJsnCTkPPtzIf49TUXmuZIDqmEOjlEMvGHfy9d2AXbiLKsX+uk828CKEJqsUuA8+s13T0LIg1dbctqYFYnsrbN0M9gLcc+xw5x78cI6l9svUANnWFUg5LPludx7UgbCBYutrg8n8ZRypVw9cxNn2Sw4cLqF/jyQ0bByiSd1M7cW5TncMrAfn2w7X/deDAnHhS41l+tuTII6I0lyD46LTLpdjS3KI+NyuT4Qr8=
+X-Rspamd-Queue-Id: 4D7DE80002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9g5nj3kiahjunks8rhrddpdqes4izxs5
+X-HE-Tag: 1787108909-633400
+X-HE-Meta: U2FsdGVkX1+xKBqsQ/GsT1nzn3RgTwnA8R95pZB8VIUEwwXeP5O1gQaLPOHC8Ygb2g5wINRYmHEKnZs7b9HvVUm8xQIM6goBT9ixg+Aa45sJMTsbHfJ2WXKnvb6LTE3EhvmapkTDCOnmzfs3McKtF2+jQPXwAoJZ1chFfUELkhVA5M1KiplKh/Uhqsz9UbCwJZW57q0TdtjvIJ3gxnw3okzkyDcXzairkr/OeTlnlSB1ipMtawUkeirtjYN98tPuqwCVjY9/xFNPg4sPm8Elk00eiGDejDkCZiNz3VIuhb82qf2jlRH+s5nRhbqv9rRq1m4GbrmrAoy269keb0aK3othxZF5j+qCOOnNHLk+ybvI5TuHT+9Gj875Rw9peKrt/zitmBp3ccH8C0i0er23gwd2KRwPlDNPihnbFoCamKO9tFLNtJ/ifZRJxO8KFyZnsOuNWZC3nijSyp8ilGLV8ZEcCZpDqM4yb/RFAMzlit1NfA5FzxBt36yW8qpLqDhhK1yQXD94uM6e3glngECSBOV3sI+MkU5aX3L0vTbugdJiGZMKGrwvE/UgxwT3oZR8lPvDSFuA3aWfgzvRhyV65E0J53sE4CqMqRKpoRhetqOHm6lZQfebVFvhHNy1FkFIUskWdVkbtjRe0Dv/zM3f3s1Cl1NnW/wHcNrCv0x9n/8iRalDp25PjVV+yFYyrUJFl4XaiyVKOKWDEp6w9sQRLORgwCXZZuRd5YAZXi1Ga1T3eAosC/z7DpvbuIuLcq0xU2pHCguzNbvR7V+8xAJcbG7F96TlbDln3Z5I63fBH11/mhLq1JPmrGnvDEBen23l8TGSLPsUuv6y4UELEwEbB3T0jqXfu+s9dZZODH/WX3QKP+DKXHcO1olnxelfDmB+EMZbMDVV7s3mQKl4zli92U6xhhNIPv4VSyiTF76J4ZSDba9zi3QNudOGtNU80Mauy7xb3bb4ZhnxMAK33/U
+ LXjDrkRG
+ XdMSwXWAQ89gdtZuKhEmkFefB8MkzRx3M7bvR6fh2hGDbj1G9RrvRwIN0GvIlzaemJYvmRDZGtfZajX55FPxPx1yHM2bC+LJ3ZtFnFW6lDAPH3cXbtz6eLSRM9m53MJy78rZ76T4jHJ4xq3eZ4j2TKFouU0tt9drN8N/rHp80JC2cx05ln8wBMGXUZfy1D6+ZZkZnYSDkcUtzG1dxYb9e2zvPi3tkWyP/eJqEr/o8jLgIk+dBtDtUGCjluU3D4hBnv5NUh/o0lIHVBCM0sbS5reAmQv/0GUz/mz6BrOp9YMV6JBLB0/Ujd2VbgFURNDVzYpEzef7Z/o5Bjr7JtWR6v5ZuBLV7k+I5pD3qQwGAbIqnkULt/AawwaUgoM3HDFpZ/k5KvS9Dv+T+pSdW9jPCpVP2LaTu9VZutl0hUbcMAC8CgRsy3qkP/tnUX0+SPQNdgmmaIhnXTTUGJLGlRy2xNX+0ftPAvJFrZmlrBmXGSwpZHbCsmeyiJN+4DPHCxPPoXCvIcKaOKqJALmP9xdE5XK0wXJmD5sG23vfbjBP2FvLw6ruapVSdDruLOETj2KmRlCq4/2vmNWreK+7/PISNzuezdORMWeY4r3U5P7F8DyShrF9cYqHYst9ccMRfttJNnvs46stRjdRI0yE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,217 +114,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+During move_pages() operation, when move_pages_ptes() returns EAGAIN,
+the error code is not cleared even after we processed it. This leads
+to a successful retry but then the same pages are retried again due to
+the stale error code. This time move fails because pages are already
+moved, loop is terminated and move_pages() reports a failure.
+Clear the error code once we processes EAGAIN.
 
-在 2026/8/13 19:40, Michal Hocko 写道:
-> On Thu 13-08-26 17:29:32, Ye Liu wrote:
->> From: Ye Liu <liuye@kylinos.cn>
->>
->> Replace the remaining manual rcu_read_lock()/rcu_read_unlock() pairs
->> in oom_cpuset_eligible(), select_bad_process(), dump_tasks(),
->> task_will_free_mem(), and __oom_kill_process() with scoped_guard(rcu)
->> for consistency and simpler control flow.  scoped_guard(rcu) limits
->> the RCU critical section to the loop body rather than the entire
->> remaining function scope, making the protected region explicit and
->> safer for future changes.
->>
->> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> 
-> It almost looks like for_each_thread and for_each_process could gain an
-> rcu varian that would do the rcu thing internally. Have you considered
-> that? I am pretty sure there will be more cases like these.
-> 
-Adding RCU versions of for_each_thread and for_each_process 
-(for_each_thread_rcu and for_each_process_rcu) would be useful. 
-I also have some simplified code to go with them. 
-I'll send a patchset later. Thanks.
+Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
+Assisted-by: ChatGPT:GPT-5.6-Luna
+Signed-off-by: Bryan Lim <foxieflakey@gmail.com>
+---
+Changes in v3:
+- Updated to use proper sign off.
 
-> Anyway
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Thanks
-> 
->> ---
->> v2:
->>  - Use scoped_guard instead of guard.
->>  - Link：https://lore.kernel.org/all/20260813032634.344946-1-ye.liu@linux.dev/
->>
->>  mm/oom_kill.c | 124 +++++++++++++++++++++++++-------------------------
->>  1 file changed, 62 insertions(+), 62 deletions(-)
->>
->> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
->> index 5f372f6e26fa..0e8982e5be51 100644
->> --- a/mm/oom_kill.c
->> +++ b/mm/oom_kill.c
->> @@ -94,27 +94,27 @@ static bool oom_cpuset_eligible(struct task_struct *start,
->>  	bool ret = false;
->>  	const nodemask_t *mask = oc->nodemask;
->>  
->> -	rcu_read_lock();
->> -	for_each_thread(start, tsk) {
->> -		if (mask) {
->> -			/*
->> -			 * If this is a mempolicy constrained oom, tsk's
->> -			 * cpuset is irrelevant.  Only return true if its
->> -			 * mempolicy intersects current, otherwise it may be
->> -			 * needlessly killed.
->> -			 */
->> -			ret = mempolicy_in_oom_domain(tsk, mask);
->> -		} else {
->> -			/*
->> -			 * This is not a mempolicy constrained oom, so only
->> -			 * check the mems of tsk's cpuset.
->> -			 */
->> -			ret = cpuset_mems_allowed_intersects(current, tsk);
->> +	scoped_guard(rcu) {
->> +		for_each_thread(start, tsk) {
->> +			if (mask) {
->> +				/*
->> +				 * If this is a mempolicy constrained oom, tsk's
->> +				 * cpuset is irrelevant.  Only return true if its
->> +				 * mempolicy intersects current, otherwise it may be
->> +				 * needlessly killed.
->> +				 */
->> +				ret = mempolicy_in_oom_domain(tsk, mask);
->> +			} else {
->> +				/*
->> +				 * This is not a mempolicy constrained oom, so only
->> +				 * check the mems of tsk's cpuset.
->> +				 */
->> +				ret = cpuset_mems_allowed_intersects(current, tsk);
->> +			}
->> +			if (ret)
->> +				break;
->>  		}
->> -		if (ret)
->> -			break;
->>  	}
->> -	rcu_read_unlock();
->>  
->>  	return ret;
->>  }
->> @@ -368,11 +368,11 @@ static void select_bad_process(struct oom_control *oc)
->>  	else {
->>  		struct task_struct *p;
->>  
->> -		rcu_read_lock();
->> -		for_each_process(p)
->> -			if (oom_evaluate_task(p, oc))
->> -				break;
->> -		rcu_read_unlock();
->> +		scoped_guard(rcu) {
->> +			for_each_process(p)
->> +				if (oom_evaluate_task(p, oc))
->> +					break;
->> +		}
->>  	}
->>  }
->>  
->> @@ -430,14 +430,14 @@ static void dump_tasks(struct oom_control *oc)
->>  		struct task_struct *p;
->>  		int i = 0;
->>  
->> -		rcu_read_lock();
->> -		for_each_process(p) {
->> -			/* Avoid potential softlockup warning */
->> -			if ((++i & 1023) == 0)
->> -				touch_softlockup_watchdog();
->> -			dump_task(p, oc);
->> +		scoped_guard(rcu) {
->> +			for_each_process(p) {
->> +				/* Avoid potential softlockup warning */
->> +				if ((++i & 1023) == 0)
->> +					touch_softlockup_watchdog();
->> +				dump_task(p, oc);
->> +			}
->>  		}
->> -		rcu_read_unlock();
->>  	}
->>  }
->>  
->> @@ -894,17 +894,17 @@ static bool task_will_free_mem(struct task_struct *task)
->>  	 * are dying as well to make sure that a) nobody pins its mm and
->>  	 * b) the task is also reapable by the oom reaper.
->>  	 */
->> -	rcu_read_lock();
->> -	for_each_process(p) {
->> -		if (!process_shares_mm(p, mm))
->> -			continue;
->> -		if (same_thread_group(task, p))
->> -			continue;
->> -		ret = __task_will_free_mem(p);
->> -		if (!ret)
->> -			break;
->> +	scoped_guard(rcu) {
->> +		for_each_process(p) {
->> +			if (!process_shares_mm(p, mm))
->> +				continue;
->> +			if (same_thread_group(task, p))
->> +				continue;
->> +			ret = __task_will_free_mem(p);
->> +			if (!ret)
->> +				break;
->> +		}
->>  	}
->> -	rcu_read_unlock();
->>  
->>  	return ret;
->>  }
->> @@ -960,29 +960,29 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
->>  	 * That thread will now get access to memory reserves since it has a
->>  	 * pending fatal signal.
->>  	 */
->> -	rcu_read_lock();
->> -	for_each_process(p) {
->> -		if (!process_shares_mm(p, mm))
->> -			continue;
->> -		if (same_thread_group(p, victim))
->> -			continue;
->> -		if (is_global_init(p)) {
->> -			can_oom_reap = false;
->> -			mm_flags_set(MMF_OOM_SKIP, mm);
->> -			pr_info("oom killer %d (%s) has mm pinned by %d (%s)\n",
->> -					task_pid_nr(victim), victim->comm,
->> -					task_pid_nr(p), p->comm);
->> -			continue;
->> +	scoped_guard(rcu) {
->> +		for_each_process(p) {
->> +			if (!process_shares_mm(p, mm))
->> +				continue;
->> +			if (same_thread_group(p, victim))
->> +				continue;
->> +			if (is_global_init(p)) {
->> +				can_oom_reap = false;
->> +				mm_flags_set(MMF_OOM_SKIP, mm);
->> +				pr_info("oom killer %d (%s) has mm pinned by %d (%s)\n",
->> +						task_pid_nr(victim), victim->comm,
->> +						task_pid_nr(p), p->comm);
->> +				continue;
->> +			}
->> +			/*
->> +			 * No kthread_use_mm() user needs to read from the userspace so
->> +			 * we are ok to reap it.
->> +			 */
->> +			if (unlikely(p->flags & PF_KTHREAD))
->> +				continue;
->> +			do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
->>  		}
->> -		/*
->> -		 * No kthread_use_mm() user needs to read from the userspace so
->> -		 * we are ok to reap it.
->> -		 */
->> -		if (unlikely(p->flags & PF_KTHREAD))
->> -			continue;
->> -		do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
->>  	}
->> -	rcu_read_unlock();
->>  
->>  	if (can_oom_reap)
->>  		queue_oom_reaper(victim);
->> -- 
->> 2.25.1
-> 
+Changes in v2:
+- Updated on description to be easier to understood
+- Reset err before retrying, instead of fixing right at the move_pages_ptes
+  branch.
+- Added Assisted-by, received an answer few days ago from linux-newbies IRC
+  that even I just used AI/LLM as "fast path" of git bisect. I still need
+  to add it following
+  https://docs.kernel.org/process/coding-assistants.html doc.
+
+---
+ mm/userfaultfd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index c3adedaaf7d5..ec5d511bd179 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2085,8 +2085,10 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 		}
+
+ 		if (err) {
+-			if (err == -EAGAIN)
++			if (err == -EAGAIN) {
++				err = 0;
+ 				continue;
++			}
+ 			break;
+ 		}
 
 -- 
-Thanks,
-Ye Liu
+2.55.0
 
 
