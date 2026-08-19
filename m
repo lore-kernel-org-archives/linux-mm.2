@@ -4,142 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D22FC5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:30:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2968C5DF86
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:36:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 098386B0093; Wed, 19 Aug 2026 05:30:07 -0400 (EDT)
+	id A8E806B0092; Wed, 19 Aug 2026 05:36:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06F1F6B0095; Wed, 19 Aug 2026 05:30:07 -0400 (EDT)
+	id A18ED6B0093; Wed, 19 Aug 2026 05:36:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC7EC6B0098; Wed, 19 Aug 2026 05:30:06 -0400 (EDT)
+	id 8E14B6B0095; Wed, 19 Aug 2026 05:36:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3E5B6B0093
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:30:06 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2BF361A04F7
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:30:06 +0000 (UTC)
-X-FDA: 85117497612.11.DA6D547
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 106242000F
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:30:03 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iMkxWfh9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787131804;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5319D6B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:36:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB396140561
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:36:29 +0000 (UTC)
+X-FDA: 85117513698.20.70EB7AE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 51926C0003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:36:28 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hj0ElIKx;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787132188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I8v1isZnzdMHObJSBQ0e6xW1KHsZYy0o9YOF8Wf0ENU=;
-	b=5OGtVrVoHQVs1v+5hHvo/ylHjQMq9Ffnq77QGVZ9sv0fKcc7GWYv3WYNCAZnlsk4ZEaOQ8
-	bmHI+db7NTQ6/XTLezvTaiLSbf0ahGkR/QOV5weDpAeqNuBRx8rIjv1d6qE0SUQTclioJ6
-	oztDh5xHKL2kBdqv1kJjW767i2c5K48=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iMkxWfh9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787131804;
-	b=jvhhSg0lcCML53rSSin0cDaZhodyn6D/ZHjz38uR+7xejGeYUSxrRohTKkSX4umKbswxSJ
-	5LoopzykEt9G965G079Vzpuzmx0NlhNQK6zL2r/m7gxvJ2mQ/o2NyeHMfW+2CjHY4TOLuR
-	s9WQt4dSNoAjOIiOl9IaBlgZxq/sqX0=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a156627e22so3115778a12.1
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:30:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787131802; cv=none;
-        d=google.com; s=arc-20260327;
-        b=d+aDvLbLtBBMW+Fvgg3cH8IkV/bsdsP2lsEVFB8bm7Ye8SMohJ4owwJn0r1w4gx9DE
-         BGLZIaotPbO62gjHxVVC+ycYfG2W+hHv9yOR2AbDkUrU2MfSvcttDK2Tq1IiljGbr1XJ
-         rPodC/rmIBJJm4p/GbFmPxViiYgIyCX1d60lVvZvtEvbHzcGUwvNnHh1lWXGvXfm17KN
-         juDZ0Z5B7I7dKJZu336heKtAILmm/9rq5D/WfSPx5AeIfu/RjOzhiwurMwQ4Yvhq78Gu
-         MpFtekWLTSryyzPJnPfy4i/t/uOCpa6/SMBbzwv3JwLc2qbZtOImWlPenM5xi0YYz4WZ
-         VJfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=I8v1isZnzdMHObJSBQ0e6xW1KHsZYy0o9YOF8Wf0ENU=;
-        fh=0P+RS5NazurDBmQiawDZJ5jsRZCD//+q82HFGBUkrko=;
-        b=h28lne1VkFzyD2FwlU+ggqHuQJmU1YmQAB8Dq4QhIZWN6VaKPsa+n96ANERFP625Us
-         ktDkjGGBZ2zEDzjHDdH1Ay9ZyOnrQKijrmVcIA3di6OpwZ/5xBGF3qoforcc0qdUu82A
-         9MULNk9fLyacIv3JYWnwV6okHF8HkXe220JauC8Y2Y/aXlvWxIFRn7IZoqd1eF2LtYzB
-         C6Fp9QWyFRZsRelwLm/TcmVtZ+w8d97sv8lxyH5tFj6FQBrT1JwDSvIVAlAEK9Yp0RMN
-         CjDzkl4kbsUSg7EqPSnFCBfl+DypbzojTkVgG+HUqOMVdOnTXCF4DZgWljS6WJ/a4dfL
-         SKEA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787131802; x=1787736602; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I8v1isZnzdMHObJSBQ0e6xW1KHsZYy0o9YOF8Wf0ENU=;
-        b=iMkxWfh9D/mAHFV0gZdDjrpVrxghiD8XmKJCJbzFOP8vlZXS5nR3mBeVj+Ev0lg+pK
-         kiIPrS9STBYP4R2JjOALvHxNgalW6xDJz+7kBD20babI0RJlulr5Ghl5QYuKf9rHCs7P
-         Tagwzs4VQxGX+m4/1Z5wkqNDcguas9KY4/T1BNu/DeHVmUKVc4GOKYjZD51Fjt940gcu
-         XW8qMbU6GtoExS+5dhVq8ZBRsrOuwxjlSyRh7UCITPGp5NIvOMB8hTEvadXNpQpwmeHW
-         IjgEn8pORPDa5pTBqudymeCqwKP49hMbNuNMfzP55N2nADTmZqTbqqhmrHre4o0k0bpg
-         U9Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787131802; x=1787736602;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I8v1isZnzdMHObJSBQ0e6xW1KHsZYy0o9YOF8Wf0ENU=;
-        b=kD8wQwfodNdlTYM7haiq6rAbvY/16u+e4LFEkWSv5A6W950ziC4+hAdi2Rb4hN918F
-         8jvX1tiSwLRXE0qWglssiV9ehRg8L888pQs2FpbgzVWNLpPBexW10/4X4sSi2LbxgN4c
-         ZYV1nu65RPs1YRGTnireLUwwTPmmtFY/gI/Ik2tJMng6qaxwzjzlQp5bRMvye7S2hmGD
-         hOOjxkQ/6ol8F8qo8mirRiHEIwPb7XjJKqSvikiEuMMK0h+vPZ3MumBHSZwh0+j2NSEj
-         MTAWL+lx/iwvXE/PLMk9S+3f5k2MQIaVHO/zltYReUTCK7k/IDSj9bk0x7WAPpuyjz7O
-         QDLw==
-X-Forwarded-Encrypted: i=1; AHgh+RqXmXvB/M72YZztvWoWUcibRy/pDzfNKwAPSEMAgtpfy9vfSpUFtw3sol4MFImBuBGWM4Ud/R1ouA==@kvack.org
-X-Gm-Message-State: AOJu0YwA0i2WSkwjZQjQ15yE6XmIu2Dr/2H7AvSb2yokPrDLrLWVZrts
-	G5Km/j3agSB9fU7UOkqwvqohxgi3r4cRF3Z2KY5oN7kJGpTYVE5dATXiyr9i4Apppl3uRwLi0Um
-	+WuyvaScunxv7oBxQHm7Q1gvUEdBaSRs=
-X-Gm-Gg: AR+sD13T94T0PhGGE+PzrqLAhGoScNw7VzPVN+luqY/yZ8aooIZwXdvfzK3Kv5TLqTb
-	3ez4DoQth/ppVEW64JPqd4lgPpsGMSz8J+XR8Jr9NWIqZToOXjoowb7J2qXMtv5GAN+hFy0pRkv
-	lqQSE/ZFuSVJEEiI8YRA/kj83h9ClSjiY/3Is2AXotgJeOqVi7ktnvFCTeoN/Dut2g1DmAdO9wN
-	jDL44fC+rZ1skbcWhqJC+SpEbh1JrP2heUK961f7P65KAqSaPMo1tqT0UnJtVmloZ1E10RavI7z
-	/1gAQAAIZRVK62fYoRmucDxlxYDwAyLl4lQiLRGwxKRKtJy0PVYyg7NFUsv91jQocYnzFTWmCx3
-	hIQ==
-X-Received: by 2002:a17:907:160f:b0:c1f:2cb2:c448 with SMTP id
- a640c23a62f3a-c237e183a79mr207074866b.7.1787131802171; Wed, 19 Aug 2026
- 02:30:02 -0700 (PDT)
+	bh=JTF3U2EL5wIQEwuPiw65PvVWmB+O0rc/BDnD0e5FQ+Y=;
+	b=Spa74ppSxweL0vfwuIiRoU6lxPLUiJrLtKg0MiZ/j9YzSf1mq8gByjDJKZfos4+utCJcOL
+	sPWCd6J07q8FujF1GR8BCDF2+acLoymSfGGeTPA5iwIwq3I/2C5nsqyWHZ1f0mIA4kW8jF
+	RvDoZqYaI5D0gPTeyHu65wRkmbZyKcE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hj0ElIKx;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787132188;
+	b=FuGW7UlI+WF4uMUVDRayxUVC3dZtUL6cb8RwYZu9X8qq8hm8xuJ5feIH+xDrqhC5xqHWw1
+	sk13S2AnBpBdJaTOdN7h+SM1CQFqyyHj5tkWKQG3LwuL0tbQLdwpID03CXsvky1mbz2mgr
+	oBttHM4EDcXWQYv1Vs4NHeRoDmrtPRY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CDF7060A63;
+	Wed, 19 Aug 2026 09:36:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986B61F00A3A;
+	Wed, 19 Aug 2026 09:36:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787132187;
+	bh=JTF3U2EL5wIQEwuPiw65PvVWmB+O0rc/BDnD0e5FQ+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hj0ElIKx6VJRJ8JYMcW7LtKc86NfHVIYzjKdrLUeZRiOHTg8nGQ4o2cY/ibgpYML/
+	 oY/NM6K7sOKxMrpb3VNMwdiGX7zic2LJrZFIABndvfb/CjQdDqEdy/y6366j5cKMoo
+	 pASkORkbrV3sVPZpjcO88OWwTuomkL97xuv0br9C2NgzYfQuWggsNnC2Fed8X32maS
+	 xCdS8A/WycqjnVUdaPrvSkNNFdUu+qJ1tNH4hGrhowXTj6WQSN9lctDaAVYh7pjOi5
+	 PrjjS9A+UJTIrbRfBxuxliHP7lu4ISMtCOm/xLFIIaEbbSAyXd3Hi6JfrGOaxR6P2s
+	 DbUdsMWU7bmsw==
+Date: Wed, 19 Aug 2026 12:36:17 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	rmikey@meta.com, riel@surriel.com, kernel-team@meta.com,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Bradley Morgan <include@grrlz.net>
+Subject: Re: [PATCH v6 0/2] kexec: keep the next kernel off hardware-poisoned
+ pages
+Message-ID: <aoV5EfBtlWcyf51E@kernel.org>
+References: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
 MIME-Version: 1.0
-References: <cover.1787056208.git.zhuhui@kylinos.cn> <4b4d4e3065e36f1b60dd69e8276cb92082f393a6.1787056208.git.zhuhui@kylinos.cn>
- <CAGsJ_4xKM1R95TEpKoicGYQB8Qafez6hKJF=Z98A_2j43X5GAA@mail.gmail.com> <39871dbf-25e3-4518-9942-a733dbb6acf5@linux.alibaba.com>
-In-Reply-To: <39871dbf-25e3-4518-9942-a733dbb6acf5@linux.alibaba.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 19 Aug 2026 17:29:25 +0800
-X-Gm-Features: AcwNN1VSEPfcy-uADUET0p5pZYZzFSYZ1aVc2M74piZQKya_Yf88ezGHA2PbGRQ
-Message-ID: <CAMgjq7D0KMdg0fKMx=i90b=F-ZEW8+UziiE12fCGxKOtiMn1Ww@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v3 2/2] mm/vmscan: apply too_many_isolated()
- throttling to MGLRU eviction
-To: Hui Zhu <hui.zhu@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Barry Song <baohua@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: maogw4449uwzs77y1kf6dznjuxcty8ha
-X-Rspamd-Queue-Id: 106242000F
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812-kexec_posioned-v6-0-e477887086f0@debian.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 51926C0003
+X-Stat-Signature: scso6188b73qqp7a1edpajppdog6m4n6
 X-Rspam-User: 
-X-HE-Tag: 1787131803-371231
-X-HE-Meta: U2FsdGVkX19ga/NdhBkAbj++Fxa1RSy+NRCQUUXSCSRswjA0axjfLu0DL3Di9nB7iTlHrYydZIi1QQ/eskG6ccBnI9vRtVglUjvv7YnCXBx05shqO9NB1P4ymfW6vrVy300qSkqKKfbmSElAaIj5yocl3SGJrDHr38WECjbGeOWKhqxy6iv9BejKrMX4cNAapmm4Nt6Kw6ZILEGLb6viLKSmnLeIuIz3H+6Jvjsd8wqyPlmKLaRjUEfwbyw8xvq6eNruysK6h1cG0zyIidf+T6fJL7uZxIsfDwsXdo+PESnsMwhsLoq7Zo02BKjrj+TTlgEe5NUJIpJoiwzPIZFH5vR9UJL70JfXr2U5BcHbn29SBnUmCfM2ooeaSmW3SPnKv+Di+yck0G8bSD9QPTSpl8hAifI1sNDys3wywIpvsGVyU107zw9TU4VN9vQeB9lOQdb6u2kGwEehCDpztMb2/d2NjUOe2BzUWF2WmMgN9yeu3hLNCyI0mTEe1T3SiTFiRftjLRqVroQu3WDEuGxtDNP6rMdZG0HIsDJlt9HWIBSmOFjHR44UOnG735V6k+9M4y8oeY536clpmi81ZiUeme5U1RTtXQLU+6aN+NZsw6saLRGYBAMARycARzbMulAGJlEgHo0YseqeSBot+fS3e7c/eN5jeig0RYs9CLjSBQt8931yQCxssIQbaRkd5lvjJW3w5uaUjAkuHgkpRCjuwOIsSIdGgGRGNQGwvgoQVx+wKXDHpGv9ea0gUIMID+584pQwr8OjUSspV7zBQleeiQKjVuw4TMnJTVnDwK3o9oG/NFcX4ZobRoKwQ6rTHce76rq/6T3GGnU6vORPZieY4yMk8a+gl8jOTxscpxi/gtinSH5EvqRM5h4ygZdt1xsXUXsm6ccwF9ZlWKZG781Sx2qMo33jhGhfFfINPyyw+b9cr2pkFcTWJujho97y8Lg4DFldBRPRzBZvb5SDDwQ
- jkVAbl6g
- ys8OkfH6rw8lDHTPhzsBjxb/WrX7HCtYV7V3MfyU1I3yhskcvCscFwUHVusx+bWDAORr+1ikKDk7G4+Et8bzQPMciVQyI0j4XVhxKOrjLOzG3rp6+fJ14y0mLW+/nmwNblyQdAr8PmenO9Pr8Q9PDYKbcO+r77z8NrMXPTQLJSRO3Nf6qsQpSr6FWU0UdBHWJRvQ6ZaOd45R02qmPKYU1vwd+JWV9M21FKfLbXTijP7mRElFavWMr/ZjoMNBRq7n/jjxb6OWA9s+2UiB1hd0a2quRTfxnPsDNVBYiqAYxR5ZzwABNw/o3BqA7knnWtAs0HgPssvug8jvFMr4HQ17HNs6U74yaVwls140ArTEuQoIg90MkVp8XIy8BTG+OPpt0+uQ1wK7cUG6MNhrn5nt9REiZCPqkeF/e8TGiiTBkIktJpo9ThNUrAMvWOmm9+09ipPN/ip18AdtPFdmTJoNAttSUykxPoKFxzvjb73R/fpaxnrg2NKPlY2COOw==
+X-HE-Tag: 1787132188-82921
+X-HE-Meta: U2FsdGVkX1/aGxgMhW7xzkvPopS+nsZl9xaNuYvobqpUxN6oD4Nuq6+wcvwbMjBIgR53vIugcqigHQk/f8LXAWptL6m6c3uKSv4SsSqAgHs2Sc+C1mFEbKf8YoEvjLwvvoJ4CKVrmg/I3LFziXXFXViWHvcKnKhFhpV+QS6dgIcHjaqaIUsJjeYKhCIY7HEaX2HbCXGhROIYC1iqMbuhuLaVMHGuVOE2d58gJ4My1X3pgkQuASc2tMcnXdPvfInz1lduSiC3X4JFGseJmrHeypmnZejpPvxNMvH3Rs5gWKmIGicEstBdsxcCxw21ig5qQwUpDcKlqQbCCNXRNpgqzyViawyD0Ysk5xDhP/uuQPjDe0Q4+qVHVX4XoNVIEZ6CP4sDO0u5c4fvs28jpe5kQkapog1xBa1GldRWHqq4qGa4Jptf7+Ln4RXaMxID52Jzr9J6NLeDdzBedJfO1iTn2hhX2Eun1ltnPucf0iGCKee1gnH335x7RTEzhAjoFpqA6Qmd2eXo+kz4LLSwVnNntNxuQEjFL1/WevwUtaDd0LjefwxNKqPTi2n0tuu/3Ei5D1bRWdau8Rn06fNhcowJ2pbXHMNuH7440Fuzc/Et5Z+AuTzXnuT62haVNhsPfHQIxh8wZR9NQXXMt5C4P8evM+m1YPvSEsXA3spBvEGxk9LIz8fBdg/5isT/eRMDXPP2fOJt8vhY0+aXVwYEebwC6H4rJyvpP6fNaLVvzmZwEw82eD2/Pa7Hvo5ieZwO7uh8z5pYWOCtdfCVfNsbGFC/dENhkOrRWkFaNgY9q+1F7h3cwHKVlMTQbPQWNDZfzPUT2Pzl01Ry9+Tco09tntG8RWBrabR7PyhukGcKcAqKnFeOVaQUJeIt35NKgVBwmbT+VBGztuZ2WKqL6V7EwRB3X9vNu7Y+k/VQ/fbp71YXm6rz63n0iNURe0WZ2d0OiiLrqYEynItNcMHUJBo7b4k
+ jaIr033m
+ Q/Os3qeAOEs3NkL5q+FYxV7gAs20CRWhTAuuFFP4ZoFqZLJEV5R/fRdeyLzySXIQBRvOscrbhiH31Nrnyq3G2MRsfWsgnxAaqQlSr41hdn71mNA6ujYiKDx6hnIQjIRK+m+iwxN6qii6b6UXsFCSqE8AvPd1RI8z4aWWV5KED58mzJMiAcW6E+62zQGR8rj0bTgs5AAgoOeLjeO66pmb5MlVUlpz69pJxp0+16E6vg0awtmyCSKUPu8Ygz8D77ywGc2XurWEt/ND2PngvHfDC0hUh2SVpg2/wzZeVVw7gPa6kDJW+Fgdmcao1oO2Qf4pmR139iggxcDk2anTPmhq4S6Qi6yC4oqzBpL2+lu82q+uWNdL3yBOhIvessQGF/nO4na+Erm2PXiUUIQb21XRlVC4BnQYm1pcyhFxoS2Tm8CM7+vlTFc61AQy58xLu0IDkvjQee+b4Ogv+s/DwHxv+lbQ4GF5sP4u80aeRYd+16jpUhyWhlH+qYlY8dfdJmV/4zcH0jI9WkoXWZkOJn3YbZ+LKiN9lJ5EM0l0d93jb6aX2tBhYI2uI2M8pk2LH8fU6uJNx+w/fH4skG0SVp06bXhgMsS81kO1KJc7yXHVixsiGCVBqtz+zBCOO0oFBuwLJx9K/1OZNIbTtfLwKvTxsBaO+mIZtCLM12YQSqgrQWNzViYviK1CNQdxvKRBChD5+Hq7IdSdv6aBVaw+BPXih3k2yi0RIBzQxkbn5TCCOH3cwGREAzUvaq9ZfwXc0UmVlDA1P+sQmE+b8c8EXb4wT05K55L54GfJeDY1Xd1A25UDcbm5YczO0Fi1/VJlGgUVJEPXXFChWMx3cumvLNNWJ2EvMQci2OCtHbsA9n0fWeU6BYUs9oJUIpi+Kl7fnZda7MmXXSG05mHOOhCEpUhiIh/cBHozpL3barVdTi8teE5+4H4tXwEFKhUiEcWWyGQxDQKuW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,111 +104,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 19, 2026 at 10:15=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
-> On 8/19/26 6:06 AM, Barry Song wrote:
-> > On Tue, Aug 18, 2026 at 8:49=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wro=
-te:
-> >>
-> >> From: Hui Zhu <zhuhui@kylinos.cn>
-> >>
-> >> The legacy path throttles direct reclaim in shrink_inactive_list()
-> >> when too many isolated folios pile up, but MGLRU's evict_folios()
-> >> isolates folios without this check, which can lead to unnecessary
-> >> swapping, thrashing and OOM.
-> >>
-> >> With the NR_ISOLATED counters now updated in evict_folios(), extract
-> >> the throttling loop from shrink_inactive_list() into
-> >> throttle_is_throttled() and reuse it in evict_folios(). Since the
-> >> type to isolate is unknown until isolation and isolate_folios() may
-> >> fall back to the other type, check all evictable types with
-> >> for_each_evictable_type() and throttle if any of them has too many
-> >> isolated folios.
-> >>
-> >
-> > I feel this is unlikely to work. MGLRU behaves quite differently from t=
-he
-> > active/inactive LRU, and its `NR_INACTIVE_FILE` accounting is also very
-> > different.
-> >
-> > With the active/inactive LRU, shrink_inactive_list() ensures that we
-> > always have an inactive list with pages available for reclaim. With MGL=
-RU,
-> > however, a generation can legitimately point to an empty list, so this
-> > assumption does not hold.
-> >
-> > try_to_inc_min_seq:
-> >
-> >          /* see the comment on lru_gen_folio */
-> >          if (swappiness && swappiness <=3D MAX_SWAPPINESS) {
-> >                  unsigned long seq =3D lrugen->max_seq - MIN_NR_GENS;
-> >
-> >                  if (min_seq[LRU_GEN_ANON] > seq && min_seq[LRU_GEN_FIL=
-E] < seq)
-> >                          min_seq[LRU_GEN_ANON] =3D seq;
-> >                  else if (min_seq[LRU_GEN_FILE] > seq &&
-> > min_seq[LRU_GEN_ANON] < seq)
-> >                          min_seq[LRU_GEN_FILE] =3D seq;
-> >          }
-> >
-> > At that point, we have no inactive pages for the type, so the
-> > throttle will take effect when the following condition is true:
-> >
-> > too_many =3D isolated > inactive;
-> >
-> > With MGLRU, however, we can still fall back to the other type even
-> > when there are no inactive pages for the current type.
+On Wed, Aug 12, 2026 at 04:31:50AM -0700, Breno Leitao wrote:
+> Memory failures are common enough on large fleets that kexec regularly
+> lands the next kernel on a frame the memory failure subsystem has already
+> marked bad. Patch 2 teaches the segment placement to avoid those frames.
+> 
+> Patch 1 is a prerequisite. locate_mem_hole_top_down() walks candidates
+> downwards without ever checking that the subtraction stays above zero, so
+> the walk can wrap and report success with a destination outside of RAM.
+> Patch 2 adds one more downward step to that loop, so the bug is fixed
+> first and both patches rely on the same bail-out.
 
-Hi All, that's a very insightful concern.
+I queued this for v7.4, the patches will appear in the liveupdate tree
+after the merge window.
+ 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+> Changes in v6:
+> - Split the pre-existing top-down underflow out into its own patch, and
+>   drop the "if (poison < kbuf->memsz)" guard from the hwpoison hunk now
+>   that the loop bail-out covers it. (Mike Rapoport, Sashiko)
+> - Reword the changelog: the MCE comes from reading the poison back, not
+>   from the relocation copy writing it, and the placement paragraphs read
+>   better split up. (Mike Rapoport)
+> - Move cond_resched() after the struct page dereference, so the scan does
+>   not yield between pfn_to_online_page() and is_page_hwpoison().
+>   (Pratyush Yadav, Sashiko)
+> - Keep cond_resched() per pfn rather than batching it. (Kiryl Shutsemau,
+>   Rik van Riel)
+> - Link to v5: https://patch.msgid.link/20260810-kexec_posioned-v5-1-95e1b5e2e656@debian.org
+> 
+> Changes in v5:
+> - Return -EHWPOISON instead of -EADDRNOTAVAIL
+> - Leverage is_page_hwpoison() instead of per-page check
+> - Link to v4: https://patch.msgid.link/20260807-kexec_posioned-v4-1-70d57f14625d@debian.org
+> 
+> Changes in v4:
+> - Anchor the top-down hole finder on the first poisoned page in the
+>   window and the bottom-up one on the last, so each jumps clear of the
+>   poison in one step. New range_first_hwpoison(). (Kiryl Shutsemau)
+> - Count a poisoned hugetlb folio in full: the flag lives on the folio,
+>   not on the subpages, so the per-pfn scan missed poisoned tail pages.
+>   (Kiryl Shutsemau)
+> - Link to v3: https://patch.msgid.link/20260803-kexec_posioned-v3-1-83aa6ede0351@debian.org
+> 
+> Changes in v3:
+> - Return the address of the last poisoned page in the range, or
+>   PHYS_ADDR_MAX when it is clean, instead of a bool plus an output
+>   parameter. Renamed to range_last_hwpoison(). (Pratyush Yadav)
+> - Add cond_resched() to the scan loop, as a segment can span half of
+>   memory. (Sashiko)
+> - Link to v2: https://patch.msgid.link/20260730-kexec_posioned-v2-1-f92d18551f64@debian.org
+> 
+> Changes in v2:
+> - Change from pfn_to_page() to pfn_to_online_page(). (Miaohe Lin)
+> - Return the poisoned address once we find a hit, to avoid the O(n^2)
+>   rescan. (Sashiko)
+> - Link to v1: https://patch.msgid.link/20260728-kexec_posioned-v1-1-160c81d180fe@debian.org
+> 
+> To: Andrew Morton <akpm@linux-foundation.org>
+> To: David Hildenbrand <david@kernel.org>
+> To: Lorenzo Stoakes <ljs@kernel.org>
+> To: "Liam R. Howlett" <liam@infradead.org>
+> To: Vlastimil Babka <vbabka@kernel.org>
+> To: Mike Rapoport <rppt@kernel.org>
+> To: Suren Baghdasaryan <surenb@google.com>
+> To: Michal Hocko <mhocko@suse.com>
+> To: Baoquan He <baoquan.he@linux.dev>
+> To: Pasha Tatashin <pasha.tatashin@soleen.com>
+> To: Pratyush Yadav <pratyush@kernel.org>
+> To: Miaohe Lin <linmiaohe@huawei.com>
+> To: Naoya Horiguchi <nao.horiguchi@gmail.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: kexec@lists.infradead.org
+> Cc: rmikey@meta.com
+> Cc: riel@surriel.com
+> 
+> ---
+> Breno Leitao (2):
+>       kexec_file: stop the top-down search before it underflows
+>       kexec: keep the next kernel off hardware-poisoned pages
+> 
+>  include/linux/mm.h  | 14 ++++++++++++++
+>  kernel/kexec_core.c | 10 ++++++++++
+>  kernel/kexec_file.c | 20 +++++++++++++++++++-
+>  mm/memory-failure.c | 40 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 83 insertions(+), 1 deletion(-)
+> ---
+> base-commit: c5e32e86ca02b003f86e095d379b38148999293d
+> change-id: 20260727-kexec_posioned-72bb0a4143a0
+> 
+> Best regards,
+> --  
+> Breno Leitao <leitao@debian.org>
+> 
 
-But on a higher level, you can fall back to the other type regardless
-of the LRU? That's not something limited to MGLRU I think? I mean
-throttling on one type seems like a good idea if the other type is
-very reclaimable.
-
->
-> Yes, that's a valid concern. So I think we can check the isolation of
-> both types for MGLRU to avoid this case:
-
-...
-
->
-> The typical 'isolated > inactive' case is that we've tried our best with
-> aging, but cold pages production can't keep up with isolation speed,
-> especially under concurrent reclaim from multiple processes. In this
-> case, I think throttling is reasonable.
-
-Just an idea... How about we simplify this: just check the isolated vs
-total memory size? At least for MGLRU. MGLRU maintains NR_INACTIVE_*
-only as a compatibility shim for reporting meminfo, so it does not
-track the immediately reclaimable set the way the active/inactive LRU
-does, so the inactive value is a poor trigger for MGLRU: Aging moves
-the folios in batches so anonymous reading can be very jumpy. For file
-folios, PID can only promote unmapped page cache to the second oldest
-generation, meaning most file folios are considered inactive. This has
-been causing trouble for our dashboards for a long time and I think we
-can fix this by using the tier number intead of gen number as the
-inactive / active reading, that 's a different topic though.
-
-And in fact I don't quite get why classical LRU only compares that
-isolated number to the inactive count only. The reclamer can move
-active folios to the inactive part anytime, so throttling when we are
-low on inactive doesn't always seem like a good idea?
-
-I remember this was discussed sometime ago that in the long term we
-might better throttle it in a different way, it was once mentioned by
-Shakeel:
-https://lore.kernel.org/linux-mm/ahncWUAJlPZhNGr8@linux.dev/
-
-So perhaps we can throttle MGLRU more gently? e.g. just compare to the
-total number / MIN_NR_GENS, which means half of the memory is isolated
-for MGLRU? This doesn't look too pretty but I think it's better than
-using the inactive count for MGLRU. And if we introduce some
-gen-balance-based aging (whether that is a good idea is also another
-topic), the ideal goal of MGLRU will be evenly ditribute folios among
-gens so the current inactive reading will always target half of the
-total memory.
-
-Another thing btw is that the function name throttle_is_throttled
-reads a bit strange to me :)
+-- 
+Sincerely yours,
+Mike.
 
