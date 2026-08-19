@@ -4,124 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 659B9C5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:54:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 422A1C5DF86
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:58:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 669AE6B00B9; Wed, 19 Aug 2026 05:54:11 -0400 (EDT)
+	id 622256B0092; Wed, 19 Aug 2026 05:58:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 619536B00BB; Wed, 19 Aug 2026 05:54:11 -0400 (EDT)
+	id 5AC316B00BC; Wed, 19 Aug 2026 05:58:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BB1D6B00BC; Wed, 19 Aug 2026 05:54:11 -0400 (EDT)
+	id 474C66B00BD; Wed, 19 Aug 2026 05:58:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2699A6B00B9
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:54:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3E491404B0
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:54:10 +0000 (UTC)
-X-FDA: 85117558260.03.6602319
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DCDF0120004
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:54:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=N5fBT8gJ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf29.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C0636B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:58:05 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99551C0508
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:58:04 +0000 (UTC)
+X-FDA: 85117568088.02.985F001
+Received: from mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5073340005
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:58:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uBLyGYxw;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787133248;
+	s=arc-20220608; t=1787133482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dl94Y3Ocjmgq20YN+NWMCqSvUO2QWpmbB00opElt5jo=;
-	b=LDqLUSin+9U4wwjkpSbC5i/t7p7xEQqNBo50wrFem83YSpcMWYURHApLyrs2ZHplPWdgI+
-	Wi0U/B1skIxhMfKhYG+VcycVwArhrcRol/eqp60YxL3FkUxo+JyzT+jytEMn3PNotdzZRa
-	dAewkrPUzO+sDmlfHHB/O7dBVMkCQ04=
+	bh=qg0LHKdiIXC16vBZXisodb5ZyYSQ4yPlz3Q6PE27RUE=;
+	b=v6TkUbC4jMPVYW4GoLxenQVScu7CSgjC2dqIvT3KwHOHuO5gThsxel01SjxDGSVt/Q9dGQ
+	oE9P7RxX+w/v0/XsANOuNCsYqY77Nf9z9ZGmf8IibU8n/vqkf1J+LXCu+aBSgzOjXR6BC7
+	YmXdQQCFgWMupWgUeBQblnaFWBtxWwk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=N5fBT8gJ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf29.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uBLyGYxw;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787133248;
-	b=5VSZ7CUu3dMa8Y/rcgbm9weT5lL/G+yyjSHA/G/Fo/f24mcsga/BKRDVbzo47atvvRJgx9
-	sucOFdA10tq3ZOEq9hEOZ+BNG9DWtFdjUUI2uPz0GFqx/S7oYlxI8U/Ur0hlZwYe6XGMQS
-	qUGY6g7OcUdvNA87cSJ83LiubKi6dfs=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cedda2ce6fso4521855ad.1
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 02:54:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1787133248; x=1787738048; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Dl94Y3Ocjmgq20YN+NWMCqSvUO2QWpmbB00opElt5jo=;
-        b=N5fBT8gJdXuJ4ElbEeVSra6vNx3mWTJJjYh2E2YZeK7l6ns1mVVpdxsMLnbJLinv6G
-         Z8eLk3UkUh5ABaffm4uXmsNg98aYuBQX3crAbDdxqvwVvXxx9tm0QUPwbBfwZ8kg9zGX
-         YGVFaVLbu3wwIz2kHddSBinIb0e4u/y3szuL1sgkWQawsircZrt5LLz25aczD0+T20lc
-         wnWvGgc5Qs9zcFD+su+9w3gu616nqOxtPJAecsdymVEYcL9hOwkQh+NW28bKH94EkTFi
-         7zgGZwVZges/LRyz52d8tvvKrXc7fTnma0K0Lhd9Yjs7nj9bdMAv631M4iO34eKJO+tk
-         yR+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787133248; x=1787738048;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Dl94Y3Ocjmgq20YN+NWMCqSvUO2QWpmbB00opElt5jo=;
-        b=B1eg0xlJ73i1fDq5enUgVoqrWRLI6yzl7VF+c0nBZNmxp7b78RFYJye9ey6XBdvW/+
-         c/hXJfsl0i9PJSK5gFsFHT7Y/IhmoTqsKw+lwppZ5Yz/V1pkWAJJDWPyPDsIjP/OZ7+s
-         X9MmIfAIS92vtKLm0+61bbFBhFjX9JZId2MoL2XuY+xSDOYLcJCBjnfoZpSXcu/iCbk5
-         bUkzUqDDgcO72B7/8boMH/qQMb9LgxAvfoK3yEKbdKcJm38VDN3A/dZbbC2VJGy/2XIm
-         oUZKhxAEWfDQQ1rsHlmOX/V2RrY70k3bJfuwrlX5LP51AMpu1ZrTfFXtQdvfQXkVn27R
-         a0uQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrYK8/TEM+9IOs5+2OQccvoKXa/49wiOCPWRvFP7f8NcxLR0Ma/kBGNE1GWPUmFz7CxBtrXCKe1Sg==@kvack.org
-X-Gm-Message-State: AFuF++mk1TxnosziNThQoFyvRn2amYlaU2cQR68Ttx9WsXuUrWrpUCuK
-	ntQ6Oov0nLG2BxTfjR3h5JLGBNxUEs8PtZiU5n7j+83kYVwMwl3MO28U67nQg1gm2Vc=
-X-Gm-Gg: AR+sD118DvwdtG4ObSJMtgNv51ud7n5cAgXyKYtD8TIxr9Pt7JhkjPJQh7rw5RW5hYI
-	gMSzUANDw+c/9kKGXLmA21nGsatK4lMfP+VCtjIV/BOWWhznGiW7lqOULMjCIxue2jgKuPIr4PN
-	kr/+RFMaSDa1ghKWH8E2AN8bnrLZ1WXiMMwTS/GLskRbVDCyJVkAJeGOTi01pDJJ8X2Azr9r3hX
-	zOQr0pyN+mF4KVFh8L766fhIZd4JU98UyPS1xXylQgb0y6jGPgoc0bAB7HegsuSyWB6xc/fDVxg
-	0NLPelutpyAeICloSBKyUs/ALlWqSSytBdmRjFGh4KVpOKNE+oB3T3WZlzv6cmFRI/xF62KLNfP
-	PwoK6t5z58YVPGqlhCUfmjS2Gs9jHnaMKI18LfPwtm8SkwKy1I3dLOSTrAiJEUIyRZW7o2TPPbt
-	534ZLdhabUbaNYSaE/NfremymQhnxpIz81+Pvt+fzRQ9168xci44CdaLfKTTo1sk5kQN9Mkxyc9
-	suaAoyBbCFbbLBxCDOWtnvCNg==
-X-Received: by 2002:a17:903:468d:b0:2cf:afe8:b722 with SMTP id d9443c01a7336-2d601ea52fbmr64639885ad.11.1787133247576;
-        Wed, 19 Aug 2026 02:54:07 -0700 (PDT)
-Received: from G6L4RL2QG9.bytedance.net ([61.213.176.10])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5c1e5434esm22504235ad.51.2026.08.19.02.54.03
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 19 Aug 2026 02:54:07 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
+	t=1787133482;
+	b=weM/3Hnc81/dbZnpAkrP9ujfhLl6+NEZ4nVKwCttKCxspo1FhDWcUwMK2fMmJ+VViX3oaw
+	LSvH2pt+wqIkN4OHGoN8uPJqf941ZNm2T1K6G+SpyqqkU4lSAiRNaYPKOrtaqxnH5rxD89
+	obFtjZlWujfBVUiZa4bn4RM0D0LPfgY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=DNPq1Nr9++W1lD30+d9a/DJZLGwqW0h6V2qdStcQ2do=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787133480; v=1; x=1787738280;
+ b=uBLyGYxwjY8WIIN+MDm5m+saJcQD3XjN+PCERrMPalT1Sew2r6wt0AUJCFRzB2qa0lpo5Psm
+ OBjDH1lYwb3XLRViccvjnPsWBxVwK+l0geu3/+GLD3UEcDbjzZf2AjedLLnkGivJFm9nItbk/k5
+ 7gOOlywUmXhBbhPpS6aQy4bk=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id 60972300063a6897;
+	Wed, 19 Aug 2026 09:57:50 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: ying.huang@linux.alibaba.com
+Cc: linmiaohe@huawei.com,
+	shivankg@amd.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	apopple@nvidia.com,
+	kmanaouil.dev@gmail.com,
+	fvdl@google.com,
+	kinseyho@google.com,
+	weixugc@google.com,
+	bharata@amd.com,
+	rientjes@google.com,
+	dev.jain@arm.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>
-Subject: [PATCH v4 17/17] mm/hugetlb: localize HUGE_BOOTMEM_ZONES_VALID
-Date: Wed, 19 Aug 2026 17:51:39 +0800
-Message-ID: <20260819095140.17252-18-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260819095140.17252-1-songmuchun@bytedance.com>
-References: <20260819095140.17252-1-songmuchun@bytedance.com>
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 7/7] mm/rmap: batch the unmap of large folios in try_to_migrate_one()
+Date: Wed, 19 Aug 2026 17:57:38 +0800
+Message-Id: <20260819095738.46511-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <87tsoq5tvq.fsf@DESKTOP-5N7EMDA>
+References: <87tsoq5tvq.fsf@DESKTOP-5N7EMDA>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5073340005
+X-Stat-Signature: cd46dh1zuhiyn4c9ztypxufziq6jdxtd
 X-Rspam-User: 
-X-Stat-Signature: s78ccfmq3m6hyp71t9wtqsrdjr1gpqtr
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DCDF0120004
-X-HE-Tag: 1787133248-598403
-X-HE-Meta: U2FsdGVkX18TVQW5uYH9EurKE6XcbugknT+TiABV9W+69peQoX/8jfOEv7w93BTDwuVvvlYIT0kHaNTMSvFBPZQ9lKuMUmLreq2VRO75hm1g4aU+ATACwwm9XiNMsLBTFe5H1pbu4IIU3fD7kS2suwipil6LYxohHPh37Gx1qUXKgTF974wzI9CKLmdWt2j68acDW5k/gTK22r52ODtV7Ve2N1FzG1OxUFMV+9+pd4mPhOrEO0vwhA90EGYJdnzEWkGCh7essDVGGBGNq/De6bI+p1KzQZepA38UFO92nuzvxc9/iVbStqGyJME3v/8Gp+6AttumrFrtzeN3IpFOeGHLIEY8f2D7zM50zP8JVRzDb2itI9WkShYvBXH1L1n1eDUggCiy5hk96oKCxcdMhpOA7gPiOC0eS2mY8ltAR2az9PfAxrmN7vgqcHCjqEcvTvmAm9YRI8lyrtqCRvS6YNF0GmZHLwGTFog1IhyYG2DmiMZnjPIilfS2FFblEvfNJUQLV6RqgcFllMSw0ZkKBB5yiXig+M9tvjgCjCc87XBng8iY9Ou/GABBCrWtJ0Hq3ZL93Rv7ZG41ZuUQlHvgG1lqf9Q8bh2z7+hzMtdqDaiWRKJzAtfpssRNorvQ39IWHrd19BNVHzPHQFFtmMJ96+5UlTZoYvFoLQ9T/PEh/hA+rhjz857lruUCWouqbj3PrdiWvrJI3zRsS4ERYMSrkIw5wo8zZRng13HK9/oPsTaRFwzudbgMY+QbhnFm+Cuq7QPf7vHKgv2VXSFypo1LY9dtVwQttCNQz7bmIh8gd1XxUay7POd3Bv1Pk1VxK6xZuc3+khLY8m8jDTx8rdvVdiFsokGhP9OQPMsrG+imKfk+WCyya177lFneECT/E6jkzT1cgKerbvXYlrWuwJvI0GKrGUT+AgvvezUO0hkNoA7W3uE38arqtnrgYzdsuERiDU3G5Cixo+WCMg1LGut
- ewlC1PP8
- wBMwNZr7GjrTRH67RsL1eNu2XsfKERI2KALXBOBg7eMHeEYkwzdA0erU/H1JsYKZpeJWzGseiy+G8+bxhkwXgmv4QK2Somki4ZuBQGRRyybAmKdQW7KtpDk2TOKqSpRKqz/MoY9OqRHT/VTDpMGNIBknjNelJXaOCrAo+XxXOmzSiVqrIrkQKXLy3gpei6UjZ9jgZ7QCtuvVq6/u43/Mk7dmWyM3G2KQ761W+14K4XhMhxv8Uxy5DpHRjgUCrMqb9qS0jubGO42wkm75kVd8j1bc8/5mXRaFOqsF7CmLNuhK3bYXXePgdFwhjEfkuXBNl3+Jqf9UvJPhzUyQ4iNB3sqbjeId75fb7+Emg8WLbzzpZg2z1GwhanKFiMwQ2078hiawp99u3Cui4SGlRZGybrNiEoY2HCcZWVYmajzrE/ABLEJt0GUXedtwv729LgQoxoHlpY0CvnwHSK5Q=
+X-HE-Tag: 1787133482-169925
+X-HE-Meta: U2FsdGVkX1/iMBwqRQYILbogfP6vJ0tjiScLDp55AaVg/pZs0UScaIU7b5MFus7Dt0CMNjHd8FI+LxVfcujhfbzJBL0B+trWJSOMFHPkOIDp81Yyq28JUrIeWDIMhitwHH3b+KgL5BHnh0+cZpL/SWCWfUajiFFVDzNxVawWe09Txup101VwnpKcqNokanI5QLBK3NdpQ8RuW1QIP9OzMKTp0yQAFuMBdTUjPCElHkxMmILFmytrGBzPN4VBUEnAhvWw4/P3b048xY9aHYaKve6I9is76TSezu0CfDYO054bcczpAGLMVPpQoVjP5iU0iMkcpzPbE/I5Q6vhwgwnIgYs8dudsQg1qBbQfO0c/FZNWDfpgNFVupoMgaQPlTHKxC+ahc+E2lzGdmnUuBEI2M0AOOFvu/3mZ85AHgQWPXkrWNyWEIF2yZHeGOGT0JIVQeX0Sm0D/F03+xGvuotGoeCfQfYSAStkrAcpDr64oh4Xw3wWAv4Q0ILJ625YM3i2ZvVPtOfxi4IUdr9J/KHqZ2OGAAuCI6vrrcBJDObM2v3dwNDY2Wk7VPltSLx3E6kh11hngBAMW6d2TMaqMu9ks5E0LoLjV5fw/sw1CFfPvdf8TbTvvEHacwOHWJ6xBxOT6qcjWsyYgn8A1/tKTOeE1pJFbtmlA80KhiCjPRnq060FkGRlXZEmRjXqlcPsVE9Zm6dgG5zTFSxquoL9Jm8J9hb2UQWNsmsRdKIuAXKD84IwFQpshOCg7vuMY67M2Kbe/DZySXxGdO7hMligg4kLKnZw3UH0NQwChxDBHI35sDgUJEUzwksuNs2czM1+ZgHd0HKUyBxWbjbHjUyV1kJOxyXkD+mKhK0YPhpYktgbTMa3Q6ZnSPUyDBeCEGJ5K6J54Acxzi7pH5BLgUMEvkF3ZEIcyYRHA29QV6iDXRvym1taWPshcstKy4ISDTVJqtboZTxi9J/2CDmGrIN+z+O
+ YMjD9j28
+ IXyEUL6eN5xQHz6U8f7q4/oZuSXS2U2GlKyRcUNhq76/Sp25gvU5ZxGYkfr3fADHx9Eimk6baA2x/195ePkfmlXN23pKLF0yN5Dqe9q/UfLT4PjkA+tqk8dWpFlGHL3RnDfNA3+sox6O0/PLqtDnXsBNkocQaWoviUhjPr1J34shojcGAoheSSbo57DTB23jZnZ+hFbdaZWlTSY6y3D8vsVFrAV5SqINFVxvHuAm/RWMTZKhesjVu1BwZaKw0Oi831LEyjRSuJoC6yVOahY9IDT1Gq6CjXX9sJK7IdwvGib8TFQHj/HyPsPI3D3Y+nyrrtzjtOPbzm8rDZxpY+sB153b3vSu1CQfN4i29sGZq1odGn4MGabk48+o9KMyUV4Da78j6uxtr9CqFcDTa37eBVtRTzBXe0mAaqLwlcZC0+pL6KbEBSULjV073eA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,49 +118,313 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HUGE_BOOTMEM_ZONES_VALID is only used by the huge_bootmem_page flag
-handling in mm/hugetlb.c. Keep the definition next to that private data
-structure instead of exposing it through the public hugetlb header.
 
-No functional change is intended.
+On Wed, Aug 19, 2026 at 05:42:17PM +0800, Huang, Ying wrote:
+>Lance Yang <lance.yang@linux.dev> writes:
+>
+>> On Tue, Aug 18, 2026 at 04:55:06PM +0800, Miaohe Lin wrote:
+>>>On 2026/8/17 17:14, Lance Yang wrote:
+>>>> +Cc Miaohe
+>>>> 
+>>>> On Thu, Aug 13, 2026 at 04:23:18AM +0000, Shivank Garg wrote:
+>>>>> try_to_migrate_one() converts present PTEs to migration entries one at a
+>>>>> time. For a PTE-mapped large folio, this repeat calls to ptep clear+flush,
+>>>>> the migration entry build and set, folio_remove_rmap_pte() and folio_put(),
+>>>>> each re-entering page_vma_mapped_walk() once per base page (256 times for
+>>>>> 1M folio).
+>>>>>
+>>>>> Mirror try_to_unmap_one() to introduce folio_migrate_pte_batch() to detect
+>>>>> eligible batch for PTEs mapping conseuctive subpages of a large folios,
+>>>>> and convert the whole batch in one shot using the batched helpers.
+>>>>>
+>>>>> A side-effect of this change is trace_set_migration_pte() will record
+>>>>> one event per batched run instead of earlier behavior of one per base page.
+>>>>>
+>>>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>>>>> ---
+>>>>> mm/rmap.c | 115 ++++++++++++++++++++++++++++++++++++++++++++++----------------
+>>>>> 1 file changed, 86 insertions(+), 29 deletions(-)
+>>>>>
+>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>> index 35752a70f3a0..63b885c0b7ef 100644
+>>>>> --- a/mm/rmap.c
+>>>>> +++ b/mm/rmap.c
+>>>>> @@ -2675,6 +2675,44 @@ static bool try_to_migrate_hugetlb_one(struct folio *folio,
+>>>>> 	return ret;
+>>>>> }
+>>>>>
+>>>>> +static inline unsigned int folio_migrate_pte_batch(struct folio *folio,
+>>>>> +		struct page_vma_mapped_walk *pvmw, pte_t pte,
+>>>>> +		struct page *subpage, bool anon_exclusive)
+>>>>> +{
+>>>>> +	unsigned long end_addr, addr = pvmw->address;
+>>>>> +	struct vm_area_struct *vma = pvmw->vma;
+>>>>> +	unsigned int max_nr, nr;
+>>>>> +
+>>>>> +#ifdef __HAVE_ARCH_UNMAP_ONE
+>>>>> +	/* Cannot batch unmap if arch_unmap_one() is defined. */
+>>>>> +	return 1;
+>>>>> +#endif
+>>>>> +
+>>>>> +	if (!folio_test_large(folio))
+>>>>> +		return 1;
+>>>>> +	if (folio_is_zone_device(folio) || folio_test_has_hwpoisoned(folio))
+>>>>> +		return 1;
+>>>>> +	if (pte_unused(pte))
+>>>>> +		return 1;
+>>>>> +
+>>>>> +	/* We may only batch within a single VMA and a single page table. */
+>>>>> +	end_addr = pmd_addr_end(addr, vma->vm_end);
+>>>>> +	max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>>>> 
+>>>> Hmm ... can this still batch over a poisoned tail page?
+>>>> 
+>>>> memory_failure() sets PageHWPoison() before taking folio lock, but
+>>>> cannot set PG_has_hwpoisoned until it acquires and releases that lock.
+>>>> 
+>>>> So tail page can already be poisoned while folio_test_has_hwpoisoned()
+>>>> still returns false ... no?
+>>>
+>>>When memory error hits thp pages, memory_failure() first set PG_has_hwpoisoned and
+>>>then tries to split thp pages. And try_to_migrate() will be called to set migration
+>>>entries for anon pages. Does folio_migrate_pte_batch() work on this case? If so, the
+>>>folio_test_has_hwpoisoned() check above could catch the bad pages?
+>>>
+>>>Or do you worry about the scene that meory error hits a thp while it's under migration?
+>>
+>> Yeah, latter case is exactly what I meant.
+>>
+>> try_to_migrate() is called with folio lock held. If migration already
+>> owns the lock, memory_failure() can set PageHWPoison() on a tail page and
+>> then block in folio_lock(), before reaching folio_set_has_hwpoisoned().
+>> try_to_migrate_one() may meanwhile start from a healthy subpage, see
+>> PageHWPoison(subpage) clear and PG_has_hwpoisoned still clear, then batch
+>> across poisoned tail and install a normal migration entry for it.
+>>
+>> Once memory_failure() publishes PG_has_hwpoisoned, the folio-level check
+>> does stop batching, as you said. It's just this window before publication
+>> that worries me ...
+>
+>I agree with you that we should check PageHWPoison() for each subpage
+>before batching.
+>
+>However, IIUC, your suggestion can only reduce the race window instead
+>of avoiding it completely. PageHWPoison() may be set even after checking
+>it anyway.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
-v2:
-- Collect Acked-by from Mike Rapoport
----
- include/linux/hugetlb.h | 2 --
- mm/hugetlb.c            | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Yeah, agreed. Still racy if PageHWPoison() gets set right after the
+check.
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 255a258f11d1..900c95e346b2 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -675,8 +675,6 @@ struct hstate {
- 	char name[HSTATE_NAME_LEN];
- };
- 
--#define HUGE_BOOTMEM_ZONES_VALID	BIT(0)
--
- int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
- void wait_for_freed_hugetlb_folios(void);
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index b2b80284c4ce..3116e323fe31 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -55,6 +55,8 @@
- #include "sparse.h"
- #include <linux/page-isolation.h>
- 
-+#define HUGE_BOOTMEM_ZONES_VALID	BIT(0)
-+
- struct huge_bootmem_page {
- 	struct list_head list;
- 	struct hstate *hstate;
--- 
-2.54.0
+IIUC, the real window is earlier than folio_lock(): between
+TestSetPageHWPoison() and get_hwpoison_page(). No extra ref pins the old
+folio there, so migration can finish and move the mappings to the new
+folio. memory_failure() then only handles the old page, leaving the
+migrated mapping without HWPoison handling.
 
+Thing is, batching makes that window a whole lot wider ... old loop at
+least checks each subpage, while one healthy first page now gives the
+whole batch a green light. So it can miss a tail page already poisoned
+before batching even starts.
+
+Per-subpage check won't make the race go away, but at least keeps
+batching from making it worse.
+
+No clever idea from me yet on how to close it completely ...
+
+Cheers, Lance
+
+>
+>---
+>Best Regards,
+>Huang, Ying
+>
+>> Thanks, Lance
+>>
+>>>Thanks both.
+>>>.
+>>>
+>>>> 
+>>>> Starting from a healthy first subpage, folio_migrate_pte_batch() can
+>>>> then batch across poisoned tail page. hwpoison only describes first
+>>>> subpage, so set_softleaf_ptes() installs a normal migration entry for
+>>>> poisoned page instead of an HWPoison entry ...
+>>>> 
+>>>> Should folio_migrate_pte_batch() check PageHWPoison() on every candidate
+>>>> subpage and stop before a poisoned one?
+>>>> 
+>>>> Cheers, Lance
+>>>> 
+>>>> 
+>>>>> +	/*
+>>>>> +	 * If unmap fails, we need to restore the ptes. To avoid accidentally
+>>>>> +	 * upgrading write permissions for ptes that were not originally writable,
+>>>>> +	 * and to avoid losing the soft-dirty bit, use the appropriate FPB flags.
+>>>>> +	 */
+>>>>> +	nr = folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
+>>>>> +				   FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>>>>> +
+>>>>> +	/* Limit possible batch count to a uniform PageAnonExclusive value */
+>>>>> +	if (folio_test_anon(folio))
+>>>>> +		nr = page_anon_exclusive_batch(0, nr, subpage, anon_exclusive);
+>>>>> +
+>>>>> +	return nr;
+>>>>> +}
+>>>>> +
+>>>>> /*
+>>>>>  * @arg: enum ttu_flags will be passed to this argument.
+>>>>>  *
+>>>>> @@ -2686,12 +2724,12 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>> {
+>>>>> 	struct mm_struct *mm = vma->vm_mm;
+>>>>> 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
+>>>>> -	bool anon_exclusive, writable, ret = true;
+>>>>> +	bool anon_exclusive, hwpoison, writable, ret = true;
+>>>>> 	pte_t pteval;
+>>>>> 	struct page *subpage;
+>>>>> 	struct mmu_notifier_range range;
+>>>>> 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+>>>>> -	unsigned long pfn;
+>>>>> +	unsigned long pfn, end_addr, nr_pages;
+>>>>>
+>>>>> 	/*
+>>>>> 	 * When racing against e.g. zap_pte_range() on another cpu,
+>>>>> @@ -2744,11 +2782,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>> 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+>>>>> 					!folio_test_pmd_mappable(folio), folio);
+>>>>>
+>>>>> -			if (set_pmd_migration_entry(&pvmw, subpage)) {
+>>>>> -				ret = false;
+>>>>> -				page_vma_mapped_walk_done(&pvmw);
+>>>>> -				break;
+>>>>> -			}
+>>>>> +			if (set_pmd_migration_entry(&pvmw, subpage))
+>>>>> +				goto walk_abort;
+>>>>> 			continue;
+>>>>> #endif
+>>>>> 		}
+>>>>> @@ -2773,10 +2808,25 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>> 		subpage = folio_page(folio, pfn - folio_pfn(folio));
+>>>>> 		anon_exclusive = folio_test_anon(folio) &&
+>>>>> 				 PageAnonExclusive(subpage);
+>>>>> +		/*
+>>>>> +		 * memory_failure() can set PageHWPoison concurrently without holding
+>>>>> +		 * the folio lock. Snapshot the flag here to decide whether to batch
+>>>>> +		 * PTEs or install hwpoison entry.
+>>>>> +		 */
+>>>>> +		hwpoison = PageHWPoison(subpage);
+>>>>>
+>>>>> +		nr_pages = 1;
+>>>>> 		if (likely(pte_present(pteval))) {
+>>>>> -			flush_cache_page(vma, address, pfn);
+>>>>> -			/* Nuke the page table entry. */
+>>>>> +			if (!hwpoison)
+>>>>> +				nr_pages = folio_migrate_pte_batch(folio, &pvmw,
+>>>>> +								   pteval, subpage,
+>>>>> +								   anon_exclusive);
+>>>>> +
+>>>>> +			end_addr = address + nr_pages * PAGE_SIZE;
+>>>>> +			flush_cache_range(vma, address, end_addr);
+>>>>> +
+>>>>> +			/* Nuke the page table entries. */
+>>>>> +			pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
+>>>>> 			if (should_defer_flush(mm, flags)) {
+>>>>> 				/*
+>>>>> 				 * We clear the PTE but do not flush so potentially
+>>>>> @@ -2786,11 +2836,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>> 				 * transition on a cached TLB entry is written through
+>>>>> 				 * and traps if the PTE is unmapped.
+>>>>> 				 */
+>>>>> -				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
+>>>>> -
+>>>>> -				set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
+>>>>> +				set_tlb_ubc_flush_pending(mm, pteval, address, end_addr);
+>>>>> 			} else {
+>>>>> -				pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>>>>> +				flush_tlb_range(vma, address, end_addr);
+>>>>> 			}
+>>>>> 			if (pte_dirty(pteval))
+>>>>> 				folio_mark_dirty(folio);
+>>>>> @@ -2809,7 +2857,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>> 		/* Update high watermark before we lower rss */
+>>>>> 		update_hiwater_rss(mm);
+>>>>>
+>>>>> -		if (PageHWPoison(subpage)) {
+>>>>> +		if (hwpoison) {
+>>>>> +			VM_WARN_ON_ONCE(nr_pages != 1);
+>>>>> 			VM_WARN_ON_FOLIO(folio_is_device_private(folio), folio);
+>>>>>
+>>>>> 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+>>>>> @@ -2837,19 +2886,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>> 			 * so we'll not check/care.
+>>>>> 			 */
+>>>>> 			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+>>>>> -				set_pte_at(mm, address, pvmw.pte, pteval);
+>>>>> -				ret = false;
+>>>>> -				page_vma_mapped_walk_done(&pvmw);
+>>>>> -				break;
+>>>>> +				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+>>>>> +				goto walk_abort;
+>>>>> 			}
+>>>>>
+>>>>> -			/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
+>>>>> +			/* See folio_try_share_anon_rmap_ptes(): clear PTE first. */
+>>>>> 			if (anon_exclusive &&
+>>>>> -			    folio_try_share_anon_rmap_pte(folio, subpage)) {
+>>>>> -				set_pte_at(mm, address, pvmw.pte, pteval);
+>>>>> -				ret = false;
+>>>>> -				page_vma_mapped_walk_done(&pvmw);
+>>>>> -				break;
+>>>>> +			    folio_try_share_anon_rmap_ptes(folio, subpage, nr_pages)) {
+>>>>> +				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+>>>>> +				goto walk_abort;
+>>>>> 			}
+>>>>>
+>>>>> 			/*
+>>>>> @@ -2859,19 +2904,31 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>> 			 */
+>>>>> 			swp_pte = make_migration_pte(subpage, pteval,
+>>>>> 						     writable, anon_exclusive);
+>>>>> -			set_pte_at(mm, address, pvmw.pte, swp_pte);
+>>>>> 			trace_set_migration_pte(address, pte_val(swp_pte),
+>>>>> 						folio_order(folio));
+>>>>> +
+>>>>> +			/* Set nr_pages migration entries, advancing the PFN. */
+>>>>> +			set_softleaf_ptes(mm, address, pvmw.pte, swp_pte, nr_pages);
+>>>>> 			/*
+>>>>> 			 * No need to invalidate here it will synchronize on
+>>>>> 			 * against the special swap migration pte.
+>>>>> 			 */
+>>>>> 		}
+>>>>>
+>>>>> -		folio_remove_rmap_pte(folio, subpage, vma);
+>>>>> -		if (vma->vm_flags & VM_LOCKED)
+>>>>> -			mlock_drain_local();
+>>>>> -		folio_put(folio);
+>>>>> +		finish_folio_unmap(vma, folio, subpage, nr_pages);
+>>>>> +
+>>>>> +		/*
+>>>>> +		 * If we batched the entire folio, there is nothing left to
+>>>>> +		 * walk; stop right here.
+>>>>> +		 */
+>>>>> +		if (nr_pages == folio_nr_pages(folio))
+>>>>> +			goto walk_done;
+>>>>> +		continue;
+>>>>> +walk_abort:
+>>>>> +		ret = false;
+>>>>> +walk_done:
+>>>>> +		page_vma_mapped_walk_done(&pvmw);
+>>>>> +		break;
+>>>>> 	}
+>>>>>
+>>>>> 	mmu_notifier_invalidate_range_end(&range);
+>>>>>
+>>>>> -- 
+>>>>> 2.43.0
+>>>>>
+>>>>>
+>>>> .
+>>>> 
+>>>
+>>>
+>
 
