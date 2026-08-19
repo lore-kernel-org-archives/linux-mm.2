@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD2C6C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 434EBC5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B21076B009F; Wed, 19 Aug 2026 19:10:16 -0400 (EDT)
+	id 8FE626B00A0; Wed, 19 Aug 2026 19:10:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF94A6B00A0; Wed, 19 Aug 2026 19:10:16 -0400 (EDT)
+	id 8D8BC6B00A1; Wed, 19 Aug 2026 19:10:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A36266B00A1; Wed, 19 Aug 2026 19:10:16 -0400 (EDT)
+	id 7EC156B00A2; Wed, 19 Aug 2026 19:10:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C2AD6B009F
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:16 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D87B58049B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:15 +0000 (UTC)
-X-FDA: 85119564390.28.DBB7966
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0936C180003
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oAI6Ih3E;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EE156B00A0
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D652DA04BF
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:20 +0000 (UTC)
+X-FDA: 85119564600.01.4234B24
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 277A540006
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K6JWGD+W;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787181014;
+	s=arc-20220608; t=1787181019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0RC2YxYzQBAU6npYN6xnbM7sVbfE8POELBDVIx12dQs=;
-	b=OiPQoTnVbImEv8mTJUzdD8W1uzV+NkbuyE5yEndgYwURNgMZ7HA1bDHfsrVqTSQyokEdMg
-	0kXFHTiuDJPsatkk5Iwn+KTwTSVJJxgvTDLLoOahe4OL2p+PR6KjpdxYvH176I1MhbNaMY
-	hjOVtfHJ2Rqa2YT4UVsMu5hk9+2Vqgc=
+	bh=ivPc/dtcW/97whhIcc40lJlLMO/RUpWFUvsYkOmQdfY=;
+	b=1B+Ihi6y3wcXg8Y8yWNMFD7u+ghdwHQR2hYa9vjt/mRaUO/2d3xexiEoZV0Sz4CMGX0xLB
+	Ibd43apeCm3+togYFUXcCWMCUGhr1AsYXtDX0B78cNroVHRs1GSTs3OcgsV1IgP/oD1aKX
+	YNToSwfbClb/0ZDlHaFtgBvR8kLqlzQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oAI6Ih3E;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K6JWGD+W;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787181014;
-	b=h/60tRC4sVW9RU9vHY0ElJxNht9pyXbXMxCaOYE4Rbp3XiZUr669WEaJlvB0Yc/ppgXclZ
-	lJkbLDaUlG/x9htvLChPmtueQ8NBgcnqem169lQaBkZvCMQO7iFSckdycVO8NNjqH/iFIs
-	LcK+R537htf3d/1blkOKl4hBgiuRGTY=
+	t=1787181019;
+	b=rxhLfbbXgwPi320a9xjBed3J00eQoEVlErHkepJlwmuFfVfnXyZOR8Ha9gV1RJWd5TCeA1
+	n7iAv5F1u3DtsLKH815cpZmwKsd9QQoIreKgYGkJmfw242vL1621VS8BmJtfnd6bihLXDI
+	7j6s082+vSuEqh1B2tE04LVt5ukjpHM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 526D240524;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9BDA26187F;
+	Wed, 19 Aug 2026 23:10:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEF71F000E9;
 	Wed, 19 Aug 2026 23:10:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ABF1F00A3D;
-	Wed, 19 Aug 2026 23:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787181013;
-	bh=0RC2YxYzQBAU6npYN6xnbM7sVbfE8POELBDVIx12dQs=;
+	s=k20260515; t=1787181018;
+	bh=ivPc/dtcW/97whhIcc40lJlLMO/RUpWFUvsYkOmQdfY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oAI6Ih3ES/uFGIJgmiQTn7WY/aZkn/AmM5u9fkKnyStjUi5sXMyjRKOtSV5LDe940
-	 7wihflb810Z+L9Ww4j7YrE8EejKnI6YrxR4rECv8TzgORD9meFSPK+LjfG/oSYFWLC
-	 6vsnvLC4hn1ofgJ7jtXSxaJL35SXJnVtwb4tWWg/egX0jbQmfm7BhPxfbbRF8iiVZw
-	 PalTaJOSi03ConwvdOQZfr0rrSv8vPIXC7y4mv38CBQxMR5h4+4LjCxroelASoaXzv
-	 9zh1A+0jgLLMWzoIQoZ9mKRhWi/Fo/js7nQJb+oLreuUtRaSdzXx90mtVuRx/bt2T4
-	 yPwURA42dZGog==
+	b=K6JWGD+W555VcCnv/WfeQSB+QTrQbSBqmZ9f3ug7SqSUGzYbWr0dw66iiH8N56xB3
+	 FVhtRLxW6JDZUa3YuUwlb9kGKhtvLUcxhU6d7R9+RD83f0WYxXybttNB3adLAvDfZx
+	 cdl2qR5wwhP6/IQem4P/DhDavLdhnZfGQvoIXBDmhn2ucjkKPL8lVuji0h2Glg3S09
+	 e/bA11p7IMAFLWhywPR4+fGjqwsZYLmbvb+kfG54EEBI9/GulE6lkFCq3hklGMCDgS
+	 qrrz5HvMZLX0fyPeIhW1dc8zjIDKv+nb124YfIlTOyLZwA7auRxlmzONjbyM/Dkjwz
+	 1ySXTCfRaRz8Q==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 20 Aug 2026 01:09:20 +0200
-Subject: [PATCH v2 03/22] coredump: set the minimum send buffer size
+Date: Thu, 20 Aug 2026 01:09:21 +0200
+Subject: [PATCH v2 04/22] selftests/coredump: discard the right amount
+ after the coredump request
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-work-coredump-sparse-v2-3-ba32dd718c51@kernel.org>
+Message-Id: <20260820-work-coredump-sparse-v2-4-ba32dd718c51@kernel.org>
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 In-Reply-To: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -86,22 +87,22 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1451; i=brauner@kernel.org;
- h=from:subject:message-id; bh=5Qwhyl+9KLUXcn7sqhHlco4XV14G2yqAc5quiUYCHt8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me8TeBZ77qmlydyE53qlJxOEfibmzdt/tU1OvC3v2
- LHf31YrdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzEVISRoVPG1XmbU4xXxda6
- P7ovat3kLVoWdwuXsnMvDFOOcrv1iOEXs+T5eW+uTLjurOJqYFRRsmHCi7ULJ++9HRoYU2ka8iW
- fFQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2069; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=dsu3ug1yJTi0SPZbLicDCFNStcMxXGAWYCl1/1v264s=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me+7pRe3+NMWjXSGn5lHmO/EKd9Leiq2r49pmuC9Z
+ ynJFa9fdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkViYjw76XK//37H+/YW/U
+ tHo7Lyn1ta89ou43Hp/Le/qinD/j4lhGhn9iWpqvbRasebPDKSth9Szdm0/0Mzj/7pdY5XOlfc4
+ LHTYA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 0936C180003
-X-Stat-Signature: enr3m95s1ou5ot3uhn9od1xyziczgnsf
+X-Rspamd-Queue-Id: 277A540006
+X-Stat-Signature: n1uf1ix5ic7nrf4584try4hqg51oxkhe
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1787181013-66956
-X-HE-Meta: U2FsdGVkX18J2yODTEJ2jKKwF7a5pEmfFCpIV3ZUnIhq+gAQq0bDgLHZxhBs3TA0pTRfYdNo+88B9mCVxxaoHIU3RMrSc+11MuWA7i9DkJpiPzhO+TfaHLRWDk+0HOEqPsiN0Rc5IXN/uy44r3x096VqAwV9Au/jLBLOA930fQf3rC/TuYWpjxWsFQaCyrOdIKOIoqOQ7xfAps+KPJg4jee1YWcshXSfO+X8UVWuomyMlukZ0QDToHiR8mtGRzYiQPIFCaK5evcsLEiOyW5cmwWBJq0PCiC4Fn8pr06y0tWvu3j/oZ8JnPoXC9sOtw7JEMzSCMedwviNoTBIDZHb4YmecK3VR+z0KaBqYGtufVd13QxWwrH1/FS8kQOtFj6GpjaA3BsendvzdcV/zvcAEj3Oqv7BMxb0+ULkmVAHjFl6KQ2Y8xbmFl/Evs/9ZMfvdbdokLphnylGms4jcMKN0O/QnRxboRxJolz/XQNspS+9hlNXOzvjcE9KvwuOyQPAoxWgzWjgiPCWXaVZ0NDGxEFtdun6y+j/kCtFCIZ1wf9ZCMbCBfpBgz9ve+2dNkOvRV7xs2cflMgvxJDw1Na2PjPz4RQiXHe3KHW2Hhwsb3QDMGaviXmKREOrN4cAn7FYPCNfVr76mYR0SXEXqNAJqsIKspt+KlsQhtcuISOYWK105IxQHtYmQj4Xy0xAD+O5Pj7NzvKVbVu/diUGxZREgD02YXf0o5VGjG7EoV1mZShxSKw2Xzk6MPyM/+NsKCHKzfQTw+dVT11iVFB9tZQX10PrksYdE7DiqQw8x8hXa2UVBvOI6e/kylPZwXdcP9K8BPkDDhtPyvPQ5U8u/pfTVAfIjVW3K8dykfMV3FfXvKWTtETaiHrZ94fM1LA1t2EIOowwsAvSmsHLP5Cuf7zfNGghw0iZ+HJXdkUOnEFLuar0K+XDv5XO8znGkW/O5+/thvUu7YfVc4tKuszTvEA
- rV8sq8d2
- IMdAUfRlH//IsfDdDuNOCLqu3e0HNOXHKC7WI/9Xo1sN/hMf3FHXvWgIwMWUKXkFvDGonC08703aeUFbVhDxOp1chBCQL59JISH7FSHn01IhZBxyv31WiZQh3vRJOs/K8WQAFJ3nemZaO2uRP8QR+H+OUYAHCWDNAt/jopT5i+lbomRP7Pn02km7muO+8aV/vsuxAkBRWfvvIQmUqh6NyKCaw5GR0OCTOdSLyQaFkmhSq6gTkgGSEhUCI5TpnYkhgAeycXfkU6wFdjdsTAOct8tb63Q==
+X-HE-Tag: 1787181018-682984
+X-HE-Meta: U2FsdGVkX18tIel/kwYWXQCL4P0Ulok2A0ZowbkJ7YF3/8PmGgLz7YHqKnU7OLG+PUjKbDYSVI19E8EbNjEB7aQMkiYVYOfP3VqUdQHwHUF68ki8/FrHILezRTBWu6mhaL4Me4URKWFPJ5yxCBHxlLf46rHspeiDp8sqp16GovEFD1mFsJRRgC5jMIzfXWCiDpBSrT6nKz2efwpqB6ftUNcMB5s0fMy9YijQeF6ogo21E9peBGuumFaoPHJyREhslz91pob4FuVRPC2+q22r8kbc1yiaJepTxwTMRdhlZ1Vy8bOwJugAGjWqbCgApUGbNQfQ1+WQFImg8pFjijdZV9qgknCbF6UavUNjyWACwbJhnEXDg2+WYchLgfQ+D7P/29/4DpqwTARCAsIA62JbJOEP0bpKuot/ex/dXDJ6AC03QrSSf/sZ5NsvUpS3jEmGdJQ0RZOHaOxvnEXiL1+3/0SRXDichHVhfW1diLN31hq9NkbafnQN/ElwTt0wpHFDwQAtgI7wLTvdBYzqNEB3CWLKVRWowZWOXMWC63kIZhnDqijoXV54Ajc3osL//EjnKBfkvgbl6pHKMnFu6URAX81T1mQVCe5xC3LUyhpnrKVQvLYpDmsy5XxJkoH0b9tzkv5rgWh1W4zc3t6ffTFDW/kajU6r1+7Fck4NvGeW017j7jhXeXGu441XhopkldOmFRTdtn0DnkKguHNgyxooUbg781G6t0TXQBlHO3VfqZhjZvbOnStxV3ah9B7VqDUEVUx7qT+ObXVFqELevhQN6IY3QkmCepLYl20HFHQNUVwjEKH4V+TJHCj2j2FakuD8OtGj4UTHH2qI/NQvFHS8i/o90iRTjTUvtVC0F1YnwU2adZ7RdbV4cATluCL+lhdarWMFZlFA5Ou3LklsYiUl7gykSqm6vc4W1+8/KsvWYozAWBrWhSOvXChMQ9Ji2gVRVI4/FpXoIvMrnX1wmwc
+ /031HC4W
+ ePrQjbhD57vv0IcJ5UQPexMc2VHEKbISQgY+afx7OwtSwDDbRvpXb6tUu9WrwHcYq57ZX4Oxn/pxRGNTfQZac/aXrSl/DyFUcSBcC2Hq1AWf/gsK+bxM9iIdsHi12ALKqn/+GQqODsmX9atc/3l721BaI2gwFPimZMGZXIg/RBaKmfkhCeLGFdQcgo0Nth5i8DTcUDbVw2Zoz2YyZMakUMSGEK1KGH8fD0EjUCawfvPQ9PBVHkSQAOGZLQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,43 +110,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The send buffer of the coredump socket is subject to the limit in
-net.core.wmem_default. af_unix uses sk_sndbuf / 2 - 64 bytes for a
-single skb. That means a send buffer below that would split a page-sized
-write into multiple skbs. Raise the send buffer to leave room for a
-page-sized write plus the header. The default value is well above that.
-So we really change it when it's below our minimum.
+read_coredump_req() gets the leftover wrong twice.
 
+It takes the absolute difference of the two sizes, so a test binary that
+knows a larger struct coredump_req than the kernel sends tries to discard
+bytes that were never sent. And it hands recv() sizeof(buffer) instead of
+the number of bytes it wants. So MSG_WAITALL waits for a whole page.
+Either one blocks until the kernel closes the socket. Which it won't
+because it is waiting for the coredump ack...
+
+It's benign today because struct coredump_req hasn't grown. But let's fix
+it for the future. Compute the leftover as what the kernel sent beyond
+what was consumed.
+
+Fixes: 59cd658eaf40 ("selftests/coredump: add coredump server selftests")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/coredump/coredump_test_helpers.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index ac4e922c9cb9..24a6405ea242 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -665,6 +665,9 @@ static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
- }
+diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.c b/tools/testing/selftests/coredump/coredump_test_helpers.c
+index 2a20faf9cb0a..524fa5370593 100644
+--- a/tools/testing/selftests/coredump/coredump_test_helpers.c
++++ b/tools/testing/selftests/coredump/coredump_test_helpers.c
+@@ -235,10 +235,10 @@ bool read_coredump_req(int fd, struct coredump_req *req)
+ 	fprintf(stderr, "Read coredump request with size %u and mask 0x%llx\n",
+ 		req->size, (unsigned long long)req->mask);
  
- #ifdef CONFIG_UNIX
-+/* af_unix halves the send buffer to size a single skb. */
-+#define COREDUMP_SOCK_SNDBUF_MIN (3 * PAGE_SIZE)
-+
- static bool coredump_sock_connect(struct core_name *cn, struct coredump_params *cprm)
- {
- 	struct file *file __free(fput) = NULL;
-@@ -690,6 +693,10 @@ static bool coredump_sock_connect(struct core_name *cn, struct coredump_params *
- 	if (retval < 0)
- 		return false;
+-	if (user_size > kernel_size)
+-		remaining_size = user_size - kernel_size;
+-	else
++	if (kernel_size > user_size)
+ 		remaining_size = kernel_size - user_size;
++	else
++		remaining_size = 0;
  
-+	/* Don't let a page-sized write split into several skbs. */
-+	socket->sk->sk_sndbuf = max_t(int, socket->sk->sk_sndbuf,
-+				      COREDUMP_SOCK_SNDBUF_MIN);
-+
- 	file = sock_alloc_file(socket, 0, NULL);
- 	if (IS_ERR(file))
+ 	if (PAGE_SIZE <= remaining_size)
  		return false;
+@@ -250,7 +250,7 @@ bool read_coredump_req(int fd, struct coredump_req *req)
+ 	if (remaining_size) {
+ 		char buffer[PAGE_SIZE];
+ 
+-		ret = recv(fd, buffer, sizeof(buffer), MSG_WAITALL);
++		ret = recv(fd, buffer, remaining_size, MSG_WAITALL);
+ 		if (ret != remaining_size)
+ 			return false;
+ 		fprintf(stderr, "Discarded %zu bytes of data after coredump request\n", remaining_size);
 
 -- 
 2.53.0
