@@ -4,116 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8226C5DF7D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:04:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A7EFC5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 03:08:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E64746B0092; Tue, 18 Aug 2026 23:04:18 -0400 (EDT)
+	id 19A2E6B008A; Tue, 18 Aug 2026 23:08:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E39C66B0093; Tue, 18 Aug 2026 23:04:18 -0400 (EDT)
+	id 149E76B008C; Tue, 18 Aug 2026 23:08:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D503F6B0099; Tue, 18 Aug 2026 23:04:18 -0400 (EDT)
+	id 0872F6B0095; Tue, 18 Aug 2026 23:08:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DFF46B0092
-	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:04:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1FF40A14BF
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:04:18 +0000 (UTC)
-X-FDA: 85116525396.22.C86654F
-Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4953A20006
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:04:16 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=G7vlSgJQ;
-	spf=pass (imf31.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D2DD96B008A
+	for <linux-mm@kvack.org>; Tue, 18 Aug 2026 23:08:27 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5ED17A03E2
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:08:27 +0000 (UTC)
+X-FDA: 85116535854.01.E5A62AA
+Received: from mta1.migadu.com (out-216.mta1.migadu.com [95.215.58.216])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3B674100009
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:08:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fFQ4ly0E;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.216 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787108656;
+	s=arc-20220608; t=1787108905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=276tg3SMLDavi/qnvy971rQZcpwVcCkj3/rR12mXK5o=;
-	b=OBOgaPyyNvGAq30Dur6+IJq+aRCdoZGdoW1geQ8vf9hNwgEUZbO7KNZ6GV4qfuaS93F4nC
-	8vtlGzkRy+T3ju57RlHiwtCck/7X73aXi/6oFrc91XRE87cqeLwpi56iwdbVn/FAwxZKCj
-	GMdmVKCUYBv/mg3teKYmEk89S9uwLl4=
+	bh=1PLqwH+pRc4V/+v0YoUGMSqF0/0UHRZfN4gb6Q8yd6s=;
+	b=euRPpk7W7ZpNkaXNeXJGATpHn0NYKpuL5/8bNER6IDtPQes0P2+MwkwzDxEapYvBKUoord
+	RHt3Y4apbd8o1WGO13Bjjaz5+gVKVLlgDloX+HAXGYyjePfWBvd71TWnJBz1xjwQ9yQQDV
+	fv0bR22GtwSfSXof7SrfFKh4R1+hsMc=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=G7vlSgJQ;
-	spf=pass (imf31.hostedemail.com: domain of foxieflakey@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=foxieflakey@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fFQ4ly0E;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.216 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787108656;
-	b=kQKDl74/aFJ6lQZXDDrVP4Oe/7U1eXHa3mni1XiD9BdJ+eUUg+VP87iEt0JiPa4ow4R3Sq
-	25X5bDyDfwcokfveLpIhg6f7s0BiB00TwkLiyspVwtmuh0fvr6GBkwcudXkRrgWMKTzdgK
-	neeot/WjTn+V8nlAZsPTyE3kC/xnc3A=
-Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-37fb1883fbfso200799a91.0
-        for <linux-mm@kvack.org>; Tue, 18 Aug 2026 20:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787108655; x=1787713455; darn=kvack.org;
-        h=content-id:content-type:mime-version:references:message-id
-         :in-reply-to:subject:cc:to:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=276tg3SMLDavi/qnvy971rQZcpwVcCkj3/rR12mXK5o=;
-        b=G7vlSgJQ319ZGdCDmKA5ff7zbQAfVerm2kwygH13QUda0Bdlz/7/REifz56WCnmxCO
-         yr9PtClV/gdsPEKvMXBhhObd8mET3f7Y1m91Namza027qcp2pnTX0N2vBi2x4P/Auqum
-         frZleH0pDgucHw5t8+JsCtZZWX/tNSyiilS1WxJieUKMJYglffUpF3VtATc/L+CjjI+U
-         Q9FRy6ir9gybW6zv9JepPrFS9U2ElsZei1d5jEBzVvvzrFhPMsl1IUbueRxiSasPSCny
-         c1diWd0ld+15NmvSslCyPpR0ZNzMNzEBP97jKdU6KykSNFsOfWZqlQpb0giceFW+/cDO
-         PeAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787108655; x=1787713455;
-        h=content-id:content-type:mime-version:references:message-id
-         :in-reply-to:subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=276tg3SMLDavi/qnvy971rQZcpwVcCkj3/rR12mXK5o=;
-        b=YparTX37v/Q55H44y0cP6hnY8UKd2H/8Roa4A5pc4VLyVZROD0zwwYDgS/fWD1xd/P
-         5VQPDM4DC4nsNTTGbkzwEPR69gEejDuOT0gbSzmxZqgraVjZPGOcJCjzZXJRXEXD4LhY
-         6kd1y01bnTYoNK61UFJdSYXmBYlADSQDGPyuG60vvE4oRJEgD5VndUGZHjvI3RriUzZ+
-         JQ76Dk6Eryd6KaYwZ9M2OxF693LOJPO6U3dFxryy4EUZEBFjyW73wQAF+uY5vJdOAgyi
-         Lo6L1r09bk7YND1mk/nEe0YM2kSYJX13VoZzBeA0U6UcS3ykT7Ss2XcokY1x5/bvjlJp
-         e5Ow==
-X-Forwarded-Encrypted: i=1; AHgh+RqqHPmW4l9hep9/a+8LhjtWYRwsA1VrxIzqxWl1IYw34DjdpKtYvspVQuNVioL7AmF4PVG9jl2COA==@kvack.org
-X-Gm-Message-State: AOJu0YwgQTc+g7G3Rq9pnaNTPs8K/r7pGL1qRPl+nphWZFopX2CWw6mb
-	7EQVtLSyGps4iCnOFm5/U91Mcn+Hph7iYmq80Ej0Amo3ZpjHm2S8ci4G
-X-Gm-Gg: AR+sD12N5c6A4aSoWcj6JT8QGe1HQa8/vRrqUQfIB+pM9VcclxXmfwLF1/wvpRRVl7J
-	SNa6r16/ynLsei+azlw4Zqudy8SRf+5dM3XIFDExnug9J3h06b9lWGz5T1jMCGVUXwK8oCeYmN0
-	IrHAt6QwKDoZ5fyNDd6wm4wIjwIojC5faavLi9XO8KlbRkErM6kEo6zUKOTiXUPLIa9Y1G+rE7V
-	b1tGPDiwl/xT0EGF6kWQI/wLjx3ZzaLfZAtIgmHyjOZ4KXzww2e4k+pFWVa5kYnP86lGGRaXAb5
-	vCINfHEbKFjAuES6+7oKkut1SfRchWRRjhc7nakpXbH3oLyuLZu362FfTPveWC149piqHhd6F4K
-	vt84qScGnQAFI9n4zEPgnKD8tAd7k4QgPUkileefQYWF2uiOqkx7N36yXejHLbfwiOrIz/sKl7V
-	mYU8jRMGvKAcF5ObsIEQ3mTr/8JlhNZODbIvldtnEEMP8PEEm8xKg/npxGKo/+U3lMG30=
-X-Received: by 2002:a17:90b:4fd0:b0:38e:5b59:c2ff with SMTP id 98e67ed59e1d1-39580a4d031mr2838795a91.3.1787108654838;
-        Tue, 18 Aug 2026 20:04:14 -0700 (PDT)
-Received: from 192.168.1.6 ([140.213.202.182])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bef3bb46sm1517533eec.3.2026.08.18.20.04.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 20:04:14 -0700 (PDT)
-From: Foxie Flakey <foxieflakey@gmail.com>
-X-Google-Original-From: Foxie Flakey <foxie@gmail.com>
-Date: Wed, 19 Aug 2026 10:04:10 +0700 (WIB)
-To: Suren Baghdasaryan <surenb@google.com>
-cc: Foxie Flakey <foxieflakey@gmail.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, rppt@kernel.org, 
-    peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: reset err to be 0 when move_pages_ptes
- succeeded
-In-Reply-To: <CAJuCfpFzcpqG+g9f-m+-B6yk=pOU+PKgKRLVowOE65S127NWzA@mail.gmail.com>
-Message-ID: <b66af965-5bee-1c20-d5b9-ce77b0c8b117@gmail.com>
-References: <9c936a9f-ed27-e510-872f-5b3b8c680975@gmail.com> <20260817152605.5d2bee3fbf1a2bace4c0eff1@linux-foundation.org> <ae1cdc48-4293-8b81-d142-3c656f2c2cfa@gmail.com> <CAJuCfpEOF3=Uu3cvoiH0tJoJhhRmwR0YLy34tyPC-2EE09xWMg@mail.gmail.com>
- <b248cc12-e083-ec37-e6f6-2a57e8cccd3b@gmail.com> <CAJuCfpFzcpqG+g9f-m+-B6yk=pOU+PKgKRLVowOE65S127NWzA@mail.gmail.com>
+	t=1787108905;
+	b=OsavH/Wyd5SmwSrrd7I2cDGFVAgiPThenOY7YiYVPWrnI+2neKQsiSxd5p7lvZLLdHIMhx
+	YCYQtgNCV8Ad4sCxvt8QU4tJqMp5sQpDhBMYCdXuECWwM3DCM3hmAsacHhxLOFrDVB0Cg5
+	X1SyGsCRt49WyMGbp3FMYrf9zoV119M=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=R9RPGX4W2sdBcGuw43AbX2HspDw/jr2m/4vM7rUIR8A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787108902; v=1; x=1787713702;
+ b=fFQ4ly0EECinPEQPKHFAsHVJHxOXnQrGluH4aOPmgo75c54QJxuVY7VQMteQ4qu8RDiXyAmg
+ cbDv06006mJNyXOq4cKZcPEiCzWQ2yFKVQai1Jk7BhHUN1Qja4R8yF8nC4A1Dh6oATf6t6FcdYq
+ E8FswRXEwdRyQA8NRBWWeiHw=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [192.168.111.29] (223.70.160.239)
+	by smtp.migadu.com with ESMTPS id 96bebe67628b13f6;
+	Wed, 19 Aug 2026 03:08:12 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <56052cbe-463d-4dbd-aa43-11f66232680c@linux.dev>
+Date: Wed, 19 Aug 2026 11:08:00 +0800
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="0-840344486-1787107643=:7449"
-Content-ID: <c46a12a4-229f-aef0-f5b7-c5e69daea2f7@gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4953A20006
-X-Stat-Signature: uise3gmp6s4h456qocxcyx9yqb1c1edj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/oom_kill: simplify remaining RCU sections with
+ scoped_guard(rcu)
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+ David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260813092933.562028-1-ye.liu@linux.dev>
+ <an2tQ90mloFCU9T0@tiehlicka>
+Content-Language: en-US
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <an2tQ90mloFCU9T0@tiehlicka>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ze4n3t3gh8ggdoagfdisgfsiaghpfyon
+X-Rspamd-Queue-Id: 3B674100009
 X-Rspam-User: 
-X-HE-Tag: 1787108656-198131
-X-HE-Meta: U2FsdGVkX18eZa9y54zskM79qKoirJQhX0ak7A3mLZxATQbsZcLR/h2LVtbTd/XxnrrXmNqsmrNNMmqByzzHo6M5CZiJVjarvT0OnM+WPvMdzLc/JylxCeHG6kvORJ4nTvaFwMOqpSrpbM64hw4MPNI1ifhwutMkyHpZYy8R/jT15TghrMIIuoO34xatdLdizhkWpktPDT36eJb8guAU8uupNPQBAPWzuMmNqMm06e7d33oRWJozFZk4ou+YRvsn0hH8aKx8yaKzAriwFzpXTMdH3JYPysf/doOVwgMNpElPirOiMNOb5wcORz63nqTBKTPjcbdKmPSjwH+cajmozM+sxmhJjzEp82hUIlDtp4bFpsBj6KpDTPLTIoUEUs5KkkWxofn8AA2a+q6/2ZDgFPUV0h8LPGWAAH/ihtNNDikttoKXZ3kNgL5kxEVI6E8wlErrJEIO7EAuNJDISUv2UBSwKt9a9CjYYuvD8/PnAzy7QpLX15aNRvIG1pb2aWBVMxpbDWtS54PYRi6nSdzVvsmWh4ZREMKUlACiCwjx70wx91SVuTC5C6qgBly2a9d/sDRcjq8GoB3l7CxapcSlZNPitVppITxWJe5OfQ5vw79mgn4hk35JJvZztvnAdQPs7zIm6r+6iY2DWXESomwKHFup7/5AtRXBYdNGvGUkA811Es6RkBOWsG7M+RvbdMPkUoGHEgBkW7Q9DT3ejAlC/71AoZXElNqOGlgkRglFvRm/gSW6dvqKIjz5o4xAWSbh4GzjiVWRiplf8Z5ioWmzP5SWmwFX1IHCXhRXA2AhXXGsU9i9klk5q0s8Zbc6GtOQ/NrbAfn9N5/OZk5e/vfLwFqKDBeiwQCrloChdx2HYmM5TtDPWcJK+TP00hERk/DbKjR4KxwgXFNnzlljYYl/UkwiQ2QMOZOrG1GdiPXmH6X2UFLOn2RokEkYvthZRtZvbD6WBqMSOYK2KAhUxOn
- Vz09Ilpf
- 2y3IcbpVIo8kndGhsT5ViBAibiOGlBv4/nqh8tAp7R9SedHlNY3mQaA4I+hXl9eIYm332R0ttcgb2Tlqm6L3kxBuHaEEIp0A7evIGVQunSBRiX4ErkF6kfxPqb+RVXyBZyEvKcM9lNIckN0jlu6oH6ITKigg6mirDIk9YxM0KUXAIidWioavmkva1mYC3fWO6p4Qr9smnFTmuRsYShPjp/u0SU4YswPuMfvrP1L/+vCU8/FyMVv3hEUVzIjYyZ+7GdjDbCokwjDeoplraKkg5whlx99SuDJeNs8E9r0LWZF5pn0DiMchEwMZv+Alrj7ahvEG9y8ZhY0aOnD7MujYKmEyfOuy81XQ4F50OYM8PRrxdZouYRFfymsAFSe1xQRlKMTadwh7QZjDMuCEkDtdkndioPDLDDZ6HCCisLP1WJZpLeWIiQWSLD46UuA3U6adD79to66TDjtzp2R8Hb7E1meXapsxAVfMj8oXB1vZ3yVUjRhVsdfu7JhixaLcnlW4h6HFvngdjSVmFHet9+rm3g0yKO0KSYcafn325+PU69iEKLsARj7ryBwq+LqZoTThD9ZSkqdUnUl/0cc2+ginsus34XQkH+cckEUCiJTxyEdGOe0JvoikmO0SI/xpBXZ7P8jxCXchEycWrKkU7CgIQxw31elRwwvrM6cIopaUWB6rVNShvm5uBDFJI+IWwSYdGiOoFTvwwflm6TPheG19z4giIHsDv0Cj+oY+3
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787108905-341550
+X-HE-Meta: U2FsdGVkX1/YnrPWTm+mulcb1mSGbwxAPzMX2zZW0fwb2LbcSa/2WQA9JeCU7oMdceav1Z+IuTxFLg0Z0Qjg7eIXG8oEMMy1UuO67DHN+jaeOTQ2mGoR/0b9788AQfe02HvCrNopkMMzXijnMy63GnIS9v2efaplFb+BVITi1RXejOhD84j7YW3AoFnlpgWlyV3CZsPCRAUnPDHp0X6JiKKXzT6Rfl22wpYj2lytancACU+fXZkWIX+JWSG99a9ccLMBrHkzZxEBGViCRjLaMIQK/xbH9Ar/2cLcGrRjA2vHEjCT0DbgY2fwaI8OdPNbKJVyl7WJtnwT9dJx2MczclQ80iw6UQMuxX8G6ZwuKhFTBcPHsKa7466FBdGG+1PbD400vKRQ0D690FRbFgobH3pym33XuRDRedMOXD5vv67xhx+9U9KOr4XkdZF+yTEP12EZF1UVej4UOu9/hC65G0OlNFpsEgb4fD4snz174c7ry02c2W1qJBlDxJWrRH7NaxajvKc88Y62nmZ3TWKH3z9ZI6onpB2dI8JzHg01QKMn98+uW5hjsaIh32fNJKsWy917oXvdf5hu+mVtRux/UKz/tdBjcJ1oMQ++nWOscT4t/aGV+vvVavL0ibV51ifevtvXjwbhAPoPEXK57PA5ggXgdKRAppd+tGIHJ2yl0mrPjcCgs/WehgEzQwvtB/eWN5qwrOUX9wkMCrx93FWCNjXMksLxGJmTl31feoOP81AUkfPa+r7AOQRtnDS0w63CDg7xEob40SjenKlizW+OsJ+e6hyIaiCEDkjCRz9KEffr1AB/ZlldGyO9rQnScAMbjCmN00Eu8JEbaI5CR6uNHgMhBKbTJ3ElWjJjjbvonNwpPcVeBrUOQ5s1pdgkKXo9Tj9dMsSC2w2XxovZg7wxhnNW5uE+NQCMSELHMtRPsmn0jSh0mTB5zILytcw+9BZOHG/j7zh538t94Jc0iRI
+ +XJIGcPB
+ Imh8q8KnP+Gow0CEalf1KmEyTzD/Oleo07Y3651u/P/zWFmR0swhhVCX0hx54jD2mBH5uMUePRHWgxKV3zMLh6kQT61DY5PwvtDugIdGqw8oOv3VkgZBm2tJmsmygbqoxVH17InOmlLuLoAZU3zKoaPCn5hJvZVvpQkMPtK6iyYVMBiz69KJBkZ6vJp7AtYp3NztGayDezTjJsnCTkPPtzIf49TUXmuZIDqmEOjlEMvGHfy9d2AXbiLKsX+uk828CKEJqsUuA8+s13T0LIg1dbctqYFYnsrbN0M9gLcc+xw5x78cI6l9svUANnWFUg5LPludx7UgbCBYutrg8n8ZRypVw9cxNn2Sw4cLqF/jyQ0bByiSd1M7cW5TncMrAfn2w7X/deDAnHhS41l+tuTII6I0lyD46LTLpdjS3KI+NyuT4Qr8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,54 +94,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---0-840344486-1787107643=:7449
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-ID: <fa3a66e8-9be9-6c33-230a-45e54ede4812@gmail.com>
 
-On Tue, 18 Aug 2026, Suren Baghdasaryan wrote:
+在 2026/8/13 19:40, Michal Hocko 写道:
+> On Thu 13-08-26 17:29:32, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> Replace the remaining manual rcu_read_lock()/rcu_read_unlock() pairs
+>> in oom_cpuset_eligible(), select_bad_process(), dump_tasks(),
+>> task_will_free_mem(), and __oom_kill_process() with scoped_guard(rcu)
+>> for consistency and simpler control flow.  scoped_guard(rcu) limits
+>> the RCU critical section to the loop body rather than the entire
+>> remaining function scope, making the protected region explicit and
+>> safer for future changes.
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> 
+> It almost looks like for_each_thread and for_each_process could gain an
+> rcu varian that would do the rcu thing internally. Have you considered
+> that? I am pretty sure there will be more cases like these.
+> 
+Adding RCU versions of for_each_thread and for_each_process 
+(for_each_thread_rcu and for_each_process_rcu) would be useful. 
+I also have some simplified code to go with them. 
+I'll send a patchset later. Thanks.
 
-> On Tue, Aug 18, 2026 at 9:50 AM Foxie Flakey <foxieflakey@gmail.com> wrote:
-> >
-> > On Tue, 18 Aug 2026, Suren Baghdasaryan wrote:
-> >
-> > > On Mon, Aug 17, 2026 at 6:13 PM Foxie Flakey <foxieflakey@gmail.com> wrote:
-> > > >
-> > > > On Mon, 17 Aug 2026, Andrew Morton wrote:
-> > > >
-> > > > > On Sat, 15 Aug 2026 17:42:12 +0700 (WIB) Foxie Flakey <foxieflakey@gmail.com> wrote:
-> > > > >
-> > > > > > Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
-> > > > > > Signed-off-by: Foxie Flakey <foxieflakey@gmail.com>
-> > > > >
-> > > > > Yes, the pseudonym is problematic - it is contrary to our written
-> > > > > rules.  But I'm a sucker for fixes, sigh.  Perhaps if someone else were
-> > > > > to send me your patch with their signoff also, the rules would be less
-> > > > > offended.
-> > > >
-> > > > I see, I'll post the updated patch and work on signoff issue later (there
-> > > > has been updates, I haven't posted v2 which updates the patch and
-> > > > description following a feedback. Why I didn't? mainly I'm not sure with
-> > > > answer for signoff)
-> > >
-> > > Yeah, please follow Mike's advise.
-> >
-> > Okay, thank you! I'll re-ask Mike again due I'm not receiving sufficient
-> > answer.
->
-> His advice was to use something that identifies you. When you meet
-> someone at a conference you do not identify yourself as Foxie Flakey
-> (unless maybe you are at some anime convention). Use the same
-> reasoning here please.
->
+> Anyway
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Thanks
+> 
+>> ---
+>> v2:
+>>  - Use scoped_guard instead of guard.
+>>  - Link：https://lore.kernel.org/all/20260813032634.344946-1-ye.liu@linux.dev/
+>>
+>>  mm/oom_kill.c | 124 +++++++++++++++++++++++++-------------------------
+>>  1 file changed, 62 insertions(+), 62 deletions(-)
+>>
+>> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+>> index 5f372f6e26fa..0e8982e5be51 100644
+>> --- a/mm/oom_kill.c
+>> +++ b/mm/oom_kill.c
+>> @@ -94,27 +94,27 @@ static bool oom_cpuset_eligible(struct task_struct *start,
+>>  	bool ret = false;
+>>  	const nodemask_t *mask = oc->nodemask;
+>>  
+>> -	rcu_read_lock();
+>> -	for_each_thread(start, tsk) {
+>> -		if (mask) {
+>> -			/*
+>> -			 * If this is a mempolicy constrained oom, tsk's
+>> -			 * cpuset is irrelevant.  Only return true if its
+>> -			 * mempolicy intersects current, otherwise it may be
+>> -			 * needlessly killed.
+>> -			 */
+>> -			ret = mempolicy_in_oom_domain(tsk, mask);
+>> -		} else {
+>> -			/*
+>> -			 * This is not a mempolicy constrained oom, so only
+>> -			 * check the mems of tsk's cpuset.
+>> -			 */
+>> -			ret = cpuset_mems_allowed_intersects(current, tsk);
+>> +	scoped_guard(rcu) {
+>> +		for_each_thread(start, tsk) {
+>> +			if (mask) {
+>> +				/*
+>> +				 * If this is a mempolicy constrained oom, tsk's
+>> +				 * cpuset is irrelevant.  Only return true if its
+>> +				 * mempolicy intersects current, otherwise it may be
+>> +				 * needlessly killed.
+>> +				 */
+>> +				ret = mempolicy_in_oom_domain(tsk, mask);
+>> +			} else {
+>> +				/*
+>> +				 * This is not a mempolicy constrained oom, so only
+>> +				 * check the mems of tsk's cpuset.
+>> +				 */
+>> +				ret = cpuset_mems_allowed_intersects(current, tsk);
+>> +			}
+>> +			if (ret)
+>> +				break;
+>>  		}
+>> -		if (ret)
+>> -			break;
+>>  	}
+>> -	rcu_read_unlock();
+>>  
+>>  	return ret;
+>>  }
+>> @@ -368,11 +368,11 @@ static void select_bad_process(struct oom_control *oc)
+>>  	else {
+>>  		struct task_struct *p;
+>>  
+>> -		rcu_read_lock();
+>> -		for_each_process(p)
+>> -			if (oom_evaluate_task(p, oc))
+>> -				break;
+>> -		rcu_read_unlock();
+>> +		scoped_guard(rcu) {
+>> +			for_each_process(p)
+>> +				if (oom_evaluate_task(p, oc))
+>> +					break;
+>> +		}
+>>  	}
+>>  }
+>>  
+>> @@ -430,14 +430,14 @@ static void dump_tasks(struct oom_control *oc)
+>>  		struct task_struct *p;
+>>  		int i = 0;
+>>  
+>> -		rcu_read_lock();
+>> -		for_each_process(p) {
+>> -			/* Avoid potential softlockup warning */
+>> -			if ((++i & 1023) == 0)
+>> -				touch_softlockup_watchdog();
+>> -			dump_task(p, oc);
+>> +		scoped_guard(rcu) {
+>> +			for_each_process(p) {
+>> +				/* Avoid potential softlockup warning */
+>> +				if ((++i & 1023) == 0)
+>> +					touch_softlockup_watchdog();
+>> +				dump_task(p, oc);
+>> +			}
+>>  		}
+>> -		rcu_read_unlock();
+>>  	}
+>>  }
+>>  
+>> @@ -894,17 +894,17 @@ static bool task_will_free_mem(struct task_struct *task)
+>>  	 * are dying as well to make sure that a) nobody pins its mm and
+>>  	 * b) the task is also reapable by the oom reaper.
+>>  	 */
+>> -	rcu_read_lock();
+>> -	for_each_process(p) {
+>> -		if (!process_shares_mm(p, mm))
+>> -			continue;
+>> -		if (same_thread_group(task, p))
+>> -			continue;
+>> -		ret = __task_will_free_mem(p);
+>> -		if (!ret)
+>> -			break;
+>> +	scoped_guard(rcu) {
+>> +		for_each_process(p) {
+>> +			if (!process_shares_mm(p, mm))
+>> +				continue;
+>> +			if (same_thread_group(task, p))
+>> +				continue;
+>> +			ret = __task_will_free_mem(p);
+>> +			if (!ret)
+>> +				break;
+>> +		}
+>>  	}
+>> -	rcu_read_unlock();
+>>  
+>>  	return ret;
+>>  }
+>> @@ -960,29 +960,29 @@ static void __oom_kill_process(struct task_struct *victim, const char *message)
+>>  	 * That thread will now get access to memory reserves since it has a
+>>  	 * pending fatal signal.
+>>  	 */
+>> -	rcu_read_lock();
+>> -	for_each_process(p) {
+>> -		if (!process_shares_mm(p, mm))
+>> -			continue;
+>> -		if (same_thread_group(p, victim))
+>> -			continue;
+>> -		if (is_global_init(p)) {
+>> -			can_oom_reap = false;
+>> -			mm_flags_set(MMF_OOM_SKIP, mm);
+>> -			pr_info("oom killer %d (%s) has mm pinned by %d (%s)\n",
+>> -					task_pid_nr(victim), victim->comm,
+>> -					task_pid_nr(p), p->comm);
+>> -			continue;
+>> +	scoped_guard(rcu) {
+>> +		for_each_process(p) {
+>> +			if (!process_shares_mm(p, mm))
+>> +				continue;
+>> +			if (same_thread_group(p, victim))
+>> +				continue;
+>> +			if (is_global_init(p)) {
+>> +				can_oom_reap = false;
+>> +				mm_flags_set(MMF_OOM_SKIP, mm);
+>> +				pr_info("oom killer %d (%s) has mm pinned by %d (%s)\n",
+>> +						task_pid_nr(victim), victim->comm,
+>> +						task_pid_nr(p), p->comm);
+>> +				continue;
+>> +			}
+>> +			/*
+>> +			 * No kthread_use_mm() user needs to read from the userspace so
+>> +			 * we are ok to reap it.
+>> +			 */
+>> +			if (unlikely(p->flags & PF_KTHREAD))
+>> +				continue;
+>> +			do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
+>>  		}
+>> -		/*
+>> -		 * No kthread_use_mm() user needs to read from the userspace so
+>> -		 * we are ok to reap it.
+>> -		 */
+>> -		if (unlikely(p->flags & PF_KTHREAD))
+>> -			continue;
+>> -		do_send_sig_info(SIGKILL, SEND_SIG_PRIV, p, PIDTYPE_TGID);
+>>  	}
+>> -	rcu_read_unlock();
+>>  
+>>  	if (can_oom_reap)
+>>  		queue_oom_reaper(victim);
+>> -- 
+>> 2.25.1
+> 
 
-Thank you. Its clearer now. After thinking for a while, I'll replace the
-name on Signed-off-by with my legal name (yes I'm aware legal is not
-required but I don't have other name which would meet under that reasoning)
-following the rule. I'll update the patch once again with proper signoff.
+-- 
+Thanks,
+Ye Liu
 
---0-840344486-1787107643=:7449--
 
