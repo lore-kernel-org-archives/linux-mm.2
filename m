@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20ED9C5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:31:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 718BEC5DF81
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:32:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 117896B0098; Wed, 19 Aug 2026 11:31:53 -0400 (EDT)
+	id 7CF7A6B009B; Wed, 19 Aug 2026 11:32:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7D16B009B; Wed, 19 Aug 2026 11:31:53 -0400 (EDT)
+	id 7A73C6B009D; Wed, 19 Aug 2026 11:32:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F201C6B009D; Wed, 19 Aug 2026 11:31:52 -0400 (EDT)
+	id 6BD256B009E; Wed, 19 Aug 2026 11:32:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4DE56B0098
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:31:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6DEF440267
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:31:52 +0000 (UTC)
-X-FDA: 85118409264.25.5ACDA71
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D58AE14000C
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:31:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Jkcns8g/";
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4911E6B009B
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:32:31 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C916A12035E
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:32:30 +0000 (UTC)
+X-FDA: 85118410860.09.C51C757
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 245AE80009
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:32:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksX2KKDB;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787153510;
+	s=arc-20220608; t=1787153549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HNlUnXINYq5kyrdEJYlrkOnp8RTE330uTqk5CA+kSvE=;
-	b=blPFLLt6lhicGa3Kir5R+ck1B/ZvD9Dr7iNetOmGP7X0N8uEle1gskuLZ9LUCQtIYYRyk7
-	lF/7kfxVIfX03lNZD2W9n+F8Nq1KfbASIajtLdNznkgfcAtjHlH+6F7ShVEqMNRQOE+meP
-	3thvSerGvWIOk6SEt601qExumxjfzjc=
+	bh=ewKOz5SEkfcTwwQGB2UX2B+VSVTOT4ozicerKMh6CdA=;
+	b=27iXxHQrnviS22tQaHuUbe0zgQ7u/itgKznRXeygTApd+iA5YFggtmd9Uy0n13sllzsnJe
+	59M7y0wrpPzGX2ez9U8zA8hPb+GTvrBlmBhnBKwZo6h3ESmqnMAbB7ztug1HE+7+fRj7Du
+	7gLO2sefSgPk0Rlo22aFNarh1Bl06DQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Jkcns8g/";
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksX2KKDB;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787153510;
-	b=OP8z8p9JlW9PzQ6NbtM7stbSAOh1AYloZ8JQ2fZGPFPx9eZeghMVzyqyY8Pcl7/WtqABy2
-	x1xKV5UbYoQ7zpg4oOG5bM1aCK5YEZsD1FTcBam9dfSruHoICblKhCfvlL0BgFoOXi5/N7
-	M1gpWDe6udykF4R3v/sVXt/Cw1FM+6k=
+	t=1787153549;
+	b=uGpaPdZrrNsK8IVKt3oZHhdcIaoxKPKjzqxnVmEMnngeDOCgsaRaX1pIvR5MtE+FoMM7lZ
+	3vw8r+NJSEEu6gmG3q8leAt5ufvtoFLD6mFn9GjQPvO6OnfVqEBqRas3yt7j+xO+5tmTRt
+	UPH3HrND6rgmaabb4dn+skD7OuwqxeA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3653C61133;
-	Wed, 19 Aug 2026 15:31:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E541F000E9;
-	Wed, 19 Aug 2026 15:31:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9722840678;
+	Wed, 19 Aug 2026 15:32:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF391F000E9;
+	Wed, 19 Aug 2026 15:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787153509;
-	bh=HNlUnXINYq5kyrdEJYlrkOnp8RTE330uTqk5CA+kSvE=;
+	s=k20260515; t=1787153547;
+	bh=ewKOz5SEkfcTwwQGB2UX2B+VSVTOT4ozicerKMh6CdA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Jkcns8g/CqHuuJ3e5laquiSCvIOOIy+m041E7EkMg90+rlBhgEDd3Z/s4QeUNPWGU
-	 7lKnx7K2jrhCBgOZTFo3FHwZ82OOI4FYvbhCNu8cJybJwXoo7h6gMJk7pI0vKMnbZH
-	 nBsYEyZdWNN1/kxjM16IIauToDeO9M72b2ZaMWYaVoAO/VRA6Y1WUZNMJ7w7C9XKHO
-	 33sKDuQLjJYCKTVE3zHOoF5Ht8GvDvDyrR0bZ9giWwLCrS7m94JfDs7L86sLniX3gP
-	 qDYrAf3b4sa/Mjmoocew7xhG2ldtx7a80soTfgrEaTk6b83dL1g5gbdpuEQazIg3vs
-	 sCO5/j3DOMsQw==
-Date: Wed, 19 Aug 2026 16:31:44 +0100
+	b=ksX2KKDBevRjIArd5K+oDP+xXE64NaOZcoDHn57mmXP6WWGdCPv9ZRXJmeO4nWm/5
+	 Fv3YZgHej98bbOnqAEM1erRVyXF1CMKhUENRKBeVorw1GSi229KF8G8Xt6xqFk5ybN
+	 zsGwJV/5M7o38gYcyhmE9zLMSyTd2lSMPLQ5k5hGOWlw0Zt9yBMwitWRlTs5tspTUP
+	 8HxBGvCO+QZoUgpsD624bDILD0ZnkbT9Wc+RHmQRBud5OxmGaMCWtLFoVR6F3sObW8
+	 +czo1pROU9p06c+Hzrm+axPJdMHCf3ZkayAKH9Qm8ORxcyYXKq0Y5uBjIoErIJpXjQ
+	 P3ewdnP4eCn9Q==
+Date: Wed, 19 Aug 2026 16:32:23 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, baohua@kernel.org, 
-	youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, kernel test robot <lkp@intel.com>
+Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org, 
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
 Subject: Re: [PATCH] mm: include swap.h in swapops.h
-Message-ID: <aoXKm5MlBqy5CTpp@gremlin>
+Message-ID: <aoXMc9bbZ21qfVSP@gremlin>
 References: <20260818115026.656406-1-kirill@shutemov.name>
+ <CAGsJ_4z_+Z_VppY3ravJxTgguK=m_pcYcbrogoOR2BdC6D-o7Q@mail.gmail.com>
+ <aoXB5vZf_vwB-FOT@thinkstation>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260818115026.656406-1-kirill@shutemov.name>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D58AE14000C
-X-Stat-Signature: 87gpoigj8obebxuytfs4w5mwojia7wmu
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aoXB5vZf_vwB-FOT@thinkstation>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 245AE80009
+X-Stat-Signature: 86gusf47rdiwg6ng7f4343kr78674b8t
 X-Rspam-User: 
-X-HE-Tag: 1787153510-236298
-X-HE-Meta: U2FsdGVkX1+24s0MHFRSFgPsRS1KT8xU0yyufO6772bb5j+ENNasSj/0NmmbGBsxnU137k7RyeGlkkHOxtNWXEDo0P8d8qsnoRSwNuYbxS7bfmZujjji81n3/Fbqg1oiWUwYoEKuAogR+fvtbE9P5asWy6eBBHpPL7I4UM30+zxoXOrfY8Xy95iVNzK1oI0LV7Vjxycg+GkgD4NT3+oiXgI8r9VsCZq+F+VH8W7HWrOeAtyPx1gmYtaGNs8J50PYX67F0t5/ChIpPtOLJjFrnG9vWCmgMfGCEqeigqfpfWNyJZOUqLAKMXma5FLlgKPZ3YdxjjjU0p4HbituNaPIeRPVXJZUkIiXpzlA+zuEeiPJJEbqZYAH4D4JY/HJ4w0WmnlFlXTHufom1zoNsyT0powIeAR5GpkQt2W6ybrlfjnl9V8NfBLZhGI72S/Nwixa7gqJkywtNS1C+ypQI9xUhxWdebgO3JhOK7YRIBsbJxnosTWn4QxGShL3n4QZZxK2M3nhQJr1dlS7vPM2CQU2W/0oKQC8OPfLiNrj/wklWMpmVJ8yCcGev90ne4J5zFkAJYnL0koW4P8sG3npycgCRR/vn74bEJlDfHD9ugNgC2ko9qwGjBPImJkcCifHSiHLV0l5byLzJ8aGOZWKQRSy/uY0hI9nelyKiVSfL24vHFkRsHhVqP5pQ2wqaZnNrmtHzllfl2GJpX661L+vDdPNM52kF7lDp9cjH27Gw5MlpmqnRJCxDLMKdj3Vzqs0U+70RbbAKukSYvTbS7jfUZylH1fSUbsx7AaFAGGk2fXm/TORbu00qoD8TbPUnuDrjtnMyjXJjuPZ0lltRnOr3yO8oh6i4TRqYPR3JutsznRHtjXqQkwDhtpPbLy1NZpFcQJRMDGu1KQ6sXs9pPfpC6dotjkVlPcne2O5ObbK970+5R7FlHgoWqOL4TPC7H0UyLt7SA4f3BuYWA5/gPFRR5J
- vDg84VtP
- HfBDmiiLdI7bof171nmoWdxVe1fZfhYyo9OHLBLc12iSSRKgiE00ZJEHybRfiF9nxn52dmDEA8TYbwozzQaqZy3th1kY/jO5a8Jt2n3EJZUxgu7mXVR2jAn+DWq1PkBpLHtxwSgf54zPciLN38Aa7RnZciTmd0+1pgMXYminBTUnQ2/em67neUhtARUz/qTG15u5ASClHEnkk8TmGj1cjSzU1WieWxwzHeky8hLGKELASKCR7vM4tFceV1oSsDn9/O2fGRfNN4LR+HMqTE7irAUHZ7sLwe8qEGxjiiNfZ7D3JSZo=
+X-HE-Tag: 1787153548-764128
+X-HE-Meta: U2FsdGVkX1/C/JKoXa3LgKmaAjoIg+JHiJhcda93433cc/dPHby3KIKA06PrIHkfxfCf7FUvLvbkmbN7F3uL4QtMMOSB4jdKkB2/N2JO4U8XaKvvxtw1iR4Ic2k0qNR0u3H29OjtsbdwAT/QbzuRIj0L+7/pBRkmyQBfPDQcJ6BuksEckCUcSr+0tDeem4c8N3c3lUKlGMbmff8XKhriJ0clJhYVhGCxBWKipZWUgjr4ovaIQseW+AGxBQb67pcjEjqqvvLNyF563+upQfgE0ZpQ4dqsMuAdYGJQVqAzSuy2KhLg1ByldWrIHluooZC3ThWP/T3QU9MY5C0HreDO3AS2ovDx6zBjW8mOa0K15cxA4fWAgBvIr1SALTP1KCIChMcfZ4xcbVz2YdbgBkN9PmSfMB1ztGUJy17+5mPEs0brmIjok4dpjdeDe6mGrxYMtU+KY2ILRn3wH97DiGcjMyhQ7FlV2+WLrafA7LHOTdrra+v1dPt5ur31Mfk2pEWMREPMBY24ppjhoGMUHUDqjKTRXwNuwwWiP4MeHJ3SLpWwi1RTDHFdU/NhcJ/g/7Hq4x9pp1mbpZw9HesGl5C3/B8qazgyggBg4un3J24WEgH/IuTX5mAxs1Z4S1wGH1+2ON2XieScDa947NXncbUQVlncbAmUCzBo6m1+kTrdH9HAU4JF0F4sOeu6MqB2L3uaCfBCUrzsKFlic1s6QzFO0FAyNQT0Vnx9Y/khXZnnBfoaYZvil5ktXUomTDD/8rgfplOkN4vazuB2xHEjfKJ3IwEcqGQEzLyoSsEPmNOvJOyJpB7pkK5nbGJLzbSaqfMZkMHZ04/FilzqrWOwHSmXsVxhndSDYhkl+tlKpM/kfVxrGaWr38PqNz1TXdYfcDpJ8I3fSuYrVKp1oMjTZlMpL8v4OaaLQCnlebMD7Dq/a+b+aPkodJirczibEIIrSF/v/eaiFJEV3PVZSC31VwA
+ jhYXlM0p
+ HmSrg7ISecoA1bYTMjPyVkdLt2QJ89Po2znbu+bSt/yfLdbA5XSn4GCiutxfJoX11dK8ib4eAdEQw0rkizDOvVfIbtvAN6wFxODkfFkeBP2OxbFwF5F3jZnAwIR2KIkd6cexcfA31EL2ektPX4wvWY3axIOR6WXsGlTGVDJqitqV/poNSHmrk+HIWkSrE0LSKoN/J9VN2/02Fdbw7s+wqUVPzBAYBAWaJR5BqISZEI1hrT1CCGv3ch2+5xJ6hkI17JBgIj8Ki1Gxj74ilijLIDvOOwkaDh58NIG2qcN4nGjO8Rps2gFAp83itwu4LCD3ItLeA3YE4zXU5Edc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,70 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 12:50:26PM +0100, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Wed, Aug 19, 2026 at 03:47:33PM +0100, Kiryl Shutsemau wrote:
+> On Wed, Aug 19, 2026 at 01:26:07PM +0800, Barry Song wrote:
+> > On Tue, Aug 18, 2026 at 7:50 PM Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> > >
+> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > >
+> > > swapops.h uses MAX_SWAPFILES_SHIFT, SWP_MIGRATION_READ and SWP_PTE_MARKER,
+> > > all of which swap.h defines, but does not include swap.h.  It compiles only
+> > > where the translation unit pulled swap.h in first.  leafops.h includes
+> > > swapops.h on the line above swap.h, so a file whose include list reaches
+> > > leafops.h before swap.h gets:
+> > >
+> > >     In file included from include/linux/leafops.h:11:
+> > >     include/linux/swapops.h:88:21: error: use of undeclared
+> > >     identifier 'MAX_SWAPFILES_SHIFT'
+> > >
+> > > A header that uses a definition has to include the header that provides it.
+> > >
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > > Closes: https://lore.kernel.org/oe-kbuild-all/202608181757.mza9RRj7-lkp@intel.com/
+> > > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > > ---
+> >
+> > Basically, is this preparing for the patchset below?
+> >
+> > https://lore.kernel.org/linux-mm/20260816224609.308019-1-kirill@shutemov.name/
 >
-> swapops.h uses MAX_SWAPFILES_SHIFT, SWP_MIGRATION_READ and SWP_PTE_MARKER,
-> all of which swap.h defines, but does not include swap.h.  It compiles only
-> where the translation unit pulled swap.h in first.  leafops.h includes
-> swapops.h on the line above swap.h, so a file whose include list reaches
-> leafops.h before swap.h gets:
+> My patchset just triggered inert bug.
 >
->     In file included from include/linux/leafops.h:11:
->     include/linux/swapops.h:88:21: error: use of undeclared
->     identifier 'MAX_SWAPFILES_SHIFT'
+> > Reviewed-by: Barry Song <baohua@kernel.org>
 >
-> A header that uses a definition has to include the header that provides it.
+> Thanks!
 >
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202608181757.mza9RRj7-lkp@intel.com/
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
-Ah C headers are terrible :)
-
-I see that the common pattern is:
-
-#include <swap.h>
-#include <swapops.h>
-
-Which is already itself quite horrible, though I suppose intent was to
-separate out stuff between the two and to not require that people take
-swapops.h necessarily.
-
-Anyway swapops.h needs to be removed, it's a left-over from the
-not-quite-fully-complete softleaf work (I left some of the swap
-entry-specific stuff alone).
-
-But when that's done by me or whoever else, the resolution should be that
-swapops.h is deleted with everything there that needs to be kept around
-moved -> leafops since swap entries are just another softleaf type.
-
-Anyway I can fix the broader issue when I get rid of swapops.h, so this
-LGTM as a resolution for the time being and:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  include/linux/swapops.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-> index 1f3ff3b93e16..e7d0d529f3e0 100644
-> --- a/include/linux/swapops.h
-> +++ b/include/linux/swapops.h
-> @@ -5,6 +5,7 @@
->  #include <linux/radix-tree.h>
->  #include <linux/bug.h>
->  #include <linux/mm_types.h>
-> +#include <linux/swap.h>
->
->  #ifdef CONFIG_MMU
->
->
-> base-commit: 33f61b12d297562321533c048e034b1fb21c1cf3
 > --
-> 2.54.0
->
+>   Kiryl Shutsemau / Kirill A. Shutemov
+
+Yeah, see my reply, but this is more like 'Lorenzo's unfinished work and a
+mistake in his includes' :)
 
 --
 Cheers, Lorenzo
