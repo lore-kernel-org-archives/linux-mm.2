@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F100C5DF81
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:10:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D9AC5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:11:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 863A86B00AD; Wed, 19 Aug 2026 19:10:54 -0400 (EDT)
+	id 974A66B00AF; Wed, 19 Aug 2026 19:11:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83BAA6B00AE; Wed, 19 Aug 2026 19:10:54 -0400 (EDT)
+	id 94C6E6B00B0; Wed, 19 Aug 2026 19:11:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 777A56B00AF; Wed, 19 Aug 2026 19:10:54 -0400 (EDT)
+	id 862D86B00B1; Wed, 19 Aug 2026 19:11:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36C9B6B00AD
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:10:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A5D128040E
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:53 +0000 (UTC)
-X-FDA: 85119565986.19.AC80C68
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id ECAAB160002
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YIcFcM+B;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 5B5296B00AF
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:11:00 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD2818040E
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:59 +0000 (UTC)
+X-FDA: 85119566238.25.D9504A1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1E7B3C000A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:10:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7ly3cBX;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787181051;
-	b=ybUuHWO06sgGlvJ9QfKSpfYDazR6EKToszItcNkU/+QtPVNfGGZypIBMwaMdH4M2gIVIF4
-	7X3TPwUxvmmUAHDXlu4VLiXKgExSUXu+z+GPR6eSVKtsCcL+MccqiAcC2ByzdmfF/QKncn
-	7VWQrboeAMRXBv4nFc+4Ti1XAFFVE0s=
+	t=1787181058;
+	b=JmyGzyx6ggoXm6G0i2yWLnlCrGc90bKVO/uWmc+aA3OBz3SiofkJX0ELm6xUQA9f8cGivV
+	tERaEQwNOZPCqgfzhR/LgWrvrgn9FIl3375QDqWEH4MrrIA+8DTKadtXl0eriG1202nzJo
+	0g9+l09tbJLdxwhlBhzwEZVhmQUeUXI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YIcFcM+B;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7ly3cBX;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787181051;
+	s=arc-20220608; t=1787181058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=exIMLt1L2itKU52nrrnmTx3w7rdobSFaYhq0fQ82NCg=;
-	b=OynGKuOllqt0RV4CP9HsPCW6TDWYgxkvFUk17srQGW/Ai7UtFHWtfqoZ2qhJ7y4yD55bEg
-	eZxKU285gmEeR2HUhHD2Da6uwUSbOP8HHNmhkdqQ9548kxZsvGqanGo2pTxdBYMXmxmF27
-	c6/6ytyTGroJMJNBUSuGZxUO1G499Dk=
+	bh=dfXAgoL+9LBeM/3gsj9qXNECM/y7xKAoBOAjrqptYLA=;
+	b=BS3dXPeFZKo1H44Tunr9Gsr1QQwK2dPSOeBWQJIyu61aTNv7azAsb8jgyaLV2E2/q0a549
+	yhTfJX/3Cf2lzTg3ZjsBDQw1G3absBh6nXUhAy2C/8uYQ+84JTl2j7qnfN97gBdgEY7q5B
+	rV5qrJLQuOwBPGLYbXCNeRJyMCHxzks=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E3FF6187F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CCB6439D9;
+	Wed, 19 Aug 2026 23:10:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17171F00A3D;
 	Wed, 19 Aug 2026 23:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B76A1F000E9;
-	Wed, 19 Aug 2026 23:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787181051;
-	bh=exIMLt1L2itKU52nrrnmTx3w7rdobSFaYhq0fQ82NCg=;
+	s=k20260515; t=1787181057;
+	bh=dfXAgoL+9LBeM/3gsj9qXNECM/y7xKAoBOAjrqptYLA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YIcFcM+B2Z6+seWCqxRl445ZotpwYdYtA/YcfjlFQ645iCYbLw54IVgabn9un7Rgp
-	 n8KL75z6q9F6AnRaRWruscBccHOPmPpXuLb805Y+sV3SxTIEmIAIRXfEW7EH7CwW6O
-	 d74XPZTGNvKoxXa3OMCHZz7xwa0n9dKECDkRxqZzdujb5rR39JTnHfX/77f23Ga2f1
-	 2FhkFcV797eR2AR100h5M8cfm4xRWxs5hGNMqGSQQgcfm5Tmi21sfF4DY/Gk2LaUUg
-	 gCrG+pf/UUwHGa1q7WeiJKSmMYSIEDB3i2OFsm8aeVL6hHlKp/3Bb0DPhA/tgPUOpB
-	 SAuy26keKCGfA==
+	b=h7ly3cBXNdZl7hnrgTxPREaO8oFEfhc6DvRM7kPLZVg7S7AYOKvbSlD9lhr61Eply
+	 6jOr4ONLrlIllToPvALfSQHXVeXm6QkRDJsyAJAwXh0P5oEm1qTk3f2Ur8CZH0XB31
+	 QU++l1mZjfVPwqPjieBgTtwk3lSZCIwowoSOdYaXBlHHSg7sC04B1d8XT23AUS4xlr
+	 pg+jQwMlNP1UfKYn/aeN27+I0aDebskxj5YMCLCEG6QgxJeBSAKlu8gf8J/9gscEcQ
+	 WfK2J0wv1iUVT5UsUTnDaFTNMGeJE2I63alCUTI+iAxn3wJb323FOgOGRANuP8CQk2
+	 RcEKGSk7x5o2A==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 20 Aug 2026 01:09:27 +0200
-Subject: [PATCH v2 10/22] coredump: make the dump helper return bool
+Date: Thu, 20 Aug 2026 01:09:28 +0200
+Subject: [PATCH v2 11/22] coredump: always chunk writes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-work-coredump-sparse-v2-10-ba32dd718c51@kernel.org>
+Message-Id: <20260820-work-coredump-sparse-v2-11-ba32dd718c51@kernel.org>
 References: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 In-Reply-To: <20260820-work-coredump-sparse-v2-0-ba32dd718c51@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -86,22 +86,22 @@ Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>,
  linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6635; i=brauner@kernel.org;
- h=from:subject:message-id; bh=YahMhih8rmcfyUDHWo+xUJvRT2IOeEUVN31aqub6Kwo=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS1me/z2hA585q9LZ+ahZqn/q6DUXclz8XOfnEi/GBi1
- VfeBYccO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYSvYLhf7aLjP38ruQGoUMX
- E19ckXvr+qf/tOCvn05vOjpnLCqfX8vwT79S6qNCkPyhnBdJC+Y933HyZ0Dbf2eek8skA32WaW/
- /wAoA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3072; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=6lmk01oIrCpLddgF34l1qNeK7azUHFnu6/y3MNvc9fs=;
+ b=kA0DAAoWkcYbwGV43KIByyZiAGqGN7+jKg8nZ84IvdAkuVaAv3pB/3A8P2ohgfbcn0M9u/3qY
+ 4h1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmqGN78ACgkQkcYbwGV43KIysgD/a+/5
+ REHHWLX+2VlcBK70uw4E+bPFY60zOkDXluZRbuoBAKZwJlYA6NSqs/oHBznLIQErTWGeszoobly
+ JDQFMN1YJ
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Queue-Id: 1E7B3C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ECAAB160002
-X-Stat-Signature: abyibntxyi6dzs8fwkwanzwegqot133j
-X-HE-Tag: 1787181051-168059
-X-HE-Meta: U2FsdGVkX190DfObFdX/f2M6dLbD+GLupAVgQZk/+sZy6AElnqYHDMGa0VBdTabGW+HuBhP48CDHsasBf8TrKjji36m42Tf59vCAYJerbiSz3UKZLwdIDWZ1m0lkpKJVwV/DIRHIf1S6QbW5HuFwF/WntbU0wu9M3FVXhI17M0D+WN3UOS8bs7QGNctk2uWrfD8btwlwP998viqpOlorV2H6kkyibCLjNrJi2EpK6UXzMMdpmJyoMDMgSdQ9JX4Ue7WcZ39l79LuY+QDfWb493ZdXAVK3No7M+WqPMwDfS/hUXT6g+KIIZHFb1ZgD2Bu/4BbWcEpLB3Aed1hQCiIhZWS6XXl0rzmMGa/8kM11a1xkvTXvIMwyE49OfofLX/qXxlizQpqMKfmZwQOOl6CXhV3NrrtwfILTgzdJiUvszwJZZU1x9J4jhsYhgRJTy81+4rPmYi/q/zVpFVipr0hCU1QgrfDhpC/DpQVYVXKChRIL4UcwN3KgVxvOJhWQxtlw4Fh7ryMoq0G0x35HINDqp6bCBsA9L5l+JNaLljSvxKGFk1xuCDwcHKqH3HZDp/rjaHgiv6jcHKLC3p97X4d6RvrfxYPapCiT82u+r8AtHqxLJFOTix9aE7uqI/L51H4E2CJa7IXPSv0xnKX8jh+dTy1PIp6GaAyuEwt792k1iekVCc9nfU4RNNDSSgtAsP+GA6ozXR7CiNzAP7a6eKiyNyehiBD98DQtpGNKVIv0Xy/s7ZwV1VSjd/2wEld27Dyo/wPv6ufJkfpPNcR3HcIU5s8SL+0iLuHHlYla5Mc7tqWBoGzIvUnCjyZoBeWzbs4UPUbw7KX5Iv/RkCkyD2QuR5bwh3FrAv5iTHFgPqv1K1aR9N6/fanqHplJOJlbogM67t0WB+U9TuG59y5+FJcO3vtw0Rl5ebsxHKgbVb/H6jafnUa8C+i2KMO9DeN1vTVpm26LV9kZy2V+jlp9o1
- U9VqPPax
- HQ7MyT3eBbyAezmmNgCTjc2AXiA7TgMYr6XB3ULXhV56RdrEu5ackeGVxBE3tX7PfBQIsWF5Iq1c3+xWf+0zzMwIzaNEqNKkC8q65I/VwseT2bcDRdXrAlUgw+h18rDd6c0HdkrNbv85REb+5Z4QAcAodRx+W6zlCNuOGcPfXcImnkbX4zTrTrQWVhGONV1FpUBJ17ruEZ/FPwmCogdy1TdiOX5rUARa24uRHKNltPbhO66hBqBdoeJwSWn0K971DzMGmd++uDjIPpEGjnpHaDjRZCg==
+X-Stat-Signature: gop888qr89qoq94bqq4xm7qgrphq1jm1
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787181057-337497
+X-HE-Meta: U2FsdGVkX19X4u8RqVe8jpeMd0JnaWxyvwVLCjwL1YReLNd9X4uZDt/Appz0sy5lxorAEHORt5FB5jv2iEtqj+aQxykHhtBqrm72kc189gTP8DevWjEoFz4u8pUF9zQwUc2xee3CeIFndFoTMl8tJ9n8JywbnbURQVXhbru9FmSNBBUIN9eq8kRQMrOe2Xgq8uA9V3EAIic9zlOdnDLeF6BYShaGFUec6qOFm5Z8IPi9oZ2/ZglCa8u7DFmcJePbYQ08qUD1ZxoFhnB6C/MPyZ4OZm0SJR2h5UWKoDs+2euUgq1uhwMsB6NJlZcYROZ87hsAICrV9cdPQs/UttHGu4ufEKJ6R0dN1AEikzEAmjctDsaUSuyCqPKkbGYR7I0/2vw5UpEp67yiJW1RjwBzEXfxZyArcAZEHyGcjm8lP1HlFTyl7Qa1Ux4PKWH0uzJDKSpmPtYhZjBco4JHHnzyEKyp8nIDllfj0jWT+HacoPyfuz3pwHU3PSSJ4n8yd1Jurw6RoiSQb2EH0WJ7+YrM+EfAzj9qkxqK4eeMp6zl7EOaP8Qf/f+3xwPatK3JhIob+JnmWBywLlmfZ4dMYg0wciuilhvN+F19FeAnf7VmHOkjmabQKYerEjEbwaRh5+qy9nNB5x+8oofIMf4Cf4Soj3rpTB4IACcBu+rmGl22JHEAtAVPyU7E8dD5KnyIj76vB/JzEJar6T+mHehBodDp2Lib0vtYeGICxoyuVUf0Ry67/0gMOje61CSIfXPNDxDkiv02hIMSgXHP1sxpPu3vUNGjYxN8JThPM+MbZkt0ft2CK3IFlomXmnUPk8pMBLVvvODzIJZFplfzyBnsiHh3Pk8Rnptd+oEM08AeFy2AW6k/kNnIbqdx+LyGyS6MZ3jC5lY+Orvhur1hUYcJbQT36/ktssxwKFQ1dsWmH4cop1Pek4707TVy4BR4qaehKW4P6MgYQGRV9U/5Y9nQMTQ
+ 9k4sDkWp
+ khreyU5Cgcf4XGHSm/EmuZWOJUmrFZDqpn+xs/hwi4ywoR1Dhh9QUM3XXwNZ8SQssEHiOVMArsudH407bMXfZlDwSqZfqKKCwEWCBpEZSkxAp/M21+KajsfcdP4cz1E9qUANMuAwDBNsvV1LWAR3ns2VkhhrRhNfqEdrPoEJCha1aApwyrr5Q55yLzDwpK8izvTCOESXy4iLiVxvTDMG7C6k7JSSy05b6XVTGY4rVARqFPKDIhFFWp7B75g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,227 +109,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The various dump helpers return one and zero. Every caller just does a
-boolean test. Convert them to return an actual bool.
+Right now dump_emit() is the only coredump helper that writes buffers
+larger than a page in one call. For elf notes that can easily blow past
+PAGE_SIZE. That's annoying because neither pipes nor af_unix sockets
+take such writes in one piece.
 
-While at it, drop the externs.
+If a signal arrives while the writer is waiting they drop a short write.
+With the coredump records work coming up that means header and its data
+are desynchronized. A write that fits in one pipe buffer or one skb
+doesn't suffer from this.
 
-No functional changes.
+So split all writes up, including elf notes, and cap every write at a
+page. The coredump socket already raises sk_sndbuf far enough for a page
+to fit a single skb and pipes always work that way.
+
+That means dump_interrupted() is now checked once per page. So a large
+coredump stops earlier (good). An empty write no longer issues a
+zero-length write. The rlimit core check stays where it was. It
+continues refusing whole writes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c            | 63 ++++++++++++++++++++++++------------------------
- include/linux/coredump.h | 14 +++++------
- 2 files changed, 39 insertions(+), 38 deletions(-)
+ fs/coredump.c | 37 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
 diff --git a/fs/coredump.c b/fs/coredump.c
-index cd36a72be445..d837819031ff 100644
+index d837819031ff..d61f36239f91 100644
 --- a/fs/coredump.c
 +++ b/fs/coredump.c
-@@ -1215,41 +1215,41 @@ void vfs_coredump(const kernel_siginfo_t *siginfo)
+@@ -1215,19 +1215,21 @@ void vfs_coredump(const kernel_siginfo_t *siginfo)
   * do on a core-file: use only these functions to write out all the
   * necessary info.
   */
--static int __dump_emit(struct coredump_params *cprm, const void *addr, int nr)
-+static bool __dump_emit(struct coredump_params *cprm, const void *addr, int nr)
+-static bool __dump_emit(struct coredump_params *cprm, const void *addr, int nr)
++/* One write, never more than a page. See __dump_emit(). */
++static bool dump_emit_chunk(struct coredump_params *cprm, const void *addr,
++			    int nr)
  {
  	struct file *file = cprm->file;
  	loff_t pos = file->f_pos;
  	ssize_t n;
  
- 	if (cprm->written + nr > cprm->limit)
--		return 0;
-+		return false;
+-	if (cprm->written + nr > cprm->limit)
+-		return false;
  	if (dump_interrupted())
--		return 0;
-+		return false;
+ 		return false;
++
  	n = __kernel_write(file, addr, nr, &pos);
  	if (n != nr)
--		return 0;
-+		return false;
+ 		return false;
++
  	file->f_pos = pos;
  	cprm->written += n;
  	cprm->pos += n;
- 
--	return 1;
-+	return true;
+@@ -1235,6 +1237,24 @@ static bool __dump_emit(struct coredump_params *cprm, const void *addr, int nr)
+ 	return true;
  }
  
--static int __dump_skip(struct coredump_params *cprm, size_t nr)
-+static bool __dump_skip(struct coredump_params *cprm, size_t nr)
++static bool __dump_emit(struct coredump_params *cprm, const void *addr, int nr)
++{
++	if (cprm->written + nr > cprm->limit)
++		return false;
++
++	while (nr) {
++		int chunk = min_t(int, nr, PAGE_SIZE);
++
++		if (!dump_emit_chunk(cprm, addr, chunk))
++			return false;
++
++		addr += chunk;
++		nr -= chunk;
++	}
++
++	return true;
++}
++
+ static bool __dump_skip(struct coredump_params *cprm, size_t nr)
  {
  	static char zeroes[PAGE_SIZE];
- 	struct file *file = cprm->file;
- 
- 	if (file->f_mode & FMODE_LSEEK) {
- 		if (dump_interrupted() || vfs_llseek(file, nr, SEEK_CUR) < 0)
--			return 0;
-+			return false;
- 		cprm->pos += nr;
--		return 1;
-+		return true;
+@@ -1247,13 +1267,16 @@ static bool __dump_skip(struct coredump_params *cprm, size_t nr)
+ 		return true;
  	}
  
- 	while (nr > PAGE_SIZE) {
- 		if (!__dump_emit(cprm, zeroes, PAGE_SIZE))
--			return 0;
-+			return false;
- 		nr -= PAGE_SIZE;
+-	while (nr > PAGE_SIZE) {
+-		if (!__dump_emit(cprm, zeroes, PAGE_SIZE))
++	while (nr) {
++		size_t chunk = min_t(size_t, nr, PAGE_SIZE);
++
++		if (!__dump_emit(cprm, zeroes, chunk))
+ 			return false;
+-		nr -= PAGE_SIZE;
++
++		nr -= chunk;
  	}
  
-@@ -1257,20 +1257,20 @@ static int __dump_skip(struct coredump_params *cprm, size_t nr)
+-	return __dump_emit(cprm, zeroes, nr);
++	return true;
  }
  
  /* Flush the accumulated hole before writing data. */
--static int dump_flush_skip(struct coredump_params *cprm)
-+static bool dump_flush_skip(struct coredump_params *cprm)
- {
- 	if (cprm->to_skip) {
- 		if (!__dump_skip(cprm, cprm->to_skip))
--			return 0;
-+			return false;
- 		cprm->to_skip = 0;
- 	}
--	return 1;
-+	return true;
- }
- 
--int dump_emit(struct coredump_params *cprm, const void *addr, int nr)
-+bool dump_emit(struct coredump_params *cprm, const void *addr, int nr)
- {
- 	if (!dump_flush_skip(cprm))
--		return 0;
-+		return false;
- 	return __dump_emit(cprm, addr, nr);
- }
- EXPORT_SYMBOL(dump_emit);
-@@ -1290,7 +1290,7 @@ void dump_skip(struct coredump_params *cprm, size_t nr)
- EXPORT_SYMBOL(dump_skip);
- 
- #ifdef CONFIG_ELF_CORE
--static int dump_emit_page(struct coredump_params *cprm, struct page *page)
-+static bool dump_emit_page(struct coredump_params *cprm, struct page *page)
- {
- 	struct bio_vec bvec;
- 	struct iov_iter iter;
-@@ -1299,25 +1299,25 @@ static int dump_emit_page(struct coredump_params *cprm, struct page *page)
- 	ssize_t n;
- 
- 	if (!page)
--		return 0;
-+		return false;
- 
- 	if (!dump_flush_skip(cprm))
--		return 0;
-+		return false;
- 	if (cprm->written + PAGE_SIZE > cprm->limit)
--		return 0;
-+		return false;
- 	if (dump_interrupted())
--		return 0;
-+		return false;
- 	pos = file->f_pos;
- 	bvec_set_page(&bvec, page, PAGE_SIZE, 0);
- 	iov_iter_bvec(&iter, ITER_SOURCE, &bvec, 1, PAGE_SIZE);
- 	n = __kernel_write_iter(cprm->file, &iter, &pos);
- 	if (n != PAGE_SIZE)
--		return 0;
-+		return false;
- 	file->f_pos = pos;
- 	cprm->written += PAGE_SIZE;
- 	cprm->pos += PAGE_SIZE;
- 
--	return 1;
-+	return true;
- }
- 
- /*
-@@ -1349,18 +1349,19 @@ static inline struct page *dump_page_copy(struct page *src, struct page *dst)
- }
- #endif
- 
--int dump_user_range(struct coredump_params *cprm, unsigned long start,
--		    unsigned long len)
-+bool dump_user_range(struct coredump_params *cprm, unsigned long start,
-+		     unsigned long len)
- {
- 	unsigned long addr;
- 	struct page *dump_page;
--	int locked, ret;
-+	int locked;
-+	bool ret;
- 
- 	dump_page = dump_page_alloc();
- 	if (!dump_page)
--		return 0;
-+		return false;
- 
--	ret = 0;
-+	ret = false;
- 	locked = 0;
- 	for (addr = start; addr < start + len; addr += PAGE_SIZE) {
- 		struct page *page;
-@@ -1384,7 +1385,7 @@ int dump_user_range(struct coredump_params *cprm, unsigned long start,
- 				mmap_read_unlock(current->mm);
- 				locked = 0;
- 			}
--			int stop = !dump_emit_page(cprm, dump_page_copy(page, dump_page));
-+			bool stop = !dump_emit_page(cprm, dump_page_copy(page, dump_page));
- 			put_page(page);
- 			if (stop)
- 				goto out;
-@@ -1403,7 +1404,7 @@ int dump_user_range(struct coredump_params *cprm, unsigned long start,
- 		}
- 		cond_resched();
- 	}
--	ret = 1;
-+	ret = true;
- out:
- 	if (locked)
- 		mmap_read_unlock(current->mm);
-@@ -1413,14 +1414,14 @@ int dump_user_range(struct coredump_params *cprm, unsigned long start,
- }
- #endif
- 
--int dump_align(struct coredump_params *cprm, int align)
-+bool dump_align(struct coredump_params *cprm, int align)
- {
- 	unsigned mod = (cprm->pos + cprm->to_skip) & (align - 1);
- 	if (align & (align - 1))
--		return 0;
-+		return false;
- 	if (mod)
- 		cprm->to_skip += align - mod;
--	return 1;
-+	return true;
- }
- EXPORT_SYMBOL(dump_align);
- 
-diff --git a/include/linux/coredump.h b/include/linux/coredump.h
-index dc7a05b1bb0a..943bddfb22bf 100644
---- a/include/linux/coredump.h
-+++ b/include/linux/coredump.h
-@@ -43,13 +43,13 @@ extern unsigned int core_file_note_size_limit;
-  * These are the only things you should do on a core-file: use only these
-  * functions to write out all the necessary info.
-  */
--extern void dump_skip_to(struct coredump_params *cprm, unsigned long to);
--extern void dump_skip(struct coredump_params *cprm, size_t nr);
--extern int dump_emit(struct coredump_params *cprm, const void *addr, int nr);
--extern int dump_align(struct coredump_params *cprm, int align);
--int dump_user_range(struct coredump_params *cprm, unsigned long start,
--		    unsigned long len);
--extern void vfs_coredump(const kernel_siginfo_t *siginfo);
-+void dump_skip_to(struct coredump_params *cprm, unsigned long to);
-+void dump_skip(struct coredump_params *cprm, size_t nr);
-+bool dump_emit(struct coredump_params *cprm, const void *addr, int nr);
-+bool dump_align(struct coredump_params *cprm, int align);
-+bool dump_user_range(struct coredump_params *cprm, unsigned long start,
-+		     unsigned long len);
-+void vfs_coredump(const kernel_siginfo_t *siginfo);
- 
- /*
-  * Logging for the coredump code, ratelimited.
 
 -- 
 2.53.0
