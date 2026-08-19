@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4049CC5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0777C5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 07:05:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 552F06B009D; Wed, 19 Aug 2026 03:05:52 -0400 (EDT)
+	id 049E06B009F; Wed, 19 Aug 2026 03:05:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 529D56B009F; Wed, 19 Aug 2026 03:05:52 -0400 (EDT)
+	id 022556B00A3; Wed, 19 Aug 2026 03:05:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 440446B00A3; Wed, 19 Aug 2026 03:05:52 -0400 (EDT)
+	id EA02F6B00A5; Wed, 19 Aug 2026 03:05:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C2346B009D
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:05:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B376AA1CED
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:05:51 +0000 (UTC)
-X-FDA: 85117134102.27.030F531
+	by kanga.kvack.org (Postfix) with ESMTP id C15B76B009F
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 03:05:57 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 371CE80474
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:05:57 +0000 (UTC)
+X-FDA: 85117134354.19.29CCD9F
 Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0048B80007
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:05:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OKzyhHHr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of 3zFWFaggKCOcSJbXWVRdPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jasonmiu.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3zFWFaggKCOcSJbXWVRdPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jasonmiu.bounces.google.com
+	by imf03.hostedemail.com (Postfix) with ESMTP id 73E652000C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 07:05:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oEE4TbhT;
+	spf=pass (imf03.hostedemail.com: domain of 30lWFaggKCO0YPhdcbXjVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jasonmiu.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=30lWFaggKCO0YPhdcbXjVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jasonmiu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787123150;
+	s=arc-20220608; t=1787123155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r13rbsEeTBQUt7C0+umCAD05cQ1RPgR2iUrqqxSlQbQ=;
-	b=Ld0m3wfgceXc68N2Nqx31CLOsNwdYgix9Mua7SsnMicX6AMAL/CpPyqSZkPhGRdQHsL9N3
-	Kc/hxinx6Ur/cNakX0jqdw1jeH1pHnhFWujKHYTbSZH75Zp7Ro3RwxM0IT+sp+9UTwYc3b
-	p0pd2UZDshBkgXmZ/CXuTji7/VxYudc=
+	bh=E95q1x2DT6McfvZlrwH4oQfSk4gruvw+vn9eniPurXw=;
+	b=0iQ1jbH5chJ1tvEum4tZIctfCp9P9tfAQMHxK9QJK5duED68pYKITPgYUWJHfiHYTVcXBj
+	yBF1aMUiNN0wRxCTFX3yQMz+PGxBdbHKGIZFz5Ym0pcjAOsibx/DGvhB6UOCkGtoBaTr7G
+	YqzpBmq5snAz69H7Q6slqrkdquN4DV0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OKzyhHHr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of 3zFWFaggKCOcSJbXWVRdPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jasonmiu.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3zFWFaggKCOcSJbXWVRdPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--jasonmiu.bounces.google.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oEE4TbhT;
+	spf=pass (imf03.hostedemail.com: domain of 30lWFaggKCO0YPhdcbXjVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jasonmiu.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=30lWFaggKCO0YPhdcbXjVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jasonmiu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787123150;
-	b=Ubz9LFl1TjjgDtVTqnpii5HQQV5OazznA3kpnLbXz38MnTUpdMmi3H11tf8Khp4HtpuwWN
-	/kp+dyN0dU9mrFAP/CeBNhrSjIHSTXkmMjmPvlp7+sg02KTtXWq9E5edLJgyrCPB+tpKM6
-	bFRgU3jUpSbNYrIVLyKsNOK/eenv9sQ=
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-388cfc4848dso776579a91.3
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:05:49 -0700 (PDT)
+	t=1787123155;
+	b=MHqnFfYg2opTJS5ZTVzFM54vwATk85qBg3XCKflMPJsM1ellM67eEi2XGMC08llCTnj8ew
+	wXejchLicW5PIqmvwJ7uqAqC3jeTBBk9TNCcQQvSh/SC5na6eCnvFOJFM19TMh3QUKVifn
+	8mkHBAbPO7cj8vMJPrjR7FJVTkguFag=
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3823dcc1647so1159071a91.3
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 00:05:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787123149; x=1787727949; darn=kvack.org;
+        d=google.com; s=20251104; t=1787123154; x=1787727954; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=r13rbsEeTBQUt7C0+umCAD05cQ1RPgR2iUrqqxSlQbQ=;
-        b=OKzyhHHrRxVRa4GMUrwk+l9cqlBF2eB7DE5vHOs9vX7/UnViTh+8ysuNV5tO7yShom
-         fTX6gcTpHDKEX3+hR62TNHPx724ps2FbtJZ5qOmC/m6iZwGYeP3PZZZQKXewG+UYSaNH
-         9U7o9OJLARi2i2kld5lQog4LYA5UTzLt0hbnWCoMrBszbDYquTVHPJqIqtvBA5WFp3kV
-         N2ZRVpsWL/XD0dNxYPX+I0z8xwYQ9UrJqbDlb8j7ZWSLgst9t0Iduu2dkTPZwjXd8wcz
-         VmNIB4eGRcw7S4ak96K21R/iA5STIp4Ulnp2QcbYiIN1hiLBhSr/0wUnRuTdNUq2Dd0v
-         OUxA==
+        bh=E95q1x2DT6McfvZlrwH4oQfSk4gruvw+vn9eniPurXw=;
+        b=oEE4TbhTVnIjIIS7GQeEDJ4ilW/1lZ2H9B9PtYQ70RsspbpB7D0lFnqxXKiMNFh5GG
+         z7c+0M9oRJUmcqpAf27pRNcdILDUR/xW4j/PDGQoLc09Y5u0yA4+6zIQVUMmBJHEgRrv
+         nfSGh1D1k8QrSpYl8+PPbcUat5WQyBIE2eHklZq2XPsGWcE6iVqMqBOtaG69fgPWM7TO
+         jal1XTehf+eTavH03AEWmiYhze7P26q4dBjkkWEFCe1BnYmtjvBFv+kU6oX+5CIMPKX7
+         dXUklGE9t6HEaOsicGevALnoLfGd/kuxt8J0FGQVR6TWCGKcTAIj5Q7PC4Rn2ADbwKzL
+         swcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787123149; x=1787727949;
+        d=1e100.net; s=20251104; t=1787123154; x=1787727954;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=r13rbsEeTBQUt7C0+umCAD05cQ1RPgR2iUrqqxSlQbQ=;
-        b=ARxIKRLVEJFnRpn5ywa0V29vVC+6iHFrCqX2ZDnv3NI6Re6q2rwb1q7O56DXfiEOMA
-         OlWlJhISYa2viRRK3ryiTX7re12LRynTRrIf/H09AVVYwMdDMoMzn5zJPkLe3YHOt98k
-         agGjEeA2/EeHFAhe+Nq6DsN3vF3D+JmzcFBsUxhYlL+pbxbFAwGPpfENbPJq/KST8tnn
-         EP8jhtAhoRhwCiEzz4e4RTCBFQresVnEkiIZfVikw7DQS9ma3DdRTPUDc7vLlVKh1KkR
-         Zc8Zd8CZrqoMd1VM5Sexkl045+pTegjNJR8o9AJkZGRU5cuTBxYkMe4g0AicgYSHpzyo
-         9f5Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rr+veg4if2sq/HS7WnSUH2+Jtcb/Ntv6+BNhPuEkJ3td/OM/bcocsF1HYKtZI3tI+5CFzqBHWW7RQ==@kvack.org
-X-Gm-Message-State: AOJu0YzDblex2ycAnCBfJGE9Nux4HjdFixMwZiUdiWBwxptd/9Z/hW65
-	VIiZFU57HgbgVktkzNu2KWGYjxObpRl3MbCqNRkT8gdeBj2X/jFxTDGhb1NoB73GUEX3vUc1Sx3
-	+tMXvmyHQKq3/7w==
-X-Received: from dybhl1.prod.google.com ([2002:a05:7301:2701:b0:327:eee:4918])
+        bh=E95q1x2DT6McfvZlrwH4oQfSk4gruvw+vn9eniPurXw=;
+        b=OlbwbySBFPP8ospcXPTbGRmB7++B3NKNoZl/pIeAl+fJeO/jTwP5QVzHxAIB66u1N6
+         j62fYRN8v9VPPn5ZpzWPSxMrgWOe9U8sS9gjWzWAld9PcYPMN7poc6zDlj/9VE57dZDi
+         hKrVO4h9aTKGjG99VAyPOBkG6/eSzBcVBstWzgfxTLpfglY6O3b8FVt2+F1iKSx5QJ86
+         I2MKLbUoVZ7fnq3Xq6W+nd3xj1fIZLEqLbeh9+wGQywOyTUsqu364XUMenmRJaFGZMAI
+         PAIOkDoA6XTJrppB0NkuHxJerw/r7OeEbdgJwVYNi24jIYhQAZMQ94gPXWvwwm73A5ev
+         ROEg==
+X-Forwarded-Encrypted: i=1; AHgh+RpNzbdx2UxqjPOX2ndBUM2WSTAdlA4AKT3rE+SvNgmtoeAYnzzmvKTrg6rj7Io4Zhp2WRp3VbLUSw==@kvack.org
+X-Gm-Message-State: AOJu0YxiZ6+2zpPSDfkDCuF4/kkcCG3TYLvGHodGvaklTCgWHNuwMxX1
+	4GPg1flFWFSjM8en86jF32iZ0BeGLyleQT0EYyx3EJwopYFF63vHDz54m2INs2eTF13jQ+7jImK
+	OrtDj9OQeYi+8cw==
+X-Received: from dyctz24.prod.google.com ([2002:a05:7301:9f18:b0:327:b132:c5a9])
  (user=jasonmiu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4a46:b0:37f:e326:6557 with SMTP id 98e67ed59e1d1-3958083fc60mr4701528a91.4.1787123148550;
- Wed, 19 Aug 2026 00:05:48 -0700 (PDT)
-Date: Wed, 19 Aug 2026 00:05:36 -0700
+ 2002:a17:90b:5250:b0:381:9028:5945 with SMTP id 98e67ed59e1d1-3958125375amr5159730a91.14.1787123154083;
+ Wed, 19 Aug 2026 00:05:54 -0700 (PDT)
+Date: Wed, 19 Aug 2026 00:05:37 -0700
 In-Reply-To: <20260819070538.2404983-1-jasonmiu@google.com>
 Mime-Version: 1.0
 References: <20260819070538.2404983-1-jasonmiu@google.com>
 X-Mailer: git-send-email 2.55.0.737.g08866a6d13-goog
-Message-ID: <20260819070538.2404983-2-jasonmiu@google.com>
-Subject: [PATCH 1/3] lib/test_mempress_timer: add module to generate kernel
- allocation pressure
+Message-ID: <20260819070538.2404983-3-jasonmiu@google.com>
+Subject: [PATCH 2/3] selftests: mm: add script to induce userspace memory contention
 From: Jason Miu <jasonmiu@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Shuah Khan <shuah@kernel.org>, David Rientjes <rientjes@google.com>, 
@@ -100,14 +99,14 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kselftest@vger.kernel.org, Jason Miu <jasonmiu@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 73E652000C
+X-Stat-Signature: ngs1a6o9ccyt7zbugi861jm1miym6eij
 X-Rspam-User: 
-X-Stat-Signature: nm5554k4fhxcstgckxzj9jk95bdzpt4i
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0048B80007
-X-HE-Tag: 1787123149-734589
-X-HE-Meta: U2FsdGVkX19HcFaDCYvCCHxt2G9P3mbpvGMXqdDuzSz0WKzMn5hnWWtGG69cxcrtdTzqV+0w4EXPnvjS9oBijp2tvQzdiEWxE7MFArntqreIC9zzHJkqGMXjPp52s7NkHWTpz70DUytJlgfG24sxO9RN8aQJmGUlgMRMx/51BH4xRMZJsMba1WPcUONmQkgEM9qIUhnCJg+owQIeJizD6ifPkgfuEhOuyEcjdL+sPM1yDub0HlShQXBx2c6v10wkVfUVOO6Zx5AyOLC2d8PZp431vrxVHob5q5A4Oj7YlvIVshoNbHL9x/dGo+Yb9ofIRp3LWCgGLq9GsGF9pcBR0k6zTWPU/6sn0qNsWBcRkMXJtNBa01i9rRZH+EprmxRzdcL2ZRwGYbzj0YVkLhFOKHHA0nwf9t5DlubY1XY2+miM9grA458c24JE/ykllMIKCX5/px/yBAUiAknj7rh/CN+A4RZ1W2HRyoBnn2YKPiEz/rKNfrqX+LfFpIymcfo0rYrU6HGe7C81bvFhqiOt+CJruQY5Zj57TIZG9SVvKDmWIyty/w/pG3fZRsBNWwryu21DJ+bYbWaSjKqvcmNcTuZuDzizE+ZXL9FIefB33ZvMKRI25DJJoUez3AUQGKQ8oCnMY/cUI7Xa0QCPEFDue8LPhak1Ntn8j2PjG7An+oPABUTK2o1lOtpjPcWK8tBunFSCR6FrKibNbSEk7QrPH8mmi3flz89z5jx5Is+L6ufAYD4X8afteVHhYkqEJdBTB2Cv6tmLDbFph5wB3Fk7OU/onaEduqhecDLeu4qsmUuLKCrGJLsbfzag+repWvhutwFFzvjK/DR+RfIfPpi2Ocs+PYhwf/xWpUv2ZRGCVnO/e0nPYtLepMLTEpFTn0keEy4EoU/bTfDOY/VKtfKyfw8KT53HWN0I/kKd4JseeITPD8E/balwzbVvnPnvD1tzM+EbZbf2xWgA4xK5qSo
- ZkDZEpiF
- fHQ3l5APBhF7A34VPiwuOfV824mhddBS4S97x1ortaecoHn618uBJLZ/9VZfsc3qjacVr0Zf8kkvSa4aDCo0KIS3wQhSpwjFUSeUMjBRRs/bYu6ujyg1wgaaQy2HqIrglGioh7fbwA79UoyHskwXxREE3yTpAPxn3Hvp0t0KQ3FOl20gL1bts0yMtRCCuUqlanNcMHbWsYJxTqOsmfETXUgllSa3uP594+IInTcaNkzFCmlm+598j8I5FFO8otAZXC9i7pgIf5+oCc6XR+87xNVuPampt34NB7uUkMSAgpKXWhEtY6VwJVFBbVgnRXW3Iv4so671kRk97+vY2NGXy0TK4VN4kGqNIJuEm6bnrBEgmD7Md9/CWPafWIMbA8orPN0vSWDtpAL/p8qbABFwKr4GnvUA7dT1Z31QAZzLLa3Z2wdIpTZ60yo4Xs5dZ8p1lYiGYimEo+cQ6Uw0tJhWP/ycc7/s7s2l2491EpZHbD3TXIhykIbL/npO61FkaAhJPKCT+MIRAQ/Z0SQYb6w/HFt0itrRu4dk90L+FLoxVXB1Amz06o+X0CkOuwKMmyfj2AieY1KPGw4uIDHlZwTNFVoN5gjAp7RqKvx2Qc+fLUBks1Mz6qhcuLoMj5sN1PGE3uKWiPCVfo4mYXic=
+X-HE-Tag: 1787123155-891014
+X-HE-Meta: U2FsdGVkX180PAHwdUyUTCEzfPmzBsJ6lSQ0OGs58CL7MQHPBHdwPiJNMgDtdgTH1Oja7/7Y0x9W3UyVCV+25Bth6AUF+LOEmC25KcGEElRSBIoooFnAhaQvzMw2cpK7Ze1lGKkYuDNSFbRu9k+viLzPC+cOa36cmfVfFfooXsNrbbLn9jmII/aV3LjHIxsi2ZjdLtHptEh2fQ3YKxOEkkMyOKvHxLSzC6j6ah9hMNrPCNy8zhp8WsnydLiDMTk7fZFaxJr2Fpr+TWlnUaD5VzLXZ76wIqgmvdFb2s2ZEqJ9tRSOUqmybTAvr+B4nB9b+TxlgJ2SPo+4sNsiYQktXcM2aRxbhLpNu1ZR11CvSdE/JRsUJGQb9WIb27AGjfq/+i3zEl68a4rKDT2zPOoW0xOI/FwRJS67J8RDFfzru3m2sG5g3V0BzRENKvjjQdctug07WFSbUZ1UQGmVZ45SC30V7mFyzk3z+c2YZmtro4qN9V0G1YlQNFwIshX7wMWQtQh++TLiXQ/kZ5fc7E8LR47m9qj/7NgbEEOE/prV4Soh8Iq+BLU0WPAYkpU5JkAdsHlDkEOHJ45gjbVRzYDL5GurQxyjWz22iA3ZZm/3iQwHl48LMsMGnTq8sQnx6ro2bR7cpymJ11iJqMF8aURk0IT28UWhZPbbFTkvJNB1462PNIL+g4jceUI0VSUu8QRCDrSOTaCqlTcKju8n9w6DdycMtqa0wUBM7VFRewXRJzMctbZrGDdYjoBpYOrg1k5UPXmeS92Jeen8fe0A6UD+y7JdNH37bkXmetLaSqBGN0LW52NwcTMgO7VduGe1qt23tX/pr5dSMdOUvuHQfgvlRpWO/HjpEe+YGaJ+SL0uSpIupcfHDoCzblFttDVfGR17nRKNa4WH8H9tHWQV84vio4zAhrS1tZXpN1k+0qfEWlKICt+bjjK41KtQoltWFP/W7F87XXM36z9MqFC9dsl
+ OgTMWxB9
+ r4zeVF+7k1JPLb4ScPbPxp9K+b+0HZB//iugHJPMhG595b0kIDCVYlHpIIi9N1I5NcSY4KNGq4gt+ljZ5DjNW0So00CxwkZcXWgARW2eVP0kqGNgHlmXQv6M/+5vQ92yEUmCIw0B3J3Ir0BfuEpJ5bRAYWsZD5UeEp9MVCnks/gDFyDnFG3C7ZTaIyNYEhdexRw2w8QFk91ghgBcpNLfbdV71HXFw5eUU1axMvZwWtxQcXuytuldrOeQxFXvH1fC7Xjb9SzssiDlItGLGN5lWjKyVrZErcxMGiNPjWjx4ntEIyClTwhg2X7iaurkDRteYonYMc5bHirhV5wzskvq5OlJDZJYUUP5KE+rvl0Lcp/7oW/uMdX0/oEWxrpLy66jDMKOXOp3dD/epuqHEGw8f2WOOXtfdXk3rxvOAJq3OQ1yH4yT3+YRbYT1XBX+AkXfjQYSyLbQckIiCI2Zp7h7MMDpM8TELsGe7QgW4fXK3Tqi0xL9LNW6Wgg+tBa2tIlcakDZ9bifaptT9ygTyo3BNSpbufFw7rYFYp+jDCqYmnP/2d9ARy/wUJr/ZT94dQtPJhEIHBVZOJ23ZBOH0sJm7DQvDHfiHphtjIG0rz9iBfRkJf/2WaFKSH22CCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,206 +114,270 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update lib/Kconfig.debug and lib/Makefile to introduce
-test_mempress_timer, a kernel testing module designed to generate
-synthetic memory allocation pressure within SoftIRQ contexts.
+Introduce page_alloc_stall_pressure.py, a userspace workload generator
+designed to saturate available system memory and force high-frequency
+page swapping.
 
-Bind independent timers to each online CPU to continuously execute
-atomic page allocations (GFP_ATOMIC | __GFP_NOWARN). Provide this
-workload generator to repeatedly emulate heavy kernel allocation demands.
+Implement a dual-process architecture:
+1. Map a specified percentage of system memory into a primary memory
+   hogger process to establish a low-watermark state.
+2. Spawn concurrent worker processes to continuously overcommit the
+   remaining memory and touch anonymous pages, driving rapid page
+   replacement activity.
 
-Add a configurable termination threshold (test_duration_secs) to prevent
-permanent test-node lockups, and provide batching control via the
-allocs_per_iteration module parameter.
+Provide this script to orchestrate artificial userspace memory demands.
+
+Note: Execution requires the external memtoy binary
+(https://github.com/kosaki/memtoy) to handle underlying anonymous memory
+block mappings.
 
 Signed-off-by: Jason Miu <jasonmiu@google.com>
 ---
- lib/Kconfig.debug         |  11 +++
- lib/Makefile              |   1 +
- lib/test_mempress_timer.c | 140 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 152 insertions(+)
- create mode 100644 lib/test_mempress_timer.c
+ .../selftests/mm/page_alloc_stall_pressure.py | 235 ++++++++++++++++++
+ 1 file changed, 235 insertions(+)
+ create mode 100644 tools/testing/selftests/mm/page_alloc_stall_pressure.py
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 1244dcac2294..00d32012e476 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2635,6 +2635,17 @@ config TEST_BITOPS
- 
- 	  If unsure, say N.
- 
-+config TEST_MEMPRESS_TIMER
-+	tristate "Test module for memory pressure and allocation stall timing"
-+	default n
-+	help
-+	  This builds the "test_mempress_timer" module that can be used to
-+	  provoke and profile page allocation stalls and direct reclaim
-+	  slowness. It periodically does a atomic page allocation to generate a
-+	  memory pressure.
-+
-+	  If unsure, say N.
-+
- config TEST_VMALLOC
- 	tristate "Test module for stress/performance analysis of vmalloc allocator"
- 	default n
-diff --git a/lib/Makefile b/lib/Makefile
-index 7f75cc6edf94..0f35c2b78970 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -78,6 +78,7 @@ CFLAGS_test_ubsan.o += $(call cc-disable-warning, unused-but-set-variable)
- UBSAN_SANITIZE_test_ubsan.o := y
- obj-$(CONFIG_TEST_KSTRTOX) += test-kstrtox.o
- obj-$(CONFIG_TEST_LKM) += test_module.o
-+obj-$(CONFIG_TEST_MEMPRESS_TIMER) += test_mempress_timer.o
- obj-$(CONFIG_TEST_VMALLOC) += test_vmalloc.o
- obj-$(CONFIG_TEST_WORKQUEUE) += test_workqueue.o
- obj-$(CONFIG_TEST_RHASHTABLE) += test_rhashtable.o
-diff --git a/lib/test_mempress_timer.c b/lib/test_mempress_timer.c
+diff --git a/tools/testing/selftests/mm/page_alloc_stall_pressure.py b/tools/testing/selftests/mm/page_alloc_stall_pressure.py
 new file mode 100644
-index 000000000000..a102ac4f6725
+index 000000000000..5e95a2355198
 --- /dev/null
-+++ b/lib/test_mempress_timer.c
-@@ -0,0 +1,140 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * test_mempress_timer.c
-+ *
-+ * Simulates kernelspace memory allocation pressure via timers.
-+ * This module binds individual timers to each online CPU to independently
-+ * allocate and free physical pages concurrently. It serves as a workload
-+ * generator to reproduce and measure page allocation stalls under system
-+ * memory contention.
-+ *
-+ * Module Parameters:
-+ *  - allocs_per_iteration: Number of atomic page allocations executed
-+ *                          during each timer callback.
-+ *                          Default: 1000
-+ *  - test_duration_secs:   Total duration in seconds to run the pressure test
-+ *                          before automatically disengaging.
-+ *                          Default: 900 (15 minutes)
-+ *
-+ * Usage:
-+ * insmod test_mempress_timer.ko test_duration_secs=900 allocs_per_iteration=1000
-+ */
++++ b/tools/testing/selftests/mm/page_alloc_stall_pressure.py
+@@ -0,0 +1,235 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++"""
++page_alloc_stall_pressure.py
 +
-+#include <linux/gfp.h>
-+#include <linux/mm.h>
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/timer.h>
-+#include <linux/proc_fs.h>
-+#include <linux/skbuff.h>
-+#include <net/tcp.h>
++Executes a multi-threaded userspace workload to consume and touch anonymous
++memory. It serves as a workload generator to create system memory contention.
 +
-+struct mempress_timer {
-+	struct timer_list timer;
-+	struct list_head list;
-+	struct list_head page_list;
-+	int cpu;
-+};
++Mechanism:
++1. Instantiates a primary memory hogger process to occupy a predetermined
++   percentage of system memory, mimicking a low-watermark memory state.
++2. Spawns multiple concurrent worker processes to intentionally overcommit the
++   remaining memory, generating high-frequency page replacement and swapping
++   activity.
 +
-+static LIST_HEAD(timers);
-+static bool stop_timers;
++Parameters:
++ - hog_percent:      Percentage of available system memory to lock strictly
++                     inside the primary memory hogger process. (Default: 50.0)
++ - num_workers:      Number of concurrent worker processes mapping anonymous
++                     memory. (Default: 64)
++ - overcommit_ratio: Ratio of remaining free memory intentionally overcommitted
++                     and mapped across all workers. (Default: 2.5)
++ - memtoy_path:      Local filesystem path to the compiled memtoy binary.
++                     (Source available at: https://github.com/kosaki/memtoy)
++                     The binary is operated via stdin and must support commands
++                     to allocate, map, and continuously touch anonymous memory
++                     regions. (Default: "memtoy/memtoy")
 +
-+static unsigned long interval = 2;
++Usage:
++ python3 page_alloc_stall_pressure.py <hog_percent> <num_workers> \
++          <overcommit_ratio> <memtoy_path>
++"""
 +
-+static unsigned long allocs_per_iteration = 1000;
-+module_param(allocs_per_iteration, long, 0444);
++import os
++import sys
++import subprocess
++import time
++import threading
 +
-+static unsigned long test_duration_secs = 900; /* 15 mins default */
-+module_param(test_duration_secs, ulong, 0444);
++def get_mem_free_bytes():
++    with open("/proc/meminfo") as f:
++        for line in f:
++            if line.startswith("MemFree:"):
++                return int(line.split()[1]) * 1024
++    return 0
 +
-+static unsigned long end_jiffies;
++def get_cgroup_root():
++    # Check for both v2 and v1.
++    if os.path.exists("/sys/fs/cgroup/cgroup.controllers"):
++        return "/sys/fs/cgroup"
++    if os.path.exists("/sys/fs/cgroup/memory"):
++        return "/sys/fs/cgroup/memory"
++    if os.path.exists("/dev/cgroup/memory"):
++        return "/dev/cgroup/memory"
 +
-+static void alloc_pages_atomics(struct mempress_timer *test)
-+{
-+	int i;
-+	struct page *page;
++    raise FileNotFoundError("Neither Cgroup v1 nor v2 controllers found.")
 +
-+	for (i = 0; i < allocs_per_iteration; i++) {
-+		page = alloc_page(GFP_ATOMIC | __GFP_NOWARN);
-+		if (!page) {
-+			pr_warn("page allocation failure from cpu %d at iteration %d\n",
-+				test->cpu, i);
-+			break;
-+		}
-+		list_add(&page->lru, &test->page_list);
-+	}
-+}
++def create_memcg(cg_name):
++    cg_root = get_cgroup_root()
++    path = os.path.join(cg_root, cg_name)
++    try:
++        os.makedirs(path, exist_ok=True)
++    except Exception as e:
++        print(f"Failed to create cgroup {path}: {e}")
 +
-+static void free_pages_atomics(struct mempress_timer *test)
-+{
-+	struct list_head *page;
-+	struct list_head *iter;
++def remove_memcg(cg_name):
++    cg_root = get_cgroup_root()
++    path = os.path.join(cg_root, cg_name)
++    try:
++        os.rmdir(path)
++    except Exception as e:
++        print(f"Failed to remove cgroup {path}: {e}")
 +
-+	list_for_each_safe(page, iter, &test->page_list)
-+		__free_page(container_of(page, struct page, lru));
-+	INIT_LIST_HEAD(&test->page_list);
-+}
++def run_mem_hogger(cg_name, size_bytes, memtoy_path):
++    cg_root = get_cgroup_root()
++    try:
++        full_cg_path = os.path.join(cg_root, cg_name)
++        def assign_memcg():
++            pid = os.getpid()
++            with open(os.path.join(full_cg_path, "cgroup.procs"), "w") as f:
++                f.write(str(pid))
++            # Protect it from the OOM killing
++            with open(f"/proc/{pid}/oom_score_adj", "w") as f:
++                f.write("-1000")
 +
-+static void atomic_timer_allocator(struct timer_list *timer)
-+{
-+	struct mempress_timer *test = timer_container_of(test, timer, timer);
-+	bool is_expired = (test_duration_secs > 0 &&
-+			   time_after(jiffies, end_jiffies));
++        p = subprocess.Popen([memtoy_path],
++                             preexec_fn=assign_memcg,
++                             stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)
 +
-+	if (list_empty(&test->page_list) && !is_expired)
-+		alloc_pages_atomics(test);
-+	else
-+		free_pages_atomics(test);
++        size_mb = int(size_bytes / 1024 / 1024)
 +
-+	if (!READ_ONCE(stop_timers) && !is_expired) {
-+		test->timer.expires = jiffies + interval;
-+		add_timer_on(&test->timer, test->cpu);
-+	} else if (is_expired) {
-+		pr_info_once("Duration (%lu secs) reached, stopping.\n", test_duration_secs);
-+	}
-+}
++        p.stdin.write(f"anon region {size_mb}m\n")
++        p.stdin.write("map region\n")
++        p.stdin.write("lock region\n") # Do not swap out the hogged memory
++        p.stdin.write("touch region write 1\n")
++        p.stdin.flush()
 +
-+static int __init mempress_timers_init(void)
-+{
-+	int cpu;
-+	struct mempress_timer *test;
++        for line in p.stdout:
++            if "touched" in line:
++                print(f"Mem Hogger (PID {p.pid}) allocated {size_mb} MB RAM.")
++                break
 +
-+	if (test_duration_secs > 0)
-+		end_jiffies = jiffies + (test_duration_secs * HZ);
++        return p
++    except Exception as e:
++        print(f"Failed to run Mem Hogger: {e}")
 +
-+	for_each_online_cpu(cpu) {
-+		test = kzalloc(sizeof(*test), GFP_KERNEL | __GFP_NOFAIL);
++class WorkerThread(threading.Thread):
++    def __init__(self, name, cg_name, size_bytes, memtoy_path):
++        super().__init__(name=name)
++        self.cg_name = cg_name
++        self.size_bytes = size_bytes
++        self.process = None
++        self.daemon = True
++        self.should_stop = False
++        self.memtoy_path = memtoy_path
 +
-+		timer_setup(&test->timer, atomic_timer_allocator, 0);
-+		list_add(&test->list, &timers);
-+		INIT_LIST_HEAD(&test->page_list);
-+		test->cpu = cpu;
++    def run(self):
++        full_cg_path = os.path.join(get_cgroup_root(), self.cg_name)
++        def assign_memcg():
++            with open(os.path.join(full_cg_path, "cgroup.procs"), "w") as f:
++                f.write(str(os.getpid()))
 +
-+		/* For start, use 90 seconds. */
-+		test->timer.expires = jiffies + (90 * HZ);
-+		add_timer_on(&test->timer, test->cpu);
-+	}
++        # Allocating a region of memory with size_bytes.
++        while not self.should_stop:
++            try:
++                self.process = subprocess.Popen([self.memtoy_path],
++                                                preexec_fn=assign_memcg,
++                                                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
++                                                universal_newlines=True)
++                size_mb = int(self.size_bytes / 1024 / 1024)
 +
-+	return 0;
-+}
-+module_init(mempress_timers_init);
++                self.process.stdin.write(f"anon region {size_mb}m\n")
++                self.process.stdin.write("map region\n")
++                self.process.stdin.write("touch region write 1\n")
++                self.process.stdin.flush()
 +
-+static void mempress_timers_exit(void)
-+{
-+	struct mempress_timer *test, *n;
++                print(f"Worker {self.name} (PID {self.process.pid}) allocated {size_mb} MB RAM.")
 +
-+	pr_crit("exiting\n");
-+	stop_timers = true;
++                while True:
++                    try:
++                        # Access the newly allocated memory continuously.
++                        # If it get killed during stdin write, it is ok.
++                        self.process.stdin.write("touch region read\n")
++                        self.process.stdin.flush()
++                    except (BrokenPipeError, ValueError):
++                        break
 +
-+	list_for_each_entry_safe(test, n, &timers, list) {
-+		timer_delete_sync(&test->timer);
-+		list_del(&test->list);
-+		cond_resched();
-+		free_pages_atomics(test);
-+		kfree(test);
-+	}
-+}
-+module_exit(mempress_timers_exit);
++                    for line in self.process.stdout:
++                        if "touched" in line:
++                            break
 +
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Test memory pressure from timers");
++                    if self.process.poll() is not None:
++                        break
++
++            except Exception as e:
++                print(f"Worker {self.name} process terminated: {e}. Respawning.")
++                if self.process:
++                    try:
++                        self.process.terminate()
++                    except Exception:
++                        pass
++                self.process = None
++                time.sleep(0.1) # Don't respawn too fast
++
++def main(hog_percent, num_workers, overcommit_ratio, memtoy_path):
++    free_mem_bytes = get_mem_free_bytes()
++    hogger_bytes = int(free_mem_bytes * (hog_percent / 100))
++    remain_bytes = free_mem_bytes - hogger_bytes
++
++    hogger_memcg_name = "mem_hogger"
++
++    print(f"Allocating {hogger_bytes} for the memory hogger.")
++
++    create_memcg(hogger_memcg_name)
++    hogger_process = run_mem_hogger(hogger_memcg_name, hogger_bytes, memtoy_path)
++
++    worker_size_bytes = int(remain_bytes / num_workers * overcommit_ratio)
++    print(f"Spawning {num_workers} with {worker_size_bytes} memory allocation each.")
++
++    threads = []
++    for i in range(num_workers):
++        worker_cg_name = f"worker_cg_{i}"
++        create_memcg(worker_cg_name)
++        t = WorkerThread(f"Worker_{i}", worker_cg_name, worker_size_bytes, memtoy_path)
++        threads.append(t)
++        t.start()
++        time.sleep(0.05)
++
++    try:
++        print("All memory loads are created. Will run for 10mins, or Ctrl-C to exit.")
++        start_time = time.time()
++        while time.time() - start_time < 600:
++            time.sleep(10)
++    except KeyboardInterrupt:
++        print("Got Ctrl-C. Exiting.")
++    finally:
++        print("Cleaning the processes and cgroups...")
++
++        if hogger_process:
++            try:
++                hogger_process.terminate()
++                if hogger_process.stdin: hogger_process.stdin.close()
++                if hogger_process.stdout: hogger_process.stdout.close()
++                hogger_process.wait()
++            except Exception:
++                pass
++
++        for t in threads:
++            t.should_stop = True
++            if t.process:
++                try:
++                    t.process.terminate()
++                    if t.process.stdin: t.process.stdin.close()
++                    if t.process.stdout: t.process.stdout.close()
++                    t.process.wait()
++                except Exception:
++                    pass
++
++        # let the kernel settle down
++        time.sleep(1)
++
++        remove_memcg(hogger_memcg_name)
++        for i in range(num_workers):
++            remove_memcg(f"worker_cg_{i}")
++
++        print("Cleanup done.")
++
++        return 0
++
++if __name__ == "__main__":
++    hog_percent = float(sys.argv[1]) if len(sys.argv) > 1 else 50.0
++    num_workers = int(sys.argv[2]) if len(sys.argv) > 2 else 64
++    overcommit_ratio = float(sys.argv[3]) if len(sys.argv) > 3 else 2.5
++    memtoy_path = sys.argv[4] if len(sys.argv) > 4 else "memtoy/memtoy"
++    sys.exit(main(hog_percent, num_workers, overcommit_ratio, memtoy_path))
 -- 
 2.55.0.691.gc56d675ccc-goog
 
