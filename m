@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A539DC5DF6D
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:14:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A13F7C5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 09:15:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB23C6B009B; Wed, 19 Aug 2026 05:14:21 -0400 (EDT)
+	id C13546B009E; Wed, 19 Aug 2026 05:15:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3C446B009D; Wed, 19 Aug 2026 05:14:21 -0400 (EDT)
+	id B9CB66B00A0; Wed, 19 Aug 2026 05:15:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9041A6B009E; Wed, 19 Aug 2026 05:14:21 -0400 (EDT)
+	id A64FE6B00A1; Wed, 19 Aug 2026 05:15:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6698A6B009B
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:14:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F01E4804A0
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:14:20 +0000 (UTC)
-X-FDA: 85117457880.10.76CF3F8
+	by kanga.kvack.org (Postfix) with ESMTP id 7C7CD6B009E
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:15:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81A841402AB
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:15:03 +0000 (UTC)
+X-FDA: 85117459686.25.5414A41
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2905880002
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:14:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id CD1A3140006
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 09:15:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
 	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787130859;
-	b=cDlgSN6WLcTJlXhOVHhAyJADSWPsl9Z5+t1RV/l0EG/nXcIQEnQ32fBhJ+vjxyDvW5P9Vl
-	VVW4RRdz4TMQY13DDPJ8d5usKwjqd0+rN+eADL5HwK18v4pgp9ZSfx0v7j1SjsZqOQR4a/
-	tNH9Aq8N1N672MHxBYS4i39epF/rKDA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787130859;
+	s=arc-20220608; t=1787130901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	b=vikVYQ/NSLdkHcigun4PvQ4mNMtNVDsmOzMqtAM5NoHOtKcZoyPKiBRMk48mgBPTK55I52
-	Hph9qsJ/WJZ2asHFnp57JGjEGv55TT9dKq0ofl5CP2QYlWYVxqMrLp0LtQE4d0Fk6T7jbB
-	cigVEN+k1OIM6vshMQZXZkCvNiENCEM=
+	b=hbJsljPsyNX0tDhQu6D3Z7aQgPVBnJUPq4u3RgKnbQ36+vVreTV3zIXSS+JyP1Eqa+3UNN
+	RMBdwnm2FrCOdQJ+M1cjFQtJPh5hrlmDV3yk5UEjaXNN0fVP01OSN+VCLCPlJXApW80v+Q
+	cRfYpMB6bLVjThyHsllRrG2yPHSO5eQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787130901;
+	b=d4tzprn3Lnv59+VBG5zIc4NNkZb/Mw00NDv4sMHCyGLNvetqQH0DjRReZo8hZV8i4jk05P
+	g0GarX+7ep1rOtxXkItw4XD0MbqRhPHlVDLzqHoIM49QirfUYQlZ965vhdL0YJAfKVT0av
+	JPhNjYaKn/AMRQmz2ycGkTwmKOnoDqc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id EAC3068C7B; Wed, 19 Aug 2026 11:14:13 +0200 (CEST)
-Date: Wed, 19 Aug 2026 11:14:13 +0200
+	id 43CEB68CFE; Wed, 19 Aug 2026 11:14:58 +0200 (CEST)
+Date: Wed, 19 Aug 2026 11:14:58 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Yu Kuai <yukuai@kernel.org>
 Cc: Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
@@ -87,23 +87,23 @@ Cc: Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
 	nvdimm@lists.linux.dev, virtualization@lists.linux.dev,
 	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 1/3] blk-cgroup: use a request_queue rhashtable
- for blkg lookup
-Message-ID: <20260819091413.GB10298@lst.de>
-References: <20260818070641.756747-1-yukuai@kernel.org> <20260818070641.756747-2-yukuai@kernel.org>
+Subject: Re: [RFC PATCH v3 2/3] blk-cgroup: store blkcg in bio instead of
+ blkg
+Message-ID: <20260819091458.GC10298@lst.de>
+References: <20260818070641.756747-1-yukuai@kernel.org> <20260818070641.756747-3-yukuai@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260818070641.756747-2-yukuai@kernel.org>
+In-Reply-To: <20260818070641.756747-3-yukuai@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2905880002
-X-Stat-Signature: twogp5ohftci1bsa8q7nzaf9tgg4amu4
-X-HE-Tag: 1787130859-227573
-X-HE-Meta: U2FsdGVkX1+oPODG8FhrfWnha+WQKweRwLfmDl5IVYg8A7G7Hb3//1/2Ccrf3BzA/7KbWRC55frg5hcIxSPrU1QmOFFUfMNfhwI19vleJ1yUfY/xM9aGwiMgbKQIpuVHphFUwDUlvYS4xImJPPBhSNflTTOWUb2l0A4AcN/iEuLfiZkTyEacLEmgKEHNsSj8FM7iCrsUeQXpBHorqdTXSusLCo7LVsE+4M85HoPpGJ1W2j33Gnuuc5+cFrd1le/rt2ldo8kypViKUvf98q7NrEoxRPKvc6SkzqOPOjGBTggPP4NpkqnEzbtlsDocs6ppCI/4s/x4Ihzws8Sqyv9Q6B5rnY4I2CgH8fwWP7Gq3ie1zQ9yj8sjIghryBJgtbGnK0LshA22Y9KO/04Y24qXQb/2KtmffKbwAo24+6Sk7zvj+C2zqSFMzINAh+0xjYju3jXg4uBgMn6nAU1Til3je1IQKg43K3Hf1iAZ8CzaFuuLzVAtmsCMEO55m7ibp6rYfRuc2ewrsM6ohfBTvp7Zg9uMVUl8yUaFCMhCD7bcwHWv3gdcwgzg/5sD/CkP62eXE77U3C9BhqtknEfE5CMcltEKVh+mtvk3OXvsdooC8UpfEf3STPcE45S0D5xVjwQdCPc3fOkEGLtGPeABEHnNrnCTDdkJvl5UwvW2ObeneK6o1vVcHXs228+pVGquFL2HlNGVfICA9qVei5SEjChzUZ+FEOI6YQV5sz0eOBCjTXrM8PiFF7elGaCztXcLnUrgcABuqwCQm0IS6nKmWifhBOud7RR6hEPcJYtrBZTEMGsYwsGGUwCrEFvoGlA1UsITOF1LjzT4n+Mdw0wh6UOvSiaS4IPsvYmLtXvyHJ7+sopHNeBTEEdeSd8+76xYpn2pyTk0PSvsbd5sZFs2Xra1GJrqMPkcpyywWNJjC2FxzlpuS2AoAJQCMRPtt9hhdHRaUoM8ntZrsF5ycf7tlgr
- jot9TsCd
- fInHHPawQNe/cnMXWhx7qkyTKwt53lHLchDoC5TvtiFSD2R4DA46HZZX0AdDcmEo9QCS7FaiyugaYzN01z0Y09i7+ns58j39iUqYlxJDleAk5rY0V2rP4kC9aXYn1BAc4gW3RoJXEkch/Kmr2pN6D8u05i8covtv1o5/iZKksX60PjI1bQij1EkYuz4BxaGWHNnlFzc2bI5gxlNQ2vwKNx0fjFooSvTaR/2kK2ePXGRuVBQq7yFklUiMCyojQsc7e7roFl+wDa0ePX/mxOkl+8NK8aIYhv6RjOVuL5rGzU6sZhMQTSeGGozAxuLk3UZQZzdFXWzBl0SlMf+w94eMD4yLuTQEtSyNHIdEoIXJiG0W7he6ZxRXYAFYFUhz+2UbSvkCmgJ/1agGyy8efhaSUufJrAHd+l6fQIxZjyvm5b/1vi9sGSe/ZmJQpnP/xpuzD2m85
+X-Stat-Signature: 7zbb6jtqacdy15r5n98eh4neacbpzkno
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CD1A3140006
+X-HE-Tag: 1787130901-49090
+X-HE-Meta: U2FsdGVkX188K7xoDYR0DEoAb99hedvW14d03/TjmMd90a6EkMt5RJE0oiDWfRSFHCTpaoUMfd20SI235w5wq+2Gpc5ev0AN/wpuScB9cYrx9NcJsIwc2oIdjpq4DYBpsl9Ff1+b2yzOw/7XzuBoAWj1KeX5jIsQnWTl07yIvgRkVl0i6JuCYCtccp2cuENhhT/75A1dCiImT7sGDJt6F8Y0TUxmoT9HJdMnJUSJynTx3UmPX7hy7JCsnOGD4CbTnRtKzNwszbOMmQQcsxuYrJNCkdwz/DQ4nPGLPwhjoLCa2se0Ivtvqf/QDR1M0pkYR4CRagH58gJyU3Pfo4OP+RmloBGSoshqPCw7Yp3E8ct7D7ppPVXIk4gLFNjEI6rBzOOkE0iIbZfSKjMaoGu2SIcbdc7T/meVsqBRN8MARSBjHX1hbduWAECmpATI/4F4PnlhSPRX9FuTV8fJ5MvAQzH9WbKWjXnX8y0aIBCM5vmf0QM+W16YklIQRlFwLy8l8okLJq4IkqdiJ67zvPV4mwh+S7MD6uqRp8S8+RTgV6DDp+vtI8QT23eG/EW8+pelOVFowpDrAM4+Hw8+mgOinC8oLgepqAzimNeiQYev/SHqjoBkg5do/CmXkukYGxTjgLx5wdlvq9oVuaynT0lbNk7+jZwvPzE0hmTlEl1bRQp+Gy7PKkVdfRPBFBled0g2fxbvby1xUSFNhl5Mup+0gN+shoAcfmD0WcrW+D0Jv7+ECUsmnvffSHnS7mOOFsisVp2bV4BE4+jZVxOp7lQIXLer5sLA4JJVwWAMBiFbftYTkULe7E8XX325/cWSPGaSt6rnMXab58d+TAObkWFsXou5BKWWyq/MzKT5C6rQwipPt8UCAbdgQeX+/HaxgaTYvKK0pHOchlyMKmcEMUul9B+V6dbfxBV4xs+nRnFAtoAYDMp5BOc/BYmt0v/nd2QtkBtTStwyqLdTlRt/ZXY
+ 8xgLDAV2
+ wN8fo4h4lMzF5aD2PJbP+44DpmP5gchRVx5+UcsWt1QYzTqDB7RLKwrGTCHzagExamuNmjZdhOzLpZAkTbQXtmsLmbsP2giqPjub7Ff2/RrO47355j6f5103Kac3FIVhmZxl3kc/m3Uh9GvGoBl6YbIcIpCIFUJs/6mixDshvMqXSVV5SNEwSFJvkaFjONdFYmTamp6lLAPSlpubi5iVQdSBDtbHScUXBd26oYTNpav77MufSiUHpqB/RFiO/vfumHvo8AHSt0OgGo8lUWJ3Glg6N8CgDd/27IyiACS1kvVziog+c1ptP5M6vzPd8IGqFDg3/JCA9smC2glZkUgnVVOH+OI3+mx+UIFffV7tjP8oxB/slh1VR+csiBsUGtWhbO3Nii0WOqiHEoFFpkeAyeNVENQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
