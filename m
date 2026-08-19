@@ -4,120 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58EB3C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:14:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 640F2C5B572
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 15:17:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB7876B0095; Wed, 19 Aug 2026 11:14:10 -0400 (EDT)
+	id BF93F6B0098; Wed, 19 Aug 2026 11:17:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C41856B0098; Wed, 19 Aug 2026 11:14:10 -0400 (EDT)
+	id BAA816B009B; Wed, 19 Aug 2026 11:17:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B08726B009B; Wed, 19 Aug 2026 11:14:10 -0400 (EDT)
+	id A98E56B009D; Wed, 19 Aug 2026 11:17:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 78EF26B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:14:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E53851A0334
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:14:09 +0000 (UTC)
-X-FDA: 85118364618.04.0C568B2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E3DD6B0098
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 11:17:03 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FE7D140339
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:17:03 +0000 (UTC)
+X-FDA: 85118371926.25.D36CFD3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E304C4000D
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:14:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kyTW9KxM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1AF5E1C0003
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 15:17:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dErVKzXQ;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787152621;
+	b=7M768Dr+J0btFtka9OvUClC/YZdMC7MyuDI+JIv0jvnyySC+/R75rbT9kaFoovOVNrYoER
+	A2QxiTUPwh0y40iOfPcg3qNAYd/NcSgKsPH4Thob4en4WaENpF2OPKEI7Fd+crwFKX2XzK
+	4rc/aljoQLr5Pz4TJJ1uxc8p5wPSAF8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dErVKzXQ;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787152447;
+	s=arc-20220608; t=1787152621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AtA5mvQQ7MuCXISnQbexM1kw6XBF0r5MhQXIqx1BTrs=;
-	b=k6TPT0JaigpZcbNacDMUBMcSc+i9JbWzm55CsU+dVK7IkeAAGmpZHuaL2jMidfPAR4zfga
-	GSILlhJ4KZGJZrcDEMJGjQTaeqARJ5lMLzIh0TlMfaegj2mp9O+1k5t2E4Fv3KPeBck6vh
-	s2nqyn2yydCukFvFKvZpn/7jZqyccAI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kyTW9KxM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787152447;
-	b=MY/Ztd1qwUndmeLXjTPThiFP1qhIrdDOgFlDcsg+/Gm7K6aGbPUb9Yv3R71JXwx/+sz2d5
-	ixrLxqcYaaFsvmxIPCV6VJNYlosA1SyMZx4ID+uXQjKV56spV1QEohqhlalVbhCNfWiBFv
-	pg73kobM0qdtqg95rYxVi+tuU+4y2Xs=
+	bh=TIJZ+Vnf9H1+s4n3J23U2JGF74uy2+otNg6jnrrxAo0=;
+	b=3cTb0iXk8sps3gIyXM4JNYC+wzSGVBfzyzGDfr+tHk0lvBHuAul9hBtubCZ4Tbzo4Xt/NA
+	9sBTF3GPYctBJNUw1A21JNiIvhmY+G7E+Y5vROxMio+d7mdZZE0TPEblBSOWqClxLVgNWL
+	QUo6G0qTUT9Qh+k2vPjuJrEBR85UxOk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B7C161133;
-	Wed, 19 Aug 2026 15:14:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6C81F00A3A;
-	Wed, 19 Aug 2026 15:14:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 77B5360A92;
+	Wed, 19 Aug 2026 15:17:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218A51F00A3A;
+	Wed, 19 Aug 2026 15:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787152447;
-	bh=AtA5mvQQ7MuCXISnQbexM1kw6XBF0r5MhQXIqx1BTrs=;
+	s=k20260515; t=1787152620;
+	bh=TIJZ+Vnf9H1+s4n3J23U2JGF74uy2+otNg6jnrrxAo0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kyTW9KxMeGmjCVvOyZovqsWUN19LtbHsM6+pFG9g9C0IY2Gzm5jeHEZuIX4R4WYgD
-	 L2q+4GcZrdsNv2NR/2WgLvvASYQEmE5B5Mp0S7W6dXcb+nJZ8QRek+EfeJty+wMjsM
-	 w0dT/z0hgYYnm3N2qzo5IQkMOQ3Cy/G2Tkdr24RdUWQTVZNE9Y6pvv3xgpCxng3Hh4
-	 wOvwnD4fqnpSzkMwrIYZ+kJn34EiwpKs5zQoEMalI2wZpkjNMklHh2hYEX/gSPhncF
-	 2ZRyu8J/1WbXIzWuRDPQWvznzBZqYdYEo8CemYNOR1w1Nyb20wKWTvswo4DLDO4usz
-	 YlgI0u/nwqXPg==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 58FEB198007C;
-	Wed, 19 Aug 2026 11:13:59 -0400 (EDT)
+	b=dErVKzXQKg0Vtr6WVxumyAni+L6Yc8iWA62lmnz3K9DTVZn0pf1Y2GevFdDzwSmMJ
+	 Cd1rcnih5RhWWEEz+lAwF4Cus/h4T8TL+kujwBDRwLRUwsfC8cJ2JQKRcgjttobWzC
+	 zkhpNM3xHJtGI8w7fk9nwP72f4roNoyOx02O94NeR5n5W5lMm9so2SwviGC44bNeMN
+	 ooLSg/m9sp1E8YyPMIgUELQcfizwGFdeSAhXHugmZHuLRwsguT3UvJRUNZeUvJFEeX
+	 22oqv7HHZ22Nr0+z3sD5LUSHY2ffVnzglsVqAQ+96BfwyLj5ozgEu7740yugCnQwIY
+	 aR1pyghYwCmcw==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 55D661980045;
+	Wed, 19 Aug 2026 11:16:53 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 19 Aug 2026 11:14:03 -0400
-X-ME-Sender: <xms:NsiFamOuKZvGYeAAZ4L5ohcD3ssXy7I_ylmo8Kawg94Gx37f_cvwIw>
-    <xme:NsiFat4mYgYDhTg9Xqls3EOPayqV9OoTnY-rq_KP3JhUhMNKrkPyAl6p7F8LjV5RY
-    4_TxSounAexYmN_4KXvl1dbujckye7fYzjIH-sHbQ9lc46KizskvA>
-X-ME-Received: <xmr:NsiFamAm2qXSqU33q9I8fSCrdWuiigNIrxM0aZyaSJ8zPl3gd65ihLXMIOA>
-X-ME-Proxy-Cause: dmFkZTFC874SqF5jgsGEVLBfbAFduP+mDXsDSwMWKiKTuMoavP1oB+KifqBRX/hDeHraKn
-    C7cfsEd3id27APShl8ehKo2D/BrLfhYUjDUUJSYZnUAyHw5GR6ippKZ0dIcwwUwUUBJHfz
-    tLscdKxQf9sMOh/ztP/IltP5J74r5Gk8cLjJqG8ArQ1asEjzFDgrqUKPLajNVdLLdS11CP
-    wjMu8+NSt/1a+rRq3Y1/7hVBbm06JC+qs9eHXcOOmC/NdFBysy20LymarntUyvWTXty776
-    ciqsnw8bL1OmbbhooeEbBHnb/FJ3/96PTKBGsUb/yZ5BM81GiTeOkmXadYlHbmd0wp4Ycz
-    6h4eGTiM3n+KmSTR9SP8vg14497+uVjAkCKo4mr/vkRcVVB7VWoR4cyUF7fSjESRpzXqAU
-    nIlwrXfkMuO5qFJUmYazFuG/a1G+DBMOlQHq0FMvaDl+Vl9MEE/sIf/7eyBSFvPEYMDqov
-    BHrBgWFdhKuZ93N2kRYuKtkW9mXDEwmf1CfDwLKjsCVO4d6gui12hg275bxNEE2HSBRvi/
-    e6/tsu9TCQGecnn/t06T2OHuU84IlSjNfnzHk158PHdeyb3jcwEpOw/Z3kuMOsPLoN4K93
-    RhGohPwdLXodlGh5VZmkyITb3tPMBvQ1zGE9qe4yNl5pCS7lNXmFpVjUE7rg
-X-ME-Proxy: <xmx:NsiFap2xZmdtLZKCbarFoA0iZSm4qgWMQrobeQkxT_obtjN3a-3CWQ>
-    <xmx:NsiFal9tTi1hjYBwFaWcBM_9zeLojWqtH2Fj_mPaM3rNbTjNZ7GRMg>
-    <xmx:NsiFasULBJKl4x-J88OWpdLTxnSj0AYgofXFu1cFKiNPhbl1IDdsqQ>
-    <xmx:NsiFan_GPLdcQtcMD_vjiF86soiIhawNtWSh1hKPBRZWQdVOgtIljQ>
-    <xmx:NsiFasbruTA37Tr2NPbaSU2DLnYA9adkZTCDAUTYsuUAYxcSu28E-Rkd>
+  by phl-compute-03.internal (MEProxy); Wed, 19 Aug 2026 11:16:57 -0400
+X-ME-Sender: <xms:5MiFavCzyH7N3KN95DzcBTX116WEzP1A6k_zO21BJjrXh-jQbYmgpg>
+    <xme:5MiFaucxEDTA7a_jSM2HbMB4lYdWNcOW9sGiwrQMIzFbSDpuwERmt7S8MY40bwBzz
+    -7kwzhqtYhGIqDA9w2XzUfiOxfL0k9qdzcYAMbpL5CtHu22BjJYS4o>
+X-ME-Received: <xmr:5MiFajXvKnHIqJMCYuFL39983ee2Pw-bVaBUJMcogpyT0z1fbhJnpixDcyo>
+X-ME-Proxy-Cause: dmFkZTFFAQcZD930YtWtoCMZ6vOXHN1s/JZZPiHZlmcWnnVTPS89T5ThnggZ/j1JZQrgY+
+    mfbzDzM/k5+b0KuvdZXgKBkmN5a6XSbon/TUIrGY9Cj2rhLJG7IXeceW08r9F3K052egp+
+    w4P4Dxj56kJ5eMHulVxcC9wt50/9fYRr1dzx9qH1RUpA7C25j8+4qXCEZkODRGJSWOFFM6
+    jMU2iIK63RNBoZy6so2dmyWmBMy/12VsGpBxLKHN+s6WNB/3HBxp7S+QeZzhhSfQypNpBP
+    14zTUjgq85k8Lkq0EyNGzDvkIJY6IPYEaNp+sgeUPbNvoOX8SLs+kk37/PGb1saa9CRfgd
+    XZaQDuCE1MUQ59BwBccZA6dv4aOhR3Bwfmi0FJeb8UHJel0YMPSdkP315hT2mxeozV+WeU
+    2i+8oEA6KAahf0ZyUAUmkpNZtHRO5nwf7FbYL5VOtilLVb/OjwFLH6RQKAb9h8RJbZkwGb
+    VnxNiYovji+Z9nO1/lYmaJK73AWhsajX3zIhaCq+Zza9ZjA4ShcFuaN1gv2z2atRyAaxTH
+    zmKL8yI2yFKPrx8pLOnsfcEyH2TM5XgugHcS7qdMcNbOLsP88Qyyrijoko31N64nB4q76z
+    GfhNJJ0mVsAPl424reFUAZUtaQlA8Vx2ONA+1soticZrLcpLyO3Yb/NtcQ5A
+X-ME-Proxy: <xmx:5MiFak6Sl2dml8_jKHzJb2rR2YEa5wsQ9phYCNpEabfLIdg7w9qYxQ>
+    <xmx:5MiFarweKc2puMyjIPXIDZieytna5g_UxsHAiSIqZ8r65rvBm91RYw>
+    <xmx:5MiFal4eN0X6AyFrTJ7Zu6U1u2Jmwko9eu_LVvxQGQqWMnCftJaGng>
+    <xmx:5MiFaqQnvbmtNMZoo9Hf5mYB4aChhZ6gLyygGNBElczEQsm2pa9Ipw>
+    <xmx:5MiFaoeGxjziW4kntCmejbJBa_tG1dwwBeL1gvKJHHcswySQ5VNBtwLj>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 19 Aug 2026 11:13:58 -0400 (EDT)
-Date: Wed, 19 Aug 2026 16:13:57 +0100
+ 19 Aug 2026 11:16:51 -0400 (EDT)
+Date: Wed, 19 Aug 2026 16:16:51 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
-	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
-	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
-	shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, dev.jain@arm.com, 
-	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, 
+	ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com, 
+	Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, 
+	riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
 	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, 
 	lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
 	shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
 Subject: Re: [PATCH v6 03/12] mm: add PMD swap entry splitting support
-Message-ID: <aoXCVDkaEpvk3GOA@thinkstation>
+Message-ID: <aoXIQWO6NEfEKipn@thinkstation>
 References: <20260818131202.494754-1-usama.arif@linux.dev>
  <20260818131202.494754-4-usama.arif@linux.dev>
+ <a5c3a93d-fcc5-4fc1-a764-726ca1d0185a@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260818131202.494754-4-usama.arif@linux.dev>
-X-Stat-Signature: yh9nuntynpsjdtpj5qpbjfmtga76fodu
-X-Rspamd-Queue-Id: E304C4000D
-X-Rspamd-Server: rspam03
+In-Reply-To: <a5c3a93d-fcc5-4fc1-a764-726ca1d0185a@kernel.org>
+X-Rspamd-Queue-Id: 1AF5E1C0003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1787152447-638704
-X-HE-Meta: U2FsdGVkX193WbOxNHpU3rEyz8fQ2BdJ3tAKoZ5s1DlNHr6cIieAlt9WBZxAWuuxAhwSJS07qnU1Mzz2eU2ZT7b3+ugmI8wxQcNpyd6p2lkXkJKD97uBb/tWNsO/MCYz5Vp8I5jDMlwJURW4v7W8T/WKsZj0SjBcOBtjp/ij2xcP5JiFAWlxTTLRHewxl0LuMik6G8kKYJhH6F5VHMaf+Frt4K/x3kAYDV3/SPqM8la38I5YLmLSCt90XUx7ZzUr33kXpTB/22ryF6h8U2Fw/K7/+gxTndmKnG9nusFpu4lZ5OsQkwz2aqTFTFRvSWpesiV+gj/RQW6Ft0XXoCHKs1HhvuOL/G/YcxaKxWwWlr0k5p1YFPyritwfxc28UJ7DEVIL5q9dr85SZfrTV2ChM85cJXGa2ulW8/+08KlQ4oCgyRWe8vYReGzCsH99hywv49JC82WppK6biFb3iNCZsaSSS7WaMpkbmoEabLC9UH5yQMdctN2PKLN3vN7K1Dge7yDE2exreQLicg10oxnC8ImXFZMhHug/xaphA3MQpd7Vy9DKXLwqnHXSs/foMKCAbDACzEbBGEfyDena55d7VqunJLiZlVAPU0A6jqzBiSBlpDQapPAOHO7eHAgj3YLffMkMirL7ixueC3bqmJfKHeaKrXi2u76x6OneWSqE4gy/k0J6YXBaxzvlKpVjLQQ1+ts6YVMQ4WyLrVt56VMSJ4eNhLMgjScwS6+KccW5HN5rum2ayiJRnfwP8fZx7ze8b8X5g+lWiYFXeHu0lW1AXMcV1uZGY3XkJQ/3ZSZFu+i/UPWQF1aBK++BH7uKG2g6Harw0L5TTEKWW/rZZZt8EYSa1f0HgQj+SbfSMWkON1gDcK8uwHSGZHinQkYDDf7zEy87msfFsVQLDFokESpfSw4T7FNk1XpD4++h3aM5ooRW1XG+lF4xtByt0wElVEeaM6ZBgOlWw7W2owxDSUS
- +SmdPldT
- yQHXBbAo5mPducOikKiOWVUO1DhyvSUgpwOwMRvjgApIskgdh1+o742oBl8GunOr8GJ70a9VTZNOGH5+ObQ2Jx5irn/dnQKZ8iFUIpXjn5/n84+BLXw2X2tcZXjyyAv2zGgnjYzcacGN1OlJq4hsXNotgrmdOSNU/qTxfyPuiA+JASZoKlktRrYwGQAayesVXFcyjkfvgBhI+3R9rEHSp0zNUxEUfl6JKx1+TUFRZefYttXA3TceDwW/et/KnJqBpoFeCYexEEDfrk5vDN7Dp5pN5Og==
+X-Stat-Signature: dks81x49fjg83c7f6tm4399fj9oxk9m7
+X-HE-Tag: 1787152620-106822
+X-HE-Meta: U2FsdGVkX196wjySUXeCR0nc8pRooA/KEuGF1u0lcng+Y6ZjCVjaXuqp5GlSnVKKTH1m1rSMBWumxq4Q4IeYIhvxtYScw9/PlSyk1mHdfBnZTJkp1fHv1qGqXkqa7AjTclpa13cH3LyN0eruKJUGAX9+U+UvfSGo2ZZPjArbfHX2EsyvgO84uErQL5GJG7iO3CwDXVVyUoecmZzhPFnnR4JMCtS+gMALH+9vCldFXlblqA0D+a4TqF3Oh32pmr/4MMyg6Qb5zBw/NLgYu4Gj60vG9Clv2wxd5hnNQbyaI05AhD1+KsZ4MVT+HjmjHWPIc3gMbwBAeJlJVL+6/3DeRSZoi2snrF3W8fIMfgBIf/NbTWD7qD3qiSJSfRjmSq8Xl35HX0p2whMDfzdZfaPrmyW5ENvmcWHCpaslF0GUhLq3Bwl41WcDyUpHdKVjniKgc2mIiQe72LOriYunJLLEndlFepT6ZHyU14Lvn3VvjFPVcVg11DQ1huUBTTKu4HsOx77I4kpLaxsDhimWXLQPEeHYW+TMV03yzVjyDT2OzRlJXcpBaeBDja5HYeuJmjkzu1ZP78hcOt7nLE3FEaWzoYTTgXMGz1ocFwiRrIHlZpoBTHzSA+rIKQaxuoY7CaEzKKo3eIoEXgbiHrAa+QE/nk3fH5a9tLvkP9vTfZsyLUCzodgCmUgZtuRBDR5DcUUekAKiXnGxesxHZyS0hPyLgwJBmenkIy1QiamGtxnCRoXSFRNZwZ93I4t4cp7Cq/dWhFFVnvyHxYpVQ/l2TeRbmGOkyeOP8IRE8wNwTJqXa4+7qAtHH3Pvxfp5UZHHzryNoo7fzjdAm0+nrAcb+0qeeAgHEPObeauj1Wv7FzvTvC8CNS7qhQbWmemr4wTOKeL/P7wreeKuLNzZZoTzORXL4lFO3+d2yuem8+W2oszHAl7hlZBUZlqhD7EvS4JZKw/nvhCsqDGwObMzNRjF4jM
+ LaYVJ8Zh
+ G7Y1w01ovau9ryW4XGeOq97PCnRgMOh+RM5l6neT7wyNU3M22EAuMw1aWh2Ab3TL1SdJo9DFlmuYMM02tN0SycQ/wGdJ9NzS7a1fAE4sDC9h1WtKmWNphpAs1wjqAqOZwOaGTS3CCt3tmHxolmkn7+ZABfSmO9yliocU+9C8pOOwNeSbLGydqTLu864V7XSURGcXD7IaNbyd/Q+yDWwViJBlLKACGm2qNFap34lLTxr41I7R2mvU0HdxIqHDnOatJFm7YlfQkiZpasKqQoI5r1yienA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,62 +126,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 06:09:44AM -0700, Usama Arif wrote:
-> Add a swap branch in __split_huge_pmd_locked() that splits a PMD swap
-> entry into 512 PTE swap entries. No folio reference is needed because
-> swap entries point to swap slots rather than pages. Each PTE inherits
-> the correct sub-slot offset and preserves soft_dirty, uffd_wp, and
-> exclusive flags.
+On Tue, Aug 18, 2026 at 07:53:48PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/18/26 15:09, Usama Arif wrote:
+> > Add a swap branch in __split_huge_pmd_locked() that splits a PMD swap
+> > entry into 512 PTE swap entries. No folio reference is needed because
+> > swap entries point to swap slots rather than pages. Each PTE inherits
+> > the correct sub-slot offset and preserves soft_dirty, uffd_wp, and
+> > exclusive flags.
+> > 
+> > The folio_remove_rmap_pmd() gate at the end must inspect old_pmd
+> > rather than *pmd: for a present THP split, *pmd has already been
+> > cleared by pmdp_invalidate(), and that invalidated bit pattern can
+> > decode as a plausible swap entry.
+> > 
+> > This branch is reached from the explicit __split_huge_pmd() callers
+> > that hit a non-present PMD: partial-range mprotect / munmap, the
+> > wp_huge_pmd() PMD-COW fallback, and the swap-in / swapoff fallbacks
+> > added in later patches when the cached folio is no longer PMD-sized.
+> > page_vma_mapped_walk() does not iterate PMD swap entries, so
+> > try_to_unmap_one() and try_to_migrate_one() do not reach this branch
+> > and freeze=true cannot occur in this branch today.  page and folio
+> > are therefore left uninitialized in the swap branch; a
+> > VM_WARN_ON_ONCE(freeze) catches any future caller that breaks this
+> > invariant before the freeze path dereferences page_to_pfn(page + i)
+> > or put_page(page).
+> > 
+> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> > ---
+> >  mm/huge_memory.c | 29 ++++++++++++++++++++++++++++-
+> >  1 file changed, 28 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 1b6b0aa2baa3b..a473e85d30f51 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -3252,6 +3252,14 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+> >  			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
+> >  						 vma, haddr, rmap_flags);
+> >  		}
+> > +	} else if (pmd_is_swap_entry(*pmd)) {
+> > +		VM_WARN_ON_ONCE(freeze);
+> > +		/* Swap entries have no page for the migration freeze path. */
+> > +		freeze = false;
 > 
-> The folio_remove_rmap_pmd() gate at the end must inspect old_pmd
-> rather than *pmd: for a present THP split, *pmd has already been
-> cleared by pmdp_invalidate(), and that invalidated bit pattern can
-> decode as a plausible swap entry.
-
-Hm. On x86, pmd_present() recognises !_PAGE_PRESENT | _PAGE_PSE PMDs as
-present. Other archs do similar thing. pmdp_invalidate() clears present
-bit, but keeps PSE around, so it is present from SW PoV.
-
-pmd_is_migration_entry() should work correctly on pmdp_invalidate()ed
-entries.
-
-> This branch is reached from the explicit __split_huge_pmd() callers
-> that hit a non-present PMD: partial-range mprotect / munmap, the
-> wp_huge_pmd() PMD-COW fallback, and the swap-in / swapoff fallbacks
-> added in later patches when the cached folio is no longer PMD-sized.
-> page_vma_mapped_walk() does not iterate PMD swap entries, so
-> try_to_unmap_one() and try_to_migrate_one() do not reach this branch
-> and freeze=true cannot occur in this branch today.  page and folio
-> are therefore left uninitialized in the swap branch; a
-> VM_WARN_ON_ONCE(freeze) catches any future caller that breaks this
-> invariant before the freeze path dereferences page_to_pfn(page + i)
-> or put_page(page).
+> It's odd to VM_WARN_ON_ONCE() and then set freeze=false;
 > 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  mm/huge_memory.c | 29 ++++++++++++++++++++++++++++-
->  1 file changed, 28 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1b6b0aa2baa3b..a473e85d30f51 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3252,6 +3252,14 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->  			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
->  						 vma, haddr, rmap_flags);
->  		}
-> +	} else if (pmd_is_swap_entry(*pmd)) {
-> +		VM_WARN_ON_ONCE(freeze);
-> +		/* Swap entries have no page for the migration freeze path. */
-> +		freeze = false;
-> +		old_pmd = *pmd;
+> I'd just add the comment above the VM_WARN_ON_ONCE() and drop the =false.
 
-PTL protects us from value drifting under us if compiler decides to load
-it multiple times, right? Same pattern as the migration/device-private
-branches above, so not a new concern, just checking.
+VM_WARN_ON_ONCE() is compiled out without DEBUG_VM. The freeze = false is
+what actually keeps the swap entry out of
 
-BTW, do we want VM_WARN_ON_ONCE(pmd_is_swap_entry(old_pmd)) in
-!vma_is_anonymous() branch to avoid surprises?
+      if (freeze || pmd_is_migration_entry(old_pmd)) {
+              ...
+              make_writable_migration_entry(page_to_pfn(page + i));
+
+and out of the put_page(page) below it, where page is uninitialized in the
+swap branch. Dropping it leaves nothing on production builds.
+
+If freeze = false goes, folio and page must be set to NULL there (or
+something along the lines).
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
