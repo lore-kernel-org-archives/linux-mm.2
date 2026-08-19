@@ -4,114 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 547DFC5DF86
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 12:17:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C4FC5DF6D
+	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 12:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F6CB6B0095; Wed, 19 Aug 2026 08:17:35 -0400 (EDT)
+	id 9D3826B0092; Wed, 19 Aug 2026 08:31:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A7DB6B0098; Wed, 19 Aug 2026 08:17:35 -0400 (EDT)
+	id 9847B6B0093; Wed, 19 Aug 2026 08:31:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BD546B009B; Wed, 19 Aug 2026 08:17:35 -0400 (EDT)
+	id 89A6F6B0095; Wed, 19 Aug 2026 08:31:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA80E6B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:17:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 46B5A1A0590
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:17:34 +0000 (UTC)
-X-FDA: 85117919628.21.9C93F07
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 89923A0013
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:17:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="lRIjn/JQ";
-	spf=pass (imf15.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 637196B0092
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 08:31:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07A75A3077
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:31:21 +0000 (UTC)
+X-FDA: 85117954362.02.5B50914
+Received: from mta0.migadu.com (out-71.mta0.migadu.com [91.218.175.71])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AE10280002
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 12:31:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b8RM31S+;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.71 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787141852;
+	s=arc-20220608; t=1787142679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Ky3eaerp2FIi8m89t9kDf7IwmRQ42625cuWkd+thIcA=;
-	b=BZVDgxe6B0VwCt9Zzw9tbWt7lGGKylxRyqI7vT6wLK7Fw5y0Fc9PGgLiYEEPtyFWOU1GDG
-	4SNLcAir7nyVPnO1X3BC9LYOvb5nrqt8CCP4s5dpKXt5Qz+iswOtueEW9mT4X7gNJZUI2i
-	x2Yb8pkUQcK1l7n8+TNopfC398/y0DI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1MaZp52pNU2YHMavbnuh9omfFFIHGmVebnILpi5GdcI=;
+	b=2NO89DVeTJhbhco/xu7rN6hywhqbWV+zGZ8DTezPZjFW2+cy3FqOAPgzNx5K91U2GYqK/Z
+	oyhZtBv0T5ZAFlg6luMNfrn68w/PMVtX+/pmMZlr3HtFBaeOcAaqOlL7qkfBgnoU71d4Gv
+	KrDtyYR8H9LRY5sTL+zZMoWPgbCSgLQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="lRIjn/JQ";
-	spf=pass (imf15.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b8RM31S+;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.71 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787141852;
-	b=6SvynNWe19VTWO2pmDPhQZ7PkB6yKBe/ULZKI80UDN4i3zujxtxijWOF+1eN/3JDBr/wrC
-	GWOpW9DWIe5l7XBlil/rWN54MQdL/4XP0A2/stkmardPBpMCPOqh54hJDmkJq4Z/CU3w21
-	n3+jC+WzYLmp5peN/h6bSfu2Km9TY2w=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e041ea211so1033095a91.0
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 05:17:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787141851; x=1787746651; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ky3eaerp2FIi8m89t9kDf7IwmRQ42625cuWkd+thIcA=;
-        b=lRIjn/JQwfAqwFs1B9Tc0fx3ZgM6/kmbMBUuBURcrs2ijozVd8q3tOVSxxVVSanz01
-         0/eS5113BdP/Pjf0KuylHZszMSztXtyjCy6KyKLhP/Pgyopz+v1kEFY8G0dXfXTblgkf
-         KuhoUzp1PNhLmNT1uMyQWqiP0ylszRSieiH+WmlUh2a7KesFKTedBZ8PuJYKWuI+8FGv
-         Au2U3C7IUidMBdjp5afmMa6uXxA0YBu1Yfnk2oueXKabNT/nbq4IAQl7d0zEUzdDt3Ky
-         fNCA8ikDvjYuI0Z/8RssCsu9xuDQ2z2fgldmXXFgnugbFOkva0LjjRKc+OnYaDgMZZ/S
-         AduQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787141851; x=1787746651;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ky3eaerp2FIi8m89t9kDf7IwmRQ42625cuWkd+thIcA=;
-        b=BYt+dexsYm7ziE+UwwwxuXIe9VRTVkp/GIQ6vbzAZKbL+hChPej0pDYwRHUcplJ1UJ
-         V++5XVsHBTCB5T5Gmxhrag8c2c4ekWdDAH/Rm7HzZF/9s0s26bSwz/1gJbLNlApUkdPI
-         UoFHEJsBNS0GTbtCw6rhvoydsSInB2Yk8A+lFXSz8Aag4ky7MCBvwFCYe2nevbKesj6C
-         mKRYgC2rfTLgo2hGuw3RPSA8y/5BCVXAX6eyRliAol/k9Lx3LCQyUbWz1JD0Xa4sJvay
-         Hpa2zL7HzYHZ0+1gpa4mxnlPY9h0Dl7Ph0NGvjVV8fuleNDrYi/4y/uWSIR5vWpJQeyN
-         UM8A==
-X-Forwarded-Encrypted: i=1; AHgh+RroTFhrfM+oytZXwORg1OPhztDaJg4OgQxqt3ZJmGW9M8WEZMFy716ur/F8im1gsAndfuvioY4ivw==@kvack.org
-X-Gm-Message-State: AFuF++nwCGnbEMFo1O5UDjpKyp+Zxmla4puZFZ/o3vIWYNu4UNeSgP1x
-	KLIrmeBgeyxSN7b+PKwH6cfrJIUQu7GsUMeLJORNiPmNdCM+B5gqHjuK
-X-Gm-Gg: AR+sD12XWWg2VErQSYJMvJ31+gXkFZvaqNP/yuFpaUw2odGix4+iUDnlmaEt77MnPDD
-	QysDDwgqvCsA/8SXM61q5gUvPa0hH/++mJzqpq8c0JvIuMBjF40finM7fQIzqfbCHB0Q6+zwy8V
-	+JFl9dAMVrT+CLcy6fhQnw0+bCkhQLpKyNzBAohoJiTxupcLQFDXtFlLLSpMnh+qMmdKTqbQzKg
-	3OGLru+YC3Xw8ze2lM00F4ykHVLZcJuf9ANQ5AVSMV747yNs7sWZuACfKe2CP3NErQTh0lfWH8V
-	e8yXaWXx3SmQcBgElAO8/uCa6UaZRtPz963IfKcKLsf8xtrnWnUhlOB6uTpyL+QrnQCtM8WtidJ
-	J5KI1TwSel1b3V3x415MCPPvJzWf5/Am5JPOn/BsvpyD1nmUO6Eh0y4mBSSDUSRr2WKEaLV3wE4
-	k8Wqtw0rZYG817Ya+IEL+D7Wcr2cItoAutYKsaQ5OtlBwj4i6efz68j4j/kJh+dLukTCU=
-X-Received: by 2002:a17:90b:4d81:b0:37d:f206:a2ac with SMTP id 98e67ed59e1d1-39580a7c832mr8254013a91.7.1787141850868;
-        Wed, 19 Aug 2026 05:17:30 -0700 (PDT)
-Received: from Anshuman ([103.106.200.63])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ad6060asm12607295c88.6.2026.08.19.05.17.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 05:17:30 -0700 (PDT)
-From: Anshuman <anshumantewari123@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman <anshumantewari123@gmail.com>
-Subject: [PATCH] selftests/mm: check stat() return value in khugepaged get_finfo()
-Date: Wed, 19 Aug 2026 17:44:26 +0530
-Message-ID: <20260819121426.49500-1-anshumantewari123@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	t=1787142679;
+	b=vL1/Hq0tEQu0H8Qld4SZnzc8rB1yVXw+P59873Tcl187b4+2VDQgh73EaFVmFP+VERsHIi
+	gksd4W7poZP4Gu4NcKFuKqXgFIxOB3J54Nc9720kugqKDMipAzu+zdwkQbGp4lbUCly5Ju
+	/Asz+PfdL8b6WVddyz67+akQWMpy2gQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/otDFlr1rhHbSmXliBx4mVZMc6saGUTu0UfzxL4rnTc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787142677; v=1; x=1787747477;
+ b=b8RM31S+GrsFhcDwEhFpTN7iMKzN1WcQtXiXHa2RtwNLYSWzi4TmVPP/O77Ei47Cz7yMiUi/
+ 9tRk0N7dpCb0qHV6ed6QLDmPwr6mSAqfktUxe/MgGJ7en71hf59LuzUx+/Mv8J7JpGZ01YJPdhx
+ atgFRntPIm4RM+fV2EtQu3bA=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [IPV6:2a03:83e0:1126:4:9d:a05e:5bd8:c200] (2620:10d:c092:500::4:a428)
+	by smtp.migadu.com with ESMTPS id 24c9a4ea09970955;
+	Wed, 19 Aug 2026 12:31:17 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <5baead5e-b9e9-4850-9ce3-e48a2e5db2ca@linux.dev>
+Date: Wed, 19 Aug 2026 13:31:08 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rniom59iufnpwqiwk7qqd61kcrb36ih4
-X-Rspamd-Queue-Id: 89923A0013
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/12] mm: add PMD swap entry detection support
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, kernel-team@meta.com
+References: <20260818131202.494754-1-usama.arif@linux.dev>
+ <20260818131202.494754-3-usama.arif@linux.dev>
+ <69e8469c-aa7f-4141-be3c-796c9cf11f2f@kernel.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <69e8469c-aa7f-4141-be3c-796c9cf11f2f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: gorkkwdcg5rfjmeki3ksy933cm3ziktq
+X-Rspamd-Queue-Id: AE10280002
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1787141852-562762
-X-HE-Meta: U2FsdGVkX1+5Upqnyjh2yXZFDjx22VzTks4S96pMtfXFH83utCbbduPKIIc7cnfH7lmNa0zwBeeLBRDrYeubygPsjMdGl1XwSI7wE8/xDW0OXnPL7CtWdNoVwrC4z5OHeVVfI/4o19/TJnFgClG6EBTBuXsT8aw+EPPlFYgPLcskhFv4EVdY1VCGQdlaz+D98/xXyX2JKR6wuWDJbmSA6seTaewsVCpM/zue+j8s8prnA0N5Po2LkjmVoT1qXjYzrF9AfzdhuKiPVmEobFWwtmvZA6Y4gSDMWh0QepOALaOas8CfIoqX5iuDR9BW9wewPCm4JR6EJLMmlEDIExei4aIvWh+DY0JtdOjDQNO2V/heFUqx4pj3aLSVkUe87t1EVAnNObIwrQy1afam1vl+JdsdQIe8LY4Bue4qXBQZcBMckZAFbFaFiKD2/6ecOi+GOGxr918Mw1vW9zCsjuzDcr9zV2y9uLYkhdD6jf0I9rIVLxpOWKB0U7qXuCi0DAlqvBqE92BPmzPet9w4SX9K+d5pzowDMEs5EmxjYgodJdErqZF0ESjdm+Yecu0OtZd45lEUqe2EFNnjC/oHsft3LnT2yXYmRqDO/9ycHkkJ6GMCvF3LekfqloGWGHB5mcL/Fx2z5we8HGQ235fpLIMRrjddorckbHilRyxpdQ5WwEx5yb2dtWhxldOCl7ptBPRMIfJIe0E2MpEuGqBEVF50rAceIX/DK9TgtevMXXqL8am/7gk28APdN/ULQrr+CQHv8HO60L9I+6UFdRM+ty0WfiS2uWKo0HC/BZjn5EFcqaP5n4zwKf9UI1+qz6lgFnTxMG/QXrH64ShVl6CT4+u0Bl9fQ2ElYW6kA4c1hUC1xeDGumF3lR7ueEbt41vGEXB8+jJPi4caU5pqak80rB99FlhwyJVx+1fCe28/6AyPZrrOrLQ0dT8Vxu894xihJs7JypAjE4rtq3nr3V29FF6
- vbJ31Udq
- N2UDRSp/CtAbP8ElPWJVedkhc7KyR/9wFGIRXi/zHnXHXB4fGNJXITGQUhB1qOH1J9iABLLHEM2ReDgCx8GD0PwdjH2cyjIX8sbXcz4OAQe2OKqNY7oTpvnVkPSCz/E9BJ3wVAp/6HmewejtAp/9fKDSuAajK2qtH6Kumr61bixuN6G9eNXbrdA95HRPLqKXKH4EhgB+zrUIpsvpWUBkkon5I3tHlIEYNPh3X25POhdr4q5KbUiu+/CXUJfY82AMoaLdO+6VQUH2xykt6ggAdy1gRuV+TLIF1pzAPqatHSh2FihrNQaRyBS/CTZyY78Xfj+dnLfJSdpsRynti/dyu2/kwKIz5XUOPLN8nvDGBP9bCaa48KtY2C0x6ZxGnkdfaN8xICt1H1avrnaFjg9gatueE/dHboDZNSFXuFtMiYJfii+2OC3cDPkmKsP+Sn8rpHoFaKS5ZCIsVlN31YaNe9cB62Vtoc8azZAeyY74nJofgHYE=
+X-HE-Tag: 1787142678-972585
+X-HE-Meta: U2FsdGVkX1/gf3Kb5e4W+/uRQ0sftzzjfisvza6OvczEnPOnGRmERL+NeHdbC3oQ6/l1r/zWhxNCuRE0cEDWk/jc1r733YnOcBvY5MEecPHjDdoLkb8KkVyPAUc7LRHLxA1IsZ7Yu0f2VNnmnGJE7kDCjAk6IPiLmzrYNeF7Eha4c6TX7rsYUOTztmVjCDVuw2KxBDH4foLMGaArjNyfJVBTFdCq988PwcPJA25onHhTCHyNL9HmWkRFQtlo0VfQx/xPq0LRaDqr/fiw2Qt6X6jqd0uVkaCMXpb24U5aHMRdvwyP4UuWOs9trQx4hyepEqq9fY8BKFmMfkyLyo0PqLg4+dUL6Xry9jIcxK726v4GmfzEx/hk0cgmyAn5NSk0hdYrn9qI57KtDQiXPSOtFlaq7mxcE+6uZWe3UlGjgyCG8aLRgPwajZqJ+nfg79Ht6f/ryUZdrL2Kr+TK9w8rJ4koqA7usjqo1JwhYgqBXZgGaa2q25iHk13opHqC5B2smvmDjE1gLGhF0/mTYa8Mzr0e8e/IiaRWguPJ7yJbgu5zifNBC7jPOK/Q5RORhsZnHDLFcQgJD8jmmGCUTGr9cECa/9+ZwwiXwE2nQ/eM/0U3pA3TRCsCaGFh8rdsmoxIxPUafocp2oYmZ33WaRzzN+H2xSWfYKkZB8qfhq0zdUDjQ4wH4PMY7nJpa4ti9ggGsG2Zsv34m/zwzzG+k7lx2iw4dRKNS/lvBqASVXdauCK8KS+gD7mxZlQhYKTB3CnjIe9hKRmMN/oUQAIq60sBc+t0fAV/5v3jPVooRLi15b4ct8WKeFLI9ndIrEEB6wY+AA3wDFg1jI1gU/F8RlASgPA0nyH9vbrA2TU4B/H0NoYipoqTCSyQA6G4sX32OvPUb8i0t07Ou67hCl5fttL2w+nTBMy1BPsvTMRHGECOV8x+Yt1IOYN2YvJ4w/kXVfmOAu3TL2Oy/GK3Kk1PCip
+ wOLJVYA6
+ LUfC5QE2S/5yjaHA4KqnDqN4saiVbeOL0UuXqho0q66p5Xj29XPmA7YSEuPfzrotPlELmgK9PNX0BzBnx1G+U5S9i0qguzD3cuLHdjSMbkDTww2Gv9JAD0CIcNPKPHu2tGF20OFIjT8CxZBcK59KUjZVUb7jHXGfWwUkWbD3YZR5pyAPTOVyrBX3/sUVBgVIJ/Btr2VmhdsNEwuqNxUb8D19MiYID4u/mPEbyAkIR0RkYtEOL4Mc7Dg7eevIqqkomdWxd1POyfoFdVOW4n7TQN8Nw/vwHlYGT4amezxTv+Y52RgY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,42 +101,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-get_finfo() calls stat() to get metadata about the target directory,
-but never checks the return value. On failure, stat() returns -1 and
-leaves path_stat unmodified, so path_stat.st_mode may contain
-uninitialized stack data.
 
-The code then checks S_ISDIR(path_stat.st_mode) against this
-potentially garbage value. This can produce a misleading "Not a
-directory" error when the real problem is a nonexistent or
-inaccessible path, or, in the worst case, the check could pass by
-chance on garbage data and let the function continue using an
-invalid path_stat for the rest of its logic.
 
-Check the return value and fail with a clear error message if
-stat() fails, matching the error-handling style already used for
-statfs() and read_file() later in the same function.
+On 18/08/2026 15:40, David Hildenbrand (Arm) wrote:
+> On 8/18/26 15:09, Usama Arif wrote:
+>> Currently when a PMD-mapped THP is swapped out, the PMD is always
+>> split into HPAGE_PMD_NR PTE-level swap entries. To preserve huge
+>> page information across swap cycles, later patches will install a
+>> single PMD-level swap entry instead. Add the infrastructure to detect
+>> those entries.
+>>
+>> Teach the softleaf layer to recognise PMD swap entries:
+>> pmd_is_swap_entry() detects them and softleaf_is_valid_pmd_entry()
+>> accepts them as a valid non-present type. Because swap entries do not
+>> encode a PFN, make pmd_softleaf_to_folio() warn and return NULL for them
+>> instead of passing the swap offset to softleaf_to_folio(). Clear the
+>> exclusive overlay bit in softleaf_from_pmd() before decoding, matching
+>> how soft_dirty and uffd bits are already stripped.
+>>
+>> Add pmd_swp_mkexclusive(), pmd_swp_exclusive(), and
+>> pmd_swp_clear_exclusive() helpers to each architecture that supports
+>> PMD softleaf entries (x86, arm64, s390, riscv, loongarch, powerpc),
+>> mirroring the existing PTE swap exclusive helpers in each arch's
+>> pgtable.h.
+> 
+> Ah, for migration entries we still use a dedicated migratetype. I actually have
+> on my todo list to move to PTE bits as well.
+> 
+> (likely the _swp_ part should then be renamed to indicate that this is for
+> softdirty entries, not just swap entries)
+> 
 
-Signed-off-by: Anshuman <anshumantewari123@gmail.com>
----
- tools/testing/selftests/mm/khugepaged.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Agreed. I kept the pmd_swp_* spelling to mirror the existing pte_swp_* API.
+Renaming the broader softleaf API is independent of this series. Maybe I can
+add it as a followup?
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 10e8dedcb..2240a9b4f 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -121,7 +121,8 @@ static void get_finfo(const char *dir)
- 	char *str, *end;
- 
- 	finfo.dir = dir;
--	stat(finfo.dir, &path_stat);
-+	if (stat(finfo.dir, &path_stat))
-+		ksft_exit_fail_perror("stat()");
- 	if (!S_ISDIR(path_stat.st_mode))
- 		ksft_exit_fail_msg("%s: Not a directory (%s)\n", __func__, finfo.dir);
- 	if (snprintf(finfo.path, sizeof(finfo.path), "%s/" TEST_FILE,
--- 
-2.55.0
+>> Provide generic no-op PMD swap exclusive fallbacks for
+>> architectures without PMD softleaf support, matching the generic PMD
+>> swap soft-dirty fallbacks.
+> 
+> No softleaf implies to migration and no swap, so this would work.
+> 
+> You should extend mm/debug_vm_pgtable.c in a separate commit to test what
+> pte_swap_exclusive_tests() tests for PMDs.
+> 
+
+I have added this in my series, and will include it in the next revision, Thanks!
+
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  arch/arm64/include/asm/pgtable.h             |  6 +++++
+>>  arch/loongarch/include/asm/pgtable.h         | 19 ++++++++++++++
+>>  arch/powerpc/include/asm/book3s/64/pgtable.h | 17 +++++++++++++
+>>  arch/riscv/include/asm/pgtable.h             | 15 +++++++++++
+>>  arch/s390/include/asm/pgtable.h              | 17 +++++++++++++
+>>  arch/x86/include/asm/pgtable.h               | 17 +++++++++++++
+> 
+> I'm sorry for asking you to compete with Kiryll's series by creating one patch
+> for each architecture that directly jumps at arch maintainers :)
+> 
+
+I have now split the architecture helpers into separate patches, followed by generic
+support for the next revision. I think I will need split patch 7 and patch 12 into
+several independent patches as well? This will significantly grow the patch count
+which is what I was trying to avoid as I feel that makes it more daunting to review
+(atleast for me), but I will try and keep it under 57 patches to not beat Kiryl :)
+
+> [...]
+> 
+>>  #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+>>  static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
+>>  {
+>> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+>> index 7c13c58a5e218..4a6c52974b305 100644
+>> --- a/include/linux/leafops.h
+>> +++ b/include/linux/leafops.h
+>> @@ -102,6 +102,8 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
+>>  		pmd = pmd_swp_clear_soft_dirty(pmd);
+>>  	if (pmd_swp_uffd(pmd))
+>>  		pmd = pmd_swp_clear_uffd(pmd);
+>> +	if (pmd_swp_exclusive(pmd))
+>> +		pmd = pmd_swp_clear_exclusive(pmd);
+> 
+> Can't we just unconditionally clear these flags?
+> 
+> pmd = pmd_swp_clear_uffd(pmd);
+> pmd = pmd_swp_clear_exclusive(pmd);
+> 
+> Avoids these rather unnecessary conditionals unless I am missing something.
+> 
+
+Yes, we can, will do in next revision.
+
+> 
+>>  	arch_entry = __pmd_to_swp_entry(pmd);
+>>  
+>>  	/* Temporary until swp_entry_t eliminated. */
+>> @@ -634,18 +636,30 @@ static inline bool pmd_is_migration_entry(pmd_t pmd)
+>>   */
+>>  static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
+>>  {
+>> -	/* Only device private, migration entries valid for PMD. */
+>> +	/* Device private, migration, and swap entries valid for PMD. */
+> 
+> Can we just drop that comment? I mean, it's as clear as it gets in the code
+> immediately below :)
+> 
+Will do in next revision.
+
+Thanks for the reviews!
+
+>>  	return softleaf_is_device_private(entry) ||
+>> -		softleaf_is_migration(entry);
+>> +		softleaf_is_migration(entry) ||
+>> +		softleaf_is_swap(entry);
+>> +}
+>> +
+> 
 
 
