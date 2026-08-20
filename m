@@ -4,80 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A36C5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 17:33:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8A13C5DF85
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 17:46:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B9516B009B; Thu, 20 Aug 2026 13:33:11 -0400 (EDT)
+	id 28CD76B0095; Thu, 20 Aug 2026 13:46:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66A816B009D; Thu, 20 Aug 2026 13:33:11 -0400 (EDT)
+	id 264376B009B; Thu, 20 Aug 2026 13:46:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 531C76B009F; Thu, 20 Aug 2026 13:33:11 -0400 (EDT)
+	id 1566E6B009D; Thu, 20 Aug 2026 13:46:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BE806B009B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:33:11 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC8CB8023A
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:33:10 +0000 (UTC)
-X-FDA: 85122343740.26.B3F6EE3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF0626B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:46:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6DA904024E
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:46:25 +0000 (UTC)
+X-FDA: 85122377130.08.D26A07E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D265940011
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:33:08 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxQmEyM3;
+	by imf20.hostedemail.com (Postfix) with ESMTP id A3C761C0005
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:46:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UsCwLrRV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787247189;
+	s=arc-20220608; t=1787247983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xKZbzHEs7LovNAK73CuUY9PodbupBOZ3Tf7iuO/vCJM=;
-	b=yl+hRM/KrfvFyzcXNRHBJybDigL8URys9ud+g1pTQKTTGwZ2tN3hAkSmIiddhZym7SaiAR
-	G2a4yP+mO05jIW0F6HSwz79IIlR2GRPvtS38OdMSxHvHzXubdv91rsNO25/o++zNxDNGMX
-	5Jmcux1/4KUCkSw8mtXmdZM7f/7mdxQ=
+	bh=2fIdalCmTaw2AjswTgZRpQgDXscO6AG89u3FfnnHiks=;
+	b=EHvUshi79O4PEZpkZGSfsylf8FxabJITacj4F67aloJUdWRDxK/KdSQDKk2kpRKGTXDO4o
+	lLksfTCozfAl321dE0bruD/IQJb3180wBrsKzGwjgpXpyKfKR95p3qo+7crikw9MgxjTmZ
+	ncbNG6kL+5JIcWC57ylaGUH5DrsrA6M=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxQmEyM3;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UsCwLrRV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787247189;
-	b=mHnzXjHAYXnNLkSsS3q7G6QyyO7dqvSUWmvPNfH4I1qSGi6pGG284Vl2b1IgmwE5qbWL7J
-	jPXizCRW+pgKnwM9VKxjCKiUHnjZuNQ8QpHxnqug9F06b206Li/3en5V6d9PqCKtmUmUGJ
-	09rDjUapgkxFrPurl1n+gjju0rOGAxg=
+	t=1787247983;
+	b=tpF+Uor333WV33kCVHywgk0Yfx9G/G9ULWTABOPBN7DE5shyEkwaWsyly/yW4zjEcm6Ull
+	UULlDe95pBUZHjN33Aq2KB51G+WTkQIFtLwf5HjbwSRmliRDimSX6gSAqnrH57eUuAAhBG
+	1HCQ6QPhRDv5PGYah+iVD2DpSGv0WN4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 128FC42D78;
-	Thu, 20 Aug 2026 17:33:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838781F000E9;
-	Thu, 20 Aug 2026 17:33:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AB2F441A7D;
+	Thu, 20 Aug 2026 17:46:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7317A1F000E9;
+	Thu, 20 Aug 2026 17:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787247188;
-	bh=xKZbzHEs7LovNAK73CuUY9PodbupBOZ3Tf7iuO/vCJM=;
+	s=k20260515; t=1787247982;
+	bh=2fIdalCmTaw2AjswTgZRpQgDXscO6AG89u3FfnnHiks=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AxQmEyM337L8/XC13vNqg2pJ/asCDJblMcM09Fj0giGxOGzcQJrT72m510uGyz+Si
-	 R7BAYktFs8f84fHzhqraAynMY+KEvnG3Hb9NGFIGlSucH8betFIvM4Q8yxKS5t2IKt
-	 qkflSYIN0MpkMRupcyw8y8xG2RcQyg/1VV2Xx6nL/tLpgpWPRNj4yYuYP2S8juGNPJ
-	 YNIWVdr71kwTXMYgCcfWBnKxzLTn5p7ttDkzXKMn4Z43z7nSIg3OzZzcdlaO8yZE1b
-	 RToj3UnvuNBfO0C1rTJUA3p710gDr3q1xukkTFGFtqdL/cNOLsogfLkJpSJv9ZXbuP
-	 ABak8h1qTcfPQ==
-Message-ID: <e29e8bbf-5a10-4868-87f4-09d48625f6e6@kernel.org>
-Date: Thu, 20 Aug 2026 19:33:03 +0200
+	b=UsCwLrRV/K35zxbIA/hIc4Id6aozHPhPLOrJUiwPAl7OYQh1taZ1K0yNEOwgg/SUt
+	 nYUi3Hdf40wr/zFLSUOd6i/TOIIK06CsD7c76CpQ+3D1YmCqljd8DdsVwbaROCzkoN
+	 bENSolqCbH0aTMxV0Uodq/7fc051LdApcEbUX5xvVe+cCt1M8fnsy4r4oEb3MGJB7Q
+	 qX5rvlwvW6KxieSCMpPyqv8bCjsxXbYmszXW7B/c4r8xxSanuHoPI9dDZ4o+A2i+7T
+	 g0mDdl8HXlxn1gl3V37kQt9jiNDzGue/0Wkgo9odCMX7acV9lcZ2eca4XgFmgikc8T
+	 J2E591DIchXmA==
+Message-ID: <bf298ebe-55bd-4f42-9339-9567eadaa514@kernel.org>
+Date: Thu, 20 Aug 2026 19:46:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/hugetlb: do not dissolve gigantic pages without
- runtime support
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Longlong Xia <xialonglong2025@163.com>, osalvador@suse.de,
- akpm@linux-foundation.org, mike.kravetz@oracle.com, mhocko@suse.com,
- linmiaohe@huawei.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Longlong Xia <xialonglong@kylinos.cn>
-References: <20260817162039.1511838-1-xialonglong2025@163.com>
- <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
- <F06EC17D-2A3D-43DA-968B-1DD4E1253EF7@linux.dev>
+Subject: Re: [PATCH v7 2/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+To: "Liu, Yuan1" <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "Zou, Nanhai" <nanhai.zou@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ "Zeng, Jason" <jason.zeng@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>,
+ "Deng, Pan" <pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260818085702.3395529-1-yuan1.liu@intel.com>
+ <20260818085702.3395529-3-yuan1.liu@intel.com>
+ <ac77571f-4a10-4511-83e0-c6372d5b4a09@kernel.org>
+ <MW4PR11MB69369259EB8B2FDF237B863AA3A42@MW4PR11MB6936.namprd11.prod.outlook.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <F06EC17D-2A3D-43DA-968B-1DD4E1253EF7@linux.dev>
+In-Reply-To: <MW4PR11MB69369259EB8B2FDF237B863AA3A42@MW4PR11MB6936.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D265940011
-X-Stat-Signature: 8hhbqj59sx4hpy8gqcu3xf1ajn88o39k
+X-Stat-Signature: rg5m4db3ckamqujwrsssj4i8ngp48wpq
+X-Rspamd-Queue-Id: A3C761C0005
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787247188-81308
-X-HE-Meta: U2FsdGVkX1+p4C6PJ/8FL7bPClXbnzDas+p57TB8VzgFMp95wfJRBfuzsePocOQtogrcNCxFDgVHhTtofmkSzq3YfM0Lr9/d6bU3cc5U8BG47Ri8Wns5IGdifZPcTc4Bnh/plLjxgnSdRv+uVEc6VeH/32wJL6aIz4HwvHphs9dCYiKSX6EpX1GKPSr0epK9R9acND9a7hUQ2XvSj9n/wKSDbZlzWVToGBdraPBMW46OJQj0CiwIS4kd0qrHCMwmDQ+bW7Xvv5k1juB2KPfqouVV6nNcfoaQi7HCNb875gHa9FZWuT6Yq1TqOOnH/KpEn1BQJsAh91/Q9wZiGkqQv0VjKkhjfXaZxGUNSE6JDMqoKjCxzQlAO5l2XkaFxN83+t4e2NTJcw9X2pR3ywOg5bOiPq1UnaEDjzz9qtw64iwFPKzzpZG3hzRNYDUKlgfSi5+wRN0bvREmPkpt66ekujyTTaM8xyQAhFLZObtEQfdA6SWcNBIBO42DPpAYqGDOfKnxLTZ8QX65w375AWLdaMHCo/AkfZBGilPQRuVrNSSp7fg8V46dX6TBKTNzPiPGAXyblhaTJdiCtDLwrl1O1LqimwTDLVY/oITdhc6KtGXycKQ9IBwXP2qyKZBq4fqseywl3mwdr9+h1Qp13N1y6kXYuWi7TTQ1/aKpTAaSxnbY7wTlHMey6bJt71FIik8hnHRUFrv6WC2D7BsW6ASQM71a73akCUXPF/ZSNJ7gwg5MC3lbAIHz1fPLvl4rBMIUcrHCr+AwFJURBYARq2wd105VqXLtwohx943fQtuThoFxRizghT+qrZtNoEIrTvK05wCBCNWBTixu6YrAfgcVliGva7BxDQiwZoBz1PNiWHzilJOcThxUlylvs9q8de8IaUH94xlu7Z8+the/3CoYAJ23sWlkVrnF+Dx/8En4Hd6JKhB0+KTdY2FgTYUVlUFSC0UjKCSYo+j7PBj6cJ0
- jhvsFHou
- FqLbDgxOM24o7mDyF3in7STw6l4iJLQejUGSb/Ya1bHuC4ERSMsv3v6LvAC8wgog+5bfname4MvarsrCcpSsB65Fzx9KaDTw5zvbSAtLW6JGgS/bdcS+aI018ejc8b4aeiBcNZ6+G/bEpJWB9LL0JTPjg4FmGsDc8xamqlr6hpNHrcxFpHxhKwXWIbemRvLnlmL1gTq/454pcoqhi6aPjb0ddAdZDIte96PxOsC/RL/ISrPXhWyQWCdUnVAVVTbg1ddx6meF9eaShZVhP0As2ghHocw==
+X-HE-Tag: 1787247983-274710
+X-HE-Meta: U2FsdGVkX1+FpH7ZbOpyYfPsiQWP8UltAZq+hoCEvfkIK7+krn/NLRbzBa5wqG+d9HaGCBMWaGjJ35sfglkzJGgf4ea5xHtUfQVifEU8nJtxlmRZO/+bCd9PkJFNdHoxO6Vqb+23W0aKjYOhCM8Fu/1MDKB7RkLwV93AbUJmEtqGw4FsnJ0ItxKQzaPzZwgJJVv00WGwJWSS08yZTBTHlRne30hvgq7FOKV/XgJpA9kJElOlOKt+6oIun2XdlqpeUzg1Ohy2FrV+TJ0zJ+WIGBWG8GF+ozGh3UbcuFmHDwKGHomvBxi15g9Yt5QzGUcpukq6HqUQJM2p1wm8gf73bnQsovrT3s+ku3x5gEYCa2gzu5gzYMhxizM7gfewkgTIXycdkP7BdM63Ztto0GH4ONLt1p3SzG6mNFohRAddxVpNQ4c7DN8c9qn7l7rVN9eADW4yWf1aBSfQDkSa2FNo5hXneCKp90k0qVU6ACoH4npaYJHOROrJ0d4Ns6TDbgDomXl0IBjntefAzD95BpmJ00UPLy989ReYMMyiKI2KWLvmE/ROKYDhkWzNGLB2+894vk0lVYK62oEnuY3BaA49qRZBReYqEZxgh819qF41JgW5vONgcDf5uOOjAmevlP0H/STKsmPv0eYc+6Z+U0VQ2r+pAAri49wnc3RPUKhrGQ9yljXgUOLkZ1H4aq16JZgSPxZa4c0PY/F5kZt3rlTkktk82FeQsAS+7wLW+mSTdxEECQvp+gnh6jRxkgUNbDFp2xN7vAX5xvxFaUZEcGyo6pOZBk1E3crvNffRH1oysi11OMplvKfQx5xQxhqkmWVDZGA9QikSWfmWOTJ4W/LqSzd7MFLz4fIFbA3KzlkrrK63cE740W1RIxh1k0G/f78bzJOdZogEiSADxfPTWTS7mSQ9RZt+buIsOn6kjkXcW0J6z8VE1s2OeIeyih70ITsobwsdySyWIvL8HkAfucj
+ hUj+0qUL
+ 0leWuDMWnW9usV7uAzo2yJEktVtJFll6QT3CIfg6uSoQIWMNgRdjeqSZr+zdv7hb4NUZZSKOUhaftVW7zq5NdcrMYGPlNGup1AO3x5eXlK5wOWxHvJlxZ2aQWl2ZqrJetntc40Ce5bGFGtzZi/Wz9o7cOq7vL4McaT3n4ZkV1gZPiuTptpo2yCTDeI6wEBOpYrkor44I2N4OdggS2nn4fGWQyrik6wA7ybXkEHUFfTr7n1/DMQZbmn1wceM2q6xLJhWWwZ7gIl+tR4PAhg6Lwdo6nUKNAq5uEsFOfahPfogV/+TE/6KqcFTRewr2ZwwTpdr4A8J7upSac1my7bETZNyKORp7MaCtuw0kuVlJPL+03pSOFvz9b6XlH8eJPefIxzx8bA7Ct09afde24OX4prchXF2CQpfihpJqJQgDRDMSCvU8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,32 +145,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/20/26 11:38, Muchun Song wrote:
-> 
-> 
->> On Aug 19, 2026, at 16:52, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>> +			online_pgcnt++;
 >>
->> On 8/17/26 18:20, Longlong Xia wrote:
->>> From: Longlong Xia <xialonglong@kylinos.cn>
->>>
->>> dissolve_free_hugetlb_folio() doesn't check hstate_is_gigantic_no_runtime(h)
->>> though remove_hugetlb_folio()/update_and_free_hugetlb_folio() silently
->>> bail for such folios
+>> Can we avoid these helpers?
 >>
->> That's odd. Why do they silently skip such folios instead of warning that
->> something unexpected is happening?
+>> 		const unsigned long subsection = pfn & PAGE_SUBSECTION_MASK;
 >>
->> This screams for a cleanup unless I am missing something :)
+>> 		/* We can have section-sized online holes with VMEMMAP. */
+>> 		if (IS_ENMABLED(CONFIG_SPARSEMEM_VMEMMAP) &&
+>> 		    subsection != last_subsection) {
+>> 			is_online = pfn_to_online_page(pfn);
+>> 			last_subsection = subsection;
+>> 		}
+>> 		if (is_online)
+>> 			online_pgcnt++;
 > 
-> Hi David,
-> 
-> Sashiko actually has a pretty detailed description [1]. So I think it deserves a fix.
+> I think there may be an issue here: PAGE_SUBSECTION_MASK is not
+> defined when CONFIG_FLATMEM is enabled, which would result in a
+> build failure.
 
-That's not what I meant. I agree that its a valid fix, but I think the code
-should possibly be reworked to not get silent rejection from these
-functions--IOW, likely the callers should make sure to never call them in this
-scenario, and then VM_WARN_ON() instead of handling it silently.
+Ah, yeah.
 
+> 
+>> An alternative is an inner loop that just walks in SUBSECTION chunks until
+>> epfn.
+>> That would probably be even cleaner and faster.
+>>
+>> I remember !vmemmap always only has early sections when they are actually
+>> online. We could extent the comment to clarify that.
+> 
+> Hi David
+> 
+> What about the following approach? It removes the helper and changes
+> the per-PFN online check to a per-chunk check.
+> 
+> +       u64 pgcnt = 0, online_pgcnt = 0;
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> +       const unsigned long chunk = PAGES_PER_SUBSECTION;
+> +#else
+> +       const unsigned long chunk = epfn - spfn;
+> +#endif
+> 
+> -       for_each_valid_pfn(pfn, spfn, epfn) {
+> -               __init_single_page(pfn_to_page(pfn), pfn, zone, node);
+> -               __SetPageReserved(pfn_to_page(pfn));
+> -               pgcnt++;
+> +       /*
+> +        * With VMEMMAP, subsection-sized holes can exist, and PFNs within
+> +        * these holes can fail pfn_to_online_page(). Without VMEMMAP, we
+> +        * always only have early sections when they are actually online.
+> +        */
+> +       for (pfn = spfn; pfn < epfn; pfn += chunk) {
+> +               const unsigned long chunk_epfn = min(pfn + chunk, epfn);
+> +               const bool is_online = !IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP) ||
+> +                                      pfn_to_online_page(pfn);
+> +               unsigned long p;
+> +
+> +               for_each_valid_pfn(p, pfn, chunk_epfn) {
+> +                       __init_single_page(pfn_to_page(p), p, zone, node);
+> +                       __SetPageReserved(pfn_to_page(p));
+> +                       if (is_online)
+> +                               online_pgcnt++;
+> +                       pgcnt++;
+> +               }
+
+I'd keep the for_each_valid_pfn() the outer loop.
 
 -- 
 Cheers,
