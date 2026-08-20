@@ -4,118 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E39DC5DF88
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 10:16:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66AC8C5DF87
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 10:53:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F2B56B0095; Thu, 20 Aug 2026 06:16:58 -0400 (EDT)
+	id 246676B0095; Thu, 20 Aug 2026 06:53:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A35A6B009D; Thu, 20 Aug 2026 06:16:58 -0400 (EDT)
+	id 1F7D96B009B; Thu, 20 Aug 2026 06:53:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED3D16B009F; Thu, 20 Aug 2026 06:16:57 -0400 (EDT)
+	id 10E676B009D; Thu, 20 Aug 2026 06:53:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B7BEC6B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 06:16:57 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3836E12073B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 10:16:57 +0000 (UTC)
-X-FDA: 85121244474.06.71D974F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A1DDE40002
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 10:16:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eMhGYcxN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DCBFE6B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 06:53:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64900160704
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 10:53:02 +0000 (UTC)
+X-FDA: 85121335404.10.6D432CB
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5CECA1C0008
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 10:53:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="l GwToSj";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=meE7wau4;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787221015;
+	s=arc-20220608; t=1787223180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Prgge7OpuMZ/HlcX8eJ0GJRbHnBVkzQIseKBREaIjlE=;
-	b=d1dFM6y28JczwJamGvf9l4lrxMkr7nXDguDCvD+llR3ov1rDBD9IPQwOKDtN6Qz6fcL7/o
-	x72tewnqOoXmo4xjW5+JusvO2JvlS9q+QiVbS/wxbYlduMluEuKA3Uc3yD4TT7puB6xrqE
-	KFZvg60SE08lu6aRzu1ec5ynXShO0H8=
+	bh=1Hm6dRu/lDSOGHkykkLzQS7nEKTBeP5xgqIC54jHG7w=;
+	b=rKOQdsbaZhG5u6+CAByne03LEKcRQKSr70KtAxpXh5MgszbT/3YdlOY8IKfAu2PJ3be5o1
+	Rf58NP2aV+Ty32LEi/S0pIUDmYgek2R25hjI9lLVbYnhlkuqTqW2fe5/dJeN1sw58il8oT
+	vLm6iZJ6fYEfuZb5/3rOK9rGwqXg7mM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eMhGYcxN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="l GwToSj";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=meE7wau4;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787221015;
-	b=bAFFRm7PHZsNDSPggibskVXeU+Xrp7LDxLXkl9aDr1oqEMf7keHhOaCRPP+T5pg3DIlwHd
-	PbXVr3nEazGZJG6zS5m8Qasz2MTdXu+PlsdawzBYgNr3Jg8xN6PT+JnZUAvolPTCUHKLiZ
-	XfOCrF7Mo5VeIlj40epgsYlE5Iu2Bkk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BDBAF60A5C;
-	Thu, 20 Aug 2026 10:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5A91F00A3D;
-	Thu, 20 Aug 2026 10:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787221014;
-	bh=Prgge7OpuMZ/HlcX8eJ0GJRbHnBVkzQIseKBREaIjlE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eMhGYcxNKDh4NXZyBubRgnxdtCcRUowO/4SMoTPHcajD0tk+vx1zx6kNjoNl7/b8u
-	 VbBmk5l0fpiy5ICmvJea6TNkuh71IIW6g4sxImhfzhNHSfOF1Pnm7qNJK8iUwqhxgH
-	 CPiDRqe0w6efLy4yZBdv4ES/dp0n601Rxz4fye4gd5ggTA2TLZcJcqAkS7jkSIrrGw
-	 KwwAacAdrYwOa6EuWzgfIQ5XSIavHrqs5msiFf1mrjgvBsX4gEBSwt+mn58su9t3xA
-	 JczaSgDsCUsUtMas4k+rIohgdfMmYCgNhhIjTpgq3MYQQZsZYiph1X6iRlWfpNOzbs
-	 kmFXzd6snLZ7g==
-Date: Thu, 20 Aug 2026 12:16:51 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
-	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, 
-	pavan.kondeti@oss.qualcomm.com
-Subject: Re: [PATCH v4 07/10] dma-buf: heaps: Add support for Tegra VPR
-Message-ID: <aobOs0ZidWzgoHut@orome>
-References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
- <20260807-tegra-vpr-v4-7-5510d16af89e@nvidia.com>
- <an4MEI7lkc2p3nKI@google.com>
- <an8K2gb1pIqbDj6-@orome>
- <aoNDRTKCUkzd2n5G@google.com>
- <aoQ1lhZojzsSkWHQ@orome>
- <aoVy8dj8f3ll5-M4@google.com>
+	t=1787223180;
+	b=g/j4nK/+rSzrLVJUFfrQQCD/i3dcz1AT1ioMyQ+CJsYAsOR6MV3FUF+xWQJy1SRLDEeTeY
+	vbHiY56ZcHVnkuV6kAtwo4SziDuLJZBqsvedbJ4arc8jeHBR8egKqHHKIRv0mDAxr9Dbwm
+	rPrBo+LseQexN1spUBzlAObphOT82Ik=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id F2BE213000D7;
+	Thu, 20 Aug 2026 06:52:57 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 20 Aug 2026 06:52:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1787223177; x=
+	1787230377; bh=1Hm6dRu/lDSOGHkykkLzQS7nEKTBeP5xgqIC54jHG7w=; b=l
+	GwToSj8vmRVt7iD8kNLWQM3v96QhNpGsPEAIsmLFJdObYyjPTBvrw7Ujk6VQKuDp
+	GCcFVbMUBnkDnKFediQ74DkjI0r5j9sygg69IGVprIeK/QZbukiszEh/8GT6zLyO
+	7qOQyfHwFR2vEffF+kH1h8xR3FHtjv+JzVnshE9icj3cLJNPFGGtBS+N4sCNnKE4
+	WCi+TVKbB0rs1hivSdibID+uGzDvlVf95YSq+EIS+1g1hDBgjK3hHbgyCgdpkFpo
+	WArd82fv+rxaxOBasx/YlltyJmaRk38eM43LSn0HQBY+0UdJNDJT40lEgZj8Gouv
+	IJwdIGvzlbFfbqpx/wLrQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787223177; x=1787230377; bh=1Hm6dRu/lDSOGHkykkLzQS7nEKTBeP5xgqI
+	C54jHG7w=; b=meE7wau4CKenl5UIRKtWlLbHB0nH5Rd4PKesazkis9U68OKk4Wn
+	EQ3Z5R2pmVJ69WzQ6nQ9nIAaTMAoQtgsAikt3XwO+xFU7SeCwmNQenIdOf/PYzEZ
+	MYw0IhPYRj0yRM/c9q3oK76xpF9/JNGoFWnHGCObkf63ugBBYvOx4tMXBVF1s+xF
+	SiMSy9RmN+erVgJS/RQLTd+rESLKHl5B3vHQVPab+tLGMYhqMgeLK6h3ItmyW3vD
+	5IfFWiPeyEbuUvX4ZHugoazneYVRXdqxx0ulsuh215HxrGproxrWmp5eUeOykS9V
+	5kzIC+7I33DzGtBFvmvVR+/ZFpwUMopnoeg==
+X-ME-Sender: <xms:iNyGat54BC7xFMs_8l708cxxc_QNa1N1KRy3lm3UYpbEGggUlgpZaA>
+    <xme:iNyGarViOayqVZ8tXexJEDUOBz4FGxvlpPQEw1SI7PiuPfT9vIONKpD6EAahfXlIc
+    ugsaYtQ096OKZWtsK4pFHHSpfMIZWGwSX6KgtfyIGdWztTaOIozpEE4>
+X-ME-Received: <xmr:iNyGal47XIR6C_PL9lYLPJXFMcpAeMSpoWverE2zKXbOXLBAvYBdNDx6pWk>
+X-ME-Proxy-Cause: dmFkZTFWRza+tZqbwe6AvSvswwNn1vm2ouOEl3sD29XdKlxSbeb7SJ+ft0N23ZfHAXdLoD
+    HmugP2x8o1qZZdYgJ6uNKnryUZdf9vJIX7yG1Wd0puBWlPtUU9+QdT2J4Dz6j/J8OsU9Lu
+    cHBdXN2icIfdMLZpxUxDYeqctOT72wTuhC9gb/P4RO5svqtLV3/dQMxW07EDCY/HgRS0R5
+    hIWhoRHy8caBmuUGk6MLMFA2fTWneQj91H7dazgLVy+nDRNY6KF3ioVB/SCkQrHtuzDw57
+    zzT/SzyH8GGH6dfj0mKV7WEwwBQIKCfmWOLYVVVdY2G5L5TUscUlN0MnsMmOT7XGn5nqZ3
+    qTusjp1bsmaQ7NxNYNGdouQ+Lzho5PCtqMOZXHY/7N8mFMRgD536Lix289uLH1lUZ5l7Bs
+    0EKkfid8uPYzb8PyS0LZ5AGD6stNkDOaYLtEQ+FU4ShSANtBwfDpn7DoszKmWH82qWAlZf
+    IibZn0VeyWcdksSZ6k5AMmFRba7hM1obgBOhf0ePHT8321pqVtXzXm7r6Ac9BoQcxbdoGX
+    DiQyx+zJJ8bPCAxR69l9MIPqGhG3bFnUFNk13wc1BQkNJDAjeLqZCWgh8a/ngZ29YtnBdz
+    5UGnWNG2Fm8ctlMT15phLBhY3M3l86Iw7muaQrld5L7QUvHK5Ib+j58n5HSQ
+X-ME-Proxy: <xmx:iNyGamLi7qP7Vxx2Urm__5VWE9vtQY2VDeeZD2Ww17JIYTyID0H14g>
+    <xmx:iNyGagjcASSknb_rBn_7XGrZaAw0RVIp9r9LgWWiYqMx7ZibjiT0gg>
+    <xmx:iNyGaoIaZZAMY58wc3AOrGX1JTsHPReoBCi33oNnA_pSv5mWAwG5lw>
+    <xmx:iNyGatEnM3ejngFdRo3f_F-khoayz0ka4TzC0oi5RkdtRfyGbUZ5QQ>
+    <xmx:idyGahzkie0eSCaUoBYs-yYze10njpQW-hnyNaeDBMfy-8AIxueySSoN>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 20 Aug 2026 06:52:55 -0400 (EDT)
+Date: Thu, 20 Aug 2026 11:52:54 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev, 
+	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
+	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
+	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
+	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	jannh@google.com, willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
+	mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [RFC PATCH 01/57] mm: add pte_folio()
+Message-ID: <aobZECx2aTUHP6n3@thinkstation>
+References: <20260816224609.308019-1-kirill@shutemov.name>
+ <20260816224609.308019-2-kirill@shutemov.name>
+ <7e40cdfe-67d2-4ddf-a048-f33b2d590371@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lgqipk6jwvqdiaex"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aoVy8dj8f3ll5-M4@google.com>
+In-Reply-To: <7e40cdfe-67d2-4ddf-a048-f33b2d590371@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A1DDE40002
+X-Rspamd-Queue-Id: 5CECA1C0008
 X-Rspamd-Server: rspam07
-X-Stat-Signature: ysqieutw111yjc4dc8a31jgbucgotbei
-X-HE-Tag: 1787221015-508511
-X-HE-Meta: U2FsdGVkX1/RixrUH04N7BpfAvlb9lC30wseOwAzdQWNCa+wQfCiQBOEZMXFq9aT5uOGaUE/rWUkYyN7uyHPeMnULRDmEsSE6NRVTi4pNorA0uAG/4QEobzRjjWSPIPBilYiXxj3XBWJ8qBQvxB1YF7Sx52vd//tScO55cXp16ioIJHZ1WEu8snrMi1K4LA7oOXLVy6lc4hM0OyzQQh2dwCQ5bKnd+amLR0q0b/J9s2eUm0Rwn3xoVhhd7UaFUvsC1rM6tA5uX/LU7Lp23hOIrdet9BqJVCIKQ93Soxni9Yw4y6Mf9y40Ki4CP395pKxaDeJ82HsiTV73Niay90ueE6eirXF+ZbloC5LRoHnmQIVqaXbMUFUoMduPlvDpI3OzxrV9EnPdW6aaamJl4npLhqXVAxmY5x3/UrcZYm21EcquZOuYpP/+qGqGmRMNy0YvndA/JZCdDEDmxvLzsD0BNC9Sy4gLxb63Y7ONyX04lAE4Z2Zn5LUkJalmlYyOLtXNIH8XNl/4XCyjZ9VoAH43nASu1cCdeAPazDXzM/QLyjEi11MbsZPAZvx7NF0i8G8NCpNA5DtoleuCGXyq8im/XYuCgZXeOVM0sO7FJLgwEarOKi0tyUdW/vlt9spAcUyp5+D47qSlDIFb6TPc0iaBLZdGhpTn2IilsDsGYE6qs65ufoKjiF1Hk9qH+CTmsO3UWs8akf+hJOkXXOAgKFCrWvjn1YN1WQvI22jG3vZ2ftOG5cUv0j/l+4PR3AYGxiKHKClYv0LA9K9A2vGIiIMNh78NPvc/IfjokAfxmcLwK8tciLROA3fT7MycP43W6kLp0EHycgNfa3BjRET215vGrI47kE7jM6dAXGiqXlzQLWtvhv7aFY0nvEX0Vt34Z35hTbwvVaYkyqEZfFDMgHiqyVmRfb1HHsmbgjWBUy+CehZygwFxBtVlpqA0NriA8HSe2corSjdGl4m7NJjBic
- AU2Nlaro
- 271g/I4khJei/xJUFiTJPl5LoWvXKCQHlbr3v5h/55evDUddrITIWawS+rbXoIUmAjGbRLJ+qcaolCTAHrbYlDkz91kVyoiLnIlsXw3H0prT8NJ/qAJjrJChDFtPDRgktq+xIycndav/Ij/ud+5TvfuJeHwXOgbBOXJdI2biww0OM0b8Bptf4+HAj16rJXAvAtg+/G5t5HSV8lqDqRFVCUjaiK0705RJiDBmWKOibO7vJFzwj5V0T1j5ELJCFNhwNee2OaUCLJxLxra/TN4GjVWpe3MlMTMfRTAsdIBzmFrXh3R8kW0zcLD27/4rGlrFC0YclEC+W/vkbYirihjxw+xF9WtVisGe7AHk3pdt51k761dnPC1RzoBFmO+Hl1ZVT6KbP0qQwQzEWwD1cIW4V4rRwBLfQi5IA3Dn5IRc6Y4Sa5UR7b5TzFdw+XM5GSPQ6I1yzM/aG769/M76+Rv4wyRJkjfGQs2Wmz05ooygZMdk3dHY=
+X-Stat-Signature: kiw844696pizccbmcek53764yzty1jp1
+X-HE-Tag: 1787223180-161322
+X-HE-Meta: U2FsdGVkX1/GMgGA4aaYAK843Mc6YxbSPsr8CYdZ/+6wVTqVeGiBZkxk4q8iRbJUCg+cf8VViQHuk9pqqhu1jX6ZMo1bmqHMVk5+gjkK558mpBzItxkSlIWUlboleQwH11qfzwt1mYl+rie6g7hNkEQo/buYKzyFy5e12NTCk/psFahUp5FxJKOfoFTDJY5jb1wGWzZ8NkMk34jjJFg0NPdArHkFPvf7ZtU0kVG3IgjKB0fNObXTWE87ullTo+MoVu9W1sEB7Wn17qoMS4l5QLXxnNAKnhoChaGW+GXkpuAF43OWrw51CZwyQHiGfmYX+HCs9EXq4KRnvfX4aeul/6GYcJsZRF08waeXZO9jzM65H6EBl7m9hmMMCfnnxPPQlWRJnOJlVZWIvWwcyGWPOea0Frhpi+SaNVzuFwfDp6R9SDDLUlzvHyTCY0JPTM748eHmNbVpoH0wdqcI4rCdWTKX+15/tAFAkaj/MpxQ60tdPui/rnOu4iLrzUsDF/EecpnCi1mTbOHLGjySxBkZ3lvokBeIZVoKkudfwLGDKWMn8+KuJkHTwBLY/mB9NFmPJy2otm6Y20QazWLWdzaS/3egmtPseKjT/ThdYqe8o5cZrv3ULkpDxxkHHps2HcDsuuLaIOlXwgEBOciin+rrw0KruM8zFa1ejGqn7z7wmAcOoYEX9gNHca+57aOVYnuoRgE6UvHJ4kKcd4vTgmD6Kj1yDgSfhm0xlC0P2zdIFfd4wKmaEmegbwR4fyHrKIhyIxIYCzjMQJsJOVD1sxqbyZU2liRLog6qjLMIRvHQyugDvClrl/tG19coqnUh9P+BLybBM19PqQ6qL//iFoq30MH5su1f6Mq/i0NDJxbVMixWta0nD80DG9U9Q/Bh7izSVnzCBiGmMo1jxgDKyIJE35YLPSGXO7Eq99aU3PloHKm+7D57fCHZPL/U9yM6DZ+SO6CCyOtRQ5tvOV6rwsk
+ rblVxCq0
+ XxT0o7KByXkAFVRZFDDv3Eowk2lDfJNzVeiwI1K2NYis0lL4C9wer9h6i1gtiYRxeZR9cLbVqXGrRm4vEcLQgbyR8DzSF3nPaXhfbcBaAkK4kcE+T+W4F646Wd180fbxLGSowkXIe2gB1RF+zgkuLdRiQmC60gk1J40kEXwfA6ZBuxO466iOEVITF3clYTMWDl1ojR2KNWEjSzqV2u3xwkFC5qi6CogOIMUCUnE0BRgmsyGlg7Hoo7jX1Pbu1VE8NH4+0CZB5Fi+4YCmVDqW1WulYr8G+XnQVqy6D5Cg8a3NQu34ViF6E7fgxuw2JE2m0hioa1h22XcP/k/r9HmzD4mB+AkORu69jIhSzB2AcpLGNhctAJvxQk+im5CJxxnXCaQMz1WCt3w4D3kMaqDHX4rOz4hjNvBfX+Vj/QdCBSOL1meeP2/tbtqjqc51ytrcDXJQ3E4qZi5B/+SJMRc8ahCL21WM1IUVd9SnCSaVkWyfA0m/6PD8hAejer27aB9vThU/8gvH/q9cdvh0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,296 +135,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Aug 18, 2026 at 07:09:48PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/17/26 00:45, Kiryl Shutsemau wrote:
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > 
+> > Callers that want the folio behind a present PTE spell it out as
+> > page_folio(pte_page(pte)).
+> > 
+> > Add pte_folio() as the folio companion to pte_page(), and convert the
+> > callers in fs/proc/task_mmu.c and mm/hugetlb.c.
+> > 
+> > Preparation for the anonymous collapse engine, which reads the folio
+> > behind a PTE in several places.
+> 
+> [...]
+> 
+> >  
+> > +/**
+> > + * pte_folio - Return the folio mapped by a present PTE.
+> > + * @pte: A present page table entry.
+> > + *
+> > + * The folio companion to pte_page(); only meaningful for a present PTE
+> > + * that maps a struct-page-backed folio.
+> > + *
+> > + * Return: The folio containing the page @pte maps.
+> > + */
+> > +static inline struct folio *pte_folio(pte_t pte)
+> > +{
+> > +	return page_folio(pte_page(pte));
+> > +}
+> 
+> There is a reason why most code doesn't need that: because they should be using
+> vm_normal_page() / vm_normal_folio(), or need the exact page and handle special
+> ptes differently (see gup.c that uses pte_page()).
+> 
+> And other code that uses pte_page() doesn't really operate on folios AFAIKs.
 
---lgqipk6jwvqdiaex
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4 07/10] dma-buf: heaps: Add support for Tegra VPR
-MIME-Version: 1.0
+Fair.  pte_folio() does not fit the abstraction as it stands, so I will
+drop it.
 
-On Wed, Aug 19, 2026 at 10:10:09AM +0100, Vincent Donnefort wrote:
-> On Tue, Aug 18, 2026 at 12:48:09PM +0200, Thierry Reding wrote:
-> > On Mon, Aug 17, 2026 at 06:22:13PM +0100, Vincent Donnefort wrote:
-> > > On Fri, Aug 14, 2026 at 02:56:05PM +0200, Thierry Reding wrote:
-> > > > On Thu, Aug 13, 2026 at 07:25:20PM +0100, Vincent Donnefort wrote:
-> > > > > On Fri, Aug 07, 2026 at 05:54:27PM +0200, Thierry Reding wrote:
-> > > > > > From: Thierry Reding <treding@nvidia.com>
-> > > > > >=20
-> > > > > > NVIDIA Tegra SoCs commonly define a Video-Protection-Region, wh=
-ich is a
-> > > > > > region of memory dedicated to content-protected video decode and
-> > > > > > playback. This memory cannot be accessed by the CPU and only ce=
-rtain
-> > > > > > hardware devices have access to it.
-> > > > > >=20
-> > > > > > Expose the VPR as a DMA heap so that applications and drivers c=
-an
-> > > > > > allocate buffers from this region for use-cases that require th=
-is kind
-> > > > > > of protected memory.
-> > > > > >=20
-> > > > > > VPR has a few very critical peculiarities. First, it must be a =
-single
-> > > > > > contiguous region of memory (there is a single pair of register=
-s that
-> > > > > > set the base address and size of the region), which is configur=
-ed by
-> > > > > > calling back into the secure monitor. The memory region also ne=
-eds to
-> > > > > > quite large for some use-cases because it needs to fit multiple=
- video
-> > > > > > frames (8K video should be supported), so VPR sizes of ~2 GiB a=
-re
-> > > > > > expected. However, some devices cannot afford to reserve this a=
-mount
-> > > > > > of memory for a particular use-case, and therefore the VPR must=
- be
-> > > > > > resizable.
-> > > > > >=20
-> > > > > > Unfortunately, resizing the VPR is slightly tricky because the =
-GPU found
-> > > > > > on Tegra SoCs must be in reset during the VPR resize operation.=
- This is
-> > > > > > currently implemented by freezing all userspace processes and c=
-alling
-> > > > > > invoking the GPU's freeze() implementation, resizing and the th=
-awing the
-> > > > > > GPU and userspace processes. This is quite heavy-handed, so eve=
-ntually
-> > > > > > it might be better to implement thawing/freezing in the GPU dri=
-ver in
-> > > > > > such a way that they block accesses to the GPU so that the VPR =
-resize
-> > > > > > operation can happen without suspending all userspace.
-> > > > > >=20
-> > > > > > In order to balance the memory usage versus the amount of resiz=
-ing that
-> > > > > > needs to happen, the VPR is divided into multiple chunks. Each =
-chunk is
-> > > > > > implemented as a CMA area that is completely allocated on first=
- use to
-> > > > > > guarantee the contiguity of the VPR. Once all buffers from a ch=
-unk have
-> > > > > > been freed, the CMA area is deallocated and the memory returned=
- to the
-> > > > > > system.
-> > > > >=20
-> > > > > Hi,
-> > > > >=20
-> > > > > I believe we (the Android team) are trying to solve similar issue=
- to yours: Arm
-> > > > > CPUs can still speculatively read memory after it has been transi=
-tioned to the
-> > > > > Secure state, as long as they retain a cacheable mapping to it.
-> > > > >=20
-> > > > > As modifying the direct mapping is difficult, the workaround ende=
-d up in the
-> > > > > hypervisor which unmaps the pages from the host stage-2 on interc=
-epted FF-A Lend
-> > > > > invocations.
-> > > > >=20
-> > > > > If convenient, this is nonetheless the wrong place to do it. Scat=
-tering the host
-> > > > > stage-2 is really terrible for performance and we would like to m=
-ove it where it
-> > > > > should be, directly into the kernel...
-> > > > >=20
-> > > > > This is what I thought was the attempt in v3, but I am now a bit =
-confused
-> > > > > because I see you are using set_direct_map_invalid_noflush()
-> > > > > set_direct_map_default_noflush(), but I am not sure that works if=
- rodata=3Dfull is
-> > > > > not set? So does the memory for the NVIDIA IP still need to be un=
-mapped?
-> > > >=20
-> > > > Yeah, this currently relies on the circumstances being such that
-> > > > can_set_direct_map() returns true, and in the case where we want to=
- use
-> > > > the resizable VPR functionality, we're going to have page-granular
-> > > > mappings anyway.
-> > > >=20
-> > > > > If so, how about having an option where the CMA allocation is bac=
-ked by a direct
-> > > > > map with the same page granularity, or at least a smaller and ali=
-gned granule?
-> > > > >=20
-> > > > > With that, we know that for whatever CMA allocation we do, we can=
- safely unmap
-> > > > > from the direct map without risking splitting blocks. On CMA free=
-, we can safely
-> > > > > remap into the direct map as I do not believe we coalesce yet.
-> > > >=20
-> > > > This sounds intriguing. For VPR we could possibly make the size a
-> > > > multiple of the memblock size (or whatever might be appropriate). I=
-f we
-> > > > can create a page-granular linear mapping specifically for that reg=
-ion,
-> > > > that'd be ideal. I don't know if the linear mapping can be subdivid=
-ed in
-> > > > this fashion, though.
-> > >=20
-> > > Actually I don't think modifying the memblock is necessary at all!
-> > >=20
-> > > Here's what I have so far:
-> > >=20
-> > > diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> > > index d4de88770ecf..a9f81413b70d 100644
-> > > --- a/arch/arm64/mm/mmu.c
-> > > +++ b/arch/arm64/mm/mmu.c
-> > > @@ -22,6 +22,7 @@
-> > >  #include <linux/fs.h>
-> > >  #include <linux/io.h>
-> > >  #include <linux/mm.h>
-> > > +#include <linux/of_fdt.h>
-> > >  #include <linux/vmalloc.h>
-> > >  #include <linux/set_memory.h>
-> > >  #include <linux/kfence.h>
-> > > @@ -1138,6 +1139,27 @@ static inline void arm64_kfence_map_pool(void)=
- { }
-> > > =20
-> > >  #endif /* CONFIG_KFENCE */
-> > > =20
-> > > +#define MAX_FORCE_PTE_REGIONS 64 /* Greater or equal to MAX_RESERVED=
-_REGIONS */
-> > > +
-> > > +static struct {
-> > > +       phys_addr_t start;
-> > > +       phys_addr_t end;
-> > > +} force_pte_regions[MAX_FORCE_PTE_REGIONS] __initdata;
-> > > +
-> > > +void __init early_init_dt_force_pte_arch(phys_addr_t start, phys_add=
-r_t end)
-> > > +{
-> > > +       static int count;
-> > > +
-> > > +       if (force_pte_mapping())
-> > > +               return;
-> > > +
-> > > +       if (count >=3D MAX_FORCE_PTE_REGIONS)
-> > > +               return;
-> > > +
-> > > +       force_pte_regions[count].start =3D start;
-> > > +       force_pte_regions[count++].end =3D end;
-> > > +}
-> > > +
-> > >  static void __init map_mem(void)
-> > >  {
-> > >         static const u64 direct_map_end =3D _PAGE_END(VA_BITS_MIN);
-> > > @@ -1186,6 +1208,15 @@ static void __init map_mem(void)
-> > >         __map_memblock(init_end, kernel_end, pgprot_tagged(PAGE_KERNE=
-L),
-> > >                        flags);
-> > > =20
-> > > +       for (i =3D 0; i < ARRAY_SIZE(force_pte_regions); i++) {
-> > > +               if (!force_pte_regions[i].end)
-> > > +                       break;
-> > > +
-> > > +               __map_memblock(force_pte_regions[i].start, force_pte_=
-regions[i].end,
-> > > +                              pgprot_tagged(PAGE_KERNEL),
-> > > +                              flags | NO_BLOCK_MAPPINGS | NO_CONT_MA=
-PPINGS);
-> > > +       }
-> >=20
-> > Interesting. I had been thinking more along the lines of adding this
-> > directly into memblock using a new entry in enum memblock_flags. None of
-> > the existing ones seem to do what we need here, though some are closely
-> > related. MEMBLOCK_SECURE or MEMBLOCK_PROTECTED are quite specific and
-> > don't necessarily mean that we need the mapping to be page-granular, so
-> > MEMBLOCK_PAGE_GRANULAR is perhaps clearer.
->=20
-> I thought it would be interesting to not have to modify memblock since it=
- is
-> used for all architectures, while the DT is at least slightly less widesp=
-read.
+I thought that maybe we can rework vm_normal_*() to be a predicate on a
+page table entry, so if it returns true the caller can safely use
+pxx_folio(). It would be a cleaner interface in my opinion.
 
-This isn't something that is DT specific. On the Tegra side, I suspect
-we might need this on ACPI platforms eventually, too. And it's not an
-ARM specific feature either. Other platforms could use shared carveouts,
-too.
+vm_ops->find_normal_page() breaks the idea, though.  Xen (being the single
+user of the vm_op) wants the special bit to indicate a custom translation
+to the page here.  A bool cannot describe this.
 
-> Also, cma_init_reserved_mem() could use an order 9. In that case PTE-leve=
-l isn't
-> necessary and we could just use PMD-level. Extending that support would b=
-e more
-> cumbersome with a memblock flag than with a callback.
->=20
-> rmem_cma_setup() hardcoding an order 0, perhaps this isn't really a probl=
-em at
-> the moment?
+Ugh..
 
-How so? memblock is really just used as a way of backing the CMA. How
-CMA subdivides it doesn't really matter, right?
-
-Or are you suggesting that if we use an entire PMD as granularity, we
-could equally well remove the entire PMD from the linear mapping instead
-of doing it page-by-page? I think that'd work really well for at least
-VPR, since it is 1 MiB aligned anyway. Using a granularity of 2 MiB is
-easily doable.
-
-For anything that doesn't require a single contiguous area to be
-protected this might be a bit more challenging since it potentially
-wastes a lot of memory. On the other hand, a lot of this is heavily
-custom code anyway, so the entire stack could be modified to make
-efficient use of this (i.e. userspace could allocate a larger chunk
-for a pool of buffers, etc.).
-
-> But yeah, the alternative is to create a "memblock_mark_forcepte" (it see=
-ms
-> memblock_setclr_flag does split memblocks) and let of_reserved_mem call t=
-hat
-> function. Finally the arm64 mmu code can simply check for the flag before
-> calling __map_memblock. Perhaps it isn't that bad in the end?
-
-It sounds like the right level of abstraction to me. But I'm not too
-familiar with this code, so it'd be good to hear from the MM and/or ARM
-maintainers what they think about this.
-
-[...]
-> I had in mind to extend "shared-dma-pool" to handle
-> set_direct_map_invalid_noflush()/set_direct_map_default_noflush() based o=
-n an
-> option. But perhaps it is better to create another separate driver. And V=
-PR
-> needing a specific dma-heap driver anyway, it could call the direct-map
-> functions there too without relying on CMA to do anything?
-
-I think it'd be nice to have separate APIs for this case where we know
-the memory region is already page-granular (or, I suppose, PMD granular)
-and removing from (or adding back to) the linear mapping is safe. That
-way we could avoid the checks for can_set_direct_map() for each page.
-
-It'd also be nice to have a version that can update the protection bits
-for a range of pages (would map directly to update_range_prot()) instead
-of having to manually iterate over each page in a range.
-
-A good middle-ground might be to have helpers that do the grunt work and
-they can then be called from VPR and the shared-dma-pool drivers to have
-pages removed from the linear mapping. VPR and similar can then perform
-the hardware protection bits on top of that.
-
-Thierry
-
---lgqipk6jwvqdiaex
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqG1BEACgkQ3SOs138+
-s6F7lRAArYkFeTZCiaSW0m7zGIomMdDlHXmGBzYfHl2VZ3wH70nxODs/qRyHRCHr
-su7floNIfcai3gyX/2hLu4adl8wuzA2Ox+wW/NBcLKD8OVJMALcEiZ92SaT5Ikpp
-O4syeCwLYOi9xTZSehRv/IoUWU/XNULjb2PjZ81mwbrSxhXiCueG2zy+kiGIp0bU
-1why7rYrqly8Ox8d7IK89VJSSKWIwo7bdRNlVmk/L+jubLG+rNkSQtXRoXU7qSeq
-s/vBkD1mhT7aDp0/5KTcNYMeMCExTOX2BkeJ4WrbjafpecrIkUnQdCv9XKnX4QG5
-pULUocNnFhC5IHpEm0xVO/g8ZdY3nf9S1VMWLpPzh3bQzZ5gRGwRd7JYGM76oSsu
-UsFmhETy2x7d8/jJKwI0iFfJDxQC9/aC1iKMw9ZZvA4W9RghorKcbl+Q/ondTY9V
-zHBUifqZUrzxOAg7Zcpi9OLOm13jP9Ug1lRW9DmSXhg/wuO6uKjui2CuQH3jYfB8
-aivJZLZZAUsrw5R6OlHutKG5iPJqfteqPa89Ru0E8ZGEjkfr9Ewm9UeIwZaB7FUx
-1w3QikuV5XNxbsXvEBfouNq8u/ruFlQ0gehgx2xHOyU8npifFHGD3xIJ9+S6A8vi
-RDQYAtF3eexkxSEhmaqou1/Y/HPJi5zwvITM9iU0n79Af7/eXJE=
-=1zoM
------END PGP SIGNATURE-----
-
---lgqipk6jwvqdiaex--
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
