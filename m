@@ -4,143 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B041C5DF82
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 18:44:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32233C5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 18:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F89C6B009D; Thu, 20 Aug 2026 14:44:53 -0400 (EDT)
+	id 12C476B009F; Thu, 20 Aug 2026 14:49:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A97A6B009F; Thu, 20 Aug 2026 14:44:53 -0400 (EDT)
+	id 104FE6B00A0; Thu, 20 Aug 2026 14:49:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BED86B00A0; Thu, 20 Aug 2026 14:44:53 -0400 (EDT)
+	id 041066B00A1; Thu, 20 Aug 2026 14:49:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E6B4F6B009D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 14:44:52 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8610EA1C05
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:44:52 +0000 (UTC)
-X-FDA: 85122524424.06.D9DF9FB
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 980D21A000D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:44:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HwJZP9ut;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787251490;
+	by kanga.kvack.org (Postfix) with ESMTP id D42556B009F
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 14:49:29 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6666880268
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:49:29 +0000 (UTC)
+X-FDA: 85122536058.02.606F04B
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf09.hostedemail.com (Postfix) with ESMTP id F4137140003
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:49:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=ah5RL2tA;
+	spf=none (imf09.hostedemail.com: domain of BATV+1d708973600d7266e180+8397+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+1d708973600d7266e180+8397+infradead.org+dwmw2@desiato.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787251767;
+	b=hp5EmGbmtl2SKMJp9kTt8QydLnNihX3y/+EnHFZfSocriyr26dQ9dxLJ01XISatYUgzU/h
+	BSqzoxDunl0UXcmyszs0JZ7rV35PmpHT1FJPU7J4kB1K967MEM+Blt7pjG6xNTJRuk8ju4
+	kPGjHhLzzKnaibUZ0xzKSvo5FPYOF7o=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=ah5RL2tA;
+	spf=none (imf09.hostedemail.com: domain of BATV+1d708973600d7266e180+8397+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+1d708973600d7266e180+8397+infradead.org+dwmw2@desiato.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787251767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ra+u2k+WGBbYHMuPstN144hB8VFxEn7aIl8UwdTV5yc=;
-	b=gSBszIadN7VpgOP+emD9e68wbBQRZz5Udq+VylpY2+Cj8va6OdqFubvQFoE8fGXIcvGJx/
-	ua8TAeGZLomOACNFbYIZoUX1DQeMxtQ+P+ZO5IgpxRA2t2p79/BfGo5mWNvb6oaCtWpspi
-	aV2mQwqaS42S3ARZQWiydkHPvkZI5Fg=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HwJZP9ut;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787251490;
-	b=LF28eo4dt/+1RWqDaDvwf93iztI801dmWuuw8PjVQR2fxcu3ZOs8J7CrPolYJf8dOl1b/1
-	tpESnYiVLdjHZfrclnF1UbcLNkrKwz+Y0rIeoiesx3+yChh7L+cVLMTbVAuJxGeCsHnBib
-	rOU1L4i3K73Zt4ZeMmeqIPLDimR0xLg=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ccdf36f63dso13495ad.0
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:44:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787251489; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cl7ySJ7qwG9x0njUCX2MpaLtq39x524Ybsw/M3isaqySejkMv4ogQ9dyyvuA/cR1IC
-         DEAjoEQdYNM7rTIeOEKh0i0UxIgb1VHdkW4cA15hneAyuoDEAJaxC/4GzwnChryoDdYd
-         4NdRv32/pXZADJJgFQ6adSsb83H5MbX1MJ4MEu4T1jBTUw1PwGLPwJYwo7IxESCsTkvG
-         t7uib8vjeHYVcuOZGy9/l0DmSsMp/NWRzjnrVDzvsyBHV0xQVTRvgy1JSBJiasRPN5f+
-         JKqinDXNPd4Yl7BNI50Pu5kPog0ellDQ/h1Ei30TL/gnJDVTCSo0vh+qPQ4YT5ZFpBKy
-         njvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ra+u2k+WGBbYHMuPstN144hB8VFxEn7aIl8UwdTV5yc=;
-        fh=IS2Z2J0Ubi9XZdzJGNMhphmBuzKlHOVgGtmGBvJM1n4=;
-        b=SBAxftzMA6LPcpd02LG8VE9GTyMYn4GPzD1jfq140/bt1hGNbKl6fMH9vN8oEoyjTB
-         D2e9/kvzSAqioNxEdbSwYz80O/JRdZw7PzmIIHdG+G/Yli+JK28zWlKUuVgrJaENDIPT
-         NoKnYLh7WXuet0XcyzPc8UdvOufLN6FHk8u1xORnjlG837tFynVE5SjASu8rwoU21PJn
-         7q8fGCQj9l7UYiH5XRjw0tjE00EASoiJ1KegD5k9Y8QNWjsZnxmnlofdi/I3cjjxcM1T
-         HZCcnQ5G8AS0c3QVVCOUg9TA2oj9U6WQLVxwbu6D+OwwQpgIOc7vvu7x/8YGEx1qdwIm
-         flWw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787251489; x=1787856289; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ra+u2k+WGBbYHMuPstN144hB8VFxEn7aIl8UwdTV5yc=;
-        b=HwJZP9utXIl9VIoUcsTsqWtQ6sBEzyi8WA4n/9+Onc8LgQJarNcDJ+dVJy/MtjcmuQ
-         RMNqznLu/N8wVV6ces0SwL+RbnogNkwVPIcwE09BsCPkfmkX9HN79/mFE8Ty4HP3lCd2
-         WQk0RwV6l8KEarPc6cGe8j+DcBa2WEZKUqA9c4q9fx1h2A130oDiGPKnANOJxxiQXlYi
-         B+F7fiWNmeEyNp6ITdUl43c1bB9xmuCLC7GBa50IbxRc3mRsjG9hNrtdN+rD8uJXjI/y
-         zZK4vYMoUC3A+oU2rdfeDEOH256URTAuuAB2HnMARhSzfvlU5w03EJt1JbPYSVMeN+ya
-         NYdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787251489; x=1787856289;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ra+u2k+WGBbYHMuPstN144hB8VFxEn7aIl8UwdTV5yc=;
-        b=lV0lmncWittl8dVaGh3WDpBtn+OQf4LGzs2gsBvmaNhjwSpCdMDpCcpIDrh+ZNsDBc
-         jZeXK3sWUKdKBoMFCsvqpEwalq/53VeAOsW8EIVKPGNS6ToEcer+vpYOFKph85tE9Iu0
-         JldDKmTHeXFtLDXor9FevFrTLPr5b0nIGe8eQP1wM7/mvB7WVoP43DdYETegsflhjwAu
-         3GavQeFkQkr6g18zW2ni3/8Xxt+16W0RbP53DmPajFyqARoj+12Ni2r4rYwxGAFedKaf
-         FnOfx8ymB3WOPNi1aF1XxM9ExWTFopuXm0nMwHPRg/Z3B0V3xrw3hUFz8ukYmCg9lt5E
-         wvsA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqt3EfeV0fwzgbQdDPYcQE2UxQAXMhkPmks8g8CtdZCC1/U918AGlIhIalyi3kmIk4LxoCzoFcFuw==@kvack.org
-X-Gm-Message-State: AFuF++nlNrQX0o7cx3sgA8inm6shUkgyDkR6/HY7aqEXQICToy6z+jxS
-	zbwzrUO2x6IdJsANuMx65iFN5RWcJpAv6Tg+Sqvf35d03QuqTaHN5sTNnFajFqTdMYtS2d6Ao1N
-	QjxOIb3+PwYHQ/sJsdr/SNWN1adDG+VcyX7pey/8w
-X-Gm-Gg: AR+sD11CErhLVi8Ss8FYTWFkoDScPV8ThJszLGnxjmIeUvsi+uJ66EYbaBBYRd63hrM
-	3LFuh1gnkUDvGmYwVn3Fd9rbSksoyq0yzXBEdml8Pe22shs+4KXcYC20l/O6I8nE7lXQYyOi8vI
-	HN5RZyvGV4ZgK8IzXenoXpiGea4BCcls9Gkvp9PZ7/ViGroVFgTzGOFk0GltnzKQ3mJQMlyNm5b
-	VM9pCeOXQwZdhTiJAhOJpUqigQ7DTezfHE5sf43gj/TsOGQJm4TfzhJDpjT7rFud1anlhi0J0yQ
-	0nE+M5g8uCSdYH+9F64cwmQwxQpe9dEh+TsI+vX914jviCBZI33xubUUO0hFFAX3ArxU1KqWg/W
-	yTeNTDHzE/wVYIRXBsP+IUWVcm1mBnA==
-X-Received: by 2002:a17:903:22c7:b0:2ca:cbe5:c3af with SMTP id
- d9443c01a7336-2d64b50af9cmr824745ad.7.1787251488719; Thu, 20 Aug 2026
- 11:44:48 -0700 (PDT)
+	bh=Bxoz+gQaajsA5pCxftnKj5mDXSS6NnATsxXZdW81D0c=;
+	b=ZGQ6DGp66R1ahrdaXy1zAZSeCFnBQAqX9aE76vv2C+fSpuMpNDvnZG3J0GKsPLdltJcJGU
+	4yS/5e67n5CK+MsJWsvHVQ/y3FvEFrbi2wDbUHueduHSTEQRBwqie0tZbyAi0oo4aoD/Vl
+	U8HyOGI5yoRUusSjNekV9bYme0htqhI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=Bxoz+gQaajsA5pCxftnKj5mDXSS6NnATsxXZdW81D0c=; b=ah5RL2tAnpSx6WytvpN6T2b/q5
+	fqecbck3UKuInlaTaX2PJfYFVfVQ+a4wbzlJxkHBtW7BkCBWxyI6KcPi4ta6dBfk5r1fe0CZOYMyj
+	8x7dsarhPKO/rS4PmBCK1o/Nel+v7nyYg7HPnF6pbv9fGq9k1/pgQP7Odtc3/RI+JKa3EbPLc6Lsy
+	gUWw0CGaY+jWW10qZMinw0UTo+/sS8IXf6wNZQraHxeObzD1oWoxzZdLvvdG+jLJXl64DVB3uQww7
+	XORkAw9jbt3754j+O8ZGHDE5UINSbulSN9HuCPSS5i+RTo11Tu0AZCncOaPIcCcne5+vldc5+h1Ik
+	yKVzsxrw==;
+Received: from [2a02:8013:6d1:1:5309:2aed:a2fc:3ef2] (helo=ehlo.thunderbird.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wx7pE-00000003HyP-1sG3;
+	Thu, 20 Aug 2026 18:49:17 +0000
+Date: Thu, 20 Aug 2026 19:49:16 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Clark Williams <clrkwllms@kernel.org>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Jerome Glisse <jglisse@redhat.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, linux-mm@kvack.org,
+ kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/mmu=5Fnotifier=3A_Remove_non=5Fb?=
+ =?US-ASCII?Q?lock=5Fstart/end=28=29_from_notifier_invocation?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20260820153413.1EAmdFht@linutronix.de>
+References: <20260820133020.7ZCRIhwX@linutronix.de> <448c5c0128b08ab98d175ae1099ff4d4874e49b3.camel@infradead.org> <20260820153413.1EAmdFht@linutronix.de>
+Message-ID: <F376821D-AEF4-4DD5-A059-1714907E7E22@infradead.org>
 MIME-Version: 1.0
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com> <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
-In-Reply-To: <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
-From: Jann Horn <jannh@google.com>
-Date: Thu, 20 Aug 2026 20:44:12 +0200
-X-Gm-Features: AcwNN1WPc46lB25I9dlQYQePR9UcO75mKPz3cBjmzriG3esMrA3mvmTFFADdtWE
-Message-ID: <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 980D21A000D
-X-Stat-Signature: 94eb51nyfaunjbwnj1m7jjeckdd8ge7q
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: F4137140003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1787251490-766621
-X-HE-Meta: U2FsdGVkX19ZMzeAXuuOYHTv3ct/dbm2scbCH53NHyGFrN3roKBY3WbgfrnXyA+MPNdYe6T0VPkMIYCBDV2lAJSob2lq0KfOTq4sMI7LagLqlIJMJGvfEluKc/WYxt+/zu7is6Q85tNUG64Sa+yPI5XTdVlR/eeE1SLSGt1ZJmy3DTm7jjQWVWCVON5nPlabk0NPD/VGBg56np/tJXpEWEBdeN76jT2r1+M+mKUyJ0XEv0fyjFBZfZtkAGSh4U6ncKJOB/0Waf3EQJWvrlP+u/s2JVRFpwaL3o8a4yg9vL9CPjDDSjn+RK7TOklh1+r822r3eWfVoEAzTQtgoNpfLc1Iex4W3K4y4GbiSr+BQSen1SnAnKETInMvQPmJZwPrZNZprJBSNCtGwojV9KBx14W0wEAmcoB8jGvXJalCjPz79+UxU4BKCEcRLrzvycY5H2iWAnmRmiwDAmraZnd8ieXa0+IsCkUdG4/1KCR1E29MBlXr4+fNE4eek07kX9HO4gAf3FNKHGXK96G5hgrUW54iuy55AhO79Y38Fl3plCw4vlj++FhD7hNj0q8p2G3S7lMCpeOTmk+c/oT0V8zSNQDnUgIBFpXIsFiRBhtycZ86qD5nXE/F/EBRXvwAZZ08FXtA/B8qZdkdTZE1UM7gB+OOVlAI+SFuN72XUmt4OAaPjsy9iNhYOxcmDoXyhupIbjrm3xQVBZtn87r9meJaNzCipFpm2yEECGS/KFC9xpXkWf89vomY4CCSq/B5PyG17V8gwb6+hhiN8BhvV1kNDGIPfVx8D9UOcldtKoYDDsJVElCsCiPC92bayRarLk70QwcaWe75aFU3fUxFiYHoxJirzFZCCW2SJMcK/UPBg5VBnV11hXpifFcj5hZ3DHHmGtNGezUqFK2H20nunJG4r++D5rsSD7QCBFO0IBuy8YF2ruYBQGOMcD/2Neu9ar9ebfQyk+AKID1kd0XeDEa
- D8F22yAG
- xYJH+yNgsfmr11hF9+h1y5qiSJGDC1CDwJNpUQ4t3yCehFmtMsemg9IM8B5JmY41m6ggzqRg4UVQM9UwjqkLNiz6rHRUjJRwb1xPD0354zR3SY0+9o/+VALu06X6vXNvWSc+oiVyf0yxJqOPpKdlKD44b/pdfx+rTomPcPZb2sshp4uD5ssGpUA0FEN+KSD8K7nH7wHhKFlws92memlFtGgsp4FuPm6ccTLsLP5SjchVvFIUzkQqA3v1uObq4XfPQacbOG1o1uD1FseQJK6Jba+Uod/iRlFg0mzSQMOY3Y9aJRKjw5kH/SrWHquG0VUhDRP98cxOUbcfYfTolBIl+0J2CsjHJe8f1V7Q+r3B6dQI8lNLe/deIeF9bWpBzw+xSXSepcdSDS+smmXh7+8C2d22oSg==
+X-Stat-Signature: 3rn5pq8f9mis3irpf9ie8mcre8r7gufn
+X-HE-Tag: 1787251766-370819
+X-HE-Meta: U2FsdGVkX19BFlVntSevmflxY4ZTwRIigm8Lkqgh1qZoWfrKl7R5k0x68majb7vKkxvA3pLNBz0YcyvmvsKwH8FPvyyKA4GKNoW4/kgx/Qsgij9d1ElwoqRpkpLtDDwjV7oRpdwThzEBz8Pri+MrEnysf2jdEQ+9TrEsxjQFxU4cb1ZqytKl59YpTYmRKPL4YuSE5iZ2SLBzh/v/D8Qkt+OGA7wp46ir74i0AqQnbJDKvaLgisClE7qZNoKGrRhiHMDnwRCG6I6ViIMs8itn9LU+h7rHlJ4FPDLKWKlMTvYhV+bWlRfl/51HL4XyAMhBRLP0/62EYgkGBmgMkWge4DJymF+CSr2VLMLUOme2QDRVpTggXPslZxDZ9lGkAjS8WlPcG0tXcx7zq0fYkyVNXGUoq3NlzMfl9yhXtXLlolYGCHF96Gv2zIWFJbwRlaA9dd6HRJSzG9pqXs3d8vWFWymITLwFOA9QyiOAjYaZyt3eieo5EHMY59wtSyhbGbXdvfVOK80C0TH2KcW1ypSlFii4t43uDFI+QggoVcBw3S2gZchYPuBMyc+Li3Ux4mpMsJr7me4aRpT9dMxQsra6xYbq5jxgE0fdIx5p97epI86ZsEQ3+ExOwL1EjoBASAXtfY90ExZf21/DzAWTgenB5D4PH8rOtIlKlgPy554qOK8P6EJ8qwoXPAb4ETaYXgdrQH7nQ1J0wfLCLbFrD5uUXer04AcxbcKIRLKnSnu3AnnDvbPcRI22RLct5AdMPmincCVaSFloRdwCLSW5e2+0Xh9rrJSVvT9xqS6f4l83SeIz0vk2ndzfJnoXEXq9t4lHyOsN2mftLh2+yg56yORk/Pvsy48tPRUmZoxw+ekmGMk0S5mcPhuuERjIcXnBLAWjcOIO6ONShNnts99SJr+odcoIl4S4JQt26utZotDnDlrFbONVKK5NkhrmhDrdfqWccJ66yG4l767MJdf06a7
+ QLgJsFMg
+ cTvk88g/LHC5g4kDR7co3gvTFrtB9ZFsumgMPzClxGitUUZLCvx9dZDvVkHLqRqnthCZxC6qJ7n4HV7601JRjKecMryQaWOBjfQV/nOQg4Ux1VoX60m7/tbRmm75WB9JQK+ZP8v62cm/3WkWXQxaaE3tM2k4eDOUy2pMjUpfNQwbr1Y9xb88YA3rpefu4LLRLVFfgbU9Of3X0dj9WcnidqWS/twAO8iR+3ywVM30OW/ycG8vAVM18LRzABb5cWn+dIVDH8IwowSSgEZWtwK9h+zIuDoa5rtM4ibhtP6ruirdiN7MlrJGwW6ALaA0gcmGG0Sm3rBCqE00RPtKGR6CHm7gk0qciQ5+FEvo78VsiAjSqNa84J3Le9Cn57UPruGqpUTMHVvRXeYvTRIWcJIy51j2SnZMnS5deuUpSON51xp/uGnKLgCFOB3m/2vuuUxTVbtRa6kAWPARrLcGI4k1HpFIiXzpuscXhTYPxmJ48dXdSbQJMQqagBYMeelQUcgnRfHvf4WuMuS143dPb3zPyF5tTNU+jJzA4EW00jbxS+4HyaD0vhV7eothjqcOOSZ8qSDLqLcRRrOt3aJijbuIJvhqSfLN16Tlg6aTrenq+E3TdEi6mW8ZiPVoQcwpAKHr4C1n+uPJ9vlWMOhrh2LAtnCKiRztUhI/YB+5bSBQdpb/9VUs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,63 +105,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 20, 2026 at 7:22=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
-> On 8/18/26 21:51, Jann Horn wrote:
-> > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently hav=
-e no
-> > good opportunity to block a process from overwriting read-only code in =
-its
-> > own address space through FOLL_FORCE writes via /proc/self/mem.
-> > The security_ptrace_access_check() LSM hook is bypassed when a process
-> > opens /proc/self/mem because this is considered "introspection".
-> >
-> > This causes a hole in SELinux EXECMEM enforcement, which tries to ensur=
-e
-> > that a process cannot create executable anonymous pages.
-> >
-> > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
-> > accesses are only possible when the LSM allows ptrace() attachment; but=
- it
-> > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
-> > environments running lots of third-party code, such as Android.
-> >
-> > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically fo=
-r
-> > such "introspective" accesses.
-> >
-> > Signed-off-by: Jann Horn <jannh@google.com>
-> > ---
-> >  fs/proc/base.c                |  6 ++++++
-> >  include/linux/lsm_hook_defs.h |  1 +
-> >  include/linux/security.h      |  6 ++++++
-> >  security/security.c           | 15 +++++++++++++++
-> >  4 files changed, 28 insertions(+)
-> >
-> > diff --git a/fs/proc/base.c b/fs/proc/base.c
-> > index bec6197329dc..3dfaef49bb70 100644
-> > --- a/fs/proc/base.c
-> > +++ b/fs/proc/base.c
-> > @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct f=
-ile *file, unsigned int mode)
-> >  /* private_data for proc_mem_operations */
-> >  struct mem_private {
-> >       struct mm_struct *mm;
-> > +     /* Was the ptrace access check bypassed due to introspection? */
-> > +     bool introspection;
-> >  };
-> >
-> >  static int mem_open(struct inode *inode, struct file *file)
-> > @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct f=
-ile *file)
-> >       priv->mm =3D proc_mem_open(inode, PTRACE_MODE_ATTACH);
-> >       if (IS_ERR_OR_NULL(priv->mm))
-> >               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> > +     priv->introspection =3D priv->mm =3D=3D current->mm;
+On 20 August 2026 16:34:13 BST, Sebastian Andrzej Siewior <bigeasy@linutron=
+ix=2Ede> wrote:
+>On 2026-08-20 15:26:35 [+0100], David Woodhouse wrote:
+>>=20
+>> So if you fix the might_sleep() and Paul comes through with the atomic
+>> SRCU thing, I no longer care *much*, but still think the whole thing
+>> deserves to die=2E
 >
-> Is the feat that the fd could be passed to someone else that would then n=
-ot be
-> detected as introspection?
+>Okay=2E Let me look into it then=2E But "the whole thing deserves to die"=
+ is
+>limited to the kvm usage, not in the kernel?
 
-Yes, exactly, that's the primary reason why I did it this way.
+I mean the whole of the non_block_start/end in the OOM path =E2=80=94 the =
+thing that this thread started by removing=2E
+
+It's always been enforcing the wrong thing, and the effect it's had has on=
+ly ever been detrimental AFAICT=2E
+
 
