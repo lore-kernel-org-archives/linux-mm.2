@@ -4,126 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79EDDC5DF87
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 13:27:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6866C5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 13:30:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 674A66B0095; Thu, 20 Aug 2026 09:27:33 -0400 (EDT)
+	id ABFA46B009D; Thu, 20 Aug 2026 09:30:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64CE46B00A3; Thu, 20 Aug 2026 09:27:33 -0400 (EDT)
+	id A96AA6B009F; Thu, 20 Aug 2026 09:30:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5624E6B00A9; Thu, 20 Aug 2026 09:27:33 -0400 (EDT)
+	id 9AB9D6B00A0; Thu, 20 Aug 2026 09:30:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 329DC6B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:27:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C34751C025A
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:27:32 +0000 (UTC)
-X-FDA: 85121724744.16.7538EB0
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D291F1C000C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:27:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="E ODRIw3";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=d4z0BTyc;
-	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.159 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 67EE86B009D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:30:05 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5837C012D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:30:04 +0000 (UTC)
+X-FDA: 85121731128.06.18BFACB
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 53B198000E
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:30:03 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf30.hostedemail.com: domain of 3WgGHagkbANMHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3WgGHagkbANMHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787232450;
+	s=arc-20220608; t=1787232603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Ozy3CczgOizZ3ooFCppKIjSA7fkYEtdaAuwRLg7kbU=;
-	b=7jDBus6Z3SfEojehpBtsqySSf2nkD0AD+AS1OGL05nOil0CdSvqt/fxb3mjuCdGPoCwK/8
-	BFvLXZbF2LTnCs4c/H4ouWaHKCa5P53d86IkHrFKCtJdDK3LOFX0mTdp/wrT0Igb3Bt4tT
-	qsSv9GiRuWMS1KpVTd0q1FEAhwaK1/E=
+	 in-reply-to:in-reply-to:references;
+	bh=Zuse5bKsrwNJaMXcn2vwRNpL06e4Ab7iDiF20cDAlPk=;
+	b=bA4A0lVTiBmb0rKW3swal22DFQnpEL/beY51Z6Kupnnzyxq4pUXvOF38x1FZ48HAPptSA9
+	5icbJXeCa7XCkdCUSuSORjZwEo51mCpCEa4fZrscpk5QPLqW2QiHW2iuqZ7OXLdJiixA0u
+	hS5bOXBWI8hC+eL1AEkdovqd/s6wq28=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="E ODRIw3";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=d4z0BTyc;
-	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.159 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf30.hostedemail.com: domain of 3WgGHagkbANMHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3WgGHagkbANMHNO9zAA3GzEE72.5DD5A3JH3G1DCI3CI.1DB@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787232450;
-	b=b+Xj3xHMxNuUIgp4ScktF7LlMkzdYcUJo/os+BEEp5ydkWhmt9AaCQl2QYPGfAMu5BsPW2
-	vJeUEX/Ko3sfXDC0ny22vWQUlfZQuZb+qK0eKDQYU5hWn90MoUcRoFgXpAuWRPCnkxAwlI
-	joyMFej6W2zc3LTfi8OyftjsGJs3w4U=
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 5DB0914000F9;
-	Thu, 20 Aug 2026 09:27:30 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Thu, 20 Aug 2026 09:27:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1787232450; x=
-	1787318850; bh=4Ozy3CczgOizZ3ooFCppKIjSA7fkYEtdaAuwRLg7kbU=; b=E
-	ODRIw3P2o1acvpUAqB72OM7hK828HA4AEGL7JzwwmMOfO/ncvj6zaV25GHFUOXAd
-	4alwM0WIJtrx/07sWpU0q9o0MlmoS516ZXhz5w0/TVVZV+h4s0z76t+RNZvQiA0a
-	Ybqu/tJyb9RbnTHVhInmsdmjhPp1t5S3m7SFdi6LwCNGHyJO+wlfgflYvI1skpEG
-	MwYd1YTdsRKAPowaxhTozYRGj1xkWy2ot/9mbsW9zfyfpT7evJQNWY8Kc36dzrG4
-	X8rx28meskatUlgr9Dqrr/mOk3o0msUdGjuwIIqlzQhbQjGmnY+uw0H4U4Pxv8uy
-	D2crUL7NA7JlIknhkw+Iw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787232450; x=1787318850; bh=4Ozy3CczgOizZ3ooFCppKIjSA7fkYEtdaAu
-	wRLg7kbU=; b=d4z0BTycjChykZU1niYaj7gAn+TEb7PaorwazbN5uNjSN1Gklyz
-	0bGJt0Kf6GrgD4StCK1QcI5v2cElqeLub/EdavWJJ+D0hTgfvOrCy67Z1G2+j31z
-	d1euHASEcrF51Rlg8JkVcns9yvV5j6cwXH9nxjGlV6JUrzr5JN1R+De+iRqLRabn
-	+2Qgt1/U3zwpAkFM9Fbut0v14Dkx/vKwxWrus7omgNVhSgp25LF8M9wMZyXG4Qz4
-	bIVNSpCu87Z1RwXte9hLE611iQMYocKWW6CF/1JkQ1cXI5QDxQ6vBimhzAJlLuT7
-	y1b7IfVWnzAgx1+Wy6oA4Sp+wwp3PXCbDCw==
-X-ME-Sender: <xms:wQCHasFuB8LJ9TeH7QvEB3gn-XxmvGbmB7FDrkBxE5DvIeHl3ER_zw>
-    <xme:wQCHaop8KbndauSCo9fxeOQHmHkV4fqeVRHg_B7zGMUmxX9DTsptntwkiAQkIMjpJ
-    IAxCZY7vexw6rutRJQYXyGTsjWd_uTOOyP3VzLJkHyiL_r_d7co_sGW>
-X-ME-Received: <xmr:wQCHaqOs_aXMJZKFYhML8XvvB3xnXVf-qSaaJVuCzk4umQEgTkIJ9ksI_r4>
-X-ME-Proxy-Cause: dmFkZTEoKWm6bbmmfKi8x+K64Bxlg2CB2ySvnBwPrS1jXCXrk+eT4gF4UsCKBI5mmn6nm6
-    60dm5WiLU3C4ooe5Pk2R042r9JhGRWPI4U8qW/2GOICA1YTtX5yENYuOuFlIecdJVuWR/w
-    5JGXSbmyBZhjSNoTK2zFoJKBzMljg4Jc9hIgPbXyLQw7jrbietBBxSHh1AiAfo1n1bvrLW
-    qn8jrbWy3WhtmSFEgBwZdQxOxJOXdzvw78mkoULr1Y6Q5l0wDkEO1Kdj+eWSSV6ljPRsZA
-    CL5JMXuJcVo7h0NaIjspEMlNGtoTil/pue8HDKYy5THLX0778c/3xdRsjTjEuyjpul/QLt
-    aF4PiCfx1WRJe4eFQAex2bzNi43lzQxmOeRwqDlQnAMimRgm0BpmnF4jgtVcZL+4xxeyYh
-    tXBXiCYKLmv5WaqY5rlD2ICC3W6go5soIqOIegCyG6+m62SVB2j3G4tTKLEdrEX+MynZiF
-    6/cAoU3xCRTJipaFsMy+2toLPoljjNDoqIpl+j3ouLTC5UgptPnjYOunOKRRno9OLqCyHk
-    x2WY6lMCRD+gt8AIe28D55YhWoGNr2WLc7Ybsq8nQjIJQvL7M2ckIEU2Du+HOBNFtBj2yf
-    WWAbNidtxuzP/HJSAAX+Bz8r/0LtsO7Jn68I2EmckseVmg6Ki4jxx5c3AJGg
-X-ME-Proxy: <xmx:wQCHakc9MEuLFfvEzNeb5Pr9JuA039uguEI6PYwYrwEAEPMNl2TqFA>
-    <xmx:wQCHaoQk4LldvSf0eRdTXHa74QTPOGcpuby8QszIaaprPncX9NpdDA>
-    <xmx:wQCHajoqwx894LBwB-ltGDxUGmE992BMq71Jlys4T8xbbx4MtpZpow>
-    <xmx:wQCHau6KVsNnv_pNePY2FqvioCzKQBg-lFQW5Wnhb6PWBbgI_n-cKQ>
-    <xmx:wgCHamfXySBPmm6VzFXjELx3tJldPDBMdhRwZ9pl45wgFfqiBQ1nlqHs>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 20 Aug 2026 09:27:29 -0400 (EDT)
-Date: Thu, 20 Aug 2026 14:27:27 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Qi Xi <xiqi2@huawei.com>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, longli@microsoft.com, 
-	kotaranov@microsoft.com, jan.kiszka@siemens.com, kbingham@kernel.org, surenb@google.com, 
-	mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, 
-	linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, sunnanyong@huawei.com, 
-	wangkefeng.wang@huawei.com
-Subject: Re: [PATCH] mm: drop stale MAX_ORDER references
-Message-ID: <aocAePwuxr4te2jG@thinkstation>
-References: <20260818122408.4182417-1-xiqi2@huawei.com>
+	t=1787232603;
+	b=6HPQjXU8jhpvwzCq8vcAQzNzRu9Pau8uW+TfyMRoAhpP8YShQJFeR9eJrroAhrPsxgFZSx
+	+4049bN34fFf/Gp4I5qLYxH11tQrdbUBBOOfhpajf/NO+Lhg+k5DwmuPulZ9L7+Bl1MYon
+	CHY5mICxC9xaR00D1jSsxYuBf+lm4oU=
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-6b13533f948so2192565eaf.3
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 06:30:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787232602; x=1787837402;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Zuse5bKsrwNJaMXcn2vwRNpL06e4Ab7iDiF20cDAlPk=;
+        b=SOAAl/CN+KSFi1HW1rjehRZ8pKyuvT9ek1b/Yfv+xYmg7MCC24MwcIG00oAIGX3yIZ
+         w10bX7K4fFjdyxVC+GmvzfF7XYf3pgqYTfQvVcvDgDh+o11Jm00I8QsU4QN3NHXPqJMB
+         o3rKVNiU006LdAJKrCJNg0j8H122byddSHcuYqcQdZM31MN7Bq/Q065OKoVT0oaqtYO4
+         CEjQAZ6O1SDtIwJaL4EBseaohPheNah45tOWSASvnUS6dBdCmogf7bWZT/FQVET9BIQm
+         p65wgKc6wD0Mg6i2I5UsKtm3BkPg8XgtMLz06in7eFmh0zwwK4zCfy/X8XkvC94GXg7a
+         rl1w==
+X-Forwarded-Encrypted: i=1; AHgh+RpG6Cne0swMNAYQdp+j3+ZolU7B/SAJKXFkkzhkyxHBT7xB2X9iFjTAPK3Iyb3Yy7E1jo6B3REAnQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx/lCFcYEs79KaqXpz2TdW5j70qL6ufMILSYK53XciRNqc8z9lC
+	cv+srU3/EZ2ej/MGG9zuc62syev/Orq7dSC0jV0nPLmlH5eMzRQtXSBE3TTmQ9TJ19/rEeScPE0
+	wGxULfX69EwtDHtNuW/WSLy3TEF86+vwYeLjUW0veHpxTWLaSBUCjYaP1iFQ=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818122408.4182417-1-xiqi2@huawei.com>
-X-Stat-Signature: s5dpfrqz559ynektug1y6888ft6ezb99
-X-Rspamd-Queue-Id: D291F1C000C
+X-Received: by 2002:a05:6820:1c9c:b0:6ac:b6c0:2c09 with SMTP id
+ 006d021491bc7-6b13c2fd483mr11301174eaf.1.1787232602265; Thu, 20 Aug 2026
+ 06:30:02 -0700 (PDT)
+Date: Thu, 20 Aug 2026 06:30:02 -0700
+In-Reply-To: <DKTSRH54U1QQ.994L7IJ2TT3I@nvidia.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a87015a.4d75e56a.c9a88.003f.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in ep_write_iter
+From: syzbot <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
+	david@kernel.org, gourry@gourry.net, gregkh@linuxfoundation.org, 
+	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-usb@vger.kernel.org, matthew.brost@intel.com, rakie.kim@sk.com, 
+	stern@rowland.harvard.edu, syzkaller-bugs@googlegroups.com, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787232450-190090
-X-HE-Meta: U2FsdGVkX192mEB/4BGpuWWjKZYuRW4NePJgLVxhOcX1CcjsFDrWgnxxZp+t0qIgN1kKB61CAS+VrisdOKsrPjnGAvujLQ4+fdurq4vJnLDFikXY3zfr50DN0mogjB/ED9RyHg9M5c6y+B45kvD0tV1sygaPuPWaRI620zNdUsXxdRKgZwZGFHKlOJ191JkUMUlvs5JWNgTI9QykoyUurte/rUTeX/2Sbn2ttIONagJggG9mpb4R3RTwVSFwyZQ7pAJMJHXpxUH/8i4fO7r2H1/YLwxg/MTDkhs3ip1SsGyR9W2Q4AOsXcC7WkM8UVeG9TU15cGFx6u3rtcgjpOcV8nS30No4yt+KAHACdGamzhYdZOOlzRZ7PTwNjsU+mdYn1xGJcLF3Io7/azk/0VNYvh5hbcGx4qlx0+z9OMFnrnNeh/S/j+2Se3iIjt54+79KtPkusNxOTsLeBh5urPUyIE6ocKpAyiQ0IU5V8fjUkiMbYvrYxMtADSuFN9AKL6ZPTFK/dba0zlg5LDSj1t3tWHjA2zyDiKwo//SkoJccAEfVf5z4lFFL971ftHiI1pMoqDjNsV8mQCvauxmve3gnBJyXWx0o/zD3bGpy2dtkoxV4bP2XXuhltIoNa7XWPhPgUrNy17MwhPQGrSg/1cCBFTK8B5J1+yBoTYbCwPY6RVx24M83/exLVPhAqU2LWMA1L5EGt+8AfQL1bBtcyOdwLxbjzjTTMRjkH17DZgNMSENC16tLLztNg/0H5JDvWs/pyxfLmJ/VG8xy/S77NZyOYQMD2kxlBiE48jzvHvJ9jO/LyaqmI6Sl6THxOXz2A2UE2iG27/J2CPhdUT7H/WQd0HBd+u6bdzhgZeOVac9msvwk+hVlnTM5RCS+sUSBMWVZKg9Uvysp1G87gJ71wj0WbUohFjQC62QU34cPpPmZhZNTP+vubQddTqwnzMiieBUppZxfVnWLYKiTA8vEMn
- thM7NTD8
- p6of5NWRi55W4BuEy9FeciTAUy5WUGF8yfgdQT74mHLonScL1hB9qHbow0+zpfqRN3Uvyue3r1yAVZ+Yp7ABNqhKZBRN/cAOdehV3UPr2gdrU54nlJy7DFAhuV8GAEHqEgZKkgU0yXrGnRdsUag0lghpgX2s3eqHOsRQP1HIF1N5ptnZGdI5K6gMlovjsbhbhenhhFE+BDSTaLKBJI3LnIKEZX9BiIgVo+lgZWGSdzAzytihosNQVbu2B9kTOdsxzSgNJFl6/wJH1DdkEtdIxfkamryJbcpEREZa7AfiaKqA8INXhC0spf6Juual/OzRxxAjDmFZ3qkN2CqjTRLISS65J5p0+CkXqb075DCxTYXs4k8nQ8isgQ5vNgaCV/vQClZwgeDeRzXUKaVO3XFIQo/scMKFSrJy7Ye36yVgcNU9EuysQqXPES6cj8hPL7ISZyXawloNGc/DqTHMH9o6j0SbC8C+0k6jXGoMbzAcn5oMe/rYW+ZRaIMwfpjdX61z9502++QLAe9VFLfc=
+X-Stat-Signature: pjbhz8bhc4sxbt83dz4rehow91gkc5gk
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 53B198000E
+X-HE-Tag: 1787232603-429213
+X-HE-Meta: U2FsdGVkX1+z+WgPkJj/94q/249be+WHF31DjksXIHLAgQUFicDGkGNYTh5U1L7EU4iNGwaS7wiLToANgLLw0Tz1XVIwKoAiYDBE1gNBsqmsLqRmGNabewMr6yrCDN2mgrX1pkpVXhPxFRviwtK9js7OwHxX33jjxVAOpeX//sk8dW3SnF5oGSd0Y/ZsP8q0dkZG60fjGppPB2Yl8gCmVM0KOU0fGyl7eLfDxtuGihPtvUExKEL/NIDr8TONxpcjjCrsLBDs/+9X0F8gelCj8NoTCG/PxKVK3Rr973HhzdsXHsjMESZirLdyQ4CtF1WmiVBXV3GUuDl5Q6INAZ0+amDryZa2N9Aa2Dety6I9uI3D8NNM33JeRsL8KbF53jgPtrIbZbUDrUxHbzYer2OFS/XzIo50rvKH5jL92vwbV+obsi5zkoouYrpQazkisDMHzze25vhzvizCs7ozAOBqoN3ik0V5oXPmsKWry6uj/7HMTLrtDgxN3sBGjecZmHggB9L3OYrrfYa1GGmjJkb/mSM/ook2VnaGHKYdwl/AzM8S0G5h36o2ttbYcBbMUUJ0acfyvD4KFYxl0XbPTICRTSeXkAlXCuVZy1oc9rwE/jqjYm8SR6rZ+wMn1wR1jGlNZtTEmYsfQ6Vo5+txfmQbUpQHU8xQIveFROqRfxraj5kELoealvKhgMJbE9LaHYQFurrIKmjHPgjyM9aOb14RNvCWiSgZv4gf1Mp2b3iPUImDBXIhu01YGS8Hx9nuxHQsxfAWbrztpGQlSi4nCPdqKTv8H3wAMRYGJ0zVxRfZ/+aczfBeBP9MTBxMRC0XBFmbNXHsqEWEiKn0rsVu+/JqUt1iUZQIyZusjffJlg49AdHK6pxH+a0DZgfv9SjBWgmjnwdMkA8DY6gwIf/yYe2cL8IZw1mUPo+T5ISyJPNrW/uuW4nKpqKndBECwdienGYhMHpaRHwvSz26YB47io5
+ AWhxATBp
+ lpsHIOzCD5vTS+0mefOh2z+CrQGaaEjtyEOsjBNGMnXYO5nkKMPRRowoB6SeG8G3MRnmZ0Pt5hifapo+SIEMbnNVcONoilFj1R9SH7SVg/LGpvTLF+HIzskqK5mSLLuOnRaNnh0/3d+kymnjguK62wyFNP/vHmlsxGvt+hU88SZIfINdj64FgYaMkidRpTxZi4u5S8RxR6IaJPxOBuZNtLcdiKMwtCFhQlhz/F4FQWIlArSmpIeNI7bEnY591yPDvdee2OOgyLMPItKyieZbySJQ5qle1/ljb83wDKA7jf2g6sZ3VZ9Bjg2x/JB9NllKcTC6vZUo5LB3PKyMoCm3yxhUrxXB4VOx9rSrRFeNogCbIioFDJQNOkWcBjVXXdacGbjgEPRHVXosqHbRvgrz05jzbLCxW/iuhvzFJ9VNZ2rvEbKVsrpSim5laO/7kA7Z8HLATnHaUa/8R3/BZiF4yWq3DrFsqn/jasPeMtnQ3yemor27TeJ9Z//oAKxzkQ+0Tmac0WJh85y/i8JEA6oLDx8GDZXjFNvxl536EHSbMbpdZDixWE2gchTsqMCcUodsHDDFP4bQlinzbSfocsMZvSz0Nxq2cv63zLFnoJVv2uW2qaZKo/ZEykeqqLTjgmDA57nUvnWZbvdmQRYa+UCA5D/5u6Z1k6UAHSstbnprgVJJfluXxVyi+epFf0lH1YjWDBebB7K/pPq/cHMWSO/jnZi7pRRa2tvXaBah9IcSy5lKOBUy7vRpGUldG/ifDpT+nA6aE0Kzr78MKZNoGAbv6ZZ+I3d1YZkYI/ffKY8mDFoLsmQk60eebQ3Bb8hgmiduzs+gID81tquZKFodRPlqzIwyhQpF+DQ8wQBj1dQsR7P27QfWF94mBN91h8/crXYhYj0apAuqAPIYCN1hXQ85SpVbH9GlP0UNRn+dlRS7YGGFOCPzTiZz0G+T6yU85CGjudMWKxMXHDR6p0lmhS9LOQpwMz4xI
+ 1fo0dBld
+ P1uHVWhAdE1CeZp5IFQSo9u1Czq+rBHIkb4J5/pT8zGc+jGYXIDX03KUAPdcoUd1Ovhwu72v6bthKDDG5Tj+gpOmoAAhwxRdCfTP80U1MT8A1y5kzBmx4CCOiaQ/Fzt1RgDBcoSQK8IOEiua4TgQfSNgaB5n7I2OZe9BNGdpFl/hGP6srxLTPRkWhrOIuAXLcY8JiLjuzS1UBGKD4zq8AYf1wZEHjMo8UKfv6wpFmpE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,46 +101,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 08:24:08PM +0800, Qi Xi wrote:
-> The treewide rename in commit 5e0a760b4441 ("mm, treewide: rename
-> MAX_ORDER to MAX_PAGE_ORDER") left a few spots still using the old
-> name:
-> 
->   - two comments in include/net/mana/mana.h and mm/page_alloc.c;
->   - the gdb helper scripts/gdb/linux/mm.py, where self.MAX_ORDER is
->     a local mirror of the kernel's MAX_ORDER define.
-> 
-> Rename the leftover instances to MAX_PAGE_ORDER so the tree is
-> consistent.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Qi Xi <xiqi2@huawei.com>
-> ---
->  include/net/mana/mana.h | 4 ++--
->  mm/page_alloc.c         | 2 +-
->  scripts/gdb/linux/mm.py | 8 ++++----
->  3 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-> index 04acb6791dbd..1d5bed71d6a7 100644
-> --- a/include/net/mana/mana.h
-> +++ b/include/net/mana/mana.h
-> @@ -40,8 +40,8 @@ enum TRI_STATE {
->  #define COMP_ENTRY_SIZE 64
->  
->  /* This Max value for RX buffers is derived from __alloc_page()'s max page
-> - * allocation calculation. It allows maximum 2^(MAX_ORDER -1) pages. RX buffer
-> - * size beyond this value gets rejected by __alloc_page() call.
-> + * allocation calculation. It allows maximum 2^(MAX_PAGE_ORDER -1) pages. RX
+Hello,
 
-Should it reference MAX_ORDER_NR_PAGES instead?
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-> + * buffer size beyond this value gets rejected by __alloc_page() call.
->   */
->  #define MAX_RX_BUFFERS_PER_QUEUE 8192
->  #define DEF_RX_BUFFERS_PER_QUEUE 1024
+Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+Tested-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Tested on:
+
+commit:         a4ff2be3 Merge tag 'v7.3-p1' of git://git.kernel.org/p..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=176bd679580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=29686c02180e4e86
+dashboard link: https://syzkaller.appspot.com/bug?extid=805630f1453e490427fa
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=1455f815580000
+
+Note: testing is done by a robot and is best-effort only.
 
