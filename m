@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0229C5DF86
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 18:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53EDDC5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 18:56:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 667D26B00A2; Thu, 20 Aug 2026 14:55:35 -0400 (EDT)
+	id CA9396B00AB; Thu, 20 Aug 2026 14:55:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 640186B00AD; Thu, 20 Aug 2026 14:55:35 -0400 (EDT)
+	id C803D6B00AD; Thu, 20 Aug 2026 14:55:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B9916B00A2; Thu, 20 Aug 2026 14:55:35 -0400 (EDT)
+	id B962F6B00AE; Thu, 20 Aug 2026 14:55:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0161D6B00AC
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 14:55:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8D7391A0292
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:55:34 +0000 (UTC)
-X-FDA: 85122551388.20.CB46C5C
+	by kanga.kvack.org (Postfix) with ESMTP id 8934E6B00AB
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 14:55:35 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F3711A026F
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:55:35 +0000 (UTC)
+X-FDA: 85122551430.10.676B5CB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 93A761C0007
+	by imf07.hostedemail.com (Postfix) with ESMTP id 202924000C
 	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:55:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bfX1Qk9G;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aZpC8W66;
+	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787252132;
+	s=arc-20220608; t=1787252133;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r/KYZFfKpD3qHwsE4Um8oGG3KPpRR+E7i1tnF4P7szc=;
-	b=1AdyinT/cNDOtAAyzEikeVFPDM8NBlwa2UkOxdRDOo89YnEisIcbTwvlyb5DLJ+MVkCfp3
-	V9BpDZvnS/RFBAJS8dKuV/tH6PuP2yp9otm1LJgSgeI+ii6moJCeVpsulL1K8DzTnndb3Q
-	bMA03EW/wVpH6KVSV3g53z001Sbhj5g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787252132;
-	b=BbMWvtJf3fFs73y7lV3TV+VA5aVCyzEs9nrx9GMNPuG85DvgT/paSjTBxUPPf6JFSlOC28
-	WLRNhsSDX0M4NZ+nn4E4fsittITr2rcuOsMS354/Zj5VYdQSvEiMyBImytf9zzvGDJGmk4
-	Y41mAXW5X0RJAbuZGSY9BARugcpHo3k=
+	bh=W1hPc0W+mXuIdJI+GANOB4ukTEmJYn8LOCRYZ0fYRFU=;
+	b=xZvpwwBvkFUMVdFQnVKFp0vUjNR0R1i+HKFb8PTK35shMcvOfQfJisymnbiyVKfCJsEb5N
+	yFQ/yLffEt5p4tcACtzKGrCQq4INa6MVsqDXXOzYQfCSykGWZdBOzZe9uv6s1+M4MwAyI1
+	E7fyzUZjVHzzpeG6Eg5wb1YEUSYpUZ0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bfX1Qk9G;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aZpC8W66;
+	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787252133;
+	b=CdSHR4BVcKehS5I4a1Ma2MIB83+C0gUFONC0qqFt5DOJKgakAy2dh/0MC5Yz/Am0eu9iDR
+	5PmFAjEGv+Fpse6VDshZYgR4LvUmJ5jd/cFerBWRK0nrzPqCeBatEOnuZp/DbQQ8h1gsjq
+	gUuZgbD1CkqeBKz0nI7Ry8SEOGwPikU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3CB6744F1C;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E53D44F66;
 	Thu, 20 Aug 2026 18:55:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1DB38C2BCFA;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3DB0FC2BCFF;
 	Thu, 20 Aug 2026 18:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1787252130;
-	bh=D+uYtmzqMh1Chmlc5Iro9Bjk9B5bgnOe9YSwa3oEhv0=;
+	bh=1Vp9iAi7DIBv3YUqfa5ynWvIwCbIw7QgrLewvsEwF+o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bfX1Qk9GSn5/3hzJsqKe5TXcVumqiTi0WOTOzHH0z7h6YBwO03NbIod7U7xRh3tSm
-	 v56cgtj3YmQhgRyIx/5/LrCv5XYYS0nRS4yTzBBhAM0kfbtbvhWAgm/bnta/teokOP
-	 w0J1t1Q0Y/B5UrZ3KlJLqQksarvZawVL8UoquUk0pvPHxie7GtK7AlyTVvTAN3ap6k
-	 BKQtN1HLJ60enlMz/sovC/ZCGDnQ8YsSx6VdDFkN00R+yh3bU/FtsD19y2dtdbW8/g
-	 7fwyEUtutCBqnDBGVqDJDK7xMAw+ux3i0CModc6J7V8CAdgI33rPyO88lWUOtsgmV3
-	 oDUtp9JOkhwcA==
+	b=aZpC8W66dfNf+SamEGN4vhzqHHK8YgSt2tWjjhzQY8ctF7cG3iTDKQvDB/veT/h0Q
+	 1KIDjigFwhJCKOL0syroAZBU7d/j+4BnWHgcyavwOYC7VDHlvpicWxNfLSAdjs83Fm
+	 BjGSfYX4j8P5j/dQw3B6vem4qOCpS0uJZtJi1nXcD0e29HGSQJXQkjPIGyisYWLD0/
+	 cH54Vt2AP9k7946vIADiSgt7MkSqZYbASbJZb7DaI+OzeefcrSo2vE9LZZEg9rYOFp
+	 K2neksMCrJBqva5TGl73nm0FwVL88SD6O9YC0APGurE/d3IRxwo+f+7rxOYOq5q5N5
+	 bKN09TjR5amFg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 024DCC5DF85;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20209C5DF8C;
 	Thu, 20 Aug 2026 18:55:30 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 21 Aug 2026 02:55:29 +0800
-Subject: [PATCH v3 16/18] mm/huge_memory: clarify supported split orders in
- comment
+Date: Fri, 21 Aug 2026 02:55:30 +0800
+Subject: [PATCH v3 17/18] mm/huge_memory: count only swap cache refs in
+ anon folio split
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260821-swap-thp-cleanup-v3-16-9b43f5163238@tencent.com>
+Message-Id: <20260821-swap-thp-cleanup-v3-17-9b43f5163238@tencent.com>
 References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
 In-Reply-To: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
 To: linux-mm@kvack.org
@@ -92,25 +92,25 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <kasong@tencent.com>, 
  Kairui Song <ryncsn@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787252124; l=1942;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787252124; l=4442;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=ZOm4Nz3i3imY6j3a4YN28Ig3P8X8i5gtRVzey97AJz8=;
- b=VqkQiDNbmac/QvX+JvB+ToITPSitcf/coH2/Q8btONl7ekAFpAv0q6SURT2xGF1l7wRaMsQaw
- piVlB5Tca96AdnZuEGUjx9Nf/H4NFkwBG2eOAsTRk3q+rJ8cN0rBGAx
+ bh=TgKhkDQrFrEKVN/TkYCZhsRocqLMR143+q4KiemUWkA=;
+ b=3dJobk7dFRk7m9rm1E1L3nmEN9fHa8TbQflgudEQNEGDJmF5szk2IpfMrxAoOfjSI+ZlLN2sw
+ xs7d+tsMjj2ANRfh3Y/tPn/oaCQ72rNh8px1QsyCt5KumYB04Idu06a
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 202924000C
+X-Stat-Signature: fcjo6z3cx8dkxugmja5oy6smg15zrasb
 X-Rspam-User: 
-X-Stat-Signature: af996z8zwg5zbwatsy8caxk95n51boiy
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 93A761C0007
-X-HE-Tag: 1787252132-36905
-X-HE-Meta: U2FsdGVkX1+zQV0wAjHHlFzhUyz1VtcBj0xp+itXXGVufbtjlRMSja6J1zkv5m1fZiU+Htl0N82P8A6wVx4ThgHGdSbv1Fx0XhMtbSKrjdtRX28GJir4FI7XDtyQ6OVusjT6KiCOCE39RaADPNU81BWy7Kr85jq7pjP7t2i7XSgeSP0bJnESIffqIJHpe9OzSV2RoEk4LfzydVoJwnuU5QWiBWz1drZVn3qscLb4p5qhpVI22ZsFlH6YTOLR6HVQKDSoYHd3zZeC++gFyddOFYrv9SMy7lOpASGjzeQ1WHUHcjp5jhXcoE7qu9Iw4p3dSgSmJEBYMY5ER3D7auKhoWtHi8C5Z3BxJ3YlQExRBaAGc+4TJw7k7swXRr0pQtXMQ4sW+G58x404lL39Xnjb2b0KXi8nNr03OdYDp0Qmbs14/1MH8z2EQ9A35wqeIRipPZLDDbwWz02O8wZOs+hgb13RnWOo//phVUhBELKR0Y2J/8qZwCrJt/GqtBHv6kHr2O9plSUctbVwLtMb5Wy0Uc3lgwfd+og1WldWReV3GDtYRYrU8+Huza8IippzvufG5Ta3RerSrAQI0DZmPPNjlMy7wv3UG1Ry9/ZR+qmH7/KfecjC99cOq/hFZJdaELREB94+VG4qXYFOcrugIOSWbUG/Se04quSBjSVx0V1fZldBxhGzyVSiQRB/citBmX/WA2gYWZFWWIp7ntEt4rKY2Yrn4TwFIjsNV1YUSOY9Mrv08r7/OuJ5qx241TaddqK1Y5N06eRtSdGhs6IHLQk0/w7lfxdTn4CBrnBMenrMmkwjoecHHuH1R3tCYrPdS5ysOiH8915lvkftK/09WOT9vmdvBULkymmU5N23Ccuqgtw2z15P689JcKPO57rXjU2toR3llcX3p4szlUaas1AkbxXowlBcwGl80OuI2zLUkLLyPV0LLRvuzQ5eEuFDhsSwzY8dG1d+zqMMCxz+Uvt
- YqolTgVH
- CZ2dBHbruaYlwK9R74NIm5ZSBhZnZ78tI0+AEgFRu7HAlOLrHi7woLw3LO3LmmNbUjbsCZWfxigMVpOGPrF5JSJmc82zDtajVT5ocjrP8AdvI5WbhBsYpE0QYEaOMQt9EEl+7vCxz2BmeIWCcRLDdV2I8tl1EuJd77Rn5fqQHxO3n02EiK30EXQ8galfPUbnQwdU8ArRzkDWSb0irJRgxJMbuSojvsIzDFcDeZTlZbBwpmClr0dANKV0L6goDecCsr1AvQvpdKWZX6BzUMeB7ycgXJ7xWi/O3dLya+9FLyZ0uQoBhH4uFSbM5YPX+1cZ8IWwa3ZICSdYfgo2q/EFM4RHWRHQZz8jGLGIdWpUjqHUh3BgD3XUCdrIHFLttj00PAQykgG9a2BvpYkiWzMKns3y6ltfjaow6PF/e6JWvyDTSnoVXQL2usqp5/sEe2YZeja8YLG+xB1R9+9E=
+X-HE-Tag: 1787252132-964426
+X-HE-Meta: U2FsdGVkX181U8MSd7sQZlcNg5LoS4KojnmXSe4VXeKnVgNmn+1FRGMtbi7vko6+QigqZ5gneXXC7nryYCyyDPpLDV67JkMhMe/NTm1b4ildJiTBKBaFjsg9ZNhkgnCvXCJgk7StSwJ6jXis24H1gEoSYV+kT/a2OEK4FNFxfAF/q/33lIDqYqMVNSKipl6TXX0lpQR2VdpqauOQQtmL38STEMr5hUu7zegRhxvyvnPk7pai8CcSD2KCnEgYAgCio0u7/aE513+UfHrc0UHC1CDdHtDzgW/HXAqh2Uwej4KZ6+19ObWjfJ4ootaalnbEs6SwF5WBrGVfEC07IkPhSKQDMqBmRjKJ74hNZMstkSvlpLNrl9mHfJKIhzxTDh2DerW3wsXfmgv37+sMCSb+ob0p/eFlEXNk8Du3nskHMbRq08KQ691pkFt9RfhDwZ7VrnooovGB03cmf5MXQ669oPePuMPDO+EmQd6dB+Zv/ebjclN8KIHiJMdzebIlgPYVvS8sekH1ibbxWA+qVvVl4A/VucDL9U3aCyawV9TRrso+Sj67Tzv7kx38yRI8eyDfnkTuwvDZD1U/k3PVCd/3ETAkt7Y/13ce4V7T6PBHhwWx1J5lKl1/4pL3uN8izAQB1Te71ZHPILaoEvHCT2tMeVk19H5gxF0aibz490Nr2NPwNP4LRIoSjBq8cqBJsp4wOt8sTVAqSQW68YV/cF4B/zCAvRI/tf6rgXdIzNe8zqeNKx5W1KCe4XjjGKIbHCXaBnoLeptdnbCA9T4OktdQ8qC/xeNFegSeeaBQLDvMWPj9XJ6QT5ZiKanDrlnr2mW3vEE7egUBOLmpFSJpz2+zZ7gEZpA/wakHYQRC01bB3D4HWGRAaSZOo+i5de7LoGxhNPnPvd8KPuTYUoET+Y2SGNUEIKPrMpKPSH7e7D8PpGwLnp4nosZKV/SlYKl+SXM2fnefw1jyMDJ4n2h7ezx
+ Nc3MJuIB
+ zCcdwNYFp4sb+vPpzOHpluyCm6t0wY56JTenkO9AUDGLPVVljdWgv3P7vvqwNxHX92AvkAt+CQYeqOUoVf4JKfya60+MZKzok74WNY14pn3g9hS/mUeYvf0DU2nP3xKfhqoVRAx0mw3dg0zUHcqq/U1uEHAL+CuWgMbPk4QqrrkS4Uwz3s8rjZdFgFOCrP9b6vf4zeaIrkz9r2II9zyx9wZU6AANq8gwcmjCb+lSbM1NoEJffu1gfCdMB/JECsdLtPNLsitKWUAR9l6CITq42Z5n6tZ5TDcB8pSuxW3sA6ywwqXaDTdGTQaq9EdfiQsvjVpRvayuU3t9B6BjqN4zHdGg0XSsMkTCye4gzt/s4R85SdI5SRV3KCFDne42GylBiJ4++y34SLQjJ0UJcaTKZsLnnuN3/o+8XBvhv7y1KxOqo4j5uvt4chUCDwKmorfb2NfZ95wontdIJ9Mz8kZ2tsBo4cUmlSKv0egky
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,47 +120,120 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-The doc comment for __split_huge_page_to_list_to_order() needs an
-update: only order 1 is rejected for anon and swapcache folios,
-matching the new_order == 1 check in folio_check_splittable().
+Only __folio_freeze_split_unmap() sees anon folios and swap cache folios
+now. The file split helper only handles page cache folios, which hold
+exactly folio_nr_pages() references.
 
-Also realign the continuation line of the function signature while at
-it.
+Rename folio_cache_ref_count() to folio_swapcache_ref_count() and drop
+the anon check so the helper counts what its name says. The file split
+helper now uses folio_nr_pages() directly.
 
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/huge_memory.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ mm/huge_memory.c | 35 +++++++++++++++--------------------
+ 1 file changed, 15 insertions(+), 20 deletions(-)
 
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 06f353f937d1..0a971ca48151 100644
+index 0a971ca48151..3e4c0fac7ba6 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -4400,11 +4400,10 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
-  *    GUP pins, will result in the folio not getting split; instead, the caller
-  *    will receive an -EAGAIN.
-  *
-- * 4) @new_order > 1, usually. Order-1 is not supported for anon or swapcache
-- *    folios: anon folios need subpage 2 for _deferred_list, which order-1
-- *    folios lack, and a swapcache folio may become anon once faulted in.
-- *    File-backed order-1 folios are supported, since they do not use
-- *    _deferred_list.
-+ * 4) @new_order != 1 for anon or swapcache. Anon folios need subpage 2 for
-+ *    _deferred_list, which order-1 folios lack, and a swapcache folio may
-+ *    become anon once faulted in. File-backed order-1 folios are supported,
-+ *    since they do not use _deferred_list.
-  *
-  * After splitting, the caller's folio reference will be transferred to @page,
-  * resulting in a raised refcount of @page after this call. The other pages may
-@@ -4432,7 +4431,7 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
-  * with the folio. Splitting to order 0 is compatible with all folios.
-  */
- int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
--				     unsigned int new_order)
-+				       unsigned int new_order)
- {
- 	struct folio *folio = page_folio(page);
+@@ -3915,10 +3915,10 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
+ 	return 0;
+ }
  
+-/* Number of folio references from the pagecache or the swapcache. */
+-static unsigned int folio_cache_ref_count(const struct folio *folio)
++/* Number of folio references from the swapcache. */
++static unsigned int folio_swapcache_ref_count(const struct folio *folio)
+ {
+-	if (folio_test_anon(folio) && !folio_test_swapcache(folio))
++	if (!folio_test_swapcache(folio))
+ 		return 0;
+ 	return folio_nr_pages(folio);
+ }
+@@ -4003,7 +4003,7 @@ static int __folio_split_unmap_and_freeze(struct folio *folio, unsigned int new_
+ 				    folio_nid(folio), &memcg);
+ 	}
+ 
+-	if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
++	if (!folio_ref_freeze(folio, folio_swapcache_ref_count(folio) + 1)) {
+ 		if (dequeue_deferred) {
+ 			list_lru_unlock(lru);
+ 			rcu_read_unlock();
+@@ -4045,7 +4045,7 @@ static int __folio_split_unmap_and_freeze(struct folio *folio, unsigned int new_
+ 		next = folio_next(new_folio);
+ 		zone_device_private_split_cb(folio, new_folio);
+ 		folio_ref_unfreeze(new_folio,
+-				   folio_cache_ref_count(new_folio) + 1);
++				   folio_swapcache_ref_count(new_folio) + 1);
+ 		if (do_lru)
+ 			lru_add_split_folio(folio, new_folio, lruvec, list);
+ 		if (ci)
+@@ -4053,7 +4053,7 @@ static int __folio_split_unmap_and_freeze(struct folio *folio, unsigned int new_
+ 	}
+ 
+ 	zone_device_private_split_cb(folio, NULL);
+-	folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
++	folio_ref_unfreeze(folio, folio_swapcache_ref_count(folio) + 1);
+ 
+ 	if (do_lru)
+ 		lruvec_unlock(lruvec);
+@@ -4099,6 +4099,7 @@ static int __folio_split_unmap_and_freeze_file(struct folio *folio, unsigned int
+ 	struct address_space *mapping = folio->mapping;
+ 	XA_STATE(xas, &mapping->i_pages, folio->index);
+ 	struct folio *end_folio = folio_next(folio);
++	long old_nr_pages = folio_nr_pages(folio);
+ 	struct mem_cgroup *memcg, *old_memcg;
+ 	struct folio *new_folio, *next;
+ 	int nr_shmem_dropped = 0;
+@@ -4170,22 +4171,16 @@ static int __folio_split_unmap_and_freeze_file(struct folio *folio, unsigned int
+ 		goto fail;
+ 	}
+ 
+-	if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
++	if (!folio_ref_freeze(folio, old_nr_pages + 1)) {
+ 		ret = -EAGAIN;
+ 		goto fail;
+ 	}
+ 
+-	if (folio_test_pmd_mappable(folio) &&
+-	    new_order < HPAGE_PMD_ORDER) {
+-		int nr = folio_nr_pages(folio);
+-
+-		if (folio_test_swapbacked(folio)) {
+-			lruvec_stat_mod_folio(folio,
+-					      NR_SHMEM_THPS, -nr);
+-		} else {
+-			lruvec_stat_mod_folio(folio,
+-					      NR_FILE_THPS, -nr);
+-		}
++	if (folio_test_pmd_mappable(folio) && new_order < HPAGE_PMD_ORDER) {
++		if (folio_test_swapbacked(folio))
++			lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, -old_nr_pages);
++		else
++			lruvec_stat_mod_folio(folio, NR_FILE_THPS, -old_nr_pages);
+ 	}
+ 
+ 	/* lock lru list/PageCompound, ref frozen by page_ref_freeze */
+@@ -4209,7 +4204,7 @@ static int __folio_split_unmap_and_freeze_file(struct folio *folio, unsigned int
+ 		next = folio_next(new_folio);
+ 
+ 		folio_ref_unfreeze(new_folio,
+-				   folio_cache_ref_count(new_folio) + 1);
++				   folio_nr_pages(new_folio) + 1);
+ 
+ 		lru_add_split_folio(folio, new_folio, lruvec, list);
+ 
+@@ -4236,7 +4231,7 @@ static int __folio_split_unmap_and_freeze_file(struct folio *folio, unsigned int
+ 	 * Otherwise, a parallel folio_try_get() can grab @folio
+ 	 * and its caller can see stale page cache entries.
+ 	 */
+-	folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
++	folio_ref_unfreeze(folio, folio_nr_pages(folio) + 1);
+ 	lruvec_unlock(lruvec);
+ fail:
+ 	/*
 
 -- 
 2.55.0
