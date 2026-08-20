@@ -4,146 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7543C5DF8C
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 04:21:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A110C5DF8B
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 04:21:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 893046B0095; Thu, 20 Aug 2026 00:21:12 -0400 (EDT)
+	id A42166B0098; Thu, 20 Aug 2026 00:21:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844156B0098; Thu, 20 Aug 2026 00:21:12 -0400 (EDT)
+	id A1A0F6B009B; Thu, 20 Aug 2026 00:21:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 732A56B009B; Thu, 20 Aug 2026 00:21:12 -0400 (EDT)
+	id 930C26B009D; Thu, 20 Aug 2026 00:21:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 43B086B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 00:21:12 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A46DA1C19DB
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 04:21:11 +0000 (UTC)
-X-FDA: 85120347942.02.6E21170
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CBD921C0002
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 04:21:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VliQkWsM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FFC26B0098
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 00:21:49 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1424A02DE
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 04:21:48 +0000 (UTC)
+X-FDA: 85120349496.25.F9B8B52
+Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1702E80006
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 04:21:45 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=D1Qsy4cB;
+	spf=pass (imf02.hostedemail.com: domain of eadavis@qq.com designates 203.205.221.209 as permitted sender) smtp.mailfrom=eadavis@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787199707;
+	b=SGRIUab67GWtvkkqzfx0RCTzS2VWcapm3uUl9rphRIqmA2bN1kAE7hDy6q103DSEw/ZT2f
+	Yg/bYZV2o2QQpT223QSnFRU34yzHNgK9e6lru67q6hNe4t4EJE+XuRNDjV/a8+PMH0EUMX
+	0HIz9DyQE3cPNzPfjFbc2Syi6+jIyJA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=D1Qsy4cB;
+	spf=pass (imf02.hostedemail.com: domain of eadavis@qq.com designates 203.205.221.209 as permitted sender) smtp.mailfrom=eadavis@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787199669;
+	s=arc-20220608; t=1787199707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=34TzclDonaRBC/uFBFwYDupP16pmzizlO9UWq1m3bXE=;
-	b=E0hDyZ/cNHMElbezXi+nAg/sKePuhwmq6hK05ltKp+FTOOxsMYKnfcysd8SscYqma1pRgC
-	f/0S13cB8bNybw00ZRK0b2LLRdu2sNqX8h/zhBN5qM/hotEmkA3lbz7GLrrZs4gCqGaaPs
-	hMCs4HabgJpYUH8XSCVknzqmx9K5+gE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VliQkWsM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787199669;
-	b=79NU0n7xDdhxqmmw3eblOxvJJoUXJ0kQg3m2Gy9gjoGEF3Cta7rfh51N3dPCJArRNawoIe
-	vGxpbBzQgCSTlUC04I8LfPKYdVsp0+J1Z2V40cAo9rROfRUGJGDImJHAs4/KkfujgsuHNa
-	GiP8p4aUJpQCF1yJrX7cafB/oBoaaIQ=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cf6d65d8a7so20533125ad.0
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:21:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787199668; x=1787804468; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=34TzclDonaRBC/uFBFwYDupP16pmzizlO9UWq1m3bXE=;
-        b=VliQkWsM4XJFNbD2s9BYus8x1ky5Br/wKOlxRC2nrmPwbrsuNpmBuD23WOuu7j8d55
-         wyJEP5KhE8dSNEw91/szkb84HdNkUB/JO1KgoBxGXW9zey2/Hy3QjCUBui1shQOj/P1W
-         AcGl49gao0qWSzd+69wBHoLjftceKjiigAplonNf9u2Q4gngncHMu4bHmEMsBJvEZxaz
-         QZQQ3yIJausWZcaJSpry8JsS1DdrmFUILCKSucHX/98Du3VIzxFS1d46nuvBJX6jMDth
-         1CKVjthMsgDUzMsZW4tW9RDXKXgb1uJx/Wn2w64NpqRkZJoo14O3HLzkaWqBhUcTNT4B
-         eihQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787199668; x=1787804468;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=34TzclDonaRBC/uFBFwYDupP16pmzizlO9UWq1m3bXE=;
-        b=dZBCvZS5BscA3BoDl3kFaYSddYqefXbQRGfa+hKfPLWqKDakh02VHYcIG9pMb5C03k
-         cqkMjlhkAwCeXgNvsigrGplarY1Huok2qQK0KCRZXvnJatLfzoLLO948Dj8s1Nbf40hF
-         pXsd5U30BmnLAwEjyR+3XqR54MSIOoZaYdP+NUTivBB2Tz1zg4XCaH9+iqNVwPhQVwh/
-         /df/LmbOdCmvT5zD5ppCMJxu44Z5qfDgAE+DYlHBsP1RTHJ8DfEmYkmTCkANMxa5W+qR
-         mDXSy1lPrbhu7z+tKWVIOGsW1E19GnucBVzSfJmm3tq0bNKZZadB7gZrdQfCmcUwXZm9
-         S7tw==
-X-Forwarded-Encrypted: i=1; AHgh+RrGKcBvkoZTc1V7IMzVlwt6g/6KkLy2fo+//JYe8doHe0xYR3JkiG4uTmTOtR1ajfe2FNlpXPwkvw==@kvack.org
-X-Gm-Message-State: AFuF++mfSrxIf/UiBgVVr5X6FxqY6RaoIF/VCEkCxpP0kfOGmxzw4aKB
-	BIynGass8KXrjaldRQU8C2vUhEoZelVCvA0FdCYJCIojR93+XxRb3UH3
-X-Gm-Gg: AR+sD10BBy9wFLk6Ah5z1ROWnfueIkmIJtCViCvQSF64xiedP6S8A5uN+NzwVWb/P32
-	rMkHWuLZ5TOzOZn80bYM1LOlEdjNF+puEhkAHzdPgOp0+5Jz0u428n/ciOsJlDTidRRUb4mYlNP
-	h/BXZEEgIiIlMs61qKWeBqs5QfjmlNyJpeBGucZHOLHQr5hsFFivhoLbMBg4AHy7NOPAvhVrN6X
-	Q8t1vZzXHAh7E5k4kkehl5C/0eeUium6bUY+KZmcxtkKj3g71N8ZZ/jfS/LwfdR1ULwoFFu0hdV
-	1yjjWxROmxkw+tjMcSyRDhOgFnXkvnyRZDSKv2ezsKnljcLk1aZ1szXRmkNO23ULTBGZgPGUeCu
-	QFXk9n6c+7oyQTFXYcuh15YeRlRRdpDmI+8xvN2I+WEKlAb4HjatT6ua5NgEs2Tb/b33gmNL3TY
-	2ilMyXYlvuMjbt2tHEcGOcT0g6iclAhRvcN1oX55hrqZxhTiaEb5TR+mUco428zM8wiJ7LWe4Lc
-	huaWWI=
-X-Received: by 2002:a17:90b:1e49:b0:38d:ef48:b04 with SMTP id 98e67ed59e1d1-39580f6c037mr16864194a91.10.1787199667842;
-        Wed, 19 Aug 2026 21:21:07 -0700 (PDT)
-Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395a9e1d336sm349605a91.1.2026.08.19.21.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 21:21:07 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>,
+	bh=OXRmnuz5ZMfJwMTMAGg3K+NGWRx+85asi7BTWGREPBA=;
+	b=ktzYwak2qSXK/vJ63VK1dSlNrHEPKrZfH4w2+RhYm7Dkk5NVpvB6dS0pPtj4U8vuhSe8q9
+	1fNJbYf5aa6vi6adOsEC9jUyqrePdIJo2W24JmxxsvPDvCpd7IGhKD3GckVO428DY8qJm6
+	Xxw2Z9xM0vEi+ucDt/KZu0uWLX26Tmw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1787199702; bh=OXRmnuz5ZMfJwMTMAGg3K+NGWRx+85asi7BTWGREPBA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=D1Qsy4cBkICvuSN0iGMs9086upS5U3XtNy5Q36vvU1Ftq73QbhaeIhN3S9DYOPt1b
+	 MFkj+B4lhfVlChfgHLeiohTTwXQWeDYMU6v7wa4mzbvPxzUxt0qX6wFj7N0czltdUb
+	 K2jop2MLBXPvXgBp/ddp1J/4foLgkm2ZWgwG8PCU=
+Received: from lxu-ped-host.. ([111.198.231.89])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id 56603215; Thu, 20 Aug 2026 12:21:38 +0800
+X-QQ-mid: xmsmtpt1787199698t5wm9axdy
+Message-ID: <tencent_D69518E8F6ED56CE0479766DD82CC56EF00A@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJ+U3yi7+TQIx+TTklNSKs7GKtNTXxTWC3i/vcI1IjR3MIm6ywSJ
+	 Tb6dXO9jMLfX2bpQAU4jnavDKAq7oZ4qQDxSjDD7xpR10SkHJbOUsuNmA151uD/FEj3L5L22+tdP
+	 AtqVasGWVmJUol+/ySSLTdx+qI1AoPijMEPVbWeNSqh2j5RD/ZiESgF1EAbNjZFQFQF2Ujr9afFj
+	 nAYBK1sdmWxFGzUznAoR8W4skNqh72ElKhbK1cUw80N4JeJDleq3avnpB2wwKpJT62/ZP2H1n+c2
+	 JyeqV4FfdN1trgxhIcqeiRWuhr0VSrxU6gm0QeFSRY2+D/ENhPQChCNcrX5svWy/tEHU1hfeL/ZQ
+	 8MA9zHWql28CXiqlBwwyl37yVc/JbyjoSr3rVjgKxjFIj4zbBj08C8QDov1wmOY0csLgXds3NBcx
+	 DcWbs0u1qP9F0KTLwQBcAW2Cxfi3hOLOXI0kzecBA7POI05azWXm7qq7fzXclUqr3gXlFrQBEQrG
+	 nLcwFpvNkm59nIObbjkuFDhEgHiqSP4YZP1BlLli6dd/QblUdGjcQqfNDwFXiNWmTiOdqolnCzdV
+	 gW7y2GLN+ofuQ93Uf60lTfF1e6xxR+/HdGuYtMcI9tWaS2nUDfYDm5hb1X6KIUA9rK9KOyX3DL/+
+	 ueNkfZSG7k25rRYA/zoHAWhEMCpI/6KAlpBVrU5dTDmYOHwf6FuRkOuonejXfB09UV4+oeSnn9kf
+	 H5f/CnlZgOIsNA1SYoXMRBCmrw0ub4qZQsffB64J4aV1NiUPE83Ox0SOo79oAan0yhHGUWkQeG4f
+	 +ObXrDqKeFubqUDTo/ZwxMA6iu17kbZkXiKHEo7lu4vCIDDx4sMyC4pDo5GGU7gZLTb5qOn0Zk6R
+	 BYhPmM7h4soiD6YOzB2aCBP2toVFGyMrx9Dy/jTjF/3RR3W6y3bHIPV1oEAHC4Bz5wOKulUvRU5R
+	 FR4zcqHQDRYruMFl3honc/q3QaCqNjQZpxc+FEeUyasrWzOw1cBDw54/6fSvU+cBNmK4qUbhbAxl
+	 tJEZ56/T7HyQsM2mQ7F9aDS8kbiOwXXlgMrbE+cWxxbP2hNdF+iNBawZHKhFNUWeyv3esfgvlmYO
+	 rWk8l4
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+Cc: agruenba@redhat.com,
+	swhiteho@redhat.com,
 	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	yosry@kernel.org,
+	apopple@nvidia.com,
+	byungchul@sk.com,
 	david@kernel.org,
-	muchun.song@linux.dev,
-	shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	chengming.zhou@linux.dev,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	qi.zheng@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	riel@surriel.com,
+	gfs2@lists.linux.dev,
 	gourry@gourry.net,
-	haowenchao22@gmail.com,
-	corbet@lwn.net,
-	kernel-team@meta.com,
-	linux-mm@kvack.org,
+	joshua.hahnjy@gmail.com,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 02/11] mm, swap: support zswap and zeroswap as vswap backends
-Date: Thu, 20 Aug 2026 12:19:38 +0800
-Message-ID: <20260820041940.443214-1-kunwu.chan@linux.dev>
+	linux-mm@kvack.org,
+	matthew.brost@intel.com,
+	rakie.kim@sk.com,
+	syzkaller-bugs@googlegroups.com,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com
+Subject: [PATCH] gfs2: valid the length of rgrp header
+Date: Thu, 20 Aug 2026 12:21:38 +0800
+X-OQ-MSGID: <20260820042137.518834-2-eadavis@qq.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260806184254.3790858-3-nphamcs@gmail.com>
-References: 
+In-Reply-To: <6a863306.ae6ddae5.3da009.0013.GAE@google.com>
+References: <6a863306.ae6ddae5.3da009.0013.GAE@google.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1702E80006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CBD921C0002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3szycuzakmz63gjfoms64ppqbkxsc9uf
-X-HE-Tag: 1787199669-178598
-X-HE-Meta: U2FsdGVkX19fl1ylamRzh1dsyG0gP2AYNr4WM7F4qcflv6YdYq+DsQkHz2Y1bPgVUQ4bDw5v1G93f4x93RDdcg+TAqBmf02vBgX981/o5/xzPNG5MihoMGXMv9CXCc2rsoN2HLkfHwP63WWblw1E+3GosPFcZfuhqLmH0LdaweSzeVf0A2jk2Gs/6OG0gHspbN7z7Q8TC6NpJGdACxypdFhED3rMg7WhCaopiCK/8MEAUcc+9qaHnSq/zdtDpqTb87iA0buaM39/W4RROxTYaFB37SxzK1TDtRE0WjAklef061Q9zV8ETWtCRInGUx0Su3jHIxc1jWlgnIH8mykJqb7ywao2oFm5bNruxjJ6J7UZP/0A7oyNn+ZcxhYYwxwfQCOO6Obvh6wywx0u2OJN75qBiJb4RdLXFxwcQoNQHvfsw3BUuIzH0aUsrHbfDeyMLUbLn9GO287rKamIiAZ7JOXuNBTWEJ+uOqERbwnzAJ4Uk48PxtLqNyLFJKO0Ecs5WzhXhT7+h8vCYIOOusVBiWFe4UTqLvVqHt0thN6ka11C/t9+Xa8a/7RHQeyk0x/1GKuYM00uumPhL6RQbolZ3MUbeJ0iLss4UzAaP3cDk9qRmihXeM+YJQXeWTYEtkDz3EXnPLCuOuCXMjJ3Om5B9/AWuCrqlqqxvZ7lAqKmasfsYny700M5XPaOpsSG3Zyu8qDL6sAUo83+LYyj2MYHjD/D52LptPr6HObR7sykGynNkRo6EGRZFOfWgNI7J4yQcMulCaVaJEZkArkYOzG2lDk7iBF4Pf6kIuBbSrOKaeHp0YPgeica7EqE1mfeKcpnrZIdIVNcbY/UTNO02QZpuvoDRYPxtVSsvQR0aa80yKEBNLKHHCje+2NszrqhKtnKG8whfyKN0LXqm549CKElhaeoEpQcVxLhevWKCbkEXzk7Gt+aN+U7TGfJNrbXo4ddYcwiK3G8zWwX1NNn9Xv
- 6mdBiqQs
- 8mut6zm/uVyYr30i9WIZ1z50DQ0uYKXZkrS1UlkWCXkgvHNq413ayc5RSRCyF6Auph0J2CcR6+kxy4yg/jJY+F5sf9W8OrxhX1ADjbz98VBnWIU/PgjrnpLnKefZEkz40qfjmZ3j1I1RY0m4qdi4wsILk1UaRB0OfQQNRwk0qe6Gg0KAioDzmpBCE+whSUVP9TuwzbbP0vxRGL8NGPvho6/2euc9jrUqeZpMlNIglToTRwQHLvE9l4M2O+Uvhy1j8gLNm7/lN45AsM5VbcVA0TxHnKeEwzk3DckRYot5ihAnSpHwS4i8G4UNW7mJ2UzDrIjMw55fYwyVyzxwzfA3lLKv+1lrgfLchr3GAsEKoWO5qEKFopVJCZWtq9tQuM3p4ir1Nyxvhq8NZ4tX6vO//pWy4Sb/bda82+LH/
+X-Stat-Signature: pe63bd7bq9yqffhfyah5knj6ogypno3j
+X-HE-Tag: 1787199705-710289
+X-HE-Meta: U2FsdGVkX1/yHEKELmm9p3qNJQenD3MPvKo2QGM/4wAYjDnrmAbrgDkWLEHzKz5JbYkpi9CpIpxa1fEsvm6+5wonvpii1sHQuHnH9VmHKryfi7Zix4QQWQMHHWrxkXG7PsR6TVkhzFi3UBa3U/YwLcRs89Voqk1oa+Li8noQ0Mwk4d6PVcMTTVjtNq8Dxz69OG5rlL1RVs/xJd4ovLes9qIwwLiUWoP5tFHLkA7DIouYc2BlhVPv+hZa4dyDaazJ7iuqoqsNW9e0/K+KuJtkZi+lkAR6EpLZPYJlLYU8rMkaV6qPbyFeHosUlvJeVn4olumIItsfTYlpd3tfnnSeyGdylSs5j8Psth1YaHCJmXMPn/zm2ZeRB+JHoPSbqp5KdQrXWY9XujuYl5m360EIV+A26iWqRsIkX7twFcT1z/1ZngdlwLmcQ4iupURISSXy6zb+M7aLxjEOFG5XarX3O41Eun0dOTaheRH0shVzF01yjZqhck7MwvvaEeATe6TwIhBVxnDfGeOESF7CvMt+FTOn0VWZjKevAiSUrB4vmH1hluaCTuFTLGeR3uOCveqjoyy43LDYSeOwHBP8qviq4yPi5hXqRNhxLrTYC0VQam61vd6IQj02rIh/ToOfZniHTuuwo1Q+Xq5xQLljYkD+pDng5LmY58crQaS2uO0AorP5EqhDv/A8xxfVtvvkQHc/PwffB0sDbRcJQVN3yuJYKuxi3nRdVaWk0LtmhCxQPOlflZ5MDZS8cXgjrXmcorljI18SKZzhO8lksel1Bva+v6YK0jn4Yuvcu0ST1/0oTXe5XwuqiSmK/pWFvy8GhcWZ/c+o7+NbtOkOdRTwx/y6iG1vDkXAJUyMhpHDPmAEMmshDu3asvOLX4pFFkaB3i27UmGRH8GTL75rZb3m9BimSDeJuy0ZRFYvztgICIMXT8NrzuPBD/FZuQ58EWtqrqCnjPr4CcXyFEDLxx+/ACB
+ iJ4zd7kz
+ GbXQDpS6hvCfBB2rABsvGV2FAr3v2+LcP2h+3hSZs21IkGXE7kPJJOuRQK9dngJ6vkdzswAqtVldKt48VymywAbB40APfpOev0xSsEGQAaLE3XId7Ga6Emb5oeco7TvNvMZbsYQi+8DPI4VOVqHrStsRL/8mUm3FRwcjCZg11WqNFJNKAjT9tyS5rb/p5c3TvL/pMkT4O5yBCNG2q/NgMvonLX/Z9S4g/BAROvwInY03JZUgVeM5FKUkl0iQtJmptbpJRPsVGUUiXWAsAGChSsca6tYFNSNsix5PCREGqLLy6EqQjSlAlxZdDGHNwoS6UqCjImqSTNWI0i0+IS+M7OM4OagyX10MxCwgb0NJsmeDASZUNftJjSFv+0vj/n0WEZCH+9Jee3FgQsYCP++zUx9Rr7CLLguI7jDzcq4n2VJ2knX+RnWldoLTLDHmEGBSIt6n5gYPiEbyIdy/jx9ThI6F9s7G9DcK9ePH/i77/w2FOwdg31lTTx8ahi4knsU/3PqiiSP5G392YYpU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,79 +117,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  6 Aug 2026 11:42:45 -0700 Nhat Pham <nphamcs@gmail.com> wrote:
+When mounting a deliberately corrupted filesystem image, an excessively
+large rgrp header length is used in a call to kzalloc_objs() within
+compute_bitstructs(), and the memory allocator cannot handle such a large
+allocation request. This triggers [1].
 
-Hi Nhat,
-[...]
-syzbot reported a NULL dereference in the v3 series:
+Add a check for the rgrp header length to avoid [1].
 
-  __vtable_get()
-    vswap_to_phys()
-      swap_entry_backend_has_flag()
+[1]
+WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2427/0x2dc0 mm/page_alloc.c:5280, CPU#1: syz-executor256/5629
+Call Trace:
+ alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
+ ___kmalloc_large_node+0xe5/0x120 mm/slub.c:5274
+ __kmalloc_large_node_noprof+0x1c/0x70 mm/slub.c:5305
+ __do_kmalloc_node mm/slub.c:5322 [inline]
+ __kmalloc_noprof+0x5a1/0x820 mm/slub.c:5359
+ _kmalloc_noprof include/linux/slab.h:992 [inline]
+ _kzalloc_noprof include/linux/slab.h:1309 [inline]
+ compute_bitstructs fs/gfs2/rgrp.c:766 [inline]
+ read_rindex_entry+0x4a1/0x1250 fs/gfs2/rgrp.c:931
+ gfs2_ri_update+0x6f/0x3b0 fs/gfs2/rgrp.c:1001
+ gfs2_rindex_update+0x40b/0x480 fs/gfs2/rgrp.c:1051
+ init_inodes+0x1f78/0x2790 fs/gfs2/ops_fstype.c:872
+ gfs2_fill_super+0x1d3d/0x2cf0 fs/gfs2/ops_fstype.c:1250
+ get_tree_bdev_flags+0x38c/0x620 fs/super.c:1640
+ gfs2_get_tree+0x4e/0x280 fs/gfs2/ops_fstype.c:1332
+ vfs_get_tree+0x92/0x320 fs/super.c:1700
+ fc_mount fs/namespace.c:1198 [inline]
 
-Seems like the underlying issue is introduced by this patch's
-`virtual_table` lifetime management.
+Fixes: bb8d8a6f54c1 ("[GFS2] Fix sign problem in quota/statfs and cleanup _host structures")
+Reported-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9d20c3ad7d29227de28d
+Tested-by: syzbot+9d20c3ad7d29227de28d@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+---
+ fs/gfs2/rgrp.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-This patch adds:
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 5988a165a830..53d097ce668e 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -899,6 +899,7 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+ 	struct gfs2_rindex buf;
+ 	int error;
+ 	struct gfs2_rgrpd *rgd;
++	size_t size;
+ 
+ 	if (pos >= i_size_read(&ip->i_inode))
+ 		return 1;
+@@ -917,6 +918,13 @@ static int read_rindex_entry(struct gfs2_inode *ip)
+ 	rgd->rd_sbd = sdp;
+ 	rgd->rd_addr = be64_to_cpu(buf.ri_addr);
+ 	rgd->rd_length = be32_to_cpu(buf.ri_length);
++
++	size = rgd->rd_length * sizeof(struct gfs2_bitmap);
++	if (get_order(size) > MAX_PAGE_ORDER) {
++		error = -EINVAL;
++		goto fail;
++	}
++
+ 	rgd->rd_data0 = be64_to_cpu(buf.ri_data0);
+ 	rgd->rd_data = be32_to_cpu(buf.ri_data);
+ 	rgd->rd_bitbytes = be32_to_cpu(buf.ri_bitbytes);
+-- 
+2.43.0
 
-> @@ -70,6 +70,7 @@ struct swap_cluster_info_dynamic {
->       struct swap_cluster_info ci;
->       unsigned int index;             /* for cluster_index() */
->       struct rcu_head rcu;
-> +     atomic_long_t *virtual_table;   /* Backing pointers for vswap slots */
->  };
-
-[...]
-
-while the read side does:
-
-> +static inline unsigned long __vtable_get(struct swap_cluster_info_dynamic *ci_dyn,
-> +                                      unsigned int off)
-> +{
-> +     VM_WARN_ON_ONCE(off >= SWAPFILE_CLUSTER);
-> +     return atomic_long_read(&ci_dyn->virtual_table[off]);
-> +}
-> +
-
-`atomic_long_read()` only makes the access atomic; it does not protect
-the lifetime of the allocation being accessed.
-
-[...]
-
-> +static inline void vswap_cluster_free_vtable(struct swap_cluster_info *ci)
-> +{
-> +     struct swap_cluster_info_dynamic *ci_dyn;
-> +
-
-and frees it synchronously:
-
-> +     ci_dyn = container_of(ci, struct swap_cluster_info_dynamic, ci);
-> +     kfree(ci_dyn->virtual_table);
-> +     ci_dyn->virtual_table = NULL;
-> +}
-> +
-
-The existing `ci->table` already has an RCU-aware lifetime: readers use
-the corresponding RCU access rules, and the storage is not freed until
-after the appropriate grace period. `virtual_table` introduced here does
-not have an equivalent lifetime rule.
-
-The syzbot crash shows that the current teardown/read-side synchronization
-is insufficient: `__vtable_get()` can observe a torn-down
-`virtual_table` and dereference NULL.
-
-I don't think a NULL check in `__vtable_get()` alone would be the right
-fix. The NULL dereference is a symptom of the missing lifetime guarantee.
-`virtual_table` needs to remain valid for as long as a reader can reach
-and access the corresponding dynamic cluster.
-
-It probably makes sense to make `virtual_table` follow the same lifetime
-scheme as the existing cluster table, or otherwise tie its freeing to the
-lifetime of `swap_cluster_info_dynamic`.
-
-[...]
-
-
-Thanks,
-KunWu
 
