@@ -4,120 +4,206 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61FA7C5DF87
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 13:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8825BC5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 13:21:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 814D86B009B; Thu, 20 Aug 2026 09:20:40 -0400 (EDT)
+	id 7EF276B00A6; Thu, 20 Aug 2026 09:21:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ED1F6B00A5; Thu, 20 Aug 2026 09:20:40 -0400 (EDT)
+	id 7C7D56B00A7; Thu, 20 Aug 2026 09:21:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7025B6B00A6; Thu, 20 Aug 2026 09:20:40 -0400 (EDT)
+	id 6B5B26B00A9; Thu, 20 Aug 2026 09:21:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B08E6B009B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:20:40 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DD457A1248
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:20:39 +0000 (UTC)
-X-FDA: 85121707398.21.2CA54E3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D7D4840010
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:20:37 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fjfXghPu;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787232038;
-	b=d3FR6VLbGBPiqvC6XF65pVzId6zY9cPzAcHIIWfB8f9ledtzWneI9duADthbBDxsKXztVo
-	lojzEI/rDpaoQLGsZo4w8XkwJsVrCUALGkF084SAaX7T94wN5TbD7MnFSWTOctzjq9hlJP
-	cWA2vsNnuPPthgXDkWUE297TFAYsBZE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fjfXghPu;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787232038;
+	by kanga.kvack.org (Postfix) with ESMTP id 40B016B00A6
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:21:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D17080148
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:21:34 +0000 (UTC)
+X-FDA: 85121709708.09.DF6147C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 443A8C0011
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:21:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aRJrHpwt;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf28.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787232091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oXgjaUyH4SAbaEvw8EOTdGJq1korcmZz///mec1zjC4=;
-	b=y6PCXcGtskeE3ieg7zMV4Sdw3R3w2ER8fr9mwr6ttHdoyNyAinz7i0sXx9sdqiDMhVcuBE
-	lCoGr0bt9IhQcKNSPwPNJQw1hvvrlxsq1VIQv38/HIppmUEWtLLIHOkz2uzcPS/5iW17C3
-	MdPEhZs76xViX4K7jItj3YhG0jPI0Ew=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9741841709;
-	Thu, 20 Aug 2026 13:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19531F000E9;
-	Thu, 20 Aug 2026 13:20:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787232036;
-	bh=oXgjaUyH4SAbaEvw8EOTdGJq1korcmZz///mec1zjC4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fjfXghPuYDKZnUQKG5ZGMZxyHIl/hnRq50QedVuOxz3ZHDwAMdWQuD+1SSTJCDUU/
-	 OaT9VF2BonB9zBjLwTi1HBtUsDo0D5skAsxhdm0PYquIZej7RJwIVf6NJxW71RVzkG
-	 XWXjkxFQKRNk8bZSQ3TB5+WCdtucaVqNsp41OGADwrhRnVh0/izloGhSzeGGf2Yy//
-	 gZ0yKC3uAkwiQM4aq1UzC8GmZlzceuJIYhVNTq+HUqnJnvIRwxbForYJST4zX4aNUw
-	 NwMJq/+Hcfk5QiS7nQ12Oy8CKwv17iDKNn+UaKV1xWr9UQ/9cYvjYk/ZUb7tVJIAe+
-	 c/hNS/hBnsmpQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 34FB41980052;
-	Thu, 20 Aug 2026 09:20:29 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 20 Aug 2026 09:20:33 -0400
-X-ME-Sender: <xms:HP-GamH-e7Cb4Jyoe_-0-0tLiI15uqU79aUbC5QGCRyL6fTLiDvnLw>
-    <xme:HP-Gas_eYVeqCSvtuDI_X_ZaZGP3Qq6ziJ8HV4h1kwzF_IOJ1ejDkBJG_DJDokXXk
-    _KpqFnKIWjOfNInSyuu6_8iiivZVmhMBT1XBS1EAOtLOu4zdOo2mEnL>
-X-ME-Received: <xmr:HP-GaoONhUGac0vYqYgXMUmi2cIe83O-u2pxCut2Xw8TQPjZtSuQIl9M3kM>
-X-ME-Proxy-Cause: dmFkZTFVEhnD9IyDtNMpCvBGobiWZhpIfRKx95I8pl2hWqFiJH48fkv3PyG9zsMLxu0z0V
-    yGDa+3wmVts4jxxlef7KWiyHAduKCqnYfrPxlEGXPFCTtMaRv8m2HSBHdmc6D91J3Ag3Tq
-    hA5UCO3PMOcZzPXxobJKX5QghQO1CEZKMBh+R7ZCxB6rsvqr/ZmLBCLTYBHH52mUxFI6LP
-    MBj9Z+PzvNT2bjthYDqUwFBQq96qv77xu6Or1xnIVJNigDXcpzhhJDEnzP97QjsvSRAyE/
-    GtIM5/BHAbWdoN8hbHKMtw2JK5fyYHtxprqks4cUPgZ3QBezfGquBZcT+hdLDxIurzEpii
-    u2LjOBaPrTSnj7pFlgzqS9DmHsteBV7ua1FKFro7RjAEBVaosu7sAclj4LEVhvvuPVPtrz
-    9nU4vaPK+VHOkazRiV5yeZl+xCavWTO6mZawH7m9rV/jTD+Ce9scgKn/B4wrnFdyCEgOHL
-    RDVGYVZyKp5gvPTLvi9TOpq/Th91qlOB+QUWfvpES8voJ1WvkQFRnFMLZNhIAhnFJOe0Ti
-    t4wAuhBuGZoLWEmOt95JvaxwX3npGV7fjWdFV2aV9aibZ2WHRZY/o8TrD2lPxgETHmNwpE
-    mQQJssMCMTfH8oRaz2/4cehQllLbPqQjerfn5YfeUs9rIOt5gwBH0TR7GSVA
-X-ME-Proxy: <xmx:HP-GaozNFED3Viok70M6rP-FARhT1r3Kmjl3fLA-qlwsEi6D-F1uFw>
-    <xmx:HP-GaqtJWrKbY01m0fdbOlnNzLAIhZx83YiZdTfS8mMB1AR6Lj6AXA>
-    <xmx:HP-GatGK-l5_6KJOe402av9tpcwGBnIEEEFyoSaUOZgocCNWZMfWfg>
-    <xmx:HP-GarWmhxd4mohRMi_Rh9cffaAlYmAQYCGzSZ53EcX9QdCiSL8_qg>
-    <xmx:HP-Gao2sQUADnV8PpV2PFsfO7YaYkiwbcdyJeitWMX7pJYwN94MNq8_D>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 20 Aug 2026 09:20:27 -0400 (EDT)
-Date: Thu, 20 Aug 2026 14:20:26 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Lance Yang <lance.yang@linux.dev>, usama.arif@linux.dev, 
-	hughd@google.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, nico.pache@linux.dev, 
-	ryan.roberts@arm.com, ziy@nvidia.com, nphamcs@gmail.com, hannes@cmpxchg.org, 
-	riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com, 
-	stable@vger.kernel.org, willy@infradead.org
-Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
- on zap
-Message-ID: <aob9PF_H6CCJMdkk@thinkstation>
-References: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
- <20260820061337.24669-1-lance.yang@linux.dev>
- <aobp2CtWZBlw4w7E@pedro-suse.lan>
+	bh=Wcu4C3RyuwGr0PkgRmgBS5ekGUg7V2uXJgWrRXuNcOE=;
+	b=7P+0Qlqh6OgzChzdzg44DISzcNOpUo6dXrn1EYpBzVtPCBmCQF+H2EzE9d+94O4vZQRn9U
+	h4DMkyG/RprsQlzN7MPSCEL3DstbK1y5AiZg38jIzO7w0N1nEx9Ufpoj7DDMqxpU8YVZSM
+	7RIDMvEPiXTxnzqd2Xnmmt+CRTXlTPQ=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aRJrHpwt;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf28.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787232091;
+	b=5efOf41cQW5EaMnZgqpSyjcrNk3xKgbzLwLWGoCEqkwG+q+AxV0NP/pf9/nLp5/hCfAUjG
+	MeWeFrQUTQFLRlZ7xroHZx6y6dTogFZ3mJ7LhCHEbmRvpaYsEvqoFNxXDkPCRb3LAxvmTt
+	kd6pIvzPCE6zzQj+g9ztKizOEouyvGA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787232091; x=1818768091;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Wcu4C3RyuwGr0PkgRmgBS5ekGUg7V2uXJgWrRXuNcOE=;
+  b=aRJrHpwtEogEe8/CGpv2tKg1L1nt1lSoxyQ2bhJR0D73nsDGgUeakeAB
+   8yk/7iNB4amX4p0dbGxqSTPFw4hpETUQxJWOEzlW/JepvCFfhVzmn6+X2
+   PLUDi6Nx0uL3bxIeKZqgl6+uPSlNj3gvrIytKUzrh+NZP3ZpmlIlb+UD/
+   e1amSYtk28Msfnhq6qP05B3WUDZ2vwFH4SO/beyIAvaaTAkdEvMmcXOyW
+   7y4qFGORTD1PnHxWVGvk/8gO/caEQmtoD6EWYXWbko/6iqVRqsZ46ZEuz
+   54DBNIpQPL6KttzaLXrZLp3qaIhg1NMBHaZEcfw6ZKpVSS5b0n+A2Af9E
+   A==;
+X-CSE-ConnectionGUID: UumsPBjhS22oKx/TrQ/cyg==
+X-CSE-MsgGUID: 4E5WZv2IRlGXmKOEZVzKGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87971772"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; 
+   d="scan'208";a="87971772"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 06:21:29 -0700
+X-CSE-ConnectionGUID: +7+6ZEt5TTaCzQS3HzXRgA==
+X-CSE-MsgGUID: dzLHZi6jRMW9rImmWiEIOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; 
+   d="scan'208";a="270264213"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 06:21:29 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 20 Aug 2026 06:21:28 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Thu, 20 Aug 2026 06:21:28 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.55) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 20 Aug 2026 06:21:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a6GGE821BjIjEWvds0lkaJfIfss1gskGOtjUUtVuMZ3sqiHTJGVDGvl8eMRdtHQ/snDVG1cE1U1C8oAtKsQG+44PY5JZFl1RMP0awCujSOiDGtqqZmgFfqV++MkOcBQCgyjdhSmNmkK3LMW3feZuHsNzH/thK9KZjNrtEwU+eL5Rtp9734TC7UjGfsdpm/aHG4FEaB80y07UjqBY5MCgAKUmgSNp9wrZQz+h7jaonJm3ASy8mes4JCDRQyrZ3DDrdtJdL6+WTjj1kXR9/iU7QpvFv+gKCFD5eFTntE+J3qlgY8f/02xwRc/KbRJ6Cv5omN3opXjsxQNn6CsWRxJ1Gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Wcu4C3RyuwGr0PkgRmgBS5ekGUg7V2uXJgWrRXuNcOE=;
+ b=VC/NLfiW6bFq/V7srpKabuP5Yq0b9gSlbBas8zrkSZor7RvFvMk7LCzzZpJKht5gcQBpcf2B+g2cxxCdn5vma4a/e1OGq6eKEhdPjRMYI1zpDtODiZaDIf7J8gXEI83K0CLq1w3WWBjzFL3QaP8UIDq9n97VKeLNRlTo4QphaOrWHtcFMRW7IXc7jLhjF4COsbZifzPYk07H8YmKBw7XTm0PFEzxOO+GLosU4nR9S8uUwVMJunJGPMyH6rnBO5Y5z2Lg5GvzO6oUtlF39YCSWwSO4EgGkTVKw5yoa4jqBANGaDPgwYo7XdrvobA9Qyx/VKPeDGGaKlXraUDLvk/Syg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW4PR11MB6936.namprd11.prod.outlook.com (2603:10b6:303:226::16)
+ by DM4PR11MB7302.namprd11.prod.outlook.com (2603:10b6:8:109::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Thu, 20 Aug
+ 2026 13:21:25 +0000
+Received: from MW4PR11MB6936.namprd11.prod.outlook.com
+ ([fe80::96dc:12ef:f56f:dd04]) by MW4PR11MB6936.namprd11.prod.outlook.com
+ ([fe80::96dc:12ef:f56f:dd04%6]) with mapi id 15.21.0339.008; Thu, 20 Aug 2026
+ 13:21:25 +0000
+From: "Liu, Yuan1" <yuan1.liu@intel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Oscar Salvador
+	<osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, Wei Yang
+	<richard.weiyang@gmail.com>
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "Zou, Nanhai"
+	<nanhai.zou@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>, "Zeng, Jason"
+	<jason.zeng@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>, "Deng, Pan"
+	<pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v7 2/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+Thread-Topic: [PATCH v7 2/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+Thread-Index: AQHdLu8R8F489m5sRUGA8lOjA7/dwralh/aAgAFm0GA=
+Date: Thu, 20 Aug 2026 13:21:24 +0000
+Message-ID: <MW4PR11MB69369259EB8B2FDF237B863AA3A42@MW4PR11MB6936.namprd11.prod.outlook.com>
+References: <20260818085702.3395529-1-yuan1.liu@intel.com>
+ <20260818085702.3395529-3-yuan1.liu@intel.com>
+ <ac77571f-4a10-4511-83e0-c6372d5b4a09@kernel.org>
+In-Reply-To: <ac77571f-4a10-4511-83e0-c6372d5b4a09@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW4PR11MB6936:EE_|DM4PR11MB7302:EE_
+x-ms-office365-filtering-correlation-id: 676ed809-19ba-4a16-91ed-08defebdef45
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|18002099003|22082099003|4143699003|11063799006|56012099006|38070700021|10067099003;
+x-microsoft-antispam-message-info: BtJM/sM5rVIjXYZdZGcl03tF98gH4QrZEZfydNOZ7Vl+uF7UzMLQ7FIdmtJfUyCi0bdciaQPec2PO/QGjnJQcjLbsxTI0oFXNg5VXAt+YPPNFFJQKDgo/v7Iq+QfrkKXI0bk5E75l0XTbOEUuz/d68k/Cx6hLIx9mucebp2rjRCsclQsb0DEkzLkPtxvd6uFBesh33hueQYCfp2SQk+70hTLv28Bwgh9PSqwriNzeaMLaoQuPf5sQZ6HCPNu6H78UGSQ9ATWJj7MOoxL71Q3VoapOrgHTwq9PRC8kPDivwXUuT5fCEzun+x9Jd7jkLyACU4llYQ7ekQPo6cQ/JHhlWAMl9yfhRalkMpDS98yAztJCA9UBmiAcbydHTskX58e/IKnaSL6rarAkdz1dmOv/LmrpPd9bUcsLRM36H32npO/FMjlbO5vmKjL+hQbaLdUi5s9UWLFPIS0lv+ejPUfrehETGGuQM43OutL9rpOxsUHGoedrfgBRXun8d6n9pwuZfySExcC/+c5zExuH+euEhY1bSYI7lbEVVE9p9EOmJOUQ3qtUTHGuqBgfp4JtyKAeSy7Od8YsyCW+c+GrcjpEjj/lbLKNxzaXdGIoUngUMGZO7+8NhIAYh+lnv7vyjQ6y1lD8/sUow4pGQtWhGFJBRY2ElMqA4378rbDjmwYUsteL8kUghKOPjvHFUwtijtw2oMbOqtg6+KwweZ69iaen0zt1hugCcMZ0ZrZXsGRGOE=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB6936.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(38070700021)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SkdnM3hkUzM4RjJuMGg0dWpFc242ZExqT3V6b01vN3B0SXFPM3c5cHpPbE5J?=
+ =?utf-8?B?REFqTGZDQ3grQ0FZaWRDblVwNzcxelo5eE05V1grVWNBWU04NGlMYlRzQ1Iw?=
+ =?utf-8?B?NHJMUEZDZHk3Q0NLQWQyQTVySGNEVzV1bDY5OGE1MzVFQWlpT2JlcWowVDIw?=
+ =?utf-8?B?Y0s1c0k2Mll6L0o0V1l4S2NpSkU5V3VvVjk4RTIyTU42VWdMVUFoUnc0RkdJ?=
+ =?utf-8?B?RDlLRFU0cStWTjV3L21KNy9TdHcvelZ1RjdvOVVmKytzK25wNG0zYWxkUDdo?=
+ =?utf-8?B?VVNkaDBBZEczanBnSlpKMjUzNmRlWkJLTzR4dURISmtJNHZ3TUpFMnRHRzlE?=
+ =?utf-8?B?S0ZSSzB0U0IwNnBoYTRNcGYwYjNMdnVNQUd6VlZlVFFjWDF2NmxBQm1PdFg3?=
+ =?utf-8?B?VGZVdkp2TXBPQUtuZmUxNDJBcTVPZFRmbUpzblhRM1NodXVxbElVZDJ4Uk44?=
+ =?utf-8?B?dE94bGJ2eWZpcUhOQ2phWW15MTBkNE91cHdZVVZENnNHY0JQcGwvWDU5Y2c2?=
+ =?utf-8?B?bnN2UWR0VFcvTitURXN3ZjIzTDVPV1Qyd1B1YmpQMmFuVGlLTTRDMUtpa3Vu?=
+ =?utf-8?B?T2RPV3BkVGJ0Q3pMK0pqTjZRM1djT0ovNURjL3dZOE5NVWVSTUV0TkNKT2ov?=
+ =?utf-8?B?NVNOdExFT2RnYzNNSktqV2hVSm56bExoazduL2dOYm5hVkEzMkRGZTFmbUw4?=
+ =?utf-8?B?Q3AyRy9QUXNuWkJseHl2VGdUV3hPT1FjSDlZbWdXSzJKa3RLenA4YTUzY0Iw?=
+ =?utf-8?B?YmZWVDRDcDhTWCtEbHBlZjV0bTFDMDQwR01aMXhndjVYME9ENThlWXYwZWRz?=
+ =?utf-8?B?azN2WTNnd1FnUTdDNTFsTVRkVUlBODF3NFNSa0ZDd3g3YVdzaWgyeUI4SXg2?=
+ =?utf-8?B?VFhpZ01kbFUvUVNBb1Vtcm9zL1NjbTJ5UEJtbzI1NVBSTlBPTlF2MTdJSU4y?=
+ =?utf-8?B?VXVYcTJWOCtOOUUwNFhuQU9WYVV6aFVMNkN1RlVhNE9vTmd2amJTcVBhU2lW?=
+ =?utf-8?B?L1lZUkFkWEdNZ2h4b05SbDRrd3VHWkh2Q0l6N1BMSmNYcVloMlNHSXJtbmVO?=
+ =?utf-8?B?dE1wZkhOcEtsVXlZUnU3QVpHQlRqZkZkdVFyRkpNZ01lUTBUaTBPeVkrdHBM?=
+ =?utf-8?B?UEFsMGR6MWJuSCtzbDZWNWtwN3VMNlVVRXFmbzZvSWRJMlpJbUpaOG0yMi8r?=
+ =?utf-8?B?T05jcFppZzZPQVlGcE5nNXBrdE5MMHR2a1ZsdjRFNzBObC9DcEdVc0s5Unlu?=
+ =?utf-8?B?RGFUcXRWNHZjUTdTVkVqOXRZYUFHS25rSWdOK09MdDVQMVR5UFc0ZDJFc0pQ?=
+ =?utf-8?B?dmJJNER1MFNoZlVFcVZ6MnRkMzdHOW0wZHdmYzB2a3dBcG5GYk9aVkJpQllJ?=
+ =?utf-8?B?dHJzTkxvc1dOL2szNnBnQ3lDM2NPTTNOdmdmRVRXdDRJWGNseDQ5dVRGNHg0?=
+ =?utf-8?B?QThGbGZMcjFtaGRxdTF4Q290cE1SR01hQmpGK3lCN2M3Q05WanJzeXA2YTli?=
+ =?utf-8?B?a0w5S0xEUlZGS24vNVYxek1wRFpzRHV1LzZxV205a2N3TmNaekVNS21lZDJ5?=
+ =?utf-8?B?bHBqOFNZRHBvd0ZwYUcvc2R1ODB5Y2VRakg4b3hzdFM5d1p0aEpNRkUraU8z?=
+ =?utf-8?B?bnFyMW5Bc0o3aTlwKzhwK1dUS3JZVnpRTzdlcFQrQlZ3QWV1RFNHdzczSlJz?=
+ =?utf-8?B?UWVwK0UvL2xJOU8zb2dnK3ZvcHZZaTdTSERlVStqamhicjFvVFRhcDIycFA1?=
+ =?utf-8?B?S1dWVHY0c09nY2lxcGhoWWlFOU1NSVh4SGYyVlN1ZzZCdUVnWnROTEN0YlBx?=
+ =?utf-8?B?QzJQQmN4T1ZmRXFEekRXZzNlT1lFVG80TkZPVUxOVmhZT0szOHQ5cDRybk91?=
+ =?utf-8?B?NDI5ODRxOFhLaTFVWDNzN25xK1JpT2E5NHhwaDNPWnB4b1ozSm5zd3JwNVE1?=
+ =?utf-8?B?QzVYWkZFeEZVWk9mQzUwajR1aWtiTVdydjBqcEhGK040Sm9ONktGdGN0eGRC?=
+ =?utf-8?B?Mm0zY0xKN1Boc0hjNXdBZ2pBaEI5SlRqclpUMDJ6djg2ZjN3em55Tk14Y0Zt?=
+ =?utf-8?B?eHAyMHpRRWgzbVVLcFY3c29Ob3FZUDBCVlYxRXlQVlgxb3IzejNwYzU1NExi?=
+ =?utf-8?B?UFdlNVB3L2RKZDk0OWhkSU5GZ2NnVkxvRUpLcXF2aG5BbmI1S2VkMXVNaWh4?=
+ =?utf-8?B?VEh4Yk45R05TTXhDbUt2aHdua3c1MGR4b1dndVpFZktNS1BjWU1FU1FXVEc3?=
+ =?utf-8?B?ZzgzbEFZVnQ2U2JxZmszOHBTOE1qUHJ0bmxHM2s2ZUlqNC9zQVVwSVY1dVF4?=
+ =?utf-8?Q?gZkczpbrcuwhfKZRiH?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aobp2CtWZBlw4w7E@pedro-suse.lan>
+X-Exchange-RoutingPolicyChecked: LCHYgEgyKjyAq/PsMha1LCdoTUcmHmNVt1paoAkSfFnvPsvIqVFDA8XZ4oeXEEdo8yMFDJnKSZ+1boaPQ4V6uziKfFmoXnclL3KSJH9iFF3OpNVqWsqUfI4UbRZTefvoKc/1AN6w4vaIhZOtOhsD6NMaTf/ylyUvFejHDV5qkVgf6JnlYYyneJEwtGdoi87uIjOadfplm7M4/cMDoxT+WfUIXr9fTeWiLmopRdxeWdgRIsBIWoiJPvKPLSYaEOPLD7PnYFoThefaTs3uh6D5Y2Bx5/rChctyoPyEoVcNonJ626U3+4SwSRUQfH89/m4p3Uyvdx/EgK4Pz0dJsYT+xA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6936.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 676ed809-19ba-4a16-91ed-08defebdef45
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Aug 2026 13:21:24.9493
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: aQcXkc0/7sX0veaENioZ5KQ7s8wyzJwHvqiiS5CMESVDChp5XPe+Ef9rSrBZYPs/d/vEZ9p/NljzrwwcTYG1TQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7302
+X-OriginatorOrg: intel.com
+X-Stat-Signature: c7n7g1w1ho3cabziiizt58ipwmud39uh
+X-Rspamd-Queue-Id: 443A8C0011
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D7D4840010
-X-Stat-Signature: ew1we4onwodg7ghnwpnhstixwaiuf8bo
-X-HE-Tag: 1787232037-466786
-X-HE-Meta: U2FsdGVkX1/+557+feG05MgE8hcP2u0PeaZCfDaVcV+RgKolSWe0O8Obaca6dqkiRFyt7HoWU551Ui12MA/cG9WxfIYzRNLGryuyvWsPEgOKZCLqdlYNOUaSEAl9Atsd/7ixT7FQhrgPVjIOw+y2miDv+Z2qjlQOJo6U/uRlXyVKEM1zrn4Iu5ctT9XGV3ZqR3ZIMZD4t1tJccbXch2XBcFokcJQo/wH6A7a6E1PMOLI4krDcCVaZ5Oa4zxwYOeL7CLvvYB5eKU2gSzZvTQyWFk6n8q4iYSyZ+g8uNQ5ieg6Z7m/ES1orbu1Iw1ISFR2sTW3U8OQDXf/efMYaI3OT6GR4es9vwPuXJfBjERD7/tRUjH1f9y1CxlbscMYF+nJIwnbrWWKe7wtIDDfyBMythYIm79SA+d8P7fdUpg7YCjJ4+Mzp3HDdvPuMPwVqkH5cwjuvqNti7CW/qbS/Ejt+nto0Sgx+wgE2816n8L+NQ5jZgQbSrQvZEI0l216koIqFsysRGuG3cXqZUJeJsTsKF5Wds2ejtx6EIJOYmE7KxFdJaez0SqRWn6CGdHcf7s05EeKp6gLhhd/SSIHwK4h37HJBRqUnBlS/iKP8IbdWcoqEqwstFghif+F2I+hiahQsDWc/gy/M4PXTZI7E1cwYEYy3ClvhswO/2l3K9g0jvbfxXYkJOxTL8TXb8Bt+C/QTbpFGYHfD0tbVVsUcPpP28ct/LZSVweLrvw03hyk/ZtI0PkYiCs1JKz581oi412xK5ASVinwEEtXE5sjPNcnsV3xa68JBFZFEP3QS0G+VgG5ZmsmJYruvOChFdKVC8Q/EJMd2TXDa/ThvT+97iTvS9NinP6k0zkwuppAeSZKqYxsZY5CxxlvvF7kiPWTjo5dz81eT3Gy/SyHqmIbHXv6Y49fdzFm2qdA7+3ctPaYTjslVvTFWIOLUBtT8XUqRdRIEXTD6YuPIeAT2hEz8q2
- m1/Xx42J
- PExsp7m1rE8flhn71LpYbEjQADF/LPP0authfayyEwdEN6SajziG9Oco1HxIyrieSiTJfOqjWt1uonrUG4xu46vx1+D/TaoSfj84Uy8vfz1OF0MxotI6mzfYCwNPWYZL8Yk+8TRVkRg60Kdk6Fib3Y8cK5wdu8C+cuGjovu0KOtlpsirHZOQOMxpFTEmhAjB+7mYWiUeizXKOkEyrFnCWamyoIT/qOgaEKhmy0PzUhyAFKySM2XaF00bCrQi/REE7JfY2cg/AohaRxbKh2WVcrVX8IgN1tqUZTGwEdRpcnhMgP2J4dgJ03oKYKD9p2+falciJICNrzFSRLfa+mlRTM4x1XoDycIRPEOiJ
+X-HE-Tag: 1787232090-960308
+X-HE-Meta: U2FsdGVkX19hfpE5rhiRg8AHlqHKwwkApzamUswALmsRp5ivW+BCpuj3fuJdNJ4DWpPR5M0iAZ41zDzgFd1JEv3aCuBU+zU5IkT3QoSYHJuFRGG6myNnlBnPEN/2u0REk90U/iDq/4lMGomvhrwNN74ggw6L9Z65lHufh4kR4ZMSLUBiZ+i7aydpY1iPFGWBhSyeyS+ibRo8zru9hNOoCqv1JbxElVmPBLiGib6EDcVUvpWenGIb7/nF40khTIEGwyVk7iD0fNte8mJHWdVifkhP+igw0TLcykYQtrIjk6tgZhJOTq6/F9pp5eY6jeHJtbITbVrLjTxQFc9C6qv+hWQvWoh4R4bOea//hAHe/elRA5Xm2mheZ95jCccMk5w7/smqma2hvUcYNJDPisvRNFwagMSSBPTYVK+/3m4FfJfPAVXKqAW9DmCOHXXawZqYaOFAEXt7FR3hMNcT2PHal8aLXTelQGkNp01B6Y6Ci2fBRjkCVMZFYxmuE592pc/IjDE5/u/Pheo2lQ9PRCSsjF9rc57DYV39I25cDxrQioi+dxQkFt4Wuc3+KzZ9J5YLOOmIT02E1ZSfX61KfQa+F2u8kxE+KJuE15N27yIkos5n1msiJBkmlR0WWzNKAk/gu/1jWZ/GCr5peVa1AFGMLm7Ba4bXnPryp8LjHlGQUqiH3wZqpQLdJwnEFpY4irBWZdLoy5f9KBFuVVXBkN5OEOmSf2oPyV5tFeHI1Sj+lNZeH7ceO3Pi3cChyrHzLkpOu8jp/L3HDHCrlVGC0X+R4gVjzpMSOIm1psoVE0dbKuy86ucB+bjnBeNsbjqssQisZerJ2zejwwjM3xiHCr68g7xiqbJ27DCr50zKv4ylGxN4ttQQQlnTAuep4rh3mDWrHDmM5CU3ghtQ8yH5LDMBGsxjcJS4neBs6DAZtN82iJva7Y57BtjLkQbloHqcSiVhkR5XIVG6SUjkHzEp4pI
+ fmt5n2LD
+ W2lz2f3Lp92pGi6PulUL2giUYLPF2+1KnlAo2o57XVWlKdGlrBILqKUZyUMVmPutMFOpvro3VM2jmaTp3NcEETdOpd0vRXyrIYCK0oanrBYx7ZbypW/tHM0CctCkcFbcoKx9TMxbVJZ7lpEgIiYxOWpt9KVypXMqXPLVCGs6uClI7LpbSHbSmFOiQicvmUZY6loMbIISGuHtDlU4sh17ayXsYlR7jRMkzObI6mXjjFw1ZXOVPEStVDqt0340TXTOqm08XKDu5r5VZL3sf8t0iYo8kYldsek/Ktxk0lS05NFtNX4EBGlm9QJjhU7qhhIiO40GCu/aLZsHSp6HMu1hay8odcGiif+ES0uhL6JwMeQU7VjxeejQLYyFjFxMiCE+7Epu0ZYvadKZ60JcM7ArxJ0xqplmbZKeXOU7nHY5bi4fWWQx6OFn48SPqmvYaMPf2THldQKuR1aey0Kl6eU3Iuy4Jg4ND+0YMg0KC2UxWswFhNvcUSpwbWQu9YG0a8mQtsFtsHQOALX0RUD3l+0Ge+U9gKqkJw2uQnFxTEe60klF7oFKZy2BNYOqhUDMOVgHU+mWSyM2hoRQpVZ9EUxBB6FHguuXZgOf7vf2UAASCl4jMNbnHmbuWQKCZaTu2/BSxbkHTwLLnalkXLW4vgY6o+LRXl4sk50my1gxVinUyqyoVU8FLRYTLFZEtgQqWlRaiP7C9Xu7Apf09uG4FtJCUNnPTCUf2sK/2fGChtCflz+uVEbjRdfO/gAtZljfNrwquQe+vDvTsiPQ8b8oTq1C6Utx5G6kI1QosguRjZUWFoKiIHheFjk1YuluShn0Dz/iKibmbePQIOjy+N9fw/dj7Vs8QKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,379 +211,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 20, 2026 at 01:12:18PM +0100, Pedro Falcato wrote:
-> +CC willy
-> 
-> On Thu, Aug 20, 2026 at 02:13:37PM +0800, Lance Yang wrote:
-> > 
-> > On Wed, Aug 19, 2026 at 05:35:41PM +0100, Pedro Falcato wrote:
-> > >On Wed, Aug 19, 2026 at 03:31:40PM +0100, Kiryl Shutsemau wrote:
-> > >> On Wed, Aug 19, 2026 at 03:12:22AM -0700, Usama Arif wrote:
-> > >> > zap_huge_pmd_folio() propagates the pmd young bit to the folio for the
-> > >> > file case, but not the dirty bit.  The pte path does propagate it, in
-> > >> > zap_present_folio_ptes() and so does the pmd split path, in
-> > >> > __split_huge_pmd_locked().
-> > >> > 
-> > >> > For most file mappings the omission is harmless, because writing to a
-> > >> > shared file mapping goes through page_mkwrite(), which dirties the
-> > >> > folio.  tmpfs is different: it has no page_mkwrite(), and
-> > >> > vma_wants_writenotify() is false for it, so a *read* fault on a
-> > >> > MAP_SHARED tmpfs mapping installs a writable pmd via do_read_fault().
-> > >> > do_read_fault() does not call fault_dirty_shared_page(), so subsequent
-> > >> > stores through that mapping set only the hardware dirty bit in the pmd
-> > >> > and never call folio_mark_dirty().
-> > >> >
-> > >> > A shmem folio allocated by a fault
-> > >> > is marked uptodate but not dirty (see the clear: block in
-> > >> > shmem_get_folio_gfp()), so PG_dirty is never set at all.
-> > >> > 
-> > >> > Unmapping such a folio - munmap(), or exit_mmap() when the process dies
-> > >> > - then loses the only record that it was written, because zap_huge_pmd()
-> > >> > drops the pmd without transferring the dirty bit.  Reclaim afterwards
-> > >> > sees a clean shmem folio: the whole swap-out block in
-> > >> > shrink_folio_list() is inside "if (folio_test_dirty(folio))", so
-> > >> > pageout() is skipped and the folio falls into __remove_mapping().
-> > >> > There, folio_is_file_lru() is false for a swapbacked folio, so no shadow
-> > >> > entry is created and __filemap_remove_folio(folio, NULL) simply empties
-> > >> > the i_pages slot.  The data is freed without ever being written to swap,
-> > >> > and the next fault on that index returns a freshly zeroed folio.
-> > >> > 
-> > >> > This is silent data loss for any process that keeps state in a
-> > >> > MAP_SHARED tmpfs segment across an unmap - for example a cache handed
-> > >> > from one process generation to the next through /dev/shm.  It requires
-> > >> > the folio to be PMD-mapped, so it only shows up once shmem THP is
-> > >> > enabled (which is what we did in Meta fleet and started noticing crashes);
-> > >> > with THP off the pte path transfers the dirty bit correctly.
-> > >> > It also only becomes visible when swap is enabled, because with no swap
-> > >> > device shmem folios (which are on the anon LRU) are not scanned by
-> > >> > reclaim at all, so the clean folio is never dropped.
-> > >> > 
-> > >> > Reproduced on x86_64 with a tmpfs mounted huge=within_size: read-fault a
-> > >> > 2MB-backed region, write a known pattern through the resulting mapping,
-> > >> > munmap, force reclaim of the cgroup, then re-map and read back.  Without
-> > >> > this patch the region reads back as zeros and vmstat shows zswpout 0 -
-> > >> > the data was discarded rather than swapped.  With this patch the region
-> > >> > reads back correctly and the pages are swapped out as expected.  With
-> > >> > huge=never, or when the first touch is a write, the test passes either
-> > >> > way.
-> > >> 
-> > >> +Hugh.
-> > >> 
-> > >> Oopsie.
-> > >> 
-> > >> I'm confused why it took a decade to discover the bug...
-> > >> Maybe read ahead of write for shmem is too rare, I donno.
-> > >> 
-> > >> > 
-> > >> > Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> > >> 
-> > >> This would be more precise: b5072380eb61 ("thp: support file pages in zap_huge_pmd()")
-> > >> 
-> > >> Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-> > >> 
-> > >> > Cc: <stable@vger.kernel.org>
-> > >> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> > >> > ---
-> > >> >  mm/huge_memory.c | 2 ++
-> > >> >  1 file changed, 2 insertions(+)
-> > >> > 
-> > >> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > >> > index ced400f72d43a..afbb5974bd225 100644
-> > >> > --- a/mm/huge_memory.c
-> > >> > +++ b/mm/huge_memory.c
-> > >> > @@ -2449,6 +2449,8 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
-> > >> >  		add_mm_counter(mm, mm_counter_file(folio),
-> > >> >  			       -HPAGE_PMD_NR);
-> > >> >  
-> > >> > +		if (is_present && pmd_dirty(pmdval))
-> > >> > +			folio_mark_dirty(folio);
-> > >> 
-> > >> Unrelated to your patch, but noticed while looking at it: we drop the rmap
-> > >> here under the pmd lock, while the TLB flush is deferred to
-> > >> tlb_finish_mmu(). The pte path handles this with
-> > >> tlb_delay_rmap()/force_flush (5df397dec7c4), but there's no pmd equivalent:
-> > >> tlb_flush_rmap_batch() only knows folio_remove_rmap_ptes(), and
-> > >> zap_huge_pmd() uses tlb_remove_page_size(), which takes no delay_rmap.
-> > >> 
-> > >> Doesn't matter for shmem, but xfs & friends do get PMD-order folios, and
-> > >> do_set_pmd() makes the pmd dirty+writable once page_mkwrite() has run. So
-> > >> folio_mkclean() can clean the folio while another CPU still stores through a
-> > >> stale TLB entry -- silently lost write, no PG_dirty left behind.
-> > >
-> > >Where do you see page_mkwrite being called in the same path as do_set_pmd()?
-> > >Per my understanding of the code, this Should Not Happen, and it really Should
-> > >Not Happen for many, many reasons (write amplification being the main one).
-> > 
-> > Hmm.. that happens on an initial shared write fault. For non-DAX XFS, the
-> > path starts with an empty PMD.
-> > 
-> > TL;DR
-> > 
-> > With an empty PMD and PMD-order THP allowed, __handle_mm_fault() first
-> > tries create_huge_pmd(). VM_FAULT_FALLBACK sends the fault to
-> > handle_pte_fault():
-> > 
-> > static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
-> > 		unsigned long address, unsigned int flags)
-> > {
-> > 	...
-> > 	if (pmd_none(*vmf.pmd) &&
-> > 	    thp_vma_allowable_order(vma, vm_flags, TVA_PAGEFAULT, PMD_ORDER)) {
-> > 		ret = create_huge_pmd(&vmf);
-> > 		if (ret & VM_FAULT_FALLBACK)
-> > 			goto fallback;
-> > 		else
-> > 			return ret;
-> > 	}
-> > 	...
-> > fallback:
-> > 	return handle_pte_fault(&vmf);
-> > }
-> > 
-> > create_huge_pmd() dispatches to the filesystem's huge_fault callback:
-> > 
-> > static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
-> > {
-> > 	struct vm_area_struct *vma = vmf->vma;
-> > 	...
-> > 	if (vma->vm_ops->huge_fault)
-> > 		return vma->vm_ops->huge_fault(vmf, PMD_ORDER);
-> > 	return VM_FAULT_FALLBACK;
-> > }
-> > 
-> > For non-DAX XFS, that callback returns VM_FAULT_FALLBACK:
-> > 
-> > static vm_fault_t
-> > xfs_filemap_huge_fault(
-> > 	struct vm_fault		*vmf,
-> > 	unsigned int		order)
-> > {
-> > 	if (!IS_DAX(file_inode(vmf->vma->vm_file)))
-> > 		return VM_FAULT_FALLBACK;
-> > 	...
-> > }
-> > 
-> > XFS installs the huge-fault, regular-fault, and page_mkwrite callbacks
-> > in the same vm_ops:
-> > 
-> > static const struct vm_operations_struct xfs_file_vm_ops = {
-> > 	.fault		= xfs_filemap_fault,
-> > 	.huge_fault	= xfs_filemap_huge_fault,
-> > 	...
-> > 	.page_mkwrite	= xfs_filemap_page_mkwrite,
-> > 	...
-> > };
-> > 
-> > On the fallback path, handle_pte_fault() leaves an empty PMD without a
-> > PTE and calls do_pte_missing():
-> > 
-> > static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
-> > {
-> > 	...
-> > 	if (unlikely(pmd_none(*vmf->pmd))) {
-> > 		/*
-> > 		 * Leave __pte_alloc() until later: because vm_ops->fault may
-> > 		 * want to allocate huge page, and if we expose page table
-> > 		 * for an instant, it will be difficult to retract from
-> > 		 * concurrent faults and from rmap lookups.
-> > 		 */
-> > 		vmf->pte = NULL;
-> > 		vmf->flags &= ~FAULT_FLAG_ORIG_PTE_VALID;
-> > 	...
-> > 	}
-> > 
-> > 	if (!vmf->pte)
-> > 		return do_pte_missing(vmf);
-> > 	...
-> > }
-> > 
-> > For a file VMA, do_pte_missing() calls do_fault():
-> > 
-> > static vm_fault_t do_pte_missing(struct vm_fault *vmf)
-> > {
-> > 	if (vma_is_anonymous(vmf->vma))
-> > 		return do_anonymous_page(vmf);
-> > 	else
-> > 		return do_fault(vmf);
-> > }
-> > 
-> > do_fault() sends FAULT_FLAG_WRITE + VM_SHARED to do_shared_fault():
-> > 
-> > static vm_fault_t do_fault(struct vm_fault *vmf)
-> > {
-> > 	struct vm_area_struct *vma = vmf->vma;
-> > 	...
-> > 	if (!vma->vm_ops->fault) {
-> > 		...
-> > 	} else if (!(vmf->flags & FAULT_FLAG_WRITE))
-> > 		ret = do_read_fault(vmf);
-> > 	else if (!(vma->vm_flags & VM_SHARED))
-> > 		ret = do_cow_fault(vmf);
-> > 	else
-> > 		ret = do_shared_fault(vmf);
-> > 	...
-> > }
-> > 
-> > do_shared_fault() first calls __do_fault():
-> > 
-> > static vm_fault_t do_shared_fault(struct vm_fault *vmf)
-> > {
-> > 	struct vm_area_struct *vma = vmf->vma;
-> > 	vm_fault_t ret, tmp;
-> > 	struct folio *folio;
-> > 	...
-> > 	ret = __do_fault(vmf);
-> > 	...
-> > }
-> > 
-> > __do_fault() invokes the regular fault callback:
-> > 
-> > static vm_fault_t __do_fault(struct vm_fault *vmf)
-> > {
-> > 	struct vm_area_struct *vma = vmf->vma;
-> > 	struct folio *folio;
-> > 	vm_fault_t ret;
-> > 	...
-> > 	ret = vma->vm_ops->fault(vmf);
-> > 	...
-> > 	return ret;
-> > }
-> > 
-> > For non-DAX XFS, xfs_filemap_fault() reaches filemap_fault():
-> > 
-> > static vm_fault_t
-> > xfs_filemap_fault(
-> > 	struct vm_fault		*vmf)
-> > {
-> > 	struct inode		*inode = file_inode(vmf->vma->vm_file);
-> > 	...
-> > 	return filemap_fault(vmf);
-> > }
-> > 
-> > Once that returns the folio, do_shared_fault() calls do_page_mkwrite()
-> > and then finish_fault():
-> > 
-> > static vm_fault_t do_shared_fault(struct vm_fault *vmf)
-> > {
-> > 	struct vm_area_struct *vma = vmf->vma;
-> > 	vm_fault_t ret, tmp;
-> > 	struct folio *folio;
-> > 	...
-> > 	folio = page_folio(vmf->page);
-> > 	...
-> > 	if (vma->vm_ops->page_mkwrite) {
-> > 		folio_unlock(folio);
-> > 		tmp = do_page_mkwrite(vmf, folio);
-> > 		...
-> > 	}
-> > 
-> > 	ret |= finish_fault(vmf);
-> > 	...
-> > }
-> > 
-> > do_page_mkwrite() calls the XFS callback installed above and restores
-> > the original fault flags:
-> > 
-> > static vm_fault_t do_page_mkwrite(struct vm_fault *vmf, struct folio *folio)
-> > {
-> > 	vm_fault_t ret;
-> > 	unsigned int old_flags = vmf->flags;
-> > 
-> > 	vmf->flags = FAULT_FLAG_WRITE|FAULT_FLAG_MKWRITE;
-> > 	...
-> > 	ret = vmf->vma->vm_ops->page_mkwrite(vmf);
-> > 	/* Restore original flags so that caller is not surprised */
-> > 	vmf->flags = old_flags;
-> > 	...
-> > }
-> > 
-> > So finish_fault() still sees FAULT_FLAG_WRITE. With an empty PMD, no
-> > fallback requirement, and a PMD-mappable folio, it tries do_set_pmd():
-> > 
-> > vm_fault_t finish_fault(struct vm_fault *vmf)
-> > {
-> > 	...
-> > 	if (pmd_none(*vmf->pmd)) {
-> > 		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
-> > 			ret = do_set_pmd(vmf, folio, page);
-> > 			if (ret != VM_FAULT_FALLBACK)
-> > 				return ret;
-> > 		}
-> > 		...
-> > 	}
-> > 	...
-> > }
-> > 
-> > After its checks pass, do_set_pmd() takes FAULT_FLAG_WRITE from vmf and
-> > installs a dirty+writable PMD:
-> > 
-> > vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page)
-> > {
-> > 	struct vm_area_struct *vma = vmf->vma;
-> > 	bool write = vmf->flags & FAULT_FLAG_WRITE;
-> > 	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
-> > 	pmd_t entry;
-> > 	...
-> > 	entry = folio_mk_pmd(folio, vma->vm_page_prot);
-> > 	if (write)
-> > 		entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
-> > 	...
-> > 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, entry);
-> > 	...
-> > }
-> > 
-> > maybe_pmd_mkwrite() sets write permission for VM_WRITE:
-> > 
-> > pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
-> > {
-> > 	if (likely(vma->vm_flags & VM_WRITE))
-> > 		pmd = pmd_mkwrite(pmd, vma);
-> > 	return pmd;
-> > }
-> 
-> Thanks, this makes sense!
-> 
-> > 
-> > >Namely, see the comment in wp_huge_pmd():
-> > >	/* COW or write-notify handled on pte level: split pmd. */
-> > >
-> > >if file huge pages get mapped writable, that's a bug.
-> > 
-> > That comment is about a different path. __handle_mm_fault() calls
-> > wp_huge_pmd() only when a write/unshare fault hits an existing PMD THP
-> > which is not writable:
-> 
-> No. That is simply a bug. There's little reason you wouldn't try do un-WP
-> a huge PMD if the idea would be to do PMD granularity for write notifications.
-> It isn't, naturally, because that results in horrible write amplification.
-
-Write notification is already folio-granular. Installing PTE instead of
-PMD changes nothing.
-
-> The fix IMO is to make it so write faults on shared mappings with page_mkwrite
-> never create a PMD.
-
-Why? Write batching from large folios is a win.
-
-> I don't think it makes sense to add rmap flushing hacks
-> for PMDs, when the common case (read + write) instantly and purposefully
-> breaks down to the PTE level (such that you really aren't supposed to get
-> the above; you'll notice that as soon as the folio gets cleaned, it will
-> get broken by the next write fault, period).
-
-If you consider delayed rmap a hack (I don't), it has to fixed on PTE
-level too.
-
-> See the attached patch. I know willy has been working on related stuff, so
-> perhaps he might want to pick it up.
-
-As I said the patch doesn't do what you expect it to do. PG_dirty is on
-folio and we writeback folios, not PTEs.
-
-Also, needs_fallback is not just "no PMD": finish_fault() then forces
-nr_pages = 1, so it is 512 faults and 512 ->page_mkwrite calls per 2M folio
-instead of one.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBEYXZpZCBIaWxkZW5icmFuZCAo
+QXJtKSA8ZGF2aWRAa2VybmVsLm9yZz4NCj4gU2VudDogV2VkbmVzZGF5LCBBdWd1c3QgMTksIDIw
+MjYgMTE6NTQgUE0NCj4gVG86IExpdSwgWXVhbjEgPHl1YW4xLmxpdUBpbnRlbC5jb20+OyBPc2Nh
+ciBTYWx2YWRvciA8b3NhbHZhZG9yQHN1c2UuZGU+Ow0KPiBNaWtlIFJhcG9wb3J0IDxycHB0QGtl
+cm5lbC5vcmc+OyBXZWkgWWFuZyA8cmljaGFyZC53ZWl5YW5nQGdtYWlsLmNvbT4NCj4gQ2M6IGxp
+bnV4LW1tQGt2YWNrLm9yZzsgWm91LCBOYW5oYWkgPG5hbmhhaS56b3VAaW50ZWwuY29tPjsgQ2hl
+biBaaGFuZw0KPiA8emhhbmdjaGVuLmtpZGRAamQuY29tPjsgWmVuZywgSmFzb24gPGphc29uLnpl
+bmdAaW50ZWwuY29tPjsgQ2hlbiwgWXUgQw0KPiA8eXUuYy5jaGVuQGludGVsLmNvbT47IERlbmcs
+IFBhbiA8cGFuLmRlbmdAaW50ZWwuY29tPjsgTGksIFRpYW55b3UNCj4gPHRpYW55b3UubGlAaW50
+ZWwuY29tPjsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BB
+VENIIHY3IDIvMl0gbW0vbWVtb3J5X2hvdHBsdWc6IG9wdGltaXplIHpvbmUgY29udGlndW91cw0K
+PiBjaGVjayB3aGVuIGNoYW5naW5nIHBmbiByYW5nZQ0KPiANCj4gDQo+ID4gIC8qDQo+ID4gICAq
+IE9ubHkgc3RydWN0IHBhZ2VzIHRoYXQgY29ycmVzcG9uZCB0byByYW5nZXMgZGVmaW5lZCBieQ0K
+PiBtZW1ibG9jay5tZW1vcnkNCj4gPiAgICogYXJlIHplcm9lZCBhbmQgaW5pdGlhbGl6ZWQgYnkg
+Z29pbmcgdGhyb3VnaCBfX2luaXRfc2luZ2xlX3BhZ2UoKQ0KPiBkdXJpbmcNCj4gPiBAQCAtODIy
+LDIyICs4NDQsMjcgQEAgdm9pZCBfX21lbWluaXQgaW5pdF9kZWZlcnJlZF9wYWdlKHVuc2lnbmVk
+IGxvbmcNCj4gcGZuLCBpbnQgbmlkKQ0KPiA+ICAgKiAgIHpvbmUvbm9kZSBhYm92ZSB0aGUgaG9s
+ZSBleGNlcHQgZm9yIHRoZSB0cmFpbGluZyBwYWdlcyBpbiB0aGUgbGFzdA0KPiA+ICAgKiAgIHNl
+Y3Rpb24gdGhhdCB3aWxsIGJlIGFwcGVuZGVkIHRvIHRoZSB6b25lL25vZGUgYmVsb3cuDQo+ID4g
+ICAqLw0KPiA+IC1zdGF0aWMgdm9pZCBfX2luaXQgaW5pdF91bmF2YWlsYWJsZV9yYW5nZSh1bnNp
+Z25lZCBsb25nIHNwZm4sDQo+ID4gLQkJCQkJICB1bnNpZ25lZCBsb25nIGVwZm4sDQo+ID4gLQkJ
+CQkJICBpbnQgem9uZSwgaW50IG5vZGUpDQo+ID4gK3N0YXRpYyB1bnNpZ25lZCBsb25nIF9faW5p
+dCBpbml0X3VuYXZhaWxhYmxlX3JhbmdlKHVuc2lnbmVkIGxvbmcgc3BmbiwNCj4gPiArCQkJCQkJ
+ICAgdW5zaWduZWQgbG9uZyBlcGZuLA0KPiA+ICsJCQkJCQkgICBpbnQgem9uZSwgaW50IG5vZGUp
+DQo+ID4gIHsNCj4gPiAgCXVuc2lnbmVkIGxvbmcgcGZuOw0KPiA+IC0JdTY0IHBnY250ID0gMDsN
+Cj4gPiArCXU2NCBwZ2NudCA9IDAsIG9ubGluZV9wZ2NudCA9IDA7DQo+ID4gKwl1bnNpZ25lZCBs
+b25nIGxhc3Rfc3Vic2VjdGlvbiA9IC0xOw0KPiA+ICsJYm9vbCBpc19vbmxpbmUgPSBmYWxzZTsN
+Cj4gPg0KPiA+ICAJZm9yX2VhY2hfdmFsaWRfcGZuKHBmbiwgc3BmbiwgZXBmbikgew0KPiA+ICAJ
+CV9faW5pdF9zaW5nbGVfcGFnZShwZm5fdG9fcGFnZShwZm4pLCBwZm4sIHpvbmUsIG5vZGUpOw0K
+PiA+ICAJCV9fU2V0UGFnZVJlc2VydmVkKHBmbl90b19wYWdlKHBmbikpOw0KPiA+ICsJCWlmICh1
+bmF2YWlsYWJsZV9wZm5faXNfb25saW5lKHBmbiwgJmxhc3Rfc3Vic2VjdGlvbiwNCj4gJmlzX29u
+bGluZSkpDQo+ID4gKwkJCW9ubGluZV9wZ2NudCsrOw0KPiANCj4gQ2FuIHdlIGF2b2lkIHRoZXNl
+IGhlbHBlcnM/DQo+IA0KPiAJCWNvbnN0IHVuc2lnbmVkIGxvbmcgc3Vic2VjdGlvbiA9IHBmbiAm
+IFBBR0VfU1VCU0VDVElPTl9NQVNLOw0KPiANCj4gCQkvKiBXZSBjYW4gaGF2ZSBzZWN0aW9uLXNp
+emVkIG9ubGluZSBob2xlcyB3aXRoIFZNRU1NQVAuICovDQo+IAkJaWYgKElTX0VOTUFCTEVEKENP
+TkZJR19TUEFSU0VNRU1fVk1FTU1BUCkgJiYNCj4gCQkgICAgc3Vic2VjdGlvbiAhPSBsYXN0X3N1
+YnNlY3Rpb24pIHsNCj4gCQkJaXNfb25saW5lID0gcGZuX3RvX29ubGluZV9wYWdlKHBmbik7DQo+
+IAkJCWxhc3Rfc3Vic2VjdGlvbiA9IHN1YnNlY3Rpb247DQo+IAkJfQ0KPiAJCWlmIChpc19vbmxp
+bmUpDQo+IAkJCW9ubGluZV9wZ2NudCsrOw0KDQpJIHRoaW5rIHRoZXJlIG1heSBiZSBhbiBpc3N1
+ZSBoZXJlOiBQQUdFX1NVQlNFQ1RJT05fTUFTSyBpcyBub3QNCmRlZmluZWQgd2hlbiBDT05GSUdf
+RkxBVE1FTSBpcyBlbmFibGVkLCB3aGljaCB3b3VsZCByZXN1bHQgaW4gYQ0KYnVpbGQgZmFpbHVy
+ZS4NCg0KPiBBbiBhbHRlcm5hdGl2ZSBpcyBhbiBpbm5lciBsb29wIHRoYXQganVzdCB3YWxrcyBp
+biBTVUJTRUNUSU9OIGNodW5rcyB1bnRpbA0KPiBlcGZuLg0KPiBUaGF0IHdvdWxkIHByb2JhYmx5
+IGJlIGV2ZW4gY2xlYW5lciBhbmQgZmFzdGVyLg0KPiANCj4gSSByZW1lbWJlciAhdm1lbW1hcCBh
+bHdheXMgb25seSBoYXMgZWFybHkgc2VjdGlvbnMgd2hlbiB0aGV5IGFyZSBhY3R1YWxseQ0KPiBv
+bmxpbmUuIFdlIGNvdWxkIGV4dGVudCB0aGUgY29tbWVudCB0byBjbGFyaWZ5IHRoYXQuDQoNCkhp
+IERhdmlkDQoNCldoYXQgYWJvdXQgdGhlIGZvbGxvd2luZyBhcHByb2FjaD8gSXQgcmVtb3ZlcyB0
+aGUgaGVscGVyIGFuZCBjaGFuZ2VzDQp0aGUgcGVyLVBGTiBvbmxpbmUgY2hlY2sgdG8gYSBwZXIt
+Y2h1bmsgY2hlY2suDQoNCisgICAgICAgdTY0IHBnY250ID0gMCwgb25saW5lX3BnY250ID0gMDsN
+CisjaWZkZWYgQ09ORklHX1NQQVJTRU1FTV9WTUVNTUFQDQorICAgICAgIGNvbnN0IHVuc2lnbmVk
+IGxvbmcgY2h1bmsgPSBQQUdFU19QRVJfU1VCU0VDVElPTjsNCisjZWxzZQ0KKyAgICAgICBjb25z
+dCB1bnNpZ25lZCBsb25nIGNodW5rID0gZXBmbiAtIHNwZm47DQorI2VuZGlmDQoNCi0gICAgICAg
+Zm9yX2VhY2hfdmFsaWRfcGZuKHBmbiwgc3BmbiwgZXBmbikgew0KLSAgICAgICAgICAgICAgIF9f
+aW5pdF9zaW5nbGVfcGFnZShwZm5fdG9fcGFnZShwZm4pLCBwZm4sIHpvbmUsIG5vZGUpOw0KLSAg
+ICAgICAgICAgICAgIF9fU2V0UGFnZVJlc2VydmVkKHBmbl90b19wYWdlKHBmbikpOw0KLSAgICAg
+ICAgICAgICAgIHBnY250Kys7DQorICAgICAgIC8qDQorICAgICAgICAqIFdpdGggVk1FTU1BUCwg
+c3Vic2VjdGlvbi1zaXplZCBob2xlcyBjYW4gZXhpc3QsIGFuZCBQRk5zIHdpdGhpbg0KKyAgICAg
+ICAgKiB0aGVzZSBob2xlcyBjYW4gZmFpbCBwZm5fdG9fb25saW5lX3BhZ2UoKS4gV2l0aG91dCBW
+TUVNTUFQLCB3ZQ0KKyAgICAgICAgKiBhbHdheXMgb25seSBoYXZlIGVhcmx5IHNlY3Rpb25zIHdo
+ZW4gdGhleSBhcmUgYWN0dWFsbHkgb25saW5lLg0KKyAgICAgICAgKi8NCisgICAgICAgZm9yIChw
+Zm4gPSBzcGZuOyBwZm4gPCBlcGZuOyBwZm4gKz0gY2h1bmspIHsNCisgICAgICAgICAgICAgICBj
+b25zdCB1bnNpZ25lZCBsb25nIGNodW5rX2VwZm4gPSBtaW4ocGZuICsgY2h1bmssIGVwZm4pOw0K
+KyAgICAgICAgICAgICAgIGNvbnN0IGJvb2wgaXNfb25saW5lID0gIUlTX0VOQUJMRUQoQ09ORklH
+X1NQQVJTRU1FTV9WTUVNTUFQKSB8fA0KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgcGZuX3RvX29ubGluZV9wYWdlKHBmbik7DQorICAgICAgICAgICAgICAgdW5zaWduZWQg
+bG9uZyBwOw0KKw0KKyAgICAgICAgICAgICAgIGZvcl9lYWNoX3ZhbGlkX3BmbihwLCBwZm4sIGNo
+dW5rX2VwZm4pIHsNCisgICAgICAgICAgICAgICAgICAgICAgIF9faW5pdF9zaW5nbGVfcGFnZShw
+Zm5fdG9fcGFnZShwKSwgcCwgem9uZSwgbm9kZSk7DQorICAgICAgICAgICAgICAgICAgICAgICBf
+X1NldFBhZ2VSZXNlcnZlZChwZm5fdG9fcGFnZShwKSk7DQorICAgICAgICAgICAgICAgICAgICAg
+ICBpZiAoaXNfb25saW5lKQ0KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvbmxpbmVf
+cGdjbnQrKzsNCisgICAgICAgICAgICAgICAgICAgICAgIHBnY250Kys7DQorICAgICAgICAgICAg
+ICAgfQ0KIA0KPiAoSSBoYXZlIHBhdGNoZXMgdG8gY2xlYW4gdGhhdCBpbml0IGNvZGUgdXApDQo+
+IA0KPiANCj4gLS0NCj4gQ2hlZXJzLA0KPiANCj4gRGF2aWQNCg==
 
