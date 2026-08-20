@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB9C0C5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 02:05:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5FBBC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 02:05:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A71DC6B0088; Wed, 19 Aug 2026 22:05:10 -0400 (EDT)
+	id AC0E66B008C; Wed, 19 Aug 2026 22:05:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A22AA6B008C; Wed, 19 Aug 2026 22:05:10 -0400 (EDT)
+	id A71C56B0092; Wed, 19 Aug 2026 22:05:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 939106B0092; Wed, 19 Aug 2026 22:05:10 -0400 (EDT)
+	id 9AE3A6B0095; Wed, 19 Aug 2026 22:05:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 677786B0088
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 22:05:10 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E162680669
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:05:09 +0000 (UTC)
-X-FDA: 85120005138.13.E5CD81F
-Received: from mta1.migadu.com (out-235.mta1.migadu.com [95.215.58.235])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A32FF40008
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:05:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sekiv8ZM;
-	spf=pass (imf04.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.235 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 753F26B008C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 22:05:27 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E3E981A0317
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:05:26 +0000 (UTC)
+X-FDA: 85120005852.18.D858F8D
+Received: from mta0.migadu.com (out-145.mta0.migadu.com [91.218.175.145])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C24071C0002
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:05:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="n1dhm/K7";
+	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787191508;
+	s=arc-20220608; t=1787191525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
 	bh=/jDDYXSbRaW8PhcOhBWb7QQ0tBcYH7mTzy2znvbWhto=;
-	b=vNe1DePPeIGuPDc1jr52kfAuellaT1Fu9oNxV9J4C41vs/Y+xns4V7vU6GJdrKP410fx7v
-	UBXpMIdkhXluERn/R8e9byR9NttRmhTxd1wAXDmWfzvYaaHAeSOJYDY8ekv+DEY1QH1P4W
-	ljhmXUoZHLxmEG7s2QGJgv6PHm5+BNQ=
+	b=3bGQDVtB/mWklhVOJYDaQaEsbijxrik6Ilq5oYeIplnuG1OvK1ku2wfaKoqf46n9EWB+oO
+	wcIOqt1CGkuovx73luqCnhC4rOoaAg/efduO/u2ugBIy1Az7b2CPgqFII2RzcBmloss0y9
+	FnMYZIqt7WcGFLQRIqCDA8dO8dLjwx8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787191508;
-	b=DZ0BZi9n7qqHYb6/yc4Xxk1WUSBj3vcO/3dAMFKbMTnv51Q0FiSQFJlDdHLVn7A38Oo8hZ
-	+ZEZ0dYDkiD7/NI2mnkyJwMhUTH5DE5nvUVFyB40GWZ5sz2vvd3l3oDIzcrgREBNPnjQDT
-	k4D8OUdZ3jTP/oRAQwFLYRlQGa2ufgM=
+	t=1787191525;
+	b=Vmbk2qSj7wEEXMRZ52m10wNesexPOpY/FR07kaGoZAOzk5hUtLTqh63hmcY8gZnMbgR6Dn
+	r+6T9dS+P0a6XmV/HNN8Hex5Dl6r67XTn75MUueOMWN4mXIiEVF6jl55pkRsnqPuST3Bly
+	63loDg5Ddy1nkCCNKY/Z2dSj39g/hSw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sekiv8ZM;
-	spf=pass (imf04.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.235 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="n1dhm/K7";
+	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
 DKIM-Signature: a=rsa-sha256; bh=GC5cAHTmrsC6CuFnURxYXv5THmItmLPch05Dbxb7Vgc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787191506; v=1; x=1787796306;
- b=sekiv8ZMjUGCHikLoLVarxjQaM2xoLa5hVEwU7jHHNcBIgk4VT4L5Kc0C7L6zDNUeKAGILoF
- 7TtgFmoFw3xOPiJ4yA98BgoMNa+7h7WnZKYcg1UAxvAYHOcJTo6jQCzUf5Izd5eRgmv+oZlmZix
- fbrghF/06qAdOR05lTf+4e+A=
+ t=1787191523; v=1; x=1787796323;
+ b=n1dhm/K7ypyoCvIGPu4Rvv2RXnj2Oj0zxeDdnxSvQ3RmTvRaBuSgaDZv89lLE00lkeOCCDo8
+ jTrSmsSmM8jSCisZXlGyfMBNLqLKYtXnNjbH66/DWLVXq+/ivI79xwNQjeYZFjXlfufY9+WURGU
+ 44kSYVCkcWbDu2jGmE70NA7I=
 X-Envelope-To: linux-mm@kvack.org
 Received: from [10.63.107.123] (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id e23c4e87174aa198;
-	Thu, 20 Aug 2026 02:05:04 +0000
-X-Mizu-Trace-ID: e23c4e87174aa198
+	by smtp.migadu.com with ESMTPS id 59725e7d187116bb;
+	Thu, 20 Aug 2026 02:05:23 +0000
+X-Mizu-Trace-ID: 59725e7d187116bb
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <c1dfa305-dcd2-4b09-a83c-030e26015e1e@linux.dev>
-Date: Thu, 20 Aug 2026 10:04:53 +0800
+Message-ID: <d9cc6abb-ac30-4936-ae2e-891dfe62e6c5@linux.dev>
+Date: Thu, 20 Aug 2026 10:05:15 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/7] mm/mglru: introduce helpers for manipulating gen and
@@ -91,13 +91,13 @@ In-Reply-To: <a13c3895-cc53-4f91-aac8-2bfef765eca5@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: pxmhsra4wx3yts8qieacz5guzwj1i4fb
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A32FF40008
-X-HE-Tag: 1787191507-871857
-X-HE-Meta: U2FsdGVkX18Bc8tbMfxIDo3JaGEtVfWx7Vj7z2+OQ3aBgKQAjbfZzZbqLr3bVa3dJN/fkRgNjxTIMEVoZff2AvcMJbUREHFLSE0b5AsnP6L7yWw8vgirQsJ2yYurcuZKa2M7gukzmsj/ySNBXvkpav6MkNX83sae48NS+9DLKqTdpuN+nlRDaObS7zao82VBS4jmpCAMuyhqfSvPPDwq160r+otB9zsLlKHazeFIcTXsLiIC3DSfyK3IOP5UwnbPDlNGpMP/kd2Z6w4ZtKAaZZwlJTdVtpylaWnAvSPJb3pd5WlKDdjNfdM/AUOSa3i7cLE4jMJ7q5UMnIi8A5+EAaokKI+vMTCIL4UJwM9wXRHwXb/Ntv5UZXamPY3YOQpbykHkswhRRVghw9W1fHOPlzoF1iXWsogITiU5w5pJ5jtBiQEGpKK5MdNVRFLC+9Evf8P0To8WE/tIbsK708+3X0/glpzfTTcYSMT7o3fBoLfOOqB99jWutmqzC7sGZHgpxJazJ1IWgvsIiCGUOSPzXwkWFMtCJztVqK24Gngt2/Sbl5TR1a3X6uhgMmqJKUxZibBOVmdaRCq+2ADOsGVZodL31CYhH3AfdN3LMUPWVY+u439W5REiO5Vr3J0YX3U3YI92Vw7S/xVfWW7pXhq0+GZkVfY4O5xP3Zvl66PLS2q3PPB7cGWQGsz70A847tHOaeVTRhNAMD81WYQDTpvHWlghA4XC3Os46YripxJcTDqSl6e0N/Y/fvGQYD6i6b8RgoaAZlM8HhuY4aTH0JOd6OEy/308/wANBu22DM1seZy0BHyr2S/ZtSm48azaUXnfDkrGSOWRqBaB4XwvhodKLSFaRBws9O4REIflMXn9q8gj0k8Ma32Vy87b3S/DyiT7dAAZvb7memc4pdp6RSWYVp0pyUeX4+xJisJ2sPyWcl9Ih8ebUNnC8L2xqKuSQbCtN3FZwOZJOBndHNmGZmJ
- BAKlgiSd
- /oyah03Pt6xJ9hgtVsSHwTwhHc2SWea4teYzfK9S4iH+84gc4w0mASExjtJZQpUXUXpjq8XlbfFjPGJX1aK3qWtpKrAUyEtWLyQUHyrrj4qdl0JcoTTuNf1iFGP0geim+8/Uk3gZE92bwdqAYLjr3tlb0W+1Ool1n7U+Mmwqblr+LkI9H60zzF8m8/egKIa8y+HpcmEspcDZs3zLXTUdX8wPVNjQkoGwfMHZD0J3jC8ClbhTw2606hX76/ERMrca/zbSZ1c0IZq4TiXD8B93kWx94WGj1TrxUXMxzElhqDbFe5GWCFk3ughOPvVaQOiaKZD3sQNDweoQ+G/Q=
+X-Stat-Signature: 3pdazhfgjyerggi4mdo5i6sirerxwhu9
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C24071C0002
+X-HE-Tag: 1787191524-493980
+X-HE-Meta: U2FsdGVkX19SFqjI0d7niTI3c0bOiUnDEMkHVIutC6M9z8GfmZPtyMwswdSmqq+MZMR/RvewEvDs1J3LKWfAWBeC+vfgpUvTUgowscx2VjD+5famPOzApX0gLLyTFPYz988yZOuUEYN6AgYwy/twzVZqZNJANDbAuBiYOlkIt+Yprzgo1eTu89ac/Qj7Jd1/mCRjjC7CVJLTr3VvCgD5xP9mkfq3/YPHQAhgrc3ZRCqOyCOT+ke62UPZpCX7af7EdOQKvK8q6YyYFOIM/mkUM4jx9Us7vbo9+dZhABR8OCQlmIHfVehlFMkfrRHFQ3QRmhC5lWWfGWYBS1hhcnm/yxjdDRNMBf8pwFeKB3txGcw/QcAsoTA+oKS8NdXwHoU6ZD48kJmi1nkQqJptPE/cUGaAPtFgon2UjQg9D8aW6qAq7/OSaN16Z9f1fHJZlVmWQwCBeRfXTTHr2d3r+1RYtzy5KYm4oZCY28WlFY2AgARtuKHnUuhl8DABt7ICDFvmlFb1MmTcxUKtzMUD4TPCOf0kXnUmIS/vLvnJgsM7jniIdPTqLJOK1tYcIeWqt+zXCo0VKcfAXd5unAW8N5juWf9zEaZG8Jh+wym7+D1FrgxJRJUEhI/cofnFEAntI2Eg0q9Ai9cBW6WWORBAzABPGUGYl6s41JsA6/Y0CD0DkwhcfCgQWsbl5EKAw3QqsNIDA7MpPW1M/uasFy+psgOftzNRIqakaX8yWKSgWP+Xttw/mGwvCmGdOIi5q87k4PRbZOVJF1SNQ0ocJYsrQFgCgVmvHdjHpcUsbCQf8eery/W6JvniKDohT6mF2n5ORHgz4OzK2v6kIhhZw2090siiMaY6vD2zyCzEipQlrLETYcQ3ajTT+fKJe23MdLZK6VfEjfIE+ZlXrGyVmBlUBabu7qR/TIUcP/WKqss36Sdr/pVWM2yDVCzg85X1AI3biomIPA1v5RZHE+Img3ZfnbC
+ ToIC1n8G
+ TFUrrSNcYVoW98XgiIb77EjaBQB+NCJ5Tur7njM4VkGgEtVmZwN7BaC7yx/1JvivvmjLAMtdzW13MJbcErJvchyA73QOEbgBDFJiw9tOCXqh/a0tE4ap5afRke9YaNbBuVynD5wnmemIkRc6/v/fX1b+RDF+VQUwfk/NmQp/PSVdWEhN47vDaL+YKomWJixLW525qfMDj/a1YEw2qJnbAJVez2u4PZwlTvFt0fF/Vcs/atBdINt/g4uuZeEMbT/bbwOzhhpV3IKIe5G1Njgtta92wJqFDpAEKpZ0vEyifz6UPCYErVgXXZOFuGSkvpGN8NvFY53/qSM8R/T0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
