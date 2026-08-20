@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2F3CC5DF82
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 07:10:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDBCCC5DF82
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 07:25:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB2536B0095; Thu, 20 Aug 2026 03:10:15 -0400 (EDT)
+	id C36AF6B008A; Thu, 20 Aug 2026 03:25:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E88EB6B0098; Thu, 20 Aug 2026 03:10:15 -0400 (EDT)
+	id BBFFB6B008C; Thu, 20 Aug 2026 03:25:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC5BC6B009D; Thu, 20 Aug 2026 03:10:15 -0400 (EDT)
+	id A87406B0092; Thu, 20 Aug 2026 03:25:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B00CA6B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:10:15 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23FD0C037E
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:10:15 +0000 (UTC)
-X-FDA: 85120773990.03.44DD3C9
-Received: from mta0.migadu.com (out-119.mta0.migadu.com [91.218.175.119])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A3FB6C0004
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:10:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LIQ35nAs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.119 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FFBD6B008A
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:25:34 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E0DCAA3436
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:25:33 +0000 (UTC)
+X-FDA: 85120812546.09.7F82881
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 16923C0002
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:25:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=GCbbos1z;
+	spf=pass (imf10.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787210731;
+	b=5GhKbV4EC60Ijxsp+3k6oLON5/q4cxaSXmR18a9GyQCqTUIlHGqdWyju0cAQZELpswILMM
+	8UDL+JHf6JpEokIHM1/rUCk9Y8fpF6qIk616w1lk+w4kdRZwbXxrVfvqHDJkMCobS7tLap
+	yFlnesKhWkW5DC9OmOIA5As8wh+3t4s=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=GCbbos1z;
+	spf=pass (imf10.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787209813;
+	s=arc-20220608; t=1787210731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hQqFVUCRMzsebtGyK0iuZYvf2IcU+yw+QCoVCPy9pXs=;
-	b=N3PL3aG8wXRJAKdSvq7K+LVHty+7+fSeQYSnRLtgko7zn9iv+nWFGBZ/0tyhiu6pM3VZ/w
-	YlJ1vTYI8PfiNU/O4ENVGHZbm5FokzW8nITZO9djF3yWRGpXqnGooRVDibJlFcF3K09Ou5
-	/y619PgGE5Rqwr/97r5BoVAgzN+6EO0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LIQ35nAs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.119 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787209813;
-	b=jzGIbK7hTBK7LL2koCZCwz4ALTRI+t28PFEx0sLIzbi9EwoNhmgpPou82ecb2QlVHrSwmh
-	2+Tz7sd5NhTttIck2XDcNHrp8znIuhcHH27ygiOU+5HQH0ys9dhUGx/7S7l3P+4zogFwMK
-	XN/iREkuVuKI68C/BraVLIBjdxrSMuo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2+3QA95E2Qu2z4Bb6C3P8E4Hs/HGV5s2I/yaYEntkPM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787209808; v=1; x=1787814608;
- b=LIQ35nAsg6QJauv+pYa4RnQF6Ym2wlWvjOYeLoznppA0uVJXFftwqfpwq2+vet7yMx0CffAO
- Op+lFbTnu67gjWChUDwyWQwYJtvBGAM7I3Ni9EMND2ezOF46q8JRztzR4/USjWCEl7flpoiXb7V
- UbKbUNIGqVY4ibbEcbbgYnUo=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id f83ced2c4d3f1100;
-	Thu, 20 Aug 2026 07:09:58 +0000
-X-Mizu-Trace-ID: f83ced2c4d3f1100
-X-Migadu-Flow: FLOW_OUT
-From: Hongfu Li <hongfu.li@linux.dev>
-To: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	shuah@kernel.org,
-	akpm@linux-foundation.org
-Cc: cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	hongfu.li@linux.dev,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH] selftests/cgroup: Fix cg_run_in_subcgroups ignoring arg parameter
-Date: Thu, 20 Aug 2026 15:09:44 +0800
-Message-ID: <20260820070944.31451-1-hongfu.li@linux.dev>
-X-Mailer: git-send-email 2.54.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0aS8nJQuIv6WMeImqkSlMoHWqr3+monhbt6PSzVNU1o=;
+	b=Y9kSIN0hNWIUs6uRTJUjR3zn0wBZ5gPBZ9QOoDtN5bN1cu48DAyH1MLwLuQ1zTR9j0jJOI
+	kEA+CkF/gmVm4zfjCu9QZkdtTiYX8dlaEBhXy/eoYb7LLpu+TyP88P+cwYHp6LmKfeqZ/y
+	MPgJmmh+QwQjXtcr0YkcS51xb5cj0I8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=0aS8nJQuIv6WMeImqkSlMoHWqr3+monhbt6PSzVNU1o=;
+	b=GCbbos1zv5wzpHRtr03X6Nnbm9Ni29G7TcsC/96HDOiOFkhywpm7If5MfQDqbM
+	n/GlAMXZoNxKvhDo0n0c9CLWZcOwkLbG72iayXOOOHpdt1stp9q+kgePKbij1KJJ
+	IQcTi9RsxL6CGr2mS9WYTEPUZJSvBmrZl/8sGlB+tGbYk=
+Received: from [198.18.0.1] (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgDXnzrVq4ZqKaNENQ--.9035S2;
+	Thu, 20 Aug 2026 15:25:11 +0800 (CST)
+Message-ID: <4efb053e-a4c5-4fb2-9a95-f7ad70ff963c@163.com>
+Date: Thu, 20 Aug 2026 15:25:09 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm/hugetlb: do not dissolve gigantic pages without
+ runtime support
+To: "David Hildenbrand (Arm)" <david@kernel.org>, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org
+Cc: mike.kravetz@oracle.com, mhocko@suse.com, linmiaohe@huawei.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+References: <20260817162039.1511838-1-xialonglong2025@163.com>
+ <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
+From: Longlong Xia <xialonglong2025@163.com>
+In-Reply-To: <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgDXnzrVq4ZqKaNENQ--.9035S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WFW5JF1fXr45Zr1rGr4xCrg_yoW8Wry8pF
+	WUWws5Ka10qa42yrs7Kr1DJry5AryfZ34jv3yaqFy3AF1fJw13KFyjgr1jgayFkrs5Ga15
+	GF4DG39rX3WvqaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U3UUbUUUUU=
+X-Originating-IP: [61.171.229.236]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xdcVWqGq9cj9wAA3t
+X-Rspamd-Queue-Id: 16923C0002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A3FB6C0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: r3cejsqykwk5t38feecftn3fcgjr9xia
-X-HE-Tag: 1787209811-677629
-X-HE-Meta: U2FsdGVkX1+n+NCceE//6S0/IikI8w1Dj7bKkckY6u3+Mic69G1ARcG2iwfRqzn2JNMz5iK0vlvIPCianjRVMMWNajIXDCQpViF0VHKgetcC9xEl/4rC+hXJx3UYmAIgM2v3ZQ1s2rK9wqf+woL7D9YrZ92A9r1oYDqycav3kBUYSNYpi+1FZr8e7e2fG0ufBVQPmObc3ULUE9IruBGPIWXV3gKPPYGVmFExsjKsRUS2XoKvzmzav0P94doW3Q9txeSZ8ZWE7VNhcVBAEsUp9K3cxKlIJH5fRRhoFIov5n9La0z/8BvjB8UkVd6njuWhll6iapKl/BoC3YAi/Rp014vsyL6fJgiaxZEUsZy1VvC2ykRDulYxwrfpfC3ujFHo7P0yb0ogbO2XAXvzVLMcOHv3yxwD7F7iKFvv6mOt89NFJ0ekAyYuZ4Iq2S5RLjQBE8VJNRq+16chtCsqHHx7jaDydzmKW4hDAUDMGYG6s/K8//QeS5yCIapRTFvsnOxka2/HGHdtG7UctoZEpJSOAYiIn8XZeecWj3V7WR0VQgSndFhk/IJdSyUN6Edggp1R/t5xTtPXo1K1zI7UXA5TbDPrMER1rbnYT+x/Qryyn5g1xVA5EhiVDoeC/6sSDzZvf6TDmoxst45e83j9LE+kSXMrBEkRa4f8IIBtY5JueFAoCjW2+uiEH08vcOHxKcFfXhwrgwARe1tUGdR84y1mYOe4wlKZRSA5FkQZr64KLPkDh3QZOseR0Y9JzGz1kry7hu7632RtwyJ4klLiK+6ZxOoTlaHbBsvCNBtheuOtOd+M02eicnWxXGd1frvwyRhpisHt6l/cemblxpRASisN+6fWRbzqqmIG2xQ18v0VJXXCqRBV2iEzmItNBXb41OgvUigluTCWag1N1KRhtFhTtNGci1APsys7mjCRmI8QGHccj4CWl5DYvVpkxIJ4sby4vJLM4JOsBqhIoaw8BdJ
- 9U9sFCCx
- rTxmaPKgB7dk7QvGUJJ2ryMt2MhuzboMmSRFXyeU2hc53vPHDdxgzfdAPP3qgjpsg31J7VJ6k8IfkuI839Wan7/WRtSvkNxNWkQQJdLNAvUS6pDM9Yj102F6U1QNz9gotf4vrdsckLO+4PfgCRArIExxvkS3Fi6UWAuNYpsnEZF/Dzp6LnQW6xNg+1SoUWCFKseuKsz27r/zfwDiOBt9YQ+15zSimpvh04K7m1snX2/jPLRGPPAG+Ug5mqJ8zfQxXMKKGQgGsuRoBck8MNBJDWJKaYQ==
+X-Stat-Signature: wygfcqpikpo77new8bxnfr6tni5gwq4u
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787210730-746756
+X-HE-Meta: U2FsdGVkX1/RuIxP+BFRwnPwBKfSVoNQtPZBEvLkM9aP/GRYYVGqFsip8rOgGB1HJ4a1O4AbUxbHVOM0mFiv13+PsI0UTpUOSosqwPRm1kGlOa/0g2dCkOYPeE9fnnaByOVjxWzAUpA/D5MkJiGdlCY9TT7XxfNIbGfzcvMpSR74Fitom5TWDhSvgfi/XnZ6NunHZwtzkpTqrm35zP2IzyvLTVATgDKDcrcROL+9UNdtbDVgg59kpZjQkkmNyLnm20kOBEXtNF2CqLxZwZh/vn7/kjdVpH2lEIJEYgU7aWIBKdg68b7l6hEj7e4TJ1gwYq08+bfDBXUzDAI39ZzYWBTf9hcQ/Xk1PkmriwWVXzA7MenvVQIa9rTK1t9kBvKBpVzlxLvwkfgsuPoUWCe4IZskMVeknd9Zg1NDZVt9NSxKsiQYAWDtUs0wtojwaoqf2dS4w0+/79Y38+FWcWldfb63Yt8OoU0ArpHvnFdLI6VyySJ5riDfBkZ9/5fI8E7cxR9IWYUe6VaGm4vMbiAn/EOWxr+XXeoxE8y9AseHl8g7aAMCZmIXaqsMc8twT/IQducXAa/tdkusOA4KmKZsaNj7hXYIMzwBzvqklEJZyhae2U9ADdKDChVUSxLHhnTsferCdPFJc8t/6hiT0XqcaxA2stZzDCqk8yii2eF5TF4U/wohOokxB4VZu1/pUfsp+FDaVSokeNR9fCovo2DRr36DKhLKXnqTASO8aU2ZkTYB7kM+TOhZl6iyh4ozawvhei+RAmZ5YjUa8u10gXby+c1pgKGWvjUADp3dAUpS4Bjm/8oyugbWjzApZQjL3LARK9WjsfHPn35GdwQ8ytKH/22/22sja9qsn/8YdtCq0PSy3RVr9ZNMRuIFBn3dodu+umEgwBWQASy5WTeWIUtwbmSHASo8ijKgVwSNJAKeMHc/7lO4HoRRscV+0btfEQKahe5fd/DoNRw1nHrlDvp
+ gr2dF7eb
+ LHtRagF7XmdJRvI0kj3FzqF+XwTNh02H/p+Yp8TQGj/vwj8pW/g/5969ry67VnAEcanjJkMSx/Z0xmtp5J1Hti4OK5Hky+Abs7+Z4LEexuY56dhewHfiOLNYPdRYwNaw4mwqBTEjF2f2H2vC993QyVIyip5S3Sap9IYIrTH2jv7zeqaoYe3JXknlP2Vu0xZFMOoUbLfCl32R5hB/VLQp6vmqLyOzevI2zm/ZZC5A3At9+M3r5LvkAuyMfWNAg9kOyd2pWVodMuC6GMF1BCuPjgDeTo+IvurPaXFPC6ZmgpdFzlHy6OzInYsToQXgZU/3J7x5XMhqDJ9E4al2aKfoWuhMoJQcebqTLa53uSdywjMyjKxvOVqM4GyhiFO5R6mna/OIe6rnkWXsGJxGC7RkIWlQKf6VtBUjnVT4W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,37 +97,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hongfu Li <lihongfu@kylinos.cn>
 
-cg_run_in_subcgroups() discards its arg and always passes NULL to cg_run(),
-turning the (void *)100 from test_kmem_dead_cgroups() into NULL so no
-allocation occurs.
+在 2026/8/19 16:52, David Hildenbrand (Arm) 写道:
+> On 8/17/26 18:20, Longlong Xia wrote:
+>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>
+>> dissolve_free_hugetlb_folio() doesn't check hstate_is_gigantic_no_runtime(h)
+>> though remove_hugetlb_folio()/update_and_free_hugetlb_folio() silently
+>> bail for such folios
+> That's odd. Why do they silently skip such folios instead of warning that
+> something unexpected is happening?
+>
+> This screams for a cleanup unless I am missing something :)
+Because until this patch, dissolve_free_hugetlb_folio() was the one caller
+that didn't filter hstate_is_gigantic_no_runtime() upstream. A WARN
+would have fired on a real path: hotplug or hwpoison dissolving
+a boot gigantic page on a no-runtime arch. So it had to stay silent.
 
-This makes test_kmem_dead_cgroups() falsely pass without exercising the
-"dying cgroup with charged slab" scenario it intends to test.
 
-Pass the arg through to cg_run() to fix this.
+This patch guards that last caller. The rest either check
+hstate_is_gigantic_no_runtime() before calling, or operate on folios that
+can't be gigantic_no_runtime (surplus/temporary gigantic folios aren't
+created once alloc_gigantic_frozen_folio() returns NULL).
 
-Fixes: 933dc80ec262 ("kselftests: cgroup: add kernel memory accounting tests")
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
- tools/testing/selftests/cgroup/test_kmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+With the gap closed the bail can become a VM_WARN_ON_ONCE:
 
-diff --git a/tools/testing/selftests/cgroup/test_kmem.c b/tools/testing/selftests/cgroup/test_kmem.c
-index 1db0ba1226b9..98e9f9f45ab9 100644
---- a/tools/testing/selftests/cgroup/test_kmem.c
-+++ b/tools/testing/selftests/cgroup/test_kmem.c
-@@ -145,7 +145,7 @@ static int cg_run_in_subcgroups(const char *parent,
- 			return -1;
- 		}
- 
--		if (cg_run(child, fn, NULL)) {
-+		if (cg_run(child, fn, arg)) {
- 			cg_destroy(child);
- 			free(child);
- 			return -1;
--- 
-2.54.0
+   // mm/hugetlb.c:1401  remove_hugetlb_folio
+   if (hstate_is_gigantic_no_runtime(h)) {
++       /* Callers must filter gigantic_no_runtime upstream. */
++       VM_WARN_ON_ONCE(1);
+         return;
+   }
+
+   // mm/hugetlb.c:1463  __update_and_free_hugetlb_folio
+   if (hstate_is_gigantic_no_runtime(h)) {
++       /* Callers must filter gigantic_no_runtime upstream. */
++       VM_WARN_ON_ONCE(1);
+         return;
+   }
+
+Separate follow-up, or fold into a v2 of this patch?
+
+Thanks,
+
+Longlong
 
 
