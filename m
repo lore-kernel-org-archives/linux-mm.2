@@ -4,115 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDC6C5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 07:59:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3551C5DF82
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 07:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9AFF6B00A0; Thu, 20 Aug 2026 03:59:46 -0400 (EDT)
+	id 721946B00A1; Thu, 20 Aug 2026 03:59:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E721A6B00A1; Thu, 20 Aug 2026 03:59:46 -0400 (EDT)
+	id 6F5DE6B00A2; Thu, 20 Aug 2026 03:59:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D88296B00A2; Thu, 20 Aug 2026 03:59:46 -0400 (EDT)
+	id 5BFCB6B00A3; Thu, 20 Aug 2026 03:59:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BEAB06B00A0
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:59:46 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C62B680680
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:51:43 +0000 (UTC)
-X-FDA: 85120878486.07.E803142
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1475B80007
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:51:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pxV4vAcy;
-	spf=pass (imf30.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787212302;
-	b=vc6Fi6ze7iGj6OryaE+hVIRiYamFXUNuTc+6w2vMEvKEMLNaTNMTwQ7J8U7Vy7LGJYgEcj
-	tda+yf/SYEIg4iroPjHTlengGY91DRBTdbe2gLIG4D1DED2O8+71RBwvk0VzMoT1HNUf6k
-	Fo5x8uruGNqO7hZsABTlse55DV9r4/w=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pxV4vAcy;
-	spf=pass (imf30.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 29E606B00A1
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:59:48 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D4961806A8
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:50:41 +0000 (UTC)
+X-FDA: 85120875882.23.F36C344
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DB0CEC0009
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:50:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=neAQbv1Q;
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787212302;
+	s=arc-20220608; t=1787212240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tcJ4CUJSv3TwjcKRyBJSt8frSb6FbG7BZe62qdbIbBk=;
-	b=pUcJR2jr3J38o+Wh0VtPc2HxZw2tCGAHlpGVv4bguD6xyhQGrFZQmr88aVI3n/bojASHXE
-	ZO9OnUvYZr2q9PfWpbAPTUh7hgh0FwfPB2GEj0C/AEqK73ej5E/3K7ZTi/CxdOPYknpEdO
-	AhxEC+oFBEo0h72vji91lhPimcqc20A=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38e3efab7e0so518611a91.0
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 00:51:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787212301; x=1787817101; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tcJ4CUJSv3TwjcKRyBJSt8frSb6FbG7BZe62qdbIbBk=;
-        b=pxV4vAcy3EwHzX8nhTPuThSFbv5C+Q6dbUgIX7LDDXK1WBuUl27Ef67QKlK4sZhDx2
-         0UbjoFv50swR9QsTUH9CM1J0tyiU0K8x2IoVxO5vPpfqQfFv8FOJxKh9spx4wzIXCK/l
-         17vtcGHUjJYVyay2KmxcTYU+ZD+3Fro22agf81LiRM+vsMqiOPkxSXpAnBkk21qKx7xs
-         PjOY2LQp9tqppLwacwcCOMM4rX3+X6I8JrISyBFmSI4HW2ov+Ortrcgkd6XtBBPN0zPQ
-         jY8kt2mwkkPRzCpokHpuI6sAZNpuMysS8+58PpeGS/KNxdA9bqn+OKgLITQkTYyPT0cu
-         gZRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787212301; x=1787817101;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tcJ4CUJSv3TwjcKRyBJSt8frSb6FbG7BZe62qdbIbBk=;
-        b=OXlpr1mQMsz8+OExMvH5B6PC3HrSlX12vbS9zJuek9t5AoWIuI+kSwfac7nrqNMu4S
-         ENkPDmSm02ANoP7QfIuelaBn9UR8UaC51bGumiDlkBwdVBHIGXVRtN55MvfERKtC2NUk
-         nvunh2RVcklH/wtgobJZe0XGq+ixGuhbECrahnkKLDZxfNtQR+UqGK+S389q+rDIVcLq
-         +l9pkp3gsxtfy9SLVksdv3ncaB00sawqF6aO6cdskxD5XZMMayNjnHK3Zn5mEq9zKBeB
-         acfPT7XZWwBKrNSecIIOD7MaGZ1DxSFyqw+M3/fmgJ97dayEO7F5XKLXejoTTxs8YYmD
-         a1yw==
-X-Gm-Message-State: AFuF++mAs8cGeHQ/iU3mBADU371C2MaikNWvcvOA/T8zRHxoIQZBoEB6
-	OM+DvEdXExYVqpsLGXJ6pYDTn6wY8O0SoTaUrRgZrp5hMuCG8HfBrKzO
-X-Gm-Gg: AR+sD12QdH1RfoxNlUr06blvL67GF80NAsKhBLQY3ZI1yhqaBGlYav8a1OVNDKX/RUt
-	y1cmE1bmL6y7Wo0LYsYIDrhKnU2gUjIzYVGa4x6xbpVTBosw2ZE113OYYIcEHdE8Orqm44SkAte
-	mI4/d2iNBVm+yUcx3hE6U8MMb4riy46o10mYCQbvcBgOiAXgkJNLLu/b41njzVsKMuxTFBOZFhc
-	/YTnVW4FSVq/BUsWscs1EiFKc1xgPsPvkEZrBogSE3EsPQwq84E5sXWXFOj28N7mh7VhtpTYRqK
-	X/0tkw2dnfXOt3ZEuy9sL+Y0/TzGRDLvbfE1HArdAV3pTLqNeySkI81jiNdrGhP5zbSXAw/Poti
-	unq+Rns1bQTlsiYp6K+sH4GiioOKs21FQwdzpsR6djmrzKaW+eMsQPcv5gwrIes52NIJyxru73J
-	UyVb3WdKTiBjYAstfs7Q6iJEK5BhnipUjA5n4xUDjUNhgoRsq2hPl3ziNqzzOJAK4lO4XxcUM20
-	W9Key9CtSLvHND/CQ==
-X-Received: by 2002:a17:90b:394f:b0:38e:9ca8:e99 with SMTP id 98e67ed59e1d1-395a05f2a2fmr4888764a91.5.1787212300631;
-        Thu, 20 Aug 2026 00:51:40 -0700 (PDT)
-Received: from PC-2B0BA31200898.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395ada67783sm455429a91.3.2026.08.20.00.51.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 00:51:39 -0700 (PDT)
-From: Meijing Zhao <zhaomeijing100@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Wandun Chen <chenwandun@lixiang.com>,
-	Meijing Zhao <zhaomeijing@lixiang.com>
-Subject: [PATCH v2 3/3] mm: memblock: synchronize debugfs reads with memory hotplug
-Date: Thu, 20 Aug 2026 15:51:22 +0800
-Message-Id: <20260820075122.3294367-4-zhaomeijing100@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260820075122.3294367-1-zhaomeijing100@gmail.com>
-References: <20260820075122.3294367-1-zhaomeijing100@gmail.com>
+	bh=4WJtv0jR6sStv5vxf0tCXJE/Qix9ltmJSQswWyWPHUg=;
+	b=3rzwwOpXEj86lS05/MPIkTn1Axn+QJ/HkJDg2s7zGoNmbtIFQX01jTf/QBBuRik+aInKkK
+	xBF/2tN/xigZ+NTr7Y7Krx0qjF3ajCSqJSNOfskamk7ozRc5wVatP/mEf979+74Z5P+ba/
+	jlNxJdSqwCWKg8AyMqofEsqwqwDR6Jg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787212240;
+	b=KiuMOw4grCsLfVBYiw3C7A0o60GKmkKB9H1DWlz0tAPcyADihe7jjC5afSqr1+CQrEG5QP
+	l+HgPoA8IKgoNNg4I2rHTUaAGMt2TT6L6A8t5m/75obY7g7Sl3DFa1FWSQg47SAJgcAdvZ
+	9GajMYwZ2HHtr/Nh17ivfIyfTHykR90=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=neAQbv1Q;
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2634043E60
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:50:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9AF1F01558
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787212239;
+	bh=4WJtv0jR6sStv5vxf0tCXJE/Qix9ltmJSQswWyWPHUg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=neAQbv1Qjm73GEOQvCZhElj0H/BirpBxAP3xFBYL/IUh/9Q5O6umHfDhcnAceoSNN
+	 kFETkhtjaaUreVRsOR+7qK19kPNr2DF7VIzBe2HC43j5ayW61vZqThvyvPW/9SJh4M
+	 +CaEormIP15qbyQ9/jI1GdbarRNpCqiyCWZXgwu5euvGPNI9A2UwzhqySVtsTCIdF5
+	 p6iAnStUkQOuXGk+4qKckmcyK92geTHS9FFjUEhZm6xj5cLR2bSfFcY2eZsJRgi/DS
+	 RjKBgWiFiN+Ty2aRdXuidyvO/sUs8LPP2kySegiyu26LOtVkNvvaSB9OGYdM6dNao1
+	 vLxjHg/ain/lA==
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e7632b193so132514685a.2
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 00:50:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrAGiNUu5iXRz5hMrU/Bap5D5mqHxdLPg9zJwM4YjZEbuF24kjLDxE37Plzi/Zut8ylbRT9A60urw==@kvack.org
+X-Gm-Message-State: AOJu0Yx+eOLg+n1CFE65ITorIBBI/tlbZ/KfgjEF2fEv/yW/eeH919Ut
+	ul1qoeD6sLH3uQVopZuP2dq07usIOZPtHHZpvWmoZgKZNpPrz7IZN6ESPQF/k/r7UPJ8583XBFR
+	Tp4io3d/rlSRNl/Embhssv7xYLPbhZvU=
+X-Received: by 2002:a05:620a:172b:b0:915:a111:86ae with SMTP id
+ af79cd13be357-9371e67b4bdmr1040292385a.35.1787212238275; Thu, 20 Aug 2026
+ 00:50:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1475B80007
-X-Rspamd-Server: rspam10
+References: <20260820072641.253591-1-ridong.chen@linux.dev>
+In-Reply-To: <20260820072641.253591-1-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 20 Aug 2026 15:50:27 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wq46FkDQ_MhvEvtgdUQN5A_+_P+b6gbDvfEadus3WAaA@mail.gmail.com>
+X-Gm-Features: AcwNN1WpZKVRcGQYU4YLusRNzGFSPplkASha87Nqpx4DHOMQ0BueSEE8CgJPFcw
+Message-ID: <CAGsJ_4wq46FkDQ_MhvEvtgdUQN5A_+_P+b6gbDvfEadus3WAaA@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: preserve inactive placement when enabling MGLRU
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Steven Barrett <steven@liquorix.net>, 
+	"Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, Yu Zhao <yuzhao@google.com>, 
+	Oleksandr Natalenko <oleksandr@natalenko.name>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: diqrfrzujt5pht5zgoo4jj13dzb9fe9h
-X-HE-Tag: 1787212301-737262
-X-HE-Meta: U2FsdGVkX18DrDwqMWxW3s1CnP5coIdremPan96TJ1v+yemiYn/Vp/egF4lZDExAi10Pmdg/uPtgwcVbJI6YpSVfD9eBvicl0cwUgCCQYIyky1nG4z7AQVPgWAmvm9ksbK1GyGsvx1YiQoYFftqdQo/WvMcUNjM9nvJJuW696Z7oND6kFKvMBzQKVIP7FR+p/apN2osQDWIBEPf0vy9l9SrXjM/eOCTMchldSFvUbaTxRNKDUJAHen4e4AfqP7qixYlCVjHp/pObMMTHNGuSBmXVzgpYOAraJEUILygQgH71NO16UG5FlPxPSmW9fqgInDV/cnwHLIok+meblJVF3U6DqNL2tqWiuW8Ohxo3nN5wd8juCU/wWZdZksMiR67qTFaQEe5USpYX64LsRkYtIa7uIxQWHRFssQqpg4ThrJgdHQTdLa3u9zr0HEKMJAfrxk1jMxm9JU3GVgWZhV223pJrsnd0W+xhueMuDIJpOoxO99nILWzGKbjYryRj7bdSIBysDSH4rT88G1rb50wNWD+8IjzzoNMvT9QQlgu/ClPhzQY9Sv3ukbgC+jO/C+XJ8wvlLNo7MlzhRQeaqLSiX+PCO0JpxmnxV5xWlgfUk0llPUzNO2NW4tpySQbykC+ipjbiIHWb4w2c1e0vIqM7ZN4EiEslwz1t2F0kDDHxx0iU4S0avyKxFbD/Xt96PgJeGPTh4tKuE8KfSHoxgw44xr0diC//i4i0KaHy3I6D7OMLImaB6UCW+Aa8mCzRrbCW6p/Nni89vcam8uv25hBI0GhyrpunAYXeIVTeyGYqgpwodmJhiraWuMZeceaP1uFwYVUxl35G3aoqDr0Bh2zY996nV3gIDBC07XWX71kbHxAeYGIdwY05II748vmux5ACI16hX2XaL5VowAh61Ff+sgVHQHM1/r7s6g2gLk65/+V/wueyNIEcUAKOjEW0qrAkng+KYe1DprIj0BGUBh6
- L3pK1RY+
- VNJ19lVWwMnejmxZsNgFTP1vPaZZn8ICTG3V/vkWzrp6lsgfzI3Jl/z3Rut8bgYoEjT7AswSSNRKGyXmeL4w9a/WYCi1YE6iC0/zOf1C8yJBixxbE18djRX2bBA1X8DtUC2Yv2xNfZ88jm+7KH+/qmfS8M/IUW/lYk5h1elT/tJ18s1tgajnvya2C3EyM2CQ6PxbEpxqCXh7lQP1TgKbTL8lNf48KZbdMcOaMyrS/Mb5tq/4kCTbe+axdPfUq80BDBmc40UIX/izz2KFomyKpbt3ZTbPjmwpKwUkl/CKuZsOLspPiKVuzSKjIVYPR2YhUc32FpqDvfu6ZDQYUDVC8MOL4UYMbyzcBya3A3AfYVSizddvlOSJPygetF4oW+7+QlIpx0noOpipVPjpdrzhEDHdyYN60hopwNJLp8tCYrQAfagXSoD6A2wt3jl9z0skLu0ZTT42BXxlzp26KH8mQzr7fXSANZCxxqff2X9OPXfLze6g0t4TmsuFUMgUMPvl1KHAv
+X-Stat-Signature: epquz357cficpg8f84nq59qeoqcuyjhf
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DB0CEC0009
+X-HE-Tag: 1787212239-777834
+X-HE-Meta: U2FsdGVkX1/KW2QzjRRKRuf5BEDBKasVuKxOa6mCRJYOKzKfKCzdRmHuTIBZpXeQSyGLiKryeG+1D/4YJ1PL0jCFd8Gi210zQkGv6JTIUeS/xD59GvmGM00X4dvwKdwsylSH8dG+HLwqdjAXQsAWRZ1dqTpE4t7y55eGYbiF0fAfL4qmVHmkoGnVnaCpMymSB69JIRJqAKhM9TqVDXmd8MC0DZlu2xcgivrzdaWtD+5H5r1P9fJDpMgCmVxW2T4ckn/eoXAkwxuQf0RODiZaAhYKNq+x+MrmmRYSUS6d0PS57GnKnfw0dBWtkCRHUeNwGhjGHG+QO/Var9d4z5pCGbsOD5i8YaE84pJUlSl5L3Pop76+BGkWAns0Bvos8q66x4kZN7TdEPgcRJRXm1njeiTzbVrCgnUycJURsKGP5hb/a7ikjvtw/WxUifdY7rzYTExUc2T2hcJdb81i3iITwA9U2xHav7/s4htwxVj9+o75K4yCNdMLY3CbCAYhXcMJQBfl+9U+OPygkpxd5vj1bCKKRmAbJeY8NqDvWUoMUdh2VKe5KmIxTISlHoYPeX8h/53IhjFkZavQTMeUCMWwj6qysq2Zq6i0vzqivGAfohjT/DN9LYKFkG9VV3eLfKmIhTa60hL4Ju1MnUC0nhx7YGNTSP0f4UJwtmqsMjb4xfQUxCPFKwnVXVk0HVyXUW2Nn7GjX4KK4+PlCXHuQ85hQf0jHMPpAb65U/o++hlSgXho9O2r4sfMZuZww4qqb4fmE+yO2S7gsGXLF38KAVgcwaWHvm0GrVNQAQxWxoB/QJoAMnSnJhd94w4x51SyRT/+YLXZEsSAXqpRiNAj+ofXh4pQCmbEHlHFgyivApxYsjo3YQFqq+OcHuXl82KspCO/wmWN1mIQL6aSV/GA29Nmc2RqdFls5LcBDnXX+x4tKseqgcQH65VHwxaC2B8ZJoGhngI5oe1bRHBfo4rAzKD
+ 3u8XDIgb
+ bNZMD/sjEWJla8HoJZq5riepmRdRviUQX++cu/AYC4Afz4xiHyfMSktjzGrjOI9wk+ufTS6J9DT0bf3jaSHbUG66GF6b01I0LArpDl+jsQA18iuo0hqHaGbjebQPjJd+xFo50KPq0nr2rYJ2egvm5BlVs+qA17SKfph9v0yCLU79Ktb6KXCAjZ169AB4ttDPphrjbJTmAjbPQmT3vnrbiMoC8VeEZ90XWwv0fC1gg1cDmMWeW2Cla29ufma8UXl7rZq3bCmw2E1jUcFmucUSuwBlTlHOIFQQcWVPUrJTE0qajR/Hg+1cz6K6N1IMMofUgcs06kvpbhm2eQLw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,53 +109,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Meijing Zhao <zhaomeijing@lixiang.com>
+On Thu, Aug 20, 2026 at 3:27=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> When the LRU is switched to MGLRU (echo y > /sys/kernel/mm/lru_gen/
+> enabled), fill_evictable() re-inserts every folio via
+> lru_gen_add_folio(..., false).  With reclaiming hardcoded to false, an
+> inactive anonymous folio (no PG_active, not in the swapcache) takes the
+> "gen =3D MIN_NR_GENS" branch in lru_gen_folio_seq() and is seeded at
+> seq =3D max_seq - 1, which lru_gen_is_active() treats as active.  Its
+> inactive placement is lost and NR_INACTIVE_ANON is folded into
+> NR_ACTIVE_ANON.
+>
+> Pass reclaiming=3D!active so a folio from an inactive list is seeded into
+> an older generation.  Folios from the active list carry PG_active and
+> hit the first branch either way, so they are unchanged.
+>
+> reclaiming also selects the insertion end in lru_gen_add_folio():
+> list_add_tail() for inactive folios, list_add() for active ones.  Both
+> the legacy LRU and a MGLRU generation keep the hottest folios at the
+> head and the coldest at the tail, and reclaim takes from the tail.  To
+> preserve that order the folio must be taken from the end matching the
+> insertion end, so take inactive folios from the head and active folios
+> from the tail; otherwise hot/cold would be reversed within the
+> generation.
+>
+> Tested on x86_64, next-20260812, 2G VM + 1G swap, ~1.5G anon pushed onto
+> the inactive list before enabling MGLRU:
+>
+>                          Active(anon)  Inactive(anon)
+>   before switch (legacy)        2952         1548792   kB
+>   after `echo y`, unpatched  1552052               0   kB
+>   after `echo y`, patched      15144         1536636   kB
+>
+> Inactive file folios stay inactive either way (NR_INACTIVE_FILE is
+> preserved).
+>
+> Fixes: 354ed5974429 ("mm: multi-gen LRU: kill switch")
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
+>  mm/vmscan.c | 29 +++++++++++++++++++++++++++--
+>  1 file changed, 27 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 94fc4f25e99f..7be4cec9a838 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5311,7 +5311,23 @@ static bool fill_evictable(struct lruvec *lruvec)
+>
+>                 while (!list_empty(head)) {
+>                         bool success;
+> -                       struct folio *folio =3D lru_to_folio(head);
+> +                       struct folio *folio;
+> +
+> +                       /*
+> +                        * Both the legacy LRU and a MGLRU generation kee=
+p the
+> +                        * hottest folios at the head and the coldest at =
+the
+> +                        * tail, and reclaim takes from the tail.  To pre=
+serve
+> +                        * that order, the end we take from must match th=
+e end
+> +                        * lru_gen_add_folio() inserts at: inactive folio=
+s use
+> +                        * reclaiming=3Dtrue (list_add_tail), so take fro=
+m the
+> +                        * head; active folios use reclaiming=3Dfalse (li=
+st_add),
+> +                        * so take from the tail.  Taking from the wrong =
+end
+> +                        * would reverse hot/cold within the generation.
+> +                        */
 
-memblock_debug_show() walks a memblock region array without
-synchronization. With CONFIG_ARCH_KEEP_MEMBLOCK, memory hotplug can
-concurrently add a region. If the array has to grow,
-memblock_double_array() replaces type->regions and frees the old
-allocation while the debugfs reader may still be using it.
+too many words, maybe just:
 
-Hold mem_hotplug_lock in read mode while producing the debugfs output.
-Memory hotplug updates already hold the write side of this lock, so the
-region array remains stable throughout the walk. The helpers are no-ops
-when CONFIG_MEMORY_HOTPLUG is disabled.
+lru_gen_add_folio() uses list_add_tail() rather than list_add()
+when reclaiming is true. Match its ordering to avoid cold/hot
+Inversion.
 
-Fixes: f9126ab9241f ("memory-hotplug: fix wrong edge when hot add a new node")
-Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
----
- mm/memblock.c | 3 +++
- 1 file changed, 3 insertions(+)
+> +                       if (active)
+> +                               folio =3D lru_to_folio(head);
+> +                       else
+> +                               folio =3D list_first_entry(head, struct f=
+olio, lru);
+>
+>                         VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(foli=
+o), folio);
+>                         VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio) !=
+=3D active, folio);
+> @@ -5319,7 +5335,16 @@ static bool fill_evictable(struct lruvec *lruvec)
+>                         VM_WARN_ON_ONCE_FOLIO(folio_lru_gen(folio) !=3D -=
+1, folio);
+>
+>                         lruvec_del_folio(lruvec, folio);
+> -                       success =3D lru_gen_add_folio(lruvec, folio, fals=
+e);
+> +                       /*
+> +                        * With reclaiming=3Dfalse, lru_gen_folio_seq() w=
+ould seed
+> +                        * an inactive folio near max_seq, which
+> +                        * lru_gen_is_active() reports as active, so its =
+inactive
+> +                        * placement would be lost.  Pass reclaiming=3D!a=
+ctive to
+> +                        * seed it into the oldest generation instead.  T=
+his
+> +                        * reuses reclaiming beyond its folio_rotate_recl=
+aimable()
+> +                        * meaning; it also picks list_add_tail() above.
+> +                        */
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 7eddcc412618..620a5dd7f5f8 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -14,6 +14,7 @@
- #include <linux/pfn.h>
- #include <linux/debugfs.h>
- #include <linux/kmemleak.h>
-+#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
- #include <linux/memblock.h>
- #include <linux/mutex.h>
-@@ -2916,6 +2917,7 @@ static int memblock_debug_show(struct seq_file *m, void *private)
- 	phys_addr_t end;
- 	bool first;
- 
-+	get_online_mems();
- 	for (i = 0; i < type->cnt; i++) {
- 		reg = &type->regions[i];
- 		end = reg->base + reg->size - 1;
-@@ -2944,6 +2946,7 @@ static int memblock_debug_show(struct seq_file *m, void *private)
- 			seq_puts(m, "NONE\n");
- 		}
- 	}
-+	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(memblock_debug);
--- 
-2.25.1
+Maybe that's too verbose. How about:
+
+"Borrow reclaiming=3Dtrue to place inactive folios in the older gens"
+
+> +                       success =3D lru_gen_add_folio(lruvec, folio, !act=
+ive);
+>                         VM_WARN_ON_ONCE(!success);
+>
+>                         if (!--remaining)
+
+This is admittedly a bit ugly, but it seems to be the simplest
+approach. Since switching MGLRU on and off is not a common scenario,
+we probably don't want to over-engineer it. So, with the above change:
+
+Acked-by: Barry Song <baohua@kernel.org>
 
