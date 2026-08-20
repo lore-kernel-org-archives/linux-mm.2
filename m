@@ -4,112 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C056EC5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 09:59:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DD2FC5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 10:02:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C90966B009F; Thu, 20 Aug 2026 05:59:14 -0400 (EDT)
+	id 8C5CA6B00A1; Thu, 20 Aug 2026 06:02:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C68CD6B00A0; Thu, 20 Aug 2026 05:59:14 -0400 (EDT)
+	id 89C846B00A2; Thu, 20 Aug 2026 06:02:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7D6E6B00A1; Thu, 20 Aug 2026 05:59:14 -0400 (EDT)
+	id 78C4E6B00A3; Thu, 20 Aug 2026 06:02:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A2DA6B009F
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 05:59:14 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 272A6A01DB
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:59:14 +0000 (UTC)
-X-FDA: 85121199828.23.C2416B6
-Received: from mta0.migadu.com (out-34.mta0.migadu.com [91.218.175.34])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2CDC01C0003
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:59:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vqfL6IYG;
-	spf=pass (imf18.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.34 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F9C26B00A1
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 06:02:13 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E9812140716
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 10:02:12 +0000 (UTC)
+X-FDA: 85121207304.17.9C63562
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7FA6EC0008
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 10:02:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=kHRXLlc7;
+	spf=pass (imf10.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787219952;
+	s=arc-20220608; t=1787220130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HK4TsdXsgwo/6J3xTGj7SDTw+psf9lHqOngnihbBBqs=;
-	b=acLW38bXZ16NbpD3bKNfy+4ukpohb8qrwT4afAuL0jUpRmXrG6zC1YLBbhuilzOGGEVUIc
-	X1MQ7wmmA6C0Y+0IBYeStYvbCJlKVD79cEolCHdaLPNN36Y4Cqf6XRrxqzBMKHn/ceoiqO
-	lBhnJTaadfgwA4kzgvtA4kBEy6TvYM0=
+	bh=5ZUL5Z9SYt8WjEdHcCbeeDg/xImehB3cb41xy7ozOFU=;
+	b=6W3FrCog6Ev1E/eTMT7uNxAlbFvKQDOknMl8V6fWErW1las6C0SQUSAohWyIIRozFU+oGz
+	MLqfEXCiNc/izE/OPYSbO+CrW7UfWbcGyfvNhCkwWu4icatJa7MEy5lbfjJoJIRHUy7f/d
+	e1bjLsxmJ3FZWAU7NYgJObxWuasgNTg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vqfL6IYG;
-	spf=pass (imf18.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.34 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=kHRXLlc7;
+	spf=pass (imf10.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787219952;
-	b=NdIQM8500SxXUyRBOchVcGdKxFY1Y41Q6IEMS5gre42E3l8Cutou3yJnXmww8llmG5pEzH
-	TdXBe9SMlRABcRWJ+O/osSROP7yx8DqiBmxqJDrXnvJ0MB2HV7IiiuAW0ogGIBSOTdHH+h
-	bVyjAh9NQJW9Esj54FkMRSABgv8Gwg8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ibyIE9gKf2iOY1+mVf6oD4UPNPJ9RqEZuDFV5F2gXBk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787219950; v=1; x=1787824750;
- b=vqfL6IYG5bmPmIHZ93WmL/Wq/O1RN2hPCoTZ0Zdnyb3zDniktYfWdkZSzBh82ifiQFP19I5v
- zH8xlDuZPucwGWdi/Qd/VZsLQ2F6NZXLZmRhtyOKSNBIIGssxHrH1yYNCUEH1gBrIoNWJuqGyYU
- j/ddxJNgNFD1Mo3If6Orz2xg=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [192.168.110.173] (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id e22ed27fc468e85d;
-	Thu, 20 Aug 2026 09:59:10 +0000
-X-Mizu-Trace-ID: e22ed27fc468e85d
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <7b2733a4-71d2-43bb-b319-1ca8defba17e@linux.dev>
-Date: Thu, 20 Aug 2026 17:58:58 +0800
+	t=1787220130;
+	b=eZq3sARgH2FkDwtnv9iytmzvV+/uzPvkoiIEjm1KkL430xcwwzUrJMlST2lP4lhM/vYHoH
+	pW1+osyrOAiy0CC/K8e5P6E19gLDGQjlyCXai77ivf8OlD67NKGpduBf1PfqohGYIdazhF
+	pyFM1bvBLURdE4799WC/kdkgw4tyEoo=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67K99kcX471575;
+	Thu, 20 Aug 2026 10:01:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=5ZUL5Z9SYt8WjEdHcCbeeDg/xImehB
+	3cb41xy7ozOFU=; b=kHRXLlc7BMKzX7CLDN6tzH2CiQdDdlljDHSt54dJKBPhkQ
+	j3p8fFJP2wUd0RR1V0f6Gtb+zHHSp5ocxZbPCq8Zyh/qmHnk9tZyD+fXAyWWXfO1
+	s4lIbIJe/+YQK/fw7O9pjineSdi4stHUS5bHFZZhsz4xrg3j8199C36IwXgb+kW1
+	abpg8X6oFuJJ9z4Tq2HvocL3y9t42piujn/YsdXlgcyFOwxoipQTSuqb/tZx4w75
+	vVJp+uNQVlpQXCUdNMckirpt04JLrilHaaNsPPLHETTKwExQJCluzDK98ECLsHVX
+	ApFcCH2sqI5+f/8L9HtcQczHZzGDTg9ydVcjSlAw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu0hh5s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 10:01:57 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67K9uJ9Z003091;
+	Thu, 20 Aug 2026 10:01:56 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33xhdtec-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 10:01:56 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67KA1sbU51380596
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Aug 2026 10:01:54 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 051F42005A;
+	Thu, 20 Aug 2026 10:01:54 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1366020067;
+	Thu, 20 Aug 2026 10:01:50 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.123.13.2])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 20 Aug 2026 10:01:49 +0000 (GMT)
+Date: Thu, 20 Aug 2026 15:31:47 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        Carlos Maiolino <cem@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, Zhang Yi <yi.zhang@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Dave Chinner <dchinner@redhat.com>,
+        Daniel Gomez <da.gomez@kernel.org>, Theodore Tso <tytso@mit.edu>,
+        linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [RFC PATCH v3 09/11] xfs: Implement RWF_NOSERIAL to parallelize
+ RWF_WRITETHROUGH writes
+Message-ID: <aobQiwQeqtzcUy-h@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <cover.1785908600.git.ojaswin@linux.ibm.com>
+ <945bb8c88a121580cb07d0311c6742a2584ea6b2.1785908600.git.ojaswin@linux.ibm.com>
+ <aoMMIfyEuuaDFpMh@quentin>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, Yu Kuai <yukuai@fygo.io>,
- Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
- Ming Lei <ming.lei@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Coly Li <colyli@fygo.io>,
- Kent Overstreet <kent.overstreet@linux.dev>, Alasdair Kergon
- <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
- Mikulas Patocka <mpatocka@redhat.com>,
- Benjamin Marzinski <bmarzins@redhat.com>, Song Liu <song@kernel.org>,
- Li Nan <magiclinan@didiglobal.com>, Xiao Ni <xiao@kernel.org>,
- Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Dan Williams <djbw@kernel.org>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>, Ira Weiny
- <iweiny@kernel.org>, Andreas Gruenbacher <agruenba@redhat.com>,
- Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev,
- linux-raid@vger.kernel.org, nvdimm@lists.linux.dev,
- virtualization@lists.linux.dev, gfs2@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 3/3] blk-cgroup: move async bio punt state to blkcg
-To: Yu Kuai <yukuai@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Tejun Heo <tj@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
- Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>
-References: <20260818070641.756747-1-yukuai@kernel.org>
- <20260818070641.756747-4-yukuai@kernel.org>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20260818070641.756747-4-yukuai@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zhnn6p85dr7sbxkyjfjhowahhiqx4jn6
-X-Rspamd-Queue-Id: 2CDC01C0003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoMMIfyEuuaDFpMh@quentin>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=MthiLWae c=1 sm=1 tr=0 ts=6a86d096 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=bQ7MZcWsUW_w0_kgk-kA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: g1VDju94doV9WRVTbrrDtB0eSdsWXssj
+X-Proofpoint-GUID: Ct-dVH7gAufKA4s268R5rd9r-obPPj75
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA3MyBTYWx0ZWRfX9HFFzydDJ5hH
+ oefgEnsN1owK02tJRzaHztoTDVNgn4AgLCO36ygvGAzvCSZ/jqXYZS6aRc5IyTNcMec/SRUhxUg
+ OfeWMeu1313Ojo8AQJh0ljI/w1Ylic0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA3MyBTYWx0ZWRfX4GolvT/WcCpg
+ duMbiLR+zFPUFNbA57TRsEnIye9d4i2neF4Q2TjTATl3Y5ZeFgSfXddp/Q40wMQOZ0r53afk0sL
+ VDpQ/xe9hyiRC8kweFlqYjzj0vlb08vgAJpvCXjCNJcX0Kc5afyA6nHSz7UhEkCY7RM77hJik41
+ EdDggafm0ee0ZDDvWlff79EdIcqSu+JmNGD/QodX7rlkc7Li+Nmik5Xji35YSYK5BZ9+1Dz1Hwf
+ Dz4D4OCAdXlO4C1pPmdqyDZaPU0ZdaDdFrok+qCuqeTbKYhtRb2xEAtt+cHjx9Qt9zuPFhus+LU
+ 0Pi6XRlzpq920AR6dW7dt+FLVxL/I4xQam7eOkQkXZ2bavEQFuRU0ZjehQTZJRKT2HGegph94gQ
+ I5kQjZQlg9uV23ybXZC6qDjZPlC6yX7lcUy0E7/Y805GTg9jc6N5j/K92tN42nSMl28x0cGFPGF
+ bl5w3haSpRjwtG20G1Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 bulkscore=0 phishscore=0 clxscore=1015
+ spamscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608200073
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7FA6EC0008
+X-Stat-Signature: rop1qoxeekeo56zm7iqrg9o81zwt3cit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787219951-420451
-X-HE-Meta: U2FsdGVkX1/RStNSP3dBynocHmi//yr2biiolO+Nw/Qq2d2Nu6D5v98YshRi1FubMNkwEmIYbM+BwWQxz8bScFMlw6tRlf+/R8au3PDtHzm46MVMtwOCWvydwjOpnputmvKon9bxRrvJFB4c2qb01RvoGO7h8R675OxCoxIRt9Pw2fQ9SOtfDKKtFm2LnBIcdc78B0GEPm7iOQNmVFvhiwEDxFHfuWiwZMKon51IDIwViB9m5aoMsmoJugZtjrghGnBvbneAxAgThLxzIVDfHVJXXIj8Qs3uizvEKAzHT7JydE2UFqIjNdoiFYZgmhy49BE6vFx6R1a9ZEWk3E5LPaM+YMYoBVmWTg0tATrjPlvxa7lJVwivFWb7D6dV0sWeCAmKWH+fHyg6L25ISXuny33B8vtGbGac4pGnflM4On43EPdb/7ZJb6w0hxeNyUleUL2/l3QnDiH6TKU1b24x+y18/PJfNDNDk5BWvHRzvMm7x5pntorqbrOYY+98fNGsuJ+aGxE3nhqg/1R+ByjZKu2VvhV+E0yxIlOm7952UFXxSTrJoF6IuYmvdGo3RApyywI3NKc5ob4B2lfgnuypH0KQpkgDu9WLmdSv4YRbfPovTCOH4jbG1wvIYP61AtYZPZnY6HGMSIEXclVO7TsSKQV/8SkXU4DOeNowiZXROvsb+kS/0jFub2U9z92ORvAd56evAMLmJcZq1eH7a8ktlmjYMOsEFfwQOB4Wn0pmXjyvWKrOFVaqGklSCHQL26SIM9tcCuja0yFjS2sDe4sPDPFw7j5BciYBWxzonEVLOXNmvfG/nosQtumwQ1lYc+jE8+0faVEuDfVEpjtCkeCXjkLd+TNokTeZosxOnZKZvyfd1kR437mEqTyIzFpuPKlRt4xLkV35Y7H8FTCyhDXMUgJXWB5en6nD8kD2+Ae5vCd51oqBm4ub1ZDKnYnCdk1IfVr7UChNqnqB38r7YO+
- Tmjl1MSa
- A2C37O6NLk/9izPch+wfjosAW3nj+S1wHEcFN0olk49J2ZsRZ+fJyMMgtxs+LRYWu385kGsCDb7nVrmwP9w3JcyvtnokMobyRArZ32nlb/siTSNvEMF3RSOCu+xvYhehq1b5JW1MwYW3OE9AyZhSilCTQtdSTBx3h4EyOLbetqu5/sgqEU8Zx22oZ+CXj/x6Avw41XduhTeNGbMaXrOKMX9Qqi2GIndxeCzepyumoz6akYXqSFprVXHGgcGx9owe3CkTwYVF7c0gM54oW3i3yVDoA/9aVZyN87xA8sCYmREe8LE6/ku4FC6s8Eqk01lWKP0z6R2E1eWDudX7txM8+N84qUsT3WoAmKwZ4c7Dt+SPrCi8mZepz0gaQr/p6G/WUTDyC
+X-HE-Tag: 1787220130-809831
+X-HE-Meta: U2FsdGVkX1+2vqBQK3dg/JQkBDyBgjBQK/UaIg7IbWv3SD7hy5wUpgL0WejsN4BAiy0qY3kuJkWwrlWi3B7f+VQD6I04T+J7eH32F8P5oqu/ScWiOZwKKrswz65NsPYBQ6kVmSirGDWNglJv9UsVDpSQVm2iiDx2LbUdjQ+0ikKfzZGGNT1gvWXTYziovN+OIwCxbXX+cwGb0NR/dtUC5cPTLh10Q5T+gx0rdJlbcbMKvVZdAOQjkVUmiaMFB9iaJWGLKOh7QeLepqsSlOvNH8X5jebfoUgZ+QMuQ9nBLe7PivoBLQ6ovuUReX2qOsVpY6ww/pxizmR9RnQpdOTjsyhVOYqykzG7nAZtBNUfQI2yOr/zX2YIu939YIHEwBMXm4vY0WnTOn6HuNTkhQiwXVkaxszPJslJqt3She1C7TUktUshb+iiAfPU2uAbIcMlv0DVZIaQiaa/Ign/LAMuO1ZKsUyDNe0oy+fbZpxnJxQ8gPpJ+UPFP778yVp7FUEnqJzoHYFeU22y5QTEITA1YgAgUUnVxxqjPNPhDPbMWn9QUZK48sj9N7gszWQerLJtFyQTvNWRFd2n00RzWqBNnnvzNx6tpx5UfU6r8iblMx26PSeD3wuDEb9YkaPC7Hykr4ZZ3eG9MUnzp2DsajB39KtAPAahuIJoLjaCX8cRUx49vOQu33Wwuf2VekpdluePgbf14FJcb+/6tYpcJuZlroxgt2GAvH6rmFETiOgBLNb2jhJTRBt/FG370hW6Womde1gxoZQSvj+3xbT3lbhOeoF2/gtGuQVPVk1VhZZhJ2Zrk4sM0rmrzCwLvScJqJAE8I+OPi9mNHZKfyWPEKUhXrsEIjmINhlKW9JSTzKy18l/5Z3y4WclLaDq3TOMZl/t7KbmuFqjoOkawBzJ+Wb8LuOi4Nqc+xgXmYaXReLhotmPOXfF1HDDgbm3kizKDJJXzo8vV/lj0wKbAz7h7Hp
+ AIiCSL4G
+ fNU/Bmhio5YQ1WMC8VaWBJJhU3EQ3XpzngYLhe913g/B7kDTlUury1lgYpftDPo0RLTmatKJrAanToBXMLzy1abn9yHGYFtx0y4Kv8TX+UQ2797ZyJ6X/oHnPB6fxxHV+rnYqAM8VFqV7dXnAIycOio3JouMCmBc3CtRfEOyL30PveZPDqLgYjx+Cq46M1MTb6YhmYfjixr4wF5hgi62yOjEwhcu0r6leW4QB7unZLX61s9eH3jll0SU6mpRRPuxVSEKotYZFchSCd+XepsaJNUkFWSyxZbLh7oNU3f4dr9pqKuf93NWjtLLwccTTSnVLWVWFxs0eXx8jKh9B2XsxR0ldTvCNoZYyBhKA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,23 +151,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-在 2026/8/18 15:06, Yu Kuai 写道:
-> blkcg_punt_bio_submit() currently queues punted bios on blkg->async_bios,
-> so it has to call bio_blkg() to find or create a queue-local blkg.  Bios
-> now carry and pin the blkcg css, so punted bio lifetime no longer needs to
-> be anchored by a blkg.
+On Mon, Aug 17, 2026 at 03:33:06PM +0200, Pankaj Raghav (Samsung) wrote:
+> >  	}
+> >  
+> > +	/*
+> > +	 * Writethrough implies non-serial writes ie writes can go
+> > +	 * parallelly.
+> > +	 */
+> > +	if (flags & RWF_WRITETHROUGH)
+> > +		kiocb_flags |= IOCB_NOSERIAL;
+> > +
 > 
-> Keeping the punt state in blkg can instantiate a blkg even when no blkcg
-> policy is enabled, just to bounce submission from a shared kthread.  Move
-> async_bio_lock, async_bios and async_bio_work to struct blkcg, and queue
-> punted bios on bio_blkcg() for non-root cgroups.  Root or unassociated bios
-> are submitted directly.
+> From a user perspective, shouldn't this be an explicit user flag instead
+> of implicitly enabling for all RWF_WRITETHROUGH?
 > 
-> This preserves the priority-inversion avoidance while preventing
-> blkcg_punt_bio_submit() from creating blkgs that are not needed by any
-> policy.
+> Power users who would want performance over POSIX compliance can enable
+> this but it should not be the other way around IMO.
+> 
+> --
+> Pankaj
 
-Reviewed-by: Tao Cui <cuitao@kylinos.cn>
+Hi Pankaj,
+
+Yes I think we just wanted to float the idea of such a flag but I was
+unsure right now whether to have users pass it or enable it implicitly.
+
+Thinking about it again I think I agree that we can allow users to pass
+it even if we just reject it for all cases except writethrough (for
+now).
+
+Regards,
+ojaswin
 
