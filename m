@@ -4,140 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8A13C5DF85
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 17:46:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A874CC5DF82
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 18:03:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28CD76B0095; Thu, 20 Aug 2026 13:46:26 -0400 (EDT)
+	id 56A336B0095; Thu, 20 Aug 2026 14:03:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 264376B009B; Thu, 20 Aug 2026 13:46:26 -0400 (EDT)
+	id 4F5096B009B; Thu, 20 Aug 2026 14:03:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1566E6B009D; Thu, 20 Aug 2026 13:46:26 -0400 (EDT)
+	id 3BBDC6B009D; Thu, 20 Aug 2026 14:03:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DF0626B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:46:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6DA904024E
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:46:25 +0000 (UTC)
-X-FDA: 85122377130.08.D26A07E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A3C761C0005
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:46:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UsCwLrRV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 081EC6B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 14:03:01 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C84BA027A
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:02:56 +0000 (UTC)
+X-FDA: 85122418752.23.F7F7C06
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0BE25C0014
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:02:53 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=rTRFHt4F;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787247983;
+	s=arc-20220608; t=1787248975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2fIdalCmTaw2AjswTgZRpQgDXscO6AG89u3FfnnHiks=;
-	b=EHvUshi79O4PEZpkZGSfsylf8FxabJITacj4F67aloJUdWRDxK/KdSQDKk2kpRKGTXDO4o
-	lLksfTCozfAl321dE0bruD/IQJb3180wBrsKzGwjgpXpyKfKR95p3qo+7crikw9MgxjTmZ
-	ncbNG6kL+5JIcWC57ylaGUH5DrsrA6M=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UsCwLrRV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=/nTZ7s1goF+GPCz6EL3sBTg9gNDkE+Bk0F4MEDCId3U=;
+	b=EpARL8ChSSjk70awautYMU8AIB9doSzgRCtbSBTUpM4GoEf15Cg82qjWHiOKRTp2pZTOia
+	99x+mqzxaYkff9FfVxtdx8KYmV5uCvFYR98pyOSKN0zL9e3X7pg51IWgFYrX5Kw9SLiQ4H
+	JyTLJ9OLaEhH2f300SP5yVmS+pJiO98=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787247983;
-	b=tpF+Uor333WV33kCVHywgk0Yfx9G/G9ULWTABOPBN7DE5shyEkwaWsyly/yW4zjEcm6Ull
-	UULlDe95pBUZHjN33Aq2KB51G+WTkQIFtLwf5HjbwSRmliRDimSX6gSAqnrH57eUuAAhBG
-	1HCQ6QPhRDv5PGYah+iVD2DpSGv0WN4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB2F441A7D;
-	Thu, 20 Aug 2026 17:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7317A1F000E9;
-	Thu, 20 Aug 2026 17:46:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787247982;
-	bh=2fIdalCmTaw2AjswTgZRpQgDXscO6AG89u3FfnnHiks=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UsCwLrRV/K35zxbIA/hIc4Id6aozHPhPLOrJUiwPAl7OYQh1taZ1K0yNEOwgg/SUt
-	 nYUi3Hdf40wr/zFLSUOd6i/TOIIK06CsD7c76CpQ+3D1YmCqljd8DdsVwbaROCzkoN
-	 bENSolqCbH0aTMxV0Uodq/7fc051LdApcEbUX5xvVe+cCt1M8fnsy4r4oEb3MGJB7Q
-	 qX5rvlwvW6KxieSCMpPyqv8bCjsxXbYmszXW7B/c4r8xxSanuHoPI9dDZ4o+A2i+7T
-	 g0mDdl8HXlxn1gl3V37kQt9jiNDzGue/0Wkgo9odCMX7acV9lcZ2eca4XgFmgikc8T
-	 J2E591DIchXmA==
-Message-ID: <bf298ebe-55bd-4f42-9339-9567eadaa514@kernel.org>
-Date: Thu, 20 Aug 2026 19:46:17 +0200
+	t=1787248975;
+	b=Ej2TOHijpvpJh+lZJOPnS4IPwUEw6tV5DqEswX8MHj5vVS2GekvOTYloT64WHng681gJbW
+	YoGBOtY7d9R8p0e5/cYkBdf6IVOIiiEIc8L09RU2wHqOz3ARxGRJXciN01i0C19o+etbMy
+	3XiOov+OQelaOkQznVTTGIk9LvA31qg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=rTRFHt4F;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/nTZ7s1goF+GPCz6EL3sBTg9gNDkE+Bk0F4MEDCId3U=; b=rTRFHt4F8LNezy/fzAgoJCTaEn
+	Hu0D4RqGfIK9MUZUy7y5Vba3MurgAp9pBMd9z6PEiUlWaCso04QtHq/uQ4n17N1VQ2wPu6RajSIxt
+	5VjB0H2feVYd3mqUp5gCxaMbrQOO+i6lj9uOvypef8Qk/ac19GC7w3Hfcyxj83iTd9QOFZIzV0iBp
+	/SGM/O64CQwL9ZlzHX0Ox5TCul40K5Mnq+2KwcSaH/1h0KS1/qNKeUME6lYFYtYCfh4F7sNx59RpD
+	pLEI6i3LHvbHNk4ESUjf0GkAf6n+DO9ur6QkErSHO05zM44QUpEFH+mMqGSk1hMk5dNHlM0YQq3eB
+	Pzxk6gcA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wx6uy-0000000G2y1-3Dxp;
+	Thu, 20 Aug 2026 17:51:08 +0000
+Date: Thu, 20 Aug 2026 18:51:08 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org,
+	max.byungchul.park@gmail.com, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+Message-ID: <aoc-jJ10op62jXFK@casper.infradead.org>
+References: <20260706061928.66713-1-byungchul@sk.com>
+ <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-To: "Liu, Yuan1" <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "Zou, Nanhai" <nanhai.zou@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
- "Zeng, Jason" <jason.zeng@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>,
- "Deng, Pan" <pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260818085702.3395529-1-yuan1.liu@intel.com>
- <20260818085702.3395529-3-yuan1.liu@intel.com>
- <ac77571f-4a10-4511-83e0-c6372d5b4a09@kernel.org>
- <MW4PR11MB69369259EB8B2FDF237B863AA3A42@MW4PR11MB6936.namprd11.prod.outlook.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <MW4PR11MB69369259EB8B2FDF237B863AA3A42@MW4PR11MB6936.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rg5m4db3ckamqujwrsssj4i8ngp48wpq
-X-Rspamd-Queue-Id: A3C761C0005
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1787247983-274710
-X-HE-Meta: U2FsdGVkX1+FpH7ZbOpyYfPsiQWP8UltAZq+hoCEvfkIK7+krn/NLRbzBa5wqG+d9HaGCBMWaGjJ35sfglkzJGgf4ea5xHtUfQVifEU8nJtxlmRZO/+bCd9PkJFNdHoxO6Vqb+23W0aKjYOhCM8Fu/1MDKB7RkLwV93AbUJmEtqGw4FsnJ0ItxKQzaPzZwgJJVv00WGwJWSS08yZTBTHlRne30hvgq7FOKV/XgJpA9kJElOlOKt+6oIun2XdlqpeUzg1Ohy2FrV+TJ0zJ+WIGBWG8GF+ozGh3UbcuFmHDwKGHomvBxi15g9Yt5QzGUcpukq6HqUQJM2p1wm8gf73bnQsovrT3s+ku3x5gEYCa2gzu5gzYMhxizM7gfewkgTIXycdkP7BdM63Ztto0GH4ONLt1p3SzG6mNFohRAddxVpNQ4c7DN8c9qn7l7rVN9eADW4yWf1aBSfQDkSa2FNo5hXneCKp90k0qVU6ACoH4npaYJHOROrJ0d4Ns6TDbgDomXl0IBjntefAzD95BpmJ00UPLy989ReYMMyiKI2KWLvmE/ROKYDhkWzNGLB2+894vk0lVYK62oEnuY3BaA49qRZBReYqEZxgh819qF41JgW5vONgcDf5uOOjAmevlP0H/STKsmPv0eYc+6Z+U0VQ2r+pAAri49wnc3RPUKhrGQ9yljXgUOLkZ1H4aq16JZgSPxZa4c0PY/F5kZt3rlTkktk82FeQsAS+7wLW+mSTdxEECQvp+gnh6jRxkgUNbDFp2xN7vAX5xvxFaUZEcGyo6pOZBk1E3crvNffRH1oysi11OMplvKfQx5xQxhqkmWVDZGA9QikSWfmWOTJ4W/LqSzd7MFLz4fIFbA3KzlkrrK63cE740W1RIxh1k0G/f78bzJOdZogEiSADxfPTWTS7mSQ9RZt+buIsOn6kjkXcW0J6z8VE1s2OeIeyih70ITsobwsdySyWIvL8HkAfucj
- hUj+0qUL
- 0leWuDMWnW9usV7uAzo2yJEktVtJFll6QT3CIfg6uSoQIWMNgRdjeqSZr+zdv7hb4NUZZSKOUhaftVW7zq5NdcrMYGPlNGup1AO3x5eXlK5wOWxHvJlxZ2aQWl2ZqrJetntc40Ce5bGFGtzZi/Wz9o7cOq7vL4McaT3n4ZkV1gZPiuTptpo2yCTDeI6wEBOpYrkor44I2N4OdggS2nn4fGWQyrik6wA7ybXkEHUFfTr7n1/DMQZbmn1wceM2q6xLJhWWwZ7gIl+tR4PAhg6Lwdo6nUKNAq5uEsFOfahPfogV/+TE/6KqcFTRewr2ZwwTpdr4A8J7upSac1my7bETZNyKORp7MaCtuw0kuVlJPL+03pSOFvz9b6XlH8eJPefIxzx8bA7Ct09afde24OX4prchXF2CQpfihpJqJQgDRDMSCvU8=
+X-Stat-Signature: p6jooaa5abgbm6obh9d1gk8nmwytbaje
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0BE25C0014
+X-HE-Tag: 1787248973-616226
+X-HE-Meta: U2FsdGVkX1/vF68CJ0MluivkLzizJ4qAvjkWCUnAxxUj2ajNbtWJTqz6SYO4ftCl61aB1VsbqSCbcWjMXMJbKASmzFdu17inDDa3uT0kkjvMBMVJsLSBo4UmuSrMqtFgLFo0rAY6A+1kvCwUm9i55RDdVuAvtwEVK4fD0jcOtLg2+ETg0eD+Sn6moOOZlR5dWNgNV1ndk0ghkAA2rwjS7m+uGBqsdFQyngIPmMXqWOXcsPoSs+CcLwZtc8BMVE22L5fCq/4N9pDsLcjenpN0RrA3w7P7ZD7dEoC00UyhWfYEE3/wHXsP80m9F6PlDozCYmtAtDHew77A0acIKX+GDm5I5bTz3R03/6nScMv3VgtdKKSklX//p18vkLmRJWkSMyb+NrPsPzZ+7j06aFBAGtqof0FzPABxae/sukfIvtjKcsO0mIDAYP9RMpHP5UpuyYNqrghFK5yxTrRRRKIKZLDhJEKm1hBabC0v2hJb0yVHnZgxuh0H9fgDYpxuAarzlUD/OyqQREL9QD0OW3z8H1ZhyKMzOy25aSr2omXffAFXIs+CyPr24SmyZPtOxz/+V/cyfTdl58MIJ3tBrw/GWdi/vIe3vnD23Eb74oQH+X9kK1jNaglMVO2n+psHZ4H4yFr32VaEx3ii4YfeNk/zqHagXxo+6+WXOOfhl7Z3f8lNbNaKbeeyj2JCO4C6EmMgHYW9NFFChQ3ey53vjSCcw6YJh7Xu5DJUCQSz8oyrzB951WrAeVw8909uD2q7yLM3BJgV1rumVnj1Yo5I5wJM2PQpk4ra5Q1GroxzR42G8HNQtR9Xk/NGgYCAMvmmD7rNwTwbw422NOi8HrZDayeA4BbiG9tsIBAUuxwts/YFs4NzuaTFd8VdRebUCCcNA+NKukTR/xOh9pRTTrI3WrQlLSzXkyzK4YF6eMVsPoTcv5NtaDjEqZDDsoXY5q+AL3CbYumRJ7zUg0GKY06w1ef
+ oYbIZ47Z
+ w+meRQm9xFcvrGS3XgyitU711ve+3TP/tjpWhQ4WKGqE1B86p+Y7QHXGXEaGoKXlhOSAXLFyJqvOUPScLacZxYpn/+Uve0uE8mTy1eIaUSxNyk32pgvUvwV0/JlsxfcBzs21m7TSLm5aIx3qaclaZbL+jqetaKdCjtwURZsmquh61/qv+npBa6NFJcFSghe4XnDz2EkT5UvU+HHlDuT/kF4jBSjh4/uoMS9WrFA+wfyag1OmoThm/Zh6uGDa8hR6PiY6glcJhYZGeGVdqbsZ113LBQAhxLNKrS/VfB4cMRwALUbE3eRKyrw8YY2j2fm3qTezGvEuOf4bwZgmPoO7OCyyKxKQ4uQy3HXSO6YXahySEMHSLzDLtoDc8bVQxinV++HFO25zBvrEIvSz+f/nTnK2mnHGaipWrY0jITNf03Le54+u46spmpA6Zpqugak922VdKPXqzezUHrEDAKUYbobdA8MGaELlmhmmmWpt2xk4AvLBbVDfnkxI0eaaX+rS6nce0mm7NrsDqFiifs3KODhxGFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,74 +152,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>> +			online_pgcnt++;
->>
->> Can we avoid these helpers?
->>
->> 		const unsigned long subsection = pfn & PAGE_SUBSECTION_MASK;
->>
->> 		/* We can have section-sized online holes with VMEMMAP. */
->> 		if (IS_ENMABLED(CONFIG_SPARSEMEM_VMEMMAP) &&
->> 		    subsection != last_subsection) {
->> 			is_online = pfn_to_online_page(pfn);
->> 			last_subsection = subsection;
->> 		}
->> 		if (is_online)
->> 			online_pgcnt++;
+On Thu, Aug 20, 2026 at 07:16:05PM +0200, David Hildenbrand (Arm) wrote:
+> > Consider this real deadlock pattern that lockdep cannot detect:
+> > 
+> >    context X              context Y              context Z
+> > 
+> >                           mutex_lock A
+> >    folio_lock B
+> >                           folio_lock B <- DEADLOCK
+> >                                                  mutex_lock A <- DEADLOCK
+> >                                                  folio_unlock B
+> >                           folio_unlock B
+> >                           mutex_unlock A
+> >                                                  mutex_unlock A
 > 
-> I think there may be an issue here: PAGE_SUBSECTION_MASK is not
-> defined when CONFIG_FLATMEM is enabled, which would result in a
-> build failure.
+> But that really just boils down to folio lock being implemented as a PG_lock +
+> some advanced wait mechanism. And we must do that because of lack of bits in
+> struct page.
+> 
+> Willy mentioned in a previous version [1]: "I don't think it makes sense to
+> track lock state in the page (nor folio).  Partly because there's just so many
+> of them, but also because the locking rules don't really apply to individual
+> folios so much as they do to the mappings (or anon_vmas) that contain folios."
+> 
+> Given that lockdep is a debug feature, and we will at some point allocate struct
+> folio separately, I assume we could just squeeze a "struct lockdep_map" in there
+> in such debug configs and the world would not collapse.
+> 
+> Doing that today (one "struct lockdep_map" in each "struct page") wouldn't work
+> as mm_zero_struct_page() would not expect such large "struct page". But
+> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_LOCK, maybe
+> that would already be ok and we could just do that (and optimize it as we
+> allocate folios separately).
+> 
+> Not that it's ideal, but for a debug feature to at least check PG_lock, probably
+> an easier way to achieve it than some completely new infrastructure.
+> 
+> Now, Willy said "locking rules don't really apply to individual folios", I
+> wonder if that could just help to also let lockdep check PG_lock with less
+> metadata? (didn't fully wrap my head around the implications)
+> 
+> [1]
+> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?utm_source=chatgpt.com
 
-Ah, yeah.
+There are a few things going on that make PG_lock special.  Let me try
+to explain again, only better this time.
 
-> 
->> An alternative is an inner loop that just walks in SUBSECTION chunks until
->> epfn.
->> That would probably be even cleaner and faster.
->>
->> I remember !vmemmap always only has early sections when they are actually
->> online. We could extent the comment to clarify that.
-> 
-> Hi David
-> 
-> What about the following approach? It removes the helper and changes
-> the per-PFN online check to a per-chunk check.
-> 
-> +       u64 pgcnt = 0, online_pgcnt = 0;
-> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
-> +       const unsigned long chunk = PAGES_PER_SUBSECTION;
-> +#else
-> +       const unsigned long chunk = epfn - spfn;
-> +#endif
-> 
-> -       for_each_valid_pfn(pfn, spfn, epfn) {
-> -               __init_single_page(pfn_to_page(pfn), pfn, zone, node);
-> -               __SetPageReserved(pfn_to_page(pfn));
-> -               pgcnt++;
-> +       /*
-> +        * With VMEMMAP, subsection-sized holes can exist, and PFNs within
-> +        * these holes can fail pfn_to_online_page(). Without VMEMMAP, we
-> +        * always only have early sections when they are actually online.
-> +        */
-> +       for (pfn = spfn; pfn < epfn; pfn += chunk) {
-> +               const unsigned long chunk_epfn = min(pfn + chunk, epfn);
-> +               const bool is_online = !IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP) ||
-> +                                      pfn_to_online_page(pfn);
-> +               unsigned long p;
-> +
-> +               for_each_valid_pfn(p, pfn, chunk_epfn) {
-> +                       __init_single_page(pfn_to_page(p), p, zone, node);
-> +                       __SetPageReserved(pfn_to_page(p));
-> +                       if (is_online)
-> +                               online_pgcnt++;
-> +                       pgcnt++;
-> +               }
+1. The current lifetime of a struct page is the lifetime of the system.
+But the semantics of its PG_lock bit change each time it is freed and
+allocated.
 
-I'd keep the for_each_valid_pfn() the outer loop.
+2. The position of PG_lock in the locking hierarchy only depend on
+what the folio is currently being used for.  That is, all folios in
+a given xfs inode behave exactly the same from a locking perspective.
+There's no need to build up state about how each PG_lock is used;
+they can all share.  Arguably all xfs file inodes are the same as
+each other (directory inodes might be different from file inodes),
+so we might want to go further than telling DEPT that "this folio
+belongs to this inode" and go to "this folio belongs to this xfs file
+inode".
 
--- 
-Cheers,
-
-David
+3. PG_lock can be taken in task context then released in interrupt
+context.  For full points, we need to mark the exact point at which
+we submit the folio for read.  Otherwise we can get into the situation
+alluded to by f2c817bed58d and better discussed at
+https://lore.kernel.org/linux-mm/20200127150024.GN1183@dhcp22.suse.cz/
+where we have the folio locked but haven't yet submitted it for I/O
+so it doesn't matter how long we wait, it will never come unlocked.
 
