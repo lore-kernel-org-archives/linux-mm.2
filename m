@@ -4,105 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D7C3C5B572
-	for <linux-mm@archiver.kernel.org>; Wed, 19 Aug 2026 23:57:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AC31C5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 00:14:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED3BC6B008C; Wed, 19 Aug 2026 19:57:36 -0400 (EDT)
+	id A121E6B008A; Wed, 19 Aug 2026 20:14:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E847C6B0092; Wed, 19 Aug 2026 19:57:36 -0400 (EDT)
+	id 9C2F16B008C; Wed, 19 Aug 2026 20:14:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9A996B0095; Wed, 19 Aug 2026 19:57:36 -0400 (EDT)
+	id 8B12A6B0092; Wed, 19 Aug 2026 20:14:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9791D6B008C
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 19:57:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 256D24055D
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:57:36 +0000 (UTC)
-X-FDA: 85119683712.09.1C800C8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8F546180005
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:57:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZccGzOeY;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 689B36B008A
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 20:14:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D19E9C067F
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 00:14:09 +0000 (UTC)
+X-FDA: 85119725418.03.6CE5D66
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3444A40005
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 00:14:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAcEbQSR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787183854;
+	s=arc-20220608; t=1787184848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N8SltvZDQNjGiAt/1Il9Q8WQof15Y1h3XpbG0HIfgYw=;
-	b=dSihN2SI61BF0Bgz/nLY/dYYh688RVy73hqGiJBauLbE45qDO4AUShNYKoHp5Yz2nIQVPG
-	IkQXraMCfZctup2ESQHNG9iA48dF/l36Yn8B8uojVtSgTO7P2v5KI9cV5QQUh0fIAPF9QC
-	PeoBAE6tTcYYmg59PkdMCrVcFQK3+xk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787183854;
-	b=JsflPSYL/+1h7jDO8gGXimbWAiYzScxbdFPRwaLjcrHbfaxOxEt8zNlFLR2KKsSoWP/l9Y
-	vLBFG4R4VR6TMSa9h7xZaWYnuQ29tpD3brHscERILNDeU+Of1S80Ma9itSfX8W0SjhLm7h
-	5S6Bgp/lfGbxG29uGs53W4I9M9bP9p4=
+	bh=HrAZoFB2O4ijHVXZLxifKgZ8fU8/Rsiq/ZvJdgv6ZAw=;
+	b=nTXFqIaau3+cRsx8d5LcmpV0zjFJNwPCqIyb12wIAWxUpd7IbHf1xdE49Xtr6R+0qnz4PT
+	pl3yWxvmVTQfTUj/JfzfenQgnhucws0izQP3UbSnl/3ZTDi4Dnzh/ywhncbm8wZCKO9dfN
+	u9I4GH1uBGIapsTnb7RYbFl12g4o/Pc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZccGzOeY;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787183853; x=1818719853;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mJeJtM1MGcCSH6M+FitFagsQU/dv60z3qvYdVQX+21I=;
-  b=ZccGzOeY82X5GElHG/pxwocfXeZhVGS7a1Efeyib8c2O24x5jAK14Cej
-   hHUrEPD/Nr4I0zuSSJoYV8udj1/Df9gSbyVtTkxoEpcK4WyV3yZfqkXK3
-   akQq8crbJt3PwReLVf7D2SJiUjJhwxlxEqRN8K4icd310x8WhCFTANQgF
-   tSNZWDfpMVCYx52NNvbb78RKYLz78Ex27OlSEEldymNrvM8jklhgzLCSi
-   1X6fadH/ngVVsJjRsEnX3TXLtuioufy3/Sg5bGoWyzspIMKSSvl7d7qkU
-   SM5RRtXY9y6iDyvWOYVRrNaLtCBJqBRN6qKXKOSq2Jmt28KzQ3s448hb6
-   g==;
-X-CSE-ConnectionGUID: SlWh0v6iTFCkQ5OWUZT1+g==
-X-CSE-MsgGUID: KcI8x3KnTLe+rX88S/Jy6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="86830459"
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="86830459"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 16:57:31 -0700
-X-CSE-ConnectionGUID: dQMW+0IFQz2vl4fU+6sySg==
-X-CSE-MsgGUID: sRTa2ll7Qq6jQJ2PWHxeRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="295640577"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 19 Aug 2026 16:57:27 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wwq9s-00000000gyL-0oyn;
-	Wed, 19 Aug 2026 23:57:24 +0000
-Date: Thu, 20 Aug 2026 07:57:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: dayou5941@163.com, akpm@linux-foundation.org, linmiaohe@huawei.com,
-	david@kernel.org, ljs@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, nao.horiguchi@gmail.com,
-	linux-mm@kvack.org, ziy@nvidia.com,
-	Li Youhong <liyouhong@kylinos.cn>, Sashiko <sashiko-bot@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] mm/memory-failure: fix folio refcount leak and
- locking in soft/hard offline
-Message-ID: <202608200744.OjhLdVKY-lkp@intel.com>
-References: <20260806031958.677935-1-dayou5941@163.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAcEbQSR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787184848;
+	b=bkcWytZqYmcfCuXPPE0JXiJj7VIDiLg0ylVoB8v5Qpy38bUi8gYCtnWmbrvRu8yTf2squ5
+	KsuM1HmqF0YdEZ4mtCVeWK6xHY3yLfyrWyyt1O9SkaoUxaxRfZmEC5unC0UKLa4O3OAdH0
+	KtqtOM5+eCdnawv+pZUJnT1mmmn9L50=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EA69F40E1B;
+	Thu, 20 Aug 2026 00:14:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39601F000E9;
+	Thu, 20 Aug 2026 00:14:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787184846;
+	bh=HrAZoFB2O4ijHVXZLxifKgZ8fU8/Rsiq/ZvJdgv6ZAw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aAcEbQSRvUAdr33zTA4FXccyAXg1kygJsd4ah3MBPqCNU7I+IgvLQhsrZY0AUSjvC
+	 4nlgQSrhQZlXPxhekgLQSirgnqyqvkBgyAg/f8tETcCmz3tSISyr60zD1MjjwzpPT/
+	 lFnei0Wp3GVXDjUGhk3F7IZO10YADXCYMu19p81phqAZ8eckNmxoTTTRjKj++er/oW
+	 hVrhyFBXowh9pJc6ftyOkd8H+yoRnwz5kU7RJwEzQe4nAjoIbq6DwTQqUbvtxAmK5q
+	 eS8NgTadFlgfiwsn/kRP06Owzd4gBBkKcgZgtVd85ktUAKGm/1XDi4oyKMLab3/hVn
+	 z9wBt5zOf/jxw==
+From: SJ Park <sj@kernel.org>
+To: Anshuman <anshumantewari123@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH] selftests/mm: check stat() return value in khugepaged get_finfo()
+Date: Wed, 19 Aug 2026 17:13:55 -0700
+Message-ID: <20260820001356.87221-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260819121426.49500-1-anshumantewari123@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806031958.677935-1-dayou5941@163.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3444A40005
+X-Stat-Signature: 6f14chf96ienuapo9mdxzrkt5fc54oqy
 X-Rspam-User: 
-X-Stat-Signature: 451dujmdrnhxtxka5ep6wja65ppcbtq4
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8F546180005
-X-HE-Tag: 1787183852-792447
-X-HE-Meta: U2FsdGVkX18++ZZJzQcvC6BgsBkln9P0uWCBC+K8WzRnvmmKdRSYtAW8uA6nsy2Wsntkz7dXtWCEfSVgoc8XWlPyNeCbFXYvENfNKBh1M65hW2x3tIlFMbcob3Q5IHDQoWEXIrd6y0GTRadDP6lkqLLXUk8IYpoDz21bI4h5QRKAxIhDsNlC34s179S/Tg43H/+XEkCX3MmisUeapzPfZa1jgJ1ss7dtiW9llcGFQRkByuE15yKclpNbb1118CXPSWimrdA3PMQH5ClmNscWMxRA+J5A5v70mDx2LLwGoUDVWw9p798O7vsv92I9WIbn/qJqq5XwDGaado+8iCYDOjG1RxZxGGmeDzXS6gGFqRWpcf7ZnRCjUSRhzaraxD/PRK+Ot9EFqWQsnP/1oLIIMCVovuxjI8k1i+qiufUK35ihyFkQ7tXYFz04lKRDSx91vNZV5ij9pdGr78XknbFDo+3PaRy7hvfgU8eP4TxnU8sC3B4iwwiq4fpPGgkUVrwAkpfyHH9fWjOJELNHHzIjxKPAXtx0dKWIH7jH/Vy6+5ecEZk2029I4T555uSDE1jdygk7tWwaLeqs9tv66ozJAG7II5zwWrohtfLTKrvD2vdL6atNrXLWHNYYyWAhk2BXkw7CoqVqhrdpDPLUtbEHmIkvHV/LsCbmy5n0uC0NSWBDsvhOHgmISS3NzCjk3vGJE5BoZiBRbFhkx67UWA04/6EiHZZ81a6RaP8pZipmjOYrIiW0NXga0ZoYvc7ODS87Tfd1LBIqyHE3V3EHNF7TIh3ZeBcFwgS390R6677jQI4XcJjBGrRxgy0I3ZQsowJa2P7AGtpHKO/a72SL9pPXSCkF4aMbvjV/BJ4p5Dt2FEmjIzdkM0tmoXDybU1MliOLIA1DaPwpaLTiWK8K8A7ThigIY+kS4QMppnJcn3c3Kh+O7ktW7GCl3MutgiNgdEWObpOD26kA23ktsZEEKy+
- IsIFDPjJ
- jx3e8Z10rpc+N+VuSy0uoTOc7T1ybe+BiQFybnH2T24X/bYfmmnD698ye9/Ln6UV4v7qOuVsVl1CNLjBruHoNRXddSpoQ8F3qcHkrh65fVSx4GCJQIYaC0VQ5YOtrQrpIYtpBiF4QZJPvetPSsN+2SZtiMDkwTwPVsfgdy34mUjmkvbwCd7su7wMv5MN2ivMgb+35vfPP0RHSgZPQmPFqDnXWc+axzEUba72j+AFk+FFlggPDy167p0ukcYek6fc0cYEEmKgtYzqQls2lb46PslvC/mDnEYxQRTtzQNjYj8nxhWhb1hpDyS+83REzc8LJfp/LNpp+gU0pMgAFPvi0HeYbdKFYGks+7RypV0DsC5wK/TSiqS2RCM1KeSFj1O7lRu2icvLgwlSH4CfdHPxQbFtx7WlCDXtd6RHp4x2CQaOtpic=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787184848-554119
+X-HE-Meta: U2FsdGVkX18DHSeaLUp9sQoMaB2qwnkPwZ3P9VHPcB6tIZhTg90wI9KS9DoXqs18S1vd7NjBXmGGADe7U2Fo4ZFot8mxmMKMT76p3RI3NOptABA92Xn41kmyZ6IkbgaKpjpMAmuegc1/FAmgeOF0CgRM0zw6xAAhSGKRloAf+XYRuZO2pX728LKgTHcnfWGva9tSYygsr5KkDQetUxkrIVb99xRvrgRQ44xsfMTPelzf9a4hwg6ONuAalRwrSu5iofbn6lo3Lv0W1/gSxUDQMM6Q7XKACBJGaGE5LpgSvEekJX4mRAE8JpCA3tW7GFuYilAlvX/DNj723e+58JM6LMt82FLCO0SZZwfUJIgOJH7kPIOd2cLwGCJosfQvz8bcfrMJKrdx2jHPDkMQK1drpT7HSF1s3AZJKiiywQs/TERuFHH342dtyCMqFUgfeTtO1vbkZrdDQ9poLHDuJ7cUz9jxXbXJr8nNbmkTmPlfpqZiXqPZlkyBcPOrCYRyFirnXpSVSvpwUHAWVU27m4gys/akinbsmyY28Sq2+9saODmZEKODt4AOO5tzJqrG8kIoEjhDjdjGXJNYyWAMwByQo+m986IJW8cVwnFJZ5DIfZm6TmyECqgO1y5LNfzD1LhQ5QXH0mXAjC75HtrrW/T4mAA4+iwvwBnqOHgDQUllqdij99stJnfp6dIVnyunITF81ahJE9e7b8vvaIMmesaOwZ5einJ7sw74nKz412FN030uVo7D4FoHqDDfwcY+5bmE3Iamq6W9ynWn3oyMd32fZcN65Qh+h1vpjSq4QZCHFey5Rqee0THi6Q16o0fATV5Jn6JZiIR6xXVI6jYh2xzqU48cBfpZO3S3k4IHx8cE24DCfr2TQLaOgCGLoOCZTX2duf4GX/rKbF+u+9KepyJsuCuJHvu6w2TxOtljZMIXzTP3Y/1OyfxdfnEwvMtJ24cPFHOdm5kLIF0svToC0+D
+ gM8L4hOK
+ mlc931xGv/wWgtRoEgrrQlER3bI6urOi1M+OrjXqUFcOnVafJHlaM1CDi/N8w1jTAhGkIrwgQ/eCHFhTZWjIceYaiu5VTi+t+qf96+Wza0MYAgtQXgqwMICLqb9xpOMF5V2oxgqiK/gePqu39HeINOjL6YJ1V89zaAchsYyZCudaW4KDkpjxJIt+h+ctXt4ckieBSO3sA2DFCq1AbxewLgx7EM1dJqEnpXkWJuELT1CsSL59y/YcwdPtVFmhLxa+BcF3i+Ma4WaVwgQKdE4MuY5w8Bqm+CUViK5KitQ31fLZCdrEzvoVpI2b5/1eYEK7I4djgTEFBcgoRZ+dKLUvm/+34tv742ShDYfSot4uINaKlD9d04EuDqV/toJYdfl0tE83SDYjbb7YBt2jpaharGp6Qvj5Laq4AkxfR3OSwrQTBSTQ7e5Ihi5q3pJSN/T287/E/VvQIpcj3nFQPm411ozoukDa0WLGG+Vi+ISHGIjueXdR4C5V+pTwQ3YsSIFZ6ketUzweJZhaKlafmQFSc2ib4Rtt02dV9lY+Y5ORUMOooItE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,297 +109,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+'get_maintainer.pl --nogit --nogit-fallback' suggests adding below recipients.
+I added them.
 
-kernel test robot noticed the following build warnings:
+- Zi Yan <ziy@nvidia.com>
+- Baolin Wang <baolin.wang@linux.alibaba.com>
+- "Liam R. Howlett" <liam@infradead.org>
+- Nico Pache <nico.pache@linux.dev>
+- Ryan Roberts <ryan.roberts@arm.com>
+- Dev Jain <dev.jain@arm.com>
+- Barry Song <baohua@kernel.org>
+- Lance Yang <lance.yang@linux.dev>
+- Usama Arif <usama.arif@linux.dev>
+- Vlastimil Babka <vbabka@kernel.org>
+- Mike Rapoport <rppt@kernel.org>
+- Suren Baghdasaryan <surenb@google.com>
+- Michal Hocko <mhocko@suse.com>
 
-[auto build test WARNING on akpm-mm/mm-everything]
+On Wed, 19 Aug 2026 17:44:26 +0530 Anshuman <anshumantewari123@gmail.com> wrote:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/dayou5941-163-com/mm-memory-failure-fix-folio-refcount-leak-and-locking-in-soft-hard-offline/20260806-111958
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260806031958.677935-1-dayou5941%40163.com
-patch subject: [PATCH v4] mm/memory-failure: fix folio refcount leak and locking in soft/hard offline
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260820/202608200744.OjhLdVKY-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260820/202608200744.OjhLdVKY-lkp@intel.com/reproduce)
+> get_finfo() calls stat() to get metadata about the target directory,
+> but never checks the return value. On failure, stat() returns -1 and
+> leaves path_stat unmodified, so path_stat.st_mode may contain
+> uninitialized stack data.
+> 
+> The code then checks S_ISDIR(path_stat.st_mode) against this
+> potentially garbage value. This can produce a misleading "Not a
+> directory" error when the real problem is a nonexistent or
+> inaccessible path, or, in the worst case, the check could pass by
+> chance on garbage data and let the function continue using an
+> invalid path_stat for the rest of its logic.
+> 
+> Check the return value and fail with a clear error message if
+> stat() fails, matching the error-handling style already used for
+> statfs() and read_file() later in the same function.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608200744.OjhLdVKY-lkp@intel.com/
+Makes sense to me.
 
-All warnings (new ones prefixed by >>):
+> 
+> Signed-off-by: Anshuman <anshumantewari123@gmail.com>
 
-   mm/memory-failure.c: In function 'memory_failure':
->> mm/memory-failure.c:2492:21: warning: variable 'err' set but not used [-Wunused-but-set-variable=]
-    2492 |                 int err;
-         |                     ^~~
+Reviewed-by: SJ Park <sj@kernel.org>
 
 
-vim +/err +2492 mm/memory-failure.c
+Thanks,
+SJ
 
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2340  
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2341  /**
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2342   * memory_failure - Handle memory failure of a page.
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2343   * @pfn: Page Number of the corrupted page
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2344   * @flags: fine tune action taken
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2345   *
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2346   * This function is called by the low level machine check code
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2347   * of an architecture when it detects hardware memory corruption
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2348   * of a page. It tries its best to recover, which includes
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2349   * dropping pages, killing processes etc.
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2350   *
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2351   * The function is primarily of use for corruptions that
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2352   * happen outside the current execution context (e.g. when
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2353   * detected by a background scrubber)
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2354   *
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2355   * Must run in process context (e.g. a work queue) with interrupts
-5885c6a62533cb Miaohe Lin              2023-07-11  2356   * enabled and no spinlocks held.
-d1fe111fb62a1c luofei                  2022-03-22  2357   *
-d2734f044f8483 Shuai Xue               2025-03-12  2358   * Return:
-d2734f044f8483 Shuai Xue               2025-03-12  2359   *   0             - success,
-d2734f044f8483 Shuai Xue               2025-03-12  2360   *   -ENXIO        - memory not managed by the kernel
-d2734f044f8483 Shuai Xue               2025-03-12  2361   *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event,
-d2734f044f8483 Shuai Xue               2025-03-12  2362   *   -EHWPOISON    - the page was already poisoned, potentially
-d2734f044f8483 Shuai Xue               2025-03-12  2363   *                   kill process,
-d2734f044f8483 Shuai Xue               2025-03-12  2364   *   other negative values - failure.
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2365   */
-83b57531c58f41 Eric W. Biederman       2017-07-09  2366  int memory_failure(unsigned long pfn, int flags)
-6a46079cf57a7f Andi Kleen              2009-09-16  2367  {
-6a46079cf57a7f Andi Kleen              2009-09-16  2368  	struct page *p;
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2369) 	struct folio *folio;
-6100e34b2526e1 Dan Williams            2018-07-13  2370  	struct dev_pagemap *pgmap;
-171936ddaf97e6 Tony Luck               2021-06-24  2371  	int res = 0;
-524fca1e7356f8 Naoya Horiguchi         2013-02-22  2372  	unsigned long page_flags;
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2373  	bool retry = true;
-6a46079cf57a7f Andi Kleen              2009-09-16  2374  
-6a46079cf57a7f Andi Kleen              2009-09-16  2375  	if (!sysctl_memory_failure_recovery)
-83b57531c58f41 Eric W. Biederman       2017-07-09  2376  		panic("Memory failure on page %lx", pfn);
-6a46079cf57a7f Andi Kleen              2009-09-16  2377  
-03b122da74b22f Tony Luck               2021-10-26  2378  	mutex_lock(&mf_mutex);
-03b122da74b22f Tony Luck               2021-10-26  2379  
-67f22ba7750f94 zhenwei pi              2022-06-15  2380  	if (!(flags & MF_SW_SIMULATED))
-67f22ba7750f94 zhenwei pi              2022-06-15  2381  		hw_memory_failure = true;
-67f22ba7750f94 zhenwei pi              2022-06-15  2382  
-96c804a6ae8c59 David Hildenbrand       2019-10-18  2383  	p = pfn_to_online_page(pfn);
-96c804a6ae8c59 David Hildenbrand       2019-10-18  2384  	if (!p) {
-03b122da74b22f Tony Luck               2021-10-26  2385  		res = arch_memory_failure(pfn, flags);
-03b122da74b22f Tony Luck               2021-10-26  2386  		if (res == 0)
-03b122da74b22f Tony Luck               2021-10-26  2387  			goto unlock_mutex;
-03b122da74b22f Tony Luck               2021-10-26  2388  
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2389  		if (!pfn_valid(pfn) && !arch_is_platform_page(PFN_PHYS(pfn))) {
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2390  			/*
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2391  			 * The PFN is not backed by struct page.
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2392  			 */
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2393  			res = memory_failure_pfn(pfn, flags);
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2394  			goto unlock_mutex;
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2395  		}
-2ec41967189cd6 Ankit Agrawal           2025-11-02  2396  
-96c804a6ae8c59 David Hildenbrand       2019-10-18  2397  		if (pfn_valid(pfn)) {
-614d850efda98e Alistair Popple         2025-09-04  2398  			pgmap = get_dev_pagemap(pfn);
-d51b68469bc780 Miaohe Lin              2023-07-01  2399  			put_ref_page(pfn, flags);
-03b122da74b22f Tony Luck               2021-10-26  2400  			if (pgmap) {
-03b122da74b22f Tony Luck               2021-10-26  2401  				res = memory_failure_dev_pagemap(pfn, flags,
-96c804a6ae8c59 David Hildenbrand       2019-10-18  2402  								 pgmap);
-03b122da74b22f Tony Luck               2021-10-26  2403  				goto unlock_mutex;
-03b122da74b22f Tony Luck               2021-10-26  2404  			}
-96c804a6ae8c59 David Hildenbrand       2019-10-18  2405  		}
-96f96763de26d6 Kefeng Wang             2022-07-26  2406  		pr_err("%#lx: memory outside kernel control\n", pfn);
-03b122da74b22f Tony Luck               2021-10-26  2407  		res = -ENXIO;
-03b122da74b22f Tony Luck               2021-10-26  2408  		goto unlock_mutex;
-6a46079cf57a7f Andi Kleen              2009-09-16  2409  	}
-6a46079cf57a7f Andi Kleen              2009-09-16  2410  
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2411  try_again:
-5ee5ff9dbce0b8 Ye Liu                  2026-05-15  2412  	res = try_memory_failure_hugetlb(pfn, flags);
-5ee5ff9dbce0b8 Ye Liu                  2026-05-15  2413  	/*
-5ee5ff9dbce0b8 Ye Liu                  2026-05-15  2414  	 * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
-5ee5ff9dbce0b8 Ye Liu                  2026-05-15  2415  	 */
-5ee5ff9dbce0b8 Ye Liu                  2026-05-15  2416  	if (res != -ENOENT)
-171936ddaf97e6 Tony Luck               2021-06-24  2417  		goto unlock_mutex;
-171936ddaf97e6 Tony Luck               2021-06-24  2418  
-6a46079cf57a7f Andi Kleen              2009-09-16  2419  	if (TestSetPageHWPoison(p)) {
-47af12bae17f99 Aili Yao                2021-06-24  2420  		res = -EHWPOISON;
-a3f5d80ea401ac Naoya Horiguchi         2021-06-28  2421  		if (flags & MF_ACTION_REQUIRED)
-a3f5d80ea401ac Naoya Horiguchi         2021-06-28  2422  			res = kill_accessing_process(current, pfn, flags);
-f361e2462e8ccc Naoya Horiguchi         2022-04-28  2423  		if (flags & MF_COUNT_INCREASED)
-f361e2462e8ccc Naoya Horiguchi         2022-04-28  2424  			put_page(p);
-b8b9488d50b715 Jane Chu                2024-05-24  2425  		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
-171936ddaf97e6 Tony Luck               2021-06-24  2426  		goto unlock_mutex;
-6a46079cf57a7f Andi Kleen              2009-09-16  2427  	}
-6a46079cf57a7f Andi Kleen              2009-09-16  2428  
-6a46079cf57a7f Andi Kleen              2009-09-16  2429  	/*
-6a46079cf57a7f Andi Kleen              2009-09-16  2430  	 * We need/can do nothing about count=0 pages.
-6a46079cf57a7f Andi Kleen              2009-09-16  2431  	 * 1) it's a free page, and therefore in safe hand:
-9cf2819159d5a3 Miaohe Lin              2022-08-30  2432  	 *    check_new_page() will be the gate keeper.
-761ad8d7c7b548 Naoya Horiguchi         2017-07-10  2433  	 * 2) it's part of a non-compound high order page.
-6a46079cf57a7f Andi Kleen              2009-09-16  2434  	 *    Implies some kernel user: cannot stop them from
-6a46079cf57a7f Andi Kleen              2009-09-16  2435  	 *    R/W the page; let's pray that the page has been
-6a46079cf57a7f Andi Kleen              2009-09-16  2436  	 *    used and will be freed some time later.
-6a46079cf57a7f Andi Kleen              2009-09-16  2437  	 * In fact it's dangerous to directly bump up page count from 0,
-1c4c3b99c03d3e Jiang Biao              2018-08-21  2438  	 * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
-6a46079cf57a7f Andi Kleen              2009-09-16  2439  	 */
-0ed950d1f28142 Naoya Horiguchi         2021-06-28  2440  	res = get_hwpoison_page(p, flags);
-737a97548c4a31 Breno Leitao            2026-06-30  2441  	switch (res) {
-737a97548c4a31 Breno Leitao            2026-06-30  2442  	case 0:
-8d22ba1b74aa94 Wu Fengguang            2009-12-16  2443  		if (is_free_buddy_page(p)) {
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2444  			if (take_page_off_buddy(p)) {
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2445  				page_ref_inc(p);
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2446  				res = MF_RECOVERED;
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2447  			} else {
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2448  				/* We lost the race, try again */
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2449  				if (retry) {
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2450  					ClearPageHWPoison(p);
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2451  					retry = false;
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2452  					goto try_again;
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2453  				}
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2454  				res = MF_FAILED;
-a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2455  			}
-b66d00dfebe79e Kefeng Wang             2022-10-21  2456  			res = action_result(pfn, MF_MSG_BUDDY, res);
-8d22ba1b74aa94 Wu Fengguang            2009-12-16  2457  		} else {
-b66d00dfebe79e Kefeng Wang             2022-10-21  2458  			res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
-8d22ba1b74aa94 Wu Fengguang            2009-12-16  2459  		}
-171936ddaf97e6 Tony Luck               2021-06-24  2460  		goto unlock_mutex;
-737a97548c4a31 Breno Leitao            2026-06-30  2461  	case 1:
-737a97548c4a31 Breno Leitao            2026-06-30  2462  		/* Got a refcount on a handlable page. */
-737a97548c4a31 Breno Leitao            2026-06-30  2463  		break;
-737a97548c4a31 Breno Leitao            2026-06-30  2464  	case -ENOTRECOVERABLE:
-737a97548c4a31 Breno Leitao            2026-06-30  2465  		/*
-737a97548c4a31 Breno Leitao            2026-06-30  2466  		 * Stable unhandlable kernel-owned page (PG_reserved,
-737a97548c4a31 Breno Leitao            2026-06-30  2467  		 * slab, page tables, large-kmalloc).
-737a97548c4a31 Breno Leitao            2026-06-30  2468  		 * No recovery possible.
-737a97548c4a31 Breno Leitao            2026-06-30  2469  		 */
-737a97548c4a31 Breno Leitao            2026-06-30  2470  		res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
-737a97548c4a31 Breno Leitao            2026-06-30  2471  		goto unlock_mutex;
-737a97548c4a31 Breno Leitao            2026-06-30  2472  	default:
-737a97548c4a31 Breno Leitao            2026-06-30  2473  		/* Transient lifecycle race with the page allocator. */
-b8b9488d50b715 Jane Chu                2024-05-24  2474  		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-0ed950d1f28142 Naoya Horiguchi         2021-06-28  2475  		goto unlock_mutex;
-0ed950d1f28142 Naoya Horiguchi         2021-06-28  2476  	}
-6a46079cf57a7f Andi Kleen              2009-09-16  2477  
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2478) 	folio = page_folio(p);
-9b0ab153d76972 Jane Chu                2024-05-24  2479  
-9b0ab153d76972 Jane Chu                2024-05-24  2480  	/* filter pages that are protected from hwpoison test by users */
-9b0ab153d76972 Jane Chu                2024-05-24  2481  	folio_lock(folio);
-9b0ab153d76972 Jane Chu                2024-05-24  2482  	if (hwpoison_filter(p)) {
-9b0ab153d76972 Jane Chu                2024-05-24  2483  		ClearPageHWPoison(p);
-9b0ab153d76972 Jane Chu                2024-05-24  2484  		folio_unlock(folio);
-9b0ab153d76972 Jane Chu                2024-05-24  2485  		folio_put(folio);
-9b0ab153d76972 Jane Chu                2024-05-24  2486  		res = -EOPNOTSUPP;
-9b0ab153d76972 Jane Chu                2024-05-24  2487  		goto unlock_mutex;
-9b0ab153d76972 Jane Chu                2024-05-24  2488  	}
-9b0ab153d76972 Jane Chu                2024-05-24  2489  	folio_unlock(folio);
-9b0ab153d76972 Jane Chu                2024-05-24  2490  
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2491) 	if (folio_test_large(folio)) {
-689b8986776c82 Zi Yan                  2025-10-31 @2492  		int err;
-689b8986776c82 Zi Yan                  2025-10-31  2493  
-eac96c3efdb593 Yang Shi                2021-10-28  2494  		/*
-eac96c3efdb593 Yang Shi                2021-10-28  2495  		 * The flag must be set after the refcount is bumped
-eac96c3efdb593 Yang Shi                2021-10-28  2496  		 * otherwise it may race with THP split.
-eac96c3efdb593 Yang Shi                2021-10-28  2497  		 * And the flag can't be set in get_hwpoison_page() since
-eac96c3efdb593 Yang Shi                2021-10-28  2498  		 * it is called by soft offline too and it is just called
-5885c6a62533cb Miaohe Lin              2023-07-11  2499  		 * for !MF_COUNT_INCREASED.  So here seems to be the best
-eac96c3efdb593 Yang Shi                2021-10-28  2500  		 * place.
-eac96c3efdb593 Yang Shi                2021-10-28  2501  		 *
-eac96c3efdb593 Yang Shi                2021-10-28  2502  		 * Don't need care about the above error handling paths for
-eac96c3efdb593 Yang Shi                2021-10-28  2503  		 * get_hwpoison_page() since they handle either free page
-eac96c3efdb593 Yang Shi                2021-10-28  2504  		 * or unhandlable page.  The refcount is bumped iff the
-eac96c3efdb593 Yang Shi                2021-10-28  2505  		 * page is a valid handlable page.
-eac96c3efdb593 Yang Shi                2021-10-28  2506  		 */
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2507) 		folio_set_has_hwpoisoned(folio);
-546d4271307492 Li Youhong              2026-08-06  2508  
-546d4271307492 Li Youhong              2026-08-06  2509  		lock_page(p);
-546d4271307492 Li Youhong              2026-08-06  2510  		err = split_huge_page_to_order(p, min_order_for_split(folio));
-546d4271307492 Li Youhong              2026-08-06  2511  		unlock_page(p);
-689b8986776c82 Zi Yan                  2025-10-31  2512  		/*
-689b8986776c82 Zi Yan                  2025-10-31  2513  		 * If splitting a folio to order-0 fails, kill the process.
-689b8986776c82 Zi Yan                  2025-10-31  2514  		 * Split the folio regardless to minimize unusable pages.
-689b8986776c82 Zi Yan                  2025-10-31  2515  		 * Because the memory failure code cannot handle large
-689b8986776c82 Zi Yan                  2025-10-31  2516  		 * folios, this split is always treated as if it failed.
-689b8986776c82 Zi Yan                  2025-10-31  2517  		 */
-689b8986776c82 Zi Yan                  2025-10-31  2518  		folio = page_folio(p);
-546d4271307492 Li Youhong              2026-08-06  2519  		if (folio_test_large(folio)) {
-1a3798dececa8c Jane Chu                2024-05-24  2520  			res = -EHWPOISON;
-1a3798dececa8c Jane Chu                2024-05-24  2521  			kill_procs_now(p, pfn, flags, folio);
-1a3798dececa8c Jane Chu                2024-05-24  2522  			put_page(p);
-1a3798dececa8c Jane Chu                2024-05-24  2523  			action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
-171936ddaf97e6 Tony Luck               2021-06-24  2524  			goto unlock_mutex;
-5d1fd5dc877bc1 Naoya Horiguchi         2020-10-15  2525  		}
-415c64c1453aa2 Naoya Horiguchi         2015-06-24  2526  	}
-415c64c1453aa2 Naoya Horiguchi         2015-06-24  2527  
-e43c3afb367112 Wu Fengguang            2009-09-29  2528  	/*
-e43c3afb367112 Wu Fengguang            2009-09-29  2529  	 * We ignore non-LRU pages for good reasons.
-e43c3afb367112 Wu Fengguang            2009-09-29  2530  	 * - PG_locked is only well defined for LRU pages and a few others
-48c935ad88f5be Kiryl Shutsemau         2016-01-15  2531  	 * - to avoid races with __SetPageLocked()
-e43c3afb367112 Wu Fengguang            2009-09-29  2532  	 * - to avoid races with __SetPageSlab*() (and more non-atomic ops)
-e43c3afb367112 Wu Fengguang            2009-09-29  2533  	 * The check (unnecessarily) ignores LRU pages being isolated and
-e43c3afb367112 Wu Fengguang            2009-09-29  2534  	 * walked by the page reclaim code, however that's not a big loss.
-e43c3afb367112 Wu Fengguang            2009-09-29  2535  	 */
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2536) 	shake_folio(folio);
-e43c3afb367112 Wu Fengguang            2009-09-29  2537  
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2538) 	folio_lock(folio);
-847ce401df392b Wu Fengguang            2009-12-16  2539  
-f37d4298aa7f8b Andi Kleen              2014-08-06  2540  	/*
-75ee64b3c9a969 Miaohe Lin              2022-03-22  2541  	 * We're only intended to deal with the non-Compound page here.
-8a78882dac1c8c Miaohe Lin              2024-07-08  2542  	 * The page cannot become compound pages again as folio has been
-8a78882dac1c8c Miaohe Lin              2024-07-08  2543  	 * splited and extra refcnt is held.
-f37d4298aa7f8b Andi Kleen              2014-08-06  2544  	 */
-8a78882dac1c8c Miaohe Lin              2024-07-08  2545  	WARN_ON(folio_test_large(folio));
-f37d4298aa7f8b Andi Kleen              2014-08-06  2546  
-524fca1e7356f8 Naoya Horiguchi         2013-02-22  2547  	/*
-524fca1e7356f8 Naoya Horiguchi         2013-02-22  2548  	 * We use page flags to determine what action should be taken, but
-524fca1e7356f8 Naoya Horiguchi         2013-02-22  2549  	 * the flags can be modified by the error containment action.  One
-524fca1e7356f8 Naoya Horiguchi         2013-02-22  2550  	 * example is an mlocked page, where PG_mlocked is cleared by
-4d8f7418e8ba36 David Hildenbrand       2023-12-20  2551  	 * folio_remove_rmap_*() in try_to_unmap_one(). So to determine page
-4d8f7418e8ba36 David Hildenbrand       2023-12-20  2552  	 * status correctly, we save a copy of the page flags at this time.
-524fca1e7356f8 Naoya Horiguchi         2013-02-22  2553  	 */
-53fbef56e07df8 Matthew Wilcox (Oracle  2025-08-05  2554) 	page_flags = folio->flags.f;
-524fca1e7356f8 Naoya Horiguchi         2013-02-22  2555  
-e8675d291ac007 yangerkun               2021-06-15  2556  	/*
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2557) 	 * __munlock_folio() may clear a writeback folio's LRU flag without
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2558) 	 * the folio lock. We need to wait for writeback completion for this
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2559) 	 * folio or it may trigger a vfs BUG while evicting inode.
-e8675d291ac007 yangerkun               2021-06-15  2560  	 */
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2561) 	if (!folio_test_lru(folio) && !folio_test_writeback(folio))
-0bc1f8b0682caa Chen Yucong             2014-07-02  2562  		goto identify_page_state;
-0bc1f8b0682caa Chen Yucong             2014-07-02  2563  
-6edd6cc66201e0 Naoya Horiguchi         2014-06-04  2564  	/*
-6edd6cc66201e0 Naoya Horiguchi         2014-06-04  2565  	 * It's very difficult to mess with pages currently under IO
-6edd6cc66201e0 Naoya Horiguchi         2014-06-04  2566  	 * and in many cases impossible, so we just avoid it here.
-6edd6cc66201e0 Naoya Horiguchi         2014-06-04  2567  	 */
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2568) 	folio_wait_writeback(folio);
-6a46079cf57a7f Andi Kleen              2009-09-16  2569  
-6a46079cf57a7f Andi Kleen              2009-09-16  2570  	/*
-6a46079cf57a7f Andi Kleen              2009-09-16  2571  	 * Now take care of user space mappings.
-6ffcd825e7d041 Matthew Wilcox (Oracle  2022-06-28  2572) 	 * Abort on fail: __filemap_remove_folio() assumes unmapped page.
-6a46079cf57a7f Andi Kleen              2009-09-16  2573  	 */
-03468a0f52893b Matthew Wilcox (Oracle  2024-04-12  2574) 	if (!hwpoison_user_mappings(folio, p, pfn, flags)) {
-b8b9488d50b715 Jane Chu                2024-05-24  2575  		res = action_result(pfn, MF_MSG_UNMAP_FAILED, MF_FAILED);
-171936ddaf97e6 Tony Luck               2021-06-24  2576  		goto unlock_page;
-1668bfd5be9d8a Wu Fengguang            2009-12-16  2577  	}
-6a46079cf57a7f Andi Kleen              2009-09-16  2578  
-6a46079cf57a7f Andi Kleen              2009-09-16  2579  	/*
-6a46079cf57a7f Andi Kleen              2009-09-16  2580  	 * Torn down by someone else?
-6a46079cf57a7f Andi Kleen              2009-09-16  2581  	 */
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2582) 	if (folio_test_lru(folio) && !folio_test_swapcache(folio) &&
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2583) 	    folio->mapping == NULL) {
-b66d00dfebe79e Kefeng Wang             2022-10-21  2584  		res = action_result(pfn, MF_MSG_TRUNCATED_LRU, MF_IGNORED);
-171936ddaf97e6 Tony Luck               2021-06-24  2585  		goto unlock_page;
-6a46079cf57a7f Andi Kleen              2009-09-16  2586  	}
-6a46079cf57a7f Andi Kleen              2009-09-16  2587  
-0bc1f8b0682caa Chen Yucong             2014-07-02  2588  identify_page_state:
-0348d2ebec9b00 Naoya Horiguchi         2017-07-10  2589  	res = identify_page_state(pfn, p, page_flags);
-ea6d0630100b28 Naoya Horiguchi         2021-06-24  2590  	mutex_unlock(&mf_mutex);
-ea6d0630100b28 Naoya Horiguchi         2021-06-24  2591  	return res;
-171936ddaf97e6 Tony Luck               2021-06-24  2592  unlock_page:
-5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2593) 	folio_unlock(folio);
-171936ddaf97e6 Tony Luck               2021-06-24  2594  unlock_mutex:
-171936ddaf97e6 Tony Luck               2021-06-24  2595  	mutex_unlock(&mf_mutex);
-6a46079cf57a7f Andi Kleen              2009-09-16  2596  	return res;
-6a46079cf57a7f Andi Kleen              2009-09-16  2597  }
-cd42f4a3b2b1c4 Tony Luck               2011-12-15  2598  EXPORT_SYMBOL_GPL(memory_failure);
-847ce401df392b Wu Fengguang            2009-12-16  2599  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[...]
 
