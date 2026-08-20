@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC59C5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 09:58:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DEFAC5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 09:58:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 785A26B0095; Thu, 20 Aug 2026 05:58:09 -0400 (EDT)
+	id 255B76B009D; Thu, 20 Aug 2026 05:58:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75CD16B009B; Thu, 20 Aug 2026 05:58:09 -0400 (EDT)
+	id 206B86B009F; Thu, 20 Aug 2026 05:58:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6503D6B009D; Thu, 20 Aug 2026 05:58:09 -0400 (EDT)
+	id 0F59C6B00A0; Thu, 20 Aug 2026 05:58:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44FF96B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 05:58:09 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 80D35140718
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:58:08 +0000 (UTC)
-X-FDA: 85121197056.17.5D6CD74
-Received: from mta0.migadu.com (out-235.mta0.migadu.com [91.218.175.235])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 67AAB1C0002
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:58:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sfnF2BCp;
-	spf=pass (imf18.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DED496B009D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 05:58:39 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 646DB1A049D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:58:39 +0000 (UTC)
+X-FDA: 85121198358.14.8B15635
+Received: from mta0.migadu.com (out-4.mta0.migadu.com [91.218.175.4])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3E67640002
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:58:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FdIXlOYN;
+	spf=pass (imf12.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.4 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787219886;
+	s=arc-20220608; t=1787219917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lW4CGRmOw1RAu8rBG0vHR1Pu0LSr5rJIGAdERpyVYbA=;
-	b=uLVeNB5FzDhBf6KEv8rE6/CHH20lR9ChXV3jMHlbgCFRNrrjBWu7IvVc5CT9eqUfsKWmqW
-	a+mqDEXspuGzXhT6Xk//UHxVixendL7vLHqeG4a3POX0ayOjRh3df0URAxRuz2IB7v9IQn
-	L9F5wteGd8vpaRApo9Raf+d4e2Fiu7o=
+	bh=gyaZk8aK8FjrhgHqtfFe8sbXuvonOinZPWzcC56af1s=;
+	b=VBsP69Rlyskk9GvlTiumg93ZmJv1rTeIcMDrwlX+sZwP7cNoMFv7lCa7Kc4hxq2kaBM1x3
+	P2e+9Dmeg+E2W4klixc7IDaF8gmS835+j6pTGMl39l5KvsY0uVRARdwcamnY7iKrLPZMtC
+	8c4DMqalcjWneJgOT5df8+omiJ/7sSw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sfnF2BCp;
-	spf=pass (imf18.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.235 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FdIXlOYN;
+	spf=pass (imf12.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.4 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787219886;
-	b=vJ3kM72X1qIsNKToq2UcI/TXypdsZKI1kDBWr+U+PoBp5j8rt2Gx7A30HLTHvuTCjZ0rXK
-	4xP+TP/q65Tvtg3JAPZQcpR2pn9nZl+x6cyKUGBjWdzdhslZhubCEGnV7VfP0/xYR3sCgl
-	Zk3dnVVi3AvmvKH3rl3jXYM3Vh1afAM=
+	t=1787219917;
+	b=W3d/A6GyXIZBe/A2jZ+THAfrDfX9tmm1Lw2dkLEp1Lu0VrP45BD2MY9afFAgGNxb2sSoTK
+	YAsJtuShs7p9MHaypIoCiHj8em46aN59MUijtakc81sEGX5KDyZhLSbU0trDNQ5aRGGHvF
+	NJF8PPDm90YUmL/HGvdCGk6M5MdV0Q4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ploZAqY/D2hnRbV7P/iJz6tixE4616igwYG3fSAUDUQ=;
+DKIM-Signature: a=rsa-sha256; bh=6+e0IVBhQsqNOnef2seSVjbtBoQ3uLTFSRseSeIlRqA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787219884; v=1; x=1787824684;
- b=sfnF2BCped+jyf3PRpPzWg9vqwTDJJt/G77kBAYEimhgBNMrXjAjpD9Y1q39Y7RVJZIgHVDF
- dP3uOTlhH0NWBOeZD26tkFr79yLOS8u50QQQsR79HARIiD5vn/XFm2aNigQbOJgSyK2sBQZDgh4
- YWHkgVFGG3nvg4rNpjKYEpBw=
+ t=1787219916; v=1; x=1787824716;
+ b=FdIXlOYNJW3tKLZOZLidF9aFp5YCR/c7kD6T9z2R+LihnpSwEbI1Bc6QpvEL8PlKdOB/p+XJ
+ 7YUuEAXEvm4iIPUVDrmwAfSftpVu5CMG5a8PfEPsn4n4MldOy520m97f0v74LZqsf1FhQdaiwA0
+ V5DzhQ0uL7I6Ox28XXzuGA24=
 X-Envelope-To: linux-mm@kvack.org
 Received: from [192.168.110.173] (223.70.159.239)
-	by smtp.migadu.com with ESMTPS id e22b78b065807185;
-	Thu, 20 Aug 2026 09:58:04 +0000
-X-Mizu-Trace-ID: e22b78b065807185
+	by smtp.migadu.com with ESMTPS id 30b66ec55db78dc2;
+	Thu, 20 Aug 2026 09:58:35 +0000
+X-Mizu-Trace-ID: 30b66ec55db78dc2
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <f9ab386b-fe45-49ef-8e7a-c8544ef3241a@linux.dev>
-Date: Thu, 20 Aug 2026 17:57:50 +0800
+Message-ID: <9c699958-c5b6-4aff-adf2-7c27a91cf4c2@linux.dev>
+Date: Thu, 20 Aug 2026 17:58:26 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: cui.tao@linux.dev, Yu Kuai <yukuai@fygo.io>,
@@ -91,26 +91,25 @@ Cc: cui.tao@linux.dev, Yu Kuai <yukuai@fygo.io>,
  linux-raid@vger.kernel.org, nvdimm@lists.linux.dev,
  virtualization@lists.linux.dev, gfs2@lists.linux.dev,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 1/3] blk-cgroup: use a request_queue rhashtable for
- blkg lookup
+Subject: Re: [RFC PATCH v3 2/3] blk-cgroup: store blkcg in bio instead of blkg
 To: Yu Kuai <yukuai@kernel.org>, Jens Axboe <axboe@kernel.dk>,
  Tejun Heo <tj@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
  Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
  <mkoutny@suse.com>
 References: <20260818070641.756747-1-yukuai@kernel.org>
- <20260818070641.756747-2-yukuai@kernel.org>
+ <20260818070641.756747-3-yukuai@kernel.org>
 From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20260818070641.756747-2-yukuai@kernel.org>
+In-Reply-To: <20260818070641.756747-3-yukuai@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 67AAB1C0002
-X-Stat-Signature: oabw84tg5uuposnodnaep3eu1usdy6r7
+X-Stat-Signature: hb4xd1n55ih5pmg9smwwzrpr8nkaxqf1
+X-Rspamd-Queue-Id: 3E67640002
 X-Rspam-User: 
-X-HE-Tag: 1787219886-524510
-X-HE-Meta: U2FsdGVkX1+EpQ8cF4vtbpn5u9xmpotSN2uK/Tm+RJ0m6tDYZkGp5OLrtT/FEZQSWGBrlgkfNRdXrn90/YocjhrEtmlwlA6VzKFZQMsYrsNkmIbr5pktTMw7fhGLsutk1ZtnOeMRR+ovUDY6MUPKWEy00glFJ0UWvbmEYREba2fhLgRTutu345dZ60ARvsFjZ4RqWwBGyrY2cg1HQkh9f5VB+y0+sJv0n4j9AW/Y/abAmkHSz+c82FYXOV0BX1vfx8SZnhVhjQdJo1ZcT8c8bx8Tgwy5IFx3RzvXOyNknPEMpu3T2nAixhoRlPA9TlrIIVpmWvdZb1fOHWKKB3OOZdxbPRG/cHzxez0K+/12lCe7BDOpFH8eAFDV26ko5uEOYrrbXbqbPyOjAhy15lT8Y0QUodkw4wz65dsZGQP7IqVE40WprhKYo5LuG75My670zEAHCwG5Ur76nKDqrTqu957xdDpoTa9AQM/gGNGyp0Pg5QOw0VVHqPszZIo6k5lo4R/edRYxJ1CvJGD3yjvOtGkUMyaJSnsd61peoPftfqvte0Da5+moAyOvZVoidrfHGeVqauH0ghHuJtR9/Vd/7Iz8IDdYQgwMjz2P40Ntv3BBDSqLqzDbGp1bA+L/B4Oyp0MXu4pqVDUaYwHz+UMHPLJeoYN7AtK7elKj9wi/dLpGEJOhPhg5MUd6w1+VKFJNZQDau0MU/sZpkhMoK68nUaOeO0XWpTl3pVkKqOfNDLexI0acNu+/+BEXZ1AFH2dkrfo4p9do+ZcA0ckqbMl0jIwu3daXbpk68bCdib14sjVisfFanES+IIXgA3lum32rTwQr0aHl/cKsLSdE+CmqmreIhA2Ph3ksOexyWdWtVpqaaigeexCtXE4wUI2zP057PPAjJuO/9++W5DXTfVwlFPdqOO/ofLDuOL5w/fb59eKBdloinORL7/5dkHXVV1Z+jYCpzZ+F9Y4crdRaLCp
- zKyjtgh7
- tZKV9Qo+ZRifsZX4Ab3SZO8fzLhya8ODVme9RtZLpkiDbhGNRV2wSvr/wVYhrVcj35wRR71xwU1u2Bqrq3W1OcUj+8zbaE4Xj/qcFmhsSV+/ruFxs9lZRq8V6OIVtxf76Sm2nATXZBPzz0sVYzIEw1dbMKv8Mvhe5HtnlRn2HRsoAu+y8EAh/XGOsxUS0kV7YfaeBb6DJ4QKaw0s1NsgtdZd4yPXn3uNViVWpBPfxtJNQAHkwoKrpmah+zd+6or9Qeb0bUOB3O7NZYGVOoeOT0t2ba8xwWgws3Ejch9bTr8cQzQ8H1P+8aSx8hQAU5lcJpDUYG9PwPDQawMe5KxxQt9sP2AAjjdlL/8OF+HBH/MVxC12wDkNuLNm0FN6qOmy/h4rlSVUc0vtEGB7W2bUWL9Tra5PVRlJBfeoBo8paDm6unb0=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787219917-304885
+X-HE-Meta: U2FsdGVkX1/qbm0Pu2sWNjpIyOy8BfUMasqpo/KRXvTRsBpL9k0C+5n0bGEV9RVBpsblZAcpETlPOWCnDA6Q1q9rZDshCsrtNts0VbezGkPFgavuE6D4z+XYtcZJ5ZUEK4r6bYV5sFTh3Ojs6fkvsUs9nUlcfZdfdDMHqnmDiRxIO05eib+WvhA0B8M3Hq/50hkxcjzb0hhrO/FDnAwrJ8vE8xwz2JSC0rz1fI1MBU88jZ6XeLlBk3lB56mZ4Yyz6AQyp4edX3SdQU64q6IyE40Vz5YTRFmXzkdbHoLZgm9jmu6gld73rI7BYEsK68stt/hwuH5uWHg6WSYf/7p3qSfm1sbTDQF5D6dEoZL28gp6pFn7xVDC6DYf/h4LKyGdAkS3spVwIQyVgjVqN/Jdw86lSlO8XkP+MAAFuIEZDNY0IcbA82tn7P0hwGmxU7qSHd97JYROAvw8h6ZC4hyJXMIg0rrD9EZvAtYKeiVtYCc6zTLRrRGNBinB0+wg48eXGzbBzx9A29qxsHq60LjdKyLakdMwZXfVYY9tdfOzbVy31vUgh+fnKv/h0B/403e75v5kv98bPiZHw+7EAn3mk6qv7defPY0Jmk8/X9R7PJDC9slnPRYJfknZWREP7HPWwwxYs39xZLJbMz9rd1sK9wSgK79SSlU+mfciHkZGVUadiDmHqZ3r3Hm1RhRCsfdFPD6A6JCzsaXjMjgZOOwIcOX0KSScuRwEQiPOEESH4dZaLaH1KjMbU2nnWeoPRRWfUMDu4hOlMCmGg79q2qvi0JNChe34iY2DWiJwsKPqX8Gp3mAxcgQi2ULk6ZkAKB1oUvcCWBqvyJ0308fzWw4qcUwMcM+oPdKybeUnbc45AUirDPeaTf1cJPZb9KFtCd5YkpUkI9HMhp2b1Vo6/Yukntgd9uSH7fohk+vC8nUg+6dzFMwyzTKeuQjw+7dKz2SgklUo/T+2pGnA65Jqy71
+ CUi+ncUJ
+ NSoYLexfV4piVTz707iWErbR4/bSDbVrYoDR49o0JiVYZkSySS+RBdRIYjBhMNha2Fvewar9xG9WxyC/SZUoLLnx80Jmc0r8T42o249B94m7TnHv/LOmZ2DT09/Z8ytnxmrSf6o3U5aHD1np5s+UkJLzSTTRvue6whjfJ+9vTds2WYVMWv9P7YSeJLGYi5VNa60oTiQns4ZcTn4qgK1rSUcwv24BWKbTnfcVcMOVS2hzDhUD+gbOJVJNRFlHMvNmeY01hy8Q76k3FFLqG6Jkx4F2HbvJgtooX+e07Ta00mUox7es4EMSi59IPe7r3C9xr7NN8JSdSmgh8cT58y8YBJi0KT8gWzDysuv98GioI1yoOMlt0U2i5HTMm6CT91UzBVaIp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,30 +120,25 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 在 2026/8/18 15:06, Yu Kuai 写道:
-> blkg lookup currently uses a per-blkcg radix tree keyed by request queue
-> ID, plus a lookup hint for the common case. This spreads the queue-local
-> blkcg association index across every blkcg and requires radix-tree
-> preloading before creating a blkg while holding q->queue_lock.
+> A bio currently stores and pins a queue-local blkg. This forces bio
+> association and remap paths to look up or create a blkg even when no
+> blkcg policy will use the bio, and ties the stored state to the current
+> block device.
 > 
-> Replace the radix tree and lookup hint with a request_queue-owned
-> rhashtable keyed by the blkcg CSS ID. Cache the ID in each blkg; the blkg
-> holds a CSS reference until after it leaves the hash, so the ID cannot be
-> reused while it is hash-visible. The integer key also reduces hashing and
-> comparison work relative to a pointer-sized key on 64-bit systems.
+> Store and reference the queue-independent blkcg in the bio instead. Add
+> helpers that lazily look up or create the queue-local blkg when a policy
+> needs it, and pin the result until the bio changes devices or releases
+> its cgroup state.
 > 
-> Keep entries until blkg_release() and provide blkg_lookup_any() for callers
-> which need to find dying entries. blkg_lookup() filters offline entries so
-> existing lookup semantics remain unchanged.
+> If blkg creation fails while walking down the hierarchy, use the closest
+> available ancestor and update the bio's blkcg association before recording
+> the blkg reference. This keeps later CSS ID hash lookups matched with the
+> pinned blkg.
 > 
-> Keep q->blkg_list for ordered policy and scheduler walks. All current
-> walkers are cgroupfs or sysfs slow paths, so they can move to rhashtable
-> iteration once the q->queue_lock to q->blkcg_mutex conversion lands.
-> Initialize and destroy the hash with request_queue, and remove the
-> radix-tree preload paths which are no longer needed.
-> 
-> blkg_release() removes the hash entry only when the blkg was successfully
-> inserted into q->blkg_list; the list_empty case covers allocation or
-> creation failure before insertion.
+> Keep lookup-only users from creating missing blkgs. A pinned blkg remains
+> in the queue hash until the bio drops its reference, so allow the bio to
+> recover it from the hash after the blkg starts dying. Rename the bio
+> association helpers to describe the blkcg state they now store.
 
 Reviewed-by: Tao Cui <cuitao@kylinos.cn>
 
