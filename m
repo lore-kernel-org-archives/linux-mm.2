@@ -4,77 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF2D4C5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 17:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A36C5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 17:33:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A1B76B0095; Thu, 20 Aug 2026 13:31:22 -0400 (EDT)
+	id 6B9516B009B; Thu, 20 Aug 2026 13:33:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 752186B009B; Thu, 20 Aug 2026 13:31:22 -0400 (EDT)
+	id 66A816B009D; Thu, 20 Aug 2026 13:33:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 668B26B009D; Thu, 20 Aug 2026 13:31:22 -0400 (EDT)
+	id 531C76B009F; Thu, 20 Aug 2026 13:33:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EBD66B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:31:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A948F1C0B11
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:31:21 +0000 (UTC)
-X-FDA: 85122339162.13.A9BD694
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BE806B009B
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:33:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC8CB8023A
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:33:10 +0000 (UTC)
+X-FDA: 85122343740.26.B3F6EE3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CDB51100007
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:31:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SCCDxpSv;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id D265940011
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:33:08 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxQmEyM3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787247079;
+	s=arc-20220608; t=1787247189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RjicE+rPS3y28uBHFm/mdXNkgiy6AiD+cc8tWN9zzKQ=;
-	b=4jZtk9ZvQ2uXMV3wBlp5mNhJbZT+bgKconMjCcaNzJFVB7jtsBOP5l6IttUs4dktR9r8M/
-	neplfCGPbIBhw/ILUzo+tcv1F9JgNVlIuGkA8V0YwdP/dGsKBYbxKg0LKbf20H1HgF+inj
-	b/zZsqsXWqe9bWormLqnOtSzSlNFLDY=
+	bh=xKZbzHEs7LovNAK73CuUY9PodbupBOZ3Tf7iuO/vCJM=;
+	b=yl+hRM/KrfvFyzcXNRHBJybDigL8URys9ud+g1pTQKTTGwZ2tN3hAkSmIiddhZym7SaiAR
+	G2a4yP+mO05jIW0F6HSwz79IIlR2GRPvtS38OdMSxHvHzXubdv91rsNO25/o++zNxDNGMX
+	5Jmcux1/4KUCkSw8mtXmdZM7f/7mdxQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SCCDxpSv;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxQmEyM3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787247079;
-	b=NIy/fwgrcRI+MfRA/ZU2BnyHhzl2MIge2kCuxin97xLHnWzB56TU0m3m3eJwoORHuup9LE
-	3Ng1h/+bQs+39UMrXIJlMdsJfbCU7GghbHj76f7oO63DgRw4N8PqmhOSAzo/Mevb9SN6Jx
-	ghvb++9cxRpJ7maGugiWNLVCdNvjKl0=
+	t=1787247189;
+	b=mHnzXjHAYXnNLkSsS3q7G6QyyO7dqvSUWmvPNfH4I1qSGi6pGG284Vl2b1IgmwE5qbWL7J
+	jPXizCRW+pgKnwM9VKxjCKiUHnjZuNQ8QpHxnqug9F06b206Li/3en5V6d9PqCKtmUmUGJ
+	09rDjUapgkxFrPurl1n+gjju0rOGAxg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C857240F01;
-	Thu, 20 Aug 2026 17:31:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022931F000E9;
-	Thu, 20 Aug 2026 17:31:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 128FC42D78;
+	Thu, 20 Aug 2026 17:33:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838781F000E9;
+	Thu, 20 Aug 2026 17:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787247078;
-	bh=RjicE+rPS3y28uBHFm/mdXNkgiy6AiD+cc8tWN9zzKQ=;
+	s=k20260515; t=1787247188;
+	bh=xKZbzHEs7LovNAK73CuUY9PodbupBOZ3Tf7iuO/vCJM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SCCDxpSvivp23EzOE1anqeLvcDunLreP1GHlzp1LfpFY+GcLHQmNpuDuVwiuxswyg
-	 6pU/mDROTUz3lyhhgfJyfthTtE/Jdk00OjuHXtLkxWXefgqyCCYhw/katvP8i5AqSg
-	 +vUeExiROM0WniQYhy0kPjBFH4gikpfeIrvf5rJT3PiTRfMe9k8LoW29bKjX1LqsWT
-	 kTkoSnnWqiilN7zLfLSi8+28SIR70ZlE0FKP+d3z0IjNSTtPD7eIdF1/i/HuN2I09P
-	 7/5/1pRM7t8Roe4qLV7UZ7HgMovkF7U4BvSEO53aWBRtTZwOCfNcCJNyH8GpBY7wNC
-	 lFYbJ229M54BA==
-Message-ID: <00fad295-132f-49ea-9a39-0febf0919ad5@kernel.org>
-Date: Thu, 20 Aug 2026 19:31:14 +0200
+	b=AxQmEyM337L8/XC13vNqg2pJ/asCDJblMcM09Fj0giGxOGzcQJrT72m510uGyz+Si
+	 R7BAYktFs8f84fHzhqraAynMY+KEvnG3Hb9NGFIGlSucH8betFIvM4Q8yxKS5t2IKt
+	 qkflSYIN0MpkMRupcyw8y8xG2RcQyg/1VV2Xx6nL/tLpgpWPRNj4yYuYP2S8juGNPJ
+	 YNIWVdr71kwTXMYgCcfWBnKxzLTn5p7ttDkzXKMn4Z43z7nSIg3OzZzcdlaO8yZE1b
+	 RToj3UnvuNBfO0C1rTJUA3p710gDr3q1xukkTFGFtqdL/cNOLsogfLkJpSJv9ZXbuP
+	 ABak8h1qTcfPQ==
+Message-ID: <e29e8bbf-5a10-4868-87f4-09d48625f6e6@kernel.org>
+Date: Thu, 20 Aug 2026 19:33:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: check stat() return value in khugepaged
- get_finfo()
-To: Anshuman <anshumantewari123@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260819121426.49500-1-anshumantewari123@gmail.com>
+Subject: Re: [PATCH 1/1] mm/hugetlb: do not dissolve gigantic pages without
+ runtime support
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Longlong Xia <xialonglong2025@163.com>, osalvador@suse.de,
+ akpm@linux-foundation.org, mike.kravetz@oracle.com, mhocko@suse.com,
+ linmiaohe@huawei.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+References: <20260817162039.1511838-1-xialonglong2025@163.com>
+ <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
+ <F06EC17D-2A3D-43DA-968B-1DD4E1253EF7@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260819121426.49500-1-anshumantewari123@gmail.com>
+In-Reply-To: <F06EC17D-2A3D-43DA-968B-1DD4E1253EF7@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CDB51100007
-X-Stat-Signature: myytfaapnfgswwh635hizk76hknhoee7
+X-Rspamd-Queue-Id: D265940011
+X-Stat-Signature: 8hhbqj59sx4hpy8gqcu3xf1ajn88o39k
 X-Rspam-User: 
-X-HE-Tag: 1787247079-86687
-X-HE-Meta: U2FsdGVkX1+cC72TDnLUieqQloLBTo8eD6SF6DZ6/ezboTSlffHCwNZ3iPzmVie0CNMwhS118abH4wnMYhXarrifFAE0teWMuQF/AmYhItq4VUxftMO7C+/FKECks0QmN4lO1gD1DM9imSbiA4KSA3gS/mkr8SMWQQSlLrHPoHs2dqg9vPiTNj25SWUefopdQZQKHIq8KQ35zInsGHD6D1JrHe5i/jvlKxhNNOWzqGWzOfkjB2/XNmtCZXq74q+eITXJuM2nALb41lhBONqiX9n4FofplNO014RyB0/Bf5K3RXFPNwfulP0YFFziorTI4YEBw9I3zWY8iZk+8ACRy/BsKvofGawTPd1embhUo/VXDsEu7ZQFdErsrpSJoW9PYjWEn8fLKnleTSUquUQRc9O9nzDzTq6qGj4T4KVltBIeCKoU+LJpVHWXsLBuJtRLuZBa/DrBsQ614E+Ox3tgY2qT5vGh2NeSBTzY/s3Y6keaYvMSu13dk7wTPGzUzdec9q1LBQXZRef+SgQg1j16KrKcXQiUYWZJYIIP8VIJcj95jtSBZmr7yKEun1u1ELE5GE0TXD8lsQ3ltDArB9JDhpjhRCdy+lzUK10og8YBXOzG2fV2NnQG7623ABUIMTHHbRIlsTLD2r6Ek0KOcPGpOYTxNf9KhleXwLhRJHHfsw2Mz72id0YeuxIpGFOCXeXyE+xNDaVe+V1TOdXTF4CKTsCsHnepdRd4SIhZxVjfNBPdKXZ4S9brFJOdiQOLmjAILSNIcgknHGoKiBevrf1hV21YgVrv1TYbD3Sn3xGsPGZjY53SRfQ0zTZXjbfNXIm9/6VOnhm9JVIia3hENLJyq/cFW00drYjLAkmiHc8bC61Lzou5F/C0oVOHsDJ5WCuN9Z3JVMh04X9DsT/dzLubRXM7g89y3rBPmH3Xv0AxW/AwNQBVW8f9oY3HD9C5Ui+NTEw8X9NWqJEwSPHRg7Y
- ZowEY1L9
- 7nq6K/UVg5jhmjRZyydqsQxr+ef7XTk5qI+FnuG11m1QLGPadcEZSgQDYilLLfsh37TC8HGuHLcL8Yx5o6m3sEBfev75v2yJsX7E+yimshBGZu7m5ooiJBojiU8YE0i5ulnXZkaMSv2Va65uvaB/EapCD/IryYViVx1Pj/DfIvMcMf42yOATdUwO2ALj4uuZYgRuv8ALnmDfNFI7BSQlf3btDkqc5boBgrLjd1srzHAYNnn+bW0GSDnp7mg6BRasXdCkdzzt69Ss/OIol+YAJlq6a3qPnmUkuDpUit31Q828vyBMYMB2KeuIYLTlkfYiA5ZEe5JWUtFlYNdjUN0ozcqGkkIqR2k8YhHx+
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787247188-81308
+X-HE-Meta: U2FsdGVkX1+p4C6PJ/8FL7bPClXbnzDas+p57TB8VzgFMp95wfJRBfuzsePocOQtogrcNCxFDgVHhTtofmkSzq3YfM0Lr9/d6bU3cc5U8BG47Ri8Wns5IGdifZPcTc4Bnh/plLjxgnSdRv+uVEc6VeH/32wJL6aIz4HwvHphs9dCYiKSX6EpX1GKPSr0epK9R9acND9a7hUQ2XvSj9n/wKSDbZlzWVToGBdraPBMW46OJQj0CiwIS4kd0qrHCMwmDQ+bW7Xvv5k1juB2KPfqouVV6nNcfoaQi7HCNb875gHa9FZWuT6Yq1TqOOnH/KpEn1BQJsAh91/Q9wZiGkqQv0VjKkhjfXaZxGUNSE6JDMqoKjCxzQlAO5l2XkaFxN83+t4e2NTJcw9X2pR3ywOg5bOiPq1UnaEDjzz9qtw64iwFPKzzpZG3hzRNYDUKlgfSi5+wRN0bvREmPkpt66ekujyTTaM8xyQAhFLZObtEQfdA6SWcNBIBO42DPpAYqGDOfKnxLTZ8QX65w375AWLdaMHCo/AkfZBGilPQRuVrNSSp7fg8V46dX6TBKTNzPiPGAXyblhaTJdiCtDLwrl1O1LqimwTDLVY/oITdhc6KtGXycKQ9IBwXP2qyKZBq4fqseywl3mwdr9+h1Qp13N1y6kXYuWi7TTQ1/aKpTAaSxnbY7wTlHMey6bJt71FIik8hnHRUFrv6WC2D7BsW6ASQM71a73akCUXPF/ZSNJ7gwg5MC3lbAIHz1fPLvl4rBMIUcrHCr+AwFJURBYARq2wd105VqXLtwohx943fQtuThoFxRizghT+qrZtNoEIrTvK05wCBCNWBTixu6YrAfgcVliGva7BxDQiwZoBz1PNiWHzilJOcThxUlylvs9q8de8IaUH94xlu7Z8+the/3CoYAJ23sWlkVrnF+Dx/8En4Hd6JKhB0+KTdY2FgTYUVlUFSC0UjKCSYo+j7PBj6cJ0
+ jhvsFHou
+ FqLbDgxOM24o7mDyF3in7STw6l4iJLQejUGSb/Ya1bHuC4ERSMsv3v6LvAC8wgog+5bfname4MvarsrCcpSsB65Fzx9KaDTw5zvbSAtLW6JGgS/bdcS+aI018ejc8b4aeiBcNZ6+G/bEpJWB9LL0JTPjg4FmGsDc8xamqlr6hpNHrcxFpHxhKwXWIbemRvLnlmL1gTq/454pcoqhi6aPjb0ddAdZDIte96PxOsC/RL/ISrPXhWyQWCdUnVAVVTbg1ddx6meF9eaShZVhP0As2ghHocw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,49 +142,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/19/26 14:14, Anshuman wrote:
-> get_finfo() calls stat() to get metadata about the target directory,
-> but never checks the return value. On failure, stat() returns -1 and
-> leaves path_stat unmodified, so path_stat.st_mode may contain
-> uninitialized stack data.
+On 8/20/26 11:38, Muchun Song wrote:
 > 
-> The code then checks S_ISDIR(path_stat.st_mode) against this
-> potentially garbage value. This can produce a misleading "Not a
-> directory" error when the real problem is a nonexistent or
-> inaccessible path, or, in the worst case, the check could pass by
-> chance on garbage data and let the function continue using an
-> invalid path_stat for the rest of its logic.
 > 
-> Check the return value and fail with a clear error message if
-> stat() fails, matching the error-handling style already used for
-> statfs() and read_file() later in the same function.
+>> On Aug 19, 2026, at 16:52, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 8/17/26 18:20, Longlong Xia wrote:
+>>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>>
+>>> dissolve_free_hugetlb_folio() doesn't check hstate_is_gigantic_no_runtime(h)
+>>> though remove_hugetlb_folio()/update_and_free_hugetlb_folio() silently
+>>> bail for such folios
+>>
+>> That's odd. Why do they silently skip such folios instead of warning that
+>> something unexpected is happening?
+>>
+>> This screams for a cleanup unless I am missing something :)
 > 
-> Signed-off-by: Anshuman <anshumantewari123@gmail.com>
-> ---
->  tools/testing/selftests/mm/khugepaged.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Hi David,
 > 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 10e8dedcb..2240a9b4f 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -121,7 +121,8 @@ static void get_finfo(const char *dir)
->  	char *str, *end;
->  
->  	finfo.dir = dir;
-> -	stat(finfo.dir, &path_stat);
-> +	if (stat(finfo.dir, &path_stat))
-> +		ksft_exit_fail_perror("stat()");
->  	if (!S_ISDIR(path_stat.st_mode))
->  		ksft_exit_fail_msg("%s: Not a directory (%s)\n", __func__, finfo.dir);
->  	if (snprintf(finfo.path, sizeof(finfo.path), "%s/" TEST_FILE,
+> Sashiko actually has a pretty detailed description [1]. So I think it deserves a fix.
 
-From out selftests that should mostly be impossible to trigger, as
-run_vmtests.sh will just create that directory.
+That's not what I meant. I agree that its a valid fix, but I think the code
+should possibly be reworked to not get silent rejection from these
+functions--IOW, likely the callers should make sure to never call them in this
+scenario, and then VM_WARN_ON() instead of handling it silently.
 
-So it's a valid improvement, but mostly irrelevant in practice
-
-1Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
