@@ -4,97 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF020C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 02:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A394C5DF85
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 03:02:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78F296B0095; Wed, 19 Aug 2026 22:48:52 -0400 (EDT)
+	id 3DBF86B008C; Wed, 19 Aug 2026 23:02:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73F146B0098; Wed, 19 Aug 2026 22:48:52 -0400 (EDT)
+	id 38DC56B0092; Wed, 19 Aug 2026 23:02:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62E686B009B; Wed, 19 Aug 2026 22:48:52 -0400 (EDT)
+	id 2A3796B0098; Wed, 19 Aug 2026 23:02:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 34C6B6B0095
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 22:48:52 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A0C5D1A069A
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:48:51 +0000 (UTC)
-X-FDA: 85120115262.18.8A46B97
-Received: from mta0.migadu.com (out-244.mta0.migadu.com [91.218.175.244])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A51C5180002
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:48:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yfd+Rxq9;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.244 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F33796B008C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:02:25 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A0941C1A8D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:02:25 +0000 (UTC)
+X-FDA: 85120149450.25.3F6A2F4
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 938EF80004
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:02:23 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W7Azikh5;
+	spf=pass (imf30.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787194129;
+	s=arc-20220608; t=1787194943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tTcro+wZrO9ONiOytWu7Pdxhrj0RvU2tboiHfG0z0yA=;
-	b=mlxOc3HBKlXmPmrrOn8kzB6M0BJLnaaUJChz9Uo+pRuftdnBQ7k4IJUZ+g18tgCOrAiuXi
-	hT685Zo70OSG9yBBez23suQZPNUn7LgWhvuOe0dJz/yEVyxY4Gd93llYwbtO8XnKRstw/G
-	19OfsymAhr8SkgWK3jN6RecZU8V6f1I=
+	bh=b7Lcuraq/4CMmDj86N4LuGkDilC6+Z6Q+xTsr6qjIXM=;
+	b=Oc8xV5FOpthiIUM/FXCtIiaebg3pf0yxddBCbuI/fdlLNPE5qa7qhLmIXul82jZZDoPfqc
+	CrEqzIx2ymqkoOfjuRLGgAWcXUFH9N41zNyH45i1w3RbISY4ZVU9n63RzxMCW3E5VJG8c5
+	U+6Mc+OPLvoWrmlY4LqhbZN8/q3y0Xg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yfd+Rxq9;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.244 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W7Azikh5;
+	spf=pass (imf30.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787194129;
-	b=QwL2XxKDJyb9IjFvFqhk7G3DNfEUuuUt0A8dKWWKhchq0EzhU487gcWyj2mrkAVjyqAGE6
-	jxoDLWloV4buEZKVc/4rm0979Vy2RU2w3SVytbDphfRtVHetOGDNHdYq2wwwb7udj2OaOE
-	yM5LsBVEQIK/JwG49MMLPAUbQdImoW8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Bhp2/74VmpHMzBwDgoyvkdbnUqDeX4YHMvi+u6elTeM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787194128; v=1; x=1787798928;
- b=Yfd+Rxq9N4Z5ZmsjtbA9/QguI7AHiEYJjlJLIesWYU/Y4VUhMh8HDjD6pppABG2RtNBK1mti
- pkl/WW+dnkQq+cLsWAqxYDjTZrqxwnJ7VZ7cgHvV5ZwwjNx8QoY79g9qL1cNRJOHeVkF7o0Wve3
- eJ5x9hztzmEue9gIelpNMXdY=
-X-Envelope-To: linux-mm@kvack.org
-Received: from teawater-KVM-Virtual-Machine (39.156.73.13)
-	by smtp.migadu.com with ESMTPS id f7eac550d4626fba;
-	Thu, 20 Aug 2026 02:48:48 +0000
-X-Mizu-Trace-ID: f7eac550d4626fba
-X-Migadu-Flow: FLOW_OUT
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH mm-unstable v4 2/2] mm/vmscan: apply too_many_isolated() throttling to MGLRU eviction
-Date: Thu, 20 Aug 2026 10:48:15 +0800
-Message-ID: <dc4963a19e11d92eea4a0a89cb31a581fb9bc821.1787193916.git.zhuhui@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1787193916.git.zhuhui@kylinos.cn>
-References: <cover.1787193916.git.zhuhui@kylinos.cn>
-MIME-Version: 1.0
+	t=1787194943;
+	b=jEsK99Alt/PJkCoqZz9nbbcNtArcDHM5cNu8IdL/Egp3srN0PXhKVQ4zz1mMU29IL2wGS3
+	3Ah7cqCGVyFi+2aNsISnydO/l0FotkS5CXfOe9d6d6uT6G72BHhl++5nT4XkAyOaSi6For
+	9eF6tmooD4ogMftZtkJ9tN0teTEBhLc=
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7ec3b429a3aso1285012a34.1
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 20:02:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787194942; x=1787799742; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=b7Lcuraq/4CMmDj86N4LuGkDilC6+Z6Q+xTsr6qjIXM=;
+        b=W7Azikh5kfaIOadfgx8pOO+RIg4JRZGQtfnWu6P03umktADHawmwhJDgZtKg5zm+eF
+         /NMWl8oUuMkEZEh1zwvInOQ1gWK+2CrVBku646WPOO+LeVY4xgCkG0ZjbPVO4Bjosrdl
+         cCpoWO08wzfvjWmr7Kd51P+3sIZCe2zo7VU3z3WklOPuJsI9FwX8QATYgC4eTqqQ6lzU
+         5Od+6YZGit8xPRkxoY7CnjcIiT7GYn7ED5/dcP3AUVRcTLheEUIMwtDLnsWPu3Nga7C/
+         EzgNeSY2MqC6aI7vpWpfaTLBOCrWXxkBvIH5LacZay61TqQGPEsbh9p4AqiSIUn7NGBe
+         B0XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787194942; x=1787799742;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b7Lcuraq/4CMmDj86N4LuGkDilC6+Z6Q+xTsr6qjIXM=;
+        b=iVkosUluQT3f5Zx2sRt/AGZWIEvL2OjSBP8u75DgdIdvQQCJ7cA7v1iSalxI1GKekh
+         Rx0tClymdINT4rDSwAbuXpm6V6SkPJouOBiB4XoO3YQ7ekJ/F+mO+ggInx6/hGzurtxJ
+         /BH6fJA+X6S5fB1V2Bu50gs7O/9qk8TjqWvblt1jt3xY+Zz5/YXeDZNl0PUCN2++Vk00
+         Fcc7bjrzGKqi3xMxYdGbPz5Bh21HStTggbKIGapk1iw1GW9hHrF9/z7qh91YbxIZgcki
+         A56p7vXhho2JG/aecxuM5YtqvytARy+G5k8nlNgXI9lTAsgfLPA/ux+CcQaqaFGsIQK9
+         xGgQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrjzHxh4CYqhPpTsD1s7zahckBu01puMYb88mJik3/iP7T4NhCrInlzXmAJJFpZa91Gvbg3YBHNYA==@kvack.org
+X-Gm-Message-State: AOJu0YzcQM76aQnGZebPsXP1Qd73KDohzKKtcRDUVxIHNqd3jHLHGEkK
+	perxVi+mCBEnaQg9gTHVD3pEaErkN0gQjCr92PCeoFcEwUv1k6S2NS4lTcWdu2sC
+X-Gm-Gg: AR+sD12kX4ePEvx+ncocJJndvq1DSwLxHhS0g2huNKMFjM7Z//NJq9e4hdhcPRhR+Kb
+	khTW8p+I3PAjG75nw+oksBwaWd5daOi7M2KaRS39Lpbgy85SrbUWLf0rwndLb41nrrawYCaWcsO
+	bX/3+1r4a6I8XvYeLZwrHiD9QEY9FRe0tgh85KFK8elkN1a9NbWcxEK9lpazXFllE1mUikdFhHu
+	k2V0wfQvBrHPCopgJn1jjgMrquOC3mU1+9K5Xd1yhQ94uBr7gFsLMQ5u5tYf2VWijFgBZ0N6VJr
+	6tjeXrbTSTwuDB5pCl6zZnhzwqwyFUy12ihod5EbeW0KV/nmvYp+6PzEjHwGs905KdDY/ztGHQp
+	a1oz/q7/+8VQmAlzgsbbD9klt9WKGv2nMUzSW1tZty46tw/IjdMgItRuFOtVdghXpfRMiqZc8HN
+	s3ljHFLaVbo/rQtai/x13nYOYH+h4If1r2uDvubLOmafVwk8/23LYu4BLiEDehJndPXf+qJwKKX
+	kH0WD+WgnsHv+JHl5VypbStdCcvt9epo4u05bkwZA+M
+X-Received: by 2002:a05:6820:217:b0:6ae:42c7:ef83 with SMTP id 006d021491bc7-6b13bdbf028mr9701164eaf.0.1787194942378;
+        Wed, 19 Aug 2026 20:02:22 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bef77be3sm11302733eec.10.2026.08.19.20.02.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 20:02:21 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Ritesh Harjani <riteshh@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, ajd@linux.ibm.com
+Cc: LKML <linux-kernel@vger.kernel.org>, Christian Brauner <brauner@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: Re: [BUG] powerpc: userspace processes crash in ld64.so.2 when running recent linux-next kernels
+In-Reply-To: <eff5c192-ed33-44e8-8834-fa5b4803f39b@kernel.org>
+Date: Thu, 20 Aug 2026 08:13:22 +0530
+Message-ID: <lda1jyut.ritesh.list@gmail.com>
+References: <75419f88-eab9-444b-bf97-28a9765819ad@linux.ibm.com> <627c5c2f-a0b3-4fba-811f-7b4ed4c74dbb@linux.ibm.com> <eff5c192-ed33-44e8-8834-fa5b4803f39b@kernel.org>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A51C5180002
-X-Stat-Signature: hxp48tfjaipesm7dks1179eo1xzt454j
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 938EF80004
+X-Stat-Signature: m19n3996etk1o7jom6k6arqaenqr9zd3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787194129-481172
-X-HE-Meta: U2FsdGVkX184Jdf/SPv7a0OVu3f1PQiGetUitAyTsrzQQRQOw4mo38xHGZJT/EIHjiacGJ8KHWd5S5xcqA9Y2dpRju4xvvP70P/dQLaTuUdko0nfd8NyDxruFTSmIhok/RjPrCxsGuBXEeDF8juFEo2UE7m9kzhE5l/u/i+39wjx8yCZYTO91s+wlJWUkT5OPOEWmB7A/jrhLxvPUCLVz+DXdZRk4byyqM2a3q4pOJY0H2bFzTwRrTR+EAbEuT6lgbCipiJ2ovKs3pAd1WYG0d2bEgyub1fNYmRT7EjFIcd5Uxoi4jaccd3sPGikjlap9396DuPe1CdDdU/wLgbqYf0m1QZL/Et+HYUyDl5WVipquSGw9UyHuTjKA3fhlDzzAdGisVQFPAMSPWf+eVuuXcIJpDA8PccWPOgVixbfPG4Xv/7N0ADmjq49DlhwtyM1y8Y2qpc9mL3vbNPUqlU/xYE0K3dgtURy681wYJ+Zv8C7Q87+N5Qs4Nu2CGlM6Ld8vDYUVDJw7y8oNfk8TQJNZypYaVZEsD14+it5ntAV95TbAh3aci5n7tJ0gS0jKRFu16/RMUlPPYUG8wM4UlYfJlYqUDuqBqzUMC7s1RAXqlcn59yjkWHzBXZJ8rE5Ldsu6yCBrkwvqLRtNMHOGiTO7Dz070hFfboWfJEpMmh1j9SuA7oQxnDJV/NbzrbaRd38ELlZT6nDvU49jFyuPuP8oxVm6ufJT6SXm+a+cW8qRwoB5LNd2QrN0cwE1jo0oSS7HJ7jCS5uAG1+sw5Y11mpBhb7wkyy0JTajTiEzCTD3AAFwFXY8L6plARY8gup/B5ssk6e7f8DkR7RVIKwiQZATy0so4fwkubHxX5+KxjHR29yPARJeblkdVRQlMzrdE+fEWlxmM0t/SrezfzmkwgKarkrc7fotUv+5E7eYbOoN+lhsL8ZkZnRazQPfIpxp0iRjen55AWj9I+yPd3LCi9
- aBtnmX7Y
- q2gNZhyBUVlqjGBinca0dbrlL4FhYSnHQSr96d7TdTFE3eWtIa216Ct5wPwry1CyPR6Nu9VHT8iOuwikRvS222g290v7aFCkqL2DCfuB/jSW4pQlwLi2V2+MRqiRzSlZCEtAeg5IjKVaCDVJgmyBVjsmkOyA4W53NNbq9RT9mQ8A2cCc5M/dFu76rgPu6dDa/SJtlqtOegAYJw8PXNF1rAUIdFz2IUa8BwWhiOIMvo1GpbuE=
+X-HE-Tag: 1787194943-822832
+X-HE-Meta: U2FsdGVkX18TsuWGdJIHMav9oSU2SOY69DDeZt6lIlicX46pClk10CTH0vdVnXjN/SwqgkZ/aN4tBFmfLohPcRF2GKr9ZqtZZejEszekysF+4J0PkiIC+/aG86MM0326+oMM5DgzC0VzL0AXk9XK/+C9Ib9fmnsTggvTEm+eBcCkBHMNYF2eaa1g1TyoVL/ESb8TODmWn+mFq0BmhN+G5za/M+hhOvHjcjWajuVE/xdlekyCs65by6zqSD4bEsxtCeW/91NDD0QcdnEdvKOjUi6Su7M7bf6C0ot0twQV3z3hiNRzDPn2assSz2eMJNJdGUX1ML6djR1+OWf5g3bpAopKHVKwebMxMCYikgl6x0L4/GGVr1lCt9k7tGt7NEl6ifakmg5vDx16EbMkVc9kS+mxyTnJWUr7y0bJMXdl22qGaWwgJX+BMQXJqASeIbItGoBmbeFD150f105/tv5MCoU4fqMXCCT6MO9J55I8mmAp6PlA/9umj0OaCnplX3njW+JP4tLAx1NzgFdolJfeLG9Ua7iO2hmSpqxEhC/LTG0z+ysFSMxrOH0/o13v472XFKJhyQxnQEh1JDWwrj/ybqKAOJcm60IhcyiqTLyUkumiNH4Nce7/ZK+ZLWwm8JOHDZgWsXx9ASWbJSZfZyRE/wf178TNe5raY8f4jZFm1eCaT7fJDuicJgbL/hOWfUW6IWj4/nYQ0VKnXQWfNszbihwpRc8fT2xy4mwdQYI3MaYlkw4ry0LmRfV93pwQ5ggbl25wSbeesp+SwWJ551S1fOcHV3X14fjq3ySN9HfbSR11hOQFWGCcoUGSVszdew3mPpvJ6KML0BoZBA5ddaV+qTF6irvxhppqxslloraGBQM4GA5MVb8PqFzteRfe60UWOl/hD132MYoWQmrxpVHWm2CBYjzR08mLH8LcPD2MLaCLgVDHuiPtj4Fbhx0zc701qxquij94/AenArJe2S+
+ cqIHoEIq
+ cBNt1mJ/98JodOoOcqbXdYISsiEQV2uyHaDqlaeqf2mKAwHqiMI4+IZs7anDbiShD/ttMIZZkI7Q/9KsUK0LhcGhL+vUegvXgXCZpxEyUF+pXymlJDbWpmN5hX28G/cS8OzcSmEhs71ldAPOIiIMsJs1gnYfCVljVvkSrVOdTlKQSKhnsV5IpmCcNEAcvwSJycYyw1xZxO6icOgdVfU3fZ+RnQnaSqAaot3R8Bsu2bPLpdH3CchEzTkYxuEED7w9DGl1ZriTIVPYKdGu/w3+2EObRzliPA3Q137+bRkwVGT+leyLlZ47deMSunvrQBW4lTivEOC36mIoKsjl4SPBtWKuGqQ9Y6YrH6rqZl9jW+3B6HZ/SeYBKQeJT8HQXOKjYS+pp7oBxlIXi/HfLlTShIl26JmrLVHVsMugmQnjnE7cUwv80MuZ/TaHiPGeWMFofGkA1CnUzifaSgdp0LoSP6Csgn0yEerl83MLnXCGZtgZolv2ooJWUN40gEB1m744olVp+DHJ/j6Tn0thAtOAz79HweCPBFlwmm8Np2/c6CHfwgV0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,167 +119,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
 
-The legacy path throttles direct reclaim in shrink_inactive_list() when
-too many isolated folios pile up, but MGLRU's evict_folios() isolates
-folios without this check, which can lead to unnecessary swapping,
-thrashing and OOM.
+> Le 11/08/2026 à 06:23, Venkat Rao Bagalkote a écrit :
+>> 
+>> As part of debugging and suggested by Maddy, I reverted the following 
+>> commit:
+>> 
+>>    263e5159e00a ("powerpc: Fix exit_flags field placement in pt_regs for 
+>> ptrace")
+>> 
+>> and rebuilt/booted linux-next with only that change reverted.
+>> 
+>> After booting the reverted kernel, I rebuilt the latest upstream kernel
+>> using the same userspace and toolchain. The build completed
+>> successfully and I did not observe any of the ld64.so.2 userspace
+>> segfaults that were previously seen during kernel compilation.
+>> 
+>> Kernel used for testing:
+>> 
+>>    7.2.0-rc5-next-20260731-00001-g79d9c1ce90a9
+>> 
+>> Top of tree:
+>> 
+>>    commit 79d9c1ce90a9873422ca4d6d0124a1d1c10a098c
+>>    Revert "powerpc: Fix exit_flags field placement in pt_regs for ptrace"
+>> 
+>> The upstream kernel build completed successfully:
+>> 
+>>    INSTALL /lib/modules/7.2.0-rc7/kernel/net/openvswitch/vport-gre.ko
+>>    DEPMOD  /lib/modules/7.2.0-rc7
+>>    INSTALL /boot
+>> 
+>> Based on this testing, reverting commit 263e5159e00a appears to
+>> eliminate the random userspace crashes observed during kernel builds,
+>> suggesting that the issue may be related to that change.
+>
+> But commit 263e5159e00a fixes commit d7a6797e0bc1 ("powerpc: add 
+> exit_flags field in pt_regs"), by reverting commit 263e5159e00a you 
+> re-introduce other bugs.
+>
+> It's a bit difficult to see what commit 263e5159e00a is doing exactly, 
+> most of it is a revert of commit d7a6797e0bc1 but it does something 
+> instead. Need to see what remains with both commits applied.
+>
 
-With the NR_ISOLATED counters now updated in evict_folios(), add
-throttle_evictable_types() and call it from evict_folios(), before the
-lruvec lock is taken since throttling sleeps. The legacy path is left
-untouched.
+Looking at the diff - I had shared a diff internally with Venkat.
+Thought of doing the same here too. This seems to be holding up for him
+in his internal testing. I haven't fully gone through this path yet to
+send an official patch - but hopefully will do that soon!
 
-Unlike the legacy path, where the LRU list to isolate from is known
-before isolation, isolate_folios() picks the type to scan from the
-refault feedback and may fall back to the other one. Therefore, instead
-of throttling on a single type, throttle_evictable_types() collects the
-evictable types that do not have too many isolated folios, and only
-sleeps when all of them do: like the legacy path, it waits once for
-concurrent reclaimers to put their isolated folios back, and gives up
-if that makes no progress.
+syscall_exit_prepare() record _TIF_RESTOREALL value in exit_result, but
+if for some reason (e.g. like an interrupt pending), if we go via
+syscall_exit_restart(), then we are returning ret from here and loosing
+the _TIF_RESTOREALL value which was captured earlier. So instead I
+believe we should return regs->exit_result from here.
 
-The resulting mask of the types that are not over-isolated is passed to
-isolate_folios(), which restricts both its initial choice and its
-fallback to it. This way a type that is merely over-isolated never
-blocks the reclaim of the other type, and isolation never lands on a
-throttled type.
+I see that we were returning exit_result prior to the culprit patch.
 
-If a fatal signal is pending, fake reclaim progress the same way the
-legacy path does, so the dying task exits reclaim quickly instead of
-being held in the throttle.
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index 5b88bf72786c..bf167a41a820 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -175,7 +175,13 @@ notrace unsigned long syscall_exit_restart(unsigned long r3, struct pt_regs *reg
+ 	current_thread_info()->exit_flags &= ~_TIF_RESTOREALL;
+ 	regs->exit_result |= ret;
 
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- mm/vmscan.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 80 insertions(+), 5 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 98226bb021f3..693dc91a1695 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4833,15 +4833,73 @@ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
- 	return positive_ctrl_err(&sp, &pv);
+-	return ret;
++	return regs->exit_result;
  }
- 
-+/*
-+ * Unlike the legacy path, where the LRU list to isolate from is known
-+ * before isolation, isolate_folios() picks the type from the refault
-+ * feedback and may fall back to the other one. Therefore, instead of
-+ * throttling on a single type, collect the evictable types that do not
-+ * have too many isolated folios, and only sleep when all of them do.
-+ *
-+ * Returns the mask of the types isolate_folios() may isolate from, or
-+ * 0 if reclaim should stop. Also sets @fatal to tell the caller that
-+ * the task received a fatal signal while waiting.
-+ */
-+static unsigned int throttle_evictable_types(struct pglist_data *pgdat,
-+					     int swappiness,
-+					     struct scan_control *sc,
-+					     bool *fatal)
-+{
-+	unsigned int allowed;
-+	bool stalled = false;
-+	int i;
-+
-+	*fatal = false;
-+
-+	for (;;) {
-+		allowed = 0;
-+		for_each_evictable_type(i, swappiness) {
-+			if (!too_many_isolated(pgdat, i, sc))
-+				allowed |= BIT(i);
-+		}
-+
-+		if (allowed)
-+			return allowed;
-+
-+		/*
-+		 * All evictable types are over-isolated. Like the legacy
-+		 * path, wait once for concurrent reclaimers to put their
-+		 * isolated folios back; give up if that makes no progress.
-+		 */
-+		if (stalled)
-+			return 0;
-+
-+		stalled = true;
-+		reclaim_throttle(pgdat, VMSCAN_THROTTLE_ISOLATED);
-+
-+		/* We are about to die and free our memory. Return now. */
-+		if (fatal_signal_pending(current)) {
-+			*fatal = true;
-+			return 0;
-+		}
-+	}
-+}
-+
- static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			  struct scan_control *sc, int swappiness,
--			  struct list_head *list, int *isolated,
--			  int *isolate_type, int *isolate_scanned)
-+			  unsigned int allowed, struct list_head *list,
-+			  int *isolated, int *isolate_type, int *isolate_scanned)
- {
- 	int i;
- 	int total_scanned = 0;
- 	int type = get_type_to_scan(lruvec, swappiness);
- 
-+	/*
-+	 * The preferred type may have been excluded by
-+	 * throttle_evictable_types(); start from the other one.
-+	 */
-+	if (!(allowed & BIT(type)))
-+		type = !type;
-+
- 	for_each_evictable_type(i, swappiness) {
- 		int scanned;
- 		int tier = get_tier_idx(lruvec, type);
-@@ -4858,9 +4916,10 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 		/*
- 		 * If scanned > 0 and isolated == 0, avoid falling back to the
- 		 * other type, as this type remains sufficient. Falling back
--		 * too readily can disrupt the positive_ctrl_err() bias.
-+		 * too readily can disrupt the positive_ctrl_err() bias. Only
-+		 * fall back to a type that is not throttled.
- 		 */
--		if (!scanned)
-+		if (!scanned && (allowed & BIT(!type)))
- 			type = !type;
- 	}
- 
-@@ -4883,13 +4942,29 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	bool skip_retry = false;
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	unsigned int allowed;
-+	bool fatal;
-+
-+	allowed = throttle_evictable_types(pgdat, swappiness, sc, &fatal);
-+	if (!allowed) {
-+		/*
-+		 * We are about to die and free our memory. Like the legacy
-+		 * path, pretend some pages were reclaimed so reclaim
-+		 * unwinds quickly instead of looping back into the
-+		 * throttle.
-+		 */
-+		if (fatal)
-+			sc->nr_reclaimed += SWAP_CLUSTER_MAX;
-+
-+		return 0;
-+	}
- 
- 	lruvec_lock_irq(lruvec);
- 
- 	/* In case folio deletion left empty old gens, flush them */
- 	try_to_inc_min_seq(lruvec, swappiness);
- 
--	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
-+	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness, allowed,
- 				 &list, &isolated, &type, &type_scanned);
- 	nr_isolated = isolated;
- 	if (nr_isolated)
--- 
-2.53.0
+ #endif
+
+-ritesh
 
 
