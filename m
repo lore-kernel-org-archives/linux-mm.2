@@ -4,135 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5FFBC5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 11:20:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E87CC5DF82
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 11:36:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9F4F6B008C; Thu, 20 Aug 2026 07:20:44 -0400 (EDT)
+	id E33776B0095; Thu, 20 Aug 2026 07:36:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D78746B0092; Thu, 20 Aug 2026 07:20:44 -0400 (EDT)
+	id DBE0A6B009B; Thu, 20 Aug 2026 07:36:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C66406B0095; Thu, 20 Aug 2026 07:20:44 -0400 (EDT)
+	id C85B26B009D; Thu, 20 Aug 2026 07:36:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A13406B008C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:20:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3DAD3A355C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:20:44 +0000 (UTC)
-X-FDA: 85121405208.06.C9C901E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 00E98160002
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:20:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZF3erbxi;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OfVmpSul;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DT/kVxbG";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=paRH9hh0;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 90C486B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:36:57 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 06B9F1C006D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:36:57 +0000 (UTC)
+X-FDA: 85121446074.17.6A0B52A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 21ED7A0004
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:36:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SB5RDxXv;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787224842;
-	b=b95lP7d9W7AtNHhysLokGb1k9GTeHZDFrKcM0DM30o35CkhO1MbOrW76tSoOpyDA1jJlzI
-	A9DpWQsDtAEylL/4cK47TFc5319k+pQT+gbULXQ6Bn0xlbP+EheGM9br5cQ3TkkfyIWFuW
-	5y/Gf1KvgZUwzNLg5bPnfKyXNRNlftM=
+	t=1787225815;
+	b=TjJERMRWUs7uSKQeiZNpHQYYuLSiHWopgRGlKC0qxPxHvJ6BW8x6BM7es1q7J4g9uQRVLX
+	iy5p+/Vsvmm6imzs++9qDCyIgQWquw3nF3aaBt5Pg9fZHUizkcSdEwgCZsVRbiIMlFjUAx
+	mH36AayooyQ48XrjKRuWP7U1oVm8OgE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZF3erbxi;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OfVmpSul;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DT/kVxbG";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=paRH9hh0;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SB5RDxXv;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787224842;
+	s=arc-20220608; t=1787225815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tk8jiJdcjWsP4GhLOTgEUqckIP3KNVGr11ane1BhbCI=;
-	b=OD9WmdgSYAhqX6l0kQRHKet25sYdo7RkhH1jsook3s0z1iDff4PAQfb0p3dBIw6xLJ1bCC
-	AdOHcfvgak0nsaP1fkJZlvNhdjyefy2yij8RP6yquCRGITbvNW2rXnbi66xh7+iekbwhjN
-	dqBo/oVcOeETrzDVgrn4b9XwD75C63k=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 33D3385041;
-	Thu, 20 Aug 2026 11:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1787224836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tk8jiJdcjWsP4GhLOTgEUqckIP3KNVGr11ane1BhbCI=;
-	b=ZF3erbxirjWV5nK4xzrbZfVT2O07TlMViOfP300cWFayelaGeKLsNk8LnWhR0Ub7k9Qb0r
-	esXasTH/LcTKHRpHhiBDPkefP3+BiSJuymIMfBYJWFBrFTsWp6dMRjktRnWlTBBfA0lzyv
-	ABcue/sUx+mR+asrIVKnVEr9HXvR5gA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1787224836;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tk8jiJdcjWsP4GhLOTgEUqckIP3KNVGr11ane1BhbCI=;
-	b=OfVmpSul/tf1tTue3qzy23FO6thfCUnoi31375KiZboJV0+JrSzTGv9ZiTW9r5KZjK6MlF
-	8Ju7a+e/DDu4G2BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1787224832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tk8jiJdcjWsP4GhLOTgEUqckIP3KNVGr11ane1BhbCI=;
-	b=DT/kVxbGZ9DAq4jap/S4imDE9t9bAwAQIWRYYy2h9s22K3c+L9qQAioHE2McDQ2FMCPQTo
-	zQhroHvJMkycZODk3BZWf/D8izEYAb7d+3jrrqcUhUisGx7dq6nwBowXSA7ETEsaXuOVIN
-	xvNIQoA+rzKFVKJfwzIicxW/XwndYTA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1787224832;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tk8jiJdcjWsP4GhLOTgEUqckIP3KNVGr11ane1BhbCI=;
-	b=paRH9hh0L1JywzeFQYaxAykZpRkx60X7NaCFq9r4bRRR7t0I2YZz5z8TOP+nrnrNFb6FhF
-	xoY44CJ2ozOSn9Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2336D27A8;
-	Thu, 20 Aug 2026 11:20:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VUaWCADjhmq9MgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 20 Aug 2026 11:20:32 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id BB7A8A13B9; Thu, 20 Aug 2026 13:20:16 +0200 (CEST)
-Date: Thu, 20 Aug 2026 13:20:16 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jann Horn <jannh@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH 1/3] proc: refactor /proc/$pid/mem to use struct as
- private_data
-Message-ID: <2vwbng2vmyvssphmthcuzuicpfv2e3oe6ybbakct4fcbachjdr@ixzg6tvsjccu>
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-1-90cd2357ee05@google.com>
+	bh=1rvWP69jNYCLEMQnHPvdNYBrNQ/dPw0juu10J6Hhu5g=;
+	b=vXiDeswkmyNkM+jEiNld5LZUzKje1dRNmCYPFD320OdBkQ6FX0/m8EJFh253GJwNi+3YYh
+	yk09AXbdS6ymdqFIhgddJKUu85Ak8BKggJc3+jwf9Yx5d26rheBn2jKdbJDnYvSWfiW81a
+	J+v6KhNpIIInt06Uwl+DIJrMNwxnmbY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5E5EE60A9E
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:36:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA821F0156F
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:36:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787225814;
+	bh=1rvWP69jNYCLEMQnHPvdNYBrNQ/dPw0juu10J6Hhu5g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=SB5RDxXvl/ioN4+C0+m6YIiRbM3zfhIQb1E+HC/YzVqhU6PxHRd0x0a6YmL5joNdo
+	 4e3l72tD2ncq5FK1Tr565oP3K0w/Nb/tTny0pdykkWXo8Prmmwx8YVmI0dDvzwWuUZ
+	 CmuIf3KJsbN8mHpAU53cWTy1WVEgyhrsU2VeJtQ/+fwhW6bSPI/GtetqzoOCuqEyzT
+	 9kAw3o0uXLdqeU3k8hu9+qSZhUat8YAr4I+/Zr17Ctrnm78JMwHvSosecb6qujzA2K
+	 GgSHBJp2/3vm1UjMTwJ8gbq55YX5N4Ykw2B8L6cBHwIAgnY+L7L6WVx1+RFp0DL4gE
+	 bybgl27AZtBRg==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e6391b114so179181385a.3
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 04:36:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrTujg9Cq5ynwZvIiTWizzdQjvsQEmwBNJdEKUdvuQcBrq3LnKM1D+SangsDrN+taktBOAmcHyNtg==@kvack.org
+X-Gm-Message-State: AOJu0YxpEzWW3Mc//4WOxp6HRAeyG2KmICQiqMIW8pb0kJSIURcTxivx
+	ZzoazXOsE4Reoa/rQpRQz/iG/+E93rmuD2xyMSVa//cPKPTzzjM43YS47sTka5mB483yRb8A2tk
+	TrTuNQU92FpG021JhkPCJvcQ2u/O+V+A=
+X-Received: by 2002:a05:620a:2847:b0:936:75ba:7c5a with SMTP id
+ af79cd13be357-9371e6f65damr960131585a.31.1787225813422; Thu, 20 Aug 2026
+ 04:36:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818-selinux-pokemem-v1-1-90cd2357ee05@google.com>
-X-Rspamd-Queue-Id: 00E98160002
-X-Rspamd-Server: rspam10
+References: <20260818163221.589352-1-alex@ghiti.fr> <20260818163221.589352-3-alex@ghiti.fr>
+In-Reply-To: <20260818163221.589352-3-alex@ghiti.fr>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 20 Aug 2026 19:36:42 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zC+wAuevG+i5y23rLPGXn0P=D7JpMECnZ1OuP1BsyYkw@mail.gmail.com>
+X-Gm-Features: AcwNN1Wdmpc747x_Oxp0xjcXXBYq4rS8x3lyA5XuxyF0aRDk0ej77W6gNxw8_XQ
+Message-ID: <CAGsJ_4zC+wAuevG+i5y23rLPGXn0P=D7JpMECnZ1OuP1BsyYkw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: swap: drop dropbehind swap cache folios on
+ writeback completion
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kairui Song <ryncsn@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Wei Xu <weixugc@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: x3bp7j64hnikqo3j9ptm5r9d7ffeig4s
-X-HE-Tag: 1787224841-657298
-X-HE-Meta: U2FsdGVkX194P461nD/YaxkhKDJ11TcHJi8WbeM96xVI3e7Pa+03kJ3Hq4O8XBrJj+m7GkD7M5vai+r4aFBp07xif26HeK8eAYxIj2aMqMAxhPC0wwa774yhqfjZfXryU6+xkWU5Vzz6uvdVa8BMTx074ktDJMUHeouvHsBNDtcb77RxHta9o1xkK1FSZH1BNGKcGXto3OO0khr7w7CzZGDRfs+C7PCeVAEKviGXyqzzD/gGv8FAnhmYig6r5FExR24RUYdXZQr2De1ushWm6rucB5Q6a6GS5ZVyit9K/iUrKkhN8DIXFT3gWa2kkS/JCv8aMybRzrq+87TNKDCoc5OxjdXsI5nsV6bCBkyQDQDRjf4sLc9ytwzTqPvXPLKOnUBLvrwtJUZ/JrNS8GB4vM6WIsVGZ7P5NoGAEH63fWdMLQnhmjLR1cd60UY7DdqFKkBprmUlX2EFe6+9fSsqL/2v5gYRfKj2OGcV4Sgu6J3KKzKIez3OQbWI3qMB0bY6OUWKTnrs9eLIdkj6jlLGYs4QvbDDgXvYbG7rJ8EDLBEr7IaAhkW6kfTh8rDe75gHmHWeX1cPI71sU8p+Cqh7Gtj0uUj3r3vuss1DxDSbznNikK+/BTUM90yE0KDqZTNlQokvy5KTUWDGsyPFM5YIiWWNp6x2g/g3E3Ee+sbEXbIEX5AZwsDUkLCgb6qB8HDdstiTFOHI5TnDFVPVtfYFumnlM7TsRzQYJs+GrtNbwVBVonNMJzqkMoCLPTJvaSqngwIQOnQ5jRx2f59ylEqHJFdc75iMzt8A4irdQPpdIumK1YwMg+ok92g7OV0zI8Zn1x2EoaZ7nQyWcoMc6lOW0U+vSqq+D+7Rd46LeHEPCI7L04ah5Wnc3mdGV8HU4BZNfp4osnoJR8+UURiAv9pq5auZz1+YwTggKNN/+bgwbbu6GZy99mM05ekESV010GhcRJGKF2Blc69gSmQyLv3
- SkgPfJCM
- ZDCQnasnKAwbjFwSXu7m2c/JHg3ziKkl3AXYHbNr0hX8jqlwOlJwpcHFN1ILHhTBJZh3NIfbj8yNJ1fQEf2+ASZ2IbmLtBe+89un4rpETetAwVCQ7ZXbv1e0AFmNs5fwoubVH5v+vEjlMTnzaPQLRop2Sm9EGgawEVb+Zo1K5VbiARAb9wlM1VBmfRppPBMNlOtx/Q2SXQabQZE9eaoBitnorpy6O3p6qJVFZCT2owcWRb8VZfuSB9rEmfn0S71p4xDfxkeAJQWmcTNEEr+zO4iBkS8hCTjQHo7Tdhf0h39E37j51Nwazt3czxV3qTVeggHUM//6YdVmPbbEAqkNRkRioprCSVcyOIJo351Wu8UrP010nICZunZc3yt0ASsHf/V+pyQGI/04V1nmGDRYHJVGG+U2SYEHgjEh/LK3P0dAwQu8Wfmjbbc8diVWjccVP5xV8wQoGZojROPGgOKZUCvi9N8zaoAeiLZDi2AOyQA9QQxwkWwKbrOZdA72wwxDCa75hhCD1gEt7Wzr2Wat7G2uAZw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 21ED7A0004
+X-Stat-Signature: w7m8m1cunffdq5d9y365wysohioih6d8
+X-HE-Tag: 1787225814-283835
+X-HE-Meta: U2FsdGVkX1/uJ0Cf6livY1pI8M93ylvLt6hZk0CIusEWQr0WBw2M4BVmOo6iZfbcsTa/loWTIZMcQnA2cscPn9qW7oh5oLC1lRQ+6nrGA4DsUjQ2xxtM60ZddUhRzfiY7qz2CPxOP35JrO3aF4xVJFu9L85GkfBbWfOAac0OG7iRC6NTbJSH6Fk5oUKlCt8YJavolsHyG5/BaCmBXsKaPF+owl14jd6ZE3Ksa6eUhjhENdFrEkZJ3cySeCJWQEsjdw1shfIVcaomZ6yaDyxLOHCV5Xj9bm2Q76VJ9yq+6QnHztuYuSq8TYZZUHruSg3cgeHcHUErg6vrqDGSIcoI/d20y4XlEDRGyNWkY6z0lQX8yacHwmNkUqChzP6ud3/0TKN6f8QL4l3dLrLlk71uLlecNHtkJOliq7RLTvctskIEK/UhzDUty5n+hjZkdO8YqCb9RE7I432kaX+8SxvO18AZGkfKC/7urI/5x6hSikCsutwo+e7nIks7TYfbxVfXZS0E0AZtcFUYIOJ0RtqLBdwVk9/1h8uRpverz6G5GTByaXGZH1JC3/X+/11e8885CReBfrAUpNzWVwSewL/21K1x+S3sfVz3pItAGe4N6nHdtLeZld1xxwzCYAGi+6lE+XGeKNQXc/CYP1Z8Vk3mOy/pNd1896DmI+wv8Vh729fE1GEcdNDZHkFfGmRBwJIKmWo85ukVDcIeZhPLzZ4yOPxMC/LvhiIkSJo0JjJsqt1or3qqgcVYSgS3xgFIBlEN3kFGDrknb6io5NEDGl7hFi08dmmLm7O7OTg9i0kv6F9aymZOVD3KY2HL0hw95nycdceA5lz7pJzwcdWhwR1+0BHs2FRvZiPPFzeLkdXPd5dbgEoEUYb/Z0VYp9U/50RLIxidtEreuE/SSRNm6Y16zqL2VGMueJWTvcmnVTtM1VHqFsh7OTqioyMxQsWOFmzh/zfTWd8kKXwV1Kie59u
+ qiAN5jZX
+ UFa/H2KcAVYxwTKhBbzcIiArUD4XCEZX3fJOqus9mQymXVQ8Zj7HLULI2y1EgUkETnfcs9axzXPwOpTDP6lAAMAmmlg7jTFeWMAMnQI7ivtjVP7NpwQyn8odPycpyMmc3cGIfIcRwKvq9ORUxAWOzX/mKbJOnGFqFi6zI+doiRwTyInvW/saLAXgSskb/gIiO0RG3BTnMtCUsyPqqmpfkVOOdo0CJiFU5NuMrI0HBcBsMjRwss1fiIH53JhBRw7n4UBJf3ye9tcWX6nIrdBqoPLz2zzFh72ZOFHQACO3S1HtBRcj19ie18L0wULF7thYPdIzRZS5lL/Zpg08HN6c++8PS6PbHlFr83BKezJUFWYUcCRxV70ZyWd0Sr3VaUi8iiHNY69QrffPnyxRH3DecEirvj6M8+QwKhIPy5vX8i9q/HHtn3Hy9UbQP2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,94 +112,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 18-08-26 21:51:05, Jann Horn wrote:
-> Refactor the handlers for proc_mem_operations to use the new struct
-> mem_private as ->private_data, rather than directly storing an mm_struct*
-> in ->private_data.
-> 
-> This is in preparation for adding more state in mem_private in the next
-> commit.
-> 
-> Signed-off-by: Jann Horn <jannh@google.com>
-
-Looks good to me. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
+On Wed, Aug 19, 2026 at 12:34=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wr=
+ote:
+>
+> A PG_dropbehind folio is dropped from its cache once writeback completes
+> rather than left for reclaim to find later; this is implemented for file
+> folios in folio_end_dropbehind(). Extend it to swap cache folios.
+>
+> The drop needs the folio and swap cluster locks and may sleep, but
+> writeback can complete in interrupt context, so defer the work to a
+> workqueue that runs once writeback has completed and frees the folios in
+> batches.
+>
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 > ---
->  fs/proc/base.c | 29 ++++++++++++++++++++++++++---
->  1 file changed, 26 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/proc/base.c b/fs/proc/base.c
-> index 780f81259052..bec6197329dc 100644
-> --- a/fs/proc/base.c
-> +++ b/fs/proc/base.c
-> @@ -848,11 +848,24 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
->  	return 0;
->  }
->  
-> +/* private_data for proc_mem_operations */
-> +struct mem_private {
-> +	struct mm_struct *mm;
-> +};
+[...]
+>
+> +static DEFINE_PER_CPU(struct llist_head, swap_dropbehind_llist);
 > +
->  static int mem_open(struct inode *inode, struct file *file)
->  {
-> +	struct mem_private *priv __free(kfree) = kmalloc_obj(struct mem_private);
-> +
-> +	if (!priv)
-> +		return -ENOMEM;
->  	if (WARN_ON_ONCE(!(file->f_op->fop_flags & FOP_UNSIGNED_OFFSET)))
->  		return -EINVAL;
-> -	return __mem_open(inode, file, PTRACE_MODE_ATTACH);
-> +	priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
-> +	if (IS_ERR_OR_NULL(priv->mm))
-> +		return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> +	file->private_data = no_free_ptr(priv);
-> +	return 0;
->  }
->  
->  static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
-> @@ -880,7 +893,8 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
->  static ssize_t mem_rw(struct file *file, char __user *buf,
->  			size_t count, loff_t *ppos, int write)
->  {
-> -	struct mm_struct *mm = file->private_data;
-> +	struct mem_private *priv = file->private_data;
-> +	struct mm_struct *mm = priv->mm;
->  	unsigned long addr = *ppos;
->  	ssize_t copied;
->  	char *page;
-> @@ -970,12 +984,21 @@ static int mem_release(struct inode *inode, struct file *file)
->  	return 0;
->  }
->  
-> +static int mem_release_with_private(struct inode *inode, struct file *file)
+> +static bool swap_dropbehind_drop_folio(struct folio *folio)
 > +{
-> +	struct mem_private *priv = file->private_data;
+> +       struct mem_cgroup *memcg;
+> +       bool dropped =3D false;
 > +
-> +	mmdrop(priv->mm);
-> +	kfree(priv);
-> +	return 0;
+> +       folio_lock(folio);
+> +
+> +       /* The folio was allocated off the LRU and nothing re-adds it her=
+e. */
+> +       VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
+
+Hi Alexandre,
+Thanks very much for your patch!
+
+I don't quite understand why we only support NON-LRU folios. Does this
+restriction prevent potential optimizations for madv_pageout?
+
+Also, zram might benefit from your patch in the future with
+asynchronous hardware compression and software compression such as
+kcompressd[1].
+
+[1] https://lore.kernel.org/linux-mm/20250430082651.3152444-1-qun-wei.lin@m=
+ediatek.com/
+
+[...]
+> +
+> +/**
+> + * swap_dropbehind_free_batch_folio - free a dropbehind swap cache folio=
+ into a batch
+> + * @folio: the off-LRU folio whose writeback has completed
+> + * @fbatch: batch of folios to free, flushed when full
+> + */
+> +static void swap_dropbehind_free_batch_folio(struct folio *folio,
+> +                                            struct folio_batch *fbatch)
+> +{
+> +       if (swap_dropbehind_drop_folio(folio) && !folio_batch_add(fbatch,=
+ folio))
+> +               folios_put(fbatch);
 > +}
 > +
->  static const struct file_operations proc_mem_operations = {
->  	.llseek		= mem_lseek,
->  	.read		= mem_read,
->  	.write		= mem_write,
->  	.open		= mem_open,
-> -	.release	= mem_release,
-> +	.release	= mem_release_with_private,
->  	.fop_flags	= FOP_UNSIGNED_OFFSET,
->  };
->  
-> 
-> -- 
-> 2.55.0.737.g08866a6d13-goog
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> +static void swap_dropbehind_workfn(struct work_struct *work)
+> +{
+> +       struct folio_batch fbatch;
+> +       struct llist_node *pos, *next;
+> +       int cpu;
+> +
+> +       folio_batch_init(&fbatch);
+> +       for_each_possible_cpu(cpu) {
+> +               pos =3D llist_del_all(per_cpu_ptr(&swap_dropbehind_llist,=
+ cpu));
+> +               llist_for_each_safe(pos, next, pos) {
+> +                       struct folio *folio =3D container_of((struct list=
+_head *)pos,
+> +                                                          struct folio, =
+lru);
+> +                       swap_dropbehind_free_batch_folio(folio, &fbatch);
+> +               }
+> +       }
+> +       if (fbatch.nr)
+> +               folios_put(&fbatch);
+> +}
+> +
+> +static DECLARE_WORK(swap_dropbehind_work, swap_dropbehind_workfn);
+> +static struct workqueue_struct *swap_dropbehind_wq;
+> +
+> +void swap_writeback_dropbehind_folio(struct folio *folio)
+> +{
+> +       llist_add((struct llist_node *)&folio->lru,
+> +                 raw_cpu_ptr(&swap_dropbehind_llist));
+> +       queue_work(swap_dropbehind_wq, &swap_dropbehind_work);
+> +}
+> +
+
+This is good. For file dropbehind, I see both F2FS [1] and block
+devices [2] reinventing workqueues in their own filesystems or
+drivers, while folio_end_dropbehind() simply benefits from its safe,
+sleepable context. This seems a bit odd.
+
+So I'm really curious whether this could be extended to file-backed
+folios as well, so that those filesystems and device drivers don't
+have to deal with this themselves.
+
+[1] https://lore.kernel.org/all/20260820071438.695893-1-qiwenjie@xiaomi.com=
+/
+[2] https://lore.kernel.org/all/20260730-blk-dontcache-v7-2-3e8e6850068d@co=
+lumbia.edu/
+
+Thanks
+Barry
 
