@@ -4,91 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 872E7C5B572
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 01:20:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAC7EC5B572
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 01:32:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5146D6B008C; Wed, 19 Aug 2026 21:20:35 -0400 (EDT)
+	id 810336B008C; Wed, 19 Aug 2026 21:32:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C5146B0092; Wed, 19 Aug 2026 21:20:35 -0400 (EDT)
+	id 7C1586B0092; Wed, 19 Aug 2026 21:32:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DAA96B0095; Wed, 19 Aug 2026 21:20:35 -0400 (EDT)
+	id 6B0B46B0095; Wed, 19 Aug 2026 21:32:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 125976B008C
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:20:35 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 800B98065F
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 01:20:34 +0000 (UTC)
-X-FDA: 85119892788.27.EED95CB
-Received: from mta1.migadu.com (out-135.mta1.migadu.com [95.215.58.135])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9379710000B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 01:20:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=euDfCNbP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.135 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E5B36B008C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 21:32:38 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABE28C0644
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 01:32:37 +0000 (UTC)
+X-FDA: 85119923154.25.F5C1F35
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by imf25.hostedemail.com (Postfix) with ESMTP id ED5CEA0003
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 01:32:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="etIJ2x/U";
+	spf=pass (imf25.hostedemail.com: domain of 3MlmGagYKCFkJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3MlmGagYKCFkJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787189555;
+	b=wwZF6Xwsv3TmR8abX0bZpkLpxaqmgeiWaW+JdUT2gF+D3/hEPRHIRWinASTL+iECs6CfCc
+	Ott61gVgKTHe+zbC1UqvUwYEB5jUv0EOxZ/kV49DUa69stpll/5xQYr7Mv9u3gpOCWcP5P
+	cPQ6r+DitjbloA0UWxUg7jXjq6zLHck=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="etIJ2x/U";
+	spf=pass (imf25.hostedemail.com: domain of 3MlmGagYKCFkJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3MlmGagYKCFkJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787188832;
+	s=arc-20220608; t=1787189555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=HhWzGP/spJ1LaUZBzEq02/Bn9QxCDgMIsS7FSbfvz7g=;
-	b=dQ1WfXXzveUBz/djL+77NJQegtkjJNWc0DWXkJfEHRXRUCfvafJ7K4jYWxkYP8aOPUA1br
-	EzC3G2EojG7SyJ8iyVTwF26xfmsmrnvMiGBhEzmGN6Ysvjs9d/SdMmciLV5BO/vZnUWK9T
-	+p7kTT8jcpWd/pGCcA39dL5sI4N1vIo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=euDfCNbP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.135 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787188832;
-	b=TybWssxvnDw3yZRvzK8XH16U+wVJzlCTSWdCPfSZ8hEbvB5kQeewrPLgI8oHi0M6Hn/xqZ
-	ZMbC9NLo++v9lfS8hvHhQj7BmHrcJjyNIttHGi1RE7m1qRVDsyrwAsfvpIFJdmscWM9dEP
-	qz15zFwzfMS84mzmCHR3ebEx+qdO3yQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=EmRWlLrhUsn2mz2khysYs0MSc5Fd2vcA/XgcGeGyEd4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787188829; v=1; x=1787793629;
- b=euDfCNbP3igRltMMIofAGkoQ7vD6PapIOjkyuS6haKPMPRieZikqwbM+jgmxcumBPXzhUV42
- 3UxmAmPE0ziuRH3EdqpBG95b+9VzI9aDmslUAyxewLQ94uSlhwwGhAwKnGIJ6uBqT8vhswKGyFN
- 86OqcFH61tXwCeVOaQSu9pgQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:19::)
-	by smtp.migadu.com with ESMTPS id 56f0944df267c2d4;
-	Thu, 20 Aug 2026 01:20:19 +0000
-X-Mizu-Trace-ID: 56f0944df267c2d4
-X-Migadu-Flow: FLOW_OUT
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Meta kernel team <kernel-team@meta.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Joy Chaoyue Xiong <cxiong@meta.com>
-Subject: [PATCH v2] memcg: trim the per-cpu charge stock instead of draining it
-Date: Wed, 19 Aug 2026 18:20:10 -0700
-Message-ID: <20260820012010.2016086-1-shakeel.butt@linux.dev>
-X-Mailer: git-send-email 2.53.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PQeRam/aXC557IkHfkSAK7ZCCBwHdULqaqUlyhncFbY=;
+	b=zxBhctH9Y0CH/zs0bML07GxCE7b5CsAwHRO84wCopAaMhjiO14tDwxuJxm9ulhYMCp+Zpr
+	XfaWGL2kWD2Ve9uh8TX12Z+63l2eYPMQfZlOlv62FiqypHD+6bwnBwZDDKoww9v8LPhvWZ
+	HBA8tZEXDOaCk80toGtv12zVltYMEPw=
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d5d00fd19bso26704005ad.1
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 18:32:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787189555; x=1787794355; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PQeRam/aXC557IkHfkSAK7ZCCBwHdULqaqUlyhncFbY=;
+        b=etIJ2x/U8FEkS4SRGtG91mSqgwSr1GxH9SQmuKFrM1vQncxk86+UFl9qnzaFgf5Eez
+         Oo5LRN805/WCiGd3DyWFVOwLxjILwCo1R343YNtK7hCxD7fDTwlaNxl4m4Aj8z+iIVuN
+         lkopbylmV2UhKR5YILv2Qsx8HOqDWbHzhM3pbe+X7tKhEpanGwopB34lSDA0SXHTMADs
+         5ujfcrM3w5e78MefptfSXG4pJWHp80c7ce3qZBEiT1m0VI/rbsGyylSZ365vzRH11IGO
+         QIDcHSNpBN8zQUOxTlu68SPollgIJJPtAl4p8FqG/dS3Lr55O/ZBUOyRY7xqL0fW54fe
+         9HNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787189555; x=1787794355;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PQeRam/aXC557IkHfkSAK7ZCCBwHdULqaqUlyhncFbY=;
+        b=H9f5CTnN5Tj1N/gdW4a0BhCu1wsAw9oZsrPMrAn2IgMbS8NATWCraSkor/hrULdu6M
+         VHMnO3rmI5wo7lIIM/HW2EVacnNkqrzx4MglRNOfD3iyhWGmf0ggB0cZTy8QShptegZf
+         bYyjNbBcQLHpRXWrE/8orLsGv0TSukqAAwichpUXi76mivwengvS/J3d3qPAcLt0x+5d
+         G5t8NQd7dx5g4N+D6gYBvs/zIPspUzQHR2GsYtVChTFlbQ0h3O35F0g8LUogwi+4gqj+
+         xrepwYFaGd7xwkL5BX+43Tq1//BPmVkaGjh9/yS4SXh3ut/sq8fiH+pHd4xbTuTVrsml
+         YFIw==
+X-Forwarded-Encrypted: i=1; AHgh+RrStAphEfMn+ugG504faKy9lV2j8+A6w+sRNas5CJxWm9RBGEhfV8FrKFeLVGpFV8ISjTNFMg9V+Q==@kvack.org
+X-Gm-Message-State: AFuF++nod2FfHZgsnWJKee+JNTSY4QEXjye3HRYhvZBDGkz8yYRjS44c
+	HlF1/H9RbeCu1sLFDFW+nTWqRGFG7BmAg3453Xz7lb7L6uiOFalU2Vw9Us+heVvit7Ml1x3zF6v
+	SzvCFUw==
+X-Received: from plbi9.prod.google.com ([2002:a17:903:20c9:b0:2d5:ca58:37e1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:40c9:b0:2c9:b396:1a55
+ with SMTP id d9443c01a7336-2d60197c4c5mr178024025ad.12.1787189554412; Wed, 19
+ Aug 2026 18:32:34 -0700 (PDT)
+Date: Wed, 19 Aug 2026 18:32:33 -0700
+In-Reply-To: <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
+ <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org> <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com>
+ <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
+Message-ID: <aoZZMQ3Uc8yQWPNA@google.com>
+Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
+ private when invalidating
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: ED5CEA0003
 X-Rspam-User: 
-X-Stat-Signature: kku4eyq8eiswx6pjd6yteu1p879h8g9j
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9379710000B
-X-HE-Tag: 1787188831-770444
-X-HE-Meta: U2FsdGVkX19xL6a6X99fJt8vEg8dDZIB7rOL6iUJB6Jq+rH9FZ7e5dftWEgJAU15DRk37+7kF5cUVexbYVHWFlsZ6OtOOMoWJlOeufAGNHBnhcGyrXudX1YpRX9dbbPW2GGIQ5zcl5GciAj8D3MmwHE9fLcnKN5EjphqjgdvZ/JswKyfDjW14/5NUJgaQJOnhdZeHfcYPEIKUuY8J4zwRIRF+WVBd2s6+qiddpfYgTirG5io4swg0hHnsozoNGC3edyhewuPbhkgTcmTf2aEw3CkwOdYAoQ/z8pHTRNwu22BWtWLNNfAbWb8RWXax5xT5XDqnhTHam2nj4DqXQRxHBcWzOsjwvR83cCxTTUPDFORrc8E9t/rdDg2/vlC/19KGA6cXEIYmhV7RzZ6EBZzZbUqdJ5GiiYT7QL+A8cU/5r82S0MuiyIYCbb3REkArt1DYRysHljEB2XK1aD/MyqRVcvlYeT8flcCkbA51vAQ46qK3vTrLX71foT0gYBTqw1A67fZM7YiwneVBy47TocNkexdB29ggF38G/uwYZo5Hpj0mdP+2XXhu/3IAd476817P0X9aKUV8rPVVj9dF17ErVUAo1c2lCeKDkj25u/ZhmWNkGrjMM34BnPmuWJDn3wdEZfE/SlGgnnhfDYzgz1a1gufPfEA9LkrhmGHIb4IoWizxlatU+tfNr9plEO8s1Q3qZCoxIQ9w1IYuKpin1WBxscbg7glWeEayYpD0FeR+eZaIWdJ2hzSd31AnW8U4u2tp2iXmKJU2wInOZbjQfcS0CnrMOXmHCV40dnhhMM06xJkjBE7F01V4ermYxKXTFfF1LdIa4Cla/mMNUAc4Br7+Uo6JljwqYnAlhpdch+6Xp+QC1Cz6LVvg2ehQrFxkHNPoIYv2Mqdl4Mk8nl2/RDfcTA5ljZjaBciZImiP/PFwNuYBNdkHFIFZIIOk+r9JpEi0BFi/SBYt4edheO0YU
- xYVi0kZX
- eJiUn8G9owXot+s4h6s2zHDo5yXIJzlVSR5olCZulm1ULiGmObwq3QEC9dznwAtGBWknVqqEVrJss7Tz1gdvZMuZM9Bluszs4dgz1K4onCWkC9F1ZoNz0yPD0CC+3KX71AmsG3UAPj9TQrS0OOZ7hKDCfgpv7tlSrQ550zKfJ+g9fGWY9Z9FoGdcA6Netwa1YHgyNXW77ZgLXpmbhuQbGWCc0GQkF+7ATeaMV1vzm0mrsWsyS29+yda2MGVyD5NSgZ47rntgwQTTohSntrNKnbwYzUG2nH1NCCpkb+aRnsXhTJLipeNXgPLnk2QyYhCz8SY7ggdOYVYPaRdtSXMpvU6Rn9dwZ/FTpogcfj6FcyivI3TIfNiTH4lFe4K9VTVk2Mp2aN6fn85FvdL6kkjv7gwoZ1LXqhmH7/j7mdfMgjLH8ZbxNHAvLu8o2lw==
+X-Stat-Signature: mbnfijtoje9gffdh6umu9495kpew636y
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787189555-889372
+X-HE-Meta: U2FsdGVkX1/1eymLrHkV1I5Qb5FvQo+oQEr3jPUE3OlyV3HzlgiGFRTchdPxDMZ2orNVshZThoCWlsimIOX8hSPxbuWrFEjTV4Rwp/pnU+GkHlNZsaVWIyG3Ff9rq7wcTjN+43sBjL66xdzSeco57fjR73ZXCSA/OrsRcdPMjDc7BfaHE8GmBmKz2P1L8pq3ftNYUFUpaFlxrMlQ5pzDhx7dAZmWK8LDmecqR8UFMeIa8Z74l57ZQVU6XsOUDXqjNpQByH48SVi+Ffa6P/YVX3OnG1BHX8t3RZp0Bhk4p0BYLnQWlL2JXw4p5aq/qGeBC7XGEBwveGbWL8Pat/KCbj0lepRtWRJEtIxdmPOyC/KrOpsRpbBx1USmTd+YLGjQnrmcD1fbHBjV5uRmV6jecIgEN+627+xXwtDfuCcRVWlKWDSonxzZ7C4t+cVbF27ORz+8MoHq0+Vh1GU6lwfTVd73ylIE9E+gQ3/PiARbkjhcjTtsZo9cuFZ4B7nNYdO7b3BXXcESkRGwHPsb+DVcPXmnR9zFxU6wBcRFIUZ5Xx9GzhRRjXkKzQi3YNkbj1hNebYhX7+qj24ZekQvHmvyYZe6x6fQv12+N/DV919iXqnCcN79s3l0wcwWlQDf2UlSL9YhTP9ae1HCpqKU2iwlFrL2jwZngIPXNmaE016nLjHaUf7Do057NmwbUTnRTxZer6+SaekyJxg9JlsMpGKS4EOkZqNsAFiBJ0vzofG8VNvhdWRoqAQENR2Hbr78fPOfeR2jiXx/6cbBsPo3NHZmH4e3EBDIwTdlg18xj6w2kdOO8kAWnphbOt5HXPILKRJu2rGz7IwC81PWBi4LYXrtViSReDuT4zRxqI3PXrhTFJOFTktvKup8OQuezsS12VzwplMxM8cvMOj15lmNqdG74hBpXsh0GSpKicPjALk0rQdMoPFwfQofnOSBKEuy875qh/SggxEDyUDjWgkzaBR
+ D1CSufEo
+ m2HXJY/7Vxawj7gF0uZcGZ/6+seIEXwY8KpcWT/LUEjfMrTdKbqwpI1gbN3dyc51cQ3hxez1OORrla32g+Ym0OLRMSmkLRmfKMdQTA27x89XeENuif1b7Ldnbks82QproqfMTKIIeBgOOjtjC03s+WajdTiiVDPPVDP5KHEhgFJfuFpL1gRh0O+zUiTgwWFxfFRYTSuzrRkgq3bw+5YLKyfp0nl3nQqNbo1tcmkUfC3kFJTV8MQJT9cXHzotEm6jCGiufJF+0Z6maE5rCqVfglvKGw0j7AscssHNxvz/IxHSqdKK+0wUKlK4hHh2efX8mi99cocNz7bJ1uvNQbi7r/71wwpVyrXoLjtU6H21qEwwgTOKAv15A7Oxg8LmBAtce7v1nun5EuznhZNrPJGhdzMd+CNkIRZyMxc01BCVUFKmuSq+pjvTJI5LmyqPXdrOYZ2Nv61+7t39ei/0XHtSKJOYkOzcvkKIScSv5Cz7DVQC0nc0rHkmScZYksY6Mn8W5fVQ6ERogq+AXHvCR0p2HR+Aby6kIRBrZWMEKFTIs+wvXBt33V4Kr8lGD5rQvEwWD/VorOWbh+pdUoVSja4DS+prVXaKPsFlJvert2KHrk0vWBQ7Fw9tp5uyONQFzWWWd0+l17hM9fT19ek4+RjyzDNp/DGkUxFFBhHMD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,107 +136,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Joy reported that an application generating a request/response traffic
-pattern spends 44.6% to 57.0% of CPU in the memcg charge/uncharge path
-for a range of message sizes, against 0.27% to 0.71% outside that range.
-Running from the root memcg, where socket memory accounting is skipped,
-recovers the performance.
+On Mon, Aug 10, 2026, Ackerley Tng wrote:
+> Sean, do you know if looking up attributes in gmem to feed the KVM MMU
+> the smallest set of pages to zap will improve performance significantly?
+> Or if there's any other reason to do this lookup (more complexity in
+> gmem)?
 
-Tracing the charge path showed that the application generates a pattern
-where the write syscall charges one page and the read syscall uncharges
-two pages on the same CPU. This hits a corner case in the memcg percpu
-stock code that thrashes the stock continuously.
+While working through this with Ackerley, I realized this patch is buggy.  When
+in-place conversion is NOT supported, then as evidenced by the current code,
+invalidations are guaranteed to only affect one of SHARED vs. PRIVATE.  And if
+we change that to zap both, we risk overzapping.  I.e. it's not just the cost of
+the extra MMU walk, it could also be a functional bug.
 
-In the memcg percpu stock code, MEMCG_CHARGE_BATCH (64) is both the high
-watermark and the emptying target, i.e. on a request to charge one page
-the kernel charges MEMCG_CHARGE_BATCH pages and caches
-(MEMCG_CHARGE_BATCH - 1) of them in the percpu stock. The following
-uncharge of 2 pages takes the cached count to (MEMCG_CHARGE_BATCH + 1),
-and refill_stock() then empties the cache completely. With such a
-pattern the percpu stock becomes completely ineffective.
+Specifically, if KVM zaps both when SHARED vs. PRIVATE is tracked per-VM, then a
+PUNCH_HOLE operation on a PRIVATE guest_memfd will incorrectly zap SHARED mappings
+that have nothing to do with that gmem instance (because they're mapped via a VMA,
+not a gmem fd).  And vice versa, a PUNCH_HOLE on a SHARED gmem (if userspace is
+using an INIT_SHARED gmem for the shared branch of a memslot) could invalidate the
+PRIVATE mappings (of a different gmem instance).
 
-Instead of a single boundary point for charges, use the technique the
-page allocator uses for its own percpu caches, which keeps the watermark
-and the emptying target apart: nr_pcp_free() frees between batch and
-high - batch pages, leaving at least pcp->batch on the list. Add a high
-watermark MEMCG_STOCK_HIGH and, once the cached count goes over it,
-return only the pages above MEMCG_STOCK_LOW. The watermarks are
-MEMCG_CHARGE_BATCH apart, so a page_counter update still covers a full
-batch.
+That latter case in particular would be a functional bug, as spuriously zapping
+PRIVATE SPTEs is fatal to TDX (destroys the memory contents).
 
-For now, keep MEMCG_STOCK_HIGH same as MEMCG_CHARGE_BATCH and in
-future we will reevaluate if it makes sense to increase it.
+So, for the initial change, we want this (full patch below):
 
-Reported-by: Joy Chaoyue Xiong <cxiong@meta.com>
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
-
-Changes since v1:
-http://lore.kernel.org/20260817234651.666540-1-shakeel.butt@linux.dev
-- Kept the upper limit of memcg stock same as before (Michal)
-
- mm/memcontrol.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 17da1f43b7d3..58e4d23cf5e0 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2048,6 +2048,15 @@ void mem_cgroup_print_oom_group(struct mem_cgroup *memcg)
-  * nr_pages in a single cacheline. This may change in future.
-  */
- #define NR_MEMCG_STOCK 7
-+
-+/*
-+ * Watermarks for a charge stock slot, in the spirit of pcp->high and
-+ * pcp->batch: MEMCG_STOCK_HIGH is the high watermark at which a slot is
-+ * trimmed, and it is trimmed down to MEMCG_STOCK_LOW rather than emptied.
-+ */
-+#define MEMCG_STOCK_LOW		(MEMCG_CHARGE_BATCH / 2)
-+#define MEMCG_STOCK_HIGH	(MEMCG_CHARGE_BATCH)
-+
- #define FLUSHING_CACHED_CHARGE	0
- struct memcg_stock_pcp {
- 	local_trylock_t lock;
-@@ -2223,17 +2232,18 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 75979c885e03..8ff2ec148614 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -138,6 +138,9 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 
+ static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(struct inode *inode)
  {
- 	struct memcg_stock_pcp *stock;
- 	struct mem_cgroup *cached;
--	uint8_t stock_pages;
-+	unsigned int stock_pages;
- 	bool success = false;
- 	int empty_slot = -1;
- 	int i;
++	if (gmem_in_place_conversion)
++		return KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
++
+ 	if (GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
+ 		return KVM_FILTER_SHARED;
  
- 	/*
--	 * For now limit MEMCG_CHARGE_BATCH to 127 and less. In future if we
--	 * decide to increase it more than 127 then we will need more careful
--	 * handling of nr_pages[] in struct memcg_stock_pcp.
-+	 * nr_pages[] is a uint8_t and a slot's count is capped at
-+	 * MEMCG_STOCK_HIGH. Raising MEMCG_CHARGE_BATCH beyond 127 would need
-+	 * more careful handling of nr_pages[] in struct memcg_stock_pcp.
- 	 */
- 	BUILD_BUG_ON(MEMCG_CHARGE_BATCH > S8_MAX);
-+	BUILD_BUG_ON(MEMCG_STOCK_HIGH > U8_MAX);
- 
- 	VM_WARN_ON_ONCE(mem_cgroup_is_root(memcg));
- 
-@@ -2254,9 +2264,12 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- 			empty_slot = i;
- 		if (memcg == READ_ONCE(stock->cached[i])) {
- 			stock_pages = READ_ONCE(stock->nr_pages[i]) + nr_pages;
-+			if (stock_pages > MEMCG_STOCK_HIGH) {
-+				memcg_uncharge(memcg,
-+					       stock_pages - MEMCG_STOCK_LOW);
-+				stock_pages = MEMCG_STOCK_LOW;
-+			}
- 			WRITE_ONCE(stock->nr_pages[i], stock_pages);
--			if (stock_pages > MEMCG_CHARGE_BATCH)
--				drain_stock(stock, i);
- 			success = true;
- 			break;
- 		}
--- 
-2.53.0-Meta
 
+And then in the main in-place conversion patch, have the conversion flow to only
+zap tap the "previous" types (with prep work as needed).  Ideally, that would be
+done *after* the main conversion patch, i.e. as an optimization, so that we get a
+nice bisection point if it's somehow buggy.  However, Ackerley pointed out that the
+conversion flow invalidates the entire range if the attributes of any gfn within
+the range is changing.  Addressing that would be rather annoying, e.g. there would
+need to be multiple invalidation ranges to deal with interpolated conversions,
+so going straight to a "zap only the previous" is probably the least awful option.
+
+---
+From: Sean Christopherson <seanjc@google.com>
+Date: Wed, 19 Aug 2026 18:06:38 -0700
+Subject: [PATCH] KVM: guest_memfd: Invalidate both SHARED and PRIVATE mappings
+ for in-place conversions
+
+When removing one or more folios from a guest_memfd instance, invalidate
+both SHARED and PRIVATE mappings if in-place conversion is enabled, because
+stating the obvious, KVM needs to ensure that all mappings to the folio(s)
+are dropped.
+
+Opportunistically rename the helper to capture that it returns the a filter
+for all gfns in anticipation of zapping only the previous mapping types on
+conversion.  I.e. when doing in-place conversion to PRIVATE, only SHARED
+mappings need to be zapped (ignoring that KVM would ideally not invalidate
+ranges whose attributes aren't changing in the first place).
+
+Note, precisely zapping only the possible mapping types when in-place
+conversion is disabled is important for functional correctness, not just
+for performance.  Specifically, if KVM zaps both when SHARED vs. PRIVATE is
+tracked per-VM, then a PUNCH_HOLE operation on a PRIVATE guest_memfd will
+incorrectly zap SHARED mappings that have nothing to do with that gmem
+instance (because they're mapped via a VMA, not a gmem fd).  And vice versa,
+a PUNCH_HOLE on a SHARED gmem (if userspace is using an INIT_SHARED gmem
+for the shared branch of a memslot) could invalidate the PRIVATE mappings
+of a different gmem instance.  The latter case in particular would be a
+functional bug, as spuriously zapping PRIVATE SPTEs is fatal to TDX, as
+doing so destroys the contents of the memory.
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ virt/kvm/guest_memfd.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 75979c885e03..7ae05ce3cd14 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -136,8 +136,11 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 	return folio;
+ }
+ 
+-static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(struct inode *inode)
++static enum kvm_gfn_range_filter kvm_gmem_get_all_gfns_filter(struct inode *inode)
+ {
++	if (gmem_in_place_conversion)
++		return KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
++
+ 	if (GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
+ 		return KVM_FILTER_SHARED;
+ 
+@@ -188,11 +191,9 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
+ static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
+ 				      pgoff_t end)
+ {
+-	enum kvm_gfn_range_filter attr_filter;
++	enum kvm_gfn_range_filter attr_filter  = kvm_gmem_get_all_gfns_filter(inode);
+ 	struct gmem_file *f;
+ 
+-	attr_filter = kvm_gmem_get_invalidate_filter(inode);
+-
+ 	kvm_gmem_for_each_file(f, inode)
+ 		__kvm_gmem_invalidate_start(f, start, end, attr_filter);
+ }
+@@ -344,7 +345,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+ 	 * memory, as its lifetime is associated with the inode, not the file.
+ 	 */
+ 	__kvm_gmem_invalidate_start(f, 0, -1ul,
+-				    kvm_gmem_get_invalidate_filter(inode));
++				    kvm_gmem_get_all_gfns_filter(inode));
+ 	__kvm_gmem_invalidate_end(f, 0, -1ul);
+ 
+ 	list_del(&f->entry);
+
+base-commit: 620f8362aaec3848ee8f465949a0701175fe0896
+--
 
