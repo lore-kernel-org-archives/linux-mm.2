@@ -4,102 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34E74C5DF87
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 22:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF41BC5DF87
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 22:49:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A6226B009D; Thu, 20 Aug 2026 18:30:24 -0400 (EDT)
+	id 536516B0095; Thu, 20 Aug 2026 18:49:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 057386B009F; Thu, 20 Aug 2026 18:30:24 -0400 (EDT)
+	id 4E74E6B009B; Thu, 20 Aug 2026 18:49:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAF466B00A0; Thu, 20 Aug 2026 18:30:23 -0400 (EDT)
+	id 3D67F6B009D; Thu, 20 Aug 2026 18:49:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3B566B009D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:30:23 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39C641A0304
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:30:23 +0000 (UTC)
-X-FDA: 85123092726.18.1F403C7
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2A7BD100003
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:30:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=A8IrUFqB;
-	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr;
-	spf=pass (imf14.hostedemail.com: domain of Jeremy.Jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=Jeremy.Jean@oss.cyber.gouv.fr
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 16ED16B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:49:18 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BA7B160321
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:49:17 +0000 (UTC)
+X-FDA: 85123140354.08.50C3D77
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C979340004
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:49:15 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hOb19F3A;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787266155;
+	b=u7Hjv9Gnzn+WbT4B/Hm/Z8su7qWmlA2nWMIdbt8TnP9I1soZMAuVy4mP4IzROnj8vqp89C
+	wbxqMjnPfHoD2KCAixUJDAgaNEAJhUsB9fCtq56el9NPFCnC55Yi2WDUBXxhuuKPqgAkSa
+	QMlFsj99KB6t5VRjbt+vDXL6ZMQ0c2E=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hOb19F3A;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787265020;
+	s=arc-20220608; t=1787266155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=3uM/5Ah60/1yfTM9+Zuo8PO9yKPICs0GbkA7rgYWFfs=;
-	b=LjdWUNyL/ZQ0IioaXkFeqdPPQLvnf80Z4pUmDmSiCjBT9NXud5TMHEJ12X3FEt1xQsgfVU
-	IzbiXjH4Itk9b+sTCPG+Pzz30ITWG6TvEieFnpAQ+saHe0JhP+yZFbRyezxuq/54WqZRAH
-	ySAHogbh/XZhrNeowtMRyHYMRKZC/2I=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=A8IrUFqB;
-	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr;
-	spf=pass (imf14.hostedemail.com: domain of Jeremy.Jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=Jeremy.Jean@oss.cyber.gouv.fr
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787265020;
-	b=Cv4/lvaISzi63rscIuWbWusJ799+9/TDZu+sGq0WjTVYWyZZXeQolRu0SIiBGVMATY3S8g
-	QVYSkcLZH43CU+ZWm4kvowicIod5LzNEjeiBcQX3wX0E8EV+XmeFo+XfvpCZvTOnCo64L9
-	L8x/vtt0cTfyrCNA2sKnTFFm51staxg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=3uM/5Ah60/1yfTM9+Zuo8PO9yKPICs0GbkA7rgYWFfs=; b=A8IrUFqBb/LHNSAfvNi258Efpw
-	k3gkshTlPpifnRaU4RVVWeOdx0+ttKHmb2QNCKgNyT1vqfzvuAQsWmv4nqiwoxMJDPtS8WsygoibJ
-	LPcoHh6f+L8FV472rhqoYM5h2L8/FlMfFYMXUaQ0wK+oKruRN1nQy8Vp76kE20p8EysMg/z4xRXrm
-	j5kuqtXJN7EzpKUaD2148VhRtpY9IJbWcFgKxdYlH4zdN2PXpSxVbaE9fWErWCxulxRAMqoXGA+tj
-	5qVqOcg+XhuJUnLD0XDl5kfC67WvqQrbp/tZm7C5F14LkMzm6yRyimLho6FpirVzEmOy3t8vrxvDV
-	B8ja3RWw==;
-Received: from [151.115.150.205] (port=44086 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1wxBH8-0000000Ahdt-3kQp;
-	Fri, 21 Aug 2026 00:30:18 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: kees@kernel.org
-Cc: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Subject: [PATCH] binfmt_elf_fdpic: reject PT_LOAD with filesz larger than memsz
-Date: Thu, 20 Aug 2026 22:28:26 +0000
-Message-ID: <20260820222824.3165092-3-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - kvack.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=l1tHcHGbIPLaDej5OevvXkdwoi/qHvPdSwnHVriPzTo=;
+	b=Hs2AmrRBq4zv9nm1qvgK0XqMQLVqvCVsRtUJZpVEJtCPJsGLh/tVGz2U7Gn+IEX001JPVx
+	GU0rnda6QQI1izHLnY/rDr8z26n7oHkKzFK8ezJxHrK+6DlNzeqmyznF+5+/QjlGT7Hc9M
+	kuHjgCB5n6Bf7xIpugAXjK6q+8/xruE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0362460A58;
+	Thu, 20 Aug 2026 22:49:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449B71F000E9;
+	Thu, 20 Aug 2026 22:49:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787266154;
+	bh=l1tHcHGbIPLaDej5OevvXkdwoi/qHvPdSwnHVriPzTo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hOb19F3At/3ryOyPPVSG++D0gS6NZEK8Cqy1nDreUNxcrQj5l7g5N6OlwLxZ3hyRg
+	 FrTDB7BfjA9sjdiAlQGJOo3jJqfz+3r+X8h0O45h2yHyEOy0QF5Ks2nYbwMTvCBlug
+	 g0AneDFXAN7M04L743USCvqSJwkS8MC56NgJ5CFE=
+Date: Thu, 20 Aug 2026 15:49:13 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
+ Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Mike
+ Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmstat: add per-order allocation slow path
+ statistics
+Message-Id: <20260820154913.3d6a821f6ba5c1f81d134a0a@linux-foundation.org>
+In-Reply-To: <20260820133659.712111-1-d-tatianin@yandex-team.ru>
+References: <20260820133659.712111-1-d-tatianin@yandex-team.ru>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C979340004
 X-Rspam-User: 
-X-Stat-Signature: hph4fjsripry535ui933ewie84ap3zk7
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2A7BD100003
-X-HE-Tag: 1787265020-583547
-X-HE-Meta: U2FsdGVkX19xU4955ED/SvkcEl6FSSVL0g849W5sGH4MibsOYGG5p9JRt/9a5/zRIuVVxdEfEEoxLcuBjzFO410c1uM2ijrjcNGUMJ1mpEpa1bB5eMxOf1b5ehPExNsTQsdGhss4DNrulqJV/ihyATORp/8fNKjWYIdu4AVoQvgGij4IFGJg4rAbrGGuRS+BufcYUWNF8u9nR0mvn1uqLFjTnGOkKv5m0+X9l3on+l/gnRSuxBdZNZjoT4mP1DuXgLsiLn4KFWTcBL8q9VIDhQO6O+a06CtjiCFA4Lc+4EgtHUduYJVQBF7kkqmvCzfQpnAsevEOimzLyX24UF/SmqO7K76qA7nsja3I6mvIa7pTemOPOrIoCsIofvfPDaxsVJGE7cgr2cz949z4tEm/8f38oqQQtkjxYG777U0a0rVzaxZWgyL9B7NnB219+WuaK5jq3gvWPvINLqD49wp0238HzNkcEqBkexTtDJVNo+t7EMEpvurthmDw/ykE9OTL8u4rpdb/vu0Q9sqmNQO3/gXEr5poFuH79KnqYCckktezvH0MvPnjC+ImgJUayH11ASXPFvGwHKZVy46qFMTWKi3+W+cALVavfunoAY1rp/rPhheOFpHS/dQ3Uwq0n65xaYIH0wFKnaH2k1S7cVoPxJvVVtz8w20VeKAFUA62puRpT4ppLdSGBa1bzJB7egoyvKG7gIsDcCGqo3MRVg82RabrwdqG0SGc/lH9lUz9pWynBSp5V6p6UaI9lYinBKyVAswB0PUckYKPjdIYJzNez5udGwyWUa6KCx2NL/sqZCY2q6Cck267yZ1OEjFygG/TTC053IixgO0Y8RqxnRTnerECnyQ7lKfgxnyRW9JBFDYhtc2ZDQea5EtNuCSoOuoWRniq0r+JAXmGJS7BP8YkioZML1gkUfbvKzcSwDc5WRrvaxgt95MatW9HdmUou34LXh4ej2GI0QnGFS48vXf
- QU0csNzP
- ikM0uUs3nM4k7FJP+705vhde0VrSD+9u9b3JV3rl+cDsVb+EvDT4gQu+bVXnPI+6gA3W8a6gzBsxDjiy3jlfJezKUtO2c/Nlt2fKG5KKRpjiTlhcUZubWcjBQVZQ4hMntwebslk7BZIRjcSG9xcu/hAytiZnNtMMhqmg0CUOFrovC6xxrfFdbWCYOchJpcx3XsNu7Ypkfw4KBaSr68/HP8CP/t8XKQRxIs7sMag1BdOUS617V/n1Ei22P8cnRxSmvN6tRxfNhTGYV7PeZ7yDPzHWloNmvXi5/lmv+8TxUN8uoyY8pCBvg3Pv/q0dcvksXUnFVBpA720pmxtMMxo49s/arWkfR6f+PTvqh8E0T0497P1bkPwuh8FWLAz+smc50bsYVTpuwIKb9M7OpHvH0fzmqq2/QsaoPLG9DB0LCWFI1VM8hpEcyCYGnBm3yzSXx18Nng7npQGuv3mov+Ue4drgjtDgf/Mn0z73osZviZN1Cv3YcvknJK+DybDCg9Z2CawusH59d9aQNi6+NcHdO1qBNi9g3XxkGPBKIDlb9qIVwu9DC01+ElGoTWU/darRGmlbFnl0IZKbXGmDDdnhwBpcWeduZx2PW0iWnzANdzn8ZxDDcrSM6rAw4eUnxjZDAewsN5rOFFEjyUKX2cIFaveE9rIauUHCPOMqqLoIofKmxX0HRwfKJlymao349aJg743Izh8x1d1ayEX7bHSW+8rKr4raXiqL+X64s
+X-Stat-Signature: 7hg3eb5rj1btp3q3aj8z4h3nb5qw8e9t
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787266155-89949
+X-HE-Meta: U2FsdGVkX1+RM46foWCqJPmvK3E2kifZqS8eIMxrJ9u/JomswO9Y+SZmP4p68m2ESQWO7JhzHyqbq1cdCM7JfwF21rGstEZMomCKFhRRfU00FsPMsyWuihDR1S8CNvbZ78XmXZkJcu9yfnays723kaOy4dT9ICg7NQr09WXY1N3zPDOkUvrooicTU/I21iVqGblE7jdEQLER3HlZueOJWI/V+arRQCLIc1qP+kBQx1qjkg4g+bCtEetNUMSmHA9gveqsGZJK9M1S/1OFvQdz1Sl/VA5I3eIdHV4xDLWM+5gdxZCDsQ/Y/oUPgLeucmEgkg29CvQyaRkcmtxSs9MTKrEAZFjQPmSfxeOqmbajJ43c5D83UJRuHIgL5yDykFF5foTsIj8Ty9HUyuDuaQQlxyywDwNC1Ec2fWGbau1XI3urQnyU+LqSwTZ3nkrz6/B6F6ELH+i2kNXbx1PNYodAMwKQZVNMLMOoaFAzYOCeuPKyX1u2Dyn/xMRLOTcO9koV+cYuh5EB70i8w9Yqot67sKTD7gJLnHIfweS6Fi9vPH/xlxkmNPgSs9AEvjGoihaskVAXfoFXSyZBOevZuxjkS2mS8CYNXGUzjYoRQFrVDY9vQI92VYfkAfY1wGRDWNFF3TujlFugxVbKHVbD8PnO+tcOIqlvHjzx1py6/uF1ey+tm9PNlgjEl/cZAxcr6qsMACL5FdxuCI+TutR0nqPEK+Zxt+BiX1LbFhV1q4Nfs+pqF/8ITrqYnyRR8gS0nD+oovZ9LKsW9YAKDaszjvtW1BRbHHRjIHHJglMB7QWsdwjdXEbdQa0J5Y54bEyt9GkHSMxOX9P90S0wabcvTiHhquYIsDd/Q+tw9o9beUn00Bm9DdAmDtM8g8yDNKwezEPzs5zH59U3eIrA6tGWT1T0CBRaOynyDoEB4GRL1kAhipGLPbSz+C8gl4sE+2Yq/VCgyPyS4pBHK8wlaYmgEVc
+ L9fYsiSv
+ opZr2BiI/jaLxvKHNdh6sQOokuwFV/jBvxgu3+NIlvpqsqXed20h0TY3ZkAjRhb9U2kmobyga2xLNqAPY/dSlhkeXmkJuNyJeoreSqIIhOXjblP1oN1GrOyFU1C/4it/6x6uPk5zn+vQ/Os9NudU9gkof7M9W+s1kfWzoF/BXI4iRusgtLNdRouw6wy0zfX3cl0YhTjXpICYXf7/0wqc06gBxaUVT6zd6M2zyNPQdvQHu3ekYIyliMaxsPZMDrAyM9z2vX0P6NB07bUVgT1eGi+HQ1BzHBBxpmi+LclFvuBBIOXUs1AQRGLIjwruB8CxOPet7O809I7dv49wS6UNxuCIv80xw2H7wYXQAJsPyfSqpcGz5rMtjTvYj1A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,52 +94,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The ELF specification requires p_filesz to be no larger than p_memsz for
-PT_LOAD segments.
+On Thu, 20 Aug 2026 16:36:58 +0300 Daniil Tatianin <d-tatianin@yandex-team.ru> wrote:
 
-elf_fdpic_map_file_constdisp_on_uclinux() sizes its contiguous allocation
-from p_memsz, then read_code() copies p_filesz bytes into it. A malformed
-segment can therefore copy file contents past the allocation on NOMMU
-systems. The direct-mmap path also subtracts p_filesz from p_memsz without
-first validating the relationship.
+> Production incidents caused by bursts of high-order allocations all
+> entering direct compaction are currently hard to attribute from
+> /proc/vmstat: pgalloc_* has no order breakdown, and compact_stall does
+> not say which order stalled. Tracepoints can recover this on a single
+> machine, but they are impractical as an always-on fleet-wide monitoring
+> source, which is what is needed to correlate latency regressions with
+> allocation behavior after the fact.
+> 
+> Add per-order event counters to /proc/vmstat, covering only the
+> allocation slow path, so the page allocator fast path is not touched
+> at all:
+> 
+>  - pgalloc_slowpath_orderN: entries into __alloc_pages_slowpath(),
+>    counted once per allocation, before the restart loop
+>  - pgalloc_fail_orderN: allocations that returned NULL to the caller
+>    (including a successful allocation freed by memcg charge failure)
+>  - compact_stall_orderN / compact_success_orderN: per-order split of
+>    the existing direct compaction counters, order 0 is omitted since
+>    direct compaction is never entered for it
+> 
+> All new counters are purely additive: the existing keys are untouched
+> and compact_stall == sum of compact_stall_orderN.
+> 
+> alloc_pages_nolock() is deliberately not counted: it is opportunistic,
+> never enters the slow path, and its NULL returns are expected rather
+> than failures.
+> 
+> Counter names are generated for any MAX_PAGE_ORDER the arch Kconfig
+> ranges allow (10..13), a static_assert catches larger values.
 
-Validate every PT_LOAD immediately after fetching the program headers.
-This covers both executable and interpreter headers before
-begin_new_exec() makes execution irreversible.
+AI review got upset about this:
+	https://sashiko.dev/#/patchset/20260820133659.712111-1-d-tatianin@yandex-team.ru
 
-On RV32 NOMMU, an ET_DYN with an 8192-byte p_filesz and 4096-byte p_memsz
-copied a marker from the second file page past its one-page mapping.
-After this change execve() rejects it with -EINVAL, while an 8192/8192
-control still executes.
+> A per-order split of PGALLOC itself was proposed in 2017 but stalled
+> over fast path overhead concerns, restricting the counters to the slow
+> path avoids that overhead entirely while still capturing the
+> allocations that cause latency.
 
-The flaw dates back to the driver's introduction in the pre-git history
-tree introduced in v2.6.11 by 91808d6ebe39 ("[PATCH] FRV: Add FDPIC ELF
-binary format driver").
+Seems useful, thanks.
 
-Assisted-by: Codex:gpt-5
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
----
- fs/binfmt_elf_fdpic.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+It would be easier for others to understand the proposal if the
+changelog were to quote some sample /proc/vmstat output.
 
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index 068c46875c74..e8a6e89b76a0 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -157,6 +157,12 @@ static int elf_fdpic_fetch_phdrs(struct elf_fdpic_params *params,
- 	if (unlikely(retval != size))
- 		return retval < 0 ? retval : -ENOEXEC;
- 
-+	phdr = params->phdrs;
-+	for (loop = 0; loop < params->hdr.e_phnum; loop++, phdr++) {
-+		if (phdr->p_type == PT_LOAD && phdr->p_filesz > phdr->p_memsz)
-+			return -EINVAL;
-+	}
-+
- 	/* determine stack size for this binary */
- 	phdr = params->phdrs;
- 	for (loop = 0; loop < params->hdr.e_phnum; loop++, phdr++) {
--- 
-2.47.3
+> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+
+Merging patches from Russian-affiliated individuals is problematic.  As
+I understand it (not well) it's OK if the contributor's organization
+isn't on the US's OFAC list, and it appears that Yandex is not on that
+list.
 
 
