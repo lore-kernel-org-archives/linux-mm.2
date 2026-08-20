@@ -4,107 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E87CC5DF82
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 11:36:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE377C5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 11:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E33776B0095; Thu, 20 Aug 2026 07:36:57 -0400 (EDT)
+	id 740DD6B0095; Thu, 20 Aug 2026 07:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBE0A6B009B; Thu, 20 Aug 2026 07:36:57 -0400 (EDT)
+	id 6F0916B009B; Thu, 20 Aug 2026 07:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C85B26B009D; Thu, 20 Aug 2026 07:36:57 -0400 (EDT)
+	id 62D216B009D; Thu, 20 Aug 2026 07:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 90C486B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:36:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 06B9F1C006D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:36:57 +0000 (UTC)
-X-FDA: 85121446074.17.6A0B52A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 21ED7A0004
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:36:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SB5RDxXv;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787225815;
-	b=TjJERMRWUs7uSKQeiZNpHQYYuLSiHWopgRGlKC0qxPxHvJ6BW8x6BM7es1q7J4g9uQRVLX
-	iy5p+/Vsvmm6imzs++9qDCyIgQWquw3nF3aaBt5Pg9fZHUizkcSdEwgCZsVRbiIMlFjUAx
-	mH36AayooyQ48XrjKRuWP7U1oVm8OgE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SB5RDxXv;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AFE26B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:46:16 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C29204011B
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:46:15 +0000 (UTC)
+X-FDA: 85121469510.02.77F1AB1
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 99F36A000B
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:46:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	spf=pass (imf15.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787225815;
+	s=arc-20220608; t=1787226374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1rvWP69jNYCLEMQnHPvdNYBrNQ/dPw0juu10J6Hhu5g=;
-	b=vXiDeswkmyNkM+jEiNld5LZUzKje1dRNmCYPFD320OdBkQ6FX0/m8EJFh253GJwNi+3YYh
-	yk09AXbdS6ymdqFIhgddJKUu85Ak8BKggJc3+jwf9Yx5d26rheBn2jKdbJDnYvSWfiW81a
-	J+v6KhNpIIInt06Uwl+DIJrMNwxnmbY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5E5EE60A9E
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:36:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA821F0156F
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:36:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787225814;
-	bh=1rvWP69jNYCLEMQnHPvdNYBrNQ/dPw0juu10J6Hhu5g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SB5RDxXvl/ioN4+C0+m6YIiRbM3zfhIQb1E+HC/YzVqhU6PxHRd0x0a6YmL5joNdo
-	 4e3l72tD2ncq5FK1Tr565oP3K0w/Nb/tTny0pdykkWXo8Prmmwx8YVmI0dDvzwWuUZ
-	 CmuIf3KJsbN8mHpAU53cWTy1WVEgyhrsU2VeJtQ/+fwhW6bSPI/GtetqzoOCuqEyzT
-	 9kAw3o0uXLdqeU3k8hu9+qSZhUat8YAr4I+/Zr17Ctrnm78JMwHvSosecb6qujzA2K
-	 GgSHBJp2/3vm1UjMTwJ8gbq55YX5N4Ykw2B8L6cBHwIAgnY+L7L6WVx1+RFp0DL4gE
-	 bybgl27AZtBRg==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e6391b114so179181385a.3
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 04:36:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrTujg9Cq5ynwZvIiTWizzdQjvsQEmwBNJdEKUdvuQcBrq3LnKM1D+SangsDrN+taktBOAmcHyNtg==@kvack.org
-X-Gm-Message-State: AOJu0YxpEzWW3Mc//4WOxp6HRAeyG2KmICQiqMIW8pb0kJSIURcTxivx
-	ZzoazXOsE4Reoa/rQpRQz/iG/+E93rmuD2xyMSVa//cPKPTzzjM43YS47sTka5mB483yRb8A2tk
-	TrTuNQU92FpG021JhkPCJvcQ2u/O+V+A=
-X-Received: by 2002:a05:620a:2847:b0:936:75ba:7c5a with SMTP id
- af79cd13be357-9371e6f65damr960131585a.31.1787225813422; Thu, 20 Aug 2026
- 04:36:53 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=p6boexFWDbKUyemxFpfvIIAoAcpLgttrMyK26yxosEQ=;
+	b=VJN5TNlh4zkl/zShGdC1Fcd1sF5kD2plOYBRcv1XJzS3T/9XpvKUmJXH4eb54EP8ilR1h/
+	GKGbVHb9eyNtiUnsWN3AZL9RNMp2SxRbbhTsX0No9K7ercLvSdX01Lvfjm2d5iDZQXl+si
+	pyCaOxorhYKTnJx2iIWsx41ybmj9lVw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787226374;
+	b=nuRdRtOk6Ny+QvORYI4vHUgpWLJNHqVcIMAc94lGoeJaZc2ZsIxRuC7lA44DRirtXxjWcV
+	JByOmyNAfjAU2kzf7QrXGii8uvhVU2gWh9zgn9ukPBJAnZd8ttqJb/zZSOIX8hjm2VtqVW
+	SYYTYXdbHoKjMU691jT5BUAUa+fmfrM=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hQhTR42S4zYQtxK
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:45:47 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 313A840596
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:46:06 +0800 (CST)
+Received: from [10.166.163.161] (unknown [10.166.163.161])
+	by APP4 (Coremail) with UTF8SMTPA id gCh0CgBH2h796IZq_44jDA--.44192S2;
+	Thu, 20 Aug 2026 19:46:06 +0800 (CST)
+Message-ID: <3d7de544-1607-472e-a922-a4687cf8a133@huaweicloud.com>
+Date: Thu, 20 Aug 2026 19:46:05 +0800
 MIME-Version: 1.0
-References: <20260818163221.589352-1-alex@ghiti.fr> <20260818163221.589352-3-alex@ghiti.fr>
-In-Reply-To: <20260818163221.589352-3-alex@ghiti.fr>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 20 Aug 2026 19:36:42 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zC+wAuevG+i5y23rLPGXn0P=D7JpMECnZ1OuP1BsyYkw@mail.gmail.com>
-X-Gm-Features: AcwNN1Wdmpc747x_Oxp0xjcXXBYq4rS8x3lyA5XuxyF0aRDk0ej77W6gNxw8_XQ
-Message-ID: <CAGsJ_4zC+wAuevG+i5y23rLPGXn0P=D7JpMECnZ1OuP1BsyYkw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] mm: swap: drop dropbehind swap cache folios on
- writeback completion
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kairui Song <ryncsn@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Wei Xu <weixugc@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] mm, swap: Remove unneeded
+ swap_extend_table_try_free() in swap_dup_entries_cluster()
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, baohua@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260720071342.50742-1-shikemeng@huaweicloud.com>
+ <20260720071342.50742-5-shikemeng@huaweicloud.com>
+ <al8mqsmCy42X3Ewo@yjaykim-PowerEdge-T330>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
+In-Reply-To: <al8mqsmCy42X3Ewo@yjaykim-PowerEdge-T330>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgBH2h796IZq_44jDA--.44192S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZF15Zr1kXry3ur17CF1ftFb_yoW5Gw43pF
+	WfKas0kF1rX34DJrsrKwnrury5uw40g34UWF13Ww15Z3ZxJ3sYgFW7tr9Y9Fn7Cws7Aas0
+	grs7Ka47u3Z0v3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUymb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UZSdgUUUUU=
+X-CM-SenderInfo: 5vklyvpphqwq5kxd4v5lfo033gof0z/
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 99F36A000B
+X-Stat-Signature: dp5fbuhwczbjoct6fyksbpntwc46tuth
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 21ED7A0004
-X-Stat-Signature: w7m8m1cunffdq5d9y365wysohioih6d8
-X-HE-Tag: 1787225814-283835
-X-HE-Meta: U2FsdGVkX1/uJ0Cf6livY1pI8M93ylvLt6hZk0CIusEWQr0WBw2M4BVmOo6iZfbcsTa/loWTIZMcQnA2cscPn9qW7oh5oLC1lRQ+6nrGA4DsUjQ2xxtM60ZddUhRzfiY7qz2CPxOP35JrO3aF4xVJFu9L85GkfBbWfOAac0OG7iRC6NTbJSH6Fk5oUKlCt8YJavolsHyG5/BaCmBXsKaPF+owl14jd6ZE3Ksa6eUhjhENdFrEkZJ3cySeCJWQEsjdw1shfIVcaomZ6yaDyxLOHCV5Xj9bm2Q76VJ9yq+6QnHztuYuSq8TYZZUHruSg3cgeHcHUErg6vrqDGSIcoI/d20y4XlEDRGyNWkY6z0lQX8yacHwmNkUqChzP6ud3/0TKN6f8QL4l3dLrLlk71uLlecNHtkJOliq7RLTvctskIEK/UhzDUty5n+hjZkdO8YqCb9RE7I432kaX+8SxvO18AZGkfKC/7urI/5x6hSikCsutwo+e7nIks7TYfbxVfXZS0E0AZtcFUYIOJ0RtqLBdwVk9/1h8uRpverz6G5GTByaXGZH1JC3/X+/11e8885CReBfrAUpNzWVwSewL/21K1x+S3sfVz3pItAGe4N6nHdtLeZld1xxwzCYAGi+6lE+XGeKNQXc/CYP1Z8Vk3mOy/pNd1896DmI+wv8Vh729fE1GEcdNDZHkFfGmRBwJIKmWo85ukVDcIeZhPLzZ4yOPxMC/LvhiIkSJo0JjJsqt1or3qqgcVYSgS3xgFIBlEN3kFGDrknb6io5NEDGl7hFi08dmmLm7O7OTg9i0kv6F9aymZOVD3KY2HL0hw95nycdceA5lz7pJzwcdWhwR1+0BHs2FRvZiPPFzeLkdXPd5dbgEoEUYb/Z0VYp9U/50RLIxidtEreuE/SSRNm6Y16zqL2VGMueJWTvcmnVTtM1VHqFsh7OTqioyMxQsWOFmzh/zfTWd8kKXwV1Kie59u
- qiAN5jZX
- UFa/H2KcAVYxwTKhBbzcIiArUD4XCEZX3fJOqus9mQymXVQ8Zj7HLULI2y1EgUkETnfcs9axzXPwOpTDP6lAAMAmmlg7jTFeWMAMnQI7ivtjVP7NpwQyn8odPycpyMmc3cGIfIcRwKvq9ORUxAWOzX/mKbJOnGFqFi6zI+doiRwTyInvW/saLAXgSskb/gIiO0RG3BTnMtCUsyPqqmpfkVOOdo0CJiFU5NuMrI0HBcBsMjRwss1fiIH53JhBRw7n4UBJf3ye9tcWX6nIrdBqoPLz2zzFh72ZOFHQACO3S1HtBRcj19ie18L0wULF7thYPdIzRZS5lL/Zpg08HN6c++8PS6PbHlFr83BKezJUFWYUcCRxV70ZyWd0Sr3VaUi8iiHNY69QrffPnyxRH3DecEirvj6M8+QwKhIPy5vX8i9q/HHtn3Hy9UbQP2w==
+X-HE-Tag: 1787226371-149187
+X-HE-Meta: U2FsdGVkX18N06sCjMiyy4TD0ZiN4iYbxkTgw9OUjycAVSX731ago/N+Y4hQUHDXQz76tEqDydwJmAThxvBuNOwdZtf7GOgMgvfkxcmb39RfKhJ06A1YbScf17p561FajdaJtyxzFOP//k4sy+4pmhCbhstCYu3kiGa5f33+p6N4OA2orFhNtXMp0o5GKfbwGbvAhwd/Vgzt8QVOkSktIeiwDgKQvbe53vaAf+jDkUUVxnMWJ9vt3MgpJ3uv3RzLISho4KNazLxd7ntbUFOMLfQ6ccHvtaGNjUh143MUeU+Y1Mj7dByzbcd6vtA2K7HNitMRxDbptEMFoQgY2RFo2dydFDw9k9hwnQB2c5g46D4gdbdIjieJCsJ5joyuaf34ndaoECDMiJjRLKVG3mMdlqeGMDEOSEdoigLtFoqRcXRIFGp1pjarmp7qyhYkqH+ExSmjofRgURTwKadsG64qoQK9OGx/smrTte5s92zToyEe0JEQDDkdQb2OBUqbREf5WUP2soyfj9ZQoc7Lt/B76BXkZFCWFADiHjbOZkmagRJv8JVaKkb8j1Y7PbNqZyJey7IGlYkbJCdx4BynJfQ2bQlxDWiZJIGs3kj37yAMPFZBikaWB6wfGryXhtpeJxnf36wpiL7TALlJS2zubzcZbrXspXb9FPu02V11dhFZFM9gtK4RUHxqy/Re+ZDrlTEISduYVRyBrXxGdLXWuWBNSNL5mCg4oNDwBlc1wFssv26if0MnIYjwAy8FLmCVg5C/2lIBS1DEuIBCaKwecmlrz0sfGl5K401Ym7BYoTEWmFjBR3wNAk8oDt5Cp0qW3D5Dq+8rI3bnPJxFmLikYE2Wn+/e4Sx4GRn4Y/wdQgLroYYy2yxJWKqGa6UCJnyifTba5kuJP0JP7rrfSn2nldELLH5O0hpVOHq5q3mB6G2tChRL3sXe9sNTbVxJ6p6XbDmjcze79ELaX71PFHcyZnQ
+ nAzUT1zW
+ tJ4YuRMnfx/2g2RAEaptnPS685tXTu2TWmd2/BTPUrBnPkknnzrUT7iLxANpv2boEsG0Xyew1EVRLWubtee1qtFCdo5uT+XiipQcSjLePmgL0/+Iq42gdAeLQuqF2bNieBfV5rtAnY0Yke12Y3dXr0asIVqovKVl1XPRSdLC3NMvXykkr4oZo9Tqp85K0D2+kytB+B1lOrdJlfLA0tuRy6wz5PNj1OPSfLz5YHbNQK7jU1AQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,114 +105,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 19, 2026 at 12:34=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wr=
-ote:
->
-> A PG_dropbehind folio is dropped from its cache once writeback completes
-> rather than left for reclaim to find later; this is implemented for file
-> folios in folio_end_dropbehind(). Extend it to swap cache folios.
->
-> The drop needs the folio and swap cluster locks and may sleep, but
-> writeback can complete in interrupt context, so defer the work to a
-> workqueue that runs once writeback has completed and frees the folios in
-> batches.
->
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
-[...]
->
-> +static DEFINE_PER_CPU(struct llist_head, swap_dropbehind_llist);
-> +
-> +static bool swap_dropbehind_drop_folio(struct folio *folio)
-> +{
-> +       struct mem_cgroup *memcg;
-> +       bool dropped =3D false;
-> +
-> +       folio_lock(folio);
-> +
-> +       /* The folio was allocated off the LRU and nothing re-adds it her=
-e. */
-> +       VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
-
-Hi Alexandre,
-Thanks very much for your patch!
-
-I don't quite understand why we only support NON-LRU folios. Does this
-restriction prevent potential optimizations for madv_pageout?
-
-Also, zram might benefit from your patch in the future with
-asynchronous hardware compression and software compression such as
-kcompressd[1].
-
-[1] https://lore.kernel.org/linux-mm/20250430082651.3152444-1-qun-wei.lin@m=
-ediatek.com/
-
-[...]
-> +
-> +/**
-> + * swap_dropbehind_free_batch_folio - free a dropbehind swap cache folio=
- into a batch
-> + * @folio: the off-LRU folio whose writeback has completed
-> + * @fbatch: batch of folios to free, flushed when full
-> + */
-> +static void swap_dropbehind_free_batch_folio(struct folio *folio,
-> +                                            struct folio_batch *fbatch)
-> +{
-> +       if (swap_dropbehind_drop_folio(folio) && !folio_batch_add(fbatch,=
- folio))
-> +               folios_put(fbatch);
-> +}
-> +
-> +static void swap_dropbehind_workfn(struct work_struct *work)
-> +{
-> +       struct folio_batch fbatch;
-> +       struct llist_node *pos, *next;
-> +       int cpu;
-> +
-> +       folio_batch_init(&fbatch);
-> +       for_each_possible_cpu(cpu) {
-> +               pos =3D llist_del_all(per_cpu_ptr(&swap_dropbehind_llist,=
- cpu));
-> +               llist_for_each_safe(pos, next, pos) {
-> +                       struct folio *folio =3D container_of((struct list=
-_head *)pos,
-> +                                                          struct folio, =
-lru);
-> +                       swap_dropbehind_free_batch_folio(folio, &fbatch);
-> +               }
-> +       }
-> +       if (fbatch.nr)
-> +               folios_put(&fbatch);
-> +}
-> +
-> +static DECLARE_WORK(swap_dropbehind_work, swap_dropbehind_workfn);
-> +static struct workqueue_struct *swap_dropbehind_wq;
-> +
-> +void swap_writeback_dropbehind_folio(struct folio *folio)
-> +{
-> +       llist_add((struct llist_node *)&folio->lru,
-> +                 raw_cpu_ptr(&swap_dropbehind_llist));
-> +       queue_work(swap_dropbehind_wq, &swap_dropbehind_work);
-> +}
-> +
-
-This is good. For file dropbehind, I see both F2FS [1] and block
-devices [2] reinventing workqueues in their own filesystems or
-drivers, while folio_end_dropbehind() simply benefits from its safe,
-sleepable context. This seems a bit odd.
-
-So I'm really curious whether this could be extended to file-backed
-folios as well, so that those filesystems and device drivers don't
-have to deal with this themselves.
-
-[1] https://lore.kernel.org/all/20260820071438.695893-1-qiwenjie@xiaomi.com=
-/
-[2] https://lore.kernel.org/all/20260730-blk-dontcache-v7-2-3e8e6850068d@co=
-lumbia.edu/
+在 2026/7/21 15:58:34, Youngjun Park 写道:
+> On Mon, Jul 20, 2026 at 03:13:42PM +0800, Kemeng Shi wrote:
+>> Since commit 0475fde0f68de ("mm, swap: avoid leaving unused extend table
+>> after alloc race"), extend table is always allocated when any swap count
+> 
+> Looks like this? 395085eacdfa
+> 
+>> reach MAX - 1 and is always freed when swap count decrease to MAX - 1
+>> or MAX - 2 with cluster lock held. So the extend table will always be
+>> freed properly when decrease swap count in __swap_cluster_put_entry().
+>> So swap_extend_table_try_free() outside of __swap_cluster_put_entry()
+>> is unneeded and can be removed.
+>>
+>> Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+>> ---
+>>  mm/swapfile.c | 1 -
+>>  1 file changed, 1 deletion(-)
+>>
+>> diff --git a/mm/swapfile.c b/mm/swapfile.c
+>> index 3fcbd10c6353..fc9f16bc2e4e 100644
+>> --- a/mm/swapfile.c
+>> +++ b/mm/swapfile.c
+>> @@ -1732,7 +1732,6 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
+>>  failed:
+>>  	while (ci_off-- > ci_start)
+>>  		__swap_cluster_put_entry(ci, ci_off);
+> 
+> Right, it handles duplicate here.
+> 
+>> -	swap_extend_table_try_free(ci);
+>>  	swap_cluster_unlock(ci);
+>>  	return err;
+>>  }
+>> -- 
+>> 2.36.1
+> 
+> However, looking at this part, since swap_extend_table_alloc() uses
+> GFP_ATOMIC, I think it could be further improved by not releasing the ci
+> lock.
+> 
+> This would also clarify the situation where scount becomes MAX - 2.
+> But there seem to be some drawbacks. For instance, the original intention
+> might have been to make the swap_extend_table_alloc() API work seamlessly
+> for both sleepable and unsleepable contexts, and some implementation details
+> might not look as clean.
+> 
+> Here is what I was thinking:
+> ...
+>         err = __swap_cluster_dup_entry(ci, ci_off);
+>         /* <- Could -ENOMEM handling be improved here? */
+>         if (unlikely(err)) {
+>                 if (err == -ENOMEM) {
+>                         spin_unlock(&ci->lock);
+>                         /* <- Change to NOT release the lock, and make
+>                          * swap_extend_table_alloc aware of it with
+>                          * GFP_ATOMIC(aware cluster locked) */
+>                         err = swap_extend_table_alloc(si, ci, ci_off,
+>                                                       GFP_ATOMIC);
+>                         spin_lock(&ci->lock);
+>                         if (!err)
+>                                 goto restart;
+> 
+> Just sharing my thoughts! (Wondering if this could be a good direction for
+> further improvement?)
+Hello Youngjun,
+Sorry for the late. I agree we can clarify the situation where scount becomes
+MAX - 2 in this way and I also agree some implementation details might not
+look as clean. So I would keep this change to make thing simple :).
 
 Thanks
-Barry
+Kemeng> 
+> The current modification looks good enough to me.
+> 
+> Reviewed-by: Youngjun Park <youngjun.park.lge.com>
+> 
+> Youngjun
+
 
