@@ -4,108 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACAE5C5DF86
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 19:19:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA4C3C5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 19:33:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CAEA6B009D; Thu, 20 Aug 2026 15:19:09 -0400 (EDT)
+	id CA2DC6B008C; Thu, 20 Aug 2026 15:33:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77BFA6B009F; Thu, 20 Aug 2026 15:19:09 -0400 (EDT)
+	id C7A276B0092; Thu, 20 Aug 2026 15:33:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F6C96B00A1; Thu, 20 Aug 2026 15:19:09 -0400 (EDT)
+	id BB72E6B0095; Thu, 20 Aug 2026 15:33:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 34DC06B009D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 15:19:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E114801E8
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:19:08 +0000 (UTC)
-X-FDA: 85122610776.11.D6B6BBC
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C3E56100004
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:19:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YsYMGmRE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3KVOHaggKCEg2urk6ktkqyyqvo.mywvsx47-wwu5kmu.y1q@flex--skhawaja.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3KVOHaggKCEg2urk6ktkqyyqvo.mywvsx47-wwu5kmu.y1q@flex--skhawaja.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F1D96B008C
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 15:33:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12022C0295
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:33:56 +0000 (UTC)
+X-FDA: 85122648072.21.6884054
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7B2B2A0009
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:33:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ci/czsF4";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787253546;
+	s=arc-20220608; t=1787254433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fQ+SSW2xYaWYPCjZNKHlYzGG7Cn/26PBkUG+IbsFEFI=;
-	b=BZ5vUdEr8N7UyCfLmVzjLA9IFaPMhB87rR5ZWkf194fu1eYb3X9hifebUWqGMkg7bq4hbY
-	Q8DJaZACXipirYAoCfdJGUjkgPVDW0MurOw4Kx7qjQSKqcK6bxwW7asZKqeTTx15mbF1bD
-	vwqzE3yKbktSQnoRVR0UcJjiveV0T4c=
+	bh=fs0htD/cjU9OCu4C2Kg80p/TbNt8/mTbG6p2Ku/lBdI=;
+	b=ljyrQdb9s5+a2Btp9b4+BjLjX+sjujdg8wUk5bXLYqtFK3Z25caGe/CdqlTWW116H6gd0h
+	j6Ws3NTPYKaiJHQmgi0t16NBhjXByswKrGVH5kk9mb+APppbxHICPIiiFX9IIZWtrAy77n
+	KBB0oVAukd/YNWbj4NhQl+uedAdyUA4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YsYMGmRE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3KVOHaggKCEg2urk6ktkqyyqvo.mywvsx47-wwu5kmu.y1q@flex--skhawaja.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3KVOHaggKCEg2urk6ktkqyyqvo.mywvsx47-wwu5kmu.y1q@flex--skhawaja.bounces.google.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ci/czsF4";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787253546;
-	b=IwLtPtMKnLK3/IwNqc0oWIrJoLY+52bXTQuW+SLMht3BJUkj8Vi5sw5sK1qbBWAudT60aI
-	xdgZ85/y4sVoo779sSkQogKxM/Kxb//JBHmtyDzb4EgqOhpBxsUzVzh1P01VlX72oiiqRh
-	mZo+alwhjiL7RI/DLx1yuM9W7Q62SPI=
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbe77d6864dso338909a12.2
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 12:19:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787253545; x=1787858345; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fQ+SSW2xYaWYPCjZNKHlYzGG7Cn/26PBkUG+IbsFEFI=;
-        b=YsYMGmREXYpa47hclSZvpC5S3ebxTSBixHuOIA+YmS9nJ2kSZLlAv/k7QCQ7IMw5wo
-         usXjf7qVHMhfBea20GuS8V0nkKsqBesRIAYRT7cQ/XU73D+6QiJBVCE/kl1IbaHSpUCy
-         NnMZCPWYT2LmGlXFLD1DYOjLitCzxTf12D6dOfWs1TrMGGDkCad1Hknb0iSvnv5gb8xu
-         /HETIpTtyGBFG4kOTQrSZbYcd3M3a3+qZKw3JJhFzmCCvAsSUl9Hjw42iV/t1X+3MB/B
-         nwdlLDgw7o+hlgd7rkL9CvJXZLc7xHmrVaEY323hPJPiuiJHwTxiQjG8fZJP8ZT9N0hR
-         D9Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787253545; x=1787858345;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fQ+SSW2xYaWYPCjZNKHlYzGG7Cn/26PBkUG+IbsFEFI=;
-        b=lzw23j/zLHL9UUVZhdrcZ2mt9Ya3LFBI7Hyloj0//z/aeZR/f4LeMgVWRuu8g+bgui
-         DKji/8uN/OTdKzlgneY/d1mwfnpaGqc3aUuothns3u9avXSmM3Wz1AHjmyQoLH9d4lcM
-         XCBII+WSr7QGg4xpr/pjYyZnbPP7WG/be6sLR7seH/U8sMwTQa2+zTjiqDsk4KdKVmrm
-         6EgQQnPY0TxTRfcK8xWN5smUgDRxVdtORXb4doAofEL1jvwdj4G7iSd5+t+3GFuGHLmB
-         dhR6vtwNOlkpnpKeCsi2f/3zEaf0aUcyNnmDxUgM76f4pc2spLSSRPEpaQieHCJsrvKL
-         NZ1w==
-X-Forwarded-Encrypted: i=1; AHgh+RpScgPTb8oiekm/G5cOVFNqL3p33nAiDa2bE/lN58UpBrpJx9tsVGAsx3p8rLae8mOGhcD5kywUuw==@kvack.org
-X-Gm-Message-State: AOJu0Yyuhwv/ofTBGNBZpyHnV3yevAhm9zm3qPiDAP9gLtp4h+Sc3DIa
-	9dOTgdA2WRUbt/TrLohGJT91pzFT3LYWLWZUKfWB4rDIZVVzjFKAfKycLMSbP+Jpdyh+LBRLVfE
-	Vk2mlmMvSenBrvg==
-X-Received: from pgsb12.prod.google.com ([2002:a65:67cc:0:b0:cc1:4df5:5acb])
- (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:4516:b0:3b2:a809:ffe with SMTP id adf61e73a8af0-3cd300901e1mr1395552637.14.1787253545341;
- Thu, 20 Aug 2026 12:19:05 -0700 (PDT)
-Date: Thu, 20 Aug 2026 19:18:54 +0000
-In-Reply-To: <20260820191854.1642931-1-skhawaja@google.com>
-Mime-Version: 1.0
-References: <20260820191854.1642931-1-skhawaja@google.com>
-X-Mailer: git-send-email 2.55.0.766.g2966f0265a-goog
-Message-ID: <20260820191854.1642931-2-skhawaja@google.com>
-Subject: [PATCH v3 1/1] liveupdate: luo_file: Add internal APIs for file preservation
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: Pranjal Shrivastava <praan@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	David Matlack <dmatlack@google.com>, tarunsahu@google.com, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
-	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: C3E56100004
-X-Stat-Signature: aqfq9hfoby4gjhhst9xrfq7n89f47as3
+	t=1787254433;
+	b=asdoKMM4+ufuqdn4Oo4mVy53ojqzvVe4Sn6kZp2gLR8gVBNZlYOZk3iIhTjixWBOKYzoS8
+	x2DlRHoDtiM21bFHvP6jaz/cz9CiZ84r5O0vtXXprx6MB9clu+Mdn89wVsP9k9oeIEy8tD
+	dqLLsRL+QCnPcA69p3Yu9eLlaN471Qo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=fs0htD/cjU9OCu4C2Kg80p/TbNt8/mTbG6p2Ku/lBdI=; b=ci/czsF4/zM1GNnaf9XI2rrb85
+	zzjZAV2v4GTFkP1N4XCj1DpxbCJjSEvQ/M2ZQy1eO1/lU1o+tZngjUMJz0YSlUA2Xou0jPXfa5TLK
+	wBex/0pkUn3IFVsl4Vc0aFxnOElaJemGvFvUf56KowyPrEnj9OfROaE150VqiEWoe4KUuu7sZ187D
+	Thd8UR61BfasYAqAQ7I26DSCPfQ8fCFTT/ip0VAyM64bNb4jvh0+6BpVJZVa0pryEYMZeHYkycasx
+	UcVgoQAjcUDBhn4cIOHxrH/u1M6owTxLlCEoRxQfvRC0vg2wg7qWNfo+sAUsdLyL+2zpjdivzJCWg
+	N5YvhS2A==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wx8WG-0000000GALd-459O;
+	Thu, 20 Aug 2026 19:33:44 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-block@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
+	fuse-devel@lists.linux.dev,
+	linux-nfs@vger.kernel.org,
+	devel@lists.orangefs.org,
+	Pavel Begunkov <asml.silence@gmail.com>
+Subject: [PATCH 3/7] btrfs: Use filemap_invalidate_pages()
+Date: Thu, 20 Aug 2026 20:33:36 +0100
+Message-ID: <20260820193343.3852967-4-willy@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260820193343.3852967-1-willy@infradead.org>
+References: <20260820193343.3852967-1-willy@infradead.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7B2B2A0009
+X-Stat-Signature: 6staf51w84736zcr5ikiard9bqtriie6
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1787253546-357877
-X-HE-Meta: U2FsdGVkX1+fetrO7aM9vby0KdopIT38dIIq43kffXtCyb18WgMOdStpyOtgTcQ56B6CSNvjXVMzkhb8Z6ykzKlUNWoxWCSBtqXQI54zRLvm+gjdWe0TziP0ciZaB0KUitj3aoJNbZaRRKm/cxnr4XbFYguwJsfTDlC7AYfivUXI8ptbiQl5REm0Cs9Scj13JgVxpSYHaMbsF42TNzcDpUqWKF3CphUrCTMg8S3WQQU3UOwgLBVtTvk8XFD4NDYH0OG7JYaX+14XiamGL9WjQ3t2HmmHoOrPubHZSnoBp/AAXFID/DVsiml9veWupPacMvu6L31QKlwVH/5Ss9HASgBt37rrMjdG34GPmcCf7rb2yAbTkJi/tglH248FvSYgVpG99QHBIsjrpPtE3Q3CyX3+6Lnz/HqHHUTPjHgrgXm+wkZku9gQ2BJZNb5LAQzjDMUewsZQ7X0Kr7taWUW9jOdSu+Qfl1UMFdn7RTQFIxrA8tH1CTNy0jLtRcmcqUbrhepn9Dc6TXgfKSBM5MAB+mGpgIavoSqSBtZtyMekvYpLxzaTSF0qZBjNspFmuHBkoLFzAFwLkqq8vjvfDsRk6jb0sOJ2D4RdGyPiyhhJQ9VtFUjl67U5s8eamztEQRg1qHrGJIUaNBRD+fsrW3N4DY14xswFPRrnpdM6GaGEEI3hAeYJzovPwehttZrC2d3RMqY5ENheMh5bBLpp+W2FvbIjJJi2w0M8m+dOp4DhdH7FBWJAhRIdXUI6KFrDFEVcP8zEQpHp9tr/x4fN4IKnPZOyjb6APb0M1rE4FxkEoppnSbTqFly/5DxP4Vh6l+FLok2Loh8I88K0qLrjDI97n8duTRMgJoplh7NCPoZnMmeVwf73JpG0KErqcMmQMBTQ7umCN+3EmhFWZbpyCKW5ehGYOneETySz1VAIkM98uNQw6DX64f+22Rc4JE7WjdGLL4aDobaBk9bI2ktnU/P
- MdwFQNZX
- bt42b/6KXMRlWVr4YJUg/to+tFmUjB+h+k2AvkqvwZoJz7woQjb3KHem36oturLOPBBK/dkA2oH8+70S0JqVlwt02GhuLSZhU3m+NS4a+U7JVuNgOmd9OgcL7SdQlBWSfuvGHnKmpHPyKXSstdX7I/JlnIzCgLRjWmSqt7oTENh3ouUWqAAa2WAHF4Ji2ojAZu/t/qjD5ni9HaHuTHl3pqqpsyoQQ6mUrURohPBucvmoJtu1ShKUuG/7dXJXTrYThIm2Sr8j2UHz2WWciO6PPnTbVwcU+M9CK2jygijDw6yUTJ/2fo4y618q72DQSKAe3Q6irrAxsapJ7oy1OhvTBgnxoQ4bXbHAP8tbnv7P1TTmp4V3cENmwdnL3TqpUeZUoGBSRE+2d0vdOYNLCbmRdBsWfpzDMsJO5aVaU+mSz4K46r5qC9jKxhMQcG4HHRGCaHGL0PT1LAY22jN40wNjpMQlAqrhTG//yCx/tBLgSCGslUY0cwJiAcXoyWedNKCe8LIHN/3ipr2R/Avxjcgn2n4FPyH/Uf6dbMG88lPw/0IrrEMphdUDX0RhgrJ9LBVpYLNAZOZoc+RWUyzzubGRRaAWj72OVm31Igd56SfsUA1OpwlJmrMm2Moh5mXTLsvZ6Uw8JMRjlUnc0BSg/TQ3RwRLIT8wCSFpnqw8YHA6G7fgFITxhFgpOTQvR2eimI7cpej2y
+X-HE-Tag: 1787254433-390573
+X-HE-Meta: U2FsdGVkX18IVN0gJ5i5hOF05GlgXlcUUvUfofdYlttaOf2AcBSfw40zr0zo+wB+1EhfvWyXe9+XvW5DW73gWodGWaF4YW1nAuIp1ORX+HWN+V9dlgB3Z8qcthuY9jEfwCprfEk5sXVjQeIGLwvqfNb+ie2Du1QlQQL8uIZJBdHdElvSuxG6CmNrFtn7wE95R93o24N79+WUK3Y+xtBvinhBX1O0H0qpovN6sWF7BeWKhwjTntbDSnFuikduuoq8G7wqHB8O4not4Gjwk97GP3lSnWj0p/HxJUX4K59v9vl7hCKA1tqVfnNZT2YMGsYFCpw7nWoIg6OCZi095bWE67IoT88ETpmavhuZhGWSemFXtH9egDkpEKb7DY5v9CkUaZkDtE8xxqXBRddEn5NTPzb49nqH/63Xp78+hBqneOhBKDtmukLbWp9nRpCgr1zo9T60uONbJn83LIp/xUJUGYVVPpOgTgy0WUPCSJhZOIw4PdaN61ytj1W1CGyaPBHw4eDWbhNSPKOHOCATacTjuSahGfw5lTuZel23L15IOTKIKKqXFKvwLGqC2iFzq7Ahi8YwqZNNtpDBC1AbrckZa8tNk74EqvVbSXTKCNUE1ObiFnnUk0eX7bMBWbnJKc1JUjH59GeAGx4rZ/EpfrnodanihEQO/9kKstbnohwdzbXnQl1YC3C2rJjL/GExOBJcIttbs8f1WhLExUKnVAwq6mBd8KvI0uSeeT+un7qZ3Vbfj7wKEZ8W+tdsxg4xO+rjPz2bS1vdVqc8mcaAOp/u8fciul3U3tAI/LM0+C+8xbKX6LUU63RFhyaAfaMRtGod9nujdZtES9EJkRhrsi5OrAEMhxPDi+FkjOMgGRskTsd+AfuMxCoHBS+CFXDi86myruBUFs+WPBOgst2WEM7VFLqGuGdcUFvf0SkoLh6WlJvcIzZry+/AsZ71xMpZhm1Smh1PC8gfAFKvCJdTAKd
+ f/5j6EjS
+ MWH9V6d3ZHAtMqAoFWROR6nfB/SFaN5W85ORSCi0zcAMA3XgxtVBX+nI29lNMzshCel+L7TKGLEifR2VUSG/rhOz+7EvsdhKOXaymJkGhuuJVeVOCuvkAjRG0DVw6uCqZ3jHPJ4GwZqONW1lNJcHCxb1lOV1iN53yRtn3S2ok7GPd73l2yuCW0I9WO9kinILrnQ5pZD2HgPCpDNSBloen0s3zDsUKfNTZZBnZSct9YGKK2kC1GhWo0tdlQ4Cop5ezQvgzHU4dGDNeyr2v0BaRaj+X/e7VMwkwerDvaZayON/XDT6ELUB4uMfCDdNGWvmOBAN4ylRVZfRZs0y1K6zVzAmyD7UNPDWmhfjkUztL4nE0TJGcy/+H4s+hvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,256 +104,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
+btrfs relies on invalidate_inode_pages2() /
+invalidate_inode_pages2_range() doing writeback by calling
+btrfs_launder_folio().  While this works, it is inefficient as each
+folio is written back and waited for individually.  Far better to call
+filemap_invalidate_pages() which will do a bulk write first, then remove
+the page cache.
 
-Live update orchestrator file handlers depend on the preservation of
-other files. To make sure that the dependency is preserved, the file
-handlers needs to fetch the preservation token of the preserved
-dependency. Similarly during restore, a file handler wants to fetch the
-restored file of the dependency.
+With this done, btrfs_launder_folio() no longer needs to exist so
+delete it.
 
-Add APIs that allows fetching token of dependency during preservation,
-and fetching the restored file dependency during restore.
-
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- include/linux/liveupdate.h       | 22 +++++++++
- kernel/liveupdate/luo_file.c     | 84 ++++++++++++++++++++++++++++++++
- kernel/liveupdate/luo_internal.h | 17 +++++++
- 3 files changed, 123 insertions(+)
+ fs/btrfs/direct-io.c        |  2 +-
+ fs/btrfs/disk-io.c          | 11 +++++++----
+ fs/btrfs/free-space-cache.c |  4 ++--
+ fs/btrfs/inode.c            | 12 ++----------
+ fs/btrfs/volumes.c          |  4 ++--
+ 5 files changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index 63ea5417de84..6051abc0612c 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -25,6 +25,7 @@ struct file;
- /**
-  * struct liveupdate_file_op_args - Arguments for file operation callbacks.
-  * @handler:          The file handler being called.
-+ * @session:          The session this file belongs to.
-  * @retrieve_status:  The retrieve status for the 'can_finish / finish'
-  *                    operation. A value of 0 means the retrieve has not been
-  *                    attempted, a positive value means the retrieve was
-@@ -45,6 +46,7 @@ struct file;
-  */
- struct liveupdate_file_op_args {
- 	struct liveupdate_file_handler *handler;
-+	struct liveupdate_session *session;
- 	int retrieve_status;
- 	struct file *file;
- 	u64 serialized_data;
-@@ -247,6 +249,14 @@ void liveupdate_flb_put_incoming(struct liveupdate_flb *flb);
- int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp);
- void liveupdate_flb_put_outgoing(struct liveupdate_flb *flb);
+diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
+index 460326d34143..4bb5890d0898 100644
+--- a/fs/btrfs/direct-io.c
++++ b/fs/btrfs/direct-io.c
+@@ -115,7 +115,7 @@ static int lock_extent_direct(struct inode *inode, u64 lockstart, u64 lockend,
+ 			/*
+ 			 * We could trigger writeback for this range (and wait
+ 			 * for it to complete) and then invalidate the pages for
+-			 * this range (through invalidate_inode_pages2_range()),
++			 * this range (through filemap_invalidate_pages()),
+ 			 * but that can lead us to a deadlock with a concurrent
+ 			 * call to readahead (a buffered read or a defrag call
+ 			 * triggered a readahead) on a page lock due to an
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 2f1666d9544e..2cf9189225c9 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -3304,7 +3304,8 @@ static void invalidate_and_check_btree_folios(struct btrfs_fs_info *fs_info)
+ 	struct extent_buffer *eb;
+ 	int ret;
  
-+/* kernel can internally retrieve files */
-+int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
-+				 struct file **filep);
-+
-+/* Get a token for an outgoing file, or -ENOENT if file is not preserved */
-+int liveupdate_get_token_outgoing(struct liveupdate_session *s,
-+				  struct file *file, u64 *tokenp);
-+
- #else /* CONFIG_LIVEUPDATE */
+-	ret = invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
++	ret = filemap_invalidate_pages(fs_info->btree_inode->i_mapping, 0,
++			OFFSET_MAX);
+ 	if (likely(ret == 0))
+ 		return;
  
- static inline bool liveupdate_enabled(void)
-@@ -299,5 +309,17 @@ static inline void liveupdate_flb_put_outgoing(struct liveupdate_flb *flb)
- {
+@@ -3339,7 +3340,8 @@ static void invalidate_and_check_btree_folios(struct btrfs_fs_info *fs_info)
+ 		rcu_read_lock();
+ 	}
+ 	rcu_read_unlock();
+-	invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
++	filemap_invalidate_pages(fs_info->btree_inode->i_mapping, 0,
++			OFFSET_MAX);
  }
  
-+static inline int liveupdate_get_file_incoming(struct liveupdate_session *s,
-+					       u64 token, struct file **filep)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int liveupdate_get_token_outgoing(struct liveupdate_session *s,
-+						struct file *file, u64 *tokenp)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- #endif /* CONFIG_LIVEUPDATE */
- #endif /* _LINUX_LIVEUPDATE_H */
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index c39f96961a85..0a4994377c98 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -91,6 +91,21 @@
-  *    again later. If the issue cannot be resolved, these resources will be held
-  *    by LUO until the next live update cycle, at which point they will be
-  *    discarded.
-+ *
-+ * Dependencies:
-+ *
-+ * Preserved files may have dependencies on other files that also need to be
-+ * preserved during a live update. A file handler can resolve these dependencies
-+ * by querying the token of the dependency. That token can then be serialized
-+ * and used to fetch the dependency during the retrieve() callback in the next
-+ * kernel.
-+ *
-+ * Some of these dependencies can be resolved late during File Handler freeze()
-+ * callback, but some of these might need resolution during File Handler
-+ * preserve() callback based on the constraints such as immutability and
-+ * performance. This introduces an order of preservation. Note that the order of
-+ * preservation of dependencies can be safely relaxed later, but it cannot be
-+ * enforced later.
-  */
+ static u32 calc_block_max_order(u32 sectorsize_bits)
+@@ -4739,7 +4741,8 @@ static void btrfs_destroy_delalloc_inodes(struct btrfs_root *root)
+ 			unsigned int nofs_flag;
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -284,6 +299,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
- 	mutex_init(&luo_file->mutex);
+ 			nofs_flag = memalloc_nofs_save();
+-			invalidate_inode_pages2(inode->i_mapping);
++			filemap_invalidate_pages(inode->i_mapping, 0,
++					OFFSET_MAX);
+ 			memalloc_nofs_restore(nofs_flag);
+ 			iput(inode);
+ 		}
+@@ -4837,7 +4840,7 @@ static void btrfs_cleanup_bg_io(struct btrfs_block_group *cache)
+ 		unsigned int nofs_flag;
  
- 	args.handler = fh;
-+	args.session = luo_session_from_file_set(file_set);
- 	args.file = file;
- 	err = fh->ops->preserve(&args);
- 	if (err)
-@@ -341,6 +357,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
- 					   struct luo_file, list);
+ 		nofs_flag = memalloc_nofs_save();
+-		invalidate_inode_pages2(inode->i_mapping);
++		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
+ 		memalloc_nofs_restore(nofs_flag);
  
- 		args.handler = luo_file->fh;
-+		args.session = luo_session_from_file_set(file_set);
- 		args.file = luo_file->file;
- 		args.serialized_data = luo_file->serialized_data;
- 		args.private_data = luo_file->private_data;
-@@ -374,6 +391,7 @@ static int luo_file_freeze_one(struct luo_file_set *file_set,
- 		struct liveupdate_file_op_args args = {0};
+ 		BTRFS_I(inode)->generation = 0;
+diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
+index e2af75a205ea..a5d5eba2c85d 100644
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -1307,7 +1307,7 @@ static int __btrfs_wait_cache_io(struct btrfs_root *root,
+ 				io_ctl->entries, io_ctl->bitmaps);
+ out:
+ 	if (ret) {
+-		invalidate_inode_pages2(inode->i_mapping);
++		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
+ 		BTRFS_I(inode)->generation = 0;
+ 		if (block_group)
+ 			btrfs_debug(root->fs_info,
+@@ -1500,7 +1500,7 @@ static int __btrfs_write_out_cache(struct inode *inode,
+ 	io_ctl->inode = NULL;
+ 	io_ctl_free(io_ctl);
+ 	if (ret) {
+-		invalidate_inode_pages2(inode->i_mapping);
++		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
+ 		BTRFS_I(inode)->generation = 0;
+ 	}
+ 	btrfs_update_inode(trans, BTRFS_I(inode));
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 2534cd9284d5..a1bb73f083aa 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -7616,12 +7616,6 @@ static void wait_subpage_spinlock(struct folio *folio)
+ 	spin_unlock_irq(&bfs->lock);
+ }
  
- 		args.handler = luo_file->fh;
-+		args.session = luo_session_from_file_set(file_set);
- 		args.file = luo_file->file;
- 		args.serialized_data = luo_file->serialized_data;
- 		args.private_data = luo_file->private_data;
-@@ -395,6 +413,7 @@ static void luo_file_unfreeze_one(struct luo_file_set *file_set,
- 		struct liveupdate_file_op_args args = {0};
- 
- 		args.handler = luo_file->fh;
-+		args.session = luo_session_from_file_set(file_set);
- 		args.file = luo_file->file;
- 		args.serialized_data = luo_file->serialized_data;
- 		args.private_data = luo_file->private_data;
-@@ -587,6 +606,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+-static int btrfs_launder_folio(struct folio *folio)
+-{
+-	return btrfs_qgroup_free_data(folio_to_inode(folio), NULL, folio_pos(folio),
+-				      folio_size(folio), NULL);
+-}
+-
+ static bool __btrfs_release_folio(struct folio *folio, gfp_t gfp_flags)
+ {
+ 	if (try_release_extent_mapping(folio, gfp_flags)) {
+@@ -10027,9 +10021,8 @@ ssize_t btrfs_do_encoded_write(struct kiocb *iocb, struct iov_iter *from,
+ 		ret = btrfs_wait_ordered_range(inode, start, num_bytes);
+ 		if (ret)
+ 			goto out_cb;
+-		ret = invalidate_inode_pages2_range(inode->vfs_inode.i_mapping,
+-						    start >> PAGE_SHIFT,
+-						    end >> PAGE_SHIFT);
++		ret = filemap_invalidate_pages(inode->vfs_inode.i_mapping,
++				start, end);
+ 		if (ret)
+ 			goto out_cb;
+ 		btrfs_lock_extent(io_tree, start, end, &cached_state);
+@@ -10782,7 +10775,6 @@ static const struct address_space_operations btrfs_aops = {
+ 	.writepages	= btrfs_writepages,
+ 	.readahead	= btrfs_readahead,
+ 	.invalidate_folio = btrfs_invalidate_folio,
+-	.launder_folio	= btrfs_launder_folio,
+ 	.release_folio	= btrfs_release_folio,
+ 	.migrate_folio	= btrfs_migrate_folio,
+ 	.dirty_folio	= btrfs_data_dirty_folio,
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 6eab4cc73ce4..0301465ab87f 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1370,8 +1370,8 @@ struct btrfs_super_block *btrfs_read_disk_super(struct block_device *bdev,
+ 		 * Drop the page of the primary superblock, so later read will
+ 		 * always read from the device.
+ 		 */
+-		invalidate_inode_pages2_range(mapping, bytenr >> PAGE_SHIFT,
+-				      (bytenr + BTRFS_SUPER_INFO_SIZE) >> PAGE_SHIFT);
++		filemap_invalidate_pages(mapping, bytenr,
++				bytenr + BTRFS_SUPER_INFO_SIZE - 1);
  	}
  
- 	args.handler = luo_file->fh;
-+	args.session = luo_session_from_file_set(file_set);
- 	args.serialized_data = luo_file->serialized_data;
- 	err = luo_file->fh->ops->retrieve(&args);
- 	if (err) {
-@@ -620,6 +640,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
- 		struct liveupdate_file_op_args args = {0};
- 
- 		args.handler = luo_file->fh;
-+		args.session = luo_session_from_file_set(file_set);
- 		args.file = luo_file->file;
- 		args.serialized_data = luo_file->serialized_data;
- 		args.retrieve_status = luo_file->retrieve_status;
-@@ -637,6 +658,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
- 	guard(mutex)(&luo_file->mutex);
- 
- 	args.handler = luo_file->fh;
-+	args.session = luo_session_from_file_set(file_set);
- 	args.file = luo_file->file;
- 	args.serialized_data = luo_file->serialized_data;
- 	args.retrieve_status = luo_file->retrieve_status;
-@@ -926,3 +948,65 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
- 	luo_flb_unregister_all(fh);
- 	list_del(&ACCESS_PRIVATE(fh, list));
- }
-+
-+/**
-+ * liveupdate_get_token_outgoing - Get the token for a preserved file.
-+ * @s:      The outgoing liveupdate session.
-+ * @file:   The file object to search for.
-+ * @tokenp: Output parameter for the found token.
-+ *
-+ * Searches the list of preserved files in an outgoing session for a matching
-+ * file object. If found, the corresponding user-provided token is returned.
-+ *
-+ * This function is intended for in-kernel callers that need to correlate a
-+ * file with its liveupdate token.
-+ *
-+ * Context: It must be called with session mutex acquired.
-+ * Return: 0 on success, -ENOENT if the file is not preserved in this session.
-+ */
-+int liveupdate_get_token_outgoing(struct liveupdate_session *s,
-+				  struct file *file, u64 *tokenp)
-+{
-+	struct luo_file_set *file_set = luo_file_set_from_session_locked(s);
-+	struct luo_file *luo_file;
-+	int err = -ENOENT;
-+
-+	list_for_each_entry(luo_file, &file_set->files_list, list) {
-+		if (luo_file->file == file) {
-+			if (tokenp)
-+				*tokenp = luo_file->token;
-+			err = 0;
-+			break;
-+		}
-+	}
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(liveupdate_get_token_outgoing);
-+
-+/**
-+ * liveupdate_get_file_incoming - Retrieves a preserved file for in-kernel use.
-+ * @s:      The incoming liveupdate session (restored from the previous kernel).
-+ * @token:  The unique token identifying the file to retrieve.
-+ * @filep:  On success, this will be populated with a pointer to the retrieved
-+ *          'struct file'.
-+ *
-+ * Provides a kernel-internal API for other subsystems to retrieve their
-+ * preserved files after a live update. This function is a simple wrapper
-+ * around luo_retrieve_file(), allowing callers to find a file by its token.
-+ *
-+ * The caller receives a new reference to the file and must call fput() when it
-+ * is no longer needed. The file's lifetime is managed by LUO and any userspace
-+ * file descriptors.
-+ *
-+ * Context: It must be called with session mutex acquired of a restored session.
-+ * Return: 0 on success. Returns -ENOENT if no file with the matching token is
-+ *         found, or any other negative errno on failure.
-+ */
-+int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
-+				 struct file **filep)
-+{
-+	return luo_retrieve_file(luo_file_set_from_session_locked(s),
-+				 token, filep);
-+}
-+EXPORT_SYMBOL_GPL(liveupdate_get_file_incoming);
-diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-index 64879ffe7378..dac6644bfb18 100644
---- a/kernel/liveupdate/luo_internal.h
-+++ b/kernel/liveupdate/luo_internal.h
-@@ -77,6 +77,23 @@ struct luo_session {
- 
- extern struct rw_semaphore luo_register_rwlock;
- 
-+static inline struct liveupdate_session *luo_session_from_file_set(struct luo_file_set *file_set)
-+{
-+	struct luo_session *session;
-+
-+	session = container_of(file_set, struct luo_session, file_set);
-+
-+	return (struct liveupdate_session *)session;
-+}
-+
-+static inline struct luo_file_set *luo_file_set_from_session_locked(struct liveupdate_session *s)
-+{
-+	struct luo_session *session = (struct luo_session *)s;
-+
-+	lockdep_assert_held(&session->mutex);
-+	return &session->file_set;
-+}
-+
- int luo_session_create(const char *name, struct file **filep);
- int luo_session_retrieve(const char *name, struct file **filep);
- void __init luo_session_setup_outgoing(u64 *sessions_pa);
+ 	filemap_invalidate_lock_shared(mapping);
 -- 
-2.55.0.766.g2966f0265a-goog
+2.47.3
 
 
