@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1882C5DF85
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 17:19:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A56CC5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 17:22:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0AC96B008C; Thu, 20 Aug 2026 13:19:07 -0400 (EDT)
+	id 93EE26B00A0; Thu, 20 Aug 2026 13:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBABC6B0092; Thu, 20 Aug 2026 13:19:07 -0400 (EDT)
+	id 8EFB66B00A1; Thu, 20 Aug 2026 13:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA99A6B009D; Thu, 20 Aug 2026 13:19:07 -0400 (EDT)
+	id 7DDB66B00A2; Thu, 20 Aug 2026 13:22:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 929FD6B008C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:19:07 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 29DEA120229
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:19:07 +0000 (UTC)
-X-FDA: 85122308334.15.71CE81E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52ECE6B00A0
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:22:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CFEC216023E
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:22:13 +0000 (UTC)
+X-FDA: 85122316146.07.ADBFD79
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6CB6C18000A
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:19:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ec3fONJw;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2ACC61A0007
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 17:22:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dmt9pdtA;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787246345;
-	b=JEGryogtV7kIBIM007pYREIhnTgQaSFJkXqhjpseVqgu9vko4EkjV/tCaxhjeVi3CqnB1A
-	AeaoVx0uTk/7U5/bAu6Ki5FA0qGNEFIZXW574unQQgHh/uuFZF5KwbGSQ1TJUqM7nFojIn
-	xkeynf0mjnsl5YqKTZD0UERU9jl9H7w=
+	t=1787246532;
+	b=wPiw0Xz7brHyMjDd51Kc/fN7sxWj8rxYj3rDlJRoW6s6eB8HIispGNodDbHjwaBVhxBypm
+	zJVViAVrT2vdLWzUoQd//xh7s6MG2Tplzx7dG7afUdsPRpmKgFj45csLV6zs5Uk19QQmhe
+	+H5tRD7RuhMdQif+4WlRbbiBQETpqfY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ec3fONJw;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dmt9pdtA;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787246345;
+	s=arc-20220608; t=1787246532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RGtQru3vrltqhttbaN2XzlN72mBtebjrTVHBY8xSB1Q=;
-	b=SzZlSA+vd7+91w3BIHcZx5M3RvqOUiTIXmMzFw+wPKg774wiJfMR+pQSBOOr8qO9SZT6VP
-	nh6nyeTPTkeFb2QOTmxSXbHdTAI8BCSvfGjp6acgJhUc3gn8rUau+ZBmDb3hnGgodaLK+v
-	+6wUktrzBfxFDl6j0MVALbl/VTD5IFY=
+	bh=exJPVe3Jxp/tmieGVsSX37DfT17fcVo21V6QONpXeNI=;
+	b=fR0BEohPm3oFp3sshXmGPRbCjfMk8AH3rZZrQWI8fDIzyBjUXOIl4lBuUyajsZJF/0a0qM
+	hghqEJ7yPbWIHYBKKCuJ/vIpi9gh//tZpDwNmMqPP3E+BUZt6aWXkSRt6chhpQROYuBe8A
+	OdOt3V8HYzNT3o2CHuHEztE5U164w6c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D615760A58;
-	Thu, 20 Aug 2026 17:19:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B3B1F000E9;
-	Thu, 20 Aug 2026 17:18:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1078160A61;
+	Thu, 20 Aug 2026 17:22:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0601F000E9;
+	Thu, 20 Aug 2026 17:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787246344;
-	bh=RGtQru3vrltqhttbaN2XzlN72mBtebjrTVHBY8xSB1Q=;
+	s=k20260515; t=1787246530;
+	bh=exJPVe3Jxp/tmieGVsSX37DfT17fcVo21V6QONpXeNI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ec3fONJwnd8YpsAgh1gHFVJu6Nhn/fFnlAa/6o4wI1iQ306dy//oh9AEz2ngp91jS
-	 d2N8uFrwZEXCEstUiiMaRNh7msdFRLiATBh9av/+Wv8RznWkXJDXsiYQnBU6E0fX5P
-	 yuP3NJ4zLtLp37a7ut/rEgby/xFgOf0ZGOJqrtcKAUTHu/lL5u2PMu9pio8Qx0Mp2D
-	 UYwmUQN0TxZf0GSFc9Oxz/hFvm3GW9Kbl4DQQYNODFghYQNZsJz3M1eGnytYD0GL7r
-	 RdOUywotKRrhQb0QHGFnyzAQIPVggd/DpMlJOWjfmHCtoAaBa8VyAK/k9h20fnJWvm
-	 R4rkznxo5l80A==
-Message-ID: <451a49f6-1897-40fc-9b30-c3d053b52474@kernel.org>
-Date: Thu, 20 Aug 2026 19:18:57 +0200
+	b=Dmt9pdtA3/p613ajbp7hmcIJVgS2TQHeLlgtiu7vWSUu1MMYvXjYQeulyuXMoum5D
+	 8AOXRqGykr6pbXsXdAyaggpB6RzXclohx0UgNkZ9FadBrjIZPemr18KbQY5D8WaSzO
+	 wMHArm6zeACTYN0mapGpEKCV2j1FDX/iXRvHjv9J1hp1iupsbFzZRPsCBy8OmOFLLV
+	 SEYJnGn63SfMFUCMdAqtpTugUpKyAbqNpF1s+ANapL3eoIj0+gRjkMnpcpYBWf/ka5
+	 W5HOwKYpiBg12FBO8ccNmqHyb3aogFJSUjj7REPK5dzNAJLdIXJlAA3RZkAOEsxqoK
+	 jC9WPfSZ4VPIg==
+Message-ID: <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
+Date: Thu, 20 Aug 2026 19:22:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] proc: refactor /proc/$pid/mem to use struct as
- private_data
+Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
+ PROC_MEM_FORCE_ALWAYS)
 To: Jann Horn <jannh@google.com>, Paul Moore <paul@paul-moore.com>,
  James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
  Stephen Smalley <stephen.smalley.work@gmail.com>, Jeff Xu
@@ -83,7 +83,7 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
  linux-mm@kvack.org
 References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-1-90cd2357ee05@google.com>
+ <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260818-selinux-pokemem-v1-1-90cd2357ee05@google.com>
+In-Reply-To: <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6CB6C18000A
 X-Rspam-User: 
-X-Stat-Signature: rp7ip64d1b5dhuayzkumtt9nos4ag9zs
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787246345-703585
-X-HE-Meta: U2FsdGVkX1/seSBCpB8hMYHOhXl2h/qm3//mZGUBeIyDMQsZE2of1KiJMdSYXyiK4oasbu7GtSt7TJJodHtT6k5lSnxtQ6uTisZoPIZh4dD7sVNTRIB1FHRqtXC9bgpGfQKo1uk4s0Evvx463GkxUz/kCnSHKWLYLxqe5uz6bfo26PWiEOLSZV3kaDL2nG2P7m4xwQ8y14pZ5mv6TdupZpoOPZ/bTTvIHUjpe56qOdw7A1zeG126OvzU6W2OF8chOz2qP0vKAPDm+RWAH6UMI32c9L/RAEieXUCtK7pfZu0olt9GKyDCRRRB92ZkEpk4PtnowCjltZ5yZcltX7UiTPQOY2W6VNsTrJXN+yVhl72gZwwdS6//HGgLTyqRjsgOSH1VmX6TkyZegIDmcNjqI3WlrLmgZw9SA3LCmzM9EOmi2q/q9iAqquAdnCf6RVDolQt9t6jgi27IS0n+SbL6KUXFSD5PYaB6uGhf4Rv5GOtiC4puSo+zbcAWguvZg2CP8D088fxdag82tZS6feJP6htvlettW1bUtCxEkwv3miElx+Mkisq5qGfEr/QU5xgnMJvHeejgfYNNCFCwiEm04KMvB/Y9+Wgy8JlYG3f7LmjBx9C2F6v/1J+0noZxRlQPvqEuh+ppNtqnOzwGpTzh6PeeXDNSIbULc8RRo5DAqSxyorRtCTtygWlcW1zWZHGfCehaCs5eWoVOC+XEeW6yuq/6JvwxJKU4zAhxtc1fX2bMjEX96qDDXiDZWaVp3FMZAowkbkrnICSIL6H4iDoSePziZ7Kcw5jrbxY3ZPUnHinuG01EhRN6NwQxAlMHrRB9ZyKFE8wCq2CDUhirsxpB/hTxWhRF2o/1mk6mpLGGOr/DSKTf2DVupiWGv3OYfCpLshr6nE7HrLcwCSlUtqKpgy/ZARZDNAomtuxIQHNGBzag+xdl71Ji3Xp3uzz5rh1tb7FVzILn2MWcf+cFvXg
- PL7HqUhy
- v5m2AzzE8o5PgKfQZEaXUbdu12nRBYv4P9+bt1o4p8+57zrhCFmaILIivxQh/jh1EhbETMV5Wn72dPZz0I1GmVED1P0NKp7Y/PDcPn76tKBXNKJnsgmxrcr1aFN8kYY6F0L81RBJrD1xsEyaN7zaIEa1+bUVU91ry2HG4V+tLo9xLhZI+VqacuWFRMK6UQeAcjiTqZixow8mLVXE9BLt7ziP0goVAjEBmZfk4yojgb/oVq1JENZ1fD6dU6PrURCENEpDGHzCNKPqeX6b3fMk++HPXk3HlF6cZKB19BE8L/T0R+/sjDbgnUyhpgGqB5GgOXW53rS6BFPpprpfqgGG56lMlgUJexDPU93MeRhNyOBdu59CSEw+itMVdqJF+TPFyn6oWb4mQTrHpjWQQISDdNwxegneU3pnHKJyl2oKjJdZElovbPjH+trGxUxyDMOOZbWjEzdrke4TAAto+21hnZq0CNQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2ACC61A0007
+X-Stat-Signature: f1d4a845k5ka3co6if5dqjnzuhqx7np5
+X-HE-Tag: 1787246532-845601
+X-HE-Meta: U2FsdGVkX1/sV449ZRxm6qw0uyz/N0z+uWF8iqrjdxBVE3Kj8bcX0ijn0MQMyqjDOxM9kBI0gfKs76aoWjpWNOtxUhH5vjfkgY6CS8BVQaWSpaNe/f7vfOhri6EdbgavzrNXZJNrNOP2FzIm+dKKaLxhkHZ7nwLJiR88v87v52a7f11qiDStecVqwxGAXKssfxxRaDiHtkerjGrDzNpK1OtQdwgAif1shNJRlnT+g8yOKUbQTuN982UzTYOoXLKQJ+YnK0fKfhBA+J8dcZ5iLKLTlsz6lN1Aw9savQN2E8yUMp76NkBoyj0Q1q0gbfS/kaPxR/7a7uCgyF4fW3en1GYIR6ShDDh/Ctl81si+/sF7iOlcx8gQ4EUC4+lEQBKDYjtzVaTCe8uMot9/BhBDEWtTbNl6TUY5vFwuHeF7h1p5RlLbo4KkdJZZ/GvDlAA+1xeoVGjNau1vd1NTMT4rHx7q2QhFaIdd4zX2UpspCiL+qVqg08lUl4SgJ26u9hByJ0EiARV2aCWVeNhBJECDW70fligQgjMQgG3csUo240nSp8Cbd8acaV2zX4I2JdbklJONZIKdTec/+x2jY6Y2XG2498Ppo8Ifagp8i7h83DNkwQiYld8gl1F+6dfhOjXeREp1hMzy1zIqmO2TeGhIEFexysAFXDVnKQoDk3+dzFUM6eTfV7PMunLjW3p5tn2vvgA72allFiE8hXZDzOuwJVum2B5ReG7Ffz/THnbTCv+oy6AODNrykkGjTV8JfOSBf4l/mCBB6x+kXNY3byAaQ1UOphs1wQrt70k2OskBY+HWiNcFWfS7PFL38A2+bXdx+xp9282KshkUvD5tQ5nWx1kjXHgr+AxL+0rgzfBCSkZURLvBMNDDIVBNf6C1Lkopxkfpe0VGlR+fx9IGcu2r8r6YEhNFXNue7/Rgdb1fgLdVhK86Go60QuuN6sHwS3wkl9vUB6/XswsOBzbS7dz
+ hmm7Ypsc
+ RVsUsNuPCdtFwWYH+2k32bOc0c37GfSRcvTnsvFd7jIkhLGqe3P8ZCSwfbM7VmhD1NtC8JXp4qyIZl9PVrpV9YeRoYahBH9+yTiaakO8tC+cgfyVTnpxuT+IAAnSdfosmVVTOk+PHDpya0ZpPS9241tC7qbcq2ANKWBAOSlG7yGK3c2NX91taTJJHK5O9BRpdhI+JtoUS9CfGODOnQW4/BgxNM5Hq7/cgFWmpVNKYSUatiNPQJ3YwjDmj4mSRVZ1Lk/enCUzp6NyYqCqYPX5cDgxTm9cspBqMJSl58lLXfOc0IuHMBw4rBOOEbVih43AlVcd/z7OE4U1yWtlzY9Yx1ln9SaKn7nYABR03K48MvB2eayyQkxPGRKILDlbCnsuO5EejK6D8aSr4yW9AcBYAdOz7hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,17 +149,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/18/26 21:51, Jann Horn wrote:
-> Refactor the handlers for proc_mem_operations to use the new struct
-> mem_private as ->private_data, rather than directly storing an mm_struct*
-> in ->private_data.
+> If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
+> good opportunity to block a process from overwriting read-only code in its
+> own address space through FOLL_FORCE writes via /proc/self/mem.
+> The security_ptrace_access_check() LSM hook is bypassed when a process
+> opens /proc/self/mem because this is considered "introspection".
 > 
-> This is in preparation for adding more state in mem_private in the next
-> commit.
+> This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
+> that a process cannot create executable anonymous pages.
+> 
+> PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
+> accesses are only possible when the LSM allows ptrace() attachment; but it
+> is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
+> environments running lots of third-party code, such as Android.
+> 
+> So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
+> such "introspective" accesses.
 > 
 > Signed-off-by: Jann Horn <jannh@google.com>
 > ---
+>  fs/proc/base.c                |  6 ++++++
+>  include/linux/lsm_hook_defs.h |  1 +
+>  include/linux/security.h      |  6 ++++++
+>  security/security.c           | 15 +++++++++++++++
+>  4 files changed, 28 insertions(+)
+> 
+> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> index bec6197329dc..3dfaef49bb70 100644
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
+>  /* private_data for proc_mem_operations */
+>  struct mem_private {
+>  	struct mm_struct *mm;
+> +	/* Was the ptrace access check bypassed due to introspection? */
+> +	bool introspection;
+>  };
+>  
+>  static int mem_open(struct inode *inode, struct file *file)
+> @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct file *file)
+>  	priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
+>  	if (IS_ERR_OR_NULL(priv->mm))
+>  		return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+> +	priv->introspection = priv->mm == current->mm;
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Is the feat that the fd could be passed to someone else that would then not be
+detected as introspection?
+
+I'm just wondering why we cannot perform this check in proc_mem_foll_force() and
+avoid rememebring "introspection".
+
 
 -- 
 Cheers,
