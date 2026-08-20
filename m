@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52471C5DF87
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 22:52:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5687AC5DF87
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 22:56:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 367F36B009D; Thu, 20 Aug 2026 18:52:48 -0400 (EDT)
+	id 606606B009F; Thu, 20 Aug 2026 18:56:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F1E86B009F; Thu, 20 Aug 2026 18:52:48 -0400 (EDT)
+	id 5B7BB6B00A0; Thu, 20 Aug 2026 18:56:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BA6F6B00A0; Thu, 20 Aug 2026 18:52:48 -0400 (EDT)
+	id 4A6786B00A1; Thu, 20 Aug 2026 18:56:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D6B696B009D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:52:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C00B61402B8
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:52:45 +0000 (UTC)
-X-FDA: 85123149090.11.E136519
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 276AF180004
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:52:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf06.hostedemail.com: domain of 3O4WHagkbAL4w23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.205 as permitted sender) smtp.mailfrom=3O4WHagkbAL4w23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787266364;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=B6SKmu7d1mgJbjunUTptXi0qdthUgUNGQr2MeND2xXY=;
-	b=H7x1QbP5YjfKGRE/vBHHfDLCx22FAAo+jKBUdYsEA38TnE2jS8i55nN7vrDtwop+p9QD2d
-	tBniuw2Z3WfR+20D2G7hSn3ZM7CA8Mg3GbtfFmGUIYTej7jwOQ/lPM6sTBeG1bFDAENohE
-	U6n/hQFReRbloz0mfyPfajFI6dWiCdE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf06.hostedemail.com: domain of 3O4WHagkbAL4w23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.205 as permitted sender) smtp.mailfrom=3O4WHagkbAL4w23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 283AF6B009F
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 18:56:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8650A02D3
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:55:59 +0000 (UTC)
+X-FDA: 85123157238.20.DA8C5AE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0090AC0006
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:55:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KagyFWw9;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787266364;
-	b=5EyyY7q0ba0cweiTepwoMEeyQy6y9ALOi91ilVaL5KdQ+0et/i6k0+cB2f/6HSVNGa8Qys
-	E7uz2QLwXYTGiaxTNSTzM+e405EHY4NiJ7BWQFYtsv/C0MI7GaSiqERYMy3KtAuPOnDIYb
-	2yoVe+XVam1vuCosnG1YZNUR2XfsLNA=
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4a49f09233fso281260b6e.0
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 15:52:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787266363; x=1787871163;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B6SKmu7d1mgJbjunUTptXi0qdthUgUNGQr2MeND2xXY=;
-        b=gGZZOJo6b7cE09a5eWasUBcuSLge+4SZ99GlTGJEL3aYF4wjkgUlWYMeZpa2tZvqFa
-         Rgv1A69aZ5lM6QVN7HFYrGKlekhERP4S8bSpjAjNLLq8Ci5CVSqxCevwjkHRBHms1GQJ
-         qBZaDc08FWEGqO45A8oNBEMVBbqf9f8N8aZJV7zcMRtGuko+Rk/C0VCKH6CPPFnD+Yxr
-         iskbSuOhemRZzdjiChYLMX6LJ91wV6ZRKENA3Yj/GgvRtFS/4VfgR0T9iwn53mxn5+G9
-         5weWhAapm2G1qFj+QQeqFgKSEbf97scZ0BAQ4Tob2l2QtdcbI0iLKTOk8GGDaLi1sypB
-         fkRA==
-X-Forwarded-Encrypted: i=1; AHgh+RreK3lCyVcHiQIqlGWix+MY62gGJnjSCjS0MlGgZfXj4mz4yruIc0yfm6CGmExc5PwsGvDhPU9eLA==@kvack.org
-X-Gm-Message-State: AOJu0YyAmC0aOU7bzfzqYGh07oEj7DCAeIibZLYCsKMt/n+3DEb2mkD1
-	4foGsddPG+19feRtb11L6hEcODOQ5LTDkk64UX6NL3qyOg28NYCUwyO9GNp5Hch8gegMhnnOzZn
-	UBobEzDKYo6w6xMI9Z8nfEeXzPcCzveht3pIqvMSXWKXZmUsWm9pFutQ4lgk=
-MIME-Version: 1.0
-X-Received: by 2002:a05:6808:4fcf:b0:495:f697:92d9 with SMTP id
- 5614622812f47-4b2cdbc6a87mr9595234b6e.7.1787266363199; Thu, 20 Aug 2026
- 15:52:43 -0700 (PDT)
-Date: Thu, 20 Aug 2026 15:52:43 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a87853b.ae6ddae5.3da009.0023.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in vma_set_pgoff
-From: syzbot <syzbot+f12658786a4153df5113@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: jnswxixe89ro73sggytxd1363835puat
-X-Rspamd-Queue-Id: 276AF180004
+	t=1787266558;
+	b=6QRCZPajPScHjBs4Bpba/xQ19Bx8npBmux2aAq3V8ZJ3mZqyb6LcYykgdxX0GAQu+ATBYX
+	SYgUy0OLN2M/62gI8zARYpK/u9mVoCcs2IY15IicPua7mO04uQdii0AuDfShcDLy1lRmI7
+	ohx20IVIJiVR/Ib/nOZKTdnQvYuXCxg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KagyFWw9;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787266558;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kZunpZo4Ob7dnPPiEiET46yjsPwCJrXBRNVqc/tVrdQ=;
+	b=kf9iJPJnDZDT7T4RTa/gbzVjB1h0YS9LR8H3yQbWa41yoVlxXA4tve5vGpGrfytlKaZh2J
+	K2lUMNvM4zZySWY+zElg5GgiDKp9tryVputcDz5YtKrzjvilB5Nntm7opCL+ok2S4tI8PL
+	zSXvkphX9o8zJu0GLkcEf04a7OkZLOQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7645060A58;
+	Thu, 20 Aug 2026 22:55:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30651F000E9;
+	Thu, 20 Aug 2026 22:55:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787266557;
+	bh=kZunpZo4Ob7dnPPiEiET46yjsPwCJrXBRNVqc/tVrdQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=KagyFWw9ORjX2tEGt6I0GhwPXz7Faeh+XtuJ2G6+yrCkLoiI8DD7BLwGrFSunUGRI
+	 0/gv1sXhQgT/wnF8PVsfDocPpDMvsS67TGwyZmGiB0tGJpu9czF9bTTguU9uyV5Lc/
+	 /eAbqtVGTdJs0lc/dSCbyLDtxGZJ8zov53EVfH2w=
+Date: Thu, 20 Aug 2026 15:55:56 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, David Finkel
+ <davidf@vimeo.com>, Tejun Heo <tj@kernel.org>,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, Tao Cui
+ <cuitao@kylinos.cn>, Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH v4 0/2] mm, memcg: fix memory.peak reset clobbering
+ other fds' watermark
+Message-Id: <20260820155556.8e95067fe0402cd83ed48dab@linux-foundation.org>
+In-Reply-To: <ee4cd3ab-0708-4c37-b597-703a7d7547e2@linux.dev>
+References: <20260814033005.2481920-1-ridong.chen@linux.dev>
+	<ee4cd3ab-0708-4c37-b597-703a7d7547e2@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0090AC0006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787266363-926123
-X-HE-Meta: U2FsdGVkX1/y+xEfgqwHpm7X7jt8PRHATgh2qzT2dDS6r0QnpMPvdtv9QAR46AEpYeWmqeI+KJRIpB7dGBcVuEGqHJiy0vOS3lIL4oJ9s07fAoEArGUDMR1TRBkXaogeSJbp6AQEXOvY4aubITHeKQKhKue8JaEJWeKm10D0KHo7f/RTbnS3EMNQSjTrAMCH6QwrKP5IaqqPm9LwKDxN5rClA++XzmxloNw/64FlFWWk40KH47ao1YaO2jnKubPUP8e9tKRcsZtfvkTg2Lk8FEOAlfPcLCxkxpEnIU3b4LL+ORSArmzcXDUmYmlmVp03WRGrfBn8dHeB+bBc0rnVVndUa26ngSIBtzOACEA4Zp+8NqKAyoVGS0ucHUX6hm+F1wCUvOtcy7X04WPitOsZxXnq8kK8bZGr9y+S51Ql3LNDKzLeA7Q2tbMw+y6Uj0z0ihNzMF+MsClnKdJ4vz24njdxBJS8uPDjoOlRnwGLRFIGtY05Mc54XPqiIVtUUzMQcKKX3E4kjaa6TelFzbPyfPiTnGghwQBJbGSB50K/8qjQVK5mOrcQ3GNqouYlYTo7teJp59JN6Rr4JETK+/6dMRCcYbaWVwZT/jFBk2pH75qLMuRzXKfY46ki9l3hosGl7cryKIoKFx2yGfysuRTQUNbYEV7RcutUGGSHBZxA4R2sspPpwxQH/Xi2er3Z83eyJWEFSPIpWtGrfMyWcdm5zYBrM1pm0Id9NiZauN3VWvi46aykQbuqHGWKjYPBdow+66g7VDFz2KlO2aMLSxK4TIWmuILt09v+PQ6bNUDFL1P8ihbSAktCcskNqA8aLHJ2xeQWvuey4ENv1YPVBrTA6hz8byP/3s0lIMSOmD7LJtaJ9/rCZ3KFjwQnnQoHuPnYiXiFiDeXCpAR+v7KVkr+oKgNiAoTL9AGVdPlrjfZdXiqAozxi2dBUEPZ9pud2jvf3YFq7m2J2BJK9eGOHcV
- TJbOZy5D
- LgB5PbVqgm3C9PcZaeXlYne/q0abBOi7IyCpWSx9SufPeQMaQ5GizW6m5v+FsYJTV9v//hd4yDU4CkBnMzKnMYTFoNwkg7jEDqTptcNZLEdfS4cES3bqom8mCCcuAzbIRZUugominIGxC0gTPMduV5BjtHWjxYoFd51UjeJyQe8mCiH1TgpOeyaNc8arT6MIxA+olqp4wMp5OLqXxiyEJ0PQYXrQxEBsysDcxH4HODsI4q4Qdt9V80pXCy0kRG+qxx1u1Ua3rPxutzf8IlcnjIooln/NE2p1s44+qg1TzeT+6yiXgwCZ7+4Qj4IQOPgNmN7kN5K/GFpqNLCtw097j7eCKFYtMv2lGXi+80JP9hYaWrG6hAZJH8BPNWPUfaVXVYYLehqL4C0h7gb/rXoSgCBrBKaPkMLyeyS5vsTXYcFQRPfwTWubk1IUWtOdtzo/za5dU42V+s7hOrmDBMAkfNPeyMBUCD6SmarYbHRH78rsxB+ZPE0ii1hEMVdmpzjW/2TcJgf4T/meW2uLlip6VFIXx1IC89hzkt8ywZwSMZffIsQkIq7vQhp/rRM9LWD0v2rIwmK+AlxCc3Ryth5JMAhm/n66xIwpT/MPV7rajiOQ9h+jLEAKOJHBPt8SvqfzKqLlQ700HE6qea258X3RXmiMrY5fOA4ArxEt0XzaDIrG/7dPFqlTCpe8+Byn08BKpxURe8Z7vGO85T686SfmNb5QjDXeJKXElP1vepmPPnB+99lyTuANXpNg8HCOoBBFGKRox2wP0GN0sZwygalAg/Escb5jNDZg7VP04qezsMPLqwD9TOpBEcIIUymPHPoScuu4nfWbBv7vSf3DC/oTvg3y0qPShAeEdE00UJ2oB5bGS72NFhbwc/KVGRXDAYAtuPqteq97CpYkoZKp7GjQ/9T8tWr4klfeGieOyfjcESQGECFS39I6o8E33mBROaVxR4kr30x207Bs92/iM59uUPNTzYdAQ
- UzflP0+M
- 4mfsQ0y7YI4KA6trh1X8MLVhpf9dN1nWl12I8OPg9Kdy9bCyoOJCcoKb2P4qcHGyNEBn9pRi1BM+NXzYHCQAb8lk2ulMWJShCNyNMtZeP/GZi+43IQPF6sz3Yp2VGyNk2aODPme+feBShZkxbfIRTtVtlvbvNaFt0DvLdBNN4zF5H8TY9cjh4AwIPjYs4mqgTC1sgx+du4RTtWGKK0IRKfAeIbqaiqa0crKkpnzAyh0CNIWxODpzpbuRkbBiWfQA+Sqr90dDhb2NUwKvUnTn2oVWfsTWfgNyY6OG519X436HlA48RS8sR47yB4LkrAUfkpy4kJkykMOqfo6PMx2d5MuVCHLCvqBXuaLw03kftGBowcII3LbOq2QTG5u5IgcNVx/caRjJsgzz09OAbMstVY1iXWvfDl8hRlOWMIXls1DhqfaEZSAplQJ3XNK3YHn1MvDQW6KMyKA=
+X-Stat-Signature: ri91ujx19788jwpsjzeau8mqdp797th3
+X-HE-Tag: 1787266557-619812
+X-HE-Meta: U2FsdGVkX19o12MWKYnEGeflk2Nu5eEpcOrEKqbyHBIlxD8ENnhcgkJep1flmf5wOJ2ElXAyIbJiQTgEhP+/ZWNQMOc/+0bwxxgh4CIDx4Ya4gnqSXbRgiEzwKXDQ5kCgJzta58yAV9ax5b8xCVEW3cLN3qhQiFBpvOZmXmaNw/JFA0hSeHwcQvECyGebYjvPObi9qQOdzpZnMv36Vg8Vyaw7e/aDiu5tcAHrx9k25VHHDsz+r1dMz/r8u8vo92zgn6Y4D8Kbn+noSVAhotScVPfBe68YH6yZ4cAS1vw25J9SX8AmlT8wNwGDFyz9HhcmsmGzMQFwbhL7xaQ3C2sIjdSudG48GvsvmaL3cMYsznXuk2UxjQqj2EUxDzPikEYy27YfqqgsFoSfMfRG8ii4wmc/oMg+NCGUtHTfXDTJKk56UrhOMeCTUI68MpgbTe0adA3WqikiHWwjOM3ThgeIfICIHQx3VyqF0CTakFit0Bqvs6Yi6j2f7/qp2RMmJ6uq6Ur17oCVL/ziixPTfX341XdV3JLJbZ8WqfYW01NQRiqmaphVWSGYiYYTT7NnWP/gFWKdxnmsZfEdL+0jOxm7uFb5ytbvIlgBOnWHzZuPyAQtYTa7+eME9L4BWQpkWaRpBXMQU5so8XFcuNwBBTs0b3svjL3zsyFrRJs51JYL8ogjMfOR6Sd3kj//9y9UeBI4O4eYSyRKNc1c8iurj0D3si20bNWg5em5vN8601CWucJ3dY0FYvrMAJ265kYoYsMY8cX6RNARufGHe0lb3PvpsyMeQXVtHwXzzELDAWY0a5nn12HaVitqVZO3Tk4EDwsOzuFLDpY/jp8/gk8ytQPdc20OJ3KTXiGHO0Uloex0MnPavnykYGyy2xLcRwQSUzDkrStxiukvDNlXzg7hQRBzws7q92dvCY9/G3bgttJL83mHApnOKyXteF30WTSPie9feTA0M7Sz8zPBtSms2m
+ 4Hqe6rAI
+ QAbleQS3tsEEB822wX4NLrshb8AzX/nxKkdfQpaHwcbUeqn203WqmumhQg27tQ7Ftl68PxKqzG+DD2x2nn1VjY6C5Gr3D1iCW+i9143TtpoVxq5jSlH3/RRnT260g5YR4ktMj67p22DhcTp569tDVeNN9T+s+VwCxIneHZqUwfbcEnQaablNIxlcPb1mdU5H7eITR4yv8HmF6Img42mas66NGT53PNiMh+XiC8jwxX1tC58/qgwqhNpNqNNTqaiWPvsHo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,92 +98,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Thu, 20 Aug 2026 16:43:23 +0800 Ridong Chen <ridong.chen@linux.dev> wrote:
 
-syzbot found the following issue on:
+> 
+> 
+> > 
+> > Ridong Chen (2):
+> >    memcg: acquire peaks_lock when reading memory.peak
+> >    mm, memcg: fix memory.peak reset clobbering other fds' watermark
+> > 
+> >   mm/memcontrol.c | 9 ++++++---
+> >   1 file changed, 6 insertions(+), 3 deletions(-)
+> > 
+> 
+> Hi all,
+> 
+> Just a quick reminder on this series, could it be applied?
+> Sending this note in case it got buried.
 
-HEAD commit:    4477a78374a5 Add linux-next specific files for 20260814
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=137fc679580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9b32a36dd637b06f
-dashboard link: https://syzkaller.appspot.com/bug?extid=f12658786a4153df5113
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=176d5949580000
+New material doesn't get a lot of attention during late -rc and during
+the merge window.  I've set this series aside for consideration late in the
+merge window, but a resend at that time (or shortly after -rc1) would
+be helpful.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/994c1c8c560e/disk-4477a783.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/cd54543d69ae/vmlinux-4477a783.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/407cdf8f3fc2/bzImage-4477a783.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+f12658786a4153df5113@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-pgoff != vma->vm_start >> 12
-WARNING: mm/vma.h:277 at assert_sane_pgoff mm/vma.h:277 [inline], CPU#1: syz.0.17/5809
-WARNING: mm/vma.h:277 at vma_set_pgoff+0x246/0x2d0 mm/vma.h:283, CPU#1: syz.0.17/5809
-Modules linked in:
-CPU: 1 UID: 0 PID: 5809 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:assert_sane_pgoff mm/vma.h:277 [inline]
-RIP: 0010:vma_set_pgoff+0x246/0x2d0 mm/vma.h:283
-Code: 0b 90 e9 d5 fe ff ff e8 a8 ed a0 ff 4c 89 f7 e8 50 5b 01 ff c6 05 b6 05 3c 0e 01 90 0f 0b 90 e9 fe fe ff ff e8 8b ed a0 ff 90 <0f> 0b 90 eb 9d 44 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c eb fd ff ff
-RSP: 0018:ffffc900035ef748 EFLAGS: 00010293
-RAX: ffffffff8226cfa5 RBX: 0000000200000a98 RCX: ffff88802733ddc0
-RDX: 0000000000000000 RSI: 0000000200000002 RDI: 0000000200000a98
-RBP: 0000000000000007 R08: ffff888076188bc3 R09: 1ffff1100ec31178
-R10: dffffc0000000000 R11: ffffed100ec31179 R12: 0000000000000001
-R13: dffffc0000000000 R14: ffff888076188b40 R15: 0000000200000002
-FS:  0000555576422500(0000) GS:ffff888124df8000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f9f85a70000 CR3: 000000007cdfc000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- vma_add_pgoff+0x1a8/0x570 mm/vma.h:314
- __split_vma+0x89e/0xa60 mm/vma.c:607
- vms_gather_munmap_vmas+0x322/0x1370 mm/vma.c:1507
- do_vmi_align_munmap+0x2b4/0x4b0 mm/vma.c:1675
- do_vmi_munmap+0x252/0x2d0 mm/vma.c:1732
- __vm_munmap+0x241/0x3e0 mm/vma.c:3390
- __do_sys_munmap mm/mmap.c:1094 [inline]
- __se_sys_munmap mm/mmap.c:1091 [inline]
- __x64_sys_munmap+0x60/0x70 mm/mmap.c:1091
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9f85b9e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff50d2f8f8 EFLAGS: 00000246 ORIG_RAX: 000000000000000b
-RAX: ffffffffffffffda RBX: 00007f9f85e25fa0 RCX: 00007f9f85b9e0d9
-RDX: 0000000000000000 RSI: 0000000000004000 RDI: 0000200000002000
-RBP: 00007f9f85c35024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f9f85e25fac R14: 00007f9f85e25fa0 R15: 00007f9f85e25fa0
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
