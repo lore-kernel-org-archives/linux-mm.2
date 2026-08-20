@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29F04C5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 11:55:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50B3FC5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 11:55:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C58F96B00A1; Thu, 20 Aug 2026 07:55:17 -0400 (EDT)
+	id D4E116B00A2; Thu, 20 Aug 2026 07:55:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0A6C6B00A3; Thu, 20 Aug 2026 07:55:17 -0400 (EDT)
+	id D1B726B00A5; Thu, 20 Aug 2026 07:55:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A360B6B00A5; Thu, 20 Aug 2026 07:55:17 -0400 (EDT)
+	id B6E836B00A2; Thu, 20 Aug 2026 07:55:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 67CBF6B00A1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BD656B00A3
 	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:55:17 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9546C011B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:55:16 +0000 (UTC)
-X-FDA: 85121492232.13.5C9B63E
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 38FE5C000C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:55:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C33D1A0121
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:55:17 +0000 (UTC)
+X-FDA: 85121492274.27.4CD27FA
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 54F984000C
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 11:55:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	spf=pass (imf01.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1787226915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LRM7qWz88PSwBw2lb447LqN110FZmajRF5TshFNbXu4=;
-	b=xHZzyUS/lD3fAYQdg7yz8pqAbPqzMyUy0RCBvzQzstzF7H5hmgd3AhgDrPosjAt+4cKdRz
-	YVCVQYYeeAGl5vaq5Z/pnkAU4K52nWto4uMqBSeQ6LkB2fQtgw6zZyz2dhP4g1lYSqZ7Ge
-	bQTpZjm7GOQR7oeA6DD5iLFhyUBy6TI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=YxW048K7oMbWrgSdv5rYKaJRvADRBLV5bOznmgW+0Pc=;
+	b=hQXpqV73slPktlIRJkgYX8eHI8334WhUQVbCVOA2J5Iyfg1ItB65MqSR9xBC3HzMB4w0Ta
+	3p2GDswvyHxTordnxV8qf7/uRN9LFzbPydE8F67xd5xim6FiGqpV1bz5bkHNSEwYM9Wxka
+	twJI4YlqpgiCmavg0h0gilnYxApEw1Q=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
+	imf01.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com
+	spf=pass (imf01.hostedemail.com: domain of shikemeng@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=shikemeng@huaweicloud.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1787226915;
-	b=W0ISAZavYnU2qiCdfp2ABx+i7LmNeIpxwKBgUN4jGrrXppknC03aO49VYqaE2EhtYXundK
-	OXdSo4pD+dQtFdu2bi5wRQ1EAKix3zCvdz9SPO/asRbC2bl1/U6JVQsg7vVPKZm4VrsWX7
-	0MJAVTKLXkPlD3ry2Ix8OsBtOJ4d6SE=
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hQhgh1V7zzKHMTC
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:54:40 +0800 (CST)
+	b=au3FiOHJrJ1nOXHXKbT9fzpqWsUsdDRg7Bv8ukwNhEIpmAyK+a8Ya/2TMRXN687YZJJg0O
+	2inSRFr1hKcWz6ZiQY1wP6JPw3d9+8befzuPn5fvjbRK1tk62K9cHRHHgKgXzfvW1vjBKG
+	P6VlK7Zq5ReMo8Tot5TmwzByISHgh/k=
+Received: from mail.maildlp.com (unknown [172.19.163.170])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hQhgt1Hg6zYQtqb
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:54:50 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id DD5D940592
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:55:10 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id DDE9B4056D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:55:08 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.166.163.161])
-	by APP1 (Coremail) with UTF8SMTPA id cCh0CgAH99Ib64ZqI3IEDA--.64911S6;
-	Thu, 20 Aug 2026 19:55:10 +0800 (CST)
+	by APP1 (Coremail) with UTF8SMTPA id cCh0CgAH99Ib64ZqI3IEDA--.64911S2;
+	Thu, 20 Aug 2026 19:55:08 +0800 (CST)
 From: Kemeng Shi <shikemeng@huaweicloud.com>
 To: akpm@linux-foundation.org,
 	chrisl@kernel.org,
@@ -65,41 +65,39 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Kemeng Shi <shikemeng@huaweicloud.com>
-Subject: [PATCH v2 4/4] mm, swap: Remove unneeded swap_extend_table_try_free() in swap_dup_entries_cluster()
-Date: Thu, 20 Aug 2026 19:55:05 +0800
-Message-Id: <20260820115505.20027-5-shikemeng@huaweicloud.com>
+Subject: [PATCH v2 0/4] mm, swap: some random fixes and cleanups
+Date: Thu, 20 Aug 2026 19:55:01 +0800
+Message-Id: <20260820115505.20027-1-shikemeng@huaweicloud.com>
 X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20260820115505.20027-1-shikemeng@huaweicloud.com>
-References: <20260820115505.20027-1-shikemeng@huaweicloud.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgAH99Ib64ZqI3IEDA--.64911S6
-X-Coremail-Antispam: 1UD129KBjvdXoWruw1rGrW7uF17KFyDAFWrZrb_yoWDZrb_Ca
-	95u3s7JrW5J3WkG3s7t3WIqrWvgrZYqr1Ykr1rtFnaya4UXFWruF17X3srA34Iq390v3s5
-	Aa1vvF1SyrZrGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbD8FF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAVCq3wA2048vs2
-	IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28E
-	F7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr
-	1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0D
-	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
-	v20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q6r
-	43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
-	Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x
-	0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWx
-	JVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
-	IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUljgxUUUUU
-	=
+X-CM-TRANSID:cCh0CgAH99Ib64ZqI3IEDA--.64911S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtr4Dtry7Zry8KF1rCw4DJwb_yoWxZrg_Wa
+	48Zas5J3yjqFyUJFWUKrn3JryfWFWv9F10g3Wftr4fJr1fXr4fWFnrJay5Zw1fWw48Jrn5
+	Aa1DZr1rAwsrKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb48FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
+	6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUb_Ma5UUUU
+	U==
 X-CM-SenderInfo: 5vklyvpphqwq5kxd4v5lfo033gof0z/
-X-Stat-Signature: fo7bu4p1ac56gdk6jc9bfuaigyrsbm6t
-X-Rspamd-Queue-Id: 38FE5C000C
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 54F984000C
+X-Stat-Signature: 6kzjsz771f9dwu94wnogqa89p9sfbq6w
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787226913-304837
-X-HE-Meta: U2FsdGVkX1+/YbXWYR9lTeVXzYKtoifx1TcE7yiv8RJ8yRXWlKuFNqAx0vGZLtm/HCZYQC2Pp1cmrqszMG1rsp8hkOOQklQ1pIlyhwaV1hCwi4gqK/Ml5jFIZ6lxwVI6cJaE72EdF9Grw1ABivACEuZgk1toho5ybc7PoRC4wS2PstlQ8vaN8frWOEcb0Fy3mxtIw/VVI0E+t9Jgrkzq5P1pHiqIHPbQQuqxGZwv1rGYgtyFzyRUWhwRhgnbpcCmLDPvB0FnrQbULFBEJ4mMBNh+2KXEEnXcbQ1ogLPckdi1RDvrNo2R0CayGWv/JoUj5kgwIEfHwwtnqSNUiAtH8ZSuL8MkE0nBbviKn0O/uayNC6f7kurpk959zM8dC/Ghoi3z5YRly0fjBJ4fkpUcVf2vKsIJ+FMqd+DczVlzVAJlwNy0xNk4G0d6UslPH+8Q+WSWhe7vr2m8ncAAfX47zdAVVSXONy8WIxlUur5+Fza7EVBPGw8wqGbWaGfj9kXD1DZwwJHU7Kvq6PaWKdxVkgO4/plxn9ND2x9bOmotWico8nK5X1qd1wjxyEYpbucDoizO2D2CmIaewfa3txGmdEstLUoyr0gjMDhK2TKs2OnBbFDunS2JN8hNen6qgOtqIxXXiKvDAWfv9wkCCwgVB5pOvMnHRc5Dq0KlR8Wr14/iV1Mkni0EAkf8q4/50wzrHfmZEMmCnK91t5uPMEZqZc+xVD6NhUud3wN0TPNbaYDEUmM7CmUMi1jcnaWgdTQmcLfSESlYrfnhH/2ZpkRvtlU4pGigR7Ps6jCeBqf0u2+DPS+kIaeEm2zDS4BM241OpJJmVq9ic7b7LG3VfLkcxE705xTwXcGAKalmyi7XzGRaPoqq0E1splAcfCVDmqg0G3iGwNZNWPuXU+ifjwlgs/OY7Z3YS9cEZ5/JIV83JTOGzgmiK1aj1Wh2AIQ66KYS+76MSOIp0+JPhvEvMtO
- LKHH81Qi
- jjVB2fa2ZDQqugD+GyTTVB7LhFsfbb4CXAQKKQbkmEwS6/FRTqq5M7ucO2kXPHKYs7PLiEzO1MipG8lS+9RecET92v1/6yFRB9mz7FUImjMOhIvMDWLWBqggm4MVEdJGNr/Yu2hYf1oSB5V3zmRbRnzeK5Kyx3M2Srl42746VSMzfYMtHsfombXb27B7cAZE+djXA
+X-HE-Tag: 1787226912-741388
+X-HE-Meta: U2FsdGVkX1/EPNwcRE968ybSKyHY4LJrvacOpys4nGdCF0BAplgPu6EDKUbiBBJzdU+gd+j9a71Fsw/4RLAxUQnAbOImF+8j2L6XqitsOaW6a+JfAog9TuTOXpoouOhO11fj5ZqaQO3AAEGWkRfoHIohKW64pmIrJmpWwKl6RHk2KVnvgFewBm17Hz9sMfDEU9Bb8wtXrJM2caUjV/thNrIqf8aIXRmrZoiSy8cjPgZBAmMUzCeBK8SjBsWSdYjGFGSxQGvJdS0Dm8UTIJTrWIkcS2niI6HtrQLxYtkwCKLCDWb8LRfP9vinBIBGAwfeYAMyj8NVpjFa9HaaERgsGm2F4jycQ8tE0huo3PNB7d/MfainEHJ+7E67eG8OGpkbXVgFevXD/gqK6k6Cp1oWoTqJTvXGWqvjS9b0fwq2LeWcrUxR302rpnXrwX8GuODdF9f48pu8xguQIcMtasYSRoTI8BitYHchL0Dd5dO+v2Ql3VQ6IbBPeOoysAtfjSCyJk8do8NUvGDpFzZmTOyNLgxoClB/WMjmwDRcXbe/jKk6fvkBZ/tXSBVTJGaQivgVWilwCrqWNkVeiHOy6jKomOu4y7C/qS2qgfHrkIQi3karfoSlikkKS02eZ3023iNdmC+mcOh1JWy+PFzOLP9uvVRxI9Wpewrocx798eOM3ZfVTh5fva0/3qU5o29SKQ9Nc5LO202uVYU/b4UDdh8I/Z7lGjA4XvYSFGoWJ/FXG+tgoiA71Um9Bh4GDlo3T1tm7QfMCxBHtrvghH8wizhlGOLC2eJOv4PkBH8n/FquztJWSW5VKBk0l7tpzYdTLmejA9KylUebAcQ2xA0oL5UCLpVbMVw7G+egj13CL3dFWYur+hdZxfVe/A8ekTNHSzk+/nITFdJCWRQi7s7HXM8QiAFWIoJTv/tZ0BbfQdp45YIZ2+9LzSkv8fn6obrrR16Qhmi30sKKPIsMWIfW6Ss
+ KnhK9Lzn
+ dqPHKIbIdMSUCL1XFGIEPwW5slRAUGF3LlwECPIEEyTt5+iy5g5EURId81HYsGhkiMNdYU4I2YmBhces=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,32 +105,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 0475fde0f68de ("mm, swap: avoid leaving unused extend table
-after alloc race"), extend table is always allocated when any swap count
-reach MAX - 1 and is always freed when swap count decrease to MAX - 1
-or MAX - 2 with cluster lock held. So the extend table will always be
-freed properly when decrease swap count in __swap_cluster_put_entry().
-So swap_extend_table_try_free() outside of __swap_cluster_put_entry()
-is unneeded and can be removed.
+Hello all,
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Youngjun Park <youngjun.park@lge.com>
----
- mm/swapfile.c | 1 -
- 1 file changed, 1 deletion(-)
+This series contains some random fixes and cleanups. More details
+can be found in respective patches.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 9f43ab43b927..9f829b008de1 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1717,7 +1717,6 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
- failed:
- 	while (ci_off-- > ci_start)
- 		__swap_cluster_put_entry(ci, ci_off);
--	swap_extend_table_try_free(ci);
- 	swap_cluster_unlock(ci);
- 	return err;
- }
+Thanks!
+
+v1->v2:
+- Collect RVB from Youngjun nad Youngjun
+- Some minor improvements
+
+Kemeng Shi (4):
+  mm, swap: Fix potential NULL dereference when trying a sleep table
+    allocation
+  mm, swap: Move setup_swap_clusters_info() after SWP_SOLIDSTATE
+    initialization
+  mm, swap: return early from swap_extend_table_try_free() on first
+    non-zero entry
+  mm, swap: Remove unneeded swap_extend_table_try_free() in
+    swap_dup_entries_cluster()
+
+ mm/swapfile.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+
 -- 
 2.36.1
 
