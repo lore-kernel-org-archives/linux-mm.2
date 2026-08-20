@@ -4,132 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 314DEC5DF87
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 12:12:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ECB0C5DF87
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 12:26:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17DCB6B0095; Thu, 20 Aug 2026 08:12:34 -0400 (EDT)
+	id 6C7A86B008C; Thu, 20 Aug 2026 08:26:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12E5F6B009B; Thu, 20 Aug 2026 08:12:34 -0400 (EDT)
+	id 6788F6B0092; Thu, 20 Aug 2026 08:26:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01CDA6B009D; Thu, 20 Aug 2026 08:12:33 -0400 (EDT)
+	id 569306B0095; Thu, 20 Aug 2026 08:26:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEB0B6B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 08:12:33 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 638C24013B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 12:12:33 +0000 (UTC)
-X-FDA: 85121535786.22.06F7D22
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3248810000D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 12:12:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wR1J2NXn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jlJ51zsd;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z1ZkbN9I;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eDIJUVK0;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787227951;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A4466B008C
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 08:26:37 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87A20160137
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 12:26:36 +0000 (UTC)
+X-FDA: 85121571192.08.533BA53
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7F6CF140004
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 12:26:34 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ozF6oqdt;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf26.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787228794;
+	b=Ju8Gt7YJLvZKMq0zduOg4i9yNyZClOASNn5L+z2vCwgOp67vRmwhyYDkEE4tr0sNA5rpz9
+	XyB5h5m4XoIb3CPVnm4fLaVVrz+wpZTC5eBwAAbduyYqxbrxQaIZGVg4t36LArgm/cRaAF
+	3UwkBtLfzsjXfXCVXAZJxNp0Kt/sL8I=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ozF6oqdt;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf26.hostedemail.com: domain of nsd.project.dev@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=nsd.project.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787228794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NFwdVqKwmHD/ih3Nqk9KcAgQVCsZzihKUnNM5VjKHG0=;
-	b=IzOTOPOm7ZmYOzwl4Rqtr4ra/xMMdD6KIFnSdklPnDzVaV5VwDE+kHsL2joiKNes9jMQkc
-	f4YDvoBR5HlZ2teCeyzMGdnSFIw97XSG3U3wg5sLZ/5ky/yoDGYJzdYZcQlPIusz6u9TcW
-	T2PShdLlDgVR1eKR1HIsLSkdTx58FkA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wR1J2NXn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jlJ51zsd;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z1ZkbN9I;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eDIJUVK0;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787227951;
-	b=ghGnpUQD9zp6yrN6dDC1Y0QfLsU5I3QKcK+iFAbfwMpIP1S1rtSbZnvJkHTtjx9cNtFAed
-	zu+h5t9xXVHCGEefB5WqRgnD376KGAnQizpQ/KWV/gZVA1TjRyQtz508xpRCwvfCx/tU6F
-	CFlPyd5szmOg5XT4dDt9rpMDjvSNVX0=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 83489834CE;
-	Thu, 20 Aug 2026 12:12:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787227945; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NFwdVqKwmHD/ih3Nqk9KcAgQVCsZzihKUnNM5VjKHG0=;
-	b=wR1J2NXnC5JfzfOs++vPcl9nAHIldJq+3heozi4oTth+7f7NnU+pEO3X8JFUF30+i8lkfn
-	K5m0urc5yoetmEUQWrnQeuqDBN3GcZL2ZV4HvS2dQs12IJXOlsWJ6gAGJaVPcPh10dicus
-	DFugyz1OCt3FNOhsJ3l9ErBDQu880z8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787227945;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NFwdVqKwmHD/ih3Nqk9KcAgQVCsZzihKUnNM5VjKHG0=;
-	b=jlJ51zsdGloBRoa40TyoQTOrnjl4PbXn4nhaatVd7rM09rooPI9T7VB3bbMRbA8xu3FmTd
-	i92NDYZHNvNZ0lCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787227941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NFwdVqKwmHD/ih3Nqk9KcAgQVCsZzihKUnNM5VjKHG0=;
-	b=z1ZkbN9I/uzN6onF/IEV0Rl2EMS7YPj2H3Z4G+F8Svd/ItaU2dDmYMjbTO9risYKeoLSmk
-	QFU4jK2laqdnS1zjF5SKhN870Hv2SLMkaGGOm7foE5sfjRk+UMaWPCGR2q8Xljjwg1WOPQ
-	06Yt3e1/3+wdpz4DlfGiqeWEpsVuvjc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787227941;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NFwdVqKwmHD/ih3Nqk9KcAgQVCsZzihKUnNM5VjKHG0=;
-	b=eDIJUVK0Bh3izMrCkAXlmb4evW2tr2nkNroxNaY2P80aNutrarU2eRx1CIdWUG4eaPrQcZ
-	jwFdRaarPWXEtnBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 172A427A8;
-	Thu, 20 Aug 2026 12:12:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id JqUZAiTvhmqpZAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 20 Aug 2026 12:12:20 +0000
-Date: Thu, 20 Aug 2026 13:12:18 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: kas@kernel.org, usama.arif@linux.dev, hughd@google.com, 
-	akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	david@kernel.org, dev.jain@arm.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, nico.pache@linux.dev, 
-	ryan.roberts@arm.com, ziy@nvidia.com, nphamcs@gmail.com, hannes@cmpxchg.org, 
-	riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com, 
-	stable@vger.kernel.org, willy@infradead.org
-Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
- on zap
-Message-ID: <aobp2CtWZBlw4w7E@pedro-suse.lan>
-References: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
- <20260820061337.24669-1-lance.yang@linux.dev>
+	bh=0xmgl9fug7nRyKGHgKexZEf2hsDIWJMU7TJaw/LGlYs=;
+	b=mPmQwBbMDWZiLAejxOWIDteQxtck3yDdFSq+fd8Bbbg6QIw/vtq/3lj4scdykjnKPLK9zh
+	lpsVhzTdCQjJRC8v4CFmk7MRLGEEAike+tLOn0/7xeC9FFfM1ptKd3NqNo05wkG3KHnxvq
+	5mr4YAHEcRij8JaoqTmcBcT3GN913Rs=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6a18840e2abso3558017a12.0
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 05:26:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787228793; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CuiCH2poxv73Y0ifvheOihP2HCuEm9oWleyalp/VuFmzr9MC3hCk9ZCdeZKuyNWGaJ
+         Wwn0zu4RPKWR73SEe6kaSCP/OBK2sTZJ2bNGAtkfEZp5tnhRi5IEjMMu9jneMSquYuYA
+         lsvX2cGSkLN7eV+ZTOwg1jpLzFDUUvAZzkvpVPHYrps8391Bz1BaDB0XuhhzpUw5oTaO
+         xBdISeKkIMhF0T0E9zYPM/Siu8miwPvKk6Vv//Alw8arDwzb2/1zz1s+rAeR5zrCRMTj
+         eBAvruAs/+lanxMbax6fh+r+ig9iMlihUgEBE4ohFuxLaAzStDIM/K+8zhqDCKUPloVr
+         ZL/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :references:in-reply-to:mime-version:dkim-signature;
+        bh=0xmgl9fug7nRyKGHgKexZEf2hsDIWJMU7TJaw/LGlYs=;
+        fh=SJHQrXVS/sjpx+sl4xnxky1R7IEPPmbGhmPUlKtxhqs=;
+        b=F+MgUTI0s50MLI88PxP/vWGGRpzOp4tf3NcsLTLmvV71H2IEAlwIDLrGSDTGrs8nDe
+         sVHRXS0NsTwkWJA83rBqVfz8fXTED1Wr0yHtc2uMOtqJ3YyC5uNcgV4OKKXMTPvTXXEV
+         mXTWhGGSSjEqvsPsvT12Lkfek+0pTHAOiWAhbCKs0eYRSgp6zD4tZ+PrXW5V69QdzfAf
+         hDeyfYGLaLLJc6mTJ1P1Le9SVamShmHpU4l+Y2Qp9Hgk15hw/OlZF+hcSwpRo6Tzvh52
+         FngZr4yUNSdvEtiaw13YSdTv2Pz9OS+DDtf+9LsyPvh8K6FHCBV+CqqG9Ho4e+GeiFJP
+         lVbQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787228793; x=1787833593; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:references:in-reply-to:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0xmgl9fug7nRyKGHgKexZEf2hsDIWJMU7TJaw/LGlYs=;
+        b=ozF6oqdtGF4MLio2iOWcWeV+wJKRvfEF5SPb329lDFp0MaRJ+UlUdkmJkEeyMDrCkI
+         CvoyYiIBRmfMh8MwWvD3VVYRh8ntrozr1fbbV/nCmR/1xmSVhy5MHX+KejEDmD/DlQDe
+         xg4t0b5jCA4WmAGy2sP4Qk7ZzewdolIqI36vc7vkTswOKis07kjyP5JBKaF7HWYBWAWi
+         eNCOWNkpKSbzpGchYDu8xGwXAm3uL9FBVrFsDEMM+icCFvPQh7E+GVlVs82JNBochI6H
+         cQBzuMEtPop0V7GS2C1QqBnb4kcYTefTnoUMp4zbtcyMLqskxjnfOXlXySHPcqe64sb7
+         Fh+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787228793; x=1787833593;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:references:in-reply-to:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0xmgl9fug7nRyKGHgKexZEf2hsDIWJMU7TJaw/LGlYs=;
+        b=NmL9PoeNzW5rbbQPenRT8s8cG2zpWH29gjxUZJifqx98GcXfi9fuWzezdx3s1+PzDM
+         bUi0aovrWBP04POLoztbb3sMZFHjPbommwDIDOFvTWcPPM2XvlzlMRTSgCFi2ez4oM7a
+         a5ZuXfVofYkFSZJSnc/PeE0VVTAAw49YpHFcXN3juntPpAeLaj3k/217x8R4Kq9ktXLq
+         KiKTo3hgFijV1tHM9zHj0/agK/xn7CwbhdShgslSf6VtOPiJ5F60Q6f0NtBWDLXxA56g
+         t1HkIF0e6SMFdif8hGeEE4z6aFXHGGifq79P2qz7PXcrCG/zWC4fW39q/7j7H4Jss05Z
+         S4WQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqoTmSnHfrQ0qGE6ZsH6QL47UkSUWtbcUdKFBRnTH3J8vznTMyZRV+M7LdH8SJtpxVWobImGaSgMg==@kvack.org
+X-Gm-Message-State: AFuF++l7w4i4xk7zsFhZFNyq2C20uHlAUZWhJWpLz0RmsdR4HYteeQFt
+	d80DZpHB0DOH8vv/sYgKqSawAyBiArXpkOR32iMgt+HtVh4l/zGVjQFEzwVrxFZjDIZb2VjopDe
+	6XPkeAuPVEUNp30QvC29DjH3/s94So+0=
+X-Gm-Gg: AR+sD10HfyV8DBWhhXhzGCsNf2leeRwtEabDLVHaY6NStZPq7wl7rHUFkMX3+rXRY4k
+	zXqFjRs51v7Ew0ccVb61rHnlOn3rKxxbA80A15G1vJwOGYDvwCfQ3ZwIdh7AOyFfSiFjwcNXPH3
+	Vk/oeC3+0mVi6jprvIwzRk6r8GbXn4TQUt8mUoLoHp2bkjRQu17Mxff4kzDn+e8HUHAvnejrHAx
+	xNs3dH1MdEBYhkUrsmky/bLSyYv9q+h+juujF2U/9bWZfW2qMCCkaEWaO+yLXnKqUzSpUIy9QjC
+	RDVjchpES4Peoh8uaRe8DAJUwu6DFpsXT+NYw+FhdhAdOmlWn+BjKMZejA==
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="xqewysoglul6w752"
-Content-Disposition: inline
-In-Reply-To: <20260820061337.24669-1-lance.yang@linux.dev>
-X-Rspamd-Action: no action
+X-Received: by 2002:a05:6402:1cc7:b0:6a3:849b:aa48 with SMTP id
+ 4fb4d7f45d1cf-6a4032b8158mr8565457a12.7.1787228792766; Thu, 20 Aug 2026
+ 05:26:32 -0700 (PDT)
+Received: from 292895732794 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 20 Aug 2026 08:26:31 -0400
+Received: from 292895732794 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 20 Aug 2026 08:26:31 -0400
+In-Reply-To: <w7vte4itudtkw2yf4vbmuofiumfffmp2y52dpu2bqvqtdgjvpd@5femyiozss3e>
+References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
+ <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
+ <anlByPDZmvEhWeXI@casper.infradead.org> <ffcij36vnozf3rginqd2opd2dwqyki7xhtdo4veuty734hhgba@utjav2k263o6>
+ <nsd.1787001235.35928@mail.gmail.com> <w7vte4itudtkw2yf4vbmuofiumfffmp2y52dpu2bqvqtdgjvpd@5femyiozss3e>
+From: =?UTF-8?B?YXloYW4gYXlkxLFu?= <nsd.project.dev@gmail.com>
+Date: Thu, 20 Aug 2026 08:26:31 -0400
+X-Gm-Features: AcwNN1XrkA43dSJ3T3GbJGOoBaCnw6PG9YJBewyvsgjvqDFf-fdILOMtvA98jJU
+Message-ID: <CAFLp9PGkVYZcQT5qAx-RKFOF-urZ92m417zpAeF7ZQempbS1HQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/3] Neural Storage Driver - learning page cache prefetcher
+To: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7F6CF140004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3248810000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: tnzu8qryrui5me4mhejx75iap8cgiw85
-X-HE-Tag: 1787227951-883240
-X-HE-Meta: U2FsdGVkX18hxl3I8fa0BJYJ1DMXMC6HXsue7jjVxwbj97HV1lFckP6PKhkwzmLNf4feslCB18bnKyNev9Y38UoleTIxlMmi5eIX7dQkgInX69UkZCbUwIjKFCyQHgEmJYdAHLdDR/rVwjiXXFWdW4s+n0MpH2Jo5+2fAwMkLVVUE+AfKcpiQ7fw3kj2Keg3YjhQC72kTWsV3kJogag05k13+w1qIp49bmac/n5wL22YGcbync67cgRklmJI7UUVno8FNHTrObwOEwqveTtFXz5fhRyyfez4EyAWEu7pwCOleDb9KLVoXuEiBFZw7G2QXFAStfU6mQOofCQ7TbsEseSViNVfR6PTeOrXrQNFrrBFlQUd1T07VWuw5J/nR5K7GVOrRiNxsjDkafP0jEVVJmSohe1ZJmRN5w/0zhuUk5MwZMmZyuJ1eIEa5mIP0B0Zhnnv4nUoSHBHcAHvYKfaj7lgGGic4Qg6/cCgu5uu3IyX4qBpyiZHRPy9jkGHdQ7E4PrZKElfnLcl5mULORR/u0DsGUZcg+kyCEsYsPmpADygFoUvWL0C5qI3Pf4PCCwyMGjXIln/A2FN5a7gxYfnV9QdBWSTwOdZUX+MLhewNq6dJTHITVFSQzl29KExR3iE8SDbsstA0hP026ZfIJK9RHnXMSxnSMI+BsY/HdNNykIVPTkBibRlfUK5IZHsMdeAAPJCeYnIudSthK3tpwkEXhNx1ojI7+B8EZPX3Z1hPycuXpntiIqBfHvp/lf+mI0MeI/xohUhhYwoQsM9RAiqYKuymDysL+nTSd+h+n/l0kDpYHHa0RW+pc7XXbOmE7KOsQJioMcOYyXtMIYT+An+n9Wx0fpQYQWWsa7y7wBKa6mzuhd5bCkv8bh69AK0VAq5UdDLKJU6EXIvEybWIriLXRrvmKxgr7pxtmGfkFyfC27pSBr6GaR0cahWVH+wAFdmiF6J26RPBhBjS3MuwHM
- cwb/0MUS
- h0D8gsDLWA5R4lAL+QN63rNuhSYCUG6G733E1vwQBNffnfVj5UgpeA9cZ39KxV+p5SPVAQ7NJjGAzsusFTYsQV3puHdy+SRnAUb0kzyo2VpmTTXPVCzD/kxCt07lW+uhJ776JNtZPtRb4b9CI28mFmyjtiQ8r7otiP5Aq6cV1utD/9tRmMJ+lWl2Vfll+TtbfCo8OYXrBavOrj9YG/m5OXebDtBjDX7xfuBg11A1gIqxLgpvHvupfKH+hZ9INpLJjQ8mkuQuuvah3mWQg+xNofheueFjMmd4fSWI0gPc35QSL0OxQHRO8k6QUR588mMmc6dkpQWeeDEchsee8qOz2A/1sWI0zhkuJLPwLdUXMczPQKqCj6hOQzAF+7LRuLHqON66WEWkp9Lcn7Z7wRuA+CGyhhw8X9E1TjUsCHFFktLwv7+k=
+X-Stat-Signature: 3z5juoqhbi6ff53br657zcw5syjx7pyj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787228794-591733
+X-HE-Meta: U2FsdGVkX1/Wc32Tsheloit5vdlAhxCt1gijjPDFANG221MN8NtYyiOV1+6xjx4YTpYRCv3BdwHjCnJWYkGegGhkXLSq/Li3VTWmCrsXeClxK7bfqhA9BsnZQmZKZDkr5YTgpu2eASzxypAfD3Ue87hAVI4T3tj7LBUobbBeIjHJJxuXxkz2+k1SJRJ5boA1ca6rb/XBYHsWgil9oCeuloiyRDWztNtwZGb6CU1RleJ7wks375c3LPifjoFcGLjsKlSTHg959idqnCaYMrc90/nMR+QUf6l1MGV9zUga0MaENdORVek1XMwMjloBx/Dbnl5wmkFk0ExY7MR1qDJD2Ir56nHbwX1FEKqqdSzrTKqxmb76Bscd0yuZYw1hlZzS4OS2Bvjlwzgeq42Lb58t6QfwOVWsN1FBtuRxFmAiY68LLJwjRoZK7WXSSI0TyQMe/1rtWi4z/hf6Jxwl/2mrTnmPVCRA1/kJGulUKjBGVXVE0HJLMu9vl0xz0jfg9rdYuN0RnnawHphWWvTGY1SGLOdDv8hjxwhrVZbXBmGhsLGWD8/mi/suazebSdqAm/10oz9ymqWOWrEV54WnjxmcB/mKW57YxoHuJGPSuGMHMLqsiUR36KDfgB9BShNZLifwd5CzZUPuX2IFQN8/5QgvIQajGB9w0lNrH1yzEJYtBh7BGW6BDqcD/ZnQMTIyXhMedVydNN+zP6MmCUoBsbL0fCD3N7uLdM/beE4f6hGjCDJ6ee73yQwJrjhurfAt65BgK9gwy1GNTKzXJd4IJvs1uAy/aPf+dEf70t/2mG4J32nvzvs+d1Eskrw6lwXhfyxcKSpLH6++ZCsw17+UuhJfpvRPAga8/Uysb80swnLZ9PN/GVrl/FyRhWRRlmINFGDvSp+l2wuaOV5AmIacaShlU9GQRaikXnjJYJuVqofeVF4lHisyZBdRHsWk7D83st7EPbvk1bXs/M0ab6EkiIn
+ pU3QaQLD
+ ZfrOCj9FOliOSVWJwWZ7z/15Iel2tp0hm8WwQBcrfopJ58fhwmwzH7a7bR7k0AdiS0pkgy8oyTCJZOg7mdBer9XG52CsAov02hXYc9hs8SOg84YMeiwuDIjkrgSGQ7HX9/AWT3hZBF7WyplFgSg0guJ091L9zthnemEFr1MF/8t1ZhSnL0I+zYY3k8b5Q9MKLhpgqnQg2czr1wpJ6cHNCvhF1gX9kSCFQY1rYzqCFLfkwI/gUs9tk0xC2MkJP+QT6zkxUmReA+Zw8AMs6fIGE7c57bxBAwMF93IWpklXAM57CYKzNy8uCmhRaBGopLBv1LH3EbdxTKNfzo+YY2fg+5OJvJEVtXgI4Pklg4CJqbwUh+f5u4MyUnI8K3Atd6N/h7+7ie7shjUSIMgd8D+xGa3o+bOqXmYGzFFKw5l0y31D3Nuux4NCfWT5BMCaXOX6FEMGEsZRg/KBXHYYo72WaVYTjRIehLcQmpK2mjr6sWUjs7hPvuAg9IXCCTMjB1MlGandU2D+y/z3yXC8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,409 +146,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Honza, Hi Willy,
 
---xqewysoglul6w752
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for the review and for the questions =E2=80=94 they pushed us to go =
+back
+and measure this properly. Since the last exchange we ran a full
+window-size matrix with complete latency and overhead numbers, and it
+answers directly what both of you asked. Let me start with the data.
 
-+CC willy
+These results come from our current in-development tree. We wanted to
+share them with you before pushing anything, so the tree referenced in
+the RFC (upstream-prep-v1, 2026-08-17) is still the earlier snapshot.
+Since that snapshot we made three changes that led to these numbers:
 
-On Thu, Aug 20, 2026 at 02:13:37PM +0800, Lance Yang wrote:
-> 
-> On Wed, Aug 19, 2026 at 05:35:41PM +0100, Pedro Falcato wrote:
-> >On Wed, Aug 19, 2026 at 03:31:40PM +0100, Kiryl Shutsemau wrote:
-> >> On Wed, Aug 19, 2026 at 03:12:22AM -0700, Usama Arif wrote:
-> >> > zap_huge_pmd_folio() propagates the pmd young bit to the folio for the
-> >> > file case, but not the dirty bit.  The pte path does propagate it, in
-> >> > zap_present_folio_ptes() and so does the pmd split path, in
-> >> > __split_huge_pmd_locked().
-> >> > 
-> >> > For most file mappings the omission is harmless, because writing to a
-> >> > shared file mapping goes through page_mkwrite(), which dirties the
-> >> > folio.  tmpfs is different: it has no page_mkwrite(), and
-> >> > vma_wants_writenotify() is false for it, so a *read* fault on a
-> >> > MAP_SHARED tmpfs mapping installs a writable pmd via do_read_fault().
-> >> > do_read_fault() does not call fault_dirty_shared_page(), so subsequent
-> >> > stores through that mapping set only the hardware dirty bit in the pmd
-> >> > and never call folio_mark_dirty().
-> >> >
-> >> > A shmem folio allocated by a fault
-> >> > is marked uptodate but not dirty (see the clear: block in
-> >> > shmem_get_folio_gfp()), so PG_dirty is never set at all.
-> >> > 
-> >> > Unmapping such a folio - munmap(), or exit_mmap() when the process dies
-> >> > - then loses the only record that it was written, because zap_huge_pmd()
-> >> > drops the pmd without transferring the dirty bit.  Reclaim afterwards
-> >> > sees a clean shmem folio: the whole swap-out block in
-> >> > shrink_folio_list() is inside "if (folio_test_dirty(folio))", so
-> >> > pageout() is skipped and the folio falls into __remove_mapping().
-> >> > There, folio_is_file_lru() is false for a swapbacked folio, so no shadow
-> >> > entry is created and __filemap_remove_folio(folio, NULL) simply empties
-> >> > the i_pages slot.  The data is freed without ever being written to swap,
-> >> > and the next fault on that index returns a freshly zeroed folio.
-> >> > 
-> >> > This is silent data loss for any process that keeps state in a
-> >> > MAP_SHARED tmpfs segment across an unmap - for example a cache handed
-> >> > from one process generation to the next through /dev/shm.  It requires
-> >> > the folio to be PMD-mapped, so it only shows up once shmem THP is
-> >> > enabled (which is what we did in Meta fleet and started noticing crashes);
-> >> > with THP off the pte path transfers the dirty bit correctly.
-> >> > It also only becomes visible when swap is enabled, because with no swap
-> >> > device shmem folios (which are on the anon LRU) are not scanned by
-> >> > reclaim at all, so the clean folio is never dropped.
-> >> > 
-> >> > Reproduced on x86_64 with a tmpfs mounted huge=within_size: read-fault a
-> >> > 2MB-backed region, write a known pattern through the resulting mapping,
-> >> > munmap, force reclaim of the cgroup, then re-map and read back.  Without
-> >> > this patch the region reads back as zeros and vmstat shows zswpout 0 -
-> >> > the data was discarded rather than swapped.  With this patch the region
-> >> > reads back correctly and the pages are swapped out as expected.  With
-> >> > huge=never, or when the first touch is a write, the test passes either
-> >> > way.
-> >> 
-> >> +Hugh.
-> >> 
-> >> Oopsie.
-> >> 
-> >> I'm confused why it took a decade to discover the bug...
-> >> Maybe read ahead of write for shmem is too rare, I donno.
-> >> 
-> >> > 
-> >> > Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> >> 
-> >> This would be more precise: b5072380eb61 ("thp: support file pages in zap_huge_pmd()")
-> >> 
-> >> Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-> >> 
-> >> > Cc: <stable@vger.kernel.org>
-> >> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> >> > ---
-> >> >  mm/huge_memory.c | 2 ++
-> >> >  1 file changed, 2 insertions(+)
-> >> > 
-> >> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> > index ced400f72d43a..afbb5974bd225 100644
-> >> > --- a/mm/huge_memory.c
-> >> > +++ b/mm/huge_memory.c
-> >> > @@ -2449,6 +2449,8 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
-> >> >  		add_mm_counter(mm, mm_counter_file(folio),
-> >> >  			       -HPAGE_PMD_NR);
-> >> >  
-> >> > +		if (is_present && pmd_dirty(pmdval))
-> >> > +			folio_mark_dirty(folio);
-> >> 
-> >> Unrelated to your patch, but noticed while looking at it: we drop the rmap
-> >> here under the pmd lock, while the TLB flush is deferred to
-> >> tlb_finish_mmu(). The pte path handles this with
-> >> tlb_delay_rmap()/force_flush (5df397dec7c4), but there's no pmd equivalent:
-> >> tlb_flush_rmap_batch() only knows folio_remove_rmap_ptes(), and
-> >> zap_huge_pmd() uses tlb_remove_page_size(), which takes no delay_rmap.
-> >> 
-> >> Doesn't matter for shmem, but xfs & friends do get PMD-order folios, and
-> >> do_set_pmd() makes the pmd dirty+writable once page_mkwrite() has run. So
-> >> folio_mkclean() can clean the folio while another CPU still stores through a
-> >> stale TLB entry -- silently lost write, no PG_dirty left behind.
-> >
-> >Where do you see page_mkwrite being called in the same path as do_set_pmd()?
-> >Per my understanding of the code, this Should Not Happen, and it really Should
-> >Not Happen for many, many reasons (write amplification being the main one).
-> 
-> Hmm.. that happens on an initial shared write fault. For non-DAX XFS, the
-> path starts with an empty PMD.
-> 
-> TL;DR
-> 
-> With an empty PMD and PMD-order THP allowed, __handle_mm_fault() first
-> tries create_huge_pmd(). VM_FAULT_FALLBACK sends the fault to
-> handle_pte_fault():
-> 
-> static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
-> 		unsigned long address, unsigned int flags)
-> {
-> 	...
-> 	if (pmd_none(*vmf.pmd) &&
-> 	    thp_vma_allowable_order(vma, vm_flags, TVA_PAGEFAULT, PMD_ORDER)) {
-> 		ret = create_huge_pmd(&vmf);
-> 		if (ret & VM_FAULT_FALLBACK)
-> 			goto fallback;
-> 		else
-> 			return ret;
-> 	}
-> 	...
-> fallback:
-> 	return handle_pte_fault(&vmf);
-> }
-> 
-> create_huge_pmd() dispatches to the filesystem's huge_fault callback:
-> 
-> static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
-> {
-> 	struct vm_area_struct *vma = vmf->vma;
-> 	...
-> 	if (vma->vm_ops->huge_fault)
-> 		return vma->vm_ops->huge_fault(vmf, PMD_ORDER);
-> 	return VM_FAULT_FALLBACK;
-> }
-> 
-> For non-DAX XFS, that callback returns VM_FAULT_FALLBACK:
-> 
-> static vm_fault_t
-> xfs_filemap_huge_fault(
-> 	struct vm_fault		*vmf,
-> 	unsigned int		order)
-> {
-> 	if (!IS_DAX(file_inode(vmf->vma->vm_file)))
-> 		return VM_FAULT_FALLBACK;
-> 	...
-> }
-> 
-> XFS installs the huge-fault, regular-fault, and page_mkwrite callbacks
-> in the same vm_ops:
-> 
-> static const struct vm_operations_struct xfs_file_vm_ops = {
-> 	.fault		= xfs_filemap_fault,
-> 	.huge_fault	= xfs_filemap_huge_fault,
-> 	...
-> 	.page_mkwrite	= xfs_filemap_page_mkwrite,
-> 	...
-> };
-> 
-> On the fallback path, handle_pte_fault() leaves an empty PMD without a
-> PTE and calls do_pte_missing():
-> 
-> static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
-> {
-> 	...
-> 	if (unlikely(pmd_none(*vmf->pmd))) {
-> 		/*
-> 		 * Leave __pte_alloc() until later: because vm_ops->fault may
-> 		 * want to allocate huge page, and if we expose page table
-> 		 * for an instant, it will be difficult to retract from
-> 		 * concurrent faults and from rmap lookups.
-> 		 */
-> 		vmf->pte = NULL;
-> 		vmf->flags &= ~FAULT_FLAG_ORIG_PTE_VALID;
-> 	...
-> 	}
-> 
-> 	if (!vmf->pte)
-> 		return do_pte_missing(vmf);
-> 	...
-> }
-> 
-> For a file VMA, do_pte_missing() calls do_fault():
-> 
-> static vm_fault_t do_pte_missing(struct vm_fault *vmf)
-> {
-> 	if (vma_is_anonymous(vmf->vma))
-> 		return do_anonymous_page(vmf);
-> 	else
-> 		return do_fault(vmf);
-> }
-> 
-> do_fault() sends FAULT_FLAG_WRITE + VM_SHARED to do_shared_fault():
-> 
-> static vm_fault_t do_fault(struct vm_fault *vmf)
-> {
-> 	struct vm_area_struct *vma = vmf->vma;
-> 	...
-> 	if (!vma->vm_ops->fault) {
-> 		...
-> 	} else if (!(vmf->flags & FAULT_FLAG_WRITE))
-> 		ret = do_read_fault(vmf);
-> 	else if (!(vma->vm_flags & VM_SHARED))
-> 		ret = do_cow_fault(vmf);
-> 	else
-> 		ret = do_shared_fault(vmf);
-> 	...
-> }
-> 
-> do_shared_fault() first calls __do_fault():
-> 
-> static vm_fault_t do_shared_fault(struct vm_fault *vmf)
-> {
-> 	struct vm_area_struct *vma = vmf->vma;
-> 	vm_fault_t ret, tmp;
-> 	struct folio *folio;
-> 	...
-> 	ret = __do_fault(vmf);
-> 	...
-> }
-> 
-> __do_fault() invokes the regular fault callback:
-> 
-> static vm_fault_t __do_fault(struct vm_fault *vmf)
-> {
-> 	struct vm_area_struct *vma = vmf->vma;
-> 	struct folio *folio;
-> 	vm_fault_t ret;
-> 	...
-> 	ret = vma->vm_ops->fault(vmf);
-> 	...
-> 	return ret;
-> }
-> 
-> For non-DAX XFS, xfs_filemap_fault() reaches filemap_fault():
-> 
-> static vm_fault_t
-> xfs_filemap_fault(
-> 	struct vm_fault		*vmf)
-> {
-> 	struct inode		*inode = file_inode(vmf->vma->vm_file);
-> 	...
-> 	return filemap_fault(vmf);
-> }
-> 
-> Once that returns the folio, do_shared_fault() calls do_page_mkwrite()
-> and then finish_fault():
-> 
-> static vm_fault_t do_shared_fault(struct vm_fault *vmf)
-> {
-> 	struct vm_area_struct *vma = vmf->vma;
-> 	vm_fault_t ret, tmp;
-> 	struct folio *folio;
-> 	...
-> 	folio = page_folio(vmf->page);
-> 	...
-> 	if (vma->vm_ops->page_mkwrite) {
-> 		folio_unlock(folio);
-> 		tmp = do_page_mkwrite(vmf, folio);
-> 		...
-> 	}
-> 
-> 	ret |= finish_fault(vmf);
-> 	...
-> }
-> 
-> do_page_mkwrite() calls the XFS callback installed above and restores
-> the original fault flags:
-> 
-> static vm_fault_t do_page_mkwrite(struct vm_fault *vmf, struct folio *folio)
-> {
-> 	vm_fault_t ret;
-> 	unsigned int old_flags = vmf->flags;
-> 
-> 	vmf->flags = FAULT_FLAG_WRITE|FAULT_FLAG_MKWRITE;
-> 	...
-> 	ret = vmf->vma->vm_ops->page_mkwrite(vmf);
-> 	/* Restore original flags so that caller is not surprised */
-> 	vmf->flags = old_flags;
-> 	...
-> }
-> 
-> So finish_fault() still sees FAULT_FLAG_WRITE. With an empty PMD, no
-> fallback requirement, and a PMD-mappable folio, it tries do_set_pmd():
-> 
-> vm_fault_t finish_fault(struct vm_fault *vmf)
-> {
-> 	...
-> 	if (pmd_none(*vmf->pmd)) {
-> 		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
-> 			ret = do_set_pmd(vmf, folio, page);
-> 			if (ret != VM_FAULT_FALLBACK)
-> 				return ret;
-> 		}
-> 		...
-> 	}
-> 	...
-> }
-> 
-> After its checks pass, do_set_pmd() takes FAULT_FLAG_WRITE from vmf and
-> installs a dirty+writable PMD:
-> 
-> vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page)
-> {
-> 	struct vm_area_struct *vma = vmf->vma;
-> 	bool write = vmf->flags & FAULT_FLAG_WRITE;
-> 	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
-> 	pmd_t entry;
-> 	...
-> 	entry = folio_mk_pmd(folio, vma->vm_page_prot);
-> 	if (write)
-> 		entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
-> 	...
-> 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, entry);
-> 	...
-> }
-> 
-> maybe_pmd_mkwrite() sets write permission for VM_WRITE:
-> 
-> pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
-> {
-> 	if (likely(vma->vm_flags & VM_WRITE))
-> 		pmd = pmd_mkwrite(pmd, vma);
-> 	return pmd;
-> }
+  1. Jump handling =E2=80=94 when a prediction lands outside the kernel's
+     readahead window we now always issue WILLNEED|NOREUSE explicitly,
+     instead of leaving the strategy branch to decide.
+  2. Kernel-window awareness =E2=80=94 when the kernel's own readahead wind=
+ow
+     is already >=3D 1MB the module detects this and completely silences
+     itself (confirmed by its own counters), so it never competes with
+     or disturbs a kernel window that is already sufficient.
+  3. Full instrumentation =E2=80=94 per-run p50/p95/p99/p999 latency, per-p=
+ass
+     usr/sys CPU overhead, and disk-I/O accounting.
 
-Thanks, this makes sense!
+We'll push the updated tree to GitHub once this discussion settles.
 
-> 
-> >Namely, see the comment in wp_huge_pmd():
-> >	/* COW or write-notify handled on pte level: split pmd. */
-> >
-> >if file huge pages get mapped writable, that's a bug.
-> 
-> That comment is about a different path. __handle_mm_fault() calls
-> wp_huge_pmd() only when a write/unshare fault hits an existing PMD THP
-> which is not writable:
+Full metrics matrix =E2=80=94 methodology: interleaved ON/OFF on the same
+machine, drop_caches before every run, 3 runs per configuration, 6.2 GB
+SQLite database and an 8 GB sequential file. Disk I/O is byte-identical
+between ON and OFF in all 96 runs =E2=80=94 NSD never issues extra I/O.
 
-No. That is simply a bug. There's little reason you wouldn't try do un-WP
-a huge PMD if the idea would be to do PMD granularity for write notifications.
-It isn't, naturally, because that results in horrible write amplification.
+seq64 =E2=80=94 8 GB sequential file, 64k requests, n=3D131K/run:
 
-The fix IMO is to make it so write faults on shared mappings with page_mkwrite
-never create a PMD. I don't think it makes sense to add rmap flushing hacks
-for PMDs, when the common case (read + write) instantly and purposefully
-breaks down to the PTE level (such that you really aren't supposed to get
-the above; you'll notice that as soon as the folio gets cleaned, it will
-get broken by the next write fault, period).
+  kb    | OFF avg  ON avg   diff  | p50 OFF->ON  | p99 OFF->ON   |
+overhead (usr+sys)
+  128   | 22.02s   17.11s   -22%  | 50->23 us     | 812->805 us   | 5.94->4=
+.33s
+  256   | 17.08s   17.22s   +1%   | 20->15 us     | 824->1129 us  | 4.07->4=
+.13s
+  512   | 16.81s   16.96s   +1%   | 16->14 us     | 1092->1903 us | 4.24->3=
+.60s
+  1024  | 17.25s   17.03s   -1%   | 15->16 us     | 1903->1883 us | 3.67->3=
+.74s
 
-See the attached patch. I know willy has been working on related stuff, so
-perhaps he might want to pick it up.
+SQLite Q2 full-table scan =E2=80=94 6.2 GB:
 
+  kb    | OFF avg  ON avg   diff  | overhead (usr+sys)
+  128   | 24.51s   20.48s   -16%  | +0.95s
+  256   | 20.05s   16.60s   -17%  | +1.26s
+  512   | 15.31s   12.18s   -20%  | +1.06s
+  1024  | 12.22s   12.09s   -1%   | +0.26s
 
--- 
-Pedro
+random4k =E2=80=94 100k random 4k requests:
 
---xqewysoglul6w752
-Content-Type: text/x-patch; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-mm-always-fallback-to-PTE-mappings-for-shared-write-.patch"
+  kb    | OFF avg  ON avg   diff  | p99
+  128   | 25.0s    25.5s    +2%   | ~0.98ms
+  256   | 26.9s    26.0s    -3%   | ~0.99ms
+  512   | 25.7s    25.5s    -1%   | ~0.98ms
+  1024  | 25.4s    24.7s    -3%   | ~0.99ms
 
-From b2f3fee7f1cc285e6a1fa79e77c58a88a51197b0 Mon Sep 17 00:00:00 2001
-From: Pedro Falcato <pfalcato@suse.de>
-Date: Thu, 20 Aug 2026 13:07:20 +0100
-Subject: [PATCH] mm: always fallback to PTE mappings for shared write faults
+random_repeat =E2=80=94 100k offsets x 3 passes, n=3D300K:
 
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
----
- mm/memory.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+  kb    | OFF avg  ON avg   diff  | p99
+  128   | 26.8s    25.1s    -6%   | 0.39ms
+  256   | 25.1s    24.0s    -4%   | 0.38ms
+  512   | 24.5s    24.4s    0%    | 0.37ms
+  1024  | 25.0s    24.7s    -1%   | 0.39ms
 
-diff --git a/mm/memory.c b/mm/memory.c
-index b4be57b590ce..d37f8a0f8355 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5778,6 +5778,16 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 		 */
- 		needs_fallback = !shmem_mapping(mapping) &&
- 			file_end < folio_next_index(folio);
-+
-+		if (vma->vm_flags & VM_SHARED && vma->vm_ops->page_mkwrite &&
-+		    vmf->flags & FAULT_FLAG_WRITE) {
-+			/*
-+			 * Filesystems that want write notification want as
-+			 * much granular of a mapping as possible. Don't
-+			 * install writable THPs for those.
-+			 */
-+			needs_fallback = true;
-+		}
- 	}
- 
- 	if (pmd_none(*vmf->pmd)) {
--- 
-2.55.0
+Honza, you asked whether the difference goes away at 1M =E2=80=94 and yes, =
+it
+does, for both workloads. The 128k default is the dominant factor; at
+1M the kernel alone already reaches this SSD's bandwidth ceiling, and
+NSD recognises that and silences itself entirely at >=3D 1M windows.
 
+But the 512k row is the one I'd really like your view on. The kernel
+with a 512k window alone (15.31s) trails the kernel with 1M (12.22s)
+by about 25%, yet NSD with a 512k window reaches 12.18s =E2=80=94 the same
+throughput at half the window. Our block-layer traces show OFF@512k
+keeps issuing ~512k requests, so the device is not the limit. It looks
+like the kernel's window growth is capped at ra_pages, while the
+fadvise-driven expansion NSD triggers is not =E2=80=94 which, incidentally,=
+ is
+why distros end up hand-tuning this value. Is that cap deliberate, for
+latency or cache-pollution control, or is there room for the growth
+policy to self-adapt?
 
---xqewysoglul6w752--
+Willy, on the architecture: hooking only vfs_read and skipping the
+fault path was a deliberate choice to bound the first iteration, but
+you're right that it's a gap =E2=80=94 filemap_fault bypasses vfs_read
+entirely, so we're currently blind to mmap'd workloads. Hooking it
+with the same fprobe is the next step. On replacing the PG_readahead
+folio marking: the matrix above convinced us this is the right
+direction. The kernel's growth policy, not the device, is the real
+bottleneck at default settings, so we're moving toward a design that
+manages ra_state directly and measures its own waste =E2=80=94 per-file
+tracking of consumed versus expired prefetches with adaptive
+aggressiveness, which is really just replacing the implicit
+assumptions behind PG_readahead marking with explicit measurement.
+Backward access patterns are already handled by the stride predictor
+(negative deltas, forward/backward counted separately); a dedicated
+backward-pattern benchmark will be added to the suite.
+
+Two things we're still working on, for honesty: at 256-512k the
+sequential p99 regresses (~0.8ms -> ~1.1ms and ~1.1ms -> ~1.9ms) as
+the prefetch regions push the device queue =E2=80=94 the usage-tracking wor=
+k
+above targets exactly that. And the random_repeat gains (4-6% at
+128-256k) suggest the predictor does help beyond what window size can
+fix; p95 there improves from 296 to 243 us.
+
+Questions we'd value your input on:
+  1. Is fadvise-driven expansion beyond ra_pages acceptable as a
+     mechanism, or should the growth policy itself change?
+  2. What would a minimal integrated design look like =E2=80=94 replacing
+     PG_readahead marking with direct ra_state control?
+  3. If we iterate: fault path first, or usage-tracking first?
+
+Per your suggestion, we'll cc the page cache maintainers from
+MAINTAINERS on the next revision.
+
+Best regards,
+Ayhan
 
