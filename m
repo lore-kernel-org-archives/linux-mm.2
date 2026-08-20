@@ -4,117 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A912C5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 09:27:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3554BC5DF81
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 09:39:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DACD6B009B; Thu, 20 Aug 2026 05:27:28 -0400 (EDT)
+	id 408EE6B0095; Thu, 20 Aug 2026 05:39:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68B706B009D; Thu, 20 Aug 2026 05:27:28 -0400 (EDT)
+	id 3BA7D6B009B; Thu, 20 Aug 2026 05:39:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A1D26B009F; Thu, 20 Aug 2026 05:27:28 -0400 (EDT)
+	id 2CF996B009D; Thu, 20 Aug 2026 05:39:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C7F56B009B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 05:27:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCA11A01DB
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:27:27 +0000 (UTC)
-X-FDA: 85121119734.19.7EDE9EC
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D78501C0007
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:27:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=UsDwAcI2;
-	spf=pass (imf20.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787218046;
-	b=HlbQhm7Fkj71yeca4DVWRlynrdiSJkjONNH5S1SHhyXT68mRQhhGUyuY/Z+z0kawdyzqHu
-	Ahh7JZn+Vai55qhrms9nyfGzKlNsFdH6x99exUu54wENM6SrH+5SYrnEtBOSiDSKxz8UEM
-	8cfOChXpvqMC80vUiJcA4ceoj3b/jnA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=UsDwAcI2;
-	spf=pass (imf20.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CB516B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 05:39:20 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86FA61606C5
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:39:19 +0000 (UTC)
+X-FDA: 85121149638.24.DCC4AE9
+Received: from mta0.migadu.com (out-125.mta0.migadu.com [91.218.175.125])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5CF14A0006
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 09:39:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OhgkQRHZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.125 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787218046;
+	s=arc-20220608; t=1787218757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hMskdTdkeMRGiYIbEal35ckaJbDeYchkDIOfTGopKXE=;
-	b=pc49zTwyJ0uCj15qN9uK0ggvzOv3dk8u6SPDLs00vzfnaefMccM4rb97qj0ZHxTniia/SU
-	17xs4kMKR+nI+Z4nAw2ZKe/7Ho9pgMEgJj3P/8FK7Nw9MyyzceSOyZxfjF1A/uDwlNSUFs
-	PiviewzJmEtzr0RiPnSrdF85EQZIRd0=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49558ce01afso15789465e9.1
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:27:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787218044; x=1787822844; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hMskdTdkeMRGiYIbEal35ckaJbDeYchkDIOfTGopKXE=;
-        b=UsDwAcI2gHXlUZxndsrL8SWZpKhwgDHJTGa7QMaw/kQvcYOphAulT8jr/8AeRvQi7V
-         jxSzR80kFE76FbQHuxQ94RGFt5B2TStuxzCjDGX/2MsICUeivQmwwubpCKvS1KhsfIw2
-         zZ7cz2IBHPuc9zult8qB8OIGC4UFJQOjRLCxgaR2fYyQv+ysV6BDbZWIiIz7fy2UtdmB
-         KoovwZpwSzkmiHZ2JL8MsYrxyeZflsIn/pbj7yT/ZgZVJA+LpTJ2ysY3W8S321QP9CB8
-         zVjYWpJeug/ljsBj73r945WFxCAU2UDP9Ev6q417nYB37EcDvHEYxHYe7w6XGJcP0zuI
-         1nwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787218044; x=1787822844;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hMskdTdkeMRGiYIbEal35ckaJbDeYchkDIOfTGopKXE=;
-        b=rARM0MG/Q9aBnwEGuYOygYtViKdzvsfsiFSORO07hwVHfCIVWMeLMjU5gslPwKgIPZ
-         L5NOAAv08EE3vy+gk4u21SYi5vixa/2sNW2KvJ7TrJh5RDaHIXTw95UOoo9fcLZNF2+3
-         WlaSVMoUdsvAufsq7B5JY7IaDGCdPVc+ZywQB0ogAG9BTW6b06gvrP/mWfA9xhS4EZhv
-         ilEY09Xcbc9T7A5+36LZLpjcUqpuo+PniCBSBMfnOvMuPnx8y0Qfk77ujojcYdJchS9k
-         NQwYUM97hKPx2jBsPWVW6SH0FQvYgXzXAls579R8MZBmh7dq0oI+GHc0aNTms76xZ980
-         4EDQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoAPwGPkga8+Bo9/nggOBkPzOc8MNmo5o7/cyWdg4223weeg8/SN1zk3BcmDyh8E88sXP/iVHN6Ww==@kvack.org
-X-Gm-Message-State: AOJu0YzA1DQ59s+KXac4cKZW0otH//bPydMhJZsA+blu1evTy/S2RKId
-	fVEE/6yOarghXY4EtCAmFmsXSFdxi/K7ZVMaYAqpmMEnLn3ITX3Q2TBSIhYpZawa/8A=
-X-Gm-Gg: AR+sD10525fpcnBa3izPLBOmPPAxetvW06i+Twus9Vxdy2+niWhFbIbCzZIsT0XV+Je
-	gPHP0rRPDFpy8POXyWzU2sBpcm3kes/b5iydThS0lc+CJT1QUeCs4mRZphZ6luNzrraxS1Alou4
-	zDSr8akay3Mi7wxkVjz5H3VIoSnVGCm2BPMItLqHIxIMhrZA5YS/CJt+Rpf2vUC8FrkEjVx+LPq
-	JmeTi7pLROv5iHImlFSivxvz5XlQK4L5DjXPMk2FDflu5cJ8mONno2Qcl7V8a8m7noAfdlaJV7G
-	uPpLh5/QW3sNcGl5VuSBdDEWHG8mpHA5Z1Pj7ktQcamY7m5K17T2pVIyWFaJ3OwwcTQsZ7QfhM8
-	se3JXTypppV8McPZ01Jd5nS5xiO5m+x4/4awNdwofjZZHoZKcetpTU9Rm4drr0OxQRBgrj4q05V
-	pxH4A/z3W49IQjdw3Z+opaPJdnWgqwHt1ukxkJGQdRax3vjWz+701voElIeaWA9NI=
-X-Received: by 2002:a05:600c:c167:b0:495:4d00:2fda with SMTP id 5b1f17b1804b1-499aa143546mr214370055e9.2.1787218044328;
-        Thu, 20 Aug 2026 02:27:24 -0700 (PDT)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499a9e805a4sm144983515e9.4.2026.08.20.02.27.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 02:27:23 -0700 (PDT)
-Date: Thu, 20 Aug 2026 11:27:20 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, tj@kernel.org, shuah@kernel.org, 
-	akpm@linux-foundation.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH] selftests/cgroup: Fix cg_run_in_subcgroups ignoring arg
- parameter
-Message-ID: <aobIWjGwusjSzvBn@localhost.localdomain>
-References: <20260820070944.31451-1-hongfu.li@linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5mgqyivtgswggrj3"
-Content-Disposition: inline
-In-Reply-To: <20260820070944.31451-1-hongfu.li@linux.dev>
-X-Rspamd-Queue-Id: D78501C0007
+	bh=7DsDg+FFQHE0daJt3tXS4ugvHiwFdRCRdfz1HqtMZc8=;
+	b=WeuZXU/orho7OhgwYr3eCsQF/w0IuC7SslxLZ5AWuHflf6I13F6A8hyaYwTevsKiJePENt
+	tahs8SSf5Nux+O7mu8KPh90bfj4kQ8l2TzjwckveDSxlEKOaScqvTc8yKWNqgxcnSa9q0q
+	3lAPNwBeFsBM+m2eOm+ZaL68tCQDuVM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OhgkQRHZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.125 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787218757;
+	b=yvwyMNAM5hxNdPXIF7ZGgyRvnf9TVAGXp3CEujK8P7YRoF4x+92nZeU2wwnZWKG2EZ/dzg
+	Fh0oCjvxwNJmrAUgqtxGDhL1agtnhA5tUfSRHN2YpoVr219yktkoIHPLH0syl0jeJLjcDM
+	8Yy8QkXPBuNUJYQSqCJ/48y4ZyBDFrY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7DsDg+FFQHE0daJt3tXS4ugvHiwFdRCRdfz1HqtMZc8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787218755; v=1; x=1787823555;
+ b=OhgkQRHZ5pnEcVrPUAcvUR98apJqLVvmPLwtxMZnm9iRWC4bHclyl2VW+vwFZhtVzx5hOXXL
+ Ps7fVxkW4Qc0lu3suFu1My6TD2ocRj57G5180Gj8fGarim9Obz1LDnVywJLXvj9NFtpxE0rPrwr
+ QqrJi7j1W6LpomBhTDV13SWw=
+X-Envelope-To: linux-mm@kvack.org
+Received: from smtpclient.apple (2408:8606:1800:501::1:7)
+	by mta12.migadu.com with ESMTPS id 093084cf8ca96627;
+	Thu, 20 Aug 2026 09:39:15 +0000
+X-Mizu-Trace-ID: 093084cf8ca96627
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 1/1] mm/hugetlb: do not dissolve gigantic pages without
+ runtime support
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
+Date: Thu, 20 Aug 2026 17:38:58 +0800
+Cc: Longlong Xia <xialonglong2025@163.com>,
+ osalvador@suse.de,
+ akpm@linux-foundation.org,
+ mike.kravetz@oracle.com,
+ mhocko@suse.com,
+ linmiaohe@huawei.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F06EC17D-2A3D-43DA-968B-1DD4E1253EF7@linux.dev>
+References: <20260817162039.1511838-1-xialonglong2025@163.com>
+ <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-Stat-Signature: b1ibxxwui3rasisetsm4yazc7iaszr4k
+X-Rspamd-Queue-Id: 5CF14A0006
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: srjcbhoy7ecx19fpkxxyjkpuyn8n54dt
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787218045-639443
-X-HE-Meta: U2FsdGVkX19O8Ga4KRR2ApAffixPCdKtKvWmQ3v2XFBgwVlbcxikxiq26SKj3cuwIkedLc11ks/sdHEBOyEHBOuGN8LhqEqc0y2/WMPFPbt1ucN2wHvr66bBjRbm0T/L0KTlKTvu+eM5KYnDOjarghqNNzdSecx7ZrCsG/kPkboqTZLS4ty7DAS0WIl7YMaK2AUYP+mie2OvdPld0v+HBM+61D6D9tUlIHRDGJtTZ/1nNt1r4LAapf4LAIsoTzupi1k6LLFzfDrUBcPjwz+rkcy8ObLd87Y137tsJj5oMX93IX49CcTbuyFRRZKafXfi8kvdn+BeqZj2o89ZUh7rp1Q2R3i/tHbXZPM5esP+NQJ6G1zQSfp0mdd7ILTNg641FItYBBqoJLVPvl+ZdNi0FUCd5/FyFAZcNYNnLdGXjAKbS/BKb63goPh6tLIH4v/DMpIalerSx1fK7ye0cLxM4424/AlJG29nUAkH1sUc7RHFSprsxgfOg1JVhaWqYKF8meaw2i4bR5QBJvngCCl99/3mFvzQvahNczR/xXdjem7qaF+7JgK7ULu0TDplwCXxw0XbZ1LjwYwiUZDvkGQGZ8aun90bGeDqzg7SBs2Yo/4f14DZ6K0swks0i52qq5T9BQSzmX/EFMZQHmT01/fsNVHEJp3ombq/zJCHueuQ1HUbq0b/P1WX/H1qxJfNy+5WQRfCDDovRvOIfy44IZCrO8iG98fgxCFBX4ZH6rxw80cMHFcn3pM9AXTRL81PaccF0zbCg837WBg+UZ7O6tI0TnikYKcbKquXQKTcVHW8FYG8ku5qK4Y51ac9rPHcOKyc0qMrlJlNiLmRoYRXUh2XdKsnmldt8ZFuQVDSFzKc6ncaj+OGaW2+lg2W4ckceCuXFwVuEXfC3DhSpGuffgQaWqJ7ZIwdi3tf2VMGkVtsCX/mDbr5zBcSLpy8L652tPULoo00GAZN3NgBNTA3rs3
- mpYZ1Up1
- w4RroYCn0zesNttxvOXGnt1IONMJHLwTyW/rbkT8QpO7LK3XHjCaQRcawYqnLdw6dGHnqgeKbAlNpd/Lp2623k86tZ5FtegchYYUY9Sekp2Uec/JtqKSlLt1PbeDCn65XyUakohXonZGd05IrVwGz35b/r5eEILfbe0HfOxfeCMADcUcebeup4zcdVs8f94lEfJgZWvlnGQRzI1cpbELKg4uiblRIBcR3VKoQs1N1QO79rTVZ1Ef80yLEJ6XwMPFSzHXyVRb6xCy7onyEG0MOH0poIt7vhEq83LGElvpan2qh2YvPPLU/GWF57v02iSOqVru57821WeNypVS6/V4OznpD1VJYO2yqbhZJkJv3o670G/fe9KoQwCauY+APAdHhbNoz9xSm+aTY5AQ3BolbCdJ0w8yBk79ijGLt8dXfTuYyUmDCAtqbpoHee4Pax7cDL05wLBCs4JZvx1yR42eceS927HT2hw3znPauJTz8e3tFrHJF7pkd/hu7a4Z0DS94xvN/
+X-HE-Tag: 1787218757-333004
+X-HE-Meta: U2FsdGVkX1/fpBsSoAoxGUKnNOEjDsCc29WbPrfUhasytTaXyRTmNm/YKkHDn3ndVfc348iTsJVwPnoC5kWB/ZjceYsENbJA9gO9dlZ6Iih/Zef2jOMZQCqIZtx9adpJPj1PNi/9t4HC6+Rq5NDhXeX8Ih7Tkifff4YSyaZdJegbtMR2x8Nhg2PsaG+3BP1NP6d+vMVHfW0sXZq/dh8vhTCr6GQt132klM7j6Zh/GqEV09fWuJHzVjxG9ioS4j0LS33q2GHJErAp9SO5UaRSzQmws61ayBTBRxwwzY1Zc4KaCN3j83mtmrW0+VQecZqkZuEg/WWiQU+62l01QVN+kRrV/Lc6+mUKIWdY54mS3hdZWhzS5v5o1XB7aoUHIg3OHkM+hB8TSnpLhIpnY0uiDjjrHTtC3OXatDMq3GcEsa2FGO1C6zk2qdfuzL8CQZ/lPU09I0kOrYYCsYBhtra/M06L+m0EovLbJ/hXQ2CyvwjCI6eKdOvajaQXNHgoeYXGTguJ2SDsrhTejm7rDeZkVthy2N977pgvqHCVKNkNNiu6hdpX6AY8FZ2f7bgyBrUHVACFCZnLnru/yc8yvvXZbLOmQdN1IhX1lBxkqut7Yr9KLn/ZyjnUG5QoyM0HRyOLh+ja10LMHiKrY5Ah6v7MDGnvazxvW8ApAB5ig3CZ7d4qEZ+H0beNp4jfAAgayBWnTqVLF5M+GZArTbB+FV8+GK6unclOR35QpBcn1ylG2WYcr5gRoIUZHcA2SZTTymlTnE8okIlNQk4Gk7ZRgymGgy1aa3fqxKnUulb6I7sOQ+B+SmU8K5hAg+CixpSCJb4WkOiCRhaiql5jsMOtioqcjrR11rJt1NjKwycOrABEZEqJAGi3kSU+aAl2fGVVGd/UA/bZuiIiZiIUfJWzMMIeAy0+ZCwjnI63x7y4bneAMcVwboDVbSbppFWN8Qa9H3ptn0I4hT7cuXr4ecpLXc8
+ 5jyxTJle
+ cmAstkE4OX6ttvXGHKXWKsXcGmLEtzCYNgXloG0fZOKfHv6uzTo7p4nDBDY5lmyW2NnJwiemlYhSBKLhrXa+BiNjy10Xu4ZjszxPf/f2YWrb6Xw13BOrdWbZBrK0ZSCR6lq3pWgXzBGhHUaNq3xAE7+j9SbvC+cNr87bfBWTFgo9naZT+9i11sqMn6PdABXa4mP0ezaiEUhDWSS62zASpQK7NGjb6V4gsztTdeEU07MulyZTaw5SFKWff87fQ7NsprccDR3032GCLOVC+rbZy9y4l+lNW7bjJhbZlcwuOSkBonlNbu4QK3PmdFnSnTUcNpZi0Cc4XMzbcyN+HNr0CmZU8PRA8ZEwvpN2iF345+baCoUvaLLo3uqHnmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,50 +102,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---5mgqyivtgswggrj3
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] selftests/cgroup: Fix cg_run_in_subcgroups ignoring arg
- parameter
-MIME-Version: 1.0
 
-On Thu, Aug 20, 2026 at 03:09:44PM +0800, Hongfu Li <hongfu.li@linux.dev> w=
-rote:
-> From: Hongfu Li <lihongfu@kylinos.cn>
+> On Aug 19, 2026, at 16:52, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
 >=20
-> cg_run_in_subcgroups() discards its arg and always passes NULL to cg_run(=
-),
-> turning the (void *)100 from test_kmem_dead_cgroups() into NULL so no
-> allocation occurs.
+> On 8/17/26 18:20, Longlong Xia wrote:
+>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>=20
+>> dissolve_free_hugetlb_folio() doesn't check =
+hstate_is_gigantic_no_runtime(h)
+>> though remove_hugetlb_folio()/update_and_free_hugetlb_folio() =
+silently
+>> bail for such folios
 >=20
-> This makes test_kmem_dead_cgroups() falsely pass without exercising the
-> "dying cgroup with charged slab" scenario it intends to test.
+> That's odd. Why do they silently skip such folios instead of warning =
+that
+> something unexpected is happening?
 >=20
-> Pass the arg through to cg_run() to fix this.
+> This screams for a cleanup unless I am missing something :)
+
+Hi David,
+
+Sashiko actually has a pretty detailed description [1]. So I think it =
+deserves a fix.
+
+[1] =
+https://sashiko.dev/#/patchset/20260814083027.1419487-1-xialonglong2025@16=
+3.com
+
+Muchun,
+Thanks.
+
 >=20
-> Fixes: 933dc80ec262 ("kselftests: cgroup: add kernel memory accounting te=
-sts")
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> ---
->  tools/testing/selftests/cgroup/test_kmem.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> --=20
+> Cheers,
+>=20
+> David
 
-Good catch,
-
-Reviewed-by: Michal Koutn=FD <mkoutny@suse.com>
-
---5mgqyivtgswggrj3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaobIcxsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AjWhwEAka0wkR1ajkCSVyjaiXDA
-XIVViX0NbgRoaisxbd3m6XYA/0av7r0/ssp0z/21d6p1a6x5TWOMouSsQwmWbet+
-y5YG
-=RIxv
------END PGP SIGNATURE-----
-
---5mgqyivtgswggrj3--
 
