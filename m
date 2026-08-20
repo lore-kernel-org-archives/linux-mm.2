@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E65D4C5DF86
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 20:18:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2DC7C5DF86
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 20:22:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C593B6B009D; Thu, 20 Aug 2026 16:18:52 -0400 (EDT)
+	id 162906B00A0; Thu, 20 Aug 2026 16:22:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2FA96B009F; Thu, 20 Aug 2026 16:18:52 -0400 (EDT)
+	id 13A8A6B00A1; Thu, 20 Aug 2026 16:22:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6C776B00A0; Thu, 20 Aug 2026 16:18:52 -0400 (EDT)
+	id 0772E6B00A2; Thu, 20 Aug 2026 16:22:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 929CE6B009D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 16:18:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D0671A02AE
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:18:52 +0000 (UTC)
-X-FDA: 85122761304.24.36FAF00
+	by kanga.kvack.org (Postfix) with ESMTP id C0B936B00A0
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 16:22:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4CFE01A02A0
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:22:29 +0000 (UTC)
+X-FDA: 85122770418.04.562D8A8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 318531C000F
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:18:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cZgTjWP4;
-	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5B29C1C0007
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:22:27 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A1FXaAFP;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787257130;
+	s=arc-20220608; t=1787257347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EA6OB8efB4CjX+7G6ehKwJX38JDkTNDwLUFqLLQu5KU=;
-	b=d7JG/jypeNZei+n2oo0honGhH+JW8YsLEsW0uElZYH1ljzZVuueCGHVbW4tLLNQUfFy0CU
-	amu44ijQ0NmyPvDKxwegPA3eOr5BN/aGhdV11kATeNpCqx8HARtdonx5ckuTXYGSRjdMSP
-	CCTrcOxM9jrEsVKh3pVx/IzhGq3PdNA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cZgTjWP4;
-	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Pz8QCpPSO3ogvQ4JHJS7MyDFtkTH0N2jETHMbR5/AwQ=;
+	b=Lxbxp5AS5rCxJlWrLirjer6T5qdvMw6PxayDTwgciFk0MWG/4gLOkzyc0prETJVwyrj05o
+	A8w9PaIN/NPR1KTANg9gSLLOOoD4PHQGAQumhpmxaM7ZkXjj1Vz4nWuvX3kMb2e3z2Nc7+
+	+WVRRCKYkD/d9q8vzjLyoFYquovwX6s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787257130;
-	b=EzZu3EOt5Mj4DWvU+Mix+B/4HmfP+D7Mpkf+4mcLoxYPo+vbHlnj40a4aAHADP1Eu0LtgG
-	ESPBXTyTjQktzsjzvAZr9rDByDxu21cLw5SqF82GMLfI6/nx8Vdeit+uc4Ln4bFdKSGvjX
-	sUGqZ6D/UMlKaWN+0ACs6mvNqh/ZnBw=
+	t=1787257347;
+	b=xfgIcWEMmzNvw80cJlMmSWbpG5/AbvUuFf/MrzRHe9A0yRZxyqkn3Kh2I25065fyV1micH
+	Mj2dg2WaEcrUh7Ts9MfUIde7WNUVLvf0WJUx8zQrvNDGjWXlnovszP1FKdrO6u09VLAgLX
+	0upLC6cO4jVRuPow7AHwsbkv+QDLqXk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A1FXaAFP;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F16784380B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CC71F00A3A
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:18:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6891043BE4
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:22:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3BF1F0155A
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787257128;
-	bh=EA6OB8efB4CjX+7G6ehKwJX38JDkTNDwLUFqLLQu5KU=;
+	s=k20260515; t=1787257346;
+	bh=Pz8QCpPSO3ogvQ4JHJS7MyDFtkTH0N2jETHMbR5/AwQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cZgTjWP4kUwedUY4+tjuChuBR2OgOb2WF2djzZFULirEcCI3xCFZnXv4rbbLcLR5c
-	 z00eqZyrEhKYWL7VUfU4zAx+7GErtIFPGIDeRmpHlECpoAoxm7Dt2W80ShQ86imwQ6
-	 bJ8bxPFDSkQCcuQcaTgkGvGVsLVWxsx84ytA7oC7DafGoSRNJ8MS0NL8cjEc5YIOaT
-	 UGgQg73+4uYYr2fZf3v921mJYQgP1HbHzxMryYuFVnwioSwKd7cFXqR/o4eFqKH1kv
-	 q/r1mvkP0C5+WOU3VSpQ/bpNovtrhxAa+nTAoR+SkW/yHWht/UmOHHscmczk+4lL6/
-	 VvNpNNgyDO9xQ==
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8ff20870ac7so2776476d6.1
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:18:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqfhUExk172m/dlJp9mINeUVeitufOKwX5yMxjpnrrweT8NgGUz0aY5uc5gemcrPfGITV0M+UhioQ==@kvack.org
-X-Gm-Message-State: AFuF++lvbUmKG6wkN6o0hDfLnPp2UU3KPNVhIyqEKwWJsPUCo7RNqkAq
-	iLsX0bM9G/lZJb6AVGSlAlnzLOKW7Rk9JP5lnN+eEOmPl1OT1N1gbHHhBNzJfyvVZjfNh75HmYR
-	XibUYYUwY+LNZsD4IlIR6pJteZ5ZjMlo=
-X-Received: by 2002:a05:6214:5006:b0:8f0:6a92:b90e with SMTP id
- 6a1803df08f44-90c80db17a5mr9077766d6.25.1787257128121; Thu, 20 Aug 2026
- 13:18:48 -0700 (PDT)
+	b=A1FXaAFPqNx99NNpam4HpjcBd3+JghFPZivbqO/NplTFdgZA76AAIKhDYeb7c3pgX
+	 HsxrFT/N6TaHIRhyVq63/aPI8zRfLpO0u7HFJVAxr1c8HBzFfgFOqSjlZfM8EdWf90
+	 zogqwNMG+hIoT54ymvLEXytjIM6T338NbpBVgCsn1f8gr//6BLZs5jcMdlpiGk7zxY
+	 UQogCXLIvsg2yI3Xg6QCDqJwmXAhay45agfZYlvNqTDLqD2WHwKI3EuAp8QGSf9Yq3
+	 B/MK8ADzhBQ3PfU5eV0cujLHS27ocgvjEZThWW0GHu8JLpcO/W2hKWuIu4XR7jKJQJ
+	 iSW/AAR3blxfg==
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c1372f84dso1532821cf.2
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:22:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rpv5MwNQ//ITSEll4varxr2deiPVvgWvzR0A21ddBpXg3cXbvXhBVKiwiKYZ+pYvTAKW1vQTzp1Hw==@kvack.org
+X-Gm-Message-State: AOJu0YyfXr3Jq3ksLHpqUtbTyVJZL9JayjeUPQfq6Srfm7qcqlxQk08O
+	I0hjFvdTwbmB/MR9FZ8Wwq3A4+olkSuJXSQJcguoJcClQKBWZjlg6yecWylR80wJCHMYjixAdC5
+	zdV1di2ndFfrhMeBlXqUnnI9UPFtQfGI=
+X-Received: by 2002:ac8:5cca:0:b0:528:f72:a986 with SMTP id
+ d75a77b69052e-52df5bc6e10mr10519831cf.44.1787257345641; Thu, 20 Aug 2026
+ 13:22:25 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260818225904.55236-1-baohua@kernel.org> <c8287b5a-8f8b-4110-ad47-996842f01bfe@kernel.org>
-In-Reply-To: <c8287b5a-8f8b-4110-ad47-996842f01bfe@kernel.org>
+ <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
 From: Barry Song <baohua@kernel.org>
-Date: Fri, 21 Aug 2026 04:18:35 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
-X-Gm-Features: AcwNN1WBnDfKERJ1DWbe774PNc22vEu6BysyJ-hXtK6D44bKVjz_b2sPxe4tyuY
-Message-ID: <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
+Date: Fri, 21 Aug 2026 04:22:14 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x+-FtP2oMRapzf3Dhu4B4wXOj1XQi+HbSSAma2Cbwz+Q@mail.gmail.com>
+X-Gm-Features: AcwNN1UvWexqHmJyks0gmx3p7vLLeAoX6RERbp3fmcxUoOpTgVNzY1dM_cQAbmY
+Message-ID: <CAGsJ_4x+-FtP2oMRapzf3Dhu4B4wXOj1XQi+HbSSAma2Cbwz+Q@mail.gmail.com>
 Subject: Re: [RFC PATCH v3 0/4] mm: enable lru cache for smaller large folios
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
@@ -92,14 +93,14 @@ Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
 	hannes@cmpxchg.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 3pb71gipzc5pfxao8ay1bzf3m44wmx3n
-X-Rspamd-Queue-Id: 318531C000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787257130-173790
-X-HE-Meta: U2FsdGVkX183B3b68GtpM34ohKKe9iYdnW0vE1kHZiAWgW9vkMxVRS90kcVLDvhQSHFZ/61PX5mVrSXptY4ajO8M22kZesdQVZ3DCaCD+G2OlAewVfBlTXp2P98A19u6+y9gaAtVO7PjByn03SoHtNOAxUoGNd/G6xeFcU4Kk011bM1n6suTtgocBTQvSRVIww7/Clpb8z2Rvw7qqxt9dzytBDSdi5323UOVEW89BnvVNlk+T7Qh6AjyEcNGbaRGS09n7YAH3iR8HrJ83kWUWQAWlND6ZtbKq4ntyKao4APvmBvuF+U29sIy/f4DTNXWTXiZ1PfT7wHUUfX7DEa9hDoAcpjs0dekTPF3Fh+e4lqMjdmdLkR2x7MtJdnHL1F52NALZMH1iSk0e6odhBRCvh6EoWjm1X0suhXr5aP4Y6utp9zAz1lCtB9ltUC6/t6JRcqNSrv80jrkw8uUSKwz7adjfAjwheRUH4wOmo7WJn6T+RoWCRK4Dpqv4G6vrsc/fK/Jhir97gtymfue3zOskySpoYk1/6T8Lc7sicnNVylYeaupsaDPysSlTkR+awQrxoYZALRBkCqZBgaH+ql4G9BVD+YuxHn7YOBSsQAfhHB4H6B8+ptsGKgQ7h9t8IzKFPnxJS/UCPZjw+wK+lpSKDO01YPko5KsAWPu0WsTfRdpsnuVLPv84sslbUaFF17Lm+LfYhOJHMpEcVbmmp6utuW2nqcN09r40TcGRlcxtw3XuZ8ZIvCOQfBzw73GfoCfNHH+wt0Y5l1dydjvkUt+cFSmz8/jMEGkOfLlYiZvouzmZmai0gP/XaQPIjwoNfZkLlY1aOmSG4WxUoqIYR+CZiwY8eUt6q4HhH3+LyKAARu2NxSACkP2ZcXDFTm5utFdj+npsgdGkhXtQeg30Ll/pzsYNVuQsBy/N4l1u566sc6HPFvpgFhyDpubLJRmIL2x7pL3ALZ5J7VC3giWxQU
- 1bP3a+z6
- FVrX2K9YqremTucOHTvevkwBVTXmpA404XKiBOhRt45+bK3LDiYChyVsC86ul8Z2n9APtSjmH7lS31WjemPRBrthWZDPiiiUK29GkQCrZHnKWEcrGeI0glKZcFC++vmolYRyyhvaNmtcY+CzA6wWxJF37xfaPhxMMrJ5Z+PxMD97XAN2wwa+Zx7wbnAgAEMG4IgeFKvVnRleYRh41Qvai1LG2s8avaQVo/GToVWftLmaYx8Va40b2VtN+Ez4NaaC0poH4/Mt9wWRj5kG9+rHQLFppfAq/NUmjHLtdii1DIs5nwV24EtExDn4Pow==
+X-Stat-Signature: urnpzb8m5ztsjpum69ee3bga73i8f4of
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5B29C1C0007
+X-HE-Tag: 1787257347-882463
+X-HE-Meta: U2FsdGVkX1/uypbJYehC0XqcJZDPiEdlgCPRh7pszW5vp+fkA7TX/ueOCmaJ2aDU0geKIAHXDKAJlzj05DLUlDmkPGJnzrZZ5W0BnMZQ2rlv396UjteQ7uut/Qjf8QJjNsHvMTPZlu8nkWwL18kgJyoqsveydDhOz1rPEYGZSLiaAQrLMTrEtrwgQfTbTQcsbwjPTXeBl901F5KR9WnP5O0QV+5JnXhl1EXiRdztcmptZ2lCanefwJ3ZBUD6WPaEsrK9sCHTGcbpksYYG/KFB6TlBoD24WDt75LCPFubB5HenBJas4qQ4toMdguj9QDSmOFsiPo5uUjWtu7trFmYq+rB2nl+lscfvfIb3mMdqElo5iQhZX1QbqiH0Ku4QoI01bEXanjTRqIL1Wv3R/7TtURWosqiNdeeYe1r/moJlG3BUh09JbQOrtvdRJASVND2mRXuieBmEi9phNGG4Hmno67MlfurZlS62nhcuQfCU4nf7S2MY6K0cAdCwjFACoXXQym2cpD3W7+WoH6sdeHxChZoZ3XUEu5UGHP0RYGMgzxXpF5zed8S9uajR4gMgAVxN/geXtDNhbyC6tLihLHfgHQ84K6WP8iBaHkFkAcc0tQr5oB+Uijs0YlDeJfGE48vHQMqG/S/qr9kSnf0C/STWeupTmr5IAEmIb4JnXhZoRWyDHGSABeNXiMgET5D/K65tmogfoTnyceRhy2sQcH+0IMpOq+OR2DRZuFoe3VDhJIWdUv7t+Xk7Rmc8ppjMCTpDehTmG9JXw3eBE8+Ur0Gu1Tk5AlwHl5C4q1Jt6EaX2vMBDuxtPMvrxZ+fKoPWNXq4omvoajpUcfyqImQTRXTvGPZ9f4EtNE8mK0GzFEG5a/Bo6spKq5aROU51STuD7SZ6NjMr52igXGzAzpj9j7PxeEDcwmSdQqTuI2D3pgKashXvj2AKYZr+NDT4BopLtZQcZlnJTvByf9ZpsjNpKy
+ 7j9lqgiv
+ b2Ly4Qs+WoU+okMgwGewmAHgF3dGJvLzwkRHxJMWZ5KK+cNCcUB5nC9TMmp1dFP72rMg4Jr18T0+ZMw7z62pQwiNp/guSn8LymwerR5CjvxidrjQHw2NW8LfRQMXIA5hfJp73UuK5kZJrJP+vqI5L8WWVdanEr8/UzIfYqQuinq9dgkT/pLUQidQDXUxvKf+BwUn4D+4fwMtlQ5xoMYh/uvpvHSk7/S4sr5ljfEtpVY3CKqYr9vQFumsOSiIqrLPmkHARgtvxd1REb+jmBDbzZ+6AWgvzumUhF/t8twA9cBMXC0omDLR5qtXv3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,42 +108,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 2:23=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
+On Fri, Aug 21, 2026 at 4:18=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
+e:
 >
-> On 8/19/26 00:59, Barry Song (Xiaomi) wrote:
-> > This patchset enables the per-CPU LRU cache for large folios with fewer
-> > than `FOLIO_BATCH_SIZE` (31) pages. It also limits each per-CPU LRU cac=
-he
-> > to at most `FOLIO_BATCH_SIZE` pages to avoid negatively affecting
-> > accounting and memory reclamation pressure.
+> On Fri, Aug 21, 2026 at 2:23=E2=80=AFAM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
 > >
-> > This is particularly beneficial on systems that use relatively small
-> > large folios. For larger folios, the benefit is likely to be smaller
-> > because far fewer folios are expected to contend for the LRU cache.
+> > On 8/19/26 00:59, Barry Song (Xiaomi) wrote:
+> > > This patchset enables the per-CPU LRU cache for large folios with few=
+er
+> > > than `FOLIO_BATCH_SIZE` (31) pages. It also limits each per-CPU LRU c=
+ache
+> > > to at most `FOLIO_BATCH_SIZE` pages to avoid negatively affecting
+> > > accounting and memory reclamation pressure.
+> > >
+> > > This is particularly beneficial on systems that use relatively small
+> > > large folios. For larger folios, the benefit is likely to be smaller
+> > > because far fewer folios are expected to contend for the LRU cache.
+> >
+> > As raised, there is this problem with collect_longterm_unpinnable_folio=
+s()
+> >
+> > (see
+> > https://lore.kernel.org/r/20260806-lru_cache_drain_for_folio-v1-1-c6287=
+d295e99@kernel.org
+> > )
+> >
+> > whereby we don't know how many refs we actually hold. Certainly not 1.
+> >
+> > We might have to wait for Hugh's cleanup to handle that cleanly (and av=
+oid all
+> > the other LRU cache draining).
 >
-> As raised, there is this problem with collect_longterm_unpinnable_folios(=
-)
->
-> (see
-> https://lore.kernel.org/r/20260806-lru_cache_drain_for_folio-v1-1-c6287d2=
-95e99@kernel.org
-> )
->
-> whereby we don't know how many refs we actually hold. Certainly not 1.
->
-> We might have to wait for Hugh's cleanup to handle that cleanly (and avoi=
-d all
-> the other LRU cache draining).
+> Hi David,
+> Thanks for raising this.
+> Yes, I saw your comment and took a closer look at it. I think the
+> best approach for now is to leave that part untouched until Hugh's
+> patch lands? We might end up doing some extra draining in that case,
+> but that's safe=E2=80=94any value greater than 1 might not be. We may jus=
+t
+> drain more than necessary?
 
-Hi David,
-Thanks for raising this.
-Yes, I saw your comment and took a closer look at it. I think the
-best approach for now is to leave that part untouched until Hugh's
-patch lands? We might end up doing some extra draining in that case,
-but that's safe=E2=80=94any value greater than 1 might not be. We may just
-drain more than necessary?
+BTW, David. This is also why I didn't move the below checks in patch 3/4[1]
+to lru_cache_drain_for_folio() as we are not safe to do it for that "1" in
+collect_longterm_unpinnable_folios():
 
-Best Regards
-Barry
++ if (folio_ref_count(folio) =3D=3D folio_expected_ref_count(folio) + 1 +
++    folio_may_be_lru_cached(folio))
++ lru_cache_drain_for_folio(folio, 1, NULL);
+
+[1] https://lore.kernel.org/all/20260818225904.55236-4-baohua@kernel.org/
+
+>
+> Best Regards
+> Barry
 
