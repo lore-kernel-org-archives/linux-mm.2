@@ -4,106 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28E83C5DF82
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 06:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA24C5DF82
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 06:15:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 214196B0098; Thu, 20 Aug 2026 02:13:57 -0400 (EDT)
+	id 65D456B009B; Thu, 20 Aug 2026 02:15:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EC056B009B; Thu, 20 Aug 2026 02:13:57 -0400 (EDT)
+	id 60DD36B009D; Thu, 20 Aug 2026 02:15:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B4356B009D; Thu, 20 Aug 2026 02:13:57 -0400 (EDT)
+	id 522F46B009E; Thu, 20 Aug 2026 02:15:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CFD366B0098
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:13:56 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53FCCC048E
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 06:13:56 +0000 (UTC)
-X-FDA: 85120632072.03.74336D9
-Received: from mta0.migadu.com (out-246.mta0.migadu.com [91.218.175.246])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 493561C0009
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 06:13:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gWsdERKG;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.246 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 326916B009B
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 02:15:48 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE306C044F
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 06:15:47 +0000 (UTC)
+X-FDA: 85120636734.27.33FA0BE
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 75C3D20002
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 06:15:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	spf=pass (imf13.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787206434;
+	s=arc-20220608; t=1787206545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VIgiuVnVrClbLqNUEm6VnA2rtONgvwj4lJEq6s2oIGM=;
-	b=YcMm/XuoG7l+XrxqB5MWJStSnxbtgAW0eyR2p0a0cnVcrAF5XUj0bYcwUGAwFIdCsApG42
-	tdC21YGCJKqPvJtX0fnqale1Wr+xt2aycbf446sC/lgLH/dvnDRSj8FiPe7lDraEFqgiiZ
-	IzNeLgq6IEk6vJBUlF0PLiM6c+7NLFY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=jA5UNKh5zqIyuAUQzbMgVLtKgsCsozrj6fK7Wa4whj0=;
+	b=QrtvEY5DlSn/zK4qthXyVdTbzpsq018k2QAftWJ4MxkkXix8suMcMzucCgt3q1v3R+HZem
+	u1c9xvkUxY/z+gC9tQ2PXQcbMg5izQn3MKsl7XwF7PRvrq9kMeyL/vmKyFm421ls8vH7ZI
+	YDaSvuFKTzeiOOlw9elWnH4WKTZjkAw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787206434;
-	b=wINUcL57tXoCEvezXM3AacluVz7Dniu9VyCNT15gUrBCgLYMhd3QmxzQ7EXaPDCPIpj/7v
-	n+FCQmvOCvMkDIwqtKqE0LFNvNZfDJeudu6XAsxtR+zrDf+iGZfg0rA7RSL+F8QCEgLufC
-	Az7QQNSUBaLl3WBoqXvYl2FTwJmO0qM=
+	t=1787206545;
+	b=o9rHb3KlOlzesgxZsnnPO53l63lFl1KgYlAzB4dNDSMmTXlrE96R9QUlEbU1dZqEPfwJ2p
+	0nUVzT6ypRxZxP++KPGLDJIjCROIEFENQ4+RQf/Qv+x+yA+IJ8Rgkhec5rvE8Ls/YfIsXu
+	WobkKgd2HimZR4QPVr5yJTZjj2p3dsU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gWsdERKG;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.246 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=OLL9Vg6Y98cx9hk3jOcUkhAPSNsd+cPxxJkp4/MTDQQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787206433; v=1; x=1787811233;
- b=gWsdERKGxhxJVoYfHa7AK5jWnL5WmZP7GsfSRU21S70/sVZkaZZFFLVQLQ25ItAHsEWHWSRs
- 2HbzNc+zxD8I8SnxQA9/+CIiYiNEPyAPxIryXnE2xsBxj/hDW2jUi/jd1/c7oGmV2l7Sumtix5B
- YNgT8QsbgCpGbCG5Cdm4g9OQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id 588eb7e31e708159;
-	Thu, 20 Aug 2026 06:13:53 +0000
-X-Mizu-Trace-ID: 588eb7e31e708159
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: pfalcato@suse.de
-Cc: kas@kernel.org,
-	usama.arif@linux.dev,
-	hughd@google.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+X-UUID: 8f4bcdd29c5e11f19a56ed5b684f684d-20260820
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:d8c56ef1-3f0e-4005-987b-25cdc788237c,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:35
+X-CID-INFO: VERSION:1.3.19,REQID:d8c56ef1-3f0e-4005-987b-25cdc788237c,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:35
+X-CID-META: VersionHash:7db8b62,CLOUDID:548e8bd7b5f61f1a0f61e7e475775867,BulkI
+	D:2608201415408YJ6C13O,BulkQuantity:0,SF:17|19|38|66|78|102|127|865|898,TC
+	:nil,Content:0|15|50,EDM:5,IP:-2,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,
+	BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_ULS,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 8f4bcdd29c5e11f19a56ed5b684f684d-20260820
+X-User: husong@kylinos.cn
+Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1493064475; Thu, 20 Aug 2026 14:15:37 +0800
+From: Song Hu <husong@kylinos.cn>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Cc: shuah@kernel.org,
 	david@kernel.org,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
 	ljs@kernel.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	ziy@nvidia.com,
-	nphamcs@gmail.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio on zap
-Date: Thu, 20 Aug 2026 14:13:37 +0800
-Message-Id: <20260820061337.24669-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
-References: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	sarthak.sharma@arm.com,
+	usama.anjum@arm.com,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/3] selftests/mm: TAP output and global-state fixes
+Date: Thu, 20 Aug 2026 14:14:23 +0800
+Message-ID: <20260820061426.356869-1-husong@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: u4ez4ps67gu95gsq54d4i5moxkb4tx5a
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 493561C0009
-X-HE-Tag: 1787206434-110877
-X-HE-Meta: U2FsdGVkX1+80nDo9uRU+cK4Loc7weIj4hYc0CBQudlCAxvQgtrJ6CRAGxkxo/L/Q7K7ClVYEd+Er7aCbBCyb4yNxEbp9hUKMbvkT6VBwkXBbFQotZRQs7zqmHLUWuCjwgTepPDf4S9B1vAWuj/2m4Dyb2HSfY1b96zHJ8Mg0DTwDKNDGFz10kGz+hnPTXQPS6WfvCmL5GmuVQCWVVAw8vbcvV8r5yWxFZuFNXzJMyBjB1Hc8gFknO2HMbFjydVSoeUwfj3Po84SRzqkwFQy+LBjeAdjr0vLsyYoX6PiXgm7gQ1RDU7nt87moNIKQTD7ASSt6K4BeAZQQLQ+6jqCt6PQGqSRf4AEjbb8g5G+BdkThwpN29/GwiYXxrrj1Z6o/BgsqcK/h/m//Y4AopMFdGBcUKdfFufeqP/AzO3Z2g0bg9vS7K4DpFyRhVJEMz4YA1HopPvmKv8wv5rKq336wSTp1sYZhVgXzIfYIqWGFKd68FlXZ2OR686f9sqUcHCK2CcILLtFoceGd+akfGAuaKRS9zUJn36WkWIos/p9tQoP96hG8QG1Er4toUAv/26gCsqHGu4Yz8rE08pCCuYw4jR9j0ZEgne5h0vuem26YbdONPlc5mek8RpqkDlNbRxfbJ9jaZLETko8AaaQrP3GnxhN/FxW1FzOygyjHpEoPDyOLNcup5gmxba6H0V2XE3NQQd97K0jgihZy0yT2fIulBpn3vLnw4tpbMmOdDdowdgGTzhhJmwgfh0/Fpfawj3i3gPrbCS4keZJBDFE5cBSHhIt1M+bY1jFvUx90VHO1TfKmnxPJnsF3anX8PWxsPe84y7pp9BBC6LXUrDnswr/iquSfQhonPAPFXQLFnvkxh1UValsYpPIjMdgoWFeI0ttIoAgd/uYCa4CjBVRJVov5lcRLApLgmsax3jFPeNHjrPtWUdP0K4WWzwFM6QCVPWMenm+OXb9WZ78Vbu+3AU
- 8iCM69OU
- iKM3WKXUnowWmdoCCrXE9m6FnjmH5sFq7sSwdEXaoMZwmfQ6GaD5muFlN+U+stGu5NyJ3RMOGi4LSHus0A9Mf9MSi3YlINXsQZMouvvrhHON+Mr4wEfe+RXEt50HJWpjEcOKQevp5XlvXQiIYfzLRSRCBl4chaZoBtg06D8TO8QYnCLVXRCMFbGsCra2nx7E9RjOnTVBDTJMKX+SHB8p0p2OoTRVjKxwM/KVlaC8HGY2++Y2SUoluA2fk5+9zV9oNmGkA0d+yo3ghadDKk4cIjTfughLD93XSR1Abdd2do9KO3U6OVmh6BsEJOiuMS12IaFUBSW209+a3v/CaS1wtrMMPdhQp7TkbTUzM
+X-Stat-Signature: ut8rp5gx7pba9ik38euoob3ye7jd954c
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 75C3D20002
+X-HE-Tag: 1787206544-882005
+X-HE-Meta: U2FsdGVkX199B5O7F8pLaE0cKjG00IsWavfBOQwa0qENBLNq4COP6+zUpsMozjShEhN6pwonB+z6INKbB7RdmjtFHK87J2qP6kyV9h28/5ds9JtQd123vv1l/LpDv9jvqnfd+0OkzZP4+xxUU14YWg49Uyk4vi8SO/xirdFOMGyycVudjd2ShESd+M8U+bMNH5AwWzQ04Zvv9XW463+zCKdcCztQgenZpXFdXAMYnrCTZyFiz2sbg1yMZslDK8vGpMke62wgdYlZSj5bjnUMwT3fjd30W4Pu5AKM32DWXEy0GmxWPC34i9f6OpYDFln5cQUjrqCcsZBPMVmG9x/0wuWSPIwcjZznO8jx+ZO3hxedfy2w5A/L6Ln6RSfoR9OZLUeyOgOzWDyzwePQeNqcUMKDWGSczP2F4fqxWy4vJPKkb2PveP37RIfexb3ayM8bCDHkVIdFKOj5czLMtJI0CysiXcakQDrxaSMCXbpxY0d2SjfJBQacnSbuWw20+WVSlIasE1Es28uUv6RPzxZ1wZ+VVyU7omjrPyWzikndUd3Lhm4UVmyQ+ZuNPTW7ryu2q6sXeg8Hc52CuVXaqLwTtt609+hA9tfF7h5RSWjhnk5ysEVPcqCFOjwucW2IOFIr+Sz9YIkydZ7SBoms6kz0YNPT+HgYvlfJKZWRnEXd2h9pCGwfssjXzw895qkR7Qk2smI3vcTRklMpEog8DvNaBnTjjCgQqMfMsJsMK951B+BiYaZ+mZr0N8VQerU6j377g/o6ZDmMrccEYnzWn36eCqnmhLxjVtZ8H32x9j+SMk35QtPxVKS1lMXeKbz2L5/wGJnKnbkTFnuhj787Xvgpool1pn209ZX2WTXs7IH0Tk8RVessJCDaps/pOQzDgNOVo9Gr/H1XL418ZsPsIplytNnZsk8PmWfQjBidKAf6xb219iNnyVHN+I1ZpnpPF5zYp5lVZwX+p8jEwGKuWBH
+ uqo1433v
+ JK9E11BUGlHGySOgChLFoKnOpvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,391 +104,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+uffd-wp-mremap and mremap_test never print the TAP header (and mremap_test
+skips with a bare exit(KSFT_SKIP) rather than a KTAP skip), so their output
+is not valid KTAP; hugetlb-soft-offline toggles enable_soft_offline during
+the run and leaves it disabled afterwards.
 
-On Wed, Aug 19, 2026 at 05:35:41PM +0100, Pedro Falcato wrote:
->On Wed, Aug 19, 2026 at 03:31:40PM +0100, Kiryl Shutsemau wrote:
->> On Wed, Aug 19, 2026 at 03:12:22AM -0700, Usama Arif wrote:
->> > zap_huge_pmd_folio() propagates the pmd young bit to the folio for the
->> > file case, but not the dirty bit.  The pte path does propagate it, in
->> > zap_present_folio_ptes() and so does the pmd split path, in
->> > __split_huge_pmd_locked().
->> > 
->> > For most file mappings the omission is harmless, because writing to a
->> > shared file mapping goes through page_mkwrite(), which dirties the
->> > folio.  tmpfs is different: it has no page_mkwrite(), and
->> > vma_wants_writenotify() is false for it, so a *read* fault on a
->> > MAP_SHARED tmpfs mapping installs a writable pmd via do_read_fault().
->> > do_read_fault() does not call fault_dirty_shared_page(), so subsequent
->> > stores through that mapping set only the hardware dirty bit in the pmd
->> > and never call folio_mark_dirty().
->> >
->> > A shmem folio allocated by a fault
->> > is marked uptodate but not dirty (see the clear: block in
->> > shmem_get_folio_gfp()), so PG_dirty is never set at all.
->> > 
->> > Unmapping such a folio - munmap(), or exit_mmap() when the process dies
->> > - then loses the only record that it was written, because zap_huge_pmd()
->> > drops the pmd without transferring the dirty bit.  Reclaim afterwards
->> > sees a clean shmem folio: the whole swap-out block in
->> > shrink_folio_list() is inside "if (folio_test_dirty(folio))", so
->> > pageout() is skipped and the folio falls into __remove_mapping().
->> > There, folio_is_file_lru() is false for a swapbacked folio, so no shadow
->> > entry is created and __filemap_remove_folio(folio, NULL) simply empties
->> > the i_pages slot.  The data is freed without ever being written to swap,
->> > and the next fault on that index returns a freshly zeroed folio.
->> > 
->> > This is silent data loss for any process that keeps state in a
->> > MAP_SHARED tmpfs segment across an unmap - for example a cache handed
->> > from one process generation to the next through /dev/shm.  It requires
->> > the folio to be PMD-mapped, so it only shows up once shmem THP is
->> > enabled (which is what we did in Meta fleet and started noticing crashes);
->> > with THP off the pte path transfers the dirty bit correctly.
->> > It also only becomes visible when swap is enabled, because with no swap
->> > device shmem folios (which are on the anon LRU) are not scanned by
->> > reclaim at all, so the clean folio is never dropped.
->> > 
->> > Reproduced on x86_64 with a tmpfs mounted huge=within_size: read-fault a
->> > 2MB-backed region, write a known pattern through the resulting mapping,
->> > munmap, force reclaim of the cgroup, then re-map and read back.  Without
->> > this patch the region reads back as zeros and vmstat shows zswpout 0 -
->> > the data was discarded rather than swapped.  With this patch the region
->> > reads back correctly and the pages are swapped out as expected.  With
->> > huge=never, or when the first touch is a write, the test passes either
->> > way.
->> 
->> +Hugh.
->> 
->> Oopsie.
->> 
->> I'm confused why it took a decade to discover the bug...
->> Maybe read ahead of write for shmem is too rare, I donno.
->> 
->> > 
->> > Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
->> 
->> This would be more precise: b5072380eb61 ("thp: support file pages in zap_huge_pmd()")
->> 
->> Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
->> 
->> > Cc: <stable@vger.kernel.org>
->> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> > ---
->> >  mm/huge_memory.c | 2 ++
->> >  1 file changed, 2 insertions(+)
->> > 
->> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> > index ced400f72d43a..afbb5974bd225 100644
->> > --- a/mm/huge_memory.c
->> > +++ b/mm/huge_memory.c
->> > @@ -2449,6 +2449,8 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
->> >  		add_mm_counter(mm, mm_counter_file(folio),
->> >  			       -HPAGE_PMD_NR);
->> >  
->> > +		if (is_present && pmd_dirty(pmdval))
->> > +			folio_mark_dirty(folio);
->> 
->> Unrelated to your patch, but noticed while looking at it: we drop the rmap
->> here under the pmd lock, while the TLB flush is deferred to
->> tlb_finish_mmu(). The pte path handles this with
->> tlb_delay_rmap()/force_flush (5df397dec7c4), but there's no pmd equivalent:
->> tlb_flush_rmap_batch() only knows folio_remove_rmap_ptes(), and
->> zap_huge_pmd() uses tlb_remove_page_size(), which takes no delay_rmap.
->> 
->> Doesn't matter for shmem, but xfs & friends do get PMD-order folios, and
->> do_set_pmd() makes the pmd dirty+writable once page_mkwrite() has run. So
->> folio_mkclean() can clean the folio while another CPU still stores through a
->> stale TLB entry -- silently lost write, no PG_dirty left behind.
->
->Where do you see page_mkwrite being called in the same path as do_set_pmd()?
->Per my understanding of the code, this Should Not Happen, and it really Should
->Not Happen for many, many reasons (write amplification being the main one).
+Tested on x86_64.
 
-Hmm.. that happens on an initial shared write fault. For non-DAX XFS, the
-path starts with an empty PMD.
+Song Hu (3):
+  selftests/mm: emit TAP header in uffd-wp-mremap
+  selftests/mm: emit TAP header and use TAP skip in mremap_test
+  selftests/mm: restore enable_soft_offline in hugetlb-soft-offline
 
-TL;DR
+ .../selftests/mm/hugetlb-soft-offline.c       | 35 ++++++----------
+ tools/testing/selftests/mm/mremap_test.c      | 43 +++++++++++++----------
+ tools/testing/selftests/mm/uffd-wp-mremap.c   |  2 +
+ 3 files changed, 39 insertions(+), 41 deletions(-)
 
-With an empty PMD and PMD-order THP allowed, __handle_mm_fault() first
-tries create_huge_pmd(). VM_FAULT_FALLBACK sends the fault to
-handle_pte_fault():
+---
 
-static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
-		unsigned long address, unsigned int flags)
-{
-	...
-	if (pmd_none(*vmf.pmd) &&
-	    thp_vma_allowable_order(vma, vm_flags, TVA_PAGEFAULT, PMD_ORDER)) {
-		ret = create_huge_pmd(&vmf);
-		if (ret & VM_FAULT_FALLBACK)
-			goto fallback;
-		else
-			return ret;
-	}
-	...
-fallback:
-	return handle_pte_fault(&vmf);
-}
+Changes in v3, per Usama Anjum's review of v2 patch 2/3:
 
-create_huge_pmd() dispatches to the filesystem's huge_fault callback:
+- mremap_test: cache mmap_min_addr in main() before ksft_set_plan(),
+  so the skip paths in get_mmap_min_addr() are taken before the plan
+  is set; a skip after the plan leaves the run with fewer tests than
+  planned.
 
-static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
-{
-	struct vm_area_struct *vma = vmf->vma;
-	...
-	if (vma->vm_ops->huge_fault)
-		return vma->vm_ops->huge_fault(vmf, PMD_ORDER);
-	return VM_FAULT_FALLBACK;
-}
+Changes in v2, per review feedback from Mike Rapoport, Sarthak Sharma and
+the Sashiko AI review Andrew Morton pointed at:
 
-For non-DAX XFS, that callback returns VM_FAULT_FALLBACK:
+- mremap_test: save errno before fclose() in get_mmap_min_addr() so
+  strerror() reports the actual failure, and split the ksft_*() messages
+  embedding "\n\t" so continuation lines get the "# " prefix.
 
-static vm_fault_t
-xfs_filemap_huge_fault(
-	struct vm_fault		*vmf,
-	unsigned int		order)
-{
-	if (!IS_DAX(file_inode(vmf->vma->vm_file)))
-		return VM_FAULT_FALLBACK;
-	...
-}
+- hugetlb-soft-offline: restore enable_soft_offline from an atexit()
+  handler so it also runs on early exits, and use read_num()/write_num()
+  from vm_util instead of the hand-rolled helpers.
 
-XFS installs the huge-fault, regular-fault, and page_mkwrite callbacks
-in the same vm_ops:
-
-static const struct vm_operations_struct xfs_file_vm_ops = {
-	.fault		= xfs_filemap_fault,
-	.huge_fault	= xfs_filemap_huge_fault,
-	...
-	.page_mkwrite	= xfs_filemap_page_mkwrite,
-	...
-};
-
-On the fallback path, handle_pte_fault() leaves an empty PMD without a
-PTE and calls do_pte_missing():
-
-static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
-{
-	...
-	if (unlikely(pmd_none(*vmf->pmd))) {
-		/*
-		 * Leave __pte_alloc() until later: because vm_ops->fault may
-		 * want to allocate huge page, and if we expose page table
-		 * for an instant, it will be difficult to retract from
-		 * concurrent faults and from rmap lookups.
-		 */
-		vmf->pte = NULL;
-		vmf->flags &= ~FAULT_FLAG_ORIG_PTE_VALID;
-	...
-	}
-
-	if (!vmf->pte)
-		return do_pte_missing(vmf);
-	...
-}
-
-For a file VMA, do_pte_missing() calls do_fault():
-
-static vm_fault_t do_pte_missing(struct vm_fault *vmf)
-{
-	if (vma_is_anonymous(vmf->vma))
-		return do_anonymous_page(vmf);
-	else
-		return do_fault(vmf);
-}
-
-do_fault() sends FAULT_FLAG_WRITE + VM_SHARED to do_shared_fault():
-
-static vm_fault_t do_fault(struct vm_fault *vmf)
-{
-	struct vm_area_struct *vma = vmf->vma;
-	...
-	if (!vma->vm_ops->fault) {
-		...
-	} else if (!(vmf->flags & FAULT_FLAG_WRITE))
-		ret = do_read_fault(vmf);
-	else if (!(vma->vm_flags & VM_SHARED))
-		ret = do_cow_fault(vmf);
-	else
-		ret = do_shared_fault(vmf);
-	...
-}
-
-do_shared_fault() first calls __do_fault():
-
-static vm_fault_t do_shared_fault(struct vm_fault *vmf)
-{
-	struct vm_area_struct *vma = vmf->vma;
-	vm_fault_t ret, tmp;
-	struct folio *folio;
-	...
-	ret = __do_fault(vmf);
-	...
-}
-
-__do_fault() invokes the regular fault callback:
-
-static vm_fault_t __do_fault(struct vm_fault *vmf)
-{
-	struct vm_area_struct *vma = vmf->vma;
-	struct folio *folio;
-	vm_fault_t ret;
-	...
-	ret = vma->vm_ops->fault(vmf);
-	...
-	return ret;
-}
-
-For non-DAX XFS, xfs_filemap_fault() reaches filemap_fault():
-
-static vm_fault_t
-xfs_filemap_fault(
-	struct vm_fault		*vmf)
-{
-	struct inode		*inode = file_inode(vmf->vma->vm_file);
-	...
-	return filemap_fault(vmf);
-}
-
-Once that returns the folio, do_shared_fault() calls do_page_mkwrite()
-and then finish_fault():
-
-static vm_fault_t do_shared_fault(struct vm_fault *vmf)
-{
-	struct vm_area_struct *vma = vmf->vma;
-	vm_fault_t ret, tmp;
-	struct folio *folio;
-	...
-	folio = page_folio(vmf->page);
-	...
-	if (vma->vm_ops->page_mkwrite) {
-		folio_unlock(folio);
-		tmp = do_page_mkwrite(vmf, folio);
-		...
-	}
-
-	ret |= finish_fault(vmf);
-	...
-}
-
-do_page_mkwrite() calls the XFS callback installed above and restores
-the original fault flags:
-
-static vm_fault_t do_page_mkwrite(struct vm_fault *vmf, struct folio *folio)
-{
-	vm_fault_t ret;
-	unsigned int old_flags = vmf->flags;
-
-	vmf->flags = FAULT_FLAG_WRITE|FAULT_FLAG_MKWRITE;
-	...
-	ret = vmf->vma->vm_ops->page_mkwrite(vmf);
-	/* Restore original flags so that caller is not surprised */
-	vmf->flags = old_flags;
-	...
-}
-
-So finish_fault() still sees FAULT_FLAG_WRITE. With an empty PMD, no
-fallback requirement, and a PMD-mappable folio, it tries do_set_pmd():
-
-vm_fault_t finish_fault(struct vm_fault *vmf)
-{
-	...
-	if (pmd_none(*vmf->pmd)) {
-		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
-			ret = do_set_pmd(vmf, folio, page);
-			if (ret != VM_FAULT_FALLBACK)
-				return ret;
-		}
-		...
-	}
-	...
-}
-
-After its checks pass, do_set_pmd() takes FAULT_FLAG_WRITE from vmf and
-installs a dirty+writable PMD:
-
-vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page)
-{
-	struct vm_area_struct *vma = vmf->vma;
-	bool write = vmf->flags & FAULT_FLAG_WRITE;
-	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
-	pmd_t entry;
-	...
-	entry = folio_mk_pmd(folio, vma->vm_page_prot);
-	if (write)
-		entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
-	...
-	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, entry);
-	...
-}
-
-maybe_pmd_mkwrite() sets write permission for VM_WRITE:
-
-pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
-{
-	if (likely(vma->vm_flags & VM_WRITE))
-		pmd = pmd_mkwrite(pmd, vma);
-	return pmd;
-}
-
->Namely, see the comment in wp_huge_pmd():
->	/* COW or write-notify handled on pte level: split pmd. */
->
->if file huge pages get mapped writable, that's a bug.
-
-That comment is about a different path. __handle_mm_fault() calls
-wp_huge_pmd() only when a write/unshare fault hits an existing PMD THP
-which is not writable:
-
-static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
-		unsigned long address, unsigned int flags)
-{
-	...
-	if (pmd_trans_huge(vmf.orig_pmd)) {
-		...
-		if ((flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) &&
-		    !pmd_write(vmf.orig_pmd)) {
-			ret = wp_huge_pmd(&vmf);
-			if (!(ret & VM_FAULT_FALLBACK))
-				return ret;
-		...
-	}
-	...
-}
-
-If the filesystem huge_fault callback falls back there, wp_huge_pmd()
-splits that existing read-only PMD:
-
-static inline vm_fault_t wp_huge_pmd(struct vm_fault *vmf)
-{
-	struct vm_area_struct *vma = vmf->vma;
-	const bool unshare = vmf->flags & FAULT_FLAG_UNSHARE;
-	vm_fault_t ret;
-	...
-	if (vma->vm_flags & (VM_SHARED | VM_MAYSHARE)) {
-		if (vma->vm_ops->huge_fault) {
-			ret = vma->vm_ops->huge_fault(vmf, PMD_ORDER);
-			if (!(ret & VM_FAULT_FALLBACK))
-				return ret;
-		}
-	}
-
-split:
-	/* COW or write-notify handled on pte level: split pmd. */
-	__split_huge_pmd(vma, vmf->pmd, vmf->address, false);
-
-	return VM_FAULT_FALLBACK;
-}
-
-So I don't think that comment says file PMDs must never be writable. It
-covers a later write fault against an existing read-only PMD. On the
-initial shared write fault above, page_mkwrite runs before do_set_pmd()
-installs the writable file PMD.
-
-Cheers, Lance
-
-> 
->
->-- 
->Pedro
->
+v2: https://lore.kernel.org/all/20260815080716.3596514-1-husong@kylinos.cn/
+v1: https://lore.kernel.org/all/20260812120821.523860-1-husong@kylinos.cn/
 
