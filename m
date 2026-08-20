@@ -4,103 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2DC7C5DF86
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 20:22:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E9D9C5DF86
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 20:37:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 162906B00A0; Thu, 20 Aug 2026 16:22:30 -0400 (EDT)
+	id 771BF6B0095; Thu, 20 Aug 2026 16:37:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13A8A6B00A1; Thu, 20 Aug 2026 16:22:30 -0400 (EDT)
+	id 722C86B009B; Thu, 20 Aug 2026 16:37:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0772E6B00A2; Thu, 20 Aug 2026 16:22:30 -0400 (EDT)
+	id 5EA7E6B009D; Thu, 20 Aug 2026 16:37:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C0B936B00A0
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 16:22:29 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4CFE01A02A0
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:22:29 +0000 (UTC)
-X-FDA: 85122770418.04.562D8A8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5B29C1C0007
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:22:27 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A1FXaAFP;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3448F6B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 16:37:50 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 261AE1A02C6
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:37:48 +0000 (UTC)
+X-FDA: 85122809016.08.595E8CF
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 101A810000B
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:37:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=bsbernd.com header.s=fm2 header.b=NjudmpvQ;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="A hDnyHQ";
+	dmarc=pass (policy=none) header.from=bsbernd.com;
+	spf=pass (imf05.hostedemail.com: domain of bernd@bsbernd.com designates 103.168.172.156 as permitted sender) smtp.mailfrom=bernd@bsbernd.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787257347;
+	s=arc-20220608; t=1787258266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pz8QCpPSO3ogvQ4JHJS7MyDFtkTH0N2jETHMbR5/AwQ=;
-	b=Lxbxp5AS5rCxJlWrLirjer6T5qdvMw6PxayDTwgciFk0MWG/4gLOkzyc0prETJVwyrj05o
-	A8w9PaIN/NPR1KTANg9gSLLOOoD4PHQGAQumhpmxaM7ZkXjj1Vz4nWuvX3kMb2e3z2Nc7+
-	+WVRRCKYkD/d9q8vzjLyoFYquovwX6s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787257347;
-	b=xfgIcWEMmzNvw80cJlMmSWbpG5/AbvUuFf/MrzRHe9A0yRZxyqkn3Kh2I25065fyV1micH
-	Mj2dg2WaEcrUh7Ts9MfUIde7WNUVLvf0WJUx8zQrvNDGjWXlnovszP1FKdrO6u09VLAgLX
-	0upLC6cO4jVRuPow7AHwsbkv+QDLqXk=
+	bh=6ucE+PuyD7hhDcJC9cnrveUi9RM10V2fUaIkxFbOn2s=;
+	b=ZDmNaywc39nQ+/HPmFY0480njNr0d28OE3IoprCNfK4xOvB9fZrGbh2VfRfPIvb3SjBX7C
+	geAOfnu4q8cvrmJiSqDDzPqAYxXT/fBb1PBtIn9QlXSkf3ueA3SUEyDxpwTXtsANLwunrh
+	Aj585uySaCBpyTurheXcdBwnrykaMBo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A1FXaAFP;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6891043BE4
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:22:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3BF1F0155A
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:22:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787257346;
-	bh=Pz8QCpPSO3ogvQ4JHJS7MyDFtkTH0N2jETHMbR5/AwQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=A1FXaAFPqNx99NNpam4HpjcBd3+JghFPZivbqO/NplTFdgZA76AAIKhDYeb7c3pgX
-	 HsxrFT/N6TaHIRhyVq63/aPI8zRfLpO0u7HFJVAxr1c8HBzFfgFOqSjlZfM8EdWf90
-	 zogqwNMG+hIoT54ymvLEXytjIM6T338NbpBVgCsn1f8gr//6BLZs5jcMdlpiGk7zxY
-	 UQogCXLIvsg2yI3Xg6QCDqJwmXAhay45agfZYlvNqTDLqD2WHwKI3EuAp8QGSf9Yq3
-	 B/MK8ADzhBQ3PfU5eV0cujLHS27ocgvjEZThWW0GHu8JLpcO/W2hKWuIu4XR7jKJQJ
-	 iSW/AAR3blxfg==
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c1372f84dso1532821cf.2
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 13:22:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rpv5MwNQ//ITSEll4varxr2deiPVvgWvzR0A21ddBpXg3cXbvXhBVKiwiKYZ+pYvTAKW1vQTzp1Hw==@kvack.org
-X-Gm-Message-State: AOJu0YyfXr3Jq3ksLHpqUtbTyVJZL9JayjeUPQfq6Srfm7qcqlxQk08O
-	I0hjFvdTwbmB/MR9FZ8Wwq3A4+olkSuJXSQJcguoJcClQKBWZjlg6yecWylR80wJCHMYjixAdC5
-	zdV1di2ndFfrhMeBlXqUnnI9UPFtQfGI=
-X-Received: by 2002:ac8:5cca:0:b0:528:f72:a986 with SMTP id
- d75a77b69052e-52df5bc6e10mr10519831cf.44.1787257345641; Thu, 20 Aug 2026
- 13:22:25 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=bsbernd.com header.s=fm2 header.b=NjudmpvQ;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="A hDnyHQ";
+	dmarc=pass (policy=none) header.from=bsbernd.com;
+	spf=pass (imf05.hostedemail.com: domain of bernd@bsbernd.com designates 103.168.172.156 as permitted sender) smtp.mailfrom=bernd@bsbernd.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787258266;
+	b=gB53A9QY5ao02u9LX5z2hA1iEaHdIfVPEH63yFHFo7UXGD100B81mSYqvEymx6c/4sUa8+
+	5KXwVOmiN2PWOu45MDEWUu8XHgCvnQsqOoR37gGis495I0tcm895fvSwnBup1MStBosTah
+	t79ODis0aQFQHNrUMBMnIQJibnyhW74=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 5AA1B14001A6;
+	Thu, 20 Aug 2026 16:37:45 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 20 Aug 2026 16:37:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787258265;
+	 x=1787344665; bh=6ucE+PuyD7hhDcJC9cnrveUi9RM10V2fUaIkxFbOn2s=; b=
+	NjudmpvQylhyKYeYYmq6rJ7HABJFpvMbHedU2kh7K6DH+E5Wxuivg0H4yaT4P4NO
+	kbo60xoea6v/A4BWjEhTErGw5QsWjX1sKqzAi9rSXprO4egiFQXL0IhIiHVR2STN
+	mHGabMSWPp5IiEBJBWlnTmsQb6D3b+osKOvv2EBO7fhduGhazJX3FMEjniF/Kwt1
+	UhIzTwqIRs9XBa9MazgWTpTxLiHtSfbtetmcwZ3RblbB9URInladeNBQ19SLxuPw
+	Pz5hY0GfbyR+Lg40YHZMyT68BRJAbFfZQbrcPqgv+Cn/8tZ0kA6IBGGREBFhNSp7
+	pg8e0sbNKWm6XWXf6X5Qgg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787258265; x=
+	1787344665; bh=6ucE+PuyD7hhDcJC9cnrveUi9RM10V2fUaIkxFbOn2s=; b=A
+	hDnyHQP7VHFPMA6XkyQPPV+kxTuR63ACHUjsmyhgvH51uG+s2wH6nlUWZqrs6jvJ
+	n5e6KMtadbw1BDevf9v8RjsyZXkuWlY2sigO5V0u//GGzEVmhFNddXq8JT3UNYfK
+	t4u3l6ZzczbkXNW9udFW8J6IL3V3bd0VStzbU34XfA08OR+rclYBzttiRtM65mFK
+	yw0cDD6skyjMmiRPv11aRWLl8CrZaVEaFdcCwvi/JAmR/Z9VRmH/kEwRHzKPrrn6
+	rPGQyEBOaHps2JPgWOeLtHh93/x9Mn05WhIvMhaL02rf+seT1bMc3FwP2BqrNetI
+	LOV2uEwEDCIaSGNArX0eg==
+X-ME-Sender: <xms:l2WHanjw8UUSF-Hu9_ZW1tGRppoDHopFOAh_P3kMKAq6OEAQkImCeg>
+    <xme:l2WHaiYdIjhPobaFh-W1_Q8ySjBmVZwmmzfQWAglglqmJFkkpGHcDPYAmET31Sdog
+    KGJixJgR1kjCgGexWWnYjPexL3yM4ggJ8hmiL0UtSxsUN99LMdA>
+X-ME-Received: <xmr:l2WHajFGKtsUDMPSEl1LMLMSwi8PnqkbWBl1eZitWS95vUmaxgTeAJ3MOSog9mgS0LWzVrENxO5ew4dzZIhFBYZOHq_VQGM-fpY2e-e30wdHPLE_RkU5sza33Q>
+X-ME-Proxy-Cause: dmFkZTGHCMB3CGTM2Dwh8T0va7wncxs4WoVtY1MpbEKlWjdfXg+yWiMMKczX5wTbdMQFpW
+    0ivrAkLMc1Gy9qLL4MiAG4RZaZ+TP0xTORRCYVOZMrrRQYSWD9kxoqy/BlIfNeKxR7Znzr
+    h7HVMgFAz1lK+rTviqK6/+k2AfwXfxtFTIO2UHB7eZh0lzGsja0vb51ozmpUclzE3uezRD
+    O4Fgyv2mXC0WaCT4M5kEGmc3gzCWB2Csic43ezC8XPNnQ2nUzHlPDv2aO8abJa33IjSuOU
+    2uLUtu1tZMKYB/bL1YysHMEnw7Afccy+cP57ip8RoYSJi+nFnKs8qIE4cbhufgG9thy4fT
+    w7f9qKyaZoBrVvtMVTO140ABivXiqNzzoRlqL726mRbzNUqJt1Vv20qzGDX3Spgr15oj95
+    Ru+v8YQPrjiDiEevr9SLrWEWjtZluRp99GauM4sCfZdFTzO/d6pisCzRwKNmRt+7qJEG0U
+    E+ubpwhYqBbZUgHmj9UKGiDCJrmqMxxX+pFuBOYCCKew4bJWNfJE07gutvf23p0pirIMPW
+    nzFWD8FJkJwlU6Zmd7faQrApJeQr8ae8BpHVPYZV7WeowV3y+ivZ7Os1fS3jAr3a8aSwtE
+    uGx43wID7Vf5alpRgI7PK+PCPgPZVmX6/6bIkz6kyCsqVNFCRiBAhsL1sWpg
+X-ME-Proxy: <xmx:l2WHanZ_lz--3EQm87NGpIZZFX1EvBA2OF2WO1qCpTbmtlLKpbruOg>
+    <xmx:l2WHas1qlw55cOfr13Mt_g2CaOxD3kxfBOJAz8_deh4qIYaZHtgUlw>
+    <xmx:l2WHandbd0UltRmcNb7mGjIpyxyeNALZ1dWI2cMVdCJ_4ED8wjwicQ>
+    <xmx:l2WHamDpbNIjLSoN-dQKAW7kmf-bbpEX263X3kd9-aAR-C3A8kAl1w>
+    <xmx:mWWHaqAuBK6e5QVhbVrcAaIIi0Qvbclqy9FMbC9JrQnjloXk5iRuyviI>
+Feedback-ID: i5c2e48a5:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 20 Aug 2026 16:37:38 -0400 (EDT)
+Message-ID: <075218ce-0c30-4f3a-b01d-6eb99094b7e8@bsbernd.com>
+Date: Thu, 20 Aug 2026 22:37:35 +0200
 MIME-Version: 1.0
-References: <20260818225904.55236-1-baohua@kernel.org> <c8287b5a-8f8b-4110-ad47-996842f01bfe@kernel.org>
- <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
-In-Reply-To: <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 21 Aug 2026 04:22:14 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x+-FtP2oMRapzf3Dhu4B4wXOj1XQi+HbSSAma2Cbwz+Q@mail.gmail.com>
-X-Gm-Features: AcwNN1UvWexqHmJyks0gmx3p7vLLeAoX6RERbp3fmcxUoOpTgVNzY1dM_cQAbmY
-Message-ID: <CAGsJ_4x+-FtP2oMRapzf3Dhu4B4wXOj1XQi+HbSSAma2Cbwz+Q@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 0/4] mm: enable lru cache for smaller large folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@suse.com, npache@redhat.com, rppt@kernel.org, ryan.roberts@arm.com, 
-	surenb@google.com, vbabka@kernel.org, ziy@nvidia.com, hughd@google.com, 
-	ackerleytng@google.com, usama.arif@linux.dev, joannelkoong@gmail.com, 
-	hannes@cmpxchg.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] fuse: Use filemap_invalidate_pages()
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Miklos Szeredi <miklos@szeredi.hu>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg
+ <martin@omnibond.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ fuse-devel@lists.linux.dev, linux-nfs@vger.kernel.org,
+ devel@lists.orangefs.org, Pavel Begunkov <asml.silence@gmail.com>
+References: <20260820193343.3852967-1-willy@infradead.org>
+ <20260820193343.3852967-3-willy@infradead.org>
+From: Bernd Schubert <bernd@bsbernd.com>
+Content-Language: fr, en-US, de-DE, ru-RU
+In-Reply-To: <20260820193343.3852967-3-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mkbb5s1ypkkdwns1eczmyqrxnkybjb6a
+X-Rspamd-Queue-Id: 101A810000B
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: urnpzb8m5ztsjpum69ee3bga73i8f4of
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5B29C1C0007
-X-HE-Tag: 1787257347-882463
-X-HE-Meta: U2FsdGVkX1/uypbJYehC0XqcJZDPiEdlgCPRh7pszW5vp+fkA7TX/ueOCmaJ2aDU0geKIAHXDKAJlzj05DLUlDmkPGJnzrZZ5W0BnMZQ2rlv396UjteQ7uut/Qjf8QJjNsHvMTPZlu8nkWwL18kgJyoqsveydDhOz1rPEYGZSLiaAQrLMTrEtrwgQfTbTQcsbwjPTXeBl901F5KR9WnP5O0QV+5JnXhl1EXiRdztcmptZ2lCanefwJ3ZBUD6WPaEsrK9sCHTGcbpksYYG/KFB6TlBoD24WDt75LCPFubB5HenBJas4qQ4toMdguj9QDSmOFsiPo5uUjWtu7trFmYq+rB2nl+lscfvfIb3mMdqElo5iQhZX1QbqiH0Ku4QoI01bEXanjTRqIL1Wv3R/7TtURWosqiNdeeYe1r/moJlG3BUh09JbQOrtvdRJASVND2mRXuieBmEi9phNGG4Hmno67MlfurZlS62nhcuQfCU4nf7S2MY6K0cAdCwjFACoXXQym2cpD3W7+WoH6sdeHxChZoZ3XUEu5UGHP0RYGMgzxXpF5zed8S9uajR4gMgAVxN/geXtDNhbyC6tLihLHfgHQ84K6WP8iBaHkFkAcc0tQr5oB+Uijs0YlDeJfGE48vHQMqG/S/qr9kSnf0C/STWeupTmr5IAEmIb4JnXhZoRWyDHGSABeNXiMgET5D/K65tmogfoTnyceRhy2sQcH+0IMpOq+OR2DRZuFoe3VDhJIWdUv7t+Xk7Rmc8ppjMCTpDehTmG9JXw3eBE8+Ur0Gu1Tk5AlwHl5C4q1Jt6EaX2vMBDuxtPMvrxZ+fKoPWNXq4omvoajpUcfyqImQTRXTvGPZ9f4EtNE8mK0GzFEG5a/Bo6spKq5aROU51STuD7SZ6NjMr52igXGzAzpj9j7PxeEDcwmSdQqTuI2D3pgKashXvj2AKYZr+NDT4BopLtZQcZlnJTvByf9ZpsjNpKy
- 7j9lqgiv
- b2Ly4Qs+WoU+okMgwGewmAHgF3dGJvLzwkRHxJMWZ5KK+cNCcUB5nC9TMmp1dFP72rMg4Jr18T0+ZMw7z62pQwiNp/guSn8LymwerR5CjvxidrjQHw2NW8LfRQMXIA5hfJp73UuK5kZJrJP+vqI5L8WWVdanEr8/UzIfYqQuinq9dgkT/pLUQidQDXUxvKf+BwUn4D+4fwMtlQ5xoMYh/uvpvHSk7/S4sr5ljfEtpVY3CKqYr9vQFumsOSiIqrLPmkHARgtvxd1REb+jmBDbzZ+6AWgvzumUhF/t8twA9cBMXC0omDLR5qtXv3g==
+X-HE-Tag: 1787258265-519205
+X-HE-Meta: U2FsdGVkX18arzYilmOfnOTKHKG8y9koLy4t1v1MN5f0sVYkKmVUVOSYFFblhRI6Hqgx0hbGqP10nVYCBUtHkEDNqbwcZ+JKv7ktLandSlzRKBnVf0/AH+tyTAOinojZjYyZtiyCmtLWkoLOAotziQxOSKF6JMqg6kFHhPVP/nvT42rUZBfXSqcNVxGShgky4lcSqMMqI8UVVTF2usRVqGyW+NgmY7P21Ge/pRnKqOUyiFGYBLbplskvdYWO9d4VFdJ0/BUr+MpJ94tZyXFC84oW22mFAild4lDKBUf3MhER8xBOU1k45pA/zwYdcrt7xk4VOSzV0/mfBZ3PlStlm5ZEWoTcvuGXCK0EMMxqlQhH5oRPjpgaMDvJWry5K8kctUs7KMNI9spF8S3KeCAIoGpwLo/y2pawlpFJzYjrAL7B3QIx6geqqUPlSZAs6J6RmiTyfdNXgje7WfZJIFHikCFtHOw65mPCGEW/41M3T45IrUFDbqXXVMRJezMu+GFcyfmtGqTC3GPsjN5fpdc+Crgjq9ZaJm6+ntDJdtmIel7rYPeuq9nMHFqgg0xxSZ5DAH6I91at1n2yaF8co2j3+EmUDtgwEWRgrwgx6EJoo0eRLwxHCaslqHcpkDikaAv8yI7LeLsUht1uuHm/hTQCGqm06U8ZaYnkI88/VG7rTVmilZVirEf2DqWo4m9j3rQgKfEAOQiPTnru1nwj8sKzqTioeojJvFibeu9dnNtpVV6UvrMlygrDHGKIG7ngc2Q2wWMNZOqcX5+gvhGQRhh9sk8URbUYMK7pCyNKr8PdXDYieM8iizLaBp4X5WknJV9Zy1qrhCPqniGxw14ZZzQy9qgQBwK5dQUMgOEMrUtWIr2wWYHKIoKHPjN02N38XLhkw2B3gm6TpKFexd3KZMf3BTDaTTOLP+Sj6udmq3R7bjbwXpS7ORNaatyvSxDgmnDiIeNYWIRBshESGgbK3lW
+ XsHYh+RE
+ 3jEMXT/xqhd0dqAON1aaEMMoM5CJXKRSOa8OZGYfRP/L7c8ibX9kQa3lpQuWGtJpG7EVcAJchtCfnYQI9TFkoePci5msem3+SVR7D1e1wkKk1dA5UPbV5vq8REHOug39AiDDRUZ5GBp4xHUPLCK3VMN6g6t1/YyahiuhIsuSY36fQRf8pqOtaMpi8y32EiSdty9TprflOKIDcWRjqeyl6lMpghxe/p7vY0bzcsllfrpC8KVtbG4+RCE0MVIm8RjjKFqpLXKYcj9SZOjCWmevInii/mVJqwnDziO7KTDc1BGzO2c/w2Gu5u1l42ZClDlN40QrJPrmUthx/eHVXQ8WGk/F6LR2zMx1cQqUqXp99T0UtZuStOb2Zppb6uGDCbY0DiqgrFr933SBeyV4ZSBisgFm/JhWtf0NIsdqqHabOmvDeqCnoN/x5IAk744vN75y6lJgrAVvVjHrlr+NxrGvEjID1jhO1Y9BCd8GXpQmJwxtcLnWzMQjz6tBjtY1JXdk3RwAh3c/5M7LnVyQne+wEpDjfY707FKySHkPFXQc1Pr5vr4xlMWE6O/dVlH/7rVuhCFJb18mPtGOGFqB5ClPfuX4vzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,58 +140,260 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 4:18=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> On Fri, Aug 21, 2026 at 2:23=E2=80=AFAM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
-> >
-> > On 8/19/26 00:59, Barry Song (Xiaomi) wrote:
-> > > This patchset enables the per-CPU LRU cache for large folios with few=
-er
-> > > than `FOLIO_BATCH_SIZE` (31) pages. It also limits each per-CPU LRU c=
-ache
-> > > to at most `FOLIO_BATCH_SIZE` pages to avoid negatively affecting
-> > > accounting and memory reclamation pressure.
-> > >
-> > > This is particularly beneficial on systems that use relatively small
-> > > large folios. For larger folios, the benefit is likely to be smaller
-> > > because far fewer folios are expected to contend for the LRU cache.
-> >
-> > As raised, there is this problem with collect_longterm_unpinnable_folio=
-s()
-> >
-> > (see
-> > https://lore.kernel.org/r/20260806-lru_cache_drain_for_folio-v1-1-c6287=
-d295e99@kernel.org
-> > )
-> >
-> > whereby we don't know how many refs we actually hold. Certainly not 1.
-> >
-> > We might have to wait for Hugh's cleanup to handle that cleanly (and av=
-oid all
-> > the other LRU cache draining).
->
-> Hi David,
-> Thanks for raising this.
-> Yes, I saw your comment and took a closer look at it. I think the
-> best approach for now is to leave that part untouched until Hugh's
-> patch lands? We might end up doing some extra draining in that case,
-> but that's safe=E2=80=94any value greater than 1 might not be. We may jus=
-t
-> drain more than necessary?
 
-BTW, David. This is also why I didn't move the below checks in patch 3/4[1]
-to lru_cache_drain_for_folio() as we are not safe to do it for that "1" in
-collect_longterm_unpinnable_folios():
 
-+ if (folio_ref_count(folio) =3D=3D folio_expected_ref_count(folio) + 1 +
-+    folio_may_be_lru_cached(folio))
-+ lru_cache_drain_for_folio(folio, 1, NULL);
+On 8/20/26 21:33, Matthew Wilcox (Oracle) wrote:
+> FUSE relies on invalidate_inode_pages2() / invalidate_inode_pages2_range()
+> doing writeback by calling fuse_launder_folio().  While this works, it
+> is inefficient as each page is written back and waited for individually.
+> Far better to call filemap_invalidate_pages() which will do a bulk write
+> first, then remove the page cache.
+> 
+> With this done, fuse_launder_folio() no longer needs to exist so
+> delete it.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  fs/fuse/dax.c   | 15 +++------------
+>  fs/fuse/dir.c   | 12 +++++++-----
+>  fs/fuse/file.c  | 46 ++++++----------------------------------------
+>  fs/fuse/inode.c | 17 +++++------------
+>  4 files changed, 21 insertions(+), 69 deletions(-)
+> 
+> diff --git a/fs/fuse/dax.c b/fs/fuse/dax.c
+> index 8b53625ac7ab..45843975e28b 100644
+> --- a/fs/fuse/dax.c
+> +++ b/fs/fuse/dax.c
+> @@ -835,19 +835,10 @@ static int dmap_writeback_invalidate(struct inode *inode,
+>  	loff_t start_pos = dmap->itn.start << FUSE_DAX_SHIFT;
+>  	loff_t end_pos = (start_pos + FUSE_DAX_SZ - 1);
+>  
+> -	ret = filemap_fdatawrite_range(inode->i_mapping, start_pos, end_pos);
+> -	if (ret) {
+> -		pr_debug("fuse: filemap_fdatawrite_range() failed. err=%d start_pos=0x%llx, end_pos=0x%llx\n",
+> -			 ret, start_pos, end_pos);
+> -		return ret;
+> -	}
+> -
+> -	ret = invalidate_inode_pages2_range(inode->i_mapping,
+> -					    start_pos >> PAGE_SHIFT,
+> -					    end_pos >> PAGE_SHIFT);
+> +	ret = filemap_invalidate_pages(inode->i_mapping, start_pos, end_pos);
+>  	if (ret)
+> -		pr_debug("fuse: invalidate_inode_pages2_range() failed err=%d\n",
+> -			 ret);
+> +		pr_debug("fuse: filemap_invalidate_pages() failed. err=%d start_pos=0x%llx, end_pos=0x%llx\n",
+> +			 ret, start_pos, end_pos);
+>  
+>  	return ret;
+>  }
+> diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+> index 0e2a1039fa43..c6c72c0ee669 100644
+> --- a/fs/fuse/dir.c
+> +++ b/fs/fuse/dir.c
+> @@ -913,7 +913,8 @@ static int fuse_create_open(struct mnt_idmap *idmap, struct inode *dir,
+>  		if (fm->fc->atomic_o_trunc && trunc)
+>  			truncate_pagecache(inode, 0);
+>  		else if (!(ff->open_flags & FOPEN_KEEP_CACHE))
+> -			invalidate_inode_pages2(inode->i_mapping);
+> +			filemap_invalidate_pages(inode->i_mapping, 0,
+> +					OFFSET_MAX);
+>  	}
+>  	return err;
+>  
+> @@ -1904,7 +1905,8 @@ static int fuse_dir_open(struct inode *inode, struct file *file)
+>  		if (ff->open_flags & (FOPEN_STREAM | FOPEN_NONSEEKABLE))
+>  			nonseekable_open(inode, file);
+>  		if (!(ff->open_flags & FOPEN_KEEP_CACHE))
+> -			invalidate_inode_pages2(inode->i_mapping);
+> +			filemap_invalidate_pages(inode->i_mapping, 0,
+> +					OFFSET_MAX);
+>  	}
+>  
+>  	return err;
+> @@ -2277,13 +2279,13 @@ int fuse_do_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+>  	spin_unlock(&fi->lock);
+>  
+>  	/*
+> -	 * Only call invalidate_inode_pages2() after removing
+> -	 * FUSE_NOWRITE, otherwise fuse_launder_folio() would deadlock.
+> +	 * Only call filemap_invalidate_pages() after removing
+> +	 * FUSE_NOWRITE, otherwise it would deadlock.
+>  	 */
+>  	if ((is_truncate || !is_wb) &&
+>  	    S_ISREG(inode->i_mode) && oldsize != outarg.attr.size) {
+>  		truncate_pagecache(inode, outarg.attr.size);
+> -		invalidate_inode_pages2(mapping);
+> +		filemap_invalidate_pages(mapping, 0, OFFSET_MAX);
+>  	}
+>  
+>  	clear_bit(FUSE_I_SIZE_UNSTABLE, &fi->state);
+> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+> index ceada75310b8..2496161f9298 100644
+> --- a/fs/fuse/file.c
+> +++ b/fs/fuse/file.c
+> @@ -294,7 +294,8 @@ static int fuse_open(struct inode *inode, struct file *file)
+>  		if (is_truncate)
+>  			truncate_pagecache(inode, 0);
+>  		else if (!(ff->open_flags & FOPEN_KEEP_CACHE))
+> -			invalidate_inode_pages2(inode->i_mapping);
+> +			filemap_invalidate_pages(inode->i_mapping, 0,
+> +					OFFSET_MAX);
+>  	}
+>  	if (dax_truncate)
+>  		filemap_invalidate_unlock(inode->i_mapping);
+> @@ -644,10 +645,8 @@ static void fuse_aio_invalidate_worker(struct work_struct *work)
+>  	struct fuse_io_priv *io = container_of(work, struct fuse_io_priv, work);
+>  	struct address_space *mapping = io->iocb->ki_filp->f_mapping;
+>  	ssize_t res = fuse_get_res_by_io(io);
+> -	pgoff_t start = io->offset >> PAGE_SHIFT;
+> -	pgoff_t end = (io->offset + res - 1) >> PAGE_SHIFT;
+>  
+> -	invalidate_inode_pages2_range(mapping, start, end);
+> +	filemap_invalidate_pages(mapping, io->offset, io->offset + res - 1);
+>  	io->iocb->ki_complete(io->iocb, res);
+>  	kref_put(&io->refcnt, fuse_io_release);
+>  }
+> @@ -1675,8 +1674,6 @@ ssize_t fuse_direct_io(struct fuse_io_priv *io, struct iov_iter *iter,
+>  	size_t nmax = write ? fc->max_write : fc->max_read;
+>  	loff_t pos = *ppos;
+>  	size_t count = iov_iter_count(iter);
+> -	pgoff_t idx_from = pos >> PAGE_SHIFT;
+> -	pgoff_t idx_to = (pos + count - 1) >> PAGE_SHIFT;
+>  	ssize_t res = 0;
+>  	int err = 0;
+>  	struct fuse_io_args *ia;
+> @@ -1689,7 +1686,7 @@ ssize_t fuse_direct_io(struct fuse_io_priv *io, struct iov_iter *iter,
+>  		return -ENOMEM;
+>  
+>  	if (fopen_direct_io) {
+> -		res = filemap_write_and_wait_range(mapping, pos, pos + count - 1);
+> +		res = filemap_invalidate_pages(mapping, pos, pos + count - 1);
+>  		if (res) {
+>  			fuse_io_free(ia);
+>  			return res;
+> @@ -1703,14 +1700,6 @@ ssize_t fuse_direct_io(struct fuse_io_priv *io, struct iov_iter *iter,
+>  			inode_unlock(inode);
+>  	}
+>  
+> -	if (fopen_direct_io && write) {
+> -		res = invalidate_inode_pages2_range(mapping, idx_from, idx_to);
+> -		if (res) {
+> -			fuse_io_free(ia);
+> -			return res;
+> -		}
+> -	}
+> -
+>  	io->should_dirty = !write && user_backed_iter(iter);
+>  	while (count) {
+>  		ssize_t nres;
+> @@ -1824,9 +1813,7 @@ static ssize_t fuse_direct_write_iter(struct kiocb *iocb, struct iov_iter *from)
+>  			 * write, to invalidate read-ahead cache that may have
+>  			 * with the write.
+>  			 */
+> -			invalidate_inode_pages2_range(mapping,
+> -				pos >> PAGE_SHIFT,
+> -				(pos + res - 1) >> PAGE_SHIFT);
+> +			filemap_invalidate_pages(mapping, pos, pos + res - 1);
+>  		}
+>  	}
+>  	fuse_dio_unlock(iocb, exclusive);
+> @@ -2324,26 +2311,6 @@ static int fuse_writepages(struct address_space *mapping,
+>  	return iomap_writepages(&wpc);
+>  }
+>  
+> -static int fuse_launder_folio(struct folio *folio)
+> -{
+> -	int err = 0;
+> -	struct fuse_fill_wb_data data = {};
+> -	struct iomap_writepage_ctx wpc = {
+> -		.inode = folio->mapping->host,
+> -		.iomap.type = IOMAP_MAPPED,
+> -		.ops = &fuse_writeback_ops,
+> -		.wb_ctx	= &data,
+> -	};
+> -
+> -	if (folio_clear_dirty_for_io(folio)) {
+> -		err = iomap_writeback_folio(&wpc, folio);
+> -		err = fuse_iomap_writeback_submit(&wpc, err);
+> -		if (!err)
+> -			folio_wait_writeback(folio);
+> -	}
+> -	return err;
+> -}
+> -
+>  /*
+>   * Write back dirty data/metadata now (there may not be any suitable
+>   * open files later for data)
+> @@ -2427,7 +2394,7 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
+>  		if ((vma->vm_flags & VM_MAYSHARE) && !fc->direct_io_allow_mmap)
+>  			return -ENODEV;
+>  
+> -		invalidate_inode_pages2(file->f_mapping);
+> +		filemap_invalidate_pages(file->f_mapping, 0, OFFSET_MAX);
+>  
+>  		if (!(vma->vm_flags & VM_MAYSHARE)) {
+>  			/* MAP_PRIVATE */
+> @@ -3102,7 +3069,6 @@ static const struct address_space_operations fuse_file_aops  = {
+>  	.read_folio	= fuse_read_folio,
+>  	.readahead	= fuse_readahead,
+>  	.writepages	= fuse_writepages,
+> -	.launder_folio	= fuse_launder_folio,
+>  	.dirty_folio	= iomap_dirty_folio,
+>  	.release_folio	= iomap_release_folio,
+>  	.invalidate_folio = iomap_invalidate_folio,
+> diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+> index d975073c6029..2c9a93a2173a 100644
+> --- a/fs/fuse/inode.c
+> +++ b/fs/fuse/inode.c
+> @@ -382,7 +382,8 @@ static void fuse_change_attributes_i(struct inode *inode, struct fuse_attr *attr
+>  		}
+>  
+>  		if (inval)
+> -			invalidate_inode_pages2(inode->i_mapping);
+> +			filemap_invalidate_pages(inode->i_mapping, 0,
+> +					OFFSET_MAX);
+>  	}
+>  
+>  	if (IS_ENABLED(CONFIG_FUSE_DAX))
+> @@ -547,8 +548,6 @@ int fuse_reverse_inval_inode(struct fuse_conn *fc, u64 nodeid,
+>  {
+>  	struct fuse_inode *fi;
+>  	struct inode *inode;
+> -	pgoff_t pg_start;
+> -	pgoff_t pg_end;
+>  
+>  	inode = fuse_ilookup(fc, nodeid, NULL);
+>  	if (!inode)
+> @@ -561,15 +560,9 @@ int fuse_reverse_inval_inode(struct fuse_conn *fc, u64 nodeid,
+>  
+>  	fuse_invalidate_attr(inode);
+>  	forget_all_cached_acls(inode);
+> -	if (offset >= 0) {
+> -		pg_start = offset >> PAGE_SHIFT;
+> -		if (len <= 0)
+> -			pg_end = -1;
+> -		else
+> -			pg_end = (offset + len - 1) >> PAGE_SHIFT;
+> -		invalidate_inode_pages2_range(inode->i_mapping,
+> -					      pg_start, pg_end);
+> -	}
+> +	if (offset >= 0)
+> +		filemap_invalidate_pages(inode->i_mapping, offset,
+> +				offset + len - 1);
+>  	iput(inode);
+>  	return 0;
+>  }
 
-[1] https://lore.kernel.org/all/20260818225904.55236-4-baohua@kernel.org/
+Please correct me if I'm wrong, but doesn't that changes behavior for
+len <= 0? The logic to invalidate till the file end is lost, at least if
+offset is != -1?  And incostent behavior for len < 1?
+Note that the existing behavior is used by libfuse and heavily by some
+fuse daemons.
 
->
-> Best Regards
-> Barry
+Thanks,
+Bernd
+
+
+
 
