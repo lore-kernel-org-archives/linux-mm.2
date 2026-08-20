@@ -4,114 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A394C5DF85
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 03:02:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D68FC5DF82
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 03:23:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DBF86B008C; Wed, 19 Aug 2026 23:02:26 -0400 (EDT)
+	id 0AB5B6B008C; Wed, 19 Aug 2026 23:23:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38DC56B0092; Wed, 19 Aug 2026 23:02:26 -0400 (EDT)
+	id 05C736B0092; Wed, 19 Aug 2026 23:23:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A3796B0098; Wed, 19 Aug 2026 23:02:26 -0400 (EDT)
+	id E8D8D6B0095; Wed, 19 Aug 2026 23:23:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F33796B008C
-	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:02:25 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A0941C1A8D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:02:25 +0000 (UTC)
-X-FDA: 85120149450.25.3F6A2F4
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 938EF80004
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:02:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=W7Azikh5;
-	spf=pass (imf30.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BEDD56B008C
+	for <linux-mm@kvack.org>; Wed, 19 Aug 2026 23:23:26 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 342EEA01D2
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:23:26 +0000 (UTC)
+X-FDA: 85120202412.23.B39206E
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4F9A540003
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:23:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DXForl16;
+	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787194943;
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787196204;
+	b=Xb4JrRndTeMUPTqAPwbFW3jelOpsvLESoOqk/sV82/IzeydVU0ZndDEBKs7tbEqLkChLPL
+	McRt2g1Y1m3n8jM6qdvpts3zOU7d9/xB2cu1MzQveg+fQ2RIjxhK08uZ5+ST2ZH6nqExy4
+	PwXKkI24bKh0s9qUoWIvQigj6E1mjr0=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DXForl16;
+	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787196204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b7Lcuraq/4CMmDj86N4LuGkDilC6+Z6Q+xTsr6qjIXM=;
-	b=Oc8xV5FOpthiIUM/FXCtIiaebg3pf0yxddBCbuI/fdlLNPE5qa7qhLmIXul82jZZDoPfqc
-	CrEqzIx2ymqkoOfjuRLGgAWcXUFH9N41zNyH45i1w3RbISY4ZVU9n63RzxMCW3E5VJG8c5
-	U+6Mc+OPLvoWrmlY4LqhbZN8/q3y0Xg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=W7Azikh5;
-	spf=pass (imf30.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787194943;
-	b=jEsK99Alt/PJkCoqZz9nbbcNtArcDHM5cNu8IdL/Egp3srN0PXhKVQ4zz1mMU29IL2wGS3
-	3Ah7cqCGVyFi+2aNsISnydO/l0FotkS5CXfOe9d6d6uT6G72BHhl++5nT4XkAyOaSi6For
-	9eF6tmooD4ogMftZtkJ9tN0teTEBhLc=
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7ec3b429a3aso1285012a34.1
-        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 20:02:23 -0700 (PDT)
+	bh=NaO+/BiFdeJlDm8qbSuChFr4r9AeOPUCQhHHi+406fk=;
+	b=S1KoXtYnwOQA//BWww647Zcd6S0kK31nzfkVDAYUQWYf81xEJD6VbyNp4+/qNYnF9O3i7r
+	BuRt+cB8xLMc7sNx8UZn8spOuNZgnzUkKvQNkiVifzMniP1wYOuUJI+pwRRPhrobhoj7R5
+	afqxMY1d9AmtlpBmGq/WUf2kWBC6BvA=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c169ae1cb26so105074166b.1
+        for <linux-mm@kvack.org>; Wed, 19 Aug 2026 20:23:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787196203; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TBIAHw/wZApmWGYIE/u60kIwh2+Fdh5Bv5vwP0lRSEH/vVxhmcU7xuoU7JdMiQxQ3F
+         UD9NqYBmz+Lm/rnUI/Q59ASdzxW330t+9+bzL2P5jP7eeF01AHa8+QC+/3sjbTWbtqzt
+         cuObwos9t4hyC7oVvDYASjQezXI81tAAtB3r0Vf/FSW927CEUbR87vU0pqXuIzuEfz54
+         HcROdqbYHMJnAu6A7nURncnsAIXerhKYB6xm0dVY29IY1143Hga9+ACUwZuExk2DwwyI
+         5DVHpT0ywO/7dHILVMs9kXd9m1+3Fm4EAyYI5joWuy9I5lZQozno+dYXWlOL2SvCH4PG
+         dWOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NaO+/BiFdeJlDm8qbSuChFr4r9AeOPUCQhHHi+406fk=;
+        fh=Y8NcBTf5nvCkBtyyRjyAPB/714YYvP3fUJLht3Beu2w=;
+        b=FePl2hbrQ3aeKDj/1IEdLCIGSoz+uL68JNFP4bY2zkncxIzS+vG5m6w556XfFiw/sn
+         N7Wchs5kT3wqYtUd04tcx2yJK2YUMkoAUfxQFGoWEDZ1XXRvMkSZ53FvljeBjd/LfkjM
+         Cl5CMvLU1KvInb7xBVZlZD2fIqz80arlpE5KHL7jBS0jEG14d8zzgMCvHYrZI6tLn7jJ
+         QwNknYKZC1gTH2+YAIdA5iH2fEMbyybo5HxDJcQNH7JhxFRLEEBaHKSlndd8As4Lmw7I
+         4I15FkAlp4YQrkjm1EioWnTUkUyIHK37IdC3OLajmgh08+lO5mkrByIziVAKdW8d/2Ee
+         XzIg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787194942; x=1787799742; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1787196203; x=1787801003; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=b7Lcuraq/4CMmDj86N4LuGkDilC6+Z6Q+xTsr6qjIXM=;
-        b=W7Azikh5kfaIOadfgx8pOO+RIg4JRZGQtfnWu6P03umktADHawmwhJDgZtKg5zm+eF
-         /NMWl8oUuMkEZEh1zwvInOQ1gWK+2CrVBku646WPOO+LeVY4xgCkG0ZjbPVO4Bjosrdl
-         cCpoWO08wzfvjWmr7Kd51P+3sIZCe2zo7VU3z3WklOPuJsI9FwX8QATYgC4eTqqQ6lzU
-         5Od+6YZGit8xPRkxoY7CnjcIiT7GYn7ED5/dcP3AUVRcTLheEUIMwtDLnsWPu3Nga7C/
-         EzgNeSY2MqC6aI7vpWpfaTLBOCrWXxkBvIH5LacZay61TqQGPEsbh9p4AqiSIUn7NGBe
-         B0XQ==
+        bh=NaO+/BiFdeJlDm8qbSuChFr4r9AeOPUCQhHHi+406fk=;
+        b=DXForl16Ecm3gNV1a7XZlxzMmXu4NFVuJkpPwC/njWpQocwRnWGw6TImC7arn1qefB
+         RW6nsbOET+L9DlwFtoHrUxMth15TpL0cJKFQrPIQmHdsvT8U/axdjzT3HEfGNM+dx6k8
+         d78tpgYyUTFb7IYlLNsltCMaebWReMV28LV6GepBkhIqaAvdrUPk8Mu0XCI1n69URXy9
+         y8uV5pYvIgD6AVbFd0D1QcZ/jvQ6PuHB67mcrQ7sEQXDe2DF7iRvB5GEgB432rE9VGj5
+         op1+1Wkm+gDbp9UZ803uXEpXA8x9QUE6jH4+ebfL9Obrz/A1sAC1LihJVYn/DfaF+7Yu
+         chYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787194942; x=1787799742;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1787196203; x=1787801003;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=b7Lcuraq/4CMmDj86N4LuGkDilC6+Z6Q+xTsr6qjIXM=;
-        b=iVkosUluQT3f5Zx2sRt/AGZWIEvL2OjSBP8u75DgdIdvQQCJ7cA7v1iSalxI1GKekh
-         Rx0tClymdINT4rDSwAbuXpm6V6SkPJouOBiB4XoO3YQ7ekJ/F+mO+ggInx6/hGzurtxJ
-         /BH6fJA+X6S5fB1V2Bu50gs7O/9qk8TjqWvblt1jt3xY+Zz5/YXeDZNl0PUCN2++Vk00
-         Fcc7bjrzGKqi3xMxYdGbPz5Bh21HStTggbKIGapk1iw1GW9hHrF9/z7qh91YbxIZgcki
-         A56p7vXhho2JG/aecxuM5YtqvytARy+G5k8nlNgXI9lTAsgfLPA/ux+CcQaqaFGsIQK9
-         xGgQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrjzHxh4CYqhPpTsD1s7zahckBu01puMYb88mJik3/iP7T4NhCrInlzXmAJJFpZa91Gvbg3YBHNYA==@kvack.org
-X-Gm-Message-State: AOJu0YzcQM76aQnGZebPsXP1Qd73KDohzKKtcRDUVxIHNqd3jHLHGEkK
-	perxVi+mCBEnaQg9gTHVD3pEaErkN0gQjCr92PCeoFcEwUv1k6S2NS4lTcWdu2sC
-X-Gm-Gg: AR+sD12kX4ePEvx+ncocJJndvq1DSwLxHhS0g2huNKMFjM7Z//NJq9e4hdhcPRhR+Kb
-	khTW8p+I3PAjG75nw+oksBwaWd5daOi7M2KaRS39Lpbgy85SrbUWLf0rwndLb41nrrawYCaWcsO
-	bX/3+1r4a6I8XvYeLZwrHiD9QEY9FRe0tgh85KFK8elkN1a9NbWcxEK9lpazXFllE1mUikdFhHu
-	k2V0wfQvBrHPCopgJn1jjgMrquOC3mU1+9K5Xd1yhQ94uBr7gFsLMQ5u5tYf2VWijFgBZ0N6VJr
-	6tjeXrbTSTwuDB5pCl6zZnhzwqwyFUy12ihod5EbeW0KV/nmvYp+6PzEjHwGs905KdDY/ztGHQp
-	a1oz/q7/+8VQmAlzgsbbD9klt9WKGv2nMUzSW1tZty46tw/IjdMgItRuFOtVdghXpfRMiqZc8HN
-	s3ljHFLaVbo/rQtai/x13nYOYH+h4If1r2uDvubLOmafVwk8/23LYu4BLiEDehJndPXf+qJwKKX
-	kH0WD+WgnsHv+JHl5VypbStdCcvt9epo4u05bkwZA+M
-X-Received: by 2002:a05:6820:217:b0:6ae:42c7:ef83 with SMTP id 006d021491bc7-6b13bdbf028mr9701164eaf.0.1787194942378;
-        Wed, 19 Aug 2026 20:02:22 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bef77be3sm11302733eec.10.2026.08.19.20.02.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 20:02:21 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Ritesh Harjani <riteshh@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, ajd@linux.ibm.com
-Cc: LKML <linux-kernel@vger.kernel.org>, Christian Brauner <brauner@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: Re: [BUG] powerpc: userspace processes crash in ld64.so.2 when running recent linux-next kernels
-In-Reply-To: <eff5c192-ed33-44e8-8834-fa5b4803f39b@kernel.org>
-Date: Thu, 20 Aug 2026 08:13:22 +0530
-Message-ID: <lda1jyut.ritesh.list@gmail.com>
-References: <75419f88-eab9-444b-bf97-28a9765819ad@linux.ibm.com> <627c5c2f-a0b3-4fba-811f-7b4ed4c74dbb@linux.ibm.com> <eff5c192-ed33-44e8-8834-fa5b4803f39b@kernel.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 938EF80004
-X-Stat-Signature: m19n3996etk1o7jom6k6arqaenqr9zd3
+        bh=NaO+/BiFdeJlDm8qbSuChFr4r9AeOPUCQhHHi+406fk=;
+        b=s5JINJi8GLseOdL58I4f2L2s5kb2D08YHILiEhpZQaU1aTrKzanUd1KK1ji4d785dv
+         gWI0TLSrGADN40R3NSl6ljinpVil9s2S7bswLbEfO1c7TIxsf/PLkXWzRoRzdM0n/apE
+         nJv4gwFC97umb/ryZNVhqPjCivoKJw65UPcbYfYLeacb86+Ts8/hTEtsqfexrZD+epTA
+         wv0ykuMf9r/O4BMkBYKzOCTEpLtDssbUurllLYpQchhVWqsrH39fKsVbF/ffaoXljEhH
+         4lTfNQbZCINK6Roo2s1ciRVV2YQuFKa54ywHqFAFicTiJmYH+J7xnXxmg+KpZweNQaim
+         hOow==
+X-Gm-Message-State: AOJu0YySo/j5x63iy/15mfFaw+MAGMiI3AaFTl1m4y0C7CMI40jgnw3V
+	IzwlSjvUEEOxJSjvsIaGGwe1dLdoO4mT64+9hu1XHjNuSRAywTukJiqsGdqXFfx4C5fr0DO5SQt
+	6eO7kEpCYpzGu/fhdmH37pJPu7DfSfbQ=
+X-Gm-Gg: AR+sD12IXfzpK1EaUbkgmz4IX6tewEQot/0AVyBsnh4PmfCQ+CwMpThGRSBm+rQ4MhI
+	xSuQFavjXUSscP9senrTXE2su9i3g0wQrvjyWn7mzoFqU26hUnzGaJIXUZ1iMDFu7om6fbBn3VM
+	D23cYV2ll5l5sNG2v0bqBuV0i/73hFoKLnKEXR8aeLfNzGYrImwhftR2faEMoT+zZloAL6zKMnO
+	y7Gn7gkdYTcKzBqAIEhcoNjKifHy4Lh6+WvuTt9Rv9A6XXtD/4L3iMmLa91JNGa12qX5L8PauFe
+	1rVgPfdcioJVcrMjQOBKWchqx+pCNmNIlzbDWr5ctakDBandzY+il6x2sI15FaKD2XyqoWua7WD
+	C
+X-Received: by 2002:a17:907:d1b:b0:c20:a243:9a52 with SMTP id
+ a640c23a62f3a-c244cf04a75mr196665566b.0.1787196202653; Wed, 19 Aug 2026
+ 20:23:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
+ <20260818-mglru-flags-cleanup-v1-5-8dbbdac0d28c@tencent.com> <959366ca-4a7d-40db-8f56-0a35580dd971@linux.dev>
+In-Reply-To: <959366ca-4a7d-40db-8f56-0a35580dd971@linux.dev>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 20 Aug 2026 11:22:45 +0800
+X-Gm-Features: AcwNN1WCT__niubxoW2MM5CPEOnCDEew3ZBP0LgkE-Yxva-umwbqX3qWyGq0Udk
+Message-ID: <CAMgjq7DOAazz98uM+qXqgka2Y6ZzshjBnQ1N5TJ7=gCR6FttBQ@mail.gmail.com>
+Subject: Re: [PATCH 5/7] mm/mglru: use explicit tier range in read_ctrl_pos()
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4F9A540003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1787194943-822832
-X-HE-Meta: U2FsdGVkX18TsuWGdJIHMav9oSU2SOY69DDeZt6lIlicX46pClk10CTH0vdVnXjN/SwqgkZ/aN4tBFmfLohPcRF2GKr9ZqtZZejEszekysF+4J0PkiIC+/aG86MM0326+oMM5DgzC0VzL0AXk9XK/+C9Ib9fmnsTggvTEm+eBcCkBHMNYF2eaa1g1TyoVL/ESb8TODmWn+mFq0BmhN+G5za/M+hhOvHjcjWajuVE/xdlekyCs65by6zqSD4bEsxtCeW/91NDD0QcdnEdvKOjUi6Su7M7bf6C0ot0twQV3z3hiNRzDPn2assSz2eMJNJdGUX1ML6djR1+OWf5g3bpAopKHVKwebMxMCYikgl6x0L4/GGVr1lCt9k7tGt7NEl6ifakmg5vDx16EbMkVc9kS+mxyTnJWUr7y0bJMXdl22qGaWwgJX+BMQXJqASeIbItGoBmbeFD150f105/tv5MCoU4fqMXCCT6MO9J55I8mmAp6PlA/9umj0OaCnplX3njW+JP4tLAx1NzgFdolJfeLG9Ua7iO2hmSpqxEhC/LTG0z+ysFSMxrOH0/o13v472XFKJhyQxnQEh1JDWwrj/ybqKAOJcm60IhcyiqTLyUkumiNH4Nce7/ZK+ZLWwm8JOHDZgWsXx9ASWbJSZfZyRE/wf178TNe5raY8f4jZFm1eCaT7fJDuicJgbL/hOWfUW6IWj4/nYQ0VKnXQWfNszbihwpRc8fT2xy4mwdQYI3MaYlkw4ry0LmRfV93pwQ5ggbl25wSbeesp+SwWJ551S1fOcHV3X14fjq3ySN9HfbSR11hOQFWGCcoUGSVszdew3mPpvJ6KML0BoZBA5ddaV+qTF6irvxhppqxslloraGBQM4GA5MVb8PqFzteRfe60UWOl/hD132MYoWQmrxpVHWm2CBYjzR08mLH8LcPD2MLaCLgVDHuiPtj4Fbhx0zc701qxquij94/AenArJe2S+
- cqIHoEIq
- cBNt1mJ/98JodOoOcqbXdYISsiEQV2uyHaDqlaeqf2mKAwHqiMI4+IZs7anDbiShD/ttMIZZkI7Q/9KsUK0LhcGhL+vUegvXgXCZpxEyUF+pXymlJDbWpmN5hX28G/cS8OzcSmEhs71ldAPOIiIMsJs1gnYfCVljVvkSrVOdTlKQSKhnsV5IpmCcNEAcvwSJycYyw1xZxO6icOgdVfU3fZ+RnQnaSqAaot3R8Bsu2bPLpdH3CchEzTkYxuEED7w9DGl1ZriTIVPYKdGu/w3+2EObRzliPA3Q137+bRkwVGT+leyLlZ47deMSunvrQBW4lTivEOC36mIoKsjl4SPBtWKuGqQ9Y6YrH6rqZl9jW+3B6HZ/SeYBKQeJT8HQXOKjYS+pp7oBxlIXi/HfLlTShIl26JmrLVHVsMugmQnjnE7cUwv80MuZ/TaHiPGeWMFofGkA1CnUzifaSgdp0LoSP6Csgn0yEerl83MLnXCGZtgZolv2ooJWUN40gEB1m744olVp+DHJ/j6Tn0thAtOAz79HweCPBFlwmm8Np2/c6CHfwgV0=
+X-Stat-Signature: k6zm67otu98pxu6o7ohwi1xx6jiy1p9c
+X-HE-Tag: 1787196204-175928
+X-HE-Meta: U2FsdGVkX1+KHbA4J6imVataUTp2JuiQkFKkE92xNZVsyroi704Wz3JCUFuckMpJKQrCsuEtdY9DvTyx0LgBvU1a+btz8wu1hCwEJADpPYRMfL/M285aT1Sx7dzX2RJnybYKdWeOs8dNNMMWfrGHKyDZyMvwdaphLre5jV86T6lAiaU1KLRqkBHIUbqvxN2rdosnRiPrRdZ4+/lPUueJ/H+jnuhnIqLBBNfMMeV4tB7KtNQeySgx7qN0xZNnfOM6H1RlT/rLUibFcdQjNtmNN1qhlDkKZ5hJqkQQnYAnP4nnDlU7/pONmUOB4pu11r3GjAhsn/5qoeIF9SCAE9Mq8eJNvrSCjKmuOiXtMAa2KJernaGzXqjgpnGvIDskeuFAG+8VIdHIe+KpD8YZX2BxbfrqQbzy25tfaFIigoUmU8pqtzeJz7+3Qv5Mabk3fBqg+9fK3R8yutX32pQs0nErIWbFVi2Ku2lId4jfskLf8YvYbP/+rbglEVgDOYz0Jlho8tHtph50PvNTb5olpw4EiKPSlLhF1/CDxQJ/gwBn5/lrCygRC3hgya16yDBfF0+d0Zg4zj9a2SH0D1FutLn/tXc91qbMZRB5QjCddK0GnOcmqx5+oCIhByXY16wP1H6rVKRGwZ3bHBCFRsU7LuhAidtphEJiFodHvnhGP8GWtYSc8EFkz72W3/TW+cvOmmgpt6CMRQrwLQWBle0Dn5rPePv8QYdKceEXJKUjhwk0TPKHeFbdaA0tAwKsWT+j0k4gkw47YPLU9FlRzuy23u9EogvlZYQVC9Z6LC4LsSuQIolpMwWb7KO4p1ij/8Smfo6tZAu2CeGhllBwVgFuPCweMq5OcVEffjoYVESo3TBnM/7cyGGP2nKqeXSeswNQ8Srbgbs3QIE76EC2T9rjx5BGdzfsCkmfSEfIZ8T1lAHN4p7UCjgyed8myqS+oMtTk1amIfEpbCdw1FgNCHgs3jk
+ sfsGtR4N
+ zv729QjL/UF35msYktbmmZwZQn9DxCAWzi7DPBDS5PcD85dGOw35iF0cdfBSAhOZ8PdvGAr7lWrpsOaQDsya/j+CBuRN1m4dv1h7QDE7ke0R6boF/F4RTM8fotGhGVF/uONB4SVJfRcGgzT3t33NiCCIeWH1eiiWGpacVVGfh8SECF5jA9quWIr3yeWT1PI51omwApMG6uUM9ijBilGjIjTlgt6Sj/fHTqzJDFvrMF6gWWAer5UUDbXMGMlU0sQC86l1pXMVA8OXTLDwgm11GrjAlBtLfEqPmCW7rpyhlBXsAJjr74964JI4bjSJNRq5MgQqC8HCtKY5usHpQPwShUFux8JkhJp3M71A38CPhW9LEOUx0j6rMQjQWiBna9DzV7rhjUuqUVO332hp3WTO52CY6HGp06uOuXvmpgssrJYWlHQ5koUOaqBK8CBe/OgYagGkjRshHoMUCNjPVOQfcKWI5uw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,77 +149,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
-
-> Le 11/08/2026 à 06:23, Venkat Rao Bagalkote a écrit :
->> 
->> As part of debugging and suggested by Maddy, I reverted the following 
->> commit:
->> 
->>    263e5159e00a ("powerpc: Fix exit_flags field placement in pt_regs for 
->> ptrace")
->> 
->> and rebuilt/booted linux-next with only that change reverted.
->> 
->> After booting the reverted kernel, I rebuilt the latest upstream kernel
->> using the same userspace and toolchain. The build completed
->> successfully and I did not observe any of the ld64.so.2 userspace
->> segfaults that were previously seen during kernel compilation.
->> 
->> Kernel used for testing:
->> 
->>    7.2.0-rc5-next-20260731-00001-g79d9c1ce90a9
->> 
->> Top of tree:
->> 
->>    commit 79d9c1ce90a9873422ca4d6d0124a1d1c10a098c
->>    Revert "powerpc: Fix exit_flags field placement in pt_regs for ptrace"
->> 
->> The upstream kernel build completed successfully:
->> 
->>    INSTALL /lib/modules/7.2.0-rc7/kernel/net/openvswitch/vport-gre.ko
->>    DEPMOD  /lib/modules/7.2.0-rc7
->>    INSTALL /boot
->> 
->> Based on this testing, reverting commit 263e5159e00a appears to
->> eliminate the random userspace crashes observed during kernel builds,
->> suggesting that the issue may be related to that change.
+On Thu, Aug 20, 2026 at 10:34=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev=
+> wrote:
+> On 8/18/2026 1:38 PM, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > read_ctrl_pos() encodes the tier range in a single "tier" parameter
+> > via "tier % MAX_NR_TIERS" as the start and "min(tier, MAX_NR_TIERS-1)"
+> > as the end. This is hard to follow, maintain, or extend. Tier values
+> > 0..3 select a single tier, while tier =3D=3D MAX_NR_TIERS selects the
+> > full range.
+> >
+> > Replace it with explicit (tier_min, tier_max) parameters using a
+> > closed [tier_min, tier_max] interval, and add LRU_TIER_MIN and
+> > LRU_TIER_MAX for the tier bounds. The call sites now become
+> > self-documenting:
+> >
+> >    - get_tier_idx:   (LRU_TIER_MIN, LRU_TIER_MIN) for the first tier,
+> >                      (tier, tier) for each subsequent tier
+> >    - get_type_to_scan: (LRU_TIER_MIN, LRU_TIER_MAX) for the full range
+> >
+> > No functional change.
+> >
 >
-> But commit 263e5159e00a fixes commit d7a6797e0bc1 ("powerpc: add 
-> exit_flags field in pt_regs"), by reverting commit 263e5159e00a you 
-> re-introduce other bugs.
->
-> It's a bit difficult to see what commit 263e5159e00a is doing exactly, 
-> most of it is a revert of commit d7a6797e0bc1 but it does something 
-> instead. Need to see what remains with both commits applied.
+> Just like LRU_GEN_MAX and MAX_NR_GENS issue.
+> Why do we have to add LRU_TIER_MAX, can we just use [tier_min, MAX_NR_TIE=
+RS)?
 >
 
-Looking at the diff - I had shared a diff internally with Venkat.
-Thought of doing the same here too. This seems to be holding up for him
-in his internal testing. I haven't fully gone through this path yet to
-send an official patch - but hopefully will do that soon!
+I did that previously, but reviewer suggested LRU_TIER_MAX, :D
 
-syscall_exit_prepare() record _TIF_RESTOREALL value in exit_result, but
-if for some reason (e.g. like an interrupt pending), if we go via
-syscall_exit_restart(), then we are returning ret from here and loosing
-the _TIF_RESTOREALL value which was captured earlier. So instead I
-believe we should return regs->exit_result from here.
-
-I see that we were returning exit_result prior to the culprit patch.
-
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 5b88bf72786c..bf167a41a820 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -175,7 +175,13 @@ notrace unsigned long syscall_exit_restart(unsigned long r3, struct pt_regs *reg
- 	current_thread_info()->exit_flags &= ~_TIF_RESTOREALL;
- 	regs->exit_result |= ret;
-
--	return ret;
-+	return regs->exit_result;
- }
- #endif
-
--ritesh
-
+I'm fine either way, it's really trivial.
 
