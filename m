@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA4C3C5DF81
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 19:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61ECDC5DF86
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 19:34:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA2DC6B008C; Thu, 20 Aug 2026 15:33:56 -0400 (EDT)
+	id 305926B0092; Thu, 20 Aug 2026 15:33:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7A276B0092; Thu, 20 Aug 2026 15:33:56 -0400 (EDT)
+	id 2B60E6B0095; Thu, 20 Aug 2026 15:33:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB72E6B0095; Thu, 20 Aug 2026 15:33:56 -0400 (EDT)
+	id 17D4A6B009B; Thu, 20 Aug 2026 15:33:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F1D96B008C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 15:33:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12022C0295
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:33:56 +0000 (UTC)
-X-FDA: 85122648072.21.6884054
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E22EF6B0092
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 15:33:58 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6573C160294
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:33:58 +0000 (UTC)
+X-FDA: 85122648156.28.12908BC
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7B2B2A0009
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:33:53 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ci/czsF4";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 80B3B1C0005
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:33:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=W2uuzkXM;
+	spf=pass (imf18.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787254433;
+	s=arc-20220608; t=1787254436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fs0htD/cjU9OCu4C2Kg80p/TbNt8/mTbG6p2Ku/lBdI=;
-	b=ljyrQdb9s5+a2Btp9b4+BjLjX+sjujdg8wUk5bXLYqtFK3Z25caGe/CdqlTWW116H6gd0h
-	j6Ws3NTPYKaiJHQmgi0t16NBhjXByswKrGVH5kk9mb+APppbxHICPIiiFX9IIZWtrAy77n
-	KBB0oVAukd/YNWbj4NhQl+uedAdyUA4=
+	bh=aVvnP14Vi0dW0rUtBUB2gwZufKNU6mHScoh2VRLGywk=;
+	b=ehU/XbXFxCNiA9VZRznWpuYTX/azfm3Ke+XkXR6F60PK3epnsmMDbX0uVuwYpCs9eHTicX
+	BFi7oroyyHXI0miq5VuDNIUoKY3+qK9lzo4A6VzA85Z9pUe78dgd7x3vdk9jghgxdMHlzY
+	gfz+e2l2V9M6duZ4cYIaH4KAYBL4qvQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ci/czsF4";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=W2uuzkXM;
+	spf=pass (imf18.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787254433;
-	b=asdoKMM4+ufuqdn4Oo4mVy53ojqzvVe4Sn6kZp2gLR8gVBNZlYOZk3iIhTjixWBOKYzoS8
-	x2DlRHoDtiM21bFHvP6jaz/cz9CiZ84r5O0vtXXprx6MB9clu+Mdn89wVsP9k9oeIEy8tD
-	dqLLsRL+QCnPcA69p3Yu9eLlaN471Qo=
+	t=1787254436;
+	b=boZNaKHDMrXwXPxjnZ2g8Huyqj1wNubkUGInlZ9EG3z9wRSTgV6/y6l+8XS9hJo2PhdwAi
+	iYBBTYYgZ6hxn0m8qmMKuJl1/aKhGTBhjJxHZ3dY8Yz5F6HCm3hkEnjHHTG2tP9fmji4cj
+	/MAD9f46Edk5aALKSva+I4NrRI3cK98=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=fs0htD/cjU9OCu4C2Kg80p/TbNt8/mTbG6p2Ku/lBdI=; b=ci/czsF4/zM1GNnaf9XI2rrb85
-	zzjZAV2v4GTFkP1N4XCj1DpxbCJjSEvQ/M2ZQy1eO1/lU1o+tZngjUMJz0YSlUA2Xou0jPXfa5TLK
-	wBex/0pkUn3IFVsl4Vc0aFxnOElaJemGvFvUf56KowyPrEnj9OfROaE150VqiEWoe4KUuu7sZ187D
-	Thd8UR61BfasYAqAQ7I26DSCPfQ8fCFTT/ip0VAyM64bNb4jvh0+6BpVJZVa0pryEYMZeHYkycasx
-	UcVgoQAjcUDBhn4cIOHxrH/u1M6owTxLlCEoRxQfvRC0vg2wg7qWNfo+sAUsdLyL+2zpjdivzJCWg
-	N5YvhS2A==;
+	bh=aVvnP14Vi0dW0rUtBUB2gwZufKNU6mHScoh2VRLGywk=; b=W2uuzkXMybJUSbnzLQsqYhvn8Y
+	dBDJxLUfmEgBvoQ90UeVVJlK71eSm3W08wFIh9Y3RZ3JkApXAQe5WRIDpKG5ZHU12JjpznfGx0PaP
+	BLA/sQAijbZBtf2kmOhIWSP3HQIwcGLfa8f0QJnr4VIx5PyahrMq3pj2zcHBWXfUYZs6DtOygxtI7
+	18keX0dU6QI4DTrjfmld6fV4AQsRWjCRPaqlfUQA4867zcwrlFqlvfKabHhq3xMUQlchMzEOCn6XO
+	GhivnZbeTM4u9HGBvxexZg1ElMMFbBglOOnqvJk5FBl7Cm1TDnHDIsIZMBj0RNqdYajEZXne0DOFw
+	BExOtdVg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wx8WG-0000000GALd-459O;
-	Thu, 20 Aug 2026 19:33:44 +0000
+	id 1wx8WH-0000000GALf-0JJm;
+	Thu, 20 Aug 2026 19:33:45 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Christian Brauner <brauner@kernel.org>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
@@ -81,22 +81,22 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	linux-nfs@vger.kernel.org,
 	devel@lists.orangefs.org,
 	Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH 3/7] btrfs: Use filemap_invalidate_pages()
-Date: Thu, 20 Aug 2026 20:33:36 +0100
-Message-ID: <20260820193343.3852967-4-willy@infradead.org>
+Subject: [PATCH 4/7] nfs: Use filemap_invalidate_pages()
+Date: Thu, 20 Aug 2026 20:33:37 +0100
+Message-ID: <20260820193343.3852967-5-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260820193343.3852967-1-willy@infradead.org>
 References: <20260820193343.3852967-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B2B2A0009
-X-Stat-Signature: 6staf51w84736zcr5ikiard9bqtriie6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 80B3B1C0005
+X-Stat-Signature: 7yx1zo9jwhhqpri4nobeiiwu8i53nezo
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787254433-390573
-X-HE-Meta: U2FsdGVkX18IVN0gJ5i5hOF05GlgXlcUUvUfofdYlttaOf2AcBSfw40zr0zo+wB+1EhfvWyXe9+XvW5DW73gWodGWaF4YW1nAuIp1ORX+HWN+V9dlgB3Z8qcthuY9jEfwCprfEk5sXVjQeIGLwvqfNb+ie2Du1QlQQL8uIZJBdHdElvSuxG6CmNrFtn7wE95R93o24N79+WUK3Y+xtBvinhBX1O0H0qpovN6sWF7BeWKhwjTntbDSnFuikduuoq8G7wqHB8O4not4Gjwk97GP3lSnWj0p/HxJUX4K59v9vl7hCKA1tqVfnNZT2YMGsYFCpw7nWoIg6OCZi095bWE67IoT88ETpmavhuZhGWSemFXtH9egDkpEKb7DY5v9CkUaZkDtE8xxqXBRddEn5NTPzb49nqH/63Xp78+hBqneOhBKDtmukLbWp9nRpCgr1zo9T60uONbJn83LIp/xUJUGYVVPpOgTgy0WUPCSJhZOIw4PdaN61ytj1W1CGyaPBHw4eDWbhNSPKOHOCATacTjuSahGfw5lTuZel23L15IOTKIKKqXFKvwLGqC2iFzq7Ahi8YwqZNNtpDBC1AbrckZa8tNk74EqvVbSXTKCNUE1ObiFnnUk0eX7bMBWbnJKc1JUjH59GeAGx4rZ/EpfrnodanihEQO/9kKstbnohwdzbXnQl1YC3C2rJjL/GExOBJcIttbs8f1WhLExUKnVAwq6mBd8KvI0uSeeT+un7qZ3Vbfj7wKEZ8W+tdsxg4xO+rjPz2bS1vdVqc8mcaAOp/u8fciul3U3tAI/LM0+C+8xbKX6LUU63RFhyaAfaMRtGod9nujdZtES9EJkRhrsi5OrAEMhxPDi+FkjOMgGRskTsd+AfuMxCoHBS+CFXDi86myruBUFs+WPBOgst2WEM7VFLqGuGdcUFvf0SkoLh6WlJvcIzZry+/AsZ71xMpZhm1Smh1PC8gfAFKvCJdTAKd
- f/5j6EjS
- MWH9V6d3ZHAtMqAoFWROR6nfB/SFaN5W85ORSCi0zcAMA3XgxtVBX+nI29lNMzshCel+L7TKGLEifR2VUSG/rhOz+7EvsdhKOXaymJkGhuuJVeVOCuvkAjRG0DVw6uCqZ3jHPJ4GwZqONW1lNJcHCxb1lOV1iN53yRtn3S2ok7GPd73l2yuCW0I9WO9kinILrnQ5pZD2HgPCpDNSBloen0s3zDsUKfNTZZBnZSct9YGKK2kC1GhWo0tdlQ4Cop5ezQvgzHU4dGDNeyr2v0BaRaj+X/e7VMwkwerDvaZayON/XDT6ELUB4uMfCDdNGWvmOBAN4ylRVZfRZs0y1K6zVzAmyD7UNPDWmhfjkUztL4nE0TJGcy/+H4s+hvQ==
+X-HE-Tag: 1787254436-812609
+X-HE-Meta: U2FsdGVkX1+vSDRv1vFBCUtEuAJqdZ91J6OfTFTCFHbhtuIKDM7KCcL52KuiTGfk6VMm4ub7sycfCCotzc9cTbw8xum60Q2n4qTLBrHbVgvh2r8Hc1E9DeqmOYYjnW9i++eZeeaQyN0DKGevi632EFpvRefJObu+SVhxp9KDaT6a/PX72k50sB5HldYaWiDSlYvcjRuiQmUSWjdOFvBwWHcVzpuktMNiGRJNCQfDMy11Cg51xdsb3CnycC18VLCG4yOXRrX6TlC5wAS3A706blJvKzq44fSxHL8hACSRLt/hIv0+2cifam7sntl6Bn32/tJCTSAJo7Hv8qZPFFwRKHHQBx6R/GllpC7cQwUiM4BqDPX8aF90XUzd79qLV7DHDkda1SkV4aSeIeYiqAJQezbkxysM/+LOQXKx816rK3dIHXQLG2O9Q5NfWkYE390oXICaOGLsRTvRUKcZQVtUnE11M7Y+ReOdU5tToKZQzbBOtMJY8cRIHrblcFojEdx4+pJCsTLfPOzf1j3lDuATX8ya+k0eQNz3KqUHRpdsx2Uh8+H+vxJ6YyNUswLDJUWzemCGICuknBR7Q8k1XZAhoqjMMJe3d2xa+1QigfarvDLk8D39nwMmIgoaNo2mGgo2Sl/4K0rcNPLoV2y5Fm0lpv9yKvC5lOCvv8jHJ/FfLe7qsgIXq/7bUhAb8R0fqIwPA+oYhLSk52Oo8naWwB1uXnmATNDFfQO9Z6k3EnO/gFgkNiyEa/9OCATuwWEJexX7quOxmcgWFn7CyrIkoNJOFYFQRh+d/DzBn5+6gevcJHoJ9WDh2eC4gYGcSA0uIo1SQXru1ACDcnJpFyypq+YDfv2HKTLFSSuvMLwTi2n+R7+uocmNv7UG9+rDe9YDY+iePhClLTuXAFHdfEVnSULzXy46GNOs+obFylRZloYFSb2ia/OU39HS6bMaD7l95e4ByCvRG47tBj8B7+dtGtZ
+ cXmq27hL
+ 1Njmuu61P/Tt8qcwDksCPRx5cpvCGDOVRuIOR7aT9iBvfwajCpmD7cEGKvaxm6Y5mADZ5hPRux/v6lW/5NVIV48xohZWrGCovzcuVRN3zgcTkCXh2+UHK2dv567Mp1SJrWI6S7gPCMTeXMXneneZsxpVXH3rEWNHmIknNXirmGmDk9Ypz8l08fNk00Vm2xmEhohWORi5ZupuDrTCrIrgG3nFactxl/xDaGQFGI/R3oZS3JywqsRAw+ub6qSOLLYzuIA1QLp9/jU9byLCIzC/IWm7cMFNhXFl6EI7y0LzBKJxEe8voHoLJf8tz6LjQfrFS5+7kC4hyXV6iUIpETh9d05ENfMzPkya4ixQrYvB0ANdXYj/H3+jdym8nhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,155 +104,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-btrfs relies on invalidate_inode_pages2() /
-invalidate_inode_pages2_range() doing writeback by calling
-btrfs_launder_folio().  While this works, it is inefficient as each
-folio is written back and waited for individually.  Far better to call
-filemap_invalidate_pages() which will do a bulk write first, then remove
-the page cache.
+nfs relies on invalidate_inode_pages2() / invalidate_inode_pages2_range()
+doing writeback by calling nfs_launder_folio().  While this works, it is
+inefficient as each folio is written back and waited for individually.
+Far better to call filemap_invalidate_pages() which will do a bulk write
+first, then remove the page cache.
 
-With this done, btrfs_launder_folio() no longer needs to exist so
-delete it.
+With this done, nfs_launder_folio() no longer needs to exist so delete it.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- fs/btrfs/direct-io.c        |  2 +-
- fs/btrfs/disk-io.c          | 11 +++++++----
- fs/btrfs/free-space-cache.c |  4 ++--
- fs/btrfs/inode.c            | 12 ++----------
- fs/btrfs/volumes.c          |  4 ++--
- 5 files changed, 14 insertions(+), 19 deletions(-)
+ fs/nfs/dir.c       |  7 ++++---
+ fs/nfs/direct.c    |  5 ++---
+ fs/nfs/file.c      | 24 ------------------------
+ fs/nfs/inode.c     |  5 +++--
+ fs/nfs/nfs42proc.c |  3 +--
+ fs/nfs/nfstrace.h  |  1 -
+ 6 files changed, 10 insertions(+), 35 deletions(-)
 
-diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
-index 460326d34143..4bb5890d0898 100644
---- a/fs/btrfs/direct-io.c
-+++ b/fs/btrfs/direct-io.c
-@@ -115,7 +115,7 @@ static int lock_extent_direct(struct inode *inode, u64 lockstart, u64 lockend,
- 			/*
- 			 * We could trigger writeback for this range (and wait
- 			 * for it to complete) and then invalidate the pages for
--			 * this range (through invalidate_inode_pages2_range()),
-+			 * this range (through filemap_invalidate_pages()),
- 			 * but that can lead us to a deadlock with a concurrent
- 			 * call to readahead (a buffered read or a defrag call
- 			 * triggered a readahead) on a page lock due to an
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 2f1666d9544e..2cf9189225c9 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -3304,7 +3304,8 @@ static void invalidate_and_check_btree_folios(struct btrfs_fs_info *fs_info)
- 	struct extent_buffer *eb;
- 	int ret;
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index c7caffb31935..265471ef5dae 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1035,7 +1035,8 @@ static int find_and_lock_cache_page(struct nfs_readdir_descriptor *desc)
+ 			nfs_readdir_folio_unlock_and_put_cached(desc);
+ 			trace_nfs_readdir_cache_fill_done(inode, res);
+ 			if (res == -EBADCOOKIE || res == -ENOTSYNC) {
+-				invalidate_inode_pages2(desc->file->f_mapping);
++				filemap_invalidate_pages(desc->file->f_mapping,
++						0, OFFSET_MAX);
+ 				nfs_readdir_rewind_search(desc);
+ 				trace_nfs_readdir_invalidate_cache_range(
+ 					inode, 0, MAX_LFS_FILESIZE);
+@@ -1050,8 +1051,8 @@ static int find_and_lock_cache_page(struct nfs_readdir_descriptor *desc)
+ 		    memcmp(nfsi->cookieverf, verf, sizeof(nfsi->cookieverf))) {
+ 			memcpy(nfsi->cookieverf, verf,
+ 			       sizeof(nfsi->cookieverf));
+-			invalidate_inode_pages2_range(desc->file->f_mapping, 1,
+-						      -1);
++			filemap_invalidate_pages(desc->file->f_mapping,
++					PAGE_SIZE, -1);
+ 			trace_nfs_readdir_invalidate_cache_range(
+ 				inode, 1, MAX_LFS_FILESIZE);
+ 		}
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index e626c72495e6..56ad855b9027 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -1019,7 +1019,7 @@ ssize_t nfs_file_direct_write(struct kiocb *iocb, struct iov_iter *iter,
+ 	nfs_add_stats(mapping->host, NFSIOS_DIRECTWRITTENBYTES, count);
  
--	ret = invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
-+	ret = filemap_invalidate_pages(fs_info->btree_inode->i_mapping, 0,
-+			OFFSET_MAX);
- 	if (likely(ret == 0))
- 		return;
+ 	pos = iocb->ki_pos;
+-	end = (pos + iov_iter_count(iter) - 1) >> PAGE_SHIFT;
++	end = pos + iov_iter_count(iter) - 1;
  
-@@ -3339,7 +3340,8 @@ static void invalidate_and_check_btree_folios(struct btrfs_fs_info *fs_info)
- 		rcu_read_lock();
- 	}
- 	rcu_read_unlock();
--	invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
-+	filemap_invalidate_pages(fs_info->btree_inode->i_mapping, 0,
-+			OFFSET_MAX);
+ 	task_io_account_write(count);
+ 
+@@ -1060,8 +1060,7 @@ ssize_t nfs_file_direct_write(struct kiocb *iocb, struct iov_iter *iter,
+ 							    FLUSH_COND_STABLE);
+ 
+ 		if (mapping->nrpages) {
+-			invalidate_inode_pages2_range(mapping,
+-						      pos >> PAGE_SHIFT, end);
++			filemap_invalidate_pages(mapping, pos, end);
+ 		}
+ 
+ 		nfs_end_io_direct(inode);
+diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+index a0d8f1c1cf10..cfc9c0135845 100644
+--- a/fs/nfs/file.c
++++ b/fs/nfs/file.c
+@@ -552,29 +552,6 @@ static void nfs_check_dirty_writeback(struct folio *folio,
+ 		*dirty = true;
  }
  
- static u32 calc_block_max_order(u32 sectorsize_bits)
-@@ -4739,7 +4741,8 @@ static void btrfs_destroy_delalloc_inodes(struct btrfs_root *root)
- 			unsigned int nofs_flag;
- 
- 			nofs_flag = memalloc_nofs_save();
+-/*
+- * Attempt to clear the private state associated with a page when an error
+- * occurs that requires the cached contents of an inode to be written back or
+- * destroyed
+- * - Called if either PG_private or fscache is set on the page
+- * - Caller holds page lock
+- * - Return 0 if successful, -error otherwise
+- */
+-static int nfs_launder_folio(struct folio *folio)
+-{
+-	struct inode *inode = folio->mapping->host;
+-	int ret;
+-
+-	dfprintk(PAGECACHE, "NFS: launder_folio(%llu, %llu)\n",
+-		inode->i_ino, folio_pos(folio));
+-
+-	folio_wait_private_2(folio); /* [DEPRECATED] */
+-	ret = nfs_wb_folio(inode, folio);
+-	trace_nfs_launder_folio_done(inode, folio_pos(folio),
+-			folio_size(folio), ret);
+-	return ret;
+-}
+-
+ static int nfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 						sector_t *span)
+ {
+@@ -633,7 +610,6 @@ const struct address_space_operations nfs_file_aops = {
+ 	.invalidate_folio = nfs_invalidate_folio,
+ 	.release_folio = nfs_release_folio,
+ 	.migrate_folio = nfs_migrate_folio,
+-	.launder_folio = nfs_launder_folio,
+ 	.is_dirty_writeback = nfs_check_dirty_writeback,
+ 	.error_remove_folio = generic_error_remove_folio,
+ 	.swap_activate = nfs_swap_activate,
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 5bcd4027d203..089dd7df1790 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -1323,7 +1323,8 @@ void nfs_file_clear_open_context(struct file *filp)
+ 		 * every page again.
+ 		 */
+ 		if (ctx->error < 0)
 -			invalidate_inode_pages2(inode->i_mapping);
 +			filemap_invalidate_pages(inode->i_mapping, 0,
 +					OFFSET_MAX);
- 			memalloc_nofs_restore(nofs_flag);
- 			iput(inode);
+ 		filp->private_data = NULL;
+ 		put_nfs_open_context_sync(ctx);
+ 	}
+@@ -1461,7 +1462,7 @@ static int nfs_invalidate_mapping(struct inode *inode, struct address_space *map
+ 			if (ret < 0)
+ 				return ret;
  		}
-@@ -4837,7 +4840,7 @@ static void btrfs_cleanup_bg_io(struct btrfs_block_group *cache)
- 		unsigned int nofs_flag;
- 
- 		nofs_flag = memalloc_nofs_save();
--		invalidate_inode_pages2(inode->i_mapping);
-+		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
- 		memalloc_nofs_restore(nofs_flag);
- 
- 		BTRFS_I(inode)->generation = 0;
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index e2af75a205ea..a5d5eba2c85d 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -1307,7 +1307,7 @@ static int __btrfs_wait_cache_io(struct btrfs_root *root,
- 				io_ctl->entries, io_ctl->bitmaps);
- out:
- 	if (ret) {
--		invalidate_inode_pages2(inode->i_mapping);
-+		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
- 		BTRFS_I(inode)->generation = 0;
- 		if (block_group)
- 			btrfs_debug(root->fs_info,
-@@ -1500,7 +1500,7 @@ static int __btrfs_write_out_cache(struct inode *inode,
- 	io_ctl->inode = NULL;
- 	io_ctl_free(io_ctl);
- 	if (ret) {
--		invalidate_inode_pages2(inode->i_mapping);
-+		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
- 		BTRFS_I(inode)->generation = 0;
+-		ret = invalidate_inode_pages2(mapping);
++		ret = filemap_invalidate_pages(mapping, 0, OFFSET_MAX);
+ 		if (ret < 0)
+ 			return ret;
  	}
- 	btrfs_update_inode(trans, BTRFS_I(inode));
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 2534cd9284d5..a1bb73f083aa 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -7616,12 +7616,6 @@ static void wait_subpage_spinlock(struct folio *folio)
- 	spin_unlock_irq(&bfs->lock);
- }
+diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
+index ab86246fc364..8555fd0a7f71 100644
+--- a/fs/nfs/nfs42proc.c
++++ b/fs/nfs/nfs42proc.c
+@@ -395,8 +395,7 @@ static void nfs42_copy_dest_done(struct file *file, loff_t pos, loff_t len,
+ 	loff_t end = newsize - 1;
  
--static int btrfs_launder_folio(struct folio *folio)
--{
--	return btrfs_qgroup_free_data(folio_to_inode(folio), NULL, folio_pos(folio),
--				      folio_size(folio), NULL);
--}
--
- static bool __btrfs_release_folio(struct folio *folio, gfp_t gfp_flags)
- {
- 	if (try_release_extent_mapping(folio, gfp_flags)) {
-@@ -10027,9 +10021,8 @@ ssize_t btrfs_do_encoded_write(struct kiocb *iocb, struct iov_iter *from,
- 		ret = btrfs_wait_ordered_range(inode, start, num_bytes);
- 		if (ret)
- 			goto out_cb;
--		ret = invalidate_inode_pages2_range(inode->vfs_inode.i_mapping,
--						    start >> PAGE_SHIFT,
--						    end >> PAGE_SHIFT);
-+		ret = filemap_invalidate_pages(inode->vfs_inode.i_mapping,
-+				start, end);
- 		if (ret)
- 			goto out_cb;
- 		btrfs_lock_extent(io_tree, start, end, &cached_state);
-@@ -10782,7 +10775,6 @@ static const struct address_space_operations btrfs_aops = {
- 	.writepages	= btrfs_writepages,
- 	.readahead	= btrfs_readahead,
- 	.invalidate_folio = btrfs_invalidate_folio,
--	.launder_folio	= btrfs_launder_folio,
- 	.release_folio	= btrfs_release_folio,
- 	.migrate_folio	= btrfs_migrate_folio,
- 	.dirty_folio	= btrfs_data_dirty_folio,
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 6eab4cc73ce4..0301465ab87f 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -1370,8 +1370,8 @@ struct btrfs_super_block *btrfs_read_disk_super(struct block_device *bdev,
- 		 * Drop the page of the primary superblock, so later read will
- 		 * always read from the device.
- 		 */
--		invalidate_inode_pages2_range(mapping, bytenr >> PAGE_SHIFT,
--				      (bytenr + BTRFS_SUPER_INFO_SIZE) >> PAGE_SHIFT);
-+		filemap_invalidate_pages(mapping, bytenr,
-+				bytenr + BTRFS_SUPER_INFO_SIZE - 1);
- 	}
+ 	nfs_truncate_last_folio(mapping, oldsize, pos);
+-	WARN_ON_ONCE(invalidate_inode_pages2_range(mapping, pos >> PAGE_SHIFT,
+-						   end >> PAGE_SHIFT));
++	WARN_ON_ONCE(filemap_invalidate_pages(mapping, pos, end));
  
- 	filemap_invalidate_lock_shared(mapping);
+ 	spin_lock(&inode->i_lock);
+ 	if (newsize > i_size_read(inode))
+diff --git a/fs/nfs/nfstrace.h b/fs/nfs/nfstrace.h
+index 4ada21f4eebd..7774b86dbd60 100644
+--- a/fs/nfs/nfstrace.h
++++ b/fs/nfs/nfstrace.h
+@@ -1069,7 +1069,6 @@ DEFINE_NFS_FOLIO_EVENT(nfs_writeback_folio);
+ DEFINE_NFS_FOLIO_EVENT_DONE(nfs_writeback_folio_done);
+ 
+ DEFINE_NFS_FOLIO_EVENT(nfs_invalidate_folio);
+-DEFINE_NFS_FOLIO_EVENT_DONE(nfs_launder_folio_done);
+ 
+ DEFINE_NFS_FOLIO_EVENT(nfs_try_to_update_request);
+ DEFINE_NFS_FOLIO_EVENT_DONE(nfs_try_to_update_request_done);
 -- 
 2.47.3
 
