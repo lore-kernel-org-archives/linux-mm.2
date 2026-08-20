@@ -4,104 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3551C5DF82
-	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 07:59:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCEDFC5DF82
+	for <linux-mm@archiver.kernel.org>; Thu, 20 Aug 2026 08:01:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 721946B00A1; Thu, 20 Aug 2026 03:59:48 -0400 (EDT)
+	id CA2536B00A3; Thu, 20 Aug 2026 04:01:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F5DE6B00A2; Thu, 20 Aug 2026 03:59:48 -0400 (EDT)
+	id C7A356B00A4; Thu, 20 Aug 2026 04:01:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BFCB6B00A3; Thu, 20 Aug 2026 03:59:48 -0400 (EDT)
+	id B42336B00A5; Thu, 20 Aug 2026 04:01:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29E606B00A1
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 03:59:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D4961806A8
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:50:41 +0000 (UTC)
-X-FDA: 85120875882.23.F36C344
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DB0CEC0009
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:50:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=neAQbv1Q;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787212240;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 80B186B00A3
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 04:01:16 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F2A8D120712
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 08:01:15 +0000 (UTC)
+X-FDA: 85120902510.13.0E27302
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011002.outbound.protection.outlook.com [52.101.70.2])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D321F180005
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 08:01:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ojxc+OF2;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ojxc+OF2;
+	spf=pass (imf16.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.70.2 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787212872;
+	b=pgQSXB2GqmBl6Vp7S79+YAcdDmG2DhCiW9k4AbLOecsCnqb6JJicyIu/sKUTO1JHDQ4ok3
+	uqqjPWfpDD+rXMTS2unff9HoZ+OxSzzJM6NRiuEncNX3M2heknm0AlWpX4XUtcpZXw6DSe
+	2ycigp7TAP0VTisxxVHmeHzFtMw74yE=
+ARC-Authentication-Results: i=3;
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ojxc+OF2;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=ojxc+OF2;
+	spf=pass (imf16.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.70.2 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787212872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4WJtv0jR6sStv5vxf0tCXJE/Qix9ltmJSQswWyWPHUg=;
-	b=3rzwwOpXEj86lS05/MPIkTn1Axn+QJ/HkJDg2s7zGoNmbtIFQX01jTf/QBBuRik+aInKkK
-	xBF/2tN/xigZ+NTr7Y7Krx0qjF3ajCSqJSNOfskamk7ozRc5wVatP/mEf979+74Z5P+ba/
-	jlNxJdSqwCWKg8AyMqofEsqwqwDR6Jg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787212240;
-	b=KiuMOw4grCsLfVBYiw3C7A0o60GKmkKB9H1DWlz0tAPcyADihe7jjC5afSqr1+CQrEG5QP
-	l+HgPoA8IKgoNNg4I2rHTUaAGMt2TT6L6A8t5m/75obY7g7Sl3DFa1FWSQg47SAJgcAdvZ
-	9GajMYwZ2HHtr/Nh17ivfIyfTHykR90=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=neAQbv1Q;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2634043E60
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:50:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9AF1F01558
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 07:50:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787212239;
-	bh=4WJtv0jR6sStv5vxf0tCXJE/Qix9ltmJSQswWyWPHUg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=neAQbv1Qjm73GEOQvCZhElj0H/BirpBxAP3xFBYL/IUh/9Q5O6umHfDhcnAceoSNN
-	 kFETkhtjaaUreVRsOR+7qK19kPNr2DF7VIzBe2HC43j5ayW61vZqThvyvPW/9SJh4M
-	 +CaEormIP15qbyQ9/jI1GdbarRNpCqiyCWZXgwu5euvGPNI9A2UwzhqySVtsTCIdF5
-	 p6iAnStUkQOuXGk+4qKckmcyK92geTHS9FFjUEhZm6xj5cLR2bSfFcY2eZsJRgi/DS
-	 RjKBgWiFiN+Ty2aRdXuidyvO/sUs8LPP2kySegiyu26LOtVkNvvaSB9OGYdM6dNao1
-	 vLxjHg/ain/lA==
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e7632b193so132514685a.2
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 00:50:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrAGiNUu5iXRz5hMrU/Bap5D5mqHxdLPg9zJwM4YjZEbuF24kjLDxE37Plzi/Zut8ylbRT9A60urw==@kvack.org
-X-Gm-Message-State: AOJu0Yx+eOLg+n1CFE65ITorIBBI/tlbZ/KfgjEF2fEv/yW/eeH919Ut
-	ul1qoeD6sLH3uQVopZuP2dq07usIOZPtHHZpvWmoZgKZNpPrz7IZN6ESPQF/k/r7UPJ8583XBFR
-	Tp4io3d/rlSRNl/Embhssv7xYLPbhZvU=
-X-Received: by 2002:a05:620a:172b:b0:915:a111:86ae with SMTP id
- af79cd13be357-9371e67b4bdmr1040292385a.35.1787212238275; Thu, 20 Aug 2026
- 00:50:38 -0700 (PDT)
+	bh=ki7Omu9X3X0UT3JAF/Wl8JtuisJO/fgUEm6RqGId8xY=;
+	b=QwbefMpN2PpBX0C2Z3OXuvt3vf7Vi2Padv+1KeFoeKo2EVaQMIa8Tc+yh0Fpj+3dJcd3sq
+	Ex08ydfnjiS/pBmv3NNyabh223D2FZmxoVoQQ2R+cPyf+R81hFPZqnA2ms+6OatJrjECaZ
+	PZPkGao8j+m9gny7PwxeNpcTvF1LAH0=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=OgG8doSKkE64WBKFGkOQpKP5/TPawyGMXTWfGG12V/mHyVPXVskWsKu8iThekN7tbdJ7dV2iJyqcVGtbS+psCe6ul9zaeDxSFUoApM16Ph8RlKA6n91f4B9NQM133PWyXwwWRXoYVH82/0mod6G//v/lMne1mk0zlsW1IGEP8N4xgUW1+u8+wGaRbImXQBNaSYoc+PtB3d3uB1ngkXsvYnOr9EkfuOWYxpA589MgoQcUf2hs+MuEgiPb/aHA1s9g+rbWAHHTzNPXsWA9BIfCRLieUmaw6kfS4ZIgwWcnuX2Sxi9zbuIxSY2c0EaEsli8sAzc4UNqcEGh30rhIlvdOA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ki7Omu9X3X0UT3JAF/Wl8JtuisJO/fgUEm6RqGId8xY=;
+ b=nAf06xnqLJSoos71gbstAfQ/VlIBAMgRGHqDFqNnJPgofNQI4aMLH1VqiD/cCYZC9rvhetuHzQOEJp5tIAbAAHF5b9phrX1+W1+KP7Z+9gP5PQxcE4pxXlWHuIXAD+M2yhzoyuloPur9VcxPTjMPxN0xoeeDaBjyJyAqiizze+rQKNmXxXoqDcOe3FG4gwEqx3am0KtVfeac2udh+UmfEKpjXX+oOCwqtFb0hfYwKhZYwRbEo/8VoRtb9Y65qZrsdDTdqH6iOADgyVgwK8PgFtcaRAsPfD1f583+0koLci7cocpvHHAZTsdZal2fM5JGA/jlIvyb2SlXkfkkAPrbpA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kylinos.cn smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ki7Omu9X3X0UT3JAF/Wl8JtuisJO/fgUEm6RqGId8xY=;
+ b=ojxc+OF2twDQcpB4qK2nnvh8WPkaj8lwdmx2+ReavAt3F4TlPidJeHpHCWqkQ92qCvX9lYc2T1pUE9tjq6vnS/aB8TMwv9Lf1wXQkQbUw0FqWRmOaxmJxJUaJpWHEQZnFf0kSijiyX3RPc+ANod/S4zVOQXeBPfEmZpyTVcdLF8=
+Received: from AM9P250CA0015.EURP250.PROD.OUTLOOK.COM (2603:10a6:20b:21c::20)
+ by DB9PR08MB8697.eurprd08.prod.outlook.com (2603:10a6:10:3d3::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Thu, 20 Aug
+ 2026 08:01:05 +0000
+Received: from DU6PEPF0000B620.eurprd02.prod.outlook.com
+ (2603:10a6:20b:21c:cafe::c) by AM9P250CA0015.outlook.office365.com
+ (2603:10a6:20b:21c::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Thu, 20
+ Aug 2026 08:01:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DU6PEPF0000B620.mail.protection.outlook.com (10.167.8.136) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.3
+ via Frontend Transport; Thu, 20 Aug 2026 08:01:03 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DF/mPu3QvBbAyJMmyWc/feq3hHtYtzLNUX6ux9J59NPM6jOxNNTtdlEcShugjLtjCd0gGOngKJNPNQCW1fRtFDcJ8f+A4XyQw+OLI9CKTwpcIxWSQRDc/MbXGBvLKcxScLCJjO0rwW5BgWXqziIqiYuACjVGjhxmGNVNbBz2Z/OBltLTGP8/UiuQFxPFXZoby33530mhj74gQydoki77wM0tc8N2g6UQoy/kwpvfoHKkKd+gI3+YGorLTJIERASTbnBI0QInXbSKKxutAoSrp42ZbioSJgckAhBsAVfRNrFWD5lA2E5AjsHVLA9v1miOkX5KyyXGfIJr0XBmLgWG9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ki7Omu9X3X0UT3JAF/Wl8JtuisJO/fgUEm6RqGId8xY=;
+ b=tKTVnNSpTQvFSkcOxWpufJ5e+VZVquN7ebzd2yHDW4R8a2ougKwOmiDHPnVTCDRWKK26XVcgrQ5ZMgAkbBoixfvok3qjKMyo/ChRlCjib/oWMsY6nevbQhbdqGN1eIS5S+LwPmFCC2UGLBwfv49cSAa8cip+hTfw/6Vz1NAJ2tGuuOUATiWrixZAukpNIRAMinavmZn/aDKyXoMky8f8eNY3VvbzhlPTIIAhyY5dwDrGkcHGEBqyMk9pp7IZreCORempJJUyuvtzyMInPREzTxS+3lq/REM8gELVmGJABjVrQVtIDfw//GMATfCjYJdkHcjmWVvYyH6xkvAQn4UZ1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ki7Omu9X3X0UT3JAF/Wl8JtuisJO/fgUEm6RqGId8xY=;
+ b=ojxc+OF2twDQcpB4qK2nnvh8WPkaj8lwdmx2+ReavAt3F4TlPidJeHpHCWqkQ92qCvX9lYc2T1pUE9tjq6vnS/aB8TMwv9Lf1wXQkQbUw0FqWRmOaxmJxJUaJpWHEQZnFf0kSijiyX3RPc+ANod/S4zVOQXeBPfEmZpyTVcdLF8=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
+ by DU0PR08MB9324.eurprd08.prod.outlook.com (2603:10a6:10:41f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Thu, 20 Aug
+ 2026 08:00:29 +0000
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0315.016; Thu, 20 Aug 2026
+ 08:00:28 +0000
+Message-ID: <5bd21a82-3ee3-44a1-a94c-f567ff36a2e5@arm.com>
+Date: Thu, 20 Aug 2026 09:00:27 +0100
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, shuah@kernel.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, peterx@redhat.com, sarthak.sharma@arm.com,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] selftests/mm: emit TAP header and use TAP skip in
+ mremap_test
+To: Song Hu <husong@kylinos.cn>, linux-mm@kvack.org, akpm@linux-foundation.org
+References: <20260820061426.356869-1-husong@kylinos.cn>
+ <20260820061426.356869-3-husong@kylinos.cn>
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+Content-Language: en-US
+In-Reply-To: <20260820061426.356869-3-husong@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0463.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1aa::18) To VI1PR08MB3421.eurprd08.prod.outlook.com
+ (2603:10a6:803:80::16)
 MIME-Version: 1.0
-References: <20260820072641.253591-1-ridong.chen@linux.dev>
-In-Reply-To: <20260820072641.253591-1-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 20 Aug 2026 15:50:27 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wq46FkDQ_MhvEvtgdUQN5A_+_P+b6gbDvfEadus3WAaA@mail.gmail.com>
-X-Gm-Features: AcwNN1WpZKVRcGQYU4YLusRNzGFSPplkASha87Nqpx4DHOMQ0BueSEE8CgJPFcw
-Message-ID: <CAGsJ_4wq46FkDQ_MhvEvtgdUQN5A_+_P+b6gbDvfEadus3WAaA@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: preserve inactive placement when enabling MGLRU
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Steven Barrett <steven@liquorix.net>, 
-	"Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, Yu Zhao <yuzhao@google.com>, 
-	Oleksandr Natalenko <oleksandr@natalenko.name>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-TrafficTypeDiagnostic:
+	VI1PR08MB3421:EE_|DU0PR08MB9324:EE_|DU6PEPF0000B620:EE_|DB9PR08MB8697:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42e4342d-1b42-4129-b898-08defe912e94
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|10067099003|56012099006|6133799003|4143699003|3023799007|22082099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info-Original:
+ FN5nUmjJIgLjgYSGGB3ovv2Cel532sl+BPhOxwpbxQu+bLDxfrGHNTFJoK2hK7/G4VP529z3OoyvZqhMV89EwgjL0KTa6eYSjeg8uLV2FCiDFhPllHdj7dZLh9qdnDu62dtbv7RItVHa07MmQBdo6uekZbjoITctvA8XQ0F9GLEoEN5j6zxqP7xZ0W+vJ8W+PfKiR0b5Sw6967DuuRUpMp87IZ4IYtPHX/U8h4bpoqArqG/S0OUAwLu0VDE1uaUAPrkjiMYF777G/SY9+6ZDYzW5VqLZqI3YVKPHkIik1XvjtKV7H94ojrQ28XUskqr1PhGG4w8VAPgNRrh5NNVJ1b/u6IBmwIOHsHjGUprwdE3LClu7muYMWc5tKuuYJ/sMa9QtS567MpQPoAENorCubLkmL+YDVWUITEzkUIF0LgwHKQynLqZ50zNQUm8ae0//7Wwj2uAh9UN9UW6FqmbaYj2eU+LPvefidyvAxDKy4E0DIUUOjYPlCo6qfZZXYuK3wVYD74vR/pS12M603frB8NfurMbKWvNYkORlPHYvW2FzwHKRAf+6TJG8gb8IrOHjFUMt5js9uXp9k9Rpgj3xH5Q/ucDO0ogoYoB4l/sQlZAmvN7hiEYMEhRjU/4jgRDWj7dxeiPfqGCUbgEa2C+nZ/SWtusmDcg4HR9nxFwuTJg=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(10067099003)(56012099006)(6133799003)(4143699003)(3023799007)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ DIE6ZL8Hz9rmYOqG/6Q77Md7qzqi4Oy1TDwYxFWoukwZSkStx+x+kzeplzh8KT7lzV+7l/8lCKXSCB6Yhq5A6oOKm8dnloK7+CR/lLUVq7ZoPfxwVX8QDyEA9lnJGZf8K5B/15nGjiqV3hN2rX3mdBNFaZVb95lMyn38srCRbmPE1cf8fc4bdAGZ8eepsaagT+1+BnkBp7XLy8QWRYWjblgZYcY8dWRW/5kqliPHDDrnpiEXAkGbu/kWmxoxcJHA0bcrTAtYDT7cbbIcheSCDuyggQv92VeUj4tK6UIb+llZIAJr9MlhbjmiDSnwTaV8Vo2MTUNZkgn8UCWLI+wABQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB9324
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU6PEPF0000B620.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	44e7fa73-06f5-49ab-0fc6-08defe911989
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700016|23010399003|14060799003|35042699022|6133799003|3023799007|56012099006|10067099003|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	KJfzLvX/oglYHFCUUspPeyH6spFSNdoFmtlEIwTRP0eFKTHP7XSI1kExuEOlpv2R12NIGjxn43Lle02rqWWoU2HMHipzxhFVP6pkW3AklAm+RMzE5npFoLnsWh+rdHRRJ7ajX0VfYr8JhZy+fJmfilEfYsjy/Y49aWPbWYDFog7W6gXCJDVDS834VbIkXqPaol8VZ57zDW20KyCg3ojSdl4zmvkc3t8hthwIqO6DtU+296PdCcGqYfH2b1ehoujNQcE18wO/yU9Bv9w0Td1UZaBiGC3i2RfP9si/oxQDP8gZNiD+xFIKhevjvpyrz6tgZO7V5og9TTHSKz59f83X9CcCdYiaMZtPK2UaFkHSQ8LjnHN7Svb0hnjrSkBV80LsITNOf8DF+Mplqg4BRFBAQJE2jev13rPGxCNQbrR0aLyNZQcZekt4sudfQLfFdjLlv0xBmkJ+GAyJ1S9N8hzuewrpWaVKorfsh0auIGdMc8Xs9OiKuZRyHtzkwVIOnkFaEZWJgyI4a+XseBdZK7uPLdlwYxlKZqQYdsgUwAfYpRDVM3dsCsOZu0f/UjWGdMAi5TZ06yOiGoVzhMO24b3cl9OEBlVlKXROPJtZ4IZb373C8sNujBEVph13tTVJs7wMyxZV0JQwYh+r6vrJG5XKa8ShamWvPRpXcJ7NJrh5rjKRNi0QRFTohsw3LWGOlkF3O0mjQk2NAODNYqg/y82w0A==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700016)(23010399003)(14060799003)(35042699022)(6133799003)(3023799007)(56012099006)(10067099003)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	YJg5FhQz4RcerJT6Gk1JY34JbClH9UtGStrfBBBcMj4UQE6V3vaLMT5MAu9J8J01cpXKMOPzagEKT4Uumksc6M0yas9nu93Jz/XGlLCfWWA2nL20zNuZHBO+DZukwAFNNkk9NizbXRIMN4LKGc/5QOTuareja6S/Mzfa0MPLrIvy3HxsxGkUMs2KTWaUaTYTsi0wd+WeYYvwe11zDWdxnH1ZXa4Z6MdrX5UdnCf28ZYNgAuuzDBagX4XgFy6PJ3yg90TsL1tvjoBKz/drXPr2Jd/wn/upDZvQh+f8yZMkCV97+QdSUkJiMYyKd4GAUNdniwzPMOWx0w1Mrdn/VJxZSELAdRXvIkKplW5aLGp3gvIIuUXCh3LoWWr01NYeIvTHKlQ0bcrSfTIWYDjAX1hbk14+MooCKCTY7d2WTLIz89ogfZ38dUm1Uz7mepcDlUt
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 08:01:03.7264
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42e4342d-1b42-4129-b898-08defe912e94
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF0000B620.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB8697
+X-Rspamd-Queue-Id: D321F180005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: epquz357cficpg8f84nq59qeoqcuyjhf
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DB0CEC0009
-X-HE-Tag: 1787212239-777834
-X-HE-Meta: U2FsdGVkX1/KW2QzjRRKRuf5BEDBKasVuKxOa6mCRJYOKzKfKCzdRmHuTIBZpXeQSyGLiKryeG+1D/4YJ1PL0jCFd8Gi210zQkGv6JTIUeS/xD59GvmGM00X4dvwKdwsylSH8dG+HLwqdjAXQsAWRZ1dqTpE4t7y55eGYbiF0fAfL4qmVHmkoGnVnaCpMymSB69JIRJqAKhM9TqVDXmd8MC0DZlu2xcgivrzdaWtD+5H5r1P9fJDpMgCmVxW2T4ckn/eoXAkwxuQf0RODiZaAhYKNq+x+MrmmRYSUS6d0PS57GnKnfw0dBWtkCRHUeNwGhjGHG+QO/Var9d4z5pCGbsOD5i8YaE84pJUlSl5L3Pop76+BGkWAns0Bvos8q66x4kZN7TdEPgcRJRXm1njeiTzbVrCgnUycJURsKGP5hb/a7ikjvtw/WxUifdY7rzYTExUc2T2hcJdb81i3iITwA9U2xHav7/s4htwxVj9+o75K4yCNdMLY3CbCAYhXcMJQBfl+9U+OPygkpxd5vj1bCKKRmAbJeY8NqDvWUoMUdh2VKe5KmIxTISlHoYPeX8h/53IhjFkZavQTMeUCMWwj6qysq2Zq6i0vzqivGAfohjT/DN9LYKFkG9VV3eLfKmIhTa60hL4Ju1MnUC0nhx7YGNTSP0f4UJwtmqsMjb4xfQUxCPFKwnVXVk0HVyXUW2Nn7GjX4KK4+PlCXHuQ85hQf0jHMPpAb65U/o++hlSgXho9O2r4sfMZuZww4qqb4fmE+yO2S7gsGXLF38KAVgcwaWHvm0GrVNQAQxWxoB/QJoAMnSnJhd94w4x51SyRT/+YLXZEsSAXqpRiNAj+ofXh4pQCmbEHlHFgyivApxYsjo3YQFqq+OcHuXl82KspCO/wmWN1mIQL6aSV/GA29Nmc2RqdFls5LcBDnXX+x4tKseqgcQH65VHwxaC2B8ZJoGhngI5oe1bRHBfo4rAzKD
- 3u8XDIgb
- bNZMD/sjEWJla8HoJZq5riepmRdRviUQX++cu/AYC4Afz4xiHyfMSktjzGrjOI9wk+ufTS6J9DT0bf3jaSHbUG66GF6b01I0LArpDl+jsQA18iuo0hqHaGbjebQPjJd+xFo50KPq0nr2rYJ2egvm5BlVs+qA17SKfph9v0yCLU79Ktb6KXCAjZ169AB4ttDPphrjbJTmAjbPQmT3vnrbiMoC8VeEZ90XWwv0fC1gg1cDmMWeW2Cla29ufma8UXl7rZq3bCmw2E1jUcFmucUSuwBlTlHOIFQQcWVPUrJTE0qajR/Hg+1cz6K6N1IMMofUgcs06kvpbhm2eQLw=
+X-Stat-Signature: tw3niyba4rn5jzs9fxxrt9q9yux9j1ej
+X-HE-Tag: 1787212871-10439
+X-HE-Meta: U2FsdGVkX19vJ7ELyrYjRdrsEEMcDnz5b7Vz66vhtKMYJTYMukVaOCrg+kftwJPkc0YpduAfL3ZlnkSdXcmMr7w5/hjXJbLRb1bEolLJdLe7iu/NUc69tcOArW134Bg4JWUliTYqjQz27zz5w9jW86OMofO4Dd9gnp4bVuAmuOxg971UT7f4uHegFcn0eZJMDgvnCnhyECzWUt1fSix8P1wBnJ/fgMdFIMYzQjjnVAZSpFyfAQ8SkXZJGM/2CMMg+YyRu65MlHAAXynSjehCmqT++O1FS7wFRyjpFIPoAhb34hgAeO+9CWres1jBT3xO1jHYNpkF0ZkPXzX709CUSVOUUWFxpaDnITnYEKdZlG03qzT9qt8EdhNt0mpRQvjU8k4JFzmrqixbW2n/+ilNjgcME31jWvUFJo8QHN72Dyr4p2RBz+aTT0WJrxMb9eEmtnzfNUhrDGEWkqgzoboQaR61brzbu8Md85ZP+Lhn7Zoz46FbS0emn0OBWqofBNqHwqEvzf3KST7YXlTO2RNVnJ1KnPi+hB831Y0OpO3F19+2jJM9/1GTe+RYwwKGudrwmGopRH4f/8meQL1w675OvzfaOLV1dFTgL70k78Ldj+4XfLa3qTeED8W6NSpUznPKqRtuIY1oTrrq5q8XwJmiqj7LlXKuh1O4ePGvr+GTI5iGTaQxdvgTIdSToQGWmlgvoNTI1b2YNb/S30GVvoBve7gej8szE2h6R5gYLf3IxDbnOodMxVcgv/B7WF4YMO+Wd+63WcxIPKhLl3sRNtbhCW0vbG+Duk9rzEzczI+K2rvrC1CKo6LqIbOLC7/faWvKZC8u2LIjQ1zrcwXXkzKlKcs9z6muKG1aBXZ8UvPcbrPk0HVYIMSylQTyF1ElcxSNhzlNucKba2SwoqrIyH+FLHc2hMSmekoZ3a8KY/mT7wV+J2/+yhDoBWJ6Vxy4IEYMOj/7Uc9KGc4TWqFXjWR
+ lUUk2dQz
+ nD6YIQTjGars9A/q2Deh7Sw3A94l1FRtiAwFIXelt3Ob1SMr3c3mpRAp0IjWF8xFpf24USs2ofLtY/hQKsrSQ3rbh6YExpYJCwdRSjJB+NLPtCLY1ArMfiGXe4UQr1TqHjkIGaTFEMmb2Xk+3fAEL024Ti08ZDMmCKB54q3BCegvO1hyM0Q9oh1Mquu73JKgZJ0EXUvI36clYS5JQ7nsG/kZHiS9SJIkt27iGrnYHtrlWnSz837fTFSmdJMxnpQesThPJC7qHOD8J2VA/9PXXZquq48gkGd92V/qVh4GAvIMCSs5G+K9Z5F4K89XcY4skAyBY2Te9ItD6CH0RINlXWwAxMLy+d1j2YebrDAPjDGnM2FisuGiy1YD4qRKbrMro/zHrmsoH2u2Fjzj3uHdgo2ESVGFGUxT3KGnRz/2vodFdBxbnw0DaIBL+UBnYE60cR6BU8yV1Wi9AIDsHJfP2QjlO65rSY8UAbF52Ui7NM1K5Is470AxkShAA/DfANnVRn8YYcQzlQc2dx8UciM99ZH+T+u+Hd5ddmS6h13KIwtAoy4Oyfuu20LtyjF1TWUM9u+4RSpYj5XjGslwhJXZo8+xDTJXm2g0BZe9g6D/+jFnd1DGZMjYolGq4hUiUcst75aFfbKIJOf6gKtU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,134 +193,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 20, 2026 at 3:27=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> When the LRU is switched to MGLRU (echo y > /sys/kernel/mm/lru_gen/
-> enabled), fill_evictable() re-inserts every folio via
-> lru_gen_add_folio(..., false).  With reclaiming hardcoded to false, an
-> inactive anonymous folio (no PG_active, not in the swapcache) takes the
-> "gen =3D MIN_NR_GENS" branch in lru_gen_folio_seq() and is seeded at
-> seq =3D max_seq - 1, which lru_gen_is_active() treats as active.  Its
-> inactive placement is lost and NR_INACTIVE_ANON is folded into
-> NR_ACTIVE_ANON.
->
-> Pass reclaiming=3D!active so a folio from an inactive list is seeded into
-> an older generation.  Folios from the active list carry PG_active and
-> hit the first branch either way, so they are unchanged.
->
-> reclaiming also selects the insertion end in lru_gen_add_folio():
-> list_add_tail() for inactive folios, list_add() for active ones.  Both
-> the legacy LRU and a MGLRU generation keep the hottest folios at the
-> head and the coldest at the tail, and reclaim takes from the tail.  To
-> preserve that order the folio must be taken from the end matching the
-> insertion end, so take inactive folios from the head and active folios
-> from the tail; otherwise hot/cold would be reversed within the
-> generation.
->
-> Tested on x86_64, next-20260812, 2G VM + 1G swap, ~1.5G anon pushed onto
-> the inactive list before enabling MGLRU:
->
->                          Active(anon)  Inactive(anon)
->   before switch (legacy)        2952         1548792   kB
->   after `echo y`, unpatched  1552052               0   kB
->   after `echo y`, patched      15144         1536636   kB
->
-> Inactive file folios stay inactive either way (NR_INACTIVE_FILE is
-> preserved).
->
-> Fixes: 354ed5974429 ("mm: multi-gen LRU: kill switch")
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+Hi Song,
+
+Thank you for working on it.
+
+On 20/08/2026 7:14 am, Song Hu wrote:
+> mremap_test calls ksft_set_plan() without ksft_print_header(), and its
+> get_mmap_min_addr() skip path uses a bare exit(KSFT_SKIP) that prints no
+> TAP line, so its output is not valid KTAP.  Add the header and switch
+> the skip to ksft_exit_skip().
+> 
+> Also fix two more KTAP compliance issues spotted in review:
+> 
+> - get_mmap_min_addr() calls strerror(errno) after fclose(), which may
+>   clobber errno; save errno before fclose() instead.
+> 
+> - Some ksft_*() messages embed "\n\t", so the text after each embedded
+>   newline is printed without the "# " prefix.  Split those into separate
+>   messages.
+> 
+> And cache mmap_min_addr in main() before ksft_set_plan(), so that the
+> skip paths in get_mmap_min_addr() are taken before the plan is set; a
+> skip after the plan leaves the run with fewer tests than planned.
+> 
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Song Hu <husong@kylinos.cn>
 > ---
->  mm/vmscan.c | 29 +++++++++++++++++++++++++++--
->  1 file changed, 27 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 94fc4f25e99f..7be4cec9a838 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -5311,7 +5311,23 @@ static bool fill_evictable(struct lruvec *lruvec)
->
->                 while (!list_empty(head)) {
->                         bool success;
-> -                       struct folio *folio =3D lru_to_folio(head);
-> +                       struct folio *folio;
+>  tools/testing/selftests/mm/mremap_test.c | 43 ++++++++++++++----------
+>  1 file changed, 25 insertions(+), 18 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+> index 131d9d6db867..ab5420f2e875 100644
+> --- a/tools/testing/selftests/mm/mremap_test.c
+> +++ b/tools/testing/selftests/mm/mremap_test.c
+> @@ -111,18 +111,17 @@ static unsigned long long get_mmap_min_addr(void)
+>  		return addr;
+
+	static unsigned long long addr;
+
+	if (addr)
+		return addr;
+I was looking at this function. Why would you define static variable when global
+variable can work. It is pre-existing problem.
+
+>  
+>  	fp = fopen("/proc/sys/vm/mmap_min_addr", "r");
+> -	if (fp == NULL) {
+> -		ksft_print_msg("Failed to open /proc/sys/vm/mmap_min_addr: %s\n",
+> -			strerror(errno));
+> -		exit(KSFT_SKIP);
+> -	}
+> +	if (!fp)
+> +		ksft_exit_skip("Failed to open /proc/sys/vm/mmap_min_addr: %s\n",
+> +			       strerror(errno));
+>  
+>  	n_matched = fscanf(fp, "%llu", &addr);
+>  	if (n_matched != 1) {
+> -		ksft_print_msg("Failed to read /proc/sys/vm/mmap_min_addr: %s\n",
+> -			strerror(errno));
+> +		int err = errno;
 > +
-> +                       /*
-> +                        * Both the legacy LRU and a MGLRU generation kee=
-p the
-> +                        * hottest folios at the head and the coldest at =
-the
-> +                        * tail, and reclaim takes from the tail.  To pre=
-serve
-> +                        * that order, the end we take from must match th=
-e end
-> +                        * lru_gen_add_folio() inserts at: inactive folio=
-s use
-> +                        * reclaiming=3Dtrue (list_add_tail), so take fro=
-m the
-> +                        * head; active folios use reclaiming=3Dfalse (li=
-st_add),
-> +                        * so take from the tail.  Taking from the wrong =
-end
-> +                        * would reverse hot/cold within the generation.
-> +                        */
+>  		fclose(fp);
+> -		exit(KSFT_SKIP);
+> +		ksft_exit_skip("Failed to read /proc/sys/vm/mmap_min_addr: %s\n",
+> +			       strerror(err));
+>  	}
+I like this patch now execution wise. As an improvement after this patch
+addr can be moved as global variable mmap_min_addr and thus get_mmap_min_addr()
+would be called only once.
 
-too many words, maybe just:
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-lru_gen_add_folio() uses list_add_tail() rather than list_add()
-when reclaiming is true. Match its ordering to avoid cold/hot
-Inversion.
+>  
+>  	fclose(fp);
+> @@ -1164,10 +1163,11 @@ static void run_mremap_test_case(struct test test_case, int *failures,
+>  					    rand_addr);
+>  
+>  	if (remap_time < 0) {
+> -		if (test_case.expect_failure)
+> -			ksft_test_result_xfail("%s\n\tExpected mremap failure\n",
+> -					      test_case.name);
+> -		else {
+> +		if (test_case.expect_failure) {
+> +			ksft_print_msg("%s: expected mremap failure\n",
+> +				       test_case.name);
+> +			ksft_test_result_xfail("%s\n", test_case.name);
+> +		} else {
+>  			ksft_test_result_fail("%s\n", test_case.name);
+>  			*failures += 1;
+>  		}
+> @@ -1177,11 +1177,13 @@ static void run_mremap_test_case(struct test test_case, int *failures,
+>  		 * was faulted in.
+>  		 */
+>  		if (threshold_mb == VALIDATION_NO_THRESHOLD ||
+> -		    test_case.config.region_size <= threshold_mb * _1MB)
+> -			ksft_test_result_pass("%s\n\tmremap time: %12lldns\n",
+> -					      test_case.name, remap_time);
+> -		else
+> +		    test_case.config.region_size <= threshold_mb * _1MB) {
+> +			ksft_print_msg("%s: mremap time: %12lldns\n",
+> +				       test_case.name, remap_time);
+>  			ksft_test_result_pass("%s\n", test_case.name);
+> +		} else {
+> +			ksft_test_result_pass("%s\n", test_case.name);
+> +		}
+>  	}
+>  }
+>  
+> @@ -1250,13 +1252,18 @@ int main(int argc, char **argv)
+>  	time_t t;
+>  	FILE *maps_fp;
+>  
+> +	ksft_print_header();
+> +
+> +	get_mmap_min_addr();
+> +
+>  	pattern_seed = (unsigned int) time(&t);
+>  
+>  	if (parse_args(argc, argv, &threshold_mb, &pattern_seed) < 0)
+>  		exit(EXIT_FAILURE);
+>  
+> -	ksft_print_msg("Test configs:\n\tthreshold_mb=%u\n\tpattern_seed=%u\n\n",
+> -		       threshold_mb, pattern_seed);
+> +	ksft_print_msg("Test configs:\n");
+> +	ksft_print_msg("threshold_mb=%u\n", threshold_mb);
+> +	ksft_print_msg("pattern_seed=%u\n", pattern_seed);
+>  
+>  	/*
+>  	 * set preallocated random array according to test configs; see the
 
-> +                       if (active)
-> +                               folio =3D lru_to_folio(head);
-> +                       else
-> +                               folio =3D list_first_entry(head, struct f=
-olio, lru);
->
->                         VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(foli=
-o), folio);
->                         VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio) !=
-=3D active, folio);
-> @@ -5319,7 +5335,16 @@ static bool fill_evictable(struct lruvec *lruvec)
->                         VM_WARN_ON_ONCE_FOLIO(folio_lru_gen(folio) !=3D -=
-1, folio);
->
->                         lruvec_del_folio(lruvec, folio);
-> -                       success =3D lru_gen_add_folio(lruvec, folio, fals=
-e);
-> +                       /*
-> +                        * With reclaiming=3Dfalse, lru_gen_folio_seq() w=
-ould seed
-> +                        * an inactive folio near max_seq, which
-> +                        * lru_gen_is_active() reports as active, so its =
-inactive
-> +                        * placement would be lost.  Pass reclaiming=3D!a=
-ctive to
-> +                        * seed it into the oldest generation instead.  T=
-his
-> +                        * reuses reclaiming beyond its folio_rotate_recl=
-aimable()
-> +                        * meaning; it also picks list_add_tail() above.
-> +                        */
+-- 
+Thanks,
+Usama
 
-Maybe that's too verbose. How about:
-
-"Borrow reclaiming=3Dtrue to place inactive folios in the older gens"
-
-> +                       success =3D lru_gen_add_folio(lruvec, folio, !act=
-ive);
->                         VM_WARN_ON_ONCE(!success);
->
->                         if (!--remaining)
-
-This is admittedly a bit ugly, but it seems to be the simplest
-approach. Since switching MGLRU on and off is not a common scenario,
-we probably don't want to over-engineer it. So, with the above change:
-
-Acked-by: Barry Song <baohua@kernel.org>
 
