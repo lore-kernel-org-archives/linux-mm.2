@@ -4,96 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85E9FC5DF81
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 01:54:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2AE6C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 02:05:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 759396B008C; Thu, 20 Aug 2026 21:54:54 -0400 (EDT)
+	id 806856B008C; Thu, 20 Aug 2026 22:05:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 730836B0092; Thu, 20 Aug 2026 21:54:54 -0400 (EDT)
+	id 7B7736B0092; Thu, 20 Aug 2026 22:05:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670826B0095; Thu, 20 Aug 2026 21:54:54 -0400 (EDT)
+	id 6A6166B009D; Thu, 20 Aug 2026 22:05:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FEB86B008C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 21:54:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE7CDC0213
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:54:53 +0000 (UTC)
-X-FDA: 85123608066.27.DD4D91A
-Received: from mta1.migadu.com (out-115.mta1.migadu.com [95.215.58.115])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B01C3140005
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:54:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=i1moms9R;
-	spf=pass (imf26.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787277292;
-	b=yuUPWwyBpfD87PiqE7gMnEmZWFdSemW6kQJX1EWqbCsg0XBckH/isc4j5hT/p/fdlCoOjo
-	XNeqr9B4pgizcskg8837SVdt51OxX7FsbAZZTXZlzSs/hsx6CmyEG8sg59gi1MqZ4qewse
-	IJ9NHBq5Grrf18RJoBWL1sQd8gN+esE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=i1moms9R;
-	spf=pass (imf26.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.115 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 34DEB6B008C
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:05:23 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B05E140120
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:05:22 +0000 (UTC)
+X-FDA: 85123634484.06.EF268BE
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 016E11C0006
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:05:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=YaX61jyC;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787277292;
+	s=arc-20220608; t=1787277920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c2MA7l2HIV79Io8iXY28cIa6Cij5CFoy8Wjne75N3Lo=;
-	b=pDkJS9xOGRHgCE7lxJbDl/f6fIPXvCDaLMXYVxXgBz0an3ydwTutRTwwCpQWYKTud02GHX
-	rugeW/RitokZTevh6PWLyaT4FKyycUutTDT0cJiwI/KRIYQl+F23Zy0N+0u08wHxeeFwo3
-	eJ+wXM32mKE/ir/xJfSfrTeTUk1MRd8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9222hT0hYb3f7vr5tolxWX9+QXMW0+zV3IKz4ky1kFA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787277288; v=1; x=1787882088;
- b=i1moms9RWlP5YSy1UNEEH0F4bNFfCqd6uQOdO2temUnUzaUslJfWCbcCeozf89reeqFlpbFy
- c4yQN8r3bOog46o6W8+8419cjE0AWeMudCMK7s++vaiaZCWNWTeh2srFIN1JymqFFUD0XNPJLpv
- GS4wwO6JKiEajFk1J4c6Pbek=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.63.107.123] (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id 4ef687fe756c6a11;
-	Fri, 21 Aug 2026 01:54:48 +0000
-X-Mizu-Trace-ID: 4ef687fe756c6a11
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <3fb795db-e7e9-415b-9a27-a99bdd34b090@linux.dev>
-Date: Fri, 21 Aug 2026 09:54:38 +0800
+	bh=ilqWqTcp2QIIegN8Wykudvyua68HMB1s5p79u7p9ot0=;
+	b=JHHm5n/VF9/MFDPlP6Po3K6ORhqr+K15lTlYBVYTpTvjXlk0wxBdUvi0HkJPq3ogYXZrr5
+	8C082gDcSP5d5WdFgREnh1PItCRYiR5RN/YpUFNj+RM7GLuLWEMK1/9ZMI6DnpKY26Mku9
+	R9N58EACaVKDqOjr9LlbR5ZNIPNDoR8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=YaX61jyC;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787277920;
+	b=jEsGJOVJmQJsQMPK5D+SdkMC/wjfF7FxNeY+xwC7XcIo4ypbuT/lGfyaro2UgPUHbfQAK0
+	kFOfdroJ57c7sfuMFWhnvzPrZkNGmf/TPl6qjW4wRSypH7RVe2Vot7dsUqV8HTURnPU7LD
+	DF6Eyrgr7pls3Q7lwncfQY/mzvKv3So=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so1154306a12.1
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:05:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1787277918; x=1787882718; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ilqWqTcp2QIIegN8Wykudvyua68HMB1s5p79u7p9ot0=;
+        b=YaX61jyConlhqSo+wxt7sxYsT1UmBxyzO41t+kiU7CUYEFKujZdT7rvvaAHXUfXbPM
+         zsxRdsDExo96S/rB0XH0nvujh3/541ZkiKaNMwzCY1OlfCFZgFMcCOqN17xgxSkXc6aA
+         MXnm2+gX63hsRJxkOccHBSZnm2eeCwpc1AOk0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787277918; x=1787882718;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ilqWqTcp2QIIegN8Wykudvyua68HMB1s5p79u7p9ot0=;
+        b=V3WRQlTtZVYrmXb3Ek5zOgb/x0TDvYLqmOGBV3FZTLT4izRz88Vjag/OXPBMlfk0PZ
+         C/hJPGXHTXKdMFydME83u9RfZ685gMGanVARwjP3DybDA8QQnLcix/j4IPDPxw9KJfxR
+         AkV5Xnn+9QqEgAp6W18RVwOK+TkNTIeMcDgxyDkjUkMwM5e5p1xhMA2nfiAmbBUy4a7P
+         UPqQ/GiwfGSyuDz5h/an6MYV0EJY+v0Q62pEReiuXugLQ9rXt6Er+eY6M1+VoS4217aV
+         Ttv5kwKDCTtrfUNAtlNMMN3O9/7Irg5k4eT4V+f8xjhq8sOw5D1KzIVV6NNsoXoooW1m
+         YVyw==
+X-Gm-Message-State: AOJu0YzRSfhIpqxi+E1ka897S1H3GpVkTHXE501P9Sgcas3p9lxiMn4O
+	Mrcxi+77wRKeT8FcCs1q3NS0Jg+dIAdttfoKhFddeMJgcgYooz3VCeLL9WuqRYtcDy+nJb6hbbK
+	ONphxJY47gA==
+X-Gm-Gg: AR+sD1250cHSNu5HKj+EW1cMXHhBHdTRvcuv0g1p3vhabWhxTubz41A5EVA2+HhuX8/
+	xCeAqKhfTKA2N0SGalsuPW6vX+fr89EB9931ea967Tu5+HnIVKBfLBzKqtl+ovW8eFNiJ59QTTE
+	IGwIEsyI5t3PDEkMHNrpOiY4V2RTQQSKm1XOQ31cHc4m3XswX6te8WvRtau7UiODs2Z43CxfIUQ
+	hSd4MRr75zTJjENDy9FOgPAMIjBD5ACOKpltEsgs+259m9+meXP9ohvkqkabVrcOojK5zvdLAu3
+	lgj8P/e50klAvzIRa20B4zjRRKnpj5RWV/oyaRGWy4Tj7RDLRDJKhQa52loi40bQxgYGZQKd5/t
+	y2b0CU7wFqN/T2EcoHqq2OP4RrzkCPT+8u3jISQPJXJ8Cb/MNtlVNM+J6GdAwXdCwXLM/l45rfD
+	Lb0qj8Z7VhdpdUiBkuS9unu1lnoKLjasELCE7L7C05Hi7dajNaBlKYsL7C9TmAxAhpzt2Zi6mpY
+	rlH65aVfIc7eKTkHYIFsUu84Y1TUVhYrajJ3A==
+X-Received: by 2002:a17:907:9346:b0:c1a:5d49:f99d with SMTP id a640c23a62f3a-c246a3ab4c2mr312520766b.7.1787277918264;
+        Thu, 20 Aug 2026 19:05:18 -0700 (PDT)
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com. [209.85.208.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c245940c46bsm251522966b.59.2026.08.20.19.05.17
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Aug 2026 19:05:17 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a10d02ff43so1169380a12.0
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:05:17 -0700 (PDT)
+X-Received: by 2002:a05:6402:24c4:b0:698:ecf:d18a with SMTP id
+ 4fb4d7f45d1cf-6a42f1be3d5mr2627931a12.9.1787277917155; Thu, 20 Aug 2026
+ 19:05:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mglru: preserve inactive placement when enabling MGLRU
-To: Barry Song <baohua@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Steven Barrett <steven@liquorix.net>,
- "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
- Yu Zhao <yuzhao@google.com>, Oleksandr Natalenko <oleksandr@natalenko.name>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260820072641.253591-1-ridong.chen@linux.dev>
- <CAGsJ_4wq46FkDQ_MhvEvtgdUQN5A_+_P+b6gbDvfEadus3WAaA@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4wq46FkDQ_MhvEvtgdUQN5A_+_P+b6gbDvfEadus3WAaA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B01C3140005
-X-Rspamd-Server: rspam10
+References: <20260818220711.d5d577cb135b213ae11549c9@linux-foundation.org>
+In-Reply-To: <20260818220711.d5d577cb135b213ae11549c9@linux-foundation.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 20 Aug 2026 19:04:59 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wipdFaYVXO6egyacqXiTfUEQWjqsOSjxjbhZ0FK_MjRTA@mail.gmail.com>
+X-Gm-Features: AcwNN1Vv4YswxSOrIw8YhWVa3VKcmfREmzL5hnmqA7uUN5u66DG9Dsgsk0KbPg4
+Message-ID: <CAHk-=wipdFaYVXO6egyacqXiTfUEQWjqsOSjxjbhZ0FK_MjRTA@mail.gmail.com>
+Subject: Re: [GIT PULL] MM updates for 7.3-rc1
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: gwggj144zkckgpsd89kxnm434umey5qi
+X-Rspamd-Queue-Id: 016E11C0006
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: ah69zxd7ekh3msnujyfsupguqjescwbt
-X-HE-Tag: 1787277291-627233
-X-HE-Meta: U2FsdGVkX199xO8GCKPms4WkzZ/dYSFPb1C+EOcv7DCJ6o+Pqfgrg31/GgVB0nPG3Cqgx3rLt2lUa9cw8jy/aHzJPTT+kh0bYlcjwTsuuRCbSPqwBAVgmBTXLKU5gCzpM7TZcrCjLbj6laCbR9LUrV9Ne+rsL98Y87qIcMUtXsxRF7obZ2p7QCLNhxlpcYGh3KXuIj1ZBUj6y6QlXEMnuHawttwW9A1r7TnJTcS1I2YtLDFecVJlvLLRgEXE3kOOoatzWPJJi+KwLPZjh0b6HvA4mFD3Ew2VgB9OODIdwfKlpzlG3tWFjGSzp8dm2vx+yMs6CQh4RBp2l+zdJGz7atWUlekwCc9lTINTZG2SJUL0CqXaGe0o0L7CiaK65jp5qojKYbMMvY1QLpenb7U93lzmXLW9kAvuPiH0XE5acw82jvU9shMjxSVN0Kbo0pumjKQLPwy5CQLPq8GiNUJDJ4UgVA3doTyzY9mc/QSI/NONhdT3MwqOJDkL42eC/0JAfeo8Z5CqHDuYr0OShUazySR1Y2pDHRiaVJ0K91ojJzj/MjIrnKcYBkwgY0J++YILgHQm9itq31LcdhLea4BOlEWwavTLJpqd2QrVWxRF1KUgE82BPmOSD55oadEgyHJojj90uRlEvxmqQPXCaL2wZTv2XPbaDqGpuwbkvNfxGwlkIzwW3D1Empho249gvxCknvq/vf0ONbLSlTGDuoyPCU+ri/bUTBPR/T7Hz9ZhYaPL0A+01+c5hcCZkiDHrg/CFiXQrWEPp2dXSG86POeFyVhWOzeGYM96Fg2H6NSgCeItTzeI0XBViYie4wWez4I+oXyGDIW0+Ia5QwENGp8+JrBcO3s8nx1jxyDB2Ke5oQ56599hEk08DaiLLVE6M+dD4jBJI2qgDTMDkupZvA/SJC8NbYh8D/AoM99d3O171j7xO+NBg7ptgC3CJVB/qj2Z0UKpagxUAD5Yax7mwCE
- nFtB97mt
- ybsZ7bWpGzbxowoh4b7MQxzPLrPnzI53+bf0Fwzh/81BwKXrVxK6UL3FLaMkX/0yR/xroCoEYYB5v7rrKCBpUk2J6vKQMtx5GJtpZfce8nQiDCTNUZQUEqjnl5E+ljkmlqZEJUduAicoIMtwjiryuLQmQDimFCszQ8Ah30ZgBTAj89G05MJrm7Bxyp4+jUuaVOoFh5SqFDQDETpRkiunHvyEooXmxX1xZ/FlhlZaMGOiy9475kX76+NUF29DoPQjZX5C1pZjVzEbpMwG6oqrIM/5r9Wu/7JAPeEU8EeUys5nN0UYSWROt5rW9HnaQlNXyWLNtJtXQ0eMWCmnEDhisQYxka3OA+GS/pAES
+X-HE-Tag: 1787277919-482214
+X-HE-Meta: U2FsdGVkX18t7MbjxUHeQMUtw3eBiSFliwJC8lhcJKxHxkuEhNRqbcUQIH9Bfj6YtuchDNFD8r28+D58hNbM6TR8adJoTtefiLLWcIFCP/k1pxmNCSwgMltGm/WTrc5jpkg5MxSHhu1DPpkVULEplUOP0ET5QK0idhncfGczokSYSEpIGRC6wzf/1R4ugPh5ALxhnQRpyJrA2e55n1Mgt7zry05fdTG7i9q1h9z1TzAJOhNOj0RDCqdHzqqebeHfFkvISvbsoMVEFqjtHFz/Y5oFZq/WIO9q+MRk2qw4gG2vp1ht5lBaKMMDO8X9JiLnfKXy9MXxjvdwltlNIaluEbZ8Nyx5VN1x9QfAITRRK8rOf/uUw9oOctMwP4KsU2XK9oNafsyfcTRxpbAzwvAkw81/KRxYF2389eWjH24/WzjY7uaHixs88I5f3n/fcFYZATy+9pxC/wX0RsUhoXUjdv+sfdzl+JSY6c+Lw67wisPFz3a5g5oL0cmseeaLu/lxQftnBNensySg5XJlz8hYMF+XHRDG4o5DNY9TOrLpEV+WBYuvHDSO2BxeprIGwc7p+I5WDMuB2TKwwwrLhPlV3b9Gx3yQcMWcA5JFdRB4tOA13wQUAI45JUU+r+ZRGQK99CcQrC6vX8Y9b6PrwnUNnL9oXcJTxMYRP1n+Jhi3H+y+WGAFI4s1meB2y2iSFAGsZBElT/doUfgHVA7k5ZkkN27uRP1DGwnzfwrCgnfegoHkFWXfIK4LmrrSDGxnrCXFw+tjtsK1IAoOpyOLrWou0Hr+9QoxvNhym9p3lOGYTstIZ8osmbxLknAC7DAVoNXoHaskV4sUxDDqPLizHg+bjq9x8l3lCo6KPOTN1Z5q2YmGRtZnQq752T1icJcgZlcoWccDDlSgQNgTlgM1YwiaijQ/3IEEe1sapysIdqplvPIkOxof5Ewsg75+PpUbT88yD6Laiht7vKZsPqPj3rn
+ itf5cgfy
+ UIX3OvuuwNQb6oHTYkC8o2LKBfBxKVjaeLlb/eE4tWfJw43AvDteSn8ZAaW0v5rN7nk1jj1/guu9RFqOQNIwgUl8DoAqOoWbIxWGzhp5E+8rwUHt0GBY8lIJNIwocmZbqYd/WskqQTChfHkENAKLVKjnjGuBPDuSfsJgmL9GfYfMvXOJ4Brgq43IBm58fR6rU8IzXeXgT2mM+CDosXUWPUDELHS//8pfVpPyiV/8oOVvze/dAc5zhwOkOJky5rHKFrlQdo1zIu1f44a5O2ZV67xGcRniwYGXZaMG96XeVxV0f/nd0FGq1h2sDSpEx9oR8Jf5FlNiV2+tWOMW0tzx6hPFGuuLxXwA1128UNXXuPMvjmWiE+vcIRDaj4zbN9Zbz9DTvwNBbqhWzTFQeXWh/eJwVinpJZaJbrfvIULBbTlNFqEPk+kcSVTXH8RnmDgbxvD+PUMEgs16GR0upJz8kAo14Y8NcV+q11bBlpkMnVIMFNqX8ZGufly5/Rs5JPEYdcvVA8yBECgqvZi3tPyYrvcUHhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,126 +122,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 18 Aug 2026 at 22:07, Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+> I don't enjoy typing up those patch series summaries, so I haven't been
+> doing them well.  This time I recruited Gemini to draft many of the
+> bullets and then I did a review/edit pass.  I think the result is
+> better(?).
 
+So I fixed up some stuff. I suspect you did the same thing last merge
+window too, it had a similar feel to it.
 
-On 8/20/2026 3:50 PM, Barry Song wrote:
-> On Thu, Aug 20, 2026 at 3:27 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> When the LRU is switched to MGLRU (echo y > /sys/kernel/mm/lru_gen/
->> enabled), fill_evictable() re-inserts every folio via
->> lru_gen_add_folio(..., false).  With reclaiming hardcoded to false, an
->> inactive anonymous folio (no PG_active, not in the swapcache) takes the
->> "gen = MIN_NR_GENS" branch in lru_gen_folio_seq() and is seeded at
->> seq = max_seq - 1, which lru_gen_is_active() treats as active.  Its
->> inactive placement is lost and NR_INACTIVE_ANON is folded into
->> NR_ACTIVE_ANON.
->>
->> Pass reclaiming=!active so a folio from an inactive list is seeded into
->> an older generation.  Folios from the active list carry PG_active and
->> hit the first branch either way, so they are unchanged.
->>
->> reclaiming also selects the insertion end in lru_gen_add_folio():
->> list_add_tail() for inactive folios, list_add() for active ones.  Both
->> the legacy LRU and a MGLRU generation keep the hottest folios at the
->> head and the coldest at the tail, and reclaim takes from the tail.  To
->> preserve that order the folio must be taken from the end matching the
->> insertion end, so take inactive folios from the head and active folios
->> from the tail; otherwise hot/cold would be reversed within the
->> generation.
->>
->> Tested on x86_64, next-20260812, 2G VM + 1G swap, ~1.5G anon pushed onto
->> the inactive list before enabling MGLRU:
->>
->>                           Active(anon)  Inactive(anon)
->>    before switch (legacy)        2952         1548792   kB
->>    after `echo y`, unpatched  1552052               0   kB
->>    after `echo y`, patched      15144         1536636   kB
->>
->> Inactive file folios stay inactive either way (NR_INACTIVE_FILE is
->> preserved).
->>
->> Fixes: 354ed5974429 ("mm: multi-gen LRU: kill switch")
->> Suggested-by: Barry Song <baohua@kernel.org>
->> Assisted-by: Claude:claude-opus-4-8
->> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->> ---
->>   mm/vmscan.c | 29 +++++++++++++++++++++++++++--
->>   1 file changed, 27 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 94fc4f25e99f..7be4cec9a838 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -5311,7 +5311,23 @@ static bool fill_evictable(struct lruvec *lruvec)
->>
->>                  while (!list_empty(head)) {
->>                          bool success;
->> -                       struct folio *folio = lru_to_folio(head);
->> +                       struct folio *folio;
->> +
->> +                       /*
->> +                        * Both the legacy LRU and a MGLRU generation keep the
->> +                        * hottest folios at the head and the coldest at the
->> +                        * tail, and reclaim takes from the tail.  To preserve
->> +                        * that order, the end we take from must match the end
->> +                        * lru_gen_add_folio() inserts at: inactive folios use
->> +                        * reclaiming=true (list_add_tail), so take from the
->> +                        * head; active folios use reclaiming=false (list_add),
->> +                        * so take from the tail.  Taking from the wrong end
->> +                        * would reverse hot/cold within the generation.
->> +                        */
-> 
-> too many words, maybe just:
-> 
-> lru_gen_add_folio() uses list_add_tail() rather than list_add()
-> when reclaiming is true. Match its ordering to avoid cold/hot
-> Inversion.
-> 
->> +                       if (active)
->> +                               folio = lru_to_folio(head);
->> +                       else
->> +                               folio = list_first_entry(head, struct folio, lru);
->>
->>                          VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(folio), folio);
->>                          VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio) != active, folio);
->> @@ -5319,7 +5335,16 @@ static bool fill_evictable(struct lruvec *lruvec)
->>                          VM_WARN_ON_ONCE_FOLIO(folio_lru_gen(folio) != -1, folio);
->>
->>                          lruvec_del_folio(lruvec, folio);
->> -                       success = lru_gen_add_folio(lruvec, folio, false);
->> +                       /*
->> +                        * With reclaiming=false, lru_gen_folio_seq() would seed
->> +                        * an inactive folio near max_seq, which
->> +                        * lru_gen_is_active() reports as active, so its inactive
->> +                        * placement would be lost.  Pass reclaiming=!active to
->> +                        * seed it into the oldest generation instead.  This
->> +                        * reuses reclaiming beyond its folio_rotate_reclaimable()
->> +                        * meaning; it also picks list_add_tail() above.
->> +                        */
-> 
-> Maybe that's too verbose. How about:
-> 
-> "Borrow reclaiming=true to place inactive folios in the older gens"
-> 
->> +                       success = lru_gen_add_folio(lruvec, folio, !active);
->>                          VM_WARN_ON_ONCE(!success);
->>
->>                          if (!--remaining)
-> 
-> This is admittedly a bit ugly, but it seems to be the simplest
-> approach. Since switching MGLRU on and off is not a common scenario,
-> we probably don't want to over-engineer it. So, with the above change:
-> 
-> Acked-by: Barry Song <baohua@kernel.org>
+And I detest the silly use of present tense prose for bug fixes etc
+("Do ABC, fixing X").
 
-Thanks.
+Or the unnecessary use of filler words.
 
-Will update.
+Or saying "This 5 patch series".
 
--- 
-Best regards
-Ridong
+Things like that should not matter in a merge message.
 
+You say what changed or what was fixed, not "Five patches to doing ABC
+fixing XYZ".
+
+If somebody cares about there being five patches, they'd be looking
+at the patches themselves. The merge message should be about
+higher-level concepts.
+
+(Or - and if people really care about the delineation of patch series
+- maybe it should be visible in the *history* with explicit
+no-fastforward merges around the individual series)
+
+I didn't do a *lot* of editing, but let's take a entirely random example:
+
+ - The 2 patch series "selftests/damon: fix memcg_path staging handling"
+   from Cheng Nie fixes a bug in _damon_sysfs.py for damos_filter
+   memcg_path setup, and adds a test case for it in sysfs.py.
+
+and I edited it to state the basics without present tense:
+
+ - "selftests/damon: fix memcg_path staging handling" (Cheng Nie)
+
+   Fix a bug in _damon_sysfs.py for damos_filter memcg_path setup, and
+   add a test case for it in sysfs.py.
+
+iow, straight and to the point. Not "Patch X optimizes abc", just "Optimize abc"
+
+But I guess it's a matter of taste. But if you use Gemini, you could
+try to tell it to not use filler words, and use imperative mood. Don't
+say "So-and-so did X, fixing Y", just state what was done.
+
+             Linus
 
