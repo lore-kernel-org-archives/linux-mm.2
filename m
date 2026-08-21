@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7346C5DF8C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA68C5DF94
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:09:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E06796B0095; Fri, 21 Aug 2026 13:04:17 -0400 (EDT)
+	id CB0966B00A0; Fri, 21 Aug 2026 13:09:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB73B6B009F; Fri, 21 Aug 2026 13:04:17 -0400 (EDT)
+	id C3A856B00A1; Fri, 21 Aug 2026 13:09:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF3D76B00A0; Fri, 21 Aug 2026 13:04:17 -0400 (EDT)
+	id B02ED6B00A2; Fri, 21 Aug 2026 13:09:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B16DB6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:04:17 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D2CA401D6
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:04:17 +0000 (UTC)
-X-FDA: 85125899754.24.90D0F4F
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9DE8510000D
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:04:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DNzWoRYK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3DoWIaggKCJU32JBzO3I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--edumazet.bounces.google.com designates 209.85.222.198 as permitted sender) smtp.mailfrom=3DoWIaggKCJU32JBzO3I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--edumazet.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 812136B00A0
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:09:40 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EBD4816015B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:09:39 +0000 (UTC)
+X-FDA: 85125913278.26.712D376
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2EE9220003
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:09:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DBDi66cJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787331855;
+	s=arc-20220608; t=1787332178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ytXCiIXJSEWeQd3fczjuZy6blW2T09URPllThg0U0lI=;
-	b=sTjgBI2XuiTLkoAva4l2CsMPMp6xUycBJCwxTmWvF3OnXTXjESC6z72jWiVEz9/cYG8Awf
-	rFVBW1UyhI9gxlsTGPAc3DpNV8+HDGrO6JhSddiLy/ij1HviuzrGL3G9GyKpDfWYgxLu7H
-	RgIMAG+MvXa+axdWPyZFoik3KouukRo=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SXhsSgD+So1KYv0opzbteQ7Y/GTNQS0Ot83166ZvllE=;
+	b=pwrF4eNfirAMaBHGwmMKUkllYg6+atIklyaFLDBIdGjOIKPKd/WFRN9cvIrhM8UA5oJ2Qu
+	0seoflWvdkx1U9pHReI9WUG65ZeWWWlxzxfA4rLqzXPjGGfco62FztnBmUZ/suV3Y0jxb6
+	10xVwhU1ZxhUXS3DhjapJYGs10Gl2og=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DNzWoRYK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3DoWIaggKCJU32JBzO3I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--edumazet.bounces.google.com designates 209.85.222.198 as permitted sender) smtp.mailfrom=3DoWIaggKCJU32JBzO3I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--edumazet.bounces.google.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DBDi66cJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787331855;
-	b=PRBMuBtLBLEfEcl3Opxtm8B5kDTFinXKdHSGSb3I6JhpVYiy9C/b8Wl5E6Ovs20jJH5Y+2
-	ROvWbWLTlnb/OIEgAqzB4aDpIakdR/y/Oz4T5gqch402zkQmjyBXABr6LhlhBd/xKznq3A
-	0bzms3auRv8uEJa4TbTBO1DqBrHcdRE=
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-9372b9db132so127519585a.2
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:04:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787331855; x=1787936655; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ytXCiIXJSEWeQd3fczjuZy6blW2T09URPllThg0U0lI=;
-        b=DNzWoRYKMu3szdvmdWgYGxpnsvuoPYvL7G+l7Qo0SsI5xSrsBiYWAM0UeglcPY7WRj
-         Xh2SYecEScUBV3j7stsu2Q37h2G8o7bG5xkpyRgxi93VzUyv+zeIg8ZdHHocNyALvIO0
-         xbLiCFV8lPe8vF2AT9SvGMao19iz/1+VZ4K/2SjuZAFnnF78Nu14ATnAexBQtboJwBSv
-         equbhK6dCFWLdcsl8zQqH9tw4T6K3NDIJ7xWCdT0C1NoPCgq81au5ga5tmwl0vHuRULO
-         aPr3elORHPuOcC+kJDJVkfHICmRtl6BKHd0GlNVPHXqe1ddWWfoBXReYrD/pSxiwqeY4
-         E2Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787331855; x=1787936655;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ytXCiIXJSEWeQd3fczjuZy6blW2T09URPllThg0U0lI=;
-        b=Bp0R+cfnw+hekvndXyegclrAYDwY13I+g4Jofzg+hl3lFGNduQtvUYUzrlPThV7kul
-         AicID22xf6tqRmqmW4lWjJCquloCrVi5P4h0e4OI4uqN7uW66/FcRV3Ai7G7bm7gw0OE
-         i2FaM14rdw+Qz/4M1Qe+aCYyhwQbzjSvixm2WFEkY4gNtQBytddZU/oNs2FU+6bu0lDn
-         jZ0ZnKHn+Wa5DUNAUDZqmBvIHT56VMD674nL6QZF7d7/Sjw+NBiyYjxSi5bfGjW6QfeA
-         nbGmxh8x0qorMQ2UpZwYRtD15+Ei+cOOC0DlkGA+hc/wKQKYDLn9iCFiRpjg/YG/EhLy
-         YyEg==
-X-Forwarded-Encrypted: i=1; AHgh+RqTeTJ7QO+gTFQU/TFD1AUbPzKIlZKiotkfDYhL5nbKw3COz5YkJPxRK/4eG9aC9u9kbFwfO2jk+Q==@kvack.org
-X-Gm-Message-State: AOJu0YzgzoD4mkM2Jg9FzJOkQo5xCRTfxV+HF8XEQ2r5nWh0Ajr7f1AZ
-	U7N3B5fxPtyUipitP0H+w2ojAmuZuf8cUSg/YKu5Slpe4SkaCi4omW26Q8K5/m9WubAocSlexW1
-	33eaLy5HcjoCk6Q==
-X-Received: from qklc14.prod.google.com ([2002:a05:620a:134e:b0:92e:6551:eed3])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:31a8:b0:92e:e1d1:49dd with SMTP id af79cd13be357-9373957489amr644583685a.21.1787331854394;
- Fri, 21 Aug 2026 10:04:14 -0700 (PDT)
-Date: Fri, 21 Aug 2026 17:04:07 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.766.g2966f0265a-goog
-Message-ID: <20260821170407.3721004-1-edumazet@google.com>
-Subject: [PATCH] mm/mempolicy: Fix sleeping allocation in alloc_pages_bulk_weighted_interleave()
-From: Eric Dumazet <edumazet@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+	t=1787332178;
+	b=Q/sHIb5/LAA1WZ9/W3IUtQoz/a+d5B0Y9XeB1XCbVpX/af0iPKIixcsLVavVtCDTtS2LLG
+	+szHb1Oht9cfJa5AKOYOXj6PCApC/dntBAvsyBXnOP7Ed1ntF2tPUi6ZAP/fdJH4Z9Z1SO
+	Yi5p3K0TLkGauUEOPXCbNQbfRxRy0Qs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F83A43B10;
+	Fri, 21 Aug 2026 17:09:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388E11F000E9;
+	Fri, 21 Aug 2026 17:09:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787332177;
+	bh=SXhsSgD+So1KYv0opzbteQ7Y/GTNQS0Ot83166ZvllE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DBDi66cJgAuWcv90XqfOjUMXdJYHjk6ICIrClqQjw3fx0PiQ+i6Q1mAYoFtRdzpiP
+	 IpgWFLgdtU/zNuaznv4wKX+6cujfcChcyjf3Fxwly2ZqSwCHpO4FHasgjSCEtuXIJI
+	 Vcc+9Fes6TFXSxN1oFkXQ86OwFZ/OUubeu9T/WTu9Km13yuzFBkW3sdAKBIuBYZOi8
+	 V3gAIIKftBQ10fLj/1kIYtQoTE+cHU95+VP9lCt/6tV0k0r0Ujr55eTko9Kr5y5n9+
+	 0btgFaMOEAOIjSmyTCc16eWkpEkBF2yUpl1OJrpasgS1hq6sAoQB8QWQYiJFtxWoKJ
+	 Uksb5L6i67JFA==
+Date: Fri, 21 Aug 2026 18:09:30 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, nico.pache@linux.dev, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	usama.arif@linux.dev, zokeefe@google.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Vernon Yang <yanglincheng@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] mm: khugepaged: fix swap entry value to
+ folio_pfn()
+Message-ID: <aoiDTwCf6320fedN@gremlin>
+References: <20260815051924.194810-1-vernon2gm@gmail.com>
+ <20260815051924.194810-2-vernon2gm@gmail.com>
+ <aoMs79VDCnYvA9S7@lucifer>
+ <aoMzkN8EfFllT5zH@lucifer>
+ <aedcacce-4880-41b0-a4a6-d892465fff57@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aedcacce-4880-41b0-a4a6-d892465fff57@gmail.com>
+X-Stat-Signature: 7wxc1foi4m9t3bdcu5wp9bkc94iaj777
+X-Rspamd-Queue-Id: 2EE9220003
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9DE8510000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 5o9a77nbqgdib1nkupnxq1s5stu6g8zi
-X-HE-Tag: 1787331855-279890
-X-HE-Meta: U2FsdGVkX1+Exz+9jUNBlPYFKZkhIfR9QHPKRAfzJ+7tfuQu+uHZ/oIM6blpxUEfd36jbwSf2EsnUTDkkSm7mXTG54UniS+EhaCoXwl+bFSsRr8MV4nlmoFaTcra4unrvIWVnhmnrbwvCIwrGhBoFV6uCs1MJM9FEIJBGszp1Loe2wLM2Ph6OfMY8nfbHUvog5PD2JDx56x7iQRaBF6o/keJhYit+MiMgIrqGzv0+Y/gHQ8goUHQsCcfEvrgYmjdfObprf2TfVTEmJf2tOP9b81WgBnvY2zTIaaV1NGTByu/4QBGWEGPYjGckl+BhOI6DWO22/N37DgVTOogqlxwRfYMFF+vZKMK9f5iQzPNRDSJpPJlM5/P1g5Jv5rbQO6HDNNX8eidIw2LDm721Ov7RsMq0TkjXMYFJM9axSKcwtBDV5HNc7rYB2UMU8+nTsVxQMxmqSLd2BTAk/j+dYPh+0Dv+wFdQhLZR/apZeF5KiZVGWwA0uBpWv+3/OuuGxxT3A0RTpaQz9Sa9a0Hfy+SzlPoajXYy1JeAxGIH6lhgXFm/loPLlj0i1jFrEpbJKhIsIDrOYddj8X2jtEF9tRLvUGc0E4sG2oLYNOzNsStlyUCzRBum20xynIS0QJUJE0kNhgdSYGetYin0ytmKBprx6yb0pD2eoKAIsUEmvzKChUcVAe8fJC2hg+Gib30x4YCMEyQOhjU79Fr4m8HI0rciQvdujvRjqgw01N/czNasuOX2EuhT4Ne//3OzdUwgefChvTFi3zvRSwDSrUdE7VMfldIw+HYZGnSEwTUz5v/qhgEZJTQIHfyvlRUCJbSK3ht2/ZQxA5zhBKxBI3PXqhJW+JEJwnhh5W4bQf24BbbJ/HpIDWs1KWnJBP9Pob3cEj0exN2d+z7a4ChEoSGE3nnnGfxYjiIaJZXVmeqEVO6hvtJc0vp/8Cw/U9Pz/bActJUN9vVj3+NQiP0RzdwFt9
- b5tN1zNn
- 1bU+i6epB7MdnbIx21A2CbbiKhWZF6G3GMyUrtTNCy4H8amQBQKyxN2cCyuN4/UFbubb9ZU++lP7Gcm4rhdlYEu76Xe9l2Z4vOe2Ov8LyNsRJFmIgmOJYBJ9fn9ddrppAkvJvDzs1UtnwRc4sZ/8GaR+XldiNt5wiM5SYwn3YYH4scHIzQXZafYVCn4Stm63LuNXj4lVUABY11J+uwjfujGEI3YHsI+xot/bcwEvCWwiUZEYVJFiTiHd0YYBK+O7DhtRLfR7p8cvdkDMbPNpdKszZXoYo8oAYyVjc+Po6z18xdmFpF1V94sxFehgZnAUHk7HUzvzjQ4mV3KKTgGwPMN7UG0yYVitttPMon9z0F6liE0R56Pkqhi/Jhx+sebQ4Y5op96PwGLjW46CK/wUR6k+PoW/TFOuU3rfMkCBa7OLp4SU+wSLaF6JUUHV0Kxv49DNwo1Jo5pfTN3x04Lggx2E77WnXb5LogVBBb/tOcPttCV4dt2M4WYCfPXMkgu5/03fx8ceUJXZScqthMhLyAaNV5NCYMt4Ssm3NgOKwI9BuK/3ZdY0ZG5jaJZKUQdhakFIfcUHQ+O6fSX4sq0K30DZPWFrili3uC7FqgFzRJX0LEbYMei8MwC4t7KEkbOj48AZPUI9bxBJLGb6UuNdKu2xUrDahDc8bsKZWW3Uf77+ti6nroG0u1qDPYzl6dvDbJ8ghmJKByIV8ogwDHOpnu/XCJ95b7c4y72Q7BYCh7JhNwKU5YxOuIPlrlBkU5Ga9nxFOl3kdfhbMN5mlpuYJSNHaSghCjxtlXFyKm3dOUMR2fOfLHis9WQMaVvgogItWZcDw5CI2Z3ESTZTJI39JnjuD8ciYy56p7/ZLgwEPKDKum1/nfjA8rhyFOwJ7PJ3nN8ToqI+QpFfhArluAR36I3/ZVRtjjVQ0Kt0GD7EaQnkQAtIuQ1SSIdSHK2L3+qXIzGYFIzvwM4EHxMy9ZUp71XExYJnf
- KCBMvibi
- 45WJUfNUAkFcQqPJZndl9Tjz93ORYKp9UR3WJc5OT2EPeNcinN5sumh6pIoMuCpGhOVFIkKHzj7iJvrOtysZ0h7osl5WxaomBjCq0BPWEXU=
+X-HE-Tag: 1787332178-289736
+X-HE-Meta: U2FsdGVkX19mvco/OQZqELRfMeqHBF+gNVcjB+LvjrbgWE/O8WCgyuItb1N4bOuXBn0Nbyjr0FA2EkSXBUYUH+E5V40Fym+7pvifozwuNJiKU76iV9HOUh8kwPgdVDQQessDv4bO/1+vv/VZlGoy1VlpkNTJ9fa4UEEI8GAim2HybrBRxhLDTiPo4ofxc2MOoIA6MnC7M6MCS2+k81+esVUuE+s70UZsjihHUhFxB8zBYj4rPU6B2dI3O80Fh4TVETA/AySnYQHR8ddx3hBI0xvH0cLDjO9reHwk4KZk3KtvImT8vIoMdGWorhbVb1IdTpeRJMfXwyJFFTBV80X02+OGAypVFmj4+EPfGOKw7trJnTKCrVfyrLTz3rQ0Pdv9day7FkadtcxXLefGI1Lck0pphnHxDf1PdmpytE0dmev98FYbJoynVMeYs0wpEZIrvjO5cZxjdiBsZTloiCb3NPw41qxDkqKLUuPQpa1mpB0eoKuF0M/Y/riHJpfbvM+1ScS7GD5+6/xXPFn+H4pvm/A8xM+s1qFDpV54B+PISKoaWooI7tbWIqekksiA9ZJtn3FiQ9C6IUBv0EwVDEj0wjQfTnvgV16FApleFCPOxcIEtdZip5eN8BVtFTkQDPMqeLXV9EiIGAiJxWIRcdN6ZE/MlPqy6LPbWH/H3GO5VpvABmed7EHg5mYk4Piv6HWjvDo5NpuUi1AAMPlqtJp7tFjoaBz6Gs/KydC+W5dB4F0lhaOvilQYypoiqDGp3xiCnN0mBwb+GvcpdKs+LX68cbYaqP90H5eoljVtVO+VeZuzc7+hgBXhYxmlrqDNVXkK19VkOZTUxOxToV9TPO5IHAn0Td1mQgI44kNrxKSlA19zBDVXjI2veQEIsOjASh5PMVyn5yTQ1TMBywX/4pOHTmlaZShjCHXvy22r/8j0W6fgzNf4fBJs0r8LHkaioXc7dBCWXobYmp7iBRObh++
+ WFwMBXI8
+ ChJvfo7hgse6g3wzxWe40uZLLOwFYyK+9ivTneqT1T7GDST1Fbl2sacz+rj1yngHhRZuEhogAw9Av4YNRfA94f4aG7ZM0lnKYtjiCYUEiak+lJdFceyz0cLJXnzXiCWBfyssj1cxmuqL0MU6Q4eZckRDxL0MApHZHyFSVLjYbq2LmQ81iVQFuDqtdZA0eMazNdVW20RYOuLLI7rkF8XTrHtEAKkXu0WLAusTLTJb1zHbfWlsS1UeM5bh9DeNAaj+XmjlWAjy/OybSxZjHCAwcdxExEvCqisk1ZO5o8JE7Mo8EaGLhvFIhu030P2H/Vos1AZTBvtfcMVQC2Yg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,61 +97,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot reported a sleeping function called from invalid context splat
-in bucket_table_alloc().
+On Fri, Aug 21, 2026 at 04:17:55PM +0800, Vernon Yang wrote:
+> On Mon, Aug 17, 2026 at 05:23:30PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Aug 17, 2026 at 05:10:39PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > On Sat, Aug 15, 2026 at 01:19:22PM +0800, Vernon Yang wrote:
+> > > > From: Vernon Yang <yanglincheng@kylinos.cn>
+> > > >
+> > > > When the swap entries found exceed max_ptes_swap, the loop is left via
+> > > > break with folio still holding the xarray value that encodes the swap
+> > > > entry, not valid folio pointer.
+> > > >
+> > > > That value is passed to trace_mm_khugepaged_scan_file(), which feeds it
+> > > > to folio_pfn(). On FLATMEM and SPARSEMEM_VMEMMAP, the page_to_pfn() is
+> > > > plain pointer arithmetic, so the trace event merely prints bogus
+> > > > scan_pfn. On classic SPARSEMEM, the page_to_pfn() reads page->flags,
+> > > > dereferencing the tiny encoded integer and oopsing khugepaged whenever
+> > > > the trace event is enabled.
+> > >
+> > > Hmm I seem to recall that we were no longer spporting !VMEMMAP SPARSEMEM, but
+> > > maybe I was imagining that :)
+> >
+> > OK seems some museum piece architectures are causing us issues again, fun times
+> > (parisc and some mips).
+> >
+> > >
+> > > But this needs fixing in general anyway.
+> > >
+> > > >
+> > > > So when folio is the swap entry value, simply set pfn to -1, just like
+> > > > exhausted scan naturally.
+> > > >
+> > > > And the folio_put() has maybe dropped the last reference of folio. The
+> > > > trace_mm_khugepaged_scan_file() is left with a dangling folio pointer.
+> > > > so using the folio_pfn() before dropping the reference, closing
+> > > > use-after-free window.
+> > > >
+> > > > Fixes: d41fd2016ed0 ("mm/khugepaged: add tracepoint to hpage_collapse_scan_file()")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> > > > ---
+> > > >  include/trace/events/huge_memory.h |  6 +++---
+> > > >  mm/khugepaged.c                    | 14 +++++++++-----
+> > > >  2 files changed, 12 insertions(+), 8 deletions(-)
+> > > >
+> > > > diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+> > > > index 291fae364c62..d3572d4ef453 100644
+> > > > --- a/include/trace/events/huge_memory.h
+> > > > +++ b/include/trace/events/huge_memory.h
+> > > > @@ -178,10 +178,10 @@ TRACE_EVENT(mm_collapse_huge_page_swapin,
+> > > >
+> > > >  TRACE_EVENT(mm_khugepaged_scan_file,
+> > > >
+> > > > -	TP_PROTO(struct mm_struct *mm, struct folio *folio, struct file *file,
+> > > > +	TP_PROTO(struct mm_struct *mm, unsigned long pfn, struct file *file,
+> > > >  		 int present, int swap, int result),
+> > > >
+> > > > -	TP_ARGS(mm, folio, file, present, swap, result),
+> > > > +	TP_ARGS(mm, pfn, file, present, swap, result),
+> > > >
+> > > >  	TP_STRUCT__entry(
+> > > >  		__field(struct mm_struct *, mm)
+> > > > @@ -194,7 +194,7 @@ TRACE_EVENT(mm_khugepaged_scan_file,
+> > > >
+> > > >  	TP_fast_assign(
+> > > >  		__entry->mm = mm;
+> > > > -		__entry->pfn = folio ? folio_pfn(folio) : -1;
+> > > > +		__entry->pfn = pfn;
+> > >
+> > > I wonder how easy it is for people to interpret that this is a PFN of something
+> > > only in the case of an early exit.
+> > >
+> > > It's a bit of a mess that we're exposing internal implementation details like
+> > > this, quite honestly.
+> > >
+> > > I hope there is no expectation of this being there indefinitely.
+> > >
+> > > >  		__assign_str(filename);
+> > > >  		__entry->present = present;
+> > > >  		__entry->swap = swap;
+> > > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > > > index 617bca76db49..e7830761d3a2 100644
+> > > > --- a/mm/khugepaged.c
+> > > > +++ b/mm/khugepaged.c
+> > > > @@ -2683,6 +2683,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+> > > >  	int present, swap;
+> > > >  	int node = NUMA_NO_NODE;
+> > > >  	enum scan_result result = SCAN_SUCCEED;
+> > > > +	unsigned long pfn;
+> > >
+> > > See below I think we should drop it.
+> >
+> > OK we can't because of museum piece architectures that will actually deref the
+> > folio to get the PFN...
+> >
+> > I'd startr by initialising this to -1 then since I guess in theory it's possible
+> > xas_for_each() could just not do anything is it? (folio is being set to NULL so
+> > that suggests so).
+> >
+> > >
+> > > >
+> > > >  	present = 0;
+> > > >  	swap = 0;
+> > > > @@ -2720,27 +2721,23 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+> > > >  			 * PMD-sized THP implies that we can only try
+> > > >  			 * retracting the PTE table.
+> > > >  			 */
+> > > > -			folio_put(folio);
+> >
+> > I still hate the idea of moving these outside of the loop, it's just asking for trouble.
+> >
+> > So I guess instead:
+> >
+> > 	xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
+> > 		pfn = -1;
+> > 		...
+> > 		if (xa_is_value(folio)) {
+> > 			...
+> > 		}
+> > 		pfn = folio_pfn(folio);
+> > 		...
+> > 	}
+> > 	...
+> > 	trace_mm_khugepaged_scan_file(mm, pfn, file, present, swap, result);
+> >
+> > That way you avoid the horror or moving the folio put somewhere deeply
+> > unintuitive and inconsistent, and maintain pfn lifetime for some arches nobody
+> > uses.
+>
+> Thank you for the reference solution. After studying the overall
+> process, I found that the above solution still has two issues:
+>
+> - When `!folio_try_get(folio)` or `folio != xas_reload(&xas)`, if the
+>   next `xas_for_each()` iteration happens to terminate, pfn will be
+>   incorrect, which is inconsistent with previous versions.
 
-When rhashtable_insert_slow() rehashes the table under rcu_read_lock(),
-it calls bucket_table_alloc(..., GFP_ATOMIC | __GFP_NOWARN).
-If the bucket table allocation uses vmalloc, __vmalloc_node_range_noprof()
-invokes vm_area_alloc_pages() -> alloc_pages_bulk_mempolicy_noprof() with
-the passed GFP_ATOMIC flags.
+Ah you're right of course!
 
-If the current task has an MPOL_WEIGHTED_INTERLEAVE mempolicy,
-alloc_pages_bulk_weighted_interleave() is called and currently hardcodes
-GFP_KERNEL when allocating the temporary weights array, triggering
-a might_alloc() splat in atomic/RCU contexts.
+> - when the `xas_for_each()` iteration to terminate and the folio
+>   operation preceding is normal. but pfn will be incorrect, also same
+>   issue.
 
-Pass the gfp flags (masked with GFP_RECLAIM_MASK to strip page-allocator
-zone modifiers like __GFP_HIGHMEM) received by
-alloc_pages_bulk_weighted_interleave() to kmalloc() instead of
-hardcoding GFP_KERNEL. Since the weights buffer is immediately
-initialized in full, kmalloc() is sufficient.
+Yeah... :)
 
-Fixes: fa3bea4e1f82 ("mm/mempolicy: introduce MPOL_WEIGHTED_INTERLEAVE for weighted interleaving")
-Reported-by: syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/6a88837e.ae6ddae5.3da009.0040.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: linux-mm@kvack.org
----
- mm/mempolicy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> To keep it simple, I modified it as follows. Is this OK?
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 79effd3f3da4..00337405c0e0 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2689,6 +2689,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  	int present, swap;
+>  	int node = NUMA_NO_NODE;
+>  	enum scan_result result = SCAN_SUCCEED;
+> +	unsigned long pfn;
+>
+>  	present = 0;
+>  	swap = 0;
+> @@ -2719,6 +2720,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  			continue;
+>  		}
+>
+> +		pfn = folio_pfn(folio);
+>  		if (is_pmd_order(folio_order(folio))) {
+>  			result = SCAN_PTE_MAPPED_HUGEPAGE;
+>  			/*
+> @@ -2779,7 +2781,8 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  		}
+>  	}
+>
+> -	trace_mm_khugepaged_scan_file(mm, folio, file, present, swap, result);
+> +	trace_mm_khugepaged_scan_file(mm, (!folio || xa_is_value(folio)) ? -1 : pfn,
+> +				      file, present, swap, result);
+>  	return result;
+>  }
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 501e0b80d7da..1ef50ca37d42 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2688,7 +2688,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 	prev_node = node;
- 
- 	/* create a local copy of node weights to operate on outside rcu */
--	weights = kzalloc(nr_node_ids, GFP_KERNEL);
-+	weights = kmalloc(nr_node_ids, gfp & GFP_RECLAIM_MASK);
- 	if (!weights)
- 		return total_allocated;
- 
+OK looks reasonable, thanks! :)
 
-base-commit: 4e69c1856bfd9ffb7e9d335a25842fa211628929
--- 
-2.55.0.766.g2966f0265a-goog
-
+>
+> --
+> Cheers,
+> Vernon
+>
 
