@@ -4,144 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0D63C5DF93
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:49:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F3AAC5DF89
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:50:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C4CA6B008C; Fri, 21 Aug 2026 10:49:14 -0400 (EDT)
+	id A4C256B009D; Fri, 21 Aug 2026 10:50:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A1846B0092; Fri, 21 Aug 2026 10:49:14 -0400 (EDT)
+	id A236F6B009F; Fri, 21 Aug 2026 10:50:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B1846B0095; Fri, 21 Aug 2026 10:49:14 -0400 (EDT)
+	id 93A826B00A0; Fri, 21 Aug 2026 10:50:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 463FF6B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:49:14 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA459120178
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:49:13 +0000 (UTC)
-X-FDA: 85125559386.30.DAE8C09
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D932E120004
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:49:11 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QPYnsWjJ;
-	spf=pass (imf29.hostedemail.com: domain of jannh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787323751;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D8736B009D
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:50:08 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3DFFA1897
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:50:07 +0000 (UTC)
+X-FDA: 85125561654.16.0E1C213
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 538A9140009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:50:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=igQmwRfF;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787323806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vlc/iU0BEBi/KNin4z6a2IXssoOeWKNQCCK9ZmekGRI=;
-	b=zzHOxgDv+K0v6PawmPtm38lTAMkN7IHd3d+PdvlAoUZHZ9qfb3temCzKVzv1aCn7zbfU78
-	wc595DsXtjFO4+fOcKh5KfS/OgTsILOgkzeqajTLvlSlCAyTospZr7i7IqM5N7P+1w0pcg
-	/KQTjOY7l8ce81tyU84uAF9eL+trcMo=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787323751;
-	b=PGfufqzEWBGj9J/Miwygk2m2paS5sOUsuKKm2525x2e8ylW7sdLrQNM0KW6Py+AMPDTIYa
-	85FqDkNHHxTguFkOzHUHNirAhAOz12xzg0zoCaeXW0icDrLWlyFyNmwwKfDu5AKZoPoyML
-	8gjF3/KtXXuXhP0y7zS3eHrRCFWwlcA=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QPYnsWjJ;
-	spf=pass (imf29.hostedemail.com: domain of jannh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d3b445a84fso79745ad.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:49:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787323751; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Md1eodbhmJmk4z0H4lxTL+Qe4vhV94Iy7xoHd62n5cJB+DMCOiz+gkRHShhXMDz3ay
-         yodWKfDa29V32cR0rp9wxzcP6ncJtYwnLHyW16wwwLoKmrDP06jYBpWTkSQ8FVu95G/I
-         J+V69w0G9Lla6EL5LpVfHfxb1iUnG2F4WM4fE2z2Tilf5/52d3DCjf+hbppOkmgplawV
-         HSF8aUm1l3xAmSf2DQdsuvG6aBjmaAluaby+6dQ3dvrlaow2CYiqkU4LKPqkrcxoEZqu
-         0NWIHsTIlD5bKBVNtFfi5eFMITaYdb+x/QIZ/f0PIu/nXDPyMgch90EJRdy/YYYKQrGG
-         m2fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Vlc/iU0BEBi/KNin4z6a2IXssoOeWKNQCCK9ZmekGRI=;
-        fh=BmSWEJQvzdxI7//EefCfHoa6htiWjTXq9kwBBCZiAvw=;
-        b=LJF1NLAx1NrUJO2Gz4wWf0EQLkvTqLusmoq9WuRgh6CpurKP04mJiD6xHfSQkfQsZZ
-         ykWqgBVOLI7tWYKY6QClMrxTnWeUk1HmKjKslxxLWFGKO4AIQqIYV5jMs7HEtWw1wWO0
-         WLkrjjFkGMXg7U15gLsXzvC0q+IPENEBWEjN55SeB2zNMFLpEu43CIHmbaiS/rEBLQc+
-         fL01RBy9R82qx3gZF4efvX0BquozNzywNKy6zroRDs6PHbsK47z57zX6b/xH1bBTFGJ8
-         oQaFOrHbw1+vSiuZWUB2UUlr35stNXiS0mCvT55H3H6ZzDtRXA7b7VRQIr/DC7aF1+5J
-         VbSg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CGzie6Qe/X0/cYKzE/v7Y5d2k3Tc6ZI2rClbmVZ2bdM=;
+	b=R0NbHsQ+I1OmmZ2sosX67O57C4n1XV+sKDYVUyZQtcDU6eMyQQlf40OJ5Avq1M3zV6MasR
+	0yBGejmUHcjpFohJbthyBSGKSkrWiG+OykikXX8WcCaFu5F8sKhSRFBO/YCnqnHwxNWBMc
+	BzZmkNg8anRBVZYbiaYFCZ+o1FUY3iA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=igQmwRfF;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787323806;
+	b=4PJlb9tRpsYwfFHa0LEuNbSP/Pw4plXDakKcFFZRR8itFnkELRHDKvjPoN31LCJgqDGetK
+	66aqbgxEZWK3tYA/K4G+i5QR4AjZzxWzfIW5lsNdFwy0E4YsJ9eCawJaVUfI9oYjLCaGAy
+	E+h4DJPOgkYQrr4ECwohkqjQRsBlQHs=
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-936e8bd9caaso75944485a.2
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:50:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787323751; x=1787928551; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Vlc/iU0BEBi/KNin4z6a2IXssoOeWKNQCCK9ZmekGRI=;
-        b=QPYnsWjJwaVlKYQ4BvGCfWf1hVDG2CvpEi6N6Y8QP4sFwVnW9DMUM59lXwd0/pn8n8
-         0MJt1RVuNCJOqqRM+x1zT0mzdrZU/lLhZplzlmSbDwKhsGOe6Nni+F0HWpLZEnYq4rSl
-         LcARe48AAdlyLx9e5Kh5yC1jpqOqkaQApsf2qRve0nqagwVrrRqnh7Ck4lXKCP5qx6W9
-         /k/PO/5Xqgm18hSe0qKgYIcRBuKZJirGx/HoxtGsNilBygKXesM3Jr+Xmy9ZHntWi8d+
-         pTjb3fX6n19FcDOlTsUn3Lddc/eYLIQoM/FMt+VuHuPEnzTRNPtT5dhy8Qs1L8h7GW0E
-         xUuw==
+        d=gourry.net; s=google; t=1787323805; x=1787928605; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CGzie6Qe/X0/cYKzE/v7Y5d2k3Tc6ZI2rClbmVZ2bdM=;
+        b=igQmwRfFWnko+TFjCB/YcTaSPRW0+q7NDH/OJf4DbaCFOitIbhSYpiy4XR1pODgbt3
+         PzOMWCTOTNNbX66RqLCWSLDS0Hx8H2xCjh07b2XAlW/z3tsxfiMLr1SqZVGdr1Ui6zAf
+         WzqmC/cdREyWPugDWRTNJww/fBBAAfQZpJcSf2bn38cAz9+X9OTxN0hYgTy4eg9YVYLr
+         2vH4gaIG0g2ksCb+0F5t6BYzERqDPwV+zPfrNOkZl5E2JtrUVQO0Q2roIjSyz2e6YVUz
+         18PQx0+qLHT/vwrRhk36rOG62IV7Y95NcmnYHoqbtfB4BAqf3dd23tBExdFtzbHWanh7
+         psfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787323751; x=1787928551;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Vlc/iU0BEBi/KNin4z6a2IXssoOeWKNQCCK9ZmekGRI=;
-        b=gW04D1gpFuacsOGG6zbL3lzvPsrIJHMTDCOOjf2efoIeq+33YOLHNYXnXi2MYi+Ts0
-         6fIAzna5HdVCjzpNMzQYYh0C5apHeM2t1SzACc65rEQ3710tg3ymdAyk5xq6eCue5Gay
-         fBt6duQF6uP5W2R0xY7TI2XVTmgq9l4ReT2xoRI/awcLJVBy4Do0t4wgKPyo96B4tda/
-         hLHwpypict1k2u3/XlCfyPk0vrVDMfDuv6zxkEDtNQcqCxx0VZ6MoQZ+6VLfV0G773rT
-         OsavBVmOQLCez58rXEWd9kMFbKxFesiRYzTy4+LHWqAAbTdDvmxv3nnjugjgVtuMeHPn
-         zW7A==
-X-Forwarded-Encrypted: i=1; AHgh+RpUJeDbkLV6aqXEg0x44xz3M3f1OmK4npu6vbfCsHUzINQicIhZW2gs8MbI9fTBXHTNzPa7tIhGnQ==@kvack.org
-X-Gm-Message-State: AFuF++lRxdAnt7dBtowMaTMuz9ec/yabYgB+uNzSJi0rwDySU8BF9Bgc
-	aGGnl9AZpdaCzW2+i/U+54U03mzhjvKO2a/XfOaWze2Jxb8aLdKfkZdoswp782kyhfHxtfk3VLV
-	W+IjKa6NN4X4Fsw67GSqh4OnC0+0tHFDY/QqqENRW
-X-Gm-Gg: AR+sD12Oy8h4Sr0j7ulSScAzYcVlG3bv3Utqhut9K0i0nnnxBWarAb6QPYfddScPg5J
-	gPBcExRYghzC+vCDu4lRi9vWrPyJRsaNRA4Rk5IfH3SZamfk0/fH1vYzRt9kQVWKYyrKvjUG76+
-	lk1SZbrG56JzBXCEI6mKIBphGpudW5PhP9bM3o5uPG/ScUa4sEWHtx3mCn2V3DHHXIL5ff/kxyk
-	KiZ3sXAwbcj0FX2Zm0Br+8Py0pZKJ/BT0n6SuU/2yedv7D5P608u8jyQk4spfL247xNjNBuGzQ8
-	C04vJIFwDXvwb1Bo1msc523hFY1fk2+T8Q2rKfHprEnMmE5JcjaYqTEN4s/LKgTGhuObTIWJp5K
-	noAmU+oghHDKOSlnXzGekh3MDI7lKutowSaDfvMM=
-X-Received: by 2002:a17:902:d98d:b0:2bd:3bfd:74f1 with SMTP id
- d9443c01a7336-2d64b0242damr7580045ad.2.1787323750012; Fri, 21 Aug 2026
- 07:49:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787323805; x=1787928605;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CGzie6Qe/X0/cYKzE/v7Y5d2k3Tc6ZI2rClbmVZ2bdM=;
+        b=r0jjLJkXvCZbBZltg8Yq6gMhJmhU0urBm5T4OqRSpypocn9x+WU7pe+evviQGIPeG0
+         DHHyq6W0eDEZqGP1A0m6LgwKejGc1ZsF3kD11Bccii87jmTnmr6FvZzaCY9IdgPmIL85
+         fLIFTen1ibKlsCFIJ7zTk2neY8pG/tsCeTvzEFIG6bLnhltwtkb2BeyhrB2pHDdHBV2e
+         KYZAjABSsnuENAZN1v7LAyPBP48/Zd5QLcHv9xHznJxk+hZOgrx9vHvtFnw73BsiNncp
+         on62ProbZylWxUUpMk4Nbt7h/LL67vhyL+ljim6Vdq+GLAFevyFJ1TNZQn0qkTHHZDlV
+         cELw==
+X-Gm-Message-State: AOJu0YyGCl29w/YsOVT8I4sEbn5bNIGsNYO0mwmwjJmriHjWH40VBtAC
+	Cq/zSw8gOKy8ev1eeimy0eF333j2L7ypHN/4U38oU5S9fCoz/Enz9O02vBjgUBRkUpKuC32s0oW
+	Bs9pa/b0=
+X-Gm-Gg: AR+sD10NIoNIMEzkP7OTCSD+AHbPg8oR6+bUxnTlR9GWISHL7O83ZWpjLEjJIne2Bya
+	H+eCUbsCPaD6Ou83zQrvb/kvHC1CdgaUuoAt/Hoj9wMgjH6kDaUNG7Qk/DywWtFQyLDs95RJXkQ
+	NdJ3NrgZuqBll3wL3XrPi/Vr36Vg/PLOTbgWRccWilfjpcPbdoWPdTUZhbJe/mEzvqFRUc1OiUq
+	HgtsFZPR/GjtimXDFIpbhiYfd8lGEdk5s8VA3tgcvibuTac8pv1dNAojfa0HDp5A2nMMdbm4Sfu
+	1Ewg9EPgdZJ3VdoMSG7fywmAIcbFoOHMErCb8b9kkwPTULVl+3CznYKqdidEt8w3WG/v/p3pcwt
+	jktblY0uN1k94c30/34suPpYOq0nV40QORlFTSCrCV7lOrcdLI7WWqqu/dZ9sYyx1JwxQ9rUwh1
+	u9RT3PsVPgksPwuXmEvBwED3Oh05Wxg3YJx8E+2YE1qQ0VeVUWqezmGCPJZCEjpPRd0ItbFmIpM
+	e9bBXb6MZGq8/L0j7qd/o0kZVVYjFFgkecwCJ/m+9/1jPxN8g==
+X-Received: by 2002:a05:620a:2591:b0:936:d833:6a35 with SMTP id af79cd13be357-937392bd3abmr583820685a.0.1787323805326;
+        Fri, 21 Aug 2026 07:50:05 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93720493f35sm609512385a.9.2026.08.21.07.50.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 07:50:04 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	david@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	peterx@redhat.com,
+	jgg@ziepe.ca,
+	sashiko-bot <sashiko-bot@kernel.org>
+Subject: [PATCH 0/2] mm: stop calling pmd_folio() on special PMDs
+Date: Fri, 21 Aug 2026 10:49:45 -0400
+Message-ID: <20260821144947.167382-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com> <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
- <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com> <dd8c34a9-0e09-453b-88e1-0a5511816627@kernel.org>
-In-Reply-To: <dd8c34a9-0e09-453b-88e1-0a5511816627@kernel.org>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 21 Aug 2026 16:48:32 +0200
-X-Gm-Features: AcwNN1XIz1KzlKUYbPV7VaC7KEh2VkyaYQONO-MSpK_iCwFkMVBjZQBPINMVB_Y
-Message-ID: <CAG48ez2bZEV+3ww2x9XV_5vRPZ_3jU_zg6+h=BDKQ94Xrd3Tqg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: bzyp3pkeqt7imdbqtc3iq5twp4xxdnd5
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D932E120004
-X-HE-Tag: 1787323751-561712
-X-HE-Meta: U2FsdGVkX18vyE7frZmhiOTNaRAO9sTSkyouwkivAYMiuFS5NyKrFD9s8QlaLl0Xkkbf0s2V4CFC1TfUJ6EwExDVSMTA5m7x0tCMc523ZQtdldfk6KoAEJDj9SIlwyd2+zRWIe478Fc+a2oTIHzkYpA38ILjnB0y4Jrnbq7yfzMrxFCxPklEEySmHMBmsMczCL+/tFpRANFaD04CHXJCJAHphh0lzIoi5Pqq9plD05hbVQp756kJczmyWq1b4i7+fhxIzvF9twe7fh12AiaUzVOrlKwfKeE5gN/H6OvS1Del5qY3jZLNAXyWd1uXc9r4z63wurbOhdFD3xQwECPflCPbRTgK8BSNr2MVFIaKX/9nsRVC+aG8FIJDGlj6r/kreG8tNwhUm8vJEaNoXDaBuUBCJBedsR3MAEqcAvV9nDJmMC+PvIAPZX2ske5wwHBgg5CYbLOT0EOWUORCFg2cgZB3t4MFWOm+DO9yr7YXMUhtozPdIc4H3Xaf3bbdxtnYEXBTONfo5IJ4U7AaSt3M78nwKgq1u8BP0U8GscqjMFp6nUYDw8nPWIRwxOJcSG/edifPaaycgtJU5at0vcD/undzB7uPPVYzbOarZXS4bBhvh/nYN/Ed4gr7G9z+xg37wDb+9exUtEZg67e+8dn1ljE0CgNXRDL+EzBPfmmNQZGo97KBWEXPPJ+1ljPBlf1CI/fqQP8E69a1nOrTVKlPjlyMBElz5SoPZibTTcx+Yeui3Ztw7a64kt/dDVxOi30oAqy05rg9XiGBHbTF3gTeD3slFKkzNAhVeLFV57Y1z94D5LmMIm3BkBQjrpJgqFqYqW6A9gAyoxT4xYfA5O3wTv1ZY3uvioVjK7tat8JLTAS+grFgIwvpNTmOU2yw4MECHlkUvAsracb/DbgyjJ9O3jnQk1UF/o1osCS4fCVvdhnnMkw6VLwJnu+j2w3kEFAu4B3cgG01F/2e4I7Am7F
- kubeKSNz
- Huqg/xvd9KR7/YIemtuiWW6xhbE+17eZnr6qw9aSScsfKIzEpTKij8iElHyAlnfqWhXwqBfrWK+bI6FvpCY36ivLPxN3aEYWvfN0LkAbm0+5ifz4NXQe6md3X+p5A7xKuYjEi3OIwYOVJmZyhxKApbFtJ3OlAV4LjvSWnlIhZGlQji8F/Dr3iOEyuFbZ84vvv11dp5V8u8xqTD/Q+P/HPyXBxjb6zC78b0KBTguY1V/fL1RIfWn2uGJKanlau3pa6w66GKhyqZ5eSMFwDU0Wmgn3VXLCXL2hoxOCDDMcsvb0pigtF6cLd8SsYs8WS/G7dGDig75Ed4Ey7ayyLU1tABc6OOOpsFRcq3l0GGbC9m17cJ0Ae5OBZ4D4+f1Fr+70YfPydqc5rDZO8GovUYFw3zPbKZQ==
+X-Rspamd-Queue-Id: 538A9140009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7n3uizq53x5joswbrxp8d3ujkar6qjgg
+X-HE-Tag: 1787323806-401641
+X-HE-Meta: U2FsdGVkX1/6FZbk3opfh+tnFr4HOxntsTA6snqg4O690G7OSfsyefFfKi6VHQ18D98pMupU7hicC0PZxuvE3PeYVUPOm6EkQpNKM1/itcYBqJNP9+61QX6qhavMpRyH6rBeYA1cF0bKnPxqLfyNN7LxnTFd2Qjb91/rMbZ4XRtbQ27qTeLHVbxpqJo9hhzHe4ODCAmZzQIroL1EWY1dRurs2C4FB/csi71AUFmxZmxjhRL850bw6hXdW3Y7L8DxaeDJkLbHSu7AMIpjd8C/Bu/2PzDLfr2O6JKqeK3jh+QXu5yFspkMROEwEBmrrsrqBZl6R/4CYyxk92NODK9HuG93Qzz/DjzAe75CvmTWDWtxgwwnxoCKH3OuujR7U39xC3yWUF4wfRHEC5hLFqvcLK4jkH3AH9v+OypKd9YpcC9un5qaoAVDFrwLZphdBbGvxDN6gT53UHoj9V7mLRS6Edb8IpBr+VKDP23UuV01gzeRDQ1erpMCFa7uwY8qT7tscQ1hSB2/NSPU1w3lK78tlyzE1J0R+SGHgCoo+urXhdwcMdeOwSVxTpBr+UOZ49zbZcVatlOeXgcmfC5RnPvsMvKH8so+xGko0+I9L2paJfBSH5zeBFcgqQAKt2+biP/6vIyYyv9hMfg8JSpX8tIgI4XvnFFFeEh9QAX6+ol4k5py0KnKijo6MVbKhJ7Md0w/KLVbelBnVqGKKXSoX78H753G3E7N+bkAC0kBa+1xdl3ULEQpjLOA6c8o51swv4AbA04Nrrx2tF+idt0/NKeczNBhPjjCjykL6Rr6VU1MeYDgB7XqU8gFUYySqIXFHvXWXAUG9GHd8ibF3hzAjgjjxpXKODMm87j2Uj1V7fuvQtTR6h7LtSTgbmH3azlQ96+2oSEpHbi/9Hf0GxnvCBY8owyeCweS1bc24paLQXDL3JRnhgmoRqs+zITkpDTMFwdonGO4wLzYXEw7i3YFzLP
+ wc9ClvcZ
+ mkWJnqTbx7GS0ECfQvAuA1NUu77EQ1EOGo9PYDV6B4R76Gbh4wRtTQ14bDG3roigBOIzB/Y1StWVKTMd3/JgNe9/e2x8H9BLWhAOFOlhYE2MBk/wJWh9fJUy5WIjmIMnFzHdAJDdfY6r40p1tVR8W1VN9bakSnIrCQrsrOAwSMewSc4erzLvfoGXe86vPzhdSsFQ6Y3HUHPe0BmdeG4KcaS5BlLb/kr8PbIknGxV8ahmE6CRX68BcgkDliDT+LIo3uiEIyWOicpeYlZnIHF9vjNvlcK8Zj/3mcLmvE2jQetVry65K6b+llhK/oyb9s7QvfTOLzNZvLn/meccm+HRgnfFlHvwHER9Nqu79qtBQmjqbYQxvkGNO9XnpQ2nSCvepTsH4jflNEmJ1K8P9yM/s7wbzk3g2nELo7P/OAsrs73wDIrUq+YxLKq5RXYb4McuFLRdYWPjyNqB8XiViXk+tXr17mE3uxsvsaHS8oF5hzCe610eIIHrWTPS0d2Omr251sE4L
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,73 +132,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 4:19=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
-> On 8/20/26 20:44, Jann Horn wrote:
-> > On Thu, Aug 20, 2026 at 7:22=E2=80=AFPM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> >> On 8/18/26 21:51, Jann Horn wrote:
-> >>> If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently h=
-ave no
-> >>> good opportunity to block a process from overwriting read-only code i=
-n its
-> >>> own address space through FOLL_FORCE writes via /proc/self/mem.
-> >>> The security_ptrace_access_check() LSM hook is bypassed when a proces=
-s
-> >>> opens /proc/self/mem because this is considered "introspection".
-> >>>
-> >>> This causes a hole in SELinux EXECMEM enforcement, which tries to ens=
-ure
-> >>> that a process cannot create executable anonymous pages.
-> >>>
-> >>> PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
-> >>> accesses are only possible when the LSM allows ptrace() attachment; b=
-ut it
-> >>> is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
-> >>> environments running lots of third-party code, such as Android.
-> >>>
-> >>> So, introduce a new LSM hook that can forbid FOLL_FORCE specifically =
-for
-> >>> such "introspective" accesses.
-> >>>
-> >>> Signed-off-by: Jann Horn <jannh@google.com>
-> >>> ---
-> >>>  fs/proc/base.c                |  6 ++++++
-> >>>  include/linux/lsm_hook_defs.h |  1 +
-> >>>  include/linux/security.h      |  6 ++++++
-> >>>  security/security.c           | 15 +++++++++++++++
-> >>>  4 files changed, 28 insertions(+)
-> >>>
-> >>> diff --git a/fs/proc/base.c b/fs/proc/base.c
-> >>> index bec6197329dc..3dfaef49bb70 100644
-> >>> --- a/fs/proc/base.c
-> >>> +++ b/fs/proc/base.c
-> >>> @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct=
- file *file, unsigned int mode)
-> >>>  /* private_data for proc_mem_operations */
-> >>>  struct mem_private {
-> >>>       struct mm_struct *mm;
-> >>> +     /* Was the ptrace access check bypassed due to introspection? *=
-/
-> >>> +     bool introspection;
-> >>>  };
-> >>>
-> >>>  static int mem_open(struct inode *inode, struct file *file)
-> >>> @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct=
- file *file)
-> >>>       priv->mm =3D proc_mem_open(inode, PTRACE_MODE_ATTACH);
-> >>>       if (IS_ERR_OR_NULL(priv->mm))
-> >>>               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> >>> +     priv->introspection =3D priv->mm =3D=3D current->mm;
-> >>
-> >> Is the feat that the fd could be passed to someone else that would the=
-n not be
-> >> detected as introspection?
-> >
-> > Yes, exactly, that's the primary reason why I did it this way.
->
-> Okay, would "opened_by_owner" or something like that be clearer? At least
-> "introspection" is less intuitive for me.
+Andrew: the first patch in this series will annoyingly conflict with the
+zone device fixes (see Closes tag) where Sashiko found these. Ordering
+on backporting is annoying here, not sure of the best approach.
 
-Ack, I'll rename it to something like that for the next version.
+===
+
+Two page table walkers resolve the folio behind a PMD with pmd_folio(),
+which is only valid for a PMD mapping a refcounted struct page:
+
+  madvise_cold_or_pageout_pte_range()   mm/madvise.c
+  queue_folios_pmd()                    mm/mempolicy.c
+
+vmf_insert_pfn_pmd() installs special PMDs holding a raw pfn that need not
+have a memmap entry at all.  Both walkers can reach one and fault on the
+first folio field read.  The PTE halves of both already use
+vm_normal_folio(); these two patches make the PMD halves match.
+
+The four callers of vmf_insert_pfn_pmd(), and which walker each reaches:
+
+  drivers/vfio/pci/vfio_pci_core.c        VM_PFNMAP     mempolicy
+  drivers/gpu/drm/drm_gem_shmem_helper.c  VM_PFNMAP     mempolicy
+  drivers/gpu/drm/panthor/panthor_gem.c   VM_PFNMAP     mempolicy
+  drivers/hv/mshv_vtl_main.c              VM_MIXEDMAP   both
+
+can_madv_lru_vma() rejects VM_PFNMAP, so only mshv_vtl_low reaches the
+madvise walker, and that needs CAP_SYS_ADMIN.  queue_pages_walk_ops
+supplies its own ->test_walk, so walk_page_test()'s generic VM_PFNMAP skip
+never runs and vfio-pci is reachable by any process holding the device fd.
+Hence the different stable tags.
+
+One behaviour change: mbind(MPOL_MF_STRICT) over a PMD mapped VM_PFNMAP
+region now returns 0 rather than -EIO.  The PTE loop already returned 0
+there.  drm_gem_shmem and panthor are where this is observable, since they
+PMD map pages that do have a memmap entry and so never faulted.
+
+Reproducer
+==========
+
+No hardware needed.  An out of tree module stands in for the drivers above:
+three misc devices, each with a ->huge_fault calling vmf_insert_pfn_pmd(),
+plus VM_HUGEPAGE so the fault path takes the PMD branch.  
+
+  /dev/pmdspec_mixed    VM_MIXEDMAP, pfn at the 1 TiB mark, no memmap
+  /dev/pmdspec_pfnmap   VM_PFNMAP,   pfn at the 1 TiB mark, no memmap
+  /dev/pmdspec_real     VM_PFNMAP,   real alloc_pages(PMD_ORDER) on node 0
+
+Userspace maps the device into a PMD aligned window, reads one byte to
+fault the PMD in, checks a module parameter to confirm it went in, then
+issues the operation.  
+
+  vng --run <bzImage> --user root --memory 4G --verbose \
+      --append "numa=fake=2" \
+      --exec "insmod pmdspec.ko && ./pmdspec_test <subtest>"
+
+numa=fake=2 gives a node 1 to bind to; the module allocates its real page
+on node 0, which is what makes queue_folio_required() true.
+
+  subtest        operation                              parent   series
+  --------------------------------------------------------------------
+  madv_cold      madvise(MADV_COLD)                     oops     ret=0
+  madv_pageout   madvise(MADV_PAGEOUT)                  oops     ret=0
+  mbind_mixed    mbind(MPOL_BIND, n1, MPOL_MF_MOVE)     oops     ret=0
+  mbind_pfnmap   mbind(MPOL_BIND, n1, MPOL_MF_STRICT)   oops     ret=0
+  mbind_real     mbind(MPOL_BIND, n1, MPOL_MF_STRICT)   -EIO     ret=0
+
+Two things the table shows that are easy to miss in the code:
+
+  - mbind_mixed passes only MPOL_MF_MOVE.  MPOL_MF_STRICT is not needed for
+    a VM_MIXEDMAP vma: walk_page_test() only skips VM_PFNMAP, and
+    vma_migratable() is true for VM_MIXEDMAP.
+
+  - mbind_real demonstrates the user visible change (-EIO -> 0)
+
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry%40gourry.net
+Assisted-by: Claude:claude-opus-5
+
+Gregory Price (2):
+  mm/mempolicy: use vm_normal_folio_pmd() in queue_folios_pmd()
+  mm/madvise: use vm_normal_folio_pmd() in cold/pageout PMD range
+
+ mm/madvise.c   |  4 +++-
+ mm/mempolicy.c | 15 +++++++++------
+ 2 files changed, 12 insertions(+), 7 deletions(-)
+
+-- 
+2.55.0
+
 
