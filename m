@@ -4,144 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73F26C5DF94
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 15:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E872C5DF93
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 15:09:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6794D6B008C; Fri, 21 Aug 2026 11:08:33 -0400 (EDT)
+	id 960816B009B; Fri, 21 Aug 2026 11:09:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 629096B0092; Fri, 21 Aug 2026 11:08:33 -0400 (EDT)
+	id 910A76B009D; Fri, 21 Aug 2026 11:09:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53F006B0095; Fri, 21 Aug 2026 11:08:33 -0400 (EDT)
+	id 7D9766B009F; Fri, 21 Aug 2026 11:09:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BFC86B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:08:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13242A2627
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:08:31 +0000 (UTC)
-X-FDA: 85125608022.19.0FBC3CA
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 17C7A18000C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:08:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=AxV472HL;
-	spf=pass (imf06.hostedemail.com: domain of jannh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787324909;
-	b=nKLsznP2OFor1+Ri+4nbNAUqGzd9UPO9tQpU2236K+zZrP4VcW2g2ORNne5OlMULeCVVgV
-	HydqL8pIXW5ZiRG/sWfbU4wDiQjCGN+HPHRba+Qb6ewpD5qc0CpWXJAjC15ksQL1tqYeAa
-	aJMR/p2p+c6luZEfIHUzYpm+/Fz4VRg=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=AxV472HL;
-	spf=pass (imf06.hostedemail.com: domain of jannh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787324909;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 549A66B009B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:09:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE6F31A01A5
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:09:30 +0000 (UTC)
+X-FDA: 85125610500.06.C7B2CFC
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 236B42000D
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:09:28 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=W0poab5a;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787324969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8B6gWPpC8JGpYPIfuo07l/hitWijKoYP3mF4ztxgwcE=;
-	b=1gNRnX2gYDK1SX0tdzs2nc5LwjyUMa7rf9fXDSdDdWqLM1sN8XPtRQasAe2CZnBKY7E71D
-	CnmY0diyIfmupltlV/ek7mdc8ORIinpFNPx7iKLX+loOEmXUjkj3LD7KAYBIndG+dW08cn
-	0tgh/l0+tuOP4yRi3GifpelGqeyBU0A=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2d3b445a84fso82765ad.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:08:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787324908; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hwQ8DHxq3LusHHrXJPSonca4/xItEFiNXV8UvYlD0e20PisG0w3dyvpoTDTjSRHL6t
-         pcOUqzmrhzduQPLqbUAGZ2xoueKY77Jfmx4OLBZq2mxRwspRv7ua88v458lEtJ+FT/2u
-         GqCYsi1bV3UzKHRk8jCaIvoOlO3UpOshDjD2GpobpjkEhjAtGHk7cJDWtD9pYnmHxhfq
-         dyj0sIb+ypdw2mYGIQh9yMqGvqZg4L7XeiLAWpO8UmkjnI9x+ikbR/uxuAy3oMdaAxBY
-         v9t20b+QheQo3mmSFDR38CiqTPbFlUtFFPzNNPvh30C9D7Kf0w8Asl99xv7fveFXVh/6
-         KLTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8B6gWPpC8JGpYPIfuo07l/hitWijKoYP3mF4ztxgwcE=;
-        fh=Vrl+iBqIy89to87eDB+SIv3xbS5UBCuMZm30qrBbmEk=;
-        b=RKlrsILa0qfn2JcJnXnHZi1581vbtgq/kWMTBPz7qvxKJpoPYdtQm21OWIGxfRXX7w
-         TXkXIEeBkZvB5Qdp50CrCxeXaEs29GkccdmJujpYqzVJO6+Zfal2ibiJZ1txAaTRjAja
-         9noYIqXkCGWaLCKvkGY59kJHxk9XPsc2OZdELas38O1qepcTIbeSXYR2CLNiUhUmUy1Z
-         8E8qrtGcs4RwLg/jK969zZWdJ1J1erolMmqZqxa0Nb2K1CBnBf8wAX55kxRnw2Lmaavd
-         8gNNpZntmZGZtqAgc0An4llzlpIQ0H/cEuWkILI09zE5CxlPn7M/N+X/vUDQtov3Dj/+
-         uFqw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=km/KnQoou2cC+qse6JnYkYGCCo/Enm/DijWAIfXBagw=;
+	b=pXxqKAMTOXxxF9wGTaiLHoIBuNvHvfBZuIY3id+pYBeMf0FV19ErmR0+C7ON1GPn22fH6G
+	ok08279WyWwBd7Gk/FKol/oJgs8BepX0rojoByKcaTnW/nS8J/m1ZA/geEshBKlBdGEORF
+	fK7biQAH+m6xjGQcv6vZtGdZL0PkUr8=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=W0poab5a;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787324969;
+	b=QXCJmrb+bIWuZ62Y2ITVSKgyaOJtil93Kg2yu6BfmHE97Hcx1S1Ud+SwzxqTXYpkjtIsrJ
+	/rLZQGOIR071HPB9iNPgoX4cAI5p1JPD1+0HggT0TLZPdkEU7ajAJlaD8kDySOePjrHY9V
+	YL1hgyD6Mac5JaPoldjAI0YWvj1O8M8=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51c08df8513so6827811cf.3
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:09:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787324908; x=1787929708; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8B6gWPpC8JGpYPIfuo07l/hitWijKoYP3mF4ztxgwcE=;
-        b=AxV472HLBZiuGH8XjDk7kkBoa7sQCD7Hcffo0tmYo3MXOuAKBmgK+FV9Qi+OXQK6rm
-         8LsIBjG/nnPj05AEmS0hArKvpDnmVviw7paHJsCng0DRJJeTp/Gig70zRNU1UrVp+m+a
-         rql5jKKaxkqjXDVR7pQOxcYPDv4t+CDDcx8WjsHdYOyD7GwDw6KkL/mTQn7l+q3j5+aM
-         XvTZ6p13AmsG2DwK4YNuQsfkScsVW2VJly3snePFwNI0n44inHJ4/UfklQsrINC6Ponw
-         rnrKoy3+kh3ybMqq7eMgNh6nPzv2RIi3PiwejxrQOfz5dyW8e3LRyRSDjyHeXNOR5626
-         4XPA==
+        d=gourry.net; s=google; t=1787324968; x=1787929768; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=km/KnQoou2cC+qse6JnYkYGCCo/Enm/DijWAIfXBagw=;
+        b=W0poab5a0mixnavSvIr2yQFf7H1Q7qw4Kx4gP3haXWNJikBeuQbFtoHVA/K614+2K6
+         VDLLy5rSCz6aLT09GmfFxU75W4KZggxvYduO4IkoW6Rdb2FNR0Q9Ycioq8t8we0UvuCl
+         QvIL5FOVLEtP0xG2Ee8OqAQcD1td/RtLQ68SrWM5pbNHqzHW3neJhWpqRsjwIs2bI/Sr
+         m32eCHLeL/lc1SJRc1wdMhmuOMlehQdwSLOqRYstYpsmg0lhYcCZtqNyza+Qn3kRFGMl
+         RHeNfwPoF7DeO0c51Yvr/CjlUv7PxgjOlwDJlMd8vTnxLzDztCc3BF16lsMn4ixbX1Tw
+         kbcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787324908; x=1787929708;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8B6gWPpC8JGpYPIfuo07l/hitWijKoYP3mF4ztxgwcE=;
-        b=FRPQ7Fxs9bEr5Z5wZ0ZIcUHHXuAOVSFY81/4kXFtElp2X/q1CuiHjJRgWJscSobWaJ
-         myZ71zFCyPLZoxLRp1k1BZ7teVHoUQUo/GnmcYlc8lZpTDFHRrGi5WS3XLkhx2O9Svll
-         bQMhfQ3rKxrC869LHTZEPqi3yZ67s6z09OYy5DzynasFlRS2iBzELxiTI6nk/qIgRmub
-         T9FmkzrPrOERFOg7yu6fMNS5ILsFBOOyZTJ6U5Qi9Gming4pzoSmR0z1tcbbwQ5f8hVT
-         UL1F77vo2pOOJdk95SHWcK7YPa+2Yw7HntV5AIkjwTxVfcbe2Oj947EVu4J3ZKqQ4dqM
-         Ddyw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqh/bzSwzMV+KvuRlg1iFRzhs3YEQbF/sS859+n5DBOVNUNYHbpZoFnzZSdvMQB9Rof72XuGYQJdw==@kvack.org
-X-Gm-Message-State: AFuF++lE0vYJbm1QxXhVIxCEZt1PxRfaHnD99hxDnUzGY3ybCAIE74uq
-	ZjtmQ1zV0qJevngOmQWauDXju8pqpO6IxQEVC/flMIiLU6pbYb5s54y2wgpppvXqMNNVsD/8wyk
-	7TLY7+lvsKHkqBicc9bqi9DhJPQuIpN/rztrzT1Bw
-X-Gm-Gg: AR+sD10mAYMIZDFDlZzIpyaPEGkXmTMhlw9g/5bDeWoVtxmapV+UFTLrBNC+BnQyZWL
-	oHZ7YULPSn8J4lEPsXNOTOhdWQ00oPBYfcgKQx52bW3Q9E/dpzrLYvfnuG58PuNGI+PTCKpi+K/
-	56Z3TwoKnhUtq/VW3zxp0q03yekNX3PIq23bheVOqcXa1LuDXm3ughGQ2PSM3VxpGPnqsWLtPut
-	mGVCGLBI2HpumScGOJj22ww/eNYtikxfRUJHrmZkbQge2/1dxSv8VxrCH8hPQy2ef3vaUoHwKWC
-	F+FiD8TLZHqCZQDXGMTf2Ok4WnhjtF9EoC1niQ3WO4U9/f8JRlDWNhEKDzkIJpgAGfZUxP2F+76
-	RXB8vMCti3Sg2pDcKy1RdOzBc3pGt
-X-Received: by 2002:a17:903:94d:b0:2d6:3c22:994e with SMTP id
- d9443c01a7336-2d650da6ed0mr6702055ad.11.1787324907361; Fri, 21 Aug 2026
- 08:08:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787324968; x=1787929768;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=km/KnQoou2cC+qse6JnYkYGCCo/Enm/DijWAIfXBagw=;
+        b=SomkD3tH+H5D5EBjQgOcptu1tLf5HC7AqCrE9bqfbwMiNoelhYfH/lKQwye1MFj2+l
+         hmpN7IRfpUkt+oNTrQqEsoS+UAnsFB/0tAPf92Pi+K3sem+u3udmX8Fsi8FYJZnkWW0E
+         AjPo4pHB24Fkl73kiJUUkCGOeAA/Zy/Tl0kLwRRw50RWkDj0boeYFhmIqwYTyYtnZGSm
+         jQHyGUcGU/NjWX1WCl+axCtq38WKDvuXm8T9rDAP5307OJ1yibpyWHRCju2drc7a1/CW
+         dtJBjF5KPCCeJKqaLQ7FlcbyZqlEzDM+lkcIJ6ZOw4AOgGe5CzDCwIs1L1b2BKeH3Mpd
+         Yeng==
+X-Gm-Message-State: AOJu0YzQdvGM18UUu+j/H7BiiHRItST/hgeEcmySOpeczfDIoCFhXEO3
+	swXvoWoQdZ02qBbwDWQMYbN4xj/Q1sXsAgGgUsm9TZJ8ipSe5b1OT6NoBVjAfKorPI3jm06Af0T
+	S1C55gbc=
+X-Gm-Gg: AR+sD12V94gcKJytrqJLtXsIneZfyuPJwzN3CV/bYT5ORXB3I1sJVwrvxESzC+EFNbN
+	w8neLzOccWUBePFUuYspuq5O7oxPA/ePieGQQKQTHx+VAv78C1x5BpXcv1q+myza8OJ0N2UQJmX
+	lg2zf8U6DbRXv6dRkqinwot9rlRUjkCBXV7YmIQOBxF6AjBxXsuUILJYs9Xj+UJIpRtlmJn+RMG
+	0aXjMR+a8FE60kxN0PWCxWtkiTi60TcfhdfKwBEz0HttHaDgeeQAKNA4qvaiy2SPWlmsqMkdO11
+	dpnLfpBZI0UjYDwOA3cI885vySNIipuPbRRDsbSzniobfmPQ0zTL3scg0LOM4tqdE+oiEsftLde
+	dpBkqqYGYMyogtdVIf0uHDpkRVRkJhGN2157WIolOQQWyC5aJnQi1tTEZtc6RS8Z8GE611S/8/4
+	pAxhp3/RFXSlpDDjY1GS3S4S9efws8aTI5938QVepLQrWgbRUEMjIJishBqrfiwwSbBM9wwVNKc
+	rmAXcxKvXP6u0A5GI0CYIQlaiowmNJTIsSZVmj/xY7juIL4Yg==
+X-Received: by 2002:a05:622a:17c7:b0:51b:cdc2:fb99 with SMTP id d75a77b69052e-52df5a08502mr70705551cf.24.1787324967962;
+        Fri, 21 Aug 2026 08:09:27 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52df40eb50csm19708061cf.0.2026.08.21.08.09.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 08:09:27 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	david@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	sashiko-bot <sashiko-bot@kernel.org>,
+	"Gregory Price (Meta)" <gourry@gourry.net>
+Subject: [PATCH] mm/madvise: use folio_trylock() in the cold/pageout PMD split
+Date: Fri, 21 Aug 2026 11:09:12 -0400
+Message-ID: <20260821150912.183976-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-3-90cd2357ee05@google.com> <CAEjxPJ714iCMiQRVAN6MQoOyNx998MS5Xfhbhmugcwz+gWYAuQ@mail.gmail.com>
- <CAG48ez3h2Gft4onQ8AgBmf8gHrF26YqTinajuBysNPkUKaTBoA@mail.gmail.com> <CAEjxPJ5cUDBekWe7fC1JYnw6CfT8GVa9fqrFwLPPAOqSP6jn3g@mail.gmail.com>
-In-Reply-To: <CAEjxPJ5cUDBekWe7fC1JYnw6CfT8GVa9fqrFwLPPAOqSP6jn3g@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 21 Aug 2026 17:07:49 +0200
-X-Gm-Features: AcwNN1UOD9xZwijeRgcDq5q20lqu4OjcbnnkogdrF0uco3EOG75h8KaWFgvrdww
-Message-ID: <CAG48ez2q6rCbVVWxE55RpuTotmMrNGYfj6+56EXWhXFSrgJXQQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] selinux: require EXECMEM or PTRACE for FOLL_FORCE introspection
-To: Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Jeff Xu <jeffxu@google.com>, 
-	=?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 236B42000D
+X-Stat-Signature: 7er4mg6i5gait57b8fwgcdf8yj4x1afi
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 17C7A18000C
-X-Stat-Signature: n7rswf89at31u47q6354taamuxed8cch
-X-HE-Tag: 1787324908-713856
-X-HE-Meta: U2FsdGVkX1/jAuEq8YKhdu/AN+p2F7NWH10yRogj0lvMp5unErXVxhofbNN2/XOpbpnpAhKh2xzkxdLTPcjKRhfaTFSYCPfgOCla3bGy9qXIXWEir9PClpBLO43nUMWBxeMGkni1ilXMLwClojOBDm4SHSqTYOFXxcRKFC5SDso4F7LHtuS/sXynLrYQzZPRfi8+I4JRA4tLHvAjP+czqfD1qbFDiBMeOf69RQI3d5q2ormPl99LXa5qvYk8usGpKV9Qsy8k8+5rW9/d3eUjazpRNwq24B7j9Mm3tl9osyCTva7X0M5quzE/3i5GSjuqJgQrJUAshoe9Ws+3p/8CwkUUagYsg8HKDMLJCUd2ZeeS0ilwGs/TBdeKPhcE75BLTWE+8TkNrzByRzpoAok7g5xmq4oOea1XFxEat3D4WNNL9G8K4KhgFGtOtl8lI+NtcCgUPeHsd5N3Nx7lHax2ruo/52HHWmtZj7bLkRnHfpCkUJFokhzpiQPICH+Jl2Z8qpODENbgJRnEr2d5bCRqHd+p2g0KoT8iJWHEwSjmbUInLp4/hq6HPzJ72ob5+tM1OJRqr3ORAWhB3jQhUGFqSqy3N+DpVExfHupkkhi9or9hqf1YvyhX0WaQ84KLAAbtZY6BQ66ycK4tydjCG8IyxqBPz32/lDPUPTcskEJ7uVS7Cs6joj9mSDdeYU4jYlqetKvBdGC86p/9BDj9J3fnnzNA2CAirHVgWWbsqxzaAP6ltoMC6L2dqmuC4gwE8M47gV63gD2ERbHOfey2XHhPOw7FF+s8Z9paEqyYEO0e26zB7/8ZB6MnyDEgy4ltALa8QI3I+Q6mc/9f0ICVucl7/iyAQbMiEMjyr4mjQbnhNkrYjLx9jfPllEfGzBrzHYunLXf/JVyhqa/GTQuCDyHwYOWGV6RkApiB7sjM+8vpiyELKTxyKaYzKjKkyfFbb+EjuDmZVevx5Jr/pPeF99R
- bFB+cdoB
- mlMTQR+oAELuG+mZwhYKIIzP2rBZpwpzhnCnvrlzygHaT6a9kOXfE8J09DX503HC2LgqsZMl3JsNQXRjBkUU1EVSW8Qu9eCNfWqXBVdSjFsa0/hRV656hx2AcOZ+8PEBy8tm8QNNuRyAggSww5IWwDANS2UWSIjUBJIT2rEiaH71fZ/jZfCp/f+OMatBgzJFCzlRCbptf/W9BRA37uN59I4/wT8E8Yrym75ZRCgjk3brEMxOdlCZTZ8KA2b3bobZMaencA9HNm/L3QEOc5HWI4Y2eHFgZ+2sxeDmbRVMDzwQLhxR74gMEvTPQypg3nc/ft8cNX7bNXcASr6Dn5ck1RhyAuOOKKJJricb9FKFIB/UADvI0WajOh97FQcMQygNnmIaUWyRHMQhnFFtAjWZ+sVukOg==
+X-HE-Tag: 1787324968-780081
+X-HE-Meta: U2FsdGVkX1+e9GoQXoCfo5rKg8nbpaSv47Oyfxv5/Xh/nIHQ6n9VQ9pjx3zl9SvZnpYKVzmmpt/CTtxVC/eRkwJ1ZH4S5IZmGMH/qsjYa78iB5OjUtaB3gFtc5PVyFO9AoUpzjNC8LKUMUMrn50ynSMs9FrFJUbQw8JQdltJdsz2frq1lWwiowclufpe+1pm5wEsOdu4bd87x2OR+4dL07uQfTAhtIyc1322nmqmy82Gwx9OMtROXP7bpnHN/Lmq64ojemPeahuuxz8VhdiGhF1c6h/2AtObY2baR8r1ZuOLXL69V4BR6DCBui8/pB5YmJQaCo78y9PX4XT4Zzu7igyAn7SgFqNbnTwplQZXQbRCyj5WjlmNIJ4iEqreQrNAWIN5Z008IY1Bqi8hcqRCs6RTQSoB352ITSY73s9bAHR0F7t0kUXf8Ph5L5V4GhXDZY6DizCHi4ZFG0cf1e56kXE10BFZhwlOy6ObhOVK5lktjj6OJEu2icCXuQOIdiphw1RDh2hmApnQBY6lyXS+jQ/Eu16Ood+r2FnxUfZ5KDBR/E+cVQLNyx6YhXlkJ/3rpbZsmNXEKdfsYO23YksBu7/3mxT3kc3f7YKP8t1qAn1dYm1F2QjskQBy3RFTvF6NkvOzJvtij5ir7Mw9dyM52CslvmnB/IHgwJAcdvM2BOO5V7jhu+lUYMTYgM2Y7iEuRCsptz3w4xzSFnW2GePK3CqdJKKIN//sjuJaW0rzcvDVflldVMQU8KvCCUdzYsUvf0Olab/UnAX+m48iteT0c6pnC2yae+DWH3TIoBfaciQoSyQbCJSv4Vh6E4qJvz4JAvFecW0ON6d2NzDss76aALhZJa4lLaJ0Xjl/rve9u8Sq8kbwZVdqRLiOKkpABxuQ7m+1wmb9X4xlZHOjV2HdbVFZmbWoDH+9OvmipBuUjaSq56+iNjqlluWyKBl86MIdJXBzZy+qtt+u9Q9L4eb
+ 9UCS3ehk
+ f3juFKzByHyCFlf6VIWCzQJphgGDrpPzxzBXP4Cg54HvF567r0SMZCDY3V7pbdufhjwk3GfzNftdz6+bNknRqG6B87Ef3u7IMglcQbGC4hIVVsRckErsvwx5bmHNyMNCvUtgsomaU1edSNosRGY/YVi9amtWHYlyE9CaNmlorZyBPQ05DQig9cdjWY6VHAmopjAA20/pF9dfSkwqkhnlOJNB+Qt+Nxp/nzvkjlRNWBvQ7frIaCA4blEWJgPJYhjILENHAsM8YW+INypjVaW/RLnggXnt63AzlRhcdJ4n9SU0WLVGjzqFm2Wrb5QieqQqP5dddQSuR0kZ5+c4sd0uV3Do7pi9g2tY2y8AntRY5xL+YslR9oftO3vwjrLx6ih4MRDuurukEbFbbDlkWhB5aJk/ObJORz9OZY7Y4ilRMd7a7k7mexlMdeJbdAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,56 +123,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 3:52=E2=80=AFPM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
-> On Thu, Aug 20, 2026 at 11:23=E2=80=AFAM Jann Horn <jannh@google.com> wro=
-te:
-> > On Wed, Aug 19, 2026 at 4:54=E2=80=AFPM Stephen Smalley
-> > <stephen.smalley.work@gmail.com> wrote:
-> > > On Tue, Aug 18, 2026 at 3:51=E2=80=AFPM Jann Horn <jannh@google.com> =
-wrote:
-> > > >
-> > > > On systems configured with PROC_MEM_FORCE_ALWAYS, ensure that a pro=
-cess can
-> > > > only create anonymous executable memory via /proc/self/mem if it ha=
-s one
-> > > > of:
-> > > >
-> > > >  - EXECMEM (like for other methods of creating anonymous executable=
- pages)
-> > > >  - PTRACE (like when using /proc/$pid/mem of another process)
-> > >
-> > > Allowing it if _either_ permission is allowed is unusual in SELinux
-> > > and seems prone to errors.
-> > > Is there a reason to not just require PTRACE always?
-> >
-> > Hmm, that might work.
-> >
-> > My two concerns about that approach are:
-> >
-> > 1. This is an operation where a process acts on itself, while PTRACE
-> > is normally for acting on another process. It feels to me like those
-> > are different types of privilege.
-> > 2. I feel like blocking this operation even for a process with EXECMEM
-> > privilege increases the risk of breaking existing configurations.
-> >
-> > I think if we want to gate it on PTRACE, we might need to put this
-> > behind a policy capability and let policy authors figure this out?
-> > But I'm no expert on how new security hooks are normally added, or
-> > what SELinux policies outside Android look like, so if you think it
-> > would be fine to just check for PTRACE, I'd be happy to go with that.
->
-> I don't think a new policy capability is necessary here. Is there any leg=
-itimate
-> user of this capability that wouldn't already have ptrace permission?
+MADV_COLD or MADV_PAGEOUT over part of a PMD splits the THP in
+madvise_cold_or_pageout_pte_range().  Two threads doing that to
+the same THP create spurious failures.
 
-I do not know of one.
-I was thinking that it is theoretically possible that some program out
-there uses /proc/self/mem to patch its own code (similarly to how the
-Linux kernel has Static Keys) or to inspect its own execute-only,
-non-readable code (which I think would also require FOLL_FORCE); but
-I'm not aware of any concrete cases that do that.
+  CPU0                          CPU1
+  ----                          ----
+  folio_get()
+  spin_unlock(ptl)
+  folio_lock()
+                                folio_get()
+                                spin_unlock(ptl)
+                                folio_lock()  <- blocks, keeps its ref
+  split_folio()
+    folio_expected_ref_count(folio) != folio_ref_count(folio) - 1
+    -EAGAIN
 
-So I guess if nobody else has an opinion on this, I'll change this to
-only check for PTRACE as you suggested.
+CPU1 cannot drop its reference until it gets the lock CPU0 holds, so CPU0's
+split always fails.  folio_trylock() makes CPU1 leave without ever taking a
+reference.  The PTE branch of this same function already does this, as do
+madvise_free_pte_range() and madvise_free_huge_pmd().
+
+Reproducer: 400 rounds of eight threads calling MADV_COLD on half of each
+of eight THPs, re-formed with MADV_COLLAPSE between rounds.  From
+/proc/vmstat:
+
+                     thp_split_page   thp_split_page_failed
+    before                     3186                     860
+    after                      3200                       0
+
+The short before count is rounds where every thread failed and the
+advice was dropped for that THP entirely.
+
+On failure the walker returns 0 and nothing retries.  The PMD path becomes
+best effort when the folio lock is held elsewhere - same as the PTE path.
+
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry%40gourry.net
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+---
+ mm/madvise.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 07a21ca31bad..bd9119880ef2 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -405,9 +405,10 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 		if (next - addr != HPAGE_PMD_SIZE) {
+ 			int err;
+ 
++			if (!folio_trylock(folio))
++				goto huge_unlock;
+ 			folio_get(folio);
+ 			spin_unlock(ptl);
+-			folio_lock(folio);
+ 			err = split_folio(folio);
+ 			folio_unlock(folio);
+ 			folio_put(folio);
+-- 
+2.55.0
+
 
