@@ -4,91 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE79C5DF88
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 03:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 964D6C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 03:12:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D626D6B00A5; Thu, 20 Aug 2026 23:11:14 -0400 (EDT)
+	id 85A8E6B008C; Thu, 20 Aug 2026 23:12:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D121C6B00A6; Thu, 20 Aug 2026 23:11:14 -0400 (EDT)
+	id 80ABB6B0092; Thu, 20 Aug 2026 23:12:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C28DD6B00A7; Thu, 20 Aug 2026 23:11:14 -0400 (EDT)
+	id 7212C6B00A6; Thu, 20 Aug 2026 23:12:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A1DB86B00A5
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 23:11:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2BB371A0344
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:11:14 +0000 (UTC)
-X-FDA: 85123800468.13.94D8A59
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5E795C000A
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:11:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=edLACQGy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787281872;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=huI46asYGhW1cU6sHzdmW2xNyrPSFaE/MtnTwoNiwpU=;
-	b=tc2PUs40dA82Pg4lIEDboRTYtGt7I6iOHoRQYspwq2W7PLUCRcfoop95S5xgz5ceAg8tyA
-	c347LIO6HlhSWMhHOZ1giy7QXF1SWosmwh/6C2yI5u/2oZ93OsJJNXkO7Mz+34NTCRdiIx
-	ME/A5gP3NlkqETHfXxvGyHsjz6uceJ8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=edLACQGy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4D05B6B008C
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 23:12:13 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D641B402F8
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:12:12 +0000 (UTC)
+X-FDA: 85123802904.20.E14D291
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3E6024000C
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:12:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ejv1plkc;
+	spf=pass (imf27.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787281872;
-	b=mcuyehcY27zwLdxPDZSBtjAkN2tENSSRfnTO4geFGMW/PhVMcLl3QDHeZ4Q/nOaIkspwXQ
-	TO4zgUiwf93/UyRdEyfxOiRV09BmeoM+5GLsVgIjEltyKS1VE/mrp9xp3QPStvFIr5LYhS
-	izxWq1DC2nnRE7ws2ktN213NDwra8eg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C580243D4B;
-	Fri, 21 Aug 2026 03:11:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E6B1F00ACA;
-	Fri, 21 Aug 2026 03:11:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787281870;
-	bh=huI46asYGhW1cU6sHzdmW2xNyrPSFaE/MtnTwoNiwpU=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=edLACQGyMXerZN29nMXS29tIJCXltY/wgT5xJgm+kgrPlrGWFhNE+VBTsPFJrOnCM
-	 c2Xt2CnvEDMWV/RBpVkSMKGui2uHyNKYus8jltssk1LPaviiRM4lRLxlyZ5DBexOHM
-	 dAphSD5Kv2dfBXIgTYoTeK9/BRL+Kdsh74beBKPNdZgwtDmTNVSCWwc9LZT956c0ie
-	 DhFD1OvvfwYPA2AXcKhV3XBFb/qRiaX3liOOzm3KYqqfbySZXqYQp4KCpitAuNyP2G
-	 o0EJMU8tDK0D2F7/E9dbLCSzOdb8vKOM5KfT7YhTxqDuNEujpaVUPwJpHHTgpWsL2A
-	 G9cq/+n5qt+XA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D4F2E3924A4D;
-	Fri, 21 Aug 2026 03:10:21 +0000 (UTC)
-Subject: Re: [GIT PULL] hotfixes for 7.3-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260819213548.4160b501de0b9ab41029cfcf@linux-foundation.org>
-References: <20260819213548.4160b501de0b9ab41029cfcf@linux-foundation.org>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <20260819213548.4160b501de0b9ab41029cfcf@linux-foundation.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-08-19-21-33
-X-PR-Tracked-Commit-Id: aedf2efd18977e0cef7eb963166e2b1fcc0aa321
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 8dbbc7e188949b6e1f6be4e82a44dd1d8b1d6c8b
-Message-Id: <178728182060.600189.10570474833709100570.pr-tracker-bot@kernel.org>
-Date: Fri, 21 Aug 2026 03:10:20 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, mm-commits@vger.kernel.org
+	t=1787281930;
+	b=6/1qT4Vk7ESR+tmdTPQYCIOzJi6jO4fIlJu4Pupb5jYA+PpxcNndSmpgxq0TeL+K8zZtQl
+	9q4c5Xi9/Ol6qLAkHRzzkdKC835698YL0E6o4me+c2ts7PhAxHuY2N2sJCne7uQmMJw/+p
+	AOm1jx+SAafcO52SqQ/McQQckG+SGM8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Ejv1plkc;
+	spf=pass (imf27.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787281930;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=x4vHuA2oIK6LAfmHV5Z8rX+eB7Kz3WActUUouAIvFjg=;
+	b=meBy7X8M0Xkgp4M2oAZV7w75G/9wHolwk85/A/7l0wdipUU8PAXqZvcDRARxTDbt6Jenmw
+	Cc8fJJZsp6i3D0SeXGeHVdCsEk/sqD5BjcCqYWQ2GpRkhMxkB2SBMwuqvXAGwmlWtPFxJW
+	h+Rpg1/ys45AjgwecIOTVt79/ScGwi8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787281930; x=1818817930;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=LLdCyUIMvTLvV0Qwwzwy3ePPzmdPaDmUaU/9K8yTvoE=;
+  b=Ejv1plkcKprxMp5PUPZ220iVQHY1LzHbsGGKzgRNZnkE2jTSZmfpN8Bt
+   aWo0AErY74LmGVIEDugKH44z4fK400U9m99MUOsjIQnXZ6+eovfZvBtd2
+   R1DTPaVVZgenS+8uBJCm1JRMq2K6naI3EpAgn4w38fAVhintCxEtvQQjm
+   gjt5qTRIQc7YeRolyF6Obf2SmhAOy2UPOnGNuQHneLlpj/PBQh4g7pBE6
+   oic5SIzeScrCdmPH8LAW27JBQEhpEg+K1REX/Jr68Uaeylh0+VrCqgYUb
+   gZkPNtLmz8cN87KxWZ6ybtqCnVaCvBfqkzt388llY6Pf/WBW5C9BCHOEK
+   Q==;
+X-CSE-ConnectionGUID: cLIjjd9pRZ+PaFkE8p/ETw==
+X-CSE-MsgGUID: HaQL3rncQpWqMGTnAm+wZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91701109"
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="91701109"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:12:09 -0700
+X-CSE-ConnectionGUID: NOkWPYcAQ6ua/qZWMjhxVQ==
+X-CSE-MsgGUID: OFKp6eRTSFCxoY11hYwwiA==
+X-ExtLoop1: 1
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:11:54 -0700
+Message-ID: <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
+Date: Fri, 21 Aug 2026 11:11:51 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 40/41] KVM: selftests: Update
+ private_mem_conversions_test to mmap() guest_memfd
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3E6024000C
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5E795C000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: uc89nczts65okfuxophtg9crhaip7doh
-X-HE-Tag: 1787281872-164227
-X-HE-Meta: U2FsdGVkX18mKSijLV+dwJRT407QNDF3cwqO7tq0AuEJ7j3+FS1/VXrQrKGUTP2rHuZWDwZH7pGbrMqG/Ov35GyMCiAqLN7MhBAW79+vMbUbp9MDeMlYdKzfoC6j8mTYnjcmXl6nVxYdWNKDggQlAoM4D7v6O5IsigGUfgtZVjsAjD0yWVxGHnrH1PseU/hHbo6oRPn3dwgZLTMogIAgou24RTmghnR0L3ts2W0pY0a5JmrZ+vCXx4WEAYUrmn3gR4pv2O+O0kFP5u9g7DdbwxrCCFTd3aScE1GXLG2SOTBwr2jhjb63t6Kp77XZLLb333EnAbdPkuhsApMUnNPSK7bao7PvSXklMetrIIF5ASQbxFDgpm/nGSMXomqZhwrnW92ESgGjnqmU0DCYEcTEOqFbnQLthg2MPiAlIArsr0zRPsvD+t+2JXCBVfzKpZskcdyBk/R0wcieB5Ai6SlFuVpTzrlIFismpEHKCsuXxkaC77e3/tzkSqDgac+dYwm+Cr0j52NZeTCrCQDwsp+vrjNZjEtuH//TH1TVHoHhkVhqSMnBXszF7QhpbWesZk4wWYDc4FxhYTcIqm8+IWgVeT5bbUypNuy+hVRzJ0ij64Ab0FDms6BraiRpypE6+BTvE0b1IDh+3Cptdg05l19o8+6adriZLMTGw0aYX9BgR1wDKDSJlADv4xkj+SOXbhJdSz9oxE/QZMNaRCOiF8hJ/hOLgEqGwin3YORNbVkAxxVQKN2MPBg8r3bpBglitcCWtAICCrHDmNW6O3ysefHH3xv76BAR8p6EGVZzL2GbQW9361Q6qXWC1N94VX3bShsVKCqHSPqYfLeRtubXT8hskCdt1v+bWOiGSterer59KN4VORm366tZBXe3n6KsvthBv+0VRYTgxjl7d/yTP4zhE+xxzsCYDwgrdfqjydql6ObTFCdkFZNJr1FYpFXUzfVVy2/eUxP8e+4+n8YXP1d
- Im6tBsqj
- o5aHQ7RiqWjkSJTQZ3Emk5Bfnicu02oeRfZjwqWYgiu4zZiqW9RFyfBxCpCpqcnDWqCavur7vp68WA8eRgX2C5Jpb7rERvQQkue88xlolyNpcQSmuzHhdni1iI6UB/9CekSrLSHhRD23PLPxdHcfsd+O7W3BOpQHshdOHjrpVAyemxM378yDPNuAVdZE7Keax1b0/N8ECn1Kcd/P6/SN3nDP/DxPsAC2SjkcOe5J2bFiNqHjLmcHZqtkN0Vaklcqt+12Ac1vVhENiC1ltEZqlitygJwXPobDrVpTTIbAM7vy5E1w1JBdatM9bZRTccomerHC2
+X-Stat-Signature: ydm6hwqojs1ct1x1zo15eb6jj3yds9u6
+X-HE-Tag: 1787281930-753524
+X-HE-Meta: U2FsdGVkX1/hkQ3FZF2LMHDviJ481+DVyNn31Z2FD1dR3okqaD4UmXMBCpMlmAqFrOLbCms+lPuAG8IWE23eGhwHCHPWswNGKLWSko04zSY+In2pfSiCTdgqFxK2tL/xKZ4lm8AsrVehbuUPwE1y8/bKhiMaQnLDOumfRR4NK13Fr7kXjoQEmClViu6bpxA1OTVceN660M8+LQPrI1YRSMCdrGFSm4b2MZBrXSbKBy/F8zs3I71je/+YZEUm52Y8DDlz4AAtucgEWNqvi3dJas6kv54llRL4RDcRNq/cjJkW+wblKek5TuZQPFIInTIcW4XeZLx366ILQdth5Ir2WEhaYyWOMt0nKxKYUzUtZf2LaevebfDMjuFQlouZgeqrgrEZ5GYiEt4bVGs1vsNGj7ePDDimn+jrBze4Qq8YTIbk/Ch+QewxMv2Naho3nUKnXx6FaPCH44RrSrEkgHF0qPHFOQWlQ8kTQsLYmEf3Xnle8NL/74j3EGZfFMCksHynmezdCKtVka9Uy1jrZNFua6VrBn8K9aPans6Hp77Wu9A7o1vnQSfFw7Eu0TZDvIfIOqhTJwjpOvlfqM0LX4hUQUel+NHAw4O1TlA6+S5heLffvomdaWqZJVVJctry2bz62nSr9LWlEfs7k4M5tqIsITzIjF5sXyBnkjiLRN1/P2qJ3+ER3TP8vtAzJNw/ley59K1YTpXpZsTg6WQI+g6wYdKORy1ktseoOT0c80iEsuIIJokmBT2fenlrjUgsxpIzMi3O2FoyNmByr4wmhdVZEQUhdBlFuPnrzmH/LU7MoNwVHZn19iRA9Fy/GtRgJOuivIWlfrfx2QPBWjuPf+4IGtI1NSj8rrX1eDFv5NINK4XSbraUD2lm9Yx9yLdBzpEnfIymniybdZaajNoMRYf66XpSEtHRQGbla6ZKB6Iig2fvrHigQBjwZVtz9YB7yFBCp8OisaLMgsgOK8MhXaX
+ +MNAiL7H
+ UeNq+oMdlh56hfm5yRPgJrxajdLV0NFcT8JZcLZD19QaA2uAKfjuRy5oH1g+oQFMTfeC/pNcZO4RplI5N7wcW3av23eCvJtATK5YVxPMYh/FrYAIpiTbmVGQCFcLwildKOWPASq19WI/rfQG++DNx6Ybuskmp0zL9HNiDcxszD7srnu/anhe5q0LILNXcDdLLigzZk4RbVsJECEvV8BzMRoUoZSypRSSwPTNdEnI7vwbUokKN5IFjpCoiwWAAolHRQ1JSRXFTLFjnU23wqGU6X2l1YQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,16 +134,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Wed, 19 Aug 2026 21:35:48 -0700:
+On 8/8/2026 5:53 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng<ackerleytng@google.com>
+> 
+> Update the private memory conversions selftest to also test conversions
+> that are done "in-place" via per-guest_memfd memory attributes. In-place
+> conversions require the host to be able to mmap() the guest_memfd so that
+> the host and guest can share the same backing physical memory.
+> 
+> This includes several updates, that are conditioned on the system
+> supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
+> 
+> 1. Set up guest_memfd requesting MMAP and INIT_SHARED.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-08-19-21-33
+If I understand correctly, even with in-place gmem, the model that 
+shared memory comes from the userspace_addr and private memory comes 
+from gmem can still work without passing GUEST_MEMFD_FLAG_MMAP flag.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/8dbbc7e188949b6e1f6be4e82a44dd1d8b1d6c8b
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Since this model is not prohibited by KVM. I think we should keep the 
+testcase for this model to ensure test coverage?
 
