@@ -4,98 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE80FC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:30:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B69A4C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEDB36B0095; Fri, 21 Aug 2026 05:30:35 -0400 (EDT)
+	id 736E46B009B; Fri, 21 Aug 2026 05:32:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9F0D6B009B; Fri, 21 Aug 2026 05:30:35 -0400 (EDT)
+	id 70D7D6B009D; Fri, 21 Aug 2026 05:32:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A68046B009D; Fri, 21 Aug 2026 05:30:35 -0400 (EDT)
+	id 61DCB6B009F; Fri, 21 Aug 2026 05:32:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 802076B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:30:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F04BFA0418
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:30:34 +0000 (UTC)
-X-FDA: 85124756388.24.129517B
-Received: from mta0.migadu.com (out-17.mta0.migadu.com [91.218.175.17])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9A6C340009
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:30:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=E0GKCBAq;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.17 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787304633;
-	b=LjRInUJZTL5iwL9FmFTaKEt41BDQJaGt08d9Snqj6Lw0Oh7UBPRGPHJJODYtF/FBf2EGAp
-	KQ2BTjHxx69SAFg3gOQsEAWrerq7ZtuoRYxrLZvHW2EujSbM180XxREJbnfZgCVkioB27b
-	UeKid1sIQkk+tjP2GkAeLiUYPGeKCYs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=E0GKCBAq;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.17 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 320416B009B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:32:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE8D31C17B6
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:32:20 +0000 (UTC)
+X-FDA: 85124760840.15.7A8850F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EF138100005
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:32:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CrUtN3Fi;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787304633;
+	s=arc-20220608; t=1787304739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MSK040sBBU8kGgBeKv9UupoXrEl2KRZD2AS7NSHKRMg=;
-	b=3Ryex/cQygU5PXiAMn12ESEQkMcEF4UZu/yPjFlAtGcP9pNG8DLoYCqOadg7F8ykxz1Ce0
-	FIO113wz6O5ABUv+wr9bXQqP0xpaDHwCzemySI9rakzXuYDqostRIcwFpIRK98auAyng2H
-	Ie8mCf+3Nqg8ENaYibY/vxa/b89tyqQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=MSK040sBBU8kGgBeKv9UupoXrEl2KRZD2AS7NSHKRMg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787304630; v=1; x=1787909430;
- b=E0GKCBAqiwbGtxef3NvQTA6webU0djEJEbmRMW3kJepwZO0K2vpnKYCpWnBCsVoC91lzIKKk
- luGJQ6qeneRzs7TI4DcD79zi2XAZOVm5rKgHYyWPNR11oM2w36F0kdCCeAUkxga4Q9JSRF7cUhq
- 6RHhASl/dwLrkPTwpbozZxS8=
-X-Envelope-To: linux-mm@kvack.org
-Received: from smtpclient.apple (114.251.196.85)
-	by mta11.migadu.com with ESMTPS id de9d4864cbfbb597;
-	Fri, 21 Aug 2026 09:30:20 +0000
-X-Mizu-Trace-ID: de9d4864cbfbb597
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 1/1] mm/hugetlb: do not dissolve gigantic pages without
- runtime support
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <e29e8bbf-5a10-4868-87f4-09d48625f6e6@kernel.org>
-Date: Fri, 21 Aug 2026 17:30:00 +0800
-Cc: Longlong Xia <xialonglong2025@163.com>,
- osalvador@suse.de,
- akpm@linux-foundation.org,
- mike.kravetz@oracle.com,
- mhocko@suse.com,
- linmiaohe@huawei.com,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Longlong Xia <xialonglong@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FE0445A4-6591-4169-998F-D0F810A78277@linux.dev>
-References: <20260817162039.1511838-1-xialonglong2025@163.com>
- <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
- <F06EC17D-2A3D-43DA-968B-1DD4E1253EF7@linux.dev>
- <e29e8bbf-5a10-4868-87f4-09d48625f6e6@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-Rspamd-Queue-Id: 9A6C340009
-X-Rspamd-Server: rspam10
+	bh=FhFDMwjisFQlmA53RTr6EmbhwCInFJVNArYz9R9qOUQ=;
+	b=o5WTdzFFyOgtrtGQ+SMDtdNm7nSgz+arInQHwqtDW+Ws8hlpRyU7UmMlJMqf79Z7z5E+a7
+	J3BKZYZ4rjH1brLxBy19SMJbjqvLsC7UUQAy8Wrr1+Eki+omYoAs2NWEFiNyVX2tSSbwRG
+	LhU/JoVPsy82gwerXP4uNxoMGK3soxI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CrUtN3Fi;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787304739;
+	b=g+BU2UBtioP+PbXtS+W+D9dkmT+6CVSAzo97IxIB+Tq/wtYg8CPTErlpdADtw4QO0z3KI6
+	gYx8gJinJ5DCt9FRjeBIA3sgc5JrfihIy38RlH2IZ/1P87v1SiEM+XfODTtIhBXgeTlPc+
+	+Ie/DqpRmdYde7wB3a3K2lDnz9+LDk8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CF5DD42B00;
+	Fri, 21 Aug 2026 09:32:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779721F000E9;
+	Fri, 21 Aug 2026 09:32:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787304737;
+	bh=FhFDMwjisFQlmA53RTr6EmbhwCInFJVNArYz9R9qOUQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CrUtN3FivWiRmuwK4pcrEznRzh4JuAN8BFS8RElvfSQtHfOHcf2NtiZ0F8mwaBMjx
+	 BnSqoWrVgE9x0mJR5jzwBU3De2TaOArD3l6lcJNlHmoriW3pp0p7F4qfIMRknEZOfO
+	 Cm1spU+sKk/vZz4oNh3jPqLT/BYGxUI6YPcnOia8bY/KRxpx1PsJilmhLsp9ZGyPP/
+	 oMXQnXnsv04vpHilaHmfIYd7Q+IXNDovrb6+NYJqJc6lFFv9QBbQ2t6sfBAd1D6hAM
+	 OogdwQbZ2KzYMn8zTdolQywifgNeOrx5LSal05zTVdZSdttiGdkMHZNPbnOjDU8miP
+	 FZQdJXT4phKgA==
+Message-ID: <f8a06140-7cda-4fc3-a121-75e4745d6182@kernel.org>
+Date: Fri, 21 Aug 2026 11:32:11 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/2] mm/memory_hotplug: make shrink_zone_span() more
+ robust
+To: Wei Yang <richard.weiyang@gmail.com>, Yuan Liu <yuan1.liu@intel.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
+ Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
+References: <20260818085702.3395529-1-yuan1.liu@intel.com>
+ <20260818085702.3395529-2-yuan1.liu@intel.com>
+ <20260821031427.qq6mb3j2zqtzdl3n@master>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260821031427.qq6mb3j2zqtzdl3n@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EF138100005
+X-Stat-Signature: frpwm1us5feiikfxuw3cw3m9pfm8to9k
 X-Rspam-User: 
-X-Stat-Signature: 1pc9t4kfyn9m6g4k7g9tfjc7hizbgjo8
-X-HE-Tag: 1787304632-780034
-X-HE-Meta: U2FsdGVkX1+sIbqZbsCtoKUpt0We5Z8QOhP29V+JgjbQpga18JN+EtE8VS1i6K2p7okdZGTeiTDGeYm4gAU9RoEwZR5z2QvT37RxmIL8TJnwPBKQSEMtE94X5lxTlGOIubaBrtD4ca+AJ6qA9pxGa0+5YjsZOslVVhasLOdy/T5EnwzOhbIVS0gqIOknrjHu8DSI4Je0zfirViPMAFwb906RNaFh/lfNp9by4ZLrAMvWdiVPJ7iKb40Q5/Oo2w7ebHMrMhQpquVoFmedIcQQ8SktvDgCvFDI57d7s9zh1hwGaEPMVE3gjMbkkmNkmkRpf64tl5Qm+Bsx/oA2pA64nIgAcIq6hR0KDJn0WzrUMFMdkVA7kWNOuI4hIhFkxQJy0wAA+kvaskk/SfdGb3gPrs9brl7FZlvOPis/jD+3RTigyiUoW9AsXbgyoJsYodkgeSvOPusE+y482gqcMnckUU6SXvEFKbCJnmbh79qiD9WJbhE6h5G9RP4jrh4E37a6fhX3782CiB/S/9VHD56B4JCVhp8SPUpokld8RCWTF03iPDzSnQvjog4ymTgD1DWKCXHwwG9QAGC7rwBfplUgk2F0iPMq1xJSUoiG4TbM5xBxDHyuLrZ8kkfv8gb7xlofoqZq1O32hnxwPdRq4LF9AsozD3D4oPYKymCQbw+i70V6dL3IsVANzAeZTMtwHbTTGkZjpkXGD2qiS6kCj5ddwlwTK9+wvgebVajenTizGVamVmoFIVuqHqONAPJx9CsQP2UdPbrknBsOVmHVIk2k/uErJz3Qh2icF/Vtq+BBQ2SE0594Y669Sgq9UrMycWw5EOHApwfjE4zM6yAy2LnuWAdRHZfiKYjvfXSkAacLhYGJty8NF7ZRd1rDeCFfi2Ha2uc8PJGoAksKfDoxSn4rfYmKeVEbAaIqrHtY3RCdCukeg0EyUNXSCSU0bx1JWbL4wm9PYi4nuyx/1IgjHP0
- zM0QJk/T
- aMazVMCdcRtTU5uuIrh2CxhzP3RQHyGTRmgR5lobEt0tTXnpyYKX2LrfXiJrreACHbPJV1R0Ffn+SX9FaBYDpjNQA/4Wif2lj2j+EATNcdCV6uBSmF1+BU5L9iX9AD+GGz9z4yy+FRcqRTeR91kOrdJmj+ReicaH57zeezCfcoqMcuz5mQCxey9qnDaXDEnH13cYSVC+4UOw5lvqGYqgH1Gl44suBvL//v0KnDnbC1M0uynbBTTaUv0C4PC0+25+cZZS8jdhbVLanoO/GLaU60Rg5XUaTpA/RCFqkGzLeg+rXmTWOc6XhPzxJSRU/3c1gcw5QSARSUd7ZyO2n1taJlsDytcGU/i1WAPAkoeL7Y7qV3xPJW1jwGVpoxw==
+X-HE-Tag: 1787304738-33740
+X-HE-Meta: U2FsdGVkX19pWBKu9TqMcoGE0NRHUPwD16zpfXlkUiib1T2eh/S5RCXnGMoW0gfgJggvWA7BUkxi6EzAt2s1x2kpf2AB68MD+aApZ7EInHrM0Zl++pEM7DxO2vDDZCPYzNAIos9XZkvqXZ7xarryUdtZ5fPui/Mt1Hh0amd7MsgA5TmUbswU6MsUMVRdGdYlXilzBecGEgddwGpmNYEcmF45/QCoFozEXfpq1T6qUyReL5ZrX2rx5xjggVi1n5ARq/+RjindiQhe9pUGpE3uS1hTzWGynaee30T7tfZq7FUx0hTaXMWtW5WXrIzxCeLcy0BN5axHRUF96KHmc3jUEKX/kUws9D9Pr897Pfypy7vVBQYQ/2stq80R9q1F1xLxySqcresAiVpjsRnb7aMyubAIeL8vX/kssUMxWiS3kSunW7GtKxUf6KCO+f7gSHMQI/Bcit36lPLf2bjipiV1NJjCyapLX31Dapib6r7FO+0+hntbIyV1Z/eodqABcR3XdGs/cEbYGmmFYASYoDUweY4PNoT6IvzmQgdqTWEMhWHLrD84U1LbFpXJJJdQUbk6DhIYM71ITtZNCZav1/InwkOIkg1dbsdPgsO+NbN/9i4jEyEE/Zd2HXqWN7pDyH9ofv/Xk1MY0CeRBa8zpeNPVRWr3pZJ+rlOCBMtEktZtDcfNhTA500eFpKgBUEAASjJhw1ch9RE9UBFXe8GGLcdOyp8PU42NTbwcjXvv2G9Tz8jU9AyxRBerje0FVQ5VMbXMAbPf6ycpTw80Ro6AeLA3rJSxFbifuCeGH1u9lKWkTQS/1AsZfEcMYFfJzG4kSo0WT1QkhKarlLnjQuScdbxgztgjyOhsZPBCAIpveM3ULjJ+3YPjv+JCxnAsnZZatworRxVml6tzXG4v0aXTdIBc8Kwjt1pDqjZhr6PB2qJEh5ymfKvfs0IduxkQ0Fzjz3TyjHfldgczdYH0eFSfER
+ 296z0A5D
+ TWHk48eiWK3gJF/nqz2HzP8NvTLG15k5dHmrsWfh2REACtCnPdVcmpsXby0ICFzUU4aYOHOBGoWzzfPK1xl8NBoJrlkrwyngOiPBVs1Qf6Jh1N3J7IaEoqrFuRsZuWJ0wUDfOsrmEY1y4WA543NkTKn3iA7PbZszJ48MvOg52E46JNqNn0WPCBGkxNjgFXrC7KU/xm6rvLJPYJS1v6UwYq5mPAtPNy0DeS00m5MODsqxAIM3LEJUPI0GCz3R2cRtgRkBANotOYvQUz85CyIFKbpre+ifFb7lHxaAgCe6JNY3FXLosqJgojIGwcktzPAr3+kzkW4pZEwnStykxvziVe7MSvyBaCMPM5sIIMQTDx+Ls4FdPALxPLIWKo/pUyjsEcHvXWvwDT/KMTrAmFTnpt3FWoGOPolWV0VXTJ9BmnJ/+UTk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,55 +143,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/21/26 05:14, Wei Yang wrote:
+> On Tue, Aug 18, 2026 at 04:57:01AM -0400, Yuan Liu wrote:
+>> From: "David Hildenbrand (Arm)" <david@kernel.org>
+>>
+>> Let's make shrink_zone_span() more robust by checking in
+>> find_smallest_section_pfn() / find_biggest_section_pfn() that the
+>> start and end PFNs of the subsection are within the zone.
+>>
+>> While at it, clean up the function by factoring the core check out
+>> into subsection_overlaps_zone().
+>>
+>> There likely is no need to check the nid first. We require
+>> SPARSEMEM_VMEMMAP_ENABLE, where pfn_to_page() is cheap, and
+>> pfn_to_nid() on CONFIG_NUMA would call pfn_to_page() either way.
+>> So let's just drop that for now.
+>>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Tested-by: Yuan Liu <yuan1.liu@intel.com>
+>> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+>> ---
+>> mm/memory_hotplug.c | 59 ++++++++++++++++++---------------------------
+>> 1 file changed, 24 insertions(+), 35 deletions(-)
+>>
+>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>> index 7ac19fab2263..cd82e79f0782 100644
+>> --- a/mm/memory_hotplug.c
+>> +++ b/mm/memory_hotplug.c
+>> @@ -422,49 +422,39 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+>> 	return err;
+>> }
+>>
+>> -/* find the smallest valid pfn in the range [start_pfn, end_pfn) */
+>> -static unsigned long find_smallest_section_pfn(int nid, struct zone *zone,
+>> -				     unsigned long start_pfn,
+>> -				     unsigned long end_pfn)
+>> +static bool subsection_overlaps_zone(unsigned long pfn, struct zone *zone)
+>> {
+>> -	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
+>> -		if (unlikely(!pfn_to_online_page(start_pfn)))
+>> -			continue;
+>> +	const unsigned long start_pfn = ALIGN_DOWN(pfn, PAGES_PER_SUBSECTION);
+>> +	const unsigned long end_pfn = start_pfn + PAGES_PER_SUBSECTION - 1;
+>>
+>> -		if (unlikely(pfn_to_nid(start_pfn) != nid))
+>> -			continue;
+> 
+> Would we have a memory layout with node interleave?
 
+I think core-mm is not prepared for actual overlapping zone ranges during boot.
 
-> On Aug 21, 2026, at 01:33, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 8/20/26 11:38, Muchun Song wrote:
->>=20
->>=20
->>> On Aug 19, 2026, at 16:52, David Hildenbrand (Arm) =
-<david@kernel.org> wrote:
->>>=20
->>> On 8/17/26 18:20, Longlong Xia wrote:
->>>> From: Longlong Xia <xialonglong@kylinos.cn>
->>>>=20
->>>> dissolve_free_hugetlb_folio() doesn't check =
-hstate_is_gigantic_no_runtime(h)
->>>> though remove_hugetlb_folio()/update_and_free_hugetlb_folio() =
-silently
->>>> bail for such folios
->>>=20
->>> That's odd. Why do they silently skip such folios instead of warning =
-that
->>> something unexpected is happening?
->>>=20
->>> This screams for a cleanup unless I am missing something :)
->>=20
->> Hi David,
->>=20
->> Sashiko actually has a pretty detailed description [1]. So I think it =
-deserves a fix.
->=20
-> That's not what I meant. I agree that its a valid fix, but I think the =
-code
-> should possibly be reworked to not get silent rejection from these
-> functions--IOW, likely the callers should make sure to never call them =
-in this
-> scenario, and then VM_WARN_ON() instead of handling it silently.
+-- 
+Cheers,
 
-OK. Make sense.
-
-Muchun,
-Thanks.
-
->=20
->=20
-> --=20
-> Cheers,
->=20
-> David
-
-
+David
 
