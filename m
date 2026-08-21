@@ -4,104 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36DC9C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 19:43:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CD29C5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 19:48:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31FFA6B009D; Fri, 21 Aug 2026 15:43:48 -0400 (EDT)
+	id 5995D6B009F; Fri, 21 Aug 2026 15:48:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F87E6B00A1; Fri, 21 Aug 2026 15:43:48 -0400 (EDT)
+	id 571E06B00A0; Fri, 21 Aug 2026 15:48:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20E896B00A2; Fri, 21 Aug 2026 15:43:48 -0400 (EDT)
+	id 486D56B00A1; Fri, 21 Aug 2026 15:48:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF2056B009D
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:43:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 71DFD1C0B2E
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:43:47 +0000 (UTC)
-X-FDA: 85126301694.01.778E295
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 255E0180008
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:43:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=UOnKEwpA;
-	spf=pass (imf06.hostedemail.com: domain of jeremy.jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=jeremy.jean@oss.cyber.gouv.fr;
-	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787341425;
-	b=dKI2qdmBQ7wmghXplXXyCJoCDDj+nHALTL2JtG5996kNQCHyFXkubK7gTfnCScqCyCDoAJ
-	W4vp/jtgD4nCn1lYWMmxQTIu8t1U2TFh2crtzTjKyGmIny1DO828ju/CuX/cfdIF0z5Rm5
-	5QNSBvEcMIsAGn5/Emf3ni1sVehgRE0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=UOnKEwpA;
-	spf=pass (imf06.hostedemail.com: domain of jeremy.jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=jeremy.jean@oss.cyber.gouv.fr;
-	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 287906B009F
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:48:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9AB3E4024D
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:48:17 +0000 (UTC)
+X-FDA: 85126313034.05.C36860F
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 87E89C0004
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:48:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=n036ESkE;
+	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787341425;
+	s=arc-20220608; t=1787341696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3cuOCLoydud/Ghe+/9rUSZTIFvtw+XcphcGGyMAn1DU=;
-	b=gOgYqjkS1XnRHeGNf0SOssXxY17U3uqd5NbQirQOtQ4UvMZVENhHS1yZBS4MDP4JbwGu9z
-	GjANsUtkgmUW0n3Ny5oVq59S7n1nEE1DeUKiEXnUh+P6iGR3UtqONl9fFAvWdjze6czqHp
-	l5WYvgaFw92Fn77UVsrcYikrj0LyUys=
+	bh=J2plf99ZSi4RvgrNhakNW0Ew4wlGptknswaCYlfxyes=;
+	b=IrRHluxm9+DN+hodSjp7VYYrvCz+JoOu7FI4uomWycf4gJYLiftTb2HXJZ7KJXVzo7dx6H
+	MTJbCu/ej6YvhAu36PJjVsBbg7GCEQOHPnyko6Pw3XpVUKLusbFZ01pLSax8G1E9H8NvSR
+	I4Lzn0H2Ofp5PBZQTLOzFQPnflICVrc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787341696;
+	b=XJP0FL3UJYBqgObWNySRBoUPD0UtLrTQjG5jmkLQR2wzWjnpw1y724aYB0+nC4yipFsq/k
+	f9rzFtw7BxhkjQHQcRXoO9TN493exRIjsrZCPFlkMxAe+SQ/x7/ppz4Fob6F5yNUfrv7pq
+	3WkUJznm0tKjZRs1JLbW7Lb1eIF5jjE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=n036ESkE;
+	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=3cuOCLoydud/Ghe+/9rUSZTIFvtw+XcphcGGyMAn1DU=; b=UOnKEwpA8W47dATxIYHpCwlglm
-	j4OWzlHUpBHdblDB3DgM+AINW95cU3xyMHpn7Fklf6Jw0KIwvusAjWUVz5slYDNAWJEP898gssApf
-	lPX78bB3RKwn9jXCnQE220o4PPErwSQpjtxhshKpHyQLzYg5YrQa5QDCgTQE1MLLVbxb2+j5kwd/B
-	GF+Xrj8jZyAjbz3bGywWiR5VYKhZoQpN2ZPHAK3KsRLdowFg5hrcfQ6KnGJQwbtjmWISM9Rp5hjM9
-	5sEvcrw+gbEWnVbRhTcxqwufFylrTO+Unnd0apooj8W7MgqkwCzwaoYI5NpwHMdlm6DPKPXs+Bmti
-	rDowhHGg==;
-Received: from [::1] (port=52878 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.99.5)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1wxV9S-0000000DuUZ-4BGv;
-	Fri, 21 Aug 2026 21:43:42 +0200
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=J2plf99ZSi4RvgrNhakNW0Ew4wlGptknswaCYlfxyes=; b=n036ESkE0ogiUqeh4hgpiPsDTO
+	gbhSAkhvHkoztzLBvWgIvd3arQqI7rOwIRfjGFWUicARO45wot1BLEdrRDIteEDhXLVr3PYzEnpK7
+	J/9/CVJ5DAF8ump0ILfZcEfNPz3JbRK2tunSdH1+kCgUonPvTPMJe2Aum5KHi+VXAsB7Ws7gC2RrH
+	WgvqzN1A7FuMcg+buq84J9O9QzMCepCnLsxg4/3WoQg1n7Gq/KTWL9uSLpNwpZVx7Z6B9hs7b2x2T
+	GIWwHOteG5H1ZSDpWdZYY3+KsR/hzQjnUb6n4SpBFS1e/iFVHZFG/FoPMspZtkxvYFeNK32383HG8
+	6OpCf/uQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wxVDp-00000000LTE-0lyj;
+	Fri, 21 Aug 2026 19:48:13 +0000
+Date: Fri, 21 Aug 2026 20:48:12 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org,
+	vbabka@kernel.org, jannh@google.com,
+	sashiko-bot <sashiko-bot@kernel.org>
+Subject: Re: [PATCH] mm/madvise: use folio_trylock() in the cold/pageout PMD
+ split
+Message-ID: <aoirfBmxkQA-HwJ_@casper.infradead.org>
+References: <20260821150912.183976-1-gourry@gourry.net>
+ <aoiWZjgcitp0nSk0@gremlin>
 MIME-Version: 1.0
-Date: Fri, 21 Aug 2026 21:43:41 +0200
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Jori Koolstra <jkoolstra@xs4all.nl>
-Cc: kees@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
- jack@suse.cz, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] binfmt_elf_fdpic: reject PT_LOAD with filesz larger than
- memsz
-In-Reply-To: <aog5Kx6HB3jxb8cJ@lt-jori.localdomain>
-References: <20260820222824.3165092-3-Jeremy.Jean@oss.cyber.gouv.fr>
- <aog5Kx6HB3jxb8cJ@lt-jori.localdomain>
-User-Agent: Roundcube Webmail/1.6.18
-Message-ID: <f7380c43c8cb88cafa170faec902c1b7@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - kvack.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Rspamd-Queue-Id: 255E0180008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoiWZjgcitp0nSk0@gremlin>
 X-Rspam-User: 
-X-Stat-Signature: d68b48wkocohyn9o4qsumnykgdcor3h7
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787341423-293226
-X-HE-Meta: U2FsdGVkX19con8QN0ek4Ghfilz0Hd5EOItA3m03Ain3c8x7+MTCTHKzHi1eBIFoOQIHl15MXSMk1OhuAOmTEtDQbrYXmcitzRwnIKtyi/NQhGA0X2BVZvwS+szwQ2eH2dgAAwKymiWLDNzratudspilio0fUC6fWDlwwHwGmtlikvqigd5mynEZeBjac+kgkqs01qoTvPSd3ye8t/i0g0iLpaQvSRQGp7bP/V/iMRsScJDsAUCQf6c/u4BK6quRcCf7j3Y+lL2dS+xV5QW20WhWSdu5SbrUd0rvefmt62w8GZ+K17CNp3A+FCVqggeRQkVdFOnZea57KAWCOalGbvLsifVeRqFXpCqEXGZgik0v1RiAwpS4X/rDW9DVvixXEuizXESl+Wcl6jeD08AtFaUYdcWtQHnxCChNwueIzz0WFz5Ex0/gkAs60sd7zVOgQfXqKo0FaYZKf1A9laIwx5QzmJB2d5y4eSmNwKQxEOb9h9QOL+bGO6QyMWBwS8u4L+gggy4nA8vp/SYD8SHW85ZPP0paAfJEyQNqfP0/2GAVtgIML//B01lqLp52vGKQt3UrHMYFMYOO/Cte7L7WkQOoXeSpqEKiMbzkGMCRWFbtYARKzLjcyykaEFI/VqSld3aPBAHt9wBQDvsAkiqU0YeHVzVEv8X346GgLyBTnKlWEvym4pySEA9Xa5dMuO8qdiL7Zr5aDJdgRDaaepTwzHxDW3DDWbStn0XXuGONoTv7vjUhvAJ4s1w4DS8X+hezc3wtxs7V+vJEY/z7UeRU5zzVKGXy/TEm2GqOpXUwAcBGoDz7lJV7ILzz/ePuUtWPdvmyS1glamcQyaUDM/zMA8xFyOxuFGdF180rRzbLGP58ejcqUrCUjus5YUojnofnyWCvtCLro1Hq1RCrCNDEx+SrWV6XbUybNCNgOyYxEpozz1OVbjEgBO+5H58zrN5OcM9SlaDMKcJjMMApjsK
- gKcWw0vx
- TqZrJNzJ4hsGB57jqkbaj4/sBckaUuLj7EImYi+gA0wfBWVGVDk1l20EI+wbq8iOh7HiovZvQaKsFqqp+qgy2p8nan7ilnyTxq+csI0aG3yzlPqTQ+lJd8IIopVzlQSUYjieXOUoulvc51MGNFeVe2Oc2xLubc4PzVDoPYO4r/edSYa4zPxW70ECskGuAPryItkIVa2bgDrG3W2W2v+lDFD8Pj4nmVmhMvhkOn6LvUq5ZwFl8iBYTxAlKq3CQTB4sIjXP6TK9f6gsTrxU6ArDAd8vwDkYyhn/Vs0DVV0etx0tj6j6u3n8aeHkffRCft0VGaKYn1Vi4OzxHk5tTMtjraifZUUM2wLi2i4/fmpmbrl9s0d8gMGJ5gRTUMzsyRSNdpVpKW1NS864JRBau6vTDUpgmJWQU91oWHoosd0u0eTnFOKvBgcqrXa4MtWzvjAif4rDQwdONiYBLhTduFdXbbJgXPrQZ8w7EMeLPutVKO/DhkUzsGOBcCO5IDy1XTlmAXAdvcMQof4q0d5eglQv1vcp+xqBWVRjXKfH6964hVancS1lgJzaUrbWAPN2KmJTA4cf4TIwsR2kgTfd+C6GIxGecungetFqq1EbEXq3VSfRGGZxbv6dhwpb6j+ToCwQxN7vy21hIcTVv9Tq+4tpIPUc08NMkb5yVpT1qZw1e6eRLVw=
+X-Stat-Signature: 7e8u57fo3y3ptoz3xusqcz5ug5csm5k6
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 87E89C0004
+X-HE-Tag: 1787341695-277607
+X-HE-Meta: U2FsdGVkX18me6BXtmuoEo8eb3cbfip2ex0UTAyMqTDKEBSpqF9FZFqAJD4H5QmhGAGXZzZBDrTHmVGgCtr516eAks5uYhksb1W21Ppw0kFKB8exFFmTA09nvuY/8LQ+fHKKqDbgHHLfD8G0oxSm9Aws/SxFwk1uB/l4/yQtSNyw59Z0OGKHTO5CDaLCHqEymGTsctjGwH8WMAdHdJ5NdMSJegOiGJMOexrVErdJsCZ1FThzDV6SFR0VRMSpUrQWigh2tHev6POtIyBUTtt5bA5q8tVm+Q13BitJibaesojz/6dD/2xKpuN0Vl+aAbGwY/cBcXxZPScxYt6oXIpAWKF1jtMScH9ubKULi76vDq6yOWXg9lfFqEtcUaapCL2cF9iHwBy3fzHOmkkKeIeogL5noBbAsPD1rqbklVa+NBrn6gIYOvDq1wY//6iEAlF1dr3L36Hc7ltrPlcPQwq4VXnHE+A2BmMdHIlQFdPaY7i1FUzv2LaxSzLr6vF2iUGOGN2Mrrlnmp5bPXnbN3AWftkDymaPDWiC7gd8ATD+D97iWxBfcoEU0Il0ivkBZ1UFxVPFK0l9+2C889q8GDUL+yG4zCs3LWUa5PJG+tCIehOYerxMoz3GLQ7SJOknuKiU7UhQLbzC875WovwXw7t0CZ2+Yh+DOwFmyaDFozUkF3VgT9RiClR3cj8oBqivWnEVqCDrcG9qAyFbjEm6f9PZRgjiVv72//cWQQ0za7mHFpJaA2sbY68QXefcxSK/2Jzv3ptpx+R2K0BS06gXajS2R3PC6gUGlY3WtJ+0yxgC3kvC0Ejk6SeqWaBtyuRQbysQ5eAFr+gH+rwlkoWfVoIWV7k3l7f0u3qFzDxPRcbbbbx7djn9OzU3UkUFmf32r2S19JpABLORSkRDh7f0CddQKxsbmlY+SNWWFQKR3J3Q8+idlXY5BBnKPP/xiNaazAH/0vTT/vqmHvkSnuYQMz2
+ 98JpjT97
+ VB36wHLlc4VzZVfgRaZo/bGv4jOWa/OaCrsy0fgutbDRDCKh52dIBN204siRpeOS9vS2zI5V24a47viiMsMDuu6iePTpbULecnlkBF0iRFfKkWNf81EPOkIzFgH5VHRYDh9n5BPhsQNrnblO6604xuq3PrXol71Qr+sZIRJBZd9A1hePW8aKasY/0XRmJFzsn/vSOErp7NbZI7oH/CAkLLXvlZXcuq0JW5BhuZGoeay5+GnXu49UvoIA3pqIK74t7GhSnuMVKOB6yiQk+zqsGNhIZ2uNx6mgkE+XUZ48hlOOogqHokEaIvmqgZed4muu28uez
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,55 +93,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Jori,
-
-On 2026-08-21 13:45, Jori Koolstra wrote:
-> On Thu, Aug 20, 2026 at 10:28:26PM +0000, Jérémy Jean wrote:
->> The ELF specification requires p_filesz to be no larger than p_memsz 
->> for
->> PT_LOAD segments.
->> 
->> elf_fdpic_map_file_constdisp_on_uclinux() sizes its contiguous 
->> allocation
->> from p_memsz, then read_code() copies p_filesz bytes into it. A 
->> malformed
->> segment can therefore copy file contents past the allocation on NOMMU
->> systems. The direct-mmap path also subtracts p_filesz from p_memsz 
->> without
->> first validating the relationship.
->> 
->> Validate every PT_LOAD immediately after fetching the program headers.
->> This covers both executable and interpreter headers before
->> begin_new_exec() makes execution irreversible.
->> 
->> On RV32 NOMMU, an ET_DYN with an 8192-byte p_filesz and 4096-byte 
->> p_memsz
->> copied a marker from the second file page past its one-page mapping.
->> After this change execve() rejects it with -EINVAL, while an 8192/8192
->> control still executes.
->> 
->> The flaw dates back to the driver's introduction in the pre-git 
->> history
->> tree introduced in v2.6.11 by 91808d6ebe39 ("[PATCH] FRV: Add FDPIC 
->> ELF
->> binary format driver").
+On Fri, Aug 21, 2026 at 07:23:34PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Aug 21, 2026 at 11:09:12AM -0400, Gregory Price wrote:
+> > MADV_COLD or MADV_PAGEOUT over part of a PMD splits the THP in
+> > madvise_cold_or_pageout_pte_range().  Two threads doing that to
+> > the same THP create spurious failures.
+> >
+> >   CPU0                          CPU1
+> >   ----                          ----
+> >   folio_get()
+> >   spin_unlock(ptl)
+> >   folio_lock()
+> >                                 folio_get()
+> >                                 spin_unlock(ptl)
+> >                                 folio_lock()  <- blocks, keeps its ref
+> >   split_folio()
+> >     folio_expected_ref_count(folio) != folio_ref_count(folio) - 1
+> >     -EAGAIN
 > 
-> I came across this about a month ago. But I wonder if this is even 
-> worth
-> fixing. You are on a non-MMU system, so running a malicious ELF kinda
-> means gameover anyhow, doesn't it?
+> Hmm, but doesn't converting to a folio_trylock() introduce entirely new spurious
+> failures due to folio lock contention?
 
-Well, this would act as defense in depth, no? I agree that cases where 
-this
-matters are probably rare, if any, but I don't see why this should not 
-be fixed
-anyway. Isn't it best not to assume anything about the use cases? The 
-patch is
-only a suggestion to start discussions: I'm merely raising this to your
-attention but you guys (maintainers) are obviously in the best place to 
-check
-whether there are better options.
+For the task running on CPU 1, yes.  But the folio does get split rather
+than probably both failing.
 
-Regards,
-Jérémy
+> > +++ b/mm/madvise.c
+> > @@ -405,9 +405,10 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+> >  		if (next - addr != HPAGE_PMD_SIZE) {
+> >  			int err;
+> >
+> > +			if (!folio_trylock(folio))
+> > +				goto huge_unlock;
+> 
+> Doesn't this violate lock ordering?
+> 
+> >From rmap.c:
+> 
+>        folio_lock
+> 	  ...
+>                  mm->page_table_lock or pte_lock
+> 
+> So now you hold the ptl lock _before_ you obtain the folio lock?
+> 
+> I'm not sure if it being a trylock gets us out of that particular situation? And
+> I'd be reticent for us to violate it... unless I'm missing something :)
+
+It's a common way of getting out of a lock ordering problem.  Surprised
+you've not encountered it as a solution to the Dining Philosophers problem.
+We have even weirder solutions to "I want to sleep on the folio lock
+but not with a reference held", and such might be appropriate here if
+we want to prevent the spurious failure on CPU 1.  See the DROP behavior
+in mm/filemap.c.  See folio_put_wait_locked() in mm/filemap.c, not that
+it's exported.
+
+We couldn't quite make that work here since the whole point is to _never_
+get the refcount on the folio if somebody else has the lock, and once
+we've dropped the PTL, the folio might have been split and thus not be
+the folio we want any more (indeed it may have been freed, reallocated
+and now be a pointer to a tail page instead of a folio).
+
 
