@@ -4,122 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDCBBC5DF8E
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 12:27:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 191E7C5DF89
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 12:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D38E16B0095; Fri, 21 Aug 2026 08:27:09 -0400 (EDT)
+	id 06F1A6B008C; Fri, 21 Aug 2026 08:30:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D10DC6B009B; Fri, 21 Aug 2026 08:27:09 -0400 (EDT)
+	id 045DB6B0092; Fri, 21 Aug 2026 08:30:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C263E6B009D; Fri, 21 Aug 2026 08:27:09 -0400 (EDT)
+	id E9E9C6B009D; Fri, 21 Aug 2026 08:30:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AED56B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:27:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1DD84A0482
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 12:27:09 +0000 (UTC)
-X-FDA: 85125201378.15.552CE5F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9DD4A20006
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 12:27:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=R0se3iZW;
-	spf=pass (imf13.hostedemail.com: domain of rrobaina@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=rrobaina@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C1DAE6B008C
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:30:14 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5927D80457
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 12:30:14 +0000 (UTC)
+X-FDA: 85125209148.18.0840A4F
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CD00B18000D
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 12:30:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vkx4NayF;
+	spf=pass (imf16.hostedemail.com: domain of 30ESIagYKCNUJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=30ESIagYKCNUJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787315227;
+	s=arc-20220608; t=1787315410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8nQiAnmFR1CPZ/lHsTXoGg00TJNHaMaAN/SMaiIN0sQ=;
-	b=t7NlVa/BGBrjdJwy1HaMBa/x91e/JaWj7VcZtNyDEKKdQtp/lf71r/F5ypLxHR0JLno5Qc
-	KtHPt+zc1v0UUILtwRbxD/H6dwGfi8hl9rdS7ez+D4af+mEyiN8vOcwxxHit4GvJJpnfmn
-	RybkdB+7X6olsTkz2FWGCnGfcdJKIP4=
+	bh=C0TDZ3//ZKM374BdreK4yr9CabYhqfPGunU2baHmMPE=;
+	b=4ya+ys8sasWY1TwooRpzlMbBkSMUI/Bq+zCq9WUKOPxgZW5AsTzLykL/LaVvPe7ondvTW6
+	ywDPfMISM5NcbV8xDZ/mHAuGwExBbtAKseJPC6ktD1yeK6FpjY/kuBuG0QL1gm/Y5IbD+e
+	zPUWOe2incPzfySkNUeEObGzKT04jvI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=R0se3iZW;
-	spf=pass (imf13.hostedemail.com: domain of rrobaina@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=rrobaina@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vkx4NayF;
+	spf=pass (imf16.hostedemail.com: domain of 30ESIagYKCNUJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=30ESIagYKCNUJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787315227;
-	b=BNnaUuq/XJSTKORH1pZ5srGCQudf+GAj2OXZ/qcjlEoA4xhkURshye1EDTR7r/c5IzzU/k
-	4NfrYUkJhA0yUGkBTjomk8HXbi1F5PHqNGcD7uqnaCsPptb1DmmpZcFZd7oOjqYUW+X5mM
-	u4VcNifFGtZ07psY9HVLwugJLIlYkWg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787315226;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8nQiAnmFR1CPZ/lHsTXoGg00TJNHaMaAN/SMaiIN0sQ=;
-	b=R0se3iZWGZUlQJOjVw0PShY9OO7+5Id41KBT/3ptx/afk9KMa0hHNDO/494AsFbuWT1MkG
-	D3KvyAhw534syowR/FhB945tCIXtL9N2b/PcI6ggXpqxiPofSdxN5V4PuKZM+qXMEc7BNY
-	wfx8GEadWvBgheFCZjfQPIg/9rcJUsc=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-135-DHM4flnfMdKR9jNZvb4RFA-1; Fri, 21 Aug 2026 08:27:04 -0400
-X-MC-Unique: DHM4flnfMdKR9jNZvb4RFA-1
-X-Mimecast-MFC-AGG-ID: DHM4flnfMdKR9jNZvb4RFA_1787315223
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c16711b9473so77279766b.2
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:27:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787315223; x=1787920023;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+	t=1787315410;
+	b=clY9UUxfrA6IdwrC3JAbE/uduMdqbGH7ucwuoSzkcwdHdwo81I5Fx58u2OdeK8uTvityyX
+	QFTGs8FNGI3yoxNrmkJ1y2YVcpJZkoYY/vqpbk4trEE1FPPZcN5IfJAdh3qG9gxBrKAZ4y
+	eSaDVFcblGAacy2cnlfNIHHIxwNRJt0=
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84f0d3ab2f4so704869b3a.1
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787315410; x=1787920210; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8nQiAnmFR1CPZ/lHsTXoGg00TJNHaMaAN/SMaiIN0sQ=;
-        b=H2ZT4ysKKnvS2XKn4iRsZjOZQScG5SXvE92U0hXnv8mJxRLHjR1xrBNdRHHT0T++T1
-         CPbuI+vt8OdqceM/C2vvhhgmzFqmTmdKvQAu8fspOHPzc2mkmX+7G4Zsw+tRbJaR2opi
-         j6ZmYy/cPuvfHB4ArMvwswhrB9UBDWCkKr2I7Jjx7GVvv2b2PnbVW1Qj29MfLOjvRrIV
-         AIFQ79gKXXE/+gOJ1FSbghibB88Z0YC0NjqrswSS7SK8tsbdRWx7i8AobKVyG+Q5Ou06
-         fsGekqXb+vyDRbW5X7SeHd8ADgXijLb/zhTm1f8e1FhZ2h6q2c4jkrl+hvSW5yaVwSHb
-         Hzaw==
-X-Forwarded-Encrypted: i=1; AHgh+RrxwlO/TV9UfmMsHRqlleq7RAimippmQmBXsWuf3T/6CLeFH5rh3d3hdkxr0LH6X8LBWvdjB6aXBg==@kvack.org
-X-Gm-Message-State: AFuF++kZYLiGJZl2YJhHWaXCd8EzO4vkERkWbNCpXwFpqvrqaug1WCPz
-	xR7n3QsfJ2EdCUtQUVaUiv1o5y8WPhgLsalAfhP3fLxIXzZcoUMTZuHfDelwTKtna2Z4AeN0vVv
-	2Gl+d5SiZcCufUjhnj/aYOkGijsR1ZPg/xIpBoMQ4jCJCDdHRI3Bl3LX3hCYnBK3d8MKdO6IUyt
-	9oZBqZPY3IdTXZUl5EUPG4z2+xgZE=
-X-Gm-Gg: AR+sD13NZLXgRcjFBPpyBedhEUqhPCHPpXC4R5jrn3sv2BoahMgSMdm2AK3U/6dWAj7
-	ULnZCst1ULwN8D1qa6Yvx6cdc8xFHH07fE1M7Iysjw7J8CgZCSeELf7t1WYJvDSNbQjjotn2CBA
-	F/uqJhs00oZupHrvGTtwgzW/PevQWFOQZeSAh7PGvVxh7KTIMn+JOSshIj4N4LzIvOQAx8/4SXl
-	of/tYISv1PK2gSk0jHAVCSHD3W1mQKII0cxbJF4iQhI1BbgpJpffosvAYlc1G4f276MihEHHQna
-X-Received: by 2002:a17:907:3d56:b0:c1f:e9d6:2a6f with SMTP id a640c23a62f3a-c2469f9991dmr630515866b.0.1787315223462;
-        Fri, 21 Aug 2026 05:27:03 -0700 (PDT)
-X-Received: by 2002:a17:907:3d56:b0:c1f:e9d6:2a6f with SMTP id
- a640c23a62f3a-c2469f9991dmr630333466b.0.1787315197822; Fri, 21 Aug 2026
- 05:26:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260724150258.560396-2-rrobaina@redhat.com> <CAHC9VhSzhyw--ycYMG_RaT5wpRQWDPBSuaNixsVrWrRXKc9hzw@mail.gmail.com>
-In-Reply-To: <CAHC9VhSzhyw--ycYMG_RaT5wpRQWDPBSuaNixsVrWrRXKc9hzw@mail.gmail.com>
-From: Ricardo Robaina <rrobaina@redhat.com>
-Date: Fri, 21 Aug 2026 09:26:26 -0300
-X-Gm-Features: AcwNN1WD71ac4WEQSUnfKMe1gRwRLyFnSk3rCPAS384W6Bqs5OsdV3sfC6_UdO4
-Message-ID: <CAABTaaA=FupPfFhOdMPi7nPy5wSh7znEdnBquYbTXCN=YbtKiA@mail.gmail.com>
-Subject: Re: [PATCH] audit: add CLONE3 auxiliary record to log process cloning
-To: Paul Moore <paul@paul-moore.com>
-Cc: audit@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	eparis@redhat.com, sgrubb@redhat.com, kees@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	akpm@linux-foundation.org, david@kernel.org, brauner@kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nrADp6YDGAYlFLI9Tlw9ZzKBu2PXXBHu2o31vNDSGgs_1787315223
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9DD4A20006
-X-Stat-Signature: 13j9ao7nnk4js67n3zeyk6um46bnm9b4
+        bh=C0TDZ3//ZKM374BdreK4yr9CabYhqfPGunU2baHmMPE=;
+        b=vkx4NayFrliwd4ao+gGFKxKnFpg3wyvv5/Rp7XqZcWmTKQ6OsMCv7j4z4pMoa7/uEW
+         cbkCeIPQFzhMBXAMkcH+EWUyR0JxLE+0YLM0Kz2Rb6LvjixWgPHWwVEIr5OpmaPKLMJo
+         kUkaYVZcD03ZfaF+k0lGK8vM49L930SmavYj4kf9DqONtlN8f6DoulmI0YCe9JY8abu6
+         4de+pxCC5CVGPEyUEd3bIUPKTOaR2/odQmau96YuGbRB6bh0CQgLCkaWeZ1/LiUnFUWW
+         knxJNkNEyd3uLUO10HFzAC4qLfiZg6E/8O8y1DAw4JE2dEy3zFypIoCXglXeE84lp8A7
+         /i2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787315410; x=1787920210;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C0TDZ3//ZKM374BdreK4yr9CabYhqfPGunU2baHmMPE=;
+        b=O8u3WhF8h4HLZXBLICSl+ltZw6JTEiWJAoJXZjvRNyeXAhurH5vYt22h2h/MYagAdv
+         iiAhCXoqdZCjrsYxIWnBCI6bPaUb4CtBAeD78qfEVSEUy6i1g/rxj91ORZxI2jVrsffh
+         L6hdgrTX0eutYyuVp4r7A7x8LsoQUBQKzvxKsl/jax66zqBUPUrwWKJMz4n6p2khaaJn
+         OZLgNUVJyJ+MwdXdg1PNV5fxBZjlYMtiHikKE3hgLIKYPEDlui6heGe8DG9IwZS2XrHU
+         CdId5+cnuE2jOpuzQkyrMAJCHSfOSX99b24ZPZ981KGLSvh4CPzuuD8ez8cwEJmKqLB4
+         IYZg==
+X-Forwarded-Encrypted: i=1; AHgh+RrJZzXS6IiV/1W54cIDbi0T8YNF08fBwW3NeRw6bqxScLvov4mOToBm+tR2UzmY156fyDSjkiO8KQ==@kvack.org
+X-Gm-Message-State: AFuF++kweIlKpyYc3St3wkswUbUR841Bt8xzWBau9beibgUzuSTJVw8/
+	Vye44nKzXfYikuaNl/+WCOe9d24DKYSoxTrFPPByREYK/Q4qWZZ7WnMzFfy23FvXHLu2N6wAOei
+	wxkpAkQ==
+X-Received: from pgly12.prod.google.com ([2002:a63:180c:0:b0:cb5:f989:9b3e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ab03:b0:847:8acd:747c
+ with SMTP id d2e1a72fcca58-851fa01e93fmr11460030b3a.13.1787315408882; Fri, 21
+ Aug 2026 05:30:08 -0700 (PDT)
+Date: Fri, 21 Aug 2026 05:30:07 -0700
+In-Reply-To: <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com> <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
+Message-ID: <aohEz_1JFVDtlSnE@google.com>
+Subject: Re: [PATCH v10 40/41] KVM: selftests: Update private_mem_conversions_test
+ to mmap() guest_memfd
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CD00B18000D
+X-Stat-Signature: 1x1h61okwx3rqecmjp8tydgcit4jb4d4
 X-Rspam-User: 
-X-HE-Tag: 1787315226-672893
-X-HE-Meta: U2FsdGVkX19ZkGVvhy4g97+n3eQtnzEiZX1Jr0rZ13xxh1CFu17aeAlLoF7icYYBmu8DqcdxpLp92ochKCvDDTFPWPteZQv+y9Mvd2K8Wu0HCEH5Ci2kJy/kaA1uWxQc6R5Vwaisplj/vItp9qs+2tZA9PfJVWxobUwhlN34syQK95KfDsSyNk6P7Xb3lN4rd2sASQCr4mD3CDR2uVv/XAuEh4FhMtnGSiCXMV5KTelNnD4ZckVH22bdv0JYzBzam5vAuwFkwM16e/EM3JEihYmUDjrD0i7I2llyxf6/+iBEEF3vd3A7dowyfdkmsIaxR8jqdO42g4jR8/Y9MPJsR8ya32XvhWaNw+R65BDIhIaaf+muSGnuMgtETIj4+bd+PhRkAd4/21YZbyHPbRmjTmTiXBBYHlXYQUNCXeDt1yj7CiakOBR3NAn/6jWo2fVMZbWuJR8/r1wvBmYFvsTpHjgpzH5DzRZS1VxMYgBfcysHcwZT/MLLVb1SxAx4WgXl7W5afZ91Y5+89YohFRbOb8yv7DMlVoyBHF2YsGJTNWIB2JqfoPkLfQaFHInegvbDofpEqh3tjg8NpRcodtsKOUQ/j9IGZCa+toVXjqdLmmXlv+k5066kytSJJFh418jX+YqRWb52PW9Lk2LH+3V6dA8FEV0PUUVj+QTmKHelxWYB0+V8UOLV8Qc6U2u3POoU1Z2EFoStM4vDXjCy7v6nj3UAU/U9Lng2j7dK4ApyN24Kcv+4WmZVKKM+Xsk6CT16uBbNcDmupiKQhoiLpoHCJEgTYKhjmAhEwghTGcLnlI1x9bgFvIRD9iOGpaqMyaDgPojhyASW2DaYATiLk6QwfGyZ+OGeYEyR4DtFScIGErN9/oyWVpX13Q1/ry+XoHwpRv93aOWH836TcO2Qm67Xknv8HJeRVCm8gc0CeoIVGlWkFCXkEdy+4UtgWzrXb53W9THuzckOlt680kC+IjM
- BYGkFUqt
- ZTGI1maqqn+KCSADMSWsCKzfuV/9mVKFemupvBlRKb3MPN8ilb26cMPbPRXSRiwmf47TOqnz/4RUvpnFVEO8VUcyU6ZYkS1/JwjYnpDPbYasBZhLMAT8IBLM5tw99RaH9vhntlCrCZIbpXi6/8K7GoGGOIzbP77GEdwFBRjQRalJfpSDgQLx4uG9B8Idob44bj7zXPTQc2/aJyAxj9NBNoVxjs3gy/vh66ZCG7jKWzav1O5lM2WUBovtOHPkrIDF76HKCfnQYIs+I6pxrIPDOPd6tE9mn8HO3YTHWr3Og969oyUtRlzNGqmMa2Rj+1iqB+tOU
+X-HE-Tag: 1787315410-227806
+X-HE-Meta: U2FsdGVkX191hIULZzUf4Zi8zWkq6eoE6dzjkk2JJYsyzXgOZHDpDlBRp0D/vMB+1kZ7IlvwN4pGFVN+xk64BQTZThJVOTlRywX1gtGmF8GCv1oVZI3PhhBI/xdn57jIVZwcXGMJkJGG2aB1mEKVV6LT9qX80Eohyl7p18P+tEvdUGcqlLT/3MSMfv1QlEpuf4w5ZvkWVzBuihtbQbG0nx1jtOgaD+9d2vx0czv+IBEVkZ7gJf+cOSaTS2ol6tyM1pEc0WcUdzDs+w9kGka48cZn508eGfRyKAguVFDuqs7X3wDCz14njXhH/mIz33QTVUh9iZ+Hw40Xf7l7Bg6r/quSKJumRQWhB7l6B1SOzvo+7JO/ZghssEaoGSwCtE2XM+5dAv0OKdgmVGTf/pPwpvRjYQIM5G0BL2tsspeED5O0jsU1uZp9ehzIOv6p6PpTN+5ejxzZqTbthsbmJCQTTTODNwqoPNhlEJZVxVFqyWhMuSDXJ6xnZ8/XACKkEcKSAmboKaTLqCbcHWaYsfD5z4l4USlzBiysojQ1BRAdw5GWdMpGaO2lM8RPKepxMwVrnt5V5Kf0rFrZ/dA9vJc03iEKstKHtoTa48lNTn8bS6rYSDBoWi5tvncyC6tNsXGhnr94V/IisTrWPX7Tjf+tmd4ghIVQa5D8odUMvGQgG0ChQfFwZ3XQ6G28LL8eoaCo5kiiilFw3yx6Igo/YYexL9hXsVTaXBUMK57BdPJClvCbsAtN/iajYdiS943mC+9o6osF/eE7l9qxz+D+GXN88M/REkBK0OXVwlPQ1F3j3L66VklM6ep9cZAH/0bx2H+GpApRwsQCkJvwCjUFKZyInqbmQvC0/PedWksMvGjTWDPhKDQNBQ3eV31R0bLTsz9egtBkA9LYvNaqt9LgAutXUnBk9oWlxH/WAQ9w81RHw8iWCI6yWjOY6tRwRMAObvzB2ykpqyscX1XRMvWXEy6
+ Z5CHDFO5
+ Fieq0x67YpIEZL9JI0jaR7cI8Hgo6o5PfxvGRAe9tyDgR0nGIuh+HqYUmJuAo4B4U9I4DXMYIxrYy3Lx4HpjaoKqghrEXEbF56Y4npWCvgaWyFWsZgbcKJ/m7zx53WGkN4pDNDIwc07E14hIwq1fH0ipDh1nV/yoPJA2FNUFU8ZKSeJe1Uuvi5jV6ajzq4nYzSlPN3EOE8tJ2PSnceBcSjsNjAuTaPt9yXpWuA5tYBUEkfoB2XdfhZ9E9OVwfVMHFNfBI6+IOnnYBRfImgqEP2xdQ7YVEhiPTKf+gs0BXc1EbzBpvoy03CsWm9kZ6KAAEiXvv6g7qhY6v3gorwbRXFYucmlD+ePujRoaL3bXRE63f/vsFxwxvTxHeZkJgsJ2hpl9115cCk1KzQeym9lOwhL76l5fUDSoxo66tjfIB7eAhQWrZyygUCLeZ+uomsMToeZFvg1vyhu4YwTaIGsdpiHzx/t88G4nT8TeRA+CQXkVNdt65p9RrBVdZ5YKIP4ouvLB+XiH5KkQqcm2L4F8YSp+NJef5aUuBNOkWJnJ9N2iE34W7HaEaR+7xQwF6JVyNdh+5U7Gcqq6dQPSG4fTLBwoCz8fbjeOTSHQUC+1GbEc6B1zUcgXWJUpSOQFtwRtYOO4w3mi9YwTcV4yATSjX5KWz8ybtbp74w+5G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,168 +135,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 29, 2026 at 7:03=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
-ote:
->
-> On Fri, Jul 24, 2026 at 11:03=E2=80=AFAM Ricardo Robaina <rrobaina@redhat=
-.com> wrote:
-> >
-> > The clone3(2) syscall moves most parameters to struct clone_args.
-> > For this reason, the generic SYSCALL audit record does not capture
-> > the structured arguments.
-> >
-> > Add a CLONE3 auxiliary record that logs: flags, exit_signal, cgroup,
-> > and pidfd fields from struct clone_args. When CLONE_PIDFD is set and
-> > the syscall succeeds, the resolved pidfd is logged; otherwise
-> > pidfd=3D(null).
-> >
-> >  ----
-> >  type=3DSYSCALL : syscall=3Dclone3 a0=3D0x7ffe7f1ec640 a1=3D0x58 a2=3D0=
-x0 ...
-> >  type=3DCLONE3 : cl3_flags=3D0x1000 exit_signal=3D17 cgroup=3D0 pidfd=
-=3D3
-> >
-> > Link: https://github.com/linux-audit/audit-kernel/issues/151
-> > Signed-off-by: Ricardo Robaina <rrobaina@redhat.com>
-> > ---
-> >  include/linux/audit.h      | 10 ++++++++++
-> >  include/uapi/linux/audit.h |  1 +
-> >  kernel/auditsc.c           | 20 ++++++++++++++++++++
-> >  kernel/fork.c              |  4 +++-
-> >  4 files changed, 34 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/audit.h b/include/linux/audit.h
-> > index 45abb3722d30..833f349bf415 100644
-> > --- a/include/linux/audit.h
-> > +++ b/include/linux/audit.h
-> > @@ -449,6 +449,7 @@ extern void __audit_tk_injoffset(struct timespec64 =
-offset);
-> >  extern void __audit_ntp_log(const struct audit_ntp_data *ad);
-> >  extern void __audit_log_nfcfg(const char *name, u8 af, unsigned int ne=
-ntries,
-> >                               enum audit_nfcfgop op, gfp_t gfp);
-> > +extern void __audit_log_clone3(struct kernel_clone_args *kargs, int re=
-t);
-> >
-> >  static inline void audit_ipc_obj(struct kern_ipc_perm *ipcp)
-> >  {
-> > @@ -598,6 +599,12 @@ static inline void audit_log_nfcfg(const char *nam=
-e, u8 af,
-> >                 __audit_log_nfcfg(name, af, nentries, op, gfp);
-> >  }
-> >
-> > +static inline void audit_log_clone3(struct kernel_clone_args *kargs, i=
-nt ret)
-> > +{
-> > +       if (!audit_dummy_context())
-> > +               __audit_log_clone3(kargs, ret);
-> > +}
-> > +
-> >  extern int audit_n_rules;
-> >  extern int audit_signals;
-> >  #else /* CONFIG_AUDITSYSCALL */
-> > @@ -730,6 +737,9 @@ static inline void audit_log_nfcfg(const char *name=
-, u8 af,
-> >                                    enum audit_nfcfgop op, gfp_t gfp)
-> >  { }
-> >
-> > +static inline void audit_log_clone3(struct kernel_clone_args *kargs, i=
-nt ret)
-> > +{ }
-> > +
-> >  #define audit_n_rules 0
-> >  #define audit_signals 0
-> >  #endif /* CONFIG_AUDITSYSCALL */
-> > diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
-> > index e8f5ce677df7..37357e17adbf 100644
-> > --- a/include/uapi/linux/audit.h
-> > +++ b/include/uapi/linux/audit.h
-> > @@ -122,6 +122,7 @@
-> >  #define AUDIT_OPENAT2          1337    /* Record showing openat2 how a=
-rgs */
-> >  #define AUDIT_DM_CTRL          1338    /* Device Mapper target control=
- */
-> >  #define AUDIT_DM_EVENT         1339    /* Device Mapper events */
-> > +#define AUDIT_CLONE3           1343    /* Record showing clone3 args *=
-/
-> >
-> >  #define AUDIT_AVC              1400    /* SE Linux avc denial or grant=
- */
-> >  #define AUDIT_SELINUX_ERR      1401    /* Internal SE Linux Errors */
-> > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> > index 6610e667c728..c0106bb71c19 100644
-> > --- a/kernel/auditsc.c
-> > +++ b/kernel/auditsc.c
-> > @@ -2882,6 +2882,26 @@ void __audit_log_nfcfg(const char *name, u8 af, =
-unsigned int nentries,
-> >  }
-> >  EXPORT_SYMBOL_GPL(__audit_log_nfcfg);
-> >
-> > +void __audit_log_clone3(struct kernel_clone_args *kargs, int ret)
-> > +{
-> > +       struct audit_buffer *ab;
-> > +       int pidfd;
-> > +
-> > +       ab =3D audit_log_start(audit_context(), GFP_KERNEL,
-> > +                            AUDIT_CLONE3);
-> > +       if (!ab)
-> > +               return;
-> > +
-> > +       audit_log_format(ab, "cl3_flags=3D0x%llx exit_signal=3D%d cgrou=
-p=3D%d",
-> > +                        kargs->flags, kargs->exit_signal, kargs->cgrou=
-p);
-> > +       if ((kargs->flags & CLONE_PIDFD) && ret >=3D 0 &&
-> > +           !get_user(pidfd, kargs->pidfd))
-> > +               audit_log_format(ab, " pidfd=3D%d", pidfd);
->
-> Do we care about distinguishing between the combination of CLONE_PIDFD
-> and CLONE_THREAD vs CLONE_PIDFD alone?  In other words, do we care if
-> the "pidfd" field sometimes represents a pidfd of the child process vs
-> a thread in the current process?
->
+On Fri, Aug 21, 2026, Xiaoyao Li wrote:
+> On 8/8/2026 5:53 AM, Ackerley Tng via B4 Relay wrote:
+> > From: Ackerley Tng<ackerleytng@google.com>
+> > 
+> > Update the private memory conversions selftest to also test conversions
+> > that are done "in-place" via per-guest_memfd memory attributes. In-place
+> > conversions require the host to be able to mmap() the guest_memfd so that
+> > the host and guest can share the same backing physical memory.
+> > 
+> > This includes several updates, that are conditioned on the system
+> > supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
+> > 
+> > 1. Set up guest_memfd requesting MMAP and INIT_SHARED.
+> 
+> If I understand correctly, even with in-place gmem, the model that shared
+> memory comes from the userspace_addr and private memory comes from gmem can
+> still work without passing GUEST_MEMFD_FLAG_MMAP flag.
+> 
+> Since this model is not prohibited by KVM. I think we should keep the
+> testcase for this model to ensure test coverage?
 
-Hi Paul,
-
-Thanks for reviewing this patch.
-
-The flags field can be use to check if CLONE_THREAD is set, so it's
-possible to determine whether the pidfd refers to a child process or a
-thread by inspecting the flags. Do you think we should include a
-dedicated field for that?
-
-> > +       else
-> > +               audit_log_format(ab, " pidfd=3D(null)");
-> > +       audit_log_end(ab);
-> > +}
-> > +
-> >  static void audit_log_task(struct audit_buffer *ab)
-> >  {
-> >         kuid_t auid, uid;
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index f0e2e131a9a5..0f52e8c0e900 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -3047,7 +3047,9 @@ SYSCALL_DEFINE2(clone3, struct clone_args __user =
-*, uargs, size_t, size)
-> >         if (!clone3_args_valid(&kargs))
-> >                 return -EINVAL;
-> >
-> > -       return kernel_clone(&kargs);
-> > +       err =3D kernel_clone(&kargs);
-> > +       audit_log_clone3(&kargs, err);
-> > +       return err;
-> >  }
-> >
-> >  void walk_process_tree(struct task_struct *top, proc_visitor visitor, =
-void *data)
-> > --
-> > 2.53.0
->
-> --
-> paul-moore.com
->
-
--Ricardo
-
++1.  Deprecated doesn't mean unsupported.
 
