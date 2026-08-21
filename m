@@ -4,93 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E858CC5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 00:56:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AF1BC5DF81
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 00:58:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E15BB6B009D; Thu, 20 Aug 2026 20:55:59 -0400 (EDT)
+	id 196866B00A0; Thu, 20 Aug 2026 20:58:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DED756B009F; Thu, 20 Aug 2026 20:55:59 -0400 (EDT)
+	id 0F90C6B00A1; Thu, 20 Aug 2026 20:58:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D29D56B00A0; Thu, 20 Aug 2026 20:55:59 -0400 (EDT)
+	id F29736B00A2; Thu, 20 Aug 2026 20:58:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A95736B009D
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:55:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29ABFA0323
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:55:59 +0000 (UTC)
-X-FDA: 85123459638.10.77FD561
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 19EAF180009
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:55:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=yandex-team.ru header.s=default header.b=lDi2na8M;
-	spf=pass (imf24.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 178.154.239.136 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru;
-	dmarc=pass (policy=none) header.from=yandex-team.ru
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CA14C6B00A0
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:58:01 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38F7A1602E6
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:58:01 +0000 (UTC)
+X-FDA: 85123464762.12.1112A36
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 875D040008
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:57:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=glQuFr0r;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787273757;
+	s=arc-20220608; t=1787273879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5D9uwJCpbHo7/4YRUJ9w57BQAP1rfW5YDjsxXh0cj1o=;
-	b=uuj/2TjnDIfFh9iQeTCDgj+jdWwuX4IGtVONOeHOM+h9+L2EzkyoA70iIq+8+3b6KlRern
-	L1UC796kgPaXjMxhFHuykFW5rFvDyELWEXMxTNkTZ+fT6kI2HifMDwtEwI09zieYK7EYqV
-	7caqw49LZaRI7Wtl5uyir/6vYJHcB5c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787273757;
-	b=koW1r31Lqg9XlRi7JrkqS652dEL8Ed+yINjIcVqWCKwFaaTYTFOKxRjFyqPqtBtfJnavV8
-	paxtfngSAskIOtY5AYpjQ9dmY7OaP0dmcoZmyVG+iofjK999V9WD0uWalcpYK/dtacLGxo
-	WkkHjeeXBJRMariIXwwxNow0UiO6r0g=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ObRKkCAoD2p4iL57DuvF+TiV2Q0N0ZNrXB+qHqHujtI=;
+	b=RPsqwfn4XIhno7HkcwvUZdxHmOPJon14frTmh1qrWJpJCovtad2fzmCqAgyIVljtKTddHj
+	/RR/yg8ARFGswloIhy7fAOk2NNAQRg8+pXdMQjp/7Pi8RJrpgj2TFZaKG/ze5q1FA/FfLN
+	MNWbAGrcKyZrH+VV/5NheM7XNcSEW7U=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=yandex-team.ru header.s=default header.b=lDi2na8M;
-	spf=pass (imf24.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 178.154.239.136 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru;
-	dmarc=pass (policy=none) header.from=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:43a8:0:640:574d:0])
-	by forwardcorp1b.mail.yandex.net (postfix) with ESMTPS id 7555080794;
-	Fri, 21 Aug 2026 03:55:53 +0300 (MSK)
-Received: from i101646577.yandex-team.ru (unknown [2a02:6bf:8080:a74::1:2e])
-	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp) with ESMTPSA id mtLKPEEY8Ko0-acuqyG6g;
-	Fri, 21 Aug 2026 03:55:52 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1787273752;
-	bh=5D9uwJCpbHo7/4YRUJ9w57BQAP1rfW5YDjsxXh0cj1o=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=lDi2na8M9DsNS+mF1ieqTD/PYo3yxcZWCISS1b/1wYdRvYM4Oh7wu+6UayOotywDg
-	 43hiqx/DqhIMUiHg9hPd9YCfupnEORgabJkUsJBCMGsD54+fwlYJNANHPE6XeZXaAT
-	 YJ2RD947cxpraaNqGJwu18Ez172WizDuBOvYP4kk=
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm/vmstat: add per-order allocation slow path statistics
-Date: Fri, 21 Aug 2026 03:55:40 +0300
-Message-ID: <20260821005541.786308-1-d-tatianin@yandex-team.ru>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=glQuFr0r;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787273879;
+	b=ivQm5R6EEuMrWituG0DGlbrCO8E/8BgKPVsOeZydfbhTWt0nO9kwAECorItx1wTJQ19Mwo
+	FnpZ2jns6gPYXM5DKM6hMmg0lq575IkL+VDnOVXGg6T6Tv/1Z8K+e5EnRLHlqahE/MwVHC
+	UCDfSIoQ+inbnlfI+8jbiIbC+4R/ECM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 23C1B43358;
+	Fri, 21 Aug 2026 00:57:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA50B1F000E9;
+	Fri, 21 Aug 2026 00:57:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787273878;
+	bh=ObRKkCAoD2p4iL57DuvF+TiV2Q0N0ZNrXB+qHqHujtI=;
+	h=Date:From:To:Subject;
+	b=glQuFr0rcPkTOGS/GAkD0OHBHovgSmLWaQTJOpDxLUghoMzdIpoVY4WfioehIdvvv
+	 qmxEj30PGJMkDceYg/v0hxmGd0TWvbcUZg2+s5PrlV5iHIZTg65y+P9fI5wZl5iZPR
+	 YJKf5+an3Fc4ba7D09YZvuFDDBgkWRDoRK/ary2M=
+Date: Thu, 20 Aug 2026 17:57:56 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: linux-mm@kvack.org
+Subject: mm.git review status at 7.2
+Message-Id: <20260820175756.92d666dbf36bdb6f13f1e7eb@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: uamaxirbopjtn83m9njw6rwo5t9wao7m
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 19EAF180009
-X-HE-Tag: 1787273756-196785
-X-HE-Meta: U2FsdGVkX1+MoV3LBaViz9GnkgnCFJk9kFNEUJk4/o1+nOWqxqycZELClUUIXUm07G2ACv3vp9XqX/1FAKCEvu9hocPzBI8cpnHYh+Gtr9aorzfSW9XhrLmfd9Fv1fw9Yqab5Dm2SaBUsQs0aucJAZezBkUQYO8ESM/3wdFdsxvB0Fb1yZjm6pZ3JOKb3+dC59dj75uEX+rifaptGJ4c4me+8WFqT1cfK+kgsi8x3rf2nvDue+ckt+7lisHI2ikxurKWXEyI44iVCW61c3Kp00pNlyUWVIqvsmFZdpnQQDXVi87hJWGJOgdMuGMmCyUXGctt+e1pUA3GpcUwarA42DkFOs2Ea40cs6k8dfH5ytloi8ONZ6VP81+UrnQweQnRgvwXMEVcXKxN6Pv9yRdkZqy2yEVUQYacAmH/PsM/J4yBjSKr0USwufNYzwA98wU5hEhVHP+YU8buourUVSRt35+Ja/vMldJCaqzcYR2eSW0NlLlOcT7tkf/AoYMvSm34DF6OOcJtAoD1gTju1vtAdiynlWX9TaW76x7Ujtw3zM4yTHBADJZHhmb50JRTUL/ZY6hRfkJuIC3F8fy841yaX101Qlx08QK0cghXfPQkK72Mxkj67R4xqhtHQqs1eylel4xlygD2Pppm3lFAC4CR3nYWko65DNwSs3X9n+/2wuYxlyW3XZUDBk8Z5IdkJiyg6YIj+ZZYbBjcUrgFLkMeKje4Nuknz85oBGhRzDD4EX6M9YnU8Gvsfe1dCsKHcht4J3fTZBSrVD97rM2uATVUqgdSUvpwBP5ItDZAO2qsrUBgaHakRkNhJ9r1wWArn+H/eGoOPBoOIX4Sci/72Q+qULrwt8jfzCH+SCmn1zq3ssRDKPIdwKU+HJA0VDA28wrQQ/2li+RQWuAIxeAbF7QXJ0pSjkWSHBeOteto9adlYlelF92UJ0m7cA5dj5s4LRcALDlzAnKWIg7et3XsP+0
- nEJ3PHeb
- Wo+1+q2d4353ttEwce922OXttd3UXCWYepDoLG3EMXT2CKIex1rk4G0PlrJYyvVYiKwjghveBfXgX171j7rNLOEuiTApDcvV/sDVQNVeFe7cEWI475JA7IvH97lPoNmJOP7xXRdyswtUPS9MaVBYlroxw/UBRMRAo1pcmAi1NDR7QVXsQ0L26pvqXPbuNFAJol3uc9NGt3AIvRZZFAjFKw1sW6XEeOrmGwrOsmoa90nv9H9aBhTr6Kai80+dO4+tD1kVzOeUN3RPzXrtYSyGde9dRnr7AE+XSRAJABt1tcTsynj1KngBNMFyGh4Un0f5ljIFvYkoreLjN1OHRIvXj3X4zzmz2Se6Vph3Rtykz+hw2gzVO5QTer7YiD9QCLCxMqRK6RQbNMwyM7rjh33fbjZEouw==
+X-Rspamd-Queue-Id: 875D040008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: o9u9f36b49cyr35z6zu4168o7tdchbwh
+X-HE-Tag: 1787273879-625337
+X-HE-Meta: U2FsdGVkX1+R7TS1cKPrYRo/Mjt71uZmPWuhe8VR7/rZEaQ/nyKC3mv4gFAnHtothQCo3axWUyMjScFCYCpD0afbDX3OgPp3fAR3caaL3laiW/Ir5Wwxd/sTZsaeQNnt6gtStcFvpmElJYzfCtzDuvk+red7LogFDy83ZguG25NXNrjGc/dleaGnm2XebZQS9P45sWaDxUBBQ/6NiPjDHvntb855jKwkIj1t7VUPNvR5c1rr+Ty/Pqv09opym+VWuRd2zuVqtT0aUP0zno8DRsMw/+Ud1wwJXNmyTRQh5ZNvuXho9ntXa9eUrYg1T6yE5TjovtJnz0CWX4IrnLyqZJQJkaYCdD32dZmAT16lAcEFbuUtljxSUN/FHyWsTW+F340va3E3eboFDVk2uBDDQhe3OWi604MTEQXTfFECwHpGaQXaogdhxMjHX2tN3g99knkve1QsuEWlc+GIM+kzUx17+l3qfujKdWBMh+DtoVOXw9QRqd9CpcTWr8aGkqEloVpfELk28cEtWvT0mDt4YvK0qAaKwSOpNgDOXrb3G0zMPqzQykaHLgBazUNjDpUQlS8keIDXcIkCig53iCFy+l08M+XBe6OOqp63pCaUYAkwK+qEuFZvRKswx18NEh2i6USlnc/QQkI3cSchK5sbsYG1nJPdX1Z5090dHftGNFfJcyPjNzyLhqqkoEgc9NK3bAQk9vjzpy5yTnTbvbsm2NW+I1BLQ0jNXO5SaZTpdca5Hnqb74GSZHlq3ZfG5DJ78MfSaRXLHCD0/oqzMnmTfgEfuydtqAXEJD6HYrgEsKBcU9y0gAbAF/chI0EWyCBeI1p5JZmfF4AZ+e8dCtFtGbobN/FtyzDWz9FAbwmEAoKqVybJtgUC0PdfwTIvFHpnU99TiTEIl7xP4H2eMUY1Y3LW+1gpNOlvS7yHI4trZgISjpwGz9vBOjBebA8THAUsKRtpUX4NSt/+mwS9LkR
+ nc07hui+
+ TybwqVxWTDFXHhXzIm7SC2s5Mf76zVy2Wj/TdWyunSnWEC9380N+4KOLPDt2epMtwqg2d0fWBMvVB8W2wVKr9OSJjuwQA24Vbkq5seBUwTtXCYHZm9b+PSFd6+wyHRtRJrOUr1wxLrGcxGUnkNdQWUDF08ukPf5zhyRG4ZySHi5lw/f5a/toak8K0WwS7wS/xB0C6X9mZRyVtbwHnLsHHObrqPfK7DqjUp1n48XxFuEDIYitaU6AbhllFDrC2kfRd2jNXIc1BNyMDwr6YU5+IQ2kPHpjTDx8TA9DrLsb/K8MiIh7tt6sAAK1R+hxgfjhlHa4tvE2FVqZwWZUihmXwC7i+U/RHB4PdfKHdsvffmZ7ihfuoG9NSPDxKhUJL/gqC/Qf3/8grmQawPsIKtElDF3dcxLcuxfTPRqtwPPXS1M9MZ9ZsX8yc9dVL114VmQbjarOP0B+rlbcDmpRIuXY+g2Aa0bZ0Eh37la0GjaQB6KgB4IahHjtE57cnvcZ7/ZaCYv3ohKWhnd1wu7SL28CbdijKroHHaxUw7rvEKXSAsoht/HCaysqjkm67b/sJH312qbQN3XEKJoZWBehy1gjlwTWSk5Sw6vwJ59dc11EdVXOB5iKFptLJ64Bb/ELXlp/kA67boXHSDoNeRJt0zzkxgPeGq74k4+iO9VSzJ7Sl4T5no8UsYPzt5hkrarU2AiXZPbg588pgX+6P0So6dlyYB8LBNGCotP12yI2xiUFJ9TH+Mzy3FoIDRmc5hjslxeUP48ddf/fgyXp4vM148gAhaA1xHkbV2cZORz8sHobqIW9kzvoA8dUtmMM3xXpcmBCC6D+79NTMGDNdpTm3gROA3EGaqTBGQ1sJ8D/ABTUcoMX27+IwPGrnJ87H2kpGFfKHE5GXnfxC81e5jGmWWu2uwA0uIBRv/92tgn/XrjJrX/lABNTtyGu/owYi25F8CnahvNCW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,259 +84,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Production incidents caused by bursts of high-order allocations all
-entering direct compaction are currently hard to attribute from
-/proc/vmstat: pgalloc_* has no order breakdown, and compact_stall does
-not say which order stalled. Tracepoints can recover this on a single
-machine, but they are impractical as an always-on fleet-wide monitoring
-source, which is what is needed to correlate latency regressions with
-allocation behavior after the fact.
 
-Add per-order event counters to /proc/vmstat, covering only the
-allocation slow path, so the page allocator fast path is not touched
-at all:
+~500 patches are in Linus's inbox.
 
- - pgalloc_slowpath_orderN: entries into __alloc_pages_slowpath(),
-   counted once per allocation, before the restart loop
- - pgalloc_fail_orderN: allocations that returned NULL to the caller
-   (including a successful allocation freed by memcg charge failure)
- - compact_stall_orderN / compact_success_orderN: per-order split of
-   the existing direct compaction counters, order 0 is omitted since
-   direct compaction is never entered for it
+This is the review status for next week's batch.  These are presently
+in mm-unstable so I can still paste in any ack/review tags.  I expect
+to move these patches into mm-stable on Monday.
 
-All new counters are purely additive: the existing keys are untouched
-and compact_stall == sum of compact_stall_orderN.
 
-alloc_pages_nolock() is deliberately not counted: it is opportunistic,
-never enters the slow path, and its NULL returns are expected rather
-than failures.
+Two patches stand out to my eye:
 
-Counter names are generated for all MAX_PAGE_ORDER configurations that
-are currently possible via ARCH_FORCE_MAX_ORDER. Orders 1..3 are
-generated unconditionally, 4..13 are MAX_PAGE_ORDER dependent (e.g.
-ppc32 with 256k pages forces 4 by default).
+	mm/hugetlb: fix missing migratable flag on same-node hugetlb migration
+	mm/migrate_device: avoid out-of-bounds writes for compound folios
 
-Sample output, taken on a small x86-64 test VM after a burst of THP
-sized (order-9) allocations against deliberately fragmented physical
-memory (only non-zero counters shown):
+I'll chase those down in the relevant threads.
 
-  $ grep -E "order[0-9]+" /proc/vmstat
-  pgalloc_slowpath_order0 9104
-  pgalloc_slowpath_order9 26
-  pgalloc_slowpath_order10 5
-  pgalloc_fail_order0 1
-  pgalloc_fail_order9 25
-  pgalloc_fail_order10 5
-  compact_stall_order9 51
 
-inspecting these we can see exactly what happened on the system in that
-moment: the order-9 burst missed the fast path 26 times, stalled in
-direct compaction 51 times and 25 of the requests failed outright,
-against a background of ordinary order-0 slow path traffic (9104).
+Please scan this list and decide if there's anything you'd like to check
+out.
 
-A per-order split of PGALLOC itself was proposed in 2017 but stalled
-over fast path overhead concerns, restricting the counters to the slow
-path avoids that overhead entirely while still capturing the
-allocations that cause latency.
 
-Link: https://lore.kernel.org/all/1499346271-15653-1-git-send-email-guro@fb.com/
 
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
----
-v1 -> v2:
- - handle MAX_PAGE_ORDER below 10: orders 4..10 now track MAX_PAGE_ORDER
-   like 11..13 already did, so configs such as arm pxa_defconfig
-   (MAX_PAGE_ORDER = 8) or ppc32 with 256K pages (4, the smallest any
-   arch Kconfig currently sets) no longer overrun the enum ranges and
-   trip the vmstat_text size assertion
- - quote sample /proc/vmstat output in the changelog
+mm.git review status for mm-stable..mm-unstable
 
- include/linux/vm_event_item.h | 19 +++++++
- mm/page_alloc.c               |  7 +++
- mm/vmstat.c                   | 96 +++++++++++++++++++++++++++++++++++
- 3 files changed, 122 insertions(+)
+Everything:
 
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 03fe95f5a020..724561b7e800 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -175,6 +175,25 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- 		KSTACK_REST,
- #endif
- #endif /* CONFIG_DEBUG_STACK_USAGE */
-+		/*
-+		 * Per-order allocation statistics: each *_FIRST..*_LAST range
-+		 * is indexed by allocation order.
-+		 */
-+		PGALLOC_SLOWPATH_ORDER_FIRST,
-+		PGALLOC_SLOWPATH_ORDER_LAST =
-+			PGALLOC_SLOWPATH_ORDER_FIRST + MAX_PAGE_ORDER,
-+		PGALLOC_FAIL_ORDER_FIRST,
-+		PGALLOC_FAIL_ORDER_LAST =
-+			PGALLOC_FAIL_ORDER_FIRST + MAX_PAGE_ORDER,
-+#ifdef CONFIG_COMPACTION
-+		/* Direct compaction is never entered for order 0 */
-+		COMPACTSTALL_ORDER_FIRST,
-+		COMPACTSTALL_ORDER_LAST =
-+			COMPACTSTALL_ORDER_FIRST + MAX_PAGE_ORDER - 1,
-+		COMPACTSUCCESS_ORDER_FIRST,
-+		COMPACTSUCCESS_ORDER_LAST =
-+			COMPACTSUCCESS_ORDER_FIRST + MAX_PAGE_ORDER - 1,
-+#endif
- 		NR_VM_EVENT_ITEMS
- };
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ee902a468c2f..2a2b14f3b516 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4169,6 +4169,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
- 	 * count a compaction stall
- 	 */
- 	count_vm_event(COMPACTSTALL);
-+	count_vm_event(COMPACTSTALL_ORDER_FIRST + order - 1);
- 
- 	/* Prep a captured page if available */
- 	if (page)
-@@ -4184,6 +4185,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
- 		zone->compact_blockskip_flush = false;
- 		compaction_defer_reset(zone, order, true);
- 		count_vm_event(COMPACTSUCCESS);
-+		count_vm_event(COMPACTSUCCESS_ORDER_FIRST + order - 1);
- 		return page;
- 	}
- 
-@@ -4757,6 +4759,8 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 		WARN_ON_ONCE(current->flags & PF_MEMALLOC);
- 	}
- 
-+	count_vm_event(PGALLOC_SLOWPATH_ORDER_FIRST + order);
-+
- restart:
- 	compaction_retries = 0;
- 	no_progress_loops = 0;
-@@ -5323,6 +5327,9 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
- 		page = NULL;
- 	}
- 
-+	if (unlikely(!page))
-+		count_vm_event(PGALLOC_FAIL_ORDER_FIRST + order);
-+
- 	trace_mm_page_alloc(page, order, alloc_gfp, ac.migratetype);
- 	kmsan_alloc_page(page, order, alloc_gfp);
- 
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index f534972f517d..08f0ebc7ff43 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1184,6 +1184,94 @@ int fragmentation_index(struct zone *zone, unsigned int order)
- 	[xx##_MOVABLE] = yy "_movable",		\
- 	TEXT_FOR_DEVICE(xx, yy)
- 
-+#if MAX_PAGE_ORDER >= 4
-+#define TEXT_FOR_ORDER_4(xx, yy) [I((xx) + 4)] = yy "4",
-+#else
-+#define TEXT_FOR_ORDER_4(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 5
-+#define TEXT_FOR_ORDER_5(xx, yy) [I((xx) + 5)] = yy "5",
-+#else
-+#define TEXT_FOR_ORDER_5(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 6
-+#define TEXT_FOR_ORDER_6(xx, yy) [I((xx) + 6)] = yy "6",
-+#else
-+#define TEXT_FOR_ORDER_6(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 7
-+#define TEXT_FOR_ORDER_7(xx, yy) [I((xx) + 7)] = yy "7",
-+#else
-+#define TEXT_FOR_ORDER_7(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 8
-+#define TEXT_FOR_ORDER_8(xx, yy) [I((xx) + 8)] = yy "8",
-+#else
-+#define TEXT_FOR_ORDER_8(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 9
-+#define TEXT_FOR_ORDER_9(xx, yy) [I((xx) + 9)] = yy "9",
-+#else
-+#define TEXT_FOR_ORDER_9(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 10
-+#define TEXT_FOR_ORDER_10(xx, yy) [I((xx) + 10)] = yy "10",
-+#else
-+#define TEXT_FOR_ORDER_10(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 11
-+#define TEXT_FOR_ORDER_11(xx, yy) [I((xx) + 11)] = yy "11",
-+#else
-+#define TEXT_FOR_ORDER_11(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 12
-+#define TEXT_FOR_ORDER_12(xx, yy) [I((xx) + 12)] = yy "12",
-+#else
-+#define TEXT_FOR_ORDER_12(xx, yy)
-+#endif
-+
-+#if MAX_PAGE_ORDER >= 13
-+#define TEXT_FOR_ORDER_13(xx, yy) [I((xx) + 13)] = yy "13",
-+#else
-+#define TEXT_FOR_ORDER_13(xx, yy)
-+#endif
-+
-+static_assert(MAX_PAGE_ORDER >= 4 && MAX_PAGE_ORDER <= 13,
-+	      "the per-order counter names need updating for this MAX_PAGE_ORDER");
-+
-+/*
-+ * (xx) + n must resolve to the vm_event_item for order n, so ranges that
-+ * start at order 1 pass their *_ORDER_FIRST item minus one. Orders 1..3
-+ * are generated unconditionally, 4..13 are MAX_PAGE_ORDER dependent (e.g.
-+ * ppc32 with 256k pages forces 4 by default).
-+ */
-+#define TEXTS_FOR_NONZERO_ORDERS(xx, yy)	\
-+	[I((xx) + 1)] = yy "1",			\
-+	[I((xx) + 2)] = yy "2",			\
-+	[I((xx) + 3)] = yy "3",			\
-+	TEXT_FOR_ORDER_4(xx, yy)		\
-+	TEXT_FOR_ORDER_5(xx, yy)		\
-+	TEXT_FOR_ORDER_6(xx, yy)		\
-+	TEXT_FOR_ORDER_7(xx, yy)		\
-+	TEXT_FOR_ORDER_8(xx, yy)		\
-+	TEXT_FOR_ORDER_9(xx, yy)		\
-+	TEXT_FOR_ORDER_10(xx, yy)		\
-+	TEXT_FOR_ORDER_11(xx, yy)		\
-+	TEXT_FOR_ORDER_12(xx, yy)		\
-+	TEXT_FOR_ORDER_13(xx, yy)
-+
-+#define TEXTS_FOR_ORDERS(xx, yy)		\
-+	[I(xx)] = yy "0",			\
-+	TEXTS_FOR_NONZERO_ORDERS(xx, yy)
-+
- const char * const vmstat_text[] = {
- 	/* enum zone_stat_item counters */
- #define I(x) (x)
-@@ -1488,6 +1576,14 @@ const char * const vmstat_text[] = {
- #if THREAD_SIZE > 65536
- 	[I(KSTACK_REST)]			= "kstack_rest",
- #endif
-+#endif
-+	TEXTS_FOR_ORDERS(PGALLOC_SLOWPATH_ORDER_FIRST, "pgalloc_slowpath_order")
-+	TEXTS_FOR_ORDERS(PGALLOC_FAIL_ORDER_FIRST, "pgalloc_fail_order")
-+#ifdef CONFIG_COMPACTION
-+	TEXTS_FOR_NONZERO_ORDERS(COMPACTSTALL_ORDER_FIRST - 1,
-+				 "compact_stall_order")
-+	TEXTS_FOR_NONZERO_ORDERS(COMPACTSUCCESS_ORDER_FIRST - 1,
-+				 "compact_success_order")
- #endif
- #undef I
- #endif /* CONFIG_VM_EVENT_COUNTERS */
+Total patches:       206
+Reviews/patch:       1.69
+Reviewed rate:       77%
+
+Excluding DAMON:
+
+Total patches:       200
+Reviews/patch:       1.74
+Reviewed rate:       79%
+
+Excluding DAMON and selftests:
+
+Total patches:       177
+Reviews/patch:       1.70
+Reviewed rate:       77%
+
+Excluding DAMON, selftests and maple_tree:
+
+Total patches:       156
+Reviews/patch:       1.88
+Reviewed rate:       85%
+
+
+
+Unreviewed patches by author:
+
+
+Andrew Morton <akpm@linux-foundation.org> (3 total)
+    "mm-provide-vma_is_cow_mapping-and-remove-is_cow_mapping-fix"
+        Link: https://lore.kernel.org/aob1goSSPH6sTN9y@gremlin
+    "selftests-cgroup-test_zswap-skip-test_no_kmem_bypass-if-debugfs-is-unavailable-fix"
+    "mm/hmm.c:hmm_do_fault(): suppress sparse warning"
+
+Catalin Marinas <catalin.marinas@arm.com> (1 total)
+    "mm: kmemleak: confirm suspected leaks with a second scan"
+        Link: https://lore.kernel.org/20260713-catalin_pto-v1-0-5b93b1131089@debian.org
+        Link: https://lore.kernel.org/20260713-catalin_pto-v1-1-5b93b1131089@debian.org
+
+Danila Tikhonov <danila@mainlining.org> (1 total)
+    "mailmap: map old addresses to Danila Tikhonov"
+        Link: https://lore.kernel.org/20260801153333.296218-1-danila@mainlining.org
+
+David Hildenbrand (Arm) <david@kernel.org> (2 total)
+    "mm: standardize printing for pgtable entries"
+        Link: https://lore.kernel.org/20260709044334.1741263-1-anshuman.khandual@arm.com
+    "mm/gup_test: keep longterm pin state per file"
+        Link: https://lore.kernel.org/20260810-gup_test_data-v1-1-fb1d41be5bb4@kernel.org
+
+Guodong Xu <docular.xu@gmail.com> (1 total)
+    "mailmap: add entries for Guodong Xu"
+        Link: https://lore.kernel.org/20260807-b4-mailmap-guodong-xu-v2-1-f7c71bc6bd9f@gmail.com
+
+Christoph Hellwig <hch@lst.de> (2 total)
+    "mm/swap: also use struct swap_iocb for block I/O"
+        Link: https://lore.kernel.org/20260713093350.2154226-4-hch@lst.de
+    "mm/swap: remove SWP_FS_OPS"
+        Link: https://lore.kernel.org/20260713093350.2154226-7-hch@lst.de
+
+Song Hu <husong@kylinos.cn> (1 total)
+    "Docs/mm: fix outdated "radix tree" in page_migration"
+        Link: https://lore.kernel.org/20260812075739.325441-1-husong@kylinos.cn
+
+Karl Mehltretter <kmehltretter@gmail.com> (1 total)
+    "selftests/proc: make proc-maps-race work with READ_IMPLIES_EXEC"
+        Link: https://lore.kernel.org/20260808200312.6326-1-kmehltretter@gmail.com
+
+Liam R. Howlett (Oracle) <liam@infradead.org> (17 total)
+    "maple_tree: add rcu locking check when LOCKDEP is enabled"
+        Link: https://lore.kernel.org/20260630190843.3563858-1-liam@infradead.org
+        Link: https://lore.kernel.org/20260630190843.3563858-2-liam@infradead.org
+    "locking/lockdep: add sequence counter to held_lock"
+        Link: https://lore.kernel.org/20260630190843.3563858-3-liam@infradead.org
+        Link: https://lore.kernel.org/all/h3tpnj5kzcrxms5picmimtkpg4aypcpip5wbd6bt2rpdj5k7eb@nhtzs3lefrkq/
+    "maple_tree: add write lock checking with lockdep sequence numbers"
+        Link: https://lore.kernel.org/20260630190843.3563858-4-liam@infradead.org
+    "maple_tree-stop-flooding-logs-when-debug_locks-is-set-to-zero-fix"
+        Link: https://lore.kernel.org/fo5r2xl3fql6gyvjasfvfu4ftugjti2vxg7zskdw7hjeo3xvqm@kk66qmsf762s
+    "maple_tree: drop dead code from mas_extend_spanning_null()"
+        Link: https://lore.kernel.org/20260630190843.3563858-6-liam@infradead.org
+    "maple_tree: drop MAPLE_ALLOC_SLOTS"
+        Link: https://lore.kernel.org/20260630190843.3563858-7-liam@infradead.org
+    "maple_tree: clarify comments on mas_nomem()"
+        Link: https://lore.kernel.org/20260630190843.3563858-8-liam@infradead.org
+    "maple_tree: use prefetched value in mas_wr_store_type()"
+        Link: https://lore.kernel.org/20260630190843.3563858-9-liam@infradead.org
+    "maple_tree: optimise mas_wr_node_store() when not in rcu mode"
+        Link: https://lore.kernel.org/20260630190843.3563858-10-liam@infradead.org
+    "maple_tree: micro optimisation of mas_wr_store_type()"
+        Link: https://lore.kernel.org/20260630190843.3563858-11-liam@infradead.org
+    "maple_tree: add bulk parent set helper"
+        Link: https://lore.kernel.org/20260630190843.3563858-12-liam@infradead.org
+    "maple_tree: WARN_ON_ONCE when allocations fail"
+        Link: https://lore.kernel.org/20260630190843.3563858-15-liam@infradead.org
+    "maple_tree: document erase and allocations better"
+        Link: https://lore.kernel.org/all/20260617180419.GA231643@ziepe.ca/
+        Link: https://lore.kernel.org/20260630190843.3563858-16-liam@infradead.org
+    "maple_tree: change two GFP flags in tests"
+        Link: https://lore.kernel.org/all/d9cbb89faa5bdb71d451781d214a51ce8923a83e.camel@perches.com/
+        Link: https://lore.kernel.org/20260630190843.3563858-17-liam@infradead.org
+    "maple_tree: fix argument name in header"
+        Link: https://lore.kernel.org/20260630190843.3563858-18-liam@infradead.org
+    "maple_tree: avoid extra gap calculation"
+        Link: https://lore.kernel.org/20260630190843.3563858-19-liam@infradead.org
+    "maple_tree: add helper mas_make_walkable()"
+        Link: https://lore.kernel.org/20260630190843.3563858-20-liam@infradead.org
+
+Qiang Liu <liuqiang@kylinos.cn> (1 total)
+    "lib/test_hmm: fix garbage pfn and wrong direction in devmem fault debug"
+        Link: https://lore.kernel.org/20260812092856.55296-1-liuqiangneo@163.com
+
+Lorenzo Stoakes (ARM) <ljs@kernel.org> (1 total)
+    "mm/huge_memory: separate out CONFIG_PERSISTENT_HUGE_ZERO_FOLIO logic"
+        Link: https://lore.kernel.org/20260730-fix-refcounted-huge-zero-v2-2-c5d8a41b317f@kernel.org
+
+Wupeng Ma <mawupeng1@huawei.com> (1 total)
+    "mm/hugetlb: fix missing migratable flag on same-node hugetlb migration"
+        Link: https://lore.kernel.org/20260707110254.3147686-1-mawupeng1@huawei.com
+
+Phillip Lougher <phillip@squashfs.org.uk> (1 total)
+    "MAINTAINERS: remove git URL for Squashfs"
+        Link: https://lore.kernel.org/20260806181916.617881-1-phillip@squashfs.org.uk
+
+Ramin Moussavi <ramin.moussavi@yacoub.de> (1 total)
+    "microblaze: restore the page alignment of swapper_pg_dir"
+        Link: https://lore.kernel.org/20260727215823.1422701-1-ramin.moussavi@yacoub.de
+
+Sergey Senozhatsky <senozhatsky@chromium.org> (4 total)
+    "zram: set default primary compressor in zram_destroy_comps()"
+        Link: https://lore.kernel.org/20260729045745.775973-2-senozhatsky@chromium.org
+    "zram: validate deflate params"
+        Link: https://lore.kernel.org/20260729045745.775973-3-senozhatsky@chromium.org
+        Link: https://sashiko.dev/#/patchset/20260728092935.31139-1-haoqinhuang7@gmail.com
+    "Documentation: zram: correct algo parameters configuration documentation"
+        Link: https://lore.kernel.org/20260730075158.1339787-1-senozhatsky@chromium.org
+    "zram: switch to unsigned long indexing"
+        Link: https://lore.kernel.org/20260806031640.536615-1-senozhatsky@chromium.org
+
+Hui Su <sh_def@163.com> (1 total)
+    "mm/migrate_device: avoid out-of-bounds writes for compound folios"
+        Link: https://lore.kernel.org/20260817120758.669807-3-sh_def@163.com
+
+SJ Park <sj@kernel.org> (5 total)
+    "samples/damon/mtier: error out for zero quota goal target values"
+        Link: https://lore.kernel.org/20260803134034.15217-1-sj@kernel.org
+        Link: https://lore.kernel.org/20260803134034.15217-2-sj@kernel.org
+    "mm/damon/lru_sort: error out for >10000 active_mem_bp"
+        Link: https://lore.kernel.org/20260803134034.15217-3-sj@kernel.org
+    "mm/damon/reclaim: skip damon_call() if ctx has not started"
+        Link: https://lore.kernel.org/20260803134646.16640-1-sj@kernel.org
+        Link: https://lore.kernel.org/20260803134646.16640-2-sj@kernel.org
+    "mm/damon/lru_sort: skip damon_call() if ctx has not started"
+        Link: https://lore.kernel.org/20260803134646.16640-3-sj@kernel.org
+    "mm/damon: adjust isolated pages stat for DAMOS_MIGRATE_{HOT,COLD}"
+        Link: https://lore.kernel.org/20260728140404.94476-1-sj@kernel.org
+
+Hajime Tazaki <thehajime@gmail.com> (1 total)
+    "mm: nommu: point to the write iterator upon split_vma"
+        Link: https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/syscalls/mseal/mseal02.c
+        Link: https://lore.kernel.org/20260702012546.665383-1-thehajime@gmail.com
+
+Muhammad Usama Anjum <usama.anjum@arm.com> (1 total)
+    "selftests/mm: retry migration failures for the full runtime"
+        Link: https://lore.kernel.org/20260727095225.372655-6-usama.anjum@arm.com
+
+Zhiling Zou <zhilinz@nebusec.ai> (1 total)
+    "mm/page_table_check: skip special zero mappings"
+        Link: https://lore.kernel.org/cover.1784717203.git.zhilinz@nebusec.ai
+        Link: https://lore.kernel.org/e94478e4fb7912fb7e8ebebed5ce85d00dc9a69d.1784717203.git.zhilinz@nebusec.ai
+
+
 
