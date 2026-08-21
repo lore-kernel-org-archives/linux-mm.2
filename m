@@ -4,129 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 964D6C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 03:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B8F6C5DF81
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 03:14:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85A8E6B008C; Thu, 20 Aug 2026 23:12:13 -0400 (EDT)
+	id 355F26B00A9; Thu, 20 Aug 2026 23:14:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80ABB6B0092; Thu, 20 Aug 2026 23:12:13 -0400 (EDT)
+	id 32D826B00AA; Thu, 20 Aug 2026 23:14:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7212C6B00A6; Thu, 20 Aug 2026 23:12:13 -0400 (EDT)
+	id 21C996B00AB; Thu, 20 Aug 2026 23:14:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D05B6B008C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 23:12:13 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D641B402F8
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:12:12 +0000 (UTC)
-X-FDA: 85123802904.20.E14D291
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3E6024000C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:12:10 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Ejv1plkc;
-	spf=pass (imf27.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787281930;
-	b=6/1qT4Vk7ESR+tmdTPQYCIOzJi6jO4fIlJu4Pupb5jYA+PpxcNndSmpgxq0TeL+K8zZtQl
-	9q4c5Xi9/Ol6qLAkHRzzkdKC835698YL0E6o4me+c2ts7PhAxHuY2N2sJCne7uQmMJw/+p
-	AOm1jx+SAafcO52SqQ/McQQckG+SGM8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Ejv1plkc;
-	spf=pass (imf27.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED0F46B00A9
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 23:14:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 75803160372
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:14:32 +0000 (UTC)
+X-FDA: 85123808784.23.D4E6A21
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9AF69180005
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:14:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="lOK/0suT";
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787281930;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787282070;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x4vHuA2oIK6LAfmHV5Z8rX+eB7Kz3WActUUouAIvFjg=;
-	b=meBy7X8M0Xkgp4M2oAZV7w75G/9wHolwk85/A/7l0wdipUU8PAXqZvcDRARxTDbt6Jenmw
-	Cc8fJJZsp6i3D0SeXGeHVdCsEk/sqD5BjcCqYWQ2GpRkhMxkB2SBMwuqvXAGwmlWtPFxJW
-	h+Rpg1/ys45AjgwecIOTVt79/ScGwi8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787281930; x=1818817930;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LLdCyUIMvTLvV0Qwwzwy3ePPzmdPaDmUaU/9K8yTvoE=;
-  b=Ejv1plkcKprxMp5PUPZ220iVQHY1LzHbsGGKzgRNZnkE2jTSZmfpN8Bt
-   aWo0AErY74LmGVIEDugKH44z4fK400U9m99MUOsjIQnXZ6+eovfZvBtd2
-   R1DTPaVVZgenS+8uBJCm1JRMq2K6naI3EpAgn4w38fAVhintCxEtvQQjm
-   gjt5qTRIQc7YeRolyF6Obf2SmhAOy2UPOnGNuQHneLlpj/PBQh4g7pBE6
-   oic5SIzeScrCdmPH8LAW27JBQEhpEg+K1REX/Jr68Uaeylh0+VrCqgYUb
-   gZkPNtLmz8cN87KxWZ6ybtqCnVaCvBfqkzt388llY6Pf/WBW5C9BCHOEK
-   Q==;
-X-CSE-ConnectionGUID: cLIjjd9pRZ+PaFkE8p/ETw==
-X-CSE-MsgGUID: HaQL3rncQpWqMGTnAm+wZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91701109"
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="91701109"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:12:09 -0700
-X-CSE-ConnectionGUID: NOkWPYcAQ6ua/qZWMjhxVQ==
-X-CSE-MsgGUID: OFKp6eRTSFCxoY11hYwwiA==
-X-ExtLoop1: 1
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 20:11:54 -0700
-Message-ID: <fe1c6359-7371-4ccd-9807-1d81c160d12b@intel.com>
-Date: Fri, 21 Aug 2026 11:11:51 +0800
+	bh=nap+rM8Be8DqruXf+C67/tHyR/uuLBbAVCYucfCY/lU=;
+	b=fPhQPSkTqzJtWxe2vFTCLjRzvBVWCqCAHCmHe/M3iQPxoElCNtKjwVki9BhmxOGk187UfX
+	2a2ehwx7aF579D1Sy2kWFTelOgioNQTF97jP/xJoSNv3Pdobh+G7HFuRAwKMoq4sseD8R1
+	bZeYm3Yyguk+XfvPWRmYBkHbYHDLRJw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="lOK/0suT";
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787282070;
+	b=Zk0k077SsHBSHxGd/ZQ1h1I8ZUK7sXMS0eacR//JMbaxScD5RQpWPLi7dmciuxpgAFBwhV
+	n+A5w0czgnGZhtxkdGQBqINRrvhLpljIOJ8d2atDgsPMsxVDSY2QrIN/jf/oydDsPSa6Vc
+	05suqkCxfyd1ZM7M/TTBgcHoGhvGHjA=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c15f020a223so79352666b.1
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:14:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787282069; x=1787886869; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nap+rM8Be8DqruXf+C67/tHyR/uuLBbAVCYucfCY/lU=;
+        b=lOK/0suT8u1plPPfrj+bL6+3bFZxl9r3V0wfuvLMvPl5T/+n0JjRL0v1LXqbN2Krxk
+         PopOE2Jr9SLGF5jPooBM+hhPe78M4IZYn3B0wyGCBSVjSaGTvkdrZH9EXj9ZBaJFH7sU
+         spc1ekRfou7DXdG5DSV2TgJh29JbpcjTAfooqtcGUtpMMUzAwEv6YLowT6EuUjJSlRJo
+         VwJFSex2BB+eWe7MCACs2TrNs9LAj8lo2VUxi3sTMyfU5By69mfYw6sDSqhTf9EUPQc5
+         n05nzrd22nspfWgSYb0oSVBvtwolPYLdshHYB0kTDuNu8QY2JLP57WFKWOLMs9AexV5q
+         3/nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787282069; x=1787886869;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=nap+rM8Be8DqruXf+C67/tHyR/uuLBbAVCYucfCY/lU=;
+        b=JXERRhJmEsUDsOxGFPtlMS6tlGEEldm/8bMX3P8nIqaDes/rNnuaMDn1LBkJbHOVxk
+         hBRTVrSbHQBoQ1NOIs5Iw/nZpOvSrNiCfFBaSbgyW2eO8aTs7M9oUxIocEeM6Ft+rnj+
+         XWMifShOUlPgUcqc0ijUWUQhsIZjGGTis/JLP+CCV39zyhiNgKoxOrNqqKrf/WoB3XFr
+         wHSNZPKy/erfskF0b2I9biE1E8nVB8G2CUfjZNIfcmWJi0+Hakyg9Ofe4QOaqrals+63
+         bL0LuvypF4JBxJnT9edlcU/NUQGZo7FEYxb/oY9tQi6oeac+YN/DJdQvvaZpynRsPn/5
+         Y2pA==
+X-Forwarded-Encrypted: i=1; AHgh+RqsLe7T7pst+gix4jLa2/EfTCmdyV283gwJ3MLlAveG7+yxHmTiRljeqXs/iVjF1sYp6XXYkoSLvQ==@kvack.org
+X-Gm-Message-State: AOJu0YxHXlPO8aCzeQPyolXrjcbWskNk7qjryhIUvW1sfrYn40g5Sc4z
+	zpkIJixJYfmXIgDtODeWV4502/UGVUlDNLZyyc1yglHKKbedn1ffLcVS
+X-Gm-Gg: AR+sD124xDQhhZjsC9GHa8Kb6f1Dm00i+v5nTZ1/0+70S0rMx8FjyfbIc6B7XguPQfX
+	zrQFHx4XvgrVcoCwgqWfo9gtsZXCrDorkm7uGXUoi059ErbgW4MvWDxngexwM+RMVP9mVtZ4UCy
+	5rI1J8No9ox7+MSdIjlgaYFuAjgkJaxa0kJ0C33fxiQEt2eRcqrMLDBWzW+Hjdp0gfcFipp1RxE
+	mGLBbPGnUySysRMYrQHxvyNxKXCp5uVKyIdEThgqh6nqLBluJxm0ko0hcxd5bgPJ4ogiixCLlE+
+	hUMRNOupsVYs6Pch3nBv1c/Ldi/6XI9fk3ngx4tjme/sDXKBeB4BzGhN1rYXjC4S+os2pK3L0/s
+	7pckb+QzZNmaNXdMzIfsLmtrHHhZRwANaDe/2gsaqlxHacWQCovCjog/7Rlaj/zqTp86coGicpy
+	9Ljn52PWuzbFZnMawpo1fh+5ZwDgXj2iUyRk2FPYGIAFm2Hc91//Hehdkpn6k=
+X-Received: by 2002:a17:906:9f8e:b0:c19:5572:d234 with SMTP id a640c23a62f3a-c246a4ac801mr365162866b.1.1787282068936;
+        Thu, 20 Aug 2026 20:14:28 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24589e1b0csm241069366b.8.2026.08.20.20.14.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 20 Aug 2026 20:14:28 -0700 (PDT)
+Date: Fri, 21 Aug 2026 03:14:27 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	Nanhai Zou <nanhai.zou@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>,
+	Jason Zeng <jason.zeng@intel.com>, Chen Yu <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 1/2] mm/memory_hotplug: make shrink_zone_span() more
+ robust
+Message-ID: <20260821031427.qq6mb3j2zqtzdl3n@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260818085702.3395529-1-yuan1.liu@intel.com>
+ <20260818085702.3395529-2-yuan1.liu@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 40/41] KVM: selftests: Update
- private_mem_conversions_test to mmap() guest_memfd
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-40-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3E6024000C
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260818085702.3395529-2-yuan1.liu@intel.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9AF69180005
+X-Stat-Signature: qnsgpjytpcx7hqyijdfntnjg14tg95tk
 X-Rspam-User: 
-X-Stat-Signature: ydm6hwqojs1ct1x1zo15eb6jj3yds9u6
-X-HE-Tag: 1787281930-753524
-X-HE-Meta: U2FsdGVkX1/hkQ3FZF2LMHDviJ481+DVyNn31Z2FD1dR3okqaD4UmXMBCpMlmAqFrOLbCms+lPuAG8IWE23eGhwHCHPWswNGKLWSko04zSY+In2pfSiCTdgqFxK2tL/xKZ4lm8AsrVehbuUPwE1y8/bKhiMaQnLDOumfRR4NK13Fr7kXjoQEmClViu6bpxA1OTVceN660M8+LQPrI1YRSMCdrGFSm4b2MZBrXSbKBy/F8zs3I71je/+YZEUm52Y8DDlz4AAtucgEWNqvi3dJas6kv54llRL4RDcRNq/cjJkW+wblKek5TuZQPFIInTIcW4XeZLx366ILQdth5Ir2WEhaYyWOMt0nKxKYUzUtZf2LaevebfDMjuFQlouZgeqrgrEZ5GYiEt4bVGs1vsNGj7ePDDimn+jrBze4Qq8YTIbk/Ch+QewxMv2Naho3nUKnXx6FaPCH44RrSrEkgHF0qPHFOQWlQ8kTQsLYmEf3Xnle8NL/74j3EGZfFMCksHynmezdCKtVka9Uy1jrZNFua6VrBn8K9aPans6Hp77Wu9A7o1vnQSfFw7Eu0TZDvIfIOqhTJwjpOvlfqM0LX4hUQUel+NHAw4O1TlA6+S5heLffvomdaWqZJVVJctry2bz62nSr9LWlEfs7k4M5tqIsITzIjF5sXyBnkjiLRN1/P2qJ3+ER3TP8vtAzJNw/ley59K1YTpXpZsTg6WQI+g6wYdKORy1ktseoOT0c80iEsuIIJokmBT2fenlrjUgsxpIzMi3O2FoyNmByr4wmhdVZEQUhdBlFuPnrzmH/LU7MoNwVHZn19iRA9Fy/GtRgJOuivIWlfrfx2QPBWjuPf+4IGtI1NSj8rrX1eDFv5NINK4XSbraUD2lm9Yx9yLdBzpEnfIymniybdZaajNoMRYf66XpSEtHRQGbla6ZKB6Iig2fvrHigQBjwZVtz9YB7yFBCp8OisaLMgsgOK8MhXaX
- +MNAiL7H
- UeNq+oMdlh56hfm5yRPgJrxajdLV0NFcT8JZcLZD19QaA2uAKfjuRy5oH1g+oQFMTfeC/pNcZO4RplI5N7wcW3av23eCvJtATK5YVxPMYh/FrYAIpiTbmVGQCFcLwildKOWPASq19WI/rfQG++DNx6Ybuskmp0zL9HNiDcxszD7srnu/anhe5q0LILNXcDdLLigzZk4RbVsJECEvV8BzMRoUoZSypRSSwPTNdEnI7vwbUokKN5IFjpCoiwWAAolHRQ1JSRXFTLFjnU23wqGU6X2l1YQ==
+X-HE-Tag: 1787282070-564582
+X-HE-Meta: U2FsdGVkX1+E/HewQHP3dLRwPyJm/gujDeCevSmNECXaupyVmSP2QdXiuP9qdK61ql3nvYXcHcnCQcam/eIGB0foREhznX4GCmcVW6+cHmO5kadpNXLqAVyFX26GTopgKMM4TP25oas4sDy8xkY+XdWBWx0fAEUBX3oUen6q/U1cBHb0VIO4YlGgv6d4bVGLO2A1blxW0BPWyj4JWYZ+amy597ie/BtRadylxlcjqzYQOXsPxIxk91pYt/sie5ur7NRl9LmW7IRgMX7g8Tqn8F8CaVsp+WYIKQOvx+wpwc52EhIsYzTGc3E3OrYgDLrnBXCsDVTxOttJfRKOmC/0OCwkncfTjM+P/KonyRAtC5SlM2WYdZIoC30IHCWoHt+JPhUfC2GuyGnb8k0skgTy+bKGVSlm/auM+5pADSydsT2rBwpAPNdhi0cYhvlnPHeqE5VVVjvT3CSDXR6L+1lx/AFLBOnXfqzIL9+eJ0mZt7S5Z0Ds7XpoWKddjyxBRBYjQqkkATqu2Z0CYHPByjDvMwWe9DiITyZSl4/p70BlX7LcsoLY4smI7Lo4uNoSBDlsaW6EF5TqrHJ1tI1OcPQpv+2Uux0qEpaCugH7Qsand7NUC++dAJAQX9wDKBh6UXgaLR+4xZfXCcs1mS58upUwgh5bg9yvLKxZfvdIm8sS7VrgsjkNnEhPP6IJVz4CI3Azk/wF++fxaRDmFYAuUG/OVkc+dxtNeyqHavfrH3gCVJJ0eAfFdZi0FHoaKXHIL7vXEYNb8sBgFaYHMQRl1OXAx7zfz6imSn4d+PicuPbm05LDlZ5Twwi0J5kKZSp2KnZ3xwIXBs9nLgpq5vgwfygRclF2FzswEnWItiLwtlz44NKJr21NCG8TstrLBvOKyCO37VKIFhZaLG5IXUrYz3MlBavAF+7IHW/sGZmn1eznwq9XMeMzlPCmjveFy3mR9cIrYJVfOfb0Jlaq62kXdQH
+ 3+mJAwbT
+ 5ChRoO31yftVnwOmXbx4C15cJDQNYFL1siDlYm/DvBdqbLOLfHhPrZvLEqEbMHiGOl7wtjr3U6sQOrTtSE3EqPTX1XZvZVnhMQWMpZ0B1l9aItHtRKGLQt//ELr5k/VqCoHv5jbROXQbd3sduVoxNzqICa+ggOs04JdWG2cC1sXWl0ffnTAwAfkrlw4FXCkwqoFJOncdSC81TQxoSiITdjPpsiNnfHwZnfnieHpITJEH5Tewn24iHyQ30v4fh+1hUXlRzD1OFEWsb2ikjC5nZCsskNoLChdrBqusX9lj0hnUB/IN3LwycuozaS3Be8jN/a1KAf3Paz9T0paOJf+oL1DdTCCR/O0SG9lVgaZGR2CcE5mUNSxC4VX+bbKb0C83WywFZyBwEtMHqD0IdUMRolS9avAatX+fT8h6YoyPdUhgvhHf6YFC4x0HaXIOtT4BPnHqYk7sHHeZCHfqBefMr06edqk9YDfQKTNEL7JZnwd/E7gFxh00NVOkdPSKQkeViUKhYes7f08ymai6UApm0sDN6MZyDPI7iU1his8lh0MtftOPEfOesd+qXUewzoMpWEEz8miHCFjGFvs3tFintZ21FEj2qqY+fL8mXLirG2j1DXQeF351nIDILYwk5c0GG2m0md2qddoRw5uH/hnjW0OBdASP3Hs+IkrNv/VaSee8sk2X+ONJ471LqE8zkOCU3TJvrJCT1x64JCrHD4sIfjZR3RQRyunYKAwcEfij/RuT49b05zHityBmjTXfhjybG/uGo5mXqJP+T1PaxsOuAcBZf2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,23 +128,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/8/2026 5:53 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng<ackerleytng@google.com>
+On Tue, Aug 18, 2026 at 04:57:01AM -0400, Yuan Liu wrote:
+>From: "David Hildenbrand (Arm)" <david@kernel.org>
+>
+>Let's make shrink_zone_span() more robust by checking in
+>find_smallest_section_pfn() / find_biggest_section_pfn() that the
+>start and end PFNs of the subsection are within the zone.
+>
+>While at it, clean up the function by factoring the core check out
+>into subsection_overlaps_zone().
+>
+>There likely is no need to check the nid first. We require
+>SPARSEMEM_VMEMMAP_ENABLE, where pfn_to_page() is cheap, and
+>pfn_to_nid() on CONFIG_NUMA would call pfn_to_page() either way.
+>So let's just drop that for now.
+>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>Tested-by: Yuan Liu <yuan1.liu@intel.com>
+>Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+>---
+> mm/memory_hotplug.c | 59 ++++++++++++++++++---------------------------
+> 1 file changed, 24 insertions(+), 35 deletions(-)
+>
+>diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>index 7ac19fab2263..cd82e79f0782 100644
+>--- a/mm/memory_hotplug.c
+>+++ b/mm/memory_hotplug.c
+>@@ -422,49 +422,39 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+> 	return err;
+> }
 > 
-> Update the private memory conversions selftest to also test conversions
-> that are done "in-place" via per-guest_memfd memory attributes. In-place
-> conversions require the host to be able to mmap() the guest_memfd so that
-> the host and guest can share the same backing physical memory.
+>-/* find the smallest valid pfn in the range [start_pfn, end_pfn) */
+>-static unsigned long find_smallest_section_pfn(int nid, struct zone *zone,
+>-				     unsigned long start_pfn,
+>-				     unsigned long end_pfn)
+>+static bool subsection_overlaps_zone(unsigned long pfn, struct zone *zone)
+> {
+>-	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
+>-		if (unlikely(!pfn_to_online_page(start_pfn)))
+>-			continue;
+>+	const unsigned long start_pfn = ALIGN_DOWN(pfn, PAGES_PER_SUBSECTION);
+>+	const unsigned long end_pfn = start_pfn + PAGES_PER_SUBSECTION - 1;
 > 
-> This includes several updates, that are conditioned on the system
-> supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
-> 
-> 1. Set up guest_memfd requesting MMAP and INIT_SHARED.
+>-		if (unlikely(pfn_to_nid(start_pfn) != nid))
+>-			continue;
 
-If I understand correctly, even with in-place gmem, the model that 
-shared memory comes from the userspace_addr and private memory comes 
-from gmem can still work without passing GUEST_MEMFD_FLAG_MMAP flag.
+Would we have a memory layout with node interleave?
 
-Since this model is not prohibited by KVM. I think we should keep the 
-testcase for this model to ensure test coverage?
+-- 
+Wei Yang
+Help you, Help me
 
