@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94735C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 08:17:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18CBDC5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 08:18:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39D456B0095; Fri, 21 Aug 2026 04:17:08 -0400 (EDT)
+	id 23FFD6B009B; Fri, 21 Aug 2026 04:18:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374D26B009B; Fri, 21 Aug 2026 04:17:08 -0400 (EDT)
+	id 217756B009D; Fri, 21 Aug 2026 04:18:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28AAA6B009D; Fri, 21 Aug 2026 04:17:08 -0400 (EDT)
+	id 1547D6B009F; Fri, 21 Aug 2026 04:18:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 031CC6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:17:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A21D40327
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:17:07 +0000 (UTC)
-X-FDA: 85124571294.13.42F673C
-Received: from mta1.migadu.com (out-30.mta1.migadu.com [95.215.58.30])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 696ED20009
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:17:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cUmc+fz8;
-	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.30 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E82F96B009B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:18:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 734FFA2FDC
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:18:04 +0000 (UTC)
+X-FDA: 85124573688.08.C089E6F
+Received: from mta0.migadu.com (out-156.mta0.migadu.com [91.218.175.156])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7D12940002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:18:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kyq3VeJX;
+	spf=pass (imf04.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.156 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787300282;
+	b=xJJMwJdqE6uu6J84CKgeaaRD2HFDxIkLAqKfW8Ph+gdkKMdMt6PIUeE0h8UsR3/+JJlkgN
+	gcoA2OTlkCIOKbwN/pJKs7F8DKVUfGskvs/6bnmYHb4WnAfeELQjTN0TlaR4CMf48lJL5N
+	WO/5FXz6SiQXPzBZuQSRdY8ioS7UiIs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kyq3VeJX;
+	spf=pass (imf04.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.156 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787300225;
+	s=arc-20220608; t=1787300282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
 	bh=hbJ6qX8RI3gMK5y4jHxx2USxOUGxbnF2MpuECV9enVg=;
-	b=cvFY//G6MPDxDDwlMs3UHhEE+KXTog7HhhEkks7VoxbjuVigFZ87cFvsJLbYJ9QMOBwH/+
-	QTIsfDrj13E4Y0FoHbKwg5bpkDSDa7yYrdOSZ6DBsR/d0Y2NSTTngkUcqMTgFI1cBkaIk4
-	DVRG/JOcm/75an07ugYyguhDQeSZA6Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787300225;
-	b=8g9C4zuU2xWmPJI1i7zKX+GLUEELZRIreo89ierWF5akQsyvDDc0ygbxmynyijT7zFxJ9H
-	pMRDo9w7fGJsxpvN0YpJoBBydr+d1nSMmhOt+rYk0x4yOCnaSR/XsUSfjEU58fytDK2kcy
-	tDIeqt7XAyFHLttnNcS4HuNtqzgVNGc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cUmc+fz8;
-	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.30 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	b=3nmFGypek2XL1PQFmXrz7Y9rlziO2GfqDEiRRpndCe3LZRpiwzxVZh7dILuwJC7JigvbUx
+	f97ZI/ObtFRuvP/hzzlCtGPKjZBe0T8ie7aF74AXSuUfiq39RKpD/DA42wi88GLtCBSor0
+	s+Fy8qiE/usyWQ1zuPyzWbYwh0GT7RU=
 X-Envelope-To: linux-mm@kvack.org
 DKIM-Signature: a=rsa-sha256; bh=q2LBYSGl4npt3b/U4TgoApNxg/auAjLyjB3dvIGUVCE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787300223; v=1; x=1787905023;
- b=cUmc+fz82tugVoetyXSen4TEtmnnwPbkouT5HPb1dverA6M4l2vjOLiFk1tA1L1QenIb7yIb
- 7wIgr+FcleAigkH8QpXmtu7FtT/BNHSx9oxhZge4qWM4E5o0634f8ZHi68rtsxQSz7wdveYofXT
- NDMaotyeh9mPBzgR4R4wds1s=
+ t=1787300281; v=1; x=1787905081;
+ b=kyq3VeJXQcnnlz5UHJ6NDw98y1YRwhlNRYbFXHEwvNjHJwsMYiv9AQTvnOsqtfBy9O4dgd4R
+ H1UnSSI4LZ8kusgMemM5Y139IRV0oMfNSR5Ht5WbaqwgfaJZf/7RP0jIiqKM8jQIspcGCe7G70k
+ 3BPOBYGngLsH+PX9uS1ZzNvs=
 X-Envelope-To: linux-mm@kvack.org
 Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id 487007466bb3646c;
-	Fri, 21 Aug 2026 08:17:03 +0000
-X-Mizu-Trace-ID: 487007466bb3646c
+	by smtp.migadu.com with ESMTPS id 89c40d2368cbfa1d;
+	Fri, 21 Aug 2026 08:18:01 +0000
+X-Mizu-Trace-ID: 89c40d2368cbfa1d
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -80,19 +80,19 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
 Subject: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
-Date: Fri, 21 Aug 2026 16:16:37 +0800
-Message-Id: <20260821081641.1339788-1-ridong.chen@linux.dev>
+Date: Fri, 21 Aug 2026 16:17:37 +0800
+Message-Id: <20260821081741.1340277-1-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7D12940002
 X-Rspam-User: 
 X-Stat-Signature: m8wi6syz3bhoqwhh9qhzophuadw313yw
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 696ED20009
-X-HE-Tag: 1787300225-267576
-X-HE-Meta: U2FsdGVkX19n6qFsrsapuh+TQkGsXfnGS5CQXBRJAh8EP/dEJKX7K/ahsXO02PTsZwnV6r+nGOupvRTQDrzuewmGuTrPjgCp8SxywhMa+XxOQSqXHN9AfSi77x/0eV+4/TNjALePs2DJ857DocVMHf4cEMoMiexJ4ppYEqjbBYIdLYWV/RUhcXBZ6chu+Bl/MOCaAPNr+Y/CG41IkYOiyfn5O2oPCdWhy/ReFSazL7gYrE1nVTh+y+F5skJhjpvVNNZbKFwffAqrtyoow7tEhn6tt0bqx1Waiuwv/Zt6c+BCiJNLEXZF3Oa7sJcFh+QDV6kiXEPl7ITVIFoqoQSc4BnBORricFXkxWOZTvlSscnh32uKhGbHm3WtJWSph68VAE5EIVUIpis0iNuKKb1K77eIsghSihVrIm5Ck/HXex9kU2sCsiBZEAInN0sT7G6ZuSTQTMqJHMqo+YThO2ef/HQjbjEkL5kXb7857JGVRCphNAtur/OUDltKqLSGdU4U3mgOvmk+vL/e+7W6tvsbv9qNGhc8oVPwMOAZQj/MWLN0gTj/pJKGbwzQ0DEVjwUIp+wA8mNsSSxKbnoSJUIUNXemOq/dwlb0IzLweZ8vMi0Ri8XVdBmuBbfZWAcfpetK2yrn94HTPI7OoDDa+GlT6YsjMpXDSZxnK3AurUYaKFF98cU3xzIkXy6mM7McYM9NHAjSDEAwD94VUpGgtP3NZOl7RXhmwgnL04DHzQDaZ7Z58STl1oyUQV9zTPhRJ+FuWri8scI1o5nbPg4Hp3qLgdixyvRPqCAhe8mxNwch4HUEIts3BiPSLYRBjixMwDTTQaYazBCVkEJo9M6z40N+p2OUKipZSLU7FWWbgtXVR++FRQABmrVUAOglIfy1CERi0ijnuD2tp1wZ+tcMXhGr8TFPd8N8WBsQr7h/fRJzfqHaEYaFGeNGMo+jylsbDhCOfZdczDS/brXnd2eoTxK
- /3zb8Ct+
- HjNKSdMuIsV/ZFA+xkPuyPYdB9wFx/NseXRIwRRxa71OLYHyP6XrHnvLxdWCS4CTKrliK9ytmTjVWuQjOH8Jk4R0rltf1zXo6TQ+gfMV+qnOC8R1CdPRgp8OLfdMOzDLyxsNdVUIjIMOACd7BbaBctzO2vOsEleBthIiYtnr+aTVD9OX5YJnhtQUxv4ecFCKkEF+1VlshKuLj80hLBkWKjMJ8OXMq/8VIgN2/Oi+wB3ZUzB4saOLf6nY4kgwYsScTsEKguwjPs8AC6PgJ/0C0Q3A4UMK7SvEr53K9zPz97/V7QSQFX6vKgna7OA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787300282-405385
+X-HE-Meta: U2FsdGVkX1/KnxFCUECWtogw0YVXIi87rXzcqnrZwnK/6hH0QcQAbnL/7GQaHYgK7MObRv131pek5k4TD4DXZs/RWyGVISBCM36CYvinRz8B7ZoOvPuZnNkQGioVPmb1x5BAvoTqPDGEq+R23fb7P6tD7KAiM2qKm/rP35KgPYiUl+pqZV/Bxupwx9VdttcLXGEfhJ+I7vbO3zHZPPtdLcrKqFSPkYv/ek81+fV1uOeJPx1eBG/xuaS/Xh9DxyUy9cRtudCnXu5vXhhzwgVrTFKBZ3boKflDVa2BSJGAAXsrE55BCtOMpTZRixxghYpXJQnwD13hqHHErSKIWhUV10KgFedc/kCUiIFJdQYyyb11tHyaOfa9K38ZXkjQSskninvP0OBF+ImNAG+QoR6S9ML8udhDwwOqylRbqCQ51zvNR2blvfhbp2SOq8AAjHHeXhIZIGXDGR76Zr8OyxBzM0TK5j5q8TaIFhTVmm1yNWBPrUPkvI+kTt4KRcgRJ8Rd2huF9LkOwZa2ZlmFFLjWqGFhDXFv05SxEsxuRlvomcehC2CClhbMCY/1Pnp6goRk7oxRJLb+VdxlqGapnHBVydf5iXkwy4brZXoexgeQT+5i1mPZDCORTr2e7aYruXCtKvwHPP/htuB1m/TvfWf7KSr1wUvg5GFpGf9Ow6Tw+2MKyT6Lix2KLQt/wPPbWHPjKw3ppIKOAqM1pEtLGr6PJDUApsGdHzptR7t03/S8pBDno4wSR5gJTNBosuyoEx7vjToAAinfeFfH45of9hrQjO/QYAIMmZkpYJltAjtynmc9nx48BERNCI2RtmWlEFbZgGdWQQtikezZ4KSD+iXa6moT76NtzRQyP/gNHQFP32GZL9zh2f3FkZO7w6UIOillkGqK5ItHBcVLTZv9IgHnustv/CCTlGoJwDJW8CU8ouo0L/Mw5LKrymDnmq/fXMHLlx3qAscBZPJ0s3SnD+f
+ xozic8Tc
+ Kb64sGPJr60lVh7JFKgA//AaVtjsmOOyZza16w+DtHEkVzZa5apDQIOV3QxvhfjnDBWqTluq5SCRd4VH7H6uhNm6l9QQL3EwTe5VNkrZ7rK12aVUOA+bi4GrEWXY3z8hpYiC1eTP48sroRXXYhui+SLOIGdo5v9VWJbtcIT9+18lmcTi6Qj029tXhpAmcpv2jwsyQxWbXv5k8w9wI6+akxAE83MO+nBrdoSEouWRG7sPKxmXmiyjfRkT/NbwKAMrg4HZrrDgq0y5ryUYYeM3CdydowOhcgu6HdwK/wQ6U7JzYU1pF6F0b1QiKtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
