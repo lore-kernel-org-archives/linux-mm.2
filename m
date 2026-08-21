@@ -4,93 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35954C5DF94
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 16:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7346C5DF8C
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:04:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40FE36B009B; Fri, 21 Aug 2026 12:57:38 -0400 (EDT)
+	id E06796B0095; Fri, 21 Aug 2026 13:04:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E7D46B009D; Fri, 21 Aug 2026 12:57:38 -0400 (EDT)
+	id DB73B6B009F; Fri, 21 Aug 2026 13:04:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FE276B009F; Fri, 21 Aug 2026 12:57:38 -0400 (EDT)
+	id CF3D76B00A0; Fri, 21 Aug 2026 13:04:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EEDDE6B009B
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 12:57:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8425114018F
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 16:57:37 +0000 (UTC)
-X-FDA: 85125882954.30.9EC7BBF
-Received: from mail-oi2-f2.google.com (mail-oi2-f2.google.com [74.125.231.194])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C46A0C0006
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 16:57:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf28.hostedemail.com: domain of 3foOIagkbAAMv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.194 as permitted sender) smtp.mailfrom=3foOIagkbAAMv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B16DB6B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:04:17 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D2CA401D6
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:04:17 +0000 (UTC)
+X-FDA: 85125899754.24.90D0F4F
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9DE8510000D
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:04:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DNzWoRYK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of 3DoWIaggKCJU32JBzO3I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--edumazet.bounces.google.com designates 209.85.222.198 as permitted sender) smtp.mailfrom=3DoWIaggKCJU32JBzO3I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--edumazet.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787331455;
+	s=arc-20220608; t=1787331855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=Lk+KPE4O52Ld5IPp84hUSFU1LFd3FsfSNj5Q6uVv6A0=;
-	b=6FbbiPghQDmbfFRy7i++dwVRlaKPUO75jwLM3wkcsyGEqp4GuaxXuTqpBKsgyW2tb85lNC
-	IZ/7gaeVPac9UmbDtEBXljhgXLWrPdAg+Qr1wAwvmASc31uNalmKnuvTB45qBPUfsN2G95
-	fUrVH+JNHZIHx9wEM/jThhJ7YN/cTXc=
+	 references:dkim-signature; bh=ytXCiIXJSEWeQd3fczjuZy6blW2T09URPllThg0U0lI=;
+	b=sTjgBI2XuiTLkoAva4l2CsMPMp6xUycBJCwxTmWvF3OnXTXjESC6z72jWiVEz9/cYG8Awf
+	rFVBW1UyhI9gxlsTGPAc3DpNV8+HDGrO6JhSddiLy/ij1HviuzrGL3G9GyKpDfWYgxLu7H
+	RgIMAG+MvXa+axdWPyZFoik3KouukRo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf28.hostedemail.com: domain of 3foOIagkbAAMv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.194 as permitted sender) smtp.mailfrom=3foOIagkbAAMv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DNzWoRYK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of 3DoWIaggKCJU32JBzO3I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--edumazet.bounces.google.com designates 209.85.222.198 as permitted sender) smtp.mailfrom=3DoWIaggKCJU32JBzO3I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--edumazet.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787331455;
-	b=FUBgIrZI1LZpA5G2jqkocW80rZwb+2LoIt+/Rf69kxaugl/VIYXD/wdSmZzsX6auYXOzqW
-	i/Y2t/wQfyszuwjo1P4rZgraXn8HzzwBWXIYtCwWha+nMiEIH86JFehqImP7xWVNVoe7b3
-	mu80k5jp45JQ2snGLNBPUX4+WMKqH70=
-Received: by mail-oi2-f2.google.com with SMTP id 5614622812f47-495d5d27acfso551913b6e.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:57:35 -0700 (PDT)
+	t=1787331855;
+	b=PRBMuBtLBLEfEcl3Opxtm8B5kDTFinXKdHSGSb3I6JhpVYiy9C/b8Wl5E6Ovs20jJH5Y+2
+	ROvWbWLTlnb/OIEgAqzB4aDpIakdR/y/Oz4T5gqch402zkQmjyBXABr6LhlhBd/xKznq3A
+	0bzms3auRv8uEJa4TbTBO1DqBrHcdRE=
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-9372b9db132so127519585a.2
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:04:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787331855; x=1787936655; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ytXCiIXJSEWeQd3fczjuZy6blW2T09URPllThg0U0lI=;
+        b=DNzWoRYKMu3szdvmdWgYGxpnsvuoPYvL7G+l7Qo0SsI5xSrsBiYWAM0UeglcPY7WRj
+         Xh2SYecEScUBV3j7stsu2Q37h2G8o7bG5xkpyRgxi93VzUyv+zeIg8ZdHHocNyALvIO0
+         xbLiCFV8lPe8vF2AT9SvGMao19iz/1+VZ4K/2SjuZAFnnF78Nu14ATnAexBQtboJwBSv
+         equbhK6dCFWLdcsl8zQqH9tw4T6K3NDIJ7xWCdT0C1NoPCgq81au5ga5tmwl0vHuRULO
+         aPr3elORHPuOcC+kJDJVkfHICmRtl6BKHd0GlNVPHXqe1ddWWfoBXReYrD/pSxiwqeY4
+         E2Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787331455; x=1787936255;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1787331855; x=1787936655;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Lk+KPE4O52Ld5IPp84hUSFU1LFd3FsfSNj5Q6uVv6A0=;
-        b=MpeayV9ovFd6U45ngvSfkEtTXeJDx4IeiH5Ey5EELK3K061BWYiOhif7Cde9i5AT22
-         EfoXMm/hly+wtrNH+cY8msFrGy2JxYS0XzT9ssiRTRAe2DjHoQrhxmD93yxzvLQ+TyZR
-         KBs3x5WDt7tOC+ZpJdluSQC1JTO6cd+iC7Yxm3jKRKw2r0ukXrvWPHHQLGYlw/8+zV5N
-         Kvh/Y10gzhp+I8Qy1cpYVpj+QToGndvd9V318nPIOBxCf9iOB39umm0BKvciTOEy0F/g
-         EmPZWqbfrhln2r59s9z+T5l6PTcfAuVs/h/BGGOrCHIE16B/cq6iM7+9QNcV3w5IIQo1
-         OuPg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6Hz1sDMyWWUYwhfX25ykkXuv5euP2A7sFLlNumhxnZFeUKIMRuAnFNH0Eai3F26Qn5So0sK5+3w==@kvack.org
-X-Gm-Message-State: AOJu0Yyody06K1jVjXBkhVrlsJCLuCBa+mZj0M7S0QlmByZ1b+8WSfPL
-	6lMUl7tfoX7owzhQZZAkJA0YbPDmsg9akfgiDyJC57xcPRDWIW9r/zDVib+VUVw7cf3Yj0sk/iB
-	jDgV34SlamLkz7jbe09j2ntjTKE26t7HfbYTcevsbjDDBWInzPqa5GWKIx98=
-MIME-Version: 1.0
-X-Received: by 2002:a05:6808:138c:b0:4b2:8d9e:de11 with SMTP id
- 5614622812f47-4b2ef439a80mr7776113b6e.19.1787331454770; Fri, 21 Aug 2026
- 09:57:34 -0700 (PDT)
-Date: Fri, 21 Aug 2026 09:57:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a88837e.ae6ddae5.3da009.0040.GAE@google.com>
-Subject: [syzbot] [mm?] BUG: sleeping function called from invalid context in bucket_table_alloc
-From: syzbot <syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@kernel.org, gourry@gourry.net, joshua.hahnjy@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, 
-	rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
+        bh=ytXCiIXJSEWeQd3fczjuZy6blW2T09URPllThg0U0lI=;
+        b=Bp0R+cfnw+hekvndXyegclrAYDwY13I+g4Jofzg+hl3lFGNduQtvUYUzrlPThV7kul
+         AicID22xf6tqRmqmW4lWjJCquloCrVi5P4h0e4OI4uqN7uW66/FcRV3Ai7G7bm7gw0OE
+         i2FaM14rdw+Qz/4M1Qe+aCYyhwQbzjSvixm2WFEkY4gNtQBytddZU/oNs2FU+6bu0lDn
+         jZ0ZnKHn+Wa5DUNAUDZqmBvIHT56VMD674nL6QZF7d7/Sjw+NBiyYjxSi5bfGjW6QfeA
+         nbGmxh8x0qorMQ2UpZwYRtD15+Ei+cOOC0DlkGA+hc/wKQKYDLn9iCFiRpjg/YG/EhLy
+         YyEg==
+X-Forwarded-Encrypted: i=1; AHgh+RqTeTJ7QO+gTFQU/TFD1AUbPzKIlZKiotkfDYhL5nbKw3COz5YkJPxRK/4eG9aC9u9kbFwfO2jk+Q==@kvack.org
+X-Gm-Message-State: AOJu0YzgzoD4mkM2Jg9FzJOkQo5xCRTfxV+HF8XEQ2r5nWh0Ajr7f1AZ
+	U7N3B5fxPtyUipitP0H+w2ojAmuZuf8cUSg/YKu5Slpe4SkaCi4omW26Q8K5/m9WubAocSlexW1
+	33eaLy5HcjoCk6Q==
+X-Received: from qklc14.prod.google.com ([2002:a05:620a:134e:b0:92e:6551:eed3])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:31a8:b0:92e:e1d1:49dd with SMTP id af79cd13be357-9373957489amr644583685a.21.1787331854394;
+ Fri, 21 Aug 2026 10:04:14 -0700 (PDT)
+Date: Fri, 21 Aug 2026 17:04:07 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.766.g2966f0265a-goog
+Message-ID: <20260821170407.3721004-1-edumazet@google.com>
+Subject: [PATCH] mm/mempolicy: Fix sleeping allocation in alloc_pages_bulk_weighted_interleave()
+From: Eric Dumazet <edumazet@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: jk33j15mb9cudh7xyf6rk8g95zyx5org
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C46A0C0006
-X-HE-Tag: 1787331455-556035
-X-HE-Meta: U2FsdGVkX1+kqwxLHt69oh3m4O1DhzVkDz52oqAC8Y4SotfX3FSZIlAqFcS9Eso87fn0PmvaBzMjqf5uFebBn9QTxfBOzrKTqvfI6jhdtwlf5idnpQxLndkKMkpL1FTUFz7HG4bAWW0WlCr5a1lNSp301r4V3GTXcLriKPIiZkj/hpBd3DlV1umTcqAZnR04Gcczi0cw0nw7BcIdhua4Kw9oH/Kd6/evdNKxbrZ94KxfIlncExgQdj+R9sjayb7dGoqAlQvBCL3z4xzOrfIR9+AXKGkNatlBks9iReI3pkaUNo2ouQNERPD3I3GzT2FmG5cR8mS934zpIvn0V08Ua8TvgrCLDtKCn2O+UnA4vAmoO14BtG7TBPILC0cOQUuL+mORzfCxVcO1zZVPkH8sOkMqZO6kdklmTZPr3tPSodo/ANiU0MIKthEgM/ykHN1BLfoM1U8u87YaqpBMWLOyPpzQC/BOcG7Cu6scOlmnUhmMWiLUyt9nJ+SdHkmg7NTqBw5lgO3Op9Ci1sISBss+ab8dK8jAzAqbPrXY4Todvxow3166bHQl4bwSWfNwqmN3RU0kO9bxpgnrGN6oqQNqe2RC/UdAZQwAf1++KDd1RAmH/rmhrFUNilaM9dufi1CivyQGRiPjpogcBKDTj+CkvP98XjLBDNO5vuQc+9UmYaF7IG07ue5LkiDNzgdF/Y/xc6aCnmBWIOMA4UJUeBoIBNL9o/w3608Ruc0K0G2FPgfUp910jXVxJM3YBn2nrmyFw6HQMhYHCUY+TOULCgnR0bmtu7/2LWfCJaejOjEvZY+pbgRb/4uZ83S7DFcmZcfIgckrcVx+s2QGUNZi4FljB86zh0kErq1ZU2rxoFoLIJxBcLOKZ1bhtDPW095CDr1UPe/xtMFdY6r/lBaGUDlNP5Iq3EF0CZFBLfS2ubHawA39x0tvA0nFGaylPCfy+ijXGwX66i9TytiGM4h0dYn
- g98PIf38
- j5JTSLla/wS71imGXdLD4TbUwt/hagAmtOVLkqbAoe+NK0bAEL4kz9gFOVLPbBE4uvucnEV5behXd7SLrdsFt6qkmRCQ/6bHGNvf9nOMgezzLgl4LZMW/5XqEoXofOSz65BrgQ6Ynx7w6ZVLVWYrimlYQ/tIKHxsJVfEmv8kHKgEagQsMa1BdE9FgEajHCCqUULBctcEQMMq/4N8baajKjuLln6ZhtnMe2BPT5lX8XYSEht9get0t1NnFdpSK9o4whUtIyj+KyoZfT8bJZIis2kRT6tFQo+DpGP1T8W1CnhISuuR4ndHtQVQhOA4bAHPNKcbdrY3uI+jlXWC4n8xvQhEJ8/6ETYGJyrrmuOb1oSNMbuekVXfgQFBLBGC2KBVSXLreeGUVKRiHCV9DYRs31JsBfdeeNIBXbAhw2pSvMslpRNidpe4bVVx2ASChgzWZ1RuhSup65Y7+zvHf9KgQIEE8YtWsWaE46iSIwKIKMwQz3Xs7uhejoNOG/6nEu/SBwADGnL7c9sRMdbFTGab6ESuKDXn2V3+6F/O1M+WU3kevkcTmdFF+jQxpY81vNb0H0cRq92G80laEH3dnzyAJMUGOfo0rpFGXhHB/T43NyQHHyXHe1yq0AyWx6AigcbP2f6NTi1THQJnV7mx3nnU1P/l/+JOprb18+6xlzf7ofo7Fn2q0TamncA2/Bn1bI/1TjZ5/3ShVRWh3C/6umMbHXFONQMgsMbwkVbif4JeCKm46dAxwo5MNHR/Bh9SeA8ZvdqZvGoftR+pKuv6JI5gMajDuvByNWyMtGLrbQHvAQCsBQHgZTeSdwPa0EGiSpnt1bXjZUILGmOI09aR8QM7EzuPafXanGNVL+jKjg0EJkrILpnffMZp8ZpW0Q1F3wMnozbSTt/zAyOOdTBuxbB/ormExCWMmh2PDLQwXKWRa3cxM+nGnIrY31GkEo8UXVzXZA8aPLLW7YrQbNU7wwRdh2fpYDbbF
- 6+V1cFPH
- kSq96pVIpd4hffuBtiXQhxBU0CLKUCILSdC+mxPHyMx/6Vk+1vm275q7M/EeZyXjQrqDE26FnY8TaY9j1QfjCTCrtJRAaXLEgLRiWCuu535uxwyMgMRKCbq0+Div1kntHHQqQJX57VBhHi+cObgfMWuh9r19qBskO39y5D54bnr/syt+H3h+VQhKc/SoSzQZr2lMnZDzYRMeA6AFrqL11LZpxgkU4Jqqb0k4+I/Im46A04QoZDH+YbGInarbcgIlbQIziB9akD83VgBE5qCq4kYni50tzNqcCp4OVcN+P4uHOI82ye7qLpGFwMwzQ+Cn5NtR0e8HYoZ22Qfqckakpyb4C3s79MOAbeYyuLDRHt7c6mnTs2uMGok1R5gXL9ejwK9g/hS+0YeMV7C29g4KuIkHuY1ooZP3bsElC/K/uyN22YVh3aXyHxtvhRESPCJiOp6Z1dTKSZoj7ZM2J6QDLT95gI+G/g0GC9PJVCyMRRR4dhrRz+oLfw==
+X-Rspamd-Queue-Id: 9DE8510000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 5o9a77nbqgdib1nkupnxq1s5stu6g8zi
+X-HE-Tag: 1787331855-279890
+X-HE-Meta: U2FsdGVkX1+Exz+9jUNBlPYFKZkhIfR9QHPKRAfzJ+7tfuQu+uHZ/oIM6blpxUEfd36jbwSf2EsnUTDkkSm7mXTG54UniS+EhaCoXwl+bFSsRr8MV4nlmoFaTcra4unrvIWVnhmnrbwvCIwrGhBoFV6uCs1MJM9FEIJBGszp1Loe2wLM2Ph6OfMY8nfbHUvog5PD2JDx56x7iQRaBF6o/keJhYit+MiMgIrqGzv0+Y/gHQ8goUHQsCcfEvrgYmjdfObprf2TfVTEmJf2tOP9b81WgBnvY2zTIaaV1NGTByu/4QBGWEGPYjGckl+BhOI6DWO22/N37DgVTOogqlxwRfYMFF+vZKMK9f5iQzPNRDSJpPJlM5/P1g5Jv5rbQO6HDNNX8eidIw2LDm721Ov7RsMq0TkjXMYFJM9axSKcwtBDV5HNc7rYB2UMU8+nTsVxQMxmqSLd2BTAk/j+dYPh+0Dv+wFdQhLZR/apZeF5KiZVGWwA0uBpWv+3/OuuGxxT3A0RTpaQz9Sa9a0Hfy+SzlPoajXYy1JeAxGIH6lhgXFm/loPLlj0i1jFrEpbJKhIsIDrOYddj8X2jtEF9tRLvUGc0E4sG2oLYNOzNsStlyUCzRBum20xynIS0QJUJE0kNhgdSYGetYin0ytmKBprx6yb0pD2eoKAIsUEmvzKChUcVAe8fJC2hg+Gib30x4YCMEyQOhjU79Fr4m8HI0rciQvdujvRjqgw01N/czNasuOX2EuhT4Ne//3OzdUwgefChvTFi3zvRSwDSrUdE7VMfldIw+HYZGnSEwTUz5v/qhgEZJTQIHfyvlRUCJbSK3ht2/ZQxA5zhBKxBI3PXqhJW+JEJwnhh5W4bQf24BbbJ/HpIDWs1KWnJBP9Pob3cEj0exN2d+z7a4ChEoSGE3nnnGfxYjiIaJZXVmeqEVO6hvtJc0vp/8Cw/U9Pz/bActJUN9vVj3+NQiP0RzdwFt9
+ b5tN1zNn
+ 1bU+i6epB7MdnbIx21A2CbbiKhWZF6G3GMyUrtTNCy4H8amQBQKyxN2cCyuN4/UFbubb9ZU++lP7Gcm4rhdlYEu76Xe9l2Z4vOe2Ov8LyNsRJFmIgmOJYBJ9fn9ddrppAkvJvDzs1UtnwRc4sZ/8GaR+XldiNt5wiM5SYwn3YYH4scHIzQXZafYVCn4Stm63LuNXj4lVUABY11J+uwjfujGEI3YHsI+xot/bcwEvCWwiUZEYVJFiTiHd0YYBK+O7DhtRLfR7p8cvdkDMbPNpdKszZXoYo8oAYyVjc+Po6z18xdmFpF1V94sxFehgZnAUHk7HUzvzjQ4mV3KKTgGwPMN7UG0yYVitttPMon9z0F6liE0R56Pkqhi/Jhx+sebQ4Y5op96PwGLjW46CK/wUR6k+PoW/TFOuU3rfMkCBa7OLp4SU+wSLaF6JUUHV0Kxv49DNwo1Jo5pfTN3x04Lggx2E77WnXb5LogVBBb/tOcPttCV4dt2M4WYCfPXMkgu5/03fx8ceUJXZScqthMhLyAaNV5NCYMt4Ssm3NgOKwI9BuK/3ZdY0ZG5jaJZKUQdhakFIfcUHQ+O6fSX4sq0K30DZPWFrili3uC7FqgFzRJX0LEbYMei8MwC4t7KEkbOj48AZPUI9bxBJLGb6UuNdKu2xUrDahDc8bsKZWW3Uf77+ti6nroG0u1qDPYzl6dvDbJ8ghmJKByIV8ogwDHOpnu/XCJ95b7c4y72Q7BYCh7JhNwKU5YxOuIPlrlBkU5Ga9nxFOl3kdfhbMN5mlpuYJSNHaSghCjxtlXFyKm3dOUMR2fOfLHis9WQMaVvgogItWZcDw5CI2Z3ESTZTJI39JnjuD8ciYy56p7/ZLgwEPKDKum1/nfjA8rhyFOwJ7PJ3nN8ToqI+QpFfhArluAR36I3/ZVRtjjVQ0Kt0GD7EaQnkQAtIuQ1SSIdSHK2L3+qXIzGYFIzvwM4EHxMy9ZUp71XExYJnf
+ KCBMvibi
+ 45WJUfNUAkFcQqPJZndl9Tjz93ORYKp9UR3WJc5OT2EPeNcinN5sumh6pIoMuCpGhOVFIkKHzj7iJvrOtysZ0h7osl5WxaomBjCq0BPWEXU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,103 +111,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+syzbot reported a sleeping function called from invalid context splat
+in bucket_table_alloc().
 
-syzbot found the following issue on:
+When rhashtable_insert_slow() rehashes the table under rcu_read_lock(),
+it calls bucket_table_alloc(..., GFP_ATOMIC | __GFP_NOWARN).
+If the bucket table allocation uses vmalloc, __vmalloc_node_range_noprof()
+invokes vm_area_alloc_pages() -> alloc_pages_bulk_mempolicy_noprof() with
+the passed GFP_ATOMIC flags.
 
-HEAD commit:    7079a12d7506 Add linux-next specific files for 20260820
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=119afa25580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=aa9dec010c9e69a7
-dashboard link: https://syzkaller.appspot.com/bug?extid=0dbf6d295b3350944f0b
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+If the current task has an MPOL_WEIGHTED_INTERLEAVE mempolicy,
+alloc_pages_bulk_weighted_interleave() is called and currently hardcodes
+GFP_KERNEL when allocating the temporary weights array, triggering
+a might_alloc() splat in atomic/RCU contexts.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Pass the gfp flags (masked with GFP_RECLAIM_MASK to strip page-allocator
+zone modifiers like __GFP_HIGHMEM) received by
+alloc_pages_bulk_weighted_interleave() to kmalloc() instead of
+hardcoding GFP_KERNEL. Since the weights buffer is immediately
+initialized in full, kmalloc() is sufficient.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/9682e92d9ec7/disk-7079a12d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/829f3c29b6e1/vmlinux-7079a12d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2e0cdd08b0f5/bzImage-7079a12d.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Fixes: fa3bea4e1f82 ("mm/mempolicy: introduce MPOL_WEIGHTED_INTERLEAVE for weighted interleaving")
 Reported-by: syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com
-
-BUG: sleeping function called from invalid context at ./include/linux/sched/mm.h:322
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 15133, name: syz.6.1501
-preempt_count: 0, expected: 0
-RCU nest depth: 1, expected: 0
-locks held by syz.6.1501/15133: 2, last CPU#1:
- #0: ffffffff90250500 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff90250500 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x767/0xc00 net/core/rtnetlink.c:7138
- #1: ffffffff8ed5ca60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
- #1: ffffffff8ed5ca60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #1: ffffffff8ed5ca60 (rcu_read_lock){....}-{1:3}, at: rhashtable_insert_slow+0x1cf/0x2000 lib/rhashtable.c:683
-CPU: 1 UID: 0 PID: 15133 Comm: syz.6.1501 Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x36a/0x4c0 kernel/sched/core.c:9236
- might_alloc include/linux/sched/mm.h:322 [inline]
- slab_pre_alloc_hook mm/slub.c:4636 [inline]
- slab_alloc_node mm/slub.c:4974 [inline]
- __do_kmalloc_node mm/slub.c:5413 [inline]
- __kmalloc_noprof+0xef/0x720 mm/slub.c:5439
- _kmalloc_noprof include/linux/slab.h:995 [inline]
- _kzalloc_noprof include/linux/slab.h:1312 [inline]
- alloc_pages_bulk_weighted_interleave mm/mempolicy.c:2682 [inline]
- alloc_pages_bulk_mempolicy_noprof+0xaef/0x1690 mm/mempolicy.c:2785
- vm_area_alloc_pages mm/vmalloc.c:3736 [inline]
- __vmalloc_area_node mm/vmalloc.c:3914 [inline]
- __vmalloc_node_range_noprof+0xa0a/0x1540 mm/vmalloc.c:4104
- __vmalloc_node_noprof mm/vmalloc.c:4165 [inline]
- __vmalloc_area_node mm/vmalloc.c:3890 [inline]
- __vmalloc_node_range_noprof+0x58b/0x1540 mm/vmalloc.c:4104
- __kvmalloc_node_noprof+0x5a1/0x820 mm/slub.c:7033
- bucket_table_alloc+0x75/0x380 lib/rhashtable.c:197
- rhashtable_insert_rehash lib/rhashtable.c:503 [inline]
- rhashtable_try_insert lib/rhashtable.c:671 [inline]
- rhashtable_insert_slow+0x1c66/0x2000 lib/rhashtable.c:684
- __rhashtable_insert_fast include/linux/rhashtable.h:789 [inline]
- rhashtable_lookup_insert_fast include/linux/rhashtable.h:966 [inline]
- vxlan_vni_add drivers/net/vxlan/vxlan_vnifilter.c:744 [inline]
- vxlan_vni_add_del drivers/net/vxlan/vxlan_vnifilter.c:824 [inline]
- vxlan_process_vni_filter drivers/net/vxlan/vxlan_vnifilter.c:891 [inline]
- vxlan_vnifilter_process+0x357a/0x4d40 drivers/net/vxlan/vxlan_vnifilter.c:973
- rtnetlink_rcv_msg+0x7b9/0xc00 net/core/rtnetlink.c:7141
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
- __sys_sendmsg net/socket.c:2799 [inline]
- __do_sys_sendmsg net/socket.c:2804 [inline]
- __se_sys_sendmsg net/socket.c:2802 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
-
-
+Closes: https://lore.kernel.org/lkml/6a88837e.ae6ddae5.3da009.0040.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+---
+ mm/mempolicy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 501e0b80d7da..1ef50ca37d42 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -2688,7 +2688,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
+ 	prev_node = node;
+ 
+ 	/* create a local copy of node weights to operate on outside rcu */
+-	weights = kzalloc(nr_node_ids, GFP_KERNEL);
++	weights = kmalloc(nr_node_ids, gfp & GFP_RECLAIM_MASK);
+ 	if (!weights)
+ 		return total_allocated;
+ 
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+base-commit: 4e69c1856bfd9ffb7e9d335a25842fa211628929
+-- 
+2.55.0.766.g2966f0265a-goog
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
