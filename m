@@ -4,95 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9341DC5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 13:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8305DC5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 13:52:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A458C6B008C; Fri, 21 Aug 2026 09:43:36 -0400 (EDT)
+	id 4FEDF6B0095; Fri, 21 Aug 2026 09:52:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1DAA6B009D; Fri, 21 Aug 2026 09:43:36 -0400 (EDT)
+	id 4AEFB6B009B; Fri, 21 Aug 2026 09:52:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 939B26B008C; Fri, 21 Aug 2026 09:43:36 -0400 (EDT)
+	id 3C4D36B009D; Fri, 21 Aug 2026 09:52:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FBD96B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:43:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08E26C013A
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:43:36 +0000 (UTC)
-X-FDA: 85125394032.28.5F87A54
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5DB8E140006
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:43:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nl/WZpMa";
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787319814;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 08F016B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:52:24 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 81E988011C
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:52:23 +0000 (UTC)
+X-FDA: 85125416166.13.99A293F
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A342D8000E
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:52:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dubsy3RO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787320341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Aquc0vxWZALAjqgmKU3O8fgPD+LqPPKkZjDpVR5CRnU=;
-	b=IG+vcrTAr/SJUGaNucR+J97WxbTe4plOKggaMJnJIgd8zQYr/G+fyYgvfiISeXO41hWTtg
-	1Alucq2MoHUQPEKg8SNYmPYqZ2S2mulcHP5IqmTk6ru8D77vpZ+CkLIappFuhcNBFr702c
-	Sp1cFdnTnhL0rJOUfAscUGSFlxbiRbc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787319814;
-	b=xtZ6obydptazGXWLyDFIJH4CT2OuDrGHvQsN/t8zEV2PDToMNcOBDgVOE7NK72vE9iu2N1
-	I8lo0ptRS4YTiu+O9Fgogo75NelTJ5j9At/mSdyCZStHKgXWUgRu10DjW6B0mvt8o3y1MU
-	cfNGOQxFjAFy6+KK9v1fFv2Bqd3BCbA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nl/WZpMa";
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E07BC60008;
-	Fri, 21 Aug 2026 13:43:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28EB1F000E9;
-	Fri, 21 Aug 2026 13:43:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787319813;
-	bh=Aquc0vxWZALAjqgmKU3O8fgPD+LqPPKkZjDpVR5CRnU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Nl/WZpMa0B7PsT1RI21yHaF56mr0V6/CEKrQ6/hWFNAG089oya1jhdHQGgciMfAnp
-	 RkzC+fzQxwP/mNwdypDjgO5xT7LMSw+WxgzYFlZutpkdjwtybpl3cVCYLluLnFLlsD
-	 T1hbeqtPc9HnYpIBuTo9SI3MjOxr+O7VJggB+B5aNBg4DYLhPE4e8eA8no0PZD+ZmF
-	 Igi2o3mcJ1gzXnTjh1KACebRmk/xfS+cLozBfhep2xMDA5CmaPbMjhNMDwaqW+E7P2
-	 InDKic7K3rLUMtEJO4JcE1tMGVNk0iaC7hXmnBvfXItGNgqx8up+pk67i6Z+0PmUOF
-	 mR9NTzhwUqyXw==
-Date: Fri, 21 Aug 2026 14:43:27 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Ridong Chen <ridong.chen@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>, Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
-Message-ID: <aohVxL9ww9wVk5uL@gremlin>
-References: <20260821081741.1340277-1-ridong.chen@linux.dev>
- <aogMyu5R_DZRqp2J@tiehlicka>
- <aogQ6iDA7RkuTtDG@gremlin>
- <aogYm0fKNsYVyBM8@tiehlicka>
- <aogxgLSLNixXvuUR@gremlin>
- <aog2AeQ2X4KSCkOk@tiehlicka>
+	bh=0MQng+9xXyTKknMt+t9Rj4wyf14y6xu9aKeDOtOOdJk=;
+	b=JFbAgpMiJ6XLsZD+uidkJG5S/JIw/UCuQiyd8Mzf3JiFIiBy2xVVL5YZn0jG/wbalt2k8f
+	k1tI2P2sMXWLj3NjqaA1go+yaQ+0a6z28bOojYry4IzdoSHs26t/oGnWS6Mn0z9MWBAKB0
+	/EU5rGRsO1lYpi0eWUoWxJQ9vuQIoAU=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dubsy3RO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787320341;
+	b=SyMA7d0HIP58meK7M9r7QZIgO8/2SRnPcRwxrZvuMbPTYW78GDvYuN6qZnTzyJYtK16ghF
+	zf2C2RuQLObvZLtsy2mw25dwsoblsi/kh2xcsAYWi+c+F1/QoozABMDeIW/P8vdSfqNo5E
+	pGZ3TzBrGi4iCzTOkpN/o2y4KCrvAb0=
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7eb5bdb50fcso922522a34.1
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:52:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787320340; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JWgFXxZLlil7zHhzSYbDa7cN+khUb4Ihnq+36VLVfk/Wmb/tEoG+Iunmz8EnkQoprO
+         FdNoMxh8SqgKoWhTXVZRYZ7fmuWhAIowgQW+KvZyINBSLo1jUAXhZB64ugdRciG87n4K
+         K2MhKMw0VVwZagqJYj/ewariBnMR8dtIJwTMEvUtzZvNOvd7IWaLu5ALULez3xNw0PNa
+         gfgevn4wfjLGyVGAgJgm9DY32ZaxNSaMCkoziEJC5KbUPIr8TYniHm6NGDjU2fiGggRF
+         52s1PZNjvx2HMNoCn6n2t53QjHa5NLI+0zKoUKWVayrI9N0mxVdtYneZ2nhqgNT0byXZ
+         ViJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0MQng+9xXyTKknMt+t9Rj4wyf14y6xu9aKeDOtOOdJk=;
+        fh=YjtP/iuPdRqS/0td0aw/+UnF3Awd8xTrYvRuIqdVkhQ=;
+        b=HvehYdMkXy1xwVj6VlG07JzvwtBPW87dQEmjVKKjaEARLAop/fswMbFDp8duxf0gP2
+         2k76PrF1qNH1oBAh94UFSZtj8riLawfLACiEKiGaISj//MxY+/QRi3otiTUgSgkZdfAM
+         NTiBOUbBvj2/rG7R99F1TU51+7Rl4wWIWDPoKt7ndmS8mDVyh/cIFzxFKHz4G/fueWGr
+         b3MKqvhMyqtXKw1JXe+LGNnQ6i0ew4ug+Z1y08tN0UFopepp5BXgQj2cH7572Ks0ciKZ
+         ZWSzU7XQIYlAkmuHCOLltJxn94FOlTrjrxJHqciGIaheMn6OPJ5Cw7qgjL//1g9AgXyp
+         htrw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787320340; x=1787925140; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0MQng+9xXyTKknMt+t9Rj4wyf14y6xu9aKeDOtOOdJk=;
+        b=Dubsy3ROJUqNFQKu0LGOUNWJ7+QhNSsijB7IMFgxPNlhZpl5TBs+BoQhUlCmB6QiEi
+         osH7MDEPWEgLJ+vng+2Fuz7Az+UbAJobf+Mx9L7XtE1PIzO57FIbl6pC/oaNx+d0sWla
+         Co4rupnZm6O9c+yPsaD0PimLJ5cNd0mQRqCcx/ASYCVEe0KoUwB9r9vD5uLy5XZyvvgr
+         MGHhsNI1fF0SRtmiNuKIujKlB/br6xC8csEFVi/DslsSJOaCzg60tPKHplRsAZ4ST6FY
+         9W+diIOvD303k4WEP3vNCPzCyCbkvdcLvF39LEnpJZbZIsGnHmnSbtR260z43TY4AY7d
+         mKww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787320340; x=1787925140;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0MQng+9xXyTKknMt+t9Rj4wyf14y6xu9aKeDOtOOdJk=;
+        b=fxZjjT+MGifkv9FvQ0ARPbqZGI0oJrnnKpybf0oUPR/VMAVm8FbmjvAxVkluqo07hz
+         QtF8KsBnlwODJJinpNqExSJmJXTZWhqLjlusTRiw9yKuO1ztbhuyCZUHNtl5wtD67fjw
+         aBeLMBu4bEvF36FJNUCCr0qsJoKJdcS18E8k70ZYYN2WAkUkjTX8LvsVTeo+1tNBMx7S
+         2dD03Y8FE0HIdDTVh5YFRTiBw5DjzTskVZM67aybD5lNmqv9OOx0Uwme5GxWO9CQtrIK
+         t5tIv+/ihsECdmqivv3gWtUzX9S++lsG0mujIn/QrmbyrKlocEyFp+z6UqmUaWh+QHUW
+         9k4A==
+X-Forwarded-Encrypted: i=1; AHgh+RrvC8Bo4kV8vqBw/T9qYXOxVxeAbCb3R2TF6RmD+v6W2sJGgbnfzb0krE7ahMHNX05hQ7WrD6Sqsw==@kvack.org
+X-Gm-Message-State: AOJu0YzkUoYvtuFUzwsXnYv54JMpO1mpxItCCTBLqKw8ZootAPMC9iFn
+	rzpoF/JlQvZRrcTDAqsXARtBN2XrYvYP5RFQQcCpGLmsXq3E24yDvWqDX654mWL+Gq8RHQzpkxA
+	jz4wXBWkQLX6XZL/7n4rzI9H+lKCFICY=
+X-Gm-Gg: AR+sD12nmDzKpoRcM6yVkK7dTrYbriw02L9tI9odJJ5NSnQi8GidZlGa7eTBXXOHDFG
+	vsRVWlIE/8Z2s1vNtfmZlm6OWz6kgKCcWWffaCK4w/I7bND+gMSElQNghOeMquLljHRSVasWzrR
+	p7zpAW3bG2zbb25WsENq8OrntANUL2rxGc24BqECj2TTZWcafvWFcAojkxzORU2DXHrj0FcOCaL
+	CX7UFisCTmTEpS7rjGoZ55CXR8ncSbUK+/FMNSIJ9YpT5BbLnWCy9s8GyWqbI+RfVS2RaobrcvB
+	FJJdIw3x4xVM9u5zS8PX22/F9kKf89i1QQq8/+rmoPqX
+X-Received: by 2002:a05:6820:341a:20b0:6aa:e176:bcb5 with SMTP id
+ 006d021491bc7-6b15925da2fmr5108790eaf.14.1787320340365; Fri, 21 Aug 2026
+ 06:52:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aog2AeQ2X4KSCkOk@tiehlicka>
+References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
+ <20260818-selinux-pokemem-v1-3-90cd2357ee05@google.com> <CAEjxPJ714iCMiQRVAN6MQoOyNx998MS5Xfhbhmugcwz+gWYAuQ@mail.gmail.com>
+ <CAG48ez3h2Gft4onQ8AgBmf8gHrF26YqTinajuBysNPkUKaTBoA@mail.gmail.com>
+In-Reply-To: <CAG48ez3h2Gft4onQ8AgBmf8gHrF26YqTinajuBysNPkUKaTBoA@mail.gmail.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Fri, 21 Aug 2026 09:52:09 -0400
+X-Gm-Features: AcwNN1XIMQRcAUBNk7fjxozSpQ8JckvqGIQ5KHe6kYNDH33rw4pKhCm-h8pgeiw
+Message-ID: <CAEjxPJ5cUDBekWe7fC1JYnw6CfT8GVa9fqrFwLPPAOqSP6jn3g@mail.gmail.com>
+Subject: Re: [PATCH 3/3] selinux: require EXECMEM or PTRACE for FOLL_FORCE introspection
+To: Jann Horn <jannh@google.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Jeff Xu <jeffxu@google.com>, 
+	=?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: uususnmsp7ph3gzfctr54odkhu9yryrh
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5DB8E140006
-X-HE-Tag: 1787319814-26946
-X-HE-Meta: U2FsdGVkX19kCPaZbqqh71BIiNHLQ/Wkvwip9/UUEhFmXsqz65tb02Du9Yuhug8p5bUGTqQK3mB8fb14pPzdBZJUaax8xwkMKy/ZAZ4aJEqtFsL/SlmRfhruYX0PpMDO1rbEBrzQVY1s46R2OvUzSMutQ7BbUX3Pbm97P4R2oBePa+Q0BjIkKZ6ebGjNRObXEGZaX9WuK94OSa4IcoXLfto0SYdzrLCz6vS5wG4y1um09j+BDMmt43++VZoBs2SFkFBYvY4GMlAPFXX3/QDCB+kZCfgCqYCzfDZdja9aFPlbBmYejpaLN/N+37X803SohhVn/YtZlvXzyYZyjueXHRWjnos/JBZ1ag/P9DmWvFwzQSyv6LuFBg9Sgq2pbpkuv43ODLlWLwpRTBnYN1QWQStgm/OYYWe+ZpJLD3uzQGAJWXomRHBbJf3l9ucTNSArAreijEFfqBcNeC78tT2RCBsV/+WnMgj9nyndv18EH++hu1nqpBAwejJqPWQZvS/ZKbsfn3Ik+5aSgJ6JECwRnflkWf4ukZaQ+4m2aq8rUbfvCSqaVDSlaRwmYbuRWNUcguKN+IvVD2sf5EnMU2GPh0i3qDRSmo8CtsKQZVgfT4Qlzoy86X2903oeuwAVs08aQHUD2G4wLsfPqM+8cEWcH2ImvrwIVLlb6cnBVbGwDKEs/jzAqXQxJEB1hVrZ34OC3Ur147lyC3jYGzP1sY4x8P9JG7f6Xx2+WXV4xbB9VoZvcHFmJ+cyABTvl9ftSQ562Nr3zkEXxoaXCAZbg4KDOsSICuCkNVdBwFudpfnBDqnV+uox+O8ypHQKg24qmbEDHb1MssiJhyLJfcl+ST9T6nj34xPyXi8RQdZgSrZ4UuWM+szrrGeVrzoHwvrvHyAoGrwmzefEPuuPplNhGipkLJqtmoyphMPz01OkmJaApkWk9ltQ5Rvf8YVPykRiuQrFJdLYwVlPFBN4SW5ZizP
- 6KSEwD54
- uEDYmiVlsnbWXYGpfKTlzQT9IvVEfOCUxa2VAEXNKmKQKJ7KFLjPPLhLJbYpAc5gO/DEpROkv+h49FH0n0/htRlGC7NlJPsKXtKh2wLx5nMQYd7ESyr9tLs5ZFspeWWOy6iH8GrS6Vn+SnCffXa6fDk2IExPUZkQ+jaxfkFn5eyr9BG7veIQG+kosd01EVFc3grHd/tAJfMvdiIHAorSpnugtas5jSiuetujiOEqqQudEW+iUePyiB6qouHYJ9Ptp9PFT
+X-Stat-Signature: wk56hqptkefgmr7aabiq7ajokuh84mx9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A342D8000E
+X-HE-Tag: 1787320341-962186
+X-HE-Meta: U2FsdGVkX19RQfR7dQGJnAF4PAyfN1Qu8vxerk1KkTOkNvpw/DIq5TSEv/QB+kbnNPzc+E+x5Rp6YDgwl+kC75lwGekxB1gDpgh5y+i/zxkr1gvcppknhgEMEtaCTziehwYUh73kKJIU2IbVcid7nAllbNDQSyYN5h/TOVEwYQCaMeamEnYa4LFx5ZfjkuXwCKLuCMeG80kKDEroAVzgh9reVmMLQBPvzhUhynCDU4QT3mYtnOWbTwJsSzb9oaGWplxzWPzbZGvexQVNgzJtRtKehMhxF3C4RXaYU/vwCK+P1Xev3/c7Jkjq/7Ry9TqGNuHzmy3yY+fbD4Xc2REt0kw2/zAe4QOs+fBVvhgg4Qyv3UBLW8yCL7hhflFSrris0BOdnCs5gf6xKzTaPd+XaOWY+He/Hpc9WzT6vWnaD30tHxvvJ8Ovc6MOQMZOMFIcH1766phnSCF3Ey/jN9QGnTtW522QJ5A59rhnKP5l4lwL/tsafV5mcR8a7yp2RN0uASv4mr5a82UjbJn0E08WFTQZLF5ol76eVWbnqjsvyjyDruHcZaqoyqzvGEpJtW1T54YOsBHQGKvYPkZE6PtF6p4uwB34bbi4X8NT0aXzOgp5+lcHIWpFMhqw+4WqpVNIa05SGkzkANl7X60YJEj5pnnSlVeL2v614Bd26do4r0ebUmeelkzqDrkjoRClySh9g6xC1RlQEsa7NDukDWv9ikbNp+cLUXXeXRI4tZsitFB5ubg7tx1DRsU5fwcU/h0XowrEIUDLUtA4kWw0/Zj0XiVLs0K6zJQSBRUn2eFoEIIMcUZtiqA/l5p/sTI0Ee1IG+0Cn7Q0/Fx4LiI+2lvJnsYlWtAWj2V+pSbI7SVbCZMUUwcixl4toFHF6JMcm3EBG3eeIwCboK/RXro6VsGioO8RaLrryjwUsL6VHhqhTmn6oaL71i0waaXRCzV+2POFOYUQ26DfvKexkwz+oIW
+ 21AAI6sR
+ ZXnzjchv3189fCBMBvPgYU8xZyZIp7CQi3JcyyjzP185KPuKwp3SlomVeRERT/GNO0iIjjAbuS6DQnz8WvC9hPBQgSixFzDrHAbzKuqnr1nxfeBPivs4//A/B6SgvhyhEhECOhb32MTDrczPdHknTLsp9WhxT42DtOloOapsrfZobN0ylSF4JBhbEkUxy4EOIfk0w7O8POgRNkdpzxnqLc87tCHgFtpEnQtnY/LvpRI7Y0s9OmPhCLixOix+ovOWmcRMiktIHF9c9qWzFbKZiGcj21fzRGO8wJjKIMMJItxXTTpjFKsXBPtaUksQtJGdtfkdOdoFYXASqxA52HvNCooQujYSO1qf6qnHnXYgugqQfRuA5gtAzyoy/hZj7zWceC77fRv5lIGdAjNzYRaZGzkWLB9Elik85wvmvX9COs59teBmO9npa0VArAUT0O8Aiw5zyqpaMLrkMRHrzAHe2u+8fcvOky4kFci4LK0/j9F9nP8U5QdprvJi84MLq7lcT7vCEZbH+8OwlnL3pzfK7Xe0j5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,27 +148,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 01:26:57PM +0200, Michal Hocko wrote:
-> Hey, do not get me wrong. I very much care about reviewers as well. I
-> merely wanted to say that we've had peaks of tool driven patches no
-> matter what. Things have eventually normalized but people need to be
-> educated about expectations of maintainers. Sashiko suggesting "but this
-> might need attention as well..." certainly contribute to more noise but
-> keep in mind that AI driven people are going to find a tool of their
-> choice to arm them with ideas to implement and post so focusing on
-> Sashiko is not going to help all that much. My main message is to
-> establish and enforce a notion that patches are going to be ignored if
-> they are not justified properly (even if they might seem technically
-> correct or fixing a theoretical problem).
+On Thu, Aug 20, 2026 at 11:23=E2=80=AFAM Jann Horn <jannh@google.com> wrote=
+:
+>
+> On Wed, Aug 19, 2026 at 4:54=E2=80=AFPM Stephen Smalley
+> <stephen.smalley.work@gmail.com> wrote:
+> > On Tue, Aug 18, 2026 at 3:51=E2=80=AFPM Jann Horn <jannh@google.com> wr=
+ote:
+> > >
+> > > On systems configured with PROC_MEM_FORCE_ALWAYS, ensure that a proce=
+ss can
+> > > only create anonymous executable memory via /proc/self/mem if it has =
+one
+> > > of:
+> > >
+> > >  - EXECMEM (like for other methods of creating anonymous executable p=
+ages)
+> > >  - PTRACE (like when using /proc/$pid/mem of another process)
+> >
+> > Allowing it if _either_ permission is allowed is unusual in SELinux
+> > and seems prone to errors.
+> > Is there a reason to not just require PTRACE always?
+>
+> Hmm, that might work.
+>
+> My two concerns about that approach are:
+>
+> 1. This is an operation where a process acts on itself, while PTRACE
+> is normally for acting on another process. It feels to me like those
+> are different types of privilege.
+> 2. I feel like blocking this operation even for a process with EXECMEM
+> privilege increases the risk of breaking existing configurations.
+>
+> I think if we want to gate it on PTRACE, we might need to put this
+> behind a policy capability and let policy authors figure this out?
+> But I'm no expert on how new security hooks are normally added, or
+> what SELinux policies outside Android look like, so if you think it
+> would be fine to just check for PTRACE, I'd be happy to go with that.
 
-I couldn't agree more.
+I don't think a new policy capability is necessary here. Is there any legit=
+imate
+user of this capability that wouldn't already have ptrace permission?
+The other alternative is to introduce a new permission for this, but that w=
+ill
+deny-by-default on existing Android and allow-by-default on Fedora based
+on handle-unknown until it is defined in the policy. In the case of Android=
+, my
+understanding was that kernel updates can always be coordinated with policy
+updates so there is no need to worry about a new kernel breaking userspace
+with old policies i.e. if and when Android ships a kernel that
+includes these patches
+they can also ship an updated policy that allows the new permission
+where necessary
+but I could be wrong.
 
-We are, of course, furiously agreeing here :>)
-
-> --
-> Michal Hocko
-> SUSE Labs
-
---
-Cheers, Lorenzo
+> (I've caused stable regressions several times at this point and am
+> trying to avoid causing more...)
 
