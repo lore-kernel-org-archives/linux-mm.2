@@ -4,105 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2B1FC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5227C5DF8C
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:58:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736EB6B00A5; Fri, 21 Aug 2026 14:58:08 -0400 (EDT)
+	id 059AF6B00A9; Fri, 21 Aug 2026 14:58:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C0AF6B00AA; Fri, 21 Aug 2026 14:58:08 -0400 (EDT)
+	id EFDA06B00AA; Fri, 21 Aug 2026 14:58:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49E5F6B00A9; Fri, 21 Aug 2026 14:58:08 -0400 (EDT)
+	id DC5E96B00AB; Fri, 21 Aug 2026 14:58:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 214C26B00A7
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A6DCC6B00A9
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:58:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA570A023A
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:58:07 +0000 (UTC)
-X-FDA: 85126186614.01.372F478
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6449BC000B
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23195C0221
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:58:08 +0000 (UTC)
+X-FDA: 85126186656.05.DA1FD3F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F3F3640003
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:58:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Y6Lx/Go3";
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=G3I1INVj;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
+	spf=pass (imf17.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787338685;
+	s=arc-20220608; t=1787338686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L4q5Fof+ukHytC/x5b+k7VwkCJq156UwS0JZy64G2so=;
-	b=W9rpmy4hxPaO8HB/bhEGhidr10ycRzKrZtMUkd2ZUyyZ1F2pQuQiEY145rCq8DnjlS+PQR
-	KR2n9DQ7ebW8gF9UmJopiEaIcaJUjxo6n20jj6Zy6avwrrZjp9Fy304jltwsMK8ga3AXwK
-	B0HClnMela6/6OhLPkckfxWYpNlmJQ0=
+	bh=cQingZcA8JY9invl4rfVqQH3WLMP3iU/vTSgNWsiPjc=;
+	b=tN2wLIvCx6MK/D9cRSCA8LXsX4wcIKVCjrtArehf62+BLyICy8FKcXyvaz6AW2ZnSv9+eo
+	gMRE8RZlM9HwalbRHYcbxTDXCm7rS3b9zxwD9A5F57bMt8K0YOfyhzLxuSmAgJrxDYtQiY
+	WOeFUUR8g6HXKGpOjfhEDjiBkRY9USs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Y6Lx/Go3";
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=G3I1INVj;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
+	spf=pass (imf17.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787338685;
-	b=1N7DCoRtExJLMmU049hq7ZVmmVE1bz16sRrY64zIaDajaWHv2C4kHdtL8vkR/3zbhgq58P
-	bmFtjnam7c312NO6cqSjrsSaeUaV91bqkIm8RlKZwR0XACZeiLsHz8jhETuy7G3iwGB6b7
-	MNtE6gWFpO3V7ysnn/9xcM2YN2GMORU=
+	t=1787338686;
+	b=jkb5ovPzUYIy9gUNU5sypwJKzB188gobpHNvDBA72J4b3y4g0m6t9Jm4nwNYMCnJi2PFMB
+	x/pbAamGeKqW1DT1R7TL/dp1DdpSTWaL7aVKbZ0a26uBr/iio7Bi4i9RU6IcDmoL2vQ5J3
+	LpJsS6j+fjVMjdzdzPkLJyaZivbbv6c=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787338684;
+	s=mimecast20190719; t=1787338685;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L4q5Fof+ukHytC/x5b+k7VwkCJq156UwS0JZy64G2so=;
-	b=Y6Lx/Go3uXJFHlGN9W7O7geOQiV3ZtoClbY3QnisAOqubuKPho1TExjfYGpDwkezDhhAXk
-	TObWUXKOfgDlirPP3XESDpgrvTyBmjnZp02sItTOMLggxcoIPOV8iOnAMbjQBk+p329vOo
-	E9TfYHbp3BEJ7Fd8axXGx36obFy8Mow=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cQingZcA8JY9invl4rfVqQH3WLMP3iU/vTSgNWsiPjc=;
+	b=G3I1INVj3mFoCprarW83H5PuRE7VN9HWHXTZ2HDP4GwNRnLFk+ZPK1Q49DElqGXiXESL+e
+	xBXQBRLS+tYILwrMNP1BKuG5FtTWZcrR4Jt+2aPLM/0oMxj+nn7hmNLSLLGa3+KW/AS/UA
+	YQa8vdCezMdWsn+kYUha9zHrEnGQOf0=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-ymx7iVDYNs2z9cMZzrUAsg-1; Fri, 21 Aug 2026 14:58:03 -0400
-X-MC-Unique: ymx7iVDYNs2z9cMZzrUAsg-1
-X-Mimecast-MFC-AGG-ID: ymx7iVDYNs2z9cMZzrUAsg_1787338683
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-90a602a4e6fso24964686d6.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:58:03 -0700 (PDT)
+ us-mta-668-hx7CIXHlOuiDNO0sh06VAQ-1; Fri, 21 Aug 2026 14:57:53 -0400
+X-MC-Unique: hx7CIXHlOuiDNO0sh06VAQ-1
+X-Mimecast-MFC-AGG-ID: hx7CIXHlOuiDNO0sh06VAQ_1787338672
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-9077b4c35c5so25622706d6.2
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:57:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787338683; x=1787943483;
+        d=1e100.net; s=20251104; t=1787338672; x=1787943472;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=L4q5Fof+ukHytC/x5b+k7VwkCJq156UwS0JZy64G2so=;
-        b=Tj+tTxus/KBo+BLTArby+s97Z/SpXOelY8SJGq4GiIDQZbzK80lffB/29bMuuB+xI8
-         NHSp0evkciB5L3XrRADX4b8dq0pG5rw7wiIeb9g16OszUzt90Uv4f06ZFII0/eaHHwfG
-         P9LtRgnJZKJ/SRyMcbjpjec+tDgs3DMni0jl8V9ckKHjFlSr1/kkClcwjkw1TVHGYqIa
-         vqZv5SH6Dqmp5OsflRJVwhqvptZzYmx6V+v2D8a8fu9q0qLAJKmzuawGeq4k1UqfFpIc
-         S2/HTVoaRu0v4VTJ/epBt95U/H4NadR3oX2EhQ0KlbmKDWJK6s+kIVeZVL0S91EidA8u
-         OPhQ==
-X-Gm-Message-State: AFuF++lDjECmbeTfoed8QuiNDcCzl8OymE5sjNvuLw4I4P8xRF7+ZbyB
-	72Zq/09b/q4YGdq+eIbLtZNmdZadk3w8RVCP5LdEkSo2kd21khZa2hhWaheYVN16flL3VH8iz4u
-	fVSFZg4slNmGfkAg9aQ0PJ00DAwkklw+90XC+BMT+bWSSd9DVCBO4
-X-Gm-Gg: AR+sD12iAWtVRJn5T4C8TLs7bIwQzAg9nodUZDX6QFkjzDLHAQb05WcRB2o02vkqjID
-	0yHB8ZfFQohH9QwObezCsFENsK5VB3Cr+ryELzM6jNGMeaYUG3vA/DDfwJXIhqsnmQ8SxOTq9kx
-	mLWkf5IjUGEyu1b3MqgdVIff+6gIseogwmha1yyYAJy60XfT9p8BWwIBti+pceenFSieYIhBap4
-	rQIbWQDtlstO5rBCETdMAI8pUrZo3Irg3pDMdcX5MTWdOqE951owA+cyLX1cr1wUBvnMPdo3QrA
-	Z8/b92thq9bXKAc4NscyzJltMTiJl1GMnGAAJ7WKZCb/uuHFigRpUxQ5/15MSrdBvmo3YDQ+6EZ
-	wyOFgNsziV/eQg4jffCYMjEUs51sYNLBJQzbk+DFe8v+e
-X-Received: by 2002:ad4:5d67:0:b0:8f7:43f4:fe8d with SMTP id 6a1803df08f44-90c8fa5ed5emr5634166d6.29.1787338683083;
-        Fri, 21 Aug 2026 11:58:03 -0700 (PDT)
-X-Received: by 2002:ad4:5d67:0:b0:8f7:43f4:fe8d with SMTP id 6a1803df08f44-90c8fa5ed5emr5633776d6.29.1787338682532;
-        Fri, 21 Aug 2026 11:58:02 -0700 (PDT)
+        bh=cQingZcA8JY9invl4rfVqQH3WLMP3iU/vTSgNWsiPjc=;
+        b=lzT23J7V2338Z8952a+XZ9dw9LeH78SH16yaK6YR7tPjSmfVxfrEpP40JGn5xm2GCD
+         wvs9oi9Bs9yc0eu3qoYYCf0mqb8a7Eq3/55fX3/w0FwteiuFfqk6gVMqhkZXKn1ZwWeK
+         9ia/spRe2+b5gmxomlcTVnLPt/TRJOCVj3Ipb1frGpVkdS6cQqE8rhpBwqk96CVyf4x5
+         bBCCvPgU5n6Z9w51XB1xvUpEw4Xz+2sFFyp/AJmRHEMi06S0RHTOi5Eij0YezMM/ninJ
+         yNuAQphLBzx9yRSQprPfoJGQhuSiVJtGq9uev9UuCmwL/ZmqXbztSM2pdYELIgmp4op+
+         U4pg==
+X-Gm-Message-State: AFuF++n72yvybVBJlxnxbpRk8ST1RtMcKjUM0DozL3h/FV9zR3InAadd
+	9WKG72QhVGHSioln+EN+a0fv1++1kGcSYefKvuf4lkidQqaL4zsxwujbx3wMEv5o6UQDZlPATGM
+	l1r9Ae3aC7NbOLT37J14lr1wvdTa+mvdOdmtnIQkT7WttjrEQDFNn
+X-Gm-Gg: AR+sD10LJTBx3VZapcdcyG9nloi5ls+GjlbywRsxmzwPbU1bYoFR9fPC/IH3azZCaAV
+	2FefMqg0/fNLrza98j5XWfumMP7VcPzyuh2VKgIdNIyE0YSnzlZDF9xa/9zUFHQ1uuMuMS7xldD
+	q54F1FHe23FdTmC0Ar2nZcoBHl5XoXF/ZfGIRlCtvhXh1NyEAHBpsMTCJXaCsM7+Hu8IY46cLpw
+	bZscUEtlCFf8kikmLcYkhenBTKFdEC/7jIv5TitSs/D7XzaDDw6a7affkqMWhsmBJIJ66I0CtAY
+	c4Usn2oy6CjNPD/FHi0GojNb6BgHCB2YDnz3Iaqdvne/YyMipnyUwbpxPI+jSKnTQmQOG87wje/
+	5pkvQVkmivG2YWKPMDg8A+G3CenVcUsFaIhuI5PFD17S2
+X-Received: by 2002:ae9:f115:0:b0:937:26c3:747f with SMTP id af79cd13be357-937468baea7mr97627185a.15.1787338672388;
+        Fri, 21 Aug 2026 11:57:52 -0700 (PDT)
+X-Received: by 2002:ae9:f115:0:b0:937:26c3:747f with SMTP id af79cd13be357-937468baea7mr97623985a.15.1787338671990;
+        Fri, 21 Aug 2026 11:57:51 -0700 (PDT)
 Received: from localhost (pool-100-17-17-231.bstnma.fios.verizon.net. [100.17.17.231])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2b4ad5sm69468316d6.42.2026.08.21.11.58.01
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-937205998ddsm651971585a.44.2026.08.21.11.57.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 11:58:01 -0700 (PDT)
+        Fri, 21 Aug 2026 11:57:50 -0700 (PDT)
 From: Eric Chanudet <echanude@redhat.com>
-Date: Fri, 21 Aug 2026 14:56:57 -0400
-Subject: [PATCH 05/11] mm/cma: charge cma allocation to memcg per area
- counters
+Date: Fri, 21 Aug 2026 14:56:53 -0400
+Subject: [PATCH 01/11] mm/cma: drop const for struct page on release API
 MIME-Version: 1.0
-Message-Id: <20260821-cma-memcg-regions-v1-5-d21b165b8440@redhat.com>
+Message-Id: <20260821-cma-memcg-regions-v1-1-d21b165b8440@redhat.com>
 References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
 In-Reply-To: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -122,18 +121,18 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Albert Esteve <aesteve@redhat.com>, Eric Chanudet <echanude@redhat.com>
 X-Mailer: b4 0.14.3
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Zg32QX9sxR5otvCINrpG0TFfhj3jboN1UsushWCKrMU_1787338683
+X-Mimecast-MFC-PROC-ID: 6BcTP-7cnckOFVz9F02GqYWNNDM7KMld9mY7xyio0gg_1787338672
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: a8brtnhfxez4ddobmgexhqja8k6opym7
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6449BC000B
-X-HE-Tag: 1787338685-538786
-X-HE-Meta: U2FsdGVkX1/fPsiOJl++L0GUXtJhfC4nfeN9QJCzOOpqCNM2Au48kfkv+iU0hHbaNuwbKKgTl+nlVDdfm7FP9OxuyQA9njas8Qp7nsY5824y+miDyTaXq9ekXqEG30RqRPZoAQNwCorIxcZPfIXXIiO8CcrKibPEc2+gv4+KqsCOhXZKYLpWiTqQuQ8dNXhyspedm/OMP+TirsTkU3i6aUHL3knP4GpTFrkm3WRm6FCq9VVc0SyAMV1lQDj2rP6D233AYPsA1AQ0T/znZRBKxdBj3HbLCnyrAQXFGlUD8JzEWS8kr8J0e1I7PUUda2r/ppXRHWBdq3qnlZbZngsvKv5kl9wP8wK/nd/rYNoOccOJKJHxvStX2iYBq/q8tKGi+TOIc+Z8HpEsdQo19fn0wo6nbNhFC2nrG5dx/P3A4kSDJloU/fvA+bCCNG99P11q9fxUY7B3tQxoHKpTK0KOZgujZRWWRQCTdEJ+xYOY8NfaoYSNqq7eFN7Z1tMOgb4zDntVbe2ombONAFPJQvkpT/yoaOu+RGFiBIhIzVRU8tgLNIvynt6vJc5dqMsELH5QiAKQLXjdO3UEmftl7iByrbhjFUQQSRd7alQmZD5MQui+zvFB68KmuC7TdGBFQFcGW2+LN0d+/9CoagAsrM61pKLu381h9a6pHcbSdXVJ7W4Qpxt3m6tL5Zm+5aYxpTD3JWGchT2kkGwoifE6geaSHPtf7O6YHRVGbaZUIRv1DFs8BhBxTTe9XkHE0HjMbKjFxil06XnXkJpXJvZeXiXnnmHv4Suy0too8bbPvguDLnzBdw2RMiFWWtg34c3soVMKfFIeFzE6IEPMp5K7W3AqgG0RW2l9YYwsmoENZgIXwVnOheENEW2ek+uJlvHRYfN83BVMSj+lkp9oez+b9/mT1G0yzvRzqgeudWPAWY1q3u3wsZGR2RHqBfa/jKhnflaWW1KuLrqf3ga0wtzWPHM
- XWKbhkke
- TDobnY0s1pTjkIz0m2Qg33xf1bW7Vwn+oQ5Lp5o+3BONvZugDzvSU3qHh2Wb7xof2EGCsuLDwfawVnNQq9T8TkRva528HSqBDnfl9BCsxzXQ0/5n6wjgHgyegOR1fXTlRZDA15mHniXzXf0MIlRDrDpfO4tYuBC9rkf9k4HWFiGsBsMAfZF8IkSAnngdCgwJYXCSkZ0QTQAv0VVXHtnXllCFUhtu5IXg/eeZ+vlzrnN5p3ZAUeOQiR3/FVTbDJAnOi6R0WiDKpyU68AbKERFJyQUvTdHnNW84HQXk7k9N0D/VAJ/C6oDEeqR6vjvv6X6JxfMWcOJEFHjszZwCggozyShdAGBEpDYV9OtMxQLQMhHr8jI7sSzYS6YXVg==
+X-Rspamd-Queue-Id: F3F3640003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: brohe1igtz13n747rpxo1oac95tzb8jk
+X-HE-Tag: 1787338685-257447
+X-HE-Meta: U2FsdGVkX19oDV0chFTvJe1zIblM9qgd0hj43d9TAU5T/LukK0tTjen5n5pv7OX4D2dO2lWaoxGgw04AvIUZvlUWafZdH7ChpaFqQe7Ps+YACssiD7e06c082EtiNZ09CpHsfdL1ewgcR7nqj8W9gbllJQhWzfrQmlDNAvMyhYe9kRYcKhg0a2Pyp+IgRXA5+0svq3nlFZQuUcYEQxILlPeymxyN6jfs+wZ8v6zy9pxBnod2pyoIgSqQHV/MnsxSfxx7Qgaexlpa1HBaEzwFY0dXe6XUMwOBffMCE1whrrlTokN1hXW6AzNHGunU5Z4OSgaMh8kpERsB6rALSzhsySFu7OA9bLwePqr44SFjhVk4P9u+JIX56auab5qX9iqwXWOm7R5zM/E4WQSVkiR3psVJiPNN/mhRbfuz61J8Tp0N4BYNN+9Bn268MV8923vKms02k6wo1yg30tS8W1ydUoc06qfEv7Yw5sS24/sgIgmTvVyBOH09buiRS1nw/Xniusy6FqXkYMWNriA7e6/sUu2LHqzZwpITGY8OVDe9ETB+1IowRm0LQf6qxQp4NWlBgeg1ZYqzU6F+IItxagCxPqYHVsmbxKHuLxY8rMleWUef+fwTiP7RNVNi8JEkGJFpUVKR21dRTgxtqSDmAoe/uaIVLwnc40l39l8pAzmXJwGbcdaJcyC5gzy/HXpmvbehYJ4LxMk/rsLUWSQdHKFEd/5pRWmIzMpnvenv2B0WdE53b3lDYY3eL3tO3MtNCg+aiLOHwnFkdpNrXuy/DxBkwT6+X80SZNrpqoSrjMUV+j8eMVuMeuz3m9jbvoy9aK/8qBZLB3yUbjotojGWjNSAxEyIT7GSdsumJqALxRxruGOHvQ7YFXZOpwkkfvAc9y4blbH27GOC8s7wBgW0v+St68MuLlY0MQXLpN7DGDLwDrwYhdfWBnO1nYrSK13A7RWzvCi+t6PwRw0MvaCRzBM
+ mOLX8geN
+ xpJMSYpw/tbswtEsWU1KwwzwxFc+UOumiNOP6wvSxQGhvvV7NHoAOzlz6tfrFMHf37rMMVyGKF3Ah58fSSHZYHZYn57ywYyUs6MV493bjwVDXvCQs+e1eCbklbvsGkS0g9RJZGkPUJ6uJLP4aVgCSpdc5k70vQI2tigV4rqUfd1i5oEKvncJJEUcdTmkzLGpZeA6PYPYId864AgWxjxVkxQNSN5pmR9MrJ+v7xkZzPE8JcDdlJH6yrFamBitFSbAQgcNSHSMA7WV9cKqDEPRARIm14Yfa2THXCWy1AiTYY3JSwefH77t5V/UbBzE2/fqOp5GEjl+PNAT7LPmioFA1sHdig+OyI/FjuMmtYxvhfZMXOc9mG0rE8i0XYA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,43 +140,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hook mem_cgroup_charge_cma() and mem_cgroup_uncharge_cma() into the CMA
-alloc/release paths.
-
-In __cma_alloc_frozen(), charge the pages to the current task's cgroup
-if the allocation succeeds. Should charging fail (e.g, reaches a limit),
-release the pages. Uncharge in __cma_release_frozen().
+The const is not honored. Both cma_release and cma_release_frozen do a
+struct page -> pfn -> struct page round-trip to convert the const struct
+page pointer to struct page and modify it:
+cma_release calls put_page_testzero() directly, which modifies the page;
+cma_release_frozen calls free_contig_frozen_range(pfn),
+__free_contig_frozen_range, then __free_contig_range_common which
+modifies the page as well.
 
 Signed-off-by: Eric Chanudet <echanude@redhat.com>
 ---
- mm/cma.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/cma.h | 4 ++--
+ mm/cma.c            | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index 8555d38a97b1..16e2136421b7 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -49,12 +49,12 @@ extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+ 					struct cma **res_cma);
+ extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsigned int align,
+ 			      bool no_warn);
+-extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long count);
++extern bool cma_release(struct cma *cma, struct page *pages, unsigned long count);
+ 
+ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
+ 		unsigned int align, bool no_warn);
+ struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order);
+-bool cma_release_frozen(struct cma *cma, const struct page *pages,
++bool cma_release_frozen(struct cma *cma, struct page *pages,
+ 		unsigned long count);
+ 
+ extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data);
 diff --git a/mm/cma.c b/mm/cma.c
-index 03f98f6d45a5..03eb3acbd3c7 100644
+index a13ce4999b39..e1820fb451e4 100644
 --- a/mm/cma.c
 +++ b/mm/cma.c
-@@ -904,6 +904,12 @@ static struct page *__cma_alloc_frozen(struct cma *cma,
- 		cma_debug_show_areas(cma);
- 	}
+@@ -992,7 +992,7 @@ static struct cma_memrange *find_cma_memrange(struct cma *cma,
+ }
  
-+	if (page && mem_cgroup_charge_cma(page, count, cma)) {
-+		free_contig_frozen_range(page_to_pfn(page), count);
-+		cma_clear_bitmap(cma, &cma->ranges[r], page_to_pfn(page), count);
-+		page = NULL;
-+	}
-+
- 	pr_debug("%s(): returned %p\n", __func__, page);
- 	trace_cma_alloc_finish(name, page ? page_to_pfn(page) : 0,
- 			       page, count, align, ret);
-@@ -997,6 +1003,7 @@ static void __cma_release_frozen(struct cma *cma, struct cma_memrange *cmr,
+ static void __cma_release_frozen(struct cma *cma, struct cma_memrange *cmr,
+-		const struct page *pages, unsigned long count)
++		struct page *pages, unsigned long count)
+ {
+ 	unsigned long pfn = page_to_pfn(pages);
  
- 	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
+@@ -1014,7 +1014,7 @@ static void __cma_release_frozen(struct cma *cma, struct cma_memrange *cmr,
+  * It returns false when provided pages do not belong to contiguous area and
+  * true otherwise.
+  */
+-bool cma_release(struct cma *cma, const struct page *pages,
++bool cma_release(struct cma *cma, struct page *pages,
+ 		 unsigned long count)
+ {
+ 	struct cma_memrange *cmr;
+@@ -1037,7 +1037,7 @@ bool cma_release(struct cma *cma, const struct page *pages,
+ }
+ EXPORT_SYMBOL_GPL(cma_release);
  
-+	mem_cgroup_uncharge_cma(pages, count, cma);
- 	free_contig_frozen_range(pfn, count);
- 	cma_clear_bitmap(cma, cmr, pfn, count);
- 	cma_sysfs_account_release_pages(cma, count);
+-bool cma_release_frozen(struct cma *cma, const struct page *pages,
++bool cma_release_frozen(struct cma *cma, struct page *pages,
+ 		unsigned long count)
+ {
+ 	struct cma_memrange *cmr;
 
 -- 
 2.53.0
