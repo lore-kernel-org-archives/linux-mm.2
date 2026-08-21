@@ -4,112 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCAEC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4576DC5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:20:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CE0C6B00A7; Fri, 21 Aug 2026 06:06:58 -0400 (EDT)
+	id 371D96B0095; Fri, 21 Aug 2026 06:20:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37FD86B00A9; Fri, 21 Aug 2026 06:06:58 -0400 (EDT)
+	id 322F06B009D; Fri, 21 Aug 2026 06:20:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D1BE6B00AA; Fri, 21 Aug 2026 06:06:58 -0400 (EDT)
+	id 1EA476B009F; Fri, 21 Aug 2026 06:20:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD0116B00A7
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:06:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B3FC1403F9
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:06:57 +0000 (UTC)
-X-FDA: 85124848074.08.976D2B9
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A46B6120003
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:06:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=MlayavnH;
-	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787306815;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E94006B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:20:14 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 072701A03EF
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:20:14 +0000 (UTC)
+X-FDA: 85124881548.06.89F6467
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8572B20007
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:20:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=AY8QRAAQ;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
+	spf=pass (imf03.hostedemail.com: domain of "prvs=6693323b7c=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=6693323b7c=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787307611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=clgEu5ocwrJ3/2sMRprXhyjnlGpexA9HwN+YHsN7hWE=;
-	b=6TJmejcAS4Yqp8PD7hL+Xlx6jRz/oOWEy3BD/4dWCOqmrAeoCqvzXHQuelpDpGl/17shwt
-	HAmEtDjhEIAZ4m1JekBpsMBVplOW60npidXT1ApepxEzg3YHHkVyoxDapx0bKH9YyOe0jC
-	KCusCdLSPXSxKblREjyiL/oSA5xiccM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=MlayavnH;
-	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787306815;
-	b=xYDJ7OQQZ781JvcTd1ZaBBMTgs+ehbrXz3IUky4RurjrPxsVTuXfhiTgjX5XUUutcZSW/a
-	LKj2HnsZnmgBjm1zK6uasPrECzgums83Lc01tF3oL1LfHArqro3FglpiwQSeL4ve6+4tUC
-	FR6R4e0cfdyij6iiYUq78zxMhVsxd2Q=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=clgEu5ocwrJ3/2sMRprXhyjnlGpexA9HwN+YHsN7hWE=; b=MlayavnHGn93lBnpvs956q0XXD
-	CVT+1RGs2pahyXBKzbABxG5K9HCaqueKoaMRMlRJlxoYTruWY+ViP9hC9ggDwSa7p/xp6CVXfiYBF
-	Vkb/5h/+iGhZ0SMb/usYLoXRqfu8B/Uv5ZRg4+wIA5XCYg/Moojlgz9XZyHEOHSQzTYImSZLRx0gp
-	ndgIoMz1pVbt7Q/NTZCvVtwgLmRdkToCfEc3gneLx1YnsXyu7jJvSRBwaA80QVPm4VIZeECOFIYgV
-	6D5EmSzBV7DP1LTe+NSG1FAB2NfipYX1D4LlenITVvl8Y97FvZBFlyDnkEvEVhayB86P05bQZwG0D
-	tPbmeQvQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wxM9C-00BGCh-0e;
-	Fri, 21 Aug 2026 10:06:50 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 21 Aug 2026 03:06:06 -0700
-Subject: [PATCH v2 6/6] efi: respect the poisoned pages coming from
- previous kernel
+	bh=QBdWJ/Ft+65Mt1iUZsmGismhVTfwzquMzLyxhpkJVHI=;
+	b=lgraguWfgtnhFvB9noUWFhJkiAEAkDI9EyiLGLcNVTB+CVHUXJMHQHtQRp2PvyJjtRpEih
+	f+2BsyBNb5SbQy2ihc6NBxrpDFG+deJPnu3/iYPvo13eN3ofjqXeDTt5TW/LaE7Sa4EvS0
+	dv3ciUuc/TfyPW+8mcw1SPJz5n3Kdtg=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=AY8QRAAQ;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
+	spf=pass (imf03.hostedemail.com: domain of "prvs=6693323b7c=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=6693323b7c=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1787307611;
+	b=ulQ21FeYQ1hFlEu3DYczpwu8UKitVK3kbNv7jjME/riAer+IdiKT9w9KLbh8kmrEI7ANXD
+	lsmJN/wOAeZVVNpZ4zcQrxE7OmAfLnOpSPMWPzq8TMq7NLE1YgE9H/Vqsc4AnFH/OMLQsT
+	i9VCqkFk/ICRXkE1xUu9E2+ICWvS7t8=
+Received: from pps.filterd (m0528007.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67L9Lfsn3797584
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:20:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=QBdWJ/Ft+65Mt1iUZsmGismhVTfwzquMzLyxh
+	pkJVHI=; b=AY8QRAAQBt3F1TwqxdGj2SEJM9MTCpSIBbF3TexxVa++2bYp+H3KQ
+	JYYYPe+an5BgU4pt8WGc28QbIX4RGseGlB7xDIiNnBgQ7AgjRSrzhMHynfH+cEOd
+	FfoPnZMG2Xdl1t8Qoji/klDWSPr/6LSB2vIJxUuZG4w03M7SWVt23Nzv/R4jBVF7
+	1B1O/O4jmXOixd+3gtnueAxZlnVlGk1vnxfQ7Ahb4Tr7j3myUs/vCRBQEK432CfA
+	wU0eORmIE8UaK6aj+LofI2YjktV0Cec5ltvGQ/fxjY/v6XQEyBYhbvNGqquH8FO4
+	1p5jkoEJA711vEsbXdBKnUAAk+/IsbyhQ==
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4g66uscys9-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:20:09 -0700 (PDT)
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-69c20d1d150so766869a12.0
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:20:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787307608; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fKfXKdLInWCvcV7XXC5jEcWv6TDIAhtx6rl0DrXOXmgNdCUHXbHsmgbmcUEuZTQf5e
+         BeKcRNIDFGRiqFv5t74A1jE6Ycl6Bl4VdmH+XMOzKeu3e98h6XhtaCMb6zCCyPSzP4kU
+         nQpXpod23vsV7Mx7iTZ5lrkM+CSXCVJKig+PsevBATYwe6AwyhFJME+w6v9vVZewrMsd
+         fhg970xp3BSMMvqG1JfFFtTPfef3hTaBTca6qCOTpvu+mwX167W/exFuTzdYyaT0CkCg
+         Y+949Kpucdsxp2zgKfJlhbfdDxOIfX4uNdeYqJWeErdB8Vvzc3O/jpdpe7IFoYeAFD3G
+         Mo2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=S0xQ/E8xpU6D6Yg6bGTT5qrnCBsTbsSONLggwCBJmUU=;
+        fh=7qcBL5x4KoE3Vmi57ImBRzPTyguVl6LYAXm2KiCbE18=;
+        b=i/DaPcoTnW1REktytwoXwwZzv1OgQ/gJsWVZ9O0mfL0QPQfJL/cVsZ/VwDW03kZFjA
+         t7MjYmx/pCh4OrREvjYxWAp6kL0m/SCMrXAujutYUvd7t/seh+EQ8Pek+2rqjnzSockT
+         vM+/PofdiZUt4bdrVPzGdRlWIqaqZEUtxyGvfKbI8Ag05kJAy6Aw6YOof26BGi3ukzod
+         qVgBlhHduWe5nLAKRTBIeYvACUYDxOzdBXI0OFdDlOj6/BV3lNDSRaEwzKdQSMq+K0iz
+         Ic2VKx/iwfCkRPP7k01CotYdS0+KTnGevsADfbIsCS49EpCBhcWR25PIz6vQ9tc9Qm33
+         Vd6A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787307608; x=1787912408;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S0xQ/E8xpU6D6Yg6bGTT5qrnCBsTbsSONLggwCBJmUU=;
+        b=Zjyb+cTZ8bkBcDzljhrwn4sUps0ZPu737W2B+xBUuen0wQXTt1LtatvsK1uB+l1l5J
+         anuaUCVrclH2Ik2lo1fH5Zs+JZJ/xN8oFpl3ntxrdr//b8w9qxPQD+FTsyqZIE2n0DX2
+         BlAHbS7oLmdUqErcyas7Z7t/EYbj+qt1ia9DroKOBEBIfAfvTcBn9G1zdmDImr3HjvKW
+         bCRCNf6r9fCA7RBzbqeRvbO38Db02Xavw11Grwwd+x8L+exlvAoBleaY1ROqHQ1pbPml
+         WNLGjPuaGDMWCqyR17u0LYpdy+aZr64DW4uZUZ9lnBiWwlEPenN4A0vNJa7RJppyXVoS
+         lvcA==
+X-Forwarded-Encrypted: i=1; AHgh+RrvmGHoOzcbCpo7sJJjphvNRm4lDbhKrgdFoKrMHHYwsN81WIoGa+VsFzWwixySn7+Neguhw/hx7Q==@kvack.org
+X-Gm-Message-State: AFuF++lavLuWWkN2y2a7PnI2DnkvOnJGtVOSEQ8GGuhrkKhTKRMqO5rO
+	/XRU3iv2Bo0Ch5mpIwZGPNMvh7M+HYjrgYmeDFBeXnl1D7IZhs6SqZJVAAAdFZfSJF6BZwoWCpb
+	anCNvruO99T/FKgVpR7fGqQNWqkOSy2kRJNklG5t+AIbV3dxnjmPHUfFWwf0C9uFyqyX5KE8H6e
+	BCeM3T+YwHnjlm8ES7mgmcLXgLUw==
+X-Gm-Gg: AR+sD10c5nua02T9lmaEejvKK53lowSPivuoSEZditCZff3gJwyYvdEHjrkTwX/Cz91
+	EJ3k81DvXcE2e9tdwtKeVRcYWBB/cUg5043ThxVv/n61Ey9NoI/ZMytCeM9X31Hn/RyP2/BPwlE
+	LdetbRjaNDfEk2ag+5ubiKNbf13QE4pBznftZrqZdNeZnnDmH2YXzVr5M1+isJ2i01aF1SwQ+kU
+	Mi+0LQCmKWWJmNKKQ==
+X-Received: by 2002:a05:6402:27d0:b0:6a0:9c84:ce0e with SMTP id 4fb4d7f45d1cf-6a42f20af9bmr5632589a12.14.1787307608375;
+        Fri, 21 Aug 2026 03:20:08 -0700 (PDT)
+X-Received: by 2002:a05:6402:27d0:b0:6a0:9c84:ce0e with SMTP id
+ 4fb4d7f45d1cf-6a42f20af9bmr5632490a12.14.1787307607878; Fri, 21 Aug 2026
+ 03:20:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260821-hwpoison-kho-v2-6-5743791e48e6@debian.org>
-References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
-In-Reply-To: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
-To: Ard Biesheuvel <ardb@kernel.org>, 
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
- Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, rmikey@meta.com, kas@kernel.org, riel@surriel.com, 
- kexec@lists.infradead.org, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4736; i=leitao@debian.org;
- h=from:subject:message-id; bh=Xsp5t/AjlrO67qweZEiBvofZ/A1yR4ej/H2a8cEi3f8=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqiCMaLD0gMUB4x31WYY7Fkyu5rCsTlY48ZbsVw
- Nj6u6XVr3uJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaogjGgAKCRA1o5Of/Hh3
- bX8cD/kBHVlSr41tBzDeV+jCDztGEjkDtT4IWUNxuOkogpCQezn/v6qS40A8wDFiNHJFSXDbAKx
- rtgqpRfApNGBuCI3kw6A1v/hmQGPaqdIo7Z4qSwy0ThsszkBZ2I2TBvDwL8C/eEEV9NklYeiF0y
- Jaav/ViHoSnLsaq77+gX3G1vLYYA8BhkRFazDF9imjYp8+vT+WTEIblxYzXG2B/a0ptHQaLn2VB
- ig/KL/jhwH7ncyfMig0bC0z/LbmQa7s0JdTXUSM7amzpllpgNW5yiV/CBIJ2xxcJtJnnRceU9dG
- BeInri9f9Ph27Zhyw2kRB7vVC/7uDGw/s1r6RjAUrCTeamf5sB2vdGl3Zg2xJ8bpYBXHkyBNFb8
- sGmmVIRJw+aZNplMEtGSUMceZoWGFXnrmaOCi3TUNxUfGtuZMF8Zc6ZrJBOpJ6fYW6/WqmRrKBA
- uqIsr0cE4uNUxBWSzO5YsTeuutpBfJYmulEBwIQSZjQAbeoNHjtIZLuMSAzAgPeJMdxOEaVLalc
- IzWFCsG0L/dTguYbx7Jxm9sWwP4krI3vzqYy/yKaLtwTCFg26qY8oJKydmVGZWNgapQsXjyj/cL
- blpYLbmyzaDkOL8RomhW5VZxKMKR079hL+ZT0EklfZwjKhv1vLLVsoLfc8nr05AY6n8KZemvcaD
- G5RQ0RnqrD7GxtQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Stat-Signature: ty3s8op7fwkh8hs9w474tiqkae1g89t6
-X-Rspamd-Queue-Id: A46B6120003
+References: <20260821093606.2231216-1-alex@ghiti.fr> <20260821093606.2231216-4-alex@ghiti.fr>
+ <c6e1ffd9-def5-448b-ad2d-52dfca9685ef@kernel.org>
+In-Reply-To: <c6e1ffd9-def5-448b-ad2d-52dfca9685ef@kernel.org>
+From: Alexandre Ghiti <alexghiti@meta.com>
+Date: Fri, 21 Aug 2026 12:19:56 +0200
+X-Gm-Features: AcwNN1WyErUGIL8bE_9Kyz4TX-nUH-FFlKTN6PXU138KXn6g8_fDtZrgVb8lYJM
+Message-ID: <CAEmasaV8tzcebVQNbV-UfBygPDbJPct6J_F-9kY8T9MxjRcjbw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] mm/zswap: preserve the workingset shadow across writeback
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
+        Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Hugh Dickins <hughd@google.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDA3NiBTYWx0ZWRfX/WkMxhi6sLfD
+ CrEgT7++gpdkhubN5YqeDBK/UQzVp0Oo4WI0mvWdnJn2K7giUVus/0nKcQhQIknWYrSckrIyADa
+ LcWqWVS90/E7/di4dvYrc8bEGh4SULUbIMNDB8rrabEvpF13ePzfbn75LAeyJDMoq6ko/w9I9N6
+ s/rvn2E/gcAq5meUXsa1inBUoG1FxOH7PFk+0OoUMU9MrX+rRG2GK2GMT1/2hHpS/JQc7d2xsRH
+ BVznmlGXqaBHm568J/JjJdL+4pnrOz8rnbacIVaUAmZZfHYLRNd9qKzGEuPZtg4IBdjroJm7oLs
+ cMwPmQSRbeQ02JBxcDQ0IZmiJU1ELXqMC2FO/dYB6XwxLRS7zL+Tbl8MsOOn6oa4/qy9Yed8Okm
+ PIpMjohr7efPVSAGbXIDt6SjpUAvGQKJQnSpw/SWfyHOT8g6DMht76WFJpnoGs1YElcednwDjJC
+ aajxYN8AEjIKX8jBwhg==
+X-Proofpoint-GUID: K9bFsqcByVsO6SCgWP_33RpqaBuReLya
+X-Proofpoint-ORIG-GUID: K9bFsqcByVsO6SCgWP_33RpqaBuReLya
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDA3NiBTYWx0ZWRfX291pX7TGbYMv
+ 0HFfO+nizZY8XYRSOmL26cqcnlv5mmXVVE4uQ7l449mTMlWfwUROCmKIYKWY5Wu0+da4OsUAeSc
+ wjzsCCbrveMGtn7YaJ44TNxA58WpfeM=
+X-Authority-Analysis: v=2.4 cv=D6h37PRj c=1 sm=1 tr=0 ts=6a882659 cx=c_pps
+ a=Tczdrg5if7+wQeIJmxD/XA==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=4h92JMTCafKA-fb_NiOh:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=uOQYcvKv8qPnW8Wm2wkA:9 a=QEXdDO2ut3YA:10
+ a=1oAhN8tkTtOBK6_UvoHx:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-21_03,2026-08-21_01,2025-10-01_01
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8572B20007
+X-Stat-Signature: 3bg667yrtq7qmkx9i4tq38qupcf6zeay
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787306815-775373
-X-HE-Meta: U2FsdGVkX18ozFB/9dJbFYJbY81ITFB8Z5niJWEOoKLe1YOBPSAeP8C+3yH07cOc0yNhnNC3lNr6yAKXTgFoA82H/M86e+WT1QZnRRHIg6n7/McnpZclpSf4g7qKEAMwS8sme9tSOfqWn7UX5txflvtbJFIM1f76wndH877Rpcq4d175sgc0qXvsDfijDzm/7p4JMh/9ppDx3VUajiWcpIrCviGjmHydG1bANdvY9EEuGrCz5j0IxwenbCl9qdm87OHeBuAlbzNHZX3te+ri5SLsBjHOyzXDxP10T6yppBj40RtXJ2X4J3VoqTYt1tJjzo3M+kaHX5Y0lOCwcMKA7HmejlvKZhbOeRiKacY0DQna2fCnm+qLg9yoIZlRbOzvl15e2vrsuhPLbPTE1+tg9VVpqV9MzOLj4Xz2f+gbagaRvDLBp77LXe3QwOJ++DuGBkwsEs6z1IeQMKbCviuoFYgbQhfKx6FPcdQm8CbCRJytLuvkZUmEz27TlhNNZtozUmkXvvzBA2awOCQPXDVLmEtyHQB9kFPLGipDrO2selNqH0B1JT4a61KIRq3shPwLGGm0Y/PL+mvuDjfVOBt02aYap6rbfRKOzMpTIsVuqNpOAf39RAM6jtgUWnKNkwl40vDeKB+275xZaUq9j665yh/uZiN71eBClQKkgk8a8q3ztNPAw6SHJYjow6YFZRHM6s+s+NS2lYmK07qJfv7mvzSSHTHETi9JLBKs4/yxXaDLv3rDuYWMn88qObZraOUfltYGsQhiljX49mefh5qoPTAlqijiC+MGjZjNX2RmQfG+lOxp3QLUQRNrkUCRKd+Z2tqa5mXVg0fNBcDzXBhEzEe4I54yIBXvWfqQgTpSh8Lk1DO6rT5U8UZVaxNyPBA8+8yMumTrOsZL0B2Senx7IAozQcAKMRFKXck2t3KSwT4Wq8tigFN3xD8sxJjyBvH//IJj3tgHX+psmCusD47
- ijeTq1W5
- PI71tExfkYD0ot8ia6S2lcIP8klyAvYw27OBUiHJmsKehAPiKzaIrl197iBASGshyum0L2KwRONRgKM49PWvnLuf+t0v4pCa5gOPceL7WSe5KbW9Oj0Tr7foyIdT9LjB5/S0kouIRPluvICfjvemWOa1FaIkB7bi3bLeFmRz8IWnwBAp2P7sNSCJZFUoJIj001/ysnWdFPtqOUEVrYfjeeegTZQBYPXzg4FYqIi9J1STjVtGWNwM+K6ms8RRQoCjVlR/UmqJrsViHER2ycjkudoE7ThSWrTMAhcBOjLbl8lQm6RxHSNOpuKvAYcHpRqtZ556ZKTRrnkUzhkzZ7qPCFTdFE6+PJtng5bKX0Moti7ftkU0=
+X-HE-Tag: 1787307611-505363
+X-HE-Meta: U2FsdGVkX19ifpD+ab833F2jbYE4/iXoFjh5bS4Sb/9d5ztXS6s3SMW5uFb9Vz8rmff+3dFi0u7g2ZGaA9PiI2mZ8nRsqwSO54lHlwRwLY4GXa5A7nKNwNnA6dcuCPErkxFzyk5SLWSOmPyqCBYmHbr05UVEoQSDoQzLVVkTLgiodYq91YquTXHX5SiXH/IiBJA3lW0nk+wxxgYOroCwHUPyGy3P/zANc7tA9+Ig/HPsWAzDk/CxQUlHT72ppIgcXOKNf015PnR+YiVTAyxXBwT2iYGIvQDxfpKZYNrrZ9+xrLZ2VIWJD+pHWtj24j5kfh79ZJI6gWCDpUdl3FCF3qF7qsNR13GamIQSTqLGziLY1dNNYnQdKzDMA/Hh9e7aSqJT1fM4QXuI/zYIsKDCQ/TjgIE2rMomNLw5+SkaPP71C+W0Bve9/E9xayMwhV53kQkq7BJLFXw5iQY6GJbezQF/2ggNNcDAQefkcug+vlODoRPukqHu4k+X7GVlU53aUcxQdzd9g0xdFwyqRMSepLWnPOzObu3dp/YqupIKPmfJeyYoDUwB16o/AAOjU8OdxHS6pxGri2vn/ujmOETpGz7jCXgAACVVlgDQt6JS1Sdc8X2/BQFPuzu0uouDNkydFNUaWJpXzHbH8rtT3dgZufroPeMuWMnQsmLKEd2gxh7PbLCdiMBnsoDFgWSTzUotSIAQYw8E/E0VjvRYHrfujCqr862h+NNGuuEYJsGpZW8fENhibvQX8vWUXnSVnbO1sdlPtCGPvM7wVCoN5qm0mv3BfzbROvZDkZE9qx7ZtaY80BREPKAuLxB8Zm1SpAupAoQPuKUhYEJ63tKyrE/ULhgojo2CIFTxR/FY7l9w4wi3uC4fhGhy6N4Tp4tSSRxwifUH4D3SBE88lecHP0D5CxNoXBTVXKudUHiHRvFq1heczyGH51UN1OtLc9ZP8ufVghglGTIAtEOB8tm61Zo
+ nPG2+4OL
+ CqmLgCzPiLZ9c/7cQMeDX0tw/lIJ+1QPwlEFrWvkDW+8QolFfgxC2tKh9pWywasIDF1VdB8QzyKWJ5JRKFLZ7/BPs1fWW/IsKmgTGCIYxJETuiZsx3YAXvrCoxkGZcCzpzgILAB4dVRJOZEXIJwng5zxF2LYscyF87JsR0VKdtuBP7cg9oSpSjnKqazwl42tsdF09+k4pGRDowWlK60/7rCOrHu4kYBIXRlnsTfjdPz1RrnmZoqEj4DvfaUGqBv1+bCFMZjxq3Ad9jxDoK7QyBPobv2uGsYuf2EKmodO8I0Nw9nMu/c2kj0AyPTfewb8aI5+Iy0wROxLZ1vF2/jxa7QGZHgJVfNCrKyJFR4JMv1O+nbapbptqo1t+BDYS3q+5S50GsOb8vNNPmv2BpifN2LQIfqiUyVMqwQFhDs+ImCwOQpSe5GEPVAruiCQ2JxWRldhtUpqq5+em0uepn39BAUft6Qzg5l3UPDIhLh//O/Cck/kI8OLLZXUUbFbrug/7KLXy63tfG8sQLNik0LHox08YpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,144 +185,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On kexec next kernel, walk the LINUX_EFI_POISONED_MEMORY bitmap during
-EFI init -- before memblock hands memory to the buddy allocator -- and
-memblock_reserve() every unit whose bit is set. So a frame poisoned
-under a previous kernel is never handed back out across a kexec.
+Hi David,
 
-This runs from efi_config_parse_tables(), early enough to keep the
-frames out of memblock and the buddy allocator.
+On Fri, Aug 21, 2026 at 11:58=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> >
+> On 8/21/26 11:35, Alexandre Ghiti wrote:
+> > When zswap writes an entry back, allocating the buffer folio in the swap
+> > cache overwrites the swap slot's workingset shadow. It is lost and later
+> > re-minted inaccurately, which corrupts anon refault/workingset accounti=
+ng
+> > for the written-back data.
+> >
+> > Preserve it within zswap itself: at writeback, park the shadow in the
+> > zswap tree in place of the freed entry, so it outlives the writeback
+> > buffer folio. The buffer then meets one of three fates, and the parked
+> > shadow is handled at whichever happens first:
+> >
+> >  - swap-in: do_swap_page()/shmem_swapin_folio() find the buffer in the =
+swap
+> >    cache, take the shadow and feed it to workingset_refault() to account
+> >    the refault of the now-resident folio, then drop it.
+> >  - reclaim: __remove_mapping() skips minting a fresh shadow for the buf=
+fer
+> >    (minting would double-count the eviction) and
+> >    __swap_cache_do_del_folio() restores the parked shadow into the slot=
+, so
+> >    a later disk swap-in still refaults against the original eviction.
+> >  - slot free (e.g. process exit): the shadow is not needed and is clear=
+ed.
+> >
+> > The last two both go through __swap_cache_do_del_folio(), the single po=
+int
+> > every swap-cache removal passes through, which is why the shadow is read
+> > and cleared there.
+> >
+> > Fixes: aae466b0052e ("mm/swap: implement workingset detection for anony=
+mous LRU")
+> > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> > ---
+> >  include/linux/swap.h  |  2 +-
+> >  include/linux/zswap.h | 12 ++++++
+> >  mm/filemap.c          |  2 +-
+> >  mm/memory.c           |  5 +++
+> >  mm/shmem.c            |  5 +++
+> >  mm/swap_state.c       | 14 ++++++-
+> >  mm/vmscan.c           |  4 +-
+> >  mm/workingset.c       | 16 ++++++--
+> >  mm/zswap.c            | 91 ++++++++++++++++++++++++++++++++++++++++++-
+> >  9 files changed, 142 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > index 6d72778e6cc3..ef9b1612ac12 100644
+> > --- a/include/linux/swap.h
+> > +++ b/include/linux/swap.h
+> > @@ -298,7 +298,7 @@ bool workingset_test_recent(void *shadow, bool file=
+, bool *workingset,
+> >                               bool flush);
+> >  void workingset_age_nonresident(struct lruvec *lruvec, unsigned long n=
+r_pages);
+> >  void *workingset_eviction(struct folio *folio, struct mem_cgroup *targ=
+et_memcg);
+> > -void workingset_refault(struct folio *folio, void *shadow);
+> > +void workingset_refault(struct folio *folio, void *shadow, bool lru_ma=
+naged);
+>
+> Passing booleans makes calling code hard to read. It's preferable to eith=
+er use
+>
+> (a) Dedicated flags; only makes sense if there are really more flags expe=
+cted
+>
+> (b) Having helpfer functions that spell it out for calling code
+>
+> workingset_refault_lru_managed
+> workingset_refault
+>
+> workingset_refault_lru
+> workingset_refault_nonlru
+>
+> Or something like that, which makes calling code easier to get.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/firmware/efi/efi.c    |  2 ++
- drivers/firmware/efi/poison.c | 71 +++++++++++++++++++++++++++++++++++++++++--
- include/linux/efi.h           |  2 ++
- 3 files changed, 73 insertions(+), 2 deletions(-)
+Ok, I'll see which of (a) or (b) is less intrusive.
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 111e60479211a..7474eeebb0add 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -812,6 +812,8 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
- 		}
- 	}
- 
-+	efi_reserve_poisoned_memory();
-+
- 	if (rt_prop != EFI_INVALID_TABLE_ADDR) {
- 		efi_rt_properties_table_t *tbl;
- 
-diff --git a/drivers/firmware/efi/poison.c b/drivers/firmware/efi/poison.c
-index 2f47293a4e45f..e418c6b3aab81 100644
---- a/drivers/firmware/efi/poison.c
-+++ b/drivers/firmware/efi/poison.c
-@@ -3,8 +3,9 @@
-  * Runtime handling for the LINUX_EFI_POISONED_MEMORY configuration table: a
-  * bitmap with one bit per EFI_POISON_UNIT_SIZE of physical memory that records
-  * hardware-poisoned frames so the next kexec kernel can keep them out of its
-- * allocator. The stub installs the (empty) bitmap; this kernel sets bits at
-- * runtime.
-+ * allocator. The stub allocates and installs the (empty) bitmap; this kernel
-+ * sets bits at runtime; the next kernel reserves the set units before the
-+ * allocator comes up.
-  *
-  * Copyright (c) 2026 Meta Platforms, Inc. and affiliates.
-  * Copyright (c) 2026 Breno Leitao <leitao@debian.org>
-@@ -16,6 +17,8 @@
- #include <linux/efi.h>
- #include <linux/io.h>
- #include <linux/log2.h>
-+#include <linux/memblock.h>
-+#include <linux/minmax.h>
- #include <linux/mm.h>
- #include <linux/overflow.h>
- 
-@@ -128,3 +131,67 @@ void efi_hwpoison_record_pfn(unsigned long pfn)
- 
- 	set_bit(unit, efi_poison->bitmap);
- }
-+
-+void __init efi_reserve_poisoned_memory(void)
-+{
-+	u64 ppm = efi.poisoned_memory, phys_base, unit_size, bitmap_size, off;
-+	struct linux_efi_poisoned_memory *pm;
-+	unsigned int nr_units = 0;
-+
-+	if (ppm == EFI_INVALID_TABLE_ADDR)
-+		return;
-+
-+	pm = early_memremap(ppm, sizeof(*pm));
-+	if (!pm) {
-+		pr_warn("Could not map poisoned-memory table\n");
-+		return;
-+	}
-+
-+	if (!efi_poison_table_valid(pm)) {
-+		/* Keep the runtime side off a table this pass rejected. */
-+		efi.poisoned_memory = EFI_INVALID_TABLE_ADDR;
-+		early_memunmap(pm, sizeof(*pm));
-+		return;
-+	}
-+
-+	phys_base = pm->phys_base;
-+	unit_size = pm->unit_size;
-+	bitmap_size = pm->size;
-+
-+	early_memunmap(pm, sizeof(*pm));
-+
-+	/* Reserve the table itself so it survives a further kexec. */
-+	memblock_reserve(PAGE_ALIGN_DOWN(ppm),
-+			 PAGE_ALIGN(ppm + sizeof(*pm) + bitmap_size) -
-+			 PAGE_ALIGN_DOWN(ppm));
-+
-+	/*
-+	 * Walk the bitmap a page at a time and reserve each poisoned unit.
-+	 * memblock.memory is not populated this early, so memblock_remove()
-+	 * and memblock_mark_nomap() would be no-ops; a reservation is what
-+	 * keeps the units away from the allocator.
-+	 */
-+	for (off = 0; off < bitmap_size; off += PAGE_SIZE) {
-+		u64 chunk = min_t(u64, PAGE_SIZE, bitmap_size - off);
-+		unsigned long bit, nbits = chunk * BITS_PER_BYTE;
-+		unsigned long *map;
-+
-+		map = early_memremap(ppm + offsetof(struct linux_efi_poisoned_memory,
-+						    bitmap) + off, chunk);
-+		if (!map) {
-+			pr_warn("Could not map poisoned-memory bitmap\n");
-+			return;
-+		}
-+		for_each_set_bit(bit, map, nbits) {
-+			u64 unit = off * BITS_PER_BYTE + bit;
-+
-+			memblock_reserve(phys_base + unit * unit_size, unit_size);
-+			nr_units++;
-+		}
-+		early_memunmap(map, chunk);
-+	}
-+
-+	if (nr_units)
-+		pr_info("reserved %u poisoned unit(s) (%lluK each) inherited across kexec\n",
-+			nr_units, unit_size >> 10);
-+}
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index f03b1bb576133..350a3cb0babdd 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1285,8 +1285,10 @@ struct linux_efi_poisoned_memory {
- #define EFI_POISON_UNIT_SIZE	SZ_2M
- 
- #ifdef CONFIG_EFI_POISONED_MEMORY
-+void efi_reserve_poisoned_memory(void);
- void efi_hwpoison_record_pfn(unsigned long pfn);
- #else
-+static inline void efi_reserve_poisoned_memory(void) { }
- static inline void efi_hwpoison_record_pfn(unsigned long pfn) { }
- #endif
- 
+Thanks,
 
--- 
-2.53.0-Meta
+Alex
 
+>
+> --
+> Cheers,
+>
+> David
+>
 
