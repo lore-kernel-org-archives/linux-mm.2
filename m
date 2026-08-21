@@ -4,122 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B4DC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 07:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32E67C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 07:57:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 369E76B009D; Fri, 21 Aug 2026 03:50:39 -0400 (EDT)
+	id 4AED56B0092; Fri, 21 Aug 2026 03:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3408B6B009F; Fri, 21 Aug 2026 03:50:39 -0400 (EDT)
+	id 486A46B0095; Fri, 21 Aug 2026 03:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 256E16B00A0; Fri, 21 Aug 2026 03:50:39 -0400 (EDT)
+	id 34DB86B009B; Fri, 21 Aug 2026 03:56:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F00566B009D
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:50:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 635D1A294B
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:50:38 +0000 (UTC)
-X-FDA: 85124504556.18.0FBBE35
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 65F4340003
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:50:36 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="QsnDFf//";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F0E76B0092
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:56:59 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E54F403CD
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:56:58 +0000 (UTC)
+X-FDA: 85124520516.26.7C5F416
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AE597140003
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:56:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B7FKkvTN;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787299016;
+	b=dh5nqiJ1S7TgG0OS5X0wAyBtA7Bc/OVL2BRUeVHcLObdc58Wy1WZ4N0SvUP3jz1qNDb7Ck
+	L1t0GWdLHz782cycKGopfX4/MWX/xz2hpH+TArABVQYdnv36ARHp0YaoaKrI9YXX2jz4hC
+	PHJ8+fvhZLfAnpfx7xpJ/TKJYt1C1u0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B7FKkvTN;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787298636;
+	s=arc-20220608; t=1787299016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9RWA+HUT3W6AsRkOLp09q1KyYn/E9QflCE9F4xeuhlo=;
-	b=pmKZSmCJUhwNQsJgwuvuII8jrTu0ihNFB7UOvEztcuj0937JUUyiW1TRZ3kns9GGC+APU0
-	tAA1WJ0YFYof+zy7qmrhZt/wvAzWC+z2AtfaxPv9TxNVIhW9Ytfq+xDDjB8owHZAnNafmD
-	zaumbsV9Yjcsr7zjgwueBchRJ1biY/M=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="QsnDFf//";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787298636;
-	b=DvKrPnR7Mp99D7xbxvsIDI0lMZJ4QLioO7J1yNA5UX7owuSHysIYWWHixj+GXISc8y7UJY
-	WRmJqq7hOIj6XdTvdBQtdZnMH4OSRRaLuBs3NqyZX74bmJtQAjIZXYceuzXGQjaYQAFnmN
-	ZLb9xYUvflbAX3Y3SlmgagKqOT3cBNU=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-69c600f76ccso1323753a12.0
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:50:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787298635; x=1787903435; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9RWA+HUT3W6AsRkOLp09q1KyYn/E9QflCE9F4xeuhlo=;
-        b=QsnDFf//YpOB8oSnPF6FDXM1JmWOg2M0Qzj9WsAo/3H+kDEPHoH5xzvbBwgyfbVajc
-         fsi00wCLHZmYuB0RW6/xFvXNDJBYIdeNWkimni/y38SXXGC0PUwYJH0oV5olSm/dlIxs
-         CZjyFZU2YzYFV5d/nfsY48J9AGKJAtpfY2o4JiTsrxb807RVB0TJvU5LuAunPLTmUr0z
-         UH4jbatKWyaLzFAFtMLZ8QIwJiWYK0stZVY9w2MjgWqLcqaFENV6JlTC9tI+nt2sMWcR
-         K8wk1wpe14/WUm/bJkJu2KhBxrTCOj5nhNsa/DjU+4vQqd5qlXuqJcLwKEhPnFmOl/Xn
-         GTew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787298635; x=1787903435;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9RWA+HUT3W6AsRkOLp09q1KyYn/E9QflCE9F4xeuhlo=;
-        b=OmQ1mo9lxDxz2dIX7zzBSvBsqljsCTGN1oI5bMFfE8XaSlbRP0Lr6DTmd1iZtFwwIT
-         6Kf6z3xJCOV7yVQSb1MxEK+AQNjPE+E3ApFLf09mF7Pkb9xKioQ4sqW5irGCowyfzWbc
-         JZz6kkqQs5MdztrGMEiVVHtsuoihkik9lv3T/YZ5E5C5WzuZ4yL4dYeW+gPoHtjlH7Do
-         +bx//CGfCSolI1eSmKubhtyXtaQFgJMmRaH8uTcuigH7IDgp4sHQk84SiE3FckVzMk71
-         NEJZvIhEubDTQcqEFuxGdKoPAwwi9J3PmClO5pkl6IJB54f6zAw9gDV+U0pyVsFvH+rZ
-         DxqQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpzHes2E86U7FE9pCrXmZpvZrfqdKovGe8e+imMtR4OhNJ9SITQtx0u+zcGVh0hWsN+tTO6dkjTXA==@kvack.org
-X-Gm-Message-State: AFuF++m3SQ+w0Fqx7DLSfj+Iak6//q55dQLBHJS+eBUx8iwM5FVBKoTE
-	NeLSYZNW7DySGCu8pIyhq1s9GpaSWt7FOUzNgJAF9nMaITJuz574cZF8ppsWMyR/SWU=
-X-Gm-Gg: AR+sD12/AkyuWKpDbwG6RxyfEGujSLrQfr2uUMBW+FtD61EIOBNvj9ldVpEBn6QfqZP
-	TAIdSmIdG8VrWSKkTY7m5tOfHMhQ6zJ6SPHd+6R8dasywT7BH7DPHgJBGZ26tv5KIMQrrATe/U/
-	FNjk7ohpD2xE75bZmR1h0jML07Vp3iuacogL3l+mdvBHpW8UGMT9DNYcZhx8AUAK5WRCg+x1wf+
-	jg1ZgD9fpfEpsRAlCfb2YbyxjsiMdwWDmEIvv9oa9a1UMjgGSMe2tJanSdfihGDdBuXKRbT//sM
-	8DAHePABduRoHjQ+2OMYfRKk7c9aPq3UEOO7N/5CJRHTmrXs2SK5m8TOHapQEMcIGkS1DKpZ7O3
-	fBG7TUKqmdE6Irt5mmAW3F8muFlUtQvVUICi+BqYPfbEHe8cyGpvisDTcz8faYvFGdHS4s3y2Xt
-	UIzVKLgr7MIdql+oHI8J+n/kcJruh/2mgZ9vqS7QUL1CHumwEjgD3+X/AYrT0/d4hjyrwwEq7LE
-	Q==
-X-Received: by 2002:a05:6402:27d0:b0:6a0:9c84:ce0e with SMTP id 4fb4d7f45d1cf-6a42f20af9bmr4666831a12.14.1787298634871;
-        Fri, 21 Aug 2026 00:50:34 -0700 (PDT)
-Received: from localhost (109-81-81-112.rct.o2.cz. [109.81.81.112])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3ff156811sm5060563a12.19.2026.08.21.00.50.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 00:50:34 -0700 (PDT)
-Date: Fri, 21 Aug 2026 09:50:32 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>, linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmstat: add per-order allocation slow path statistics
-Message-ID: <aogDSG8a68CrMQpL@tiehlicka>
-References: <20260820133659.712111-1-d-tatianin@yandex-team.ru>
- <20260820154913.3d6a821f6ba5c1f81d134a0a@linux-foundation.org>
+	bh=tjjBBZ/k0RLbSDGZaWeN6t6IvNROJ7OMmNej421EHXw=;
+	b=rT8Rk1HrsM7zptdJIfkfRHEXwu0SmUpe9vrgsnjeLvhrK9Fc6kW6JHS4DGIjCkX2qqXu/x
+	PKqk4WJKluYSZrJaZGJ6cayFerjP9QOXgYyX1QIl2o9+SSbxnMZAMAZ+0aUqDjn766awtQ
+	0hplZ69V/YXHEwn2R/q1LZR8EIN0q9A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E05E043CB7;
+	Fri, 21 Aug 2026 07:56:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AD01F000E9;
+	Fri, 21 Aug 2026 07:56:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787299015;
+	bh=tjjBBZ/k0RLbSDGZaWeN6t6IvNROJ7OMmNej421EHXw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=B7FKkvTN+AVvwFWaae0GEz5bWAYGMjhYykTrLQH6sZHxNtmwJSC06TT6oijP5rGyj
+	 05snL9vfZwtw3LreSzJcJqjZ+mG5lZDEdTI7rgZMcN83z1uikEHEHFp6A30/1kJ8xg
+	 MQZMOcXRp+Za4puQ9RCN8egvQkgBEJkMzE4BZXTAxNeqfyifjPZwrFCMZN/uQ8E5Yt
+	 IfHqTL4RoEmG+mjLKT4CyTVKh+p2vEprX8aMnavjB8RCBKRNBPSIVagli0TSSk1WTd
+	 JJ7dScWvo11ij5GhsRdhzrY2RwyJIcUIt9NYe5bcObHvjJmePWnU1OQpzeGEubLNlk
+	 G8Y435QyEiqcQ==
+Message-ID: <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
+Date: Fri, 21 Aug 2026 09:56:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260820154913.3d6a821f6ba5c1f81d134a0a@linux-foundation.org>
-X-Stat-Signature: knqbonqq15b7d9pppe5aysp3nt1epbdx
-X-Rspamd-Queue-Id: 65F4340003
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+To: Byungchul Park <byungchul@sk.com>
+Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
+ kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+ chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com, boqun.feng@gmail.com,
+ longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+ yeoreum.yun@arm.com, netdev@vger.kernel.org, matthew.brost@intel.com,
+ her0gyugyu@gmail.com, corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de,
+ x86@kernel.org, hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
+ kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
+ ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
+ baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org
+References: <20260706061928.66713-1-byungchul@sk.com>
+ <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+ <20260821042143.GA40890@system.software.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260821042143.GA40890@system.software.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AE597140003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1787298636-844386
-X-HE-Meta: U2FsdGVkX18q8Nm0cU/q71Bizfjw87A0Z+zTyDy15TjPkKR59lzbiD0jhdkMBm2Dhr0vCpZ0NMkMuX0K9B1c54/gxL55N7bjmdnomgu4tQp5csW9VJpJcSyHZEPwOET/uu18IFS+R9cPL3uczzztR0IasfKO+unAmguxAd0sss6lhHf96ZGK+tMEC8m2OYL0b2uwYxX4M2RMth8PvviMG36iba6yWKM6IEAxI3OrPBb4xxk62BX9b/xWoseYO7NUT1N9Fpie484+GeSEXfr1KKdnOdRitFBMfcGJieYQaLHcRvSBKGsb8qZ8rkGcD7BflKmA2JMdLH3OPt/LM7ydzpS4EFVAuirCrvKQ4yQpf8BH2ZqNtz7LsqpmBndBi6gYYe4+pntJ19eUvOkyLHz4Hs/8q3vY+zusPzIHILgRzpt3ifSAUCB06AutFNq3Nq5ZFN1S4qyaZrxRECZug5FbotEemt+nrIVgd5FOcO4bCobqr6ieqHteYnjv0JTSxfyZ5mUqOMEqn96ZQczMca+ZpDHuZGzNQrUkzLZS3994stXH6qGjmJ0fQQA2DmhnKbCxJX+O7O14bK6D49JI5JTf/4rlMARgn8uiKaW0nN58yETuVYZK1YXeDyy/+w1VsfMf3zIsuO+kNVRKVr0zRmO4M6iNntWRoqCyeNs36QnWQH7Pl4w5lVeE+/gfJeiSyzuS4/OaeKz02WwTG6uAGH+2rHYNT5G0S4Ybzo8R0jucucUke1ekhVx3ZGDwZoD5Ins+2xwMbJGyB49MffxDOlc5NZnlEm+TPUNOyeE4VuZcuJdkfTJWwzgNrY1uCpjqXrqq2jbvBXhzeDNhOFfgrlW9LoSTqII6pGU1SVUn1yk12okcHTF11oPL4iB6KUCNNHHFKXeYuYkfj3PUHOYspUkMILIufF4RpS8v78DQqg2Y4+4CYjBj1T/VnjLlKmRejL3sxYb779GmK8Y4jJRbGzm
- AYyLwHuc
- 7uKZhWHbBIvkeXTCcLmtAAbammpRs0R4LCI1Q21GOPxwT3AYI189FxI70zlOJNVfbu0fCgkiOoJvr1FZPYD+aAHui2yrseL7qo1fYLAbL3iA0w04U0zlAk/ZJ5Be/owgqOAgRGUZD9yT1gG13i3lRVtvjBnApeO9Ccs1lCQGhWkgP4gjdOT+1vA3+7a+ZC76y7XTtrsH8/M8fb1akIrVMKmX3Vxo0YvUsQpXMh4mLq6Ei9p2z1/ZnVosuQQ7myioDpRQTZh/dNcnFcTWdSobr6WcG6vqd54GRgsn5IMj3mTHvHYRXErii2j9db4kqyW45+QoE+t2yLzz/DnbObTwoX83pDI52Gp05im1YdLTvhCzHYk48hR+YszQ7IPpae1AyQQWwiq2E+k7cvugrbkyvkU9ljaTEwy/CFMKU5z+q41SM3J1WijDFwyyD7nZkTGBC7RL14rK8ctM/qEqkFJ6bcVX9WdM7wA4z1wV6
+X-Stat-Signature: owigqj876w9tjsaiyzhbmnx8yrbzxktr
+X-HE-Tag: 1787299016-381922
+X-HE-Meta: U2FsdGVkX1+z7XN75aRHCD/v/dpp9zzNPrFQQQhqCR7UmJrEn0ZGlk4F1E4BhXq3sOe2FnwoDqRRZg2sDzSPTCh2uM/NyXAJLYBxmq2QPD/BNm0YtUsXNpfjnp5f5q8Bsv1SuPkPZrfZX1wbhnu6E76ilBVE2piFKZZ/xcdPrxU3qUWi9+JyzB3i5SNDYhvuSCn7Z1pgZXYlPDVbhZWAaLUiUvE8h3aUfBV7BCFmUtcXofSTmsTVhDdmBDXpRk/7/CxBQ5hFyaCZhvUUMg0wIPpJnZ4moHSxCeYm5jKcZJ2Umqa+IbDHJf9Z4724MYEp6zKKlPvc0CNSGcebnP7P/DyN6ak9RxjTiydWOyOB+30jE2LZXHGYP3IQ+tcmCZI+nDD/Oy+EgZbp956gOlBYzPgmqsJ6jC5j2GaKj+ujwy3ONlBF/yuT4rCVhe+RxiWuGUwfziJZVB3ZeNc5wn1DjdAfNj0MwPsVoq7JocoYe7yUB40U758URwEG2ciSTyLwHN6SQaU6GaxKadnKWyI4cB9fz8WyEXAzbzLLIj3tR5MhKCO3h0STPCO8PntA0fXB6qWuSVH2ZvTSHN2eZiOPQEyvpTi+eLV92R63sBQfmbBVmvCtyItQS8+9vYcg/bf6XSrcgw0rZXtv4GQXFHBnt3nbjo2RTMHcK6yVahi4jrG/xCHIjK6O6EoqjewuH4RBb9Uo9VFti5oDur4JLKZ358oyG92MKuhlSzQ3IJg/WBgFIRonvSXRGSXZQ93K2X8E404iqULZBlWyUn2fWeNzB0X7cyVrUj8C5+ATUBZuDSKTfg/csT7z8ObpKTIC5eOJkCOZLo7YUY1t8RjePfYTxhLH6z50niiC50XGNH6H9yAhKaikL8AZc4yN3HkJdv7YwOraX5q+j2i+4LWPfn5vZxDJhUJEmGTAyARJJDdcKJSuL+VYAi1IKA+Asf4bRJbXpUXFvgg56eHoaeezSGK
+ 32EZOtG/
+ ZHT//sry3XP+IilNZDGmSZtM5kVE9znulJi8GbW/KGiuisbBFEUZpNzoK9VPONop/iy5zS3V9FBHCSAEQ2DP99Vl9QQ90mjeGbwVBs1v3gjhmtfWhRXoFgXAU1ok6+32swqzFnNlNPAd9FaLN2BDZbjm+RoOP6FDpU9Ma7bMVidOcyIwIik8Z1nHCRskBrhYLrp8CqIvxfKVjAMkE+m3hMKr2iTJAevMb6dx5r7MgbV3WuGQXxP2H5E/YGHDHJPR4Hn0vLX9JbSZjglYbj501QWmg9TZwX529uh08M0PjOnAsWQOTJKEFYLWfhVA8+haT0uxE6rQ6Llt7+0cyfpq71AToG3c+v33DnF9/+fHXlwhbRmxuf2g6e0cxawtoR9kz1T5Ubzl0pHEbtuh1Cf50lWiXh5896IM9iHV1vcBe+mRCCWZWnIceBvXaCwaPvO7WLvgPN4DSJrlnieXKAxlhpUrTDcqnSkG2Wb4AB26dntpTFJgccD2F1eyB18045CM1amJaORgFSfsiT88kSKK3E9MDVq8FasbI8Tg7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,60 +194,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 20-08-26 15:49:13, Andrew Morton wrote:
-> On Thu, 20 Aug 2026 16:36:58 +0300 Daniil Tatianin <d-tatianin@yandex-team.ru> wrote:
-> 
-> > Production incidents caused by bursts of high-order allocations all
-> > entering direct compaction are currently hard to attribute from
-> > /proc/vmstat: pgalloc_* has no order breakdown, and compact_stall does
-> > not say which order stalled. Tracepoints can recover this on a single
-> > machine, but they are impractical as an always-on fleet-wide monitoring
-> > source, which is what is needed to correlate latency regressions with
-> > allocation behavior after the fact.
-> > 
-> > Add per-order event counters to /proc/vmstat, covering only the
-> > allocation slow path, so the page allocator fast path is not touched
-> > at all:
-> > 
-> >  - pgalloc_slowpath_orderN: entries into __alloc_pages_slowpath(),
-> >    counted once per allocation, before the restart loop
-> >  - pgalloc_fail_orderN: allocations that returned NULL to the caller
-> >    (including a successful allocation freed by memcg charge failure)
-> >  - compact_stall_orderN / compact_success_orderN: per-order split of
-> >    the existing direct compaction counters, order 0 is omitted since
-> >    direct compaction is never entered for it
-> > 
-> > All new counters are purely additive: the existing keys are untouched
-> > and compact_stall == sum of compact_stall_orderN.
-> > 
-> > alloc_pages_nolock() is deliberately not counted: it is opportunistic,
-> > never enters the slow path, and its NULL returns are expected rather
-> > than failures.
-> > 
-> > Counter names are generated for any MAX_PAGE_ORDER the arch Kconfig
-> > ranges allow (10..13), a static_assert catches larger values.
-> 
-> AI review got upset about this:
-> 	https://sashiko.dev/#/patchset/20260820133659.712111-1-d-tatianin@yandex-team.ru
-> 
-> > A per-order split of PGALLOC itself was proposed in 2017 but stalled
-> > over fast path overhead concerns, restricting the counters to the slow
-> > path avoids that overhead entirely while still capturing the
-> > allocations that cause latency.
-> 
-> Seems useful, thanks.
 
-I would rather not put that into ever growing vmstat and bloat it even
-more. Most users simply do not care about that level of details. What do
-we expect next, per migrate target/order stats because somebody might be
-interested to debug fragmentation better?
+[...]
 
-Would it be sufficient to have a dedicated debugfs interface? The
-argument about tracepoints scalability is also rather weak. There are
-examples of successfull bpf, tracing deployments at large scales so this
-certainly is not a new problem to tackle.
+> Exactly.  That's why we use classification e.g. lock class - DEPT also
+> makes use of the concept.
+> 
+> DEPT doesn't use a full map in each page but uses a minimum space for a
+> timestamp in each to track when each starts to wait so as to use the
+> recorded timestamp when the event occurs e.g. folio_unlock().
+
+Thanks for that information!
+
+> 
+>> Given that lockdep is a debug feature, and we will at some point allocate struct
+>> folio separately, I assume we could just squeeze a "struct lockdep_map" in there
+>> in such debug configs and the world would not collapse.
+> 
+> That's a good news for lockdep.  (And even for DEPT :)
+
+He :) Where do you currently store the additional per-page information?
+
+> 
+>> Doing that today (one "struct lockdep_map" in each "struct page") wouldn't work
+>> as mm_zero_struct_page() would not expect such large "struct page". But
+>> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_LOCK, maybe
+>> that would already be ok and we could just do that (and optimize it as we
+>> allocate folios separately).
+> 
+> Sounds great.
+> 
+>> Not that it's ideal, but for a debug feature to at least check PG_lock, probably
+>> an easier way to achieve it than some completely new infrastructure.
+> 
+> I understand what you are going to tell.
+> 
+> However, it's worth noting that lockdep tracks dependencies basically
+> based on **lock acqusition orders** in the system.  To make it track
+> even rwlock and general synchronization mechanism as well, lockdep has
+> no choice but to get more complicated.
+
+Well, yes, sure :)
+
+> 
+> Focusing on only the dependency checking, the most parts of lockdep are
+> for the tricky things, so the reusable parts are not that big.
+> 
+>> Now, Willy said "locking rules don't really apply to individual folios", I
+>> wonder if that could just help to also let lockdep check PG_lock with less
+>> metadata? (didn't fully wrap my head around the implications)
+> 
+> That's what DEPT did and what brought external wgen introduced in DEPT.
+> I was considering the exactly same thing :)
+> 
+> Again, lockdep that tracks lock acquisition orders can't do that.
+> 
+>> [1]
+>> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?utm_source=chatgpt.com
+>>
+>>
+>> It's your guiding example, that's why I mention it. You do mention other wait
+>> cases here, I don't know anything about them, but for folios it's really just
+>> "we used a single bit so far" AFAIKs.
+> 
+> It doesn't matter whether it's implemented using bit or not.  folio lock
+> is quite special since it's allowed to be released other than the
+> acquisition context that makes lockdep impossible to track them.
+
+Does that really make lockdep *impossible* to track them? IOW, there is no way
+to extend lockdep to support lock release in different context?
+
+I guess there is a way, but the question is at which price (I seriously have no
+idea, maybe this was already discussed and people have a pointer for me).
+
+> 
+>> [...]
+>>
+>>>
+>>> Q. Why not build DEPT into lockdep?
+>>>
+>>> A. Lockdep is stable, battle-tested code. I chose separation because
+>>>    while DEPT borrows BFS and hashing ideas, the wait/event model
+>>>    requires rebuilding from scratch. Lockdep was designed for lock
+>>>    acquisition order — retrofitting it would risk its stability.
+>>
+>> Why can't this just be some configurable extension to lockdep
+>> (CONFIG_LOCKDEP_XYZ) until the feature is stable and can unconditionally be
+>> enabled along with it?
+> 
+> Answered?
+
+Not quite. I don't understand why this must be a completely separate machinery,
+even if, conceptually, it would do more than traditional lockdep.
+
+Is it either DEPT or LOCKDEP in current configurations? Can both run at the same
+time?
+
+> 
+>> I don't quite buy the "would risk its stability" argument. A lot of stuff we do
+>> "risks stability", every day :)
+> 
+> That's awsome anyway :)
+> 
+>> Is there another good reason (incompatible with X, dangerous with Y, cinfusing
+>> Z) why this really must be a separate thing?
+> 
+> Roughly:
+> 
+>    1. Similar or less effort is needed for the new one - retrofitting
+>       lockdep is not easy and big changes are required since the
+>       reusable parts are not that big.
+> 
+>    2. Even though you didn't agree, retrofitting it would risk its
+>       stability.
+
+Well, I don't buy the stability argument, really :)
+
+Retrofitting effort for lockdep is an interesting point, though. Lockdep
+maintainers would have to make the call here regarding direction and feasibility.
+
+[...]
+
+>> But I am not a locking maintainer. I think there was plenty of discussion in the
+>> past, so I might just be raising points that were already discussed in the past,
+>> but I really just read some random pieces of earlier discussions. (ideally
+>> previous discussions would be summarized here)
+>>
+>> Long story short: we are now in v19 and I think there was pushback in the past.
+>> Did the opinion of locking maintainers change, or is there a way forward to
+>> integrate this in a way that would make locking maintainers accept this?
+> 
+> One of locking maintainers who I met in an LPC told me that he agrees
+> with the direction of DEPT and supports DEPT, not officially tho.
+
+Hm.
+
+> 
+> What he and other people are concerning w.r.t DEPT the most is, false
+> positives, which is the most important issue for now.
+
+Thanks for highlighting that. What's the main reason for false positives? Is it
+something conceptual that is mostly impossible to solve, or rather just
+implementation work to cover all edge cases?
+
+> 
+> At the same time, I think the most important thing is to make DEPT
+> useful in practice especially with folio locks involved.  Actually, I'm
+> planning to share DEPT's true reports periodically to LKML and work with
+> people who believe DEPT can make things better.
+> 
+> Any advices will be welcome.  Thanks for your opinions.
+
+I think we must come to some conclusion on how to proceed with DEPT. I see the
+following options:
+
+(1) Don't merge it and carry it OOT. Shame if it delivers real value.
+
+(2) Merge it (after proper review and acks from relevant maintainers ;) ),
+    keeping it entirely separate from lockdep.
+
+(3) Integrate it with lockdep on a high level, giving us a single locking
+    dependency checker, but mostly letting dept have a separate implementation.
+    Look into possible merging afterwards.
+
+(4) Retrofit and extend lockdep to really have one mechanism.
+
+As the saying goes, it's hard to teach old dogs new tricks, but in the end
+taking care of two dogs is likely harder than only a single dog? :)
+
+I tend to favor (4) (or 3 with possible future work to achieve 4), but I am not
+a locking maintainer, so really they have to voice what to do.
+
+I do see value in DEPT (even if the folio lock might be handled differently).
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
