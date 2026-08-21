@@ -4,93 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EE29C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4421FC5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:20:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FBA76B0095; Fri, 21 Aug 2026 07:16:57 -0400 (EDT)
+	id 4CD1E6B009D; Fri, 21 Aug 2026 07:20:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D28C6B009B; Fri, 21 Aug 2026 07:16:57 -0400 (EDT)
+	id 47D806B009F; Fri, 21 Aug 2026 07:20:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70F916B009D; Fri, 21 Aug 2026 07:16:57 -0400 (EDT)
+	id 36E796B00A0; Fri, 21 Aug 2026 07:20:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E68A6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:16:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CDB6912040C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:16:56 +0000 (UTC)
-X-FDA: 85125024432.27.D791DCB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2B4BD20003
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:16:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VcysFdYC;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787311015;
-	b=hSS8x9GXdAofje0e1d0W3OIRDma0XGpYDn/nvzsy2SnSFFI0daaY4CU9uWDDq2WLiW8Euz
-	wc21HxtkHvrFNBZJE2zjher6dVJdD2igNztpPEA0Vvlrn/QM9NFj/Twj+nJKtCrjxIrzIz
-	7M8CBzEUNLP0ug2zEYU993ZYFDF7LtA=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VcysFdYC;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 160B26B009D
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:20:24 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA84C160411
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:20:23 +0000 (UTC)
+X-FDA: 85125033126.30.428735C
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A56C4140003
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:20:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=cJi0VSpl;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787311015;
+	s=arc-20220608; t=1787311221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KGFY8Wph74poQlCTeXTgQZO9xVvJ3OIvs0GGQOMzH3Q=;
-	b=MOHptal2rfjJsxsLy+DYsjQ7IeXE2CqMRfv4WmvLCICUl+Lk06n2to9xd9VmuflyZIU/w+
-	mY1wJK1C/xWY/gMdMtSrcEjM5IvakVjl7F1e+CmtwKusheXvzAgTIFg/VOP3kFLG7sBYBm
-	ay08DrCY5GtvxqurLK+BbQBnx11bPro=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5699440B29;
-	Fri, 21 Aug 2026 11:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E841F00A3A;
-	Fri, 21 Aug 2026 11:16:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787311014;
-	bh=KGFY8Wph74poQlCTeXTgQZO9xVvJ3OIvs0GGQOMzH3Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VcysFdYCHpmHmNN303g7tSxdzlAD5viQ7gg07COrdjH1qKdMKLD1rXDSQpIeKQG44
-	 0HKd5IwVWfRFpcBrp6o5vtlGMKuZdnNT7qzgre0ka42vw95KdE7/3utBxu3YnlWYtD
-	 qZ0iKZbdSUA3nY/F8ZoCIDWJhXlbYtUkGcgDUQbJiB6xYpf7xOfla0Bali1PC9c3nO
-	 aTC0yVinIJMrfqwAo/Nei2J0JHb8R1eQjt5QOVakeB7Seio9MDxDTo56SfYkd2Pta0
-	 fV55wmMRpK+zMXkW+DgqBmPMIB8ATiM5ETVaVSMLB/dYQY/elIwTrlImMAiIVr24Wl
-	 8dRtX856/c/cA==
-Date: Fri, 21 Aug 2026 12:16:47 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Ridong Chen <ridong.chen@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>, Roman Gushchin <roman.gushchin@linux.dev>
+	bh=S9DzUHhXqeF8/l/paW9lK4zwpzVJ/XlGGskrQialWHo=;
+	b=rTH4kON4E/j11IQJg7OMMkyVK7GjjcyxnkNQPYbzzex9bnV9+26Un/xz0RXeppgSIBt0DP
+	03Y7QtFUlJPjr2mrWB5kl40XelV8ZXiY/sxMQSS46XFfDNcX/u92derLcy1QPqp8V5vu/k
+	cPckHqHACbQytcSEaft/FPqCXgR6xF8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=cJi0VSpl;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787311221;
+	b=7WW0XwAGL0IL/8gWk3p5kLH2WoCu3We8vLkGZnn4rigkNrhpjpA6fc13ZP9nQ0I1Gk4jLK
+	mgDGVkm7mU2h5uJdqf+lOWGA4asEScWIzJGT9mOtigIHbz2Ep5kvHFp36qKlS0LkGXkivD
+	xPf7Q7pEbBbWu8s2sgFRu75PKA03AIs=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2020421077so151001266b.3
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:20:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1787311220; x=1787916020; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=S9DzUHhXqeF8/l/paW9lK4zwpzVJ/XlGGskrQialWHo=;
+        b=cJi0VSplAhiuFgpgLLKGPXqk8Pk1akBYu+qhtvDbmybSITveuTMlOQ00lFI+1LOeBh
+         Cyyloc2jHT6kxp7zQpcCpe3eW16FzOqzTAu0iE0g7LadCryzWWQeHy7g6lQ3LD8lWA2x
+         Codj0Crs0B5sZhuW9X6+P42dj/3tW3AAxB4iQsTNt0t6eG12k79iDqcfffuqxGl8msaT
+         ZuBB/zradWdhqzYD8UJ78fZhC/YNakEDY6Kti2tH8z7v75PiKL8bJ2PeravhC6LIBFbN
+         w5YRHw4URay7aKhJC1kAnNh1nvrseEjc6umtdA8XP9khhQ2Mead/h9lqnIGgOZNIhIVE
+         nErQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787311220; x=1787916020;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S9DzUHhXqeF8/l/paW9lK4zwpzVJ/XlGGskrQialWHo=;
+        b=HJcQJZV1RXVeixgCfwKrkQtKVU5x7e9GtCrtgnKF8eq5iWY+IojqAL72TIgGu34066
+         oPlyygm+xaNpUHuPaPtk04w69H11Jc5dqNMpC7aqH0/bXVR2+naRzGR7Q+LJROk23r4w
+         aklofR8W37Qs5CsLHoC61i7leTHmEFG9712IS4otWiNVKOCVmkNFGWcXWXikeRYYcTRl
+         C1cDZZPCIl/49AwbA0RtzAzyEYmB558pe/58INWLbSsPn40JabxGqoGRxnfeSdXe1FdR
+         6jYiXcVtf6rYXvIXlIof7KQwJfKoeTZJKeLhlx08CEeWD+Ga1XAAcYF1viIbCCeVUSES
+         9lLQ==
+X-Forwarded-Encrypted: i=1; AHgh+RotlR/3kxatibQfszhNlXlAgSI35ZPz14cp1YfTDJAmYlcyCaOwVwzdcmZ7arQMECqd5zuJAWWomQ==@kvack.org
+X-Gm-Message-State: AFuF++ns5SIQ+nWMF4d1QLFyKcEggNfvexu6f5bS7KHyEuG8OXscwG/8
+	tNgrKota+xIgRGOdOaAY4akjaMi4Tp2pufo/Ac1OguPWlQ6p/iv355kQb6gJCsWpg7A=
+X-Gm-Gg: AR+sD10rgGZL1lnc1k6z3C+5avMtkShM+j/U7d6O4KT5F7hxbZzA5Mr4K5owiCXC/C0
+	zsPPBSdqjK8q2BBADf52rLQuhaEZKP4UpyXeijmZeIYEA0FQpLxh9S8yP3GBg9p+t2DASfyu1gW
+	CvvLSkGOcMKb+/dJdJSv5kzXKLwGf0FyRDLnZ79UDQwYbZ6jAa9UooRj37ZrLCrBrXIfHSrBAuj
+	NvHHlfejw9/Ww75Sg+boiyo6EswqYVthVUpT3ziszNeYwc2cD7K/VIB8oKPhLs823TyAzYtpSXP
+	PuDcCqVgqT700asLdRhFEyI+n1+/0853Br351pffUzGEKJQ75jKovkEDXKqW4F0qMU+sYATDiOv
+	6zV4tYJeD+0ZFRQRo7ge9+4iFwPc68Y8LT/kwCAwlQnvbCu3nMWDNkb8Kai6PEJy0JLwXJJJM7t
+	JEST3skWkd9oNfkKpB/u29JBoynZUUEAGQTxEzcV8kq49T+PjJKVpLKsFdJsNgjYRUMGooboC91
+	+1605W0yVgR
+X-Received: by 2002:a17:907:da16:b0:c20:f4ee:7c97 with SMTP id a640c23a62f3a-c246a4aa1bemr550696866b.5.1787311220175;
+        Fri, 21 Aug 2026 04:20:20 -0700 (PDT)
+Received: from localhost (109-81-81-112.rct.o2.cz. [109.81.81.112])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3ff16c2cbsm6285973a12.22.2026.08.21.04.20.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 04:20:19 -0700 (PDT)
+Date: Fri, 21 Aug 2026 13:20:18 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Ridong Chen <chenridong@xiaomi.com>
 Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
-Message-ID: <aogxgLSLNixXvuUR@gremlin>
+Message-ID: <aog0ch0u8BtkR-a1@tiehlicka>
 References: <20260821081741.1340277-1-ridong.chen@linux.dev>
  <aogMyu5R_DZRqp2J@tiehlicka>
- <aogQ6iDA7RkuTtDG@gremlin>
- <aogYm0fKNsYVyBM8@tiehlicka>
+ <f45848da-9569-453f-b0c0-8aa984e1976d@linux.dev>
+ <aogZZsXwCyOXISaw@tiehlicka>
+ <bc9c3de9-17b9-4ba1-8065-3270bb455630@linux.dev>
+ <aogwUac-sjfcs7Vi@tiehlicka>
+ <dba83897-9bbb-4a44-9021-8f938bb6a12f@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aogYm0fKNsYVyBM8@tiehlicka>
-X-Rspamd-Queue-Id: 2B4BD20003
+In-Reply-To: <dba83897-9bbb-4a44-9021-8f938bb6a12f@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: m3uz5fabbszympshfq46oneuodr4kzz4
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787311015-139574
-X-HE-Meta: U2FsdGVkX18nAcjMMm3d5dmv3O2m8q90NjXOU9+RZKasFNRKzK99XHRxS72MidM3B7+Q9MvpnDfNSzENWMarZFzMVV/Egh4T76Bie52U0HvGbhDls06AveIzMeDDQ8K8WiRqEFfmRLJE3YHxaPslde/WsHXB5Lm3qQjxwsEMquN5jJy03Vq9EHFFoqcZEm94y7oeBkVGA4Lyu7DmEwDnJjebAz6gqv3ISWyycWpd+JXKb8igWnhpR6g9q4eAUVzN3W2IIYn1rWyGyMve+NPwWwHNhMDf7dQxX0L76MTlQpPTBf5xNKnz+ne2cXU1PA4iD/OHUcxcm1d4DdryrqxHA8+6A5s36Iq28I1eXHpWcm+ptXM3dd9oJ/1sOiXMaqg3BX51MSt4Pqg/sbK8eHncZtrGqs7pMpa1mVL0j1mQKQFJGBR6PeGBB1vKjZkGJNKHWHylZ42tv+2o+kJD7AGaZr2NdsJXCqX5wTmEHUjGvx4B1OeiF7g5pUdNg6Wt41KQqCDU+1PfDugo5OGLnjjS1mnXiVPsf5/A5VoIXyB0g9xKuOkJViHS/zNRg7FzPp12GpjLZsqr9nP6X4GJg2ReQ7Vjz/t98hlQhdggFTRkALxq8IvqOASBcB7vKFfT+Y3tckgbzF+qcYX0g639f10DCJ2NYNBYzqRn1Ivfq/AAM4BHaTypFwBioyHAWsGerOcNLuzoYVtoIKNQPkLmrUqIjQYleoAruBwRYcCaxstiCVMJZ8W1pXYGsUO3e/n0wSvGKI2cfx0ZAIrusOEVW7vqZsuMx7SN8QolPy/pmP0KVVOaH0tmqr/dN1K9TyXBN0yaHFxnI6KjmM+MYPQQNL0LnEyUKE16o42ogGMLTh81Op8I0cMXajOnzdtCHAcAbmkp29OXN3UZ5dCDojsiyYA52g5NRwsvDT+tyw7omuBAYNqOM16D4N9zjEkW+7KrTcwMkntClTi6Uzw8UYJWZK4
- MWuRdR3q
- 24EGQuBlWafqBFkq4Ba7a15RZU62zmYjX1Q8pFa+EOSDgSRhvHIKCWoVjCR6HoLirnnbO9g7aYMi5V/9nxVY0HQrYa3bXzOx9zR6ky0XjynqgIl+0LSnWPRHu6Sox95yieyAJ12FRax7eulPkVtJaAsfPGtE4/E6vA6URHIH9baFnO9i3KEuYwTEgdyEG1lIeWb4w3ksBVbQ+nLxjbIV5w6OGHm+81xkoxNejjhUaugTSQDneJRigeOwCxcJNiBe62CNu
+X-Rspamd-Queue-Id: A56C4140003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7s33xdwyyzdjrwwkaxd6x6bgroazwp8x
+X-HE-Tag: 1787311221-816851
+X-HE-Meta: U2FsdGVkX1/dldvFxxkAWL7y+onaxwfEtB45id68Xyuz/r0ZmUJFcQ/W62w4fpKKnV/TkSP2v92grmOjaCc9trB9wmQul4AH0JkHHtT0dIDpYLPysCtKL1dIwwGA3k66hwHn4TiwfrGLJm6IFELV67O5SxaZWMPEEKWKQeEUdhdlEdYjUafa3ecduCVWWT1ZZbZ06qo4LKA9+iCj3uQ/zbcCzn2LthFSLiboWr3TAU7NINK2KWWLUSbdkyeHvkZtx3W3aiJQre8e1ordkU/tilidzjr7K6v/aB2X+IUDpKMmB7YitdEH5ch3tfWEQoZCwmdNtmjmKbDWq8shIn+3RDXU0qWco/wDiAI5ExaS7t4vhz0Qg7N6mTgneh1gpBr6J/QeQptonKyQgj9GQkUHdweG6a+AVNq3UK35l1xAF8lDGIv7EKiEDg2ed3juwj6ZQmcT39xdU8umKBJ8mA44GS/V42ozQtTVCd4OADPJCgFRuT+OtgXN8DwXcGjA6R1jLb7ihFQLz87UMjwCiWMd4z9PJoxwHEHMsZG5gyhoQR02iiw+Eli3LA8XLyZsIZiy0OyDCzbpn/QrRT08XrcH+P+KPnrQu1iDwcycQgCfkacFSdua9LWY1J7j+rTu7qYGi0VyoyYSqJAwsKnYylsb2PX9+Zw123RFuuTrr5STZ/hlCZKx48Ymwayx5WP3SY7DaGMhZ0T6COqQdsHjtj4SdFzus4xsvaXS14jWqapij8Vv43meZdrw3SNsrr3GglVwsbBqHeWA6IAX7w2C/fFXpLk0E9rLbdU6cVTnvW6xgU5CyYiMGwb4vMtnRxSPdSCb+sqE11lQate1auUU4pUwBbeH9zdwX3tBjTYbhj5gcgoEuvtn/zn+Z8+3D9LGW2MV40Hjckk9IBf/aHAyT1DDFzWZO1ZUxrWRW9Td5JYhWMyv9Gj1Qrug8porcxksPwd23bvRrnFaP2f6JJvLIw2
+ PHVj6R7U
+ 66vX8LyP9EoDapnyNDRWJtyeOMYWk4jKb67XTnywe0+0ouxvsWS1a4lXKS4Pl3VUyi24J8mzLkqWFSWru8wQyNL/V5vNUCfXzAEr5rQkkAzZ4laMuMkG3KvvjNs95Ms8VMLt3XrJPI6m3Cki+ojLVblIlhMMd1K4kdhU+TJawCTLjf/a6Pj7Etj+HNIzUvNNunJQlqJviNLPT4TqhEcb3KTqlD9X+IVfvKgXTfkdFwEi0AmvT4cBZO5qHaj/5O4o8eUQUwDIX5tsV19Yd8QMiToaM6J4DZbKdjc8Z7Mt6UK8KORJ9hhfMtPBNTL3aU1eVW4FmkuzC0T9lXAzfph88tC23pkdMw/BhWg30vOndRI9QoC/clzPZx+6E/TqPWEoOOLfO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,76 +133,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 11:21:31AM +0200, Michal Hocko wrote:
-> On Fri 21-08-26 09:58:52, Lorenzo Stoakes (ARM) wrote:
-> > +cc Roman for suggestion.
-> >
-> > On Fri, Aug 21, 2026 at 10:31:06AM +0200, Michal Hocko wrote:
-> > > You are explaining what but missing the most important part _Why_ do we
-> > > need to have this addressed? Is this just addressing Sashiko review
-> > > refernced below? Is there any real usecase where the current behavior
-> > > matters?
-> >
-> > This is exactly the issue with these 'unrelated to your patch but' suggestions
-> > from sashiko.
-> >
-> > You end up in loops:
-> >
-> >         AI generated patch --------------->  AI generated review
-> >                   ^                                  |
-> >                   |                                  |
-> >                   |                                  v
-> >                  AI generated 'unrelated to your patch but'
-> >
-> > And _at every stage_ reviewers have to do _additional work_ (with ~50% signal/noise).
-> >
-> > This isn't sustainable.
-> >
-> > We already had _too much work_ prior to the slopgeddon. Now we have a multiple
-> > of that.
-> >
-> > Roman - I really think we a way of switching off the 'unrelated to your patch
-> > but' stuff per-subsystem would be useful.
-> >
-> > Maybe we could figure out a way of funnelling this stuff somewhere separately
-> > longer term.
-> >
-> > (I have I think 2 slopped fixes to rewrite after the previous what like 7 or 8
-> > this cycle? So forgive the grumpiness :)
->
-> I wouldn't blame Sashiko on this really. Yes it points to a theoretical
-> problem. That is fine. But we should encourage people to not blindly
+On Fri 21-08-26 19:10:45, Ridong Chen wrote:
+> > > Did you mean that min_slab_pages and min_unmapped_pages should influence
+> > > proactive per-node reclaim?
+> > 
+> > Nope, exactly opposite
+> > 
+> 
+> I would really appreciate it if you could clarify this further. Sorry, I'm
+> not sure I fully understand what you meant.
 
-I mean it's not only this case, it's a pattern I've been observing for a
-while.
-
-> follow that lead and immediately jump at fixing something that is not a
-> real problem. Quite honestly I even haven't looked into patches until it
-> is clear that the usecase is sound. We should enforce this more and
-> leave patches lingering if they are not sufficiently justified.
-
-Yes this is a needed change in mm, but until we fully transition workflow
-any patch might still land.
-
-And I still find those kinds of suggestions deeply problematic for reviewer
-workload.
-
-If you had a person repeatedly say 'hey unrelated to this series but...'
-you'd very quickly ask them to stop and if they persisted, >/dev/null them.
-
-I get that passive passes are too expensive and it's not that much more
-work to have sashiko point this stuff out, but it's not that much more work
-for _it_, it's substantially increasing workload for reviewers.
-
-As I said on a recent call - it's fine as long as you don't care about
-reviewer/maintainer burnout.
-
-But I do so :)
-
-> --
-> Michal Hocko
-> SUSE Labs
-
---
-Cheers, Lorenzo
+pro-active (userspace triggered) node reclaim should completely ignore
+all those historical node_reclaim tunables.
+-- 
+Michal Hocko
+SUSE Labs
 
