@@ -4,117 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 018DAC5DF88
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 03:41:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6180FC5DF88
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 04:21:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5C516B0095; Thu, 20 Aug 2026 23:41:36 -0400 (EDT)
+	id 001B36B0095; Fri, 21 Aug 2026 00:21:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0CC06B009B; Thu, 20 Aug 2026 23:41:36 -0400 (EDT)
+	id F1C216B009B; Fri, 21 Aug 2026 00:21:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4A106B009D; Thu, 20 Aug 2026 23:41:36 -0400 (EDT)
+	id DE3736B009D; Fri, 21 Aug 2026 00:21:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AE90F6B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 23:41:36 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A5D946B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:21:52 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE233140338
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:41:35 +0000 (UTC)
-X-FDA: 85123876950.06.A837ECC
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9EF2F120002
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:41:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=UjmXfeHe;
-	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 91A9BA0205
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:21:50 +0000 (UTC)
+X-FDA: 85123978380.06.97631B2
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A839140003
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:21:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf01.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787283693;
+	s=arc-20220608; t=1787286108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EL37QOqkfz4M1rcSjU6ngbT0t5Oo/IwMsygbaYu8nYw=;
-	b=iVlIBQGBM5Y+wRuxsfxSjMJMveVvO8bJAfFAhWTMLBxpdcYG20EAwCgFGwnTp/dUyDZLhj
-	TlbujP5jKWU5BEB2jJNMOXem71yi8EXJGlEV3KKGZ1Yb2dxvFo1eyGr3Y15vZmA44Eay+b
-	6KyRca8rVZfuJ2DxZGyoRPigVEv1JRg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L+U2X9duGtafkdUWOXiYDghlnwtch/2YWa0j5bx6JDo=;
+	b=4go4seZjWEcoT0umP4VaWXhqOJvGGfN2XtEz0JljcKisT9KVTk3SPpibZiFzMjdOvkJ/e9
+	BrwHBIxkG2GkjChUY/nWftIzSYTJvCJHe4F629LjLPbdXpzFuC2Qz6xQVOAlPMTMCcHkNT
+	hZUC2JXcb8qnQ5PdxZrsA9Rp8Pb39V8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=UjmXfeHe;
-	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf01.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787283693;
-	b=Q24OqXo4kAXvNlDFz//I8cJmbbjY+u0gNTDTPk+IfEVenhjqZjK/jWR0Cove4eWKJ+yU1x
-	CSHZRjgD0Gc22PB1oZEiBoweHaAV3TLNmoL5NryBBpto2dVg9Zze7YKfWrRixUmjA3Gh6S
-	mef5Gi8DHbC0NKPv6GuQKUjLtVVUDJE=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-930f4e5eed1so30363985a.2
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:41:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1787283693; x=1787888493; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EL37QOqkfz4M1rcSjU6ngbT0t5Oo/IwMsygbaYu8nYw=;
-        b=UjmXfeHebXs/5yTjsWE2FAiVizBPOWla4IB+4lfvVVAYnrf8izpg18O8TPP4oGUTsm
-         v6MRJrzFSjYt8JLtDBLEmcmiOD8ug099emPnR66k8TFenv2N5F0l5RCrU08mLUPbyGTk
-         tdHQCoVppdszshLYr5mg9bdRtIkfCJ6yfBHScCFewEiwVcCHhQz7eSlqO9uWOLJF73ew
-         k93G47QjslA0itaaupiBn44HV0Z73eug3170ieuuPME2P0O5fH66tX5o76cR6C3O60Ml
-         XA0tneEg26xluVLUZHbg77bxMSM0IrynTCAWKXP+h+Q+p0eZoYwvw3dmhUbsxu5X4BWy
-         BRCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787283693; x=1787888493;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EL37QOqkfz4M1rcSjU6ngbT0t5Oo/IwMsygbaYu8nYw=;
-        b=JBN1mF7Iumoeu/eZjWV9Dcb5fclnp+jbkzEFVsWJHfPLpplvuryZSaBAQ5nC/fs64e
-         +iVD/W/DTNmq7EPWnwISdxCuCPtGz2t9D+Alx7xE+cNIuVT5W52uT6S9xkB4UGhHAKRH
-         piDy4cH8+8QbMKJo7ClQkbHbUu/DNt2xUzuA8vpWMmwz65gZ8l+YKahVDtHdMg79213/
-         xDLq+f7k8ONH8D3NGE1F19kOkJIq/U9tuv1dm/icozXyUIRMT18ZeEgH5LqhuORLP7g8
-         nJer3pZlaz+98d5J5hAwHSGxOMThsCIJNQTffqjdzJb1JNK3MytlVc8Rj7a7ejHbhogU
-         vEEw==
-X-Forwarded-Encrypted: i=1; AHgh+RrMT+XKcyPS3b9FCpsB+/dXdzykxdVdryFj0xKChIPSpsA3gAxNnN3R4Py8M2JQ8KHfU2TaX6g0zg==@kvack.org
-X-Gm-Message-State: AOJu0YwBQU/tl1GvaBPe8rqcEyboOrSZJA/HeIlH80SBTBQ6pzeDnrn+
-	zYOlMD5OEaU+QKMr/gMgk6K2UoMCJ+uYhZdRIez8qDimVdZdvqUvXbl1e2lXRqCBWxLaOZEkT+3
-	VWoMD
-X-Gm-Gg: AR+sD10idDA9+iicPgAVdDqF7yovbqlPtsa1WnDt6icLxplsyELNNtfp3XQeUnGIW5K
-	wFfBqSNaCSYVsxbHAm92pPCczlHP9sHs854onENTExK4aWT2A+83tlKoBam6TeApl4GRH90ADg/
-	ke/qzxzODkVacyhsjbaUAnDSiu9UMwcr6kAFOzTstRqjTqaE1VdUPvVBHMSuOtU0yJOwYcRtJFy
-	Dzfc2/L4hsDpw4O/RsNp9slbb+jEvRKFJUCayxrQ9W7/PwTNLpWuehLrgc7ekE+wdagxyYQYho9
-	UgJiOTwVK5l7SCO2SB+cK4MRj3jicyfNLvZ1CeBHGIYYQEd1+oSIEa//qG1UwJntyDetwLXh6hA
-	xviz+A+Of+pN9TNgAa5XlIxl2RBPajjIIjFrm4zQTMFFUml5Q+0xGn4y4cxhNS+X4g7JM8eYDpj
-	DKA6/5XKFRyRQIqsTvGNgpXPLY24f2VoHzPdTCdv6AssIaI4d/DE0oI1T5ft4=
-X-Received: by 2002:a05:620a:6f02:b0:931:4b6:a9e6 with SMTP id af79cd13be357-937396f3282mr286246585a.47.1787283692603;
-        Thu, 20 Aug 2026 20:41:32 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9372fdf59f3sm234049085a.10.2026.08.20.20.41.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 20:41:31 -0700 (PDT)
-Date: Thu, 20 Aug 2026 23:41:30 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Enlin Mu <enlin.mu@linux.dev>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, david@kernel.org,
-	mhocko@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, enlin.mu@unisoc.com
-Subject: Re: [PATCH] mm/vmscan: fix comment logic in balance_pgdat
-Message-ID: <aofI6uXxq4TD5QTS@cmpxchg.org>
-References: <20260821005107.3416-1-enlin.mu@linux.dev>
+	t=1787286108;
+	b=0GR48JBXZm6FKVAZ/EMkpCCVWs6cLAtx1iKACRBblFnoy4LjlJmppjmKyTGQKTK1hHWwZb
+	Sc1gpvj+pEFlFFcHOgD0LK4cLX6Xu3EQJU6Noc1lLcPfEn06eJE2YsiZOVA61T2kJlAi0G
+	9A2lepaTao8tnScCz6L4ORr+0Cqj/qs=
+X-AuditID: a67dfc5b-c2dff70000001609-1e-6a87d2577020
+Date: Fri, 21 Aug 2026 13:21:43 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
+	kernel_team@skhynix.com, torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
+	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
+	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
+	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+Message-ID: <20260821042143.GA40890@system.software.com>
+References: <20260706061928.66713-1-byungchul@sk.com>
+ <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260821005107.3416-1-enlin.mu@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9EF2F120002
-X-Stat-Signature: fniiyomc95p1q67f7dgfpcp11zyd4h6c
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0ybZRiG835nmhU+6nTvtkRN52JggTGzxCeZmxpN/NRtMZnGZfvhmvEF
+	OsrBwjhojJzXAWrBUaTNCIxROtptUmAHEMdwDAgHC1mgcsyAtTYFWbBAwFJsS4z8eXPlvt88
+	1/Pj4UhZE7OHUyalieokhUrOSCjJwo5rUaeHL12I8XnCQFPwLYzkdFCw7NFQsGG4y4LGWklD
+	z2guBav/GEgouL9JgW6ojARLcw4Bf//sY2DRWIJA7zCw4Or6ADYnnQSMrswjMM75CJjruIRg
+	Q5cAbt1zBirKbQjaTbkMPNO2kPBkeZGB3vJiBqpz22kY6ncjuGooQ5BXe5uBIbeXgAldGQFm
+	6wmYNjoo6NNeI6DCxYCucRcYKvII//MnAeU32whYMzaw0F87QYExez/MmPQseJ8egs3qZHhs
+	drLQOzVCg9tRxsB0dyEN1j+6EHiePCXAUuIgwTrrb9vHDkBN4XUKKqsmGNBseBBMWTZpyDas
+	0mDr6KNh2Gzzb/G4h4LxgR9Y+L31Jv1OrLBa8D0lWKosSPhtfpEU8psyhLq+eUa4fnmdEEoH
+	ooT7+klWyP91jBWqrReF/EcLtNBkihRqf3ERQs3SMi2MuY8K1obLzCdRZyRvxYoqZbqoPnjs
+	nCR+1jnKpnQdzTRdsRPZqPxgEQrhMH8Y67W3iSLEBflBzueBmOL341mXhgoww7+O7fY1MsA7
+	+Rjs7Mn1f5dwJG9+GV+Z7mYDxQv8m7h5opgJsJQHfGt9PMgyXomvPjCjrTwc91bOBYeS/qHe
+	qmEy4CX5vbjex23Fr+C8FkPQFcIfw7NFz4P8Ir8Pd9zpJrZWXgrBaz9+vcW78UOTndKicP02
+	g36bQf+/Qb/NUI2oBiRTJqUnKpSqw9HxWUnKzOjzyYlW5D9l4zfes/fQku1UJ+I5JN8hjZkq
+	vCCjFempWYmdCHOkfKf0lsYfSWMVWV+J6uQv1BdVYmon2stR8l3SN1YyYmV8nCJNTBDFFFH9
+	X0twIXuykeqe69xrssjBd5/VeeJCc8arLKdfeji+El7smM9otg1GFNSHNn4c8WrYzNmIn8JO
+	ffpZypftxz8adIeVJJxfP6mwEJXvR88MGNtaD2T6Ss2ljYJ34Ui0vX/wZNvxqPfevvNdXULN
+	SKnzUf3dNPZE5r7dG/QoO8nEJfbeCG058mFrj/YvOZUarzgUSapTFf8Cx7i0xsYDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTVxjHc865Pb00q1xrpzeyuKRzMSER2aLxWXBmbjHezGj0w4ZhS2aV
+	m1He1NYxMNm0dJ2lugUbW7QVRZRqLCJrgY2ZDgIDYWoEVOgUKIRCR0BBVmSUt7WYZXw5+Z3/
+	8zy/53w4LFFY6WpWk31U1GarM1VUxsh2JxnWJ3ecTE+89mANmIzHodsfkECnvp6ByZCJgQu3
+	yinMOX6Wgsl9XgItXfkMtFW4EPgnTQimZhwEjLULDMxZmqUQmn4qBasewYK3GYGt3ULA11ZH
+	oLxKj+HvynkKI40TCKz9AQpFw3oGxpynEdiHHFIYbtoBz/y3JbDQE8TQ9XIUgTMwjyFQfxLB
+	nC0DLpV6IuO2cQoz9x8QKLK2Ibjc30NgYrgPQVVzL4JgdRiB93o+hcHCagIPA8vg0eQYhVbr
+	KQrP2i9geF5JoSTfK4H2eyMIih0WBENPvBgMV25RsBW7Gajt+1UK7SOzGLptFgwu9y7wO4cY
+	uFtYiiNvjnT9tAocRQYcOf7CYL15G3/gRMKU8UdGuOGpwYKxY44K5RfLkTATtiAhVGYggrEw
+	cm0cHSPCd56vhbK7o1QITz6mgvdlCSP8UcoLVwvCWDhzf71Qa++R7tmWItuSKmZqckTthq37
+	ZWkDwS7p4ab3c6+f9eETyLrBjFiW5zbydfpkM4phGe5tfmDYxESZcut4n2+aRFnJJfLBlnxs
+	RjKWcK41/Fn/HWm0sILbzFd1n6JRlnPAV4SfLrKC0/DFdS70Kl/Ot54PLEpJRDp7sYNE9xIu
+	jr82z76K3+QN1Y7FXTHcVn7APL7Ir3Nv8fU1d3AhWmZfYrIvMdn/N9mXmEoQcwMpNdk5WWpN
+	5qYEXUZaXrYmN+HgoSw3inxW5zezZ35BoYc7GhDHItVr8sTe79MVEnWOLi+rAfEsUSnlFaZI
+	JE9V5x0TtYe+0H6VKeoaUBzLqFbJP04W9yu4L9VHxQxRPCxq/6tiNmb1CaQekR9R/pCymaQ8
+	173ojB/d7hsvOLLTHJrX1aZubDwQ/LbrvbV9sZ+sdW3rv/JCGbviXNPlhgKPO6Z1i+nzeIXq
+	sz+f9ApJ3dvLht4tbdk7uG/itOq3jsrfafrYYPOHcf8sJIaKOh+/8em56eWKhKapWNmx4+59
+	nqAv6aOVuTXpN8db96oYXZr6nXii1an/BXiILQioAwAA
+X-CFilter-Loop: Reflected
 X-Rspam-User: 
-X-HE-Tag: 1787283693-123844
-X-HE-Meta: U2FsdGVkX1+8Jfll1/2H4rNe5dC9qQaTZ66J2xPBZrI8nongductfXViupTWuUkE7ptNQutEqBcfBZz/XyZ2PkfRPuIzFEasD/qHCUF5CeAXvyz21SwfI2zmfaVWRpihKeLCEaDXA42VOCaXqMbM2bPsrqNguQrcY8L85acQ1ghAZkWAAFOJM1Ef3METdc6WKAJXKr+Ol5s/L7deT5YiYQJSWGPbAWE3jkXvETMuELyL3RKQNPDcQgCo+QCy+WvtHafoIDkGJTm349oc/vBuxXq6dRCsjUE6ct9RbrhoWGrFOSScZ0l+PV5pMkb+/cjfXJsmIT7zlfXucpmzrYCDg3i2uFEA2+8UT0dmAExyBHq2qktZQ/oQw18ytk7mY6nPTfsPoB/VjFSIYRsYBy8YLe9ORoDsXgpvh/oBB1iTtZNQMGz/HKJ6Zc6IEVwkgfhgesM1Nhy8qulbggrKIWUK3Jgz3bBeqSgRTibA9T1pEIaSxqKwUfY2dzXmE4ryMX9hKbUOrusuZpP4RIe2S2t2J8HzwvULHL6+3bRYV2maUGPD5CQ3KhCfemq6Z31QZZEIwPNjgIZImYUl1/uZ/6/27bkSGd+S3YsauVkRanyzQr4U1BixfL84uClcGAGa2y8Fynt3RHjp0/jHRWfSZF+GKo+Na4dtYxdjKQ98LGfCxa4LJC34+qe8AVsR1+RxHauxYgwkKh3dZFio7Wmr09HBuNROYdBMrVKnRlnfxq0HdXdDRd9btiVmo05M3rf/iP894DZU2UQJk5ShpXYlw+QlNfKpMRoWlM1MqtyzYY9sSsm+fxgRPSNgr+SA4t9cac6yx8KaaZBdKnrPyOZhclseNaVfgOdjB7bF2liwQYfEKxUBH1ecWMP8ySS3JuuC3ED5nVMBXmErz+YqdQRuDzj0RfwpmY1jqQu+DXCWO/8wq/nGvWF4NTIFLS/71JKFBqm8z2qIrAwPhGnr3rrBkA7
- EyGV9L1R
- 8xdADlCm856hUBV4EGRlsFCWuqXLBUMtQwwMdpLkvwzUkGMn7bNRrq++i+++tA1IvLqg/COU3Z/d1bSGpCmEmNQefXeER4Hyg87JdR1/UFdvgPD8aeh+ACkqQuGkRFL5k3eW4Byf/RzRoWl+ecMrTXJXHpj1rZKCMylIysI4UmnZF3WmnAz/6hOYIdvxRf/N0WreSIjgc/Hc6NOlIVHrmZQAH/E5dgJtMLt94HfE0kiM9Nhlqzcwj/vjO2+mdmkfBd92F/Z+wQVq4BOABWWH7r9pmNYNNYMzhDr1RNs/xzrAoCUCwfY+RIDoDgHle4kcRU8Nz/xA9CYDE1Aj+ezbCS9xZwYjQjn0Gmx9HfUi9014cuShCrk0GjjvXw/0vNTvnKVWlobAEGxhw3x6QnSEQjLKwuQ7CMmqvfAmR/MRdUHG28NXzleViYEAEkbzCVaN7HHPxLxqPba/TbagyAhOQwI5ljg3pEpKDlRBEB2oAIOYTi1CqrmLO8qSQx5/BGnlyYPivME6OgV5T8XQ=
+X-Stat-Signature: y1gztfn6at7oyikoi7kj4wihduq1dtc3
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A839140003
+X-HE-Tag: 1787286107-852094
+X-HE-Meta: U2FsdGVkX1/8A4hcFIGmoKKVZ1/ZXOXYF3afai1XpGZfMHfe3kwxxXCF1lwvA/ze10d1oWtMtlcGzCJZF5OQ+e94jjMRcY5P+dgdbz89UXva+hM9/dM0baIsq1+t81bhyYQV4ojPQgQmK8TXrrmqOMzFSnJcAA5Amue3PY4c9DClINChtnmzWGqwf0lmIW+pgmJhRBNyQCHn513Hwx8Qt957XU3HnHzWbMAtiVHm/7g519tY9ILEzX8FBE5cBw0vqN0tHKxjBprj/rBUh3lQlkQSXw7nJcT8/b6lgn/SJkzB2BdJkpZncYYKAmizBdJoP/0Wm7Tk0Ct63mWK/SBo0wvh8AAKDn5LjJStjHMleqUfCONHj0ylLQ0BmkXB+Q7U4yga+BIGY1odjb533UBvxPIw2Cx7XGfnASU44B2B3rtpLAYX5ql6h4thFxsvdDTBJ5zroE3M5iw8EMmkoa+fZTY8Fcu9stRqds9xq+iTaxY1grhUbgJykFPNt2XS0jsKu+h13c4OTOyMprvkcq5CDMDFBnnVtix1gjDcHCeTl2LXqjgo6evgwjNL50qB8d567g/6wAjQT+arp47q49rA/l4iSxugn7RLoILJqeoz/8T+oO1IP/x5Tnww6LqrPv5QlFp/ycisrOkGSGrnvYqugJpNbJqROeZhZomhas4c5lFPCk9o+4ECC1tOJC9TSZvw2AXa0LQXo9THw3qYwVdkPqXyMHGpHVXFou0w9HowD+p1m8OqPpz7xOzLlN4xpMFNqOaLS6yxVFQLcmhXtwikdt2jz0fRi93DDI+o5DdYV8VZa7322rR+mbFnoFLNRiMxhv1d49ln/7RJZ9J4C7kbxie57fwKEzvJV2KVviuxQzmLF3b+W7rIItrTqs/PMuWA3H7r2jqljoGq25HTFtwNmgYPOUQgr1a+/7fLtcBrfsobe1bGxaAHlj6uaMxZD3Omgzmov/pYGAyAOOmg9xH
+ vaI37uaF
+ R5dYAXPjrQMiZHFwohbpsjDb/fcffvo068yQ0hrVq3Owi7hab3onkJB1EVNx5kw5WX9zg9WqfOBS4n4ST9SHsdHMbA+qwiPyWd2MijN3SlBTwnPwgmjq6mdmliEcYa8E9gLOzI20RAoTFKZ8Q5Zj4eoNVZhlBcVOq5kD95y9BkkWt+flyqqrDWbJG9gdxu2uQGqZC4gO/AvUqExTf533DQH1Eq4Qh5xkMgiLOMYn7jhHpiFtMbE2hDUqKU72HTZI49Sx+xoXl64Rtlm0mqhYdty65JhxvZpwD5mcx6wfNHbvndKGYPq6pA1IjGW/SpMJawmrtho8cC4WHuR4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,39 +178,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 08:51:07AM +0800, Enlin Mu wrote:
-> In balance_pgdat(), when the low watermark is met, processes sleeping on
-> pfmemalloc_wait are woken up because they are able to safely make forward
-> progress.
+On Thu, Aug 20, 2026 at 07:16:05PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/6/26 08:18, Byungchul Park wrote:
+> > Hi Linus and folks,
 > 
-> However, the comment incorrectly states "they should not be able",
-> which contradicts the actual code behavior. Fix this typo to accurately
-> reflect the logic.
-> 
-> No functional changes are introduced.
-> 
-> Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
-> Signed-off-by: Enlin Mu <enlin.mu@linux.dev>
-> ---
->  mm/vmscan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..822f73758c42 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -7188,7 +7188,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
->  
->  		/*
->  		 * If the low watermark is met there is no need for processes
-> -		 * to be throttled on pfmemalloc_wait as they should not be
-> +		 * to be throttled on pfmemalloc_wait as they should be
+> Hi,
 
-Pretty sure this was supposed to be "now" instead of "not". That would
-make more sense than removing it, since this is about the watermark
-check after kswapd has performed reclaim.
+Hi,
 
->  		 * able to safely make forward progress. Wake them
->  		 */
->  		if (waitqueue_active(&pgdat->pfmemalloc_wait) &&
+> I think there was plenty of feedback from locking maintainers in the past. One
+> question and a comment below.
+> 
+> >
+> > DEPT(DEPendency Tracker) is a runtime deadlock detection framework that
+> > sees what lockdep cannot.
+> >
+> > I'm thrilled to share that DEPT has moved beyond theory and is now
+> > catching real deadlocks in the wild:
+> >
+> >    https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/
+> >    https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+> >    https://lore.kernel.org/all/b6e00e77-4a8c-4e05-ab79-266bf05fcc2d@igalia.com/
+> >
+> > I've added comprehensive documentation explaining DEPT's design and usage.
+> > Getting started is as simple as enabling CONFIG_DEPT and watching dmesg.
+> >
+> > THE PROBLEM LOCKDEP CANNOT SOLVE
+> > --------------------------------
+> >
+> > Lockdep has been our trusted deadlock detector for two decades, but it
+> > has a fundamental blind spot: it tracks lock acquisition order, not the
+> > actual waits and events that cause deadlocks. This means lockdep misses:
+> >
+> >   * Deadlocks involving folio locks (not released within the context)
+> >   * Cross-context synchronization like wait_for_completion()/complete()
+> >   * DMA fence waits, RCU waits, and general waitqueue patterns
+> >   * Any synchronization primitive outside the classic lock/unlock model
+> >
+> > Consider this real deadlock pattern that lockdep cannot detect:
+> >
+> >    context X              context Y              context Z
+> >
+> >                           mutex_lock A
+> >    folio_lock B
+> >                           folio_lock B <- DEADLOCK
+> >                                                  mutex_lock A <- DEADLOCK
+> >                                                  folio_unlock B
+> >                           folio_unlock B
+> >                           mutex_unlock A
+> >                                                  mutex_unlock A
+> 
+> But that really just boils down to folio lock being implemented as a PG_lock +
+> some advanced wait mechanism. And we must do that because of lack of bits in
+> struct page.
+> 
+> Willy mentioned in a previous version [1]: "I don't think it makes sense to
+> track lock state in the page (nor folio).  Partly because there's just so many
+> of them, but also because the locking rules don't really apply to individual
+> folios so much as they do to the mappings (or anon_vmas) that contain folios."
+
+Exactly.  That's why we use classification e.g. lock class - DEPT also
+makes use of the concept.
+
+DEPT doesn't use a full map in each page but uses a minimum space for a
+timestamp in each to track when each starts to wait so as to use the
+recorded timestamp when the event occurs e.g. folio_unlock().
+
+> Given that lockdep is a debug feature, and we will at some point allocate struct
+> folio separately, I assume we could just squeeze a "struct lockdep_map" in there
+> in such debug configs and the world would not collapse.
+
+That's a good news for lockdep.  (And even for DEPT :)
+
+> Doing that today (one "struct lockdep_map" in each "struct page") wouldn't work
+> as mm_zero_struct_page() would not expect such large "struct page". But
+> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_LOCK, maybe
+> that would already be ok and we could just do that (and optimize it as we
+> allocate folios separately).
+
+Sounds great.
+
+> Not that it's ideal, but for a debug feature to at least check PG_lock, probably
+> an easier way to achieve it than some completely new infrastructure.
+
+I understand what you are going to tell.
+
+However, it's worth noting that lockdep tracks dependencies basically
+based on **lock acqusition orders** in the system.  To make it track
+even rwlock and general synchronization mechanism as well, lockdep has
+no choice but to get more complicated.
+
+Focusing on only the dependency checking, the most parts of lockdep are
+for the tricky things, so the reusable parts are not that big.
+
+> Now, Willy said "locking rules don't really apply to individual folios", I
+> wonder if that could just help to also let lockdep check PG_lock with less
+> metadata? (didn't fully wrap my head around the implications)
+
+That's what DEPT did and what brought external wgen introduced in DEPT.
+I was considering the exactly same thing :)
+
+Again, lockdep that tracks lock acquisition orders can't do that.
+
+> [1]
+> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?utm_source=chatgpt.com
+> 
+> 
+> It's your guiding example, that's why I mention it. You do mention other wait
+> cases here, I don't know anything about them, but for folios it's really just
+> "we used a single bit so far" AFAIKs.
+
+It doesn't matter whether it's implemented using bit or not.  folio lock
+is quite special since it's allowed to be released other than the
+acquisition context that makes lockdep impossible to track them.
+
+> [...]
+> 
+> >
+> > Q. Why not build DEPT into lockdep?
+> >
+> > A. Lockdep is stable, battle-tested code. I chose separation because
+> >    while DEPT borrows BFS and hashing ideas, the wait/event model
+> >    requires rebuilding from scratch. Lockdep was designed for lock
+> >    acquisition order — retrofitting it would risk its stability.
+> 
+> Why can't this just be some configurable extension to lockdep
+> (CONFIG_LOCKDEP_XYZ) until the feature is stable and can unconditionally be
+> enabled along with it?
+
+Answered?
+
+> I don't quite buy the "would risk its stability" argument. A lot of stuff we do
+> "risks stability", every day :)
+
+That's awsome anyway :)
+
+> Is there another good reason (incompatible with X, dangerous with Y, cinfusing
+> Z) why this really must be a separate thing?
+
+Roughly:
+
+   1. Similar or less effort is needed for the new one - retrofitting
+      lockdep is not easy and big changes are required since the
+      reusable parts are not that big.
+
+   2. Even though you didn't agree, retrofitting it would risk its
+      stability.
+
+> >
+> > Q. Will DEPT replace lockdep?
+> >
+> > A. No. Lockdep validates correct lock usage — that's not going away.
+> >    DEPT supersedes only the dependency-checking logic when mature.
+> 
+> It's quite unfortunate that we'd end up with another similar-but-different
+> mechanism, that will just end up confusing people.
+
+I meant, at least dependency checking engine should be altered, but you
+make sense.  Worth thinking it more.
+
+> But I am not a locking maintainer. I think there was plenty of discussion in the
+> past, so I might just be raising points that were already discussed in the past,
+> but I really just read some random pieces of earlier discussions. (ideally
+> previous discussions would be summarized here)
+> 
+> Long story short: we are now in v19 and I think there was pushback in the past.
+> Did the opinion of locking maintainers change, or is there a way forward to
+> integrate this in a way that would make locking maintainers accept this?
+
+One of locking maintainers who I met in an LPC told me that he agrees
+with the direction of DEPT and supports DEPT, not officially tho.
+
+What he and other people are concerning w.r.t DEPT the most is, false
+positives, which is the most important issue for now.
+
+At the same time, I think the most important thing is to make DEPT
+useful in practice especially with folio locks involved.  Actually, I'm
+planning to share DEPT's true reports periodically to LKML and work with
+people who believe DEPT can make things better.
+
+Any advices will be welcome.  Thanks for your opinions.
+
+	Byungchul
+> --
+> Cheers,
+> 
+> David
 
