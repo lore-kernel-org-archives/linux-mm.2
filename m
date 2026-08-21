@@ -4,81 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B69A4C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E005C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:35:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736E46B009B; Fri, 21 Aug 2026 05:32:21 -0400 (EDT)
+	id B5B036B0095; Fri, 21 Aug 2026 05:35:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70D7D6B009D; Fri, 21 Aug 2026 05:32:21 -0400 (EDT)
+	id B32B06B009D; Fri, 21 Aug 2026 05:35:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61DCB6B009F; Fri, 21 Aug 2026 05:32:21 -0400 (EDT)
+	id A498D6B009F; Fri, 21 Aug 2026 05:35:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 320416B009B
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:32:21 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE8D31C17B6
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:32:20 +0000 (UTC)
-X-FDA: 85124760840.15.7A8850F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 81AF86B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:35:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0FFCFC03BE
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:35:50 +0000 (UTC)
+X-FDA: 85124769660.04.D741543
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EF138100005
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:32:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CrUtN3Fi;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4599640002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:35:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ybx2d0qc;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787304739;
+	s=arc-20220608; t=1787304948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FhFDMwjisFQlmA53RTr6EmbhwCInFJVNArYz9R9qOUQ=;
-	b=o5WTdzFFyOgtrtGQ+SMDtdNm7nSgz+arInQHwqtDW+Ws8hlpRyU7UmMlJMqf79Z7z5E+a7
-	J3BKZYZ4rjH1brLxBy19SMJbjqvLsC7UUQAy8Wrr1+Eki+omYoAs2NWEFiNyVX2tSSbwRG
-	LhU/JoVPsy82gwerXP4uNxoMGK3soxI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CrUtN3Fi;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=M2b7depORYOpe7iBmdnQUOKdXzN4AqhClHk74YTKfa0=;
+	b=D+eOghpMgsbgyvPLfBoXSNJX7HpVgtLZUbspC1TlDoQBx1QZSc6ZB8qHnVrGHADivT32tw
+	S/T2rewqB2aNeFVwTGsgTfmxVMWIMPrMZ1Wgb4dPc4B/AOzSnvYA4RPzfAinPEUAAwwhxl
+	rXQWJTn5/rcZs+EnbVHLculRRF9MAyw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787304739;
-	b=g+BU2UBtioP+PbXtS+W+D9dkmT+6CVSAzo97IxIB+Tq/wtYg8CPTErlpdADtw4QO0z3KI6
-	gYx8gJinJ5DCt9FRjeBIA3sgc5JrfihIy38RlH2IZ/1P87v1SiEM+XfODTtIhBXgeTlPc+
-	+Ie/DqpRmdYde7wB3a3K2lDnz9+LDk8=
+	t=1787304948;
+	b=OOPs2UetqC+Y4DX5xuvb3M/dSs7/5Ho3i1sFd2pizJ+8NRFZlf5FFe7zQQRn49gVWEWSXA
+	c+/x2Pe/6HURt5ebMU6NI5CvOz8pLM14oYk9BJn6CPdPs47eT0PY61S5aQ/xwu4uWpZR+u
+	grd3uQ+Pa6ls2X3UWONdVLzepvBB/hM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ybx2d0qc;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF5DD42B00;
-	Fri, 21 Aug 2026 09:32:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779721F000E9;
-	Fri, 21 Aug 2026 09:32:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 196A94328A;
+	Fri, 21 Aug 2026 09:35:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763161F000E9;
+	Fri, 21 Aug 2026 09:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787304737;
-	bh=FhFDMwjisFQlmA53RTr6EmbhwCInFJVNArYz9R9qOUQ=;
+	s=k20260515; t=1787304947;
+	bh=M2b7depORYOpe7iBmdnQUOKdXzN4AqhClHk74YTKfa0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CrUtN3FivWiRmuwK4pcrEznRzh4JuAN8BFS8RElvfSQtHfOHcf2NtiZ0F8mwaBMjx
-	 BnSqoWrVgE9x0mJR5jzwBU3De2TaOArD3l6lcJNlHmoriW3pp0p7F4qfIMRknEZOfO
-	 Cm1spU+sKk/vZz4oNh3jPqLT/BYGxUI6YPcnOia8bY/KRxpx1PsJilmhLsp9ZGyPP/
-	 oMXQnXnsv04vpHilaHmfIYd7Q+IXNDovrb6+NYJqJc6lFFv9QBbQ2t6sfBAd1D6hAM
-	 OogdwQbZ2KzYMn8zTdolQywifgNeOrx5LSal05zTVdZSdttiGdkMHZNPbnOjDU8miP
-	 FZQdJXT4phKgA==
-Message-ID: <f8a06140-7cda-4fc3-a121-75e4745d6182@kernel.org>
-Date: Fri, 21 Aug 2026 11:32:11 +0200
+	b=Ybx2d0qcbjFy8oda/M9EkTCbTZVsfTq5k3Z+69THEtOtJUa9tgYLJHxB+NTx+rCmH
+	 PmgmuNlohvFVpv2pVfg9qQMHbcm1AjOsCSd8JlwL6/nM+wBNCkM0kuz62GeUI/NQYv
+	 7eIRLEOx9tTIlMqt+gfNmTW3Oji0qqheg/TdTTZSNBTZN0sEczGkGfKfJY+9DUrbJX
+	 vL3gqc+srQF5Phke/TrngURMjYrIUMEh1AJqj0/MZo2qMTrTT9rWseYZ6LrTXv9yAY
+	 Vf8fMSEY0d35qYvwPWVMt/F74FCTAEYxL2RLTYi4xJRFRntWGKmHHqA0yBlxKP+K55
+	 ElOafvaTr2uSQ==
+Message-ID: <774ee653-5f01-4a06-965f-fd3517743c08@kernel.org>
+Date: Fri, 21 Aug 2026 11:35:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/2] mm/memory_hotplug: make shrink_zone_span() more
- robust
-To: Wei Yang <richard.weiyang@gmail.com>, Yuan Liu <yuan1.liu@intel.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
- Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
-References: <20260818085702.3395529-1-yuan1.liu@intel.com>
- <20260818085702.3395529-2-yuan1.liu@intel.com>
- <20260821031427.qq6mb3j2zqtzdl3n@master>
+Subject: Re: [PATCH 1/2] kselftest: mm: prevent random failure of huge page
+ split for khugepaged
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260820-fix_split-v1-0-ab430c58c7cf@arm.com>
+ <20260820-fix_split-v1-1-ab430c58c7cf@arm.com>
+ <DKU173CETFYO.1RJA1CSOC5S99@nvidia.com> <aodwNr_zgOn55z3W@e129823.arm.com>
+ <DKU60290OED0.12P9UF0Z97DND@nvidia.com> <aoeT20fPw57DtpGe@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260821031427.qq6mb3j2zqtzdl3n@master>
+In-Reply-To: <aoeT20fPw57DtpGe@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EF138100005
-X-Stat-Signature: frpwm1us5feiikfxuw3cw3m9pfm8to9k
 X-Rspam-User: 
-X-HE-Tag: 1787304738-33740
-X-HE-Meta: U2FsdGVkX19pWBKu9TqMcoGE0NRHUPwD16zpfXlkUiib1T2eh/S5RCXnGMoW0gfgJggvWA7BUkxi6EzAt2s1x2kpf2AB68MD+aApZ7EInHrM0Zl++pEM7DxO2vDDZCPYzNAIos9XZkvqXZ7xarryUdtZ5fPui/Mt1Hh0amd7MsgA5TmUbswU6MsUMVRdGdYlXilzBecGEgddwGpmNYEcmF45/QCoFozEXfpq1T6qUyReL5ZrX2rx5xjggVi1n5ARq/+RjindiQhe9pUGpE3uS1hTzWGynaee30T7tfZq7FUx0hTaXMWtW5WXrIzxCeLcy0BN5axHRUF96KHmc3jUEKX/kUws9D9Pr897Pfypy7vVBQYQ/2stq80R9q1F1xLxySqcresAiVpjsRnb7aMyubAIeL8vX/kssUMxWiS3kSunW7GtKxUf6KCO+f7gSHMQI/Bcit36lPLf2bjipiV1NJjCyapLX31Dapib6r7FO+0+hntbIyV1Z/eodqABcR3XdGs/cEbYGmmFYASYoDUweY4PNoT6IvzmQgdqTWEMhWHLrD84U1LbFpXJJJdQUbk6DhIYM71ITtZNCZav1/InwkOIkg1dbsdPgsO+NbN/9i4jEyEE/Zd2HXqWN7pDyH9ofv/Xk1MY0CeRBa8zpeNPVRWr3pZJ+rlOCBMtEktZtDcfNhTA500eFpKgBUEAASjJhw1ch9RE9UBFXe8GGLcdOyp8PU42NTbwcjXvv2G9Tz8jU9AyxRBerje0FVQ5VMbXMAbPf6ycpTw80Ro6AeLA3rJSxFbifuCeGH1u9lKWkTQS/1AsZfEcMYFfJzG4kSo0WT1QkhKarlLnjQuScdbxgztgjyOhsZPBCAIpveM3ULjJ+3YPjv+JCxnAsnZZatworRxVml6tzXG4v0aXTdIBc8Kwjt1pDqjZhr6PB2qJEh5ymfKvfs0IduxkQ0Fzjz3TyjHfldgczdYH0eFSfER
- 296z0A5D
- TWHk48eiWK3gJF/nqz2HzP8NvTLG15k5dHmrsWfh2REACtCnPdVcmpsXby0ICFzUU4aYOHOBGoWzzfPK1xl8NBoJrlkrwyngOiPBVs1Qf6Jh1N3J7IaEoqrFuRsZuWJ0wUDfOsrmEY1y4WA543NkTKn3iA7PbZszJ48MvOg52E46JNqNn0WPCBGkxNjgFXrC7KU/xm6rvLJPYJS1v6UwYq5mPAtPNy0DeS00m5MODsqxAIM3LEJUPI0GCz3R2cRtgRkBANotOYvQUz85CyIFKbpre+ifFb7lHxaAgCe6JNY3FXLosqJgojIGwcktzPAr3+kzkW4pZEwnStykxvziVe7MSvyBaCMPM5sIIMQTDx+Ls4FdPALxPLIWKo/pUyjsEcHvXWvwDT/KMTrAmFTnpt3FWoGOPolWV0VXTJ9BmnJ/+UTk=
+X-Stat-Signature: 8fmcaz9zhjmirbd9xitu8aji35e9xmsr
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4599640002
+X-HE-Tag: 1787304948-619300
+X-HE-Meta: U2FsdGVkX18sE4HtuUQxq1cN3tzat8Oi8LXBrbB6GcdZkGz3iq/TtMyQ5n+BIg7BfAeEdS20mzDqp0xgmHv2Y08FhJDa+UL6+DPpsjMD3AO0u13dk7ySLMNKJLk/ch/pFfOK045pzvra7K+lpjSWYxvYl2G6c9Nk5I3M5AkQJSLb8DR5ngnakD8sZB0SnEQPEFn/vMHlrK/l6f1VUzNfSfvSjwMdvC7KacZfEPk+zHfoH7pDMvhpsds+qEkuVNylscHGUx9qMJXE04yE12/KpU44WWsU1XnFozu1lHmSF5HKjjEVlmNxgh/wOZCM58u0LTZVMzqMhITZI08dhh3dBGqrNxHN5bxOOY1mZrV12EEHVthV9r94YcuLttgr+HbTQqT3xFBVG/49EBwv+c0qIVFU56BLJFwTZemZyUeZBd3t8QmaHjeS4p/wnAIDYAArASz0nKyUlMbMOwWfLAMLwwzOqYzrIxstkrZWtUTXbGFTiAFJ75217VgbslOhp/W3hZJZJnxqL5fVcKmPjkgy3aF113KDNJ4QXPcXXpg+PhI8pxh5IuFgWjsDNYmAphCC0hapsQgWP8suEvkvHJ7vccTNsJFrewS5G4q4PW1mHtEDbcX9+PZ1W7CXtTV7c3+sAFCu8bGMGBFou3GrtApgLYvh+eUAEDE/j0YesWa0y0w9jGzVn7Ze0w8m3yWf+SiwU0lUiu9vcywbowhvy6FMGP5+02pGdZ5lJeI31Lh75Ha7loEGmtjvx5N9ZjLx566h6KArb26/NF6wpFFh7m1HIKhZ+BfuLOTyTpBNj1e+VspGutw0k6pk9bcjR6sD9QsorSleKpyHmw7y4D2jvljGvNJxiCmmgf1hxZa++zKb8TOVLyxByeivzVuQu3jf2nYGtiCZ7IgT6sjL5km5eudw3Ca1vF1H2UfrqO+Am3FgUR45FXfjUDxv79Kb5lqMudBcOM/Znich7jEj2HPaHvi
+ 5xOZjoKW
+ 92AmTTFPLbCqhQ7hHhkhYGfyb3IedvkV52SEsb6EAhfj3bds3lXL+mVDZ24EZcMLVrqBrcDY0YHY7VQGqFLYS8/sPumrLeJWJ0Uz3gMHYM0e4YDHG5h2vbpXP5P8nh+4pXwIHapmNNwefJemFzHFyX8vTXG4eHPmF3wt9tTv9fytNcRBu+/pPkCAQdTt0KTxWE16YDUmHXtPHizpVvPo87QU68UU3bYTtCklaPtMqtRazeGcjDdoRQ/BGqOvUyBAMbK+N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,55 +150,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/21/26 05:14, Wei Yang wrote:
-> On Tue, Aug 18, 2026 at 04:57:01AM -0400, Yuan Liu wrote:
->> From: "David Hildenbrand (Arm)" <david@kernel.org>
+On 8/21/26 01:55, Yeoreum Yun wrote:
+> On Thu, Aug 20, 2026 at 07:37:29PM -0400, Zi Yan wrote:
+>> On Thu Aug 20, 2026 at 5:23 PM EDT, Yeoreum Yun wrote:
+>>>
+>>> Well, this also works with hugepage_save_settings() and write the
+>>> khugepaged/scan_sleep_millisecs with the maximum integer.
+>>>
+>>> I don't have a strong opinion but since it seems more hackish way to
+>>> change scan_sllep_millisecs, I use madvise() with MADV_NOHUGEPATE.
+>>>
+>>> Would it be better to change using APIs in hugepage_setting,h?
 >>
->> Let's make shrink_zone_span() more robust by checking in
->> find_smallest_section_pfn() / find_biggest_section_pfn() that the
->> start and end PFNs of the subsection are within the zone.
+>> No. I did not realize there is no way of stopping khugepaged completely.
 >>
->> While at it, clean up the function by factoring the core check out
->> into subsection_overlaps_zone().
->>
->> There likely is no need to check the nid first. We require
->> SPARSEMEM_VMEMMAP_ENABLE, where pfn_to_page() is cheap, and
->> pfn_to_nid() on CONFIG_NUMA would call pfn_to_page() either way.
->> So let's just drop that for now.
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> Tested-by: Yuan Liu <yuan1.liu@intel.com>
->> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
->> ---
->> mm/memory_hotplug.c | 59 ++++++++++++++++++---------------------------
->> 1 file changed, 24 insertions(+), 35 deletions(-)
->>
->> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->> index 7ac19fab2263..cd82e79f0782 100644
->> --- a/mm/memory_hotplug.c
->> +++ b/mm/memory_hotplug.c
->> @@ -422,49 +422,39 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
->> 	return err;
->> }
->>
->> -/* find the smallest valid pfn in the range [start_pfn, end_pfn) */
->> -static unsigned long find_smallest_section_pfn(int nid, struct zone *zone,
->> -				     unsigned long start_pfn,
->> -				     unsigned long end_pfn)
->> +static bool subsection_overlaps_zone(unsigned long pfn, struct zone *zone)
->> {
->> -	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
->> -		if (unlikely(!pfn_to_online_page(start_pfn)))
->> -			continue;
->> +	const unsigned long start_pfn = ALIGN_DOWN(pfn, PAGES_PER_SUBSECTION);
->> +	const unsigned long end_pfn = start_pfn + PAGES_PER_SUBSECTION - 1;
->>
->> -		if (unlikely(pfn_to_nid(start_pfn) != nid))
->> -			continue;
+>> BTW, I am curious about your khugepaged config causing this issue.
+>> IIRC, khugepaged scan interval is about minutes and
+>> the time between madvise(MADV_HUGEPAGE) and the second
+>> is_backed_by_folio() should not be that long.
 > 
-> Would we have a memory layout with node interleave?
+> Yes. it's relly timing sensitive and I've failed to reproduce in the
+> real hardware. but in the emulation environment it often failed with 
+> the scan_sllep_millisecs as 10 seconds while the test running.
+> 
+>>
+>> For your patch, maybe you want to check the return value of madvise() to
+>> make sure it succeeds.
+> 
+> Yeap. but it seems enough just worning message for the madvise() with
+> MADV_NOHUGEPAGE.
 
-I think core-mm is not prepared for actual overlapping zone ranges during boot.
+Yeah, I assume we can assume that we are running on a recent enough kernel that
+supports MADV_NOHUGEPAGE.
 
 -- 
 Cheers,
