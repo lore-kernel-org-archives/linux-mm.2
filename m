@@ -4,90 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E91E9C5DF89
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:19:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 214BBC5DF89
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:19:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E9B26B00A0; Fri, 21 Aug 2026 10:19:05 -0400 (EDT)
+	id 2E5346B00A1; Fri, 21 Aug 2026 10:19:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C12F6B00A1; Fri, 21 Aug 2026 10:19:05 -0400 (EDT)
+	id 295766B00A2; Fri, 21 Aug 2026 10:19:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF2F56B00A2; Fri, 21 Aug 2026 10:19:04 -0400 (EDT)
+	id 1ADE56B00A3; Fri, 21 Aug 2026 10:19:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF5E86B00A0
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:19:04 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DB7B1C00D3
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:19:04 +0000 (UTC)
-X-FDA: 85125483408.03.5289BDC
+	by kanga.kvack.org (Postfix) with ESMTP id E6C5C6B00A1
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:19:11 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8EC151C00EA
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:19:11 +0000 (UTC)
+X-FDA: 85125483702.18.6AD5113
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9E5C0C0009
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:19:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EjZSYAWO;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id B1419A0009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:19:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bM5zUvTM;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787321949;
+	b=2O7pJP39ZbmWuFaRu32x/GMCPRrZHVVRpK4CbHnGnPILa57g6SG690kH5eL1MkYtA1Nvro
+	tqUejxuJyvo2ByrSTfuz+QHqJzj9YyAEYtYJRWF5UrANkOPcaGL8c88fEzAwGxLa1mw/gu
+	CE9cGwBqtb3Tbm2B4r+FqpbPv/iFZKA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bM5zUvTM;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787321942;
+	s=arc-20220608; t=1787321949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u2XbnGzR4oklypPgE+Viv5JNUn/D8iY5cwkY2Kqvw4E=;
-	b=bRU5sSjGCVqiVeAbyMCGLFgLV7HQ9Z1UzUqDrYhzyHUhZcXK1RZJCCG4dlVQ8XIPWyzcY1
-	z48/gwhTvxxVvuLCNEc2cHhFhEmv5na3zY3DFKFw1B7hNia5bS/QL9CdZvL74SNdLLavVR
-	YCJMEEKZxUHmtmZl/44fQBR64xN00Y0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EjZSYAWO;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787321942;
-	b=FIePNWuWIzpfN+2byzzRlSRMMDba5BweAQWZuRJMJSXDaIpVPUv4pkK4Iq9Utl+7bvNioI
-	4s31iZq26QLSWORg9zcpmbGyg18WXZY9HH0L04b4CbllKYVzqaU/+BqGArcp9Bzu3Z/sW9
-	LS7qpZ7ztK8kdPe5mCjTH//OEEPfEpI=
+	bh=iZN3fQETOzM8QMZdeq9l1GD6dRqDhSLNC8Cp1Uflg2Q=;
+	b=JwyHDKyJVr+zXzaX+C4P0lIwdXY7CKAMqipNFgUls0Au2yUizG0XRG/N0sQRFfOhdzqF5k
+	THVJYVzQb0HZV3aIXYZXdNV1k5Oh/ihto5N+XK3FhoJSbu2OpDEUtctpiEgN1zOXsP6oo1
+	7fMuet3Qp5Ma8PVZ3WF84pjnMvIuQEU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ECF1843384;
-	Fri, 21 Aug 2026 14:19:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841651F000E9;
-	Fri, 21 Aug 2026 14:18:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 33991434D5;
+	Fri, 21 Aug 2026 14:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D591F00A3A;
+	Fri, 21 Aug 2026 14:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787321941;
-	bh=u2XbnGzR4oklypPgE+Viv5JNUn/D8iY5cwkY2Kqvw4E=;
+	s=k20260515; t=1787321948;
+	bh=iZN3fQETOzM8QMZdeq9l1GD6dRqDhSLNC8Cp1Uflg2Q=;
 	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=EjZSYAWO28454RqSV7v89nBk8+YcOGyf5apbjjM7L2GvqAzQasrzCMMMPrPqh6tN2
-	 kRkIwcYM3KXd4a+eGEgaAWwNlI2c8Y/h0qkgIHqXQpCSlALAxzpd0dvHnfUQMALz9G
-	 Ru6tS0xXakGh3n3iyyQu9LPwr0J3OsSMOLtLQMOlDhR1sNYJRUWUQcBDQ8gNrGZAax
-	 ILBqWcxTxG9RrLGzzIIAaUFx5QDCqQn8LBEJIBTzQLpdUcdLNhT+sUmmzLFINod50N
-	 uHQSN1V8PHPDs2C3P8ltB4+y8NhkRl3G1uNFasRFtBVjD6wXe1GDFLFCotx11glIuO
-	 KpEGF8Pbq8DDA==
-Message-ID: <dd8c34a9-0e09-453b-88e1-0a5511816627@kernel.org>
-Date: Fri, 21 Aug 2026 16:18:53 +0200
+	b=bM5zUvTMQ3pKcq2915HpCteZs6V/p2vqc0s9U7Aso0hK8pYRkK78K4NxMLMy3Ztyl
+	 Mips5Ir7vyKtHKB5wG+gg9xzuy4ii4PaAWK5g2vsJlrP1YRvwpK8q0S4qXzCK+gSDp
+	 KYSG1vwjW8lf2xN4M4dCDx/lTxtP4eySUGV3LPzka+5TOMuVyC8koDFdHtK2k0BkW8
+	 ELDGGhsV/fn26+u6B5dAh77ODPsWFneoMLd66qtcRElaPFgba4A4ctItIB7eu/MXzi
+	 23PNUtG8PAz0uDFNfHfg2WsPckc5ZnOyM/KoGk6OkdRR1JBqxCX5fYGHB4HtUd3DbH
+	 NBq8rUlabwKkg==
+Message-ID: <7bb2d581-924e-4a59-9955-b8afa2b51268@kernel.org>
+Date: Fri, 21 Aug 2026 16:18:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
- PROC_MEM_FORCE_ALWAYS)
-To: Jann Horn <jannh@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>, Jeff Xu
- <jeffxu@google.com>, =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org,
- Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
- linux-mm@kvack.org
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
- <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
- <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com>
+Subject: Re: [PATCH] selftests/mm: check strdup() and fix buf leak in
+ parse_test_type()
+To: Anshuman <anshumantewari123@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260821114416.12255-1-anshumantewari123@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -133,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com>
+In-Reply-To: <20260821114416.12255-1-anshumantewari123@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rzxm1q9q3ah8s1fojohj8pspmi4t74r9
-X-Rspamd-Queue-Id: 9E5C0C0009
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787321942-394071
-X-HE-Meta: U2FsdGVkX18FTxM7fuc8beK6G5eyfcjf32s0G/iqY/FY937VTQT7R2JAVbcdIay0bVOcombGTg8xbpqXWrzRWkpXdCCNM66jMSeoz4J7l6kN735B5IA3ljKc921KxtMNdACUEwIrZls7eLn1LiDraaqL6w6E7+2w8g8k69wOV63wo63X1/gR71tgtRQ58iSopMps/yr3vDg3MZua+iukSfF8ruB6xirA1Qv4pBOkMdl0QNkmtGblRuX+iiSzE0MBwZXDV82QuiLkjgfGZHqCthWPQCO9WiRRVu5BfcnAQlqlhfTxFfS4g10GybnHbwkCj5rZZ9oC4/wTVW+jRu7eDNdc+a5Z7vyjbvAMzxO+2i0KaoNdabHrV2OUZg/bpt/ejCDlEn3+Zi/PWoXxtpe6Wha1dZuB1y6VuPJqbHc1vNJ8Qi0PFOLQI48dPPiD4iOEz7NSPdKeJKpBjQ/KWMIQMjvnVmt95HWcZh5jILwRrepZv2lLuZvGWfLK4Z4it7x6/xfuHgUOoAGqoitJHC2WuUjl61z6Br3hJg1WeGQ7y9BDaGQZzeFqZPqeSybv3K7jOyLJ8rtiHsZzpgWcRE4D0t0/Yj5HWu8VimlJvAtVbuX+FrjVM5imZ9/oprlQv04saIxfrLpJRip4OX0STxQubKxOA9p55IA3o12NCZuuqYhiummkdjGjWFoIFDxCY82IFsDrWXrMJ9f79QO1i+qbR580UlG72gFkVI0Sf4EKx/T6/cvrD8/Y6fHRJzU5PxxUKqxFRgszZgFevle+syWh0JUxduAOO5DRq5BakMt9e5bvlPR2u9uL/WtETjsfEhuGxQtae0ejDQ8NdMdSHOCuKU3bbwW14j6uDzgva/ZPmbRD49DD9tWkvCNGHm8hytGcpzhAELdVZ+zVP9P6U/6X8mrkzytruwjCOg6H4Mf4jpLJmiI1usbqdKzJzrBAFCmvPZcoofmjYbq5K9YBe2l
- caPA5KpJ
- KMTaf7F9v9A/Oanq9kKjXlz+fl11hHG7vXcod8moPdCUUw1iT/NI4bHJTJTPsfIbDZn5AZwdeOHrtl5se5BPza0tqTeeTKVwe0pb5O+M3vpcXw1XkJo6SM/SsnCheDz5LVWpXHukUl3pkY/JMMgoydDny7V3fOtFIG4c0NQIVu6oRJyW7K+fU56TyHiELh9q+9DAS1VDYzP8u7OfFT0SUn5SdqzSxbz5nVqH2yr0QeBTTZEZS+IASDTJ4JgAPtzJbPnhuGhTSiQM5Dd5AENaORds2GYm83XrP9W0QLYj+x/3Al/m3Ir9n6bZ5ghxmGfR8ZriUG/sJKOViIiL9ipSBo8KijPVVaYQmK2zpTesXDJT8NcZQ5CTud214i1N+y+e7/YIf3pxHTJreKjmK4zbTk/mdcgG/Mrljl3Rz77oJvHBFIBydfA7gVVwFGE/0+JDu3h25dInIy28SLA0=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B1419A0009
+X-Stat-Signature: 6fwx8q1nddiaff8z4tddxuznw78xt7nh
+X-HE-Tag: 1787321949-823917
+X-HE-Meta: U2FsdGVkX18yRTc6JzPhDjkHlNeeEhZDn9MEMaywFNLu0cBH5SKXTdRxM9NuZ1mtypYkT9TV6NaKOmjk7bqkMEa29F5KOwqv+LHscgtTGOgupOEoENpKF4KInbVQqLp7x9wVNR1jf9dSOwT8xRY+XYtlxT/e7TMh/ttNxQb0QzJE94nhEBaPk/z6L3SPpt0elUbDjpmm97egtiTuKwi3qiM9xzWmyGBGTxt8uvJE13FZxSukBOHkux4ICDuFQQwXRpyrZGwEpsv0r+p/MEC5GwLGk1d6NtflBrmDRrjgFgU9eU617ObOhzt0nWUXStENc5WOy7wtBS23kjlf2H/aWyMfbEF5Our8cTa46KIepEtd9LT8AypzbQNahTw4gnd8qv1llTXt/FJbGQZOWHEfF+YmMXbUIvaVOWCdSrwRnhWBDj9n3XGd3LFLOIqJGnRJ4vf3qUx0VnGX1crCyDkocAaJ25adMQzT0eJczeVmeJX0tX6rH1rpNbaot4hqHCmuO+131wRsSJbkuxA9fGI5F+bej4E4atebLwE4wELU3OSOg6kBUvxWlGtApEwRXCGE4OUHgFgSNloXX8LCg8kSXMDZPkLAfEhMyf8B7SG8RNBxYqWJaFAiUiWjqJPiEWod6SM2NwDr3D6EdOk7VycbBt0ZH0KpEsiIVcvAv+2+00Vy5e/zmszjT1jc4LHxivodY+lhQXKIf9VhPeK5n9dD1tzPm+zcn7hI7+mM0PpkP+DDJPTz8afUIFSl97fsRfim8NC5Pa6+52L0yoH6MXC5TLEhfXU4mVDPNwpg302cLDbPUQW2unLBse5DvGDHPdwukUWv+9WpYNNISaj237nSexe3PvtmnKQTLSjyuzKpwL+o871SQo5Pnx4/00sFQXbOumTcU7WU4HFpstREkK13yMP8taeD6z1j+rWQSTJBdOnVBpVpX8egcEyRZV6x8nJ6jOQOIOlZYpAuxTuVTJk
+ NZHkPlqz
+ eckncuvsitUoF+nlypAszDU2Zinqjzi4LPyfTeAIAiY9QfYnuKqEVt/I3nswApv1039Ck2ntgO0L1Wm4KjCpCkTLHVB9FzH7nkiCviOSTyL54uyHSeskt9l869v/R1itRfWvYVGLDanYlWX5jK6vt0XUB3ptY53UbOJ3S2S9En9KTMFd3iSnacdfpMjb7v/RuFEcog8H/ub474DccBCZvCI76deaMGxh8sPIFc9y/1WoAKfcd41S9MncXBWZ4nJQS4+VqCfq71tUKGgVr8xeGttF0ds3QC3HKQjwUPxR3LksZs56ryyJk01kxCJZWz2mKYQr1adwj3wOb7+M6fHPXNhXA1uQkXoEoVH/4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,61 +146,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/20/26 20:44, Jann Horn wrote:
-> On Thu, Aug 20, 2026 at 7:22 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->> On 8/18/26 21:51, Jann Horn wrote:
->>> If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
->>> good opportunity to block a process from overwriting read-only code in its
->>> own address space through FOLL_FORCE writes via /proc/self/mem.
->>> The security_ptrace_access_check() LSM hook is bypassed when a process
->>> opens /proc/self/mem because this is considered "introspection".
->>>
->>> This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
->>> that a process cannot create executable anonymous pages.
->>>
->>> PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
->>> accesses are only possible when the LSM allows ptrace() attachment; but it
->>> is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
->>> environments running lots of third-party code, such as Android.
->>>
->>> So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
->>> such "introspective" accesses.
->>>
->>> Signed-off-by: Jann Horn <jannh@google.com>
->>> ---
->>>  fs/proc/base.c                |  6 ++++++
->>>  include/linux/lsm_hook_defs.h |  1 +
->>>  include/linux/security.h      |  6 ++++++
->>>  security/security.c           | 15 +++++++++++++++
->>>  4 files changed, 28 insertions(+)
->>>
->>> diff --git a/fs/proc/base.c b/fs/proc/base.c
->>> index bec6197329dc..3dfaef49bb70 100644
->>> --- a/fs/proc/base.c
->>> +++ b/fs/proc/base.c
->>> @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
->>>  /* private_data for proc_mem_operations */
->>>  struct mem_private {
->>>       struct mm_struct *mm;
->>> +     /* Was the ptrace access check bypassed due to introspection? */
->>> +     bool introspection;
->>>  };
->>>
->>>  static int mem_open(struct inode *inode, struct file *file)
->>> @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct file *file)
->>>       priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
->>>       if (IS_ERR_OR_NULL(priv->mm))
->>>               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
->>> +     priv->introspection = priv->mm == current->mm;
->>
->> Is the feat that the fd could be passed to someone else that would then not be
->> detected as introspection?
-> 
-> Yes, exactly, that's the primary reason why I did it this way.
+On 8/21/26 13:44, Anshuman wrote:
+> The return value of strdup() is never checked before being passed to
+> strsep() and strcmp(). If strdup() fails and returns NULL, strsep()
+> returns NULL as well, and the subsequent strcmp(NULL, "all") is
+> undefined behavior, likely causing a crash.
 
-Okay, would "opened_by_owner" or something like that be clearer? At least
-"introspection" is less intuitive for me.
+In practice this is extraordinarily unlikely to ever fail. :)
+
+So I don't think we would ever experience this.
+
+> 
+> Additionally, buf is never freed. strsep() advances the buf pointer
+> past the first token, so by the time buf would normally be freed,
+> the original pointer returned by strdup() has already been
+> overwritten and is no longer available.
+
+Given that parse_test_type() is called only once, nobody cares.
+
+> 
+> Check strdup()'s return value and fail cleanly on allocation failure.
+> Keep a separate pointer to the original allocation so it can be
+> freed once buf is done being used, after all parsing has completed
+> successfully.
+> 
+> Signed-off-by: Anshuman <anshumantewari123@gmail.com>
+> ---
+
+[...]
+That's too much churn for something that is irrelevant in practice and
+makes the code more complicated.
+
+So the following is better I think:
+
+From 36d525409eb16f56e667b2f979f2c6ef112ff235 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Fri, 21 Aug 2026 15:57:57 +0200
+Subject: [PATCH] selftests/mm: khugepaged: remove str_dup() usage
+
+We don't check str_dup() return value and never free it. While both
+things are irrelevant in practice, let's just work on argv[0] directly
+and avoid the str_dup().
+
+Nobody after us needs these parts of the argv[0] string.
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ tools/testing/selftests/mm/khugepaged.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/mm/khugepaged.c
+b/tools/testing/selftests/mm/khugepaged.c
+index d3a53673e1f9..7520fc0483ac 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -1226,7 +1226,7 @@ static void parse_test_type(int argc, char **argv)
+ 		return;
+ 	}
+ -	buf = strdup(argv[0]);
++	buf = argv[0];
+ 	token = strsep(&buf, ":");
+  	if (!strcmp(token, "all")) {
+-- 
+2.43.0
+
 
 -- 
 Cheers,
