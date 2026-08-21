@@ -4,89 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28E19C5DF8C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 19:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FCF4C5DF8C
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 19:26:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0349B6B0092; Fri, 21 Aug 2026 15:18:48 -0400 (EDT)
+	id C4E9A6B009D; Fri, 21 Aug 2026 15:26:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F27266B009B; Fri, 21 Aug 2026 15:18:47 -0400 (EDT)
+	id BFFDA6B009F; Fri, 21 Aug 2026 15:26:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3E6B6B009D; Fri, 21 Aug 2026 15:18:47 -0400 (EDT)
+	id B3C496B00A0; Fri, 21 Aug 2026 15:26:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B71086B0092
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:18:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 47C67A025E
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:18:47 +0000 (UTC)
-X-FDA: 85126238694.02.74E9B7C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9663C1A000A
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:18:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OSP3N6On;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BF226B009D
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:26:44 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01ADF1A0268
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:26:43 +0000 (UTC)
+X-FDA: 85126258728.24.FDD1053
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 920DA1C0004
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:26:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=h5gDY0LS;
+	spf=pass (imf18.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787340402;
+	b=YXmwdp7aH08gzz/KXQ8qTRCBsbQMRmKJCjdfDyQzNTU5JyEuMSL8nbvg4z7aBmNFmMolmp
+	hhlSOhcgIFpjZ0ttjz967fu+yc8Jb1Ees/bonH5fyvxuqr1+trqp2rXWfW+dpgp30jkuOe
+	at3c7cTTWQBXgHCNdUBlDka7ODbVW1w=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=h5gDY0LS;
+	spf=pass (imf18.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787339925;
+	s=arc-20220608; t=1787340402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A7EQwwPAnKK4q8enDsZaq/QP/VU09oRuTvIZgOemLOg=;
-	b=BcBQWZKH9PZLC3pIXTa5oXdjZEj7oQiZ7Tly6i8EUXQdkW1qdUPM7cco+VgQCD2Zpj2yC9
-	nCYil5s/0idupjr2UjHaS88GW8RwSEXMVX3JuyXwKw6EUmDqJngG9klp1YCacP1aYeoD6T
-	HMGAqXtRnQQil3XxmX2XqnQilz+kTN8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OSP3N6On;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787339925;
-	b=iWPKU/nArBeltgjLRjRjBGBhAgpdbwvJJ2FpYKcFI5r2BpSBq1WhCJZAz4cXdNgnHOvC5o
-	+ebNDUTrfVVFLaCOzkGvjprn6pfGhyvKAfNGYmKxrBeZ/QV8pcTtrQ9pTmzlRGBhb8lsVV
-	KekTj2pPB1Ekt/7dbo7VPhon83jqRkk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFD694004A;
-	Fri, 21 Aug 2026 19:18:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C6B1F00A3A;
-	Fri, 21 Aug 2026 19:18:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787339924;
-	bh=A7EQwwPAnKK4q8enDsZaq/QP/VU09oRuTvIZgOemLOg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OSP3N6OnFOMNhcH624P0dAupyoQ36T9SMi18isQoZ2T2H9c2kTKzVA5MZHwmFxfIj
-	 oH1Uk59SThYcIqFox/PhnHA/aYvL+QTZmXia/ENAGLuO3d3zvrJEYO89xEKzOCGbjN
-	 qvL0ChNSKVHltC4r6giprL7AMSDpJvJOW/R1C90ZOnKvN+ACvDkLhtmoWqirmqTT+w
-	 KwpP0mkS0GlQpr9HodQgZwfAScXRWzxwhyY+wQH5y38FlMxUGRcqOCK0ok1vepNAaV
-	 PkXbsBBTUffsvPe5548y9Lw4O2Q3vOReOsyWc5jaTgylhLSsC20JZdsOhcbsEa55Fk
-	 5CofarYyRYTOw==
-Date: Fri, 21 Aug 2026 20:18:39 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, sashiko-bot <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] mm/madvise: use folio_trylock() in the cold/pageout PMD
- split
-Message-ID: <aoicRY6aG6I2ZAvg@gremlin>
-References: <20260821150912.183976-1-gourry@gourry.net>
- <aoiWZjgcitp0nSk0@gremlin>
- <aoiap-yBdPaM_YQG@gourry-fedora-PF4VCD3F>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UzzXCRkZBIFLuWMJrKxsdtQj0pfVNINGow9N0iGvU9s=;
+	b=o90mV55lFhyTP6bH6VI4Ef1rkQmozTWANE+JqJSqAsMFSKGtJJm0QJPgb49MZ49W/mXTHP
+	jEdMkC2gEx9p8CTLNUhfkK30K16KCwkaNCH8m4r3pjB5X7NAYqhviEeZXeDYNQKSKTWD44
+	KP0oYTwjKGtA7X30/xrKwMRqEziyoCM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=UzzXCRkZBIFLuWMJrKxsdtQj0pfVNINGow9N0iGvU9s=; b=h5gDY0LSX/yuB9FLkhffQzlohK
+	mKDTy/V1MvdKQR4Y1kpZmaDUOZ8qRysQOHC3yDJl9WNllzfW7HILppuMGyAxM8zgLjutEhShNOGIN
+	WaY//ZkX477E9YGIMoKKpRJZ4YcQ4VgW78K+Tj5HOAErLGtcXgdNnafBxgWPEZdTVwswLD5MGuw3b
+	0ZHCTj38dFUjG/yb33/ltgEqU1YQsn26SbiP8Xb4VRVzpylOJz/hytf3MengKi9JwmAwdYRBF7x06
+	bch71K8vWg86qeyerXTHeI01kVR3u65U37rJqv85tU15HTF9aE5JouxnF9t6V9YYJtvJ/dVG+8vzb
+	1mCdK5Ew==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wxUsx-0000000E0gT-1sBQ;
+	Fri, 21 Aug 2026 19:26:39 +0000
+From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	maple-tree@lists.infradead.org,
+	"Liam R. Howlett (Oracle)" <liam@infradead.org>
+Subject: [PATCH v3 00/19] maple_tree: lock checking and clean ups
+Date: Fri, 21 Aug 2026 15:26:08 -0400
+Message-ID: <20260821192627.4085470-1-liam@infradead.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoiap-yBdPaM_YQG@gourry-fedora-PF4VCD3F>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9663C1A000A
-X-Stat-Signature: 1cju46c84zkssiquo4jd4wfxqj5hadsr
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 920DA1C0004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1787339925-38120
-X-HE-Meta: U2FsdGVkX18r8UmUmbhWWnnSQtRU+p6kgM4b7NsBfZ8kS2TsWwh7OReY4/KZkmC/NPKmFt/0wEUA/iHyXRcf096AzWVRCUEjZTnkzW9Kylg+kuRk1eZnSwvJKkImoSVLqjg7GWxq/jW6sJ1tw7IYaSCwz9bphMzEUUge5/Dwj824Pj1MOdT7RL0cwgKGLeco9MXniOnsfqLupKV+YycbaMoaz2+7aMzRvvc6YTNEPgusUvfGNOpnZ8IF8ZPk/QCwAn6Bwuz8cn0OzFqL+kgTDi20jRby5fU7XLMrWY9jLXgxV1NncV/AAJXvlYtjpRe9peCnmD4rAoP+7JrFmQr6dprTWw8qrYrflbp2Xhx8YPnDsNQxMGzsZ+VIkLS9bh7BFwRQysW7I6PreUipTN5L6csViUMBq6SF9XeuRFhE6w/+MWfHhYX6Xbth0m8Y36cgxmlZqKdpBcFoTOLgvsJ/TDmdH3aKGzaKe3HVLxfB1UAUU76wwrkcZnA2M+wrcmHqxxCPSJfpzb7ZjWQj3AtJTz4By97/vcDGZI4KftTsfMgD+eijqrYKwQZdxVX2Kmf4iF2fJoNnK/+Ht01FMp5TQwtKel96Ly1QaGYh9oubSKQPx5KuVrIh0SyzuEA+lyMr7miWOnwuQ+ZoREtLCqU925QzIfZQoVd918RknhyOlFCAkTZeyGfMISTu3GM4jhNZB/vme8NuRur+0hn1+uzwEyBx4HlUEsN3lY3ZdJprCWt+naZzNKputCHR/Etdr3ji5sOeUljTO/d5zMspNEE3Ey+miLBA6nbcUMsWL02W2skz1DKPOyk37B0X7uptzKaWS86TKNwY5j9ANx+RzyjvCtAvwQvZ78JSvYrWIMMtGnorRtOYiy71jq2vYiv7/cuYNUX8ahgejGrIsCKWjw21xFC4EfZXI+16MsADWklz5dM+BQU0zezDaBBtJSJ/LSJAEMe6JRbBa7uzmvPUe1x
- xjjRAJ3Q
- L9vj9jSkwx7kZg3pGFXd5MVUEWibBtkookw+I9u8pCfe46SN4yWI2eT6RVx9uIMOr3aoBONL6hcNzRgvyMLeq9fS/eawv+qzNe1mWAYObhbXxtB8v0RahvTZ21yvuQJtzC5Akyf0DCdGWGKnufOBN90cM+xTGgK36Tvd3emU+9MhXLn0+bHEnx8xcOJHArlFgJMbrYC652iJ7iKI1ueoy2UczxLhEcRpxpnctd/ABEkW+mnuDjCXgHfZZLEGSi/06Cm+GsbnrMgJufEEtt52H/rPHUeX+QwDbD745lE3tXOu6WBmMVTKj2Oywa4tjjPQNQUHA
+X-Stat-Signature: 3wxkb6znt3oe1kque54f7s8ujcy9amtb
+X-HE-Tag: 1787340401-981613
+X-HE-Meta: U2FsdGVkX18esbFZBF8KgYEIAWx9XsM9ACkiqkfnlWF41Kt0KCHlCvxD0ZDWiR6WJoD4k8knaN5AwZRpm14Y+u1R5a++zDr2nPqIxQHdaAZHkTb+0iwzsT2f/ZHzRWY9y6unTmYob3YSayg7M7JbZbK73Izd0Q4zqi69yf6AYi0hgr8ShzsO7jGKEkB14/GnwFfH69N481tzJbDICDtoXJrb027/GxdBo3Y14oZgFNyWS8YwWnaUzWKF6pMErlLfQV07oGQjH/RNamIdBvt+/6XEmeoxAZsu2FYDFNoV9x4gLaXdcNfh3+U01xXxMIJvjBsYt8HYyjGHiTEVg28TRUiZk7pIdORz/0b3Ow8tKKjiZoeZzjME0g+CLVI1DKRXXt6Wsr5mYWOx/AhwVPRsKKaFYpyH1C5e549WciJuUhcP8E2fM8ePv9sANqLFmBgeqGiHhD8Ph4XZsxZms/3asDL93bzJmHG1lcc0UCkdp4QEySTz3vQi89QTU15Z02tRsl7vQtyCvjow5Kfc9jPZa9emdcbD6oloS+a1H26IV7q7D5Gk2zEUUxC+2mFTV7pSOp0zdmBEDmd2LI821ck/PwcVB+tOk1Z9Ii7+hoDPDtYY2Zt2F7TyoIvs5EahlzlzVkwnliRlzcsEjMq3nZ7st4okjWz+xMZpqMXLtu+/UGBc+jQp7IFI37PLEwNen7d8nS5lZeWqYQ6KhNKdeZCQn4iSMz9raCotyczN5SdAIcWKbSB2D0wCQXJVVL1Zj7ChuBHKBRcylEKBILVr88tms1Xpwk4MgUQvNZhV2L9i90BhMlS06HGapnu0BH+o6KVkVkA/8UPWkL6rRUKFH8l4ljFuLaFvsVI6knjI9ylabntTMxFcEXZBXgyJ6viF2O8FkndcRaOATiBUnPmFIOcFzFzzRPF4A4YM5dcNf+uwf2+dQVYJcr+5ogyjsHZpglRNP0FNqhaTx62sQTyKudE
+ 1lyYbs7w
+ LhSKMMKgDdweE0Wu0I6wPWfX0vJrL+1QwpvrroyqOZ3sAqyNXKwyCZCOAoGwevYAHmZsBzN/CcwDNKAK2P1E9NTRayDT/kGF8pQexwcy/SGuA+AcLeV5err5pnQSM23Gs3dIBmJfMX7Our6VNsMK4sPIy08MzFTV9E69Pabbn2gTYmNh/uI5J4AO9LvivXsIZNZ6STEKBa6Ddo5FoErD3aZ9ogNsCpJ4b3Buscl+nAbGwZOk72QwPNgK4NDY++zlRvRxOVszcmIvQGGQXtJvYyFWnZ1pzXmC/EJ/xjduzv7itFNH99CDG60f719JRL7inav6if+bnvKVxdP3JMC9YVYL7mY2WEbowURURyF7Vh7syeOA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,70 +89,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 02:42:01PM -0400, Gregory Price wrote:
-> On Fri, Aug 21, 2026 at 07:23:34PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Fri, Aug 21, 2026 at 11:09:12AM -0400, Gregory Price wrote:
-> >
-> > I am _so_ glad to see an actual reproducer used in a sashiko bug fix. THANKS. :)
-> >
->
-> fwiw i try to produce reproducers on all my sashiko submitted fixes,
-> i've just been dumb about including them in the changelog.  Trying to
-> fix that from now on.
->
-> > > +			if (!folio_trylock(folio))
-> > > +				goto huge_unlock;
-> >
-> > Doesn't this violate lock ordering?
-> >
-> > From rmap.c:
-> >
-> >        folio_lock
-> > 	  ...
-> >                  mm->page_table_lock or pte_lock
-> >
-> > So now you hold the ptl lock _before_ you obtain the folio lock?
-> >
-> > I'm not sure if it being a trylock gets us out of that particular situation? And
-> > I'd be reticent for us to violate it... unless I'm missing something :)
-> >
->
-> This was the thing i was least sure about, but the deadlock condition
-> should only happen if we tried to spin on the folio lock right?
->
-> It does look weird, so it would be wrong of me to say i'm 100%
-> confident this is the best change.
+In this series:
+1. Try to detect lock issues
+  A number of syzbot reports are incorrectly pointing to the mm exit as
+  a source of the locking error.  The first three patches attempt to
+  help users detect errors in their locking - but they still have to use
+  LOCKDEP.  I guess it's still down to hope and prayers.
 
-Hmm yeah. I worry about subtleties here.
+2. Documentation fixes
+  The documentation was lacking clarity, there are updates to try and
+  help the users, especially around the erase() cases.
 
-I suppose you are avoiding what you'd obviously worry about with a PTL
-lock/folio lock inversion causing a deadlock.
+3. Two benign issues
+  The cyclic allocator may have a race, although no in-kernel user can
+  hit it.
+  The erase functions may cause allocation issues if used with the
+  incorrect locking type, but none are present in-tree.
 
-madvise_free_pte_range() seems to 'violate' this also with a trlock, seems
-it's not an uncommon pattern.
+4. The erase gfp uses
+  mas_erase() and mtree_erase() do not take a gfp argument.  To improve
+  reliability of the erase, the first attempt to allocate will be
+  GFP_NOWAIT, followed by a retry (if necessary of GFP_KERNEL |
+  GFP_NOFAIL.  This will ensure the data is gone.  I've updated the
+  documentation to make it more clear as well.  mas_store() is not
+  addressed in the same way, but may need to be updated at a later date,
+  but that may require changing callers so it is out of scope here.
 
-I suppose the question is - what else is likely to lock this?
+Beyond these goals there are some test fixes, some general speed-up
+patches targeting extra work and cycles, and dropping dead code.
 
-It does seem likely to be the race you flag in general.
+v2: https://lore.kernel.org/all/20260630190843.3563858-1-liam@infradead.org/
+v1: https://lore.kernel.org/all/20260629144145.1572283-1-liam@infradead.org/
 
-So probably this is fine then.
+Changes since v2:
+ - Added a mas_nomem_nofail() function for mas_erase() - Thanks Jason,
+   Vlastimil, and Pedro.
+ - Dropped the WARN_ON() that was triggered by syzbot and questioned by
+   Andrew - Thanks Andrew (and the syzbot)
 
-And the window is relatively small also...
+Liam R. Howlett (Oracle) (19):
+  maple_tree: Add rcu locking check when LOCKDEP is enabled
+  locking/lockdep: Add sequence counter to held_lock
+  maple_tree: Add write lock checking with lockdep sequence numbers
+  maple_tree: Documentation fix
+  maple_tree: Drop dead code from mas_extend_spanning_null()
+  maple_tree: Drop MAPLE_ALLOC_SLOTS
+  maple_tree: Clarify comments on mas_nomem()
+  maple_tree: Use prefetched value in mas_wr_store_type()
+  maple_tree: Optimise mas_wr_node_store() when not in rcu mode
+  maple_tree: micro optimisation of mas_wr_store_type()
+  maple_tree: Add bulk parent set helper
+  maple_tree: Catch race in mas_alloc_cyclic()
+  maple_tree: Document that erase may use GFP_KERNEL for allocations
+  maple_tree: Avoid mas_erase() and mtree_erase() failures
+  maple_tree: Document erase and allocations better
+  maple_tree: Change two GFP flags in tests
+  maple_tree: Fix argument name in header
+  maple_tree: Avoid extra gap calculation
+  maple_tree: Add helper mas_make_walkable()
 
-This kind of stuff gives me the heebie-jeebies :) I know that's not exactly
-technical but there we go.
+ Documentation/core-api/maple_tree.rst |  23 +-
+ include/linux/lockdep.h               |   3 +
+ include/linux/lockdep_types.h         |   3 +-
+ include/linux/maple_tree.h            |  12 +-
+ include/linux/sched.h                 |   1 +
+ kernel/locking/lockdep.c              |  58 +++-
+ lib/maple_tree.c                      | 394 ++++++++++++++++++--------
+ tools/testing/radix-tree/maple.c      |   4 +-
+ 8 files changed, 366 insertions(+), 132 deletions(-)
 
-I guess there's just no other way of resolving this either.
+-- 
+2.47.3
 
-That with the reproducer suggests this is fine then!
-
-Since it scares me I think A-b rather than R-b ;)
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
->
-> ~Gregory
-
---
-Cheers, Lorenzo
 
