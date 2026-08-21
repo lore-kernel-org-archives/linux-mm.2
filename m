@@ -4,117 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B03C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 06:04:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFFF8C5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 06:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F1AF6B0095; Fri, 21 Aug 2026 02:04:16 -0400 (EDT)
+	id 9C82D6B0095; Fri, 21 Aug 2026 02:21:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C9146B009B; Fri, 21 Aug 2026 02:04:16 -0400 (EDT)
+	id 9A0056B009B; Fri, 21 Aug 2026 02:21:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DEA26B009D; Fri, 21 Aug 2026 02:04:16 -0400 (EDT)
+	id 8B5326B009D; Fri, 21 Aug 2026 02:21:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F08C06B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:04:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57C7A140376
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:04:15 +0000 (UTC)
-X-FDA: 85124236470.29.719742E
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 83258100005
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:04:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="TO/kHazf";
-	spf=pass (imf05.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6B2606B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:21:15 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA9268039C
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:21:14 +0000 (UTC)
+X-FDA: 85124279268.11.76AB8C8
+Received: from mta0.migadu.com (out-154.mta0.migadu.com [91.218.175.154])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AE05A40006
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:21:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ppN72ykJ;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787293273;
+	b=uObTMZi1Gaqs3+hAJc7jkKPnrQ2dZUjOwTut4bc7ssbnT4zwxNP0T27d8tmBhIyjYvpVe4
+	3WBtUr4b765wdUyonQx2HeVlDgo/H0mrCuvuP7er+fk+IxOypN4Q6r9hRxWi+dUNPDBCHq
+	3uYYIM8z8vtaRR5ETG+oIeQs0chbaqc=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ppN72ykJ;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787292253;
+	s=arc-20220608; t=1787293273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g+M7b/GvGl+uD4vBvTDfSad/jpayqDUX2TQt1tkjpXg=;
-	b=UYyUTPCehinAWUTXXN2coSPt85FlVMoXZa7vQQrsMOOYI00Kf0RUnBojJtJ7agLCbt2WLS
-	wAOABtRymxiu6Z+elNKW/VF9RlhSlSa2GQFZtPmn5KodvAekC0kxXfcvom3so+AOmtruQT
-	50azZXGGaV4b1k7EEElrd2+dQHo94R8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="TO/kHazf";
-	spf=pass (imf05.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787292253;
-	b=mx4pCcrFhmla2InySF757x28K6f764A/g3crSAiA+9iBbSGzc4aQsHwLtcw86f6dpjX22x
-	nomRDQRYMJEW3AcMbkcQGX7aa2MNxfuSPOQ8LvWskdcXOLFd5vMpTMaU3LjaNyfZ0uquBO
-	6PdXUWdavcKqWj0ipH1CVv5GbC7abhc=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso610348a12.0
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 23:04:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787292252; x=1787897052; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=g+M7b/GvGl+uD4vBvTDfSad/jpayqDUX2TQt1tkjpXg=;
-        b=TO/kHazfZyHvORRzFRuu9mQF48vtVI2gxGJEBt0xS+p7UtJ3S2sHKWo82MjK2+lo8s
-         NLzas9BfB6D3MUDd3RcEujEH85rB14G0h3/MQ8oCQw/zXk1oU5Aicrg2ENsIrY2SAk6/
-         7E5sCZMiaaNOGWquU1zFE0zDNnulWxTcG3ar2q5XgXXxieCU1BCW2KGEcyuNnemLWJnl
-         obaZdXd8WpsCiigAC+13QkA2KpG8BuwgEkKJMzhG3y+dNcBLr2gn7gsgZInpm21DodQK
-         kDSFEGB2sls3o7bkOyaMgq4uUvEYhWx8jBXMjjPJ+HzzLCDAUdBq0a30nb7iftvc9DAb
-         S4sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787292252; x=1787897052;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g+M7b/GvGl+uD4vBvTDfSad/jpayqDUX2TQt1tkjpXg=;
-        b=HoAwx9f4l8GSvyeZLjYybGMDCjObj57tsqDKwhXEkYWJJAJn61XO7NyQtsuI9xpFiF
-         KiUQwqTThgq/exYUOTnMWP9FbWCDPEgOwQi36j7aVPZatpIETgFZqc3jgy15BRv5PpG8
-         SbEUVarzqeQ2QPGWDiXFNpfNs5K6NcxmMHteYHjk1xD9VA1QqtGOieRb3kU4N5eLqct7
-         uO3oUKt/zjUk+EpN+m+CheO0oyt0+y1dNxmOhzXN6WwdhRmO6H7jEqiwcVZwzQQdd5J9
-         qxN6ClHl4Mxmev4XPHE3lDCIExJ/55btxBDoqAepP3sgM77RGlunv4WUqZ0qxNz86FLN
-         trrg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1kSMrH+xSEpeVI28ux/cMgmWfjx0qxx2yvUvnfglNcYxOz5oYcWoCx9HmdBNoMsrOK2qE13Q+gQ==@kvack.org
-X-Gm-Message-State: AFuF++nwNSiNzmwcxfNoGOT38gMCLe8t+mwYVFRsOBzOTrn89IiOF3Il
-	YdX94Vxi99aERlShFvH9tfYsMIatN6TtaMKv55Z9elJhelMCUq2tC+Wp
-X-Gm-Gg: AR+sD122malJOS8erhK5HA2f1AOOjO2cijKbvQSuCw4VBTeQEYGQQgc0nfJOrlhJqBH
-	3Lz/qkHQueNhvqyOTiVqbMGwdBXaWZQcIZBLlp39Izq5VupKb/p2U2lt/KjNh4HLP2v2cMpPHgn
-	AEutRh1N23eEHtel0wfNZrrT5NGyh/r9+n/37CX2CbEXTy+Fpz78abyEDlwdvpGjUz1bvdmeipd
-	0Y4jbfpHBUzAFc4/J2gu12ouEHHL21ufaNgI1YoHhlo+RoNBxEq6oAsaa7+jlXdaJL5qFWQpaPq
-	FiZu5/VSMj9AbLJyEYWeRC1NAQnSIg06715/iFAgQyBNyX+OfGNVMfII/JrshNw3a0gv1n3Tyyq
-	8vtcWRux0MCaQcpGX5XV42U0wHzKEshy7aWCb3cbuJD2QyPW0o1oOBvtPEAsRwhgzgZ5apfNuxu
-	+kLqoGaARdsMtaaxp5fdHz96ppAMnkiiEcaAZ2aRLiM3sVPA+J0AR7luJ7yCLGTEcCZNn8qQw=
-X-Received: by 2002:a05:6a00:a8c:b0:84e:d5e6:a085 with SMTP id d2e1a72fcca58-851f969b7a9mr5413810b3a.0.1787292252349;
-        Thu, 20 Aug 2026 23:04:12 -0700 (PDT)
-Received: from localhost.localdomain ([114.86.54.94])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851d366c853sm2409432b3a.49.2026.08.20.23.04.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 23:04:11 -0700 (PDT)
-Date: Fri, 21 Aug 2026 14:03:33 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lance Yang <lance.yang@linux.dev>, baolin.wang@linux.alibaba.com, 
-	david@kernel.org, ljs@kernel.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, zokeefe@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/3] mm: khugepaged: fix tracepoint UAF
-Message-ID: <006469fe-b6f2-44c9-85ab-b9ef99bfb2f0@gmail.com>
-References: <20260815174444.4164-1-lance.yang@linux.dev>
- <20260815181632.21453-1-lance.yang@linux.dev>
- <20260817153049.120e224cc303f1c2292cd768@linux-foundation.org>
+	bh=XoVmYBmwXV0f9WVcpC2TRp8kdZHd68RVqz9KsA5hmdI=;
+	b=LECgAknwrpcbL2fE8bD6wHKJ+fFouyfFDKOusPmBTp5YG8WvM3Zg+s7WPjYVKpxhR8Gf8l
+	DhuyheIwQSc7dE++7SMa9jkBeDy5PrwvKxzzgQ55uDwLOmrTVRl+CDbMydWM2djt8NfERV
+	82olLOGkxoKck+2oUFo1VuRcQjVUm8w=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=adPVk1lWJaVbZTKBLf1r5uG4plHwOPG0xXdAgm1qOdo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787293269; v=1; x=1787898069;
+ b=ppN72ykJoA1pOapa+b7GeFcWtqd6Qvnjp3SBBd6S3IeYMbMqfR2bbhqA7LvT7IaoonXy2D8d
+ IyIs/96tQ5oNjcIbuaCHTiYN6d36ZOX8RwjLW1bM38/fI765oYwqDUyAs9PH0mnJ+3ult3Y2ZuK
+ O4nTNEqBhsbxYOwVXDo2YsBY=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (223.70.159.239)
+	by mta12.migadu.com with ESMTPS id 550237e5f76dc425;
+	Fri, 21 Aug 2026 06:21:08 +0000
+X-Mizu-Trace-ID: 550237e5f76dc425
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 21 Aug 2026 14:21:00 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com
+Subject: Re: [RFC PATCH 4/6] mm/mglru: report hot PUDs from the rmap feedback
+ path
+Message-ID: <aofuTK6OOzC4lGUK@fedora>
+References: <20260806103003.3924438-1-baoquan.he@linux.dev>
+ <20260806103003.3924438-5-baoquan.he@linux.dev>
+ <CAGsJ_4xrJhFrmG+Gr7ukPUS0NeKTgYT9VViN_niq8tHejp36cg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260817153049.120e224cc303f1c2292cd768@linux-foundation.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 83258100005
-X-Stat-Signature: rjnwqznykw64a933mj34spjj4698p549
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4xrJhFrmG+Gr7ukPUS0NeKTgYT9VViN_niq8tHejp36cg@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1787292253-196540
-X-HE-Meta: U2FsdGVkX18J9OanMQhq2gDd6AZSQOU5wHPlo5BpooUU7WhhaPUpLm9HNMMxlSp9aAf08vChHEBiHKD58jqYUjOMyYvQWKDCs5MnDITY5J2WuuCnk/A5M4rT8HRZHtcCwPaQZpRvoJ20D3sAR0sLceSOTUlX7zBOU30NV5KVBaaaZ7lzY3+wZCXlj8w1HAB0RtYAwUZHVWcf3u2Uet5A7ib82pAsmhv3Y+UhH2QWrX6TaOWAPqkAYZTjmG7wHCj8gnlzKg4YpRlrAlKYZBnt4mOlSR/rc5F3C78XGAqvVxVrQdfUUYp8w4FfR95a/1B1TE49OYg47/MjAWC+ZI3npT29NyGII6gvdLyLiBdXA7VFQK7pGQWGmRwaVOL25bU+22wgip61OIYJ5RPPBqeKHFF7/Mn4dE8gXG/rafURsNB5ggQHC18Om/9ApIWvPp32TIXjOHawwAsz/0e2fqe4YNGeU4sYRA/z7FaEI0ssxNK5F9JIXNH+pYUoERRsMpI6j/ZwYv+GSiLOFarepBuAVCU42gtDq2/G7cMuwCcfD7hoTXaG2JBsq0xSo+FrAAtRw5TvcBoDkVT+QbxgqOMgVI3hjwcGCHOgLSSvqF9/ht2RJqgjj68rrgeT13o2YaaPKRdoqsH76l7/VPx06wjDOa5hCCPNSP6iBk6evUbe5V5irUrjH1Qi5miFBRJH4+2/YdKuxg4Dp9PBS8FJQUxNP0MrpKoheOTnY455NuTyvGlVSwLZrGQ4EsQb45fGCba9YRzh3XlSX4FKGc7sF6TNlWEM+LZ0G4IFpTNL+tJRxOHQ8ie2bz7+nNpuJaa14fzRdjfWM/ugjSU8YPgHeZTw014Hj73mZANIBWrlhsNMG9rGjdGVMQMbaIsz0B4wW3XhKw6w8k47WPaSv1YLL9Ep8gaeGW9HOkT3tIUhY3D9kvEPzsZjlUa4ve88o+KAFQfxzrDAlQc0TxSYbSwtRVa
- 8uK5QwBZ
- 3iFx1l5q0tU9/UszBYItn9YP1IviLGeRCTiZmBUI6FUJwyp8+wXc8x8UEYTiEjJMMVUtysDjGOO77viSUSEZCt6r+W+R6F5j+aapPkM5BdAPD/saIouTU8xMe95jmOZ/lbbLCEpxxoHsFLD3m7nxMivbYQp8IzGzyk1sVZUO8ZJgtwm9oCsEuiNzCccJ1pqYjZiXWQX9zGYECqDjtO3qiA5q95vzHt/7ogyU0gHqh0NXSX228UQq9AZTMNZubGE63y9TtT1P+e7FTTLBVZSCqfqDZrCYPYSlYybTaOYth/JMttcBv0CyghMHdpiEz5644d9LELHQnZv7OZVftzPBFqV6xfW52XmSXHVgu9ag4IajVI1YSwXrE428AxtwoJSMKklf7vtlFNaBIrgYAg1CoRO+jtVTaTlUmhBdwr0mDydcGe1T+g9M40pORlzwNah8NyV1FkxEcM1rIi1RLOIjGwYhcoLiun/mXWyohL8i1hbsF/WCdKo6K9G6UwS+pXRsQpbrN6YgqogIszvI=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AE05A40006
+X-Stat-Signature: he1rts1jeamhw479mpnoc94zkwu93x9m
+X-HE-Tag: 1787293272-304971
+X-HE-Meta: U2FsdGVkX1/O1Rkf6kVTN+td3CHNPCz1eLvTR6QLBdvAsFpCPJRflu4rpZFvL4C24ynZQ9xyoy8l/IRmNpB4lZB510Erh2CLqam0d9deOfNpck3okM06WgPfJ8T4fnEoqsQdPD/hiSY/ASJkbD9aGhVsLP6/utJ3yxNpWt1T8gV5oGC0zJZTJ5eFpw7JZqb94xsAZnwGeRe5tzxRVlcOPMsuNiQDGuYxmqb04sjcsflUN2owJC+L9D0zPIqIdUv/ZDbX7Mou44ruAZHNZqDucuP93BbvnWQMVkz8/rDmkRIXZGAOBzVgyUbSLZvyP4Zgp8rl9d2vdhYgP2VKYnRHACupiCV3bbnnxGAko+DRQaRN2QMilYscqxdCuVrrY9Ytd9dvpgU7BulS1zqjRobsTEUClGL6iXQCbsEfT62Pf1EVn1RNwn+cUTNL6kJ2ynFCXqN3uz3VgusK+8nZDmWaDnRvPRwwigRI7zPgje2KvqMth1hlKl1DsLSOJ/x/mWPayNuLgXEFdPppwtmyJ7NlMVgoEu8nzbummndlg3I/KCpaJxLy6uJN0PAsc6DNFDItSMOUekwhzQLVj9JrfWTGBnoR1Hgi7eWN7iyW/piWa0ck8+VxNO/V9XvOeXh9M6Ey5MuDjSqiTvzr2Jg7ByBJTCByEWWUV5g6HNHXdLRu8fbzjahTZqCga1zxA8uk334QtpM9rC5CanfP6uvI3TUBpjeSmAQUvFzuwXoVoVhMIGVZARieZazfcdmkXd0tMjJRetxE0jJAL/rVLw/HOUbMReCzliBDGPCC+KIf5gDF0Q+R/hhXjWhsVlj2iBWCdrQrIUi+b2nG0kzSjuK3MNO41nH4iXtgYKVDDtH7+t6eP9Z0N11+KUlGqbCYNiJow4brBQ5BhEbs+2YsMs9NmQ8t9ryAebBOj9YCugx2lOIL5MtVsJknxrM7RVQc5g2cjNczmtTuZ8434tdNn+iMq1o
+ nnaDa4Lo
+ bPhVp3sL3yBhSu/nHCkAEXhPZVGLd9d7aJe2a6/Qi5Ba2jTFG6MvaWLGSF5mQ5dRa9eg4lgebKrL+wGhggplrmTDeyysUraQgEcrkYGx2Bvpl1/sB4cpr6KVs3DO9diapx0SoqVBL3w8i5Vqz4L2hIcQcOtD45yvg+vvpwqwLvuf+yxnSbIZS5Njx1ywFNUbNt74NV/zNEKRU2G+Ctq47qvnOul17jc0cXOSIsr2CUv8AuncZv4+5AyubgRHyEaK2cofH43qc0GicTmy52Yv22TywwHCjIj7B8zt8YvNPiHmVTnMgu2fRm9W72LxOmzG9fMAhmIlbIswxj3nO7/i+pm4FKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,30 +95,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 03:30:49PM -0700, Andrew Morton wrote:
-> On Sun, 16 Aug 2026 02:16:32 +0800 Lance Yang <lance.yang@linux.dev> wrote:
->
-> > >>Pass the pfn to the tracepoints directly, captured while the folio is
-> > >>still pinned, closing the use-after-free windows in
-> > >>mm_khugepaged_scan_file(), mm_khugepaged_scan_pmd() and
-> > >>mm_khugepaged_collapse_file().
-> > >
-> > >Well spotted!
-> > >
-> > >Gave the series a run on x86_64 (KVM), all good (only classic SPARSEMEM
-> > >untested) :)
+On 08/15/26 at 07:36am, Barry Song wrote:
+> On Thu, Aug 6, 2026 at 6:30 PM Baoquan He <baoquan.he@linux.dev> wrote:
 > >
-> > Hmm ... stumbled over something else while testing this ...
->
-> Sashiko might have found a couple of pre-existing things.
-> 	https://sashiko.dev/#/patchset/20260815051924.194810-1-vernon2gm@gmail.com
->
-> Vernon, you may decide that the second one is on-topic for this patchset?
+> > lru_gen_look_around() marks the PMD of a young PTE found during the
+> > eviction rmap walk, feeding hot regions back to the aging walker.
+> > With the PUD-level filter in place, that PMD marking alone is not
+> > enough: the next aging walk would test the containing PUD first and
+> > skip the whole 1GB subtree if the PUD is unmarked, never reaching the
+> > PMD. Mark the covering PUD as well, so regions whose hotness is only
+> > observed by eviction keep getting re-scanned by aging.
+> >
+> > The PUD entry is re-derived from the mm page tables via pgd_offset()/
+> > p4d_offset()/pud_offset(); it is only hashed, never dereferenced, and
+> > the mmap lock held by the rmap walk keeps the table chain valid.
+> >
+> > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+> > ---
+> >  mm/vmscan.c | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 74edfe2a747d..ca0f06641adc 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4416,8 +4416,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+> >         lazy_mmu_mode_disable();
+> >
+> >         /* feedback from rmap walkers to page table walkers */
+> > -       if (mm_state && suitable_to_scan(i, young))
+> > +       if (mm_state && suitable_to_scan(i, young)) {
+> > +               /* the PUD entry covering the young PTEs scanned above */
+> > +               pud_t *pud_p = pud_offset(p4d_offset(pgd_offset(vma->vm_mm, pvmw->address),
+> > +                                                    pvmw->address), pvmw->address);
+> > +
+> >                 update_bloom_filter(mm_state, max_seq, pvmw->pmd);
+> > +               update_pud_bloom_filter(mm_state, max_seq, pud_p);
+> 
+> Is there a case where all PMDs return suitable_to_scan() == false,
+> but the PUD is still worth updating? Or, if only one PMD returns
+> suitable_to_scan() == true while the other 511 return false, is the
+> PUD still worth updating?
+> It seems we can keep it simple. I was just thinking through some
+> extreme cases — maybe I'm overthinking it.
 
-Hi, Andrew, the second one already is on-topic for this patchset, detail
-look for the PATCH#3 please.
+Good questions.
 
---
-Cheers,
-Vernon
+The PUD update uses the same suitable_to_scan() gate as the PMD filter: 
+walk_pte_range() returns suitable_to_scan(), just as lru_gen_look_around()
+does. So a PUD is marked if any of its PMDs shows dense enough young
+activity. If no PMD passes, the PUD is left unmarked by both paths on
+purpose: sparse young pages don't justify walking the whole 1GB subtree. 
+Those young pages in unmarked PMD/PUDs are not lost: they are deferred
+to eviction, which doesn't check filters but checks their actual PTE young
+bits via folio_referenced(). Young ones are kept , and lru_gen_look_around() 
+then re-marks the covering PUD, or cold ones are reclaimed. So I'll keep it
+simple.
+
+> 
+> > +       }
+> >
+> >         mem_cgroup_put(memcg);
+> >
+> 
+> Best Regards
+> Barry
 
