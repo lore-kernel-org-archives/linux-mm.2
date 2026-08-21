@@ -4,140 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF3ADC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 08:35:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE54C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 08:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD1D56B008C; Fri, 21 Aug 2026 04:35:35 -0400 (EDT)
+	id 461106B0095; Fri, 21 Aug 2026 04:59:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D83A56B0092; Fri, 21 Aug 2026 04:35:35 -0400 (EDT)
+	id 437DC6B009B; Fri, 21 Aug 2026 04:59:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C72C26B00A0; Fri, 21 Aug 2026 04:35:35 -0400 (EDT)
+	id 34F1F6B009D; Fri, 21 Aug 2026 04:59:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D6C76B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:35:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1462A403E1
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:35:35 +0000 (UTC)
-X-FDA: 85124617830.03.925F667
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3D4CA40006
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:35:33 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rUNlZ28j;
-	spf=pass (imf01.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787301333;
-	b=itE+ZX27u234qNLPdi7/6j80ZixTrli1uXWzim0YP94VEPWdPlAYtd9e5BUvaeTHa52/al
-	jiZ0rOlSgoefJSJiZG5vQUaFFz5JjSkXJOYKGNHAf3WFej058dOZIJkOD5zbo/bGRTUeV/
-	MuIQ/ykufYNE+L6wsUpJy5SHoeoEzJA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rUNlZ28j;
-	spf=pass (imf01.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 11D726B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:59:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D51D14036E
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:59:01 +0000 (UTC)
+X-FDA: 85124676882.09.BF7140A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EE0C3140005
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:58:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVgG0YWk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787301333;
+	s=arc-20220608; t=1787302740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LJo+VFODNoZcuVrRZgNruXYVosZL9AlBhzltP1KWSy4=;
-	b=n4HIhJUZctg9vqArMtsHvNRgvIdv7JG5Mt1R2Ysv8ZqhfEVb6H5dmJnuWFizHvnxu1hqGu
-	+TZrF+d07/WlMo4jSfqw9AfYMit1IeyxbBssew43RQOlSv/xM2xdxD1DS4Adl2Hmd7hEut
-	rNQh1Jm1IRKd0hnz7w+sbVXzKtOC6Fw=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cc891373e0so9015205ad.2
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:35:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787301332; x=1787906132; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LJo+VFODNoZcuVrRZgNruXYVosZL9AlBhzltP1KWSy4=;
-        b=rUNlZ28jc6/s4I0ec5BK2aaROdZFN4HCv4KuhR9V5/ytqOzAS1Lq8cEmKzQE0PLZQv
-         oLTnzxcxXPx92mIVpvb1mPyFES+kUehWM8rdkXDQhapC6VnUnQ9Xc6l4YFQ+g6ottBUh
-         ggw/NAEze/X2NtFIArpiYp0L7hpYrHBxZu+y2X0pt0LSMO8TpdeA34AFErKprppEbKkS
-         ZewbEyV7rtraUkmeC0wR951D1MQFo+12WWsQVcZHImWMLJuuvu19ufJjAdQXcZ+agkOU
-         CO9KCXTvNuab/cnyoSvAgqEcFW6C79YFQq/mMCsEoaqHTKrQO4QB/REqx5zSqMtKnfXK
-         3uOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787301332; x=1787906132;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LJo+VFODNoZcuVrRZgNruXYVosZL9AlBhzltP1KWSy4=;
-        b=AuH7qt1LTK53SUDDExozkWR6JdDrAf46MtvyeRni7GP/4XRgcBAoHqYfyrbwK+Ki+7
-         nXpKCCCZvx9BR+tWvzkQqYwm7mdMG0NY/itigDtUQUikkZU5vLLk63cU/gL8FyuQ6FZH
-         urpyrfuMfWqTBT7dkBOBVWTgYDFLz6kzqhhPf0B2BkenDndomxlInMxfZSR2jcmUczYC
-         j2Gyd6RruY5UiUO6/kwlPOd5uyyn2n3nzKyHDFE8tik0PKs1+WPF1L/XslttjQsIJfpM
-         1oD9JN/1eANi2PFYTvtwjfoyfzf2u5oooPe16Qzk0uWBrcU+IzyFMsiKO+UvgFRpP5Fm
-         UQvg==
-X-Forwarded-Encrypted: i=1; AHgh+RrRmqTarYg1dLu6LCr+OYv5I4maszX1lRy68ThcfXKDzYhl5B2y0Znn/g0MV0RCNo3WXOLw8A7qGw==@kvack.org
-X-Gm-Message-State: AFuF++loKaF+mvN/iJftREilCNXtYHG7KeRpYvktmGNQsOJRni3h0f/T
-	P4TuvFsGQgubqaeBNaITtxG8XJjnP1cLw8iXq7Nfa+6WU+h/pUssN55c
-X-Gm-Gg: AR+sD119LeW0odExNjc2nSXhpFCsEN6bE1nGLcWW0vKowUmzfNrB5NzG5jHTU8DxrWl
-	aPx0Ld04QcPuiFFj2e56wwDT6dd5OCZ3uuc81r5J8efjsvm5H4QWDuD5X6OQRsxtKdqo0QShBtV
-	nN/6Q3vXRssiF4LD/AWheZOJk0ECGRS5+R7FIXnmczw8QU0TjKR75uGj5HEdNM5+k8cND1PJEXe
-	+l7nzye4LjtrKLLAfU8PY2LpDmD72EXFjJbHYxMFq2q5Aobd8YCN+f2WmMgogr/dyszrQuZlWgc
-	BdD9mF9xupD7ZNhyhu4wgMDUlMBmTraqPhoQ7jE39hig5UInFRzD+IqZsIdFMEpVfuvLfO8SwM9
-	r9MwfB73L16k4zGcc1QzQWrN9F/s2h6bab20bwFalK+JDR1lPTvh6HfAxJ3qGwxeytBKR+DWnyR
-	z6ZBAUtblY0KuEDGa9XyK0/ddcgSRE8ZK4OCBVE2rPSZNKPgFAqtI1F8XBIhD+quu3bpTeAPYKg
-	GaDKr0=
-X-Received: by 2002:a17:90b:2f0d:b0:381:cef1:11ac with SMTP id 98e67ed59e1d1-395c3561a6dmr9048161a91.10.1787301331934;
-        Fri, 21 Aug 2026 01:35:31 -0700 (PDT)
-Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c8fd34d9sm599575a91.1.2026.08.21.01.35.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 01:35:31 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Wei Xu <weixugc@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] mm: swap: drop dropbehind swap cache folios on writeback completion
-Date: Fri, 21 Aug 2026 16:34:50 +0800
-Message-ID: <20260821083500.856970-1-kunwu.chan@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260818163221.589352-3-alex@ghiti.fr>
-References: 
+	bh=/svEZ96u/XgpDcn+/+8Lk9kAWvGHG4PXL4nB1no2kT0=;
+	b=lb8iYKLhZsv8LGixqlTzkKR3OyN2i1YgqID9qlu1e2GDyhu9Lsc9EtKVGYnztttAvKwo9N
+	U5KKyOnnqQhZlss162jKvfKFuYNQW4ILzCBSenBN4WXKEv7s4EoBvKHi3ADgnxSm6DjnXi
+	LYY0CS5c9oL5EhaL2OlmCqOd+pbFcwY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVgG0YWk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787302740;
+	b=RffT4ay1MvfwMmCe0JPXFsWPGLOvUG6LJIJV6jEgS2CjMktUNsG2qKwSRVoWijDiaLLdMe
+	yjIDwdUzdPtNLjtBrUy2HySBxCut66MSzzCiyelnY9vKqERLPWeVxQAWD2mBKcxJit4wRj
+	rWkIoogja+I2HHHHO98H6S7kYE7JQFE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C5C760DBF;
+	Fri, 21 Aug 2026 08:58:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A3B1F00A3A;
+	Fri, 21 Aug 2026 08:58:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787302739;
+	bh=/svEZ96u/XgpDcn+/+8Lk9kAWvGHG4PXL4nB1no2kT0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NVgG0YWkXKLHdVuOJkonzqIhIVR2HYmY/jEGmlu1+tTGtqx5zpcNbIMqgc9EpYLAp
+	 lISq+kipsOgr1sgA2POu6j+GyAbz1wYUe1h4Wiir1F3gNYEw0Z2T+oBZCEzJfWWhTp
+	 Q4skTFdto/yRNMaVUvCbswuz3oltufek1wfE+q788FZbXIdERyBh1ex3jK5+3FHtyj
+	 zJ+5UjLmIdadRJ691Nxo9bmI9DfmwCnfnhaFwTqIujf9zTlS7YoPp6SqSDJQn1LmM6
+	 a8p5S8RXsQd9ilwC5O4LH/JYTz4vfNte76y8Yx2poGDWIZ/1Cr68s9Cu3Mo4yYUaxZ
+	 hopwQha8dTCYw==
+Date: Fri, 21 Aug 2026 09:58:52 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Ridong Chen <ridong.chen@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
+Message-ID: <aogQ6iDA7RkuTtDG@gremlin>
+References: <20260821081741.1340277-1-ridong.chen@linux.dev>
+ <aogMyu5R_DZRqp2J@tiehlicka>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aogMyu5R_DZRqp2J@tiehlicka>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3D4CA40006
-X-Stat-Signature: mweue41dfxiq4r6jiwrxuxxp8pc7ik3h
-X-HE-Tag: 1787301333-713378
-X-HE-Meta: U2FsdGVkX1+oRPfaU9ol/GiTMDAjQoV1ViWXVyCSOLAjkQLeFEfw5+KVRd2gFW5baJSYtn2oRsFkv2vq3CnSgys1P0fx1mYIW9s2XOnnPiAV4HNuDqXefOCz4uii6ZjQkZTVS9cSme0pM3Tui2ZC0sLU9aS1L+3eHXhmZ4nuUtCKiTyqFoI2KGbg05n5cMWwFQPVsZClJzyUj/mPxvSvlmr/3Seetxz8NT42FFZgsnMA5G8M41VZwTd1CTsHLXoJJOxg3XCzuCnAwJ6dlPP1jrLJJNJDJgTwABFHWr4nDzPR1cTjEhMKEOVQ0Z798KQsN0fcjFuK0PZoRRWHaZdKJ+q/1E5qM/UvfENc8KFU4FFzf6tfDd6jNufllT652qdjLqS0Bt2u+9nvAjafpQApBSc4OeqqNNKPVE/Henwx5827lM3Kep/8AfdsmRmt2H2DWfGlUcRn+/gf2v40o66MkNoGUGJYhkugpCWSMw1O883bc43T16AQWplJtie7X1wC0rj7QYZ81SS66I9k3jbFmRkT6ToyAUpx0fYQMOi0Q2qmPCCCZseY8oZlLCYB/NBfiAl578hNTXRCgEwqwNMk5cbNiKV/E9JI933TnEndRZuCAaIwNk35TpoW3DB+0HURVV1t2VRYzxt7F0ZQ8z4CAqJd1hcjEUe4MYjKYJ3j7F2hmzoC5PGXhvSRjppKmsdQfHCtz8T9OsLqhQl0FQ+Iuf1Oaos0lSkJHrg05yyIt0Zec3BKOXowYzAgTU8phqoLGej52yyv3uVfuQ8UZo9+63mp0mzw08NgbUPEq7TszXG89SIoKr1uadEzxCp4hFzcPDXDdCijWc2EecJtoNIq1Z7PSsie1u0yijC78BFCsKy4PKLHjAKp5uhj/mnvqzkV+QGb/rtv0RhuRMk9jYXt1p0APG667nILTFZVa1tRAxBlBXlgE88jdyTjVevxZikSDLDaT2oOvspRDP2phV6
- v3Y3lD/t
- c3rk2gqYh/Pui6BJHeBp2KrOZj3Yjv9xPp86XYzKl23OrkMA/rmPosZNIBYpHySH4HrEXZ64+PH3nK9w4hsrL0HWuJIi+RqnGkYrHUV+z94SpeIcGVzISP9QPZSFpi+ciVzi2lF7Mm7OlbnOIs8CwfEXkEPK4loy9y8yR2+DF2NvryUJ0pZE+2oduXGlKVIKHDkQ+dq1pH5QnSiW8nk/RkU8rkNlATuVFRj3jcC6MbfQYxaAkNtJuvLAt8PeXRY4ae7K2i6LWqLGBHs0+hp3SwpjecBvFBAkQwG4sh+qeYk2SuHT3dEZwBw6EN6ovE26VwD3uBYXC6irw1mNZcRu9eM9Jie6srhrw8okkZo95wAxluZYgjghWoScDmFe2mV/m+Nse
+X-Stat-Signature: yncrkt5a1j9g78zscrtcyg74mgkru1ph
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EE0C3140005
+X-HE-Tag: 1787302739-623619
+X-HE-Meta: U2FsdGVkX19HuRmRNX2KwC7+MKmIasV087eN3wd9+5CnVko6wUIP+n5AgGndhiqvWFQ7Pj9qTG/9o6hDSNKiIQHfgNxDjzadSdHHRkBXwry0fLAI8ubmV96Z+ibHJG038kdGo8zuJ85zZyXV4qLF73WUJjCcEinQlTt6AaKXm0y2R2XxfVSYyPrAi8vSPopIcdwghE4yyiNNHaGzaYqANNV2DaZA5/cjmLheJPgCHpqc78OTpdEATnxtH8KMwqnOPMF+jp2onDUnAR8jCd5gRCNFyFtynNTQsRDCnGnar2WCrPDBjPEIWEKQ96SSjOWgh7kIccbP2jtkLjHdGBoWIasQNxWzhmt4SAT4jgsPYe0UaM+AnR5M4NE2jCFE5Qh2VzruCYq3BzxCZ8xyovgAtZ8VlVEJ1BNTCcdcboNWZTFbTwGubd1eRfUuBVexL87HNFGT5CFcrNttqDOgZ1i+No8wH1xbL0Gdm4M3ygWhyug+gt7tBgU9LR7HnlNrRnuAvR62ICV76ZxQfxn1kdhDwFfFhovg60d7QjCqmHJ1RhjgFIz+Sw6PM9zwGK1OYU5M2F8r3XH9+c44ZQ2Wfcf0j89FJN6+oyJOtGLo5qJ7qnWy4y4Vnnklzw6jrB/l4/vcAZ5/32c9HLkqeIbb5KJxXhVlS0RSLN1pNg1mgGzxZ5GlsZrFSHmEJ2jknh38w5QSffuX3jwHmfYcGsaE2phX04OLs2cqj6SxgXETZDgnuBR1tvYAv4s+9ytu59UXupJYvyoBOca72g8FvgWs8bYTDOEQrnQIM5WYqH7N8JyI55Jf1WnLBDncpka4uc3B/Tv261QM080LNvc5HzLHxbtYUtv0gtEd7BMfcqLyFo/ftya1KofDGQC8Xdw/qBTkwKpKRI9Gp6HjoT2+L7OIYhj6JXddxD0pBjpbHhIFrSZnsMhm8bpPjj+miMYiSJbL65nj4yRRnlctPC0dycWRvw9
+ K8+siq/w
+ Ds40Uu0QmKaWMl7OWDIw+9elGG6rAUHa3jFoY4skqggOC/waBCl5mTBoLoTHyaj7pqhvXtTA6LnBQ2EavGiIqfTJe/EEUjCJGsKt+1IA0iH39cI/CIWfjAWmXqf5zLi635Pg9hVYgcsVk4XEl1gDhdvvEpxkTxYpierfEd8As9XSxKkx44zvtay2NdVRzOkJ6TzGnsBXgzjdPKOPdXn91gpn8SsPuGgJ7PgIVqQkoZGceRnnxl3UEdNmlj+Ox4H9ofM1W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,74 +96,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
++cc Roman for suggestion.
 
-Hi Alexandre,
+On Fri, Aug 21, 2026 at 10:31:06AM +0200, Michal Hocko wrote:
+> You are explaining what but missing the most important part _Why_ do we
+> need to have this addressed? Is this just addressing Sashiko review
+> refernced below? Is there any real usecase where the current behavior
+> matters?
 
-I have a question about the reference ownership/lifetime model in the
-synchronous-IO case.
+This is exactly the issue with these 'unrelated to your patch but' suggestions
+from sashiko.
 
-Consider the synchronous writeback path in Patch 3:
+You end up in loops:
 
-  zswap_writeback_entry()
-    folio = __swap_cache_alloc_folio(...);
-    ...
-    __swap_writepage(folio, NULL);
-    folio_put(folio);
+        AI generated patch --------------->  AI generated review
+                  ^                                  |
+                  |                                  |
+                  |                                  v
+                 AI generated 'unrelated to your patch but'
 
-During writeback completion, Patch 2 does:
+And _at every stage_ reviewers have to do _additional work_ (with ~50% signal/noise).
 
-  folio_end_writeback(folio)
-    folio_get(folio);
-    ...
-    swap_writeback_dropbehind_folio(folio);
-      llist_add()
-      queue_work()
+This isn't sustainable.
 
-With synchronous I/O, is it possible for the dropbehind worker to run
-before zswap_writeback_entry() drops its reference after
-__swap_writepage() returns?
+We already had _too much work_ prior to the slopgeddon. Now we have a multiple
+of that.
 
-If so, the worker will attempt:
+Roman - I really think we a way of switching off the 'unrelated to your patch
+but' stuff per-subsystem would be useful.
 
-  swap_dropbehind_drop_folio(folio)
-    ...
-    remove_mapping(swap_address_space(folio->swap), folio, true, memcg)
+Maybe we could figure out a way of funnelling this stuff somewhere separately
+longer term.
 
-while the caller's reference is still held.  Looking at
-__remove_mapping() in mm/vmscan.c, it expects a refcount of
-1 + folio_nr_pages(folio), but the extra reference still held by
-zswap_writeback_entry() would make the actual refcount one higher.
-It therefore looks like folio_ref_freeze() will fail in this case.
-Is that the intended behavior here?
+(I have I think 2 slopped fixes to rewrite after the previous what like 7 or 8
+this cycle? So forgive the grumpiness :)
 
-If the removal can fail, the fallback is:
-
-    folio_clear_dropbehind(folio);
-    folio_add_lru(folio);
-
-This appears semantically safe, but it means that the dropbehind
-optimization is lost for that writeback: the cold folio goes back onto
-the LRU and has to be found by reclaim later.
-
-This seems particularly worth checking because v3 intentionally removes
-the synchronous-I/O special case from v2.  The cover letter describes
-that special case as an optimization that was not worth the extra code,
-which I agree is a reasonable direction if the generic path is
-sufficiently effective.
-
-Could you measure the corresponding fallback rate on a synchronous
-backend (e.g. zram)?  The 99.996% success rate in the cover letter is for
-asynchronous NVMe, so it does not tell us how often this particular race
-occurs with synchronous completion.
-
-More generally, I'd like the reference ownership across
-__swap_writepage(), folio_end_writeback(), and the deferred worker to be
-made explicit.  If the caller's reference can overlap with the worker's
-reference, I'd also like to understand whether that is an intentional
-and acceptable trade-off, or whether the overlap can be avoided without
-reintroducing the synchronous-I/O special case that v3 is trying to
-remove.
-
-Thanks,
-KunWu
+--
+Cheers, Lorenzo
 
