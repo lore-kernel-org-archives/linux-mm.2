@@ -4,126 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BC97C5DF89
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:02:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58805C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:05:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5495C6B0095; Fri, 21 Aug 2026 07:02:47 -0400 (EDT)
+	id 4D77F6B009D; Fri, 21 Aug 2026 07:05:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51FA36B009B; Fri, 21 Aug 2026 07:02:47 -0400 (EDT)
+	id 4AFB96B009F; Fri, 21 Aug 2026 07:05:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 436386B009D; Fri, 21 Aug 2026 07:02:47 -0400 (EDT)
+	id 3EC766B00A0; Fri, 21 Aug 2026 07:05:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2052A6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:02:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5583A045F
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:02:46 +0000 (UTC)
-X-FDA: 85124988732.16.649B52F
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AE3D020005
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:02:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ExnqYX53;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 15F446B009D
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:05:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A237740429
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:05:04 +0000 (UTC)
+X-FDA: 85124994528.14.5F3BB16
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9612D100005
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:05:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bXA/xwwX";
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787310302;
+	b=XddltMAwEHugc+oODgBTTjVxbzsgFiSme460y3iDyDPO4lEJx35aS4Y8OxMS+Xo7Qy+cP9
+	IBh/ko5WMpnlzhq9wiJeLRwgqT/ZtERN4llqsxhUt3lYle8yBerht/9V6iwEUKLqHo2LvG
+	wqI0wXl1wX+STnKdBtTXwHGFvnbVEcI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bXA/xwwX";
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787310164;
+	s=arc-20220608; t=1787310302;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X+Zbs7AKbQaKbIL7murYn+4F5I2qORmS8p5vc7CpbKM=;
-	b=BH/dZgv2suTGUmcoeGe9RKgjEOXFd/T4QOMjX9Ckms+ZfheYt3AIfTosUzLnsHq4/1jd3e
-	PvOwOG7WvltAQDW7WsKYZFx93RTaKxpKN4YTwKxlS46uro6yL/G6n0B/3OLdfXtzcAp11L
-	yb37AwT/eusLU/2eV3CJrh2qIYmD5AY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=ExnqYX53;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787310164;
-	b=EXyoZCOC9IsnhofimQgfNcwn8zlMgSodTtnsrzcgefOP/xITxZNCbmCHccDBwPHzV7G+gn
-	NqONp5Aegi4cYHSvpcZD2CdiopLjHdRM8fZyG4dPFwTs18Z+atD1I7zlM8T3voWujRZaNA
-	dKlu9Hu8g8NMDcg6Loz6NPT+ekwF3Bo=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a422090b14so1374345a12.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:02:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787310163; x=1787914963; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=X+Zbs7AKbQaKbIL7murYn+4F5I2qORmS8p5vc7CpbKM=;
-        b=ExnqYX53Npszry64oahRBxx7WhJeQszYw6H3e2MWdVQEbuI9H5LMGQEnh4k7jqoo5g
-         OpHaAs9hm1xKFxWmJqvCqt0HPmUAC/Vb4Hur3Rh41ZDyLRBEt5CrYZ6OS/Sfve2RgND+
-         51CS1KcFt7xnhRs3/+GudnOEq0tOZ/pNzSDPmHoTqUGhRwqYMhR5dYLcDdz2EskLlGBy
-         vKxvXMGxJOL9XITqQhK3qJBeATjPcHP5Nojk+haEyUUxY283roDacrYUe/iEXNFXzq7H
-         k4Qv6Kk+PuAQ1HYeq1P5L+7UYi2ARV1oxYUli6JLYaKJjak7mGNx8r36XgV83hToJFgx
-         A+EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787310163; x=1787914963;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X+Zbs7AKbQaKbIL7murYn+4F5I2qORmS8p5vc7CpbKM=;
-        b=nr/S7jio792TDKbwI+5JR3X2zKS3kw0S+1Fms0wGFsDNxhveoC9qByHAdYSKzblYOZ
-         DJz51v5eibR3A3i8DP5/M7978Xqstj6YTV42UDmmE//qN1XQFdzKZ+6dRflqyFqfq3Xs
-         Yr2H3jr2JE/NXp+H+bNWiSfTbPiR0/ePTz8M75mUk3SF2SktNVi968QdC/kZ4aVd2JbJ
-         jijLdiYMjlXUMTUF988K0WhYnGeLHwgz3QFWpZ4Z4es0QzmsrlEqyfCb/cCusupgwfnU
-         2T6e0dFG4Wx1s85qUjX0R/VGhiMt04r0KpSXWgxuprcG8fm4cqeAljxccTGZJGR8a+kd
-         ksbw==
-X-Forwarded-Encrypted: i=1; AHgh+RqMRy8qKttqqZbfzrviskDT+BcmSbGWl6Nwvy7/8heqsCnF89lRCq4HAWwM4UNAg+i/1lay/GsRnA==@kvack.org
-X-Gm-Message-State: AFuF++kCShUwUL4ctmaJ4E7eYDNGTHtkI+q9Dd0ET7DUdwZkjH46kHoi
-	CCZrSebEYdOFAeSh5j0lQw8ExAKCoj7cTHH7ydGr/Iao3qJs8bwm+z8cmkBpELoW06s=
-X-Gm-Gg: AR+sD10ezYBrCPI5ms3Ey3RgTmZr/n9od1pPiA0/oVUISmvPj0uQozVCFD5fyIhtu4P
-	IeErbzSrSsaRiwJ7O12ved96RMTjhNrgeK4AbFQeDBFiB3Deg4iMPP8UDwGkPZrdpVya8zbb0S8
-	onIpGw+Hk0x85gJHQlf9QyFRjUcTeEo+BNT3M5MTYJxhuaV4geEWFBtIQ5UpUeNBU6BFQ9tyYTZ
-	vQwBueWfFo/0JUv9v62R5bn+bdKzRT0yAw0EQSrZPhK6CB80wlJoQXPraN73k76ObbDUCiX6wRq
-	hooeq5ap3dp7hoCKRV3KsN4XoAYqtEgA9xTfgFMxYe0XcS7+x9TgbCHumkHYVcsNe/vLlECqggX
-	97f+UiaoxBRLD7BXRilssgsAy9cBbVu2AjObIWUHLXJ8OAvVFeLT5hcLZWxcPdxTeZBID9+lle0
-	2MUE58XOkQ7Ncbaw27/k72f0qQLNhZBc4LbBYBwe/hyxTq/k7PzzxhBr0rACOwEE5k6CfcKhZKW
-	w==
-X-Received: by 2002:a17:906:f5a6:b0:c24:87e3:b8b8 with SMTP id a640c23a62f3a-c2487e3d755mr132843366b.17.1787310162979;
-        Fri, 21 Aug 2026 04:02:42 -0700 (PDT)
-Received: from localhost (109-81-81-112.rct.o2.cz. [109.81.81.112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2458b58a50sm456168766b.26.2026.08.21.04.02.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 04:02:42 -0700 (PDT)
-Date: Fri, 21 Aug 2026 13:02:41 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
-Message-ID: <aogwUac-sjfcs7Vi@tiehlicka>
-References: <20260821081741.1340277-1-ridong.chen@linux.dev>
- <aogMyu5R_DZRqp2J@tiehlicka>
- <f45848da-9569-453f-b0c0-8aa984e1976d@linux.dev>
- <aogZZsXwCyOXISaw@tiehlicka>
- <bc9c3de9-17b9-4ba1-8065-3270bb455630@linux.dev>
+	bh=pCvD1MdzsW2akKjjzWWz1w5C615w+H1/o/P1Mz5Sgas=;
+	b=FBgSNO5ZAVLnSJN0Y0XTEjTqbwrdC9r9rWbq54Wi5Ip8tTIT/p13vt64W7dH/WUA+nS0mh
+	sQyCC6+VonESu1v8LTjrLcsMtzkxK2kDFtoLG9L96mpjJe4s/94ktjn3tZfIVCrGKJk3Ly
+	Cyi0/5XtVW2AEVny62IqGvjUoIEbWFI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6D626419C4;
+	Fri, 21 Aug 2026 11:05:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87DE61F000E9;
+	Fri, 21 Aug 2026 11:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787310301;
+	bh=pCvD1MdzsW2akKjjzWWz1w5C615w+H1/o/P1Mz5Sgas=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bXA/xwwXn4mlknABhcs+eK/JMOJK6tbygxJOQMNISU2axQcGedUiq+oXFvNCNv9L/
+	 vzUAFDuljuxzu/8t0oydhoubTIBLPP6wUYL7BeADjIqaiFHglf/IOQFNKIvvl4mRGU
+	 kOJp1+hurzzvo+cMau+URL845baPVGUlLydXRMaMZKOK+eCDNnoIFzXEJY9oV7kPTh
+	 PWHSunSaxuBbMgoCpqz2XyO0ndwTytWoLzqja5SK7kFCfOGtCva7Bw+QHs92OZrau7
+	 K0olHV4ldLh2SYkjdBHS+RKu5ZV4kBjiTdTHFwlwt3pcpqSKL/4Bnb7nVOz5EPPLAT
+	 DfrTxeGm5Kdmw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.ams.internal (Postfix) with ESMTP id DE9AA1980070;
+	Fri, 21 Aug 2026 07:04:56 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 21 Aug 2026 07:04:58 -0400
+X-ME-Sender: <xms:2DCIal3BzlUlLRcbUf1WM3l8G3jfkGrsCNsXyuggYI3ebJOhVS4g-g>
+    <xme:2DCIapgoWIV8fysXnFo7Fbf4F6UKCP-YJGNKUg4JKJHBFh7F3zLyL5h-7DGTz0YD8
+    8nPdiOMNjK5q7Dw67TGT5XyDdtnJ0Z4RcBQ23TQlW7ufF00kQfa_r0>
+X-ME-Received: <xmr:2DCIal2UclUQM-TfhqxlJ0XsJiZfpPLiMNb6hdsHGDFLnIDhg2XQKTK2joY>
+X-ME-Proxy-Cause: dmFkZTEWM2E58ZDI3GBPHZLDZKPHLTpyhDURcoURdljfk4cH7f/KXOu0wRWhhh9eH1QjfP
+    Hp+aXrB4+gX0+3nQ2wUB/0Zvpvx7qc4d6/fk8+4IbRswX34lPo/BdJFV5G0qe+PMX54acE
+    6lv00gVtxDmgkIP6CGEleZL9qbWoXqA2tuV52C0yG7xpsMWNkMvCN/v51+Hhf9fW7iEsCg
+    hWuFYjNdn5OKp/KjkJpYfUEGv+I0qBpjxsHBdjZoULL4G0EWgCiVun6QBLQ4Z7I97oMxO8
+    mNESgb5/JqWf4uBVnaYDM02rPLOn4fEGSZpAAxIkmMXoRT23duwEkNmZ8Ga5IT+v8ho/XJ
+    PCkb/fhaZZo0oGr/0/ozdbDPV67SewXLZ9ZpakNXpjAdrdBwRFy+FFPt2Hf3TYa3C5mYTC
+    mSmfqEJm+P2jiYXI3Wokb3IFaRvrt1CpmPnuhV33AUFAXTs/MSpZXW7OMtxyIbdNQV6tYu
+    BPBXQrx2p7xQAcZwZGycAznwajnw2F3Qtl/nAlWxLxpJnj91KTaq0Ko8/jEJbCjeTCCdDl
+    KVtgulxJo8BKttcTC+Yo5KG5o+tQZrkJRkwqA0vRG+6lWRpC67Kj1PdtYZz0eIPjUZrGA2
+    RTIwa8c910SS/a9bxUETGsMRVOALUBl/insQ0UaPZevyX2e+/klPyDBCu4ww
+X-ME-Proxy: <xmx:2DCIakdSFSnxuxbFUy646Z_3pYcU_JQFsASN4D6sJAP-TMs8JrzTCQ>
+    <xmx:2DCIaoEqODzw6s1FL1FnLSsCuRfvekhbFwAJ1HbQqpOQw3ZD_ZwYPw>
+    <xmx:2DCIaqowZBgRL8NADKAstydP1-5mHUgpue4ZvUWDj0JXKZP_gT7mHA>
+    <xmx:2DCIaqLd6vjFP-EyxxsMYhC_zElx0Y3mLCL6mll6uNeY5PR-YMnRnA>
+    <xmx:2DCIajxJhxC591LPoHBXbm1Yl_2ItGS4mPuM2BlqgWSUmfCgvGc5-U2C>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 21 Aug 2026 07:04:55 -0400 (EDT)
+Date: Fri, 21 Aug 2026 12:04:54 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rmikey@meta.com, riel@surriel.com, kexec@lists.infradead.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 1/6] efi/libstub: add a helper for the top of usable
+ RAM
+Message-ID: <aogvGXKH2u7JsJiS@thinkstation>
+References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
+ <20260821-hwpoison-kho-v2-1-5743791e48e6@debian.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bc9c3de9-17b9-4ba1-8065-3270bb455630@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AE3D020005
-X-Stat-Signature: 6nxgz4wjur66skzzhapeajmf9b38n6qo
+In-Reply-To: <20260821-hwpoison-kho-v2-1-5743791e48e6@debian.org>
+X-Rspamd-Queue-Id: 9612D100005
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1787310164-58008
-X-HE-Meta: U2FsdGVkX1+00tQHnFmfScqSuRe7wUmNLhHfHKb/tJ8xR18DKYCiucA+spNz0eBiwlQiEGyjt5RIZrTaoHoBsWtcHb6M6ZeuQJPXsZwDYz4tMl5qCOfRhfXesVmbn3oVth7upsBuihkv2ULL0QACYc6PZtpArqfAuhDIIj356H/NIPwkSify2YhtBYFYw5fa0bScUdw2DkMDop+7M7ijnbk6S4w8N5liiNq9Qa3VzdQrE8h6jUk+HDDuXq0LozWnoUGGliKrpwxGflI3CF+fO9n63P428ef91eqbq0iatOlsq5W9TmtLwTz7pg3aAJSnEIxh6NX3BG99+Q9y9kxt2s7RZfg7oDPnQO30j1L/X+CtiJPFf0fLAp5LCTOrxlufbyEhjr9aZro806vuMr4Vdg9PQLRf824NOLeApn6U2mQmq4SElzK3+SWdLta5S1Vqy8bGBRWuRQ6eKSfMN3n6lWga3ETQ/hNADCCOpuuUGSCX/OVNX0+yTqzdRkpdf8WF3TAysADcJHeKmoiQrqLEAkxE6UIBc4PCdP+g8I2v5H2aRsxL3M0dwrm3hHfeaHE4kCFMj3KG1gbHa7HpacF+mMY7lGgsxmA23WU2Cld6CGfIQy70fqhaIG03lY4NrjUX4ZJMo26XypfwkKswmk0t2KfN9V9xU3qg9pCqnM5FskNvO55W4N+tRFUS7S379jAt2ibtR+B3oW3TGSM6oRoN/eZDu4O/6VJ4m1lnA4uM9OEr7eWBQ/nB7/a5J/WWObZqh8C+qU7Uv1APiFAaEjuC82Y3ceR4uphnDAXxtXKAKKOHzhxt26SmO5M0+7iolR7273F+DSMwSsKW2qv93sziNHcxzu7ip8zI8xOP9eciL6cXSAs17IXSDyPQCF7WBTzVt+ZKNlz0I3ldn7wg4RUA13mjRsOonLJkPzitzrUhmtSAs4sqxHU07hLpdqyGLECKrbaqO9S5b0HpjBDyic7
- 2CCB93do
- bhiaTV2hme/q9Ig4/paGbuj/Hb7jSs6+gzA4wq9eFkmtfoaVI9pLRGG3p04mBjHvgUgwVV0RIGqzvCYYjQENNxxf8CrYQgExgXX2fz8PVinrIUqxckYQYUFxqcRuMOeGJdf220Qwea5wvAZmPYz5a8agdTJ9E//ubD84o2hsVfmG2Vvyjf0m5A/Bc5/qv18mFyP1niIWA3vp+aO35nLDJb0i3dquvsbN1QgilmrDjZ9V0Gd7MQmNbJsrackWl5lg0ccVJevHQi4Fp3ldSvLkawJTUSrQccECjRfMElozF7aZR99cCHZQxKJ6cTX08z6RI+ViafvwqbtHFophY9DT/qTwwh0TR3UmmMlZ92LM+EV7nMYnr1vWyQ8hFddQhB4+TPFfLQQmlq4wUiAFLfWj0W5L6x2kUdL2g4b2a
+X-Stat-Signature: f5gezmkcjapdxnd565i4wxucqswru6b7
+X-HE-Tag: 1787310302-164084
+X-HE-Meta: U2FsdGVkX18GjSJubOWsAl7G9CbFWF/Jj0M67nkgpptz1RdZEqm1bI9nMpSFYirU92Hk3EjzV07/8f2sURU3+W2VYQ5HHY6xXIQ3JTjLuakcAbMRa/lua5k8X1OznfHOt2LsEPYAVKK+36FvJCkbt7Cor2O71c3NK5e7V/j9J3Fy9AfEfEUspAgxQDrNJlk6qOqai85xSPidfVDEbFeuMcuZbMVsXuOgzWBuAeBXwyvxdgt0BTqSUTot+GNkbIEaq3806hqmEGI4MzEB4Il1ptOO15oRO/ESwaatxnoN9cqGXTNR/wLv2PI8W5rcHmIXCjd6Ga0TDgv2zlPnxpyP5h3LGLIm+a0ARrY5LHDPhPnMeX88HvvJDCFdd/qJmS6gjrf6XtRQavFzKirTeVm/XGI1NEu6sZe/yt3C07NWZCTYqXHM93VRrV5+bgJta5j6iMQQOd+ohu0+MUtBXVJqsaSZCKs2VcGb22P3WyRajktV+qeChqwE/7GrLSYhyGFEcNbuTHtm0UX3MJZFcYs1/HoxhHniYfmCF5m9JkUh5RQ4E4FtNr41taybXMcJjs67bKE8rkD85Dv1XderJviA0n3nowwRt07ho/40q04JzZoT+dXJvCNC1mQX7YWMbh65vxXhGdNHJD0/1VEsKSMYeXw+F/yFpk/BzlNkXJ0Najz4SzJaaWUPkH4IIBAo2hr0vm1Gah5pMSqAaPGMQVkDkdfLZrLMIEGe+XuSda5e22xSvbcxn2yPCL01qGpVHb35FSs1EUzV3s2QEInN2AL2QgHIovvVtslTSpFQTCm073lyqAXV202jKLVoFUrH48uzkkQD+6LnVdnKL6xrtbb1o6Bpu3N3peKbK2HGcv/LtahlGkyJOs602v/jMcy0fvgGgkEohzRzBH0XGnO4xSlPJytHupZOaF39VoIEkDuZUnAjsa3bjYa27UFmlKH9xFUCBoW6ibPkkN9cWXnHNN8
+ mW0xz9/c
+ u05bGAlKfgs3w+z5xp7idjrKW0Y07uH/ObP2I9mbHUr35bpDtEsDj583jEHQUGZHfH76YGClMyl71qifwS98CMCaFxhjksEpJe5S94oRA62mmhmfg9rR0/OWNyrnFMhjDuJ26q0kDjFd1XI3lNqbOp6Hb++Sn9qvANp6FIr/1go8lmBBWhRBMBdsEgE4FRdqfu2gBcmHLjC/8OuHJYhhVewMHWHyWtLSXHQKiDJaW2edUjE37bqPV0zJE206nnFPOWpFQfW3+VWcml52cHgYmu86qMaynYhwrfyx+fP2ZsAcyajLrIWINWKvNCeogLJfowMfh7msk++31jJatDoShk4H3NFCKvItprTtRLZEF4J0W4dC+6Idp8I4pf7+C/zqVjYbu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,76 +123,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 21-08-26 18:52:12, Ridong Chen wrote:
-> 
-> 
-> On 8/21/2026 5:24 PM, Michal Hocko wrote:
-> > On Fri 21-08-26 17:07:32, Ridong Chen wrote:
-> > > 
-> > > 
-> > > On 8/21/2026 4:31 PM, Michal Hocko wrote:
-> > > > On Fri 21-08-26 16:17:37, Ridong Chen wrote:
-> > > > > From: Ridong Chen <chenridong@xiaomi.com>
-> > > > > 
-> > > > > min_unmapped_pages and min_slab_pages are documented as per-type limits,
-> > > > > but node reclaim treats them as one combined gate: once either is
-> > > > > exceeded, shrink_node() reclaims slab, file and anon together and pushes
-> > > > > the other type below its limit. Per-node proactive reclaim reuses the
-> > > > > same gate and fares worse -- with page cache and slab both under their
-> > > > > limits it reclaims nothing and returns -EAGAIN on an anon-heavy node [1].
-> > > > > 
-> > > > > This series gates each type separately via two scan_control flags
-> > > > > (skip_slab_reclaim, skip_file_reclaim) set only on the node reclaim path,
-> > > > > drops the combined gate, and extends node_reclaim()'s early bail to check
-> > > > > anon. The flags default to zero, so kswapd, direct, memcg and drop_caches
-> > > > > are unaffected.
-> > > > 
-> > > > You are explaining what but missing the most important part _Why_ do we
-> > > > need to have this addressed? Is this just addressing Sashiko review
-> > > > refernced below? Is there any real usecase where the current behavior
-> > > > matters?
-> > > > 
-> > > 
-> > > Hi Michal,
-> > > 
-> > > Thank you for your reply. I should have made the background much clearer.
-> > > 
-> > > Yes, the original issue comes from Sashiko's review. Sashiko found that
-> > > proactive reclaim fails to reclaim memory when the node's unmapped file or
-> > > slab pages are below the minimum thresholds, even though there is plenty of
-> > > anonymous memory available.
-> > > 
-> > > After further discussion, we realized that min_unmapped_pages and
-> > > min_slab_pages may not be used correctly. Apart from the issue above, there
-> > > are other problems as mentioned by Barry in [2]:
-> > > 
-> > > Even when page cache is below min_unmapped_pages, it may still be reclaimed
-> > > as long as slab is sufficient. Similarly, slab may still be reclaimed even
-> > > when it is below min_slab_pages.
-> > > 
-> > > node_reclaim() cannot reclaim anonymous pages if both page cache and slab
-> > > are below their respective thresholds, even when there is plenty of
-> > > anonymous memory available.
-> > > 
-> > > To address these issues, I am sending this series to facilitate discussion.
-> > > Your feedback would be greatly appreciated.
-> > 
-> > Those interfaces are relicts from the distant past same as the node
-> > reclaim. I wouldn't bother fixing those unless there is a real usecase.
-> > Pro-active per node reclaim is a different thing and we should probably
-> > divorce it from those min_$foo counters altogether (if they are not
-> > yet).
-> > 
-> 
-> Yeah, proactive per-node reclaim currently does not divorce from those
-> min_$foo counters.
-> 
-> Did you mean that min_slab_pages and min_unmapped_pages should influence
-> proactive per-node reclaim?
+On Fri, Aug 21, 2026 at 03:06:01AM -0700, Breno Leitao wrote:
+> diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
+> index 59f3f83de50c2..777f1f180c66e 100644
+> --- a/drivers/firmware/efi/libstub/mem.c
+> +++ b/drivers/firmware/efi/libstub/mem.c
+> @@ -64,6 +64,59 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
+>  	return EFI_SUCCESS;
+>  }
+>  
+> +/**
+> + * efi_get_ram_top() - find the top of usable RAM
+> + * @top:	on return, the end of the highest memory map entry that becomes
+> + *		usable RAM
+> + *
+> + * Walk the UEFI memory map for the entry types that become usable RAM, the set
+> + * setup_e820() maps to E820_TYPE_RAM, and return the highest address any of
+> + * them reaches. Memory a confidential guest has not accepted yet counts as
+> + * well, since it becomes RAM once accepted. This is what the stub has in place
+> + * of max_pfn, which is only set once the kernel proper is up.
+> + *
+> + * Memory the firmware hot-adds later is not described by the memory map and so
+> + * is not accounted for here.
+> + *
+> + * Return:	status code
+> + */
+> +efi_status_t efi_get_ram_top(u64 *top)
+> +{
+> +	struct efi_boot_memmap *map __free(efi_pool) = NULL;
+> +	efi_status_t status;
+> +	u64 ram_top = 0;
+> +	int i, nr_desc;
+> +
+> +	status = efi_get_memory_map(&map, false);
+> +	if (status != EFI_SUCCESS)
+> +		return status;
+> +
+> +	nr_desc = map->map_size / map->desc_size;
+> +	for (i = 0; i < nr_desc; i++) {
+> +		efi_memory_desc_t *d;
+> +
+> +		d = efi_memdesc_ptr((unsigned long)map->map, map->desc_size, i);
+> +		switch (d->type) {
+> +		case EFI_LOADER_CODE:
+> +		case EFI_LOADER_DATA:
+> +		case EFI_BOOT_SERVICES_CODE:
+> +		case EFI_BOOT_SERVICES_DATA:
+> +		case EFI_CONVENTIONAL_MEMORY:
+> +		case EFI_UNACCEPTED_MEMORY:
+> +			ram_top = max(ram_top,
+> +				      d->phys_addr + d->num_pages * EFI_PAGE_SIZE);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+> +	}
 
-Nope, exactly opposite
+You model it after setup_e820() which is x86-specific.
+
+On ARM is_memory() adds anything with WB/WT/WC, and is_usable_memory()
+also counts EFI_ACPI_RECLAIM_MEMORY and EFI_PERSISTENT_MEMORY.
+
 
 -- 
-Michal Hocko
-SUSE Labs
+  Kiryl Shutsemau / Kirill A. Shutemov
 
