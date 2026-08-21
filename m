@@ -4,146 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F6E8C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B70E5C5DF8C
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:06:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 397F26B009B; Fri, 21 Aug 2026 05:58:55 -0400 (EDT)
+	id A846E6B009F; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3490C6B009D; Fri, 21 Aug 2026 05:58:55 -0400 (EDT)
+	id A5CF06B00A1; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 239516B00A2; Fri, 21 Aug 2026 05:58:55 -0400 (EDT)
+	id 998E26B00A0; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E35196B009B
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:58:54 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7CB361C17BF
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:58:54 +0000 (UTC)
-X-FDA: 85124827788.11.7734919
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AFA8640008
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:58:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHF2KKX3;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787306332;
-	b=BRbe8kZYcXe2C6zMVhMnYM1VIOBmprJfacJhSRBChWK5RefZtelHdaetFTU+XgTTDZGvi0
-	i9LPUJ55t7uXF7MKeGCqWIAq/wD1y8GoMMRKhvyRmgZZX67LfXbaxpJM2ewV0JChxZTKwl
-	hnYkprZPBYaVt75ilYwxBR2nQuXzBWg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHF2KKX3;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 753F16B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 11D3D1A03CE
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:06:40 +0000 (UTC)
+X-FDA: 85124847360.28.42ADC04
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3CFEDC0008
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:06:38 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=JpgEkXdv;
+	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787306332;
+	s=arc-20220608; t=1787306798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vOBFFN3DogCz6H5/khZbeZaJY/DvAhpaGbrZVIDS07E=;
-	b=SqHjf+TUq/xwZrNzB8mY5jGLM9ix5RKYq8i101eQSBG/DRPCMViCdRsF+11hTS987IYdKg
-	QJVuDQqMAxL5L22p9z43ahQMpXckXoqN7y3jrP4rgiJj/b3nB51BF73r1e5+3P2lu5xeuJ
-	n2p6hs2XqIGv1VCNCEXMO4B+U11RGfE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00AAD60DB6;
-	Fri, 21 Aug 2026 09:58:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8851F000E9;
-	Fri, 21 Aug 2026 09:58:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787306331;
-	bh=vOBFFN3DogCz6H5/khZbeZaJY/DvAhpaGbrZVIDS07E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cHF2KKX3gX0wJna0xdHDX/lXXUaFtDwFPYOdtTYGJ/dTz06ZcMf0qutw0drcSZfkz
-	 UO1heuB6gInCl8NFG5BCE8TEcBPM69yEaQWqPZtVNVA5R6VGkQ83KHLoSXBBvwz5Cu
-	 xpN1OpNUTo107yf8ioy6M386UyIbwZDU327W66ktwVdY/2PdNo0q6fabHJ7aG6vR2l
-	 EIPhBcthZVVwatmeJh/S/p51d21jt+5pR1o97t/ZulFIS5/i+1IFvfyDjD7sYlIPgz
-	 ytOIfLtxBztkuT7tlN1T4+0+B5sSWbS+dvsTYBOa0aPIn96Pklbjr7kk+2c0goi3QE
-	 kgF0k9SFII+gA==
-Message-ID: <c6e1ffd9-def5-448b-ad2d-52dfca9685ef@kernel.org>
-Date: Fri, 21 Aug 2026 11:58:43 +0200
+	bh=uSbfStPdbr5U0zykVDsBNKewNVAMS5oNdmlQT4Yzkm4=;
+	b=qHwPGaiV+R3y7Gk4wnt/5JBM/N5pTb+4mKDvMawaggIqrW+fsLE7+HEABcrAln0pM0+p2U
+	CV2touAerizWbwcSgeitBjzIl7+eN6rpJxbbDzxwt8a7/x0fJAeWkp6tPftezD14Lp/RNZ
+	sR0ZadaG+MwRZprjz8TjEYNTnXzbz94=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787306798;
+	b=5LpvYffBg/AVm3Iw5BUz6Y1HDMQkST+wfUUutsv5zIW4eEzizF0lNwYoXxFYr++rVGXHSj
+	hhm+Bmn1iGCkNbgMTzxGZoYQOI2XIVr7JE7h3j7G3B+hKzFPJIxsoejjXkk5RNl0ZSXUMt
+	Q22TMnATkowyWv6B1zrmc8XesKuvE88=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=JpgEkXdv;
+	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=uSbfStPdbr5U0zykVDsBNKewNVAMS5oNdmlQT4Yzkm4=; b=JpgEkXdvDryDyqfLO0w6yqBV2Y
+	po9ZYmBcuuqI6K+8Bngw5grb44nVueQqJqyMib3N12wBXWSTP3kfjJpViJ/KqsWS10+pKLtQXroux
+	3zs72OdNSfraFY5tvnzRIMOPasTACbKrv7irFHssTWRMwqkrZqxqF0MgtrFDskCuCuzMiWDGyv6n9
+	11trmB9cEpvrFyXbSHx4T5gRUqghgL+4kERDaojynRBBe69+Mh5YZDRTMfp6hEMJx1f42y+Cp4faK
+	Ve9zBMAX0DYXQaEPNx1lahDGe0fDgiLNriggWzRHsW40wDi10ol3DFJsI0eC7vYI9TeACJDS9Xezb
+	OgZtd8zg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wxM8p-00BGBE-2w;
+	Fri, 21 Aug 2026 10:06:28 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 21 Aug 2026 03:06:01 -0700
+Subject: [PATCH v2 1/6] efi/libstub: add a helper for the top of usable RAM
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm/zswap: preserve the workingset shadow across
- writeback
-To: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
- Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260821093606.2231216-1-alex@ghiti.fr>
- <20260821093606.2231216-4-alex@ghiti.fr>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260821093606.2231216-4-alex@ghiti.fr>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AFA8640008
+Message-Id: <20260821-hwpoison-kho-v2-1-5743791e48e6@debian.org>
+References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
+In-Reply-To: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
+To: Ard Biesheuvel <ardb@kernel.org>, 
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+ Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, rmikey@meta.com, kas@kernel.org, riel@surriel.com, 
+ kexec@lists.infradead.org, Breno Leitao <leitao@debian.org>, 
+ kernel-team@meta.com
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3412; i=leitao@debian.org;
+ h=from:subject:message-id; bh=zsnCaEJjr4WDYRVIG0kIJ3bs7R9uvNp2xzudAoWoA6U=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqiCMa+W8jcyD0u0SyGOn1kbwZALutc1lA3Zhhy
+ qAmTakDK4KJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaogjGgAKCRA1o5Of/Hh3
+ bT35D/9SVn4DqMGqAj5kaAZRL6R7KVMcpYT4xdA1bnQ36xXLRr6PlPIy3/U/Avm8oLzAWW8h0/T
+ dSpko6t2GqNkpZYSY8IuELnOGbhlzMtTySVLrEXxcH4gCWWYdxgetVxBTgtJj+9bAiLd3dUhji0
+ hg7W+VVaskZGhLAenosUqpF3/mwgIO8JWuf55/DrJj9ZY05EBcaU/eWyyZqDvRNX9ENWezAHfYW
+ gDXz2Ib7cyRJSknqb1J0FAFM+xUaiV2P0X0wq2+jyk0COyMd5wWOAMGUc764hQXhmEV2MlVr+Qi
+ LXWEpp9encGy7VnT7uDYRXg8kWsAK/19ivwcBlYO+tuXOmRb7RiB+OkURRv2nqb7Azd0XmlItJn
+ CvbWlmSOoS06/vNZhmzAIFuJ5yf8tZaJEmEkuRa1q7MMcNJtIdA0YDceKm2kt/bbf+hoDgqJz2K
+ qNYqHn1BWMoR4VIbM+ZrpSSTAr3OCpuXF2le6KrbP0PHb+SG1MPSGJTPKIr5TMJAUR+/jrX04xV
+ 9WUeW4FasYe5O9C/izHkbKCql1JrHv2/q2cUPN4rCwjPhPW9QA6eVgETQ/8hXeAf7V/YxYojrlY
+ GkMu0GuBk6f3sfjOtJfAKfXRyVu6l4ljhLKWQ3v54aBtxVD8PKnUSLn91ZD6FH6E6PwfWdVKIYu
+ kW1eajB8O7w2lFg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Stat-Signature: 4ygidzaz8u5a6d59wba5geka6usdjey4
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787306332-106787
-X-HE-Meta: U2FsdGVkX19kPcFOJxEApzgiKjP6nSoiWbayHi5b7IN2fAKikJjl6/anLv8oe/ulCWDAhboFvTCD2TQjSP7l407Xkv9wimM0YE6qWZVnB7jmSCk5ZykQYv9D/M6mZ3KlIXXepkhB6g2Dc1MYXuH72KSy3rqKElGEt5183Bt/eXZVZCYwiZeotzrDRDNQ12jJFssP9L8tRdD20aayIBis6ajAiatn321Rij224FCbq/UhYmto8WlJ0+GD+2Gz/pfVEwUtVN0dBYLealf5EfAy5Y6FqqxRebdBSgWSXrGk1d8mLseDhhjpiEvjQGqKt+WBbLi00XsuO8H+GwDuuf+VIFp9IziHUeKdV4TXsBl0IIBczNQ3XaItXVMfoq0MBkq612GPr2vIkA7kj3AGaIm/BderLhNN+9o607fD3erLUC0obfjUNithhfTDxYaxTDP8tQGJv4WTzhy711YzoOOroUZRzLOWPv9nmiddiddcfUnqhuW4StmZSr658ECLqdwfogzO1rLV0z9veNpQNrCP7tanRwfaxv8PdWXbyH5QNLnu7Ga6sCsKowDJGE/QLgc+xymyh012oIkCsMnbgdchiljK4InXGPNBK7NxnxpCRl4ugj+v9t5TyH6ZgRQswOCOcvToQdDU640aiT8aQYZZ4jKJ+Oqs5A4L6Gvsqe4+tLJD91t1wEOP7x7DuTz/aB5pjYmwmv7X/hlCaRWOmIpFBS4VaomBOpXEMhVIzRGTdRM0b7yOtLnRXv98Nr9c3XSokoCELea88dFwwyNwVpAm9bBq8thYWDIeuO3YGRodRhX4Fl1cRVVI2CH1C6AyrT2dIH57d6ausuAqTUXS2p5To+T9QVDsH/sztn46c9e+ZDkeW2Pisocf3eYjau4FPYHvv8776dfohsI+IxbZU8Y+C+3VDPH/xjfQv/je9/c/VL1j3unNFz33jDk2WZiupwP5IFIHNdN6GOYHg9ENUkk
- QnmiPeFi
- wF+T8sFkWXBUrHhAGAMTqTPqDe8MYh/rhb8zYq8fVXriefJk7XZAQfQwlwoNJucCD5G+osDeLVGfWIWs3gAnb3lDFvaTHZ6gYKYKrp/WB1mMA1DAwl0ptSpvbTVQm2CuwAcW8FN2AC7B/r1OrAoD2KSQ9vDT5XJleNuQTsJIXT6RZoU919sbndOvnhud4gN3ihotPhyh95vIy6QCoSG/DMNo+8UNhxOw0rVGcwEIkU+I8ax6FK1/c58iytcfaWuEkAwcchktQYS+Vn0ahvmjEaxzU2kbxsMqpKPlE
+X-Stat-Signature: gux94fqci6rgw1r1816etwri5p1rzmer
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3CFEDC0008
+X-HE-Tag: 1787306798-380234
+X-HE-Meta: U2FsdGVkX1/e8pSmhZBGDQ22h9TUU4UQRA3yXL7o4cgR7JCiUPEA2lsyYx+3BI6nu/0U6JoqNydpoqnW2UW42B05kkTjeRsW9XTcW89yYT7+Qp+td7iwUcWUHu9aodfu2uRXSHuAFJszDYIPejPNZTQz37TsCv4MXmIfCg7YC5+VOI3dpCuUUdRwuRs/W+ZdQkZWIatuxf54L81FYmM3oyNxnNlgvwQumygcqxB384SDO11pUqDipDPs+NZKXryhq/T/vWBOElB8ZhHHh728rLhSQKZgibww/LV1SIRxnWl0bml3skTMmchSMIfsXfj6D45tbUf7J4N/YwuaNy3AYbq6h5yweuTwx2X0+qBiLaMHVlGrXU/D3XJJvlqVESKbUshWvf5APRHEHHQ3/ZFc20GKy0L1hLus1Kx+duf5hSiDP74M//CwQZFzVIrmqz2IuzoWa3fQYxn4rwyrKY1YgfAx0h62rKLM38MUuiupVeF86QikOR8g+/sWKwxLuh2ty7Xt/vDJKCAbSrMGx0rbxW+1ja6svPiV1LEY/N3tlutg7nN4chO+XLSgxO1BSfZrvGFuMoDW1XXlXaZCo41kuBOeccVEJhRhSWtYxxUbYWAK7qHmdqMMhmKWdnmyEY/k3rfPEPu975P/jZgt8lQ9tV9OU+tJX+EbstIYtOrF0gXNjN5J911Pu+yR/WoR6qBeZiycolob9IKFGgFXiJV3EbKyC0J7Q31V5rSa8iVPqqkZqOIdQCpUdVDQOW70UxBkHSDJT4SRDg71qBBPVMsI8FkrZEAoqeHZ4kc1mWk/gqPynSATegw8idsjf9hhpv2CvnBTLUacAbqI2/MVJu+QGh9PHI0Jg1vYLBhsz9+uMGb7wnLlMG7alOZ4kaJuWB/35IxtQJxLe1rZlwdgjWQd5gLps1npqnnWEQk6pxP6VjWhl/jhZl+Z2NlPfruhXD3V3xZS/nZvpc6m0+QqnCS
+ 3/6R2LAy
+ EGfY4O0uGadU/5w8ONIdszB6PZimm83r1uF5+2LNAgNaM8uRV+MWsHFw8fxHqsB/yC89wgGaR7ve2wL7M7kMkv1nt3vuiHWJYf06Vhlb+or7/GOUTdnFzhktCMTfTHiY66po6vGRYzIfHWqRGLmIErnDiToH9LZeq3uM0ZxilJS9KDFbI5GtifaoxH2xI4JnLye9c+0FZeI1IgyiTjC0N53BH13jh6SdI2qQjizU1fFuXiK68DaBtO4uRU97GopznkGTPfJA1f/7idbIJOy7NJD6fwqj4ViinlsvGO05Htcb//5cCbGud7A76Wc4pbaCHsitS+O0h/jidYnh2VV5zzNO0Gq/A7bulL87Saa4bBU1sgVcdSJIEnPmM+cVr9+LYjgifZ5lf9fuDU81SAYI94nmEBo3Bi+ViNhRg9Bz7AAKUKQ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,72 +116,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/21/26 11:35, Alexandre Ghiti wrote:
-> When zswap writes an entry back, allocating the buffer folio in the swap
-> cache overwrites the swap slot's workingset shadow. It is lost and later
-> re-minted inaccurately, which corrupts anon refault/workingset accounting
-> for the written-back data.
-> 
-> Preserve it within zswap itself: at writeback, park the shadow in the
-> zswap tree in place of the freed entry, so it outlives the writeback
-> buffer folio. The buffer then meets one of three fates, and the parked
-> shadow is handled at whichever happens first:
-> 
->  - swap-in: do_swap_page()/shmem_swapin_folio() find the buffer in the swap
->    cache, take the shadow and feed it to workingset_refault() to account
->    the refault of the now-resident folio, then drop it.
->  - reclaim: __remove_mapping() skips minting a fresh shadow for the buffer
->    (minting would double-count the eviction) and
->    __swap_cache_do_del_folio() restores the parked shadow into the slot, so
->    a later disk swap-in still refaults against the original eviction.
->  - slot free (e.g. process exit): the shadow is not needed and is cleared.
-> 
-> The last two both go through __swap_cache_do_del_folio(), the single point
-> every swap-cache removal passes through, which is why the shadow is read
-> and cleared there.
-> 
-> Fixes: aae466b0052e ("mm/swap: implement workingset detection for anonymous LRU")
-> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
->  include/linux/swap.h  |  2 +-
->  include/linux/zswap.h | 12 ++++++
->  mm/filemap.c          |  2 +-
->  mm/memory.c           |  5 +++
->  mm/shmem.c            |  5 +++
->  mm/swap_state.c       | 14 ++++++-
->  mm/vmscan.c           |  4 +-
->  mm/workingset.c       | 16 ++++++--
->  mm/zswap.c            | 91 ++++++++++++++++++++++++++++++++++++++++++-
->  9 files changed, 142 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 6d72778e6cc3..ef9b1612ac12 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -298,7 +298,7 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
->  				bool flush);
->  void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages);
->  void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg);
-> -void workingset_refault(struct folio *folio, void *shadow);
-> +void workingset_refault(struct folio *folio, void *shadow, bool lru_managed);
+The stub has no way to ask how far RAM reaches, which is useful to
+create a bitmap that covers the whole memory.
 
-Passing booleans makes calling code hard to read. It's preferable to either use
+max_pfn answers that for the kernel, but it is only set in
+setup_arch(), long after the stub has handed off, so, unfortunately we
+cannot use it here..
 
-(a) Dedicated flags; only makes sense if there are really more flags expected
+Add efi_get_ram_top(), which returns the highest address reached by the
+entry types that become usable RAM. Unaccepted memory is counted as
+well, as suggested by Kiryl.
 
-(b) Having helpfer functions that spell it out for calling code
+Memory the firmware hot-adds later is *not* in the memory map, so it is
+not covered; that matches max_pfn, which is likewise the top of the
+memory present at boot.
 
-workingset_refault_lru_managed
-workingset_refault
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/firmware/efi/libstub/efistub.h |  2 ++
+ drivers/firmware/efi/libstub/mem.c     | 53 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-workingset_refault_lru
-workingset_refault_nonlru
-
-Or something like that, which makes calling code easier to get.
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index fd91fc15ec810..77ba576779aca 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -1094,6 +1094,8 @@ char *efi_convert_cmdline(efi_loaded_image_t *image);
+ efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
+ 				bool install_cfg_tbl);
+ 
++efi_status_t efi_get_ram_top(u64 *top);
++
+ efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
+ 				unsigned long max);
+ 
+diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
+index 59f3f83de50c2..777f1f180c66e 100644
+--- a/drivers/firmware/efi/libstub/mem.c
++++ b/drivers/firmware/efi/libstub/mem.c
+@@ -64,6 +64,59 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
+ 	return EFI_SUCCESS;
+ }
+ 
++/**
++ * efi_get_ram_top() - find the top of usable RAM
++ * @top:	on return, the end of the highest memory map entry that becomes
++ *		usable RAM
++ *
++ * Walk the UEFI memory map for the entry types that become usable RAM, the set
++ * setup_e820() maps to E820_TYPE_RAM, and return the highest address any of
++ * them reaches. Memory a confidential guest has not accepted yet counts as
++ * well, since it becomes RAM once accepted. This is what the stub has in place
++ * of max_pfn, which is only set once the kernel proper is up.
++ *
++ * Memory the firmware hot-adds later is not described by the memory map and so
++ * is not accounted for here.
++ *
++ * Return:	status code
++ */
++efi_status_t efi_get_ram_top(u64 *top)
++{
++	struct efi_boot_memmap *map __free(efi_pool) = NULL;
++	efi_status_t status;
++	u64 ram_top = 0;
++	int i, nr_desc;
++
++	status = efi_get_memory_map(&map, false);
++	if (status != EFI_SUCCESS)
++		return status;
++
++	nr_desc = map->map_size / map->desc_size;
++	for (i = 0; i < nr_desc; i++) {
++		efi_memory_desc_t *d;
++
++		d = efi_memdesc_ptr((unsigned long)map->map, map->desc_size, i);
++		switch (d->type) {
++		case EFI_LOADER_CODE:
++		case EFI_LOADER_DATA:
++		case EFI_BOOT_SERVICES_CODE:
++		case EFI_BOOT_SERVICES_DATA:
++		case EFI_CONVENTIONAL_MEMORY:
++		case EFI_UNACCEPTED_MEMORY:
++			ram_top = max(ram_top,
++				      d->phys_addr + d->num_pages * EFI_PAGE_SIZE);
++			break;
++		default:
++			break;
++		}
++	}
++	if (!ram_top)
++		return EFI_NOT_FOUND;
++
++	*top = ram_top;
++	return EFI_SUCCESS;
++}
++
+ /**
+  * efi_allocate_pages() - Allocate memory pages
+  * @size:	minimum number of bytes to allocate
 
 -- 
-Cheers,
+2.53.0-Meta
 
-David
 
