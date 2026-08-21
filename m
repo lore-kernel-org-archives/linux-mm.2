@@ -4,104 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 932C7C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:26:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D05C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:29:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 972976B00AA; Fri, 21 Aug 2026 06:26:45 -0400 (EDT)
+	id 50B0C6B0095; Fri, 21 Aug 2026 06:29:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 948766B00AB; Fri, 21 Aug 2026 06:26:45 -0400 (EDT)
+	id 4BB6E6B009D; Fri, 21 Aug 2026 06:29:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 887686B00AC; Fri, 21 Aug 2026 06:26:45 -0400 (EDT)
+	id 3AA3F6B00A2; Fri, 21 Aug 2026 06:29:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6759F6B00AA
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:26:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E95D31A03F2
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:26:44 +0000 (UTC)
-X-FDA: 85124897928.30.70EF03B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 08D836B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:29:46 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7CCE2A2FD5
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:29:46 +0000 (UTC)
+X-FDA: 85124905572.29.49185FB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 441BF1C0004
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:26:43 +0000 (UTC)
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7CB4E1C0002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:29:44 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BhsHa0kk;
-	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixUI3kRs;
+	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787308003;
+	s=arc-20220608; t=1787308184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ak2P0tLlmHEpiFHwLAXYiUkDNHqN3CdnzgG9lD0dGyU=;
-	b=0NpNj1heMW0HJT914uoNyEGH41yoWLYxH6q6FQR9J34XiCrT/nNo2gg7hF2VRwUOjFGb3b
-	0tIdA3z1DVwv2e/+ZpJlyH1jBlnx3mU7EawN98papYzGVI4hUVPHoUCPy8+0kxeO5J2QsN
-	PaEC0UO2M5SE3bOFlLcCDyl/CKJmqSU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787308003;
-	b=bRczAthOmN1+jveh8VZrgfw5j7S6j7sP3LbCni9raenkt3ozj8Z5zzUTcXmJaTDFRc309x
-	nWicVIBZ3PWvuiXs6RR1lvABuhUyd0H3niA0lWOLHp4MCGGtqHTkVuidjnQGWJz8toEBWF
-	6JWkLzycngbDgWzhq1f2Q5gQMkjObbA=
+	bh=APGED5YlpOpMPxOSsAuKA6X7ShEtj4fbflQDOHFgkgs=;
+	b=1FHFlxWMfDWLsnIzjeHyx6It/Oi5icmMp8FvuV5W6lfam41h6yR3mZ8V5E3zGX0fmMazil
+	csXIWlnzlTenLLwXVnpWlRb2X8fUBO19mPH29HnITRP7Eb3vbZiQVT4zwT0IqCfvbt5B2e
+	WPgxvDLD1iKWrTAfSfxAEawjSSP+/1A=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BhsHa0kk;
-	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixUI3kRs;
+	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787308184;
+	b=4NeWJQ9Bs100RGmJWlnB+CIBtOeaV20xQdhiaJdrFs704NgS/xd46a6g0ePVpDFu2D3b9/
+	Ab3jVCpow5gLwrvhdwqxA7xU2h4uXeJ3Hzk9WYVoVcrsHtKsKyMeCE1Uv2xP5nG0yvufcn
+	jLRnaPLavPJkRkhq0uua0rg4dS07doM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F1A043C48;
-	Fri, 21 Aug 2026 10:26:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB87D1F00A3F;
-	Fri, 21 Aug 2026 10:26:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9AF0043C9E;
+	Fri, 21 Aug 2026 10:29:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929BD1F00A3E;
+	Fri, 21 Aug 2026 10:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787308002;
-	bh=Ak2P0tLlmHEpiFHwLAXYiUkDNHqN3CdnzgG9lD0dGyU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BhsHa0kkx6JhUcbZ5bXcyCYJwYlDmAZBdMVPOphK+IvpqwJKqNth/1zrxSvSXY7WS
-	 sXWiSoqqLIFc6B2dNm0DDSBMqsafiYoTq679FQJ0N8LzF9RzV+OAunClgn/F5+ryvi
-	 uqQy3iq6dJSedc7qBtrLVBxvYMcRVWjUrsIDWIvdXyw9wsygmMRMnPryHjR8rgc4U6
-	 HNfnskuaKTqX1a1zhNJnSAubv5xlWJQ4EN4QZt/WbPhI1GIiZca6NbEL0u0lNAq3nx
-	 3zpt1RGo6AnzavaQWZJe62Wv0/MOx35Pqz1VkxfgpZlynxhgoBxjO+WqHrRPPPott4
-	 paYhCxu1upNuA==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: axelrasmussen@google.com,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	chenridong@xiaomi.com,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	kasong@tencent.com,
-	lianux.mm@gmail.com,
-	linux-kernel@vger.kernel.org,
-	ljs@kernel.org,
-	lyugaofei@xiaomi.com,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	stevensd@chromium.org,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhangbo56@xiaomi.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH 6/6] mm/mglru: batch move folios to the second-oldest gen's LRU
-Date: Fri, 21 Aug 2026 18:25:38 +0800
-Message-Id: <20260821102538.22642-7-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260821102538.22642-1-baohua@kernel.org>
-References: <20260821102538.22642-1-baohua@kernel.org>
+	s=k20260515; t=1787308183;
+	bh=APGED5YlpOpMPxOSsAuKA6X7ShEtj4fbflQDOHFgkgs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ixUI3kRsD8NoUTtmkjyJfa4wlDS1R4IthffH+JxKoU6cmU1lGAaG4clXL287xuHh1
+	 FzXDa/qYuq72kJG0jgYnXPTUntW8HTxORTjZ9zMtzU2H76m9/ZwKxWBR8g7VqYAuva
+	 kgQFavADAJwi0NRufxA8l8j/zT3OVVcMAxgx1gl2+e85rIVJR64+x6g9/HBkUVYvVx
+	 kCH7LrYn2BlvwyddOASSf0J2KMGbkAaRPTHlkFbYif7VFRWytKOhy+T2rQDtkoB01E
+	 Od3baF8witTx31YqfSZSFnCFr4BovvmI0G+CDmqrfhlwEDpZqh6I3Ig2QOF85lHa94
+	 BNRaFCMkdKWqg==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 2926B1980052;
+	Fri, 21 Aug 2026 06:29:39 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 21 Aug 2026 06:29:41 -0400
+X-ME-Sender: <xms:kiiIarVzSmx1y-aArkHdOBg6_uN2EF6kmHm7eYV3kLj8d1ZetYmTnQ>
+    <xme:kiiIarad1L4afhIQcR9TpUON9bZV2_aFZEy-RJGSw_E5CZfR8pB7srH9uie3fSiuB
+    dePAuvZWbvXhhgkEl6OfcEL-YeY89S6pgIr0B7jnImbXdTXQ6RL2xCu>
+X-ME-Received: <xmr:kiiIaixDRegUN-DZiVZpoNH_w4V-cSHrk9NAzrk7u6EdWuZo3aVYGcDscRg>
+X-ME-Proxy-Cause: dmFkZTGP4bL3rkkhiaU+LYYEJklVw3I4bCV0bLo9Xe/rEgNWD79Kg2qnSiGX6a0LzPvrT3
+    wfkn1QSVsDXoCCou0Ai4CQZtSMXEfYR7TcfJrEs2qA5nuREzR/25/SXv5FHUVnpahHF5rZ
+    sKtXsan+W3eHdPeJRne/qiXwfCfCb10WRvmLB30Ci3uaIEVL5D3olIiiOSnObxq8C6IPWE
+    CaoBiOtHyQu+B9nz7YFtvwuilTaX0/jGLK4wKrha13aK2nLIfCvV4FGU476zMpcM2zcLB4
+    bT9trOvY0ulRdAD+iw9eIBoGr0FK47s7WRgK6yQyBMu7G61oTI+YvMopiv4VSl18lOJ5Z3
+    PFVi+866/3m3g5aFzO7xOv7m6vuXzMUw4Lv+jO9gfxTn5uM0B+j96kCvw/jt8I+huXrLkU
+    wKkJaFlospdKLrCQDk16EZ8+PTysacY1zlTDsV2ACyFg8I0wjizXHCfA4iRjksBttHwcTY
+    wvEmk9ehfcuSKoQI7pMdYMnnya1y9zVIko1YRNEGK1ERHWn8XNmEmOW7aegRM9a2hLgBF2
+    fUrsAB+TJNQlwN/Ob1VoLupB9GoBMoq4ahvuVHXxmmOnPY+KATnU/KnrCbrHVXlRRWx6En
+    75CalTn5X3AfHuDh0QqtF9FFmIT9W6QxvSkRgXvqsKl4lNvEtZYrfgg/K2hA
+X-ME-Proxy: <xmx:kiiIagJ6K1_IhTU6mwLPUNctDqMy9YCXitJsDYeigc3ethIccfkWKg>
+    <xmx:kiiIapfwVryqGlX_G8FBQ-G81dMyuek2WOwFvDgVQNTkC2pFWFIxZw>
+    <xmx:kiiIaouDMVQjpMMhVDXhzsvSFoiQl94RJjkg-M1USLW9qB4i-AysmA>
+    <xmx:kiiIanFDd2c0gVRX9E4XBv2diwz95NhoIw-LxCwp5NSInmTPRSGErw>
+    <xmx:kiiIaifnfAIs5050IA3B1i7QlIb-FxA2CFT7Ar6PadIGJ8yF-mjmyIVy>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 21 Aug 2026 06:29:38 -0400 (EDT)
+Date: Fri, 21 Aug 2026 11:29:36 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rmikey@meta.com, riel@surriel.com, kexec@lists.infradead.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 0/6] efi: mm/memory-failure: keep hardware-poisoned
+ pages out of the next kexec
+Message-ID: <aognoSPb8vbkR3U8@thinkstation>
+References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
+X-Stat-Signature: dzrrcyy4ksdpnwfgkeahhqyrng6h6rpk
+X-Rspamd-Queue-Id: 7CB4E1C0002
 X-Rspam-User: 
-X-Stat-Signature: g6ckbtq66cf15jks1c7noxbpm6n5y145
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 441BF1C0004
-X-HE-Tag: 1787308003-392410
-X-HE-Meta: U2FsdGVkX19k6G9ZipDbzgt0ln/JL7q7n70O84tszn1eYwpoWfvg7P1BjlOqaQWPm7UKy/0FbkJ5TfBHZohYs41YteqZDBIM4t6Ny351vVz4NEH9na6vz3SZA+Mxtf73g3WdrfaBbTwV9O6o82GAnE9Ct7daljSOxE1aR/fMCTyeBAXMXSDNdLqMc5+JOIeSOtzRwUbYqJ2fzQzmLICdOo1lwJsE+sIUrMOPuD967I+0GkNHhro5K0fRQtY19wGpUsXKLfi8P7py8tGkfJG4lzEVO6gH199k02P7IVTsOCG82AheNAmFn6r/EiIof8aO0IFZ/4R3/Wr0daLlJMOM4UTsb7APdGr/ebX+ikAdKFjCzAzQq6jn7sWpVthpwCGwtUbdvzYoFHPjzLMPlsg/9OUg0W1dCFUbAaLwuZ9KCO9zwKddRJ3acG+3epFKHBGkVWgUhiOzpsqAG2X5Hm+3wT0O06o6d3jaRSZP6k7I9O3y4uxefG5RcasEUJphPffNgEi+FgPtYX/rc8N7/F7kb6WJ92Q495ubsGRtiwN5/iWse/eHPWeDMiY1+vh27Hsg308VeVO9UWGwtzpQC9PvpRAn1s1xOZo7XjKQb7E6qJI0XnT8/woqZyaMulUOyXf7yI2htiDUizvFxgL02tzItGLYtml9doc0hsq1L2oRJTGd68IABi0N5bfU4cVgFYmy6kTXS9Hr0pS3S9Tymk2MfqE8F96OfVnfN3fyAhWcSseLZGAuoIi6qWO3JpJOBQnjstrg3mKkso1k4mjOvMTmYVG1odw0FIVqXEaqVHXs5YTOX3xA9hOAsFEJbIcB6RrkdtCe1/kh7slIlq/IQP//Bf2E6sGbFFY8+HXViUyIO20obzMTrFZOqNxsKBXugXDKA82nItfddyqOv+kWEJNMR0AxqbU6B9iM2iykk8cr3b/8I+MpgF6NJC/trqFUt0rcKL249+qXh0+T8VwrTA7
- h1nPegjw
- aYhlbglngA9pLgo5t3FNGD8G/7IkUV6X9MMc9xrpFH3wqcujhGeJyN1WQHHWun3ty1hJgw6gsRxSMTf8DBFJbBsmqcmnl4efYV+nBaXt/QW2/H/vRPXPBwU9i990wAJDYI1tXtW8NiEsFuMXqWPHbZHDXMoX0VPsZEYiQxAcRFTlnncEYt4/fw79oy6jgdMbXrmJY1t7zNMIWLJLuWq03OvxSAfGVBM02FiE5sh8DLEb8KSQS6SeeeA6sjyo1QSdsyF3/RV8F5fFd+L8KaYPxTB44oCkhV/sPddx3s173XDKJUm4kQxio0r+Azg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787308184-390525
+X-HE-Meta: U2FsdGVkX19J9SaJxtOZMDK3BiQowMtTbfJgmCFhcXHvCIMGM9urpopL/haTZ9uBRzR5mLrDvnROL/HI/jOOBSYuHrhHzi00sq1A9Ux9pikqVAkhZxUV28bnRj0YOLbQeo7L7FkBIxOHJdCjg9n/jE4lNPyfxJFzOxXB0dhFCtqd/Q2ImLjYDo0JUaeNgjPYQObdMamk4H8Vsk/UUYT/QGcoqBK2NTDQ9dSu4NVvL8Yp73miZ/jB2m9PCvyRvW0c0tqovjkeu3lg2ts7dmgYZmrAUl8/hyMAUnWDa63Uo/HKICyaKG/zXaNk2bIexkg+C0BUKma73r+EBkImjBBtF2E8zfD5t8V0ChxxVEZz6+TAkpcpUhHnRaqc3pTlG7BqkHc3Hwg/31xtAJ7WSWe8m9tJy1CGYunINqFc2mYmt7Kzx5uoIeKduwFLoAX6mRxOP+kNLJS0wD00wohbllfjE01keQsul04gAPIi30bz7uGLbxz6DrmsmTOaVrg9IopJQ0C1oQH3UdTFvzddzSpauIRhZrpnuwL1J+Si4c9Kwiq02A5fYWKgoj2Sir4LZVN+XcUzwpnqCBt+JSYRax4jZVTizDiSdassMZ+AOa5uRecjk8Q2uyRiRM7Agm6OI3Z1pUOW/jcMlAQFRUHbbKiRwcqElRzrH0hK0IN7NsCU4z0WqQPGH5vrM+zpk5Cifa8g0/x4ruRtY/cqbR54iZt56GyvMVK7plG56ZxEszHwqQBT1m2UKXes4ybR/XR0+v02E5as/47y9hNCbryVvb0pCB1xq3RsZihdnFYTk4uTJ/Y9R0Wv5qT+bTJk8kZc37hMrh7YSnB0ec9HrxxX5HAPMtRPEUi+adNpOrfjJEpNAZSLD8IC671fO+zqFmWTXiRFBKauk/4mfaxPViMsN1KUJkGHxJxtscDfnaRAeZ5QIkFvggb+3geamZC1ECtu5YEkyfk1PGOE1e0gTcPXCYf
+ OvpeMoN7
+ Ngtbr0n/n4Od5s2pebIXA/HpbXah4FgEZ0bd1n+8QxVZvnLB0ILjzOai5EBh0iob5gqX5g8U5AYgrJKbZINY44X8h/sms9zOz9d5VPuVLl9BbpTrYmX1JBqNAztoK9AbDQgXhLG+Iqhhizlz5uu1ABcKAHkdYBE27EtWeASVjXGPUBmeTwsH5g81eKTb5J7U4bGAQ+7jRkIuolnzOwLACnn2JFx+/7eBIGhv0hM2bU7UGVvc6lfWbj1t06Hquam1NdCk+riJ6cQdfWyOh3+bPddXW5d4DhyVnqfrSSe9StUmBFPxdPpTFilF9HQvPWICoZw9vngyhPU3W8N6I0yg3H1SAMT2mUO1UBcRp5pkFa+b+jNA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,80 +122,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Detect folios that need to move from the oldest generation to
-the second-oldest generation, and batch-move them together.
-This can significantly reduce the sys time of inc_min_seq(),
-especially when the other type is significantly behind the
-preferred type.
+On Fri, Aug 21, 2026 at 03:06:00AM -0700, Breno Leitao wrote:
+> The allocation is capped at 1MB, which covers 16TB at 2MB per bit. Past
+> that the stub doubles the unit rather than growing the table, so the
+> table stays bounded on any machine.
 
-Assisted-by: gemini:gemini-3.6-flash
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- mm/vmscan.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+For unaccepted memory I didn't capped it. On x86, architectural maximum
+is 4PB which would cost 256MB in the bitmap. It should be okay for the
+scale.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 2fd82b2ca4d1..996b48344ed0 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3923,6 +3923,19 @@ static void clear_mm_walk(void)
- 		kfree(walk);
- }
- 
-+static inline void flush_lru_batch(struct list_head *head, struct list_head **batch_end,
-+				   struct list_head *dst)
-+{
-+	LIST_HEAD(movable);
-+
-+	if (!*batch_end)
-+		return;
-+
-+	list_cut_position(&movable, head, *batch_end);
-+	list_splice_tail_init(&movable, dst);
-+	*batch_end = NULL;
-+}
-+
- static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
- {
- 	int zone;
-@@ -3942,9 +3955,11 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
- 
- 	/* prevent cold/hot inversion if the type is evictable */
- 	for (zone = 0; zone < MAX_NR_ZONES; zone++) {
-+		struct list_head *target_list = &lrugen->folios[target_gen][type][zone];
- 		struct list_head *head = &lrugen->folios[old_gen][type][zone];
- 		unsigned long protected[MAX_NR_TIERS] = {}, delta = 0;
- 		struct list_head *pos = head->next;
-+		struct list_head *batch_end = NULL;
- 
- 		while (pos != head) {
- 			struct folio *folio = list_entry(pos, struct folio, lru);
-@@ -3963,7 +3978,8 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
- 			new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
- 			if (gen_increased) {
- 				delta += nr_pages;
--				list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
-+				batch_end = &folio->lru;
-+
- 				/* don't count the workingset being lazily promoted */
- 				if (refs + workingset != BIT(LRU_REFS_WIDTH) + 1) {
- 					int tier = lru_tier_from_refs(refs, workingset);
-@@ -3971,11 +3987,14 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
- 					protected[tier] += nr_pages;
- 				}
- 			} else {
-+				flush_lru_batch(head, &batch_end, target_list);
- 				list_move(&folio->lru, &lrugen->folios[new_gen][type][zone]);
- 			}
- 			if (!--remaining)
- 				break;
- 		}
-+		flush_lru_batch(head, &batch_end, target_list);
-+
- 		WRITE_ONCE(lrugen->nr_pages[old_gen][type][zone],
- 			   lrugen->nr_pages[old_gen][type][zone] - delta);
- 		WRITE_ONCE(lrugen->nr_pages[target_gen][type][zone],
+> Memory hot-added after boot is not covered either: the bitmap spans the
+> RAM the EFI memory map describes, and a frame outside it is silently not
+> recorded.
+
+We might update it if/when it gets solved for unaccepted memory.
+
 -- 
-2.34.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
