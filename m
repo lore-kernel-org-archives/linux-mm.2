@@ -4,118 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8958DC5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:51:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828A4C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:52:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 928266B008C; Fri, 21 Aug 2026 07:51:44 -0400 (EDT)
+	id 6B8826B009B; Fri, 21 Aug 2026 07:52:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D9226B0092; Fri, 21 Aug 2026 07:51:44 -0400 (EDT)
+	id 668BB6B009D; Fri, 21 Aug 2026 07:52:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 815A76B0095; Fri, 21 Aug 2026 07:51:44 -0400 (EDT)
+	id 558D06B009F; Fri, 21 Aug 2026 07:52:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 614C56B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:51:44 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D290FA2DAA
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:51:43 +0000 (UTC)
-X-FDA: 85125112086.20.C747F04
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 260AB6B009B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:52:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A808140434
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:52:25 +0000 (UTC)
+X-FDA: 85125113850.07.6BA5C37
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D3465C0007
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:51:41 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eqeLOlyR;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787313101;
-	b=NpZIwEb6vp4L7DBZKIMjxVQzHhKNT7Hxix5eI/IWDQNIzgSAfBoWZnNZT5p6jFbVww6l/j
-	0WxikXMUfFCnX3R5SROeLltpLPbBWkX9FIGAokqVXept3ZBbYXCgYaF2SM245luMmsncaZ
-	uVXkR+6O/GkCoJZ/o3s2/oh9G59xH5o=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eqeLOlyR;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id E168B40003
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:52:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N87+Z5et;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787313101;
+	s=arc-20220608; t=1787313144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sBpMKLMCpV2AxfNqRU5qSpbkRSV1+US95VjWx7rNRF8=;
-	b=rUJX4tjEuIL+X1Gb1uhwbtLloEcv8azAzBwajl92r+c8Lh624qGz7uTbQqzph67KY8yNC4
-	3qtcrKGR/XDRCY3bRuyDkFtrDKDLSPKAUPnsXzVVOWn5q1HMHZ/vG7fFvvAoKe7bpO9lXT
-	j9KFo7Nxh8iUoFNf7n+fndjzU/TmvmI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rb7T7qQ245v3lAPAAQlownuvidcAdgxgItOpVQHp7Vc=;
+	b=GP+hZjZj+zqyhZo56JvJDEdRTpk6/ZpamZPc64Su1isig9tcWf50hVAEv8s43+P1aDuKhe
+	mIN6Iqi31ch4vDC6Fvb4LkdfeIPwiUOiYnn7+RTLTzIbfsc+hYs1sVzbeZWGIpUkGJgCEW
+	N3CF1+NJhJYR+JymSvNe0kpIiFCHNbM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N87+Z5et;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787313144;
+	b=GAWZ8K84RDIn5+rfILyvHbaqBTxrFlWX38Qy2+NYVUnxy1LCI3Tfn+KzU9iTK90BPByslu
+	zjswYVpSde5C5IOtj4FrTWR6k4shwaURDa/I6yV3zWLGKjeo2xA0tw7Eee8skECrW1CRGA
+	d8SCZ7gixXSK32eeGn2faa2zV/QG0oI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF5E342DF7;
-	Fri, 21 Aug 2026 11:51:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF6D1F00A3D;
-	Fri, 21 Aug 2026 11:51:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A1DA43540;
+	Fri, 21 Aug 2026 11:52:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8F41F000E9;
+	Fri, 21 Aug 2026 11:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787313100;
-	bh=sBpMKLMCpV2AxfNqRU5qSpbkRSV1+US95VjWx7rNRF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eqeLOlyR4+rgSoG3eVry3aEncsV6Y46NTXrIU+4B1Ewqc9OkFka8zAwrx6AxpmcMY
-	 1/RgrhvVcCqjpoexzMc1ZTPySmd0VMgynpzMy2tA44sfXlHMtF7nqi2qo+sN3YVoMt
-	 5gP4EbnTlC46kkBUEdhW00pSr+5ZChFtdUVZ7tnJSyfI8Uvz8Ko6qpnBBtxal3h0fJ
-	 CdLYKOfwuCrB83yvhsF235Z9hJu/E+fsOLm77D00KgCcLbmSTko3B/TN8T7OaDoYS2
-	 TCSWbCjz/mC4p2rF1VsVxo99rneRyVOzfxuYqVZ7ciN191NmPmbXjd5Y71eiuc5MlJ
-	 WFs2vdm0DtBBQ==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 72BA11980052;
-	Fri, 21 Aug 2026 07:51:36 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Fri, 21 Aug 2026 07:51:38 -0400
-X-ME-Sender: <xms:xzuIao-UNTuh7jdnMg-X77Z0xxMkKq3OlEUrkuxpz-IlLBBhol3buQ>
-    <xme:xzuIauIA96Foe0bv9NGipTbBqiztVzEXtIvkcwRIlfYCafITkGIZ0qcrU34S41Uo9
-    -S0_DsRhUonwIwz-4VLhWtrVZaZ_IS33LfGWXTsjxnQ8uQJ6jpZao0Q>
-X-ME-Received: <xmr:xzuIat8nn8vxcLyjvU-PUwhAGkBqmf94OXOtZqUzKmXRBrPwhH3-GylGf1g>
-X-ME-Proxy-Cause: dmFkZTGkobwOJDXfmDVQnTznTajLF1+gng1DwxP4wyWzTCBiX4TmWfUTIIyia2/B+dSgwA
-    STm0VnjeA3gf6v/mcV6BalUqH8ECjST+EleofvJRKrsyN2NupbIpJquZovYUNNk0U6Eomu
-    WhAtF5pnbt7hYJtbns0BYqJTie5NhdvuO1mhJgr4BELW3bCr1zqqvJcro1IQSF2ZKXB8DA
-    0OQXpq/9SOu19gzyOKSjGFBwxEyH+DhBFMLo4iiWifqLV5zkS/ouYeekSqXQFPoPPchPlr
-    CO74nMl7Eikd90vhEMTpNsEBcdkVE9IgK4oQEB2sJSIkY/Pecf0l2qm3eHkbY8CRnkxRdQ
-    5JCqN3LVGR8BRgIFSZ3MsakQ5IXa7UU/uv4Y1/kU6PoC7jhSmdoDZOAxAWyiakOKUJ6UKu
-    EcX3j/zjIM8WAmWhziX24j8dcoJUnn3l13AJ4oN1zKBwmBvCHWK2SoNIvxbme+VmL6x53X
-    I7ONH4f25zJDU9t0KejOxyWwabWZGwjKWsi/BE+TY5HeArEUswR9Bu2dK4iei6/6AXhlIQ
-    5SkNJohggZqlHZgpYtWTZxnvPK2oqQ5F8MvAn1xG8iraX6BbsKZltxe1gP/36QTzpJdAS1
-    E1ApgNmjYzxh0z7R6fhuUKPP7EQmUhDqtbi+YsifOzYWAThUnXMcA52KK1sg
-X-ME-Proxy: <xmx:xzuIaqHsbj7vVwwwNp5W5D_DmYi4s0cMkJC0VbwGkiydyrbzCFyoAg>
-    <xmx:xzuIatO-Aystk8z6Aej9SnIgmw1uvm2drJdWm04g2LCTwBoQmuDE7g>
-    <xmx:xzuIapQD7IO_EW7A8eUz_MZhoL7Hoe-6UI09xnUnZDyGBUtBzmxlEw>
-    <xmx:xzuIakTn9SQe7ZjkAN0tZ4IiQMaplFTVPI_umTFY2LBN2VE9KiWOYA>
-    <xmx:yDuIajbvORkshWti5lpU2jvUvh80MNtzsmL4ltiYN-8XSzWRFfDjgs3P>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Aug 2026 07:51:35 -0400 (EDT)
-Date: Fri, 21 Aug 2026 12:51:34 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rmikey@meta.com, riel@surriel.com, kexec@lists.infradead.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 2/6] efi: add the LINUX_EFI_POISONED_MEMORY
- configuration table
-Message-ID: <aog7bwfMVpSy9LcY@thinkstation>
-References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
- <20260821-hwpoison-kho-v2-2-5743791e48e6@debian.org>
+	s=k20260515; t=1787313143;
+	bh=rb7T7qQ245v3lAPAAQlownuvidcAdgxgItOpVQHp7Vc=;
+	h=From:Subject:Date:To:Cc;
+	b=N87+Z5et1fyU2ko/O1Cr71bw/e1K0Y7lpQCiWriodjuayeS/brKGIl1542vcGrf2Z
+	 xge0SPDDp1GQRsiBorLLtEdwFaStNffwCFw2LumAYgWUg5Mzoczk1KqWRChl/WM4Ri
+	 F7nT2FMjO4ukNidMdBUFSBpPogxm9NUCgtRcL7reZ1ilzpx6ku00PTiLZPQBUK90pD
+	 HitWCGTO62xHJaJFosV+UPcOk+Zr8uOAI77jkhDKJxuoBcRm5IDqSVDdPfDuaocAH7
+	 IIRuv87wFvfGEvqQP1CyLnVpNDExhYjEorWyBu+krI0/kRMa/VepjtBKni1PpZUBU0
+	 3hh+8ZYVXFSgg==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 0/6] coredump: select memory types per request
+Date: Fri, 21 Aug 2026 13:52:01 +0200
+Message-Id: <20260821-work-coredump-filter-v1-0-91f9a73ef03e@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821-hwpoison-kho-v2-2-5743791e48e6@debian.org>
-X-Rspamd-Queue-Id: D3465C0007
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/zWNwQ6CMBBEf4Xs2UXaEKL+ivFQ2i2sYku2oCaEf
+ 5dKPL7JzLwFEglTgkuxgNCLE8ewgToUYHsTOkJ2G4OudFOdtMJ3lAfaKOTm54ieh4kElT/7qnb
+ katXANh2FPH9+t9fbzmlu72Sn/JUbrUmErZhg+xxF4Y4DmmE4ZkH5F5S7oMx1WNcvIfRFQK8AA
+ AA=
+X-Change-ID: 20260821-work-coredump-filter-1f9f04ded416
+To: linux-fsdevel@vger.kernel.org
+Cc: Jacob Lalonde <jalalonde@meta.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Omar Sandoval <osandov@osandov.com>, 
+ Jacob Lalonde <jalalonde@fb.com>, Shuah Khan <shuah@kernel.org>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Mailer: b4 0.17-dev-362b8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2728; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=CHr7/siqtsybsuSIZJlmc8HwuFWlZjKE7BJt0/blPig=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR1WH/84HubVVHmBJtE9xLerU7/XEQL7/bYs6czXBFxW
+ aq6+FJ/RykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQ+HGH477Pw8fqop+wVjlsn
+ bN7mr/gu5QRj2sXG7JbMFf8OfxM7GsvwP27l7X3GebocW1vniZotDclou3m9Y+Xs6tXn3hSstfn
+ 4jA0A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Stat-Signature: pfppowomu7zefnx4fymzgnnbsdnur4xi
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787313101-118911
-X-HE-Meta: U2FsdGVkX1/P0s6TVshNjUYpryznixSt7WzofA1qwVW5ryDptiOcNyV/w/nEpAEx4pVO7D1KR4YCVLNulAR8re4p4+RS7ibrLP0zxYjzPxANtPe9iQWWmwpb/8DPf0pEYt8E8C6I0Kwl1W8ogmPijH9ni9qmlaXXlONvgkiYAwpgpc/84uswhGDFN5H3kWLl5Bf/H1Zk/gGpl5RtDA8AmgzyDBIWWPSkC6oyPgngQtvGwahLwKChnQeCv63DyrBK2iBUuESmAzf1m4ZMGA2n8/l4PxhYwTLrt4xBFDBiby44OJeOda0OQewv++6OxfG3+JlskqfpSRSZVahxQ33v3SopnJIcn5vZXqEGt7fRyxpu1AVGuSBQ5qKHLsSFp4wNxO0lv9LRzhD9/OwMJ7aJUehev6TOdoPl0DWvDrk4XTeG/qqYYV7tSqxnnmb2ccLmZg09TWPnqG4tOy7BVWUe5stkZvy0JmUT8WaU2qKz1+ncFXvy3OcHKgZUblS+R6MfNbsBbWGyyJF0eNIj13QyOgRql7+rnSLL3wyLNd/+Tx0lDQbpZ8q9+cUoAWS0rcE02oRD/Sr2SkUq1t1GClXXJRjJhsznU4aKplJ3S5w8dsC25p2IhMwd8ZmKypxanJxVJNbYUhhQX1VXj68UM8V+U9GxA7cQTip+3ngsenimmCotizEgJYoy5I7ApukO8m7Yk0zVvlwmj4VdKosqTlUtvG7Cw9aJA7+YrMc8pVDprNv076KYn1Yt0ns/ssvBx96iVzVJ9RS6YiAj27gWFKHa7BgJQC19EH+X8UcMavR4eBILur+0mU1lELIVimMhF1vHlaAKG4HMK7Kk2cGfMrUVf1+eiF4/8ysE91J/ZP5+FjykoRjD7l2E+ETcME4ldoKY4tcVQzup6uWLlunjZdec28umds16FqWA5lkyRmttb0oPVFCbp71Gl+mGj9LqHstWXvoZh/KjMDBvnR4s4/3
- cfvSBLTo
- 9xSr5ryI8rbwlRhplJ87gP4/nmqdpeN1NAMTD2ZHUP2LcUi9TLKKyboAMXL9teUh5H82SRb6FXB7mcIw/4Rq3HAdgbDofReLIWtbLnKAtFimC2sOdZtqgvtDMw53HKDwp4nvoNuPYWSad+tN7c/fs09T9qCelV70DBfvLjY/lROMDeTMm/wFMxogU1WEwyT6wLiyF0+aeZ6DvjBylP85mrLmD1yF412LcK56pT6tRN0kiWpaXWD4TUPKsAhH68P2CNMFyzmdnQ6Y4IEAI3P8c9uXajy/0gYmiMqWepAt/Z+MoZujAmT352TzpMneNOgTJ9FMdDXrZRgoT+sDUFOmHtuE7Nu9y2oHb4H9/5Zs8XDx07OJpqYQ1nKpgU2O9o5usG1UadeLIp1Qr7z/B5B4myR9Y9g==
+X-Stat-Signature: 88zwminsoun5exiqfx43ch6bbh6k81mw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E168B40003
+X-HE-Tag: 1787313143-499480
+X-HE-Meta: U2FsdGVkX1+zARtNP8unmk0NqTnDMPU//PwnM4p0Lt5D86b9+MhLXa57W8ouMlJ092yegFqWvwqqb4DQb/f/2TvCNQi8s/24oxAsqJJAM3fTFCJPIGKOGrLW14ai/zdHvuTQyYIKuRuK0OkOkOn3UIwGQgtYcs1f33eWvyClUOYh/hZ0O+4UNbevr6N8EHwZb/B3MgaPCwtCNJPqx4In4DCQm4YOOnJ8rPTCg4qri5jzh73rD6xUf86uL67p1+O84LB6RC869bUGcpRFIh41H3dzn3ml0vCRnVT8aCC0SAsiwtJZBRkdcCedcY6a0OQNgL6PSN3im0623No5w9Y12MgbN8hePfdqGWalRazkWOS1PW2Dd7jwsj2z+xDtVD0SbytjaB5PvsI6RbbrKCh2Wkl+DxLFc5URBt0TiBPEL30xfcMKv6hY/+A1ht8jJZjodDMDhSRNOBfLDaw1E8H8MkUGhmzLT17IojAIatG61Sz6Xo3sstVdOn1ICv9jXpvPjP+jSoe09DZQBJ8y/hBmYQmYZicE2DoB8xs+0hmwjYpYIaGIDbTZA3JDaW/f23KE2sv7VDFJqoKEmUyVdYylSfMWR1dXbB3xLVYiT6thhQ0crmRac/SWZyvMmYwd5IOVxlK4r6zSkurN8Pcs17b0EvJjV/EkzVyV88JNbFDC4Sv6RtIUIAdAGpg8pROSRbjLbypK9IeMUk4N5+MHDTsnFAvMK6pcBKq1iuWYsFeZ2URNuiFVs91X8OxrL0YH6wtHLxOlARCqTkDRvcchoyIpwRVWGnbixeQ6dlSzeMO3ixOmlUSa1H7sFhGP3j2LLWbEItDfIgoHWUGv7fF/DOF8jXECnjUmZ8p5upnJKfRFIT0OJms4Nb1lNaIEbyQD6w9q5C/3ah7hhl56CmNI4xYJ3vZxi58K41hM/3MLiABkQy+JAcGDNy3p5H9NHBFJ1Sny4nvhyY/ZQpwa+Rtqkey
+ Rr4M/GgD
+ RqGquObeqzt50qtVG48DlY34nIpivDh8S0eLKU9DamrVUSwOb8FFKCCC6ULwtuciR/P0EZIbO2IYTi4Afrw585L0gLdltSPn2dmV+oAw6xy54aryH2Rifre0t6lBc2HnpYAr8fTNw67y3P5exEd4acEJMoZszPi1YBsPkH4XaYA1vn/OoWS8bFBqeK13PukhxoFpMKKpGH6J4Y8TGVCufxTPgJRmT1u72faALl9c0gw6Cyz/zMOXMgciDRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,31 +111,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 03:06:02AM -0700, Breno Leitao wrote:
-> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> index 29e0729299f5b..69c0dc02bc112 100644
-> --- a/drivers/firmware/efi/Kconfig
-> +++ b/drivers/firmware/efi/Kconfig
-> @@ -263,6 +263,16 @@ config EFI_COCO_SECRET
->  	  virt/coco/efi_secret module to access the secrets, which in turn
->  	  allows userspace programs to access the injected secrets.
->  
-> +config EFI_POISONED_MEMORY
-> +	bool "Carry hardware-poisoned pages across kexec"
-> +	depends on EFI_STUB && MEMORY_FAILURE && 64BIT
-> +	help
-> +	  Record page frames that are hardware-poisoned while this kernel runs
-> +	  into an EFI configuration table, and honor that table early on the
-> +	  next kernel so a kexec does not hand known-bad RAM back out.
-> +
-> +	  If unsure, say N.
-> +
+Currently /proc/<pid>/coredump_filter determines what types of memory
+are included in a coredump produced by <pid>. This is fairly static. The
+coredump server has no easy way to configure what memory to dump even
+though it can figure out all the necessary details to make an informed
+decision.
 
-Do we want to make it conditional? Maybe just for everyone with EFI_STUB
-&& MEMORY_FAILURE?
+Add a new COREDUMP_MEMORY_TYPES feature bit. If the coredump server
+raises it the kernel will dump memory types raised in the
+coredump_ack->memory_types member. Zero is valid and causes the creation
+of a coredump that just includes the program headers and notes but no
+memory apart from the mappings that are always dumped.
 
-Where 64BIT limitation comes from?
+struct coredump_req gains @memory_types which is set to the default
+memory types that are included in the coredump. This can be overridden by
+raising bits in coredump_ack->memory_types. It also gains
+@memory_types_mask which contains a bitmask of all memory types the
+kernel knows about. A coredump server may only raise bits in
+coredump_ack->memory_types that are raised in
+coredump_req->memory_types_mask.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+struct coredump_ack grows too. If COREDUMP_MEMORY_TYPES is raised in
+@mask the kernel dumps the memory types set in the @memory_types mask.
+Zero is valid and dumps no memory apart from the mappings that are
+always dumped. A coredump server wanting to add or drop memory types
+instead of outright replacing it should simply copy
+coredump_req->memory_types and then mask off or raise types as needed.
+
+@memory_types must be zero if COREDUMP_MEMORY_TYPES isn't raised.
+COREDUMP_MEMORY_TYPES requires COREDUMP_KERNEL and an ack of at least
+COREDUMP_ACK_SIZE_VER1 bytes.
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (6):
+      coredump: select memory types to include
+      tools: sync coredump.h header
+      selftests/coredump: simplify the refusal tests
+      selftests/coredump: test COREDUMP_MEMORY_TYPES
+      selftests/coredump: improve coredump size negotiation tests
+      selftests/coredump: test failed handshakes
+
+ Documentation/filesystems/proc.rst                 |    4 +
+ fs/coredump.c                                      |  114 +-
+ include/linux/coredump.h                           |    4 +-
+ include/uapi/linux/coredump.h                      |   70 +-
+ tools/include/uapi/linux/coredump.h                |   70 +-
+ .../coredump/coredump_socket_protocol_test.c       | 1224 ++++++++++++--------
+ .../selftests/coredump/coredump_test_helpers.c     |  279 ++++-
+ .../selftests/coredump/coredump_test_helpers.h     |   26 +
+ 8 files changed, 1274 insertions(+), 517 deletions(-)
+---
+base-commit: 19f075830e5d874749f55d837fc4e8af98df0559
+change-id: 20260821-work-coredump-filter-1f9f04ded416
+
 
