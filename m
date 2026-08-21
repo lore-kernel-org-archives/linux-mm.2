@@ -4,83 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DCE5C5DF89
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E91E9C5DF89
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83BB66B009F; Fri, 21 Aug 2026 10:18:41 -0400 (EDT)
+	id 0E9B26B00A0; Fri, 21 Aug 2026 10:19:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 812C66B00A0; Fri, 21 Aug 2026 10:18:41 -0400 (EDT)
+	id 0C12F6B00A1; Fri, 21 Aug 2026 10:19:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 728B56B00A1; Fri, 21 Aug 2026 10:18:41 -0400 (EDT)
+	id EF2F56B00A2; Fri, 21 Aug 2026 10:19:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FBCC6B009F
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:18:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D58D81C0141
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:18:40 +0000 (UTC)
-X-FDA: 85125482400.15.C837528
+	by kanga.kvack.org (Postfix) with ESMTP id CF5E86B00A0
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:19:04 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DB7B1C00D3
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:19:04 +0000 (UTC)
+X-FDA: 85125483408.03.5289BDC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DE0D920009
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:18:38 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mCrlU9qn;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9E5C0C0009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:19:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EjZSYAWO;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787321919;
+	s=arc-20220608; t=1787321942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=25aRKT2H17E3+b7/M5uXvQXwb5OfRhehW7b7COK86RQ=;
-	b=8RZEHCOqOE61SZzVxIu5xRlG+k3Fccb1HFrFMMLcK8npbKx7+EZ+UbV6t3ARP6C8iaTy8r
-	0SzAgzbOypSrkD6DqYtjgyOImiXGYmlQiSONTi3NHf05wN0JIeSNFwnd+33io+7CqQ1Nht
-	7w5c7VxB9C8mhbI0g2UQ4E+FbnM0Zvg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787321919;
-	b=gnakmuMfdj+Ei+9nyWg35csl1CyxAKduc7Kgce3/Cfk2OnQayytM5zywsmVpoJDjKlRjBV
-	ScS2vyc/FE5boFHdJRrhLGFDFWif0NkJG8ZmIuqndAz44AKSOsxD3WYhmVkxKq2CcjOvwD
-	31xWGJ43qJMwSNk85NVeIkSn/nhZ4MQ=
+	bh=u2XbnGzR4oklypPgE+Viv5JNUn/D8iY5cwkY2Kqvw4E=;
+	b=bRU5sSjGCVqiVeAbyMCGLFgLV7HQ9Z1UzUqDrYhzyHUhZcXK1RZJCCG4dlVQ8XIPWyzcY1
+	z48/gwhTvxxVvuLCNEc2cHhFhEmv5na3zY3DFKFw1B7hNia5bS/QL9CdZvL74SNdLLavVR
+	YCJMEEKZxUHmtmZl/44fQBR64xN00Y0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mCrlU9qn;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EjZSYAWO;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787321942;
+	b=FIePNWuWIzpfN+2byzzRlSRMMDba5BweAQWZuRJMJSXDaIpVPUv4pkK4Iq9Utl+7bvNioI
+	4s31iZq26QLSWORg9zcpmbGyg18WXZY9HH0L04b4CbllKYVzqaU/+BqGArcp9Bzu3Z/sW9
+	LS7qpZ7ztK8kdPe5mCjTH//OEEPfEpI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 007D1413DF;
-	Fri, 21 Aug 2026 14:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9141F000E9;
-	Fri, 21 Aug 2026 14:18:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ECF1843384;
+	Fri, 21 Aug 2026 14:19:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841651F000E9;
+	Fri, 21 Aug 2026 14:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787321917;
-	bh=25aRKT2H17E3+b7/M5uXvQXwb5OfRhehW7b7COK86RQ=;
+	s=k20260515; t=1787321941;
+	bh=u2XbnGzR4oklypPgE+Viv5JNUn/D8iY5cwkY2Kqvw4E=;
 	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=mCrlU9qnLmCDoMjoYWy2y0kteLWFvhGmH4vE46dQiE+IlMGWWq8McDNVEzD9elWx3
-	 juv4qEb/MC/XNLRAklmjfLHtMHpTTvfP7oFgME+Rhl27NzU6spRtGwNmfWK4EEyMqT
-	 9t3bYLGlSPN9dEP7JKVf14K131nuy0Q27ZhwLWf09RqEwaiVKjfypqlxLrzG+VZn9V
-	 rO67iYJpwiEMYMyxDQi1csCNK9oWDQzBQMnxI41NR1WVZGTFszMidaaQcA26nTZMBo
-	 6XmAJt7zrmAJTzv9Rogz+Ve8y2GeiqFxsBr2iucOrW+9M6FNqTwvnWC3DRDfNM48FF
-	 BQ9vTfkzJLoqg==
-Message-ID: <cade8707-26e7-4f8b-a056-95094bf8756c@kernel.org>
-Date: Fri, 21 Aug 2026 16:18:31 +0200
+	b=EjZSYAWO28454RqSV7v89nBk8+YcOGyf5apbjjM7L2GvqAzQasrzCMMMPrPqh6tN2
+	 kRkIwcYM3KXd4a+eGEgaAWwNlI2c8Y/h0qkgIHqXQpCSlALAxzpd0dvHnfUQMALz9G
+	 Ru6tS0xXakGh3n3iyyQu9LPwr0J3OsSMOLtLQMOlDhR1sNYJRUWUQcBDQ8gNrGZAax
+	 ILBqWcxTxG9RrLGzzIIAaUFx5QDCqQn8LBEJIBTzQLpdUcdLNhT+sUmmzLFINod50N
+	 uHQSN1V8PHPDs2C3P8ltB4+y8NhkRl3G1uNFasRFtBVjD6wXe1GDFLFCotx11glIuO
+	 KpEGF8Pbq8DDA==
+Message-ID: <dd8c34a9-0e09-453b-88e1-0a5511816627@kernel.org>
+Date: Fri, 21 Aug 2026 16:18:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [RFC PATCH v3 0/4] mm: enable lru cache for smaller large folios
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev,
- liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
- mhocko@suse.com, npache@redhat.com, rppt@kernel.org, ryan.roberts@arm.com,
- surenb@google.com, vbabka@kernel.org, ziy@nvidia.com, hughd@google.com,
- ackerleytng@google.com, usama.arif@linux.dev, joannelkoong@gmail.com,
- hannes@cmpxchg.org
-References: <20260818225904.55236-1-baohua@kernel.org>
- <c8287b5a-8f8b-4110-ad47-996842f01bfe@kernel.org>
- <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
+Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
+ PROC_MEM_FORCE_ALWAYS)
+To: Jann Horn <jannh@google.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, Jeff Xu
+ <jeffxu@google.com>, =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ linux-mm@kvack.org
+References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
+ <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
+ <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
+ <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -126,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
+In-Reply-To: <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rzxm1q9q3ah8s1fojohj8pspmi4t74r9
+X-Rspamd-Queue-Id: 9E5C0C0009
 X-Rspam-User: 
-X-Stat-Signature: wk9zampa6w58jbhdoro9rpbowqgwjshe
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DE0D920009
-X-HE-Tag: 1787321918-301830
-X-HE-Meta: U2FsdGVkX1+uypnym62Ws5hHO6z6sVgM1JcsubatOhPi8uTkDlDb2VTsaooNpSFAxb7WfoXMu+oQ64vLT9zRt0LN5ytT4R3l0/r894SAUtq8w69SJxOXI0Aifqk35DJ3iReUE2abw47BuFuIaO2qtr7egnbf6xoTpsuyti1chK1uvf06CqgQbONmsz16YRIoxkMl2foVYqQtd/6B8E0DPvBU3eveEwhl/yOv9QU2npel6499hkyPHmAtR/Xbyly7634LOxtJgaSMJlrtoC795Wo5Bqtq1ocV2yddeVCobZiO01WKZSI+sEohMwMf28eg3sFEIcuP9Cne0YjSSLd0aBLh52tYzwJjs5SyhoHY9rsZZtfOdAMsrLdQR/meYruj5fCQaPp3qp/MXsoYak0irbbBP15tnS7riqGhMI+qWDPgCRIh+kbrxjLoMF69hmleNWjxdsaKP1nyHJlry6Zminr+GvolR4qpIOmRF2HjPxG+A35CQgy15WmBY+e5cIk5o40A3w0OUmratdS6GxczOY/8/+71V0gJ2nhekvV336u7SJbU5cfZJPRhknyNoCXsSFn8V3mWPdfKZyyzEwGt/8etRmQvUFkeh9Q4MWCwgtrYH08z77o1JG65KZ6K42iC2ECEXWzt+dvMXqQ4Nk5rcSTmmSraaLxbZmccHs/pb9SHOoJGiE5ws46PAWzOM8LJbVTxL0jiCN1C9qwkE/iZ8aMRrnCZg13ULTvccCXKun2e9A1YyYVv2Js1CPOF+2m2Fbvb/Atr2e+0Srj8tsyKpFBMCo4nCM6sCpQyjAWnnknYmQdU5a3ZVyBNnugTDX5+7nuHBz+9/g1xXwYqCHIgSbinIwFBGfNfcx32ojl6FMiSyCcmaZwsyAxcyLd9hZI74DN8bidwR8kKtw9ZT2wy9owalServDMRpuzk3pwPuqA0+0qLcjVosJs1rNhaFHrWOkpf0eGefN6eHMT+Y6W
- oNIoT5zQ
- nw5SzPnHEl5eSxbnO51c4IOludj0NTO3prV7fV20Qf5wivASh4MjmKQ2nTZzeJH36GxpRpQJ7TxTjZ+ADMm1ELQtmadCZoQleT9pj/ZXGMufUE1Z3itikFk9i1eujpewedHEpJRD+HcQwwXzwue0egoOLeogLE6lO1h+1jioj58W7kGqmCDnTJcud5O6pQgOKAvhq2jnfhNtb/zMHGoPEbb/pL+DVbiGQoppmKjXfjyLdMGgOCHrG/nj2xEKJ1Dh8oRb22Ovkcnk+5m0j560KB6vI7xdUeW8im65FRbuzwUPEpD1gwgwL7rOAPA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787321942-394071
+X-HE-Meta: U2FsdGVkX18FTxM7fuc8beK6G5eyfcjf32s0G/iqY/FY937VTQT7R2JAVbcdIay0bVOcombGTg8xbpqXWrzRWkpXdCCNM66jMSeoz4J7l6kN735B5IA3ljKc921KxtMNdACUEwIrZls7eLn1LiDraaqL6w6E7+2w8g8k69wOV63wo63X1/gR71tgtRQ58iSopMps/yr3vDg3MZua+iukSfF8ruB6xirA1Qv4pBOkMdl0QNkmtGblRuX+iiSzE0MBwZXDV82QuiLkjgfGZHqCthWPQCO9WiRRVu5BfcnAQlqlhfTxFfS4g10GybnHbwkCj5rZZ9oC4/wTVW+jRu7eDNdc+a5Z7vyjbvAMzxO+2i0KaoNdabHrV2OUZg/bpt/ejCDlEn3+Zi/PWoXxtpe6Wha1dZuB1y6VuPJqbHc1vNJ8Qi0PFOLQI48dPPiD4iOEz7NSPdKeJKpBjQ/KWMIQMjvnVmt95HWcZh5jILwRrepZv2lLuZvGWfLK4Z4it7x6/xfuHgUOoAGqoitJHC2WuUjl61z6Br3hJg1WeGQ7y9BDaGQZzeFqZPqeSybv3K7jOyLJ8rtiHsZzpgWcRE4D0t0/Yj5HWu8VimlJvAtVbuX+FrjVM5imZ9/oprlQv04saIxfrLpJRip4OX0STxQubKxOA9p55IA3o12NCZuuqYhiummkdjGjWFoIFDxCY82IFsDrWXrMJ9f79QO1i+qbR580UlG72gFkVI0Sf4EKx/T6/cvrD8/Y6fHRJzU5PxxUKqxFRgszZgFevle+syWh0JUxduAOO5DRq5BakMt9e5bvlPR2u9uL/WtETjsfEhuGxQtae0ejDQ8NdMdSHOCuKU3bbwW14j6uDzgva/ZPmbRD49DD9tWkvCNGHm8hytGcpzhAELdVZ+zVP9P6U/6X8mrkzytruwjCOg6H4Mf4jpLJmiI1usbqdKzJzrBAFCmvPZcoofmjYbq5K9YBe2l
+ caPA5KpJ
+ KMTaf7F9v9A/Oanq9kKjXlz+fl11hHG7vXcod8moPdCUUw1iT/NI4bHJTJTPsfIbDZn5AZwdeOHrtl5se5BPza0tqTeeTKVwe0pb5O+M3vpcXw1XkJo6SM/SsnCheDz5LVWpXHukUl3pkY/JMMgoydDny7V3fOtFIG4c0NQIVu6oRJyW7K+fU56TyHiELh9q+9DAS1VDYzP8u7OfFT0SUn5SdqzSxbz5nVqH2yr0QeBTTZEZS+IASDTJ4JgAPtzJbPnhuGhTSiQM5Dd5AENaORds2GYm83XrP9W0QLYj+x/3Al/m3Ir9n6bZ5ghxmGfR8ZriUG/sJKOViIiL9ipSBo8KijPVVaYQmK2zpTesXDJT8NcZQ5CTud214i1N+y+e7/YIf3pxHTJreKjmK4zbTk/mdcgG/Mrljl3Rz77oJvHBFIBydfA7gVVwFGE/0+JDu3h25dInIy28SLA0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,46 +151,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/20/26 22:18, Barry Song wrote:
-> On Fri, Aug 21, 2026 at 2:23 AM David Hildenbrand (Arm)
+On 8/20/26 20:44, Jann Horn wrote:
+> On Thu, Aug 20, 2026 at 7:22 PM David Hildenbrand (Arm)
 > <david@kernel.org> wrote:
->>
->> On 8/19/26 00:59, Barry Song (Xiaomi) wrote:
->>> This patchset enables the per-CPU LRU cache for large folios with fewer
->>> than `FOLIO_BATCH_SIZE` (31) pages. It also limits each per-CPU LRU cache
->>> to at most `FOLIO_BATCH_SIZE` pages to avoid negatively affecting
->>> accounting and memory reclamation pressure.
+>> On 8/18/26 21:51, Jann Horn wrote:
+>>> If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
+>>> good opportunity to block a process from overwriting read-only code in its
+>>> own address space through FOLL_FORCE writes via /proc/self/mem.
+>>> The security_ptrace_access_check() LSM hook is bypassed when a process
+>>> opens /proc/self/mem because this is considered "introspection".
 >>>
->>> This is particularly beneficial on systems that use relatively small
->>> large folios. For larger folios, the benefit is likely to be smaller
->>> because far fewer folios are expected to contend for the LRU cache.
+>>> This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
+>>> that a process cannot create executable anonymous pages.
+>>>
+>>> PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
+>>> accesses are only possible when the LSM allows ptrace() attachment; but it
+>>> is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
+>>> environments running lots of third-party code, such as Android.
+>>>
+>>> So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
+>>> such "introspective" accesses.
+>>>
+>>> Signed-off-by: Jann Horn <jannh@google.com>
+>>> ---
+>>>  fs/proc/base.c                |  6 ++++++
+>>>  include/linux/lsm_hook_defs.h |  1 +
+>>>  include/linux/security.h      |  6 ++++++
+>>>  security/security.c           | 15 +++++++++++++++
+>>>  4 files changed, 28 insertions(+)
+>>>
+>>> diff --git a/fs/proc/base.c b/fs/proc/base.c
+>>> index bec6197329dc..3dfaef49bb70 100644
+>>> --- a/fs/proc/base.c
+>>> +++ b/fs/proc/base.c
+>>> @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
+>>>  /* private_data for proc_mem_operations */
+>>>  struct mem_private {
+>>>       struct mm_struct *mm;
+>>> +     /* Was the ptrace access check bypassed due to introspection? */
+>>> +     bool introspection;
+>>>  };
+>>>
+>>>  static int mem_open(struct inode *inode, struct file *file)
+>>> @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct file *file)
+>>>       priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
+>>>       if (IS_ERR_OR_NULL(priv->mm))
+>>>               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+>>> +     priv->introspection = priv->mm == current->mm;
 >>
->> As raised, there is this problem with collect_longterm_unpinnable_folios()
->>
->> (see
->> https://lore.kernel.org/r/20260806-lru_cache_drain_for_folio-v1-1-c6287d295e99@kernel.org
->> )
->>
->> whereby we don't know how many refs we actually hold. Certainly not 1.
->>
->> We might have to wait for Hugh's cleanup to handle that cleanly (and avoid all
->> the other LRU cache draining).
+>> Is the feat that the fd could be passed to someone else that would then not be
+>> detected as introspection?
 > 
-> Hi David,
-> Thanks for raising this.
-> Yes, I saw your comment and took a closer look at it. I think the
-> best approach for now is to leave that part untouched until Hugh's
-> patch lands? 
+> Yes, exactly, that's the primary reason why I did it this way.
 
-I think we should not consider your patch set until Hugh either resolved it or
-we have a better way to handle draining. Building on top of this for large
-folios now just gets painful.
-
-> We might end up doing some extra draining in that case,
-> but that's safe—any value greater than 1 might not be. 
-
-We'll unconditionally drain all LRU caches, which is precisely *not* what we
-want to do in the first place. :)
+Okay, would "opened_by_owner" or something like that be clearer? At least
+"introspection" is less intuitive for me.
 
 -- 
 Cheers,
