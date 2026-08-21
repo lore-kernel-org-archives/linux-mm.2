@@ -4,100 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E1DEC5DF81
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 02:16:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D28AC5DF81
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 02:23:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E847C6B0095; Thu, 20 Aug 2026 22:16:31 -0400 (EDT)
+	id DF4E16B0095; Thu, 20 Aug 2026 22:23:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5BE36B009B; Thu, 20 Aug 2026 22:16:31 -0400 (EDT)
+	id DA5726B009B; Thu, 20 Aug 2026 22:23:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D71406B00A2; Thu, 20 Aug 2026 22:16:31 -0400 (EDT)
+	id C6DC16B009D; Thu, 20 Aug 2026 22:23:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B3BD56B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:16:31 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B6734031F
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:16:31 +0000 (UTC)
-X-FDA: 85123662582.20.73EDF15
-Received: from mta0.migadu.com (out-226.mta0.migadu.com [91.218.175.226])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 32DF21C0002
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:16:28 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wq8oJGAk;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.226 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787278589;
-	b=bl0L/GKyb8UBo9LiiDN3ZU4rRE94fJ7hHEUut7y4Nie8tOIzeFU85OMoEDQxxjvV0IJPbw
-	wvIe9D0hivYfOAcziDHYTGKC2ih3qccL2OGfj//np6Njs1Babmd58vW0ah3VyuUfZNILz8
-	cJ5z2zUPR/8myWuthKccPchhR5vmfnI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wq8oJGAk;
-	spf=pass (imf20.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.226 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A032E6B0095
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:23:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2101BC0303
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:23:49 +0000 (UTC)
+X-FDA: 85123680978.21.AE20192
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7B9CB40009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:23:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FKOdp80K;
+	spf=pass (imf01.hostedemail.com: domain of pjw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pjw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787278589;
+	s=arc-20220608; t=1787279027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=06VJ/cKIWm4xTkcOWePNqyqX4k9F0vE6a/UnptulOyM=;
-	b=f3CkKPcvUBR7kpvv6RrccUQLwgmJVjMZWqle+VD9QA4OG4WqzE9YWXf/LOmWsX8iEVgmHL
-	fQ1ahujZx4Rd1/kv02Fm0hfvaDmtRqsChXynSqbbjLviKgK/IDdKdg/l9i/8fDinmRa/d3
-	8NLjxv/jXEnO8lBd0hKokGurji8Ks7M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=cQfTML8jAwykpKy6eZpPxbBffY9ZWjQHa+xVmDcrmew=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787278587; v=1; x=1787883387;
- b=Wq8oJGAkepwUhI9Og+QnNlfn63D+3A4EDQ3ua4Sr+Dn9HkM3xa6pKEAY2koWxPRUcnAIKHUK
- D6rw7hnJmdg/508lDpEccAzQnVyy8lMtzc4NKqHBWYUmnmuv+Hn+6+ZHvdgBYF9BTBnHqrtF2xP
- Hfz7SAtH0j275FFo003t7erQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id 2ae2dc645df94b93;
-	Fri, 21 Aug 2026 02:16:27 +0000
-X-Mizu-Trace-ID: 2ae2dc645df94b93
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Steven Barrett <steven@liquorix.net>,
-	"Jan Alexander Steffens (heftig)" <heftig@archlinux.org>,
-	Suleiman Souhlal <suleiman@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Oleksandr Natalenko <oleksandr@natalenko.name>,
-	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)),
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v2] mm/mglru: preserve inactive placement when enabling MGLRU
-Date: Fri, 21 Aug 2026 10:16:06 +0800
-Message-Id: <20260821021606.877330-1-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nwj029qvfIuS0n2IlGGdFsymc671fa/erueghYr3m0A=;
+	b=2jYZ1Wk0J7ArGPRR1oByjTyVQRhDaAdYj62XaF3e5yuI+xCaT6kETIqM81qXPNXFysi3z3
+	mQBaun6aVMguxPN1n48Jfn2WCPRvP8F1VADeGLeMb0JRe2OFa5+tiH1sKx46q/RYhqgGF8
+	K1il4tBaSqrdgNLH1jIrVknEuTvAYn0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FKOdp80K;
+	spf=pass (imf01.hostedemail.com: domain of pjw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pjw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787279027;
+	b=eYCts8k6sPa4YF+Rs5lO9FpaRkyB9aKVHevehAVFVuAMjm5MzbCZrQuQrNs6Sins9hZm+R
+	2gawhLpDQzs7BJSW4ulBz9yVLqi/x8YpBthSHbrDPlJDJmwbIYaOqXi8Q0guZ6fAFRhfS3
+	wdpBiueEuAI2wZyfxu+/yxTth/c5BMY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E251A40179;
+	Fri, 21 Aug 2026 02:23:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7941F000E9;
+	Fri, 21 Aug 2026 02:23:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787279025;
+	bh=nwj029qvfIuS0n2IlGGdFsymc671fa/erueghYr3m0A=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=FKOdp80K1NCdExfZ1tcV6jarRclI8uxefHf43o0VfsGMY7h6gHGbb2Rx1STpUXm3W
+	 ZqllCnvzbL/8/x8dercSC6kVEvqT2XPEZGyYrbE/rwLPpSiTtbtKl/4vEvNiotiM+H
+	 /ppk8euQ1OD384/8sy5svQj87ViMgNLjapwxeRn6TmnDbBv5i/zXQQ8t/325nQ2NjH
+	 AqolJF6RXXh+L7bpAQA8mNzojnq//qqj9QpSOI+LWw5dQiVChms/JXaexpX7c34u1l
+	 e++Owow0HeRcTCq1jG3DhsIBIx9wYnOEK/idwAIO06GpBh+b3diywe7T4A4oLu4hfJ
+	 p6mVte1Qi/1sw==
+Date: Thu, 20 Aug 2026 20:23:44 -0600 (MDT)
+From: Paul Walmsley <pjw@kernel.org>
+To: =?ISO-8859-15?Q?Thomas_Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+cc: Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+    linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
+    linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+    linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, 
+    linux-sh@vger.kernel.org, linux-alpha@vger.kernel.org
+Subject: Re: [PATCH 07/15] RISC-V: Remove AT_VECTOR_SIZE_ARCH from UAPI
+In-Reply-To: <20260302-at-vector-size-arch-v1-7-a11f03ba2ca8@linutronix.de>
+Message-ID: <236a0edb-76f4-a28c-175b-f43994310a9f@kernel.org>
+References: <20260302-at-vector-size-arch-v1-0-a11f03ba2ca8@linutronix.de> <20260302-at-vector-size-arch-v1-7-a11f03ba2ca8@linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 32DF21C0002
-X-Rspamd-Server: rspam10
+Content-Type: multipart/mixed; BOUNDARY="8323329-746012605-1787278993=:86110"
+Content-ID: <1dd06b80-a066-feec-b1fa-addb8fb6fff9@kernel.org>
+X-Stat-Signature: 7wgn6hpunxgzg9637boansjuzco9kxay
+X-Rspamd-Queue-Id: 7B9CB40009
 X-Rspam-User: 
-X-Stat-Signature: m1ujwyzkswkmz6p76znpwsdkpfskd7pq
-X-HE-Tag: 1787278588-19399
-X-HE-Meta: U2FsdGVkX1+jJYJF4ylntbbhtqCz43SazcpjHMTFwUuLjY/KUanL0PjZIJigmo/kJBmLCF0bveR0ss2WOLVYFpyd8buNtSZ9nBqpy8xXfzAGhKQh13/zXoNUzu6S0Kf+745LdoTcF5VLhQ81gDV2EzQmpBwuFytZi1ir/OgQaH76TBkR9Onmey90hzytASjaR/Od2CK57Uz/1p/YBwsEjYskM4ZCV2xZt5feYYLPsP1n1GzS8Lk+2zyNnnEwSZf3xoUUaW8OiVlkkrpb/xlokRCFzGgDTPkPKUJ3CHlIqZkRA0iYxItMrWOxL+T7KHeJLGbdvz2ajQkKbZZre+Nigq85E12J0+7i8k/GdzVMNF6InYzARN0EHgyHqW4L83WEHdsC9JLU+3ljOs+ZQzxOOdLXQ47SZ4eae3YhGM8oNg4YqxGyNlMtrLE45DVpwfFblFpYPBCNrh5+8eRpPVk5Jx16c2xH7taB/mX1FKBDByYMP/7UDQd3BNffu99ggwNF/11uI7S9w0kxfv0mOvNHEVO5ExzK0mQhxY/HBGlKCAERS9NiAYGMsAXo9ltvw1jb2CH6p0mezLwzb1ypj9BM+TCWPvWTIm8vxCk6RBBzi8ayblMvyzqsBhZjowhvH3rqZhZrvBqSK1rQlg9CbAsR0wkYLfo0zlaKJpojyK8SnSQYg464ZML9Suc/2xUtD/LJDIf1zUchfA+0ntG/BTCrgLe4XU6GVY1EixdoG0TTr2pFN89YCkePifDaD/imZYa/+2FTdiWoUmIOBBnpU38YngzY5b61FqLJjEDFcsK01FrdCYWFuImXLpT0N72Oq6+3sddsINFYkbpTmiC01q9KVZsUCSuGHNTuZwzdzLUo5m0OVkjLywD6oXIjfbXK+KuI2i4u6VoTPZ2LMST4iyGMpk3tEMmOoLPXKgByh1tMTm08Si2RiQ8imGjYf/YuuaoiZzx+KTP/mepoMJMZgUz
- PQr7aZyP
- IWys2CQRjAl1sfU1SHW6EEQtj7ewfaPVZ27DkhpTl9wDvnpQZwtIT86t61trMHMzufy9bFDohv/wdh8vrQcsSkg92UBsoLCLozWXP0eBVPuCuVO9ls+bjtoS3w3EwsLRqnfg4s5m0chCF8BNp+KvGZURgbDTlBoaiLODerFy5V45vDHqlnHqDnjC/udyb2iTXTZCbHTqLsnETt60JtmyOCUZ+s87yGF5V3JVEiQnFDIkWddaJdiJmxeNSZDDbPnoLhKGlZS3emzIsG0v0mwQDVnAomQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787279027-810512
+X-HE-Meta: U2FsdGVkX18pQtWqlte2fVYKTryKrIw+VZ57aSmTrs/jlt/PvtzMUCf4g3H31bV8zK8aiPLzEmZ3093hgp09rQ+eNqwAZeuOXnsqCKAUITapSMewANHcUhXYZdDjTpVSOPqb7qjSFTQArZKAhQmxe0FX0kqINzoe6UpmIW1tB90/99EFoQ7CLZaGKZbJHEY5HRuEVCtJ4+anSFZqmLiugR5IVmSKiTutsSLi7pukTjAHaANo3hBFsTyVwnOGnFZa/7OiDd2tRSVKsw1U5cvtQQolnsm+EeyAa+FdcclQ3oI5XWbVsrkIMe3vOqQC7KXvqWwxrGJyrN7y88YVB8eRcOVghMuAHCQ+haIsn8+8cxIW+hLBBKv8kKRagsCX2c/byepUtcwAV2bKpXdqdLvxuu9stHcb3lZAu2u3XkgJPPQp4PunKki7WCzC4SCobxTIl1XIjyt4TwuSQG9lO1K9MZn1FlSzHezkh1T5+8gSizU5cD/rwTzm+SHmMoT/YBCGaAP4G16bKfRGPMa+j7pAD8NyNpMGrwH51hFNBw/5neKbmoU6WQ0WA22HCU7WyjUCM+2zRlXN5RiiodLdWNqSbImFyjQz5EWW9ACoK4FSpFQT44wZ06J3p0Pwl5DRyp11HnQPl3c5d9hxZs00SLctB8ujc+jRI0l+qm2+Fku8NpYZXlFjT2q6b8QvFsH5T0iRDtIrehtqM0UWcQ9VAdItC2Xb2mwrLHsidbz1On108hJfW3cR1ixcZCIgpPqCFBci80FSdd6xFZLsgEsD9tYi/n9E9CM+1Sv9J26IQtxHDH5KzZitA1ZuYTIpdXNkOJKMzqeKFXgj6y/LBzw1fHUK6deOw+a9qwD7Lhd6Fx3HmIRvcAAZvMcH/G/V90X5HxF9bfWebzm97C89RamGXFzr8BG/EuY4x378wxhi5pm/zfR2aVsgazeKKnev2m1Zb+XUzRYDmhmcN7KiEhjA7dk
+ DHnQR/Nn
+ 0jeWoRJ0HN4hu5Q4pnkIYSFBpPMAtHOhvg+2YUg0oD7OncdjH5epCrWMW2jxXgTtNqI9mQH+B7PKnG3TM/6AoGYkJGdiAJn5VadssVr0KoK2qKrG/uGwW/B48/jD5uF+zSjyBeTV2bB6jZAjk9PA0P73BJqZKFC8wWFgeAKOLZZbNH0ka0WOv744LMlXopW6jqsoFlGsjBYhumr8/9jtuktr04kZrOQExTzu04bZxdVrhJIrV+wnLkInA2q8C/AwnKAiIVrgI0vqPTPFzIYHUPbZxA/a3+OQo+apPbz3N2vJTb4i50dpKYHOagKgDdVSWpIjHT6Sb0ucdcqfedWoxaC+0/XxQn2SGabvcaOw760sA3fMNrui7PpF/bT5xvNTaeq576xxubZx26PRc8Q9YsLN28d+de5MWiy3zbeFdfVD0luFNyBhp+APSkKml+fL/qSbWfVRp9TtyOkojtoZL5s8R7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,87 +95,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-When the LRU is switched to MGLRU (echo y > /sys/kernel/mm/lru_gen/
-enabled), fill_evictable() re-inserts every folio via
-lru_gen_add_folio(..., false).  With reclaiming hardcoded to false, an
-inactive anonymous folio (no PG_active, not in the swapcache) takes the
-"gen = MIN_NR_GENS" branch in lru_gen_folio_seq() and is seeded at
-seq = max_seq - 1, which lru_gen_is_active() treats as active.  Its
-inactive placement is lost and NR_INACTIVE_ANON is folded into
-NR_ACTIVE_ANON.
+--8323329-746012605-1787278993=:86110
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <c4da6fb9-7dfb-d0d8-ef0a-6c21140cde31@kernel.org>
 
-Pass reclaiming=!active so a folio from an inactive list is seeded into
-an older generation.  Folios from the active list carry PG_active and
-hit the first branch either way, so they are unchanged.
+On Mon, 2 Mar 2026, Thomas Weiﬂschuh wrote:
 
-reclaiming also selects the insertion end in lru_gen_add_folio():
-list_add_tail() for inactive folios, list_add() for active ones.  Both
-the legacy LRU and a MGLRU generation keep the hottest folios at the
-head and the coldest at the tail, and reclaim takes from the tail.  To
-preserve that order the folio must be taken from the end matching the
-insertion end, so take inactive folios from the head and active folios
-from the tail; otherwise hot/cold would be reversed within the
-generation.
+> There is nothing userspace can do with this value. In the kernel is
+> always combined with AT_VECTOR_SIZE_BASE, which is not exposed to
+> userspace and also changes from time to time.
+> 
+> Move the symbol to a kernel-internal header.
+> 
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 
-Tested on x86_64, next-20260812, 2G VM + 1G swap, ~1.5G anon pushed onto
-the inactive list before enabling MGLRU:
+Acked-by: Paul Walmsley <pjw@kernel.org> # arch/riscv
 
-                         Active(anon)  Inactive(anon)
-  before switch (legacy)        2952         1548792   kB
-  after `echo y`, unpatched  1552052               0   kB
-  after `echo y`, patched      15144         1536636   kB
 
-Inactive file folios stay inactive either way (NR_INACTIVE_FILE is
-preserved).
-
-Fixes: 354ed5974429 ("mm: multi-gen LRU: kill switch")
-Suggested-by: Barry Song <baohua@kernel.org>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-Acked-by: Barry Song <baohua@kernel.org>
----
- mm/vmscan.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 94fc4f25e99f..c17ac77b08a4 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5311,7 +5311,17 @@ static bool fill_evictable(struct lruvec *lruvec)
- 
- 		while (!list_empty(head)) {
- 			bool success;
--			struct folio *folio = lru_to_folio(head);
-+			struct folio *folio;
-+
-+			/*
-+			 * lru_gen_add_folio() uses list_add_tail() rather
-+			 * than list_add() when reclaiming is true.  Match
-+			 * its ordering to avoid cold/hot inversion.
-+			 */
-+			if (active)
-+				folio = lru_to_folio(head);
-+			else
-+				folio = list_first_entry(head, struct folio, lru);
- 
- 			VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(folio), folio);
- 			VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio) != active, folio);
-@@ -5319,7 +5329,11 @@ static bool fill_evictable(struct lruvec *lruvec)
- 			VM_WARN_ON_ONCE_FOLIO(folio_lru_gen(folio) != -1, folio);
- 
- 			lruvec_del_folio(lruvec, folio);
--			success = lru_gen_add_folio(lruvec, folio, false);
-+			/*
-+			 * Borrow reclaiming=true to place inactive folios in
-+			 * the older gens.
-+			 */
-+			success = lru_gen_add_folio(lruvec, folio, !active);
- 			VM_WARN_ON_ONCE(!success);
- 
- 			if (!--remaining)
--- 
-2.34.1
-
+- Paul
+--8323329-746012605-1787278993=:86110--
 
