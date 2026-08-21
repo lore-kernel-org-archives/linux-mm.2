@@ -4,116 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11ADC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBCB2C5DF8C
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:52:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C22CB6B0095; Fri, 21 Aug 2026 14:42:06 -0400 (EDT)
+	id 7C8E76B0095; Fri, 21 Aug 2026 14:52:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD3BF6B009B; Fri, 21 Aug 2026 14:42:06 -0400 (EDT)
+	id 7A0286B009B; Fri, 21 Aug 2026 14:52:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE97A6B009D; Fri, 21 Aug 2026 14:42:06 -0400 (EDT)
+	id 6B6F16B009D; Fri, 21 Aug 2026 14:52:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8579A6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:42:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D819C0207
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:42:06 +0000 (UTC)
-X-FDA: 85126146252.14.EC6C2F9
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4EFBA100005
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:42:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Qpgb/ByY";
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 45E1F6B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:52:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C9F8B120232
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:52:21 +0000 (UTC)
+X-FDA: 85126172082.17.F2D38B9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 181E518000A
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:52:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rk6QCGUz;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787338340;
+	b=hPdULp2euM0nyETr3BaZcnm7u9DZk7V34/JxJp8OZLGJP2NTV9/8yX0Wqjauexo1vBe6VG
+	Kk6t/nVlb20nvYCIIR+NA9jT3B7EijhjXeJaw9viRQaNKs7PtGoKIpnO+abTSAJJ4RDRM0
+	IXMxsUd11Y7pdzWQWf3XOMhgGwEAM20=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rk6QCGUz;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787337724;
+	s=arc-20220608; t=1787338340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ZJ1gDUH+GzGBn6NOh4hEOLkLDX+Z7WrRip/EASVTmE=;
-	b=k/rNzeG3m8JnAOaF46BQsns9g0NEypbY93eYb43AFq8KTNph9vxkq6emdI7UHsSo9UQalC
-	qH7XCRVpbERtA/AE9SBXkDhl/VuR8EjyBK/Zf43aHAHdC092OXJvJHj8tVVi/AMw5G9kpI
-	AlrYIkqR3/ExRABUmu7Z0Y/jrIJtpts=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Qpgb/ByY";
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787337724;
-	b=TUsctfQFMOZi4URconZrx2lm914QoZxdF6IqbvIu1Qj/sEEXYcbBhEq8fWK7y7o+XX8tWB
-	mN8JLwFeqsG4jFpb8G7ZiHCjdbazgK3XHMSmPVhNebiNvh7sZzT28zeapCBRXsFwbV4dts
-	eoqGpGKCnQXBJwXtA2GlBf7AE6LYQ/0=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8f1e274ccb9so7133826d6.2
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:42:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1787337723; x=1787942523; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7ZJ1gDUH+GzGBn6NOh4hEOLkLDX+Z7WrRip/EASVTmE=;
-        b=Qpgb/ByYzEjePEx72w3th4K3pWs8/kKi2QkeqxdGyBjgzO6+Pt3BnYDkPfduC8H3Gg
-         GspheoCT0Zs/KPo8GOBbn8jSr1jvPCXX7OzZRNBtzDfmeWU/O1tHmpJWzjrPNJZyz9sy
-         ivydtyGDr/4PI0/zlz56SdHNO1y2YdZqKmFTPWH9TAQz2PPvZreS8U7d1UASzdbGL5Fe
-         0JPQ0a7F5BkIl4BpI9MMf6vToSb77JpbJxrHNSTQduRpVJBlt2F5wQWWp6f3nDLG4lZn
-         EPXJC1Ng6qszSa8wuZcoZQpcChb/B18SPZloxM6eIdMzhLOrTCsig/0X0bfPxQq+mLMv
-         U9+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787337723; x=1787942523;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7ZJ1gDUH+GzGBn6NOh4hEOLkLDX+Z7WrRip/EASVTmE=;
-        b=QhHmHbheeJJTHnCkcDpUoS5N9y80tNAvfd4tHeZ8isFMd+ScCy7/x0+yzOjcsy0Gpb
-         qIuvr/nI/SiSOXrtBbtF6t6Jb7hZdM+1le1fV2pStwHrRVUw98nnGplsJOo/IDCjuGsn
-         SXSQjZDru+mEa3g+03wZ//dikJsCaBEBFDMxA7JwgVDYDFZRFA2OHEw6hthxTQKHwMUw
-         xEydUlaL5EtkBwEkk3UsOfUm90PkG+BHy30OmyBtONtEt2xGX7rayy3Krb7tMZIOiw2l
-         y7fzbXTldEYJh1u+AhsvN4AI2/2U7j7CUWmGqppjC7u58cNzTdCJZV5TvJIwvhN5NaPV
-         xkNQ==
-X-Gm-Message-State: AFuF++nc8YFfHA3acxtEq9SiGbEzv84OVTZQczFtKYw6dhSld6nKDiZf
-	WDHC4xx/PWr+QVx2XWu2WTbhN2Vysc9brJYHYw1zDegPIAQtDXDQvhULUk2gBiT/7JM=
-X-Gm-Gg: AR+sD11qWgm88ILITrs3lT0ODjkbCgg952Oy/J5NS+QKar9utz/B4PUBAuU1nD0YjyB
-	wMt4jSniDcshWmO4/JxHJbUlsRmiQ84Gwl8ZJFuAQq/4GN6xRVqWwdPPWrNcXEeOt4JGzTGgOq1
-	Ewyd7Br4cNCW20xpsm2vrl+Z1tP5fwAoDxxr6+dgqPrwSlY79/agt1kdd7y6PVKHmlJsB2KqtZC
-	EtNEFOB7MhZO/UMLfB0c+t8DpDgdHkVm4Oa6IT2lUCbES+kiZIrrtQCDqeLsjbnAVknFXd54azb
-	2SyRGDNOeXyzneN5I1BhmGvP3LJwpPweC0zRUPuSF4xgFlx9PZLlWql6TxZymLF9SCvEBwManpg
-	sN830ricaX+mQqbazNqL9FgmR36eAIADoKQlEyEvtDc9p9dSUwvDU+27wDqoo5xLImPiJXcceUP
-	4Qf+tn6iNCcq+BqfTkOKxWMgU6uF+p9BxiLSg2KKYfG/e1XR4I5ZXrZncZi6w13GC+PE0xz4YT3
-	YGrd/KmkhXHLiIR6tNcQZ219ZfCnjoB2tcTw6+pp6HX
-X-Received: by 2002:a05:6214:f21:b0:907:5cea:2f00 with SMTP id 6a1803df08f44-90c809444cbmr84527006d6.5.1787337723325;
-        Fri, 21 Aug 2026 11:42:03 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2a2d62sm68350656d6.38.2026.08.21.11.42.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 11:42:02 -0700 (PDT)
-Date: Fri, 21 Aug 2026 14:42:01 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, sashiko-bot <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] mm/madvise: use folio_trylock() in the cold/pageout PMD
- split
-Message-ID: <aoiap-yBdPaM_YQG@gourry-fedora-PF4VCD3F>
-References: <20260821150912.183976-1-gourry@gourry.net>
- <aoiWZjgcitp0nSk0@gremlin>
+	bh=b1BHtoNef4td6Og2iN6g1HbZL10mPM2Ly/XyYiAnVCg=;
+	b=oAuZPCX//Qs7yoZGYCnCmgKaZhHzVUgK/EbttkleCpq6k5iIfTlHmjcHsfmv1X7acE2vTv
+	9NWPQYd+AbwfuvCwadf99AQ2tLj7Rm9FCmFiNzIUm/wy210wJGubrD0Kbv4JSdFiXabSmp
+	L6QueE5qegMtdnm6b+9MtW/T6SYVZzA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 27AB9414FE;
+	Fri, 21 Aug 2026 18:52:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FDB1F000E9;
+	Fri, 21 Aug 2026 18:52:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787338339;
+	bh=b1BHtoNef4td6Og2iN6g1HbZL10mPM2Ly/XyYiAnVCg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Rk6QCGUzCZBsasCr/5vVPikhT1k7x2I/nEl+6mwH3QqZ1LsZqAktAG9teYTJW/0Yf
+	 rQgob+ZL0jX4pwL7soVlD0N6QpwSGKyD/ixmIP/zx274iknFX2G+3qo1r1ekFrsPnz
+	 IThkxrEQPLRhMukqYrxLSenuQ3iWYu2HZ+PW97vI8/Ar6c2HoWQfaTsTX62UAv9348
+	 u1FoWSqxGLWXqPtmc0ncBX6onVTxn04mHQNzkB/r2zrJ4joBxRduJPW1rdt4J5hOwn
+	 KmRIWkYTD+3PRbVlx0NdK9o5eUgVGbl0a62Ev+k78ABMvBtZwY8p+YpcKo+1GbSdX0
+	 XEecZhcBdhdnw==
+Date: Fri, 21 Aug 2026 19:52:11 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
+ PROC_MEM_FORCE_ALWAYS)
+Message-ID: <aoibvf6CY99IXynk@gremlin>
+References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
+ <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
+ <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
+ <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com>
+ <dd8c34a9-0e09-453b-88e1-0a5511816627@kernel.org>
+ <CAG48ez2bZEV+3ww2x9XV_5vRPZ_3jU_zg6+h=BDKQ94Xrd3Tqg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aoiWZjgcitp0nSk0@gremlin>
-X-Rspamd-Queue-Id: 4EFBA100005
-X-Stat-Signature: g1tg6f6qcsmej98k8fut5s45xcdb7g1j
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez2bZEV+3ww2x9XV_5vRPZ_3jU_zg6+h=BDKQ94Xrd3Tqg@mail.gmail.com>
+X-Rspamd-Queue-Id: 181E518000A
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787337724-732884
-X-HE-Meta: U2FsdGVkX18gKb75Dn8UocUhCCJ6VA/+2qJ5vz/wqF2sJMRHrrbNWtAlwTVxiHYe5xe1Wd2pgrihIb3C6byAr4+P6zaGQQk1ew1BGs+/K9Lky9Pd5ls72Pnvq8TglXFJZ3OqMgX/hEcTIjoswIF/x6uBK6ZK8Er1ItVu1tOr6Tqp4qClE4gyTcG4G+gHqdxVoSIAuuZ/eK8IZ2KYlyghQQ2JAFdQpzgYqOPH4ezRoVOGLxxR+GtjTH9hmT+qhjnyolnh8O60C0NGom2duTeMtj1vztCW3mG5BMgXJrcs0R34aYeF6iiqVbWcmlpT4Qs7P78+XMJzUnZKaqRJsngOVk5ep3rLIakd5aSg0Idjw8lOcaD+noAcRy2io/1J+Pi4y1mspKgSTHkXhIpKIqL1uQTtjhXxnakj85G44KK46ArFb4JZuc6A7J38526CfpjJUXOY1GhgIyhiSmUSX4adRJwKr5uGbgu+AScRU8XqbLS2WXNWpTtkHEoM4zZlnq58tUScInBi+lUyWPd54uyeMlhxjJrKkEy93PKkcPJBCptPeydhJaQqpF4G2j5F6jgbs90jnMRvOpy8hovHZgv8qvLTkwi2cqgFQcxBp8HTAtsUjACte/VrD1gRpovN9Yc2mSUgVIASeElPa5kl7W69GhJRf5Ouy1Pu8oSgF4WV8wGAAaiGm47wp0WlZppw9RcYVaWL6Kt5OGVBS5DUZMSvz9YoDHsq8PGr2TeT8SRmteiRPF/4+v0gytIwlgQwJe7zB8L/THPWFvsrN6SE4zcCnaAHJpWPvg8TzfIEFj8nx1PuIK7WbU3D7lWWR5hvewL6vYj1KxyBMmjexwXGz/pl5x9tfm8g++Z++qDyngI8KBVHzTvVFvYr11thwXY9nY8kJOe2Sd0DkOprlRndYnntBTBtW2rJgHhmFKZ47gFLlkkegEflMKxqYOxu+hUbVCDj8rvIuXGSJ5TA65jViqG
- HGGzjtoJ
- Ys5Zo8eHqAJYwnsAGiez5tbcds1Jo9cX79l1VBLpNAgrTrRSpQkeSOroLmLqvY7aeIPG65mPD0zjoe1jYCgvYLzi9Tye1P1QohiiMHqlNq7RC00xd/JPwesaifu4/6FZKXvbIs8r5MAQEmWpRpjuGz6pptv1vDtkfRwbruIXuKdWWnANPdeetkWGiTzD5SRXt6bzXYFZSQ+NJu5iDnQ3K9Fuijt2dB/f84kjSYTobHVtogKwfSomJKJdpC0aOoyQHOBMVVkvDeODgxx9WJKKDFUHZ3QmCaoikbbN9R2fDShoqDhoPOXsNqUEhcVKLcsBGMrvtkEK58c1Msh0CrOWz4BUPaZbbVdL0Z8hLUfs0ienSRTHhK/V7hA7YGQ==
+X-Stat-Signature: 1ewmihrqoy7wid1bqcqpjq568o55xx8r
+X-HE-Tag: 1787338339-449045
+X-HE-Meta: U2FsdGVkX184KNDDRinE46wrgnRfMvYy5klaq45hwA3Vag1rLdhOi2B6KWy2p1oHh0snXkMPXBF6eDtyRGYcwG7U5NoMXa6HmHrtxgdsMxuuH3BF41qfkES3BUmZG+jXPqMvh5/lGKYSZIhDMuVrV3v+y5qYNpzAwvLYbx2daERTzb/fyRToL/qSlKpoDmgI3/Vu6r5D7bg3Uyp1J7l6gu53rO5iPKpqwiUWySuEtJUze+esG14frgTrUBalNDpqGWR3dk+aZEASTQrF5jFZoDvYfaEFdYzxjbuC1KtxmtBXZXt3J5dac+HnANhUXMMuu3WR48nYUg8+19jksJ7EAUUuXq5t0yOtqmywoBmCco+p9hvcYSw+fLK7wAhRSpr45jUFRMqj/l65IckVbKVM7WYooNLnB7/7+uW+n6BjYG9cucjYYbH55xYPUlUXtBT9KD33POfeaK6Z8lvCwqV+SXLx98bx8fQqZiIOwm6g0uYRKr8w47/vuelxXL0oM4goMUyvRfocZZLMd8hRcu8KiPF6m7ep+Sz9qH7rKIocKy3W10Y3/3FCJSZfQExRqtYXnJfn7qg+4DSOj8vErmb/ulNep5tjWrgtgzo0A2mob2AVnpgU5Fpc47PZMzfAL3te0VgqboJ/CVIzWBy7xCaaq57iPBDTXqLkWmle9TuBFrxvhnnp826N715VdskZLXMkxJY1bHqLmz1bRAUZ5xzcnWOifBlYhdFd14QGskX/uLaHyo3i7HF6Pg5fi1hyhHTmC0gVu4QgDl7ZD65Z6T5Vl+Km9x8O5BJ38zZVAH5+dxvRpLxZlRx1kP4/TQeB5J65jiBlHAp8vLxbs3hhVeZ7mv40BvXYAbAAheHJa+R0DOaQIAflC/On5AlKhWbn0VnOWLSrQuerjrePRvyw6PvYeog+8OZhQzINvWXEDt7FF/zXEb66S2f2bPC/BQjN8+AqwnJqkz0BkBzAleFE1TR
+ YNh3J9b3
+ vhqghOp2j8OaLjj8HbBftZSxzLUCxsvf7TwiZUdiy0XvzknwzlwxAYm4Ngime1A3L4AjpulYu2GYS2zk3rbHiKf5ao4/NPZHZwlO9YcOFjOWDVvv0urj2wgWBAVf0wPK4MCqoxOcRHE/OBfCC6jhK2fJ44mMne3T9b2MvNYDNYqnfEbB4nr51XN57Kj7qgL32ptpbX1/Duh3wBVzxnakYCfeSS9gtFgPAaJdRDIxoE+DT0dTVqLpQDg7vyekv+ryTiGRECSoSpenkUxIyqzlmBORhJCBLFSGIDWoCf/KqhSysuY8SCgU/YGs+CdVV43xESwTRNkAzmUcvGmfVfovjBN3YkrCX4X7rsiCv68ekoOOLdPaLbcOpuqkM0w7sJdEKCKgiHQKQB44rnpVlKGDF/R5iazd1kaB8jCXyhpxHUVOS1Mx/VK7S06OcdKl+4ZUKm3bX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,38 +105,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 07:23:34PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Aug 21, 2026 at 11:09:12AM -0400, Gregory Price wrote:
-> 
-> I am _so_ glad to see an actual reproducer used in a sashiko bug fix. THANKS. :)
-> 
+On Fri, Aug 21, 2026 at 04:48:32PM +0200, Jann Horn wrote:
+> On Fri, Aug 21, 2026 at 4:19 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+> > On 8/20/26 20:44, Jann Horn wrote:
+> > > On Thu, Aug 20, 2026 at 7:22 PM David Hildenbrand (Arm)
+> > > <david@kernel.org> wrote:
+> > >> On 8/18/26 21:51, Jann Horn wrote:
+> > >>> If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
+> > >>> good opportunity to block a process from overwriting read-only code in its
+> > >>> own address space through FOLL_FORCE writes via /proc/self/mem.
+> > >>> The security_ptrace_access_check() LSM hook is bypassed when a process
+> > >>> opens /proc/self/mem because this is considered "introspection".
+> > >>>
+> > >>> This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
+> > >>> that a process cannot create executable anonymous pages.
+> > >>>
+> > >>> PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
+> > >>> accesses are only possible when the LSM allows ptrace() attachment; but it
+> > >>> is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
+> > >>> environments running lots of third-party code, such as Android.
+> > >>>
+> > >>> So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
+> > >>> such "introspective" accesses.
+> > >>>
+> > >>> Signed-off-by: Jann Horn <jannh@google.com>
+> > >>> ---
+> > >>>  fs/proc/base.c                |  6 ++++++
+> > >>>  include/linux/lsm_hook_defs.h |  1 +
+> > >>>  include/linux/security.h      |  6 ++++++
+> > >>>  security/security.c           | 15 +++++++++++++++
+> > >>>  4 files changed, 28 insertions(+)
+> > >>>
+> > >>> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> > >>> index bec6197329dc..3dfaef49bb70 100644
+> > >>> --- a/fs/proc/base.c
+> > >>> +++ b/fs/proc/base.c
+> > >>> @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
+> > >>>  /* private_data for proc_mem_operations */
+> > >>>  struct mem_private {
+> > >>>       struct mm_struct *mm;
+> > >>> +     /* Was the ptrace access check bypassed due to introspection? */
+> > >>> +     bool introspection;
+> > >>>  };
+> > >>>
+> > >>>  static int mem_open(struct inode *inode, struct file *file)
+> > >>> @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct file *file)
+> > >>>       priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
+> > >>>       if (IS_ERR_OR_NULL(priv->mm))
+> > >>>               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+> > >>> +     priv->introspection = priv->mm == current->mm;
+> > >>
+> > >> Is the feat that the fd could be passed to someone else that would then not be
+> > >> detected as introspection?
+> > >
+> > > Yes, exactly, that's the primary reason why I did it this way.
+> >
+> > Okay, would "opened_by_owner" or something like that be clearer? At least
+> > "introspection" is less intuitive for me.
+>
+> Ack, I'll rename it to something like that for the next version.
 
-fwiw i try to produce reproducers on all my sashiko submitted fixes,
-i've just been dumb about including them in the changelog.  Trying to
-fix that from now on.
+I agree the naming is confusing.
 
-> > +			if (!folio_trylock(folio))
-> > +				goto huge_unlock;
-> 
-> Doesn't this violate lock ordering?
-> 
-> From rmap.c:
-> 
->        folio_lock
-> 	  ...
->                  mm->page_table_lock or pte_lock
-> 
-> So now you hold the ptl lock _before_ you obtain the folio lock?
-> 
-> I'm not sure if it being a trylock gets us out of that particular situation? And
-> I'd be reticent for us to violate it... unless I'm missing something :)
-> 
+OK so the whole thing is:
 
-This was the thing i was least sure about, but the deadlock condition
-should only happen if we tried to spin on the folio lock right?
+mem_open()
+  -> __mem_open()
+    -> proc_mem_open()
+      -> mm_access()
+        -> may_access_mm()
 
-It does look weird, so it would be wrong of me to say i'm 100%
-confident this is the best change.
+And:
 
-~Gregory
+static bool may_access_mm(struct mm_struct *mm, struct task_struct *task, unsigned int mode)
+{
+	if (mm == current->mm)
+		return true;
+	...
+}
+
+And what this flag is carrying is 'hey the reason we allowed the _open_ is
+because it's looking at its own address space'.
+
+I did wonder if what you're protecting against is even a process updating
+execmem _it_ owns, no fd shared anywhere, as something LSM might want to
+prevent even so?
+
+The sharing a /proc/mem fd seems like that's a pretty dumb thing to do in
+general :) but I guess you have to protect against that.
+
+But TL;DR I agree with David on the naming, opened_by_owner is probably the
+least-worst way of saying it very plainly and covers both cases.
+
+--
+Cheers, Lorenzo
 
