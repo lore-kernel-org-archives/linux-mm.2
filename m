@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD1DBC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 19:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18208C5DF8C
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 19:27:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 598756B008C; Fri, 21 Aug 2026 15:26:52 -0400 (EDT)
+	id DD4DB6B00A3; Fri, 21 Aug 2026 15:26:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 548C46B00A4; Fri, 21 Aug 2026 15:26:52 -0400 (EDT)
+	id D86526B00A4; Fri, 21 Aug 2026 15:26:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48AD46B008C; Fri, 21 Aug 2026 15:26:52 -0400 (EDT)
+	id C9BC26B00A5; Fri, 21 Aug 2026 15:26:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 14DE16B008C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A0FF56B00A3
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 15:26:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 00F381C0DA4
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:26:50 +0000 (UTC)
-X-FDA: 85126258980.30.215A29C
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B118140258
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:26:52 +0000 (UTC)
+X-FDA: 85126259064.17.941165D
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E477BC000C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:26:48 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=nStR2H0A;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf22.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id A67F514000E
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 19:26:50 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rhhf1W07;
+	spf=pass (imf09.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787340410;
+	b=tt1qjrdMdxPhhGKOWMj4TC6Vwxux7LKotIVRtnW3/9yPTKeei2l7aE6e4ePPCH12aykLrP
+	2soZP+Cpg71pRSNqQ5OzDtWOhli2WFt9rPMLOWYZ3Yc4dwigRdRlF80arEjwzLmtuhgkah
+	iIbr4q8iYMjIuOjTpQrMd9HXqlckd2s=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rhhf1W07;
+	spf=pass (imf09.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787340409;
+	s=arc-20220608; t=1787340410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D4onz/HeLHxxoamf9Krig4BuT4qb4mm5o9pd3xPJqPk=;
-	b=ESbAKfk4LrhWb3nj8xH5Pzv4E1XiCqHxFO1qsE9rRvFJIniKBK1Lvu5/2hf5/wfHiaXvHf
-	JTPBdZ3XwcKBZe6R531UEjksOdytbkWIhuP2b9JxF4jelARUOwjo0lE76r6hDuLCg61hpC
-	sRCUPh5rU74e5jXN7o9Fe6uWrpxwLxc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=nStR2H0A;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf22.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787340409;
-	b=TgDUlUjqH0saLj9KHUWMVVF8GPIMTVbBK01k1Tuxw59O9+VUl3u2+oIcAW4HPBhquYSzlf
-	CRo3SYL5ztY7UIDxzw72i9t5kziO6A/AFvh+CgowfuOIS95piOmnfiBE4o7Tfg6kqAgn3+
-	qDNgQ/rVe38kb/qMtFpGHgX2SWBVNSE=
+	bh=hPfPuTck0yc0sCY/+xYg9mTu/vOl9PIPQA/wAMsFBps=;
+	b=rdyFStViE/n/GpKRAsgZ5cWAcqYiwSs8l4Llg1MqZjSFUOksbie6kDNrOxXkQ7DxR+ph4I
+	ixdv2fe3Exi7pR4Prjq2gJCctcaB7q4toa/KX2CNlsKQexLGjdu8yEClpI49PSVr1ggXsZ
+	Y78DBfq0MjGE3Nq1HRIxgsqNHpolkFg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=D4onz/HeLHxxoamf9Krig4BuT4qb4mm5o9pd3xPJqPk=; b=nStR2H0Ae1bs9Y6uxQZGKGdovU
-	2zk9HtD4tM1Uve2MzmH4YBzWAHnnx2KBPOCN/rs3rQeuY6BgLA0oWmM4GYHby8+VLWZpWvr/7SZ+l
-	3II6QraqCuOkNPgGqVXss2aoZl+IB1MSruhvHvNbRpUyNBa3YrQPlnmoUyAInqBPJL5IIz/jmKekV
-	SpZNFW0L4yfvLYbWXM3gGqJ3jOQ8+cT4JiWJBy3odNcynL9ipcphjX4YewPT36nQe+B5NbFjgzRtB
-	Jqm2lnwRkOqVyybv5k5PV8MjpRdFDx7pa2tu+5x2fAY/HnrDgv9GKmgZdMfC6RET2eAPfPx/dwc5X
-	1+yJQKqw==;
+	bh=hPfPuTck0yc0sCY/+xYg9mTu/vOl9PIPQA/wAMsFBps=; b=rhhf1W071Rr2NkkyrSQzYJw0HA
+	JTRL7EPwtrSs11Ff+RqwJd+SsfIdB8fNa6uZ6jCKEPsEQcELxmyYWKd9PXIQ9bCtz1eqtaGsdp/UZ
+	idh9vSbga4Rbqfb8c2TjmNjEZJ6MGbpXuOAWBFS/VSmw/x9va6CgByfUhAtwYeMKy8j69NoPDX3Yx
+	W7+kpt3gqug17Yu9a8xO6nSqsCxu+P8QK9MNnMAkRMdl5grvVuiawxn1pgToeazEOgKYy537flLgu
+	HdevUMjnUvDnzfd2sm8e4G6EuorprhHOyfB9IsmbAbYiVO3GcNtA7e0cq7Nt/BC0PqL/+ZT71WVYV
+	dFCn0HXg==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wxUt5-0000000E0iX-3r8f;
-	Fri, 21 Aug 2026 19:26:48 +0000
+	id 1wxUt7-0000000E0j6-2HAk;
+	Fri, 21 Aug 2026 19:26:49 +0000
 From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	maple-tree@lists.infradead.org,
 	"Liam R. Howlett (Oracle)" <liam@infradead.org>
-Subject: [PATCH v3 05/19] maple_tree: Drop dead code from mas_extend_spanning_null()
-Date: Fri, 21 Aug 2026 15:26:13 -0400
-Message-ID: <20260821192627.4085470-6-liam@infradead.org>
+Subject: [PATCH v3 06/19] maple_tree: Drop MAPLE_ALLOC_SLOTS
+Date: Fri, 21 Aug 2026 15:26:14 -0400
+Message-ID: <20260821192627.4085470-7-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260821192627.4085470-1-liam@infradead.org>
 References: <20260821192627.4085470-1-liam@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E477BC000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ddnmt7chsweqpe8azfhbimiiqs79fm6i
-X-HE-Tag: 1787340408-206279
-X-HE-Meta: U2FsdGVkX1/MRA945LLDiFVUgD5aCj5pXPSrwgg+mWUC0RpwDCFOGt6lT7DePgMM2QZUBV3/YsmKfizHxtunc01yH2kj/VAsFLdT5/vOmoT04GTFrtIyaJRjFt6oMyhy6Ptj7GHGcxhEJZfu+H0XsbfPfingAIAi48/w+pUqouqu4wgkFXh8IfyeyGjZ6UIQsu9dpfwYF9XGlM9MEq0tuaG8LDz2FGT5rob5CEQBwAFimCFn3rcI5HoUF9FYOFPfwZxE28AVI3L93fvPFIN/uHUcg5dePF0lHFoe0D+gibVKB+JLB1onslA5xjU81US2MnYHnWnoxQVl4Lx7XsuskPHFKvVWzH508hb+shKcchBLxk1p+rYWJ9FNahcyR2whxk80aPsOqwufFzsecziyKqDmb2qvw7myGU+9fU/IIBHreKU1YJWLSIDYwqPIlWEQP3+a1yR2U4/Zyvh0Zi1Px4SJAX8uNPw5M8J0qdAkCJzkTIfmmnt3PgPL428z1l3mwjY6frJ5nBlsB5t8Y6QxLkMaeHiUP21sMdbRGisydV2K/x17kRNhzN1Sbka76iJeYUeJiIOScwJ6xuopLmKO9BpwfmZS2I6L7JPOlGAq+3Z6Fp5WGzTuMUBvlrKdzfAmZhEqvkz/I7CtOOm1L56i8Ez+RO2XzMs7DaD6DfCgkVk3dnebkSK+bEE33AguWR8LntLYddKsd6CoPG73VyS11HWBuHrWyUFbPvVIsg22m4fS/7HWiaDvNBUDSM9ojhZCjddEYa7OW2h8xI+XTac24jcU+wqxwQvWjMgRLv1Z7y3nk8jcXkUqWNrb6S3oTKNzN4wad27r9s08j7IJmzkCuGGtaA1hbyIhhXw9e5xskxSXqbA27bbJSgMpo0zNPQboBTKqeRcmdZpe5Cuf/5Px7jnHHMXyiDADcdAxdtbDu9cpSZPA7va/C0ABdDYGdgCy0BWobWAKkChq32FqpW2
- orRhciPK
- I5IzRxWtOHb/fQIoJrsaKNgGtv9LuMZx7IOvH0n4mO47YdnMXb6hqI5o7mALbVIoUw7pJ5lYWs/A1jQrbGtf98fxK4m4q878C2qfM+kO3G/dJwZI8M2wLCSEyjR8r1BTbD4jAWx34cmAQcv3Eh6y3+w6HEGy8CJjBGgEyfaVJg+Ko57aAwvHONZHYkZj/4hM9AMaYx2asCTC2Ed2ZuCG4ucCijQ+eShsOZCQiOl3umTjvmhlCJD7Qdk4aJiKnCsa1ch5NcTxGX1Tn2N4bG2A1mD14rYUGkiBtYf/hqyd5HmacwFRT9+Zv7oqtPxGAtpcmzFLsy/Y1xKBGmOc0DxUFNER+Vg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A67F514000E
+X-Stat-Signature: fus4xz88fwqbectx56aemi3m71nd8agn
+X-HE-Tag: 1787340410-902816
+X-HE-Meta: U2FsdGVkX1/dDjT97JalNUIctI91DwFrMXKRjmlrNxlX3NL0JSSU/SoUUQAj4f5Oh4EDhQVvDI4QjVaN+rHewM9r526AjytDplar10ufhYEROqWI7/5JeyQPxZcmJpEf1ZyTDcFeFmkKfG2emz3Tan2BiJQ8XM/9TgKrJgL3b/EFtYCfjAiYcLzP/OZjAUfRy5QJQRDnYpbDahGQrMfWLlE+KxQtUf0SLdEm/Z+j2VtbklZN6EwfJ29fT1lpvxNgJcT0R4kW+IJouuCJedOArL8tlb9IuXG8UUbrOnOUO3koE8mn4boRbGUwqpD9T4oXwy1Iohbd5sXr3okOCIr7tUhJU8vUF0xubk4sClppHwucq9doh29uC2n7RzNGCrcGZL2NaER0OQk+iuypsTkdY2SZlM4ndugXjbtL0bRcwNGXS1zHeHAELXYgVIjBwNNkHKW6QKQz9b8AbBNK95Fx7HjR3IHRUzElRi97Fs/4w8th79JR5rM5XL7yGoW+6z7AUSAAz58N98pvXamQrhXvktjPEydVR0ZT9pdJB6slGDw4SIM/FG3OLAq1IC8FCwO+bGa930SC8yPlwWhREvh5u7c4e5kBovGCiUb1HPVKfr+wBFS0krxPmlnit8zB2lqmXEYA5/x/SjG6Iv6KZUfSycdBjOfQ9syU7JiPDcYCJVUSwA0kFlhGRqq93XCIv0inGktgNSSEzySBvnyTze+nn7oUHUzKevQJ4G9P4fsQ0xzgBZIiTXB7TwuP8AlGzy688VzN6HZ5arr1RtUAb511ifKJjrGX4snfwjAymjkKVQ/0mhaLrQTyXt83QcSY1kljSN/E/KltdaKO/3DNFpZ5SoHuJCX4dWykB8PUIP9mcOpwP1thUzOPHi/+/Gtq/t7pUmszjT+NCPXXEQhVAc7I607YE8mpPwxTPxo5fzVvMxJsYNhyCLMLqjCnvJ+brPHjy4g5WIC+0zm0JUPS9u6
+ z8/amVbh
+ c2FPjpM14bTRMhagpzjFxPkMobIf3ZIjql21r/bGQ1QFCBemmo+jLAqa81b8skxjKwDkq9tjZFD9cQcFerpo5oQCtlq7su8uBfpIFvRgVu++sqIbLZn8l8HLBlJM8/Nfa8wNvXlIk8y6xj2IaOQ8KUlMkRAj5jGEKqOjtNlHfQny8h1lc7CBdk90m1G1BvT20OnoBf85zkKi0oiomsZ3lW8EQJNhP+r6+HzBfpzN1wI7TuIiPvQzDgLJNdg6yKrKTcLHG0UHhl55A6O3ZnEwrbfEYjYJpVfeTEsx34pyLNpFHbTV48LycVCcr6VxGNzlVdQq8zCZ5mwjy0Qj8Dabjpzp/9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,46 +91,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mas_extend_spanning_null() had a clause if the end of the range being
-written (mas->last) is the same as the end of the existing range it is
-overwriting (wr_mas->r_max), action will be taken.
-
-This code path is not possible because the only calling function
-increments mas->last (unless it's ULONG_MAX) to walk to one beyond the
-write and then resets the value back to the initial value.
-
-In the case of mas->last == ULONG_MAX, then the second part of the
-statement will always be false - mas->last cannot be less than the node
-max.
-
-This code never executed and is flawed anyways (the arguments are
-incorrectly ordered), so removing it is the safest action.  Since the
-code never executes, it is not fixing any issue so Fixes tag is not
-given.
+MAPLE_ALLOC_SLOTS is no longer used, so remove it.
 
 Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- lib/maple_tree.c | 7 -------
- 1 file changed, 7 deletions(-)
+ include/linux/maple_tree.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index d8c826e1ca0cf..3509e293c84f9 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -2997,13 +2997,6 @@ static inline void mas_extend_spanning_null(struct ma_wr_state *l_wr_mas,
- 		if (r_mas->last < r_wr_mas->r_max)
- 			r_mas->last = r_wr_mas->r_max;
- 		r_mas->offset++;
--	} else if ((r_mas->last == r_wr_mas->r_max) &&
--	    (r_mas->last < r_mas->max) &&
--	    !mas_slot_locked(r_mas, r_wr_mas->slots, r_mas->offset + 1)) {
--		r_mas->last = mas_safe_pivot(r_mas, r_wr_mas->pivots,
--					     r_wr_mas->type, r_mas->offset + 1);
--		r_mas->offset++;
--		r_wr_mas->r_max = r_mas->last;
- 	}
- }
+diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
+index d63ac92208d02..14ca9ac775d99 100644
+--- a/include/linux/maple_tree.h
++++ b/include/linux/maple_tree.h
+@@ -28,13 +28,11 @@
+ #define MAPLE_NODE_SLOTS	31	/* 256 bytes including ->parent */
+ #define MAPLE_RANGE64_SLOTS	16	/* 256 bytes */
+ #define MAPLE_ARANGE64_SLOTS	10	/* 240 bytes */
+-#define MAPLE_ALLOC_SLOTS	(MAPLE_NODE_SLOTS - 1)
+ #else
+ /* 32bit sizes */
+ #define MAPLE_NODE_SLOTS	63	/* 256 bytes including ->parent */
+ #define MAPLE_RANGE64_SLOTS	32	/* 256 bytes */
+ #define MAPLE_ARANGE64_SLOTS	21	/* 240 bytes */
+-#define MAPLE_ALLOC_SLOTS	(MAPLE_NODE_SLOTS - 2)
+ #endif /* defined(CONFIG_64BIT) || defined(BUILD_VDSO32_64) */
  
+ #define MAPLE_NODE_MASK		255UL
 -- 
 2.47.3
 
