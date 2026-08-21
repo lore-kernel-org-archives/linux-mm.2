@@ -4,143 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4653C5DF93
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 16:18:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D84AAC5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 16:32:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D1CD6B0095; Fri, 21 Aug 2026 12:18:49 -0400 (EDT)
+	id 89B946B0095; Fri, 21 Aug 2026 12:32:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A97A6B009B; Fri, 21 Aug 2026 12:18:49 -0400 (EDT)
+	id 84D936B009B; Fri, 21 Aug 2026 12:32:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7970C6B009D; Fri, 21 Aug 2026 12:18:49 -0400 (EDT)
+	id 73B536B009D; Fri, 21 Aug 2026 12:32:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 498676B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 12:18:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF4361201CC
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 16:18:48 +0000 (UTC)
-X-FDA: 85125785136.23.8D62377
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EABCD140009
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 16:18:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwnzrW1h;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787329127;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 435726B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 12:32:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF6B6C01AE
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 16:32:18 +0000 (UTC)
+X-FDA: 85125819156.11.217FBA8
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8C317140014
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 16:32:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rgJRJEEx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787329936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bK5Z1U/LtfHGrR9XRRCoM6YDapABh0PULQPjbOEEkig=;
-	b=YBQ1zZIoLN42KXQIMRtb6ksMMnBTqAU69dTasxWrQwRib+EE1MvOh9lDc2YSuIlWAefWwC
-	9D7z2h5T8itexC55aaPfWTb/+zuHJPodTS5La6BITjQZfzTkEjBx2EnkHefC2XkAzitCv5
-	/16C7+X3cvqV2qkk+6FynXuU9/WbYHQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwnzrW1h;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787329127;
-	b=Y6xIYNzmaDb3O3MfBwobHclzkyrmpwHfEXoJvoS+uz2yR6+gOi00r2zoG9OS8e9J4Th+IA
-	vjL0Qw54+PM/BAJN9QdSZjzY0zJWNJOErG032ZvsPGGrgW5C8MZF97RSn1HumrbbGdFxnu
-	eBGPkRzwktJ+jmJwYKaoUzz0c5T8oPw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DE7B542A11;
-	Fri, 21 Aug 2026 16:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A99F1F00AC4;
-	Fri, 21 Aug 2026 16:18:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787329125;
-	bh=bK5Z1U/LtfHGrR9XRRCoM6YDapABh0PULQPjbOEEkig=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fwnzrW1hvWd7+dYVdCO0D24yMeJ8pAz2tbo9J8BJrTHPO07gILIZdtDp11i9HKbAn
-	 8lWd0+arD3ka6gGt/VRMEeMx8Z5IL2ZtVfU59rzjyFmejicGc3aOL9qP9w+ci8eXCG
-	 fbT/CoYwcWKK1b3xuNgOl9ZI9M+h+oMUNOHQ+2kSbxAg3Dsplclea6S73VJjtC7y9x
-	 OEI893e+vt2s6T4UdpdyU8nLFpTk7zuxlkfDyOhr96TWy+qp4BYqu7r8nOupCJXchP
-	 N4XJGOmrKMaYlmPbG46/VYVIMQR3ahO51ep9whI8CwCjIS0ctxc87jJaa7Yrur7xjx
-	 AEzxwQpfBy8jg==
-Message-ID: <e7c339b8-b936-40c7-b121-1a4c14838dd9@kernel.org>
-Date: Fri, 21 Aug 2026 18:18:37 +0200
+	bh=uKrunJMg40NjeuxUGrFsyHBAkzDtHd4//4PJzcyrA7w=;
+	b=JRQzgDld9RKxThref1hZzR6FuNOrgkmPdQOyUK1mnPda0xXAk4X6wvB+fPao9e118FPEjf
+	hjU4zuH/ySfoHfpEzlwTybfv+kcrlGrMzHDwwJQ7vxk7qLbn8kP7QEqGwX5e+7Tl3GGkfp
+	aZC4tM0mQZe8rsodD2aRjb2AEQuCmWg=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rgJRJEEx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.227.138 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787329936;
+	b=I0wg054vtSb8jSgLC+iqGzKmKpvpyJpGULg165qht+wbrc/a2AK1s0rZkX4S1rqeFCihEw
+	D1sVYotcRn+ON2yKiRiTwO5FriqnMXvBrU2w6CXlAff3xy8BKEXgmbA+zAUq4wWmzw/SZ0
+	4gR4496IA7/8spQQ2QiOH6Jz3uLV/YQ=
+Received: by mail-pj2-f10.google.com with SMTP id 98e67ed59e1d1-38dc4f9462cso362164a91.0
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:32:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787329935; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JmPsjiEgqlzMamC+tCMeZFiz0r/AewVQTgQj08CkDOWnOXg5yvmddmWSgDWLCRm8vr
+         eq6PQk0OupsqD1g5I7lxDLAx+eOizI7TLxB/u4/6TC0A9BoIqEgraSrJGpRH8EfFExmc
+         hF7MQ3L2tqosLM96UJEviMosF86WJdrAghhuASy3am4IUNAU02gsVB6xhdfX9M47crAM
+         5OnPk19g4ptV9+FLjfhHDHZ5QPEUc7fvMgddX8frCxT+PMYVakwc9sF47A5qNTR4D2k7
+         RFJdC8XixK5iGnh/KSSP3zqC6byTDiflS4kt8pLw+eIxZhH7i16/OX7lfAKqgeKkJqix
+         wLBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uKrunJMg40NjeuxUGrFsyHBAkzDtHd4//4PJzcyrA7w=;
+        fh=JOfgaPqyQhvZhlrH6YqYCuK3bFH25DdfNaXqKgSLQ0Q=;
+        b=ZhZ4GjuoKgXIa9HN26bTYBbZY4eLORdV+5IPO4zpawjfMBnWUeBHj3bQyVgYagaWDo
+         hJyxSjzrwCpTkLGo3FvGtG6nxxW17Kob/ekxyJ6zqBTe3bB10KqHjjz8RG0W3RCdu0Ml
+         uDi5s2ePQTJXa5+wEDRBYrYKuSFIlczrtA48fDDJ0/I/oN90j5MKl7vrGgHd6nBr8iIM
+         NJWpGWF34d6wsmKgm9E9aPbE4Zztsm2vmNrm/TaGCslcrbvURZznuHdVdiiz287vHi7n
+         MZUqitdZVlvQOVz3uiVsO+R9H6Uf2WhCQk7jsy780FSmr2gZwmkGUxWpdW8vRr2ssmAH
+         pvWw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787329935; x=1787934735; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uKrunJMg40NjeuxUGrFsyHBAkzDtHd4//4PJzcyrA7w=;
+        b=rgJRJEExQclO5/g5teogxNemHukvtpV5d+qjBGb5uzhAFTZfFLr0A2VlmceqmRIRdm
+         6ABEHTO2dywaQqfZRuMdfbFNqjLD+/Ihyr0++wh3Ie4J55G5+r8CnTzxwNabZME8kEVU
+         WIig3VaEVIS+wDlHtIJBwYOWksJzBAM9pJZ38elFwD3+D6W2rrdbgZAUkYVxc90clC1T
+         Dxp2BcFIBp+vQ9I31h0cVqHb7aDWu9VPB9tnEu0eImKrAnMOTxawY8SkT/Rb7Sui9C7H
+         ECZuuxmXG8ZMy9de240WEcfKW7zJbbOUACyQ97SOf+LSzSRcGSE0227ymTt/cbByjeJI
+         Cevw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787329935; x=1787934735;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uKrunJMg40NjeuxUGrFsyHBAkzDtHd4//4PJzcyrA7w=;
+        b=OOtBPFIbkjo7VDpsIGJHZr8Qepcs3up0Ve32e+ZyjKdNyRubl1IlhVTOkCKCw3JSE7
+         FdRB/QUYThgk09BOkli9Cx+BpYRcMqEj9l4z0/WzmaELJvzZauw9gm076A53TbigO1Xt
+         m/I4VF1joqjqp9kT+OCCfQ5UK6CfgQ4/itiITnZtmaIOPovcqsYWENKFCc1wEWWt0ojm
+         B2MaaOAh9Lvc2WsyuD8ZDuPkYJki5uUGs8VEN/PILG7e/XGtKlx16XIrPpmij6CyjodZ
+         DYDSXD5Rprfvejc0an0cyYaoTuj5DRn8T+RNivVu7ZIkQ8aQG+aNFhMs1B9mgxOJtUCH
+         6QrQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq05/CEFs3yRFoPF3QKnEDf8dbWzHY7grpFFnI09YmKGzKTUsH/NQOTGVuSIqOWUn1ZnRnDdKWbiA==@kvack.org
+X-Gm-Message-State: AFuF++k4MRGjyZXejjx3djf0FiJZKfpSGPFhV/NREmEHyu0YUQhpRb44
+	NtApdMuQVJ5VOd0cexH9xwIwi9B2cTk3QthpCfZH7g1qvV/6mutKxsdeYTNwgMJsJVRQB+Vv7wb
+	J5ODXPeA+cDWLASASNjS4VuAhmQosHg==
+X-Gm-Gg: AR+sD13AyGa0+QMVTsIyc/I9pSQECf1wUg86tFGalk8XyRGKgEs2jFlTxrpwpUmmFAn
+	BkT9YIf6wamhvU723jpaLvCwKSO32wcaFxV4nh6bZCXwYNbtdRbMDqkACIe/Cv0Myu/3m2Q4iYk
+	vfPYzzqGtb17clJgYLtsBlmDn/Scqy3eXg4Iiv63iFh64vjeoPcWqK7WV4k+vp2Vz/A3gWxdsrS
+	tROCma6gezNXRP0g2I2w+C/Q3VW8XklUtJKnDb/q56ZR4hXiYb8CNtUG0Lt8AvmZkObyLuSrrIM
+	4KbatD3QMCCEfiR8rRzfMN9EbitNgF9dle3UBnqmScn/QkIudxk1gAQp5dI=
+X-Received: by 2002:a17:90b:55cd:b0:38e:97f0:aa4b with SMTP id
+ 98e67ed59e1d1-395c35f0a85mr14515030a91.13.1787329935050; Fri, 21 Aug 2026
+ 09:32:15 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: check strdup() and fix buf leak in
- parse_test_type()
-To: Anshuman Tewari <anshumantewari123@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260821114416.12255-1-anshumantewari123@gmail.com>
- <7bb2d581-924e-4a59-9955-b8afa2b51268@kernel.org>
- <CAJqi8kJf9EzfZWBo=1KpEzGiq+vGRz0J0mN+-NXAjrtq9HDrMg@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAJqi8kJf9EzfZWBo=1KpEzGiq+vGRz0J0mN+-NXAjrtq9HDrMg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EABCD140009
-X-Stat-Signature: 78ip4mzffz8xp5qenwnokzuq7tofsbhf
+References: <20260529165640.820-1-ravis.opensrc@gmail.com> <20260818073546.832476-1-kunwu.chan@linux.dev>
+ <CALa+Y16xODsaFZDfh7ZeP3gWbycK92gvP5N8_NFpOvW=R2BWbg@mail.gmail.com> <CAN_Opa_h2W1hRimy2YXPC4EgueCi2UNwnZ5gSYV=cr8M7yfCmA@mail.gmail.com>
+In-Reply-To: <CAN_Opa_h2W1hRimy2YXPC4EgueCi2UNwnZ5gSYV=cr8M7yfCmA@mail.gmail.com>
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Date: Fri, 21 Aug 2026 09:32:02 -0700
+X-Gm-Features: AcwNN1W_2JZ34i4ktwhmNpUgZM8oH3GEFi2Bi6orDDuwSTf-FJjTXej5NTLTNnE
+Message-ID: <CALa+Y15zNhpubyH5GQgu_BHesrwRdH0B8k5cqT3o_U0h5A2e-w@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/6] mm/damon: hardware-sampled access reports
+To: KunWu Chan <kunwu.chan@gmail.com>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>, sj@kernel.org, akinobu.mita@gmail.com, 
+	damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, akpm@linux-foundation.org, corbet@lwn.net, 
+	bijan311@gmail.com, ajayjoshi@micron.com, honggyu.kim@sk.com, 
+	yunjeong.mun@sk.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: abuf8eiqgs4tepm1rz8ry4p8hz3khw9s
+X-Rspamd-Queue-Id: 8C317140014
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787329126-339339
-X-HE-Meta: U2FsdGVkX1+YBryas++qdUrVdmTBHyA+SYGkf1afdYaelgY2XZaxuFWRfmozLbi9SWo/WE5JHjrtd9N7fbGqNZPRia1H0xsCam/gDbg84CGxciMjix+tTHO+fd9h2c73YEUqoeucUNsE3v3PJE5V7XWW9SymMNVfV3919RfRjimCkkZU90XKKsSEx4psb1X7NboHoNp8PrQXs9UOoTpNww8oS0nmYcZCRczImbuMgLv26gAUEqRfhrGaHxZheKMX+Me+fSOJU/TiebuZgocI7X7D4zL96Nl/0QIwjKTZZSZxoF5ktbxvh0jW4R6yw/mWXEGC1iHBqjpu4dgMBzOMarmSrSFJClwLLvQdvUnL7MvMIKf+HzOOORVVUfKQBmKNJxIciv7IUtrotPeKhdecnwPA9jwXCtwO+Ejli2R68NpwdNnD0zEH0Zeh7/DnzumlV30IKrZ06gWEkrRWNStGu9B3Vk34z9oWHj+vI7nrO3gDIOgPCV/azwQz9/SeS7nm+ipTY2czeWDRymmcyYOKaFlFQv9WIO3pWUwtXAZpFyOaQTmnf1XuBGojeWELvorIumistOGT5/QMw9hAHnOGJx0h7jixZ+4tMS2ZtaFezbjBwphKFGndCCCmz2RC8wMGVSbq6Fv2p8Xdox9nrEz5U6yKUK1XIzVvL/RYVVpEPhEhwhEwF6+sFdcU+8KyF7Z/j5CYOdAQLZD3zu7M5YLRYJ3W2x6UK6JYVDOWjmP0mRCh7T41BrdSuKPlwknZelLOtOE6dJlK5kisAsP8Aexh6INplIl+ujHAKY9rqdkhD6htflaN+ZE+fHAYkmwcHZaECkttERodjx/dX6BIq2C8MS8tX0p3Sc33CCnf5RyIsLBnanQHzL+D3tfTUFmW7oY5W+1cTyXXjsOPABjnNQjmdCm7JFKnmlQT855AjOJr+efnm1fvJbgwulEsMmyOBx/8XazQHu9Wf5M0XnD2Lyy
- cpEjLu7l
- Ea9igUbcS5DYdkIgsNWbPHW28XmkBVFq6eo87/KI4BnM3XA7gMhvkop/X3NdQZ/PhQjaOVTho0MGL2r/zorRwIYMZm8i682Vm3dQLxJByUkMw3rmKr8iVxGAJfOJNV1n0iifSwPbDa3ACoF04Smi5sKFG+9z/DXY9N/KiA5VUOY+cq7cEcJlQjXGgGjcALVZlUHvvpDvL11axi9axpEwOZx1EJvjfV/YBKy1xB5ZNCO73fyY3OdU6epSkik1RpYR4JlVcsJe/s58/cLyw+1n4es349YaWWQuyu7fuOP0jb170xob9ldynl2+qjlSRIM5mdgDBrVDKmQs0sl8=
+X-HE-Tag: 1787329936-6183
+X-HE-Meta: U2FsdGVkX1/dax/RBNIOFO1F79FF/NA97/KN8LhfHNJ7GVlMx8GiPg/ZjDa8Cs1x2ZpBk/IqA9WbyzM9QeaFs8u82TydD59cKw8681FDhx6kqcfByEeZtC1fjAaadTZb5ieNcOWJGR2EHIi+FVH79X0pzM6PVZsEvy/tGTO2h0ZcE9lxSJZ4fv6zC4SpWPdHGfTYcNh74QrwXAvzIgWWHbJ85SHdHPEC3+r9YV/7omVMgP+GAYPOx3l5zkU/ALKJaF41UXd9hFQ1NyH1aZclupc1KwcZVztFASnrWOfTfFHLEKburBZYpnSI2BGYIFXMVBMFSD4GHWpNd4qwWOInMscAvayGOThQIvzJLH1CLHdNbX41p/uPL4MrI1bZXQ/6Kmio9UfIb6jptmqqyfdOQHb4YKj5k8oQ2MygApl9c4+HlGPiEGRhk5yMPpxJIv3OM1dmaE5I7cW1X2coLWhPKRx25VaX682votR0NvS9Uywghb/y+YkCxCUHZG6hhXGjQjIMl942mkMoRMYBfMPAuHNXH1pV5HglSmN5J/iK/MAsLt82rBTdwP11rBX1MBioTD0As+nvwQDkr3gsZmDx2/yHKmws7aj9FF8REnptVMhWjeAChsGGOasEwvq+vTtRg097Zt7+ijySKAfIxQERfwabgNBNivwC9L9aqICD0oAt4SdfKbmlYmqNZYDVY/NU6yAXAwgDOrhSj/iFD92fb53konrUMTyUHmloD1M+cLRiHT3Naqb4bXaHhr/+s7mbTUGUa7pp3KjS0wDPPZVucFsrR8gRfFM95thcIIgYatuT4nh2s9er6dSEWJENEAxK1ULSqNPhcE4/DbvLd7OalYcAgrkWUIde6ZupjGkK1U0l5E1bssDzQe+oPMrpr+41CNoIaH+4B7CdEW5la+cNT/lFFbYNxzGz80wSokud1qZmPMtExVBHDrJnmstMD3LyemmHetNFoZBTFS+MoFz
+ IjA6Zwfr
+ RP0HEsL8wRF88VVK+rYwKYw6OwL0EAVcKPHjFA+z7IgOovT0qWj52vIgXNjNgOoLaTBppbKCa+77kysO1o/ytW3M8EIxPFPn8H7mKGLyNFybiYoJI79tpsFeZgVlItJO9v4bxQp4OuU6U6zUX4xHeuYa4LQRqaOy2WJXxgUomp9unra77hu2RFy3x5IGZQbj1HctP11csNw1WGvkG8NigcaoI5SD7eSjU+wpa3anPYCy8sf1plz12pu7khzwIdei7uwdlO/izpwI3e4ATlxsmTTt3EZEul+ywIHsXjD6q6iW+Ho+F5M47e0mQ9TQYOQhey+wclsrjBu8OTZHntSLbKsurq07jIt9pkDZTOwZaNncYKPxX1hD781KqLbgi7VCGOvMQo1Ih5CyAr2MH9AfaClyST/ZJ6aeOun5GDreFYsE2txCKK1RT78CvnaB186eHweEdEmFODwNo6hbc8Qvp/resI8aO/6Bpjh8TOxEoppjbm2Fg6Y8SO4uZ50YqdwWkmmy7cBxpTRJ0Mlo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,35 +143,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/21/26 18:09, Anshuman Tewari wrote:
-> Thanks David, agreed — strdup() is overkill here for a single-use
-> parse, and dropping it is the right call.
-> 
-> One small consideration on the approach: working on argv[0] in place
-> means strsep() will overwrite the : separator with '\0', so the
-> original string (e.g. "khugepaged:anon") ends up truncated after
-> parsing. Nothing today reads argv[0] again afterward, so it's safe as
-> things stand, but it does mean correctness quietly depends on that
-> staying true — a future change that logs argv[0], re-parses it, or
-> echoes it back in an error/usage message would get the mutated version
-> instead of what the user actually typed.
-> 
-> If we'd rather not rely on that invariant, an alternative that still
-> avoids strdup()/free() entirely: copy the type argument into a small
-> fixed-size stack buffer (with a bounds check against its length first)
-> and run strsep() on that copy instead of on argv[0] directly. Same
-> benefit as your version — no allocation, nothing to free, no
-> NULL-check needed — but argv[0] itself stays untouched.
-> 
-> Happy to write this up as a v2 if it seems worthwhile, or if you think
-> relying on "nothing downstream needs argv[0]" is fine as-is, I'm okay
-> going with your version too. Your call.
+On Fri, Aug 21, 2026 at 2:55=E2=80=AFAM KunWu Chan <kunwu.chan@gmail.com> w=
+rote:
+>
+> Hi Ravi,
+>
+> Thanks for the detailed reply.  The fan-in diagnosis makes perfect sense.
+>
+> > Your series is based on the v1 substrate, and the way an event is
+> > configured is the part that moves most.
+> >
+> > [...]
+>
+> Glad to hear v2 is on the way.  The probe-based model is actually
+> something I encountered while building the AUX backend. When multiple
+> sources can feed the same region (e.g. PTE scanning + SPE/IBS), the
+> question of how to combine their reports becomes interesting.
+>
+> For example, CXL tiering may care about physical-address locality, while
+> per-process monitoring may need virtual-address attribution.  How do you
+> see probe weights being determined =E2=80=94 is that expected to be
+> scenario-specific, or is there a more general principle behind the
+> weighting?
 
-I don't think we have to worry about other such argv[0] users. If they ever
-appear, basic testing would reveal them.
+Hello KunWu,
 
--- 
-Cheers,
+SJ can answer that authoritatively -- the probe and weight interface
+is his. Here is my understanding which SJ can confirm later:
 
-David
+Weights are relative, and only among probes. A context can hold up to four;
+each report carries its probe index and credits that probe's own hit count,
+so two PMU-based probes in one context are scored in proportion to their
+weights, and that is where a scenario-specific choice belongs.
+
+What does not mix is a weighted probe with the other two sources. Any
+nonzero weight switches the whole context to probe-weighted scoring, which
+turns page-table access checking off -- so SPE cannot be blended with PTE
+scanning, it replaces it. Page-fault reports carry no probe index; they
+credit the region's access rate but have no hit count, so under weighted
+scoring they are not part of the score either. Both coexist with a probe
+only at weight zero, where everything feeds the same access rate and is
+indistinguishable afterwards.
+
+So for your case I would read it as: PA locality and VA attribution are
+different targets and different address kinds, which points at separate
+contexts rather than one context with tuned weights.
+
+>
+> > 2. The 67.9% drop rate is fan-in, not sizing
+> >
+> > ---
+> >
+> > [...]
+>
+> I completely missed this.  The observability framework showed the
+> symptom (67.9% drop) but got the root cause wrong =E2=80=94 it's not a ri=
+ng
+> sizing issue, it's a fan-in problem.  With a single kdamond thread
+> draining the per-CPU sources, the samples effectively get funneled
+> into a single ring, which explains the numbers.
+>
+> The per-CPU drain approach using `system_percpu_wq` and `queue_work_on()`
+> looks like the right fix.  Our AUX backend already carries a CPU argument
+> through the ops, so adapting it should be straightforward.  I'll take a
+> look at your v2 branch and re-test with the per-CPU drain.
+>
+> Two questions:
+> 1. Is `damon/perf-rfc-v2-08-20-26` ready for me to rebase the
+>    AUX backend and observability framework on top of it?  I'd like to
+>    validate the per-CPU drain fix with real SPE hardware.
+>
+
+Yes:
+
+  https://github.com/ravis-opensrc/linux.git
+  branch damon/perf-rfc-v2-08-20-26, tip 9c0410564596
+
+That is the branch I used to exercise the AUX path. It carries all five of
+your AUX kernel-consumer API patches unmodified, and from the SPE series,
+patch 1/4 plus the generic half of 2/4. 2/4's SPE backend and parser, and
+3/4 and 4/4 which test them, are SPE-specific and I used an x86 box
+with virtual PMU.
+
+The branch is force-updated post fixing two trailers please re-fetch
+if necessary.
+
+None of it is meant for my v2 posting.
+This branch is only the vehicle for testing the AUX report path.
+
+The SHAs you will care about:
+
+  808519650a7a  the per-CPU report side
+  e3323a3bdc75  your AUX interface, ported to the probe model
+  1c347519c626  parse each CPU's AUX buffer on that CPU
+  9c0410564596  perf/core: balance the AUX buffer reference on kernel
+                release
+
+1c347519c626 drains with one work item per CPU in the event's cpumask, via
+queue_work_on() on system_percpu_wq -- system_wq would not do, being
+unbound it silently ignores the CPU targeting.
+
+Two things came out of a quick test in a VM:
+
+- spe_backend_init() calls perf_event_setup_aux(), but I could not find any
+  path calling perf_event_release_aux() -- spe_backend_cleanup() frees only
+  st->win, and your kerneldoc says the release must happen before
+  perf_event_release_kernel(). Left alone on my branch.
+
+- 9c0410564596: the explicit ring_buffer_put() in perf_event_release_aux()
+  is one too many, since ring_buffer_attach(event, NULL) just above already
+  drops the event's reference.
+
+> 2. For the probe-based configuration, does the `prep_action =3D "perf_eve=
+nt"`
+>    model preserve the same event lifecycle?  Our AUX path needs to create
+>    and bind the event during apply, keep it disabled initially, and enabl=
+e
+>    it when kdamond starts.
+>
+
+Yes -- created disabled during apply, bound, then enabled. Per CPU, on the
+kdamond turn-on path:
+
+  perf_event_create_kernel_counter()   attr has .pinned =3D 1, .disabled =
+=3D 1,
+                                       so the counter is installed but not
+                                       yet schedulable
+  ops->init(event, cpu, perf_event)    your backend attaches the AUX buffer
+                                       here, via perf_event_setup_aux()
+  perf_event_enable()                  only now can the PMU be scheduled in
+
+So the buffer is always attached before the counter starts. If ops->init()
+fails the counter is released without ever being enabled.
+kernel/watchdog_perf.c uses the same pinned + disabled-then-enable pairing.
+
+Sanity-tested both report paths in a VM.
+
+Best Regards,
+Ravi.
+
+> Thanks,
+> KunWu
 
