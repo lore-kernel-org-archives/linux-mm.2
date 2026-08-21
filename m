@@ -4,117 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2AE6C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 02:05:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 299EEC5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 02:09:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 806856B008C; Thu, 20 Aug 2026 22:05:23 -0400 (EDT)
+	id 32C966B009D; Thu, 20 Aug 2026 22:09:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B7736B0092; Thu, 20 Aug 2026 22:05:23 -0400 (EDT)
+	id 2DCD46B009F; Thu, 20 Aug 2026 22:09:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A6166B009D; Thu, 20 Aug 2026 22:05:23 -0400 (EDT)
+	id 1CBD86B00A0; Thu, 20 Aug 2026 22:09:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 34DEB6B008C
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:05:23 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B05E140120
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:05:22 +0000 (UTC)
-X-FDA: 85123634484.06.EF268BE
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 016E11C0006
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:05:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=YaX61jyC;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F01E96B009D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 22:09:22 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 721004035E
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:09:22 +0000 (UTC)
+X-FDA: 85123644564.24.B05DF62
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CB487120002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:09:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sZF6OF5T;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787277920;
+	s=arc-20220608; t=1787278160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ilqWqTcp2QIIegN8Wykudvyua68HMB1s5p79u7p9ot0=;
-	b=JHHm5n/VF9/MFDPlP6Po3K6ORhqr+K15lTlYBVYTpTvjXlk0wxBdUvi0HkJPq3ogYXZrr5
-	8C082gDcSP5d5WdFgREnh1PItCRYiR5RN/YpUFNj+RM7GLuLWEMK1/9ZMI6DnpKY26Mku9
-	R9N58EACaVKDqOjr9LlbR5ZNIPNDoR8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dKjbfZHkiNhUGqU33xNBmYXaYrU2IxP4A82LmlRQCB0=;
+	b=LCUhAbf0W8a1D+4/KqIKGL2Ifzm5UpJbf4h9LebvUUpV6znh6w+ZoRq2Eb4BYNc95Pwrzu
+	JG3zD1K0wwgRhZWMTbyL0IPeCxmVy3F3A18d2on+INPwvwqFcaa3cpV+Al6OX+5PO0UvqH
+	KK//7MXYr7LoNjLV935J+gedh1WhHtU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=YaX61jyC;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.51 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sZF6OF5T;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787277920;
-	b=jEsGJOVJmQJsQMPK5D+SdkMC/wjfF7FxNeY+xwC7XcIo4ypbuT/lGfyaro2UgPUHbfQAK0
-	kFOfdroJ57c7sfuMFWhnvzPrZkNGmf/TPl6qjW4wRSypH7RVe2Vot7dsUqV8HTURnPU7LD
-	DF6Eyrgr7pls3Q7lwncfQY/mzvKv3So=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so1154306a12.1
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:05:19 -0700 (PDT)
+	t=1787278160;
+	b=ACUKl8wsw1EhkEwbpltfac46ECNpL8m0k4JOnrm28hsEgffiqUO5iOI8r4OQT5EdLih+DZ
+	E4P20nWcbc6nrTv9qDWO/DPhQlXaGnSeJb/Zm4zxYlVjZxaEhHYf09M+WAcENa1OR2FFHm
+	zsRpoFUhKw6CU5/Dl9ioT4mI/tuLVeo=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d049069377so5180455ad.0
+        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:09:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1787277918; x=1787882718; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ilqWqTcp2QIIegN8Wykudvyua68HMB1s5p79u7p9ot0=;
-        b=YaX61jyConlhqSo+wxt7sxYsT1UmBxyzO41t+kiU7CUYEFKujZdT7rvvaAHXUfXbPM
-         zsxRdsDExo96S/rB0XH0nvujh3/541ZkiKaNMwzCY1OlfCFZgFMcCOqN17xgxSkXc6aA
-         MXnm2+gX63hsRJxkOccHBSZnm2eeCwpc1AOk0=
+        d=gmail.com; s=20251104; t=1787278160; x=1787882960; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dKjbfZHkiNhUGqU33xNBmYXaYrU2IxP4A82LmlRQCB0=;
+        b=sZF6OF5TlaIANxDTvc7U56LzWpu6gHx6N1P8wQVkryYc07rAAUjDXJBJSytjDE4m54
+         qVLkG4yYstZ8cIt7LsW4ewyuiNgBFAEz0h01MdRolx2aJehRZkwp+jHs/X6tLGoMzZy9
+         775RSQX+3DPQYxag+YPBGY9cuFrZOz2XGS6Q8LU5EFAyXzNnm88FQRNVtpDI4FPq6Lwu
+         /rGiezt44XW1dJWTGizeDLrXJqoxHmFwyy4no9jpmxFA5kqL5Op9IoddtpicKFtS0ktd
+         jH6Q0PnBQ5X3Q9VfyzAqyNCg8MPFE9J5pOZqbJ3hg4kybqWDLmxOmLElvSmOnNjUzIf8
+         hgzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787277918; x=1787882718;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ilqWqTcp2QIIegN8Wykudvyua68HMB1s5p79u7p9ot0=;
-        b=V3WRQlTtZVYrmXb3Ek5zOgb/x0TDvYLqmOGBV3FZTLT4izRz88Vjag/OXPBMlfk0PZ
-         C/hJPGXHTXKdMFydME83u9RfZ685gMGanVARwjP3DybDA8QQnLcix/j4IPDPxw9KJfxR
-         AkV5Xnn+9QqEgAp6W18RVwOK+TkNTIeMcDgxyDkjUkMwM5e5p1xhMA2nfiAmbBUy4a7P
-         UPqQ/GiwfGSyuDz5h/an6MYV0EJY+v0Q62pEReiuXugLQ9rXt6Er+eY6M1+VoS4217aV
-         Ttv5kwKDCTtrfUNAtlNMMN3O9/7Irg5k4eT4V+f8xjhq8sOw5D1KzIVV6NNsoXoooW1m
-         YVyw==
-X-Gm-Message-State: AOJu0YzRSfhIpqxi+E1ka897S1H3GpVkTHXE501P9Sgcas3p9lxiMn4O
-	Mrcxi+77wRKeT8FcCs1q3NS0Jg+dIAdttfoKhFddeMJgcgYooz3VCeLL9WuqRYtcDy+nJb6hbbK
-	ONphxJY47gA==
-X-Gm-Gg: AR+sD1250cHSNu5HKj+EW1cMXHhBHdTRvcuv0g1p3vhabWhxTubz41A5EVA2+HhuX8/
-	xCeAqKhfTKA2N0SGalsuPW6vX+fr89EB9931ea967Tu5+HnIVKBfLBzKqtl+ovW8eFNiJ59QTTE
-	IGwIEsyI5t3PDEkMHNrpOiY4V2RTQQSKm1XOQ31cHc4m3XswX6te8WvRtau7UiODs2Z43CxfIUQ
-	hSd4MRr75zTJjENDy9FOgPAMIjBD5ACOKpltEsgs+259m9+meXP9ohvkqkabVrcOojK5zvdLAu3
-	lgj8P/e50klAvzIRa20B4zjRRKnpj5RWV/oyaRGWy4Tj7RDLRDJKhQa52loi40bQxgYGZQKd5/t
-	y2b0CU7wFqN/T2EcoHqq2OP4RrzkCPT+8u3jISQPJXJ8Cb/MNtlVNM+J6GdAwXdCwXLM/l45rfD
-	Lb0qj8Z7VhdpdUiBkuS9unu1lnoKLjasELCE7L7C05Hi7dajNaBlKYsL7C9TmAxAhpzt2Zi6mpY
-	rlH65aVfIc7eKTkHYIFsUu84Y1TUVhYrajJ3A==
-X-Received: by 2002:a17:907:9346:b0:c1a:5d49:f99d with SMTP id a640c23a62f3a-c246a3ab4c2mr312520766b.7.1787277918264;
-        Thu, 20 Aug 2026 19:05:18 -0700 (PDT)
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com. [209.85.208.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c245940c46bsm251522966b.59.2026.08.20.19.05.17
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Aug 2026 19:05:17 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a10d02ff43so1169380a12.0
-        for <linux-mm@kvack.org>; Thu, 20 Aug 2026 19:05:17 -0700 (PDT)
-X-Received: by 2002:a05:6402:24c4:b0:698:ecf:d18a with SMTP id
- 4fb4d7f45d1cf-6a42f1be3d5mr2627931a12.9.1787277917155; Thu, 20 Aug 2026
- 19:05:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787278160; x=1787882960;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dKjbfZHkiNhUGqU33xNBmYXaYrU2IxP4A82LmlRQCB0=;
+        b=kc1v8UNRTJQL34UNgGucR8UFxvNIGCv45rzbpMhjgC5jumAiqmMscxPLPTDue1yciY
+         0IiGIgTpefQ5fH66TLAnJo5yrfR6V5OxSjvg/GE2IlzRqS0029BTCJ5H4ym3UUCxSmAM
+         AiFUI6wnHzrJdRQlRkhuUsili82fxKcKfSLPoXR1l0nBM28FnkHTGY2+SQ73SkaKF6HU
+         Oml9KqTOgBXPyCtKyNcaEDBgT00RAv+3u532yiZZLSNzgFeZhGI+0qpTfZS2x4apToGZ
+         1eUaORRTm97zPtHjPW+ubndHRn2w08EXLVA9mRtG/2TpEFG9ysAXOi1Y/DYEhcUWgNB+
+         Hlgw==
+X-Gm-Message-State: AFuF++mFgOw4msCOBEOngwEUF9mixbIJZCzYeHKF7HCzkdZwIoqDptgw
+	Oz/hFj26YgTgedUSdnABdUzRagF6fPiq8EZJNQQ9W7JzfLkZDEU+9guK
+X-Gm-Gg: AR+sD130Lx4RYgHVGFx+1/WiMZoBOkaEORoa/bXpvpbbvJpgxHSzsMWyw9QZZX8CxI2
+	+pwCNq1nivViFhBvbC2bHKdHhTB7WilCF5GLxGgg6eVNNaQib0Eq4lIkcM9KTscEOHNxbtku+Le
+	ZHgZwjdYaXC3U9jvmqOIqkXPYFYBSe1Vd62JDvqpZ23F6d3QA/C3N9iq6+zNSwnI/uruPkzhjqj
+	yamV7prxveuZLClIHoD4VM3C1giJ0AsdsUFZUxGOIZHenlM4D2QAOkuJuWiXt4wuseBZG6otiRl
+	lgX4gPuq0H0RIqFm4g7pqPLspjAx1GX1FliUeh0dCBUy014rkeLhlZDt5x1PUQDm0cFRLBt47Zp
+	fYpJhjW5f/E6cbxTKCUecX09sMdp9z/TB339385LbJTDcRsSOb6T1oK5QgrzRMk/SMAvuzUjKxR
+	EVKbK/zmI8p2ZVDv+IOKHmxA9Uv5EzZVVDYkrLhXo6XkIlfrj4S3WHwqzbn0t2ldxm1j5cvGjhV
+	OQvClGi927l1yZ1hlQgb8sl2t4=
+X-Received: by 2002:a17:902:f68d:b0:2ca:660:b1d with SMTP id d9443c01a7336-2d64b025d01mr50792365ad.11.1787278159529;
+        Thu, 20 Aug 2026 19:09:19 -0700 (PDT)
+Received: from PC-2B0BA31200898.company.local ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62e3cced8sm12851045ad.75.2026.08.20.19.09.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 19:09:19 -0700 (PDT)
+From: Meijing Zhao <zhaomeijing100@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Wandun Chen <chenwandun@lixiang.com>,
+	Meijing Zhao <zhaomeijing@lixiang.com>
+Subject: [PATCH v2 RESEND 0/3] mm: memblock: fix debugfs flag reporting and synchronization
+Date: Fri, 21 Aug 2026 10:09:07 +0800
+Message-Id: <20260821020910.3428585-1-zhaomeijing100@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20260818220711.d5d577cb135b213ae11549c9@linux-foundation.org>
-In-Reply-To: <20260818220711.d5d577cb135b213ae11549c9@linux-foundation.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 20 Aug 2026 19:04:59 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wipdFaYVXO6egyacqXiTfUEQWjqsOSjxjbhZ0FK_MjRTA@mail.gmail.com>
-X-Gm-Features: AcwNN1Vv4YswxSOrIw8YhWVa3VKcmfREmzL5hnmqA7uUN5u66DG9Dsgsk0KbPg4
-Message-ID: <CAHk-=wipdFaYVXO6egyacqXiTfUEQWjqsOSjxjbhZ0FK_MjRTA@mail.gmail.com>
-Subject: Re: [GIT PULL] MM updates for 7.3-rc1
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: gwggj144zkckgpsd89kxnm434umey5qi
-X-Rspamd-Queue-Id: 016E11C0006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: h6yc9supj1ah18szwt5xtrcweox5oe1s
+X-Rspamd-Queue-Id: CB487120002
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787277919-482214
-X-HE-Meta: U2FsdGVkX18t7MbjxUHeQMUtw3eBiSFliwJC8lhcJKxHxkuEhNRqbcUQIH9Bfj6YtuchDNFD8r28+D58hNbM6TR8adJoTtefiLLWcIFCP/k1pxmNCSwgMltGm/WTrc5jpkg5MxSHhu1DPpkVULEplUOP0ET5QK0idhncfGczokSYSEpIGRC6wzf/1R4ugPh5ALxhnQRpyJrA2e55n1Mgt7zry05fdTG7i9q1h9z1TzAJOhNOj0RDCqdHzqqebeHfFkvISvbsoMVEFqjtHFz/Y5oFZq/WIO9q+MRk2qw4gG2vp1ht5lBaKMMDO8X9JiLnfKXy9MXxjvdwltlNIaluEbZ8Nyx5VN1x9QfAITRRK8rOf/uUw9oOctMwP4KsU2XK9oNafsyfcTRxpbAzwvAkw81/KRxYF2389eWjH24/WzjY7uaHixs88I5f3n/fcFYZATy+9pxC/wX0RsUhoXUjdv+sfdzl+JSY6c+Lw67wisPFz3a5g5oL0cmseeaLu/lxQftnBNensySg5XJlz8hYMF+XHRDG4o5DNY9TOrLpEV+WBYuvHDSO2BxeprIGwc7p+I5WDMuB2TKwwwrLhPlV3b9Gx3yQcMWcA5JFdRB4tOA13wQUAI45JUU+r+ZRGQK99CcQrC6vX8Y9b6PrwnUNnL9oXcJTxMYRP1n+Jhi3H+y+WGAFI4s1meB2y2iSFAGsZBElT/doUfgHVA7k5ZkkN27uRP1DGwnzfwrCgnfegoHkFWXfIK4LmrrSDGxnrCXFw+tjtsK1IAoOpyOLrWou0Hr+9QoxvNhym9p3lOGYTstIZ8osmbxLknAC7DAVoNXoHaskV4sUxDDqPLizHg+bjq9x8l3lCo6KPOTN1Z5q2YmGRtZnQq752T1icJcgZlcoWccDDlSgQNgTlgM1YwiaijQ/3IEEe1sapysIdqplvPIkOxof5Ewsg75+PpUbT88yD6Laiht7vKZsPqPj3rn
- itf5cgfy
- UIX3OvuuwNQb6oHTYkC8o2LKBfBxKVjaeLlb/eE4tWfJw43AvDteSn8ZAaW0v5rN7nk1jj1/guu9RFqOQNIwgUl8DoAqOoWbIxWGzhp5E+8rwUHt0GBY8lIJNIwocmZbqYd/WskqQTChfHkENAKLVKjnjGuBPDuSfsJgmL9GfYfMvXOJ4Brgq43IBm58fR6rU8IzXeXgT2mM+CDosXUWPUDELHS//8pfVpPyiV/8oOVvze/dAc5zhwOkOJky5rHKFrlQdo1zIu1f44a5O2ZV67xGcRniwYGXZaMG96XeVxV0f/nd0FGq1h2sDSpEx9oR8Jf5FlNiV2+tWOMW0tzx6hPFGuuLxXwA1128UNXXuPMvjmWiE+vcIRDaj4zbN9Zbz9DTvwNBbqhWzTFQeXWh/eJwVinpJZaJbrfvIULBbTlNFqEPk+kcSVTXH8RnmDgbxvD+PUMEgs16GR0upJz8kAo14Y8NcV+q11bBlpkMnVIMFNqX8ZGufly5/Rs5JPEYdcvVA8yBECgqvZi3tPyYrvcUHhA==
+X-HE-Tag: 1787278160-937425
+X-HE-Meta: U2FsdGVkX1+SCdvwd2VQnXzg9ZstmoVbHruaW+I5ci3NNZUwfgm88av9NTmoLoCfiGtsjDVUeXMj8AoUzY3EQRBK3iwm9KvNs5yVAd2ePNwmyDvbN8fqBkfMRebzOAhyyTnJUm2aJ48k51Oz4cWKnq39aWNWBvFaRDuyKltp5a/BBxla+y0V4VJ4vlQ4sCZijvkt+vQh6gtpLphjED9Fn90kS34N7/A6wwq1YDAK8A/FNb7bGQj1z+FrWxZ9LYyY6p3kAO547bYtnJzAhC6PCpgdkJgqgD/e0Be7laYjzL8rOe+O394pUu+rFAzk/a5Hcbd0ZsLMM+dw4FhRmgMaOxBRik+dDX9m32EhR6Yi+S7SejwaLHNYBQgQIvTg+jvpil1JPmv80gKmum9X1O1qBtO+nv9aoNqfXX78CtFxVGhXl+vumPehbs9CbemFqK/+AXsIqeC9/ddcdK+hUD7ReKWtpUp7g+lgOx5PDUnc3cA0E8kaolCh7xTqD8Hi6VOMI8ijM8L4mwdOnyAn2T/CiJelN/+LiQP7n0tJHt6vlD61WTsTCfDSBTTodzQvxht+gC4tbdamjmQyyXYXHTlbS2z6fP30t64FOjkgqigCDlyNfcW7bMy/dLms3EQ+IiG3rtYJGQrJ6/Ip5LEA0CvXBIz4/e/ozwPd3u4hsdM5gHshhwdMS2bKreoAbxpqz5VLrenjVMNRgyGAlDCxWfTbqbcG90JPb8Vb7hY57YnH/kqALcjaLAUP/Fd0UcVSMa0nqFmAZOi+paYVmJsmrgtGJyAAomtBsFyTmBYgqHc28UAFWUfa9C9CdmoJDcdjER6aiEu88W1QD4LeDjnYrXjg7AFgHULL8/VS6jV3ueKmDWKfnVVs80BhC0MtUCyNrL/aOVUBfLjcYzTW+gr2Loz8s4HuocR6jEI0Znn61E+l60pLvJjjc4rYZ4j9ZrWmYOWF6qThuK8OuUjEf+Sgeaw
+ mKiSPpmw
+ AIOn7ERBBqgh/Q+/0TOhSOJQRE6q90IXGJcJyE+KG7adsQaRWOtRmGTQAMLwsbyHNYWODEHGtgbx+EHReZ/EIpmx3zVtoVpNMXjznV4QaWJ7DvFX79E8BfrGN7pj1Zc506FYZNWvEb0rKrTNmpn4BWx35QdnHSXzKp6e4bnKkXHk5qDmqWe+osDw3IM9HmUhfOQyEEhtoVimua4RyoLJrABIpyY8YM2xwFHN/ChoU0k4YSrVxQfxr0uDd14hTc+0CM4XAW0gARDagBDeCuHl8qV4S/iMAFhnX2XdiIrHE21cRqcgbf4bDmMl27Vjc8o6E7zcPpMPTXxLRjpGkWYy/BpHO+cqeuvoTj2dz/4FZpB5pA5FSGyNVKWqS/0ozNDgGQ8OmH5uKwjq6zphpDzIKRafkbhGFptu21cP0tJBHuiEM+SmELk8w70jLDH6AYxq2I9Kr/gkMkXol5iggNLuYoBed8h5+K+d4GssTphI8eZZBRlyiHwLMXVxP9VscaKBZvmoUhweMMYdGTOA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,54 +117,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 18 Aug 2026 at 22:07, Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> I don't enjoy typing up those patch series summaries, so I haven't been
-> doing them well.  This time I recruited Gemini to draft many of the
-> bullets and then I did a review/edit pass.  I think the result is
-> better(?).
+From: Meijing Zhao <zhaomeijing@lixiang.com>
 
-So I fixed up some stuff. I suspect you did the same thing last merge
-window too, it had a similar feel to it.
+The memblock debugfs interface has two issues when reporting region
+flags. MEMBLOCK_RSRV_HUGETLB has no corresponding name, and regions
+with multiple flags only show the lowest set bit.
 
-And I detest the silly use of present tense prose for bug fixes etc
-("Do ABC, fixing X").
+In addition, memblock_debug_show() walks the region arrays without
+synchronizing against memory hotplug. If memory hotplug grows an array,
+the debugfs reader may continue accessing the old array after it has
+been freed.
 
-Or the unnecessary use of filler words.
+Add the missing HugeTLB flag name, report every set bit including those
+beyond flagname[], and hold the memory hotplug read lock while walking
+the arrays.
 
-Or saying "This 5 patch series".
+With the series applied, a HugeTLB bootmem reservation is reported as:
 
-Things like that should not matter in a merge message.
+  RSV_KERN|RSV_HUGETLB
 
-You say what changed or what was fixed, not "Five patches to doing ABC
-fixing XYZ".
+RESEND:
+- Regenerate the series from the same clean base as v1. The previous v2
+  was inadvertently generated with an unrelated MEMBLOCK_NODUMP change
+  in the patch context, causing apply failures. No code changes.
 
-If somebody cares about there being five patches, they'd be looking
-at the patches themselves. The merge message should be about
-higher-level concepts.
+Changes in v2:
+- Report set bits beyond flagname[] as UNKNOWN instead of ignoring them.
+- Add a separate patch to synchronize debugfs reads with memory hotplug.
 
-(Or - and if people really care about the delineation of patch series
-- maybe it should be visible in the *history* with explicit
-no-fastforward merges around the individual series)
+v1: https://lore.kernel.org/linux-mm/20260819075422.2387980-1-zhaomeijing100@gmail.com/
 
-I didn't do a *lot* of editing, but let's take a entirely random example:
+Meijing Zhao (3):
+  mm: memblock: add missing HugeTLB flag name
+  mm: memblock: show all region flags in debugfs
+  mm: memblock: synchronize debugfs reads with memory hotplug
 
- - The 2 patch series "selftests/damon: fix memcg_path staging handling"
-   from Cheng Nie fixes a bug in _damon_sysfs.py for damos_filter
-   memcg_path setup, and adds a test case for it in sysfs.py.
+ mm/memblock.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-and I edited it to state the basics without present tense:
-
- - "selftests/damon: fix memcg_path staging handling" (Cheng Nie)
-
-   Fix a bug in _damon_sysfs.py for damos_filter memcg_path setup, and
-   add a test case for it in sysfs.py.
-
-iow, straight and to the point. Not "Patch X optimizes abc", just "Optimize abc"
-
-But I guess it's a matter of taste. But if you use Gemini, you could
-try to tell it to not use filler words, and use imperative mood. Don't
-say "So-and-so did X, fixing Y", just state what was done.
-
-             Linus
+-- 
+2.25.1
 
