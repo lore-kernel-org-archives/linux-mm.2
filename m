@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04110C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 08:03:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94735C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 08:17:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E09A56B008C; Fri, 21 Aug 2026 04:03:25 -0400 (EDT)
+	id 39D456B0095; Fri, 21 Aug 2026 04:17:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBB106B009D; Fri, 21 Aug 2026 04:03:25 -0400 (EDT)
+	id 374D26B009B; Fri, 21 Aug 2026 04:17:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD1126B00A0; Fri, 21 Aug 2026 04:03:25 -0400 (EDT)
+	id 28AAA6B009D; Fri, 21 Aug 2026 04:17:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A0CFF6B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:03:25 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1DAEA1403AB
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:03:25 +0000 (UTC)
-X-FDA: 85124536770.18.D0802CC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8B4134000C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:03:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYXyUBvH;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 031CC6B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:17:07 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A21D40327
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:17:07 +0000 (UTC)
+X-FDA: 85124571294.13.42F673C
+Received: from mta1.migadu.com (out-30.mta1.migadu.com [95.215.58.30])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 696ED20009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:17:05 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cUmc+fz8;
+	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.30 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787299403;
+	s=arc-20220608; t=1787300225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xl/eqcse8q01TGfMWGAYjBFpqsEhjPokKNvvi+tLs1Y=;
-	b=Hth2rSl/Zgu8Iumwg9vm/O/lLb3PxrMbQpDuPQ77EwPB+pXDyHrybD9D1BwJMoT0gj4WVl
-	7WjwpynHq38WL8R0xw0UZuvYuyXiF6C27MVT16xsxJOIFyP92Wa+jIEVX9B8VE8+hQH5Kd
-	1BHuNcYpve/GV1wN8e0TJiKPuLoC/yk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hbJ6qX8RI3gMK5y4jHxx2USxOUGxbnF2MpuECV9enVg=;
+	b=cvFY//G6MPDxDDwlMs3UHhEE+KXTog7HhhEkks7VoxbjuVigFZ87cFvsJLbYJ9QMOBwH/+
+	QTIsfDrj13E4Y0FoHbKwg5bpkDSDa7yYrdOSZ6DBsR/d0Y2NSTTngkUcqMTgFI1cBkaIk4
+	DVRG/JOcm/75an07ugYyguhDQeSZA6Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787299403;
-	b=LeNgt1rD0Qv7/qMY0fvZeKNl0MEFlN4fTb9pU6H4E9Fu/PHplrhwSoVpoS44EQG3Yd+/nR
-	tkYvN+/KltSEC59TjVHSXpZDv4uPseu1kCQ1f+y5yT7pkVQRWQW2577dPsnviKjenFFqhX
-	J8KWO/3PUEE+oc7e7v56wE0mysrPgM8=
+	t=1787300225;
+	b=8g9C4zuU2xWmPJI1i7zKX+GLUEELZRIreo89ierWF5akQsyvDDc0ygbxmynyijT7zFxJ9H
+	pMRDo9w7fGJsxpvN0YpJoBBydr+d1nSMmhOt+rYk0x4yOCnaSR/XsUSfjEU58fytDK2kcy
+	tDIeqt7XAyFHLttnNcS4HuNtqzgVNGc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYXyUBvH;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CBCA160A77;
-	Fri, 21 Aug 2026 08:03:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DAC1F000E9;
-	Fri, 21 Aug 2026 08:03:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787299402;
-	bh=Xl/eqcse8q01TGfMWGAYjBFpqsEhjPokKNvvi+tLs1Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aYXyUBvHuWjxr5r5eke88584RfNeQiUv+Z11RSeOyKCJggIp2nOOOkrdSWdQub4Oo
-	 FEmsOg1wM0tLHoJClvfXiLGGTuPCPmlyT0ak6hbN/HUGcC409TYNT1hUMrU7+3CkbK
-	 oEV7YcB8aSyGuYu9ujOHDN/hxTNq20RrzZ+2vDp1M62m5veKaUf9wVdMhzcm9D/fHt
-	 IipPH+TMQDy/DeS/BGCKZ9euJ3ugymN70cPWTNl8Y3qBGrrhRBGgt7ltQqma7NKJGx
-	 BzbrDqjhhZyfMSZVPoqVEKP1dZdaVhqgwdNlgait2VYyzRfa34YE7PS0dhPzQDrcKf
-	 lG8NCr2eeNcIQ==
-Date: Fri, 21 Aug 2026 09:03:15 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Saravanan D <saravanand@crusoe.ai>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, 
-	Alex Williamson <alex.williamson@redhat.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: allow huge pfnmaps regardless of THP mode
-Message-ID: <aogCjEc9uyMjFP6S@gremlin>
-References: <20260821070520.25759-1-saravanand@crusoe.ai>
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cUmc+fz8;
+	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.30 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=q2LBYSGl4npt3b/U4TgoApNxg/auAjLyjB3dvIGUVCE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787300223; v=1; x=1787905023;
+ b=cUmc+fz82tugVoetyXSen4TEtmnnwPbkouT5HPb1dverA6M4l2vjOLiFk1tA1L1QenIb7yIb
+ 7wIgr+FcleAigkH8QpXmtu7FtT/BNHSx9oxhZge4qWM4E5o0634f8ZHi68rtsxQSz7wdveYofXT
+ NDMaotyeh9mPBzgR4R4wds1s=
+X-Envelope-To: linux-mm@kvack.org
+Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
+	by smtp.migadu.com with ESMTPS id 487007466bb3646c;
+	Fri, 21 Aug 2026 08:17:03 +0000
+X-Mizu-Trace-ID: 487007466bb3646c
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
+Date: Fri, 21 Aug 2026 16:16:37 +0800
+Message-Id: <20260821081641.1339788-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821070520.25759-1-saravanand@crusoe.ai>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: eq4skaaaaa3eqf6payk7q3jjtn4jtp7w
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8B4134000C
-X-HE-Tag: 1787299403-777214
-X-HE-Meta: U2FsdGVkX1966X+HJwi1hZbICKeOtIPYBD+p+QWrGl9oy9CPEHLnaz69Ie33amYxdvJan4fNk0rmoj5MXNYmZA7+il9Yq7rnLVTUk2lcxh4tJKVr0Sin4KmTK0OkDSO08KY0gIGQkZ8Mh8BCsTYWt3lc9MkIKkeOuxjrGoo2xie9X6oMHd5VCcfrdMhyqpHGW0ekPu/JL8Y4BOuxpXGwvkZCIZX8hy3+SahDpubg4IpYf07KR9t9tTNU7ztt3fvutqxGuKkE0wCARzbHLo0loZYqTHLJX0fQm7SrzHmTn7vhhSbeb1m5ctvrAeBYqe4Plldj9ejFY0vsLGUUxSkfna4ZXrzqfrLnzxZPYT9iMreaG/SUd5Jw6aw5qRaYMEfDDzichPvt/uWNZrMknUQlc9QDYDaL/UFQD6uOUiPfFYJyflDF/B2mPBGQF9BKyXolYJFuMHXqWILG+4p36ezYDK7jCO8VKMJUfqDQNAG/a7GeJE/7ej1bVMk8oUuGKo8dsNkXL9jKwmjN7FD/DOk/nzWqnlc0WT887OkUgCAk9p/KPI9b2lSH83TR9FU8K1g4urCnCi99FvReQA+Qm745xm4hM9xMaLi4oqi1bIZ8JALy/Zm3sbOVxwQXTW4uSFficeyCPMu+cZWZwDHOoqsZB/hhLfOriotAwFvTL6gc7IeRyMKgacxatTnqX0dpU0hEItKilqYHQK96vyikUkchSXa9QgVViCj2z8dEsEq8PCPUUxHOzhE1nJtXG0oaGmbzofjjqapJBseXjc8A/CQq9KAnWvUTrkBYvO1tE6PmkAiCDeVJ4ylL2XRbt49r9PfqMSbeHVzbB9YO9ybo4MhG7GRx6SZFQNp+b3hWjLe6gN7VzkXlvHmLQWEusdFVNgkii46wBfXy9+bUjTEQGMR9Jw3KzVUFWhgDOXpJv+oYkMc0Ch5n942KC2VVSOAbjdLhwih6WteOxER4mcY7Yao
- Z53DXhus
- TNf51gqDmlaCanAhGucFf3NSAJWLjtXYQQTz71qhjjbL/iJWpZhkh5pX0WXxfaBuKlRulIdNdfOImp1TD21mdqg5YZvve1AuL2OhgUv+XG7bnvWmk6964mAlq9V6g/T4zgQiVob2zmrux7K963a8v4G056wodCSWJfmh5D8XsNjh3S6pzRypUsC+iDSM2CiCecDhYEpMWoeSoMu1+9QKR4V4pTR5tMrBlgxQRvhfdc7SIwg6BrfewZXYd8oesc0uy7lM5hMdNl5sDbFwa0IZ5qyitZn5uYC6nJvUXyCSmpSTOLzawIGd3lq3X4/NLFTRiaUdt2Bx0d2D+DG89khy8VEen+rfeUQHvdpH252hhQosTHjt8uirjIxMV4w==
+X-Stat-Signature: m8wi6syz3bhoqwhh9qhzophuadw313yw
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 696ED20009
+X-HE-Tag: 1787300225-267576
+X-HE-Meta: U2FsdGVkX19n6qFsrsapuh+TQkGsXfnGS5CQXBRJAh8EP/dEJKX7K/ahsXO02PTsZwnV6r+nGOupvRTQDrzuewmGuTrPjgCp8SxywhMa+XxOQSqXHN9AfSi77x/0eV+4/TNjALePs2DJ857DocVMHf4cEMoMiexJ4ppYEqjbBYIdLYWV/RUhcXBZ6chu+Bl/MOCaAPNr+Y/CG41IkYOiyfn5O2oPCdWhy/ReFSazL7gYrE1nVTh+y+F5skJhjpvVNNZbKFwffAqrtyoow7tEhn6tt0bqx1Waiuwv/Zt6c+BCiJNLEXZF3Oa7sJcFh+QDV6kiXEPl7ITVIFoqoQSc4BnBORricFXkxWOZTvlSscnh32uKhGbHm3WtJWSph68VAE5EIVUIpis0iNuKKb1K77eIsghSihVrIm5Ck/HXex9kU2sCsiBZEAInN0sT7G6ZuSTQTMqJHMqo+YThO2ef/HQjbjEkL5kXb7857JGVRCphNAtur/OUDltKqLSGdU4U3mgOvmk+vL/e+7W6tvsbv9qNGhc8oVPwMOAZQj/MWLN0gTj/pJKGbwzQ0DEVjwUIp+wA8mNsSSxKbnoSJUIUNXemOq/dwlb0IzLweZ8vMi0Ri8XVdBmuBbfZWAcfpetK2yrn94HTPI7OoDDa+GlT6YsjMpXDSZxnK3AurUYaKFF98cU3xzIkXy6mM7McYM9NHAjSDEAwD94VUpGgtP3NZOl7RXhmwgnL04DHzQDaZ7Z58STl1oyUQV9zTPhRJ+FuWri8scI1o5nbPg4Hp3qLgdixyvRPqCAhe8mxNwch4HUEIts3BiPSLYRBjixMwDTTQaYazBCVkEJo9M6z40N+p2OUKipZSLU7FWWbgtXVR++FRQABmrVUAOglIfy1CERi0ijnuD2tp1wZ+tcMXhGr8TFPd8N8WBsQr7h/fRJzfqHaEYaFGeNGMo+jylsbDhCOfZdczDS/brXnd2eoTxK
+ /3zb8Ct+
+ HjNKSdMuIsV/ZFA+xkPuyPYdB9wFx/NseXRIwRRxa71OLYHyP6XrHnvLxdWCS4CTKrliK9ytmTjVWuQjOH8Jk4R0rltf1zXo6TQ+gfMV+qnOC8R1CdPRgp8OLfdMOzDLyxsNdVUIjIMOACd7BbaBctzO2vOsEleBthIiYtnr+aTVD9OX5YJnhtQUxv4ecFCKkEF+1VlshKuLj80hLBkWKjMJ8OXMq/8VIgN2/Oi+wB3ZUzB4saOLf6nY4kgwYsScTsEKguwjPs8AC6PgJ/0C0Q3A4UMK7SvEr53K9zPz97/V7QSQFX6vKgna7OA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,67 +100,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nope.
+From: Ridong Chen <chenridong@xiaomi.com>
 
-On Fri, Aug 21, 2026 at 12:05:20AM -0700, Saravanan D wrote:
-> The THP mode check in __thp_vma_allowable_orders() runs before the
-> clause that trusts huge_fault() handlers, so huge pfnmaps only
-> materialize when THP is set to "always". The THP modes exist to
-> limit the memory and khugepaged costs of transparent hugepages.
-> Special mappings are backed by pfns instead of THP folios and
-> khugepaged never scans them, so those costs do not apply and we
-> can exempt special mappings from the mode check. This also makes
-> THPeligible in smaps report 1 for such mappings.
->
-> This matters for VFIO device passthrough on distributions where
-> the default THP mode is "madvise". Mapping a 128 GiB GPU BAR
-> through VFIO_IOMMU_MAP_DMA costs 33.5 million order 0 faults and
-> 20.7 seconds when the mode denies huge pfnmaps. With huge pfnmaps
-> allowed, the same mapping takes 128 PUD faults and 0.4 seconds.
->
-> Signed-off-by: Saravanan D <saravanand@crusoe.ai>
+min_unmapped_pages and min_slab_pages are documented as per-type limits,
+but node reclaim treats them as one combined gate: once either is
+exceeded, shrink_node() reclaims slab, file and anon together and pushes
+the other type below its limit. Per-node proactive reclaim reuses the
+same gate and fares worse -- with page cache and slab both under their
+limits it reclaims nothing and returns -EAGAIN on an anon-heavy node [1].
 
-This seems like AI slop. We don't want it, thanks.
+This series gates each type separately via two scan_control flags
+(skip_slab_reclaim, skip_file_reclaim) set only on the node reclaim path,
+drops the combined gate, and extends node_reclaim()'s early bail to check
+anon. The flags default to zero, so kswapd, direct, memcg and drop_caches
+are unaffected.
 
-Read https://docs.kernel.org/process/coding-assistants.html and
-https://docs.kernel.org/process/generated-content.html and follow kernel
-guidelines please.
+Tested on QEMU (x86_64, 2 NUMA nodes), A/B kernels differing only in this
+series.
 
-In any case if you'd taken 5 minutes to search the mailing list you'd see
-this was:
+Proactive reclaim (echo to node/reclaim) on an anon-heavy node, file and
+slab under their limits:
 
-a. Already submitted (so your patch reads like plagiarism).
-b. Already rejected in favour of me doing an actually sensible solution.
+  metric              before   after
+  -----------------   ------   -----------
+  pages reclaimed     0 MiB    254 MiB anon
+  return value        -EAGAIN  0
 
-https://lore.kernel.org/linux-mm/anL-NZkNMSSxN0YN@lucifer/
+Node reclaim (zone_reclaim_mode) with one type under its limit -- the type
+under its limit must be left alone:
 
-> ---
->  mm/huge_memory.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index afbb5974bd22..bc61b8020af6 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -193,9 +193,10 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->  	if (!vma_is_anonymous(vma)) {
->  		/*
->  		 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> -		 * were already handled in thp_vma_allowable_orders().
-> +		 * were already handled in thp_vma_allowable_orders(). Special
-> +		 * mappings have no THP costs and are exempt.
->  		 */
-> -		if (!forced_collapse &&
-> +		if (!forced_collapse && !vma_is_special_huge(vma) &&
->  		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
->  						    !hugepage_global_always())))
->  			return 0;
->
-> base-commit: a032d41a86cb82a747bc14d9c82b3e153a9a9ab7
-> --
-> 2.53.0
->
+  type under limit    before          after
+  -----------------   -------------   --------
+  slab                645 scans       0 scans
+  page cache          83 MiB scanned  0 MiB
 
---
-Cheers, Lorenzo
+[1] https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong.chen@linux.dev
+
+Ridong Chen (4):
+  mm/vmscan: only reclaim slab in node reclaim when over min_slab_pages
+  mm/vmscan: only reclaim file pages in node reclaim when over
+    min_unmapped_pages
+  mm/vmscan: drop the combined limit gate in __node_reclaim()
+  mm/vmscan: do not skip node reclaim when only anon is reclaimable
+
+ mm/vmscan.c | 89 ++++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 67 insertions(+), 22 deletions(-)
+
+-- 
+2.34.1
+
 
