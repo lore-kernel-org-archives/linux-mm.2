@@ -4,98 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD2A8C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8958DC5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:51:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B66536B009B; Fri, 21 Aug 2026 07:46:05 -0400 (EDT)
+	id 928266B008C; Fri, 21 Aug 2026 07:51:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3DF16B009D; Fri, 21 Aug 2026 07:46:05 -0400 (EDT)
+	id 8D9226B0092; Fri, 21 Aug 2026 07:51:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A543F6B009F; Fri, 21 Aug 2026 07:46:05 -0400 (EDT)
+	id 815A76B0095; Fri, 21 Aug 2026 07:51:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D71C6B009B
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:46:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 614C56B008C
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:51:44 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 032771C17E2
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:46:04 +0000 (UTC)
-X-FDA: 85125097890.20.EEC204E
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.168])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DDF61C000A
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:46:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=FT6wv1JU;
-	spf=pass (imf10.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.168 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D290FA2DAA
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:51:43 +0000 (UTC)
+X-FDA: 85125112086.20.C747F04
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D3465C0007
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:51:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eqeLOlyR;
+	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787312763;
-	b=jiHEfPDEvTU2kNPYC0SE88PWIRxDsMOlmJvh3sfzEn3oShycu02s7xe//foTcas9LZM9Sf
-	Y4gf33zeyaljBWN562slXVaQfphkMuD6cVu3/WoN/v2TLruZ7x4DvGfoP6d2e7oC3N0Fy8
-	dz7JKfAzv+JpNZwPoJYsOyRfOxE0FJU=
+	t=1787313101;
+	b=NpZIwEb6vp4L7DBZKIMjxVQzHhKNT7Hxix5eI/IWDQNIzgSAfBoWZnNZT5p6jFbVww6l/j
+	0WxikXMUfFCnX3R5SROeLltpLPbBWkX9FIGAokqVXept3ZBbYXCgYaF2SM245luMmsncaZ
+	uVXkR+6O/GkCoJZ/o3s2/oh9G59xH5o=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=FT6wv1JU;
-	spf=pass (imf10.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.168 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
-	dmarc=pass (policy=reject) header.from=xs4all.nl
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eqeLOlyR;
+	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787312763;
+	s=arc-20220608; t=1787313101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yFPmgGHt8SfwvN/uEXqWH/wUz0hJJxpKPqJOuk3pBBM=;
-	b=dMmIVnOPSANYFQwMp7fe2ZY1CA1nF8jxvDGZ4KT3ga4tTO8SoW1V5KhLQDy3SO32FHsQM6
-	x62izKQJ4Mm3Ni5oBb0xddsCLG1EvrfRX9v08iz+PcOL1/JyHlYPstAoxMAu7ybzI5Ig9f
-	adjR/VmcXEMAAEbEjW3Lz9gsAY8Ul4Y=
-X-KPN-MessageId: e0887a5e-9d55-11f1-861c-005056aba152
-Received: from smtp.kpnmail.nl (unknown [10.31.155.38])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id e0887a5e-9d55-11f1-861c-005056aba152;
-	Fri, 21 Aug 2026 13:45:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:message-id:subject:to:from:date;
-	bh=yFPmgGHt8SfwvN/uEXqWH/wUz0hJJxpKPqJOuk3pBBM=;
-	b=FT6wv1JU6jQOf5bV++m8gzkkrFKXwb19IJ2LLFJJBSkHg6fo6QZPr/atwQOA2U3Gc/JRbyEPgBFmx
-	 v+3vDDX3os3EBiCVrm5SvSDk6GHqU3UP2n+l0PnF/fPzssVg+pJ4b2UmAawi5AIgKAJl6bbsTrRyw8
-	 Q9Vz8iPOzJBx8or66RWB/inyQtAzthl2KS85B740TQ3QOlB1AmjKWuMSJ5pra1vhuskR3uYLaja+0Y
-	 kkEQzwTToLiECc4CC0Ut35dRnZgnp1of+SowzEf+Eum6ToNdkDYGA5fv6Fig+k6A2WdvHoWS0i8A4w
-	 flrh9eH4qCCvVallyLooNYQEQsrzE5Q==
-X-KPN-MID: 33|ilEge/h7m+/Q9upzrozFqztLXqy78Hd2ih5BIJCdjBaiAYzReanRBYnKVtch47B
- ejkS4yT9QE1WkDtKF6cBKjcv46OaiHcYjCL2addabmSU=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|Q0wP+J6rG6V1Xcmg6XTyqcjJZlrLvJ4+shaI9oPmFiccw69ASds7LUtEE1TGXUm
- yAxT+hnTa5XNQO/cyMcmLHA==
-X-Originating-IP: 85.144.169.142
-Received: from localhost (142-169-144-85.ftth.glasoperator.nl [85.144.169.142])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id e061f711-9d55-11f1-bd1e-005056abf0db;
-	Fri, 21 Aug 2026 13:45:58 +0200 (CEST)
-Date: Fri, 21 Aug 2026 13:45:59 +0200
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: kees@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	jack@suse.cz, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] binfmt_elf_fdpic: reject PT_LOAD with filesz larger than
- memsz
-Message-ID: <aog5Kx6HB3jxb8cJ@lt-jori.localdomain>
-References: <20260820222824.3165092-3-Jeremy.Jean@oss.cyber.gouv.fr>
+	bh=sBpMKLMCpV2AxfNqRU5qSpbkRSV1+US95VjWx7rNRF8=;
+	b=rUJX4tjEuIL+X1Gb1uhwbtLloEcv8azAzBwajl92r+c8Lh624qGz7uTbQqzph67KY8yNC4
+	3qtcrKGR/XDRCY3bRuyDkFtrDKDLSPKAUPnsXzVVOWn5q1HMHZ/vG7fFvvAoKe7bpO9lXT
+	j9KFo7Nxh8iUoFNf7n+fndjzU/TmvmI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BF5E342DF7;
+	Fri, 21 Aug 2026 11:51:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF6D1F00A3D;
+	Fri, 21 Aug 2026 11:51:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787313100;
+	bh=sBpMKLMCpV2AxfNqRU5qSpbkRSV1+US95VjWx7rNRF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eqeLOlyR4+rgSoG3eVry3aEncsV6Y46NTXrIU+4B1Ewqc9OkFka8zAwrx6AxpmcMY
+	 1/RgrhvVcCqjpoexzMc1ZTPySmd0VMgynpzMy2tA44sfXlHMtF7nqi2qo+sN3YVoMt
+	 5gP4EbnTlC46kkBUEdhW00pSr+5ZChFtdUVZ7tnJSyfI8Uvz8Ko6qpnBBtxal3h0fJ
+	 CdLYKOfwuCrB83yvhsF235Z9hJu/E+fsOLm77D00KgCcLbmSTko3B/TN8T7OaDoYS2
+	 TCSWbCjz/mC4p2rF1VsVxo99rneRyVOzfxuYqVZ7ciN191NmPmbXjd5Y71eiuc5MlJ
+	 WFs2vdm0DtBBQ==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 72BA11980052;
+	Fri, 21 Aug 2026 07:51:36 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Fri, 21 Aug 2026 07:51:38 -0400
+X-ME-Sender: <xms:xzuIao-UNTuh7jdnMg-X77Z0xxMkKq3OlEUrkuxpz-IlLBBhol3buQ>
+    <xme:xzuIauIA96Foe0bv9NGipTbBqiztVzEXtIvkcwRIlfYCafITkGIZ0qcrU34S41Uo9
+    -S0_DsRhUonwIwz-4VLhWtrVZaZ_IS33LfGWXTsjxnQ8uQJ6jpZao0Q>
+X-ME-Received: <xmr:xzuIat8nn8vxcLyjvU-PUwhAGkBqmf94OXOtZqUzKmXRBrPwhH3-GylGf1g>
+X-ME-Proxy-Cause: dmFkZTGkobwOJDXfmDVQnTznTajLF1+gng1DwxP4wyWzTCBiX4TmWfUTIIyia2/B+dSgwA
+    STm0VnjeA3gf6v/mcV6BalUqH8ECjST+EleofvJRKrsyN2NupbIpJquZovYUNNk0U6Eomu
+    WhAtF5pnbt7hYJtbns0BYqJTie5NhdvuO1mhJgr4BELW3bCr1zqqvJcro1IQSF2ZKXB8DA
+    0OQXpq/9SOu19gzyOKSjGFBwxEyH+DhBFMLo4iiWifqLV5zkS/ouYeekSqXQFPoPPchPlr
+    CO74nMl7Eikd90vhEMTpNsEBcdkVE9IgK4oQEB2sJSIkY/Pecf0l2qm3eHkbY8CRnkxRdQ
+    5JCqN3LVGR8BRgIFSZ3MsakQ5IXa7UU/uv4Y1/kU6PoC7jhSmdoDZOAxAWyiakOKUJ6UKu
+    EcX3j/zjIM8WAmWhziX24j8dcoJUnn3l13AJ4oN1zKBwmBvCHWK2SoNIvxbme+VmL6x53X
+    I7ONH4f25zJDU9t0KejOxyWwabWZGwjKWsi/BE+TY5HeArEUswR9Bu2dK4iei6/6AXhlIQ
+    5SkNJohggZqlHZgpYtWTZxnvPK2oqQ5F8MvAn1xG8iraX6BbsKZltxe1gP/36QTzpJdAS1
+    E1ApgNmjYzxh0z7R6fhuUKPP7EQmUhDqtbi+YsifOzYWAThUnXMcA52KK1sg
+X-ME-Proxy: <xmx:xzuIaqHsbj7vVwwwNp5W5D_DmYi4s0cMkJC0VbwGkiydyrbzCFyoAg>
+    <xmx:xzuIatO-Aystk8z6Aej9SnIgmw1uvm2drJdWm04g2LCTwBoQmuDE7g>
+    <xmx:xzuIapQD7IO_EW7A8eUz_MZhoL7Hoe-6UI09xnUnZDyGBUtBzmxlEw>
+    <xmx:xzuIakTn9SQe7ZjkAN0tZ4IiQMaplFTVPI_umTFY2LBN2VE9KiWOYA>
+    <xmx:yDuIajbvORkshWti5lpU2jvUvh80MNtzsmL4ltiYN-8XSzWRFfDjgs3P>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 21 Aug 2026 07:51:35 -0400 (EDT)
+Date: Fri, 21 Aug 2026 12:51:34 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rmikey@meta.com, riel@surriel.com, kexec@lists.infradead.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/6] efi: add the LINUX_EFI_POISONED_MEMORY
+ configuration table
+Message-ID: <aog7bwfMVpSy9LcY@thinkstation>
+References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
+ <20260821-hwpoison-kho-v2-2-5743791e48e6@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260820222824.3165092-3-Jeremy.Jean@oss.cyber.gouv.fr>
+In-Reply-To: <20260821-hwpoison-kho-v2-2-5743791e48e6@debian.org>
+X-Rspamd-Queue-Id: D3465C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DDF61C000A
-X-Stat-Signature: ui4u4mudmfogkn9m1neccdcm8npmjuud
-X-HE-Tag: 1787312762-86382
-X-HE-Meta: U2FsdGVkX19ST0tm6zL4+Ej4GQ2aOhBxH4YVu3tuajVPb6cg2TbZ91LGOUMlDv/SUGI7PBdwwzbctQgcYVdxmC42QlkJj5060OSXcZES7RdJJUCwao9YQ95j9wVBKqNSFWQ1oFI46UJlDJjcy54q20W2XdptDRJogQMTu0RtToGCTHYISVOv7Qwr9WQI843zE/E/gBHVlaiPgPVf0bt1bx2PoNraHydtBsKV5JUjsDpBH1I1UJKAkYS+26VZduk42O/c2cQEJokXumojLaVLM0CGOgn7796ulpr/eNnDc76s1T8F+UC+No0zhuDS8KoiFlKT7f9WRSQwT3tFpmd1k6IEEG6PRw3LXS9/sGu0r5W8S8ZYZ0VIp7ADXgpS54JfgpYp5nMV7Ik6NXo7y4EwKtYxSZqg44p/gEniToub6HQwqQIJigYyLxEzjh2R7RWZcK1zYdWZ+VOdWKxSbTCPx20ESmwC6zVaCgSiQc9f5i0T7C8UgkQMFgYVCZz9oEjumSUjWcRuwN+/t73L2n12bTBeDSQYjHKAOKJ4uTwOOHMxoMYvEFMHWnhXMxp9tKlw8mcynG2CddAjKZS4QmVIHL8v316m4AdfCzRrdvWh2aIAIsD3Z3P2M3JQ+rqxUOz5mKMcQngDZAZ5XI5pQl+KQJB4vdt/ie0JBhDa4aM4DCsZ8RWUCpkYWP/2s0JNdQfPV2GNh09dQ0ATn65umP9PIVuHwPNPec5OO9iShxk71inxu7l0EeIYoT6Pxf17uThL2OopHBjn4XSyPJBiL3187RhKlYVBFT0Br/LhNyAoBeDHtB50gGW4QGUOe47SpGLedAMCPvsWRxFFGLmXBmUcX3lp2uNwzB42BcP9INkBN5OUuogqrFLSEPnK44JL59mjE3ZwIHUW3QiycLJzbuR72FGLozSxKciO/WI7N92wKOKZqpgAivPDzHcIxFvvUfUgLCPIN3OA0v2cx8gYW7d
- 2HbJ8bRp
- h3KK2sQncxsI1NLVvZ+GSG9auexFY4IS9wCAPASM+bMBoBoKnkOWSx3xr167/e5uTBhtaPa72lf8/9HQkTph+7pih9yaacI0/kIKOttq+RUjM3a6dcuabfyQBLFuz29TsXJ6m3Xio7S8PJVCHnKC2KBrfHlyItOE5YGC9wS9ebQIn+NBsN7zysEwZKttIaAOlUdefVw/YT59xVAfjcrxEgFN5g9h7HSmy02tBC4e/bbIEY5sK5obVt5BZVwqpHsSKLWmC1bFHBGOXrGwqWQckLI++A/3cLRDXqxtZr7AWz3U9BHX1IF+qoYVTGhKxIheVK48vzotxIqeUKFXyrjcQGQbF6mZTkUYyQVjSc04zje04yXbTfH+/A1jpSPDKeMEIz7/QmtIRNXpcEgH1T4UMgD8aCmvxbOYJzxKyVnENkM7WrY5EA4Dx4jpPeQ8zZ8UBZtscvYPLCATjaPOzSK0h/zhtRiOb/nAYw79y9ROUa6D1p5gKOSuO1/mc7a1u67fIFtGpJ2e9XJOo0JJSmlTrh7R7TELBL48jGe4za9zpLT1M//LgvKi7uhTuHw==
+X-Stat-Signature: pfppowomu7zefnx4fymzgnnbsdnur4xi
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787313101-118911
+X-HE-Meta: U2FsdGVkX1/P0s6TVshNjUYpryznixSt7WzofA1qwVW5ryDptiOcNyV/w/nEpAEx4pVO7D1KR4YCVLNulAR8re4p4+RS7ibrLP0zxYjzPxANtPe9iQWWmwpb/8DPf0pEYt8E8C6I0Kwl1W8ogmPijH9ni9qmlaXXlONvgkiYAwpgpc/84uswhGDFN5H3kWLl5Bf/H1Zk/gGpl5RtDA8AmgzyDBIWWPSkC6oyPgngQtvGwahLwKChnQeCv63DyrBK2iBUuESmAzf1m4ZMGA2n8/l4PxhYwTLrt4xBFDBiby44OJeOda0OQewv++6OxfG3+JlskqfpSRSZVahxQ33v3SopnJIcn5vZXqEGt7fRyxpu1AVGuSBQ5qKHLsSFp4wNxO0lv9LRzhD9/OwMJ7aJUehev6TOdoPl0DWvDrk4XTeG/qqYYV7tSqxnnmb2ccLmZg09TWPnqG4tOy7BVWUe5stkZvy0JmUT8WaU2qKz1+ncFXvy3OcHKgZUblS+R6MfNbsBbWGyyJF0eNIj13QyOgRql7+rnSLL3wyLNd/+Tx0lDQbpZ8q9+cUoAWS0rcE02oRD/Sr2SkUq1t1GClXXJRjJhsznU4aKplJ3S5w8dsC25p2IhMwd8ZmKypxanJxVJNbYUhhQX1VXj68UM8V+U9GxA7cQTip+3ngsenimmCotizEgJYoy5I7ApukO8m7Yk0zVvlwmj4VdKosqTlUtvG7Cw9aJA7+YrMc8pVDprNv076KYn1Yt0ns/ssvBx96iVzVJ9RS6YiAj27gWFKHa7BgJQC19EH+X8UcMavR4eBILur+0mU1lELIVimMhF1vHlaAKG4HMK7Kk2cGfMrUVf1+eiF4/8ysE91J/ZP5+FjykoRjD7l2E+ETcME4ldoKY4tcVQzup6uWLlunjZdec28umds16FqWA5lkyRmttb0oPVFCbp71Gl+mGj9LqHstWXvoZh/KjMDBvnR4s4/3
+ cfvSBLTo
+ 9xSr5ryI8rbwlRhplJ87gP4/nmqdpeN1NAMTD2ZHUP2LcUi9TLKKyboAMXL9teUh5H82SRb6FXB7mcIw/4Rq3HAdgbDofReLIWtbLnKAtFimC2sOdZtqgvtDMw53HKDwp4nvoNuPYWSad+tN7c/fs09T9qCelV70DBfvLjY/lROMDeTMm/wFMxogU1WEwyT6wLiyF0+aeZ6DvjBylP85mrLmD1yF412LcK56pT6tRN0kiWpaXWD4TUPKsAhH68P2CNMFyzmdnQ6Y4IEAI3P8c9uXajy/0gYmiMqWepAt/Z+MoZujAmT352TzpMneNOgTJ9FMdDXrZRgoT+sDUFOmHtuE7Nu9y2oHb4H9/5Zs8XDx07OJpqYQ1nKpgU2O9o5usG1UadeLIp1Qr7z/B5B4myR9Y9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,63 +123,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 20, 2026 at 10:28:26PM +0000, Jérémy Jean wrote:
-> The ELF specification requires p_filesz to be no larger than p_memsz for
-> PT_LOAD segments.
-> 
-> elf_fdpic_map_file_constdisp_on_uclinux() sizes its contiguous allocation
-> from p_memsz, then read_code() copies p_filesz bytes into it. A malformed
-> segment can therefore copy file contents past the allocation on NOMMU
-> systems. The direct-mmap path also subtracts p_filesz from p_memsz without
-> first validating the relationship.
-> 
-> Validate every PT_LOAD immediately after fetching the program headers.
-> This covers both executable and interpreter headers before
-> begin_new_exec() makes execution irreversible.
-> 
-> On RV32 NOMMU, an ET_DYN with an 8192-byte p_filesz and 4096-byte p_memsz
-> copied a marker from the second file page past its one-page mapping.
-> After this change execve() rejects it with -EINVAL, while an 8192/8192
-> control still executes.
-> 
-> The flaw dates back to the driver's introduction in the pre-git history
-> tree introduced in v2.6.11 by 91808d6ebe39 ("[PATCH] FRV: Add FDPIC ELF
-> binary format driver").
-
-I came across this about a month ago. But I wonder if this is even worth
-fixing. You are on a non-MMU system, so running a malicious ELF kinda
-means gameover anyhow, doesn't it?
-
-> 
-> Assisted-by: Codex:gpt-5
-
-You are allowed to use LLM assistance, but the commit message also reads
-like AI, so I am a bit worried whether you actually understand the
-change you are proposing. Afaik, this is still required.
-
-> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-> ---
->  fs/binfmt_elf_fdpic.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-> index 068c46875c74..e8a6e89b76a0 100644
-> --- a/fs/binfmt_elf_fdpic.c
-> +++ b/fs/binfmt_elf_fdpic.c
-> @@ -157,6 +157,12 @@ static int elf_fdpic_fetch_phdrs(struct elf_fdpic_params *params,
->  	if (unlikely(retval != size))
->  		return retval < 0 ? retval : -ENOEXEC;
+On Fri, Aug 21, 2026 at 03:06:02AM -0700, Breno Leitao wrote:
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index 29e0729299f5b..69c0dc02bc112 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -263,6 +263,16 @@ config EFI_COCO_SECRET
+>  	  virt/coco/efi_secret module to access the secrets, which in turn
+>  	  allows userspace programs to access the injected secrets.
 >  
-> +	phdr = params->phdrs;
-> +	for (loop = 0; loop < params->hdr.e_phnum; loop++, phdr++) {
-> +		if (phdr->p_type == PT_LOAD && phdr->p_filesz > phdr->p_memsz)
-> +			return -EINVAL;
-> +	}
+> +config EFI_POISONED_MEMORY
+> +	bool "Carry hardware-poisoned pages across kexec"
+> +	depends on EFI_STUB && MEMORY_FAILURE && 64BIT
+> +	help
+> +	  Record page frames that are hardware-poisoned while this kernel runs
+> +	  into an EFI configuration table, and honor that table early on the
+> +	  next kernel so a kexec does not hand known-bad RAM back out.
 > +
->  	/* determine stack size for this binary */
->  	phdr = params->phdrs;
->  	for (loop = 0; loop < params->hdr.e_phnum; loop++, phdr++) {
-> -- 
-> 2.47.3
-> 
+> +	  If unsure, say N.
+> +
+
+Do we want to make it conditional? Maybe just for everyone with EFI_STUB
+&& MEMORY_FAILURE?
+
+Where 64BIT limitation comes from?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
