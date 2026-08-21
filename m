@@ -4,93 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FCC5C5DF81
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 00:24:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98302C5DF81
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 00:26:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17C36B0095; Thu, 20 Aug 2026 20:24:17 -0400 (EDT)
+	id 79DC06B009B; Thu, 20 Aug 2026 20:26:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEF506B009B; Thu, 20 Aug 2026 20:24:17 -0400 (EDT)
+	id 74EB26B009D; Thu, 20 Aug 2026 20:26:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2C2F6B009D; Thu, 20 Aug 2026 20:24:17 -0400 (EDT)
+	id 68C866B009F; Thu, 20 Aug 2026 20:26:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 92E7D6B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:24:17 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C2C5A2C6C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:24:17 +0000 (UTC)
-X-FDA: 85123379754.10.7A53A6E
-Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A4F2FA0003
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:24:14 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=yandex-team.ru header.s=default header.b=zrmsxZNa;
-	dmarc=pass (policy=none) header.from=yandex-team.ru;
-	spf=pass (imf15.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 178.154.239.200 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 453FE6B009B
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 20:26:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 572151A032A
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:26:55 +0000 (UTC)
+X-FDA: 85123386390.07.52EBA59
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6ECFF20002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:26:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OpB9Z52b;
+	spf=pass (imf03.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787271855;
+	s=arc-20220608; t=1787272013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PisyH1HuiBHr709YrZqJgs8jcmnNqZIHg4qjGq0xcMY=;
-	b=F/GICmho2PVsvTKeu/ERW8venqSwnxAcNxJaKayoaBoNUXF7N2EHLANEcKXoNCFU07oN0B
-	vaKKwSB1iXVjIOcy6GMAjqW+EuB9teBnGXTyzQ1Dk6C6FT99IHTEtZGngaWTQncUodpe8k
-	eDVieDiYPnyrQbWm68c3ylzduTgmXJ8=
+	bh=haewGvRrqLrw7gzI1I68E3Wusy8MXt3MWlVEI57RI7U=;
+	b=ofREv8J+uw0hJc/nnJdYTCl6kgg+BMmWQAxoRGKqdrwwtIoz/84TSelTzS6dGs4pZrlfS0
+	AC+eCgqcGVfHwtOFaCBj/5OpCyTZ/epx41gi9MxoejRcJsE+reMgHcTh8hhAgPlJOiPAc+
+	n1gvFsYoj3rEsWyS/fWVA3eD0Z9pD6g=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=yandex-team.ru header.s=default header.b=zrmsxZNa;
-	dmarc=pass (policy=none) header.from=yandex-team.ru;
-	spf=pass (imf15.hostedemail.com: domain of d-tatianin@yandex-team.ru designates 178.154.239.200 as permitted sender) smtp.mailfrom=d-tatianin@yandex-team.ru
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=OpB9Z52b;
+	spf=pass (imf03.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787271855;
-	b=UV1D3dSjyM8CsCOAKzf8uREctQj4/UVPElI7lIxhlxMmlzbLwHaF4A0tLIJe7Amgea/UeE
-	tU45mT82OqFOyxe+jpPZGBVmgFk2CKm9nM5Rikhlomj/KpC1ObZqsZGlRIQKcdekWw9nnA
-	lK5om1eER3a4Br4flDsqZ+2AWJBbKDY=
-Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:86a0:0:640:75de:0])
-	by forwardcorp1d.mail.yandex.net (postfix) with ESMTPS id 0513480EE9;
-	Fri, 21 Aug 2026 03:24:12 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:8080:a74::1:2e] (unknown [2a02:6bf:8080:a74::1:2e])
-	by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp) with ESMTPSA id 9OLK3n1WPKo0-KxUMjvRq;
-	Fri, 21 Aug 2026 03:24:11 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1787271851;
-	bh=PisyH1HuiBHr709YrZqJgs8jcmnNqZIHg4qjGq0xcMY=;
-	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
-	b=zrmsxZNaqv7j4hhgQDAaHui5rz9F8+lbtfAN2aMMsqQBT2HZxbj4SrYv+feULDUDO
-	 IsheZmFUrJi/JnQJsQL2XPHRcTZtrIawP3yLfiRXyQA0Cg3v7NpawOJIT+HXgJF0Fu
-	 J93X6G+1yqDc02vps03V8WtZjDd9jAlluPuglBF4=
-Message-ID: <d1d6c16c-a43d-452e-a6fa-67db561d1eea@yandex-team.ru>
-Date: Fri, 21 Aug 2026 03:24:09 +0300
+	t=1787272013;
+	b=yEHG10ujRdzzaomI5CU40nIAKwgmblqyqybGqGu9L2uSx3QWQS/zGjFmG+qU+mm06ZjQ7Y
+	yXGRzQvvqLiqjG9HZgLse1Ts6rEB/8I2KqbgOtJ0MPhYqIkUesq/tjZUJUncECiKQNpyxI
+	z9BVq0+68WT4vCJ1tWuNwfb5YFYYnhA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4AC33202C;
+	Thu, 20 Aug 2026 17:26:48 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7778D3F66F;
+	Thu, 20 Aug 2026 17:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1787272012; bh=rZtzriMNQLdFVOWizIVfqbKh0as8DbXMCiKrEQ8ecIY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OpB9Z52bMX+u/hTZY2vChYPYCd1qlV0jQCF3mgYzesh4wViGlYG6Xl+gbXqySp7JR
+	 eqW0aDi78KPuR2W5srPpKsUWliPqtXW1gSVewlxs+004FHq/Tj48UKbjcRsM0qHqB9
+	 BTaElZfW9yVhKEGypc9R+7NE8wX4L1Lr4rtjNMwg=
+Date: Fri, 21 Aug 2026 01:26:47 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] kselftest: mm: replace usage of /proc/self/smaps for
+ check_huge_xxx() helper
+Message-ID: <aoebR7VhQH8kU-xJ@e129823.arm.com>
+References: <20260820-fix_split-v1-0-ab430c58c7cf@arm.com>
+ <20260820-fix_split-v1-2-ab430c58c7cf@arm.com>
+ <DKU1AFIKNMNE.2A0JUVSTKHHLC@nvidia.com>
+ <aodxH5Qc6_zVay-M@e129823.arm.com>
+ <DKU6OCPNSECE.O9BZZWTSU1H4@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmstat: add per-order allocation slow path statistics
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- linux-kernel@vger.kernel.org
-References: <20260820133659.712111-1-d-tatianin@yandex-team.ru>
- <20260820154913.3d6a821f6ba5c1f81d134a0a@linux-foundation.org>
-Content-Language: en-US
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-In-Reply-To: <20260820154913.3d6a821f6ba5c1f81d134a0a@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A4F2FA0003
-X-Stat-Signature: qcy1c4ie7gmtkjuryk4rjnh35c88nfzg
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DKU6OCPNSECE.O9BZZWTSU1H4@nvidia.com>
+X-Stat-Signature: b1cm67jqab3ct41wkysjwinidb7znom1
+X-Rspamd-Queue-Id: 6ECFF20002
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787271854-768907
-X-HE-Meta: U2FsdGVkX18tMW9E5fcRfNockglgW7c+Z9hyhfcPnng5qp9oeTpuGtS7inM1fb9hEzD7yVgq7vT8dT/1Oi3JKf/4ji8QT0KoU6D2yxUZ0lYz4w7tTXwttROeJ+M10XiG3u4psKVzcBnHgEd3BP81mk9eD+vDb9MaFgzwlsD+KWqQVwOPqozzhj+5p2RX4TA9djWq+i0S25fkaCEaFFMmQ4dAdqrFLjI/UEWUSbh4P9Z0O03khKk4QF5menCjpNrqxWu3huzb+bl9tNZCXDB2WnaGbTgv3PJ7Pq55Y/tNZTmbpzU43EnJCqVV2nIAPFgRevzUaZfVfXOHV4+6ci3gyZutCDQyJ3rUqdJJwMOT4QoG8oUrocfyLQuUM+B73u36mfl0dThfFHzlfcQGqeBu2LFxRFoTdKVAS3XIL7wEKCXCTalPiF4YmeaxPp4p/QA5TmPxxi5m+FaFLlCMB7Taw8ODsypd+0kS4L+Zkyt8zT0G3mx5j29mMkjb2EaiO3J8u9iO5IMW2JE9eqmsg9IEZ+4zUyp6ySQIMQwqI9HE77JBPFwg0F+juxuiSlxWPA/39Sx+OkCKPW1/HkK3zHY2o/GVVC9lnT8ypftYI+4moi3Iull770gNgjEG6nnASZ/LclMPzaioJoEixG6hddTLDyCPc8p+wUUyett+5nT5p6o5Ay6Odc8Z6ufx4ZYK7yjQfi0pgzOZfxLunXGX7CuVfig4DTIsfVqLQ+2AVb6tH8iy+5nhYXJXH95KUhyhDmbcRhVzIAtzFpNQCvuscV/frI0nKxxXHoJSHPNJtIFwKDDOooSTYSg5R0b2LTuyVFlGlHPTiYuoyJas9Zoba2MQBjcySnLiz2y59tHTG7kGOpE9F+9iQhY2hYX5ead45tjIlFDPfzmQzH+9ocmwKrzXF7NjIMuU1iS5JD/xugGlFZEfQUjKjoAoqRe6qz8UEz+EEVbdTrRAtndVmnclgEP
- 2Cc+DVwP
- M7WIZaxaM3yuE9L//gazcXtJfrR9pJHtECElKpAGUclLjcx1BLIRPt5BXWgvfJES4oCDG4wPPthKAOEf5IWY/7leOns2SkNrYYUsCLI37sXD+rxBx+V5s34UW6kKbredywAHt84S7i1OnS3go1wfBykz7VkOHJJLJFxk8CBGQjtP+LXJqPZ7b3WkeHfnKTgU95XWJpTCazcvhzCwdSdwKnE3ueiDKeJqpb+XBY6E15CupUEYDRe4GGLRSW0qvLT2yCa3yK0qLUKnHMDRfsQvKy8aWwRTCJ1RqSfvxZa/83m3VBFAaedQ9gk61nRrdtxlPqxaf249KBM+1l1PSEW+41M8aFvJiKFCc1BQkYOj9m6Jsp5tNx4HPk1c9e02UdAy2nxNYyZDzx7YCwwHCUPXziG6IgMg617Bu5yzre6tplXVEpsR2uY8hsMXdrWhNy4McTmvspIS49fT+rig=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787272013-586271
+X-HE-Meta: U2FsdGVkX19Upk1789QFPCcaYcPXYFimpOpZ5KMH2F3nSgjEyFeuip6VAnzzHTKIaiqU4VzuN8NbBohxYS5ipmolmCgtDoY+vF5bP/Egm7++SV7iaOYc/M3OYdiLKTg8vAj9jD4Wot31kLrloA4DMbGCZfOWcnScTcQo1S8VNNPDgtFMdQbek4wlaj5cLClFmLS6ZzALUok/BMde1iI4vriD8fQc8DzPvDCFSykjiW1E6gFnnr5pz9NPVFca9MH9TZ9BfCbYnvcugUJYZxuDcbl4IV9bG7GvyL/+D+rKDj59rRQNlXGz1VuVe+d1XlXjeH60dIIt3F0dGz6qsg87yv8OF9HxCZZGz8j/O1ZuPu38re5bXcSiKJJwu4JIG/awUm8k7bETGsV0ZvvydR+G8wrnIkop01qtw7GeVCw7k7GqHSN0tKSPQ5OSY/YIBM3FNFo0GcTzrvDLkSXKflP1RzSKmYYVqWrZ9S1ucP/j4l9r+P07gW1pes9aCkDhhXMXXVNR0bKxxKHpcJxevrmP2MThUJcbyLvV5MI5HrLLH4zd8n9TRkUzbbw5YnJE4UR0neiaUlGP9dAd4u0oE17S3WHb+lBeSIElit5WwynCEA0xLFoP4SoLIV6B9IxvEQfMM/aqdLMOBrb1PklHWcojNzquBOkqNtOovBPBceCKEQbk6C8Wi3WsXlTHSgoTF3bV4YM7empX5X14Z8KdYZ+Xz8fD80Tx3VB5w1soZb3W8nKjxSByQmsw7tlsxagT6esy836RIl5PbFxK49dNCs3rTPVVtPqL+RgdMEWGEsZr7m0nMbZVXIrRuqMf3XXYfipVPGBbkLQ8tmwolWNzMJdL1xrtktqqCBmhWyZnqqRHZinDCEBKrk0v2ZRcLFVjZ4uCXmZm82cIxSB6St0ImKlpxczcpOr3nDtkoFTffCH7bu2keZxu5zl4zya84tc4GXQprMBVoIi8YK1BIAhu3Hg
+ X8M0p4Qd
+ EXqt+TxU5x05fZDCcGfXVwZyXpcFtboHFJaXVTVvJIfxoYFcgqgfjYea6SoCmxkdTYRiGRn1bpMpjI9QiLPXZfGhYMtAjbQoxpg4LEYu+x5excoBS2JVZmHO1c4j+wd8Fu0KF3Jt4YA/ImlsyS/ejlEN0cBaBRfiiTHM1cFRcmde/0Ti9bYvjbU2hqdajuH+R+RQn02jnSZprDBsSlEQZVdppyookqS180AxmwG+JSpAabqYcO2+/JLKELnoQoeg4+yvWMaEaVHe68cOIn/g1LjAF2LcDn/OJ1ncCEtHvjf9tCeWRIdMsXmjUHU6QJ9lm4J1LTdlb4aQYMYHKS38Hudg1g3/b2u6Yiq0w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,65 +108,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for the quick review!
+On Thu, Aug 20, 2026 at 08:09:12PM -0400, Zi Yan wrote:
+> On Thu Aug 20, 2026 at 5:26 PM EDT, Yeoreum Yun wrote:
+> >> On Thu Aug 20, 2026 at 3:40 PM EDT, Yeoreum Yun wrote:
+> >> > Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+> >> > glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+> >> > made by memalign().
+> 
+> I just googled the commit and find that Dev did that. ;)
+> 
+> >> >
+> >> > The underlying VMA may start at a different address from the aligned
+> >> > address returned by memalign(). Furthermore, a subsequent
+> >> > madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
+> >> > already set.
+> >> >
+> >> > This causes split_huge_page_test to fail because the check_huge_xxx()
+> >> > helpers incorrectly require the address returned by memalign() to
+> >> > match the VMA start address reported in /proc/self/smaps.
+> >> >
+> >> > Fix this by using /proc/self/pagemap and /proc/kpageflags instead of
+> >> > /proc/self/smaps to detect huge pages and change the meaning of
+> >> > check_huge_xxx()'s nr_hpages argument:
+> >> 
+> >> Have you checked Baolin's patches[1] in mm-new? They resue
+> >> gather_after_split_folio_orders() to reimplement check_huge_xxx(), also
+> >> based on pagemap and kpageflags. Does it fix the issue?
+> >> 
+> >> [1] https://lore.kernel.org/all/cover.1785985999.git.baolin.wang@linux.alibaba.com/
+> >>
+> >
+> > Unfortunately, No. since __check_pmd_huge() in check_huge_xxx() still use
+> > /proc/self/smaps [1] for pmd THP, it still has problem though ths patch
+> > series applied.
+> >
+> > [1] https://lore.kernel.org/all/56b16691f605426b33b5cf47319233de6127a6b3.1785985999.git.baolin.wang@linux.alibaba.com/
+> 
+> In that case, is it possible to use and extend check_large_folios() for
+> all check_huge_xxx()? You still need pagemap_scan_get_categories() to
+> check PAGE_IS_HUGE to identify huge mappings. Or at least
+> check_huge_xxx() in your patch can share most of the code.
 
-On 8/21/26 1:49 AM, Andrew Morton wrote:
-> On Thu, 20 Aug 2026 16:36:58 +0300 Daniil Tatianin <d-tatianin@yandex-team.ru> wrote:
->
->> Production incidents caused by bursts of high-order allocations all
->> entering direct compaction are currently hard to attribute from
->> /proc/vmstat: pgalloc_* has no order breakdown, and compact_stall does
->> not say which order stalled. Tracepoints can recover this on a single
->> machine, but they are impractical as an always-on fleet-wide monitoring
->> source, which is what is needed to correlate latency regressions with
->> allocation behavior after the fact.
->>
->> Add per-order event counters to /proc/vmstat, covering only the
->> allocation slow path, so the page allocator fast path is not touched
->> at all:
->>
->>   - pgalloc_slowpath_orderN: entries into __alloc_pages_slowpath(),
->>     counted once per allocation, before the restart loop
->>   - pgalloc_fail_orderN: allocations that returned NULL to the caller
->>     (including a successful allocation freed by memcg charge failure)
->>   - compact_stall_orderN / compact_success_orderN: per-order split of
->>     the existing direct compaction counters, order 0 is omitted since
->>     direct compaction is never entered for it
->>
->> All new counters are purely additive: the existing keys are untouched
->> and compact_stall == sum of compact_stall_orderN.
->>
->> alloc_pages_nolock() is deliberately not counted: it is opportunistic,
->> never enters the slow path, and its NULL returns are expected rather
->> than failures.
->>
->> Counter names are generated for any MAX_PAGE_ORDER the arch Kconfig
->> ranges allow (10..13), a static_assert catches larger values.
-> AI review got upset about this:
-> 	https://sashiko.dev/#/patchset/20260820133659.712111-1-d-tatianin@yandex-team.ru
+Agree. but TBH, I think check_large_folios() can replace checking
+PAGE_IS_HUGE and keep the later part to check wehther PAGE_IS_FILE
+and SWAPBACKED according to check_huge_xxx().
 
-Indeed, it appears PowerPC even does 7 in some cases.
-Will fix in v2 in a second.
+BTW, Should I do this after [1] is merged into mm-unstable?
 
->
->> A per-order split of PGALLOC itself was proposed in 2017 but stalled
->> over fast path overhead concerns, restricting the counters to the slow
->> path avoids that overhead entirely while still capturing the
->> allocations that cause latency.
-> Seems useful, thanks.
->
-> It would be easier for others to understand the proposal if the
-> changelog were to quote some sample /proc/vmstat output.
+> BTW, in your check_huge_shmem(), expect_huge seems to be inverted
+> compared to other check_huge_xxx().
 
-Agreed, will attach in v2.
+Yes. I've noticed. this was my typo while I change the variable name...
 
->
->> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-> Merging patches from Russian-affiliated individuals is problematic.  As
-> I understand it (not well) it's OK if the contributor's organization
-> isn't on the US's OFAC list, and it appears that Yandex is not on that
-> list.
+Thanks!
 
-Can't comment because I don't know either
+[1] https://lore.kernel.org/all/cover.1785985999.git.baolin.wang@linux.alibaba.com/
 
+
+> 
+> -- 
+> Best Regards,
+> Yan, Zi
+> 
+
+-- 
+Sincerely,
+Yeoreum Yun
 
