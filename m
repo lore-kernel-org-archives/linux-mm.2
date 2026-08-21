@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B62F4C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 08:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7020C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 08:18:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB7BC6B00A5; Fri, 21 Aug 2026 04:18:31 -0400 (EDT)
+	id D8B556B00A6; Fri, 21 Aug 2026 04:18:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8DBB6B00A6; Fri, 21 Aug 2026 04:18:31 -0400 (EDT)
+	id D62B16B00A7; Fri, 21 Aug 2026 04:18:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA4186B00A7; Fri, 21 Aug 2026 04:18:31 -0400 (EDT)
+	id C9FE36B00A9; Fri, 21 Aug 2026 04:18:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 842176B00A5
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:18:31 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 10F821A035E
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:18:31 +0000 (UTC)
-X-FDA: 85124574822.09.F17E770
-Received: from mta1.migadu.com (out-90.mta1.migadu.com [95.215.58.90])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2EF2D20006
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:18:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="hJDuNPG/";
-	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.90 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC27A6B00A6
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:18:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 38FC41C17A1
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:18:40 +0000 (UTC)
+X-FDA: 85124575200.11.903BDA7
+Received: from mta1.migadu.com (out-98.mta1.migadu.com [95.215.58.98])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3339880002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 08:18:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YSaPexXk;
+	spf=pass (imf02.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787300309;
+	s=arc-20220608; t=1787300318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GSGHMZ5hGxLV9vjBlL5IJRAgW0SFuLyCaDcStCkrc7I=;
-	b=67F6Xj2j/sktpJWVimjSivxB8ifgeYygpw09xYVoJpbmjYfuc7mmkgAtvtraP7dzII124R
-	QS9LMS8e9ovtDDblrkfXOqekXIzK65XlnOfpJejoFJUiHBpOUkAAMS8PYLwI94DiesJdrG
-	efc8ktmYcF7BAQ471JIUJjPC4hYbJdg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787300309;
-	b=8CnmZQC7SABQuat6SeJUj3fq3pKmac1RRuHYBTD5cW5KxJeGXHhEjHnB8t8XckgN3FAWQD
-	cOW8OC97IX/z1a1IBQaLnJSoAIgHxsdqkaCQsL2COSJsi9AuGgvho4+hqNROyQ1DMNuetx
-	eVEE22DkiORiBV7zWxxAMj5/g+uq3hc=
+	bh=nkoNt5Gr72o5PnQjp0wkacZFwvKjCwRCH7HaBMDrYPQ=;
+	b=vvCF0ezZ2tMSnzRrP0poe3zpsej7qE7oOU41uftmh2TysnPr1uzGARF/AcBCc2G3qOwDjV
+	cTmZIh5V5ldloao1kN3kF9VM+zXwbpY/ToFCYJpn3xUeCqCqlm4/dl4iid0PbvBA+PSbKW
+	TO43tBAIVT71/lr3gK51aZYf0AjJw20=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="hJDuNPG/";
-	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.90 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YSaPexXk;
+	spf=pass (imf02.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787300318;
+	b=rba+KBGwcC5qbMdF6j26c1yiHNfjewhyopPWy6RaFNVN64NWWoNBSyOmsa2q7cnN5/M8mO
+	NX6EIHhZi0TQQq3JNVEHhRymGA47kdlicjUUvtgVngQ7iTpf1CX14rMQeSFkc0zM5AqVph
+	95Q2CLq0O77newLz27y5NkrdLPxvUc0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ZAscUiHq/rYEWDhnt5RfykoKmzATq1btSoHBcxnZeVk=;
+DKIM-Signature: a=rsa-sha256; bh=fJJAB3mxKN0RQHrysuI3TTh1XFgddk39iuxEmKJOrQA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787300308; v=1; x=1787905108;
- b=hJDuNPG/aIrW3VicCgnYHMPfZFZcSKAzqkrKsTLse2VIpQ+LXI0Lc8Z/t8Kt9/MNARyi+lAO
- zJxztGQe2GX1ukUqyOoRSYY3f4hvV8TDVqCR2+VZoqYhdeuolzlyU01k5+Aj+nszdlDwxKMx/Ku
- nPmZFeepM4GaB5y5mUn7Ahk0=
+ t=1787300317; v=1; x=1787905117;
+ b=YSaPexXkkBbpuiGTT2njGMF5J9pDV9XbBEy0BPn+Lj7OHwpC/pCLQEgTcdUa57r64VBvqk95
+ GiK74xc1YxFJdQhfhrssN96+e7bENLaCpejk6VAuwyxk12r3HUgBpK3JNlO1tmjyTk31rGrKvGv
+ cgmSr23w/8U64mF+8LNalBnU=
 X-Envelope-To: linux-mm@kvack.org
 Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id 9be2503217972ce1;
-	Fri, 21 Aug 2026 08:18:27 +0000
-X-Mizu-Trace-ID: 9be2503217972ce1
+	by smtp.migadu.com with ESMTPS id 69efcddfc4b900a9;
+	Fri, 21 Aug 2026 08:18:36 +0000
+X-Mizu-Trace-ID: 69efcddfc4b900a9
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -79,22 +79,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [RFC PATCH 3/4] mm/vmscan: drop the combined limit gate in __node_reclaim()
-Date: Fri, 21 Aug 2026 16:17:40 +0800
-Message-Id: <20260821081741.1340277-4-ridong.chen@linux.dev>
+Subject: [RFC PATCH 4/4] mm/vmscan: do not skip node reclaim when only anon is reclaimable
+Date: Fri, 21 Aug 2026 16:17:41 +0800
+Message-Id: <20260821081741.1340277-5-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260821081741.1340277-1-ridong.chen@linux.dev>
 References: <20260821081741.1340277-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3339880002
+X-Stat-Signature: sm68jed355tnt5rkkrtoxwu7yym3ut85
 X-Rspam-User: 
-X-Stat-Signature: m4q5onpqtxpzyna8zkio4j3cgiw9ttfa
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2EF2D20006
-X-HE-Tag: 1787300308-780346
-X-HE-Meta: U2FsdGVkX18yT+FEBbDXjU64UqeRoiWmuDSJdOG49EhgNu/Xf3UeAVV5o5Ij7wd7HWNBGjBTI61BRfqadqpy7rN748kV0rArMjC16ChzGJYZ+ct9tFoUNoc/YJDv2Wu71nubLTVN5C/4dOl4QvMIxcYymIYj6TMfnsFWYVHL7ReDpTctj3REG5rtKh4io3/cvzWmA7ulCdmh63v0aEaFax7Xd+XAC1jXVYJDBDiGmNgN1+rv2WUeZlWIuyRVC6B6V8WrctFDs9ECYaLljlg8KaFBIr1w40JD52r+w521ve19r1iYBXYKIBW3Kq3dEAMv/qdvcWl6FoNoblS3XKYK8reqNkkgZohsOYx+hVqB5FI35qQHlJzVIcjRafeQEuMrpexoSzb0UhuAvFOU+UvGQTRMvpfXzV76lH0u0SFdp0Nhm7up++cIPFpxUas4+03OyMW9z5v+iv2TNfZPk2BuHMUzT/RVUyI2z+ftPj6lCBR+lBqfrlRDprqxg1AOK/X7SnjgpOpUedGrfM+ggQfl67/LMIq/DZ/Ks50ToVN0CtubBVAynSuiOagoh63TlWcb/Ca1Elmxx3KN/ZWD3+IMIdpYiCP7DFZs8rJzg9Tsh1v0jqQ5XbxuAYzMs/c9mdqn65ue6nyhGKqnBWcWv0o6pb2pNUDIhyM7bkkQ5bch4E1+7TUrsub3Y8CxQ8glpVjjhzQdWx2vsXaHLQ32VXLeMj1xkd1B4+ReHk0i7ZhCnPEI7rQZn6Y4IHeBRIhhDfSDcqfjqp9JmM86ZKtwxBcyoTKcMqiW6WDQsGeDYhFQ6imZZIsMXg9oMS4i/NxMTzSJgblWjd4IcaG/dgcenUbvjwS/ztJjMkMBEi/xbR165H9LtkjDw0XXTAKuQi0uxrbz+W8VSdXaMka5vw3srLbxtJmvDybLz5SlGij75n4sYkJth6LK2RBef6NDPXKuKG1Gb3ndnkG+Y4Vb90GXK9C
- uh6i9Xvb
- l068IBZRB36wTdQ1Ef8ThX4/IgQg2bBxTh2xAwiC6D8jvCnnNqxdBtiauwP6ST91UVNdBZj+oIq/4HlyXOrN4aBYJePqBCsxCJJDlJfDIdnOacWNe5HLjgtZzwW81S/bH+5efxDQxRzZDbYJe/gjQHawFcsCCFWabhhRUPNK1B9Rm3sodiTOgCHJd53aNffiKy3GcNobCjzEgicge4sZ9EbooVTT6uh5hUbYPd5KjXg+mBFr/0p+yRJFb/uiNVOoVj/aQeMe03S1jKaOxC4MKNiSNXwG3UtIyDtM3oKyIRS48Dbs=
+X-HE-Tag: 1787300317-169837
+X-HE-Meta: U2FsdGVkX1+ZnFwRxXOZMP6ynvi6t73CveilxyiYBmO6df82rpTgDHmxKafyE2Qcq+8YnKn/1NuZjj37MNLcF3NFoSleVK1fWPEaOrmRrnk4VDlOgP4AyeiRYX8x6K60ARDyhnXA8aqFMm3GybrUpmJ8kBOWrIRHEcqt7Qrp+g3uXJxxaq2kVbE4ickdtlmmVp5vF+3T0A9wYUeZZXMXckEjgqs633ZYbyYEzzqrydbDJWnHqgHP24tiudSSncmy9Zy3wP60fYXrxxI46i5xkORPdRxCBUI6Prh96G66XccGt8oVfrpQLL/kx4AJwrf8TaKc+O21bp5UhGtAzU9POQLYnpTTHyTlZJEKHGsNcqXaob+XqN2xwJWRMm6K3CW09Ua9xSgUICStPYAwfM4wtzepd2SY1Qepahw627RAbMA5ZENiK1TuraAITqps8f7fLV1831xw3FKaYT8czGs/Ap0ZlLv0nHbP9fqDaG2vcsR2t3qGamwbHjUriCjMo8au3F5KxBP5zg3hyWYy6fU10eYhcKsxsU11LeuqQzXAnFHSGPcXE7G6NP9xikrS4+S7ocBtakjxfqZLoEKYtxix/8CrfaTBfUwefp9AWkHCDLYhGMyh+hZL6nJrjH1mlanBrb0VdM7XYS8BjDndN2pAeqJ95uMqEyyYp/76f2/5yyVkzfJo53F/IK6FVGp4kJKalQ0mmrTv7RjHJ/GYqh79djgW+fJm+kr4T7VslIKhA3/kJgHlmSU5e7nOqgQXuYHWivFXJ50kEegMnHJ+MER6EFjwuJJuYX3WvR+4byifqgbEibrEc235esz/TnFhkQG7kSRxOCTJrOLe4+QnOgT7NmlEj2nVOtIxe/rCems7iCgXh6A9IcBgi+CAsDyrJDLcj/qWT09bXIxMUJgMbPxQXiOSNdqp9FuQl5u6luBJhVVz0+2YTDGntH3ndNIvu9yJJ40KYPOAZAm6w1ARNS6
+ ZtswGiJj
+ OPP6C8oz5oHNMcX6G7AnbXu5ruvPo4FnGk7/yHsCGgrmmEXA3juXVHle+B4Qid1AwwytJ7HcCoJZw76Ikizc+HjDngY8MWSGESGh4pl8HNuykN7FJq0MW5MPqJ415gupszO2Gxs2KrUtRT99FbJgUrNeWki3d/9jZ3+fOhomEW1MnhgTSPHAa/v7x9ZAfmwkLpS5lgLRP3wXfkhyqR5KbJdOpUvKVsTk6t044Nk1sWGEzNg1+lHJ2vpSplyge42BXQSbD4HgJWBLGrnu+akWvRLkqEWssFGSIYcMC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,61 +104,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-__node_reclaim() only ran shrink_node() when unmapped page cache was
-over min_unmapped_pages OR reclaimable slab was over min_slab_pages.
+node_reclaim() bailed out with "return 0" whenever both unmapped page
+cache and reclaimable slab were at or below their limits:
 
-With slab and file reclaim now gated per type by sc->skip_slab_reclaim and
-sc->skip_file_reclaim, this combined gate is either redundant or harmful:
+	if (node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages &&
+	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=
+	    pgdat->min_slab_pages)
+		return 0;
 
- - for the NUMA node reclaim caller it is always true, since
-   node_reclaim() only calls in when at least one limit is exceeded;
+But min_unmapped_pages and min_slab_pages only describe file and slab;
+they say nothing about anonymous memory, which node reclaim is otherwise
+happy to reclaim (may_swap is set, swappiness applies).  So a node with
+little page cache and slab but plenty of reclaimable anon was skipped
+entirely, even though there was anon to free.
 
- - for the per-node proactive reclaim caller (which does not go through
-   node_reclaim()'s checks) it wrongly suppressed all reclaim -- anon
-   included -- whenever both page cache and slab happened to sit at or
-   below their limits, even with plenty of reclaimable anon present.
-
-Drop the gate and let the per-type flags decide what to reclaim.  The
-node reclaim path is unchanged; the proactive path can now reclaim anon
-as requested.
+Require in addition that anon cannot be reclaimed before bailing out, so
+the early return only triggers when none of the three types has anything
+to reclaim.  When anon is reclaimable the per-type flags leave file and
+slab alone, so shrink_node reclaims anon only; checking
+can_reclaim_anon_pages() here also avoids entering reclaim just to scan
+without freeing anything when swap and demotion are both unavailable.
 
 Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- mm/vmscan.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ mm/vmscan.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 1e56973ceb73..5a3f67b3ba32 100644
+index 5a3f67b3ba32..8c706807da44 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -7906,16 +7906,16 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
- 	noreclaim_flag = memalloc_noreclaim_save();
- 	set_task_reclaim_state(p, &sc->reclaim_state);
+@@ -7945,18 +7945,14 @@ unsigned long node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned i
+ 	};
  
--	if (node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
--	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
--		/*
--		 * Free memory by calling shrink node with increasing
--		 * priorities until we have enough memory freed.
--		 */
--		do {
--			shrink_node(pgdat, sc);
--		} while (sc->nr_reclaimed < nr_pages && --sc->priority >= 0);
--	}
-+	/*
-+	 * Free memory by calling shrink node with increasing
-+	 * priorities until we have enough memory freed.
-+	 *
-+	 * What to reclaim is gated per type by sc->skip_slab_reclaim and
-+	 * sc->skip_file_reclaim.
-+	 */
-+	do {
-+		shrink_node(pgdat, sc);
-+	} while (sc->nr_reclaimed < nr_pages && --sc->priority >= 0);
+ 	/*
+-	 * Node reclaim reclaims unmapped file backed pages and
+-	 * slab pages if we are over the defined limits.
+-	 *
+-	 * A small portion of unmapped file backed pages is needed for
+-	 * file I/O otherwise pages read by file I/O will be immediately
+-	 * thrown out if the node is overallocated. So we do not reclaim
+-	 * if less than a specified percentage of the node is used by
+-	 * unmapped file backed pages.
++	 * min_unmapped_pages and min_slab_pages only gate file and slab.
++	 * Bail out only when both are under their limits and anon cannot
++	 * be reclaimed either, so we do not skip reclaimable anon.
+ 	 */
+ 	if (node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages &&
+ 	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=
+-	    pgdat->min_slab_pages)
++	    pgdat->min_slab_pages &&
++	    !can_reclaim_anon_pages(NULL, pgdat->node_id, &sc))
+ 		return 0;
  
- 	set_task_reclaim_state(p, NULL);
- 	memalloc_noreclaim_restore(noreclaim_flag);
+ 	/*
 -- 
 2.34.1
 
