@@ -4,174 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 794C0C5DF89
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 13:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30B91C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 13:43:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FFDF6B0095; Fri, 21 Aug 2026 09:39:24 -0400 (EDT)
+	id 1E0E16B009B; Fri, 21 Aug 2026 09:43:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18A8A6B009B; Fri, 21 Aug 2026 09:39:24 -0400 (EDT)
+	id 1919C6B009D; Fri, 21 Aug 2026 09:43:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02C266B009D; Fri, 21 Aug 2026 09:39:23 -0400 (EDT)
+	id 080816B009F; Fri, 21 Aug 2026 09:43:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C833D6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:39:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 64B941A0132
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:39:23 +0000 (UTC)
-X-FDA: 85125383406.28.C4764C1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B03C610000A
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:39:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CA2926B009B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:43:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5185A160149
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:43:14 +0000 (UTC)
+X-FDA: 85125393108.01.CC6EB43
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8EC4F100002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:43:12 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oWL/xvv0";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787319561;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z5qvxSsmX93GMZIq4o2S4vCyfn1hgCx4th+U3zJS7iQ=;
-	b=xwjIHxopOvLNk7fEbfef2+EBAWCHs3AtYLnI9XXMnjia4ZZxhPeO3dYCDU2t473dm9TQ5s
-	QdH3b5nOJROBhRkKY174NWXtXVxo0VMwwJzlKMqtFfd7lV6lN/+G9Y/GoPdLmLwbjPulGI
-	7NpRuqGTONdMEPDDw5VW+wiLAHSuMJs=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sqfou5ck;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787319792;
+	b=iRZV4jtuI2FYV6xl/VLvPKS39sEr8hoAfICkptx4S9rSSx735OOR6kHByQg7/BZJ5ndHd7
+	yYjQ5YyF+B07SblBB/YXmc763Dip4TEJVua2yMaqkDa4Kh5Bhpqgx0iqZYPpAFBiftfTCp
+	cQcHJVLpKpDbbCVHxMgCxwDYGqwCgik=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oWL/xvv0";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787319561;
-	b=blpXdnTr4fQaHzN4gCCaTev/jMpuL3IkwrkR2TnXFxeXvO6ehbVTSI+7mZ24/kY1DhWyRU
-	LUaggu4S15t4k1/GasmlEYHx1MYT00WM/uGYPXhgY3QRz5M/RG2cWdTMdWVTdZvR2A0aHC
-	sZPC/ZUq4RdBrshCs5aLldMSv1geIMA=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sqfou5ck;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787319792;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QZVuBsFPO7y/+P0oUWt1MocdFg1Mb540trEFoGS+/XI=;
+	b=cDepTcT6MEf66dUeNoGIABIC14LqKJUXQiNFX0Q3ZH9xZuBYRvK0OPTVDc/oEJOxbPm19y
+	aNkSkItoBdE2KAqBa+9TVVyzrZe3OuHPxGJKgQJb7uD21cnlVWiNcGNuGwKIaQvxn5zPKm
+	DHkH1DFY9LjOyB/V3k9zp/CkbQJp1WA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2060760A69;
-	Fri, 21 Aug 2026 13:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D851F000E9;
-	Fri, 21 Aug 2026 13:39:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 34EE441B4D;
+	Fri, 21 Aug 2026 13:43:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E1B1F00A3A;
+	Fri, 21 Aug 2026 13:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787319560;
-	bh=z5qvxSsmX93GMZIq4o2S4vCyfn1hgCx4th+U3zJS7iQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oWL/xvv0Ecw0+byyi+FYm+YqgpJUQd7rkxhyEU+OqTnezJNJmQTYOXllz0ZfQXurP
-	 HSOb6vFsiHAP6Z2O2N6gcii1eZrWM9e3R7/NPlp2GA752q542z8kFJoOvG/YPzqlqD
-	 iKYKdMfNv8Qk+Z1H+OZTtbTtg4gm5CTl6xxybmYolLtW5+KHj1snAKwa846Rt4HPlT
-	 fWhuMQ78kHGtTKaYABYWhRNt8+R7IUYV92RMOdn/oqFED4BHhaNkczEQGw1fMw7X2E
-	 SYsJoIFjsEZuOmdPYwA/r5KYajK4hPeksolQMdgY83/MMf9mHkcMmqnLgvwtoA6Vy4
-	 icWl+pRjNvuXA==
-Message-ID: <3cdf9ac0-b77c-4624-ad8e-68c10af648ac@kernel.org>
-Date: Fri, 21 Aug 2026 15:39:04 +0200
+	s=k20260515; t=1787319791;
+	bh=QZVuBsFPO7y/+P0oUWt1MocdFg1Mb540trEFoGS+/XI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Sqfou5ckAPcZDBKBlY5L6E32jhVWknn+BnkCBXSzAHC7pfl9T3qdvget9Zkc+r6W7
+	 NpjLzhmEdGkPzoP6YkEDGZj6TgnB/x880a3qegXWBJNqoR++tXsgs/b8o2l4cRPEnX
+	 3tNFRlhTDjZsd6m/DepQ44NryZkeOlVBijE4gBgmqx85Z1hWgeFmONtrKsSWm5AdLo
+	 mlkIuqxVEuLtN1t8qiRcyXmdm5KWgBkPBQtUtFOfwqzl4VdKeEQ8V408M2WPxi2b5E
+	 A0squiaZSky8+YbGL0adr/sq8XFJjmk9Q7C1Zpk7ZcIJCc0HV2x3hpXDQjBzlwW7DP
+	 RTIBuEBMJN+Ew==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Tarun Sahu
+ <tarunsahu@google.com>,  ackerleytng@google.com,  fuad.tabba@linux.dev,
+  Andrew Morton <akpm@linux-foundation.org>,  dmatlack@google.com,  Shuah
+ Khan <skhan@linuxfoundation.org>,  Jonathan Corbet <corbet@lwn.net>,
+  david@redhat.com,  Pasha Tatashin <pasha.tatashin@soleen.com>,
+  sagis@google.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
+  linux-kselftest@vger.kernel.org,  andre.przywara@arm.com,
+  michael.roth@amd.com,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  will@kernel.org,  vannapurve@google.com,  maz@kernel.org,
+  fvdl@google.com,  kvm@vger.kernel.org,  oliver.upton@linux.dev,
+  kvmarm@lists.linux.dev,  alexandru.elisei@arm.com,  skhawaja@google.com,
+  aneesh.kumar@kernel.org,  linux-doc@vger.kernel.org,  David Hildenbrand
+ <david@kernel.org>,  yan.y.zhao@intel.com,  kexec@lists.infradead.org,
+  suzuki.poulose@arm.com
+Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live
+ updates
+In-Reply-To: <aoSCCTTBn9D5hqzk@google.com> (Sean Christopherson's message of
+	"Tue, 18 Aug 2026 09:02:17 -0700")
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+	<20260728121138.1103610-6-tarunsahu@google.com>
+	<anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
+	<anssOQFNZ2LfihbU@google.com> <2vxzik5f311e.fsf@kernel.org>
+	<anyObKiZIhfok5mk@google.com> <2vxzqzjz1x5f.fsf@kernel.org>
+	<aoMcqp0gr06YXAPU@google.com> <2vxzy0e3zgqz.fsf@kernel.org>
+	<aoSCCTTBn9D5hqzk@google.com>
+Date: Fri, 21 Aug 2026 15:43:04 +0200
+Message-ID: <2vxzy0dzy4gn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] KVM: guest_memfd: folio migration for
- non-confidential VMs
-To: "Garg, Shivank" <shivankg@amd.com>, "Gupta, Pankaj"
- <Pankaj.Gupta@amd.com>, "Sampat, Pratik Rajesh"
- <PratikRajesh.Sampat@amd.com>,
- "nikita.kalyazin@linux.dev" <nikita.kalyazin@linux.dev>,
- "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
- "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
- "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>, "jack@suse.cz" <jack@suse.cz>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "Dadhania, Nikunj" <nikunj.dadhania@amd.com>,
- "Roth, Michael" <Michael.Roth@amd.com>, "corbet@lwn.net" <corbet@lwn.net>,
- "mhocko@suse.com" <mhocko@suse.com>, "gourry@gourry.net"
- <gourry@gourry.net>, "iweiny@kernel.org" <iweiny@kernel.org>,
- "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>,
- "byungchul@sk.com" <byungchul@sk.com>, "x86@kernel.org" <x86@kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "ricarkol@google.com" <ricarkol@google.com>,
- "vannapurve@google.com" <vannapurve@google.com>,
- "shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "jackmanb@google.com" <jackmanb@google.com>,
- "Kalra, Ashish" <Ashish.Kalra@amd.com>,
- "willy@infradead.org" <willy@infradead.org>,
- "surenb@google.com" <surenb@google.com>,
- "pshier@google.com" <pshier@google.com>,
- "matthew.brost@intel.com" <matthew.brost@intel.com>,
- "fuad.tabba@linux.dev" <fuad.tabba@linux.dev>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
- "rakie.kim@sk.com" <rakie.kim@sk.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "apopple@nvidia.com" <apopple@nvidia.com>, "ziy@nvidia.com"
- <ziy@nvidia.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Cc: "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "sashiko-bot@kernel.org" <sashiko-bot@kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
-References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
- <0a02a6c4f0ee50ca596c4a2673b2ae6c80d4569b.camel@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <0a02a6c4f0ee50ca596c4a2673b2ae6c80d4569b.camel@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: iw41cdfabhqojmzff5yaei8w56efmrpj
-X-Rspamd-Queue-Id: B03C610000A
-X-Rspamd-Server: rspam03
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 8EC4F100002
 X-Rspam-User: 
-X-HE-Tag: 1787319561-505573
-X-HE-Meta: U2FsdGVkX18KCM1xNnuAyfyUJ8wPz48WGgA/j0S4DC5d+qzr7J5uh6aRGjOZMKepvpKDqcuO74CesuED619IjLFRaqy0/IxpQfqr28ctU4vIgisenn0I0dLw/caKNjd7NYUGz2Gel6swECfGp54av11Xi4awdkxsacibnfn9dAWnczUl8vSA3CcqlaOmBdwTWYXw4Lo4XEZAUlcLXftKh21JglcMGVMLJG4R4HiaK7sO9O9g33cw7PwWyXvqtEAIoe4jIC7boaBa9Fi8WxCrZW0mUr6kfZOqb8xWnQunLRG7OyKiS9oKg4qLLN4c7U84BIEKWk8PsfjDRKW4FULXVsUyj6c5bDuSUcK6DkHI7AwFGS6SrSiBP/pBW8sH6J+gZ1BpewCPf13iBXVD4LQc0B36RLVA2auxMiLZtEEERbPMRSk3Tf+zMmEs1kfHn4hIE/RshaBKPfhm2mu97jims6r61AgcJ9Xih5lyK+/x4KcnxqgSPa+JTKya50Tcebvj+UhCEetK0WrUU6QDcAcU6Mun2/Wh9JnfqbjiRd0WlqLCQ5vEqdhVNGrYMC9N8CCI0LdQwFz/DQI5qffmmg6Y318LlSw1uwmz23pzROApkgHno5VrrWoKMfgkXwy+DXxQRphJb2ndTe8mWBcWwQR3+QUSwlx77k4eF8tu8ILyoGtP27aWJTen8NShCuAeh0+jIZ3XbZ0Wvd/riyKS15bixQh00oOQYturrR/i9Nt9QvI5jQYNUILH1QDj2MDKfHLZ7zOm5JrAMBmgGq4HlHF7jNfYeUEq1+1/72c08a4BxE6lURCCXW1LmVHpnjMv9OrAQjr2sxXOGsOMSvXXJks5FnaG4+jEx7lYpKwBn0d5Xsjxf93WCtzUIRoW7eATrUnttizbgeyRO1DzZ0TWFOEZLWu3EH6teK7pPn18WogbGetHucVfmpx5gzVC6cK6DEXWIWcMCkngy4lHY4BdeIx
- rjQVsUWP
- wLgrkg+OWGTt/8UZnxvVgplDUyQtbHNPNrFzMibmYiQM5G5XecTgcTGV1eiz8uUP6N6zGazrU9C7uZki2A/Kq7ilwVWaC2ba1g7rpTvFAhkSNouXTWxWRDXbbnuqlj2sOK9xIdVb6CRHGcwhxbRluTO+qEHZZRtXNnJGO2UqdiRluoJMGdUnK7v143V+eAXsDHI7Ksj6izC9kJy8KkgxkuplMceNcdQ66hplKKNQwwY0ZspC7ra3EZcCnIkIXwiOw2C6QW6PCX9ZLojmLG4/z0CwQqWzFXBfDqz/lnNjRr8/M7JR6KEdEgjIaMXKCIWF3RqJwfYWkvk4KZ/6gu4o3pvv5qU5wv2NdsGzY4O12w7rMCd9K0JXyZwrO4XTKW+KfNlYU2Z5kCtVpWkiHKatdj4+jXC+l58m/ff2tGEd5gHrzdcyPC25Fl3yDKLiYoGgpjPTMwY43bDk+3eKwkPFd0+gd6J4ahllD19Uyk3+dcQp7bNojh/JXiDB6ZNctNdtHzRrQr4C/7AzN/ds8v5pyCZXaBXFN/38lJLaybTYcBJeEJP0=
+X-Stat-Signature: oisbx5g68gsmhu8p7u6qzpofunpxzo4o
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787319792-641623
+X-HE-Meta: U2FsdGVkX19dEiAZJVjtUlGSnfqwrq6KnY9GMl/7IZdZrw3c9aLccEpm3dx8p0KhmMeUBTB6Ykdo6kd4b7pjbg0ArvmWz/SN3KEHckhC8fw80twEyemFqAs1fLp/UBpWUUXZAJNfRqu18BIer/+fSf5/ZBU11KqQ1UOgFaXbhlgmh1i70FnFe7dg/mNHkuf/pcHMCt0TT6InRdMkMxygBM4s5+1DCp3IxXhx+VOIZPhnv3/QjFlbJxHWwfKydxWEDxzm16CwkrJgTFVhb6MTin64Bt4Otbd8DvLRI7WHn3Tf6TZXe1aezByeFAwpZm6ZS2U+I0WKJXRnCStpgfrAcFuFWnjYiXd1jPTovkO87JG7FfbL2GwottoTEs74OelwBV3Nl7UOukwUOrimSbyu4VbdTbkgRP8FE3IzvVhTIqf3rAkJ9ebju6Gdz5a2IgBH+nghRSSMpVt0IEGx/V/S0ylc7c44qiVmiepbwg1Jzsv4xsCZbvjUnT6PC/t9OIaT85l60g4VSi3dDxarjdUfGDrSUyjDdIjhLUOn5+HKk9iT2xDdDFuHckQAsakkKCQLROamlUMroPMm4C8HZW2QrwmC1oCslzhoIRdTU1mRtibUVhGVuu0hcbgRLZ5H3Sk6/qLWle2+qe1gYgJz6alkVoG3CZ/mv2cTwzePNnnmKS9yeBRpS3+NB+jShXBGc40vajQ7DeAQF0NhWNJYn7Y/SwZ6fS28Vpbx1mNJLn2GdrY8R8eerHa5ZHMD79gqaAMb7BlOb6nYWcZS+e4rSjSqbOa+RKWlPtlo2OG9ScqMBS/eXrNGX18pa26SBb4nPGVE2CzJ5TRYxWJNm7agA1zbf7YvKmgwbOE7fb+CEOIetqi9fawmINB+B0iO3noBuD4hW03q8ecxG2cx7LS9hoTSP+/GCfrkXx7Y1ZDuryc1d5m6HXYqcgQl5zgugs4Gwc+sRwpWAy3ku6OcgSRIjzK
+ gwpnIqLR
+ NtvXjjq2jhJ1Vne88hycD5zIUL7FRbP5+0hM7cdognY4H0tSNxJHA+PWlC9P6TC3ZbPHrZElSsLVUDuUgGrv24G3FE8E7zLH6Pm0E1APuVYv/bo4uPg9YaRSEyQmHaMUjQ5DgOxalI71CcZTT7dQha++7p0TT0aAQv/Nj4/uaBERnDypfYkvwlQEFtT+zNu50L1UeOVScy9MCXyh1GWViZwLONg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,92 +111,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/21/26 14:34, Garg, Shivank wrote:
-> On Wed, 2026-08-05 at 06:40 +0000, Shivank Garg wrote:
->> guest_memfd folios are currently always marked unmovable, so the kernel cannot
->> perform memory compaction, offlining, etc. This is unavoidable for
->> confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
->> needs firmware assistance. However, for non-confidential VMs (like
->> Firecracker), we can migrate the folios.
->>
->> This series enables folio migration for non-confidential guest_memfd and
->> also lays the groundwork for migrating confidential guest_memfd later.
->> Once firmware-assisted copying support is available, those VMs can be
->> made movable, the confidential folio content can be copied separately,
->> and the destination folio marked with FOLIO_CONTENT_COPIED[4] so
->> __migrate_folio() skips the host-side folio_mc_copy().
->>
->> Testing
->> -------
->> Host: 7.2-rc6+(c21bb419386) + this, AMD EPYC ZEN 3, 2 NUMA nodes
->>
->> - KVM selftest: allocate folios on node 0, migrate them to node 1 and
->>   back and verify resulting NUMA node and the folio contents at each
->>   step.
->>
->> - Firecracker [1]: booted a microVM backed by guest_memfd. While the
->>   guest was running, forced host-side migration of its folios via
->>   migratepages(8) and explicit move_pages(2) of guest_memfd
->>   pages. Verify with /proc/firecracker_pid/numa_maps.
->>
->> Notes
->> -----
->> - Sashiko pointed out a pre-existing ABBA deadlock between
->>   kvm_gmem_error_folio() and truncation. It's being addressed separately
->>   by Hao Zhang. [2][3]
->>
->> [1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
->>     In builder.rs, add GUEST_MEMFD_FLAG_MIGRATABLE to bit-2 and pass it instead
->>     of GUEST_MEMFD_FLAG_NO_DIRECT_MAP to vm.create_guest_memfd().
->> [2] https://lore.kernel.org/all/ambEdSPjerZIVN0b@192.168.1.215/
->> [3] https://sashiko.dev/#/patchset/20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95%40amd.com
->> [4] https://lore.kernel.org/all/20260630-shivank-batch-migrate-offload-v6-1-da95d7e8b8a2@amd.com
->>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
->> ---
->> Changes in v3:
->> - Fix unbalanced mmu_invalidate_in_progress count unbinding dying guest_memfd. (Sashiko)
->> - Fix maxnode handling in xapic_ipi_test selftest.
->> - Add GUEST_MEMFD_FLAG_MIGRATABLE documentation
->> - Replace open-coded sizeof() * 8 calculation with BITS_PER_TYPE()
->> - Add get_numa_mem_nodes() and use  MPOL_F_MEMS_ALLOWED for allowed NUMA ndoes
->>   instead of hardcoded NUMA node IDs. (Sashiko)
->> - Extend migration selftest to verify rejection without MIGRATABLE flag and
->>   move repeated checks into common helpers.
->> - Drop RFC tag.
->> - Link to v2: https://lore.kernel.org/r/20260728-shivank-gmem-migrate-v2-0-269ac1f84e2b@amd.com
->>
->> Changes in v2:
->> - Make folio migration opt-in through GUEST_MEMFD_FLAG_MIGRATABLE,
->>   preserving unmovable behavior if userspace don't explictly ask. (Alexandru, David, Sean)
->> - Add kvm_arch_supports_gmem_migration() so arch can control whether
->>   GUEST_MEMFD_FLAG_MIGRATABLE is advertised.
->> - Allocate movable folios with GFP_HIGHUSER_MOVABLE. (David)
->> - Keep guest_memfd unevictable. (David, Sashiko, Sean)
->> - Split migrate_folio() implementation and enablement as separate patches.
->> - Update selftest with new flag.
->> - Link to v1: https://lore.kernel.org/r/20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com
->>
->> ---
->> Shivank Garg (9):
->>       KVM: guest_memfd: take the invalidate lock when unbinding a dying file
->>       mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
->>       KVM: guest_memfd: implement folio migration for non-confidential VMs
->>       KVM: guest_memfd: add GUEST_MEMFD_FLAG_MIGRATABLE
->>       KVM: selftests: fix maxnode arguments in xapic_ipi_test
->>       KVM: selftests: use BITS_PER_TYPE() for NUMA masks
->>       KVM: selftests: add get_numa_mem_nodes()
->>       KVM: selftests: use allowed NUMA nodes in guest_memfd_test
->>       KVM: selftests: exercise guest_memfd folio migration
->>
->>
-> 
-> Should I spin the independent patches out of this series for next cycle?
+Hi Sean,
 
-I'd say, yes :)
+On Tue, Aug 18 2026, Sean Christopherson wrote:
+
+> On Tue, Aug 18, 2026, Pratyush Yadav wrote:
+>> Hi Sean,
+>> 
+>> On Mon, Aug 17 2026, Sean Christopherson wrote:
+>> 
+>> > On Sat, Aug 15, 2026, Pratyush Yadav wrote:
+>> >> On Wed, Aug 12 2026, Sean Christopherson wrote:
+>> >> > On Wed, Aug 12, 2026, Pratyush Yadav wrote:
+>> >> So with live update, we don't need to keep backwards compatibility in
+>> >> the ABI forever. Of course, it is good to minimize changes, but we have
+>> >> more freedom to change it.
+>> >
+>> > Ah.  So this is the heart of the disconnect.  I very strongly disagree with the
+>> > statement that live update doesn't need to support backwards compatibility.  I
+>> > can totally believe that the folks working on live update are ok breaking backwards
+>> > compatibility because their use cases are "fine" with such breakage.  And I can
+>> > also believe live update as an upstream kernel feature being developed by those
+>> > same folks is also ok with breaking backwards compatibility.
+>> >
+>> > But with my upstream KVM maintainer hat on, I am not ok with that.  I did not agree
+>> > to support a world where KVM is allowed to break backwards compatibility, so long
+>> > as it's done "carefully" or whatever.  If y'all want to deal with the resulting
+>> > complexity, that's fine by me, but you'll be doing it without KVM.
+>> 
+>> Let's step back a bit. I don't think backwards compatibility in the
+>> _ABI_ is all that important in live update's context. What is important
+>> is that our users are able to live update from kernel version X to Y.
+>> The line format the kernel uses to describe its state is an
+>> implementation detail. Our users never see it.
+>
+> The rule is thou shalt not break userspace.  Whether or not the breakage is the
+> result of an explicit ABI change is irrelevant.
+>
+>> The high level idea is that when you need to make a change to the ABI so
+>> the kernel can better describe the objects/resources/files it is
+>> passing, you create a new version of the ABI and allow transitions from
+>> older versions.
+>> 
+>> Say you make some changes and need an ABI version v5. You don't get rid
+>> of v4. You keep it around. LUO core will facilitate picking the right
+>> version for the next kernel. So it will be possible to seamlessly
+>> upgrade your kernel that speaks v4 to a new kernel that speaks v4 and
+>> v5. Now this kernel can start speaking v5 if its successor speaks v5
+>> too. And so on for going to v6 and v7, etc.
+>> 
+>> After a "reasonable" time given for upgrades, you deprecate v4. v4 has
+>> been around long enough and our users have had a chance to go to kernels
+>> speaking newer versions. That's when you remove the code for v4 from the
+>> kernel.
+>> 
+>> We can argue what "reasonable" means, but the core idea stays. 
+>> 
+>> It will still be possible to go back to v4 or earlier, but you'd need an
+>> extra stop along the way. And of course, vendors can keep a wider
+>> support matrix downstream if they see the need for it.
+>> 
+>> Does this idea of "backwards compatibility" sound acceptable to you, at
+>> least at a high level?
+>
+> No.
+>
+> It's probably fine for Google and other large companies that tightly control their
+> kernels and use cases, and have the resources to juggle the resulting complexity,
+> e.g. have kernel engineers on staff to track feature and dependencies, coordinate
+> and plan kernel upgrades, etc.
+>
+> It's not acceptable for upstream, where downstream consumers often run a distro
+> kernel, have much more varied use cases, and don't always have a horde of kernel
+> engineers on staff to help them thread the needle you describe above.  And if
+> supporting live update as a general feature for all users of the kernel isn't
+> being factored into design considerations, then that needs to change, otherwise
+> this is all dead in the water.
+>
+> I also don't see the point.  Maintaining a rigid save/restore ABI is annoying,
+> but it's not _hard_ (or at least, not _that_ hard), especially if there's a set
+> of well-documented best known practices that subsystems can follow, e.g. so that
+> individual subsystems don't need to learn painful lessons first-hand.  I genuinely
+> believe that maintaining the version hell you describe above would be more costly
+> in the long run than simply committing to full backwards compatibility within a
+> given subsystem.  I can imagine that enumerating what subsystems' information is
+> in the payload will require a different scheme, but for a given subsystem, I don't
+> see any reason to aim for anything less than full backwards compatibility.
+
+Let's say for argument's sake that we commit for a fully stable
+backwards compatible ABI. Even then, you have to deal with multiple ABI
+versions.
+
+Live update's ABI is more complex compared to KVM's save/restore ABI.
+For the KVM save/restore uAPI, you are largely describing architectural
+state like CPU registers, etc. These things don't evolve as fast and
+more or less stay the same.
+
+Live update needs to describe the state of kernel objects. These are
+more complex and evolve faster.
+
+For example, say you merge guest_memfd preservation today. Some time
+later, someone comes up with a more efficient data structure to track
+the folios in the file. You _have_ to make a backwards-incompatible ABI
+change to use this data structure.
+
+Or say you add a new memory backend (like the HugeTLB patches in
+flight). That likely will need a different ABI to describe the state of
+the guest_memfd.
+
+So you will end up with multiple ABI versions that aren't always
+backwards compatible.
+
+If you refuse that idea too, then KVM live update will be dead in the
+water for a different reason. It will be damn near useless because it
+can't keep up with an evolving subsystem.
+
+Now once you get multiple ABI versions and you can seamlessly go from
+old to new one, say you have a version that was superseded 5 years ago.
+It would be completely reasonable to say that this version is old enough
+and no one should be going from a 5 year old kernel to a modern one. So
+you deprecate this ABI. Deprecating old unused uAPIs is not
+unprecedented.
+
+I think we are better off formalizing this deprecation period from the
+get go.
+
+A somewhat tangential example is BPF kfuncs. My BPF program that works
+in kernel X might not work in kernel Y because the kfunc has changed or
+been removed.
+
+The argument they make in kfuncs.rst is that kfuncs "provide a kernel
+<-> kernel API, and thus are not bound by any of the strict stability
+restrictions associated with kernel <-> user UAPIs". For LUO as well,
+this is a kernel -> kernel API. Users can also still do a regular kexec
+or reboot. They just won't get the performance optimization of LUO.
+
+Regardless of if you agree with the last bit about deprecating old
+versions, ABIs evolving with the subsystem is a ground reality of live
+update and it would be foolish to think we can do with only
+backwards-compatible ABI changes forever.
 
 -- 
-Cheers,
-
-David
+Regards,
+Pratyush Yadav
 
