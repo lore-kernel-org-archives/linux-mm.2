@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1681C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 01:19:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2ABAC5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 01:20:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA5896B0095; Thu, 20 Aug 2026 21:19:43 -0400 (EDT)
+	id 7B3D36B009D; Thu, 20 Aug 2026 21:20:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D55D86B009B; Thu, 20 Aug 2026 21:19:43 -0400 (EDT)
+	id 764866B009F; Thu, 20 Aug 2026 21:20:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C468E6B009D; Thu, 20 Aug 2026 21:19:43 -0400 (EDT)
+	id 62BCC6B00A0; Thu, 20 Aug 2026 21:20:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9833F6B0095
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 21:19:43 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 197F6A2DAA
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:19:43 +0000 (UTC)
-X-FDA: 85123519446.14.65CCDEE
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D214B20002
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:19:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZvX+LbPZ;
-	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B6716B009D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 21:20:43 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B43C71C0C72
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:20:42 +0000 (UTC)
+X-FDA: 85123521924.27.6C90D1D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EFA6C80009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:20:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RNNV+cYZ;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787275241;
+	b=Zni1L6Q6xCzIS2mwQhKBxYW1rbI+qtpYREOoHnS8L7THXPV11oCAyZhhk7ghBDju2gmfQG
+	gmCbj/gTiidU7x6t/6xRYoYgXLkMtHcX6H2lvPRzCBJx4yr+foVzqWMMdtTn0f3b/xIDbg
+	i/KGBzUKkFL9OB4g2YbgTqnIlRuJDxE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RNNV+cYZ;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787275181;
+	s=arc-20220608; t=1787275241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WGdDOkU52715zf2/WD7HSWNIZJ/R5i+/51DA79YiOoE=;
-	b=HotTtkgYuOatwbMPpwFWBnxVrLllOlosHvX1Vp13b96/esDEsrfEaL/g87u6NuK/dHnWDy
-	/p9joJ2q4EDzTlJk+PlGEjK9YjWrIdwo16CxANoM05l7VoDwVkM+LTkcYf5d8D9eTbQBDD
-	P2PXUqOAGD78W0QCeEym+Nbr2ijwwfc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787275181;
-	b=bdZj9t+LPj2lLjLNyflk8BthbLG5UXy2dlWCe8W0nXnivtIPi5i7nrxzbu2CKvRrt7dGwz
-	bwsI2v/8kc3WW19hHYEOyk+lRD/j/vOfnxXgvbEQnk89Jf2qrsQjCevYkyPHrt+6PT9t1M
-	AWsiPI0z7Zkg4vxYHQCtHm953xZXSnU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ZvX+LbPZ;
-	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1787275177; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=WGdDOkU52715zf2/WD7HSWNIZJ/R5i+/51DA79YiOoE=;
-	b=ZvX+LbPZIVu9O7jZ+Mz1uX1AVq8GkuX6jz5SSvV3dPWbSeYk8rnXP3lgdkMch+K4D64YBTcbxk/WkHlwBiZxBhxjAt0nNgocnnj9PvETF/QLvFnZzC6K732AKlCv100ONsbFe/YMTXaljfw0a0G7/ZFB6jXIckePelLG0fhnZ3Y=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R581e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X9Kfngf_1787275174;
-Received: from 30.74.144.113(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9Kfngf_1787275174 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 21 Aug 2026 09:19:35 +0800
-Message-ID: <1bb6c1fc-ea6f-4b3f-a7dc-93012d1da598@linux.alibaba.com>
-Date: Fri, 21 Aug 2026 09:19:34 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] kselftest: mm: replace usage of /proc/self/smaps for
- check_huge_xxx() helper
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260820-fix_split-v1-0-ab430c58c7cf@arm.com>
- <20260820-fix_split-v1-2-ab430c58c7cf@arm.com>
- <DKU1AFIKNMNE.2A0JUVSTKHHLC@nvidia.com> <aodxH5Qc6_zVay-M@e129823.arm.com>
- <DKU6OCPNSECE.O9BZZWTSU1H4@nvidia.com> <aoebR7VhQH8kU-xJ@e129823.arm.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aoebR7VhQH8kU-xJ@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+	bh=hfFyCgIVsZNfHPslBJGjBS2F3LWrEzkMWOBp11fXAF0=;
+	b=OZwb/vASWKDOufoTMp0UTrz6mFPg97mBAceWp5cifvAxG6EyV/mEmmFqTnt7RuWRcAZo6y
+	Agcc/qJz7OWCReRC2IxSOmHeQcIaZvV3Y5JvSkQ/Zx/tr5l+FfeMoVYJYX/j6rDn/9JZKc
+	x8+bdckxZMxSq7Xk5R1VRqPHBeTyAe0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AC6E940112;
+	Fri, 21 Aug 2026 01:20:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11ECB1F000E9;
+	Fri, 21 Aug 2026 01:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787275239;
+	bh=hfFyCgIVsZNfHPslBJGjBS2F3LWrEzkMWOBp11fXAF0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=RNNV+cYZ5+aJda8P1sCv52PVqhOWoeLyirlvjLUKSUBqZOYAefQ/InbP9RhJaxp2+
+	 iONedHR86FeYZsi0Ko0TyghBWfBrb5ZrVxVqnTL+/nF5ZvYgF0X3MqeYE03sZsDKb3
+	 6Zzb6TLk5b2bSbnTKSPP+yG4YLX/t2vlFNWeNifc=
+Date: Thu, 20 Aug 2026 18:20:38 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: syzbot <syzbot+5f0b6e2e4195c75b5658@syzkaller.appspotmail.com>,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com,
+ surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org,
+ ziy@nvidia.com, Zhen Ni <zhen.ni@easystack.cn>, Oscar Salvador
+ <osalvador@suse.de>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander
+ Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ Dmitry Vyukov <dvyukov@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in kvm_vm_release (4)
+Message-Id: <20260820182038.c45e454506c8cd3c1f21930b@linux-foundation.org>
+In-Reply-To: <d477b226-cf6e-4101-9a4a-71c317a891d1@linux.dev>
+References: <6a86fe29.f7a79266.2f965f.004a.GAE@google.com>
+	<20260820092904.7a2b43fff85ed0c13b9c74ab@linux-foundation.org>
+	<d477b226-cf6e-4101-9a4a-71c317a891d1@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EFA6C80009
 X-Rspam-User: 
-X-Stat-Signature: k96puojue83qiuutd8ru1z1h9miu6raa
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D214B20002
-X-HE-Tag: 1787275179-472267
-X-HE-Meta: U2FsdGVkX18eRLOLPJ4gZEbkrN6C1ao+5E+QjIEbp5zkcAsg+Frj6qnFJWYAecJ92LIrbo3Rdw/oKryb/c2ku3W4BLQQ4vj2JyF/CVEY9VgWXHyBTjY9dgT+wtP/A/7ozQR8zTsv7mYFsKSvTZ/+FXt+D76i/SKoBMlPq3Ge/2XWMZ698C7ZfED6YeKNTG5xikaR2tszarir1/bL+AYe4+kB2leBbcGrASps5Go9e36GER8lRLpxLrSSwCI007Z4oi3Rmk/Nn1WpItGFVk8U9cN+8GSSuXzmBSEm7esc+TlQAjrij6Ulnrt7q2Mzg19+0tI2JBjD010npt5ntqR5vFScl3FVQ1nb/aQQwNTHYDu0U5d3qtfIZhPu5a9v9332oP1K8Xfhc8KYn5c9L/OrFPXqBhxpb60q7RFGC6OhPS1fS6pxfzck9eq8+7Ts2FFadwmJua2UcPWSewVhIUCwmnOYTs0mgUVfLkLnOuLEWqOlWtbdlp/7VMEFGnL7ElvYXIuVp+CBXh0GghQgD+jE/wJ0zHrmpU9u8DBy02AK5KV8QQ/F6qPF29+4bVsofeL+Jz8CZC3g8mk/zSZ41i2UqpriHZ6oR5EF6nYJZvq0y4Y01/GipuQn90UIUxWPdW0MhRC3XWwLTyCUfcyVBWeJFXU93gZ544mHD8ygCtws6HUkIP4uFrdgQH24t1rFOzfai+luBS7wEMarRoF7tDgSYj/7ohwOrgi/CDN6E+njmRr51nEMwFTQrJmhVjOiYZQksDkQA4cCqd5ZLVuRAizWI/Wlk3tUiuoBqlkX4xaxEWSDREeLkSEba5cmxhNQYxJO8QFFQCDtLzupQ8NVlUYAmR7a+9ZKCWmzCMA+AbVzwAG2+7cMp5z2pC8K1Lxfh1u4iIAV/Ud56mS8+H/513LcFjyGYZDxSNSAj155D9bz7fDwkyv1n1Hwg27glLpQOujOOGxvNy183ykeV2/lBoj
- 0HEOLC05
- E2UatdZFPelkDz7ouJ8bycf/Wf6UDz+TsMPF/w2D1yIsMnWm/oKEorS81Z69Khxzf3B0S5ptP7BsRzEaioYD6R7gMUpIjRJUis8Qoj+Va0gVbeVNfaduR1SOtbq7lVl57KUoHP7i2V3x7YfOtflqhHIGMc1JGn4Gs6CeUmQQAaA8mVeE4hL4i6KK5s8fm3Zj1e2t7YQxwu5Z+8RUpGdxpwErmAxiHliMHMZPOyWOZ3pI6tzbOm650eMtlF2eOnQxeXhCqPUS5w9Z9smtbKoNPt9zWqqmpqqbjrEzEqyq0ZoceuSMJddziqve2cuhkAsm15wZvTfRGSU4w2kV7ZrmSppKQ8T9s7xkNdlQj/+LbuHF2OhRn+9lhRQsepVrz90pYm3oMM3l9l40WzIk=
+X-Stat-Signature: nirghwsqasbkspdy6u6mrxwp18mg3k8c
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787275240-413968
+X-HE-Meta: U2FsdGVkX18RbNMtMNyN0d8y58sBuAbGqj782laD69imsBDpNq1oW279OekLlDYX82CcQtWSXGCv8+WlLpW2YlMDtnkCeM/c7/NxeDduFjCMelweoLyQK8d/hJNE0SANlj43wbUq79mTHCTBHMBdvAOp0VqTZLh/UWLOJlIdAgdS2rVC+HKoexHuOqNmA1XqnRAf4gPeqWLDstWK652gXVScoIWggL9HFOC47g5Z+Zly89cNIYEH9MkXajbpdt/rUM2mSFbcX73VAPC39znCzsxwY9vcLF7aqF7WbndZS0llVcwUTVjulDtLuwvqDeppzVqWSzWHHWsoDrzTzyQo+5YlgXCMqmU98T4UKas6enlywQDPljn/R08UzXrEordEW24GWcmLIPpT3TOBUrVfc2/uiqN56phCYZIbu2qDU0q1x39wdOAyuABUyHawCegZowT/IujNtY/j5F7L0cty+IfybV/qSPFPRdSD8smgdITy7mFI5E2WehW+KMlzBFbyFrWTwRxYN+WHEcgQt78n4OfOfRUWvNY8Ww+YHPuAtthyDdOJ1k0IehHBmDtmJLgA/A1rlA2d7vRupADAL2S/rDADEczs6Z07MQYjJBSL9/kD30JenVsUhF6Y7Z8y6zSu+54q0JE7n277q0eNYCa6KvhBNhqKMuvt8smKJ7AJ7sC0JhkSEeVqCnVp2S+PC1Bb3AsH0lKVej2bB4meT2jxHztuR/Fg471+oa84Xiupyh1uWnDStLRh2Wo37nDG+WWuQeGVEe8vjmiHd8igtofavLI+YcnytPUcAbub3h9ojV3j4uWofYKZpqDs7xef/A7f3N50F4FOV0uRv45UsErW286gjGMyS2+TsGy9rg7DucYrkK04XTiObtsM5RZKJWfPHfYhkoqSj+GFeNQhQhJTLcgBP7kGI2+qyGSGYsvXeN9kDSd548Bv4S/E/YhagYvCd3Gj3kXsD27QNcqS+U7
+ lTIUtdv3
+ N1ZDOjtCdMAySQrNJ6LSMtT+jH5aUfu/DZpnzjaFu4X0NUKDXfd7Oq0Wpem7op3+dpx/O9TF/DqV5pNhqMAeDNYou3pZdhinctU+FOLSEzxjpCK1sGNJmRyuTG8Q4FGilXegppqwkJzgpCnIdTWXl0uWJuOfLcHkCFyl8Q7ujg5JedzfXegE7Sohh0iiN0d4zBW/19pNplOjkihv8ma0nzPPA16t7a50w1I98FJWtJQAz3chwKqaIOys0GP2y+T5TitxSKDgisqw/AcJ4OYFHtiaDekd5ilpxNapGtxpGMLr3teXm32r1AME60MWLf5IwCPw/2TYAwhN16JPz0qWgwT55DB5nzcD+7SSOJrbhybbybLgDYj3406glVbCbslagMCA79518PLf5us5XXpgoPtahNShzMiZzxD5Fg1zA+8f3dSsPBHsPbd8kqxNG0DGTfqSeoLBX5+6jIJeWsWCoMPKcwPUuooxU08Il
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,58 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 21 Aug 2026 09:06:48 +0800 Ye Liu <ye.liu@linux.dev> wrote:
 
-
-On 8/21/26 8:26 AM, Yeoreum Yun wrote:
-> On Thu, Aug 20, 2026 at 08:09:12PM -0400, Zi Yan wrote:
->> On Thu Aug 20, 2026 at 5:26 PM EDT, Yeoreum Yun wrote:
->>>> On Thu Aug 20, 2026 at 3:40 PM EDT, Yeoreum Yun wrote:
->>>>> Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
->>>>> glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
->>>>> made by memalign().
->>
->> I just googled the commit and find that Dev did that. ;)
->>
->>>>>
->>>>> The underlying VMA may start at a different address from the aligned
->>>>> address returned by memalign(). Furthermore, a subsequent
->>>>> madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
->>>>> already set.
->>>>>
->>>>> This causes split_huge_page_test to fail because the check_huge_xxx()
->>>>> helpers incorrectly require the address returned by memalign() to
->>>>> match the VMA start address reported in /proc/self/smaps.
->>>>>
->>>>> Fix this by using /proc/self/pagemap and /proc/kpageflags instead of
->>>>> /proc/self/smaps to detect huge pages and change the meaning of
->>>>> check_huge_xxx()'s nr_hpages argument:
->>>>
->>>> Have you checked Baolin's patches[1] in mm-new? They resue
->>>> gather_after_split_folio_orders() to reimplement check_huge_xxx(), also
->>>> based on pagemap and kpageflags. Does it fix the issue?
->>>>
->>>> [1] https://lore.kernel.org/all/cover.1785985999.git.baolin.wang@linux.alibaba.com/
->>>>
->>>
->>> Unfortunately, No. since __check_pmd_huge() in check_huge_xxx() still use
->>> /proc/self/smaps [1] for pmd THP, it still has problem though ths patch
->>> series applied.
->>>
->>> [1] https://lore.kernel.org/all/56b16691f605426b33b5cf47319233de6127a6b3.1785985999.git.baolin.wang@linux.alibaba.com/
->>
->> In that case, is it possible to use and extend check_large_folios() for
->> all check_huge_xxx()? You still need pagemap_scan_get_categories() to
->> check PAGE_IS_HUGE to identify huge mappings. Or at least
->> check_huge_xxx() in your patch can share most of the code.
+> > : The combination of debug tools: KASAN quarantine processing + ORC
+> > : unwinder + page_owner stack tracing executed so slowly on the CPU that
+> > : it exceeded the RCU stall threshold.
+> > 
+> > (I think we've recently seen the same thing, different callers)
+> > 
+> > I can't say I'm terribly motivated.  page_owner is expensive and if you
+> > run heavy stress testing with page_owner enabled then such things
+> > aren't surprising.
+> > 
+> > Let me Cc a few page_owner and KASAN people, see if they feel
+> > differently.
 > 
-> Agree. but TBH, I think check_large_folios() can replace checking
-> PAGE_IS_HUGE and keep the later part to check wehther PAGE_IS_FILE
-> and SWAPBACKED according to check_huge_xxx().
-> 
-> BTW, Should I do this after [1] is merged into mm-unstable?
+> Adding cond_resched() to the qlist_free_all() loop would fix this .
+> kasan_quarantine_remove_cache() already dose the same in its scanning loop.
 
-This series is already in mm-unstable, please rebase your patchset on 
-mm-unstable branch. Moreover, we've extended check_huge_xxx() to support 
-mTHP, so I don't think you need to change the meaning of 'nr_hpages' 
-argument.
+I don't think cond_resched() does what we want for RCU stalls.
+
+And cond_resched() is a no-op without CONFIG_PREEMPT_NONE, which wasn't
+set here.
+
 
