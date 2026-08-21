@@ -4,94 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E0B4C5DF8C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:56:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A7CFC5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:57:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 512996B00A0; Fri, 21 Aug 2026 14:56:48 -0400 (EDT)
+	id 27C426B00A1; Fri, 21 Aug 2026 14:57:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C3836B00A1; Fri, 21 Aug 2026 14:56:48 -0400 (EDT)
+	id 22C896B00A2; Fri, 21 Aug 2026 14:57:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B2086B00A2; Fri, 21 Aug 2026 14:56:48 -0400 (EDT)
+	id 0F7886B00A3; Fri, 21 Aug 2026 14:57:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 100B26B00A0
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:56:48 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B8471A0238
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:56:47 +0000 (UTC)
-X-FDA: 85126183254.17.AA55173
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 20E63C000C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:56:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AkQCNnKS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CFCDA6B00A1
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:57:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5A821140217
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:57:55 +0000 (UTC)
+X-FDA: 85126186110.27.9384028
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DE55440008
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:57:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BGseqZ7w;
+	spf=pass (imf12.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787338673;
+	b=cCoFCme4fkQh0UjPkH3di66JspUQS/RmuftM9PhBCb7rkGX3K0X9XszndW6gne1SCdnvYV
+	rIg7zc/1kDLmL/1tjrksa2kO1pI1bpO32pLJmnPW7oGcZZgJ4oTy7k6eff8Af2VlFtH+I/
+	+wxnxbxo6VkChjxU6IA3TfRlPpE09G4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BGseqZ7w;
+	spf=pass (imf12.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787338606;
+	s=arc-20220608; t=1787338673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ujt60NbqKdENBZQ77CfcHaeZZJdQN/p1Z76EsgS+bZg=;
-	b=uCLN29uIbSKKrXinZLcBKpcTK7/rvNHxOwV+k/BWhBtMKud1PJ0BYS4Ki7vu0i1fAgRMak
-	8gketTJohzJDurzOYzWrHUzVMOwPbmSFSHw5U11Sc30JV0IXI0jH24Md+0mvGhyeCxBqYv
-	r9xKnVFDRs/8BeHVIW6KK4ExAkJudYo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AkQCNnKS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787338606;
-	b=3e4PrVNUK55S5Ltf6yr0clGxRGhiFkkvw1VGEnrwWBl9t1OF0EisDt7lQtIlS1tB+D5V6k
-	3WPBXHs4em3VQgQBJbIDj1KTC3bNCJHkABZt9nOiHwma5SiJyEgWm+FeFqSj5tUdqbrqQO
-	j/HrGlZoMGBt6jfeErxHYZCqa0mZhfs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A3A1461126;
-	Fri, 21 Aug 2026 18:56:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578281F000E9;
-	Fri, 21 Aug 2026 18:56:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787338605;
-	bh=ujt60NbqKdENBZQ77CfcHaeZZJdQN/p1Z76EsgS+bZg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AkQCNnKSYtat8UOrPuf3sJGUEh9Lh4vv8cbwauS2+Ujg9OR7NymCiidbW3iofdpqh
-	 2UTIvDx/sbK+DCcqDmnjJ0+dYnszaWEFLJZpba7EMR1VYBMV6sv9tU+fiqCmvLn9tC
-	 LH9DMx678+JdiqTYy+EYOXbMvxH4opD9EtFNKl8Yb4zD/TPGH+WAyk28xShPYxtIsF
-	 O9ssFux5L5RUDcGOW4BeljnVwHa4hlt8tYY2q1zhH2Om5asNwkbl6TqOEoLTdpRxsu
-	 ZzchuFaq5oc21qL4Bz1vZM8F1ud+eeWayItx+1N0O/b0xrBQASVryR+pvI35Sy1K03
-	 tCTJLEnmsG7mQ==
-Date: Fri, 21 Aug 2026 19:56:37 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH 3/3] selinux: require EXECMEM or PTRACE for FOLL_FORCE
- introspection
-Message-ID: <aoie0oyojqdHciKM@gremlin>
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-3-90cd2357ee05@google.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=g7+NxbGivt12D871ywA3vXdCtRMIy1dH4uv3I74lADM=;
+	b=tE1bN5HZhgBbZ0nc9//kl7FtQIrhTx0Sk0sK0tiryxb/m4RK8K6RqHGz/ezyECQpf+Cfbg
+	wLzP2RYq2NdxOe0vnoWd0/S3fe2nm1s6ZerRD4FtwXpVVOGOuac7C4Pg2GMhpMgQ2OXgHG
+	AMeGqtAolNelOA7NBlZ65fc9nCblMRg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787338672;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=g7+NxbGivt12D871ywA3vXdCtRMIy1dH4uv3I74lADM=;
+	b=BGseqZ7w3iKycabokBueXBw8eVrkCklVZHGm6OBy6DdmC9wBk0fkrbMfAGAkLCHo2hes0C
+	lbL0u7Fp0Z6lTNb1lN4k7e25DKfO4PmMMCE9Ofu8YdF42BQcvvKYxSFVY7b/IoongEw0dz
+	Ot7ZnDqUrNbT/cdyHuCeG7Ozfibu2AY=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-145-rzCewSG9Oy-BWiJJP75v3g-1; Fri, 21 Aug 2026 14:57:51 -0400
+X-MC-Unique: rzCewSG9Oy-BWiJJP75v3g-1
+X-Mimecast-MFC-AGG-ID: rzCewSG9Oy-BWiJJP75v3g_1787338670
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-9368b4c5964so100410285a.1
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:57:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787338670; x=1787943470;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=g7+NxbGivt12D871ywA3vXdCtRMIy1dH4uv3I74lADM=;
+        b=mryflBBhWo/pujkavtAqKkzqVQ3l64+FzoT7/PWuf3SmpKYRh4MehLI9WLQZbfmLub
+         t+K83XnYS5gknJSjiYtTRhh4+pVxycnR81OFc7WVjCQAjBgKtoxq0N8ksPtNO2Y5/ThW
+         M6AZ/K02oC/dN8HNEucv6Qg7xqM9A9BBkX1JNiyuZEwdnQj4GpLgOt3u8/X/1GbPADS6
+         3LOaPesuqBeckchPTtcPcNbMUXHUZjWS43stn15RipdwwM6j+1wO3mn7nKXWRMjqFpuz
+         nfhLj8ioM6ueRR+nLIkEmjRF0wT6zgZwu+bvd4shyU67DYaB6435mlXQqeBm6JkBYwmf
+         rxbw==
+X-Gm-Message-State: AFuF++l3/IQCVnUIlZgkehBptsKmTmmJObYEBKnG+uhKKlwhuyx+1wPz
+	GUbEdVm6kpMGTZ0n1YyZhZkuoVLKyNg1VO65HE18KlQs9uLqCscdhIo0f3go4AT9hojhBzZ+V8G
+	oHXwx7fjsvXWduhKkRpi9LYPWRihbr52C55PZXgyEAd9ziD+JrN911qkWZGxaiRs=
+X-Gm-Gg: AR+sD11CUAffmOt5OJPbr+LchrSPe/nm5gLzOVxRsrI3P5Xus1Zb7no3uBO7WPSx5Aw
+	e07sGs4vaByPuTNuJN2x9iD9JDQl9YnZjZLw6mXuEMBbdNq4Cc+FRsWfiJ/skT+2zf1vOgWjYn8
+	Am17DKirM+3yvmMHGvoE3CPoe2VavZaCTatwu1pyTGgOMLUngUuePDH2+8HYPdobyPklecNIiP5
+	ahQR4Wfu8Djws1mbDrf1hna0TpV8S9YPQphM2qMCKqBn2Ai8W8AE+6axrboRFFrNwhmswAJ24q5
+	o5KklMnUM0pX5voagbfAamqmNG1EH9wyHI/MP5iYIr5X62TNxqvukBtnX8k1p3iocnUu7aEuhNa
+	Vd7pIDIM3g+RAHFGjw8rDZQHcXQC0z4YhyIUzseBdNcAE
+X-Received: by 2002:a05:620a:6306:20b0:930:9585:e08e with SMTP id af79cd13be357-9373954280emr603127285a.10.1787338670389;
+        Fri, 21 Aug 2026 11:57:50 -0700 (PDT)
+X-Received: by 2002:a05:620a:6306:20b0:930:9585:e08e with SMTP id af79cd13be357-9373954280emr603122285a.10.1787338669904;
+        Fri, 21 Aug 2026 11:57:49 -0700 (PDT)
+Received: from localhost (pool-100-17-17-231.bstnma.fios.verizon.net. [100.17.17.231])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-937205817f1sm658045085a.32.2026.08.21.11.57.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 11:57:49 -0700 (PDT)
+From: Eric Chanudet <echanude@redhat.com>
+Subject: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+Date: Fri, 21 Aug 2026 14:56:52 -0400
+Message-Id: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818-selinux-pokemem-v1-3-90cd2357ee05@google.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvyJ7bsGENPtKdDBbbQ9WKEQg/T3pO
+ DAzFQplpgKTqJDp5sLn0aDvBPjdHZGQt8agpNLSSI0+OUyUfMRMsckFtdV+HSgYa0do3ZUp8PM
+ /5+V9P4pyRQdjAAAA
+X-Change-ID: 20260706-cma-memcg-regions-696cb5ef7998
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Tejun Heo <tj@kernel.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Maxime Ripard <mripard@redhat.com>, 
+ Albert Esteve <aesteve@redhat.com>, Eric Chanudet <echanude@redhat.com>
+X-Mailer: b4 0.14.3
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ch5dSe_9Cb6XfWsTO7z0OF-3fJP6zIIoX7vpk7gl4CE_1787338670
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: DE55440008
 X-Rspam-User: 
-X-Stat-Signature: r8i34egegoyhomp6z491ep8xxqbsedk7
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 20E63C000C
-X-HE-Tag: 1787338605-171675
-X-HE-Meta: U2FsdGVkX1/0nELl5xH44hQiHqvSpmuChaOkbLyg3ugOcy0xO5G0ybh5nM2NA0ZMZMI4wRD/Zu3DIu/VBFRCm2TSrJjgBMPge56CDs+a2qKXiwuVTOY+VWELUrwIo863C2EiKPATeJQ1AFK18GJIsV3umhkQ2RlHp3bdrIf5P1+rQbe24tIyPh5qTUpeZ6ib2z3mA3LyxWAGfNoiEqlvNHskVe+OukH1DMzOCgr0l7QJOxUWgCQaLwiWc3f3m8bvAFqH4W4dAmjNwr6qiF/QuUfDvp+JXkxuPI3tCOSnwnuYhoqsPCLLrCY5Q6GPZMQ75Cjfl90KLK4YxvdlfUGX/MEvqVu2lWZxsdYgvKWocJNYTb5yjmW0+2/vVkvFWDWjcTFdMsRZWY7/uoNnYxIJn3LiCHNh943rawHG+BMSusH1WtcwBWsPHWVqqidcHQeZPzDRkb4w3jSptYtGuH77i2ReYMmoziQPCFD/QmdNO7XKJ0X0bXZWPWgFeXCYw+HgKXmqGnImpenC8RTBeb/lrj7gpt7gVpAd1PgfN+VMnGstkDn9Rsi0RNypsM6gewggzCFRWJU32KDYF009Z+mRlljeUPwmfLiNW+SmNSHvhYIQpe0/OHnUc3OM2ZQ/WCRrFCRy3kVXZVI1t/Jr/GAsmFIVjKaHhZdkd42Rff1SAOJvxfwNhp0wZgMrx32HFX1TAJJLPLuji08INvG1uzEAyjyv04fWkR9BZ/xVRXDrJQPlG5qd5tszac5dDSoX5OwpuwABDjAAalUFryZmUt+Dl/wjIG2XKFM6mp64JIHLX1mN6k9Ot4+GQFhad+F+3elPTwdLOP6IG2F4PrVs+QrBOYsjGyOEBUpjMJB9ZUBzQaSQiJZUEyB6p+4s4QoiY/qku9Th4SDoKS37v9mC3ZKWzaZ06UImNCiE2upEW3QdC80RHWJf89GKhhw6v9rJ0ezK9HpLQo46t6MJOjLe6vq
- JUhN1S/f
- qOfVkmFXQ4D+1HDj2RBxU+D+j9/1Vu5RjmG3OQwN9KXML2pf6Qr9G4xgdmHARKvWCoceYhmA54v6X1jSc+RW3FkqNbVwLTFc+Rx5T/c0OahFulE8FDXI7Fhqd6NRsy/vBk/h1P3IosfJ15oTYVCGAGil8oOfeI6G+ip4IBbuYghWHngrxhWxvMSfEUqM2KRqymGu6q/9xwd44usiR5LBdkdeHxDnS96Ojk21biY2VqaWFsekFVFhQPYwhoovN5GWRi8R8yzYxtLLOzJtirarqKazYZmiwku/qk8QEpKrFU5NBremhj9eDSZD8V7SZiIL3ai4LPJAyZYm0Vr5NFSTHlAYhL/r4QfjLMVM3H68b3T6XO2amBqOd6BDKMxIBvZaY1od/ZtTtVJqR/9k=
+X-Stat-Signature: 8xpiidx4e7rre8chnwqot1tesfaczaco
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787338672-405074
+X-HE-Meta: U2FsdGVkX1+m3kiP0sVFwSYwurHBUh9iHIWNlHc1DxANiZ2y8pkRYnA4f1OjOf7y/CcvAyvh8kuH8Yn0H8cT0XXZV4u6ZEnpeAhxWKvj4MS/eG1MKv9mrSx+1foR5OH1qDY3iOcAWtgACwyN7hsqvTA5Y+JLdmq70mrhlb/81rVF3MyZW/ywkvdUz6v0WQNcXre2q21YcRYi12zV59zPUrytyePHXwbHiXX6ZcLuCZb+Nbc5UR9m378ywFrYsvcF2FIOOS7sb306gQDNz8a1eBkh0jlFCnyy+P97XIUnN9TlMCkP43ymTZ8gHjvJcZRd7xHSUtPkU7aQxcoKSOak7H/LgKGlsdcJy4Nb3aGLUWTtdx5B0SB/Lde09UriSilgG5uInQ+S1NCkdxTGOiJsDvybfoDfOJT8KtUUOcmwvy/eBggqUyRbhbCVY1Gi8QF2Ov8mHA6aehpFl0MPlj3sNEUo4ORPa/2n8zSW4gi97FJH1aGiK1VODxs3BxvBAhFTPCpy1114esSavlETh4smhDJlnhGtxEqJIgpFa4/eo3OgB3X4VRFSfQnPLfBzYnF+28qgaOMUyDNe+BdrInfnowVSOT7W51EJiOQ+WFH8ZLTwHL3R8li/D1JblcgoA1c1Miq0DlEfinkmAYVDhldm8ZeGFfhyJnaLEMw+tWgIYvw9YYQR7GAcAa+mBFK9vU9uBPKDV3LVS31O88x3JSVgpyhX8AGjULt40sjZpdWSYXwiqfvLqK7ydeVQVbPW+o8NrgDFYYXmwAHg34CivE5HHt9Ma+lOcfZqaVfGLskgv7zxfovhOmp8Iurt3et5WU9hgLR0/eXM5f+5VYQTbO7iddyR6b+DJjoEHtD4vbAePLgBxYKMueOlSgSJQ+OtOfYfinqaSAolE2ZDxvx4ZMYpYkmPnXrcXh4UIAvBvg1J1hRs39aVFOPCJ1Ufad6/ZAjww6HayccFMlpLr3BT8wc
+ 7pRs5RjL
+ PAlFl8kTVdqBfapcJxaboZ/QhjXUjufV8pE1raEiaAtjYM3TiSesO6NVRQLsZNwz877JvbhGM7er7MESrDNePmYvpu3imLzsvfwXX66l/cqfkrO+zZyfZYfy4CPek4wJi6CDO1jvG72s6KKwqA+MKGOH9Y0PzGydIViJPE7ag/2KUUT8nI2ToEg/CaYG/ano0FSCUDHLCUH8IjXrjQkd03tw94hM7m91CCBPv2lqfV0mefTxF1HTH7ZSMYGUlE6MtZpCwiYA+z0XmOBZ09fes+ak27eXCmyjHhOM+cyYfnl7bUDobLuJ4MiNSN5LldNkbKpm2a8HWs5XFg0TeGzSKBGAo93RE+pXrVNu2VcRy6F+o0hIXvcc6vFlAUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,86 +140,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 09:51:07PM +0200, Jann Horn wrote:
-> On systems configured with PROC_MEM_FORCE_ALWAYS, ensure that a process can
-> only create anonymous executable memory via /proc/self/mem if it has one
-> of:
->
->  - EXECMEM (like for other methods of creating anonymous executable pages)
->  - PTRACE (like when using /proc/$pid/mem of another process)
->
-> This closes a hole in EXECMEM enforcement that Project Zero has used in a
-> remote Android exploit chain:
-> It was possible to use a memory corruption bug in a service without EXECMEM
-> permission to overwrite executable code via /proc/self/mem, which made it
-> possible to load and run shellcode with a kernel exploit.
->
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
->  security/selinux/hooks.c | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
->
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 18dd28b2bb13..905137c47321 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -2157,6 +2157,32 @@ static int selinux_ptrace_traceme(struct task_struct *parent)
->  			    SECCLASS_PROCESS, PROCESS__PTRACE, NULL);
->  }
->
-> +/*
-> + * Decide whether it should be possible to read non-readable VMAs and write
-> + * non-writable VMAs via /proc/self/mem.
-> + * This only applies to systems configured with PROC_MEM_FORCE_ALWAYS, and only
-> + * triggers on accesses that are not visible to selinux_ptrace_access_check().
+CMA allocations are currently unaccounted for by cgroup memory
+controllers. As system resources, they should fall under memcg, but CMA
+areas partition the available space for different purposes and memcg
+doesn't have a good representation for that.
 
-It might be worth mentioning may_access_mm() here, and obviously propagate the
-suggested name change introspection -> opened_by_owner or fd_from_order maybe
-even?
+Add a memory_cma_accounting cgroupfs option in preparation for the
+following new behavior. Make it disabled by default since it will
+account for CMA allocations in memcg which may affect existing systems.
 
-> + *
-> + * This allows a process to overwrite read-only code in its own address space.
-> + *
-> + * Creating an audit record on denial doesn't make sense here, since we can't
-> + * tell whether FOLL_FORCE matters for the accessed VMAs.
-> + */
-> +static int selinux_introspect_mem_foll_force(const struct cred *subject)
-> +{
-> +	struct av_decision avd;
-> +	int rc;
-> +	u32 sid = cred_sid(subject);
-> +
-> +	/* Allow if the process is generally allowed to have executable anonymous memory. */
-> +	rc = avc_has_perm_noaudit(sid, sid, SECCLASS_PROCESS, PROCESS__EXECMEM, 0, &avd);
+Provide CMA charge/uncharge functions to memcg that introduce a CMA area
+specific counter per CMA area. Charges are issued to memcg and to a page
+counter for the CMA area used. The allocation's folios are marked with
+the cgroup via commit_charge() (once for large folios, per-page for
+0-order ones) so they can be later uncharged correctly.
 
-But does it make sense for the shared-by-fd case? In that case you're now
-updating execmem for another process's memory right?
+Add the new memcg calls into the cma allocator under __cma_alloc_frozen,
+for both cma and hugetlb_cma allocations accounting.
 
+Finally register the per-area usage counters in the cgroupfs. Each CMA
+area creates a memory.cma.<area>.{current,max} pair for reporting and
+limitation for each area.
 
+Selftests and a vmtest script are added to this series for convenience.
+The tests are simple accounting and limit enforcement verification using
+the default reserved CMA area (cma=) and hugetlb_cma.
 
-> +
-> +	/* Also allow if selinux_ptrace_access_check() would allow it. */
-> +	if (rc)
-> +		rc = avc_has_perm_noaudit(sid, sid, SECCLASS_PROCESS, PROCESS__PTRACE, 0, &avd);
-> +	return rc;
-> +}
-> +
->  static int selinux_capget(const struct task_struct *target, kernel_cap_t *effective,
->  			  kernel_cap_t *inheritable, kernel_cap_t *permitted)
->  {
-> @@ -7558,6 +7584,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
->
->  	LSM_HOOK_INIT(ptrace_access_check, selinux_ptrace_access_check),
->  	LSM_HOOK_INIT(ptrace_traceme, selinux_ptrace_traceme),
-> +	LSM_HOOK_INIT(introspect_mem_foll_force, selinux_introspect_mem_foll_force),
->  	LSM_HOOK_INIT(capget, selinux_capget),
->  	LSM_HOOK_INIT(capset, selinux_capset),
->  	LSM_HOOK_INIT(capable, selinux_capable),
->
-> --
-> 2.55.0.737.g08866a6d13-goog
->
+Signed-off-by: Eric Chanudet <echanude@redhat.com>
+---
+Eric Chanudet (11):
+      mm/cma: drop const for struct page on release API
+      mm/cma: include linux/cma.h in cma.h
+      cgroup: add memory_cma_accounting mount option
+      memcg: add cma charge/uncharge functions for area counters
+      mm/cma: charge cma allocation to memcg per area counters
+      memcg: register per-area usage counters in cgroupfs
+      selftests: cgroup: add cma configs for cgroup selftest suite
+      selftests: cgroup: add memcg cma tests
+      selftests: cgroup: add a vmtest script for memcg
+      selftests: cgroup: add memcg hugetlb_cma tests
+      selftests: cgroup: amend vmtest-memcg to run the hugetlb cma tests
 
---
-Cheers, Lorenzo
+ Documentation/admin-guide/cgroup-v2.rst         |  35 +++
+ include/linux/cgroup-defs.h                     |   5 +
+ include/linux/cma.h                             |   4 +-
+ include/linux/memcontrol.h                      |  19 ++
+ kernel/cgroup/cgroup.c                          |  15 +-
+ mm/cma.c                                        |  14 +-
+ mm/cma.h                                        |   6 +
+ mm/cma_debug.c                                  |   1 -
+ mm/cma_sysfs.c                                  |   1 -
+ mm/memcontrol.c                                 | 205 ++++++++++++
+ tools/testing/selftests/cgroup/.gitignore       |   1 +
+ tools/testing/selftests/cgroup/Makefile         |   2 +
+ tools/testing/selftests/cgroup/config           |   5 +
+ tools/testing/selftests/cgroup/test_cma_memcg.c | 402 ++++++++++++++++++++++++
+ tools/testing/selftests/cgroup/vmtest-memcg.sh  | 197 ++++++++++++
+ 15 files changed, 903 insertions(+), 9 deletions(-)
+---
+base-commit: 98f21c54f99519329c18e2625b0ea6db14524d09
+change-id: 20260706-cma-memcg-regions-696cb5ef7998
+
+Best regards,
+-- 
+Eric Chanudet <echanude@redhat.com>
+
 
