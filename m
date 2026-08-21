@@ -4,144 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB29EC5DF94
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE8B7C5DF97
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:10:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E10676B00A1; Fri, 21 Aug 2026 13:09:48 -0400 (EDT)
+	id DEBF56B00A3; Fri, 21 Aug 2026 13:10:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2066B00A2; Fri, 21 Aug 2026 13:09:48 -0400 (EDT)
+	id D9B666B00A4; Fri, 21 Aug 2026 13:10:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C89526B00A3; Fri, 21 Aug 2026 13:09:48 -0400 (EDT)
+	id C8B1D6B00A5; Fri, 21 Aug 2026 13:10:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B53D6B00A1
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:09:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A18E1C00BC
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:09:48 +0000 (UTC)
-X-FDA: 85125913656.13.E7BD47A
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2A69F10000E
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:09:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fBeec9c2;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787332186;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 88E486B00A3
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:10:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1E90312017B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:10:35 +0000 (UTC)
+X-FDA: 85125915630.04.035FED9
+Received: from outbound.pv.icloud.com (pv-2002k-snip4-3.eps.apple.com [57.103.64.154])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2383C20002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:10:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=me.com header.s=1a1hai header.b=gEYoKaMJ;
+	spf=pass (imf13.hostedemail.com: domain of ferran.duarri@me.com designates 57.103.64.154 as permitted sender) smtp.mailfrom=ferran.duarri@me.com;
+	dmarc=pass (policy=quarantine) header.from=me.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787332233;
+	b=n5eiBP+YCszpu1ySdmh15pNT41W4+p/LSZtuPGDnyqaogANKGh6etS936HcgztAoaCL+zM
+	InV1NdKwZj4vGjXCCWNNdkTOQQz8sZttE1uD2BKvX31dA7EKM5/2zWcZ7qE5C+3NfdoJHt
+	oQIZNP0Pjx7eTjuqp+YOpEwf2i2GNN8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=me.com header.s=1a1hai header.b=gEYoKaMJ;
+	spf=pass (imf13.hostedemail.com: domain of ferran.duarri@me.com designates 57.103.64.154 as permitted sender) smtp.mailfrom=ferran.duarri@me.com;
+	dmarc=pass (policy=quarantine) header.from=me.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787332233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=veZnyf/dfYhbTVP9YeELLr3c4PfKlTUdiQo55s2EN7I=;
-	b=qoif+hq1rJigddmPPEGcQIZJdbuBoi8zngrDubcxem3hUa6I82cWKWZiC3Nn3vX+k1e3Vz
-	g+fpApNCbti6zD8dUos3UbYue9s5jfPJnOi5fMzy+IavJQMlJGFS++Ub2cr/ytqXQsdsqX
-	ynTowsk5htmRnVySW/78w8Uv4oPHgYY=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fBeec9c2;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787332186;
-	b=wUNNLEvTcdZLVUbasrn53qeCOt9QyvOD06BIZvLduum5Wwv8CjBB8yWyVrbrVD+iPhfYxw
-	vNd7mx5KqfJjGvi6hvXeAxNyAkOHW05Ct2AM5noDGa5zKr9j6kTE5SraaaEEUVYOkuIMV9
-	cUnUVa1WOKYay8jsOQQKFJHx7OMrYkM=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so1216811f8f.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:09:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787332185; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OEc0+G2DjK/keqnZ79dcrooPHtohuI/hdQI6ef7N/OQeLQBAPrVmPDlLHjtczHjuP4
-         99bvDady0rl2dXOImpvFamCgdyQ4zBMVv/QxoH3w11wOLUMqLg4HZoeMPTi2GQgdmSPu
-         iQtYfUEOTqHfbAQaus6aiBfEsoumrCi/VOP2uLqrRH2QsVSvqcqQSlMU+0XCl+rcWZQn
-         2ieewzVzC1ikw8THUyc3Zz/uCZblywHDiHgkQs0EPbV3cP7UhzofDGhCnfdx0EYqRwC0
-         L1KM0SQ2oPbdrbONtEFQFDOkzvE+39maAjNwuWftuQEWMD/XEugZwY58X/TUOFXvlpfU
-         ARKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=veZnyf/dfYhbTVP9YeELLr3c4PfKlTUdiQo55s2EN7I=;
-        fh=2GQh6D88EYRxkac54Bj8Wl4hm7bc5Bz9RRGmQ2jK/S0=;
-        b=n+HEcYQkSHYJ1qrjYh0iRpaFzBNL2jhzYHMMSpOCkxEMzTOwJ6j5LZ0cby+OEd/SaX
-         s8xbR4c43JVqh9HX9FFOeZt9D1rlCvnzJHKfnKwKnikhdYwEezkg+7kPQl9qqED6TSXZ
-         xZefVp14PZbe8+1yo9pjZohrV3dd0zeqL/g7NFA7gpPfFDg54xbI4KU/wjOiLDpB8MoX
-         LirUnXTTlQovlDwRLJw99ldGB7ctZq/0fIMl9szaaWvH1k26DomC+XVyZutuokGA+f1U
-         yZOPq4SP49okKPLv1to9EZp7+jkd9VXbkkNOgxt4sKwW0jehrjRZFw3N1umJR+JQes1y
-         rgtg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787332185; x=1787936985; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=veZnyf/dfYhbTVP9YeELLr3c4PfKlTUdiQo55s2EN7I=;
-        b=fBeec9c2NMuwzJ2bLu/6yzXlW97h9EPa32p8DClBEc+a82y0AYNDJxAUZPG3wdvdaQ
-         4IR1eTeFje25Exc8Fhn1J5BPv/F3bcmFjudBdEffLITzKzN019VLL9scndWPpkd+cS7d
-         p49NCfRQSx2VQenufhwIvJ6CEhWsXpRhPQpRHhh4E477b9yNR84jx1DeqyKEsHCRZC87
-         VEEat/4WL7edqa120qJNL8rjCmvn5VJwzOJcuBhgXjebsYz4N7qU7NdISe9170ZzXoWw
-         bAcFdcMTGY0NhbD+X3yHBz2uFRE+BbaqvZQvIDpbxHQDkD6408QvIl7msGSzKbCmhy79
-         XQSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787332185; x=1787936985;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=veZnyf/dfYhbTVP9YeELLr3c4PfKlTUdiQo55s2EN7I=;
-        b=G1MLDGpK86qzmBmWIm3iSiEKx99VOw8CmiUSs//1rN0r3YrBiaI21h/IVlOBaqck/i
-         O7wpo186XCb1nwDBm6GYAzzGumlW+TL+tJJRIppXvfl5tADjbvmmSaMcC3KLGWp7sgwq
-         HaEayKyvJilBncd+2nZHuWF6qacY0P+J0hw/q5IKz+YoLrk+pgCJC0ClZ5RQvoLHpjPm
-         78cagSjbAY6Qn9UNBDMAeAMIZRtm0SpB0ONl3NjvqTwKhA32h1afH1h2dvZZ0vgMuoZY
-         s9cMfiNmzIUJC7a0lY8CLxoXU2ODLfKBmQolM3rVQQQmnNO1HX4DdJunGxgwlvmtn3Ju
-         c4ug==
-X-Forwarded-Encrypted: i=1; AHgh+RoybkXAJRWOeBKGtE0ZPFbW+S1cPOQd154X49uaMaYfsfjAoTkoZpUJEr0UhOnBBLBDVUlcgWK6EQ==@kvack.org
-X-Gm-Message-State: AFuF++loipIqywej/ClLZ2f3lNi7ewl4rjbPOwx9tgA8X3SKXQzWy6z4
-	yqC/Qy//Wud9XduVzMy+78cNi5jlb1VIm4JjQNXaBz1AIxyqlO3L03rtUkUCiEU/PYAsDpQ7y0u
-	msyUiiUUgCVpDmJr1qumAcdJoYNzf5Vc=
-X-Gm-Gg: AR+sD10DUeRtYIp1kk5Yj5RlK06odQ6+JBNUyPU3heW0u6HTp5tjLUq4J/fl9fBkf6M
-	2NXD+BBodOxVP1MalO6kbu48Klr5IpuRvJytlALjB2Hf6NiGkC82BesKLAOo5Z4RtI5jBKychE7
-	feFHbBGv+5BZglThhRTG9x/+RO7rKmUus9pXbnOc4pWfzU79iOpkJ1HtgnSUGaMu5tmQxG/K7bv
-	YJtnCk+UuTPOMGVtJZBC2QjvFLA6yxuv4GMv8okLiVMKHbW3WDKRrI2/JxhgXM1EZHVUGmLoveV
-	NTuuUJ0b0KJgqpeavc3382KHcZbD8xFNGrF3lbaFPQ54WSztkgJEr/tqlBfe2u5mGthVxBV/S0a
-	T
-X-Received: by 2002:a05:6000:1acb:b0:47f:71a6:970e with SMTP id
- ffacd0b85a97d-482c0b55d3fmr11033799f8f.2.1787332184426; Fri, 21 Aug 2026
- 10:09:44 -0700 (PDT)
+	bh=y7vmQEH+EXJnCGy6NDM0LcFuCB9ULXv4xHDAVnQjTbw=;
+	b=5TEkRFfvpiVZFEE95Xo/vWX6uyVVs1sKK4oKGKnDmazcnsdzfNntJH/nzbK4N4t9pMVMBy
+	t87OL4LFe6jyEj8zGQAOVdxkT2fsyt/g9S/zsNsuEPbFbWDJIJgFPDLcVMmkyD4D4xWvfT
+	egEgxbW4guLxOOZ5zmwf46IVnjl4NBU=
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-20-percent-2 (Postfix) with ESMTPS id 4D654180035B;
+	Fri, 21 Aug 2026 17:10:26 +0000 (UTC)
+X-ICL-RepId: 01a0254d-6cb4-7d74-aa23-6d7ba8a8508a
+X-ICL-Out-Info: HUtFAUMHWwJACUgBTUQeDx5WFlZNRAJCTQhABkMAWBxBDkkdXwVaEhVdRVUIRRlTHhccRgxFGVswVB0dDlgGEhZdRV4IGQhdHRkKUFAGWxIYXBRcUFgeRhJWDV0JGRtEXlAbXwJCDxwTVhUTHUMZDysISgRDB0UCXgslEwlTVl8VFxtcABcGWxQERAFdBV0CSAtJAloGWwNJF00AXQVSAl0IVVUIRRlTHhccRgxFGVswVB0dDlgGDFBNAUMICgJRHFYNVw==
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai; t=1787332232; x=1789924232; bh=y7vmQEH+EXJnCGy6NDM0LcFuCB9ULXv4xHDAVnQjTbw=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=gEYoKaMJPVootcGsoImNWYqlHnP6cRmimFHOK4FBH1CWqeOM+7gVH9HLKHihCLNOZKWLGvD9kuyhJMYaIMt8ZLU8oElqTkAmhwMC4qrE9pHj2wrLLEYuTcPXNGMeCixS0t86lOntAOHVdEiLV9MYcs09iOIfGK8Bh+eOp5cTQ9NWnTegkwnF4YJ4lBfJbkdk6Z2q3HEzMS4rCUbnO/GbIiVRtLRw5jP4Xm5JHFEXaGkf98inQPUlI3oyQ6PJJQTBKqoMW5D3D7p0/NVFaV30T2j5czxSOKsyUlqS3DdGBODyGkyNUP08FEF4PqPGxI652+DKCepoVM3MJd0ntXR5og==
+Received: from ncore (unknown [17.156.192.29])
+	by p00-icloudmta-asmtp-us-west-1a-20-percent-2 (Postfix) with ESMTPSA id 7AA1A1802180;
+	Fri, 21 Aug 2026 17:10:23 +0000 (UTC)
+From: Ferran Duarri <ferran.duarri@me.com>
+To: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: thp: default defrag mode to defer+madvise
+Date: Fri, 21 Aug 2026 19:10:17 +0200
+Message-ID: <20260821171019.530290-1-ferran.duarri@me.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <06f5eea7-c6e7-49ed-8f45-0c6c86a04c26@kernel.org>
+References: <20260820190825.221308-1-ferran.duarri@me.com> <06f5eea7-c6e7-49ed-8f45-0c6c86a04c26@kernel.org>
 MIME-Version: 1.0
-References: <20260806184254.3790858-3-nphamcs@gmail.com> <20260820041940.443214-1-kunwu.chan@linux.dev>
-In-Reply-To: <20260820041940.443214-1-kunwu.chan@linux.dev>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 21 Aug 2026 10:09:32 -0700
-X-Gm-Features: AcwNN1Ugn_Yvgh2BA7rl2-6Ryj849JsdlpzstMFnk3QEm_uy8ugTFY1jdBeldW4
-Message-ID: <CAKEwX=Mj7QVArjKVvKOKnuQoTmN1Wu=vXe4jkLshnzKoYF4XkA@mail.gmail.com>
-Subject: Re: [PATCH v3 02/11] mm, swap: support zswap and zeroswap as vswap backends
-To: Kunwu Chan <kunwu.chan@gmail.com>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>, akpm@linux-foundation.org, chrisl@kernel.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, yosry@kernel.org, 
-	david@kernel.org, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, 
-	chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	riel@surriel.com, gourry@gourry.net, haowenchao22@gmail.com, corbet@lwn.net, 
-	kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2A69F10000E
-X-Stat-Signature: zczpanukqrcmhfy46fakcff7wyhdrj63
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: g5bQ3r4UL7hR7-uJueVRq5EREg00XwRO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDEzNSBTYWx0ZWRfXylG5i1v7Ltdi
+ IxkNdAL6kaSEBiFVLG4wWz0Scay4VsqGnB6BbsczPKOvJz3gTovt5xMd92HVohIF8Ow2kr7DkDA
+ PJjthsNo+n4CjvKGlQJk0czcJ0Nq+oSruT3vZ2C1H0UlW/JEPSNIYM3REHC1dfyjhziUGYEULSh
+ hiU5tkYaBI3rSmNArOAA59d41JGcoUsCAbwSLlIPW04tjcudzcD6dbCj1QRKmhQvjBvDdWmGysY
+ 3b34EFyRRzm1IO0jey8JTXusXIR6TlkPQgNwx8YGaBs7xI6xpH/+sWil7/0xUtmj7ER5lC77A9V
+ eALVKzXVBr3L21l0RsNYrvE8ObNB1EglOn8ohyIvo9rF6ClajOxiAmPyQ7A8H8=
+X-Proofpoint-GUID: g5bQ3r4UL7hR7-uJueVRq5EREg00XwRO
+X-Authority-Info-Out: v=2.4 cv=VMPQXtPX c=1 sm=1 tr=0 ts=6a888683
+ cx=c_apl:c_pps:t_out a=aW9mcIavGNWWFvFFKOxBSA==:117
+ a=aW9mcIavGNWWFvFFKOxBSA==:17 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
+ a=x7bEGLp0ZPQA:10 a=B9nqV3Rn1-QA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=PCHdVTuO9_M3hTcQpgcA:9 a=QEXdDO2ut3YA:10
+X-JNJ: AAAAAAAB7+eZj6DEaCgCBjELS8/Km6w2M1nLXrEPw5dfxgis1/HffaeQBMdKktdOnwp7+H9hQMSdhB46/YOEOqIoOtVAT0svE8vKMdvXqXjSpouOm6R01Gm/ml+BEZaug7P+NAviyzKYyiy+lVrOfh7nIA32rpnK7FpBifiiBz66+LlGXN2n2Ye5Sd1coL+sJ4ZESehT1UQI5jcy9mSX2Wdib0h2tt01JHRCBpPCqb++o8KoVLYQ8kqTBJ+XnLocMA+aQqhNkOA3EtinYQMjDnFAfqgaJRK50suxX4XDeB9QA3mlbyxI0J9Tpb+yOlwYODiOPpragrVyVFQjw/chL6eIBQPM/7EI3rI149ZE60eXAwxt7IW4D6h2QXvWi74AxODQlJ12TcCu22kV+9AIFEeCpwaJENwXl4lMaSpbMBezSPbBTXHmgAFs9xTeyt//majrxxW75P7lJSQLrybsaP4ez3fSE/rcrwoqXzmBilr2V6DauLPPazKYdUj/kn0FVuHlYgDO6vCmmId3Ze10hfjHFSpPEjM5oFuanSKf7Ol863AlQT2ww+iK+OvzGLY429Cx73jR07wa3jJcDQDoMMT2NE4EO5gyBUAAAs8sX0HgVRkI/HbjqMQH8fCpmLlc/pRtN2IC0nDhVO7kKLnAL7GNwFmREf0ktDdalkRj3dwJsGZkC6pBasSeJ1IYr9Y9kjf6yzv3WGy5WqM8m2QoEpD1/lDZGYjNJikbU8rPAmortUPKFIdGXLXGddkophdaPBsvG1sdFxriOfwSiShVUialnbRxoqe2CQ+v7HstH8TSCxTn6upXoHGLYEcnXBmSdT1XLITy5uOPB2QlajkBlTRGpxpalSfrAVM3PoQ+pc0Z9jE7ZXkFEmi222UZuLG04dFZM1PYxl4jlqlnFNGzOrzejYKBPivp47KcLPzrrElqwKZWwqvkrPZt49vhMPxRmOdYjiyXjxZLMMrWL+4yCM+
+ 09gK+rAJ
+ tkYsJ7A09OaI5ze+sS+m+8uKlSk+WB5J6jeJeZcBJ1sgmvvjTMI1lCKLr3rw6jBv72C+ofMfquHPTdR4MZxupcS/bSV6/GB/nQuymcvxYBlbreXlGag/OYLKkFdM6pk3BC4iGwTXvj/PEKWx5yKzJCL5200KDzVJBnVBNf5Y2pB1GRhhaGZqVox6N42rLfjs2UIm6Fmzdss9bGlUuxNPVCbGkRs+FcxuFK0NEVTf8OkHtPqrXIEZdyK98Ic5lhVwxznXyS6Dt1w==
 X-Rspam-User: 
-X-HE-Tag: 1787332186-891665
-X-HE-Meta: U2FsdGVkX1/Phee56Rzj3/tTgqluiVuB4xqNhy0nfbJflncaXix1RcI2gM2wK4lrA10GZ1vP2nnr+foAUFGvPiitI6flVhYTD6iSh0yu7EWKDROIClIfq5DaFyY4K3IN1GqRG8mmHUmPTAr3GhTX4LICia73wD1LNJZU+B6dQClc3WLMVi4qTTeZ9bmxavhHs5QODwN/OMkr9B47EkijaEatbZ+DvuSpepzblf/zRa05RFyW8FTlExHmUWU+QPr8tnRxpdeEwm69kCSV+y1+nETz68Aemu3BvAYrh2MpEDowzJOGugdIeQXWrW2olUmFGU1p+mP5mY6bWoaYZNZhhL2ug8fXbMNw8P1+qbN0ejbTdlr0IvI0ErR2wfErtphemLnsteCwpdHo4L4itcZQfyTe/dm+UfReA8HG8dMn0fB9f/975nu5qx8ZZjY9IB38rzIN2nAP8TLe+xc2jw4r4l/RydoBBaJp6ezoh+TpWOYZ8B/+UObYOLVivLHB6nqtxACfrkbBBkeGGAbn7gWwPcLcBboaTOQfFqnP6CWuPG1DFJobeuxAAOCL3Ph/wIWBjDxBasXIa70+CcqnB9o0AtbuNDu/2L8URLTkcJsNJ7a2GajPoPvNs+KgTaKFOoEVG1klNrMqPSpepREtgibbiPHgWKRHYl7/i71Zw9RQGYSGdRkN5rJnJct/SI885q2rnYkp5L3PqTqLGndK6N0kutQZaWegDMDZ9fztiv2CY719AVaPKNiC6Rvb8iTYFiMX/eT5tLL9DO0qUSVAEhuSlwKn2A2q1F3JYP+3bh0GJpJUnPq1cOVuBXBDX7ey9umwmJ95ow3xQ+OTOuw9kyuf63/IYd+rltVs29xU9QrJDYna0ByS/+c/PGHznovwsQvDAZbuVmftpu3ORxjZrlMJlGxYViDJVumNM0A+WPvhBLRlIDLQzM1SeS55zcJ4P+L4en7k8SRCNnlDkSBEofK
- j8Qf6a2L
- mhya+/I833UDfzJ0ajqve8xXBy0OYor5lxD1OpBT6yURryYMKa9Mb5JItDBSZpGxT6JD3s65IxGzeX8+XNwkdPuJ/bO7Tm0W1lJle2EgqR6OKMTmiABYRZKOVYl8RHifQMTATfDrRc6g/xwFZmihotBLxxqyPorkqQhKimkMJ9MusN/qH442fFw7QSvlKyLsKQyJ3ENl4csPyqIHl/XZhUIlXx3mlioztHDcqkAhyTt6jJY9Iad2P4v1uNHM/J4mduFFWrnox2/AwzoUtk6wJqC6RjvWLuvqT12/iQMrJl+WDKmZMyJkF6XmQR1QSadPB2zj/I+0Lz71Lxq0GZHRpE7yutU81fC4LJ5tGK6FSDOweYmw/HDZGsy5PmTKzXVHyNcha3bV2lLD+3wq4eB1Tiu4rFR0Up4HVirN5oVfYzpb/qGgohqYPSTma/1d5XmrTxZEPnzom9XeQf/Q7y9Y+tyOydWxuuvkwSiwMIUeJEuMFMu6Xs4X2Cg7PbLNfziE6qvxoFLvtaM7tfcASP7JgvL9wVPXl0JVPQE47
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2383C20002
+X-Stat-Signature: obi967s6go7ea769yk696um5465jp6hs
+X-HE-Tag: 1787332232-805549
+X-HE-Meta: U2FsdGVkX1/YKU7ImVLakZgFvCol3u6cRnXjjg/QaGPutKzwZt7IvD+33RyZmP2VMUNt/QLdyLXWH+7FjKdBke0EEUVrMac4z7sq2+XqbvOrt1xhG/vgHz5qlGQ4RofpVwkfNUq8/yfBP+YcG7jHfrJPXgavRkDBc3qJQU0L1G+UAbMw6Ojcl4Lz6sec5xqQ9CZQvfMeWzBQRe0/630H3HokjnQN26rgOIR2tj0PyZs0hoagkCnd2tH6Es21qg5L5bMvd+NIotugIWp9I8eTCB4D/091eQeosjjQJ3h4JkNpmaeyYXRC+gDQ0qHV+BekzMsN70zVpKLmipZ1sqSTyGEeoxznoC/HrXgQLracI3MJ7w9Dmds0773v8dl6cyPCtTIPnhwHmLbks+lfPm6zTnpb/x/Jm3ZNpU3nQ4AOEs01Pqd/MeGjJRI0UQcD76ppGjDukeVn5htpLavZOhzaGEnzSPNnyEVDHZMETSmccKwxF0hmNfz9Men1a0Vne9BHRHgmGk092aEvYspSo+7whk8ds8/nlgGXxOBTbGpCBb/imELk5uTDHTu+83NypTTd0srLMIgtYPZTH65trRJYB2v1yRsDWVNrPmv7RYpMtbI3Nh43sQuLoqEd62bJ/UoDWWtGOHPnwT3DHnpMh6krwVJcmrWndCHxtIQM8aT5kJzVuQWwHwfBrVTzLIvUSSJCHATuo9nMNMbUqaqPaegSbkjqQfZrQyHfeNuJhiSkBYVlf+TLtgoiwXzsh1vzLGittBGQ5sY+wM9/6ABxx7f3ePARRUppd9Gls1/Y7cMLlY1U01kzGyOVwtqaKBd1l5518bqHHc3DR4F5uANsMSwhk+YgJf27FWT0iUj1QoR6RfJIoD5/a3NLnxI42XQdSgD7zPqg1XkNk4299+vnjnqtatgei+dNApj3gb7HuZA/6IirR/DDcAU2mhQPDaJZMSu+XHWfbb0ResF+GddUjok
+ VpsZrcCk
+ FByFrFWxtuCvJriAVdcIRcLSBulauvqU0Xej7Mrkg5w4biLjd1lVezkTH+IefKwwAUyN3FHGlv4IUEDTgjVoCGu49gneSMDMn0PAkS+2vQf1+0GsrVpwkQnNcDa2oz8Y4bfnZ1y9PvVAQUtkphKIvqfeLjOd7Y5Jd+ip3oHQMHUNmqkHK6R8fGpdNowQVZXDFgzCcBi1TZSdSXpsT3AOFl80louppz+cytAdSXZqjh5zpS9TefNEWmGiltMdHig6jwmVO1SxXJ/2/Vd8besqCLtSmoW6RbCcCpBEV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,95 +109,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 19, 2026 at 9:21=E2=80=AFPM Kunwu Chan <kunwu.chan@gmail.com> w=
-rote:
->
-> On Thu,  6 Aug 2026 11:42:45 -0700 Nhat Pham <nphamcs@gmail.com> wrote:
->
-> Hi Nhat,
-> [...]
-> syzbot reported a NULL dereference in the v3 series:
->
->   __vtable_get()
->     vswap_to_phys()
->       swap_entry_backend_has_flag()
->
-> Seems like the underlying issue is introduced by this patch's
-> `virtual_table` lifetime management.
->
-> This patch adds:
->
-> > @@ -70,6 +70,7 @@ struct swap_cluster_info_dynamic {
-> >       struct swap_cluster_info ci;
-> >       unsigned int index;             /* for cluster_index() */
-> >       struct rcu_head rcu;
-> > +     atomic_long_t *virtual_table;   /* Backing pointers for vswap slo=
-ts */
-> >  };
->
-> [...]
->
-> while the read side does:
->
-> > +static inline unsigned long __vtable_get(struct swap_cluster_info_dyna=
-mic *ci_dyn,
-> > +                                      unsigned int off)
-> > +{
-> > +     VM_WARN_ON_ONCE(off >=3D SWAPFILE_CLUSTER);
-> > +     return atomic_long_read(&ci_dyn->virtual_table[off]);
-> > +}
-> > +
->
-> `atomic_long_read()` only makes the access atomic; it does not protect
-> the lifetime of the allocation being accessed.
->
-> [...]
->
-> > +static inline void vswap_cluster_free_vtable(struct swap_cluster_info =
-*ci)
-> > +{
-> > +     struct swap_cluster_info_dynamic *ci_dyn;
-> > +
->
-> and frees it synchronously:
->
-> > +     ci_dyn =3D container_of(ci, struct swap_cluster_info_dynamic, ci)=
-;
-> > +     kfree(ci_dyn->virtual_table);
-> > +     ci_dyn->virtual_table =3D NULL;
-> > +}
-> > +
->
-> The existing `ci->table` already has an RCU-aware lifetime: readers use
-> the corresponding RCU access rules, and the storage is not freed until
-> after the appropriate grace period. `virtual_table` introduced here does
-> not have an equivalent lifetime rule.
->
-> The syzbot crash shows that the current teardown/read-side synchronizatio=
-n
-> is insufficient: `__vtable_get()` can observe a torn-down
-> `virtual_table` and dereference NULL.
->
-> I don't think a NULL check in `__vtable_get()` alone would be the right
-> fix. The NULL dereference is a symptom of the missing lifetime guarantee.
-> `virtual_table` needs to remain valid for as long as a reader can reach
-> and access the corresponding dynamic cluster.
+Please drop this one, and not for the reason you asked about. Your mail
+sent me back to read the code properly, and my commit message has the
+mechanism backwards.
 
-Thanks for taking a look, Kunwu.
+I claimed:
 
-Null-check by itself is not sufficient, correct. But I think a full
-dance of: rcu read section + spin_lock + checking for
-CLUSTER_FLAG_DEAD should suffice. As long as cluster is valid inside
-this rcu read section, we can get the lock. Once we have the lock, no
-one can free the cluster under us. and as long as the
-"CLUSTER_FLAG_DEAD" flag checks out under the lock, we can exit the
-rcu_read_section(), and proceed with reading the vtable. I already
-fixed this in (to-be-sent) v4.
+> Paired with transparent_hugepage=always every anonymous fault
+> becomes eligible, and under memory pressure the faulting thread can
+> stall in compaction.
 
-Note that this is actually only required where we don't have any
-reference pin. One example is the one syzbot detected phys swap device
-backend flag check, because at do_swap_time() we don't actually have
-any reference pins. The PTE is not locked, so swap entry can gets
-released underneath us. But if we have a pin - for e.g if we own the
-swap cache folio, then we don't really need this dance.
+That doesn't happen. In vma_thp_gfp_mask(), the current default:
+
+	/* Only do synchronous compaction if madvised */
+	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, ...))
+		return GFP_TRANSHUGE_LIGHT |
+		       (vma_madvised ? __GFP_DIRECT_RECLAIM : 0);
+
+A non-madvised fault gets GFP_TRANSHUGE_LIGHT with no reclaim flag at all,
+so it fails fast and cannot stall in direct compaction. The stall I
+described is only reachable from a MADV_HUGEPAGE region, and defer+madvise
+keeps __GFP_DIRECT_RECLAIM for exactly those regions:
+
+	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG, ...))
+		return GFP_TRANSHUGE_LIGHT |
+			(vma_madvised ? __GFP_DIRECT_RECLAIM :
+					__GFP_KSWAPD_RECLAIM);
+
+So the patch removes no stall. What it actually changes is the other
+branch: non-madvised faults gain __GFP_KSWAPD_RECLAIM, which they did not
+have. That is strictly more background work, waking kswapd and kcompactd
+on failed THP allocations across every anonymous fault under THP=always.
+The patch does close to the opposite of what it claims, and on a
+fragmented machine it is a plausible regression rather than an
+improvement.
+
+transhuge.rst says the same thing I should have read before writing the
+commit message: madvise "will enter direct reclaim like always but only
+for regions that are have used madvise(MADV_HUGEPAGE)".
+
+Zi Yan, that also answers your question, and you were right to ask it: the
+extra kswapd and kcompactd work you identified is the real effect of the
+patch, not a side cost of it.
+
+One correction to my own patch while I am here. I wrote that the machine
+could not testify: thp_fault_fallback 0 across 60682 faults, compact_stall
+0. That was true when I sent it and is not true now. Same box, THP=always,
+64 GB, after a few hours with a 27B model resident:
+
+	thp_fault_alloc     213690
+	thp_fault_fallback   22145
+	compact_stall         3762
+	compact_fail          1926
+
+So it does reach the fallback path, it just had not yet. I am not offering
+that as evidence for anything: it was collected with defer+madvise already
+in effect, so it says nothing about what madvise would have done, and
+defrag is writable at runtime, so the A/B costs nothing. If I get
+something worth showing, it will be a fresh patch with numbers in it, not
+this one.
+
+Lorenzo, no argument on the patch. It is wrong for the reason above and I
+would rather have found that before sending than after.
+
+On "distros can set as needed", that is the one part I would push back on,
+and it is the same thing David asked. They cannot, other than by writing
+to sysfs after boot. There is no Kconfig symbol for defrag; mm/Kconfig
+offers only the ALWAYS/MADVISE/NEVER enablement axis. There is no boot
+parameter either: setup_transparent_hugepage() sets
+TRANSPARENT_HUGEPAGE_FLAG and TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG only, and
+thp_anon= is a different axis again. Grepping for what sets the DEFRAG
+bits at all outside the initialiser, it is defrag_store() and nothing
+else. So a distro that wants a different defrag default ships a sysfs
+unit, and anything faulting between subsys_initcall(hugepage_init) and
+that unit gets the compiled-in value.
+
+That may well be deliberate and sufficient. If it is not, a boot parameter
+is the cheap fix and I am happy to write it. Either answer is useful to
+me, and I would rather be told it is a non-problem than guess.
+
+Some context, offered as an explanation and not as an excuse. These
+patches come out of running large models locally: I maintain a custom
+kernel tree for my own inference workstation, and the changes in it
+accumulated there first, against a real workload rather than as ideas. I
+have started sending them upstream to put that pile in order and to find
+out which of them are actually correct rather than merely useful to me.
+This one is a fair sample of why that is worth doing, and of why the order
+I did it in was wrong: I posted while still testing, instead of testing
+and then posting. I am slowing the pace down and the rest stays local
+until it has had more than this one got.
+
+Thanks for the review. It caught a real error.
+
+Ferran
 
