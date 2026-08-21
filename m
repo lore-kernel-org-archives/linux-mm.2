@@ -4,70 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9132FC5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 01:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 920F8C5DF81
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 01:45:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A79986B009B; Thu, 20 Aug 2026 21:45:02 -0400 (EDT)
+	id 3C3306B009D; Thu, 20 Aug 2026 21:45:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A51BA6B009D; Thu, 20 Aug 2026 21:45:02 -0400 (EDT)
+	id 374026B009F; Thu, 20 Aug 2026 21:45:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 940826B009F; Thu, 20 Aug 2026 21:45:02 -0400 (EDT)
+	id 263EB6B00A0; Thu, 20 Aug 2026 21:45:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6685A6B009B
-	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 21:45:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D7A7A1D2F
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:45:01 +0000 (UTC)
-X-FDA: 85123583202.08.5C97F1D
-Received: from mta0.migadu.com (out-102.mta0.migadu.com [91.218.175.102])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 66E121C0002
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:44:59 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=up7tUo4Y;
-	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787276699;
-	b=eefken7AtTAuhaHn4h0Lgie+0mQE8M3YBJLo1likiZuHqWoVeuO2f9TbHmO1Ow2OBvN7sL
-	8hp0deWOdV/+Enh3jB/n5K+w1HGmhCIeAq1YzT9PC6B+I7RnVtrV/l8DTqP7gXB/yHlmnH
-	25caQbosf7pPsnpdwho37KZnKxofJIA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=up7tUo4Y;
-	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F26766B009D
+	for <linux-mm@kvack.org>; Thu, 20 Aug 2026 21:45:20 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7ADDB1C1569
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:45:20 +0000 (UTC)
+X-FDA: 85123584000.20.75361F6
+Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7AB4920008
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 01:45:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VgbusWlB;
+	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787276699;
+	s=arc-20220608; t=1787276718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R29iz+PsKrJ4+9WEpi6D/5zazk0+9hCXN6GIjSipsoU=;
-	b=G9WM4lCvCcRX/FkMiLKxRICvL4O+Mte8wo+VXKH6QQ7EScq0cbod6wvLk2+jJ6mmZucDK+
-	xg7lrWsKp8ETaBTnrXLvJQV3HkUIYZXGcLz6mzhBJI0gcoSWxmuryQY42QOe5BtON62baI
-	1PHO2KLHFKyYD5TuQ7MJ4+2C29PYdSs=
+	bh=p2FMWT5A2o6x55cH0jMPh7uwdsrz3NBheTdCLGTG3UI=;
+	b=ZKxZx6BEoPpuwUJoUf6ZH5obPjkHPgYZ5ZrcrtJdzbEZlJj4smaSouR96YlHNi3YJHyHMl
+	GUUttIZZV+YPZQa5e255zrcXsAHddGzNv+NPQlQZvdUiC3qWB5G3ENh4htKJ2bdjLVhm9J
+	W8mxF9fVksl02ibLTyq8mNXfL7c7iLg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787276718;
+	b=ODT20avAdTXb7xcY2Utt/JGVV7TDl/EBaodUXpZLSAOQv0oNvON4VvjC5q8589zm8wjsO/
+	yLkk3DG9khdwGGEj/OLPVug5BiZMu6vowU4CbKI9wa3k67hHgIxzdC8lqVvFhhOzbIDM6O
+	tbdkNvH3l+KpUWJTrLs4BQE4MqGGSPs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VgbusWlB;
+	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=0k5ukuEriWuoe7c2VoM3YZKYW2oeG0da9ih3CxjEuA0=;
+DKIM-Signature: a=rsa-sha256; bh=Gb3gKqWWZhzHZch1lV86VPNeY80SBN6K83Ep6tDE+RI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787276697; v=1; x=1787881497;
- b=up7tUo4YgCUXj7FUDCBGWA8ED+06bcSO1wmDtDvyYyNEBXGdJuzq0CZDbv33vflSZjOMOo5G
- eHsi1nrG8uPh714S50l5Zi9ZEduQ9OW9ddHna1LmwpEoEQkGndfy1GeVAOUkXWoDOrrModW/v6P
- RZ65tVkZ4H26MzNqKUhPO4RQ=
+ t=1787276717; v=1; x=1787881517;
+ b=VgbusWlB0oQShrZFLLvnKOXvI8GbomwedlgegqoQI96mA3dWPqFpmScapGVoSSwZn33O7BLo
+ cZKbZN7YU4wGrkSw5eo+tQX7owDuhg830c1mwdbI07KG/W4+yWWkT2X2z1ncLBG6czW0nCrkdlx
+ I0LBG97FMRIq5Z1wouJNywTQ=
 X-Envelope-To: linux-mm@kvack.org
 Received: from [10.63.107.123] (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id 06a7fe33c891c8f4;
-	Fri, 21 Aug 2026 01:44:57 +0000
-X-Mizu-Trace-ID: 06a7fe33c891c8f4
+	by smtp.migadu.com with ESMTPS id 608958cb15c913ce;
+	Fri, 21 Aug 2026 01:45:17 +0000
+X-Mizu-Trace-ID: 608958cb15c913ce
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <d81c3050-37d7-4448-b1da-cdeb0521665d@linux.dev>
-Date: Fri, 21 Aug 2026 09:44:47 +0800
+Message-ID: <4838e4ff-e982-4347-9972-741e08dd1bd0@linux.dev>
+Date: Fri, 21 Aug 2026 09:45:10 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] mm/mglru: improve scan_folios() exhaustion detection
+Subject: Re: [PATCH 3/3] mm/mglru: retry the same type once if isolation fails
+ due to races
 To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
  linux-mm@kvack.org
 Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
@@ -78,19 +79,19 @@ Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
  stevensd@chromium.org, wangzicheng@honor.com, weixugc@google.com,
  yuanchu@google.com
 References: <20260820045603.68809-1-baohua@kernel.org>
- <20260820045603.68809-3-baohua@kernel.org>
+ <20260820045603.68809-4-baohua@kernel.org>
 From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260820045603.68809-3-baohua@kernel.org>
+In-Reply-To: <20260820045603.68809-4-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 66E121C0002
 X-Rspam-User: 
-X-Stat-Signature: g1w44bcmfxb3xmieqi5izw6t7kmw7mw4
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787276699-698451
-X-HE-Meta: U2FsdGVkX18pGGylAmT3uhn67LVaKZgGqpyDSkERHthwntwhfpas5/R2btRD0FVKEyr2c5zzE1IwmA9qgH2ydU0U8sNi0rIuGuQWiIFjbdOpwvImSajmBjPYrTkwMReHdJ7goIZedlN5vE3YUCxk7dy+7P/+nAvS+WGRXQUEFCI+sxXriGVfGO4y9x0FGhJHX6iIOtrEJdJASVqKX6Xj/GwKmbWbui06c//rMgly86+ahHxtPlgFrC/ptvmUvMWDpObnh8ahLvZi8lOpYR08xrH460THSPnKPEcdmTGqveZ1ucEXuCT/ENnRhKt788ANokyhyH6FJaxK9ACaPvbdiq0qd5gHyaFJov4RXW+uiRQXlZ5fXPDDKD99zGo//swJAPI6q8dMnmPqCDKCbrd2N0VvsoNod5q+/nEW75VgD+cFpTML1yhsB/mp5bpGoV7mJzSDlSRw1tnfYypQ27UpS9T/1lrJrhH45U/5+HeHraXxsiVfJoGvKqTJ775MX3CDbLm94HYq1PzV+duAiGyohw3kzUhYl0ZV9MAPC0FXYjyjWhIPGEziecNHbAIRtJlpEfDPdx2awK+WCwum967i+cgvckyZQ2LlkaCTjdTAguJvnu0L2hCKJvI0AglCYGOoRnkBf94PXcPSm4oZEr/1QwUyT1xlUKgjyAtUbKbEDch6gxpnO5rRBjZ0I8r8gnlfjlt6Lvfj09sUBlNRFVoq7EAkZXYb7ekTHlc3mTFJ1FI5HLZnCxdCWW5ByarQNHVX5tW2iNgOrVhSr7PgqDb9383GY2BTXcLg9vWIHr/6B0y4hOpVjhjQw8jp8sJ69w/gqAAYhB71KkdufaKgY+HjfIvdc8TXIfiJHBPIcgHNV+H2PyRhPStn5JtzkH9ZM2ec4kgL5PCF8/gJcE/3k8WuM0zk0imDRn8YiygM7Q+VShMWP82Jm5ScsRDPwgvzEYFGMakYMET400x4ozSVxzD
- weMFp+Bc
- dFmP+TKQBYOi9QDgdWRaoSmtLiT+/Fc9/Zzn9H3ECcgVJ9+mmKs+OieqCq8XhXA/9OQCzHOodzZxUB3iLtj4cIQJlxFebuu8yC2YdunUk2uwOqWY72dpc6H3WJnY0VEcRV9dGmCoDW3yYFor8K2Gkj/WKod+MVe154yOqoOj2Bt73E0xxZWSpCNuG2DoGf2hsdQM4CNY+gbidZv/avUL9vub431TMMbjmsV0sjw2EMTeUQEs7O8QtYIm28xS5kiXA8wUNnqQMYY7mDjjUZE5CIG8xHxNtfvYnxi2wk2k0VoUbXOdr5EkWPbDHbVskw+INXyx2Yv8q1LxEcHSpzsO0dBCHMZE33xnB6L45GiBB6OmJuoLdnLvg3e+zHBC/V9Yk0Sc9IUT63XP3Rn9YsDOy9k6LJoeLS9PuC/aUHOwBJ48r4VXCtCRF+E8bq39NpBBMmfGpQ0XheGtP2rE=
+X-Stat-Signature: hamhex8bix1b9mxf35yykmjcgdw5hfr1
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7AB4920008
+X-HE-Tag: 1787276718-234768
+X-HE-Meta: U2FsdGVkX1/u6Ai9ym0cwAoZNUfnBZCIZtziQfV0usLRUK05z0K7ktSgg1mOqD9sMJEx66tPZdFotNkjn73/crCqh8CHcL1O1fpDxKsJputSXyMID7RBoL+FAfjjwtGsD5YLI8sfjt/wuNCcbtse0RVWWZdEbLX/kA4BTy+jc6ny5DekfvY9MTqdppq7R2sAs0QaB4UPsEwg2JQyYQ/XX0KIctBXkW/xCeRftmW7hIrGAN2b5I1W6XSWqe2+QNPDQAIKfThL4I+Z1S1MyJ/TInjM8Pw1Y66qJ/NXZWNUqxz5SBQAnIiGl+kSwWjfPy3ajF3M9Qvr6ACBzVCZHLwe0h/CFHwb4uZvqzPBdCfmiJcJWqd3sF6UFQ/hmpZ5oYjkQQ8L9sUNR5t/KN//oQcKdjw8uTbhEbRsBG9P6gkGIPfVI0rdmFKXI85JqkW6L8JuySCAfcU21vq7QudGlmAdnNdhEVBirS5ZIV5LawizeC6IInkgrSGTdlpDyQRE2bHK87T8Kd5hIFoeee9XPW8i+oTYrHMJjM6FnW3RW8ehw94ZSG6q9QmXUVBSQRmlshl4FJmOsFcBoOff7hiilvtawGVzJUPRnBubXJeAqw1ZaAgos54c4ASzzUCgB2/F8Fd6jJRQYG9oUwoTd61hr/uMp3PdCc9axE6sg7UU4eTHgS38wfhIKDfQcl9PAWBEasR3+gNL2r+svgf7Bf767cWElaXgbtk7Fd0jy2HozM34wW8wB0vnD+0rFBVQBeRcUlAVqnuM8S1juzx521XjS0BEER8HwsjiLUkEmCZs8BzG5a1ai89VZpXk4W9ua9OEE0ccKce9ZKyB16b3V/aupk6MNcl3KK37ceO/alUc+ix+ruV+hJhUBCnRx7O+5ciO4JtIiaXsoZaYfekFFCidizR+TDrRCDjsPrjFotohCwdFzvcLivrKL0K4pVRs7wkPkBK0lt4dZViZZAKvmQyCyNG
+ 9hX0BoaU
+ oQF4yu6pqrkeG0D4gmFcC+Jvx+5piux6XgiqDRs69MJGGDd/q2p86GpDtSAIApRL7LAyAiqqLws6eUFP3QbZQ9yms/v4XXxPKVDgGad2ysA/6M8JxuWuLyRJPPu2o2ylB0nxYL1Tlxm6KJwc0w3/d5cHVKwomSfhsBd7gI6Y3l2azObCEp8ypCG9tHgWx6FPqT6Wdey4JRpBcOWUjpfVcTaQeLEButx24jRLW6PuXTt5Gx3i1SuqjWAZgkto/T72tXFYbXaQ2jHy3ugM1NC46DMxTMopG9h8CvUbSIBg2iRo2mayFZ6+OCLW11aYulYgYQEHdBpAx2AgDA4aWfmQMaB/Y/V4PASwFmzQD5nJc/jSPQZWQkPydrVbexQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,123 +102,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 8/20/2026 12:56 PM, Barry Song (Xiaomi) wrote:
-> Commit 16b475d2ac3c ("mm/mglru: avoid reclaim type fall back when
-> isolation makes no progress") uses scanned == 0 to determine
-> whether scan_folios() has exhausted a reclaim type. However,
-> this is not always sufficient. It is possible for scanned > 0,
-> while the oldest reclaimable generation is exhausted after the
-> first scan_folios() call.
-> 
-> We detect early_stop in scan_folios(). If we stop early for any reason,
-> it means the current reclaim type is not exhausted yet. If early_stop is
-> never reached, it means we have exhausted the current oldest generation
-> without hitting any scanning limit.
-> 
-> Another issue is that if the lruvec has 4 generations, we might have
-> exhausted the oldest generation while the second oldest generation is
-> still reclaimable. In that case, this type is not exhausted yet.
-> 
-> Add an exhausted output argument to scan_folios() so it can
-> explicitly report whether the reclaimable lists for the current
-> type have been exhausted.
+> If we are not exhausted (i.e., there are still folios in the
+> reclaimable generations) but fail to isolate any folios due to
+> promotions, protections, or races, retry once more to avoid going
+> through the outer loop again.
 > 
 > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
->   mm/vmscan.c | 28 ++++++++++++++++++++++------
->   1 file changed, 22 insertions(+), 6 deletions(-)
+>   mm/vmscan.c | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
 > 
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index d5cc30b667ad..1f2e574b0061 100644
+> index 1f2e574b0061..1f302386d8ab 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -4721,7 +4721,8 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
->   
->   static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   		       struct scan_control *sc, int type, int tier,
-> -		       struct list_head *list, int *isolatedp)
-> +		       struct list_head *list, int *isolatedp,
-> +		       bool *exhausted)
->   {
->   	int i;
->   	int gen;
-> @@ -4732,12 +4733,15 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   	int skipped = 0;
->   	unsigned long remaining = nr_to_scan;
->   	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-> +	bool early_stop = false;
->   
->   	VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
->   	VM_WARN_ON_ONCE(!list_empty(list));
->   
-> -	if (get_nr_gens(lruvec, type) == MIN_NR_GENS)
-> +	if (get_nr_gens(lruvec, type) == MIN_NR_GENS) {
-> +		*exhausted = true;
->   		return 0;
-> +	}
->   
->   	gen = lru_gen_from_seq(lrugen->min_seq[type]);
->   
-> @@ -4768,8 +4772,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   				skipped_zone += delta;
->   			}
->   
-> -			if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH)
-> +			if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH) {
-> +				early_stop = true;
->   				break;
-> +			}
->   		}
->   
->   		if (skipped_zone) {
-> @@ -4778,8 +4784,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   			skipped += skipped_zone;
->   		}
->   
-> -		if (!remaining || isolated >= MIN_LRU_BATCH)
-> +		if (!remaining || isolated >= MIN_LRU_BATCH) {
-> +			early_stop = true;
->   			break;
-> +		}
->   	}
->   
->   	item = PGSCAN_KSWAPD + reclaimer_offset(sc);
-> @@ -4790,6 +4798,13 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   				scanned, skipped, isolated,
->   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->   
-> +	/*
-> +	 * If we didn't stop early, all reclaimable folios in the current
-> +	 * generation have been scanned. We are exhausted if this is the last
-> +	 * reclaimable generation.
-> +	 */
-> +	*exhausted = !early_stop &&
-> +		     lrugen->min_seq[type] + MIN_NR_GENS == lrugen->max_seq;
->   	*isolatedp = isolated;
->   	return scanned;
->   }
-> @@ -4847,11 +4862,12 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+> @@ -4862,7 +4862,7 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 >   	bool type_fallback_allowed = !is_single_type_reclaim(swappiness);
 >   	int type = get_type_to_scan(lruvec, swappiness);
 >   	int total_scanned = 0, scanned, tier;
-> +	bool exhausted;
+> -	bool exhausted;
+> +	bool exhausted, tried = false;
 >   
 >   retry:
 >   	tier = get_tier_idx(lruvec, type);
->   	scanned = scan_folios(nr_to_scan, lruvec, sc,
-> -			      type, tier, list, isolated);
-> +			      type, tier, list, isolated, &exhausted);
->   
->   	total_scanned += scanned;
->   	if (*isolated) {
-> @@ -4864,7 +4880,7 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   	 * We are running out of the current reclaim type. Fall back to
->   	 * the other type if allowed.
->   	 */
-> -	if (!scanned && type_fallback_allowed) {
-> +	if (exhausted && type_fallback_allowed) {
->   		type = !type;
+> @@ -4885,6 +4885,14 @@ static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
 >   		type_fallback_allowed = false;
 >   		goto retry;
+>   	}
+> +	/*
+> +	 * We are not exhausted, but failed to isolate any folios due to
+> +	 * promotions, protections, or races. Retry once to avoid a larger loop.
+> +	 */
+> +	if (!exhausted && !tried) {
+> +		tried = true;
+> +		goto retry;
+> +	}
+>   
+>   	return total_scanned;
+>   }
 
 LGTM.
 
