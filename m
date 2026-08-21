@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B70E5C5DF8C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:06:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7471C5DF8E
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:06:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A846E6B009F; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
+	id DB99A6B0095; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5CF06B00A1; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
+	id D69576B00A0; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998E26B00A0; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
+	id C7EF36B00A2; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 753F16B0095
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A65276B00A0
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:06:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 11D3D1A03CE
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41DCE1203D4
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:06:40 +0000 (UTC)
-X-FDA: 85124847360.28.42ADC04
+X-FDA: 85124847360.17.42DE59E
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3CFEDC0008
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8554118000A
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:06:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=JpgEkXdv;
-	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=iGManAEd;
+	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1787306798;
@@ -35,43 +35,44 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uSbfStPdbr5U0zykVDsBNKewNVAMS5oNdmlQT4Yzkm4=;
-	b=qHwPGaiV+R3y7Gk4wnt/5JBM/N5pTb+4mKDvMawaggIqrW+fsLE7+HEABcrAln0pM0+p2U
-	CV2touAerizWbwcSgeitBjzIl7+eN6rpJxbbDzxwt8a7/x0fJAeWkp6tPftezD14Lp/RNZ
-	sR0ZadaG+MwRZprjz8TjEYNTnXzbz94=
+	bh=GijpPHV/MlnALkvostyEz/qvgq+mkhNTyT2lnEH+3cc=;
+	b=GE+uD1XLl4q0K+aitB/hzIhyH5FkTVy9SeSTATwcFuzm120HqCQW5UCR2QJqx/q3hmn9qD
+	sGuuoMJZF6NnDexvf9ElCtVCuCGgyoS51uRAObI7Q5PbrrlZcloS4uzPBZdDGj7GzElWCR
+	MhMp8VWyUlWxTI0ve9Fvx1vIz9sw2jk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1787306798;
-	b=5LpvYffBg/AVm3Iw5BUz6Y1HDMQkST+wfUUutsv5zIW4eEzizF0lNwYoXxFYr++rVGXHSj
-	hhm+Bmn1iGCkNbgMTzxGZoYQOI2XIVr7JE7h3j7G3B+hKzFPJIxsoejjXkk5RNl0ZSXUMt
-	Q22TMnATkowyWv6B1zrmc8XesKuvE88=
+	b=ATtDpiBKJTLXONsr1TUAWO3n+Ol0+NIBBKo36ByExkEV/OpBGXWy1GL3/l0PWKZl/+DU+i
+	dswWsp1fMY4GArqCyzRypfSs7x9BKOyxDSnGkgN7y8o0YZ0cz4ZCKIujuCFiD0oRSawbC7
+	HTr2cVRyX/GZvYrZNbWgm3MM9mgz8pE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=JpgEkXdv;
-	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=iGManAEd;
+	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=uSbfStPdbr5U0zykVDsBNKewNVAMS5oNdmlQT4Yzkm4=; b=JpgEkXdvDryDyqfLO0w6yqBV2Y
-	po9ZYmBcuuqI6K+8Bngw5grb44nVueQqJqyMib3N12wBXWSTP3kfjJpViJ/KqsWS10+pKLtQXroux
-	3zs72OdNSfraFY5tvnzRIMOPasTACbKrv7irFHssTWRMwqkrZqxqF0MgtrFDskCuCuzMiWDGyv6n9
-	11trmB9cEpvrFyXbSHx4T5gRUqghgL+4kERDaojynRBBe69+Mh5YZDRTMfp6hEMJx1f42y+Cp4faK
-	Ve9zBMAX0DYXQaEPNx1lahDGe0fDgiLNriggWzRHsW40wDi10ol3DFJsI0eC7vYI9TeACJDS9Xezb
-	OgZtd8zg==;
+	bh=GijpPHV/MlnALkvostyEz/qvgq+mkhNTyT2lnEH+3cc=; b=iGManAEdaf1RslOR2kQtj60Uau
+	2cPekOu/rvVOIMx+a/RdULWoQqOizOXh9q2ResBctGch27Ylb26QCtMYYfgmdE0XpZOAsBFzMamnL
+	6BFmHMrcpmbyp1X293U+Dzi56na2S7mreb8TCnLeDRv7lIvfYUztITa+wd8S28EnULOIjsdp6zCz2
+	ygwkTFKI7KZ1LE+ByVAiwUyKRgo+NDY87YkDiTYcgxtzTT7FUH1OThNQG2yKJFvJORcEbRjnbmn6T
+	jH/d5KqWpDiJzP6Q6SQwrbQbOOIDievRHSFNWQHnRifdGuRIe3jS17kLLO4AF8VTd6MJ3x+TDNTWS
+	DjHeOyLw==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wxM8p-00BGBE-2w;
-	Fri, 21 Aug 2026 10:06:28 +0000
+	id 1wxM8u-00BGBG-16;
+	Fri, 21 Aug 2026 10:06:32 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 21 Aug 2026 03:06:01 -0700
-Subject: [PATCH v2 1/6] efi/libstub: add a helper for the top of usable RAM
+Date: Fri, 21 Aug 2026 03:06:02 -0700
+Subject: [PATCH v2 2/6] efi: add the LINUX_EFI_POISONED_MEMORY
+ configuration table
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260821-hwpoison-kho-v2-1-5743791e48e6@debian.org>
+Message-Id: <20260821-hwpoison-kho-v2-2-5743791e48e6@debian.org>
 References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
 In-Reply-To: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
 To: Ard Biesheuvel <ardb@kernel.org>, 
@@ -84,31 +85,31 @@ Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
  kexec@lists.infradead.org, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3412; i=leitao@debian.org;
- h=from:subject:message-id; bh=zsnCaEJjr4WDYRVIG0kIJ3bs7R9uvNp2xzudAoWoA6U=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqiCMa+W8jcyD0u0SyGOn1kbwZALutc1lA3Zhhy
- qAmTakDK4KJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaogjGgAKCRA1o5Of/Hh3
- bT35D/9SVn4DqMGqAj5kaAZRL6R7KVMcpYT4xdA1bnQ36xXLRr6PlPIy3/U/Avm8oLzAWW8h0/T
- dSpko6t2GqNkpZYSY8IuELnOGbhlzMtTySVLrEXxcH4gCWWYdxgetVxBTgtJj+9bAiLd3dUhji0
- hg7W+VVaskZGhLAenosUqpF3/mwgIO8JWuf55/DrJj9ZY05EBcaU/eWyyZqDvRNX9ENWezAHfYW
- gDXz2Ib7cyRJSknqb1J0FAFM+xUaiV2P0X0wq2+jyk0COyMd5wWOAMGUc764hQXhmEV2MlVr+Qi
- LXWEpp9encGy7VnT7uDYRXg8kWsAK/19ivwcBlYO+tuXOmRb7RiB+OkURRv2nqb7Azd0XmlItJn
- CvbWlmSOoS06/vNZhmzAIFuJ5yf8tZaJEmEkuRa1q7MMcNJtIdA0YDceKm2kt/bbf+hoDgqJz2K
- qNYqHn1BWMoR4VIbM+ZrpSSTAr3OCpuXF2le6KrbP0PHb+SG1MPSGJTPKIr5TMJAUR+/jrX04xV
- 9WUeW4FasYe5O9C/izHkbKCql1JrHv2/q2cUPN4rCwjPhPW9QA6eVgETQ/8hXeAf7V/YxYojrlY
- GkMu0GuBk6f3sfjOtJfAKfXRyVu6l4ljhLKWQ3v54aBtxVD8PKnUSLn91ZD6FH6E6PwfWdVKIYu
- kW1eajB8O7w2lFg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4479; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Z/vnT9K1G8JkfMrXbm/2Q9zXt1siFCixL2PK45FYBZE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqiCMaQOgra0AgIH7Fhhk615ZgT/EKbr1P24x+f
+ vcF/X/ROlaJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaogjGgAKCRA1o5Of/Hh3
+ bbwQD/9xKGVGX5YWvlXXOMyaxbNwxB6OkudoXxGeuMi480JxdrtEbNG9MKwYTTv+hBls5nFsxOs
+ PCOU1GsJSwPEqeByAAOJUv9WCo/izqKh7nERh7ft/ZdZSwd8SroxpkL/5ZQ8U8HRRq7D6leBHUp
+ eK7J1vgRdboT7WVSt4sU8iG9psRa35T4D++40LNwoH9WrlHsw94+tRils2g6fS2DmaRBbitQGDG
+ 0BVBo1RFRhYRxH8Fmjcb6Ll633456uZzbvD5KmUrH1bJRfvJeLHBn7cu345txlsZHRwWj4640bS
+ R47Ayqj5pV/UCuBoUskVSeud8qf2bIr0Q3KWKxc92biz9d4tBTZOZ4O4JvX+r0OQ8qCu1q1bpe7
+ GAf9iuKPhgjSHvozRIKj0k+qvmdowhOOt9gYieCf4WvuYp396iJ6xIOUptwyRURhZg1Ys7w5Yyj
+ TPIwogIuh8fVqZQO6LaBQMcxVGvpkZSaOzw2kMwDFMRV2YXibFj9jUlZzTaGJBkso/dIe5AijRh
+ yciexX3E9NOeG/eY9g3FHxM0vcg4JvyTaNdkxw/GR6S9LvTgDVlolK4TUmkFrbv/JmgJRkntw08
+ 2lznEos9GOe4K1+6lmLvcIlLKXZaGAmxi4tCyMoLhzdbwpne9cjplDV+9h0qLABHoxqIvOvpXu7
+ 5eFmHY2Z6fn+Eaw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 X-Rspam-User: 
-X-Stat-Signature: gux94fqci6rgw1r1816etwri5p1rzmer
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3CFEDC0008
-X-HE-Tag: 1787306798-380234
-X-HE-Meta: U2FsdGVkX1/e8pSmhZBGDQ22h9TUU4UQRA3yXL7o4cgR7JCiUPEA2lsyYx+3BI6nu/0U6JoqNydpoqnW2UW42B05kkTjeRsW9XTcW89yYT7+Qp+td7iwUcWUHu9aodfu2uRXSHuAFJszDYIPejPNZTQz37TsCv4MXmIfCg7YC5+VOI3dpCuUUdRwuRs/W+ZdQkZWIatuxf54L81FYmM3oyNxnNlgvwQumygcqxB384SDO11pUqDipDPs+NZKXryhq/T/vWBOElB8ZhHHh728rLhSQKZgibww/LV1SIRxnWl0bml3skTMmchSMIfsXfj6D45tbUf7J4N/YwuaNy3AYbq6h5yweuTwx2X0+qBiLaMHVlGrXU/D3XJJvlqVESKbUshWvf5APRHEHHQ3/ZFc20GKy0L1hLus1Kx+duf5hSiDP74M//CwQZFzVIrmqz2IuzoWa3fQYxn4rwyrKY1YgfAx0h62rKLM38MUuiupVeF86QikOR8g+/sWKwxLuh2ty7Xt/vDJKCAbSrMGx0rbxW+1ja6svPiV1LEY/N3tlutg7nN4chO+XLSgxO1BSfZrvGFuMoDW1XXlXaZCo41kuBOeccVEJhRhSWtYxxUbYWAK7qHmdqMMhmKWdnmyEY/k3rfPEPu975P/jZgt8lQ9tV9OU+tJX+EbstIYtOrF0gXNjN5J911Pu+yR/WoR6qBeZiycolob9IKFGgFXiJV3EbKyC0J7Q31V5rSa8iVPqqkZqOIdQCpUdVDQOW70UxBkHSDJT4SRDg71qBBPVMsI8FkrZEAoqeHZ4kc1mWk/gqPynSATegw8idsjf9hhpv2CvnBTLUacAbqI2/MVJu+QGh9PHI0Jg1vYLBhsz9+uMGb7wnLlMG7alOZ4kaJuWB/35IxtQJxLe1rZlwdgjWQd5gLps1npqnnWEQk6pxP6VjWhl/jhZl+Z2NlPfruhXD3V3xZS/nZvpc6m0+QqnCS
- 3/6R2LAy
- EGfY4O0uGadU/5w8ONIdszB6PZimm83r1uF5+2LNAgNaM8uRV+MWsHFw8fxHqsB/yC89wgGaR7ve2wL7M7kMkv1nt3vuiHWJYf06Vhlb+or7/GOUTdnFzhktCMTfTHiY66po6vGRYzIfHWqRGLmIErnDiToH9LZeq3uM0ZxilJS9KDFbI5GtifaoxH2xI4JnLye9c+0FZeI1IgyiTjC0N53BH13jh6SdI2qQjizU1fFuXiK68DaBtO4uRU97GopznkGTPfJA1f/7idbIJOy7NJD6fwqj4ViinlsvGO05Htcb//5cCbGud7A76Wc4pbaCHsitS+O0h/jidYnh2VV5zzNO0Gq/A7bulL87Saa4bBU1sgVcdSJIEnPmM+cVr9+LYjgifZ5lf9fuDU81SAYI94nmEBo3Bi+ViNhRg9Bz7AAKUKQ8=
+X-Stat-Signature: qufy93bkfgwxi71repmmimrdyrfoebs7
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8554118000A
+X-HE-Tag: 1787306798-1483
+X-HE-Meta: U2FsdGVkX1/15wqft04YPA0kJB4l9yZQ5Nlmd+q5xozul+0zk3Wk5stmyPNyvqY0Hrt2uQX4i+o09gxcxeFqXUpiFa29/78pU2aqJNnME74P+aXgn6mgdKxcJV1HBysEg/IIBLSnO5WCsVtPmlY8Hwbi2nWtsv6H1Jrc5OrNhjPayAWx1242g5uuPvp1Uq8VTx2hOozz6gyXl43UBxb/JKB/WL2OmhGm+tpUFe/hrGpV+iAjDtS3tr3eOoG8gWjYEyrqX5ArLnDnRPY70mzZwHUVCUsnX7RymbDx89dnsyKe4bm01mkEEcpVoG/Gb4sfsX9sGewr1qlCoOunybpn/ubAb/64L/tTOB+rFt8ZHnRkFjeLpgRCMfxZkLo6CTwLPnVFFNdjZaVOceCm69QFAnqW+0PEpTI3hHjNu32KQUdp21i9FC9c3qRV0HZu4okkih9CsABURyHFYPzSKSGzNizfIlxC/lZ0VaUA47LFpRfq+EtnC8P/H9bkknL1dl4k+AaaUW8qfhzc9ec92xfBZIvdGe5oH1+PiVoWRjsgyx5GJdCGuxwVSrcPiokR8XBTftt/dNYR/pBFGi52KKRQ22xoJJn5JhPdswEEq3KyjQad2QPDeXLjdOAiwBvWzyf20vl0gEyW2NRmWm6/xtiwM+7PTLYmIwHd9yPAAatlyNFgVD7kGR3XwGxy0CSA03jprGpgiDsevEl/WWaupdELDtmCUlPeeic7S3j7ouzIP2QfdE9N17375zv1fPnQ5ssDpLLo0xxm/HZlCqC3s/hyw6oegTbNCGHlNR/u/+YJWOxQzdAjbkOCXoQiJfuTpZXaprCmc9yAhqv+HFRIUjIqe46YcRQGKOtCPyhaHTKtRpBeFDzQ2WppmdpR/cvxOs+g4sbTWR+qYGbfLP4eTZHujnYvfASRrURDKJelwepR5cMINeri08/e1S8EFCvVRMRmTVLGN/qtGof0iufNpEv
+ zKKs5mVb
+ o4fVRWdoK6/MEa2MCWfl1PUsKzp94+CshiHfSxki3iBZfWQT0qmd/eBP9bILRzIJ/5Hq3nkw2IY+JZHwR8ZP0jPjmQFFmC+CpS2++F8OFjNszky5Cjo5aFLlxaN9vmLFYU+kTPke1tX4w16fk+bs/RxYqcoPmRFhvOMrpFt5buTD0uRqXdu79sHub7b/36zzXbTqyVp2BCSjRgD6TsO5lZLxq3lTEMyGxUUAF6m59BO5RdFV9Y1ceI3oFqntbEFzjTnMver72Ns11W48x1KlzzQC0QjZtcTRsUw5ue1KwjYVp8YS5hNyKk5NHedNmKlGd5NLWZs2K/qjE7GSituUJLBbrhYXFUtVgnKyfOHZ+fawdg8zamNsVGOwBVjiRRaVjYrnIgyO9XV2yFpWNLeren64YnyTOArsP3qtIXETVfzeU16Z6soPTZ16M5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,104 +117,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The stub has no way to ask how far RAM reaches, which is useful to
-create a bitmap that covers the whole memory.
+Hardware-poisoned page frames are tracked only in the running kernel's
+data structures, so a kexec loses them and the next kernel doesn't have
+this information, thus, tripping into them again.
 
-max_pfn answers that for the kernel, but it is only set in
-setup_arch(), long after the stub has handed off, so, unfortunately we
-cannot use it here..
+Add an EFI configuration table to carry that information across kexec.
 
-Add efi_get_ram_top(), which returns the highest address reached by the
-entry types that become usable RAM. Unaccepted memory is counted as
-well, as suggested by Kiryl.
+It is a bitmap with one bit per EFI_POISON_UNIT_SIZE (2MiB) of physical
+memory, modeled on the LINUX_EFI_UNACCEPTED_MEMORY table, and it rides
+the EFI system table to every kernel in the chain.
 
-Memory the firmware hot-adds later is *not* in the memory map, so it is
-not covered; that matches max_pfn, which is likewise the top of the
-memory present at boot.
-
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/firmware/efi/libstub/efistub.h |  2 ++
- drivers/firmware/efi/libstub/mem.c     | 53 ++++++++++++++++++++++++++++++++++
- 2 files changed, 55 insertions(+)
+ drivers/firmware/efi/Kconfig | 10 ++++++++++
+ drivers/firmware/efi/efi.c   |  6 ++++++
+ include/linux/efi.h          | 13 +++++++++++++
+ 3 files changed, 29 insertions(+)
 
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index fd91fc15ec810..77ba576779aca 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -1094,6 +1094,8 @@ char *efi_convert_cmdline(efi_loaded_image_t *image);
- efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
- 				bool install_cfg_tbl);
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 29e0729299f5b..69c0dc02bc112 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -263,6 +263,16 @@ config EFI_COCO_SECRET
+ 	  virt/coco/efi_secret module to access the secrets, which in turn
+ 	  allows userspace programs to access the injected secrets.
  
-+efi_status_t efi_get_ram_top(u64 *top);
++config EFI_POISONED_MEMORY
++	bool "Carry hardware-poisoned pages across kexec"
++	depends on EFI_STUB && MEMORY_FAILURE && 64BIT
++	help
++	  Record page frames that are hardware-poisoned while this kernel runs
++	  into an EFI configuration table, and honor that table early on the
++	  next kernel so a kexec does not hand known-bad RAM back out.
 +
- efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
- 				unsigned long max);
++	  If unsure, say N.
++
+ config OVMF_DEBUG_LOG
+ 	bool "Expose OVMF firmware debug log via sysfs"
+ 	depends on EFI
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 0327a39d31fa5..111e60479211a 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -55,6 +55,9 @@ struct efi __read_mostly efi = {
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	.unaccepted		= EFI_INVALID_TABLE_ADDR,
+ #endif
++#ifdef CONFIG_EFI_POISONED_MEMORY
++	.poisoned_memory	= EFI_INVALID_TABLE_ADDR,
++#endif
+ };
+ EXPORT_SYMBOL(efi);
  
-diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
-index 59f3f83de50c2..777f1f180c66e 100644
---- a/drivers/firmware/efi/libstub/mem.c
-+++ b/drivers/firmware/efi/libstub/mem.c
-@@ -64,6 +64,59 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
- 	return EFI_SUCCESS;
- }
+@@ -646,6 +649,9 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	{LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID,	&efi.unaccepted,	"Unaccepted"	},
+ #endif
++#ifdef CONFIG_EFI_POISONED_MEMORY
++	{LINUX_EFI_POISONED_MEMORY_TABLE_GUID,	&efi.poisoned_memory,	"POISON"	},
++#endif
+ #ifdef CONFIG_EFI_GENERIC_STUB
+ 	{LINUX_EFI_PRIMARY_DISPLAY_TABLE_GUID,	&primary_display_table			},
+ #endif
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index b3c83516593d1..ce0980a5bb81b 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -23,6 +23,7 @@
+ #include <linux/pstore.h>
+ #include <linux/range.h>
+ #include <linux/reboot.h>
++#include <linux/sizes.h>
+ #include <linux/uuid.h>
  
-+/**
-+ * efi_get_ram_top() - find the top of usable RAM
-+ * @top:	on return, the end of the highest memory map entry that becomes
-+ *		usable RAM
-+ *
-+ * Walk the UEFI memory map for the entry types that become usable RAM, the set
-+ * setup_e820() maps to E820_TYPE_RAM, and return the highest address any of
-+ * them reaches. Memory a confidential guest has not accepted yet counts as
-+ * well, since it becomes RAM once accepted. This is what the stub has in place
-+ * of max_pfn, which is only set once the kernel proper is up.
-+ *
-+ * Memory the firmware hot-adds later is not described by the memory map and so
-+ * is not accounted for here.
-+ *
-+ * Return:	status code
-+ */
-+efi_status_t efi_get_ram_top(u64 *top)
-+{
-+	struct efi_boot_memmap *map __free(efi_pool) = NULL;
-+	efi_status_t status;
-+	u64 ram_top = 0;
-+	int i, nr_desc;
+ #include <asm/page.h>
+@@ -422,6 +423,7 @@ void efi_native_runtime_setup(void);
+ #define LINUX_EFI_COCO_SECRET_AREA_GUID		EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+ #define LINUX_EFI_BOOT_MEMMAP_GUID		EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
+ #define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID	EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
++#define LINUX_EFI_POISONED_MEMORY_TABLE_GUID	EFI_GUID(0x78a5bf07, 0x7d2a, 0x2889,  0x16, 0x31, 0x63, 0xd4, 0x56, 0xf2, 0x83, 0x50)
+ 
+ #define RISCV_EFI_BOOT_PROTOCOL_GUID		EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+ 
+@@ -650,6 +652,7 @@ extern struct efi {
+ 	unsigned long			mokvar_table;		/* MOK variable config table */
+ 	unsigned long			coco_secret;		/* Confidential computing secret table */
+ 	unsigned long			unaccepted;		/* Unaccepted memory table */
++	unsigned long			poisoned_memory;	/* Hardware-poisoned memory table */
+ 
+ 	efi_get_time_t			*get_time;
+ 	efi_set_time_t			*set_time;
+@@ -1271,6 +1274,16 @@ struct linux_efi_memreserve {
+ #define EFI_MEMRESERVE_COUNT(size) (((size) - sizeof(struct linux_efi_memreserve)) \
+ 	/ sizeof_field(struct linux_efi_memreserve, entry[0]))
+ 
++struct linux_efi_poisoned_memory {
++	u32		version;
++	u32		unit_size;	/* bytes of phys space per bitmap bit */
++	u64		phys_base;	/* phys address covered by bit 0 */
++	u64		size;		/* bitmap size in bytes */
++	unsigned long	bitmap[];
++};
 +
-+	status = efi_get_memory_map(&map, false);
-+	if (status != EFI_SUCCESS)
-+		return status;
++#define EFI_POISON_UNIT_SIZE	SZ_2M
 +
-+	nr_desc = map->map_size / map->desc_size;
-+	for (i = 0; i < nr_desc; i++) {
-+		efi_memory_desc_t *d;
-+
-+		d = efi_memdesc_ptr((unsigned long)map->map, map->desc_size, i);
-+		switch (d->type) {
-+		case EFI_LOADER_CODE:
-+		case EFI_LOADER_DATA:
-+		case EFI_BOOT_SERVICES_CODE:
-+		case EFI_BOOT_SERVICES_DATA:
-+		case EFI_CONVENTIONAL_MEMORY:
-+		case EFI_UNACCEPTED_MEMORY:
-+			ram_top = max(ram_top,
-+				      d->phys_addr + d->num_pages * EFI_PAGE_SIZE);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+	if (!ram_top)
-+		return EFI_NOT_FOUND;
-+
-+	*top = ram_top;
-+	return EFI_SUCCESS;
-+}
-+
- /**
-  * efi_allocate_pages() - Allocate memory pages
-  * @size:	minimum number of bytes to allocate
+ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
+ 
+ /*
 
 -- 
 2.53.0-Meta
