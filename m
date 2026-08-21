@@ -4,78 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CAE4C5DF89
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DCE5C5DF89
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:18:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99B136B0095; Fri, 21 Aug 2026 10:18:31 -0400 (EDT)
+	id 83BB66B009F; Fri, 21 Aug 2026 10:18:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 972726B009B; Fri, 21 Aug 2026 10:18:31 -0400 (EDT)
+	id 812C66B00A0; Fri, 21 Aug 2026 10:18:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 862136B009F; Fri, 21 Aug 2026 10:18:31 -0400 (EDT)
+	id 728B56B00A1; Fri, 21 Aug 2026 10:18:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C75F6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:18:31 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C61DB140150
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:18:30 +0000 (UTC)
-X-FDA: 85125481980.16.C3A1E9B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 12C7740006
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:18:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L7kjw09V;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FBCC6B009F
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:18:41 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D58D81C0141
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:18:40 +0000 (UTC)
+X-FDA: 85125482400.15.C837528
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DE0D920009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:18:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mCrlU9qn;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787321909;
+	s=arc-20220608; t=1787321919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GCzpH+AkCY0aeIXoDOfaDvPOR2Q5CwIwfkAmh6a+U3A=;
-	b=h+zfEnkv8X0YPLsmMquXKEGHXKNfD5z+GLGK5W4y+ffnKwWesTux3/qhRQF7J5hJl0EZOn
-	DXuFNt4+m9PWAINFjrUG+M7F+KZE2BxRO/7G2mmiaOYp9iMC/aWYrrFkBy273CeuI/W/4r
-	27kgSM8AsGHQBSfrKE8Qf9dvwXeBJ1Y=
+	bh=25aRKT2H17E3+b7/M5uXvQXwb5OfRhehW7b7COK86RQ=;
+	b=8RZEHCOqOE61SZzVxIu5xRlG+k3Fccb1HFrFMMLcK8npbKx7+EZ+UbV6t3ARP6C8iaTy8r
+	0SzAgzbOypSrkD6DqYtjgyOImiXGYmlQiSONTi3NHf05wN0JIeSNFwnd+33io+7CqQ1Nht
+	7w5c7VxB9C8mhbI0g2UQ4E+FbnM0Zvg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787321909;
-	b=fCCxtkTl0gOsxgwQFrq8QAn9nXFxyA8IyMeXmMKQyuc5eFGz1eQdO+WOKSCQa96PwNM7dH
-	NQuB77jRXKCjLV16MGrwBVeVabjbdsVt04PMwm8kIh0r/mFEllX0+8FXCHj7DOPGzKkIyG
-	ku6w3/f9HpuXz7MoNS9pqTQT8hiz4Dk=
+	t=1787321919;
+	b=gnakmuMfdj+Ei+9nyWg35csl1CyxAKduc7Kgce3/Cfk2OnQayytM5zywsmVpoJDjKlRjBV
+	ScS2vyc/FE5boFHdJRrhLGFDFWif0NkJG8ZmIuqndAz44AKSOsxD3WYhmVkxKq2CcjOvwD
+	31xWGJ43qJMwSNk85NVeIkSn/nhZ4MQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L7kjw09V;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mCrlU9qn;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6EE856001D;
-	Fri, 21 Aug 2026 14:18:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95F71F000E9;
-	Fri, 21 Aug 2026 14:18:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 007D1413DF;
+	Fri, 21 Aug 2026 14:18:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9141F000E9;
+	Fri, 21 Aug 2026 14:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787321908;
-	bh=GCzpH+AkCY0aeIXoDOfaDvPOR2Q5CwIwfkAmh6a+U3A=;
+	s=k20260515; t=1787321917;
+	bh=25aRKT2H17E3+b7/M5uXvQXwb5OfRhehW7b7COK86RQ=;
 	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=L7kjw09VgZa7fNcZgNUg45LTk4MaCo7uJlNzZyYyGZoptUJTMEMqkd59WinlTzTab
-	 a2rH/NDJUMr8KNppsYDuNXhpQXNkP4gns6May87olh1mnEhRPOPhfqo3IhcgR5j8Nd
-	 k7IU2HBwGcyJXEzXboUYXxOfQM8zkaca1r6DWZugDFxgcrQ67gwDku/tlB88i/sUpI
-	 dHnGyH0TmiLA/Q0uVJZftozjtk62ZbhFOxGSbCHXMYfWEhdLaK3cZMbF4syKc67Bq4
-	 RGoxDkLU60YT9DvWKukOdkwbaqK60n8uSpejwEhJsdTo1AECVidsGwXcz07K5aka5O
-	 qkQ+/iESsp6Xg==
-Message-ID: <06f5eea7-c6e7-49ed-8f45-0c6c86a04c26@kernel.org>
-Date: Fri, 21 Aug 2026 16:18:23 +0200
+	b=mCrlU9qnLmCDoMjoYWy2y0kteLWFvhGmH4vE46dQiE+IlMGWWq8McDNVEzD9elWx3
+	 juv4qEb/MC/XNLRAklmjfLHtMHpTTvfP7oFgME+Rhl27NzU6spRtGwNmfWK4EEyMqT
+	 9t3bYLGlSPN9dEP7JKVf14K131nuy0Q27ZhwLWf09RqEwaiVKjfypqlxLrzG+VZn9V
+	 rO67iYJpwiEMYMyxDQi1csCNK9oWDQzBQMnxI41NR1WVZGTFszMidaaQcA26nTZMBo
+	 6XmAJt7zrmAJTzv9Rogz+Ve8y2GeiqFxsBr2iucOrW+9M6FNqTwvnWC3DRDfNM48FF
+	 BQ9vTfkzJLoqg==
+Message-ID: <cade8707-26e7-4f8b-a056-95094bf8756c@kernel.org>
+Date: Fri, 21 Aug 2026 16:18:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH] mm: thp: default defrag mode to defer+madvise
-To: Ferran Duarri <ferran.duarri@me.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260820190825.221308-1-ferran.duarri@me.com>
+Subject: Re: [RFC PATCH v3 0/4] mm: enable lru cache for smaller large folios
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev,
+ liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
+ mhocko@suse.com, npache@redhat.com, rppt@kernel.org, ryan.roberts@arm.com,
+ surenb@google.com, vbabka@kernel.org, ziy@nvidia.com, hughd@google.com,
+ ackerleytng@google.com, usama.arif@linux.dev, joannelkoong@gmail.com,
+ hannes@cmpxchg.org
+References: <20260818225904.55236-1-baohua@kernel.org>
+ <c8287b5a-8f8b-4110-ad47-996842f01bfe@kernel.org>
+ <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -121,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260820190825.221308-1-ferran.duarri@me.com>
+In-Reply-To: <CAGsJ_4xT-Nga9yCa_QtbmFQ3tm0LJF0doCsV3pJpO0i+2z4yww@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: uyzwn47p9oq6td85si6r97ffhrnuqufb
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 12C7740006
-X-HE-Tag: 1787321908-838124
-X-HE-Meta: U2FsdGVkX19MQyB4Ts61IsAs2ARye8paivPSyE1OStbfZs+nj3JqjZ8lD1QTIXdxHVsaKIUef/TQszEDqxC7jz0tmFeD5YmCOpWF53c1XTjnRqKGnb9Y43ezJ03WkX9dVqbVVnaLG4lbyq+Ol28rnRKGrwev2d43pVTsbW1vvLcrXu/zuO2VdNriQA/aUVO9/slKj5J/CcICM6ulPTaMkDgwnuX8KVZOTp/LdDuB4Frp41p+UcxEvM2FO1vPx7IhU/gyKYbLTVJ/IZEH6u8sEJYH6wzWcHhUrLQNQ39PxYVpDLUixet3r1bUYJ2MMJweOdxJRFl3n0YUjuCjjhHsZKR9LXnmYrzlw12fUoiZdzCpV+F2IinjR6dEj+lyxWqVXg3zemId0+YF6T87lfrxN7goNL3Sk2M/xyxRRirvZmiqn1cnuD/FcICgzJmoc68gAeOJt8KmhFRXAOXPadDoEKieP3yZNdHK2K98epBpXLgEpTDR9s6KHau9f6qJeKx2dvbCB1dVPIHyKh+Rw00Y738zf5QB6zeNCFOAE0tqSjoqpa50QrEBugafkSHiakcHgIqj52X05ZUaECeFMV2VFPpZVVg6BuWNnhYaNtWNAYKSRcCa9HYoP4cVEfT99UKY4o2C/r8M2vMCVbAgXce9j4RphRCM2hHxydV3skB8CrfNRRMdHdaiGVWwvKV+hGM4zAri2DKOlh1ZHYBEnWnO2kN98LYFlwey8abYSE9qyr+mP6hjaY9NpDVBPzaNZDMvBDZHfaeGf5oAaFJNjL0e24K5BxBQcto/xyJdrgRV1wC4zB80BVbUHyixZiCL0ZwxrLjVNF0KYVKV5EpJtMKvXGpWYmpXIymbJWYbqR0vH0UG0I+0cJ/aANXpPhr5LRiEbyZ8JqSJMXcrIcmhwFM+KYPljN5r/+9BvbHqwT4UaYWK9qJ5s8H7u1TZxvQ4KjKgoQXefClI7+N8UCcNJ8I
- HV1N4yAk
- Y5PalsMAKJt7cGIZISXQasmlfe4lNyYV+CdYbz1EbNASWv5p7m4SxGvdJ3tmivuBvktDn0C6lXl0yIN2T8pr90h6RSxpc0v4AU4ty3J9/Kba7QIOb/q5D71mpgwvTTXomikO5UCqik6B8UABUvQsk2KZKv+SWyqBi7n3qVzjh4JhG7qYR9S9rXsVUZVgsfoN7G1uceuEfMDYAz4ipuY95UEaCPdl3wY15CaHHIFFIIcCSiqhVRPEOgw8lk5lpkk6uZoUVpuVsRaDro79624u1+fpcJA==
+X-Stat-Signature: wk9zampa6w58jbhdoro9rpbowqgwjshe
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DE0D920009
+X-HE-Tag: 1787321918-301830
+X-HE-Meta: U2FsdGVkX1+uypnym62Ws5hHO6z6sVgM1JcsubatOhPi8uTkDlDb2VTsaooNpSFAxb7WfoXMu+oQ64vLT9zRt0LN5ytT4R3l0/r894SAUtq8w69SJxOXI0Aifqk35DJ3iReUE2abw47BuFuIaO2qtr7egnbf6xoTpsuyti1chK1uvf06CqgQbONmsz16YRIoxkMl2foVYqQtd/6B8E0DPvBU3eveEwhl/yOv9QU2npel6499hkyPHmAtR/Xbyly7634LOxtJgaSMJlrtoC795Wo5Bqtq1ocV2yddeVCobZiO01WKZSI+sEohMwMf28eg3sFEIcuP9Cne0YjSSLd0aBLh52tYzwJjs5SyhoHY9rsZZtfOdAMsrLdQR/meYruj5fCQaPp3qp/MXsoYak0irbbBP15tnS7riqGhMI+qWDPgCRIh+kbrxjLoMF69hmleNWjxdsaKP1nyHJlry6Zminr+GvolR4qpIOmRF2HjPxG+A35CQgy15WmBY+e5cIk5o40A3w0OUmratdS6GxczOY/8/+71V0gJ2nhekvV336u7SJbU5cfZJPRhknyNoCXsSFn8V3mWPdfKZyyzEwGt/8etRmQvUFkeh9Q4MWCwgtrYH08z77o1JG65KZ6K42iC2ECEXWzt+dvMXqQ4Nk5rcSTmmSraaLxbZmccHs/pb9SHOoJGiE5ws46PAWzOM8LJbVTxL0jiCN1C9qwkE/iZ8aMRrnCZg13ULTvccCXKun2e9A1YyYVv2Js1CPOF+2m2Fbvb/Atr2e+0Srj8tsyKpFBMCo4nCM6sCpQyjAWnnknYmQdU5a3ZVyBNnugTDX5+7nuHBz+9/g1xXwYqCHIgSbinIwFBGfNfcx32ojl6FMiSyCcmaZwsyAxcyLd9hZI74DN8bidwR8kKtw9ZT2wy9owalServDMRpuzk3pwPuqA0+0qLcjVosJs1rNhaFHrWOkpf0eGefN6eHMT+Y6W
+ oNIoT5zQ
+ nw5SzPnHEl5eSxbnO51c4IOludj0NTO3prV7fV20Qf5wivASh4MjmKQ2nTZzeJH36GxpRpQJ7TxTjZ+ADMm1ELQtmadCZoQleT9pj/ZXGMufUE1Z3itikFk9i1eujpewedHEpJRD+HcQwwXzwue0egoOLeogLE6lO1h+1jioj58W7kGqmCDnTJcud5O6pQgOKAvhq2jnfhNtb/zMHGoPEbb/pL+DVbiGQoppmKjXfjyLdMGgOCHrG/nj2xEKJ1Dh8oRb22Ovkcnk+5m0j560KB6vI7xdUeW8im65FRbuzwUPEpD1gwgwL7rOAPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,65 +144,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/20/26 21:08, Ferran Duarri wrote:
-> transparent_hugepage_flags unconditionally sets
-> TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, so the built-in defrag mode
-> is always "madvise" regardless of which of CONFIG_TRANSPARENT_HUGEPAGE_
-> ALWAYS or _MADVISE was selected. Those Kconfig options choose whether
-> THP is applied by default; they do not express a preference about how
-> hard the allocator should work to produce a huge page, yet the defrag
-> default is pinned as if they did.
+On 8/20/26 22:18, Barry Song wrote:
+> On Fri, Aug 21, 2026 at 2:23 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 8/19/26 00:59, Barry Song (Xiaomi) wrote:
+>>> This patchset enables the per-CPU LRU cache for large folios with fewer
+>>> than `FOLIO_BATCH_SIZE` (31) pages. It also limits each per-CPU LRU cache
+>>> to at most `FOLIO_BATCH_SIZE` pages to avoid negatively affecting
+>>> accounting and memory reclamation pressure.
+>>>
+>>> This is particularly beneficial on systems that use relatively small
+>>> large folios. For larger folios, the benefit is likely to be smaller
+>>> because far fewer folios are expected to contend for the LRU cache.
+>>
+>> As raised, there is this problem with collect_longterm_unpinnable_folios()
+>>
+>> (see
+>> https://lore.kernel.org/r/20260806-lru_cache_drain_for_folio-v1-1-c6287d295e99@kernel.org
+>> )
+>>
+>> whereby we don't know how many refs we actually hold. Certainly not 1.
+>>
+>> We might have to wait for Hugh's cleanup to handle that cleanly (and avoid all
+>> the other LRU cache draining).
 > 
-> In "madvise" mode a fault on a MADV_HUGEPAGE region performs direct
-> compaction in the fault path. Paired with transparent_hugepage=madvise
-> that is a bounded cost, since only regions that asked for it are
-> affected. Paired with transparent_hugepage=always every anonymous fault
-> becomes eligible, and under memory pressure the faulting thread can
-> stall in compaction.
-> 
-> "defer+madvise" keeps the same set of regions eligible for huge pages
-> and the same allocation attempt, but on failure it wakes kswapd and
-> khugepaged to compact in the background instead of doing it inline. The
-> fault proceeds with small pages and the region is collapsed later. This
-> is the configuration long recommended to users running THP=always with
-> large anonymous working sets, and it is a strictly weaker stall
-> guarantee to make the default.
-> 
-> This changes only the compiled-in default;
-> /sys/kernel/mm/transparent_hugepage/defrag continues to accept every
-> existing mode, including the current "madvise" behaviour.
-> 
-> No stall measurement is offered with this patch. On the machine that
-> prompted it the fault path never reaches direct compaction at all:
-> thp_fault_alloc is 60682 against thp_fault_fallback 0, and compact_stall
-> is 0, because memory has stayed abundant enough that no huge-page
-> allocation has had to fall back. That makes the box unable to testify
-> either way, and a number gathered under those conditions would measure
-> nothing. The argument above is a correctness one about which knob the
-> Kconfig choice is entitled to set, and it should be judged on that.
-> 
-> Signed-off-by: Ferran Duarri <ferran.duarri@me.com>
-> ---
->  mm/huge_memory.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index b118bcd392cb..749f669cca56 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -63,7 +63,7 @@ unsigned long transparent_hugepage_flags __read_mostly =
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE_MADVISE
->  	(1<<TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG)|
->  #endif
-> -	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG)|
-> +	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG)|
->  	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
->  	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
->  
+> Hi David,
+> Thanks for raising this.
+> Yes, I saw your comment and took a closer look at it. I think the
+> best approach for now is to leave that part untouched until Hugh's
+> patch lands? 
 
-Why are such defaults not better changed in the distributions or by the users in
-their boot system config? Why is there a need for us to change the default in
-the kernel?
+I think we should not consider your patch set until Hugh either resolved it or
+we have a better way to handle draining. Building on top of this for large
+folios now just gets painful.
+
+> We might end up doing some extra draining in that case,
+> but that's safe—any value greater than 1 might not be. 
+
+We'll unconditionally drain all LRU caches, which is precisely *not* what we
+want to do in the first place. :)
 
 -- 
 Cheers,
