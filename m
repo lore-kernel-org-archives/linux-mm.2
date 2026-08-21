@@ -4,128 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A02CAC5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:45:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD2A8C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71F786B0095; Fri, 21 Aug 2026 07:45:30 -0400 (EDT)
+	id B66536B009B; Fri, 21 Aug 2026 07:46:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D0226B009B; Fri, 21 Aug 2026 07:45:30 -0400 (EDT)
+	id B3DF16B009D; Fri, 21 Aug 2026 07:46:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 597726B009D; Fri, 21 Aug 2026 07:45:30 -0400 (EDT)
+	id A543F6B009F; Fri, 21 Aug 2026 07:46:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29F2D6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:45:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B722A30D7
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:45:28 +0000 (UTC)
-X-FDA: 85125096336.05.AA3AD0C
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3EA2A40010
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:45:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=K+1B+X5f;
-	spf=pass (imf27.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D71C6B009B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:46:05 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 032771C17E2
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:46:04 +0000 (UTC)
+X-FDA: 85125097890.20.EEC204E
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.168])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DDF61C000A
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:46:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=FT6wv1JU;
+	spf=pass (imf10.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.168 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
+	dmarc=pass (policy=reject) header.from=xs4all.nl
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787312726;
-	b=Kw7yfUcG+E7H7UIr7sHcV92RjIWiv4lvz/+ck2//EmREeIDVysmzgwmKEP7aO83qkE5tcS
-	7+g2SucevX1Qmg1hGyifMPUfZ8TUtD9Z0OIpX1e5k28cVdko1rcLCED1fh0mHaFlSvTt+L
-	AnYwcLIC+Kn+PsoHbZOvU9RXEz3otN4=
+	t=1787312763;
+	b=jiHEfPDEvTU2kNPYC0SE88PWIRxDsMOlmJvh3sfzEn3oShycu02s7xe//foTcas9LZM9Sf
+	Y4gf33zeyaljBWN562slXVaQfphkMuD6cVu3/WoN/v2TLruZ7x4DvGfoP6d2e7oC3N0Fy8
+	dz7JKfAzv+JpNZwPoJYsOyRfOxE0FJU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=K+1B+X5f;
-	spf=pass (imf27.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=FT6wv1JU;
+	spf=pass (imf10.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.168 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl;
+	dmarc=pass (policy=reject) header.from=xs4all.nl
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787312726;
+	s=arc-20220608; t=1787312763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JSy4cnyR4S+sHUGi7h02BTfopN89+3p/alRrTWBOPrA=;
-	b=E8g5TUqpUf8EmOiZwyTucabgsX0d6MPXzk+63c65+VEy0+5aNaT6PbtSY1M8EZlS38Zklg
-	r3hvZUORKUpNeyZfaOOp+oF4gRZVp1doK4hrCvrkWclRi9XEH1MsO+sK/Qrf44Xvpw7b0D
-	lzpCYSilIvSGVm2SOIloZRVoHrWKfL0=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cab973140bso11572665ad.3
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:45:26 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yFPmgGHt8SfwvN/uEXqWH/wUz0hJJxpKPqJOuk3pBBM=;
+	b=dMmIVnOPSANYFQwMp7fe2ZY1CA1nF8jxvDGZ4KT3ga4tTO8SoW1V5KhLQDy3SO32FHsQM6
+	x62izKQJ4Mm3Ni5oBb0xddsCLG1EvrfRX9v08iz+PcOL1/JyHlYPstAoxMAu7ybzI5Ig9f
+	adjR/VmcXEMAAEbEjW3Lz9gsAY8Ul4Y=
+X-KPN-MessageId: e0887a5e-9d55-11f1-861c-005056aba152
+Received: from smtp.kpnmail.nl (unknown [10.31.155.38])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id e0887a5e-9d55-11f1-861c-005056aba152;
+	Fri, 21 Aug 2026 13:45:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787312725; x=1787917525; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JSy4cnyR4S+sHUGi7h02BTfopN89+3p/alRrTWBOPrA=;
-        b=K+1B+X5f3P5UPp4t739asUPLHNb9fe29eYSJlueP43AkL3J+HI6OOwbRE3HZ8L/UYv
-         QQ4vwdv7/le3HZuJ9PHG/8j8y73t7ynf1/I3049zYL0K29xvo7VL7BxqAQCRlEjP62M0
-         C7ebulfLZzcjXmqmFIlRafeqdSHuNQW8ZAcYj1BUG9omigTz07suqram1LeEeFh5xCdO
-         vdaRKsMmVw0nNILO+6yZu0QVFL2ZpPmhCeK36z7+bQ8RoxCvMa1n9jzbYycepg+0uWYW
-         3ZNgROf2NRywRiM0sdxR7Nhv7UOB6W9MOFsj74oBzyYSwpQS4lEuex/OPNy4jirSKHsX
-         iwKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787312725; x=1787917525;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JSy4cnyR4S+sHUGi7h02BTfopN89+3p/alRrTWBOPrA=;
-        b=mR5nhTKvqtImGcl4cQTZb/rxihnLWPy4eRM9gQ3yf3Dn95kbgCvhGmcqXVEkR04wz2
-         dYoK4HD/Jkhc5PGQfhe3I5GdEU/rZAx5MlKJ8/p10qRcC9X7u1wNGm44K+q3zOXTX1Ei
-         eBqFmyW5CooSUQkLm0i9ZBv43UJ2WlRb5ych7v9PYA3DA0eNwz4ElqZQdChhRYBnwnDC
-         w/r9hq7PAUgaqoYAm/QyUN0zFpGL9bwOwb9MyHYysC5wlLXixGOghXNfSAGrGTrb+taL
-         zKvioz/Oet8JlZoT/gIugVuudonozAWd2bzD/GyE2eGrnggb1zx2NxSls6Mt3WJmuBd0
-         +67g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1BzbeVJJOwP7CvZ7px1Wv8O1Kr8hyDggtVrNdMsv9BmpX+tLhW4nXINBPOZyPNLC/NckAb0pudA==@kvack.org
-X-Gm-Message-State: AFuF++mkW4D5qzGIKM1lnytzZcdNyOYfyfLCpIm/WYwUDwlWKu41P1lJ
-	ExqY897K+ArsohGh4nAwCvdwEgCxvf/g27xps4vwM4jtS3qh8Db0HAIV
-X-Gm-Gg: AR+sD12ZGOXLhoOHfTUj5RQLKhaYcUJUXNGBF9xRNCRmxoUQfUVZd/dRVI3/JOebH9K
-	u/GvMacs9wbzevZLy3hI4jOZ5+oOigxtJcF1jdlV9SC4FjV/Nszsd18dQybM7vtxrllbVaBkUJN
-	LwZx34BcJgV2D7mHXNla8wyvWKNnAO33z5uTDoQZQkM3zm9FzkZMoB70YLNJ5OuYegfQZUbYM+T
-	rC5WSMW9vXd0jSEAywIWDRJ6FaEOxMcKxHjBXtrjT0sA/ywgyZqWPqeUYrZqq2RAQU3OU5XBfB0
-	QiR4Ex6OrbH+xFXTSPNICILCnRRVCsCKNlTqgUKdjEhwhASrsXOFuRxL43MkCwbkvbeNCH29YPI
-	mwxzK2hbsuP1yblntB2YZmYG2c5rftKWO5HtVqJ6+BOawVC65eyYABS0vOIEPq2n9tYVROaFIRt
-	2kXexj5NCZnmAeSKflVUgS3fn1L1X4ZZzHr04cJ3uX9ak35s3aObiC7qcE5tr4pRgo37vPNSEZO
-	1UCJ4CzrvdgAm+/2uKwkNrZ8ts=
-X-Received: by 2002:a17:902:fdb0:b0:2cc:6018:f030 with SMTP id d9443c01a7336-2d64b0b5652mr124872615ad.14.1787312724901;
-        Fri, 21 Aug 2026 04:45:24 -0700 (PDT)
-Received: from Anshuman ([103.161.223.14])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327c946293dsm20771743eec.22.2026.08.21.04.45.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 04:45:24 -0700 (PDT)
-From: Anshuman <anshumantewari123@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman <anshumantewari123@gmail.com>
-Subject: [PATCH] selftests/mm: check strdup() and fix buf leak in parse_test_type()
-Date: Fri, 21 Aug 2026 17:14:16 +0530
-Message-ID: <20260821114416.12255-1-anshumantewari123@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	d=xs4all.nl; s=xs4all01;
+	h=content-type:mime-version:message-id:subject:to:from:date;
+	bh=yFPmgGHt8SfwvN/uEXqWH/wUz0hJJxpKPqJOuk3pBBM=;
+	b=FT6wv1JU6jQOf5bV++m8gzkkrFKXwb19IJ2LLFJJBSkHg6fo6QZPr/atwQOA2U3Gc/JRbyEPgBFmx
+	 v+3vDDX3os3EBiCVrm5SvSDk6GHqU3UP2n+l0PnF/fPzssVg+pJ4b2UmAawi5AIgKAJl6bbsTrRyw8
+	 Q9Vz8iPOzJBx8or66RWB/inyQtAzthl2KS85B740TQ3QOlB1AmjKWuMSJ5pra1vhuskR3uYLaja+0Y
+	 kkEQzwTToLiECc4CC0Ut35dRnZgnp1of+SowzEf+Eum6ToNdkDYGA5fv6Fig+k6A2WdvHoWS0i8A4w
+	 flrh9eH4qCCvVallyLooNYQEQsrzE5Q==
+X-KPN-MID: 33|ilEge/h7m+/Q9upzrozFqztLXqy78Hd2ih5BIJCdjBaiAYzReanRBYnKVtch47B
+ ejkS4yT9QE1WkDtKF6cBKjcv46OaiHcYjCL2addabmSU=
+X-KPN-VerifiedSender: Yes
+X-CMASSUN: 33|Q0wP+J6rG6V1Xcmg6XTyqcjJZlrLvJ4+shaI9oPmFiccw69ASds7LUtEE1TGXUm
+ yAxT+hnTa5XNQO/cyMcmLHA==
+X-Originating-IP: 85.144.169.142
+Received: from localhost (142-169-144-85.ftth.glasoperator.nl [85.144.169.142])
+	by smtp.xs4all.nl (Halon) with ESMTPSA
+	id e061f711-9d55-11f1-bd1e-005056abf0db;
+	Fri, 21 Aug 2026 13:45:58 +0200 (CEST)
+Date: Fri, 21 Aug 2026 13:45:59 +0200
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: kees@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	jack@suse.cz, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] binfmt_elf_fdpic: reject PT_LOAD with filesz larger than
+ memsz
+Message-ID: <aog5Kx6HB3jxb8cJ@lt-jori.localdomain>
+References: <20260820222824.3165092-3-Jeremy.Jean@oss.cyber.gouv.fr>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3EA2A40010
+In-Reply-To: <20260820222824.3165092-3-Jeremy.Jean@oss.cyber.gouv.fr>
 X-Rspam-User: 
-X-Stat-Signature: mcupmyzz57stkm7mgtz5ewbw3mkjq61m
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787312726-2970
-X-HE-Meta: U2FsdGVkX18TMqk0Io+VTp9wOQMcvASOuI2NfwTpdwdHp+HIhuiLOdtBolnih+D7/Vjy6crC9DNWeRN3lDaqnZ4zyxa7Iz0t9SqMiqMYF4kfPZFiyxvK8oRPCSQYMviymggxJdjE79CJ5Z8ZBr1LMQQdxK2fQ9gr6DUfSE7pI5yk+AYrbQql5pA3rfGVnRpamNg2gIzAzug1S3eXLDF5Wi+Hcq9noQUn1dH0Im0NlP/p1kJGV796zgTL2qS4zk3ouR/rx2s+yNlkjtpXXIGMipG5hH8XULCHQ7XTOw0hdg2Z2AxpXncZr3yas7zFUd1X0ohm/E9XlxARnPucGF8ponT7x8pVJ6+/cLA9TVKlabKvQ8Szvh3YYoqdMdrmH2ay8cegzGn/fnyY2nIC6JCJCXklXQ0XSiJsRGwkmb5Ppg2pseRz9qxKxRHBW+kb6gleHtZl6yn80+4TxC0W9b42zOgpZBPkteOqKVv0Z7/E/SEqowMDqp1HbFLrg/w1qfd6rWy7yM6s15XlbUNqgfh2IN+n7/GqCBs1YJIUrSvAECsqW/C16qp6PuVMTr4F/2hn+q3Sl803+ynHNpXuZkkWNjr8vQLQ1fDwrlte0MXFKPlYGcXxEHQTrRovsLKMenBzapqOC+0v14s3nfaD6DCSocZVcf7Uo3V2VlOHu28jKQYzv7F345VMZj8yV98knVGYJlhj0F8gX+B8s3PdGjlgQTHdnLgG3+Yb3cOCiNDY5F4Gt4Aqdl5m+4q4JFyKuU464h1Jf8o4SRqihBMf1bcQPczlSakHXtLCo1bFgABeuh1WHdu5HUt57qezLwAoEomdlPRxpK9OFPC1SIwM8ChxF80zzJCtfp9jc0Fta5l8t5asqBev2UYBkwfqI0flk553YynMLYt1ogHpoBugLaM637O47inGdxu/l5+Gb/xsNFS1u347LqD88bIOmv1/lxcu+Z1czeLJU5M2w3uOTgK
- vqy9CqxQ
- y9FJFmX/JypSeUNaGjOi/4VzibAT2mpqrCHSPMDUJZl0wJ/smSR7vSD1qk5xiy0taEOfg/QwOpldbhFC0ANvq4dmJcJy9XN9/lmzJaWjcM7828LROrU2H4N3gKNYAHfeswYEWYBU1FrlBp1mB0v6XQH91Y4KisW+tkMeGcwPrhvnl9Vap4z9dnwkCksg2ipxKjP6i/zzy6liQIuUiHE4EyvXm02HDgEaVGNlcRCilncs8e8aZNAeYVMMAELmwSyAtlA+1hBxOl9Zs03ZkmI9P++uUMMe3sjyaaHYNXWcEB0aO6qTQ+LxQwm9PdPa6la0gZP5NnyrpIqwJNogNcRefpUW2JSCPcij/P3K9WntgbeD/9uSZ9q0y0aDgf/b1rgPAoE9bOuxzkg0iawaocj6mY1xj/kUQ/aYK7t7PwK+IaDK2Qcedb256fSsRpRfsoiMG0EgCKBOPbhXObnFtWkC3JpxdjxO5YeVD8BiiZqanycqhsP8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DDF61C000A
+X-Stat-Signature: ui4u4mudmfogkn9m1neccdcm8npmjuud
+X-HE-Tag: 1787312762-86382
+X-HE-Meta: U2FsdGVkX19ST0tm6zL4+Ej4GQ2aOhBxH4YVu3tuajVPb6cg2TbZ91LGOUMlDv/SUGI7PBdwwzbctQgcYVdxmC42QlkJj5060OSXcZES7RdJJUCwao9YQ95j9wVBKqNSFWQ1oFI46UJlDJjcy54q20W2XdptDRJogQMTu0RtToGCTHYISVOv7Qwr9WQI843zE/E/gBHVlaiPgPVf0bt1bx2PoNraHydtBsKV5JUjsDpBH1I1UJKAkYS+26VZduk42O/c2cQEJokXumojLaVLM0CGOgn7796ulpr/eNnDc76s1T8F+UC+No0zhuDS8KoiFlKT7f9WRSQwT3tFpmd1k6IEEG6PRw3LXS9/sGu0r5W8S8ZYZ0VIp7ADXgpS54JfgpYp5nMV7Ik6NXo7y4EwKtYxSZqg44p/gEniToub6HQwqQIJigYyLxEzjh2R7RWZcK1zYdWZ+VOdWKxSbTCPx20ESmwC6zVaCgSiQc9f5i0T7C8UgkQMFgYVCZz9oEjumSUjWcRuwN+/t73L2n12bTBeDSQYjHKAOKJ4uTwOOHMxoMYvEFMHWnhXMxp9tKlw8mcynG2CddAjKZS4QmVIHL8v316m4AdfCzRrdvWh2aIAIsD3Z3P2M3JQ+rqxUOz5mKMcQngDZAZ5XI5pQl+KQJB4vdt/ie0JBhDa4aM4DCsZ8RWUCpkYWP/2s0JNdQfPV2GNh09dQ0ATn65umP9PIVuHwPNPec5OO9iShxk71inxu7l0EeIYoT6Pxf17uThL2OopHBjn4XSyPJBiL3187RhKlYVBFT0Br/LhNyAoBeDHtB50gGW4QGUOe47SpGLedAMCPvsWRxFFGLmXBmUcX3lp2uNwzB42BcP9INkBN5OUuogqrFLSEPnK44JL59mjE3ZwIHUW3QiycLJzbuR72FGLozSxKciO/WI7N92wKOKZqpgAivPDzHcIxFvvUfUgLCPIN3OA0v2cx8gYW7d
+ 2HbJ8bRp
+ h3KK2sQncxsI1NLVvZ+GSG9auexFY4IS9wCAPASM+bMBoBoKnkOWSx3xr167/e5uTBhtaPa72lf8/9HQkTph+7pih9yaacI0/kIKOttq+RUjM3a6dcuabfyQBLFuz29TsXJ6m3Xio7S8PJVCHnKC2KBrfHlyItOE5YGC9wS9ebQIn+NBsN7zysEwZKttIaAOlUdefVw/YT59xVAfjcrxEgFN5g9h7HSmy02tBC4e/bbIEY5sK5obVt5BZVwqpHsSKLWmC1bFHBGOXrGwqWQckLI++A/3cLRDXqxtZr7AWz3U9BHX1IF+qoYVTGhKxIheVK48vzotxIqeUKFXyrjcQGQbF6mZTkUYyQVjSc04zje04yXbTfH+/A1jpSPDKeMEIz7/QmtIRNXpcEgH1T4UMgD8aCmvxbOYJzxKyVnENkM7WrY5EA4Dx4jpPeQ8zZ8UBZtscvYPLCATjaPOzSK0h/zhtRiOb/nAYw79y9ROUa6D1p5gKOSuO1/mc7a1u67fIFtGpJ2e9XJOo0JJSmlTrh7R7TELBL48jGe4za9zpLT1M//LgvKi7uhTuHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,84 +103,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The return value of strdup() is never checked before being passed to
-strsep() and strcmp(). If strdup() fails and returns NULL, strsep()
-returns NULL as well, and the subsequent strcmp(NULL, "all") is
-undefined behavior, likely causing a crash.
+On Thu, Aug 20, 2026 at 10:28:26PM +0000, Jérémy Jean wrote:
+> The ELF specification requires p_filesz to be no larger than p_memsz for
+> PT_LOAD segments.
+> 
+> elf_fdpic_map_file_constdisp_on_uclinux() sizes its contiguous allocation
+> from p_memsz, then read_code() copies p_filesz bytes into it. A malformed
+> segment can therefore copy file contents past the allocation on NOMMU
+> systems. The direct-mmap path also subtracts p_filesz from p_memsz without
+> first validating the relationship.
+> 
+> Validate every PT_LOAD immediately after fetching the program headers.
+> This covers both executable and interpreter headers before
+> begin_new_exec() makes execution irreversible.
+> 
+> On RV32 NOMMU, an ET_DYN with an 8192-byte p_filesz and 4096-byte p_memsz
+> copied a marker from the second file page past its one-page mapping.
+> After this change execve() rejects it with -EINVAL, while an 8192/8192
+> control still executes.
+> 
+> The flaw dates back to the driver's introduction in the pre-git history
+> tree introduced in v2.6.11 by 91808d6ebe39 ("[PATCH] FRV: Add FDPIC ELF
+> binary format driver").
 
-Additionally, buf is never freed. strsep() advances the buf pointer
-past the first token, so by the time buf would normally be freed,
-the original pointer returned by strdup() has already been
-overwritten and is no longer available.
+I came across this about a month ago. But I wonder if this is even worth
+fixing. You are on a non-MMU system, so running a malicious ELF kinda
+means gameover anyhow, doesn't it?
 
-Check strdup()'s return value and fail cleanly on allocation failure.
-Keep a separate pointer to the original allocation so it can be
-freed once buf is done being used, after all parsing has completed
-successfully.
+> 
+> Assisted-by: Codex:gpt-5
 
-Signed-off-by: Anshuman <anshumantewari123@gmail.com>
----
- tools/testing/selftests/mm/khugepaged.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+You are allowed to use LLM assistance, but the commit message also reads
+like AI, so I am a bit worried whether you actually understand the
+change you are proposing. Afaik, this is still required.
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 10e8dedcb..a84fb87bd 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -1110,6 +1110,7 @@ static void parse_test_type(int argc, char **argv)
- {
- 	int opt;
- 	char *buf;
-+	char *c;
- 	const char *token;
- 
- 	while ((opt = getopt(argc, argv, "s:h")) != -1) {
-@@ -1135,7 +1136,10 @@ static void parse_test_type(int argc, char **argv)
- 	}
- 
- 	buf = strdup(argv[0]);
--	token = strsep(&buf, ":");
-+	if (!buf)
-+		ksft_exit_fail_msg("Insufficient memory\n");
-+	c = buf;
-+	token = strsep(&c, ":");
- 
- 	if (!strcmp(token, "all")) {
- 		khugepaged_context =  &__khugepaged_context;
-@@ -1148,26 +1152,27 @@ static void parse_test_type(int argc, char **argv)
- 		usage();
- 	}
- 
--	if (!buf)
-+	if (!c)
- 		usage();
- 
--	if (!strcmp(buf, "all")) {
-+	if (!strcmp(c, "all")) {
- 		read_only_file_ops =  &__read_only_file_ops;
- 		read_write_file_read_ops =  &__read_write_file_read_ops;
- 		read_write_file_write_ops =  &__read_write_file_write_ops;
- 		anon_ops = &__anon_ops;
- 		shmem_ops = &__shmem_ops;
--	} else if (!strcmp(buf, "anon")) {
-+	} else if (!strcmp(c, "anon")) {
- 		anon_ops = &__anon_ops;
--	} else if (!strcmp(buf, "file")) {
-+	} else if (!strcmp(c, "file")) {
- 		read_only_file_ops =  &__read_only_file_ops;
- 		read_write_file_read_ops =  &__read_write_file_read_ops;
- 		read_write_file_write_ops =  &__read_write_file_write_ops;
--	} else if (!strcmp(buf, "shmem")) {
-+	} else if (!strcmp(c, "shmem")) {
- 		shmem_ops = &__shmem_ops;
- 	} else {
- 		usage();
- 	}
-+	free(buf);
- 
- 	if (!read_only_file_ops && !read_write_file_read_ops &&
- 	    !read_write_file_write_ops)
--- 
-2.55.0
-
+> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+> ---
+>  fs/binfmt_elf_fdpic.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+> index 068c46875c74..e8a6e89b76a0 100644
+> --- a/fs/binfmt_elf_fdpic.c
+> +++ b/fs/binfmt_elf_fdpic.c
+> @@ -157,6 +157,12 @@ static int elf_fdpic_fetch_phdrs(struct elf_fdpic_params *params,
+>  	if (unlikely(retval != size))
+>  		return retval < 0 ? retval : -ENOEXEC;
+>  
+> +	phdr = params->phdrs;
+> +	for (loop = 0; loop < params->hdr.e_phnum; loop++, phdr++) {
+> +		if (phdr->p_type == PT_LOAD && phdr->p_filesz > phdr->p_memsz)
+> +			return -EINVAL;
+> +	}
+> +
+>  	/* determine stack size for this binary */
+>  	phdr = params->phdrs;
+>  	for (loop = 0; loop < params->hdr.e_phnum; loop++, phdr++) {
+> -- 
+> 2.47.3
+> 
 
