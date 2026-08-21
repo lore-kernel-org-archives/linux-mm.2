@@ -4,119 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48997C5DF97
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:47:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70E63C5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:52:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F4BD6B009B; Fri, 21 Aug 2026 13:47:16 -0400 (EDT)
+	id 70CB76B009F; Fri, 21 Aug 2026 13:52:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A5D76B009D; Fri, 21 Aug 2026 13:47:16 -0400 (EDT)
+	id 6BC5F6B00A0; Fri, 21 Aug 2026 13:52:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BC6C6B00A0; Fri, 21 Aug 2026 13:47:16 -0400 (EDT)
+	id 5AB456B00A1; Fri, 21 Aug 2026 13:52:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 030926B009B
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:47:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7865740146
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:47:15 +0000 (UTC)
-X-FDA: 85126008030.20.07C7C67
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9EE7A1C0011
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:47:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="OQnoSUJ/";
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787334433;
-	b=G4l6Mm5xOBuIf6Rz3wQIPs2oCmsFp2t3azFmy/w38nALVs4rz0sAMsJ9LbAUkBc0VSH74O
-	3uul6oz8vV9NRF7sa9mslq4X/tEnY0Hl6VMZ1H61WP0povs2iZbhOplhiM2YFWcLyyPUse
-	o0+vrKaP0EMX2L0HfScWL5yJu80VZLg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="OQnoSUJ/";
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 286516B009F
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:52:07 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A165A160210
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:52:06 +0000 (UTC)
+X-FDA: 85126020252.02.7FAEA71
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7A48514000C
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:52:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=t4t21egP;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787334433;
+	s=arc-20220608; t=1787334724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7LpovUuBXQ1rmSnUnPw6Mn33E9THVK5Leh3D5MMLADs=;
-	b=hv025N23olZPTsCMXw6IxqdPztecGAga6A9pORfr6czpy4L6vx3Jybi9MI8KIWocitDqF8
-	W8bEW1m9PF4CeiuL5Wy+/P4VKyuo5PhX8n/eVIQ9kiGWgUnajgUuviCTsPe4tOYvH8Kxxl
-	+POjLrDd5zCiS9OyGZE6WDaJhBDJlGk=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-527e352a167so8466441cf.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:47:13 -0700 (PDT)
+	bh=z4r9Jbt/bO7UeLYNwfXFrbJjchGvrclBSzHl6eH4LNA=;
+	b=FWCqK5MoxJcSjM39eIMHw2ZDfmYY0QVT7y/yCXnDga7J0K5y2i063lW4d82sZD6hheBx4F
+	bSzgbj+Ehtds59Qoq6EHIhvbEW/AkBRA6SxPg9A7/1xbCUUpz3jC9uS5gNhXh/mxiM40Qd
+	U6cgX8LpLCyLCb5LKcDLEfBG/cDc5W8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=t4t21egP;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787334724;
+	b=n2Ze4pc9jp7EZnkjIdM/s8y9trQgm4seOPTj0zAZ44iqRTcPrUMH4SZ3AP1WFXAuSZdN5A
+	q49X9b1aJehF2HwrhfW7q3WL5+KEc/AcLHkAdRaDnsjQUapx/wjRv0o7ENS/Tm8W//kILS
+	jfFKZ42NRXDx1qO1rqfRhlbBB82TX4E=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c0cea8883so10605591cf.1
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:52:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1787334433; x=1787939233; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7LpovUuBXQ1rmSnUnPw6Mn33E9THVK5Leh3D5MMLADs=;
-        b=OQnoSUJ/8qS3OKMVir2tyssOu/ZItKDci14qyvlxpS0ZN6wQNhoYeyzEnBfXQ3DZZX
-         ojgO9x8oUvuaGf9a9apg4h2+eEOG+RMRerxVI893Aw0LFQsmo4X0kied9iRhuSqKKMg5
-         IflmsH/+v8J+2F8KittrEf8JI8q+fKRtoVi26xr57hbQEbp5t7F80FO6T09EdJ/YYuk0
-         2rGtVzrAXmZM7t7yCzh3m3jobF4OBrg5nfbBnd1wGvnC4A+z0dqhh7F62X8c8CfuRI8o
-         7Y/x8qeyDNJOrBF4+HKKcV5GZMRpADXoX2I6c3YpNLhPKtpsyphO/Nzg1I+aY7UnNLxy
-         Wapg==
+        d=cmpxchg.org; s=google; t=1787334723; x=1787939523; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=z4r9Jbt/bO7UeLYNwfXFrbJjchGvrclBSzHl6eH4LNA=;
+        b=t4t21egPrlE5aEwXSP/0xPCrDTGXOI//R18sOEO6qB1IRJEklyLQtTnH5afNmbamnv
+         INnCvOGsYstU2CjEScn00sGy2Y9L6J6HY74lHzq3W9MEB3zcpsfgWQDarXd0mhjHRCds
+         yo6gH5AWeDLnrNoZ+1F6ixVKcgTefK8isNsLag6Mk87P9mq6+2JQNjvvbvmdQPEAf9kS
+         w0xrMv+aNdmz/ZYdGlFS3KjPnaQ3vNYyW5aOZSPSOWyQFq5z5YUL/HICDySoeRq/l7BQ
+         lmdUQLAZnj5B1//BAhqSB0vRDC5nmLRypyY4JAjXOc7FiQu0Rz42ffSIojF/GcBumugj
+         ql7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787334433; x=1787939233;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7LpovUuBXQ1rmSnUnPw6Mn33E9THVK5Leh3D5MMLADs=;
-        b=KAXLOnt8bqviGFa+1syYbNSfzywfySLVuJu6EgZPyhEJ9yCGQl4d4zKDo/NksR8yzT
-         zYJ7rXjgsv6ooVf7j/2peiHiAfnifaR+r7jTt6dotB1VCTgQKKD2dMw+xXWk3eR7rmYS
-         RLDwz3yt0efqKeztq21AN9BCwtkLydIJsWe/UwgkWIKVet3mrYxFOSdeamhaE/EPgG6A
-         R+gN7uUdYhymmSojq8Dtap2I+sb9IgGkq7pfGqZgC5voW/5aO6vJLMMywiNMsNgYN7sF
-         MChnYrl8UbxWjUcEqvti3kbAL44626dtyqfdYbXnv9wn0L3Y2jES01p543LRO8xqJTZ0
-         gKZg==
-X-Forwarded-Encrypted: i=1; AHgh+RqeHBnbihR9sh90wn/gCvsinKc5KzYbL4VWzMj1S6ONDwGHd0H/93S0AIkg9pIcgjAiCZS6qei/hw==@kvack.org
-X-Gm-Message-State: AFuF++lGGJWqE5J5le5E2Xm/wdb90wzfv5EUMUeS0nMncb3RlGNfzKWa
-	iEeKLqNHnZZdyJ9U2mzHnlynTM2TiYJLEzJqUbbq6uSRi30gfNG84/6DWhFPmwII0II=
-X-Gm-Gg: AR+sD10CJp6yqfPDMDKeqPEusNC/8drsdDPW22AAM1NXs+d2wunQHVa235tpNF/El6H
-	OKdpq+3ZQaJmrOvZEP9ivqcRmg0OPxO4JEDyeE2/JnrLNPeWT7WCHrzNhTVj8dTFSv45Ezcp5l1
-	1gJHHXBwZRzzwBm3sNwzl0WOiUSN8brT69WhI4cxf/1NdnJcWwYb4UcniOY2Gv06EuJGP0fKnx3
-	Ut91/TyyIntvrVhJky9gndbChI2gFPNmhI2ozs34+ptK1LtNCMjRzXfcyy+aB96eVq2h8aQfMCR
-	uKr29/qnqDiXQPIdXpxTp/JXX4X7pF+2Gj1m2vJ4KmWm/8DdZVwIXVxdLDA/E3o6AoCON1yj11U
-	E5qmgseCZn9cNV127ppK6eJDbf1tRgoIgvCd9eiBWR7hX9OJheWAiHg+F135Q6cknxMOWSk6tv5
-	w5z3EDesT31WB4MsbVQ5hH/NhqEt4lXZnHkNV+pL4PXy+SZtCg5qlg3HiRErX+r/MErW9Jp2puv
-	VigUMLMNBcwUi8jvobZq4B++1HI50Lae8p8x3WmuAyl
-X-Received: by 2002:ac8:5702:0:b0:51b:fb4f:afdc with SMTP id d75a77b69052e-52df573878bmr74337971cf.11.1787334432715;
-        Fri, 21 Aug 2026 10:47:12 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2b2b38sm67816356d6.43.2026.08.21.10.47.12
+        d=1e100.net; s=20251104; t=1787334723; x=1787939523;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=z4r9Jbt/bO7UeLYNwfXFrbJjchGvrclBSzHl6eH4LNA=;
+        b=YlLXRKi5VAJGOlXFUJ2cuFHeTN8KFpO8kxC7PnQFY0wql/dHZulkpkFvTNYWMh4kNG
+         1F3rEAwR7bBraWW4s0K5J2tCqPK8fQAbIyNT+TGXXsDfv0gr4M5pnhwQGTcJ/hUW3cV8
+         mIzBX5RdhYLrWIAAyWRGWA6Yjay3lZFgTnnY3JYV3NUs5urmCMz6kU7PJSXu7ZHfzN4X
+         dBnoScti3wDWkd8mkkInnnrQHtq3b0emfvwgF//RKNoyRS9QYp/yFdFdi8twDyrdyibW
+         bUCS6ZZ+j6kqtCm4BU11pcN7vMPCsA6dKxJdhhw7rNHUgerbElZFsVZTs9BhEVrfvMES
+         c96Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpGxTENg68iidPJ+aIs034y4CvnAjkcHahs8KYS1FSyHpfwwFTRzXYezlB+OEhAYdWpiuQSqDgZ5g==@kvack.org
+X-Gm-Message-State: AOJu0YxvTkuh93Hyj/kdHvBCXGS/o7Cl5wWBFcvax9ZDSDlEvnaXkaDj
+	SwyO7vTyo0b5zw7tcx7dsmk7X7oIfEl77icwqlzoQx6PPNtZMcpQ2bQ4BnngvbjqHaE=
+X-Gm-Gg: AR+sD11aRPKMX+9bQ4SJoKppnS65Q4ruEBcSV40Zz9bn8/iWWeBd7bzDR7Sz/pZuMgy
+	fVsQTsVrP4RY8kDvTmCED3biFH3vbqWmyxya8MFbRUrpQvEtFNXeZ5xnK+nTpJJS2ycG0sMlQuu
+	ngtWm/owOKp4XaB8MUpDk3sz7VmZZumhIHG4HveeRig6YEtaVvp4wQPOOAIcZ8bqbpiAyKSzlfe
+	Vqa1nLsp8mr9e9WwF1ryCzaVrY8ZY56j7dZ0ObEcykAHpK4ayXWy/aT2aNSS3n11G/2wg0CKCeu
+	v5fTh0KolDOwCrPqpOTwTt0NLiVbhnLYNnGrvpaRZGuKfDKS7dpiGmXe259DuldlAu7zfw8nn36
+	hJTSRmsh1DYTcaEs8bPSihcsoW/TYVEv+4EmHGnEgU90oQyz1Trr7zU60FBixZPY/herQEqNbVQ
+	om1lD74MsyaTWvgesMIQ0/GRB3hcb/QIIKZOGOjV3NSPXEZwWEtemskpDk+oEb+qQpnrP3Og==
+X-Received: by 2002:a05:622a:8603:b0:52e:1e5:45d6 with SMTP id d75a77b69052e-52e01e57d27mr28511781cf.6.1787334723252;
+        Fri, 21 Aug 2026 10:52:03 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2906afsm67569666d6.25.2026.08.21.10.52.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 10:47:12 -0700 (PDT)
-Date: Fri, 21 Aug 2026 13:47:10 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Eric Dumazet <edumazet@google.com>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/mempolicy: Fix sleeping allocation in
- alloc_pages_bulk_weighted_interleave()
-Message-ID: <aoiONiqcPJG11J88@gourry-fedora-PF4VCD3F>
-References: <20260821170407.3721004-1-edumazet@google.com>
- <20260821104043.f692421fec915c0c5bc1fbe6@linux-foundation.org>
+        Fri, 21 Aug 2026 10:52:02 -0700 (PDT)
+Date: Fri, 21 Aug 2026 13:51:58 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Song Hu <husong@kylinos.cn>,
+	Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+	chengming.zhou@linux.dev, yunzhao@cloudflare.com
+Subject: Re: [PATCH] mm: memcg: use ratelimited stats flush in
+ obj_cgroup_may_zswap()
+Message-ID: <aoiQPrudvYZ76ZSD@cmpxchg.org>
+References: <20260817131843.45121-1-husong@kylinos.cn>
+ <1787017182353556.21.seg@mailgw.kylinos.cn>
+ <0689d805-45c6-4bb2-8eb2-f065457c45bf@kylinos.cn>
+ <CAO9r8zNxnVYpwrsuB1Ofcwf-Lks2e+DL1Ys9CXZ5jozBug_ybQ@mail.gmail.com>
+ <CAJnrk1bFq7J7K0=X67voeZVkAb0dmiLkqomuQ+VcXBLyP5hMVg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260821104043.f692421fec915c0c5bc1fbe6@linux-foundation.org>
-X-Rspamd-Queue-Id: 9EE7A1C0011
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJnrk1bFq7J7K0=X67voeZVkAb0dmiLkqomuQ+VcXBLyP5hMVg@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: 13o1h661q5qe99m1yrd8xjjwy4g63711
-X-HE-Tag: 1787334433-741931
-X-HE-Meta: U2FsdGVkX18gUAj65vsFrKAMUvQOheVDpxlxgmRZAznXtlT0JQogQLir8EUPH1/dmw8s5PNEaVgAZUfvjXDDcQKPD+CydhiOJmTjeWWHYo/C9FMZbGmGqf9al3ZwNpN04i8CG4OOmcWRJeVLAu8/qsdii/yQtLvDvUxL7uVa8hnmNW9gP22jkoUFXLsK0IRmr1aW9x6dCemQ4OaXhjZRpSLSTldYUewsE2n0oOar3pDnXQfkE+GjeficGMlGG9L9OKD6vAp9Bt6BO1Lm4FbEXidbXMX0nHgClWyEW2omCTjqoTlwxgM7REcx/PFW+JNaS70hgxEMOUsUisd5IYEVcdahHi5WiFRSSoy4Xx8W0eLnhdS340sSFqyrTS3Xrjd5e8aoy1sN9JKBnPyppdzUV7JMPEY+5e3JIwIrIVTolXH0zWVtTmkEp/GCdxTo2tHTS4GWj2LmYgFdCBkwovouE3IdqUwt6iAFdALkkh53hHZmiH6hVCugUnWksQUFM3JAVp0SaD8X0mE5M02gg5lOcqyxjshqI7mkzRbcWonBwJUnUOHa5w/MJxVA1kPHI1ck49sZ8gO0BI1foIxVfdi97a1forxkycGJc9V6CjFJHGSDXiUciG94bmgGkR2VEFYO+rKk5/PtyF6rPdFTKHLzu9jQf1H8bLTTSQBMmcZOQoJpaghNlMFd/ml2W5cOs0CSVCpGlzSx5uGYipiTZPadF+NQW86U2LNvH2gCO+bLq6K3UOcRfKRFuIzNMRJG2tAmi+hQRdn+W8YcZUeZw32DMi1bKFIzvZDHqiSd+fMuTuGSL1dAB3HIJNk1B1hHe7j5RFSbPe8CQ08fjmfJTjWbFn6S/mVwnJiKDa07VYf/FBReBdviMfYUG0XEBMoCK9MrWcVlX/fEmnkgMXNzowyDQx1oy3gmNLbAfxtj8ZUoq3J2cYWuEar8Td3Aew6xJ0GV5K7Q2C1K29OA0wUoFRY
- aO2MIA7N
- mHaBf2z9zXw/Cma0fWkOx6LWOPFZiPC3GnCygeRkGr44/R976Zm9D+fkwWSzVVoYyo6ySX5JJ+eEORUQ3OQy97Xj6tzfjLqquyr8wJoBE6mjaqFt6pC8s8+RXIH+qzcAPCXsRjC+QNKmCo+nJk1MoybkBMd8MMAV3Q6DITqAnK3FYHjgxylVikaTVHnDt8z89tRq6pE6Paj4JY5c77kxZPOl7p+zaqk9PwwT5Zw50CR84B76rZB3Uk9UN6yYPz6VdOP1wsPG4xOF4kaOBlyQ8Ni8yJt3ZWJNzLnK1LKN+3+2ICW1iJ0YU78BnAi42sLds6301ot2n3Fbfytluv1cQ4fGrLSw+Zfp7Iki/0ptdUH2A3F4Ci5f3jJB81T0VYO/DNyyKgFmNLsWewmFbkwqbw3spcRgA0ZMdoh65VZSSEkIzhv8KtGd1Z2XljRwpSaFC03FZWXq8wr4Y3yMRD0EDGqyF7HyGooErY9bkGbIZ869YrRVsTPx0Mu7FhrpEi/gMl0J8W3ZCV1+41EINQE34Wm6HHQ==
+X-Stat-Signature: uubdc1dayy9cmg54po1u4d9obbft1h6f
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7A48514000C
+X-HE-Tag: 1787334724-145478
+X-HE-Meta: U2FsdGVkX19i7qww6grPg0SBvIopN4cLjyy6LS9OQd5qPOU7PJvLyd8HbIiybAX8v2k7uKiF/hUihhGS7KI61fIXr2p9e5ti3IYe67l3Rjpwu4XG5YN+iyWfYsSua3jhZS9SORLG1BJHcvXBcnjmGnoINDsL2vRqrFBT7JxHIe03Se//1yK+DhWS5AQkX4iwQO0W941YQbPO3ySQOrzKEDApE2KVFDdwE0x5Xeg+sKI+cdKYCkwLTxlR29xjxTnJtK9R9DhAfR+l1q53UrUUB5GqbylhU9pCefrR2mtHf13FCMa397VLXOx9m4xQkx6n6G1OlYChojHNHrg2qot3Idxyjq5Fm3f6YogSWZdEfVIc4lc3FFhgwi7VGE9w13utkuh2UInLGL6pZtMkxFfrMMB3vzz1ByHXolzzt5kXtlBRG8d6EWpba96NP/xZHqFw+tcYidLKHcQKovQzEmpXFSUPJEDq/ELpdlDmc2bzBvXrw1ZyLvXo7PD4/USv0iyg7S+74q7Aqa+ROWb1WgoL0jbUpf4rWKC7V1kCBt5/jUSIpaEYTTEUROwPR7f63HTBXarq3gzWL58ffbJssGAE4TJSRx+90rfZkH3qLUiIh3TJkyRkwTznZEDvgHZiyMFISj5ZcfJmaWdPN6cWx6UVTN4m8MdR5NbcqZPlpwpTzBZx93GVwHnJ7xQJsefz41xuWooKY3L4lTF+RNXUfKtJNE6cFeXwQEfF8+doTVZdhsPcPF4HAfQae1Srk0uCaWch0T31w79IpSZHySXa5V3yRPCJcJIXrOFKW2YXrr1WOvshzDfqOZi1vEhdvTaDHu5S0+lVCNqaPil0wR9EAn1azRyxfj9QnRyFrEeSpzuPt1rf4CzlpMgmAjeMASNgzIb0kkrmLjG8Ehw48X4VUHdkGeGlBoW7LGK45oKCQYFoNPsnfboEzT06Nps8LQkW++ZhwyKVfLEMwy6e/XJWYy4
+ 23+wxxYm
+ LJ0K7TZ4eZ8NiuKv712fYzdfNwFKY32uRa7ng6AlP/8Yo1n8b4xJ0Gm0JRxB1zORZ2kMLIdYylBQ1yMfJLSLdv69ktzXpFJjaqIb45UjcPpflMat2YrM+RvywJh5gNSQ1NSW6b9HqwM5tZHX9w7mbMwwGNTKODbKfxYkdfX09O7PPv8clv0NazyLOXI4SbK9dBjT+11KjOVGEFU/1mT7rtIFFvqLJO+fIDAnaPpbAsjT7LoOR2wCxt+lFJak+mjLGEbMVUccQqqPGW4iWhos8P2mbQl3KBVD/Hh2AF0VbPHJD4pByPBHwgCK5CXX2YhPdLLFdWWr88bwjC17Jfr8tMOvqRSt6n2+FS/9SDzXDGC3ZDWlIxLMyAwkbIrciPkHolH4iWnCvF8+V7Pj4sMgX3rrZ3tpan/96wD4odXSCUnU8HsDz7pbmzI3Jf3r+GSug/lJx5athUAIWnQTh74OuKm2wXDuLLiiJKugYTsmXNbqPugUpH6yy4yeFANFj9gpm+bXv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,27 +128,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 10:40:43AM -0700, Andrew Morton wrote:
-> On Fri, 21 Aug 2026 17:04:07 +0000 Eric Dumazet <edumazet@google.com> wrote:
+On Thu, Aug 20, 2026 at 03:18:39PM -0700, Joanne Koong wrote:
+> On Tue, Aug 18, 2026 at 11:35 AM Yosry Ahmed <yosry@kernel.org> wrote:
+> >
+> > On Mon, Aug 17, 2026 at 6:53 PM Song Hu <husong@kylinos.cn> wrote:
+> > >
+> > >
+> > >
+> > > 在 2026/8/18 00:04, Shakeel Butt 写道:
+> > > > On Mon, Aug 17, 2026 at 09:18:43PM +0800, Song Hu wrote:
+> > > >> obj_cgroup_may_zswap() runs on every folio swapped out through
+> > > >> zswap.  For each ancestor with a non-max zswap.max, it flushes the
+> > > >> cgroup rstat hierarchy synchronously with force=true, which skips
+> > > >> the ratelimit inside __mem_cgroup_flush_stats().  In a swap storm
+> > > >> with zswap.max configured, a container takes the global rstat lock
+> > > >> on every swapped-out folio.
+> > > >
+> > > > Any reason you are limiting zswap through zswap.max?
+> > > >
+> > >
+> > > Mostly fairness on a shared pool: zswap.max_pool_percent is global
+> > > only, so on a multi-tenant host one cgroup's cold anonymous memory
+> > > can soak the pool and crowd out the others.  zswap.max is the only
+> > > per-cgroup control over that share; memory.max bounds the total
+> > > footprint, not the share of the pool.
+> > >
+> > > >>
+> > > >> zswap_shrinker_count() had the same pattern and switched to
+> > > >> mem_cgroup_flush_stats_ratelimited() in commit ea80da363a1f
+> > > >> ("mm/zswap: use ratelimited stats flush in zswap_shrinker_count()"),
+> > > >> where the same flush on the shrinker side showed up at 2.88% of
+> > > >> kernel cycles under osq_lock on a 96-core machine.
+> > > >>
+> > > >> Measured on a KVM guest with a swap storm under a cgroup with
+> > > >> zswap.max set: obj_cgroup_may_zswap() was entered 198,977 times
+> > > >> before the patch and 198,968 times after, while
+> > > >> __mem_cgroup_flush_stats() was entered 281,017 times before and
+> > > >> 80,445 times after.  The removed 200,572 flushes match the store
+> > > >> attempt count almost exactly; the remainder comes from other stats
+> > > >> readers in the swap path.
+> > > >
+> > > > This is a known issue. Using ratelimited interface also comes with a drawback
+> > > > that the kernel may react on stale information and the consequences might be
+> > > > unneeded oom-kills.
+> > > >
+> > > > There was orthogonal discussion on moving zswap limit enforcement away from
+> > > > rstat. Yosry, any updates on that?
+> >
+> > I am not actively looking into that, but Joanne was looking into
+> > AFAICT. I will respond to the thread there and CC Song as well.
+> >
 > 
-> I wonder if we *really* need the local copy of state->iw_table. 
-> Perhaps with appropriate care we can directly use state->iw_table in
-> here.
+> For this zswap stat, I ran some benchmarks comparing 4 approaches
+> (switchable behind a runtime knob [1]):
+> a) rstat + forced flush       (baseline aka what the tree does today)
+> b) rstat + ratelimited         (Song's proposal)
+> c) hierarchical per-CPU   (Yosry's idea from [2])
+> d) page counters              (following what all the other memcg limits do)
 > 
-> How much would it hurt to expand the rcu_read_lock() coverage?
+> For the setup, the benchmark creates a cgroup chain at depth X with
+> memory.max set to 1G on the leaf and memory.zswap.max set to 512M on
+> every level, and spins up 20 processes there that each allocate 100
+> MiB, fault it in, and touch every page four more times. With that 2000
+> MiB against the 1 GiB memory.max, it triggers reclaim continuously and
+> makes the swap traffic go through zswap. The machine I ran this on had
+> 80 CPUs.
 > 
-> A local array of MAX_NUMNODES bytes isn't attractive - 1k of stack.
+> I also ran it with no memory.zswap.max set (ie no reads triggered,
+> only update path runs) - as I understand it, this is the configuration
+> that is more often used in practice.
 > 
-> A spinlock-protected static array would work, if super-rare slowpath.
+> These are the results I saw:
 > 
+> kernel cpu time (in ns) per zswap store, zswap.max set
+>                       a)                     b)            c)                d)
+> depth 1        567,116          35,604     35,841     34,995
+> depth 2      1,082,007          35,507     37,803     36,209
+> depth 4      2,153,329          37,591     40,117     39,893
+> depth 8      4,211,692          34,963     41,070     44,211
+> depth 32    15,728,220       53,575     94,685     65,946
+> 
+> kernel cpu time (in ns) per zswap store, no zswap.max (update path only):
+>                         a)                  b)              c)            d)
+> depth 1         34,787          34,062     34,930     35,630
+> depth 2         34,913          35,061     36,404     36,360
+> depth 4         36,422          36,809     36,922     37,483
+> depth 8         42,177          34,440     36,679     40,793
+> depth 32        55,309          55,321     57,671     59,190
+> 
+> c) and d) are for the most part pretty comparable to b) without
+> introducing the staleness problem of b). Between c) and d), I think d)
+> ends up outperforming c) as the # of cpus and depth gets larger.
+> 
+> I'm seeing that all the other memory limits (eg memory.swap.max,
+> memory.max, etc) are already using page counters. Is there a reason
+> the zswap stat can't? If not, does it make sense for the zswap stat to
+> switch over to using page counters?
 
-I would need to go back through the original thread when i authored
-this, but I think this is possible.  I will add it to my backlog to
-investigate.
+Thanks for running these.
 
-Weight updates should be *extraordinarily* rare, unless someone is doing
-dynamic runtime twiddling of the sysfs values and thinks that's somehow
-a good idea (or expecting them to be timely).
+I used the vmstat counter on the assumption that setting zswap.max is
+rare and the counter is maintained anyway for memory.stat.
 
-~Gregory
+But I never actually tested it. The assumption was that surely walking
+ancestors on a quick if (max == PAGE_COUNTER_MAX) continue would be
+much cheaper than page counter atomics at every level. And so I'm
+surprised by your results.
+
+But that was the sole reason. If it doesn't stand up to benchmarking,
+no objection to streamlining the control to a standard implementation.
 
