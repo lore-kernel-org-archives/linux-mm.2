@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B108C5DF8C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BB0FC5DF94
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 17:21:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 548316B008C; Fri, 21 Aug 2026 13:19:05 -0400 (EDT)
+	id EE9CA6B009B; Fri, 21 Aug 2026 13:21:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F8CA6B0095; Fri, 21 Aug 2026 13:19:05 -0400 (EDT)
+	id E9A876B009D; Fri, 21 Aug 2026 13:21:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40ECF6B009B; Fri, 21 Aug 2026 13:19:05 -0400 (EDT)
+	id DB1206B009F; Fri, 21 Aug 2026 13:21:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CAA26B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:19:05 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1775C1C0A65
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:19:03 +0000 (UTC)
-X-FDA: 85125936966.13.BF65D2C
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 70CB62000E
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:19:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=manguebit.org header.s=dkim header.b=bPX7Txm+;
-	dmarc=pass (policy=quarantine) header.from=manguebit.org;
-	spf=pass (imf13.hostedemail.com: domain of pc@manguebit.org designates 143.255.12.172 as permitted sender) smtp.mailfrom=pc@manguebit.org
+	by kanga.kvack.org (Postfix) with ESMTP id BB5F96B009B
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:21:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4CC091C0A7F
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:21:35 +0000 (UTC)
+X-FDA: 85125943350.28.5665EA7
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8D1D8C0004
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:21:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="P/gO3+OX";
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787332741;
+	s=arc-20220608; t=1787332893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eGFEiYEVjkcCzgDW1sDcNJoasexjmVTJtd81q0MQQhI=;
-	b=Lxyi/cvAhLgK7RamiZQFHVGBECgAw1xZ3mufvrXs+nErsVx1qeV7wXybFU0R5q7E4brG9v
-	OfTLqJXytqiC6XR0EMIPTNufITsNTh7FVfzsMuvQ5azKrSzk0nFDN4mOfjPFLvnO02kVUY
-	MVqWr28Kl120tWtGWXOfKnztnRQy4e4=
+	bh=ujreQuq/VbmIvSks87pTDL9ws/ca+3fQw+q8D7dPgig=;
+	b=KolAjLoddKvOGk8w+W+mzEvcIWQ80Zz89ihkjngOiqrBwQ5x1WJkNnEFvKlqgjMmry84oZ
+	gVpoudODAs/DHN4kldV2El4RgMkcPErX5citnffuBXSXZAn2XoovjIEbFI34kXxA5XrNq4
+	FQFhkZ1EJU8y8EKVD4zcHbIe6rVCGU4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=manguebit.org header.s=dkim header.b=bPX7Txm+;
-	dmarc=pass (policy=quarantine) header.from=manguebit.org;
-	spf=pass (imf13.hostedemail.com: domain of pc@manguebit.org designates 143.255.12.172 as permitted sender) smtp.mailfrom=pc@manguebit.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="P/gO3+OX";
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787332741;
-	b=VZJnajrBfh0RjY+hz0fsurOTtpV40vsJ8N4z4usmNABnvuXkC070xiMhomRigrFqoZCTV3
-	Wf2b1y4G2RoePoT+U8evQ+9Nk9J4k45iVYtbolL1C125uNuNFOKqxm94ghSSqcBTDwVCCb
-	i+xtP9Rh7frQEdRoDoPG+DOuIZ79fJw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=eGFEiYEVjkcCzgDW1sDcNJoasexjmVTJtd81q0MQQhI=; b=bPX7Txm+aEXVSbJoZKzjQba2XG
-	9YS/Y0rDUhBbcKT7T1doyGbOzeyI+iecGVyiKU3KGh094SRLP6IdW/bVIUZi+zvAg92pm6zhyv0GP
-	P3HBhks11I2VpufWiGMErvvmSU2Tl27dQ2DOPHsmsXlrMilNdKUZA4MZPdiOW//gSzZqcZ6dXXapw
-	g5PuxS92tOYKAvQ+Eel4gCBYp8VA8nQu47TjLyI3TiB1IqTt9oJ0/OtjQR+m38BKbE4RvuL1ZyEv2
-	QkJdM7SLmJ+l80Vb1t1xIXTzQWGiyQspYdOe/Aq7Ki18+5JtYSdnkrCiwEFbowhIk/9oN7uh47FkL
-	pH3bTrdw==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.99.5)
-	id 1wxStJ-00000000PlG-3uIC;
-	Fri, 21 Aug 2026 14:18:53 -0300
-Message-ID: <6e9aa19ba351b8c7f4df2992342a75da@manguebit.org>
-From: Paulo Alcantara <pc@manguebit.org>
-To: Christian Brauner <brauner@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Jens Axboe <axboe@kernel.dk>
-Cc: Peter Zijlstra <peterz@infradead.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Steve French
- <sfrench@samba.org>, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
- linux-cifs@vger.kernel.org, linux-mm@kvack.org, "Christian Brauner
- (Amutable)" <brauner@kernel.org>
-Subject: Re: [PATCH 4/4] smb: prevent TIF_NOTIFY_SIGNAL from interrupting
-In-Reply-To: <20260818-work-tif_notify_signal-v1-4-1ee1fcc5b3ff@kernel.org>
-References: <20260818-work-tif_notify_signal-v1-0-1ee1fcc5b3ff@kernel.org>
- <20260818-work-tif_notify_signal-v1-4-1ee1fcc5b3ff@kernel.org>
-Date: Fri, 21 Aug 2026 14:18:53 -0300
+	t=1787332893;
+	b=uaK6qAQHB3OvNfM6k36uizUygbnVr8O+vYOLQbqNQaq5LPVGn1nhB1Cws1EnlA0LmPRBuv
+	rsw+Ka7fwz9uFb5DHcH6JdtHMJnhLdIyB5QrpuYIM9yxItQjVI/+uLYm5txizZT176Ciad
+	ntCQufFLXVGq4CrZRGyga2aCFFTXNb4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=ujreQuq/VbmIvSks87pTDL9ws/ca+3fQw+q8D7dPgig=; b=P/gO3+OXjKhdklMG70E4d9i1Pv
+	CTtOyI7PTR1PUPuVw5nC9U8ZjLepIYCzm58FlRYPQE9FCZOapdf7XZ7JFcU4z/+/nzKPP0geDGkbA
+	vkbBZayX61CN3UmI7yXulNL7qsEmI/lbaPowvDacKmuCYmQM+tQBme1JhhlOmpkcHInMUiDw6cuq3
+	gEDuvuNXW9ZS+qluH8M8vSYdyab8wzGX5wpNR7ZsrFyTLtnXLrLggMTPZMxR1Gme4QQYwBtYQX//5
+	Ar6oAAK9X34bZCPBrnt3mY/YnES6I92rb4yIJxHbQJSoidhzxWQ1tbrOXyWPeBdNKWPyDzfSREq+y
+	yaBnCfpQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wxSLG-00BTcG-28;
+	Fri, 21 Aug 2026 16:43:43 +0000
+Date: Fri, 21 Aug 2026 09:43:37 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rmikey@meta.com, riel@surriel.com, kexec@lists.infradead.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 6/6] efi: respect the poisoned pages coming from
+ previous kernel
+Message-ID: <aoh-3XJw82O8SmsA@gmail.com>
+References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
+ <20260821-hwpoison-kho-v2-6-5743791e48e6@debian.org>
+ <aog_uH5fTsJzXjjx@thinkstation>
+ <aohIF6MmjiQpbz5j@gmail.com>
+ <aohldTtzE2GJ76md@thinkstation>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: xzquea1awyx3bsfawked1xsstqntyukf
-X-Rspamd-Queue-Id: 70CB62000E
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aohldTtzE2GJ76md@thinkstation>
+X-Debian-User: leitao
+X-Stat-Signature: pdthqbjrgk46n5ppbzon45w39if9q9t5
+X-Rspamd-Queue-Id: 8D1D8C0004
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787332741-712806
-X-HE-Meta: U2FsdGVkX1+ACvlQ/jC17AxaEWP2BMPuhg0KAATEg2NxkIOKd1v5MYhBchfkKnzw/jJnl5jHSWrPi/V0sWHCbegoLuhxRZUujy8u6xXC2Bqq3zU/nP3H0hpJz8zt+ngNe5P0DMFsSOvy4rj65grUzGYlbdaMO+azYUszG8UvRwCtkUo/znyBImOh/ZN0MjiqeALNL3LBOVg9OAoqeY5qhF6PG6+gY4EaqMtgNiys8kvqjOCbmr5P304eZMQhmBcsGr9+pRsV2glAUT2NXyrg+F7iHQNANbj1ylpBc07Ir9AvxOHMymGX8HIu2aU/gIV81Og0uMhVCkvlFRKW8dLgQYapfSABcK4lVpnrl9Mh+LykZsU5G85Obr6E/1zhV2wbcDb7rh2cIIZOZi/0UnvfNyCSXd2OgS/+3Z/7JGdvZsGz6phpHAZbNMaIu24Z5Yh9NeG/h0XCMm7yAxzEq4s86+xEpr0ZCNxGILI1ZmqIinwvL+JXTHY5wkQm/2Dwkl9kDjd02IzBBuXQvVvCjVlgbJVgpVc+jxndccbLxCwqJtAIB0RiGZ6A69tvd3tOzkYFGnpCEcof19oiGKACVorOAcO6U8Qy7wN5c8FL0Eydp5VHC13iQObz0MKjzIXTyJuXDt19hm0/kuJt5ACFlrU2V7pYi1ARWz2QZy/f5XfdYGgEcfaD0aIRAiHdh+An88OxVlb2x2Bbas0LlEvbdBjITPO/DuywFQFOrIRrMcf9KbwNll2+pqXM96lFvqSwutKcwh8XHwxQYFlLs7INJezfI8EwARFCL7GdTLGy7vpeIXflnXbvxgi0FUGd5267oPAO1kKtuq7I33IuRPwtdIdOVjeQMTfuhGKhVktPb0Srxg2qJJK5Wo1M3xBZjPFBaH3NnrwVXQqh5D8+Ul44C9Ge44SWdXcyzQFMnhsomzeBfxdA4kRH0rbziBZiHGu43zOLLCynudoRL9Z5uDeouAn
- f+sde1XK
- CLoGXqorv6CepX92tcVO8jrsHnx3+HcaVVUysvyI8JUHWmj4Wg9ryWnnbj0h4uBwTMFmfcS7CostremWEpbFh3+uRSX7uKvDeAE6sTNovOwjizFJBz6Pj7Ee//XKbNMaDMl/DBH/pCqde8hUaFeuqsSqb7o2NluxZ4dnMDHagSUvXsx/ojpBhtlEohMur88Nf9M3Ad+NxAxBxyG69w4ua5g7IJ+lYrIDimtn4/Da4oyFdrirnSDs9BWWPxh5kxN/BRRkJ4jXX6hmuzv2khNSj4NuQS4d9G3W8POtbon2nwtlI6XSP8mwlsOcyziprc29w+6DHUkWEmH73WeZBdDx+TqjSaoVpVTdsIuY/Uqw4F6uZTakk8ecNTrclYjoOhWjrQ5mbQFASdCtaKZ0=
+X-HE-Tag: 1787332893-251006
+X-HE-Meta: U2FsdGVkX18PcEP8DXin28OpzI3uDwfZMI5qMZCKdbAF1Bti3LXJNqqxDMQGe5WtIO2kS8q6N3wm9eLnVMkvJbtm39Cu0X8uch6NjHv98MMyxbGo/lzQeIB6RTSE2izO0JIxAiCrDDz5gsnPVm5typuWMGoHZxSHit/FzgJICdLMaCzXRylpIBpkfV807dbl1cVqYeSnFWvzIWNIgw7H93OxDI/WnxUIN9IMbEIhJvABdlZUNFpfAlT8myvAviT0Qd7ml5rRblb2OUBtMnef4fewuZ6qR79Hd0vgp68o7J7fIGzzkDFDC4a0bdq9ikM9Et5gLWYGiArKKZcmKK3fRT80n1q/8s+aiO7caZdVHOE2qVdkdsW4+6Brxr+u0ecWYC64VRSgWNeTH+YVPaXSTOrvO2a2rGrZ16JSdworC8jyMz5T2tZH/Q7tMdo7Sih3llM4iRApFjhUI7jDXTfarnmtOp8ObuYtAZ5NAx3Tb11pp9rrnt1ccVoc+DMyxGHOB82c/assy5uvPwbzHyvewpBl/y6S4aNkIJMhPDdyq3xoRU3LfxWik/BcejO70OA5niangqMVxB4p8FuodCjfZfDj7VhBCYqd2rPvy8JRDEf5taasqxjvMNwErKE8dBC0jVvdu/JUhBzvaJNLulL91LQAJ1iNifJ6Sbg/+ScoEPyy+cpEeiGoyIs+1Zqp+mYef4KBHNDY9uPua+Uk/SPkKDyoaOffe6vtytpmpjInnwKewqEptpRq86zuZX9Njt8I6a8SzBYW8LVbFZeA+t32y1G/IX8qD50oetrpFRkFLyiXwPhN/znbDONFSmZ4tgm9A1JaQQ1e857M9yC/xarJUNzLAoPlJhU0OEPzLqtT7vDvXfoV0QA3jAW5KnbDkASQdaRBTUZYtvV3nn0t8XpG6IoJFOJ2fTLJIQkBxBes07AlNhh6WQejCtrHwMEEpJFLa9mXuQoXcQhzREt7Zge
+ yM0Sx+ru
+ VoEzxx+5woIHp/JR1erPV5IRYVdp+Hw1lzIDRFdW6z8xx/8VaZudBKqArhTWQqt/xwHtei1954ABsXY2xaAWnHo6xt3JxIApGCa04TDTBZjIPP33UEVH3M4xdnr+4cmssJdTG4kCeaaETZGQDCJzkqjX3XCtm9/OOdDZ8odztm0N51WnlHosrJo4yPUsKexH6Gu2DqgM/6wpEisi8jCQr5dTCHfSeyCEzMkLMvq2J5lwzrXwWpkP4xVHOQbdxKr5gro3NJ4mQlAzbg8p0vz7n1AjaLbicL9FXw/NctDqCwzXPf0yKoKDychDSt6QnBWzjoWMAr4lT4U6g3Dkny2xCslNViDm5re/pkMQho1CQiKhXN3czg3TNguvCLZDoXXijL1dYaJMggVEbdMirIDCPzsnhYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,25 +103,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Christian Brauner <brauner@kernel.org> writes:
+On Fri, Aug 21, 2026 at 03:53:32PM +0100, Kiryl Shutsemau wrote:
+> On Fri, Aug 21, 2026 at 07:03:06AM -0700, Breno Leitao wrote:
+> > On Fri, Aug 21, 2026 at 01:13:55PM +0100, Kiryl Shutsemau wrote:
+> > > On Fri, Aug 21, 2026 at 03:06:06AM -0700, Breno Leitao wrote:
+> > > > +	/* Reserve the table itself so it survives a further kexec. */
+> > > > +	memblock_reserve(PAGE_ALIGN_DOWN(ppm),
+> > > > +			 PAGE_ALIGN(ppm + sizeof(*pm) + bitmap_size) -
+> > > > +			 PAGE_ALIGN_DOWN(ppm));
+> > > 
+> > > Hm. I don't think it is enough.
+> > > 
+> > > On x86, kernel doesn't keep memblock around after boot (see
+> > > CONFIG_ARCH_KEEP_MEMBLOCK). Reserving in memblock exclude the memory
+> > > from page allocator. But kexec can place the image there.
+> > 
+> > You mean the third kexec?
+> > 
+> > 1) Kernel A hits an ECC error and marks page X poisoned.
+> > 2) Kernel A kexecs into kernel B, which won't use that page since
+> >    it's in EFI_POISONED_PAGE and memblock-reserved.
+> > 3) Kernel B kexecs into kernel C, which doesn't respect
+> >    EFI_POISONED_PAGE.
+> > 
+> > Is this the scenario you mean?
+> 
+> No. I think nothing prevents kernel B from putting kernel C image into
+> the reserved space in !CONFIG_ARCH_KEEP_MEMBLOCK case.
+> 
+> Kernel B excludes poisoned memory from buddy allocator, but kexec
+> doesn't care about this when look for placement for the next image.
 
-> smb_send_kvec() blocks every signal during a send:
->
-> 	sigfillset(&mask);
-> 	sigprocmask(SIG_BLOCK, &mask, &oldmask);
->
-> An incomplete or partial sent would cause the connection to become out
-> of sync. That in turn would cause the session to be torn down and
-> reconnected.
->
-> In 00be6f26a2a7 ("smb: client: transport: avoid reconnects triggered
-> by pending task work") smb hand-rolled its own solution. Have it use the
-> new no_notify_signal_save() critical section instead.
->
-> This stops io_uring from cancelling a send in flight but that's just
-> like it is today and it is bounded by sk_sndtimeo at around 15s.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Right, that is exactly the case I meant above — sorry for not being
+clearer.
 
-Acked-by: Paulo Alcantara <pc@manguebit.org>
+Agreed, this is a gap.
+
+Can we keep it separate for now and address it as a follow-up? Similar
+to the one covered the initial issue [1] first.
+
+Link: https://lore.kernel.org/all/20260812-kexec_posioned-v6-0-e477887086f0@debian.org/ [1]
 
