@@ -4,124 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C08D9C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:25:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE80FC5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:30:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9245A6B009B; Fri, 21 Aug 2026 05:24:59 -0400 (EDT)
+	id BEDB36B0095; Fri, 21 Aug 2026 05:30:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D54A6B009D; Fri, 21 Aug 2026 05:24:59 -0400 (EDT)
+	id B9F0D6B009B; Fri, 21 Aug 2026 05:30:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C39D6B009F; Fri, 21 Aug 2026 05:24:59 -0400 (EDT)
+	id A68046B009D; Fri, 21 Aug 2026 05:30:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E48E6B009B
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:24:59 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE107C03A1
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:24:58 +0000 (UTC)
-X-FDA: 85124742276.02.791F087
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E38CCC0004
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:24:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=BDCFZo6j;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 802076B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:30:35 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F04BFA0418
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:30:34 +0000 (UTC)
+X-FDA: 85124756388.24.129517B
+Received: from mta0.migadu.com (out-17.mta0.migadu.com [91.218.175.17])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9A6C340009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:30:32 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E0GKCBAq;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.17 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787304633;
+	b=LjRInUJZTL5iwL9FmFTaKEt41BDQJaGt08d9Snqj6Lw0Oh7UBPRGPHJJODYtF/FBf2EGAp
+	KQ2BTjHxx69SAFg3gOQsEAWrerq7ZtuoRYxrLZvHW2EujSbM180XxREJbnfZgCVkioB27b
+	UeKid1sIQkk+tjP2GkAeLiUYPGeKCYs=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E0GKCBAq;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.17 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787304297;
+	s=arc-20220608; t=1787304633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xrvJ8t01wSuPVhMK2rhUOR81NuGr3NcfrpigUqOVjnE=;
-	b=hjSCS2eKZ8136ejEAL3FNrqX5jbCExvnF840VY8YtFhhfbSX5wF3zaQg2p59i8bW+Huqwn
-	Vj+PSml6Ss2oRvRzDUsg87NC00uRiJHrDwIXw7PXM749rJOmD2Y5sK/TohVyCJZ2vcsdjD
-	jQkM+N06mPNUhvYN3Ic36XL7qNlhOsc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=BDCFZo6j;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787304297;
-	b=IOb/rcE8/n5ZbrfeBf+J+1dBOWxBUqQHMcqtygJ17o1XVzpwRaZprHMRFS+MhkY8fHsAJv
-	pynegfF1yZnljyLjCKSSgrZTweqtAeyPpzQsxfcRFqLYsLmlH/lBMrwLfJpYINymFHXyc5
-	W/GpJun3ZxdFd6IYy2y4wd5ul1uEW+A=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c197e7e4e94so152515466b.2
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:24:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787304295; x=1787909095; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xrvJ8t01wSuPVhMK2rhUOR81NuGr3NcfrpigUqOVjnE=;
-        b=BDCFZo6jDYy6oUgLIZtZI/pJTspCYcxVnZxSqBlpCIVuiFDPiibbLWAancYJVlU79e
-         zPmCOl/nga1f7C4TcNnE1SSlueoHX6a0/c9a/LeGiLhONFznZ2mxGAdj2SVQWjiofFVT
-         kz1+G8L7951F39hq9/7iLEM6L8b06pJ8hAfEbUcvoU6JZdf5oq88qCK7KHwsuZCjba4K
-         fF42DqjRovr+yrdg+MX/iZu97LgkskghLDfyFiO7+0fXIVgwLzm65FuvMjFY2ZqsDvaN
-         KRztn1YPssbMgVrdiLGtg5Su4QrYZ5QMr64vAIdwHDQ4LA6GxTn1advdlozlLATY4hW8
-         zcTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787304295; x=1787909095;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xrvJ8t01wSuPVhMK2rhUOR81NuGr3NcfrpigUqOVjnE=;
-        b=ZyHVpFgs4vC9xWdPKYXULmZppVlhTtBQNZJmPXq7xtURvTo0m4k+wUuoh8HR4KXaN0
-         rBosNXG9icpRV++tthRsQWozVemHgQE60Y9B6QTX2Rxsxc2Vp/6VbZ7nn47mFm+2hKPS
-         q9BaTGN9S20ZbW7Vm2tTQBvgyolgEQi7+p39h1Fdig6Oi/Gm+x+6l7NdtEmMCbM/xA/g
-         nLD8hI2OiXNPqV4ClJsYaBpQXPVCTBexSesi075AYbsA5pYv8zJFMlgxC5+T512XQioz
-         zHG56mqCaTzhr/cBS26sBfhhI8sXMsEX8xG7bZZ0ST2E34Ahf2WRTmLxKYeWXSIU5E+n
-         Uw7w==
-X-Forwarded-Encrypted: i=1; AHgh+RrXl+KzcjBYh0wzA8WXfikvZbWf+cLJyDyMF+bYWq4/MvIPZjwLwNNnvcKX+VYkuSU7EylvKqs6iw==@kvack.org
-X-Gm-Message-State: AFuF++l6O5hAKPDpz3hamtZjABsjcIMQ5KQwC9VrYjqqHENtmZNEl9yI
-	cEop8X5+edxT3VNzt15297SazzTdtvCKH7rPsg4T6G4lBuWSast5h9TbPzQwYk45Dqg=
-X-Gm-Gg: AR+sD13141KRZrAs+cw2q08TYhB7dlzHpFKngD2YxqwaiED8o0m6Od86N0uuwDSe6ua
-	rWNaZiDcOlZMuL+ycWEJqwYvSxdlUxhBxQV0/effNIyMuHjZXCBzFnMUmh2nXVXNIjNnFZbarsc
-	GqXejMLKwwWeqqtJWwSHmcfcYcpq+V0FRabQgViYur8m567trGYov+elYUbfidfGFHMNUAH+YAi
-	eN4mzzIJ+8G4TIeQAfPHPBVsxUQJpQE+HWnSBTWZXelZCw0qBpy7BCYWtAKagjhk6djCnVypxUs
-	vHDAoEcGIgwGjDwazfXVrs4h4/BvONMhv/ItSQARaDxNYpkvz37AGqb/qSYYXdbGcMzUb9Vkss7
-	47/Miv6X1MDQ4BTeJJw5cQ+KnWPTA8KQ+vF6S/2sLECuYLJjJLc9Cw+MEsHmn8qlWxYIeYtocQw
-	ao29QVInQSTJdYjVwSnz22owGPFu5hODhFGPN7c9uivIARiopx8fOLMU+h0SUeZgHSFHke3MydL
-	K8l1Lxoe4Hi
-X-Received: by 2002:a17:907:9495:b0:c24:7cb5:d617 with SMTP id a640c23a62f3a-c247cb5d969mr246787766b.1.1787304295516;
-        Fri, 21 Aug 2026 02:24:55 -0700 (PDT)
-Received: from localhost (109-81-81-112.rct.o2.cz. [109.81.81.112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24591e037dsm385915066b.52.2026.08.21.02.24.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 02:24:55 -0700 (PDT)
-Date: Fri, 21 Aug 2026 11:24:54 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
-Message-ID: <aogZZsXwCyOXISaw@tiehlicka>
-References: <20260821081741.1340277-1-ridong.chen@linux.dev>
- <aogMyu5R_DZRqp2J@tiehlicka>
- <f45848da-9569-453f-b0c0-8aa984e1976d@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f45848da-9569-453f-b0c0-8aa984e1976d@linux.dev>
+	bh=MSK040sBBU8kGgBeKv9UupoXrEl2KRZD2AS7NSHKRMg=;
+	b=3Ryex/cQygU5PXiAMn12ESEQkMcEF4UZu/yPjFlAtGcP9pNG8DLoYCqOadg7F8ykxz1Ce0
+	FIO113wz6O5ABUv+wr9bXQqP0xpaDHwCzemySI9rakzXuYDqostRIcwFpIRK98auAyng2H
+	Ie8mCf+3Nqg8ENaYibY/vxa/b89tyqQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=MSK040sBBU8kGgBeKv9UupoXrEl2KRZD2AS7NSHKRMg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787304630; v=1; x=1787909430;
+ b=E0GKCBAqiwbGtxef3NvQTA6webU0djEJEbmRMW3kJepwZO0K2vpnKYCpWnBCsVoC91lzIKKk
+ luGJQ6qeneRzs7TI4DcD79zi2XAZOVm5rKgHYyWPNR11oM2w36F0kdCCeAUkxga4Q9JSRF7cUhq
+ 6RHhASl/dwLrkPTwpbozZxS8=
+X-Envelope-To: linux-mm@kvack.org
+Received: from smtpclient.apple (114.251.196.85)
+	by mta11.migadu.com with ESMTPS id de9d4864cbfbb597;
+	Fri, 21 Aug 2026 09:30:20 +0000
+X-Mizu-Trace-ID: de9d4864cbfbb597
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 1/1] mm/hugetlb: do not dissolve gigantic pages without
+ runtime support
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <e29e8bbf-5a10-4868-87f4-09d48625f6e6@kernel.org>
+Date: Fri, 21 Aug 2026 17:30:00 +0800
+Cc: Longlong Xia <xialonglong2025@163.com>,
+ osalvador@suse.de,
+ akpm@linux-foundation.org,
+ mike.kravetz@oracle.com,
+ mhocko@suse.com,
+ linmiaohe@huawei.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FE0445A4-6591-4169-998F-D0F810A78277@linux.dev>
+References: <20260817162039.1511838-1-xialonglong2025@163.com>
+ <206cb1f2-b66c-4b7b-b0ad-14cca9d8e0bd@kernel.org>
+ <F06EC17D-2A3D-43DA-968B-1DD4E1253EF7@linux.dev>
+ <e29e8bbf-5a10-4868-87f4-09d48625f6e6@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-Rspamd-Queue-Id: 9A6C340009
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E38CCC0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nranxakegx7is331t1yr8ngtsd5aoi56
-X-HE-Tag: 1787304296-661076
-X-HE-Meta: U2FsdGVkX1/Jw71/l+WLTK+7DKH1WKMhLjMWYMIf7x1B2f1PHjp9eDBTMdm3Rz8yrPd0QolbZYDScDO4ES4Xt0sLBupmHCPfv5rgHt5gZBjC+FacOqiXZafLOqdXwE21g4DmDdXLifXPoVucOjy1kjqkJ6h2jvk+shgLpvsoU7c9jqg5K5H1ej6qmSSotETwVhN8/KxDo+J43vyCri7eWMLe6dx7eP+mhrgire0x1HtSfNjQSD4rd44ghEscjDx+THHBBAx8TrCqbJWMXR+ME8hfSQjUyvJnLHXges60TBlTVhmbOGJqq970geww0Au1Lh2+fXkQ/45x+23Ermlj+0f32KGe8raP0mw2y/kLJTnUDnGRi54U+2wtNwaMbDB9wiEBX1IRRJdgvSsZD0C+EbeLzvR+L5jMob6IEnQg6Xg+H0Z/1hbihHrL2oV99NLYy6EDaOjl9HENA0tQIMudheQZahxqXK58clr4cXMexC3uB5MGL7LoZ0MDGX86fO0xt4hZf5elPOCtcKOqhBK41aFWAwrJsilHMCFeX9gQ2hr+A5ChcBAFlwrupI3yDetKqdkqjJzskIu6rx9JbrlxJZuRrJUia/5ayQLSpykT8j0nUPgNBwgpid3Kt5M249IHyFfjPeSne9tJJDfRu8SSnjuIam38tIdbgp4gRykNtfa0ZhRGpjf1eB/Q0VfJcfBMeJ+l0naZeCru8OPUBg/vMjKBOLI8inF2hu5SCAT264QTdS6U4lcDUyU2QKN1FXPoH1eakPrYv9A/GtD6L4xHO7l5WWS5MtDoAhjNxH1AM0+4JDkFU3yIEvI8z0eszKDJ1exL6iO4q8ZP1VJQXtaPy3ZlIkTJ/suoVGfHoD1aUizkBc1mkwFH+d7i4HBm12BytW4snQca58tQ0BKxrOhzPbfgCINIJKVwnlkaMIqbLpK19JUjt/Xn7HS1Lmyr2fgmBusZ2FHl8Luym9EYiRb
- T86/2o1M
- lg0rKaEPTPGwdVqMS3O60On6JRR1rZzUDpmkz3Cn11AgIHyqLcbNWyQKazqD423GvrsUKgEqW1f1Qn+zgMdQA6PfdBtZ5ON/hcfUClVaqUOSe5nWNxYitU18yEcHxQUWLII+SxTPHyEVNroJsczOcueR5Bm8s1e5ztVAacTV/ToWbmchb6jzM4uAw50Dr9Mb1eiTRzf56L1cP2dKzKvuuBc7Y4/Dac7rSJu5FiqHHk0rBAj41IeUvywpnK8ddpqkCQFFZ6+dZMIV1V/4Zip7OybmfquFPxqfHB2NhWaE5cgnR+nmjkQutTT97ZULp6Btxu+CcLsBv3J+GI1of8g511TELN2QO2vQR5fDlqjE0rUyCIK/cPLBs9shlW05xuJs2cevh
+X-Stat-Signature: 1pc9t4kfyn9m6g4k7g9tfjc7hizbgjo8
+X-HE-Tag: 1787304632-780034
+X-HE-Meta: U2FsdGVkX1+sIbqZbsCtoKUpt0We5Z8QOhP29V+JgjbQpga18JN+EtE8VS1i6K2p7okdZGTeiTDGeYm4gAU9RoEwZR5z2QvT37RxmIL8TJnwPBKQSEMtE94X5lxTlGOIubaBrtD4ca+AJ6qA9pxGa0+5YjsZOslVVhasLOdy/T5EnwzOhbIVS0gqIOknrjHu8DSI4Je0zfirViPMAFwb906RNaFh/lfNp9by4ZLrAMvWdiVPJ7iKb40Q5/Oo2w7ebHMrMhQpquVoFmedIcQQ8SktvDgCvFDI57d7s9zh1hwGaEPMVE3gjMbkkmNkmkRpf64tl5Qm+Bsx/oA2pA64nIgAcIq6hR0KDJn0WzrUMFMdkVA7kWNOuI4hIhFkxQJy0wAA+kvaskk/SfdGb3gPrs9brl7FZlvOPis/jD+3RTigyiUoW9AsXbgyoJsYodkgeSvOPusE+y482gqcMnckUU6SXvEFKbCJnmbh79qiD9WJbhE6h5G9RP4jrh4E37a6fhX3782CiB/S/9VHD56B4JCVhp8SPUpokld8RCWTF03iPDzSnQvjog4ymTgD1DWKCXHwwG9QAGC7rwBfplUgk2F0iPMq1xJSUoiG4TbM5xBxDHyuLrZ8kkfv8gb7xlofoqZq1O32hnxwPdRq4LF9AsozD3D4oPYKymCQbw+i70V6dL3IsVANzAeZTMtwHbTTGkZjpkXGD2qiS6kCj5ddwlwTK9+wvgebVajenTizGVamVmoFIVuqHqONAPJx9CsQP2UdPbrknBsOVmHVIk2k/uErJz3Qh2icF/Vtq+BBQ2SE0594Y669Sgq9UrMycWw5EOHApwfjE4zM6yAy2LnuWAdRHZfiKYjvfXSkAacLhYGJty8NF7ZRd1rDeCFfi2Ha2uc8PJGoAksKfDoxSn4rfYmKeVEbAaIqrHtY3RCdCukeg0EyUNXSCSU0bx1JWbL4wm9PYi4nuyx/1IgjHP0
+ zM0QJk/T
+ aMazVMCdcRtTU5uuIrh2CxhzP3RQHyGTRmgR5lobEt0tTXnpyYKX2LrfXiJrreACHbPJV1R0Ffn+SX9FaBYDpjNQA/4Wif2lj2j+EATNcdCV6uBSmF1+BU5L9iX9AD+GGz9z4yy+FRcqRTeR91kOrdJmj+ReicaH57zeezCfcoqMcuz5mQCxey9qnDaXDEnH13cYSVC+4UOw5lvqGYqgH1Gl44suBvL//v0KnDnbC1M0uynbBTTaUv0C4PC0+25+cZZS8jdhbVLanoO/GLaU60Rg5XUaTpA/RCFqkGzLeg+rXmTWOc6XhPzxJSRU/3c1gcw5QSARSUd7ZyO2n1taJlsDytcGU/i1WAPAkoeL7Y7qV3xPJW1jwGVpoxw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,68 +103,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 21-08-26 17:07:32, Ridong Chen wrote:
-> 
-> 
-> On 8/21/2026 4:31 PM, Michal Hocko wrote:
-> > On Fri 21-08-26 16:17:37, Ridong Chen wrote:
-> > > From: Ridong Chen <chenridong@xiaomi.com>
-> > > 
-> > > min_unmapped_pages and min_slab_pages are documented as per-type limits,
-> > > but node reclaim treats them as one combined gate: once either is
-> > > exceeded, shrink_node() reclaims slab, file and anon together and pushes
-> > > the other type below its limit. Per-node proactive reclaim reuses the
-> > > same gate and fares worse -- with page cache and slab both under their
-> > > limits it reclaims nothing and returns -EAGAIN on an anon-heavy node [1].
-> > > 
-> > > This series gates each type separately via two scan_control flags
-> > > (skip_slab_reclaim, skip_file_reclaim) set only on the node reclaim path,
-> > > drops the combined gate, and extends node_reclaim()'s early bail to check
-> > > anon. The flags default to zero, so kswapd, direct, memcg and drop_caches
-> > > are unaffected.
-> > 
-> > You are explaining what but missing the most important part _Why_ do we
-> > need to have this addressed? Is this just addressing Sashiko review
-> > refernced below? Is there any real usecase where the current behavior
-> > matters?
-> > 
-> 
-> Hi Michal,
-> 
-> Thank you for your reply. I should have made the background much clearer.
-> 
-> Yes, the original issue comes from Sashiko's review. Sashiko found that
-> proactive reclaim fails to reclaim memory when the node's unmapped file or
-> slab pages are below the minimum thresholds, even though there is plenty of
-> anonymous memory available.
-> 
-> After further discussion, we realized that min_unmapped_pages and
-> min_slab_pages may not be used correctly. Apart from the issue above, there
-> are other problems as mentioned by Barry in [2]:
-> 
-> Even when page cache is below min_unmapped_pages, it may still be reclaimed
-> as long as slab is sufficient. Similarly, slab may still be reclaimed even
-> when it is below min_slab_pages.
-> 
-> node_reclaim() cannot reclaim anonymous pages if both page cache and slab
-> are below their respective thresholds, even when there is plenty of
-> anonymous memory available.
-> 
-> To address these issues, I am sending this series to facilitate discussion.
-> Your feedback would be greatly appreciated.
 
-Those interfaces are relicts from the distant past same as the node
-reclaim. I wouldn't bother fixing those unless there is a real usecase.
-Pro-active per node reclaim is a different thing and we should probably
-divorce it from those min_$foo counters altogether (if they are not
-yet).
 
-Same as checkpatch.pl, shashiko is giving you hints and you shouldn't
-simply follow them without a deeper considerations. Consider that there
-is review capacity required for any patch posted. We do not want to
-waste that scarce resource.
+> On Aug 21, 2026, at 01:33, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 8/20/26 11:38, Muchun Song wrote:
+>>=20
+>>=20
+>>> On Aug 19, 2026, at 16:52, David Hildenbrand (Arm) =
+<david@kernel.org> wrote:
+>>>=20
+>>> On 8/17/26 18:20, Longlong Xia wrote:
+>>>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>>>=20
+>>>> dissolve_free_hugetlb_folio() doesn't check =
+hstate_is_gigantic_no_runtime(h)
+>>>> though remove_hugetlb_folio()/update_and_free_hugetlb_folio() =
+silently
+>>>> bail for such folios
+>>>=20
+>>> That's odd. Why do they silently skip such folios instead of warning =
+that
+>>> something unexpected is happening?
+>>>=20
+>>> This screams for a cleanup unless I am missing something :)
+>>=20
+>> Hi David,
+>>=20
+>> Sashiko actually has a pretty detailed description [1]. So I think it =
+deserves a fix.
+>=20
+> That's not what I meant. I agree that its a valid fix, but I think the =
+code
+> should possibly be reworked to not get silent rejection from these
+> functions--IOW, likely the callers should make sure to never call them =
+in this
+> scenario, and then VM_WARN_ON() instead of handling it silently.
 
--- 
-Michal Hocko
-SUSE Labs
+OK. Make sense.
+
+Muchun,
+Thanks.
+
+>=20
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
+
 
