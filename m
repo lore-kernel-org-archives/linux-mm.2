@@ -4,94 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5FEDC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:34:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11ADC5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:42:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 957066B008C; Fri, 21 Aug 2026 14:34:53 -0400 (EDT)
+	id C22CB6B0095; Fri, 21 Aug 2026 14:42:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90BBF6B009B; Fri, 21 Aug 2026 14:34:53 -0400 (EDT)
+	id BD3BF6B009B; Fri, 21 Aug 2026 14:42:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F5F96B009D; Fri, 21 Aug 2026 14:34:53 -0400 (EDT)
+	id AE97A6B009D; Fri, 21 Aug 2026 14:42:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E35C6B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:34:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67C0780233
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:34:51 +0000 (UTC)
-X-FDA: 85126127982.10.90D47DE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D2BE44000A
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:34:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VE6JOs5Z;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787337289;
-	b=FC+FV8ALOnjsojCPJ/Ay3BGgzOdR61XBRDBz4it48MUvLjYvv3yTEfiT1qtGDxFXARaJA5
-	hzIC1dXGCycLca9GX70yc3Gpk1SMHl5SmpwY8FlhuiuolDutcpGw+Qcj6ecJQLsuf2zcx4
-	+u+PnlzxhcocNtL4UW2qNmUeIiKYNAA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VE6JOs5Z;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8579A6B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:42:06 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D819C0207
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:42:06 +0000 (UTC)
+X-FDA: 85126146252.14.EC6C2F9
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4EFBA100005
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:42:04 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="Qpgb/ByY";
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787337289;
+	s=arc-20220608; t=1787337724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oMBCnKRxKdS8Q3i2Mwvd1NJnQGm8tP9hnWkr5qGiIIk=;
-	b=etZLe1zUe2/Gcj6DsMZs/4PFgq0QZVdhJxOtxlWKv8Qij0KuViMdw/xrgvnXA+tbpuXENE
-	PPJd//wC3UZm1iDf6CNkWF+ekrBDKzlq23QlebRm/iJZcixlq1dNaXuFxXX/TCoK7uGWj1
-	ICmi9v4LFuhK8cxhrd+8WpfeN1NkHKQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 220C861126;
-	Fri, 21 Aug 2026 18:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F3C1F000E9;
-	Fri, 21 Aug 2026 18:34:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787337288;
-	bh=oMBCnKRxKdS8Q3i2Mwvd1NJnQGm8tP9hnWkr5qGiIIk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VE6JOs5ZJj3dEjBzNPO4iPDfwuEjv0FsIv+vdc8KAnBGDN/QyXvPtzibDYbgCaNB+
-	 0qKQDP7MVhwfGi4k8B3e5K3OgNolhxfJ4A6wZnnTYQFzqZrel/QFBM7QcLzRON1VA2
-	 LazEpVjV6bJmbfnO2imsIZUM0mqHw4kD6blPmx+UpT1lUA2lqkJRbDWFZ5Umqd56/S
-	 LlNgcQcce4ULiYlUhok3cGbtugaiJxEgWRfzd+HqDvXBBRk47VVPvUYd7I4Gq/4PJt
-	 aWDJcrVOZbmLbUu5lbHdTfLcpSOkTNZmfg1nD1l0OAGtiGJgcy4cWISjaFOf0C7k4X
-	 bmw4bpPl83HUA==
-Date: Fri, 21 Aug 2026 19:34:41 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH 1/3] proc: refactor /proc/$pid/mem to use struct as
- private_data
-Message-ID: <aoiXvKXQK__0cSWL@gremlin>
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-1-90cd2357ee05@google.com>
+	bh=7ZJ1gDUH+GzGBn6NOh4hEOLkLDX+Z7WrRip/EASVTmE=;
+	b=k/rNzeG3m8JnAOaF46BQsns9g0NEypbY93eYb43AFq8KTNph9vxkq6emdI7UHsSo9UQalC
+	qH7XCRVpbERtA/AE9SBXkDhl/VuR8EjyBK/Zf43aHAHdC092OXJvJHj8tVVi/AMw5G9kpI
+	AlrYIkqR3/ExRABUmu7Z0Y/jrIJtpts=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="Qpgb/ByY";
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787337724;
+	b=TUsctfQFMOZi4URconZrx2lm914QoZxdF6IqbvIu1Qj/sEEXYcbBhEq8fWK7y7o+XX8tWB
+	mN8JLwFeqsG4jFpb8G7ZiHCjdbazgK3XHMSmPVhNebiNvh7sZzT28zeapCBRXsFwbV4dts
+	eoqGpGKCnQXBJwXtA2GlBf7AE6LYQ/0=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8f1e274ccb9so7133826d6.2
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:42:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1787337723; x=1787942523; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7ZJ1gDUH+GzGBn6NOh4hEOLkLDX+Z7WrRip/EASVTmE=;
+        b=Qpgb/ByYzEjePEx72w3th4K3pWs8/kKi2QkeqxdGyBjgzO6+Pt3BnYDkPfduC8H3Gg
+         GspheoCT0Zs/KPo8GOBbn8jSr1jvPCXX7OzZRNBtzDfmeWU/O1tHmpJWzjrPNJZyz9sy
+         ivydtyGDr/4PI0/zlz56SdHNO1y2YdZqKmFTPWH9TAQz2PPvZreS8U7d1UASzdbGL5Fe
+         0JPQ0a7F5BkIl4BpI9MMf6vToSb77JpbJxrHNSTQduRpVJBlt2F5wQWWp6f3nDLG4lZn
+         EPXJC1Ng6qszSa8wuZcoZQpcChb/B18SPZloxM6eIdMzhLOrTCsig/0X0bfPxQq+mLMv
+         U9+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787337723; x=1787942523;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7ZJ1gDUH+GzGBn6NOh4hEOLkLDX+Z7WrRip/EASVTmE=;
+        b=QhHmHbheeJJTHnCkcDpUoS5N9y80tNAvfd4tHeZ8isFMd+ScCy7/x0+yzOjcsy0Gpb
+         qIuvr/nI/SiSOXrtBbtF6t6Jb7hZdM+1le1fV2pStwHrRVUw98nnGplsJOo/IDCjuGsn
+         SXSQjZDru+mEa3g+03wZ//dikJsCaBEBFDMxA7JwgVDYDFZRFA2OHEw6hthxTQKHwMUw
+         xEydUlaL5EtkBwEkk3UsOfUm90PkG+BHy30OmyBtONtEt2xGX7rayy3Krb7tMZIOiw2l
+         y7fzbXTldEYJh1u+AhsvN4AI2/2U7j7CUWmGqppjC7u58cNzTdCJZV5TvJIwvhN5NaPV
+         xkNQ==
+X-Gm-Message-State: AFuF++nc8YFfHA3acxtEq9SiGbEzv84OVTZQczFtKYw6dhSld6nKDiZf
+	WDHC4xx/PWr+QVx2XWu2WTbhN2Vysc9brJYHYw1zDegPIAQtDXDQvhULUk2gBiT/7JM=
+X-Gm-Gg: AR+sD11qWgm88ILITrs3lT0ODjkbCgg952Oy/J5NS+QKar9utz/B4PUBAuU1nD0YjyB
+	wMt4jSniDcshWmO4/JxHJbUlsRmiQ84Gwl8ZJFuAQq/4GN6xRVqWwdPPWrNcXEeOt4JGzTGgOq1
+	Ewyd7Br4cNCW20xpsm2vrl+Z1tP5fwAoDxxr6+dgqPrwSlY79/agt1kdd7y6PVKHmlJsB2KqtZC
+	EtNEFOB7MhZO/UMLfB0c+t8DpDgdHkVm4Oa6IT2lUCbES+kiZIrrtQCDqeLsjbnAVknFXd54azb
+	2SyRGDNOeXyzneN5I1BhmGvP3LJwpPweC0zRUPuSF4xgFlx9PZLlWql6TxZymLF9SCvEBwManpg
+	sN830ricaX+mQqbazNqL9FgmR36eAIADoKQlEyEvtDc9p9dSUwvDU+27wDqoo5xLImPiJXcceUP
+	4Qf+tn6iNCcq+BqfTkOKxWMgU6uF+p9BxiLSg2KKYfG/e1XR4I5ZXrZncZi6w13GC+PE0xz4YT3
+	YGrd/KmkhXHLiIR6tNcQZ219ZfCnjoB2tcTw6+pp6HX
+X-Received: by 2002:a05:6214:f21:b0:907:5cea:2f00 with SMTP id 6a1803df08f44-90c809444cbmr84527006d6.5.1787337723325;
+        Fri, 21 Aug 2026 11:42:03 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2a2d62sm68350656d6.38.2026.08.21.11.42.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 11:42:02 -0700 (PDT)
+Date: Fri, 21 Aug 2026 14:42:01 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
+	jannh@google.com, sashiko-bot <sashiko-bot@kernel.org>
+Subject: Re: [PATCH] mm/madvise: use folio_trylock() in the cold/pageout PMD
+ split
+Message-ID: <aoiap-yBdPaM_YQG@gourry-fedora-PF4VCD3F>
+References: <20260821150912.183976-1-gourry@gourry.net>
+ <aoiWZjgcitp0nSk0@gremlin>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260818-selinux-pokemem-v1-1-90cd2357ee05@google.com>
-X-Rspamd-Queue-Id: D2BE44000A
-X-Rspamd-Server: rspam10
+In-Reply-To: <aoiWZjgcitp0nSk0@gremlin>
+X-Rspamd-Queue-Id: 4EFBA100005
+X-Stat-Signature: g1tg6f6qcsmej98k8fut5s45xcdb7g1j
 X-Rspam-User: 
-X-Stat-Signature: jsc4j4a85njyi6gmhjbd9fyn6onhehj3
-X-HE-Tag: 1787337289-439746
-X-HE-Meta: U2FsdGVkX1/OlTHHeeqFMfaOgb3GSc/XozM8QBbk2IxAm08/jmdRlsdMNDiqXCjxovI64tDjPm7zJRX2coTmPnkv2XZ+pnmCu2mBun3gI7JK7fbaML/cp9ohdkOpuNvD9lNSuFQnNGaunuc//W/aBTLPocGuvjOoABSQYbmm6O0Cmt2UgriczRqRARR3+0qtf8SHwUdHOP44heahNimn+gex8zq25RkEZjSvGsar0zuLpi25sTr8VxW1GJaQmtL6bCHkat3CfT+kO5LTAsUmJkiORuT1i9ZfdJJXXOwq0vY0a6l2q1cV2dmcABBbJDd1DusJ6l3v26dl8/6Ol7MLifZtl8LDnBsHbynezkpirAxgnKBX+QuETsYJcadu34v/kq5NzFiKOplNSaEG0mrJRtB/krpNU1LgmbcyFBBbtU3zW7E5UY3yyF3SWCGCvnBms+APXFuQa6fVQk6rfvwPNJciWJvOZnPN38XT2vi0ov23sGeSdcQ43Sj8CMZgGVmcTQuS00bnHWnwGifR82oLwIegzFzYcvy5xaAijv4RwpEpX75nkvVUjF+Vzyp082tpNyDoNV6TV2PNGf4IlDJJXbnysky89tKzQJGBnoYug9lhfeSdsr4+63LNJGyJE5X8a942vR9WiLP+z/9lYeCC+zZckb+kcbj/KZR8UJsMk7/V1nKRb9nwmlJpkKsxCDCdKIuXJvdx2GLX9Z1XwLQ+OMNLBC13PPh2y86CKh4bIg3VkTbSH4PHBW/DoXSzccxoEU1CdbwKVz8/6w4MjQMv+eF215LAT9cAkkEgvDPpmACLMsp3nlEhkF1/BkJWZVkIfVqug9CFYMFZpmi66raqI4yWSNT5PFViRDIZLl1W+tZU8UkC5PfExW2Qw49g+My1GzwADr9Dk1g/YcVx8WH9Kn76B+xS0YvAGK8IiDQkhklWzE1N2uW9YGtX1cdow+bniN/+LctwHBPH6nl3t+o
- FRSywUse
- pjJeah1+WTWg/OPe4Aap5Sztc5IgDtENq4aq+tTlfPN/H81OrIGGe/jZ2XRVWIdTDq9PhECLCogZwUCTJdZ67VEIht0Kf4paHKOvOW6sDU/cmC5jELANCQU3f0TyxCwEpW1/icclwQu42gXksLU7oXRlOPJ+SXAvrB+HoPPqOZs3+WjNcU8FSyuZhvofev10tHALem0owy5rpBdeT5teclAlrAISLDfjJhYistsuyuCHBqZVwVF1jPRxxqmZxXZXyO5AOqovP2CGpdmr3gVjBWr3M4ZELg5lvoZp64MCd5dLFWfR88wOD635WlgnDmp53ddSpL7wV97kQhnxp0i0YOtF/0nN0hiBg1+7TdPZbazNMFh86k1GODC9McA/DmEgYP/xdNRIjD4HKUP7GKMgNVFjQX2X9B2Ljx20rGngh7xl8tMT1fscgPmEi2CRI50o6rhijzA/lczqgF947jkKeEA+Z/w==
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787337724-732884
+X-HE-Meta: U2FsdGVkX18gKb75Dn8UocUhCCJ6VA/+2qJ5vz/wqF2sJMRHrrbNWtAlwTVxiHYe5xe1Wd2pgrihIb3C6byAr4+P6zaGQQk1ew1BGs+/K9Lky9Pd5ls72Pnvq8TglXFJZ3OqMgX/hEcTIjoswIF/x6uBK6ZK8Er1ItVu1tOr6Tqp4qClE4gyTcG4G+gHqdxVoSIAuuZ/eK8IZ2KYlyghQQ2JAFdQpzgYqOPH4ezRoVOGLxxR+GtjTH9hmT+qhjnyolnh8O60C0NGom2duTeMtj1vztCW3mG5BMgXJrcs0R34aYeF6iiqVbWcmlpT4Qs7P78+XMJzUnZKaqRJsngOVk5ep3rLIakd5aSg0Idjw8lOcaD+noAcRy2io/1J+Pi4y1mspKgSTHkXhIpKIqL1uQTtjhXxnakj85G44KK46ArFb4JZuc6A7J38526CfpjJUXOY1GhgIyhiSmUSX4adRJwKr5uGbgu+AScRU8XqbLS2WXNWpTtkHEoM4zZlnq58tUScInBi+lUyWPd54uyeMlhxjJrKkEy93PKkcPJBCptPeydhJaQqpF4G2j5F6jgbs90jnMRvOpy8hovHZgv8qvLTkwi2cqgFQcxBp8HTAtsUjACte/VrD1gRpovN9Yc2mSUgVIASeElPa5kl7W69GhJRf5Ouy1Pu8oSgF4WV8wGAAaiGm47wp0WlZppw9RcYVaWL6Kt5OGVBS5DUZMSvz9YoDHsq8PGr2TeT8SRmteiRPF/4+v0gytIwlgQwJe7zB8L/THPWFvsrN6SE4zcCnaAHJpWPvg8TzfIEFj8nx1PuIK7WbU3D7lWWR5hvewL6vYj1KxyBMmjexwXGz/pl5x9tfm8g++Z++qDyngI8KBVHzTvVFvYr11thwXY9nY8kJOe2Sd0DkOprlRndYnntBTBtW2rJgHhmFKZ47gFLlkkegEflMKxqYOxu+hUbVCDj8rvIuXGSJ5TA65jViqG
+ HGGzjtoJ
+ Ys5Zo8eHqAJYwnsAGiez5tbcds1Jo9cX79l1VBLpNAgrTrRSpQkeSOroLmLqvY7aeIPG65mPD0zjoe1jYCgvYLzi9Tye1P1QohiiMHqlNq7RC00xd/JPwesaifu4/6FZKXvbIs8r5MAQEmWpRpjuGz6pptv1vDtkfRwbruIXuKdWWnANPdeetkWGiTzD5SRXt6bzXYFZSQ+NJu5iDnQ3K9Fuijt2dB/f84kjSYTobHVtogKwfSomJKJdpC0aOoyQHOBMVVkvDeODgxx9WJKKDFUHZ3QmCaoikbbN9R2fDShoqDhoPOXsNqUEhcVKLcsBGMrvtkEK58c1Msh0CrOWz4BUPaZbbVdL0Z8hLUfs0ienSRTHhK/V7hA7YGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,95 +121,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 09:51:05PM +0200, Jann Horn wrote:
-> Refactor the handlers for proc_mem_operations to use the new struct
-> mem_private as ->private_data, rather than directly storing an mm_struct*
-> in ->private_data.
->
-> This is in preparation for adding more state in mem_private in the next
-> commit.
->
-> Signed-off-by: Jann Horn <jannh@google.com>
+On Fri, Aug 21, 2026 at 07:23:34PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Aug 21, 2026 at 11:09:12AM -0400, Gregory Price wrote:
+> 
+> I am _so_ glad to see an actual reproducer used in a sashiko bug fix. THANKS. :)
+> 
 
-You had me at helper struct Jann, you had me at helper struct :)
+fwiw i try to produce reproducers on all my sashiko submitted fixes,
+i've just been dumb about including them in the changelog.  Trying to
+fix that from now on.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > +			if (!folio_trylock(folio))
+> > +				goto huge_unlock;
+> 
+> Doesn't this violate lock ordering?
+> 
+> From rmap.c:
+> 
+>        folio_lock
+> 	  ...
+>                  mm->page_table_lock or pte_lock
+> 
+> So now you hold the ptl lock _before_ you obtain the folio lock?
+> 
+> I'm not sure if it being a trylock gets us out of that particular situation? And
+> I'd be reticent for us to violate it... unless I'm missing something :)
+> 
 
-> ---
->  fs/proc/base.c | 29 ++++++++++++++++++++++++++---
->  1 file changed, 26 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/proc/base.c b/fs/proc/base.c
-> index 780f81259052..bec6197329dc 100644
-> --- a/fs/proc/base.c
-> +++ b/fs/proc/base.c
-> @@ -848,11 +848,24 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
->  	return 0;
->  }
->
-> +/* private_data for proc_mem_operations */
-> +struct mem_private {
-> +	struct mm_struct *mm;
-> +};
-> +
->  static int mem_open(struct inode *inode, struct file *file)
->  {
-> +	struct mem_private *priv __free(kfree) = kmalloc_obj(struct mem_private);
-> +
-> +	if (!priv)
-> +		return -ENOMEM;
->  	if (WARN_ON_ONCE(!(file->f_op->fop_flags & FOP_UNSIGNED_OFFSET)))
->  		return -EINVAL;
-> -	return __mem_open(inode, file, PTRACE_MODE_ATTACH);
-> +	priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
-> +	if (IS_ERR_OR_NULL(priv->mm))
-> +		return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> +	file->private_data = no_free_ptr(priv);
-> +	return 0;
->  }
->
->  static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
-> @@ -880,7 +893,8 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
->  static ssize_t mem_rw(struct file *file, char __user *buf,
->  			size_t count, loff_t *ppos, int write)
->  {
-> -	struct mm_struct *mm = file->private_data;
-> +	struct mem_private *priv = file->private_data;
-> +	struct mm_struct *mm = priv->mm;
->  	unsigned long addr = *ppos;
->  	ssize_t copied;
->  	char *page;
-> @@ -970,12 +984,21 @@ static int mem_release(struct inode *inode, struct file *file)
->  	return 0;
->  }
->
-> +static int mem_release_with_private(struct inode *inode, struct file *file)
-> +{
-> +	struct mem_private *priv = file->private_data;
-> +
-> +	mmdrop(priv->mm);
-> +	kfree(priv);
-> +	return 0;
-> +}
+This was the thing i was least sure about, but the deadlock condition
+should only happen if we tried to spin on the folio lock right?
 
-OK I see that we mm_grab() in proc_mem_open().
+It does look weird, so it would be wrong of me to say i'm 100%
+confident this is the best change.
 
-> +
->  static const struct file_operations proc_mem_operations = {
->  	.llseek		= mem_lseek,
->  	.read		= mem_read,
->  	.write		= mem_write,
->  	.open		= mem_open,
-> -	.release	= mem_release,
-> +	.release	= mem_release_with_private,
->  	.fop_flags	= FOP_UNSIGNED_OFFSET,
->  };
->
->
-> --
-> 2.55.0.737.g08866a6d13-goog
->
-
---
-Cheers, Lorenzo
+~Gregory
 
