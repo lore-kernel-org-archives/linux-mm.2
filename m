@@ -4,180 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E70C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:53:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 467AFC5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 09:54:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0802E6B009F; Fri, 21 Aug 2026 05:53:47 -0400 (EDT)
+	id 42B536B00A1; Fri, 21 Aug 2026 05:54:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 031016B00A0; Fri, 21 Aug 2026 05:53:46 -0400 (EDT)
+	id 402C46B00A3; Fri, 21 Aug 2026 05:54:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3B116B00A1; Fri, 21 Aug 2026 05:53:46 -0400 (EDT)
+	id 3185B6B00A4; Fri, 21 Aug 2026 05:54:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B3ED46B009F
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:53:46 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 47D4C403DC
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:53:46 +0000 (UTC)
-X-FDA: 85124814852.29.0DDD6E6
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CAC8710000C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:53:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=LY0XSeJr;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf05.hostedemail.com: domain of "prvs=6693323b7c=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=6693323b7c=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1787306023;
-	b=Cksj0o9RxUDffTMn4lVen6NFwHVwsqlD6CWtfbdtM5tGk9Rwkms20XpNNwoQdR+P9Spusb
-	2DG79ezGOXFbGsygP4e+hsYuieEmGo30xau1y1ExIf+gCvp6KjJLnPtI62bnSnYTZ+Jsh1
-	yLk+4rqJgK+UW7L9ZDl5HOqxI2L3zBk=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=LY0XSeJr;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf05.hostedemail.com: domain of "prvs=6693323b7c=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=6693323b7c=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787306023;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E7E06B00A1
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 05:54:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F65F1C1703
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:54:06 +0000 (UTC)
+X-FDA: 85124815692.01.AE4A8B9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E0F74100002
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 09:54:04 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SVJrWNLC;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787306045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q/b5fVo2WxJIZnLRI3/yvoL8jlPSjpb9T+ok0n3ErCQ=;
-	b=BogqTyh5t7ta1CXfjhgqxgq6/AXMDLn8pRaZADb4b9iN6LoIiKq6+UpyYqu0m2+KrzPBz7
-	ykim93eaK+OekkTJhKpRIUfOQ/npy0EkiRbTqodnO3hVCBTbipVDRWYFxVqc2U6bX0BOLq
-	h/YS1gPhGS/xkybCrjgLXt1cGWygBGI=
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 67L9LlQ83114803
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:53:43 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=Q/b5fVo2WxJIZnLRI3/yvoL8jlPSjpb9T+ok0
-	n3ErCQ=; b=LY0XSeJrzaoLLXHaa1OQZqLoVbsuZvyCQJzBJI6Bpc3zYPsHyyQb6
-	1CP2XY8YkUqy5NDqVQ3sW3fxmFq8KcAOlGof/gV6uD5oQsmqaz79YSlFeiEjm2oG
-	GyaTI6R9M0qOadiiEf3vd3xeNijttySRR7Nbcru0uxWEsAOqGoKfXrtDzEc6Q59s
-	8KYgDS57nWWyN9yNJw2mQPOAxch6ASz8ZjT29MSq692FcoF3Dk3cU6W0Zw+wLI7e
-	x3jBpNQ9H3t1bIjZqnkG/drNJCYVXeQqew0h5ONCDwxZEJ4ExwV+6CBQAdjUlhi+
-	fzFk3uW4BG9nuVSWbRMbblA545jPeFltg==
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4g6edu1t0r-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:53:42 -0700 (PDT)
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6a17c89d8c1so1231362a12.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:53:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787306021; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KNh4jtS3bKSC9BT36vmyur5vbaKf+3JQyf6mYh283yyZYMltpExFaaVI3sI+tKZ61u
-         WRB46VSff8VIX50mjGScfnTrTYeNhhPH/hhQQZL1fYgrcsadqFe9wm8la4P1OfbzVAUP
-         aIWB1ZyqZ60ynXdiGC5MQDdit0bT55/vxgN9y2qhUq1dUTevM26H1nBDt4CTz5fzo6LW
-         1u1NcUPY8O9RtFDXyEo74Gd3yjNlL+2QvcApsFBJaOeW9TGcHHCO9U82fJAPWPVKi1+w
-         e4ViV0DipXXSe3XmelEfRqsxTcjbnTVqncexhJ8rWzoLjeIcJYaxbytqA2mAh88sXi6U
-         Su9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=ej/zOQeAlckNdnxilgVX/wASDqQzfo0LnhQaPbJcOkI=;
-        fh=7GzgmKDzPB7c8PBpUgMERa9QMmD36joWS33U8NKbKJs=;
-        b=m5VcdziGpMQ728lqkp+L8ac2GZTMxsF+//pYtCtetsg0rspL2jWdfMK/LXXqJPs8/F
-         ypwMlbJUKGb+JPXylPKO7om9h+zfU2OnN7RVJzhZfGgKgE9VDGPy/fuJk645UFCuIHdg
-         6uvaj90SeEYFyL6XIqpUBWgLPWzrhXBvqSv/uL/w4M8z5G44UbVkdzwfW82PxCDo/YZG
-         fdDRi0ALX18ZZ3WPrbCk8LpyoinA/Bv76W7Qofljzx68oSyzkJYmoWM9kD2FmZ3LZscp
-         1Bt04INX8U/tCs08RPcqHbIaSg7HSgF3wyCj60dTRJ201SegUeXnOJwbDpyDoDEZwib+
-         0xJw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787306021; x=1787910821;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ej/zOQeAlckNdnxilgVX/wASDqQzfo0LnhQaPbJcOkI=;
-        b=cTwTmSkwKtPPtHxP/zGYjZgRMZ6j3uaZ9f8pgs4RHy/3Bzxn8+1v6ctbwmeEQUteU6
-         b/MQsf3ht7NsnaY2amoDlL0QTvCOMMI02PgGXnK6kvY673+SWMjBnNdUyO9o1sjn77bq
-         6QcQCX2fqcRZskEigUmG2SiyTs0uaSSTY6UqxVMtDc7kt0vMQGHClc+QgMsnSSuIbKdp
-         9of/mmLWwDe8KvnL48bYg3TJ+0oS519AQU3M0sB5BQCDQeTl93ssSyTuXCTjXpxPDAxe
-         Mpl10PsK1V1m2ZmN+sH6jOQw1b0NLDVQmJpjUmyogthxNik9MJsX9Hv29oduQcS1vwVf
-         5aZQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoRCjIhU/1CM+lzcTB+MARcSR2p8fa/JDY0Qj9/RTJpgM4LaNxcdHmVTWn6hHwG6jCmkbMb5qa/GA==@kvack.org
-X-Gm-Message-State: AFuF++mD9AQh+Zpo+wyz3tOG+5NWPvPJCB2THRj9tbbY/Qq4Bj42bEPH
-	mrqBwHSDfvFac4mpDPUal58zrSqi80K1xHmjhjnnPYihiOm1ZwhwxX3+Zm2RZVUxtMWDiBkRNP0
-	S0KI/kU1NXcrDv7FkmkzX+1ug69QVfnx/WYHWTVHdKym2CT2vKn/bkIZLgDcFzalAWfFjs1fUe0
-	SKHQdfcORuJS0GN0yUOKTm8KUNqw==
-X-Gm-Gg: AR+sD12uQsrAvdSJ9ZMsoxmBimvlFvmEOc7xApL2YcoLFCHTrn33rFotdE+GHBNeBJR
-	GIuxWn8c7O1HA7IiIJiJD4ZOlbfCBGHVTQV342M+0yu5ThhAxULtBQ8LThgZoknfeNNT1ERyC1Y
-	botOl46bAfsXRboLSmo1k9Tu4LRsoodJouG637+spLkp08V0CG1viT7zTsdqvrkc6/GARoXpxPS
-	KR8+kFdPvVdYpB1rA==
-X-Received: by 2002:a05:6402:2353:b0:6a1:f95b:8cef with SMTP id 4fb4d7f45d1cf-6a42f179014mr4703998a12.4.1787306021567;
-        Fri, 21 Aug 2026 02:53:41 -0700 (PDT)
-X-Received: by 2002:a05:6402:2353:b0:6a1:f95b:8cef with SMTP id
- 4fb4d7f45d1cf-6a42f179014mr4703944a12.4.1787306021163; Fri, 21 Aug 2026
- 02:53:41 -0700 (PDT)
+	bh=TjPLxJNysrCM3XRTjy0rjnsBt7BAmnyP4ZMFpEcN1Sw=;
+	b=VeOAD9KWzRp+gNoYHiHlDcJShQ5mEIOqJd396Kj3U6Pcj61B3CiCF7fcgGDb1OrqHgkW8F
+	4irN0WQ6KSuLWMZEUX0kewxvmH5J10Le+O7bhzCVY4GXYeZouzr24T+0pIUtNp4w3tVIqL
+	ODAWtAwQw//VeSDZXjWRNsDtvuHzHZU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787306045;
+	b=b343U1quQEu0/F9nKz2D7XZEx7I8HtJBqlE6GrDX7rXyR20EB1N/WKYLdTEo1E35+e5LDT
+	lwUwEGbVe03c3Jfpse+OO2n06ahxaey1Jyfy5c0LyRfFsrjseeDMU5s13jBG/QLB/WFuCu
+	FXPMQ0PuZ/zHF0/gTyhRnn6+zFnJgSg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SVJrWNLC;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 14A4843C81;
+	Fri, 21 Aug 2026 09:54:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97B51F000E9;
+	Fri, 21 Aug 2026 09:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787306044;
+	bh=TjPLxJNysrCM3XRTjy0rjnsBt7BAmnyP4ZMFpEcN1Sw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=SVJrWNLCMys4aydRPUHIVTuX7TEEsk2EQ1EQ4KNIWMxdspWLnKdBwX8GiAsWuIA+3
+	 xeetpygDIYQhcq5Cx/zuvud0+6wiM3d5sexk5Q/bK3+8Mml/0oCrHplnLlt0S8ybqi
+	 /v20kjxrlHkWTxETU19UioaRAE7YVc5VVJXmYwwOfl3DsT46cDmwqSH4k6xoBskYkV
+	 MM9QjlqvBNeACDehdIfoTTS8XLm8SOGTTMipmrUM3VLqcNI6GqRjHcn3oIa3Rck1Yj
+	 Bd7E7KVogJmt1BFhraC9rsxas26BHTa4+xJtYY3vX38LN7DVocCouQGFjByCEAwPGG
+	 fm5ZyV0GW0Mbg==
+Message-ID: <59525a3e-6003-4ab1-bd75-e0c7dcc8a257@kernel.org>
+Date: Fri, 21 Aug 2026 11:53:57 +0200
 MIME-Version: 1.0
-References: <20260818163221.589352-3-alex@ghiti.fr> <20260821083500.856970-1-kunwu.chan@linux.dev>
-In-Reply-To: <20260821083500.856970-1-kunwu.chan@linux.dev>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Fri, 21 Aug 2026 11:53:29 +0200
-X-Gm-Features: AcwNN1VwPpnVY928RhWmXd4qrgisMWDu8nlBflGB812tXUe-FhICPDNcvqK498w
-Message-ID: <CAEmasaUzCU7r7DzJfMFbQGZCJvA_wOJifPywQmy8mOz0efWn8g@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] mm: swap: drop dropbehind swap cache folios on
- writeback completion
-To: Kunwu Chan <kunwu.chan@gmail.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Kunwu Chan <kunwu.chan@linux.dev>,
-        Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
-        Nhat Pham <nphamcs@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Kairui Song <ryncsn@gmail.com>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Kemeng Shi <shikemeng@huaweicloud.com>,
-        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-        Youngjun Park <youngjun.park@lge.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
-        Wei Xu <weixugc@google.com>, Yuanchu Xie <yuanchu@google.com>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: ljAjNQkH2eTzqLOCoTqvhDq15JAIvWEu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDA3MyBTYWx0ZWRfX0zV0X+YzU0QG
- aUV+vFv3qBEEFO3mlFN4U4gY2fikCQw9BLa+jtLo2y2BiQy0U8gTOXoFqRf0kaBnaIKs+1N0Pkv
- 5+rlnMVNxh1acYDIuu6DUd0Iqlj17/YdQfAj1s1jqDYpu1BTHNpXyRQLYatVwtEf0YjZ1FzxnUB
- ojUhc2vvPJoDcANqQin0wy8XioWJxRvTBOM79H1mnNrPM/lE/vKvXdSQKExGTAy7lxBwYLB3fYt
- HGv+UjveBf4Pmn8DCOzFXcdkQGmwhP29Q5pmDX6S/GTCmyYrm/1oyKTCDWwsFqSzANQIZp9IW/6
- uIMFofakMx5Px1o6xXhTyuP1YUma9drg7MW57vvRzZIrrF1OUDMWf184+rJrhMs8S2oHmgBxPcW
- jeUGm3wxQdu+Y1exTpXKseFjcgngwks97+7HjId87JjrUoqBfVxm734M2LTXb/WrXRbI5Ec537A
- 7zOcus5dYva74c5bghw==
-X-Authority-Analysis: v=2.4 cv=CaE4Irrl c=1 sm=1 tr=0 ts=6a882026 cx=c_pps
- a=9KvDgq78n9V61H3VJbnhTw==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=855S8uPTkML1Oy45N9_h:22
- a=pGLkceISAAAA:8 a=aLlJzFw6OyoQ_NU6FLYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: ljAjNQkH2eTzqLOCoTqvhDq15JAIvWEu
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDA3MyBTYWx0ZWRfX+wcGHnTkxVns
- JeEKOu5Mww7G0dFkTyI/ONlGJmvBDg7twkW6oF7WGeJiqaXf6sJ0WhKjmZKqaPDfM4Mx9kNIRLw
- CC7Vj93cFI+HXesJnVz6HNm/x9o78ac=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-21_03,2026-08-21_01,2025-10-01_01
-X-Rspamd-Queue-Id: CAC8710000C
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/3] selftests: mm: introduce page allocation stall
+ reproducer
+To: Andrew Morton <akpm@linux-foundation.org>, Jason Miu <jasonmiu@google.com>
+Cc: Shuah Khan <shuah@kernel.org>, David Rientjes <rientjes@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Greg Thelen <gthelen@google.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260819070538.2404983-1-jasonmiu@google.com>
+ <20260820170348.48f04ed654dce5193ca3a532@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260820170348.48f04ed654dce5193ca3a532@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: pbbai3rgwfaciyqyj6u3zeejn8668imd
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787306023-39561
-X-HE-Meta: U2FsdGVkX1+0bDboF6MsbmWNXdKqxUD1jYyxC6nlu0ciQFcRHFfWwFv/7kmTNTnqW+Hlvq8n7lrQopfs6VKx/voM71B6D/6YEKoTlf9cwi+1th2+ZrBNwVoRR6llGc/LWQfr09PRt2fousupCCkUPuHakB2QomHSQpshgfAqu0AKx1oEntdsVKLyh9zW53hDmJoFk9nodJCBEO+wLOguTwjaRpwpN+canmg4+X0GInE1BRiOVxND+4m7o84E7286nKjXp+qSC2ox2ucYw9FdTqglqaC6dJpgodcaQGftoAhVlEo+anDNIp9jyZEeNR7YD9Q4cE3t0uuv0KjUmdNA7LabN8ALaeBMRlQ1JOO1Pk95in2BEPoYgX5Ry0Ud14aFoIKBMw9o1/rZCEboWQ1aw93LsjwMXoi28wH8CkEIL75etFQ0cghKCA+080xkk3AohNo6/Xv7bOUTZzKEbwZGQaBCybM54372/DvXE3h34ZpI3jy9jRgu293MlcNUxfum5LpPEEIcALqeUPOSscXGoEUefUaxSSy28IKpe5+tc00wSeFUexvx2wVPf1Gbhw3TAoICsQ7K2ZDtcmSlZI69uY7ig0YA/hjcJoDCuw3l8lZHe1qLBP5h34BMCp1BKke610tF1A5eqYC532IP05uf2MyjOgG32UXGTylUOuJToBSDTspRttf3bCzqCtK1L8CSVNsfWoquBJoZ7k+RnxlrF1PWk6SQ2FOVIZxCSeTEufLJsR3Z51CihlmEvgRm5nD74RSWW8s8ba9UIOVTqceczNEPF+gMtn/GVSTHUqxn60djiPD4Dn7GOUCW81CJzh6djMO/4f12zaRpWwpFF2cNjd+BoGfSxdaw9E30NjSetMP04S1mHd66tbTdNM7tmnC1GnoD9hdBgKRBoLJ17jLvXVhmaNxxRIJAnF8454ljROcMBzWCY5frrPLSCl/qXVl2EyeAVQgd15Nkksc10z/
- inRDiKEK
- s73YJPDY+W66PqeKN7JOPtgP2DqTde72X7ddcUI1PBEoKcNXErGyWINbeb9HHXxXHZAnZf0wJssYREh31cC9xrnULyVxngdwMnSXWEzNLNS4NTuxHMih+sc53Gz7hI9nwhUFiIi7MJrFwNzSYN617lKfn2wsXTHZDLAxyFAH0IaM/KOzrjPsR1wo4Vr9SKINF7ixO9IPBhvQrSCY9aDCdDDEbt5N/+1yCT+T+4c6S4Cd/ky56ti4i3jQu/YqBOjBTkcpEzNBUpY1a+pKKu6zQgXEKrnMDJxoL3jJgw/j7f3TdWoaKonIVkyZUoA9FaymnITZ26HC6mgSceshW5RScfenMGV/QTk2VuQouK1zgRRXxEUwKm+H9XWbZeCbXE3XpVHhTq5T91AE0Uhou3MZIAQPv3qgIxLRxhH6oJdSyIDDEJx438lLvOWJNpqBIQ21RTxWkpm3A73uBRBfKYb4CNygO8R3XnpiMP0oMnt9d4Je8bu6hGN/0fQsPHO+mzNcN2QCmBZ1RqsIqZU+mDJoBRtRdSdr+5tSX4wph
+X-Stat-Signature: z1s534wg8xc63ms451r676m7ijkfgy4a
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E0F74100002
+X-HE-Tag: 1787306044-532972
+X-HE-Meta: U2FsdGVkX18fN518bIZg/ve+W6bf2/uXDmGb0EX3rZN46TGcSJzonHptf7OoE6n0ummr2ynQAW4+kJAT6k1z3QBiXRuApCuTP7T/b3Oha3J1Yb/4QVN3aCeKRvcMZI3+tzPntPul1n1O8FWhEZ5zd4jtlbOPeU2KexPCo6E68gQ7qMgJqH1f60Gc0PTdf4e8xQG8idbtA5kEfJ1wVq0dUVjB6M5RofQnJqpJQxtoSTHzoBl1875KbltVWazcgr29JTd5PsENO7WkWPpjyQas3WLCbGKu+HYDAHkbOWznsyE4hCFz4rSoL5vEzZZJbKy+nEkRFwI0d44SwAX3JixKx7NI8FhRIbz3HC1o/hkG5B4YgfhYhINqDUFKTHLsvq58fE6MSNQNXniG0e+bvakcfmtZnz7V2u2BHrd4YhJOrv5bFijJ3KsTwH7KNB7+ZIjMxYtwXJz87K1RSO6rF9L8mfWdfSoIixoO5gbL+u00kNLLSt1JkTx7vCgaVt3twxhdobW8h02gN6NmlR2jsTjYtaGDoxHgb2ZkKTplIQXYoOmXO2P+YS4tW+MhSvsb3tuLA8Ak3dmTXQsMB4Y6Qiyfd7lGMYNAKCybeKhgZd9dMgqa78+vtlWNni+CoUy6UaWUE/Fznsa6EkdJ+ohuHX99Kkzg22R1MrOkowcKoo75LIWOv2zK69mO275+Pqx1uRED+SCaPFiLMGQrmO4DBFtxlrMXFGiFTQqAcEBXOXM9ZQLPqJPqSB8Yr1zY4gxSyk4IhUEqzmFPxmKqYB+aYCiFhD7BaUjwRICbuczwIkv7JlAUOuxgq9li+9iyDcGer07tBCXSY7EYqZSVUzroTkbYDg6jzJJMtyXCXZafQvCFoPTYoihd3WF8dZpdReuPLk9a/AoDwsSVlwMsXA91CRrX5ho1EfJF3jGMEEcartr+qPD4vGCOnhia8TDzpXWJPVcnDYH9l+TUPUT8VOrOqeh
+ V3sSKcSu
+ X+GVjRN4IqaS69wk/b/uRkuRp6HCM2qD+J4F+CebGOHHRww8ZkRCKwzhjp/HOPlX8B91GOiLRMFb710ISJ7hQWBKnAmiQsiMKvUcv+QGpcvz0mFEV2FV7qCiNCfhyskjCAS0TpbZU+71iqgB+W9UWkCOcQzt0EbGJ/H0tJoNmHLEQJxQDM9UJDMrJg+mIJqW5cuSqLmc6GJIwvU3rFjcw0222MSrYHWUe3PnXiz6nVOGx3nbEHD726Yc5Coj0G74Cf4i4+CnfdXXRqFgVx696Y5Z4cb6QvHO4wDXb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,97 +144,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kunwu,
+On 8/21/26 02:03, Andrew Morton wrote:
+> On Wed, 19 Aug 2026 00:05:35 -0700 Jason Miu <jasonmiu@google.com> wrote:
+> 
+>> Background
+>> ==========
+>> Under severe system memory pressure, system unresponsiveness often 
+>> occurs due to page allocation stalls. In commit 94e0bcde055e ("mm, 
+>> page_alloc: reintroduce page allocation stall warning"), David Rientjes 
+>> introduced a warning mechanism to emit a kernel log when a page 
+>> allocation takes longer than 10 seconds. This log is used to correlate
+>> a frozen system with the system memory state at the time of failure.
+>>
+>> To further debug and analyze these allocation stalls, we need a 
+>> reproducible test case. This patch series introduces a new selftest 
+>> designed to artificially mimic the severe memory pressure scenarios 
+>> seen in production, allowing us to observe the resulting allocation 
+>> stalls.
+> 
+> Interesting.
+> 
+>>  lib/Kconfig.debug                             |  11 +
+>>  lib/Makefile                                  |   1 +
+>>  lib/test_mempress_timer.c                     | 140 +++++++++++
+>>  .../testing/selftests/mm/page_alloc_stall.sh  |  80 ++++++
+>>  .../selftests/mm/page_alloc_stall_pressure.py | 235 ++++++++++++++++++
+>>  5 files changed, 467 insertions(+)
+>>  create mode 100644 lib/test_mempress_timer.c
+>>  create mode 100644 tools/testing/selftests/mm/page_alloc_stall.sh
+>>  create mode 100644 tools/testing/selftests/mm/page_alloc_stall_pressure.py
+> 
+> Nothing fits very well, does it?
+> 
 
-On Fri, Aug 21, 2026 at 10:35=E2=80=AFAM Kunwu Chan <kunwu.chan@gmail.com> =
-wrote:
->
-> >
->
-> Hi Alexandre,
->
-> I have a question about the reference ownership/lifetime model in the
-> synchronous-IO case.
->
-> Consider the synchronous writeback path in Patch 3:
->
->   zswap_writeback_entry()
->     folio =3D __swap_cache_alloc_folio(...);
->     ...
->     __swap_writepage(folio, NULL);
->     folio_put(folio);
->
-> During writeback completion, Patch 2 does:
->
->   folio_end_writeback(folio)
->     folio_get(folio);
->     ...
->     swap_writeback_dropbehind_folio(folio);
->       llist_add()
->       queue_work()
->
-> With synchronous I/O, is it possible for the dropbehind worker to run
-> before zswap_writeback_entry() drops its reference after
-> __swap_writepage() returns?
+Why are we mixing python and sh?
 
-Yes, totally! The window is short though and in that rare case, we
-would fall back to the initial behaviour (almost, since we put the
-folio back onto lru but not rotate it). And for async devices, I don't
-think it can happen at all.
+> 
+> 
+> selftests is for quick tests which are run by run_kselftest.sh.  You
+> had to place it in selftests because there isn't anywhere obvious for
+> it to live.
+> 
+> So I suggest a brand new tools/testing/stresstests/mm.  If we create
+> this, people will jump on it and start adding things which presently
+> reside in their personal collections.
 
->
-> If so, the worker will attempt:
->
->   swap_dropbehind_drop_folio(folio)
->     ...
->     remove_mapping(swap_address_space(folio->swap), folio, true, memcg)
->
-> while the caller's reference is still held.  Looking at
-> __remove_mapping() in mm/vmscan.c, it expects a refcount of
-> 1 + folio_nr_pages(folio), but the extra reference still held by
-> zswap_writeback_entry() would make the actual refcount one higher.
-> It therefore looks like folio_ref_freeze() will fail in this case.
-> Is that the intended behavior here?
->
-> If the removal can fail, the fallback is:
->
->     folio_clear_dropbehind(folio);
->     folio_add_lru(folio);
->
-> This appears semantically safe, but it means that the dropbehind
-> optimization is lost for that writeback: the cold folio goes back onto
-> the LRU and has to be found by reclaim later.
->
-> This seems particularly worth checking because v3 intentionally removes
-> the synchronous-I/O special case from v2.  The cover letter describes
-> that special case as an optimization that was not worth the extra code,
-> which I agree is a reasonable direction if the generic path is
-> sufficiently effective.
->
-> Could you measure the corresponding fallback rate on a synchronous
-> backend (e.g. zram)?  The 99.996% success rate in the cover letter is for
-> asynchronous NVMe, so it does not tell us how often this particular race
-> occurs with synchronous completion.
->
-> More generally, I'd like the reference ownership across
-> __swap_writepage(), folio_end_writeback(), and the deferred worker to be
-> made explicit.  If the caller's reference can overlap with the worker's
-> reference, I'd also like to understand whether that is an intentional
-> and acceptable trade-off, or whether the overlap can be avoided without
-> reintroducing the synchronous-I/O special case that v3 is trying to
-> remove.
+There was recently a discussion around performance tests, and one thought was to
+not carry these in the kernel tree at all.
 
-I need to look into the patchset that Matthew and Barry pointed to and
-check if it's still relevant with this patchset on top of it. If so,
-I'll add a debug counter to confirm we don't fall back too much for
-sync devices :)
+Stresstests, not sure.
 
-Thanks for your comment!
+So agreed, that this shouldn't be an ordinary selftests (nothing we would want
+to run autoamtically), but I am also not 100% sure about having performance /
+stress tests in the kernel tree. It's all stuff we have to maintain and drag along.
 
-Alex
+> 
+> 
+> 
+> I can't say I like "mempress".  Is "memory_pressure" too wordy?
+> 
+> 
+> 
+> All of lib/test*.c shouldn't be in lib/.  lib/ is for library code! 
+> Again, we put them there because people are shy about doing mkdir.
 
->
-> Thanks,
-> KunWu
->
+There were recent discussions where I raised the same. I would prefer if testing
+kernel modules are somewhere in tools/testing/ if possible.
+
+
+-- 
+Cheers,
+
+David
 
