@@ -4,131 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB024C5DF93
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:50:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0BB0C5DF89
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:53:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A2636B00A0; Fri, 21 Aug 2026 10:50:12 -0400 (EDT)
+	id D5FD96B00A2; Fri, 21 Aug 2026 10:53:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6535D6B00A2; Fri, 21 Aug 2026 10:50:12 -0400 (EDT)
+	id D10616B00A3; Fri, 21 Aug 2026 10:53:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 542296B00A3; Fri, 21 Aug 2026 10:50:12 -0400 (EDT)
+	id C013B6B00A4; Fri, 21 Aug 2026 10:53:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 284EF6B00A0
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:50:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C075160154
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:50:11 +0000 (UTC)
-X-FDA: 85125561822.19.EE87384
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B60FB40009
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:50:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=hsf8uU01;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A08F46B00A2
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:53:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3ABFA4011A
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:53:41 +0000 (UTC)
+X-FDA: 85125570642.25.CF133F4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3C6F98000E
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:53:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PEqLsZh8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787323809;
+	s=arc-20220608; t=1787324019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xsVHSsNBVmunDbjw2peBUvjMtVALhYSkX0xXozMheRU=;
-	b=x4KBV+RYQTu2wkgGMZZJ/k/8mFX6tekLOVgfkPB7yDBnJdexnc0DHereGEqACMOmBXs0cr
-	gtzIbJc0by88H4sffkT73jvn722rD9iKIBO2dDF8zMfiDAqon7nT68QPLgPTecLCz6j8FP
-	Ha2h8wdL4uV/cElUWSZTo0K26IR1j1g=
+	bh=gjevPVNDI3BMq67YKVjzwksfTaXW8pJVyyPC7ES6lEo=;
+	b=jYNlF2pFvi/3GzbG8ES85Vavd8MKeLKjPPzqMlhxn5G4DFwYHquBN/veGdgoZK/BXrpUdn
+	meB6Z3P3gW2Qhn4hKJoiY/lgOyKgIjk6UJUacIj032GRKCfPZQIHPZC5mXL4OfRhCYMFS7
+	sE744S8j0Gb0G9YtAoOSyYhTCcEQQx8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=hsf8uU01;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PEqLsZh8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787323809;
-	b=ciwvY/dIBtIuPjynDjrpNGW4LnpAQFDEL3nVrYlKA1lMih6lU7g/ANkgF6wCLQGXYm63RD
-	KxUF5lRi5KX8Rcbg1mOarauWv4wNtQsiifVGfCxb8URKOgUo6315rIEVm8GdhOwCLvVLOd
-	vA6NZUhVyEwftCETWiAQnWJjJ/xge7Y=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e6a434cabso57099285a.1
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:50:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1787323809; x=1787928609; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xsVHSsNBVmunDbjw2peBUvjMtVALhYSkX0xXozMheRU=;
-        b=hsf8uU01kf4QdOmCV20NPQL6K8q4JGvctlSwCWpkQLESl2Tn37il+bY5GuDVUCFKrA
-         H96amv/YX13De6CcmV4Dyaf8345dHeipwfubzd0RXtVGA5ZXq0gFA+7XdE0faLa0QvTT
-         6/296xLuZgJ9XaFPlzTjXvdJepo0h/Lhb5rrSEIAx+y6RPtuYfOiKTsdx2Tb7NOz3QJO
-         WyNZG2ewAGwog01hTVtoBTKoAZmw6HHWefmSxbMmdPcquDKsWWgna4Ltd8doZ+NMn0Jc
-         yHxDTlwnZuc8l77nD+uefxi5Z+oYsKguRB9n4WdL8xODcmGyGOll2TNo96NOBNV8H9gF
-         g3eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787323809; x=1787928609;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xsVHSsNBVmunDbjw2peBUvjMtVALhYSkX0xXozMheRU=;
-        b=A/dzDUi+QoklyPuHLA5E4XkJ1+zoZEScvzAFASziICniIgxQC6A/RquKdYBsYZoUV6
-         TmB5CyBjf5UIM0KX+cJSgQF0hzDJpW4Lw56MafWQ/Ura0fS1CGYVkBTQQ0Gw3vlfk586
-         91oHKS6yIn3t6zTXceboDyRs/tqUBsWzzmZXWfsH+EMQl/TOTibFx/mEhFaDKonr9UyJ
-         35q7nQKKBfI6TbuABeg8dlKmt7nKKWyNsQWRPQJ2GZZ2KmAHW8172hQrayOCmGUo6+Mu
-         EEPNG2FcIAJlrtFVy5m9/pS0hS46N+WaQCMWgTL2ib1WvVV8OyP31cHlkubLiPkL7tB5
-         4LGQ==
-X-Gm-Message-State: AOJu0YxMzJSjdShedSqm6AlnpLpii1PfDL+alEMLwFI4zBEzbxnBrdyQ
-	wCmjxAMKNGvCClbBNYdtyJRGoYUsondA4l3k+1HYL7KN+QmxB8tRTlJBM79hzM24DITauCiTG67
-	5c3SxSNk=
-X-Gm-Gg: AR+sD11NAMnjrWR+Nf+EU+VTkVkbS/yvMQ38hKIDtuweR0/+TSwPbS5kziScfFZIlvP
-	ybj5J6ggmAYDApCqM1CUbaGkOcNCzbJj1TFX3gNM1Qdnul1/EMmu9tn9m8AKwyMsJy+2KGd5uR6
-	3Z5JMJ4H7upby8xwmyqP1e0B8WRmWuNINdH+bb3hn+UtadbAgYFO0AdZrhcYyx7J8aBP06sgWtJ
-	BvHuN/ELI0EHLBDQr8pKxT/xOkVoxyGAsmWN96ELX3jJJpxEs3sGntLYWiw7vM2KqPV1dnwrPs9
-	E0xrI73yNTbCHuwNRpObGs4n63saJd8yj66fCE5iWE1WLLsMe9HyhQ/A4tqM2sa1HhvnPq3cXYU
-	QAXNMzwB6Orc/5FEAxZ4vhCskLMOPMYmxVe9/laxueK/4OZsxwBti9nESvsUyfSvSD5ITUpjCtU
-	lUfOtUOfhyGWf6jQsxJ7XnY7aaCrBwiDT2keLsCBk3axT22cMuJfaTjKL1jh2rMKDTCh2D2w7aI
-	qWyA1wrYLxbhhDj43GUrjzbjijW7LBTNGcA6o+7tkANIB83FQ==
-X-Received: by 2002:a05:620a:70f2:b0:92e:603f:1f20 with SMTP id af79cd13be357-937394e9257mr431611785a.2.1787323808787;
-        Fri, 21 Aug 2026 07:50:08 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93720493f35sm609512385a.9.2026.08.21.07.50.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 07:50:08 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org,
-	david@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	peterx@redhat.com,
-	jgg@ziepe.ca,
-	sashiko-bot <sashiko-bot@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] mm/madvise: use vm_normal_folio_pmd() in cold/pageout PMD range
-Date: Fri, 21 Aug 2026 10:49:47 -0400
-Message-ID: <20260821144947.167382-3-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260821144947.167382-1-gourry@gourry.net>
-References: <20260821144947.167382-1-gourry@gourry.net>
+	t=1787324019;
+	b=ZWk9MkwJZln1/ArvmuZxRUq+N+1vzvzBtQzO4w2W5HF/oA/mT1CRekvJcowcMVavR+gmrF
+	nMmwJ1PjG7UlBvDMizzrh6VfZjOkyzfElNR4eM2n0bVsyJfHQxF2eVItUWURC5Ny0BYMk9
+	ndTFAPkpjSZowrbaj0Rx3Vuvykf9dls=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7422D41FAC;
+	Fri, 21 Aug 2026 14:53:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19A11F00A3A;
+	Fri, 21 Aug 2026 14:53:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787324018;
+	bh=gjevPVNDI3BMq67YKVjzwksfTaXW8pJVyyPC7ES6lEo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PEqLsZh8icemV6iCXLH8M1lwsuZIi3ppcJsoYkHbdgbhu48kCp/fzBVJmA+oO0f10
+	 A3T8kuGkGfXWM3lFtPhlABSA/ZLi5QI1UlAez8YchNUOWf6MIbU+Sq4O/RMx+ddJzd
+	 zX6mfViDwm9H4ky1grMR/7zMfO1HJVHZDI3kQdGakxl87mqdNfF2T069ytU4DpBR1R
+	 uUfOlu07HhdXWSEZcB7TpoBFiRx5U3OuBGcOl/m1t38yanYpaMdnHgb6oRM9K+QoCP
+	 Eur4/KYp8ziJXcXNbn3YRLL+yg8AgCvW4WKrQs5/fx9CGAIg6Vr6CfnI0j0QFnUrbm
+	 1CtXL9ud/p8iw==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 686B8198003A;
+	Fri, 21 Aug 2026 10:53:34 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 21 Aug 2026 10:53:36 -0400
+X-ME-Sender: <xms:bWaIahUo1Hb5TY7rwvXWZqiIQCsFm7HQZRTqnTRCmeUTDs2vDO3M7g>
+    <xme:bWaIavA0jrACtIJfZNvxMZnB6LY5W3K6xw9sI5Oyjio_OXkiu-Rald-HEwNdcbwFs
+    EFnhJ08yslj1tzcI-YdxlzsNHQDfk7etgZCI4hvkpXcYkXmd4O0sY1J>
+X-ME-Received: <xmr:bWaIatXlrPt1A9pRHHG3TomUuLeZgaxqix4gL1TQUGJ1yocmnUjHoi5KShA>
+X-ME-Proxy-Cause: dmFkZTEbg+VVSOlsbnGiy6K3W4JLvpYCkMXlScxQEGLLdOvOtuyrQIKV5vXx+5KSTZnied
+    1BL05bKU0wpXElyHPT96soPhyznOA9yhQkJWdpXI71jCNZvHn/c8VAuX2g4/alGQJvz1qd
+    B6T1tx9pKoO/3Xnvauupxnqq2zICVzTk4UBlHScruUUmAP9mnk/qzNvZQc+jf4jpBBOpED
+    xE+2fgXCydrOnnCVlfS603l+zfBqCrVei/CtHb7spiwvo3P4OCFzG/j5TiRRMOyLcK4pgg
+    ZSlRN9jwxfCyD9ZxG09NOzC4Ou0Dq8l4ppVyOBSA9VAPYEjjLuSug642uKL0/SMdJGusT8
+    FyQeFVv5+gCq6v82m5C+dc3R+HvKciPH93C1bDuVeIW4IkUVggKfOTqwr4KKZy3emCTP+n
+    DBukM1AbkGCTiOllFIoIrYoui9xfTNkWipsxWRgRoasgv7YwnRXH5aQZquW9snqERvi/Xs
+    R0upe+kYPe/qNbREEIgpWHKovwhkbXElaYqKpMSBzNUq1tliCfVcEBRiTFlkTSmPwDqgrW
+    ibYpBtd+fq2PrhOJ9Bklg/CSpV2hTOVcWUlpUl15BIC4Ze+TqxA907+2A7dBb9OARMk/T8
+    nYgNX66kQKWXnHcaCI9pVHv1DteFjCk363spGtTWHEjy145SOc0yJlhjjcWg
+X-ME-Proxy: <xmx:bWaIal_Su38VzUHm5aZb5ee-a0Xap4tAuQbnDctK1GAi4ze5g8Uy-Q>
+    <xmx:bWaIarlEUp7XaB1sCVXjYocrfIRLRmUk01Zsvst5zTvva0SwLs4H5Q>
+    <xmx:bWaIaoKqrww3YI_6W-VqhpR6EMrBfw132AL-VJxCcnDhIAw2aruieA>
+    <xmx:bWaIaprOpW83gjEzL46Meqyz_1QQ8ZhkWmKqehA-02uQYv0Zk58lew>
+    <xmx:bWaIatSyPscqY50xMTnar5di4kwbi2endQokP4zfKYafYoSxjsRuGgoR>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 21 Aug 2026 10:53:33 -0400 (EDT)
+Date: Fri, 21 Aug 2026 15:53:32 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rmikey@meta.com, riel@surriel.com, kexec@lists.infradead.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 6/6] efi: respect the poisoned pages coming from
+ previous kernel
+Message-ID: <aohldTtzE2GJ76md@thinkstation>
+References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
+ <20260821-hwpoison-kho-v2-6-5743791e48e6@debian.org>
+ <aog_uH5fTsJzXjjx@thinkstation>
+ <aohIF6MmjiQpbz5j@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rsat7t7pyxxad9z8ro9yoe57kfohdirs
-X-Rspamd-Queue-Id: B60FB40009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aohIF6MmjiQpbz5j@gmail.com>
+X-Rspamd-Queue-Id: 3C6F98000E
+X-Stat-Signature: 3w67kezyfi48a883sbc6kdfqewjumozm
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787323809-590527
-X-HE-Meta: U2FsdGVkX19RGF0Bsmu9eMlZi0OLV0gi+c2BqiD++XkiiEK8T6I+VMZ+L/yjG9qVDULiXTu2tNCh2DGFyORS0F3lpH8dd6hayejpcs9hMP/17sx7L26gcvgsuf96rOjVnhsXciBlcLbTQUouk4avDlujz+M1TPoy7HpviZPu10MVh4MoYqNTSEkh04XRF8nfGW68VD8ZFfYtIpXz7i86DP1qmILCpflKd6IPkwJ4cLMeMJ9UValWXfy9+yBMrBa5eT4Wzlr9v/oXaNUGk/M/pR+2B8yy2l1brnWA92Z5rCZuUGpxCV3yGTIPiZ4S98Qvw2NJ1iI8cSBLQo3bep3mXISGynWBynXHOiZ8o922wXnXG/zvgCiAJVOJUkUTQp6m5YFWsQfAyEKfxh9q+20/EUHA3iL54NkYHC8CsACqXSJFgjjDNBDUlBEAgfIVwKAB6b5Bz1xiZCz5kjmeuF50kL3AWn2t2ntvdHJX3VgyrFgQ1IL2WjxLgcHkmq6bH1EGjvV/qCsoK1CLdV1gXLYscaExj5QUCKbiI5zFc+4aS6dr14KI94b76NPpY1Ac2IfXXL6LrRr7RMsgdJJMIB9N4vgSRjcGzZwg/79bM38Dd3b4wJEvGUOYbpFpVBoDAWNNKTQZMd5wfcOmKHBA3TosDW0fxRBO10TLK2qzEgaTOe6Te++QLd2TOQ+A8cnTACNCFjt6ShjhGEGcEG51uHfHNl95uVqlzW14cOdUFvLvcYgKVaPzzxTRJ/o9nBjGnjcsbrUZWexVir2M6N1cWMzyDxrFxwaaEvstvRe7gh2fqTRG8lyoZKfMEnVatpB6Z5TMYPAqBUsMye32mP1JFIGVMm8fiFFrULeO/wIQe21YKFxqUhv9Hcca/PiWMLBmMEDCi/tSKrklCRrcmJaQaPtVKoig10Du0mVfslplpQFu2lSu00aHfw0VsNddsVxVR7qHZEKNsDy0JGuDISR9U+S
- h4Vu69T3
- KEolezN1Ru22gytAZqaK6xBokze3s4t3pL+rJ1nOpMdF2t7YJSLMaOEsVCsYjmUiJPbs8xdHT7grkAbVUEKPpcgOzplqIaukvloNVrdED0yZbQ8fO3Ax6TbKbdsU98Av3Mq98X34cy9H/QpvySM0IvhK/Qd4yi0k9t+blXMA90vnchM+dcpVxNsOAsjdVurESdYOmSADzqY773FZaF7QoIJFzkwFCCReHncu0dzBb0/2w2KGT7UkwHrbIH9rqaSGbaxTK0C2ebxWDqOZyqC/Dd0b9xLD/jhcRWyKYKDe+25RZvWRNVVNf3XSAUkAFtBrmC7cU/cbHOXdYsFDWAQIHLy9VRbspBUO3oj3DdZ7QnQagxRXr+e4iuocnYD89tO+cH5EuwxYmoEnOUWa73ONKEQZ4wI2d5yahe7HkAfCrU2NHWrE3TwgL9utTtd17+C68u36DmKPXNcQaPd5cNRyF2JqnN3bd+UnuNqaV1Q+V5MnRWEzR1B/swtYYcmtpay/v6mO+
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787324019-392551
+X-HE-Meta: U2FsdGVkX18sy7uJPGGuEOKPWC8q8m/u1SFxtzA6USXOF0WWRED1RkEiKyLimtNYNYacxyZDtxtUejvao9AZIsqed3ChSyA01QCUdhovItyWdx7r0vzRWvYAy0pT8uqdmSOEmJ7LBdidDGYZcJZdkfuFSwHwXkEBLGdEVGwEbpoa0z7FBHXEtoLyA/fZm4dczROYi7QeRacncOKX6PRMBiY5r9xei+FTZYd8gEshxott6DQfprhhz3w5NTwDZLT+AWqOKwyFFtcSI46EXFM1FeJB++49fNQ10clzz5TMmlUbEfb/wZBf976XcRIh3BLnWrGCmF3d5loZ+E4Z8LNLnoEesuBvPq367XF0/iCDSnpThNDVqSwRsMK5+zj9szaMqybPq6U+g62DYaIyi3/DGXi+rKtp/28LXK7TMQh85mUc5vracywDgY4J4WDff2yqt5epjahHuv7HoiY0FcDzViJQBDEy8J5VwPpWH+euEy7fGC4/d7RawaDFYqo3A9thHH8ZFGQuhI5uZ0KOScMNG/1e5w/616ov46cJNapTLjL02df0apfn3jNRqxL90sjnBuUll+sPus6ADHgSpbP/jrB0twNos98Z91QFIN5XZGJ02mYYiHy17X5vcRvyWC+WdLMv4QOgG1zJX2w0XPJ5sVDuM6gsE4HxSsxripnzgzMlVBZTPr0qxy/cZ4HwYCzuQd5O36QAgQuhX5z79QsJ/5NtVwZDFfPXiV7TboL4eoCppPuqHN5EjrIiVJKhN1eL2CJqUQQiBmrsoWYCJL4rN660SMDGNnyzm6uk4NPK97pMo1KLjRMlLBF4hoUxI8WRW0wNP1q122dPBvfCgk/MxTt5uRFWe+5agJeGIJjC7n6aQcy4q8u37k3dolRebqzwl8qoLRWCxPGpZ7hYoA9aQDiVV0wFKhulitixAXDpqJtHPYW9NQpvciuWTvk5Ukq1L7LYEgFP4kV0Lo/1PL9
+ ng6pTrgQ
+ 4NcK97waXRC0Sh2d/2SioyaTCFgo6nBlJeHI+hMKbcvPZgvjPxrE8Gi3C+23Ic+dGcFutGX7N6YW5nvWlqSxFXds4JuKGp6/jG1zx7euXn48bNIvTcpu/9YPraF658JBAkN0RBFVer/UVDT8od6hPyBlHaIiUM6lmSpIl1upCkxhJ7+LpANvaogoVS0ihFgjrL/5BAwFYiywK1roKGpr3a7H2PdDam6uOT8CfC05oqJaqYqMe8bO6DHIr3bj9LBtWXtfjZ/X3jlF+Hw6GKOBWagvvYUKRvWvwweUWd4IvqnYmHbURbSJ8UWng9Pqts/Pjshnm+0ai+qBATd4GdpiTvQNJoPT1P1We4xWL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,66 +125,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mmap a VM_MIXEDMAP region whose ->huge_fault installs a PMD through
-vmf_insert_pfn_pmd() - mshv_vtl_low does this, and needs CAP_SYS_ADMIN to
-open - then
+On Fri, Aug 21, 2026 at 07:03:06AM -0700, Breno Leitao wrote:
+> On Fri, Aug 21, 2026 at 01:13:55PM +0100, Kiryl Shutsemau wrote:
+> > On Fri, Aug 21, 2026 at 03:06:06AM -0700, Breno Leitao wrote:
+> > > +	/* Reserve the table itself so it survives a further kexec. */
+> > > +	memblock_reserve(PAGE_ALIGN_DOWN(ppm),
+> > > +			 PAGE_ALIGN(ppm + sizeof(*pm) + bitmap_size) -
+> > > +			 PAGE_ALIGN_DOWN(ppm));
+> > 
+> > Hm. I don't think it is enough.
+> > 
+> > On x86, kernel doesn't keep memblock around after boot (see
+> > CONFIG_ARCH_KEEP_MEMBLOCK). Reserving in memblock exclude the memory
+> > from page allocator. But kexec can place the image there.
+> 
+> You mean the third kexec?
+> 
+> 1) Kernel A hits an ECC error and marks page X poisoned.
+> 2) Kernel A kexecs into kernel B, which won't use that page since
+>    it's in EFI_POISONED_PAGE and memblock-reserved.
+> 3) Kernel B kexecs into kernel C, which doesn't respect
+>    EFI_POISONED_PAGE.
+> 
+> Is this the scenario you mean?
 
-	madvise(p, PMD_SIZE, MADV_PAGEOUT);
+No. I think nothing prevents kernel B from putting kernel C image into
+the reserved space in !CONFIG_ARCH_KEEP_MEMBLOCK case.
 
-With a stand-in module for the driver:
+Kernel B excludes poisoned memory from buddy allocator, but kexec
+doesn't care about this when look for placement for the next image.
 
-  BUG: unable to handle page fault for address: fffff587c0000008
-  RIP: 0010:madvise_cold_or_pageout_pte_range+0x410/0x9b0
-   walk_pgd_range+0x52b/0xaf0
-   __walk_page_range+0x6a/0x1d0
-   walk_page_range_vma_unsafe+0x8e/0x120
-   madvise_pageout+0xb2/0x180
-   madvise_vma_behavior+0x46b/0xa90
-   do_madvise+0x108/0x190
-   __x64_sys_madvise+0x26/0x30
-
-Nothing validates the pfn on the way in:
-
-  can_madv_lru_vma()     rejects VM_PFNMAP, but not VM_MIXEDMAP
-  can_fault()            *pfn = vmf->pgoff & ~(mask >> PAGE_SHIFT);
-  vmf_insert_pfn_pmd()   no pfn_valid() check
-  pmd_folio()            pfn_to_page() -> unpopulated vmemmap
-
-Even with a valid pfn the path is wrong.  The mapping carries no rmap, so
-folio_maybe_mapped_shared() sees mapcount 0, and the walker goes on to
-folio_deactivate(), or folio_isolate_lru() plus reclaim_pages(), against a
-folio this mapping does not own.
-
-Use vm_normal_folio_pmd() and skip on NULL, as the PTE half of this same
-walker already does with vm_normal_folio().  The huge zero PMD is already
-handled further up by is_huge_zero_pmd().
-
-Fixes: 3c8e44c9b369 ("mm: mark special bits for huge pfn mappings when inject")
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry%40gourry.net
-Cc: <stable@vger.kernel.org> # v6.19+
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- mm/madvise.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index ffd6a68320a8..ab362bc482a5 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -393,7 +393,9 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 			goto huge_unlock;
- 		}
- 
--		folio = pmd_folio(orig_pmd);
-+		folio = vm_normal_folio_pmd(vma, addr, orig_pmd);
-+		if (!folio)
-+			goto huge_unlock;
- 
- 		if (folio_is_zone_device(folio))
- 			goto huge_unlock;
 -- 
-2.55.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
