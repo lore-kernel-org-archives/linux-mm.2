@@ -4,30 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0765AC5DF8C
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:58:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91386C5DF8C
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:58:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB6736B00AF; Fri, 21 Aug 2026 14:58:22 -0400 (EDT)
+	id 00B726B00AE; Fri, 21 Aug 2026 14:58:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C65D16B00B0; Fri, 21 Aug 2026 14:58:22 -0400 (EDT)
+	id F004B6B00B1; Fri, 21 Aug 2026 14:58:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B075C6B00B1; Fri, 21 Aug 2026 14:58:22 -0400 (EDT)
+	id CB43D6B00AE; Fri, 21 Aug 2026 14:58:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 67B936B00AE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 90C7C6B00AF
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:58:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8F7C40228
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA612160221
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:58:21 +0000 (UTC)
-X-FDA: 85126187202.07.E7B91B0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 98D1A40008
+X-FDA: 85126187202.18.98F022B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BB5BD40007
 	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:58:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qs0L3KOQ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WGn09rux;
+	spf=pass (imf07.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787338699;
+	b=cFzHCJIb0iEZp1bTdz8aY7uOSF+/oF/9O22DF0AlJVNge4Si0bXFHbUTuzykJ5LlW+sKeU
+	FMopDcc+RrxbUyGnYTujZ8Ab2K9frreGcr69bBn14mJ26mR+0uw4AT4sGG/Sm7nhE+Vp9m
+	5oYwpq05iVvGAUr1ZRcuNhdcrjGIIhU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WGn09rux;
+	spf=pass (imf07.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1787338699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,74 +45,63 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/8joInrEG3wyxgyxVErJ5zORrPbi9GYjPiUJzUhqISA=;
-	b=pxwKgDlgtj+pErzuyxtYf6xAs2lkZCc8JtlXwzVKRE9atRhBuPxwR/Q1p85aPZhB+E6/D0
-	MNYPLNnWNHPkQXzoMQoTTLmpcSG6yqqUWDnGgzE46rwuJ/Fw8UppFy7esHjJX4AZvexq9H
-	Kvl9AJl6mL39C9YMnaxbwLRkxlxmPtc=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qs0L3KOQ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787338699;
-	b=HVb12EIuO2/wQgjqDxUsiLt5x5EL6PBiQ1HoycTkEwuWXCGRdoMln56wvVYwAx95O4lXRk
-	3DG6X8VZsRcQXvaVRUo8BMQ07Y2sYNSGEkgfoShThDsJzP8LTEQm/M9mbVxvK12z7+bcJw
-	xg9CEX0RdAfvUhVg2bKmUam56PgbmIE=
+	bh=jb8nkZgnYdLG8ktPFayByOUpa/ch44LcnfTYgPP/10M=;
+	b=EmiaCVky/qaaJQSZVXR959Vh6ah88fM+vtPtrOTBOi8PJZHXEKgHa26Bi9US2tOcP+2hN5
+	Zm84+09PFUl4bMP0f9t9s2tOez1tAoTP5Fjar1t2tzIXfebRVz7iX74AqDelljG7rS4p1W
+	wC/DCrcV7Cw7HNcZnysFjYIkuaqdp4Q=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1787338699;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/8joInrEG3wyxgyxVErJ5zORrPbi9GYjPiUJzUhqISA=;
-	b=Qs0L3KOQebDIG56XPCr9EkuLNWsfzFz2VfUJAhSPHGykHKGKWRcrHyoYrmUaKil8pD/5c0
-	ufbpHP5MOjKoDygKNTS0GdBs7+XpWwuOC32U5rr/1KZaiS0giBV1KF8GQRRU8aqK5NAh9s
-	RrXSzbJyHqqSX5m61T05dDRbHN5YY5U=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=jb8nkZgnYdLG8ktPFayByOUpa/ch44LcnfTYgPP/10M=;
+	b=WGn09ruxLARoiVw+dOCdZ/UgKxiaFEaBGheLFLpjIA8ELh4ENi23hdm8KA6JMj0/8JChCK
+	s8ugd6PC03UQcYPZGjLuBXjxV9vvzSrE6oINgQZUzROMh71jjb4PTCzce1y1EpW3JGnHq3
+	FukJ/kaOUKqZKX5nLDf87l95Ce+9NlI=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-LcR-DxndOeqtKKQkhsP0Jg-1; Fri, 21 Aug 2026 14:58:17 -0400
-X-MC-Unique: LcR-DxndOeqtKKQkhsP0Jg-1
-X-Mimecast-MFC-AGG-ID: LcR-DxndOeqtKKQkhsP0Jg_1787338697
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-90c4da3d504so8736016d6.0
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:58:17 -0700 (PDT)
+ us-mta-435-xLmTUgbSOdaod-fjKDfx6g-1; Fri, 21 Aug 2026 14:58:12 -0400
+X-MC-Unique: xLmTUgbSOdaod-fjKDfx6g-1
+X-Mimecast-MFC-AGG-ID: xLmTUgbSOdaod-fjKDfx6g_1787338691
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9368f2b7b2bso135911785a.0
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:58:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787338697; x=1787943497;
+        d=1e100.net; s=20251104; t=1787338691; x=1787943491;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/8joInrEG3wyxgyxVErJ5zORrPbi9GYjPiUJzUhqISA=;
-        b=VMun7MmlUydb1MMD1m4PaUpLrgNmzBHoYeold4KqX86hgI9XFI0bHtmjlwPvuPKzF7
-         UjxK8expQOj2QY9gc2mSu0EEaVQOho8rWx0emzfBOEiJrqdiuWH2WfOu4EYWLrXKHihA
-         9s9QwWiAR0Itkuq7PfQQ16uy/8Jzny8YTa7qwbJpDe+WjMMDZK5UuFx6GMnoKGSe8p/c
-         GzdX5/16mVjPVAB7sCsFU62NjtoddxUoztEABOa1iL0SRZoJjNkgERV+X5uALAcpOZFj
-         zQkaMt2UKf+X5zzsfMm+vIkVfjdF4FOgbAhE/q4dHiV2x+jhNyUebP8LQFTGVRDZd22Z
-         5KsA==
-X-Gm-Message-State: AFuF++lBIj7ZwB3bifsrOSqzYPAi/x7bBwLG/1G8A5vPICVDbKIFR474
-	RvIcSh8uWP61O+WUnU8bwklU0DKWjDMueM6uRip2/OGX3GCg3D+CgnD1R3fkYwLgyxrmOdQ5qF+
-	eTqXBMH2dMLexye2Rwm9P9W82ggks00+9Ubc3AWn+tWshDfq+JBs6
-X-Gm-Gg: AR+sD11e8PXqQbyggMntVZFb365TSTyyTVoRa+V6n61Fj2m5PeOTbUwLM+4ZPctnXkl
-	GAimgv3E3gdGb8rVfV1tHQ1omD1tKb3B9fqUopnlC2VV8bsTiAcfZG4JOYi9PGIOODyRIvfQv/m
-	FZ3VOopbDehkLBkn81KLJdPn5mGS86OzwsiqP0BHzYhryor7YAnd9QYAy3wxlawREo9uStHpCKY
-	a+IexBkW94EexcKMbeS0cdt53GQbSMMFzWvm3YU+6kXUEqH7zIQyAVw246qwJEJOahvt/72IMkU
-	xHuYYu7VdZnAV3cMBErqCJGKUKIUEvm4r6A4gJ35lHNCKnaAuIRQYk2KerLtTCr8zXP4IsgMATM
-	tinLkpTnDbnutK8Geax6p/shRmycAJlmsDOKQn9GTdSym
-X-Received: by 2002:a05:6214:21cb:b0:8f3:cf36:15ca with SMTP id 6a1803df08f44-90c8098e804mr82074716d6.9.1787338697313;
-        Fri, 21 Aug 2026 11:58:17 -0700 (PDT)
-X-Received: by 2002:a05:6214:21cb:b0:8f3:cf36:15ca with SMTP id 6a1803df08f44-90c8098e804mr82074206d6.9.1787338696872;
-        Fri, 21 Aug 2026 11:58:16 -0700 (PDT)
+        bh=jb8nkZgnYdLG8ktPFayByOUpa/ch44LcnfTYgPP/10M=;
+        b=g85GjQqQA56Bj0it+KtN9tmniEsjLbc2MWIISAs+jdGC+pNo9jFiOXQ2eyuuoaegIM
+         gE08d9PhlIacXXvghnjisZPSeC5TVHCiFaKTYTonwlCRTPeZa5qTepIIxmEjgcElIw7A
+         TbWKMebKxkJwp9TwTL9SsYmkWklYyBgwzyj0ZgODWArhDe4hxIBcpC5jY/oKyEQn2WMC
+         c7C2Yqy69HwwIO2FuDMuQU/7y+b8fPMcsE/uS0oBLD/4KyOIkTJ3HsGccNYt8sodGRcd
+         rdKNPaSE/woiXOAw6yMkC14g4PCY5lvk4LZJciZ6YAopx+ZrmFJPboK4O0paYRN7PABK
+         5aLg==
+X-Gm-Message-State: AFuF++nyKl0HTGF19BxmNohaI1pehdvkRe7df/vvV55AivBZW2EpBAe6
+	P7teDuWJDjvXxiASGGVdQZf6gyQ89mjR04Mzet6BgIn8KxLByNq9yHQbkIpL86KHIdcEj+zmH24
+	cqDiJd27X1AShDcBXOp50Hm54bMCQVivIcIwNcpIV6JTGiBXRuZlS
+X-Gm-Gg: AR+sD12A4nYZW4YarrNtkJXPVQTWXmvOIsreV5CBP3fqWyC520u4b9LARZH75E36E3f
+	m6fzSAG4A6s0k9+39eWVl+vP9DHIFNdS2StH5tlI5n0v65aDVuGmtzGWx8jqhboBbv7wzcBJLvW
+	2irdw6PNVrDpVqX6EOmn755Ygc3McMn8/ov8iL5lEvn++WYECOTYe0wH/egMWeD07tDM3g0TE11
+	e1xVp5KADG1GMRbAfIrd5YBuyIkA+ePqYgjYMEDJZB9SY30EKFsp65zCV2AJ1ujh16EAuJWOnwv
+	JfBQ/6+zUAlwFOPwplLAxIyDqZvLCIBCa2b5I1AQmOcRjvZskHsIm5A669el0zhIrmyC21maRv3
+	j+JcJWSoDsIuAQrs4Xgh52qjj7caQdn2bWDUae0CHBrN/
+X-Received: by 2002:a05:620a:6192:b0:915:9e84:85d1 with SMTP id af79cd13be357-9373952c7a5mr808448685a.23.1787338691134;
+        Fri, 21 Aug 2026 11:58:11 -0700 (PDT)
+X-Received: by 2002:a05:620a:6192:b0:915:9e84:85d1 with SMTP id af79cd13be357-9373952c7a5mr808442485a.23.1787338690612;
+        Fri, 21 Aug 2026 11:58:10 -0700 (PDT)
 Received: from localhost (pool-100-17-17-231.bstnma.fios.verizon.net. [100.17.17.231])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2905d6sm68917236d6.29.2026.08.21.11.58.15
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-937204b7b6bsm663030085a.20.2026.08.21.11.58.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 11:58:16 -0700 (PDT)
+        Fri, 21 Aug 2026 11:58:09 -0700 (PDT)
 From: Eric Chanudet <echanude@redhat.com>
-Date: Fri, 21 Aug 2026 14:57:03 -0400
-Subject: [PATCH 11/11] selftests: cgroup: amend vmtest-memcg to run the
- hugetlb cma tests
+Date: Fri, 21 Aug 2026 14:57:01 -0400
+Subject: [PATCH 09/11] selftests: cgroup: add a vmtest script for memcg
 MIME-Version: 1.0
-Message-Id: <20260821-cma-memcg-regions-v1-11-d21b165b8440@redhat.com>
+Message-Id: <20260821-cma-memcg-regions-v1-9-d21b165b8440@redhat.com>
 References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
 In-Reply-To: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -122,18 +121,18 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Albert Esteve <aesteve@redhat.com>, Eric Chanudet <echanude@redhat.com>
 X-Mailer: b4 0.14.3
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9YN8MRwqfVQlm1uEzjveeM6muVCtfz3X2sq9TpRExjI_1787338697
+X-Mimecast-MFC-PROC-ID: fbN0TTyBzaBKWKjmw0-z6AnL4qlnibwDASXQJXh7YiQ_1787338691
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BB5BD40007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 98D1A40008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 6zgwx1xhydued8ngjnuwar466yt74u16
-X-HE-Tag: 1787338699-265285
-X-HE-Meta: U2FsdGVkX1+MgmoMJDjkw1xBnhUOIExLF6SI34TWAFAK82NOIYKKQ7YK0yOHPadIt45naXYZ15ewwNr2qBiknlXnhOKvigVRxhLUUyJisHhod3T4xIg7g6cyx8kpiG+wLNiEAEqOAVL1rhtUdnQ17C6VWQQ4Yo7BTJ4wWnwbqcBeHj4HUXksKKs02Wqt3qSYdRLQm7cb1ZKZu/vrdEihq+u7BjDI2nmAVQsdKH41W/865sTjX/peF60ncrRU64p03YF9oRnJ7dtqBv9y0TYH/tMc2fTAxxfcx1O/a71IUp1/OmSjQEC9opVUINBypV/pUAePjZzdeIvCmeK7iwcFO1RT5iO0oRou1zift1lx9Q81IYXq12/n/ExrpLm7Q6WwTPOHd4hwLbN4nNbqel4LjWHPgZY7yaMwd2o8ti5k8H+WRksIFxUDlabRCHk12cr4HcQD58sM8C0+xyi7RjUfFV5oZo+aCek09j8jFCoD8BgmBMHYhB5jrUzoxaPYZ2GDvq5OLSe3udmDWXHc/UNM32y/PAYzO/xVAk0BE4vVWmJSvA7tb590YI293YnycEI+3YTmcLOW6Y9ZB0vlRYJbbqSccZDtWQFs72eDzVxAbxm85Nyv5EKEk5Gi+kSP8IT+qEB8ePRhf1Y4gu73mkpGq1xMIz3sY2Cuuyok9S9eevcui3/9PsqIeKFZe6glT0wC0fnVtiNLSH9M31OOnZ9Z+HTPK9kb8/jhx//rVaQhGh9SU2DA/gaVQVCn651Yb1MWHdFzOOxMaXzleWwDWX7uDkFpYB1X8XIADV5ts1bMw131Hqp9IECCXrElSC2mMi0PpDwX9TvHTd1nHmyeaxTji8fknrlLf5Tx8GX42V3sfHSPjE5HKUG9k0TGA+pb6HrmIA5PqgsRitSSfQdgXq9CABXP67g8PZD0oMPZDKmcsNJ/1jX5e36NEbbSise9hIUJIr/ItveliDHHEwwrBqf
- +zPxikXG
- XOil1rdBgt339UjACFJfDF+DTfLPbkIyDQv1SLpgE021H5gclb+DtW1Hk7xAhvzTHuxQLrJLlwrQ3eWiyo9CdrFi/fIUOFq67padPXBTHpthTvkOfsXHt8pZ9nNIZr+CQoL0UCbxWOWddRufcGYEqiCASIB5zYLPTXgr2A+v9mZ1zZgRZoPKMKQxYVMD9Q/T0ZaAW2toEq7U0WEjSeIdHFNzNc/md6s0lPot/p4/J2cjKO+bUqm5b5svyjesXMm7/8FuJHN7dFNWpno4Pu7AcOewjJUbE9I9lVEmK4NbDuDltbRy5GKAsGhHWIdUDe+wxhxG6CmyToA6CppV1R0hZwyZui0NL73ml71UJZGsta8AGvE9/r34Yc60DKQ==
+X-Stat-Signature: ffd4xkmoxtwu4nyp3e179t3mmju17n39
+X-HE-Tag: 1787338699-571385
+X-HE-Meta: U2FsdGVkX1/qALT5Vq8jAQIjP0HZXtQzTHeQHNXn1b3KUa0KvgCGtEme2e4dkBXLTLKlf+vLct983y6kq3HztuYhQuh+dhguCDCJeitgqBQTp0QiqyPGHZuDV2kBgDXcX/fx8eyKhwajm3zVYxKU+Zi3RVMWUwRSeKjwNTsHwEYNhHZV9KoMrbXUGoM8/3so3ZDjF3EcDkq7p/vS2AzAEItDM+TBqdXikU07K3SAluip3SFAjqJiMVde2pl0FKcCxYi71i+Pskj1WSw7hItVNFIy+Bx4qMVFRAijURl2njl03ro7PFm3gbjaWnbs1N8M+nosNvArgmrewN9UL1R/jucZw8uzU9dGYQbswaq53UM5S6L6B0/ed9GMyyTHbP3NYerB9ePNMZsJQ3vM7ApF7ii8+rgQ560qljbpjweCbgx/tx5Pm4MjgHwPCdrjPMASXCKqV5+p+0NYTFTcJas6BqWyQFRv5JludhhFARRgpvoayptkenauANJvmtDHjyD6PxOzD9Ewxzylz5jkjQLUaheSDZ+S/Uz9AFgE7Z5kyuy4lhKR3b2x1iTIwTwK+MIx8ukFUfHVrUhir5x5ARJt18606Sl4VRLqldjzpQ2pd5gsFknnxn8TEb/gaPPPf9iQW0plRmYHdOArOQHRCy8gjGI82s+o2UGBMjeuiCYOMBGgItHvpyO68cMUgGB+d9nXUpi6UgBrJgRK9s4PEH98bpeXj91X7NVUqtJPvyo+K4F3s1hOC8NhAa7MPU7zq6Yq9qpgI3+QhFmKunZZrR6nVQQsKVxPMWbDkuAmhIQruWXY3rqKvm0KMBf3VzVVkymVfNfRbY/JuoxIYO2+axkayFAC/cPdvx+pR2LS5RWZNdEFf+Q/Ipnkuw9SO4AHFE8UxXnd8Z0/mTYkekR+UjMlarb1g6QJF4XDeZOGCEPMk0M8ClVR69Z+WkdZJMVFrz0T6Lt7t285oxkhdf9MriL
+ QfmF2I5F
+ c07OZ7sJiTfw+wiDXcCbjgVcr4XfLRrEWrEly+jnN9/A4M1N0+lUSKIe81wGUHCRFc3QzAMxZJgChquscMIHosJw31ghEMG5n9iI0WhWbVC8pm6gMzg0ixgC7uon/3LLMYhrZesvxzgXudEK4+XBauPXQQ8x6PYAqCiZslbYByJ+rlkJ2OckkzOUVKUOzZHD1ysbsa/lpZm76P4O4EIugZbFhAOWiL8T87zJTXFxWazWdSeKWRZsVXeUMTTA7InA7pZci92YD2Vh35bXtVNTHX6+To6VP1XJt1uy8LDxUiA9Yoom8QrWPdE3UiI8dtlG9ux7vhiviqizQzZ+Q2k2nVgeVbi9q3HkQhyytCDaorZ4iMstSa0n9y++kdGmEA9UpzCryxjNzwj4eTfg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,39 +140,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add HUGETLBFS to the selftest configuration. Amend the vmtest script to
-pass hugetlb_cma=1G and hugetlb_cma_only=1. In order for hugepages to be
-available, ask qemu for 3G of memory so the CMA reservation succeeds.
+Following dmem's example[1], add a vmtest-memcg.sh to provide a
+repeatable VM workflow using virtme-ng for memcg tests.
+
+Boot a VM using virtme-ng with cma=64M in its kargs and enable
+memory_cma_accounting on cgroupfs, then run the cgroup tests inside the
+guest.
+
+Provide -b to build the kernel first, -q to use a different qemu binary,
+-s to start a shell in the VM, and -v for verbose boot.
+
+[1] https://lore.kernel.org/all/20260706-kunit_cgroups-v5-3-6c42c8753468@redhat.com/
 
 Signed-off-by: Eric Chanudet <echanude@redhat.com>
 ---
- tools/testing/selftests/cgroup/config          | 1 +
- tools/testing/selftests/cgroup/vmtest-memcg.sh | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/cgroup/vmtest-memcg.sh | 196 +++++++++++++++++++++++++
+ 1 file changed, 196 insertions(+)
 
-diff --git a/tools/testing/selftests/cgroup/config b/tools/testing/selftests/cgroup/config
-index c4f7df4f1b24..1c9034017682 100644
---- a/tools/testing/selftests/cgroup/config
-+++ b/tools/testing/selftests/cgroup/config
-@@ -8,3 +8,4 @@ CONFIG_CMA=y
- CONFIG_DMA_CMA=y
- CONFIG_DMABUF_HEAPS=y
- CONFIG_DMABUF_HEAPS_CMA=y
-+CONFIG_HUGETLBFS=y
 diff --git a/tools/testing/selftests/cgroup/vmtest-memcg.sh b/tools/testing/selftests/cgroup/vmtest-memcg.sh
-index b19b96731784..534a95ef5e07 100755
---- a/tools/testing/selftests/cgroup/vmtest-memcg.sh
+new file mode 100755
+index 000000000000..b19b96731784
+--- /dev/null
 +++ b/tools/testing/selftests/cgroup/vmtest-memcg.sh
-@@ -116,7 +116,8 @@ vm_start() {
- 		--qemu="$(command -v "$QEMU")" \
- 		--user root \
- 		--ssh "$SSH_GUEST_PORT" \
--		--append "cma=64M" \
-+		--memory 3G \
-+		--append "cma=64M hugetlb_cma=1G hugetlb_cma_only=1" \
- 		--rw &>"$logfile" &
- 
- 	local vng_pid=$!
+@@ -0,0 +1,196 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Copyright (c) 2026 Red Hat, Inc.
++#
++# Run cgroup memory controller selftests inside a virtme-ng VM
++# Dependencies:
++#		* virtme-ng
++#		* busybox-static (used by virtme-ng)
++#		* qemu	(used by virtme-ng)
++
++set -euo pipefail
++
++readonly SCRIPT_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
++readonly KERNEL_CHECKOUT="$(realpath "${SCRIPT_DIR}"/../../../../)"
++
++source "${SCRIPT_DIR}"/../kselftest/ktap_helpers.sh
++
++readonly SSH_GUEST_PORT="${SSH_GUEST_PORT:-22}"
++readonly WAIT_PERIOD=3
++readonly WAIT_PERIOD_MAX=80
++readonly WAIT_TOTAL=$((WAIT_PERIOD * WAIT_PERIOD_MAX))
++readonly QEMU_PIDFILE="$(mktemp /tmp/qemu_memcg_vmtest_XXXX.pid)"
++readonly QEMU_OPTS=" --pidfile ${QEMU_PIDFILE} "
++
++BUILD=0
++QEMU="qemu-system-$(uname -m)"
++VERBOSE=0
++SHELL_MODE=0
++GUEST_TREE="${GUEST_TREE:-$KERNEL_CHECKOUT}"
++
++usage() {
++	cat <<EOF
++$0 [OPTIONS]
++    -b        Build kernel from source tree before booting
++    -q <qemu> QEMU binary/path (default: $QEMU)
++    -s        Start interactive shell in VM
++    -v        Verbose output (vng boot logs on stdout)
++EOF
++	exit 1
++}
++
++die() {
++	echo "$*" >&2
++	exit "${KSFT_FAIL}"
++}
++
++cleanup() {
++	if [[ -s "$QEMU_PIDFILE" ]]; then
++		pkill -SIGTERM -F "$QEMU_PIDFILE" >/dev/null 2>&1 || true
++	fi
++
++	if [[ -e "$QEMU_PIDFILE" ]]; then
++		rm -f "$QEMU_PIDFILE"
++	fi
++}
++
++vm_ssh() {
++	stdbuf -oL ssh -q \
++		-F "$HOME/.cache/virtme-ng/.ssh/virtme-ng-ssh.conf" \
++		-l root "virtme-ng%$SSH_GUEST_PORT" \
++		"$@"
++}
++
++check_deps() {
++	for dep in vng "$QEMU" busybox pkill ssh; do
++		if ! command -v "$dep" >/dev/null 2>&1; then
++			echo "skip: dependency $dep not found"
++			exit "$KSFT_SKIP"
++		fi
++	done
++}
++
++handle_build() {
++	if [[ ! "$BUILD" -eq 1 ]]; then
++		return
++	fi
++
++	if [[ ! -d "$KERNEL_CHECKOUT" ]]; then
++		echo "-b requires $0 to be called from the kernel source tree" >&2
++		exit 1
++	fi
++
++	pushd "$KERNEL_CHECKOUT" &>/dev/null
++
++	if ! vng --kconfig --config "$SCRIPT_DIR"/config; then
++		die "failed to generate .config for kernel source tree ($KERNEL_CHECKOUT)"
++	fi
++
++	if ! make -j"$(nproc)"; then
++		die "failed to build kernel from source tree ($KERNEL_CHECKOUT)"
++	fi
++
++	popd &>/dev/null
++}
++
++vm_start() {
++	local logfile=/dev/null
++	local verbose_opt=""
++	local kernel_opt=""
++
++	if [[ "$VERBOSE" -eq 1 ]]; then
++		verbose_opt="--verbose"
++		logfile=/dev/stdout
++	fi
++
++	if [[ "$BUILD" -eq 1 ]]; then
++		kernel_opt="${KERNEL_CHECKOUT}"
++	fi
++
++	vng \
++		--run \
++		${kernel_opt} \
++		${verbose_opt} \
++		--qemu-opts="$QEMU_OPTS" \
++		--qemu="$(command -v "$QEMU")" \
++		--user root \
++		--ssh "$SSH_GUEST_PORT" \
++		--append "cma=64M" \
++		--rw &>"$logfile" &
++
++	local vng_pid=$!
++	local elapsed=0
++
++	while [[ ! -s "$QEMU_PIDFILE" ]]; do
++		kill -0 "$vng_pid" 2>/dev/null || \
++			die "vng exited early; failed to boot VM"
++		[[ "$elapsed" -ge "$WAIT_TOTAL" ]] && \
++			die "timed out waiting for VM boot"
++		sleep 1
++		elapsed=$((elapsed + 1))
++	done
++}
++
++vm_wait_for_ssh() {
++	local i=0
++	while true; do
++		vm_ssh -- true && break
++		i=$((i + 1))
++		[[ "${i}" -gt "$WAIT_PERIOD_MAX" ]] && \
++			die "timed out waiting for guest ssh"
++		sleep "$WAIT_PERIOD"
++	done
++}
++
++check_guest_requirements() {
++	vm_ssh -- "grep -q memory /sys/fs/cgroup/cgroup.controllers" \
++		|| die "memory controller not available (CONFIG_MEMCG?)"
++	vm_ssh -- "[[ -e /dev/dma_heap/default_cma_region ]]" \
++		|| die "CMA heap not available (CONFIG_DMABUF_HEAPS_CMA? cma= cmdline?)"
++}
++
++setup_guest_cma_accounting() {
++	vm_ssh -- "mount -o remount,memory_cma_accounting /sys/fs/cgroup" \
++		|| die "failed to enable memory_cma_accounting"
++	vm_ssh -- "echo +memory > /sys/fs/cgroup/cgroup.subtree_control" \
++		|| die "failed to enable memory controller"
++}
++
++run_test() {
++	vm_ssh -- "cd '$GUEST_TREE' && make -C tools/testing/selftests TARGETS=cgroup"
++	vm_ssh -- "cd '$GUEST_TREE' && make -C tools/testing/selftests TARGETS=cgroup run_tests"
++}
++
++while getopts ":hvq:sb" opt; do
++	case "$opt" in
++	v) VERBOSE=1 ;;
++	q) QEMU="${OPTARG}" ;;
++	b) BUILD=1 ;;
++	s) SHELL_MODE=1 ;;
++	h|*) usage ;;
++	esac
++done
++
++trap cleanup EXIT
++
++check_deps
++handle_build
++echo "Booting virtme-ng VM..."
++vm_start
++vm_wait_for_ssh
++echo "VM is reachable via SSH."
++
++if [[ "$SHELL_MODE" -eq 1 ]]; then
++	echo "Starting interactive shell in VM. Exit to stop VM."
++	vm_ssh -t -- "cd '$GUEST_TREE' && exec bash --noprofile --norc"
++	exit "$KSFT_PASS"
++fi
++
++check_guest_requirements
++setup_guest_cma_accounting
++
++echo "Running cgroup selftests in VM..."
++run_test
++echo "PASS: cgroup selftests completed"
++exit "$KSFT_PASS"
 
 -- 
 2.53.0
