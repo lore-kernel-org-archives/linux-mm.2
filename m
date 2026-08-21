@@ -4,108 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0B92C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:22:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD849C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:26:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC61B6B00A2; Fri, 21 Aug 2026 06:22:52 -0400 (EDT)
+	id E2BF46B009F; Fri, 21 Aug 2026 06:26:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9DEC6B00A3; Fri, 21 Aug 2026 06:22:52 -0400 (EDT)
+	id E032A6B00A0; Fri, 21 Aug 2026 06:26:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDAFC6B00A4; Fri, 21 Aug 2026 06:22:52 -0400 (EDT)
+	id D402C6B00A3; Fri, 21 Aug 2026 06:26:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A2D86B00A2
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:22:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B9791203E3
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:22:52 +0000 (UTC)
-X-FDA: 85124888184.02.4725285
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E5B4EA0007
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:22:49 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=lthBTzfx;
-	spf=pass (imf25.hostedemail.com: domain of Jeremy.Jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=Jeremy.Jean@oss.cyber.gouv.fr;
-	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787307770;
-	b=PdX6KlvuTUmEJm1h1g6fdwGxbwb9KdQNB2i+hen2RZkFjzbRxGc8QRWh3rExI4M6Aiu7io
-	/4Jb3RQ6crpe1/7L4VeB7rg1SqGsczqyzCJhD5d3lgls8ySs93PCtkGDq9ukcMfe88cilG
-	/kFVhd3jp9YKEv6Dji4jF37D4OFOj5o=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=lthBTzfx;
-	spf=pass (imf25.hostedemail.com: domain of Jeremy.Jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=Jeremy.Jean@oss.cyber.gouv.fr;
-	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A9DB66B009F
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:26:22 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B041B1403F2
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:26:20 +0000 (UTC)
+X-FDA: 85124896920.15.CF7CE8C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 20BC1100004
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:26:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fbq0d4vM;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787307770;
+	s=arc-20220608; t=1787307979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JEr8w4nR21pzOukAyhBhhXDwo5ooGu0VwxUIJYQuB9g=;
-	b=QBDF9zIKjWU6YtkrPFwdZnfXWLZq8UbPkBcm3MCQAYwzWrwsJB8blSA4GsDoKpuou+X31X
-	7jN6Yo1Q55MhSVCyaT4g+iUhE1MZ1+/+Er0OX7ABLw/On592awb8UGFi3ki/X0fOUdFbEA
-	QxpYt7cCRDvUEo2ZmDZGYUBA/VZUsmU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JEr8w4nR21pzOukAyhBhhXDwo5ooGu0VwxUIJYQuB9g=; b=lthBTzfxbAaZnvwdXTpDEjEvDb
-	b0MDMHOKvzWsMTxkkRzamBEfAaWQwI7uM2/4bH1ZlNm5FVT7HOhKnOQr9QmakA6c4mgdxDAWsLkfd
-	aYc3dGEvP+sF/BsJ0czbqqRp9V8+JhDSv3bQ5bdh9VRd59kI16tOVR/NDs2kDDweSRKltXNN/Fks5
-	5LrLMYAQ9iPICSNzqBOPirLDcrjgF7si6CZ7BdkVXaV11FDy+2CEUAa15aIQqkTolfnOuCuvUCS0s
-	W1ShV1poidagoCTmJ9aHbQ4vMBgVln0njDGClV8tCgAEwuKehRYzILT8FNoqxrFI96hjX0tzLxLWH
-	pnxQ/VrA==;
-Received: from [151.115.150.205] (port=45678 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1wxMOd-00000004kiq-1h8z;
-	Fri, 21 Aug 2026 12:22:47 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Kees Cook <kees@kernel.org>,
+	 references:dkim-signature; bh=DImEcDtOKUY2rAhijhJNaWF8FQiu+X6BoqAJgd4cEOM=;
+	b=yC6duTS3g6Y19RwzKTjtRGWg5C7mZGU3YDVyvzS5Z57U+upnLIWzlKaumup9H2DFF92ASb
+	RTHTxQct28TeA1Ew2IBxfuMUfLVFAL4xKZTwTRlVXW5tLM7WWneJijHYfBB1Il3doYid2b
+	65zebO7KxIzz4sUMsEdz9TxBvY6sQ74=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fbq0d4vM;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787307979;
+	b=Q8PjvjDvlHgOC5y0OjQptHOJPhIGDrEgVqVe5XNWiGmJREjhiwnLzga8uC+zWbuJkzryl2
+	EqGV9DxPo0OHqEKQjzuWSg9jJuNVepAlM574gTOpe1zxjuVPW/kDj/cjgVbLN9UlhvvDcQ
+	YZV4zmTYpBJIl/KROt8w2lbvaLcziHs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 53E37406F6;
+	Fri, 21 Aug 2026 10:26:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCF51F000E9;
+	Fri, 21 Aug 2026 10:26:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787307978;
+	bh=DImEcDtOKUY2rAhijhJNaWF8FQiu+X6BoqAJgd4cEOM=;
+	h=From:To:Cc:Subject:Date;
+	b=Fbq0d4vMNd3d7+s+DE1ZJPxLzlbTpOctIuZyaxcizV+27mCifm8+4C1vLznc8JEZF
+	 uq0NQ/BfbbNBz/mi/TW5tUmntUeoOlINBy/VGirTKLHIYdnXwtbA2VsBjMTWlGBQpK
+	 7tDkfkP5PNREGldA/fAlm/LfpEU4EmUfLFzlzCTzieWSxICz9Xo5XIaMnESYdAbKcW
+	 lfA8FCIAZ0J4N+FKE9gAterklHs1TXsG+BMvthUZ0keL94EQj4A0opRoq75Vz6mEfX
+	 6wHUG/FFYaTeH67kOJZGJkw4i9j8HpIC/dO26VcFUlvNb5gZ2BRlKC14ZOg0FMCbBR
+	 TlFwunhkT59Sg==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: axelrasmussen@google.com,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	chenridong@xiaomi.com,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	kasong@tencent.com,
+	lianux.mm@gmail.com,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Subject: [PATCH] fork: initialize function graph state before copy_exec_state()
-Date: Fri, 21 Aug 2026 10:22:08 +0000
-Message-ID: <20260821102207.3626491-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	ljs@kernel.org,
+	lyugaofei@xiaomi.com,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	stevensd@chromium.org,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhangbo56@xiaomi.com,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: [PATCH 0/6] mm/mglru: speed up inc_min_seq() and fix cold/hot inversions
+Date: Fri, 21 Aug 2026 18:25:32 +0800
+Message-Id: <20260821102538.22642-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - kvack.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Rspamd-Queue-Id: E5B4EA0007
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 20BC1100004
+X-Stat-Signature: tbbit7yp4fmn36ku1f35qw8d68i1hbc4
 X-Rspam-User: 
-X-Stat-Signature: gtrpqimuh3auezh6omh8pubgjjm1c3uj
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787307769-958940
-X-HE-Meta: U2FsdGVkX1+3LNRT6FULKoX+IRiXaKB3pvYQEcgaZhONhMXa4F2f3lQmAIkr5pGygv71KngxrfteobpLcN0KPWZaVx8nz5cQicvxIxI0lMi/EPMEqBVyhMvfvqL4SxRWWqdGq2Fk9ajr14RbeMqQ2eS77tk75uoZLFmw+jVFrkGFYY9DI9mnULHayiHSnvQeWovSk0BtFsm9EDmX0xfrHRKOwi/mtk+7x7ZG5L8osdQzR4JCaq/I68DizgYCxoUvz3CbF8PWbf26NVHFLzaiTFArTzx8xthsTJNeCdzTNeS1IH0Cy3e6Y+HRnm0s3WBcGaNCDfBrKYQhffd0eubaHa+ynSHFB+iwBfIxk6iTfQBFcdkV4UDT9yxHAgSZ1iePqwEqNka1CfqSlo5ajn9bJ2ifaOsj+/P+kkH4tlbSvFH38xtwCwBikpv96TdurXhZf6L75diLOhufyD4Ui7+Bv9GOFcdnJi0FobfYcxP7L2Oo0qWLPjpq4/CNyLF4vnjLR66jURt9sZ20AXqnuWC6uLNmkcBSpPEGPAKx6/X3MbPD0riCJCSiFO6b+xZs6T6nOyh9FwIy9bcYf63/MFo1AtG/+0n7TMTLR25HsNK3WtN9ivflGzf3aWXvOaYu3wPx9UGA8ARCA+AZP2kqoZO/6wfCjhtLAfhe29g3RgMcwA36bxH0AfyAl/7g+CexXFFqri6GPMJG4Y/VxG3WXLrP1dZ0zmJ4iqjFrFuBN1LLiU15sPEa1OlFxASkNK0A+MdhOpcn3oOokKHuGRPZmQbWrPu5ecX1xlAitOM4u9ZfPFJg96IHyr1AfHeam2ELibXIup4Qk02Af3SSUXslI2PzjGQuszlrdgtcdo2+rY0p5USHVhQ16Ui5KGs0V5Ifw07n5O2BZUF3Rr0fIG/v1ux9CZuVyb2zPR3HeCpVSyWXChWpDjYGP+9s0OpMwD1S2ShWa2PgVHZdibXIe8fnilD
- ELKcZNkI
- jMMkZXYnR97gkQ/K1jkB4x6fyM7bIPRzGy9b4HcJBgfQCh/o3rMBuUsaRB87Zf3m38Wa9HaJa3fAUhHv8wKViMA4LOkDtk1ZSwE0q+oBcvjJdWaPmuN4/5DniYJjxizeSJqoxjy2gzbyds49/gjryDjR7Ug3YRun3nr79kuJuhpv9aNZRknF2wvIdowRmRu5WvZLZZc+G8uT20Yl7ekyONJlOLGIAIzGs2O8L75013yegaVrfy1mvg/Dh1StuLhum0SbjMK6+jZL25XUvaVX6dIOPxLHb+bSrBRJFZTy8WNnkoO/2uv7He/K9MZyQOXv8hEXz0vM0dfQiIqqk3g8DSyT+Oacb9xvPchxz+Fsgi4zC6TtyX9GRCoh8crqhyV2/n+TDF0ZCBGd3ZB8TSgvPkPRqwJBxktNNZ3xIhFwyXvXs84vtmtzp8Zop8jl2lQUi0tTB5ebBlQGr7VC1uJTYaclmADRBRsQ5pGU/mexRMtkE7IqlDSNI/bFOzC9FiiVYZez8E9+Yku2daDyEb/5rYjdc4H1Wq1vtnkGvrcF8qcpOm4o0ahho8FaXv70GoVvKFcgYbImeaE+RK6DmNHHz+gGVgDl+mQ0DMuFEgB/Xh2JT2JY1jpLy9X9DNsmozvqFNZGBWkuEgBAh8EYeuRU9F92+lVoKvTGmobpBWh8dhQStAcks6BZQvvAh1Ax8CUhjjXUpkPNRC+OM0cM=
+X-HE-Tag: 1787307978-694384
+X-HE-Meta: U2FsdGVkX1+DXDB4kfwLoRuqzESNambXYTwOJg3HpvtdGmul2kL4JqUff8suPP3D49oM324AGzHagN/9jICVW3hPgZJmEOrf03eyJyvG4hysgFRdJhnFW3TYxKiOzoskz55nAikEf9m7TYezmyL8W+RAaErbRXgH5XwZz+Ns8lAh/Tsw1BnyvtA0+c/MqpX2ETOuiL05MtSAtVWX+N7C01GVwpeDdwy38x89wLPPWzoCofDnAxrBiKlg1gsQw1jwuU9QuwCWFO60oiufqv9KW8h5beiFc48P8lvlKQjVDWihbjhlnQYdvVQBsIeUMsjSuz1ESlScwYiV+MuJNec01srRRJyukiaveLqP3aLfzKZI2IML3lnNy/N7+Uy2fME9C0NDnjtqD6dLxInzQd9HvLaRCsXZrJfONNiyFAXyJbYJt7E0o1yhKnAERPG/E5luY9E6MQ2qjUtKayHomIQWuc3FaaqdxhEGDzDas6XII8NucWv4Jk/VBwaHpc2rI1N606QOvw8s4+awWd2izDhOzH2z8FBf/nKVO5bzcxW+FJyx05U69gVMyLzQmvtNQvhpla5u4TUvOeNzhoelum4O+EGr1it+eowtcIg2wVCKvsjOhfernm7gWk9HZT3AA0b+wZT+SM2pFtGIxpJDiV2fm9K4K38yeJmbAuX9+6DrnArGBg2pPk1/njsh6ofNaL2ZbHrx+oPFaSA5CahNjB6+D8+Kwi6IwheWm23D8R8wzOYLx1xqFyGwGyE3EvmQavrm+3r4y3gsZiB1bgo16xZHrPeh+/JKlm1LjmMYpvKXlZGMUQvIV8yjBlzjs0toLS23bjk8VTBAGCIAybrSAX8heGyu9BdIU46ZVde2akQIUA5IcAdvfEJ/oOHS+xzVe3x0+tNUZUiKR9CC4n2yllMYzm7kalVRLNAF87cQMb2Z9h6BJNLVrkk4/AnWB03rcfA5AFTQ6XNCQP2yKm8pCwp
+ 3DnXCz7q
+ lyCHjpywuU88+QyV49jEufgnoMmhwPNAyuaD2VCXelu6Gn4ouD4QKlx2nuvJTrJwzOiFHpWcuiQaP3ughGqoX5eXhq/juoSN1xZNg/0URe4UiGe+r+Wc3bwr2UJk6vHM0KcsB+lFq2SL4w1lizmr8M70ch/rhKnNDsdow83RUMMtOnpCt/jAbEo/qblM6kWsB2H6EcNqN0fox597UoOMmVF4ojLQvmlG1iE660wWfrk7HFoerkFbH2Lzlki0bcsoCdAkMkj9LBz3Z3fpAJVJE1KMoawHE7+rk4drKspuV58gIxT5Aj/jAs8WGcalsJ+Cz3Nb1t/E8G1CY3qSrlSzF0tD840no9cbnIXOUI7VqjCNu29tR8s5bCE5iSAhGfN6x+fAfqU9DGQTdlxU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,49 +108,253 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-dup_task_struct() copies the parent's task_struct, including ret_stack.
-ftrace_graph_init_task() clears the copied function graph state, but it
-currently runs after copy_exec_state().
+This is an aging speedup series split out from the MGLRU swappiness
+series [1], with the inc_min_seq changes separated to make them
+easier to review.
 
-For non-CLONE_VM forks, copy_exec_state() allocates a new task_exec_state.
-If that allocation fails, copy_process() reaches bad_fork_free and
-free_task() calls ftrace_graph_exit_task(). Since the child still carries
-the parent's ret_stack pointer, the unwind frees the parent's active
-function graph return stack. The parent subsequently accesses freed memory
-from function_graph_enter_regs(). KASAN reports a UAF.
+Currently, inc_min_seq performance is crucial to both the swappiness
+fix and proactive aging. There are two problems with it:
 
-Initialize the child function graph state immediately after
-dup_task_struct(), before the first fallible operation.
+1. It processes each folio one by one, while many operations can be
+batched or skipped. For example, a batch of folios can be moved together
+from the oldest generation to the second-oldest generation, and the
+associated counting can also be done in batches.
 
-Fixes: 6b1c66c9cca9 ("exec_state: relocate dumpable information")
-Assisted-by: Codex:gpt-5
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
----
- kernel/fork.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+2. It may cause potential cold/hot inversion by placing promoted folios
+(which have been scanned and found to have young PTEs) behind
+non-promoted folios. A similar inversion can also occur among
+non-promoted folios, as tail folios from the oldest generation are
+placed before head folios when moving them to the second-oldest
+generation.
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 1e68404bd773..cec82a64a07c 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2139,6 +2139,7 @@ __latent_entropy struct task_struct *copy_process(
- 	p = dup_task_struct(current, node);
- 	if (!p)
- 		goto fork_out;
-+	ftrace_graph_init_task(p);
- 	retval = copy_exec_state(clone_flags, p);
- 	if (retval)
- 		goto bad_fork_free;
-@@ -2165,8 +2166,6 @@ __latent_entropy struct task_struct *copy_process(
+This series tries to batch operations as much as possible and fix the
+potential cold/hot inversion by keeping promoted folios ahead of
+non-promoted folios, while also preserving the order of non-promoted
+folios when moving them from the oldest generation to the second-oldest
+generation.
+
+Minor issue: inc_min_seq() also counts protected folios
+improperly, as promoted folios should be skipped, as in
+sort_folio().
+
+We need a stable workload with a stable number of folios to measure
+aging and evaluate the speedup in inc_min_seq(). So I asked ChatGPT
+to generate the microbenchmark below. It ages an LRU vec containing
+512 MB of memory 100 times:
+
+ #define _GNU_SOURCE
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <stdint.h>
+ #include <unistd.h>
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <time.h>
+ #include <sys/mman.h>
+ 
+ #define SIZE		(512UL * 1024 * 1024)
+ #define LRU_GEN		"/sys/kernel/debug/lru_gen"
+ #define TARGET_CGROUP	"/system.slice/agetest.scope"
+ #define START_GEN	3
+ #define END_GEN	103
+ 
+ static long long nsec_diff(const struct timespec *start,
+ 			   const struct timespec *end)
+ {
+ 	return (end->tv_sec - start->tv_sec) * 1000000000LL +
+ 	       (end->tv_nsec - start->tv_nsec);
+ }
+ 
+ static int find_memcg_id(void)
+ {
+ 	FILE *fp;
+ 	char line[4096];
+ 	int memcg_id;
+ 
+ 	fp = fopen(LRU_GEN, "r");
+ 	if (!fp) {
+ 		perror("fopen lru_gen");
+ 		return -1;
+ 	}
+ 
+ 	while (fgets(line, sizeof(line), fp)) {
+ 		char *p;
+ 
+ 		if (strncmp(line, "memcg ", 6))
+ 			continue;
+ 
+ 		p = line + 6;
+ 
+ 		if (sscanf(p, "%d", &memcg_id) != 1)
+ 			continue;
+ 
+ 		/*
+ 		 * The memcg path follows the numeric ID.
+ 		 */
+ 		p = strchr(p, ' ');
+ 		if (!p)
+ 			continue;
+ 
+ 		if (strstr(p, TARGET_CGROUP)) {
+ 			fclose(fp);
+ 			return memcg_id;
+ 		}
+ 	}
+ 
+ 	fclose(fp);
+ 
+ 	fprintf(stderr, "Cannot find %s\n", TARGET_CGROUP);
+ 	return -1;
+ }
+ 
+ int main(void)
+ {
+ 	void *addr;
+ 	int memcg_id;
+ 	int fd;
+ 	long long total_ns = 0;
+ 
+ 	/*
+ 	 * mmap 512 MB and touch every page.
  	 */
- 	p->clear_child_tid = (clone_flags & CLONE_CHILD_CLEARTID) ? args->child_tid : NULL;
+ 	addr = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+ 		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 	if (addr == MAP_FAILED) {
+ 		perror("mmap");
+ 		return 1;
+ 	}
  
--	ftrace_graph_init_task(p);
--
- 	rt_mutex_init_task(p);
- 	raw_spin_lock_init(&p->blocked_lock);
+ 	memset(addr, 0x55, SIZE);
  
+ 	printf("mmap: %p, size: %lu MB\n",
+ 	       addr, SIZE / 1024 / 1024);
+ 
+ 	/*
+ 	 * Find the memcg ID automatically.
+ 	 */
+ 	memcg_id = find_memcg_id();
+ 	if (memcg_id < 0)
+ 		return 1;
+ 
+ 	printf("memcg: %d (%s)\n", memcg_id, TARGET_CGROUP);
+ 	printf("aging generation %d -> %d\n",
+ 	       START_GEN, END_GEN);
+ 
+ 	fd = open(LRU_GEN, O_WRONLY);
+ 	if (fd < 0) {
+ 		perror("open lru_gen");
+ 		return 1;
+ 	}
+ 
+ 	for (int gen = START_GEN; gen <= END_GEN; gen++) {
+ 		char buf[128];
+ 		int len;
+ 		struct timespec start, end;
+ 		long long ns;
+ 
+ 		len = snprintf(buf, sizeof(buf),
+ 			       "+ %d 0 %d\n", memcg_id, gen);
+ 
+ 		clock_gettime(CLOCK_MONOTONIC, &start);
+ 
+ 		if (write(fd, buf, len) != len) {
+ 			perror("write lru_gen");
+ 			close(fd);
+ 			return 1;
+ 		}
+ 
+ 		clock_gettime(CLOCK_MONOTONIC, &end);
+ 
+ 		ns = nsec_diff(&start, &end);
+ 		total_ns += ns;
+ 
+ 		printf("gen %3d: %8.3f ms\n",
+ 		       gen, ns / 1000000.0);
+ 		fflush(stdout);
+ 	}
+ 
+ 	close(fd);
+ 
+ 	printf("\nTotal:   %.3f ms\n",
+ 	       total_ns / 1000000.0);
+ 	printf("Average: %.3f ms\n",
+ 	       total_ns / (double)(END_GEN - START_GEN + 1) /
+ 	       1000000.0);
+ 
+ 	while (1)
+ 		sleep(1);
+ 
+ 	return 0;
+ }
+
+Run the above microbenchmark with:
+systemd-run --scope --unit=agetest -p MemoryMax=1024M ./agetest
+
+I’m seeing inc_min_seq() become significantly faster:
+
+W/o patch:
+
+Running scope as unit: agetest.scope
+mmap: 0x72c1b5a00000, size: 512 MB
+memcg: 12673 (/system.slice/agetest.scope)
+aging generation 3 -> 103
+gen   3:    7.433 ms
+gen   4:    0.949 ms
+gen   5:    2.535 ms
+gen   6:    5.043 ms
+gen   7:    5.041 ms
+gen   8:    5.027 ms
+...
+gen 100:    5.035 ms
+gen 101:    5.011 ms
+gen 102:    5.029 ms
+gen 103:    5.056 ms
+
+Total:   503.946 ms
+Average: 4.990 ms
+
+W/ patch:
+
+Running scope as unit: agetest.scope
+mmap: 0x7c4b1d200000, size: 512 MB
+memcg: 12893 (/system.slice/agetest.scope)
+aging generation 3 -> 103
+gen   3:    7.538 ms
+gen   4:    0.937 ms
+gen   5:    2.348 ms
+gen   6:    2.300 ms
+gen   7:    2.302 ms
+gen   8:    2.294 ms
+gen   9:    2.296 ms
+...
+gen 100:    2.292 ms
+gen 101:    2.307 ms
+gen 102:    2.293 ms
+gen 103:    2.293 ms
+
+Total:   235.718 ms
+Average: 2.334 ms
+
+The average aging time drops from 4.990 ms to 2.334 ms!
+
+[1] https://lore.kernel.org/linux-mm/20260812121658.69965-1-baohua@kernel.org/
+
+Barry Song (Xiaomi) (6):
+  mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
+  mm/mglru: batch update lrugen->protected in inc_min_seq()
+  mm/mglru: enhance cold/hot inversion handling in inc_min_seq()
+  mm/mglru: exclude folios promoted by aging from protected in
+    inc_min_seq()
+  mm/mglru: move folios from oldest gen to second-oldest gen from head
+    to tail
+  mm/mglru: batch move folios to the second-oldest gen's LRU
+
+ mm/vmscan.c | 98 +++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 80 insertions(+), 18 deletions(-)
+
 -- 
-2.47.3
+2.34.1
 
 
