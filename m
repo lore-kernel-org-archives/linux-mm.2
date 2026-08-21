@@ -4,127 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D26C4C5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A02CAC5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 11:45:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96D276B0095; Fri, 21 Aug 2026 07:27:03 -0400 (EDT)
+	id 71F786B0095; Fri, 21 Aug 2026 07:45:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 944876B009B; Fri, 21 Aug 2026 07:27:03 -0400 (EDT)
+	id 6D0226B009B; Fri, 21 Aug 2026 07:45:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 859F16B009D; Fri, 21 Aug 2026 07:27:03 -0400 (EDT)
+	id 597726B009D; Fri, 21 Aug 2026 07:45:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DAB96B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:27:03 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E1A15A30AA
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:27:02 +0000 (UTC)
-X-FDA: 85125049884.07.F9AAFEC
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 004C4C0004
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:27:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=I2e9BbXi;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 29F2D6B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:45:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B722A30D7
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:45:28 +0000 (UTC)
+X-FDA: 85125096336.05.AA3AD0C
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3EA2A40010
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 11:45:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K+1B+X5f;
+	spf=pass (imf27.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787312726;
+	b=Kw7yfUcG+E7H7UIr7sHcV92RjIWiv4lvz/+ck2//EmREeIDVysmzgwmKEP7aO83qkE5tcS
+	7+g2SucevX1Qmg1hGyifMPUfZ8TUtD9Z0OIpX1e5k28cVdko1rcLCED1fh0mHaFlSvTt+L
+	AnYwcLIC+Kn+PsoHbZOvU9RXEz3otN4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K+1B+X5f;
+	spf=pass (imf27.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787311621;
+	s=arc-20220608; t=1787312726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y0+Hytv4UMojIA2Hs8fG8+n+8sWIYR+hpSfJmDuymH4=;
-	b=WxWkzVLQSi62nS24mucqe2T65yBWFhqF2VTtu9UuasI8UeDEAxPSkCWKakT6/bX0Ps60I/
-	29xIi08ejLF1GFmC+avhTZ6d9/2hKPPvu57STCC/63Ril/V1uP/fBH8VzF8NWwGNxrniqO
-	v231L+GgQ6ZxMhx9EfRtccW651MV/NE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=I2e9BbXi;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787311621;
-	b=XBur2l6X9ijdX8X5O0PZuGhmjJfG8HW2GYzNOJcM18rV21CzBfKOATlg4fDn1PTgVGSukI
-	9vtqglEvibN+PJfF7dn96DFyBO/dY4Ev6eU5SDPeSHRzIvZ8jxWcvHcuAQcJgk+EhahF3U
-	NZX8v+Q3c/8K3kmtYUc9ggyrGvhNPEY=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a41191c9a9so1981713a12.3
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:27:00 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JSy4cnyR4S+sHUGi7h02BTfopN89+3p/alRrTWBOPrA=;
+	b=E8g5TUqpUf8EmOiZwyTucabgsX0d6MPXzk+63c65+VEy0+5aNaT6PbtSY1M8EZlS38Zklg
+	r3hvZUORKUpNeyZfaOOp+oF4gRZVp1doK4hrCvrkWclRi9XEH1MsO+sK/Qrf44Xvpw7b0D
+	lzpCYSilIvSGVm2SOIloZRVoHrWKfL0=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cab973140bso11572665ad.3
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 04:45:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787311619; x=1787916419; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Y0+Hytv4UMojIA2Hs8fG8+n+8sWIYR+hpSfJmDuymH4=;
-        b=I2e9BbXixFG3yQagMHpzGlI4eHcmwq54JVfatzHeFduSOCZlcY6a6KaLBovYqaxth1
-         N/gqpczBf9Z8/vKGBPrUxKttMr9kPn2HaJ6LjH39qu9Y1C4R6Fc0ntwwGoBPLrwm1AzS
-         NxNizTo5/lX9pFRBMpYjy8D6VNCHZarfVyj18fId5ez1c2SB1d+VRfBSb30KD+OR56ZU
-         NdXcAdUUHCg88LFH0/lbnoxWvBjzjrjzcFQeYJrt0XyiNoT+x2aOo3eDhbQSAeJp5M9g
-         pbJt+umRvGD1M8tvUIhWZYz41U0yhD5NGfva8YRYFi2HAQRzZzOlFjRerbxKA1gImTFN
-         5TzA==
+        d=gmail.com; s=20251104; t=1787312725; x=1787917525; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JSy4cnyR4S+sHUGi7h02BTfopN89+3p/alRrTWBOPrA=;
+        b=K+1B+X5f3P5UPp4t739asUPLHNb9fe29eYSJlueP43AkL3J+HI6OOwbRE3HZ8L/UYv
+         QQ4vwdv7/le3HZuJ9PHG/8j8y73t7ynf1/I3049zYL0K29xvo7VL7BxqAQCRlEjP62M0
+         C7ebulfLZzcjXmqmFIlRafeqdSHuNQW8ZAcYj1BUG9omigTz07suqram1LeEeFh5xCdO
+         vdaRKsMmVw0nNILO+6yZu0QVFL2ZpPmhCeK36z7+bQ8RoxCvMa1n9jzbYycepg+0uWYW
+         3ZNgROf2NRywRiM0sdxR7Nhv7UOB6W9MOFsj74oBzyYSwpQS4lEuex/OPNy4jirSKHsX
+         iwKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787311619; x=1787916419;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Y0+Hytv4UMojIA2Hs8fG8+n+8sWIYR+hpSfJmDuymH4=;
-        b=bjCxdQ0lqHltITTYiGyoBVaEE+URyFLA8nS13wlqwa2WPr7WyJmhSrDTGyPjhb40xe
-         DSOD+25vsDRhM/ASkglXgG9fj4tJ8bPgYOixoc3Hi7c/didxZhVu8DJF+vLPCJosBZOV
-         sHFmtt4PfkXzeF21uBhcuAWCAR6reTGALwI8Qok3Qjf5unkFWTQf+0nitCJyeVK9A2Ke
-         XbbrgGmh2S9fwKH7vqgvyyDsBWoXFeWPhJHueZ59EdDym5u0cPWGntE/bqXNl5Wr/+ps
-         tcLgJO7zBzGz8Ej8NcYv2ND9hWt+9T4oIJClrFV87EZCa6MHLqhEKg/qkw8DNAYc7qQ8
-         dYgw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5IVHjyQPexifX6/e89VlwMamtImH9wGkgBgOMqYd4CiO9BrzY2PqFbU8HVDho6FkNtjdgvy7kqQ==@kvack.org
-X-Gm-Message-State: AFuF++kLM0EG722ZodUwXBG4bGiqsiXPKqPlNPMeQZiI2zYGYOfVQ8my
-	EjE2OSQI21ZXAeeGARLJLkzSZtQ6IOCZgQVE0eTXX2xs/5dCkq3TLtx+zJ/8VSBoezU=
-X-Gm-Gg: AR+sD11BXR8r9RyrJXWHwo8FqCy+95rxtu/P4NIuQt8rRF4r7nu2nB+3q/qmW5gMYs8
-	dlA4wY1RBwjZVPEu2B0gdjwAZPVLMLbgTvHfvz08J/eW3RfHtS2xrSTGTauWIi3K5isgJhVL/x6
-	WfbkeenvQwMWCsVys9aheDkUjFc8hily/zIaIRzBHf0X0oRj8xXvdEYA7OeeYuyWBteriJ9MAiL
-	kdINC04efetie5Pspz7mAZLOQjeB6F1p9UVTMDix6NV8Mgj1iiDmf3KkdpHFB1keAQlySbfccuN
-	tGCtZF8dRgOk4ZMRVUbljNIV5T7CEQ+cTCeT3wxiQpfm+Gd+74f+wdn66BErbzBMgVKOKJ5hPtJ
-	zJpYmfTvQYJ60vSsTpwyBNkZcjv838RD5LvISzwHSJSltaUC64m0zekh3Mdnci0vIkBk18qaMGX
-	88mThVpQvC9l72NAEB2rhOGvCp+YlOL+MG5gDiGFkbPV8yQn/kblZwDZNTG5fquxHIC/0rg+W4l
-	gxHh2ZCHGVg
-X-Received: by 2002:a17:906:100a:20b0:c16:8799:fcb4 with SMTP id a640c23a62f3a-c246a6a93fbmr429118866b.19.1787311619449;
-        Fri, 21 Aug 2026 04:26:59 -0700 (PDT)
-Received: from localhost (109-81-81-112.rct.o2.cz. [109.81.81.112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24591df622sm433233966b.46.2026.08.21.04.26.58
+        d=1e100.net; s=20251104; t=1787312725; x=1787917525;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JSy4cnyR4S+sHUGi7h02BTfopN89+3p/alRrTWBOPrA=;
+        b=mR5nhTKvqtImGcl4cQTZb/rxihnLWPy4eRM9gQ3yf3Dn95kbgCvhGmcqXVEkR04wz2
+         dYoK4HD/Jkhc5PGQfhe3I5GdEU/rZAx5MlKJ8/p10qRcC9X7u1wNGm44K+q3zOXTX1Ei
+         eBqFmyW5CooSUQkLm0i9ZBv43UJ2WlRb5ych7v9PYA3DA0eNwz4ElqZQdChhRYBnwnDC
+         w/r9hq7PAUgaqoYAm/QyUN0zFpGL9bwOwb9MyHYysC5wlLXixGOghXNfSAGrGTrb+taL
+         zKvioz/Oet8JlZoT/gIugVuudonozAWd2bzD/GyE2eGrnggb1zx2NxSls6Mt3WJmuBd0
+         +67g==
+X-Forwarded-Encrypted: i=1; AHgh+Rr1BzbeVJJOwP7CvZ7px1Wv8O1Kr8hyDggtVrNdMsv9BmpX+tLhW4nXINBPOZyPNLC/NckAb0pudA==@kvack.org
+X-Gm-Message-State: AFuF++mkW4D5qzGIKM1lnytzZcdNyOYfyfLCpIm/WYwUDwlWKu41P1lJ
+	ExqY897K+ArsohGh4nAwCvdwEgCxvf/g27xps4vwM4jtS3qh8Db0HAIV
+X-Gm-Gg: AR+sD12ZGOXLhoOHfTUj5RQLKhaYcUJUXNGBF9xRNCRmxoUQfUVZd/dRVI3/JOebH9K
+	u/GvMacs9wbzevZLy3hI4jOZ5+oOigxtJcF1jdlV9SC4FjV/Nszsd18dQybM7vtxrllbVaBkUJN
+	LwZx34BcJgV2D7mHXNla8wyvWKNnAO33z5uTDoQZQkM3zm9FzkZMoB70YLNJ5OuYegfQZUbYM+T
+	rC5WSMW9vXd0jSEAywIWDRJ6FaEOxMcKxHjBXtrjT0sA/ywgyZqWPqeUYrZqq2RAQU3OU5XBfB0
+	QiR4Ex6OrbH+xFXTSPNICILCnRRVCsCKNlTqgUKdjEhwhASrsXOFuRxL43MkCwbkvbeNCH29YPI
+	mwxzK2hbsuP1yblntB2YZmYG2c5rftKWO5HtVqJ6+BOawVC65eyYABS0vOIEPq2n9tYVROaFIRt
+	2kXexj5NCZnmAeSKflVUgS3fn1L1X4ZZzHr04cJ3uX9ak35s3aObiC7qcE5tr4pRgo37vPNSEZO
+	1UCJ4CzrvdgAm+/2uKwkNrZ8ts=
+X-Received: by 2002:a17:902:fdb0:b0:2cc:6018:f030 with SMTP id d9443c01a7336-2d64b0b5652mr124872615ad.14.1787312724901;
+        Fri, 21 Aug 2026 04:45:24 -0700 (PDT)
+Received: from Anshuman ([103.161.223.14])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327c946293dsm20771743eec.22.2026.08.21.04.45.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 04:26:59 -0700 (PDT)
-Date: Fri, 21 Aug 2026 13:26:57 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Ridong Chen <ridong.chen@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Ridong Chen <chenridong@xiaomi.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
-Message-ID: <aog2AeQ2X4KSCkOk@tiehlicka>
-References: <20260821081741.1340277-1-ridong.chen@linux.dev>
- <aogMyu5R_DZRqp2J@tiehlicka>
- <aogQ6iDA7RkuTtDG@gremlin>
- <aogYm0fKNsYVyBM8@tiehlicka>
- <aogxgLSLNixXvuUR@gremlin>
+        Fri, 21 Aug 2026 04:45:24 -0700 (PDT)
+From: Anshuman <anshumantewari123@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Anshuman <anshumantewari123@gmail.com>
+Subject: [PATCH] selftests/mm: check strdup() and fix buf leak in parse_test_type()
+Date: Fri, 21 Aug 2026 17:14:16 +0530
+Message-ID: <20260821114416.12255-1-anshumantewari123@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aogxgLSLNixXvuUR@gremlin>
-X-Stat-Signature: esygtkg36eeo1ug81gacu4syo7cqxmph
-X-Rspamd-Queue-Id: 004C4C0004
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3EA2A40010
 X-Rspam-User: 
-X-HE-Tag: 1787311620-27807
-X-HE-Meta: U2FsdGVkX18Yw1Ik5btTwcqvGK7cupY8Vjv+RXcsLzejAh/kuFowSDCMlfsRQDP3EC+TT0oj3mDmB1xPJkmBc4nfWjMJHF6XmHAQkLRrnA2tP9AyUmN3fkmKSsG7IOdGeV3hFqzzWY4wSNZKCUccwSRXKhzYv79gTZjUQfyjpLYBBeQOICKMo2wB+tLE5tayBc+Amta+KLkvdONmlDoi6HJNx/TiGMx2TOMDMoFTHFRR+j9Vv1mOizhJpTLRSad1d7PCaRw6lx4C6UDxtQalVtWbx3GGbTxW69ktHmkiIiE1ODtwtVaJtfCTdQUrqjiu79ak/Ev89mmuV2g5Fs7Sx1atUxHXrdHEGaLpnzghdEnzdkCQYVqMTJ/+ycoR9FfdmuHkSn2V47pmLmoMV7Nf1kUyPif+q4EsmxEo4X/nyPi+jSUw+mYH+5PMhegCKIo8EpBGBt6h2RCq2+pszcyrku4MTyYPiHq7UgSqMLpkP6NmV/A8MAOumBtrBm83WIJH/i2ykLYKAXDOaqq7jOeWuZGL/OSskIkEdINAhfL0TF508tUNQ/6RAaQO6mmoD/n+4qIq1yTu4AXXEWvSqZdHCi71z2mbK1fCXiJV/fz/xmLtED2fPPQAyxVWsJ9pdWrqzkaKf08i6ufgcYXxHR1sMgB2Sx4AVgKpqyHS99QxC2YXbThdYE39zDfdwtvwl8MTGW/16cI9SqFYT5ikqX77semsS5/V4XAV7Q1edqxWEzuQa1o+MPaf+EqD41wtQ0IuEPeJVOXcTmEpxcPmn9//c5lsphLir2sMn9ESCAZlhWZwN1TwHBX1zHBOhEPaaTJOxtZhI7kIPAYxyNIhypqsbrRX+6mB1bDZXRuBVS4vJpmzTJYoIJREd0/SJojlNk7z3MMfXn0otalg/SCBqlmhO9e7tddqpYjkNAnWXMos9Ok9ugYd05WAW7bp+KcKVjk6+FIPGb4fxqfUs/Gh3UZ
- TVcVnk5o
- f9Jjk8Nn0SQEAS53ehfbNfLjWqLR3IZy2/wqFrkrZKpcv/LsS7uEWJwHZ/wKiBryrWm9vbimsNpldmxNwOBA0HTNiXzGwDkfC+33bEVUNQy8aa4U5q+dIkZXZa+hNN2o0KilBcqhcw0LhfEI1sdH2xzOIrp+DgN7FZiv+xLTR4tmzRFd8DpwnBGCfyYFbGLnDZ6c0TPjqeMWuiC3OTJUUPqOsvNmcWoRAce1vlDs12fHQOzlHIh7ViM9F0VChtd0VWC33fE2NswhN3776gpA6itSOgGova2bCUxYSW32jJY1vvMpQF9B1kyvqyXBWxL6kpwcltosPN1+BZR21E5USzEfB9sMREbjsc5RRAwkckdBK0v0=
+X-Stat-Signature: mcupmyzz57stkm7mgtz5ewbw3mkjq61m
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787312726-2970
+X-HE-Meta: U2FsdGVkX18TMqk0Io+VTp9wOQMcvASOuI2NfwTpdwdHp+HIhuiLOdtBolnih+D7/Vjy6crC9DNWeRN3lDaqnZ4zyxa7Iz0t9SqMiqMYF4kfPZFiyxvK8oRPCSQYMviymggxJdjE79CJ5Z8ZBr1LMQQdxK2fQ9gr6DUfSE7pI5yk+AYrbQql5pA3rfGVnRpamNg2gIzAzug1S3eXLDF5Wi+Hcq9noQUn1dH0Im0NlP/p1kJGV796zgTL2qS4zk3ouR/rx2s+yNlkjtpXXIGMipG5hH8XULCHQ7XTOw0hdg2Z2AxpXncZr3yas7zFUd1X0ohm/E9XlxARnPucGF8ponT7x8pVJ6+/cLA9TVKlabKvQ8Szvh3YYoqdMdrmH2ay8cegzGn/fnyY2nIC6JCJCXklXQ0XSiJsRGwkmb5Ppg2pseRz9qxKxRHBW+kb6gleHtZl6yn80+4TxC0W9b42zOgpZBPkteOqKVv0Z7/E/SEqowMDqp1HbFLrg/w1qfd6rWy7yM6s15XlbUNqgfh2IN+n7/GqCBs1YJIUrSvAECsqW/C16qp6PuVMTr4F/2hn+q3Sl803+ynHNpXuZkkWNjr8vQLQ1fDwrlte0MXFKPlYGcXxEHQTrRovsLKMenBzapqOC+0v14s3nfaD6DCSocZVcf7Uo3V2VlOHu28jKQYzv7F345VMZj8yV98knVGYJlhj0F8gX+B8s3PdGjlgQTHdnLgG3+Yb3cOCiNDY5F4Gt4Aqdl5m+4q4JFyKuU464h1Jf8o4SRqihBMf1bcQPczlSakHXtLCo1bFgABeuh1WHdu5HUt57qezLwAoEomdlPRxpK9OFPC1SIwM8ChxF80zzJCtfp9jc0Fta5l8t5asqBev2UYBkwfqI0flk553YynMLYt1ogHpoBugLaM637O47inGdxu/l5+Gb/xsNFS1u347LqD88bIOmv1/lxcu+Z1czeLJU5M2w3uOTgK
+ vqy9CqxQ
+ y9FJFmX/JypSeUNaGjOi/4VzibAT2mpqrCHSPMDUJZl0wJ/smSR7vSD1qk5xiy0taEOfg/QwOpldbhFC0ANvq4dmJcJy9XN9/lmzJaWjcM7828LROrU2H4N3gKNYAHfeswYEWYBU1FrlBp1mB0v6XQH91Y4KisW+tkMeGcwPrhvnl9Vap4z9dnwkCksg2ipxKjP6i/zzy6liQIuUiHE4EyvXm02HDgEaVGNlcRCilncs8e8aZNAeYVMMAELmwSyAtlA+1hBxOl9Zs03ZkmI9P++uUMMe3sjyaaHYNXWcEB0aO6qTQ+LxQwm9PdPa6la0gZP5NnyrpIqwJNogNcRefpUW2JSCPcij/P3K9WntgbeD/9uSZ9q0y0aDgf/b1rgPAoE9bOuxzkg0iawaocj6mY1xj/kUQ/aYK7t7PwK+IaDK2Qcedb256fSsRpRfsoiMG0EgCKBOPbhXObnFtWkC3JpxdjxO5YeVD8BiiZqanycqhsP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,87 +133,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 21-08-26 12:16:47, Lorenzo Stoakes (ARM) wrote:
-> On Fri, Aug 21, 2026 at 11:21:31AM +0200, Michal Hocko wrote:
-> > On Fri 21-08-26 09:58:52, Lorenzo Stoakes (ARM) wrote:
-> > > +cc Roman for suggestion.
-> > >
-> > > On Fri, Aug 21, 2026 at 10:31:06AM +0200, Michal Hocko wrote:
-> > > > You are explaining what but missing the most important part _Why_ do we
-> > > > need to have this addressed? Is this just addressing Sashiko review
-> > > > refernced below? Is there any real usecase where the current behavior
-> > > > matters?
-> > >
-> > > This is exactly the issue with these 'unrelated to your patch but' suggestions
-> > > from sashiko.
-> > >
-> > > You end up in loops:
-> > >
-> > >         AI generated patch --------------->  AI generated review
-> > >                   ^                                  |
-> > >                   |                                  |
-> > >                   |                                  v
-> > >                  AI generated 'unrelated to your patch but'
-> > >
-> > > And _at every stage_ reviewers have to do _additional work_ (with ~50% signal/noise).
-> > >
-> > > This isn't sustainable.
-> > >
-> > > We already had _too much work_ prior to the slopgeddon. Now we have a multiple
-> > > of that.
-> > >
-> > > Roman - I really think we a way of switching off the 'unrelated to your patch
-> > > but' stuff per-subsystem would be useful.
-> > >
-> > > Maybe we could figure out a way of funnelling this stuff somewhere separately
-> > > longer term.
-> > >
-> > > (I have I think 2 slopped fixes to rewrite after the previous what like 7 or 8
-> > > this cycle? So forgive the grumpiness :)
-> >
-> > I wouldn't blame Sashiko on this really. Yes it points to a theoretical
-> > problem. That is fine. But we should encourage people to not blindly
-> 
-> I mean it's not only this case, it's a pattern I've been observing for a
-> while.
+The return value of strdup() is never checked before being passed to
+strsep() and strcmp(). If strdup() fails and returns NULL, strsep()
+returns NULL as well, and the subsequent strcmp(NULL, "all") is
+undefined behavior, likely causing a crash.
 
-Yes, I know.
+Additionally, buf is never freed. strsep() advances the buf pointer
+past the first token, so by the time buf would normally be freed,
+the original pointer returned by strdup() has already been
+overwritten and is no longer available.
 
-> > follow that lead and immediately jump at fixing something that is not a
-> > real problem. Quite honestly I even haven't looked into patches until it
-> > is clear that the usecase is sound. We should enforce this more and
-> > leave patches lingering if they are not sufficiently justified.
-> 
-> Yes this is a needed change in mm, but until we fully transition workflow
-> any patch might still land.
-> 
-> And I still find those kinds of suggestions deeply problematic for reviewer
-> workload.
-> 
-> If you had a person repeatedly say 'hey unrelated to this series but...'
-> you'd very quickly ask them to stop and if they persisted, >/dev/null them.
-> 
-> I get that passive passes are too expensive and it's not that much more
-> work to have sashiko point this stuff out, but it's not that much more work
-> for _it_, it's substantially increasing workload for reviewers.
-> 
-> As I said on a recent call - it's fine as long as you don't care about
-> reviewer/maintainer burnout.
-> 
-> But I do so :)
+Check strdup()'s return value and fail cleanly on allocation failure.
+Keep a separate pointer to the original allocation so it can be
+freed once buf is done being used, after all parsing has completed
+successfully.
 
-Hey, do not get me wrong. I very much care about reviewers as well. I
-merely wanted to say that we've had peaks of tool driven patches no
-matter what. Things have eventually normalized but people need to be
-educated about expectations of maintainers. Sashiko suggesting "but this
-might need attention as well..." certainly contribute to more noise but
-keep in mind that AI driven people are going to find a tool of their
-choice to arm them with ideas to implement and post so focusing on
-Sashiko is not going to help all that much. My main message is to
-establish and enforce a notion that patches are going to be ignored if
-they are not justified properly (even if they might seem technically
-correct or fixing a theoretical problem).
+Signed-off-by: Anshuman <anshumantewari123@gmail.com>
+---
+ tools/testing/selftests/mm/khugepaged.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 10e8dedcb..a84fb87bd 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -1110,6 +1110,7 @@ static void parse_test_type(int argc, char **argv)
+ {
+ 	int opt;
+ 	char *buf;
++	char *c;
+ 	const char *token;
+ 
+ 	while ((opt = getopt(argc, argv, "s:h")) != -1) {
+@@ -1135,7 +1136,10 @@ static void parse_test_type(int argc, char **argv)
+ 	}
+ 
+ 	buf = strdup(argv[0]);
+-	token = strsep(&buf, ":");
++	if (!buf)
++		ksft_exit_fail_msg("Insufficient memory\n");
++	c = buf;
++	token = strsep(&c, ":");
+ 
+ 	if (!strcmp(token, "all")) {
+ 		khugepaged_context =  &__khugepaged_context;
+@@ -1148,26 +1152,27 @@ static void parse_test_type(int argc, char **argv)
+ 		usage();
+ 	}
+ 
+-	if (!buf)
++	if (!c)
+ 		usage();
+ 
+-	if (!strcmp(buf, "all")) {
++	if (!strcmp(c, "all")) {
+ 		read_only_file_ops =  &__read_only_file_ops;
+ 		read_write_file_read_ops =  &__read_write_file_read_ops;
+ 		read_write_file_write_ops =  &__read_write_file_write_ops;
+ 		anon_ops = &__anon_ops;
+ 		shmem_ops = &__shmem_ops;
+-	} else if (!strcmp(buf, "anon")) {
++	} else if (!strcmp(c, "anon")) {
+ 		anon_ops = &__anon_ops;
+-	} else if (!strcmp(buf, "file")) {
++	} else if (!strcmp(c, "file")) {
+ 		read_only_file_ops =  &__read_only_file_ops;
+ 		read_write_file_read_ops =  &__read_write_file_read_ops;
+ 		read_write_file_write_ops =  &__read_write_file_write_ops;
+-	} else if (!strcmp(buf, "shmem")) {
++	} else if (!strcmp(c, "shmem")) {
+ 		shmem_ops = &__shmem_ops;
+ 	} else {
+ 		usage();
+ 	}
++	free(buf);
+ 
+ 	if (!read_only_file_ops && !read_write_file_read_ops &&
+ 	    !read_write_file_write_ops)
 -- 
-Michal Hocko
-SUSE Labs
+2.55.0
+
 
