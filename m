@@ -4,94 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFFF6C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 06:41:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2818C5DF88
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 07:05:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E32C46B0095; Fri, 21 Aug 2026 02:41:18 -0400 (EDT)
+	id 956026B0095; Fri, 21 Aug 2026 03:05:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE42C6B009B; Fri, 21 Aug 2026 02:41:18 -0400 (EDT)
+	id 92D9E6B009B; Fri, 21 Aug 2026 03:05:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFC4E6B009D; Fri, 21 Aug 2026 02:41:18 -0400 (EDT)
+	id 81C9D6B009D; Fri, 21 Aug 2026 03:05:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A987B6B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 02:41:18 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 25DDF1A038D
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:41:18 +0000 (UTC)
-X-FDA: 85124329836.26.40D8AC8
-Received: from mta1.migadu.com (out-191.mta1.migadu.com [95.215.58.191])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0E46B80006
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:41:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=erA3EBmz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of enlin.mu@linux.dev designates 95.215.58.191 as permitted sender) smtp.mailfrom=enlin.mu@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 544F86B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 03:05:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 319A1403C6
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:05:27 +0000 (UTC)
+X-FDA: 85124390694.13.62A9E44
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5F997140005
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:05:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=crusoe.ai header.s=google header.b=IElXwrS1;
+	spf=pass (imf23.hostedemail.com: domain of saravanand@crusoe.ai designates 209.85.214.177 as permitted sender) smtp.mailfrom=saravanand@crusoe.ai;
+	dmarc=pass (policy=quarantine) header.from=crusoe.ai
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787294476;
+	s=arc-20220608; t=1787295925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=sOwOeAkjdzft5eJ7i45oa+rAz5wPdiDKRyJIYIlSSBA=;
-	b=vCxahOqwShmORUaslY0njJi5RD5ji5NqyE4prFQBWCGtlp76RIoORPZxH+SGw8vmABBRZd
-	ecbgNQccLEf8VhgiFWVR3bEcKc+l+TWlNG+WsxfEVi5qXMA0V1UDc1sKuQcxR4HXUock9a
-	CVywpdGYwxtvD+0FJouyHkVbsoRwc/4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=erA3EBmz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of enlin.mu@linux.dev designates 95.215.58.191 as permitted sender) smtp.mailfrom=enlin.mu@linux.dev
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=H72dygOg9yIEOwIPt0eosLGHWNoHMNL+/AqoJVCW+JE=;
+	b=jxHz8ZD3Ngh/AZyd3/AcNmY1BBFuskGkYB5CV7i/rflIypq99vvv1vVWCAiQLyxCWQYeSr
+	E3/VZRtAUJbltIcdkUtLHnooWY+/1GCz86C5WosSoSpPHne3VDB2Uc+AZbYF5iprdOCo/9
+	JeY5lAAXTdBHnhD45wgXeyzon4j4H3A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787294476;
-	b=G2Mt9BRglLHycHDK0rNKWn2ssP5beFRfjff3hz26zq08KP9JzjVKty/a9BlRvORX+YPhgl
-	C5w7tE5XwNvN9cMeuHpzvZwYw3jUbZlgZr9WnP6e3Cy80a2b6jyd9AvttuA4J4vRl7mBkm
-	BIIi8zLsHwcPf45KU26Tarmcpo0UvcQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6KGQRjY1sVeRKd6gftJizGDGbmdsHlLRR9CVuOhEP0U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787294473; v=1; x=1787899273;
- b=erA3EBmzkORpxx/RqIQsKH/u+7Ooe29W+Nm4jg0lBh2mO76TrE5Df91dwXzf8n+MCOJXArv8
- cmb2GIEMrK5O7ASgB/1oaHam/ArLWjkf9H10cTqmAP2kaEv+ZabZSsl4vb3RSf1XFrqsTqSBjcF
- sjOOqAg9frXbaFaekDoUMg+8=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (2408:8411:24a0:401:66b7:563b:1733:817d)
-	by mta10.migadu.com with ESMTPS id e84666c61e62ed05;
-	Fri, 21 Aug 2026 06:41:12 +0000
-X-Mizu-Trace-ID: e84666c61e62ed05
-X-Migadu-Flow: FLOW_OUT
-From: Enlin Mu <enlin.mu@linux.dev>
-To: akpm@linux-foundation.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
+	t=1787295925;
+	b=acunK+w+BvLUWMhFxglr3oBvtPya7+WFvAdTi5X4X7FnqnhzeU3O0TZ3v0ReVDd+VELi8L
+	/zFZLu64FQdLWczxgwSgBT30Y12O4A6+TwWlirp+6PCLaPsNcjwZzsyLKydXZFu37ZCWb4
+	YDv92vlMbOwuDVf8PblUrKEVrXRITr0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=crusoe.ai header.s=google header.b=IElXwrS1;
+	spf=pass (imf23.hostedemail.com: domain of saravanand@crusoe.ai designates 209.85.214.177 as permitted sender) smtp.mailfrom=saravanand@crusoe.ai;
+	dmarc=pass (policy=quarantine) header.from=crusoe.ai
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d5cad1a6baso6442605ad.3
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 00:05:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=crusoe.ai; s=google; t=1787295924; x=1787900724; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=H72dygOg9yIEOwIPt0eosLGHWNoHMNL+/AqoJVCW+JE=;
+        b=IElXwrS1QiEewBPQqDaSlkQVp0qFyUCx+8QWjN8wjFV5NQrw3nsuOwZHnIrl1XqnJ3
+         poRHOL+0hDUl4SQwG5dgomWjg58mOmk3suylH6vp6f2Wxk6nWXgyNfQpFji3+FHzvzQe
+         2Dq7wY89UjUW3NGxXcIxbXMzB0r1xTNw1I9ru+ATk2dMBATv8phAud6zv4U5++TKs2Vw
+         e4zWfTda9VSDKyQNdyf+ROmmgHXHKrWcRPqfr0G5vlHCBxnQwXtSszDsEdpw2ITjI3LL
+         nTtq5NX3/PE8ae4a/K/pBekjgkOdoogw0KivsBq8vDLCnP9yaeFOCIN245YwBqIx/bjS
+         YvOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787295924; x=1787900724;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=H72dygOg9yIEOwIPt0eosLGHWNoHMNL+/AqoJVCW+JE=;
+        b=PkaJetIO63OzEyvdFXM4fLRIdZVlj6wBtcBECLMM/Vc058lHnvhgKkqNJyjOWbqCLq
+         EMxxzNah8Q71ziZwhQw/+mkXDVnoKqt7woz3JFsjFTdDDWP6TsjbaJpZ0n6nWx7L3/rf
+         Liyfw1OJiPyZcxn6MpEMFN/mS+vs4XAtxqEX0Ne6urqtPOHMQNdzay7UHtaTN/k1j4oH
+         Jy+eKC1zixGfP8OazzR/8EaDP0ZvHIq7MhHzr44u67Os/5h77NfiHmcb5LDfmNgaQGmV
+         alPu6L//qLS+UwrRByA/M2S5Jht8bepplMkMB2w+8ht2zRMgO9ShaRH+0OBhvXRZVZXn
+         +a2A==
+X-Forwarded-Encrypted: i=1; AHgh+RolSGUbkK9knBlWdUkJFUzB5ZyfgDFp56OsZ6pHW8GNinpzj7zoLzYxIuyzaGIJ6ou8NUCJ69O2AQ==@kvack.org
+X-Gm-Message-State: AFuF++nJEoTPVypQKwaOFUDtza5JUFyejokLlrALXEVo0D+D4YcpllYn
+	o80k6631uHuGjc/L6hSN4a4ocZ+ARRw+aPXqsnQXNBLPSvo2jv+CiMYrD4rqeoKmSi4=
+X-Gm-Gg: AR+sD13JRun8eucVatDfC81pJwvOQ2wXMZ77yVEzzZ6QOhAXg0gxgG6LPGAyFmpTGOo
+	dHv14FbjyeS1sHkxx/Vp1V5Px3xkK2oVBWgSGUeGghtm/ipdqwxVUy+C0rWSISfI0h2hn0Gn3aK
+	dsp6H0LNyGGXFcc5gulUmrA14A95N+sl5yVMFdjmFreMmNZxo4oqaASYwBpIXNQfQ6b2NL9xwJo
+	lOc8nm2T5oWPvSs9rYjd3lx3IiZVh9nRNTHWaD4dNrelNW67dTwhIxyMYeulo9hJMWhNz6kgZS+
+	TqoQw1aNKGj2tueu2ueNwujCk3Qx7Vcu/r0wBnliFTPI/Sfda5Wk3kdk7Ww94VZbA4Kfohq0wNT
+	IwuXY4Dj23fxCW4lFM2zBM2peF+L7n8FXD774KiAcBLp+sUi4Xwavi3mmonUaRlsPlHLkiVSog7
+	5+T2ciVDn2T4J9SzPlsxoEgVGB42dPkNNpJnPm9lLQ34hd6/LuuFTvDPfHFRtlxn+L/6ZE5jtMH
+	KUNGk0g0YsMu69RWxbaUE8nhKYA0LspGTdjbiGq264=
+X-Received: by 2002:a17:903:b07:b0:2cf:afe8:b722 with SMTP id d9443c01a7336-2d64afe960dmr79499025ad.11.1787295924173;
+        Fri, 21 Aug 2026 00:05:24 -0700 (PDT)
+Received: from MBP-Saravanan-D.civet-hops.ts.net ([2601:647:4380:3400:8867:e04c:ed8b:db39])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bef77bfcsm21651507eec.9.2026.08.21.00.05.22
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 21 Aug 2026 00:05:23 -0700 (PDT)
+From: Saravanan D <saravanand@crusoe.ai>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	linux-kernel@vger.kernel.org,
-	enlin.mu@unisoc.com,
-	enlin.mu@linux.dev
-Subject: [PATCH v2] mm/vmscan: fix comment logic in balance_pgdat
-Date: Fri, 21 Aug 2026 14:40:57 +0800
-Message-Id: <20260821064057.4081-1-enlin.mu@linux.dev>
-X-Mailer: git-send-email 2.39.5
+	Saravanan D <saravanand@crusoe.ai>
+Subject: [PATCH] mm/huge_memory: allow huge pfnmaps regardless of THP mode
+Date: Fri, 21 Aug 2026 00:05:20 -0700
+Message-ID: <20260821070520.25759-1-saravanand@crusoe.ai>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0E46B80006
-X-Stat-Signature: 96z6bmn7negdqhgiz3rxx1rks6n1kn9j
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787294475-198153
-X-HE-Meta: U2FsdGVkX193BK5XeKBbkaYJEn72t7OB+tAaGEcKKxuNRI3dgJnu5vtpLZueuVNIzISk4881FUJ55rL31BS4MYraIGdIKj3fjaue//gKYm71SyiuzM0/p40Z7eLQBDRMJp8dDcDFdPLsclxUVY6vEAXWgYahtZpehiEeToBT6it1w2+C/zjt9bpOuiCMczwjTpEYiTb2APUVfO1//LsvGxC7ji02HDdUM4rMbYRtoOHA2bCg5driiEH3sEb6Tvp+xAiP4zJZYqmiPf3h+8Dxm/r7M3d4jaJZ6B2r+ew6vd0vTe1GZXN3oNFKGTAJPP5JJni3SdnTA88qU8Kc0RbQji3HpxrUITbEmZ5BOwDrSMPRX605EsHVpbLRtHxZ7iM3tE0jpwpkGEZI93QW+ftfnaqYSmIleLJRdhymb2T7zCa/L0X3tzb5Lj0AaGyATSqXnohkCO4T7/WOfSCuzZkC0PY7Wj+v18xtsVQfg6kLG5PaSn0dtU9VuhTLPugQz7lJCNHVwg3LVaT+FmQdGXpnlFAzrb92/wg66cE70znBujVa6U1ytZPfKHp21D8Bj3+dpf/+0Wp9KV4z/BOY8hnKKT0kC70QhM6uMYysfsbHCMI3keCLZve1dmWKWTWMyDiwLaAs+V7tiwBbYvx+Yo/GiLtdmlmmoJI2w9eGGeM0cBOL4vZCOZeJDwJNpLTM0TXnHhZAXJMlpDasuI4o5bDU+nqzKHTqPzfOhwwoPE3CiqiCWLs6a0Bc4EyvdnYuCYmgQ32ulJBwIv98oxOP4gcaEGh0VoUgSVHYxGmAp9xTrLaIVE75s6f0+UTn0Qb6JWltEpiEdJgRGiG+JtLEsb+C5LrqVv5nTIUvnN6RTh9d/8TIlAAV0uY2yb5OZiZ7OcczgQn8Pq6raTw4tLj1x8RB7OiEAmMwQomyIx1dy4EpPhP2+cTUJ45ytkJDrIhPCzXQnVyML5vqlemKulpnIhJ
- ECH02wiN
- zLlqCXBVULpQaCPOOA3qEgGIxe1gdFdE/0CXMkv93b/cuF0S3ke8+ycg0zZuh2lnMPoeHCom4ThmLuCZ+RxSFB8Nf6LbC01ZLIeLCdZBFHuhLKQnPnEIoFB9ZKAv1g6YxHcFkGikNM6UvLb5Y86OufvhvwPr9x5Qks08b4s5t0l4X+/aeU3lpDYxpKUsXdZi0s+bNcSudEAIs2pk2RB2y63IyahD4R+/hYqshd10Qd2HQ52/sMEV24ijEslDtVxe7mvu126NkbyoSqPXtSBc2CjUi74N7nmJqnvDtDszZ0UTaaVmEUiA1RPcP6ZJpvOaa4BUBLoOHaA9pYxwVLTvOuXx2QA==
+X-Stat-Signature: egqss8h5zothmmgeej78i3hyuutjzm7y
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5F997140005
+X-HE-Tag: 1787295925-685418
+X-HE-Meta: U2FsdGVkX1+LDtG1tB362hMCwUatn0uOZKr5klclmzEwDMLK6qfWvTpAmRsGdSGvMwoWGDMiw/k6uG56BQ8urmEgtp77LPnZh4j3Y8ao6FM8Rix07Sp5LKsRHhDajPB07Xl+wHQ/RnDd5WwBcDvPEYjBUnYIlKOv4lEZz0HrzVmGAQNp0QGM0o4foo3P2ukW51CCAIq/cKTtUh0izHa8TQJuA4RY71mke/ia2ZNWno+ZvB1s2CuQvjtNTh/umBnXgLjFt0Fy98HctK17flku+tbVnWqUMKAnQZ0C9ks6BijM50BDdJZvdAwo7aPF3NxMJ6W9jbulgxQ4kF1ptRtrz+HaN26I5Sgvl++v0PJXbV2TFzr1HM2njsJmnjO7ZGZRPDu29O7hhRv6mhsRzm18aakiTB0+D8UDvKMRJzIfLbiguaw6wRefbzk3lByO6cIfnPynTBT8DBlN9D4MHonY2N5Zlf2CJi5a4RQCkj/Gl4WGTuZM6/ibPVOHfjWcCb6aMFsSY+qVLgHB9tCNj5N6xdnfXPBrEYiAcwQFJxailvKQARvKlD13mJDpf2aWfe753uXfV5v1W4jhp+QH8VsBhT8aPoV7hxLhZp9chOxa9pxc7jBalpMymT9S4bUpTmR6AwwnFwkzdQwWuF/SO6tRNnbtxO7Zev5tdpwTZhCQ5Uf/wwvKvkuIXW7XLBuqD8xWKmSg8hHnuQYOHq6+MLRpFj+WK1pWFQKKEIEd+uwsHHhihe6DSDbmyl7v1Gndxh9bTi7ZgdrcDVVXEPjz3UpJRBZhl/kAYWpSID6zaOGfomqValaqJ/8oPNaU3d58JkVGht0NaAb0HYUMVkernxQCFrRMHh7ZS10u3QzFo8DaxJup6/EP+hkL6uWj2waozePszNJWHiyWJLf1ZIFUZJ+qvxA5Z7FnyZXhNYff0VtEDSYSHp+vSbjsc1WcXK6LkklfSjWa1zJzHRYub5IavFy
+ VooSO7/b
+ vaR08Y3YdrKPe55wOFmGCuY5OIC+/TN/r8ueExAbMn0opAqy6li+5h42toPCoafUqw2sNA0mWicDUbm4433ef0X8gH36pDFbVG3yI8DFvRULZLSuyN8FhbWBRcmetf44G9T/wGhsZC+GHwOz8qtCSowrvjz30+9nn6dZJ9ZCHNiHYAYcjyR/veDcsyXLDRQ9YDla0sz35m2fBC0B9+wZKYxW13ww3mQwskXWlceFVvZCS9OWKXMio0FJDNHxXimgEiHB2qfOrlKo6+IVLk0jSGetOZ5lq6+OV5x5NQxQSrLpspl03oa+Txpv9mDQKAWTt+kE8lndSKqh1VHGKvBiFJtMe9ZhzyumvmRj0HgGMJJKzmLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,36 +129,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In balance_pgdat(), when the low watermark is met, processes sleeping on
-pfmemalloc_wait are woken up because they are able to safely make forward
-progress.
+The THP mode check in __thp_vma_allowable_orders() runs before the
+clause that trusts huge_fault() handlers, so huge pfnmaps only
+materialize when THP is set to "always". The THP modes exist to
+limit the memory and khugepaged costs of transparent hugepages.
+Special mappings are backed by pfns instead of THP folios and
+khugepaged never scans them, so those costs do not apply and we
+can exempt special mappings from the mode check. This also makes
+THPeligible in smaps report 1 for such mappings.
 
-However, the comment incorrectly states "they should not be able",
-which contradicts the actual code behavior. Fix this typo to accurately
-reflect the logic.
+This matters for VFIO device passthrough on distributions where
+the default THP mode is "madvise". Mapping a 128 GiB GPU BAR
+through VFIO_IOMMU_MAP_DMA costs 33.5 million order 0 faults and
+20.7 seconds when the mode denies huge pfnmaps. With huge pfnmaps
+allowed, the same mapping takes 128 PUD faults and 0.4 seconds.
 
-No functional changes are introduced.
-
-Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
-Signed-off-by: Enlin Mu <enlin.mu@linux.dev>
+Signed-off-by: Saravanan D <saravanand@crusoe.ai>
 ---
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/huge_memory.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 35c3bb15ae96..8c4766b4c29c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7188,7 +7188,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index afbb5974bd22..bc61b8020af6 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -193,9 +193,10 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+ 	if (!vma_is_anonymous(vma)) {
  		/*
- 		 * If the low watermark is met there is no need for processes
--		 * to be throttled on pfmemalloc_wait as they should not be
-+		 * to be throttled on pfmemalloc_wait as they should now be
- 		 * able to safely make forward progress. Wake them
+ 		 * Enforce THP collapse requirements as necessary. Anonymous vmas
+-		 * were already handled in thp_vma_allowable_orders().
++		 * were already handled in thp_vma_allowable_orders(). Special
++		 * mappings have no THP costs and are exempt.
  		 */
- 		if (waitqueue_active(&pgdat->pfmemalloc_wait) &&
+-		if (!forced_collapse &&
++		if (!forced_collapse && !vma_is_special_huge(vma) &&
+ 		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
+ 						    !hugepage_global_always())))
+ 			return 0;
+
+base-commit: a032d41a86cb82a747bc14d9c82b3e153a9a9ab7
 -- 
-2.39.5
+2.53.0
 
 
