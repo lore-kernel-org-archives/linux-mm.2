@@ -4,87 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E927CC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:23:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CFA5C5DF7D
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 18:28:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7A546B0095; Fri, 21 Aug 2026 14:23:45 -0400 (EDT)
+	id 2BA8C6B008C; Fri, 21 Aug 2026 14:28:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2AE06B009B; Fri, 21 Aug 2026 14:23:45 -0400 (EDT)
+	id 26C006B0092; Fri, 21 Aug 2026 14:28:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 940B16B009D; Fri, 21 Aug 2026 14:23:45 -0400 (EDT)
+	id 1A8D16B009B; Fri, 21 Aug 2026 14:28:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 71BC36B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:23:45 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F5C41201F9
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:23:43 +0000 (UTC)
-X-FDA: 85126099926.04.4551A31
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C0DE540009
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:23:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kEproVlo;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E9F006B008C
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:28:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7FC5E1A016A
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:28:39 +0000 (UTC)
+X-FDA: 85126112358.09.24DBC51
+Received: from panther.cherry.relay.mailchannels.net (panther.cherry.relay.mailchannels.net [23.83.223.141])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 194E140004
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 18:28:36 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=melanic.org header.s=hostingermail-a header.b=Ex8NAptm;
+	dmarc=pass (policy=none) header.from=melanic.org;
+	spf=pass (imf11.hostedemail.com: domain of moise@melanic.org designates 23.83.223.141 as permitted sender) smtp.mailfrom=moise@melanic.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787336621;
+	s=arc-20220608; t=1787336917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5b7cFHm6oxeq9qapqN+UDtp45+mElz3GDxCrkZRNQXQ=;
-	b=gw5wuWwK5OZoJfV56f3XFEzJxFwrWqfp150/NiD0LgQ8nRlBMIeByLFlzP3AwgEqpk9/eD
-	9DQ4MG5NDa5US26kRV1Ax4gUr9T+BgOReZfj72znOCrWdjopyesr0BA01oIADmCdLrBomP
-	kEqPeYkruERuBTWEw+j0/Q7rTv7rvWI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787336622;
-	b=cxUNNk9STVtlhq9H3IbSZn21pD/owdmfYYY+IOzpTkM3gZGe1MRJoitKL5v2lS4fKSe2sp
-	2suIdT0GKEbpUDXCOiC0uPTx49ufF0B3kVN7JV4FJ/CXCn5wvfgBbNATbasw5jFaiho+8B
-	R3s8EE2KA/Mo2evCufwGW9j2RdZZRuo=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=y0H6u+Y8Fp33g4BMhqv2A76gIMJ9wJgN5OpGPv5y6Mk=;
+	b=oQmEqxoAqMX6yNxQYo9U2/cxnf75ikAZ7sGzVl1OKQZE6VbSDeckH3qVBoRCGrRiGie/gB
+	8l4+ACcCY8a3G1AH31tJVCgKHxCyFquRRpQY+Ipr+LizxIB2szXf6Fs13au52uISVXIJQ3
+	JLN3ZRrEbLkrkbpctyiDdVbUajNfRV8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kEproVlo;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0EDD140B30;
-	Fri, 21 Aug 2026 18:23:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354E31F000E9;
-	Fri, 21 Aug 2026 18:23:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787336619;
-	bh=5b7cFHm6oxeq9qapqN+UDtp45+mElz3GDxCrkZRNQXQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kEproVlofcbeK10ETFJo/e2EXWUuvC1gLuBkqBhw6Vrq39uN0tEkd0A3ZlPixzmRc
-	 PqWR7iYi3ltMuIWXeQeRfClL32kNr8JJ34A3wdUbyiB7OPfnH77MXXr6r/JlZORJti
-	 q6ApQO408oqqyl3z3tjYh39XLpq90vCGBRKM14sZeNYZUE2F0bPnqp3FVC7WnPhKPp
-	 YQShYuMgNUQqZmGsNryzAw4ocm1mKL5DCae8+P+ch03aIgtfL+G0lLeoCD8zz9bwbJ
-	 VeXfzxqy/OeLZ3vFBgbjckwgrOdxca8tPX8t0FDlYou+q6eKHkf469oaiNjvSVzQ8D
-	 g9HTpPZr3Xzrw==
-Date: Fri, 21 Aug 2026 19:23:34 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, sashiko-bot <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] mm/madvise: use folio_trylock() in the cold/pageout PMD
- split
-Message-ID: <aoiWZjgcitp0nSk0@gremlin>
-References: <20260821150912.183976-1-gourry@gourry.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821150912.183976-1-gourry@gourry.net>
+	imf11.hostedemail.com;
+	dkim=pass header.d=melanic.org header.s=hostingermail-a header.b=Ex8NAptm;
+	dmarc=pass (policy=none) header.from=melanic.org;
+	spf=pass (imf11.hostedemail.com: domain of moise@melanic.org designates 23.83.223.141 as permitted sender) smtp.mailfrom=moise@melanic.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787336917;
+	b=AMDVcPMOAoOsOCVuncmivp8AdFlEo+SE2z33ZeiEajNOYaRP5zZF4vR7Co4eZDNpOkfZgh
+	pR2KfJfM80cU/BqnlbbaY4e5nL37R5DBMYC8jBPWBfpBY4UxH73xY1HJrejlszyL3rHqt2
+	YUxJ25y5FUGES0iNhiLwz59vfn+Kttc=
+X-Sender-Id: hostingeremail|x-authuser|moise@melanic.org
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 78E7740081C;
+	Fri, 21 Aug 2026 18:28:35 +0000 (UTC)
+Received: from de-fra-smtpout1.hostinger.io (100-96-14-83.trex-nlb.outbound.svc.cluster.local [100.96.14.83])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id B2FF0401D4E;
+	Fri, 21 Aug 2026 18:28:31 +0000 (UTC)
+X-Sender-Id: hostingeremail|x-authuser|moise@melanic.org
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|moise@melanic.org
+X-MailChannels-Auth-Id: hostingeremail
+X-Belong-Skirt: 138402670fbe3dcd_1787336915288_3410687736
+X-MC-Loop-Signature: 1787336915288:4117894728
+X-MC-Ingress-Time: 1787336915288
+Received: from de-fra-smtpout1.hostinger.io (de-fra-smtpout1.hostinger.io
+ [148.222.55.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.96.14.83 (trex/8.0.2);
+	Fri, 21 Aug 2026 18:28:35 +0000
+Received: from localhost (unknown [73.4.98.140])
+	(Authenticated sender: moise@melanic.org)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4hRTMd3Mqdz41Bk;
+	Fri, 21 Aug 2026 18:28:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=melanic.org;
+	s=hostingermail-a; t=1787336909;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=y0H6u+Y8Fp33g4BMhqv2A76gIMJ9wJgN5OpGPv5y6Mk=;
+	b=Ex8NAptmbX6Eq6/FgptI6UBW2u7lPdbOSwrEbDHUEPBUKB1iIJKNHGFt+whXy0BCKDYLeh
+	sgJpDwZ0Ns0MT2tkMuaZ2iGHQoAcyMD5cG+GL0kxP2gb5lpbufKgcTmBBZ8z85izeiyOi3
+	rS5DW98DRGGdt2FFMpl7k/+w7Gwm6GMNVjTH0VRB5EW5vFzwl/UhYDLoISr1rvhKBwyHCC
+	6A6W8wKFN7DZB0ZxTVsZ+ZnItmLNpE7gztNPuEE22eGeoLB+YanJcVmv8KcldbexsK4PY/
+	IpginT66PaRUKwA1qvOtYKap6EgaOFhA6RvG0Oz+XFAYnzaMI0u6ZbDKPEkXzw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Message-Id: <DKUU1YRIIFGF.2Y7M5HXDCG19R@melanic.org>
+Subject: [RFC] memory.high auto limit daemon
+From: "Andrew Moise" <moise@melanic.org>
+To: <linux-mm@kvack.org>, <hannes@cmpxchg.org>
+X-Mailer: aerc 0.22.0
+Date: Fri, 21 Aug 2026 18:28:29 +0000 (UTC)
+X-CM-Envelope: MS4xfEa6slZW0GqgCwHuJFQv/8MfsJlz4R7L/vDH77ew0PSK9M7fQZKfynZnu0RRC4TvdKgLFfwy2LXubdKnFy7NsUnRf+lQeOPUqJrlsCwL5YNZgx/lbaSc vj30KBzKRfDD/Td+0uK660GBh4jNhPpWZhmQaWf9cKQAoFZM0iHCBuxpp4pr8k4Sc/EoijhdMoSKrNI2dGQRI8MDudJsA7GjuDQ=
+X-CM-Analysis: v=2.4 cv=fr2OZ04f c=1 sm=1 tr=0 ts=6a8898cd a=tlFvG+WYsuLx1OZ5RMiffA==:117 a=tlFvG+WYsuLx1OZ5RMiffA==:17 a=IkcTkHD0fZMA:10 a=SXzkmgPmAAAA:8 a=OGjWj8McAAAA:8 a=3BgyhFcLIEM2KKGDJPUA:9 a=QEXdDO2ut3YA:10 a=-FEs8UIgK8oA:10 a=EWLf6cg6Bh5aS0AxDgDu:22 a=UYjydHh6ynBBc6_pBLvz:22 a=ro8diQT2BJi9Lq4alXVm:22
+X-AuthUser: moise@melanic.org
 X-Rspam-User: 
-X-Stat-Signature: 3cqhhsia78sftpcwck5tgerz9s38edme
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C0DE540009
-X-HE-Tag: 1787336621-38755
-X-HE-Meta: U2FsdGVkX1/+D97VFErsf0sENOR2vaeqRJ+iFlYTKEIlL0DLbfauVNdrbyChOrM/hbu6+bl54NytbKL5SsCXP+cFRhHw49eNJXxy0YOAhTWv8/WaqQ8LhZRXMFTKN0vmO7uPOS7M8heN9NqKgqASllmfqqUppfelNfg+OwARRU+Dykf1R280P9KzrniuGSKLb13/PDN47qUzPjbSn626+58g3GEPM04yC1Nu4m0JGQuyaODnZT++/jsDSHnjJCK82Rra0oXtZXCnc2BiZEoB7MHixG0HvHf4iTOsF0sxW2KTO5dkRMKuQfNTJsW6CGlKukQos4qg7goC+MqOl7TAFMKwCnfVZmv9LPexTK1GCyn7nf0+9TFAri7xhA1yyM/Hc84Z2424/+eNEBwEnamsEn/HsJ8HiH2WbcEVL9gNg7TCG69gzOEZ1UQor33j7FMqkRZkNDkpCKX/aoYzp2Tw62IvnvbzGBKKbIfdI4SMXH0GkGnGY2vjn0yHkqDrQ2AIq+utsclOX7e18eZJLESDPuBBdJOmLB16lsDHWQ47clOEIXZP0vh7QSPJ3lhJyODq+pqAuy3SNu5wreoIu69TBgfG0MuueNNT2ZnbwItm2wDUkATdCqkzOR1W2IL406PbHT5TWh64iq2Ua5GcdW2nirASx8XhX3wR1JsfS2DHZBcE5O4k6LUHyTFumqqcmMvB7+rghPL+O2i8oAU7HkoI+SYFaPF3qp4bpUA9PZ9QcW5JiGv4nSCxiPpyLYm4UUo69zathUw+2nxZSosECPOUBHd5Wkh4q5FK+3DA4f1ONklT30ewH30B3Cg6LpG5vJUFAVwU5yLB1XSk40sDjFrZGGR8YAK4NNLxeCVog9eEb4G0NLQwN8TLShf0DeDc+pFY+DLf3yE8VkhRFuap4sEsLSpQKmAKzJZOqeTLMeZSSrLiuvL8l/dWyRRDcb3oeo1i4hM8D3oq3USsdJJrL9U
- QdV7AXSH
- OKnho0uvydxKQ7sctHjhgvQOYtOOmUfiff2O1IzsTU1QX0uWwgb2DjiDUoI5eqOSMRRmiw+YBBTOSW1S2LWTMaLsBbCGZuF244WAWqY003sT/gbD6ra+w2mu7TiBJYHUN7tqFiL22HI1LKzUPd2nDaSL0dmXqHfISqX/SaZRyMitWgGtjB9tW6jMhNGm9MgLiixf6G6clCP7m52NoqWwYT7deUY4OuFpC6HDb3P2EBAqigY3NK6uEWst0J+CHa7LINPujoPQgbiWqA1ZcISI70mooQpwI4Tr1hGnfB1SzaQQxWEos7flsi9jC4+pI+PC45jIM+NUFYdflsfSnDmhIgtJuMz7se1Y80AiJ8zWgKBt+I3gGTxGPrdYRVhoVN4R4KzVu++z42I+IaQEZhh7DNp9/XlmEPBzG5suN1llYpNJsz2Z9wZMR9xmZNA==
+X-Stat-Signature: g4b5k6hyrbn8ck8e16tkjbemk4ia71s6
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 194E140004
+X-HE-Tag: 1787336916-858642
+X-HE-Meta: U2FsdGVkX18+dUAPgWulL6UrgFXbMZGqWq15NUKWDguCXI0ADKTEeHfsjI7FheKxSzclCAgf3eLZYkmJk53a0KX5bNPnDYY7LG5QisK7HcaPbvL9Ux7XEb90zdXgYBAzZsiyQjFd2fT+zpn9L4lgjPvGVi4mLRWrYUEkNRnnjVGcEkXfOtsOSGgYAI2IpmuUGR/QJRYOhoG1YyRDH5yJl4ND7o4jfouqRMvTMcH1miC9QnlT13aViGkz3gdL8PZ6NroyNuTtCoBdfOtaUUdQJNxnnXo9adLb+sNlpqU08EIiHDUCCfFuX24FUxPUFRP1GpYN3LHdhZZxJyOPNv/QuD0s4VnnCwNpWKfRzzhfdikYcPKkpNdt/4Se25Ti07T8nUwEmRbE4AzWNdSmtpmocgt6IhX7I0vaBjCHbhIwBZe54IdGMIBUBdR+5A6DpGn4AkUtTQ2j9qeptYdQi1LEsag11qOyo2iBk+iMokSs4CJSgkMX7/xjpeD2yJyWLj/79dur6XNV7HcsGjoG/C0bYPCKaeCXdLnbCV4AmDwNEHzUivWFCxUqHhVD6y696wGhNTwbBi/W+25jhP8IHe9U3oXDqsbKFn5x8rWVbBx9pasXa6ERLLswWvsl3TSanLtnV2ZxD1wjhGP39uWFD5RErTmhlETjomP/5fzMZxSx8FhbFZi5ispjjJYo/hpyZ2OX4OCFXNJwjdW7JObu+Ku7fif1the+lVVlNNii1mPm+jDBy5qSrhkJy/ekk+57PGsqZOBBBy9pYyOlv+zKnrHkw+rQVY5+Ktj1NzrXVIe/1tRYeUor/QBAvqCuKvtCHlpT8iBJwYQDvEzptq2qugaF9qETKH7lRb/nSaYnNBCbELtGuwV7JnnIMgMoyK7wKtiL3jQh5MCoCLFfnNkpRh91W0SSGGtO5YRXXNm0WUXWYxusdJqBdldu+5qY0YaupssWrcdF96ZhPfyQQF19+kS
+ Kz+ax67N
+ eEO7kR2e0CyVv/ttqVsDLveAPjKAy2/Dv6odo25Z4I9J1tG1ESSZrTrQCQVYcnC62cUBE54qk+VzIdjFsCslxw+B4JI5fSgzoWgVSPIraHd3eYmudL8q4wK4m93ZVqlA6uf4YB18IhqexEfi/EgXxFYi7RBOEbzK4xAH3nj7YUDI5vSmZ48QkcBweLqYp0TvXvDTsN3CB+KtJeFNNXmoSO3wPuHg1H1oZ6usgH7b8+VBZsFpZ6mv781SaODaRyvXvUU4ma6zslOXi+BKWHHaDF8MZluiCKbevL8t0jXyk9nSun2L471K3+rb53L0MZKWQm34R7IVZCD5dwtwMw3I4wy0dIPeGoFQq81wjI4UvzZEvLYe0wVLwgacNNQnLBiAXUhQNExU/xcGFKnEJJZJaRjIfnuvJCPohgKkqpay9NlqbYdURrwsxsoB5D2v/iVeklqqTYpUxmRjXMxFIFu4cxiaDAj4oqtej3ppp+b2Rd26TZXguIMLZ8REW0Mi4sziaM2hNrx7bgu0O8FQu3yhA/4uO4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,91 +110,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 11:09:12AM -0400, Gregory Price wrote:
-> MADV_COLD or MADV_PAGEOUT over part of a PMD splits the THP in
-> madvise_cold_or_pageout_pte_range().  Two threads doing that to
-> the same THP create spurious failures.
->
->   CPU0                          CPU1
->   ----                          ----
->   folio_get()
->   spin_unlock(ptl)
->   folio_lock()
->                                 folio_get()
->                                 spin_unlock(ptl)
->                                 folio_lock()  <- blocks, keeps its ref
->   split_folio()
->     folio_expected_ref_count(folio) != folio_ref_count(folio) - 1
->     -EAGAIN
+Hi all. So I wrote a daemon which attempts to manage memory.high limits
+to keep interactive processes usable during thrashing (Rust compiles,
+NixOS builds, etc) without the user needing to do workload-specific
+setup. I'd be interested in feedback on idea and implementation, if
+anyone is interested to take a look.
 
-Hmm, but doesn't converting to a folio_trylock() introduce entirely new spurious
-failures due to folio lock contention?
+Code: https://codeberg.org/andyman/destressd
 
->
-> CPU1 cannot drop its reference until it gets the lock CPU0 holds, so CPU0's
-> split always fails.  folio_trylock() makes CPU1 leave without ever taking a
-> reference.  The PTE branch of this same function already does this, as do
-> madvise_free_pte_range() and madvise_free_huge_pmd().
->
-> Reproducer: 400 rounds of eight threads calling MADV_COLD on half of each
-> of eight THPs, re-formed with MADV_COLLAPSE between rounds.  From
-> /proc/vmstat:
->
->                      thp_split_page   thp_split_page_failed
->     before                     3186                     860
->     after                      3200                       0
+Basically what it's doing is:
 
-I am _so_ glad to see an actual reproducer used in a sashiko bug fix. THANKS. :)
+* We watch the PSI stall percentages to see if programs are starting
+  to stall because of memory pressure.
+* When they are, we try to roughly estimate how much memory each
+  cgroup was trying to touch during the last 5 seconds of its
+  computation time, if PSI waiting time hadn't been a factor.
+* Whatever is the weightiest cgroup by that metric (*), we start
+  bumping down its memory.high allotment incrementally until we stop
+  seeing PSI-indicated memory stalls in other cgroups.
 
->
-> The short before count is rounds where every thread failed and the
-> advice was dropped for that THP entirely.
->
-> On failure the walker returns 0 and nothing retries.  The PMD path becomes
-> best effort when the folio lock is held elsewhere - same as the PTE path.
->
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry%40gourry.net
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
->  mm/madvise.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 07a21ca31bad..bd9119880ef2 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -405,9 +405,10 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
->  		if (next - addr != HPAGE_PMD_SIZE) {
->  			int err;
->
-> +			if (!folio_trylock(folio))
-> +				goto huge_unlock;
+(*) oversimplifying a bit
 
-Doesn't this violate lock ordering?
+To me this seems like experimentally a feasible approach. I did some
+testing of how long it takes to do simple browser tasks under pretty
+punishing thrashing caused by Rust compiles. There are details in
+the tool's README, but overall the results on my machine averaged
+over five runs are these:
 
-From rmap.c:
+  phase                    normal   thrashing  thrashing+destressd
+  --------------------- ---------  ----------  -------------------
+  browser_startup          0.78s       21.63s               14.95s
+  reddit_load              2.56s       27.57s               10.02s
+  scroll_20               20.99s       39.91s               27.05s
 
-       folio_lock
-	  ...
-                 mm->page_table_lock or pte_lock
+The test is not super-scientific, just an attempt to give numbers to
+my subjective feeling that "when we set memory.high on the thrashing
+process the system gets a lot more responsive." Of course that outcome
+is not surprising, but having a daemon that will adaptively set
+memory.high when needed to make it happen seems useful to me.
 
-So now you hold the ptl lock _before_ you obtain the folio lock?
+I would also very much like to get the "thrashing+destressd" numbers
+down so they're more similar to the unthrashing case. I probably will
+keep working, seeing if there's a way of better containing the
+thrashing cgroup so that the interactive stuff just works similarly
+to how it does if the system's not loaded. But that up there is
+the performance right now with the current approach.
 
-I'm not sure if it being a trylock gets us out of that particular situation? And
-I'd be reticent for us to violate it... unless I'm missing something :)
+Thoughts? Feedback? I saw a talk where
+the idea of limiting memory.high was briefly mentioned
+(https://lpc.events/event/7/contributions/649/attachments/546/965/2020-lpc-=
+resource-management.pdf),
+and in the tool's README I list some prior art of similar approaches
+that I was able to find, but I couldn't find much that's using this
+specific memory.high limiting approach, and to me it seems like a good
+way. But like I say I'm curious what the people who are in this space
+think about it.
 
->  			folio_get(folio);
->  			spin_unlock(ptl);
-> -			folio_lock(folio);
->  			err = split_folio(folio);
->  			folio_unlock(folio);
->  			folio_put(folio);
-> --
-> 2.55.0
->
-
---
-Cheers, Lorenzo
+-Andrew
 
