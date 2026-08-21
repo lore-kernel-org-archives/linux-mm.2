@@ -4,167 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7227AC5DF7D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 20:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 240D2C5DF94
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 21:35:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56B486B009D; Fri, 21 Aug 2026 16:44:58 -0400 (EDT)
+	id A0C726B0095; Fri, 21 Aug 2026 17:35:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51CC76B009F; Fri, 21 Aug 2026 16:44:58 -0400 (EDT)
+	id 9BD3D6B009B; Fri, 21 Aug 2026 17:35:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E3C36B00A0; Fri, 21 Aug 2026 16:44:58 -0400 (EDT)
+	id 8D45F6B009D; Fri, 21 Aug 2026 17:35:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1351D6B009D
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 16:44:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9697EA024B
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 20:44:57 +0000 (UTC)
-X-FDA: 85126455834.20.CB35B43
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CF60440007
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 20:44:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uX9rWk5d;
-	spf=pass (imf11.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787345095;
-	b=Fr8GRDch9jCcjSsYaE46OzQgRlwStBx0rl0ho0zzuOROTcYL/+QxX+nUZaoqba2rSVbByy
-	eMMWcoZOm3Co3sSZ+MWFGAXnkYEpkPVXtT9VMPLfvrS+kNgQ6bq3pftRVmAa1s5u1T2hNW
-	PUPv+z5AeKuy2DRDxoFkXyUkZ6nzvJA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uX9rWk5d;
-	spf=pass (imf11.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 68FFC6B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 17:35:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E0D81140290
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 21:35:16 +0000 (UTC)
+X-FDA: 85126582632.23.F88FE6E
+Received: from mta1.migadu.com (out-75.mta1.migadu.com [95.215.58.75])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C166B160009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 21:35:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HLAC3vTl;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.75 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787345095;
+	s=arc-20220608; t=1787348115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QzsO6bXfVkXRG/aUxfAmIkKsE+Fa964GVFQS62WZABw=;
-	b=A+JTIF/+hA6eyFFqlUiuMI2vQQnqCDOY2IRZBB6yP0oCEp8phuiveAh/yq+7+iZJHzRkF8
-	GFrtbyoD7VmjpcGqX5MSPYDKrbzDF85T4py5BissOfSzzo4Sdgm50CuxwLWLullx5J45oC
-	fkQIGxrx691GLIViZ6tvb9jGEnXWrT0=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493b966dd74so6856785e9.3
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 13:44:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787345094; x=1787949894; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QzsO6bXfVkXRG/aUxfAmIkKsE+Fa964GVFQS62WZABw=;
-        b=uX9rWk5dY4vpA3/XZWzuf4jfF5TmhuzyG2gNXSVNhucNYV7d7LkKuzZtJhdqkRaeLH
-         4jgdPRXmhNMp4L9FEr1ZBffX306lDzMhXu2Ei5zYGbsvDM72dHA6BciHMr8KPfIIGLuY
-         DYIMfCBCfv2OFmVRrQbpvK896dvoO7UvAzUb5r/eselG6E55N2VajHFCkcfrX888HRY2
-         0+8Ta7Za5G0GHlP2FNgPspsT1thE+X7+gpUilPLS9/hzUQqaXovCpaICBlf6toQptWTb
-         sTPaF6Xq+CfSZ2N87ueN4Rf/+fxMXR4JB/I1LP7Ad97g7pZMex5VhlVzZnzW+1ODfTzj
-         mt5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787345094; x=1787949894;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QzsO6bXfVkXRG/aUxfAmIkKsE+Fa964GVFQS62WZABw=;
-        b=N/sOMkTPDSm1mH69zhiZP3UUoOON7EjEaWZUDWDRk0210H7ZCX9BOMteke4kVdsdKY
-         EaapvxAx56H9qqhO59RbPcFp4Kxos2QEHHk9mrvooEbqndlxwWv8WViQRT5iKJREa2Xk
-         Hy2HvFcZnOOK582QrlQMIIXxLfe49vIeYPU2tN4wbm+Qn4t75rIBzm4y66ixampNtwtu
-         /DdpmJwmn9MztiL97Xw1qCQ0Ul7fvkKNCwyEKhIkFiT+R1CBfsF0nFykAhSSYR5ApMRG
-         8wrqswvo/zaUHm4w+NJ5VsAJWse91z9uc4lWVRkDt5RABotopHDmmLHpxQXLha2g6+2H
-         TnCA==
-X-Forwarded-Encrypted: i=1; AHgh+RqNmlCVNgXb+8BvTUotlpemJ1jMh/t66MzzcPnRYgb+Na0QqitZGGNjCHRg1zojCKxMKxJ1VUfxzQ==@kvack.org
-X-Gm-Message-State: AFuF++lG/OOppvY+FZeAWi3XGtr3bcBXBRx5OyfHmm2x8l9jEeJkGof/
-	keiYIJ7g7b6czORmYqODerYWrFFvBNMvFYqB0/cTPHsb4iQ4UHlnj833hkCP1qchzQ==
-X-Gm-Gg: AR+sD12e0rn4zE7pa1rjn3nXTpUaGn+DqHAU+cU3Spcp5fc7Hg7GThENllWMKr9EBsG
-	sOPiMXntN9e9GbBZmsrT8af2CEUJRJlC2rX6m5K8a/nYFyDCX6KIO+w+MZr6UDNytY3Hj6pp9PP
-	Svm+tB0ktdj2Xc2jav4urIZvl84U1LwF1GrKYMdG5DWTFcYrM/OecXL5Urz1s7zLBN8mLn7uu5d
-	HwF+7xfg5cwqdfUdDEFQcdpRSvHu/caBMZ5HM41Pgh3YKqpnGDJn/RipE1A2u34DjXcth56S+c8
-	SlwCZ3oySgIwUIbQq/o8M52KLPAR5BmKKzLbSAWoys+p6QC+HuLealOA4DyVJz3tEFqcyoU0uFy
-	+8kz/DrqfAEl2DsNJ37rBAH6yXyuxy9E9bIaw+FhBIn8aHMcKa11lmBgTqQ0RGo/SePL0gucdSP
-	ABLzJRiaSUjRc4dn/FbzL1Zks2Vtr6//5aqIvOb4oMX8LX6avPWwBN0V/RMEs+w92YrnXEFWyp5
-	Yq9V9AyeASRJRqo95ptqWIj4IYwIgqI
-X-Received: by 2002:a05:600c:548c:b0:499:8aff:59b6 with SMTP id 5b1f17b1804b1-499c19f514emr11324295e9.14.1787345093778;
-        Fri, 21 Aug 2026 13:44:53 -0700 (PDT)
-Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b911584bsm40454845e9.14.2026.08.21.13.44.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 13:44:52 -0700 (PDT)
-Date: Fri, 21 Aug 2026 21:44:49 +0100
-From: Vincent Donnefort <vdonnefort@google.com>
-To: Thierry Reding <thierry.reding@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Russell King <linux@armlinux.org.uk>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Chun Ng <chunn@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-mm@kvack.org,
-	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org,
-	linux-trace-kernel@vger.kernel.org,
-	Thierry Reding <treding@nvidia.com>, pavan.kondeti@oss.qualcomm.com
-Subject: Re: [PATCH v4 07/10] dma-buf: heaps: Add support for Tegra VPR
-Message-ID: <aoi4wZJIutMWu9Ux@google.com>
-References: <20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com>
- <20260807-tegra-vpr-v4-7-5510d16af89e@nvidia.com>
- <an4MEI7lkc2p3nKI@google.com>
- <an8K2gb1pIqbDj6-@orome>
- <aoNDRTKCUkzd2n5G@google.com>
- <aoQ1lhZojzsSkWHQ@orome>
- <aoVy8dj8f3ll5-M4@google.com>
- <aobOs0ZidWzgoHut@orome>
+	bh=Mcusd25TqiiguEeVFskWqDuX2/CfPhjxnrX4zJ1h/iY=;
+	b=pCeKUc/9YzFNYc+Gh7tyT0cCumOGGUa8SAxYnWDneOcrmitVf5eTXr67u22fSsCDfGk7/r
+	HVyAtm++HFYapy+dGEy3MxgXcojYpuBI7yQQ+IHESybgbjZqSqCJuSXIrDW2dOiMVSOn69
+	7ag5+oNvmSO6apV2mSeWBVqlJQsfCNA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787348115;
+	b=aDjp14WR34f7QrmemtMCQBC6B24d/aLtlK0p4Bf6F6oBmTRvaOKMrUDRoBNtilLvn75hIP
+	LQA6XsveEPkVbdkYDSNOf2Yfoxqm8WFoDFjlczP0dipsqJVZ0UFKQ8+H+m10O+ZxhOQ5Fq
+	vCtxYjyzQk2Bu/a6L4WD5G0XTux4S2c=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HLAC3vTl;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.75 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=o8c4zF4D2sASPXDeNAkCDbQ/WUugHXEUBThuwoDLNnk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787348113; v=1; x=1787952913;
+ b=HLAC3vTlZSKWH6d+79LfitBu65Z7UoiAqNK2Tp/f19hvsa61rPgk63oCMneCGlCKALnXqjya
+ mps/5lHNLtjCU2Z/YJIY0HVdYeVXObjTg/rABSmbsfq1umwVhOsLC2Dyn20U8nZjX100nv899Wj
+ bh6mreEIK2V99n7vcc5ma7tM=
+X-Envelope-To: linux-mm@kvack.org
+Received: from castle.c.googlers.com (35.203.187.139)
+	by mta12.migadu.com with ESMTPS id e805eb4d6b971688;
+	Fri, 21 Aug 2026 21:35:08 +0000
+X-Mizu-Trace-ID: e805eb4d6b971688
+X-Migadu-Flow: FLOW_OUT
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>,  Ridong Chen <ridong.chen@linux.dev>,
+  Andrew Morton <akpm@linux-foundation.org>,  Johannes Weiner
+ <hannes@cmpxchg.org>,  David Hildenbrand <david@kernel.org>,  Qi Zheng
+ <qi.zheng@linux.dev>,  Shakeel Butt <shakeel.butt@linux.dev>,  Kairui Song
+ <kasong@tencent.com>,  Barry Song <baohua@kernel.org>,  Axel Rasmussen
+ <axelrasmussen@google.com>,  Yuanchu Xie <yuanchu@google.com>,  Wei Xu
+ <weixugc@google.com>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
+In-Reply-To: <aogQ6iDA7RkuTtDG@gremlin> (Lorenzo Stoakes's message of "Fri, 21
+	Aug 2026 09:58:52 +0100")
+References: <20260821081741.1340277-1-ridong.chen@linux.dev>
+	<aogMyu5R_DZRqp2J@tiehlicka> <aogQ6iDA7RkuTtDG@gremlin>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Fri, 21 Aug 2026 21:35:04 +0000
+Message-ID: <7ia4tsonw41j.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aobOs0ZidWzgoHut@orome>
-X-Rspamd-Queue-Id: CF60440007
-X-Rspamd-Server: rspam10
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: n5pxkyi1aqz7ekxw9oxe3udxneuouar9
-X-HE-Tag: 1787345095-182076
-X-HE-Meta: U2FsdGVkX1+7Or+m+hkJ/yXTook01yhNiw/5nG5cPXCfLzZz2VW0PT+NwvdINsT1tmqQPP8NKotK2TUQ7Sy9IdtClYWXYZGPkwKBGq5ZGYNHqZhxwnj9FjR3tNvqJ9Ucy1W1ojxiOZMQrJ+QIvYwV6kuz5D6MR6QCLMQl8vv6bhRCvLFFiB1VzPpH3JDaFaPkVUu9Rz8tr7E3blgJzek9XEzR2FHfWBzvhHUOxPZtXRimcCxIMJvjEkg3HK2hi0F1HPUJaPmMrGQDONmWdwAh+U/EjvfKjcS1iyKtK2d0o0+WZK6av6z3uM+mEJq5f53zKXNzq+6CvCZ9zz99FieARWCKfWU7J66B6bardFnlYDQHynC4otkS2YcBor+OY6P1fOkCU9G6WgO1rzIekjxGvVqIQ9ZXu5flYpRKasoYzSYO8gr+6KDqj0g7hDf0UOuVTzk/qEf/0YyRRH0k5/Ij5B6h4N3YrU7MdyLtH1hj63A3E9zYJ5tE8kX1A5g1Ve8qhmhkJFsYSWveI6KASejjdgN7HiymC8ShjtFNgKjsl7Ylcz9wOfe9xmoTHpTdrTOwWi9zFtId+06UZP4bvIlEUww6KxkjZqxXpgQc/IQOo51YPt8VOV+acs+b0uYSkfnIp+xXYqW2YX4gDAT16ZzcajsjViNe3H/p6nBbOyePV6TBmBSbNIpCV/q7HNFVWo/a4o+WZQYDgS9pVnsFZGO7nUYDG2pQ7c2Z9YP0GGasO9h9G2DsdzpFjwRZOEX9nti5wyLVTmUVH9dG8tNNFmhvUDILChdMK32F+SGq2tE9d3hpw2ev6tQDP+XOM5H/s8hcO17I4X0HVhNmyChm9M8cyA6Y7wek+HAkr1kYWFvSqKlQDqPJeoGjPRowx4befpCzKAlzZMI3nYEWCERufaggM/wIReKuqQZGgZ8XaZ5yC1XvE0e9d0UNBX4C90XsNfO51Mhcw2LqHfoLQxnRah
- kthDGIuC
- 6vKaEj32qcHTUTRLuRiRj+Sy80Jl2FQAgn2/L/QoNsZ1RcOHk1RcDFp31OCl8hOOk69ELpHkFEioxmBHu9Qa3FiGOD/hg7lMwRQc211IfrBhbuosBsyho++PiGqc4M/Y5/ab4O2id35T1TzwnLHZEMBxU8HN4GpBbKL+fei0MvrHEx95DTxzraO/xDhbCXZCPPmlbuAjFxu+aiM+N8KfASknoFSl0CVwVBNVaq0wiYT9f76lMo2tJxy6+eBrhMgvBOoNkm5UchSJsUX6bEsGdaqBy/KUEEkBdTmE1xBAL6qGm0htp8sexm9qnU6yqB55B5vTDR4sJa4vVLYezKkI+rR3oIHr6Ef3w6lEkFgjEvJwiohLMieCC52JcvGRzPwDqpTz726C92QV3Fqo0/lCwxqMIELbyeQSIWNjUqEch0XkLxgtCJJq5y12R4HyiMqX2KTVLE9Mh7zua/ESUTU6C5sHmVw==
+X-Stat-Signature: fpw65hkziuzjyhx1xf6piry8b1jfzxtd
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C166B160009
+X-HE-Tag: 1787348114-669909
+X-HE-Meta: U2FsdGVkX1/BsiaTbIm5uYCBVVpS1L6ABwcVc+gjJXUHS/VGjMY12VXvuv078vFKCgrCrkmAKspbzCMFaEe6idmAAeRe/1NwDVQ6RDO/wanJIuBLwj76NyrEGQ6Gj+ScyCQOE7OdYfBPJcqBnK6p6cPIvXZNLmJHhGywY2d09ndbs9xG0Ccm1lPfcJDH/xRV2gFsXXFWABfCvzy60z5yGK4qV+ow8lClvG5BJUQST4bcUaZ2Yyp+Xhfds1HPIkkIAdV7xMjUD04k+Kz7bQvSpMNG/TqkqpWzQhxPqa09BmwIIXCygH9FMXNJ36ty8vufC3jzaB2P+rTPolqIT/G+1mFbCthfjE1/YL92zTv44k4hFtnBuP9wnMI4J5PwRFziCY+pWyvlw0qF1B1+3Wjuuj4V1b0JQgPEanpJMrvl20oR1QE/EWD4nrBJO+kq0cGkRy6XY5hyxDOc3t2VOwMboY1VyCTMvbSp6FDC/Yrp3beqIZulb8QUzOgogj25fGnxmx5YwVAaajF/R0D22TN1LrGX57K5CJBRG+9Yxc1zOmYgPusCavP36t0CSkFs56V7r6RDMiUv0yaK9AxKdnr9hJATWV48KP3BmnWwuFHqlSMKnv4FVt/kBQkNybqDr8f12GxwvgW9L8QNdPhKCQpPbqVYfhq/v6yk3JaqnGMS/W/YBkScXMv9eHJwXP5+i1VVJ49dY3SMUtiQSNCzoV65S1R+m3uHCN38DvBEwXdBen6TsIOMUmpi4m5EkXjozth/7y3mnF9oe+s2JhtDrZIMdA1SLm49uHpGs1eixqc954m7FVKHnQrWBR+o0+C+oTrP5DF6P2m6959NEgPGjwht8XY2aQc99ANgKFPJ3WFHbmkyIuXe3AQAcBgLKqT4nyztRy1qGcMAEmSl6fmbpzrHJnKtPzZX2OKo1OHJWuKSfWCHHJaq01vo0sPW4FdUZEWe+tMAwWCDPRUbJmD5/c/
+ ktJ9giH8
+ QdBpGFT4QVWiQ486hM5oAtfIxZpJBNdKKa8nmt1Rzphwfd7oxwBwjZgJiQCNFycYTNJ/OkEPaDNHfMEGMJpaIvkUcxB26QX6QQUOq6vJ7DDUz7TOX0m0N7qvN79Y/eRneSQukO3DbZqVz0cb/pB3JIW0dGfohPm/UhVfLiG8pfz0j6rqNoJj2sGieL0618Nu76fdkJxOJYGMlq6TG+ZuMlE3qcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,101 +97,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[...]
+"Lorenzo Stoakes (ARM)" <ljs@kernel.org> writes:
 
-> > > Interesting. I had been thinking more along the lines of adding this
-> > > directly into memblock using a new entry in enum memblock_flags. None of
-> > > the existing ones seem to do what we need here, though some are closely
-> > > related. MEMBLOCK_SECURE or MEMBLOCK_PROTECTED are quite specific and
-> > > don't necessarily mean that we need the mapping to be page-granular, so
-> > > MEMBLOCK_PAGE_GRANULAR is perhaps clearer.
-> > 
-> > I thought it would be interesting to not have to modify memblock since it is
-> > used for all architectures, while the DT is at least slightly less widespread.
-> 
-> This isn't something that is DT specific. On the Tegra side, I suspect
-> we might need this on ACPI platforms eventually, too. And it's not an
-> ARM specific feature either. Other platforms could use shared carveouts,
-> too.
-
-Agreed, and actually I have tried the memblock version and it looks quite neat!
-
-I will share what I have after the merge-window.
-
-> 
-> > Also, cma_init_reserved_mem() could use an order 9. In that case PTE-level isn't
-> > necessary and we could just use PMD-level. Extending that support would be more
-> > cumbersome with a memblock flag than with a callback.
-> > 
-> > rmem_cma_setup() hardcoding an order 0, perhaps this isn't really a problem at
-> > the moment?
-> 
-> How so? memblock is really just used as a way of backing the CMA. How
-> CMA subdivides it doesn't really matter, right?
-> 
-> Or are you suggesting that if we use an entire PMD as granularity, we
-> could equally well remove the entire PMD from the linear mapping instead
-> of doing it page-by-page? I think that'd work really well for at least
-> VPR, since it is 1 MiB aligned anyway. Using a granularity of 2 MiB is
-> easily doable.
-
-Yes, that is what I meant. We could easily force a PMD-level mapping instead of
-PTE-level one. But then that means declaring another memblock flag. 
-
-> 
-> For anything that doesn't require a single contiguous area to be
-> protected this might be a bit more challenging since it potentially
-> wastes a lot of memory. On the other hand, a lot of this is heavily
-> custom code anyway, so the entire stack could be modified to make
-> efficient use of this (i.e. userspace could allocate a larger chunk
-> for a pool of buffers, etc.).
-> 
-> > But yeah, the alternative is to create a "memblock_mark_forcepte" (it seems
-> > memblock_setclr_flag does split memblocks) and let of_reserved_mem call that
-> > function. Finally the arm64 mmu code can simply check for the flag before
-> > calling __map_memblock. Perhaps it isn't that bad in the end?
-> 
-> It sounds like the right level of abstraction to me. But I'm not too
-> familiar with this code, so it'd be good to hear from the MM and/or ARM
-> maintainers what they think about this.
-> 
-> [...]
-> > I had in mind to extend "shared-dma-pool" to handle
-> > set_direct_map_invalid_noflush()/set_direct_map_default_noflush() based on an
-> > option. But perhaps it is better to create another separate driver. And VPR
-> > needing a specific dma-heap driver anyway, it could call the direct-map
-> > functions there too without relying on CMA to do anything?
-> 
-> I think it'd be nice to have separate APIs for this case where we know
-> the memory region is already page-granular (or, I suppose, PMD granular)
-> and removing from (or adding back to) the linear mapping is safe. That
-> way we could avoid the checks for can_set_direct_map() for each page.
-> 
-> It'd also be nice to have a version that can update the protection bits
-> for a range of pages (would map directly to update_range_prot()) instead
-> of having to manually iterate over each page in a range.
+> +cc Roman for suggestion.
 >
+> On Fri, Aug 21, 2026 at 10:31:06AM +0200, Michal Hocko wrote:
+>> You are explaining what but missing the most important part _Why_ do we
+>> need to have this addressed? Is this just addressing Sashiko review
+>> refernced below? Is there any real usecase where the current behavior
+>> matters?
+>
+> This is exactly the issue with these 'unrelated to your patch but' suggestions
+> from sashiko.
+>
+> You end up in loops:
+>
+>         AI generated patch --------------->  AI generated review
+>                   ^                                  |
+>                   |                                  |
+>                   |                                  v
+>                  AI generated 'unrelated to your patch but'
+>
+> And _at every stage_ reviewers have to do _additional work_ (with ~50% signal/noise).
+>
+> This isn't sustainable.
+>
+> We already had _too much work_ prior to the slopgeddon. Now we have a multiple
+> of that.
+>
+> Roman - I really think we a way of switching off the 'unrelated to your patch
+> but' stuff per-subsystem would be useful.
 
-How about?
+I thought about it, but switching it off completely looks dubious to
+me. So maybe moderating it a bit can help? Like not reporting completely
+unrelated issues or at least do not report them more than once?
+Even if it's only 50% accurate, 50% chance of missing a critical/high severity
+bug (other are not reported) sounds bad.
 
-  /* True if can_set_direct_map() or [start, end) is mapped at PTE-level */
-  can_set_direct_map_range(phys_addr_t start, phys_addr_t end); 
+But also I feel like there should be no expectations on fixing
+pre-existing issues as something _required_ to land a patch.
+It's always a best effort thing.
 
-  /* Must check can_set_direct_map() or can_set_direct_map_range() first */
-  __set_direct_map_invalid_noflush(phys_addr_t start, phys_addr_t end)
-  __set_direct_map_default_noflush(phys_addr_t start, phys_addr_t end)
+> Maybe we could figure out a way of funnelling this stuff somewhere separately
+> longer term.
 
-> A good middle-ground might be to have helpers that do the grunt work and
-> they can then be called from VPR and the shared-dma-pool drivers to have
-> pages removed from the linear mapping. VPR and similar can then perform
-> the hardware protection bits on top of that.
+Yes, there will be a database available to maintainers soon.
 
-I believe between the reserved-memory attribute to force the last-level mappings
-and the direct map functions above, there's enough for the VPR driver?
+>
+> (I have I think 2 slopped fixes to rewrite after the previous what like 7 or 8
+> this cycle? So forgive the grumpiness :)
 
--- 
-Vincent
-
-> 
-> Thierry
+No problems :)
 
