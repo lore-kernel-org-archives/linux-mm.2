@@ -4,117 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D05C5DF87
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:29:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F48C5DF87
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 10:44:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50B0C6B0095; Fri, 21 Aug 2026 06:29:47 -0400 (EDT)
+	id A56DB6B0095; Fri, 21 Aug 2026 06:44:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BB6E6B009D; Fri, 21 Aug 2026 06:29:47 -0400 (EDT)
+	id A07CA6B009B; Fri, 21 Aug 2026 06:44:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AA3F6B00A2; Fri, 21 Aug 2026 06:29:47 -0400 (EDT)
+	id 91DD76B009D; Fri, 21 Aug 2026 06:44:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 08D836B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:29:46 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 754F36B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 06:44:43 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7CCE2A2FD5
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:29:46 +0000 (UTC)
-X-FDA: 85124905572.29.49185FB
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 791DBC03EB
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:44:41 +0000 (UTC)
+X-FDA: 85124943162.29.C9FDCD6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7CB4E1C0002
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:29:44 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixUI3kRs;
-	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id C9EA4180009
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:44:39 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fZcYv/iN";
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787308184;
+	s=arc-20220608; t=1787309079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=APGED5YlpOpMPxOSsAuKA6X7ShEtj4fbflQDOHFgkgs=;
-	b=1FHFlxWMfDWLsnIzjeHyx6It/Oi5icmMp8FvuV5W6lfam41h6yR3mZ8V5E3zGX0fmMazil
-	csXIWlnzlTenLLwXVnpWlRb2X8fUBO19mPH29HnITRP7Eb3vbZiQVT4zwT0IqCfvbt5B2e
-	WPgxvDLD1iKWrTAfSfxAEawjSSP+/1A=
+	bh=OEV1uuB0ujnXPKaY+Wk+sXi2Lz9xQB5FZ/QqRMb9zEE=;
+	b=1/kD9hL8rHX2QS2N9962hb61vZxr2dxHWdcB8TCK2P0tatkAAMLplsmWc4ckO7Nn3p8e4K
+	s44/QvfMAadbC7SdYyMOg14v2dkNM8ex14A1T4Bfvw7W9y3PJSBTN1t2cdUB+Bat2OzX52
+	OXMp/Phk3cxehXr/4kT3CJk1iN80BJw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ixUI3kRs;
-	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fZcYv/iN";
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787308184;
-	b=4NeWJQ9Bs100RGmJWlnB+CIBtOeaV20xQdhiaJdrFs704NgS/xd46a6g0ePVpDFu2D3b9/
-	Ab3jVCpow5gLwrvhdwqxA7xU2h4uXeJ3Hzk9WYVoVcrsHtKsKyMeCE1Uv2xP5nG0yvufcn
-	jLRnaPLavPJkRkhq0uua0rg4dS07doM=
+	t=1787309079;
+	b=CToAP4sNm5U9hnYKWz2+ujl0US1NZfbnO6ywamG6QkSsvei6QLkxVaTCKOJxBZq+REm7X+
+	lp8b/1f4J3Ni7QaGCtfNMl6IbuRG8bPNzj4l5sRiHejUQ6IPbruNvXWWrBNLfziFijyu01
+	caT971m80k8FrwDEylz28V4AtE1aJf4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9AF0043C9E;
-	Fri, 21 Aug 2026 10:29:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929BD1F00A3E;
-	Fri, 21 Aug 2026 10:29:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CA50841659;
+	Fri, 21 Aug 2026 10:44:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC2E1F000E9;
+	Fri, 21 Aug 2026 10:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787308183;
-	bh=APGED5YlpOpMPxOSsAuKA6X7ShEtj4fbflQDOHFgkgs=;
+	s=k20260515; t=1787309078;
+	bh=OEV1uuB0ujnXPKaY+Wk+sXi2Lz9xQB5FZ/QqRMb9zEE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ixUI3kRsD8NoUTtmkjyJfa4wlDS1R4IthffH+JxKoU6cmU1lGAaG4clXL287xuHh1
-	 FzXDa/qYuq72kJG0jgYnXPTUntW8HTxORTjZ9zMtzU2H76m9/ZwKxWBR8g7VqYAuva
-	 kgQFavADAJwi0NRufxA8l8j/zT3OVVcMAxgx1gl2+e85rIVJR64+x6g9/HBkUVYvVx
-	 kCH7LrYn2BlvwyddOASSf0J2KMGbkAaRPTHlkFbYif7VFRWytKOhy+T2rQDtkoB01E
-	 Od3baF8witTx31YqfSZSFnCFr4BovvmI0G+CDmqrfhlwEDpZqh6I3Ig2QOF85lHa94
-	 BNRaFCMkdKWqg==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 2926B1980052;
-	Fri, 21 Aug 2026 06:29:39 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Fri, 21 Aug 2026 06:29:41 -0400
-X-ME-Sender: <xms:kiiIarVzSmx1y-aArkHdOBg6_uN2EF6kmHm7eYV3kLj8d1ZetYmTnQ>
-    <xme:kiiIarad1L4afhIQcR9TpUON9bZV2_aFZEy-RJGSw_E5CZfR8pB7srH9uie3fSiuB
-    dePAuvZWbvXhhgkEl6OfcEL-YeY89S6pgIr0B7jnImbXdTXQ6RL2xCu>
-X-ME-Received: <xmr:kiiIaixDRegUN-DZiVZpoNH_w4V-cSHrk9NAzrk7u6EdWuZo3aVYGcDscRg>
-X-ME-Proxy-Cause: dmFkZTGP4bL3rkkhiaU+LYYEJklVw3I4bCV0bLo9Xe/rEgNWD79Kg2qnSiGX6a0LzPvrT3
-    wfkn1QSVsDXoCCou0Ai4CQZtSMXEfYR7TcfJrEs2qA5nuREzR/25/SXv5FHUVnpahHF5rZ
-    sKtXsan+W3eHdPeJRne/qiXwfCfCb10WRvmLB30Ci3uaIEVL5D3olIiiOSnObxq8C6IPWE
-    CaoBiOtHyQu+B9nz7YFtvwuilTaX0/jGLK4wKrha13aK2nLIfCvV4FGU476zMpcM2zcLB4
-    bT9trOvY0ulRdAD+iw9eIBoGr0FK47s7WRgK6yQyBMu7G61oTI+YvMopiv4VSl18lOJ5Z3
-    PFVi+866/3m3g5aFzO7xOv7m6vuXzMUw4Lv+jO9gfxTn5uM0B+j96kCvw/jt8I+huXrLkU
-    wKkJaFlospdKLrCQDk16EZ8+PTysacY1zlTDsV2ACyFg8I0wjizXHCfA4iRjksBttHwcTY
-    wvEmk9ehfcuSKoQI7pMdYMnnya1y9zVIko1YRNEGK1ERHWn8XNmEmOW7aegRM9a2hLgBF2
-    fUrsAB+TJNQlwN/Ob1VoLupB9GoBMoq4ahvuVHXxmmOnPY+KATnU/KnrCbrHVXlRRWx6En
-    75CalTn5X3AfHuDh0QqtF9FFmIT9W6QxvSkRgXvqsKl4lNvEtZYrfgg/K2hA
-X-ME-Proxy: <xmx:kiiIagJ6K1_IhTU6mwLPUNctDqMy9YCXitJsDYeigc3ethIccfkWKg>
-    <xmx:kiiIapfwVryqGlX_G8FBQ-G81dMyuek2WOwFvDgVQNTkC2pFWFIxZw>
-    <xmx:kiiIaouDMVQjpMMhVDXhzsvSFoiQl94RJjkg-M1USLW9qB4i-AysmA>
-    <xmx:kiiIanFDd2c0gVRX9E4XBv2diwz95NhoIw-LxCwp5NSInmTPRSGErw>
-    <xmx:kiiIaifnfAIs5050IA3B1i7QlIb-FxA2CFT7Ar6PadIGJ8yF-mjmyIVy>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Aug 2026 06:29:38 -0400 (EDT)
-Date: Fri, 21 Aug 2026 11:29:36 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rmikey@meta.com, riel@surriel.com, kexec@lists.infradead.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 0/6] efi: mm/memory-failure: keep hardware-poisoned
- pages out of the next kexec
-Message-ID: <aognoSPb8vbkR3U8@thinkstation>
-References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
+	b=fZcYv/iNpqmmH+eXzN1nlKAbp1671QSKAZLHzfydCp+CXLyRzutsB18WhFHNCJKXq
+	 0w2cjHsawvgyRkYVvb+l3Nr7gofGMxxh8a4PAa0AtIucWl4l+mGuMsFuiML8kiu2i1
+	 6SxcUq9zyGgn5sUOf28BjtENDZVSngJRHwHIYmA0e0KRndnvXUXCPFskUoYc1nvPqO
+	 A1PdLfBTAnyQgRKrnl04YMB0b2ELcWkk7Rca7CAmOJze/P3hN1iGdertvDAlQT4Zj9
+	 Xb30GgCCk0QAzjqAJdrlfVLcZUE8U8qSeusK5dpdk/paoZI+YDjx/qThpyLnQBrjYF
+	 BW+ntHcWp9V7g==
+Date: Fri, 21 Aug 2026 11:44:32 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jason Miu <jasonmiu@google.com>, Shuah Khan <shuah@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Greg Thelen <gthelen@google.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [RFC PATCH 0/3] selftests: mm: introduce page allocation stall
+ reproducer
+Message-ID: <aogrd9knfBUGH885@gremlin>
+References: <20260819070538.2404983-1-jasonmiu@google.com>
+ <20260820170348.48f04ed654dce5193ca3a532@linux-foundation.org>
+ <59525a3e-6003-4ab1-bd75-e0c7dcc8a257@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
-X-Stat-Signature: dzrrcyy4ksdpnwfgkeahhqyrng6h6rpk
-X-Rspamd-Queue-Id: 7CB4E1C0002
+In-Reply-To: <59525a3e-6003-4ab1-bd75-e0c7dcc8a257@kernel.org>
+X-Stat-Signature: mabaemqbxhmrr5spyzcccp68nzkcpk4o
+X-Rspamd-Queue-Id: C9EA4180009
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1787308184-390525
-X-HE-Meta: U2FsdGVkX19J9SaJxtOZMDK3BiQowMtTbfJgmCFhcXHvCIMGM9urpopL/haTZ9uBRzR5mLrDvnROL/HI/jOOBSYuHrhHzi00sq1A9Ux9pikqVAkhZxUV28bnRj0YOLbQeo7L7FkBIxOHJdCjg9n/jE4lNPyfxJFzOxXB0dhFCtqd/Q2ImLjYDo0JUaeNgjPYQObdMamk4H8Vsk/UUYT/QGcoqBK2NTDQ9dSu4NVvL8Yp73miZ/jB2m9PCvyRvW0c0tqovjkeu3lg2ts7dmgYZmrAUl8/hyMAUnWDa63Uo/HKICyaKG/zXaNk2bIexkg+C0BUKma73r+EBkImjBBtF2E8zfD5t8V0ChxxVEZz6+TAkpcpUhHnRaqc3pTlG7BqkHc3Hwg/31xtAJ7WSWe8m9tJy1CGYunINqFc2mYmt7Kzx5uoIeKduwFLoAX6mRxOP+kNLJS0wD00wohbllfjE01keQsul04gAPIi30bz7uGLbxz6DrmsmTOaVrg9IopJQ0C1oQH3UdTFvzddzSpauIRhZrpnuwL1J+Si4c9Kwiq02A5fYWKgoj2Sir4LZVN+XcUzwpnqCBt+JSYRax4jZVTizDiSdassMZ+AOa5uRecjk8Q2uyRiRM7Agm6OI3Z1pUOW/jcMlAQFRUHbbKiRwcqElRzrH0hK0IN7NsCU4z0WqQPGH5vrM+zpk5Cifa8g0/x4ruRtY/cqbR54iZt56GyvMVK7plG56ZxEszHwqQBT1m2UKXes4ybR/XR0+v02E5as/47y9hNCbryVvb0pCB1xq3RsZihdnFYTk4uTJ/Y9R0Wv5qT+bTJk8kZc37hMrh7YSnB0ec9HrxxX5HAPMtRPEUi+adNpOrfjJEpNAZSLD8IC671fO+zqFmWTXiRFBKauk/4mfaxPViMsN1KUJkGHxJxtscDfnaRAeZ5QIkFvggb+3geamZC1ECtu5YEkyfk1PGOE1e0gTcPXCYf
- OvpeMoN7
- Ngtbr0n/n4Od5s2pebIXA/HpbXah4FgEZ0bd1n+8QxVZvnLB0ILjzOai5EBh0iob5gqX5g8U5AYgrJKbZINY44X8h/sms9zOz9d5VPuVLl9BbpTrYmX1JBqNAztoK9AbDQgXhLG+Iqhhizlz5uu1ABcKAHkdYBE27EtWeASVjXGPUBmeTwsH5g81eKTb5J7U4bGAQ+7jRkIuolnzOwLACnn2JFx+/7eBIGhv0hM2bU7UGVvc6lfWbj1t06Hquam1NdCk+riJ6cQdfWyOh3+bPddXW5d4DhyVnqfrSSe9StUmBFPxdPpTFilF9HQvPWICoZw9vngyhPU3W8N6I0yg3H1SAMT2mUO1UBcRp5pkFa+b+jNA=
+X-HE-Tag: 1787309079-14612
+X-HE-Meta: U2FsdGVkX1/oEaek9DiiSYvSgVZdB4vtoPi8oBVRN6ZaEIGxXueFj4db4XfnMkigVDzrsknqIreFdn1aqaOHYlkjouVnmfU9wP/rrq7c1us4EvN5t99WzXOeQhQJUe8KjveG7UhSeV3QMpjognQCFQgtk0y03SaM9m9Q3Ylk108K4IjGlhLIK34LrKrciMZD/AqZh9TPvUOgkP9aUu3FHHTB4MBJCg7MkatXnDDwbsD8BwInd+V9jl7CX6xCvH4W72nxZ9UX/vOdvp/EV/nOCzBcPdMuvuEGbOkI4js0TFAemnqVPYAlO/rUNp55lozVsRfMPfieHHtfudWSKk0EnhcskcI20IFcmygWx5TEpHevyVoKvVaT4kCNVC7vqnH84yVMbj6MJyo4wKX62n/faFmrdAs7xTjL41ftXHsIaxRRDZuV0E6cGB+mfSEdGLjr2BMY6z91mbmL0bFD8B3cba2X/h7UE0GqRadaLnmOWKn19HsI66Ux+Z0ONcDkE6wOLyBgFx7Jbm76VeLZLM/gPcEZmnONbS2fRbrBem5eyY4plLhnZ+bIjLe2/hZ9zS2Cq6t/yRFQ3gTK29NAzDk1yLUkrPgZCt/oPNTICjUtBnv90gB2sJuMgoRwsehIFC/DAqxXMRcwe6JTkp6vpOZ9P3hcQt16W5IC65XjVOywerB594UivE4JqRTozYgukR6nKRguB07e8RMuNU02llkXYWLl4DhO8sxqwWZYoWLv3gdpeaRck2etWdXdU0Os3vhOvxqvY63qwxQ+c0cNEzP6L5bct8oXVN/mbwmaYSX8Uy/oZiYLY5tjV1OrL7359FEpN59trYmPYXebDKQlyGYwvXW9zj1mg/DBviaw4guTEQUWI0GAwi/awjyHayEXt35QdoE2ErSy4EA+Loz8cv76FzFADInedssF15IQojQVXVFgdQs8byg4qV21TJI7QmaDpAW4VBECZ+egRJvBsr0
+ 4lF5zvti
+ zLBqbbpkUL2mYxkqkVaJtb60KQ8GWpLs97uXDKYiS2dJxtfbTKbXjVVlpjK4txtk5k+Z7Bjg6ZDj2/szMvr1rTwqec+vXBinS40VlVQHBRAUanH6OFXFMUK5N+xAGv9xNb+eEcyuCFVsiLCnVTpJRfn7toIzDxi4t6fQhE/Nj6WutQ3Rfg7gx6Hm7xHKupahDHEzPTBi6qLeIZdgsQ/GOQcLp96wooWWZMidbZhswyfZ8UHt8+on42AQZDlkrKUYd62G+U2AxV3tN5SHQvOCKFEL22EE9NdDpBEF6GZefkEtNeE/2zDHp3fjl1A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,21 +98,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 03:06:00AM -0700, Breno Leitao wrote:
-> The allocation is capped at 1MB, which covers 16TB at 2MB per bit. Past
-> that the stub doubles the unit rather than growing the table, so the
-> table stays bounded on any machine.
+On Fri, Aug 21, 2026 at 11:53:57AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/21/26 02:03, Andrew Morton wrote:
+> > On Wed, 19 Aug 2026 00:05:35 -0700 Jason Miu <jasonmiu@google.com> wrote:
+> >
+> >> Background
+> >> ==========
+> >> Under severe system memory pressure, system unresponsiveness often
+> >> occurs due to page allocation stalls. In commit 94e0bcde055e ("mm,
+> >> page_alloc: reintroduce page allocation stall warning"), David Rientjes
+> >> introduced a warning mechanism to emit a kernel log when a page
+> >> allocation takes longer than 10 seconds. This log is used to correlate
+> >> a frozen system with the system memory state at the time of failure.
+> >>
+> >> To further debug and analyze these allocation stalls, we need a
+> >> reproducible test case. This patch series introduces a new selftest
+> >> designed to artificially mimic the severe memory pressure scenarios
+> >> seen in production, allowing us to observe the resulting allocation
+> >> stalls.
+> >
+> > Interesting.
+> >
+> >>  lib/Kconfig.debug                             |  11 +
+> >>  lib/Makefile                                  |   1 +
+> >>  lib/test_mempress_timer.c                     | 140 +++++++++++
+> >>  .../testing/selftests/mm/page_alloc_stall.sh  |  80 ++++++
+> >>  .../selftests/mm/page_alloc_stall_pressure.py | 235 ++++++++++++++++++
+> >>  5 files changed, 467 insertions(+)
+> >>  create mode 100644 lib/test_mempress_timer.c
+> >>  create mode 100644 tools/testing/selftests/mm/page_alloc_stall.sh
+> >>  create mode 100644 tools/testing/selftests/mm/page_alloc_stall_pressure.py
+> >
+> > Nothing fits very well, does it?
+> >
+>
+> Why are we mixing python and sh?
 
-For unaccepted memory I didn't capped it. On x86, architectural maximum
-is 4PB which would cost 256MB in the bitmap. It should be okay for the
-scale.
+Oh HELL no.
 
-> Memory hot-added after boot is not covered either: the bitmap spans the
-> RAM the EFI memory map describes, and a frame outside it is silently not
-> recorded.
+Only C in the selftests please.
 
-We might update it if/when it gets solved for unaccepted memory.
+And python is replete with 'getting it to run locally' issues. I have venv
+PTSD...
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>
+> >
+> >
+> > selftests is for quick tests which are run by run_kselftest.sh.  You
+> > had to place it in selftests because there isn't anywhere obvious for
+> > it to live.
+> >
+> > So I suggest a brand new tools/testing/stresstests/mm.  If we create
+> > this, people will jump on it and start adding things which presently
+> > reside in their personal collections.
+>
+> There was recently a discussion around performance tests, and one thought was to
+> not carry these in the kernel tree at all.
+>
+> Stresstests, not sure.
+>
+> So agreed, that this shouldn't be an ordinary selftests (nothing we would want
+> to run autoamtically), but I am also not 100% sure about having performance /
+> stress tests in the kernel tree. It's all stuff we have to maintain and drag along.
+
+Agreed. Separate please.
+
+Stress tests are just asking for flakes :) they are useful + important but
+something different.
+
+>
+> >
+> >
+> >
+> > I can't say I like "mempress".  Is "memory_pressure" too wordy?
+> >
+> >
+> >
+> > All of lib/test*.c shouldn't be in lib/.  lib/ is for library code!
+> > Again, we put them there because people are shy about doing mkdir.
+>
+> There were recent discussions where I raised the same. I would prefer if testing
+> kernel modules are somewhere in tools/testing/ if possible.
+
+Yes.
+
+>
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
