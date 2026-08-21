@@ -4,114 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 494F2C5DF93
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CAE4C5DF89
+	for <linux-mm@archiver.kernel.org>; Fri, 21 Aug 2026 14:18:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59FE26B009D; Fri, 21 Aug 2026 10:16:52 -0400 (EDT)
+	id 99B136B0095; Fri, 21 Aug 2026 10:18:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5505C6B00A0; Fri, 21 Aug 2026 10:16:52 -0400 (EDT)
+	id 972726B009B; Fri, 21 Aug 2026 10:18:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4661A6B00A1; Fri, 21 Aug 2026 10:16:52 -0400 (EDT)
+	id 862136B009F; Fri, 21 Aug 2026 10:18:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2333A6B009D
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:16:52 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2BA1AA0156
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:16:50 +0000 (UTC)
-X-FDA: 85125477780.29.BBA733C
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 474B810000C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:16:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dxB1yZCS;
-	spf=pass (imf05.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787321808;
-	b=r55jfioN5Bngtyowwmk1DlOUn+ZOta2H8pWIPsvQlD2sAaDDQCBmCPN1HoSsOGHZCB+QUH
-	tJ9HInHJUvR0SyPzUvKQTM97hv4kJrpEGLWXdf14rRF449W5R7Z7YLVYCxYERCqzW2Motx
-	fmDnYAdtIhuUO81nGjiwxkx/CXofApQ=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dxB1yZCS;
-	spf=pass (imf05.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C75F6B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 10:18:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C61DB140150
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:18:30 +0000 (UTC)
+X-FDA: 85125481980.16.C3A1E9B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 12C7740006
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 14:18:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L7kjw09V;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787321808;
+	s=arc-20220608; t=1787321909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gkFIWdQrIG5uSLpHBwsVSrnZ/Bh83b4gEGjaE+vppUY=;
-	b=fiv26V2Z4quDKvvuWpI/Att4YPzDRsCHQv6A3U1mOdksFeZIoq6+5Ff5eBy1MHMg4Hhjnd
-	AVcnVFi1U3Zod7HtanpJnT0kkypgup2lSvry0NBoJwg9eEm9FII8e3rX6CUsNuPJYsZZUf
-	CbIAveko2rvgzNQGwrlCfUFqVY9gtzM=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ccf2360620so8798655ad.3
-        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 07:16:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787321807; x=1787926607; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gkFIWdQrIG5uSLpHBwsVSrnZ/Bh83b4gEGjaE+vppUY=;
-        b=dxB1yZCS7U1i0TPoXgsK71lM8lMgiiKp1Wwi3xaFIWYZQzSKC4dOs+bK7C3rSKWf1u
-         7/+DojPLblE1foi+/n/lv5O2+lCNE5p0CdHIjILpA8IJcCOCdAAfHeJFIA5swKPhb8q1
-         6SKEY2BX9mcs2ip36RUzKOY4H7IEtFZf9XJL52yp3wvfA8bDSyD7nOXixfxbmxvjHsNf
-         i4UaGDHAL0HUvQGDpOLcI887jb7iWegNg4+m67wGDkhJD/1MZsKRwDpAD7O8Fxys1mRe
-         d+8OBjVReu6SCCBjzvtWMnro1BnslLc+L7u194Ce7RC+SvKrDs/PjreVN3XgPCl7rsYB
-         8Wtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787321807; x=1787926607;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gkFIWdQrIG5uSLpHBwsVSrnZ/Bh83b4gEGjaE+vppUY=;
-        b=aGBj7lyrGe1TeSjR4d9jKEHdzkEHalFccD5BhAvhqDqWwh0AdQbegFgPy50QCTSUJk
-         +TcR8EFsDuZoEVYnHZHJHbEOHaR6MCgVyN9dzhdDh05F4kJEANIiJnhbofyPp7iVH1fG
-         ufTwzVfC/IKpTQPCFIywO7/Czb1ynViEJ16mPIR/C3/wCqN3Ic9n+GSxp/5D1JtOVNSZ
-         Eahkvr4SJtN96z6cEi4gvn9DjXegAM0C3bCAgZwPbRgAHPB42Hs9ZuC0SH7AQXwKtqmA
-         K0J3aIb8SZnLmgOsAlUE3pTZT9LD/0oUAH4kxhv8YwFMOxcdKx6Sc3dATf3um7CUJXij
-         pxBQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roti36O07T/Z6HIKrIiPcyldxBRsUPW1V61YXwj0f36nX2M+zTyfgH2BEpVf3hqB77hcO32FZ6qqw==@kvack.org
-X-Gm-Message-State: AFuF++nLYs2P3KGCfI3Ne4oJeq10LJuAmj+qOIthFYVmwNyNETlFE3iO
-	SpAlmHHz/LxnhWgF9K9GG/uWk5Qr288lCmbxnXVIcnuM68igR+JIPxJY
-X-Gm-Gg: AR+sD13S9EAR7xzSGA3tef3lllGBWsf9pHPtfr3Mw5WUwREiOFYPDOxPKSaX+RgvsT2
-	j5lPFLESpQOjMurU0BaqPv+O0aWjsbQhUkb7J8h15UW1dd7t4BWE2Re+yq7vP0VBNwI+3dGWA5+
-	m2KgIxiS9a9zK2pmMkcQfYrSyCeX3tSxfEKIvtl3vYekxUij2FVetq0lci023S/YE5/4e2LwnQC
-	KrEZv3G67L2QaUXZGNRHsfZUIfBwX0S7B1DqybNT7yDaDYfAPZyHKZT4x4mQEpcf9ZUcYXXMTEC
-	jh2W4r8DZWqKXBz0OjflZOUdwtnKc4FGI042xETZ5kjlFxDnp7a+U2fK+P9FSBttMmcQsKlF2rj
-	5RjGgLoauTD7QpE6sXI+6Wj8FTPbZbnLXdT6uR8pJ0EwC6MFRPDJZ+Cd660kCRRuhlIuE35dIHG
-	9DJJM3RGSKbiufVqar+RbrxCYD4JoNHAzeDtVbr08FiRCOn/G+UawfISqkt0ydblL9zA==
-X-Received: by 2002:a17:902:ebc2:b0:2c0:b6c7:227e with SMTP id d9443c01a7336-2d64adea473mr133703485ad.5.1787321806882;
-        Fri, 21 Aug 2026 07:16:46 -0700 (PDT)
-Received: from celestia ([2402:1980:8916:4049:ca73:3818:84b0:e2c4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62ec88ebfsm19455455ad.84.2026.08.21.07.16.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 07:16:46 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	gutierrez.asier@huawei-partners.com,
-	linux-mm@kvack.org
-Subject: Re: [RFC/Discussion] mm/damon: Helping with alternative for watermarks
-Date: Fri, 21 Aug 2026 22:16:54 +0800
-Message-ID: <20260821141654.203418-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260817135742.75706-1-sj@kernel.org>
-References: <20260817135742.75706-1-sj@kernel.org>
+	bh=GCzpH+AkCY0aeIXoDOfaDvPOR2Q5CwIwfkAmh6a+U3A=;
+	b=h+zfEnkv8X0YPLsmMquXKEGHXKNfD5z+GLGK5W4y+ffnKwWesTux3/qhRQF7J5hJl0EZOn
+	DXuFNt4+m9PWAINFjrUG+M7F+KZE2BxRO/7G2mmiaOYp9iMC/aWYrrFkBy273CeuI/W/4r
+	27kgSM8AsGHQBSfrKE8Qf9dvwXeBJ1Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787321909;
+	b=fCCxtkTl0gOsxgwQFrq8QAn9nXFxyA8IyMeXmMKQyuc5eFGz1eQdO+WOKSCQa96PwNM7dH
+	NQuB77jRXKCjLV16MGrwBVeVabjbdsVt04PMwm8kIh0r/mFEllX0+8FXCHj7DOPGzKkIyG
+	ku6w3/f9HpuXz7MoNS9pqTQT8hiz4Dk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L7kjw09V;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6EE856001D;
+	Fri, 21 Aug 2026 14:18:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95F71F000E9;
+	Fri, 21 Aug 2026 14:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787321908;
+	bh=GCzpH+AkCY0aeIXoDOfaDvPOR2Q5CwIwfkAmh6a+U3A=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=L7kjw09VgZa7fNcZgNUg45LTk4MaCo7uJlNzZyYyGZoptUJTMEMqkd59WinlTzTab
+	 a2rH/NDJUMr8KNppsYDuNXhpQXNkP4gns6May87olh1mnEhRPOPhfqo3IhcgR5j8Nd
+	 k7IU2HBwGcyJXEzXboUYXxOfQM8zkaca1r6DWZugDFxgcrQ67gwDku/tlB88i/sUpI
+	 dHnGyH0TmiLA/Q0uVJZftozjtk62ZbhFOxGSbCHXMYfWEhdLaK3cZMbF4syKc67Bq4
+	 RGoxDkLU60YT9DvWKukOdkwbaqK60n8uSpejwEhJsdTo1AECVidsGwXcz07K5aka5O
+	 qkQ+/iESsp6Xg==
+Message-ID: <06f5eea7-c6e7-49ed-8f45-0c6c86a04c26@kernel.org>
+Date: Fri, 21 Aug 2026 16:18:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH] mm: thp: default defrag mode to defer+madvise
+To: Ferran Duarri <ferran.duarri@me.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260820190825.221308-1-ferran.duarri@me.com>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260820190825.221308-1-ferran.duarri@me.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 474B810000C
-X-Stat-Signature: 6x6ih9s38dqweu4bzh3sie6jeddppo7b
-X-HE-Tag: 1787321808-102897
-X-HE-Meta: U2FsdGVkX19p6M4f1t8jAuCZYllYJxXGtSXh5lYCvGb3DP6TouWVVjVy15owdQG68oGcLwHp7bz8kVMj59dJ3KiYcGtcm/BgxeCecmzpR73HWAK4hLIyypDqpEO0ddH75oMSPdzfGkK5jiX8Itksb4uaqVNli9htyYmvUG3D5BM8EV7ToANFxSE08P8hfwo6r+gLHtPJEhbnNAOsdUSq05QRWhZ1ezflb5Q+WWlIOGWEa9ijU0w3RwpVXNBv92yv1DgT9LFRJY6K5UYVu5moE7nv9wqXtiFhAEnBB/y/dpjl+TbYco0Y8yMPMky2OpBPZ2Wad1Jfg/LCQ+MpfJ1JMLkVgn1xiGA9mDBkW5zOKaTfI8q+I5r7hNdCw5RNw7/UEQeonnHkZUZQB5yT7mPSwDWu48ITu+GXLKIhngy7ScUcLe2bbhY9036yNo1V9dU5GsUm/smrZqmVPzx//KjamEK+pBlLWnXbbPOwkSKdJrFkEmRE1hgn8vg2eG0V8Hps51MjDHV3wqMFIz76ZTit8da4xAMrFL6jYeUaqDZcsFZedyoIJeuB+0O9PsrtvYUOePOxRnQL9+z6UvxjKHSVkMoH7wiyAb1QD6YnqIT5bkcTqSGFz2jAgxnbdSsD+r0QDpM54YrWyx6Prpi8aVtWxFujF+KpQ3UGgMJKQq9BiyCDOPUi/4e4t3xoTseL12mGEMat9nY7nk1NFR480xsvYV2PQfqjU+G99kzPxBDWAcHsNl/x2t5R/2dZ0Ugw7G49Z+W7wgA1jQCf0as4psadorQR+ewvSCjjkRNBjDr58cw5400aJNPcYh+IDAis3YZb1yL5JTisJWrkowjVDEBCIOOBB4vNk44uR7cA8DVHPDSSMZjQfa6vkvVlm3kJmAgVXjajMy+5LeQulFLZjtTDDY2TLmQFINTi9nEvgBR67qa/w0qBgKoVj6NQMgFakZKlaBmIQ5EHblFZXrWzyu5
- ib0LKNRB
- NLYzFhNejWAV1r5en+ZAjookAbN0W7V/qlZXgZUZQrxp6vwcoJmhZQM/baYu1YW4a8igMuofJsHhDtn+3I5cY6h9eXXzP+LYZJvArHD4s6SO3ddc1d6C4YYffVESLeYqracaENuG5V5nRMwWHEFJP8AkhnF6ateK20nX9qyv7QoZ74N6Z5KUDemTd5945JoDiT4zmn906Y7sf71e5TGzIpwNV/U8ZO3A2P8mJkrYCvLpNl7pC99+ddsf/1XJ52Hc2X90np/Qoz8wYXIwx7tb94gLPZwGT8OpQ0hKH/ERTbtLsV6Qnp4e6yxJz8vPyGVdFrlsiTzhJGKWHE8Tqxa3mAkhj7iKUK37B+rZiD3hyGmLBR8JCiTCjTMLQxWa1AHTy8eR75fHPHPgM5Qrjg/Q+vwQFh3X1oJ21TgUzO+3qRVIUjKp3fPJt3vz03+NWCqRGMLEG
+X-Stat-Signature: uyzwn47p9oq6td85si6r97ffhrnuqufb
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 12C7740006
+X-HE-Tag: 1787321908-838124
+X-HE-Meta: U2FsdGVkX19MQyB4Ts61IsAs2ARye8paivPSyE1OStbfZs+nj3JqjZ8lD1QTIXdxHVsaKIUef/TQszEDqxC7jz0tmFeD5YmCOpWF53c1XTjnRqKGnb9Y43ezJ03WkX9dVqbVVnaLG4lbyq+Ol28rnRKGrwev2d43pVTsbW1vvLcrXu/zuO2VdNriQA/aUVO9/slKj5J/CcICM6ulPTaMkDgwnuX8KVZOTp/LdDuB4Frp41p+UcxEvM2FO1vPx7IhU/gyKYbLTVJ/IZEH6u8sEJYH6wzWcHhUrLQNQ39PxYVpDLUixet3r1bUYJ2MMJweOdxJRFl3n0YUjuCjjhHsZKR9LXnmYrzlw12fUoiZdzCpV+F2IinjR6dEj+lyxWqVXg3zemId0+YF6T87lfrxN7goNL3Sk2M/xyxRRirvZmiqn1cnuD/FcICgzJmoc68gAeOJt8KmhFRXAOXPadDoEKieP3yZNdHK2K98epBpXLgEpTDR9s6KHau9f6qJeKx2dvbCB1dVPIHyKh+Rw00Y738zf5QB6zeNCFOAE0tqSjoqpa50QrEBugafkSHiakcHgIqj52X05ZUaECeFMV2VFPpZVVg6BuWNnhYaNtWNAYKSRcCa9HYoP4cVEfT99UKY4o2C/r8M2vMCVbAgXce9j4RphRCM2hHxydV3skB8CrfNRRMdHdaiGVWwvKV+hGM4zAri2DKOlh1ZHYBEnWnO2kN98LYFlwey8abYSE9qyr+mP6hjaY9NpDVBPzaNZDMvBDZHfaeGf5oAaFJNjL0e24K5BxBQcto/xyJdrgRV1wC4zB80BVbUHyixZiCL0ZwxrLjVNF0KYVKV5EpJtMKvXGpWYmpXIymbJWYbqR0vH0UG0I+0cJ/aANXpPhr5LRiEbyZ8JqSJMXcrIcmhwFM+KYPljN5r/+9BvbHqwT4UaYWK9qJ5s8H7u1TZxvQ4KjKgoQXefClI7+N8UCcNJ8I
+ HV1N4yAk
+ Y5PalsMAKJt7cGIZISXQasmlfe4lNyYV+CdYbz1EbNASWv5p7m4SxGvdJ3tmivuBvktDn0C6lXl0yIN2T8pr90h6RSxpc0v4AU4ty3J9/Kba7QIOb/q5D71mpgwvTTXomikO5UCqik6B8UABUvQsk2KZKv+SWyqBi7n3qVzjh4JhG7qYR9S9rXsVUZVgsfoN7G1uceuEfMDYAz4ipuY95UEaCPdl3wY15CaHHIFFIIcCSiqhVRPEOgw8lk5lpkk6uZoUVpuVsRaDro79624u1+fpcJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,71 +139,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Aug 2026 06:57:42 -0700 SJ Park <sj@kernel.org> wrote:
-
-> On Mon, 17 Aug 2026 16:39:23 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-
-> > 1. Why use Watermarks? And what was the problem?
-> > 
-> > I now understand why we do not need better Watermarks, so my answer is
-> > based on my previous thought.
-> > 
-> > I used Watermarks primarily because it is the only mechanism I know for
-> > stopping/running a Scheme.  The problem is it can only monitor MemFree.
+On 8/20/26 21:08, Ferran Duarri wrote:
+> transparent_hugepage_flags unconditionally sets
+> TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG, so the built-in defrag mode
+> is always "madvise" regardless of which of CONFIG_TRANSPARENT_HUGEPAGE_
+> ALWAYS or _MADVISE was selected. Those Kconfig options choose whether
+> THP is applied by default; they do not express a preference about how
+> hard the allocator should work to produce a huge page, yet the defrag
+> default is pinned as if they did.
 > 
-> Thank you for clarifying.  I'd like to go one step further.  What is the
-> initial problem?  Why you need the automatic proactive reclamation?  Do you
-> have some data showing the problem?
-
-To be honest, I have not encountered any problems, and I do not have any
-rigorous data.  I simply using DAMON to try proactive reclamation, and
-see if it would cause any serious issues.  So far, it has not; it has
-almost no noticeable negative impact on daily use.
-
+> In "madvise" mode a fault on a MADV_HUGEPAGE region performs direct
+> compaction in the fault path. Paired with transparent_hugepage=madvise
+> that is a bounded cost, since only regions that asked for it are
+> affected. Paired with transparent_hugepage=always every anonymous fault
+> becomes eligible, and under memory pressure the faulting thread can
+> stall in compaction.
 > 
-> > 
-> > 2. How exactly the page cache becomes a problem for you?
-> > 
-> > After prolonged computer use, the page cache can become full.
-> > DAMON_RECLAIM might then mistakenly assume there is slight memory
-> > pressure and reclaim those cached pages.  Unnecessary page cache
-> > reclamation can incur unnecessary overhead.
+> "defer+madvise" keeps the same set of regions eligible for huge pages
+> and the same allocation attempt, but on failure it wakes kswapd and
+> khugepaged to compact in the background instead of doing it inline. The
+> fault proceeds with small pages and the region is collapsed later. This
+> is the configuration long recommended to users running THP=always with
+> large anonymous working sets, and it is a strictly weaker stall
+> guarantee to make the default.
 > 
-> Thank you for sharing this.  I can theoretically understand the issue.  Maybe
-> you are concerned if page cache is too aggressively reclaimed and therefore if
-> file io becomes slow.  But I'm not really sure if it is only theoretical or
-> real.  Since the proactive reclamation reclaims coldest page first, and because
-> it works for not only page cache, the performance impact might not that big in
-> real.  Do you have some data showing the problem?
-
-This is currently only theoretical.  I also think that the performance
-impact will likely be minimal.  I think adding a MemAvailable option
-provides certainty, if users know for sure that their devices will not
-lag when MemFree is low, but will when MemAvailable is low, then they
-can choose the option that best suits their device based on their own
-situation.
-
-However, since DAMOS Quota already supports checking current_value from
-user input, and I cannot yet prove whether this option can bring
-improvement in any workload, I think we can disregard whether to add
-this new option for now.
-
+> This changes only the compiled-in default;
+> /sys/kernel/mm/transparent_hugepage/defrag continues to accept every
+> existing mode, including the current "madvise" behaviour.
 > 
-> > 
-> > 3. Has the MemAvailable based one solved your problem?
-> > 
-> > Yes, using MemAvailable as a watermarks/DAMOS Quota metric can avoid a
-> > lot of unnecessary memory reclamation.
+> No stall measurement is offered with this patch. On the machine that
+> prompted it the fault path never reaches direct compaction at all:
+> thp_fault_alloc is 60682 against thp_fault_fallback 0, and compact_stall
+> is 0, because memory has stayed abundant enough that no huge-page
+> allocation has had to fall back. That makes the box unable to testify
+> either way, and a number gathered under those conditions would measure
+> nothing. The argument above is a correctness one about which knob the
+> Kconfig choice is entitled to set, and it should be judged on that.
 > 
-> Great to hear that.  I'm curious if you have some data showing the improvement.
+> Signed-off-by: Ferran Duarri <ferran.duarri@me.com>
+> ---
+>  mm/huge_memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index b118bcd392cb..749f669cca56 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -63,7 +63,7 @@ unsigned long transparent_hugepage_flags __read_mostly =
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE_MADVISE
+>  	(1<<TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG)|
+>  #endif
+> -	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG)|
+> +	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KSWAPD_OR_MADV_FLAG)|
+>  	(1<<TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG)|
+>  	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
+>  
 
-While I do not have rigorous data to demonstrate any improvement yet, I
-appreciate your guidance on this.
+Why are such defaults not better changed in the distributions or by the users in
+their boot system config? Why is there a need for us to change the default in
+the kernel?
 
-I will continue exploring DAMON on my end, and I might send out some
-patches later regarding a few logical issues I noticed in the code.
-Thank you again for your time and answers.
+-- 
+Cheers,
 
-Best regards,
-Rui Yan
+David
+
 
