@@ -4,120 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE10BC5DF97
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:20:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC5BC5DF8C
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:54:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46FDF6B0095; Sat, 22 Aug 2026 09:20:30 -0400 (EDT)
+	id 12D2D6B0095; Sat, 22 Aug 2026 09:54:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 420DB6B009B; Sat, 22 Aug 2026 09:20:30 -0400 (EDT)
+	id 0DDB66B009B; Sat, 22 Aug 2026 09:54:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30ECD6B009D; Sat, 22 Aug 2026 09:20:30 -0400 (EDT)
+	id F0E056B009D; Sat, 22 Aug 2026 09:54:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10BD16B0095
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:20:30 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1010D140133
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:20:28 +0000 (UTC)
-X-FDA: 85128964536.08.EDAC7B2
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 53C4EC000B
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:20:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="Kmf8z2 z";
-	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787404826;
-	b=hUf80wnCYPlqfgSnw8rbRxWZcS+s7xcCG3Ra0sMf3hRDwjl2wd3ASNZljJFu8h9UNwftK2
-	RWI3VlwVpkIzAE8VeWdvZ0q2BzENZUw0YTxEdTL0I18HyUTyeIqTS+HemoRgXV1UyEvwt2
-	lsfjWTrbpcX02ewVPxWTat4f0pAND8Y=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="Kmf8z2 z";
-	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BFF476B0095
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:54:00 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C9B816015F
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:00 +0000 (UTC)
+X-FDA: 85129049040.25.879EA79
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7F97920006
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:53:58 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Sal9YDx3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of 39KmJaggKCMkp6sq+vx8v33v0t.r310x29C-11zAprz.36v@flex--ardb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=39KmJaggKCMkp6sq+vx8v33v0t.r310x29C-11zAprz.36v@flex--ardb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787404826;
+	s=arc-20220608; t=1787406838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EjMXvPk9aH54O5E/fcDNppHp//EgL+Bd1eWrHkkFL4U=;
-	b=EHwsTNu0V9iSGt27EU4nfyTba0rIuHvQ/iXgp9idifOmDYNpnL3wZ0GOKDItck9wyDCHMN
-	4lrLDsVJdcu34i8cQMGzovSfEBrXhu0AWEdnGKE5kXmii3GabLvp5FMzfem+QE9zU82Wo+
-	tU3e0hxAomDSBb27GCf25NHjNhOOUw0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=EjMXvPk9aH54O5E/fcDNppHp//EgL+Bd1eWrHkkFL4U=; b=Kmf8z2
-	z2JWjgLOFoUVn8fQxue+KUEv1gSA3YRhP7b+ea7Jl8DgjSIOOd6U0uApckUZpr9o45y/v52NWyXmA
-	myJQBFTwR5ucBdWoleZgHyV4r8B/X5gfBHhxVCRahtW5fjBnv3icdtzmYZIg4EFrDnBBA66YgitQC
-	FiC9GE2yA8jOvSVabhj/YFy0LPF5Vmlz90GarGSrByI341ICvIkLq4Xe2aUFYbdHYVu3j5xFYVzDo
-	zlg9l8tPGQSNmFsVnEYXCWqq1CE81DbWsCGMYzvfKz75VcTG9LhB8CK2htuHqsgb0fLqH2ph34K6U
-	q9q7ivFXmaK1fy8r63X0vUFym2MA==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1wxldo-00000002LbJ-0X79;
-	Sat, 22 Aug 2026 13:20:08 +0000
-Message-ID: <f86ca125a9b63cdab8edeb3c3b02a29141f18c1a.camel@surriel.com>
-Subject: Re: [RFC PATCH v3 3/8] mm/gup: split follow_page_pte_commit() out
- of follow_page_pte()
-From: Rik van Riel <riel@surriel.com>
-To: John Hubbard <jhubbard@nvidia.com>, "David Hildenbrand (Arm)"
-	 <david@kernel.org>, linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com, Andrew Morton <akpm@linux-foundation.org>, Jason
- Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org
-Date: Sat, 22 Aug 2026 09:20:07 -0400
-In-Reply-To: <fe9f0bb5-73e3-4509-951d-e529e37011fd@nvidia.com>
-References: <20260811025157.1632867-1-riel@surriel.com>
-	 <20260811025157.1632867-4-riel@surriel.com>
-	 <8a9d5a6f-a7c6-468f-8b50-a7aa2b4dea2c@kernel.org>
-	 <30b747de6202cd875b7669f8d76ad8ded5c0a4e7.camel@surriel.com>
-	 <3b8cb743-702a-4362-9abb-7c30e687c3c2@kernel.org>
-	 <ab1661573257d7755d5a48e4f9165ff22febba29.camel@surriel.com>
-	 <fe9f0bb5-73e3-4509-951d-e529e37011fd@nvidia.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SFWwYfK2ORvvb1ePNWqdIkWg8WHsPyZq2XD2ex3XzW0=;
+	b=4JO8icKd8mLzryFG0tXyJGqcTBkm9vbCszOLgiDuDgFofLLGhDW3XAU6Mkn3IGDZqaTuk9
+	FwmD8w6548v1Ha/IQ1p88GQOmPOmWcuJq7oQjgvPkd5wgOcGp5w+em/oYLff/P6CqyQUx+
+	HkvkpLAY1NIm3sgd2pJfTujimen+yio=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Sal9YDx3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of 39KmJaggKCMkp6sq+vx8v33v0t.r310x29C-11zAprz.36v@flex--ardb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=39KmJaggKCMkp6sq+vx8v33v0t.r310x29C-11zAprz.36v@flex--ardb.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787406838;
+	b=AJ6o93bz1CwnR3c5sPrnJp99/EALKpkHloTeDkFUxErWYD8x3xmxmSZtIrbZ1SK1RKOQWU
+	QBNydu8Lf3pZPOkwl1vkvij0TRRrcB8+FEXHZ/ZmrBLQbOqtWOABQvw0EUPEPpBj6B13r7
+	0Fh1XqMaJsoLkUYAMIX4b0Kkre3FJCA=
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-495474a5fbcso16830435e9.1
+        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787406837; x=1788011637; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=SFWwYfK2ORvvb1ePNWqdIkWg8WHsPyZq2XD2ex3XzW0=;
+        b=Sal9YDx3+zTLuGF3k4vYxtGZxcpvCnRhngJR4UkFWKlRNuPvnedWv/XK04cF18yeU5
+         eEPvnNWKZ7NJxqMrOSiamEybH1/SGo1CZrlpngkOi7QYS/2uhaRpUuCyEI3rR0kdz1yu
+         OBxkUDNO3TA+ngQtubrtdSLEaNMD+/AR0Ux9mQtt0EI5nlw76KEm1hOw9B1tIVCJPJFM
+         3ca5oQFustUteO11h9v/CYCLepHOembkTI3ywwoiurFqaikerzmZHmuVYaqEhYbF4lBF
+         37+zCnG+g3QF8eyrJkRrrggRI2hQV5waPQOSaJpWMFpMBaavPbQSkCehY5BnU+RbnM9V
+         qXqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787406837; x=1788011637;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SFWwYfK2ORvvb1ePNWqdIkWg8WHsPyZq2XD2ex3XzW0=;
+        b=LgyDGL/JkzkXeO2M5cFMcKd9B3n0L2svt8oQvK7eK6gcptMRvEhWgfVZrHDG4a4eT4
+         xAtJr3kXGEi+/X15heMChL7ojVHXhdCUBBJGx3gJU6ZOsk/STbOfoagNXgmktuo+BcsA
+         JWyGtYKeLfUoAO356nJmcsWEgKIFTiSNbz3WVesN+Hr5yx6asxVXSa8q2UbzX5O67PIg
+         BVrwEktcT8C1wx3R1aMxbwghljrgpsp8V3QQQSz+nKmHVxrM+kLjsauRNFiAhWtGMr5v
+         b4jDOpow0QacpQTPJ/FEkROW+fy4jqMb1HN1d9ix61cpxJlCCcZjsiXxak+nBfHXpAsX
+         3ylg==
+X-Forwarded-Encrypted: i=1; AHgh+RoUqc15Zid1mAt5qOzPO7uIDeRoIOuGkzcTO7oT3aupmaNoKiusK3Ec4BFY6UENjzYuNI7zNUyK/w==@kvack.org
+X-Gm-Message-State: AFuF++muOi/f6qbkXHpMgIzg4J17g6kbaWx1z5vJ3XJ7MP6jqhKmvBdr
+	xeY8vR8HEgU0Cz4yeRujW+xMDOOsd8z1dKSZpSG6YiC0tiNYf08M7+qej+XBuTk/DqXZIabwCw=
+	=
+X-Received: from wmlu19.prod.google.com ([2002:a05:600c:2113:b0:493:ae35:2761])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4f06:b0:499:a5fc:207e
+ with SMTP id 5b1f17b1804b1-499b8340754mr196385025e9.8.1787406836660; Sat, 22
+ Aug 2026 06:53:56 -0700 (PDT)
+Date: Sat, 22 Aug 2026 15:53:22 +0200
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3648; i=ardb@kernel.org;
+ h=from:subject; bh=2f7AvVCI5x1tX97+DCcut0s/Ah4Z634pXHbbbq7B0rk=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIatz5WXxBeue7y3/sIvrsfxld8u+ud3712Ssecfy8Xo4Z
+ /z2HZaKHaUsDGJcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiP98zMvRtO33wRsLJ8H2u
+ zLVsqfNVVy7rWL3p0aqaHzyLTcMu3S9h+KfBcnOJYGSsFldpb0TP6S2Bt7lMSs58us+6yehx6eU XX1kA
+X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
+Message-ID: <20260822135323.795946-11-ardb+git@google.com>
+Subject: [RFC PATCH 0/9] arm64: Allocate .text and .init.text together
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-MIME-Version: 1.0
+X-Rspamd-Queue-Id: 7F97920006
+X-Stat-Signature: 4tkjup6nwjgot6fzap7umb1cq4oktoso
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 53C4EC000B
-X-Stat-Signature: 64g7xcigsrckhmuqetnmheof7h5d3nsd
-X-HE-Tag: 1787404826-36860
-X-HE-Meta: U2FsdGVkX1+qi8czrTzVefslrR0om6MXWJy2VL0SF5dyRPmQOUZWYFS8CZqsInHDVlqvNAWViG5vD1SQ4nUPs8WfDRc24padnB7+fKkY8ScJ1OWBdXwhLcvElkvDATps9EQVqAv5TfBtBn6wwX6W7IHFx4pk0p2BJOtYZVc96aovi8xPe3dpfinCzWTvOLzRULKWGHxJhGK1BT1wWq6B1MtrPNnl6jfhGM/w18H+50DtQkU+OAbDRIHXqyH+0TGWBt2Xyb9PggTWRwX3V2YEgV2moLAldtXQSAanGnShCyAbsFBZeY0zoXakHXMkQOLPf0tY+Vxjh22MlWO6/VyeUTEMqVorRD//0eC+DdvAalwDbtppBFEMLUnOAZoFCaZt0NsQ2kiD2ZKjSsscldHuznPGnE+MiPrJjiSJ0zIEj5f2o3rzc0GP0x7qRd6SFkmj9XY0rVjcO6a+F1XNS+sDGbDTTrDn6gGcPTf7cGcK2LOey1eiSjPwnC0M7gjz2jJbEMWUmNEZbMWbaLkuxN3FrjvMw+C7r31ZxkaR/QEYFYn/knFsfZuuxG9FRjKhW+Amp91KgaoCx6tCapoRhAY12d+SR1nBRv+BQN+nEyOFe19tYJJVMIecMBZtHJxIzJclRZR0+qdihFP09eLRES1qmpccAmaY/CkfW2TKg7F5hQSMhJrD2GMk1r3XXNwvv5/lZtXPaIjALXshKjb/2qCoM8QBamhJ2GQ9pna3D8OcL32br1u197/NZkmmJWzcSQswNfpgSI0kZHTml8wGuNiNOmQ8foIlI8b6H5OkCaLNJiikOzyfzkpYKDD4xQZdFrYFGGVSBwr4rGo+d09vP2nq7jRzx0X9zP3lS65pzWPqDTqC9pfT2l3qX+kddp5dXjM8aD7/YFvzoRuShSxJo+6izNEiprHjq5GWwtreO5iUCMS+eFqjuO9RPTUorUmMYbjx+xQ2AFuiL3+MbioumWq
- 31hygdGh
- 6p6hLMq24BGUl+AUggb2s4hzx8JsEkjjAXUwazdMcMH8rZaQZWvrdxjzIToXHUkOBpWgaH9lFBUTY0Gl0VVDnj1+lNm55N2n7gsABNRKCrLsjYZ5tTjsWzDhaKfqNJlXlZkjw6AFRJd6Z9hJnhMPlouKiq6T7Iz6rWI4DWCNSzjBO9txbeFYBMWqDwvYJBdNrBvpErhibbAq1THSZSc42nXsdDwSopbxmRP4Wnv/4LEzaqNOwOuSkJQZKijazyjEqYQcUL3zL4QMno9SuTz/YIfxvo17uv9HOSzPMrR/8fEMfUf09Bv41NXpj70xzSH9F0NdB
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787406838-245839
+X-HE-Meta: U2FsdGVkX18W4+BKZ1QqFGa6wVOFB0RqJ2+SBguciacnBkQuEFqXiiSpZ0nQvzbFmNUcBc4g75oNnan1tR30YJqaZ1Sf0gpSduaN+l5L2B+EjHKP72cCN9cpzQ8WVSM4QzNl9Fwsc6AhiGFLvLNwFUdpBkvIlyftkTiDViTLxdwuqBjwdEneCg7r/bRh/iLuD6vc9rmWaoyfhsBXre7AyM2c45V2mDZS+vUrF4yYDu0AFFXF88oLAvIe0V2MmrcvW2N4lbX5xQvkaguya/OdPb3GxVrcRG0agbXdzRfcoRlMeJv5nE5QFZFiCkR9jBRtnSuvfDYpq8EnNdkp2+hO9Ku8IL6KnwUpzl9xHeDw+AkwuEbJwJ9D/ovJr6L6fa1bo9Tl3hFe2BJ2MMP21tLLDpnjn8V+VVr+lpGtkFRdVzVpfglxJSLBeFZAUyrq2KqoD/++pYRsEFMjbp7e2iNFN8zlQQ17PedetaAhSFzrLVIleEv4ZjKJr7xAzhhcdsnmjN6NS2nM9+fuOpoxw22TMw87JFqxUb/dw7BYxoT0L99Mw2pbwx7lLy2Ks5JJ28NVpZmowJoY2TSZXFI2TiMKkhaNFcrcX6t2gVTFUEBb/eumMrfiJILDwOWErnMz8ylK0vcS1KjOmFi3LALG+3rD/w3cWhMLSDerSLRBIOp12jjEh9Z0wziX9O/mdC2Axbv4FK12PxGyornMwF7yfx4OrKIF1ZofygoiIcAU9qM680zseLX71Lc9n/ObcJAgRSaEhYf4u9/ALLU1aeLc4kGxSiVzet5IOqYT2+sKfgbcNT4u2HxMVzMhMko+vTCVCp0YTaYqRhiNEEnt3vW/PtW+pLiYhc/OKOV9uYb6WPGa5clXVJ4kZ9aZuGnAMc6Nnts6QD/hBkHBH/2HGGC98Q4/UUcqfOOXJxFTHIFwWsm1UJju4TOodmgSbf0vjW4qor6dquSXGjXJL5pe71U/mPN
+ VwNrf0Au
+ j3W12/5AHMGo93xuYSXO8iuXdbb/BeY8wv/Z9p3ScpfIfqL6wfBQmk0aeMpKJOYA5INbvJr2ixIHL4A/uWn8rwuAaie7AEoyFBb7s5JkmoAEQsUE2UF2lCkTRDDmxdF3fCA52fClwu3owJjT9e5Upuut4r5HCi/Pl9reHvXFjrc/XHVu34QPh7vN8/q855GwXtXSy/ffeUcHvSyENLb48kgj7DtRTfOl5PIKoDQDkeicnPSNzAywSCfWXZ83EYGl0nWAHc/JZfJQ9CwIcyUDPAdm6/zHh5qAVCL2h/savd3HgpTUBpjOEluolHz/784BP4VEhF1woWG0oLifJuujLg4zL4432wbBxM8cx2S6pUJN35FUkKJS8jhX2gbkwWLNeOaPrS/2rCd6j6KjaNvRLax68YMb7zB6zgqpBfl4heVOTPNxtoPzkt6yZH+7c9+ubcsjac5OPyobgPb4HixUwViOhBAeBvR0zZi0jsnAc9TPxiFqeCj63G+E4RwVYSPGfgtDRWs1Knrt06Kjdkth9f/sYQWyZKoH4mpZ6337RZQQDpG8n9Lv/qknAFbn+6IcOdaoIBKk8lI5iuZieU40VRAVijvGvy3A+zHFAM5v1UzqlDM5XN7LyIlzx/Pjh1U7HISS4Ws7RlsQdYorX2H4tQXnXODw5f81RPLoRQ0RUzrvRBwbMTqLhqg+I0UOlDaHqpJ3V4vKu3MNrMUmBLN7vRzPPshWU1T10IPqB8M1GlYG36TohqIj6GCxxbdmHOgbpNzu91p0Ku0BDn+Fo7kelwsOArYnBQT5TH47ofL5E8okvTW+cSY6uOi8IEb4Dr7rgtW8AmkqhW1WgpbcGGULcYwzDjNsd9GapRHPZyu6WymaDEBzzns9sUzarJlO7krrPWomAQZHaSMH5avWwbYm6LF9Yip6XR5XHEdvgVZ9GV5eEqGZlmGyT3/gfiprd395GvMSIRRX7tHJiLCPKJnvS6KMwleTZ
+ V2U8yk5o
+ b7ro9ctDPLZTL6JVw6PCtJVtv4qK1Hrg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,31 +124,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-08-21 at 15:04 -0700, John Hubbard wrote:
->=20
-> You have delved too deep, and now uncovered something that's been
-> a problem for the whole time. :)
->=20
-> Specifically, "no, GUP should not be setting folios nor pages
-> dirty", because that generally needs to be done as part of a
-> filesystem
-> coordinated set of steps. If the page is dirty, and the filesystem
-> didn't expect it to be, that leads to problems.
->=20
-> This is part of the big, remaining set of required fixes, that
-> launched the creation of pin_user_pages*() and related. Connecting
-> up the filesystems properly is yet to be done. And until then, this
-> is a real defect.
->=20
-Not just filesystems.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-I found about two dozen places where drivers
-fail to mark a page dirty after writing to
-it, after obtaining the page from GUP.
+The arm64 module loader has to deal with a couple of corner cases that
+may occur when .init.text is placed out of direct branch range of .text:
 
-I'll get out patches for that, unless there's
-some reason I shouldn't.
+- ordinary direct branches from .init.text into .text may require the
+  use of a PLT entry (i.e., a trampoline aka veneer), which means not
+  only that additional PLT entries need to be allocated for
+  cross-section calls, but also that .init.text needs its own PLT
+  reservation, as the one in .text will be out of range as well;
+
+- dynamic patching of the ftrace handler into .init.text code needs its
+  own dedicated trampoline as the one in .text may be too far away.
+
+- recent compilers may omit BTI veneers for static functions that never
+  have their address taken, and so additional veneers will need to be
+  added to .text in case cross-section direct branches from .init.text=20
+  require a PLT entry (and therefore a landing pad at the target end).
+
+This is unfortunate, because it is actually somewhat unusual for .text
+and .init.text to be so far away from each other: only when allocating
+either of them (but not both) exhausts the 'near' (PLT-less) module
+region, the other will be allocated from the spillover region, which is
+not in direct branching range, and therefore requires PLT entries for
+cross-section calls.
+
+This series addresses this wart by allocating both of them as a single
+chunk, and freeing the .init.text part along with the other init
+sections at the appropriate time. This ensures that the two regions will
+never require veneers for cross-section calls, allowing the arm64 module
+loader to be simplified.
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Daniel Gomez <da.gomez@kernel.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Aaron Tomlin <atomlin@atomlin.com>
+Cc: "Adrian Barna=C5=9B" <abarnas@google.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-modules@vger.kernel.org
+
+Ard Biesheuvel (9):
+  mm: execmem: Add API to split an existing execmem cache allocation
+  mm: execmem: Allow huge vmappings to be avoided for execmem caches
+  module: Place MOD_TEXT before MOD_INIT_TEXT in enumeration
+  module: Allocate MOD_INIT_TEXT from the MOD_TEXT ROX allocation
+  arm64: mm: Permit permissions changes on huge vmappings
+  arm64: Enable the execmem ROX cache for module text
+  arm64: ftrace: Revert "fix unreachable PLT for ftrace_caller ..."
+  arm64: module: Combine init and core PLT entries again
+  arm64: ftrace: Simplify PLT handling
+
+ arch/arm64/Kconfig                  |  1 +
+ arch/arm64/include/asm/module.h     |  2 -
+ arch/arm64/include/asm/module.lds.h |  3 -
+ arch/arm64/kernel/ftrace.c          | 13 +---
+ arch/arm64/kernel/module-plts.c     | 63 +++++---------------
+ arch/arm64/kernel/module.c          | 20 +------
+ arch/arm64/mm/init.c                | 19 +++++-
+ arch/arm64/mm/pageattr.c            | 13 +++-
+ include/linux/execmem.h             | 11 ++++
+ include/linux/module.h              |  4 +-
+ kernel/module/main.c                | 22 +++++--
+ mm/execmem.c                        | 47 ++++++++++++++-
+ 12 files changed, 124 insertions(+), 94 deletions(-)
 
 --=20
-All Rights Reversed.
+2.55.0.860.g4b6b3295ed-goog
+
 
