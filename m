@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F19C5DF8C
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:54:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 253C1C5DF9C
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:54:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D4E36B009D; Sat, 22 Aug 2026 09:54:09 -0400 (EDT)
+	id 0DF2B6B009F; Sat, 22 Aug 2026 09:54:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 683266B009F; Sat, 22 Aug 2026 09:54:09 -0400 (EDT)
+	id F3C536B00A0; Sat, 22 Aug 2026 09:54:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 572416B00A0; Sat, 22 Aug 2026 09:54:09 -0400 (EDT)
+	id DAF326B00A1; Sat, 22 Aug 2026 09:54:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 224926B009D
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:54:09 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95C1016015D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A3F486B009F
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:54:10 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01B8F80146
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:09 +0000 (UTC)
+X-FDA: 85129049460.11.20A6100
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3728680002
 	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:08 +0000 (UTC)
-X-FDA: 85129049376.21.162B372
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CB75BA0004
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="NjZWgdT/";
-	spf=pass (imf25.hostedemail.com: domain of 3_amJaggKCNIyF1z+46H4CC492.0CA96BIL-AA8Jy08.CF4@flex--ardb.bounces.google.com designates 209.85.128.72 as permitted sender) smtp.mailfrom=3_amJaggKCNIyF1z+46H4CC492.0CA96BIL-AA8Jy08.CF4@flex--ardb.bounces.google.com;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=W1Ogbq1K;
+	spf=pass (imf02.hostedemail.com: domain of 3_qmJaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3_qmJaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787406846;
+	s=arc-20220608; t=1787406848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hkCM63s99i91p1PpHDumOCyyQdfuhx7OwD6Jd3t1Lq4=;
-	b=nQpzsChNt2zhpdB9ExTHvB8UMFGfIiPgyOc6XYAVtIMnPMzW5vSpYhVav3LFpcV3xFrHPh
-	qnQwpl+mwNu3BXt14Z08yVkv5e0YNVmGnpQgtaXkmTRhfJ4nGbccsEwvzLToiYdG+HyoyZ
-	HfMSdi27I/k7CTwTtEEBVfngjLDlW6g=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="NjZWgdT/";
-	spf=pass (imf25.hostedemail.com: domain of 3_amJaggKCNIyF1z+46H4CC492.0CA96BIL-AA8Jy08.CF4@flex--ardb.bounces.google.com designates 209.85.128.72 as permitted sender) smtp.mailfrom=3_amJaggKCNIyF1z+46H4CC492.0CA96BIL-AA8Jy08.CF4@flex--ardb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=Ei9aAhCyyRq9nczFsrb/oQ6US+9hvk5Rs5Wuqs8mBgQ=;
+	b=Zcjpfz5EKddvbbrC/suG7fwxIdIeu4TFPkpT7HFKPeOvVD1kwU7cFRRb3nIieXIXksBQc6
+	4+jo9YbWRzdyHkwrszwVC/rxfe1wJh5+XuZkTYk8DV2Zb9S2bvrJ8ZTc/G8VGMiwyt3ReI
+	2/39ZX92Hmnmc8gGIf+Hfdnd/hIx8SY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787406846;
-	b=yBuWcu8PHXbKibtOyIbZmUlOPr3Vsp56a3PjfXofzCpRfIjAicp+81VxarSpT4SeiUiI7M
-	OkMz+8GxCTfiROsqXFepr0z8m6RdUzm0v7SklDt80qB8G6QX0R7Qr0vt3N/AAUOiT9D8bM
-	ElhRfvuqef3Ln/xGfFOIDmxoldMtEJ4=
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-499900c9d99so14427975e9.0
-        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:54:06 -0700 (PDT)
+	t=1787406848;
+	b=8M82mhjqUSzINc9BfmjOdml92i1OKeBIzTLZj2fEzo3bits2Irt0l6+UK260LAvzisU6qv
+	9b8cWVA4fiLHHVuii0/BlTVfRjlEDTYzQWM9nn4EqqRCTRrpfkkeQJEUM+zqDe09RgbGrq
+	/WVXtW0yy5clUB3t/KZH9u9PG9WjUHc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=W1Ogbq1K;
+	spf=pass (imf02.hostedemail.com: domain of 3_qmJaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3_qmJaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4955843c6cdso15912065e9.1
+        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:54:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787406845; x=1788011645; darn=kvack.org;
+        d=google.com; s=20251104; t=1787406847; x=1788011647; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hkCM63s99i91p1PpHDumOCyyQdfuhx7OwD6Jd3t1Lq4=;
-        b=NjZWgdT/pW0ZV+KbUjyjZ6d9drqXTAkQr5IcAOcwU2oqVr4N6ejt6kT58TZctabSwG
-         LCdsXbmOSLCi+Iyr2aQFGli1kl7lVi6SpLrD00Ky09QSq5AunuexiAelpg/HP2D6K+gV
-         OX/o8V5CnL34tMoehAm8SjVsJ174sRhfrE4T2NxZVILvTqjnRwa2YfDV694wuPs+Ynds
-         M1BkCiR0jzxUE5Fr4ZAigYa9Ks3ZtBI63vZPfyJswadUkzRFMxX0rOSVNeHpU02b0hl1
-         BTSlPFn3tFYm+TIZ98DvZ9jbWcQE6f+7elVZRgB6FKwaVa1SilERV1T/dtPi/NarVBIy
-         Cjfw==
+        bh=Ei9aAhCyyRq9nczFsrb/oQ6US+9hvk5Rs5Wuqs8mBgQ=;
+        b=W1Ogbq1KWo4V5ZOoaAxZjd+iUBcOPuf8LnX1haG4JtSovIq666yEhVIEtrIGqRPfES
+         kFCX5fVlJ8YOI7XF1HMCCBGoE1hMg3vPU5lALb+oNWmB50miBlC3YmQCGoDxrT21Pl9q
+         hsPupGW/nmIc6VrXkFfbgyhsNgal/IRLqG9fbRgfcklokLXwpHhW6C1ePj/YXU1zkHSK
+         xqDyhizXZC+ei7yvbzTaEjuKgJE23xyvoCxizRXrtwZXfrbI/YmKVR4+eD9k5XRAjtwR
+         IyvHERAc0SQmtjVC5AoWDxtXJjuF2OwuBSTAk/Ew+GaAiWw5d3bNx8ko/e9+S1TI+93m
+         76hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787406845; x=1788011645;
+        d=1e100.net; s=20251104; t=1787406847; x=1788011647;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hkCM63s99i91p1PpHDumOCyyQdfuhx7OwD6Jd3t1Lq4=;
-        b=OwvK3jhLrZ5cK8HrpmXRlSjEcsi1DQz0U2Zwl5lRlN7R2IA75/pq39CMvj1RkpIKQO
-         H53HXx6PjErChdAynR+z7xeXBHpoTxCN5y2F2ByN3ktecU9fjcM7ZlsqCo8ZCA0vxiaa
-         aX6pCYzhuMQV0UhMIfdbYcuOPpPGPaTp8e+CrQBcVcvyDhd7YA+Y1bMDFSSbU6pZyevT
-         ZXfySATFGRB1nj9dQIxZeAh2d8tNvSnyCwhOvqm/LtWLqQsv8uS0dr3DPa21LzG8ez5O
-         pLM4Z5HdbfuYyMK7os/Y3+A2WetMjGCxJNsnAUQzjvFLnFjVLw1b3Ut3itgE1LENbTbJ
-         WcCQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrsIp2tb+23sFo8vi3xfEdedLVkOuez9lp+NbDeVLFUvwUxJhk3lrESKuMAOOXIhl88XmJP090cwQ==@kvack.org
-X-Gm-Message-State: AFuF++kEARRuVSJqV5kJ+ecOMaOslr4I8dSSrO08B3aofZzk2FaPq6pG
-	ymkVnBrktF9LE8WR3JVDdIKDOhBUzHLQa69b/4r4BggTBhwC0ybZ9MKweES+k0PG34izYcccXg=
+        bh=Ei9aAhCyyRq9nczFsrb/oQ6US+9hvk5Rs5Wuqs8mBgQ=;
+        b=DAqiGJtc2FNXJLumZ2vLznNirBNEnXMVXHTv630B2HHAZj7tPe3vH1jn1rLVMuZ9jt
+         ciftTBjv2ZHiix95HmT9x4y9StmhhYMZ/fl/gh7jP2vCcggJlnHf6xR94j9qbLgYRDop
+         F+x3pSKnOCKo0b9MT26HlojIJZks1HGAJQvjGItJctz7XvWD1bewNuN4C3sHBbzHygMg
+         RZomm2E6+odeKEr7KSMdqMjkvznDsh/4XXiYnq/b0RvXDUk0ZgTKJvQMgXGOYGsC9K5G
+         5tS5DjokbPUIKoVkAGsbUV6rciba/uw8EieS2PdlM0hKO2UEa4QWjeSgQJS0Bxu62sXs
+         3xfA==
+X-Forwarded-Encrypted: i=1; AHgh+RoSyUpd4LVcTnjEddgedgZMo/YW8bXCuLdqyCXUM7ppGcggcjQfzFmmez5ShSwP3CFHoF264WEHVg==@kvack.org
+X-Gm-Message-State: AFuF++l9sOjwKs/aLF/9ckMoNjzUH06K5sEB0RUuuLh2b+ebekiHiQDd
+	2m2mjkHDNESBAbgnlb1q2/1CttKqLUp5Y+YmypdU7GxCDO2OBszkL8c2K9Pgpy57NBi5e5ayOQ=
 	=
-X-Received: from wmsk20-n1.prod.google.com ([2002:a05:600d:8494:10b0:495:5b3d:ed8e])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4f87:b0:499:5a50:b022
- with SMTP id 5b1f17b1804b1-499b830d220mr157713495e9.3.1787406845321; Sat, 22
- Aug 2026 06:54:05 -0700 (PDT)
-Date: Sat, 22 Aug 2026 15:53:24 +0200
+X-Received: from wmcu3.prod.google.com ([2002:a7b:c043:0:b0:499:8f0d:36d6])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8b77:b0:499:48bb:417e
+ with SMTP id 5b1f17b1804b1-499b82f4163mr187118595e9.2.1787406846628; Sat, 22
+ Aug 2026 06:54:06 -0700 (PDT)
+Date: Sat, 22 Aug 2026 15:53:25 +0200
 In-Reply-To: <20260822135323.795946-11-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260822135323.795946-11-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1777; i=ardb@kernel.org;
- h=from:subject; bh=P7ZGJgEcYK0LKyyPgb8fkUAxKeezm6n7kbgZPbKu2yU=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIatz5TWxr2KyTbZTbOpLO1+U67/Xi9h1eWvb4iPcl4w+S
- bRJZ7V0lLIwiHExyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIms3cbwv5ahahdT+LH2cO82
- t1yDecoKnrvaJgjtU5h+/th0FT1bD4Z/Wub5/n96de+wmHSaPL+t1b4gf0nC0eXNz1JN5Yqla1c yAgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1141; i=ardb@kernel.org;
+ h=from:subject; bh=LLSSaN9rhZ2F3aT4P4AsB5UNc3JBgAb9PUajizskM3Y=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIatz5Y0AZ4svS9ISbTaf6Vvbffb640AuEdFH514lyFxeu
+ vB339++jlIWBjEuBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCREiuG3+xHy5/ozft6vo39
+ a++HnWc27J26lnlODVv1x/cTz/MfferGyHBrod6fpd6OR87MNvD91aMtcLL+0Su90/UXLE4ohsc 1yXMBAA==
 X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
-Message-ID: <20260822135323.795946-13-ardb+git@google.com>
-Subject: [RFC PATCH 2/9] mm: execmem: Allow huge vmappings to be avoided for
- execmem caches
+Message-ID: <20260822135323.795946-14-ardb+git@google.com>
+Subject: [RFC PATCH 3/9] module: Place MOD_TEXT before MOD_INIT_TEXT in enumeration
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
@@ -109,14 +108,14 @@ Cc: Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
 	linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CB75BA0004
-X-Stat-Signature: kgcup3nf1m5cogun3yb3ahmfxwx6gc8i
 X-Rspam-User: 
-X-HE-Tag: 1787406846-989672
-X-HE-Meta: U2FsdGVkX18thwlsaMa3HYRWksXb5Z8y9j3oC+FfGKkjDxirHodhZgIpwM7cbGcdjaIqWWGn4/4tRZ8t1DWoj4M1+BKl8lJiNYwwba2xTl+agjvk5DO+Cz9H6bDW2FP/NZeZTVtDzw5Ba26kTaB/HhTA4YcNpUqVEtz/jli7SipxARCHtPlbnmr/vv+0MMs/IMGzF72Dhzlz53XlPBlpwNxsdkmVWMEEE/V5a223fyBT3wfGLpcxT/5wj2UZET2NEz20a08lCJxsazeHAiC2FOK0tlmoRV+SPLEX5H/RsO/LyhhtMwSic+zFKBOQqmav2nemwyvupAcKCig/ZJVCT2ixmM8F02pKVM1j9fPtfSlHWzu5X6BKTrjuxLzlHRIyRaPRaExDnWPP7GimAvVLLw7Y/ZswHo8Od/YF5ZO2BnS++L3hegWWl/DIaG7nYa0WHOcqSSYwfiS9TfJ9DAPVu74AyXzcp4fD+9oWcqIGf146FkWNTRuV54b8GcdQ6sBV81XFMNl6TWobmS0/k8BjXo6BCC0PE2EJc6QrkQNqXI7msKiO1OYytJlUWYUta/UpF6kDSFT2YVYuHogspF2gfrCw2W+4f4rW60Wsr0OnLW3hJrhZJgk8pk9G8fsZjX8isOPPR8yHYtOlyOz2E5WLyLkCKhffpLNbN1B4qWkKLPByay1WfL2E4PEt3jjq6HezcuGrbs1KMpVi8VyKRyGrdtLrOymNr/Y0yPqL/CPi31oYtCWGhMgvLFU57R6sSYA4Bwoijlh8nMjxfpweS15jcaDsrLzB0e9TP7jzvsIYAAour8qlubFcpoj2SgM4khjOt4hv2Io1LqMXZNQUdOvWap0mzkYMNz/ifrQs2SS0M06QqqnhvIoCwYnon+/LTBgK4yEmFWGIWVJBO4WjuV4plY6s3YAl4QwreysZ5YgLZh6+ALqF1sHikag6YJmhBZtt2JijPc//G2hy0un5q2S
- HHT7NtW6
- SMkPVyQIhr7SGvnoupAIXMyjvHfRjcfpx86MC4zejiocdpFN3ZWBJvVRJ4Ub/wyWFSUgRnzG1AYsVDtvv8ZTb105eDi9FPHR7YfqJoxFyaIHJG1blZEhHN8VEWnyvzDTIkVKq3U+t/dXzYWdWUoQwqSsTmlmdxkLfDBdJbEqBueFBii5OUbVJLw8uLfhdGBMZ5hcnWotjP6D5es/GIb2AI3QmOBXTCZyzpPbOQZWKsk6OiEQ813yxctsFA2xU03190eXCEWIEGkqe+KLzgzg1J3W1c1XVVc992Mf9pGrZfYHoXGnq7zcoGKCDVSe5f6632xS9vO8ae7u3VUY/lsS1GxqQzwmGeuRv4O2bAAIryyAT6GiTkVY+gP7Etkx+XFgotZf6CnH5ez0p2ZkpEVMlQ8wY7OYskILBCoK6G14HcfVFK7+Civ25yK5W/vORUxFh//3hd6neeh3GIigM5yDq0E8D6jx2sAt4Kt0Y8rG5WAUJJZXd2CdQsF3EUNvWaGJAht+4koxvlUQX2VxKgzPGqzy/JRool6naNfmvLgtDJRBtVbw2V945scb+6Fl+dgwq2AnroJQZm0uDcWhu13JHDjvRxQ0/NL3gnVPj
+X-Stat-Signature: 3b1x38kf53kondoo4ou67xh41rqcnb78
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3728680002
+X-HE-Tag: 1787406848-372659
+X-HE-Meta: U2FsdGVkX18sPsymVE1jExJ4kwRUVk8SVE7lhGhupUxbhL4IDyrKmJtiN84lbdONd4IR+TqFyix2CJGPH21HDAVfQ125G8xJHdLHz5oAAcOYohKtrfFOOSx4RAvN1kNGYXUCLfQp+IlINFTtiXu8tpSoGP5L+g0iSkIEFHBiPrdf4JFwx95g2ewh2nY/Wry8kgTHgBnEG73SMe3vRI59cpQro6AqbDPBHy2HyYI8gvpwjY7eal77X+vnNrwbXF0awq/s8um3Frie5RXe0IliaT62bJQwPYaXxMpCTujAfzeZuh3a0bRAqlhO5mrMZ/dJQjBHGydyt8Wt3+zXeept34r7ncTC1/QsEL1oTPOoPUStlcd6zmve7T5/SJnVK6qUMP7S60SMRhe8DlmUG3HC5XRKxHbcuMYtEnGeHZRVq0ws3nI7GbNy2RRbPoUUJy1Ku9rH2mu/nWhE7idUYPeLYC2GeBT8jwbRQ49ZJ4WJT8iDp21XJ98LQ1eqltxIN17FvaVGx8RqnFgbWEOgnT7gGlyrKDXib/3FJTb3qFXhBxg+6k8ABy/x64V46HsA9R9cLdU8Tbh//5qtomA/0Rl1hofI+8zInH+3ElbADLePZkQRm1ur4Qk5y8tqCQ0oMPIbF6imwCVqxyu3BqEQUvxoFjCzMVbLbf8tHB0MC5qkoDDXpllVPmKv/aOqmc+VQz9cAA5Zuopr4IP/TuGIumIn/7wu26Ful6xiNUVZQvSzTj+LVW+tVqp7IGkohIucl5tukK6MTL63W/fjqxNX4lbnHsN6lXpeuEMN6smBIvMfeTMgAComRqzs0ahefb9a8WgK0og+zjgMAe0pekHmbsJ3oRxL6K8jZR6j1/0Jfr1ZFEM1ahtUJdSui0agyH/oz2xB7VPyK4jPU66iqZwyObkml6m86KU/0gqrz4ttDP3j50O7eLez1FQdXW3NzV3k71lht1eeLjtOVAE86CRAijx
+ vrGJFc7Z
+ RjJ5a7nNqvQxz1ZboE+ooUwpz+oJiZgGr96uGYSoqdDwU1TgGbnjV6dtql6Q06bgO7s5FJ+oYnw7C4iL697A0Dv415ZS4j1HUGpzhSFGm6XcmxiPKCADQbC6VnQO1GwKuZjAZFwye3jCuOOBRRwf7dARvyW+mdzO0U8jr6tRZYCE46DrdoOddaUD52raTs3nWM3+dGCjMB+e2SpGMReAEaDs5RiHO2hdmTGoncDwTySjXIi00sPA3mpK7DtPhFjybL3TMQD6wBUFSi4rid0OJo1PediQRRp0jTJsQk9GX6D5aJoRpdFrUXeuoS+1+zBd9NQnHdRru13bAAQ8f+Uxzikl9ZACFqrvI1mERVjvwBkIfso55biojXfM1M8f2EZNPKOTQSG6o1gbc1LaqeE/1tS61l3kj3UJ328xgsw7rj7t3LqctauMwvcnVIvoanfCMBp/MaWv6jU45U2dJKu8jSlWMoPuKX0OcJtIH/cCimMisDZSRPf4UAesZPs3rG/jlyLxue7uMydykrAJzWqz2w0EfbU3z+z0zXrrLcO8niu3Uq3Cdc4Qgd/H4JekGy4udQY9Bhh/UQLMGx4XSqaSSRfeRDB/c4DGkYuh9IXZGjC1qHdJ22nanK9hFl+tF9D0oZhmLQP/O5cX+/XSPGN16m8V4ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,50 +125,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Only recent arm64 systems are guaranteed to be able to manipulate the
-permissions on live kernel mappings that may use huge mappings. Older
-ones can only do so on live mappings that are mapped down to pages.
+Reorder enum mod_mem_type so that MOD_TEXT appears right before
+MOD_INIT_TEXT. This will result in MOD_INIT_TEXT being allocated right
+after MOD_TEXT when the allocation logic iterates over the memory types
+in enum declaration order.
 
-In order to make execmem caches work on arm64 despite this distinction,
-allow huge vmappings to be omitted when allocating the caches.
+In a subsequent patch, this will be taken advantage of, by allocating
+.text and .init.text together, and freeing .init.text by truncating the
+allocation. Doing so without this reordering would likely result in more
+fragmentation, as the truncated .text allocation would be followed by
+.rodata and .data/.bss of the same module.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- include/linux/execmem.h | 2 ++
- mm/execmem.c            | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ include/linux/module.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/execmem.h b/include/linux/execmem.h
-index 59bd862cb061..b04926f3fff2 100644
---- a/include/linux/execmem.h
-+++ b/include/linux/execmem.h
-@@ -48,10 +48,12 @@ enum execmem_type {
-  * enum execmem_range_flags - options for executable memory allocations
-  * @EXECMEM_KASAN_SHADOW:	allocate kasan shadow
-  * @EXECMEM_ROX_CACHE:		allocations should use ROX cache of huge pages
-+ * @EXECMEM_NO_HUGE_VMAP:	cache allocations must avoid huge vmappings
-  */
- enum execmem_range_flags {
- 	EXECMEM_KASAN_SHADOW	= (1 << 0),
- 	EXECMEM_ROX_CACHE	= (1 << 1),
-+	EXECMEM_NO_HUGE_VMAP	= (1 << 2),
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 7566815fabbe..0336a46733dd 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -316,10 +316,10 @@ struct mod_tree_node {
  };
  
- #ifdef CONFIG_ARCH_HAS_EXECMEM_ROX
-diff --git a/mm/execmem.c b/mm/execmem.c
-index 6db0c1d82a9d..5790d4a8532a 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -276,7 +276,8 @@ static void *__execmem_cache_alloc(struct execmem_range *range, size_t size)
- 
- static void *execmem_cache_populate_alloc(struct execmem_range *range, size_t size)
- {
--	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-+	unsigned long vm_flags = (range->flags & EXECMEM_NO_HUGE_VMAP)
-+						? 0 : VM_ALLOW_HUGE_VMAP;
- 	struct mutex *mutex = &execmem_cache.mutex;
- 	struct vm_struct *vm;
- 	size_t alloc_size;
+ enum mod_mem_type {
+-	MOD_TEXT = 0,
+-	MOD_DATA,
++	MOD_DATA = 0,
+ 	MOD_RODATA,
+ 	MOD_RO_AFTER_INIT,
++	MOD_TEXT,
+ 	MOD_INIT_TEXT,
+ 	MOD_INIT_DATA,
+ 	MOD_INIT_RODATA,
 -- 
 2.55.0.860.g4b6b3295ed-goog
 
