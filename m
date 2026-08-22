@@ -4,118 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C32FC5DF9A
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:54:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D38C5DF97
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 14:29:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06B176B00A6; Sat, 22 Aug 2026 09:54:18 -0400 (EDT)
+	id 430626B008C; Sat, 22 Aug 2026 10:29:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE7706B00A7; Sat, 22 Aug 2026 09:54:17 -0400 (EDT)
+	id 408266B0095; Sat, 22 Aug 2026 10:29:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAF026B00A9; Sat, 22 Aug 2026 09:54:17 -0400 (EDT)
+	id 346176B009B; Sat, 22 Aug 2026 10:29:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A6FCA6B00A6
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:54:17 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 273F740156
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:17 +0000 (UTC)
-X-FDA: 85129049754.29.FE44021
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5408040007
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YCA2Qflv;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3BaqJaggKCNo6N97+CEPCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--ardb.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=3BaqJaggKCNo6N97+CEPCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--ardb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 13E7F6B008C
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 10:29:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D67F80151
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 14:29:56 +0000 (UTC)
+X-FDA: 85129139592.23.939AE90
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BDA5A1C0005
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 14:29:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LdYxZ8St;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787406855;
+	s=arc-20220608; t=1787408994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fli+nS6RhVan3nt659uJs8jpsHJEZUSGw+6iw8TgCBk=;
-	b=yO4kd9HPxPmg3+qofkTHq7tfO4w4Qdlf9wNYN9HH4RTvB76NzZJLBEf8dqJc4cgqrdoDob
-	Tb0/XnFFFZMqjmBDUWMKIJnrU369Gcunr/y7eNMTMl/Zdbblbx1TQBnWyOsav5FsVqHWWp
-	TC5vqaB0m5KlusZYyqy5LkMLI+EezIs=
+	bh=gq2M4Yp4LsrAbxCcb4OsdXRCxH2vxgvtkfvBcPe7rk4=;
+	b=1JGRsgF1Wt7ESLfgh4RhPERL+25/1qHIn7i+cT17tPfz7xBWQTKWTqbjKEan2Zb1cXoJpq
+	2x/q5VsAd0OGzLUXB2kDd04I8AicVaEM6B6u8aLwWsQnEbFY3Fyt8xtDRnUgdwmNzv5QXZ
+	VfdZvFwHS1+QLmVyLQgv1bpK3MncS9c=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YCA2Qflv;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3BaqJaggKCNo6N97+CEPCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--ardb.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=3BaqJaggKCNo6N97+CEPCKKCHA.8KIHEJQT-IIGR68G.KNC@flex--ardb.bounces.google.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LdYxZ8St;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787406855;
-	b=gWdu+50eE6RA/H7dFG4BiMhpFSoXR/3+JG57qHXbpwW9LVBPWvIJaFmSE6HRoWtMEmqF1f
-	S/wGKPNPUO4dkP4xuhDd1X2LdQWOHlJtg4IBO/6LSDQKslKMuy6Cyq/ZjxJ4xfaFDPkNYs
-	2JVXvMxQK3EAs3pMyIGiGQTc9uz3DJ4=
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490a767b782so11841865e9.2
-        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:54:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787406854; x=1788011654; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fli+nS6RhVan3nt659uJs8jpsHJEZUSGw+6iw8TgCBk=;
-        b=YCA2QflvNb9haTgY3nSpadbglHBFlI5+TactjE/qghOuVIWAhzHML3QH6/eUx/EpK1
-         6LVS3iC6q8lreiQg2Lx3sfuUF2u9hornuZEnCdXGZlnBK5No4232EeUbYroDwU1ejhNv
-         7EbLs0hS+Wis8LlQ8rkxGBgUy+lmDOh9KdY8ljZqr5ylQ3W8zaEMmLC476Y5B2kKZTxu
-         /5o6aDwqbi6UI9kopVJ7Ynw8mHfpjzy3FkWI3y2O5CQ9gydkMu/jewJPKLae53OUdV8Z
-         /08wZpbHByns0Uuf4KoR+DXgbYwgUzkB+MRJkF8cD892KPqB6KJfegEuj92+KAuZFw+4
-         /hvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787406854; x=1788011654;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Fli+nS6RhVan3nt659uJs8jpsHJEZUSGw+6iw8TgCBk=;
-        b=HzwyRtEIVO9RsjRrrg0fkYQyDAFUS/OT0MhFJvti7a80eR6yt5PhjdTJIVV1EduXTi
-         CRHExuVwzWmeUVdkrnzjaZ9fkYxBAN7eteMzy1bMceRHzjQzTWRBZcDe/GQReQgz5+K0
-         8Ihyqi7BjiUKabtZOV7X/bvsvLft7x+S7l4IS55JzpJSSSqRcCNDvtO8+PSw3+ih54bZ
-         Wplm+cfCtKJ6Ewxezuj+g67bgxo32pMpPLURD/iheCdLCtK/dkEeahJvd8UNPjeBfMdD
-         OwnrYeaDkUfKfXcvlxFaxeVCsyu4vr1C+bCobmPHm2G0CAdf3YizKb1GfuJcCsUKicsK
-         9I4g==
-X-Forwarded-Encrypted: i=1; AHgh+Rrti5bBNgPOq1alznqQXADinXkn1TxL2cY+izXakT+jbIcxYgYWGvFKhko9OOeqwaGfV/lok9qT6g==@kvack.org
-X-Gm-Message-State: AFuF++lySKv8ku48UN235ianVrOWmUfeUMgLXHuHf7nkxfDjRIptup6u
-	GlE97LnzRzWYj4/XWwmgtd74nKNzFKuudC8ZBCO5hcdZdB81rrmWtB5/jmnafTdn9ikjHiaqJg=
-	=
-X-Received: from wmfu6.prod.google.com ([2002:a05:600c:1386:b0:495:4396:e1fc])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4f87:b0:499:5a50:b022
- with SMTP id 5b1f17b1804b1-499b830d220mr157719645e9.3.1787406853968; Sat, 22
- Aug 2026 06:54:13 -0700 (PDT)
-Date: Sat, 22 Aug 2026 15:53:31 +0200
-In-Reply-To: <20260822135323.795946-11-ardb+git@google.com>
-Mime-Version: 1.0
-References: <20260822135323.795946-11-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3229; i=ardb@kernel.org;
- h=from:subject; bh=E47PSMirXFpI2/XCsflkCaR86s287Dpi3LlkrwYeMZU=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIatz5YP+Sf2p1kr7Q6vXvzG479h57WWiGrOK0SxDm5Zur
- rn/05U6SlkYxLgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwETM0hj+xzDKsHPO3dNxlH9C
- 0+uIc6a1D/ek6rI+m2n6kfsH+/Iz2xj+xz1lvlS6rabo2mvOz1OevZxXu7UtMFJsxfK5+yQPz9Z 5ygoA
-X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
-Message-ID: <20260822135323.795946-20-ardb+git@google.com>
-Subject: [RFC PATCH 9/9] arm64: ftrace: Simplify PLT handling
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 9ix7iftbbmnkhu7bnka94w8s66r6cm6s
-X-Rspamd-Queue-Id: 5408040007
-X-Rspamd-Server: rspam03
+	t=1787408994;
+	b=weZSjZb8aQI2NQb0/rzD/lsNrsUe84UAbnoraVAfffPsxT5O9rD5T/VXwoW3j0KtNJ3CmM
+	6uB+x0hU1RY8aZiUoY27f0ucM+pUQTcjKcVj0XA1ZqKCeGJvswSZhQtMHTzLUcORQEZ99O
+	fOW8pDDiAvxyiwYKb3aVSzGLsc3WlsY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 28EEB40F21;
+	Sat, 22 Aug 2026 14:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D235C1F000E9;
+	Sat, 22 Aug 2026 14:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787408993;
+	bh=gq2M4Yp4LsrAbxCcb4OsdXRCxH2vxgvtkfvBcPe7rk4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LdYxZ8StMjABIcT7GtcCWMLOJqwH1cWscypDLzD51I9TUkdn8V8YQaeIffjAoeOcW
+	 dzcm7q/A9qUCL59SW35i6wvvom3EWABVutkaBxb6qtwQ8DumGk6FL2bRcsGGG9EveS
+	 yxCQHkghOG1kajzcUXC0SJkq42uCbkaSCSKUY9h4WoYblQG3MHQpRWRQfkqACs0pwr
+	 OMRnixZivZNW4DRGjnDHN0D1YeINBlEnByv0+W+xa+XybkfXPXGybkF0NHrFCIQCxW
+	 nTw8R+wDjYzLT9ZFb6Xl7JuQ/eIc66Lgo6G71gTLNXWhkrdwhxoVC2yzuIv78Wmk5e
+	 8qUFCJyA6EQDw==
+Date: Sat, 22 Aug 2026 15:29:46 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Saravanan D <saravanand@crusoe.ai>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, 
+	Alex Williamson <alex.williamson@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: allow huge pfnmaps regardless of THP mode
+Message-ID: <aomyM47kVsW_v-Cm@gremlin>
+References: <20260821070520.25759-1-saravanand@crusoe.ai>
+ <aogCjEc9uyMjFP6S@gremlin>
+ <20260821193220.91799-1-saravanand@crusoe.ai>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260821193220.91799-1-saravanand@crusoe.ai>
 X-Rspam-User: 
-X-HE-Tag: 1787406855-183028
-X-HE-Meta: U2FsdGVkX1+YS3y2OFZpG8ROXgOS53aSjUwerUR9+xEV0Y9q3STtWTIK0UzUc4e0k/OawpNBOMT7/jFpPezTOi+b8RH/22TJxo/G0X8/AF1LpxljnXRERKTj52z3gfsZVWSBUn70Tsl7BRhm/DoIjMcAzkXgY+rbIYKpeya8kIT/FQ6mibfRp326JohHSpdLtBy2s+pz48XYlVYvNxI0tffy79ZQHA9k1ig6Uzv3imOyEN4Fau8/1IrlYCiqD3/g+Sc5SH1Tdo1KUgbS01NZ+T5fsv39KibXan9ubNECcLS9JLYVSkPTW86Ared64ja2wuipZEE7/CTkV31qMx6qAplOaoBdOBEPpGPQXPSENA9I+P/fm+N38Nf4OWRxhKZPdrfrt3GDf36tMio7SmltjwMeUip6TE2mVm6OoWJ4TdJwfXZc5VhFNT9QUr7JCw6JOxfo21IHiegC+2shsxEWiTfXVHORTz7y4cgG4sr21No790p+1XC3gpPFvodrapX3A5J5Tm4Ph1y/ynRYEYxb65loWr1A14XOOGfo19TdKIV1xO/XUER5Yf5pyVrkQQYaxkYZglVan3lTIozd1udzJQSUzq6kDWuukxhnoZ/XDv+0cZuZKM5kDeYCY73firIaaNf67VWOgl+Bq5AvojpNhk2AUjyW1KRQlKS2Uhq2m3YdUKUXkr7bLC58VJ0Fx+edbaM/1H+A0slm13zsptlo+LsT1ia/l3qnx2/ux5u1qCTs8fJCO2E2tAJyCV/hUkCjRmFp6/0yyq3QC80JzALtlzxKG9zM8ZaEOCKyy+yYzKmpkmZ3p5tz2K9XMzYaHxsnL96nYL/zFHYT+Gy7P+Qavn4n+N646ciJv2KcaBrbwuzBMA4943F74JlqRuMPIMwEOzBBOeqNcTUERs/Jvs/GUJU2Xyxt4D3+jgbfvDB7Qv53h149Waf5NVHp5vFVLNsId7iY/Le9t1cPXGbWsXI
- w5VM+Zfs
- skx4GkuJW9jo+fZvjoIDxosKV4iV2vZfIuNFvu4ZWlCkNonyhyXRf4FUmCjhFF+OWHSWz2KlpkRSLzJ1bCkUM1sSLgKaPfaN2rMj7ftI98c6zjDKm7WkK3Ed72N3iueAGHBQowe4mnkDcsBrAw/XkvP4ndd+YoC4MPfs9NkWQvdbleYM6Q9ALfQssVQqK6hpJUwwz+r+gvzTkC2BwvNA2Z4dK8b1NA8xk3o3cQUiQt7XAE1SAeFMp+ZGbdMc+Ndy+g6Ul+iTtpSEoUi4CRYbBnI/ULpeB96is8CDtxMLs8Q0Sdy+7bcXvkzRj3o/ia8O7xD8FxbErNTRVMR6ikXevnOV7L22J4GPTK/nb/+jYrT1Xs/9lNqdNvYTDhyaHGauAK9yjJCrOQOggJ2cb9zBocTs6Yrbjigq3S/20pO9CNwId1fXzQi08wurNmka+sYLZfSF1rmd8390Jke19TDXDLFsZhjLQLqWW1p46alsUBGxyAR/j4f3kpZCRXLsnbOmwrAkWl30mhQUORiRC9tUHIy9pWxoqjRoYYe0upDVV9wplflO/n94HXK06/AdBxaKLhoC2ptAneEgwo0pgUZMnf/vgVjsWiLP0+w54
+X-Rspamd-Queue-Id: BDA5A1C0005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1tna7g61i3exht198h78rh3jpq1buyst
+X-HE-Tag: 1787408994-353438
+X-HE-Meta: U2FsdGVkX1+ZqzUddZsYEFl70SEVY7bVIkV7f6+YmstvFoG70w37D7m/SGuf4+C+vw6PpXOH2ahcFtZiTVQWoE8g20TS1uq1Fheh0cqh3uxXaszoq489JDxhogTZTHPvcqZ19NLFB6KALGfIDDz6RJU++S1Fk9eLUcN357MjyHmIwOt3FrcqN4KTFflT1qBIEhx8D/5xDYg7hN8ITWFjZ+2RCiDwc/8nQ8H0CLQ3qApsS4LHXQiopQazCDB8p5ajr4ibs7dhrGsd7ON/AOqZb4wvvsSvsJF4pjGPeh5QdJCMS3UjpTsIa6sOn1I0ubROIFEfMQTE2nWhYtIUzouPBTF2sK6AMURRIn8LJw50+bXJGQszX4Mg9g8qoawUjPN5lkbt0xiBVsdj89a6UCQbcnWcqRynCLAqGSMpGfKIwXVhWr0ZHo7NUAHlUCfL3cyB1FEXdFrk4/cG1HpnCZd5d4UslcR2aTWJWK+a20q7YfiZ+8n1jz3mvEi4vBkK4GcDpClD1ZI9VeWFfXWwEFeVFljqDUzOwuETm4AMa493tzPXyLzXeKqOD+wHg+w53SuP0+9c3oioZOIamC9P9pH/XEK1SviLGC6ysVMEWpP2bqyCrhvbPrYVcerKOU/7pJeIYda3tM019O3kNBBabmd2h2RSMZRnGClqDC4KodmYDz3Jo+YKJ2TJiTyT0xb9oYxbdtFhaOh59PDSylXQxxw2uBRHJK1lAdO8eyZOlWZoGr1cop+zWmCLWB7uJqGVG2mqzihqMTdWzO9XPkAn9s/u80y5cavtzcSWlO/ucVNhxiKryH0DghtuQPtRLSGOwEGDBFxXfQOMWV5JJWZ0NL7m7qNCcTmP5puusR/HBhAQdOuzwEr8QcLwVbryq1F5+9Lnr6JBHWOtyIF4D6L+WlY5K3D2Sx0kQzJzRl3DQOYmasRTAlREyc6i7MS/ZTkXKY7zrRGW5yhV9opPMCHNM6C
+ qOMXsfQS
+ b9RDagQwXjCIyqWLyJM5t4fo+rDCRypgpk45ng+armvytasm1Qsfpf6kXCauRaBoV8d/9iubT9Till4UBHyD0/hjIE2u6xo51ry8XTrov0uBiK/MBwHwRad7TUnXNxZ2ui3I5YL/C1goRfdkiA6nL14exkleykoHqVaPHnvT9C0c3lI3ihrHRAcm3oSH8d4I3b86LrjO24pGEZbcB6FHvqWEoBsIYM5D8r20e5HiLlCkTu5mUTM7GFUTaFbcLif3tvRW7tWTM/nujmkGaPA50AxH5o07fdhiVc2/yqXqfkf29G7aaQWTIBBCaHktn7Gyae0pv2da2DLMmJKk3q3L2aATWihvzRgj+2h/1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,99 +99,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Fri, Aug 21, 2026 at 12:32:20PM -0700, Saravanan D wrote:
+> On Fri, Aug 21, 2026 at 09:03:15AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > In any case if you'd taken 5 minutes to search the mailing list you'd see
+> > this was:
+> >
+> > a. Already submitted (so your patch reads like plagiarism).
+> > b. Already rejected in favour of me doing an actually sensible solution.
+> >
+> > https://lore.kernel.org/linux-mm/anL-NZkNMSSxN0YN@lucifer/
+>
+> Apologies and please disregard my patch. I had not
+> searched the list before sending and was unaware of Cédric's patch
+> and your rework. Mine came from an independent observation of slow
+> VM boot times on Ubuntu based hosts running cloud-hypervisor with H100
+> GPUs. The patch was prepared with AI assistance and should have
+> carried an Assisted-by tag. All of my future submissions will.
+>
+> I backported the diff you attached in your earlier response to
+> a 6.17 based kernel and ran it on a HGX host with four H100 GPUs,
+> each exposing a 128 GiB BAR1, with cloud-hypervisor. THP
+> mode was the Ubuntu default - madvise in all runs.
+>
+>                        VFIO_IOMMU_MAP_DMA       4 GPU VM boot
+>                        per 128 GiB BAR
+>   6.17 unpatched             20.7s                   97s
+>   6.17 + your diff            0.4s                   17s
+>
+> Each BAR mapped with 128 PUD faults. Your approach will definitely
+> improve VM boot times in our production. Very grateful for your
+> contribution.
 
-Instead of emitting the ftrace trampoline PLT into a separate ELF
-section, allocate them at the start of the ordinary PLT array, so
-that no special sections are needed.
+Thanks, always appreciate real world data :)
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/include/asm/module.lds.h |  1 -
- arch/arm64/kernel/module-plts.c     | 18 +++++-------------
- arch/arm64/kernel/module.c          |  9 +--------
- 3 files changed, 6 insertions(+), 22 deletions(-)
+I will send the actual patch at some point it's on my never ending TODO
+list... :)
 
-diff --git a/arch/arm64/include/asm/module.lds.h b/arch/arm64/include/asm/module.lds.h
-index 24fc9401c514..95540e956b41 100644
---- a/arch/arm64/include/asm/module.lds.h
-+++ b/arch/arm64/include/asm/module.lds.h
-@@ -1,6 +1,5 @@
- SECTIONS {
- 	.plt 0 : { BYTE(0) }
--	.text.ftrace_trampoline 0 : { BYTE(0) }
- 
- #ifdef CONFIG_KASAN_SW_TAGS
- 	/*
-diff --git a/arch/arm64/kernel/module-plts.c b/arch/arm64/kernel/module-plts.c
-index e30876b90e30..6900d2242f1b 100644
---- a/arch/arm64/kernel/module-plts.c
-+++ b/arch/arm64/kernel/module-plts.c
-@@ -275,12 +275,14 @@ static int partition_branch_plt_relas(Elf64_Sym *syms, Elf64_Rela *rela,
- 	return i;
- }
- 
-+static const int ftrace_plts = IS_ENABLED(CONFIG_DYNAMIC_FTRACE) ? NR_FTRACE_PLTS : 0;
-+
- int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 			      char *secstrings, struct module *mod)
- {
--	unsigned long core_plts = 0;
-+	unsigned long core_plts = ftrace_plts;
- 	Elf64_Sym *syms = NULL;
--	Elf_Shdr *pltsec, *tramp = NULL;
-+	Elf_Shdr *pltsec;
- 	int i;
- 
- 	/*
-@@ -290,9 +292,6 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 	for (i = 0; i < ehdr->e_shnum; i++) {
- 		if (!strcmp(secstrings + sechdrs[i].sh_name, ".plt"))
- 			mod->arch.core.plt_shndx = i;
--		else if (!strcmp(secstrings + sechdrs[i].sh_name,
--				 ".text.ftrace_trampoline"))
--			tramp = sechdrs + i;
- 		else if (sechdrs[i].sh_type == SHT_SYMTAB)
- 			syms = (Elf64_Sym *)sechdrs[i].sh_addr;
- 	}
-@@ -336,15 +335,8 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 	pltsec->sh_flags = SHF_EXECINSTR | SHF_ALLOC;
- 	pltsec->sh_addralign = L1_CACHE_BYTES;
- 	pltsec->sh_size = (core_plts  + 1) * sizeof(struct plt_entry);
--	mod->arch.core.plt_num_entries = 0;
-+	mod->arch.core.plt_num_entries = ftrace_plts;
- 	mod->arch.core.plt_max_entries = core_plts;
- 
--	if (tramp) {
--		tramp->sh_type = SHT_NOBITS;
--		tramp->sh_flags = SHF_EXECINSTR | SHF_ALLOC;
--		tramp->sh_addralign = __alignof__(struct plt_entry);
--		tramp->sh_size = NR_FTRACE_PLTS * sizeof(struct plt_entry);
--	}
--
- 	return 0;
- }
-diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
-index 6e5b488a219e..620c2b70115e 100644
---- a/arch/arm64/kernel/module.c
-+++ b/arch/arm64/kernel/module.c
-@@ -454,14 +454,7 @@ static int module_init_ftrace_plt(const Elf_Ehdr *hdr,
- 				  struct module *mod)
- {
- #if defined(CONFIG_DYNAMIC_FTRACE)
--	const Elf_Shdr *s;
--	struct plt_entry *plts;
--
--	s = find_section(hdr, sechdrs, ".text.ftrace_trampoline");
--	if (!s)
--		return -ENOEXEC;
--
--	plts = (void *)s->sh_addr;
-+	struct plt_entry *plts = (void *)sechdrs[mod->arch.core.plt_shndx].sh_addr;
- 
- 	__init_plt(&plts[FTRACE_PLT_IDX], FTRACE_ADDR);
- 
--- 
-2.55.0.860.g4b6b3295ed-goog
+>
+> Thanks,
+> Saravanan D.
 
+--
+Cheers, Lorenzo
 
