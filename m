@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8F2CC5DF8C
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 06:43:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C08CDC5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 08:50:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 711FE6B0095; Sat, 22 Aug 2026 02:43:10 -0400 (EDT)
+	id 47E926B0095; Sat, 22 Aug 2026 04:50:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EA016B009B; Sat, 22 Aug 2026 02:43:10 -0400 (EDT)
+	id 42F7C6B009B; Sat, 22 Aug 2026 04:50:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 627166B009D; Sat, 22 Aug 2026 02:43:10 -0400 (EDT)
+	id 31F206B009D; Sat, 22 Aug 2026 04:50:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 432846B0095
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 02:43:10 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B230F160322
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:43:09 +0000 (UTC)
-X-FDA: 85127963298.05.24E1DB2
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B2D5D20004
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:43:06 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hYIe8WPm;
-	spf=pass (imf31.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=longwei27@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 095156B0095
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 04:50:43 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C1DB1A018C
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 08:50:42 +0000 (UTC)
+X-FDA: 85128284724.26.C37F14A
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4A240140003
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 08:50:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=X1EZAnKo;
+	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr;
+	spf=pass (imf26.hostedemail.com: domain of jeremy.jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=jeremy.jean@oss.cyber.gouv.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787380988;
+	s=arc-20220608; t=1787388640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6eacw4YePywUKJOL7QhFxdGGTcFFbEXg3nV8IglWfIA=;
-	b=KRv2odDokNRdiz4sAHU3h3giYL0T/46X8cwo6RixDdITLaN4VzRnHCvYwFNAw6pse1lQCC
-	YM6TipVS7n+o2rGjxhBmedpwONLAFz2BZgYq7dgpLoYNAtOAzcVgMPxxhoy8OrHAZw4izF
-	ZqUTZ0vVlLUMLiUOnmTYCh9C0rB9Gpk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jA7ZZ+PPBmaHIUeoNEMhyCIkVm7La/GskdTAq5H+eKo=;
+	b=0FYFhaniAqzS5EGlPJ1xYT/rZj2Ef9Yk0Q004k4Mi4+7E66114Zt1yLG/f+jP3DWxm+OXL
+	lFB7K9ZtKXlVjklVxSwCf3ZdX26bQ33rLUTgh4Ej12GpniVG5ps0hOkU4RIR7uqK5fFn9/
+	J8pY1cnQH5MBlDn6UbbJXccJGp0QIiM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hYIe8WPm;
-	spf=pass (imf31.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=longwei27@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=X1EZAnKo;
+	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr;
+	spf=pass (imf26.hostedemail.com: domain of jeremy.jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=jeremy.jean@oss.cyber.gouv.fr
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787380988;
-	b=mp4hf1834cinKbpGn6detdQbf2Q8faREkIhNYpIHjE+YXA/sOygnVygQY5EoRb7mmUo5ZS
-	XB6sJ6ZzbjzrLH406GOqswXO/i5PvWmgquWXV23VwM0BvERdXJIfkOqAffBn27bs9UNuvI
-	w2WbLTT8YGX+H+HEVd0kMV2t19MQdQA=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=6eacw4YePywUKJOL7QhFxdGGTcFFbEXg3nV8IglWfIA=;
-	b=hYIe8WPmsGe8PIEm71LjWkodGMOUa9oyyhcsN2syDBuzunzkpnpzzS1RQ5wtKAkMAvHjIn5hZ
-	aq0RtlP42KEZaIT8VKHjTtKGiKiIodz/0p/Ih/T3zfKozgcP3YQTkmnmtmpVcmcBdOhFZGjl+Tj
-	ToKFI5d/w5hz/K+yKW1qgFI=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hRnRG1LPmz12LDV;
-	Sat, 22 Aug 2026 14:32:42 +0800 (CST)
-Received: from kwepemo200009.china.huawei.com (unknown [7.202.195.26])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9EDD140561;
-	Sat, 22 Aug 2026 14:43:01 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by kwepemo200009.china.huawei.com
- (7.202.195.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Sat, 22 Aug
- 2026 14:43:00 +0800
-From: LongWei27 <longwei27@huawei.com>
-To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, Pasha
- Tatashin <pasha.tatashin@soleen.com>
-CC: Pratyush Yadav <pratyush@kernel.org>, <kexec@lists.infradead.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<hewenliang4@huawei.com>, Long Wei <longwei27@huawei.com>
-Subject: [PATCH] kho: Convert error handling to immediate return pattern
-Date: Sat, 22 Aug 2026 14:41:27 +0800
-Message-ID: <20260822064127.498411-1-longwei27@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	t=1787388640;
+	b=VtnYG0VVo0nN4JgyGZNICIGXQhfrHxrvz6Pqc++j6sc2GhVVuq95Zb44pPMHF61KtrkKz/
+	zysGfkm+24BcBO+6Q3FA8VgQvzb7K07x/ePuVqT3wqZDw08fWPSypsGvaMvhbQPWGUKmsK
+	OmKPoo4n9ajGpn0k0OqLF3gylxNttfk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jA7ZZ+PPBmaHIUeoNEMhyCIkVm7La/GskdTAq5H+eKo=; b=X1EZAnKoPUSWGz5kjixqIMzm9o
+	CabyqZVNATHb1zUrWsrRICCm0Y8c1jOXeoUhSEw/fh4rvgDnB8PoE8iDflV4/J5kra39hGGixh9dM
+	5ioBhEey24Adct8FB76oxnAAA01LtVIeyVMIxvzuLiuEn5oAblkrep2SQ0M6VyDl1esJ/gw+zACY7
+	8WUPFjXRaTZVpg10RW0DgpTUYz5mIhJJ32enZelH51BYAeZLtq69H1ha8Oj10ILxr9OnrOD5ZSaoi
+	ld0OBAa4BxHgLnUicd+jUfKeLHX4ZhNMLVoWaeT0XSbV8HPVgpgVqjTD4pfpD++lLznjm727fDQfD
+	DahGPMIA==;
+Received: from [::1] (port=33978 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.99.5)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1wxhR2-00000008nAh-0geM;
+	Sat, 22 Aug 2026 10:50:38 +0200
 MIME-Version: 1.0
+Date: Sat, 22 Aug 2026 10:50:36 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: Bradley Morgan <include@grrlz.net>
+Cc: bsegall@google.com, dietmar.eggemann@arm.com, juri.lelli@redhat.com,
+ kees@kernel.org, kprateek.nayak@amd.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mgorman@suse.de, mingo@redhat.com, peterz@infradead.org,
+ rostedt@goodmis.org, vincent.guittot@linaro.org, vschneid@redhat.com
+Subject: Re: [PATCH] fork: initialize function graph state before
+ copy_exec_state()
+In-Reply-To: <115F081D-7469-474E-BDDD-39FCB6FCFD7E@grrlz.net>
+References: <115F081D-7469-474E-BDDD-39FCB6FCFD7E@grrlz.net>
+User-Agent: Roundcube Webmail/1.6.18
+Message-ID: <18e7f6a43796eacfe08742d00ae655ad@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.159.234]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemo200009.china.huawei.com (7.202.195.26)
-X-Stat-Signature: j6ha3g6qknk7e81infwspeofji8bn33c
-X-Rspamd-Queue-Id: B2D5D20004
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - kvack.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787380986-777592
-X-HE-Meta: U2FsdGVkX18o1ZOcQJ5Cw91Mq9VU4sydX6fkRE0lnkBeiR/i92d/poRm1LKASG+qvy8SYcIST54WyFoFSwZ4m1FrVriBY94/2IlwPyze6yzoAhJhmbJp/dY3fFzMnRKDLnGVc17q7prkk1xX5b9Qejp10cfOAYcObt0PDlmH6aZopKt9a8PARf1kq4TzLRhC1GI8H7UfPiB7Uz5iS3T0CENydVZVAIrDvWYG8f3NLAe5ZnFvTLR9Y5yL9+boVOkBrFJb3bFnjaMZl6R2SBmEZ7S4k1OgounDZX+JtMPdIk3WDoiBsexYW0LozuwqVmayDS4UvzNNXbO9P4GWI/A+Yo7fGG1z8tRZd/kJclCu77YY99WVftsS2r3SWXaCCwQCirg5tJaoj8KoIRMZD/YNrB55uUhzj/DxSGVhrgFRmklCdpl7qPt9ogOe2Cr/fc+PMz5RMT4Pa87Y/A4tl184AwtwF4Ck/O6dR2/iKP3mYmz35XA59VYYb9sFUzIZtByrJtZ221Q5P9XvjZ8Fu/PY7O91m1cFv7CUeWlWzp+imDIGNB6sorxdufQhahra8TSGdZgcExoLGuuF3XyZsiMqa+HVDqE/ysqJDFzs9vlZgn/uCstcyrLhvPgBh/nzZESWHBD89hiFxp1ILSjz5xSUTafvvLYMrVnuC6AVEX7vz7ib8DqhfHI89X074ml3/NEL7kZtv65JnLn6Yg2CliNjADGHknT6KWStw8gdKDByO3eUHU6rU3b2QOw+QtuDwazVYy2aPr1H78I9NgNOte6BM2lZJ9Eh51mfgfDPXnB8g2LC4T+2106ZgMlcoRVRaiaEHZVS774Fo5x3yV6jPBETXeDw0eYMY7GEkPLq/xdnVni9p5qtUYeu4jd+8OFN4Nts+daPbve0yeyaT4Rqtm9RWF6WuBo2/AK6pMxZLrw3JmotbGas7RKeWO7STyj01CV3PHGODP16bIThg55qXjv
- 09aySrC2
- fwMzdjqXqKFfgsbc4ZwakbL6Qp1MbvQWWnOaEOw5oBvIxAgkGFfgNng3tzqXdbYLB5T53lWOOU4IiW3u9AdcRbyr7Z12S05gw3h0bpyrd6mp6j0DeTVvUjiBe9NLqWUOe3e/N2zHzU/X3MSFgm0LX9PT9CTLf5wqJOflqRHWDNCSt+GrpznkGjof7VlYY+LU/PUm2B9luVI6g9tQ/ph5/Gu4ReS73Fsc3YRgM5yLixpIujsKIhezNEd61W9qiORYEkjv5tCc2/iwjIjTA6Rr9a4MErXiewydUtZX2
+X-Rspamd-Queue-Id: 4A240140003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: jatx91er6kanym1gajm44aut8u84ot79
+X-HE-Tag: 1787388640-975280
+X-HE-Meta: U2FsdGVkX18bfA1U4ecUPgOsxpfAhlVQIc30FFHurrxaj6NI/ZEcl/FZDqTxmg782mW68FIBJGe0IOOQ6xSIIKYOgiDb1H00yOhS6yKBJDAzXcj2fADFpDohAq4I48Av5V6Z1EokbP4bgE8cZfXTrSljsf6592xhpvFS41PobOFtVI2dDf0Kl4gMD7Ku7SpzHXJrRRd0gEEdH+cVCw0LYy1M5hKpM7tzsRo+h3ik1VfiSbErlmgeVvv/H980dyn3sc1AmOKym6yTxDL0kJRCB2aySH8ZlUYpE2stwIVLLCzVO0NeH7rqlIYKGnOXSRbQMnrK7sgR6UcIIASfiLQIhgYZtbCba+jONHLBph7enueOq4ElHfE+OVL91KF5kkP6uen4PIGlA5uCJ6ovuJPd5g2HsNW+X6qgsyV08DJFtCKHjFCbzkr9zZ/aphF8jjwH0RHX5RGFl1HROjq9yTRpE4z1IqI3I/7YVNhqTpScJS0W6QBKnNnXSiwwEWiyTlEsDXtmN0YgydeHDkURxGLeZTZelSYKbCBB7wy/BgJCQOcWl67Fg/VvTvMB5B/thyvAovBEkyDCbLExzG9BpRLfyfRBsB/raxEyAVjoulmf1O3IYvH7lA8x4xHBPeLNZVfbIGTj/5tGWWxpusXN8jkIdVua2nOgqDbFrxD/KGHrXFKL2vHsvnFXXeyP448VPXfF4tScH3xUJp7o+2cGmeEGvoFpkovQzoRMth+iM7d+YBrMXs4FCZzovldd9DDtOB+Hkt28bgBOhhQG/1gs9xxXoI6WYGLlmwEJBtS/+juauqjYC6M39QFyhalWYZo2uN5b3p1A6TMECkmQlqgErgTjOSOU1GmMBT2fSXsyHbna85h+GYxHXdhpKbpUzfYOZIPlEy/n0d3z11TVYw2AqRFDAEyOhQMN2LNaMysCyy9+IuU8VTRU0ibvsiVJTxdzNjiwk5J9sQxt8aIfS5M0kr6
+ owti4VHC
+ b5rr5EAmjOFN7ncGg6wHG52NZQY35zql7n72HxbSqYdzk/F1DDYIPt13JNxN8AfLj2U/XLuEI9xC/BU5zPWCuqptyKRWgg7yIl+8/GWGHRGbgdLXCcavta3Oi/iVw3puJm7k0N405XGBKjXqgEz98jqgKUghhsbkqmWcQuxXKnYWDVY9bjk9X5TTUndmbrZWKgv9fACiu6CtPq2+FU8rP+hhfXbK4zTCL3hC84YT6X0Q/O27bU2MUlcY/HYSjrNxL6oGKTFFS/L4DxaP9Rf7/FooNEmD0s92u1g8NqZcChGVMCtn7AX91svdufzknuMblu4fKNcm02ZNlAZC55DnP35VJ7y5o1vkX43869HhD0QJnqYAPM8SZzWx+jlD5p0HTiwLfGkEfdmuREtZhfZz5kW27N8JnViPN37w4XPkI7aqjaBEVKQDD7vXf/sLOV86TL1rTu6fGilezDmLIc1SU0VQJpx5rHXHuoQY1WwF1rV6d0rQ8cL10mVzFjiQsBXKqGqxvHN9QytqAQGWGLVxk2mdt4iM7lJNLWrGOBNeRScHkgie5JRbGfbx5JCxmZeml3G+KlmWAPRZzCMgD5zuOW2q8V8J0C1UP29SHPqPNL/ueqDMo7dbejKLG8Z5nwhJs8y68caVyCjxCzUBKoQvEJR/NrDFPxTDJx95mAjOK0W+rXxAN28rtfzW9ZvKfCMJrxoxGcx+MO+IBG9E1hQqvgDUFsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,65 +109,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Long Wei <longwei27@huawei.com>
+On 2026-08-21 23:58, Bradley Morgan wrote:
+> On 21 August 2026 10:22:08 BST, Jérémy Jean
+> <Jeremy.Jean@oss.cyber.gouv.fr> wrote:
+>> From: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>> 
+>> dup_task_struct() copies the parent's task_struct, including 
+>> ret_stack.
+>> ftrace_graph_init_task() clears the copied function graph state, but 
+>> it
+>> currently runs after copy_exec_state().
+>> 
+>> For non-CLONE_VM forks, copy_exec_state() allocates a new 
+>> task_exec_state.
+>> If that allocation fails, copy_process() reaches bad_fork_free and
+>> free_task() calls ftrace_graph_exit_task(). Since the child still 
+>> carries
+>> the parent's ret_stack pointer, the unwind frees the parent's active
+>> function graph return stack. The parent subsequently accesses freed 
+>> memory
+>> from function_graph_enter_regs(). KASAN reports a UAF.
+> 
+> 
+> Ugh, real one.
+> dup_task_struct() does
+> *tsk = *orig so the child inherits the parent's ret_stack,
+> task_exec_state_copy() can return -ENOMEM, and free_task() calls
+> ftrace_graph_exit_task() unconditionally, so the child happily frees
+> the parent's return stack. Exactly as described.
+> 
+>> Initialize the child function graph state immediately after
+>> dup_task_struct(), before the first fallible operation.
+> 
+> Good! The alloc inside ftrace_graph_init_task() swallows its own
+> failure, so moving it earlier adds no new error path.
+> 
+>> Fixes: 6b1c66c9cca9 ("exec_state: relocate dumpable information")
+> 
+> Tag is right, before that commit nothing between dup_task_struct() and
+> the init call could fail.
+> 
+>> Assisted-by: Codex:gpt-5
+> 
+> Love you declared AI
+> 
+> If you still have the KASAN report, pasting it in would help the folks
+> applying this see it is real and not theoretical.
+> 
+>> diff --git a/kernel/fork.c b/kernel/fork.c
+>> --- a/kernel/fork.c
+>> +++ b/kernel/fork.c
+>> @@ -2139,6 +2139,7 @@ __latent_entropy struct task_struct 
+>> *copy_process(
+>>  p = dup_task_struct(current, node);
+>>  if (!p)
+>>   goto fork_out;
+>> + ftrace_graph_init_task(p);
+> 
+> One small ask, feel free to bikeshed: nobody is going to remember why
+> this call has to sit before copy_exec_state(), and the next reorder
+> breaks it again. Something like:
+> 
+>  /*
+>   * Must run before the first fallible op, so error paths never
+>   * free the parent's ret_stack.
+>   */
+>  ftrace_graph_init_task(p);
+> 
+> With or without that, idc ..
+> 
+> Reviewed-by: Bradley Morgan <include@grrlz.net>
+> 
+> Thanks!
 
-Replace the chained error accumulation (err |= func()) with immediate
-per-step error checking and early return in kho_out_fdt_setup().
+Hello Bradley,
 
-Signed-off-by: Long Wei <longwei27@huawei.com>
----
- kernel/liveupdate/kexec_handover.c | 32 +++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+Many thanks for your feedback and advices.
+I will send a v2 shortly.
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 175c08a6e..93443ad84 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1438,20 +1438,34 @@ static __init int kho_out_fdt_setup(void)
- 	int err;
- 
- 	err = fdt_create(root, PAGE_SIZE);
--	err |= fdt_finish_reservemap(root);
--	err |= fdt_begin_node(root, "");
--	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
-+	if (err)
-+		return err;
-+	err = fdt_finish_reservemap(root);
-+	if (err)
-+		return err;
-+	err = fdt_begin_node(root, "");
-+	if (err)
-+		return err;
-+	err = fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
-+	if (err)
-+		return err;
- 
- 	preserved_mem_tree_pa = virt_to_phys(tree->root);
- 
--	err |= fdt_property(root, KHO_FDT_MEMORY_MAP_PROP_NAME,
--			    &preserved_mem_tree_pa,
--			    sizeof(preserved_mem_tree_pa));
-+	err = fdt_property(root, KHO_FDT_MEMORY_MAP_PROP_NAME,
-+			   &preserved_mem_tree_pa,
-+			   sizeof(preserved_mem_tree_pa));
-+	if (err)
-+		return err;
- 
--	err |= fdt_end_node(root);
--	err |= fdt_finish(root);
-+	err = fdt_end_node(root);
-+	if (err)
-+		return err;
-+	err = fdt_finish(root);
-+	if (err)
-+		return err;
- 
--	return err;
-+	return 0;
- }
- 
- static void __init kho_in_kexec_metadata(void)
--- 
-2.43.0
-
+Regards,
+Jérémy
 
