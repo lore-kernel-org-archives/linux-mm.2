@@ -4,94 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D38C5DF97
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 14:29:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C596C5DF97
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 15:23:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 430626B008C; Sat, 22 Aug 2026 10:29:57 -0400 (EDT)
+	id EA86A6B0095; Sat, 22 Aug 2026 11:23:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 408266B0095; Sat, 22 Aug 2026 10:29:57 -0400 (EDT)
+	id E59766B009B; Sat, 22 Aug 2026 11:23:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 346176B009B; Sat, 22 Aug 2026 10:29:57 -0400 (EDT)
+	id D6F9B6B009D; Sat, 22 Aug 2026 11:23:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 13E7F6B008C
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 10:29:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D67F80151
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 14:29:56 +0000 (UTC)
-X-FDA: 85129139592.23.939AE90
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BDA5A1C0005
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 14:29:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LdYxZ8St;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B557A6B0095
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 11:23:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3413B1A0198
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 15:23:24 +0000 (UTC)
+X-FDA: 85129274328.01.C2166A2
+Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 70B8A40002
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 15:23:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787412202;
+	b=uJzAKk4C4rTdp7UwiikiMbSg4oiE7oVkiQ8qhOuQizj10Szl+LuDlzVx8Dhi2FS0ai9G5B
+	+3jYDp+RQXKNXPwb+WEzFYZ0bj8V4sUlk4hGDzrl96Zu7D7oL9PCwGJDorK1yZ/aGuU94p
+	k4w3N/6D5Pl9wbLebc/5Hg+Lz9LDPlY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787408994;
+	s=arc-20220608; t=1787412202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gq2M4Yp4LsrAbxCcb4OsdXRCxH2vxgvtkfvBcPe7rk4=;
-	b=1JGRsgF1Wt7ESLfgh4RhPERL+25/1qHIn7i+cT17tPfz7xBWQTKWTqbjKEan2Zb1cXoJpq
-	2x/q5VsAd0OGzLUXB2kDd04I8AicVaEM6B6u8aLwWsQnEbFY3Fyt8xtDRnUgdwmNzv5QXZ
-	VfdZvFwHS1+QLmVyLQgv1bpK3MncS9c=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LdYxZ8St;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787408994;
-	b=weZSjZb8aQI2NQb0/rzD/lsNrsUe84UAbnoraVAfffPsxT5O9rD5T/VXwoW3j0KtNJ3CmM
-	6uB+x0hU1RY8aZiUoY27f0ucM+pUQTcjKcVj0XA1ZqKCeGJvswSZhQtMHTzLUcORQEZ99O
-	fOW8pDDiAvxyiwYKb3aVSzGLsc3WlsY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 28EEB40F21;
-	Sat, 22 Aug 2026 14:29:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D235C1F000E9;
-	Sat, 22 Aug 2026 14:29:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787408993;
-	bh=gq2M4Yp4LsrAbxCcb4OsdXRCxH2vxgvtkfvBcPe7rk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LdYxZ8StMjABIcT7GtcCWMLOJqwH1cWscypDLzD51I9TUkdn8V8YQaeIffjAoeOcW
-	 dzcm7q/A9qUCL59SW35i6wvvom3EWABVutkaBxb6qtwQ8DumGk6FL2bRcsGGG9EveS
-	 yxCQHkghOG1kajzcUXC0SJkq42uCbkaSCSKUY9h4WoYblQG3MHQpRWRQfkqACs0pwr
-	 OMRnixZivZNW4DRGjnDHN0D1YeINBlEnByv0+W+xa+XybkfXPXGybkF0NHrFCIQCxW
-	 nTw8R+wDjYzLT9ZFb6Xl7JuQ/eIc66Lgo6G71gTLNXWhkrdwhxoVC2yzuIv78Wmk5e
-	 8qUFCJyA6EQDw==
-Date: Sat, 22 Aug 2026 15:29:46 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Saravanan D <saravanand@crusoe.ai>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, 
-	Alex Williamson <alex.williamson@redhat.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: allow huge pfnmaps regardless of THP mode
-Message-ID: <aomyM47kVsW_v-Cm@gremlin>
-References: <20260821070520.25759-1-saravanand@crusoe.ai>
- <aogCjEc9uyMjFP6S@gremlin>
- <20260821193220.91799-1-saravanand@crusoe.ai>
+	bh=WrJatvS+dpsgvexrFJw28Fc/KzpHX/g5DZqmk0x10VM=;
+	b=HWfexrCDA7f7YL9yncF0SmEYiT1alPG6imZdw2WAjhVp3RPLZbBUHzfIFYEXlqd9+yuGC7
+	A04ZIeuwzQmhKksf5V/dehJavb8KGzaSyqwrpCBWPWKLtnsN8YcDpUuawvrUyy+xwV8aQu
+	izkl6n6w/RGdzkdoLJJrI1IGc+Pz6pQ=
+Received: from omf11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD4DF1A019A;
+	Sat, 22 Aug 2026 15:23:20 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf11.hostedemail.com (Postfix) with ESMTPA id 64C072002C;
+	Sat, 22 Aug 2026 15:23:04 +0000 (UTC)
+Date: Sat, 22 Aug 2026 11:22:48 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: =?UTF-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, mgorman@suse.de, include@grrlz.net,
+ bsegall@google.com, dietmar.eggemann@arm.com, kees@kernel.org,
+ kprateek.nayak@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ vschneid@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] fork: initialize function graph state before
+ copy_exec_state()
+Message-ID: <20260822112248.1b7e1b1d@fedora>
+In-Reply-To: <20260822084927.547141-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20260822084927.547141-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260821193220.91799-1-saravanand@crusoe.ai>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/qlZgXADOrmF5uNiwy2VX4iR+37QC+ua0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=WrJatvS+dpsgvexrFJw28Fc/KzpHX/g5DZqmk0x10VM=; b=LU3Tlu5E9WSgJxSNWsL/2vPXgUhe5EFm0BYPSVPu6drm7C50bC8/L89hVt2/9AlzA+Yks7JGZ4GdAiJkNwrwO2dpI/ms/oa77mR9N7/ygFttYOV0twgNAzf7sEcRDB5BTXcb7D1mr8kHnAzLL8VjlxN1I4eN7aIXBnDAn+TPqXQ=
+X-HE-Meta: U2FsdGVkX1/EQPw/mJTjICcbGMkIafRXyWn0hFafPUl7sXG2e1khZHtjupHcjqNglVg48miZ0LvxnwKP5Wd1l2RYRGTOPx0Jhs6zNAfz5mi+0gVIRFydJJBtShVAm6z0N1E5BxBpbu4Fxa64G9l2HoCnbqkZFEeTYbpzcwQitm6cLbzZtiXVeWOkRhdwIq2JeFoKn65Bou4/Zinu6QOwvKmRtTAV+iAeowY+75dy6mrVgL0D4LfRWQpIsjJT3yjIdxMXM5gfZBIPcmGp7e1T8+iDcndX9bZGSvlcE1/wbPHtGj54C0brJr4aYF7RlK21GqpbuskWc+u5qPYHDYasoFUuhVQghrIg
+X-Rspamd-Queue-Id: 70B8A40002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BDA5A1C0005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 1tna7g61i3exht198h78rh3jpq1buyst
-X-HE-Tag: 1787408994-353438
-X-HE-Meta: U2FsdGVkX1+ZqzUddZsYEFl70SEVY7bVIkV7f6+YmstvFoG70w37D7m/SGuf4+C+vw6PpXOH2ahcFtZiTVQWoE8g20TS1uq1Fheh0cqh3uxXaszoq489JDxhogTZTHPvcqZ19NLFB6KALGfIDDz6RJU++S1Fk9eLUcN357MjyHmIwOt3FrcqN4KTFflT1qBIEhx8D/5xDYg7hN8ITWFjZ+2RCiDwc/8nQ8H0CLQ3qApsS4LHXQiopQazCDB8p5ajr4ibs7dhrGsd7ON/AOqZb4wvvsSvsJF4pjGPeh5QdJCMS3UjpTsIa6sOn1I0ubROIFEfMQTE2nWhYtIUzouPBTF2sK6AMURRIn8LJw50+bXJGQszX4Mg9g8qoawUjPN5lkbt0xiBVsdj89a6UCQbcnWcqRynCLAqGSMpGfKIwXVhWr0ZHo7NUAHlUCfL3cyB1FEXdFrk4/cG1HpnCZd5d4UslcR2aTWJWK+a20q7YfiZ+8n1jz3mvEi4vBkK4GcDpClD1ZI9VeWFfXWwEFeVFljqDUzOwuETm4AMa493tzPXyLzXeKqOD+wHg+w53SuP0+9c3oioZOIamC9P9pH/XEK1SviLGC6ysVMEWpP2bqyCrhvbPrYVcerKOU/7pJeIYda3tM019O3kNBBabmd2h2RSMZRnGClqDC4KodmYDz3Jo+YKJ2TJiTyT0xb9oYxbdtFhaOh59PDSylXQxxw2uBRHJK1lAdO8eyZOlWZoGr1cop+zWmCLWB7uJqGVG2mqzihqMTdWzO9XPkAn9s/u80y5cavtzcSWlO/ucVNhxiKryH0DghtuQPtRLSGOwEGDBFxXfQOMWV5JJWZ0NL7m7qNCcTmP5puusR/HBhAQdOuzwEr8QcLwVbryq1F5+9Lnr6JBHWOtyIF4D6L+WlY5K3D2Sx0kQzJzRl3DQOYmasRTAlREyc6i7MS/ZTkXKY7zrRGW5yhV9opPMCHNM6C
- qOMXsfQS
- b9RDagQwXjCIyqWLyJM5t4fo+rDCRypgpk45ng+armvytasm1Qsfpf6kXCauRaBoV8d/9iubT9Till4UBHyD0/hjIE2u6xo51ry8XTrov0uBiK/MBwHwRad7TUnXNxZ2ui3I5YL/C1goRfdkiA6nL14exkleykoHqVaPHnvT9C0c3lI3ihrHRAcm3oSH8d4I3b86LrjO24pGEZbcB6FHvqWEoBsIYM5D8r20e5HiLlCkTu5mUTM7GFUTaFbcLif3tvRW7tWTM/nujmkGaPA50AxH5o07fdhiVc2/yqXqfkf29G7aaQWTIBBCaHktn7Gyae0pv2da2DLMmJKk3q3L2aATWihvzRgj+2h/1
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ajshg4cetoi7kmjm6yugn1ah3akmwne5
+X-HE-Tag-Orig: 1787412184-401758
+X-HE-Tag: 1787412202-189412
+X-HE-Meta: U2FsdGVkX1+RFY7Z+cZ6bwI0ftl1BmNgDbtQEgscghiJCep1rmDch72+WKR8O7cq2fsqaA5xYJvZyEe7rZnBbNBUVJsb9VeDlQS4T2uB3qHrIVXP4NZNmVylh2uw45CnROufnQ9eUZPoQXVwZ61B8lGSwIftwB6cm+KX7utX2I90Lzv42Nqg5vQDOOslh4+dkWEyn3uVfemhiSI+7u9c+2BXqaWs0ggkNV1VMsCozgvrTBf9haZoZFUJWC/d6xMDMuXZK09CasxLT6FatdjJId8Rv8971MZjJRELYEztbn1SIrFlzmIeu27Zt8fOOSv+AeDCvw9E7B90NRgC25wFQ6TeQ9a9L4Q2FA6TwAeMuS+5HJzMTaZ6e3135welYfRoMd6TxhPnB6n5qpxR3qu9erOENwVNiB1wvgOWmGm0E8Wrd5tN1xxEzkAkhoK5cHTVUmF6EIrh84VhXriUcS1NykK6H9/7zElg9uN3koHsNWzCzrmy0FjKC2FPiWVzMuAmH7BhPi30tqlcCNayYDZpL/0GJplhhXrEXjb+wiDOYRP/nDCHMPr08yTBuLKIslAn9Ts62TVDHUrVcg2kZmQKProMlOfECnEK3cTojsQ9u7xE97DykfZ2BEqVl0XIZ+MOgi4q7qJ/fOVU6I6T3Ra6OxwnGGsW5KQXaeP6cb50By5hLnb2/n6UvVbW5dIrPQkn+ff3KLxqUIgb+15N80KWL90GddbvMqnfNJve685EhL+M1a3EjssoTCN9+2UjhSIDY3rMyFeqQQoguZrZb0NWq1lz/AtGcV78bL4q2e/94r4+CXydwwwOUp/UD637jXAYfloDngbawoj47eNq6WYVKUq8R+PgKKkp/zLVlCDOG+RA2xc7DGpmuPy6Sf3O4jepU2oQSQ8kMnxJ59+T7BCud/yi5FgOcSfbzcCiIahgnAh7mMUmN2TIFPrltdaXiA6rU5edFoJpL1F59+S5uvz
+ IhHbavAB
+ +WLaju6WogxKr18JBQvj9Mn/j/nsiVvW5ubelsY5NuqarG1zKdvXwdu3lmhbRttAd67v5S1xWZXed7/meMnkaHXfQ5Dc840ZwT5IxQwHi4Ngc42D9XRmyPZ8vmUX1Kyg7yKTlMd7T28mvgKXmPhQezHbH763FmhKQdM906bfWp0nUWYRhBn6+tD7R0lQy7pUmyVrnGqwcUfWT0OqF4sZRhW0/wDhDCiP9zF9YaR//btL6BtA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,46 +87,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 12:32:20PM -0700, Saravanan D wrote:
-> On Fri, Aug 21, 2026 at 09:03:15AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > In any case if you'd taken 5 minutes to search the mailing list you'd see
-> > this was:
-> >
-> > a. Already submitted (so your patch reads like plagiarism).
-> > b. Already rejected in favour of me doing an actually sensible solution.
-> >
-> > https://lore.kernel.org/linux-mm/anL-NZkNMSSxN0YN@lucifer/
->
-> Apologies and please disregard my patch. I had not
-> searched the list before sending and was unaware of Cédric's patch
-> and your rework. Mine came from an independent observation of slow
-> VM boot times on Ubuntu based hosts running cloud-hypervisor with H100
-> GPUs. The patch was prepared with AI assistance and should have
-> carried an Assisted-by tag. All of my future submissions will.
->
-> I backported the diff you attached in your earlier response to
-> a 6.17 based kernel and ran it on a HGX host with four H100 GPUs,
-> each exposing a 128 GiB BAR1, with cloud-hypervisor. THP
-> mode was the Ubuntu default - madvise in all runs.
->
->                        VFIO_IOMMU_MAP_DMA       4 GPU VM boot
->                        per 128 GiB BAR
->   6.17 unpatched             20.7s                   97s
->   6.17 + your diff            0.4s                   17s
->
-> Each BAR mapped with 128 PUD faults. Your approach will definitely
-> improve VM boot times in our production. Very grateful for your
-> contribution.
+On Sat, 22 Aug 2026 08:49:27 +0000
+J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr> wrote:
 
-Thanks, always appreciate real world data :)
+> dup_task_struct() copies the parent's task_struct, including ret_stack.
+> ftrace_graph_init_task() clears the copied function graph state, but it
+> currently runs after copy_exec_state().
+>=20
+> For non-CLONE_VM forks, copy_exec_state() allocates a new task_exec_state.
+> If that allocation fails, copy_process() reaches bad_fork_free and
+> free_task() calls ftrace_graph_exit_task(). Since the child still carries
+> the parent's ret_stack pointer, the unwind frees the parent's active
+> function graph return stack. The parent subsequently accesses freed memory
+> from function_graph_enter_regs().
+>=20
 
-I will send the actual patch at some point it's on my never ending TODO
-list... :)
+As this effects function_graph tracing, please resend and Cc:
+linux-trace-kernel@vger.kernel.org so that it gets to the proper
+patchwork. It will need to go through my tree so that it gets the
+proper testing.
 
->
-> Thanks,
-> Saravanan D.
+Thanks,
 
---
-Cheers, Lorenzo
+-- Steve
 
