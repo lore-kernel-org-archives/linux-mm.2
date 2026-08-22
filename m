@@ -4,89 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7796C5DF97
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 19:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E34A8C5DF97
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 21:10:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FEFC6B009D; Sat, 22 Aug 2026 15:58:22 -0400 (EDT)
+	id 8F8A26B0095; Sat, 22 Aug 2026 17:10:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D7216B00A1; Sat, 22 Aug 2026 15:58:22 -0400 (EDT)
+	id 8CF426B009B; Sat, 22 Aug 2026 17:10:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 514036B00A2; Sat, 22 Aug 2026 15:58:22 -0400 (EDT)
+	id 80C846B009D; Sat, 22 Aug 2026 17:10:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F2F46B009D
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 15:58:22 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 204C3A014B
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 19:58:20 +0000 (UTC)
-X-FDA: 85129967160.09.0BBB9A2
-Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EFAAE40007
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 19:58:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=XfQXjUjK;
-	spf=pass (imf04.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787428698;
-	b=pTURnVLGnxPC+EWa/DTU3Bm0QhS+Vfws8KRY7SBGzncRWctd+0FL71RtkrcCrtDTHt/lSb
-	WOa2utUCWSr4PhVOnZN+wYrJfQH2XiCgpZ73eVv6rCmH8v5x5E12iyWHpvE9ALLFwAbgDc
-	t24vEXhOPS9nuxKtkjCCPma9Ptqzgrg=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=XfQXjUjK;
-	spf=pass (imf04.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F66D6B0095
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 17:10:00 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41E7D1401EF
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 21:09:58 +0000 (UTC)
+X-FDA: 85130147676.23.D1E4D30
+Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7E790120007
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 21:09:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787428698;
+	s=arc-20220608; t=1787432996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j9EquugxwSIyMKJNunDeenMEdYCUweRVw+5sun3wzco=;
-	b=QHI0WBQSrf7QEEgqvVeN2noMxP/bkcsWSZP+WiJhSkG/eme+La2TrHwASeEHYpQKkLBiPB
-	vA5bqpbP321eSfTmanihQvAdcZsl6nz6zue40TxdtGzVJVf90G2y/+iBEuLFprlaO48iBS
-	SgCa27e0z7rGE6QHavoKal9T8Bo9uvU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1787428695;
-	bh=j9EquugxwSIyMKJNunDeenMEdYCUweRVw+5sun3wzco=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=XfQXjUjKWD5d4WorvWY3dtHsOfvDKR+zJrsyZkttC81JtngJk3PjzAd/TKVH6xFh6
-	 VPSESmhVw3u2EDAAullSrHNK9jd2FlyMoJlKwogcxxuDZaTPryYMDGKBXaXtcXz4n/
-	 KFCsaTHOSQhn57m91M73+kZCUy0eAMh33wEpxTHk=
-Received: from mx2.investici.org (unknown [127.0.0.1])
-	by devianza.investici.org (Postfix) with ESMTP id 4hS7Jl0Hvwz6vK0;
-	Sat, 22 Aug 2026 19:58:15 +0000 (UTC)
-Received: by mx2.investici.org (Postfix) id 4hS7Jk4dT5z4y6W;
-	Sat, 22 Aug 2026 19:58:14 +0000 (UTC)
-Date: Sat, 22 Aug 2026 20:58:15 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: =?ISO-8859-1?Q?J=E9r=E9my_Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+	bh=8tizi2Uz63VDjzZwu+pGZmliKPuwtoD7SrzZgbbbMac=;
+	b=FrN959t2V51YSFmoQNKUYqUJVZSz3YdMNKErykfrqwH5v0MkM85Qgc3AITOzbBkEmmtGs7
+	wIhHFBm/3SRnXw+mLJtnYBCORibPUd7aM7PpdBtQ6ttkaqRg2RYZmNOT21v/E/zCiEMgkR
+	vc7PtGpHZZOe1seD7m/irVj/OOw/CBI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787432996;
+	b=RfMYWPxaquZgJjTkAssrQPDI0Ju/iroh7hxKBZrjrGsifjN8Z6U1qOtntr15ZmuL1PLk5v
+	tRuYu4XpEuT55Q1sDqYiVpfOpkl6fMeOQNtJ5os2V1eErIWkuCHDYtOJZJdGWmVVzcuX3Z
+	oLhdOabeDJpZ1lUX7eHV+35Cm9GL5hs=
+Received: from omf07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA34940203;
+	Sat, 22 Aug 2026 21:09:54 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf07.hostedemail.com (Postfix) with ESMTPA id D60A32002D;
+	Sat, 22 Aug 2026 21:09:39 +0000 (UTC)
+Date: Sat, 22 Aug 2026 17:09:28 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Bradley Morgan <include@grrlz.net>
+Cc: =?UTF-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>,
  mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, mgorman@suse.de
-CC: bsegall@google.com, dietmar.eggemann@arm.com, kees@kernel.org,
- kprateek.nayak@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- rostedt@goodmis.org, vschneid@redhat.com, linux-trace-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3=5D_fork=3A_initialize_functi?=
- =?US-ASCII?Q?on_graph_state_before_copy=5Fexec=5Fstate=28=29?=
-In-Reply-To: <20260822195321.962383-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ vincent.guittot@linaro.org, mgorman@suse.de, bsegall@google.com,
+ dietmar.eggemann@arm.com, kees@kernel.org, kprateek.nayak@amd.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, vschneid@redhat.com,
+ linux-trace-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] fork: initialize function graph state before
+ copy_exec_state()
+Message-ID: <20260822170928.1acba2cc@fedora>
+In-Reply-To: <4E2240F5-1211-47CE-AF04-24E1F0BC4707@grrlz.net>
 References: <20260822195321.962383-2-Jeremy.Jean@oss.cyber.gouv.fr>
-Message-ID: <4E2240F5-1211-47CE-AF04-24E1F0BC4707@grrlz.net>
+	<4E2240F5-1211-47CE-AF04-24E1F0BC4707@grrlz.net>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EFAAE40007
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX187Mxv5W4DFJ3fURMYUvMnrhDd8uqR80Rw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=8tizi2Uz63VDjzZwu+pGZmliKPuwtoD7SrzZgbbbMac=; b=cZd72qi9ymxUl9V8XfieHWrIXrJ1PnIzyJy+BPyUoZrE9UlS1TULy/OrTaw0wO848HgkMqFDmS2QTWaSfHHIaxvi58GjfP566ANuzX1viHqvMYZh2GKd5g98sj66woLci9OVSoVcVP1aXikh2H3LscvPwIPNvQpx1J279Q2CNX8=
+X-HE-Meta: U2FsdGVkX1/CrHML0TEz1SejKFmkDQnB4+yKcjQD66q8Jcu+lGWPWRCs5jyXT3aVqU8qktRFuQNQhr6DRgV/hroJHlTbByDPzksYd2yEIXrXn1wGg0AV8iDGQCD04ysBGEA0GaxkiSRvAdqOGoLfLVhYopv1sGOP+9U1Y3tKeC8cZsND7kDaEJny3ouPRaHP9b3Mv5J3czn2EUYy7qEhXOpWH45TNyhEphrDGaGdtMeC3MLLHe7OorJSN9Y7OS7kqw0zHcCjXoyU5LRWKphlXUx4STKkxO8RPpUOr56rBwhwC7lrSJgPCl6Pv8CHB6/fS6gbvhTxgZ1uJ6CKT4Abp/8pMJVjhqAhgTqm6ucrSWd3ASzCABe5VBKvQ5NQdCXTvo+3XJKR9laQVlc7BzA3Uw==
+X-Rspamd-Queue-Id: 7E790120007
+X-Stat-Signature: bchptuiitregw8grxmyadnsig59ji9zy
 X-Rspam-User: 
-X-Stat-Signature: dbqeiewwethp57ffgt1zqkt7q13rnc5e
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787428697-734473
-X-HE-Meta: U2FsdGVkX1/phOuU3yEBW7F0Zhmg+MB2TmeCjNj2mv5nCvAaZr9zPChbV7dTiE2NUMY0AIWPoGC4PvqDZTAz6nEHfnyxaXgX8716tIGs7PX9CXUllx4NUeIR6WEnVt3M0P01HSmBlv8MXgaYQ08we2J6I6vrCkkTq4ajsFisiyGP3F+aOd8f7drSiiubqagxc/8MWe8T57G4p2F7pNnyxdAzobcjZWrxWjAZnVaLPMzqE0CaHZjAKvTW2YlDFRU/avgmU1rBzPjOE42OYfb6fvJFXbZymV958HKFk0ayS3+ih7FPN2J5DohRBjYLY6OuWllBjenhSH9iZ8lgiSUGHCMjN1Gi1f41R/HNVGhhF8yzicIwNrYkn4tZPjd3XwJs4Jb/OVZQI79HzrloOfG19uZkxjkjRuFaWskuADnvErVUmxIx1wXdsFHEf5pR7av00JzaOMbVXKhilX2RvRR5JDaBOrr3V8cytqCajj6fwl7TTeCL2akWv8+jeLN6ceIhMBzpFh8MzWfsXR784tIUJ1DH1u8noiRZl/oP+oBp+mV7q4LB0Ir7AyzIksZm4/z8msSuGSQ8nEnCDq2VKCt2XeuxrYnioFL1BwqtGD2ptm4/e/wQdG113pGPftRir481/0gQJgB3PUhECyQfrD6OgT8/7FVM1cWUoGtsVlrCLJ/m6zG+nxSv9sOvzzzNFbkRCGqZUJl8c7AhLniBaYv6VVD9SOIhbLOTrVWeMrgXAENQV/uBF3ibtSxr0plcTlZEghUxNHOLyqnvNmig6+L00G2SD7YIAK8RS8kdYJ0udYQV4SW4wF7VFFgKPNWXJUcJwBZMe7VJGgb+srlh7PLOokbylZO1MT19Apfjz3ZSBk6/meiYXWL6sjRCg8WUXIge5MmO+2h6dPH18mUtZ41XAm93JkGmiKF5roCO/kjTT8z+qRWanygb3MDnF5nHB5ug7aQ+qXLaxYPr//73EQ+
- 3G/SmoAX
- vmiaRVYI0QrR0LKT9wIf53bn5a+x7zd8hIZPW7EezY1h3nLWQrmkLCQX1ByIgVrrhpLKcH+M8XNbTdsLGhwinrXuLypV5QLnbCMbGZPIksrQhFPzP/ZWM2MdgFawTyODuS0s/5OlIZPePIXhKMaPV4J+7elCLZOsn6c04DQ8qK7Vgt6auBEuaQc9dsmQ1/dRdI09ysb8hy0o4Y48LCw6zzuDgpL7nwzDmRGNKM3jJmqBxxVoXfJYy7f1LEVueqBCQP/16H33d48rqDuZSWXLx0V+j4Nr80/qj++HxUT0pfcQvD/hci5BN6CHoJY6DBuWL1xsfyKSTR9duuVsebARusHc6ysq+2u981t6iiOrPjTwJFeOecRHGQ+MwMyo+U1BIiQYT4lXj0tz2wytU0hVpIA5ROvRRmHgbuLUzKqG6wq66ieNdDqbVDKQbEA==
+X-HE-Tag-Orig: 1787432979-424543
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787432996-214025
+X-HE-Meta: U2FsdGVkX18DNLfx1OWYCBKPG0G4F2vp6mTkVMOWqPtwLkEczcYPmJ9H0sU6+wtmyXNG18N5SCO5l1Kjo0z8f4/ooau3TjroE7k767hXCN42RNIlSVtat0xjD84e4pOkOKCh3uBmmqfe5lXVfcytheZ0Hl3yX3wCvXzdVy9W2iDys2lxE/fTVpOjHquqcd9F48CUJOI8A5iSXE65ICXcUpUIV/To5MMPoaY+Rpf3wozuzVgYXN0HsCJFaf5GUNnCwToQUIZ8W8sRqoFI4+KsOPEvRBH+YkfIs8dlQqnZNWCXOznjEXIpFdQsMs+g41GL0wqi8V0gNCL5gaKYmEo42wN1CQmkLvRO8EDRBzJkGUWnEZEuEb+ZvmUMgdhMAuCgjIiWiXAmb4eOyFaidUIcAbj6sL+CJox4XLR0u16s8qpN+IFmgn7hpr/S5Wu4/vmmBj03tl2VCamhSaJTfcenjpdvWC9MnjmQGETjbiYukIazOSnhNTRn7ydTunVjpFfWgS+XSjVVPVsD8hI0F+GyRtvbHY1kWrebuB0m/WaOHb+DvIfHZwaMUO0Onk93jpYns+494IuvTWv3I2PY6kQSy24M7RQWajDHGahytJY9VoRBDR52fW5H7iDvMZ47PZAoL635TJm6fBc738BTatANsRbI/0ArAcOAenJqUyhb6UdYKoAakUPrdC1sPHzaQKEBYMGx6Y4k6LUnQKJlwB8Ka2gib7LDWP05wMrWJasoAO6VnWGRi70819o+fKZjFowuCv2RdK7TB7XYKUeHcz5wOIH6ReP2cLAv4I6xww/5mnXVkMbmBpi9c3ElkLlZDfaft2WJXEJMG3CyBlAOd4rvK2KmgwjLbyk63qnIliIdp2JFKX2UEeHJw8AvyCC+yzELMGKsaCI3dA24FpRZGenUvIkunshKGb5zlcgCQAnJ9mqCiZLxYuvMUHUmTp990uBGCaYMvaibZugQmjHu3A6
+ ymNZ2pJ9
+ KwcBm9ljhklOtmW8ACQF6K+LPb5Y5oVhIz6WcfAQCzcqn+iBPna0Ml7qY/HO3z9hqKLTBYAm9Q9os2XMX39klb5l3QvFR/83dxN1BM9ggds2idSEZAnGkBGe4MWbzSs4SzR912POIqjl8WV4qtfKOzs40knZ7XLnj70OUX8BBL7eO0HKXtC18opGkHU8OioWCVlf3aSQH1xcRIyna0XsNvZ14nkXYOV1az4exBRGTV0fxEHgLjTbdY0SU0DOeMF3WGxmsiWMVkePaIWR2V+Lh6Ub7eLqlLs7sQ0FccRHuXqVaH48=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,119 +89,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22 August 2026 20:53:22 BST, "Jérémy Jean"
-<Jeremy.Jean@oss.cyber.gouv.fr> wrote:
->dup_task_struct() copies the parent's task_struct, including ret_stack.
->ftrace_graph_init_task() clears the copied function graph state, but it
->currently runs after copy_exec_state().
->
->For non-CLONE_VM forks, copy_exec_state() allocates a new task_exec_state.
->If that allocation fails, copy_process() reaches bad_fork_free and
->free_task() calls ftrace_graph_exit_task(). Since the child still carries
->the parent's ret_stack pointer, the unwind frees the parent's active
->function graph return stack. The parent subsequently accesses freed memory
->from function_graph_enter_regs().
->
->KASAN reports:
->
->[   22.190920]
->==================================================================
->[   22.195899] BUG: KASAN: slab-use-after-free in
->function_graph_enter_regs+0xa76/0xb90
->[   22.200747] Write of size 8 at addr ff110000054dc0a8 by task repro/1
->[   22.205134]
->[   22.210770] CPU: 0 UID: 0 PID: 1 Comm: repro Not tainted
->7.2.0-07732-g9328b3b03bdc-dirty #3 PREEMPT(lazy)
->[   22.212576] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
->1.16.3-debian-1.16.3-2 04/01/2014
->[   22.213750] Call Trace:
->[   22.215271]  <TASK>
->[   22.216242]  ? ftrace_stub_direct_tramp+0x10/0x10
->[   22.217774]  dump_stack_lvl+0x4e/0x70
->[   22.220531]  print_report+0x157/0x4b4
->[   22.223202]  ? fixup_red_left+0x9/0x30
->[   22.224407]  ? complete_report_info+0x83/0x110
->[   22.226679]  ? function_graph_enter_regs+0xa76/0xb90
->[   22.228084]  kasan_report+0xce/0x100
->[   22.230109]  ? function_graph_enter_regs+0xa76/0xb90
->[   22.232860]  ? stack_trace_save+0x4/0xd0
->[   22.234156]  function_graph_enter_regs+0xa76/0xb90
->[   22.236090]  ? kasan_save_stack+0x30/0x50
->[   22.237752]  ? __pfx_function_graph_enter_regs+0x10/0x10
->[   22.238694]  ? ring_buffer_lock_reserve+0x345/0xf80
->[   22.239628]  ? stack_trace_save+0x4/0xd0
->[   22.242121]  ? stack_trace_save+0x4/0xd0
->[   22.243588]  ftrace_graph_func+0xda/0x160
->[   22.245362]  ? ftrace_stub_direct_tramp+0x10/0x10
->[   22.246520]  0xffffffffa0000095
->[   22.250528]  ? stack_trace_save+0x9/0xd0
->[   22.251757]  ? ring_buffer_unlock_commit+0x11d/0x5c0
->[   22.253152]  stack_trace_save+0x9/0xd0
->[   22.254264]  kasan_save_stack+0x30/0x50
->[   22.273631]  kasan_save_track+0x14/0x30
->[   22.276763]  kasan_save_free_info+0x3b/0x70
->[   22.278296]  __kasan_slab_free+0x43/0x70
->[   22.280157]  kmem_cache_free+0xbf/0x3b0
->[   22.282963]  ? ftrace_stub_direct_tramp+0x10/0x10
->[   22.284001]  free_task+0xa2/0x160
->[   22.285699]  ? ftrace_stub_direct_tramp+0x10/0x10
->[   22.286752]  copy_process+0x2aae/0x7bc0
->
->Initialize the child function graph state immediately after
->dup_task_struct(), before the first fallible operation.
->
->Fixes: 6b1c66c9cca9 ("exec_state: relocate dumpable information")
->Cc: stable@vger.kernel.org
->Assisted-by: Codex:gpt-5
+On Sat, 22 Aug 2026 20:58:15 +0100
+Bradley Morgan <include@grrlz.net> wrote:
 
-Where's my R-B, nothing changed also, it's V3!!!!
+> >Fixes: 6b1c66c9cca9 ("exec_state: relocate dumpable information")
+> >Cc: stable@vger.kernel.org
+> >Assisted-by: Codex:gpt-5 =20
+>=20
+> Where's my R-B, nothing changed also, it's V3!!!!
 
->Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
->---
->Resending v2 
+No need to get so excited ;-)
 
-(no! V3!!) 
+Anyway, as there was no change, it should have included your
+Reviewed-by tag, as it will not be automatically added from the
+previous thread.
 
+>=20
+> >Signed-off-by: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+> >---
+> >Resending v2  =20
+>=20
+> (no! V3!!)=20
 
->as requested by adding Cc:
->linux-trace-kernel@vger.kernel.org
->
->Changes in v2:
->- Add the KASAN report excerpt to the commit message.
->- Add a comment documenting why ftrace_graph_init_task() must run before
->  fallible initialization.
->
->v1: https://lore.kernel.org/all/20260821102207.3626491-2-Jeremy.Jean@oss.cyber.gouv.fr/
->
-> kernel/fork.c | 7 +++++--
-> 1 file changed, 5 insertions(+), 2 deletions(-)
->
->diff --git a/kernel/fork.c b/kernel/fork.c
->index 1e68404bd773..0d1ad92e2d33 100644
->--- a/kernel/fork.c
->+++ b/kernel/fork.c
->@@ -2139,6 +2139,11 @@ __latent_entropy struct task_struct *copy_process(
-> 	p = dup_task_struct(current, node);
-> 	if (!p)
-> 		goto fork_out;
->+	/*
->+	 * Must run before the first fallible op, so error paths never
->+	 * free the parent's ret_stack.
->+	 */
->+	ftrace_graph_init_task(p);
-> 	retval = copy_exec_state(clone_flags, p);
-> 	if (retval)
-> 		goto bad_fork_free;
->@@ -2165,8 +2170,6 @@ __latent_entropy struct task_struct *copy_process(
-> 	 */
-> 	p->clear_child_tid = (clone_flags & CLONE_CHILD_CLEARTID) ? args->child_tid : NULL;
-> 
->-	ftrace_graph_init_task(p);
->-
-> 	rt_mutex_init_task(p);
-> 	raw_spin_lock_init(&p->blocked_lock);
-> 
->
+Right, when resending, it is best to add "[RESEND]" to the subject:
 
-Thanks!
+   [RESEND][PATCH v2] fork: initialize function graph state before copy_exe=
+c_state()
+
+And below the '---' have:
+
+- Resend to include linux-trace-kernel mailing list.
+  Previous sent patch: https://lore.kernel.org/all/20260822195321.962383-2-=
+Jeremy.Jean@oss.cyber.gouv.fr/
+
+-- Steve
 
