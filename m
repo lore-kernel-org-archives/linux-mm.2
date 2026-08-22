@@ -4,82 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C596C5DF97
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 15:23:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FC4C5DF97
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 16:39:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA86A6B0095; Sat, 22 Aug 2026 11:23:24 -0400 (EDT)
+	id 82E376B0095; Sat, 22 Aug 2026 12:39:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E59766B009B; Sat, 22 Aug 2026 11:23:24 -0400 (EDT)
+	id 7DEE46B009B; Sat, 22 Aug 2026 12:39:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6F9B6B009D; Sat, 22 Aug 2026 11:23:24 -0400 (EDT)
+	id 6F4736B009D; Sat, 22 Aug 2026 12:39:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B557A6B0095
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 11:23:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3413B1A0198
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 15:23:24 +0000 (UTC)
-X-FDA: 85129274328.01.C2166A2
-Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 70B8A40002
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 15:23:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 498436B0095
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 12:39:01 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 407151601BA
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 16:38:59 +0000 (UTC)
+X-FDA: 85129464798.22.BFD53E7
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9A20E40005
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 16:38:57 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JCloTXYN;
+	spf=pass (imf01.hostedemail.com: domain of nicoyip.dev@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=nicoyip.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787412202;
-	b=uJzAKk4C4rTdp7UwiikiMbSg4oiE7oVkiQ8qhOuQizj10Szl+LuDlzVx8Dhi2FS0ai9G5B
-	+3jYDp+RQXKNXPwb+WEzFYZ0bj8V4sUlk4hGDzrl96Zu7D7oL9PCwGJDorK1yZ/aGuU94p
-	k4w3N/6D5Pl9wbLebc/5Hg+Lz9LDPlY=
+	t=1787416737;
+	b=EYjV/KtjIH2f5Wj11OlI524z8JbYOFZ8noftPIcH4Xe47bK33pvxyujkJ15o88QdZlWynv
+	F4tX4VegYDatPyiNVVUUL+lQKY/qBP6nVpPYXObySneQEgWwQzYqk3VEzMufHPv6wJyztr
+	V81roWvmRmcXRKsTFcRF/syBDqzEtj8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	none
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JCloTXYN;
+	spf=pass (imf01.hostedemail.com: domain of nicoyip.dev@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=nicoyip.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787412202;
+	s=arc-20220608; t=1787416737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WrJatvS+dpsgvexrFJw28Fc/KzpHX/g5DZqmk0x10VM=;
-	b=HWfexrCDA7f7YL9yncF0SmEYiT1alPG6imZdw2WAjhVp3RPLZbBUHzfIFYEXlqd9+yuGC7
-	A04ZIeuwzQmhKksf5V/dehJavb8KGzaSyqwrpCBWPWKLtnsN8YcDpUuawvrUyy+xwV8aQu
-	izkl6n6w/RGdzkdoLJJrI1IGc+Pz6pQ=
-Received: from omf11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD4DF1A019A;
-	Sat, 22 Aug 2026 15:23:20 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf11.hostedemail.com (Postfix) with ESMTPA id 64C072002C;
-	Sat, 22 Aug 2026 15:23:04 +0000 (UTC)
-Date: Sat, 22 Aug 2026 11:22:48 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: =?UTF-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, mgorman@suse.de, include@grrlz.net,
- bsegall@google.com, dietmar.eggemann@arm.com, kees@kernel.org,
- kprateek.nayak@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- vschneid@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] fork: initialize function graph state before
- copy_exec_state()
-Message-ID: <20260822112248.1b7e1b1d@fedora>
-In-Reply-To: <20260822084927.547141-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20260822084927.547141-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=g7kLVYi/u6oDHfqj97goW0adMfCQDYdgNJj4eCuKJKQ=;
+	b=d5S/Yaf6r3AfffOuYInTHMHiySapcv7n0aCz5tyq2t8xL1lsmKH9BfuDMhaZ3il10Rf7Rq
+	/E+HUCr03YfFCxAFFhY1EEr2fwAtz5u2Kf75xcQlSHDuLbHWpLZvPS6RkjXdfaf3YrGdCq
+	FnX9TGf9F9whprKc20slDY+RR4p05dE=
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-836d228798aso1327737b3.2
+        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:38:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787416737; x=1788021537; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=g7kLVYi/u6oDHfqj97goW0adMfCQDYdgNJj4eCuKJKQ=;
+        b=JCloTXYNkIBOUQNWgNmrRbLSTjl5o9ppNgq+R903Myo2qwSxQFzB6o+/7hUTJpJCY3
+         mWis5WPavcEUNucXAqvN+Kt/oj38ycPvJuUmISYm0Cvoa27QsNrDdy7IxbKfi7MNEbCC
+         urU9aitAk0vLdq0tEmP3yLm2iEN/Rhll0D5lDKwxPkzLKovdMejPd5gGWc+Wc/9d7moY
+         hxbJQ9xOdUb0aQTyNCLupcr5q6COXTUBRn/eczoX8Z8dUvIiXAIFqQRQtKdxPRqbC8r+
+         F9BGJH0r3yRxp9SG1CjlsDNO8zW6ekL037vAenyvnadn/k8K1ItgJSmUkcPs9Cn//PSO
+         RGvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787416737; x=1788021537;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=g7kLVYi/u6oDHfqj97goW0adMfCQDYdgNJj4eCuKJKQ=;
+        b=YQKXpDR0SMAGJVegHDaQzmEaAqZZC8aGRBXCnpFBMSPiED89dDnZqWqe2iPVaJZIwA
+         upkEIta9CXRbCE5qwFg6sxZh7TsBe0H9edWGtvhPSskOjyerDB6mrVtV1VDVt/T9V1cK
+         OJ3MrvOR8jou+dF1Z2zRdI1r1oo4oXrs3IrNSZww1rKSAtrmkj1AvcYfE8j8rEbFA3Qn
+         dh4kya2JXk0LvDk5c2vjeqdUQt8hGvR+ND4NXTwXAcqRKHC+kznl4QOR/wXrxFnrYaKt
+         krOq6ugPNKjjLuiX0cF7Cezi52nvuqFECKjn+5R61CQpe2pzXmkD2t55hOZSRKbDyOUW
+         w+0A==
+X-Gm-Message-State: AFuF++kuzUYWlq9YLH9OUmGPGcZXqrr4RK1bHsIfBkEQxEcG3duy2hMY
+	xjlyRM7OVNV1izNAJRXIBc253G98qPBy3oylLrMWf559crwDiMQqSMKA
+X-Gm-Gg: AR+sD13bM5ID5i7lLaMEg6Aj/YKmVguyU3/J4A2GzlqtsFn3fwdscZLHNqyHOVxVGYy
+	FKacy7qjxNq1jr3SV6LcRLzM8Hyj6ZsxWiMbk4yi7Pa8wGuiGNnt+BQ2i/qYgEeBzSNHeEU3OLe
+	jdfRr9j4X7O+VCgSMZrxPUVa2hzoosnRxljmPOCMJmDVnxS5QyJFG8XkroydjnMr3v/5q9vnR3f
+	6FiaLJ/QENSLagMzFS5M4mfP4wH3jg4vdYcLrnN543AQVcK41Y0eYo6x37pWiwPV/arCgoSeJsB
+	UJ+rxdUM1uiNtOX9r57Bn5zmFEfU90THjqKxbRzIp4M+60ItdWnSYvSaAXtvvKyzc7ipQeVi0Ot
+	iVi72ngLZCR7PsDWapZtwxkJrTbxweAnkbnekHcjKPeMFV1Y7me0rEGReRp+YUx+8dkWsMuS00x
+	vEEgqXWmVkGhdLzBzkJkvopii8MiSVb8txj4Ro7+rrnMxqCQ1k5C0s+x4bn6PMl4epuIcVYIeLH
+	R0W++AlLLsgsYodsU81XoV5RZxfl18Ju68+Oj2PR8MPS5RQwXwfAfI=
+X-Received: by 2002:a05:690c:6b86:b0:820:100e:1abb with SMTP id 00721157ae682-849f7d0c986mr57211377b3.4.1787416736602;
+        Sat, 22 Aug 2026 09:38:56 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84ca518899csm12628707b3.2.2026.08.22.09.38.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Aug 2026 09:38:56 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Hugh Dickins <hughd@google.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>
+Subject: [PATCH] mm/ksm: mark migration stores with WRITE_ONCE()
+Date: Sun, 23 Aug 2026 00:38:46 +0800
+Message-ID: <20260822163846.3747787-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/qlZgXADOrmF5uNiwy2VX4iR+37QC+ua0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=WrJatvS+dpsgvexrFJw28Fc/KzpHX/g5DZqmk0x10VM=; b=LU3Tlu5E9WSgJxSNWsL/2vPXgUhe5EFm0BYPSVPu6drm7C50bC8/L89hVt2/9AlzA+Yks7JGZ4GdAiJkNwrwO2dpI/ms/oa77mR9N7/ygFttYOV0twgNAzf7sEcRDB5BTXcb7D1mr8kHnAzLL8VjlxN1I4eN7aIXBnDAn+TPqXQ=
-X-HE-Meta: U2FsdGVkX1/EQPw/mJTjICcbGMkIafRXyWn0hFafPUl7sXG2e1khZHtjupHcjqNglVg48miZ0LvxnwKP5Wd1l2RYRGTOPx0Jhs6zNAfz5mi+0gVIRFydJJBtShVAm6z0N1E5BxBpbu4Fxa64G9l2HoCnbqkZFEeTYbpzcwQitm6cLbzZtiXVeWOkRhdwIq2JeFoKn65Bou4/Zinu6QOwvKmRtTAV+iAeowY+75dy6mrVgL0D4LfRWQpIsjJT3yjIdxMXM5gfZBIPcmGp7e1T8+iDcndX9bZGSvlcE1/wbPHtGj54C0brJr4aYF7RlK21GqpbuskWc+u5qPYHDYasoFUuhVQghrIg
-X-Rspamd-Queue-Id: 70B8A40002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9A20E40005
 X-Rspam-User: 
+X-Stat-Signature: gtd4t9qjpx7be6duku313m1iqyhfhc1o
 X-Rspamd-Server: rspam06
-X-Stat-Signature: ajshg4cetoi7kmjm6yugn1ah3akmwne5
-X-HE-Tag-Orig: 1787412184-401758
-X-HE-Tag: 1787412202-189412
-X-HE-Meta: U2FsdGVkX1+RFY7Z+cZ6bwI0ftl1BmNgDbtQEgscghiJCep1rmDch72+WKR8O7cq2fsqaA5xYJvZyEe7rZnBbNBUVJsb9VeDlQS4T2uB3qHrIVXP4NZNmVylh2uw45CnROufnQ9eUZPoQXVwZ61B8lGSwIftwB6cm+KX7utX2I90Lzv42Nqg5vQDOOslh4+dkWEyn3uVfemhiSI+7u9c+2BXqaWs0ggkNV1VMsCozgvrTBf9haZoZFUJWC/d6xMDMuXZK09CasxLT6FatdjJId8Rv8971MZjJRELYEztbn1SIrFlzmIeu27Zt8fOOSv+AeDCvw9E7B90NRgC25wFQ6TeQ9a9L4Q2FA6TwAeMuS+5HJzMTaZ6e3135welYfRoMd6TxhPnB6n5qpxR3qu9erOENwVNiB1wvgOWmGm0E8Wrd5tN1xxEzkAkhoK5cHTVUmF6EIrh84VhXriUcS1NykK6H9/7zElg9uN3koHsNWzCzrmy0FjKC2FPiWVzMuAmH7BhPi30tqlcCNayYDZpL/0GJplhhXrEXjb+wiDOYRP/nDCHMPr08yTBuLKIslAn9Ts62TVDHUrVcg2kZmQKProMlOfECnEK3cTojsQ9u7xE97DykfZ2BEqVl0XIZ+MOgi4q7qJ/fOVU6I6T3Ra6OxwnGGsW5KQXaeP6cb50By5hLnb2/n6UvVbW5dIrPQkn+ff3KLxqUIgb+15N80KWL90GddbvMqnfNJve685EhL+M1a3EjssoTCN9+2UjhSIDY3rMyFeqQQoguZrZb0NWq1lz/AtGcV78bL4q2e/94r4+CXydwwwOUp/UD637jXAYfloDngbawoj47eNq6WYVKUq8R+PgKKkp/zLVlCDOG+RA2xc7DGpmuPy6Sf3O4jepU2oQSQ8kMnxJ59+T7BCud/yi5FgOcSfbzcCiIahgnAh7mMUmN2TIFPrltdaXiA6rU5edFoJpL1F59+S5uvz
- IhHbavAB
- +WLaju6WogxKr18JBQvj9Mn/j/nsiVvW5ubelsY5NuqarG1zKdvXwdu3lmhbRttAd67v5S1xWZXed7/meMnkaHXfQ5Dc840ZwT5IxQwHi4Ngc42D9XRmyPZ8vmUX1Kyg7yKTlMd7T28mvgKXmPhQezHbH763FmhKQdM906bfWp0nUWYRhBn6+tD7R0lQy7pUmyVrnGqwcUfWT0OqF4sZRhW0/wDhDCiP9zF9YaR//btL6BtA=
+X-HE-Tag: 1787416737-806685
+X-HE-Meta: U2FsdGVkX19Fi+b6k+Gf5E5uxKeA0Yc7MgwptWfZE8nM09Riv14aI2u6r4uL/dYLmRjuKebxO5jpZUPy8IuwnbIyZmlEoBkDChAQNVYeiLlZ5S0LaguEnkyKdiY7NorZVjgunioT1DZgxw8weq4Rzz/ZaOw+t5eJ5Yx8v1cPdcu4aELKXEeJZ/xouwuuSGbuCJR3+KlQyoA7TIitNbzNvC0x7/DzyFXB+IpVb4dOp18XIZ6kPTiP0CKT6ndn6zMZYKkNJFOzNL76u2D4GPe1qmqjyPQOw8pxwUktHeIUs9j9VEdDBZ6OuwvKQTR5XDVURCzyfAgbhyXvSv1B4vMUqQriflvMBfNlH2XlR3XZYW/S+yIE/c9xaBQQfDgMXAqNi8ZX5jdfj+EL2giVaF6w1P5IBrjZHZhY/m/y0Gt6vBDAkzjQ1Q+nP3Zgq4g/zQvVxPF4oMLd12g89x0AOHiWl1eXzu39CONjqTZ10F64taNpiZ+3utuXl0+S6WUoJtZ5+T87T3JN/YA6CL/XvG/5xv7385vHI53awlU4mPLejcKLsboCwp7BS5Sk8JfWhMzv4CM4SoVvfPcMABQiB6VJOORTi+yoNmTI8CFzW51qso3/uQxCIkgqqKz7BciJeC0DZjUi9EUfcY/vbizNv+5f8XuGCOAdv51dy7Wv+66VygaiwBjAalWBdZWvWRx6yTrTAJkxPuMkFXr5SfyxVvY9eI9s1VFHpB2QoJVKabocJZd+ms12ibq5o2y4k5e0g0i5vQWlngJO71Se/YNsSQuci3Ig3yr+mr7/6EjSaIbWYAcTzw+Xc6oTmbinbP1T4LiwKzoxIup1Vw9CaGlLDNMX0vXyUcwxzjdzdCA0+wc5aQXCFC5fPRax32wYtpFq9i19+LLRL0lLLDOS6IxVs4tASwS90e7TM7fIK6XfPucsbLtsHx/f61B8C8I+0LupduUxeLKCHe34ykMW2FwlnbT
+ cQILH/M7
+ r/df8YHyWYsrRkuM+6jQrd/U4R4ClEDgVYASNkGYaxaKpcD4MU/Y7mZEu3Z0TMMIhXlwXv/KauJKrIZoSGkvnCdaZhYT07kCYDhfFczKr5Oo6JjbvmiNAooxL+WcfRdr2po40qDk2o/nAGFVFKmKp+7XGxzw7xTYQLLFtq1YFKEfb+s+yI0RdA3rrqAAIANIXHAeEY4wU0rMbUizxeo7kSj2EshM0wMzgVzaC2C8rO0eKjzXalfOGxxYf1hWfcG/gINqUjClwQHGumB1QmmGLvC0+t7nue1sNJDLYf2ChvUSrdgH+hMQCUWci0CupJIED7kYSYqQ420cy4Rkezt/Ad/x6fZqTFpF3JLUN7c8wbxF5Sd78/OSd5tmnO2oP9gSMdLDDVfWs0EwPSUtu6xmynaVycR2dS7mudusE5v8h31pkpafTAbvqAR1tJjx+IF349zF/k9HaRRhfDjRiHgJ63ZcfmNmvsIi876VZwqssOUtygbMFbj3ebWW/z8AkKCmhJyItp8LJGKnGpBFryiZZqLa/4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,27 +119,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 22 Aug 2026 08:49:27 +0000
-J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr> wrote:
+ksm_get_folio() deliberately samples stable_node->kpfn and
+folio->mapping without taking the folio lock because the KSM folio may be
+migrated concurrently.  folio_migrate_ksm() updates the same state using
+plain assignments.
 
-> dup_task_struct() copies the parent's task_struct, including ret_stack.
-> ftrace_graph_init_task() clears the copied function graph state, but it
-> currently runs after copy_exec_state().
->=20
-> For non-CLONE_VM forks, copy_exec_state() allocates a new task_exec_state.
-> If that allocation fails, copy_process() reaches bad_fork_free and
-> free_task() calls ftrace_graph_exit_task(). Since the child still carries
-> the parent's ret_stack pointer, the unwind frees the parent's active
-> function graph return stack. The parent subsequently accesses freed memory
-> from function_graph_enter_regs().
->=20
+The reader can load the old kpfn, then the migrator can store the new kpfn,
+execute smp_wmb(), and clear the old folio's mapping before the reader
+checks that mapping.  Thus the initial kpfn load can overlap its update and
+the subsequent mapping load can overlap the clear, with no common lock.
+This leaves marked READ_ONCE() accesses racing with plain stores.
 
-As this effects function_graph tracing, please resend and Cc:
-linux-trace-kernel@vger.kernel.org so that it gets to the proper
-patchwork. It will need to go through my tree so that it gets the
-proper testing.
+The kernel reported:
 
-Thanks,
+  BUG: KCSAN: data-race in folio_migrate_ksm / ksm_get_folio
 
--- Steve
+  read (marked) to 0xffff8ce401421330 of 8 bytes by task 48 on cpu 3:
+   ksm_get_folio+0x7f/0x2a0
+   ksm_scan_thread+0x1635/0x3330
+   kthread+0x1af/0x1f0
+
+  write to 0xffff8ce401421330 of 8 bytes by task 102 on cpu 1:
+   folio_migrate_ksm+0x6a/0xd0
+   folio_migrate_flags+0x193/0x420
+   __migrate_folio.isra.0+0x162/0x1a0
+   migrate_folio+0x4c/0x70
+   move_to_new_folio+0xd6/0x170
+
+Use WRITE_ONCE() for both stores to pair them with the existing lockless
+reads.  This preserves the existing smp_wmb()/smp_rmb() migration protocol
+and control flow while preventing compiler transformations of the shared
+accesses.
+
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ mm/ksm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index b4142746777e..bec6fea0fdb4 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -1116,7 +1116,8 @@ static inline void folio_set_stable_node(struct folio *folio,
+ 					 struct ksm_stable_node *stable_node)
+ {
+ 	VM_WARN_ON_FOLIO(folio_test_anon(folio) && PageAnonExclusive(&folio->page), folio);
+-	folio->mapping = (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM);
++	WRITE_ONCE(folio->mapping,
++		   (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM));
+ }
+ 
+ #ifdef CONFIG_SYSFS
+@@ -3318,7 +3319,7 @@ void folio_migrate_ksm(struct folio *newfolio, struct folio *folio)
+ 	stable_node = folio_stable_node(folio);
+ 	if (stable_node) {
+ 		VM_BUG_ON_FOLIO(stable_node->kpfn != folio_pfn(folio), folio);
+-		stable_node->kpfn = folio_pfn(newfolio);
++		WRITE_ONCE(stable_node->kpfn, folio_pfn(newfolio));
+ 		/*
+ 		 * newfolio->mapping was set in advance; now we need smp_wmb()
+ 		 * to make sure that the new stable_node->kpfn is visible
+-- 
+2.43.0
+
 
