@@ -4,114 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FC4C5DF97
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 16:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA88C5DF97
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 16:50:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82E376B0095; Sat, 22 Aug 2026 12:39:01 -0400 (EDT)
+	id 387706B0095; Sat, 22 Aug 2026 12:50:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DEE46B009B; Sat, 22 Aug 2026 12:39:01 -0400 (EDT)
+	id 339506B009B; Sat, 22 Aug 2026 12:50:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F4736B009D; Sat, 22 Aug 2026 12:39:01 -0400 (EDT)
+	id 227D56B009D; Sat, 22 Aug 2026 12:50:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 498436B0095
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 12:39:01 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 407151601BA
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 16:38:59 +0000 (UTC)
-X-FDA: 85129464798.22.BFD53E7
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9A20E40005
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 16:38:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JCloTXYN;
-	spf=pass (imf01.hostedemail.com: domain of nicoyip.dev@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=nicoyip.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F19636B0095
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 12:50:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F68B1A0159
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 16:50:39 +0000 (UTC)
+X-FDA: 85129494198.30.98F9776
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0410480002
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 16:50:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of whitebox@nefkom.net designates 212.18.0.9 as permitted sender) smtp.mailfrom=whitebox@nefkom.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787416737;
-	b=EYjV/KtjIH2f5Wj11OlI524z8JbYOFZ8noftPIcH4Xe47bK33pvxyujkJ15o88QdZlWynv
-	F4tX4VegYDatPyiNVVUUL+lQKY/qBP6nVpPYXObySneQEgWwQzYqk3VEzMufHPv6wJyztr
-	V81roWvmRmcXRKsTFcRF/syBDqzEtj8=
+	t=1787417437;
+	b=bxef1jh5Iu2Y6lPx0X76L/An9NmLKVJCrur7geQ3HVrHB/dREXBAat1SEeXknd8/fCquO+
+	F/6AJzSi2x8dh9s4VJE7Vqrtc5w8LNf3mh+bYsH67Cva/gvNQmI6FfFGnvLKDsV0Jkh95b
+	DKzR5eC7y8pI6//fblFFe3dCXlzn3S0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JCloTXYN;
-	spf=pass (imf01.hostedemail.com: domain of nicoyip.dev@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=nicoyip.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of whitebox@nefkom.net designates 212.18.0.9 as permitted sender) smtp.mailfrom=whitebox@nefkom.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787416737;
+	s=arc-20220608; t=1787417437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=g7kLVYi/u6oDHfqj97goW0adMfCQDYdgNJj4eCuKJKQ=;
-	b=d5S/Yaf6r3AfffOuYInTHMHiySapcv7n0aCz5tyq2t8xL1lsmKH9BfuDMhaZ3il10Rf7Rq
-	/E+HUCr03YfFCxAFFhY1EEr2fwAtz5u2Kf75xcQlSHDuLbHWpLZvPS6RkjXdfaf3YrGdCq
-	FnX9TGf9F9whprKc20slDY+RR4p05dE=
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-836d228798aso1327737b3.2
-        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:38:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787416737; x=1788021537; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=g7kLVYi/u6oDHfqj97goW0adMfCQDYdgNJj4eCuKJKQ=;
-        b=JCloTXYNkIBOUQNWgNmrRbLSTjl5o9ppNgq+R903Myo2qwSxQFzB6o+/7hUTJpJCY3
-         mWis5WPavcEUNucXAqvN+Kt/oj38ycPvJuUmISYm0Cvoa27QsNrDdy7IxbKfi7MNEbCC
-         urU9aitAk0vLdq0tEmP3yLm2iEN/Rhll0D5lDKwxPkzLKovdMejPd5gGWc+Wc/9d7moY
-         hxbJQ9xOdUb0aQTyNCLupcr5q6COXTUBRn/eczoX8Z8dUvIiXAIFqQRQtKdxPRqbC8r+
-         F9BGJH0r3yRxp9SG1CjlsDNO8zW6ekL037vAenyvnadn/k8K1ItgJSmUkcPs9Cn//PSO
-         RGvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787416737; x=1788021537;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=g7kLVYi/u6oDHfqj97goW0adMfCQDYdgNJj4eCuKJKQ=;
-        b=YQKXpDR0SMAGJVegHDaQzmEaAqZZC8aGRBXCnpFBMSPiED89dDnZqWqe2iPVaJZIwA
-         upkEIta9CXRbCE5qwFg6sxZh7TsBe0H9edWGtvhPSskOjyerDB6mrVtV1VDVt/T9V1cK
-         OJ3MrvOR8jou+dF1Z2zRdI1r1oo4oXrs3IrNSZww1rKSAtrmkj1AvcYfE8j8rEbFA3Qn
-         dh4kya2JXk0LvDk5c2vjeqdUQt8hGvR+ND4NXTwXAcqRKHC+kznl4QOR/wXrxFnrYaKt
-         krOq6ugPNKjjLuiX0cF7Cezi52nvuqFECKjn+5R61CQpe2pzXmkD2t55hOZSRKbDyOUW
-         w+0A==
-X-Gm-Message-State: AFuF++kuzUYWlq9YLH9OUmGPGcZXqrr4RK1bHsIfBkEQxEcG3duy2hMY
-	xjlyRM7OVNV1izNAJRXIBc253G98qPBy3oylLrMWf559crwDiMQqSMKA
-X-Gm-Gg: AR+sD13bM5ID5i7lLaMEg6Aj/YKmVguyU3/J4A2GzlqtsFn3fwdscZLHNqyHOVxVGYy
-	FKacy7qjxNq1jr3SV6LcRLzM8Hyj6ZsxWiMbk4yi7Pa8wGuiGNnt+BQ2i/qYgEeBzSNHeEU3OLe
-	jdfRr9j4X7O+VCgSMZrxPUVa2hzoosnRxljmPOCMJmDVnxS5QyJFG8XkroydjnMr3v/5q9vnR3f
-	6FiaLJ/QENSLagMzFS5M4mfP4wH3jg4vdYcLrnN543AQVcK41Y0eYo6x37pWiwPV/arCgoSeJsB
-	UJ+rxdUM1uiNtOX9r57Bn5zmFEfU90THjqKxbRzIp4M+60ItdWnSYvSaAXtvvKyzc7ipQeVi0Ot
-	iVi72ngLZCR7PsDWapZtwxkJrTbxweAnkbnekHcjKPeMFV1Y7me0rEGReRp+YUx+8dkWsMuS00x
-	vEEgqXWmVkGhdLzBzkJkvopii8MiSVb8txj4Ro7+rrnMxqCQ1k5C0s+x4bn6PMl4epuIcVYIeLH
-	R0W++AlLLsgsYodsU81XoV5RZxfl18Ju68+Oj2PR8MPS5RQwXwfAfI=
-X-Received: by 2002:a05:690c:6b86:b0:820:100e:1abb with SMTP id 00721157ae682-849f7d0c986mr57211377b3.4.1787416736602;
-        Sat, 22 Aug 2026 09:38:56 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84ca518899csm12628707b3.2.2026.08.22.09.38.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 09:38:56 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Hugh Dickins <hughd@google.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>
-Subject: [PATCH] mm/ksm: mark migration stores with WRITE_ONCE()
-Date: Sun, 23 Aug 2026 00:38:46 +0800
-Message-ID: <20260822163846.3747787-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XNKqe4B/drntFpqC9zQm1IIunGsYcnQzk8g9/XwlYvE=;
+	b=RJ88+w8nNgdq/LmoRjzCE55OXUth/GgEhQU16N17eUl73vOrpYrZYMk40xEi7Ksy988/Qc
+	90cRaagzzDPkgQ70mJcqKEpWEiVhFZP5AFXnOUYEMrfvtJWP5tjZM70x7W+kPYq3r93IGo
+	ejeDDzV1ZLxpKMiTv73SDNOsw/ddhg8=
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4hS38C1WYJz1r6RW;
+	Sat, 22 Aug 2026 18:50:35 +0200 (CEST)
+Received: from frontend03.mail.m-online.net (unknown [192.168.6.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4hS384666fz1r6R5;
+	Sat, 22 Aug 2026 18:50:28 +0200 (CEST)
+Received: from localhost (dynscan3.mnet-online.de [192.168.6.87])
+	by mail.m-online.net (Postfix) with ESMTP id 4hS3841brWz1qqlZ;
+	Sat, 22 Aug 2026 18:50:28 +0200 (CEST)
+X-Virus-Scanned: amavis at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.6.182])
+ by localhost (dynscan3.mail.m-online.net [192.168.6.87]) (amavis, port 10024)
+ with ESMTP id rZELxZgBWMic; Sat, 22 Aug 2026 18:50:23 +0200 (CEST)
+X-Auth-Info: OL3cYjbU1r+qfm2QpDKq9gsFcdK7pEagtpeOPHg4Dj+AVcv3aYERNAi5TjJCOgP7
+Received: from igel.home (aftr-62-216-202-215.dynamic.mnet-online.de [62.216.202.215])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Sat, 22 Aug 2026 18:50:22 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 349732C0AF8; Sat, 22 Aug 2026 18:50:22 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>,  Deepak Gupta via B4 Relay
+ <devnull+debug.rivosinc.com@kernel.org>,  Thomas Gleixner
+ <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov
+ <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>,
+  x86@kernel.org,  "H. Peter Anvin" <hpa@zytor.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+  Vlastimil Babka <vbabka@suse.cz>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Paul Walmsley <paul.walmsley@sifive.com>,
+  Palmer Dabbelt <palmer@dabbelt.com>,  Albert Ou <aou@eecs.berkeley.edu>,
+  Conor Dooley <conor@kernel.org>,  Rob Herring <robh@kernel.org>,
+  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
+  Christian Brauner <brauner@kernel.org>,  Peter Zijlstra
+ <peterz@infradead.org>,  Oleg Nesterov <oleg@redhat.com>,  Kees Cook
+ <kees@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Shuah Khan
+ <shuah@kernel.org>,  Jann Horn <jannh@google.com>,  Conor Dooley
+ <conor+dt@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
+ <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Andreas
+ Hindborg <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,
+  Trevor Gross <tmgross@umich.edu>,  Benno Lossin <lossin@kernel.org>,
+  linux-kernel@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
+  devicetree@vger.kernel.org,  linux-arch@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  alistair.francis@wdc.com,  richard.henderson@linaro.org,
+  jim.shu@sifive.com,  andybnac@gmail.com,  kito.cheng@sifive.com,
+  charlie@rivosinc.com,  atishp@rivosinc.com,  evan@rivosinc.com,
+  cleger@rivosinc.com,  alexghiti@rivosinc.com,  samitolvanen@google.com,
+  broonie@kernel.org,  rick.p.edgecombe@intel.com,
+  rust-for-linux@vger.kernel.org,  Zong Li <zong.li@sifive.com>
+Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
+ | VM_WRITE
+In-Reply-To: <CAKC1njRapOxS6ibQdCuES1E3aAjsA+yGz4yZ1xJAZHU2vkAm_A@mail.gmail.com>
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+	<20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
+	<87jyslndo4.fsf@igel.home>
+	<CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
+	<875x44o9hj.fsf@igel.home>
+	<CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
+	<871peqgp9v.fsf@igel.home>
+	<CAKC1njR+dTdvp+BmLGPtgd8dufiUwBtkQ9a-qinELT_Fmi13sQ@mail.gmail.com>
+	<87wlwif04z.fsf@igel.home>
+	<87tsrli6lt.fsf@email.froward.int.ebiederm.org>
+	<CAKC1njRapOxS6ibQdCuES1E3aAjsA+yGz4yZ1xJAZHU2vkAm_A@mail.gmail.com>
+Date: Sat, 22 Aug 2026 18:50:22 +0200
+Message-ID: <878q5y6qwh.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9A20E40005
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 0410480002
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: gtd4t9qjpx7be6duku313m1iqyhfhc1o
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787416737-806685
-X-HE-Meta: U2FsdGVkX19Fi+b6k+Gf5E5uxKeA0Yc7MgwptWfZE8nM09Riv14aI2u6r4uL/dYLmRjuKebxO5jpZUPy8IuwnbIyZmlEoBkDChAQNVYeiLlZ5S0LaguEnkyKdiY7NorZVjgunioT1DZgxw8weq4Rzz/ZaOw+t5eJ5Yx8v1cPdcu4aELKXEeJZ/xouwuuSGbuCJR3+KlQyoA7TIitNbzNvC0x7/DzyFXB+IpVb4dOp18XIZ6kPTiP0CKT6ndn6zMZYKkNJFOzNL76u2D4GPe1qmqjyPQOw8pxwUktHeIUs9j9VEdDBZ6OuwvKQTR5XDVURCzyfAgbhyXvSv1B4vMUqQriflvMBfNlH2XlR3XZYW/S+yIE/c9xaBQQfDgMXAqNi8ZX5jdfj+EL2giVaF6w1P5IBrjZHZhY/m/y0Gt6vBDAkzjQ1Q+nP3Zgq4g/zQvVxPF4oMLd12g89x0AOHiWl1eXzu39CONjqTZ10F64taNpiZ+3utuXl0+S6WUoJtZ5+T87T3JN/YA6CL/XvG/5xv7385vHI53awlU4mPLejcKLsboCwp7BS5Sk8JfWhMzv4CM4SoVvfPcMABQiB6VJOORTi+yoNmTI8CFzW51qso3/uQxCIkgqqKz7BciJeC0DZjUi9EUfcY/vbizNv+5f8XuGCOAdv51dy7Wv+66VygaiwBjAalWBdZWvWRx6yTrTAJkxPuMkFXr5SfyxVvY9eI9s1VFHpB2QoJVKabocJZd+ms12ibq5o2y4k5e0g0i5vQWlngJO71Se/YNsSQuci3Ig3yr+mr7/6EjSaIbWYAcTzw+Xc6oTmbinbP1T4LiwKzoxIup1Vw9CaGlLDNMX0vXyUcwxzjdzdCA0+wc5aQXCFC5fPRax32wYtpFq9i19+LLRL0lLLDOS6IxVs4tASwS90e7TM7fIK6XfPucsbLtsHx/f61B8C8I+0LupduUxeLKCHe34ykMW2FwlnbT
- cQILH/M7
- r/df8YHyWYsrRkuM+6jQrd/U4R4ClEDgVYASNkGYaxaKpcD4MU/Y7mZEu3Z0TMMIhXlwXv/KauJKrIZoSGkvnCdaZhYT07kCYDhfFczKr5Oo6JjbvmiNAooxL+WcfRdr2po40qDk2o/nAGFVFKmKp+7XGxzw7xTYQLLFtq1YFKEfb+s+yI0RdA3rrqAAIANIXHAeEY4wU0rMbUizxeo7kSj2EshM0wMzgVzaC2C8rO0eKjzXalfOGxxYf1hWfcG/gINqUjClwQHGumB1QmmGLvC0+t7nue1sNJDLYf2ChvUSrdgH+hMQCUWci0CupJIED7kYSYqQ420cy4Rkezt/Ad/x6fZqTFpF3JLUN7c8wbxF5Sd78/OSd5tmnO2oP9gSMdLDDVfWs0EwPSUtu6xmynaVycR2dS7mudusE5v8h31pkpafTAbvqAR1tJjx+IF349zF/k9HaRRhfDjRiHgJ63ZcfmNmvsIi876VZwqssOUtygbMFbj3ebWW/z8AkKCmhJyItp8LJGKnGpBFryiZZqLa/4Q==
+X-Stat-Signature: ru6yap75iz8zswujw9wrub8xydc5q5eh
+X-HE-Tag: 1787417436-634536
+X-HE-Meta: U2FsdGVkX1/S90uW4vOcFCMy+yAxGXS1moppOeg3iiRzxad+W2emycNKBUcTzOycOr7uPvSAe0rXRW83x6jqfQ4lsUXMVtG2gYo0Vi2Yezchm9iyedGzTscNDDLW9G4QyILH0seGxsUN+sOyBPkOuJXpvGcMSO+Z7+zdq5B+0FGg9a2Vmm48is7AojWuRYnc7iNNHrhrFm6eg6/tax9pt2h8xQ9ePIzxsjXxbK8pg9JP2fnWOh3dhmZCX80B3rt+vc65J922eGBwa354OeV4cLnRpjKPdzKRopqo94WKKdVyaYW+0Hoh5VtcHSKhQI9QYRi8pgz+hEY1v739g/vD9eNvfoQKgNjW8FkWQeAC73Cnr3A0Ueahb2SJts5T+f+phKVpyGaHLTsZ84Sifu9KwnzZLBQn2JNfCMGWMcTwmslMfGybJ7Y99mQ60sN6jj+utvZkYvkudkpw+dCWYk3NLEhy8Nn7I8wgM8ETSYFilOdfuqS8OqgHRDkF3VBX8oFYYpJLxryAUT3zq6hIo3gbwjbMJ+h+v1BRxSD4/+btIjjX1AZ2aOUYOsTqZuQNCIUPTlFUKdL7yrREhib4UunZCtKE8iw7SzIhrwKkqxGDYVG7YOlLmXSR0L/XjaTJGcOYR9BBOKfUv6dsR85WnvnXBxeSH4IvZiQWRwdeQ2BKLW0PxC4abXxdOC81DeIsLljgniepN8Gtj2QKGd4hBBtfQ32TO6/pvUuU0HKUDSgz/ruLc7EFh6BxVHgpTKw1rLhz3OOCSl8liCUV2wg5Y9XlcBPcVDgyLV0ax/2uzhFoUzGiV3pyjL4ehWbDfQfdsfHtZoaqBVGwPyNMvPARdQefuVLzVyfbfI5OUYYSwr3BxZZZZUawzaAnkqWGwI+BCj3brOfhHEIgs3xpV/e9IwG2uGlqXUGCrWngJygRYC8ysUVEJPTGPmIUHtm/LkQWEigj3SlLP4YUJ3wuQfAxawf
+ XojXQj4N
+ wbcuXAFYwk1XP1yiXR5UHuaeEn6yy6ll4UQDou44jDYaY+dy4RVyRrqMoV0OfXEodXWXDeY9eWXTJ/NAxjvQpypPs021ap9YAYw+iwB4RpQkKw/SDwvHs8709e++nAgjz4u9vteUqJxANMkzXqQK5LtHkkXxtw1XRr5dvMhF3HkB8jvzwQE2E6jrmFH02jpbvbuAhlOjS2L524927WqGlXOlcHSShS03H2z2ohJovUm7+lnzxLfxe/aLqlIHJWWoJRPE5FRrPIFrXjOXUvzK9a5np2mXF2m3RO8IKx4/y5KUkFN5AALq2HcbyQAvSi5qGNvY2zAadZSI8UaSNTeKb5BhXIp7+dl5N2phJkuwOVzy+cK3aM3cPnpOcMPZqLBhOppQOOHa1Ix5PfyEYMjabOds8N4vz2pM4yOIOkeZHqhfAdDqLdMylNdEGhmXtYJEdpkMGOVz13SVIAgbfDQQZ6YYjWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,67 +135,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ksm_get_folio() deliberately samples stable_node->kpfn and
-folio->mapping without taking the folio lock because the KSM folio may be
-migrated concurrently.  folio_migrate_ksm() updates the same state using
-plain assignments.
+On Jun 02 2026, Deepak Gupta wrote:
 
-The reader can load the old kpfn, then the migrator can store the new kpfn,
-execute smp_wmb(), and clear the old folio's mapping before the reader
-checks that mapping.  Thus the initial kpfn load can overlap its update and
-the subsequent mapping load can overlap the clear, with no common lock.
-This leaves marked READ_ONCE() accesses racing with plain stores.
+> I'll send a patch. Thanks.
 
-The kernel reported:
+Any news?  It's still broken in 7.2.
 
-  BUG: KCSAN: data-race in folio_migrate_ksm / ksm_get_folio
-
-  read (marked) to 0xffff8ce401421330 of 8 bytes by task 48 on cpu 3:
-   ksm_get_folio+0x7f/0x2a0
-   ksm_scan_thread+0x1635/0x3330
-   kthread+0x1af/0x1f0
-
-  write to 0xffff8ce401421330 of 8 bytes by task 102 on cpu 1:
-   folio_migrate_ksm+0x6a/0xd0
-   folio_migrate_flags+0x193/0x420
-   __migrate_folio.isra.0+0x162/0x1a0
-   migrate_folio+0x4c/0x70
-   move_to_new_folio+0xd6/0x170
-
-Use WRITE_ONCE() for both stores to pair them with the existing lockless
-reads.  This preserves the existing smp_wmb()/smp_rmb() migration protocol
-and control flow while preventing compiler transformations of the shared
-accesses.
-
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- mm/ksm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index b4142746777e..bec6fea0fdb4 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -1116,7 +1116,8 @@ static inline void folio_set_stable_node(struct folio *folio,
- 					 struct ksm_stable_node *stable_node)
- {
- 	VM_WARN_ON_FOLIO(folio_test_anon(folio) && PageAnonExclusive(&folio->page), folio);
--	folio->mapping = (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM);
-+	WRITE_ONCE(folio->mapping,
-+		   (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM));
- }
- 
- #ifdef CONFIG_SYSFS
-@@ -3318,7 +3319,7 @@ void folio_migrate_ksm(struct folio *newfolio, struct folio *folio)
- 	stable_node = folio_stable_node(folio);
- 	if (stable_node) {
- 		VM_BUG_ON_FOLIO(stable_node->kpfn != folio_pfn(folio), folio);
--		stable_node->kpfn = folio_pfn(newfolio);
-+		WRITE_ONCE(stable_node->kpfn, folio_pfn(newfolio));
- 		/*
- 		 * newfolio->mapping was set in advance; now we need smp_wmb()
- 		 * to make sure that the new stable_node->kpfn is visible
 -- 
-2.43.0
-
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
 
