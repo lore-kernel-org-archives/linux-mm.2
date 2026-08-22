@@ -4,91 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F301C5DF8C
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 17:30:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28FAAC5DF97
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 18:55:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B74686B0095; Sat, 22 Aug 2026 13:30:47 -0400 (EDT)
+	id C90346B008C; Sat, 22 Aug 2026 14:55:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4B616B009B; Sat, 22 Aug 2026 13:30:47 -0400 (EDT)
+	id C67D46B0092; Sat, 22 Aug 2026 14:55:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A61376B009D; Sat, 22 Aug 2026 13:30:47 -0400 (EDT)
+	id BA50F6B009D; Sat, 22 Aug 2026 14:55:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81F2C6B0095
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:30:47 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECF8B80153
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 17:30:46 +0000 (UTC)
-X-FDA: 85129595292.10.4B263B7
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 286E2100002
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 17:30:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GbbejwmR;
-	spf=pass (imf14.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9338C6B008C
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 14:55:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06355C01C4
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 18:55:51 +0000 (UTC)
+X-FDA: 85129809702.30.0BA94C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7820E20002
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 18:55:49 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DnUgW/OE";
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787419844;
+	s=arc-20220608; t=1787424949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cOewuHhYijHg680wHZMfLhmFaLHTLM5/CGaRUwoaHXw=;
-	b=o96BcxW/wY1k59htaz9mLKZikySAuNqZx1hGFeu8iXBO+yIOmvfqAlnhcUfdHNCZbGXnDG
-	dYGSx7GcjO9McUtRmR66B7dLjm1H4pvQKAQIEB3dn5zftBr9GWwzjAGM5k61fh6/Jpcr/z
-	bN7xtUMA9bpGic1kSH31tPYLjPLW1rM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GbbejwmR;
-	spf=pass (imf14.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=78SBByw6W5epz7cVxeuu6l+8VUwUHF/hNkVnqoTyScQ=;
+	b=xYj91m6Hycz0HNOKA/r+Sm7SsP4sY9FOfiGHnVnusz0p+herxz8kc1FWyT+Ae6YYWkD5dc
+	b11gq7xPEbCzhAblF/WF2iPAylsYr7GsCSTQOjujtoM6n/tNFc0SxSQCF2vz+H+QqBJskc
+	uG7PA2XN/qTWtXcowltFtJeQpEiHomU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787419844;
-	b=Mc/yksIiRCyjG2UDkWmTqKsS4KGJ0pBz8uOTohR5jnIZi5ehZ9RxZjYAT+pjZKQ2n0jssw
-	hAKYPGwlkOnoQSigK9OJNX/Ck22aL3cxHyaNvsAILmnXdlejScU1UnkX8HuJq61Zju7gHo
-	PBAHmJMYYrGZtavePVA1094iYfwqjwI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=cOewuHhYijHg680wHZMfLhmFaLHTLM5/CGaRUwoaHXw=; b=GbbejwmRT/Y9YCxZ5dFbYZGMG/
-	4mhTcJj02Rb+ynspC7Gd7T+p0BhxZWbFBjrdzuzpF5lT7YFlk9ge++4aemWplVqm62iGsrY7IoTxM
-	HkpIP6//e8SeHa0L34uU9ZsGlW9lsSFv+mVGE1s94VOfU5PxUKaggXPErWD9Bc8WarRkIEOomPz3W
-	nERR2GMVPWhe9CJVVoHnIpHxH2Rxl6tm4RIQy9VN/5Ea1qfR2uqgDV8w68RYjLekK6VlwPYQd0pp+
-	s6tGALbp0TjdT8YQOg24Qo4PXeQMnG7cKaX8R7pk/4XEAIImjTSiXmgb3sCzPYnXDyuBrhA8aovnA
-	U2H7LffQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wxpYG-0000000Egoh-23eY;
-	Sat, 22 Aug 2026 17:30:40 +0000
-Message-ID: <23c3480c-2779-4618-8f8e-57a60d26cb3b@infradead.org>
-Date: Sat, 22 Aug 2026 10:30:39 -0700
+	t=1787424949;
+	b=wpuWTn3zkfZ6s7My71c6wMx95ziDfmPJRIWUZh/PU0vRRlthvxtFNP87vkMa1w5tlRYWoM
+	JUTW6GXlYAGwRhCV4X9Zr7oPqMRDUWCefFdslClwQ1jIKT5Kt0I+0M4tVT0vwDaMN+WZVR
+	Z8CF0/UuQWJ33d7D1rHbeKrZSr0/QVc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DnUgW/OE";
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 76F4460008;
+	Sat, 22 Aug 2026 18:55:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485601F000E9;
+	Sat, 22 Aug 2026 18:55:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787424948;
+	bh=78SBByw6W5epz7cVxeuu6l+8VUwUHF/hNkVnqoTyScQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DnUgW/OEk1K5xfMoFU0brDWSz2iUuUROqMrQbohZNa6W65TeH+nyrXq5F9vu3mmZz
+	 JbIGV8v7KWb7Tl8EfnNa98qitCYoWyHVBEsTnlC5gNY8khyp82h9G98GdIooq173Gp
+	 uWa8f31tYwduZ4uKGZY6z/gsP1YvqPNbHFt+NMiMnaTvRjkdvJv/f+KcJ1MHjOaeJY
+	 0JGLgT3MuzUy03AEYH291WJP+YcCIaLhlz2Er+rtuHC6V10HlS0jg0LME7nXknFCLo
+	 2vkHT27XAbrnBrr7ARz3E9a8LS6acqWqlL5ulsvzt8RN9lFDQyqwUBFEknCkcGyA/J
+	 2PgDnnn6barQg==
+Date: Sat, 22 Aug 2026 19:55:28 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, Hagen Paul Pfeifer <hagen@jauu.net>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: properly account locked pages
+Message-ID: <aonwNh4vsmyp5o1K@lucifer>
+References: <20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org>
+ <178706447572.2799959.13846195033539124794.b4-review@b4>
+ <aoRx-VLojNCSBPUj@lucifer>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] docs: xarray: Fix xas_try_split() name
-To: Karl Mehltretter <kmehltretter@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: Matthew Wilcox <willy@infradead.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Zi Yan <ziy@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260822121651.1559-1-kmehltretter@gmail.com>
- <20260822121651.1559-7-kmehltretter@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260822121651.1559-7-kmehltretter@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 286E2100002
-X-Stat-Signature: jsfk3u13qorymfykfbrdwh4kzryayy43
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoRx-VLojNCSBPUj@lucifer>
 X-Rspam-User: 
-X-HE-Tag: 1787419844-424793
-X-HE-Meta: U2FsdGVkX1/aMtvcGNDklTcrjF8Bj+OzqVkpw9yd/MHdq4PchnRz17ZdD9mMg8Pe3x+1sjjtUD6p0/lpt2fwtw6BVfdHi51GjqNDAdafR4zoYq1VhNY3pGEQOj0wKJEDJMXVJazJ0p9I2AYGvzLqWjPIRzaJt9gTHDX+8qxVzzzTjuIt+1ET7l0xdgv/lVk8Zk66oqjxDr+eUvCaKqlbA8fMpXLe6tc/Tzrtdf6gMEsIHvdguQtqxachuNetdeJ9rj/Ka4A7iAaXtLSJIUQtpxJiVdp5koyueo6CqCQpeLyjD+8f9bKCtEL5ZQWFkdbNOOWhCGlqJgjCqcD073dUKf87CFCUPT9cH6g0qCA2YBKoaXKlX4eBjVOkNMficXw06Ao4Oip7Ok2KxOd4XFoJCtyrnHuRRAbP8Khta+X5bL6T3hRelecar3taOXjrQWMKdM4AnFKrGupQQYhc8PM633twlyugr4o7sUAqTe8IxHOW2fAT0eiD6esTTR2PgUHw4yYsFguJjL1/FXPdzAQbh2bijZdZUifZJgrlferWF/Gcf8VaaZ7xVQj63JQJo7clIxnySpYrjmfHlozSqDUw2gvjwCK4bHKZABl32eroR+Rt4K2qjMaSZF7eoSRu4zIqbUZ9FrpfHUeSpHB7MPsFArPJmmowh60Ad/TAeuplQtiAFckHfIWkz8T1lmR2I6y20tb70vYaN4ufgf6mbFjK7439+7xodeHQ57eBd8GPEQ8Hg3wqK7H+LXx7VCwdSJ6iDifKnA4rx29r3EzuNoTaFxnuXLxf4hxJAOlkw+ow2dAO1OimH9etftp7mIci6FRScEsPNR5T7gvUqVscTK8Aivl033Uyr4oGUThxHmJgYUkB/eK6BA6L+yHwt59Q/BMrSSMJmzORuc8D8nnmnZZ8DwE7nEQdpYAF2ULA8KuCyQ1SoTaudz2dW1RyaFqnJbQSBcFaFhu1Prjr4qXfllu
- hsXXn8aW
- GyduaQ2yZE0qqWenmWsz5tC/3/XbNj64TLuUIVR1YhzmzTPIvUdpMSz1JQH+fWQzfNfVGTo0MPJSA0VItBgDkm1rbfg3DKXKieAhmIhrohS/nwNKSYKKjRvOba0G+Op6qER4sp9f8r4Ek8Ez3bihZqsl9Cmom5UtS+JxjlSouzPNkMO8B1ku/8TQfZoAcau9BrchrFiLBNbV3BvRZqwfBMQYCExQF4wf5CHWNSi1hqIdAMeA9ydj/kix5ybswGRgjND3DiHFE9uXfMgXw1pbYffMFJBsAR7mutTV3juWbgg6P0FnLKAYR9WCMB2ar6KPd3MEwhDtqNTMFaNw1ixt8anvbEjgjDHi/Bq+bZDVJBvew8KoZrZCeTSUD6/Mup9od1VFJh6J5KD98Dfnj+K5p9ZJb1UgISg8iJNwH
+X-Stat-Signature: 1fbhqnmcohp9whac5jm79jq68cqqdzjt
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7820E20002
+X-HE-Tag: 1787424949-109325
+X-HE-Meta: U2FsdGVkX1+CYQCW9IOOiNec24Kk5bK88IeKamxNvr46te6cTUQakgdsa22n8id2r1gNcSJ/INMqw5+dLF0WX8daaT6kBlCIjS//XZVPorxdYZj8LuXvJuHmCb63EtkYxlIV39uAUC2c+19+fMsE5mh3mGuQcWKLVLcOXFpzfFjcHDe8MjB5ewMbAJ0Bw2WfBeaRgRTTBt1TVnY/rRtXPvlHpmPeC4rgwTSHU+kEoG63yImUV8xsY3nImFnBB1P3ySPW6zAUxitByk5ZjfrpC63kDtySHVUuCggjOd+FtE3Bc85tuMzbN33bZZZqvmVhCkQjORU8oziaRe5G2Tvs//1D5fBXXJUsGZA7sCFr2qqoRKgbby1k2uYVrejPHDV9FrgiEKTTKbCRcq1Rvt1HqxC5vA5OhvmUlJtUQ4Elao1c5rjLuNHYSbiowh5baBiS1c70MENNuXbh0uwa4RZouXO2rVoE/AlUesON4IsbB2hfDrZJCfi5qKGKPKrddAvtJl/vMCuIu45BrdKhvigZ9FOpslnTYuqGTWog+g4T9KKo95lr60o+9/ga8EoOsQ0sljYSoBYoquseXoxLKqb1V8/k+eSJAr0nRmA39L9Yq8GEgYtVNZ+nGZxeIeKqF75k33MpB+3AYo6CiX73ySBsm+Z/bY38A3Q32ouzGJe6Z8isXd2UtFkiS9s4Nn8mfuVmqYGndQqt/5ygEAYuaxWnGuFZqAFgQmaIJRJ/vo0yPMj+B0ch/FqnUzblWabG3YSm6ofwoi5esqUxOpxASh9l0Eg09OEq5dz+EX5+bhAoJLiKeLWOeTewapw72bfKSsQZaQ/ywFM2jEZEPNyYb5qWInnlRJ2c0QhC5HeE5mF3kTvf5VMh1ONqEqfreWYj1lgBDGlw4c2RucAJzzVue5181ZYAkqPyZDylEzMZ4PplM10RwQzyw4cVpnBFlk4oO5e1CWY3d0fFggi9YhO61SR
+ NomUIS95
+ 5gC7QJhKPKomoviM4pPlQ20k7v0pSTxsC0cizOdsd7yDlKJ5On7g2NhcQ/y5oOcAHPXjgjoMKf1ZugR4asWKIGp6JuBibkEp5f51H1J/wV3D2xaf1+D2dBvqhdCqOa3k3hqTjkCOxlMninr9KEaiAVwMAyJdmQCM8+lnPHdystIS+zReE/VlXEg7ti5S2HLXrKA11hoGrZ2cX/g+qVdDPh93iFl00nzjmKlNPIxczTLr78biSYBS0NuL7KZa7XXm5yABrbhQ94AVgL/wIUIC1U516oa+T+xw5YJId3oF2lBD+J4OJUDCJ5UztL9vC1hMq/bLS/EXyweKCt+BFIQQsFcMnywM05qfPdRme
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,37 +101,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Aug 18, 2026 at 04:27:48PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Aug 18, 2026 at 05:47:55PM +0300, Mike Rapoport wrote:
+> > > diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
+> > > index aac4f795c327..626e7033b72f 100644
+> > > --- a/tools/testing/selftests/mm/memfd_secret.c
+> > > +++ b/tools/testing/selftests/mm/memfd_secret.c
+...
+> > > +static void test_mlock_limit(void)
+> > >  {
+> > >  	size_t len;
+> > >  	char *mem;
+> > > +	int fd;
+> > > +
+> > > +	/* Locked pages have an inode lifetime, so need a new fd. */
+> > > +	fd = memfd_secret(0);
+> > > +	if (fd < 0) {
+> > > +		fail("memfd_secret failed: %s\n", strerror(errno));
+> > > +		return;
+> > > +	}
+> > > +
+> > > +	if (ftruncate(fd, mlock_limit_max * 2)) {
+> > > +		fail("ftruncate failed: %s\n", strerror(errno));
+> > > +		goto out_close;
+> > > +	}
+> >
+> > Can't we ftruncate to this size in main and be done?
+>
+> I think we should be able to, will change unless it's somehow a problem.
 
+OK no, I have to do it here as there needs to be a new fd since keeping the same
+fd would mean all future tests would have secretmem that exceeded the rlimit
+quota (since it's per inode now), so have to set up new fd, configure it, tear
+it down just for this test :)
 
-On 8/22/26 5:16 AM, Karl Mehltretter wrote:
-> The iterative split helper is xas_try_split(), not
-> xas_try_alloc().
-> 
-> Fixes: 3fec86f8aa8c ("xarray: add xas_try_split() to split a multi-index entry")
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
-
-> ---
->  Documentation/core-api/xarray.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/core-api/xarray.rst b/Documentation/core-api/xarray.rst
-> index c6c91cbd0c3ce..3d2b20c05a937 100644
-> --- a/Documentation/core-api/xarray.rst
-> +++ b/Documentation/core-api/xarray.rst
-> @@ -490,7 +490,7 @@ entry at every index to ``NULL`` and dissolve the tie.  A multi-index
->  entry can be split into entries occupying smaller ranges by calling
->  xas_split_alloc() without the xa_lock held, followed by taking the lock
->  and calling xas_split() or calling xas_try_split() with xa_lock. The
-> -difference between xas_split_alloc()+xas_split() and xas_try_alloc() is
-> +difference between xas_split_alloc()+xas_split() and xas_try_split() is
->  that xas_split_alloc() + xas_split() split the entry from the original
->  order to the new order in one shot uniformly, whereas xas_try_split()
->  iteratively splits the entry containing the index non-uniformly.
-
--- 
-~Randy
+--
+Cheers, Lorenzo
 
