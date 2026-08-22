@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A5D8C5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 09:37:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36725C5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 11:34:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 761636B0095; Sat, 22 Aug 2026 05:37:12 -0400 (EDT)
+	id 888926B0095; Sat, 22 Aug 2026 07:34:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7123D6B009B; Sat, 22 Aug 2026 05:37:12 -0400 (EDT)
+	id 867C06B009B; Sat, 22 Aug 2026 07:34:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 601666B009D; Sat, 22 Aug 2026 05:37:12 -0400 (EDT)
+	id 74F576B009D; Sat, 22 Aug 2026 07:34:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DCE286B0095
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 05:37:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4582E120310
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:37:11 +0000 (UTC)
-X-FDA: 85128401862.19.9064CB3
-Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 00E9440008
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:37:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=AW2TRut3;
-	dmarc=pass (policy=reject) header.from=grrlz.net;
-	spf=pass (imf07.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net
+	by kanga.kvack.org (Postfix) with ESMTP id 3B2D16B0095
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 07:34:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83EBD120390
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 11:34:08 +0000 (UTC)
+X-FDA: 85128696576.15.5F74F21
+Received: from latitanza.investici.org (latitanza.investici.org [185.218.207.228])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 57E1740005
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 11:34:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=g3XcHBIG;
+	spf=pass (imf04.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787391429;
+	s=arc-20220608; t=1787398446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mO/P0+l2gNGVNNapyT1SVGjulwrUYq3eEwcsgYPE6uo=;
-	b=fwBYAKEWUPTf9iooF3gi8VoqtMlseEh0895WQb0hUlPpGvnoIpA1LnUTGSCA8pyMQ1nKnJ
-	2Xre1/R/xnCIhXr6oDxqm8ssbP9pxs9019U3PePYv6g5O1tfS+Ef18NyT80ln3njFqE+Ep
-	t/ZVMMw0+uHW/7C8a2XByZN4KPSVoSw=
+	bh=GNwyVkbrl/IZdn/NaEk3v2rcVEw/q2TX5VaMaY7Fz6A=;
+	b=nMDd7cVdq75Nyjij54m5irMDPYLZNKwLxD9iJzch983xaiE+zp86OuBn2fdTD7H7pH+You
+	1P7pbDftDxxcs/HwkA57nmU9ZwYUEP5xTjl3EIkYwFpRdjcRVEMdzqkWZke9Z/R/toNK/p
+	rr+eUT8LSaR3cEkwdoerBCzqTfmJz8E=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=AW2TRut3;
-	dmarc=pass (policy=reject) header.from=grrlz.net;
-	spf=pass (imf07.hostedemail.com: domain of include@grrlz.net designates 198.167.222.108 as permitted sender) smtp.mailfrom=include@grrlz.net
+	imf04.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b=g3XcHBIG;
+	spf=pass (imf04.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787391429;
-	b=fYmburRFBzo5dKmj4/FgVS2DsqsrkdUi5mrC8k8ynI3ehdrFZzKvAuuLMXaUUC2tzrfut1
-	0b2I0d0dHcqmFARQUHKnnnEICdaR0ZALln655a5/o812Ne5/e8qeHFUPuLlIP87wz44lhT
-	Aacy3UJlwqra+zH38LgYYPEhmPWOcRo=
+	t=1787398446;
+	b=LeuqS6qI7nyGdMEpq0n9ON7DVnuovTnK3b8fFNN6Qqqz7Rwk+E8Z9TtWVj8hYrJPRWJNYN
+	NZPwuuIY02kTZqYj3kNbkJdRSo+ULje+iwVrJxOYv2Li0rSCf5J9pOKyzXJuP5OO0db7t3
+	xS6ahnOhcpYBjp4dCSq2X+EY2JT+ZHw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1787391426;
-	bh=mO/P0+l2gNGVNNapyT1SVGjulwrUYq3eEwcsgYPE6uo=;
+	s=stigmate; t=1787398443;
+	bh=GNwyVkbrl/IZdn/NaEk3v2rcVEw/q2TX5VaMaY7Fz6A=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=AW2TRut3MjPGhP0H4hr+lRuB61Lkh13O3+s1p1mKfX+djYut/xe01703gdveSkG8L
-	 +VH1EAf77xX14doMOjtAQUUMofJ4K81aKkmdiPUZzu/z8Pu3/urN+V2E/O7i/urqAb
-	 fmf+wQWoRKmEtPT1aEsUuEZVDN517k9vct3xOtdc=
-Received: from mx2.investici.org (unknown [127.0.0.1])
-	by devianza.investici.org (Postfix) with ESMTP id 4hRsX20G1wz6vZ0;
-	Sat, 22 Aug 2026 09:37:06 +0000 (UTC)
-Received: by mx2.investici.org (Postfix) id 4hRsX147xNz4y6W;
-	Sat, 22 Aug 2026 09:37:05 +0000 (UTC)
-Date: Sat, 22 Aug 2026 10:37:05 +0100
+	b=g3XcHBIGCwsDyRRltTA0CXu6mdQ3t4HGha31MglU1M7NlMpj/jeh0+kFAcIgLu9os
+	 193Cse5ZjVk1d2pXg1/47VABuzinLhWeN43czqHojC4XvKbDwSj6UGUzVv30+mZnhD
+	 RQ3hmNlvcrmak+RJg0vPnvx4j7dPlq/eKzMvi9nc=
+Received: from mx3.investici.org (unknown [127.0.0.1])
+	by latitanza.investici.org (Postfix) with ESMTP id 4hRw6z52rGzGpCY;
+	Sat, 22 Aug 2026 11:34:03 +0000 (UTC)
+Received: by mx3.investici.org (Postfix) id 4hRw6z1sVRzGpCG;
+	Sat, 22 Aug 2026 11:34:03 +0000 (UTC)
+Date: Sat, 22 Aug 2026 12:28:17 +0100
 From: Bradley Morgan <include@grrlz.net>
 To: =?ISO-8859-1?Q?J=E9r=E9my_Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
  mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
@@ -73,19 +73,19 @@ Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_fork=3A_initialize_functi?=
  =?US-ASCII?Q?on_graph_state_before_copy=5Fexec=5Fstate=28=29?=
 In-Reply-To: <20260822084927.547141-2-Jeremy.Jean@oss.cyber.gouv.fr>
 References: <20260822084927.547141-2-Jeremy.Jean@oss.cyber.gouv.fr>
-Message-ID: <00C50F65-0241-49EE-AB30-6B61CC6B0799@grrlz.net>
+Message-ID: <E33C59B8-755C-403F-A06C-7B7DE3F81926@grrlz.net>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3nedny6469dfurgkjpt3f1en7hpyaoge
-X-Rspamd-Queue-Id: 00E9440008
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 57E1740005
+X-Stat-Signature: n5xdyjbspuad95ufzfrop6m6s3u6hpiy
 X-Rspam-User: 
-X-HE-Tag: 1787391428-816748
-X-HE-Meta: U2FsdGVkX19TqFZB/EEfyWXwlbkWX45IA134kYV5hX0Q4ObZUcgkPa6FbxZF/f+w2Q85/0EPukqG5gH1/LB/pPAoAZDuXqTxEFPTmUTiFoqz3iTK8SGyrKYc9HI875aFN+SYIlMexM3W8aBs9Py0cpeesd3sd7l61oY6vZQlA+3lhjvYXgLncxS56KMiqSSYXL+f5bJZAi4BAxPke83FeL1vPZ2xJwlg4o078RAV5BeSeGbu4qeypl5vROkYbqqaflpGcbN0W4bQ3knwa3/AiAqxdl39C0pM27RteKJe44CU0Gw8nPZoZ0TQW6JVcxU2XOvrHEKwOV1ksmr7get89hwypbOCUh/u0505SDtCezRDcsJuN71+RASSmDf6JXPPSaVL+1WB/U9UHefuLWTMb/vcmIPrGJ4BD2UI6+etdqtogzOHuVHo21BMt4A+Tau2SddzFHTGcBg1aqvP5S3a78ZYGXBH9LLLQl5MYYZETi/JwxmIxLqPEqh6VvRfDLvgBbTY35paO8XV1PJQ3lAe1zgPWQ1LHycbMnnZOEb9dl0erKyYs3LIAE3cYZ7qrab7kCG4rtiFCO+peTS4y6AdMihXXzeGV5BzyNAu9aCk0JEACFH8C3dWsvhzudqSAPsLNR1XK+4KI5jC3W7lhveDB97ELhlcK2i+fiykwlq6qEy1r5L78le2jeoYDOEPjOm/Ra6PmnAlWR+UjNQmh4qMrYH414yLtDM2MZy5OsDWv5/FGG7Dfz7SFjwXfzfMVKyBJ5oRcogbdEGmgofU+wUH5ji9hWwJcHCPeFVZhwI0tSwEW0b1QOfjDXj1W31K3QVWPIJLFWIaKyAldfLov0O0CdyxvePaZ45aGRTGuAiYNKBwePtAaCJOlQWzKT0wH0xzHxow9t9IakHjIIWrrq7p+hgdWgpHDj/n3G8/OhlfLUka1FyOhMFs2cWJ7D8s4GMu1cIOdTidTcE1ptPFWbh
- ZeccUXKm
- I4vF0eQuNUoE1nWT6tPd24LCDVyVWJyv4gZKd+Es1cx2Vd2HGHN/E4dGOtJ7/pVfbVOleZtkifluDmnMmPhPegecuNIO/vxKJYMcQM8J+z/RIGmj6yn2ZrFIPGKsMEuxzDGmA6Dm06LiF1WNEUWS2fA0KfRA/mjVavTmu2RDQ0P3ImBhFRo+tv1TCiKtnQkk8mXbmkauyAJnXEN0vFgxud5vWqLrW5MiwHL/lDlFUcDqJxqegDuS6/RPHGgyhLT7OMj/uhwIhjdPx+MMEWAja1UiCnblb2dycma8U0lRhtXZCWRB3lAxGNYzFCz+Sl3Z2FbhqMoQy681DvE/qEl8KDAZmW12rAPNK4HhO+WDHVv2RdcbIzduJddX4bO7PltAWZIJy2uM0n0xROitbTWxUqJxLM/pJ95v+Du0DoRpoqzY/QtIhy3MCRQR9mxkCDzRfvTkmwVLvYlTymPHJepoIs4IhiW8xf9nBrqAG
+X-HE-Tag: 1787398446-24879
+X-HE-Meta: U2FsdGVkX19hKKlYZwcJW8lm+qEsrVFHXLSyzoycZujR6uDoQ5zjtYfhbjz+4o/JyUzaKmDrW/6tw6d2SWTN1CLcigY+nSlNt8f5BGOer2LOb7IORoEgsYyHDIbK1xWuIzdISEGwjZPts/RIJLGqm1iQX0x7zONtOW6Ysn8FV/X/xiW5POX9UzNjVymUEF2sUsfyNXyZRo5TJAQwtWQW9XZuJe4vOU+kSISM8S3G720KlArAQZTo5elMTUv3J5yOd+bDWJg/CY5qOtGMTnR6RvS14q0Jln+y10hBZv20OTOvtGSeopGS3xn2MAP5zsiF6WaRXkegLoegdI+4B+kP1ymrpaDVTf2fJEg3/ncxlmWmycxIkzeJl4wggpjF0RvRlouDzMDa6yDS1wSwWOwSRuThrxAMVGI1Y6To5hH3B3V7P0M8eBzwMt02z7Q4CAuahaXl+vA9y3TUIQ68F2u5pnVj1Zy81c/4lTag8BWPfjCk8/JaDQqUtJrbI5ZN3VMBkwqlJS48NfybaJbsZYkdYf2h1Z79+jhiV8k3N0JC7v2xntQ4Y7s/eWbPLaRxp4Ah65QAJ7G7FMH4dzR3MG3ABCWd8IktDvgN5k793mNaHHLyCCdjXiHkqxxVY7RAh+JvcgrxeFGmKwzcGnCL/Yyggh9dFGl1sTeuaxW724pvrFCoIcrUAxw8IGVqnXt8v+TeEJ/DU1rwScuulIf02nKj2J2Kcp+a8OXw08T0igUA0ASfKlvbyEv7WJFh+8QlwBQB96Z0FRdjZDL/ZmVJJLI8Wr7iF4dM8M7j7HcXbYavDBN/CQEk54E79UlpOWnZkY8fapbPAVcGdks+49or1LrpBxoOjjUW+EF+gfmWabZdvX0PdAEICIipBxc67j2e4jJxqag0NmpstnHimjbQaoP5KhhFWfjQVFhRedv3ahqDNwuqkzseLmEYelDqqJ7kzU2TkP9nuzE6/npEOA9DmSb
+ nfxwSpX+
+ zkMgucuciCilBMUcvQAT7OWehCJ7fa39VRe6xbRS6ko0MmJCeGvU3xTlxGFLiMEQx5eY3yd+ew5BARo/oGDYa/Q5jNcXBXkuDYU8/4zXnOP31Z9n1wr8rfiDgTKpc+wBDTJjl9lqdRIWlaAFmYMeuf1s6uEH0wOlQOqVXQj9afAA2ROv0Ygz/vD4rAh70XsjCDYm21s1VKGFYHbtZzXdv/kPzDPG3TpdxUBY9cRiDHgZvN14fcYuKI4WNmFAUxaMsrjeFkuKJK90v6nq/FhyCB/bHWL5kuMaqawx3C484t4LGlDYAOJ8LMkivILZLkzWtSRMIhGKwfHMv97acic11684VAAqKapNujc3r2IMG8HyP8nkqADyy+8+NoX4aJrKOHb5sIrJxXFX/HXe80xJ0YlPxuhKkX8CAO1/YARJC+a5TFmUNfYACOgaCkCqtn+DifeXt7BL4e8fDa2eMdE1BMaCXi5HlMr3eH4JN6/SCLEtbKstjAV/G9grJiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,39 +93,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22 August 2026 08:49:27 BST, Jérémy Jean
+On 22 August 2026 09:49:27 BST, "Jérémy Jean"
 <Jeremy.Jean@oss.cyber.gouv.fr> wrote:
->From: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>dup_task_struct() copies the parent's task_struct, including ret_stack.
+>ftrace_graph_init_task() clears the copied function graph state, but it
+>currently runs after copy_exec_state().
 >
+>For non-CLONE_VM forks, copy_exec_state() allocates a new task_exec_state.
+>If that allocation fails, copy_process() reaches bad_fork_free and
+>free_task() calls ftrace_graph_exit_task(). Since the child still carries
+>the parent's ret_stack pointer, the unwind frees the parent's active
+>function graph return stack. The parent subsequently accesses freed memory
+>from function_graph_enter_regs().
+>
+
+Wow! Real life use case?
+
+
 >KASAN reports:
 >
+>[   22.190920]
+>==================================================================
 >[   22.195899] BUG: KASAN: slab-use-after-free in
 >function_graph_enter_regs+0xa76/0xb90
 >[   22.200747] Write of size 8 at addr ff110000054dc0a8 by task repro/1
-
-Perfect!
-
+>[   22.205134]
+>[   22.210770] CPU: 0 UID: 0 PID: 1 Comm: repro Not tainted
+>7.2.0-07732-g9328b3b03bdc-dirty #3 PREEMPT(lazy)
+>[   22.212576] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+>1.16.3-debian-1.16.3-2 04/01/2014
+>[   22.213750] Call Trace:
+>[   22.215271]  <TASK>
+>[   22.216242]  ? ftrace_stub_direct_tramp+0x10/0x10
+>[   22.217774]  dump_stack_lvl+0x4e/0x70
+>[   22.220531]  print_report+0x157/0x4b4
+>[   22.223202]  ? fixup_red_left+0x9/0x30
+>[   22.224407]  ? complete_report_info+0x83/0x110
+>[   22.226679]  ? function_graph_enter_regs+0xa76/0xb90
+>[   22.228084]  kasan_report+0xce/0x100
+>[   22.230109]  ? function_graph_enter_regs+0xa76/0xb90
+>[   22.232860]  ? stack_trace_save+0x4/0xd0
+>[   22.234156]  function_graph_enter_regs+0xa76/0xb90
+>[   22.236090]  ? kasan_save_stack+0x30/0x50
+>[   22.237752]  ? __pfx_function_graph_enter_regs+0x10/0x10
+>[   22.238694]  ? ring_buffer_lock_reserve+0x345/0xf80
+>[   22.239628]  ? stack_trace_save+0x4/0xd0
+>[   22.242121]  ? stack_trace_save+0x4/0xd0
+>[   22.243588]  ftrace_graph_func+0xda/0x160
+>[   22.245362]  ? ftrace_stub_direct_tramp+0x10/0x10
+>[   22.246520]  0xffffffffa0000095
+>[   22.250528]  ? stack_trace_save+0x9/0xd0
+>[   22.251757]  ? ring_buffer_unlock_commit+0x11d/0x5c0
+>[   22.253152]  stack_trace_save+0x9/0xd0
+>[   22.254264]  kasan_save_stack+0x30/0x50
+>[   22.273631]  kasan_save_track+0x14/0x30
+>[   22.276763]  kasan_save_free_info+0x3b/0x70
 >[   22.278296]  __kasan_slab_free+0x43/0x70
 >[   22.280157]  kmem_cache_free+0xbf/0x3b0
 >[   22.282963]  ? ftrace_stub_direct_tramp+0x10/0x10
 >[   22.284001]  free_task+0xa2/0x160
 >[   22.285699]  ? ftrace_stub_direct_tramp+0x10/0x10
 >[   22.286752]  copy_process+0x2aae/0x7bc0
+>
 
-And the free stack is exactly the mechanism from the changelog,
-free_task() under copy_process()'s error path dropping the stack, then
-the parent writes into it afterwards. Stable folks will love this.
+I see.
 
->diff --git a/kernel/fork.c b/kernel/fork.c
->+ /*
->+  * Must run before the first fallible op, so error paths never
->+  * free the parent's ret_stack.
->+  */
->+ ftrace_graph_init_task(p);
+>Initialize the child function graph state immediately after
+>dup_task_struct(), before the first fallible operation.
+>
+>Fixes: 6b1c66c9cca9 ("exec_state: relocate dumpable information")
 
-And the comment landed too. Nice!
+Ack.
+
+>Cc: stable@vger.kernel.org
+>Assisted-by: Codex:gpt-5
+
+Good, declared AI.
 
 Reviewed-by: Bradley Morgan <include@grrlz.net>
+
+
+>Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>---
+>Changes in v2:
+>- Add the KASAN report excerpt to the commit message.
+>- Add a comment documenting why ftrace_graph_init_task() must run before
+>  fallible initialization.
+>
+>v1: https://lore.kernel.org/all/20260821102207.3626491-2-Jeremy.Jean@oss.cyber.gouv.fr/
+>
+> kernel/fork.c | 7 +++++--
+> 1 file changed, 5 insertions(+), 2 deletions(-)
+>
+>diff --git a/kernel/fork.c b/kernel/fork.c
+>index 1e68404bd773..0d1ad92e2d33 100644
+>--- a/kernel/fork.c
+>+++ b/kernel/fork.c
+>@@ -2139,6 +2139,11 @@ __latent_entropy struct task_struct *copy_process(
+> 	p = dup_task_struct(current, node);
+> 	if (!p)
+> 		goto fork_out;
+>+	/*
+>+	 * Must run before the first fallible op, so error paths never
+>+	 * free the parent's ret_stack.
+>+	 */
+
+Used my suggestion, good.
+
+↓ good fix.
+
+>+	ftrace_graph_init_task(p);
+> 	retval = copy_exec_state(clone_flags, p);
+> 	if (retval)
+> 		goto bad_fork_free;
+>@@ -2165,8 +2170,6 @@ __latent_entropy struct task_struct *copy_process(
+> 	 */
+> 	p->clear_child_tid = (clone_flags & CLONE_CHILD_CLEARTID) ? args->child_tid : NULL;
+> 
+>-	ftrace_graph_init_task(p);
+>-
+> 	rt_mutex_init_task(p);
+> 	raw_spin_lock_init(&p->blocked_lock);
+> 
+>
 
 Thanks!
 
