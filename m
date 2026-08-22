@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 253C1C5DF9C
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:54:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CD15C5DF97
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:54:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DF2B6B009F; Sat, 22 Aug 2026 09:54:11 -0400 (EDT)
+	id 0B9DC6B00A0; Sat, 22 Aug 2026 09:54:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3C536B00A0; Sat, 22 Aug 2026 09:54:10 -0400 (EDT)
+	id 0693A6B00A1; Sat, 22 Aug 2026 09:54:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAF326B00A1; Sat, 22 Aug 2026 09:54:10 -0400 (EDT)
+	id E99636B00A2; Sat, 22 Aug 2026 09:54:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3F486B009F
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:54:10 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01B8F80146
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AEE106B00A0
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:54:11 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 275BEA0173
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:11 +0000 (UTC)
+X-FDA: 85129049502.25.1C20669
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 607AF120003
 	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:09 +0000 (UTC)
-X-FDA: 85129049460.11.20A6100
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3728680002
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=W1Ogbq1K;
-	spf=pass (imf02.hostedemail.com: domain of 3_qmJaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3_qmJaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=N39mj8yp;
+	spf=pass (imf29.hostedemail.com: domain of 3_6mJaggKCNQ0H31+68J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ardb.bounces.google.com designates 209.85.221.71 as permitted sender) smtp.mailfrom=3_6mJaggKCNQ0H31+68J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787406849;
+	b=uH1v34HUjZ9nFmz0KQGy+xlruLKV6OTaR+LJneaxADjq+hrhyKx0F8S+HvNjw+WZWd8RcI
+	uAJi1aTrLBBmeeNUuZUAV8FwPdpMB7r8FRq4mvkZ8ScMa3qqxm2T2AoAsFy3TAIDUbaff+
+	CcDHtQmPNHRvm5nQft0xY078Parfnpw=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=N39mj8yp;
+	spf=pass (imf29.hostedemail.com: domain of 3_6mJaggKCNQ0H31+68J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ardb.bounces.google.com designates 209.85.221.71 as permitted sender) smtp.mailfrom=3_6mJaggKCNQ0H31+68J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ardb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787406848;
+	s=arc-20220608; t=1787406849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ei9aAhCyyRq9nczFsrb/oQ6US+9hvk5Rs5Wuqs8mBgQ=;
-	b=Zcjpfz5EKddvbbrC/suG7fwxIdIeu4TFPkpT7HFKPeOvVD1kwU7cFRRb3nIieXIXksBQc6
-	4+jo9YbWRzdyHkwrszwVC/rxfe1wJh5+XuZkTYk8DV2Zb9S2bvrJ8ZTc/G8VGMiwyt3ReI
-	2/39ZX92Hmnmc8gGIf+Hfdnd/hIx8SY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787406848;
-	b=8M82mhjqUSzINc9BfmjOdml92i1OKeBIzTLZj2fEzo3bits2Irt0l6+UK260LAvzisU6qv
-	9b8cWVA4fiLHHVuii0/BlTVfRjlEDTYzQWM9nn4EqqRCTRrpfkkeQJEUM+zqDe09RgbGrq
-	/WVXtW0yy5clUB3t/KZH9u9PG9WjUHc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=W1Ogbq1K;
-	spf=pass (imf02.hostedemail.com: domain of 3_qmJaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3_qmJaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4955843c6cdso15912065e9.1
-        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:54:07 -0700 (PDT)
+	bh=3C1MhcgCYBzARL/+z1ptrjz40O26zol1QO0uE2euMIU=;
+	b=6JZzmk6tZEU39yhLm7TUR9wU6JKhFoX9yhoGOKp09TVKCCIMkTSjrlWtr5shy27571ZpPP
+	3v5N8V0cLJCzwO7IFNpgOFJzwglmxHOWqsGUPv6w7ZCml8N65E7rTe94ZhmtJ3kTmYTLgZ
+	eewXSkj9v5fl5PizPyhPKnttI5SVouw=
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f83416551so1536550f8f.3
+        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:54:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787406847; x=1788011647; darn=kvack.org;
+        d=google.com; s=20251104; t=1787406848; x=1788011648; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ei9aAhCyyRq9nczFsrb/oQ6US+9hvk5Rs5Wuqs8mBgQ=;
-        b=W1Ogbq1KWo4V5ZOoaAxZjd+iUBcOPuf8LnX1haG4JtSovIq666yEhVIEtrIGqRPfES
-         kFCX5fVlJ8YOI7XF1HMCCBGoE1hMg3vPU5lALb+oNWmB50miBlC3YmQCGoDxrT21Pl9q
-         hsPupGW/nmIc6VrXkFfbgyhsNgal/IRLqG9fbRgfcklokLXwpHhW6C1ePj/YXU1zkHSK
-         xqDyhizXZC+ei7yvbzTaEjuKgJE23xyvoCxizRXrtwZXfrbI/YmKVR4+eD9k5XRAjtwR
-         IyvHERAc0SQmtjVC5AoWDxtXJjuF2OwuBSTAk/Ew+GaAiWw5d3bNx8ko/e9+S1TI+93m
-         76hA==
+        bh=3C1MhcgCYBzARL/+z1ptrjz40O26zol1QO0uE2euMIU=;
+        b=N39mj8ypDjcxV+5cQITgKmtBaPY3FSxdTeXtNnGwnjvN4dsdVYLDihQtZCO0RKluf4
+         fjbKBn+lvjUhGgaqcaDb3lZ9MK8a6M3UKIMHFI81WRHswGX56VqoSpS0nBZXsy0BdjoK
+         ePg8H2RJxYfwDf2aCgvtagVblXd2J2kurcRqzWxXxNt95SVOgLxFB8odE+KTZTmSStSR
+         sxezw9uPZ1Wnj2vRYyXwoqWFntvpyr6mvgBqPu01Y7Ui92g+6cP/gFTvdGfsEOKQ0Jkq
+         /F1XAMvuJ/+tcWsF7PjjkUI6SXTqCguMUhHq7JMv8pHtPTf0dXyJ6aGn2+ngBbMWt0Nl
+         NDPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787406847; x=1788011647;
+        d=1e100.net; s=20251104; t=1787406848; x=1788011648;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ei9aAhCyyRq9nczFsrb/oQ6US+9hvk5Rs5Wuqs8mBgQ=;
-        b=DAqiGJtc2FNXJLumZ2vLznNirBNEnXMVXHTv630B2HHAZj7tPe3vH1jn1rLVMuZ9jt
-         ciftTBjv2ZHiix95HmT9x4y9StmhhYMZ/fl/gh7jP2vCcggJlnHf6xR94j9qbLgYRDop
-         F+x3pSKnOCKo0b9MT26HlojIJZks1HGAJQvjGItJctz7XvWD1bewNuN4C3sHBbzHygMg
-         RZomm2E6+odeKEr7KSMdqMjkvznDsh/4XXiYnq/b0RvXDUk0ZgTKJvQMgXGOYGsC9K5G
-         5tS5DjokbPUIKoVkAGsbUV6rciba/uw8EieS2PdlM0hKO2UEa4QWjeSgQJS0Bxu62sXs
-         3xfA==
-X-Forwarded-Encrypted: i=1; AHgh+RoSyUpd4LVcTnjEddgedgZMo/YW8bXCuLdqyCXUM7ppGcggcjQfzFmmez5ShSwP3CFHoF264WEHVg==@kvack.org
-X-Gm-Message-State: AFuF++l9sOjwKs/aLF/9ckMoNjzUH06K5sEB0RUuuLh2b+ebekiHiQDd
-	2m2mjkHDNESBAbgnlb1q2/1CttKqLUp5Y+YmypdU7GxCDO2OBszkL8c2K9Pgpy57NBi5e5ayOQ=
+        bh=3C1MhcgCYBzARL/+z1ptrjz40O26zol1QO0uE2euMIU=;
+        b=kTU/cliADGIHjUbWzSQ6OUyDshPzllbu7rjtT94Z5NdxDV9iqNptR90BskCi6B2i5T
+         DDsJlqKLFU9oU7PRiEnZn8f/99+vPnbCzu6YphG5F07DvZjsey5IUe5CKv9Hqmt2+oUB
+         H7eKKsRHojBgfhHavT5SKSI8cFCx9eNxxui+ckFqDkrmoHAAqTyhg35XMfoUgeDmYMTU
+         pLIZt7hqd/T32PFYCDu42Twft6sR0WlTGhNkwx97H+3g8RGvBM9LKBwHs1oNJpbsABdv
+         ody4d8DxSdGl8voTMDq+vr+O6YTuflhrw1+h0OgAMIJuPdGzF7mo2z1PGhdJXnlfRciN
+         Z3qQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3fTW1e3vc4E/ozhcckVDtSD7jYAnaeSVSxJz2biGfMbwUJzIk8szszot3hS84bkVEIYyijUVpbA==@kvack.org
+X-Gm-Message-State: AFuF++ly+xIqzsPveeYPO+ZcRgW4QRtGexo5kf3xVY+N5wx3dPBNaHa3
+	hhChCqIaBYC+3q9wW0Kt84Fy7RM6zoYKGHqi0ypVmwzcHu1zcPhObkiocfPDAOr1Rrvgftq+Sw=
 	=
-X-Received: from wmcu3.prod.google.com ([2002:a7b:c043:0:b0:499:8f0d:36d6])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8b77:b0:499:48bb:417e
- with SMTP id 5b1f17b1804b1-499b82f4163mr187118595e9.2.1787406846628; Sat, 22
- Aug 2026 06:54:06 -0700 (PDT)
-Date: Sat, 22 Aug 2026 15:53:25 +0200
+X-Received: from wrnk3.prod.google.com ([2002:adf:e8c3:0:b0:481:5a0f:19b5])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:310f:b0:47f:7129:e30
+ with SMTP id ffacd0b85a97d-482c0b976f1mr17563678f8f.11.1787406847588; Sat, 22
+ Aug 2026 06:54:07 -0700 (PDT)
+Date: Sat, 22 Aug 2026 15:53:26 +0200
 In-Reply-To: <20260822135323.795946-11-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260822135323.795946-11-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1141; i=ardb@kernel.org;
- h=from:subject; bh=LLSSaN9rhZ2F3aT4P4AsB5UNc3JBgAb9PUajizskM3Y=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIatz5Y0AZ4svS9ISbTaf6Vvbffb640AuEdFH514lyFxeu
- vB339++jlIWBjEuBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCREiuG3+xHy5/ozft6vo39
- a++HnWc27J26lnlODVv1x/cTz/MfferGyHBrod6fpd6OR87MNvD91aMtcLL+0Su90/UXLE4ohsc 1yXMBAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2204; i=ardb@kernel.org;
+ h=from:subject; bh=2CJ7XIW20mRvuSe13JPdhhevFvLjPgwtnqW6fGhR0pc=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIatz5c1bi+7sDNh4oOHy8XMHks1ZWx/c9LM5qpAednXj/
+ pol76fv6ChlYRDjYpAVU2QRmP333c7TE6VqnWfJwsxhZQIZwsDFKQAT0dVjZGjsanuobS/bwOzn
+ INDJt9ssjUtyEdfbFTGrcj54/RWdJsTw31v4rEPQ3sLVG+ati7dtnpxtEvm4wabQeZJex247NZX 3/AA=
 X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
-Message-ID: <20260822135323.795946-14-ardb+git@google.com>
-Subject: [RFC PATCH 3/9] module: Place MOD_TEXT before MOD_INIT_TEXT in enumeration
+Message-ID: <20260822135323.795946-15-ardb+git@google.com>
+Subject: [RFC PATCH 4/9] module: Allocate MOD_INIT_TEXT from the MOD_TEXT ROX allocation
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
@@ -108,14 +108,14 @@ Cc: Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
 	linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 607AF120003
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 3b1x38kf53kondoo4ou67xh41rqcnb78
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3728680002
-X-HE-Tag: 1787406848-372659
-X-HE-Meta: U2FsdGVkX18sPsymVE1jExJ4kwRUVk8SVE7lhGhupUxbhL4IDyrKmJtiN84lbdONd4IR+TqFyix2CJGPH21HDAVfQ125G8xJHdLHz5oAAcOYohKtrfFOOSx4RAvN1kNGYXUCLfQp+IlINFTtiXu8tpSoGP5L+g0iSkIEFHBiPrdf4JFwx95g2ewh2nY/Wry8kgTHgBnEG73SMe3vRI59cpQro6AqbDPBHy2HyYI8gvpwjY7eal77X+vnNrwbXF0awq/s8um3Frie5RXe0IliaT62bJQwPYaXxMpCTujAfzeZuh3a0bRAqlhO5mrMZ/dJQjBHGydyt8Wt3+zXeept34r7ncTC1/QsEL1oTPOoPUStlcd6zmve7T5/SJnVK6qUMP7S60SMRhe8DlmUG3HC5XRKxHbcuMYtEnGeHZRVq0ws3nI7GbNy2RRbPoUUJy1Ku9rH2mu/nWhE7idUYPeLYC2GeBT8jwbRQ49ZJ4WJT8iDp21XJ98LQ1eqltxIN17FvaVGx8RqnFgbWEOgnT7gGlyrKDXib/3FJTb3qFXhBxg+6k8ABy/x64V46HsA9R9cLdU8Tbh//5qtomA/0Rl1hofI+8zInH+3ElbADLePZkQRm1ur4Qk5y8tqCQ0oMPIbF6imwCVqxyu3BqEQUvxoFjCzMVbLbf8tHB0MC5qkoDDXpllVPmKv/aOqmc+VQz9cAA5Zuopr4IP/TuGIumIn/7wu26Ful6xiNUVZQvSzTj+LVW+tVqp7IGkohIucl5tukK6MTL63W/fjqxNX4lbnHsN6lXpeuEMN6smBIvMfeTMgAComRqzs0ahefb9a8WgK0og+zjgMAe0pekHmbsJ3oRxL6K8jZR6j1/0Jfr1ZFEM1ahtUJdSui0agyH/oz2xB7VPyK4jPU66iqZwyObkml6m86KU/0gqrz4ttDP3j50O7eLez1FQdXW3NzV3k71lht1eeLjtOVAE86CRAijx
- vrGJFc7Z
- RjJ5a7nNqvQxz1ZboE+ooUwpz+oJiZgGr96uGYSoqdDwU1TgGbnjV6dtql6Q06bgO7s5FJ+oYnw7C4iL697A0Dv415ZS4j1HUGpzhSFGm6XcmxiPKCADQbC6VnQO1GwKuZjAZFwye3jCuOOBRRwf7dARvyW+mdzO0U8jr6tRZYCE46DrdoOddaUD52raTs3nWM3+dGCjMB+e2SpGMReAEaDs5RiHO2hdmTGoncDwTySjXIi00sPA3mpK7DtPhFjybL3TMQD6wBUFSi4rid0OJo1PediQRRp0jTJsQk9GX6D5aJoRpdFrUXeuoS+1+zBd9NQnHdRru13bAAQ8f+Uxzikl9ZACFqrvI1mERVjvwBkIfso55biojXfM1M8f2EZNPKOTQSG6o1gbc1LaqeE/1tS61l3kj3UJ328xgsw7rj7t3LqctauMwvcnVIvoanfCMBp/MaWv6jU45U2dJKu8jSlWMoPuKX0OcJtIH/cCimMisDZSRPf4UAesZPs3rG/jlyLxue7uMydykrAJzWqz2w0EfbU3z+z0zXrrLcO8niu3Uq3Cdc4Qgd/H4JekGy4udQY9Bhh/UQLMGx4XSqaSSRfeRDB/c4DGkYuh9IXZGjC1qHdJ22nanK9hFl+tF9D0oZhmLQP/O5cX+/XSPGN16m8V4ew==
+X-Stat-Signature: xpkp85tqyh1or7oinqqirr9iirrzzi8x
+X-HE-Tag: 1787406849-465353
+X-HE-Meta: U2FsdGVkX18Yp0AHk+/1hEdB/SvYllAsaMlgjltvAdiW5/qNxhqnphk9YZAUE68MuXDeUwyUmPueHWGejjk6nMRVtY1WbPowg0WY5qNIQ7dG6L6yvamkfNszibU7l96Q1KNnjpMf9AGFc/0y7pUKSXWOwcb9CwAdBV4tRn+2Zzq4xw0tBtiSXw2Bo3oDS0l1S2/ATCas7gwW86+YnEWSxMX8g2XHV4aQWKvcOyQdwSgfCklTn70mxpMNgICya5ifn9Q3AWmgDcx1HrwsX3slVdmAAvX7HfTGh86nwebmdnAts11f0mhap9qDQ83gl5AITOU1sdIFAv/RJiFGrEQNBrUIHDs7C8EzfDH4o6p1pAacDaQMGbcg6jlZDppugy9hyRZYEmjZ11329uu3Rew6GbN2q5CP46tGq7RBE+uPe8TRn95uhYBuUHSpGQxsmNe5RlHqSca3+f0hp6TGSV6F+yTcid17tucS9m6pGjQQ0+X3x9Dss/QX06hu5Lj9mRuna+xNHEz7BDwyiVpbMTALyF6RFnE3Wu7wTRcFGpGAhGJj+V0EzLbAUdM6v72xL4a/NuWHyd6BbxeX+92kUVuoXgUcjrkUD9fewNKVo5RF3ZAHwtWXab8qOjL2bY54uVU3UInQj+PoRa2IT6ZVEnRlGzdtXXwLOjHtXHG9irID1/X9YhV/hlrOJTTwyQV+VNWab4wyUi6WoJ1GFpCLCuzGcQsQhicd6fvOGQfNZ/XMNdmaDTSxcZzWz8OV9Dpdln+RLtsX/9j8q7jUlm28d5Ci1+7qgdFEodXFvCxCgQhm5K+ZXu9+jd72rfZ8CyANrnECHt3OkFF/SUOYN9mvYJ1BATJhcMOKXgLnMrc9TEoYloY/eOLFvp7gxnVf+s9/kC2RqMBdiwq7IEioa8rhTmWUmYENXfnJiAdyzHtX3WjVDw7rgyMrHS8KLq5gABk4r6uIN0YttTqjx2yhjGXrq/T
+ sZerdoBf
+ DpRTm+bcD4ijQ9RZONtS75NEO4Egim9s8uk+Hzl4MISuxps9G80Enge5+yBnWpdQF2WU55bssURV5G/R1HZO8VOuHZbmEduGQAsEwdOuTkdz+5Pf+Z0TVhhuZ8/yNmEBu8wg+/mSePAQOVftcbaU5U6fuk280ZQEWxnPAgDhMaf8OmQ9oJSNdRy5a6U26jy4hhyw5iN9RS5sdNCQs76SbbPJENWpmQ7kl7GBfmOlkhRvBjcY0AWsJ+XBNNLQD0K1q3Npd7r/BKovzfN10G69TTZPOb2rbk+x8nAIClikw49ABCj73KJhbLjmXngw3TQHBT8B8HQtNdIF/RisA0X9oEfKdm3ITy6WmfWRj0l9ruXgSOCwaxMi7dvvA6x4iVGH7KegU6uI4KDpl7IoQyIS0PjMfAA4s3tZeqAMFH4A76cLvHavpKjQRvldb9otoAroz2ra6f1vKagM8huR028t7rOY/kp79rrzWBaPRRfDJ6frDk8FZwmEwyG8OIdnJ1Gmwibm1Dz1CCeFJZCvdjnpmkurrakejDsUWsopNpLT+TD1BLURm5Ln3O/BYVDsHWMRIegkCG3Rd3LKo4sIdlql6964Ae/0B5GHxBcWsqh/nh++Lv02F+949bWWlkbEeRpUQ4iQcDHbHM3SYM6uVIg6jzjsM4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,39 +125,69 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Reorder enum mod_mem_type so that MOD_TEXT appears right before
-MOD_INIT_TEXT. This will result in MOD_INIT_TEXT being allocated right
-after MOD_TEXT when the allocation logic iterates over the memory types
-in enum declaration order.
+When execmem ROX caches are used for module text and inittext, place
+them adjacently in memory, by allocating space for both initially, and
+splitting off the space for MOD_INIT_TEXT as needed.
 
-In a subsequent patch, this will be taken advantage of, by allocating
-.text and .init.text together, and freeing .init.text by truncating the
-allocation. Doing so without this reordering would likely result in more
-fragmentation, as the truncated .text allocation would be followed by
-.rodata and .data/.bss of the same module.
+This avoids the corner case on arm64, where .init.text being placed far
+from .text results in a lot of complexity wrt indirect branches and PLTs
+that we'd prefer to avoid.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- include/linux/module.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/module/main.c | 22 ++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 7566815fabbe..0336a46733dd 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -316,10 +316,10 @@ struct mod_tree_node {
- };
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 46dd8d25a605..2d6213496359 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1342,7 +1342,7 @@ static int module_memory_alloc(struct module *mod, enum mod_mem_type type)
+ {
+ 	unsigned int size = PAGE_ALIGN(mod->mem[type].size);
+ 	enum execmem_type execmem_type;
+-	void *ptr;
++	void *ptr = NULL;
  
- enum mod_mem_type {
--	MOD_TEXT = 0,
--	MOD_DATA,
-+	MOD_DATA = 0,
- 	MOD_RODATA,
- 	MOD_RO_AFTER_INIT,
-+	MOD_TEXT,
- 	MOD_INIT_TEXT,
- 	MOD_INIT_DATA,
- 	MOD_INIT_RODATA,
+ 	mod->mem[type].size = size;
+ 
+@@ -1351,11 +1351,25 @@ static int module_memory_alloc(struct module *mod, enum mod_mem_type type)
+ 	else
+ 		execmem_type = EXECMEM_MODULE_TEXT;
+ 
+-	ptr = execmem_alloc_rw(execmem_type, size);
++	bool is_rox = execmem_is_rox(execmem_type);
++	if (is_rox) {
++		/*
++		 * Special case for MOD_TEXT / MOD_INIT_TEXT: allocate the
++		 * latter by splitting off required space from the former
++		 * so that they are always placed close together.
++		 */
++		if (type == MOD_TEXT)
++			size += PAGE_ALIGN(mod->mem[MOD_INIT_TEXT].size);
++		else if (type == MOD_INIT_TEXT)
++			ptr = execmem_split(mod->mem[MOD_TEXT].base, size);
++	}
++
++	if (!ptr)
++		ptr = execmem_alloc_rw(execmem_type, size);
+ 	if (!ptr)
+ 		return -ENOMEM;
+ 
+-	mod->mem[type].is_rox = execmem_is_rox(execmem_type);
++	mod->mem[type].is_rox = is_rox;
+ 
+ 	/*
+ 	 * The pointer to these blocks of memory are stored on the module
+@@ -1368,7 +1382,7 @@ static int module_memory_alloc(struct module *mod, enum mod_mem_type type)
+ 	 * *do* eventually get freed, but let's just keep things simple
+ 	 * and avoid *any* false positives.
+ 	 */
+-	if (!mod->mem[type].is_rox)
++	if (!is_rox)
+ 		kmemleak_not_leak(ptr);
+ 
+ 	memset(ptr, 0, size);
 -- 
 2.55.0.860.g4b6b3295ed-goog
 
