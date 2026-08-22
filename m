@@ -4,98 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A3F1C5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 03:20:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A1AC5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 03:23:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9B336B008C; Fri, 21 Aug 2026 23:20:03 -0400 (EDT)
+	id 572D96B0095; Fri, 21 Aug 2026 23:23:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A71D96B0092; Fri, 21 Aug 2026 23:20:03 -0400 (EDT)
+	id 522F96B009B; Fri, 21 Aug 2026 23:23:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 988456B0095; Fri, 21 Aug 2026 23:20:03 -0400 (EDT)
+	id 411E86B009D; Fri, 21 Aug 2026 23:23:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78C736B008C
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 23:20:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E654802F4
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 03:20:01 +0000 (UTC)
-X-FDA: 85127451402.01.ABF7F14
-Received: from mta0.migadu.com (out-69.mta0.migadu.com [91.218.175.69])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 28B2720002
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 03:19:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="XGph/YaM";
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.69 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 175126B0095
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 23:23:56 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B0081A02E3
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 03:23:55 +0000 (UTC)
+X-FDA: 85127461230.19.13387A1
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BD26340003
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 03:23:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=R8Y56LT6;
+	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787368799;
+	s=arc-20220608; t=1787369033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GWPJ+Ubtdu1zKK30inxtIWOeCJAabxBc/dUbXDEnEHg=;
-	b=u1jfEyTgzfPZ1R79MZ3Z46uNRFyZix9jGH6/l7CbrBrx4ZhalYtNYGNWL7NN5sIgBwOr1x
-	ap8mZUxhla74LgRZC0nOknSyy/NNXdH+jJ27mZDCbjZLICxb3tiuCmFJVPGwYwknkCxPfP
-	FifJTkMuPrkB4vYeAW2f+rTJFN9VmvQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="XGph/YaM";
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.69 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=j6UTc4WIdbDdRVopL640XLd67bSkxARSxTgQAdAaqQU=;
+	b=RhC39BkdIE+JM6uiIHa75oXvAgpz/iPfLbLxR0UYd8SyQr/vW+fp5sTFKcTMhdWhLnuGbj
+	1o2Nch/DEgqYmtBrsrFZUSi2ZXSnGSqjJLf6n62bQpS2NJrq6OisrwMMyJ2OSbmzjQtZrF
+	QcsSMxQWVib/VQ83XoOM3l5IiS//ceY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787368799;
-	b=GXAr36A08VCtvSo0djEsGE+j06u/ZVbn0/+l3DMF8ZU8usfDC7Nf8VWvMEceIMbM9h+umg
-	RrDNkli5iiccg+4Uf+vUqCBnI01BG1YYZnzq2+h4Voi523glpide/a8FNvcbqE/CBWMgJ3
-	qY9SoDn75XjOEQZ1P2heE/t9RvPiWZY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1lAj0RYynE1f5++3x9dW2tApKBrusbMFAf4fDQ7WuCY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787368797; v=1; x=1787973597;
- b=XGph/YaMg5159DEMOdv6Dag9T3ufhC5fLR1CZw4mpsisQSKm1xueqLoJQZD7SwtB6uEgJJ1n
- xYl73ia+b8aXyPbTtpdD+ex8PN5g49ijPMtc45h2SO5vcxx6aHxiICRMzti/L9jT2lEjh+MQ4wy
- Z5UpAD4LLKw19/FIgBzzc6Sg=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:4c::)
-	by smtp.migadu.com with ESMTPS id 6c42c0bd215f903c;
-	Sat, 22 Aug 2026 03:19:47 +0000
-X-Mizu-Trace-ID: 6c42c0bd215f903c
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 21 Aug 2026 20:19:45 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>, 
-	Hui Zhu <hui.zhu@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	JP Kobryn <inwardvessel@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
-	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next v4 1/2] mm/bpf: Add bpf_proactive_reclaim kfuncs
-Message-ID: <aojJoHl2uSe1IsfA@linux.dev>
-References: <cover.1787205002.git.zhuhui@kylinos.cn>
- <e9b2a34418919f5c3ee2b80bcb4f9d80ce6ec422.1787205002.git.zhuhui@kylinos.cn>
- <CAEf4Bza0KYB+OHpa89K16+ptUQuQDJKyxxNCyDPcgQaO1mtxjg@mail.gmail.com>
- <DKUVJN7NQMAI.2JXLSBOGJTI1W@gmail.com>
+	t=1787369033;
+	b=l2+E1CJrE0UoaOIwXERQVeBlC9J2jegcC5BZ42VcRKiwprFDkskEOScYacdl4KV7uNM44m
+	hji80ZPcRTdgzNR6TqFjiYtih061kZqfvx4nTzgIjwbxRqHCQ8nV+xI5t4wRvkaXV3hBF+
+	8g5i8oLpbPIXV5f1cV/MWYZl/1lJ9sU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=R8Y56LT6;
+	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cbedf433a99so1612226a12.2
+        for <linux-mm@kvack.org>; Fri, 21 Aug 2026 20:23:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787369032; x=1787973832; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j6UTc4WIdbDdRVopL640XLd67bSkxARSxTgQAdAaqQU=;
+        b=R8Y56LT6vB6qqoV6zlQaWDL8CBXdDvMAtc02NoxEdhvckoqrE1m6uCb9+G5N9Ufjbb
+         jd1OmvZ0Qj8mq0TjslybrWzkIYOygjrxHXs2bVXgJEqbYu2R1ES19iCZ6qF6YebNlbYJ
+         w0b+j0D7W6c7QW3/aE3i92yQYVn4LLZg7ZX7BnvZBLgatHExiFR6VR91HjSRTqPaJc7d
+         PJSFguj9BvdTuKNL7Z7+xvx+OOo/7wiEGPw7f5nD4kANb/+RmnITcmhBr/NnzP0p1a1m
+         YGCmq5NapRJOTUXg7VcYpR+c4JngXrl47IrSQbXQI/Maaikx3+/cdRGqPq+zCKBnzBWP
+         w2IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787369032; x=1787973832;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j6UTc4WIdbDdRVopL640XLd67bSkxARSxTgQAdAaqQU=;
+        b=WW4w9TIs/PIThwKws9vlgYDOpQEi1ZgX6raciPOCLR+zPh6eG6sEkMClj/uqE3Z7Yu
+         a8vDE7s9voYrbLYC0MeTUNVkyALgxXMJ4/+VDijfxw/fVXkFSof5Y7XekBxDtv15Gb0j
+         diW0mZm+6alkBrfocXiaWNGuKGYKr+Kvp1mk8xOJpmGVL3rZQN/0EUKogyBqbE8fNnEs
+         9MEuJzQnRRXjhuieKRsR0hq/TQGfx5OA4X6SLsJcJcFIbq+LpY4UtHmWa+3N4jF8UcvL
+         J21yLFjx/9iyR93RWZ+34WuHEpA91O9n0Grn3HdWg1qCqKFPtDckGFUQsaOeCJlHFtMf
+         ZRww==
+X-Forwarded-Encrypted: i=1; AHgh+RqfVFLMrA30BI4tUQg84gsDv81ndxhnr/trQEqArES6gX04fJAB0/l3XA6ViqiQVz3BfkmiTGmm5Q==@kvack.org
+X-Gm-Message-State: AFuF++m4CuXTyyBql9/9BPLpb1OT8q7U87IcKEJ2a2LdS17tcdRfjq6h
+	LCKFyNxaLTZTiuCP4qnNzXqeLeqghJreZb+1DWk3lBL5Pufv5a0GqUMOEuwK8w==
+X-Gm-Gg: AR+sD12S0oG5iPI/dxMR0UwUs6bgI2AIYgi8CcqTyojlcAzD5Cela9+GoRyJj/Aygon
+	h7/nw6WcIlQeIRuYAaaCxO7DjnfsDasuGvxjry0iHLWLTZGW2iDzvLkHs1XkuGhqd2ETyXT0ynf
+	IJ27SwtRc3HqfYYdBr3UJj3rdHEPYfNtUAvilCZhKnyPRpOD8p1MhQFK8DQdgDYdVihTLqsfGPp
+	KCnLx0icmuXHoOqh+6rrwCNQyz2loO6wPXLqiCaEZTG3nw1GHIJ2qpfTqcr/Xf3+GJwcJ2V7pmK
+	1ggJio5CUKJE8pOAYMoPmCtAwM2X/gcdiebO5hvS8Q4CESJZL9/Ll/dG0Obb8iCf8giwQ/YfhEB
+	CQHQB4mWl5eeUNIqL8MrCxdqniGh+3b2uO8I1eQbbmZot5wAGXz+cJN+Il8DDEO+qkloyD6vfC+
+	IjqmSefQSwLMZEuuLIITA0bIpnEdzpfalpZqcEarvxwRG7gwm/NQ8cYBw=
+X-Received: by 2002:a17:90b:50c3:b0:395:5eec:b932 with SMTP id 98e67ed59e1d1-395c39e6433mr21359062a91.11.1787369032388;
+        Fri, 21 Aug 2026 20:23:52 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395e49b4060sm1152671a91.6.2026.08.21.20.23.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 20:23:51 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Hongfu Li <lihongfu@kylinos.cn>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memblock: simplify reserve_mem_init error handling
+Date: Sat, 22 Aug 2026 12:23:23 +0900
+Message-ID: <20260822032327.3548986-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260821033230.55210-1-hongfu.li@linux.dev>
+References: <20260821033230.55210-1-hongfu.li@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <DKUVJN7NQMAI.2JXLSBOGJTI1W@gmail.com>
-X-Stat-Signature: 5tbd76gcio4pdo4uazggbriw6rjgy91e
-X-Rspamd-Queue-Id: 28B2720002
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787368798-288922
-X-HE-Meta: U2FsdGVkX1+T54h8aWd+XGUI0V15e3LkJ6Rt1JE3kFWxTuDAIChBDKZoKkw0dGaSEsrWjb1QBlb2UiWyCtqvia+2YXu+7jwm2+Yk1CpQMsE4pDkxpcN/CdNswH7bBfWoUBt3Ql021ErBX55n+cAIlnT1zE9OYAEdLyoMQNQDYgkfXmB1SZuMFueTVD28dnoif+7XuUjfICu+jxkz2ETTGVnhUz2LJdoLC3T59H1m3hXg7CqJyUWL/GHWd6RjJagOE9HYPbOOAu+/WZ3Sn9OOd04Cwl70CK08yzBeP4yV3OCUxJekbtFbByZpeOpQy7Can+H6toEDf5fZAGXJmNmZ374WoG2TTKaXuHjVCC9GCfSf8V1xGrrnbKYDYzPLjsC5LElYC4LDd5D++ozyxswrFCfqnD+sAU51pVjyCBAvmVPvt3mvqpMnJesjye+pHRYUiuDy7EryWZ2ZiqtNalDYK6kIm2J3pdIF7BbItBxKRjnxJduezJofXBpASRVtgUa8GHY2Sy814DynhQjvBK08Js7On/OW9uBa99pSyqBJZ5AMDxv0DCJ+K6xPqyogrHNKOFgvgs7h1N3MtbykhHCcgMfLtEpfqv6RpOUpy4ft7cgdL9N2U3wUzKt0mhF5ZvNcWGHr0nT+ZO1tHpoOt+5WVAuFB3U1qVgW9hp9vDhqeph91r8ARX+5TAqsZUjRN/klNedu8rY9zkShqsTijHFfqLund84IAK4BcS825WJSvvDRVOmeO7T184EBVGh1T/yQaHyxAtaKaJqCBlXi++6RLwvSoY82tIOWRkMuvYqLX8seMp/vrjO3oDH7X+oWaQWLqaCEbziaDzU7nSsAQ+AcLw8LDLqWG0aC7gFL6gIgBJ/4tyquKu0XsMHFo8aKhdsjSBV7Kc1+UW+VZNv2+uN5IiunnQELhpPbbw8etPTKsW1G17T4T6CU3AOWNQ1PaJQ7cnzelhlhAeOQSPcxHEJ
- 3M4oOLx4
- ZMqIN3VxLi3viDMHbK8zpvk3DGCqHRF6VrAjEDrBUUBJ3qjuoLztE/LWOaZE3lTZSGUxmJzkg3VTGPo25UpFeLoqeFCJuPnrbCSaE23YNlGMgpyepq8cngmyAvd7Wlc5iu2tIZA2HSHg5qzdtTGQcqWn3TuSOF7RiMlihKsN40r2IxgtrMSW9wVsm6N3zfsFgEwMN9RQdtmfXHDL4QNkWUqiVWBZuiJ30bAA1TIq8t6pFJvQEp0PUS4YSygAJe01nyWEwQPst6cEdO54/JqQoDDDdJDowxlmurWkn1ylS/2XXsHhShVLta8A+hO90XGGQ1bbZU1RafFuB/0JegKwTRW3Nw9Q8FBDkxCaA2RRI09tDoSAyYIZxImD5C9939dxoGNh0ihWGeOVx12XyLUrlIfJbdlvTKZPAgjOzxPfOqpGBRnQi52OnKP4Pd0FAd5TLPe8qmwlqOIs5/2pCwWuzUQR+Zz53SzYg73TZV7BfdhUtBBrs0gor27/dPQ==
+X-Stat-Signature: ig39hpuruis11ir186xgojpce6x1jjmg
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BD26340003
+X-HE-Tag: 1787369033-364738
+X-HE-Meta: U2FsdGVkX1/e8xVPMiPh0l/b9kNqGmFqUmZNCx4Nmr1Q7fRutnsrblwKZ2pLESGZBJiBWpRUTwxL30DQ46QJXRtPtN1r5qEv9YXsUSgIDdCus0OVo28PHAAdya74yhM5xNnwlxe/BmuJPZv1LNo/0vLxXnrKOGm6sldxhZ9eVNgQcMabGg1xFZh7qUsMkGjTRa7yrPyS+rrQtBGh23EvAIXFiMmO05vcG5VvGCxaJoxoZUnBaGPn5zvYONszdXs5nlbYNW0Va6oex3HH/5kvvAchnbbai+7/W910RrWkbv0pjcXrHNIYqe18nfV26uNKxln5Hlrl3T9ayNzPfcq+kLL5eNGIU/aDhMmQmnOc1+IwdiIK2J8AiiI/8GCrnCAdFyjfsi8WG44+AHJEf5Boo1JfNb7VKWqdL0zUpT3C9lLFYkXOT5tJtCfxAAgmjNeRQgSqC/8gjZ/+3YKka1/OF26AY24AkJxY8IpvIhg+/7qVt7z/A5K4Qiil0zTbZ0SgM719sx4nYgklI3Kx9qXofcjJFFXmvBxsEM3/jT/AVVQQBnHjKDY+f6gSaH2v2gYwuI6jq5Ub8SOoCZ+QnIrX/27Z8Xbg4rvITeiFmQh2M1g9dhanMVkX+cjhXDsou2TvueCHXQG0qn3bRt7T2piw2fe9aLrVmNIJRD75WBWPuAWyJun8B3c1IDztqRh1XIinCs9T2IBMIrOgdAX74hZtgEUQxAnHR3rDXO2KKAmL4ngcX2iDBP/4YRKJcWirBOi5/C/7zUW3gcoWNwIbmgS0RmTo7gWwa3f2bWJTqDXal/mEvBF1gce3B5mHRXolPH5JvhuufjG78aKT/MRZ5nDVE2xqnbO28d6mnx3m2QMlW3KtmvVlgw9XdbJX5DqYS1DZEyi7AlUtviWhSTer7mAD2ccAZ2cDd0E0s2yic/90orDRtz3vSfpc0kw/j6QA8BeyxS0z60eidQfyADpk9/n
+ 3rImWF/U
+ kZRcdUIgly5JJu6vgQoVR/rWxZihNgfSIstxCc9X9d7QJJKEtggO2bWEvxVdQQIYRb2u2yPZFwJ7Egz/faye9yqnI/S3R2Z2qtEpwHTpw+D+Ema4r+pFOQIc7ETz7DPfZAoBbrh56CGJterVbTRYJOXxwd4FsqagBhGihHGRKN5a99Ka33v0hxXtIvQ2UF7qgMZZ5qQzD4cAOv21c5oX93d+QV29TRTUJ1fUKd/QiKwjAkzJVGsVLJyzTpMF7x8+5NRDD/3xe9SK9rgaZ7Gy6te5ZjxxBciBX88ZdkrwfThzShfpiNYuAFK02wdhHaCNfYIRJVfA4+Xe+bbTL8cqVSo1+Vx7coaN1noQUacbYjG34rJYVrq7i2qIHw98qTzwjG2/o3e1anlTvstebQxmrrUeXmuREHMpPesUNKouQbjMVMYPvINqpP6VsEZ5lBjiGq2kM8bHSPq+p8GncuysxqrkdUp6gel94X+BjF/Ieu4Sk91I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,221 +122,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 09:38:31PM +0200, Kumar Kartikeya Dwivedi wrote:
-> On Fri Aug 21, 2026 at 9:12 PM CEST, Andrii Nakryiko wrote:
-> > On Wed, Aug 19, 2026 at 11:12 PM Hui Zhu <hui.zhu@linux.dev> wrote:
-> >>
-> >> From: Hui Zhu <zhuhui@kylinos.cn>
-> >>
-> >> Expose memcg proactive reclaim to sleepable BPF programs:
-> >> unsigned long bpf_proactive_reclaim(memcg, size);
-> >> unsigned long bpf_proactive_reclaim_swappiness(memcg, size, swappiness);
-> >>
-> >> They perform one reclaim pass on @memcg, like a write to memory.reclaim:
-> >> swap is allowed, and the anon/file balance follows the cgroup's
-> >> swappiness or an explicit override in [MIN_SWAPPINESS, MAX_SWAPPINESS]
-> >> plus SWAPPINESS_ANON_ONLY. Both go through a shared helper,
-> >> bpf_proactive_reclaim_pages(), which guards against reclaim recursion
-> >> and calls try_to_free_mem_cgroup_pages() with GFP_KERNEL and
-> >> MEMCG_RECLAIM_MAY_SWAP | MEMCG_RECLAIM_PROACTIVE, the same parameters
-> >> user_proactive_reclaim() uses, and unlike memory.reclaim they do not
-> >> retry until @size is reached.
-> >>
-> >> Reclaim must not recurse: try_to_free_mem_cgroup_pages() overwrites
-> >> current->reclaim_state on entry and NULLs it on exit, so a nested call
-> >> from an in-flight reclaim would corrupt the outer reclaim state (e.g.
-> >> MGLRU dereferences current->reclaim_state->mm_walk). Both kfuncs
-> >> therefore refuse to reclaim when PF_MEMALLOC is set or
-> >> current->reclaim_state is non-NULL. The latter check also closes the
-> >> window in try_to_free_mem_cgroup_pages() where reclaim_state is already
-> >> installed but PF_MEMALLOC is not: only a tracepoint call sits in
-> >> between, and while a sleepable BPF program cannot attach to the
-> >> tracepoint itself, it can attach to the generated trace iterator
-> >> function (__traceiter_mm_vmscan_memcg_reclaim_begin) via fentry.
-> >>
-> >> The kfuncs take @size in bytes; the return value is normalized to bytes
-> >> as well, matching the byte-based unit of bpf_mem_cgroup_usage() and
-> >> bpf_mem_cgroup_page_state(), so callers can mix them without manual
-> >> page/byte conversions.
-> >>
-> >> An out-of-range @swappiness is reported with (unsigned long)-1 instead
-> >> of 0, following the convention of bpf_mem_cgroup_vm_events() and
-> >> bpf_mem_cgroup_page_state(), as 0 cannot be told apart from a
-> >> successful pass that reclaimed nothing.
-> >>
-> >> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> >> ---
-> >>  mm/bpf_memcontrol.c | 118 ++++++++++++++++++++++++++++++++++++++++++++
-> >>  1 file changed, 118 insertions(+)
-> >>
-> >> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> >> index 716df49d7647..dc51868b3acf 100644
-> >> --- a/mm/bpf_memcontrol.c
-> >> +++ b/mm/bpf_memcontrol.c
-> >> @@ -6,6 +6,7 @@
-> >>   */
-> >>
-> >>  #include <linux/memcontrol.h>
-> >> +#include <linux/swap.h>
-> >>  #include <linux/bpf.h>
-> >>
-> >>  __bpf_kfunc_start_defs();
-> >> @@ -159,6 +160,120 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
-> >>         mem_cgroup_flush_stats(memcg);
-> >>  }
-> >>
-> >> +/*
-> >> + * Reclaim must not recurse. try_to_free_mem_cgroup_pages() unconditionally
-> >> + * overwrites current->reclaim_state on entry and resets it to NULL on exit.
-> >> + * So invoking it from an in-flight reclaim would clobber the outer reclaim
-> >> + * state and corrupt its accounting.
-> >> + *
-> >> + * The guards are PF_MEMALLOC and current->reclaim_state. Every reclaim
-> >> + * entry point marks the current task with PF_MEMALLOC for the whole
-> >> + * reclaim window: try_to_free_mem_cgroup_pages() and __perform_reclaim()
-> >> + * do so via memalloc_noreclaim_save(), and kswapd keeps it set for its
-> >> + * entire lifetime. A hook inside the reclaim path (shrink_node,
-> >> + * shrink_slab, ...) executes in the context of the reclaiming task, where
-> >> + * current->flags already carries the flag. The page allocator, the memcg
-> >> + * charging path and node_reclaim() rely on the same flag to avoid reclaim
-> >> + * recursion.
-> >> + *
-> >> + * reclaim_state is checked in addition because it is set slightly before
-> >> + * PF_MEMALLOC in try_to_free_mem_cgroup_pages(), with only a tracepoint
-> >> + * call in between. A sleepable BPF program cannot attach to the tracepoint
-> >> + * itself, but it can attach to the generated trace iterator function
-> >> + * (__traceiter_mm_vmscan_memcg_reclaim_begin) via fentry, so PF_MEMALLOC
-> >> + * alone would leave that window open.
-> >> + *
-> >> + * Also, PF_MEMALLOC is set in some non-reclaim contexts (e.g. direct compaction
-> >> + * and vmalloc), where the kfunc conservatively refuses to reclaim as well.
-> >> + */
-> >> +static bool bpf_in_reclaim_context(void)
-> >> +{
-> >> +       return (current->flags & PF_MEMALLOC) || current->reclaim_state;
-> >> +}
-> >> +
-> >> +/*
-> >> + * Shared implementation of the proactive reclaim kfuncs: performs one
-> >> + * reclaim pass on @memcg with @nr_pages as the goal, allowing swap, and
-> >> + * @swappiness as the anon/file balance override (NULL to follow the
-> >> + * cgroup's own swappiness setting). Returns the reclaimed amount in
-> >> + * bytes, keeping the byte-based unit of the kfuncs' @size argument.
-> >> + */
-> >> +static unsigned long
-> >> +bpf_proactive_reclaim_pages(struct mem_cgroup *memcg, unsigned long nr_pages,
-> >> +                           int *swappiness)
-> >> +{
-> >> +       unsigned long nr_reclaimed;
-> >> +
-> >> +       if (!nr_pages || unlikely(bpf_in_reclaim_context()))
-> >> +               return 0;
-> >> +
-> >> +       nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages, GFP_KERNEL,
-> >> +                                                   MEMCG_RECLAIM_MAY_SWAP |
-> >> +                                                   MEMCG_RECLAIM_PROACTIVE,
-> >> +                                                   swappiness);
-> >> +
-> >> +       return nr_reclaimed * PAGE_SIZE;
-> >> +}
-> >> +
-> >> +/**
-> >> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
-> >> + *                         cgroup
-> >> + * @memcg: the target memory cgroup to reclaim from
-> >> + * @size:  the amount of memory to reclaim, in bytes
-> >> + *
-> >> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
-> >> + * the memory.reclaim cgroup file: pages are reclaimed according to the
-> >> + * cgroup's own swappiness setting and swap is allowed. Note that,
-> >> + * unlike memory.reclaim, this does not retry until @size is reached;
-> >> + * callers can invoke it again if needed.
-> >> + *
-> >> + * The reclaim runs with GFP_KERNEL, so this function must not be called
-> >> + * from a context that holds a filesystem lock (e.g. an LSM hook invoked
-> >> + * with inode_lock held): the reclaim path may enter filesystem shrinkers
-> >> + * and deadlock trying to reacquire the lock. Contexts that set
-> >> + * PF_MEMALLOC_NOFS/NOIO are handled by the gfp context inheritance.
-> >> + *
-> >> + * Return:
-> >> + *   The amount of memory actually reclaimed, in bytes (rounded to full
-> >> + *   pages), or 0 if @size is smaller than a page or the calling task is
-> >> + *   already in a reclaim/freeing context (PF_MEMALLOC).
-> >> + */
-> >> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memcg,
-> >> +                                               unsigned long size)
-> >> +{
-> >> +       return bpf_proactive_reclaim_pages(memcg, size / PAGE_SIZE, NULL);
-> >> +}
-> >> +
-> >> +/**
-> >> + * bpf_proactive_reclaim_swappiness - proactively reclaim memory from a
-> >> + *                                    memory cgroup with an explicit
-> >> + *                                    swappiness
-> >> + * @memcg:      the target memory cgroup to reclaim from
-> >> + * @size:       the amount of memory to reclaim, in bytes
-> >> + * @swappiness: swappiness override for this reclaim pass
-> >> + *
-> >> + * Same as bpf_proactive_reclaim(), except that the anon/file reclaim
-> >> + * balance is controlled by @swappiness instead of the cgroup's
-> >> + * swappiness setting. Valid values are [MIN_SWAPPINESS, MAX_SWAPPINESS]
-> >> + * and SWAPPINESS_ANON_ONLY, which restricts reclaim to anon folios.
-> >> + *
-> >> + * Return:
-> >> + *   The amount of memory actually reclaimed, in bytes (rounded to full
-> >> + *   pages), (unsigned long)-1 if @swappiness is out of range, or 0 if
-> >> + *   @size is smaller than a page or the calling task is already in a
-> >> + *   reclaim/freeing context (PF_MEMALLOC).
-> >> + */
-> >> +__bpf_kfunc unsigned long
-> >> +bpf_proactive_reclaim_swappiness(struct mem_cgroup *memcg, unsigned long size,
-> >> +                                int swappiness)
-> >> +{
-> >> +       if (swappiness < MIN_SWAPPINESS || swappiness > SWAPPINESS_ANON_ONLY)
-> >> +               return (unsigned long)-1;
-> >> +
-> >> +       return bpf_proactive_reclaim_pages(memcg, size / PAGE_SIZE,
-> >> +                                          &swappiness);
-> >> +}
-> >
-> > I haven't followed previous discussion, so I apologize if this was
-> > discussed, but if not, isn't it a bit an overkill to have second
-> > variant just to provide optional swappiness? Valid range of swappinees
-> > seems to be non-negative [0, 200], that special ANON is 201, so why
-> > can't we defined that <0 swappiness just means no swappiness was
-> > provided and get away with just one kfunc?
-> >
-> 
-> I think my understanding of Shakeel's suggestion was that we only add one
-> bpf_proactive_reclaim() for now, if swappiness parameter is necessary we can
-> introduce the second API later. But given it seems Hui wants to add both, I
-> think it would make sense to do what Andrii said and just introduce one kfunc
-> with the swappiness parameter now.
-> 
-> But Hui, please wait for Shakeel to comment before respinning again.
+On Fri, Aug 21, 2026 at 11:32:30AM +0800, Hongfu Li wrote:
+> Return prepare_kho_fdt() directly instead of assigning to a local and
+> returning it on both success and failure paths.
 
-Yes let's go with Andri's suggestion.
+Thanks for the patch, but the same change was already posted [1].
+As mentioned in the cover letter, I can send it as a separate patch
+if needed.
 
-However Hui, don't respin the series. Let me go through it first. I am not happy
-with the amount of text and comments added to the patches.
+[1] https://lore.kernel.org/all/20260723184538.3888637-37-ekffu200098@gmail.com/
 
-> 
-> >> +
-> >>  __bpf_kfunc_end_defs();
-> >>
-> >>  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-> >> @@ -172,6 +287,9 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
-> >>  BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
-> >>  BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
-> >>
-> >> +BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
-> >> +BTF_ID_FLAGS(func, bpf_proactive_reclaim_swappiness, KF_SLEEPABLE)
-> >> +
-> >>  BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
-> >>
-> >>  static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
-> >> --
-> >> 2.53.0
-> >>
-> 
+Best Regards,
+Sang-Heon Jeon
 
