@@ -4,89 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2BF4C5DF94
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 02:47:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A3F1C5B572
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 03:20:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9230E6B0095; Fri, 21 Aug 2026 22:47:25 -0400 (EDT)
+	id A9B336B008C; Fri, 21 Aug 2026 23:20:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D3F46B009B; Fri, 21 Aug 2026 22:47:25 -0400 (EDT)
+	id A71D96B0092; Fri, 21 Aug 2026 23:20:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E9726B009D; Fri, 21 Aug 2026 22:47:25 -0400 (EDT)
+	id 988456B0095; Fri, 21 Aug 2026 23:20:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55CF96B0095
-	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 22:47:25 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BAABA1A02DF
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 02:47:24 +0000 (UTC)
-X-FDA: 85127369208.16.6052CF4
-Received: from mta0.migadu.com (out-76.mta0.migadu.com [91.218.175.76])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9E3221C0004
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 02:47:22 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gQX8HsSM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.76 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 78C736B008C
+	for <linux-mm@kvack.org>; Fri, 21 Aug 2026 23:20:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E654802F4
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 03:20:01 +0000 (UTC)
+X-FDA: 85127451402.01.ABF7F14
+Received: from mta0.migadu.com (out-69.mta0.migadu.com [91.218.175.69])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 28B2720002
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 03:19:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="XGph/YaM";
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.69 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787366843;
+	s=arc-20220608; t=1787368799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Iu4M9aTmhgOWpf4BCPlDhObwoIJorDttg9oJ80fpDSo=;
-	b=ZnoKkibFf5We20IJ+l5bSXqiCXIhRBroM3yPvrp0gsENQoSJmffqgZslELirVGT6HTBA7M
-	d5i8yLeUc1hG2449V2JGqGYeF5WlEuusmpBaclEE6P/X9ai/DaBzcjn+HGbxcm9eAhtQ1w
-	HX4YJu5OA+NrmMMD1Qi3QnSnvEZ4EDs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GWPJ+Ubtdu1zKK30inxtIWOeCJAabxBc/dUbXDEnEHg=;
+	b=u1jfEyTgzfPZ1R79MZ3Z46uNRFyZix9jGH6/l7CbrBrx4ZhalYtNYGNWL7NN5sIgBwOr1x
+	ap8mZUxhla74LgRZC0nOknSyy/NNXdH+jJ27mZDCbjZLICxb3tiuCmFJVPGwYwknkCxPfP
+	FifJTkMuPrkB4vYeAW2f+rTJFN9VmvQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gQX8HsSM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.76 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="XGph/YaM";
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.69 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787366843;
-	b=daEyQdo+jCQ1dfafqllD2Y3FcugSczPn9XIx+3+NG2IeOMq5njnWGM1OWzoeivRCs9WCiQ
-	l2Od+K3ROG2onZeJF2vu5tAA680whks5j7IzX2q57JHAAgxqW9ozvGEcOjqjyJ7ynYOLly
-	7cgDvBbIKEHUSnRjS8WiAs6pky3W/JM=
+	t=1787368799;
+	b=GXAr36A08VCtvSo0djEsGE+j06u/ZVbn0/+l3DMF8ZU8usfDC7Nf8VWvMEceIMbM9h+umg
+	RrDNkli5iiccg+4Uf+vUqCBnI01BG1YYZnzq2+h4Voi523glpide/a8FNvcbqE/CBWMgJ3
+	qY9SoDn75XjOEQZ1P2heE/t9RvPiWZY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=eVVRhhBLN/+FkM0gx4duUnqi0A2acoQjl/ZnvoeEHME=;
+DKIM-Signature: a=rsa-sha256; bh=1lAj0RYynE1f5++3x9dW2tApKBrusbMFAf4fDQ7WuCY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787366841; v=1; x=1787971641;
- b=gQX8HsSM9DqTFD4agTBDOyYobA6sHis3+7otPremcuTr7orWFzBJ/jPQ/EEC506SVxs1U4ae
- g8c1NvQlwifvnOWX2Jd+gMT7XUDJjx8Icko6SY+WDmt565PVx+18BaxiHPExdB6OK+HK70lROjw
- J/ZQER65vq7hxnEyAyy+mmQk=
+ t=1787368797; v=1; x=1787973597;
+ b=XGph/YaMg5159DEMOdv6Dag9T3ufhC5fLR1CZw4mpsisQSKm1xueqLoJQZD7SwtB6uEgJJ1n
+ xYl73ia+b8aXyPbTtpdD+ex8PN5g49ijPMtc45h2SO5vcxx6aHxiICRMzti/L9jT2lEjh+MQ4wy
+ Z5UpAD4LLKw19/FIgBzzc6Sg=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:5c::)
-	by smtp.migadu.com with ESMTPS id 07ae24895d946565;
-	Sat, 22 Aug 2026 02:47:11 +0000
-X-Mizu-Trace-ID: 07ae24895d946565
+Received: from localhost (2a03:2880:10ff:4c::)
+	by smtp.migadu.com with ESMTPS id 6c42c0bd215f903c;
+	Sat, 22 Aug 2026 03:19:47 +0000
+X-Mizu-Trace-ID: 6c42c0bd215f903c
 X-Migadu-Flow: FLOW_OUT
+Date: Fri, 21 Aug 2026 20:19:45 -0700
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] memcg: move LRU size accounting on reparenting instead of copying it
-Date: Fri, 21 Aug 2026 19:47:07 -0700
-Message-ID: <20260822024707.77192-1-shakeel.butt@linux.dev>
-X-Mailer: git-send-email 2.53.0
+To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>, 
+	Hui Zhu <hui.zhu@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	JP Kobryn <inwardvessel@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
+	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH bpf-next v4 1/2] mm/bpf: Add bpf_proactive_reclaim kfuncs
+Message-ID: <aojJoHl2uSe1IsfA@linux.dev>
+References: <cover.1787205002.git.zhuhui@kylinos.cn>
+ <e9b2a34418919f5c3ee2b80bcb4f9d80ce6ec422.1787205002.git.zhuhui@kylinos.cn>
+ <CAEf4Bza0KYB+OHpa89K16+ptUQuQDJKyxxNCyDPcgQaO1mtxjg@mail.gmail.com>
+ <DKUVJN7NQMAI.2JXLSBOGJTI1W@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <DKUVJN7NQMAI.2JXLSBOGJTI1W@gmail.com>
+X-Stat-Signature: 5tbd76gcio4pdo4uazggbriw6rjgy91e
+X-Rspamd-Queue-Id: 28B2720002
 X-Rspam-User: 
-X-Stat-Signature: ymb7u3th33iu4umtdkgcjk1ioanhjbon
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9E3221C0004
-X-HE-Tag: 1787366842-488928
-X-HE-Meta: U2FsdGVkX1+2ZCUhY6HvblzGw4KQafglEiPyu/kQi6gOleEJaTl8cJuTk8mTL7twn4Uo1SKSI4JWEe+bm6c4sNAtN0lt1eKqlsyy/rTvukKT7V1YHL907GKLX4Z2Eqs+AfeoCZNnrZARD6/favs1p8qEdrrf1fPDJpKtA7aDU+H9/rBseP1sbBpwYhs+UbhPdpr89Pbn4i5qM3g5gaOTdZknIes1uihARgyeC3f4joLTVz319PTYMQwpCwz3HzS5FBX7momd7M/oyAAOH72G/3NLPEvtfHgY3n9x8D47qv6xsHCA2ErBExVgle7CAD4iG8xdOYa1UU228TN/E0dRYP9KSZCXztWScEFFo8cpyE+1/XMOw6GwQfzJeY474JhNUlGK4yKG0x5T30mEkz7tpniOcEjZ0Jfb8f3q5i1Kit819ELZ+l6mORJw9FJR7jl/0lipI4ty17z6HSGOmsXvjuFheWHJxJSBhiirVsct3wdZZPhM0w01pfZSRHCxtURwur4FFNTVm46lKwFGWUVFZTzcbIzKgdL3WETmNdgozOvRdT08F7JO7tCzUtqFDyLq9BVki86M4ayn5GJJ2OQcObiI9a05eM7OKOu5lxa2PivNH3fwkpt72TEWd92WKGqbm3EyhMHuwDM0ZK9PsGS0ILSeSJ4M1yxzIjahSL6Gz5fCrWn89DwqmBzQ4W7FyKIucrXICffVvMmo8pWFDx0hlFoUg6Km2r85SX5lX8c/Yqhfw6J6vUpspQTAHRvRcPfUlC5o+SxSBi/9jP9L1OzRfWGNrpHmZLa/JfGqKGvgGn6Z0iCQpmxAizVrsXEOs1S9QfMZR28CrpZfsX3IPbiu3bb8+o1VCQtyKS6X3rKhiUDMPwaPUYGSz2rMG2HckR8LIRVfs8FphNnw2ak+xsc4YwOrZYNWLCt0cmoSggOY1HT6ZP0+iMQXrpPUDNPLId0xpCaydwdjmcwruHiP7/G
- a0TnDwqu
- ZAkusAaVQVKsCM7if/vuFr8uFkDkKDlF+oRBDf2OiKifjW3HaBpmNknAHe4tJ/zPhWE/1kGuB+FwIfE/+e+xMfKBf94n6jRhZLnfdVHPuRBffFKTvtTvcGEpy3Rkd9r1S7c5XlOhc2Tz7GHzR2ytU8hH3t06tk8s8c3aQRDsT+8HpkS5YToF02CNyNGEbKe8R/+QdjWX8CDzcNY/t9xwG5QVMAc10MhWiAVtNvYPL1dqrf9kG9ucyFDj4Y1hy6ij0JbxENke3IzNGgG6HmbmHUyuAe02PkIKPDgqODwtrQLpcctE=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787368798-288922
+X-HE-Meta: U2FsdGVkX1+T54h8aWd+XGUI0V15e3LkJ6Rt1JE3kFWxTuDAIChBDKZoKkw0dGaSEsrWjb1QBlb2UiWyCtqvia+2YXu+7jwm2+Yk1CpQMsE4pDkxpcN/CdNswH7bBfWoUBt3Ql021ErBX55n+cAIlnT1zE9OYAEdLyoMQNQDYgkfXmB1SZuMFueTVD28dnoif+7XuUjfICu+jxkz2ETTGVnhUz2LJdoLC3T59H1m3hXg7CqJyUWL/GHWd6RjJagOE9HYPbOOAu+/WZ3Sn9OOd04Cwl70CK08yzBeP4yV3OCUxJekbtFbByZpeOpQy7Can+H6toEDf5fZAGXJmNmZ374WoG2TTKaXuHjVCC9GCfSf8V1xGrrnbKYDYzPLjsC5LElYC4LDd5D++ozyxswrFCfqnD+sAU51pVjyCBAvmVPvt3mvqpMnJesjye+pHRYUiuDy7EryWZ2ZiqtNalDYK6kIm2J3pdIF7BbItBxKRjnxJduezJofXBpASRVtgUa8GHY2Sy814DynhQjvBK08Js7On/OW9uBa99pSyqBJZ5AMDxv0DCJ+K6xPqyogrHNKOFgvgs7h1N3MtbykhHCcgMfLtEpfqv6RpOUpy4ft7cgdL9N2U3wUzKt0mhF5ZvNcWGHr0nT+ZO1tHpoOt+5WVAuFB3U1qVgW9hp9vDhqeph91r8ARX+5TAqsZUjRN/klNedu8rY9zkShqsTijHFfqLund84IAK4BcS825WJSvvDRVOmeO7T184EBVGh1T/yQaHyxAtaKaJqCBlXi++6RLwvSoY82tIOWRkMuvYqLX8seMp/vrjO3oDH7X+oWaQWLqaCEbziaDzU7nSsAQ+AcLw8LDLqWG0aC7gFL6gIgBJ/4tyquKu0XsMHFo8aKhdsjSBV7Kc1+UW+VZNv2+uN5IiunnQELhpPbbw8etPTKsW1G17T4T6CU3AOWNQ1PaJQ7cnzelhlhAeOQSPcxHEJ
+ 3M4oOLx4
+ ZMqIN3VxLi3viDMHbK8zpvk3DGCqHRF6VrAjEDrBUUBJ3qjuoLztE/LWOaZE3lTZSGUxmJzkg3VTGPo25UpFeLoqeFCJuPnrbCSaE23YNlGMgpyepq8cngmyAvd7Wlc5iu2tIZA2HSHg5qzdtTGQcqWn3TuSOF7RiMlihKsN40r2IxgtrMSW9wVsm6N3zfsFgEwMN9RQdtmfXHDL4QNkWUqiVWBZuiJ30bAA1TIq8t6pFJvQEp0PUS4YSygAJe01nyWEwQPst6cEdO54/JqQoDDDdJDowxlmurWkn1ylS/2XXsHhShVLta8A+hO90XGGQ1bbZU1RafFuB/0JegKwTRW3Nw9Q8FBDkxCaA2RRI09tDoSAyYIZxImD5C9939dxoGNh0ihWGeOVx12XyLUrlIfJbdlvTKZPAgjOzxPfOqpGBRnQi52OnKP4Pd0FAd5TLPe8qmwlqOIs5/2pCwWuzUQR+Zz53SzYg73TZV7BfdhUtBBrs0gor27/dPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,96 +103,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a memory cgroup is offlined its LRU folios are reparented to the
-parent.  lruvec_reparent_lru() splices the child's lists into the
-parent's and credits the parent with the child's per-zone
-lru_zone_size[], but never clears the child's copy, so the size is
-copied rather than moved.  lru_gen_reparent_memcg() does the same for
-MGLRU.
+On Fri, Aug 21, 2026 at 09:38:31PM +0200, Kumar Kartikeya Dwivedi wrote:
+> On Fri Aug 21, 2026 at 9:12 PM CEST, Andrii Nakryiko wrote:
+> > On Wed, Aug 19, 2026 at 11:12 PM Hui Zhu <hui.zhu@linux.dev> wrote:
+> >>
+> >> From: Hui Zhu <zhuhui@kylinos.cn>
+> >>
+> >> Expose memcg proactive reclaim to sleepable BPF programs:
+> >> unsigned long bpf_proactive_reclaim(memcg, size);
+> >> unsigned long bpf_proactive_reclaim_swappiness(memcg, size, swappiness);
+> >>
+> >> They perform one reclaim pass on @memcg, like a write to memory.reclaim:
+> >> swap is allowed, and the anon/file balance follows the cgroup's
+> >> swappiness or an explicit override in [MIN_SWAPPINESS, MAX_SWAPPINESS]
+> >> plus SWAPPINESS_ANON_ONLY. Both go through a shared helper,
+> >> bpf_proactive_reclaim_pages(), which guards against reclaim recursion
+> >> and calls try_to_free_mem_cgroup_pages() with GFP_KERNEL and
+> >> MEMCG_RECLAIM_MAY_SWAP | MEMCG_RECLAIM_PROACTIVE, the same parameters
+> >> user_proactive_reclaim() uses, and unlike memory.reclaim they do not
+> >> retry until @size is reached.
+> >>
+> >> Reclaim must not recurse: try_to_free_mem_cgroup_pages() overwrites
+> >> current->reclaim_state on entry and NULLs it on exit, so a nested call
+> >> from an in-flight reclaim would corrupt the outer reclaim state (e.g.
+> >> MGLRU dereferences current->reclaim_state->mm_walk). Both kfuncs
+> >> therefore refuse to reclaim when PF_MEMALLOC is set or
+> >> current->reclaim_state is non-NULL. The latter check also closes the
+> >> window in try_to_free_mem_cgroup_pages() where reclaim_state is already
+> >> installed but PF_MEMALLOC is not: only a tracepoint call sits in
+> >> between, and while a sleepable BPF program cannot attach to the
+> >> tracepoint itself, it can attach to the generated trace iterator
+> >> function (__traceiter_mm_vmscan_memcg_reclaim_begin) via fentry.
+> >>
+> >> The kfuncs take @size in bytes; the return value is normalized to bytes
+> >> as well, matching the byte-based unit of bpf_mem_cgroup_usage() and
+> >> bpf_mem_cgroup_page_state(), so callers can mix them without manual
+> >> page/byte conversions.
+> >>
+> >> An out-of-range @swappiness is reported with (unsigned long)-1 instead
+> >> of 0, following the convention of bpf_mem_cgroup_vm_events() and
+> >> bpf_mem_cgroup_page_state(), as 0 cannot be told apart from a
+> >> successful pass that reclaimed nothing.
+> >>
+> >> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> >> ---
+> >>  mm/bpf_memcontrol.c | 118 ++++++++++++++++++++++++++++++++++++++++++++
+> >>  1 file changed, 118 insertions(+)
+> >>
+> >> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> >> index 716df49d7647..dc51868b3acf 100644
+> >> --- a/mm/bpf_memcontrol.c
+> >> +++ b/mm/bpf_memcontrol.c
+> >> @@ -6,6 +6,7 @@
+> >>   */
+> >>
+> >>  #include <linux/memcontrol.h>
+> >> +#include <linux/swap.h>
+> >>  #include <linux/bpf.h>
+> >>
+> >>  __bpf_kfunc_start_defs();
+> >> @@ -159,6 +160,120 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+> >>         mem_cgroup_flush_stats(memcg);
+> >>  }
+> >>
+> >> +/*
+> >> + * Reclaim must not recurse. try_to_free_mem_cgroup_pages() unconditionally
+> >> + * overwrites current->reclaim_state on entry and resets it to NULL on exit.
+> >> + * So invoking it from an in-flight reclaim would clobber the outer reclaim
+> >> + * state and corrupt its accounting.
+> >> + *
+> >> + * The guards are PF_MEMALLOC and current->reclaim_state. Every reclaim
+> >> + * entry point marks the current task with PF_MEMALLOC for the whole
+> >> + * reclaim window: try_to_free_mem_cgroup_pages() and __perform_reclaim()
+> >> + * do so via memalloc_noreclaim_save(), and kswapd keeps it set for its
+> >> + * entire lifetime. A hook inside the reclaim path (shrink_node,
+> >> + * shrink_slab, ...) executes in the context of the reclaiming task, where
+> >> + * current->flags already carries the flag. The page allocator, the memcg
+> >> + * charging path and node_reclaim() rely on the same flag to avoid reclaim
+> >> + * recursion.
+> >> + *
+> >> + * reclaim_state is checked in addition because it is set slightly before
+> >> + * PF_MEMALLOC in try_to_free_mem_cgroup_pages(), with only a tracepoint
+> >> + * call in between. A sleepable BPF program cannot attach to the tracepoint
+> >> + * itself, but it can attach to the generated trace iterator function
+> >> + * (__traceiter_mm_vmscan_memcg_reclaim_begin) via fentry, so PF_MEMALLOC
+> >> + * alone would leave that window open.
+> >> + *
+> >> + * Also, PF_MEMALLOC is set in some non-reclaim contexts (e.g. direct compaction
+> >> + * and vmalloc), where the kfunc conservatively refuses to reclaim as well.
+> >> + */
+> >> +static bool bpf_in_reclaim_context(void)
+> >> +{
+> >> +       return (current->flags & PF_MEMALLOC) || current->reclaim_state;
+> >> +}
+> >> +
+> >> +/*
+> >> + * Shared implementation of the proactive reclaim kfuncs: performs one
+> >> + * reclaim pass on @memcg with @nr_pages as the goal, allowing swap, and
+> >> + * @swappiness as the anon/file balance override (NULL to follow the
+> >> + * cgroup's own swappiness setting). Returns the reclaimed amount in
+> >> + * bytes, keeping the byte-based unit of the kfuncs' @size argument.
+> >> + */
+> >> +static unsigned long
+> >> +bpf_proactive_reclaim_pages(struct mem_cgroup *memcg, unsigned long nr_pages,
+> >> +                           int *swappiness)
+> >> +{
+> >> +       unsigned long nr_reclaimed;
+> >> +
+> >> +       if (!nr_pages || unlikely(bpf_in_reclaim_context()))
+> >> +               return 0;
+> >> +
+> >> +       nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, nr_pages, GFP_KERNEL,
+> >> +                                                   MEMCG_RECLAIM_MAY_SWAP |
+> >> +                                                   MEMCG_RECLAIM_PROACTIVE,
+> >> +                                                   swappiness);
+> >> +
+> >> +       return nr_reclaimed * PAGE_SIZE;
+> >> +}
+> >> +
+> >> +/**
+> >> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
+> >> + *                         cgroup
+> >> + * @memcg: the target memory cgroup to reclaim from
+> >> + * @size:  the amount of memory to reclaim, in bytes
+> >> + *
+> >> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
+> >> + * the memory.reclaim cgroup file: pages are reclaimed according to the
+> >> + * cgroup's own swappiness setting and swap is allowed. Note that,
+> >> + * unlike memory.reclaim, this does not retry until @size is reached;
+> >> + * callers can invoke it again if needed.
+> >> + *
+> >> + * The reclaim runs with GFP_KERNEL, so this function must not be called
+> >> + * from a context that holds a filesystem lock (e.g. an LSM hook invoked
+> >> + * with inode_lock held): the reclaim path may enter filesystem shrinkers
+> >> + * and deadlock trying to reacquire the lock. Contexts that set
+> >> + * PF_MEMALLOC_NOFS/NOIO are handled by the gfp context inheritance.
+> >> + *
+> >> + * Return:
+> >> + *   The amount of memory actually reclaimed, in bytes (rounded to full
+> >> + *   pages), or 0 if @size is smaller than a page or the calling task is
+> >> + *   already in a reclaim/freeing context (PF_MEMALLOC).
+> >> + */
+> >> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memcg,
+> >> +                                               unsigned long size)
+> >> +{
+> >> +       return bpf_proactive_reclaim_pages(memcg, size / PAGE_SIZE, NULL);
+> >> +}
+> >> +
+> >> +/**
+> >> + * bpf_proactive_reclaim_swappiness - proactively reclaim memory from a
+> >> + *                                    memory cgroup with an explicit
+> >> + *                                    swappiness
+> >> + * @memcg:      the target memory cgroup to reclaim from
+> >> + * @size:       the amount of memory to reclaim, in bytes
+> >> + * @swappiness: swappiness override for this reclaim pass
+> >> + *
+> >> + * Same as bpf_proactive_reclaim(), except that the anon/file reclaim
+> >> + * balance is controlled by @swappiness instead of the cgroup's
+> >> + * swappiness setting. Valid values are [MIN_SWAPPINESS, MAX_SWAPPINESS]
+> >> + * and SWAPPINESS_ANON_ONLY, which restricts reclaim to anon folios.
+> >> + *
+> >> + * Return:
+> >> + *   The amount of memory actually reclaimed, in bytes (rounded to full
+> >> + *   pages), (unsigned long)-1 if @swappiness is out of range, or 0 if
+> >> + *   @size is smaller than a page or the calling task is already in a
+> >> + *   reclaim/freeing context (PF_MEMALLOC).
+> >> + */
+> >> +__bpf_kfunc unsigned long
+> >> +bpf_proactive_reclaim_swappiness(struct mem_cgroup *memcg, unsigned long size,
+> >> +                                int swappiness)
+> >> +{
+> >> +       if (swappiness < MIN_SWAPPINESS || swappiness > SWAPPINESS_ANON_ONLY)
+> >> +               return (unsigned long)-1;
+> >> +
+> >> +       return bpf_proactive_reclaim_pages(memcg, size / PAGE_SIZE,
+> >> +                                          &swappiness);
+> >> +}
+> >
+> > I haven't followed previous discussion, so I apologize if this was
+> > discussed, but if not, isn't it a bit an overkill to have second
+> > variant just to provide optional swappiness? Valid range of swappinees
+> > seems to be non-negative [0, 200], that special ANON is 201, so why
+> > can't we defined that <0 swappiness just means no swappiness was
+> > provided and get away with just one kfunc?
+> >
+> 
+> I think my understanding of Shakeel's suggestion was that we only add one
+> bpf_proactive_reclaim() for now, if swappiness parameter is necessary we can
+> introduce the second API later. But given it seems Hui wants to add both, I
+> think it would make sense to do what Andrii said and just introduce one kfunc
+> with the swappiness parameter now.
+> 
+> But Hui, please wait for Shakeel to comment before respinning again.
 
-The parent is left correct, credited with exactly the folios it took
-over.  The stale value sits on the child and nothing will correct it:
-folio->memcg_data now resolves to the parent, so every later
-update_lru_size() for those folios goes there.
+Yes let's go with Andri's suggestion.
 
-Dying cgroups are not freed immediately and mem_cgroup_iter() still
-walks them, so shrink_lruvec() keeps being called on them.
-get_scan_count() reads the phantom counter through lruvec_lru_size() and
-the scan loop then grinds through nr[] in SWAP_CLUSTER_MAX steps against
-an empty list, for as long as the dead cgroup lives.  Under MGLRU the
-MGLRU scanner runs instead, but count_shadow_nodes() sums all of
-NR_LRU_LISTS through lruvec_lru_size() and over-budgets the shadow node
-limit just the same.
+However Hui, don't respin the series. Let me go through it first. I am not happy
+with the amount of text and comments added to the patches.
 
-On one 251 GiB host a sweep of every mz->lru_zone_size[] found 380
-counters describing folios on no list at all: 124777314 pages, 476 GiB,
-1.89x the machine's RAM, across 57 cgroups.  All were on memcgs with
-CSS_DYING set and CSS_ONLINE clear, and parent/child pairs reported
-byte-identical sizes.
-
-LRU_UNEVICTABLE needs its size moved too.  Its list is deliberately not
-spliced because lruvec_init() poisons the head - the unevictable LRU is
-imaginary and folios are never threaded on it - but the size is kept by
-lruvec_add_folio()/lruvec_del_folio() and those folios account to the
-parent from here on.
-
-This depends on commit bf4ade7dbd76 ("memcg: keep folio's objcg same as
-its node") and must not be backported ahead of it.  Without that
-invariant a folio's objcg can belong to another node, so a folio already
-spliced onto the parent's list can still resolve to the child's lruvec
-until the objcg's node is reparented in a later iteration of
-memcg_reparent_objcgs(); clearing the child's counter early then lets
-lruvec_del_folio() underflow it and trip the WARN_ONCE()/VM_BUG_ON() in
-mem_cgroup_update_lru_size().
-
-Fixes: 07a6e9a2c199 ("mm: vmscan: prepare for reparenting traditional LRU folios")
-Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-Cc: <stable@vger.kernel.org> # After: bf4ade7dbd76: memcg: keep folio's objcg same as its node
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- mm/folio.c  | 9 +++++++++
- mm/vmscan.c | 5 +++++
- 2 files changed, 14 insertions(+)
-
-diff --git a/mm/folio.c b/mm/folio.c
-index 59c477120b9a..c02dcea9c03c 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -1130,7 +1130,16 @@ static void lruvec_reparent_lru(struct lruvec *child_lruvec,
- 	for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1) {
- 		unsigned long size = mem_cgroup_get_zone_lru_size(child_lruvec, lru, zid);
- 
-+		if (!size)
-+			continue;
-+
-+		/*
-+		 * The folios are accounted to the parent from now on, so the
-+		 * size has to be moved, not just copied. Leaving it behind
-+		 * makes the dying child describe folios it no longer owns.
-+		 */
- 		mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
-+		mem_cgroup_update_lru_size(child_lruvec, lru, zid, -(long)size);
- 	}
- }
- 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index fe7f0c52a18c..561eeec5628c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4635,7 +4635,12 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
- 		for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1) {
- 			unsigned long size = mem_cgroup_get_zone_lru_size(child_lruvec, lru, zid);
- 
-+			if (!size)
-+				continue;
-+
-+			/* Move the accounting, do not duplicate it. */
- 			mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
-+			mem_cgroup_update_lru_size(child_lruvec, lru, zid, -(long)size);
- 		}
- 	}
- }
--- 
-2.53.0-Meta
-
+> 
+> >> +
+> >>  __bpf_kfunc_end_defs();
+> >>
+> >>  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
+> >> @@ -172,6 +287,9 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
+> >>  BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
+> >>  BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
+> >>
+> >> +BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
+> >> +BTF_ID_FLAGS(func, bpf_proactive_reclaim_swappiness, KF_SLEEPABLE)
+> >> +
+> >>  BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
+> >>
+> >>  static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
+> >> --
+> >> 2.53.0
+> >>
+> 
 
