@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DA6FC5DF97
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1194C5DF9A
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 13:54:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B18A86B00A4; Sat, 22 Aug 2026 09:54:15 -0400 (EDT)
+	id 489036B00A5; Sat, 22 Aug 2026 09:54:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA1B46B00A5; Sat, 22 Aug 2026 09:54:15 -0400 (EDT)
+	id 412886B00A6; Sat, 22 Aug 2026 09:54:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 942606B00A6; Sat, 22 Aug 2026 09:54:15 -0400 (EDT)
+	id 300DE6B00A7; Sat, 22 Aug 2026 09:54:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E5196B00A4
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:54:15 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC280120147
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:14 +0000 (UTC)
-X-FDA: 85129049628.30.0B034EF
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 058826B00A5
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 09:54:16 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 57F15140147
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:16 +0000 (UTC)
+X-FDA: 85129049712.27.5CEDABE
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1EBDE4000A
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g04y7qrb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3A6qJaggKCNg4L75+ACNAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--ardb.bounces.google.com designates 209.85.221.72 as permitted sender) smtp.mailfrom=3A6qJaggKCNg4L75+ACNAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--ardb.bounces.google.com
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9252F80002
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 13:54:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BYsIlRhB;
+	spf=pass (imf02.hostedemail.com: domain of 3BKqJaggKCNk5M86+BDOBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--ardb.bounces.google.com designates 209.85.221.72 as permitted sender) smtp.mailfrom=3BKqJaggKCNk5M86+BDOBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787406853;
+	s=arc-20220608; t=1787406854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uCGSy80EkADOYqRdnClxXtF6MDWdUJROODWOao0NQ9A=;
-	b=PDyWpOlIFCW8dQz08RAQAsYOUwXZhZOLHfwuYCPNGAYJSusYNLmuROyon5GXtCNsQOTz0I
-	JtPj6c7iuYPN1khsIt0FgbtgT5antzplHd2rY3PtBCoXpj4fmuhZC3WLotR5LFSSNddKv5
-	xNWnUjBn7/o00hGbvTiDqNDMnz0xzcM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g04y7qrb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3A6qJaggKCNg4L75+ACNAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--ardb.bounces.google.com designates 209.85.221.72 as permitted sender) smtp.mailfrom=3A6qJaggKCNg4L75+ACNAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--ardb.bounces.google.com
+	bh=4lE3r1MZLrWL74IP7BP3pqzwy+IxcMr+2cYN0bFzQAQ=;
+	b=ymDpH6Pp2cAXZMYe2VZizWjTD6uXGhxLZ40uCyEOjWs+xY7fNkO84pbOLumLXV/g28qZFG
+	T/ulWCRqoAgKtykjsZ5u4zO+YLbm1ss9rmq1nbBPbudn3JNiYYP7f97cfVcfNdOZluHbkZ
+	x7IKFTHyWRc/7vAxhx0NroAlcGId2DQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787406853;
-	b=vh1JhrBf/it3RuHtXYIBlg5LMaZIrfLDDmZYGs5gcRFVHydISU/2kFzZisNXr0szYEE580
-	nc3NPZblvuz4yVUdiBllTp99ieKXkZh61Cg3+zk5zbYn1KeF91jhcwCU6M8pGATMZ0c4jM
-	N7fJOC+42sgepJnKPBc5Bzxxls3Q/dA=
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f83450a8eso1568528f8f.0
-        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:54:12 -0700 (PDT)
+	t=1787406854;
+	b=yVwNK7tQ/qGqGxZybkuN3pSt2tJU5bf+yCro+9r6MVPaw2w6gUYHGfvQbCKGPkwMGZ0SNs
+	T6rqqafCSFyP+ZzakqfTIpy0fulsf1HJ9YRhha5VBRfvzB19270kAHTLB/wJRbBt8oR5ou
+	8bkBbCmIjUxc7qowWPW4iHHByL03Z9c=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BYsIlRhB;
+	spf=pass (imf02.hostedemail.com: domain of 3BKqJaggKCNk5M86+BDOBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--ardb.bounces.google.com designates 209.85.221.72 as permitted sender) smtp.mailfrom=3BKqJaggKCNk5M86+BDOBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f84ac1990so1032981f8f.2
+        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 06:54:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787406852; x=1788011652; darn=kvack.org;
+        d=google.com; s=20251104; t=1787406853; x=1788011653; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uCGSy80EkADOYqRdnClxXtF6MDWdUJROODWOao0NQ9A=;
-        b=g04y7qrbS1gm4hhdViVbK1NCqxmf/PQFtX/wEWwZeQaNddk0ZzyaZZSwKyhvC2VGBK
-         KcCBwvKdl/91W42WEOWo7HjeU1tcKUxqspRuXLUH9UXI4EbFr5ePJCU6pSyQRuFH3Lwp
-         1wg1nKBVI5HLXowwaLRBAcGHpkRtmtTwo5Ylw1TGHRHx7CIPtoY/DOQa9TFyJGaFmznY
-         +p/BnoR9xTKOAVNV++r3OXemflDr6qfiTcgrKxvhMQEQdtT9XhG0QTjrrcy0N43W13T3
-         uBrb4sWPqG46TCdNnZeL4lIvxb6VYpuFjK2HSHJNqJAkNmw7UavmP+TwyR2lOWBFF0Gx
-         km6Q==
+        bh=4lE3r1MZLrWL74IP7BP3pqzwy+IxcMr+2cYN0bFzQAQ=;
+        b=BYsIlRhBNKPgJJw1VioL8lkrVxAGD1ns/hactY/3toR+KdpEWFmgmf756qPDk3HmiO
+         G5rc04VKHOOEnOfI6vnHb0V0dM6xokgaRNEAsdqXFDNweUcsE2AWnxl04agoluifCuBX
+         RRRcqVpgHeLlimMzeZvzkSKTpA4iQiuGQamHx94iW7hGCCZh/TBBVSGzABt77eYwbrnV
+         zx9YCqkvouYSFRlUhEPBjqigso2UaMod2WWyWZdF3f5yxkFeonC+kj5v7hgyzdNo8qBF
+         Y9MB4KTB2quJofnzqSmDusghqIV9/Wd4zjmdq/QIwK1HyRPSVYjYwQGm17IA3wKW8hKA
+         Mbxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787406852; x=1788011652;
+        d=1e100.net; s=20251104; t=1787406853; x=1788011653;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uCGSy80EkADOYqRdnClxXtF6MDWdUJROODWOao0NQ9A=;
-        b=cSlrsOypyL9x3by1iFYhtBwuTkQWuZ7WUw/P/93A4MdvAdJMGefm//JdZCwwui043p
-         +eFdDOQ/pLvIKl9CK70IjFe9I2xdR4ksiu9dMeCvbIQNUKv7o9hrWps+IllYwB5jsAWO
-         EM9xgSj5m/rLvBhYMEU3ZDQlk9ZV+DAGhk3AR26B9IUiWzjOUPS0wqj+KapkyZ5APU63
-         YRNu7+xhU9nykI6fuplpETDpne3xFeWiHpCKNHTSSgyvvDD/ncTxfkkjR6KyYUhZ1GsJ
-         iR0NuXa5JzOKIc4gh4b3ziWJ5Jes6zqcgQx15eRXTMABsiny1eOGxIOjlexIJtUEXXbF
-         1tQw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq8FMPVyU7mcQMjznsQKdyOlfS+ZyiwvaP/FE3bfP4GsQ3QTIwYOuAnN/QeouaI2T45MzHC4Az8vA==@kvack.org
-X-Gm-Message-State: AFuF++mad0v/jtzbYkmN7CzwjZkZIiEucKEiE8UMy6x72/mHCpbL79Gy
-	Ky8KtMz3/RS3epdfd6IlrND7Yn1UI24hsCMi/Au5AgSc/yzWWO9PVhF6rLmG4BcDpeqWSV/qyQ=
+        bh=4lE3r1MZLrWL74IP7BP3pqzwy+IxcMr+2cYN0bFzQAQ=;
+        b=osX3ABxYaM69tT1TKdKhFyUfIUL8cDER7Od7pY0YRZuyVbcytcSwC5cPicAYHgG7ja
+         RqHrg+Rq+hAYuXzMzWDrPVx6fUeuCgCIDkNY5PzaUppxBvkEIpNrehXk1pC3pDO2GRom
+         G82YwrIpqfMH/eYY3MpnA5J3KMQM0bEXiHrshFK0tN+POZjnAbaZPrNEg6L88oSkdvqO
+         +n4X+Q672ggwBDUQCeMSgeGRiQZv2CBfcs09Cy7imbVPtZQNE1jp7IdFh6fSwOgMKPrN
+         fbczaIW4gUj4sY5jPM+qGCugcOay7cSxLVEew1mLkLExf/XWpl9iw19c1nE3z5DzlFQs
+         JNXA==
+X-Forwarded-Encrypted: i=1; AHgh+RqrIRnPRguVgFeiiKf6Qes1CdStfDUAZUS+YeVET44cGnUOCCoD4CmIIW5n1QwirKxfcp3NpDJtJw==@kvack.org
+X-Gm-Message-State: AFuF++nSnHrCqepX/2Y9XSRH///hIOvEoVkD+u+hljjlDCbxR+JhfWK4
+	/TaO6jxpO55Vzq5Qqh0RlgRQEJcClUvBb1yaTGs7w+MJTq3Z2t5c+BkU6npLg8i3+gkIPskXHQ=
 	=
-X-Received: from wrtv12.prod.google.com ([2002:a5d:610c:0:b0:47f:76fc:f05a])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2589:b0:482:bf17:e685
- with SMTP id ffacd0b85a97d-482c0b88f19mr19709898f8f.11.1787406851530; Sat, 22
- Aug 2026 06:54:11 -0700 (PDT)
-Date: Sat, 22 Aug 2026 15:53:29 +0200
+X-Received: from wrbgf1.prod.google.com ([2002:a05:6000:27c1:b0:462:567a:6591])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:6f13:0:b0:47f:e9fd:80d8
+ with SMTP id ffacd0b85a97d-482c0bb40bemr18991596f8f.21.1787406852902; Sat, 22
+ Aug 2026 06:54:12 -0700 (PDT)
+Date: Sat, 22 Aug 2026 15:53:30 +0200
 In-Reply-To: <20260822135323.795946-11-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260822135323.795946-11-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4579; i=ardb@kernel.org;
- h=from:subject; bh=BEHgSt5XbzXt4tBoZXsq5UPFvM43IOdkHorxrjqha9w=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIatz5b2w6FXrAkIL3p777u+w3ijm62ajN4vezjfYEpZQl
- u7w99y6jlIWBjEuBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCRA0mMDO0W8Xtjiy5zcH03
- q/x9b5GHzca9Bgf6WzaZLIo6+FaheSUjw3TVOf/Ejuza9aHbfV1D3U6jyXpCKevnz9LVlc13Lr4 txwYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5799; i=ardb@kernel.org;
+ h=from:subject; bh=5Vh9JPqa1jt8juFWDYh0K543ecP29Z3LFYkXXDIJ0JE=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIatz5f0rrx+s+jGrVkH3hJXknjsl122VL1WsEJX3nyc5J
+ 3SrBmd9RykLgxgXg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjIp2BGhvu/oyTzD638eknh
+ x5azWglPZFe66t+aGDBlhfIq+S9TPy9gZJj348O6+Lw9ldcEz9Z/ZujJu/c0/uE08dwNgV7bPq9 szmYAAA==
 X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
-Message-ID: <20260822135323.795946-18-ardb+git@google.com>
-Subject: [RFC PATCH 7/9] arm64: ftrace: Revert "fix unreachable PLT for
- ftrace_caller ..."
+Message-ID: <20260822135323.795946-19-ardb+git@google.com>
+Subject: [RFC PATCH 8/9] arm64: module: Combine init and core PLT entries again
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
@@ -109,14 +108,14 @@ Cc: Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
 	linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ofqhufs1fui4rjst6udfpai1i1ax3518
-X-Rspamd-Queue-Id: 1EBDE4000A
-X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787406852-66912
-X-HE-Meta: U2FsdGVkX19KxGoEhZoot7rGVHm8dC6FADgmYIjqWxf/9vPiYj0YZ8N8g7F6w4Z9ImADa6sRVkTprDG0SD+t//ccqiD3F2Xp1yzrlRIkeqj7GyRRa6amXTs9gF5l3ohOL5uNwltwNjn9GtNt9vCW8nhxvjifQrhyONZywKNi7w5s07MJ7PNUggKWqX3MFQz64Cmv+fx4y/UH+aRtcMNPPIvJBrwjG4BlJ/6jHP8XSZ5Q1IDfGStjW49ykPhD8SkudYoBS0fy3t4u/R+TJ6sqNCMkqIZZgUHidAdhd08HThC6eUOVmC8LS1B+mP+bClqfrRHhKwhhlsYKOzpFiCRKvBnDyaXCUvTaVXEnsoVl6Oac1rEWQA5oLU96pSi769j/TtHXvnkrkiepfjajGJ0ENfX2b2bNWseiXRG5RcCqhbyAXth9KiKpy1aB+jr6YZ6bPDUCK4dUwue+9uZCcdyC+8LPsqdddaAbSQuV4H79hikF8p1ymOCw69P7RLszBKJDzwknmAJ6lFk8ocz0+eteAzrZluPSGkwZcaMl8AXIqb/MQLD+phLyWky6ZQLI4SsKaIvFp8dx80yKRzgehCNXbwHDXH6N4DQXCXGMIhFsu3DSQLhD3m9SRLUBZRa/MTPuV5TFhOttPgiJfoSJ6/Ya6AiKeVwdZO66O+gQNmR6gHCND8t/Ra3+ZiLvNgs5PoY2OFEv5YjZoZKlAfvQvcZY8bf+M5Mlr+zK4bWQ/BttQziG5oqWiZ7vdjyGhfl7lPcEt6wr/2v0YPUKuFB7U4d5aF8FCCdUJwYrxjtVbV1M9HLy0v+z7Fbge2CWfAE1oopJsZHz1pwnuGy1wOo65OjjP713LpF2pLcofKZtXkpqga/7xyYyQuq8AWDE4RsRAHjGf5Y4+twhTl3OwSjlvbikVROfEuM9hGoUTS0a72nbe/gLUIlrHClLIS09i0YZ/984lxJ6vVyBq8E3liocY9d
- fmwgtCr5
- JvjBIQeCKA4K8ZBSFmEpTHaQAhnLNqjN49BUvY+RTNZ+49SfE1MaPc6S8S0kivoRaU1jWT1HxGlNOrTZsMwlWS4Y3x+13YUn1AhCYMjidoxZfrNtiedfTVOw6H0AeVKkxa/8kDMuDA3g+z55Dl/QVIf3X/EgoGo2LU+buFDR4ruuu6Ra9r0ZjeugEVQcetU5MnDyqmspotBaRiMuQA1xK7uCVi9uqechMMqh2Z6qL5iA9bshWeylIVbleIp6z54HlcAWHwRoCrrnZ4lghBfL/DvoQCjdasvtSAGRP0gh9SPGlAv+8CnJB1eOifu8eCT1+DuuqFc5+QCgQUTg8IdS8A2S8vLTHPVjvtqtJc8MVolavqQtSA8nyeZJYUNyiRg2/HizxcaDC6jFViOZ23FPRyOIAyXaXCzHQRq7MQJlmHK4ajk9e5xXPR1hdkgFnCd0Jijm5rtKEzZeZalOwUeAbm3UJYXzsZ/+q94LNx1plN1xO54n/Pqt9vtNqugJfqzeHhSQmjUWbxxFsVNsxNuh65SUFaFIn3sla75sW1Rtc8FqB2IonHYfDVrrKga90ZzSM+gqGbZ4WJxGRZ13yinoKi+be3rPxGS2vfUjciIdsx7CfmC1rl7G2aNrjm+96snQoe785ew1VI8LbyPtI+MKICG/NLg==
+X-Stat-Signature: n1eyacpba5eg4m6jqhz949dbai9t3odq
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9252F80002
+X-HE-Tag: 1787406854-113254
+X-HE-Meta: U2FsdGVkX1+2ScpGU4C+JooTgNLfC04x1Y/qNCVUfE0rgcHYjMeydhL3KVvWNaekmQ5X8vTrxWUe6sCPzZOrlTdR9/pWgK4Ay+3zRJJTRQhPmfgSutPRPH+8LiB2uS7OJY0jwXpcZO072icl7ri3bjl+cejh2y8QlQ2Lwa1tQgeFdaB0O78YIkn9tB3p+sw+zPRr8hvCkQSEKg8/qemJ4nOqm5Nakq6ecEfaXV6hoy1DL5V+qC3ceFoifZmx4wBKSAg9VOVNl8Z7KWgYgltgbvpppwtbYR55tzQ5ef4Wj91574F1zFsJN4c8qp5YEm1Sp1wlWZz+yNRnlsUtKrfTkkrUBhQCN7xL3kXw1Bx1DcFQj4PUvkowhZ7DUOTMaSD7sUbzQ2jggkvvEhcMvwt51wn5CAgXAEQnqZUHQcqIk2+I9xUz6i+G6aUgcYceslSWR1oxrM4pUbIyVebVQxMu2bn04+wv0r1zM5AXqQAxL/15fN5v+8HIq4wtndxoGOFtDMl9HEDQfFX2K0LUBhP5fz0DNzxq5Wrchiw9nnR4qqfwr4U9rQpmYnBH2ELttx1AELHSSExH4Hm31Spoya5IrkVwvwvzSCpZSwmzOUfN6Hgb16Zi4RH+bsHhYqlS9P969PYJwLOnR3H/qn5X9pna5gda5+UhqbLHhgv5ZWFwAHWlWei6wBnG5zqLBNeByEkFzJ8PTE4MroGFfm4Dmstz35pOvunY1LRMGHuHpe0M+rgBlM3Ss0solYMj4Bic1RzaWgLJh81Kp+uJn4Lfb5QZHTp4DGQmiuc1NO2t3cHskO1Q9Nmzylv2bU+cDefG5iWqYzNcQtED/sfRvcpVOBpA3x6q+9rIRA8vsehYeT8thpq+AjycZ0EGjki+XwbSkdLf1IQGWGwQqgqx2F7HXJ+jkmH2Xw7ls1SNKHATvmY17FxIc9M9JkCaMmo2eatcmU2bkMxygvqcG4HoTas8+Vu
+ SxxjiKpI
+ gnhRCTwh2z9VzzG1/dioaW8O4lbIGk/atCgJ0d8FbArEGQCv9YhG37VxOvnThFruRyBEXu3XV0foD8uUjJzD0qXB9nbYJQjZbAClT/gch7gvIWlNFItFg6VN7NtnKO56828OXF19DwCfedZZP7z1A2gvWn1VzIxKRRj+wtNvaHjRnxMdtdwyla1oex1N6i5l5g/AtjMiZac7ZOSnYvFBk28ImSneIyIduv+LpXlX2Ukq2d+dO74gt8CA+HhhZdQjVOCGZXK+bkKTcdUIs44FNKC+65CuVfjwF0yUquxhcIlVLAWYbRCrGlWbsvty23KHejW5t6kOSOFD4d1HZuxzbgZ++0FX3Cf1ht5bXIeKfGbnBnd8kCd1MtIBHR7Zy89evvGXabij4jmKtKLu95w4XFewuj+K5rQT1YAOaIG70efBhGSnkBup4PaTU2PiTybkfl5Nkbew/0Skmy6eDSwu1SumLOwUBX1KizGAshbXACk+prxpQ4zvZZg4LwL2vi0kD1mJap9zCLRZCizidUUyBCj6dw/b2XHR+zm9Ns/1Y7xtKF+wEP5Vi1Zyqshh2S65wszvp/eJf8RIkQmEJah6oJ8O1CeSQ+l+W4wKG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,135 +125,147 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-This reverts commit a7ed7b9d0ebb038db9963d574da0311cab0b666a, which is
-no longer needed now that the corner case where .init.text is placed out
-of direct branching range from .text of the same module can no longer
-occur.
+It is no longer possible for .init.text to end up being placed out of
+direct branching range of the .text section of the same module, so the
+PLT array of core and init code can be combined again.
+
+It also means there is no longer a need to allocate PLT entries for
+cross-section calls within the same module, and so the upper bound
+for the number of needed entries can be lowered again as well.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
  arch/arm64/include/asm/module.h     |  1 -
  arch/arm64/include/asm/module.lds.h |  1 -
- arch/arm64/kernel/ftrace.c          | 13 +++----------
- arch/arm64/kernel/module-plts.c     | 12 +-----------
- arch/arm64/kernel/module.c          | 11 -----------
- 5 files changed, 4 insertions(+), 34 deletions(-)
+ arch/arm64/kernel/module-plts.c     | 35 +++++---------------
+ 3 files changed, 9 insertions(+), 28 deletions(-)
 
 diff --git a/arch/arm64/include/asm/module.h b/arch/arm64/include/asm/module.h
-index fb9b88eebeb1..79550b22ba19 100644
+index 79550b22ba19..9328fadb4a95 100644
 --- a/arch/arm64/include/asm/module.h
 +++ b/arch/arm64/include/asm/module.h
-@@ -19,7 +19,6 @@ struct mod_arch_specific {
+@@ -15,7 +15,6 @@ struct mod_plt_sec {
+ 
+ struct mod_arch_specific {
+ 	struct mod_plt_sec	core;
+-	struct mod_plt_sec	init;
  
  	/* for CONFIG_DYNAMIC_FTRACE */
  	struct plt_entry	*ftrace_trampolines;
--	struct plt_entry	*init_ftrace_trampolines;
- };
- 
- u64 module_emit_plt_entry(struct module *mod, Elf64_Shdr *sechdrs,
 diff --git a/arch/arm64/include/asm/module.lds.h b/arch/arm64/include/asm/module.lds.h
-index 0b3aacd22c59..0c3aea98e116 100644
+index 0c3aea98e116..24fc9401c514 100644
 --- a/arch/arm64/include/asm/module.lds.h
 +++ b/arch/arm64/include/asm/module.lds.h
-@@ -2,7 +2,6 @@ SECTIONS {
+@@ -1,6 +1,5 @@
+ SECTIONS {
  	.plt 0 : { BYTE(0) }
- 	.init.plt 0 : { BYTE(0) }
+-	.init.plt 0 : { BYTE(0) }
  	.text.ftrace_trampoline 0 : { BYTE(0) }
--	.init.text.ftrace_trampoline 0 : { BYTE(0) }
  
  #ifdef CONFIG_KASAN_SW_TAGS
- 	/*
-diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
-index 5a1554a44162..b56da24c1be4 100644
---- a/arch/arm64/kernel/ftrace.c
-+++ b/arch/arm64/kernel/ftrace.c
-@@ -258,17 +258,10 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 	return ftrace_modify_code(pc, 0, new, false);
- }
- 
--static struct plt_entry *get_ftrace_plt(struct module *mod, unsigned long addr)
-+static struct plt_entry *get_ftrace_plt(struct module *mod)
- {
- #ifdef CONFIG_MODULES
--	struct plt_entry *plt = NULL;
--
--	if (within_module_mem_type(addr, mod, MOD_INIT_TEXT))
--		plt = mod->arch.init_ftrace_trampolines;
--	else if (within_module_mem_type(addr, mod, MOD_TEXT))
--		plt = mod->arch.ftrace_trampolines;
--	else
--		return NULL;
-+	struct plt_entry *plt = mod->arch.ftrace_trampolines;
- 
- 	return &plt[FTRACE_PLT_IDX];
- #else
-@@ -339,7 +332,7 @@ static bool ftrace_find_callable_addr(struct dyn_ftrace *rec,
- 	if (WARN_ON(!mod))
- 		return false;
- 
--	plt = get_ftrace_plt(mod, pc);
-+	plt = get_ftrace_plt(mod);
- 	if (!plt) {
- 		pr_err("ftrace: no module PLT for %ps\n", (void *)*addr);
- 		return false;
 diff --git a/arch/arm64/kernel/module-plts.c b/arch/arm64/kernel/module-plts.c
-index 7afd370da9f4..bde32979c06a 100644
+index bde32979c06a..e30876b90e30 100644
 --- a/arch/arm64/kernel/module-plts.c
 +++ b/arch/arm64/kernel/module-plts.c
-@@ -283,7 +283,7 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 	unsigned long core_plts = 0;
- 	unsigned long init_plts = 0;
- 	Elf64_Sym *syms = NULL;
--	Elf_Shdr *pltsec, *tramp = NULL, *init_tramp = NULL;
-+	Elf_Shdr *pltsec, *tramp = NULL;
- 	int i;
+@@ -70,8 +70,7 @@ u64 module_emit_plt_entry(struct module *mod, Elf64_Shdr *sechdrs,
+ 			  void *loc, const Elf64_Rela *rela,
+ 			  Elf64_Sym *sym)
+ {
+-	struct mod_plt_sec *pltsec = !within_module_init((unsigned long)loc, mod) ?
+-						&mod->arch.core : &mod->arch.init;
++	struct mod_plt_sec *pltsec = &mod->arch.core;
+ 	struct plt_entry *plt = (struct plt_entry *)sechdrs[pltsec->plt_shndx].sh_addr;
+ 	int i = pltsec->plt_num_entries;
+ 	int j = i - 1;
+@@ -101,8 +100,7 @@ u64 module_emit_plt_entry(struct module *mod, Elf64_Shdr *sechdrs,
+ u64 module_emit_veneer_for_adrp(struct module *mod, Elf64_Shdr *sechdrs,
+ 				void *loc, u64 val)
+ {
+-	struct mod_plt_sec *pltsec = !within_module_init((unsigned long)loc, mod) ?
+-						&mod->arch.core : &mod->arch.init;
++	struct mod_plt_sec *pltsec = &mod->arch.core;
+ 	struct plt_entry *plt = (struct plt_entry *)sechdrs[pltsec->plt_shndx].sh_addr;
+ 	int i = pltsec->plt_num_entries++;
+ 	u32 br;
+@@ -169,17 +167,17 @@ static unsigned int count_plts(Elf64_Sym *syms, Elf64_Rela *rela, int num,
+ 		case R_AARCH64_CALL26:
+ 			/*
+ 			 * We only have to consider branch targets that resolve
+-			 * to symbols that are defined in a different section.
++			 * to symbols that are not defined in the same module.
+ 			 * This is not simply a heuristic, it is a fundamental
+ 			 * limitation, since there is no guaranteed way to emit
+ 			 * PLT entries sufficiently close to the branch if the
+ 			 * section size exceeds the range of a branch
+ 			 * instruction. So ignore relocations against defined
+-			 * symbols if they live in the same section as the
++			 * symbols if they live in the same module as the
+ 			 * relocation target.
+ 			 */
+ 			s = syms + ELF64_R_SYM(rela[i].r_info);
+-			if (s->st_shndx == dstidx)
++			if (s->st_shndx != SHN_UNDEF)
+ 				break;
  
- 	/*
-@@ -298,9 +298,6 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
+ 			/*
+@@ -281,7 +279,6 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
+ 			      char *secstrings, struct module *mod)
+ {
+ 	unsigned long core_plts = 0;
+-	unsigned long init_plts = 0;
+ 	Elf64_Sym *syms = NULL;
+ 	Elf_Shdr *pltsec, *tramp = NULL;
+ 	int i;
+@@ -293,8 +290,6 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
+ 	for (i = 0; i < ehdr->e_shnum; i++) {
+ 		if (!strcmp(secstrings + sechdrs[i].sh_name, ".plt"))
+ 			mod->arch.core.plt_shndx = i;
+-		else if (!strcmp(secstrings + sechdrs[i].sh_name, ".init.plt"))
+-			mod->arch.init.plt_shndx = i;
  		else if (!strcmp(secstrings + sechdrs[i].sh_name,
  				 ".text.ftrace_trampoline"))
  			tramp = sechdrs + i;
--		else if (!strcmp(secstrings + sechdrs[i].sh_name,
--				 ".init.text.ftrace_trampoline"))
--			init_tramp = sechdrs + i;
- 		else if (sechdrs[i].sh_type == SHT_SYMTAB)
+@@ -302,8 +297,8 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
  			syms = (Elf64_Sym *)sechdrs[i].sh_addr;
  	}
-@@ -366,12 +363,5 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
- 		tramp->sh_size = NR_FTRACE_PLTS * sizeof(struct plt_entry);
+ 
+-	if (!mod->arch.core.plt_shndx || !mod->arch.init.plt_shndx) {
+-		pr_err("%s: module PLT section(s) missing\n", mod->name);
++	if (!mod->arch.core.plt_shndx) {
++		pr_err("%s: module PLT section missing\n", mod->name);
+ 		return -ENOEXEC;
+ 	}
+ 	if (!syms) {
+@@ -332,12 +327,8 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
+ 		if (nents)
+ 			sort(rels, nents, sizeof(Elf64_Rela), cmp_rela, NULL);
+ 
+-		if (!module_init_layout_section(secstrings + dstsec->sh_name))
+-			core_plts += count_plts(syms, rels, numrels,
+-						sechdrs[i].sh_info, dstsec);
+-		else
+-			init_plts += count_plts(syms, rels, numrels,
+-						sechdrs[i].sh_info, dstsec);
++		core_plts += count_plts(syms, rels, numrels, sechdrs[i].sh_info,
++					dstsec);
  	}
  
--	if (init_tramp) {
--		init_tramp->sh_type = SHT_NOBITS;
--		init_tramp->sh_flags = SHF_EXECINSTR | SHF_ALLOC;
--		init_tramp->sh_addralign = __alignof__(struct plt_entry);
--		init_tramp->sh_size = NR_FTRACE_PLTS * sizeof(struct plt_entry);
--	}
--
- 	return 0;
- }
-diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
-index 24adb581af0e..6e5b488a219e 100644
---- a/arch/arm64/kernel/module.c
-+++ b/arch/arm64/kernel/module.c
-@@ -466,17 +466,6 @@ static int module_init_ftrace_plt(const Elf_Ehdr *hdr,
- 	__init_plt(&plts[FTRACE_PLT_IDX], FTRACE_ADDR);
+ 	pltsec = sechdrs + mod->arch.core.plt_shndx;
+@@ -348,14 +339,6 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
+ 	mod->arch.core.plt_num_entries = 0;
+ 	mod->arch.core.plt_max_entries = core_plts;
  
- 	mod->arch.ftrace_trampolines = plts;
+-	pltsec = sechdrs + mod->arch.init.plt_shndx;
+-	pltsec->sh_type = SHT_NOBITS;
+-	pltsec->sh_flags = SHF_EXECINSTR | SHF_ALLOC;
+-	pltsec->sh_addralign = L1_CACHE_BYTES;
+-	pltsec->sh_size = (init_plts + 1) * sizeof(struct plt_entry);
+-	mod->arch.init.plt_num_entries = 0;
+-	mod->arch.init.plt_max_entries = init_plts;
 -
--	s = find_section(hdr, sechdrs, ".init.text.ftrace_trampoline");
--	if (!s)
--		return -ENOEXEC;
--
--	plts = (void *)s->sh_addr;
--
--	__init_plt(&plts[FTRACE_PLT_IDX], FTRACE_ADDR);
--
--	mod->arch.init_ftrace_trampolines = plts;
--
- #endif
- 	return 0;
- }
+ 	if (tramp) {
+ 		tramp->sh_type = SHT_NOBITS;
+ 		tramp->sh_flags = SHF_EXECINSTR | SHF_ALLOC;
 -- 
 2.55.0.860.g4b6b3295ed-goog
 
