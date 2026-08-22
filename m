@@ -4,88 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36725C5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 11:34:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53C78C5DF97
+	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 12:17:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 888926B0095; Sat, 22 Aug 2026 07:34:09 -0400 (EDT)
+	id DBA2B6B0095; Sat, 22 Aug 2026 08:17:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 867C06B009B; Sat, 22 Aug 2026 07:34:09 -0400 (EDT)
+	id D6AEE6B009B; Sat, 22 Aug 2026 08:17:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74F576B009D; Sat, 22 Aug 2026 07:34:09 -0400 (EDT)
+	id C5A206B009D; Sat, 22 Aug 2026 08:17:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B2D16B0095
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 07:34:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83EBD120390
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 11:34:08 +0000 (UTC)
-X-FDA: 85128696576.15.5F74F21
-Received: from latitanza.investici.org (latitanza.investici.org [185.218.207.228])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 57E1740005
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 11:34:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=g3XcHBIG;
-	spf=pass (imf04.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 97DB86B0095
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 08:17:04 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 149A3C0112
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 12:17:04 +0000 (UTC)
+X-FDA: 85128804768.22.E226A9B
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5AC0140006
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 12:17:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TDfA+q9i;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787398446;
+	s=arc-20220608; t=1787401022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GNwyVkbrl/IZdn/NaEk3v2rcVEw/q2TX5VaMaY7Fz6A=;
-	b=nMDd7cVdq75Nyjij54m5irMDPYLZNKwLxD9iJzch983xaiE+zp86OuBn2fdTD7H7pH+You
-	1P7pbDftDxxcs/HwkA57nmU9ZwYUEP5xTjl3EIkYwFpRdjcRVEMdzqkWZke9Z/R/toNK/p
-	rr+eUT8LSaR3cEkwdoerBCzqTfmJz8E=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jsN6LvX9NPfCQNk61W1iZUjewLQksV8dhJul9MwmJzE=;
+	b=uBdf1JKHozJq5LoVNLnCWjCDh/VoU7cq4mbGapbA1JHPWJ6VfdSl9gpHIyMFrzwLYUnbYh
+	zyM3fgCxK+ngFmJKZRn+ivq2GyUWXDsVNV4nvyfEF/NNir9OJXetbHFVkeMnye6c3Om0XI
+	38q3KF5UPQ+M+iiKgLpcRgSZ/iFcg1E=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=grrlz.net header.s=stigmate header.b=g3XcHBIG;
-	spf=pass (imf04.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
-	dmarc=pass (policy=reject) header.from=grrlz.net
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TDfA+q9i;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787398446;
-	b=LeuqS6qI7nyGdMEpq0n9ON7DVnuovTnK3b8fFNN6Qqqz7Rwk+E8Z9TtWVj8hYrJPRWJNYN
-	NZPwuuIY02kTZqYj3kNbkJdRSo+ULje+iwVrJxOYv2Li0rSCf5J9pOKyzXJuP5OO0db7t3
-	xS6ahnOhcpYBjp4dCSq2X+EY2JT+ZHw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
-	s=stigmate; t=1787398443;
-	bh=GNwyVkbrl/IZdn/NaEk3v2rcVEw/q2TX5VaMaY7Fz6A=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=g3XcHBIGCwsDyRRltTA0CXu6mdQ3t4HGha31MglU1M7NlMpj/jeh0+kFAcIgLu9os
-	 193Cse5ZjVk1d2pXg1/47VABuzinLhWeN43czqHojC4XvKbDwSj6UGUzVv30+mZnhD
-	 RQ3hmNlvcrmak+RJg0vPnvx4j7dPlq/eKzMvi9nc=
-Received: from mx3.investici.org (unknown [127.0.0.1])
-	by latitanza.investici.org (Postfix) with ESMTP id 4hRw6z52rGzGpCY;
-	Sat, 22 Aug 2026 11:34:03 +0000 (UTC)
-Received: by mx3.investici.org (Postfix) id 4hRw6z1sVRzGpCG;
-	Sat, 22 Aug 2026 11:34:03 +0000 (UTC)
-Date: Sat, 22 Aug 2026 12:28:17 +0100
-From: Bradley Morgan <include@grrlz.net>
-To: =?ISO-8859-1?Q?J=E9r=E9my_Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, mgorman@suse.de
-CC: bsegall@google.com, dietmar.eggemann@arm.com, kees@kernel.org,
- kprateek.nayak@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- rostedt@goodmis.org, vschneid@redhat.com, stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_fork=3A_initialize_functi?=
- =?US-ASCII?Q?on_graph_state_before_copy=5Fexec=5Fstate=28=29?=
-In-Reply-To: <20260822084927.547141-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20260822084927.547141-2-Jeremy.Jean@oss.cyber.gouv.fr>
-Message-ID: <E33C59B8-755C-403F-A06C-7B7DE3F81926@grrlz.net>
+	t=1787401022;
+	b=Dod4SjwhcEmPVQHSBzD/yDZXvUHTefaZIgNpr8ov2jCzdrr84gbnMp6P0bziu4Ar047zo6
+	VpuFX5pQGJuCbBxI3QzlskoQ4uSmeBO600waN4imKENWwv3tB/tomnWR2BkpruzU/Cl5GV
+	NePIOy5fEryxooHk0n49k0sxmNTxifM=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a0794669a6so3798388a12.2
+        for <linux-mm@kvack.org>; Sat, 22 Aug 2026 05:17:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787401021; x=1788005821; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jsN6LvX9NPfCQNk61W1iZUjewLQksV8dhJul9MwmJzE=;
+        b=TDfA+q9idV5M5uP8u2GfGmn4io9naOoGI6qHrM/YtH4zguArhbmK10Jz+X5q12Nk3m
+         WVgEuQv1b3RNUxukv0C3pAFMGu45YII3IAhZT6ndryY4X+/zgeUKwGvKfBwwFi+TPVVa
+         8tvOk0kedjUYYbSOnxOLWNwlRLKUcpx87YWnA00R6cxOHJ3K1OdPfmBcaJZoO+g36W0o
+         pZvVjLDGBAUNxfva3ifdRS9mReOw5Q4JbZZIdF38H1qH5yVkMgKXOKObF+B9vNW7BRkn
+         ok5PwGX8kor5Y3aHMQZoEXZUXWx8uW20gzEWlsfQXJTpKObIGz35fkFlZ8IIEkRYPXPo
+         9Y+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787401021; x=1788005821;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jsN6LvX9NPfCQNk61W1iZUjewLQksV8dhJul9MwmJzE=;
+        b=PgLaakqueqwUN4HMSEQpaNk8ADmPodVs9y81gW/1o+GpibxXvKfVEK8Z1ZUH6O7LPO
+         X8xsCCCcAhKiDAzTYWCKeg6a5YWHQVG4uoPYzScZuF8z/4J7kAtw2mzAuTG+DHjgFf2v
+         xup6KMv2Ex93zNxgA+oZyfSVPBp9lxH5oRrPoH7XnviCe4rEiitUgr5jLTWCGmIDYopM
+         3G9hWgC7ronivGAYGfezpyZTmKdRNr4Qi3bFEneuEbaUrbisH8BE/DiygdbmXss/XqO8
+         u/eFyFEb9jO6orNFp6v90nvawwk2R6dMCWoRlLYxoZONBNZPNLL9NJtnWti1cdNq2UC4
+         pkaw==
+X-Forwarded-Encrypted: i=1; AHgh+RqVRUSdBWE2+nwli6WRtVJ7UfX39+KR6EOklIUj5/qDZp68jdCTwSLGczX+hhchxYQk0Cyv+BY5yg==@kvack.org
+X-Gm-Message-State: AFuF++k3nIsAYenfh074WWfdSzuhHxyunTY86GcwBlVuJrpvzbTXGVCk
+	XxycWxbU/zTA7vLZ5pCjqSxrGEXSNg1Ss3sLv0pQxvflpdBcXRSJLcNX
+X-Gm-Gg: AR+sD100r+uERAfiIFmh5KqQWRKK7C40PMkQ4zyhYoadECxe2w0hDpVmNwti9GLs/ww
+	pRRnTsqUk1Q+8WrwZNuy8FOCFgs8EXX6esUIFSX69sAx8WKmkwXULcLVA01wRZ36RmD5z0UTwCM
+	ag+2cF6y4hvr8fEmc2o/D6ANxR9iwyllzwbJCNi6nqK2GCvIAJmdkVOiJjF8NCSWSt633sw6wwJ
+	3YSHGUaY6p98BCd+zX690x5Hl9uCN3TRw0psimv6cOh0+rbrDYde1EwZbqr/jjuK/ixpWkAF56w
+	/t/usJvBYrDqz4wWJcNn2+K+PCA5b7DEUo9x1ujj/Vti9B2/Or+dwA3oiEzJzHT9f4Y9ZkWtGDR
+	PtSqiZYGUDSz3sH9niX1+dgUMhP9MluMcwetr/ZWwPIHcEBCvt9GCdbf8saih7MrbolRFqhJ1vi
+	MDmK1li869FbYR28HB0FtUnLLCSipbVAwxMKR76Zs8+6nFy113tMP3xZi/PgjV0BP8JOqiVW/5F
+	2OJo8rInBmrwqPVz3rhRa2pboVD6l7+7J3bnjBBrtaoBL6YhtphSnUyFKk+qGka40EvwnttGVca
+	yTVjx9wBv4x01spps3bFQMlz/xZA8hBDu3NiinqVCPJi8DpGzDGANbtgv8Vcbf24POcP
+X-Received: by 2002:a05:6402:5513:b0:6a4:2ee:5c6d with SMTP id 4fb4d7f45d1cf-6a582b16d2bmr6451179a12.6.1787401020491;
+        Sat, 22 Aug 2026 05:17:00 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a0f5-8c01-3de3-cd62-aa6f-2fb0.310.pool.telefonica.de. [2a02:3100:a0f5:8c01:3de3:cd62:aa6f:2fb0])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3ff0c30casm10998322a12.7.2026.08.22.05.16.58
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 22 Aug 2026 05:16:59 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Petr Tesarik <petr@tesarici.cz>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/7] docs: core-api: Fix stale function names and a broken example
+Date: Sat, 22 Aug 2026 14:16:44 +0200
+Message-Id: <20260822121651.1559-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 57E1740005
-X-Stat-Signature: n5xdyjbspuad95ufzfrop6m6s3u6hpiy
+X-Stat-Signature: xip7tp7s417xs7hr4j54kx71ic3zzfgc
+X-Rspamd-Queue-Id: 5AC0140006
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787398446-24879
-X-HE-Meta: U2FsdGVkX19hKKlYZwcJW8lm+qEsrVFHXLSyzoycZujR6uDoQ5zjtYfhbjz+4o/JyUzaKmDrW/6tw6d2SWTN1CLcigY+nSlNt8f5BGOer2LOb7IORoEgsYyHDIbK1xWuIzdISEGwjZPts/RIJLGqm1iQX0x7zONtOW6Ysn8FV/X/xiW5POX9UzNjVymUEF2sUsfyNXyZRo5TJAQwtWQW9XZuJe4vOU+kSISM8S3G720KlArAQZTo5elMTUv3J5yOd+bDWJg/CY5qOtGMTnR6RvS14q0Jln+y10hBZv20OTOvtGSeopGS3xn2MAP5zsiF6WaRXkegLoegdI+4B+kP1ymrpaDVTf2fJEg3/ncxlmWmycxIkzeJl4wggpjF0RvRlouDzMDa6yDS1wSwWOwSRuThrxAMVGI1Y6To5hH3B3V7P0M8eBzwMt02z7Q4CAuahaXl+vA9y3TUIQ68F2u5pnVj1Zy81c/4lTag8BWPfjCk8/JaDQqUtJrbI5ZN3VMBkwqlJS48NfybaJbsZYkdYf2h1Z79+jhiV8k3N0JC7v2xntQ4Y7s/eWbPLaRxp4Ah65QAJ7G7FMH4dzR3MG3ABCWd8IktDvgN5k793mNaHHLyCCdjXiHkqxxVY7RAh+JvcgrxeFGmKwzcGnCL/Yyggh9dFGl1sTeuaxW724pvrFCoIcrUAxw8IGVqnXt8v+TeEJ/DU1rwScuulIf02nKj2J2Kcp+a8OXw08T0igUA0ASfKlvbyEv7WJFh+8QlwBQB96Z0FRdjZDL/ZmVJJLI8Wr7iF4dM8M7j7HcXbYavDBN/CQEk54E79UlpOWnZkY8fapbPAVcGdks+49or1LrpBxoOjjUW+EF+gfmWabZdvX0PdAEICIipBxc67j2e4jJxqag0NmpstnHimjbQaoP5KhhFWfjQVFhRedv3ahqDNwuqkzseLmEYelDqqJ7kzU2TkP9nuzE6/npEOA9DmSb
- nfxwSpX+
- zkMgucuciCilBMUcvQAT7OWehCJ7fa39VRe6xbRS6ko0MmJCeGvU3xTlxGFLiMEQx5eY3yd+ew5BARo/oGDYa/Q5jNcXBXkuDYU8/4zXnOP31Z9n1wr8rfiDgTKpc+wBDTJjl9lqdRIWlaAFmYMeuf1s6uEH0wOlQOqVXQj9afAA2ROv0Ygz/vD4rAh70XsjCDYm21s1VKGFYHbtZzXdv/kPzDPG3TpdxUBY9cRiDHgZvN14fcYuKI4WNmFAUxaMsrjeFkuKJK90v6nq/FhyCB/bHWL5kuMaqawx3C484t4LGlDYAOJ8LMkivILZLkzWtSRMIhGKwfHMv97acic11684VAAqKapNujc3r2IMG8HyP8nkqADyy+8+NoX4aJrKOHb5sIrJxXFX/HXe80xJ0YlPxuhKkX8CAO1/YARJC+a5TFmUNfYACOgaCkCqtn+DifeXt7BL4e8fDa2eMdE1BMaCXi5HlMr3eH4JN6/SCLEtbKstjAV/G9grJiw==
+X-HE-Tag: 1787401022-485939
+X-HE-Meta: U2FsdGVkX1/l/zmtjezExW/PEHKxzgQ6nUN5fj+IQ8tCAadspSufMa5lVKwV61r9nhthyQ32wTQH/JQK8abKVYvfCmqMprbAjy1ZJJG5u3Yqku22OZrOfmOVY0bxEmxTYvaoI2lA2asK2oVGk00TDzr94k/7LsEim1z3XDXG/tnTaOIVSxfgkfm8DZQXcA+RHmZP3oNyayUkFLMsuHruY7h/zIHqvBGYZFaK9Vw/BEJA9KvbRQIV8Khc/HAJPgi6fKK+zpJ4JB9lxD8yIrTMGL/h1DI6ZWnehkGNLR5ipEGPwNyfO+LjXp6R0TAcat2xvZtbLk0Mw9BMrmQMhc+P+PGFVH7ymkh7WC2qN8/zztYPJLWZI3mqsxFboIe13B6pZslNIs0nIB7ZzBRg6/EJYM/qvLe+Ow2THMNeBqFr6ZL/qMbi8U8kf4m9e2zKy6/PqoFDPVCtEPNDV/w/aohgIFKdnbPv47hNMfIme5oVFoLZwVWNwUSsAVUf98YqaX9N5XCK3fvltPRbmwEaVu5TWEfiqXlDr+LgxO3qDUXr5ofnzGza4+0LGikpApUwa7dNMwzPpxa+P1uONkrDHfxnxV8a3Tab4USthwvyaXc9kllR0znJ5PjjVNZT+k/DNLLQ/yPovjd6mt+fKFUmqM1sV56U1Qi2hTcAxPwARAI1yzCezC8UPBHBxjz2yLpk+q/2TKt3eIC4F6uPDOs3aoUhHt4NnaY/Io1UOCC4hxBRXfJE8XwIdNVkSu4bQfnK62Dw6r6vzygBQNbDAG9Nt4M2krVlr9eqXiydUOTFcg7agRPz9Ak0TtqO20Pac9nhDvmNTdk6jJuK+zxQVxfB4MKh1lyDjU1iGETyhfmhsguw9g9vBsfqGkQ5kvbGD0pqjls3w2iP1lEuhcEkaZuqBOcF68+JhHhF7yYxtUevWTRm+7deEvs8aBe+zqteOSy7tvgKjamcnxDL1NvPXRGRgIZ
+ nw2J+qTs
+ 201lOUnfZYGQPhwDVQhxD5gDVderOUlj4WX+FceT638zijJJekYhYFe5cf4tq6Adl7L7DQWF87v2vumnoLQdW2cGIaB+L5Fu1WK/aCLLj1jfKA8gmZozM5Vqd9bhg7cfAPacUkl9mEagELEf1daPHGdeX2WbFqj0vN92GC785GYcBI4cNa22GKpiAbf195zvcnndsrvkv5qHWdGBaqaecBRukbA/8pVh9edjTkwS43QPg5mzXxzur9PQklEtrr3lDS0x9HlIZb7n/zE9S/kc1i804nlOQxfkZFwCWD1Z57CjPwzh1ErbBuZ1dwWeRqdeytQGzy02j9NU/dU+TAy+3Kd+f/x1DLxZGZhrZa+miD4Qu13OaMNvQFSgPZEDFJIc8QnSGDe4hFERcmMXtNcX4tif+BG6IUZh8zBqrzKtk0+x+bOc/4NyLJXG9Gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,129 +131,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22 August 2026 09:49:27 BST, "Jérémy Jean"
-<Jeremy.Jean@oss.cyber.gouv.fr> wrote:
->dup_task_struct() copies the parent's task_struct, including ret_stack.
->ftrace_graph_init_task() clears the copied function graph state, but it
->currently runs after copy_exec_state().
->
->For non-CLONE_VM forks, copy_exec_state() allocates a new task_exec_state.
->If that allocation fails, copy_process() reaches bad_fork_free and
->free_task() calls ftrace_graph_exit_task(). Since the child still carries
->the parent's ret_stack pointer, the unwind frees the parent's active
->function graph return stack. The parent subsequently accesses freed memory
->from function_graph_enter_regs().
->
+A review of Documentation/core-api turned up a handful of places where
+the text names a function that does not exist, or an example command
+that cannot work as written.  Each one is a plain typo from the day the
+text was written rather than an API rename: for every patch the wrong
+name was checked against the tree at the time of the Fixes: commit, and
+the correct name exists in current mainline.
 
-Wow! Real life use case?
+The changes are independent of each other and only touch prose and
+examples, so each can be applied on its own.
 
+Karl Mehltretter (7):
+  docs: cpu_hotplug: Fix multi-instance removal calls
+  docs: irq-affinity: Restore grep in example
+  docs: dma-attributes: Fix dma_alloc_attrs() name
+  docs: swiotlb: Fix maximum mapping size helper
+  docs: this_cpu_ops: Fix SRCU helper names
+  docs: xarray: Fix xas_try_split() name
+  docs: debugobjects: Fix debug_object_init() name
 
->KASAN reports:
->
->[   22.190920]
->==================================================================
->[   22.195899] BUG: KASAN: slab-use-after-free in
->function_graph_enter_regs+0xa76/0xb90
->[   22.200747] Write of size 8 at addr ff110000054dc0a8 by task repro/1
->[   22.205134]
->[   22.210770] CPU: 0 UID: 0 PID: 1 Comm: repro Not tainted
->7.2.0-07732-g9328b3b03bdc-dirty #3 PREEMPT(lazy)
->[   22.212576] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
->1.16.3-debian-1.16.3-2 04/01/2014
->[   22.213750] Call Trace:
->[   22.215271]  <TASK>
->[   22.216242]  ? ftrace_stub_direct_tramp+0x10/0x10
->[   22.217774]  dump_stack_lvl+0x4e/0x70
->[   22.220531]  print_report+0x157/0x4b4
->[   22.223202]  ? fixup_red_left+0x9/0x30
->[   22.224407]  ? complete_report_info+0x83/0x110
->[   22.226679]  ? function_graph_enter_regs+0xa76/0xb90
->[   22.228084]  kasan_report+0xce/0x100
->[   22.230109]  ? function_graph_enter_regs+0xa76/0xb90
->[   22.232860]  ? stack_trace_save+0x4/0xd0
->[   22.234156]  function_graph_enter_regs+0xa76/0xb90
->[   22.236090]  ? kasan_save_stack+0x30/0x50
->[   22.237752]  ? __pfx_function_graph_enter_regs+0x10/0x10
->[   22.238694]  ? ring_buffer_lock_reserve+0x345/0xf80
->[   22.239628]  ? stack_trace_save+0x4/0xd0
->[   22.242121]  ? stack_trace_save+0x4/0xd0
->[   22.243588]  ftrace_graph_func+0xda/0x160
->[   22.245362]  ? ftrace_stub_direct_tramp+0x10/0x10
->[   22.246520]  0xffffffffa0000095
->[   22.250528]  ? stack_trace_save+0x9/0xd0
->[   22.251757]  ? ring_buffer_unlock_commit+0x11d/0x5c0
->[   22.253152]  stack_trace_save+0x9/0xd0
->[   22.254264]  kasan_save_stack+0x30/0x50
->[   22.273631]  kasan_save_track+0x14/0x30
->[   22.276763]  kasan_save_free_info+0x3b/0x70
->[   22.278296]  __kasan_slab_free+0x43/0x70
->[   22.280157]  kmem_cache_free+0xbf/0x3b0
->[   22.282963]  ? ftrace_stub_direct_tramp+0x10/0x10
->[   22.284001]  free_task+0xa2/0x160
->[   22.285699]  ? ftrace_stub_direct_tramp+0x10/0x10
->[   22.286752]  copy_process+0x2aae/0x7bc0
->
+ Documentation/core-api/cpu_hotplug.rst | 4 ++--
+ Documentation/core-api/irq/irq-affinity.rst | 2 +-
+ Documentation/core-api/dma-attributes.rst | 2 +-
+ Documentation/core-api/swiotlb.rst | 2 +-
+ Documentation/core-api/this_cpu_ops.rst | 6 +++---
+ Documentation/core-api/xarray.rst | 2 +-
+ Documentation/core-api/debug-objects.rst | 2 +-
+ 7 files changed, 10 insertions(+), 10 deletions(-)
 
-I see.
+base-commit: 26260251022fbc2f248a3d747a9b2b961b18d2d8
+-- 
+2.53.0
 
->Initialize the child function graph state immediately after
->dup_task_struct(), before the first fallible operation.
->
->Fixes: 6b1c66c9cca9 ("exec_state: relocate dumpable information")
-
-Ack.
-
->Cc: stable@vger.kernel.org
->Assisted-by: Codex:gpt-5
-
-Good, declared AI.
-
-Reviewed-by: Bradley Morgan <include@grrlz.net>
-
-
->Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
->---
->Changes in v2:
->- Add the KASAN report excerpt to the commit message.
->- Add a comment documenting why ftrace_graph_init_task() must run before
->  fallible initialization.
->
->v1: https://lore.kernel.org/all/20260821102207.3626491-2-Jeremy.Jean@oss.cyber.gouv.fr/
->
-> kernel/fork.c | 7 +++++--
-> 1 file changed, 5 insertions(+), 2 deletions(-)
->
->diff --git a/kernel/fork.c b/kernel/fork.c
->index 1e68404bd773..0d1ad92e2d33 100644
->--- a/kernel/fork.c
->+++ b/kernel/fork.c
->@@ -2139,6 +2139,11 @@ __latent_entropy struct task_struct *copy_process(
-> 	p = dup_task_struct(current, node);
-> 	if (!p)
-> 		goto fork_out;
->+	/*
->+	 * Must run before the first fallible op, so error paths never
->+	 * free the parent's ret_stack.
->+	 */
-
-Used my suggestion, good.
-
-↓ good fix.
-
->+	ftrace_graph_init_task(p);
-> 	retval = copy_exec_state(clone_flags, p);
-> 	if (retval)
-> 		goto bad_fork_free;
->@@ -2165,8 +2170,6 @@ __latent_entropy struct task_struct *copy_process(
-> 	 */
-> 	p->clear_child_tid = (clone_flags & CLONE_CHILD_CLEARTID) ? args->child_tid : NULL;
-> 
->-	ftrace_graph_init_task(p);
->-
-> 	rt_mutex_init_task(p);
-> 	raw_spin_lock_init(&p->blocked_lock);
-> 
->
-
-Thanks!
 
