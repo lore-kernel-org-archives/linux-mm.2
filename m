@@ -4,93 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8578C5DF98
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 04:42:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2287C5DF81
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 06:51:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98DFC6B009D; Sun, 23 Aug 2026 00:41:59 -0400 (EDT)
+	id 2AFFE6B0095; Sun, 23 Aug 2026 02:51:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C86A6B009F; Sun, 23 Aug 2026 00:41:59 -0400 (EDT)
+	id 2601F6B009B; Sun, 23 Aug 2026 02:51:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71C2A6B00A0; Sun, 23 Aug 2026 00:41:59 -0400 (EDT)
+	id 19D946B009D; Sun, 23 Aug 2026 02:51:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BF096B009D
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 00:41:59 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B69C812026E
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 04:41:58 +0000 (UTC)
-X-FDA: 85131286716.19.103BBC4
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 06056A0003
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 04:41:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Pcf6htPu;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf25.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E24E86B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 02:51:00 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6379414026E
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 06:51:00 +0000 (UTC)
+X-FDA: 85131611880.07.48D3466
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9D75E40004
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 06:50:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lPSFldhZ;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787467858;
+	b=qghxEYQf7dKH9+sNwhUVj2mg5q5G917umEKLyG+PPGzmGMQ0e6H1a5DCEGnAJI0pE2GEYL
+	vSPO7nlkBIaasffzjNT+B3QwFvOCCzOY2gDtwEgtLXLeT8ox5kZP5ZSyvquV1Glo4oaocZ
+	k1o0S6xSleRDFLRdzK+OCAnu3QAcEfM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lPSFldhZ;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787460117;
+	s=arc-20220608; t=1787467858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rpJ8lj+pnCjeQ7J7KuEkjV/sMqGkbWtnr3XBGPFmpoc=;
-	b=qTYunHOGB2tN4wyFlV6ewuPitZoWvwTdrXpNDiFpElH2yVsAwVRo8HXpQwGTdGhZ85yhg8
-	mc3zhAr/UH4jGC+gKmdftpH/kZGWzACWPMLjNwufcC/Em2TZO+nLJSsqB8AGyZNiEoBoFF
-	pWeWHwT6XDb8pk2fp1fa2rmgUcaAE+I=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Pcf6htPu;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf25.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787460117;
-	b=f53Omd6hulfXszdQFfM/Mfl90NLv9Hk8yoLsDR8ozzXPYq6zWEti8oC9CnkYgovTw+GYn+
-	3qduFCDFIoeN8HJxcjYqvyae0+ZgTWlF3mWK263d9+MESulmajz0t+OMEP7wGteGTRvgCG
-	j9GtQYgrbXibGl6e+M6+9ZOj1iDlA8I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=rp
-	J8lj+pnCjeQ7J7KuEkjV/sMqGkbWtnr3XBGPFmpoc=; b=Pcf6htPudBQzdQoW2s
-	/XVkCZKemfMRGKJRUbUhwIdGZOB9wrVOrwywLGG4gNn3+wtgVADeWlBuMByW9Kf2
-	YZMfGItNvkD2thWf3eLGpuOvg9G/nRKy95GarVfl3CNqtorghmoWNwoS5Bi+XY/L
-	vuf4uLCZtYsywGqyGUa7kAg54=
-Received: from XLL-9950X.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAXH8z4eYpqyqI1Qw--.15058S3;
-	Sun, 23 Aug 2026 12:41:33 +0800 (CST)
-From: Longlong Xia <xialonglong2025@163.com>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	david@kernel.org
-Cc: mike.kravetz@oracle.com,
-	mhocko@suse.com,
-	linmiaohe@huawei.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	xialonglong@kylinos.cn
-Subject: [PATCH v2 1/2] mm/hugetlb: do not dissolve gigantic pages without runtime support
-Date: Sun, 23 Aug 2026 12:40:51 +0800
-Message-ID: <20260823044118.1097121-2-xialonglong2025@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260823044118.1097121-1-xialonglong2025@163.com>
-References: <20260823044118.1097121-1-xialonglong2025@163.com>
+	bh=PxHus4vSfS5CQqnKuDATVr2Sh5vCyrMBO6sWrbzlMGU=;
+	b=kQMpPO/f8/QrAa7nlMLwzURetnj6ZQqYQbRGeRFvy20EizjJOUklqm+j3SyCHDp4mNmvEZ
+	3Mi+cSwKwNz5+D8C6egVY7vGPaI08V/h7B197ipTABPx9KBkcugOzBTbblREZVgh+ETTQv
+	CKYViLtqNKTAXNmxtpulam8Dt0j9n50=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4DAA242DDB;
+	Sun, 23 Aug 2026 06:50:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E531F000E9;
+	Sun, 23 Aug 2026 06:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787467857;
+	bh=PxHus4vSfS5CQqnKuDATVr2Sh5vCyrMBO6sWrbzlMGU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lPSFldhZWKsCQ8AGQqYAuquWRS9TzZqMwiUcVMs+0BySD3vagvlLEkEJCg93UdPyW
+	 N+ICTFk+RFOsP4Dhox9+lwUmTkWOQe/wtA6WvXU4nyW0SvEXOUih7VIQfhIHmVmuc2
+	 LSfNxqY7WQXEWTzVkOPVXMbgwruz/9uGE0axKAqNWgvEv4GphVR4bN9Z8bkea0Zu9x
+	 GcsHbfF7d08egVV10MRPheMou2fqf0ILLKn8JL5dmWNvN8J38/2rgZE+XskopkA3Pu
+	 SVFWVACMBBmB3CwY0NMt/L23BDtqm89EMJ/WgTHH+4bqcDFKvhrJ0kY75HIN6u4q2t
+	 An1hwJnQWYPwg==
+Date: Sun, 23 Aug 2026 09:50:51 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC] mm: Drop pxd_ERROR()
+Message-ID: <aoqYS9eFTPqtgFMn@kernel.org>
+References: <20260806080639.1916749-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXH8z4eYpqyqI1Qw--.15058S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4xCry3Kr1xKrWUuw4UArb_yoW8JFWrpF
-	WkWrs8GrWUXF9rCF4xJr4UXrn8Gr95Xry09a4xKF43ZFnxG34DKrs8Xa18tayFvw1fJa1f
-	urWqqrWDWF4q9aUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j7mi_UUUUU=
-X-Originating-IP: [2409:8d1e:e12:7fe:fc27:3a72:bb72:5709]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9x3a02qKef2ZCAAA3W
-X-Rspamd-Queue-Id: 06056A0003
-X-Stat-Signature: 8d7z933im9kusujokntoxn51ws4k7r98
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806080639.1916749-1-anshuman.khandual@arm.com>
+X-Rspamd-Queue-Id: 9D75E40004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787460115-708212
-X-HE-Meta: U2FsdGVkX1/xVbmbGNvKD2vohDUf9PN/GxkI/lOIV2YWGbYWdPiTI5Kn+iBOs9hjm8U3xVqiIXiDn2JBbR6ZM3taovniHln5K4e/bO/IWxcpuDS596jDYf9bXkxZASOhsTJ1ABqU5QV885VkDaN8m33n6edZrxTWYa8LZ6FaVMLlu5euPHgCQOFeQYX0hyuGsIuwlnqtvFiT+b4bg+LJL2eYWsjT7fjGIeRDbfZdIYOEnr/eHyPWtlFPhcNiWZH4sVg79vJMVhdtzqZCgDjJ/VmT5b+/Lm7zyL6etivdl+YGxzceBGS+rZuXLHDnu0oPE2cEUS6XSnAahUxma/8LcaZMeLiit2G4q0oU3o9PQHNz3ktOkhlRflQMbGmD7zaJMtAVLFdnKCrXwveu20OKtB/1kBhlDz2vzafwzPMI40Kax+KBe/3Pw1iZBOMdWzwjyBnsgiNh8VH6sgeT4LLZ7v2i3ff5X7I/sFBg6D+jrKSXZlyqKQrDtgWZlv0DEyY3Td0GX/BQAmVjpaMvitzjMsBmNkz2PtcVcYI7vMP+XL/CgTwbzReb0sGb35EVG/Pq7oq4AeLFgy91LAI8K2nDkgqSA0GgkmzgdrIiVtNnfTzb2lqSWFE4VxfWWJp0lpsGpts2u5xHQJFeIfQyM8OfLESaMp59RRdWuR+AIiQxfw3fpToUIYNLMIpSyhQRxoFpKJqNZ4qzPlkryYl0jOOxxDyaFPgyDcImICx7QPzGrWlvjujYwE+wVJXnLJUH5TBnWNtSLJni4weFq8I/vMyhYKMIvgFPhwUwe5pxwT8PDx63YqtuKeM5DfP8eNBJ2WVKzo1wRc2+2OD2B96LinethCYnbbAJdBOaazQkBk4VN1ZYtE0eChMIY0VRdoz0YaPLGmmJWb5+LMOUNRI55yC0YCXhoqaiNnwjdQVz+1m4th2yD1pD16kVhvRVi3tlUDb6HG5SmXyZLcUYhkEx1Vq
- a2dmCXwm
- AlsZQgZYxhgsjiMO/C3oS8v+4duU21uR40LSP0Ijkgb4GfJXXesQ1PHATsLo5uT4IzqbNWvZSEo3WVfcbZ+Zy54CwCo0OqL2GLQXMz2ATpHTpu3ohL7/Jcu9pXgHmokRfCs3aiqcrHmHfpVsYyb2J/hKDoIVXAU4lv6GALJS/wGttw0avR6YGHnhTZMWoCIFJlnGqoPUPMMm4r/giJTQHlRvRc92am2RDsEiEzhMFsQgZlCSfZz/BgN6DqRcFiCc/wqBEW0h7n/RF5ikVBj9L/yFo9Gk83lc32mWuM05KiaoYTefCAX3nskVQ5A==
+X-Stat-Signature: abikr5m89zzseud3o4rsx3qutburjuw3
+X-HE-Tag: 1787467858-543904
+X-HE-Meta: U2FsdGVkX191hGVmcFuVN6WoyYBtybVBImYF+WMn+QRc/D+/c3n973nHqERMFnDSjS+JcKPu8QFmDkiV7wDr8KDezLmIV2pFoyZE231xMPVYGyXUevo2GXx5VyteLsKVIawPix8jLs2839hVEhRMCoYuMDThAxWP2ASOD7q102OEq76/GbRHZw3nAYsbAxGZo0Pwhf0EDcMWFUjTrWzRGSIOJYr8k2jIYV2HmQfoFlPtRSEtcwTBPra4cskEWdFqvCq/9vV/G9tdFMVIKF0PW1jfocGSnwahHi2Dd8uoYjD81OoHA7OBO/Cmz605+kFHj8n6AXkwcq7DnpJ3JBpAhczOkacgubqSvClo/+BjmyLzxffPHTvhn1u1iuwwzZfrKktsL7bUdMdWrLuKyX+JNK6H4ljiIMBOk8Up7GLoFBGJWONLaq/dR7ZPEZ0F7zX+JUzcWVnfOQltbw9pCs/uq1w4AKNe3J+RquRc9dW69qA9fQTQ+fcBwHTfQHE1Uxw0ai4ZP3lRiiVZei+bE7db3ouvumSOK8iQaX/OGVbHXOBbRAb3BAlA8+tu1OyHKW6OndW7o+RF0+/psHyHJjYEg6kKey9UM5ox39deo4L+lInYt2lRQ/p3e+f/K+92wv3HUF1epGXfc0BPTt/BEUC/IDaYKMRW/QSe1q3bEkzF1DpERtGlcGfE2OEFf3Zijn8dmsxHgdMuLGu7rw6i0Dw2MaVZ37EaAWbWPV0a3JW6nPTPTxcRqHZNBZbE7jICAmTP83TQ+HQltcr175bMJJn3BS6WTkWF4dJG4nDD549aPAUScEGTRbv1YfCjRjMc+/w8ruxk6UR2tSgKf+cmTqxc1KMOxX3YbeSOfb5B4dhlY3bw8WeT3rWvJivJdCEWhQK4G0dELTGIxAgnSL3qci8FEU2xY6UPGnivN44472YGbnWkWnSAP1r9mc5AUF74lDmjFZvyGlrOgpCMCRNv5BN
+ 4n3OFVwx
+ /fuE8X8jg9OQriSeAAIiw7Js9BzVV9zADdHRuCtjC0kTODjbPD+rHIr8/B3GxGB7AJ2V7Xeuk22CAMKC3LZaKmKt+D+lKbcu36dfwjHAZJdfCMba0QJwL7R50YfzZ+088onglj0mqwafR01pWaCwnoU7txlwjNatcV7NW4eQm0HpSJVPSHToHxNFPtbbb5B6i5Z/vt+xItcXYuwdCZlvvzdiJUvhF/EefJW5Q2u6u3HBTpbDxJsh3KlzRNy/zTBWMAX6yvCu+nzhXDVZ9IaBHuV1YnSiQ07MvxwmtM6CbrnhY93ZLiPmUVugbPlGPP90No6QqnDmo/dOuVtgP425kQ349dAK5BJZVT3NQAechPmZQlAwGn0TnYYkN5LmxbsaU/v+1E6QQdHneclOBI+Le2Ii/aX++fTpqLdHkQB2iOgS/4didbdPgQUUssxJjYrDFY+aoiLULPvQY5MGgggaswAru2f8sWBYcE0HAtoqabPI5J3zw1+QQ8w47qg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,42 +91,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Longlong Xia <xialonglong@kylinos.cn>
+On Thu, Aug 06, 2026 at 01:36:39PM +0530, Anshuman Khandual wrote:
+> pxd_ERROR() has been used in generic mm just to print the page table entry
+> in pxd_clear_bad() before clearing those out with pxd_clear() later. These
+> pxd_ERROR() macros have been provided by all platforms which basically did
+> the same thing.
+> 
+> Make pxd_clear_bad() use recently added ptval_to_str() instead for printing
+> page table entries thus completely dropping dependency on platform provided
+> pxd_ERROR() macros which can then be dropped off. First move all required
+> helpers in core MM into a header file which could then be used else where.
+> 
+> Although some platforms still use those macros internally as well. In which
+> case just move these macros inside the platform for now.
+> 
+> Cc: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org> 
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> This applies on v7.2-rc6 but after the following patch
+> 
+> https://lore.kernel.org/all/20260709044334.1741263-1-anshuman.khandual@arm.com/
+> 
+> Would it also make sense to just drop __FILE__ and __LINE__ from the output
+> in pxd_clear_bad() helpers as they always print the same details regardless
+> the error path and does not add much value.
 
-dissolve_free_hugetlb_folio() doesn't check
-hstate_is_gigantic_no_runtime(h) though remove_hugetlb_folio()/
-update_and_free_hugetlb_folio() silently bail for such folios, so it
-frees a still-listed folio and, on vmemmap restore failure, the
-add_hugetlb_folio() rollback corrupts the free list.
-
-Fixes: 6eb4e88a6d27 ("hugetlb: create remove_hugetlb_page() to separate functionality")
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
----
- mm/hugetlb.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index e93c4d2456aa..8b9cb476a41b 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1977,6 +1977,15 @@ int dissolve_free_hugetlb_folio(struct folio *folio)
- 		struct hstate *h = folio_hstate(folio);
- 		bool adjust_surplus = false;
+Maybe replace them with the caller address?
  
-+		/*
-+		 * remove_hugetlb_folio()/update_and_free_hugetlb_folio() bail
-+		 * for gigantic hstates without runtime support, so dissolving one
-+		 * here would leave it on the free list and, on vmemmap restore
-+		 * failure, the add_hugetlb_folio() rollback corrupts that list.
-+		 */
-+		if (hstate_is_gigantic_no_runtime(h))
-+			goto out;
-+
- 		if (!available_huge_pages(h))
- 			goto out;
+> Build tested for various architectures.
+> 
+>  arch/alpha/include/asm/pgtable.h              |  7 ----
+>  arch/arc/include/asm/pgtable-levels.h         | 11 -----
+>  arch/arm/include/asm/pgtable.h                |  7 ----
+>  arch/arm/kernel/traps.c                       | 17 --------
+>  arch/arm64/include/asm/pgtable.h              | 15 -------
+>  arch/csky/include/asm/pgtable.h               |  4 --
+>  arch/hexagon/include/asm/pgtable.h            |  3 --
+>  arch/loongarch/include/asm/pgtable.h          | 10 -----
+>  arch/m68k/include/asm/mcf_pgtable.h           |  6 ---
+>  arch/m68k/include/asm/motorola_pgtable.h      |  8 ----
+>  arch/m68k/include/asm/sun3_pgtable.h          |  7 ----
+>  arch/microblaze/include/asm/pgtable.h         |  7 ----
+>  arch/mips/include/asm/pgtable-32.h            | 10 -----
+>  arch/mips/include/asm/pgtable-64.h            | 13 ------
+>  arch/nios2/include/asm/pgtable.h              |  7 ----
+>  arch/openrisc/include/asm/pgtable.h           |  7 ----
+>  arch/parisc/include/asm/pgtable.h             |  3 +-
+>  arch/powerpc/include/asm/book3s/32/pgtable.h  |  2 -
+>  arch/powerpc/include/asm/book3s/64/pgtable.h  |  7 ----
+>  arch/powerpc/include/asm/nohash/32/pgtable.h  |  2 -
+>  .../include/asm/nohash/64/pgtable-4k.h        |  3 --
+>  arch/powerpc/include/asm/nohash/64/pgtable.h  |  5 ---
+>  arch/riscv/include/asm/pgtable-64.h           |  9 ----
+>  arch/riscv/include/asm/pgtable.h              |  4 --
+>  arch/s390/include/asm/pgtable.h               | 11 -----
+>  arch/sh/include/asm/pgtable-3level.h          |  6 +++
+>  arch/sparc/include/asm/pgtable_32.h           |  3 --
+>  arch/sparc/include/asm/pgtable_64.h           | 10 -----
+>  arch/um/include/asm/pgtable-2level.h          |  7 ----
+>  arch/um/include/asm/pgtable-4level.h          | 13 ------
+>  arch/x86/include/asm/pgtable-2level.h         |  5 ---
+>  arch/x86/include/asm/pgtable-3level.h         | 11 -----
+>  arch/x86/include/asm/pgtable_64.h             | 18 --------
+>  arch/xtensa/include/asm/pgtable.h             |  4 --
+>  include/asm-generic/pgtable-nop4d.h           |  1 -
+>  include/asm-generic/pgtable-nopmd.h           |  1 -
+>  include/asm-generic/pgtable-nopud.h           |  1 -
+>  include/linux/mm_types.h                      | 40 ++++++++++++++++++
+>  mm/memory.c                                   | 41 +------------------
+>  mm/pgtable-generic.c                          | 21 ++++++++--
+>  40 files changed, 65 insertions(+), 302 deletions(-)
+
+This is nice :)
  
+> diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+> index 467b8547ac8b..cca30bf11b4c 100644
+> --- a/arch/parisc/include/asm/pgtable.h
+> +++ b/arch/parisc/include/asm/pgtable.h
+> @@ -75,12 +75,11 @@ extern void __update_cache(pte_t pte);
+>  
+>  #endif /* !__ASSEMBLER__ */
+>  
+> -#define pte_ERROR(e) \
+> -	printk("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
+>  #if CONFIG_PGTABLE_LEVELS == 3
+>  #define pmd_ERROR(e) \
+>  	printk("%s:%d: bad pmd %08lx.\n", __FILE__, __LINE__, (unsigned long)pmd_val(e))
+>  #endif
+> +
+
+Stray whitespace change?
+
+>  #define pgd_ERROR(e) \
+>  	printk("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, (unsigned long)pgd_val(e))
+>  
+> diff --git a/arch/sh/include/asm/pgtable-3level.h b/arch/sh/include/asm/pgtable-3level.h
+> index d1ce73f3bd85..3cfbec15de2f 100644
+> --- a/arch/sh/include/asm/pgtable-3level.h
+> +++ b/arch/sh/include/asm/pgtable-3level.h
+> @@ -28,6 +28,12 @@
+>  #define pmd_ERROR(e) \
+>  	printk("%s:%d: bad pmd %016llx.\n", __FILE__, __LINE__, pmd_val(e))
+>  
+> +#define pud_ERROR(e) \
+> +	printk("%s:%d: bad pud %016llx.\n", __FILE__, __LINE__, pud_val(e))
+> +
+> +#define p4d_ERROR(e) \
+> +	printk("%s:%d: bad p4d %016llx.\n", __FILE__, __LINE__, p4d_val(e))
+> +
+
+I'd expect that all arch changes would only remove code. Why sh needs
+those?
+
+>  typedef union {
+>  	struct {
+>  		unsigned long pmd_low;
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index b18c2b2e7d2c..1025b9140c0b 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -2001,4 +2001,44 @@ static inline unsigned long mmf_init_legacy_flags(unsigned long flags)
+>  	return flags & MMF_INIT_LEGACY_MASK;
+>  }
+>  
+> +static inline void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
+
+include/linux/pgtable.h seems more natural home for this
+
+> +{
+> +	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
+> +		snprintf(buf, buf_size, "overflow");
+> +		return;
+> +	}
+
 -- 
-2.43.0
-
+Sincerely yours,
+Mike.
 
