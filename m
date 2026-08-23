@@ -4,81 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81CE3C5DF97
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 00:07:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED853C5DF81
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 03:43:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DB146B008C; Sat, 22 Aug 2026 20:07:33 -0400 (EDT)
+	id 1331E6B0095; Sat, 22 Aug 2026 23:43:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 365346B0095; Sat, 22 Aug 2026 20:07:33 -0400 (EDT)
+	id 0BD6A6B009D; Sat, 22 Aug 2026 23:43:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22DC06B009B; Sat, 22 Aug 2026 20:07:33 -0400 (EDT)
+	id EF0C56B009B; Sat, 22 Aug 2026 23:43:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E499F6B008C
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 20:07:32 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57F2C1C0B81
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 00:07:32 +0000 (UTC)
-X-FDA: 85130595144.19.1B82DDD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9271C40008
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 00:07:30 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tZ9gVfSl;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787443650;
-	b=bGYKtDXAdcnyFrv3XF76vXKZgEK6/P6EXMx8KvtsCw53pfF5MK7w5NelVbEr4QslnAm7Ym
-	GddDOxym+jHjV6JnCkkF2sfcr0pj0ezjYkvPdEl3cSj38MjEBo7vL0/3ltK3v9jd7eZRX2
-	NB2MbMCIzbt+qklSYndA6Nf/jZXaVqQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tZ9gVfSl;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B80356B0092
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 23:43:38 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2875D1A0269
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 03:43:38 +0000 (UTC)
+X-FDA: 85131139716.06.3D18C36
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 68DEDC0006
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 03:43:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ZtrRxKqv;
+	spf=pass (imf28.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787443650;
+	s=arc-20220608; t=1787456616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Jv9OK1rc+KFJbl15QLqqmRw3mFydCFiVTSz+aKJB6jE=;
-	b=jMYDd0Eyfks6Sl1eaKrELLdLppGmlfnEShpN5z1gor7T2Lx+KpDRZ4mJ6UjJK8U88S/Ydd
-	LFBswJFLlA6Tn6lf6UvKYqV9xgZ3KaIEDY8SnasJX4xR+s++mZ+HVHVYvvJPLCCloqrTab
-	Fhl5Npd2sLbRnyx5ceGVMVfjknSKmps=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 546BF43741;
-	Sun, 23 Aug 2026 00:07:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BE91F000E9;
-	Sun, 23 Aug 2026 00:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787443649;
-	bh=Jv9OK1rc+KFJbl15QLqqmRw3mFydCFiVTSz+aKJB6jE=;
-	h=Date:From:To:Cc:Subject;
-	b=tZ9gVfSlIrEXJYlJIxWJhXzkSDx9gOr+NRWi/eEOSnQaCI20mwUfRd2yKntsNfGiz
-	 JL4RYV9jVXDwyqK1/i/lHev8C3oxMBUDvLy+wqdZYKcmJRBbD4ewTxq83yPJ+VaNwk
-	 wVyepnn139kvV3rMUvGe8y70E0teKUt6Ku8K0ZBE=
-Date: Sat, 22 Aug 2026 17:07:28 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mm-commits@vger.kernel.org
-Subject: [GIT PULL] Non-MM updates for 7.3.rc1
-Message-Id: <20260822170728.415abdaf6589f2849d6de871@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9271C40008
-X-Rspamd-Server: rspam10
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZX/O3csu16e7u2YujhVvxNnuWagxpbwnVSJpm7UbvMo=;
+	b=QevX6dzr9hOSRLtjQ9zd2h55Db0ToPgN41wBidmbo3Cpt3KoxtMZSSusXJaFeqgI1ZNAa/
+	2CxgOu6YVBQ4KXS3cY1Ex2efUsMWxZuTQM7nruzhoDYQJPfPzTRQ0Ps1PVs03RGgpWTrtH
+	9g+1WF88oSexfbcPx0CJMQzW+YHwjJ0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787456616;
+	b=AgHClLmzK4ARBWa9EjQM6bRH8uYYSKwLlvPXlmJTh+Oi/Dq6Qc7cErkGQSUNZeXK6OyOV5
+	6Dci5FyY9YuFdjDwz1cQ7h1/pszpf9AzIz6ebe3sfiUmxTypv4EC7DJzWP0HXnyDBGNB0d
+	EIPBx3TAalXZ+9p0stJv6f/Esg8IfQg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ZtrRxKqv;
+	spf=pass (imf28.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ZX
+	/O3csu16e7u2YujhVvxNnuWagxpbwnVSJpm7UbvMo=; b=ZtrRxKqvrBmj2npo4+
+	lgxnBQgpWpWmzv2SUWhmRuweLei/R8mRgNkZzfsHriLmz+1JrRb43dBFtqgjrh5d
+	NMKZ0d3Z8dBwNhsKT9MQ6yny/gJd6vwAfpxmqpP8H6rSBTwARq9NKKtl/tPf1Hng
+	TcE00JN6659HGezUQFxfW0UNI=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wCH5exMbIpqBB8uQw--.11509S2;
+	Sun, 23 Aug 2026 11:43:10 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	mike.kravetz@oracle.com,
+	yuzhao@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Longlong Xia <xialonglong@kylinos.cn>
+Subject: [PATCH 0/2] mm/hugetlb: fix surplus accounting and availability checks during demotion
+Date: Sun, 23 Aug 2026 11:43:05 +0800
+Message-ID: <20260823034307.1072415-1-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCH5exMbIpqBB8uQw--.11509S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tw18Wr4DXr4fGw1kWr13twb_yoW8JFW7pF
+	WrKw1Ykr1rCr9xJr4Svw1jkwn3uw4Syw45twsrJr45t3ZxWry7Kr12kryUAFWxuw4fAF4I
+	gr4jq3WDuay5ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjtC7UUUUU=
+X-Originating-IP: [2409:8d1e:e12:7fe:fc27:3a72:bb72:5709]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+A5rZGqKbE7x+gAA3w
 X-Rspam-User: 
-X-Stat-Signature: b63ibqykia3pc37qnpyxsjb51tomqe4p
-X-HE-Tag: 1787443650-487934
-X-HE-Meta: U2FsdGVkX182yLNDMQ/wjbjJDDlCN9Ou1tTQDhnwykz/xo+r9AYoD9fGpXUFKxvpWPILwQ7jnpYbwAuRP3Th5gffi1VNhHy0/txBtAqEYti4j/OCBVhQ+TPbp1M3ypLotIFgG0bZq4NFRqIA+P274mzmTk74CBaa2r860aavSj7D82F0ImjssSuAm13mnOGm46GR4lFqZcFO2gqxeDiqkGVHvyMMFHb7dr/kfGHej1s1cbDVs1ATmrm+AH0/ebznrKeMWMYXpSd7NehGwLRZo07EGYETUDP5aqjWApCMEe5wgbVdgWpA2zL7p94BxSpDI/PndLXDC8U2thCoGSwJxAlbiuXjw3UgdvB3aWzWnHthblbvXlN2WkDFXUMeDvjKV6IM08wMrgbf00choPbOdQK/vP141QOjQzzh+RmZCt7ccdS0X9oQmo2eOrBWYV8ISMtZ2OsFqoX8i2vhzBkOQMWAZLjC5v26Z0Nz0vG2FkXJQphocvrEvlFtapZz5LFzowoCu4MxK2DJD+3b86MQ3J0kD1WVD1YS7BUF3sCNPHwOQdQwNalLFO74zGyvUcpIESySzpTWubef4RSKah4cSUoFbp8FShV2gXKzUjWD71JP6jvnosTAZDgr+gT2o+Q26wlmu1JGr4JvBCWfrRFXfyj4srAH20zIvR8W6MuefI12iZJmVz11lvhypRx/fQuica+vDvkcKECN4LLFnrIiywbetKoAjnOhZhxQKnlBECh65iFWSSa8xtPC1FKviPSqSFRm5S39zRJc0RbFg8FNX29BB6Ovv3avNTyJMsSwBgsF0UMtqyxe4SpSMa6ilI/ei3V0KbIy1m8kMLztE6gVlNI3xj6Kw0VfLu21nxyMPDmkaMcrj0Z8oekwrXp6x43EygbruulX8TSxucVWoRjSurJgeg1SLdn7jn48Uc2lIOBDL3EA57l0Ij5JSPIXlPjkkhFpNMUQNfPHPydvVJR
- 4kzSxGdF
- giVDKTbV/T7UCZgdhE4kF8/cxc9hDYT77vlJ/Dc7NOv2Xhas2C+0v5tn7ypGPFRIXuAKj+0GxcNRlZRldv+vIMxD5uMtWf5nsgFCqhZVt/eUb26Ug1yzwxEGV9uPZQnjxm3Roh7GWohTw/ajlUPixyOiXh2VmP9701JstQPygh8VkinzxqT0anngMFcQ580wDJSMy+OYxJELcwqmf2vbC3AJaPNueRYVy6QerzKvMMMyIMCAsAAxhJOFZQGcFR+l1ORzoqNGuprtxcT26BdT6EaUrzQ==
+X-Stat-Signature: tt7b7pkceuj97eogm1ctidoiyeyq4ku6
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 68DEDC0006
+X-HE-Tag: 1787456615-780752
+X-HE-Meta: U2FsdGVkX1/kQbJcNrSomxUfkb+lf1z0FUjYT9fRC4HvziWUex0l/KqKLxxvMXMaazHdoHfhkjHrp7Cg3zNJxGTMD3Nnh81LW5oheA72rds7pDt4pKAvMroIuI09wcML4OATibmqSIcf6/xQGwB5KZpOhb4/C/RSTm+rLq2QPvnn/NtwX6zLcErdarr8khhi7rmT4cGa3BXjo0eBaUyalHPXJViaAOAbmnuptkvNmaVW3+Ze7ioK1hfw7Xqo1edDLpnAeh+vYWqcywogFpA+r6IOsfXCpQ4ZHPZzeqMjvwAwck2I890C8+UaB1zc6XaWtJn5gmjhJvqc8zaG47r1OZrMpXJgnxdptvXmC/YH9EJkLSVXlOYdYifgo6VzjfQFtq60vt15O5X/W6MgAsKuLrmoa+h9QAhM7anBbZYMWb6E23kSlSxCo0Go3fL9VKEDOQBiDoTMz9tmPfAmTdXrkfTahkQ/yIJrggVkNzSnPNBQFmUizGeb1tk2iMAIH9zw5svYOSmfzcl5giPjbEHxEsF/mfzEzcrBdEAltEJyHRwCBwraMH4Pr8igDOhnapgz6AkZXkaUDmMMqec7SLPcVcbCvd5gTEtiLBAsIbmWV9OQJMvHIzAX0ks9AGbHRZ5TUZs+imf1GojrXmmJU/y05raUj0GDmpWtJH9+Hq5tqRSJDlx2i1PDMxRtYigVs4+gZXHm8maHXsVp1SICZNGgr1VTCrtzgfbt/telGk98Ynid2wqE+2/4r9opwHIo9ywRkmEj7+kMKRNgquBvwTeo6RaCQyi3RM7Mcvpi6A3x7iPcsAavI1v+HzhDzHQG698JXkQ6Ee2Ic9YxM1ZgpXB0N0idoRN6BI1gvCEr6isDoZYKnJYdHuU7ze7df5AHwOH6AYSJaTcZmgVwLHVGMw6j6Ko2i6Afg+PicPc2SBpkLB/sInHFHYfXj/0p/7JYe6PMwaH37O1cRHR/4CfDFOb
+ wI0xN/CW
+ Qv91zONv3SFPmnUYjS0fPT7p4/Icr1sYJ2hFQOfESRpMoLctiB6FkyNdTIhLIs6YaZiGGDXrnYeMryCo9DpcOvH/TgdVYe93t5XSGLqPi+yMHaRsyYKz74AbF7Iub6lGKvL880uxvAcFtR3+ehKstyt64N0AAL8xKfQxHAqdjXUJm05aBgAT8w/YlGOVZXJR8Aa/u8IC4pV28s5eq3ORL6Oxr1bwOWb2P5FcQ5KVuLH0w7DaUY9vBToxdk9Key0oZopqtY9xM00B0sH+g/D5pyt/8U2nfrj8hQhF13s5A9lQnDPNU7YeJP6qeSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,397 +95,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-Linus, please merge mm,git's other-than-MM updates for the upcoming -rc
-cycle.
-
-I'm seeing no present or upcoming conflicts at this time.
-
-Thanks.
-
-
-The following changes since commit 62cc90241548d5570ee68e01aaba6506964e9811:
-
-  Merge tag 'mm-hotfixes-stable-2026-07-27-14-18' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm (2026-07-27 14:36:26 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2026-08-22-16-57
-
-for you to fetch changes up to eef628bce8e18ce1eb8531c396bf55e36f86c62c:
-
-  mailmap: fix bouncing address for Taniya Das (2026-08-19 19:55:06 -0700)
-
-----------------------------------------------------------------
-mm.git review status for master..mm-nonmm-stable
-
-Total patches:       95
-Reviews/patch:       0.63
-Reviewed rate:       56%
-
-Summary of patch series in this merge:
-
-- "ocfs2/dlm: bound peer-controlled lengths in the o2dlm" (Bryam Vargas):
-
-  Validate and bound all input lengths and count fields in the o2dlm
-  migration and recovery receive handlers to prevent memory corruption and
-  kernel panics from malformed cluster messages
-
-- "ocfs2: validate xattr entry bounds" (Cen Zhang):
-
-  Validate OCFS2 extended attribute entry name and value bounds during
-  metadata reads to prevent out-of-range memory accesses during retrieval
-  or listing operations.
-
-- "taskstats: fix cgroupstats invalid fd handling and add selftests"
-  (Yiyang Chen):
-
-  Return -EBADF when cgroupstats receives an invalid file descriptor to
-  prevent caller hangs and misleading success ACKs.  Add a kselftest to
-  validate valid cgroup v1 queries and verify proper error handling across
-  different Netlink flag combinations.
-
-- "misc lib/raid/ improvements v2" (Christoph Hellwig):
-
-  Improve benchmark-based algorithm selection for the XOR and RAID6
-  libraries, add KUnit benchmark tests, and cleanup minor implementation
-  details.
-
-- "ocfs2: cluster: o2hb_region_pin() fixes" (Joseph Qi):
-
-  Fix sleeping-in-atomic, lock order inversion and error-path cleanup
-  bugs in o2hb_region_pin() by releasing o2hb_live_lock across sleeping
-  configfs_depend_item() calls and using unlocked variants from callback
-  context.  Ensure failed pin attempts properly decrement user counts and
-  unpin partially initialized heartbeat regions to prevent memory leaks
-  and unprotected states.
-
-- "lib/ucs2_string.c: fix out-of-bounds read in ucs2_strnlen()" (Vincent
-  Mailhol)
-
-  Fix an off-by-one which could cause an out-of-bounds read.
-
-- "ocfs2: harden heartbeat teardown races" (Cen Zhang):
-
-  Fix two OCFS2 heartbeat/o2net teardown races found by KASAN.
-
-- "taskstats: tidy up the cpumask command path" *Bradley Morgan)
-
-  make two small cleanups in kernel/taskstats.c.
-
-- "ocfs2: validate active orphan slots during inode read" (ZhengYuan Huang):
-
-  Validate active ordinary and append-DIO orphan slots read from OCFS2
-  dinodes at the metadata boundary to prevent corrupted slot indices from
-  causing out-of-bounds array accesses.
-
-- "ocfs2: bound-check both readdir re-validation scans" (Zhan Xusheng)
-
-  Enforce strict boundary checks on directory entry record lengths and
-  offset calculations during OCFS2 directory re-scans to prevent
-  out-of-bounds memory reads and directory position corruption.
-
-----------------------------------------------------------------
-Adi Nata (1):
-      lib/math: add KUnit test suite for polynomial_calc()
-
-Andrea Calabrese (1):
-      kernel: refactor: shorten has_pending_signals
-
-Bradley Morgan (7):
-      lib/string: fix memchr_inv() for large ranges
-      signal: avoid shared siginfo namespace rewrites
-      taskstats: fix cpumask parsing cutting off the last character
-      taskstats: drop the dead NULL attribute check in parse()
-      taskstats: fold the two cpumask handlers into one
-      signal: factor out the kernel reserved si_code check
-      prctl: fix PR_SET_MM_AUXV losing the forced AT_NULL terminator
-
-Bryam Vargas (2):
-      ocfs2: bound namelen in dlm_migrate_request_handler
-      ocfs2: validate lengths in dlm_mig_lockres_handler
-
-Calvin Owens (3):
-      pps: don't try to wait for negative timeouts in PPS_FETCH
-      pps: don't allow PPS_KC_BIND on removed devices
-      pps-gpio: remove dead capture_clear code
-
-Cen Zhang (5):
-      ocfs2/cluster: keep heartbeat local node stable
-      ocfs2: validate inline xattrs during inode block validation
-      ocfs2: validate external xattr entries when reading metadata
-      ocfs2: synchronize heartbeat callbacks with o2net teardown
-      ocfs2: o2hb: quiesce negotiate handlers and timeout work
-
-Charlie Jenkins (1):
-      mailmap: add entry for Charlie Jenkins
-
-Chen-Yu Tsai (1):
-      checkpatch: don't emit warnings for ID-base USB & PCI DT compatibles
-
-Christoph Hellwig (8):
-      xor: enable lock context analysis
-      xor: improve the runtime selection benchmark
-      xor/kunit: fix a spelling error
-      xor/kunit: add a benchmark
-      raid6: enable lock context analysis
-      raid6: defer implementation selection when built-in
-      raid6: improve the runtime selection benchmark
-      raid6/kunit: add a benchmark
-
-Deepanshu Kartikey (1):
-      ocfs2: use inode_lock_nested() for orphan dir locking
-
-Dmitry Antipov (2):
-      ocfs2: do not use make_bad_inode() in ocfs2_read_inode_block_full()
-      ocfs2: always run deallocs on copy-on-write completion
-
-Doruk Tan Ozturk (1):
-      ocfs2: validate directory-index entry counts when reading metadata
-
-Gou Hao (3):
-      drm: remove dead WARN_ON NULL check after GFP_NOFAIL allocation
-      lib/test_hmm: remove dead NULL checks after GFP_NOFAIL allocations
-      RDMA/cxgb4: remove dead NULL checks after GFP_NOFAIL allocations
-
-Guangshuo Li (1):
-      rapidio: clear mport->net when rio_add_net() fails
-
-Hongfu Li (1):
-      selftests/prctl: fix non-anonymous VMA mapping in set-anon-vma-name test
-
-Ian Bridges (1):
-      ocfs2: fix missing metadata reservation for large xattrs
-
-Ibrahim Hashimov (1):
-      ocfs2: validate rl_used against rl_count in refcount block validator
-
-James Kim (1):
-      rapidio: mport_cdev: fix use-after-free in dma_req_free()
-
-Jiaming Zhang (1):
-      ocfs2: fix hung task in orphan recovery
-
-JianChunfu (1):
-      kernel/fork: declare max_threads __read_mostly
-
-Jianlin Shi (1):
-      ipc: only destroy orphaned shm segments on sysctl write
-
-Jim Cromie (1):
-      kernel/params: fix a pr_debug(" %p ") in parse_one()
-
-Jordan R Abrahams-Whitehead (1):
-      include/linux/list.h: mark list_add and __list_add as __always_inline
-
-Joseph Qi (5):
-      ocfs2: cluster: use GFP_NOFS for heartbeat bio allocation
-      ocfs2: cluster: use an on-stack bio for the heartbeat write
-      ocfs2: cluster: don't sleep while holding o2hb_live_lock in o2hb_region_pin()
-      ocfs2: cluster: avoid lock order inversion in o2hb_region_pin() from drop_item
-      ocfs2: cluster: fix o2hb_dependent_users leak on pin failure
-
-Joy H.J. Lee (1):
-      tools/compiler: match glibc 2.42 definition of __attribute_const__
-
-Karl Mehltretter (1):
-      lib/interval_tree: fix allocation warning messages
-
-Kir Chou (1):
-      lib/random32: convert selftest to KUnit
-
-Konrad Dybcio (1):
-      mailmap: fix bouncing address for Taniya Das
-
-Krystian Kaniewski (1):
-      ocfs2: fix circular locking dependency in ocfs2_init_acl()
-
-Lasse Collin (2):
-      lib/xz: use size_t instead of uint32_t in a few places
-      lib/xz: fix comments
-
-Linfeng Sun (1):
-      mailmap: update email address for Linfeng Sun
-
-Manuel Quintero Fonseca (1):
-      resource: downgrade "resource sanity check" warning to debug level
-
-Matthew Chen (1):
-      watchdog/softlockup: fix softlockup typos
-
-Matthias Goergens (1):
-      ocfs2: fix cached cluster count after suballocator reclaim
-
-Michael Byczkowski (1):
-      pps: pps-gpio: split IRQ handler into hardirq timestamper + threaded handler
-
-Nathan Chancellor (1):
-      .get_maintainer.ignore: add Nathan Chancellor
-
-Oleg Nesterov (2):
-      signal: change sys_kill() to use SEND_SIG_NOINFO
-      signal: avoid unconditional siginfo copy in send_signal_locked()
-
-Paul Walmsley (1):
-      checkpatch: add NOKPROBE_SYMBOL to the whitelist of lines that can occur immediately after functions
-
-Paul White (1):
-      selftests: ipc: change operation not supported error number
-
-Petr Mladek (1):
-      Revert "printf: Compile the kunit test with DISABLE_BRANCH_PROFILING DISABLE_BRANCH_PROFILING"
-
-Petr Vorel (1):
-      MAINTAINERS: add IRC and patchwork for LTP
-
-Phillip Lougher (1):
-      Squashfs: check block offset is not negative
-
-Randy Dunlap (3):
-      rbtree: fixup kernel-doc names
-      llist: use correct function parameter name
-      stacktrace: header: repair kernel-doc comments
-
-Sara Sena (1):
-      tools/accounting/delaytop.c: fix typo in PSI header string
-
-Shivank Sharma (1):
-      tools/accounting: fix macro typos in getdelays
-
-Tetsuo Handa (1):
-      kcov: fix data corruption and race conditions on PREEMPT_RT
-
-Thorsten Blum (1):
-      lib/xz: replace min_t with min
-
-Usama Arif (1):
-      squashfs: avoid thundering-herd cache wakeups
-
-Vincent Mailhol (2):
-      lib/ucs2_string.c: fix out-of-bounds read in ucs2_strnlen()
-      lib/ucs2_string.c: fix indentation
-
-Warren Xiong (1):
-      tools/mm: prevent page_owner_sort from truncating input
-
-Xibo Wang (1):
-      hung_task: update DETECT_HUNG_TASK_BLOCKER Kconfig help
-
-Yemu Lu (1):
-      fat: restore original value when fat_ent_write failed
-
-Yichong Chen (1):
-      fat: release buffer head after rebuilding parent
-
-Yiyang Chen (4):
-      taskstats: remove dead taskstats_exit_mutex declaration
-      taskstats: return -EBADF when cgroupstats receives an invalid fd
-      selftests/acct: add cgroupstats functional test
-      selftests/acct: share netlink helpers
-
-Zhan Xusheng (3):
-      ocfs2: fix readdir position truncation on 32-bit kernels
-      ocfs2: bound-check dir entries in the readdir re-validation scan
-      ocfs2: bound-check dir entries in the inline-data re-validation scan
-
-ZhengYuan Huang (2):
-      ocfs2: validate orphan slot during inode read
-      ocfs2: validate DIO orphan slot during inode read
-
-Ziran Zhang (1):
-      FAT: allow 0xE9 near jump in fat_read_static_bpb()
-
- .get_maintainer.ignore                             |   1 +
- .mailmap                                           |   6 +-
- MAINTAINERS                                        |   2 +
- drivers/gpu/drm/drm_modeset_lock.c                 |   4 -
- drivers/infiniband/hw/cxgb4/mem.c                  |  10 +-
- drivers/pps/clients/pps-gpio.c                     |  72 ++--
- drivers/pps/kc.c                                   |  10 +
- drivers/pps/pps.c                                  |  10 +-
- drivers/rapidio/devices/rio_mport_cdev.c           |  10 +-
- drivers/rapidio/rio-scan.c                         |   1 +
- fs/fat/inode.c                                     |   5 +-
- fs/fat/misc.c                                      |   4 +
- fs/fat/nfs.c                                       |   4 +-
- fs/ocfs2/acl.c                                     | 135 +++++---
- fs/ocfs2/acl.h                                     |  19 +-
- fs/ocfs2/cluster/heartbeat.c                       | 381 +++++++++++++++------
- fs/ocfs2/cluster/heartbeat.h                       |   5 +
- fs/ocfs2/cluster/nodemanager.c                     |  29 +-
- fs/ocfs2/cluster/nodemanager.h                     |   3 +
- fs/ocfs2/cluster/tcp.c                             | 186 ++++++++--
- fs/ocfs2/cluster/tcp.h                             |   2 +
- fs/ocfs2/dir.c                                     |  93 ++++-
- fs/ocfs2/dlm/dlmmaster.c                           |   6 +
- fs/ocfs2/dlm/dlmrecovery.c                         |   9 +
- fs/ocfs2/inode.c                                   |  22 +-
- fs/ocfs2/namei.c                                   |  34 +-
- fs/ocfs2/refcounttree.c                            |  47 ++-
- fs/ocfs2/suballoc.c                                |   2 +-
- fs/ocfs2/xattr.c                                   | 324 +++++++++++++++---
- fs/ocfs2/xattr.h                                   |  11 +-
- fs/squashfs/cache.c                                | 116 ++++++-
- fs/squashfs/squashfs_fs_sb.h                       |   9 +
- include/linux/list.h                               |  15 +-
- include/linux/llist.h                              |   2 +-
- include/linux/nmi.h                                |   4 +-
- include/linux/pps_kernel.h                         |   1 +
- include/linux/rbtree.h                             |   2 +-
- include/linux/rbtree_latch.h                       |   2 +-
- include/linux/sched.h                              |   8 +
- include/linux/stacktrace.h                         |   6 +-
- include/linux/taskstats_kern.h                     |   1 -
- ipc/ipc_sysctl.c                                   |   2 +-
- kernel/fork.c                                      |   2 +-
- kernel/kcov.c                                      |  90 ++---
- kernel/params.c                                    |   4 +-
- kernel/resource.c                                  |   2 +-
- kernel/signal.c                                    |  76 ++--
- kernel/sys.c                                       |   2 +-
- kernel/taskstats.c                                 |  45 +--
- kernel/watchdog.c                                  |  16 +-
- lib/Kconfig                                        |   6 -
- lib/Kconfig.debug                                  |  39 ++-
- lib/interval_tree_test.c                           |   4 +-
- lib/math/tests/Makefile                            |   1 +
- lib/math/tests/polynomial_kunit.c                  | 270 +++++++++++++++
- lib/raid/Kconfig                                   |  12 +
- lib/raid/raid6/Makefile                            |   2 +
- lib/raid/raid6/algos.c                             | 102 +++---
- lib/raid/raid6/tests/raid6_kunit.c                 |  66 +++-
- lib/raid/xor/Makefile                              |   2 +
- lib/raid/xor/tests/Makefile                        |   2 +
- lib/raid/xor/tests/xor_kunit.c                     |  64 +++-
- lib/raid/xor/xor-core.c                            |  55 ++-
- lib/random32.c                                     | 184 +---------
- lib/string.c                                       |   3 +-
- lib/test_hmm.c                                     |   6 -
- lib/tests/Makefile                                 |   3 +-
- lib/tests/random32_kunit.c                         | 182 ++++++++++
- lib/ucs2_string.c                                  |  38 +-
- lib/xz/xz_dec_bcj.c                                |   2 +-
- lib/xz/xz_dec_lzma2.c                              |  63 ++--
- lib/xz/xz_dec_stream.c                             |   4 +-
- lib/xz/xz_lzma2.h                                  |   2 +-
- scripts/checkpatch.pl                              |   7 +
- tools/accounting/delaytop.c                        |   2 +-
- tools/accounting/getdelays.c                       |  32 +-
- tools/include/linux/compiler.h                     |   2 +-
- tools/mm/page_owner_sort.c                         |  10 +-
- tools/testing/selftests/acct/.gitignore            |   1 +
- tools/testing/selftests/acct/Makefile              |  11 +
- tools/testing/selftests/acct/cgroupstats.c         | 231 +++++++++++++
- tools/testing/selftests/acct/netlink_helper.c      | 116 +++++++
- tools/testing/selftests/acct/netlink_helper.h      |  44 +++
- .../selftests/acct/taskstats_fill_stats_tgid.c     | 134 +-------
- tools/testing/selftests/ipc/msgque.c               |   2 +-
- .../selftests/prctl/set-anon-vma-name-test.c       |  21 +-
- 86 files changed, 2589 insertions(+), 988 deletions(-)
- create mode 100644 lib/math/tests/polynomial_kunit.c
- create mode 100644 lib/tests/random32_kunit.c
- create mode 100644 tools/testing/selftests/acct/cgroupstats.c
- create mode 100644 tools/testing/selftests/acct/netlink_helper.c
- create mode 100644 tools/testing/selftests/acct/netlink_helper.h
+From: Longlong Xia <xialonglong@kylinos.cn>
+
+This series fixes two problems in the hugetlb demote path.
+
+Patch 1 fixes surplus accounting in the source hstate.
+demote_pool_huge_page() removes every source folio as a persistent
+folio, but a free folio may instead account for one of the source
+hstate's surplus pages (for example after a vmemmap restoration
+failure). Removing such a folio without adjusting surplus_huge_pages
+makes the persistent count underflow, and later subtracting it from
+max_huge_pages can underflow that counter as well.
+
+Patch 2 fixes an availability overcount in the sysfs demote path. The
+sysfs trigger checks whether any page is available but then passes the
+entire request to demote_pool_huge_page(), which can remove free huge
+pages that back existing reservations. With two free pages and one
+reservation, a request for two pages removes both and leaves the
+reservation without a backing page.
+
+Both patches carry Fixes tags.
+
+Longlong Xia (2):
+  mm/hugetlb: preserve source surplus accounting during demotion
+  mm/hugetlb: cap demotion at currently available free pages
+
+ mm/hugetlb.c       | 57 ++++++++++++++++++++++++++++++++++++++++++----
+ mm/hugetlb_sysfs.c | 10 ++++----
+ 2 files changed, 57 insertions(+), 10 deletions(-)
+
+-- 
+2.43.0
 
 
