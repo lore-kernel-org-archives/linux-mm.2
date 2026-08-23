@@ -4,108 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BA83C5DF81
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 15:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C18C5DF81
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 16:31:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 394EE6B0095; Sun, 23 Aug 2026 11:50:00 -0400 (EDT)
+	id 31C256B0095; Sun, 23 Aug 2026 12:31:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 346396B009B; Sun, 23 Aug 2026 11:50:00 -0400 (EDT)
+	id 2CCE16B009B; Sun, 23 Aug 2026 12:31:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25B906B009D; Sun, 23 Aug 2026 11:50:00 -0400 (EDT)
+	id 1E3376B009D; Sun, 23 Aug 2026 12:31:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0622B6B0095
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 11:49:59 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0DBEF1C0FE9
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 15:49:58 +0000 (UTC)
-X-FDA: 85132970076.22.56F918F
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6C4E4180006
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 15:49:56 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="QULgv/JO";
-	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F288B6B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:31:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7CE93A32A9
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 16:31:01 +0000 (UTC)
+X-FDA: 85133073522.11.5DF89B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B20D640004
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 16:30:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Whfp9XBU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787500196;
+	s=arc-20220608; t=1787502659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=C7zkviamvc6bRFbsWtMqYEFSXg4kaO5aw2vbwTFQBGI=;
-	b=jPH1WfF6K9fVI5Nm4/Lz6ZU+tYQKz2mlt1UzSJ1OSoRP+4FYqcHsSkeBrS4f8LIerDTAS9
-	4qs0Enlsdemzeoj9SVn4kAEogTQ37gSZ5PdrKfR/ZT8xUKu/uIqRNy1QJ6ZQ9fj0XhKB9k
-	wgEjZxIuCjUNR40LOcqKVEBtrnZzDoY=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=zSckTnyIbH/NA5CO67d6i3mvcZ8WMAnIAcorZ5eX4AM=;
+	b=IzJ7a8hVqY7ZaSI7rxabmd4k/5ssUub2i/8/ywE2Dq3llhf4RC4RyaRlgmIvxzKSHmQp+W
+	BkvQmDcNQlZ+YHf9ir2US/oPUOd6IkxwydbXVTd+uDzBkRXPwtlZfhBgfxGkjVARt2Hs+o
+	gO5UgJv16nFHURTlAr6obJjFhIXx0vg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="QULgv/JO";
-	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Whfp9XBU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787500196;
-	b=Fuz4LKTwkMKI+DmCbP+6H0V4IO8otpvndagSZE48Rw/gZgX0EwEZNSaSKkI60B/vawfQky
-	SLJZ5IvYWJQksLOc3dM0ebCR3M6v557REn1YN6HjQwTE3rYuv7v7meqxwWVMU5AF08jEsu
-	JyB5GCwXmkOvIUxC/aHisuGlwGeIdZ8=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cbee3777e1cso1545701a12.3
-        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 08:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787500195; x=1788104995; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=C7zkviamvc6bRFbsWtMqYEFSXg4kaO5aw2vbwTFQBGI=;
-        b=QULgv/JOQrzbO27YswFATUaftexKlCk0VI4oGVoP2FYwql3vvoNgdyb+I9oD6nvKjh
-         c4rbb/gDIkAPFgZ8KNq9EzTbJ6fVMN4luydTiJQHO/KL1voiMYLzmMVBKSbulNiqGB0P
-         hBB7ZunxRUrz+pNEXslpJzV49XE4yxQE2mEd6ZG54M6+orPRVq29FVDUhgwZATCaYJiU
-         2PsT2FbyZDdtmwE1X3b/pt1w4YnK2eRgasII3n0iLKxBv4zh5wLgWVTWFA6ujvFZ+9o8
-         txr5rqUMdQ3lgTf2PjVIj8gVmhQdym1XYdZqCJbCneESFrDVVg5MRxahZIsYZgaExAKG
-         RASA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787500195; x=1788104995;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=C7zkviamvc6bRFbsWtMqYEFSXg4kaO5aw2vbwTFQBGI=;
-        b=CwU2YVDvuArwjKh61R0258671lBsQG02GofYsakopGxnJH0g0zgLD0UMWpK6B2mWgy
-         D0l0DLIfv1iQqu+FDmaOtCiy4RAkSszGLEC0lTlizL4H86MG5sEWzl0VECN5DXaY0R0V
-         vE0rfZv8Y8TUMqR3TAm1ZlmA8KeO5v/3AOMowj0w8mqjH2COFPVb3AknN8zB61jeoQ/8
-         YvOojCsOHxpe2aArAMFx+JET1+i9uT8wAFyLRoOSt3/5g+ChB8E3A+AmfThh3HfpQIq0
-         xQa69GH2qlyw5qQLPCbAmM4vfQ7a9u10mD4DJ1IimGZ8vNnjS4fGqr5uOarMhyyRbO1T
-         8e/Q==
-X-Gm-Message-State: AFuF++nnP6I81Urnve7AOndvkWvTFt++hi4knIEalICRrEqtHr+Rhicl
-	QIQRK3LsU3cf6uDtQU2xISRqcBmwkyIhtcieocYb2xCpsMo6UUUOfxIz
-X-Gm-Gg: AR+sD12g3HHe2cQ6hGOswXW101MMlBuv9FJVqiv0ufrCYuz0q2DIvh1NnOiyokIsJlM
-	uNNWH6H/gn/mFFW1BHh35EJ050bqLQbmceWiwC6IJ9ckQcVw7HLvb4KfDHGUJPDawBK47f75D7K
-	GvHorrmVVYXSZ+APhSAR4a+rZ06J0aJ+A9Fmrb8k6m7gp06ASK9jvY287G5SS7l4dVmXh/vrZYQ
-	hVsPAnHFZxgnE3C3mdxY9rHdJavkHIpydvRMH+bA9b9X0aNFWgJb+SVKVNCa2URY04bVoJeZZaF
-	F8ax29csdjkkc89mpGpp7nTnGulKOahf22d1pd5XKCQZNHBsol7FS+TOz84Mj6XIwSOm15V1vCs
-	ergq/UVVpYY1ksrckeFn58tTCThz86wporQ+gEK9/KETFQL3aH7EOX/XKUlp9C+MW5cKDpfEt9Y
-	8yF8e/FJ0vIDv76p+ay/koJNzdABroqxUp878hQpDwkQrM4qWZ0Pv5XxY=
-X-Received: by 2002:a17:90a:d60d:b0:392:6638:2e6a with SMTP id 98e67ed59e1d1-395c3a49e08mr38286844a91.13.1787500195009;
-        Sun, 23 Aug 2026 08:49:55 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395e49b5d8asm6765393a91.7.2026.08.23.08.49.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 08:49:54 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [PATCH v2] memblock: remove conditional return with no effect
-Date: Mon, 24 Aug 2026 00:48:38 +0900
-Message-ID: <20260823154840.3793140-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6C4E4180006
-X-Stat-Signature: ec98zp9zz8aqfdxwc8q3zdw7161nndjb
+	t=1787502659;
+	b=pqQv8/CYz3Jph9hpDctpoMZzf+5t0P68wAfYz0rxQXzpwUumcI4yGyV5cnjC2fUCSDYEZw
+	gesvaMn5AMjREgnyEFVZOw5ffzweGNgvwkKMSQ/fSoL7R1VpEDfLgYw7zA70p9njm99zj0
+	8G7lbltUYX2BK0BIxxqTFrKy+jCSILk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EE2C960055;
+	Sun, 23 Aug 2026 16:30:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC5D1F0156C;
+	Sun, 23 Aug 2026 16:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787502658;
+	bh=zSckTnyIbH/NA5CO67d6i3mvcZ8WMAnIAcorZ5eX4AM=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=Whfp9XBUNTPzRmBYYYOkoBvC/oOhfgY0shRcyKHO27qTXsv0ZsB/y30MRfq70NqkO
+	 uLnZQJzpret3nO1H46hNxRXOeEKe91bkghBrdbACti26mncfrT1fnWp+8+7q0DCmVa
+	 uLzNbk03bjOy4xNhrlt/P5HLwbHQClCFdeuqVGOc9J/b8ZV+4s2WMJwIrcmTRWligA
+	 URC24N14WBiKJUhvIPGDZjRCKqGGX8vdmnoghAUuTAzZRCCgvDJALP7hFNkW3aY11F
+	 qErGYxZfYryEbyV582yCYsXIcFpTqO1gHykZGpAdPMVIB2NMl5Dru2w+vXz896hNV3
+	 4PuITQONggajQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199DD380AA77;
+	Sun, 23 Aug 2026 16:30:08 +0000 (UTC)
+Subject: Re: [GIT PULL] Non-MM updates for 7.3.rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260822170728.415abdaf6589f2849d6de871@linux-foundation.org>
+References: <20260822170728.415abdaf6589f2849d6de871@linux-foundation.org>
+X-PR-Tracked-List-Id: <linux-mm.kvack.org>
+X-PR-Tracked-Message-Id: <20260822170728.415abdaf6589f2849d6de871@linux-foundation.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2026-08-22-16-57
+X-PR-Tracked-Commit-Id: eef628bce8e18ce1eb8531c396bf55e36f86c62c
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: e5f92606156a6a823992294d214c285b49cd72e9
+Message-Id: <178750260687.2078512.3571703151903804032.pr-tracker-bot@kernel.org>
+Date: Sun, 23 Aug 2026 16:30:06 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, mm-commits@vger.kernel.org
 X-Rspam-User: 
-X-HE-Tag: 1787500196-119264
-X-HE-Meta: U2FsdGVkX1/dNk6jPFlN2tPuoxDRYqBcci8jdXXyTs1LlZJP27LmZjP6zIsRpk1nf7lcPIwJJ0SonzBv41eZYWfxXf4UtKnpq8fumiMrKEng0B3DYl+JDraEj6vARvxbIhpZxbOAvQJ384j9wv0f3u+rnMdIWB/4Z6Sg+ERHr85yIOuLKxb8ocDHheBCNnob9sKzTzvzlWm6Kr7X6Enc6isLh3eEm+8y+0T9tVwIdbuDpVqGtPrF6X9ozV5rsuKkHPzgMdqsEfw3WrwsuTrXaxYiwOkuzSb5LsrRNthllOVdQnZJF2noU4saNx+s8pIOqLUZV6+/8PJnIuNKpZM9eyfsqVLqVWZPWQD2EsM7L+HC7W4BHM0R0Y3JnDX6WDSn7yKDfVf32HSgTlQ7R+I1WQxnmurw51thlyEBJRoCJScxpz64AKsHx3zVgMSZQL2/3KUfKYc/kneKerVbaKuNFJgjLLSeHA7Uj3Y0m9AtxpUwmhUMVvXQ/YSqkOdaJr1ZeUv/n7spPfzU532TbfpXbFevfGQsKqNRza1sTMTUdLZvbS3telVZhXtrp7RVipw4Ksx7E/FlWLyvUczTM22o4VF9NLqCB4XWxm9NQlR8kC+dB0R/u9vbruC5CUybuNJWxZMnpBXEJkrpWjmCviCcb6Y5xdqSLpacomk1PBPIntYESCmCkVVSu8RQb9MnxdWfEwtf+pRvLNAipF6MGpOfgEFWQ9/do8dmFrKeFVKxEFkZeRcoK9s1rTgYM0Vpytizwt8mySFLyftmO1oEpDzYGd3kuAeHtCCrqt53XMJoeqOcS+EGK2yCGSFWWh3WanCuTByzb3DNgo+f3doluPQQU+y3LaAp547X+NzDrrSfqW3T7bCPBcMt4aymsOdWANZk+0VK4gXV55+u6AHMxI9ZtlA7kvWnM106YfnPPBsGAiwHTeLoPIB3iuRbPOxJzE+y6CjPvAEQte4yYiTG4l3
- lvEv3QYv
- AZJB/Q+1kJZELxEw4mwDXQ4pfoXl6xjatBhTu/VEdHtCzowHGzLkh0yATMk0wQZ/BP1//hBpT6vRyc9LrAguRw7nvDeBtk3hTfr5wIUiUnuz3WErQeAsnaRV5wW5/VjtV91SfpnzIf58ukVmAzfvIe5/bTCxgTBDzklhtkdQcAhtp3eNcEapvYOMolv3G9Ykfo1cnBVLVbGn87hKXeJbsgf/hLO/txU2mDvcWkwwHy4BBH+O6lpbLyBj2Y6q08dVsDbNjrNKH2o9hk5UmhbNsiPd5/5s0I9eCpiUyi6iPlaKSwrDw9Bh2UmrFGWKbS9hM9A3r+bdg28p6MVM+E4CzbcwaVkAD9eFqEgkQXlVWOnnXkJiVIIIaz9ek5rZl7C7oM/Nz9ek5/Vy9PixkChIyj/BXKbIKlxMTxehb6zpO8MG+YWf7Kxk5Pixokw==
+X-Stat-Signature: o5ni5bypaasjwscks5ycea18ctds5ezx
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B20D640004
+X-HE-Tag: 1787502659-746916
+X-HE-Meta: U2FsdGVkX18TgY0qCG0OERgaSrODKxRy2wiADWafH5vqgMYT/RQHgtkiJDjNVlj31aMaGpHxmPIvYTfeT7EMgO9krnnLE9Mv/C+USItAkNJ+6pnHTrgqtNIzNRrweq/NV+mwSijGu/PhnG9hK05p6xpXwepQj/Q4Hb/uZwdoHgagWPBYSy0C5BLv6OW32RH1Hy/aCcFbiDSqrkpt5g/e07Skzp0+ZOFDIEdg0uCEfOaPE0zWfuwtavJnbSXT5EqBdVBiJRG1WL65TEy4+62w6XgwA3aqYO9VqGfVYbkPeQEDsO6GgwuuaD7qOQLlaGDPUKQyr+D8EVZBHuGBMrisipD+M+e5aG0mLsUYuCtiLPD8QMj0TClUP2hy9KfJpUDCnDDZg1OqZu0NFkpdbfLK7byWuHyjEIjImY5kwrFB1lbaFMyZ3gcouzQBsGWLCTgsXICAqEWzkQvvp5P5Ni1bSpQ+HsH3vN+ESRyXB+fjcGgktMn5erp/rVaPRh/iI4BJRD8jMaf+wG5M+07fMpxkvzks3fypvfSSECJADYHHS7BZX1Xe6QoJWpuXgh44ZvHoKBD/rrkAjFtbUC89dg9Qa81LKO/zL9dBxkgDarCJYB/FOgvWXkGFKCdX9hY3aUKiUgu53phGk3ZbT6w5fioamlP2qko3wfN52WpO7T2WpihJASl2UJbINmR5hMTGFFskUqH3LtAozSJbVsDXRynCpWD4TN3CjhgB7JbMmLhaGnVgRMidLtH23Ufw1G4Qqn2UCPOJ8ovFqARQbWdrLpQx8FDkA/OGippC8fgUIjS8VWqvPcI4qS4Qq1EBVZOBAqYuwvrIOABlCbMnToYEvk88qBYX3Xd8uuZhraeoJCzdrXYhY3Hpv13cZcCWv+43ZyfGZ1VNc1CK6QrOGA3OVjMBdpxcg2VvFZ9laWQczTUtI2Yt8+pUVyoSJWjUrt89fd/PEPV2Pk7Wu9CXKhp0E3B
+ ATqV3kSI
+ q0bnJcQA9Lk/sMdtQvDgiiP9MwvlB6L3raciYTV9vhvmhls+Dwm7y69+NYOSDnXKiJXmqHUPfVk44lR/DfyT60GD3isWIlpnJa0+hOWmG3Y9GQb+37pJncrp0SLkK70sfGRCQA5YoR2QzzxbnGDROT1loNs3Fszv9+JvOV7duzVUM7n+igOscYZoJgiluTXOuWYWvF6fm8wbemzY0qbqV+3pHt0ju06gilrml7Xaeo4YUZ3eZ46U6sWDgJxJp/G/yGEQN3C1xHjGukd06nRXZo23noXOtwAgHhXXrR5ANnQIQh/eFVy4xaELm3ppxi6Vzcg82avySbnZ43a2U80NRkLCoIV0VEnGEdvgBhVS0hNHFJqzI5J5LwBvlXgS9dLAktPEnDvae62EgPi8wlTxepNUoVst/M7J4nrJbh1GBkyUQ1y7duPob9oMm+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,50 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Both branches of the check return the same value, so the check has
-no effect. Remove it and return the value directly.
+The pull request you sent on Sat, 22 Aug 2026 17:07:28 -0700:
 
-This is the result of running the Coccinelle script from
-scripts/coccinelle/misc/cond_return_no_effect.cocci.
+> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2026-08-22-16-57
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
-The memblock patch of the treewide v1 series [1] is posted separately.
-You can find the Coccinelle script in v1 [1].
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/e5f92606156a6a823992294d214c285b49cd72e9
 
----
-Changes from v1 [1]
-- Change base to memblock/for-next
-- Filter only memblock changes
+Thank you!
 
-[1] https://lore.kernel.org/all/20260723184538.3888637-1-ekffu200098@gmail.com/
----
-
- mm/memblock.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 43e036f3e11a..9a31781923fb 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2613,15 +2613,10 @@ static int __init prepare_kho_fdt(void)
- 
- static int __init reserve_mem_init(void)
- {
--	int err;
--
- 	if (!kho_is_enabled() || !reserved_mem_count)
- 		return 0;
- 
--	err = prepare_kho_fdt();
--	if (err)
--		return err;
--	return err;
-+	return prepare_kho_fdt();
- }
- late_initcall(reserve_mem_init);
- 
 -- 
-2.43.0
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
