@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E13CBC5DF81
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 14:30:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83E2C5DF97
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 14:43:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC8916B008C; Sun, 23 Aug 2026 10:30:22 -0400 (EDT)
+	id 95C396B0095; Sun, 23 Aug 2026 10:43:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C79DA6B0092; Sun, 23 Aug 2026 10:30:22 -0400 (EDT)
+	id 90D876B009B; Sun, 23 Aug 2026 10:43:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1AD86B0095; Sun, 23 Aug 2026 10:30:22 -0400 (EDT)
+	id 826606B009D; Sun, 23 Aug 2026 10:43:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5636B008C
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 10:30:22 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D84FA32AB
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 14:30:22 +0000 (UTC)
-X-FDA: 85132769484.24.50DCBEF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 87C672000C
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 14:30:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaVTKTig;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B48F6B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 10:43:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA25740310
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 14:43:19 +0000 (UTC)
+X-FDA: 85132802118.05.C7FB9A3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 22D364000C
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 14:43:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+AvD5Qd;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787496198;
+	b=nEnIvie0vWt7dl5Q4+xQFV3X+YqmBQ1IT2/o9wvFMN5aelrCs69WHr2aoo5nZyO7IvCAvT
+	n5NZxRqF+p74aJIt7Ar1h0y0iySaPNvDeWBka+pzKX9l51y8NJfAVCqhQnz3EynDdhNIjh
+	sVperK+ozKAZ/NAYBJLUPt+uY9WB8gA=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+AvD5Qd;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787495420;
+	s=arc-20220608; t=1787496198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TplePkvwxXwaIo8VD5LQPXlaM4B5k2qGrj3Fbwy9i/Y=;
-	b=tVB4jL6428/JveRTxVwfAgWIe+Y9zPRb2Bmevp+vOt+rBOWi+uV74n0IjmkXBAuuV6OAN1
-	YO3pF1dbzao0Ohh+G8NaeX6T5fpZDPT8RLoJJZeIsn377TrCPF6dCsEYD0fJan5PwyX9lO
-	tTvz9H4tQIPekiA9y+yEsaQH1wjDutY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787495420;
-	b=tCxOwftVNzOoDHEPtAPT41Nv/hGW/l8YVdEfodxExhk4HWw70vFyfG/aqcJ14n0/h4NeDo
-	VRGNtARyuOE0S0JaSPDSqeEibpvDV3lFnEq3f1wviwsCSlUGG/qp8ZT7RTIYwUKCAe0lfg
-	uarzwow2+08QGqrsnVtiOZVNit8QN1I=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaVTKTig;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=pvjv/nyRQmsWaIMsCt8srBUubLaMtm17KGRMdE9iACI=;
+	b=0rQrqWf2vOj1EDNA0t9CAd0yHV0P9+J+Wt3ecm77AmY8t9S21Uf87pY/K4xNgHWsvOLq4n
+	jWy2QXBWq5Qj+VtTeMxWucL/wRQ0uFKhyO2zBf/0f65niCnQj0y8cohTyNydTlqvHHuy1l
+	xv9THLL7GmnkzKxSZsyu46hxEdgjbo0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D46960055;
-	Sun, 23 Aug 2026 14:30:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201FB1F000E9;
-	Sun, 23 Aug 2026 14:30:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EDC1F40978;
+	Sun, 23 Aug 2026 14:43:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D796A1F000E9;
+	Sun, 23 Aug 2026 14:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787495418;
-	bh=TplePkvwxXwaIo8VD5LQPXlaM4B5k2qGrj3Fbwy9i/Y=;
+	s=k20260515; t=1787496196;
+	bh=pvjv/nyRQmsWaIMsCt8srBUubLaMtm17KGRMdE9iACI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iaVTKTigpTYRL3cvVH30nbiAFwLl6f2MDf1sQBKJMyNgwfanbvYVmxCUxSPMqZeWE
-	 afAkfdTjNpfhH7E+keuUSbR4jKFb3TB6jQDS7//a1yUkrnm3jzT0PMGO7Pe/rJXqIW
-	 VP6GgPfJOaUI0kUz6Fxf2TpBC4tPA68Zqa3f9plxf6t6zrWtWvjovkUIwmtIRgmdsg
-	 RsMcCZCR+H6ClumRCi7QK1IVC47kUlqwDLEmvaDyXBhriu8alaVA6eGj7Z5Xl98n66
-	 Nl/N4lTVC7Hhr5P9gcTFSMdnNtphrIyfWEQ6b6sGPvoRSKsFdwbnfjjsIzfsY3VNB5
-	 koggEg3H/e9YA==
-Date: Sun, 23 Aug 2026 17:30:12 +0300
+	b=h+AvD5QdsIyzhG+gUEoYCTYnrzZkvWKchkhatD+NaXvh7aQ3sGD03cnt8uKfIkNfC
+	 W5EsA23A8Bn+dwg/5XLzaShcZ0mOx0Y+IqgHdHpSIbCQQ+Aj3hTtHOydp2gwEA82d1
+	 iShmCKnM1xH8HPh4N5OD3uJX+Xoeq7746YRZL/qAmJx/71zUY/PA68vuw18IwaorRW
+	 J5/yPZouO8hIyinoJSHSK1Gg7lo+iOEcF8ISnCax9YdMy3ETBk5z1JbUXzgUdQ6zcS
+	 VSDUB3AjYmvBI/61rocahAtZgRfYQ7i/3U6nVYViIQVi2+/jx1WcWXwL+02bb7Nv7b
+	 goI06wVJCl86w==
+Date: Sun, 23 Aug 2026 17:43:11 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Hongfu Li <hongfu.li@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Hongfu Li <lihongfu@kylinos.cn>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/memblock: simplify reserve_mem_init error handling
-Message-ID: <aosD9E8ntZF1RLxz@kernel.org>
-References: <20260821033230.55210-1-hongfu.li@linux.dev>
- <20260822032327.3548986-1-ekffu200098@gmail.com>
+To: Meijing Zhao <zhaomeijing100@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Wandun Chen <chenwandun@lixiang.com>,
+	Meijing Zhao <zhaomeijing@lixiang.com>
+Subject: Re: [PATCH v2 RESEND 0/3] mm: memblock: fix debugfs flag reporting
+ and synchronization
+Message-ID: <aosG_685XrPdrAJD@kernel.org>
+References: <20260821020910.3428585-1-zhaomeijing100@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260822032327.3548986-1-ekffu200098@gmail.com>
+In-Reply-To: <20260821020910.3428585-1-zhaomeijing100@gmail.com>
+X-Rspamd-Queue-Id: 22D364000C
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: dsx6wx5p163x651x56ow6z63em7gwwdi
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 87C672000C
-X-HE-Tag: 1787495420-388951
-X-HE-Meta: U2FsdGVkX18+c05WUbMktnTNgUzcLql1lQMqwa3q7pJPfzg59l4rk5fsgafAZObUy1fMS/mvbNYVckN3oS7g6+zdEaGbWwtGErepYPHZ4sKrNKpCQGnRllNKlI6dz5ufiHh8joGurPkU+mJamtHn1CY6ObQM6ZMp3c/ixlwlVfOnePFnt2K+tzArI192sr96hq4jfRYehHoNmOoDRi5qLkIGiQPelRv562o7qSxfl/QPd/ZIIWPxwz2y4tBdUW5GbD085HfwcL1Y+oZggaS2H/TX4zWS9ajiPKaAOvQKAbATKMylm7K/NUrE4W8/Pu4HmH/TrpThzs/p6yx9r7wTKiDYaA+dCzVblCFrkk2/LhUuFhNDYl71ATxAL6wAdZeQvVBzBvle8P3wBrwMHj3vtzH/S6rQ07qOZWvL0HYgmp3OmUJ6GSz/Pr4GMGl54BKAvd3c/i9wfnp1STIinlbP5bc4low+xIzEjQMTkoDqgYjD31gMyb1oukkKPd29a6FX5SKqOfz/uzh9wMnLrUE/Xqr9nXcwC/0ix6h6NHg7uRhDIXrJM59qeRj+5wDOX4j6Ry3odlOimuvNcHcThV4yY9KlWH4vjFOVBUDI94JmnpjyHcU9XBGie3ORMOVfUjrgVH+JWNLWnoCjwZQ8adMF5w8//0DSuFsvXlNWvn3+/MzISed4cUH5sLhmqrpz3W2BurimNhh6w9vx6Axk8qL0wXA3XHZffg/X3537faZwV7hNeCQymwM72oVlieaDjYiGFBQ3C+jkK6KIbdhKQJ3kAWmO77VtIg1Ltbkwy5jocgFE7+SYeIiAvUxVKIjRdLvir1SX5aTxO9w1qVmfT2Vxgbad3EJtA1xxbEdIDZyTVhWWGy3idQEgeq7PB3N8eruA0jZ3Vm/hccnbnH62qTkJhBvkJOf8O7Kfx+Z1sGPuI6CGcU5wqX9k65aDFmC6rYAhcrDBLGTZmtxlulrgYCW
- N7xBK6MV
- ZKN31GEtrXjD1SsZYHObmujy1b6Z9x/vXMYhIBMJ97VKrNDcm8rEcCNkFnLCQoDn25k1kTpyrF1JSfO1NvZ2+g03KVe9cAmHBhOWbCiYcMUUce7gjyUjxKkOsJMkdPMPtL1cn+nj8b0wM97xhTpbiV//rriWt4Ye7S79pB6gfWQLIYwnTZnw++wjEJ2lcOsEOMbGbf7Y4+JaaXqVpuvBjAJkSyJ2OudCbY5u2wK9D3Tb2RnbFSF0b8GzShTpCYHfdEdIkFo7HDdbPIJUspJdfYBfWXFGTngYWTpXWFU9J1ro67RWViT7PU/YH24gVMHMHinvOLYE5N1UeGN3GYxp+3Gc52izeAAONwpbg5NatdON+4K63w+PbTjP/HQ==
+X-Stat-Signature: 9i556ecci4381ajii59oq9ya7ry3benj
+X-HE-Tag: 1787496197-545169
+X-HE-Meta: U2FsdGVkX1/pxuffgyiSaEq9lAswYajtY2f4daalKq7sp2m2GE6kJI9UB+Y6aVK7GQXEg6NmcwIL69HlaaiLkg8h0owOKrrGcfpKoZWX1Xx4XmLH1u3iTw1RTeBkwUae7Ma5UDCV9SncnSXnLfmvbHMadDWcBl1euMvjlNYgyPsIbLKxW+ZMA9Q0x1mVgHZOJ/enLfakHSsviBDuxKyVsFdG+TGXcNPyQ5QL/ucLAE7IqGV/Ttz38o9zPyr3mEHsD1LrAykzgbwKPj/YbCD5vhbmF6SCuofyGd+I9YLnQhSwZ6cqotUu5AdCJ430mNOeoeuSMkwWuRnVTTALFL7kj6VOSpQ+vVtjLm2cS2LmZT9VO8TgOCTKzhfabIc6LYf0QM+CF04q0hf7CXe/UnD+57M0dJ/QS74aGA6j0Nh8kV/8GyzJRpHNR/kosPHmcfZxs3kH/NXOLNWC0yIt2zlImR+V+234HHA7SBbXHYg5cCAAGxh203rROGy6tt6kdWn77AvFa4CFjJHmO4PhWqln9fxk54UNJ0EM9C3vs2AMPiKJt0d8CzwfyUb1J/Wo5zCXbsNkReNAm6XK2CYTjkCNE5xdTrUji94QOBno3SPvCJD/2l1nGXhBF1jF5RVjvFUpaDBnPE/tkrM5Bz0bTs19SYQteyWo+d7jYUwWjKfbSsP5Kijw1kPT3XUUMhwWKAI7oDndmS0UlYzNMW+3O7Xf/eLjWxleIVyCaVXcAe2ybL22upsqqiKJI3gd0QVFcizP0VyC9WiXMqZQPBGihfan44jNVsrp1W04hppWvqQjoES5Ky6dL9uPD0c1F1XGcoTWYkvMVzfugpBZ7v+g0m/LRKzu+SwpulNaWKEyBMJBw4+m7FzYL0suBNDVa3pUzKSogFHR1w6MOuGB7fsVvlX5kffMuX5cHOCtGHYbixeb2oLlLa/J9oAltOlXdo82Ar1ZgdegUwJuj83HKSZqGUn
+ kL0+h2DH
+ z0NfkKoDXphIIZm0hjOxcdPkU3kh9PGBGvK8HezlMFfhcPYPYPubucRUkV90qtTilvcEEuwWshad2daaBOAAD6lcH8gDUx8zeh8LeXXBIouM0nHg0LHPbTlvJWevdgTkq0ePqaUBjoHSlyzDS/Ts3hQL8TwCeuo2EcwCrg9+ljBbITDk+kFM1ZagO2scIUALy+j3GvASMibqz6DigvVf54+3AaU3QUjK8Z+PE0nxzU0HCylXBm8e4gArr/AgcIVrehc5BAfYnILYPvCwNN+B1dnfHnCiji78L1WokpP/bFdiwEdyqIPIl6oQ+Rw9es6qoPkTiJfK6OLqShAP7DIoWJUfw8yi8WgCDn0MnMnyp5RN0+XE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,23 +92,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 22, 2026 at 12:23:23PM +0900, Sang-Heon Jeon wrote:
-> On Fri, Aug 21, 2026 at 11:32:30AM +0800, Hongfu Li wrote:
-> > Return prepare_kho_fdt() directly instead of assigning to a local and
-> > returning it on both success and failure paths.
+Hi,
+
+On Fri, Aug 21, 2026 at 10:09:07AM +0800, Meijing Zhao wrote:
+> From: Meijing Zhao <zhaomeijing@lixiang.com>
 > 
-> Thanks for the patch, but the same change was already posted [1].
-> As mentioned in the cover letter, I can send it as a separate patch
-> if needed.
+> The memblock debugfs interface has two issues when reporting region
+> flags. MEMBLOCK_RSRV_HUGETLB has no corresponding name, and regions
+> with multiple flags only show the lowest set bit.
+> 
+> In addition, memblock_debug_show() walks the region arrays without
+> synchronizing against memory hotplug. If memory hotplug grows an array,
+> the debugfs reader may continue accessing the old array after it has
+> been freed.
+> 
+> Add the missing HugeTLB flag name, report every set bit including those
+> beyond flagname[], and hold the memory hotplug read lock while walking
+> the arrays.
+> 
+> With the series applied, a HugeTLB bootmem reservation is reported as:
+> 
+>   RSV_KERN|RSV_HUGETLB
+> 
+> RESEND:
+> - Regenerate the series from the same clean base as v1. The previous v2
+>   was inadvertently generated with an unrelated MEMBLOCK_NODUMP change
+>   in the patch context, causing apply failures. No code changes.
 
-Please send it as as separate patch, as Mark requested.
+I presume the changes were on top of linux-next and it's not clear how to
+apply them before the end of the merge window.
 
-Hongfu, I'm planning take that one because he was the first.
+Can you please resend the patches after v7.3-rc1 is out and base them on
+that?
  
-> [1] https://lore.kernel.org/all/20260723184538.3888637-37-ekffu200098@gmail.com/
+> Changes in v2:
+> - Report set bits beyond flagname[] as UNKNOWN instead of ignoring them.
+> - Add a separate patch to synchronize debugfs reads with memory hotplug.
 > 
-> Best Regards,
-> Sang-Heon Jeon
+> v1: https://lore.kernel.org/linux-mm/20260819075422.2387980-1-zhaomeijing100@gmail.com/
+> 
+> Meijing Zhao (3):
+>   mm: memblock: add missing HugeTLB flag name
+>   mm: memblock: show all region flags in debugfs
+>   mm: memblock: synchronize debugfs reads with memory hotplug
+> 
+>  mm/memblock.c | 26 ++++++++++++++++++--------
+>  1 file changed, 18 insertions(+), 8 deletions(-)
+> 
+> -- 
+> 2.25.1
 
 -- 
 Sincerely yours,
