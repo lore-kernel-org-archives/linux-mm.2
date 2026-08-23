@@ -4,85 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F30C5B572
-	for <linux-mm@archiver.kernel.org>; Sat, 22 Aug 2026 21:52:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81CE3C5DF97
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 00:07:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79D266B0095; Sat, 22 Aug 2026 17:52:41 -0400 (EDT)
+	id 3DB146B008C; Sat, 22 Aug 2026 20:07:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74D116B00A0; Sat, 22 Aug 2026 17:52:41 -0400 (EDT)
+	id 365346B0095; Sat, 22 Aug 2026 20:07:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 663DF6B00A1; Sat, 22 Aug 2026 17:52:41 -0400 (EDT)
+	id 22DC06B009B; Sat, 22 Aug 2026 20:07:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 43D486B0095
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 17:52:41 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C98341601EE
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 21:52:40 +0000 (UTC)
-X-FDA: 85130255280.12.1CD1C2A
-Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F36E140006
-	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 21:52:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	none
+	by kanga.kvack.org (Postfix) with ESMTP id E499F6B008C
+	for <linux-mm@kvack.org>; Sat, 22 Aug 2026 20:07:32 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57F2C1C0B81
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 00:07:32 +0000 (UTC)
+X-FDA: 85130595144.19.1B82DDD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9271C40008
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 00:07:30 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tZ9gVfSl;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787443650;
+	b=bGYKtDXAdcnyFrv3XF76vXKZgEK6/P6EXMx8KvtsCw53pfF5MK7w5NelVbEr4QslnAm7Ym
+	GddDOxym+jHjV6JnCkkF2sfcr0pj0ezjYkvPdEl3cSj38MjEBo7vL0/3ltK3v9jd7eZRX2
+	NB2MbMCIzbt+qklSYndA6Nf/jZXaVqQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tZ9gVfSl;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787435559;
+	s=arc-20220608; t=1787443650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pEt8O7LRcCyZgmO9qoneCT5b17y2bffjN5bHSaZ1+eQ=;
-	b=M15L/zYkBJ8f3NSnC7Ajcz9tq1Vvu+kLfnK5CXl0QVeQD8VO/sk6eOBUwmkGJjPlK2lm5M
-	kDBpkXDa+dRkYOWH9zcdralUMzBtw8aK9z1pzaO/V7tEXU4+LjNcyHO4iI8wwwWd8jOEmE
-	bwN7L2DfAVK70tM23V9uUhTBZ6toAN4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787435559;
-	b=ulKF/xxNbk6YtcMbXU8nJmswSi1tmvbXjqhOB5Q08W5ikHQNI4yW4ZXh1gSTdhhhpvKDMg
-	gUjKx+fEBMjdVudcV2Bmam8dY5bjwUe5Tr0QQXhHEdDz1/1+voVLUCbcs5bRyMvHIMjNbY
-	2RoMvqAAw1+yCkIYNolsOJS9eG/MZ+k=
-Received: from omf10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6DDC34020C;
-	Sat, 22 Aug 2026 21:52:37 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id 14AC830;
-	Sat, 22 Aug 2026 21:52:21 +0000 (UTC)
-Date: Sat, 22 Aug 2026 17:52:09 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Bradley Morgan <include@grrlz.net>
-Cc: =?UTF-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, mgorman@suse.de, bsegall@google.com,
- dietmar.eggemann@arm.com, kees@kernel.org, kprateek.nayak@amd.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, vschneid@redhat.com,
- linux-trace-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] fork: initialize function graph state before
- copy_exec_state()
-Message-ID: <20260822175209.3bc255d3@fedora>
-In-Reply-To: <20260822170928.1acba2cc@fedora>
-References: <20260822195321.962383-2-Jeremy.Jean@oss.cyber.gouv.fr>
-	<4E2240F5-1211-47CE-AF04-24E1F0BC4707@grrlz.net>
-	<20260822170928.1acba2cc@fedora>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Jv9OK1rc+KFJbl15QLqqmRw3mFydCFiVTSz+aKJB6jE=;
+	b=jMYDd0Eyfks6Sl1eaKrELLdLppGmlfnEShpN5z1gor7T2Lx+KpDRZ4mJ6UjJK8U88S/Ydd
+	LFBswJFLlA6Tn6lf6UvKYqV9xgZ3KaIEDY8SnasJX4xR+s++mZ+HVHVYvvJPLCCloqrTab
+	Fhl5Npd2sLbRnyx5ceGVMVfjknSKmps=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 546BF43741;
+	Sun, 23 Aug 2026 00:07:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BE91F000E9;
+	Sun, 23 Aug 2026 00:07:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787443649;
+	bh=Jv9OK1rc+KFJbl15QLqqmRw3mFydCFiVTSz+aKJB6jE=;
+	h=Date:From:To:Cc:Subject;
+	b=tZ9gVfSlIrEXJYlJIxWJhXzkSDx9gOr+NRWi/eEOSnQaCI20mwUfRd2yKntsNfGiz
+	 JL4RYV9jVXDwyqK1/i/lHev8C3oxMBUDvLy+wqdZYKcmJRBbD4ewTxq83yPJ+VaNwk
+	 wVyepnn139kvV3rMUvGe8y70E0teKUt6Ku8K0ZBE=
+Date: Sat, 22 Aug 2026 17:07:28 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mm-commits@vger.kernel.org
+Subject: [GIT PULL] Non-MM updates for 7.3.rc1
+Message-Id: <20260822170728.415abdaf6589f2849d6de871@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18o9nZPijjm5fLztvCCYL2gxznxJRGXRfA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=pEt8O7LRcCyZgmO9qoneCT5b17y2bffjN5bHSaZ1+eQ=; b=PThRT9JFyMELxlt4cDT4fWfwjdtR7AgQl9vRmrqmB1Y0I9sKW+S0KsrzrOsJpcrldSRFc2iN71iMuTJNFm7Zo4egyYwX1MYPOUn97SpBbCbjB2v2chfOJVv1vUuWDAJeWWohshECSRwo+pGqlFBK/zkBiqxLAEMZYms9D1JJgJw=
-X-HE-Meta: U2FsdGVkX19UINL0mmjW3hpFQxrhf/7zY2aOpgFoZTxOywy6YXM+r6/gNO/T+lLGHzD/Xbox/2BzdIxNf+HbCZpVOcRoj2LT68FMo14DGhu7Tdv9WRXcWJ0rMyDnf/sijEig2VhxgnptJgcRLP5jgEfg0Vc+yakLccQB4HsruOWMZ0mbLZG9E6XrT9jEvnWGj6bcD8tJzEOQmkw6eX+jm92d7nDJ2pC3SJXPVB0y8dSpifkSsEZQWD48mbAeOGY+Rn/LePQn4/38xbCd7mEytgfAN6MCZxEtUXHGBt72PB+pKvAzil/f0b7HqvNOvxT8hgS3tnHptvs3c9UAz0aSZc24pDAY1YFAVWzI7x8AjXcIl5ubOzp+P1MIwMVpIO96
-X-Rspamd-Queue-Id: F36E140006
-X-Stat-Signature: oecqcq3jg44x6sad1zai3jhigekgdk18
-X-HE-Tag-Orig: 1787435541-503601
+X-Rspamd-Queue-Id: 9271C40008
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787435558-121777
-X-HE-Meta: U2FsdGVkX1+hlD7GA0tIzURae+taHkXd+EiA5S7ytZKRUsqi3/oFjx4hXoM7FwFjFY5MZlagVdt7j55Expvc4CpcpgB3bxsqEgUTsyXXAJC+hpPhI/NjIY68uFNbSsfKp2NzA+1H+8NoRq+0AtQBXfQ90dCpeevb8K8QQSQHnYScLwhWZOEr+M9GtwnZP3phlUGOoDKOM43q+vvtcfMVe5aIqNdviLtJqPsMa5ENK+v5+bnQsMJqHChws2tnJ2ut9su4rpDjVq2oHK8cUZv4ek15oXEHMBzN8Jw9Mlgm22bmYDdiy/B9JjSxQugjmc9Tt7mSGk0pRne2VLwrX+Bks81Czs0VOBm/DQyBB1uiK/gIeArrTlsdL42BB/gVWUItAD1yCtqCqg8FtdzL7xcsjMJeRgBpZpAGRxyVk3sq4P65EKeAS3gvRvAVU8EG2ien0h4XF7at8VccyGcevy3PfuroQ+uaPvabRiClszaBIQ582nFbOQuGHR+vOKyzqrn/NOLKBW19cK1IYdDF13b+Y/7R1hYGvZH49B0umRG/THJSZUS2OCRNdm2adCc0xClj9uDJ7bpspeMz5niBKQJ1XSJF7qCUHA7TO/aKKmowYNFgf7AGMPFsSZPlBgNOMimqoyERApQoOQhPgVL5B5eTEw3QmUscvpClaNPll6Ao8KHTUeaQEY/AY8crIsSL2DMFAczohLdJzIKXwvUwi6BrsrW8cWwqbKZsLRU4KqHIlU9f1kEug+GAeMwajjMYfIi4p6hhbTm8s7q0DfbDUlaK0ePAWHKlDQCJk7c01bmMSr2xWh3WKoeRqn34K4w+0DbzD2UWdUdZxi72o5L0VOpfgp9C3fHTtjTWy/9hI6FYwRaD8dNa4mzQi3I288Q/7Xw4XaVvEuyC+82bkdPx5U8XJQU2ei2z+G2cLhLiaBOUFL8i5tnFrp7v88NS2FIdIv+jkXsFQsx8JuZCTOHZGNT
- jlKb3ko3
- 7FhdeDcKdZfRxtWUa4JkQh7eaWYGA2bLktfRlJLLHbg7sLfAuJJmVv+/aEI09BnhUnSMdC00dEoNyPvcfhEYfYKnS0an3U1HRCFCnblTBLIUH8CWqYrNHu+DKg2DyDAFADQRi3PoY6JFiph72uS3YiyWwv3PL66urJS9ELHS230NJoCdZN7zGypZ4PXepk3VBPB+8pwySXyzycc7OMccmDJ3RSt18iywKoAwIyL7MYj0eq1QinYrXlzOxkSNioNtqyYlDO60MmcLsVTHpJjBJl+PGlA==
+X-Stat-Signature: b63ibqykia3pc37qnpyxsjb51tomqe4p
+X-HE-Tag: 1787443650-487934
+X-HE-Meta: U2FsdGVkX182yLNDMQ/wjbjJDDlCN9Ou1tTQDhnwykz/xo+r9AYoD9fGpXUFKxvpWPILwQ7jnpYbwAuRP3Th5gffi1VNhHy0/txBtAqEYti4j/OCBVhQ+TPbp1M3ypLotIFgG0bZq4NFRqIA+P274mzmTk74CBaa2r860aavSj7D82F0ImjssSuAm13mnOGm46GR4lFqZcFO2gqxeDiqkGVHvyMMFHb7dr/kfGHej1s1cbDVs1ATmrm+AH0/ebznrKeMWMYXpSd7NehGwLRZo07EGYETUDP5aqjWApCMEe5wgbVdgWpA2zL7p94BxSpDI/PndLXDC8U2thCoGSwJxAlbiuXjw3UgdvB3aWzWnHthblbvXlN2WkDFXUMeDvjKV6IM08wMrgbf00choPbOdQK/vP141QOjQzzh+RmZCt7ccdS0X9oQmo2eOrBWYV8ISMtZ2OsFqoX8i2vhzBkOQMWAZLjC5v26Z0Nz0vG2FkXJQphocvrEvlFtapZz5LFzowoCu4MxK2DJD+3b86MQ3J0kD1WVD1YS7BUF3sCNPHwOQdQwNalLFO74zGyvUcpIESySzpTWubef4RSKah4cSUoFbp8FShV2gXKzUjWD71JP6jvnosTAZDgr+gT2o+Q26wlmu1JGr4JvBCWfrRFXfyj4srAH20zIvR8W6MuefI12iZJmVz11lvhypRx/fQuica+vDvkcKECN4LLFnrIiywbetKoAjnOhZhxQKnlBECh65iFWSSa8xtPC1FKviPSqSFRm5S39zRJc0RbFg8FNX29BB6Ovv3avNTyJMsSwBgsF0UMtqyxe4SpSMa6ilI/ei3V0KbIy1m8kMLztE6gVlNI3xj6Kw0VfLu21nxyMPDmkaMcrj0Z8oekwrXp6x43EygbruulX8TSxucVWoRjSurJgeg1SLdn7jn48Uc2lIOBDL3EA57l0Ij5JSPIXlPjkkhFpNMUQNfPHPydvVJR
+ 4kzSxGdF
+ giVDKTbV/T7UCZgdhE4kF8/cxc9hDYT77vlJ/Dc7NOv2Xhas2C+0v5tn7ypGPFRIXuAKj+0GxcNRlZRldv+vIMxD5uMtWf5nsgFCqhZVt/eUb26Ug1yzwxEGV9uPZQnjxm3Roh7GWohTw/ajlUPixyOiXh2VmP9701JstQPygh8VkinzxqT0anngMFcQ580wDJSMy+OYxJELcwqmf2vbC3AJaPNueRYVy6QerzKvMMMyIMCAsAAxhJOFZQGcFR+l1ORzoqNGuprtxcT26BdT6EaUrzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,21 +86,397 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 22 Aug 2026 17:09:28 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
 
-> > >Resending v2     
-> > 
-> > (no! V3!!)   
-> 
-> Right, when resending, it is best to add "[RESEND]" to the subject:
+Linus, please merge mm,git's other-than-MM updates for the upcoming -rc
+cycle.
 
-I shouldn't have said "right" because it wasn't. You add "RESEND" not
-v3. You should not up the version if the patch has not changed and you
-are only resending to update the Cc. I do that all the time.
+I'm seeing no present or upcoming conflicts at this time.
 
--- Steve
+Thanks.
 
-> 
->    [RESEND][PATCH v2] fork: initialize function graph state before copy_exec_state()
+
+The following changes since commit 62cc90241548d5570ee68e01aaba6506964e9811:
+
+  Merge tag 'mm-hotfixes-stable-2026-07-27-14-18' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm (2026-07-27 14:36:26 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2026-08-22-16-57
+
+for you to fetch changes up to eef628bce8e18ce1eb8531c396bf55e36f86c62c:
+
+  mailmap: fix bouncing address for Taniya Das (2026-08-19 19:55:06 -0700)
+
+----------------------------------------------------------------
+mm.git review status for master..mm-nonmm-stable
+
+Total patches:       95
+Reviews/patch:       0.63
+Reviewed rate:       56%
+
+Summary of patch series in this merge:
+
+- "ocfs2/dlm: bound peer-controlled lengths in the o2dlm" (Bryam Vargas):
+
+  Validate and bound all input lengths and count fields in the o2dlm
+  migration and recovery receive handlers to prevent memory corruption and
+  kernel panics from malformed cluster messages
+
+- "ocfs2: validate xattr entry bounds" (Cen Zhang):
+
+  Validate OCFS2 extended attribute entry name and value bounds during
+  metadata reads to prevent out-of-range memory accesses during retrieval
+  or listing operations.
+
+- "taskstats: fix cgroupstats invalid fd handling and add selftests"
+  (Yiyang Chen):
+
+  Return -EBADF when cgroupstats receives an invalid file descriptor to
+  prevent caller hangs and misleading success ACKs.  Add a kselftest to
+  validate valid cgroup v1 queries and verify proper error handling across
+  different Netlink flag combinations.
+
+- "misc lib/raid/ improvements v2" (Christoph Hellwig):
+
+  Improve benchmark-based algorithm selection for the XOR and RAID6
+  libraries, add KUnit benchmark tests, and cleanup minor implementation
+  details.
+
+- "ocfs2: cluster: o2hb_region_pin() fixes" (Joseph Qi):
+
+  Fix sleeping-in-atomic, lock order inversion and error-path cleanup
+  bugs in o2hb_region_pin() by releasing o2hb_live_lock across sleeping
+  configfs_depend_item() calls and using unlocked variants from callback
+  context.  Ensure failed pin attempts properly decrement user counts and
+  unpin partially initialized heartbeat regions to prevent memory leaks
+  and unprotected states.
+
+- "lib/ucs2_string.c: fix out-of-bounds read in ucs2_strnlen()" (Vincent
+  Mailhol)
+
+  Fix an off-by-one which could cause an out-of-bounds read.
+
+- "ocfs2: harden heartbeat teardown races" (Cen Zhang):
+
+  Fix two OCFS2 heartbeat/o2net teardown races found by KASAN.
+
+- "taskstats: tidy up the cpumask command path" *Bradley Morgan)
+
+  make two small cleanups in kernel/taskstats.c.
+
+- "ocfs2: validate active orphan slots during inode read" (ZhengYuan Huang):
+
+  Validate active ordinary and append-DIO orphan slots read from OCFS2
+  dinodes at the metadata boundary to prevent corrupted slot indices from
+  causing out-of-bounds array accesses.
+
+- "ocfs2: bound-check both readdir re-validation scans" (Zhan Xusheng)
+
+  Enforce strict boundary checks on directory entry record lengths and
+  offset calculations during OCFS2 directory re-scans to prevent
+  out-of-bounds memory reads and directory position corruption.
+
+----------------------------------------------------------------
+Adi Nata (1):
+      lib/math: add KUnit test suite for polynomial_calc()
+
+Andrea Calabrese (1):
+      kernel: refactor: shorten has_pending_signals
+
+Bradley Morgan (7):
+      lib/string: fix memchr_inv() for large ranges
+      signal: avoid shared siginfo namespace rewrites
+      taskstats: fix cpumask parsing cutting off the last character
+      taskstats: drop the dead NULL attribute check in parse()
+      taskstats: fold the two cpumask handlers into one
+      signal: factor out the kernel reserved si_code check
+      prctl: fix PR_SET_MM_AUXV losing the forced AT_NULL terminator
+
+Bryam Vargas (2):
+      ocfs2: bound namelen in dlm_migrate_request_handler
+      ocfs2: validate lengths in dlm_mig_lockres_handler
+
+Calvin Owens (3):
+      pps: don't try to wait for negative timeouts in PPS_FETCH
+      pps: don't allow PPS_KC_BIND on removed devices
+      pps-gpio: remove dead capture_clear code
+
+Cen Zhang (5):
+      ocfs2/cluster: keep heartbeat local node stable
+      ocfs2: validate inline xattrs during inode block validation
+      ocfs2: validate external xattr entries when reading metadata
+      ocfs2: synchronize heartbeat callbacks with o2net teardown
+      ocfs2: o2hb: quiesce negotiate handlers and timeout work
+
+Charlie Jenkins (1):
+      mailmap: add entry for Charlie Jenkins
+
+Chen-Yu Tsai (1):
+      checkpatch: don't emit warnings for ID-base USB & PCI DT compatibles
+
+Christoph Hellwig (8):
+      xor: enable lock context analysis
+      xor: improve the runtime selection benchmark
+      xor/kunit: fix a spelling error
+      xor/kunit: add a benchmark
+      raid6: enable lock context analysis
+      raid6: defer implementation selection when built-in
+      raid6: improve the runtime selection benchmark
+      raid6/kunit: add a benchmark
+
+Deepanshu Kartikey (1):
+      ocfs2: use inode_lock_nested() for orphan dir locking
+
+Dmitry Antipov (2):
+      ocfs2: do not use make_bad_inode() in ocfs2_read_inode_block_full()
+      ocfs2: always run deallocs on copy-on-write completion
+
+Doruk Tan Ozturk (1):
+      ocfs2: validate directory-index entry counts when reading metadata
+
+Gou Hao (3):
+      drm: remove dead WARN_ON NULL check after GFP_NOFAIL allocation
+      lib/test_hmm: remove dead NULL checks after GFP_NOFAIL allocations
+      RDMA/cxgb4: remove dead NULL checks after GFP_NOFAIL allocations
+
+Guangshuo Li (1):
+      rapidio: clear mport->net when rio_add_net() fails
+
+Hongfu Li (1):
+      selftests/prctl: fix non-anonymous VMA mapping in set-anon-vma-name test
+
+Ian Bridges (1):
+      ocfs2: fix missing metadata reservation for large xattrs
+
+Ibrahim Hashimov (1):
+      ocfs2: validate rl_used against rl_count in refcount block validator
+
+James Kim (1):
+      rapidio: mport_cdev: fix use-after-free in dma_req_free()
+
+Jiaming Zhang (1):
+      ocfs2: fix hung task in orphan recovery
+
+JianChunfu (1):
+      kernel/fork: declare max_threads __read_mostly
+
+Jianlin Shi (1):
+      ipc: only destroy orphaned shm segments on sysctl write
+
+Jim Cromie (1):
+      kernel/params: fix a pr_debug(" %p ") in parse_one()
+
+Jordan R Abrahams-Whitehead (1):
+      include/linux/list.h: mark list_add and __list_add as __always_inline
+
+Joseph Qi (5):
+      ocfs2: cluster: use GFP_NOFS for heartbeat bio allocation
+      ocfs2: cluster: use an on-stack bio for the heartbeat write
+      ocfs2: cluster: don't sleep while holding o2hb_live_lock in o2hb_region_pin()
+      ocfs2: cluster: avoid lock order inversion in o2hb_region_pin() from drop_item
+      ocfs2: cluster: fix o2hb_dependent_users leak on pin failure
+
+Joy H.J. Lee (1):
+      tools/compiler: match glibc 2.42 definition of __attribute_const__
+
+Karl Mehltretter (1):
+      lib/interval_tree: fix allocation warning messages
+
+Kir Chou (1):
+      lib/random32: convert selftest to KUnit
+
+Konrad Dybcio (1):
+      mailmap: fix bouncing address for Taniya Das
+
+Krystian Kaniewski (1):
+      ocfs2: fix circular locking dependency in ocfs2_init_acl()
+
+Lasse Collin (2):
+      lib/xz: use size_t instead of uint32_t in a few places
+      lib/xz: fix comments
+
+Linfeng Sun (1):
+      mailmap: update email address for Linfeng Sun
+
+Manuel Quintero Fonseca (1):
+      resource: downgrade "resource sanity check" warning to debug level
+
+Matthew Chen (1):
+      watchdog/softlockup: fix softlockup typos
+
+Matthias Goergens (1):
+      ocfs2: fix cached cluster count after suballocator reclaim
+
+Michael Byczkowski (1):
+      pps: pps-gpio: split IRQ handler into hardirq timestamper + threaded handler
+
+Nathan Chancellor (1):
+      .get_maintainer.ignore: add Nathan Chancellor
+
+Oleg Nesterov (2):
+      signal: change sys_kill() to use SEND_SIG_NOINFO
+      signal: avoid unconditional siginfo copy in send_signal_locked()
+
+Paul Walmsley (1):
+      checkpatch: add NOKPROBE_SYMBOL to the whitelist of lines that can occur immediately after functions
+
+Paul White (1):
+      selftests: ipc: change operation not supported error number
+
+Petr Mladek (1):
+      Revert "printf: Compile the kunit test with DISABLE_BRANCH_PROFILING DISABLE_BRANCH_PROFILING"
+
+Petr Vorel (1):
+      MAINTAINERS: add IRC and patchwork for LTP
+
+Phillip Lougher (1):
+      Squashfs: check block offset is not negative
+
+Randy Dunlap (3):
+      rbtree: fixup kernel-doc names
+      llist: use correct function parameter name
+      stacktrace: header: repair kernel-doc comments
+
+Sara Sena (1):
+      tools/accounting/delaytop.c: fix typo in PSI header string
+
+Shivank Sharma (1):
+      tools/accounting: fix macro typos in getdelays
+
+Tetsuo Handa (1):
+      kcov: fix data corruption and race conditions on PREEMPT_RT
+
+Thorsten Blum (1):
+      lib/xz: replace min_t with min
+
+Usama Arif (1):
+      squashfs: avoid thundering-herd cache wakeups
+
+Vincent Mailhol (2):
+      lib/ucs2_string.c: fix out-of-bounds read in ucs2_strnlen()
+      lib/ucs2_string.c: fix indentation
+
+Warren Xiong (1):
+      tools/mm: prevent page_owner_sort from truncating input
+
+Xibo Wang (1):
+      hung_task: update DETECT_HUNG_TASK_BLOCKER Kconfig help
+
+Yemu Lu (1):
+      fat: restore original value when fat_ent_write failed
+
+Yichong Chen (1):
+      fat: release buffer head after rebuilding parent
+
+Yiyang Chen (4):
+      taskstats: remove dead taskstats_exit_mutex declaration
+      taskstats: return -EBADF when cgroupstats receives an invalid fd
+      selftests/acct: add cgroupstats functional test
+      selftests/acct: share netlink helpers
+
+Zhan Xusheng (3):
+      ocfs2: fix readdir position truncation on 32-bit kernels
+      ocfs2: bound-check dir entries in the readdir re-validation scan
+      ocfs2: bound-check dir entries in the inline-data re-validation scan
+
+ZhengYuan Huang (2):
+      ocfs2: validate orphan slot during inode read
+      ocfs2: validate DIO orphan slot during inode read
+
+Ziran Zhang (1):
+      FAT: allow 0xE9 near jump in fat_read_static_bpb()
+
+ .get_maintainer.ignore                             |   1 +
+ .mailmap                                           |   6 +-
+ MAINTAINERS                                        |   2 +
+ drivers/gpu/drm/drm_modeset_lock.c                 |   4 -
+ drivers/infiniband/hw/cxgb4/mem.c                  |  10 +-
+ drivers/pps/clients/pps-gpio.c                     |  72 ++--
+ drivers/pps/kc.c                                   |  10 +
+ drivers/pps/pps.c                                  |  10 +-
+ drivers/rapidio/devices/rio_mport_cdev.c           |  10 +-
+ drivers/rapidio/rio-scan.c                         |   1 +
+ fs/fat/inode.c                                     |   5 +-
+ fs/fat/misc.c                                      |   4 +
+ fs/fat/nfs.c                                       |   4 +-
+ fs/ocfs2/acl.c                                     | 135 +++++---
+ fs/ocfs2/acl.h                                     |  19 +-
+ fs/ocfs2/cluster/heartbeat.c                       | 381 +++++++++++++++------
+ fs/ocfs2/cluster/heartbeat.h                       |   5 +
+ fs/ocfs2/cluster/nodemanager.c                     |  29 +-
+ fs/ocfs2/cluster/nodemanager.h                     |   3 +
+ fs/ocfs2/cluster/tcp.c                             | 186 ++++++++--
+ fs/ocfs2/cluster/tcp.h                             |   2 +
+ fs/ocfs2/dir.c                                     |  93 ++++-
+ fs/ocfs2/dlm/dlmmaster.c                           |   6 +
+ fs/ocfs2/dlm/dlmrecovery.c                         |   9 +
+ fs/ocfs2/inode.c                                   |  22 +-
+ fs/ocfs2/namei.c                                   |  34 +-
+ fs/ocfs2/refcounttree.c                            |  47 ++-
+ fs/ocfs2/suballoc.c                                |   2 +-
+ fs/ocfs2/xattr.c                                   | 324 +++++++++++++++---
+ fs/ocfs2/xattr.h                                   |  11 +-
+ fs/squashfs/cache.c                                | 116 ++++++-
+ fs/squashfs/squashfs_fs_sb.h                       |   9 +
+ include/linux/list.h                               |  15 +-
+ include/linux/llist.h                              |   2 +-
+ include/linux/nmi.h                                |   4 +-
+ include/linux/pps_kernel.h                         |   1 +
+ include/linux/rbtree.h                             |   2 +-
+ include/linux/rbtree_latch.h                       |   2 +-
+ include/linux/sched.h                              |   8 +
+ include/linux/stacktrace.h                         |   6 +-
+ include/linux/taskstats_kern.h                     |   1 -
+ ipc/ipc_sysctl.c                                   |   2 +-
+ kernel/fork.c                                      |   2 +-
+ kernel/kcov.c                                      |  90 ++---
+ kernel/params.c                                    |   4 +-
+ kernel/resource.c                                  |   2 +-
+ kernel/signal.c                                    |  76 ++--
+ kernel/sys.c                                       |   2 +-
+ kernel/taskstats.c                                 |  45 +--
+ kernel/watchdog.c                                  |  16 +-
+ lib/Kconfig                                        |   6 -
+ lib/Kconfig.debug                                  |  39 ++-
+ lib/interval_tree_test.c                           |   4 +-
+ lib/math/tests/Makefile                            |   1 +
+ lib/math/tests/polynomial_kunit.c                  | 270 +++++++++++++++
+ lib/raid/Kconfig                                   |  12 +
+ lib/raid/raid6/Makefile                            |   2 +
+ lib/raid/raid6/algos.c                             | 102 +++---
+ lib/raid/raid6/tests/raid6_kunit.c                 |  66 +++-
+ lib/raid/xor/Makefile                              |   2 +
+ lib/raid/xor/tests/Makefile                        |   2 +
+ lib/raid/xor/tests/xor_kunit.c                     |  64 +++-
+ lib/raid/xor/xor-core.c                            |  55 ++-
+ lib/random32.c                                     | 184 +---------
+ lib/string.c                                       |   3 +-
+ lib/test_hmm.c                                     |   6 -
+ lib/tests/Makefile                                 |   3 +-
+ lib/tests/random32_kunit.c                         | 182 ++++++++++
+ lib/ucs2_string.c                                  |  38 +-
+ lib/xz/xz_dec_bcj.c                                |   2 +-
+ lib/xz/xz_dec_lzma2.c                              |  63 ++--
+ lib/xz/xz_dec_stream.c                             |   4 +-
+ lib/xz/xz_lzma2.h                                  |   2 +-
+ scripts/checkpatch.pl                              |   7 +
+ tools/accounting/delaytop.c                        |   2 +-
+ tools/accounting/getdelays.c                       |  32 +-
+ tools/include/linux/compiler.h                     |   2 +-
+ tools/mm/page_owner_sort.c                         |  10 +-
+ tools/testing/selftests/acct/.gitignore            |   1 +
+ tools/testing/selftests/acct/Makefile              |  11 +
+ tools/testing/selftests/acct/cgroupstats.c         | 231 +++++++++++++
+ tools/testing/selftests/acct/netlink_helper.c      | 116 +++++++
+ tools/testing/selftests/acct/netlink_helper.h      |  44 +++
+ .../selftests/acct/taskstats_fill_stats_tgid.c     | 134 +-------
+ tools/testing/selftests/ipc/msgque.c               |   2 +-
+ .../selftests/prctl/set-anon-vma-name-test.c       |  21 +-
+ 86 files changed, 2589 insertions(+), 988 deletions(-)
+ create mode 100644 lib/math/tests/polynomial_kunit.c
+ create mode 100644 lib/tests/random32_kunit.c
+ create mode 100644 tools/testing/selftests/acct/cgroupstats.c
+ create mode 100644 tools/testing/selftests/acct/netlink_helper.c
+ create mode 100644 tools/testing/selftests/acct/netlink_helper.h
+
 
