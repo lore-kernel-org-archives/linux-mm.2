@@ -4,88 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 501EEC5DF8C
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 07:39:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 834F8C5DF8C
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 08:39:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C3196B0095; Sun, 23 Aug 2026 03:39:33 -0400 (EDT)
+	id 6F6566B0095; Sun, 23 Aug 2026 04:39:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 093EE6B009B; Sun, 23 Aug 2026 03:39:33 -0400 (EDT)
+	id 6A6B46B009B; Sun, 23 Aug 2026 04:39:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F12796B009D; Sun, 23 Aug 2026 03:39:32 -0400 (EDT)
+	id 5963A6B009D; Sun, 23 Aug 2026 04:39:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D1B1A6B0095
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 03:39:32 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 35441140277
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 07:39:32 +0000 (UTC)
-X-FDA: 85131734184.17.09444AD
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 34AA06B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 04:39:03 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8C98FC0271
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 08:39:02 +0000 (UTC)
+X-FDA: 85131884124.20.EBFBF9A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 94D3920002
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 07:39:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L6f2iutO;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9E3ADC0004
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 08:39:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fNidCwNi;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787470770;
+	s=arc-20220608; t=1787474340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rB1jsGUuojkYKJwh0qxzHjSNA7rq8zyf57JSD5x6cWw=;
-	b=e/fpSjXOCYv/RvwS9eMcO9UWQNiz2pHqNX8roXvYKwRrQWKpcnhoZdxIDiN6aJYkqEifSR
-	UsbEpfzf/30+/zuiu1K7/bd0G9nlPQay4ep4Liyxlz82UaMfhPti94Gyc1OzrbbcLaMICf
-	xKFkGohIHNmZKdlJ3ULrhaDx1H13vpU=
+	bh=Sh8RQ4+LO0vHcH+3EYo20mArA2lH6QjCIsypEu9LqKA=;
+	b=TtU4RUMjOTVl1mJ7pgh6Rveg7N3EhCmH7uA0NBk6xV69gZXi+c8s3/MVLZgOPJss8M4MJS
+	lssy4X7PU92SzWnDEZAjULAs8BnHHGglxVfJl4k3nuGdud8O0borLFXe33GnfvlsZwUoYN
+	sP2kLdDad9oUrEIcvVjRzt7QuwQRO1E=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L6f2iutO;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fNidCwNi;
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787470770;
-	b=7myOGjINARPx1fzU+9OkkE37F7lrD4ZvqqUueDjxi+6opv1aXepVVgZSfSrEWZ3JkVxcKL
-	tiUeNVc9AvL3ABf+D29wTbNMuLa6rw2LpNDyNmjVMGAbUwR3hwMK8x+e5hq8FPQIcrj83z
-	IqFBJvohAIQz7xzFPyp04D3fgr7vnbA=
+	t=1787474340;
+	b=eC6cErV35BYHCBOTv2+8fkEwWw/WTr6zBB3hJ230cuac81N769ruoQvTaOWMZeTqmG+9yr
+	ijwp6FZ0btSgqY0XZzOEioK/XLQBsCBb44PSHNRbGRmPtQQ2+MiiTSbSZWhBLk13oIvJY6
+	yixG3wkOYL/pzOmBH9fAw1FjD1ekG8k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C05AE411A6;
-	Sun, 23 Aug 2026 07:39:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D153B1F000E9;
-	Sun, 23 Aug 2026 07:39:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 60CA244E4B
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 08:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4876A1F000E9
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 08:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787470769;
-	bh=rB1jsGUuojkYKJwh0qxzHjSNA7rq8zyf57JSD5x6cWw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=L6f2iutOGFtzKX/8ZblKNBsANqnd1qU3V5YpH2wDSEsWH5BqFLyO4B8k8BAPvGqPQ
-	 iz3MvD3068uGj13pWR7sry2GGrz/XslSwWhNA0xjWe9tZL5ta6M7PPKc9UUafjzeZx
-	 MYvufbZV6GWEnzPctWCfg7Rxd3uhn3umK77Z1mWhyMzFCYVr3eY8pDOlOpPWwNX7Do
-	 yc37a6mDloeb5J/1GfpBy764i4o255JbtM8Utnd2WQUsb7fK71vCQpc9S+mTC/lL6Z
-	 9VkOkWdXLPlfXGp2LRywoFyd14TpU5OvO5fL1/1ndIji5etYlabWI9jqQ1R52+Obtc
-	 IUitXeXLRcZ5Q==
-Date: Sun, 23 Aug 2026 10:39:23 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: LongWei27 <longwei27@huawei.com>
-Cc: Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	hewenliang4@huawei.com
-Subject: Re: [PATCH] kho: Convert error handling to immediate return pattern
-Message-ID: <aoqjq4kLCCSJtdP8@kernel.org>
-References: <20260822064127.498411-1-longwei27@huawei.com>
+	s=k20260515; t=1787474339;
+	bh=Sh8RQ4+LO0vHcH+3EYo20mArA2lH6QjCIsypEu9LqKA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=fNidCwNi9xl+XRQCBZq/wwu4UnorxMWk1augmIUsDHqIe2To88eVo6QZY6UlSh86z
+	 BnnnGrOppgL3pjMmxhJWutdhXCwmsfG+sHbKh38+iSxlIydAJEzxJkzE/hUficAFKv
+	 iC0iOghFFMOKeuCtN4k7sUEsgw2ryBvLYQfs18c/HEfnTUxn6vHBTYpEJodNTcaV/G
+	 66mdOCYji9mm5BSX9zSsj1AY4787EdSDsAp/29u2rmeazKKldwKQP4Y+ZeOQmfPTMj
+	 7ZLOt+u6xSRkUw2jLzPOHXmxGmCIYnHYG9fv6i/fmsEDRNxwrontH02cyHbqojsmNH
+	 wKTJZxZJgHbMw==
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-52d58d7aad6so11877651cf.2
+        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 01:38:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RporWXUnYelSe3gn+abWfg0N9iTxrXFLody3PXtdzzKtdpK+CD4h4BwY4JbR6TucVix8wbsHD1+LQ==@kvack.org
+X-Gm-Message-State: AFuF++kJwCeTaJ7ZgT/nsoCqhEVoowr7QXohrtjsK0mTaxL2HnwGiYz8
+	xdPmNZDtpX2uqOgwt4y+ku346lEgy0BzcISJTcfGKxtA6EOfQo/+R1IfZ/BGdt/8tJOhQ6yFvdx
+	1K7g7W5g8NwcqLWWmyhnAk2qdFxdTaaA=
+X-Received: by 2002:a05:622a:1a84:b0:51c:1967:5091 with SMTP id
+ d75a77b69052e-52df5bb188amr162403571cf.41.1787474338252; Sun, 23 Aug 2026
+ 01:38:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260822064127.498411-1-longwei27@huawei.com>
+References: <20260821093606.2231216-1-alex@ghiti.fr> <20260821093606.2231216-2-alex@ghiti.fr>
+In-Reply-To: <20260821093606.2231216-2-alex@ghiti.fr>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 23 Aug 2026 16:38:47 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zHcW8oJBRmCDB2WYFc_uv9KP+M0fxOgnnfmA3+x06t4A@mail.gmail.com>
+X-Gm-Features: AcwNN1X5RmCuPZ6HzH2ZEMMP4hYSduCy2ZindZ0ZsliEHSk5whiut8UMogU3BgU
+Message-ID: <CAGsJ_4zHcW8oJBRmCDB2WYFc_uv9KP+M0fxOgnnfmA3+x06t4A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] mm/swap: move LRU insertion out of the swap cache allocator
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 94D3920002
-X-Stat-Signature: rsp98u7ggtxt1tqzeube9b5eef8fncxa
+X-Rspamd-Queue-Id: 9E3ADC0004
+X-Stat-Signature: 1x9zsjmqc4ynoarbfis66f17e9njbkbe
 X-Rspam-User: 
-X-HE-Tag: 1787470770-781157
-X-HE-Meta: U2FsdGVkX18AGkO3pXdsqH2/DYNhAD1ZXtycURlOG6M46KBZzn6WqzSCBwaiSHoUzqrgV3rpW4XHFJ++8vDZF2tGYVnmNnlpTkOWCQHxiAX1SymTQVfAVQS6ztmPzK9ihJZLti2FkI6B3L2yP0XrtGycSrS6zXnrYp9WoNW18yoXek5rEa00LhSKrGQ9sCSpxSrb+9dA4w2Ov+LH0UJOnKN8AyUUGzQdeE4fhlo7ju8jjDRbbr82u96OXVQ4tzZRENUINnoaYDvzjB0tZqpaWiJUICpsRzpgcCSbl0GKgyKvlb07NS40OUx595m8rXPqWMtKu8bKEtwXxMzgd8HEqBalT6pwYWI5ngNgtwYtUIPF/cyTOyCvX4KGu+B2CChszqDA+b18zRgYlobxtyQ5t1NIF97+NuXh975xRzZwl4x2Et93k/o2GaV1xXftvv40TM983+2+pSd/NMCwZYLgX/SrUHapP0lCtS7kiydR9e/chExaafFvLCcxXQqmyMujhTx1i8fDXMqHKaem5IhFsII+kuv1AuEFPejbKmdMXnBc/vWXohRJji8WOzC9pDUKVDw9ArXqavkhVcI8rHHypQm1zgnfCtFdXID+Iv8ldNlbj4PgfM/ODPwqHrNTmGZRbu9GK75j6/IxhoKnoUeQGKjqVGuWniVLFwhnzoen/Zx1fcxdsP0E3DWGYBKGaQSNEPRa0MfX34ymQXB81GUk0HRbHYdlRyrdizrETR/ZoUoSzoyO9J1CGk0RlYQNj3B5jtUL4+nugkCgwTgMcFoK9HGtjzbIMztEOqH+1RQuqlspbPU0NUAHopJQ6rkzP1abLcN35uclNGO00/7mr6eWC1q0qRD8l0IT69YPZJ9D8kw05X1kuKXKNt6M1MmN7AshjmJOP/qLNxah84QOlHwKncnrRosJSCZGj5yr1bLQJVJGMG7xhMtVjymXdJmSWpmoqDnJUO7Tl1bt9eVaKgC
- /KdwO9Ny
- PvQ0y4bcP/sx8/h7GwAxEeHEMMzFoAI7zQ+lJdqICuAsYJBQ/5i3beQlcwHt7MS/ARntOrvSgJkHSbejcQodxElj79SzFoOXLS6siYSdMrZNBQI8M9SGMeMoOyiZ9z8CnUikZudXATjGF0rSBSWdcnNSaDfhtJayJndUla8eDmmmYgx4Qw801kotIdFQg2Lk8t8TKQF7WZIN6p4WM0pApBLjJCEk5dIvtVjACivCeIjBME9ubGP6XUhWI5w//uJLMhdsWUs3u0u5cUk8lXxPhHVQ8dgcvDEN9XcYU6BglpHILtV4=
+X-HE-Tag: 1787474340-42662
+X-HE-Meta: U2FsdGVkX19gkvRkakEMPpIHlmS5qZsNbwNxVI9JggxvQjcMjs6TU84GyUzJzchmvPh6CP5rnEmLKHGRqiEjiTYed5usph63piWafyCmMUBY3JBjVeWlauFUMqdaWl1gLmeeqvrL762NrZyokdViRAxYE/Hz+RjJNX3SOsqtI9QYGt8Jgd7tb5XXz+LiuKlHIoWA5MTY1fnR7QkqmatlFht/M6iQSkDTd/mZANBqQ3edEtcHViLWIYiWifp/NCVUAj0QDpL4PGdM+SHq4j5YcK3yj7JGBxj76mmuBPJYaJcUYFzYacE+ZiUrvujnEQc7EgY4TghgmT4B1tMr+u+5sz9Hs65D6FWt/Ly3HTciRMdFlOzTi/WDrRp3SZQ9vy/7hjtFjMzyO4L6odDib1OWa8c51LdccJZ9vHg3xCsq7FjtDxlqKz8hehkhOi1Y8n9aoip7XpwXfDP14tEsiE8wWN1gbjpMx5C23EF1Z0YPptOSzfcxR8kg9SfFFOShfHmmA9N78mBI4RpjD8iLZISFr+KRTMAAFaBfAkHvTt6GNzRJhipib0yTPLVfuJ9iKvuBOzbgGHGqFDVMm2Wqz2WR0r113e2mAHu2nYAZPk9yd0JR+budjsTTxmwD4yN0gNoBPcZ/raj9qhhRM5Sfssmv12niC6E39lZUl6belkj/DFsPmX8Vbv+Vs0iVnachGjz0nENTvcN6TD9fzx+223LNDS5ZTGBvlhN4bD0M6sIdKZKnUiXl+hOfVnb6yZa0gLBVnm1uG7J9iIDe8sJNf5RMs+R/v0PeUwIM3Bpkx0BEfYchs+jo8eFaJXKYRF8XO5KClNVVCETUjH/YY8DVAcKJa5qLdrqxqXfMZPlOAxWQW8gQx/sEB+WGpO373LlK+SGZTUgTSe96Um2QA4V3JBPDyl79oFAYz1/O3J85AMvWmmYxFfq9R0yN0oYeP8cS9b7nnf97kV0fnpzRVQstFEy
+ 9TdmHLUj
+ rTsIBV9Vr/7TpLssz249AMG/bYv0u9EVWydoIN5F5g+pHVsdSGuSXrR4SGQNsIGxbCa9bo9XbNUYyYS33o0YFfpnyP40wda0wCUjoZ3/X34x7sVJc+XI9X2EqZTvzZ8mHzxcRtiJPtM3kLhByMb6uulurXGOMjSYBHwVoHJhcZJn4uyOqXsWyW/WnEBZrXQghBpTv8ZlgsCXnJ3dnqRPTAY4EnEM8qIMvJzH4wK+jkJ5YA0dTCL3cuv59OQd420Z8LCnPHA5YVyPY2dZ2/qYi6mgeqBp+CY9/UDjQPsIWYKcmTOS95TLczaIl1y2Oasv10gXU4mIev0Xa4XA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,22 +112,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Fri, Aug 21, 2026 at 5:37=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wro=
+te:
+>
+> The swap cache allocator adds the new folio to the LRU itself, which
+> forces every caller to live with that ordering.  The next patch needs to
+> evaluate the refault of a swapped-in folio *before* it becomes visible to
+> reclaim, because folio_add_lru() consumes PG_workingset/PG_active when it
+> picks the LRU list (and, under MGLRU, the generation).
+>
+> So defer the LRU addition to the callers of __swap_cache_alloc_folio(),
+> no functional change intended.
+>
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 
-On Sat, Aug 22, 2026 at 02:41:27PM +0800, LongWei27 wrote:
-> From: Long Wei <longwei27@huawei.com>
-> 
-> Replace the chained error accumulation (err |= func()) with immediate
-> per-step error checking and early return in kho_out_fdt_setup().
+Hi Alexandre,
 
-You didn't explain *why* are you doing it.
- 
-> Signed-off-by: Long Wei <longwei27@huawei.com>
-> ---
->  kernel/liveupdate/kexec_handover.c | 32 +++++++++++++++++++++---------
->  1 file changed, 23 insertions(+), 9 deletions(-)
+I=E2=80=99m getting a bit confused, as I noticed that you also have this
+patch in another patchset:
 
--- 
-Sincerely yours,
-Mike.
+https://lore.kernel.org/linux-mm/20260818163221.589352-2-alex@ghiti.fr/
+
+Why are you including the same patch in two different patchsets?
+
+Thanks
+Barry
 
