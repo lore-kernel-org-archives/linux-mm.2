@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48722C5DF8C
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 16:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 459AFC5DF81
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 16:52:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C71B6B0095; Sun, 23 Aug 2026 12:47:05 -0400 (EDT)
+	id 087AC6B008C; Sun, 23 Aug 2026 12:52:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29F3E6B009B; Sun, 23 Aug 2026 12:47:05 -0400 (EDT)
+	id 060036B0092; Sun, 23 Aug 2026 12:52:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3E36B009D; Sun, 23 Aug 2026 12:47:05 -0400 (EDT)
+	id E8FEC6B0095; Sun, 23 Aug 2026 12:52:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E92D56B0095
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:47:04 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 683C01C145E
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 16:47:04 +0000 (UTC)
-X-FDA: 85133113968.20.9B03907
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A135D4000A
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 16:47:02 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BE74A6B008C
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:52:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2CE6DA0350
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 16:52:55 +0000 (UTC)
+X-FDA: 85133128710.14.BA26C3C
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5F4B640005
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 16:52:53 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DVtGmBoy;
-	spf=pass (imf12.hostedemail.com: domain of abarnas@google.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=abarnas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=google.com header.s=20251104 header.b=a4AxxIj7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of abarnas@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=abarnas@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787503622;
+	s=arc-20220608; t=1787503973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/ZF6HUGQYWvBUACVOKONbBRQQpsYWeEt/fKmrPzcNd4=;
-	b=c7Y6lsPr+/JiIYlJUIkFg3/op/0hwtv319znu8XvQB7Zvy+bpHhtxh4NYCQbbqIPkEOB0V
-	9e2dNXYeTsI/h5/YHQ7L/nJw4TXOmLHrrO6Ll80+HEtR/vk5JALoCSLP4AzkU1oAx4SPu8
-	shB9o+aaCvvIZWMyVNupKMZDJhBQuac=
+	bh=QjRcKycCgEIdRjuuH2tPItX4wlK7ZDllY3I75Ar7NjE=;
+	b=Pzfujfp+zUVwQOqFHzhqoM6O39HaPo03nx+KnIip+FBOuSQQPecThWwlYNh5IYpjF+v2Y6
+	5Oqfijn4+z9G4lpmxErmVxmPbAXgh/MDI02GDUwPdh4pjumgMY6uQQglXazg0uqP2xCEO/
+	oRuZwuolGPe89VzIEVf7T/AOSEqiE7U=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DVtGmBoy;
-	spf=pass (imf12.hostedemail.com: domain of abarnas@google.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=abarnas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=google.com header.s=20251104 header.b=a4AxxIj7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of abarnas@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=abarnas@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787503622;
-	b=1cUPEJJm+Ly1o09rtKW5Q0/Fb+hDGW/lFVS1Z2BeEUTKBOrV9D2dcw2Sdv/vBGD2xhsLTh
-	RYLgGdcQX47DIjMAzg3q6icybUVTu71Ld51TYxgAHrWqDkgwgcLLLh6F1vrx8G+6dXEKlj
-	zdudaZ5AzZStJ4mgMsvDLsDBjTPebP0=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47de008b020so1406144f8f.1
-        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 09:47:02 -0700 (PDT)
+	t=1787503973;
+	b=LJKMv0cxnemjQNG3LvSM2e+Iv7lRZ0E8jJOB1mP/p2J93oPvqz8SRVW0R1XcaJ8Yu0cGnu
+	EMre8rka9WxRFRsS6WSv2kcPxjlxmD0AQ/m8mcPAYJqRUFbboeyXWA486WXBC4gPRQGiGE
+	nZmoIKRDqZw5A4iqj5iXmoCUrMS+vVc=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so24273295e9.0
+        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 09:52:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787503621; x=1788108421; darn=kvack.org;
+        d=google.com; s=20251104; t=1787503972; x=1788108772; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/ZF6HUGQYWvBUACVOKONbBRQQpsYWeEt/fKmrPzcNd4=;
-        b=DVtGmBoyI4aZ91c4C29aicZQI4s1SquDNHVV7a13Ct/KzNQKFJdMjeTQlC49FYsjBS
-         BgsAq4vYr9qIOqWsndlIxLQSrmLX6cwKM7X9Hmup2t33MVjTguBd8Hzu6nzCkLemMHCb
-         BYLGPo6g+Hz4VK6LPch2AqJRMajN5HMkKSnD4v8zeAhoOAe1LSGwCcWWz0nWFHZK6s2S
-         HoWS/i0mHoqOizrNTd5VOn7OObLeAIQpu/jx/gB70jJne2fCWP0hMlyEEWCl8Xm4c9/G
-         830RnBLckwIuUWeVlx7X9r2Tu2d2+oNH0J6a2zDtSqjAsNMcdN7ushLUt8z7QPmXZwNY
-         mTbQ==
+        bh=QjRcKycCgEIdRjuuH2tPItX4wlK7ZDllY3I75Ar7NjE=;
+        b=a4AxxIj7N5nhZXbu7M++/UsOtd0L0E9ksDqnKvLJpvhxJtaoW6zqlt3LkJpFHoipIh
+         n+vfo7vLMp1mR7f12WIBHJ4ULvdOqyHQKk91dSbccrhL1BN0wROS8R6+LMsnOfMm1gu5
+         IndSRzgSb0fNrG4plZEGGUodlEV/8S18jPklvBRHhmUZWGQaRqdPF+EDDn9SqDcrJwFw
+         B2KtJezr8OpUixSSZY5yDl+i1jWlnDWTgffRWT4U4QtqCWK5T2k7ba/fz8r3+WMebDqH
+         ZqiouRBCKhZQToEKcerW/EEPeB+UyOsqdJxrokY3/Zmzkz6b7ntnIT4jDHsP9M7lVago
+         E+OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787503621; x=1788108421;
+        d=1e100.net; s=20251104; t=1787503972; x=1788108772;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/ZF6HUGQYWvBUACVOKONbBRQQpsYWeEt/fKmrPzcNd4=;
-        b=PkZGpYB823mCNuGYin7TpJXFPRoct+Lkv04Xk9QGJCksMjeXBngtVy/IW5K7A4M8Vp
-         SQpmYxvbo+15LmCwqMABp+jWt1c+iwiz5yIOYFdSSd16KWhfSmKqVW4zFKxcaFt3h5Nf
-         69x0Idn/R9+1vivC/Zvd0Pwj0rhmCbKqFM46ngtJrAO/kfAuyMPZ3EryvyTg+2rYCCiw
-         s3wvPHnHyyxRRrBxtWXNlDAK4TiqfSBcMloUn4bFEqlLKCFJYcV9i+BVYAKVIim0Obw2
-         pgMaGKKjEPPGFTuIY9gtuv3Q2rAPtc8N1+ceQt2rX8qwQ3CWPTxaR6rTf8fPlDq8+l1L
-         qBag==
-X-Forwarded-Encrypted: i=1; AHgh+RpLRHX4lhKUsSpTBSI1dqeRhEWzAQBnxwDHdrVXxE8CCv0dkPV2HzZyLhSiXEOwh1spxqIzDtJJsA==@kvack.org
-X-Gm-Message-State: AFuF++lpK8X6RvtNatEfx6C8mVMtU3HPsjDX2OqiwfWx85S8rQMUZoRN
-	sCUHnnHwfNt58no9WIFoKmVB0EVpPZbVm5pWMGP9zcFaFaVcDYUum7G2EuFYCCojbQ==
-X-Gm-Gg: AR+sD13AC7PQ1eJ996cYtW5WBILcpskcv44QjtcA+pxtOpDeM8zkYu2w+iPUHKAqMyP
-	ITMpcm0VphX/hAWX4xTKsJLgyna7DI7fjaUpdYlt1o1rlSjMIhf7d6kYsg6dmncM8S0WByxYHpk
-	uwwPcGZDUeZp8xvDwulIRqMxR8ARL4X97B0D+Lf/kXe2MrZPxVHnRXlbh9wJ2RTT1iE429ocLnZ
-	rCZXSWKYvcODLJGztymzFzBbEt9n4lOBy8tEZOo7+pfukmW+zXV8Xwv45L/khMmND+ZB8qzcuow
-	+mRgWFcqX07nzvsA31+i6QRclKbDebTnRZEpHgtgnTg6QJdlkjehhmup3aay0zkrMZ+aRK53hnv
-	aRk47mahZZa5iSHjwHxPNKvQnJGi5+tdXocA8WuORceyEdLz+G98llluyxRkmK1nXuFVYFsvIxo
-	XXDhTSgcnsO5/ersLevEOFq3yui0eDQ+OSYXPivlmLSM/gOGSfEilHxKze716pjU063MOrn+Ce1
-	cZlaI3wnRN8umfR5e/tpL2twQ==
-X-Received: by 2002:a05:6000:3104:b0:47f:8554:a341 with SMTP id ffacd0b85a97d-482b784c4bbmr35989706f8f.13.1787503620630;
-        Sun, 23 Aug 2026 09:47:00 -0700 (PDT)
+        bh=QjRcKycCgEIdRjuuH2tPItX4wlK7ZDllY3I75Ar7NjE=;
+        b=PBdcj0sr24OumH09c/1GeBLcE/YH4IENtz/xIXDB/hTV/GNP4LZaK+lXkr7Gtf9r41
+         H5j2Ij9vbKcgs38GNkybnV0EjsLYt7xhKrdRcEVTg3vSbZZ79SnD2BSLyh08kYXvsTBk
+         R1aTVTDZj6/FUFAoY4M1RIGyT2K2E/YlAdBSBJ3m4GWKPF11HljBG/z4AP5nJ+QYU9rN
+         DfQz/P0mNpkCXHX/H332bOCfp8hdjSgQcQ1TrfpQ6YqPnUW4jIIsC5xP2LfD9Z0A7aPY
+         UIYTuYJt11zXremMfJx+aPOqpRdJeg0Wm98V09pOm/OnQgfZsSAJJDMawC4QsZhmHPsc
+         l+AQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpwviaaMr5xM/nojOaDLbbjOJHUIB57MmYgX2PU0SHVH9Zwfald4705KiNaMda/P3XnfgtjAi5OHQ==@kvack.org
+X-Gm-Message-State: AFuF++kZp0etW8YUCS6KHujeD4o+uKy3Qd75t+KEfuNpJW4CeLIPX7Kf
+	mrP5ccas7wNXO/sgDObEMAsEhAfYIJ4C8tGbSnV5lIjTFqRWEcxDyXcgLEbkek9auA==
+X-Gm-Gg: AR+sD13xgEs3m+7ng5fFjvf6b2sJxCVQvrLrqbPRBlYMRxGp6sLktVK7F9WTV0Rn3Ce
+	rxmpfsCD5k1aauLpoZ5SSPewb2m+9WJIgnN8ffIgKtmQ/aIXk0uPejKMnzzYKeoWjcvssz2cltv
+	q0+/2Mf8vB6eD4ce/VKnl+O9ELZNlBLpldkzELTTh9Xj+RyzEGlGIqwjzdIo+VY3BTciu7nmglR
+	jsKsSkV1gOIMnV61Q3RCvAnpuPcZ0pf/+Vl9wu4PKYVfDgsoguSdrrTGffhcrYSpSKK7Zcrh8W2
+	cyZZ7aD+ca1fIk0DaWcwnK0rlBPu6YYr1baZ2AUVI05SbkQ2jP+ItR2d516eSVHtTszrK+w0oKJ
+	nAEGLWpOVv4gi1iEi15H4cJ+L78/aQpp6Ye/tsl4xWvObil7KovVq2HuLZqiZBI+XeDzAPTApBd
+	t/Hk72kVfwwpXOmXlY94qzrDEFrJGXp3RivSack6Z9yPAFA2TCA8nar+ZszdcSkVY54GFsCdRI1
+	e1i7E3gQlWqWiQ637W8SOZZR+bO2nV5Qfp793l5mFZTDoAT
+X-Received: by 2002:a05:600c:34c6:b0:499:5f7a:7ea2 with SMTP id 5b1f17b1804b1-499c19cbbd7mr122720055e9.12.1787503971299;
+        Sun, 23 Aug 2026 09:52:51 -0700 (PDT)
 Received: from google.com (78.207.190.35.bc.googleusercontent.com. [35.190.207.78])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482c9bfd2bbsm5538099f8f.18.2026.08.23.09.46.57
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499c33098besm53780005e9.0.2026.08.23.09.52.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 09:46:58 -0700 (PDT)
-Date: Sun, 23 Aug 2026 16:46:55 +0000
+        Sun, 23 Aug 2026 09:52:50 -0700 (PDT)
+Date: Sun, 23 Aug 2026 16:52:47 +0000
 From: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
 To: Ard Biesheuvel <ardb+git@google.com>
 Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -112,23 +112,23 @@ Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-modules@vger.kernel.org
-Subject: Re: [RFC PATCH 6/9] arm64: Enable the execmem ROX cache for module
- text
-Message-ID: <aosj_1LChfLM8xaz@google.com>
+Subject: Re: [RFC PATCH 5/9] arm64: mm: Permit permissions changes on huge
+ vmappings
+Message-ID: <aoslX8cDCR647ebE@google.com>
 References: <20260822135323.795946-11-ardb+git@google.com>
- <20260822135323.795946-17-ardb+git@google.com>
+ <20260822135323.795946-16-ardb+git@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260822135323.795946-17-ardb+git@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A135D4000A
-X-Stat-Signature: xf8nbgysduwsyb76a9zfjei3tx545dk7
+In-Reply-To: <20260822135323.795946-16-ardb+git@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1787503622-256350
-X-HE-Meta: U2FsdGVkX1/QWTJl+b9PsuAEHN59vl7OrQlPtX03oTv5FvQ9V+EYBvTBkcpPV2ZPIqoUg3rjEe/CahBCtLDthuagrL3YFbX3znGPvH6d78t769KWJHxq+abVyZeNJm/RDX42kbuut+s/Td7DRfR65L7HeyoVEkoeEMSqt47LGLxXvvIteStYLkLpfD1k+7ZfECsc0dlSps5KUZrzHp9rvWroFGjr2LXldrg2dmhAZwsGXyI9HpBD01v84MoMHpNNfrd5V7MuxW7DEkEQRGcJ/L7WcTfscB4huyYRUlNCAvZBtCwHg+v+8fJJZ8vKRfC1+eNMO0SPeDIs4o1JW5MH456lrlKcLkRUxVcJsTe0K9Bnxpg2+Xmw5Sfwm2j7D8tpbGlWkL2uzQ9q64F/RLQPy6beiKIX4OjXtQetOnu9p1DjvecFFTI+oqKdrKqVj/zIBM0LArRKGH3L3hVYdIWGVexzw8HxypvGQ89Ev4Q9Ylgi5cvJM6LB7R5TTzlHofJbKduqHgLH6a6XBzey5JYFwtdX3bXuyFIpKbTPP1lvK65NvdsEADGAMLRomCRv3ukS5MqoyOjmMlN4Tr4BMoqinjjkX8Rh61Z0CkwyCy2QWrWSB3fusqhQMrmeFaiRbDnQnN7N/zPSSWRwQW985sSOAhMifLfBGgovaSWU4ZmvnbhRymO4s3qjkkwKaVJgY0LhrrTmVMb0RWePjN/WOPPoIeFkBnc4t1y2Cbd2xZOdXhad3aW91omEJUgxFX0ZhhkHFMU9jqH9rES9pn0octznCDmXJZgbUYTWbOdG7NBPBDtHf6ULinF9c7xQ9/Nqf/+KcrAwSr1Hk/3Z0KOQDdIMkhcyn8uYNyftFBozTSxm0l0W1hhfOxYi+UAGk5ekSQuLX+sNR9eXp+gmzzdLEPTR4Jr4t+pdJH26r5bFt2GusCWUEjYglkhXZG3h6qhdkWKKbPZ0V3/e688xEhEI3z1
- JUCbYH8P
- dsbO10X4Q2C5emfIc4TgY19ttVLLiG32IiWoq7kjHayCjHoiXOhjggaznL8iu1OPTrtcdC6usr3ki7qjXSKm3RjcEyP48gNqWIt3J9r4EHmPrVY36vArgOZuwmrIuL2IrY07uyzS5hGSjmlRfasJh2gUCyt8IYuPJqv6ZeSwNxCfsYUYxjbT/IgVB5Q4ZbYOjlF19/+FZ7AaRQhwe9SsLTE8Jx9AFzekBWlpPOWQjqQE+CCxx6TkeQeg17jPHTo22MFTiyw2AnqXKb37iQuhOyumARJ0yTk+Wcy1MKGT4tCkKm//rSG9pz3jupRs8EJo/H6Eb9msq0hySbm/aUFa5ybr2Orofx8KDX5LeqVlP90D+QdSVTmB5bPR9NnNGXeEU5I7jIY2A0V8SUsLq1+LTR+J6KkoXfKxkkEm2A5V9XpZobWPolWzwrx9RAJ1VcvyfCppPj6+tScnCPIrJydPgaloS3wrxiXNOJBJdLA8QbUgNJswKtS7FQ2aR/dh2xAD/x3TmhFO6GkEWsSc=
+X-Stat-Signature: b616qzmgfiwxgq13ezdnnrrrbbuqcb4o
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5F4B640005
+X-HE-Tag: 1787503973-639756
+X-HE-Meta: U2FsdGVkX18dt5Xr9n2R4r/pLHjyZbSmJ/2OI6y1TsFMTUQPMQQkMRMVOWoKfN/7vgxN0pH1o41F67cNCkk/7gfqSX5KYaRgbnMWyOu2BvihKj3oy+Afu3z4UdJekjFKCgUbFTN/nM2RYBsMrivHoBr7IhemIjcXJ9Pkfy7xfjLBi5qc0Tk45EWp06sVXdCl3XQyRITpXQWh9THE4muUmnoNeZXRBK8zvUejhkHZgrsLuQBnnWdM3DY6PX3klPnEep3BjpMylbyo03mgNFwn700Q9z30Tf2kpFHg/UQaqWDB0BpRkh2zdOy+7oI7p2pr1ZhfmPBa/nVer3W9LUAlPrQLTc/eeM6YEd8CzxdUmFYRjOe8amIziPnLsv9C3DGOCMHmHopBsH0ZjRtPaNH7qoF4nkw5P5Kn/kB8Cd5z74xDg6iR3jMp7enDdDArnecFrHTBgHMESoAoqNK+fAfJwdmpAb8flJBiachrEyag+VfhER6U7J9/HvT/CGKJQf9rKD4rZ/ZTniXLYmiM4a4mUG9F30THt74OF+auneB5iT3R85QhivxWdrdOj2EgJktGiutQLoOD3N/SkezWZt0vhHovcmU0fK0UzVJuRzQRgv1Ir8SZt33AGFuVAnBWT4qzXvnBNwkf9ZJwreOlTZTV97q9aqSH3MPuQ64IlNt1eKZzfrVyX2E0qSidFiPSQb7rNHqjuxLBZH0rN+VT2TQFzYfk4JTLtWPqB5LfD5xMjVhv8iaHq+7b3UMz/WF3mlJVlkF3hG5gff3Nfc4tV60fzkzbon+/r/FvB3QZeXu/2xcaB+x4yqM4ACPgbvK7+SYgkNEBV3MCcWZqnC12Jvqjk8QBH4xxMc4cjbR0av6ramfHKLD/qEBb+QHYPzfJhfebX6QXMIVxtyhchrkZZD2k0a9KnRBOqMN3UvoYd6c/1zUy2xuJWGI/c0gYDWSpaSRgkeCzums+PUvDuYG+t5W
+ fG2nQOId
+ /ermGQ1jgL9HLxjLbXPpS569dDwZ7ifaTq3toWv5+ChLjUbWs8doggHeq5+VDsOCRxMQ1dKDqU3sLipk7EPsKw+rEM+DHwVpElrN9rQPswSYWFyv4mF/jEnGR8AqcO+LwFsY7aTieSJih3rT8xhLauEfMvBDmcmsQwR9kiCArzb3Ue87ECiecs5XzxlypmfqHcFDMr/LqmbToS4hXPiUcKxbzr+AWXGAeWYDIypGn8Evik0ZSOWnqubkvIRw+meEGZUSZU+pK3geyt44P6/tmMb7NXSiRFQsOccL63YulIqd17oX7zcP/9K9F8fcO2FsAy9HUNlBCapTTEo+eHy496Qdz8qqA4YnCOXTE0vzMqlOTTW4DL0x95wD08PhyOgy59xVrEgov0YMIat1WZhv/2awzZgfs2oVdFKDCqbRtys056PoT/iEpEukiyHUluWGkC+r8rZxkXneKvyyw2M1sGZS6RzgKcFGIm+vWlQU3jmB9IzTksF3SL9pH58NykvZA6X89XMtBawkxDrU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,22 +136,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 22, 2026 at 03:53:28PM +0200, Ard Biesheuvel wrote:
+Hi Ard
+
+On Sat, Aug 22, 2026 at 03:53:27PM +0200, Ard Biesheuvel wrote:
 >From: Ard Biesheuvel <ardb@kernel.org>
 >
->Wire up the existing support for the execmem ROX cache on arm64, so that
->it will be used for module .text and .init.text regions. This will be
->relied upon by a subsequent patch in order to allocate those regions
->from a single chunk of memory.
+>Allow permission changes on huge vmappings in cases where no splitting
+>is needed (i.e., the region is aligned sufficiently), or when the system
+>has support for splitting live mappings.
 >
+>Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>---
+> arch/arm64/mm/pageattr.c | 13 ++++++++++---
+> 1 file changed, 10 insertions(+), 3 deletions(-)
+>
+>diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>index bbe98ac9ad8c..20ff9cb273c1 100644
+>--- a/arch/arm64/mm/pageattr.c
+>+++ b/arch/arm64/mm/pageattr.c
+>@@ -169,8 +169,6 @@ static int change_memory_common(unsigned long addr, int numpages,
+> 	 * we are operating on does not result in such splitting.
+> 	 *
+> 	 * Let's restrict ourselves to mappings created by vmalloc (or vmap).
+>-	 * Disallow VM_ALLOW_HUGE_VMAP mappings to guarantee that only page
+>-	 * mappings are updated and splitting is never needed.
+> 	 *
+> 	 * So check whether the [addr, addr + size) interval is entirely
+> 	 * covered by precisely one VM area that has the VM_ALLOC flag set.
+>@@ -179,7 +177,16 @@ static int change_memory_common(unsigned long addr, int numpages,
+> 	if (!area ||
+> 	    ((unsigned long)kasan_reset_tag((void *)end) >
+> 	     (unsigned long)kasan_reset_tag(area->addr) + area->size) ||
+>-	    ((area->flags & (VM_ALLOC | VM_ALLOW_HUGE_VMAP)) != VM_ALLOC))
+>+	    !(area->flags & VM_ALLOC))
+>+               return -EINVAL;
+>+
+>+	/*
+>+	 * Disallow VM_ALLOW_HUGE_VMAP mappings unless the region is PMD
+>+	 * aligned, or splitting live huge mappings is supported.
+>+	 */
+>+	if ((area->flags & VM_ALLOW_HUGE_VMAP) &&
+>+	   ((start % PMD_SIZE) || (size % PMD_SIZE)) &&
 
-Until Mike lands his changes [1] on set_direct_map, enabling ROX_CACHE on  
-ARM64 would cause a permission fault when the same part of the direct map is
-used again (the RO flag is not properly stripped off after an execmem cache
-clean).                                                                    
-                                                                            
-[1]: https://lore.kernel.org/all/20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org/
-                                                                            
-Best regards,                                                              
-Adrian  
+If I understand the intention here correctly, I don't think it is valid. Even   
+if it is PMD-sized and PMD-aligned, it would still cause a split because  
+the loop below is not using page order, but performs attribute changes 
+page by page.                                                                     
+                                                                             
+Best regards,                                                               
+Adrian
 
