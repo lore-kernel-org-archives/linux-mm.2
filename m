@@ -4,96 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C6B6C5DF8C
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 19:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 463ABC5DF8C
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 19:41:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EED66B009B; Sun, 23 Aug 2026 15:41:18 -0400 (EDT)
+	id 01AE06B009D; Sun, 23 Aug 2026 15:41:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 151136B009D; Sun, 23 Aug 2026 15:41:18 -0400 (EDT)
+	id EBE846B009F; Sun, 23 Aug 2026 15:41:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0CEE6B009F; Sun, 23 Aug 2026 15:41:17 -0400 (EDT)
+	id D35D86B00A0; Sun, 23 Aug 2026 15:41:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6A086B009B
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 15:41:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A4FE46B009D
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 15:41:18 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C939160393
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:41:17 +0000 (UTC)
-X-FDA: 85133552994.22.170B9C4
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8B36EC000B
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:41:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=oqf4LZth;
-	spf=pass (imf22.hostedemail.com: domain of 32kyLagYKCPsz1lkdqjrrjoh.frpolqx0-ppnydfn.ruj@flex--wyihan.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=32kyLagYKCPsz1lkdqjrrjoh.frpolqx0-ppnydfn.ruj@flex--wyihan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787514075;
-	b=CsB5FRoUqrv0WXMrFe/M2v7pXjYO3kwuLy6rASnhUPJQfB5Rcjw397b5CbIO+vABeCi2sr
-	PT9D24KpxoqG5+hSK7lEA4/H73WRuPnxvABi5n096Ke6Ke0T754jfrw2WbjaGVkZGRq77/
-	LclIe1nCeXYQ74v1AzQKV7kIDMqDL4c=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=oqf4LZth;
-	spf=pass (imf22.hostedemail.com: domain of 32kyLagYKCPsz1lkdqjrrjoh.frpolqx0-ppnydfn.ruj@flex--wyihan.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=32kyLagYKCPsz1lkdqjrrjoh.frpolqx0-ppnydfn.ruj@flex--wyihan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20C9214032D
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:41:18 +0000 (UTC)
+X-FDA: 85133553036.22.CCCCE91
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 599E8100005
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:41:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Q/cjA4Fd";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of 320yLagYKCPw02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=320yLagYKCPw02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787514075;
+	s=arc-20220608; t=1787514076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+PLLVRLXNNRd7Ed/uUOsyNVCmInoOvgLdAuldbbtEw8=;
-	b=O7+X+hELYX5PwkcKhHr6qH1YR1bStK7cAvcvptM2PbU9VFXmH9xjtad1OqCvRb5FHUSTya
-	ydRoDwR1fSS0Mv9R5dHHh4D0CbLJQ92UGmErMnR+Dbb3aBP72abI5QuX6ZoZaQs7S9MdAa
-	n3Dtv2NwlnpxNWxTvW+pgYZ/Iz0RZlE=
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cce14a21faso37119085ad.0
-        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:41:15 -0700 (PDT)
+	bh=o+OpOp2FYZHZK1eqhH9cUqizMST4EcGgJtULK4xaToU=;
+	b=u36BAbv/GLrJn9ihu/+SAdYgOgkzs0WsDscrnwVGhq3i7AmnQXgSSWua6lWv7tLpPhS8cu
+	ozR2Ri517FxuI2VLiUnLiIQSDgnsrKHfOFHjpDr+JDY8nz19GOlKApBw1fdm2Dvdt6Tzii
+	db+j++8lpSD+zFao1RK0gFY/MwZwPdw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Q/cjA4Fd";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of 320yLagYKCPw02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=320yLagYKCPw02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787514076;
+	b=ea6ZUebzbFgPGqaw+gfgw5x6PzI4+NIPWXjNNyVZZUKxNqGQV9wshLvw1AcBL1hOwxkWed
+	A8v1tPQdPSTm9I++v/Bw6on82NvXMUVFDVNTlLiPJ8jm4pekdDh8w9RBPx9MQyg0vFnQUL
+	yMPikRXyGrMfgeimJuaRDUw66RId590=
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d63bad3d09so32883195ad.3
+        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:41:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787514074; x=1788118874; darn=kvack.org;
+        d=google.com; s=20251104; t=1787514075; x=1788118875; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+PLLVRLXNNRd7Ed/uUOsyNVCmInoOvgLdAuldbbtEw8=;
-        b=oqf4LZthtD40CyUsHwkEqzBMwxSmwighFaDHttI5uOrSsxXQChS++oX6UJfEWQjiPe
-         0uy7silVbBvICU4lCGM+rfPyG0mJ2WBSThyg4hzaWtcadJDZ3vAXVxuHLsjVjpptVA5y
-         qUH67wIu0nS26eqsFshH+joMP4kDc+re5iO0jr1NehDvJgIcDa5U9R9daU7FfA/tsg+i
-         O3Fg2lByWBcGWpNKt5Ol3ZV9aLPfHLG1OPZUWdASANxXYGCYOtE+0vJ3imgzz/ef3W5g
-         M5jNRswBDQzzASzRYibi9XN3E75D15Oe0i959QFyiVY95jTO0fsAxpCscIRD2vgBTIKM
-         VHIA==
+        bh=o+OpOp2FYZHZK1eqhH9cUqizMST4EcGgJtULK4xaToU=;
+        b=Q/cjA4Fd2HvNmfHUH1XrRT7TDMrPXgDo/xkBHuZ7KKFRFLA3cK4UwAU1mRS1bZDv9W
+         krLbHLq3d/urxTL+Pk9e8WSmTdJWqSVhSiK0fO/c+m8JR9lRDsF9FvhysJAC/fLrZfXo
+         CFSiaEbZOR4DzFEEAy3OGbS2D8644M8SlQjrj3ifou9LSKsJSSCzlFvFXMx1K5P3qTSg
+         FUE2A0rG22robhrdWtcGRiMu313I9dF0XdwmqipUKkzFQ6LUqlD1i2MA66RKlzD8YjA5
+         iWIr2WsnlaAibMev8gTQSyrfyNiz3FW3ikf3vISbWFbX7OjkAhtUWotr0P9NT9sJOtzS
+         61qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787514074; x=1788118874;
+        d=1e100.net; s=20251104; t=1787514075; x=1788118875;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+PLLVRLXNNRd7Ed/uUOsyNVCmInoOvgLdAuldbbtEw8=;
-        b=tNRk/G9M7m9SDFVusEvSlefRzNra11POPQAX6PKMd75lO16SKt6fwigK05CsuMd361
-         WVmZmEUIqyoiHqU3O2Wuf1eB0d48P7eSy05/5oJpFBNkA9vGpNVA2+m1zMbNtPHn+xjy
-         i9mvcrizfakbWkap0ZpnV9FnmoVQlvIqB8W1RgSDGfCcVd+PI9ApdKnKvdquN+dBBA7B
-         4ZpvQah2umyDjsaQQA5Uqv5ZbmiYKOTQpkEh9Py56nHsbUj0ze3+aUub9hXZfRS6NxNM
-         Ne0Q5DeORDg+cKjJDQVZwTYycrmB25aouk9jHbiw5TTHqfyWrjEI8xttcbIXYBIo0Evb
-         FvJA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq//7BHfCzsl2+kHYHHZdTwzito3yfQ8QtFx/Dq5VDiP87xGQXpshD7JTuXH8wNJs67Lf3hjyvtFw==@kvack.org
-X-Gm-Message-State: AFuF++lDCd/0AzdjA+1yyt1+3nteprFe/ZVp1lQ5XYfdDNMK2sELluSx
-	O/XA8lsmMJ2NbPvVL9/DJVcBhaMEw0BCaSNfm3mcaOB0bBVJT4bGLy50wYd3Wbuo0O6ziED5dGH
-	5iV1Zqw==
-X-Received: from plgu17.prod.google.com ([2002:a17:902:e811:b0:2cf:e9e8:7776])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19c8:b0:2bc:e299:4b3f
- with SMTP id d9443c01a7336-2d6501d2265mr232088365ad.10.1787514074179; Sun, 23
- Aug 2026 12:41:14 -0700 (PDT)
-Date: Sun, 23 Aug 2026 19:40:54 +0000
+        bh=o+OpOp2FYZHZK1eqhH9cUqizMST4EcGgJtULK4xaToU=;
+        b=EqWbHz4Uxyb3Eh8f7PaoWGyLKqtOZ+0HNVf7F0fcwJLCWPVP0epR19/rhwpgdm8/ze
+         OsvpenqOKfq7vNnTylu5XW1BXS08331jyIBOgU9S7qVYyol0uPyFe+uCeY8/aIQFVOBo
+         lSiXje43GZ1e9jd1y6DXVsmGHltedlb+N9fRfX2ktDfe9GmZq0kvqVbqAKrDZrxz8Uk0
+         D6XwDnChrsE1GaoWcOZly2cXjXDCTRvit8foxR9P2fBzD/N+obMVmmAyHH68gza8NPsB
+         w88m/nZanXeFOjykIzjM21MNColutZeHe0rNNu3+tGfC1SBmNDsccVkRsCtUdhZW7Z9Q
+         a2ag==
+X-Forwarded-Encrypted: i=1; AHgh+RoxVwTFJQThrUPTck5v7aS6/II38JV6IYnnLlzjkNZ0O+qtM3/JZWzZ55W0qsK6QdpQCjgHYnJELw==@kvack.org
+X-Gm-Message-State: AFuF++moeOxL7sse6fyphfvvhLmeFVhzNks5DywEt2eAR9Dz9CoahKli
+	oHiX+h6RA4ip1Rtx5OGH79JoYpnfi+fskHvz2dRAMxlAvwMqCPmzx/vplWbgWwpuIfwrxz2U+at
+	wq6t+QQ==
+X-Received: from plml14.prod.google.com ([2002:a17:903:184e:b0:2d3:7166:b1a6])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3904:b0:2c7:ebfb:618f
+ with SMTP id d9443c01a7336-2d670d299bdmr242569585ad.14.1787514075026; Sun, 23
+ Aug 2026 12:41:15 -0700 (PDT)
+Date: Sun, 23 Aug 2026 19:40:55 +0000
 In-Reply-To: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
 Mime-Version: 1.0
 References: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787514072; l=2540;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787514072; l=2009;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=vCHjJBFQNgP1MdM2vs0H0cX8vGGek8P/ghWBajkazgE=; b=2sOGcjZM07dUbENkG7ka8LU+3w8x7MPjDTsuM6RqhzWcVud3VEqIB1Z/Pld7tKcRttGXPnsFr
- /62srT92oGsA7CVfqsivq5aDykS/C493DC4/WQwo3KfT2kM0654yUZf
+ bh=DG04WuEmB+N8qtRetaF/4g/eNDjDsfwar1GsdNmj7GI=; b=l3Mv9NFzVojO4X30lik/YxnXTp8odsky55GCF49Ybs0TwqNB3EpJZR4IWtMFjUh+RZrz/DSlr
+ kyCzx6aZvHqDNzH3hGWJjzxiWsVRAHFhzpzByW10l57CWxucdyf1HjT
 X-Mailer: b4 0.14.3
-Message-ID: <20260823-memory-failure-mf-delayed-fix-v5-1-d97a5703e45a@google.com>
-Subject: [PATCH v5 1/5] mm: memory_failure: Clarify the MF_DELAYED definition
+Message-ID: <20260823-memory-failure-mf-delayed-fix-v5-2-d97a5703e45a@google.com>
+Subject: [PATCH v5 2/5] mm: memory_failure: Allow truncate_error_folio to
+ return MF_DELAYED
 From: Lisa Wang <wyihan@google.com>
 To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -112,13 +113,13 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
 	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8B36EC000B
-X-Stat-Signature: 3gx7eox1mndzfg96tndmdiabtmmdxcqc
-X-HE-Tag: 1787514075-839756
-X-HE-Meta: U2FsdGVkX1/hwe5m+BVe0x3yJB0y99ehl7rK0ajmeT2gp6K0tohgvZM7/xDEKYse6QZobF6UKkFJiWqL+JMyi0rtBQfpUjLAJ67M1fZyNgHTqsGqw6muDZrYMkfjJrluyE/+WwRq664w28SxmoQ15foaS9jtziTw9dTGvJFjSx0W+h/ekcfk/8CXxJAVUxyiTnFFWPD3uTeo18BlD9OFzDsTiWPrvePE+s4Tb611CVIQnLO+PKwfRSoUii0mL2Z7d91pljE94zyWKw65XFA1bK9IZQ9i9GMw9VRob8IgZ5VlcUiTQ3z3a6pBwT2Nap/r/OvoIjejhoFJxafp1ydY0IB0FYBGaZWvUEoVKJJNRRQW8Sezq4JNzJrSafZxLUjiUCWOn05Uz3Qhe0L6A8kn7q7wtHJBnv/cShxCpy6phhSBMqGIXJRFHitgSd499UN2ziBU5NEEVMT0QfWJCZDjPQktP9TB2kJ4eERqLpPnuqIrWt3i0Wp+wib4dC0vVx5aaz6fSCuNlKYnNC+6ucW467viaB6OdYvA/+5VQlV9VOTZWXP85cTQB18ygHjP6DG0bXmOO5i+/Uva/nKrrWNu15I+UPoaMgBwFf+Qv2AxG+82NQcZIXPIDCLeKIDlEXeOF+21tZvuuVc+rzdbNZIUq0AuWmjtxXoBroq9lu4nvJk2e3WBfYBINnBHfDIFQ3tIeBWFWegm9YeRMAW80GFaW0ZSWk2eQVKjuGP7bcp145aq41bgdXDQ1LuwrTej6shA7H6LCw5sH7SJgOjnTYGO8X0Xs8xuD2LzHgcSgUL60GH9tE3SraMuOMiwKNdpHynyc7hDocrbUiCSJF3XgPuA5Qtdagh3fGIdfm3oRvGD+Y7HVZ5/cKRWs21KvdN2etENK4UO6VWGCX4sitt/K+X+nVIHmNMlf2p12QDkdhotEE0jEk75myM0VzcBRuyiYTZjmmXry4pi49AIpR2YoNd
- a5qAj1c8
- 1KXTNBMdA3hOICPv7KT8QOYcEiMhAw2DGcwx35Im6vMIAMZwahlBQFjEg3MDeuGaNGlf0jzNqeY905TJktf31iuh8NjpU4VQqo9kffj7eac9SoyAc4+A1WRl2yzO1q+Hlrb0SA/yrZ42L2KRYT4SkISxHihSocyWBLv5vj67Z6D/FgORYTMHLXtaqMSFLbvPvem8/iWPdeUj6TQPpU2wSiK6d9FdPfXYaHiuH0ryZ9tkPZc4dBh7g7oqlyMa7a6mlUIkoOTyo8YwhZYlmXomK4fi0LWhC++9i/SW7JrzS0LEgIudXXlTNnRYIx853VqDNmm/9Y9jpx//qkCdrZaWyItZ2VVCjkOoYdMm84oeigMy4MjhL4wBfNApS2yCWYJR2x8vjSSEEoYow8Yj9lm55CZbzXawO9+cFHEt/gmPTp3UDxgA2+rJXzUS3ieOI+rVxWS77dZ+MHNg9Is9wbxXaeimiRCZ77RhjPMGvZo8lnRXNzd8c7OtXo9bDf4/Nzd95J1S5ZeP+aLRL0WtERk0uDaGnOvv17IEDZlHycKvMW2Zu3FaE+ZTrmeAu5B6QZKUmcCaTbvAIF5wdzJmEBWLlY7q6fOF+btRAgKFjkiPWhG1nI+RXK9pBKPd3pIA3NEHUvndWD2ObJ+W9AfY7kWFjU+X2CHDwd9ir/xqZklWbVK7Bh289IHbtBVyzZTjrVydU/M4+8yN2azJnxbJBTNZy/0Yk/A==
+X-Rspamd-Queue-Id: 599E8100005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1quygknqh4q5amzj4zmtx3qe86f6e1y3
+X-HE-Tag: 1787514076-711285
+X-HE-Meta: U2FsdGVkX19kw0toxDCQ4qow6b6KC4UZjRGO7aKehgX7olLLYEJTm7iH4f7hrihyMR+rjVQp7sFkhRrp9slyGsy5cFrZKoTWzSyfQHL2f9Ep/euwVosSHlNYZnHnzb17J44A9aoIuXVvUze3YHOhFn7fi4ct36+k37J7nGy9QVZaSDJwcZv/+2TUwIIBiYKCoWS7VZ74ktCRlodWrGdYOXbTo6jh6wwXAuiPG7R0R2sB+YSpsXeDWOeg0/+VQmzoBjiuYxu+4f97qe67hqCydHaHChWFAbPwCKFc0yzelQBGZdqZSiKYyeWphywmeCgkmAYdIQjaaYxDrWRPPDkshqV/4L80Q31Xjhxet6Jm5filJhOEnIQNd6QK9Yus90QzihlSyeL9LDqBK3UMQ5kwPa0UZm0H3mx2TP23GZcG6RQzq22104CEKX9Q1SssUFnLFEilQ5kz4whzqR3FN5XGRads5VQsif3SzHuxfPmmNzphJ+vMZ6eQBspjSoDTeB09oWWaISxqw9IYzwSWuZnCvGDrbCn8HN0O9vyLhbdi5V2a0VM5D0Gjw5ukbgblgq8hp+r0Q8T9ioO1Gj0zH8hVqGDrpRkm47LcjYpjfo55zyBI7ZJSmkv8rmTSYaG3ZtSBpHoB9RjraCnbvWYMkCfMslZN0PyV32xFjPmKnLoDcyHYZ5TXm0iNwxriHak540FcL1Ia1jmCOiQFMDcfCGm2o/3v89QhVcVqVhz4l4p7xs5L82JYh37M15AR/yQnSGHnouh5gKHAmCEfL0bw5lYQn5EwvxMKEboPx4DnTQdan8a/IcChoaC5Xg/8Lggg4d/wp8uCV3FBc/nlyRMBn/5WcHKkTlXbnewIgEIA9T/YVxgmF70jQ2vIsTV/JlDSrf2IFYBwJY8LjTLoJgrOaOUcLAiQE5b+lW0wnCwaenx1feB4yMOXG7SCh+jGurowZAlu1o9MqRi0L8Y73+g3ZUO
+ SK1Whnk9
+ MRU7z4kqVwMyag+7TGdBhmqFBcFJaruIEO+p4IWhea/vRMyuGeDJlVHcfHwCKIp/oylkTLdTVaicaGGmc1M0CZwAzzBBFkoAA0exDPyMfGsDlYn7ApPP+ScJV8pszzz7VNJ5gWh/R/q5aot/baiq5QaOHhf8jhmU2pVQnZGnNhF0yBWH237/lKiDiZWLfg6LW6n60oUxtMYLNbNXCvAHPh5wjPmLucxOIrhqtNduZEVRHHRL7glzP4XxrNVtsrULxCmRdKlnpLOW91GPawCMF0D2e5Oqk6nH/CZyWJJ7VK4uosxDGeYdZG1j7HglQtVTnJMlKB0x4TrsBTfhGDurWAy/fnP1NqC3tZz+A9JoOHGT2g7msdZCBtGgIgcv6euhjFeXQNl2OBo+Zawz8XL1nLINBeCnAsShHT/yRZ8JdRFCanJv0cyyrm3J1zxbOPEyBzYxoEkkIyLrDByEMVWiqTbHmJmj1Lu2V0pw6wTSCinV6icbg6cmqeWcQeXzzwIpjomwuINIKzxDVYVBP9pWwE5WxJ4IAdgrfdyaFojH5et84kLZtk4CzpwCGX+jwlPII62UdvgpuAJpWfeJL1T+6JeyvjXynrB8vl/EUDFCiqfJwdqZ04yGDjpqHiYYJt2jdCYFOXoeugK/1uIZ4YEt67LuHnLQW2F0LRezgorwttWxmtUgRDDAxy128bRrInTI9eIxjC6RAX6GfAwWWFnm+OGx3jg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,55 +127,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch clarifies the definition of MF_DELAYED to represent cases
-where a folio's removal is initiated but not immediately completed
-(e.g., due to remaining metadata references).
+The .error_remove_folio a_ops is used by different filesystems to handle
+folio truncation upon discovery of a memory failure in the memory
+associated with the given folio.
+
+Currently, MF_DELAYED is treated as an error, causing "Failed to punch
+page" to be written to the console. MF_DELAYED is then relayed to the
+caller of truncate_error_folio() as MF_FAILED. This further causes
+memory_failure() to return -EBUSY, which then always causes a SIGBUS.
+
+This is also implies that regardless of whether the thread's memory
+corruption kill policy is PR_MCE_KILL_EARLY or PR_MCE_KILL_LATE, a
+memory failure with MF_DELAYED will always cause a SIGBUS.
+
+Update truncate_error_folio() to return MF_DELAYED to the caller if the
+.error_remove_folio() callback reports MF_DELAYED.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+Fixes: 6a46079cf57a ("HWPOISON: The high level memory error handler in the VM v7")
+Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
- mm/memory-failure.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ mm/memory-failure.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index aaf14608b30e..e698d0e9711d 100644
+index e698d0e9711d..37ea23489b75 100644
 --- a/mm/memory-failure.c
 +++ b/mm/memory-failure.c
-@@ -847,24 +847,25 @@ static int kill_accessing_process(struct task_struct *p, unsigned long pfn,
- }
+@@ -939,10 +939,12 @@ static int truncate_error_folio(struct folio *folio, unsigned long pfn,
+ 	if (mapping->a_ops->error_remove_folio) {
+ 		int err = mapping->a_ops->error_remove_folio(mapping, folio);
  
- /*
-- * MF_IGNORED - The m-f() handler marks the page as PG_hwpoisoned'ed.
-+ * MF_IGNORED - The m-f() handler marks the page as PG_hwpoison'ed.
-  * But it could not do more to isolate the page from being accessed again,
-  * nor does it kill the process. This is extremely rare and one of the
-  * potential causes is that the page state has been changed due to
-  * underlying race condition. This is the most severe outcomes.
-  *
-- * MF_FAILED - The m-f() handler marks the page as PG_hwpoisoned'ed.
-+ * MF_FAILED - The m-f() handler marks the page as PG_hwpoison'ed.
-  * It should have killed the process, but it can't isolate the page,
-  * due to conditions such as extra pin, unmap failure, etc. Accessing
-  * the page again may trigger another MCE and the process will be killed
-  * by the m-f() handler immediately.
-  *
-- * MF_DELAYED - The m-f() handler marks the page as PG_hwpoisoned'ed.
-- * The page is unmapped, and is removed from the LRU or file mapping.
-- * An attempt to access the page again will trigger page fault and the
-- * PF handler will kill the process.
-+ * MF_DELAYED - The m-f() handler marks the page as PG_hwpoison'ed.
-+ * It means the page was unmapped and partially isolated (e.g. removed from
-+ * file mapping or the LRU) but full cleanup is deferred (e.g. the metadata
-+ * for the memory, as in struct page/folio, is still referenced). Any
-+ * further access to the page will result in the process being killed.
-  *
-- * MF_RECOVERED - The m-f() handler marks the page as PG_hwpoisoned'ed.
-+ * MF_RECOVERED - The m-f() handler marks the page as PG_hwpoison'ed.
-  * The page has been completely isolated, that is, unmapped, taken out of
-  * the buddy system, or hole-punched out of the file mapping.
-  */
+-		if (err != 0)
++		if (err == MF_DELAYED)
++			ret = err;
++		else if (err != 0)
+ 			pr_info("%#lx: Failed to punch page: %d\n", pfn, err);
+ 		else if (!filemap_release_folio(folio, GFP_NOIO))
+-			pr_info("%#lx: failed to release buffers\n", pfn);
++			pr_info("%#lx: Failed to release buffers\n", pfn);
+ 		else
+ 			ret = MF_RECOVERED;
+ 	} else {
 
 -- 
 2.55.0.766.g2966f0265a-goog
