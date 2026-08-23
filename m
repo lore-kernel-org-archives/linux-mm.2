@@ -4,131 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 459AFC5DF81
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 16:52:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E33EC5DF8C
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 18:43:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 087AC6B008C; Sun, 23 Aug 2026 12:52:56 -0400 (EDT)
+	id CA6036B0095; Sun, 23 Aug 2026 14:43:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 060036B0092; Sun, 23 Aug 2026 12:52:56 -0400 (EDT)
+	id C557A6B009B; Sun, 23 Aug 2026 14:43:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8FEC6B0095; Sun, 23 Aug 2026 12:52:55 -0400 (EDT)
+	id B45266B009D; Sun, 23 Aug 2026 14:43:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BE74A6B008C
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:52:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2CE6DA0350
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 16:52:55 +0000 (UTC)
-X-FDA: 85133128710.14.BA26C3C
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5F4B640005
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 16:52:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a4AxxIj7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of abarnas@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=abarnas@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 88BB46B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 14:43:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DBEBF160389
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 18:43:35 +0000 (UTC)
+X-FDA: 85133407590.07.CCDFF30
+Received: from mta0.migadu.com (out-15.mta0.migadu.com [91.218.175.15])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C173D80002
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 18:43:33 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wbV7435I;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.15 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787503973;
+	s=arc-20220608; t=1787510614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QjRcKycCgEIdRjuuH2tPItX4wlK7ZDllY3I75Ar7NjE=;
-	b=Pzfujfp+zUVwQOqFHzhqoM6O39HaPo03nx+KnIip+FBOuSQQPecThWwlYNh5IYpjF+v2Y6
-	5Oqfijn4+z9G4lpmxErmVxmPbAXgh/MDI02GDUwPdh4pjumgMY6uQQglXazg0uqP2xCEO/
-	oRuZwuolGPe89VzIEVf7T/AOSEqiE7U=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=80U5/1z9O344hzgJgSz/o2r0kPaRJXeQatCRvLC5ngg=;
+	b=tWzHOhSCXaZFIovbtWmyckZ3hwvvD5WATfVOVop6ZuU1yki/SsIvFQ3Sag3tHUOQ2Dx2ZF
+	12Af4DtLV8IfPI/oLT6zI2GeGWWl6tC0H1WpeBAfyFWysHTAnhAFjLopkntYYBk150SGec
+	Tqtq0nIssH0WcOHXf1V6A/ZlY6Q+WfU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a4AxxIj7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of abarnas@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=abarnas@google.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wbV7435I;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.15 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787503973;
-	b=LJKMv0cxnemjQNG3LvSM2e+Iv7lRZ0E8jJOB1mP/p2J93oPvqz8SRVW0R1XcaJ8Yu0cGnu
-	EMre8rka9WxRFRsS6WSv2kcPxjlxmD0AQ/m8mcPAYJqRUFbboeyXWA486WXBC4gPRQGiGE
-	nZmoIKRDqZw5A4iqj5iXmoCUrMS+vVc=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so24273295e9.0
-        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 09:52:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787503972; x=1788108772; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QjRcKycCgEIdRjuuH2tPItX4wlK7ZDllY3I75Ar7NjE=;
-        b=a4AxxIj7N5nhZXbu7M++/UsOtd0L0E9ksDqnKvLJpvhxJtaoW6zqlt3LkJpFHoipIh
-         n+vfo7vLMp1mR7f12WIBHJ4ULvdOqyHQKk91dSbccrhL1BN0wROS8R6+LMsnOfMm1gu5
-         IndSRzgSb0fNrG4plZEGGUodlEV/8S18jPklvBRHhmUZWGQaRqdPF+EDDn9SqDcrJwFw
-         B2KtJezr8OpUixSSZY5yDl+i1jWlnDWTgffRWT4U4QtqCWK5T2k7ba/fz8r3+WMebDqH
-         ZqiouRBCKhZQToEKcerW/EEPeB+UyOsqdJxrokY3/Zmzkz6b7ntnIT4jDHsP9M7lVago
-         E+OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787503972; x=1788108772;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QjRcKycCgEIdRjuuH2tPItX4wlK7ZDllY3I75Ar7NjE=;
-        b=PBdcj0sr24OumH09c/1GeBLcE/YH4IENtz/xIXDB/hTV/GNP4LZaK+lXkr7Gtf9r41
-         H5j2Ij9vbKcgs38GNkybnV0EjsLYt7xhKrdRcEVTg3vSbZZ79SnD2BSLyh08kYXvsTBk
-         R1aTVTDZj6/FUFAoY4M1RIGyT2K2E/YlAdBSBJ3m4GWKPF11HljBG/z4AP5nJ+QYU9rN
-         DfQz/P0mNpkCXHX/H332bOCfp8hdjSgQcQ1TrfpQ6YqPnUW4jIIsC5xP2LfD9Z0A7aPY
-         UIYTuYJt11zXremMfJx+aPOqpRdJeg0Wm98V09pOm/OnQgfZsSAJJDMawC4QsZhmHPsc
-         l+AQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpwviaaMr5xM/nojOaDLbbjOJHUIB57MmYgX2PU0SHVH9Zwfald4705KiNaMda/P3XnfgtjAi5OHQ==@kvack.org
-X-Gm-Message-State: AFuF++kZp0etW8YUCS6KHujeD4o+uKy3Qd75t+KEfuNpJW4CeLIPX7Kf
-	mrP5ccas7wNXO/sgDObEMAsEhAfYIJ4C8tGbSnV5lIjTFqRWEcxDyXcgLEbkek9auA==
-X-Gm-Gg: AR+sD13xgEs3m+7ng5fFjvf6b2sJxCVQvrLrqbPRBlYMRxGp6sLktVK7F9WTV0Rn3Ce
-	rxmpfsCD5k1aauLpoZ5SSPewb2m+9WJIgnN8ffIgKtmQ/aIXk0uPejKMnzzYKeoWjcvssz2cltv
-	q0+/2Mf8vB6eD4ce/VKnl+O9ELZNlBLpldkzELTTh9Xj+RyzEGlGIqwjzdIo+VY3BTciu7nmglR
-	jsKsSkV1gOIMnV61Q3RCvAnpuPcZ0pf/+Vl9wu4PKYVfDgsoguSdrrTGffhcrYSpSKK7Zcrh8W2
-	cyZZ7aD+ca1fIk0DaWcwnK0rlBPu6YYr1baZ2AUVI05SbkQ2jP+ItR2d516eSVHtTszrK+w0oKJ
-	nAEGLWpOVv4gi1iEi15H4cJ+L78/aQpp6Ye/tsl4xWvObil7KovVq2HuLZqiZBI+XeDzAPTApBd
-	t/Hk72kVfwwpXOmXlY94qzrDEFrJGXp3RivSack6Z9yPAFA2TCA8nar+ZszdcSkVY54GFsCdRI1
-	e1i7E3gQlWqWiQ637W8SOZZR+bO2nV5Qfp793l5mFZTDoAT
-X-Received: by 2002:a05:600c:34c6:b0:499:5f7a:7ea2 with SMTP id 5b1f17b1804b1-499c19cbbd7mr122720055e9.12.1787503971299;
-        Sun, 23 Aug 2026 09:52:51 -0700 (PDT)
-Received: from google.com (78.207.190.35.bc.googleusercontent.com. [35.190.207.78])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499c33098besm53780005e9.0.2026.08.23.09.52.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 09:52:50 -0700 (PDT)
-Date: Sun, 23 Aug 2026 16:52:47 +0000
-From: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org
-Subject: Re: [RFC PATCH 5/9] arm64: mm: Permit permissions changes on huge
- vmappings
-Message-ID: <aoslX8cDCR647ebE@google.com>
-References: <20260822135323.795946-11-ardb+git@google.com>
- <20260822135323.795946-16-ardb+git@google.com>
+	t=1787510614;
+	b=bgw9m+ZnBGu0MuFEHJtAGW118YvJqLWShG5Y/fREIOcif/KNuAw+5XQeukUwY9WlH51gWy
+	2++9YqIHlB7Rfjh3NnLO3h6GG+6EkVrE1pzL9PCk09qlY5Wkl0q/EN6JfXOE21NWJGR7A2
+	Hkde5tXU1hiKhms495j4/Ce+mqEdZU4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2cRtSobj9DpAWdrabwHpR7MWbs04ul1EeZDL8CjWVAM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787510612; v=1; x=1788115412;
+ b=wbV7435IA+1QO165eqrBuWJyCQsbAXXoibrGKfIsjwKTp8wjZvPLQH/TAQWusc0Y2LcTqNGS
+ F78ImbGUmv+LkvaZlAr15d5v2jTKw4jHPsEma9oKvmqbtOrKr8Wkci0empEkYzibJZtDDomsR/P
+ q4Wk7Tu9oyYLbUWGdeCXwkJ0=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost.localdomain (218.247.43.97)
+	by smtp.migadu.com with ESMTPS id 040bf0f4d0e4635f;
+	Sun, 23 Aug 2026 18:43:31 +0000
+X-Mizu-Trace-ID: 040bf0f4d0e4635f
+X-Migadu-Flow: FLOW_OUT
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	shr@devkernel.io,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+Subject: [PATCH] selftests/mm: disable smart scan for ksm_tests
+Date: Mon, 24 Aug 2026 02:43:14 +0800
+Message-ID: <20260823184314.45044-1-zenghui.yu@linux.dev>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260822135323.795946-16-ardb+git@google.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: b616qzmgfiwxgq13ezdnnrrrbbuqcb4o
+X-Stat-Signature: 658uhtg8u1sqjs6gdtufk6kzsdq3ur63
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5F4B640005
-X-HE-Tag: 1787503973-639756
-X-HE-Meta: U2FsdGVkX18dt5Xr9n2R4r/pLHjyZbSmJ/2OI6y1TsFMTUQPMQQkMRMVOWoKfN/7vgxN0pH1o41F67cNCkk/7gfqSX5KYaRgbnMWyOu2BvihKj3oy+Afu3z4UdJekjFKCgUbFTN/nM2RYBsMrivHoBr7IhemIjcXJ9Pkfy7xfjLBi5qc0Tk45EWp06sVXdCl3XQyRITpXQWh9THE4muUmnoNeZXRBK8zvUejhkHZgrsLuQBnnWdM3DY6PX3klPnEep3BjpMylbyo03mgNFwn700Q9z30Tf2kpFHg/UQaqWDB0BpRkh2zdOy+7oI7p2pr1ZhfmPBa/nVer3W9LUAlPrQLTc/eeM6YEd8CzxdUmFYRjOe8amIziPnLsv9C3DGOCMHmHopBsH0ZjRtPaNH7qoF4nkw5P5Kn/kB8Cd5z74xDg6iR3jMp7enDdDArnecFrHTBgHMESoAoqNK+fAfJwdmpAb8flJBiachrEyag+VfhER6U7J9/HvT/CGKJQf9rKD4rZ/ZTniXLYmiM4a4mUG9F30THt74OF+auneB5iT3R85QhivxWdrdOj2EgJktGiutQLoOD3N/SkezWZt0vhHovcmU0fK0UzVJuRzQRgv1Ir8SZt33AGFuVAnBWT4qzXvnBNwkf9ZJwreOlTZTV97q9aqSH3MPuQ64IlNt1eKZzfrVyX2E0qSidFiPSQb7rNHqjuxLBZH0rN+VT2TQFzYfk4JTLtWPqB5LfD5xMjVhv8iaHq+7b3UMz/WF3mlJVlkF3hG5gff3Nfc4tV60fzkzbon+/r/FvB3QZeXu/2xcaB+x4yqM4ACPgbvK7+SYgkNEBV3MCcWZqnC12Jvqjk8QBH4xxMc4cjbR0av6ramfHKLD/qEBb+QHYPzfJhfebX6QXMIVxtyhchrkZZD2k0a9KnRBOqMN3UvoYd6c/1zUy2xuJWGI/c0gYDWSpaSRgkeCzums+PUvDuYG+t5W
- fG2nQOId
- /ermGQ1jgL9HLxjLbXPpS569dDwZ7ifaTq3toWv5+ChLjUbWs8doggHeq5+VDsOCRxMQ1dKDqU3sLipk7EPsKw+rEM+DHwVpElrN9rQPswSYWFyv4mF/jEnGR8AqcO+LwFsY7aTieSJih3rT8xhLauEfMvBDmcmsQwR9kiCArzb3Ue87ECiecs5XzxlypmfqHcFDMr/LqmbToS4hXPiUcKxbzr+AWXGAeWYDIypGn8Evik0ZSOWnqubkvIRw+meEGZUSZU+pK3geyt44P6/tmMb7NXSiRFQsOccL63YulIqd17oX7zcP/9K9F8fcO2FsAy9HUNlBCapTTEo+eHy496Qdz8qqA4YnCOXTE0vzMqlOTTW4DL0x95wD08PhyOgy59xVrEgov0YMIat1WZhv/2awzZgfs2oVdFKDCqbRtys056PoT/iEpEukiyHUluWGkC+r8rZxkXneKvyyw2M1sGZS6RzgKcFGIm+vWlQU3jmB9IzTksF3SL9pH58NykvZA6X89XMtBawkxDrU=
+X-Rspamd-Queue-Id: C173D80002
+X-HE-Tag: 1787510613-711172
+X-HE-Meta: U2FsdGVkX1+lLYHCd3aDp6ann6jAroSUHLsMu05kqw7Sr7sKx0zwvn+4XRylUZwOJpzdcodCtxAMQngJGG3w/JOM0yEcqLiDgaZSFXulLfnVQjW0t1mIlXZrh/1XZQPCf+5sB8EpjmS0fBNkCT2fpU/7ojRPDpoChIvghGuAELw4CYoDUhSVNL7pH7u70ZzPDBxDygWdf0vjJaZYec3fTJl0RN4TfUM/LyinM3xTmY6xdhYksfpIPIWhpliQwUzWtQZKsnqdj6xOID4UkSLKMKbxX+zgmbatZR+KXOjwG0/dGtYLkBfCRCcG2a2ADvsJSOkB5zkfANbzrjevI8cZRXtsk22CYg8qCNMMCXhzQXfJ5It+LBwIpfxB4pJivK8O9v1fW780vVGPqLTlnLsP8+ROl8GjlJDQlhVz1ypCpY/jIWMyhEGHZyHH/xzwC+qixKVAnAY3GmdHP1Nq1cWmPs3Go4QIUqWb5hU9WkCmPXnC6xFg1mRyRC56vg5MSikD5jIkITbtYwuhlZFo+MIbDCfvqjazn5dtWDmIAAGKgqRVcAilQjT/E5XvIzU6UhLE8931+qH6fnzuxCewN6xTQJ/mRRNulIBI5qDFt+rjbb+EwxCL+88BrajoAYXBzfnQb5Mhn2bPyRZRlVXGzypPrQrJtKzNLNWmNp4YnVXVlV06vHKeVTDw7unIE14wLL6iMYPyB3ZiD2YdqyZq1ZQNL6qB310SqDRpSRZsGXfhxxdCq20i81hrbx+v3CE/+HpzQL2xIF5d66CI7Ax5DJiozObXzqt7rFdoVkIEpJQnSJoeIXBXUa7y/FwVgTmWIsvm/vsDDediu35baKFtCoH1UrtYHywMYQcJeU3BV1ZFbLoBeVorosQH1ZBY93msoYbdIa7Sm5Wvup9jo654cH7M0tC7OqdpSm/fGskv+NbkbjChm8a4AafQC4T+p8vZUDradBNAClFXL7ENwKCFMP5
+ nbTeEanm
+ s3+Ra0BZ4taOlJc06hg7opkBFhl8IL63k42TBj0RuA6+8tvynrLzrh//WQE2H8apLnld31zoJcipdcLct9mL18pXrU6YTmNKouafQAtK4NQuML+E5haGkTsaRv1osSo7hpYCrlHg15wtDbPwqRyxNdJJWtstVw3MYvhGQqGOvJTvGBC6AGOkN3ALvTbtqclzv8UaoBbwFzCdZNuTQN42qKi5AmM8ZKQw0C9Tm3Vnz0sGNqnwrBND24qCHQ0VLzH/ZjRTgpt2CLR/3GB27NOjXggoQPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,53 +99,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ard
+From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 
-On Sat, Aug 22, 2026 at 03:53:27PM +0200, Ard Biesheuvel wrote:
->From: Ard Biesheuvel <ardb@kernel.org>
->
->Allow permission changes on huge vmappings in cases where no splitting
->is needed (i.e., the region is aligned sufficiently), or when the system
->has support for splitting live mappings.
->
->Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->---
-> arch/arm64/mm/pageattr.c | 13 ++++++++++---
-> 1 file changed, 10 insertions(+), 3 deletions(-)
->
->diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
->index bbe98ac9ad8c..20ff9cb273c1 100644
->--- a/arch/arm64/mm/pageattr.c
->+++ b/arch/arm64/mm/pageattr.c
->@@ -169,8 +169,6 @@ static int change_memory_common(unsigned long addr, int numpages,
-> 	 * we are operating on does not result in such splitting.
-> 	 *
-> 	 * Let's restrict ourselves to mappings created by vmalloc (or vmap).
->-	 * Disallow VM_ALLOW_HUGE_VMAP mappings to guarantee that only page
->-	 * mappings are updated and splitting is never needed.
-> 	 *
-> 	 * So check whether the [addr, addr + size) interval is entirely
-> 	 * covered by precisely one VM area that has the VM_ALLOC flag set.
->@@ -179,7 +177,16 @@ static int change_memory_common(unsigned long addr, int numpages,
-> 	if (!area ||
-> 	    ((unsigned long)kasan_reset_tag((void *)end) >
-> 	     (unsigned long)kasan_reset_tag(area->addr) + area->size) ||
->-	    ((area->flags & (VM_ALLOC | VM_ALLOW_HUGE_VMAP)) != VM_ALLOC))
->+	    !(area->flags & VM_ALLOC))
->+               return -EINVAL;
->+
->+	/*
->+	 * Disallow VM_ALLOW_HUGE_VMAP mappings unless the region is PMD
->+	 * aligned, or splitting live huge mappings is supported.
->+	 */
->+	if ((area->flags & VM_ALLOW_HUGE_VMAP) &&
->+	   ((start % PMD_SIZE) || (size % PMD_SIZE)) &&
+The "KSM NUMA merging" test allocates two identical pages on two NUMA nodes
+and verifies KSM will merge these two pages after 2 scans (see
+ksm_merge_pages()). But when smart scan is enabled, pages that have
+previously not been de-duplicated may get skipped for some scans. Verifying
+KSM behavior after only 2 scans may not be enough.
 
-If I understand the intention here correctly, I don't think it is valid. Even   
-if it is PMD-sized and PMD-aligned, it would still cause a split because  
-the loop below is not using page order, but performs attribute changes 
-page by page.                                                                     
-                                                                             
-Best regards,                                                               
-Adrian
+ $ ./ksm_tests -N -d
+ TAP version 13
+ 1..1
+ pages_shared      : 0
+ pages_sharing     : 0
+ max_page_sharing  : 256
+ full_scans        : 211
+ pages_unshared    : 1
+ pages_volatile    : 2
+ stable_node_chains: 0
+ stable_node_dups  : 0
+ general_profit    : -128
+ ksm_rmap_items 2
+ ksm_zero_pages 0
+ ksm_merging_pages 0
+ ksm_process_profit -128
+ ksm_merge_any: no
+ ksm_mergeable: yes
+ not ok 1 KSM NUMA merging
+ # Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
+
+This specific test fails because KSM started scanning the second page
+whilst the first page had already been scanned for 16 times
+(ksm_rmap_item::age of page 0 is 16 greater than page 1). It's not
+difficult to infer that should_skip_rmap_item() cannot be false at the same
+time for these two pages - they cannot be merged even after 211 full scans.
+
+Given the current implementation of smart scan, it may not be appropriate
+to enable it for selftests. Let's disable it for now.
+
+Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+---
+ tools/testing/selftests/mm/ksm_tests.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
+index 5fd7792a0d47..e72681090ff9 100644
+--- a/tools/testing/selftests/mm/ksm_tests.c
++++ b/tools/testing/selftests/mm/ksm_tests.c
+@@ -33,6 +33,7 @@ struct ksm_sysfs {
+ 	unsigned long pages_to_scan;
+ 	unsigned long run;
+ 	unsigned long sleep_millisecs;
++	unsigned long smart_scan;
+ 	unsigned long stable_node_chains_prune_millisecs;
+ 	unsigned long use_zero_pages;
+ };
+@@ -293,6 +294,7 @@ static int ksm_save_def(struct ksm_sysfs *ksm_sysfs)
+ 	    ksm_read_sysfs(KSM_FP("sleep_millisecs"), &ksm_sysfs->sleep_millisecs) ||
+ 	    ksm_read_sysfs(KSM_FP("pages_to_scan"), &ksm_sysfs->pages_to_scan) ||
+ 	    ksm_read_sysfs(KSM_FP("run"), &ksm_sysfs->run) ||
++	    ksm_read_sysfs(KSM_FP("smart_scan"), &ksm_sysfs->smart_scan) ||
+ 	    ksm_read_sysfs(KSM_FP("stable_node_chains_prune_millisecs"),
+ 			   &ksm_sysfs->stable_node_chains_prune_millisecs) ||
+ 	    ksm_read_sysfs(KSM_FP("use_zero_pages"), &ksm_sysfs->use_zero_pages))
+@@ -309,6 +311,7 @@ static int ksm_restore(struct ksm_sysfs *ksm_sysfs)
+ 	    ksm_write_sysfs(KSM_FP("pages_to_scan"), ksm_sysfs->pages_to_scan) ||
+ 	    ksm_write_sysfs(KSM_FP("run"), ksm_sysfs->run) ||
+ 	    ksm_write_sysfs(KSM_FP("sleep_millisecs"), ksm_sysfs->sleep_millisecs) ||
++	    ksm_write_sysfs(KSM_FP("smart_scan"), ksm_sysfs->smart_scan) ||
+ 	    ksm_write_sysfs(KSM_FP("stable_node_chains_prune_millisecs"),
+ 			    ksm_sysfs->stable_node_chains_prune_millisecs) ||
+ 	    ksm_write_sysfs(KSM_FP("use_zero_pages"), ksm_sysfs->use_zero_pages))
+@@ -846,6 +849,7 @@ int main(int argc, char *argv[])
+ 
+ 	if (ksm_write_sysfs(KSM_FP("run"), 2) ||
+ 	    ksm_write_sysfs(KSM_FP("sleep_millisecs"), 0) ||
++	    ksm_write_sysfs(KSM_FP("smart_scan"), 0) ||
+ 	    (numa_available() ? 0 :
+ 		ksm_write_sysfs(KSM_FP("merge_across_nodes"), 1)) ||
+ 	    ksm_write_sysfs(KSM_FP("pages_to_scan"), page_count))
+-- 
+2.53.0
+
 
