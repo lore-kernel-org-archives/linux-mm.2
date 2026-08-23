@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5126C5DF8C
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 12:17:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DB82C5DF81
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 12:18:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 761DE6B009F; Sun, 23 Aug 2026 08:17:52 -0400 (EDT)
+	id 53EA66B00A1; Sun, 23 Aug 2026 08:18:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7392F6B00A0; Sun, 23 Aug 2026 08:17:52 -0400 (EDT)
+	id 4EF606B00A2; Sun, 23 Aug 2026 08:18:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 679876B00A1; Sun, 23 Aug 2026 08:17:52 -0400 (EDT)
+	id 42C876B00A3; Sun, 23 Aug 2026 08:18:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 45F536B009F
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 08:17:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BFD1B802D6
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:17:51 +0000 (UTC)
-X-FDA: 85132435542.17.6898B2F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1938A6B00A1
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 08:18:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B4FA1C0405
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:17:59 +0000 (UTC)
+X-FDA: 85132435878.01.4CA6211
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 01A04120006
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:17:49 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=incwjgAz;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id DA5A340005
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:17:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JdB62QeL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787487470;
+	s=arc-20220608; t=1787487478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=isHahu0jRpz1uJRo3YiAtHQCbGtLanBl+0E0+Ww+aJY=;
-	b=kZLoDu+1EpbY5KaJQXsut4HvUcVF6HpbwEBR1MePyTlUj5IZs0ByJIRWZ8+pdFc4jo15J8
-	6k/mNAWyc7i5ES/fTIDO2SHfpnBW66u/DbckrjiDXpV152DWKwAiCBfF+hQ67ScbdhkV97
-	kqIg8Oom0D3z72Ea/UUHm5WtTmKLLLs=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=phtAfk9967tvw5jCZ8EwhMxuR9BV70DOT2vnREg6Av0=;
+	b=xEo/mnzXFiJ5boseZls43m4NPyhR6Ry1iD3cSIlf0mrBD18C/QyY8juIxaijhgF16Qsys9
+	ao1pZ02VAcWh7heAvQ2l/rNycvxITtHuVLKTaCk25n+0MxXCTf3C87+B7OT5KjnxTzIjxz
+	rn3rZRIsekPsJfkXwqU1fzgud2MLIOo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=incwjgAz;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JdB62QeL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787487470;
-	b=fIcUi5kO8PsYoV9EKTtG7AuXTy2ZGYVfkoF2Ql0OhmHbUfWmCtFAyQxg8PEGbtRR9nlp9Q
-	s0b5sI4CqOjX8hn7gi3Ygo83pJcXKkz77GMRVfdMaOfZV+XEMOSyMaEme2eziulJkHe6+v
-	odHIN/rAEDQhGtWTgHp6k/4tsk+UzaY=
+	t=1787487478;
+	b=uF3nreZuxARMOi5CRKV1uLJXTqx/weoUgqpKMs9ii+Emnq/EKzCqBoINgnYWZOvLVgVr/3
+	rJi+v+EDIX5kYYZXKQHzCa/hHbWqI1MjHb4IQqFNdosAjy6v1gkjwvgDSnCu87dqOUEUZF
+	x3fRMlH6/kRkEbO7D8e0GGypY/gASqk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1F3EC41A9B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 37D614018A;
+	Sun, 23 Aug 2026 12:17:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9721F00A3A;
 	Sun, 23 Aug 2026 12:17:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615CB1F000E9;
-	Sun, 23 Aug 2026 12:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787487469;
-	bh=isHahu0jRpz1uJRo3YiAtHQCbGtLanBl+0E0+Ww+aJY=;
-	h=From:Subject:Date:To:Cc;
-	b=incwjgAz5Ue8ij1brw1X3z2ppJxMCEPKvIC3rX+6eD2cf5WTGs4dVlnC2PKtLi5TP
-	 BtSRA5GJLHQMzRwlD/TTjJBV2nWXFc1tFOFl0b/XrLncxN2MA1ulizkXqmkSLbzX0U
-	 2N8k6dbYZ1MInvsdysbJBV0QIObtMDHJGZQOuyYSpOR4B32mGWI0PaftaM35oXhwzE
-	 UDbdYQpGfBKVVYc+ImPluq5zlYUjhit9jaDYt+C3iCY4jBrQJgHkYulR+oL4BGIkuu
-	 o/UA+3eMC9dAbBjbiP65GCJD0kL2AtYqRRnrOt7Wd0uWXSbbMjyXofMnOwKy3ff3q0
-	 3IqcaSoBw6X0w==
+	s=k20260515; t=1787487477;
+	bh=phtAfk9967tvw5jCZ8EwhMxuR9BV70DOT2vnREg6Av0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=JdB62QeLHfrgk01rU7saumkTHude9O5ljmTk8ojegK2RGvEuN1X6v0+bfsUBT3oC8
+	 BrrdKyH8U+RenOUG0fNyJGhL761oH3Uggo6pqg/KnEcJ8gvjVzWNkQd+eUxp3Cy4nK
+	 ppxrXNG7PBxHFWlT9GuW0UhWK/ezVtolSz/FTRGF7LcYtPJHhV8w4QvIyFiT59gttD
+	 FqaZ/wlxuzjVHlojywG4R7foLh5P3doLWKkw0bKIj+L4G6DeZX6+lX3GRS653oR5vz
+	 Kjhrj0tTRMDE2EJm5T0PvMXlQSrTWVyAkH+VBPOJmvZAcUq17e1hyIlMUAmNPEIf1f
+	 EGV0bagWOWW5A==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH 0/6] userfaultfd: decouple uffd mode from VMA flags
-Date: Sun, 23 Aug 2026 15:17:37 +0300
-Message-Id: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+Date: Sun, 23 Aug 2026 15:17:38 +0300
+Subject: [PATCH 1/6] mm/gup: move gup_can_follow_protnone() to gup.c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywrDIBBFfyXMukOjQgn9ldKFjzGxRFMclULIv
- 9e0y3O55+zAlAMx3IcdMrXAYUsdxGUAu+g0EwbXGeQob+MkFVbvHbaIftUzYxNIpEgoYdQkHHT
- tncmHzy/5eP6Zq3mRLWfnfBjNhCbrZJdzinEr8Roj1sRFm5XgOL5rdDpBmAAAAA==
-X-Change-ID: 20260823-uffd-vm-flags-v1-ee3e131b381d
+Message-Id: <20260823-uffd-vm-flags-v1-v1-1-3086981b33cf@kernel.org>
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+In-Reply-To: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, 
@@ -97,14 +96,14 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  linux-trace-kernel@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 01A04120006
-X-Stat-Signature: 6z11m4au6e83fc9yswn8xz8d8ne4gejs
 X-Rspam-User: 
-X-HE-Tag: 1787487469-541096
-X-HE-Meta: U2FsdGVkX1/O/I0USsNRM+hNIoCShKjj58H/0wLkZ0w289U1M/PWRErzdFpW5QUzklHPhkE7CuFHyesKbs1urbA2r0O6iPwIf+72/zLloYTl6Z3RScQCj6HlNwxuLnspQIQtCIwdtRAxVdPeEG9jQca1/I7lL3ZakJim2shGivdAT2T8iXlkAFPmdmDq3WvJdp+iakmJBfWWqcixnJZkDzfAj/rAjs3MnsPqMOjJ/7RwVxij3rYZx+fXbuV81NHH+Ac+8mk7h3kZejVe5OnyWTSq+1e9nmvPLGLwH1v4SKYjN1JK60PVygpvepVCWc3PCYReS2ZSFsEDhR1qbwzJHPZaXtpj4I+UG4Z+18c3peDVuYFVHjE2ZKu58IxYkZ4aw7VZWmmQZ17tgK825svdWMi7G4rCRFfwys5kc07KA6bf6o6cdUQsuQdJVmH7ofyunX7vzjBRFgqkHQut/S+dhHU4WQVdfpcOABZi9JpJ+UuNJWV6mjm9PToZbzMn8ieBz+8Zstvry77PP3dK4qVrZgWp7zbH8nKhca2QyFlYBiMAqJh81KZOwqNZufL/1BdGIGIDBkNzsdCOEAlA162rt4Yxq8saSiC0WK7nzprpDOWJnbfUprJ82WEemFgnoMdIH85NnESJ1rXmoUgr3fDiJqM9GeVQSfBjf9BduF22NMCEZxyZnaXsS//ona6DA79fRA6/wxThJ7HfvWQwLSfAvM+9mQwNKft85Q/yHURgNqYuHR8aSwL48uqs9qcJXp8zX44SSKX0UvUypJNGejaxbKzfWCqhReI1a3/aqW6bQIOZx3vrZME2k2xPDZmsXTphlO5QkB2oey3r5o/SNOjAQ300QezR4FfVzdVEcyrnXSel50PE8r1uMkVyB2Ae21L/0p/K8Jq9dzwSku/M6Jg3o3deHkrBO84YdyE6DZXQKguEKvoab3v0Y738TBzMts+nAvg0HY3U/L1+Suhcmzi
- FE+4ZHX7
- 6Ldg+GYnr50gmV5CApmyvrrX+DSi9fp7bhIshF5LqUrUDI8nAMYU8n+UELkZ9O9y5Ja6PWrZdDVeYUVWDkckKcFPfcYxiC9CasD2Qlr97fbuVv+tnL+oHapK9Fv0r+yrG6lu7mS2gPhP18qIase258NV7hgz8DCpqL2uL0amrRks/5OHMLKUllC4hsENHDRA2Pc71OldFHLLftxM81mIsWFznzP+rb2kG4QXg
+X-Rspamd-Queue-Id: DA5A340005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sd6jtkzh456s6tgdx3g5eqits1fkburd
+X-HE-Tag: 1787487477-463618
+X-HE-Meta: U2FsdGVkX1/k95iplJq38ddwIH3fBSmku7+bXsrn9RLo8vEOsFrAUYY2BGUv9UcgXzAFOcJ0GyUtwAdoAZQGZ69p8EpDLbQn4A8jYg5gOez8kzuJ0BTWe1sN7doCcAT1bVYxolY0vXaUgad0IXxRqQd8Syl2dATecy3g9Mp5RR51KaJx04gO/GOPo8tkr3W2M1Ru4wsnYzEIPLRJpWkXhXXL45NI2/okB4w/F3Y5z1UpYMLMg/zPIERYPpNmOTOXnCJtHWDfry0Ko1NkBo+Eoi/UY8zvHqDO+ZFtsFNcICp4zGD5q2BU1eqbv5HDI0O6VSFoOGDnb7nW4Ke5D4EMP9zLXqi4+D/l62UKvUbGA+80QhSkhw7OeIsTlESD5IF52SscnvZsgmK207sR+3OcE/9qdcbp4PEcjxdvxg6hD5zWv9BrcrmDYNTO6DHUbYHW1Jnmh2YQi5O/dBh88zI5PFZq9CkUvRwuARO5asCojwNgAEEWTCWalSy4hyhDFp0WV0VsGspWK0ci3AJObRrNc8hvEy2EobROYs6ZtxVgVqMeCMevsjIeFKu6pvxMZe18SrHjBazZ5amcnrBGEXfUIco5tUKiq+or1NLWPafoQiktVD887fsrMNGdkPoHw1/tcWWbiafHTw3cVRXEv3WHlvjbKrziGn2M6Rpy3IV0sOebprpEZdCQcZWKQQ2aw7s6KxedAsuzqmu/GUeXrDDQeBBqctsWOORhUpnpJjV41LCnw72IRkUquw4uBjDfsnypeMDrPXtSyk8G0wjAgvaeYIuzRQtOaqSngAAx6F/7ot8eDyEVVnsDkykUYQqB9WgcbkThl12OFq0E42EGBK+1B/oJX3lF1JiagpX7fqf8XCk/3TVP91ty7sj4yjPogP8eiJTwXLYJfofx79pTgHS2SJcjZgX0EEzBu7JPWjivaM89F1xXQPDJ3RptHHWv3qReJ386ScqFezyx4tcBBwm
+ rgUMdMOW
+ 5j1MQKb3Xq2q3V5lABXrEsRrzeqVRGkI+DNsDV6r2orfBriqyGT9WqbTcuG6qbQRx8RSrIkstn8mH2znck+Gxb5K2UUamlpkupT13AIQRypPaMtZTz9W96VoAndsIOkYu2OpjFfQ7IfbyUTWxjTOPXNLbI5P//lxh6a0U+FE93BqHC8ZODnqVkkZ9K0c7nG+G17srxN4CWq7TRnonuxlJNOvQTYn3WMh6DFUu7QyutZcom5f2EI3BEdCr8udfE4QNvlEdfb0+PGw+nEgOuzykGn8jkxCdMbiE9MESnVK//gScYpc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,53 +111,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently userfault related VMA flags have multiple meanings:
-* identify VMAs that are registered with userfaultfd
-* and also how exactly VMA is registered with uffd
-* and also communicate kind of user fault between the page fault handler
-  and handle_userfault()
+gup_can_follow_protnone() is defined in include/linux/mm.h but only used
+by mm/gup.c.
 
-Introduce an enum for user fault reasons and move the registration mode
-into per VMA vm_uffd_state structure today known as vm_userfaultfd_ctx.
+First, there is no reason to have it in already gigantic header.
 
+Next, the upcoming refactoring of userfaultfd flags will make
+gup_can_follow_protnone() depend on userfaultfd_k.h which would cause a
+cyclic header dependency.
+
+Move gup_can_follow_protnone() to mm/gup.c.
+
+No functional change.
+
+Assisted-by: copilot:claude-opus-5
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-Mike Rapoport (Microsoft) (6):
-      mm/gup: move gup_can_follow_protnone() to gup.c
-      userfaultfd: constify VMA parameter of userfaultfd_*() helpers
-      userfaultfd: use userfaultfd_*() helpers instead of open coded flag tests
-      userfaultfd: rename vm_userfaultfd_ctx to vm_uffd_state
-      userfaultfd: decouple fault reason from VMA flags
-      userfaultfd: collapse VM_UFFD_{MISSING,WP,MINOR,RWP} into single VM_UFFD
+ include/linux/mm.h | 38 --------------------------------------
+ mm/gup.c           | 38 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+), 38 deletions(-)
 
- Documentation/mm/process_addrs.rst |   4 +-
- fs/proc/task_mmu.c                 |  18 +--
- include/linux/mm.h                 | 105 +++--------------
- include/linux/mm_types.h           |  11 +-
- include/linux/pgtable.h            |   4 +-
- include/linux/userfaultfd_k.h      | 155 ++++++++++++++-----------
- include/trace/events/mmflags.h     |  17 +--
- include/uapi/linux/userfaultfd.h   |   6 +-
- mm/gup.c                           |  39 +++++++
- mm/huge_memory.c                   |   6 +-
- mm/hugetlb.c                       |  12 +-
- mm/khugepaged.c                    |   2 +-
- mm/memory.c                        |  16 +--
- mm/mprotect.c                      |   2 +-
- mm/mremap.c                        |   4 +-
- mm/shmem.c                         |   6 +-
- mm/userfaultfd.c                   | 225 +++++++++++++++++++------------------
- mm/vma.c                           |   4 +-
- mm/vma.h                           |   6 +-
- mm/vma_init.c                      |   4 +-
- tools/testing/vma/include/dup.h    |  20 ++--
- tools/testing/vma/include/stubs.h  |   6 +-
- 22 files changed, 323 insertions(+), 349 deletions(-)
----
-base-commit: 4b2ae13f3393ef4b4bce0021e8762790354f369f
-change-id: 20260823-uffd-vm-flags-v1-ee3e131b381d
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0829e0d3b2d1..4daf9cd6ae8e 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4860,44 +4860,6 @@ static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
+ 	return 0;
+ }
+ 
+-/*
+- * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
+- * a (NUMA hinting or userfaultfd RWP) fault is required.
+- */
+-static inline bool gup_can_follow_protnone(const struct vm_area_struct *vma,
+-					   unsigned int flags)
+-{
+-	/*
+-	 * VM_UFFD_RWP uses protnone as an access-tracking marker, not for
+-	 * NUMA hinting. GUP must always take a fault so the access is
+-	 * delivered to userfaultfd, regardless of FOLL_HONOR_NUMA_FAULT.
+-	 *
+-	 * Only do so while the VMA is accessible. If it has been made
+-	 * inaccessible (e.g. mprotect(PROT_NONE)), fall through to the guard
+-	 * below: forcing a fault there would loop, as handle_mm_fault() makes
+-	 * no progress on protnone in an inaccessible VMA, and the access is
+-	 * denied regardless of RWP anyway.
+-	 */
+-	if (vma_test_single_mask(vma, VMA_UFFD_RWP) && vma_is_accessible(vma))
+-		return false;
+-
+-	/*
+-	 * If callers don't want to honor NUMA hinting faults, no need to
+-	 * determine if we would actually have to trigger a NUMA hinting fault.
+-	 */
+-	if (!(flags & FOLL_HONOR_NUMA_FAULT))
+-		return true;
+-
+-	/*
+-	 * NUMA hinting faults don't apply in inaccessible (PROT_NONE) VMAs.
+-	 *
+-	 * Requiring a fault here even for inaccessible VMAs would mean that
+-	 * FOLL_FORCE cannot make any progress, because handle_mm_fault()
+-	 * refuses to process NUMA hinting faults in inaccessible VMAs.
+-	 */
+-	return !vma_is_accessible(vma);
+-}
+-
+ typedef int (*pte_fn_t)(pte_t *pte, unsigned long addr, void *data);
+ extern int apply_to_page_range(struct mm_struct *mm, unsigned long address,
+ 			       unsigned long size, pte_fn_t fn, void *data);
+diff --git a/mm/gup.c b/mm/gup.c
+index eb898ea1ee22..500e2aa99e48 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -633,6 +633,44 @@ static struct page *no_page_table(struct vm_area_struct *vma,
+ 	return NULL;
+ }
+ 
++/*
++ * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
++ * a (NUMA hinting or userfaultfd RWP) fault is required.
++ */
++static inline bool gup_can_follow_protnone(const struct vm_area_struct *vma,
++					   unsigned int flags)
++{
++	/*
++	 * VM_UFFD_RWP uses protnone as an access-tracking marker, not for
++	 * NUMA hinting. GUP must always take a fault so the access is
++	 * delivered to userfaultfd, regardless of FOLL_HONOR_NUMA_FAULT.
++	 *
++	 * Only do so while the VMA is accessible. If it has been made
++	 * inaccessible (e.g. mprotect(PROT_NONE)), fall through to the guard
++	 * below: forcing a fault there would loop, as handle_mm_fault() makes
++	 * no progress on protnone in an inaccessible VMA, and the access is
++	 * denied regardless of RWP anyway.
++	 */
++	if (vma_test_single_mask(vma, VMA_UFFD_RWP) && vma_is_accessible(vma))
++		return false;
++
++	/*
++	 * If callers don't want to honor NUMA hinting faults, no need to
++	 * determine if we would actually have to trigger a NUMA hinting fault.
++	 */
++	if (!(flags & FOLL_HONOR_NUMA_FAULT))
++		return true;
++
++	/*
++	 * NUMA hinting faults don't apply in inaccessible (PROT_NONE) VMAs.
++	 *
++	 * Requiring a fault here even for inaccessible VMAs would mean that
++	 * FOLL_FORCE cannot make any progress, because handle_mm_fault()
++	 * refuses to process NUMA hinting faults in inaccessible VMAs.
++	 */
++	return !vma_is_accessible(vma);
++}
++
+ #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
+ /* FOLL_FORCE can write to even unwritable PUDs in COW mappings. */
+ static inline bool can_follow_write_pud(pud_t pud, struct page *page,
 
---
-Sincerely yours,
-Mike.
+-- 
+2.53.0
 
 
