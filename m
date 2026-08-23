@@ -4,110 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D25C5DF98
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 11:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2561C5DF8C
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 12:14:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1B866B00A5; Sun, 23 Aug 2026 07:47:24 -0400 (EDT)
+	id B04196B0095; Sun, 23 Aug 2026 08:14:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF2CB6B00A6; Sun, 23 Aug 2026 07:47:24 -0400 (EDT)
+	id AB54A6B009B; Sun, 23 Aug 2026 08:14:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C099E6B00A7; Sun, 23 Aug 2026 07:47:24 -0400 (EDT)
+	id 97CED6B009D; Sun, 23 Aug 2026 08:14:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 927B06B00A5
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 07:47:24 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0B109C02D6
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 11:47:24 +0000 (UTC)
-X-FDA: 85132358808.27.A59DD7D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 63E4FC0002
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 11:47:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GR+EPnx5;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787485642;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F5346B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 08:14:34 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC52940205
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:14:33 +0000 (UTC)
+X-FDA: 85132427226.29.4A426CE
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E3E8318000C
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:14:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d7yiZTKr;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787487270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rfbXl9VbJJ1Sdgb3CrdMLA7PizvK3A5LrpuhhYPyjKk=;
-	b=WWNN3dfvzuFvAMfzrzFnx886d/1pSyG0PAgdFFny854bP2IBqrtt0BzjgFnD2lVGOBv4BG
-	F0mewggQtwzjYpok20D5g0saNXJ7Dww/kKWR+uaxcih4ioD+WHFvtTi8zgeZXXmZoLH95c
-	X+0lOC/zAqMj5EExoo/yKMYmtXUljpI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GR+EPnx5;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787485642;
-	b=u7jpHiJ0lLwpgy+Cfnm29ZHzcbUyd+n68mKrlte7s7S1982Is7zrShsEFLwWmPVe+uawmM
-	huzSaFVc/FV8yXoKpHXZx6oe6X/hSkTeX2w7AOYgUys9WPpXOWB+adRK0JvcGRI3T5BVhZ
-	JJfVI0c9qQ+utVfeWLwOM63nStAhf0I=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 07BEC60052;
-	Sun, 23 Aug 2026 11:47:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556CD1F000E9;
-	Sun, 23 Aug 2026 11:47:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787485641;
-	bh=rfbXl9VbJJ1Sdgb3CrdMLA7PizvK3A5LrpuhhYPyjKk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=GR+EPnx5JjY2y6j2cwBoRe0ZQZtjiH2t4gW4CnhBU2dF6EGQ33O3EG4r/XGhlIllJ
-	 Nst1G2RRcvVnDgOs+kdrsPo+ejiCqMxSMT3q8IasWBptn0CaCORZMotXXqGrNG+dyU
-	 4lt9XqVoCJW6Q53Y3KDib+kzow6QjVst9U8Sj9RsiHQw5+cRbFos337JWxSqAryu4+
-	 u8qU9iTiUiyiI0D7T4HZ4fgUXdy1voMsKSF/kTKGtA5hn5O/8+OQoRG+vrG+RsA5kw
-	 JqABmzemuKva4V8kAFXy8rgAovNcAraYmYYzFnwEJZTx4MnIBVew+F1qpb8B85epVg
-	 bwj5C14j/M9KQ==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 23 Aug 2026 14:46:17 +0300
-Subject: [PATCH v2 6/6] Revert "arch: introduce
- set_direct_map_valid_noflush()"
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=tFsLwbAMvlk7T3VsAbaypJmecjvt3xgCM/mHCdnVWOQ=;
+	b=nFim/YRBQKNC2xtaGUr6Jtq0wFJKYe6v7WBwYQ5hqBmRRU5TZD6MjTVgyZClqfHb6mXJaa
+	kQLrqZRMiIERHItN4zZWzzYtTSOqByyZNCaAFSeKLnMew38MvQ/MsGT03TgmrBsdtC7OQi
+	aLXacQmXdSQqVp8jfnusMujRh8LSB0A=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d7yiZTKr;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1787487270;
+	b=hr603MIHpoTOVi3sLrZzp4A7rWFeeHFihmRV2GO8NCCj7o6E+Vli3bVVlVjVWPR+RS5pb6
+	06QcGf/MORoCfhLuKmjQoSu0eAAonqQVfF2wyyyWSwSoKDGrCckkarXU+B3oijX99l6KnM
+	Yb117XKzn2MkS/7LCU+8mjsgvsOxuDM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787487269; x=1819023269;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   mime-version;
+  bh=mbXGQMMBVD0m1echtyWuZ27w1mas5bi2uKnlS6CHH/0=;
+  b=d7yiZTKrtSe7QvZwYMnEnGb0CYch29YXonpSCwxn78fVdndFRrDf7AH3
+   2lrRLPLsA6o3e5PhkfskiBi6ELcslOJjEdoZ/XXwWJPN5Zsf7K3xIpJPv
+   xkXrisz1x+MzK/HvIb4pNLf6bykMWktbwNvPfpo8oOJbuzj01x38BDqUc
+   50WPL2pzRKL25nRicjRg5XMkUcisV/8G3pPIi3B088wwVvhonw/mHbCrQ
+   JmEp4Nc2nWnDbapiu499UtZVsv0ar3R+4h5+CQ6EkyxLOUKTl42pPqN4U
+   p6iCJ/6YrQvZmQN+L+00eE9TT1GCOCunBZt3RtHmcdczX9KZdmz/xJqey
+   Q==;
+X-CSE-ConnectionGUID: 7vMRO7V0TkyQztTy5xJKJA==
+X-CSE-MsgGUID: 0LOpv8DmT/W7szJPPFSFkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11883"; a="88088884"
+X-IronPort-AV: E=Sophos;i="6.25,238,1779174000"; 
+   d="scan'208";a="88088884"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2026 05:14:28 -0700
+X-CSE-ConnectionGUID: oZoDpNcdQFumRUhuJQ3wwQ==
+X-CSE-MsgGUID: kwP9ZLlpSJ2yealLuGWzBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,238,1779174000"; 
+   d="scan'208";a="260603105"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2026 05:14:27 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Sun, 23 Aug 2026 05:14:27 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Sun, 23 Aug 2026 05:14:27 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.44) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Sun, 23 Aug 2026 05:14:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gG6QwldGaaRjbDouXf6R/r0pfMSZOm8IpGIhJGMhhagf3DMCZ1X3s4FNflLLeFFrKSTJFHbFX5Rov3nEkHn/Coi2/9bUz93tvNGNGG+2C3aoNU5e3vnUAiIy+n2htRlULfZdj/EPOJsVLlVWTtqz0FVTPy6uXWIjPfV88JZRGatU21pe0ck6vGoZoMRcWwBlRWXMhOi3hfOD9ZS8Q4rpNu8y6Lh9fB+uNx7li1HcXz4hE33WT7P8iGJQmhrETpbsq3RI/X0D8S9xPNkDYoEIIIQFksl4V05c1AYDSJ2GC42vhQCf5upfzYy2AwTNA/JHXl+BJcQ+agegQhESf2E33Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tFsLwbAMvlk7T3VsAbaypJmecjvt3xgCM/mHCdnVWOQ=;
+ b=k0wS+P3ewK8FH8l7xcNcZlfhMKUmEd80SQzsuOOH/TBacakx5af04itVKXH16KiGsTI8Z9L22su/KlhU+O3sIoSz679vnudj1TikswJMNOhz8OZYvGQxtuExWubQXzL1CjUYOSKKXKmRXPPg3nnLrcKBanB7nFklDkdEvxRBuEmDvaxrdDgUO26lhhCAlFa9eOzTOiYUBOpAoYM4DghF7YSlC3ZFKgDiIk93XlLMHOdyVazIgGZYqIgTR1HizYr1dD9X/vRvhWdNjax24nYlkaHR9NXZJ60RdV2q5l7xi1IlFNmHubciAGkP0Aw98P7QEHJKpR/kFsAA0pqvKmYMAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB5214.namprd11.prod.outlook.com (2603:10b6:a03:2df::22)
+ by PH8PR11MB6998.namprd11.prod.outlook.com (2603:10b6:510:222::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Sun, 23 Aug
+ 2026 12:14:25 +0000
+Received: from SJ0PR11MB5214.namprd11.prod.outlook.com
+ ([fe80::5926:3836:4212:8640]) by SJ0PR11MB5214.namprd11.prod.outlook.com
+ ([fe80::5926:3836:4212:8640%4]) with mapi id 15.21.0339.012; Sun, 23 Aug 2026
+ 12:14:25 +0000
+Date: Sun, 23 Aug 2026 20:14:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Meijing Zhao <zhaomeijing100@gmail.com>, Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+CC: <oe-kbuild-all@lists.linux.dev>, Linux Memory Management List
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Wandun Chen
+	<chenwandun@lixiang.com>, Meijing Zhao <zhaomeijing@lixiang.com>
+Subject: Re: [PATCH 2/2] mm: memblock: show all region flags in debugfs
+Message-ID: <202608230255.AL6UNOZq-lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260819075422.2387980-3-zhaomeijing100@gmail.com>
+X-ClientProxiedBy: TPYP295CA0016.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:a::8)
+ To SJ0PR11MB5214.namprd11.prod.outlook.com (2603:10b6:a03:2df::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260823-execmem-set-vm-perms-v0-2-v2-6-b013a37d84b3@kernel.org>
-References: <20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org>
-In-Reply-To: <20260823-execmem-set-vm-perms-v0-2-v2-0-b013a37d84b3@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>, 
- Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
- Brendan Jackman <brendan.jackman@linux.dev>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- David Hildenbrand <david@kernel.org>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Paul Walmsley <pjw@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Ryan Roberts <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>, 
- Thomas Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
- Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>, 
- Will Deacon <will@kernel.org>, x86@kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-pm@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
- loongarch@lists.linux.dev
-X-Mailer: b4 0.17-dev
-X-Stat-Signature: e8jzcuhj6zt65mkwrdg31du1qbxqrkpk
-X-Rspamd-Queue-Id: 63E4FC0002
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB5214:EE_|PH8PR11MB6998:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37733273-2360-449b-5a83-08df01101262
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|10067099003|6133799003|22082099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: 5L/VOoRCeqLKzxM522IO2ll4lavRrC9m/k3yfH47D817uqXriUSxkM9/sdlYNQPn4l4IG5dmJqtpYNeni42u5L7AOqU4aZ+casfPBGK8GbqhgN9hCTlKKFfNQMZS242z2APLSgqdAmRoZD3O+TM9D0A22AYFj82xpxEiXIQ5tQWgOXO81ycffTswvZTkv5pGBX18mbc/hg/j5y1ZskwS0BpIqweXfCfJzNDdJFhm0Ul+Gd1xR98KlWuGn5CXwdEPrVJQZrdQiaxeK7B14YUXfxRC6cD+9aCvvVQfqPiQ9IxrMF8WorqNGUuZ9B+VPl/6/nmNPKuX1TWK2yypD4cmsho+YI6nbGzA2bc2/hKDVVJCKFfIs8DnBv05hTZVCvWM1Rx98IBuTIUSuZoveDO2zQcVf3FC1o9c9GU4kt1SF51a9nHdWh4EpLfHnffZoClnfEZHvDpaTZgEU9Wy3iRxNxXhGFiGg/Bsfj5W+drlTA8/SKDBNo/gzP1mFNhvRXJb2hiH1JFQjPnoogOoln5JZrUvtf8KshXcN21TAPkXCwA5TZGrCWqpRsLnELrYpSQ+Nm494dNmLiPxLhuPMjO9PcbjVDaTwKydnds0qDIcgQGYZYY+mSZ8dMHxP/Hz/oym
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5214.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(10067099003)(6133799003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iaaQW8l526GvEda7BWYSX34HrcKFnMUiAm/q0vdWWEwZPlILIz1u6sqtNCgE?=
+ =?us-ascii?Q?8jeuVN8XSA8+N9PAZLemhRHgLBkChVYHrV5bHsb/27LhyNB+yuwhKBFSVaqb?=
+ =?us-ascii?Q?2vyofAyHW+cHgNd7EKtVt3cSAbe5SX2yXNWnR/MZFQPz/KX1g2g5kTJkxv/W?=
+ =?us-ascii?Q?ufk6nnC/MTIOQ+dXF4fvBjj3qUuFZ4Hmt7nC0B+nBnEBRBIAFRi4a0BUth5+?=
+ =?us-ascii?Q?KLGPgXbRlWDe+AeKsqJe1cT5PA00HhbQ0xihlyOmdq7/u7Bvsl5F5NbnacCj?=
+ =?us-ascii?Q?GHfXCdtyagqjC+0zibekjOZ6Zprkkj8o68maGlyIVx2lJjPiwOZ3fLOYv1Xp?=
+ =?us-ascii?Q?f9WCHcMe2uvumXeSWK0Tu0/wPd4cdY/F6n2RKYVDJh+JteI8e/Gplleozcyl?=
+ =?us-ascii?Q?OmucRdQ0k1govIuHUoyS3RA85iiRBy57c/QWVYOQ1tngEh8x9/E3bHVbWU4n?=
+ =?us-ascii?Q?dCVIvQRRl/KJNzXxwRzP7g+fLD5uADsvyyjcguE8VifR7cupCJWhuJ2Z7fUd?=
+ =?us-ascii?Q?aGuhDNxu8mJWELZuyUvuH/Gfkn9h/dTPLrw/q4/sXYFP52M6tdVLpfaMhNor?=
+ =?us-ascii?Q?xa2dFVf/t4ay3LS8q56ivi6Q8Ctw+AHL7YoE34vc8Y8c8UFsrRZP24vAohkP?=
+ =?us-ascii?Q?lSfS6j0dsVw3qYN1P9ZY/HXJq+Dx+rqUM6N65YsiYsQ4TO1T3K16QpdqF9Ag?=
+ =?us-ascii?Q?NOYTLKZ9OrJXyYVyMiJ32rHE3+Cg12C5XcI5wBsEf6zAxhrb+ouMmgvuHNhV?=
+ =?us-ascii?Q?0mBAMbdCNu3n+WU5GdMjLYaCLcq/V1ssTI7syWx0ZDLwGzwDko1zRajVfpLw?=
+ =?us-ascii?Q?6GXlkMKwr/f+/mRjdxbVxYQLUuit+EhPSDSZtZGMZaxyr90S94qj/Q9RVvBI?=
+ =?us-ascii?Q?jXnDw4VoizaRJpCwlKZHk9eIThCk0Q3A1L0b7w2Kww9AxtKJBDTPwp7ywhzT?=
+ =?us-ascii?Q?4BacVJ7bZHOjQAyKcS/bh4OvgB2wVOuRqsfQYfwdSMnSyNtO/S75SlPQ4Xg5?=
+ =?us-ascii?Q?FoE8UBOe0djvFqYQCFSpab7WqgQxjjdy0JZ9yX3CFq5mR0qWF8tRVkwv3OT8?=
+ =?us-ascii?Q?jojDeDJXrEteyl0kblcfGIje8EUepaoqbpXLykurvOUuXE2mj518vZnamrLu?=
+ =?us-ascii?Q?QTEA6Jucdp5l2wRwjx0txepRL92GNKv+xHaz3YVKOvYYDhEfVWaqjp6FywHm?=
+ =?us-ascii?Q?3moke1nkKaldEhNc98NoQGdf5uO32HqdNLkd4MXDG43PQtCrZP4gc3yQ6Y7r?=
+ =?us-ascii?Q?C5QnHd5Ri66wkFaQ1MP6LAwbHyIKAonyGBi8A9JmuR20Y4eBiT0NJ28YNPz+?=
+ =?us-ascii?Q?w86QsqVXtvjJ3lGQr+lNxjbc7yQiZGHoGF/GdtOz/GSlVG4A/7nIs+rmJCVz?=
+ =?us-ascii?Q?dxSgt1/2XYRDDEewguReE05g0HJxDpEhJEcWiHjL7Tpz7EhXWJ50jlO68p82?=
+ =?us-ascii?Q?kYJ6goUXl77Larj01cOnPIVYK5YdpIMvAnhFaEbSj0Xn7HluOc7/cjpeNA68?=
+ =?us-ascii?Q?aI6FqPQJdVto5Xv7+WbnWQewsA7jt4s2MU9tT03BQ77o3PjoXDtYDa7sns3D?=
+ =?us-ascii?Q?KW9tYZgc7cf6DSIv9AWQFQ0Kh4vPQhHdrUEoLw48WWiftuAGshV9XfEqSsRE?=
+ =?us-ascii?Q?RUirJT7ga/Oe8O1u3239Vi83OUDGfViBlmmNI5V89HXdYYpe4SjO9EY9eW5O?=
+ =?us-ascii?Q?QBrW0zglHAhNdOxYr0g0P00r8g2kBeB2L0D2hbIkpnQh77nUrKs3jEY1jxlm?=
+ =?us-ascii?Q?8YadV35wdA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: OAm3ulL0cBQiO2L+0VJC5Pbt8rS29t+kSLjW1RRHV+9r8aUyAIky+8z1KvqyfOxABclNQ5FnSGvqczBLE+yHBi/2eGEAEClnyOrlpMo3h5lnK+6SggrG2pMMOXzdoLAH916CDAoSaV4ZsIX53lMGsc518Zh3T9sbSXpuVy8ig8A4iAQsMxAYgkGYG5+FBUjWjDcyZ1MJBozwNMLyHajRapa5qC7hbkdM8gH36xhyYToDqGzz23ZwwesJEP6Ge5mOVFw+QLynmv3tldPKxIwkiBg358Nz9gpgRNx3b1kiW5qY+VGmdbeG4PDtbhNx2lpeg7xcIA+t1cqfB5B5w0BR0A==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37733273-2360-449b-5a83-08df01101262
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5214.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2026 12:14:25.1584
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Wap+MIvImXNG9NxbAQksaJeOlhleoLKhEjBtLAa9hDCeMLwb2HWzSweqGM6kQ7M6ifGQUrmLemHRRBIrculefQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6998
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787485642-574115
-X-HE-Meta: U2FsdGVkX185UNNapTtTCAkC6frr53Axv3jaNUC7Fe+DOGt7yuS5QW7gd9845+ZMjK/P5gLce7KswFqnRnQiHsFGxmvf0plcv9zaHhyqDhDpGTRxvqMBtme0i5frDWsgu7yEmury1wSOfxUukwPq32ht+PX+kouNaySNjBAmRnbfTIIRZUdWTZkhJBkvMuDrOfBWOoc9q9DkiwJHGi5f1/nsx7zx8h0Tvc4GZin35XhByIER6bSElV+5whZcGqgQDmCtY9uHG/5DeSYB1G7n4iL5zoBikihxb65M8P15EJ9K1umSo6uC3cUpqiX4W+x31275IGNc8M7sFIdIvi6qkO0FlyT/uFkWSFQoEm951cnyn7HqOd5M6utTL7R8K3HU67a68EK1wG+P2tEbXS6VDeKtWeNCZlS0RJVo7l2V3ZA/iftBYFN7DBYay6hkyXkQI6hZOIxLwSJJXz2FC4JmnnZ3WL8oPnCWV4Tc61gpD6LlYVuwpIbEvhBQxuKMKSWVqUkgRZlYAiwn3J+FCHwGm/F+LHlw0Du10W0LdQ+eCqy01bmLBsmWHIbOr+IjjSgnkhQIGtIm3ORh5wTguS07oSpWwDGAAWNQmfAss8acr63688az9QQZnIbuWfAwqeqoM4bb/pEIVvW8amaW4NFyaWOyXDxXla72ZcDcNJO9iZJvGAqmL5MiobXLcD/MPrZ4brVD7n+sJrpxRPyQJqsnup4oWwguVbiIE6rhOEcDPamfpf2QNDK9FygaoExtQmAkReqUFiRPcV/O4tjBId6zMJjwm47RQfQynO/jkR7ePVKDLUZ/c6utkcIrEwn8bthTy0OaWb87z32cXAggYw33K0vBH8qqcazxfdKUWmsi2ws+EiSaW62EwF+uXkP+MHc+//kN8gUAzVlqqHY/hQAyavBk1Mo+WneAq8/OVAVC7IyYZDNrzyfIHAhZimWoFh569nHLrzQMVI3/8AXMay0
- 33OofJ0w
- wWRgFFPG5+lXzheGox9u2Ng0Fm59th1eijFC3PyqFkzed9g1dkzGZcDJKMRW7i73vLGuV+UfnmvynFxJcYyaSE57pFGjP8w8cYuZdCR7mtcz3sS+ksqMa6fPAAFxyfZ4zEwxtSJ6bcE4CwWqKxLd3/pUQD/yZc1ta2ui0gPsKBV2ss/zuxmxVjUqGDUGBuFXLJj1558U7nuihgwOepGBmaUtxQOTZ7fgVF3P6iMkbMnRab6IaD+QWOn0pBMVdmobM+ZHVQ8kWNZJpny0+rVcXoV3GxjDEBGJb0SZ3
+X-Rspamd-Queue-Id: E3E8318000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: e1594phafozokrhbusq5grc3hzsuz9kf
+X-HE-Tag: 1787487268-711299
+X-HE-Meta: U2FsdGVkX18CBayy20puM+xZLh+YZMfiddflEyPWLMld7eo3G7EV/RIwbasaGEYazJVk8lTCnVbnv26O0+VR/R3WTPUoUJGUMZFoNn9Yqc1bglYKpuG3Sv4Fx5Q7mE4niDSpebHC87CITWs6+kFMd2/2nXI1aHNiymd4hX/ke1HfGmhIE/UvOJlj43OvLKMpTv95VDsnsSobZWXuYgTQjmsII8GUACmojZJFcqvb/3CCrOkqwfaX/Qd/xsHi+TWQp41RnMggrlXg3oYkvAARkFgSEPvSUrFJ7xt0Uq1Lh2UTrjiE0gJ/sCld9GKBW22dNObbyo3rDorclCiGXL/Dr93HE4bomPMlnBBCn9rg9q6BKSpU1EoJJ/Ea8yDlRih5EyIwfxBvXZJJbom9PEAeSHTdShe+c8Mz3WxX8urGUOZ3GrG3C4qAOsEDFgxiVxMwALd+mGY7bsccmxTGqU/HW3razJRBbR6fLDvgNdvvKzIpms89L3BThTUKVPFdaT7IDOTL+NiPBhqNcG8oQCQAVRi7D8l+2ZUz2rELMx+ViwfeHNqxvJtUy4Xoya8hpndPpudXAodbcQXtWyI+eTSJ9YjG16xqugizp3v7XOdqQjJY2F/skgQFUJALC+x8BaWACfGXZz3AGYNaGyQV1XfECrdn4C4H32rORnYG/i8EPRQ6HXisCh1q9PMXNmETdO86vvwOLk9goVMf5JyHovb5b+NNnSdHdupIR8wrSriBsNfopjhR0jSHhxU1kJSjM+TH5J2BRhnF/r+4c6MCyH2+jC1xlZ+zCx+dpf+D4d2Xcr3U4A+R4YesQjc8Xoi01PZ3NLYDxhkCPKGg9jo4UyH8G4yWU7Nn1sWpMk3gYVyvlELszgg7XqeLYyL1+belEBWYUBPAPGbJwtknD/XnMZiyAaePw5ri80d75Uo6O3J2+cO7QzrXcgZTDKnq3y9RApxh1Aww/9NGbmGz0CFd1Sk
+ oiUv9oG5
+ s0aHTU20aUwKsh01Pu0DFT6+qbrWhBZ294WyzQVcLfbzLhpkTvW1pHPHN+rP0/KMrlzNdo08D1/Opul3i/pUC7wbTJPW/+tNChiciS/5odDQtn5b9JyK9SZnwhD23Wh6MRjN53qS2h5yCHL7LPGqAlBpbZfLG6EggxvevwWX0YoTee48g/K7ba2VlST6aBlxWAkaKceOBl4rPpSrdI+gp1vSESCTbV8u5WTRl/AeKlQ6uie3zc6vkF3PoXhDhs43wzEkWDuqyUCgIR7ydK/5yffH6/RGvOSrba4K80mOiAHkwvF8xc6IB48NeYfR0u9OqtuQZjpLPgJXNjkFwt4Pvfz4DH9Xez25hi4pr0zIvV5Orc/uopCyn0t4naiuRCqkn+WqzGCfymhszdp53IK47wMMIVsS0Let/95cczXb1ETZaahl3XSz+YZkrJHkCwOSECdMSoGO4FxCG9DrGR+IaZWpAclk9cBK0jnk7G9Lcxg9pDDadjyZfWCvb86JHWJk823Vx4jdYwC3xlY51SXOuYcYQ+ZFQii7EJ9PkZOvd1RMJw06nPbNp88NIQgY1GvLu5/s6aQEzQ7zmk96/3JmwTgWznL//SCBZOrq0k6zosIYzUyluF5CsogWMaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,249 +190,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 0c6378a71574 ("arch: introduce set_direct_map_valid_noflush()")
-added set_direct_map_valid_noflush() to allow updating the direct map
-for a physically contiguous range in execmem.
+Hi Meijing,
 
-As Brendan recently pointed out [1], this API is confusing because on
-arm64 it means that is sets VALID bit in ptes, while on other
-architectures it is an analog of set_direct_map_default_noflush().
+kernel test robot noticed the following build errors:
 
-The only user of set_direct_map_valid_noflush() was execmem's ROX cache
-freeing path and it was switched to utilize VM_FLUSH_RESET_PERMS for
-resetting permissions of the direct map alias.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-With the last user gone and with set_direct_map_{invalid,default}_noflush()
-accepting number of pages as a parameter, set_direct_map_valid_noflush()
-become a copy of set_memory_valid() on arm64 and a duplicate of
-set_direct_map_{invalid,default}_noflush() on other architecture, it is
-safe to remove set_direct_map_valid_noflush().
+url:    https://github.com/intel-lab-lkp/linux/commits/Meijing-Zhao/mm-memblock-add-missing-HugeTLB-flag-name/20260819-155421
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260819075422.2387980-3-zhaomeijing100%40gmail.com
+patch subject: [PATCH 2/2] mm: memblock: show all region flags in debugfs
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260823/202608230255.AL6UNOZq-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 16.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260823/202608230255.AL6UNOZq-lkp@intel.com/reproduce)
 
-Also drop a stale comment in arm64::__kernel_map_pages() that Linus
-bothered to add when merging changes containing set_direct_map_valid_noflush()
-to his tree.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608230255.AL6UNOZq-lkp@intel.com/
 
-This reverts commit 0c6378a71574daa6cd1534ad42a956e3262756c7.
+All errors (new ones prefixed by >>):
 
-[1] https://lore.kernel.org/all/DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev
+   In file included from include/linux/kernel.h:25,
+                    from mm/memblock.c:9:
+>> mm/memblock.c:2805:16: error: 'MEMBLOCK_RSRV_HUGETLB' undeclared here (not in a function); did you mean 'MEMBLOCK_RSRV_KERN'?
+    2805 |         [ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
+         |                ^~~~~~~~~~~~~~~~~~~~~
+   include/linux/log2.h:158:30: note: in definition of macro 'ilog2'
+     158 |         __builtin_constant_p(n) ?       \
+         |                              ^
+>> include/linux/log2.h:157:1: error: array index in initializer not of integer type
+     157 | ( \
+         | ^
+   mm/memblock.c:2805:10: note: in expansion of macro 'ilog2'
+    2805 |         [ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
+         |          ^~~~~
+   include/linux/log2.h:157:1: note: (near initialization for 'flagname')
+   mm/memblock.c:2805:10: note: in expansion of macro 'ilog2'
+    2805 |         [ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
+         |          ^~~~~
 
-Reviewed-by: Brendan Jackman <brendan.jackman@linux.dev>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- arch/arm64/include/asm/set_memory.h     |  1 -
- arch/arm64/mm/pageattr.c                | 16 ----------------
- arch/loongarch/include/asm/set_memory.h |  1 -
- arch/loongarch/mm/pageattr.c            | 19 -------------------
- arch/riscv/include/asm/set_memory.h     |  1 -
- arch/riscv/mm/pageattr.c                | 15 ---------------
- arch/s390/include/asm/set_memory.h      |  1 -
- arch/s390/mm/pageattr.c                 | 12 ------------
- arch/x86/include/asm/set_memory.h       |  1 -
- arch/x86/mm/pat/set_memory.c            |  8 --------
- include/linux/set_memory.h              |  6 ------
- 11 files changed, 81 deletions(-)
 
-diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
-index b07fd4e026ea..0091ba12200e 100644
---- a/arch/arm64/include/asm/set_memory.h
-+++ b/arch/arm64/include/asm/set_memory.h
-@@ -13,7 +13,6 @@ int set_memory_valid(unsigned long addr, int numpages, int enable);
- 
- int set_direct_map_invalid_noflush(struct page *page, unsigned int numpages);
- int set_direct_map_default_noflush(struct page *page, unsigned int numpages);
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
- bool kernel_page_present(struct page *page);
- 
- int set_memory_encrypted(unsigned long addr, int numpages);
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index db8d60a84d14..132938b32eb1 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -355,23 +355,7 @@ int realm_register_memory_enc_ops(void)
- 	return arm64_mem_crypt_ops_register(&realm_crypt_ops);
- }
- 
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
--{
--	unsigned long addr = (unsigned long)page_address(page);
--
--	if (!can_set_direct_map())
--		return 0;
--
--	return set_memory_valid(addr, nr, valid);
--}
--
- #ifdef CONFIG_DEBUG_PAGEALLOC
--/*
-- * This is - apart from the return value - doing the same
-- * thing as the new set_direct_map_valid_noflush() function.
-- *
-- * Unify? Explain the conceptual differences?
-- */
- void __kernel_map_pages(struct page *page, int numpages, int enable)
- {
- 	if (!can_set_direct_map())
-diff --git a/arch/loongarch/include/asm/set_memory.h b/arch/loongarch/include/asm/set_memory.h
-index 563aab92896e..4bb01172fbc2 100644
---- a/arch/loongarch/include/asm/set_memory.h
-+++ b/arch/loongarch/include/asm/set_memory.h
-@@ -17,6 +17,5 @@ int set_memory_rw(unsigned long addr, int numpages);
- bool kernel_page_present(struct page *page);
- int set_direct_map_default_noflush(struct page *page, unsigned int nr);
- int set_direct_map_invalid_noflush(struct page *page, unsigned int nr);
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
- 
- #endif /* _ASM_LOONGARCH_SET_MEMORY_H */
-diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c
-index 43ad2a104f19..a7dcff40f759 100644
---- a/arch/loongarch/mm/pageattr.c
-+++ b/arch/loongarch/mm/pageattr.c
-@@ -217,22 +217,3 @@ int set_direct_map_invalid_noflush(struct page *page, unsigned int nr)
- 
- 	return __set_memory(addr, nr, __pgprot(0), __pgprot(_PAGE_PRESENT | _PAGE_VALID));
- }
--
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
--{
--	unsigned long addr = (unsigned long)page_address(page);
--	pgprot_t set, clear;
--
--	if (addr < vm_map_base)
--		return 0;
--
--	if (valid) {
--		set = PAGE_KERNEL;
--		clear = __pgprot(0);
--	} else {
--		set = __pgprot(0);
--		clear = __pgprot(_PAGE_PRESENT | _PAGE_VALID);
--	}
--
--	return __set_memory(addr, nr, set, clear);
--}
-diff --git a/arch/riscv/include/asm/set_memory.h b/arch/riscv/include/asm/set_memory.h
-index db1d0ed82b69..e9f9960c1947 100644
---- a/arch/riscv/include/asm/set_memory.h
-+++ b/arch/riscv/include/asm/set_memory.h
-@@ -42,7 +42,6 @@ static inline int set_kernel_memory(char *startp, char *endp,
- 
- int set_direct_map_invalid_noflush(struct page *page, unsigned int nr);
- int set_direct_map_default_noflush(struct page *page, unsigned int nr);
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
- bool kernel_page_present(struct page *page);
- 
- #endif /* __ASSEMBLER__ */
-diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-index 20ef95b1d0c3..5b3cf326455d 100644
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -386,21 +386,6 @@ int set_direct_map_default_noflush(struct page *page, unsigned int nr)
- 			    PAGE_KERNEL, __pgprot(_PAGE_EXEC));
- }
- 
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
--{
--	pgprot_t set, clear;
--
--	if (valid) {
--		set = PAGE_KERNEL;
--		clear = __pgprot(_PAGE_EXEC);
--	} else {
--		set = __pgprot(0);
--		clear = __pgprot(_PAGE_PRESENT);
--	}
--
--	return __set_memory((unsigned long)page_address(page), nr, set, clear);
--}
--
- #ifdef CONFIG_DEBUG_PAGEALLOC
- static int debug_pagealloc_set_page(pte_t *pte, unsigned long addr, void *data)
- {
-diff --git a/arch/s390/include/asm/set_memory.h b/arch/s390/include/asm/set_memory.h
-index 6b0aa9147ed8..e3562bf0c1aa 100644
---- a/arch/s390/include/asm/set_memory.h
-+++ b/arch/s390/include/asm/set_memory.h
-@@ -62,7 +62,6 @@ __SET_MEMORY_FUNC(set_memory_4k, SET_MEMORY_4K)
- 
- int set_direct_map_invalid_noflush(struct page *page, unsigned int nr);
- int set_direct_map_default_noflush(struct page *page, unsigned int nr);
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
- bool kernel_page_present(struct page *page);
- 
- #endif
-diff --git a/arch/s390/mm/pageattr.c b/arch/s390/mm/pageattr.c
-index 02d992b251cb..f46a666bc5c7 100644
---- a/arch/s390/mm/pageattr.c
-+++ b/arch/s390/mm/pageattr.c
-@@ -397,18 +397,6 @@ int set_direct_map_default_noflush(struct page *page, unsigned int nr)
- 	return __set_memory((unsigned long)page_to_virt(page), nr, SET_MEMORY_DEF);
- }
- 
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
--{
--	unsigned long flags;
--
--	if (valid)
--		flags = SET_MEMORY_DEF;
--	else
--		flags = SET_MEMORY_INV;
--
--	return __set_memory((unsigned long)page_to_virt(page), nr, flags);
--}
--
- bool kernel_page_present(struct page *page)
- {
- 	unsigned long addr;
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index 0c4235d159f4..39271a5ea925 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -88,7 +88,6 @@ int set_pages_rw(struct page *page, int numpages);
- 
- int set_direct_map_invalid_noflush(struct page *page, unsigned int nr);
- int set_direct_map_default_noflush(struct page *page, unsigned int nr);
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
- bool kernel_page_present(struct page *page);
- 
- extern int kernel_set_to_readonly;
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 9022354e26e9..a6b2912a4837 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2683,14 +2683,6 @@ int set_direct_map_default_noflush(struct page *page, unsigned int nr)
- 	return __set_pages_p(page, nr);
- }
- 
--int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
--{
--	if (valid)
--		return __set_pages_p(page, nr);
--
--	return __set_pages_np(page, nr);
--}
--
- #ifdef CONFIG_DEBUG_PAGEALLOC
- void __kernel_map_pages(struct page *page, int numpages, int enable)
- {
-diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-index 0b77f1d7d8b9..3fe293cfed8c 100644
---- a/include/linux/set_memory.h
-+++ b/include/linux/set_memory.h
-@@ -36,12 +36,6 @@ static inline int set_direct_map_default_noflush(struct page *page,
- 	return 0;
- }
- 
--static inline int set_direct_map_valid_noflush(struct page *page,
--					       unsigned nr, bool valid)
--{
--	return 0;
--}
--
- static inline bool kernel_page_present(struct page *page)
- {
- 	return true;
+vim +2805 mm/memblock.c
 
--- 
-2.53.0
+  2794	
+  2795	#ifdef CONFIG_DEBUG_FS
+  2796	#ifdef CONFIG_ARCH_KEEP_MEMBLOCK
+  2797	static const char * const flagname[] = {
+  2798		[ilog2(MEMBLOCK_HOTPLUG)] = "HOTPLUG",
+  2799		[ilog2(MEMBLOCK_MIRROR)] = "MIRROR",
+  2800		[ilog2(MEMBLOCK_NOMAP)] = "NOMAP",
+  2801		[ilog2(MEMBLOCK_DRIVER_MANAGED)] = "DRV_MNG",
+  2802		[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
+  2803		[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
+  2804		[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
+> 2805		[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
+  2806	};
+  2807	
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
