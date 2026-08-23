@@ -4,84 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D58EC5DF8C
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 21:04:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0229EC5DF8C
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 21:14:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C28E86B009D; Sun, 23 Aug 2026 17:04:15 -0400 (EDT)
+	id B05C66B0095; Sun, 23 Aug 2026 17:14:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD8F06B009F; Sun, 23 Aug 2026 17:04:15 -0400 (EDT)
+	id A67CB6B009B; Sun, 23 Aug 2026 17:14:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEF546B00A0; Sun, 23 Aug 2026 17:04:15 -0400 (EDT)
+	id 92FEC6B009D; Sun, 23 Aug 2026 17:14:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FEC56B009D
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 17:04:15 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5C7980395
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 21:04:13 +0000 (UTC)
-X-FDA: 85133761986.07.D62FEE7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ED4CCC0002
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 21:04:11 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SGWtU1r1;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6507A6B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 17:14:26 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7214A403B0
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 21:14:25 +0000 (UTC)
+X-FDA: 85133787690.18.1CA3B12
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8E525140005
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 21:14:23 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rhj8IXPa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787519052;
+	s=arc-20220608; t=1787519663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y5VxSwmuQ6ztS1MLxHRfHBUyhAy2w+d0ivs0tkUqY08=;
-	b=qInFmtyXNaQVA3esvLK6jPoNsVDNGFUZb3I1ezklgZVJ4+EE+H5ix3RS4dunc0Vsl1ID17
-	qVkvkegxXM+wZE7PYllvRexRaLe7H+I1ODS87TBajmDLuW8cyJsdTyuXSB4W7UtC+QuSPE
-	4zbp5gRay+qcyX8uUyGM8cvx6FjAJD8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787519052;
-	b=o8rB1pj/UzG6ePTPhpRlIBcQuAiQmRNvsbhYd48JvTxdBV6P0D5omxZ8so8y3AqyRyKO04
-	qIVDV8xbR0R3S6HPafjHQOS1lmfSO22IjLT2oCxy6/4DTU8gtv9idsfJRC2bHmTbh30ZE+
-	aXiGZMk/glkjiFIOhQWNEiH9BpmVCIs=
+	bh=5aIk5hjqNt5oNCOWt6NWdUPn77WlZIYMgpDkKjeT4gI=;
+	b=0CbVssyAQ9PuBPqVlYp2XN3AZU0D+sCWNoxcOQIIsUZDaTweYlczjbvDQsoTSdfcT9QMgA
+	W5lC/V/kYTVruuYvo9DcPf7Sd6kxfENSyGtyHQqCEjQGoggEXodFaWo1v4Pey61rWi/k5u
+	7Pfz/MdIkzgs06cfHn6N1718OXjGqOo=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SGWtU1r1;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rhj8IXPa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787519663;
+	b=q15wZmuYSdR8/Eu5gV68pFpPxIfqdVKnMfmu3EzV1l4bBVTxtgaYFy1GZNQx/kGhxuprSj
+	K6uXjp3Ap1V9sJNneG2f3cI1815N9Z08Vu/qTidQhmGKtRE8HRulVoBNRIYNIYGGm78LLr
+	xXwLbNOZv2iqr7jq1q6YCbCRYMoBlKE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EB8C644047
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 21:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07AE1F01560
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 21:04:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EA6F6600AD
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 21:14:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909C11F0155D
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 21:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787519050;
-	bh=Y5VxSwmuQ6ztS1MLxHRfHBUyhAy2w+d0ivs0tkUqY08=;
+	s=k20260515; t=1787519662;
+	bh=5aIk5hjqNt5oNCOWt6NWdUPn77WlZIYMgpDkKjeT4gI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SGWtU1r1O+/G6w/iQF/Am3SuKXqCK3ZinFSW5xmAN8aUfMvGFZ+x5FWOvAa0Io8h/
-	 9f5VppfNfuPpISvprGPw3q1pUYiYb4HaFqNMtv7ACBaANPtEAmoDEZXiahH29QAkcb
-	 9LEk4EyKKh03b/MNF3mhJpS3jNC1eEmgv0US2yWmE6r80gOCYwPou1qD+rwMEsJr1H
-	 4LB0MO6MUFpbSq2Kg4AF1I5WxUqM7kUqNF+GJtIBJCxOg3MjJNT8eObfMLYq03QfOX
-	 E7o2ATBWvHB6w3rXnbfBk5FiwNEIynpqY+HPY8/PzGuhCfji2qC0P/DeaLJoJPHbQv
-	 3XCke1p0vh8NQ==
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8f032b47e3cso17924866d6.0
-        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 14:04:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoyZL/b4WPaZFhkF/q2wTZouk05J/2lFl3d06Wh+x9dbruiyr7WCM3zElCAqy7zr0zwWJKXIeYJXQ==@kvack.org
-X-Gm-Message-State: AFuF++lQu53SM3RLo16sVmL25PSV8bdjhwryxgeK9A3cV2olfms4B/87
-	Ipuy7cuELGgoTUpSE+p7g/bsTqkHDRf0N68BRS1k8sZFTg9Udc6AYHv3ABUytw6nDN0/yFwlIoY
-	tGlEm3dIWwPfuK+mXTVXLWl3RGHF7Zxw=
-X-Received: by 2002:ad4:5cc1:0:b0:90c:5947:7e60 with SMTP id
- 6a1803df08f44-90c80c15daamr170758646d6.4.1787519050081; Sun, 23 Aug 2026
- 14:04:10 -0700 (PDT)
+	b=Rhj8IXPa8+Foj6h4ON2DpulSKlWKVqUoCZ0tUxVdjkGMS6mDg62lftZBZsInlJdiY
+	 9GpDcXsON4jAhZZ4UVxL0wFXACUuPm/gwI68BirTUDvAMlIkRrVZyk+5cvZRRbiXOj
+	 mIMsP0r+NQ000h0QPDX0BlQLFJzRlaVf7DjRJcLayjputbhR+RqVLoXIA9cv3UeY6T
+	 g+7X16+0DrTTjEBsO2HzSzyEX6cN5E+PoKo+V4ZVRro0mQTcU+LVyeyHH2bvHkAs89
+	 6EyhV7sl/DZ/aqY81LkD1Rtdna0ZiI6SiNEZDZrVJ3Z/8iludEorqg9pW2Qb1bz9gR
+	 MY6ogG7MytaIQ==
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8eeb4508f29so17256026d6.0
+        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 14:14:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rqw6l2hiLezwKd8kmSN22Q8G+qmWdtIchjcMLZGvcX9W1unP/bD3igyeFEAgVC6ONeSHu4ftDIGYA==@kvack.org
+X-Gm-Message-State: AFuF++nsn2d8Is7+5v8hzVrOyMvgBy8RZNr7GZVZ5uwhEPIiDD3MXCGz
+	m/nbTmp+Dc8aSE1Lmfztm5igbzgZeGdxFX+DJtbiRk1flST6HZ5PX1mE7mrm0qrcleLL9H0rkgj
+	EP7ltxzuPTIAimDk+pXPH9GVVjuBtte8=
+X-Received: by 2002:a05:6214:318d:b0:90a:807d:3668 with SMTP id
+ 6a1803df08f44-90c8f941e02mr144419456d6.7.1787519661887; Sun, 23 Aug 2026
+ 14:14:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org> <20260823-uffd-vm-flags-v1-v1-1-3086981b33cf@kernel.org>
-In-Reply-To: <20260823-uffd-vm-flags-v1-v1-1-3086981b33cf@kernel.org>
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org> <20260823-uffd-vm-flags-v1-v1-3-3086981b33cf@kernel.org>
+In-Reply-To: <20260823-uffd-vm-flags-v1-v1-3-3086981b33cf@kernel.org>
 From: Barry Song <baohua@kernel.org>
-Date: Mon, 24 Aug 2026 05:03:59 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z1FHFOggOfq4V_ikdrNNmiAyDTdUaq6=Svw=MSNJODpg@mail.gmail.com>
-X-Gm-Features: AcwNN1XAA5UHMELIWABqTde52FJDm4K7QaHzff4fQOng4mfJiplIHcLVl25NsMI
-Message-ID: <CAGsJ_4z1FHFOggOfq4V_ikdrNNmiAyDTdUaq6=Svw=MSNJODpg@mail.gmail.com>
-Subject: Re: [PATCH 1/6] mm/gup: move gup_can_follow_protnone() to gup.c
+Date: Mon, 24 Aug 2026 05:14:10 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4w643aN5OY5RqSwPy5V=ost8fGyaODGyGQj4c_Q+LYO+A@mail.gmail.com>
+X-Gm-Features: AcwNN1VurWkGDFr7vGNUR0UHyLbUPFfOak-4q4LksN87tuQ5GQ8kLbP5vUnF-Ks
+Message-ID: <CAGsJ_4w643aN5OY5RqSwPy5V=ost8fGyaODGyGQj4c_Q+LYO+A@mail.gmail.com>
+Subject: Re: [PATCH 3/6] userfaultfd: use userfaultfd_*() helpers instead of
+ open coded flag tests
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>, 
@@ -100,14 +101,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8E525140005
+X-Stat-Signature: 6miqqx7w51bbw1z3bzkyx9qiohuzji83
 X-Rspam-User: 
-X-Stat-Signature: dye9o5nuzw8odxt688hpyawjpjcbxx9p
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ED4CCC0002
-X-HE-Tag: 1787519051-90518
-X-HE-Meta: U2FsdGVkX1+NPmvl83YoL/llSHoT+l0u+ZTgfvjH0D7EmeZoZWZ3o/6q7i90Objr+BhNO3r45onA66EhgnyPq2lM4ervaeTEMh52eQLutLKwjPMBe5uK8F0QUMsHV2kk2bcL0ks9ocDcS3VJB6z7VnKKNZtINB37qFfBFz//2bR1nGOh3juIEzFK7Y8ZM87DIeVytXuaISXI12/UAlQMjcy0EtiBFS//3k9WFWYU8zGU3wcDiiPGTmHcJV/Glwv53vAAhH9A9iGIbwVY8niubMEXZMtBp3VqbOi+ptbcfjkGnu/8IQiMvVlRregO7FyibeADM4rty3sAszy2J0Lb85E/8YkWb8SRCG8f74cENn7CoUXx1XIm5wzRS1tUBuASxn0iDLDB9pz9x86qq5xdflQ1a5kLZMPi8hu3CIBMjXfVprSp5+olkL3Ty+JEe1Jj40kq27MC8HCye78vWtcUrCYX52RfyyIxtEz94ixwEiFD5HtbAEzjGHZ3yYHXT1NnmSWn/USPeZI4VhojCmv/MJdX/CDc4TVLVkp9EPwrh39EgRLTcSGvNzTdroAxyal+CLwh/Z+76zFjCDqT3nI6nRkP25jmu8fSJTiGsBDCVAJCVcVO3HDWqnOcX9737pBYfqcSPIaS92dfCSqnr7kA35QzsgC1OGUUDKdssYosUk0d+ifXlkQ+Kn7gAx3Sku3wyYKE3UqTyaP0u69sLv6OVU1wSaiwo4mqtKJteeUcKWiAoNIUBdVPQj7KA12IZokdlq6vyw8vg/C/kbFw9tzp5npxHyvvOo92pjJbMKnmuy1c/qojcYwAFuC5Jfz3Pfy0FRLkPnsmCRl0t/MQxOEAc0xko+VLUVpZ+RxxYKOqfgif2Kvs3mxQhnAxYAnj1EFCi1eWC83YwhmtrjSF2i5JG3tBgJyWv7FeC+wIxW8etga7Nt7dXxNaNLknkv6PQV1LxIIkigTo8fA0UaiwZqU
- g2DzpfZX
- NxoBTJ/2bMdDtHl5rGJqv6O7ckEXQINtUG7qU7/gnAeehboZNtC1ma3Alt13eslFidKU+y1jEctrpO+P3KfmgVbIvWg6LfJf+GloaPrEV01yfR9Cn845leQhWLKkVMLk9OrlI1OTDg6E/4K2qQv8yQaNzd5cCm7TjBsocXNxz+ZLy8/4QlttrBwEzRTlpP2jak8L/xbd38FnzUbOfm9TZbpxZsMISASp0UXRRvZ2jT9cs9YzURG288WTuE20ohBhvZ5HGAyCyV2cabYDvwEMpyHh/15lwzjbSSr5FggNODRonpOkMaOxIb5JcPCBnPilFYLV3oCHhWDnwYhT5LY7ReZXe+PXUPBA4LiDY
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787519663-203994
+X-HE-Meta: U2FsdGVkX19u48Ag1YC48L8D15wFZzMu3j/0oszSkjwyiNTQWKOLuBzwuWG6GcxDwXYAlVtlsFEK966w2UIiIBCZAOd5DF0d8U60SnA9pWL8AjxBvQmVog5WRNh/5XTwVjMctFE8uUw8+/Fs+bQNfFIiECNmR//DYWZHIw6WmiZ4OQaE0Zm/xNc6yq87ILLxXBU9rqXiJYX/7e+2KdoS6Ti8SbiBY0XckhnPcX7+5zfjRdiUJ+/tUSJNnFRC7HS6tqUb2zYq0upGqI2825oCqh27K2TSxEyRsgChuQiYQmIWsq3c9YLLbjLT5ILsqsY2aT87aiiIEeqqL37WzF+Tti/ZT8jrbJ7SPOnQYkQwpylomLyRC8KXxLbhix4Was7c8LcA/ER2GokdAOuAbYpNtknxyfKMK3O9tHMrwIcY00yL1ho95gP28aKO76txQXPkwXAESR25ePTlEg1WrtmtczP3nO9anbzR1kTdrPMuPqYREFHr9ogT9tVX7bdUKRqOelK2darfy7+gp99JKNRPFXPu0YmmQIZJ2y8FpEQPi9FHXxd4XfjAzbO1SfAJ9BvqjIsjGq7R/+WNv52+iqGEEipPtAOl2wCz6D12+argPW1jNFILRYOTqbgf15q7By06mVMzzwII9u/zJpHPTvs8HPk+TMYDFv4WZba/1O7WVu+YKvylB0zoQVfKpcKs7tOheTFEkWJHy+hrBmQlSbbgDF4MXu33FGvKAv4VWuIwrEiSZkJz2NfpEejYpKMHCM//sKMuw6v1FVJbWnuabWhHrDo35gT3L40USAEenBHRkdjS93c2hsXV/h72qz2wAMvxPN9/IBWVtHbURE9Ivt0pd2C62/3IVNZIXOI+Na6Is0q7fs8LJu4u6MGMTdCyH6KdL/E4KRivsNHyM3pW63XPkglB3BrwaIlQiqVKMKkF5xd8KIdbMrLTWTByoHTuGBp2WuNLXKlVaKC/Jx4IqEg
+ ai7CgU8M
+ qigsg8UiQ/dx5pPVljs+38pBsw2F8VkZrycu2ftSIYYgr3uW7cgYUsuBq/5b/KC/y/Bg8Uah8v64OfuS1ESgWZU6QmJAgegoSpsBa3QNJghoK8U7VxcAcnkO/WuPpHTGNBEa6/kFSoZ/W0R2cOgiuPTZtFNkSbOW3lK5EJVtoOBzPiqsNKkWRpC2raP3ZMi+ZYcdM7MrSEl8ZRaqzMgc58RZ0ywBvuEMAbOla0qZUFzGeeczSORweg5rwsSPeCMwS4QBZXJ5tB6LjGEBkpPEQRxkh3bxxzXBkeknIsaDubKjRkdPdEnju4N2EXQIv/by5NbrPHU5oT1YayqS4aMNa/Lq8OPt99kjHUO09
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,27 +116,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 23, 2026 at 8:17=E2=80=AFPM Mike Rapoport (Microsoft)
+On Sun, Aug 23, 2026 at 8:18=E2=80=AFPM Mike Rapoport (Microsoft)
 <rppt@kernel.org> wrote:
 >
-> gup_can_follow_protnone() is defined in include/linux/mm.h but only used
-> by mm/gup.c.
+> Move userfaultfd_{missing,wp,minor,rwp}() and userfaultfd_protected()
+> ahead of uffd_disable_huge_pmd_share() and uffd_disable_fault_around()
+> and make the latter two use the helpers rather than open coded VMA flag
+> masks.
 >
-> First, there is no reason to have it in already gigantic header.
+> Convert open coded VMA flag test in mfill_get_vma() to userfaultfd_wp()
+> as well.
 >
-> Next, the upcoming refactoring of userfaultfd flags will make
-> gup_can_follow_protnone() depend on userfaultfd_k.h which would cause a
-> cyclic header dependency.
->
-> Move gup_can_follow_protnone() to mm/gup.c.
+> With every user of the per-VMA uffd modes going through the helpers,
+> their underlying representation can be changed in the next step.
 >
 > No functional change.
 >
 > Assisted-by: copilot:claude-opus-5
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
 
-LGTM, thanks!
+LGTM,
 
 Reviewed-by: Barry Song <baohua@kernel.org>
 
