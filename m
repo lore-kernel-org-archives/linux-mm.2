@@ -4,185 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6D95C5DF8C
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 13:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60FB3C5DF97
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 13:31:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4EA26B0095; Sun, 23 Aug 2026 09:23:48 -0400 (EDT)
+	id 331F16B0095; Sun, 23 Aug 2026 09:31:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A001F6B009B; Sun, 23 Aug 2026 09:23:48 -0400 (EDT)
+	id 2BB7A6B009B; Sun, 23 Aug 2026 09:31:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C7826B009D; Sun, 23 Aug 2026 09:23:48 -0400 (EDT)
+	id 1AB016B009D; Sun, 23 Aug 2026 09:31:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F42C6B0095
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 09:23:48 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B59D16030F
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 13:23:47 +0000 (UTC)
-X-FDA: 85132601694.05.CF3E772
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 869E340009
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 13:23:43 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RUkYnDFk;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787491424;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DA8B26B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 09:31:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 138351A0329
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 13:31:27 +0000 (UTC)
+X-FDA: 85132621014.13.C8D42FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 91B5C140004
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 13:31:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TV9Q5meh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787491885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=P750k92FDOPEiLyfEYlVAZYh/4kBDhf7cRJUBSouW3Q=;
-	b=LFRKN4/pD0uATb+hmKZHkbbajXPhz2ODj17QZEZtT1q4kkBZK0DZ5c7gmOLs00zSt/4kbs
-	8hdHYu9dVhnT1dvkos2yiaP7QJv9hEqw6uQmgk8LW+lSulo1YuY1uhLSJYHN4BxakCQmXu
-	K57WLRVEcjSxgKTcKGKFtUksnzUEanw=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RUkYnDFk;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1787491424;
-	b=f02KS8+4a2Jx7AWTPeG5WLIW6MQpN/WARPv2u/fjhSeM0DLy274Ulv0fqFxylIrUm2yFQ5
-	2SvbjCAsjRNTJiljRYlbfcsmRUDJqAI9kb4K41AemebsVJLaDO3vAq4yaIpJ7NUZKN16KI
-	MD+4fZYEbUfp0IPR8UFqYDbBnc2Ihv4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787491424; x=1819027424;
-  h=date:from:to:cc:subject:message-id:in-reply-to:
-   mime-version;
-  bh=buWeOnDAjAbcot4xR0dhWSyqZXplZoESgZ3Vtl6z50c=;
-  b=RUkYnDFkuvFszR85xG/7+eF6a3vttVixsbfy5VlEvaqM7HZp8M/Fjozd
-   ECrvjiuh/EAX48ds2g5NMzMmXeg5zdKGDe0fODF9yVsw/Dm9KEIoheRO+
-   4s3q7HzN4edLY99Gbjgb6mFPeBRq/LICYMW4C1fVj5UTOvaYLqfxiDVxH
-   jaILGJZcZt5YYy1mdhszt/FCEyBASwiC04o/IzgEOw/07rr68T2+JG1Y4
-   vxP6GfckDfy+ouLW4Q5TZRHiNB9+Umg5s6Tz0G8vyiyAkvNoLpYzZsQgX
-   3eEcDub+RBfP4sHP2JhPcqNuQ+HkHz8VD2b1wvkfxgwSuYQUXs4Ceg2VQ
-   A==;
-X-CSE-ConnectionGUID: zjVrmxt8RheT8bTNsPbWKA==
-X-CSE-MsgGUID: kPtJOq01T22gqvk2YWYTog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11883"; a="88021294"
-X-IronPort-AV: E=Sophos;i="6.25,238,1779174000"; 
-   d="scan'208";a="88021294"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2026 06:23:43 -0700
-X-CSE-ConnectionGUID: CcAjTjA9RrqKKaR3mbnjjA==
-X-CSE-MsgGUID: Qk9kpoXUSsixD2i5dI4Jzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,238,1779174000"; 
-   d="scan'208";a="266246370"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2026 06:23:43 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sun, 23 Aug 2026 06:23:42 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Sun, 23 Aug 2026 06:23:42 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.26) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sun, 23 Aug 2026 06:23:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ef0+B6zz3fN3tJX3hbWZcLQY4bRPl6F2yVYGpWQSle2F8YC6dPZm3Va6fBgxVPsUzsIRv+c/pokOd/lkK94YDO4OAvCn4OOoGWIdi54HoJH7uqz2ImP3LLmUdOU0TLDEoYZG/ph9veGYdyXtn3WgauwT28a+vNPIfCBicppX08DCJ2HkoNjEABCv26yLwhrfD2/9M/2Bpi90LXPtIjmMEOFrYnSZAvkiNv8FYPotWZmQ25SJeA5Ulvb3q0LBIRttCwijU5reTvQiKIc9GnwzqseeoN4/OEdX/6z2szzdRQb8f4S592O9ylELbOf/qO943Pc84RETicJ3qaSNgMDwJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P750k92FDOPEiLyfEYlVAZYh/4kBDhf7cRJUBSouW3Q=;
- b=oZ2UBrrm/WUiFoO65V9uDDGLqYwzm2c2SIsgHQw4JoaViwify8B64qd+dgPIHziRW9AOVVErxo0NSMqgGO4J+6spg+XbE78v9Q+7tWMVL/WHmRtY1uq2H2Gf3pFrHEs+jT8XfOEXSEs2mhZTO31GlED+4UL7/YJtqgPKpqaAavDHHwPfw1MnZMBYtlH6oftRr6iTv3kBlwMwhOFXRXj24/QO4Jnbsx5OTRDuuKpgDEHSbowUaHUP7qZezWt9mdKMkp39K80wJTP2tOKCsSUrjSAK7qFT6dL267L5ewRQuBtpNsM7ExC0hor4R3QCj14gEzVZTsJqWWb4LCkQkPjQnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB5214.namprd11.prod.outlook.com (2603:10b6:a03:2df::22)
- by CO1PR11MB4993.namprd11.prod.outlook.com (2603:10b6:303:6c::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Sun, 23 Aug
- 2026 13:23:40 +0000
-Received: from SJ0PR11MB5214.namprd11.prod.outlook.com
- ([fe80::5926:3836:4212:8640]) by SJ0PR11MB5214.namprd11.prod.outlook.com
- ([fe80::5926:3836:4212:8640%4]) with mapi id 15.21.0339.012; Sun, 23 Aug 2026
- 13:23:39 +0000
-Date: Sun, 23 Aug 2026 21:23:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Anthony Iliopoulos <ailiop@suse.com>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: <llvm@lists.linux.dev>, <oe-kbuild-all@lists.linux.dev>, "Linux Memory
- Management List" <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] kernel/profile: remove setup_profiling_timer
-Message-ID: <202608231532.dENn2OSP-lkp@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260821091744.91496-1-ailiop@suse.com>
-X-ClientProxiedBy: KU0P306CA0080.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:2b::16) To SJ0PR11MB5214.namprd11.prod.outlook.com
- (2603:10b6:a03:2df::22)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zsSjjn7DLVrE+cmbB2WIsuyMJH7KSRD8XhZ3lqxHxTc=;
+	b=ekmNu/ZtGzp0AA8tKjN9XF5U4Y6PHCOlbNfia2L71JGUI9/gheo5xjS+6cuLU5aBqj+eql
+	6cZ8snB9knY71ibwalB41eETza8+IO4R9pJEzlryGteY+hIQEmjK940gtcUeSKffF23Y7s
+	ffoScV0zwj2+PeURkXcHCrtrFRqIPBI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TV9Q5meh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of yukuai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yukuai@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787491885;
+	b=ADiFLW0aBcKj7irRyck+ifKUS34UQqjEkvxcyxUuhnN6jhOP2fJNUexzUtYAqtzhJ5J2is
+	jmuhBiN7/fKMwYDpeNPSdmGNLwo/XvHe5Jm2DDxQl8m/58JSlgDW7cnLRklCqbYvlXm+x1
+	NIEwyuYpeHWPsa2TBNv42M9De9mP0aw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B38AD60008;
+	Sun, 23 Aug 2026 13:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5E21F00A3E;
+	Sun, 23 Aug 2026 13:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787491884;
+	bh=zsSjjn7DLVrE+cmbB2WIsuyMJH7KSRD8XhZ3lqxHxTc=;
+	h=From:To:Cc:Subject:Date;
+	b=TV9Q5meh3pwHXqjStt1RaCQzxfSQ/sLyIC6aPeQbDgn8M+12n2iTRWIgCmgx4u/Cq
+	 i6MfKXjSUVw3ny9D9Wt6xb2kveiUodxsZPgjrJf0bFj/hA3C+/CE9npDXJ9iPmJHYB
+	 47gUnRlOotDIkz6qidAHuIIUGgooXOqUzMVV8xqKgGV7Grz7GhrQwFKyRdsttNV1oZ
+	 DY05Oo7QYT+QlOjKCSl4VBvA1lRxrkUxc0mhWOcMgNGfEJK3z/HrU60Nn33qgSbgIv
+	 nigBw1iTObQb89JTmWUVK2ziFz56GKSVqSCdnI8uzig2wuONiTvVc2+NJbGyjAr7xE
+	 7XqOGKI2SqJ9g==
+From: Yu Kuai <yukuai@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <tj@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Yu Kuai <yukuai@fygo.io>,
+	Christoph Hellwig <hch@lst.de>,
+	Tao Cui <cui.tao@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Coly Li <colyli@fygo.io>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Song Liu <song@kernel.org>,
+	Li Nan <magiclinan@didiglobal.com>,
+	Xiao Ni <xiao@kernel.org>,
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <iweiny@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-bcache@vger.kernel.org,
+	dm-devel@lists.linux.dev,
+	linux-raid@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	virtualization@lists.linux.dev,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/3] blk-cgroup: store blkcg in bio before blkcg_mutex conversion
+Date: Sun, 23 Aug 2026 21:30:42 +0800
+Message-ID: <20260823133045.970199-1-yukuai@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5214:EE_|CO1PR11MB4993:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c1c01ac-6b12-4875-28ba-08df0119bea1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|10067099003|22082099003|18002099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: QAn7n54xw22G6PyN2GCVf5kJPE9IBpKebpdpQh5UnIuk+82tTUdnxsvhj1hs2g1QME0PdqOnY6gvtCRRmQ3KU0D8885n8IynWezpfhsXMCB3xK7Qi4FOZHABpI0jmZFYQp4OngLO8FFg+5Xkdsr7Y8ZYyl2eGWrIHV751WRH+SVhtDTdfaGVaHsQgTBvS+3qv2a/GLQCAptRj3mLcyY3y8MfwVNw0lDb+MAJiymd3lmfaCLFoanPzTIJQlY+kOEnlXtQxjUyCUvRhsdWBdwvfx9oMgkNHIWchMIW2Q1XgK3JhmUauRHn1/ac6uaNwqt254F4xG47VjOScBh2Lk/eVHUD2CTuUtZkl6LcBe8G3wuMPNZXA+cxAT557gG5japLvMo+N4hNbpWKYjjgaXUTnhKOZ7XrZG7sdmstWshKNM1dvUpOYhLTJs8hSLiLJcJWpyvSW31XLyEHAWNw/Zw1LYBti8+YM7RPotLnsDrYa2ygminOU/gzmcWtYLM7KYp9uOww0T7shO6JU7pFjO9zYjiUuLUK3P3ogaM9HbwyVi82hmejV1q2jhDISDASJ/VEdhV+2wkaxCqNSWgU13NFEPgflRYUv6BxxpeQHvPB5j97pmxY6sxC7ySBSkCLlAYT
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5214.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(10067099003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SPWtysDvARmFcdEhSrUGlmNapBJ9TK77dryGMlKsDpIQcrZum4oroFgnwNQT?=
- =?us-ascii?Q?ZjEzC9iej7hfwqYdxM+dHyMgetWH9CbnLldk4EeMlg3UpSYuLKd9AeXgVhs+?=
- =?us-ascii?Q?tGmJaD0YH8JLD/650tDaBDCHFd5TgZUCOvDpUQhwfIgpEWt5PhxJd8bZZSyz?=
- =?us-ascii?Q?+DUjN9yq+pHW3rfgUtm/ugrNyEzz2p0Pl3WSrCyi07s0uklNzYFjbSdrPwTt?=
- =?us-ascii?Q?ss5b9MWzFsMyVimnP9gMeCMPH8/BWJebvihHMf2gOtiGioq/zNec8OFs7+km?=
- =?us-ascii?Q?wEZcPD5kX4WYZKHfliOyEu9w/r9gLeXKD5pDAR9wk4IBH+KSTV+LEBQDyAJN?=
- =?us-ascii?Q?xkrbBWStti1jBx8+IDtvr/Z+g5cIulL2WVH84IsEREajqvnGtEMH/9ONwSm3?=
- =?us-ascii?Q?sfsa39Q6EgF8T+j7w4K/Zu8oUyuZZ5l+Y8U34HXZgUyAVCH1P7wqxpqxtCLX?=
- =?us-ascii?Q?4n2s4nRZ5MQuAY+/v6YEM+iu10JrsFd/coV4dsj8wjXLMDi9W7apSfV9szjr?=
- =?us-ascii?Q?yOhm5nGMcAevqxOswVRghGvsE58a9ZVkXRjGAvNMxQPOZ0wMmVIuIg54E6Gc?=
- =?us-ascii?Q?YcPaFkQmAf5R0IAstM3Q6Hqt2u70nn29A3MgasYeM6Ii2wfK1Pi7fDZsUxU6?=
- =?us-ascii?Q?x2kNH4bTEDT5wnq4lb0tJ/JYIIdKdnEQIQ8V6ijdY3RLe4Pdb+s6IUK+NvP7?=
- =?us-ascii?Q?1CWX+dTCgOeSG7d5nrLQcrTlHSbJ9Q4NTSct3unskimIwToPYQfsJNr5m9/q?=
- =?us-ascii?Q?BEYYkdH6LYW8og8XBJx8bBSSM2FckdTsjqc6yuYIT0pQZM6XNYjfC0uJAg1s?=
- =?us-ascii?Q?HuDYGFAnEUetxnjyG2poUA66HxAkHos084QSl5Mz2TBqyxbspjjgOov5RmRm?=
- =?us-ascii?Q?gTXbQ9TYjmrCPoDPCJW4+N/RQLl5fKfHEiqwmLqTEUdkfx0DHECz4ewDymZ+?=
- =?us-ascii?Q?gON/QiA6eMU7GGhMbOJCYNQSt/Vzw+Mx8BcT+soFrMKlgF1GULMciPi8t+K9?=
- =?us-ascii?Q?dSffi1K6D2WFM8DPxK6LayGwSs9BcZOqAm8InkS208Z/mPmQ48xi9hIgIrRn?=
- =?us-ascii?Q?vM9+paSDoJesyTXGi7UWkgmJMYRrt8j9P+cc59uGTDrRlP8YMiNopErNMr1J?=
- =?us-ascii?Q?bVQos9u7DX+Jot+7El78XCKrtgP+f8P5HcqYlA20SI6kKQRK/+KSrg0zz/BV?=
- =?us-ascii?Q?NIkTsRsTtgcFHbfLDa3Mep1HLY1UCx4W3ldkbGCCdn4OoRn8fKNtvVi+Sh5x?=
- =?us-ascii?Q?oh4ioEEaL1mBNrLohvUZWJg6R39/G8YcYDkdvnfO7wxo4aiKscG8zOGPvhl1?=
- =?us-ascii?Q?mmyFjpiqgaavpAm41B+/4KaYAUjVYzK/oWf738kL9YxDtdSF7xPb8jACjBPO?=
- =?us-ascii?Q?+rfnhkmP8WXYmvyEhtz9inUsOtx1DOxk57KYpsdrAVS7SD9OAeaBCey+Uoqy?=
- =?us-ascii?Q?ZN6VnZakOlSJBKnFbEY7ePyEchNMlADUPnOUOHFUrirl/K1vpjeCIgRTqypo?=
- =?us-ascii?Q?I1EKQ3icX3FdGSJzyjSj2PLvtnTLpk5L284r8rKh1oqeUQg7FAfo8GTwq7JK?=
- =?us-ascii?Q?KZ0mgQ45C4Ol+FOGnOdooQ9REOjz1OibnU2JhzLzCGDmnTA8mvFszhximSP+?=
- =?us-ascii?Q?C10yLjii0Q3aoyKBbeZAZZGEz/QHX6ltNi6/z0PeaAbunC4FtwqMeqa3YI12?=
- =?us-ascii?Q?Y5og/Nkx4ZxjrSNCwyKt590o0b5logNgiedEBd2G9YWBtU1m8XmQ6pOmklYh?=
- =?us-ascii?Q?XKsmbWqNuA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: xQK1Bmc/gh+D2pt2IpkjYt24UxPG0B+a8ATP+Jc2hGHuwz/TeDs+7iKL/m6ZHCTctWdWUn5JXbQVw7Ikjpbe2WxEHUWInTQDhfhtZKgJyHZv4jjmYWjgAAkfvQ3HdN3NZ3JL9i0DpcQkK3K4vYWCXklETjXvOT4PCmShpeDa5ulddHSAsVtK/xBCIEcGvx4eK8dWDuTMpwSt4N2CUFn4Fr1Djf/Oj+/CZT7potnmxUjnIINh3blSoEYrAGHyesv1Jhgxqu1r1cIh7NZR7JieCEhcua1M6dIbqk1kJrh5/gX7+bfXC3jiIUYaedKRsAxaqNfBWzAUS/dT3C8eBljRzg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c1c01ac-6b12-4875-28ba-08df0119bea1
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5214.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2026 13:23:39.6794
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VnXvlPyh/47TjI2tInvfxKlFZZSRmvlUqCSiukMVnxmMI/lUh8ApCOQ6uo6hDhlQdKbpg9odnyQeRJLbLaw7GQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4993
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 869E340009
-X-Stat-Signature: g3hiidjeeqwr77h5r7aiiugggb5ye4qg
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787491423-33084
-X-HE-Meta: U2FsdGVkX195Yj9gnJ4OqP/+PWXcasgV+F3FF5aVpeI+AZnRyjjEmmSPftvKoBFdb1PG573mTn/y0oyloAnUIYDj28ajPiOToarHEwcpgxjHzKhuxPKJ2NpvFxnYYwrYqDiIfHSSdaEQ9J6UBVzfKRf+XGgcV0PnfEN+pGmhoQejmPQONYDnJXESdigP0laCODtQAWrDFTBSeuMhGhCCAp3Ip4aNiNOyoukejH4gO7ryTLufL6uNUtWkxUWkqGEJ18eFsm2P/4c9bbXiFQ8gyZAQaKhSAyW6Wr80P081fp1yY+T4wFGvDA+bYO4d2qcpMA1Ph2rvHTSyGbZ9hictnLtsMSugbORuAvirGB8lOEVXuqRkGG4FYufWMSztfPfxHPJk4qI0CY+mxUV+DUHZJoEngKjfrGOj+ZtUMP8up1PdgjzbLsm/BDClnGenBhvAILTvSn9EuOTexOakqkyiOhzDyhgL3oojQtaWqqTtE4fJZFbn3vFa2KXG+lzDdEqu1Etgrg2YC73DWWQrDY+2+PZ9E0iwZsJtTGKO2beOvuNCL6CS/iw7FdH5XFNOzZ+5j/jJ17mVR+ruSamPey1e3+BCVAF3yIKv73jYBVY23/Tmd80pdFcH74Tvmo3B48ZW/s5/RwbCBEP8VL/AlHc61Ry9N1d9P+jYZDtgH2s6lcCf3yctcC8xKkqfFIRP7ePemnejDoMBqoopYb2gBO0zgKswEbkLYCJNoZzCDvDedAv2aa9z96WjgKVyU22m5N3YOWtFxc0QTjgtahjUXwleMhEvcI7L8XhxPOJCs7ivgzSQmvRBuY/q+as9sddzfH6Y+vjr4jSfePFrLDkUI6HB/jrvLMfiybrPMJOyi4i3EnqunLlaeWnVvN5nXacyepqzM+/tDbSg3xhwUfvAWQLtJMOeb6PSW8cHF1Bva3cijtFUh0R0UmXxDp9F21nyy+/mNLThqz8Nzv/yVteHeTY
- COI9uXFk
- Kz3mSJNC4MWxUiPbJ3g4HVdlcM81LOL80bFhGeBqNeGS7RfQsbYwuqr2QcxmD+56OKt8i4jdys/r8fhjIk7Zy/KH2HVb9IWQYyh+McPvHg25KWTOwWDJlBy1dWXaFWvQy+kJ9Xz7d/HNZirU8YnERPjLvGTluGrysPelmLwyzwJsUJJEgDbGQXNvLDl2QCWi4Osh9Iqw2TGF4dhfbMvZ4WSnF+zGWG4rlN9b1r7IS62Qj07GTIAsAS4tMJ6ng7Ci/mLuw+fCVVNiPPESAytiHKQk9IdU8E2ndrVE56+W8izUP+lfSKvFAuzrB0aWI9RhaIr3psOPCmSuB7t1zDTPV4puOJfmKJ8GVe8DzC2UHoyKV9ERnabJQ1HO3hbI2LjWutc7bdimdTNnOBXMIWwfYKeKMde2Iepm52KM6uYwaDgERD/zrRQaG8DzgD4jeEU0lzfaPij9GRfy5U+qixKMzVEuQsJtjng8xgxkV0WO2lUbUV5gNDPrhZWsanEC8BKDg42I0IZ9nCKRgRN5XDCqJpTtE5/xd6cRZVekkyvS0Zm5BhfPpYgLGWUmwmmvsRNNW1kuyF1Uu4NiKUwXfUUCTWOUSwjc7NmJkqIdTFgvXjt/gG1V0LrOwmTVNij4HAEQ2Ynb4kUcm+oYpyDkWWjWtzdoYIkkCs+aCBOZYzAxF6nk6n8ChzSashJuvx4zlNSoCTmUFF40nkMHtr9FMNXCdGAuFX0rqwzl3Xdf7
+X-Stat-Signature: frffto6r41qjbg1orq9rq9mzesge1yjp
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 91B5C140004
+X-HE-Tag: 1787491885-345846
+X-HE-Meta: U2FsdGVkX1+iNNxrQX9nqhTXUU9cbtT1tpQbE4VtojVHenuJaY1yC0XBUvgP7VL1vGLKAsCDTZC6hdzasLFk5QILu2feYLcF8tmi72MkEIh0atK0TVsB3e0UKG0a0bo0zN3M0XgbV9eLaDWJ9W/v3ubv5SUN3JQYV13gtmpLewgjQxFUuXy0f1vsEHX7MzWjBQP5zE9KsnNAbkZgiNj1GLCETOMy+5xnGCFG6xxNYp/DuXQ2AfxOf+DT3s5ziqNJgO16alyTT4nIK7hD1Hv+0ak0quttz9xZf2uoClNwLHE+0t3VKNlAsTn8NjDWyonJDbHixeWR3wiY0vrolOF9GcnOW1aUpPjtVcdXfgXyIvr94CAiFWi070D3KD8IQ82TGqd8rHbFSlXkv2eiUIWRm7qq7+HUpDAkV2gCO6uCfHLwB+TLvDlZQVt9Mlv8o60+pQIktLTUEFYFvLZomeOm8u3sjUvaHTVNu10InXGLubYZdepktjY5G5juJ1C3P2f+VIhaVTqzaqMCfksTGDobvyWuv5/J2QMt2aPoFvbSleYIq0hTJZezV8E4Jq8enIdxmd4iBPD0bZBQW+oMGQSx+fMR6OOsjQixoQaCPJ9dmlZ5PGZfGPiUIga5trpRER0NYfJ8Lhri6WAvCYOiwvcdk7VpPWWFO+qw2whKNJ0+4dQziaAo7BRGvIvmDk0P1R89yKgOD/QJapdlXsW2g+ugqPNqAh4Fd+Ad5GVf2kSFKKpp0RfXoYvXxukb0h95ixq+p1/wizSyNz0sMCpwMoJp9P6wlZQ0HWflsRm0H6I3RYQ0gNKmhJiYocDrYxcs8CcTMR9AG6f84k/1mO9G3RgBld7OoRd6hJAVxnfvCsnNy+FOW1oCL66aGLV5RCJ2HZeuqeNdUnBXSsXLd6OooK8AauLOXdBr0Upu+1/fVayqjD2QFA1p/9CqeDJa3vet7yr1PzmOKd5oKDWfQfaOvVf
+ JEm6Hl8Q
+ Cy60pCbfwdWVolzrm66soaVIa7CGjAiL6m81kU2ddztUEFQNQs8u/+jrYMjs1CeKIowS3Z5a0NDo1/qOZfRBaOLM5wCfSEJ8xnP3l/w4E6wLxaCvR3W3QdI257C6HVw9oTGDiI7rmCIS6H097pVjjWYKCHW06Yh1PUDvC3lmrWqRTDZke9kjAqa25iob1r8FRWY2tyUsyRyX4WBpZSkWGVg8FYll3thnmBIdNXPZDSivm36yfxIgZLxjYPjB4wYEe4LV0b+S1mrObxHSJ4BMYd+4mvzKy1tiiWZiVVX/4cXCcBkrl2Dnw9I8cNgQx2Hog3GnZTa/Dbzi/jAIhPXrHaXuBBY9msCjykoDzNAc62SeSKBU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -190,53 +133,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Anthony,
+From: Yu Kuai <yukuai@fygo.io>
 
-kernel test robot noticed the following build warnings:
+This is the first formal, non-RFC posting of the preparatory series for
+the blkcg_mutex conversion proposed in the related blkcg_mutex RFC v2
+series [1].  That conversion moves queue-local blkg topology
+synchronization from q->queue_lock to q->blkcg_mutex, which is awkward
+while bios directly store queue-local blkg references.
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on linus/master v7.2 next-20260821]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+RFC v1 made the stored bio association queue-independent by replacing
+bi_blkg with bi_blkcg, but a bio-owned blkg reference still had to be
+recovered by looking up the bio's blkcg and current request_queue.  Tao Cui
+reported that cgroup removal deletes a dying blkg from the per-blkcg radix
+tree before a throttled bio drops its reference.  A later lookup for that
+pinned blkg then fails, triggers the warning in bio_pinned_blkg(), and
+leaks the reference.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Anthony-Iliopoulos/kernel-profile-remove-setup_profiling_timer/20260821-111744
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260821091744.91496-1-ailiop%40suse.com
-patch subject: [PATCH] kernel/profile: remove setup_profiling_timer
-config: loongarch-randconfig-001-20260823 (https://download.01.org/0day-ci/archive/20260823/202608231532.dENn2OSP-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 935bfc708590c60147a79c7df145bb6e68b1d388)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260823/202608231532.dENn2OSP-lkp@intel.com/reproduce)
+RFC v2 makes request_queue the authoritative lookup owner before converting
+the bio association.  A queue-owned rhashtable, keyed by the blkcg CSS ID,
+keeps dying blkgs discoverable until their references drain while
+q->blkg_list remains available for ordered walks.  The bio conversion then
+stores and pins the blkcg CSS, lazily creates a blkg only for users which
+need one, and uses lookup-only access for completion and accounting paths
+which already own a blkg reference.  Async bio punt state is finally moved
+from blkg to blkcg so punting alone does not instantiate a queue-local
+blkg.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608231532.dENn2OSP-lkp@intel.com/
+Changes since RFC v3:
 
-All warnings (new ones prefixed by >>):
+  - Drop the RFC prefix.
+  - Add Christoph Hellwig's Reviewed-by to patch 1.
+  - Add Tao Cui's Reviewed-by to patch 2.
+  - In patch 2, relax blkg_lookup_any()/blkg_lookup() to also allow
+    q->queue_lock as an alternative to the RCU read lock.
 
->> arch/loongarch/kernel/smp.c:720:5: warning: no previous prototype for function 'setup_profiling_timer' [-Wmissing-prototypes]
-     720 | int setup_profiling_timer(unsigned int multiplier)
-         |     ^
-   arch/loongarch/kernel/smp.c:720:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-     720 | int setup_profiling_timer(unsigned int multiplier)
-         | ^
-         | static 
-   1 warning generated.
+Changes since RFC v2:
 
+  - Drop the old patch 1 and send it separately as a bugfix for 7.3 and
+    -stable, as suggested by Christoph Hellwig.
+  - Rebase onto the latest for-7.3/block branch.
+  - In the new patch 1, note that the remaining q->blkg_list walkers are
+    cgroupfs/sysfs slow paths and can move to rhashtable iteration after
+    the queue_lock-to-blkcg_mutex conversion.
+  - In the new patch 1, explain the list_empty case in blkg_release(), and
+    add an RCU lockdep assertion plus documentation that blkg_lookup_any()
+    does not acquire a reference.
 
-vim +/setup_profiling_timer +720 arch/loongarch/kernel/smp.c
+Changes since RFC v1:
 
-46859ac8af52ae Huacai Chen 2022-05-31  718  
-c718a0bad75cce Bibo Mao    2023-09-20  719  #ifdef CONFIG_PROFILING
-46859ac8af52ae Huacai Chen 2022-05-31 @720  int setup_profiling_timer(unsigned int multiplier)
-46859ac8af52ae Huacai Chen 2022-05-31  721  {
-46859ac8af52ae Huacai Chen 2022-05-31  722  	return 0;
-46859ac8af52ae Huacai Chen 2022-05-31  723  }
-c718a0bad75cce Bibo Mao    2023-09-20  724  #endif
-46859ac8af52ae Huacai Chen 2022-05-31  725  
+  - Add patch 1 to wait for every old blkg to leave q->blkg_list before a
+    shared request_queue is rebound, instead of treating root_blkg == NULL
+    as completion of asynchronous blkg teardown.
+  - Add patch 2 to replace the per-blkcg radix tree and lookup hint with a
+    request_queue rhashtable keyed by blkcg->css.id, as suggested by
+    Christoph Hellwig.  Keep dying pinned blkgs in the hash until
+    blkg_release() so bio-owned references remain discoverable.
+  - Fold the v1 helper-only patch into patch 3, as suggested by Jan Kara and
+    Christoph Hellwig, and make bio_blkcg() naturally return NULL for an
+    unassociated bio.
+  - Rework patch 3 so blkg_lookup_create() acquires the bio-owned reference,
+    falls back to a live parent when creation or tryget fails, and updates
+    bi_blkcg when the returned blkg belongs to an ancestor.
+  - Make bio_blkg_lookup() lookup-only: it returns NULL unless BIO_BLKG_REF
+    is already set.  Use bio_blkg() in the BFQ and IOCOST merge paths which
+    may need to create a blkg, while keeping blk_cgroup_bio_start() and
+    completion paths lookup-only.
+  - Move CSS online-reference handling into
+    bio_associate_blkcg_from_css(), including fallback to the root blkcg, so
+    bio_associate_blkcg() does not take a redundant reference.
+  - Keep the v1 async bio punt conversion as patch 4 and document that
+    async_bio_lock protects async_bios.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Previous versions:
+  RFC v3: https://lore.kernel.org/r/20260818070641.756747-1-yukuai@kernel.org
+  RFC v2: https://lore.kernel.org/r/20260811064744.1139446-1-yukuai@kernel.org
+  RFC v1: https://lore.kernel.org/r/20260804065313.2092022-1-yukuai@kernel.org
+
+Related series:
+  [1] RFC v2 blk-cgroup: protect blkgs with blkcg_mutex
+      https://lore.kernel.org/r/20260724123037.3004560-1-yukuai@kernel.org
+
+Yu Kuai (3):
+  blk-cgroup: use a request_queue rhashtable for blkg lookup
+  blk-cgroup: store blkcg in bio instead of blkg
+  blk-cgroup: move async bio punt state to blkcg
+
+ Documentation/admin-guide/cgroup-v2.rst |   2 +-
+ block/bfq-cgroup.c                      |  16 +-
+ block/bfq-iosched.c                     |  19 +-
+ block/bio.c                             |  22 +-
+ block/blk-cgroup-fc-appid.c             |  10 +-
+ block/blk-cgroup.c                      | 339 ++++++++++++++----------
+ block/blk-cgroup.h                      |  92 +++++--
+ block/blk-core.c                        |   9 +-
+ block/blk-crypto-fallback.c             |   2 +-
+ block/blk-iocost.c                      |  12 +-
+ block/blk-iolatency.c                   |  11 +-
+ block/blk-ioprio.c                      |   2 +-
+ block/blk-throttle.c                    |   2 +-
+ block/blk-throttle.h                    |   2 +-
+ drivers/md/bcache/request.c             |   2 +-
+ drivers/md/dm.c                         |   2 +-
+ drivers/md/md.c                         |   2 +-
+ drivers/nvdimm/nd_virtio.c              |   2 +-
+ fs/gfs2/lops.c                          |   3 +-
+ include/linux/bio.h                     |  26 +-
+ include/linux/blk_types.h               |   9 +-
+ include/linux/blkdev.h                  |   2 +
+ include/linux/writeback.h               |   2 +-
+ mm/page_io.c                            |  13 +-
+ 24 files changed, 366 insertions(+), 237 deletions(-)
+
+-- 
+2.51.0
 
