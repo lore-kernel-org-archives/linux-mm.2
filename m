@@ -4,121 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38425C5DF8C
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 19:41:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 619F6C5DF81
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 19:45:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E7376B00A1; Sun, 23 Aug 2026 15:41:23 -0400 (EDT)
+	id 37C756B00A2; Sun, 23 Aug 2026 15:45:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 598256B00A2; Sun, 23 Aug 2026 15:41:23 -0400 (EDT)
+	id 32DE06B00A3; Sun, 23 Aug 2026 15:45:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AEFA6B00A3; Sun, 23 Aug 2026 15:41:23 -0400 (EDT)
+	id 21CA76B00A4; Sun, 23 Aug 2026 15:45:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 10B0E6B00A1
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 15:41:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 635D212037C
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:41:22 +0000 (UTC)
-X-FDA: 85133553204.16.88B43A0
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 92116100005
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:41:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=R8Fv4Jfb;
-	spf=pass (imf14.hostedemail.com: domain of 330yLagYKCAIy0kjcpiqqing.eqonkpwz-oomxcem.qti@flex--wyihan.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=330yLagYKCAIy0kjcpiqqing.eqonkpwz-oomxcem.qti@flex--wyihan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F0C7C6B00A2
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 15:45:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 72D1E14035E
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:45:03 +0000 (UTC)
+X-FDA: 85133562486.01.675B61D
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7D7031A0006
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:45:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="i BG4CWT";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=gqFPsMeW;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787514080;
+	s=arc-20220608; t=1787514301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KyxwXzW/e6yZkOmQq00SGFMBQuYBpdvqua93AJie1gM=;
-	b=YZ8VuPO8QtVOXnUP8xpnljP9iazrLkqxnDNN/VF1oiF3M5KQwfRW0Syx83vpm/VzBDfj3L
-	Jl7JQ6pxBwA8zMjCOmrn5qsPUxlBhktH6BuZk/qO2IK3BCYizB9YsVwEaQTGcoOLAAdMJc
-	tGSsQRt5I9fl2kHwd+XlKzLmAnXHe9w=
+	bh=B84SOBpXfchnbFJACUkoJj9mcWI8juB/tA+PVTwP76c=;
+	b=hk8PAsF0xYpA6mjf2dXjG+nS0645erg4wpLVEdM9iadPC9mLrFRGCsD+lsxi7o9rPEpLYH
+	9+UEszQRJBvYsBjFGVNsp1bfj6azezi3oeLj0Ep3HhSfWnaFWWhGj447SUnRjSPNoMW5Fh
+	rylTNiZeOdXtKdXKKmz3tUqcJg+KAtk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=R8Fv4Jfb;
-	spf=pass (imf14.hostedemail.com: domain of 330yLagYKCAIy0kjcpiqqing.eqonkpwz-oomxcem.qti@flex--wyihan.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=330yLagYKCAIy0kjcpiqqing.eqonkpwz-oomxcem.qti@flex--wyihan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="i BG4CWT";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=gqFPsMeW;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787514080;
-	b=tTnF2okAYBGG7oyIe5Rstm7l6jd47ae3kci2eBxvtbahKk1EeZ0NqdUy8rOfFeK/WgOVb5
-	1jn2U5cfTL09y8sMMZ8lLBplPdEPlIjYZGby2HcOCKS7HTB2++DfEK9BueXikQBdj6GJ+u
-	di0BcXdgiGQhsIPczx4fRBxBWpOxIRY=
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cec4226c70so35546435ad.1
-        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:41:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787514079; x=1788118879; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KyxwXzW/e6yZkOmQq00SGFMBQuYBpdvqua93AJie1gM=;
-        b=R8Fv4JfbY5l2xoIwYObDSH5Rpuxs1MMFXSWk73eDAtw/JS45mg9swm1CEKhLmwtkf6
-         GCDsZ8WyWhLBOxGGr/q8cCxR1pqg8JAb9nIBu8WKyKSl7EkUmTWBO9nzNbluJfj6yE3p
-         ulK+IhmW4lwoc5E6RDyOcwcU4GhLIQReu4IH4ulz7E7RdVMHwf3kilwtXidtrLGstTW9
-         4mTw009Adql8Vy3x6x8mLUKP195LAxcuTK1LYXZ7wNB4Lh92iqa/mQeVtdO4VBQo7M84
-         YpmAFWoRuthb2kBIGuV11oMY1LNFaW3zDPbogFnl6ZSF00wuj5T89KbcOp2TrnzYAGi/
-         xdCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787514079; x=1788118879;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KyxwXzW/e6yZkOmQq00SGFMBQuYBpdvqua93AJie1gM=;
-        b=s+MgXUvQX1EVxaaPDEJAWBzG6s8Ddx6nJtYIdG41rCbxB/jSIV/ipbT8O25v4Mlx6D
-         Xxk5ep72+aOsMceLtDwFFZqtFBMNbVBlPRHF6ghXYa/GmiFst7k9TkNZZgKk462ltTsf
-         tc40rOlaALjODR1K5iBd/cBTCTDpB3b656eWG1w87+pJouTW5t8utTg8IYBvqDOVVoVg
-         hTpawsEVH8Lx+0McB3uKYyO5KBjlGXl70rrVedDAr3SiBnmyf4vwO7pmvlIYUgeHv1pn
-         HPoRcRWXCTf/1tgljzyBooYVzT9JkUz7+OoKNEGDUf5wUAyKmp1LEar9ViPubNZKiBq3
-         zMJw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq4m+hoRCVY4fIimzoskGBcfY5j8lgpM+PnW6Cj+NfLRVsODN7L31GvHVb1d99vmQcFHwzoamjyeQ==@kvack.org
-X-Gm-Message-State: AFuF++l16laDCAMgau0NYb5WWk7noaeZ2JVRL1/bezxbqsJQVhUXakmT
-	xlnfWzQknQOoA6XPqzS9l5OKZu7YyGnZnF/tmvChUL9xTS6L+r4PRUyIu0NLIbVGqNNgjbTNVXJ
-	mwhXOVA==
-X-Received: from plho9.prod.google.com ([2002:a17:903:23c9:b0:2c9:a5a0:a677])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f693:b0:2d3:7c58:b0e1
- with SMTP id d9443c01a7336-2d64a9a6dadmr341194815ad.0.1787514079265; Sun, 23
- Aug 2026 12:41:19 -0700 (PDT)
-Date: Sun, 23 Aug 2026 19:40:58 +0000
-In-Reply-To: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
-Mime-Version: 1.0
-References: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
-X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787514072; l=5373;
- i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=6H/urXyqo0R+eZVEoqxfnPvxrvulOJIGV7ZBXfbSyS8=; b=cfUM1tjzhEk88mj+/xQKY18Tt+IgfKj4f4BWzGxytwJR3RDp3E/1P4wLOfG3mtNtrmLJ7RP7q
- DWeg3JebmrBC9/hzRqFcen3nbsG48on5ZN3oWRga2CjGRq3Ol71dSNW
-X-Mailer: b4 0.14.3
-Message-ID: <20260823-memory-failure-mf-delayed-fix-v5-5-d97a5703e45a@google.com>
-Subject: [PATCH v5 5/5] mm: selftests: Add shmem into memory failure test
-From: Lisa Wang <wyihan@google.com>
-To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Andi Kleen <andi@firstfloor.org>, 
-	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>, Rik van Riel <riel@redhat.com>, 
-	Yu Zhang <yu.c.zhang@linux.intel.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>
-Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com, 
-	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
-	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="utf-8"
+	t=1787514301;
+	b=pYJ0sAxv5KSlHVrYrOxEJBHJoDK7PSeCCt2BBEH2j5Cwr4HLFYbrFP5AU8MwMeuAwtcxTs
+	R293rGyS/HgEamDpafwXV5REF0vl4JpjoelAJH7k5ThA/ypYbcoywUPQTeykyT/V4gup2s
+	gDvrp3HC+HHx+Y4Gqk8Sff5ObJGNTKI=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 6F6111300087;
+	Sun, 23 Aug 2026 15:44:58 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Sun, 23 Aug 2026 15:44:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1787514298; x=
+	1787521498; bh=B84SOBpXfchnbFJACUkoJj9mcWI8juB/tA+PVTwP76c=; b=i
+	BG4CWTAP7+gUYMgy9z5g4eejHoYHqYLzpMEXMvwc8rEEcV65F2hT1DyQ58OF8l8R
+	WgZY5XnxgvH/HxEs0uw2gvpsHM4SCToVZVU91zpFUmrwDlXU4ZWHBRoY2OqDbHQD
+	eRbIIkEmJp2qUYwwDw3DgMODVKW/xDi7pu/Tni5AQnASVWblTYLIRCFbIA79zrUf
+	0sSjsG9mcfoW5SQX0n068Nh7idswA0izC0oeJ0vcQtLPDlZQTuB0Om40UxQD+kVW
+	Y4cFRWFSPSV8OWCYX4/KsHWJFeqIYdGJmg/iCLX26Ex+70g/fKaMV3r51FTLY3aq
+	MIYyZCKlzZSu5f+bK8XPA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787514298; x=1787521498; bh=B84SOBpXfchnbFJACUkoJj9mcWI8juB/tA+
+	PVTwP76c=; b=gqFPsMeW+Z9xupKErzuF9zglO8p5tDXIu1unCaMFm/mG3ChAcdg
+	QUv+NbVH1O5bayIwEw3wwy/EzZCYVIn2mrtK+ca66ks8vL2/30T6Z1foiwaE5t0I
+	vXWWDOeHRDJPGmrDfJha2NbPyXUGz3a7eKHN/RbQJ2iTvAAorLYyBTNIySY2kUGy
+	URRFbGBupkdvw3E87RUrHLylS4ktDl9LHqYJqXVtFYuCjUhHGFB6qukmIi3CYGFk
+	k7g96DLhIDYj+ziRC7AfnTdpFoSB31oO2y7J2OK+5F/TMnpR0o2OVum4K+wg/7J1
+	sTHEUzLao5kLp0XDuLveg3ZRREr4TTV4l0A==
+X-ME-Sender: <xms:uU2Lat0wwgOYyNH0K9VuC1lRAv689_RmKhkIqm4CqaCq147FfNhjqQ>
+    <xme:uU2LatEhyBrFCKxS4JhVXdR0aHUlmuf1MOInhugHgEWxaixPjGAJv_UP7YRRt_9on
+    lrNtqcNeJOKSzWv2s0XJdPDnUnEslohFaF79Jm2lLG9Ag0LPuKodBc>
+X-ME-Received: <xmr:uU2Lank_IVdvePPLo4gh0sd42cewsq1AWTLujf7Km2MIdfc_XJiBJpzsErs>
+X-ME-Proxy-Cause: dmFkZTEF7/FO4zwyXX9a2VYUo7USSjPaeOP+cnpDM+WG0kKCq3cXs8+WFpXJLKiQaM6AFB
+    9Jti1uPrb10pgcdMGQXlIi3HP2Xg0MT2tStA7MuH7LdjIKrsMlonkxDg7jHKTi6a1zBPyy
+    gO0cPC/y5rpJbbvFWttg6jBkX7OJkcZGzLR/50kzal4cv+JmXzi3e+TymywizE9AYOviSN
+    IWms+Rhycc4UkGhTZKJTm/xBReiFWIGw27IETfSNdWlcewX8droIaCy5QGmUYxVn6kD1qu
+    LiobeL4lQDfnZGe2uscBDnio72jOq+cmJmGjj+aRP9+C4oAnw85Aug9+KQB2/HFi4pWzKD
+    4g4mXewx2n7bApMhnOofVrvj3xCgxDEVO5MVTiYYK4narHoKgK/KdKYbz96jrf01MZA4jS
+    cYp75MXnPj02AGJQkR359A0gixsHp7BzZIqP9OoYzY0PikQSY3NORG6m2qGqtsQJvHCvJe
+    OIGMYyi1ivJRawkUzaAWyFgnhP2tJmATDXhLa0EwKmPQ7Gkk1JaIoeASbQp7LZEaSFpc17
+    Rv/qMMi5Bj/OR8qCIyRBwa5Zh6y9xYxEoHDuhJ2XFE81usGGzlHC4Liq8u5y8fQ/Rc6gch
+    +eAg3S6bawkpoEetyA5akZ3epiU/rK3dzHeUEbuTAZzafH55pvfnIdDHC+fQ
+X-ME-Proxy: <xmx:uU2LahwMB45LiF7mqN6T3AUsJtdvv-ZIWd7ZXOZz3uMmqZZBXgyu7A>
+    <xmx:uU2LaixseAHrYKsZEVxpe4ktK9xHMA0LIUv-kGZ0hcwmHMau5sZ4Lw>
+    <xmx:uU2Laj8lHmf9-wuI84TQo9o7OR3A8Hi0ISCkIYwjqU7UQr242DGPLA>
+    <xmx:uU2LaliIuTrmZf3sz4Vgby9rdhlSXXamo96Cw9BbkHnPSVTsqs6rNQ>
+    <xmx:uk2LauR-8uC652xrjTvHDb96PrqUVHOAVMwQbuXXofXp7KTmMPlJPl54>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 23 Aug 2026 15:44:56 -0400 (EDT)
+Date: Sun, 23 Aug 2026 20:44:55 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, nico.pache@linux.dev, 
+	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
+	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
+	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
+	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 04/19] selftests/mm: skip khugepaged page cache cases
+ without a PMD folio
+Message-ID: <aotHcV0a4bTMdX7Y@thinkstation>
+References: <20260815015901.1236937-1-kirill@shutemov.name>
+ <20260815015901.1236937-5-kirill@shutemov.name>
+ <aoQuhSq-2Bd3Kz67@lucifer>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoQuhSq-2Bd3Kz67@lucifer>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 92116100005
-X-Stat-Signature: wdhn1mn6nmo5w481s7547upkmyxf9s3z
+X-Rspamd-Queue-Id: 7D7031A0006
+X-Stat-Signature: w73dy6qkxqg6w9413m68pb68pyak8pn5
 X-Rspam-User: 
-X-HE-Tag: 1787514080-977342
-X-HE-Meta: U2FsdGVkX1+WE1MGx+feSb0we8Kbap5AyytRcZpRT40AH+8oLiz5K3HKENARVU+1IybP9RpWRY3iiP8dBaoxoNtUfXmjYaEQ9zU2ggRCp4QcWTcLzY4hkKNc6SLOf24l2N6y57KgagFrPzIcJ9kn7Q7oHCTdYUsMIa2nRsHCIQSibmMKplkxkf8u3tkG7b1utVoAWVAFK0GVLK2m667jm6/yTEYQ3+G+CXo6Zj6dTxcXHbGOP8SqZvnArNNLhSY9WsxOH5c+HJPc/7upmBtyOLnFCqPwHrpeu5F+fp/BZuGr6iYfFumCmXU/5r51ehn0QSCYPwDfXSxEjPIMjW7WrOLTTlztqob7D7TKxxNS01c0UT+DWJtG+Pzu4xytOwUITwYqTe7yV3f9cejg8nCjXkznTKKEH4wlpu0ii8m1tCBvm7zbGnRHwpAu+CBFoRMGcKacS+OBRGQZ+Q2jXPMDWn/DtlolsOEW1/kTPrN8Zqkpz3bd9Pw1UShC8zg0q1lfzhLikgB/i/QFyRLeZ6FfYx2vued1emLUMzZr8XZURnh1nCeH4DnGw7hnrKCGyYoouxlgQUZ1EnFwBJnGVabfD7P7meV96JxuYBOKyCE4C992mBrC/lwslg9JPbHIWN+BXaU7WnqQ3cVxiVnUfj0dOgXleJw20xqmsH0YIhmzdkLo+HkQ3jQNtFw0dDHf70Hu3cRD5RDI+jwbwKjFbhLrVs6ZqTKgZ4hg6URjV21HTitILiiT9hyEPpp94+jhkLahNmUj+pYyDA93EuWtCrHqF6zexDASUoXnVPxrHYbMAsfNYRBfTWaBGA9S+DCUBNfyAVQIkm4MviCjrP9elfJXh3kUxvdm5Ux8y50dHDLZ1Skbm+5uLxGz8lSPg3qDdPBCUN6PcGsBPxmc+LqbJ0WMZ+mI6cY/nLFD+ZE3LCA5AGoRTo6EbESVVaiuSTNyMXvplovksVr8YXloeNgAMMQ
- hyguZpXf
- siw5grukSv8hOzGU5sOQptBf7F1lWWtlMsno0zeiQBNFPFAAzP3/lNIdMK7fkHctBmDYi65p2a8wb8/klzZMmdB8HaALFt01/sJXxG1rFId5KhiFSAsPnrGYuX2bsgBAAmXJcHcCflT6YKjPjwtNTeqTN78HW6Rb6zsCJtcFXQfT18Kwh8G0kOtot9KQAa++iO0fudRNJN0qTxHdRnGHXLlLzK+C6NHfFwgXbiMppiLSXjJfyopu0QNdoLoqj6XycZUIk/X7vhk1H2r+o+BNEm2Z3w5o5C8BMK1QZGEEgXe0gwDEzCurShPzDHWSxBS2TsNL0DRav+w4unvx+L3XD00fMZcNGUjDehM/P6oxmSrbnBi59UnXYPzlI4FCQc3WXBjzmt/ry1Z2WUr7aWDhpFcWtfJ2SzSYBW8V4mfHReokRvOrWhq3xJmPVTq91PoY9rnVc+nC6LHpEyVlRn9yeZ19Y75FE7irV2e2ArMiQJ6Upvb52iuo7y5HNKqkH8c8Q24BWYrqghw7ltC6sp2ckXz0iAhDkUfK5o8kmRHHSD0yZWwSGU15F07O2UYvjU+PCTOA8OuM6sTEtLzjSDLNzWv7QWc0nPfa+eb2Ev++oml1c8sLAx0MUg67dvD6TL/qZi4VyIoHz4zaDGt0=
+X-HE-Tag: 1787514301-92413
+X-HE-Meta: U2FsdGVkX1+3sjcKxjNNW7Z2X/4RRI/IeHQTA1uEaYoVG4qYJI476eIBYwv3wn/AYFK3gCjfw41wqI9aFOf74F2TQSfI06nrNYmnROFeJvi1XywDXScZgdfmmkvbBKSLXCQEiSeUtVxqajDXBApUzmpkBEzCLIslDDLiAreaqsDz2sd6Y1RPvU1VCMYAT1wOFK482ft0deoGxRVZr28cn3zbAX6PVfxxBO77jb1jvWy8+Gwo1K3lAj+LMOTn+tdvoasjWV1k4uAqvPhTnF1kFBZI+0aLLlYhixlZdVRhJNNhltSMhpKw4QA++Nh6Sxpzh/pO/ERkfcAhbizNMAoM3ZnluYNAK0Zln++TlUbta3jv1I9yC5vnL0BpQpew6TufdB9a1aUR3s2UakgO61ImRWik8Q5tOrK693UoH799OGX6c8oZyjWBY7ax1Q2qYa2xSxX0tRl1t60VfaFjDqi+lqTwv6SGNpDwNeoM6e8Vq48zFkOttJCoos/yTIemDYDF2Hkb8quqaGQOqisOIhnJ4VZq54hEIFRrQRdIRdNXsx7GD1dt6hXG1XqFZ5RWl39SzagI1CDQ8/np3ojCOKNbCqLZ1f+DYSNn8y1B6WkyZkN+ngG16yiCj01pCLgKoUgV6uWjAi9CMIngnl8SIzZxEfR9f2sI0tNFGna6UTQW8A7uzLCJJ3+aM+yNsjMA6bpq/4SuDuRapEBpKNXLCsUxhiQPfVm1ezjOhbQx7twnyHawkJa2LZBVzNW3syD8UzhsqNUn+b8nYRjt8WmAJynscUIyqP0X1FBoM5disp1gsP6wf2zzPfEg5gLACh6hP2DegFPtsYvebpbWqPQelasP3C+sdWV+adriD1FTC2UoclfiOIsNk3Ze8umvWxH8kxZ6wQo9F1IXoaBHiQD0yyBABaS2A0YvEGqLvkFFZEiBHJKfQxN6x2rSVUnhJAuJiZMNAItEE/dLMWPPD/bBvrk
+ mmewfqiG
+ KX/NpvSGKPiXDc2wCcsVdQIHlHEoRulWzcxxh/8aAt+ve/NQNwzNbHrr40d+L8dZcTDMODjBZrmgqcAVYhUI1QFXcLJqGVCjYTz29hzBSS4rqU9qm71x4uy3UnRvkLIzGcWirgbD5vFYizO7YhtlA7l9WlUkh65BTkHY2FO41okdmoIzTHg6RtBVwKJ5CPUq/+TZDV/RXP2v5cR3JFeEg7cO3SWlmp9Lvj9YqtdUUWViuquo/Dw/bi4USENQcxhehNfJf2suCubgWIBauzRfroSW5GF/z6+SNTxU07/ICcHqQkpu6+7GxBTtdrzXnhfcgKjz6xdClEbWi7LggYj0VxXHQ6lpMiZnT/grTrxQgBYc4opxL/9Oj8aHcCLHg9xfudy/294UxUjTC3Rm3el1YCTYd+rZ6h6GQrmeQQlB4HtAXk1tZ2Yy1zIOJguldylCwoMYO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,195 +134,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a shmem memory failure selftest to test the shmem memory failure is
-correct after modifying shmem return value.
+On Tue, Aug 18, 2026 at 11:07:55AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> > index c499804a0ec4..ec5c36a19d92 100644
+> > --- a/tools/testing/selftests/mm/khugepaged.c
+> > +++ b/tools/testing/selftests/mm/khugepaged.c
+> > @@ -1357,6 +1357,30 @@ int main(int argc, char **argv)
+> >
+> >  	setbuf(stdout, NULL);
+> >
+> > +	/*
+> > +	 * The page cache caps folio order at MAX_PAGECACHE_ORDER, which is
+> > +	 * below the PMD order on arm64 with 64K pages.  A PMD-sized page cache
+> > +	 * folio is impossible there, so the kernel refuses these collapses by
+> > +	 * design and there is nothing to test.  The cap is not shmem-specific:
+> > +	 * it rules out regular files too, and the per-order shmem_enabled
+> > +	 * controls exist for exactly the orders it allows, which is what makes
+> > +	 * them readable here.
+> > +	 */
+> 
+> This is a very schloppy comment. Can you trim it please?
 
-Specifically, test the expected behavior under various scenarios
-combining page dirtiness (dirty vs clean) and failure types (hard vs
-soft):
-+ Dirty + Hard: Trigger a SIGBUS on injection, and trigger another
-  SIGBUS when reading the page again.
-+ Dirty + Soft: No SIGBUS is triggered, and the original value can be
-  read successfully.
-+ Clean + Hard: No SIGBUS is triggered on injection, but trigger a
-  SIGBUS when trying to read the page again.
-+ Clean + Soft: No SIGBUS is triggered, and the page can be read
-  successfully.
+Will do.
 
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Signed-off-by: Lisa Wang <wyihan@google.com>
----
- tools/testing/selftests/mm/memory-failure.c | 118 +++++++++++++++++++++++++++-
- 1 file changed, 115 insertions(+), 3 deletions(-)
+> > +	if (!(thp_shmem_supported_orders() & (1UL << hpage_pmd_order))) {
+> 
+> Is this inferring file-backed khugepaged behaviour from shmem? That seems iffy.
 
-diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-index 1a5a32e22cce..5b26f0c44664 100644
---- a/tools/testing/selftests/mm/memory-failure.c
-+++ b/tools/testing/selftests/mm/memory-failure.c
-@@ -20,6 +20,10 @@
- 
- #include "vm_util.h"
- 
-+#ifndef fallthrough
-+# define fallthrough __attribute__((__fallthrough__))
-+#endif
-+
- enum inject_type {
- 	MADV_HARD,
- 	MADV_SOFT,
-@@ -29,9 +33,14 @@ enum result_type {
- 	MADV_HARD_ANON,
- 	MADV_HARD_CLEAN_PAGECACHE,
- 	MADV_HARD_DIRTY_PAGECACHE,
-+	MADV_HARD_CLEAN_SHMEM,
-+	MADV_HARD_DIRTY_SHMEM,
- 	MADV_SOFT_ANON,
- 	MADV_SOFT_CLEAN_PAGECACHE,
- 	MADV_SOFT_DIRTY_PAGECACHE,
-+	MADV_SOFT_CLEAN_SHMEM,
-+	MADV_SOFT_DIRTY_SHMEM,
-+	READ_ERROR,
- };
- 
- static jmp_buf signal_jmp_buf;
-@@ -157,17 +166,22 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
- 	case MADV_HARD_CLEAN_PAGECACHE:
- 	case MADV_SOFT_CLEAN_PAGECACHE:
- 	case MADV_SOFT_DIRTY_PAGECACHE:
--		/* It is not expected to receive a SIGBUS signal. */
--		ASSERT_EQ(setjmp, 0);
--
-+	case MADV_SOFT_DIRTY_SHMEM:
- 		/* The page content should remain unchanged. */
- 		ASSERT_TRUE(check_memory(vaddr, self->page_size));
-+		fallthrough;
-+	case MADV_HARD_CLEAN_SHMEM:
-+	case MADV_SOFT_CLEAN_SHMEM:
-+		/* It is not expected to receive a SIGBUS signal. */
-+		ASSERT_EQ(setjmp, 0);
- 
- 		/* The backing pfn of addr should have changed. */
- 		ASSERT_NE(pagemap_get_pfn(self->pagemap_fd, vaddr), self->pfn);
- 		break;
- 	case MADV_HARD_ANON:
- 	case MADV_HARD_DIRTY_PAGECACHE:
-+	case MADV_HARD_DIRTY_SHMEM:
-+	case READ_ERROR:
- 		/* The SIGBUS signal should have been received. */
- 		ASSERT_EQ(setjmp, 1);
- 
-@@ -263,6 +277,20 @@ static int prepare_file(const char *fname, unsigned long size)
- 	return fd;
- }
- 
-+static int prepare_shmem(const char *fname, unsigned long size)
-+{
-+	int fd;
-+
-+	fd = memfd_create(fname, 0);
-+	if (fd < 0)
-+		return -1;
-+	if (ftruncate(fd, size) < 0) {
-+		close(fd);
-+		return -1;
-+	}
-+	return fd;
-+}
-+
- /* Borrowed from mm/gup_longterm.c. */
- static int get_fs_type(int fd)
- {
-@@ -355,4 +383,88 @@ TEST_F(memory_failure, dirty_pagecache)
- 	ASSERT_EQ(close(fd), 0);
- }
- 
-+TEST_F(memory_failure, dirty_shmem)
-+{
-+	int fd;
-+	char *addr;
-+	int ret;
-+
-+	fd = prepare_shmem("shmem-file", self->page_size);
-+	if (fd < 0)
-+		SKIP(return, "failed to open test shmem-file.\n");
-+
-+	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED, fd, 0);
-+	if (addr == MAP_FAILED) {
-+		close(fd);
-+		SKIP(return, "mmap failed, not enough memory.\n");
-+	}
-+	memset(addr, 0xce, self->page_size);
-+
-+	prepare(_metadata, self, addr);
-+
-+	ret = sigsetjmp(signal_jmp_buf, 1);
-+	if (!ret && !self->injection_attempted) {
-+		self->injection_attempted = true;
-+		ASSERT_EQ(variant->inject(self, addr), 0);
-+	}
-+
-+	if (variant->type == MADV_HARD) {
-+		check(_metadata, self, addr, MADV_HARD_DIRTY_SHMEM, ret);
-+		ret = sigsetjmp(signal_jmp_buf, 1);
-+		if (ret == 0)
-+			FORCE_READ(*addr);
-+		check(_metadata, self, addr, READ_ERROR, ret);
-+	} else {
-+		check(_metadata, self, addr, MADV_SOFT_DIRTY_SHMEM, ret);
-+	}
-+
-+	ASSERT_EQ(munmap(addr, self->page_size), 0);
-+
-+	ASSERT_EQ(close(fd), 0);
-+}
-+
-+TEST_F(memory_failure, clean_shmem)
-+{
-+	int fd;
-+	char *addr;
-+	int ret;
-+
-+	fd = prepare_shmem("shmem-file", self->page_size);
-+	if (fd < 0)
-+		SKIP(return, "failed to open test shmem-file.\n");
-+
-+	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED, fd, 0);
-+	if (addr == MAP_FAILED) {
-+		close(fd);
-+		SKIP(return, "mmap failed, not enough memory.\n");
-+	}
-+	FORCE_READ(*addr);
-+
-+	prepare(_metadata, self, addr);
-+
-+	ret = sigsetjmp(signal_jmp_buf, 1);
-+	if (!ret && !self->injection_attempted) {
-+		self->injection_attempted = true;
-+		ASSERT_EQ(variant->inject(self, addr), 0);
-+	}
-+
-+	if (variant->type == MADV_HARD) {
-+		check(_metadata, self, addr, MADV_HARD_CLEAN_SHMEM, ret);
-+		ret = sigsetjmp(signal_jmp_buf, 1);
-+		if (ret == 0)
-+			FORCE_READ(*addr);
-+		check(_metadata, self, addr, READ_ERROR, ret);
-+	} else {
-+		/* Test the address accessability without check_memory(). */
-+		FORCE_READ(*addr);
-+		check(_metadata, self, addr, MADV_SOFT_CLEAN_SHMEM, ret);
-+	}
-+
-+	ASSERT_EQ(munmap(addr, self->page_size), 0);
-+
-+	ASSERT_EQ(close(fd), 0);
-+}
-+
- TEST_HARNESS_MAIN
+The helper is named after shmem but the sysfs set is the page cache one.
+`thpsize_create()` creates the per-order `shmem_enabled` attribute under one
+condition:
+
+	if (BIT(order) & THP_ORDERS_ALL_FILE_DEFAULT) {
+
+and that mask is orders 1 to `MAX_PAGECACHE_ORDER`.
+
+So hugepages-<N>kB/shmem_enabled exists means "the page cache can hold an
+order-N folio", for regular files as much as for shmem.
+
+thp_shmem_supported_orders() name is confusing. I think, I will add
+`thp_file_supported_orders()` over the same sysfs walk and use that
+here.
 
 -- 
-2.55.0.766.g2966f0265a-goog
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
