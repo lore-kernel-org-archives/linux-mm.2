@@ -4,129 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9896AC5DF81
-	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 19:17:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99510C5DF81
+	for <linux-mm@archiver.kernel.org>; Sun, 23 Aug 2026 19:41:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51DD26B0095; Sun, 23 Aug 2026 15:17:48 -0400 (EDT)
+	id 4FB796B0095; Sun, 23 Aug 2026 15:41:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CEAB6B009B; Sun, 23 Aug 2026 15:17:48 -0400 (EDT)
+	id 4AC926B009B; Sun, 23 Aug 2026 15:41:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BDA96B009D; Sun, 23 Aug 2026 15:17:48 -0400 (EDT)
+	id 3C2566B009D; Sun, 23 Aug 2026 15:41:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E13E6B0095
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 15:17:48 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 88313403A5
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:17:47 +0000 (UTC)
-X-FDA: 85133493774.30.2922128
-Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8E6821A0005
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:17:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="S h172nv";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=U8qMIjuW;
-	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787512665;
-	b=7h3RZ4ZJtbHKOqJeb+IQMdTpEx9aE/MXP2hgJPehj+iwyIa0RCnibB/q5bd1IpJWSpnqt/
-	govJW9QGgliGFZgGVpZD7kfdXxF0IP2WJi368OuM4ivC4Bvr8O5VPuWL+1ieTI66gLXvLV
-	MOeSLLiDLlbH5ESq3md+ibGrRjUshdk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="S h172nv";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=U8qMIjuW;
-	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 18F3D6B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 15:41:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 69FCF160394
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:41:16 +0000 (UTC)
+X-FDA: 85133552952.15.5CA1030
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 86531140004
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 19:41:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HaA9HnhP;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 32EyLagYKCPkxzjibohpphmf.dpnmjovy-nnlwbdl.psh@flex--wyihan.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=32EyLagYKCPkxzjibohpphmf.dpnmjovy-nnlwbdl.psh@flex--wyihan.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787512665;
+	s=arc-20220608; t=1787514074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0wLxy792B6yNuuTN2hFZ7joedHo9NROFJ3RumMARwe4=;
-	b=i4i7fT7vBaNLWScJfmn/F16u/4LPn3UX/qmNWe7Jg3fle0KZhW2/0ZuLXBR9phuARc8KdW
-	Oo/MjhAsA6vJXyvh5Z1Al16r6lK+UXNLTeqwoCiVU64U8SgpRWSENJRxQzlMfRWoNasMeA
-	pk93dqothM/ThL9psyWtDxXMy2HNKIk=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.stl.internal (Postfix) with ESMTP id 8F87913000E2;
-	Sun, 23 Aug 2026 15:17:43 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Sun, 23 Aug 2026 15:17:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787512663; x=
-	1787519863; bh=0wLxy792B6yNuuTN2hFZ7joedHo9NROFJ3RumMARwe4=; b=S
-	h172nvLnDkyAB1weLsxE1VwjgqoHALsfHUizskU3E3z31baxwgN+rW1PV9h79e3C
-	84TIJB4elaZ6xWcLDZDEkQUADqoHGtBRewFTon3qC9tkFA7X2+tluK++KbOUmj9A
-	WUnTMTvXpPFjcOWm54FjWs6WJ9o8nyntXF5BX+qSWZqOxq4m1Xhs7Ig02aSTpLrJ
-	aaNbhKSmdZxSD2GbXmZt1NHTsjxmAzEE416BVjypZkiO42Ct9FAJ8N/aPKCL7K1q
-	/6nz435RiaGaGgn8KTDj1yIQvQC7x3qLO/bfdnQTtRjOKEghTWAKIwrBwwVPjtL8
-	l8jSldykja69bCnbss1og==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787512663; x=1787519863; bh=0wLxy792B6yNuuTN2hFZ7joedHo9NROFJ3R
-	umMARwe4=; b=U8qMIjuW70/dXCbpvwKxtBUmcsNKlSWGtC8DP27jJSw3dFa+qJR
-	CAXLqVVJGP0QHLewjKcKipkSYrg/1JhdooBpXGRkFrvgvgiDXh92JqCGYE+TuGl8
-	/iuRrdeZuTZwfT3wUpJtOBNBDhQGF+83DgS995i4jL94Sp6VXxiE3E0T2TsNa2b9
-	HRRf67CFriTL2KOjUFRc/3c6aNydflTkMXpvPKjNaDb+Dgy5CuDUALZMxajwAtKU
-	q02K/hTfErHbudYv8B+1kRlS9JpQAvo1bA7kn5v2M0PmSxxBF+U6rYlyMI4XpCdY
-	xbfdxiMB149O7eSVe2z7b2rHfwZ9VxpDBng==
-X-ME-Sender: <xms:VkeLam6xJ1jN4ngbIRqfCtnvcsyWVK5AHmD0y-o8_0L47t0lOBQHaw>
-    <xme:VkeLatjqbES0ahdNINVRRmjsg72zGXz2VwnU5dfa39uyaADW124JWUAOgexBmxXGK
-    bpvm9rq8kgwUuIRYBolkweSc0Omlubrdw3UJkmG7_bFPaldfu7MBFpo>
-X-ME-Received: <xmr:VkeLarDT9CPjTGW61p6Jsqhoc9O8NZ106xWrj7vSXnvB_A087UHOcPCEccc>
-X-ME-Proxy-Cause: dmFkZTFvj3ReSWIb55/gzqe1p2vADJpe2m938hpzU8Jp7sQQ+uDkp+Af7BRN+YUj5izGrP
-    ozuQI6+mhwe05vF8+hIceVJhtt1lF1UWX+PMS29zLHNWwa39BloQnd5iwe2kKi9NCiuWjd
-    AoJ0VbO1+/UwTRpxrTcW8DnKYlvqZtZ/K63Eq8Ad/8llZfx+26m8vP+SLHnA38cimd2o7j
-    Hk5nbqLS1xqX7kWzc9TQstwh/PffKF9YfFowcjA9A8/TqWlG4FKoyX7nXQdsj9P6LrqfBC
-    ovvkf1ZdC73R29CcITbF0ySlcxWl9XoA8//IwsOs3etdbiVdaNDoyfODSeYV3n7lBndkIF
-    i0NacUKwx0cTYf94OCY15U/bvqUDAgUEZNv6ZQy/GV1L5x3fuHZxWO9uwIbYeubchNQsjJ
-    C0TPVQ+JBNKfQ2eOG9Nlg+RTSa+65A3djLXMJ6bgpXqp6t18Sm1ld1JgYSeY1lRO0gRfR7
-    4lc+MGguPN3TbtIpnwBXqV7bfmAYQ/0rZ4R4IL7SoGn59qriew3214fXxwirQicHxdgOEd
-    rpApnVQooRr+E+/G5b93MS0peDpCOTYtZeoZdrhmpJrPDSunoGUBJcStTt2lw+39+nOU6X
-    yJ5uAQ2h/Fm2kZJsyy4TAgikyNB+2MMUTTh3kRhsRmea8oQwEhP7kdLx+CWQ
-X-ME-Proxy: <xmx:VkeLamxVi8L2vSLLy3s8GdNfNkJMPLYn4WV-kr9G1a4joGEKLyQaBg>
-    <xmx:VkeLapO27o9snJry_3TK_bLugaYkcskVBYSBV_ekpYWYpj-OqqN39Q>
-    <xmx:VkeLatfq9ktOAVIA_z5DgMCMx6pReY6NXRpfZiwE42_tJEVIw1JllQ>
-    <xmx:VkeLag62a9T0KNyJrxbApaAzNu7We6qFPp3s6U4XqFNCVdmQWGOe9g>
-    <xmx:V0eLasgDVUyQ9Nj9xGGyaGXOaIPKyEqKegRWKR1ktifySRG5-yGHhh9B>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 23 Aug 2026 15:17:41 -0400 (EDT)
-Date: Sun, 23 Aug 2026 20:17:40 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, nico.pache@linux.dev, 
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
-	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 03/19] selftests/mm: scale khugepaged's collapse wait
- with the PMD size
-Message-ID: <aotFuN5NTCnawTy3@thinkstation>
-References: <20260815015901.1236937-1-kirill@shutemov.name>
- <20260815015901.1236937-4-kirill@shutemov.name>
- <aoQuCP87uX2kHl5q@lucifer>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoQuCP87uX2kHl5q@lucifer>
-X-Rspamd-Queue-Id: 8E6821A0005
-X-Rspamd-Server: rspam10
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1YHDRXuyabVdapSHSXZFO8jE+pTDDymBWhtJlJpEAUs=;
+	b=KwE4kQuhZESKnl2+639F9LQLn0A7o7o0u+75M4bmynbIMJEz1DzGEk46XhR1ymidSWL+Wn
+	OCvWjHg0UfGi5YPZvYM7/nfKvcdso6rZVJ+w2KVYHOx4CBxik1B2SSLJduReQy7Aao7QJu
+	1LZPCQ8+KEPtDgATFoszl635FrROfbc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HaA9HnhP;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 32EyLagYKCPkxzjibohpphmf.dpnmjovy-nnlwbdl.psh@flex--wyihan.bounces.google.com designates 209.85.210.197 as permitted sender) smtp.mailfrom=32EyLagYKCPkxzjibohpphmf.dpnmjovy-nnlwbdl.psh@flex--wyihan.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787514074;
+	b=Ruo68cjTkRJ+v+zfhB2ts822aq/iVcWvPyPhdWKY/pVKHNhMypTT+FmNKKF1ljsXCt18NP
+	xAR7HW/O7psHVsoU4MPNv2SmCI+0sxX+fr3GmUWPenIm6g4NalKKxwxDcT/P8bk98QCTfz
+	MOr4bDssyEl1LTTpW1gbgDwldrh6EzM=
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84857446424so4797373b3a.1
+        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 12:41:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787514073; x=1788118873; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1YHDRXuyabVdapSHSXZFO8jE+pTDDymBWhtJlJpEAUs=;
+        b=HaA9HnhPwFuG2ZUibs12moWwSbl3YwZ61zPLOrNJBwERzrvH1hPY6vT71N1xU297WA
+         MEgjeBbDhrM1P129h1UcPguXjeD8t1r98pMKLyqhGnfwSrnN1mqffNzi6SntXiRfQFLp
+         hI4VYdqW36D1qnjG8FOxDe2Frbpvwrdd+8qpfRM293/QkgHPf8ASWm2+yphyQOYHPY1J
+         PXuhVNFqNwPXnlxMKNTubbs0bZUi3BqJAsJ+RH31sIYfX1llSs/rC3BAZ3j38XujTUw3
+         8AC1d2NY/qSU8JesoxHfI+BkuL6Gt4hYuTsZ40pAPTwNo7CRk2pzOMSrImZxCg7w94pi
+         kK3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787514073; x=1788118873;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1YHDRXuyabVdapSHSXZFO8jE+pTDDymBWhtJlJpEAUs=;
+        b=G3e4udJ5SDMykIMe+1mO02FPb7tkpaW3fIWucZ9dZroD6tXDqcFs+9onHp/rjY8KaM
+         Y1ZGbxR9QnCTfd+5wjkpsWyQGdkPVZ0j0ErPtvmt2U2cyPVnr3YBGxoDF240ykdokdtl
+         1CgEJMtdoxKjDGjUiwFP6kFTpjeDFSSU+SNsdo7oQJJaaFtxxyISfMVoDFwKgx0nPLz/
+         aERSPfgh1RzMAHfJecQuJTy1fTqnvPKNcjmtEG9AeOicppV1pqeAE7LxdHi8RuFLC6dn
+         5ZaBpixulTIa5vnbr8vS800tMFbt3+wKYvwEZAbGoviOLMjCU0teUA12ljyJPElSRcdS
+         Gslg==
+X-Forwarded-Encrypted: i=1; AHgh+RojR+g7K+7OkjvzZX1R2UMCgDJbyHZKF+QBsQQZaVwZ2b59Kn45wCu3XyaBSmyezJVVthDIYYrWDQ==@kvack.org
+X-Gm-Message-State: AFuF++klgjTfXbB0BRWhHXzDNSisjHqvliQ+ZPF/P7LhlulUOO1d/V+M
+	H4kScM7NzNl9iUMzCzpYx9WzZVztNeEH9VBzCjafSXD7127RnKlFmKTnttNoKemhkhZ1DSnvLTU
+	nfc+6YA==
+X-Received: from pfcj21.prod.google.com ([2002:a05:6a00:1755:b0:848:3f4b:c4da])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:997:b0:84a:29a7:f650
+ with SMTP id d2e1a72fcca58-8520b06403bmr21400701b3a.0.1787514072766; Sun, 23
+ Aug 2026 12:41:12 -0700 (PDT)
+Date: Sun, 23 Aug 2026 19:40:53 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAMVMi2oC/4WNQQ6CMBBFr0K6dkzTUEBX3sOwmLZTmIRS0yqRE
+ O5uxQO4fC/5728iU2LK4lptItHCmeNcQJ8qYUecBwJ2hYWSqpFatRAoxLSCR55eiSB4cDThSg4
+ 8v6F1GjtfY4edEaXxSFT00b/3hUfOzzI/7pb6a3/lRqo/5aUGCaiNbZ3ReDHqNsQ4THS2MYh+3 /cP6eGeecsAAAA=
+X-Change-Id: 20260527-memory-failure-mf-delayed-fix-7d5a8f4a8a8b
+X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787514072; l=1927;
+ i=wyihan@google.com; s=20260319; h=from:subject:message-id;
+ bh=BmydyRyqabJ0xq1KtEZLfqJqBfIHdz1QSKABi+pLLAI=; b=aQ8VY631+PZ+8I90X2r+jykIUJ42Q/O5yclWaB3EPJYnhT9dbJJbqum/jUJQCww5qrZd1UDmT
+ KWwnaZyjzf1Cp4Ox8aHXsiwWhudY/IUqGTsKjYbYdn1AS3GCUvptlH1
+X-Mailer: b4 0.14.3
+Message-ID: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
+Subject: [PATCH v5 0/5] mm: Fix MF_DELAYED handling on memory failure
+From: Lisa Wang <wyihan@google.com>
+To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Andi Kleen <andi@firstfloor.org>, 
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>, Rik van Riel <riel@redhat.com>, 
+	Yu Zhang <yu.c.zhang@linux.intel.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com, 
+	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
+	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fdziyehi1w1631473fq49jxk8j3q9hf3
+X-Rspamd-Queue-Id: 86531140004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: d75tweq6ch6nymw796wca75sb89jfpdh
-X-HE-Tag: 1787512665-925787
-X-HE-Meta: U2FsdGVkX194hlWDhoDvV3Hl1PxHSkrlLl5Q4bQ+znUzdlkOyC+HbUQf1I9p7WXXEcpqn84UGjAMMqDHm7Vb3D5IKig+vHhjafNcGqHNdmaSHtTCfnrrwzu0+hfxSvRny5pQ3CRE8a84tQ7mXhGlGtCdGroubDOu1C4S0xIv8ZYUvZwGMD48/vFixRUHmapWbIHkTV0V8ISlVl0BO57z+XApc2HD1fbnO3emhZIS3MpNemp4OuJASSvAjqa19R+vj6tRDJ8DVgs5P3ZHZS6VsJnO0KC98cRPfhb3m+QmbyaL71kfbhPQbC9zhQxBpF3i7uiAYg0ztlc8RQOIFJXRXZPNcMvt3FfBEONg498yOzlQIsHOd0Jbi0HkcpwUySZGP7v4hRF4oOQOmr19awVf+XQ9Zyc1qwwWyuSgRP2RC4hAXDv9aaJL+JiwDTNmIiuFjiqdBlvH4IpK9GJL/oEYfysZteMkRoF+Ds7d3UCLnhErtYx4bZGkDFKm1AuzFC0ZSvy8R7fkDr7ADmIktM7bpp8GxeTLGSxmm2hK/156dFeOyoxeE4JfADWojLuCEeCRfvrI4TUi9yhqYtw3HYY0Cqnbk+Gd2JTouXNO6KlOh5NUeZly4pRikpsn5+/nzOVzx/T97fR3hi4nJOOM4cid3IJ/YbXsxXL/jiJjDxdHVhgmA2D1L5GsnPyoaIR/GXXhROYwVg9d+DZbEa+h9Is26sVgljxTH3qMnma2UxhWM972YTR1oBTk/DvlpuZSZuUuGk9iOTOzHUwIyk/0c/T8wSUVqQT9btRciPHokylNPXd4GehYV0WwDUScjBR3wnNP//65uPEmdVOUo8alMFMqruAEH6E687PX03Nl+sx5/h3Hem7hLtpblSLZkL4opbdMRUqVdQOHQ3zSpRxMA2TIcLh2j/AqPYYvy4eVto+UMje5lJ5K+mXrwAEi74LePpp5A8eH1uZEIkuTASb/1p2
- C9PtLl48
- n18pVRvdmMLv4TEP4VdZmEpj9EJqsIeTiLqsKogZG+9hk1RZkvshXPxy4ibAy+BKuamvXb7+etfCwsJonFya4OCi1pZsKGTSk5Us2WbzEFSWMKVw0qtLuvA994opV1T+j5rza2Hsa1bzO6ZWZiDXbixzbc5Tu5T0OytTM8dQ5Tewzf9peeBHm9lqrPrSGMl4fhUaoUu/Z6ghzx7W2yyq+xdofrMyi04VLRVCL1ojakUAqq32WT3BeaYbKCgnrFJ0tPPHf5oGSHWZpOrfBR4YQ7EOL9mNUDbGsT2FCGbqWqOf2w7Cuh71xLmUbs7J4QuQNtlzjU9Em8pS55WamzBSkeCveR7jXnHdOHJzwNxThfgczdNXJedJ8tGpPBcGVKZUloT5EIWMYEGS7Jvud3gLEvxFCAWHO6ZZsfkSVHdujIX4uPx0XbQMccmay4vjXtE8tORUopa3odc1sckBf9TSQ7Y7n4A==
+X-HE-Tag: 1787514074-233680
+X-HE-Meta: U2FsdGVkX1+kGkagRhXI6yTnItFg9Bx1QyWrR7dgSI6LC+/q5B1OWhN1pv49lj5jTMfD5F0bG3boqOnOUvOwGKatx2kPHeiUtM3Br4SLd5Py8A1RS42zcaElxXjAsTvkqGhzOn9Sq9BpjrGemvqhYbimCWykSSyVTOClg+mDc/n4Fq9rf7TCUr4lMS4In5MpZWAGr+e8V57Q203xB4ilQaFmPXl7gXMBhzfhZqrn9JzeCTvLvHHmk+SUw/hMxmiVDFNNiVyuvhNcaOGHUusi5cF1/uxO/G7sOielpN6vhMd6JZfiflcLuopTDo0WPkR7TVULMC7VeQPB0bPxmsORo4lfK8zB5BZmOU4kd8WEhvGylsGb73IBgVBdD5hf+VrEC0WcqPkcvO11Y/a+1vRYeqaee63P+3/wXVzvMXAwtPQDR0S3dcvSuZgdjXI4dGgbHo5T4T3APhkBy5TsmNbEosN0gMNKGQnhssdaK0TjW4s36FwWyYvvmga2j2l0/3i62ermYNijSOzgiZza5JGR8/BHzOeFNPXP6Y955+UEkYKKAR89fep65QSEO6IpKu343Q0LDW1zlQDc7UqCQMDOC6/KSJBnUse/vEwG3jWx1T0e0w8IUxcso8N3jYK58UBJubht/pIplBJy+bmOzxcdcGR2HRvae8hM22FJxfJx9v6RcaS9Qjjkv5hZM47K6dFnvdu3P4dYMFo9eeK8i9Toz2lAg1CgEzF2cDNbGtWswy3sjrX5mLp+myAxSbLmv58SYWPMtQyCCID4xQ8zK/7u8ADV05DC0x3tlAciHV2I2X0bfT68VI3j7PHhy+eGL2NR/3FXCPZ5VFHGxixMNMelHx1TKbB9pHcDxaLuSTSWr4Ydn4CSOhtbdoXhvaIse3ofw+t75VumER0qJ0K5A0VIcwoqHWf9W0Tz0/jdohLnlY0LyqjtNCJI0ymIdpu8XzxBo1L2ymyaa/07gfuhs//
+ uuwRSnX5
+ DWj5K3Tj4cFzLl7bbDqtydM3YcyZIg23g5OvY5u7/FScPBNSGArMWdv8kl631pBUpq/pPQl88Inj+eAaA7x9y4Nm6HV05n0eoB3ogrvH84vQDfp38CnCTYqWPhS4Iktn4ViXd8K7kVXqEx8c+KxQdY2CFc9t2pmd/VOel0dZMJNZMP94LN8HBAOl1xYFuaO22Rj89iTIQ1sMeVZr/3Gx+4q1V0b6ChuVDrHwIeu7sM1YyV63FcX4MHixlnWqaKT9W6y6cF36V87clMyuHElZkF4pmpdpiKfyQtNl4SOrWUGuJnpz9hSC7GiQqXbB72ouzJTu2t1ZBcoIQJmm5/dHlXDlpLCHCKza1guabewS+xPCak32lHIsSpdQtfDLbm0nyXy1pY6I9U07eS3a4ZtMxn1KKhu8NcC0U9rzgMHzv4drcxlW6s1LyrVfHSeINRmqHB8WH9PIcE8qYxDRxNYu1PXm20R5Kw1qIP0cw6iPVQWxTrJOUki64pajYJUMrriEJnbg5Su24vyWYDZPuPLcFgofh5vqWUOdbq3TodsuW9/vvzT0fCnotw36fh3LgwiR7ExCCI/WnE6Zqo1ZQ1YYE3eWU8TFT9QmuAgBJlg2SZ48cGU+hcb/gUlKuppX7AxP013pryRjR3HUR5qOz3s2/QQh/AZ9KSuktSoGwLkRdzA0qpmxozCNpOP3H5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,43 +129,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 11:04:57AM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Sat, Aug 15, 2026 at 02:58:45AM +0100, Kiryl Shutsemau wrote:
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> >
-> > wait_for_scan() gives every case the same three seconds, whatever the huge
-> > page costs to build.  collapse_full() asks for four of them: 8M at a 2M
-> > PMD, but 2G at a 512M PMD -- arm64 with 64K base pages.
-> >
-> > Three seconds is thin at that size rather than generous.  Across 80 runs of
-> > collapse_full() on arm64 with 64K pages the wait was half a second in 73 of
-> > them, with a tail to two seconds.  The case has also timed out in a full
-> > matrix run, reporting a failure for a collapse that was still going.
-> >
-> > Keep three seconds as the floor and add a second per 128M collapsed.  A 2M
-> > PMD is unchanged.  A 512M PMD gets 19 seconds.
-> 
-> Yikes that does make this run really slow for 64 KiB page size machines and a
-> key aim in the selftests is that they don't take too egregiously long to run.
-> 
-> Can this somehow be trimmed some other way?
+Here's a fifth revision to fix MF_DELAYED handling on memory failure.
 
-It does not change how long the run takes.
+This patch series addresses an issue in the memory failure handling path
+where MF_DELAYED is incorrectly treated as an error. This issue was
+discovered while testing memory failure handling for guest_memfd.
 
-The timeout is a ceiling on a poll loop, not a sleep: wait_for_scan()
-breaks as soon as check_huge() sees the collapse, or as soon as
-`full_scans` has advanced by two.
+The proposed solution involves -
+1. Clarifying the definition of MF_DELAYED to mean that memory failure
+   handling is only partially completed, and that the metadata for the
+   memory that failed (as in struct page/folio) is still referenced.
+2. Updating shmem=E2=80=99s handling to align with the clarified definition=
+.
+3. Updating how the result of .error_remove_folio() is interpreted.
 
-On arm64 with 64K pages the wait was half a second in 73 of 80 runs of
-`collapse_full()`.  The 19 seconds is spent only when two khugepaged
-passes have not completed in that time, which is the case this patch
-exists to stop reporting as a failure. This can happen on very big
-machines with high memory usage or in an emulator. I use QEMU TCG for
-testing on ARM.
+Changes from v4:
++ Add "fallthrough;" in the memory-failure test, as suggested by David
++ Add Fixes tags in the commit message, as suggested by Miaohe
++ Rebase to the branch "mm-stable"
++ Split the KVM selftests to the future series
 
-I will put that in the changelog for v5, with the before and after
-runtime of the whole `./khugepaged` run.
+Thanks for review from Ackerley, Andrew, David and Miaohe!
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
++ RFC v4: https://lore.kernel.org/all/20260602-memory-failure-mf-delayed-fi=
+x-v4-0-a5bc7db5a9b2@google.com/
+
+Signed-off-by: Lisa Wang <wyihan@google.com>
+---
+Lisa Wang (5):
+      mm: memory_failure: Clarify the MF_DELAYED definition
+      mm: memory_failure: Allow truncate_error_folio to return MF_DELAYED
+      mm: shmem: Update shmem handler to the MF_DELAYED definition
+      mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED =
+cases
+      mm: selftests: Add shmem into memory failure test
+
+ mm/memory-failure.c                         |  29 ++++---
+ mm/shmem.c                                  |   2 +-
+ tools/testing/selftests/mm/memory-failure.c | 118 ++++++++++++++++++++++++=
++++-
+ 3 files changed, 130 insertions(+), 19 deletions(-)
+---
+base-commit: 08745c62350126bc31b09548137be87e2866f628
+change-id: 20260527-memory-failure-mf-delayed-fix-7d5a8f4a8a8b
+
+Best regards,
+--=20
+Lisa Wang <wyihan@google.com>
+
 
