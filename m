@@ -4,143 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41C77C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:02:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE061C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:11:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D1466B008C; Mon, 24 Aug 2026 03:02:42 -0400 (EDT)
+	id CC33E6B008A; Mon, 24 Aug 2026 03:11:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 782716B0092; Mon, 24 Aug 2026 03:02:42 -0400 (EDT)
+	id C9B426B008C; Mon, 24 Aug 2026 03:11:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 649116B0095; Mon, 24 Aug 2026 03:02:42 -0400 (EDT)
+	id BB11F6B0092; Mon, 24 Aug 2026 03:11:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 23B936B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:02:42 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C858A369F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:02:41 +0000 (UTC)
-X-FDA: 85135270122.30.B7AC7E8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1719E40009
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:02:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZI6lOHM;
-	dkim=pass header.d=redhat.com header.s=google header.b=HSNtzeus;
-	spf=pass (imf04.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787554959;
-	b=yA4qoYzaXdhr1nCSKauVfVAOoUUE4FSkZmeVIKz0W1cfV/VcGf65v/NE88D3XfHTS9k6MF
-	vDkStbzDVNgNZgOS9PUPObdhD4HocADdG+L3RmRh8B7eTIItJlOYWpS+FCmVHQRleS8ah4
-	AVOVxa05siK06akuiaGB4CEh+WEMC1w=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZI6lOHM;
-	dkim=pass header.d=redhat.com header.s=google header.b=HSNtzeus;
-	spf=pass (imf04.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9282C6B008A
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:11:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9814B1C1A47
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:11:41 +0000 (UTC)
+X-FDA: 85135292802.29.4AC4F78
+Received: from mta1.migadu.com (out-220.mta1.migadu.com [95.215.58.220])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 49F8C40009
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:11:39 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BBiXNL4l;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787554959;
+	s=arc-20220608; t=1787555499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G7d7HgiMHwmpzIOyoUl4AR6/ya+8tZe+ferjW/FC15c=;
-	b=y7jBVhyt5+Vbimz0bNtHGJBbIyyP0WWqfmUShqdjhx46L7k1jvvK3s8bgsK+mX3JaYjvAc
-	qyNp1M0Jbq5bEsBHzAdl9Fheg0L4VkyVkr8RBXlKXiyuoZigk2HgPJUT6R69SJbW/S82vz
-	cDU6YMB0zb+kzXXa/ROzK+Gm9cIJwiA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787554958;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G7d7HgiMHwmpzIOyoUl4AR6/ya+8tZe+ferjW/FC15c=;
-	b=YZI6lOHMxobrn8Khnj1cJd0OyZXjI97Awl/KRm+AcEaktQcYm8ftUwh8VNMQTiYEzeSqcY
-	9oO+UKTixN3Vhwxe+GYUtBZkp8Xr93s7p7p7aMv9oxw8ZS3sUmRH8x9Vk1vmlSYccg7njA
-	GtWWHfEM/uRzTCcRRv1+HLA3MC47DNg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-6CqNv0J1NLOhwnkyRp0PbQ-1; Mon, 24 Aug 2026 03:02:36 -0400
-X-MC-Unique: 6CqNv0J1NLOhwnkyRp0PbQ-1
-X-Mimecast-MFC-AGG-ID: 6CqNv0J1NLOhwnkyRp0PbQ_1787554955
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-499b99a8a10so17689145e9.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 00:02:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787554955; x=1788159755; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=G7d7HgiMHwmpzIOyoUl4AR6/ya+8tZe+ferjW/FC15c=;
-        b=HSNtzeusc8DeExlzPueFcMFfqzzPJ3lECuiUotgKsCkhYPjrO/CXkwyio9VJwGxzop
-         wgYZd3UAMGbB3A7PwkK4d6YOirLrHdhzdpOJSDMYvPT7Wf4wgYQX3no3bHV4B5h+iZyo
-         8FVtiA9dYqA93+dcBCEdpWvnFst2kILMbK9HkGE4GMu4O/MhgaQsCnRBVMzYBIDs7fMr
-         vZH/OmKwiyw9QT/iJqBSm3iZkRHvyktiVIjnmoXhNVjxDP5z92NgU7+lW8eHJU6iplO/
-         d0IdAqnFrnlSJ2lk/ffQDQtbjr6EOtTcxINdB7UFselNX9WrGA8TUAdf6sXy12QXceGR
-         +IWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787554955; x=1788159755;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G7d7HgiMHwmpzIOyoUl4AR6/ya+8tZe+ferjW/FC15c=;
-        b=FqhmDSPy2eP/bPlP2EbwGhSRXzdsF/RAyJTWm1kATXmK92NOS3dQWg5Yl9u6midF0W
-         HFxTqQvnuKTLNugg35LsiOVoTSsFiJVX/zTsnGOouWp6uSi6WMfZpCggzp1CPO62wBOf
-         Wu3mnuH1yT7wYb/4Puz8+VPO6tYfdHFqfz8VhH0gEcXRfehCVsaL6uujWyB1fTDJXWZi
-         D4oYNKtyxglhTAI1x2xENJv4mRAELrLt4iX9IHgfpXAzwX4JgLbah7amGbWFZipuy5cU
-         tawXgkvPX9/p0LTnVf1OHx1TG7tdmDkYPUlRAiG9b9cYiGqh5nCGRupMCt9j+GioO+jY
-         gVXg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6ikvGQ/+hjhHwbkGS0H2SF9rdUUblM7YAcuO9hCBZ+B4XUJBuiSelhzRcevw4cTfun3ivxnGLjA==@kvack.org
-X-Gm-Message-State: AFuF++lhU8eHQbfyTmMjpGKbg8K23tQHVYqEwz3DUVFXPvnKav42KTFr
-	FEb3lZlXL7nMG2CKUJFeBuosjJxuZjhrvNMTl8AtILSEH2/KTyo0FJ+Jd9inZpVItlXWX4cxETe
-	04COoFAEi+Bq3Pr5obAOU0/YF9h1C3konXnhsZW/9H2mlxGgSqnPg
-X-Gm-Gg: AR+sD12qoS+GYj9iS55p77wk96TOMSlZnehYbs4LL3Wn/WDrhALqz2nnt//gNL4bEbU
-	Cjm7KAlEorK1L/my8hZVOzaiRB5a0W5GxV4bKw3qF2TWywTNqX8fERPKemXSp9oMRhaf0NJQArN
-	Or5M/27YJvBl9MMRJ5SQhHbC5Je5pOwQe7UySgy2TC5Ki4Ux0M0vytUH0EVmlWRExRE+giYFxNp
-	vkUIlfQuKjb0BjMw/k/BwG/WbcQ+xS2vo4lulwcmkO71hYRPhLSBxDrqz2rl9Gqfl/8vNoVC2ZJ
-	WgZndbXE7y6ksF5AZBCQDINnzDBDtB6SQvr/SBGyjAWDszWtQlgnzAk8fBy3/ySyfUPEs+JDMg=
-	=
-X-Received: by 2002:a05:600c:4688:b0:499:5f80:83ac with SMTP id 5b1f17b1804b1-499b91ad940mr188040475e9.7.1787554954760;
-        Mon, 24 Aug 2026 00:02:34 -0700 (PDT)
-X-Received: by 2002:a05:600c:4688:b0:499:5f80:83ac with SMTP id 5b1f17b1804b1-499b91ad940mr188039125e9.7.1787554954215;
-        Mon, 24 Aug 2026 00:02:34 -0700 (PDT)
-Received: from localhost ([2a01:e0a:a99:9822:ca7f:54ff:fe01:374c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499bae8bb6fsm103521345e9.0.2026.08.24.00.02.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 00:02:32 -0700 (PDT)
-Date: Mon, 24 Aug 2026 09:02:30 +0200
-From: Maxime Ripard <mripard@redhat.com>
-To: Eric Chanudet <echanude@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Albert Esteve <aesteve@redhat.com>
-Subject: Re: [PATCH 03/11] cgroup: add memory_cma_accounting mount option
-Message-ID: <20260824-poised-meaty-shellfish-9a09d2@houat>
-References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
- <20260821-cma-memcg-regions-v1-3-d21b165b8440@redhat.com>
+	bh=qagM8IIgCZ7aJYQi+BKjP6Qu+js1tt3mZZIHl8joMTg=;
+	b=HIFAFIB8KnhARebS7DwzWjXb+Lxr9hHKsw/zSpxFJhyjxlEaOViNITta0n1S72YalW1Ak/
+	8PkovzIjSfPcYddecJEERajRn1hdmaeGKegK+7YoYAb8nJyD1CZp8jP77hHchkCCzKefQE
+	TOjvQPpDRTQmDa/Idz/GTaxdDzhkk5s=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BBiXNL4l;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787555499;
+	b=6/73FUNnQpBcy5DqNSiYIR7tGYmjovHnEAMqqKABl4PxoDDUfKOZTStNI4EjAHJns6NDcg
+	rK5wRMWdXSFbXw60b4SKf71KiZoWiYnGJFDl515W6PsnsRdAGyqw/zXAj+F52+JKlSl78E
+	WkcQUfZZGAqXZuuBL4VEGy59Ajs9xhM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=upHHen4ux8L9irT5wAQCPUOo8cd6TtLi7blsQg4Qp0c=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787555497; v=1; x=1788160297;
+ b=BBiXNL4lNREsQ2300oMM+gr2YknnB9p1+MuIdmYBJamkt9iNgJYESP2ang0LIez/h3JLyx5F
+ axQqA/FmBM/eA1KsGNvZQkK9FEz9pcH1QOUTMEPpNq5KsU3KKIwRfT/D+oO+iwFLMi+SF/r+w9h
+ tt+Q+gJvYFqEsmwROXDciLSo=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id bf7ef9951ffd2d20;
+	Mon, 24 Aug 2026 07:11:37 +0000
+X-Mizu-Trace-ID: bf7ef9951ffd2d20
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: rppt@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	hughd@google.com,
+	jannh@google.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	corbet@lwn.net,
+	liam@infradead.org,
+	ljs@kernel.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	mhocko@suse.com,
+	muchun.song@linux.dev,
+	nico.pache@linux.dev,
+	osalvador@suse.de,
+	pfalcato@suse.de,
+	peterx@redhat.com,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	skhan@linuxfoundation.org,
+	rostedt@goodmis.org,
+	surenb@google.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	ziy@nvidia.com,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 6/6] userfaultfd: collapse VM_UFFD_{MISSING,WP,MINOR,RWP} into single VM_UFFD
+Date: Mon, 24 Aug 2026 15:11:26 +0800
+Message-Id: <20260824071126.41979-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260823-uffd-vm-flags-v1-v1-6-3086981b33cf@kernel.org>
+References: <20260823-uffd-vm-flags-v1-v1-6-3086981b33cf@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="l2avhy4pfliwz3eh"
-Content-Disposition: inline
-In-Reply-To: <20260821-cma-memcg-regions-v1-3-d21b165b8440@redhat.com>
-X-Rspamd-Queue-Id: 1719E40009
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: drghf5dkcnfniq98ycxokgbpez9qnhix
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787554958-401727
-X-HE-Meta: U2FsdGVkX19cLaNa2Gx/kGDjmonsgflolBy6pwYTPCWmsz216Q9LJq74xsKqOdNiFRrePTzGQc7mBSZddmpJvMdQtx0DONo4VUhqljkiC1ryXbAYOEsvHXEHxBGITKOfAcblDuShwupI2B1NQyYUZbVZ1ybiSnqa9386yQswrDvDydJjRyhaX2tLy8mo2y5WA6DtFSY8caUinYJUto5tWPDpo9pHvyQTG8ybMdqWpko7NPnMgazC8zRmqzEg2jBA3ihazzXgBtUhoa5ni7SycTGuWSJibhnBjak9Lj/Nl1g2nY/ByFlo2YI+yPmB/SDQoVYsZd+pQ45acQcBK/iOpuvBLRgrwdqJweIW/Q/6u1sS2q5K6P5sERby1zqvmzzxvkuYiR2BZy8oTjJr7dkVGnY7+/AkbXXOLFRDPBfmMHRFCRiCqV6+N81noms4LAKKV3N1J2IQEizjgAQAGovE5W0GXjIAVzZS4nNfKYKruTH1jnnaWc5kSy22TE6ItcRefq/Eop/EBrKFW3b4N765JTBc47CuPAJmlpCXvOyQTafMQ1g8zh3GhiL69QXQ6rr2scEqHLTTnFLpBC3ryKmW9EdswlTI3LDHIEsOWh2i3MM6dCRlemZR/jBWafptpsctVSFpsGcmNYVXctKdpEHW/QuyUD3B4JpkKK96zstnYiHCcSrmugPcK8i7NgBe5Xy1wcdrcscDKGf4kyMJZ7V5P3iajT3VcIOxf7wNqg7YZGq4jqiou3URVV+XQTEm8W8QQOhFL63MNq0eP2TEvMajL5VWpmfF7lvfj2UvKM9iDVLpgobC8Y7lsj9JPt5WSvHFFpSqaRGlCzGMD5oeV585OseZfmuVzExzsVlJKNiU6M2ibW9KNgKNXowMbT3iLJ4k7GnCEenG+8RZ+xq4H1x1YOsrFEDZWOSbbfxFzUp5BV8IteQr56giunT4VEpucZema87quC2R3l25clnNqzt
- dUxPqpcm
- WlDOp35XDt2jiGnEmtBiKvmlatKuPyNosvPao4KeYt2LxCZR3IYenq1+wj94I3KXuzUWM685HqedyOy7/SrL1mIlPf2kqnj7s0scx2oC778I+hztGj8pRPqBRosJ924Y6A53jDESa9FSDQ4FJNLZIzY+IazdpTZLJKVpIdrykX6/FUL399RE6FOWl2ZgXKmQlAfp6syEzlXjKB+RPxjgJDKD3A4oQNptGvU8Rij6hMK4yWjljp8ue+yYu5H3SiZmshxS9yw6YxJctgCKhyLE0TvisC8SBi7geQlcvc9fOSOXLvV4thvB29zvsax1lgFX1usiNGDKLr9duhNRpCvrhovGKl48invrdmypg/Rt6mg5P+0ZWJDCbvXa/7MevRZMgbtb7uD3npTYBexfhf/t2MQut3GCWuRgKdtC/jno+uHLJQdkmF1bGHnAWVyOp4V/9FjpQqbowtJDBOHOyfRHrsoUtMG59ciaJv4Hk/Pm1ZLtO7QGAZutr6RBY0V8med2ua7qFp3VUiBEGZKZUnEbRkfMup5wwSb5VEXfFGq5XU3DrxIcXxqIEC81B5M+WAXrLytRk4A3FwFCehjM=
+X-Stat-Signature: my37e31auidyjg9fm9mmms6u6eutsxw6
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 49F8C40009
+X-HE-Tag: 1787555499-89768
+X-HE-Meta: U2FsdGVkX1/oKXU9XJ3Y6o5AuN8mWDyqxvOPv5JWorZE3GgEi5rEnHSvJsz8adn51MCJIIHveyWdkiPYwZoatvV+mXn9M6GNUSsb2zVjbqhEv7WwN2aUK5suh+/DfryiSYWGu98JRpZfgoEM06O+oNIXxhuugNDJRYaijsj2v0CX6udD1uo9XYOy5CiImEsD7AxwJb2mGHlxcayjPksTJfzEw16b4mZZa5eBZVGgdlmT4MOEpTKCF+rW3u4mQOZjnq68yB8PlSx3AO1eVdegMhy9bJZ1kW/NoUowCc5eCXpVJjnJ4WCDzeos9/Fj/XqyVkn6Q53ADxJx489GFErocoDLhdu5LJ8MuyjIv3ZSPVBan5Lblesz5vBbUF9QYP9hgOVi1s86NSNz36buODu9hBQkdoVxi5arEgFsu50XayOEZ+Hxkjc9WrglNK4uVhFrfMAv1mwFltUAxTAx3WKK8agia+4tSYydwu/vsFT6pmJgu73Sp1Lxy+K67rTp3QR0a9H6dAAjBRpC4V8JaRG5rV1oGJOOnwle+JK76GXbGGjd9tQGDNujciLg+tHxUyt1pARSbaGK0ToOlj5D+57JbSOLfMGPfrq5RLYiXChSU7QyrthAqIbJilnawiPmhgxX4FJoiNmKzgZ5dlqRweGHyl6r8TUB86hVkFjfcq5Gn+3aexs+IKqHFM+EFMxzMkfN8RyijMIP+L4iXSpLufZEIWhk6tkg/JaidNYV6yWnrHdn6S1csTMlNll0G2YxxxyOPxaksLy9EatWlKQBuckaA2eQNsqJ+/kD84lGgSLyXzJ42jxDM622jpd3ASYbaOUGf1OF787Of4m145CN5JZR1VIG3/3lK6Rw3V7nHMgxWKOzhWJ7pzTeLpsOB0YdcF2dSoeCZrwM+kT82HMDJH/lYaPa19ag+JHwbwZ50tGhUmRJsVSBMrOK9Ga+PsN8omcXkTbvtb01sA/uX9DP4aZ
+ 14l2ccxX
+ uWRo0Sy/7L5qz42CLE3arIYvK40ThpCIMAFx7SGgLahJbpmnUQ4uUy+JhEQ1ZlpVvxpfSRt1/4fgkGPuG5MsrzeGev3ZC1EUbD2vNlD4B0dRvuWj5MFpPnLzQ5675VkM/iCmhybNZRH6fTu48xz/Sl61C5gRR1SSJEYd+wWHizjs+EQhU1CBwhKrwFWbY0I7CLPPGzEUdMTW/ucfjbEs2vZKyslfK7gZhFe/vZHdaG2939ewdbQk24deNXFprqBhVtqbp66aOyuvz1VHDIJTGG/YGUEqqw3CYemhHHYw4RScsHMA+OECaYchimV+zc5cEoIuJR6nJI4ac7/s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,73 +124,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---l2avhy4pfliwz3eh
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 03/11] cgroup: add memory_cma_accounting mount option
-MIME-Version: 1.0
+On Sun, Aug 23, 2026 at 03:17:43PM +0300, Mike Rapoport (Microsoft) wrote:
+[...]
+>diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+>index 83587d34b189..193f6e65d875 100644
+>--- a/mm/userfaultfd.c
+>+++ b/mm/userfaultfd.c
+>@@ -50,10 +50,10 @@ struct mfill_state {
+> 	pmd_t *pmd;
+> };
+> 
+>-static bool anon_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+>+static bool anon_can_userfault(struct vm_area_struct *vma, unsigned int mode)
+> {
+> 	/* anonymous memory does not support MINOR mode */
+>-	if (vm_flags & VM_UFFD_MINOR)
+>+	if (mode & UFFD_MODE_MINOR)
+> 		return false;
+> 	return true;
+> }
+>@@ -462,7 +462,7 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+> }
+> 
+> #define MFILL_RETRY_STATE_VMA_FLAGS \
+>-	append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
+>+	append_vma_flags(VMA_UFFD, VMA_SHARED_BIT)
 
-On Fri, Aug 21, 2026 at 02:56:55PM -0400, Eric Chanudet wrote:
-> Add a cgroup v2 mount option that will be used later in this series to
-> enable CMA memory accounting under memcg.
->=20
-> The option is made opt-in as it will charge allocations to the cgroup's
-> overall memory usage, which changes existing expectations.
->=20
-> Signed-off-by: Eric Chanudet <echanude@redhat.com>
-> ---
->  Documentation/admin-guide/cgroup-v2.rst | 20 ++++++++++++++++++++
->  include/linux/cgroup-defs.h             |  5 +++++
->  kernel/cgroup/cgroup.c                  | 15 ++++++++++++++-
->  3 files changed, 39 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admi=
-n-guide/cgroup-v2.rst
-> index aed195a71cbf..3dfc13f31a0c 100644
-> --- a/Documentation/admin-guide/cgroup-v2.rst
-> +++ b/Documentation/admin-guide/cgroup-v2.rst
-> @@ -246,6 +246,26 @@ cgroup v2 currently supports the following mount opt=
-ions.
->            will not be tracked by the memory controller (even if cgroup
->            v2 is remounted later on).
-> =20
-> +  memory_cma_accounting
-> +        Count CMA memory usage towards the cgroup's overall memory usage=
- for
-> +        the memory controller, and expose per-CMA-area usage counters. T=
-his
-> +        behavior is opt-in, so as to not cause regression on existing se=
-tups.
-> +
-> +        A few caveats to keep in mind:
-> +
-> +        * CMA areas are reserved at boot time, memory is only charged to=
- a
-> +          cgroup when a CMA allocation is performed on its behalf.
-> +        * CMA pages allocated while this option is not enabled will not =
-be
-> +          tracked by the memory controller, even if cgroup v2 is remount=
-ed
-> +          later on with this option. Charges happen at allocation.
+Looks like this drops registration mode from the retry snapshot. Assume a
+shared shmem VMA is registered for MISSING and COPY reaches
+mfill_copy_folio_retry(). While locks are dropped, the same userfaultfd|
+can re-register the range for MINOR. VMA_UFFD, VM_SHARED, ops, file and
+pgoff all stay unchanged, so the old COPY can continue instead of
+returning -EAGAIN ... no?
 
-And what would happen if it's the other way around, ie mounted with this
-option enabled, then remounted with the option disabled?
+The snapshot and comparison bracket the unlocked copy:
 
-Maxime
+static int mfill_copy_folio_retry(struct mfill_state *mfill_state,
+				  struct folio *folio)
+{
+	...
+	mfill_retry_state_save(&retry_state, mfill_state->vma);
 
---l2avhy4pfliwz3eh
-Content-Type: application/pgp-signature; name="signature.asc"
+	/* retry copying with mm_lock dropped */
+	mfill_put_vma(mfill_state);
+	...
+	/* reget VMA and PMD, they could change underneath us */
+	err = mfill_get_vma(mfill_state);
+	if (err)
+		return err;
 
------BEGIN PGP SIGNATURE-----
+	if (mfill_retry_state_changed(&retry_state, mfill_state->vma))
+		return -EAGAIN;
+	...
+}
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaovshgAKCRAnX84Zoj2+
-dmgFAYD2QpXyIkC2UzudfuMMWSQyhPMvADvZ8Rf/HrEEqUh/MjtRgmrUG5NqgkMI
-UAktDh4BgIRrcGChUBI+vsNkyPAnIa8ElouZIe+7PjdeK6u1QPgT/QlxiYNC2N8b
-AaFU79ONPw==
-=PSxk
------END PGP SIGNATURE-----
+Since mode now lives in vm_uffd_state.mode, could we save it before
+mfill_put_vma() and compare it after mfill_get_vma()? The UFFD flags
+comment also needs an update, since the mask no longer contains per mode
+flags.
 
---l2avhy4pfliwz3eh--
+Maybe something like this?
 
+---8<---
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 193f6e65d875..5e3c86fe8aee 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -493,7 +493,7 @@ static bool mfill_retry_state_changed(struct mfill_retry_state *state,
+ 	vma_flags_t flags = vma_flags_and_mask(&vma->flags,
+ 					       MFILL_RETRY_STATE_VMA_FLAGS);
+
+-	/* Have any UFFD flags (missing, WP, minor) changed? */
++	/* Has UFFD registration or VMA sharing changed? */
+ 	if (!vma_flags_same_pair(&state->flags, &flags))
+ 		return true;
+
+@@ -528,6 +528,7 @@ static int mfill_copy_folio_retry(struct mfill_state *mfill_state,
+ 	struct mfill_retry_state retry_state = { 0 };
+ 	struct mfill_retry_state *for_free __free(retry_put) = &retry_state;
+ 	unsigned long src_addr = mfill_state->src_addr;
++	unsigned int saved_mode = uffd_mode(mfill_state->vma);
+ 	void *kaddr;
+ 	int err;
+
+@@ -549,7 +550,8 @@ static int mfill_copy_folio_retry(struct mfill_state *mfill_state,
+ 	if (err)
+ 		return err;
+
+-	if (mfill_retry_state_changed(&retry_state, mfill_state->vma))
++	if (saved_mode != uffd_mode(mfill_state->vma) ||
++	    mfill_retry_state_changed(&retry_state, mfill_state->vma))
+ 		return -EAGAIN;
+
+ 	err = mfill_establish_pmd(mfill_state);
+---
+
+Cheers, Lance
 
