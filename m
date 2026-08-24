@@ -4,84 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 748B5C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 09:50:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1BAEC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 09:52:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F9986B008C; Mon, 24 Aug 2026 05:50:29 -0400 (EDT)
+	id 899F76B0092; Mon, 24 Aug 2026 05:52:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AA2B6B0092; Mon, 24 Aug 2026 05:50:29 -0400 (EDT)
+	id 823F96B0095; Mon, 24 Aug 2026 05:52:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674636B0095; Mon, 24 Aug 2026 05:50:29 -0400 (EDT)
+	id 6EAEF6B0096; Mon, 24 Aug 2026 05:52:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 409606B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 05:50:29 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD10B804A3
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:50:28 +0000 (UTC)
-X-FDA: 85135692936.06.1EC378E
-Received: from mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B0A09A0003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:50:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cHxQvXr/";
-	spf=pass (imf25.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 375AA6B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 05:52:46 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE62CC0476
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:52:45 +0000 (UTC)
+X-FDA: 85135698690.24.28E548D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EE0DF40008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:52:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRQUE2gR;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787565027;
+	s=arc-20220608; t=1787565164;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DIQ9nUDPPdsjn+myRSxfW1pgABv9nS+mwIZpATyE9iQ=;
-	b=Q5cZUHX/EADWid0emiMNmpkHL3MoHTU7pZZ64A/bLiMAvdkXvOzJELuc+9C5UUmY6Fsla7
-	9gIkeAiC55SJYVune7udepJ4NrVufJw5Aailw7AEwKuTJ2lbCCOkAQpo1iXARAIb2erTMw
-	HPkuEX0hNN13azMwjlDQn4SzqAayZvE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ncc/ibtwj4XA+xUmAcqxnKb0K30k1jpqLU0IvWTGloI=;
+	b=j5hL7Az8Z2jQ0QQzE35VMVCLxS+F+51y5qUBmgFfVHxnHmHbz0jDP3zPPDotyBI2Uv62NR
+	2u8LKE4acgIguvre8diKWNtrF/4OWzV6XxA1jR+EK4ou9jMphVPjrBsvQ/M7fR1O/j6tjE
+	UFP32sQwNHk8f86N7tg4ArYLbKRaLnE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cHxQvXr/";
-	spf=pass (imf25.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRQUE2gR;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787565027;
-	b=KMAX+YUmm+2Onh2KkG2vrMOsSfS7wL7d3aEgSs05I/M4A78ZiG8KYn6JvmbL1J9aODzwdW
-	KRJbxV+qC4smMGt7B3YDvfffB1kJZQzvFmimGyRVHNqP1+huNAe0sQRU6By1hMzxW59BSh
-	Tunn0qXDs/5xtUa45bpMrIffl8jcJ4A=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=X9ufpZjmt4MTtglWZo2Xlzd7jESQtJorX9XRJ/2a3JE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787565025; v=1; x=1788169825;
- b=cHxQvXr/m7dDgUj1iUfWadKl8lsgOinpRGrVII/lxOswxHoX/pnYUwqiJDPpUbpW1HZtm93h
- gt5kcViKvLZoZEvwXvafO2Wc4tFP8ANMk2FC4qRUITY07NYYdfradzUD13TbxlA9JfdZqAd4AO0
- 7EtibDLMUOk9EVtsqBUNld+I=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (39.156.73.11)
-	by smtp.migadu.com with ESMTPS id 0f92cbfa78e388f7;
-	Mon, 24 Aug 2026 09:50:24 +0000
-X-Mizu-Trace-ID: 0f92cbfa78e388f7
-X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/vmalloc: fix vmap_purge_lock livelock under memory pressure
-Date: Mon, 24 Aug 2026 17:50:19 +0800
-Message-Id: <20260824095020.1225189-1-ye.liu@linux.dev>
-X-Mailer: git-send-email 2.25.1
+	t=1787565164;
+	b=VJ4K2W1wEa8R8kXYtuwRmE8XSEgIg/mwZrB72rkupyNEIPBfG2tWPGIV1QwIFMPX260aet
+	d3Y8+gWoouiuOoLjBAWcsdWgj0OLvJzPtUHON1TSATRBcMdgx9oCW/dL9+lo1oKcWdH4ZX
+	YUeZepwRq47EEICaGGaH01iVjBIN9+s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 69282600AD;
+	Mon, 24 Aug 2026 09:52:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2441E1F000E9;
+	Mon, 24 Aug 2026 09:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787565163;
+	bh=Ncc/ibtwj4XA+xUmAcqxnKb0K30k1jpqLU0IvWTGloI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jRQUE2gRuRRWrt1yYPty7r4L6TNF+UqtdyMmMhBQ5nkffh2Q7Ab3vvPToUgj7sHFX
+	 SIN1ICP7aIlslYtW5vLxqCas7UMP8EtoCyQmCJrhdFKXQaOUcq23/OMVVuBZfFlU21
+	 IZh/skIzmfEXGizrl24A+wtA8nEHSBoP6+AvxY8pAZ+CcazFDeX8ja0HeZvXc+jdkZ
+	 4Y4oS9P/k1jgtcnLR2M77n7agre7ywoSwRqdPg69VG882ANFUkSjTX5GQkjyG4QOf5
+	 63AiWZQLmrPGjYH5uaXcj2dIkecyurc1PWA4DHkQNg+BYZA4HxDwq+9bCuPr3LATwz
+	 GLhOuyrcMmswA==
+Message-ID: <f4bfb3d6-d69d-4ad2-93d2-34ba1cc424c4@kernel.org>
+Date: Mon, 24 Aug 2026 11:52:37 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: icndfj49xokbqkxrajftc8aihs96uais
-X-Rspamd-Queue-Id: B0A09A0003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] mm: replace custom ratelimiting logic
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260811172156.356053-1-pfalcato@suse.de>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260811172156.356053-1-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EE0DF40008
+X-Stat-Signature: djs464gw8jf9jk8ztisoez7wwnkq6w1d
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787565026-531594
-X-HE-Meta: U2FsdGVkX1+YMrosdi9a4WEbB+Cl1NEtPtpL/GNn0ycZPaizD7YgjlYPLFy0hfmyBzPrVNl8gUuj/DKXIHIaJ2+Sq4PQWfVyyF8LyByvlagb/TbX48YANw0KWTITFK+bevG+c9vowuo1+arrsdnNAFLp5Io6GBdPF9dun4EJVDz7w8m+2RmiJ4INB2I9f/TftWePLFqVb0jrMnMdC6bYxgluNUb8DJb8w96HocFyojjP3r7/xP+8JZTusjxvReTpktiiCp1/NnpfhXrvl+077rLSNoLANHAjIq2pzWAzrXCyRPmRdBD2SiihrZHwqiMK/1yKtpubi7b5+qiyRW/YJsYwxquXQYs5z++wHJNg4f/O6xtoN9Ybpb8cags57sKSMsaerPIgYR6innSK3dxak4kgUnfNJYK6819q4JmKh0+jGHINL3hkj+0AWq0mdvBO7clrS8+f6MfGVbxlssxgnm0RBg0hbqXcwtMASodiTBllGtUPEq+B3/tywUDbP5622bv7Tq7kNvmjuw6ao2Pe6LSfHlJs6sSaU5y92J8yQiuBaQ3uvY/vJil1aQWWw7XzlUAExP53C7mqat03QVQefcX3oK/CPs46jiC4rU55QyyW1x99sxESHdAiX/kWSe6LlJEL2jtFSeijqRPAPKsf8D4VrJZYehN4IhZqTaW+uWiPX9LvQQncXUQ8DJUnRJ1oJETISj3hrhEGYv2GqGu9waR2b7uUN4Hot2bOsSUvfAX1/J6hqn0wPe1c9nuLZoaClqgMgZHSGVNX/n6A5QWsmr7vpnFds8m6ABYk/1N2YhZpmE2D6exTlx59a7n52xGB/DCT3BSIZ23Zn9mwfs1oHEeSHrK5KKuHBHBHW/Y8xJmWKHwFXeF9sU6KzHMPrBoaQyhoYh3DE2eMidBAaqaOwz+/io6J2/XWt6EUh6DJEwwhKjYqQwtOPOLt3GvymWaya4fHlXvJUpKhbWBeasi
- JelH75Za
- PDiCejEoh3ekfmQCPfaJtFpHn1KXICvxY2fxZKUcpBt9fmPrRZ4rZBVCK/PAzHiT9GWXgFMHs5eO3bIzMgmIpqC6e7L1oSoeiuvY4UpIcbaQ4h0lysCPPEhapG316awD+flPZqTCq87IkB0ET5ZW1UWbVNiJSz1sntzgXvZJ6G4pQkWW17zwBNBZGvgUL3+ceaUWOBSXW/VrIZl16sel1WAdxRC+sx4ZEDAj+Itb8irmGmTOG/JYlch0yNku2utAoAGtgdtOjHAJ6Z4Y=
+X-HE-Tag: 1787565163-222943
+X-HE-Meta: U2FsdGVkX1+FcbKhQdgf7wwCGOocTyGh58xpdEwogL84++zjW4q2XjbJzEMNHTGaqmdVsERIBCXkfQMmUSCwgBejQV6IswEWJPTDD2rns/ZTAJtnBu+4E3/idkYUDnmZdGGZHTdInecgjnUHEF1FQjOHhdGUVmDdflSdolBNB/UtRD3vK+bgoNkdirzXKa8wuxj9uud3Ri6NZGi42d1x3WgGYFW1A2Hg40LrltnAkRMmsneaZYlzpOq1/DRO4ordHFxFXHPMo5c6Wk86MF3IXhw58yWHkB7+EXUVZwgdTb/Zf4fPt43Oba/AHx8H/0vuKrcKklg/ZvsOsyZ0a13HsE+qFyce8NMfryT24UuW2vDGW6tYjH3AlmjdpzjIaNMyZxwZvKK96tG2p5V1oR8+hb2u3jZB9lMKRUk8vqecCGzGUX//YHwLCpCR3jJTFQ1fY8gi81d/6xMF96EYyo1aUTzaVRkh1t2NF1X9QfssZVyUwhvKsCS9CUj2GNyjo0l+ZoGvxBY0tR8vPy1a6qDA2ykzRnMRYkS6PXew71+6wXtalu9wf1tKMQEVyl9nWOGkVsVutJAsP25rFS2YJ6lhCtoxTdU201/kO6cMkRlr6OOtbLdtLlkdgalr92x/fyE1l+Tvq+nSKp8HoUNUJy72Cf9b3H1oFSMt+UA7Ry/7exkXBMP/9Z/vjv/DjsMHiCinlGR0sgcNHZq9IzwctDzGNI7KisIfRgzXMO95NVZhhlsM22GXsz6+CEFx9xovp1H9FUCM9HUUuBZDDkORb9OzoI7kPFI1AYvIbzASPAfW8uMlX0s3J/PbUPiOoquFx/tJvHna8K+GVceRaP4gr6Zmjp8WVV/jkP8Jgw8d4KbainE0tFoMZ3p5mkqPWvfi4yi/jBBmwjk+FuCgDgMJYawUZyXzEpi9Ao0u5MMm1DgRaDKfHphn2XptG30R6WFO/foMKd/E3LjvsX97Fr2yrnA
+ ddmGyX3i
+ 8TUPuAl8F/VqYtp9UR3U0CYH9/xRnXzl2OtGqaoRnhm/XlP7rZpKUlpGZSsXKcEUw5PYsz3Aru6U+hakCW1UI2bz6PBZBoEPyQRQre6nd9lji/r3eCQDfjuty+ALvIdwmRNiLuxxGQ9NYAV95EHS05viJAB4CH4ngQFV2Gb25xr6aRI5hPGvxgHDbBIgEVteRDYilAYvSQXqWoPriSSqZgs/JU86qZ3zRrwpneDlHm/3MIlE0lOBenCyBExdXdqZlrDQFFrroESniF7Q++Fs78sqL5uwAnS8HgK9Ksg7KUDw3UeuIp5P8siJ4fHRQV5S2GYOKpIX7gt+8XEn01BW79EMrRc14St4Gy4yg5eLyI7FZrsJjWjNi/A7SqFevp9kW81utEHGfI7tqinY4JFmTMkQsleQDHJ7AcMNgaeL7PFbtUsNz0gWpJCsL6r9AkGfwn6Ymn+tfuJF4PHldBTuEKcDhZ3Z7drf392ryae7kcCW7GDTeXRgCCzw6CypOpshUlbtvwjk3R056rjjgzG8dLMpFxrAE2WI9RtpwXf5ZpxMFbP8jeu8duGzC+PepazVZbAH/4T0GkRH21kmFB9wPwXaBfx90q0PjptyFHcEdy6QXoEhxY1dpg+1bHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,119 +137,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+On 8/11/26 19:21, Pedro Falcato wrote:
+> The kernel has a perfectly cromulent and mostly-equivalent variant in
+> lib/ratelimit.c that can be used.
+> 
+> To: Andrew Morton <akpm@linux-foundation.org>
+> To: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: "Liam R. Howlett" <liam@infradead.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Brendan Jackman <brendan.jackman@linux.dev>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> 
+> Pedro Falcato (2):
+>   mm: replace custom bad page map ratelimiting logic
+>   mm/page_alloc: replace custom bad page ratelimiting logic
 
-The vmap_purge_lock mutex can be held for an extended period by
-__purge_vmap_area_lazy() which calls flush_work() to wait for
-purge_vmap_node workers while holding the lock.  Under memory
-pressure, those workers may themselves be blocked in direct
-reclaim trying to acquire the same lock via the
-vmap_node_shrink_scan() shrinker callback, creating a circular
-dependency that deadlocks the entire system.
+Cool!
 
-Two changes:
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-1. vmap_node_shrink_scan(): replace blocking guard(mutex) with
-   mutex_trylock().  This is a shrinker that only decays the vmap
-   pool and returns SHRINK_STOP without freeing memory; skipping a
-   decay cycle when the lock is contended is harmless and prevents
-   tasks from piling up on the mutex in the direct reclaim path.
-
-2. __purge_vmap_area_lazy(): purge all vmap nodes inline instead of
-   scheduling purge_vmap_node via workqueue and calling flush_work()
-   while holding vmap_purge_lock.  The workqueue dispatch + flush
-   pattern under a mutex is the deadlock trigger: if no free worker
-   threads are available (all blocked on the same lock), flush_work()
-   never returns and the lock is held indefinitely.
-
-Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/vmalloc.c | 51 +++++++++++++++++++++------------------------------
- 1 file changed, 21 insertions(+), 30 deletions(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index bea9f76ed7e7..41443708d22d 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2358,7 +2358,6 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
- 		bool full_pool_decay)
- {
- 	unsigned long nr_purged_areas = 0;
--	unsigned int nr_purge_helpers;
- 	static cpumask_t purge_nodes;
- 	unsigned int nr_purge_nodes;
- 	struct vmap_node *vn;
-@@ -2397,36 +2396,17 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
- 	if (nr_purge_nodes > 0) {
- 		flush_tlb_kernel_range(start, end);
- 
--		/* One extra worker is per a lazy_max_pages() full set minus one. */
--		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
--		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
--
--		for_each_cpu(i, &purge_nodes) {
--			vn = &vmap_nodes[i];
--
--			if (nr_purge_helpers > 0) {
--				INIT_WORK(&vn->purge_work, purge_vmap_node);
--
--				if (cpumask_test_cpu(i, cpu_online_mask))
--					schedule_work_on(i, &vn->purge_work);
--				else
--					schedule_work(&vn->purge_work);
--
--				nr_purge_helpers--;
--			} else {
--				vn->purge_work.func = NULL;
--				purge_vmap_node(&vn->purge_work);
--				nr_purged_areas += vn->nr_purged;
--			}
--		}
--
-+		/*
-+		 * Purge all nodes inline.  Do not schedule_work() and
-+		 * flush_work() here: flush_work() while holding
-+		 * vmap_purge_lock can deadlock if the worker pool is
-+		 * starved (e.g. all workers blocked on this same lock
-+		 * in the direct reclaim path via vmap_node_shrink_scan).
-+		 */
- 		for_each_cpu(i, &purge_nodes) {
- 			vn = &vmap_nodes[i];
--
--			if (vn->purge_work.func) {
--				flush_work(&vn->purge_work);
--				nr_purged_areas += vn->nr_purged;
--			}
-+			purge_vmap_node(&vn->purge_work);
-+			nr_purged_areas += vn->nr_purged;
- 		}
- 	}
- 
-@@ -5519,10 +5499,21 @@ vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
- {
- 	struct vmap_node *vn;
- 
--	guard(mutex)(&vmap_purge_lock);
-+	/*
-+	 * This shrinker is invoked from direct reclaim path where memory
-+	 * pressure is already high.  Blocking on vmap_purge_lock here can
-+	 * cause a pile-up of tasks all waiting for the same mutex while
-+	 * the lock holder may itself be blocked in flush_work() waiting for
-+	 * a worker that is stuck in the same reclaim path.  Use trylock to
-+	 * avoid this; skipping a pool decay cycle is harmless.
-+	 */
-+	if (!mutex_trylock(&vmap_purge_lock))
-+		return SHRINK_STOP;
-+
- 	for_each_vmap_node(vn)
- 		decay_va_pool_node(vn, true);
- 
-+	mutex_unlock(&vmap_purge_lock);
- 	return SHRINK_STOP;
- }
- 
--- 
-2.25.1
+> 
+>  mm/memory.c     | 30 +++---------------------------
+>  mm/page_alloc.c | 28 +++++-----------------------
+>  2 files changed, 8 insertions(+), 50 deletions(-)
+> 
 
 
