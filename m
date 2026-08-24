@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09A12C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC8E4C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2038A6B009D; Mon, 24 Aug 2026 03:39:02 -0400 (EDT)
+	id D21936B009F; Mon, 24 Aug 2026 03:39:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 185F86B009F; Mon, 24 Aug 2026 03:39:02 -0400 (EDT)
+	id CF8B16B00A0; Mon, 24 Aug 2026 03:39:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 074E26B00A0; Mon, 24 Aug 2026 03:39:02 -0400 (EDT)
+	id C3D236B00A1; Mon, 24 Aug 2026 03:39:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE3206B009D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:39:01 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D070160477
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:39:01 +0000 (UTC)
-X-FDA: 85135361682.04.4DD4974
-Received: from mta1.migadu.com (out-207.mta1.migadu.com [95.215.58.207])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7822CC000B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:38:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 900AB6B009F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:39:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20F10120424
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:39:10 +0000 (UTC)
+X-FDA: 85135362060.01.06728A9
+Received: from mta1.migadu.com (out-212.mta1.migadu.com [95.215.58.212])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 35740180003
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:39:08 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.212 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787557139;
+	s=arc-20220608; t=1787557148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qq5xBeJv1JeLERBDQQCJd7goLSe3eRusHem/h4VHA1A=;
-	b=1C8+DHsxZp8SMWPK6y3kExQ1xCF0YEJ9pPLg6K59N0bsg8RGI4Eqbgb8kbu1WWF9K/maCf
-	V9HgYZ2E2rNXHVH9YeDB5D0YmimppNlRz83j2bxPW1F+Oco6oYVGvg4PT4uUylxAfuvbTG
-	g5Q7v+61qErzUE/9MunQOjNhuoQNTo0=
+	bh=oOg1ZhnxEZnHo3M3oArfD2yyqEboP+XpsQwYpngu9MA=;
+	b=1fvDunFbIIgd6BlQ/j9/G2/+dhrpi80BQorupN9akGE1cfodPfNqZPdQUQs0QuhaksYNVj
+	CAvpznQaPn24PNoSSu7oPtmVE+DHL06zdgMCem7n3oEefRYMPBUpIeepZNUXBFkEoin3UJ
+	HFaHX+aATziVWdO9cGnZcOaxdFp5uME=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
+	imf16.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.212 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787557139;
-	b=36N0dYHqjzocMRVFayrSMkoUsexRSagnmDOa7AUpTN7MgSODlsublnU+TWz/KLt4b/pSUr
-	7MjEj0t3/RDfvwxVzwKjPu/JwqwDq6QkO7ydug+s9JJ1k7zEhaGETtBcfhJ50GaF5UELZV
-	1LQb8iSWOXEcndvUO+M/8Th4N7pRBhY=
+	t=1787557148;
+	b=u3seHLmU+c9TewPmmdC1WERzRgFxTwx6Mp79+Nil8PWWyKcBK80qOmWuxO2D08Nd737uqZ
+	alhgVrJ9wjN7OlW5K1PZpK68vp4iqJ29WjIMsQPPymR5t7Sjz0EfmBnR21eNGasoDw3Jj0
+	DbszXl++n8oDpgaDXySKsrixeCdqJ40=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost (3.112.29.171)
-	by mta12.migadu.com with ESMTPS id 8c39e84324b5293c;
-	Mon, 24 Aug 2026 07:38:58 +0000
-X-Mizu-Trace-ID: 8c39e84324b5293c
+	by mta10.migadu.com with ESMTPS id b854645ab578d865;
+	Mon, 24 Aug 2026 07:39:07 +0000
+X-Mizu-Trace-ID: b854645ab578d865
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -70,23 +70,23 @@ Cc: akpm@linux-foundation.org,
 	baolin.wang@linux.alibaba.com,
 	hannes@cmpxchg.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 6/9] mm/mglru: refactor Bloom filter helpers for two filter levels
-Date: Mon, 24 Aug 2026 15:38:03 +0800
-Message-ID: <20260824073806.629593-7-hebaoquan@kylinos.cn>
+Subject: [PATCH 7/9] mm/mglru: skip PUD subtrees during aging
+Date: Mon, 24 Aug 2026 15:38:04 +0800
+Message-ID: <20260824073806.629593-8-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260824073806.629593-1-hebaoquan@kylinos.cn>
 References: <20260824073806.629593-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 35740180003
+X-Stat-Signature: bkfjme7tit5f61838w7q1gkmh67gwwhc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7822CC000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: xsx5sodbj51bdgu4cx7cbkqkcdycdhy7
-X-HE-Tag: 1787557139-419109
-X-HE-Meta: U2FsdGVkX18r+bt5cYhczaBqphIvdJn/xKWVqN7DxPK5Hp4OONRADsS51tT9av261PiNRgpm3my9XvZecULuLpRfeNhgrmIaI6Uv1YMvRiq4lxfg4Vx/s2tpLeKrUSUNyq8KN76kEOYf+asLtwdMSm/DcTfTPumy+sANk/Vadfznxzu8zfkwHsTIdiG/W7UMa29KQ9GEeBy8JLBXhWzFyLEcYld70MJs1ecQUmvZGCTvXWPfksXxEWwKBnV7/t0m8gfI/VKPNjmDRjODsmYsvXavWKGMi8l2bVyB0ja4Iow95FpjQhM9o268qL6q0KR2Ag1/4FQMFpq9lFAae7U1RRaajQRDzHO++Wl//f3pN3SHSjj3S+/OIr4kbTuiE6SFNNXUpeCsRRrGPRoQOT8O1Ap/s8B8/rB4bQnpZXkRyIN4rhR3ggfqZdyjbTNgFdXIUsNoPzqSBW0/MwIK73Xj56mWp5jR5ngQpRZPpEV742crISXSfNjYlO49sg7zYt5F8iQm3YMoo8ju5DrzHdq3sFpywMaGzphfsB63TWJuAKYPi2ilHarDARMokRpDZNaGAMqzAluj+h9a50EgmvT62bvZq2vKNyhidNXEvb6OAk73JQcDF7T8OIPIAwBliYVDql7TcbrUsJE5xJAU5EOiND2h9JiVZ0cDihRduP4zATSLl+f3jr2AB577U8WnWNTzMylRAbH+dNSQjhkKXjSzOJL9FISEYkQTi5ZhI3tr3RLiWhXIgHxrxCpX3GYDDTP6KpUSfq4K6JZGYekucogOWB+W7Jpg89Doy4ifFl/UNNEKIcT/zSd7o37T6dRkhfv1uBXfhxjzvCIFO0Y9d2a+e4h1V/G1V6O7z6E/9t1tQm+T9sBAMAQSwCxcZmW5YSX1yO09DgtToEdkBbTyekaeP7GlpwzZ/cFUMhs2lK8jqksypBsayPyn9IdoeNF3tKyUSFi7UN3TsKmwojHozMb
- 0pfvt1EI
- onBU+t7tJKis9Khz7Cz3mq5wFEWqZ1UIy5yAR9G6OzbspokejxgW9Lb9wrvvzq/f7tMU9wpStMDTq5yLNETcIzCgb/yls/z/PmvMJNu22BqZul49iRcvQb1dGofX/5hGJLNlmYu+KllEFCMrcTl6mgswYJpXwxbY846bkTbxnmNOEf6vqi+xn9wOzKTotW5sDhGCieC5MbUcsfM+U0fR8fjyx5p/+k4NWD7tknWOzp/15xQWitn8713CmezIUq5bysAEYlFm7FTeG4imEfNikrNhWE3R1/E8DFJ90ZSPWTGCOSBxUh0iBjRL1Kr3Y9VuLNIg29BShMgiR6+mbTUpvOdeKqtm2Dscs1eCA7V7muREunF0=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787557148-424608
+X-HE-Meta: U2FsdGVkX18zO8AhesgEPHMFdpl7Pw78tgOS6sZSHBvSHdI+HB0ac5qL7tcqe5AJAmREDVcn8nVpxY5vRB5f9RcX53gcHj7jW42axPEJl9WgRVcjvEmjdP8FUZygfLI0UlV6W8KoKWJG/QreHLXqTZgbANq2Tp0dWG51hv6ZurMLteKvHE+LYeBXkQnubV4vT+CRzIsZaM96DGcwsDEUbFuFAyl2Frm2F9q4PTdcSTHQg2KTJjAaXjZ6jg2GEimjxU/KrtL7unFuz6tyfCuqWifzWN9ryPvOyL6iqymhyLtSHbEkfWtYanARke1qNlMMIDn3bdbMCzQ1WPHJbAOJhfNNjhRiaDQmGPfgY0wzpkwtE7FAgFGJ6sSwpQIRW1pdTvRxyrh9XFzPqk910sM85fiq8SNJM52YF0c/+OvhDGtYa+2YL/FIaT7ePlmiu2VG97+rMQT6E4Y5efcbfDNPNRKUOFbOtIy221gJqGTXkfHN11FvGfeSlBjwjBJDkVkfqZcG3orAWCAPkQ9RsWTlfOyuwfQoQLET2gJ1sVmGDVxL73ZuWT7pJXkjODqUfajkgx4ZoooHolRrY9/d/f8dK4QzwZQdesWb6ibcysqN/V/9bvlfnX+dKTmRkFGQDBtYvpiIGFMhoPfBolTTPQsThDJ225cGIoR9steRca97rk5cMYr5fMNJU3NiifWDIevNlE2NtCc3J6raW3pUOiR3dLagY9DBfEmAqVzxBNSMbfacknBsd1pPdue8KETBCyn2hHkbhY/LXOtVf03q7iGmEfwRk2/SiBzZE34E3gi0ZYF1r/0Gu2Jm0eY0XxZ7BsNXWJrg3cPbgDuU7+K7eFliJLVIH5C5zWaThInGYxfZ5dDQ68muAghxWPnmMpntCb37KmJegwii8qoc7jYaCbUvQnTysnJ4Ldxs8bykaNI+aoW6GzY5NnNOG4vee9DIr70pXaMfGCEFHXLoEFCHAdK
+ HSUgBnC3
+ koPmu2AHMXxKKIweWgYQS2czYQZHbkO1wuGPcRuhNDLZem//H5C6uQAnS8c2rDCrvi1uaKWboHz1GbgpxISseF9/BfBW1EtCnW1L/dIAHX02/cAUXf+C7btS1AhqJYj1MaobIEkqemuUtpJsmpqIch/Pg+ZbOMx5JP9guTY9RkmU+pFYvykUIpG445zjd8arebPXBzMbeS64bFjDTOh1kbBhRUSQAvdPySylCvSjGYWv7VlN6GL5taRw9+B1uVoo3Gs3sy8rxr2KUMaaa0N6PNRcFcNIHMBJMQYxFG1iuSEQyp2W032fWFeoN3fXzjVEGCnAjlS2l387SsjLDXeZRvVXvp5rHed9keJB62O0bbj6fUxk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,132 +94,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Split functions test/update/reset_bloom_filter() into __ prefixed helpers
-that operate on a generic filters array, and wrappers
-(test/update/reset_pmd_bloom_filter()) that pass PMD-level mm_state->pmd_filters
-as parameter. Then PUD-level filter pair can reuse the same hash,
-double-buffering and reset. no behavior change yet.
+The aging walk into present PUD and iterates all its 512 PMDs, testing the
+PMD-level Bloom filter on each. Add a coarser PUD-level filter
+(pud_filters) one level up:
+ - walk_pmd_range() now reports whether it found any young leaf entries,
+ - and walk_pud_range() records that in the PUD filter and,
+ - on subsequent generations, skips the whole 1GB subtree when the filter says
+   it had none last generation.
+
+The double-buffered filter flips with each new iteration, and the existing
+eviction feedback (lru_gen_look_around()) keeps hot regions marked, so newly
+hot or migrated-in pages are re-checked promptly rather than suppressed
+indefinitely. force_scan walks bypass the PUD test, so manual aging and newly
+added mm's always rescan and re-populate the filter.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- mm/vmscan.c | 41 ++++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ mm/vmscan.c | 44 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 40 insertions(+), 4 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 912cbf86c7ff..062504f287da 100644
+index 062504f287da..7a6c15be1c2a 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -2842,14 +2842,13 @@ static void get_item_key(void *item, int *key)
- 	key[1] = hash >> BLOOM_FILTER_SHIFT;
+@@ -2817,6 +2817,8 @@ static bool __maybe_unused seq_is_valid(struct lruvec *lruvec)
+  * walk_pmd_range(); the eviction also report them when walking the rmap
+  * in lru_gen_look_around().
+  *
++ * A second, coarser pair of filters (pud_filters) sits one level up.
++ *
+  * For future optimizations:
+  * 1. It's not necessary to keep both filters all the time. The spare one can be
+  *    freed after the RCU grace period and reallocated if needed again.
+@@ -2908,6 +2910,23 @@ static void reset_pmd_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned l
+ 	__reset_bloom_filter(mm_state->pmd_filters, seq);
  }
  
--static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
--			      void *item)
-+static bool __test_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
- {
- 	int key[2];
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = READ_ONCE(mm_state->pmd_filters[gen]);
-+	filter = READ_ONCE(filters[gen]);
- 	if (!filter)
- 		return true;
- 
-@@ -2858,14 +2857,13 @@ static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long s
- 	return test_bit(key[0], filter) && test_bit(key[1], filter);
- }
- 
--static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
--				void *item)
-+static void __update_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
- {
- 	int key[2];
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = READ_ONCE(mm_state->pmd_filters[gen]);
-+	filter = READ_ONCE(filters[gen]);
- 	if (!filter)
- 		return;
- 
-@@ -2877,12 +2875,12 @@ static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
- 		set_bit(key[1], filter);
- }
- 
--static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
-+static void __reset_bloom_filter(unsigned long **filters, unsigned long seq)
- {
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = mm_state->pmd_filters[gen];
-+	filter = filters[gen];
- 	if (filter) {
- 		bitmap_clear(filter, 0, BIT(BLOOM_FILTER_SHIFT));
- 		return;
-@@ -2890,7 +2888,24 @@ static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
- 
- 	filter = bitmap_zalloc(BIT(BLOOM_FILTER_SHIFT),
- 			       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
--	WRITE_ONCE(mm_state->pmd_filters[gen], filter);
-+	WRITE_ONCE(filters[gen], filter);
++static bool test_pud_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
++				  void *item)
++{
++	return __test_bloom_filter(mm_state->pud_filters, seq, item);
 +}
 +
-+static bool test_pmd_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
-+			      void *item)
++static void update_pud_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
++				    void *item)
 +{
-+	return __test_bloom_filter(mm_state->pmd_filters, seq, item);
++	__update_bloom_filter(mm_state->pud_filters, seq, item);
 +}
 +
-+static void update_pmd_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
-+				void *item)
++static void reset_pud_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
 +{
-+	__update_bloom_filter(mm_state->pmd_filters, seq, item);
++	__reset_bloom_filter(mm_state->pud_filters, seq);
 +}
 +
-+static void reset_pmd_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
-+{
-+	__reset_bloom_filter(mm_state->pmd_filters, seq);
- }
- 
  /******************************************************************************
-@@ -3144,7 +3159,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+  *                          mm_struct list
+  ******************************************************************************/
+@@ -3158,8 +3177,10 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+ 
  	spin_unlock(&mm_list->lock);
  
- 	if (mm && first)
--		reset_bloom_filter(mm_state, walk->seq + 1);
-+		reset_pmd_bloom_filter(mm_state, walk->seq + 1);
+-	if (mm && first)
++	if (mm && first) {
+ 		reset_pmd_bloom_filter(mm_state, walk->seq + 1);
++		reset_pud_bloom_filter(mm_state, walk->seq + 1);
++	}
  
  	if (*iter)
  		mmdrop(*iter);
-@@ -3782,7 +3797,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
+@@ -3744,10 +3765,11 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 	*first = -1;
+ }
+ 
+-static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
++static bool walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 			   struct mm_walk *args)
+ {
+ 	int i;
++	bool young = false;
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	unsigned long addr;
+@@ -3784,8 +3806,10 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 
+ 			walk->mm_stats[MM_LEAF_TOTAL]++;
+ 
+-			if (pfn != -1)
++			if (pfn != -1) {
+ 				walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
++				young = true;
++			}
+ 			continue;
  		}
  
--		if (!walk->force_scan && !test_bloom_filter(mm_state, walk->seq, pmd + i))
-+		if (!walk->force_scan && !test_pmd_bloom_filter(mm_state, walk->seq, pmd + i))
+@@ -3795,6 +3819,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 				continue;
+ 
+ 			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
++			young = true;
+ 		}
+ 
+ 		if (!walk->force_scan && !test_pmd_bloom_filter(mm_state, walk->seq, pmd + i))
+@@ -3806,6 +3831,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
  			continue;
  
- 		walk->mm_stats[MM_NONLEAF_FOUND]++;
-@@ -3793,7 +3808,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
  		walk->mm_stats[MM_NONLEAF_ADDED]++;
++		young = true;
  
  		/* carry over to the next generation */
--		update_bloom_filter(mm_state, walk->seq + 1, pmd + i);
-+		update_pmd_bloom_filter(mm_state, walk->seq + 1, pmd + i);
+ 		update_pmd_bloom_filter(mm_state, walk->seq + 1, pmd + i);
+@@ -3815,6 +3841,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 
+ 	if (i < PTRS_PER_PMD && get_next_vma(PUD_MASK, PMD_SIZE, args, &start, &end))
+ 		goto restart;
++
++	return young;
+ }
+ 
+ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+@@ -3825,6 +3853,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+ 	unsigned long addr;
+ 	unsigned long next;
+ 	struct lru_gen_mm_walk *walk = args->private;
++	struct lru_gen_mm_state *mm_state = get_mm_state(walk->lruvec);
+ 
+ 	VM_WARN_ON_ONCE(p4d_leaf(*p4d));
+ 
+@@ -3838,7 +3867,12 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+ 		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
+ 			continue;
+ 
+-		walk_pmd_range(&val, addr, next, args);
++		/* Skip a subtree whose 512 PMDs all failed the PMD-level filter last gen */
++		if (!walk->force_scan && !test_pud_bloom_filter(mm_state, walk->seq, pud + i))
++			continue;
++
++		if (walk_pmd_range(&val, addr, next, args))
++			update_pud_bloom_filter(mm_state, walk->seq + 1, pud + i);
+ 
+ 		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
+ 			end = (addr | ~PUD_MASK) + 1;
+@@ -6027,6 +6061,8 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
+ 		for (i = 0; i < NR_BLOOM_FILTERS; i++) {
+ 			bitmap_free(mm_state->pmd_filters[i]);
+ 			mm_state->pmd_filters[i] = NULL;
++			bitmap_free(mm_state->pud_filters[i]);
++			mm_state->pud_filters[i] = NULL;
+ 		}
  	}
- 
- 	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
-@@ -4422,7 +4437,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- 
- 	/* feedback from rmap walkers to page table walkers */
- 	if (mm_state && suitable_to_scan(i, young))
--		update_bloom_filter(mm_state, max_seq, pvmw->pmd);
-+		update_pmd_bloom_filter(mm_state, max_seq, pvmw->pmd);
- 
- 	mem_cgroup_put(memcg);
- 
+ }
 -- 
 2.54.0
 
