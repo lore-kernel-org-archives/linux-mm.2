@@ -4,130 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD972C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 08:42:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 690D0C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 08:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 695686B0095; Mon, 24 Aug 2026 04:42:28 -0400 (EDT)
+	id 8452C6B0099; Mon, 24 Aug 2026 04:43:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66D4B6B0096; Mon, 24 Aug 2026 04:42:28 -0400 (EDT)
+	id 81CBB6B009B; Mon, 24 Aug 2026 04:43:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 583426B0099; Mon, 24 Aug 2026 04:42:28 -0400 (EDT)
+	id 7595A6B009D; Mon, 24 Aug 2026 04:43:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA4F6B0095
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:42:28 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8A93040478
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:42:27 +0000 (UTC)
-X-FDA: 85135521534.16.5F23215
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8CCC4C0003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:42:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=QrzUD3io;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D3EF6B0099
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:43:00 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD1E3802B2
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:42:59 +0000 (UTC)
+X-FDA: 85135522878.30.D9956AC
+Received: from mta1.migadu.com (out-22.mta1.migadu.com [95.215.58.22])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 553031C0008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:42:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Udc3AjIH;
+	spf=pass (imf21.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.22 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787560945;
+	s=arc-20220608; t=1787560978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GGTqSFIdIFnX5ZwL1pucBsR+p2FUQcaSYFkmH0uw2Ps=;
-	b=g9xVngxb5qLvLXzUrFiWGx0SR47iDBbAjIxhxc4gqetlTxVY8c2HD+7zDiMSb1W8OmDCES
-	QnAG34NRw4vBQr1ot+6zzhyYbe7qCB/zdXGMvmaWj4nwDUNI1xqq/io/PzK6XAQ6NKYtdj
-	MrM4aC+NFopnHwbkdkC/Gw9QmRqfgdA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=QrzUD3io;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	bh=ntzODhn9rXQnazJjVE8N1IOl00AEOP2fkyYLqZwbxzw=;
+	b=Q5fD/jPENoepbx95jxAetQMlVNuxTupKgcCBs74rDB+ZGq6oHp2TNZk8GlcfRTR9PQWlEF
+	jwSRgnmxf1GMZTjkgiUJEIi13WRk9vloJUrqJHlhbvNn8zsL9JhJ3RoEkgoxpxZBH4gi8u
+	vRjsbxEbZ9tKMdNLKMoCT8aBalbAEPY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787560945;
-	b=WuCybmlVuvXJYGN+8dQUJM5N9jrvUYlqrtJCgfwtbuov5zTBDesWLTSoX+zCuQz5jVJGGC
-	w5UiLw3r6sKm4yCSzw5s1BUG0gwG9rcog9fmF7YscEKgiTGXBx96JyVJ0wWDMFZjsrMqAF
-	nj5umie37dSGEpUAS8lWQpOOSdOiNi4=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a422090b2fso4712834a12.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 01:42:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787560944; x=1788165744; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GGTqSFIdIFnX5ZwL1pucBsR+p2FUQcaSYFkmH0uw2Ps=;
-        b=QrzUD3ioQpafO40mrOj+VxhDlQAFGbmdPhcPeHhMhnRU9x0OLAnovWvM8+Alf6BS73
-         frxSKULlc9dWcXx3JfPm2I9DRrfneCmSbbPTLGpRLeAfS4QK0GpYfkZXInKu6awA4vzq
-         wbDWmYpiTwbrfancbWuEJuWmPFIsLp4WaqeLzEWuD2P4cN/2Q7keFl6gn7rYgN7cy2sL
-         KtOWQ/2400dIxybv7lXE3NQx3I7BBYH/ZOA7w90xLfUWTz4Lw7GT9El54OjregINUZPY
-         AKchxTbWYiVgotbbz2fvwyCzHb9+WEfLu9sM8F5jC1dTcOzyQl+kkRq+oV5675IGC7qK
-         32TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787560944; x=1788165744;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GGTqSFIdIFnX5ZwL1pucBsR+p2FUQcaSYFkmH0uw2Ps=;
-        b=UVv7CcTbO8Hsmzl4NmLQhmtoIJQ4LY9f/Nzawc5UnNOjUb299GtI9nlrtLV1ttCZZa
-         w9UXd/62z1mm8tyA31mbeOqkoz9NX85ZpYWlMqPzfdv24JfExW/9dprYOpnZB8l0q9m0
-         pY1jnDdKCOOq7J6mEhtSO/uwLC1F+oLWwFRQpYFPJQ42f0liZQFDRbBlFbXwaKvzM8hD
-         +KT7Ycj74PDPan35y5rGtlwpDAJbJXKhy8h2VJIPpVwDb0Km2l5WBWVvsjSmPwAr9ZsJ
-         y93jDoXQTqEcCYC9XnBcmFasvDxwVGu21jPMiVCuOY8nJSsuAizZxB7MvB3F+oR42xyo
-         5EsQ==
-X-Forwarded-Encrypted: i=1; AHgh+RreFXOr90rJvzR8WRftOBhK4EkxniR+nCTyuzAGVnQ2QyhF7+kfTp8uGtICG7n9ima+uur9mOLDqg==@kvack.org
-X-Gm-Message-State: AFuF++lU3xefFk55I+XHntQMRYhydf4/6YeKgIaYXbolTBmOMyuJ7OhK
-	O6U8mblw6pfWqT07p6kG/s79WxTxJVJIZeXGHn7bFtt/UwUAhmrMXMqfGaGjUpWhgBw=
-X-Gm-Gg: AR+sD10UlEnGXUAbxuVxPfcsed+WkA/5KejG5or/Vs/JMvWGsLbV7gw/n1WL+oTXCcS
-	1EIkTNMuPnSXVyQUCeQ7QXLj03W2Ue9veirkUSC6SqzaZ6nHmAjxLMGbH86PZiVfGoGA+vGSl5G
-	CwZOG+dCrbht/E/ITDgBXOQcHuoXazD6sgSCXBNj2rzPUfSVL2a8pc0x1d6uRixnYDMRewvyaF6
-	T/xwyp7pvwwHQZo4i4uNXoGSF5jUYMJZzwrBDisPJCT5eon7Fu0eBPKYJHeD+xUVIYN0bFFsJJe
-	5o6bz17Zo/zmn4U/kqJEs/BGcldQytutofBFj29y/RctAN0QVOxJw0BgJMU03Fo4yE71UJtAvAB
-	6nNSKTSliw4zaKtuTonmwI+K/R60rpEzHUa+BgPGEIHrZxUtQfboNJxLwZ86GG0n422xsNtmhBT
-	JpZicKzmyXvyz5oxjk6bNgv6ZUZXfsDFJOxVxRNBSban+uroR1PhrUUsnNck5DH0rUofHe4D2uC
-	w==
-X-Received: by 2002:a17:906:2481:b0:c1c:2007:298e with SMTP id a640c23a62f3a-c246b4c5e33mr2142741366b.24.1787560944031;
-        Mon, 24 Aug 2026 01:42:24 -0700 (PDT)
-Received: from localhost (109-81-81-112.rct.o2.cz. [109.81.81.112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24968abf18sm1238314066b.61.2026.08.24.01.42.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 01:42:23 -0700 (PDT)
-Date: Mon, 24 Aug 2026 10:42:22 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
-Message-ID: <aowD7tUUIUbhjJQj@tiehlicka>
-References: <20260821081741.1340277-1-ridong.chen@linux.dev>
- <aogMyu5R_DZRqp2J@tiehlicka>
- <f45848da-9569-453f-b0c0-8aa984e1976d@linux.dev>
- <aogZZsXwCyOXISaw@tiehlicka>
- <bc9c3de9-17b9-4ba1-8065-3270bb455630@linux.dev>
- <aogwUac-sjfcs7Vi@tiehlicka>
- <dba83897-9bbb-4a44-9021-8f938bb6a12f@linux.dev>
- <aog0ch0u8BtkR-a1@tiehlicka>
- <de7d583e-bd9b-464f-9e28-73075c0211a4@linux.dev>
+	t=1787560978;
+	b=DGiH6BmaFQ30UZOmPKuWaQTyk20jxftsAtmrImEMxzmTgtqR07lMyOyrTI1wY2wJusVUJe
+	TKmahe2R8ghR6Ofu35xIEghGVVLgNgbWQQNlRDq69BcYbT2za0b6bimIe4Stm5azV148UF
+	mQnSgXlv9QNmsDYx0OdjI+6M1Lc5eSs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Udc3AjIH;
+	spf=pass (imf21.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.22 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=a7I01ceEBwjGUHz7eVfy6nfOZJ7Sz8KIAjmLETcZems=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787560975; v=1; x=1788165775;
+ b=Udc3AjIHLQc1Fe8XSGgUfN9eDcuLC4fpx2RwmiN2RV/wnQA4vmnT06x3b7I4C7/f2OWHTirs
+ 0wMC8TEC6pL+XsZUlEpTWE3aJwbBlv24FpY0kn4n1gEPsKt2iZVTEidvVSNxhk+o1wT7b3Aulu+
+ UeP+oTLBmYcZr0XP7bFinusU=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (3.112.29.171)
+	by mta11.migadu.com with ESMTPS id e004af43b8cd7349;
+	Mon, 24 Aug 2026 08:42:55 +0000
+X-Mizu-Trace-ID: e004af43b8cd7349
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 24 Aug 2026 16:42:44 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Baoquan He <hebaoquan@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org,
+	rostedt@goodmis.org, mhiramat@kernel.org, kasong@tencent.com,
+	baohua@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org
+Subject: Re: [PATCH 0/9] mm/mglru: suppress empty page table walks during
+ aging
+Message-ID: <aowEBGJPwLdsJZLt@fedora>
+References: <20260824073806.629593-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <de7d583e-bd9b-464f-9e28-73075c0211a4@linux.dev>
-X-Rspamd-Queue-Id: 8CCC4C0003
-X-Stat-Signature: t4wy3b8nkkt9rqquo64571dagmiikoum
+In-Reply-To: <20260824073806.629593-1-hebaoquan@kylinos.cn>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787560945-189037
-X-HE-Meta: U2FsdGVkX18nCMVWkmFLzSqvYcJHGe9j09tVgGsaKKqo9P0QxxTXSXEEDt5RCiLOK5J5lhwNeDsFFjyCgkdHkua++896DtnPQwt+RH1KqQLLG/pbo431YOAMZ56IfS31sXofmXqrRGd3yRkS50MZfeQZsaktARlpTZHipR9pKN9OIYOMIJbHoDprLBcA8Cy3ZIkbDx2Yz7aGYrthq7r+G9RtJBNlNlq/DT6Jai9AUU+iyynwfWdJ/GjjqPJoBdTaE3UC2y2jjTO+Ep8n2VlFKcs9+IUbNDjLJO6vthS8HPLea5GwTrH86zOJomAY6g/p2MX3RFe20Mj4fFvN/TUMUWLg3SKjdXadSfQeAM3TWWaYTH2e1j+gSJFM0raKOsYWSBixUumsuIih+keMBtHSiuwRUosbKdH+RlFGafOO2zP1Wa3GKLb+8Oz791Hcm2YWY6WnvgnvnNWBYiq9cNxussq81KGC0AJdPXY3G1lgSQX9cEZbGNyjNz7Ury3+cBzWLhm+ug/7WgakhUgl4PbLM+FsQM6RBisQCV/bjVk1m+indPRGIcZPSKg1DSmZy0ILVcDiRCyfbSH59PV8YgK6j1TUjSFssKSwuwBl5PtgeX1UEFThBFCoh7zRCVm802nnext3lPHVh9j7ti6qw/uO6ppVT4HcfS3EQx9M/6+RAGkx6zwCJjyHUeAEp8nB/w2HDs82vbAl4X9SvRULoDUIiLgM1Nn+VPG4snxWakdEKRKAD5yZYFlhyk10QnVVed/yRGkh5VsLAF8sRYUlrd7XYnWeDs7xv7ndeoe/yaeHCjO4iMrdvIHGSpr924cy8kWYWJQMbUBMMn+ycXB/jOZA9bk6xSymCORi+Xlsqr/mQ5oD9Oggxn61vQGS7fFGixe6eR/WZUQthcWQ+VuRzSnxrH9ifjx8a6Q+blTQ9gXtgQWgxo2d8j7AQTA7rcOp3MCuyK56Fzc4wXG+jBhE1VW
- 1SRs5i0W
- ur+8GI9T09YTZDW5d4bJqT/NgKDdMLzmJyCI38kkrTc0Vh84caUVNhu4DD6rurGy4fOsVAi7gzUcHwYJeip9Z5TI03qvUNtXAfYVHQLRqQvxrq6M20zhcLLUX2yAJmBMBa7AmrPerbkdPC14cYEQiapDs86h3QWc+Ar/Q8JJ5mGG62QPewRXMyC7tGGV1B62gNw2WLEce7Q5IFXzBXuXD32co+voHjy0vtrrkIAxD8AOQg6ikVyQqvXI1Fz2YyRTIjcr3Kx/MFUBOgA/jjsZTkUQq6Nu9aV3BL83X6MtQMMSBOUkHhaE75flDfkkV0gMeYUaTANWPU15MyNU2mGUpbeo5jTdEVI410qqwpRr2pbQsaOk=
+X-Stat-Signature: aahjq1pzwx3nbwbwthw659cgmxbjr4dc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 553031C0008
+X-HE-Tag: 1787560976-338818
+X-HE-Meta: U2FsdGVkX1/Z62X10lXlf4OitJKRDODr/LifU74zgN4hzNXBK3yMRhBxL5GnVAc/IfWF6mgN8hEa2j+2tqJqbLMDLYZ+8cax8ZByInYrrn71RvNhyuH7Z1UVrIpYgts2CdKMmnM2p9joFQSErpnQGAjrUWGTVAx/QKJwcUNvXP5OrVb08Xb1YxDeRjrfxkIdvs8jGSoSR15wONJNbxIT59EuoRcdfSnr82JwmduRXHPpBulGgfzTOFGvTSIs5NlncpBOoGedmbQXGdsY6CmgZnt5YBQP5mbG/kUSltu9JCtF1BEV0KLEaicPO+v+CX0VXm8anGjjStYzcRTtC0t1/dt8DJK63vsRWQAKbf5XLeIeRwH0vHyO4RYyxrlrUUJwYbMrOY7tOeQs4b7A4TlAQBgPUtNTVLFVHtPHuChYXuq3bPAprtVp7vJ1CBd86wBoOVLDHi1ffq9NssAN9+ppbGmEwMZLM9UnL7XR5g5L2Mmf3cCq+SkdTFa/8DzfEilRIuQTDD5UhmYyOB8HG7yRuuduW+0XuElYAuO4m9Reqnox4oMpcIib/CbaISUn2CWuaqJ/yjzh7dSxmY1vrENi7ORdum7ADfNPvLqOxENsv9gqm/r5uwKiNiKJXkmBd8JA1Gul1qXsB0Wa2I+VkTTl1W9VShE3rL2qP1lNywO3m3S5hnNyEgO1njmPUIJgc8mCFfdlny+hYQgDqSldQC5B30yHfzNW8TBKlIddsf7KJZv7DU5ykkjHF/Yc8JLlXRTPXGVck6mtF8nFWtap4pOl8nTmwElv2inYwqfF+6vd3gPVxy+BxatWIJmA2cprQHKEEaO7TdB9To8DmsSQGU3lCq2nbvk+fz8mh8iA4wKARykqZ9eFe1AH0goqgILFmhrzQbg2ByiYlmD52xERa9ARe7GveSJGHRivp28m2CpaBXEmKAI2JttnV9vYAHV9GWvl4cwB5YQbkHFbkgnanIy
+ mZLSZ4tQ
+ oHd9nDFvE6OYF5KVRV2LM9mP/pmlTsBsuYe4AmLkz9jj6J0/hydFso+MXWUkEPaOjy8MRXq/Mm4pFqgHfifoISaNuTd8RJ3ZK9zcSjgAed2Rx9Lz7Rb7Wq5loLeXR4iWoR+PpIsKztjEJv0tx2y+YIC91gE3qM1T64dI/QJ1E+5mEan7/k+0C9ZyK7qC73+8z9b2NSKRiWWcR+qKyGR68FhHVvh7shgT6lcIjzXlzqFRtKlMluA6iMwc8mnhCFitSKElBEsEz4i3eTuf2578MSthoGIj8cytH24xuegqQLZz3akIYzwL1CGgDX8otkbZL2F0MmuoEREN01f9HZnMpwwvF4//y6Yt1KiA5dKr4IMpz/WbGtwF/VJFTGoZMOBBW1lY5Y3pkn82MuPLE8CSnq41axVdU4WOTIye2AFC+e74ArkY2CZsMMbe3DQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,65 +93,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 24-08-26 11:24:46, Ridong Chen wrote:
+On 08/24/26 at 03:37pm, Baoquan He wrote:
+> In the current MGLRU, lru_gen_use_mm() will mark an mm for all nodes at
+> each context switch, so on each node aging will walk into each mm's page
+> table independently. On a multi-NUMA node system, one process launched
+> on one or a subset of nodes, its mm is walked by all other nodes's aging
+> while finds on pages for their lruvec. This is pure waste (100% walks
+> are empty on those other nodes)
 > 
+> This patch series suppresses these empty page table walks with two
+> complementary mechanisms at different levels:
 > 
-> On 8/21/2026 7:20 PM, Michal Hocko wrote:
-> > On Fri 21-08-26 19:10:45, Ridong Chen wrote:
-> > > > > Did you mean that min_slab_pages and min_unmapped_pages should influence
-> > > > > proactive per-node reclaim?
-> > > > 
+>   - empty_map (cross-node specifc). At mm granularity, one process's mm
+>     whose walk found no pages for one node's lruvec is skipped on that
+>     node between re-scan passes.
 > 
-> I apologize for being incoherent in my last email, it was after a full day
-> of work. What I wanted to say is that min_slab_pages and min_unmapped_pages
-> should *not* influence proactive per-node reclaim.
+>   - PUD-level Bloom filter (general). One level up from the existing PMD
+>     filters, it skips any 1GB PUD that had no young entries last
+>     generation - namely whose 512 PMDs all failed PMD test. Cross-node
+>     empty walks can prove its effect the best, but it also suppresses
+>     purely code PUD inside local mms. So it reduces unnecessary walking
+>     in any workload with cold areas.
 > 
-> > > > Nope, exactly opposite
-> > > > 
-> > > 
-> > > I would really appreciate it if you could clarify this further. Sorry, I'm
-> > > not sure I fully understand what you meant.
-> > 
-> > pro-active (userspace triggered) node reclaim should completely ignore
-> > all those historical node_reclaim tunables.
+> The two complement each other: empty_map reduces the *number* of
+> cross-node walks, the PUD-level filter reduces the *cost* of the walks
+> that remain.
 > 
-> Yeah, this matches my understanding. Apologies again for the confusing reply.
+> Measurement test (3-socket Xeon 6766E, 32 x 256MB workers pinned to node 0):
 > 
-> Since Johannes has acked patch 3, perhaps we can simply remove the
-> conditional check in __node_reclaim and keep the shrink loop as follows:
-> 
-> ```
-> @@ -7906,16 +7906,16 @@ static unsigned long __node_reclaim(struct
-> pglist_data *pgdat,
->  	noreclaim_flag = memalloc_noreclaim_save();
->  	set_task_reclaim_state(p, &sc->reclaim_state);
-> 
-> -	if (node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
-> -	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
-> -		/*
-> -		 * Free memory by calling shrink node with increasing
-> -		 * priorities until we have enough memory freed.
-> -		 */
-> -		do {
-> -			shrink_node(pgdat, sc);
-> -		} while (sc->nr_reclaimed < nr_pages && --sc->priority >= 0);
-> -	}
-> +	/*
-> +	 * Free memory by calling shrink node with increasing
-> +	 * priorities until we have enough memory freed.
-> +	 *
-> +	 * What to reclaim is gated per type by sc->skip_slab_reclaim and
-> +	 * sc->skip_file_reclaim.
-> +	 */
-> +	do {
-> +		shrink_node(pgdat, sc);
-> +	} while (sc->nr_reclaimed < nr_pages && --sc->priority >= 0);
-> 
->  	set_task_reclaim_state(p, NULL);
->  	memalloc_noreclaim_restore(noreclaim_flag);
+>   node 1 (foreign mm walks):
+>     empty_map off (PUD filter on): 3300 walks, all empty, ~1238 PTE scans/walk
+>     both on:                       900 walks (-73%), ~0 PTE scans/walk
 
-Could you post a stand alone patch with the full description please?
--- 
-Michal Hocko
-SUSE Labs
+node 1 (foreign mm walks):
+  no (PUD filter|empty_map) (baseline): 3300 walks, all empty, ~1238 PTE scans/walk
+  empty_map off (PUD filter on):        3300 walks, all empty, ~0 PTE scans/walk
+  both on:                              900 walks (-73%), ~0 PTE scans/walk
+
+Sorry, double check here and found I pasted the wrong content. The above
+table is the right one. The 1st case means on baseline kernel, no pud
+filter and no empty_map, on node 1 3300 walks are all empty walks, and
+each walk scans ~1238 PTE.
+
+> 
+>   - empty_map cuts node 1's walk count by ~73% (every 4th pass re-scans
+>     to close migration/fault windows).
+>   - the PUD-level filter makes the remaining walks nearly free: the 1GB
+>     subtrees are skipped instead of iterating their 512 PMDs
+>     (leaf_total drops from ~1238 to ~0 per walk).
+>   - worker RSS is unchanged in both modes - no premature reclaim. A
+>     force_scan pass confirms the local pages are found young and eligible
+>     (leaf_eligible == young == 21320 on node 0) when the filters are
+>     bypassed, i.e. the pages are hot and the aging walker can find them.
+> 
+> Performance regression test (make -j4 in a 3G memory cgroup, 4 vCPU / 8GB
+> 2-NUMA VM, median of 3 runs):
+> 
+>                   baseline   patch    diff
+>     build time     10m01s    9m41s    -3.4%
+>     pgpgin        136868    138080   +0.9%
+>     pgmajfault      1832      1862   +1.6%
+> 
+> Build time, page-in and major-fault counts are within run-to-run
+> variance of a no-patch baseline - no measurable regression. The build
+> time is if anything slightly lower, consistent with the suppression
+> reducing reclaim overhead (fewer cross-node empty walks) during a real
+> memory-pressure workload.
+> 
+> The test codes/scripts (numa_workload + run_test_v4.sh) are available at:
+> https://github.com/baoquan-he/mglru-empty-walk-test
+> 
+> RFC-v1:
+>   - Bloom filter helpers are named symmetrically -
+>     test/update/reset_pmd_bloom_filter() alongside the PUD-level ones, and
+>     the struct field filters -> pmd_filters (Barry).
+> 
+>   - An mm is marked empty only when its page tables were actually walked
+>     (a failed mmap_read_trylock() or a stale seq is not empty), and the skip
+>     is invalidated on the major page-fault and migration paths. (Sashiko)
+> 
+>   - Reworked the re-scan: the old shared counter across nodes got stuck at
+>     the slowest node, so the skip never really engaged. Now each node re-scans
+>     its empty mms every N passes on its own clock. N is the skip_empty knob
+>     (default 4, proper read/write with input validation). (Sashiko)
+> 
+>   - Added measurement counters/tracepoint, and a kernel-build regression
+>     test (no measurable impact).
+> 
+> 
+> Baoquan He (9):
+>   mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+>   mm/mglru: suppress cross-node empty page table walks
+>   mm/mglru: add debugfs knob for the empty-walk skip threshold
+>   mm/mglru: invalidate empty-walk skip on page fault and migration
+>   mm/mglru: add PUD-level Bloom filter state
+>   mm/mglru: refactor Bloom filter helpers for two filter levels
+>   mm/mglru: skip PUD subtrees during aging
+>   mm/mglru: report hot PUDs from the rmap feedback path
+>   mm/mglru: count PUD subtrees skipped by the PUD-level filter
+> 
+>  include/linux/mm_types.h      |  22 ++++
+>  include/linux/mmzone.h        |  13 ++-
+>  include/trace/events/vmscan.h |  30 +++++
+>  mm/huge_memory.c              |   3 +
+>  mm/memory.c                   |  15 +++
+>  mm/migrate.c                  |   4 +
+>  mm/vmscan.c                   | 205 +++++++++++++++++++++++++++++-----
+>  7 files changed, 264 insertions(+), 28 deletions(-)
+> 
+> 
+> base-commit: efecab401cb15fd3bb9bc05990609acb6b267ff2
+> -- 
+> 2.54.0
+> 
+> 
 
