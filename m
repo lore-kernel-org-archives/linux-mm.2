@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AB67C5DF9B
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:43:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7815C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:44:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42D456B00A3; Mon, 24 Aug 2026 10:43:12 -0400 (EDT)
+	id E8E916B0088; Mon, 24 Aug 2026 10:44:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 403856B00A4; Mon, 24 Aug 2026 10:43:12 -0400 (EDT)
+	id E65F56B009D; Mon, 24 Aug 2026 10:44:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F2DC6B00A5; Mon, 24 Aug 2026 10:43:12 -0400 (EDT)
+	id D54BA6B00A5; Mon, 24 Aug 2026 10:44:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EC6B56B00A3
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:43:11 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2847A0171
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:43:10 +0000 (UTC)
-X-FDA: 85136430540.20.65E7892
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2FDD640003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:43:09 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AlKZbYd/";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ADB1B6B0088
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:44:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 46CB640188
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:44:13 +0000 (UTC)
+X-FDA: 85136433186.13.E7770DF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7780C40004
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:44:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EDx/ebIR";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787582589;
+	s=arc-20220608; t=1787582651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5GFYVfLZYq0r9iG/4b45yVopptA1WJO2ICLEgAVWy20=;
-	b=fK9qeJ6nHFBos6SZuVF5sEjWnmwAhgkyk1rLwubrN00wXp19xwfB/Ux8AOAUBxnk+DyO8m
-	/51k/YEMJyIv+A0Fg9ByK8h7PW6vchZaXkw1tVl4uAasAasl4SouwhmWPUAcjjTWF/rXxT
-	De+UFsGh537A2UzANBorRRHF5BKmVok=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787582589;
-	b=bNLtSEpijm2UgIWSBDqgmBRLHgRrPgEdfZJi8lGsoXbvo6OS7ITVIi5VyW6257V9/2RQ1D
-	eZq3SvMWHIW4cuC7uL0lHkvP6VUzHwRUJ9VuNWihHBXNcyZASqkOPMQ5o+EAWj6DvkM7AL
-	hxNH6vPoavU5iUFrfcUaLYyMA2bXD1c=
+	bh=QQokobOnzFx766ycwjdsmUZkNuOG9N7qwhFQ4tQY8GI=;
+	b=RFnmbVRlZaGQiFRDeTUZYGsMyHt5IzVvPMSM0rib7cIX1Uvub90FAVSDSSzSaU7EDegNkn
+	O4DDYKMXQUYbWLfEuFsPsc7ySM3Aw78xKNNLauJknxyhbD0wCAYN0LAU6NH42xgEAr8S0f
+	VyG0sywQNBzg7gFHYZ1SjpKyaNtKldo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AlKZbYd/";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EDx/ebIR";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787582651;
+	b=Avn8z5E/kUXGBpTlq8eOaT0ZhoJ51bdgP7h0T0sKST9NJ1wAe2QKp782M8bdQn7ksjfmsj
+	VHX/2FMP3YVpaHPGeHSnYHZBCF9PtiWOKMIAAUVr4C+nllZXs0VJ2x4I1rkDVja/9jVjUy
+	qi/ledsgVEsfWK2aGXxFcUxR49apA7g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A8912601DE;
-	Mon, 24 Aug 2026 14:43:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67481F00A3A;
-	Mon, 24 Aug 2026 14:42:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A23FD43A4E;
+	Mon, 24 Aug 2026 14:44:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5131F00A3F;
+	Mon, 24 Aug 2026 14:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787582588;
-	bh=5GFYVfLZYq0r9iG/4b45yVopptA1WJO2ICLEgAVWy20=;
+	s=k20260515; t=1787582650;
+	bh=QQokobOnzFx766ycwjdsmUZkNuOG9N7qwhFQ4tQY8GI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AlKZbYd/gqBhPNOz0AiQSA5mSiZNAp152sXk75N5tzoj3r9OArCGiokUa5lJlbECv
-	 kGcLfrEbcc/udWmZyaV+xn1HkZOqfnZclpvBRYNSva5ti9gRALHmFgNyu4N+0fbvBb
-	 qYNSK5GbXErmmfTbmwW0icgbaJUrXaWKSn0Y2aOjl1+GCSWFC7oWQRce8X4w/hvLz7
-	 /MHrC8412hiwVSlIvpgO7P17LK6BQsE7abz1FLlMbgR6bVUWr3xen3L4JyWPcteWoY
-	 y6Fb0DpI4A3Ec3MtKksPc+/+fV6SncEL0acQxdu9SXApgnX1dBs36j7v4N01XLJ4Hl
-	 ioL/51laT+d/A==
-Message-ID: <a4650e75-ae01-418a-b695-f8bb15c5d7db@kernel.org>
-Date: Mon, 24 Aug 2026 16:42:56 +0200
+	b=EDx/ebIRHPPAEr4vyUHoRfprdZRzHQrMcuhuD63VjKrhtsdLhKk81VF88Krt4GnL0
+	 q0WsC/GIIjQMj6oZCFatOZVDtFR83C8xJoLAlTb1JiQl0/XmsR8j/2cMRQM8qt8I0z
+	 +Y7b9LVI91ZNRpDuHpvoudk9d3HCrQXfNPvHlHHS3LMWbpghVf9W1MEb28f48OGfO/
+	 b1JeQlSwMxN1wTqU+Olimy5ANpLfroo2pTrn5gx3/jKLVytp9L+f1TERFBfWfw2zId
+	 hgecs3hOSiTiCDrUj6Xp+KM0ofY7PlIIsE3GyiOWEPQ8MmDEaI2pJtg+NBUZDB3UYK
+	 QzxLXe0NYwWxg==
+Message-ID: <7ea3ca54-1975-4b7f-bd08-d28e72fa4b7f@kernel.org>
+Date: Mon, 24 Aug 2026 16:43:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] mm/gup: move gup_can_follow_protnone() to gup.c
+Subject: Re: [PATCH 4/6] userfaultfd: rename vm_userfaultfd_ctx to
+ vm_uffd_state
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -90,7 +91,7 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
  linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
 References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-1-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-4-3086981b33cf@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260823-uffd-vm-flags-v1-v1-1-3086981b33cf@kernel.org>
+In-Reply-To: <20260823-uffd-vm-flags-v1-v1-4-3086981b33cf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: yhsjnqi1rb5gz3nx1mrdqnyohrztkyfu
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2FDD640003
-X-HE-Tag: 1787582588-395942
-X-HE-Meta: U2FsdGVkX1/yVy3gxj0OQf1zrf82sHjDN7/UkUIQMIMVzhIzMO/T8kbwsiMihaF7bKwwLnOwfYi+QtnBLCmbcr27Onmw0SoGtKarabBRcD8+mozS6x7I/lKraKsPjz7jsg+vgL6225QokedEBGYfVwxASHtUOGHOrX4mhMkKVrOejdfJ3Gogp9OrBSnlbAscjwDZbg7gSsutACiDkAJcnK1r6RcXcA8nfKqfgxVcII8K5DyHVPvBf8x5/cZRxjOeGBpVJZZHHi5f3qx4z6bnFcK7aGouyer94DWUaqRQn+6fLzhoyYIFx7co9Z23NKaHP2MR0pq+Mbr7jNklx4Ze5aoKJYnB9LuNHs5BlcUdYqP4oQIcrje7Tnz2TwpecztW2CFpgLBOaWpdp0PxCwpL88hSiCCmkgmYEnib4r7ZqKCVxHnhcUe+YQsIlWzzSgkInts1AHzgMITSFXs3OeiGXOYsu4/G/itObzY4gLAv6z+TnEQ70ek2QlD+HMNJxGCTBRDsDduwQfvOE+2skhXugEpCKYHcva11aUXLVeggZNgOt9A2Tiu3e3b090a4rt2GjdObEasSa1sch4IYz8AhosP9INGn3483sVeGbmteF11gP64tImdnq/8VL2sUPeenUXJyUpcASuzQ66gDCYltIigiT96ZbofapIRh4OkFYnxUOOs/8jhRTsS5dWEwK9PgGST2T53YF4/dXrrSgTU8/vzPIaDf7y27jDLjxw8ysstFv1LmZpDAoXbVjA57vtar9e1cG7Cnh5cOzgYWS+XR99xD81C7qnv44o/8/vjXD+/YX7dGdeKqjVmOT6DkfRL3iuRM4Tc1mZoan4FFLTkJ2v7dCwrQz22a7YxA/60XETGaXsIglTKHps+ClkBI+ciiECwPrxAH+WYeSZamyrdc/5NFwjcAtH8RUW3B2zxuq3o1dRI7zVY4aBdCNgRsRKEEHcTPjcd2+kHAMSfQ1X5
- VLMcNU3v
- pHvZtgGhTeoYolNYhw11BXwcn9VMzs84OLXg+QMWeD7fiQQOj7m0PHPiMDnFZX/LRloox3eCvL2a8a+K89LrGuBDeN28pT6B48cd9ahLuyyB2yJHvW26uO9ogr4lkKDUOpkWZLI2XLnIFUAo+UkNxAnxl0LCY2Fano3w5nE8dHfHYWCPQLGEbnWZZ8aUx0H1hCDM+SxQuisRy3kzeNK2nHXU2k6TW+UAILLvLrfb16r9ICsf64fZDsucCKiFaEnPwXdLnNNoxfGlj8WYt6oX/Ij6KrsC3bj+ZvIzRZed2ftoRudEl9leic549zIVQYRU4utkWH0ff4qotQgE=
+X-Rspamd-Queue-Id: 7780C40004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: w9mn1ntj9tzwjcpydzrqzhakbtctzqzt
+X-HE-Tag: 1787582651-461685
+X-HE-Meta: U2FsdGVkX181lb1OfbksTokfPcoN98jcoAeoQxDtk2qBhg7VELaw/I8GSJcYYr0NbWWcF6JdoN3L94hu2T3/ILH6IcVJHWiuVWznNoGJlWLldmzguOvrwW7R5LyoQQ46A6yJPdvWw7UXlLBtK1DxCPgUNUz8T9Ft5ZDPDJgnWQ11hw2YUsI6Wrd6cne3oEeSxOg1RWPQ2JQ/Vo9HKMosW9tvGbURyIAAWQbnP0hivW8YDFg/m52Y645Zn/bqf/xXiMKklKGSEvP8IupyZwclR39HkzIekfrU0UfY7ObcjcIvsF3OuCW/lgbjQJDdGm8FjTowZB1goYXfPBTbT889NpPMDtNFTMIib/iliq3FgJPr1g3dAZZR/M+e1/Gt/6qtSuy58mjtol9lK8eTzndGxrKCPtOWGeDL8Cn3fv4oxNbRU3sWr9FtJK1hXU+vqT0CO3g2WH/r8G8zQpFQ8a/l64Cn73F1UxmiCHq6t/ouO+BNQk/DgErwe5gLfz0HyPZY6XJ6hOgBUyGMP78qA2aNbPE4FJLsEQQpAChwMd2WYhvhLwbGw4JhUKNHobwsZEnn6d348h2+NogwTOxyyWpgZwjo4QISh2lg9RxHLvauJfBbPr3QWvtlImJg3DQyXe9NLH5oI3Et2L1+heHQjs+ThDtUVHg9T8RH0RPGQDBtZH2No4Weqq7XByeaB0M4R+JkvwhTk0OJMG6Rrj61DOONLb+mrb1POsK9kLPopK0EbB9GV8l4O/GviHU5t389u7HiWX35hBG8P3sG7ead70iqSo1Ncb9TMHW/HRmlbHO2C8fOvo8lhVRbbSvezadcAVEUx76yVp++zqEzJy7OIwi8OBg1DKqhoDAi3McWIrAgaz31VbkA2bu9RHnEP/3Ou5M/QGyO7ldesPO4zrxXcmPhRHH5ChW+cwwGYWSBWh7/M8OwQZDPr7W7I7VQg6nbaCkVK3EuXfctbQvD3dlbvAV
+ iZJ6RZg7
+ YS/FcKovHjQaz7CodV4J0Ahml1CZaMslKtYT+9H7ldl45DBjuUrwJnp8TDLkbTEY2V8X1l4UCuNM6XP7ex/sJkGcYbDQ7EP4B0t4xm5SP15QDRybibHvS0C3VprJGd0eesinCPdx3WehU49aUcQ81SdpRdlWtPcuK0jyQIFl8OAwZ5mVowD2aD/O8OQjaOd0pX2SrR6uacf750aVUHcDyITAQ+I+JQ+3oECgEA+JqTofyKXBlg9QHgCqhRqff9VllYXCPW26MBYiE/otQMlvgfhpTMw2H7hpZH3894znwVh/SfJgwdgFA6rffWLNrzw1FXxDoekEoH2rykTM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,49 +157,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/23/26 14:17, Mike Rapoport (Microsoft) wrote:
-> gup_can_follow_protnone() is defined in include/linux/mm.h but only used
-> by mm/gup.c.
+> Rename struct vm_userfaultfd_ctx to vm_uffd_state to better reflect that
+> it will represent the userfaultfd state for a VMA rather than just a
+> context pointer.
 > 
-> First, there is no reason to have it in already gigantic header.
-
-Once upon a time there was a user in mm/huge_memory.c, in a beautifully named
-function called follow_trans_huge_pmd().
-
+> This is a preparatory step for extending the struct with a mode field.
 > 
-> Next, the upcoming refactoring of userfaultfd flags will make
-> gup_can_follow_protnone() depend on userfaultfd_k.h which would cause a
-> cyclic header dependency.
+> Mechanical rename, no functional change.
 > 
-> Move gup_can_follow_protnone() to mm/gup.c.
-> 
-> No functional change.
-> 
-> Assisted-by: copilot:claude-opus-5
+> Assisted-by: copilot:claude-opus-4.6
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
-
-
-[...]
-
->  typedef int (*pte_fn_t)(pte_t *pte, unsigned long addr, void *data);
->  extern int apply_to_page_range(struct mm_struct *mm, unsigned long address,
->  			       unsigned long size, pte_fn_t fn, void *data);
-> diff --git a/mm/gup.c b/mm/gup.c
-> index eb898ea1ee22..500e2aa99e48 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -633,6 +633,44 @@ static struct page *no_page_table(struct vm_area_struct *vma,
->  	return NULL;
->  }
->  
-> +/*
-> + * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
-> + * a (NUMA hinting or userfaultfd RWP) fault is required.
-> + */
-> +static inline bool gup_can_follow_protnone(const struct vm_area_struct *vma,
-> +					   unsigned int flags)
-
-While at it, could switch to double-tab here.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
