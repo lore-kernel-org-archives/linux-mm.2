@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E8BEC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48268C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:38:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E5886B0095; Mon, 24 Aug 2026 03:38:37 -0400 (EDT)
+	id 5AC946B0096; Mon, 24 Aug 2026 03:38:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2963E6B0096; Mon, 24 Aug 2026 03:38:37 -0400 (EDT)
+	id 5562C6B0099; Mon, 24 Aug 2026 03:38:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AC2A6B0099; Mon, 24 Aug 2026 03:38:37 -0400 (EDT)
+	id 46B866B009B; Mon, 24 Aug 2026 03:38:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ECE006B0095
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:38:36 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 259E06B0096
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:38:44 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9006716047A
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:38:36 +0000 (UTC)
-X-FDA: 85135360632.27.7C551D5
-Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BF104C0004
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:38:33 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C3BB1160471
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:38:43 +0000 (UTC)
+X-FDA: 85135360926.27.2CB9BF7
+Received: from mta0.migadu.com (out-90.mta0.migadu.com [91.218.175.90])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DF97C40002
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:38:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.90 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787557114;
+	s=arc-20220608; t=1787557122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kdgLuo0ICy5rzcZ6s6b2Y+zcnMs4fr9NiSj4VCIzrbs=;
-	b=fmiU4I/rCp4z5FRSShEw3VmgSdGzlcGxtyetUH7ihBlO+tvbV6U5DaJIIXJ0LZQZqM4QlD
-	b5QqrCVm+/4xPRhXqBVgODEUp8dq45fTwT/bVeXW/qKey50BeMPQgi65JF20IbKIbij0zm
-	9Osnp2KDFgBuJPdszDIAI+xi4TYKJ+s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787557114;
-	b=BoAwNjQwXBTYQr1IGJE5WAAB7TpJnphtijqSG8rEIHC99mJlXcMIV7cxj6KX51QsQ8g4ml
-	ZUPw44IpkjgEbKKiwNWFjp3U5w6I8SJpdEpifxgpMpPe632K/+XoUu+ucfiyO33Ll8ZHx3
-	m4xt8QzqNlY0lPfC+iPI4fN+OFEnYVs=
+	bh=aiVCuCBRK3cltX3s+AhutJ0MI27JpQRF6AMHkZhVR2Q=;
+	b=ONn91A9rXbcUoXxjlXuP2zhZFUPtlyLyfDinN1dRCr08W8ScFfWjPb3NzbUdOS/TMKve9o
+	D6Ppo4aYA74ahp3yJso5bPeVurCD2s/YRe5waRXI2O1wCYBQA80asqZKjsfxsiT/Z2uybD
+	1o6EnS4fqMB/2H8vnsc65gXVsqVtE/E=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
+	imf12.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.90 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787557122;
+	b=AmWz5MwvsQQr8DjlvPsI0X1CaGtax+hQK5Mkt+HErDx1qqMR9ETIHEwo44Xj1kOaerIf7c
+	P6XE0J7MwVSWG6+Vn6qjmKhxA/c+8nozwcP/hiuL/BmmwPY5onHOTexaYrbJE1EnYXLHS/
+	be6KPP/iyTt66H0iIdMnfdUaadb1h8Q=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
 Received: from localhost (3.112.29.171)
-	by mta11.migadu.com with ESMTPS id d61735cbc13f785a;
-	Mon, 24 Aug 2026 07:38:32 +0000
-X-Mizu-Trace-ID: d61735cbc13f785a
+	by mta10.migadu.com with ESMTPS id 1abddb27e25b8ce6;
+	Mon, 24 Aug 2026 07:38:40 +0000
+X-Mizu-Trace-ID: 1abddb27e25b8ce6
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -70,23 +70,23 @@ Cc: akpm@linux-foundation.org,
 	baolin.wang@linux.alibaba.com,
 	hannes@cmpxchg.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 2/9] mm/mglru: suppress cross-node empty page table walks
-Date: Mon, 24 Aug 2026 15:37:59 +0800
-Message-ID: <20260824073806.629593-3-hebaoquan@kylinos.cn>
+Subject: [PATCH 3/9] mm/mglru: add debugfs knob for the empty-walk skip threshold
+Date: Mon, 24 Aug 2026 15:38:00 +0800
+Message-ID: <20260824073806.629593-4-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260824073806.629593-1-hebaoquan@kylinos.cn>
 References: <20260824073806.629593-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: oes79arokbg9a831nummjqe791kb4iuy
+X-Rspamd-Queue-Id: DF97C40002
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 5rkxe3md45n6ya7648661u3hs948xq1a
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BF104C0004
-X-HE-Tag: 1787557113-642739
-X-HE-Meta: U2FsdGVkX1+9H5q8Cv4lAbcEEswuE+D09XDSN4LP15N77f6irH6+hdPYZys9aPL3RHBIPAQsjANQlQbdArDIQbxXMtaTCv8uFO9A5uLgyFIeb+qMNXgHIlueUh3Q9fL+c8A0gbmnrW2dCainmT5euTzDU8fLTqSora/3DRfk/7IO3Bq1yFSAxNFwY9qqV7fwCmmkcBLpS4d6txH87TJshnVKUTsFUNMPa7Crx99lMu0L7UgtPOjpxQ4Ie/iJoXk0ZtSobgOA+/Mv64OYC1a4g9esJO1bpb0hMGTtZ2bQsncXEaO7v84rxGH1tx6UyQKenMcXbyVYOFNO0+FKpoo9TonpjT/9F3O2MtUNx/hlWo0SVszOuCDiOjv6I2CUaLpE4NylHp9nvm42VbUILc7hczWtSYD4NAFYlyruvPn/35rtq8ZT7/XW5xI8g+qqE7chZ7XomToVvoA9YprYEf/4XeUzlRYOB8zCbyUjY7ra2NznuuJx2XU0r1YFBDsiWkDDrgewp5sAYh/wuySDdDYOLyx1GoMPhp/mlwS75LA7Ges2qwnlzRZxwEokKY/O2vgffM4mlhpaQ4ig0f2hnPwaKqZMU0NYw446loY5R3nnHAT0A4oe2LQu5GsxvnlRZxn6RZNemCny3X5VFSKrZjjoi3+M9+MNtWwW0vsWo5MSkzCTBMw+SPOiiCuvITF6Ic7Xd0g4mBG713E1Jlm2hE9NDB8I/RvS3aKqb2PUP/P7pj54cYGGvqCSVuEyXhsLm8poECMAXGWEV/c1SUQzfcY7/L3VkvzzyVCLXEWI1pS41eYRnlXaihZJTuSo0iU4SFpVOVPuzWh0OJuWMGsPfwqqd+BZoTJpExEiZfW/DyIJcAdK+bgwtR5e8ln1GskQjlL+qYZ83Soi3ya5fTTrgiWgw/nZWHIa7VaQlm1S967Zvb6U4ddLKi2qsR8LwiMz6tjzUztJ0UGtaSXBqZ70p3t
- qAbewhGd
- UCYD+uCoFoDqZHv8ZcXCCk+1z+oGhtMhncC4vCEyeVTJmtO0PAjr/WDXyVjWfebrmUZZbIA/BLJRSd9UMVTLc+YoBEItI1NQAQArBCEf4JxFPnP3q8P/eBVL8jp3L/M0vU1yRVk6nIkDi4oXS28fjCI8Zv8A7WHuU0VeETiYSLGHg06DZlSkMLgY4Wc5Y3QKWzkvutqKRgbpCVFu3FvDnX7jFCwiGIaZKLAkwtPvGl8Pn9IjvYZqxoY7vSyVpSbmqerOe3gLXYrj9nS8UKiXIx1s1wTAIIQYZP5Cx6dNJKHy+6mUzGtxoumH2uNY/7iA6gESRm0YUtAZ3jv5qHFr5+nEKrrIGShhFARSjozBH43ktOK0=
+X-HE-Tag: 1787557121-126426
+X-HE-Meta: U2FsdGVkX18fIBzZWyrUKbpueXBUmBwCSpIFnRmo+h72vVsM0CgmLDVLlJtchRwuYC4XQKvMYYpsY/obX8pmv5it2Dz3SiOjFFFp7koy8ZC4OTlxlPbrEuJ/93+JMQI/RO/NcMz6wMt/8f/UgPgrUsDZCV5iVli8fo2H7bPScLydbNlX64NDXbyABMCXFsbmczCdvo+9lb4LrXRopRukbaop7WjcyjLPVPyOg/uPBNmAG94yirqCY1Nr/EvoXNTk0JjB5bxNqrjFI2vZ6KtkOpTCy3T0g5VbXw3IDn5bEJD5Iuj7jwp+ia7Py+zbsdG6R1Mprts63tQDdjybdoqzcIlo2vgMI6YfczLsO8FGHbD0Rsz3Nh212BWmqAkG7xJZKo+Om8SSN1kYVFhqFStjPiChqMgbQHz5eaSAMAMtvcKk4qQdkJTeKaMExD/QcXh/2cie/Yi0IMVu4NCh+A//PzOEgEwgNClse7sM2hnMN6p8Z0Ng3LOTJlaQtJBzLOK9hdA0dm6rWfMB8Vjvir6oUU0e6Ef0ZXwEDngIuDRcs8/3VBZl9s6WnHg5OEXrfptRyzgTi8IIp0NNFteXOBSGboD7bvrcvxQ4S8QTFl9ILBqIHu/b85JsTgDd/ID2LLMGs9y6U9deFepDjbcDDseRFcAlwo7Dk6Z5F49MPl/1m8OiaA4XSw6OvrTtR/5jhvwU5xXTYKkyBA2EGah2LKvU9AEx40jxShB847+KGw1bhWUYBSWVuBl/ii1drxmfTgmLV5XmCpTYVVuvBIERTGrZ4eUA5V1s4FXpEWUDSPnpi1y50jQrCrfNW0n8qrLasTT+MnJHLPeVOi2UbDdWYkVsbLNpyt/sfQ5NGSFESipeeD0vaAbK3XWi3N0j9GT2QOO/IrXpQkwb0NxTJxyXJuxEzSXdVh5pxNUsDwjUHc3lGj6kf3RV91CleDd+VmnhZu4PHrH4q6Pk2iQCp3p10hL
+ NwpAwn1j
+ FLGwfIFUyMmDhHoMlt60kFXzWD6RDg679j5Czn+mtzjVaHhBNhJoUckibsIs53qXTPaXlBZlSEFhG2KxEO/RhXYTCdQYGHo8dKX9mzAsRC3cOVFc5tN7nPuHIu14RFXCio579Y53m0z51OAkYMYb/u4+ApJ1he2W+sg2jhwJkLhnaV3g7GMtOLlBLuzb4xfD8LmB7cABDDNL5JqR340WCEutUceRWBueNdRZjv/zxstDw38+J294/BcSb/r6YaWx2IBzU6wPplzdy+FGM/CGwuQEYxBxyXYTLeGcgEgGqs5R8RcFlN/pHqHPGbikPhTj9HkA6rHu65L3q/T+xuF36pKgmCaCajpP644jZPTjdwon85ss=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,186 +94,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the current MGLRU, lru_gen_use_mm() will mark one process's mm used
-on all nodes at each context switch. So each nodes's aging walks into
-each mm's page tables. For an mm with memory on one or only a subset of
-nodes, the other nodes' walks find no pages for one lruvec. While these
-empty walks are pure waste.
+Change the hardcoded MGLRU_EMPTY_SKIP_GENS to a runtime-tunable
+mglru_empty_skip_gens (default 4), set by:
 
-Track per-mm, per-node empty-walk marks: bit N on mm->lru_gen.empty_map is
-set when node N's walk of the mm found no page for this lruvec, and
-get_next_mm() will skip the mm on node N between re-scan passes. The re-scan
-is driven by each node's own pass count (mm_state->seq), so every
-mglru_empty_skip_gens-th (default 4) pass re-walks all empty-marked mms to
-close migration/NUMA-balancing windows; keeping it on the node's own clock
-avoids a shared "oldest marking" sequence latching at the slowest node.
+  echo "skip_empty <N>" > /sys/kernel/debug/lru_gen   (0 = disable)
 
-A walk is "empty" when it traversed the page tables and found no folio for
-this lruvec.
-
-A page that appears on the node during the skip (fault or migration) is not
-aged until the re-scan; a later patch invalidates the skip on those
-paths. mm_struct grows by 8 bytes per process.
+The current value is shown as "empty_skip" in the lru_gen read output.
+N=0 disables the empty-walk skip, for easy A/B testing.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/mm_types.h |  3 +++
- include/linux/mmzone.h   |  2 ++
- mm/vmscan.c              | 52 ++++++++++++++++++++++++++++++++++------
- 3 files changed, 50 insertions(+), 7 deletions(-)
+ mm/vmscan.c | 49 +++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 6d815f6440c9..3738e8877b73 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1410,6 +1410,8 @@ struct mm_struct {
- 			 * page table walkers cleared the corresponding bits.
- 			 */
- 			unsigned long bitmap;
-+			/* bit N: node N's last walk found no folio; skip until re-scan */
-+			unsigned long empty_map;
- #ifdef CONFIG_MEMCG
- 			/* points to the memcg of "owner" above */
- 			struct mem_cgroup *memcg;
-@@ -1503,6 +1505,7 @@ static inline void lru_gen_init_mm(struct mm_struct *mm)
- {
- 	INIT_LIST_HEAD(&mm->lru_gen.list);
- 	mm->lru_gen.bitmap = 0;
-+	mm->lru_gen.empty_map = 0;
- #ifdef CONFIG_MEMCG
- 	mm->lru_gen.memcg = NULL;
- #endif
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 229d27fbfb54..30213a880db0 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -633,6 +633,8 @@ struct lru_gen_mm_walk {
- 	int batched;
- 	int swappiness;
- 	bool force_scan;
-+	/* this aging pass is an empty-walk re-scan pass (every K-th) */
-+	bool rescan_pass;
- };
- 
- /*
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 92cb83a78971..e8ba49683b28 100644
+index e8ba49683b28..f592f04fe1bd 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -2710,6 +2710,14 @@ static bool should_clear_pmd_young(void)
+@@ -2710,14 +2710,6 @@ static bool should_clear_pmd_young(void)
  	return arch_has_hw_nonleaf_pmd_young() && get_cap(LRU_GEN_NONLEAF_YOUNG);
  }
  
-+/*
-+ * Cross-node empty walk suppression. lru_gen_use_mm() marks an mm used on all
-+ * nodes, so aging on a node where the mm has no memory wastes a full page table
-+ * walk. Skip such an mm for up to MGLRU_EMPTY_SKIP_GENS generations after an
-+ * empty walk, then force-rescan to close migration/mlock/NUMA-balancing windows.
-+ */
-+#define MGLRU_EMPTY_SKIP_GENS 4
-+
+-/*
+- * Cross-node empty walk suppression. lru_gen_use_mm() marks an mm used on all
+- * nodes, so aging on a node where the mm has no memory wastes a full page table
+- * walk. Skip such an mm for up to MGLRU_EMPTY_SKIP_GENS generations after an
+- * empty walk, then force-rescan to close migration/mlock/NUMA-balancing windows.
+- */
+-#define MGLRU_EMPTY_SKIP_GENS 4
+-
  /******************************************************************************
   *                          shorthand helpers
   ******************************************************************************/
-@@ -2930,9 +2938,17 @@ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
- 	mm = list_entry(mm_state->head, struct mm_struct, lru_gen.list);
- 	key = pgdat->node_id % BITS_PER_TYPE(mm->lru_gen.bitmap);
- 
-+	/* skip if not used on this node since the last walk */
- 	if (!walk->force_scan && !test_bit(key, &mm->lru_gen.bitmap))
- 		return NULL;
- 
-+	/* Skip empty-marked mms except on a re-scan pass; off on node-id alias */
-+	if (!walk->force_scan &&
-+	    nr_node_ids <= BITS_PER_TYPE(mm->lru_gen.bitmap) &&
-+	    !walk->rescan_pass &&
-+	    test_bit(key, &mm->lru_gen.empty_map))
-+		return NULL;
-+
- 	clear_bit(key, &mm->lru_gen.bitmap);
- 	mmgrab(mm);
- 
-@@ -3833,7 +3849,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 	return -EAGAIN;
+@@ -2928,6 +2920,9 @@ static struct lru_gen_mm_state *get_mm_state(struct lruvec *lruvec)
+ 	return &lruvec->mm_state;
  }
  
--static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
-+static bool walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
++/* tunable empty-walk skip threshold; defined later, get_next_mm() needs it */
++static unsigned long mglru_empty_skip_gens __read_mostly;
++
+ static struct mm_struct *get_next_mm(struct lru_gen_mm_walk *walk)
  {
- 	static const struct mm_walk_ops mm_walk_ops = {
- 		.test_walk = should_skip_vma,
-@@ -3841,6 +3857,7 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
- 		.walk_lock = PGWALK_RDLOCK,
- 	};
- 	int err;
-+	bool walked = false;
- 	struct lruvec *lruvec = walk->lruvec;
+ 	int key;
+@@ -4266,6 +4261,14 @@ static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc
+ /* to protect the working set of the last N jiffies */
+ static unsigned long lru_gen_min_ttl __read_mostly;
  
- 	walk->next_addr = FIRST_USER_ADDRESS;
-@@ -3859,6 +3876,7 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
- 			err = walk_page_range(mm, walk->next_addr, ULONG_MAX, &mm_walk_ops, walk);
- 
- 			mmap_read_unlock(mm);
-+			walked = true;
- 		}
- 
- 		if (walk->batched)
-@@ -3866,6 +3884,9 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
- 
- 		cond_resched();
- 	} while (err == -EAGAIN);
++/*
++ * Skip an mm on node N between re-scan passes: every
++ * @mglru_empty_skip_gens-th aging pass the node re-scans all empty-marked
++ * mms and re-marks them if still empty. Default 4, 0 disables. Tunable via:
++ * echo "skip_empty <N>" > /sys/kernel/debug/lru_gen
++ */
++static unsigned long mglru_empty_skip_gens __read_mostly = 4;
 +
-+	/* true only if the page tables were traversed - a failed trylock/stale seq is not */
-+	return walked;
- }
+ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
+ {
+ 	struct mem_cgroup *memcg;
+@@ -5676,6 +5679,7 @@ static int lru_gen_seq_show(struct seq_file *m, void *v)
+ 			cgroup_path(memcg->css.cgroup, m->private, PATH_MAX);
+ #endif
+ 		seq_printf(m, "memcg %llu %s\n", mem_cgroup_id(memcg), path);
++		seq_printf(m, "empty_skip %lu\n", READ_ONCE(mglru_empty_skip_gens));
+ 	}
  
- static struct lru_gen_mm_walk *set_mm_walk(struct pglist_data *pgdat, bool force_alloc)
-@@ -4110,22 +4131,39 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
- 	walk->seq = seq;
- 	walk->swappiness = swappiness;
- 	walk->force_scan = force_scan;
-+	/* every skip_gens-th pass re-scans empty-marked mms; 0 disables */
-+	walk->rescan_pass = mglru_empty_skip_gens == 0 ||
-+			    mm_state->seq % READ_ONCE(mglru_empty_skip_gens) == 0;
+ 	seq_printf(m, " node %5d\n", nid);
+@@ -5854,6 +5858,35 @@ static ssize_t lru_gen_seq_write(struct file *file, const char __user *src,
+ 		if (!*cur)
+ 			continue;
  
- 	do {
- 		success = iterate_mm_list(walk, &mm);
- 		if (mm) {
-+			int nid = lruvec_pgdat(lruvec)->node_id;
-+			int key = nid % BITS_PER_TYPE(mm->lru_gen.bitmap);
-+			bool walked;
- 			bool empty = false;
- 
--			walk_mm(mm, walk);
--			/* A walk that traversed page tables but found no folio
--			 * belonging to this lruvec (node+memcg) is pure waste. */
--			if (walk->mm_stats[MM_LEAF_TOTAL]) {
-+			walked = walk_mm(mm, walk);
++		/*
++		 * set the empty-walk skip threshold: "skip_empty <N>"
++		 * (the current value is readable via /sys/kernel/debug/lru_gen)
++		 */
++		if (!strncmp(cur, "skip_empty", 10)) {
++			unsigned long val;
 +
-+			/* Empty = walked, no eligible folio; failed trylock/stale seq is not */
-+			empty = walked && walk->mm_stats[MM_LEAF_ELIGIBLE] == 0;
-+			/* skip_gens == 0: stop maintaining marks */
-+			if (mglru_empty_skip_gens &&
-+			    nr_node_ids <= BITS_PER_TYPE(mm->lru_gen.bitmap)) {
-+				if (empty)
-+					set_bit(key, &mm->lru_gen.empty_map);
-+				else
-+					/* found eligible folios: clear the marking */
-+					clear_bit(key, &mm->lru_gen.empty_map);
++			cur += 10;
++			/* require a space before the value: reject "skip_empty123" */
++			if (*cur && !isspace(*cur)) {
++				err = -EINVAL;
++				break;
 +			}
++			cur = skip_spaces(cur);
++			if (!*cur) {
++				/* no value: read the threshold via lru_gen */
++				err = -EINVAL;
++				break;
++			}
++			/* kstrtoul() rejects negatives and trailing garbage */
++			if (kstrtoul(cur, 10, &val)) {
++				err = -EINVAL;
++				break;
++			}
++			WRITE_ONCE(mglru_empty_skip_gens, val);
++			err = 0;
++			continue;
++		}
 +
-+			/* Count completed walks with the same "empty" definition */
-+			if (walked) {
- 				walk->mm_stats[MM_WALK_TOTAL]++;
--				if (walk->mm_stats[MM_LEAF_ELIGIBLE] == 0) {
-+				if (empty) {
- 					walk->mm_stats[MM_WALK_EMPTY]++;
- 					walk->mm_stats[MM_LEAF_TOTAL_EMPTY] +=
- 						walk->mm_stats[MM_LEAF_TOTAL];
--					empty = true;
- 				}
- 			}
- 			trace_mm_vmscan_lru_gen_walk(
+ 		n = sscanf(cur, "%c %llu %u %lu %n %4s %n %lu %n", &cmd, &memcg_id, &nid,
+ 			   &seq, &end, swap_string, &end, &opt, &end);
+ 		if (n < 4 || cur[end]) {
 -- 
 2.54.0
 
