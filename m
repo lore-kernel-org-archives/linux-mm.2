@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1807CC5DF9B
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:49:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80402C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:52:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 326506B008C; Mon, 24 Aug 2026 09:49:56 -0400 (EDT)
+	id 8835B6B009F; Mon, 24 Aug 2026 09:52:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FE3F6B009D; Mon, 24 Aug 2026 09:49:56 -0400 (EDT)
+	id 833396B00A1; Mon, 24 Aug 2026 09:52:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14F566B008C; Mon, 24 Aug 2026 09:49:56 -0400 (EDT)
+	id 721DB6B00A2; Mon, 24 Aug 2026 09:52:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB6A76B0092
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:49:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7845E14012F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:49:55 +0000 (UTC)
-X-FDA: 85136296350.11.B2D03B7
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C18E520006
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:49:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ePTnUCwz;
-	spf=pass (imf13.hostedemail.com: domain of hughd@google.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787579393;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=wa1iTT9vjhUKkra9WxI7hECThksYL7WKs9jkspFydz8=;
-	b=tcnOk+7/0d0lev9WeufTuS+M4WWP67I2SwWjTGmrx5SW7jcBRfIKflt5CBmI1fKW7Az19y
-	77fokEapsnSltaPu7u2VCmabO5dneTWvPnV8axE8mge+7G2ih0VJ4V1ktmAjJS7w0+PLj3
-	yFLc541bkz3nIzlHdusFRwfx2IK7+xM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ePTnUCwz;
-	spf=pass (imf13.hostedemail.com: domain of hughd@google.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=hughd@google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44DD56B009F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:52:51 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6E021C01C3
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:52:50 +0000 (UTC)
+X-FDA: 85136303700.03.F6AA53E
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2847BC0008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:52:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=b7FRBFh3;
+	spf=pass (imf10.hostedemail.com: domain of hughd@google.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=hughd@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787579393;
-	b=taZvPqyRAavTX5d5Kmc+nZTPRLPaU+2JCElRsl4Mjw8ult5Y/ixPg/vrYcNun6PoXlI41D
-	Xa7rvgLC7JmjVVDIRNf1jOvxBEW9HHD1Cu15CwBCV7MDnIh8qgIP5bW8NsumQykIqiS1A7
-	1ixN3BN+1tDfDBjsHvOSeikNo2LA7P0=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-836c718715fso32798537b3.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:49:53 -0700 (PDT)
+	t=1787579569;
+	b=BdJQcx+PKAN/yAPRS6xK/gtjkQ4uvpJ3pF2Aw8DjH93Dv/YMaIrlHqVIMsXJK0W8dmzDPY
+	SwX3K1ZakYmmgY2XM+ohYBRGLq8TM85msI6i2yqcZiMRqhV4nYnCCyD5NtPnLqC1eIAzES
+	KKqbZ+SgRrhYBJ6GtW/M6uHnT5+Pxj4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=b7FRBFh3;
+	spf=pass (imf10.hostedemail.com: domain of hughd@google.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787579569;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=n94V7wbjjjBLybhmkw6p8j8STOH0bCJCKxuuQhNVBOI=;
+	b=VN+SWTPJs5G8FbLr4sr48S0mpmHKvkIluB3a0catRfYbvJYNSObb3IZ44aZYyOXy+BFIHF
+	uQ2UlUjFwX55Jm8q4zULPQZzZXzk551ZiHzng+H1KJUwhlCromLqm9vZ94L/olR8vzer2O
+	zY3zbnM2qdlHjrJGMND2gnNDzKtzVuU=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-66c744a00edso2118741d50.2
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:52:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787579393; x=1788184193; darn=kvack.org;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wa1iTT9vjhUKkra9WxI7hECThksYL7WKs9jkspFydz8=;
-        b=ePTnUCwzLaa1JAXj0vue6bAJKgUXVHCAEJHP3hP9Rc3K7hxWI2PNFoywEsxhfD3c2L
-         12U5x3Q5aiQYpz6v6nSNh7ROsLxo8TckKp3bStDUcXW1ldzqDpzJ+W8opHyjDAUamzhS
-         SnzmcfQpFd9pcmEHACJOdrMpN0xfLqntauBigYdyhv/vOXOT1Eb5xPf4lfhEGZH5Wiob
-         onycD2fofd42sAYGxnCMTVxn/M5Lg7yJOg+cEh9s0SNv6ZV7Fq0UoGCRa/qUB7dWfCSV
-         SYC5Q4xdEgMJDj6/7VXXmUMXofQY3JrdQUf9Fc6tD0n3aydn7GiXN/Tm6JyxW/ZXbiV7
-         shSQ==
+        d=google.com; s=20251104; t=1787579568; x=1788184368; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=n94V7wbjjjBLybhmkw6p8j8STOH0bCJCKxuuQhNVBOI=;
+        b=b7FRBFh3HoJKJRPG7A7uZCeJAmaYkgZTUwCbRZ8mSshynJxISGwwMsMYT7IL5SYp/n
+         uSGm5r5pwKyOBBj1PBnnasLRdPc+l5U2xYq/Cux2iXfeQfZ/NSVcahf73AmMOjzvvE2H
+         fUIyEiyQZLVnEGBABT7uEqK4+/pZeb9+LsAnN33wjzzZNRfS1D14HrMMgr+FPLQVt/dG
+         MgMYs8Wu6NKhk5Mm85aU2mJqpImccAmbkfU0557hvPUejJCzMN390RuCvjtm37AFoX1+
+         fg8+71wqNy79zeWqtrd8XLYxSIWu8bSkDqyRQYpN8cuR4t7VsaBaQ62KyG8/58+OK4A2
+         PXvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787579393; x=1788184193;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wa1iTT9vjhUKkra9WxI7hECThksYL7WKs9jkspFydz8=;
-        b=UzSs7KSDqiAYAR3wcPv4Qpr3kGIADIPyW6W3jssfH9YwHR9ms4iKBMosnkAHoMlBzN
-         OjR3lixqoO9e4JqU/ZIOhuzJy95lozetfFhtfFCyUmGkwB2KYQFNWkS38UJfGZkLtXba
-         krmgT+JLSwHU8sxBjRwI2sgZ4OIJHUW/Ik5XbxJ5olBjgMngbqkU2rJ5jjnuiobL+5gA
-         ijlcONya4/U4H9Vs+9U4n64zE90gEF6BUziIlz1O1UgX+s8x9ObqDzQe0BRUcnid4JZy
-         JHQnZlz+B7TBa2Li+DWC0Hb7wuOCyY4amvgHl4KoR7UbTuqnPJXwYUBBofjdXD0+6gW6
-         0NYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpdR9pfNx6r1JI1QBs4gt1Y53TxH8J7Kv4jJmB5oplF/OwyHYe+dWAsuAOtEkfTK6fsqsrNx9dk/Q==@kvack.org
-X-Gm-Message-State: AFuF++lnyh/t7LF838Y5k7Ufw9ECxwoNaXDJlmsh84R2S4NpHAqOr+cY
-	CI1mDN4U8L2qQyO57JpUx5sbNW+gK73z9934Dp6OxGM84SHIKoMMEYMWZRCH7oHFhw==
-X-Gm-Gg: AR+sD13fZCBebZR1jQh5O4mTi5d0lxNCkkS/nfd4qMcQchwQrapX25CIHX7RW4OxJEs
-	FOWo4pn2IXWdE5SIpf2+SNOASDjc7UZHAKM+CHo8rxhMFiULiCpk+1FUVWMz2y494b+Gn6Cj+j+
-	K3AHitOG5uH0rbWDlDD/OWZf6HS+jmABKlreVhxQgBUwcnjRxxc7F0KZMpb1uQQOQHPQl6dTllh
-	RIAaI1u0v2ab1AGpbPfPP/lD30J50/VTQfgs5s2mhA+Kh5/q9U8ILnHz1VLm6llRTbWMwpA00RZ
-	T1eOA0NHsvKwGcstg9MrI2yuMcZIMc8v2xPrWeRywTRLGLBu4GpwiT//zBQv5fPK9S4vHEfGPcM
-	fVyQznkfBU/9PLE2uzd3frgCkm2yID3MD+9tq2BrRRiBzh03wLVNo2iG2OlniYhmAbvTAriyXAS
-	x+yL9TuOUh0onEDIpkySLfHIXutisyIOEhJwtBl8kfiAnYU7oWQzI6RSFZwUOHKdUxXSPbshYM7
-	Dsj2QK5svVvtJ7/q6UpVXiszzORbvzRcyZEyleJR8n5Pdj+
-X-Received: by 2002:a05:690c:c602:b0:81e:ae6d:caed with SMTP id 00721157ae682-849f7262b93mr78114917b3.34.1787579392083;
-        Mon, 24 Aug 2026 06:49:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787579568; x=1788184368;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=n94V7wbjjjBLybhmkw6p8j8STOH0bCJCKxuuQhNVBOI=;
+        b=CzYD4gV46ZWV58pevwdO0V5+/W69hAn5LTqu1ecClNdJ0YGMFd4nNBuUSdaS/sQGhU
+         fZxs85eyqqi1fYI6pxPoaO5VRmxBogZ0Rm2X2wJK1SiN37VXVqTkOAm8xKBCjbb09cm1
+         WA2ldpKsmv62dAFPYAYIXMfgn18WFyfXT2me3drbq0QQXRIYJr/TKzYubHYO2J3+kgdS
+         Rofpr8ofVT6U8y4QTDbKpp6XiPZk0LRW62QVprrCrPPHs1IE54y8LDA7En6/lOs578WZ
+         L88N1n7CpjvxlCjoy5brHv02U/KEHZJuYBTAa2JKAyLX5tSbRvI4bzkXmXZEAHVJcqTE
+         o0jQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoQGidnLb+UZ8T7TjcsMhIGLF9MqjLHltm1gfVqNnt2gIrf6+7vclI5v0i59f/b4aDlTk8i1EVAkA==@kvack.org
+X-Gm-Message-State: AFuF++lBryPzBnz4HJsGxUKvgXyrziHHJsgtA2jxOkJovhqbTB/eZ9jh
+	+gzrTWb8LSpxM9kXbCNTGUwdyB79JrF2aMkqSq2T+NHTdNvguVCP9Ph25PrKm/MjZw==
+X-Gm-Gg: AR+sD11TarHY+Ot8iHuk7rcUuQ91jHTtW4lL1RRFNtTZm2VzxC2iyFiZjZtZngm4WEe
+	LF9IpYWiOzb0QmIGwkAfF2pDQbFWPoOxx2Y9dle1uhJEysbSJjWE3qijYFZoE203YlXN4YnSpyo
+	YPhHqj/MguzhIgpS7oB63B0/RXGTwawZWvynHPNAuyqnbADiMb/w1NURDqefWbFzvmhNRRGRik6
+	z+FSU/BQO+u4T8JeJVLRsogsDKlAUd8G3gUs31lGINDO9JiS4TNXTLaFEv8QVXik9q3k7csPSvX
+	rjQRId0CtxE36T721XfGVAXo9wU8A5btvI0B0CHxFCbKC9s6fU3k4/sjQuIklmWwJ8lEmV7D/gQ
+	jf1p1WauLfdgFRwmvl4AZWEe5YedULRJ0hYAqbAHJtIq482VJceBwrlzaSjTP7/t3jYDTUz0vz5
+	G/bw5aYBK3L9QUbWhR8Uo51HMlUaXEGoXjMqpSaEmFjvIg4K8I+BDYJx4Ud6zfsHSbwg6pM7u2Y
+	2ClA3o5+ZNRJKQ6qMSNjevoWbehfdG7YKiGhWnQh8vBdSB+m9Wf7zZRKKpjX8d6mEu26Wg=
+X-Received: by 2002:a53:cdcf:0:b0:667:b314:aea4 with SMTP id 956f58d0204a3-66ce4a56db4mr7162361d50.16.1787579567501;
+        Mon, 24 Aug 2026 06:52:47 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84ca62f6ad5sm33495767b3.18.2026.08.24.06.49.46
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66cf4624f47sm3724257d50.4.2026.08.24.06.52.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 06:49:49 -0700 (PDT)
-Date: Mon, 24 Aug 2026 06:49:31 -0700 (PDT)
+        Mon, 24 Aug 2026 06:52:46 -0700 (PDT)
+Date: Mon, 24 Aug 2026 06:52:41 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 cc: Ackerley Tng <ackerleytng@google.com>, 
@@ -99,12 +101,12 @@ cc: Ackerley Tng <ackerleytng@google.com>,
     Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
     Christoph Lameter <cl@gentwo.org>, 
     Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>, 
-    JP Kobryn <jp.kobryn@linux.dev>, Jan Kara <jack@suse.cz>, 
-    Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, 
-    Kairui Song <ryncsn@gmail.com>, Kiryl Shutsemau <kas@kernel.org>, 
-    Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>, 
-    Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
+    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+    Marcelo Tosatti <mtosatti@redhat.com>, 
     Matthew Wilcox <willy@infradead.org>, 
     Mel Gorman <mgorman@techsingularity.net>, 
     Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
@@ -119,18 +121,21 @@ cc: Ackerley Tng <ackerleytng@google.com>,
     Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
     linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH 00/25] mm/fbatch: drain lru_add_drain() and _all()
-Message-ID: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+Subject: [PATCH 01/25] mm/fbatch: remove !CONFIG_SMP special case of
+ folio_activate()
+In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+Message-ID: <3f18ab7d-c12a-d2a3-4d3e-f9908f94f27d@google.com>
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C18E520006
-X-Stat-Signature: dffhjrmwunekzkk8unkuyf3fc9ma999q
+X-Rspamd-Queue-Id: 2847BC0008
 X-Rspam-User: 
-X-HE-Tag: 1787579393-2759
-X-HE-Meta: U2FsdGVkX18EuCtD80svkesOLfskdDMSgxzZu1PXsy+7AZLqwJUMZJ8ZGwlnJdPNPZU/noKrneLuWC6g6tWnmmnXbPn94lkcWr7r/qxWyJxTsF4c8nyv60xcpQevA7XQvKKWs57KzCJcKNE2WfG9amyiGCD2gOpSey+c9kFkG06JqILI0scATdkBj3qRIS5jcdNpBdbPcn2TNzj0dpXrPmY6kQtggPcFb91fzI8o0iHb0FDUPq7q2z7W5zF+bQXQ3BURjtDqp7mRxkXi2j0+aY6e/b/mrZcZHeKv2kYkqSHT91I1nhiIMMr+9Dn/7TiH+lIA6KID/aPokGzXABKfyX9t2ElEeanU0YKYBvbpn6wMLuEra9QiJzFL054/Y3LT4GXWb6JLyBI88IBm/aInQW5mqUqQ2Z/3OjyOAnxIsSQMJmrVfW+F0B732wEp/2eemc74t7uWxzuoo8Mm4UoHRwcFkTk9xrAr42z3ATRaSHRXXFKWOc5ofqY7CF2orp5RHTsFe2YxHFm3qfMzC6CPb8zyrPw/GtTG1GJxWxr3Zn0zEpIoWQZqxnPT9tlQHXo/ysuiZmnZtaxzS9SwN3OWGqB0+CKn+i9qd0je55M3mulZvomiSFuHayrUMwHyVTvmrpXhODAjuuC5X1Mh/3GRKT0VirrQNT/RbiVhkhfvwgObZ7veujCYccpeoMoIvhq2L/akCOwrWYka6ruVixDj0EMiY7c1TGiTjs3Q6u2jdaRJEmdafMIHtGgtOhW0WpOqdbpQCQNPW8r81AfvZDtCaLUaK7c//QIsziANMzwU+7F+fCQD2UA5EYK/IcAg+fyHWlK8n/QZ+K0ume3MDsjwfj0VeTGs+n+WyLTfQp/J5whMnRHRQKlBwUinhwfizkpeu6AW5YVHyTw9TrY+brNSVoS4Fz6XJpya3v/zWrRsSNwN3xe7aL/NILT19jyyahGAcejU1qSiKutvsaidxtP
- f1nJfVuN
- 4LMTInxw6uWXUSEb8pCEgtmKQ7dDXrmq1cko7/1p7FH70/5QAYcUdzaYP3V3NAj5k3pPuZl1y0Xw4uaiOKzEkReyq/GavYX/teJuDGrwX6WOPZopZ1etd1m9t7NwSbarSAJygcYga4jtHUx+OF++ebQZA8IxNc0vz07+JRjqPrpTGTenymAGWNVExZCUOUrWfY5yJzbZKhksSrYh6BVd8z0K6nup4yUTtpQ3pD+Ny+zV9ljK02pM2vid5pproPjp1DSwWUqGZk3XvLZjPqwU2qPRTq+67gSBw3hjFf45RkHC//yD0Yff+i0k/KRYa8QO0O9n0OlUszYT8v+ADk7nred9JOa29a3fN10Cq1+OlS2o9GsXtpVXUkOk5y5LCMagdwIO05iiW8aOLh6FQJ2u1vK3rAAyJAgv7+62B/TVxql4PEHICln1xi6UhmbgSjzCRuKb+LmlT0kHcQYGMVVsl2FUBQt6297T/y6Ji9P3rcNBgiw8=
+X-Stat-Signature: 9b6tneky199977p7h1qtcfzgprx6frpu
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787579569-151194
+X-HE-Meta: U2FsdGVkX1+41+oVB5bHTrjwfswaA4Fu3m5M+3AstwxBA0EoOELDJtik3g/pD5Z276vP2rSMugUtoFzx2/dbEVxQlg411y7I9kL9TWiDQkEBLkLI1XI02u29Wq/oj6nkERSPnTfYWX8SmBlNlGVdpjZM4ea3eL1aE1L5xjRfNqKhn9vDvL/qAWxnfhrtctbG7ti8CZTDH/ini5e8ungqtrP6xeDKUfCRG4aHf2x4v5+BbmL8tIAGnFyPbet/VOgxk0zDQwALCQSjpD6vcxOlQTm4ENUj33q8lqPTohTjl1aJ9xkMcbnXYMDjHqfifMGQ/kV1dWNkU90xYUdjddvOAUZsZCOoTrFMbxqZX2utCBWDR8mxZ/QqVBexVzGnrB0Cef8mYXLvsa5IhNLiUWMyKDL0oWOpl7YON9GW5I8dCP1ZXqXBUetuJeyrXK8bksChM2v3fPlHMzpMDqGQT7w4NHKfO1ftbXa+XRy3TIUjqYd55hzKfAKLK6d9JW0Klc/xzCIYSUzYzoWW8qmn46+2iM8HSk3Tm7vBsoWQdR5/+NleHLPHRX6lc2YbNahyTX3TqTQmQY1vbE8dhufoaVNYuHM1Xzbp8ZHiL9JoHHhXYh1VQaqiag85f0snRhPVAHZfGhI/xm7iud95aUg4M/pr2dUfqdErJW5NnSsN9F6iCOyMM1Zra3ISTDh+Ux89K47iEV0aEXmDzCHY7ktkLmE8GWr869M+wU+oOnq7mwZ6mVQQnnf2CIjn5qphfmD1kuNVcg/IVatK9L1GfBt7WAyg04RpcuWTBkWfjVrWVaUe2k0doxhFpMoN3f53u+FhA5c/AF63A861FM+hbQObdcrFGsDT7CwzQFJJ9bFYwf6C2sG5iUnL/0x0GspIf/tCrDYHUo0mks6ReNLLq1IzuamTF879VLGcpuzuY5kKiY1hu8nOOEVGsj89JTDndJOoBlIwGU0AjkcuLoJpdlzk5A2
+ C8XHy3UQ
+ sij0ONlCVTEdtsnchr5AvE3vvlmX3Bx/IosH/vCCEL69nZdVYRT6YAMEuEZbwal5144wg4bplIWGP3q3eCp2ZaUohz4rjwtkkuO9j/F4EjUeM+dGIqdT/akqrH8AaAJdJziUBzacEyGJR8Wjnf4u6J0+Jj5lAIkVgzVd3Ybz+j10C0KqsXY5Nj2u67PPw0zwea3p66tSMnNuwE3uBi3CcU4M/zfZqN5GJZrrRPgTM5Q8H0/Hx+yd92dIU8D3J1FXrNiqAqphQ/qLaBvRHIbgxuq66gToxAIFUpIlXboNv5jsgcx+AeHS5xeK/1RECf+uLFnuMPcjbdDGZoxES1NdwMVzvHrEIpZp+pos8ygzJETeWB4RvSmRDCsL14/B/gAak74B38w7mFIXFRmt8mqEq92DVQsQhwkYK17IcEFzwBiEMil+xOPRy+kDl3Ww4pddaXn7hsiHiEvZKs5Fwjmxd/QbVDlvN+z+GT9nRGibZSUa7bDDjbr8hr95TUb/RnWxKn/QiexhWU51zXunHxCtUL9pl1+AmY35aWP+M3l6E+zYaJbmTq8ypz60X5GKDvjkJUN8EawrO9bcUKKojJ4W8bz2Z0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,113 +143,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series was prompted by lru_add_drain_all() appearing in watchdog
-backtraces: not to blame, but blocked on an unresponsive CPU to run
-its workqueue. lru_add_drain_all() is a heavyweight operation, which
-we often hope to avoid by a much lighter lru_add_drain(); but even
-those local drains can aggravate the lruvec lock contention which
-per-cpu fbatches are intended to ease.
+3.0 commit eb709b0d062e ("mm: batch activate_page() to reduce lock
+contention") brought in an ifdef CONFIG_SMP around activate batching:
+https://lore.kernel.org/linux-mm/20100805140755.501af8a7.akpm@linux-foundation.org/
+shows a sensitivity to bloat that day, not any incompatibility with UP.
 
-Now let the folios on the lru_add and other per-cpu fbatches remain
-there, isolatable, with PG_lru set and refcount unraised, just like
-when on an actual LRU. Then many calls to lru_add_drain() and _all()
-can be removed.
+No other batching here has a UP alternative, and it's a bit confusing:
+simplify mm/folio.c a little by removing it now.
 
-It's something I've wanted to do for years, tried several times, but
-only hit on a good way to do it a few weeks ago: now it's uncomfortable
-to watch others wrestling with the drainage, while I'm sitting on this.
+Certainly we can reduce UP bloat (and/or 32-bit bloat) by, say, lowering
+FOLIO_BATCH_SIZE from 31: traditionally 16, 14, 15, then raised to 31 by
+6.9 commit 9cecde80aae0 ("mm: increase folio batch size"); or by giving
+just the static per-cpu folio batches a type of their own with a smaller
+array size on UP (1? or a little batching worthwhile even on UP?). But
+not right now, it's orthogonal to this series.
 
-The key idea came from the "if (!folio_test_clear_lru(folio)) continue;".
-If we don't mind missing to take an action on rare occasions, then maybe
-we won't mind taking an action on the wrong folio on rare occasions, so
-long as it is a folio consenting to PG_lru rules.
+And I suspect that the old ifdef led to lru_activate being placed last,
+whereas it's usually the second most popular fbatch: move it there, to
+match cpu_needs_drain() comment "Check these in order of likelihood that
+they're not zero".
 
-No new locking, but relies on folio_try_get() and  folio_test_clear_lru()
-even on the lru_add fbatch; with use of bits not set in aligned pointers,
-and some try_cmpxchg()ing.  Speculative references to folios are already
-accepted: this adds another source of them.
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
+ mm/folio.c | 40 ++++++----------------------------------
+ 1 file changed, 6 insertions(+), 34 deletions(-)
 
-Performance? You (and the bots) tell me. I'm considering this as a
-cleanup, to make life easier for developers. I expect that some loads
-will show improvement, but also expect some disappointments (perhaps
-I go too far against lru_cache_disable()? or not far enough).
+diff --git a/mm/folio.c b/mm/folio.c
+index d2937600cf72..62b96c9ce19e 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -47,12 +47,10 @@ struct cpu_fbatches {
+ 	 */
+ 	local_lock_t lock;
+ 	struct folio_batch lru_add;
++	struct folio_batch lru_activate;
+ 	struct folio_batch lru_deactivate_file;
+ 	struct folio_batch lru_deactivate;
+ 	struct folio_batch lru_lazyfree;
+-#ifdef CONFIG_SMP
+-	struct folio_batch lru_activate;
+-#endif
+ 	/* Protecting the following batches which require disabling interrupts */
+ 	local_lock_t lock_irq;
+ 	struct folio_batch lru_move_tail;
+@@ -349,15 +347,6 @@ static void lru_activate(struct lruvec *lruvec, struct folio *folio)
+ 	count_memcg_events(lruvec_memcg(lruvec), PGACTIVATE, nr_pages);
+ }
+ 
+-#ifdef CONFIG_SMP
+-static void folio_activate_drain(int cpu)
+-{
+-	struct folio_batch *fbatch = &per_cpu(cpu_fbatches.lru_activate, cpu);
+-
+-	if (folio_batch_count(fbatch))
+-		folio_batch_move_lru(fbatch, lru_activate);
+-}
+-
+ void folio_activate(struct folio *folio)
+ {
+ 	if (folio_test_active(folio) || folio_test_unevictable(folio) ||
+@@ -367,25 +356,6 @@ void folio_activate(struct folio *folio)
+ 	folio_batch_add_and_move(folio, lru_activate);
+ }
+ 
+-#else
+-static inline void folio_activate_drain(int cpu)
+-{
+-}
+-
+-void folio_activate(struct folio *folio)
+-{
+-	struct lruvec *lruvec;
+-
+-	if (!folio_test_clear_lru(folio))
+-		return;
+-
+-	lruvec = folio_lruvec_lock_irq(folio);
+-	lru_activate(lruvec, folio);
+-	lruvec_unlock_irq(lruvec);
+-	folio_set_lru(folio);
+-}
+-#endif
+-
+ static void __lru_cache_activate_folio(struct folio *folio)
+ {
+ 	struct folio_batch *fbatch;
+@@ -694,6 +664,10 @@ void lru_add_drain_cpu(int cpu)
+ 		trace_mm_lru_add_drain_tp(cpu, nr_folios);
+ 	}
+ 
++	fbatch = &fbatches->lru_activate;
++	if (folio_batch_count(fbatch))
++		folio_batch_move_lru(fbatch, lru_activate);
++
+ 	fbatch = &fbatches->lru_move_tail;
+ 	/* Disabling interrupts below acts as a compiler barrier. */
+ 	if (data_race(folio_batch_count(fbatch))) {
+@@ -716,8 +690,6 @@ void lru_add_drain_cpu(int cpu)
+ 	fbatch = &fbatches->lru_lazyfree;
+ 	if (folio_batch_count(fbatch))
+ 		folio_batch_move_lru(fbatch, lru_lazyfree);
+-
+-	folio_activate_drain(cpu);
+ }
+ 
+ /**
+@@ -825,11 +797,11 @@ static bool cpu_needs_drain(unsigned int cpu)
+ 
+ 	/* Check these in order of likelihood that they're not zero */
+ 	return data_race(folio_batch_count(&fbatches->lru_add) ||
++			 folio_batch_count(&fbatches->lru_activate) ||
+ 			 folio_batch_count(&fbatches->lru_move_tail) ||
+ 			 folio_batch_count(&fbatches->lru_deactivate_file) ||
+ 			 folio_batch_count(&fbatches->lru_deactivate) ||
+ 			 folio_batch_count(&fbatches->lru_lazyfree) ||
+-			 folio_batch_count(&fbatches->lru_activate) ||
+ 			 need_mlock_drain(cpu)) ||
+ 		has_bh_in_lru(cpu, NULL);
+ }
+-- 
+2.51.0
 
-The timing is not so good: middle of a merge window is not a great
-time to present new work; but I hope to be taking three weeks off in
-two weeks time, so best to get this out in the open early, while I can
-respond. If it's welcome in principle for 7.4, but too many changes
-are demanded, maybe someone else can step up to shepherd it through.
-
-Rebased and retested on Linus's tree of Sunday afternoon,
-base-commit: 4352b8aee98005853aa63f57d6377282de17a33f
-which includes the mm/swap.c to mm/folio.c renaming,
-but not yet David's mods to mm/gup.c which conflict with my 13/25:
-I'll reply to that one with an alternate patch to use once David's
-two have gone in (reverting both of them and what was there before).
-
-01/25 mm/fbatch: remove !CONFIG_SMP special case of folio_activate()
-02/25 mm/fbatch: allow folios_put_refs() to skip xa_is_value() entries
-03/25 mm/fbatch: temporarily disable lazyfree and mlock+munlock batching
-04/25 mm/fbatch: lru bit set, no extra ref, while folio on per-cpu fbatch
-05/25 mm/fbatch: lru_add_del_folio()+folio_add_lru() after clear_lru()
-06/25 mm/fbatch: fbatch_drain_lazyfree(onstack fbatch) before ptl unlock
-07/25 mm/fbatch: LRU_NEXT_ACTIVATE bit to optimize folio_activate()
-08/25 mm/fbatch: replace mlock_new_folio() by __folio_add_lru(,mlockit)
-09/25 mm/fbatch: restore mlock+munlock batching, without extra ref
-10/25 mm/fbatch: remove several uses of mlock_drain_local()
-11/25 mm/fbatch: remove migration's PAGE_WAS_MLOCKED lru_add_drain()
-12/25 mm/fbatch: remove percpu_pvec_drained and folios_put()
-13/25 mm/fbatch: no lru_add drain to collect_longterm_unpinnable_folios()
-14/25 mm/fbatch: no lru_add_drain() nor _all() for memfd_wait_for_pins()
-15/25 mm/fbatch: remove shake_folio() shake_page() from memory-failure
-16/25 mm/fbatch: remove lru_cache_disable() from NUMA folio migration
-17/25 mm/fbatch: no lru_cache_disable() in __alloc_contig_migrate_range()
-18/25 mm/fbatch: remove lru_add_drain() and _all() calls from various
-19/25 mm/fbatch: vm/stat_refresh include lru_add_drain() on each cpu
-20/25 s390/fbatch: no lru_add_drain_all() in s390_wiggle_split_folio()
-21/25 block/fbatch: no lru_add_drain_all() in invalidate_bdev()
-22/25 fs/fbatch: drop_caches invalidate_bh_lrus() not lru_add_drain_all()
-23/25 fs,mm/fbatch: use invalidate_bh_lrus() not invalidate_bh_lrus_cpu()
-24/25 fs,mm/fbatch: lru_cache_disable() keep off buffer_head lrus only
-25/25 mm/fbatch: move lru_add_drain_all() declaration to mm/internal.h
-
- Documentation/mm/unevictable-lru.rst |   2 +-
- arch/s390/kernel/uv.c                |   1 -
- block/bdev.c                         |   1 -
- fs/buffer.c                          |  40 +--
- fs/drop_caches.c                     |   4 +-
- include/linux/buffer_head.h          |   8 +-
- include/linux/folio_batch.h          |   7 +-
- include/linux/huge_mm.h              |   6 +-
- include/linux/mm.h                   |  18 --
- include/linux/mm_inline.h            |  22 ++
- include/linux/mm_types.h             |  12 +-
- include/linux/swap.h                 |  14 +-
- mm/compaction.c                      |  25 +-
- mm/fadvise.c                         |  17 +-
- mm/folio.c                           | 375 +++++++++------------------
- mm/gup.c                             |  14 -
- mm/huge_memory.c                     |  16 +-
- mm/hwpoison-inject.c                 |   1 -
- mm/internal.h                        |  15 +-
- mm/khugepaged.c                      |  11 -
- mm/ksm.c                             |  12 -
- mm/madvise.c                         |   9 +-
- mm/memfd.c                           |   6 +-
- mm/memory-failure.c                  |  38 +--
- mm/memory.c                          |  14 +-
- mm/memory_hotplug.c                  |   4 +
- mm/mempolicy.c                       |   7 -
- mm/migrate.c                         |  13 +-
- mm/migrate_device.c                  |   9 -
- mm/mlock.c                           | 192 ++++++--------
- mm/page_alloc.c                      |   3 -
- mm/rmap.c                            |   4 -
- mm/shmem.c                           |   2 -
- mm/truncate.c                        |  17 +-
- mm/vmscan.c                          |  16 +-
- mm/vmstat.c                          |   1 +
- 36 files changed, 344 insertions(+), 612 deletions(-)
-
-Hugh
 
