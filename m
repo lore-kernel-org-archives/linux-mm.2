@@ -4,126 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E6E2C61CE2
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0599CC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:10:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DE176B008C; Mon, 24 Aug 2026 07:09:39 -0400 (EDT)
+	id 076716B0096; Mon, 24 Aug 2026 07:10:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5F46B0096; Mon, 24 Aug 2026 07:09:39 -0400 (EDT)
+	id 026CD6B0099; Mon, 24 Aug 2026 07:10:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A52E6B0099; Mon, 24 Aug 2026 07:09:39 -0400 (EDT)
+	id E80256B009B; Mon, 24 Aug 2026 07:10:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3009A6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:09:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC030A373A
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:09:38 +0000 (UTC)
-X-FDA: 85135892436.30.3DB4723
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 004891C0008
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:09:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=G8niwCql;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BFA646B0096
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:10:08 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5607C1204A7
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:10:08 +0000 (UTC)
+X-FDA: 85135893696.01.DEDC50E
+Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1396A180009
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:10:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EzyOSCUQ;
+	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787569777;
+	s=arc-20220608; t=1787569806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FqwXbXyfUlH6nF/dcWjMtptrPqoYpuG4oKFrsn7psr0=;
-	b=kFcIsm0It6aNPIQ91+4ysuryV9zYwpc4AUi1V6hUZMLFqel1aX02PoHoGZpgcBTDZK24DS
-	/yDbizsuz5SeOtvIYTDlN/qwr+iETBTHEI/yDs6Sa5WybzAnWtwa3KAGfV+7EW39r1ngPw
-	LvxoPeyXJEITTl9ojbpADAI7EAATKBM=
+	bh=HXWBt/ALPMpEd76o9QhClkprgZubHF3CQiskIy8Laog=;
+	b=snycO20wn6fKiF/dJv64/dTEFRlgQUE4CrlQHa9IuN6vhGCD/dcCsWINL5CSqg9lIetTUc
+	jya+cRYrL44TApeYU5GNgRtP+AiBL+6VFcZnbeI0y4NZA0FI5Gc8XQQsdRZ9R1uU7aIVGM
+	N6izwtQK7kx4cGrUf+kTYmwOyo7H3OI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=G8niwCql;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EzyOSCUQ;
+	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787569777;
-	b=Zr5mOvD3bb01etV3rhoJ79iLSpYAt9OgKlKlB6vCJiK2o/4qux5fmccYs+BJltMDoY5A0o
-	AAcHxgQHLfE9nCmmYKq4JTXXJOi9jHWRyz7+3p1vUgUfsElvU41xn1jSUHkAfynKMhFm1l
-	rtCKe6//6npxzn/VG9C6gxOXDHPlyuw=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso2856806b3a.1
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:09:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787569776; x=1788174576; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FqwXbXyfUlH6nF/dcWjMtptrPqoYpuG4oKFrsn7psr0=;
-        b=G8niwCqlDr3OiJThO7eQrNiELCsS6BoDnNJo0twYYPresho+muAiXSrFVgSEuG6Icr
-         V5CFb6lKVDRhwNDsNUVh8HE/wjY1e9Egl3YxEO6N3ywpUecW6tcssr+p02OXTX8xLUzL
-         61s0l8QhEm4VWAZYUdUKgVndhzjocFEtH1apqpcDgXTcT8zmKq6n9qwK4f0ly4uHWv9A
-         fEos/buN8lpCLofnTrLQqr5jTBza2IIkkcfyLAEIY7EQjz/aIM1dNg4wju4DdOj2n4MD
-         uR5eSYPUiMnlP1a4vOLyLLkjXJgj1Ylx/f93hdFgR4SX2GjnM4RcOTlPWQE81wVRzIAh
-         v8UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787569776; x=1788174576;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FqwXbXyfUlH6nF/dcWjMtptrPqoYpuG4oKFrsn7psr0=;
-        b=TDJ204o0AYvrHPeml91aagc529PPKF9/TgAhTlZ6q98n0DKAIw2jlUPqDFoQLlGwmK
-         uMot8OAhfo5ljb/FdPxD/o7SdAMZ+G98dXnuHUkx7Mg/30ov+hpfOMzOKsj+UsWHOBjO
-         QtnYi3URsy68nkxOUbazJ6ozqHoi+M0wxm0dn/vPlN2ELPOpV/4Ofrx3TDobqNqgsfPT
-         ciMk/qt568bclaO3LPTuglbwZIRpRnSszhsLgyw7nrX34APnuZu//1QjRpZy4S2hZ6Sw
-         jW8Zqurk00Q+0awIP/VQsUcbH7ZkfyTdM+liMzJLP55TDe8v4vy/LjyKqpD417uBZSWj
-         Pa8g==
-X-Forwarded-Encrypted: i=1; AHgh+RqB6Og37PtAU5oCvoS8rrxnfHT9LuxzVChO0vwewaiBL1mm63P7Cf9omB0BdlcdU1lgEejFGcHzWA==@kvack.org
-X-Gm-Message-State: AFuF++kcTx9bg4Gyx4EWAn4flkZ75GlzmlTn9xBeF7FS77of8SRaJntv
-	oqBJHWzZw4F6PGT7iJNJ+FuGHbiZwUy6U5cbCumi2LAlAF7Td/5a5A8h
-X-Gm-Gg: AR+sD137fEQ1W7+5sEtvgKvpVBGzcp3A9vvtznhi3a91BMhYXYMDFpFvx4mx6Ta4KbG
-	rVwpPARUjXnTtN5Qku3bJrWcHXP/+H7GEMmVwjMugiQTYjuWTdpMsbdf+AM0BelmWS9LTCAN7gE
-	lAvL4Xm8XQDrmiZPbEzuucYE6m87itcQLd+DNDNe0JZqH0uTzXDDXTAN3G81EFRuILD1Ul9YnUk
-	M/R1bhmwaZo+cg8nVwPho6tGhn5sRP21U2GRh8HSOQ4rHY9J1WM4Y1kvzOu8E8xCulM8CgdNHso
-	fh7MtWH2mTlBd72oR0a03Pwt8cp0nZiaycuTknjhY789Q6ilP+Jx+o9jFcz3evNYa3Vw6feDy20
-	/uy06sDDwN8DsVussC8CJDfYdUMFoljeHr4TL9Patv4dQcK7tATCInbxE3gEIu7HyjB3l2EOpFf
-	GvRJ+E5ugOObo7WIyp+XmQB0P0XFason0EhWzqIiURlKYyWtA7YLLfEIb4TOu5DJikAmeRQNLih
-	da6PrjF2EK3ghMFTttC4Evu
-X-Received: by 2002:a05:6a00:2d04:b0:84b:9a69:156d with SMTP id d2e1a72fcca58-851f9a2c87amr22297176b3a.0.1787569775691;
-        Mon, 24 Aug 2026 04:09:35 -0700 (PDT)
-Received: from KASONG-MC4 ([114.246.239.71])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8520ef26df4sm1790900b3a.21.2026.08.24.04.09.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 04:09:35 -0700 (PDT)
-Date: Mon, 24 Aug 2026 19:09:24 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>, 
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/7] mm/mglru: introduce helpers for manipulating gen and
- refs flags
-Message-ID: <aowABnB6OPCb95eC@KASONG-MC4>
-References: <20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com>
- <20260818-mglru-flags-cleanup-v1-2-8dbbdac0d28c@tencent.com>
- <a13c3895-cc53-4f91-aac8-2bfef765eca5@linux.dev>
+	t=1787569806;
+	b=dbuKVh7NbiK7kisXMnY+NvIB/yTYMHb7IGhK90PN995WXS+EHq6CXxgLAm+xBbzoO/9LRQ
+	9G/4THe7kOvHJBzCpYRdbV3+nJeins3IBezYQtStDz+W5lJSCQ+Ntd463vCeQLNWHHBC4i
+	q6eyeiH+L/OVWc5yhCqjYU9tB8P2q7g=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=MLoHlZQykALuphN6lnBx1ivPtGHUFJ0fv7fJkVRd95E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787569804; v=1; x=1788174604;
+ b=EzyOSCUQpaFtXFd3pa/3J36wjPwKSd3ccFmd76ctK8rqjTQpID7ryHZeOvouhZK+wm3XZFAd
+ MwLUTd5E4B1wGekW9ZMm7wini0WeJjBPNAb0CUFOpUi0bFZf6aJRsvy8G8KuAxKEHoR4LXYpav2
+ /eSwIdRb9JTllmuE0BhFH1LA=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.67.158.60] (114.251.196.91)
+	by smtp.migadu.com with ESMTPS id b9a820b2082c8157;
+	Mon, 24 Aug 2026 11:09:54 +0000
+X-Mizu-Trace-ID: b9a820b2082c8157
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <cde94ead-445e-45bd-88b0-ac64b3ed6ace@linux.dev>
+Date: Mon, 24 Aug 2026 19:09:45 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a13c3895-cc53-4f91-aac8-2bfef765eca5@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 004891C0008
-X-Stat-Signature: cw6x455z3xymoqui637hafwdcadqgcaf
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 08/17] mm/sparse-vmemmap: support section-based vmemmap
+ optimization
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
+References: <20260819095140.17252-1-songmuchun@bytedance.com>
+ <20260819095140.17252-9-songmuchun@bytedance.com>
+ <178756196750.3606540.8562704442052486227.b4-review@b4>
+Content-Language: en-US
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <178756196750.3606540.8562704442052486227.b4-review@b4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1396A180009
+X-Stat-Signature: tpakiyd8mdk4r5s6erdajnjntepodjib
 X-Rspam-User: 
-X-HE-Tag: 1787569776-19394
-X-HE-Meta: U2FsdGVkX19ZPGZaADVQl7psWVbwBoyEL+Pk28SG6u2H9yMYn6I5ixcLHfnb7rPAsUncCpCPz1MA3PrqRZRFRVJz8n8LaXe0hiTF17qt+btIvV+bbHIwiRkx7/ger+c5SG8lrzK4E9PK8htc//zIRc7j/jh3UB1Tict5trQSqQJ6dpORpM1Jo/md9iL310P9zMFf8GmmOGDYoAS9bSyzMCV2aCgOTNSh34QP1mBeufUIVoY2Whzxq0SPlgnx2fi6V6vn8tVv1GRm2Rdu6/rhTrpgsThTOW8uZC0gecyvxnBCmfDbVlT99H1O8yPcwxRsosAIPfLLOi3JBFdQjc8rVRonTqodNeN9fbykXWTl3to7CtasFuhKu9nWnKoCwfwJ3oPfQIrfpHABDYbFY+JNHItrxoMhklvEWQ21H9SG2a31A1tmaW63y+eF8SW59AkywQdeAoLqkzUxMvHsLRGASgaJPQr1UHQ+pZafmuu9Ke02Yd9il4H5gOu+LTHqmsYRz2p+LPsPUUSEaxzowbHIcX6GTl/WbOcEXiBQT/v6WwMgvURDF6V8yyvt/kZYOZBW488BFAJ3CQDYrORHqQP492i06qa2RFVeCMdYKcfqyaBAiXKgKW64XvnV3/ljtumEcHXAIxSGZcg6P57g0Yk9vsZipwBduj7hLoV+P5yKurtrrfUpN//OSHAnViP6KB7qHPA95vI+nCrDVNhV2xlaDr4WJt1k1sTpkT4BJZ0DcBbmshSXovBaKzIogMRoibRY9zFNPgBECDDY3q9Ef4KKXJnVsdK3lpEJSh+ZndxKhY1EwEn3pMUvDxkrhyFAfy4XhQifkVNY8rOYKNRXHWqQe9VrOlmo2sO8NM46zJSSsH0wMtHtJ2EquQiYWea04HN5ZkX14elcnb+Cjd/yju4mD3VWlAYvF4yiv/TJ7HMgz80+t1JHXEjX/3RwwW8cojKUtAciyea/u9+XYhJBZty
- BpaTFjD7
- p7xL3vewUzR/BoL22irID/osea3uqlRCBgnJIWcdB2JGd6UQAYVlxwpvlVfUL+/4UGUb5o0v3e/GZzeN74SUNZq22vRYjVGeVJwIxRCaBIgl95D20eOh5efLxJtJA+DEg4XbNGnTDN6Ngr/Be0/EPm4eF4hi9RgERvS2eEE1ODmyIndROn4oFxkVVa7A402NbIabprj3V1gF8vCHXjakaW25MHFNv+Vo+l69m2sBht41oEgDylX1OpbkPn1FB4YEaXR4LBr29d+80QtbjhPFg9hY/pGfEefQNBGNDMkT7McQZsLT38/hyjNjM1VIoCClzoJ2mGOLF7mIT6pg8LGIQH113qsNtzd5SgcC3XeNjdECk29eZwTEU4bCkknpNOpXaGiGjFHJ4ZY6NkL3MtpA8u4SYzfMdZd44dgdAeQeTFK91kELtw9VCKJ2YSbbyf5IzQyWoDl+Pnv5hFuM=
+X-HE-Tag: 1787569805-571003
+X-HE-Meta: U2FsdGVkX19OtwhHPt6W0g9+HBoyPTLpue+mbmoZinQ+0noNPC0TFxZ5FiIpREBhqJ15CgxjtF868f809mrp4TZVvXAXQJ4rWjK61Djf/dPtdxbNwRqfyjekth8hS6nuWb7KUVd6mlgyZpZXWC8mQeN2IZc7ZCFVhsIaIT8PbLL/Yb3fyEU5PwCQsEkeN9k+K5TWBc+7xtwCgwsl51PRDeWOB0fG+lnlFU0OelwqHPnmGJHpwHYVXJ+hYfKtMrEtRCa9fYUK8wBxx1zP9vhYTKHXCeiEqEC/+287/JqEUaubt2kDWCxkvjqoYCriDG9uh4g7YsEaVbrVPNXkO+uQatXTtt7zMM5WE7Y7kXoE6sgCYAGGUnJDpgdCjXKy6b3PvImlxZTGG8nE/X3ScISW0tDfMcAqm8Bn3kryaij2lzSzrC7QpPImRo3A9vGJaFnIKyHT+DnQoi1Iw98BmiWS4h89/PpH5eGLwaMwgENNsI8aab66gqQ26fAW27aUh4jBEFb903/ly+g02xha1WwjZjKkP4YhSJqVobM2Y+Uv+npoSyow6p6szIMEZ05ea7K+bgC2HVnT7pA8oq9CHnaO48emiX/JGWdd2EwJLlyr4O0t51JTOP6xagMfWst6mipBz+0r1S60P31fu6mnMyxu7T/O+we2hNCb+chZNENRsrIwOeRokpWTM+AmFyI+KPjze/LP+T6hP1kxzIZObgX0y2C+b9r5blyEzhedE1PMrEbrs8Sk39b9RQYnM/qH8E7wnClwvoRMoh5/s8U1uXFE2BTSDX4FGkBDOYLQbs7d/S2zxA8J5fCcF2eeuOhqq0lbep1YJMvKYY/5wN5lizyIF5w5Rd4fPsHRv3wI4bTsLHhc2XLf672IZ8MqnVR2QKsWQ0NFo/p5flyG1obFZOlAN7XhuWnd43zG6XpHIB6eo+rsv2urkOzTsnyoHmtGYyS1Cl8j3U1E4QsiBeV2Tyy
+ pkQHsyq3
+ /4x3xyWcklZak7ZliRrsjl9lndj5fXURBx16T4LjE3lP+nW1luPevpqZbeJYoGf2PRBqgEWB8dNQQvwLJjQmk0NgG86f99f7jjWnB/Bj2TvRQtG+1xVcsiQ7NVXmzkSL2QwqHwH76YRsGxBNYSaTlKGOzLbsqUvvL2hwKopDZzJXWFzbKz3BxucCQx/rQ/OrLnRxuDhnrViR1H7WLGF94bRClrxDpzKXdfID5g26pLGjURfN4a+SqbFlgCd7WvbAT7H9Qc54+qk/b/llx7AcGbjYB6KVyw6UgjadbTEJs8zCM5SqHvWk0sCsd1fQjE/z2EHSLICwCwqx4C10djXGbZVIQ1+a7LUNog0IULTdu7f44LpVtjRF3LOq9CzNhJOfD6+n2V0ULjvmt0bOx7JzZfVCSeR+OoWGAF3V4NsEbDtb1zaPZlgeyywDf0ojuopIj13eG4XA/mCCNXyM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,61 +100,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 20, 2026 at 09:43:38AM +0800, Ridong Chen wrote:
-> 
-> 
-> On 8/18/2026 1:38 PM, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> > 
-> > Instead of doing bit ops on folio->flags.f, introduce helpers for
-> > adjusting folio's refs and gen info, make the code easier to debug and
-> > understand.
-> > 
-> > No functional change is intended: some combined atomic operations are
-> > split into two, which only creates harmless transient states.
-> > 
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >   include/linux/mm_inline.h | 79 +++++++++++++++++++++++++++++++++++++++++------
-> >   include/linux/mmzone.h    |  2 ++
-> >   mm/folio.c                | 19 +++++++-----
-> >   mm/vmscan.c               | 61 ++++++++++++++++++++----------------
-> >   4 files changed, 117 insertions(+), 44 deletions(-)
-> > 
-> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> > index 621c8653d8f7..93bf3fa221f8 100644
-> > --- a/include/linux/mm_inline.h
-> > +++ b/include/linux/mm_inline.h
-> > @@ -142,10 +142,43 @@ static inline int lru_tier_from_refs(int refs, bool workingset)
-> >   	return workingset ? MAX_NR_TIERS - 1 : order_base_2(refs);
-> >   }
-> > -static inline int folio_lru_refs(const struct folio *folio)
-> > +/**
-> > + * lru_gen_from_flags - Return the LRU generation number from folio flags.
-> > + * @flags: folio flags
-> > + *
-> > + * Returns: A number between 0 and LRU_GEN_MAX, inclusive. Returns -1 if the
-> > + * flags indicate the folio is off the list (e.g., isolated).
-> > + */
-> > +static inline int lru_gen_from_flags(unsigned long flags)
-> > +{
-> > +	int gen = ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF);
-> > +
-> > +	BUILD_BUG_ON(LRU_GEN_MASK & LRU_REFS_MASK);
-> > +	gen -= 1;
-> > +	VM_WARN_ON_ONCE(gen != -1 && gen > LRU_GEN_MAX);
-> 
-> Perhaps we could define a macro such as GEN_OFF = -1 to make the code more
-> self-explanatory, I found this warning a bit confusing at first glance.
-> 
-> LRU_GEN_MAX already bears some resemblance to MAX_NR_GENS, so introducing
-> yet another macro may add some clutter.
-> 
-> Just my two cents.
-> 
 
-Thanks for the review.
 
-Let me just simplify the sanity check then, I think using MAX_NR_GENS are
-good engough.
+On 2026/8/24 16:59, Mike Rapoport wrote:
+>> Teach sparse-vmemmap population code to use the compound page order
+>> when deciding whether a vmemmap page can be optimized.
+>>
+>> With this information, the common sparse-vmemmap population path can
+>> allocate or reuse shared tail vmemmap pages directly instead of relying
+>> on HugeTLB-specific handling.
+>>
+>> This centralizes vmemmap optimization logic in the sparse-vmemmap code,
+>> based on section metadata, and prepares for sharing the same mechanism
+>> across different users of vmemmap optimization, including HugeTLB and
+>> DAX.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index b770fe2428fd..737d50bdd3ef 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -186,6 +186,11 @@ static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *
+>>   
+>>   	return tail;
+>>   }
+>> +#else
+>> +static inline struct page *vmemmap_get_tail(unsigned int order, struct zone *zone)
+>> +{
+>> +	return NULL;
+>> +}
+>>   #endif
+>>   
+>>   static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
+>> @@ -193,12 +198,24 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>>   				       unsigned long ptpfn, unsigned long flags)
+>>   {
+>>   	pte_t *pte = pte_offset_kernel(pmd, addr);
+>> +	unsigned long pfn = page_to_pfn((struct page *)addr);
+>> +
+>>   	if (pte_none(ptep_get(pte))) {
+>>   		pte_t entry;
+>> -		void *p;
+>> +
+>> +		if (vmemmap_optimizable_pfn(pfn) && ptpfn == (unsigned long)-1) {
+>> +			unsigned int order = pfn_to_section_order(pfn);
+>> +			struct zone *zone = pfn_to_zone(pfn, node);
+>> +			struct page *page = vmemmap_get_tail(order, zone);
+>> +
+>> +			if (!page)
+>> +				return NULL;
+>> +			ptpfn = page_to_pfn(page);
+>> +		}
+>>   
+>>   		if (ptpfn == (unsigned long)-1) {
+>> -			p = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+>> +			void *p = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+>> +
+> What do you think about adding a helper function here, e.g something
+> like
+
+Better than mine. More clear.
+
+>
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index 0aa0ab4f8b11..933b122f9937 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -191,6 +191,23 @@ static inline struct page *vmemmap_get_tail(unsigned int order, struct zone *zon
+>   }
+>   #endif
+>   
+> +static void * __meminit vmemmap_alloc_pte(unsigned long pfn, int node,
+> +					  struct vmem_altmap *altmap)
+> +{
+> +	unsigned int order = pfn_to_section_order(pfn);
+> +	struct zone *zone = pfn_to_zone(pfn, node);
+> +	struct page *page;
+> +
+> +	if (!vmemmap_optimizable_pfn(pfn))
+> +		return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+> +
+> +	page = vmemmap_get_tail(order, zone);
+> +	if (!page)
+> +		return NULL;
+> +
+> +	return page_address(page);
+> +}
+> +
+>   static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
+>   				       struct vmem_altmap *altmap,
+>   				       unsigned long ptpfn, unsigned long flags)
+> @@ -201,19 +218,8 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>   	if (pte_none(ptep_get(pte))) {
+>   		pte_t entry;
+>   
+> -		if (vmemmap_optimizable_pfn(pfn) && ptpfn == (unsigned long)-1) {
+> -			unsigned int order = pfn_to_section_order(pfn);
+> -			struct zone *zone = pfn_to_zone(pfn, node);
+> -			struct page *page = vmemmap_get_tail(order, zone);
+> -
+> -			if (!page)
+> -				return NULL;
+> -			ptpfn = page_to_pfn(page);
+> -		}
+> -
+>   		if (ptpfn == (unsigned long)-1) {
+> -			void *p = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+> -
+> +			void *p = vmemmap_alloc_pte(pfn, node, altmap);
+>   			if (!p)
+>   				return NULL;
+>   			ptpfn = PHYS_PFN(__pa(p));
+>
+>>   			if (!p)
+>>   				return NULL;
+>>   			ptpfn = PHYS_PFN(__pa(p));
+>> @@ -217,7 +234,8 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>>   		}
+>>   		entry = pfn_pte(ptpfn, PAGE_KERNEL);
+>>   		set_pte_at(&init_mm, addr, pte, entry);
+>> -	}
+>> +	} else if (WARN_ON_ONCE(vmemmap_optimizable_pfn(pfn)))
+>> +		return NULL;
+>>   	return pte;
+>>   }
+>>   
+>> @@ -406,6 +424,9 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+>>   	pmd_t *pmd;
+>>   
+>>   	for (addr = start; addr < end; addr = next) {
+>> +		unsigned long pfn = page_to_pfn((struct page *)addr);
+>> +		const struct mem_section *ms = __pfn_to_section(pfn);
+>> +
+>>   		next = pmd_addr_end(addr, end);
+>>   
+>>   		pgd = vmemmap_pgd_populate(addr, node);
+>> @@ -421,7 +442,7 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+>>   			return -ENOMEM;
+>>   
+>>   		pmd = pmd_offset(pud, addr);
+>> -		if (pmd_none(pmdp_get(pmd))) {
+>> +		if (pmd_none(pmdp_get(pmd)) && !section_vmemmap_optimizable(ms)) {
+>>   			void *p;
+>>   
+>>   			p = vmemmap_alloc_block_buf(PMD_SIZE, node, altmap);
+>> @@ -439,8 +460,11 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+>>   				 */
+>>   				return -ENOMEM;
+>>   			}
+>> -		} else if (vmemmap_check_pmd(pmd, node, addr, next))
+>> +		} else if (vmemmap_check_pmd(pmd, node, addr, next)) {
+>> +			if (WARN_ON_ONCE(section_vmemmap_optimizable(ms)))
+>> +				return -EOPNOTSUPP;
+>>   			continue;
+>> +		}
+>>   		if (vmemmap_populate_basepages(addr, next, node, altmap))
+>>   			return -ENOMEM;
+>>   	}
+>> @@ -620,6 +644,33 @@ void __init sparse_init_subsection_map(void)
+>>   		sparse_init_subsection_map_range(start, end - start);
+>>   }
+>>   
+>> +int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
+>> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>> +{
+> Can we do all code movements in separate patches?
+
+Yes.
+
+> Maybe even move this to the previous patch and update the changelog to
+> say "move code around in preparation ..."
+
+Make sense. Will do next version.
+
+Muchun,
+Thanks.
+
 
