@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0292C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:51:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 240F9C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:51:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ECF96B009D; Mon, 24 Aug 2026 12:51:18 -0400 (EDT)
+	id 286196B009F; Mon, 24 Aug 2026 12:51:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89ECD6B009F; Mon, 24 Aug 2026 12:51:18 -0400 (EDT)
+	id 25D5C6B00A0; Mon, 24 Aug 2026 12:51:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B39D6B00A0; Mon, 24 Aug 2026 12:51:18 -0400 (EDT)
+	id 14D886B00A1; Mon, 24 Aug 2026 12:51:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 608886B009D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:51:18 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0747D1A0194
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:51:18 +0000 (UTC)
-X-FDA: 85136753436.13.71B97A3
-Received: from mta1.migadu.com (out-158.mta1.migadu.com [95.215.58.158])
-	by imf03.hostedemail.com (Postfix) with ESMTP id EAB0420003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:51:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=l+ThLLPl;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.158 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787590276;
-	b=Umcwu96WUruNFQ0J41NndvUs0jqakgpE0siZyDsdswg0lhbq+nhIW3XtU4bUcWiHrUez04
-	hqs5wLa4pbTtB58hO1u9eGHf3HJerrCAdhCCmq3whRp92DMWlHyeU835B9h0F6ZfKTVzQm
-	a6Gu5Huo8av2zPtdPdNxpSW6YlRvWrY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=l+ThLLPl;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.158 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EC0C26B009F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:51:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7AA1BC01D2
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:51:54 +0000 (UTC)
+X-FDA: 85136754948.08.782001C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3712380003
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:51:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=bG+n8mRv;
+	spf=pass (imf02.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787590276;
+	s=arc-20220608; t=1787590312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VITpa+ghJ07mw1XijAJ7bVQRsNRrYu/FquTnGKD+P+s=;
-	b=IqQ3NpG0q5JU2wO/JFQFvdSQoHPF32LlRS85akG44RzkEkIOfpDaqdCP/2Fw11m51Lzj7y
-	lPGOo+6Sxtp1epb3xMG1AYG5zWG7PV6424WZgWnK8x23F+j0WjKxBIoUvdIg39cs9BjVV+
-	QHiWaw3F73oXg9yB+FDyU+84FdZnsAM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=PV2zLJMeUDfjBLQlhAwSR9WqLY4Agrz21Du2BoFyGno=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787590274; v=1; x=1788195074;
- b=l+ThLLPlPVoch9kUhuFTsZdGTJH14lVIMrgwBLchDY9wgqPhxYmjXn2P9mu3uB964/rZJRuw
- KDBpGVYvv1pZadY4I+Vm48EZWb5ey7iVaYVe5J3lpqZmQ4ACnpiwmP2MWY2GUDSmxHZdH20H+kc
- KUZoELVJpg2BZ7NSqC2NGZHc=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:53::)
-	by smtp.migadu.com with ESMTPS id 1cfc0863f37e0941;
-	Mon, 24 Aug 2026 16:51:14 +0000
-X-Mizu-Trace-ID: 1cfc0863f37e0941
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 24 Aug 2026 09:51:12 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH] mm: workingset: account MGLRU pages in
- count_shadow_nodes()
-Message-ID: <aoxzzAHm3tx33KZA@linux.dev>
-References: <20260824091631.836473-1-hui.zhu@linux.dev>
+	bh=/pRcrUPOXsyrdeVukIWc4SE+545428m5LfB8zUsy5Ao=;
+	b=2QVhcRdhb1ExkYuhf9WngiYMBPWk6imrIUBTyf6y5VjVpki+wGJ0JgnI/iMbnd94vIaXW7
+	VrS4s+3lTXwo6aoqZdGYbfaG/29Jpg0whP+ctjAXSNdwolpllmJBK/2pSOyk0if7QU1SSE
+	Q03XDwoss0oFRD5zkaE94LxnlbMxLxI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=bG+n8mRv;
+	spf=pass (imf02.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787590312;
+	b=OuMStwvlpVVq/2Oja5AbiCMnD18bsaV425K8L6Y5rcSFyW16Kc3kvVyIys/s8kW1PGRVU1
+	RotlFF2JJ+zFRl4Q67zjkxXQo0r961M919Jh8oSwumUlVxLbFQ3cy6ZA8KDrN+s2482Ehl
+	Y3aXMnlKLjd/Noe/nos78mjnlIXBP5o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=/pRcrUPOXsyrdeVukIWc4SE+545428m5LfB8zUsy5Ao=; b=bG+n8mRvz3YPeVpOAFdo2e8pEs
+	G5B5WFMth9vxiAb8J4pdP2TPxa0bunQlK+XfFvGl2wRkWoAoOcNe+z2J9cpH9wCzBa6RvgMP/3613
+	JsL4Gkm6bxP+/zz1mhs+NssNNrrfwVjKnrxpg3ZHtjG6qsfMOMh+PV1Pf/ftzXJQNFN0ivrhTb/ug
+	+lTiI1/a5a3HzNUl/SR12F0tVZ4xDLsUo7RWgVT3cUC17ZseFBYFvdhd7F2DmN/AqPr1uG45kbO+9
+	rp7ArQwdOb3Jq85FUCrBVqHZ7ZfxNqBb4aH3CreWqPWyEgHvbxc/cn+dysHn5fvTN0y62hAURNCEm
+	JGfv3Juw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wyXtX-0000000H59U-3tBK;
+	Mon, 24 Aug 2026 16:51:36 +0000
+Message-ID: <6075472a-9ec5-48b9-bfbd-c3d8ac29d98d@infradead.org>
+Date: Mon, 24 Aug 2026 09:51:35 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824091631.836473-1-hui.zhu@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] docs: ksm: fix typos in sysfs knob names
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ david@kernel.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, shr@devkernel.io, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20260824061010.3343959-1-tujinjiang@huawei.com>
+ <20260824061010.3343959-2-tujinjiang@huawei.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260824061010.3343959-2-tujinjiang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3712380003
+X-Stat-Signature: jqy3h3fjny15upiuq3emge53gh7erzio
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EAB0420003
-X-Stat-Signature: k5i5n5315kqq1mp1prqh1ic8iqh7sb65
-X-HE-Tag: 1787590275-677532
-X-HE-Meta: U2FsdGVkX18Lt2YMG54gjVnU2zwkc6VaDJRmE1xtM/aOBE7Q43rcCztf1LlFnzi3yGuzIvBWW9Vni+2/tDRSEp1atS0YJK5VSmkbiIj/NT6HXwiWLhgVqxxvcqZfbYtvTUJjMMrZUWU0BBMI+V9RXiohVRQ9vwMZ/nkckD1YPGzLtPQ/nO2LepT3/UpVzF5DBoclz4RxuuG95eRp9pDz4TU99OVxWJzeDUcvHAY51034mOvpvu+L73iMBphy1rphyG5CDsEANjjMjDK5cDZwQnnzvHKszQoxFsVsL2FV4l7cRWUD7y8X55ho4LE7j+jpTiUHzkiXPFWgOtZsm8OgdrgHVOJJe8+EV1tRn04LglwuzFiwuZBOFMk50co+3Jlj59kYl9g/GfgRGIox3XUfK9zdStoT40hkliEbtU5FFwysab6y1QodwpIeWQZwXKu2b2b7v92BtaIbEOqzPMxA0Yb9h/xhJ+NG7gwBXRkACCsExm3W5H/ZR8X4//cG0823h4+/aVP11PPojjUyef1Nwy6WRGvlVYpJ9XS3+o4IlTET8ZOH7YkOTUN5uacuMKcmyrsHxQQIphWMurWwU0tTJIEMC7OHrf+dL+Q12lNieTJ5qSyz4iTQzbdJwI1ayvF9e34al0N/smUBaWRaC4LRbIwkZtFMWRjLIbcaSHnlC1UHVPh+VsNiCvPtj/fRz0/wMpPWDXRBvzPsLI0YuhH0oUxJUFXhs5JjdT7d3y43QWCSZBf3uTm0JKCR4uTqAWuPlpAfZgeIKinJx9fhfP0BWfVro1SY/vX/x8qREdPmnPlQM1OQBxXmS0FbSjmVGzRhmwZRCIlPC4oE9tPGb7C8fbMdQHaGNMrynII2zY3UkdtKluINPIMgSn6m9OGHOfSB+2e/V3fiNhnmbzAO8GGgq0pkExwfJn3zmJC//fIPKxQJGnOsK7Zk4T0j+AIkIHK0pOOZuDCNOQpCr4YwuF+
- PRciCQ9M
- fYPMOdKQyPBYZGQqc5z06ZuZUeEhC35DdobyMQLwba+rXIp5CflPRNrlOzIwZNKBROjEiXOk6hLwurc7hvQsxD7vF6FB1LRPvn7N7xNe9p+tpX6asQszJ00NGWRIyKCB5tpr4HW/jqjYuEIz+wfx+6CYTGSMremxl0Te0alfuizSBMhrD1zmUDh0jZq26zP9bx3UJkhscTa1bpGe1ARXmq9BfDuf1iFScxvJhHPlJQce6Lh9xZbtUn2/gEwEqjhQiGGOXgd/qRgZzELSYyNd0azKXrLTNec/5nnTkfn7GIYe0Aw0QLiaD8JhcBBF8zknrmfE155jsOmEwIBaXSHP4scEeIXrwOjoOu9qp95n0K4uEDVk=
+X-HE-Tag: 1787590312-676589
+X-HE-Meta: U2FsdGVkX18/f52mwn/E4kBkiRjB/DGcjAnoC4h7eflJu4kx+d4q4JEx/ybo/1PVmB1KIq2otMxZYGRTi+tLMdKIFRddE0ZYGXofEk5ZZ9muJwAGGV/GzD1OuHKXQ8AlsVoX2Pi1J6Q+hrnL0u5H0djMuS7TQZVLrpn59X8qH1ui5/yV4wCeAmPgqrB2cH/kU6rHrkiFP3xbCv9McSSTTCDK4dAbU+1mRZtooLEcSeElxyjsspbufKAU7fkPkSl8cIddQ6udzqWIvU4gjmY+f2sTVyfmc+PEvp7afV/GDaGmNSh5rt48GAdSNECk+nZpNqnbMMmJn20g743ZW+ZbdhgJdf9o/Mp5dI7FThJr3D4/+AsQ8b4bZF8DJ4WgAyK/5SRaYdhqM8kbthW9Tf2TF8MegMxBsbbwxOBGPUm35w86o/RtTyrVI9SdvGS3+GIviWqjDLeiWznDzEKxLnsPh3PZ5AbXaf407AzNIvbtghP8gRddBEiCU25g26TuBLEkwerdCH0ryy5v0jDKvcCL4BGeRCJtpO21v9BBBhokJHlrNZArn/HCnTHIAGOlseXyYDQXL0Gh4qXzzYYLk4X/9m6wU0IMSt9HEsK7Ld7s1zSPbgXsUWfTjjqZ9MfURAwNjW3KxgNLEGLTTfxKM9a5IkZJK6Xnh/LJpZKf7Rohzix9NeQSDx1AF+uSSPLQX54/dgB3GdEYhFlEmtk2KWCOsKveYvGaS9SXJaHm/ewsHZ797VyNnhayIpPtCH46JgTbTdm8VBq8hLT8yJ/lCmdmUPxquWXueHNtE3/Tdo4iFa8HTfSmUGJwsZzSS5qI27bC7JQIaJtUMRHzlnAIAJCAMIRLis/JyZKMiu1A1hDbW4pvdWQVkWYeWSjOJjVkfDBUomx9kI8q7KcDTJhsb0mOiU7pUwvEcmFCy6QzhkQS2Dm+tNVifxmyin6TD2DLHD/6fvFsH50oFRfKoFhu9d3
+ iLKrAuVU
+ 8dlcjk/h3ESUosIozAf9UhKh/2n/+vX2LQGu1B73zxJdUUHtOjSVHnuZecYOgLdZCov/yi3DrGnijg4W18LudatFzUqU1UsXspC5zK3ZCKVjSr5TQnIRg19cC50ju7HdQae361iVwOBhy/bbUvLHHU91MUZLGPIUuslDskjO5tMdfy1MarcV94fRsiHYr6CGnT5FpHwIPs/pKV0XJ3nGDYknnNCFRZjfu70Xca6p26QIhODrK79r/LMgbAgTVa+6ztnQQIgdUvoYv1Gge/+OjKcG8TGZFtHR7gSJBfkyfjSsXilrcpYc8AqC8AYvubMH3zAvdBmBTNL0Taelqc7XFx/6Bpumra+DHPdTsmHnuyU/1Du+1LNghHVSWJVskqCiWhU6yNg/Bg2JOM8Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,20 +97,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 05:16:30PM +0800, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
+
+
+On 8/23/26 11:10 PM, Jinjiang Tu wrote:
+> The sysfs knob names in mm/ksm.c are "advisor_max_cpu" and
+> "advisor_max_pages_to_scan", but the ksm.rst documentation spelled
+> both as "adivsor_*", fix the two typos.
 > 
-> Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
-> number of lru pages") switched count_shadow_nodes() to
-> lruvec_lru_size(). 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 
-Instead of adding more complexity and increasing divergence between classic LRU
-and MGLRU, let's fix lruvec_page_state_local for all. Usage of lruvec_lru_size
-instead lruvec_page_state_local was mainly due to concern on adding upward tree
-traversal on stats update side i.e. get_non_dying_memcg_[start|end].
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Thanks.
 
-However offlining should be rate. Let's just use get_non_dying_memcg_[start|end]
-everywhere and not just v1 and measure the impact.
+> ---
+>  Documentation/admin-guide/mm/ksm.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
+> index ad8e7a41f3b5..c9f533b10f6f 100644
+> --- a/Documentation/admin-guide/mm/ksm.rst
+> +++ b/Documentation/admin-guide/mm/ksm.rst
+> @@ -174,7 +174,7 @@ advisor_mode
+>          The section about ``advisor`` explains in detail how the scan time
+>          advisor works.
+>  
+> -adivsor_max_cpu
+> +advisor_max_cpu
+>          specifies the upper limit of the cpu percent usage of the ksmd
+>          background thread. The default is 70.
+>  
+> @@ -186,7 +186,7 @@ advisor_min_pages_to_scan
+>          specifies the lower limit of the ``pages_to_scan`` parameter of the
+>          scan time advisor. The default is 500.
+>  
+> -adivsor_max_pages_to_scan
+> +advisor_max_pages_to_scan
+>          specifies the upper limit of the ``pages_to_scan`` parameter of the
+>          scan time advisor. The default is 30000.
+>  
 
-Shakeel
+-- 
+~Randy
 
