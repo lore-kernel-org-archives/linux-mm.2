@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B2AC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8FC1C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:32:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E22B6B008C; Mon, 24 Aug 2026 10:30:15 -0400 (EDT)
+	id CCAD66B0092; Mon, 24 Aug 2026 10:32:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 793406B0096; Mon, 24 Aug 2026 10:30:15 -0400 (EDT)
+	id CA13D6B0096; Mon, 24 Aug 2026 10:32:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 682476B009B; Mon, 24 Aug 2026 10:30:15 -0400 (EDT)
+	id BB7846B009B; Mon, 24 Aug 2026 10:32:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DD3F6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:30:15 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 94CCF6B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:32:47 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40F3480178
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:30:13 +0000 (UTC)
-X-FDA: 85136397906.18.7271E68
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 797D312001C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:30:11 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=f9h+3crU;
-	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13DC4C018B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:32:47 +0000 (UTC)
+X-FDA: 85136404374.18.FC4F04B
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3F3BBC000C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:32:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IbbChgkA;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787581811;
+	s=arc-20220608; t=1787581965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jkA2C/lQgXcypv6Ly6gx3bJF+pwu7LTevogMVJJ14Qg=;
-	b=bQiTr6WbX3yGqy3VQYLo7Wsd55x5Jbt67QueO6/k4+Z+8BPNQTCI46wQkz9XSoeJIeFc8i
-	2tg+iMtTGg6S3uifFtP8hFCiMqLvZhGmEYBYUK8rwx/ckRB1C3AyxHCyBlE6JJLcJTDPYb
-	SKiYhr7Cp/v3roMUPcdrdAfM//BE5iQ=
+	bh=DObH//Sc3+e2cOll9IRNEEzq8JrLC+/wx5igp55m6yw=;
+	b=Z1cKQkNtwzXN9DC5thW/L2VMWS0dtmKR1nRcMUw7XUUzuB2+uFf60GqMHKS/PajkOBnxwz
+	iKQCXbvbI/4ov3idHm/5Ht8KZT/gQwjZcd2rDj32ZKD9Qjml5PeMBz+m3IWDIaADTsWZeh
+	43I4Hk9nUpPF58V1Wyjo9PWwSymfk2Y=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=f9h+3crU;
-	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=IbbChgkA;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787581811;
-	b=tTQQLwvVDFgynUJB5exqmo1viBWdlnVY5QJKKkYLnVGr+sZUI+rfqs6ZE3Gu6OLYnT5RjB
-	oBATdAAyZLAf/6iwxjYo95bRtgrvc4gtwNbaWWXQuYzLCuY1B85SmO1ct6t7EwXaLrVub6
-	3AAVI8f8z+IpIDSkDIzji8JouARoI+A=
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-84c4d4f68c7so38291317b3.2
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:30:11 -0700 (PDT)
+	t=1787581965;
+	b=OAO7EOF55t7rqoGt3P3de9qvq4nUsAOHo4Jr0/eQcXdZtdoM3dRqQWXHqYUYJV4AimnErX
+	hAdo43/okTknnOW8WUkG+tL9ccAFN2mpuTM+dgECKOAdcOxpYRPW2nZmMb15r4cWww6HW9
+	5/Xw8KfFhQ14nm4N9m0iv2ZVRqblmuI=
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-80cebd41372so53715167b3.3
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:32:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787581810; x=1788186610; darn=kvack.org;
+        d=google.com; s=20251104; t=1787581964; x=1788186764; darn=kvack.org;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jkA2C/lQgXcypv6Ly6gx3bJF+pwu7LTevogMVJJ14Qg=;
-        b=f9h+3crU7ulZoadwlDFPVc3wHh+aXzqzw4Wi3v1NPu/80DEGEbjEh+tPDIxAcS1DoK
-         f6t07WKMOIswJUTJL5nrkS5ICEtLkTbUAEo12xta2qv731QrsbCr7AqcbM7yYLnjoyvw
-         5CY1YXOyMG1qp9JKOizURjVvWO6iGwq03OZRwvMelhN665HglazGpyaWKocblUTc7lA3
-         ERqI97w4YsYow4Nlbo6QClAEIx88n6BcBCrCzZDcFyw/4p3O6R5SU8EvCXOYdxiCe/sh
-         bOzglMwky5tmD4NmnxQzp8YE433PK7zo6h3SGbJ1yrVPrkumHXFRotL55k+1CK8FAzOJ
-         zfUQ==
+        bh=DObH//Sc3+e2cOll9IRNEEzq8JrLC+/wx5igp55m6yw=;
+        b=IbbChgkAiaX2flPDIOexI4dAO2wxjgEk3rkSlnI8ad4UZpJM8QzmIv0WfF89I3UgD9
+         16yO3JREJ8Rz7jsND+IA72bgM9MMCLcBjE02jVQADq/iTqlgtT1kwzh1LIeuLTwi0KWc
+         rq2Fdel4XG3+W6HE/XLvi/emRWDCkRQAxuLG18rsFVaAzDHZA5dQ0kMeh0TtJ1YSfaiN
+         GOq8FQKZYF7bHf9bPXHG22eZoA1EEivxtHQ2qZ5IRXiSYbJEs6/JH9cPVvITmuKlJDJy
+         8jdyNDfczd3nYmL76pXuiuz6iAtypRSHkZujO3H9I9tvpQq/cwTYew5iOw6lwNCRrrRW
+         VfTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787581810; x=1788186610;
+        d=1e100.net; s=20251104; t=1787581964; x=1788186764;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jkA2C/lQgXcypv6Ly6gx3bJF+pwu7LTevogMVJJ14Qg=;
-        b=Q2pvZB29N1GOblzjjc+bVV/obt1qGKQ5np+89+fe4Ml9HPfdsFugGn/gSSoTGIENnW
-         cYgd5XxMZ6JlP0F0JxD9iQE1zvdiUy/zldIEnHpR1UAmwIT5vcCYzAr39HvAuiUYQqnj
-         17R4YO/ISdLVqzFyMzoiOfwsVxaCHPpjqBrDMC/AnB2VffPT6xIOWl8ge2a88+C/VjB2
-         dzn0Bj9YziFPqgZoENYI/zFUigcYdYb7p1qkbUpI4dgEx3hTIGArHQQKKvteGulQ3TQx
-         WtCsmNMdLwsB3dc3SckHn4kO2OO3pmbBdP9rkcLu6BmjwCSFYpD3oGOE7xTzcZ9K+Faj
-         LUGA==
-X-Forwarded-Encrypted: i=1; AHgh+RomKKtbsyu8/Wm7YvF2Gw8P5+5L73UguemE+ZthkFkxTTfYqFBDlQhkWNVyX/Up84bvsP+TAqmdjg==@kvack.org
-X-Gm-Message-State: AFuF++lapdf7Q3N5Av1GoOBuA0fPvIvAqg0bWEsSzKaeuyTy9C5cqcQV
-	QxsBZ9cHqAoJfTayYU5i8oQR2jivRlU8T0UHTMGlkE6SPUbjsZeCeqkxZR6ZGypMvA==
-X-Gm-Gg: AR+sD10surt2LwQ1kqkPAde6GPhSwz1n/oQ/a90L+wBzplsqoa3w3XxaXyoRL8VlDbK
-	DREyhdOqWyKi8YGLB+BUwZegVhE2wR4xhTJ0BESU8k8F1ZtuipXc/vdk8dKT9wJ0cCt8SdWJKhW
-	mnYOcG//pFW8NjnVdFlze3E+GjASuQG9C3TAKc203GokgWrlWvr+lEokqSNOuF96CboQvNR1zFX
-	CEKcCHhCtvvwN5KlemsXRpbiJETh+k+b89S2M6JIvsI/5pB9G6DiLLoDGto1nmT41v2NfPgpxZx
-	79GXBx+5CLdfzg1mQkGgKqTCeHgHyAJoxo+POiEWH//yVmU8Hp/6P2yDN6Cv+SM7er8u640t4MY
-	FT6d1EzFHG722te9u4IRqDBPXeRAbM/UFkT1Tb1+deqA9uoL6Y74KySY2V2DQZv5bK/1DwoFjkk
-	7bYSu86wI9beNWHD8iBnKa8UcVVPGhkGcQ7m9hJXBZ+D6RObJ0vlLojpSHUdW2NbWLJUZgRa8Bo
-	Wt70cjtFw9ddRWx1/1Qu5AO5ZmUrVQzkKaml+QHbfBS8bTlVC/306XxPZA=
-X-Received: by 2002:a05:690c:e29a:20b0:81e:eaaa:535b with SMTP id 00721157ae682-849f6c946f8mr72860737b3.35.1787581809761;
-        Mon, 24 Aug 2026 07:30:09 -0700 (PDT)
+        bh=DObH//Sc3+e2cOll9IRNEEzq8JrLC+/wx5igp55m6yw=;
+        b=iYrn42MaiOL+sqMajZhRc8w2ScRS1JFdPPhep6xUjOHFXnnCHXpN1QUunzU7HqF4sv
+         gqhdF3RojZahycuswIw/q+DTn0TapOcdRYyyxraMD/Mhe5nwoFdjBeAg8hdpMOm5eM8H
+         /vf9HIq0FDrQ7HydGoThGpykMNdSBt++tOmERkkQsESLPrXcjIRpiR716fPdQpWq922K
+         G/zmpHBiiOYzd0BL1wdh4PUqBVYK7rTvx4gpLeNFrPmjp671ykJkswNpKUVF6sMQlFda
+         gTU4VSq732u+qQ1nnddIpNuPgHNyLOnQKVuyBEV3lQ/UhYvYqk0ufTuPjqdG3IY/fXR0
+         lOvw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro495KvKV7VTZpniXZzOVfIvJQerKSKhrebPOU8lThs/WtO1HhTsiGlLKsDT7VpyneiW8REwmEn3w==@kvack.org
+X-Gm-Message-State: AFuF++nDUQcJdMzYAikOOy91Qz2QQUmrw4Zesev+y7cCb5sLkA5Ci6DZ
+	zzhQjdhuYpreL1t/PT7WF4lm6EuGQFH0IHBcPyzO7qXtzBSOrQeP47lAqhPGrHG58w==
+X-Gm-Gg: AR+sD11Kfih/Cti7cYdBvS3FZdB2BmyPc+mJABeCeqVWND4coSk6bNuhga53lyg+pzy
+	sis5QVPivdCVpbr63ERPyKQFjnyyvWS7Uc3L5aHHdSB7hpgOjyObKVFxV0ER/vkDGqJziPKXcke
+	lebbQ4sQiRIcLRbzFmRjvrmUrV7j38V5ZweOvBN1Tvw4dGDkc5fstETTNTNMl7RHx9mDwdHoVn9
+	dxNrWMAjdeBURcnmJYC2rNc5y0xJ8H138MtUg4OhGHNhKKRg2H04yjkpfICJ1SeDYrMuFzzEqzk
+	IT7hJEZY4X1SXzSp5M14pc2Bltkgxe0wrmlxKcceuerFRA4GznArx/sBjaoqTU+IZd5zZ1ZkLRd
+	KzZ3y0G4nW2ACqJC3CTM/B20UN/G15EBe0iyixafu99eY2lcv8KYMTFhRP9XGuuXxiaCdtS0Azi
+	hyorpGM5wY2Mo3FGLkKQJ5RLibS8XOCCeZRuwvg5Ydc9JQohqcceGNsGaveZdZ7XSXkXYoZeb72
+	fxMf5/WyUW9yOTD3yRLKRSxUt2gr3SU1Tx73l+oKtGIbn6b
+X-Received: by 2002:a05:690c:ec7:b0:81d:5155:213b with SMTP id 00721157ae682-84c9587c096mr75848627b3.14.1787581963521;
+        Mon, 24 Aug 2026 07:32:43 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84caabb9e88sm34055617b3.29.2026.08.24.07.30.05
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84cac201719sm34583487b3.43.2026.08.24.07.32.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 07:30:08 -0700 (PDT)
-Date: Mon, 24 Aug 2026 07:30:04 -0700 (PDT)
+        Mon, 24 Aug 2026 07:32:42 -0700 (PDT)
+Date: Mon, 24 Aug 2026 07:32:38 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 cc: Ackerley Tng <ackerleytng@google.com>, 
@@ -121,21 +121,21 @@ cc: Ackerley Tng <ackerleytng@google.com>,
     Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
     linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH 16/25] mm/fbatch: remove lru_cache_disable(() from NUMA folio
- migration
+Subject: [PATCH 17/25] mm/fbatch: no lru_cache_disable() in
+ __alloc_contig_migrate_range()
 In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
-Message-ID: <a5147dfb-cefb-fb9b-7162-b537e54d9bb1@google.com>
+Message-ID: <614c4116-8326-641e-d7bc-534fde0422b9@google.com>
 References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 797D312001C
-X-Stat-Signature: j76fea3mwwowwyfu71tmkdi498g46znx
 X-Rspam-User: 
-X-HE-Tag: 1787581811-962991
-X-HE-Meta: U2FsdGVkX1+02KaonbrWX+W/b//X2B3eEltiufqivnUpHOVdQoLQFmYNexgGK+huUQDBXrdP/ZMXnlKNhN4T8SZbzpkOvMsg37CmRPPxGtTN7OMb0JIarGYncaSC0geMxTPAVn4Od/D+K/RjprALOxC3VhhGveZOuosqdKrE0knL7IHrdKKyPOyT+DmefOVR/7DuWufZ5pQJrhpNG72zjzuof4bV5wPNQ88f7YrP/Y3NcEXglc5sUYz/rTYCnWZneQgOCcdwRP5/KixZmhtUTBuoe/j7um5IdBE3AvkH0zwrNu60r9tb2N6cDZJNp7VBkjDPRPmQEH3HXKYi1cwU2gc4AMuHxzLvX5Gng1yj1stmdxHOE3zTYqMWSjWXCJoshurQlKWRormWHtuglDcPNlvWXyth5xEb2CLyMXz0+bjJrmIjfsyE5ttTSUxe05XCJibMFVsf1XN7rJ82U9REUg6z5okooI85+Fnf+BaHbmFfDH8rbQbsuUUj+VCDw4GyEUs5RKvCGFZ4BniwgNQKsXUdzQpzXEAy+n8LQ3w2Xll586kfKEpb/+Ht7/p5wrKwaFTFcGxftHaQdWHHHvePlxXNs6SMFPGV7zBKR2Q+GshCg1tQI/02X4ueVJSIBbjCTvy/Vr1qMXBftRvDrq1j47hc+TqBEHpxq6EHRPEhgcB+8sp1Quo1hYvbxHdEKjDLLYVkcY6CmjwRd6RPfSB6ydbFLnazSl/TtxvPUN0X1U7FMWyCw0KWRpJv83oovOV2axU+Eac6rgYl8f6Q4d4491+VJvHlS4IJFF1KsUWOP5TUO+Cf2Fodv8flFX1L3/zAdx0OKXBwNeiYy6y00OuYsjustYqWDrSIRxbXxVaFiHMDzT3L2RyZmp+4Iwp56oEbNQyAMX11r8GbuXETnMKjwI2+UdTOJyCa1v5RTG9wT2vphlykafWnKD2pBY//Gp5moSxX3m5kqSnWaOPZgdD
- IBShfM3m
- MBoJblenfvwFFFdbPI3bcyAAmyC+CEGXalQWf9q7fLRRMGaO265LXVlp5ipkHKrQpgZndI4dNehDbEsPpqFeVdP6v8FGZbLtvXcTsi+mKwbhkwJ0MVo7WWPwiNYY8X/J3NbCgHWlmiQtuptytlWKUN+9b8hf6VoMADOn5pX4wCFxCxUvzMDZFeIpes152cGY2ZLCkRmPNsBTkCro70z5imndkBRv1Xs3p8u2KQIHyvNinJWkABfbc3QKDicQ2Df//+udxicfeFXO8xa9BNxW6izyoeg1kywuELDqPisdN/I4Bdp1NlvMMi8OdRR9k9w6pDUQ5mJq+E+qG93Ap8ny5tErmwEUHUfkiVV7o/8KJE3XTtWAzuCKGbKIAU3+Y+Moawys1nETNUzScAWUhzxAzktpQDe5G1/h19FFIeZSZhOfbPNv23XzfpEmI7VK0G+IyfIWkJPCiYMFcfOmAPbzeynrDMW97dqV8uLQ6
+X-Stat-Signature: hfprb9jeqp1g8uss8fds8iq49ysx36qq
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3F3BBC000C
+X-HE-Tag: 1787581965-331301
+X-HE-Meta: U2FsdGVkX18491cNwszsQtpOeC4HQAa7XKLKGeNAF7yFRnoCRvvQXtbDKsM3yTFaKDyk+i3PC5QXiIaCH+wBrQ/dijRoh8tBSz1/iAPfJ59EXjw3NfpQKm/5aXbYzCiVdYzzyhBE39ZxX4D9iarTgnLZ2q8vbIV8lGarAuWuwuW6h6WLc/kWrhmsGnwul7YFOsmwXhv/HjWlST5L0LjrChQWodBaKN2aSk7yO2LzVNufMdYinlGdJ/zl8ULbZhc1hXbn9J8o87pb/qbsWsk4ir0pbvA/G9qlb+Ik5JbLHBdUqaUY7xHv7jYv34GLUti7GaOBSZrO+ldhUrIXZ1XIdOySKaRxYsX5oBrxyKSWO+BqC+5PboeDVnZHDz7gjXaEXB20nhddPHL/MI8cvJnmKZWipdJb5UVjxddl50rmfGx8UNWAdvnXhZMnV/+5SNWPHH6t/clNgaQnni4K1yUjWeUru44WdLoYFlXtXM0g2LWmq+flWKOj+t/hUDdGrVphRZTgX7dpm+cIsFaZtF6O4cBk6AzH4pme73CMhzXkqmC27ZLIW3zGeQc9ahueUF9/C5JLz8F8BYxF7wlBjmHyP1JeL1Qcdga1nHYLXlqagABifrRXSVhFJFgy8XrC5jaDAKCeniCvqTjVMHrbiCzeQlsBux0HraWPcf3sdKMuhYrJ2cnopJI+AckTgLQc0KIZjAN4zE6uuzzSU27xzR5sU+FD03b7ssjBtIGiJT3Lxk2ghbZzZgwP4J3IY4myaA4XYgLzVh8txN2hfvyUpLKh85DjsEYWgm81pmC0M0j1eNqT8gVPAlIk+b033GjP4iKrEm1bqEDF9EYGp+6183kW+5hdnK0Y5eWbZL819C7Q93gIJ4DgBDCb8+T/zWblFNpg0zaqiz1jrBJlpneNQ8CoqERjWVf6ZB+Ga9Os2H+GxqxShdbeM8Auope9RLB6pz1tc/hSt5td8RNZArXzvod
+ o9uFGVHR
+ vEgG7UQdto4xz2MZ3v2w9TwlEn5koafLMh3v4tecLFaDVYSWTy0d+bDqA/SDgHpOsmevk5s/JCem+nrxIU7L+BzWlJB3WQI9Zg1iD7F158FQUuN97XtESpvGI/2DSGGjCMpTzV4i/zOqE0ab2CdXsCeGvG0UUwX0FvIyquyzwBLp+XHiuozz3i0aDsoqxoxmsMp5kQfbWAnyOZRE1AKJ8ASqytdzvtU4woAC1RopARhZpFs+gpawSTR/z+Zh+vQS74wTNIpFW7XA+Y9eXGRaRbHn5AqyyidBXHK/TUgQ4gPHzwT7hunvvAnQPvzg52UJ9xMeFAlQCQND+ebnB4Ua9wvsZL9ACutVIC/LMb+4Dl9nbwXXMM9FLFdmrAIu/uM2c6F4KS0LDvQq7qzoriJ/ZlqeOEkrj6z9t8lJ+w/Mmny56qp2geIi8Dv3EQlo0+9CtdD74QdWmVrHrL0Ysd5C9sdjUhU++zds8fPdO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,79 +143,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove lru_cache_disable() from mbind(MOVE), migrate_pages and move_pages
-syscall handling. They do not now benefit from lru_add_drain_all() first;
-they gain little benefit from invalidating buffer head LRUs first, since
-5.0 commit 80409c65e2c6 ("mm: migrate: make buffer_migrate_page_norefs()
-actually succeed"); and it's a shame that (even without CAP_SYS_NICE)
-they can prevent concurrent tasks from enjoying the use of those caches.
+Remove lru_cache_disable() from __alloc_contig_migrate_range(). It does
+not now benefit from lru_add_drain_all() first; and gains little benefit
+from invalidating buffer head LRUs first, since 5.0 commit 80409c65e2c6
+("mm: migrate: make buffer_migrate_page_norefs() actually succeed").
+
+This will be more controversial. lru_cache_disable()+lru_cache_enable()
+were brought in for CMA page migration, see 5.13 commit d479960e44f2
+("mm: disable LRU pagevec during the migration temporarily") through
+8cc621d2f45d ("mm: fs: invalidate BH LRU during page migration") - I
+guess the testing there must have been on a 4.19-based Android kernel,
+without 5.0's buffer_migrate_page_norefs().
+
+It's possible that invalidating BH LRUs perhaps 0 times, perhaps N
+times, will average out worse than invalidating 1 time and stopping
+everyone else; or that folio_test_clear_lru() failures manifest more
+than before (note how folio migration has retries on raised refcount,
+but isolate_migratepages_block() no retry on failed test_clear_lru).
+But let's give this a try and look out for regressions.
+
+Don't delete lru_cache_disable() yet: leaving stale folio pointers in
+the per-cpu fbatches, with folio_try_get() yet to come on them, would be
+bad for memory hotremoval: the lru_cache_disable() in offline_pages()
+protects from that.
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- mm/mempolicy.c | 7 -------
- mm/migrate.c   | 3 ---
- 2 files changed, 10 deletions(-)
+ mm/page_alloc.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 501e0b80d7da..44912d707d57 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1343,8 +1343,6 @@ int do_migrate_pages(struct mm_struct *mm, const nodemask_t *from,
- 	long err = 0;
- 	nodemask_t tmp;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 083cbcb5bdde..96ab51b78a5f 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7135,8 +7135,6 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
+ 		.reason = MR_CONTIG_RANGE,
+ 	};
  
 -	lru_cache_disable();
 -
- 	/*
- 	 * Find a 'source' bit set in 'tmp' whose corresponding 'dest'
- 	 * bit in 'to' is not also set in 'tmp'.  Clear the found 'source'
-@@ -1425,7 +1423,6 @@ int do_migrate_pages(struct mm_struct *mm, const nodemask_t *from,
+ 	while (pfn < end || !list_empty(&cc->migratepages)) {
+ 		if (fatal_signal_pending(current)) {
+ 			ret = -EINTR;
+@@ -7170,7 +7168,6 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
  			break;
  	}
  
 -	lru_cache_enable();
- 	if (err < 0)
- 		return err;
- 	return (nr_failed < INT_MAX) ? nr_failed : INT_MAX;
-@@ -1530,8 +1527,6 @@ static long do_mbind(unsigned long start, unsigned long len,
- 	if (!new)
- 		flags |= MPOL_MF_DISCONTIG_OK;
- 
--	if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL))
--		lru_cache_disable();
- 	{
- 		NODEMASK_SCRATCH(scratch);
- 		if (scratch) {
-@@ -1626,8 +1621,6 @@ static long do_mbind(unsigned long start, unsigned long len,
- 		putback_movable_pages(&pagelist);
- mpol_out:
- 	mpol_put(new);
--	if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL))
--		lru_cache_enable();
- 	return err;
- }
- 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 534908a0839a..bf9fe533a5fb 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2360,8 +2360,6 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
- 	int start, i;
- 	int err = 0, err1;
- 
--	lru_cache_disable();
--
- 	for (i = start = 0; i < nr_pages; i++) {
- 		const void __user *p;
- 		int node;
-@@ -2440,7 +2438,6 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
- 	if (err >= 0)
- 		err = err1;
- out:
--	lru_cache_enable();
- 	return err;
- }
- 
+ 	if (ret < 0) {
+ 		if (!(cc->gfp_mask & __GFP_NOWARN) && ret == -EBUSY)
+ 			alloc_contig_dump_pages(&cc->migratepages);
 -- 
 2.51.0
 
