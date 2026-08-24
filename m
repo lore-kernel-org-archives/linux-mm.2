@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04647C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 18:17:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D430BC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 18:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD5536B008C; Mon, 24 Aug 2026 14:17:52 -0400 (EDT)
+	id D3D186B0095; Mon, 24 Aug 2026 14:20:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5F386B0092; Mon, 24 Aug 2026 14:17:52 -0400 (EDT)
+	id CC6DA6B0096; Mon, 24 Aug 2026 14:20:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C27256B0095; Mon, 24 Aug 2026 14:17:52 -0400 (EDT)
+	id B8E506B0099; Mon, 24 Aug 2026 14:20:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FB646B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:17:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 304F716021D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 18:17:52 +0000 (UTC)
-X-FDA: 85136971584.16.24632F2
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BEFEC180005
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 18:17:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dMs5oldf;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8CEDC6B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:20:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC4311C08C0
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 18:20:09 +0000 (UTC)
+X-FDA: 85136977338.20.8862FD9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 37BC0C0008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 18:20:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="VVZ64v/a";
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787595608;
+	b=qi8VGxZz7Ke/vLWGYDnrb9C0NvV7ZD1tGr+KbddYzch8d3G3mx61neEr3RcGR8qrmnkvcf
+	CLR7jbL3kb3U1M7c50p1hJ4JSVjPzOmqxtanvQllLh8ZNAwvxwjh7cxT023cl2QwQRehK+
+	BL7cWYJTbw0WYAsuQ8hE+TEFRZzCWCg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="VVZ64v/a";
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787595470;
+	s=arc-20220608; t=1787595608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YD1GqD83PyV7F9VPUwj4kbqvO6zzJjBsM9hK49aM5to=;
-	b=yuNFFy3bBiNUqD6qBhQvcUqNGbmmISFWgniW9xSJMBWi4DTG/yeJFt1iaL8MKChB/97nXV
-	xm1Bo3YqaHES7pIkJy64rsoOKS2kqT9PdgKQxZ4aTUCZ/8QtTmJA6GhfUIvPnruTO2nTY9
-	vfbJjCdxJJb4qc722cXX+XwQ9g5RC1k=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dMs5oldf;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf16.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787595470;
-	b=XHAmZSAm4aw0C48EI9+ttZqqZHauaaHVXTIbsqnFRY0jq7VCAP4cPeEw9vyy1KtyTzuqdI
-	f0t6VQRSZ+uYOFirYFeEeMHBJa/vMX9J7dS9ryZyHMxh9iGpmtHoLkVXJYwhmwBGw1bwlo
-	FjyjL+OKbAYJVOqQKF4PzA9oyb0jVaY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YD1GqD83PyV7F9VPUwj4kbqvO6zzJjBsM9hK49aM5to=; b=dMs5oldf5sHbEk2paBx+Aa2NKq
-	82ylPnE2ou4HUkWlhpD10V9ADVyG/bIO7FB5Sq1/Fhc2DQGF75Pb6ZrXK6b3mPl7IRsPuUYmHySNI
-	uJMfQYkdjUgPh+34yr5oVvFSoGff/wGmCHgyEj2sIX41qWyhBM4EiS3OprdAmjGN9Laickcfd7eHx
-	TXCkA49n4cRIQUJ4iC6U+QSZ+AakS//MT84dLtYeRPAm2oD+vNfuG605EQW02X3s6+HSyCSrDhWjo
-	M818Izcz1Tsg2Lvfvo0AxZD8zJaRob2LLnnuAuGEuAOX0kTsRTZTUZjzqwcv5rHLMk1hXHQ+I8inD
-	VYqGCIGg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyZEs-00000007d09-1LER;
-	Mon, 24 Aug 2026 18:17:42 +0000
-Date: Mon, 24 Aug 2026 19:17:42 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	fuse-devel@lists.linux.dev, linux-nfs@vger.kernel.org,
-	devel@lists.orangefs.org, Pavel Begunkov <asml.silence@gmail.com>
-Subject: Re: [PATCH 2/7] fuse: Use filemap_invalidate_pages()
-Message-ID: <aoyKxvdQdeJQfPHj@casper.infradead.org>
-References: <20260820193343.3852967-1-willy@infradead.org>
- <20260820193343.3852967-3-willy@infradead.org>
- <CAJfpegvP3i8ZJc2T=+f4rAhZ4E1QcT5+jC6mQPLxtB-yoK9Brw@mail.gmail.com>
- <aoxHOSC9kTPbKeNq@casper.infradead.org>
- <CAJfpegv3Ak+qNLb=fTSCSz7-taQ3Ui-Hkmqgn4PaGPe=CR4cbQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJfpegv3Ak+qNLb=fTSCSz7-taQ3Ui-Hkmqgn4PaGPe=CR4cbQ@mail.gmail.com>
+	bh=d9vG0Y7mVhQecHl6eJllLIfmCJ9uIwopYVEZSC9phFc=;
+	b=ZAqdaNt6ifGEi3L7y1q7uKVSwEDCgAxvBjgGgAM18BKZm8vjpIXEpL0uJR5sFeCsQCUZDr
+	L9g68BeTLQobsPAkJV/XE3yzLub1PVhEP6iDnMIgeqSBYu25gmevKeCVasb7G4zCz9NplS
+	ioTGfTpc/kpTeTWjBlz2V0W/cJfat8c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6232660120;
+	Mon, 24 Aug 2026 18:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4C61F000E9;
+	Mon, 24 Aug 2026 18:20:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787595607;
+	bh=d9vG0Y7mVhQecHl6eJllLIfmCJ9uIwopYVEZSC9phFc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VVZ64v/agVHINM1ozDQT0CA1zHGvcVogxWNYlkiMraLmMUQ7cUmdIm+ROAzgabF3b
+	 2/KF2/nNv4jM0vrotyW1o3yVBnC6uid7j/kfqRQhOoAA6Bl8o8GHryLslUZ5OtxIW2
+	 0jv1Cchrp/nhI+uNkibMC51b/J1Ym+S+O33Ei8yk=
+Date: Mon, 24 Aug 2026 11:20:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kyle Meyer <kyle.meyer@hpe.com>
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>, Liam.Howlett@oracle.com,
+ bp@alien8.de, corbet@lwn.net, david@redhat.com, hannes@cmpxchg.org,
+ jack@suse.cz, jane.chu@oracle.com, jiaqiyan@google.com,
+ joel.granados@kernel.org, laoar.shao@gmail.com, linmiaohe@huawei.com,
+ linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mclapinski@google.com,
+ mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
+ rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+ shawn.fan@intel.com, shuah@kernel.org, surenb@google.com,
+ tony.luck@intel.com, vbabka@suse.cz
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline
+ for HugeTLB pages
+Message-Id: <20260824112005.856732bac3094b62a430d17c@linux-foundation.org>
+In-Reply-To: <aoyFK92azAlDAPuF@hpe.com>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+	<0d2fc2ab-333e-42a1-88a1-6bb85538cbb0@linux.alibaba.com>
+	<aoyFK92azAlDAPuF@hpe.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 37BC0C0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BEFEC180005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mqo6cftmpztj6ouhwugqs36xpj61wthk
-X-HE-Tag: 1787595469-886759
-X-HE-Meta: U2FsdGVkX1+Fx93S/JWI5MXw0DUCyHAGLd8KzOtncKuXzEkway+NACkOoPEdZxFfTuPUqmXLl/ALOtFZgkaMNu1AfJHd0lAC0mm4YWRwN56ni+6pp7L+iIce7x3JxAuQ4TMEI3gEfnmYUy7oxZF95MlTGlk+WmyoiFKLy9LDjDw/yvnE2HG+xTdHtLodfndtv3h2O/2RBMNHkwXBarh6/HDPpmX1Wea0eSjheCFmFh4DvvBcnLzWW+BckH0+C2ZMEEybYEOD6yGZMFQCTRGeShnUxfBHUz5vjtVfEpWfFY6h5J+ogAyWYjl+bgur3b6G5qJE0M/2DqVVbJk1vg5Nu4LKsdAZ1qWQTtRInaVU+dAHlBL6PwfH5clIH3oiuXTl3ZDMltwNA1oXxzwuHjKQF88hOYMvCcGuJYpjkEIPy4Dxt1xrTxNJbhen9J+OLmk4LuU3dhA2NFJ54bSl/+QFfdrvTLqV/OhIGUWs7CpZ3/teByQ5tbrwX0360GvBGMUePR8pGTVxXlNRtZ8roNyfynIym0HntpMXCh7rNS4WEVeiTjCxdcj3Zl2+/XVj5saZGyANGg+lMNG8XbYrmhXq9YiZFDJ0D0y6qIEDhaZWsEdNSOHXGcYyk4a/dsdBmuDXWBQOJ8eyPGO37qbG0uWvzYGdTjeUlESNrIfxaGGY+KEeNd079EyU/qY7DxNKIpbWatqUgmJlGyhVSSPnUqg8ZtnRuwSfyJL6Ten3rxLF8x3Lg19GrpbtZHM+bO5nv2CV6boeE+eRiK+LY6p8ZRNvY39K+Bin+H/6rScnqOHDOjoRrt4unbf6FU3+5IX6uXVtSNxpyyDwOvkhC0iAi8LaHdzzpMwOEy9X269hZgpUnUSCB9z8+4vCkL2Al8kFUSN/t7w3auX2bIoDLkre/KLsEZwPlu6s78Gs+7Z/30cH8Ayyxfz89OUYHHGr9vzOKXYTIDhJXFuSHM93SalCbFi
- 8OFq+fj2
- JLGVcVjH2Qs5iuJL3NQhHqUp1WZWYg9/Wd0O2aZ5aA5wOR/xc5CguGBI24e1UyrckTHfgUjxUWhtYD29ZQKQ1uOwJnvsPz2bPePswE3H/vokF/wlVepO+zq/lkk7XNP8bnix0ZZxV9ypN9Vs7zPsv92sBMwyhTplnfaqxUqgqqdRr/A2q88jNz2fVAGGkXMdbyNFeVI5FUpFNwDWqvdUXVzp0IWKaUlaKeY//16iTdjJFWBZ5jFThgNplunURfHcIj16Tl+93IO3BqPILW50lob9r7w8NqDCTvNQ8yqkF9qNNoWMEeeyMfot1BB6Gkdom8FhQcWeVPKa7Vi22Y/wR0/OFXeBDRqhpbM5HJeSNo6NlWQw+cEPjC7bTI9x8Y2xqfKKtj1EYZBN+yEqfq2xvS6MiHYYxzsOxJacjeusQqq3H3j50VFp6qEl5nN4yp9NnR09ew21HG5eMLfQ=
+X-Stat-Signature: 71ancpazc73whsw14nd4kcysjdjjpodg
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787595608-968610
+X-HE-Meta: U2FsdGVkX18krwkfH2F6GeEo/MLDW4zxBFDiLC0Gq3BzMu3nDmXmKkJ8CfSf5RFKdSW9inyZiTqgykwEddvik5/DqBxUu/Bh/VXZgY+TQARI9qYOIolVM7w7e98OLC2etDsAMNLkoJxOVcyM19eg/UfDD/Nof91Kt1ChlNTaEGIgaUTilTuHrgqUYbKwJWV+nU4yKm2FZvd+uq2K54duALUemU8OLwRdjLZciSaZB4LhSG1jTgVGbz1bF3fOFMyiTGsVoDSWAB7Di0FN6vfommJ/xsSbjqtcuBXtGmDq1KVRPhRQhJ3CxnyTapbqVNvui1bAarOBXyaLZn+7F0k9PGeAkf8qPQ5+GguNrMuN+s5385RRq1ZjZcHm/3/9l4pyjtEJ4g4SsZUryW0L1Vl82OxO4Acqu4ZM6+Hq4PlqNqk/83z0UQU92W9WvfpUQe9CH/Tuy1d/XDU+NtH6DRNTbNl+NmTZIF1Dck4GytWUfiCD5m8YqR7qG5YZANyfX5n1PMjG6Czrq++ZjNkj31//q5hrJqE94IzjCXSh4B/mxP6i5Eh+TTomJLcMx7lprWjL56hglrdqMrW6dCq6yPzHXzdQJB3MakGp64MlXewCiNm9y0fhwf87catrMTckYlFMa+6/B81N5XnRaFfy8CtBgkA9zX0i38wd6eHKVPS58PlDCdrrRrMtZkVoYyx0Sgaz6ELsmkY5n0s/kKXa0JSrJpIl49Ase1d0LwAD7PRwSW4dh8QCBo8v2fFHqaCFFHof8N0iikbNj1yTCMbW4s4L2NaNUq4OnTSjkGyfZtLPX6MoQkL83P8aYXE1V6pfNDTCgHE2YIL+8RJihiuFRjS45CXSXyq+ICUej9XzGHoqM5n87f+OL705PbY3s2Fi3sjc0IYfltYczqLO0d4XMd63UCFmE2bh1zqA4LNAQR4pwvqu6jTbLCG7rFzrA4oDxY4YfICqMxdz14RQ09YM4ST
+ sIdxLhQq
+ 4kQlevYN/mnBCU7JEU+Z/b1h7kzV+pPtU59j37oBg7xHLPwZWtDeLa0ZwIKbcfHunrt8++HGtV/47T9fbg+FwkWENOtnSbN3/1dXai1kVaA0m6Rnck2dDZalvmMFy3aAwYVmCNXlUatMtHNS6RpIuUFLnOSziGKan0QIUovt0jQ2EpxaNhTZFm9yRvWIG/cQPlLPMzOSEhgeyEHfnKcyTMIUUZL3/pNYJMred+ky14BVXJPHyV0lL6XwtjiQAfGzWEHPNPZgO2lx9Wm1pf48b0iV1ko5OOmHr4iGqoZm9y7icxK/wAmtCRjZ1KqtKVLKZZdtMGEoDum+FthwV4birej5AxSRsyJ+mvGTraTjSyFRoOcwhE1j7HajfJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,55 +101,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 03:49:37PM +0200, Miklos Szeredi wrote:
-> On Mon, 24 Aug 2026 at 15:29, Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Mon, Aug 24, 2026 at 11:05:46AM +0200, Miklos Szeredi wrote:
+On Mon, 24 Aug 2026 12:53:47 -0500 Kyle Meyer <kyle.meyer@hpe.com> wrote:
+
+> On Thu, Aug 20, 2026 at 11:47:11AM +0800, Shuai Xue wrote:
+> > Hi Kyle,
 > 
-> > > Maybe add a variant that takes that lock?
-> >
-> > I don't understand what use that would be.  As soon as that function
-> > drops the lock, the pages could be reinstated.  If the caller needs the
-> > pages to not come back, it must need to hold the invalidate_lock across
-> > the whole operation.
+> Hi.
+>  
+> > Following up on this thread. The v2 patch once landed in akpm's mm
+> > tree (9ae6eefa4b6b "mm/memory-failure: support disabling soft
+> > offline for HugeTLB pages"), but that commit is now not reachable
+> > from any branch, and mainline as of v7.3-rc1 still only has the 0/1
+> > switch in /proc/sys/vm/enable_soft_offline.
 > 
-> invalidate_inode_pages2_range() together with launder_page guaranteed
-> that no dirty data remained in the cache after that call.   Yes, the
-> pages can be reinstated after that but those need faults and the
-> server can then serialize those against the invalidation.
+> Thanks for pointing this out.
 > 
-> I don't see that guarantee with the filemap_write_and_wait_range()
-> (with or without invalidate_lock actually) since the mapping can be
-> dirtied again without the filesystem's knowledge.
+> Looks like this patch was added on 2025-09-16 [1] and dropped on 2025-11-11 [2].
 > 
-> Am I missing something?
+> [1] https://lore.kernel.org/all/20250916032512.AE588C4CEEB@smtp.kernel.org
+> [2] https://lore.kernel.org/all/20251111231818.52A60C16AAE@smtp.kernel.org
+> 
+> I must have missed the second email.
+> 
+> I don't remember discussing a v3. Can someone please remind me what we planned
+> to change or whether there was another reason it was dropped?
 
-Well, one of us is!
+I interpreted the (lengthy) review discussion to mean that a new
+version was to be sent out.
 
-Before:
+> > The underlying issue discussed here is still unresolved for us:
+> > firmware reporting per-rank corrected error thresholds via GHES
+> > triggers soft offline of huge pages, which neither addresses the
+> > failing rank nor is acceptable for workloads that rely on stable
+> > hugetlb physical layouts.
+> > 
+> > Do you still plan to send a v3, e.g. with the disable-bitmask
+> > layout Anshuman suggested upthread?
+> 
+> I wasn't planning on sending a v3 but I'm happy to revisit if needed.
 
-fuse_open()
-	invalidate_inode_pages2()
-		folio_lock()
-		folio_unmap_invalidate()
-			folio_launder()
-		folio_unlock()
+That would be best at this stage - please review the changelog to see
+if additional details should be added to cover the considerations which
+were discussed.
 
-After:
-
-fuse_open()
-	filemap_invalidate_pages()
-		filemap_write_and_wait_range()
-		invalidate_inode_pages2_range()
-			folio_lock()
-			folio_unmap_invalidate()
-				folio_test_dirty()
-			folio_unlock()
-
-so what's the serialisation that the filesystem can perform in the first
-case that it can't perform in the second case?
-
-or alternatively, what's the serialisation that would be useful by
-adding a lock/unlock of the invalidate_lock inside
-filemap_invalidate_pages()?
 
