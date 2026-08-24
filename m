@@ -4,160 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007CBC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:36:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBC51C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3A1F6B008C; Mon, 24 Aug 2026 07:36:39 -0400 (EDT)
+	id 7E44D6B008C; Mon, 24 Aug 2026 07:48:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEB096B0092; Mon, 24 Aug 2026 07:36:39 -0400 (EDT)
+	id 7957E6B0092; Mon, 24 Aug 2026 07:48:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB57E6B0095; Mon, 24 Aug 2026 07:36:39 -0400 (EDT)
+	id 684506B0095; Mon, 24 Aug 2026 07:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A21BD6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:36:39 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40B931A04F1
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:36:39 +0000 (UTC)
-X-FDA: 85135960518.05.CACF360
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4C6B916000B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:36:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YjwhrxE5;
-	spf=pass (imf08.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787571397;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 34E446B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:48:00 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B36CAC04BF
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:47:59 +0000 (UTC)
+X-FDA: 85135989078.25.4E765BF
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 935DC100005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:47:57 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JYfPNNkU;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787572077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FLR8gNeFJ9TssEfTR8tSkoTtg4StSpJ+7GNVLjYl8Vg=;
-	b=Rs/QfRMc1LY320mhCMf+EnXmg6edyGp24d0vVpXSbQCFMdor0mEiTeCYZwZVOEIrLl/jIE
-	4jrOwwmzmVVRxsB8PT0lJVFbYgY162vNH61PRcdmFWnwiXgjTVN3LBE0pl0UrDldhJ8cR/
-	jQUowflrqCJC+9cVKwHg2Q/A1j1KMK0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787571397;
-	b=cPHn8tlDwCj1xxSIlHB5XzdU7Sebh9STreEP8o+i9dLSjtS7y011fKNBr+7UhfjcH3G6HA
-	KQuY/H20rT2uyFk+OSPDcG2+J4fI1rwkCsBXSu4/a3oIVJ9BuXPuhP4sBlmlHFGTj6ZuPQ
-	1SP8ZKYz9usXSufI3I8tnmXwvD/VC/E=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YjwhrxE5;
-	spf=pass (imf08.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cecdc24b1cso3229255ad.1
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:36:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787571396; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hWpEJFWHjex5SlKBAaDSG2R6fmzcO1+ZbWIetXPk6KmqycXyHnQlWuQ+CfGhyQkljs
-         rjdG2mfxRw9ZmLwCMsxf1e/2OM+9NL4Ir8KDzhB3PCjcPkDyMLtIc6nX5BqQhbkCEc/q
-         4yXlKmlbpUc4U7Cal64Ag7UW6BWNFdCPl+GZXtm7kBp8pH8LEMR7N9dx2gv7YadJJ+j8
-         +owCdt5xsyndSrw/T2JXhFL//tE+E7CDxrt0vw7OkA9dHstwUeV7Ppu712z6KU0zn/bk
-         dXPcmbHCg96fcjdtWEO/2oWSFeElx8A+WSee7RQwuF6ZemMQCxpUk7z7JdN+h1WbsK6I
-         rJoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FLR8gNeFJ9TssEfTR8tSkoTtg4StSpJ+7GNVLjYl8Vg=;
-        fh=Bg0QJlUlHeWBbP7nxknaaSgezFeXlBp1UZPDi6ZQue0=;
-        b=U3KoAgT3VsZ5L/MIMXAVMjhNvW2Lk/vfpS9C/fOu5xzFAiZhUtxFxFX8nLvsOdpeH1
-         ZU589e/VnZUmjGQLwUYCrGrrcoWX/Xr220zGjONLJNJ4osynLAEM2JdA8S8TmzVOcfVS
-         rRjDVYrWFNxqlu9SufplTEKFBz4KZ1iBrPt+l4b1B8r4mR6hJstXTogksju/z2XHZfnL
-         SxoZiGdN25D+6MF4OcbuRDtWw8BE7Fd/bfVrDpiBmAYjHSR6+a/wHCbu8cmw4v5ghFJg
-         W8QkH98djBd0AYp1uOyotPmWf73KqFqyjuURzp+8vxkKVUUdH8xrFtjeNYrvIv+7T4CG
-         wXjg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=S1OQ+o11GFCuRHAOrkLxBgVaNwncS1WphwbZ+fSPfb4=;
+	b=k6l4kD0TseO4Vy0Xh3nl1kB2pKOHF0B6E9fwn+zBSCtSKFHgn70T/BprV3BAYF3duOD4nO
+	k+akYGSHNtdK3iC9CjHBF8mNSI0w/aAjIKnW6jAHi64WG9AoeS7Ux5UAnktEf3ncxaNRx3
+	qeIqBC9U2T1IabQp9+sVEkZfBuA3Rf8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787572077;
+	b=HWmhi2uN8uHn8OLfa6+xvadEHm+w2kBiFJT1nWEZ6kfp636ygxnvTyJpAiqdJrUxwWRrI+
+	u7LGBIw6HdXVOlxAWBfoyV++d+EuCAQzwqwrAbLDoEqeZh/F5fKzIm2sxWFGLuefNahBZv
+	Kqv8RltFK/dBM04sKTxpvh3g8jqnax8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JYfPNNkU;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69c600f76ccso5605812a12.0
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:47:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787571396; x=1788176196; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=suse.com; s=google; t=1787572076; x=1788176876; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=FLR8gNeFJ9TssEfTR8tSkoTtg4StSpJ+7GNVLjYl8Vg=;
-        b=YjwhrxE5PtdgzPWtuH6Qp6Ai3Q7YYkUscH4HVCdSRYAFQhXZ9YUrjUrsqFJEwnzMjy
-         51vwXUt7LkQO/XqeDXQdsHAW1v77yIxwdSw+LVfo6uyM5mkVdRynRau+v+gfy5RQ0S/K
-         vp2/gGD9w49pM+Dlpy9CXvRtpzWAukEsSBEJLHuAOz/3CrFKUyefbKJ3QzaUm4CLh3U3
-         pIAW+6GpYnbFpvseVL2uPa0j3qmySH46tgoa9wH2lCbM2LtfBTh43KRKJj3/fI6TAnYP
-         0sHwVeqVOazErVFXO1hFeWBucZVS42Nfwj686pqylvtw/cDtnEtcbLQl6huFkX9Nn3M/
-         ExTQ==
+        bh=S1OQ+o11GFCuRHAOrkLxBgVaNwncS1WphwbZ+fSPfb4=;
+        b=JYfPNNkUZr7s+ybl9w3fcINs6tCk+u1hlUZvQ8tXFCLwKL8c1q6Qlkkq46bn6CZFOm
+         8E6FT47sjP5epfcCWjXKBtYd/RrZ4ApiZrRT3N7NPcSetKRGR1H9H2/UxKhfhppu1No4
+         qoFzcnwywRdDAFjkysBCbxFpvcuJdTQA1r0/dI3GJ1u60c6Zk95Lr1Rp28+NmG3dvW+T
+         d2NMbJ31o0wPUt5yhOy+s7+I1KlPb/JgqjJVywtjaiz73l8BOpCW0KA8GwsVK5ponXHp
+         GZmznBe5tatRyztO7ntZMQTSTuQ3Ru+iYC6KjtRvzKZGLmoyswur/HGPlqyFkAXclBWP
+         C6cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787571396; x=1788176196;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787572076; x=1788176876;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FLR8gNeFJ9TssEfTR8tSkoTtg4StSpJ+7GNVLjYl8Vg=;
-        b=sI8xxMYKJLkaIsCw1bWaGqBazjdmHmk85NtgbK4q4Wn0wazWY0itoA1zN95OxE7Hn8
-         FAGjexbQTSiws1WEgDElddvU1Rf6Uvxp/DkUU7yj8NvOdlMuAaB7U7ArDpxPBZvu+dkW
-         jlB2dZXtAmZ/rSZ9SgrOOQtAfl4xPAguT/262C1hZlPtZb0AVxsgpMcPCotAhjQoXoZJ
-         g2rtf+e/b1LAkpNxeKDFFdwOWcVxSA79zeacS2KfDNpfEk5eq8S9hTjmsp5KiX5THTMt
-         280LVC8/B6uHrGSac9h3f5Z4gkZJPBsol5N/fBfKLLrnYue43705leiQgF7tWIez4j1+
-         8kfg==
-X-Forwarded-Encrypted: i=1; AHgh+RoT5I8lJk9CuzaDuxvKf/rx+PdvbqKNUyV7s/wXD6mF1s7OqwxvJdnROVRPRRUstRiZxCC50setFw==@kvack.org
-X-Gm-Message-State: AFuF++nfWxiZB/48LteO/6LlEGhiZ2UJlttoiDUzYTGsmz1ziX2mQ6z0
-	t94cOsycv0qSJHmYx1y6VaHSORViWtYK1FXEf+L33vUMKsMOVq3kC6B7bPCvtrUtXIEWo+1XCsa
-	mzVcmjAUMsLq8udmmq3XosnQ+HSQnLX8=
-X-Gm-Gg: AR+sD11VUcigJckxPDy/hakw0gt9EDpIhlxjvIRy0heyEv9a1TxBJc+K1/mQ2xon+/q
-	x0bJ+emqqtoVAoGiaL6pFV9FQhjykkPsg289QIfqR67X5ONbPcJaooKx1mEGaGXOR1fjsm/G8AB
-	kU1xTwcM9l5GNZorXDAxotq8/gBs8MXUJgBu/W1ZiankdDYMB8mP5RoAeqamFU33qi5qsE6ucVA
-	l5g3bDd+HQJsPtnW6iGXHYSi9hBJDo3N4nxMFi/uyYS8plXUU7kp/GwrCPc5LEZa8UMCj1E6WiJ
-	jMtr/UV0yOnomk/btD35LrCMQCERCnu/J+lyFwOkF1GRAe/ShYI5sNtuctKBW9JDIfvbBShNbDf
-	ZSg4/vpk62EiGdHlfKmPuIQSaSYhcHe5x8CB3a4JenlENNLZsrdarEIdB9/nDwDpF3/6IpBY=
-X-Received: by 2002:a17:902:fc4d:b0:2c9:e846:a582 with SMTP id
- d9443c01a7336-2d64a9a668bmr222250785ad.0.1787571396025; Mon, 24 Aug 2026
- 04:36:36 -0700 (PDT)
+        bh=S1OQ+o11GFCuRHAOrkLxBgVaNwncS1WphwbZ+fSPfb4=;
+        b=j+3P0CzNpb21acQyREwt536pQdkWTL/V07W0UtfmC1VkHnaJL7YgXhVWw4Fu0MMFoP
+         ICH2rz4cRujpN9ivyo5+oBV3WFk+670+CcSIdDau0Z9JPPSH4oEtE5sNAqaKmlsg3LUX
+         Wpk5W69AuPdPciwJ9gAxxEphe0trTgzYfOLkvaz8z93Jc2D3NZ3Pm23x+KrZj15Uk8kH
+         vl97cquKxKZqpA8bF59xGPCQNePpfrdCiyjgzyl8VXEaP1vunGfG7y2Od40N6FrkEh8f
+         RJC544XQCBmVVJqzXA3mWcD2FPPqp7CzwRVYIgrwbc3eiy9Qday4XhuWswaW8wNouxLv
+         n0/w==
+X-Forwarded-Encrypted: i=1; AHgh+Rq4NfVP/DM54rBzP4OXT2s23yheDHDZzddUvc6GTRbvv/8+ePfQMJr0HhPYbNCiEr+FswJZzDPWBg==@kvack.org
+X-Gm-Message-State: AFuF++myO5T+UQY0YWzvE0TMVY++TyW+rUCmmxs81czP74eCbJ8bc5C1
+	mB20UVh5WXZXJ156QaBgYMrCEKi6SrZIJpV5UiLLo9xSTaBeDkuLejEauHXEEiyHQgU=
+X-Gm-Gg: AR+sD115+NxoDvnpYLN0j6iDwHdVSlClvB+LWKARYY8zJdB8j2vCnTRsBRz0YDwjvcQ
+	f47AuUBeyfcXohptSdeO+m3GgbCM2lspUSY0SjfmbjAz5gOJVyFOwjRGCdXekuwt4i9Y/ON9JHf
+	I+2g0zzPdo+4xFCchH28WIPBvW358IkhIrNsBqoOvHp2J1kKlmd1JjgwZwECswOpvcL2/D1fIYE
+	sbw77pp2z3PwVXQEqJEZO0VvofDjM/Cci6Q3Vtzx/LXJ5WioyEmdjHZYccJCe6JvMF6px88Rc2h
+	C0BrbVYWG2Ys08Ez52rPZqI1pZJpKDD0Pg+Dq2aTIAEhWwuVVCXnWUcIETT2zbTwbLuHSTzj6sX
+	cOTGaA4VXj3pQHw6+9XhzBm4+eQorWrr1meos10OIXEppoOMrqBZAhNU0nvi0GydZs0zAURPpEG
+	sQYP+isib+88g1uBskUXYYMlPNQRBxZJli+Supic61zp4tgboz6E4IwgxF7Jq9bhOogxErn447T
+	HLEH3Jm4iBE
+X-Received: by 2002:a05:6402:450f:b0:6a0:a65a:a0c2 with SMTP id 4fb4d7f45d1cf-6a42f1a0226mr29775246a12.7.1787572076095;
+        Mon, 24 Aug 2026 04:47:56 -0700 (PDT)
+Received: from localhost (109-81-81-112.rct.o2.cz. [109.81.81.112])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e00108asm12355655a12.2.2026.08.24.04.47.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 04:47:55 -0700 (PDT)
+Date: Mon, 24 Aug 2026 13:47:54 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] memcg: move LRU size accounting on reparenting instead
+ of copying it
+Message-ID: <aowvaq5RRDAtIKIY@tiehlicka>
+References: <20260822024707.77192-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-References: <20260824-unique-ref-v20-0-490735672187@kernel.org> <20260824-unique-ref-v20-6-490735672187@kernel.org>
-In-Reply-To: <20260824-unique-ref-v20-6-490735672187@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 24 Aug 2026 13:36:22 +0200
-X-Gm-Features: AcwNN1XvVB-Mna-bMRr_-WAakhrdmhTEWRag6uYdZi5jKauuC-nwA9j0nxkTDxw
-Message-ID: <CANiq72mPLrKQMzb37ow2969m5r3Z2Kh_4LHERUun6ALw3ea6tg@mail.gmail.com>
-Subject: Re: [PATCH v20 6/8] rust: Add missing SAFETY documentation for `ARef` example
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Lyude Paul <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Ira Weiny <iweiny@kernel.org>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev, 
-	linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Oliver Mangold <oliver.mangold@pm.me>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260822024707.77192-1-shakeel.butt@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: 77shke4j9i14x656u6wte3uwu6eeykaj
+X-Stat-Signature: 7xi39mg4mzwyaxe5juspxuxsght5yfm4
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4C6B916000B
-X-HE-Tag: 1787571397-973318
-X-HE-Meta: U2FsdGVkX18gXoEkL9/gzwZkUyr7IuqYYvyuljaOppd1BpE1rCHe6vWAzuxf21pEdrlsvf862kMOV3EvXxLLNf1acKnX3jxHNsCRe1cV9amMS/GVi5yOIEJs/L+yNl0q3KozhGYps+DZeotGdeUdRxLtMYvcqqpbhRk/L8dbS34AKv/FWjBa8GSRQu5p5rdDmRQjW8NHBe5AzXbhLqXThOcDCMOlzy9A9gMs4DtCf6O4bsXJYoWdR1Aa/XpzoGyV1pkpi9eLnqRauLBKjEsRHS86UY4Uh7pkWuCKZ6l8dRriKrxgberp69edQQ0ZL6JeGdSeLnEAbhIYCTFq1zUITMduJU33Y8d0AERXsIMvPhgg4ITfC9QMusyqhOSrOd50HRqIC2f5NR6s7W+pKv2ou13Wdm+40y/V/X/P1cDca7SXtShDBMc2dyprHas29vJK7rJJalpr3G/w3tO56UlxbGQ3hhgDIHuqjP+At9BiEpl9t8xA5bq0CtPI/wpchP8jAcDyMIBZ2PPYX8ybeshGJiaPx0F1ZFRB1W8eOa0y8CP7e7t8KzC+GstmqWo+aDvO7LuiXno+b0/GID+di3erQ1+8PI3FywoW5XuOXjXqk3ifUXEuE8jviXekMLtL3qWm8H48Fy3OBOEOLPMNVcU9ru8gSenmYbmr/dhIemjPrp0slHPQWh1KR6IJ6lSa0x/e2r3cnKFgUN4KLLP0hwft4VJPoOryXupzeZDwXdVJBMkgWDGMBJz67//e6+ENehz2R+ThX5RI+JM/Ic2jPo7mo1RO4xG0LGBy+Tz9298A16XSK8Dfxw/LdRPE2JNvOXfoZfOzZZU0VLuNze3/tnHnnsWxUQZzW/7ufeGeKV0lO7CGDnMWLnuFOntGS+Zn4yXgBXtd6gn1lxEDxEYCPlKNgcdGOTNsNzVGp9HeQ0oeGqy8wOex/D+49+N0AgAOcavDLwSi8NANYw6I5DeqZ8T
- GPzGfVl+
- FmaGsbqgw5Womd3nuKST3SWR2f+mlPUXbmGE3kjzw5wgP/6/tdzhZgs+oVQdmm2zD0OtPromzkBqr43iv9TuxhAQcRE+q57KrK+dBCSbTGn67+gDkA1Tr6Q3bYF0rBk5EYIYcwS5/MCcJy/JUzxsHzLPU/Mg9OfK8AItBFvUJxgqKV2ocQCHrR7CLV00O4/Tw4dPMIQlygbykXNueBdoa7cAwNMWI8/7r2X/G+KnIHaMgK9vxgby3ZNBD6VggrliWIuWV0ZC00QaiIYRUkoRw3LWq7IXlfQy+DW+I8ibINngsT/Fj6z99G4otANPULK0U/p0RF56g4TlK1qf37o/iOwwUj6Y+zr0Z8GLt3LCB103qu6FVozFbR/kGI08Ri3tWwNb5duhpmN9aAvBuXhoVvpQhP48ThyV8L64kbuZe3+W2nsCE9Y9870mcut5kqDkiVncgnnylvxO2wnXRpmpGFV66uLiXkDwpYV9RnhGBae4kQzGDPm8tBM/4ZR2fEgRY5tFDaM6DRPFdPAjFzGtPzus+zFIht9xgaajC8dNW4C0EOosa+NVATBF+1xHJYnj/FoqpdL3FTD1qmyw=
+X-Rspamd-Queue-Id: 935DC100005
+X-HE-Tag: 1787572077-945172
+X-HE-Meta: U2FsdGVkX18axFn2JhYoUzpN6lPvgqfE41tPHm/B6Tm9fbNAlqcxlsXtmVv/j+VBqwleaGiwIN1kkamVubub33ki7ZTtHsuc3S4zO95s8PscOIaRWW6tz2IL3zzUjjrcu9N+oeO5tg6SDu2biNyB49sjHAPZxJqIF3z6z/PrhfQ3Ghqqsn7AhNfX++7yBQdYmkpIHpHjXbn3ECz+pQh3ue40jmGfKnrNVThkGtvsYKP9iAmZHvgEzdKQLkRL9j6bp9yYgmljG/dGl/Ietldz7hMoKGJEogQ+JWzhvz50cFdYHNdLAAQm6hH0Hi+Cif2As6DbScn91z2lO1WeOVlVtxe2d0B0su2+5qzNm28f4kWZnx5KBU6l5kN3/Kqf+ULmbYtNKa93kFTmL3NM0lJOWrR8+qVv0MoQYWTQ556s1Hpz7s9In1nA3ewS65JtMpSF9WOUru1UleelDT2bWc35MVBrlzrtdDcYpbQjNtnJk9zSJmFAkhMxe3dWYSPDI6yJu+uV3ekbZpGuWcf0xcKL/hR5ZMORycDJRmYaSy2gUZdaGMFj2ErjzWIkj2eqa/+QfUhO6hvOanD6n+KcyGdmsF5l0z4OTNmYeJqJsxjRepcZrL6+g0hSv80UpFPMdyOnrqNO1q5U1sjCs3EVIuYIWhWoJYRnG5+es5AYvr6YBQoQUI3JglI0rjs6KfGkDblzK+sN5AWttahjOIYCdn9KHbkwnfnc2ExjaCgPrAcDkNo6v3FKXqasyZ1jgnTes2AqsG/1whaw9RBp/+73E1bqg87gTmQJ55BMxHuQ/AOPpgNFIGXaQyuF269eYnGlJ7YyeM7ksCQJC6yf1lZW+5sjCfFYB83lPsQ0ixJ2eQOcdJdbVYxRlUileGwW07nYEgPxn2DbjQQNqGGjhOwi4q7h7O5wLvbA82b10GpcSUMoNHaeL1EiOykDQlGGXOW3pbpMBZJ3bkiZL/6DDGH0+sp
+ XYIw9dwE
+ zjrjGKiwJLqX7q3v7NFV1zHAmZ6vaGTKCobhj3gMTXaJS4nEMO1pTNyu0C8mcK+Xp3VPz2FdONlbCowDMT84sMHiwTvbe9RrWrGbrTIlxRc97cDdFDspcn4Z2x7bo7Z4SCdaEfCz5VBauA9J3wU7E1jx3aGpLZKabkx4UGy4vaj3RkNF4A2TPfszcs10M1eqx7WklaUX3vtzwZBrEqfrt0SM8bJp5B6QyJ3hwS7hnI68MUEdh+VLbfwDAYx0TrodshweoU8ZQFMr2o8galFzcBYGe575O6dwMuWfRXvnyWFY1JloD29DvPzqorRLzx2JrZsDEv2/dkcP/+PUodVExcaVnV2KQxwP+v/6ufDEViK1q3fhslkiZFTVYUuJxh4lnOIVR2h4nELhp/4PjewIxZjLUbDUt87QMV8GHIpus79evqJtYUDbI6G9cx2rURHflJNA2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,22 +124,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 1:19=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> From: Oliver Mangold <oliver.mangold@pm.me>
->
-> SAFETY comment in rustdoc example was just 'TODO'. Fixed.
->
-> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Fri 21-08-26 19:47:07, Shakeel Butt wrote:
+> When a memory cgroup is offlined its LRU folios are reparented to the
+> parent.  lruvec_reparent_lru() splices the child's lists into the
+> parent's and credits the parent with the child's per-zone
+> lru_zone_size[], but never clears the child's copy, so the size is
+> copied rather than moved.  lru_gen_reparent_memcg() does the same for
+> MGLRU.
+> 
+> The parent is left correct, credited with exactly the folios it took
+> over.  The stale value sits on the child and nothing will correct it:
+> folio->memcg_data now resolves to the parent, so every later
+> update_lru_size() for those folios goes there.
+> 
+> Dying cgroups are not freed immediately and mem_cgroup_iter() still
+> walks them, so shrink_lruvec() keeps being called on them.
+> get_scan_count() reads the phantom counter through lruvec_lru_size() and
+> the scan loop then grinds through nr[] in SWAP_CLUSTER_MAX steps against
+> an empty list, for as long as the dead cgroup lives.  Under MGLRU the
+> MGLRU scanner runs instead, but count_shadow_nodes() sums all of
+> NR_LRU_LISTS through lruvec_lru_size() and over-budgets the shadow node
+> limit just the same.
+> 
+> On one 251 GiB host a sweep of every mz->lru_zone_size[] found 380
+> counters describing folios on no list at all: 124777314 pages, 476 GiB,
+> 1.89x the machine's RAM, across 57 cgroups.  All were on memcgs with
+> CSS_DYING set and CSS_ONLINE clear, and parent/child pairs reported
+> byte-identical sizes.
+> 
+> LRU_UNEVICTABLE needs its size moved too.  Its list is deliberately not
+> spliced because lruvec_init() poisons the head - the unevictable LRU is
+> imaginary and folios are never threaded on it - but the size is kept by
+> lruvec_add_folio()/lruvec_del_folio() and those folios account to the
+> parent from here on.
+> 
+> This depends on commit bf4ade7dbd76 ("memcg: keep folio's objcg same as
+> its node") and must not be backported ahead of it.  Without that
+> invariant a folio's objcg can belong to another node, so a folio already
+> spliced onto the parent's list can still resolve to the child's lruvec
+> until the objcg's node is reparented in a later iteration of
+> memcg_reparent_objcgs(); clearing the child's counter early then lets
+> lruvec_del_folio() underflow it and trip the WARN_ONCE()/VM_BUG_ON() in
+> mem_cgroup_update_lru_size().
+> 
+> Fixes: 07a6e9a2c199 ("mm: vmscan: prepare for reparenting traditional LRU folios")
+> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+> Cc: <stable@vger.kernel.org> # After: bf4ade7dbd76: memcg: keep folio's objcg same as its node
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Please see/link https://github.com/Rust-for-Linux/linux/issues/351.
-
+Acked-by: Michal Hocko <mhocko@suse.com>
 Thanks!
 
-Cheers,
-Miguel
+> ---
+>  mm/folio.c  | 9 +++++++++
+>  mm/vmscan.c | 5 +++++
+>  2 files changed, 14 insertions(+)
+> 
+> diff --git a/mm/folio.c b/mm/folio.c
+> index 59c477120b9a..c02dcea9c03c 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -1130,7 +1130,16 @@ static void lruvec_reparent_lru(struct lruvec *child_lruvec,
+>  	for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1) {
+>  		unsigned long size = mem_cgroup_get_zone_lru_size(child_lruvec, lru, zid);
+>  
+> +		if (!size)
+> +			continue;
+> +
+> +		/*
+> +		 * The folios are accounted to the parent from now on, so the
+> +		 * size has to be moved, not just copied. Leaving it behind
+> +		 * makes the dying child describe folios it no longer owns.
+> +		 */
+>  		mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
+> +		mem_cgroup_update_lru_size(child_lruvec, lru, zid, -(long)size);
+>  	}
+>  }
+>  
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index fe7f0c52a18c..561eeec5628c 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4635,7 +4635,12 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
+>  		for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1) {
+>  			unsigned long size = mem_cgroup_get_zone_lru_size(child_lruvec, lru, zid);
+>  
+> +			if (!size)
+> +				continue;
+> +
+> +			/* Move the accounting, do not duplicate it. */
+>  			mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
+> +			mem_cgroup_update_lru_size(child_lruvec, lru, zid, -(long)size);
+>  		}
+>  	}
+>  }
+> -- 
+> 2.53.0-Meta
+
+-- 
+Michal Hocko
+SUSE Labs
 
