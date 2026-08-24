@@ -4,101 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39FD1C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:42:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD75CC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:45:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B34B6B008C; Mon, 24 Aug 2026 11:42:23 -0400 (EDT)
+	id 6EBE76B0095; Mon, 24 Aug 2026 11:45:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 364466B0092; Mon, 24 Aug 2026 11:42:23 -0400 (EDT)
+	id 6C3DB6B0096; Mon, 24 Aug 2026 11:45:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 253196B0095; Mon, 24 Aug 2026 11:42:23 -0400 (EDT)
+	id 5D96B6B0099; Mon, 24 Aug 2026 11:45:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F10706B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:42:22 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7827B801A5
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:42:22 +0000 (UTC)
-X-FDA: 85136579724.30.D11664C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B7E5D1C0003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:42:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dGTNyzaq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 357D96B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:45:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B9B7C1201A8
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:45:15 +0000 (UTC)
+X-FDA: 85136586990.07.1DCCC7F
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AF1DDC000A
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:45:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=AGuxWBg4;
+	spf=pass (imf10.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787586140;
+	s=arc-20220608; t=1787586313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gDJOsrRKqI5xL2B6uMXlAlzziTORMVR8F6b3csb1Z5A=;
-	b=0URA9Or5JvsUoRI7Ne9x396d5RSMoJMzJUlpKO/fA2SiUY4c4h0Q5GGPNfku1UcTTzxEgc
-	xij8kcwppf+X+h/uoHBdP/Cd0WDV5HMqXTdWCIZsccAV09h8DTZR1zQQ3xYYFhIwlg2sG4
-	HQXDg3nN7tQEcRBOaio+Vm0EZiIrOus=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dGTNyzaq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=QEtJVtkW7q375yAi3A0GskrIJ2s9H0yJ3yupt0Y509Y=;
+	b=rsTYwKC+sCNkVYEbP2rxkqD9X+zvBHk7inQWSqy0d7BhWqliaZ/CWWiiZOFgqWO25GN3FP
+	8JvQFbhcTtzcVDFqKT5qMRXiGogd91Yka4rgHCuiLeOD/Ql84MKQ3QfW650WTtDES4+fGK
+	JEMoogXjThNf6p9esyIiVYDSGoQkknA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787586140;
-	b=pzOwzjgnqBV0DEMzkHqhjBTJOYR3Yx5FY3mOpn/WZF/2Z9PHfvFoAu9G19tB61sbcpQrvv
-	qbpb8nZ0zjoNcTq6ArBHN6JxkZqdO9FExnJrW6bJsl7tnGeszDV0XPr+LT7OvMtzf4X+Ew
-	hRLBRlaTdY/EcV5WV4tUHbOKJ6QMlEg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C949843CB4;
-	Mon, 24 Aug 2026 15:42:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77131F000E9;
-	Mon, 24 Aug 2026 15:42:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787586139;
-	bh=gDJOsrRKqI5xL2B6uMXlAlzziTORMVR8F6b3csb1Z5A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dGTNyzaqagflzAHTgeexZXKKH+KVWAo5nC/pFnlYNZ56RSlS9nB43umegx0wHMJmS
-	 hq9kMpzb4o38N0DTS9FFszdrlLkfpCVu81gw1ujGJPJ653xo7L8Ep6QtjNntzjNw4N
-	 1f+xSwgrw+26Q3/gyUV+xfei3oASh97D1mDkSv7mviskBn7aV22SLBKMZwqeve2Ij0
-	 dOYroJJJZHVEAX0e8z6IWMD3X4CwWvVc+HpA9JyQ9YMQX5Ijq6JCwe6ViRtcjjiS5x
-	 4KagaCGikFM7wBeMmeZJjOlg3BkE5ZnoB5Pxscja+rzKQgZDGrjGHvOObGVSyGKbtT
-	 uck17MVQs6PXg==
-Date: Mon, 24 Aug 2026 16:42:11 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
-	Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
-	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] userfaultfd: rename vm_userfaultfd_ctx to
- vm_uffd_state
-Message-ID: <aoxl7W2wAqW_SYkI@gremlin>
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-4-3086981b33cf@kernel.org>
+	t=1787586313;
+	b=irHgFXVC6uhUXuGB7bG4euAQ/HnjEXTXLLzmH58oXVC2RBs4V+WV9yDDAWVDqh0m9Qg17/
+	9vQ9cd0lco311okRlDTjFMx6TzNoZEVyQts53HAbY9PZTFbNJSr8LLY5zaKB7OIMtFpaxG
+	Bh67dSkE8lPnSF+5zlnIn3H2BZdSR0o=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=AGuxWBg4;
+	spf=pass (imf10.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38deea72eebso4186463a91.1
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:45:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1787586312; x=1788191112; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QEtJVtkW7q375yAi3A0GskrIJ2s9H0yJ3yupt0Y509Y=;
+        b=AGuxWBg4FtpOfBgiaK+dL1aDjRm/E6TS9QBRaBarnD5LvVXN1JtVAgUwCSn8f2sT+L
+         u3dhwRqrV2L5BZm4IF2fy5bhaexBNajk4k1/pT4OEVvrmhkSApd0eS6jc+YYpxosJCjT
+         WunY4lVlwQQYfLcaMlUfuwYkELAOG3BGOY5sg3l3pyPcm4PFB77TMPzuzTkCBHbFim0F
+         RJtrCoA1PBwnm90sqp8+Lhuwb+tUu0NeNVTJupg2SrY5KD3zlx1AnAmv2f+Bx8xKLFH2
+         QO8wk//gMsa7X6HG2sUFHBOg1BfLdrpRDqnCkP8JmctT9ZP0UcuGRmry0Q4umU2P94jV
+         ZL2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787586312; x=1788191112;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QEtJVtkW7q375yAi3A0GskrIJ2s9H0yJ3yupt0Y509Y=;
+        b=OjxfJfJ8NW7TmuOIocP/iRvS033lJw7HeWs2Xl/v//B1C2CEBhjXbvPFe7y5lTVTM3
+         7+fb4zSoO2denOwlFyRwLH4RnkJODxMlaMXfc925spOvkTrwZKAs8SZ7/ioIv0dAKHj8
+         ua+A/2/BIbBPMim+zeIoNIJF8TOetCMZE+BMnTvjgZQm8SbH59NMKXXLyFcKo+ct4eZf
+         vYavCWIaPEwBm/1xZTZ847OgkK6v97kkzdSCwsr9a5PecOxqswmFDQHa9YLEMa+0YYN/
+         Ld2d8YpwBZUa+Akcm5OWGE/UdcCbb2MOJBdUSyraiB7iXvcplScCxfqEplkI+O1ox5GM
+         5PMA==
+X-Forwarded-Encrypted: i=1; AHgh+RoT/IdURT76/QaW0FsgqVRji2XxlCGzh0uCqlyX8pp/zer8URNcrZ4EDT+LHwSWkMO/5GzUKs5pZw==@kvack.org
+X-Gm-Message-State: AFuF++m0CxOELAo3Z/7kuTwWFOptFWluJkz16Zk/1BJNV9fR7y9FpADl
+	rlr/kLiLQ9nIPM6h8wDLaVgz9d7ZPNUEVq+a3QRwJezD4+SRcwxKNN/GO4HxQQVoSNM=
+X-Gm-Gg: AR+sD13n/150/LHt0jS5OaBOZP3JaeGl7SHQCPsN40w0a4F0diApTk4S5GWM6nPw1GD
+	abIvUHzS6qSM4yNOHsMLBpHt2uIQCkPo8DJOO0AzaHCrLZyQ7KPhKSs8pEBrsDPBMwrw5FRMran
+	1wTOMqqp3qNb+JydPepCvcsUsQdAn6TrxOefnnmwvvUynbTU51dnXEe1oNhVfH/ihRNBuE0uVDA
+	2iv0ExV5xWT92XPiyyjcrszVnF0E40AUkWBJkk2/QOkE6+S2RPvSZ/pTIiUQRt8DbzwO6ZBpX0M
+	rf6zPZJgnCuN9RucNbsd8RB3r6E9qtYPwPj2yuPDjHIz1vT2epP38+OwZEzohpe20qsACoV8SFp
+	4YzTefaByL/Eq/0zQBONb/5+NjZtUI7p/taHmvTUC2LiiApK/XYDPDF3ft1zK9NrURRSAyzYr1d
+	BTj/naLiywDx6AnKGdNOBrFXz/f0+nK7/0dMuEsRIgTGk/QmSB9GT4bK25yEg8pDOGfqvC3MQpe
+	Q8bliL3ZvJScPE=
+X-Received: by 2002:a17:90b:5867:b0:395:4de4:92c8 with SMTP id 98e67ed59e1d1-395df4dcdbcmr39252435a91.15.1787586312489;
+        Mon, 24 Aug 2026 08:45:12 -0700 (PDT)
+Received: from [100.64.0.1] ([165.225.242.163])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645b7ff6dsm23611a91.10.2026.08.24.08.45.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Aug 2026 08:45:11 -0700 (PDT)
+Message-ID: <029cfde8-74fc-4437-bc18-b1b53d44cab2@sifive.com>
+Date: Mon, 24 Aug 2026 10:45:09 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260823-uffd-vm-flags-v1-v1-4-3086981b33cf@kernel.org>
-X-Rspamd-Queue-Id: B7E5D1C0003
-X-Stat-Signature: m86wgoac44c6i7in5tiddzk3y83nse1b
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V3 1/8] mm: Make ptrval_to_str() generally available
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
+ <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+ linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org
+References: <20260818040041.1891769-1-anshuman.khandual@arm.com>
+ <20260818040041.1891769-2-anshuman.khandual@arm.com>
+From: Samuel Holland <samuel.holland@sifive.com>
+Content-Language: en-US
+In-Reply-To: <20260818040041.1891769-2-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787586140-93200
-X-HE-Meta: U2FsdGVkX1/YTE5aUPcVVgglzVcb4cPcG5YdyLgLg332nXQJ7//OLz5Qoy0QYVx/gb8hwWKGvmU8uloVAWoGpulG8fY/jtrE5o66H0o47p3CfNI2oGGVAfam2e6dIOrGnnunt1fXWP7Rmkm4uG6ZxjFO76PAcxH3MhAAd+s2GnvrTOnMhNln+tLEB8t+yWdtEl5JPW7+M14UQ/5fpRrHSTLmATe8PdOfTfm7CsfePxXpy91eFZuEyGosuojGR37AzfkhN+x99qDFz3Ua0rl/VhwHOPCi2J8M8ruZcscm4hFuLilaP0UUKeAjPMOfatDsSVHuBxmklIK9aIwmryk0XjalSsPDtIKQ8BwJ0gj6s+WSveZCA/D+eCQpRLn5izFjHJceoT9YKvscmBHBu0eIK9chN/yWx3ODgkRiRHWVWu/MoseS2uaVTxknbNSJ0C5qGD1aw+OxE5Zlns2ljOOEgjY3R60mU4KuY9bfRK1rtaKyMw1PM+/9zz1l9trnOCFlhiwVBfF8sCUKp1tmqcFb+oj4JF80moesWcSCozPNC+USl3LdID1HuroTMvTsSMZvNPLi271IXNm2yfqUSLrdJhwLThU2R5GzylQ3p1jnhsHedevy9eSy1Y6eKT6A+WYMYxSRGuek3tkM3ofk3xGV42STIbCqO5xIZ6RguFQvVgAT2HoXokbsTD3xdfhMQeE9WO1YojSvZUlTnJ25lq/IZPH9SHW01Mm7DvNW8esmKeFkdAm+Z3KS6TB1lo84S7Esqf1l+ZMrVVtOVTtISK8IB/qZFaXlot3PAhE+vfhYzV61YZsJn7WcSbAixixBavUwdEacQCxCD/flJiozkpj1HHFfTd0NF9xqPGZT8sEL9XpmIQSRhinyVSbc/pO1IN6JVu2gjRG5TkXDitx1NG+i13Af1QzYM+6jdppIKkz5doZBpv9oN+z/GfRcs8iPk1s2H4yFpmGTOjcwdJcllsZ
- bbruZzFk
- +6lPJOiTWUQBFoKdPv+ImlVWH21vJ50Fkh9E0ShTceGLjaunIZxBzxhukn1GFRR+vbpaNAhbRBQOCHE14uDcxasD2MReCVBNIWWBDL1Dw53UqWo3Ac2VZvJzXysj7BDyvaVguntmY2HAZfgFq6o1eFzow8bpyjreMK6YMp7xoRXVmRWGJgtkUyAJ3DR5BC7KkbY7pt2MeBWJUwr330+5ecBB+0MW5zPmQ8kT4rYNnmCojFo+aJTvfZsWse3nVr15IbyLxkpdUQacU0TZLkML/ZbTwo2gSk6C0iZzTjFM5xWt2Cqe91n4XPJugiV5+ZPMdaWUC6oF1ALrvTVE=
+X-Stat-Signature: nxxtd3s51bcq8gpwg4z3psueb4qpo4km
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AF1DDC000A
+X-HE-Tag: 1787586313-571008
+X-HE-Meta: U2FsdGVkX1/2o/W9HEXax1TIo/EQsl4MlM61A+Q6KF1pC6FVlD6u2KzkgYO4ngthGKDvGQ0L4F53S5oN67cNcDm0taJPv+p98BMdrEEwEyQwgAl07uJau0vKLHtqeGrRbbio51GvIusnxOGkp14Y+qMIikmV0rzDvbvKglX03LdYy9t98oTvgY4HoZWL7WTsuaEwdp1Rn2tR01VzyfvW+0r8l4yFV3w5vXlsviz573Fb+wIJSvfP6m7eF4hdqBvdDVjlSduCQDpWNQgyLe8JJR9n14I8Jw0cwAvWwRr3ojbLdJCeg94vxDu/uxUIZy3iXeNrnznwEGLRk312BjMSv1hzeu2a05oqg8q/cyOp9QeLFAjIC+3GCltY+QCoLl/KP/o3TmdEGEJVuWYKjmDU7XxY8DBsvEsQOSNtyW1zNf/ERvSgXansTsi6iZ/cCa/SjHvyV8HRteBL31Y55RC0LeWRoYa1r8KZRtPTDthzcTBtz8tyq+ShKctmSzthuZ59HVL5j6TFL9MyFb4zfu9CpFCZCFptbKKQqhDGvV/OTucaGGmD+Y2MMFy74oE6TQXQYSn+a2280fnZCFY2lCHLxZWqtaFtqaNwBxkPFEmVjQRCT/uE4mH0WznhZMZr2zNazyHzbShfurTKYRQRm3r5PUeP+nXb8ngPrmTDrqxgqOjLM07V/HqaNs7cOroQpyIXtaZDf2S7qCsaKTi1bdXy84ZZLnQkrWDtwYmgOpL7Fc/XkuYlF4Sp3C+yA8HNcMnLBhDZRLGrCwtWZ3JRoLS0W35O1RcWpVktc+68z+J/drbcjNd0SFaAvxivPRwbZKtm/+qPdWyTvPI0QFZYKXvrXtIQymGar1f6/P1sVaAdSblnkdnEpygqmWiGqwisv+w0q3RhumDJs4eudj+zLfhljoAZ2tNAKs28epMulC9dIvUGYgASf0xKc1KBh2/W7gR6NcaLvUkH1+LfqsrSzUt
+ xST3pE6u
+ cvQMB6bGJc4KeaLhheq9IT3yRsNQxch9eqOR6EIFA7AVMRow0B7q6uYQrP0t6fkY+bdRUOfii8clqChRCcNqKVxA1KhXFIjsxZ+1owpYrDz4YtbDdR1L6dmtCv+dJ3h8mRWnqnylLG7VfP/ptA6Fvxfrr98owtsVi41yvaeQEqf6R2Uf4ot/9zzRqICx72entdJWMM0401AMI2JYLi2LBY2SSpMYdEplaE2NsFdrSlUe/Asoqrax4vZHyHtN6olvih4Y5ckXwEqAC9j/7hp2chRlcuy5ceXg0Ind74rj/vsfY7sSxkwej23bLXwlKa55dsM+onuixwCnG9po35SK9g4s4M5ViSmZbG1t3ncH92vOgMyahTNS4Af4CL1U8H4QNTa/olfkObN8/cks2L4v+zr67NY2UdmuBobd2BTjiJ78bYOLr4fok3r//WUMKMpPziBLviwIQuYn4grFtt4NxWKuZSyPNwP2i8iHeviqeWa/uWPdpv3JU5z3+dxqXOvidAUpGnJ3GjLEXziBk++TYyMMmbp+HcizkpY34rEmsenu3LRF70/BdaFWHw0ADJFUwxRzif7pKO0xc7IUWafHmuaQfvFSZDCQ+x+zNfs7yAnjUNktpr0BT9dDjHc26p+IqLNwwjNZpZOwlkkE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,572 +136,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 23, 2026 at 03:17:41PM +0300, Mike Rapoport (Microsoft) wrote:
-> Rename struct vm_userfaultfd_ctx to vm_uffd_state to better reflect that
-> it will represent the userfaultfd state for a VMA rather than just a
-> context pointer.
->
-> This is a preparatory step for extending the struct with a mode field.
->
-> Mechanical rename, no functional change.
->
-> Assisted-by: copilot:claude-opus-4.6
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 2026-08-17 11:00 PM, Anshuman Khandual wrote:
+> Move ptrval_to_str() inside a header thus making the helper more generally
 
-LGTM and compiles GTM so:
+Typo here and in subject: ptrval -> ptval
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+> available for new users which are being added later. While here, also move
+> another related string size macro PTVAL_STR_MAX inside the header as well.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->  Documentation/mm/process_addrs.rst |  4 +--
->  include/linux/mm_types.h           | 10 +++---
->  include/linux/userfaultfd_k.h      | 24 ++++++-------
->  mm/mremap.c                        |  4 +--
->  mm/userfaultfd.c                   | 74 +++++++++++++++++++-------------------
->  mm/vma.c                           |  4 +--
->  mm/vma.h                           |  6 ++--
->  mm/vma_init.c                      |  4 +--
->  tools/testing/vma/include/dup.h    |  2 +-
->  tools/testing/vma/include/stubs.h  |  6 ++--
->  10 files changed, 69 insertions(+), 69 deletions(-)
->
-> diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
-> index a7296f251799..481e9435e4e8 100644
-> --- a/Documentation/mm/process_addrs.rst
-> +++ b/Documentation/mm/process_addrs.rst
-> @@ -229,8 +229,8 @@ These are the core fields which describe the MM the VMA belongs to and its attri
->                                                             NUMA balancing in relation to this VMA.  lock.
->                                                             Updated under mmap read lock by
->                                                             :c:func:`!task_numa_work`.
-> -   :c:member:`!vm_userfaultfd_ctx`   CONFIG_USERFAULTFD    Userfaultfd context wrapper object of    mmap write,
-> -                                                           type :c:type:`!vm_userfaultfd_ctx`,      VMA write.
-> +   :c:member:`!vm_uffd_state`        CONFIG_USERFAULTFD    Userfaultfd context wrapper object of    mmap write,
-> +                                                           type :c:type:`!vm_uffd_state`,           VMA write.
->                                                             either of zero size if userfaultfd is
->                                                             disabled, or containing a pointer
->                                                             to an underlying
+>  include/linux/mm_types.h | 15 +++++++++++++++
+>  mm/memory.c              | 16 ++--------------
+>  2 files changed, 17 insertions(+), 14 deletions(-)
+> 
 > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 6d815f6440c9..d6deb655d82e 100644
+> index b18c2b2e7d2c..a5b514e55dd7 100644
 > --- a/include/linux/mm_types.h
 > +++ b/include/linux/mm_types.h
-> @@ -720,13 +720,13 @@ struct vm_region {
->  };
->
->  #ifdef CONFIG_USERFAULTFD
-> -#define NULL_VM_UFFD_CTX ((struct vm_userfaultfd_ctx) { NULL, })
-> -struct vm_userfaultfd_ctx {
-> +#define NULL_VM_UFFD_STATE ((struct vm_uffd_state) { NULL, })
-> +struct vm_uffd_state {
->  	struct userfaultfd_ctx *ctx;
->  };
->  #else /* CONFIG_USERFAULTFD */
-> -#define NULL_VM_UFFD_CTX ((struct vm_userfaultfd_ctx) {})
-> -struct vm_userfaultfd_ctx {};
-> +#define NULL_VM_UFFD_STATE ((struct vm_uffd_state) {})
-> +struct vm_uffd_state {};
->  #endif /* CONFIG_USERFAULTFD */
->
->  struct anon_vma_name {
-> @@ -1071,7 +1071,7 @@ struct vm_area_struct {
->  	 */
->  	struct anon_vma_name *anon_name;
->  #endif
-> -	struct vm_userfaultfd_ctx vm_userfaultfd_ctx;
-> +	struct vm_uffd_state vm_uffd_state;
->  #ifdef __HAVE_PFNMAP_TRACKING
->  	struct pfnmap_track_ctx *pfnmap_track_ctx;
->  #endif
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index d8262e3dc134..45355bdb4ec7 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -162,10 +162,10 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
->  			unsigned long dst_addr, unsigned long src_addr);
->
->  /* mm helpers */
-> -static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
-> -					struct vm_userfaultfd_ctx vm_ctx)
-> +static inline bool is_mergeable_vm_uffd_state(struct vm_area_struct *vma,
-> +					struct vm_uffd_state vm_ctx)
->  {
-> -	return vma->vm_userfaultfd_ctx.ctx == vm_ctx.ctx;
-> +	return vma->vm_uffd_state.ctx == vm_ctx.ctx;
+> @@ -2001,4 +2001,19 @@ static inline unsigned long mmf_init_legacy_flags(unsigned long flags)
+>  	return flags & MMF_INIT_LEGACY_MASK;
 >  }
->
->  static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
-> @@ -264,7 +264,7 @@ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
->
->  static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
->  {
-> -	struct userfaultfd_ctx *uffd_ctx = vma->vm_userfaultfd_ctx.ctx;
-> +	struct userfaultfd_ctx *uffd_ctx = vma->vm_uffd_state.ctx;
->
->  	return uffd_ctx && (uffd_ctx->features & UFFD_FEATURE_EVENT_REMAP) == 0;
->  }
-> @@ -274,11 +274,11 @@ extern void dup_userfaultfd_complete(struct list_head *);
->  void dup_userfaultfd_fail(struct list_head *);
->
->  extern void mremap_userfaultfd_prep(struct vm_area_struct *,
-> -				    struct vm_userfaultfd_ctx *);
-> -extern void mremap_userfaultfd_complete(struct vm_userfaultfd_ctx *,
-> +				    struct vm_uffd_state *);
-> +extern void mremap_userfaultfd_complete(struct vm_uffd_state *,
->  					unsigned long from, unsigned long to,
->  					unsigned long len);
-> -void mremap_userfaultfd_fail(struct vm_userfaultfd_ctx *);
-> +void mremap_userfaultfd_fail(struct vm_uffd_state *);
->
->  extern bool userfaultfd_remove(struct vm_area_struct *vma,
->  			       unsigned long start,
-> @@ -345,8 +345,8 @@ static inline long uffd_wp_range(struct vm_area_struct *vma,
->  	return false;
->  }
->
-> -static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
-> -					struct vm_userfaultfd_ctx vm_ctx)
-> +static inline bool is_mergeable_vm_uffd_state(struct vm_area_struct *vma,
-> +					struct vm_uffd_state vm_ctx)
->  {
->  	return true;
->  }
-> @@ -420,18 +420,18 @@ static inline void dup_userfaultfd_fail(struct list_head *l)
->  }
->
->  static inline void mremap_userfaultfd_prep(struct vm_area_struct *vma,
-> -					   struct vm_userfaultfd_ctx *ctx)
-> +					   struct vm_uffd_state *ctx)
->  {
->  }
->
-> -static inline void mremap_userfaultfd_complete(struct vm_userfaultfd_ctx *ctx,
-> +static inline void mremap_userfaultfd_complete(struct vm_uffd_state *ctx,
->  					       unsigned long from,
->  					       unsigned long to,
->  					       unsigned long len)
->  {
->  }
->
-> -static inline void mremap_userfaultfd_fail(struct vm_userfaultfd_ctx *ctx)
-> +static inline void mremap_userfaultfd_fail(struct vm_uffd_state *ctx)
->  {
->  }
->
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index e8df5cdb0ac9..a4a38f30b255 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -56,7 +56,7 @@ struct vma_remap_struct {
->  	unsigned long new_addr;	/* Optionally, desired new address. */
->
->  	/* uffd state. */
-> -	struct vm_userfaultfd_ctx *uf;
-> +	struct vm_uffd_state *uf;
->  	struct list_head *uf_unmap_early;
->  	struct list_head *uf_unmap;
->
-> @@ -2033,7 +2033,7 @@ SYSCALL_DEFINE5(mremap, unsigned long, addr, unsigned long, old_len,
->  		unsigned long, new_len, unsigned long, flags,
->  		unsigned long, new_addr)
->  {
-> -	struct vm_userfaultfd_ctx uf = NULL_VM_UFFD_CTX;
-> +	struct vm_uffd_state uf = NULL_VM_UFFD_STATE;
->  	LIST_HEAD(uf_unmap_early);
->  	LIST_HEAD(uf_unmap);
->  	/*
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 32003aa04943..119304547230 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -99,7 +99,7 @@ bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
->  	 * enforce the VM_MAYWRITE check done at uffd registration
->  	 * time.
->  	 */
-> -	if (!dst_vma->vm_userfaultfd_ctx.ctx)
-> +	if (!dst_vma->vm_uffd_state.ctx)
->  		return false;
->
->  	return true;
-> @@ -1812,8 +1812,8 @@ static int validate_move_areas(struct userfaultfd_ctx *ctx,
->  		return -EINVAL;
->
->  	/* Ensure dst_vma is registered in uffd we are operating on */
-> -	if (!dst_vma->vm_userfaultfd_ctx.ctx ||
-> -	    dst_vma->vm_userfaultfd_ctx.ctx != ctx)
-> +	if (!dst_vma->vm_uffd_state.ctx ||
-> +	    dst_vma->vm_uffd_state.ctx != ctx)
->  		return -EINVAL;
->
->  	/* Only allow moving across anonymous vmas */
-> @@ -2249,7 +2249,7 @@ static void userfaultfd_set_ctx(struct vm_area_struct *vma,
->  				vm_flags_t vm_flags)
->  {
->  	vma_start_write(vma);
-> -	vma->vm_userfaultfd_ctx = (struct vm_userfaultfd_ctx){ctx};
-> +	vma->vm_uffd_state = (struct vm_uffd_state){ctx};
->  	userfaultfd_set_vm_flags(vma,
->  				 (vma->vm_flags & ~__VM_UFFD_FLAGS) | vm_flags);
->  }
-> @@ -2296,7 +2296,7 @@ static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
->  	}
->
->  	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
-> -				    &new_vma_flags, NULL_VM_UFFD_CTX,
-> +				    &new_vma_flags, NULL_VM_UFFD_STATE,
->  				    give_up_on_oom);
->
->  	/*
-> @@ -2330,15 +2330,15 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
->  		cond_resched();
->
->  		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
-> -		VM_WARN_ON_ONCE(vma->vm_userfaultfd_ctx.ctx &&
-> -				vma->vm_userfaultfd_ctx.ctx != ctx);
-> +		VM_WARN_ON_ONCE(vma->vm_uffd_state.ctx &&
-> +				vma->vm_uffd_state.ctx != ctx);
->  		VM_WARN_ON_ONCE(!vma_test(vma, VMA_MAYWRITE_BIT));
->
->  		/*
->  		 * Nothing to do: this vma is already registered into this
->  		 * userfaultfd and with the right tracking mode too.
->  		 */
-> -		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
-> +		if (vma->vm_uffd_state.ctx == ctx &&
->  		    vma_test_all_mask(vma, vma_flags))
->  			goto skip;
->
-> @@ -2347,7 +2347,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
->  		 * switches that would drop VM_UFFD_WP or VM_UFFD_RWP, so a
->  		 * stray bit here is a bug.
->  		 */
-> -		VM_WARN_ON_ONCE(vma->vm_userfaultfd_ctx.ctx == ctx &&
-> +		VM_WARN_ON_ONCE(vma->vm_uffd_state.ctx == ctx &&
->  				vma->vm_flags & (VM_UFFD_WP | VM_UFFD_RWP) & ~vm_flags);
->
->  		if (vma->vm_start > start)
-> @@ -2360,7 +2360,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
->
->  		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
->  					    &new_vma_flags,
-> -					    (struct vm_userfaultfd_ctx){ctx},
-> +					    (struct vm_uffd_state){ctx},
->  					    /* give_up_on_oom = */false);
->  		if (IS_ERR(vma))
->  			return PTR_ERR(vma);
-> @@ -2389,10 +2389,10 @@ static void userfaultfd_release_new(struct userfaultfd_ctx *ctx)
->  	struct vm_area_struct *vma;
->  	VMA_ITERATOR(vmi, mm, 0);
->
-> -	/* the various vma->vm_userfaultfd_ctx still points to it */
-> +	/* the various vma->vm_uffd_state still points to it */
->  	mmap_write_lock(mm);
->  	for_each_vma(vmi, vma) {
-> -		if (vma->vm_userfaultfd_ctx.ctx == ctx)
-> +		if (vma->vm_uffd_state.ctx == ctx)
->  			userfaultfd_reset_ctx(vma);
->  	}
->  	mmap_write_unlock(mm);
-> @@ -2419,9 +2419,9 @@ static void userfaultfd_release_all(struct mm_struct *mm,
->  	prev = NULL;
->  	for_each_vma(vmi, vma) {
->  		cond_resched();
-> -		VM_WARN_ON_ONCE(!!vma->vm_userfaultfd_ctx.ctx ^
-> +		VM_WARN_ON_ONCE(!!vma->vm_uffd_state.ctx ^
->  				!!(vma->vm_flags & __VM_UFFD_FLAGS));
-> -		if (vma->vm_userfaultfd_ctx.ctx != ctx) {
-> +		if (vma->vm_uffd_state.ctx != ctx) {
->  			prev = vma;
->  			continue;
->  		}
-> @@ -2512,7 +2512,7 @@ static bool userfaultfd_rwp_async_ctx(struct userfaultfd_ctx *ctx)
->   */
->  bool userfaultfd_wp_unpopulated(struct vm_area_struct *vma)
->  {
-> -	struct userfaultfd_ctx *ctx = vma->vm_userfaultfd_ctx.ctx;
-> +	struct userfaultfd_ctx *ctx = vma->vm_uffd_state.ctx;
->
->  	if (!ctx)
->  		return false;
-> @@ -2854,7 +2854,7 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
->
->  	assert_fault_locked(vmf);
->
-> -	ctx = vma->vm_userfaultfd_ctx.ctx;
-> +	ctx = vma->vm_uffd_state.ctx;
->  	if (!ctx)
->  		goto out;
->
-> @@ -3094,7 +3094,7 @@ int dup_userfaultfd(struct vm_area_struct *vma, struct list_head *fcs)
->  	struct userfaultfd_ctx *ctx = NULL, *octx;
->  	struct userfaultfd_fork_ctx *fctx;
->
-> -	octx = vma->vm_userfaultfd_ctx.ctx;
-> +	octx = vma->vm_uffd_state.ctx;
->  	if (!octx)
->  		return 0;
->
-> @@ -3138,7 +3138,7 @@ int dup_userfaultfd(struct vm_area_struct *vma, struct list_head *fcs)
->  		list_add_tail(&fctx->list, fcs);
->  	}
->
-> -	vma->vm_userfaultfd_ctx.ctx = ctx;
-> +	vma->vm_uffd_state.ctx = ctx;
->  	return 0;
->  }
->
-> @@ -3195,11 +3195,11 @@ void dup_userfaultfd_fail(struct list_head *fcs)
->  }
->
->  void mremap_userfaultfd_prep(struct vm_area_struct *vma,
-> -			     struct vm_userfaultfd_ctx *vm_ctx)
-> +			     struct vm_uffd_state *vm_ctx)
->  {
->  	struct userfaultfd_ctx *ctx;
->
-> -	ctx = vma->vm_userfaultfd_ctx.ctx;
-> +	ctx = vma->vm_uffd_state.ctx;
->
->  	if (!ctx)
->  		return;
-> @@ -3216,7 +3216,7 @@ void mremap_userfaultfd_prep(struct vm_area_struct *vma,
->  	}
->  }
->
-> -void mremap_userfaultfd_complete(struct vm_userfaultfd_ctx *vm_ctx,
-> +void mremap_userfaultfd_complete(struct vm_uffd_state *vm_ctx,
->  				 unsigned long from, unsigned long to,
->  				 unsigned long len)
->  {
-> @@ -3236,7 +3236,7 @@ void mremap_userfaultfd_complete(struct vm_userfaultfd_ctx *vm_ctx,
->  	userfaultfd_event_wait_completion(ctx, &ewq);
->  }
->
-> -void mremap_userfaultfd_fail(struct vm_userfaultfd_ctx *vm_ctx)
-> +void mremap_userfaultfd_fail(struct vm_uffd_state *vm_ctx)
->  {
->  	struct userfaultfd_ctx *ctx = vm_ctx->ctx;
->
-> @@ -3255,7 +3255,7 @@ bool userfaultfd_remove(struct vm_area_struct *vma,
->  	struct userfaultfd_ctx *ctx;
->  	struct userfaultfd_wait_queue ewq;
->
-> -	ctx = vma->vm_userfaultfd_ctx.ctx;
-> +	ctx = vma->vm_uffd_state.ctx;
->  	if (!ctx || !(ctx->features & UFFD_FEATURE_EVENT_REMOVE))
->  		return true;
->
-> @@ -3293,7 +3293,7 @@ int userfaultfd_unmap_prep(struct vm_area_struct *vma, unsigned long start,
->  			   unsigned long end, struct list_head *unmaps)
->  {
->  	struct userfaultfd_unmap_ctx *unmap_ctx;
-> -	struct userfaultfd_ctx *ctx = vma->vm_userfaultfd_ctx.ctx;
-> +	struct userfaultfd_ctx *ctx = vma->vm_uffd_state.ctx;
->
->  	if (!ctx || !(ctx->features & UFFD_FEATURE_EVENT_UNMAP) ||
->  	    has_unmap_ctx(ctx, unmaps, start, end))
-> @@ -3813,7 +3813,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
->  	do {
->  		cond_resched();
->
-> -		VM_WARN_ON_ONCE(!!cur->vm_userfaultfd_ctx.ctx ^
-> +		VM_WARN_ON_ONCE(!!cur->vm_uffd_state.ctx ^
->  				!!(cur->vm_flags & __VM_UFFD_FLAGS));
->
->  		/* check not compatible vmas */
-> @@ -3867,8 +3867,8 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
->  		 * wouldn't know which one to deliver the userfaults to.
->  		 */
->  		ret = -EBUSY;
-> -		if (cur->vm_userfaultfd_ctx.ctx &&
-> -		    cur->vm_userfaultfd_ctx.ctx != ctx)
-> +		if (cur->vm_uffd_state.ctx &&
-> +		    cur->vm_uffd_state.ctx != ctx)
->  			goto out_unlock;
->
->  		/*
-> @@ -3877,7 +3877,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
->  		 * subsequent mprotect() would then promote stale markers
->  		 * into the other mode. Require an unregister first.
->  		 */
-> -		if (cur->vm_userfaultfd_ctx.ctx == ctx &&
-> +		if (cur->vm_uffd_state.ctx == ctx &&
->  		    cur->vm_flags & (VM_UFFD_WP | VM_UFFD_RWP) & ~vm_flags)
->  			goto out_unlock;
->
-> @@ -3985,15 +3985,15 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
->  	do {
->  		cond_resched();
->
-> -		VM_WARN_ON_ONCE(!!cur->vm_userfaultfd_ctx.ctx ^
-> +		VM_WARN_ON_ONCE(!!cur->vm_uffd_state.ctx ^
->  				!!(cur->vm_flags & __VM_UFFD_FLAGS));
->
->  		/*
->  		 * Prevent unregistering through a different userfaultfd than
->  		 * the one used for registration.
->  		 */
-> -		if (cur->vm_userfaultfd_ctx.ctx &&
-> -		    cur->vm_userfaultfd_ctx.ctx != ctx)
-> +		if (cur->vm_uffd_state.ctx &&
-> +		    cur->vm_uffd_state.ctx != ctx)
->  			goto out_unlock;
->
->  		/*
-> @@ -4020,10 +4020,10 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
->  		cond_resched();
->
->  		/* VMA not registered with userfaultfd. */
-> -		if (!vma->vm_userfaultfd_ctx.ctx)
-> +		if (!vma->vm_uffd_state.ctx)
->  			goto skip;
->
-> -		VM_WARN_ON_ONCE(vma->vm_userfaultfd_ctx.ctx != ctx);
-> +		VM_WARN_ON_ONCE(vma->vm_uffd_state.ctx != ctx);
->  		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vma->vm_flags, wp_async));
->  		VM_WARN_ON_ONCE(!(vma->vm_flags & VM_MAYWRITE));
->
-> @@ -4041,7 +4041,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
->  			struct userfaultfd_wake_range range;
->  			range.start = start;
->  			range.len = vma_end - start;
-> -			wake_userfault(vma->vm_userfaultfd_ctx.ctx, &range);
-> +			wake_userfault(vma->vm_uffd_state.ctx, &range);
->  		}
->
->  		vma = userfaultfd_clear_vma(&vmi, prev, vma,
-> @@ -4382,7 +4382,7 @@ static int userfaultfd_set_mode(struct userfaultfd_ctx *ctx,
->  		VMA_ITERATOR(vmi, mm, 0);
->
->  		for_each_vma(vmi, vma) {
-> -			if (vma->vm_userfaultfd_ctx.ctx == ctx)
-> +			if (vma->vm_uffd_state.ctx == ctx)
->  				vma_start_write(vma);
->  		}
->  	}
-> @@ -4537,12 +4537,12 @@ static inline int userfaultfd_poison(struct userfaultfd_ctx *ctx, unsigned long
->
->  bool userfaultfd_wp_async(struct vm_area_struct *vma)
->  {
-> -	return userfaultfd_wp_async_ctx(vma->vm_userfaultfd_ctx.ctx);
-> +	return userfaultfd_wp_async_ctx(vma->vm_uffd_state.ctx);
->  }
->
->  bool userfaultfd_rwp_async(struct vm_area_struct *vma)
->  {
-> -	return userfaultfd_rwp_async_ctx(vma->vm_userfaultfd_ctx.ctx);
-> +	return userfaultfd_rwp_async_ctx(vma->vm_uffd_state.ctx);
->  }
->
->  static inline unsigned int uffd_ctx_features(__u64 user_features)
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 35e7a64855fa..f2c65d148498 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -118,7 +118,7 @@ static inline bool is_mergeable_vma(struct vma_merge_struct *vmg, bool merge_nex
->  		return false;
->  	if (vma->vm_file != vmg->file)
->  		return false;
-> -	if (!is_mergeable_vm_userfaultfd_ctx(vma, vmg->uffd_ctx))
-> +	if (!is_mergeable_vm_uffd_state(vma, vmg->uffd_ctx))
->  		return false;
->  	if (!anon_vma_name_eq(anon_vma_name(vma), vmg->anon_name))
->  		return false;
-> @@ -1837,7 +1837,7 @@ struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
->  struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
->  		struct vm_area_struct *prev, struct vm_area_struct *vma,
->  		unsigned long start, unsigned long end,
-> -		const vma_flags_t *vma_flags, struct vm_userfaultfd_ctx new_ctx,
-> +		const vma_flags_t *vma_flags, struct vm_uffd_state new_ctx,
->  		bool give_up_on_oom)
->  {
->  	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
-> diff --git a/mm/vma.h b/mm/vma.h
-> index 024fabe63560..ab23a65750de 100644
-> --- a/mm/vma.h
-> +++ b/mm/vma.h
-> @@ -114,7 +114,7 @@ struct vma_merge_struct {
->  	struct file *file;
->  	struct anon_vma *anon_vma;
->  	struct mempolicy *policy;
-> -	struct vm_userfaultfd_ctx uffd_ctx;
-> +	struct vm_uffd_state uffd_ctx;
->  	struct anon_vma_name *anon_name;
->  	enum vma_merge_state state;
->
-> @@ -349,7 +349,7 @@ static inline void vma_sub_pgoff(struct vm_area_struct *vma, pgoff_t delta)
->  		.file = vma_->vm_file,					\
->  		.anon_vma = vma_->anon_vma,				\
->  		.policy = vma_policy(vma_),				\
-> -		.uffd_ctx = vma_->vm_userfaultfd_ctx,			\
-> +		.uffd_ctx = vma_->vm_uffd_state,			\
->  		.anon_name = anon_vma_name(vma_),			\
->  		.state = VMA_MERGE_START,				\
->  	}
-> @@ -519,7 +519,7 @@ __must_check struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
->  __must_check struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
->  		struct vm_area_struct *prev, struct vm_area_struct *vma,
->  		unsigned long start, unsigned long end, const vma_flags_t *vma_flags,
-> -		struct vm_userfaultfd_ctx new_ctx, bool give_up_on_oom);
-> +		struct vm_uffd_state new_ctx, bool give_up_on_oom);
->
->  __must_check struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg);
->
-> diff --git a/mm/vma_init.c b/mm/vma_init.c
-> index baa7e82f47e3..61ddb31318bb 100644
-> --- a/mm/vma_init.c
-> +++ b/mm/vma_init.c
-> @@ -62,8 +62,8 @@ static void vm_area_init_from(const struct vm_area_struct *src,
->  	 * dup_mmap(), but the clone will reinitialize it.
->  	 */
->  	data_race(memcpy(&dest->shared, &src->shared, sizeof(dest->shared)));
-> -	memcpy(&dest->vm_userfaultfd_ctx, &src->vm_userfaultfd_ctx,
-> -	       sizeof(dest->vm_userfaultfd_ctx));
-> +	memcpy(&dest->vm_uffd_state, &src->vm_uffd_state,
-> +	       sizeof(dest->vm_uffd_state));
->  #ifdef CONFIG_ANON_VMA_NAME
->  	dest->anon_name = src->anon_name;
->  #endif
-> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-> index 4c58487b764e..1a01c3529d22 100644
-> --- a/tools/testing/vma/include/dup.h
-> +++ b/tools/testing/vma/include/dup.h
-> @@ -634,7 +634,7 @@ struct vm_area_struct {
->  	 */
->  	struct anon_vma_name *anon_name;
->  #endif
-> -	struct vm_userfaultfd_ctx vm_userfaultfd_ctx;
-> +	struct vm_uffd_state vm_uffd_state;
->  } __randomize_layout;
->
->  struct vm_operations_struct {
-> diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
-> index d6136e19a8af..dcd1b1719928 100644
-> --- a/tools/testing/vma/include/stubs.h
-> +++ b/tools/testing/vma/include/stubs.h
-> @@ -33,7 +33,7 @@ struct unmap_desc;
->
->  #define ASSERT_EXCLUSIVE_WRITER(x)
->
-> -struct vm_userfaultfd_ctx {};
-> +struct vm_uffd_state {};
->  struct mempolicy {};
->  struct mmu_gather {};
->  struct mutex {};
-> @@ -350,8 +350,8 @@ static inline struct anon_vma_name *anon_vma_name(struct vm_area_struct *vma)
->  	return NULL;
->  }
->
-> -static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
-> -					struct vm_userfaultfd_ctx vm_ctx)
-> +static inline bool is_mergeable_vm_uffd_state(struct vm_area_struct *vma,
-> +					struct vm_uffd_state vm_ctx)
->  {
->  	return true;
->  }
->
-> --
-> 2.53.0
->
-
---
-Cheers, Lorenzo
+>  
+> +void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size);
+> +
+> +#define ptval_to_str(buf, val)								\
+>...
 
