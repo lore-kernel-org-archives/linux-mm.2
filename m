@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7FC7C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:08:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AFD7C5DF9B
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:08:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BC576B009F; Mon, 24 Aug 2026 08:08:43 -0400 (EDT)
+	id BB7476B00A0; Mon, 24 Aug 2026 08:08:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7954A6B00A0; Mon, 24 Aug 2026 08:08:43 -0400 (EDT)
+	id B3D646B00A1; Mon, 24 Aug 2026 08:08:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AA4F6B00A1; Mon, 24 Aug 2026 08:08:43 -0400 (EDT)
+	id A532E6B00A2; Mon, 24 Aug 2026 08:08:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C7876B009F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:08:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A433912010F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:08:42 +0000 (UTC)
-X-FDA: 85136041284.07.3C3EFBE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EEAE980006
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:08:40 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lwYNaCQ0;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 79E456B00A0
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:08:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E2758A02E3
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:08:45 +0000 (UTC)
+X-FDA: 85136041410.22.661DE46
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0DCB74000C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:08:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=auaeZgQ+;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787573320;
+	s=arc-20220608; t=1787573324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X/BRx6M0sWOF5lRkxvQBnf742kB/koawcH9FfpZ801w=;
-	b=4iUsRZRiprY6m2NivJHs7wpIBXOUiyuAOtSBbZr724WQ7XYJWTFl0CxY9MhebP+t60hpw6
-	VD4A+UJQZKJoLF+1NSFUGsf4h4IMYEWvD3dsswJrX1mQgdIbNMwWOAz/WU8nfyN7cEHVmT
-	gEJbgJHeIdsEwelww/HkUli9D5DYMqI=
+	bh=uQui/Mo5x/mE+ZdE3He0UvEKRAK0DKtU9+wg6AGH260=;
+	b=DCh5Of//fH7zXBr5Q/4KEu8v7GpyFeGb5k6KG50YJA/hS+eXyh/0z6Jnmx2ST1/NES3ahw
+	EdT1pO1f/BKco3hK1uo4CSWzgvcrYBX5Z5sPR1pbK0CyN0Ib7tnEsiPZUbu7nBbah07kOv
+	SjqvH3e2atU0JPJYdngMnWb6oTqJFgM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lwYNaCQ0;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=auaeZgQ+;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787573320;
-	b=0VE+OpDEah7eOv099xVAtAk/p1wI8IoEkri7xhkYY5ffGL3hqPLtzL8k3/kBF4jPX1wQgf
-	QQOWwA1E/c+fKb+nFZcwxbTuiQEfuDoP0chegAd9EfigSDE4AOwQfN8Kp3rMCrOM1zcp7M
-	gtmmX2WPX6e/lEExJxz+TGLYb64/Q4k=
+	t=1787573324;
+	b=3xSI/EY6Hyvpc2GumdL4IgC2oOJphe4D+SGITBHySyoXqd1szBrXOO5o9aDH7RK4ATMpxc
+	lRdNBLaHdN54uYzJEzOIwj+WgHAMVCcS1M8pAKWbyZ+r89JZo5RLaQ/Tvts2SnFbdWLROc
+	S23KiKi72cX0FZLvrFXIMgS65wOFAkM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C9DE600E2;
+	by sea.source.kernel.org (Postfix) with ESMTP id 60AC042DED;
+	Mon, 24 Aug 2026 12:08:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64BA1F00A3A;
 	Mon, 24 Aug 2026 12:08:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB23A1F000E9;
-	Mon, 24 Aug 2026 12:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787573320;
-	bh=X/BRx6M0sWOF5lRkxvQBnf742kB/koawcH9FfpZ801w=;
+	s=k20260515; t=1787573323;
+	bh=uQui/Mo5x/mE+ZdE3He0UvEKRAK0DKtU9+wg6AGH260=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lwYNaCQ08Sh6l7XGgwRZlDDmSSKrXqYwm396gFjuimZaVsGZytvx+p7297a3dagpi
-	 YpWIXwnkPt3mAI1yUptAYf7Qn2PyKlP3Db5dDCZ5mqpsKJxfLojXKz3UozogGoGPPn
-	 1XBsfiTvtxe2Tz2Va/ntmvrjrrRR7rWhAm3rzGa3kn7wpEplgEr4GYCEg1f09PyrhY
-	 zy2Zyq1wMjn7aXPCbxKkDWRCgd47EGvF//6Qe3llqXdUYmjPx03lToU8YftAJDgWtO
-	 IxpuSfIY0hNZTiYFal2u9395hoIKrXyECPdNlGqfatI1yXaDjABt/lLnC34accHbIu
-	 0pO6cqfWmQYgQ==
+	b=auaeZgQ++dDT6ZiZ6j0vOGeWJbMYu77qkLcsAZ2LPTVROkev5iy5DviBSsIzb2Y6/
+	 ZtcONh6wqJlHy5SxWbXTiC8pzO2Yi0YIaBNME3eOzW1iJtF1EBJez+ifmeeXFsLPWP
+	 p03vPpvNElYn6yV9r0s7L/StVf289CXsvw40aWG2jiRORRnogxOjWe6qInEB+SPJeh
+	 E3c+MsE1MOi87IWGqonmZ5BEFSESrz94UsQsQjqWEZ0pM4Ugy9YsvSyD0bZ02I0qtR
+	 yHGM4KizZC0xb9QHNPxhlMSQtUh6aD5/izOnJy93eOjZCxzEHBByLIfEt4wVC7Zao2
+	 1nrdZMFEI7O6A==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 24 Aug 2026 14:08:19 +0200
-Subject: [PATCH v2 4/5] smb: prevent TIF_NOTIFY_SIGNAL from interrupting
+Date: Mon, 24 Aug 2026 14:08:20 +0200
+Subject: [PATCH v2 5/5] pid_namespace: prevent TIF_NOTIFY_SIGNAL from
+ interrupting the reaper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-work-tif_notify_signal-v2-4-6609e42b3157@kernel.org>
+Message-Id: <20260824-work-tif_notify_signal-v2-5-6609e42b3157@kernel.org>
 References: <20260824-work-tif_notify_signal-v2-0-6609e42b3157@kernel.org>
 In-Reply-To: <20260824-work-tif_notify_signal-v2-0-6609e42b3157@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>
@@ -78,25 +79,24 @@ Cc: Jens Axboe <axboe@kernel.dk>, Peter Zijlstra <peterz@infradead.org>,
  Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
  Steve French <sfrench@samba.org>, linux-fsdevel@vger.kernel.org, 
  bpf@vger.kernel.org, linux-cifs@vger.kernel.org, linux-mm@kvack.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Paulo Alcantara <pc@manguebit.org>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2185; i=brauner@kernel.org;
- h=from:subject:message-id; bh=DegYEG6tpjLPd6zIyd0uvEZQ+CG03dLYC5VoDZmbB70=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT1mFg6rpr9/KnJblcjBY2oGa/3Tnoe9H/NLofT+5YsD
- r662Hr/9I5SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJLDvHyHDilY5tlM6jJRu1
- 0k8xFa1M+GWvUb/SfuU36yfbfUpaT4YzMkyKr+KfFrleNnTzleSyhg+SVjHGzTmm0sr3e5vPMMT
- nMwEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1853; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=DNuXd0pKQn7U4+pLkpu+uX5FDrR9RBOyfwfmgrAQmaM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT1mFi+/SQbxvzpzDOeWTM1LbY8mlm86STj0xu7n77kv
+ T3fTGcmW0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEql4y/OF/4DczK1bwzyTX
+ ABtWL3eWI5Gab1ZtKU3/dIz9/iTjcGaGfybL9IRqYoU3fGcv36qcMOWBmmPQ8flmz/ft4/nMdol
+ djh0A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: ub3833xin4yx1h5n4hur9mf4c1wtqc3u
-X-Rspamd-Queue-Id: EEAE980006
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0DCB74000C
+X-Stat-Signature: z5hxzpgooditkgd8c3q5hr1rssmo5uai
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787573320-539273
-X-HE-Meta: U2FsdGVkX18BWmRSFf8ZknDMAP4GqfvUqOd0PA+qb1vGIE2NoKQVR3i2ZsFMiv1oBNdMGVLLsO8CCfD7+xAMbPU7MlviOnDXwVWLgbUoDodF8BW+gybATO8kBvrwMfpN2Wlq8/x2mmYhhabSrwRK1GEg81PJ81DY6fA6ETm53Zq3+ioQcpoRy1cbhe02tV/SyxY20VVU4U60pjfpa3Hs0B5n068pYnIMsSGhkSfMD8VG3HtITQMnPJuB9PPMqK0WDAuy4iXBKOl2PIdyc9xJ4lRWak7Mo9TRgSDNN0DF/pqzTmwHV43fUug9mvcP0dnFHOq1XE3Hy8U58f/N6urQMBsrDR/2WcIsEVEXeN1nLNlMbEcBWgIvKfSYzLcI8aXecqmXtfMF3v5mtUltyCp8q2tWJymjMTuqI0QE3ZMdrbVjrK/6BMVeJjDeaMnJkVQV9A7eookoxLs3Cs3w0b9+4F26oENgfbA3z30awY5t7l2IQCbBSsHPIs5x8GrplYmzkknotKGQAtz0sDxL0+VmkIwQHPjdzIiELODHrP55uQpAyva26s8QKL0QXxYZN+DuyWzZ9Cb+3ubROMUcwY62cY+TAmQ9ej/txeukrZ1LOggkkRr1NUG7Q5krFQo1lCtm+/JSBBhd4PrxJhLwycE7Khk6r7L1fLARP/U7AG2BRa0cxCjQ+02bemTbPdLISWdW+d6CKnZlPvyP0gm0oeNIXnuE48PVKkOD0y/lOQTLpMVAOIZWsOQglrMmvtq5FFfscnOciWq8HNJ/Rp4vSIJb1AbZGXRcVsrjLkxvc3NSPYo3oYblcjNadOTzxmrqMNesOkQzV+f4cAYbgM8F1kR4VN4uC3WTllI2uVilMOnaUpz3ZhHctfmBG7+PCJwZ7bgI8ytH4Ulwl29b5WTulPiKkk2iwbBE/C3Kb+azoJFJUOh8vncLa1ZT/wT+DUdcEI80pvUZqO/EF5JSwNmNf3c
- NZQTejAO
- +18xG2NPsrLAaw5tiiQ2gBs1DGF6MCeTnY3DyJZffqyUiual9+g/6jqBWl61OS/pprnK8/5pyAKVlmxgVw0fL+9jPxCMFUVxVZAe/r+h7C2rK0R4HwAMo4oG7iFKGxH8OSY25OQ+miZmbTivznX7wEL4V4oDRk7ePrt5OpJpe7YjfXrR7jNaEoYPJr7MBpsIIMBJ3ZFEga3NIKvSOpCziWVr4efgLuy0VN17JPULYvpnCdRyGNI+1b4GVXcGfVM48ucoSrly7knOOlVcnHPrIdibpQgpMD6CQIB8lN4Y5Q/3gZlso4C4YuK202gAZ0qB4YE7kPpSykkAxogzy7aCgNEj4r4CFElI5YiEU
+X-HE-Tag: 1787573323-860737
+X-HE-Meta: U2FsdGVkX189OsI1TbAN8eVp4AiNSoOG7ibWwG9leYntK65+WwGhE0haq+1xcR+kqmC0awogaVpccuz3nV4OVt4/EwywW01MvadRxusEh095BdxnGNmVPQDAYD6jND2jVECVzvlqVNnTGHdzKxZL90wRq0Kt2hq7ftlNhBGGiElGcSXeLFWwRnnG9bGBZJTr48IoC4zrxKdoz4OFb9fjY04s7C3jDVA45ePzhp7DLSKYul/6uPT2nj93E6prBsDkyDD79i6a/jKgPBUbt3+PaWNM84ftiSXJ8Dw7dd2pvDxdZ/zYNsJqqPkbJNEc+2ujgCyMT1CS2qstmj9vRNLi0GUt9fgapUi9Kuabw1kP8N7as8cB5sDFtnIxEGcuOITTXDlEGBgADTs8/jcCET3ON5lAqliQ+t66t2TafWQbXRpyKalS6ASnMf2DN7dUgKyKxcv6pmeCE34IHS2kuUViCT/DqO4C0TgXVL8JY/hntbyz27oQ8mSa1/ESFC6KpGh3bcRb0FRyF/FfH3PdBOehM1Scn2YwX+kgpxaN/5MjYVX05hZa7zIv/Yek9mRLw1gNlSZQ5ErzzXOIbhKxbfJHp2OiomEq574UouODn/VmXmyHmpcd8hwH51SFvue8wEDHG3ZNa8nI75FchnQFi6CFHij+yk2WJbGXrJyWK6133/9zD9dblcwggj/Tv0DjYZGwdI1F204V0DK27S7Bjr0gOsE/6PhUChbsKiOo18NsIyG6BuqbBR0kAtrE76ErnuKmgxNCvAuCqS6JUFdHCZ3aM1vQ829lG19Mph2muD2q8YJIlDA+Ge1jznT0OPxAhEsJmWTSNUfYiqNKJ2XpbWS+lGtuLg65gINah6ytDxExd2tcWZg60eOpzOkdw3hsxlWHkhKsnqFgFEpmsFXpMyV9Mhrk24yqAGaKxRP7wY7UntifWjIUtEfJXxJPOoX9aCxGWBUP4CYXb93p7QsNsnr
+ tVE2Nicq
+ Andl3n9mKJ22A+5ip+C2kW7l6R6AVOWC2HTpM1Ex/sDwZm9gPP6uuXAXPf5oI6EvZwMJuaZOfrXgk37bnSr0BDeo45kcUtSZtnlvlpDp8DmjAKgvXGtGHPhPYDJkFNrLcBaAMEp3P7AlZab3RvAHa8j21uk1SY+lGQTuEzFFyZl+mHDaRUsM9Pi2eQGreW6UPZvcLyWHF2KbZv3rKzK707WRqtJ06myCAplRz2uC6yHWHja8EWmQJ5GuKk9X1S77tBpCu4eIxrfEzVRR2q1DtiOtVO/JZuii0/qsewFAPjUDvZtfhyEBrcG233F7ri7CrupzD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,60 +104,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-smb blocks every signal during some sends:
+Since commit 7fea700e04bd ("zap_pid_ns_processes: clear
+TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING") zap_pid_ns_processes()
+clears TIF_NOTIFY_SIGNAL before every kernel_wait4() call. Otherwise
+kernel_wait4() doesn't sleep and returns -ERESTARTSYS if
+signal_pending() is true and the reaper busy-waits.
 
-	sigfillset(&mask);
-	sigprocmask(SIG_BLOCK, &mask, &oldmask);
+But clearing TIF_NOTIFY_SIGNAL doesn't fix it. It can get raised again.
+For example, klp_send_signals() sets it raw against any task that hasn't
+transitioned yet. And it keeps sending it until the livepatch finishes.
 
-An incomplete or partial send would cause the connection to become out
-of sync. That in turn would cause the session to be torn down and
-reconnected.
+The sleep loop waiting for pid_allocated to drop has the same problem
+and it doesn't even clear anything. So a schedule() in
+TASK_INTERRUPTIBLE returns immediately.
 
-In commit 00be6f26a2a7 ("smb: client: transport: avoid reconnects
-triggered by pending task work") smb hand-rolled its own solution. Have
-it use the new no_notify_signal_save() critical section instead.
+Use a no_notify_signal guard. signal_pending() will ignore
+TIF_NOTIFY_SIGNAL and the pid namespace reaper sleeps until a child
+exits or free_pid() wakes it.
 
-This stops io_uring from cancelling a send in flight but that's just
-like it is today and it is bounded by sk_sndtimeo at around 15s.
-
-Acked-by: Paulo Alcantara <pc@manguebit.org>
+Fixes: 7fea700e04bd ("zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING")
+Cc: stable@vger.kernel.org
+Suggested-by: Oleg Nesterov <oleg@redhat.com>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/smb/client/transport.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ kernel/pid_namespace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index fdf4e50c27ce..35fa699569e9 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -22,7 +22,6 @@
- #include <linux/mempool.h>
- #include <linux/sched/signal.h>
- #include <linux/task_io_accounting_ops.h>
--#include <linux/task_work.h>
- #include "cifsglob.h"
- #include "cifsproto.h"
- #include "cifs_debug.h"
-@@ -172,15 +171,11 @@ smb_send_kvec(struct TCP_Server_Info *server, struct msghdr *smb_msg,
- 		 * after the retries we will kill the socket and
- 		 * reconnect which may clear the network problem.
- 		 *
--		 * Even if regular signals are masked, EINTR might be
--		 * propagated from sk_stream_wait_memory() to here when
--		 * TIF_NOTIFY_SIGNAL is used for task work. For example,
--		 * certain io_uring completions will use that. Treat
--		 * having EINTR with pending task work the same as EAGAIN
--		 * to avoid unnecessary reconnects.
-+		 * Task work must not abort the send, see signal_pending().
- 		 */
--		rc = sock_sendmsg(ssocket, smb_msg);
--		if (rc == -EAGAIN || unlikely(rc == -EINTR && task_work_pending(current))) {
-+		scoped_guard(no_notify_signal)
-+			rc = sock_sendmsg(ssocket, smb_msg);
-+		if (rc == -EAGAIN) {
- 			retries++;
- 			if (retries >= 14 ||
- 			    (!server->noblocksnd && (retries > 2))) {
+diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
+index d36afc58ee1d..8bc9edb40b78 100644
+--- a/kernel/pid_namespace.c
++++ b/kernel/pid_namespace.c
+@@ -238,9 +238,10 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
+ 	 * kernel_wait4() will also block until our children traced from the
+ 	 * parent namespace are detached and become EXIT_DEAD.
+ 	 */
++	/* Task work must not busy-loop the reaper, see signal_pending(). */
++	guard(no_notify_signal)();
+ 	do {
+ 		clear_thread_flag(TIF_SIGPENDING);
+-		clear_thread_flag(TIF_NOTIFY_SIGNAL);
+ 		rc = kernel_wait4(-1, NULL, __WALL, NULL);
+ 	} while (rc != -ECHILD);
+ 
 
 -- 
 2.53.0
