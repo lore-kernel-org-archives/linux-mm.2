@@ -4,88 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2D7CC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75A8EC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:10:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E33BE6B008C; Mon, 24 Aug 2026 06:08:33 -0400 (EDT)
+	id 697A56B0095; Mon, 24 Aug 2026 06:10:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE4B76B0092; Mon, 24 Aug 2026 06:08:33 -0400 (EDT)
+	id 66E766B0096; Mon, 24 Aug 2026 06:10:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFB546B0095; Mon, 24 Aug 2026 06:08:33 -0400 (EDT)
+	id 50FE86B0099; Mon, 24 Aug 2026 06:10:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B0D426B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:08:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 46CD51A04B3
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:08:33 +0000 (UTC)
-X-FDA: 85135738506.16.13ECEFD
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 87069160008
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:08:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=N+92z3Mn;
-	spf=pass (imf08.hostedemail.com: domain of chenyuan_fl@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chenyuan_fl@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 274C76B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:10:40 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F0D0A37E1
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:10:38 +0000 (UTC)
+X-FDA: 85135743756.08.05122E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 62C804000C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:10:36 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZZ2kfgI8;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787566111;
+	s=arc-20220608; t=1787566236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0NtmON3Iinqg4NTT+CvpMz+LBDo++1meA3igasdFZAQ=;
-	b=oXpY5ug4nKzbHYWTMENMHMLo6G03AhIcTvqX0P90PArS1z7S6Cmnn9pOSYI5kcorAqcuUz
-	3TVWKVYmeuO8V4Ar9GgVSmFb9laqhPVQTF1GnpxnN9g+KMEV5rTSmlvlh/BwDDq8AvqrmX
-	kfMIZXthNRnd+S273jb+KhekRQANssM=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=N+92z3Mn;
-	spf=pass (imf08.hostedemail.com: domain of chenyuan_fl@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=chenyuan_fl@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ruAV9WVJZvTMqMCHyyT5jtOkCTLN7kP5QaYxm/Ke2Vg=;
+	b=zt3dAetF2AEVeYfJaRNM+YnNgpGZjy+tYJKp0t/l6r+SIT7IC782pUOk/5RBaK3GMmWxnr
+	hVC7mLaQnAkP8wwKWQ0+MfaGXzIe/7r3FOexROyfpzasOdzxr0WrxndjQE2Fz2wyDDPYdh
+	5XJ7iWNihl2eKFn5gIrCt0M+QjJj43M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787566111;
-	b=A3xbqjVNpb6E64KY1ZsAGgLkVVQdDwhtitI6xmZLYLbMcYuG73IOg74/ey6EIxI15aV6RX
-	uvZSTWbjvmtqUpOdV6/sVwJv7HIsRDrRB3m8pwF35ww0s6qeFTCmjQA2Laf2vppSgKcqiP
-	h+jGmOygFAnUFpwLTxBHQZBr4qEauXo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=0N
-	tmON3Iinqg4NTT+CvpMz+LBDo++1meA3igasdFZAQ=; b=N+92z3MniTkaYTvV4e
-	67Pb3Ua4tbzpAbPwf51171tU4qRV3dk9eKtW26nPKW1a8KEd7c2NKj8aXmFAkv36
-	T37wc2X4j3OpeLNTBFmk72KWX76A/oKEM14f/GJ7uGJvS0Mz9iKWYqrt+xdIZ4S+
-	VzbUIOdmZX9JRTRwy60MsZtyo=
-Received: from nec8-i7 (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgAXwo0RGIxqh63qLw--.59759S2;
-	Mon, 24 Aug 2026 18:08:17 +0800 (CST)
-From: chenyuan_fl@163.com
-To: linux-mm@kvack.org,
-	bpf@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	shuah@kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuan Chen <chenyuan@kylinos.cn>
-Subject: [PATCH] mm/bpf_memcontrol: fix signed enum bounds check bypass via negative values
-Date: Mon, 24 Aug 2026 18:08:07 +0800
-Message-ID: <20260824100807.1829195-1-chenyuan_fl@163.com>
-X-Mailer: git-send-email 2.54.0
+	t=1787566236;
+	b=kiRFHmsw0edVoXP2eCsVBDXS6Op1hQUHaW+fR8ztTPaUlK2jRWPhSgtJDfJ8hpj65/YnJo
+	oF3TjSEFktdONVQf2+3lZKbz/o1MWLsV1sk/Dd3GNQUINKxv2dEK/9tziSwZOVZoc9mhPE
+	gF6aHwneg7XNKPyXs2CuFB+4iG6SDjQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZZ2kfgI8;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 43AFF4367F;
+	Mon, 24 Aug 2026 10:10:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E00A1F000E9;
+	Mon, 24 Aug 2026 10:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787566235;
+	bh=ruAV9WVJZvTMqMCHyyT5jtOkCTLN7kP5QaYxm/Ke2Vg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZZ2kfgI8b4lxA6uxl6PdeXIdNCVRfoXG6EXJ6a9Eige/3ODiLOsAIvQs1OP2f6qJi
+	 x08efzbtgW864ad5xlLDMaa5z9l5LJYwRi4XRGEWtXEmL/0zr1fFG72xJCVYrepPxC
+	 FlVXl0rT61Ily4BgCj7Dg5mTgX549zGEiFhJyV1adcBuLC7MXZuEFTiVY5R/elKBlQ
+	 BE/vuzAA25C/3IYqbV6eL8HtDR1UEWEcNe/zuZCRZ2VEyI8H5Ky/n4oDxuBwv/yCvt
+	 hxZGhX8NvNj4I8Wz9r1Umi3SrMcnYBAKietEDpVeVY0DE/AVI+yzAZpxvlWuDknf7t
+	 4+fCaxcujRUTg==
+Message-ID: <d9a33e74-ad87-4993-84b4-1dc87d0fe875@kernel.org>
+Date: Mon, 24 Aug 2026 12:10:27 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgAXwo0RGIxqh63qLw--.59759S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Zry7Xr1kur1UWF48Jw1UKFg_yoW8AF1fpF
-	s3ta4rKrs7tFs5WF13KF1Uua4fZw1Iq39xCwsrJr1rZr13Ww15Xa47Kr4rAFn8KFWjqr47
-	J34qqryxAw4DZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzKZXUUUUU=
-X-Originating-IP: [120.228.140.85]
-X-CM-SenderInfo: xfkh05pxdqswro6rljoofrz/xtbC5hLHhWqMGBJbBwAA3G
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 87069160008
-X-Stat-Signature: fog8tp6ttsmba5w6ahigfky3a4aedw3r
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] mm/ksm: fix advisor_min_pages_to_scan description
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ xu.xin16@zte.com.cn, chengming.zhou@linux.dev, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
+ shr@devkernel.io, linux-mm@kvack.org, linux-doc@vger.kernel.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20260824061010.3343959-1-tujinjiang@huawei.com>
+ <20260824061010.3343959-3-tujinjiang@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260824061010.3343959-3-tujinjiang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787566110-111853
-X-HE-Meta: U2FsdGVkX19IAtrWn38jxO6+9oyOzC0jUeri7qmPUbg8uKaiV5jaxLS+cpKeGCqrieHh20Otw2JTDtg7SEH9IFytMqTYEfKoLrD9O2b+x5b8xdYNcmTfzHNrl54bGsfVr9GM+pNPpXdvSnJ3Y9lrz419236Z3P9U3oJdeK/OhKD4jEfjEdE4j67PsX06R/N+7OqmlRftJfjhSCwNQpwzNKgpiJ2s8K0lYHUL2iXTbONQPKzIdvkedyKTZGhAhLYPCNuD3Via16UWJBqJDPjdB1LcnlDV34BgCD+FHUCNNlXeciUMhYeN3e50jhpe4tc794b4zkcSCwwm0irQa8PE3fAhMTRU3VjHemzt7o1Z113H9VTX7vtBwSJH+l5ooiiopBZoTVQMgqN0KpxpNGdohnhGB+2Z+87zc+Woh5WZsLWOyadcwKW0OW+NwScLrWllc4e+sxPsDKwNgi9FGB8cVqZmMvfuueLFNf4jtkPUt58G1o5eyvXGWJhpp42T9X7WDgdMBSiKVvxnM28BWaEvcrICeEE1kAkqpaYnikDrPxm+oG0rL8ERtnEvsjlWlLgEWukjm3MlfSOr6jiTveq+LWv4uMR+Vxg8maOmAIk8JthdEts3qR05cefFKnVDrfEqHV+URoX7TMYU14lGa8I1dJOo5ROCDrWDMCrEBduerYY+KZBmcgFrM9iML1G4NiLfzI3esQuPuTpS3PYKGJ96a0+V3Wlb9Y7rmu0dec4G0h8sV/xwM6CY1j3b5Z7iBZcI7d4WDSrSbM+oixcq5f0iRL1eTqivd0/OIQ3zkkAVr0IuBgFwxi61WT8fu7aD4P31O7Hp5nmv0OIczH2DM8P6Z2y1+PEgoit90gjX8c0RZmFuuOzlvm+nncWN34LGnV0F4vj7doVoOk2ITHokr4qUrCy26Ph9/7U4o+Bh4kr6i6fz+GJAvs7iXGWDJXQAQ8tnDjHzd3IkoaleuH28XAz
- XncAB3sQ
- QlFAjoGeuYbK9eCUsjh84SYVr8MavMKqf32Usj1iCCr/xIa4ZbEJsx590yN+rVIXYA/gicsHAYVb51TssouLA8JrPnlzpHytXogUqHIVyCIqt0wtFmsQsZw3ADDX/i4/byplKNH8PCb+MfEy4jZCGuY3S3E7R9TfBzcYeYHNkE/azeqq1KCoDBIu0AVOgaQvI0yFsZwLjwnZnohpjruM/hB8w9DHI7dn8cuDA728eoru0uw+P1UNRb9hbcOYh3NlG4lvxGD+X3pKdK6/YhriGfOHd773HmqleUdHsJ581a97e8/i5F001M5ivZCzBP7HNmjIwptlODHNXeJ5DOCwMzoyRlmaq9nUHU2wteN/0hg7R2WvaiHJ990ry3yMWSE9D3UVFhqVCJqhLq6/fvUT4Ai3/pw==
+X-Stat-Signature: fbncqjtz4wtshg547eqhzd6qpxi1ke7d
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 62C804000C
+X-HE-Tag: 1787566236-379116
+X-HE-Meta: U2FsdGVkX1+QAi63/ZqLPEq0hUVbqtlyvV8TM9zEGaGnQ6jkru55FBc8cSZ7QEG7+VD7ncSWx8mCyLoGWA1ADQq1Ixm2YoUOu5r1V7BsMw3lRday+KvN4qIe10bsI7vY+gNZ6+Rid5FBarb8xvuG3poIAE5wLwP4uJNZij24I79Z0ag4Bg4eIkmd72252s2VSM2vp45nr7Ured8NaHeBKs+aL8CmPQloEEhAf9w/TnpoJZpdNdNQWwfBjSL21Ixe64ZfUA27OSAGQDKM/S1CEqvgDHmISM9pnlqb1sAObphqxeHtR9RlcvqdfHpTnwRUTG46eHkqamqiNdTq0uNyzruH5jMNrkofgM8OkCuBdoZVnEUwuL4VQfMIxPW9COC6XohOgKQKewiNcfxMgmct0NdAVRdv6l+i2vOJnWtlxi9C24B5vGVHgpUGRb6OyvrQm185Rq6kM0DBiAYmW4VuA5DK5QAe77ZJgUa/5M5YEO0Prs3LXxd5qL9Y35AQXEpZvTKWlxLwqwl2z8b4sna9sVtHWwCO/KIroqj8KnHG3++d33hrr/HMed5KTuSBkRP8iv0qo7bmC44L9TORWSXcZXl4Y0Q36ug5VqePpGRYEvAnDSMfOs4X6DMoZLoifmqGlAgc6nym4sekHanWGGM6uTyffDkCxfnsg90RvhkQqSDbN3T6bOL+V6OweMdwtl+cnLY9dDdJvmn7/z6e/Km3CT+1Bmo69ZAdQTGWTunLB+RHJSUtzGD0HKgfjdoBGeHSwE1BkkoAJSnCknMaLqiEjQ7iKScl906vY334ELpQ+3yzPRMjiBoOP7rvQQxWvHygUXIgcebfNeijR2fO+Qf5PeK+FqqzPFaYhu6pCanvcgI9m+5WNh8BOpNQrbmg3dxtL2QlsWltqaN3r8+h1yzix1p4R0y5P0k6jc9zI3KOfxCwYREJqJkwJlXHB5u4EV/4pIbh0j0yIH3GOrTuoIM
+ BhwkVFu6
+ I41sz8HaSo3UDDodPQ1cihJ5ys7tG1ZjAzR4jt2XOUYMrbS+GMJYUuhiK1Vodtu1DQ+u4Vsm8qTHvLIbjQoMGm82xTBZCEWSJAWmwghFt/XPFvs2Br2nmuHjQzAxQC3EuGEHWu78Wd9ucjfKXjge9hRIaLwnJEmdr6juxrHJyp17VmRsL8i7ikHWL8zmvytnfxPJ8RE/jwu4y07TSy/otiGges/b5jw9uhI8e/oyuF9YbAEF8lh6KEMvNViCZqXAhugLGMfKoS0Ibrrncy7QdXV3CB2zN8OcubSpLL5YavgTHN+pFlJs+GVss+3Krn8U/rt4wJaqNvwlMM7XukUbF6+/dFEtck5Syab29
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,51 +141,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+On 8/24/26 08:10, Jinjiang Tu wrote:
+> Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
+> variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
+> lower limit of the pages_to_scan parameter, but that is not how the
+> scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
+> advisor") only uses it to initialize ksm_thread_pages_to_scan when the
+> scan-time advisor is enabled.
+> 
+> ksm_thread_pages_to_scan is adjusted by scan_time_advisor() after a full
+> scan finishes. ksm_thread_pages_to_scan could be increased or decreased
+> depend on the real scan time is longer or shorter than the target scan
+> time. The min value of ksm_thread_pages_to_scan is only limited by
+> KSM_ADVISOR_MIN_CPU, so ksm_thread_pages_to_scan could be smaller than
+> ksm_advisor_min_pages_to_scan.
+> 
+> The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
+> [1], but the documentation wasn't updated.
+> 
+> Update the documentation and comment to match the semantics of
+> advisor_min_pages_to_scan.
+> 
+> Link: https://lore.kernel.org/linux-mm/20231028000945.2428830-2-shr@devkernel.io/ [1]
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> ---
 
-bpf_mem_cgroup_memory_events() and memcg_vm_event_item_valid() use signed
->= comparisons on enum-typed arguments, so a BPF program passing a
-negative value evades the upper-bound check and is then used as a
-negative array index, causing out-of-bounds reads.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Cast the input to u32 before the comparison, matching the pattern
-already used in memcg_stat_item_valid().
-
-Fixes: 99430ab8b804c26b ("mm: introduce BPF kfuncs to access memcg statistics and events")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
----
- mm/bpf_memcontrol.c | 2 +-
- mm/memcontrol.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-index 716df49d7647..5e8107f240ba 100644
---- a/mm/bpf_memcontrol.c
-+++ b/mm/bpf_memcontrol.c
-@@ -125,7 +125,7 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
- __bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
- 						       enum memcg_memory_event event)
- {
--	if (unlikely(event >= MEMCG_NR_MEMORY_EVENTS))
-+	if (unlikely((u32)event >= MEMCG_NR_MEMORY_EVENTS))
- 		return (unsigned long)-1;
- 
- 	return atomic_long_read(&memcg->memory_events[event]);
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 6dc4888a90f3..42a1b855bb75 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1058,7 +1058,7 @@ unsigned long memcg_events(struct mem_cgroup *memcg, int event)
- 
- bool memcg_vm_event_item_valid(enum vm_event_item idx)
- {
--	if (idx >= NR_VM_EVENT_ITEMS)
-+	if ((u32)idx >= NR_VM_EVENT_ITEMS)
- 		return false;
- 
- 	return !BAD_STAT_IDX(memcg_events_index(idx));
 -- 
-2.54.0
+Cheers,
 
+David
 
