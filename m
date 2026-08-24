@@ -4,137 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33197C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:00:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2FB3C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:08:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3404D6B008C; Mon, 24 Aug 2026 08:00:03 -0400 (EDT)
+	id B8CA76B0092; Mon, 24 Aug 2026 08:08:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F1016B009B; Mon, 24 Aug 2026 08:00:03 -0400 (EDT)
+	id B64F66B0095; Mon, 24 Aug 2026 08:08:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DFCA6B009D; Mon, 24 Aug 2026 08:00:03 -0400 (EDT)
+	id AA1326B0096; Mon, 24 Aug 2026 08:08:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E67296B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:00:02 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6EA3F80494
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:00:02 +0000 (UTC)
-X-FDA: 85136019444.23.BB93160
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DE3A6B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:08:32 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4506A1A00FB
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:08:31 +0000 (UTC)
+X-FDA: 85136040822.19.6A4B693
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A033540006
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:00:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DV8XUbma;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787572800;
-	b=xcTFQaoEI1D8QlvFtzs44/krLIXd71rVwhTucOlkgzFFceG5FKdguDtTV4qocE0Cw5jfPQ
-	OhVbAh8BNwPaTnBjZMqnSlg8d3MSE6RAJYxR+LsaYFLF28hCcbL4Q/v70U5/6w1xj/vU8U
-	rQIo6Z1UZDQh1tDLxQAPyIA/4aRun/I=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DV8XUbma;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 6A18320006
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:08:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G98Ov3/n";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787572800;
+	s=arc-20220608; t=1787573309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rTuYvF3Mu7p31xlyX3il8puWDUAl1lur7TZTZMOinSw=;
-	b=nenFEolLpTysAKxzJbteqtyUA/iixFTzO4ohP7cHZbXtgKafHKVPM6OZnh/CnpI+pc3Vc/
-	hWHKgWfV2e+5vN3AU9VEPyafUmfhKD9o9qAwaIKfNS4dFIdt1AyHvXjBIes6EUTvciq4Wu
-	s55AysM3Y9WQvBBEywItLY9hDVzaQfs=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=f/+JvnDhjNopw+2Gz7qCznpexTN/om/tJxtCsJ2MGLM=;
+	b=TzmlvXJlD0mWVuWx4bN/q9s37aOjMa3nwP7gxG4JqhXvXu3ZglwslfsSoltt32zNuAzc/b
+	2Svanzp+N5QqQzP9HGuAoTHQfUClOXwb/1Xv+wAeZNlM9ZUDE+/5GMnp/elE/GSkaIiHkV
+	+U2oR86qxbPzwjX+KKp1NvTsTYy3QHQ=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G98Ov3/n";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787573309;
+	b=KO6ucrCkYgKHo+IVkSa0os7wgjs5Jf3rD+ImSUbHck1t5cQPRai+VW9HEKx7mV9v1GG8nd
+	l7X9ndCxAhYS3igtGBAfOITmTd4gjX5Xgij0EOvXc4Z7o3L1XPPirfHgofBZrqwyxBA1F1
+	y2sw8M+6anp5qwSa5qRkYQIV0eXXC8E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C12A940A1D;
-	Mon, 24 Aug 2026 11:59:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3691D1F000E9;
-	Mon, 24 Aug 2026 11:59:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 99F8A4013E;
+	Mon, 24 Aug 2026 12:08:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16701F000E9;
+	Mon, 24 Aug 2026 12:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787572799;
-	bh=rTuYvF3Mu7p31xlyX3il8puWDUAl1lur7TZTZMOinSw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DV8XUbmaKUGJZhyQ1aHYwN/aGyQChNpP/e/L2YUvyE4Qt2E6lWjS7DsjwkPQCtXPu
-	 11Dgzi+rcPEI2V8DfmdRO+2hM6TZmmOOOCZW+MtGDSp/Iw5jx/tyEPab/lS3768PXt
-	 +coJPLqdOA25xoeeLV6zmReX18s1vkXtEyAPQLCTUCl82xr1GdOrVHx073h1aGx3rH
-	 IyBrhiIRf77corKNQlykvoVSUJd8TtjLwOLjVZxf4TKijbBl/XOCDUPTu1okWd+VlW
-	 NhdOqmSULDHu45jlzUp2eCPONjeTRfoA19bjWYycWlWQp21DAEhUrl4VDPmqbmBmXe
-	 zT8NEIkG46Rqg==
-Message-ID: <8001afe8-84e4-43d4-971b-b23f72070339@kernel.org>
-Date: Mon, 24 Aug 2026 13:59:53 +0200
+	s=k20260515; t=1787573308;
+	bh=f/+JvnDhjNopw+2Gz7qCznpexTN/om/tJxtCsJ2MGLM=;
+	h=From:Subject:Date:To:Cc;
+	b=G98Ov3/nUrA9AhbdYxFPOM3c/11BTrh7mgkH3pJEfqouS9ul+ppypntqTl2J8+vLC
+	 ggNL6L3KYdHMLhAR9ur84/ldXHuBdThGIo1M8bcsIkqjJrDfMAjrDq7TRUM/1i+nGN
+	 7oqBHTj1yJaAqP9yTiI6IdvALGuR+GZOBi+55SYp1kMveeyvZozfQQKHUg0nFGcBkF
+	 w3Wm2IdDhMPba/7yh6+qDxKjiPC6BmPQvLXb8aiLCfnCnpIUiODhZ1tbrOVgUMsYzw
+	 Ohe19K9g2KH/BXzcm9HY9Rkt6YpMw5hwY70s3eWGm8/CXeGf0bX/3jcPEyopSYZi8a
+	 5oE/EU8v7NlWQ==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH v2 0/5] Stop TIF_NOTIFY_SIGNAL from interrupting work that
+ can't be restarted
+Date: Mon, 24 Aug 2026 14:08:15 +0200
+Message-Id: <20260824-work-tif_notify_signal-v2-0-6609e42b3157@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] mm: khugepaged: fix folio is used after
- folio_put/unlock()
-To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org
-Cc: nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
- zokeefe@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260824092935.73892-1-vernon2gm@gmail.com>
- <20260824092935.73892-4-vernon2gm@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260824092935.73892-4-vernon2gm@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A033540006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WO3crCMAyGb0V6bKVdt1o98j5EpD/p1k9tJZ1Tk
+ d27reLhRyDwhOTJ+yIZMEAm28WLIEwhhxQLNMsFsYOOPdDgCpOGNZIpvqb3hCc6Bn+MqfTnMYc
+ +6jOV2jDFnBByI0g5viL48PiI94cv55v5AztWW90wOgM1qKMd6uii8wi4UlwZKCWFc9L4zrfA1
+ sDbzkvrjLbQNUyL1lbDEPKY8PnJPvH66RdT/Rdz4pRRDsC9tZ0R3u9OgBHOq4Q9Oczz/AYX9Qf
+ KEQEAAA==
+X-Change-ID: 20260817-work-tif_notify_signal-6ab080d33693
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Peter Zijlstra <peterz@infradead.org>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ Steve French <sfrench@samba.org>, linux-fsdevel@vger.kernel.org, 
+ bpf@vger.kernel.org, linux-cifs@vger.kernel.org, linux-mm@kvack.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org, 
+ Paulo Alcantara <pc@manguebit.org>
+X-Mailer: b4 0.17-dev-362b8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6564; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=dWRAsCglCo/M3vK0FN3SrSESVBbJXhJ2obKurvHCQb0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT1mFje156X5qe7usXgWtz6TE1h5ZlnX2ZJsLe/e7B8y
+ bqAxGM5HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMpecXIsJRT8v9dxvCsc9FW
+ No+21M1Kfv1z88eTjsfSqjxj2pfsPMLIcGilbv7s24wLMxM2/NP/cVrwWVnF3T3L2vY9+pkfuOH
+ adV4A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Queue-Id: 6A18320006
+X-Stat-Signature: 11n79hfdpjjdmexq3duh61y811j1kzwe
 X-Rspam-User: 
-X-Stat-Signature: njpmks48xa8ws4yk6s5cgtuq49d9x64k
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787572800-444031
-X-HE-Meta: U2FsdGVkX18UXlltmEB1D2rC2NShLynySNNMVvjgIaxF0MoRiM58ItSWNxUQS5TIIYjCFmMAkvIIqiIlNpA0nhMeoTeHBin9JxXVdPFVfBZVuRqpg3dMWDxjCNGzwp1caIIuouSlSErQQiqs/fBsiCPSI/HYpvRyrkQP4KNDJPBe3ePY4KcUgjDwYwziTa/+EPlLcZd7R7dZy5pfTFMa1FW+3gpaCzOB6tZ41OmrdxlEbvDNIyVaadIyuxPFN9QlWKW8ScjdbpJBfGCNx2jYouFLmGXKg6d63Ibrt5odHdahwbenZLr2OzaLVg5GYTlov929PnZU2Wk0aFCkTijhAi2DF+P1AXb/gPb68WV/1eOJIu2cxFlURixnJoPvKut+LhMb91Vi3Lkz9UpZaAXX2jTL0iN/JpRP/obFZ6OfIyWcuzQcTD3EXv49VzCm7Blb4f354FVKp91iVsxnLwbdq1Mh6MZwblwwDxrfnzs3pMN8/8PT3HZvydGvMwJSEBk3cZMwobVXoGB+vXmHkf0A/LC4tofsak69XMpENk4U/+Ra60jrlWhWEtOjWKiu/8th6eoYv057ZEHHYvMHjFduZok2SpOwwsfqQM0BloG8LtvxCxYSGANdSx6fLWXDi4ELm1GuwfZtm3n3IoYMD6b6++Aby2O+mDaII1Su7vC3NRd9aJoKXlIi6LqW0vy0espK+xSso0ofGRv7FJU3kQ63qrf4+wpY5yGndxgIbHsxZtDCOPABkLTK6QHGsLO1AQ6kqKAjSXD80f1BUfOoxv1TFqTtRkPgwOU8WkEzBvHtbPSwJeGRJUKSA2ZaoEft/k4/OLaAAkSIR5udF+Ag8NRwN+Zpv7q1CarB4isoALPDQ0J3l1tOjO5s2/ktOZrMufTy1Bjgqaz9zouGgUpy7WECa2JuOx1MUNCGZxHaDpOtmDaA5HdtMk2ixcIT2bII+Y4vE8Ibw6l9wUFwMDd6vNS
- 5IBnovLx
- W9GqpH3bTuOll2K+JS8x0xn9qyFJJyM2A+xi2XVZqgHlbnn60wDUwYpacFXlm1qje7lo0chbqZecdmVjUobRcaUeN03ZD706z/bMvn+q3DmMSoj5epAv0adgVJadydzynj/P1oony25Ns07jXt2o86KmFu9JrzPsG6KVWJgYNcmXPMhmBrzeajVvRDJEoAavGvI3KKTf/OV6rNJqxD4/OXQKnCXDfdGXtDquOVz15w+9PcAfISj3+Leuz3ww7BvScZWL5uXZJtlCgshjavFqCqgfGxl1QnTmW9hxiVQSbQlFTnlezCZG5crhJPA6v0a+M4e3618Hen310w/I=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787573309-585775
+X-HE-Meta: U2FsdGVkX194AhcwFg0lvZ4a2zf34npgdmIOgQO5xYOqOT2lul/xfMVV9FmfI7Y7EEsFtWgh7+n5+wCLwyYb9X1+BZ5f0j/GN2aZgQl0UaZlqjBqa7/tKsPFaTZB7QIq10VlBxFognfKHilOg/P+NsAaXK0ve9832sGssxsLNP7+C7pOwCYoZBqHoDVaipLyqGaHMK1dggT8uaidKCTyIyrFpl63jyLAQd862uShRJBSNGgvb/gMaxLJN12eff5wezwvDKACbug+xre++H72QNEXPTcp4vQyuiAUf5e7JKsUNg3p4L+HZ/150qArIlFfsnhEP4xrA2qyOhVBqocBGY7mgGoyZRumd6I99A/6RhVnrXnvZXX7JiZrJvU3NGuUQPlvP7QuVk0SNC1Ja8DNDkM7S7OI5nCMlmtZdBy7J4DPbpdVFKhNexrz9KnIswLNa0XuhfLGON6VBUk1z0la2EOx3g8MBTdNJDBzhVPlpLD2LdVavHEjKMahdqBNfc9bp7ZblCD50oOoxheNDJriEsZBhK4rj4EytWOz7oDkho/dC1GTWqVdenpqULxgkS8pe6qnzNE4krNbmcym/TszWv8qMY8HLIDZMlTOy6gqeec2irG9pbFlHQCCvWCVJxn/J+xd1j8XvdUlMgBBzPcqVS7fu/xV7VxXgVDvTX4raF7eyezIeg1hv5TRHdbr9bVdVqWOsyoooeF2Z70DHvDNbo/TIMFrW/aJEOKbHQjpkHyoslJGKSb1ylpLPHe4DVgFudLJL00Oa+pd0GF1i7VAo4LHz4iaz4LfNOfTr3dgOnKqq1yXp1snVWUjvezp487/cBKM5Kovz97iTWuQ2cCXEjpq1DNx0c6EPLdNirCycbq2S+teRT++ZyY2bHgPliIA6L8SObcshRsRjE9AJ0g36jZ6Bb3uDjUaxxwrWlxdoM4jXf3dwE/PkSSVyY1T7RVIQYuFyQCg0uwBpmpYOxS
+ zdMJ8BZJ
+ KpLQesADF92ZsVfEC7YReYuQtBPO1GEhLxElKn+kiOsHERcMYNznYkmzb1rjAFJTaayVgaLGQynTPcG6JjrgwMldI+hZIb0Z1lVYtTNwYar92LLjBwBurP3zBw1h7HPJuizANQ4rDxeI3iNPfI/PLCZVpCGuZOO0IIJEvPt/evYKQmxo8PDsCGK+JfC+ek5zoZ3hFMy6BQJ/wqAp10m9TgZvbPxN9CM8J08XjXXG+aCKhrux6gJ+4oql3s+rVQnprCv+lwJXyQZSDDPHDvlGh7vGE/wG+rxB6kKn3G/dGYJRNGTK8ibf9b98CIBhba7F8adxd8VlKNGrNPhFeEerO1dSnjWEk5qGcH41kLRunb1/dScEX9+iMUbtTw5zgUBUSyKnzw6wRfJ8tO+hYiVRC++JCNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,76 +108,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/24/26 11:29, Vernon Yang wrote:
-> From: Vernon Yang <yanglincheng@kylinos.cn>
-> 
-> On the rollback path, folio_put() has already dropped the last reference
-> of new_folio. On the success path, new_folio is already unlocked and can
-> be freed concurrently. The trace_mm_khugepaged_collapse_file() is left
-> with a dangling folio pointer.
-> 
-> So using the folio_pfn() before dropping the reference, closing
-> use-after-free window.
-> 
-> Fixes: 4c9473e87e75 ("mm/khugepaged: add tracepoint to collapse_file()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> ---
->  include/trace/events/huge_memory.h | 6 +++---
->  mm/khugepaged.c                    | 5 ++++-
->  2 files changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-> index fa828967e1fb..5fb4d92cfd84 100644
-> --- a/include/trace/events/huge_memory.h
-> +++ b/include/trace/events/huge_memory.h
-> @@ -211,10 +211,10 @@ TRACE_EVENT(mm_khugepaged_scan_file,
->  );
->  
->  TRACE_EVENT(mm_khugepaged_collapse_file,
-> -	TP_PROTO(struct mm_struct *mm, struct folio *new_folio, pgoff_t index,
-> +	TP_PROTO(struct mm_struct *mm, unsigned long new_pfn, pgoff_t index,
->  			unsigned long addr, bool is_shmem, struct file *file,
->  			int nr, int result),
-> -	TP_ARGS(mm, new_folio, index, addr, is_shmem, file, nr, result),
-> +	TP_ARGS(mm, new_pfn, index, addr, is_shmem, file, nr, result),
->  	TP_STRUCT__entry(
->  		__field(struct mm_struct *, mm)
->  		__field(unsigned long, hpfn)
-> @@ -228,7 +228,7 @@ TRACE_EVENT(mm_khugepaged_collapse_file,
->  
->  	TP_fast_assign(
->  		__entry->mm = mm;
-> -		__entry->hpfn = new_folio ? folio_pfn(new_folio) : -1;
-> +		__entry->hpfn = new_pfn;
->  		__entry->index = index;
->  		__entry->addr = addr;
->  		__entry->is_shmem = is_shmem;
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 4e0fca5942dd..24347f1a94ae 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2254,6 +2254,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  	struct address_space *mapping = file->f_mapping;
->  	struct page *dst;
->  	struct folio *folio, *tmp, *new_folio;
-> +	unsigned long new_pfn = -1;
->  	pgoff_t index = 0, end = start + HPAGE_PMD_NR;
->  	LIST_HEAD(pagelist);
->  	XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
-> @@ -2633,6 +2634,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  	retract_page_tables(mapping, start);
->  	if (cc && !cc->is_khugepaged)
->  		result = SCAN_PTE_MAPPED_HUGEPAGE;
-> +	new_pfn = folio_pfn(new_folio);
+Ok, so I was looking into things and as usual got
+side-tracked so here we are. Oleg, save me please.
 
-Why not set new_pfn once after successful alloc_charge_folio()?
+TIF_NOTIFY_SIGNAL is used to kick a task in uninterruptible sleep to
+return to userspace and run task work and then go back to sleep. This
+mechanism works well but breaks coredumps. dump_interrupted() only
+allows fatal signals to interrupt a coredump and the whole regular write
+path going to actual filesystems is impervious to TIF_NOTIFY_SIGNAL as
+well.
 
+The core is that you can have quite deep callchains that end up calling
+signal_pending() in both the pipe and the socket codepaths so it's like
+we can just pass a flag through somehow.
 
+For coredumps its very annoying because it means io_uring is - depending
+on how much outstanding work you have - incompatible with generating
+non-truncated coredumps. A process with too many file backed mappings
+and io_uring requests in flight ends up losing most of the coredump.
 
+While zap_threads() has cleared TIF_SIGPENDING for a long time, just
+clearing TIF_NOTIFY_SIGNAL isn't going to work because the next
+completion will just set it again.
 
--- 
-Cheers,
+The fun part also is that io_uring isn't actually the only case:
 
-David
+(1) io_uring
+
+(2) klp_send_signals()
+
+(3) bpf_task_work_schedule_signal()
+
+(4) landlock's tsync
+
+And technically, kthread_stop() and the printk kunit test set the bit
+raw. So no simple way of just fixing this in one subsystem.
+
+So, a fix for this issue has the following constraints:
+
+(i) The places where a write is aborted are deep callchains that we
+    can't reasonably parameterize. For example, anon_pipe_write(),
+    unix_stream_sendmsg(), unix_stream_read_generic(),
+    sk_stream_wait_memory(), or a bare wait_event_interruptible() in
+    wait_for_dump_helpers(). All of them are shared with regular
+    syscalls that must stay interruptible.
+
+    IOW, the state has to be per-task and ambient.
+
+    An LLM would call this "load bearing"...
+
+(ii) There are multiple ways TIF_NOTIFY_SIGNAL can get raised and they
+     can get set from irq context against any task. As said above we
+     have at least io_uring paths (poll task_work, msg_ring, tctx exit,
+     io-wq via __set_notify_signal()), bpf_task_work_schedule_signal(),
+     klp_send_signals(), landlock tsync, plus kthread_stop() and the
+     printk kunit stuff that set the bit raw.
+
+     So fixing this up in the individual subsystems is doomed to fail or
+     require constant audits in case some new variant shows up.
+
+(iii) The coredump task is exiting and can't restart the work.
+
+So here's some stuff that was considered but I think is not really
+feasible:
+
+(a) Check for task_is_coredumping(). That will end up forcing
+    task_work_add() users to know about coredumps. This seems like a
+    layering violation.
+
+    I have a patch for this as well but it's ugly. It races with the
+    dump starting unless the bit setter takes a lock in the io_uring
+    completion. I know someone that will disagree with this approach. ;)
+
+(b) Oleg's old suggestion iirc. Just clear the bit at coredump entry.
+    That doesn't work because io_uring poll completions just raise it
+    again from irq context. So you also need synchronization with the
+    setter of which there are quite a few.
+
+(c) Let the setting task defer setting the bit if the task is flagged
+    and then raise it again at exit.
+
+(d) Take TIF_NOTIFY_SIGNAL out of singal_pending() and make it opt-in at
+    specific points. That breaks io_uring quite badly and forces a
+    tree-wide audit.
+
+So the amount of patches for this issue over the years is impressive. So
+let me add one to the pile for the lolz.
+
+Add PF_NO_NOTIFY_SIGNAL and helpers to raise/restore it. This is the
+same approach as memalloc_nofs_save(). signal_pending() will not report
+a fake pending signal via TIF_NOTIFY_SIGNAL if inside a
+PF_NO_NOTIFY_SIGNAL critical section. Obviously you can't
+fork()/clone3() in such a section.
+
+Fix coredumps, smb, and pid namespace busy-reaping. Fwiw, I think
+there's a few other potential users of the helpers that are left out of
+this series.
+
+|         |    notify_signal_pipe     |   notify_signal_socket    |
+|---------|---------------------------|---------------------------|
+| fix     | ok                        | ok                        |
+|---------|---------------------------|---------------------------|
+| unfixed | 357324 of ≥ 5111808 bytes | 467336 of ≥ 5111808 bytes |
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Changes in v2:
+- no_notify_signal_save() now returns the unmasked current->flags,
+  current_restore_flags() masks on restore (Oleg)
+- Add an irqsave-style no_notify_signal guard on top of the helpers
+  and use it at all three sites
+- New patch: pid_namespace: prevent TIF_NOTIFY_SIGNAL from
+  interrupting the reaper (suggested by Oleg)
+- selftests: unlink stale core file and socket in the fixture setup so
+  a killed previous run can't fake a result; assert the exact expected
+  dump size
+- Add Fixes:/Cc: stable tags
+- Carried Paulo's Acked-by on the smb patch over the mechanical
+  conversion to the scoped guard
+- Link to v1: https://patch.msgid.link/20260818-work-tif_notify_signal-v1-0-1ee1fcc5b3ff@kernel.org
+
+---
+Christian Brauner (5):
+      signal: allow taks to temporarily block TIF_NOTIFY_SIGNAL
+      coredump: prevent TIF_NOTIFY_SIGNAL from interrupting coredumps
+      selftests/coredump: test that TIF_NOTIFY_SIGNAL doesn't truncate a coredump
+      smb: prevent TIF_NOTIFY_SIGNAL from interrupting
+      pid_namespace: prevent TIF_NOTIFY_SIGNAL from interrupting the reaper
+
+ fs/coredump.c                                      |   2 +
+ fs/smb/client/transport.c                          |  13 +-
+ include/linux/sched.h                              |   2 +-
+ include/linux/sched/signal.h                       |  27 +-
+ kernel/pid_namespace.c                             |   3 +-
+ tools/testing/selftests/coredump/Makefile          |   7 +-
+ .../selftests/coredump/coredump_notify_signal.h    |  29 ++
+ .../coredump/coredump_notify_signal_helper.c       |  46 +++
+ .../coredump/coredump_notify_signal_test.c         | 245 ++++++++++++++++
+ tools/testing/selftests/coredump/coredump_test.h   |   1 +
+ .../selftests/coredump/coredump_test_helpers.c     | 311 +++++++++++++++++++++
+ 11 files changed, 672 insertions(+), 14 deletions(-)
+---
+base-commit: 818bebeb63dd6bf5f4e07e145f6cdbace520a34c
+change-id: 20260817-work-tif_notify_signal-6ab080d33693
+
 
