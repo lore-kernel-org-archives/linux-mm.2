@@ -4,126 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55E64C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 20:14:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 757B2C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 20:15:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D8CA6B0095; Mon, 24 Aug 2026 16:14:57 -0400 (EDT)
+	id 5FD5C6B0099; Mon, 24 Aug 2026 16:15:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3625C6B0096; Mon, 24 Aug 2026 16:14:57 -0400 (EDT)
+	id 5D4D56B009B; Mon, 24 Aug 2026 16:15:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 278976B0099; Mon, 24 Aug 2026 16:14:57 -0400 (EDT)
+	id 4EB1B6B009D; Mon, 24 Aug 2026 16:15:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D72B46B0095
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:14:56 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 25F346B0099
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:15:52 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F2331A024B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:14:56 +0000 (UTC)
-X-FDA: 85137266592.30.175EE14
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8455418000D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:14:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=v6IO+3RQ;
-	spf=pass (imf06.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A38B9160261
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:15:50 +0000 (UTC)
+X-FDA: 85137268860.30.6BAA1CE
+Received: from mta1.migadu.com (out-26.mta1.migadu.com [95.215.58.26])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7DE0C40007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:15:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JkRXcuAV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.26 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787602494;
+	s=arc-20220608; t=1787602549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lbrx60MJW7m62aJUfR88Sv9pb7keNNeDEwmAMWLXqMY=;
-	b=tOhQCNdtYdxCZ3S+feX3D1i7y6+6WaZOa+W0pfkACDm3Jep49nk0fC5G8GLUqO6IFIli/7
-	y5JSDg5BvnwXEZiD0a9xv5xgxJ83wCTOOmtVXLQ6gq5SCMw9zSyopTRSDw3vcvQW2mk+c3
-	hCUuOiwo4nmIKfhSJ5W0FAgs/wZXpPY=
+	bh=qT38V6Fyi/oYYJ4d+n8fx4SQuOseTyBW50h7Hf4I/BQ=;
+	b=qOHYYm0zH7lilmRNLx3Ue69L9QM4G5svrrOFQQr1p4/YCukeG4Vx2oATlVECQlkrU9jDOS
+	MgJE5bIfX09xvp2PK6hOk56ZoWBT+YpGTEnUOlyYQznCRoXGZ3WRcGNxOSWCzv0lzfiqS1
+	cYvErRnVLXZg/Dx78lVlXwDmLuVcOqI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=v6IO+3RQ;
-	spf=pass (imf06.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JkRXcuAV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.26 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787602494;
-	b=x2kaqoGW23hzorxvI5eRKAJyhkjxP3bnjw5b8l3xI9WQEsgX40Ve0ihofPpF6+2d8HmHnR
-	9jcSHumGrSbSPthqmYKYUFa0fi3zPt10Uul4UdnFPXBQac/Z7HyZIVfmCUnf9TqO7kLRJi
-	A88gfHuen4NcnOAbNWsDuWJYcx0gALE=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d3b445a84fso4705ad.1
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:14:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787602493; x=1788207293; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Lbrx60MJW7m62aJUfR88Sv9pb7keNNeDEwmAMWLXqMY=;
-        b=v6IO+3RQSlHNDu8N7IOAOqp97HsNhuptx+TLDqZ4yDWp+I9aIKfS5oAd0Dbpg48OeR
-         f034zDBCn9PaNLxkL1FIkY7ZXDvvkYPJkhvhV3WJ3OJzqTfzM4gSqR4Y3glweBuc5mWC
-         3OfsqAG/oL68Pm9kvkTAiOvhUsQB3NdKYwSqkdVAVxhgu0108lqsOItrGvCzCEm5CMsi
-         L37zSOFn8dX8ZEAbKFxazaQGpWX5PjPp9Io9JiazMVZD+REgzysUavcZx6TdWoCkBT3o
-         BjWWScA8OJlxFpXJHta4ADWJUF/RMwhtmdu9dYvdxfSxMrVdUW/vxxQHIzWa/sPJzcM6
-         4sRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787602493; x=1788207293;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Lbrx60MJW7m62aJUfR88Sv9pb7keNNeDEwmAMWLXqMY=;
-        b=Osp5WXTrn98cRjBw4oKqQaB1YxHxtXEnOBsvKpdkuoGbzCSU/EGhcW7utcefSfotAH
-         p55R610+YjpDT7e5s+2ROSGx5ZN2x6dzP8A4t6NR4JZVrb2ZtcFnsUaDYU6Ap/ee3iKW
-         +UTnLD2cPGxXq+pebNkxSY6p1xCW41rJeqy04HtZvB7JqWZnQ3mkPvQiZS8EhzlAdyYt
-         L1QU7fXiK53eVbnwyvfJYE1oCU46eDVf3LIlJcNa4eH5l9Xe/IwTOM+BCOne0tKYlIGr
-         L6faa+6aVQze5hzdLGeazAmQXp8fecm9O8Dg2vDvSVKRXe+X4gfSPQMm/6huiaItlc8z
-         ptqw==
-X-Forwarded-Encrypted: i=1; AHgh+RrFSnmKoVP1LLteX3frK+k9rCLb2KfUTRlikaHQJ3R8qjxVOLGgfEKfAMLaBsuz1wP/FXAZiCGREA==@kvack.org
-X-Gm-Message-State: AFuF++mo+KBPjEr5+EzOMcdhXqUOL4X41RdrpXYjZ32yHFsscRDMni4v
-	4YnRozF/R7LZ6FJ/inPGwI2HnTHy36z4mpulCbV9IHxd4UlXqvFfYbzHTrkryYRRwA==
-X-Gm-Gg: AR+sD13+VBaET/lNqsCT15tJBQ4tKGFkiOuBo6oUs/FtCoWpF7YDzqxGQCfHkCwlVM2
-	902HpH8nSwQqxSe93l+Hy51NaRPhkpq8AeBQ6l6AtNPr0Xtu1oyEdsxoA1GOuG3E1A3mbVfOyOk
-	FYnJib1l8fgGTYNBtvgDsHm/T0NQNCYBcXNPRW/DSAyvmIMYJ4oxJhY3XXFImxRrulnTq7qB8du
-	AwJZ8kGDW3jTXIS/sE19JdqP7FQ+4oTOSpTp7b+TAUn/3FJFTLIusjfSOpROtSHEofv6LiOVULc
-	8HpuUMZyOxx607bpBINgWKPrB2uy3Kd84z7uTlZVHD3A23twYrndgJnwDJuBWYdIrI8xsLItw0L
-	lh7pNCMTTF+sbydPCL8/BoKsJgWCBiWbMHc7Wp6BghxoHppOwwz+B1PZ7pOWh4G5hS4AvqF6vYr
-	BaKsPqef72awYcoUkI/5AALydIBBLP/rqsiBvdarDdhzHyDYD/7L6/BAEBcZrFnMNlbmu1RSeUs
-	7AI9JLRckWZxApMUVY0dUjShWrKUjKDcoakUx5Eb9iYFjFx3uE1HN3KLz8=
-X-Received: by 2002:a17:902:f142:b0:2c0:defb:557e with SMTP id d9443c01a7336-2d6e07f52b9mr751815ad.1.1787602492814;
-        Mon, 24 Aug 2026 13:14:52 -0700 (PDT)
-Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645b49e76sm811208a91.6.2026.08.24.13.14.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 13:14:52 -0700 (PDT)
-Date: Mon, 24 Aug 2026 20:14:49 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 02/12] PCI: liveupdate: Track outgoing preserved PCI
- devices
-Message-ID: <aoymLetUiJPsqrfI@google.com>
-References: <20260728221007.2098560-1-dmatlack@google.com>
- <20260728221007.2098560-3-dmatlack@google.com>
+	t=1787602549;
+	b=lqlCD/yBOHq3YBKLp7Q9YwP16jYrfJ+rQmFO8LrMHjLOrAw98StJeNCJRQLEgPstnpyX3u
+	kcjR/d9RFvtdw61dStmRjNUHDUVYPh9N9axfp79S9xe2Kjq8BQinQXEr6gskI0ohEjNYhv
+	rjkmURg1HU15+2jUmpyLMrutKRo8OLk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nLzdm/qCP+HJMriRMsBX2NapVlTGsrYyj+a9BUlHHi0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787602547; v=1; x=1788207347;
+ b=JkRXcuAV7eH9fS9NjOutkiyCjEus98SYFLEZEHYx3Mh3T2oCfMUKsWBvxZP5J3kTmFwJiDc6
+ u2Ey5dOKKyqPluUZX6HwlJSo7obEc4whhAAY2e5FWWRQL4w55FswPR9BCPcGaL21B8vfsd1Utik
+ sndRQtWsmFo9pe6rKawzi/0o=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:5::)
+	by smtp.migadu.com with ESMTPS id d3cffa5edf59e1e6;
+	Mon, 24 Aug 2026 20:15:46 +0000
+X-Mizu-Trace-ID: d3cffa5edf59e1e6
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 24 Aug 2026 13:15:41 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, 
+	JP Kobryn <inwardvessel@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH bpf-next v4 0/2] bpf: BPF-driven proactive memcg reclaim
+Message-ID: <aoyl4IrvfUl8swv_@linux.dev>
+References: <cover.1787205002.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260728221007.2098560-3-dmatlack@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8455418000D
-X-Stat-Signature: f1fbf9oin5t53f7ej8bqyhxjq4iefqdc
+In-Reply-To: <cover.1787205002.git.zhuhui@kylinos.cn>
+X-Stat-Signature: p9stqakdum3ckq7tjiqjdoare3e3qoq8
+X-Rspamd-Queue-Id: 7DE0C40007
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787602494-288118
-X-HE-Meta: U2FsdGVkX1+kX7hRRhsXNkLw5Zzxzhv/S2gmj9/Rh4O476JNBL4yrHB/zHlqO0JrqjMqG/Me1YZyf4u02tfhqPmZ3AIDHQY2Ex3O5p7+BTCwwjLGB65fkObuhhAJhdyTb4Iz9+VKrjyxs4T/5sq10AdGNbjZY4bD7H3MzNx6G1Xy+akZKyzMqIhJ2xrikO9xsuOq1Dg/Jc1RVSg64bpkKGhYb22NXU+mVVXJvNPe/8XoXtipAhXkndT0jxQBzkvwdq7bUTBwYr4LWotx4pki2pEc3Ex6qpQos+0At5Ezp/dKxnQeCor57OjG6+0mxuMH4f7oHJS38oAlUqvU9TadOsWxyIL++UfGN9LGafeuvSmn95Z3ObcJJV2CxKIsB9pzGVgBAbmGFn0Uw3TBuUxDYcpwtftEpSfeSXrI/1lrb0xAU8Xn+a0dXaU4kYkwtdWVJWr2Trclng0cpBMTfCvwBQ8Ww1HPo+2S6eCJV+mkSS6hE4YbQdkr5afk+j1imo7TKsDZEFEPUCseG9RtLL7HKBjoEhXaMfcwUGqcfmyjc5RY9lqgpKVHFIUV9LGTW+nXb85fryHCYx+AUlBxdzZth+RJYRIJtSOn/NMNuJhxc9v9hmHP/ssGmzDqdKB5texSwwJs2/nKCOKAyOQ7iUsq53A94+OA5eAB6WT1bQjMcGMtfcTrfF1q+1KVRUC0uEKWTZcCbUY0SlI44/b/GF0d5qdyHATgJho6GO6GVcG1V7pA9bGtFNsI+Wpav/WDYXqMFbTax4aQGtzrnMeve78f89+SW9loo8PUBGuV3MtJN38T8Y4Hv9mymk588mJvHiTY1rvmf9NABcEZ/ut0CVxTJONVz5PIEyMVNjPW6I67u7vZeLny6UhvYaZ7WaBNZz6NUbjIssJQMwHwIXQfncniRXkKf0gGDoIFaNSz+G7PpNLG14yD4hGM4d29Tpsq1sGNwIub2oa8ONkhF74WlZQ
- O+t3FgdZ
- glf1S+tAoC/lNIqiWmCcEx3xhpqmezPg12COxWScGc/aygmyzy5mt0WB9QRZfsTq3JmN3L0ZeB5puxLxGp8tV3Qfp0dCfJc5iKVAGHEj2CyE7Jy6HNG6UiwfrL0BKEK4vIHa7GKB0DRVo0IDfvOF+tTjzthAfOmz+iLhgwg3TTMpNZU3jJmrfOOVcObNiHWXicXeCCzOWwBFTpxfTkSiHDBPTFHIBZoTymwbxidPfaejBgV3m/aLSCVi485168bKYBPx0fJ2Vu8jdvXw43+OMEhy+IPSij7Sk/kvERAHX9481OG7e6xWAon404yWckuRaD6RNJWm2fxHySGhgsO9HA34vpB2CvPcVaHYFFyj2O50cBKN+dbM0FCaqr3vV4LdIPzTa3mtWjlo6OzD6g9YFOepNLGvacX9rRQ+p
+X-HE-Tag: 1787602548-214222
+X-HE-Meta: U2FsdGVkX1/zksli2x7eGCGm7dN3VrWJANOIAnwEj7KxxlTm4Ocs1M0+8IK5hIdFRKWoCoaTfn8hMIe/cvmkbCZMhNzj3T5BXjf1HsOwobKtVxS6VV2m+bfOUHGLykhClmCw2FYw0XAzo2X5HZbxahdx1mu4RgLwztjiwqJ/Sn12DPP6SSOL+8ybKtmBu/huJOjcV/v1lIq7/X3WqmKkdyHUP+l0IJbkx9CXFGnA3I3yjd+Gso41Zip2SNrHrh58u2XxcDOU1Wq74JXNEDfdhJLdJIJP0vv7ADWPB79I44Q20DFdYlt1cMzoPQ+j4WT9aqVYxMzLW0Hikzit7B8V18fCXpKs1+7VBaSmyB1AK/sWzGnkPBy0V1KJ/aRzw0tqConcs9NcG+VyKWxU+mNnRpIiOk2L7f4cwNDTAGE2bd9CS1UrkzvTXYWH6opIVjm1CGiQ7l78ZTWPaNdmTCUTrbRsApeD2PVFTfiH63tQheTXinPqWS7ZSFLdDYmIzZ1zDkNv00iPDT1oTyagkPfQtuuw2MEUsVpdFJD+LYc8DKtkI8Zr0rSlW2E7vGw+ClMSMoN+rz0rLJzHubNu/2AOj+yz6T4ojSRJBOyKxV0w+xMlRPmSB3v9W/OjYKHQX5De8jSZ5n1CzVZ0IZUhT52cAiDYP+/koUsEUCpTE7bnTlX4RdfHeagvZgiAZoR2Lmklly3rLBogKt5n4t229CsAU5O/N42xKnlMXwqhV5ch1I3VJM24IiZKNxDjPKu1w+lUTSG6qRBHJVwYyFwSOOLGilTlLq0Azqg11fZ6iyCaRHqBbI/ile6daYwW5nGrqXB5QbsxypACQnrmhNExbpO71BQev83nnlfXKIbvymrUtaA9ZhrwQAXVKswk1uo9yOTnPvCX1unl4rm2JTy3zJqAxzBrFpcJU1IrPi5JKEqGVPp9+w8G/zdSjF4jtwjWSSGF3rZm7UFf4Py0VnLsKr5
+ WijShmxh
+ vFLKX9LoKNp+j2uLhaw9yi3k4YlalLjH+IXgQQdy3g2MtJUIxb1LCjDX4Q58S13fc3BCj4anWQCDp2nfsSAf3LGOu2rtBwSbQeLjhuWNGnWXwEQlMUSfjWYYaL5jYbGF30QmaO/AnnVQi4ikOEwbd3yn7a2No7W1vD5YOSBFKncbSMjba1a2h1UrqxlDzwjrnKRFkYBesTbQygpyZSTdkwMC84wo86WTe2e8DbgLJE6PZ7foEVIkB2ka/2xV+jK0g8QF3yCTI4aoLYmSorV/r/jJ8bNxwBnlFc30i7ywAGIxvupZxvJU3af9wjAU+xJWo1K29
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,37 +97,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 10:09:56PM +0000, David Matlack wrote:
->Add APIs to allow drivers to notify the PCI core of which devices are
->being preserved across a Live Update for the next kernel, i.e.
->"outgoing" devices.
->
->Drivers must notify the PCI core when devices are preserved so that the
->PCI core can update its FLB data (struct pci_ser) and track the list of
->outgoing devices. pci_liveupdate_preserve() notifies the PCI core that a
->device must be preserved across Live Update. pci_liveupdate_unpreserve()
->reverses this (cancels the preservation of the device).
->
->This tracking ensures the PCI core is fully aware of which devices may
->need special handling during shutdown and kexec, and so the list of
->preserved devices can be handed off to the next kernel.
->
->For now, the API only supports preserving non-VF devices on a root bus
->(not behind an PCI-to-PCI bridges).
->
->Reviewed-by: Pranjal Shrivastava <praan@google.com>
->Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
->Signed-off-by: David Matlack <dmatlack@google.com>
->---
-> drivers/pci/liveupdate.c       | 210 +++++++++++++++++++++++++++++++++
-> drivers/pci/liveupdate.h       |  21 ++++
-> drivers/pci/probe.c            |   2 +
-> include/linux/pci.h            |   3 +
-> include/linux/pci_liveupdate.h |  21 ++++
-> 5 files changed, 257 insertions(+)
-> create mode 100644 drivers/pci/liveupdate.h
->
+On Thu, Aug 20, 2026 at 02:12:25PM +0800, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> This series lets a BPF program decide when to trigger memcg reclaim
+> and how aggressively to do it, based on whatever runtime signal it
+> chooses to observe -- rather than reclaim only being triggered once a
+> cgroup's usage crosses a fixed threshold. The core idea is a pair of
+> new kfuncs, bpf_proactive_reclaim() and
+> bpf_proactive_reclaim_swappiness(), which give BPF direct access to
+> the proactive reclaim path so this decision can be made in BPF policy
+> rather than hard-coded threshold logic.
+> 
+> This was originally part of a larger series posted here [1].
+> That series also adds a memcg BPF struct_ops (memcg_charged,
+> memcg_uncharged, below_low, below_min) for synchronous, in-line memory
+> protection decisions. That mechanism and this one solve different
+> problems -- struct_ops hooks run inline on the charge/reclaim path,
+> while the kfuncs here are for asynchronous, out-of-band reclaim
+> decided independently by a BPF program -- so they are reviewed as
+> separate series. This series carries only the async reclaim piece.
+> 
+> Compared to v1, the kfunc interface has been reworked based on review
+> feedback: instead of a thin wrapper around
+> try_to_free_mem_cgroup_pages() exposing raw gfp/reclaim-option knobs,
+> the series now provides use-case-driven kfuncs that perform one
+> proactive reclaim pass with the same parameters memory.reclaim uses.
+> The bpf_thread_wq patches from v1 (old patches 2-3) are dropped from
+> this series: following the discussion in [2], the cgroup-aware
+> workqueue is being superseded by a disaggregated set of async
+> primitives (bpf_kthread/bpf_waitq) that will be developed separately
+> (discussion in [3]), and the selftest now queues its reclaim work
+> through bpf_wq.
+> 
+> Patch 1 adds bpf_proactive_reclaim() and
+> bpf_proactive_reclaim_swappiness(), sleepable kfuncs that perform one
+> reclaim pass on a target memcg, like a write to memory.reclaim: swap
+> is allowed, and the anon/file balance follows the cgroup's swappiness
+> or an explicit override in [MIN_SWAPPINESS, MAX_SWAPPINESS] plus
+> SWAPPINESS_ANON_ONLY. Both go through a shared helper,
+> bpf_proactive_reclaim_pages(), which guards against reclaim recursion
+> and calls try_to_free_mem_cgroup_pages() with GFP_KERNEL and
+> MEMCG_RECLAIM_MAY_SWAP | MEMCG_RECLAIM_PROACTIVE, the same parameters
+> user_proactive_reclaim() uses, and unlike memory.reclaim they do not
+> retry until the requested size is reached. Both refuse to run when
+> the caller already holds PF_MEMALLOC or has a non-NULL
+> current->reclaim_state, since a nested try_to_free_mem_cgroup_pages()
+> would clobber the outer reclaim's current->reclaim_state (e.g. MGLRU
+> dereferences current->reclaim_state->mm_walk); the reclaim_state
+> check also closes the window where try_to_free_mem_cgroup_pages() has
+> installed it but not yet set PF_MEMALLOC, reachable by a sleepable
+> program attaching fentry to the generated trace iterator function.
+> The size argument and the return value are both in bytes, matching
+> the byte-based unit of bpf_mem_cgroup_usage() and
+> bpf_mem_cgroup_page_state() so callers can mix them without manual
+> page/byte conversions. An out-of-range swappiness is reported with
+> (unsigned long)-1 rather than 0, since 0 cannot be told apart from a
+> pass that reclaimed nothing.
+> 
+> Patch 2 (selftests/bpf: add memcg async reclaim test) ties the kfuncs
+> into a worked example: it watches the WORKINGSET_REFAULT_FILE counter
+> of a high-priority cgroup as a proxy for memory-pressure impact, and
+> once it starts climbing, proactively reclaims memory from a
+> low-priority cgroup via bpf_proactive_reclaim(), with the reclaim
+> work queued asynchronously through bpf_wq. The test asserts that the
+> monitored cgroup's workload finishes faster once async reclaim kicks
+> in, and -- as timing alone cannot distinguish a working reclaim from
+> a no-op one -- that the BPF program actually made reclaim calls and
+> reclaimed bytes, via counters it exports through its .bss. This
+> demonstrates the end-to-end use case: BPF observes pressure on the
+> cgroup it wants to protect, and reclaims from the cgroup it wants to
+> reclaim from, in one self-contained mechanism. Note that, without
+> bpf_thread_wq, the CPU cost of the reclaim work is not yet attributed
+> to a chosen cgroup; that part waits for the async primitives work
+> mentioned above.
 
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+All of this is unnecessary text. You don't need to explain the patches here and
+then again in their commit messages. Please remove this explanation.
+
+Also don't need to give history. Just explain why you want to add memcg reclaim
+kfunc and what use-cases you are looking into. (Ask your AI to be very concise
+and precise).
+
 
