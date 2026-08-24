@@ -4,91 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0A69C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 09:25:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85370C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 09:30:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13E756B009D; Mon, 24 Aug 2026 05:25:24 -0400 (EDT)
+	id 601486B0092; Mon, 24 Aug 2026 05:30:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 115A76B009F; Mon, 24 Aug 2026 05:25:24 -0400 (EDT)
+	id 5B7386B0095; Mon, 24 Aug 2026 05:30:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02BC86B00A0; Mon, 24 Aug 2026 05:25:23 -0400 (EDT)
+	id 4A0746B0096; Mon, 24 Aug 2026 05:30:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D776E6B009D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 05:25:23 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D120A36E1
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:25:23 +0000 (UTC)
-X-FDA: 85135629726.04.AEB1DA7
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8CCF81A0003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:25:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=KBoKjoJJ;
-	spf=pass (imf19.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787563521;
-	b=l7t3P79GX/uLsfr8L6KZw3zPwA8myWl5EkIo0PCpKMZNvdq3s+a3pwGITR2hWWkwPnIy6e
-	g6e3VWMSSA6AlfRiQugW1mgYk97gulz3cMwPpbagnBjbFb9zDaI++H+Z0oo5Ujk3vLVmlA
-	Dm/QYDAT2U5VcjDV6nWamcnEpBn3M+M=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=KBoKjoJJ;
-	spf=pass (imf19.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 23F166B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 05:30:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A49F21A04A7
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:30:05 +0000 (UTC)
+X-FDA: 85135641570.28.01FA1FE
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E408A140008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:30:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=feRmBWua;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787563521;
+	s=arc-20220608; t=1787563803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=fqyk0M4nQ5HyXJAey1xHXtSz/i6z8jK7G+LbcAImz78=;
-	b=d1sULF9JjiF+j2JD1bKO0/7SoHtiPy8XIGw5Kxd5ggy85G2QxTXrldaXaows9JF/rXo+VA
-	+mTxpVRf7apsTL+WCNb7BQZlnOERFv1Bb4VRRWUTC8wFKjMlbWXY1TJjoqxtmqnlEX1U9d
-	ofUALAP3aODg/q+wltg3vTXqx8QAoBo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=fq
-	yk0M4nQ5HyXJAey1xHXtSz/i6z8jK7G+LbcAImz78=; b=KBoKjoJJvXwEhR/N6Q
-	a1bJYNGkm9mfhJdCHrJ0nvg1AlHb+cCzYeiYL+1WUEEOVq1H5jAYw3F0jwHIhOnW
-	H30lGAn8tqms+Zu2cs+0vFK/jUmflESWDrYAbjouw7GZ7GQOKNMu8L/AGw8PloPh
-	BOvOw1w+aSRPk2fLJSC84PELU=
-Received: from XLL-9950X.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgCXUibmDYxqi1jwNw--.45078S2;
-	Mon, 24 Aug 2026 17:24:55 +0800 (CST)
-From: Longlong Xia <xialonglong2025@163.com>
-To: vbabka@kernel.org,
-	harry@kernel.org,
-	akpm@linux-foundation.org
-Cc: hao.li@linux.dev,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
+	bh=DGZ9Z1DPfEdVHcTUddQdNEyq05aFRAjwLdFGsMJBr5c=;
+	b=1L14Z0Ln5oiepkq6W+khl7PtkTsyoEOWWRKQ388uTDwM/IZKkiVhWoL7rqvwICYX2CEgu7
+	zPfrOnLz5cpwm8nt1BWCNkdGKO6UYMm4bDOA35iIWzQsAmOXoViPj+2iDtOOgIZWbZ2qXY
+	W2Vf1bMQqqj/v3zDv+T+kJD4KzXMLgo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=feRmBWua;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787563803;
+	b=J3uaYaclYkEuLO4DOy9FazeM9Nupbjhzgl9RDpm+UurGuMjT2MTIcsqpR5GLYlZt7oC74O
+	fTTL2YgC0Qx3dVGgXSju9A7oYPSQE0CRDMrzKZ2qZSPpXi+tN9EjC8CE88eiCN6PIWXDsa
+	pLr/3ry42iD0F4yMBkgyRpCjhN4FYqI=
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc11a30a259so3322456a12.3
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 02:30:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787563803; x=1788168603; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DGZ9Z1DPfEdVHcTUddQdNEyq05aFRAjwLdFGsMJBr5c=;
+        b=feRmBWuaWIXZD8zb5ZZpEkj/d3DBaTivxAuhYbBP3oAm8/W8+fAOP4so74+9BkTHfJ
+         MLBkwUTEeUXK5PCsvdnpNnpIWUq0ngkca+vmTeA10KxffN2rGi/NkkD+QH+ReDatZiAb
+         fq/KyT67fsxN61EKuK7nOHwcj3ipPd6vJM8AYRIgh19nFoBqg+3DS+zGQvlibSJfnQCY
+         qSV+u+lekXhFI2aSMBEKgLeAEMHA5xIK8VM30XbCCfempgNKSCTidin5wPsDdKHiQMU+
+         4RNVQFb49joUaWRgZSdPP2DUc4nBqq7BTlQZk8iK8k/vfs6HMEiJ2Azec8nv9ovpjUYG
+         owFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787563803; x=1788168603;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DGZ9Z1DPfEdVHcTUddQdNEyq05aFRAjwLdFGsMJBr5c=;
+        b=QyrTQ+m1aK5X8UEmIJ1PQouUZEpZTI8QwdZp1JIt6AxyJk80A83dgq5ujvIwmmiMR/
+         LuXb97XZoD2SEam+5eiYXG23lNbZayuO6onc6XgcLRg/Qa3fkEl3qxifQgXOE8wFeRBH
+         mY7iITx16RQAdc4/bpMzOXiKpNo5Gb1MkNgXABxXYkizvXH9M1AL/jOToAG3Ldxn5BK6
+         bgeuYLOOmZlBzYuaYKL9k/nRoi4+IJut48LDlrPLGpIHQHx/mth9zcHhxQY3VoDG70Zt
+         VJF/U/RfZco6r9MNRVFNcN4oUrznFOe7t9gzW5WI//P6nbevERWbpnVVN4DnzGOcL+bW
+         3Bzg==
+X-Forwarded-Encrypted: i=1; AHgh+RrF04EBssI91SH8WMVyHK8OHjYWQHDL2krlRUXxJT49JKuiGolb19wgGS5GGLnE1SubMgJkt8saHg==@kvack.org
+X-Gm-Message-State: AFuF++nHgXtIK9PtnY6aZXz05NzWxxGPORnVycnQnN0zoah0oWt+aCW+
+	oMnoqwWGWZTPvJOlGqOyk2N2vlBBURH4aQCkqXqpowEnAGBhWy3l7r6f
+X-Gm-Gg: AR+sD12jzbY9YLR88lYscV+lLBXG+GkpbCoHl8MX9mf+dXHD1DhI2z5eVsplf/QhqQP
+	9BCA6OVePqmJW5cvpqy8cYLqzXYB8Y8dZrq4I7B9JkBOfPjF5Ue1Kn9FMSNZhItsmZxA6VGs3Fi
+	N3LY6Bbve6DVn3osJXD02mGizR1ueiovbUz3rVbXV/MTNEfGfJ0odnhbLPi00Er/zy9bDvLZnvA
+	txAVKvYA1flj2pCWR+fuGJHprxwiQnK5IvTUZab84lFtVctT9savG1ZGk1bXeDvkjwkZE/5ZN9S
+	VmpCNa0WdAJCtyRncHuBlZRXTe4cxcbVQBj0Av8Jp5OrIVnjDzHKNjLfKEdFepRUk7gpx7zEFL2
+	o2ng7NvYOeThKvePk3q7CwJRm8tLQ9SpzX2xZ9ATje0jIwfjeUfchQr9AvnKN7qBR9/3DzxptCj
+	P1SOC2CYQ+Wpm1HNGPvfuFBrIePM4KdAGuuUnlPbMxs2yk866RAydui9iY6EVohZUTomPFk9YEG
+	is=
+X-Received: by 2002:a05:6a21:d89:b0:3cc:f008:8125 with SMTP id adf61e73a8af0-3cd4b9a9fabmr34624401637.1.1787563802568;
+        Mon, 24 Aug 2026 02:30:02 -0700 (PDT)
+Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc199e60035sm845226a12.22.2026.08.24.02.29.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 02:30:02 -0700 (PDT)
+From: Vernon Yang <vernon2gm@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	zokeefe@google.com,
 	linux-kernel@vger.kernel.org,
-	xialonglong@kylinos.cn
-Subject: [PATCH 1/1] mm/slab_common: reject zero object_size before calculate_alignment
-Date: Mon, 24 Aug 2026 17:24:54 +0800
-Message-ID: <20260824092454.1693745-1-xialonglong2025@163.com>
-X-Mailer: git-send-email 2.43.0
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: [PATCH v3 0/3] mm: khugepaged: fix tracepoint UAF
+Date: Mon, 24 Aug 2026 17:29:32 +0800
+Message-ID: <20260824092935.73892-1-vernon2gm@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgCXUibmDYxqi1jwNw--.45078S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AryfXF1DZw43Cr4kWrW7Arb_yoW8XF13pF
-	W8Ka4DXFW0qr17urZFya4kGFWrX3sYyay7Ca98Cw48XrZ8Xw4kJ398KFy5Wry3KFy5Way5
-	ZF95Kay09a4UCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UD739UUUUU=
-X-Originating-IP: [39.144.46.203]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+Ac6M2qMDed6ggAA3C
-X-Rspamd-Queue-Id: 8CCF81A0003
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: g6xtaf9dmtwtj8tgboshbxg5j5skt1pr
-X-HE-Tag: 1787563520-544178
-X-HE-Meta: U2FsdGVkX1+2BaSAEHaHbg1XChB7RXnY7cMO+CpgdeWkbvZhfgi6yNYrYInDAYZLJ2h0I03B86iRHlnDy2z55Z6U0E4AJyABYJhzqNV4OglB4OihpzCMr+kwSpxe4Wx1UNa8rfjKaQg+qnASadnxBe8m1KOrGCR03ihyDrigDQJEWl57SP8SEfnx+7AsVRu15sZvXYgLkGJRb8/4iOyM+ydoyC9M9akO/YDZI9cKcze/021I78jwTg+pk2R4eGK7W5iUKmbkhD2r0GMifGZeQPgOiicBezhFMESOxyzIItcMlbaG1zfCKwyYn0u6tpKaOWRCSpQACQVjzPeZ25RIvQsIzT0Cvpi5azz2/zaZ+BBUJ5nNLYW5iZ6HzvEx6MujOKEvQLm0EAfMCX2rakmaY8G3u/t1amc2bIX3JNCy6fss3aFXKxG1LAtU2lEokadl7qdEo+UV4lMkN/hm5yhZr+0t+ffvGAeanB7apVGdcBSbc1hfbr0LBSIYuD2ZO3cs+Hd2PP2+MknZzc8t84WR4W9LEuTg2IMuZbJ0mg/NjvHL95n1fLLzn8l1uI6pdaYO/9EOGQ5EB90P1TvS+MMAn45mOZhQc97iJt/5Rf1Sy1W5Db+Sb6RUuIfaf2rQuVr6x6tfBU4C82cHxdXq7HVBQ5S03qH10tO7sG6lU4DGPwQNOx1xmY+a2hMcnAi5VlgFH3JFqrNUDiYRFJZeUeaBvvW1moZmMR8N1UEZdMVjoUws0PvOyNxk2v+2sK3F3h0ZLkAqLT+1603H+dFbdM+7bNRgcUAG/+25U7dsROB/PlZBeiNGEyPvdn46NTmomSZ8aaJh9nuDGPceeNx/Ok8VIcaN5HdN8V4RUwxy4kdy8bsq8Ap33H6/CVG6IrF8J/0BvxsIOLezOfsQMJ/u7hm10F5f6S2jH6riGqL3CJX3dg1B5M5xTX3jLaVAaGKbby1NPpi6td45HG9pAWO25bc
- ah0hLInF
- 1OSUKbTfZWZS86zeEe3lzXG8GZTaXMR1xQLIlBQie+54hAeeCYDhbicvFHsefCaBuYWC0SBtGzjJB1CUc0NbE8msLJTowsJuKQHaGjTW0mtqailTBcfv9XfR2pkqmgcs6Cum6gwnIcekFZzIw1sHc8Zj+0dtgCwdwCDlyZjh7IwKJ9AsFEfNd57fttrW1kpV6Xm0L7zADciFb42pLSm5kr9FdKCCLdBT56/KScjMbvTHoTEhknKbl1NjpgXpNh6IxoOZ/pG4Zdozema/jXFXhp4Auasnl8qgOnO2vXu6IGRveycPLWeK1ObuVntKRdy0FsFU9S/+v3Wg7AyWNbezXBEvFw3aEYCyrqBAaEkc5LqrPPv3KT8hnILNowHJBjx0iIHFWT7y1TzP/mbg=
+X-Rspamd-Queue-Id: E408A140008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bm9e58xtiqqycsst13weg6gdx9fwmzdz
+X-HE-Tag: 1787563803-850820
+X-HE-Meta: U2FsdGVkX1+uPK/HWNOS6uvDrIT5K889XzZ11No12evgKC5LgGgqhlbqIRrjUzOKBgxbYpWy0adkAdlRN1XSnPO2aPgnb+pcvHwODRvZ56XcjgRxad5WboWbbAR95HojxEaM5oW+ZTsCN5eHJ6NVHKKqeCSH8fXUTDoeI7XizPTj0NpYV8OFLFPqiUFbkSZKoEOFaMK32mJWRUtYQHnHGCFic2xQ84fmNVd11NDMH4EbVg2H8e1GR7HtjqzdZ5WEVhmzAZxKIBrmbPWNERN1gECPPyP8q/vEM5/lIXoM2uz5kM7lQfHFcICO3dQJNycyiBb2kASE+zbQ+VCXgd0Y0pkOBMWnTGx3DYwV4hBTVu2DALHOmLBzgFVBQ1BcC8NJEAl/Cw68/zeQxzujFmNF8Wl4uu8k8wKJ/WG/OG98+WzHv2o3SNIlzrIxyPdVwoB79jvOwbNLTAs1XHVFLctO95nDjtXm2qfDs9nTUG0v1+2Woo74BEUut9R4ah2g0OQA47JzyW0639Z8LbJuorWU027TpRWDJiZ8IpPSkYi/3bCoqwgcspjHfAK3onRcmT1FZA/05QeKE67ineYr8vSlgurvzuv+zhynjFNhvroMk6er93UGz7MR9R+Jh7lsiD3F1OL1ew9climi5OTcjeMMlWDYUo1Ojv2xs2M217y8+AbKzAIqVcul8Czg5IpKg4zFxKq5DcFu2eh11rPNg+BgSD1DHYVoEyCp+RkgObpNRUhV4viSc52N4vERw2WnCcGx/BTIx3Ha2WFXi28qt9zo5MOwkpDFZcLdxhKlHnUU36hWRAgtvXosKGfpfMeV7o3MSDrXRjbRCVh9Lp+jGtxmKBsol7/GR9b0XXOdzZ++tIDlKPrlaqbYjt4AxIYNw7wx58LECUrOg9t1oX69MauvqQFLfVBBQe3eqXbIY9cidgx22QXhPEtqHovMTuidvmAw4SPb4bd2TXaRZnNnnbt
+ YynxOgf7
+ GGWEY2nv9lFAcofKkuMXUBAryPdgDq4/NAwJ5Jt1y2vOL6xZcjIt4sVTmqmpPScC41J8QI4LA8cPjMdNo9y/tPCHWh5TgAAMIpkDG+UAhh8HhCLIrrEDDvN7eQVcMTYuyGlKWg1TkOsVTbpaBnGLKeLFdPH3KbR2wVNbAAM4BKrRvr43eT9EMq9o+UmIBLFQ4kfH/FnyFdBkuN1CE7XJK8D+tOCTGmcURagmWpa81iFje4QAKdMdAkAoQznFJkk/wzZe+TQc5F8VTkqkD1rMSKEERFkHlUFCFLb7U2E3p5xaWF0H9JXkIg3NQ3bvGCH0aS8z/oBQlr5kK8LXwedH+RmT36vEcwXWr0mx9hR6CoKLkAqDxFvYz2M8RUy6XyL+ZesDspzZ0cnw2FIYpf3MQKPXTXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,48 +126,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Longlong Xia <xialonglong@kylinos.cn>
+From: Vernon Yang <yanglincheng@kylinos.cn>
 
-calculate_alignment() with SLAB_HWCACHE_ALIGN halves ralign in a
-while (size <= ralign / 2) loop. When size is 0, ralign eventually
-reaches 0 and the condition stays true indefinitely, hanging the
-kernel.
+The khugepaged tracepoints take a folio pointer and call folio_pfn(),
+but by then the folio may no longer be valid: freed after folio_put(),
+folio_unlock() or pte_unmap_unlock(), or not a folio at all but an
+xarray-encoded swap entry. On classic SPARSEMEM, dereferencing it oopses
+khugepaged as soon as the trace event is enabled; on other memory models
+it merely prints a bogus pfn.
 
-kmem_cache_sanity_check() rejected size > KMALLOC_MAX_SIZE but not
-size == 0, and the sanity check is compiled out without
-CONFIG_DEBUG_VM. Add a !object_size check in
-__kmem_cache_create_args(), which is always compiled, and add !size
-to the DEBUG_VM sanity check for diagnostics.
+Pass the pfn to the tracepoints directly, captured while the folio is
+still pinned, closing the use-after-free windows in
+mm_khugepaged_scan_file(), mm_khugepaged_scan_pmd() and
+mm_khugepaged_collapse_file().
 
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
----
- mm/slab_common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This series is based on mm-new.
 
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 657fd75776ea..209fe838fe71 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -102,7 +102,7 @@ static bool kmem_cache_is_duplicate_name(const char *name)
- 
- static int kmem_cache_sanity_check(const char *name, unsigned int size)
- {
--	if (!name || in_interrupt() || size > KMALLOC_MAX_SIZE) {
-+	if (!name || in_interrupt() || !size || size > KMALLOC_MAX_SIZE) {
- 		pr_err("kmem_cache_create(%s) integrity check failed\n", name);
- 		return -EINVAL;
- 	}
-@@ -354,7 +354,7 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
- 		goto out_unlock;
- 	}
- 
--	if (flags & ~SLAB_FLAGS_PERMITTED) {
-+	if (!object_size || flags & ~SLAB_FLAGS_PERMITTED) {
- 		err = -EINVAL;
- 		goto out_unlock;
- 	}
--- 
-2.43.0
+V2 -> V3:
+- Place folio_pfn() inside the xas_for_each() loop in PATCH#1.
+- Already defaulted the pfn value to -1, to simple it in PATCH#2.
+
+V1 -> V2:
+- Instead of passing the folio, just pass the pfn directly.
+- Using the folio_pfn() before dropping the reference or the page table
+  lock.
+
+V2 : https://lore.kernel.org/linux-mm/20260815051924.194810-1-vernon2gm@gmail.com/
+V1 : https://lore.kernel.org/linux-mm/20260811133655.267739-1-vernon2gm@gmail.com/
+
+Vernon Yang (3):
+  mm: khugepaged: fix swap entry value to folio_pfn()
+  mm: khugepaged: fix folio is used after pte_unmap_unlock()
+  mm: khugepaged: fix folio is used after folio_put/unlock()
+
+ include/trace/events/huge_memory.h | 18 +++++++++---------
+ mm/khugepaged.c                    | 15 ++++++++++++---
+ 2 files changed, 21 insertions(+), 12 deletions(-)
+
+
+base-commit: a032d41a86cb82a747bc14d9c82b3e153a9a9ab7
+--
+2.53.0
 
 
