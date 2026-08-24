@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BB0BC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:05:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DBD0C5DF9C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:06:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDE8C6B0096; Mon, 24 Aug 2026 12:05:57 -0400 (EDT)
+	id 27F1B6B009B; Mon, 24 Aug 2026 12:06:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB6CD6B0099; Mon, 24 Aug 2026 12:05:57 -0400 (EDT)
+	id 1BA7B6B009D; Mon, 24 Aug 2026 12:06:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B09246B009B; Mon, 24 Aug 2026 12:05:57 -0400 (EDT)
+	id 0F7956B009F; Mon, 24 Aug 2026 12:06:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D3856B0096
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:05:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C9A826B009B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:06:00 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0479BA01CC
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:05:56 +0000 (UTC)
-X-FDA: 85136639154.11.BC69874
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55D9A801B4
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:06:00 +0000 (UTC)
+X-FDA: 85136639280.11.4D0941B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3676EC0011
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:05:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KXcATGYi;
-	spf=pass (imf22.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787587555;
-	b=6u6bPhgqVpDVf6kI7cP9M8kNsqLE/ulEDVu7Lq6sf9FfPoPxiFlOLszWLl0zabSfEyDH1t
-	abVp9/tWcntcsUKTmOr1YQ0nelc9oKsqYoDb3z5VpgiLYUd/G4tYscCP91e/ploCJU7ake
-	/C9E9m2y/WwFI0OORmsZPHmJZsK/p/k=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KXcATGYi;
-	spf=pass (imf22.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf14.hostedemail.com (Postfix) with ESMTP id 89F08100005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:05:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=IJ4nzVeh;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787587555;
+	s=arc-20220608; t=1787587558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1tsHM56Af+xS/wSTkYaeejENR/tdpIY/K0Iqzm/97eo=;
-	b=pUfAkDxeJ54DWlImWN9YTf3N+bTdGfrH6sqyaxJynrBXDGQEjABzYNZNAM9l8PK0ROjGi+
-	a+mapyIGX2XOTlzo0DLipFAKWdrG425ANVl9dqXRrb6W+lGtSDl1tOwlmbqMLVQQMMmbis
-	7fycKKVEGWNNar97OzAbNBcGdrNamsw=
+	bh=3lhzQ8Ef5dV1+hHioph425Pq7Ajue7QfcmG8Lv/yNuk=;
+	b=seDnUlpBxMWuS92BLchKZfo41W/b8Rspmbe71RcVR0fTdHle6MJR+Qhgj2b7gG2pfuRUZ0
+	kylADZ0rwIILnxAtx2pfA+anrDsA1hTL3YZRs+K5UOPNqQGdoEND1bYc0/+YS9T+9dWXKI
+	0LHfhNYa5hoeGBFRM+tpA+dbcujKVJY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=IJ4nzVeh;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787587558;
+	b=gAag54eUQY+tGVna3Rn4t6xuBbYC115YCOi+5Q7y+ip/k+UDNypESORpSQG2XLVG/6VpC5
+	yPn+TICyoOqo5kg7ttmG+tJvpu241q1QWLf1x0g2gFhRLj9lzU9FjKMJydn2/ULxBIrxNM
+	/q/iRcgws+qwtWheqkCvqX+pm7xpR2g=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57321176C;
-	Mon, 24 Aug 2026 09:05:50 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DC93A1AC1;
+	Mon, 24 Aug 2026 09:05:53 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E50133F85F;
-	Mon, 24 Aug 2026 09:05:50 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 769D03F85F;
+	Mon, 24 Aug 2026 09:05:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787587554; bh=mAnn8lCC8CIaJdHDU1rhT42Z2WA5jMjaMEMo8Y0pB/s=;
+	t=1787587557; bh=m2SBTQpkWSQqtHWMxAh9TvwsKocaEw70262S7IijE4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXcATGYiblCFLHpkpJ3dWLchgVGcO9Fkn7aLt+0hDsnP3bpXXPHFXftjmt7pR58vR
-	 2bXx6QlmsEr8OZamAZdP5OCw7v/hT+jfDQRoSou7GvXm1ImM5oCovGMfQyOGW9P/Gn
-	 em69FAcrIUlVaiYSuADP1SL6CUzdUrdZlVbQffZ4=
+	b=IJ4nzVehS8Hj4+HT2oldjrWLZfDgo41bmtZTUlst4kclYjz6JGUKaYe6MBCCvzi8t
+	 7KG05+LCjlzm0mxwo5U1+zEPCt1LJnfci69d5G/n9XN09VbrmnvKqGB7eAhMcCqd+S
+	 ZBYO+C1F8Knznuik3pACO1Cht3v7ezOhwpBKTvfg=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -88,22 +88,22 @@ To: Catalin Marinas <catalin.marinas@arm.com>,
 	bpf@vger.kernel.org (open list:BPF [GENERAL] (Safe Dynamic Programs and Tools)),
 	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - CORE)
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH 2/7] uaccess: Add scope guard for bare kernel nofault regions
-Date: Mon, 24 Aug 2026 17:04:47 +0100
-Message-ID: <20260824160523.3907021-3-usama.anjum@arm.com>
+Subject: [PATCH 3/7] maccess: Skip setup for zero-sized kernel nofault copies
+Date: Mon, 24 Aug 2026 17:04:48 +0100
+Message-ID: <20260824160523.3907021-4-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260824160523.3907021-1-usama.anjum@arm.com>
 References: <20260824160523.3907021-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3676EC0011
-X-Stat-Signature: fmhisiribefhf8kse46c3i9a8w1wrcuj
-X-HE-Tag: 1787587554-258013
-X-HE-Meta: U2FsdGVkX1/fBRJsU8ufKS4f9k3hVRUSZPswJ57vEbvO84/S3znHP2fWnt/9fuAP14c6hTmu3VUV72JarwwjeTuH7IZQ/uLxZ0CMCqTiWvbcWbd37GbP+uZYO3pFg2XpwqMBZHFhT/EBn02MoLKZcc5Sn2HfnA8DYJQRuLmqVL3y2HpZgM7q6FcJ4bKOMNLuXl9oOx2/iJD3vAaaLtKMpLk+74keCAPwNkVjPcbs5QdSxNprW9RLS/UV2lnpiq3p+wgNVXe5hRdHOPR/6ciRxMEt8WTTv5krHsi9FeE3eYWjxF9aMHxSoSkKNCWnLp8HmfGV+3x+4L49nK3EpI7a6FaxbjF+qw1NnGoOPfJt2//fyfSkuS+in3ly7vZzNbqNrw/CHUKoR/YWy7iqhEPgkegR7kaoxCDa3dGVKxrueTa6gVZJ+bTySPEQ4heUdHhQFDZAMGNsaYJDeT4l0mYSjbssZk6VN/lO7h8g+TK4rAXqsqUgiOTe4ziBQl8JXjm1RzgL64rke6kdeSXx+Ct78s8+K2xlIlRlaUR0WpNgP4AlaWAlkY727AH68rkrdxFAzNzhf839XSnLnn8AvvqidyOs99hysLuiaSgkXxEjNhrr0k3kuUUZ14nCbVTjHT98+9gUsYyJ2c8i+LzhRJxISQTyOzCFB0nNnyg8F3a0Bhl/lNo4Fy9vzRKJmM6Wm9Bct50Q/OFUNmX7zUqxPZ5HrYICVvbsBVxXTSkMtxCJyKqcYdTbViDPeLntNyEf6Sarg3WJiamdJilWhrcmPECdlfCsnzQgHkH9j/I1BS2xrQlQ21FjBl+/ked8OeV78mpc4NPjLLm6zUfnFcEz3lhsZAnvuhG4rb5ZJBmdq1jBr4bAsCJK2Sy07bbZdUQ0eSrCi5M6HncKSpaqrFaJzzAyuFut2ajs1HEa4Y23SjmtwfLqU75shKEmLyrp4eNMaCNM2E00JklUu/d2RNfkaLI
- TFvrxVVo
- hJqBkYNRuR4jCByVg5q2gKDNW3WTokpdDWyo1tCYKfrnhXjdbxDtcTNmgfw/qingqqOaAkHPynJEiYZSR1D5R49Ahnlr3QhdoOg4o1LLO6eyH6QJlrfYIsypbyA1PfBSlJKJnoysFaqwM5ecZ1nFf4r7wWr3D8Pic8LPc/GvoDXkLsaPKntkSrXZ7fRDiTWAMuuAwVZtJLW4RSktT/4OTOmcI08kvUPmpgj/6cy2kUhZOT1d+YUVQ5fzagcuqVBEyh47NOjK/+C+23BLxPUIfOKfMXewqBUhv+BpSmGL1oxl5K06bAbjNtoN/lol+Fya8b6zV/p9EOTqy/W3ce3efrA8D/gGP7wA+gPKnOjP9rQjQhj+zvmuoyOBF0utYGLV+hTsGhRzHLp+kEMuWaeIixmehTEpIv+qeUy1ZyrdR5dQebGBECv10+LBLEnXsE/TzUfPVwDVEVNDobysk4gEkvrdBS7GEaOqWgGaB9fWKYQNICqDKtw4uLif07yKGDxFcXwpMuc/jaV1bhaoRLrwtOgNGN2LChcih9Ddm5/Nx2Wm2Lf7IW4E9RX+UfQbX6aI+w6H3WaAvagsDO9sX6ZDoqYjSUkAq7dLup/7LmvmRBqcRpc7v9z2AFdaB/S6JozvncrcpOKDtcjZWzpjw/X69NQzS89pRCQBclxlNDEHBuH4HCMp4DyGlwFIZrqS3koelAu1nqtNpKoCFmgy1gNnCY5ZZ3/2siFuxJWNOL3By15xnooX6oiN2T4bGC6+0OXCb0vzdhLNG/5CwWofK/HnxJVo0FuTsqJsIC5NrwBdpGIMsZHloifD2n2zMRvn58FnqVMr9Omi35MNIyKSxsTLYD1u2Hi2fdQhplRaEgEk7Xo0CpOioNdlTTyrdP2oY347+ULylXi9JcYaWPlnTHpIUlYDwssP9w4EzwUGw8X3hAWPXYzOfWR4PuUpCut1tEilTHX5t
+X-Stat-Signature: myb9wshq6rez44q6wzjh9cb3wzbhno8z
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 89F08100005
+X-HE-Tag: 1787587558-503354
+X-HE-Meta: U2FsdGVkX19hgn4Y7waPtflKBi7ezY4DjT95KvzPXpc3Y/DV9NrsaldqIMush79C40UloWD2pz7xJVW2GsNYzeQbL3IvIsnvsCkvg5nfYL94/cHwluLT8psnniQS/oZ31saRDsf7yD4CuFemKSCiWy8OnGQDyNrnf8iGlZN2rtZg51fo00P+TYoYD7Iuv3Q+WTcWimHczPYy1pk9VepM9xGeBT0yZi5XK5sdzCy6AzwsnI0aJ6NbloZSu8PYaGMDFuba5jD5a0w4de4jWeLrf0p9Loxg+AQx61XUqz7qMLfwcwVK3SBfOT46LenVPUd8mAJf/R4XUxT69L6O4Y4dgeOeN7tDy+pBcSjnD0QdLWxdEfNBP1mmgd8u6VJUppBTmsJh7rpUYMlbFjHuXA97hIHnp46ZeMqWau2KiD0xZySqZmd0wd2iLwiKNbsQNcpHGm54D39Y6zx/OaJlPLE7Rcu9DvoYNCE+Jhdutz3iH80odYEPAYGgYWrUWEnf38oRPXqhs5W3/r6p1JcTR+XLnCRbkAyCPrg3gbYFUNcMurd4kUXzdvM+d/1mkceMnj5iqwekhqU1EOj3t3/msUZC0IHjGhX2SdNqntfsSJe31qWZohYnstBWwwKmoWSuejViVSHyNf+atvMCO+vPMJzYpuDS51dlVspZ0v54ZJ4Q554QD1Fx13q60ti/J2TYdGf1DBKNnppijImqeyL9aOf2tyMaUtlGnjL147RYXPBz2sGJS54OH4wvjQZHbvfRjTlMRe2zhwVxVgSk0BpFyz5zNpUl9x8qlBsxYLaqwZ/BRYluSYCTgcHAuQWxMgdzAjFYArQGm4Pt1QDE1OwUjz2D31NysDxA68t4/bsV0cbPsG6e0fS/wpyH5NsBku+Z8lyKEx76pvCTl0OP0QmQIb39qYFamqnYzmoGKWTPgTTEZTB34D4aDB2vTjCDvwT4EbRWW3vd+kB3WpMYM10lcO4
+ tbjpecgu
+ 617mwr9m+azEsC3L4UjqTVKt7dlKOk3Q0Eb4T0mYuwO/UMBg8SlDukNiC23Df+FYMWs5mtZyllLuxYivU7HNt3CB/XPj5fT0CktIIaI2T0+p+irnW04VkTvxuwao/W1hvTD/dtSXoKTVB4HLm6TPQc0mSP2VpqhzmaaVBqo4o8by6Olcr3ls6LVQd+EO7pq+jJkL0uYi5E/Hrd/zJtWQgStGG4/QbsGHJU95uHHGW/RM1EJL6a+oBIImC4knwj619MR2/WKQtxaZfuv7ZJUWhU6yagDp7/mrkXzLU3BYqL4M8YPvOpiIQw/oo4NjG2aIlK7ZKVNKq445/lq/YKkeQCPIxUwhSkh4/3RZ8i9d2HbtPFokYM3mG04KKR05sPuidfWn/jrhWSd6V27M1eZWoRR5usYZ8hJrfSh7E+jig6KQgf3ouyu1wsfr6A+Nh8epauX3WtliRAyPhuC8PZXKYUjM5hqCgE5sJOXaS7OTDFR+cWc7AserRBXuzCOzwMpdEr9ZkfLOPYU1WUvGodK6npvhn2595zCcu46HQIh7IMdO8p4IfIVLsb2XGUV+ZE8TH+k1hGAfJLxvtmGsfawLaH4xDM0RVi68ALmcYJdTyYZbRd/rdbFQwpTXDgiqwfEqtIpKVG4B44ETvmf1OEfSCoPM6TKF4ek0TawbGiLeI+JWxjVKeOI8RBtr3t9TlAmImhD+J+A1zK6L6kbD9QLAlzlmch/aPPAWcBf8p7KcMOl9DRBJvsiFUF3OwB+qJYVLNbUa21xdr+HAx90Pqx4gs5B3jT1KBaMLpXX98j9ThhQ3FmS7wp4r0L6nR/2lUiFjEafEELKkBw9tVfqmujpan0bvMdRsTJ7GNZ7BSgo5NwrLtbhcmt+S+6AUM7dV1zzqY8lvrBUKY37X16MHadW+TWUVABMWxSQSRPquM7ZfbDrGnfs+h1yiLzSnsPTTFF3liHRW+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,35 +111,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A batched nofault region must run its end hook on every exit. Pairing the
-hooks by hand makes early returns and error paths easy to get wrong.
+A zero-sized kernel nofault copy does not enter an access loop, but it
+still disables and re-enables page faults.
 
-Add a scope guard that starts the region on entry and ends it when the
-scope is left. Callers can keep their natural control flow while the
-architecture state remains balanced on success and failure.
+Zero sizes are valid. BPF probe-read helpers accept them, and KGDB memory
+packets may carry a zero length.
 
-No functional change until a caller uses the guard.
+Return before changing page-fault state when there is nothing to copy.
+For reads, keep architecture-specific address validation before the fast
+path so its behavior is unchanged.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- include/linux/uaccess.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/maccess.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 7ae1854673471..b25e778ddc38a 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -653,6 +653,10 @@ do {							\
- #define __end_kernel_nofault_bare()	do {} while (0)
- #endif
+diff --git a/mm/maccess.c b/mm/maccess.c
+index 486559d688583..c59a0e092d24a 100644
+--- a/mm/maccess.c
++++ b/mm/maccess.c
+@@ -35,6 +35,8 @@ long copy_from_kernel_nofault(void *dst, const void *src, size_t size)
  
-+DEFINE_LOCK_GUARD_0(__kernel_nofault_bare,
-+		    __begin_kernel_nofault_bare(),
-+		    __end_kernel_nofault_bare())
+ 	if (!copy_from_kernel_nofault_allowed(src, size))
+ 		return -ERANGE;
++	if (!size)
++		return 0;
+ 
+ 	pagefault_disable();
+ 	if (!(align & 7))
+@@ -65,6 +67,9 @@ long copy_to_kernel_nofault(void *dst, const void *src, size_t size)
+ {
+ 	unsigned long align = 0;
+ 
++	if (!size)
++		return 0;
 +
- /**
-  * get_kernel_nofault(): safely attempt to read from a location
-  * @val: read into this variable
+ 	if (!IS_ENABLED(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS))
+ 		align = (unsigned long)dst | (unsigned long)src;
+ 
 -- 
 2.47.3
 
