@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E13C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69633C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:26:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87EA66B009B; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
+	id 98F836B009D; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8273D6B00A1; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
+	id 9607A6B00A5; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C9276B00A2; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
+	id 7D8D86B00A3; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BE406B0096
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 523576B009B
 	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D73C61A0194
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CBD0B1201B7
 	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:26:34 +0000 (UTC)
-X-FDA: 85136539908.27.C5E7CA0
+X-FDA: 85136539908.23.A60133B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D93DAA0004
+	by imf27.hostedemail.com (Postfix) with ESMTP id D744840003
 	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:26:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZNHeNCf9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="evkVSOi/";
+	spf=pass (imf27.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1787585193;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vUDbLl6GFq3AXFVmUsZ621ipDHQmBt1g1Mu6F1/B6b0=;
-	b=xEbcC3Yho8ATcaNG7AVt0m9mheX4L0456V0M3OPwoEsDLX9/ppG14iAiI2aWtBXfBKtt7Y
-	YbGKkY+BQAY3qTlc8KI+eo+NWRABNn9tisqG/qUlQ7HUWHZ3PcHAp7TpGrjnr5wxh58Gjv
-	NiGklKQhugGDt7gXd3jG24lrg2l8rro=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZNHeNCf9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	bh=5rrYs1FTn1+fNq+SXDdkSW7HHYGKBPFlRq0xZ2JWlhM=;
+	b=FCA2cW2LupeuAPQhq2AOlpZFD3Ou8MgiAVi0IqCKXWlWIPX9/WiFyrBMiMma9Yrhx1GsVf
+	vLuDmZA2IkzvM4TdQo0e4rTKX/tB2OEBLvXgNb8C7IIth8dx3rOu8J0SUdMTJk+vtEhYRe
+	bZeyE9l7o+r36BJK59wO8zMP/SfFsR8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1787585193;
-	b=gU3htmjZnWroL3VKEzSbGy7MwwYVDRSb2KZVPVqeUkRtMgMSzBP4CSwESadcpIw9pmJZic
-	xgQW3BSd5va38S4Xakcn+lJYyPjlMW6A41ZyIwTuwZk1d1wrZ1DTOvHmIvFFNhQY2ClHlk
-	2vqEFu/6Q+UH6CS1JXXoyuAwfrF++nM=
+	b=x4ggV6FkyeE3YaUgXZP6eBD3I9iv6vMfF1AklVVYwaAPMEfIB/JZUVl2CLVQiJdb3hoTIm
+	mVXi5VkrRTA+HR+NUmm8C73W/eV6KItUZFHd811DSc9fQY2Gy95whCHqPIffxJ81hLbAru
+	i1cDJWdRZW3rpCBRvP1bgZM7gP5vh7g=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="evkVSOi/";
+	spf=pass (imf27.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0BBA443BD5;
+	by sea.source.kernel.org (Postfix) with ESMTP id 286C343FC5;
 	Mon, 24 Aug 2026 15:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D36A4C19425;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0181CC2BD00;
 	Mon, 24 Aug 2026 15:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787585191;
-	bh=bN2F8gmSHKc1/jt75s0wLe0MmFp59ane/uTTthFFmOQ=;
+	s=k20201202; t=1787585192;
+	bh=P+17iUIaKozZUszrRwBPon4mP56KzLJ6WpxOwu3K73M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ZNHeNCf9t7zLgIVI7HBfTfunv7f59iFTKQczIwTWr0zUM5Uij6nDVv8g8FZbHI52I
-	 X56PQNRAEgFeTT1t5csi3wRpmkxhvxRT0rziugCWbeZX2bvpy8zury5iAQF11cK37O
-	 sCWbnVVdXvhxrCtESr9CT99nSjxyrkf/PR3kKg4T0A6ZlTb0J6BqK9PKF16evvBGp6
-	 p6Hrfr94J0Vo+z8PlnQ29wC7T7fKGlc9Jad0/PUJSNBzkAobmkfsAPfmNW0Bu9NTd4
-	 iYPBOcYZmj7O9fxu0k/X1BkAujPKgGC/NOXJtsMfTNET5xUNwxowOIAtdA/ldIgnnT
-	 3meD7YAwdZrYA==
+	b=evkVSOi/AASgqhx0m0pslJmESHDQjSwT2XZ5pV4+3mjA4X+KiInpvYmecFJhALIbS
+	 ghsOjUBgDXcgO130CF/TYN21VMOCSLCcHoohwcE8K/NZQcorYMpnF4hErX3gfwuejo
+	 YCuNPm9Aq/8c4qqwNhZGY5FfvG6LYI1n0lpMd9KObZ4IWvEE1kHg2ofh8IHU/CBzoQ
+	 KumQ4PKXKFDiKP7b7QR4VUN3G+7X6wtDGyjLTsag1D2l8xTTfqrhIkqkKuIUtcMlkT
+	 yjG7KbW9n8iAzYgFdLhioROxcv8fCBtrFez5xXn8GwebSK6/X4zB9HDO1dR2KnVjCB
+	 vO6iAX2jHYTUw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0CBBC5DF9C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB982C61DB4;
 	Mon, 24 Aug 2026 15:26:31 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Mon, 24 Aug 2026 23:26:28 +0800
-Subject: [PATCH v2 1/6] mm/memcontrol: make lru_zone_size atomic and
- simplify sanity check
+Date: Mon, 24 Aug 2026 23:26:30 +0800
+Subject: [PATCH v2 3/6] mm/migrate: copy all referenced state via
+ folio_migrate_lru_refs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-mglru-flags-cleanup-v2-1-0104132114ae@tencent.com>
+Message-Id: <20260824-mglru-flags-cleanup-v2-3-0104132114ae@tencent.com>
 References: <20260824-mglru-flags-cleanup-v2-0-0104132114ae@tencent.com>
 In-Reply-To: <20260824-mglru-flags-cleanup-v2-0-0104132114ae@tencent.com>
 To: linux-mm@kvack.org
@@ -93,11 +93,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Kairui Song <ryncsn@gmail.com>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787585189; l=3616;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787585189; l=3250;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=RexeF1U3Yfl0k0lRFmBeywxr/pHJWWKLBeFtqNt3agc=;
- b=BZLmo0P2XGHFX1zI7sUUmKSe4H3Wpg70rneiSn6rerCZeGSMyCua0Uo+7VKEzGhYmGwVtnAdv
- 7TwR1hIlpuTAf9aQp09WtZ/jGtYwqgpmaPHmB5ZMWy4z5yZucbnyrIx
+ bh=cPJ+z22jDdcCM3atcpqaDtz2zW4ZvNzKe4hDfgAQsCE=;
+ b=yVbj2v8HH/FoZaiXjkE0G1SM5F9E68EtrLhFxk6egxlIGeT+4fZ0IJPVD9g/sfre3W6ZuzyaO
+ qhoBG9o1nzMBvRIH/Nl/0QiyoXI6itIZ8RvOPdhjdo3dIHFQ9qA9Un2
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
@@ -105,13 +105,13 @@ X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
 X-Rspam-User: 
-X-Stat-Signature: jhqof6ubr63j96874fo6795d516e9as9
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D93DAA0004
-X-HE-Tag: 1787585192-552447
-X-HE-Meta: U2FsdGVkX1+IdERScfBPFlR1MrLtRI9cz+LHlP6RcFHdYeaIAbR0YjUrpRGc9/KyYNQnNFjiqgzjOJa9IpEt9pgks18C2xqOu8/8SdY7MaQVQnAl/qrBewNFk9cHXgVpyHfjNgdwxbVQF+XJj1Wm1iqc3WsVaSKZmxqO1mj5stbo+JGI+EjX/7b+BAzjXBgoZSVCT4fwSSdl3axNGMksu0FrDkp3hZg1AdjqhaCaEXoTXkJWfTfo56+bQXKvjEOs6My/6pcJwmqNJp0fQUHzRfTE34/p2iBfNWMX96lgb4/Q0GNWbTBy7PZuSK5zmUE2C47Er1DizKJSvc3yrCkUtSCcIbnulD45os88bRVcuDZPVIdEniX0tpw2JTKaBe0BlwpRgYe97oxmiEf4wmdUIPk5EFPr/SdkX6oIgms8lEog70JSxRv6beb4FDgsCaHAvBuYCMQZ9RpntsAHyelUVeFnu2QlshTOFaJXr69E3jSvlXV4KcJWleMz2gTs5FI0MK4L589O33+dcHMfV6gVJANUIsduVB/d+1r3HwEWVMzWjrS4bXfJrsjkPn2549a2n9XxHFuAILxwCsQsM5OpuyZBApKxV0pJU796UuSR1gV90LluZCsEahd7Vi0n47rMpiUXkVOaouNcIelVJq29/5PVFft2nyHWLKxX0sw9lCthTWZL6mOd+H2kPYGwLSvGG1Xa0wn0tL6QQ+zHP9pt8Qaamu8mgdceQXBvA/HX5968+GdIwsbvPOTdzPQa5jPKKe3KWazYOVLxFpbZObsw5oSKK9Xp0cAZj+C+OM/mJ9Vh6p1QrFID6NXZ8U9KYxq56XWirtuh33Ebc6Xsg4gtpdnemw6zxBtzJEfG+URy47u5w76600lUMWvaTL216bWLpB6wkHn+9U7G/EzGeBeuIsC8D/6XYCWRYqWdcUpQsi2MEdeWj9CPSCAnR+MFMMojnYf2tU59JTG+yGwubtv
- Dfuq73NF
- gHkr/vDjo39HxlXbP5vnzb5XPwShyp3+mgRwoUgJlydGABIvE1MzVGkMRIbecx4L5vhl/HPw1HfovOb8l9aH0IZUz0JCT0t3iMe6AJhWcFmcnNc3sUZ9cQnfgZwKKzcvLiitpIqfqs5NT7gq+rztspfyUvr3kjmEhgGJN/zD0v0VWheB8gHJZasUTAIDe5w1YC0Tsi3FTkiyEPsQN/o61jTMnZvJHNgQTzWUSeAvhDOrJySKnGgeMYznmlNz+yG18WTMC4foWy1QmEb6zTpcS4hEB0ys3EkjUltO0S2UkSbVMRFp5Tl/TQW6hjJ9/B9KttnJku9CsmP9aVC+WVLlJDd97/XZt56oUgYNd9b767slgWyE9RGpv2NUZvbhtiFD/Z1M6qJwaQucel7zcXDkkqxdFvggR88oHeCXau+2qYko3/LHj40Zu0dsx2sdxKFbrUzmp/A6AGAOSxdY=
+X-Stat-Signature: ere56dc8sb3bxq9pqqm7xg16kywtqu3q
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D744840003
+X-HE-Tag: 1787585192-503175
+X-HE-Meta: U2FsdGVkX1/cJdgevWHB2vv+y33a05ByK3l6YvSNvqr8Yw7zWpuzNMq7vaw8sL+5VpZbTEbV2EwCb61T2VDpB12EYH6ELrfy2nBaKI4r01bk0O0M14e5/Kytfnnv0zgxRuknlRQxJf8KlqU7MmuU3RfD/1h+A16CWy6gb/Q9OTj9ROhWOVFyFfy/xqwTuna1qFl0ZOyEG6opdcTXLx5SI4y8vk2qcCOw6r9bh6zlhFIPfxZlTSdflGgziJoyNejbqO2GAxbxF+S9SfHXoxMrERpRaRRInyjlJcbmvoT7B4OlmvUZCS82wMVrzvEXGV5vGlivIwvr/AVWez44cAoBAy8XV7IbrbMZUpWaB1OOI/5eoi8X6Qnufx5G6d4iO/iV/S6YaqpJBUf2baM5i2/9AN8K1vsG5R+ZK3EmNFIiMDHiYg93u4MXiJsGh/krxVk2VsgIKqMqIxQUuiI0awdkWq17UrE3yUPcR6V3o6GKxTLoKAHw2boIv5VBQefll9OOtkL7bvyCrcgbNymE+ee81w+DbMAh2AnFiJNf736Q/2MLbw/gt43mqssfgr8I7tawC1ZFudgy76XmeGRkjcL/8+WxiHIc7QDiXnam90KtZBntgwvwfTrrSlQ5hydx9n1OezpUyJZ8m/DwhLuenm0gHR2XfAhs+gM8D2wHz+m/0OX0mIxXhrU5tphi/78zUKmWkmouzFmSQZLptzrfZXXJFsVrH0HB41IkVFvYrLi4YA2/m0w8V7U5EAWfSGQKQ09Q+AEhRsYTr+zGZYAT9+wKA7SHRwJNwRhkWofTF0IgylshfP9dCKhDuePgP/xUMHvsqbm0oYRnQDz9bPZNh7PCN1goL/n36W2YTcemWXs+t8bWBtMJAOZf4PrxALHiPmLbVoHxy+Np/xw1PcSWcc9SeptZdHy/1Lz0nMhupl0vTzWKOU/ALvyYG24YvrGJWzRlZBgFAnkzveZfPWHCM2H
+ f+zpPlMI
+ U5W6cvl/yIRJF9/QNMB4dpksjMdmVah4b7nVh4ScFxygmWG09Yc/w9ScsQ/rKpLecy+FIxnYiTMqrNEeW/S4iBtLapzzhq+uOwtUhjoN29+nAyPSCFGBWq9OrTJMkzhCjys2QE394DtoTQuFbtDrSEbzMMTa3T+aao2shAXj21lt4RtMpBuPLgqMUOwwbSfTEo2YvudqDF1MmfGDW2Mh32TrwdFCTuhAM8npf/uwdWN4s5XhB3BgNClo0jDU4Tt0dMAe9X4E4yE3YzYBfF4FrDFibXDIJwcVIYmp4TbpB8zvDXOMRdUMOCId/t9duNIl307zvgDsxDiYXAljmpAUvEKMWd1t/BV2aDEMmdDiAP5Dyh3xsH99ZjP3DOZOOXcec3LgQPVdFn9pmUbekGfSRf+yDPDKJ/duEepoX/SRo9iuPRsCdmFCdnOos+kjXM1KPRtQ0mvl4uAl2Boc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,102 +121,90 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
-introduced a sanity check to catch memcg counter underflow, which was
-more of a workaround for another bug: lru_zone_size is unsigned, so
-underflow wraps it around and returns an enormously large number, then
-the memcg shrinker loops almost forever as the calculated number of
-folios to shrink is huge. That commit also checked if a zero value
-matches the empty LRU list, so we have to hold the LRU lock, and
-handle the positive and negative deltas separately.
+folio_migrate_flags() copies PG_referenced separately from the MGLRU
+refs counter, which folio_migrate_refs() transfers. Yet under MGLRU,
+PG_referenced and the refs counter bits together describe the
+referenced status of a folio.
 
-But later commit b4536f0c829c ("mm, memcg: fix the active list aging
-for lowmem requests when memcg is enabled") already removed the LRU
-emptiness check, so handling the deltas separately is no longer
-needed. And if we just turn it into an atomic long, underflow isn't a
-big issue either, and can be checked at the reader side, which is
-called much less frequently than the updater.
+Consolidate the two: rename folio_migrate_refs() to
+folio_migrate_lru_refs() and let it copy the complete referenced
+status, i.e., the MGLRU refs count including PG_referenced, or just
+PG_referenced for the active/inactive LRU. Drop the open-coded
+PG_referenced copy so the referenced status is transferred in one
+place. No behavior change is intended: under the active/inactive LRU
+the extra bits are unused, so operating on them is a noop.
 
-So let's turn the counter into an atomic long and check at the reader
-side instead, which has a smaller overhead. The underflow correction
-is removed: a massive leak of the LRU size counter would indicate
-that something else has gone very wrong, and one should fix that
-leaking site instead. Besides, the updater-side sanity check is
-unlikely to catch the leaking site anyway: if a folio was removed
-without updating the counter while other folios remain on the LRU,
-the WARN only triggers much later, from a likely innocent callsite.
-
-Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/memcontrol.h |  9 +++++++--
- mm/memcontrol.c            | 18 +-----------------
- 2 files changed, 8 insertions(+), 19 deletions(-)
+ include/linux/mm_inline.h | 20 +++++++++++++++-----
+ mm/migrate.c              |  6 +++---
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 215e2e87f42b..7b89d0cb5f6c 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -113,7 +113,7 @@ struct mem_cgroup_per_node {
- 	/* Fields which get updated often at the end. */
- 	struct lruvec		lruvec;
- 	CACHELINE_PADDING(_pad2_);
--	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
-+	atomic_long_t		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
- 	struct mem_cgroup_reclaim_iter	iter;
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index edfaf2661812..7f91a89b5ba3 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -365,11 +365,19 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+ 	return true;
+ }
  
- 	/*
-@@ -902,10 +902,15 @@ static inline
- unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
- 		enum lru_list lru, int zone_idx)
+-static inline void folio_migrate_refs(struct folio *new, const struct folio *old)
++/**
++ * folio_migrate_lru_refs - copy the reference state to a new folio
++ * @new: the destination folio
++ * @old: the source folio
++ *
++ * Transfer the reference state to @new during migration: the MGLRU
++ * refs count, including PG_referenced, or just PG_referenced for the
++ * active/inactive LRU.
++ */
++static inline void folio_migrate_lru_refs(struct folio *new, const struct folio *old)
  {
-+	long val;
- 	struct mem_cgroup_per_node *mz;
+-	unsigned long refs = READ_ONCE(old->flags.f) & LRU_REFS_MASK;
+-
+-	set_mask_bits(&new->flags.f, LRU_REFS_MASK, refs);
++	BUILD_BUG_ON(LRU_REFS_MASK & BIT(PG_referenced));
++	folio_set_lru_refs(new, folio_lru_refs(old));
+ }
+ #else /* !CONFIG_LRU_GEN */
  
- 	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
--	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
-+	val = atomic_long_read(&mz->lru_zone_size[zone_idx][lru]);
-+	if (WARN_ON_ONCE(val < 0))
-+		return 0;
+@@ -398,8 +406,10 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+ 	return false;
+ }
+ 
+-static inline void folio_migrate_refs(struct folio *new, const struct folio *old)
++static inline void folio_migrate_lru_refs(struct folio *new, const struct folio *old)
+ {
++	if (folio_test_referenced(old))
++		folio_set_referenced(new);
+ }
+ #endif /* CONFIG_LRU_GEN */
+ 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 15b45832bcfa..96eda490ba43 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -776,8 +776,6 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
+ {
+ 	int cpupid;
+ 
+-	if (folio_test_referenced(folio))
+-		folio_set_referenced(newfolio);
+ 	if (folio_test_uptodate(folio))
+ 		folio_mark_uptodate(newfolio);
+ 	if (folio_test_clear_active(folio)) {
+@@ -807,7 +805,9 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
+ 	if (folio_test_idle(folio))
+ 		folio_set_idle(newfolio);
+ 
+-	folio_migrate_refs(newfolio, folio);
++	/* Copy the reference state, including PG_referenced */
++	folio_migrate_lru_refs(newfolio, folio);
 +
-+	return val;
- }
- 
- void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 11b85f4b6828..a7572ded56c9 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1529,28 +1529,12 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
- 				int zid, long nr_pages)
- {
- 	struct mem_cgroup_per_node *mz;
--	unsigned long *lru_size;
--	long size;
- 
- 	if (mem_cgroup_disabled())
- 		return;
- 
- 	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
--	lru_size = &mz->lru_zone_size[zid][lru];
--
--	if (nr_pages < 0)
--		*lru_size += nr_pages;
--
--	size = *lru_size;
--	if (WARN_ONCE(size < 0,
--		"%s(%p, %d, %ld): lru_size %ld\n",
--		__func__, lruvec, lru, nr_pages, size)) {
--		VM_BUG_ON(1);
--		*lru_size = 0;
--	}
--
--	if (nr_pages > 0)
--		*lru_size += nr_pages;
-+	atomic_long_add(nr_pages, &mz->lru_zone_size[zid][lru]);
- }
- 
- /**
+ 	/*
+ 	 * Copy NUMA information to the new page, to prevent over-eager
+ 	 * future migrations of this same page.
 
 -- 
 2.55.0
