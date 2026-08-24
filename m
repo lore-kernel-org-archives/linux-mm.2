@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FB88C5DF8C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 03:06:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7D2CC5DF8C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 03:24:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA8316B009B; Sun, 23 Aug 2026 23:06:13 -0400 (EDT)
+	id 5E9AD6B0095; Sun, 23 Aug 2026 23:24:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7FC86B009D; Sun, 23 Aug 2026 23:06:13 -0400 (EDT)
+	id 5C06F6B009B; Sun, 23 Aug 2026 23:24:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 995AC6B009F; Sun, 23 Aug 2026 23:06:13 -0400 (EDT)
+	id 4D6CE6B009D; Sun, 23 Aug 2026 23:24:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 78B026B009B
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 23:06:13 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E85E1C03CC
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:06:12 +0000 (UTC)
-X-FDA: 85134674184.28.087D707
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E123A40008
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:06:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AeW14FV0;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 28D446B0095
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 23:24:56 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C1324041E
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:24:55 +0000 (UTC)
+X-FDA: 85134721350.20.606E641
+Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 67E9420005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:24:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qKA7mjhX;
+	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787541893;
+	b=aPuPlFxgN9cYN3KXXH06/CzZBtr3sgMgeLmBDsS5IWUwjHwcyXbzWXAjwRlsVZoCe8DziO
+	07TLTno2U3F7tsbctFfoUgKqC+AGfayRuwVYj3dYh08aBrpvrLqED2yTLt/CdWCiTwkDkm
+	GPXt2I/Aw8r1hNAEpI5Y3tefBGnmpKM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qKA7mjhX;
+	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787540771;
+	s=arc-20220608; t=1787541893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X0RTeEPPkTUJwAhiSHeNNGSJtMypaSRst3/83QMi1Dk=;
-	b=OJBmNtkgxeFJn40itLCrZK1MdaqVs/zzopmqRgRAnQxyk/w8bOmLJ7j5QWBg//tWiY6R+Q
-	vZIW1ATX0O/ExdM+3pNiRKHCyhJrG0+wtImTcweFN35Xe/IsbBBZKe8erqRpCiJzHOARmm
-	y/p0dQmN9XGSj7rHSf2RMGGucURtAaU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AeW14FV0;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787540771;
-	b=dXKLxjxsfB0epRXnysEv0MOgHuR3Wb/eR5NQ7hrz2Z6fm43PCHNHxW1CofDJHs0asQD5Vr
-	KFTbjinRA1GqXURmIYRSaxIq7VDoBeGAA8nPKU6X/W+TVFyDdKqq5/vasN3t/Np6UUa3Lv
-	geXKnQ7u3P9Tfdtu18CjkLtREebX6u8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=X0RTeEPPkTUJwAhiSHeNNGSJtMypaSRst3/83QMi1Dk=; b=AeW14FV0pgandiUG8boMQJRZgN
-	EPCw6yOxDJzGLA1rJCA/w4NwUKKN6YG0+UoMewkfLhX8Y/dQclE0U9YLbmNq4DpVp+OCxGn0630X7
-	ERMYRdyMNW1NgTowHL2yUsLEf/zisUPcL8sJ7XPO7kdi4lvEmTTQ12T/Lfk5Fre1blEXjWWh9uNzt
-	Y4YOI3q+aAz5YeGba6MJXcyPCBXhQC7S2rn2quLoh117+WJl3VR/SZOVfzPqntchz1t0Pui72hJ8E
-	b0R+NPODtuOnXn0YrHCXL5iBrJnMsVU9QZ/+FDdfPyEzy4JjupA5I7wXLntsO7peH/6Z0ULQxnl6h
-	YSwvTsxQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyL0e-000000059Vk-0XNn;
-	Mon, 24 Aug 2026 03:06:04 +0000
-Date: Mon, 24 Aug 2026 04:06:03 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, edumazet@google.com,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org, david@kernel.org, ziy@nvidia.com,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/mempolicy: refcount the weighted interleave state
- instead of copying it
-Message-ID: <aou1Gwxk2s8Qjdm9@casper.infradead.org>
-References: <20260821104043.f692421fec915c0c5bc1fbe6@linux-foundation.org>
- <20260824024117.1755899-1-gourry@gourry.net>
+	bh=2NiJ7gKGNplXhdWnRiORd0oQmfXzE5e5jmRmb3tG+Oo=;
+	b=JY4M52Iys55ogB0DZOdIrEyxmCckeGMihHC6HlohWP9RQdaEPAKa8NvWOLwHPvhT63vLc0
+	H0dHFRaGnT+siOWqOkhJKiltoq1mgHK9yqW3WSds+LwDl4VBd9GviDeZDyE9vsd/L0TWWM
+	Fd0IjZBgTZSdcOKL5rUeT0GFhkyF8/A=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=GJQQjYv5cAikeWZ4aygGwi6YdDnAejQoQYl0vwFIJJY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787541891; v=1; x=1788146691;
+ b=qKA7mjhX8EqNoG6I6h7I+tcfMxDLqWdEdnODkaQ/xeobZYgC3tpKQ4nL0ZTpJILXqqcvyCOT
+ g6rhSUYBRI8eNOu28tZ+qRNefDIdRrWintA5F2bzVu8MrIMIyeLnOj4ZnILXPEy1S7ubNMUEGBO
+ tNqeR5TZfWdtJc9bLRCCdw4Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.63.107.123] (14.29.108.92)
+	by smtp.migadu.com with ESMTPS id aeb7d2d31c83cd6f;
+	Mon, 24 Aug 2026 03:24:51 +0000
+X-Mizu-Trace-ID: aeb7d2d31c83cd6f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <de7d583e-bd9b-464f-9e28-73075c0211a4@linux.dev>
+Date: Mon, 24 Aug 2026 11:24:46 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824024117.1755899-1-gourry@gourry.net>
-X-Stat-Signature: bei3ahbb1xa6wbjpfpa1u3wk6g6i5zwr
-X-Rspamd-Queue-Id: E123A40008
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/4] mm/vmscan: honour node reclaim limits per type
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260821081741.1340277-1-ridong.chen@linux.dev>
+ <aogMyu5R_DZRqp2J@tiehlicka> <f45848da-9569-453f-b0c0-8aa984e1976d@linux.dev>
+ <aogZZsXwCyOXISaw@tiehlicka> <bc9c3de9-17b9-4ba1-8065-3270bb455630@linux.dev>
+ <aogwUac-sjfcs7Vi@tiehlicka> <dba83897-9bbb-4a44-9021-8f938bb6a12f@linux.dev>
+ <aog0ch0u8BtkR-a1@tiehlicka>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <aog0ch0u8BtkR-a1@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787540770-159216
-X-HE-Meta: U2FsdGVkX1+Nd/KBe1silvRkKkXsv8HG7XeH7REbwK9L6Tap3e3xIH5OaZRUVwDtkh+faWty3sSwtTCGvM7MC+FK+KlyFunFcAXFgKHBVUB/ycHN5CY7c3RCjBT0r6/pWmuV+THuk1ZlE1k1uZn1IwXpytLMreSq/EOLYEa+DbrDC0aFNfSXZRZ1I0McoHYRqx1aOtShpfFrzHWAVO4JHhDvBXiSCzKb87y6vQJXbW2BvlONdB6DqQh5OQJQF+165rnDVvqGPbrynDR6dPC2YXYz4bMsUVJfr7Moc0Rl82IoMe6ARD+DRKqJvpEeZ0vzwc9havqSz6c7nIwGfy0bJRARDi8AB2OU3PdqAUdfqvrbk6wSAp9DIUt4dDhWA1bSIr6JU6klb/dST9+FAQgi5/D63oJxVBKWyJdyka95hNpFNkAlAdnh8ElNf9UBTfvH62M22+rj4ayW0/a1M/V6hyjF5muUju5s5yovtIX5jAf3kI+DePjtXixG+TmjGgp1gvzuiQPyKigqnFXt1jhuqt8DJiAk/uHn9jr16Ix++OrhD+MMd09zxmtdy9S14A2jd6+3hAIJZEIuvX4XkziQIVRohPwiNcQXgHBAqKNXI2HiMi0/wehqygHJmO+LV70vLHlDYRsfUN8LnR98C5s3O/slZUC0EBMXxYcgEjpZaTkLhy5InFlrbuQSAgretSemrnPVCZ4qTOcxyrwouw/DX7Sm/3ONWWhuO1n6XR0+ov8HAzT8aswuXSHwvarR8CW3rgtnKQBDk8t32XHS8EUNDPmfwgORNiXoxS1ctJ0XpaiH+eKizJQDzj6N6h7Qbkdf2aRT9ydRaGBv7otNiA+TB6li0xKjllUOIfQOfSeBQhp1lbd+haNLSh7r83JSOTVJp0MBBmzKzHla3c4vRaNxpooxj3ry69P/bujnWNpzl9i44Ma9M5pdOkjo9WLQxDlXAT2HF7r++Fl8Kt2ffUQ
- D4/zoPIe
- xMZFOsTec88FrkW4fnlbIKKOTELEZvdeUex/H9TH+0oX2p+1yM2j8E7bXTixvQe8CLgAKKETkSrb/5tF9Hyimfh5RUgwc+aqgzq7UhsRpP7bZOFxMJhFXkjojt09tEs+RQrIMc20kBM+Sas33c37CAmFK697dpzfOlWgj7xzluGlovthgSdTpII3ABHB7dYQGqTgPx1jMKZZ/fHwz5eGVWPvXw1lrPt3vMqh61w33jqOeORypULFajHDXw1C0vMrOjf0v/AK4VakWZjFRpqLAs7Ak5+XNQsVex+7OEYYwYpZGNP78B5nvbZbbNL3Ds9UATOGjVspYDjBTu3vd/UVHLUlA51NLf5LNTCwYTwxL5QTvBEVErB+zXCuMLAAXjquSVI+2Yw891vVzw+jwWlJHFbz58A==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 67E9420005
+X-Stat-Signature: 655h4wysdisqkddxyfa4moibadn1myit
+X-HE-Tag: 1787541893-595691
+X-HE-Meta: U2FsdGVkX1/rTNB4bqzFuGElTy5ELbv73TolnBDMzp7hWjwvkrJXSZU03rRsz5L3D3+Ntjqol6msw6HDJnyzU08lSu5AGyKElyRjjL/pzDhAcLxfXjXugGW5gPrrHgiLr20aeW3Ua9mJ+dxcGLNQ4wN2sZVB3Z28atVHa3AahW5/pxM+JoGSskUNuk4EHWCzd/8/CNTAkilqg22tXslNj2KsW7zOohEJDeGdu0nZF1yjNSyLDNOuyQrdtC06iCIOvIg9SFoPnht+AxcWJnVC3kacU3EMh3HiFTY7L2D9ys1eWe0WBVwB3HX6kJh4RlXWg3Dw7tPj4SHQp/j1qXAmtQGZIhn7aQUxKdpP/T6MUrQCOx7EDdKMaUpsNfgeV2UvvaQ0fJPteGq9rgzbHf51SjNvhtWdfo1myUB1bHPLFujEu912hFh62raI3vamefNMd0RPocMyL6SjMcAg367l3F5F4qyxmU2J4cLC3y6PZZbxoC35cr2WZ8OZXu0wd+oKEMA+DB1Z+g4mMlm8cElPnQgbbodesOQ6oQ89HY/waA3F2ifoEz3AWrxEQicqnUYXn2uS1OrNOfOtuDRGjCSauxWxap9Z7pCD4y9nS9otGwmwUsQCtmTtPkb83gdoz8RWsm1/eumRs3qID8rHnASNEQENpL3non90+0l44NVeUb3b8PluDqJavRL3VVeMH1VsG/QClwbyLXvFLtMu/x36xHDUJBvCiCMelpcuBwg0leXIYR/IHw3TL7+jXdXjv2DsQj6lIAMwymcqeJzWbzAAcefCDA/ppmdB1t+Fy+cU1HoP4lC33VP2NerzE9EYWV5Nip8oeliPUQv2XNj9U60TZAeqDA2Y4TdHgWKqg+gPuJLiYlvFS/+B43hJfG5YjJkzVrPb9ilq+CeQAGpQmSxicKmX1xWB7jBNxM6OG4Hc9+jQIVR/fwn3XxBaSzW1LRVAo+02ZSF513I/ElIl4oK
+ 39VDtz1m
+ rX2BqswbEQyj1StRQjSCYsjZu4LYp52CJqVdMM/KmVB+/HZIGimAClC3b+j4sxaYMeJu3LfndOonkCeGBShOO1yLyaEa4vez50SHuvFVgQQuejpX1D0z2mZefzIFVNQdiddK70eE8Du/u6AVyQgb5a12DoJgEVZHyjy3K3TCohUPWCYbCTvyh60JkWA4lCFXP9l/OUe0Z2jirB+yuIX3k5VYbjOcak3MUohtPnW/DfUsqIutdcIgUKgo3jjlsOOaqnVGS8OJiKJKgtkfOQQRwFmgPFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,69 +101,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 23, 2026 at 10:41:17PM -0400, Gregory Price wrote:
-> @@ -2632,7 +2654,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
->  	unsigned long nr_allocated = 0;
->  	unsigned long rounds;
->  	unsigned long node_pages, delta;
-> -	u8 *weights, weight;
-> +	u8 *table, weight;
->  	unsigned int weight_total = 0;
->  	unsigned long rem_pages = nr_pages;
->  	nodemask_t nodes;
-> @@ -2676,25 +2698,12 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
->  	me->il_weight = 0;
->  	prev_node = node;
->  
-> -	/* create a local copy of node weights to operate on outside rcu */
-> -	weights = kzalloc(nr_node_ids, GFP_KERNEL);
-> -	if (!weights)
-> -		return total_allocated;
-> -
-> -	rcu_read_lock();
-> -	state = rcu_dereference(wi_state);
-> -	if (state) {
-> -		memcpy(weights, state->iw_table, nr_node_ids * sizeof(u8));
-> -		rcu_read_unlock();
-> -	} else {
-> -		rcu_read_unlock();
-> -		for (i = 0; i < nr_node_ids; i++)
-> -			weights[i] = 1;
-> -	}
-> +	state = wi_state_get();
-> +	table = state ? state->iw_table : NULL;
->  
->  	/* calculate total, detect system default usage */
->  	for_each_node_mask(node, nodes)
-> -		weight_total += weights[node];
-> +		weight_total += table ? table[node] : 1;
->  
->  	/*
->  	 * Calculate rounds/partial rounds to minimize __alloc_pages_bulk calls.
-> @@ -2706,10 +2715,10 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
->  	rounds = rem_pages / weight_total;
->  	delta = rem_pages % weight_total;
->  	resume_node = next_node_in(prev_node, nodes);
-> -	resume_weight = weights[resume_node];
-> +	resume_weight = table ? table[resume_node] : 1;
->  	for (i = 0; i < nnodes; i++) {
->  		node = next_node_in(prev_node, nodes);
-> -		weight = weights[node];
-> +		weight = table ? table[node] : 1;
->  		node_pages = weight * rounds;
->  		/* If a delta exists, add this node's portion of the delta */
->  		if (delta > weight) {
-> @@ -2735,7 +2744,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
->  	}
->  	me->il_prev = resume_node;
->  	me->il_weight = resume_weight;
-> -	kfree(weights);
-> +	wi_state_put(state);
->  	return total_allocated;
->  }
->  
 
-Bit of a shame to take/put a refcount on every memory allocation.  That
-seems like it might hurt (even being on a different cacheline).  Would
-it make more sense to use SRCU for this?
+
+On 8/21/2026 7:20 PM, Michal Hocko wrote:
+> On Fri 21-08-26 19:10:45, Ridong Chen wrote:
+>>>> Did you mean that min_slab_pages and min_unmapped_pages should influence
+>>>> proactive per-node reclaim?
+>>>
+
+I apologize for being incoherent in my last email, it was after a full day of 
+work. What I wanted to say is that min_slab_pages and min_unmapped_pages should 
+*not* influence proactive per-node reclaim.
+
+>>> Nope, exactly opposite
+>>>
+>>
+>> I would really appreciate it if you could clarify this further. Sorry, I'm
+>> not sure I fully understand what you meant.
+> 
+> pro-active (userspace triggered) node reclaim should completely ignore
+> all those historical node_reclaim tunables.
+
+Yeah, this matches my understanding. Apologies again for the confusing reply.
+
+Since Johannes has acked patch 3, perhaps we can simply remove the conditional 
+check in __node_reclaim and keep the shrink loop as follows:
+
+```
+@@ -7906,16 +7906,16 @@ static unsigned long __node_reclaim(struct pglist_data 
+*pgdat,
+  	noreclaim_flag = memalloc_noreclaim_save();
+  	set_task_reclaim_state(p, &sc->reclaim_state);
+
+-	if (node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
+-	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
+-		/*
+-		 * Free memory by calling shrink node with increasing
+-		 * priorities until we have enough memory freed.
+-		 */
+-		do {
+-			shrink_node(pgdat, sc);
+-		} while (sc->nr_reclaimed < nr_pages && --sc->priority >= 0);
+-	}
++	/*
++	 * Free memory by calling shrink node with increasing
++	 * priorities until we have enough memory freed.
++	 *
++	 * What to reclaim is gated per type by sc->skip_slab_reclaim and
++	 * sc->skip_file_reclaim.
++	 */
++	do {
++		shrink_node(pgdat, sc);
++	} while (sc->nr_reclaimed < nr_pages && --sc->priority >= 0);
+
+  	set_task_reclaim_state(p, NULL);
+  	memalloc_noreclaim_restore(noreclaim_flag);
+
+```
+
+-- 
+Best regards
+Ridong
+
 
