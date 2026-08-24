@@ -4,98 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A63AAC5DF9C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 20:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FA87C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 20:49:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 378416B008C; Mon, 24 Aug 2026 16:47:45 -0400 (EDT)
+	id DDBE86B0095; Mon, 24 Aug 2026 16:49:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3011E6B0092; Mon, 24 Aug 2026 16:47:45 -0400 (EDT)
+	id D8CBF6B0096; Mon, 24 Aug 2026 16:49:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F0E86B0095; Mon, 24 Aug 2026 16:47:45 -0400 (EDT)
+	id C7C946B0099; Mon, 24 Aug 2026 16:49:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EC9FD6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:47:44 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B777A024A
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:47:44 +0000 (UTC)
-X-FDA: 85137349248.01.58EB29E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 81754180009
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:47:42 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B03A6B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:49:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2754F1C0D1E
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:49:52 +0000 (UTC)
+X-FDA: 85137354624.05.18D8372
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3239F180005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:49:50 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=r9LfvOkj;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787604462;
-	b=vmnVLCofLhUlqBJfKrRaM39GXj2KABGYIamrUHBZbPhjgXEQ/Xm81qTVCdrGoH/t+hawH9
-	Ra3JixvwL8S3cFN4NY1W8mIqnwzik2qdilxcepyiPOAOCVwrQy91qlTYwsdlKDoIQ6AmZf
-	1/siFFgQ32hPKgbhwfUJQ9DbA4BV0tw=
-ARC-Authentication-Results: i=1;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iwbNyNiP;
+	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787604590;
+	b=IAVsCffrh4A7jCIwMbivOYatUcc+XkZbxlkerSwILC4373U9mcgNTD+4VAbUI0nZvZanAo
+	yc670B8LIknWvvLmEOPicCzD75+ugrnrW0f/iwB9WMSuHlCM63vt/KyFeJTqw8gSTho+84
+	U9bW/TUwyE/UPIvl6XEWka/AsMGO2vg=
+ARC-Authentication-Results: i=2;
 	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=r9LfvOkj;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787604462;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iwbNyNiP;
+	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787604590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=niEZYxfNIOD72gAedVquSAPl0GL96aOUAIsjWVWnyrs=;
-	b=tTDcuqMeCDwdy42JjVgk3LkAKHTAcuKBUKCpRBCHJtVl/yffFhQUQFYsxwj6n8Q9VHNHNz
-	8T872g0DlYKCRPgvapY3KdXu9JGRcuuRyPBjx6b5QhlXJtY1B1SceNdQGaZqoZE5gOa2B4
-	A+qaXuE4aBSKkGzQtwebvym5m5QGIMw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=niEZYxfNIOD72gAedVquSAPl0GL96aOUAIsjWVWnyrs=; b=r9LfvOkjge2amjsBvyE5gj6qMI
-	uYvVlQ3b0KYGngAv8XESPmmtwmX5YL31/ZZL/aCv3YA8HiM47NGP857BeCRMrrjzps/Ne9d2cn52v
-	zqL2zGvjLLk1nv9syOdx3pvPSZ8lB4ZZOVBgqTtBiLjoK7MD80xjfIWR87mDrmvJgbQIzO6B2iuYH
-	wqfSCFzLZJjECzSnGHLMWVk/RyHGkAgVmz+igPSrxnkQPu9UxG3bW9HhbNxyefBXIscvW+/Ut9PSd
-	iZrPpiftS7pWBxDvgsL/MprJcvS05WbioAv/k/Wf8gVfSs67WWjwBEeQoBx+YaSMwlZC9Q0pIrjfj
-	dHmqFNDQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wybZv-00000007nCw-0Kvv;
-	Mon, 24 Aug 2026 20:47:35 +0000
-Date: Mon, 24 Aug 2026 21:47:34 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	fuse-devel@lists.linux.dev, linux-nfs@vger.kernel.org,
-	devel@lists.orangefs.org, Pavel Begunkov <asml.silence@gmail.com>
-Subject: Re: [PATCH 2/7] fuse: Use filemap_invalidate_pages()
-Message-ID: <aoyt5pL7mXYwSqsG@casper.infradead.org>
-References: <20260820193343.3852967-1-willy@infradead.org>
- <20260820193343.3852967-3-willy@infradead.org>
- <CAJfpegvP3i8ZJc2T=+f4rAhZ4E1QcT5+jC6mQPLxtB-yoK9Brw@mail.gmail.com>
- <aoxHOSC9kTPbKeNq@casper.infradead.org>
- <CAJfpegv3Ak+qNLb=fTSCSz7-taQ3Ui-Hkmqgn4PaGPe=CR4cbQ@mail.gmail.com>
- <aoyKxvdQdeJQfPHj@casper.infradead.org>
- <CAJfpegtgenUaudDcvecJuV2_WkkVw=gdcB0Eqg=UFKPMZP1uKQ@mail.gmail.com>
+	bh=Rnrc6rgXkO/4siYHOqsGt2EqzbzE5rWSn7kKau8RpvM=;
+	b=sO3u2CVseMFe+joys/YkOYvoVyjhQb3SL+ivk9i3oYT8unfRljJasw6SxA2MabXbf53bpR
+	Lo2NDTajnry+E7VKxscG5Gdimli1JGijG+j0wsEB2qiLFt8nk9BnnrZvxOzMmOauuXGJ8C
+	ZFSKZJOVuHxrnNPFDFXTC6VaKpFnM6U=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c10ed63c0so17991cf.1
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:49:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787604589; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Znf6Op/sgJSCKAX/sNSzNHpTNxMNy5D42tPXF3Q5LiXS8Q7MvxGNtCUwAsicDiyA8Z
+         oHytT5UaCx3XhK1x+3miWrn5Qn31YUBk1VPR/cA4CKuYciWj4dQhdJVDNCGI+LFwFtgf
+         SK7HCwiuBOxtBZjbk/meyR+XCn0Q4mAAfggCV9uR2uG0EQmo6Nghxvkjk+N+tQ4d6erF
+         9Gme/U8UYBOu/mbXi1zwzA3N8INgCGMckmj+mW5awC3FoHU4Xj3HJpP9p78Lk3xyZfba
+         1hGhH69Fx/kNAelg3NJD18RQdmlyLHkc6RiZI3MDJARGZVY2ruH5wD+if0/Lbr+C8uPq
+         MWYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Rnrc6rgXkO/4siYHOqsGt2EqzbzE5rWSn7kKau8RpvM=;
+        fh=pmx3UNx47fDhOxz94J+V5/bRUbhHg6jEInq36GJimRg=;
+        b=H5yFeYJO/DsLHPPBZ+fjcZ70UnF60g+pa3K0yLZ/05VGbXHU/SxNmIgaUSN0pAWSYO
+         votAqRCgI582Zn4kNiPJQ8GNvdDzoOWXT7IOP6f4HGR/wFgS+zOz3AXY92btOl19+DzQ
+         A0qw3SQf0NscoA9b+8M/+RVlZLsCTpSjDl+1l8Wp8BeSfCJ+OtUrIgZGaGwvTXsRngwj
+         FmQJrGKWXANwnf3crGwHQ26OzgNExho/l7G41Fd7/ckxpqPjKhDMZsR8p1iRBcSOFM51
+         ivUuCT97h/uCiIS8p5QoQgvSI4oZ6DjIM6r4X+H6BcYDZlG7YAJQ35zPue1XW2ezjX4s
+         jHuw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787604589; x=1788209389; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Rnrc6rgXkO/4siYHOqsGt2EqzbzE5rWSn7kKau8RpvM=;
+        b=iwbNyNiPMcDnEDwSgEDsFE2YJ/zrAqqiWqVt3jDGxLBgq3VkgUsvZIBFnLLRk+pEXn
+         oqjJ+vSoW9wmzi99jKBh8VxHdoqRuWgNDCaYlS5Lp4wgbKGwLwWZe20KrrD6sqUAxt3C
+         59LJrX37ItSTPR65iq31t2zs9zFo17kGmov21oZsiV8uqqkIRs3XmIN2nP4sF/lyGbUP
+         2GeE4LHxuvmfd+YlMbIdCDk6/1SRjtJ4ZFXAlvESezsCOW0Z1p6/mEoM+0u5+Z56j03+
+         zp2N1sheJr49ZdGswoUsxxS77AUP/m0r/yBh+r402z5i1eGu6NO+rmcLFW/YAQc1WJIb
+         unxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787604589; x=1788209389;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Rnrc6rgXkO/4siYHOqsGt2EqzbzE5rWSn7kKau8RpvM=;
+        b=TNH5c+EtaQ60NTWAnrgZh1CxULOQYiX99udpmvTXnBNRLIuYDm2Ae+vqv6j3sUcYCE
+         aURDbUiwjTZMK1Z1jA8//c54c//Q0/wzeW2Vppp+zafwmG8YY2AAxEZGKp/8Z6H2xlRH
+         zQ9DcBL3AuNJGTTNWjvUObCCU6K9h41+/aEkVhYNedUbdS40jlNsWxOQ2Pw5l2X2jlL8
+         MAmNT4oMxs/tCgK/mvVbrTaFVW81ZBrKKdpy3m7LwId400RHjQ8IoTIxKCZ+5UMTmZFM
+         ocb39SaugCY6SifeCgKkD2BxcjRvjygucoiW88818T3N4AzmHIXCl6WMbiyARbiBaguJ
+         Fbrw==
+X-Forwarded-Encrypted: i=1; AHgh+RoTCuSMpjNeE/hqRp2U6r8scj7cy4Y9g1zAj9MdjoFdqY8gSP2A0sGDV0VnFHg4trbznDxATF/kwA==@kvack.org
+X-Gm-Message-State: AFuF++mG263bai4xVufLLjaesRj8dRjTk0qqHDsCXpXto9RrN31+Lw++
+	s7tdM2B6nIyRWwT/GcoWlvaTnhLKwTM9u1f4+DK0Pl7g53sfjp4Y+TpyA71H2+a7VpNnEmb8nuR
+	p6GTwBZKUv8XyYgrElRWjir5tkzcnbow7LPUvNH3+
+X-Gm-Gg: AR+sD11+77wF75HDH/DPSA7gTkUSHyh0QAdTaDV0YUOxCnWj9UFElX+q1gLnyWVg7++
+	KhTTRAeHNQXzv90GOrLJa8/ewk6e1faHU3HXgpZm3lYf0XWlatHJte3f8jDUz8PYprQTOceOH3p
+	z82RkWl9+iabMYAmvdWMu9zfVeUIOD2ll2fFYzvLBJOa68e9NeORodFWP7SMraI0HGDdDZOT8g8
+	dB89E/nUyjEUmLPa/mraJobt+e7hlonbOYBeSU96Jtf5OTzYUWeXTCZFI1/beHzZhq867DFwqiA
+	k0A0vBRcybESFY+uV0GtfXKoBgz1rwXa/p7JNGqImco=
+X-Received: by 2002:a05:622a:22a8:b0:517:5e32:2d14 with SMTP id
+ d75a77b69052e-52e308039c6mr3439151cf.10.1787604588512; Mon, 24 Aug 2026
+ 13:49:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJfpegtgenUaudDcvecJuV2_WkkVw=gdcB0Eqg=UFKPMZP1uKQ@mail.gmail.com>
-X-Rspamd-Queue-Id: 81754180009
-X-Rspamd-Server: rspam10
+References: <20260808200312.6326-1-kmehltretter@gmail.com>
+In-Reply-To: <20260808200312.6326-1-kmehltretter@gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 24 Aug 2026 13:49:37 -0700
+X-Gm-Features: AcwNN1U3QleQBnvzJTMW5EoRgp4utl8IsEYk7xBRzJCJAaM1F0xAu0phz7nBY1A
+Message-ID: <CAJuCfpGTneUdh6xvZoeds0xt0Y=dc_xgOCninwqSv=HzVnPvoQ@mail.gmail.com>
+Subject: Re: [PATCH v2] selftests/proc: make proc-maps-race work with READ_IMPLIES_EXEC
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Hildenbrand <david@redhat.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Alexey Dobriyan <adobriyan@gmail.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: fsznt9eidq16taoystp1woid5mgmqicg
-X-HE-Tag: 1787604462-369695
-X-HE-Meta: U2FsdGVkX1/Mp0fY9sI1HN2OTiMJiVISlL0/6/cK0h43Y2sZ+8k8lyEk7/zxQpDJowbM0CnFDysBl68OEHJaRMCakIT1PegxxXPrlkRgIFByk6vp+Df2svg9AdGcNaRAxezwmnrb207uBgB6xrsVaG/kQDgLZS+3H8wLP72uOd1QxM6//KxtZmmgwzzlfnYcBAg4gdUHYtbpX4sC1EpPgFazT18216GwTX3Sggp2ZaREZJ4RpdyEdlpHVGmQNuUjjG+eSWhMuJLSOBmXp+UbvdWWbcppvi1xCGaZI9nLwKRqzUmSKUcGPjxM5dq4rFyYtdYYepFaCkgTrhkzYuwmjMlloIVJ5zVhDYk3WQa4c2JAVFTvHgwFNrT912HrNFvt6MvOR+l9/uk7kL9ZhzREBI568OYETfC+i5FOUAwhJbLYIVkS31TtHz5zNqzrhPvEesMBLLvC1kJiiBjM7p4Bd3ZAq7E6dRFVtWDoiQdKW23i9ypVdhhi5RhUEwzbQTuVWdAYFXZ9bwk4HMmMANrSr1BHTA24jEFQoz5gCnoCMTjuTZn1esyzC2tp7kOaeF0IBldJvX8/FzwFlAY4nRe0XCR33pji0qyhqVoRwsrgNlY8/tU6+VMXDG8isHXyRkZEzNcIe95Q0rnisTMlHGv4tXvjQ2h6r9i623S1K+yhteEHT2p2gjv0NCA9gEs2h9IFLMYrpImWzBpctg0sNXZxoelAfU5woYNu3lAIM21bejH6J5vlSFM8ljek5NwJJZDKqb/jMEShlVS3AcQ35z9YJm81HxVhBRtgk5K8AynzuE4Mj8g+Glba4y+5Qfav4739DiWvtBorIIcSO/AOdUbAsUF6TZcwhq5i/X5yPMiIvuttbccq+jOjh0YMOngKcHDuaJbPyQ+98dLy0bVMzKvBy4LlkrQQXQ3c3P17JqLmY52OIrQWPi8uj94XMDNr9d7fDZx8Fd+ues6VoU4ARyW
- WH5Rq9VF
- xN3oWmgJKliKw8hGXcKzMwRSnt4+84JV3MfH+KMeZiz2i4tdBEeZR/04n7CWyeP+oG7cnBjI8QmR1tibm48bNhw5lbTVl3UhVIkUch/Ljer3HDbhKbOdWHi52D7G4GIklMG3o7Pdu2YvigD1P3WcdUm2SIBIbCG8HubVraDKlD/qUH1KOASBRkavtvY5/tVUPE1JQO3c6SCwVzdetGJss6PtsJy7v41r3adwkNlGEKVArvjvgBUFJPGmH45hRugm7gQZw3bsMDrBAh1do1BDy1VaxVIytgBqZqmqFJ6o1B5EMK4h6D19rJjRthX+I+EBh/YDhd/URySD53UiI+xFoxNCQomqjYx8WAuZ+ETs40uEf6yU2QXAcBSUjU3yXztyJh2Yz7jFgXyj6rH7vI6SsC6FTZitWWpnFdNOJqVGHOPJ8p+0B6VynrS4Ws8pN1RJabSBqU17q/fHGWOI=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3239F180005
+X-Stat-Signature: nn3479wquownqgkmnfnh1qx9cikg8wsw
+X-HE-Tag: 1787604590-376834
+X-HE-Meta: U2FsdGVkX1/dT2DEVWIEfvxDvvV0VoOKQgmQkaKl+z9dyDm/zJ8ICIt8LKyOtYmXmHGfXC69qkBxCbatJIWf26Roan8fyEWs9PxwHuSl5SchseqJ1t2eKMbV0zMa/77OPGDMq87VBukbAsLMx+XzlAVop3YHMxk+RhfNoiqS7P51atT7xOtXTz4KPnD7kJVxf1uQ9CEN89vnctriE3uulHQoD7xajDH3Va87oCaQ1CQlxquWUickFD+ACP0lWVlXe/ibKS0NjSquzQducRN7y5G3Y0QwHoxHLyYeg8I31XRpD/gs0Q8FvItY0Ve1SclT1KQXmyu9haStfbiSjYBJ7bnxTmRnTpKsVn88J5H2I/CnYAkNEra689Qd1/nypysOz7SI2UzVTkG/ASnQ6FUWrfmYkm2nZObqAdAvX1kw6CESk2m7nOSnsopPUG+RCtwz5C1lz1KtEzZF5751BlEgR1jdeAWReJrHWQYr8G198EbvGfv+MnHPzsFum/x7zL5BH8sEXC7UQog6vGhtrvUvLPHfsZbC9rHp0dKz1UAljvW4DXjv1O2AoZVsTp/+ED8ZeYtyxpDFcLv4HAcNV6bTJfFdXux8PBey11aXs/cN/8tUzs1HCiPfqdieWlt7E+jFV+wOBox0HzgoKVHDp7sgQjZTZZImnDYWswERqPx7ztQkbUIymIOguwQfxm5pcMpZSHRgmTfAXQQbjHI7+QsYYr4MU4wsOOl4TrjzexXtsRpmDdcCRhMmP9csTORAv1gYYCWlc6VCHTNn8VvB7mq5QJ0IYpwZ0p3j6IV/p37Ha7ipBYKYANKzWuuX7tMgewMKJaTr2eKCnUzl4+Mt3PCV86d7uJZcD8I2VWzENKzXN5jZPs8WKSKWNcXu6BUimPLuwwoPq0ky4b5oEhG1IWyXZ04CrLfhIWmrrzkH1gIOUMYdMOU7TBzvdQhDc1FUDtDrm74qm6FTUUPNB/dLJqd
+ zx5CtHSo
+ t/OAOxnXTOm9pyO0AqfDSZQKSE51oN7neuYrUuIIj8vdfywdNG/zAiAZcY+9DqD2kALo9K6Rs/bZH3qwaxXT/xNUaOdZ5gxNPCRYRuwpZKqaVJ28G3IXrWYX/X61/fKGx3SNTffKF4ZmQY4vHTz/Fg8lyRxmhVATWjbWVB+Dn4REjZS4V03JhrkkZKLzksncQkIKtjunIw76GEx6GDGv96iX8Cuc6RiAM9z3JTpnaulj++8kshzXH/KCFY3Bvyo50r9uYDwsd1i4fDTIt8OZGxrIMj1PZE/MXzzE3ByECaM13qTBwsZQovBj7PR8z5wOS3T3umcU9bamlfVdb6v6BYMYEhG8OJHL9ZuMc1q1UOG+n15A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,56 +142,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 09:33:03PM +0200, Miklos Szeredi wrote:
-> On Mon, 24 Aug 2026 at 20:17, Matthew Wilcox <willy@infradead.org> wrote:
-> 
-> > Before:
-> >
-> > fuse_open()
-> >         invalidate_inode_pages2()
-> >                 folio_lock()
-> >                 folio_unmap_invalidate()
-> >                         folio_launder()
-> >                 folio_unlock()
-> >
-> > After:
-> >
-> > fuse_open()
-> >         filemap_invalidate_pages()
-> >                 filemap_write_and_wait_range()
-> >                 invalidate_inode_pages2_range()
-> >                         folio_lock()
-> >                         folio_unmap_invalidate()
-> >                                 folio_test_dirty()
-> >                         folio_unlock()
-> >
-> > so what's the serialisation that the filesystem can perform in the first
-> > case that it can't perform in the second case?
-> 
-> In the second case filemap_write_and_wait_range() won't write protect
-> or unmap the page, so it may become dirty after the writeback.
+On Sat, Aug 8, 2026 at 1:04=E2=80=AFPM Karl Mehltretter <kmehltretter@gmail=
+.com> wrote:
+>
+> test_maps_tearing_from_split times out when READ_IMPLIES_EXEC is set.
+> This happens by default on pre-ARMv6 CPUs, which lack no-execute support.
+>
+> split_vma() re-maps the first page with mod_info->prot | PROT_EXEC to
+> make it differ from its neighbours.  With READ_IMPLIES_EXEC the original
+> mapping is already executable, so no split occurs and the test hangs
+> waiting for the modifier child.
+>
+> Use PROT_NONE for the split mapping, which always differs from its
+> readable neighbours.
+>
+> Fixes: beb69e817246 ("selftests/proc: add /proc/pid/maps tearing from vma=
+ split test")
+> Assisted-by: Codex:gpt-5.6-terra
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 
-But that can also happen in the first case.  page_mkwrite() can be called
-immediately after the folio is unlocked, for example.  Or the folio can
-be evicted and replaced with a different folio which is then dirtied.
+Sorry for missing both versions.
 
-I've widened the race window, no doubt.  But it was always there.
-If you want to prevent something like that from happening, you need
-to be holding the invalidate_lock across the call to
-filemap_invalidate_folio() and whatever other thing you're doing that
-needs those pages clean.
+Acked-by: Suren Baghdasaryan <surenb@google.com>
 
-> That can't happen in the first case, since the page is written and
-> unmapped while under page lock.
-> 
-> > or alternatively, what's the serialisation that would be useful by
-> > adding a lock/unlock of the invalidate_lock inside
-> > filemap_invalidate_pages()?
-> 
-> Nothing.
-> 
-> What would prevent this if we'd have writeback + unmap + writeback.
-
-We could do that -- but it won't solve the problem because the pages
-could still be redirtied after the second writeback.
+> ---
+> Tested on:
+> - QEMU versatilepb/ARM926EJ-S: maps and smaps fail before, pass after
+> - QEMU realview-eb-mpcore/ARM11MPCore: maps and smaps pass before and aft=
+er
+>
+> Changes since v1:
+> - v1 went out without any recipients in To: and received no reply in 19 d=
+ays.
+> - No functional change. reworked the commit message.
+>
+> v1: https://lore.kernel.org/all/20260720061835.6290-1-kmehltretter@gmail.=
+com/
+>
+>  tools/testing/selftests/proc/proc-maps-race.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/proc/proc-maps-race.c b/tools/testin=
+g/selftests/proc/proc-maps-race.c
+> index 1026d8c400e1..415eccb70468 100644
+> --- a/tools/testing/selftests/proc/proc-maps-race.c
+> +++ b/tools/testing/selftests/proc/proc-maps-race.c
+> @@ -490,7 +490,8 @@ static bool query_addr_at(int maps_fd, void *addr,
+>
+>  static inline bool split_vma(FIXTURE_DATA(proc_maps_race) *self)
+>  {
+> -       return mmap(self->mod_info->addr, self->page_size, self->mod_info=
+->prot | PROT_EXEC,
+> +       /* PROT_NONE differs from both readable neighbors. */
+> +       return mmap(self->mod_info->addr, self->page_size, PROT_NONE,
+>                     MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0) !=3D =
+MAP_FAILED;
+>  }
+>
+> --
+> 2.53.0
 
