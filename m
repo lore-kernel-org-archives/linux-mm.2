@@ -4,115 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 068EBC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:24:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C55EEC5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:26:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 069086B008C; Mon, 24 Aug 2026 07:24:45 -0400 (EDT)
+	id D8CD66B00AA; Mon, 24 Aug 2026 07:26:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 019706B00AA; Mon, 24 Aug 2026 07:24:44 -0400 (EDT)
+	id D64926B00AB; Mon, 24 Aug 2026 07:26:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4D226B00AB; Mon, 24 Aug 2026 07:24:44 -0400 (EDT)
+	id C7CD46B00AC; Mon, 24 Aug 2026 07:26:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AE8D46B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:24:44 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 385B91604DE
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:24:44 +0000 (UTC)
-X-FDA: 85135930488.20.CDB06D8
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7F2DEA000E
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:24:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KFQByf3n;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of nicoyip.dev@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=nicoyip.dev@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787570682;
+	by kanga.kvack.org (Postfix) with ESMTP id 9E8776B00AA
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:26:43 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 446221C1B1D
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:26:43 +0000 (UTC)
+X-FDA: 85135935486.21.49BA8BE
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5EF2F80007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:26:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hhK73oa6;
+	spf=pass (imf30.hostedemail.com: domain of nicoyip.dev@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=nicoyip.dev@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787570801;
+	b=pj25uKJKEp8+HMiMlCmbKFadzwzMSeabBfSOtYxzVoGoV8XjyxRWpEgTaejNmWkZk+PsH8
+	cS6nKiZmSm9A+3ICQV7olqvX4mkeLLPsOIwANMhU/VwCPGga3rJXcvkcXMz6IjDgKXgeol
+	gdosSV7gzReNZ2QuGS77sodeXjDWa2w=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hhK73oa6;
+	spf=pass (imf30.hostedemail.com: domain of nicoyip.dev@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=nicoyip.dev@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787570801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=zsWUj6D2O23IjGwV7U+g6CAWZzqgDR0i/7tBeONboys=;
-	b=bbh6SbIgwHTNYYUoMJn4tbl4qCWh32YcYQbCPlDtL7fu/ZPNby8DfneZeL7hRSa/ozHTlv
-	fLODfQpbJHCPLJcGZA1x3p8Zdld8aNJ+snDCaXDJWOI63ekT5OQL8T363CI3XI9ZbGS+kU
-	4dOBqIbnT6EV2lnGOl0gM+MxbAAe+ns=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KFQByf3n;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of nicoyip.dev@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=nicoyip.dev@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787570682;
-	b=6U3/fZdEpabZ2CZS4nxucFYQUcSjl7QaW7TMMLM0l0GeToy8GitLYOE9XGD1Ns8tNSaBBs
-	c7itruHMSVdkDze+5B4yd9UzRs+43qOnPYOQ+8Ideo68LkZJZu3d+ntu33ymDJZNu2wgIZ
-	O7FcFz/lrP0HCGeIB839KQfDAhlJVnk=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c8612812170so242937a12.2
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:24:42 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jQhGWzkKSaiEn4reGO8BqZW7gZKqXxVsZuryAY63ImM=;
+	b=1dlsDBsPgYJitcG+115SoitMAydxnV3pRydEJ25PylEagcytjJGW2pOHopJBbYAKyWZd+/
+	lO4OjvSupsxNs9YDFlltnkjgEYE7GeROAYQVzd4xm8f8ez003dp3UXlDDTmcAsZj3hjk/d
+	21+bbmr74z+8QoZ/zxs/MwsDf8WK0bQ=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c16879184e7so27998466b.3
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:26:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787570800; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hycmsdMHEbjwPceXvxddmidAyjPZf3dGPFRDOk3zGVKbUkvaRAB2Am6sq6p3IqlFZp
+         54dcI8wD1jXNVqJIvNmq9p7OqQ8Qz5d/cEji+8k1fSo/9dnfNiL0Lbcf6JWT4f/SmVGR
+         FLaM32EmRVfO/+ssQNYkVy6T31Vr9Ugz0lgeTYNG9uiBakrVu7bY/8x3AvYcMfn+eyZN
+         TL6nfq4D6QU7xOFEBJaXmgLmHgO421EVffVEmzEVQF9dcKJBcoPKQWN1fSMo75/MO5d/
+         hWwSADlGo+qUvXdD9LBM80xyuw8XJA3B3ILIhMdPhJFMXPkuUASSmXlrIy+fEdMpiaBF
+         rofg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jQhGWzkKSaiEn4reGO8BqZW7gZKqXxVsZuryAY63ImM=;
+        fh=eczIuT73u4kNQ6bQmzoD/5SQSjPEU9Uc0LDFiAJ+9/M=;
+        b=PBLv4tdLyL/WVvAfWfPx4FWo1yt/ZZyWbzLSOp8RmTM4JpExmQCcZuEz+ddVypwOSS
+         1vcDF4V87vVW3I5RAilhI70gSD9M9W2kSxm4gAeXjygDaG+y4CwToafFo/XArpZRXZmQ
+         ToxWTwRVAaear7SMnTdNX4cXHaSXiEPG3U1NThFnM6HLbkd0KxIW8Md9yML3Mhm84cXP
+         7OmRCjH9Un8vPbdLrWI3SdDOTEnZYESK/vBFn44lbb3SWrQlWjJDJrwTzlT62AojhPfJ
+         aKkU8HP9/02IujQ9R7ciJ3cyJ3XefTEvKwDYXANHujSY9S8FbpwHuULa2uHNo4a9y/Lp
+         8brA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787570681; x=1788175481; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zsWUj6D2O23IjGwV7U+g6CAWZzqgDR0i/7tBeONboys=;
-        b=KFQByf3ndTaIyVZO7zTZEVwGNhSQF4dfKQLRI47SlVZC4x6YJTZV+P2ph1rINNt1ol
-         OirRstoJqj+iXenMDjXE7ONggyfEWHfMtkJjgoCfLdjg/D3yGutMe8HKOMasUHGC9V+z
-         sB92rAmaR4j7BRizVWr9wiGNWJLseb3ixEKAcOMyR+3RgI4oXLPqVAk6x9m6TowmSVjD
-         szkZqgq4zi9SOq+XX93dflZr6vWueEYl1U6QnGpt3zB1BxTJaiaKziFf5J+OWkaNMJtA
-         kP7FlG6Ckop2wMTy3wQfabdat/w74kQ62y+sZmfP5JzGg/ogRIi16xMckWxcUj61R8HW
-         f+DQ==
+        d=gmail.com; s=20251104; t=1787570800; x=1788175600; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jQhGWzkKSaiEn4reGO8BqZW7gZKqXxVsZuryAY63ImM=;
+        b=hhK73oa6gQGMGOw4isGLg8bfun93VwTFbxLq2a1Rz+yDXGkI30VG+QCGmqDD1tooem
+         vAFRM9+iAp50uYGTXdRDtJ1vehMkX2U/lrEvNmbPfv1Ky2/ants2hxz5Fhh6jcRPDhf4
+         NDD0/Ak3IaqBDaMRYsNIUoTiIBcS1IqWrL2ZKDKDrv7Seov9So2HSwZQnb8HS8QRevJM
+         snO4iQ31n2AofkMFbMzP/lxEzQvQT0TNT0dSeExQwXzjPhxvGi16QFYSzEU8i68+TfsP
+         AcGS99GY/ovzEirOEIH7M5Uh/w48XCD2vmJNa1AD74RL8W3fHeA5wGmcKm7rOxhRDhG8
+         p4uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787570681; x=1788175481;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zsWUj6D2O23IjGwV7U+g6CAWZzqgDR0i/7tBeONboys=;
-        b=o3IMXx90Mes0FK7r81dJcccjz67lQa/Wq50FR8SS44z8wOJHUBtaduWwuI4JnZ6rpH
-         P1FhqRNfyhO/l6YjAyP/blfjZZA09khBXRmmrFaGA5MTntooW33tbNe53qmKTff9q4Pn
-         699VzdEO8vZLH4ER0sT/iP3paWoXg90soQg6X6mEW2ucqoGBpITZ7FqKghrHvf2+TLQS
-         EcEeDzJatsK4RxXM6XWLvhRe0IRv6+Yg/SeFYGLCWCrKGSN05Hp86gYjpykmKa3d1xL/
-         YQtnPHDSNWNEqwWnB2qwIV0Wp5vLseEsxUTh//8YYO6cvcOHzb4zvKGYeQhpJGIXntbA
-         CUug==
-X-Gm-Message-State: AFuF++mW/PHQtYuj4pCRc69gLt8OPNNgseXfQ/wLUTYTFjRuzRl7NVSc
-	irxINOaaCiCb6wIsCJJLyrllq2jhS4qyI01E+aherWE1CGqnR1JaG3Sk
-X-Gm-Gg: AR+sD13+nt8usOq/mAYWqw0CQfJaXMqMOTnQEPKzxMSwBR1aZtPzIZRC+/CELuGCeCK
-	TCVeBGtZopJ70WdVWM06bvPXNJgJ8n+4G0/vf5HvdQmSgIKwyEqWVFF8AltgKPHacujuY0ShvJV
-	NflUnrJB2HPr0jlohZWL5jd9Gvd+ZdLkcdyZ+rlRG7P/4/DSlKNEt/LfxoFg42Esi5T3Xg6RM1e
-	slnO3TUOZXBQDINRysXHIoFUNQSe3Q+Cw23Ua8Bk2wsEEYGEHQ6X1I01mrBma6mpiiBpnyX8xik
-	8WcLkm0Ck57UwEW3Fk3QqClJpMuOwGSODgszLNb/8xFXk6bVz8gDGXP2YCJlJLUfUIqfBEj+aGW
-	QDC9omTE8GmrmGZ+fT0A6MeSyhuo2W7V0VYc5RxjR0kiLLJ+tlSdRW2BknOUkVYYYXdmsShfVBh
-	QOZ/P839aCjH5tyyxmYe1OyHbXjK8J0mP9js2ujW4cF+Jju7mrAnQZ456RYpHw1k4BafXz6orxh
-	eo4F4ZIRbthNvl/10diE5nEtKy9JIwseQ==
-X-Received: by 2002:a05:6a20:7288:b0:3c3:2dc0:7cbd with SMTP id adf61e73a8af0-3cd2ff087fdmr23133335637.1.1787570681051;
-        Mon, 24 Aug 2026 04:24:41 -0700 (PDT)
-Received: from localhost.localdomain ([14.216.85.214])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc199e5fcaasm912995a12.24.2026.08.24.04.24.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 04:24:40 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Hugh Dickins <hughd@google.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/ksm: mark migration stores with WRITE_ONCE()
-Date: Mon, 24 Aug 2026 19:24:33 +0800
-Message-ID: <20260824112433.191301-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1787570800; x=1788175600;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jQhGWzkKSaiEn4reGO8BqZW7gZKqXxVsZuryAY63ImM=;
+        b=Wh5ReGt11tkQf85O4Ovq+ZGF/Q1qvtwXcDhKrnX6y3gkJONgao54FzAkU3xkWsUeMc
+         a6dac1MU+1tKfNWOnYl77KYdd9EHLrvkY1h5nN9nUc6sLlgV33LjCvR2NUmTjP8RRydU
+         xoaCFuF8sNTlLi9w2BIJtdGpfkZdURaBfn1J2IqDCZ1ZYbVBKxcy/74eGzjAAdyl7iio
+         mnBuRoclbUYCD7g9iXwswxsp6HBUdc3vf9cU8o7X/G7w23ZbDvEJqYQEGqYu0XIv6zVf
+         4SUFNA8/9ZHlRVUrIR5ejSXatZDYz6qdwr3OBoZ+Ih3uh+6oJrOhZDaD09UdTzmBi4DK
+         086Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpAlFEToM1BXdSSOLnWSxJnIu8da+m6MRWjHH7bamDPhNBW9zgBYJPGgVAqHPfvrpzAz0s/ye8Arg==@kvack.org
+X-Gm-Message-State: AFuF++m/ddBx8J6ptauV+kCjSjGStQc3oDTodAKcQD7UlbcjCYeR3iZK
+	oBwl+xDCnp0EhO3OAnhHgbbV/PLBaX4Wba5slQOTdjPgW9mfC1QcViVOzehtGFeoRsXTzHhg5gj
+	5RymN8KGnjYPZOAUEe/15HfdZAYEx5xI=
+X-Gm-Gg: AR+sD11/7UOkSfiCX6MkQ1zz3Pb61dkrZ26QROZEjDuvJzv9nlyi3uXH2mORIoFIXbD
+	3HL6q8rGnh7qZFVVD2YNeDJ8Bn5muLizp7/HQ9ZtmnWx6A0q6vZLCWrYm7AccbxtoFDFSIbb2Rn
+	jnyBwk7tjlqXiWN0n+jMthmNjcZ+a/WG8qW9I+cMw+K+OIg7z+hvb6+YrXNKKVOcbzWoYZx6yiK
+	bguEBtq7Z0GmJNDfnhlsskfSdE0/z49feKq7xEq54L8IIK4ihdbwFukMeDSw/+ZsXpqQpb2aVc4
+	SCXYKNKWm1mPjkGUeB2UABaoIiUMtxRo/Pkz+BadMrrhKJ3OLL4NtQEi2m2LkSSmIfp9FuChVQ=
+	=
+X-Received: by 2002:a17:907:1c26:b0:c21:8555:5f55 with SMTP id
+ a640c23a62f3a-c246a65eda7mr1686296066b.2.1787570799606; Mon, 24 Aug 2026
+ 04:26:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260822163846.3747787-1-nicoyip.dev@gmail.com> <5501d110-9f04-4a61-b0d1-16898910eb93@kernel.org>
+In-Reply-To: <5501d110-9f04-4a61-b0d1-16898910eb93@kernel.org>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Mon, 24 Aug 2026 19:26:27 +0800
+X-Gm-Features: AcwNN1Wccqw0xEpAVNPC31HL9r3NmqSdwsB4IhFgkqOaIR11op4Cw25r1k8pRgk
+Message-ID: <CAAo+4rWuTAy8Tn5NuixTmixuzYw+Xr33bLtzoOLF1Nmo2f820w@mail.gmail.com>
+Subject: Re: [PATCH] mm/ksm: mark migration stores with WRITE_ONCE()
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Hugh Dickins <hughd@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5EF2F80007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: boxe31a71rfusdobqjaiqrud85tog8s5
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7F2DEA000E
-X-HE-Tag: 1787570682-138712
-X-HE-Meta: U2FsdGVkX19S6PF8kYU/t0A1JXj/DtJV3I8UO98kf18V3StYXqPhrCOqOiONkpIZOh/PQiYkHkHrtz8bF0tu33tTc/Tap0/wtp4dSz8VKxavCYyl/MsCrG/qBQYwP+EAuuYGZo/oAlDWVQ0J967UMmCcu43xmBx5v3RDYQSL4kqMvoh5Ixxng6GsBurUWsaqcJXbw3Ng7MxT7h4I9CQigBgG/uIbaelg6wka8S9Tk+UXGgMR86pMV7d7lMJYfVH91SaF7KI9NVhSoMhVVZqubwAGFeAF9YJkeC5ZqC6TUKEUniiELclxmnduhZfnjkHvy2XCpQF4p/w8mXuKpMKaELbMA/OUACWdY0a7OrpDmmIsuS7ffEOUl9cpw8R4p/zCs1ok/QSMYhJCVuBfKSEG30ZZznyH1bfiXZaxWfZbQRJpDa0lWPiaAfqfiTB0O3izHJzlc08rRD1BACUKWsKgJD5yX9wbImWJWDEiuGiwv1QTs/DyAarip0UQusvyecwf7PfCDcCiFerG8UiD6ohMwFc09n90G7eJgdkb9hiTuaBybjevL1iZMSpA2qnjFa0QnreC28xJuRpuBhAkq/MNaAqQpeYr472Buy4CR5dPqmUhR4aquISEJjqXXV1UB4Fk1KW32BQFKCo18cbY5IQ4sMMPj3lewWCbNBkrl9edgD1svmX967DMX2jzVjAM6C2XIwv8o74BEt+/4cRVOXymZC+pYZqrhKPyucoNFWqedzeSbJ68Zvn5earaZilerxrsYuXvB6BsZemKJFACnacfj5vY66wlJrXtPaxlIQoZpmBjI5MDwo2SNoIr27VB941zWept4jWyK4pvbkapsbn5oIqiIK2RilrO8T+V74eV5ia4kZkhO27RdZFJaS44V+Sydp9SC+XqUL+tjKkU8U0bCZAQxlmnxGuhTEQ0y2icJUBRiDTFLeyacinp5Qx0d/Odwr4q/D0gwyILDQNVfgT
- yI0hG02R
- fbG5AN1MCuNH2kqcvzu15KXPlKgefEdJad060/uEcBG2R5iivkpsI1Sk4JEWBAQ4dd4TUHVMfGtcVvM2YbCLhK5AW8pqWo1YZoI28xlc/avQbTYEEJaSMT9pH07kqMkV1fTlvs5IJ9NhF6pfDWqzViJti4znU8QflmOxtEQIRoaVL4Ll+aaYO6hAmuVGVIxpUsQnpFJhAXGD406b/BKIunUz+kWa3lOPkjVjnWrysAmO8HVw7Zaxx+6psmIJMjvjO/hwBWPMv2rvrHBRHou83ZpPl9w8xzHdEe7RC6p9y4IRf8cCBbyovRIsif+RovCmjvOXrp+AqNW0DTSoXsMnT9FxG54w0kfn1D3nEl+NeEHFyMz+Ujldaz8+UcYodjHJ7lfqsp8Os1VbQp2JxnTUAiHwIk7QoT6SdAhP2v1H2ljjN/sfa0Z5Z01eUrR3/giX7rVBUw7YZpM9ymFiLFn1u4B04kaOjb/l1fAym48jobkY4PYDtnp3f/vjUlSOyGaNILiexRjzHfEG5jitQ0aRgFfw4V22e/JM6Ys8TcdjGVn8aXnF8EmAeGTeHYHkgjjZG+98fXCw/dfJa4fWarieQsrG0lVit9N3ykAX9mceO6GXj/7Q=
+X-Stat-Signature: nwfay143xrjksxkttsy3r5bg5hjdch8w
+X-HE-Tag: 1787570801-549039
+X-HE-Meta: U2FsdGVkX1+o0KQHJMcB/EOSk/jVbQLDjrxs64r8v2OcRJJux92j1PXa08FivrrQhasvYksoK8/7gWSXwbuT0WESASCBgx6DDzNCMTS00QLZHqs9CXy1Dnyg/ele2x4THAT2Azy2gbc7Aa30y4M1/hL2VhPopiwPrhcvhd1SbDsC7tbyv4w+fKkI1wcujSfeVZBXC8gq/E/gbnS0CFQGzPRbpZW7tzN3qIxA0O5mkY2ME1nH5BKH80+b6+P6eJMJ7Cgi9pefsoVTVXm2LtkOxNQN5XNF/ciTs8gh/XRGxUY6/skH2BRo/rOHw7hMLf4csx36xGTmOfHNGJRIvmUNfANDCrED0MR9q6rYEudZBeu5MPCST1K+NtBucNpV9/J+Xbv/C3va/4MLh1r0kjzws0ytlmSQ5OfVS81/ni6vSGcSCOjxffvmdfdHHexYdnnf4wiph3Bvq49z02/c8CsKOHBGcGl9a0Mvq7VW7Zb6k4L/4moS6pboYBDOU1byhulRQwC0GTgSL3EaQDvei/bUgPNdwOpbhIjLoP9p8r2rZsBt54VGlK2yeGCCrv6GwQ6tJS2rLrJagfxyJBm33bsVKtawZjgMVtqZwiFjkGF+Im7+mKNVHhevTqmbhK9Ef+sMQ25r6DAKnQNviC63wj2jsIhKKC8FhKXQrLigmCsTk2MiJnhutsGzz/6+XImDPy3fGyzErWqtm6W0YcEgdJeZSJuZadsKCMlo/iPpGrAMpGqfnjqUtRqbh3RsFYA5CLKUVOzJkbL3ZkGFD16C+9oSmMG4L7Wp0srf9vItJB/NcND+3AnX91ddoosF4FDwVFflq3rzJLVupZWdwZcquPtSz/0ldC8XoFsfQ/+1ChHcbsEotqteehZ7ZEgj9wvzueZpduZvzbm9EUUeLTYmgT4poSNRusGGLPEN/mBDkk3tzXYuktAjCUT6w7knkLqDe/iTCtRfbbEIlUe+nDvCuAp
+ ln2+GSiY
+ O9v7s65l2Ay+mgyidSkuklbhnABOYItDj4+rNWbncgg1qidZSFt13tbPFZGxlweFrXVOtgpSVuZlRX6vBigAId1lrv6KkED2m3pVvLK+rY/pAXl7fkMq/qmpq4fRjCIbAUbY//IeQt4OIy5sFEh/QLfmOHhcN+mBTwwyzB2tcqJWqncPbM/W9enZ7BI5qRrjN4dQjarAAM3T5PsO9gSWA5E4p0ukI5I1CBTw1i8GB0FH8t0soqvjNUmQZ5Ri/45K4+wRduCsyk715CTcFFE2WspKQAmK16BmCIo1t1qWiHRTsROBW+MJXVnu/UczfiwWZZkf+SR2EJqoYhf1xzGqL5zTHQ6Aq4BW7zkCcaw50A6xE/mG17guS2MS/CCduLx4oxZBc5C6A6AWXxk0t0tZYcFH4pXZS3SN7JtSHa/PYAJqLeBZmK+kw560q+eEjRxcJERU/zsURmcsI3XBj9Ep57QoKPHzl6guDpXRKC3PEo4C04/Qq/6aGUn+gq8Shv6slvRkf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,76 +141,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ksm_get_folio() deliberately samples stable_node->kpfn and
-folio->mapping without taking the folio lock because the KSM folio may be
-migrated concurrently.  folio_migrate_ksm() updates the same state using
-plain assignments.
+On Mon, Aug 24, 2026 at 6:39=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+> We want a Fixes: tag, can you dig?
+>
+> I am not convinced CC stable is warranted ... but certainly wouldn't hurt=
+ here.
 
-The reader can load the old kpfn, then the migrator can store the new kpfn,
-execute smp_wmb(), and clear the old folio's mapping before the reader
-checks that mapping.  Thus the initial kpfn load can overlap its update and
-the subsequent mapping load can overlap the clear, with no common lock.
-This leaves marked READ_ONCE() accesses racing with plain stores.
+No problem, v2 is sent to add the CC stable and a fix tag. Thanks all
+for your review!
 
-The kernel reported:
-
-  BUG: KCSAN: data-race in folio_migrate_ksm / ksm_get_folio
-
-  read (marked) to 0xffff8ce401421330 of 8 bytes by task 48 on cpu 3:
-   ksm_get_folio+0x7f/0x2a0
-   ksm_scan_thread+0x1635/0x3330
-   kthread+0x1af/0x1f0
-
-  write to 0xffff8ce401421330 of 8 bytes by task 102 on cpu 1:
-   folio_migrate_ksm+0x6a/0xd0
-   folio_migrate_flags+0x193/0x420
-   __migrate_folio.isra.0+0x162/0x1a0
-   migrate_folio+0x4c/0x70
-   move_to_new_folio+0xd6/0x170
-
-Use WRITE_ONCE() for both stores to pair them with the existing lockless
-reads.  This preserves the existing smp_wmb()/smp_rmb() migration protocol
-and control flow while preventing compiler transformations of the shared
-accesses.
-
-Fixes: c8d6553b9580 ("ksm: make KSM page migration possible")
-Cc: stable@vger.kernel.org
-Acked-by: Xu Xin <xu.xin16@zte.com.cn>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
-Changes in v2:
-- Add the Fixes tag requested during review.
-- Add Cc: stable@vger.kernel.org.
-- Add David Hildenbrand's Acked-by.
-
- mm/ksm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index b4142746777e..bec6fea0fdb4 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -1116,7 +1116,8 @@ static inline void folio_set_stable_node(struct folio *folio,
- 					 struct ksm_stable_node *stable_node)
- {
- 	VM_WARN_ON_FOLIO(folio_test_anon(folio) && PageAnonExclusive(&folio->page), folio);
--	folio->mapping = (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM);
-+	WRITE_ONCE(folio->mapping,
-+		   (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM));
- }
- 
- #ifdef CONFIG_SYSFS
-@@ -3318,7 +3319,7 @@ void folio_migrate_ksm(struct folio *newfolio, struct folio *folio)
- 	stable_node = folio_stable_node(folio);
- 	if (stable_node) {
- 		VM_BUG_ON_FOLIO(stable_node->kpfn != folio_pfn(folio), folio);
--		stable_node->kpfn = folio_pfn(newfolio);
-+		WRITE_ONCE(stable_node->kpfn, folio_pfn(newfolio));
- 		/*
- 		 * newfolio->mapping was set in advance; now we need smp_wmb()
- 		 * to make sure that the new stable_node->kpfn is visible
--- 
-2.43.0
-
+Best regards,
+Chengfeng
 
