@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2268CC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:06:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BBDDC5DF9D
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:06:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1476F6B00A0; Mon, 24 Aug 2026 12:06:08 -0400 (EDT)
+	id 9AB106B00A1; Mon, 24 Aug 2026 12:06:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AA156B00A1; Mon, 24 Aug 2026 12:06:08 -0400 (EDT)
+	id 934CE6B00A2; Mon, 24 Aug 2026 12:06:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F28366B00A2; Mon, 24 Aug 2026 12:06:07 -0400 (EDT)
+	id 7FBEB6B00A3; Mon, 24 Aug 2026 12:06:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D1ACF6B00A0
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:06:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67304A014D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:06:07 +0000 (UTC)
-X-FDA: 85136639574.02.5276486
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 51CB96B00A1
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:06:11 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D272F1C0A46
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:06:10 +0000 (UTC)
+X-FDA: 85136639700.15.D8A13E5
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A0296A0019
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:06:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cM4OF4zK;
-	spf=pass (imf15.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 37B0C40014
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:06:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Jc91idwU;
+	spf=pass (imf12.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787587565;
+	s=arc-20220608; t=1787587569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2HODHgPFWcmpM4OrWXnRIwysDZ/R1pibvtBSqDnsLNw=;
-	b=LpmLZyfPrYmKmEfVxJnDfQxYybyrqIiskVmOtWurPz2FgVyk7YeDNZgfTAJ5WdI9oDLG7k
-	dvy09lFhYCw0ZWruPBs7vKdDYz4iMbQFRcmiemPfLEruoqhG+HnddGr30YwHklVGk3Nv7t
-	U6J5Q3/mJ1GTWTkTDI7ilEFthwwQc+A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787587565;
-	b=i/hPGB4xaq+JmfoPe9thHnu6UR4rvAy3M/+9g4McoeELI6zNSCKYq6CnEr6su5MT+BlbMj
-	sh8be2JEHXtNuFWd6bjGhuTxQ6Hzx63VWD+59x5j77Q2BAjCrQi3cT1u7McDYZKfzGTluo
-	XB/F2bx4YLZO331m+VEpvqogMrE1QKg=
+	bh=ruNSXO6+hub5hhAXwMAn+u90C58s72NfnpcMVIePf5c=;
+	b=S8JwqQvnhLGaJXakOnqQvKLtAQoFQ1NUF7MLYZ58NgNbxGtrEwlLUd005iWZKvlDn4pNf9
+	GzKh616YuplCeYHJo2f6W/8bhD/GdWMpTskQ9ehePrQ+pkQ/erKw967NlWvSzQBrOx6Bqy
+	JF398Im77ZWCVhX28IUHOuNlgXbaZc0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cM4OF4zK;
-	spf=pass (imf15.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Jc91idwU;
+	spf=pass (imf12.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787587569;
+	b=ZZ9FnZMWmJIuk98uYjUjRH+ITj3+hea32etyvFbWGxTQ9aaX4ZH0RLwtuP3Nh5w3NKQ2Zq
+	eMjveQPMgzoLTIyFThCmoGuE5KCcQpBLVKVCXFpVTcYaNbrSdjGk+B7Iu3BMur9J78eN0U
+	tO3vcOosZS+OFh+yrD+NTO5t8yRyP7M=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2D1F16F2;
-	Mon, 24 Aug 2026 09:06:00 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 684411756;
+	Mon, 24 Aug 2026 09:06:04 -0700 (PDT)
 Received: from e142334-100.cambridge.arm.com (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 846553F85F;
-	Mon, 24 Aug 2026 09:06:01 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0C5DE3F85F;
+	Mon, 24 Aug 2026 09:06:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787587564; bh=nodn3/K9trBK+2wWrkLJGeFqd0INql6u2EHBqnLbWuc=;
+	t=1787587568; bh=RrebhXATXwELFIUm3sfpDdh92ACD3QNlTwQzpg9AkNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cM4OF4zKGJ1P/SjzDr6eXMRdqUQP3re7P3X9242MP8mexIfZldlzw0sfMcbAUSh1L
-	 1a49U9Gw7XBFBsIGu7em0nv2/uib4e3xK/sCEUzr4sS4BhFi9PqpXz8JGLANNTKTay
-	 tyBid6SLPtTSmY70IX5SC9k9RdCKMRCJUje9FtAk=
+	b=Jc91idwUPeyzoMBCcMqqcJfBY/NipSip+nx0Vu2SSHMLt0GB1cy1vcJ0XIHfHuDVt
+	 ZfysIhqHXV5A+RsGPMQs5ObrYLtPAo5PLdYurj6y9VDAQ+21gPimS5kpua6pOqy5p/
+	 cu3IO/eY89jF1Cl+5pzRLPOStBWlPPk/3hQnsiX0=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -88,22 +88,22 @@ To: Catalin Marinas <catalin.marinas@arm.com>,
 	bpf@vger.kernel.org (open list:BPF [GENERAL] (Safe Dynamic Programs and Tools)),
 	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - CORE)
 Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH 4/7] maccess: Use a scoped guard to re-enable page faults
-Date: Mon, 24 Aug 2026 17:04:50 +0100
-Message-ID: <20260824160523.3907021-6-usama.anjum@arm.com>
+Subject: [PATCH 5/7] maccess: Batch TCO handling in kernel nofault loops
+Date: Mon, 24 Aug 2026 17:04:51 +0100
+Message-ID: <20260824160523.3907021-7-usama.anjum@arm.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260824160523.3907021-1-usama.anjum@arm.com>
 References: <20260824160523.3907021-1-usama.anjum@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 37B0C40014
+X-Stat-Signature: 3kaydwk6d5zifcb9x41497sf7eftp9kz
 X-Rspam-User: 
-X-Stat-Signature: f4nhf691iedc7is5mkybcus845z3f73t
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A0296A0019
-X-HE-Tag: 1787587565-512046
-X-HE-Meta: U2FsdGVkX1+5eOlq6r09i+DUG1j75tw7lIoDzFY3XU0nVqg/SBrHvsBX/nOJGUfyA5L6mR1bAS/gsD923X0lwXZDDmDsKCBp22FFGqa4o7jiHFK5d/7T4f07NoxvC0gHKj8NlR10gSIPIdihO6QlX96ra0/RyjjBm4swOPxw6oRnEwaUmn82VP62WS6fORgDi3xq6sVZyhxkRH4puRHBfGQDB/a8ImPll+EBb8In2YqNaituSpCgn+hQvD7gjMVfKcK1AzwHkJjDxkjBigY+2Ngj90GPiYn5y33hHt4BsFdNh4D9FlynGTh6NTZx13drDt0oD/83fUBQjsBu/mMyfdpAbVyxlvdeAgLY1XMFCIVmysp1DMiFYx0vKc4PNXLDHXGL41KnPDozhcOKgMBBHy0Afd0Bx6BUIf1G6hNi7AHLTj22Y3KjMtOpReZuNfSC7L/j1G12g2tzm4vLdzsjoeDBq51KNqNdOelpeECPT8eGZW42iTmDU9eB9CqlSFmIenAww7lJXKBIbKPctEaNncrKgv9Xxxco9PZkqKWRvW1TKT++AFq1W7rrw/xaMuq1g12/tat10msHIyBUzEz6BFxQIYj8a0IR74WTfVnFGu+EMyr/9woGnbEF44YGWaNrZasz2tdD2FDtX5dhaWJCux8jnlskci2xGp8T9HwLLTIbBzsp8Au96WW6SrrkeI5Yuyr+kgnPH0Ank/MVgVba21uqCZy+dDs02jWyUa5ffYVaWwS0P5YxFVQjN0sB8YpZcaVnFmoxSKMOmMZbSH5oW5K6wpU/tYk6Yy/pjBvaBR41P+cW4sSyThijcnzSHrDn2APg/Q2v7xujF835S7bv3jmgWM13/6HLh2UFwyIY2yKT4XKOlFA+2rpT8hkCxmIdQyksAQjRbJ9nV90X8q2y4NsOpqO1mwP82xnb50+VfpbxcNrv4ZyivZtlGFqMlwdwUaPsb64bxVEMIe6Wh5X
- 6tFPUu1x
- 8vTLuzGkrF+NC72ZKj16fcnTR0r9eAosfcJPpBJtRfYQvtk8QdHGfUlIM2xFddkTcW8N2Vz1uhxgMGmNJiF+3eunruviI4K9DiOuYa4cYxqtXm8tvW74TU2Lb15e05U7qsVt9363FjpzBysl1t0PMVqoiufYB1DKsi8VHRhCJrijnAoyhJbabPFmoJY3PRrUpFpauln/IjH6a7ZvA6uyT/S4/JyFXzTT6Mheu5BhKTJDuKmGYLZKlA6rAg8nuqUOGVSNYslYd3m9VFmM48san7UbzlIRN92dtoOXb6Sb54eX5eHLbYOkB3qbVuV5OpWPUXzbaNcmimZUpCF/lvQWy2O+EKYmIEuaVfgU3+81H8OkWAmE4NWryD1y3umVlqJ9Q+iM0nF0TLa3cQNQm6s7uTSjaoTh5XlLQzvYCcmOLFqEPKPtfZeYBW4G8msAo9IarE0HYeDDEnsFF5W1HLR0zMd7dQGuyXYgocDsajF50YgKXJdOJJMNXGdpec1m6yo6V6NGMxj4ZJXvC0SF/1sLNZ4iG5OAgBEo6zHYrbLmI0HE1+0iDIdQCEaLOtxkoqpYY1WVOap07fWZIIM6Yza295RxFOVtypwo5dYSqCNFT32BzHUX/7C4jP/NLkQ/QtwoPIGbkfy6U6y1GKh6BRP+HH6fPAuyh2VTlaArgtrwOkMvihJfRTy6BL54mHXT5CNdPpk24iYEc9th5LcBeFun4yo5XQB8MYv1esJ6W0LkQmoC2DonZgI5R9lQzMUZ7Bx62EwJB9YA3yDZDSt99L40MeXZDb8WX5923znvKnsx6sPVzJ3IjwZdjU5ndWRT2hAkt9drNpGEz15LVR296CJub6QTasOu4e3pNts4T34VqU5QL15ocykqIdCWkW0KoJ3S2ecXOfAf7fNf3bd+qTqUovGq15nzt2ZN/wU7ZqKW1nTb6tOQv2ZtcbrGEggQFmCJOt4N/
+X-HE-Tag: 1787587569-893374
+X-HE-Meta: U2FsdGVkX1/xnzYmBU5BjIuv106sES+kCf+IBVMF3Npc6wjknl6L6k5wn3SIvfcB08KPmCOktUCum0Y0TLD9GDNMBu4px641krXgvd6E2c/AggSCWMOJRscabJGRsmCAUAUejnFeu+86pIX8ERqyJ+3V8M44s5BS+M4hVUiuTNnJLQ+UPAa7daXBsuDYP/Kumn/AzUDukPI1rhaRBw9UNSXIPhH0qoNTxA0KAfrAPGL5RJnTdzVHwRpRzurT7wqzxbIrsisYhssErfZa4gPSol4Is2oeys36GKd0uLdcJIoGOBrn4aGM3z9RoQLu1Il2SFcWuChrA4xT30kJtCqdI59WMf4RZQlTeyyNvEZQHx2d18ag6PWbXTz9SblXuQDgRcT/wrO8XsHZy94pTtjCA+IQ8W76nlOKqVhvFeVtL293jnRCQB670bpy6IMIixQx2PEBLe2fJVae6LAjQAGnm7sEphy3Blnx8xywT0GZb1s1Gu0qo68klKSSrw0PEoEGTzghZFX2HAIq2sN1UgfVZzO6BkHG56RYCSnP6UgKChjO4qgrqLiFNwCm92rULgtd/0Fx3HBclpYcD7VNhBrz2j63wdNDURAJlOdPbLvCygXkKsrFj6z0RGc+ZgtS5HfsmZue/XHajEqvbSvoQMnHASTT4U+8iWaTN9kF0vjyaKYK7RqFHHC5pc/+tXabCbEBgNl6gZApOSscBotuYAuuw71uGdwwbKw5nRqmFJRFVcwBMPa5yWjKJmCrJAH7qxjUTOwWFHwZrZT6RedPsyjZJMIskRB7lsVcT6NpXqjXF5AAhS9rGKdgCe8LN78PdEKE0Oulxk/2p5E3D1cMMw2bT+y4dejQ27c9st1Cc/CpTy0NfEKn6Y0AyJEUmT2hCowLIf/dZeabZc7QGqoIj0WzBvlcXAAv89VV7xONqtDHAoOW6psyO/vlOuQThRIswjQ2eORqadh30oNDdszEmlT
+ eK9l2OF1
+ 8IAi9Sx411Df2Fvzt0IKaNMPGktnscaBFTB2fvgbD0LahZueGJiKrg13soqB5jKFG7A8h/MZaDjPsqSoH17xxqmSjzEXjML/oS5yKmXmZZrOqslwVKkS/iXqy8ulaj7z1n9nBgIHb/mTwoue/6+HIiFLv38co1lU6z1jNvCEUD5Spaid+W0VexofiazPka09/MrsRv5sHu6xNTMR1KotFfZ6A0MZxk9mMD6KNvkANtt9tZGVCuynqIZnFqRls+G3QRBmTKilwAacWbxeDgPiVb38PWPNNa8xEcCUBx3Vm65hMd7zwtdvSo0ULZfUnLwfqgBdTefGWxyJnlB28U+3bd2DiNsjIZDxkmYW7Q4Tnd+O4sN2Pl+5PLdYZai4rfScIjsp6Pig7zUDeBWPUyAurii3/xaFBal8jOvrn+MzrG59JqGRGka+Q7I8tEbznjBcFzf7Ym4qDTD0oRGUwJELIDqEhkM6zK6697P9vMfQnxj/6vK6ROkLKXUzXC70dWiPFgwtGwjEbR/muuu1vCXWVGcASeiW4x5o78+Mn0AmvdbIZR/UmrJ0gtlr++ahQ3veCd1kC6kwSITb7k8ofCS2dHdOvT16JT+4ZEaCnCxS7njLiQykP7hcJHEWH4/ICVacPKGT5ZIk2YeNlMvRy/Gdw+AHBloFE6BPAgfyr3meaMSWlgHetk8EoWTowcZd+cFS+OCDeqe7kc8gqEQOnATROHPXivO666OcPsA8SfKIFzkCJU5HMlFQPZRtxtWVoES7OsxD2dN5XHe9XJAAVXhquwgBmtVBjwPpPwG2n22Ti9LKzPUtnz/yW3WDisB+TNVbRPcvL9gvp2FQZRLLziuDcM/LjG7KeEXVINvqu1vQpgwYXavSc7gsn4ZLQhmuAgjL6uY0ftn64nR1Z32QxlSNLZL5//f3DoNbL3XNOyJ/69KB/QRC49rTmSncoHmKKQPTW0tnQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,106 +111,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kernel nofault copy and string paths open-code page-fault disable and
-enable around label-based loops, duplicating cleanup on success and
-failure.
+With Hardware Tag-Based KASAN in asynchronous or asymmetric mode, every
+arm64 kernel nofault access sets and clears PSTATE.TCO. Copy and string
+loops repeat that pair even though tag checking can stay disabled for the
+whole operation.
 
-Use a page-fault scope guard instead. Leaving the scope now re-enables
-page faults on both paths without separate cleanup at the fault label.
+Cover each non-empty operation with one bare nofault region and use bare
+accessors in the loop. Leaving the region restores TCO before page faults
+are enabled again, including after an access fault. Existing empty-work
+checks ensure that every new region performs at least one access.
 
-No functional change.
+The number of dynamic MSR TCO executions therefore changes as follows:
+
+    Work                         Before    After
+    N nofault accesses          2N        2
+    4 KiB nofault copy          1,024     2
+    N-byte strncpy              2N        2
+
+The 4 KiB case assumes 512 64-bit accesses. These figures come from the
+control flow rather than a runtime measurement, so the time saved depends
+on the CPU and workload. Generic fallbacks leave other architectures
+unchanged.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- mm/maccess.c | 53 +++++++++++++++++++++++++---------------------------
- 1 file changed, 25 insertions(+), 28 deletions(-)
+ mm/maccess.c | 48 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 21 deletions(-)
 
 diff --git a/mm/maccess.c b/mm/maccess.c
-index c59a0e092d24a..f695ceefe6fcc 100644
+index f695ceefe6fcc..87486bf98d15a 100644
 --- a/mm/maccess.c
 +++ b/mm/maccess.c
-@@ -38,18 +38,17 @@ long copy_from_kernel_nofault(void *dst, const void *src, size_t size)
- 	if (!size)
+@@ -19,7 +19,7 @@ bool __weak copy_from_kernel_nofault_allowed(const void *unsafe_src,
+  */
+ #define copy_from_kernel_nofault_loop(dst, src, len, type, err_label)	\
+ 	while (len >= sizeof(type)) {					\
+-		__get_kernel_nofault(dst, src, type, err_label);	\
++		__get_kernel_nofault_bare(dst, src, type, err_label);	\
+ 		kmsan_check_memory(src, sizeof(type));			\
+ 		dst += sizeof(type);					\
+ 		src += sizeof(type);					\
+@@ -39,13 +39,15 @@ long copy_from_kernel_nofault(void *dst, const void *src, size_t size)
  		return 0;
  
--	pagefault_disable();
--	if (!(align & 7))
--		copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
--	if (!(align & 3))
--		copy_from_kernel_nofault_loop(dst, src, size, u32, Efault);
--	if (!(align & 1))
--		copy_from_kernel_nofault_loop(dst, src, size, u16, Efault);
--	copy_from_kernel_nofault_loop(dst, src, size, u8, Efault);
--	pagefault_enable();
-+	scoped_guard(pagefault) {
-+		if (!(align & 7))
-+			copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
-+		if (!(align & 3))
-+			copy_from_kernel_nofault_loop(dst, src, size, u32, Efault);
-+		if (!(align & 1))
-+			copy_from_kernel_nofault_loop(dst, src, size, u16, Efault);
-+		copy_from_kernel_nofault_loop(dst, src, size, u8, Efault);
-+	}
+ 	scoped_guard(pagefault) {
+-		if (!(align & 7))
+-			copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
+-		if (!(align & 3))
+-			copy_from_kernel_nofault_loop(dst, src, size, u32, Efault);
+-		if (!(align & 1))
+-			copy_from_kernel_nofault_loop(dst, src, size, u16, Efault);
+-		copy_from_kernel_nofault_loop(dst, src, size, u8, Efault);
++		scoped_guard(__kernel_nofault_bare) {
++			if (!(align & 7))
++				copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
++			if (!(align & 3))
++				copy_from_kernel_nofault_loop(dst, src, size, u32, Efault);
++			if (!(align & 1))
++				copy_from_kernel_nofault_loop(dst, src, size, u16, Efault);
++			copy_from_kernel_nofault_loop(dst, src, size, u8, Efault);
++		}
+ 	}
  	return 0;
  Efault:
--	pagefault_enable();
- 	return -EFAULT;
- }
- EXPORT_SYMBOL_GPL(copy_from_kernel_nofault);
-@@ -73,18 +72,17 @@ long copy_to_kernel_nofault(void *dst, const void *src, size_t size)
- 	if (!IS_ENABLED(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS))
+@@ -55,7 +57,7 @@ EXPORT_SYMBOL_GPL(copy_from_kernel_nofault);
+ 
+ #define copy_to_kernel_nofault_loop(dst, src, len, type, err_label)	\
+ 	while (len >= sizeof(type)) {					\
+-		__put_kernel_nofault(dst, src, type, err_label);	\
++		__put_kernel_nofault_bare(dst, src, type, err_label);	\
+ 		instrument_write(dst, sizeof(type));			\
+ 		dst += sizeof(type);					\
+ 		src += sizeof(type);					\
+@@ -73,13 +75,15 @@ long copy_to_kernel_nofault(void *dst, const void *src, size_t size)
  		align = (unsigned long)dst | (unsigned long)src;
  
--	pagefault_disable();
--	if (!(align & 7))
--		copy_to_kernel_nofault_loop(dst, src, size, u64, Efault);
--	if (!(align & 3))
--		copy_to_kernel_nofault_loop(dst, src, size, u32, Efault);
--	if (!(align & 1))
--		copy_to_kernel_nofault_loop(dst, src, size, u16, Efault);
--	copy_to_kernel_nofault_loop(dst, src, size, u8, Efault);
--	pagefault_enable();
-+	scoped_guard(pagefault) {
-+		if (!(align & 7))
-+			copy_to_kernel_nofault_loop(dst, src, size, u64, Efault);
-+		if (!(align & 3))
-+			copy_to_kernel_nofault_loop(dst, src, size, u32, Efault);
-+		if (!(align & 1))
-+			copy_to_kernel_nofault_loop(dst, src, size, u16, Efault);
-+		copy_to_kernel_nofault_loop(dst, src, size, u8, Efault);
-+	}
+ 	scoped_guard(pagefault) {
+-		if (!(align & 7))
+-			copy_to_kernel_nofault_loop(dst, src, size, u64, Efault);
+-		if (!(align & 3))
+-			copy_to_kernel_nofault_loop(dst, src, size, u32, Efault);
+-		if (!(align & 1))
+-			copy_to_kernel_nofault_loop(dst, src, size, u16, Efault);
+-		copy_to_kernel_nofault_loop(dst, src, size, u8, Efault);
++		scoped_guard(__kernel_nofault_bare) {
++			if (!(align & 7))
++				copy_to_kernel_nofault_loop(dst, src, size, u64, Efault);
++			if (!(align & 3))
++				copy_to_kernel_nofault_loop(dst, src, size, u32, Efault);
++			if (!(align & 1))
++				copy_to_kernel_nofault_loop(dst, src, size, u16, Efault);
++			copy_to_kernel_nofault_loop(dst, src, size, u8, Efault);
++		}
+ 	}
  	return 0;
  Efault:
--	pagefault_enable();
- 	return -EFAULT;
- }
- 
-@@ -97,18 +95,17 @@ long strncpy_from_kernel_nofault(char *dst, const void *unsafe_addr, long count)
- 	if (!copy_from_kernel_nofault_allowed(unsafe_addr, count))
+@@ -96,11 +100,13 @@ long strncpy_from_kernel_nofault(char *dst, const void *unsafe_addr, long count)
  		return -ERANGE;
  
--	pagefault_disable();
--	do {
--		__get_kernel_nofault(dst, src, u8, Efault);
--		dst++;
--		src++;
--	} while (dst[-1] && src - unsafe_addr < count);
--	pagefault_enable();
-+	scoped_guard(pagefault) {
-+		do {
-+			__get_kernel_nofault(dst, src, u8, Efault);
-+			dst++;
-+			src++;
-+		} while (dst[-1] && src - unsafe_addr < count);
-+	}
+ 	scoped_guard(pagefault) {
+-		do {
+-			__get_kernel_nofault(dst, src, u8, Efault);
+-			dst++;
+-			src++;
+-		} while (dst[-1] && src - unsafe_addr < count);
++		scoped_guard(__kernel_nofault_bare) {
++			do {
++				__get_kernel_nofault_bare(dst, src, u8, Efault);
++				dst++;
++				src++;
++			} while (dst[-1] && src - unsafe_addr < count);
++		}
+ 	}
  
  	dst[-1] = '\0';
- 	return src - unsafe_addr;
- Efault:
--	pagefault_enable();
- 	dst[0] = '\0';
- 	return -EFAULT;
- }
 -- 
 2.47.3
 
