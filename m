@@ -4,84 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99098C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 19:08:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18966C5DF9C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 19:18:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F2C56B008C; Mon, 24 Aug 2026 15:08:20 -0400 (EDT)
+	id DAA086B008C; Mon, 24 Aug 2026 15:18:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C9DB6B0092; Mon, 24 Aug 2026 15:08:20 -0400 (EDT)
+	id D5B0E6B0092; Mon, 24 Aug 2026 15:18:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E07B6B0095; Mon, 24 Aug 2026 15:08:20 -0400 (EDT)
+	id C4A186B0095; Mon, 24 Aug 2026 15:18:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EC516B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:08:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D466B140238
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:08:19 +0000 (UTC)
-X-FDA: 85137098718.23.5472AF7
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AD09440002
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:08:17 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fVJ5WxBy;
-	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787598498;
-	b=rThlfaBstXl05QoRzLzdzFh9m1XKCX2DqOrGSKPu/+aw5rU9T3ntz470r1Q/UOt9JPbJiy
-	RqduzeAivF2w47fA7eaTEoxZ7L7FQ8i/twrz2o4wai2B8KlmmOpelZuIRxvQhaYAy0R59/
-	kK8OS+z7j0UbvAg2Jg+dV3RmNjghK0w=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fVJ5WxBy;
-	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A50DD6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:18:56 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19F1EC0245
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:18:56 +0000 (UTC)
+X-FDA: 85137125472.05.806606B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 365334000B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:18:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bA035ozC;
+	spf=pass (imf12.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787598498;
+	s=arc-20220608; t=1787599134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rXZ7ZE15rvwerUJ9OHaFUdA7osUeOjHjAwPp1v8D3Z8=;
-	b=f41zD26/9nDvsKmuGEz5xM9+fBL6SZhX+jKwI7gGXYi4H/cdftqeNJ97MbhRgpAY2O1yXl
-	wojGPicRF1FJwxmmDZjodxyL83YGwzQYhaQ5B8WXheSDX0ALHaaCWX//IyjlOmizOA9GoR
-	pCpMdbznANjIAuXMmnm5eiRtqyuL3CI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
-	Subject:To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=rXZ7ZE15rvwerUJ9OHaFUdA7osUeOjHjAwPp1v8D3Z8=; b=fVJ5WxBy21PuBmR1rP+fz/pIl2
-	5Iuy6MNrN7UowmFAKk8XIDnE7WC9ITFHIuJe/0qyEScfD8Aq3HNb5e1Kiri2u+3H6fiY8aSK9fyu2
-	XQevVKRrCMTmBlMNadaWX+V+rVqPbAv62qHyPJkOraieP/ZkEWspLWVMewUYnHGMh8BJIZEINI0kQ
-	WqcLUXDbgQn6v4HUweUI71vOv6UCWcA57cnwYfI19WbBrRGpDLMBANTfSay7oE9/4QNvDmF113AH/
-	LcERCZFuIfNDm5T712CokJ4O0JmENbSA+FD66cAVZV7EUpVaHpnhFOd3m7dcWbozPDNtmMWL2CyMn
-	A7Laf5Zg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wya1e-00000007gW8-3U3q;
-	Mon, 24 Aug 2026 19:08:06 +0000
-Date: Mon, 24 Aug 2026 20:08:06 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Pedro Falcato <pfalcato@suse.de>, Christoph Hellwig <hch@lst.de>,
-	Jann Horn <jannh@google.com>, David Howells <dhowells@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>, Jan Kara <jack@suse.cz>,
-	Rik van Riel <riel@surriel.com>, Qu Wenruo <wqu@suse.com>,
-	"Darrick J. Wong" <djwong@kernel.org>, linux-btrfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org
-Subject: Removing ->dirty_folio
-Message-ID: <aoyWln-Gt-yvZQkE@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: AD09440002
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=bDDPwn4xCpHQCGnWoBvi2mfgf7tmYr3K7oyrB3+/vVE=;
+	b=bHtlRHadYFSDrNI0tOgvTHdhTWnUrDIRLEjEkW66fLm3vYEzlMHMOeCViJht3t8Dbpm5Ke
+	ib9VFO/FFzt9eCzoug2xIEQQd3kIBDLD3oopE3UXaXv9/Smj/tYue5dFNbB1f+B8h20l3p
+	Dc+uzfKRKJKCn7P+zATHsYcexjCuinQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bA035ozC;
+	spf=pass (imf12.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787599134;
+	b=lkppzOH2SVU+PFsH2mJqmsz6TYX0c7G/HDXoVmNl1GaTyXZ2/lRtz2MWvfWAfVOFmoDPWR
+	mpaByuj35VHRO63C4uVOD58sMui3O9Ue4KJ0Nqa1XRunX1h6JYyXqHgE0CFYw5aMo79Qti
+	T9/kpRmyaHF8t3uuxAa6d0/IukgCkjM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A60143F3B;
+	Mon, 24 Aug 2026 19:18:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3871F000E9;
+	Mon, 24 Aug 2026 19:18:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787599133;
+	bh=bDDPwn4xCpHQCGnWoBvi2mfgf7tmYr3K7oyrB3+/vVE=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=bA035ozC1RcPbXOOGIblgpGpgDPorErz8t25zM6nfH2nlUUFHbiyXfVnEW1jbqsZe
+	 YLirPMEex8SLSZ/SRJh8oefTvN9y9F11uHw9R2JYN8/myRYvpWMFCOufGsLUEVYnls
+	 NFnkTpXcVXmobJp4X28Vh9Y1Ei/bd9m3Xw5OCRrvvlkkcmm8zt2GusMI3ybd+g9cBc
+	 rOhtYOkJ3kAp4yG7bXfRo78ypjLG3B0pQpMqL+uDuIUNWBUXzSK1xY8at7CSHhuyzp
+	 QwCJ6JmU9B2bMxmYyxhQQQnONDcD9GFx4TOVXnkAbPFRcQAtfIqL1l6BiD4+hRti2P
+	 rBnqGzHrCqe4w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A983924A4C;
+	Mon, 24 Aug 2026 19:18:01 +0000 (UTC)
+Subject: Re: [GIT PULL] slab updates for 7.3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <321f40c8-c694-4cc6-a4cb-df0c9b3d3fcd@kernel.org>
+References: <321f40c8-c694-4cc6-a4cb-df0c9b3d3fcd@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <321f40c8-c694-4cc6-a4cb-df0c9b3d3fcd@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.3
+X-PR-Tracked-Commit-Id: 564ed40708ebc60a78f280944799cbe8e3401816
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 918e25291ce95ef26c288234b088e9d433ecd94e
+Message-Id: <178759908041.3075085.10406364731845307805.pr-tracker-bot@kernel.org>
+Date: Mon, 24 Aug 2026 19:18:00 +0000
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, "Harry Yoo (Oracle)" <harry@kernel.org>, Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 365334000B
+X-Stat-Signature: uhrs8hr5717p7ze93kinw7jrcd6zjgc6
 X-Rspam-User: 
-X-Stat-Signature: 6z9r98ubwatn4mhof5znfbb3nstozekh
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787598497-298726
-X-HE-Meta: U2FsdGVkX194ukhxsbMAc04fDMzcIz9HsnkI1SjgJK8y4H2n9i+jabjDKzwk9D2bObal8VrMfxtgBiJGdZFGd6SpF4aI3PsUS19VouQ3lwX+t/DWJFXhtjmrr3DHDAXnA6aw4BVgFyGELjWmbOBU+5b2XAQV4g8Gfz86u/g0ss7BiMCXFryHdYhVOq/D0WiwGvFXZdLixajfC3McQd+C3qa5pyx/tFkIQ6PsHMfOX6k7p/xsgPrYfbe4WjxH/QjXva2MjZn4J3jyF8gZ71pNVZMybI0iC+7wakwc03QPle+BuRKVpFo4/+NCuq2BTxIrpsbtYzBNeH4M9enc3wQgW013asJepp55OdfMcGGGNTqvpppDT//IRHLy9oDinBzg+TvhsY+TF/nxtUH2sRPYMZrY1ecUimhw82iSkrC/sFUsp4CcTLdHF1koBWyCiypANREYz9tuuNEEIetxfVp3SywJSPK/5e0z1N4q+EzrCihGFCYnZ7/kYpfjIoa8AYxQ41CVr0w9HZ6ORhDU/HJ91mHLYrzzwcaqLVcq0iY4g9Tx3SupqBgy8ppjc3/zkWef63XsvA0EdeNdDf6gYPSXEUGmCpZLUxcU1ycpWEbTiwHy1Ij6NGuv4wiOkDI1R45/u9PzGmHMI+DrUIC/ahFzv0708aYPz2z5ueWE9LrolTILsZIRDKlsrBKwkqiX5gu/mUn9S0NcRszrtdT8x3TlFKgogs38SqziF++siL4oiAw4er9AX4NbpXIY8eXn3hWypSxnVUeUfhqYOg+hg7v0xIPoDq/Ro/37IVdmuTUuIJvIXm4sn4g+1qyBc2vYtB3C/lN3doIgv2Or3WfElPXES/uyHn8D562EJg+fV3m9Hu9yy25+FsjQKsdU2N+G2bq9BRMZe7kUstvegddJxKcRA7r9p9UZtZVSxdBVOF4Sg6m015lc4Wa9QY7R0LzZ6GAT0zznZtNWNWLLzp8aHJ8
- k9IfHtnT
- sWNyo8WXvRHIdpLw2Xfcl1LjewbbvPUnjQenswT+UvBp8MNt2+ZWYEoEqAmXrEk8wYpWM5xsiTM9gT+r2dO5jgthP9Pdq4rl7H9x0+hQcP9bmo/BjFThocRi29qQ/CRln7RBBCY1Q1LfixVA5dmeuLxAdKjbPzDhcZ0TEMgjvmdYGGmFb14b5NAN7Xpmp8uchxJdyQFSHxoqPADsPyfNKSP+8FsZTZ7XHH8H/6EhebL2zfXCf8j9ZuxtQ6hXxdhcay4sR8tNLOYysko+PKuj7EbLEdSa4UFSgKgq4
+X-HE-Tag: 1787599134-293144
+X-HE-Meta: U2FsdGVkX19s79uOIZVwUcEE0VYNmiYtshUQ1YCVZoDmnLUKwOCUhES4GSfkPXo+d4hgoSua/sVuIilVHBUYi8M7IQcsGJ6Ms0l02jYr85hn1on4v1lpX1ZzY+DgBfihVJB9wfDOc44tFCDsVRbwDWcdkunqSZP1Qkq7D4sWAFJrEhnNf9iJI1ER3Tkpl7RXHoL3AyHxHMypHy5gYZxMb7XExJQqq+nF8qsx0vq2pbvWA0kCEoTfOtmLO9BbgCvA4F3hgKpH63QPzxh77D/E5X8W+imMMdESm8wSYGi5cNcsYRMEisznpC82V+YVNv7RSW1bfwdRzGJA03UJjrFRZzXr+U73wkbUnjbdLRy8Ac2EU9HlFD3TOIUPrvylEWFZXe2Qyfj349THUg1ImtKKWZb0R/UskjinsbOcxQVFl5Rl4O9IGuLtsa17euM0qgre6RPwd5bazsFEBZgwcaJQui8zgor31sIWmN8GvKbdeTROomEmU8mQe+5p/u/I8Uh8saNp4H1du1JO60g03Yt+TSLGwGZDZgcpHH6qV+i0a/OtDNr3ZpV1DsbpwD3vh0w0c0bz+e6GovON530bzQcwtjiD69IFL79kpeOaWN6obysmEsZQG7eWL0ZgDfooKGTviT/xzGGdyTeTtmyrLbn0akJAKbtslSWBIGrBx0eQc8EaWFxFSm59X2jKkFFh8olAhYWtrca1mJ692VEttNhminF3lrbYLX1DjGZD8Q5a5qU4Pmq0geKbLgxlZWDYoEWjbYtazR49nwLdji6uqyvSXNRZnADvU9TbQn3CI7SKssc3X/Ai8yEwJZZC5PM5Pq2709ef9qt2QFydfTh5i4q1qzBUzd1gCj8Qat0XrU3eohvNyiROow9Csg8mbEDpqrRAkl7V5WOlsZUtRYTdCpoOR+9aouYsvLf/JIQHubEkMykd4JHy1eQUix2v8TokO/vWis+rDDIhPbkLI81ltN0
+ +Gq11YeP
+ gVlvDx906rpykDflbzzmFeGNbNW3WLNmgveMQaJtfuRcV1gVzGK1HeADEHHeyVTIMIAT6hHR7zCJgrSTo9JDr2ENSLe24IUdmKyiFZ2IuXGPm1+wlAkz1KQVn6jDuZhnMi4nsQbYIiLIgdp36oq9zPkP2q4EjCGfFG07EdZyu7gI4RSgl5oAXBk7xIJtVvy0SBVqN/HcftFt8ucJE/Iln+AzS5S3JEdx5iCsRUAUwC7kqlcS67jK67z+f8HEDsykufJoElEArM6Y9/OW1YCfIIYRDACamj7QsCy62R6be8GGffeY4kVb0VJLhHLqB0LgXOqhYGMTTiA2AHytQhjKi0v2bxnzOqy5OenTOvgr9HJWnSVOuFFJnUxYRyPNCScIODq+OzRRgMbxsXqBT0hr3giSGoiFu5oCKX69c6ysDn0egizV4uIy8Q27JVov21vUN3vvDwPyrWVcRQnHSzOBHToX5p5Botf0CmdEt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,45 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I think it's time to remove folio_mark_dirty(), ->dirty_folio() and so on.
+The pull request you sent on Mon, 24 Aug 2026 15:57:51 +0200:
 
-This is not how filesystems want to be informed of folio dirtying.
-It was fine for ext2, but anything that's journalled or COW has work
-to do before the folio is made dirty, and it's hard to do that work
-under the page table spinlock (not all callers hold that lock, but the
-filesystem has to be able to handle the cases where it is.
+> git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.3
 
-Filesystems want the page_mkwrite() entry point to be how they find out
-about a folio being dirtied -- and that works great!  Except that we
-can writeback the folio for a number of reasons.  If it's been dirtied
-due to a shared writable mmap, that's fine; we map the folio read-only
-and any subsequent writes will re-enter the page_mkwrite path.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/918e25291ce95ef26c288234b088e9d433ecd94e
 
-The problem is GUP.  We have no way to force the GUP caller to go
-through page_mkwrite again.  So instead we make the GUP caller call
-folio_mark_dirty_lock() which many just don't, and generally we get away
-with it.  But it's a bug, and a bad interface.
+Thank you!
 
-There's also the problem that GUP users bypass the folio_wait_stable()
-mechanism.  If a page is written to while somebody is creating a
-checksum over that page, the checksum will be corrupted.  If we want
-to fix this, we have to bounce-buffer the page.  There's no way to
-prevent or delay a GUP user from writing to the page.  Enjoy your RAID.
-
-My proposal is this:
-
- - Fileystems take note of folio_maybe_dma_pinned() during writeback.
-   If it's true, do the writeback, but retain/recreate whatever data
-   structures you need in order to write the folio again; behave as if
-   ->page_mkdirty() had been called again for each page in the folio is
-   marked as dirty.
- - The MM behaves similarly; we do not clear the writeback flag for
-   folio_maybe_dma_pinned().
-
-This will have the effect of writing pinned folios back every time the
-inode is scheduled for writeback.  But since we have no idea whether
-the folio is actually dirty (because the GUP user won't tell us),
-this is the correct behaviour.
-
-I'm probably missing some stuff here.  Let me know.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
