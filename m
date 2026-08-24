@@ -4,136 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0AB3C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9829C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:42:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECA9E6B0095; Mon, 24 Aug 2026 09:34:21 -0400 (EDT)
+	id A431E6B008C; Mon, 24 Aug 2026 09:42:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA1DA6B0099; Mon, 24 Aug 2026 09:34:21 -0400 (EDT)
+	id 9F40C6B0092; Mon, 24 Aug 2026 09:42:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB7A96B009B; Mon, 24 Aug 2026 09:34:21 -0400 (EDT)
+	id 8E2FE6B0095; Mon, 24 Aug 2026 09:42:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A8F8E6B0095
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:34:21 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 353351C0141
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:34:21 +0000 (UTC)
-X-FDA: 85136257122.15.A8291D4
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 385DDA0002
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:34:19 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="owAO5yO/";
-	spf=pass (imf25.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787578459;
-	b=NAOBXtYpe3bTTf1d4uX279T51F9Gfk02U8F0rBUbQWaMzBNZZ6NtXuuLniYqHnJdnNFRW/
-	FDLnKtnIR8w3Q7struSZaGZEqhFVlKRl4WCy0uEKjJahno/ej5lDMUB/rFWCQ1ofHP9c7v
-	9NwrFheYE3mdGkuF0j7Z0Q1oios+1IA=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="owAO5yO/";
-	spf=pass (imf25.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=qwjhust@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787578459;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 691EA6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:42:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF4EB1A0111
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:42:02 +0000 (UTC)
+X-FDA: 85136276484.01.791AE25
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1B04110000C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:42:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Tp6MMWCc;
+	spf=pass (imf05.hostedemail.com: domain of praan@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787578921;
+	b=7RwIDSJQZffoe/m+wtmdOgZ1gQGWh9FpvPXJeC+H3a0bmHyIhIAMDiq4DnnUcWNvHx5I4P
+	fkIbgzHP5qSuOYmlJf/CG9x6cEd+mzugwQ3RINF7JQrq8KzKtbP5YgJnKMA3uITaHCN3Yd
+	afl6x63a7u8mg5droxIrVIiq1v3kuX4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Tp6MMWCc;
+	spf=pass (imf05.hostedemail.com: domain of praan@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787578921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QBacaBnshuCPlzxPKwpr0zEJzedqj8NVhoTRiE9AZZQ=;
-	b=pFbjhtnh5zSkjIuIrCtt2x6ijrbKBG/ys359uwpX5gykDAsos6RyO3jnKj7aDSVLJaHkHc
-	URJRq9908DJ7SaIaPti7wq3f89dN5NtO8RCk/Ylpp00ThsUe5XpeMbDCqTs6IXL/jEPVcD
-	5uoe3+Z0mZTiWZUIydIh64mygk3OIuo=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aec6360133so2962260e87.1
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:34:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787578457; cv=none;
-        d=google.com; s=arc-20260327;
-        b=E8+9b3nVIwhWoxFmwqljfW2+6caX0K3PSlQCk+sZt+qLR4ZpFPhQGZ2p3L2zBj3qX0
-         D7Mr4uENzrFHfEfEZUzr3IEhyfyvJbAFbvDsykv0f79cskXt9U7Z2ymcm5cvNoYgBkY/
-         lLm34LQCwakVc7llcrFz51gYtjVj2vEIqmH3iG3HtZnfvi2pd05ZarxsKVuFrDkKu5S3
-         ngGclrvniMDj7rUtTXH1pimU/Xar6GUTQnis8CZxHd93chME7kryxEaQIPwuXs4sasCq
-         mRcJGQNxo6Q4fVFzcJj3kSGV6DC/HRFOOqQCD/nYcpmQ/h/XVlgll3ZVQBOldbGeUcN9
-         8YQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QBacaBnshuCPlzxPKwpr0zEJzedqj8NVhoTRiE9AZZQ=;
-        fh=1GMTiCHx9BDpuU7SUrBvsBdw0yrBQJnoGo1UYi6cHPI=;
-        b=Wv75587aycse8vXG5RTbrjXHLza0abXHM08ngnanHJBeou6tTOTFLfq1H1YUGhxbgp
-         wO9Du6SIwXHHq7Ic29NLQ2gVmTK1EM4RYAOYbd3N+dPWQjDvv+uFq2lREEsLicnSAd4D
-         puZtl+paocyN2Oa3sEpjqURC024RQOWbepjN2RMuUWBcflDEq/AtND8IHgpks9qse63U
-         aEKIfgLFT8VFqGoV8I1msVA88gJiVgBBtIoTzwM999PJElQKOwyrSvZMFzVXbxqCEk6g
-         VaGzVf3lVAJsUIhfRGLZLn+uslOi09twuBJ42KFCZ5gm1Fiz5VS2mUuBdLDZ7vit0ytK
-         h+fA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=MXklq75Z4X2qA44rayjTFnITvL4DP/DDkWPkbOCUBY0=;
+	b=ZFSy3XguWV7lxqJxdN/ip0X36ffGvaeigv9kyfehyVOOVUCbnpZ86hcm966FCihpJ3o0yv
+	OVml0uY8eRmjhQCzVaAZvN1rbiYMWZisM29uRC1s3TiYPzr6dSV4nkFzxHjzrA1pF7iBgU
+	0ZUe/GigP5kNUeIBtkDIqYoDqyHIDhA=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d3b440b97aso155445ad.1
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:42:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787578457; x=1788183257; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=google.com; s=20251104; t=1787578920; x=1788183720; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=QBacaBnshuCPlzxPKwpr0zEJzedqj8NVhoTRiE9AZZQ=;
-        b=owAO5yO/k2u/XdX1AeX9neDAvJkbRdL8SsuMjPNm9tgGz4j3NKobU95QHB5uyPI2Ci
-         ervsjTuvsBNsFllekFYjEDVCb2dMO01zdi0/RLjK17pdmTbGo21pFYCx+GilhuKdxStd
-         zDkEpe/oxyqt1gMXJch58wnf8z6WeoWR0uM4/V3yWgScjvX+m+VreohQCfNUlJ1uMkVH
-         OblivMlM/qnW//sm+wfqg/wMK+Kuj9y9ePQLelgXgKoZGCv0MrrB0D2E6XNnjcWMqs4Q
-         KXOVUBjjjhOKCZCwEaWxfFTFIclopvfoGRRSGTAeZv6q172Hc03cNAnxJq/VcgSnf5SW
-         bLuw==
+        bh=MXklq75Z4X2qA44rayjTFnITvL4DP/DDkWPkbOCUBY0=;
+        b=Tp6MMWCcAiDb31oYwI94KGXkfa6AUryTYts1LD35YAfdXL3Yb209mz/ncaX5k0ZT1N
+         JoRJnl96Jcl/6InvXzcXLJxYwTtrayQhltLBs4LNAsIL46M8w1XMcP9mNtpW8OnXKFhP
+         5476JTWdx1locHr1oFVI2UUHuebWSq8yvj6hhh96J1M9qL+Ucr2qpwmYv+jF1L7d0sAf
+         VwxZ8UU609x/DHzzJG8pcyNrIZzZ82ba7Oh5pFYY5RMnP749yRTzraBUzBBRdV+EixPU
+         sTpaKFP36wp1QFV7aSE+6XCFrT1NoNTk8xpN4KJimfbYArJrLFuCwM2FQP9uEpT53mdm
+         jqxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787578457; x=1788183257;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787578920; x=1788183720;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QBacaBnshuCPlzxPKwpr0zEJzedqj8NVhoTRiE9AZZQ=;
-        b=TUmT31ZXcRjfYGwCvv+iq4ytv12wh9fnT9v3KnEF/9HmjZ9sMgmoc4HPRMJJj+NTfe
-         HViO7n9wbwcdjLmvqw/UYpsdmi5E1hA8VLkkezh25iAg8TdBu8yU1HRWGUwBkYeJWtt+
-         Jf8W/XPoNh68u17G4SmuSOwzSmpa/CjMr5xHXRUCI6c6WGcPUJ3J+ndhSq2wiDNrMy7k
-         wsvbtQJUjwrURpRiVvVFGgPfn/FD2ZGRnPrMW4G/sqf87gQnXPZFw9gmzs/lTJ5UMn1U
-         rls5eUDB8yooQiCrCsH9CE2NzLuVV4zu7T7HUlykngYDpnCzivB8cBzNyGqNhB1+a1TM
-         VW/A==
-X-Forwarded-Encrypted: i=1; AHgh+RrTK1OcaMHqCE4Moe0aCLbExqyVD0WLCyBaKmwNTaKp7paM6JYfy+CgtLCwdmxEC4CDTfpA28//EA==@kvack.org
-X-Gm-Message-State: AFuF++mMKjgiVkWQMm4jGmRMuMSlmvLKvcGNgtVuqxYX/nqlwwD/+CJI
-	775yza0p1ukuTAIxPsXZOsSesqojaRJaCKB/n3Q66e1xhgC1HDmNLKUS3lRwQmLelJpO9MGLiGG
-	72+fs668FJaGYAxw8GLycORSncQAXTIM=
-X-Gm-Gg: AR+sD12b8XFDaQz/EyVqQGoBeEmB/PLEPAJl9zmVW7dIUDE51I77O51yB6naIRC7fwV
-	zXZCllV+OvhTbnY4FUczhHZNFjijKROJme2oCfwdAgZnPq5yTQ81HGh2AGbyOjFXhYx8q/91PuA
-	UwxV/NOl3yt2AmVNIR7mO69/nO8lW7cdOpBC5PojVU98B64Bls5EDPJ43RGWqJCQBNky+p4JTSZ
-	UAWK5jz76AMM49YjTv7Kc8+DDttZAscI/UDj+mYcSS0/ZWOJe41BOtCtuDVWeGLDtlPKdX5jLz5
-	CIlOMxQAACW7xTakqm0JNTpjVe5nftABHlxgRczbTGsSzg==
-X-Received: by 2002:a05:6512:3c8d:b0:5b1:121e:56ae with SMTP id
- 2adb3069b0e04-5b484207013mr9172063e87.11.1787578457000; Mon, 24 Aug 2026
- 06:34:17 -0700 (PDT)
+        bh=MXklq75Z4X2qA44rayjTFnITvL4DP/DDkWPkbOCUBY0=;
+        b=Bdmt08PMk5QDq+3knFx4URIExlXxFQqk2NOcqxyVk/hIYuGV4IZL1exeJxwUjC/W3E
+         VRX4BSrsWkNv/JK69a51buXhmsDlbLdPinG2zVFi2OqlT9QX90YNvkCzkwAYFDLbrK1i
+         Xwh5z0jLmqJIrNT5XjI5rlJVQMlalWafdYJHPpzYar0e+9mMT8bRZ/eo5PPKuln1pWjn
+         2HEOgRVghzu4dZmywI6YoLDNBkEYyL6Aj6qNMDHtQzueFU+Rvds6gf5PCTqotnzQLg3B
+         OpmbQOGZdkHjWLZRMc9lPVQ9Em9DDuKgj7AEi42eRNIxIn3vdj9foWMd6R7LDVKaYUhi
+         NLow==
+X-Forwarded-Encrypted: i=1; AHgh+Rp9CBrvsocO2wMScQ/Zw8Nb4+HlmXNvGecIyCSdbcwP/GDQ6BkU+pVVJ/7d+tYpcaBw6F9cnhycXw==@kvack.org
+X-Gm-Message-State: AFuF++mBPiSIEKpxhbl2ekFwigqg83hs4pnxl65lrT21zfbwIV+MklaA
+	DFaWyuUneIftA+06kvCfnnQlddeSb7D9tN+4xWxtulNPU4kyV7D2ECksz+JV0wkgRA==
+X-Gm-Gg: AR+sD12sfzmv+UIlCGuWK4pwU63cgwN8aIYovbjDeus66vWNz1tykJi2e8tBd5SiERc
+	EAkOjn+npbxOiN2iLFSoL/rdUgIU4tpwXRUKS435QL2/WVVmUP5YhlVQaSQghCVw8WlCTzyUriu
+	1s18GwY5ZPbQOYj+W8XUoBvbB+tiifNLushjk45QoPTPKLd5HKMGqDccmmuVYiYPDzHRcMN2CJp
+	Jj96Jp+ULMg5gXlXwAxzOXDRNa5AP7djlsQ/aVrdaZ029vXaLwn0egEKOIRhqrdsVS0UDRAWXSF
+	FZc+xuvDnQ5KmVfjxQqoYadVexsP3W6RwNrZpy7dWBL7FdBsptGnrtc7XDv5J8gwGRoflhZ7r3R
+	U4dnKgdk15y/4O1lNAMUVKWMFZiZhPi3r7K6TQR699Wm30XdGVjM8sZJVXEck5OZeonEZt0X1Aj
+	FZ7Ox/Da/aOMVjbzM0zwAwXSML2U4T8ZR6JnLiPlnV70Hy9aTCClKmvCYKQEzxOfhlxSwQGA7dd
+	J+PwpyOP2mF9IhRuS+UrMjsoQ==
+X-Received: by 2002:a17:903:1b4e:b0:2ca:cbe5:c3af with SMTP id d9443c01a7336-2d673b9e9ccmr8380625ad.7.1787578919029;
+        Mon, 24 Aug 2026 06:41:59 -0700 (PDT)
+Received: from google.com (164.210.142.34.bc.googleusercontent.com. [34.142.210.164])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d676761c35sm18347475ad.15.2026.08.24.06.41.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 06:41:58 -0700 (PDT)
+Date: Mon, 24 Aug 2026 13:41:50 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v8 06/12] PCI: liveupdate: Auto-preserve upstream bridges
+ across Live Update
+Message-ID: <aoxKHh_zLBb5vhzY@google.com>
+References: <20260728221007.2098560-1-dmatlack@google.com>
+ <20260728221007.2098560-7-dmatlack@google.com>
 MIME-Version: 1.0
-References: <20260820142956.1414337-1-qiwenjie@xiaomi.com> <aocQcaMMU7-rfn3e@casper.infradead.org>
- <CAGFpFsRarmDScAQxHpCtSZxK5H4WCg4Y=y0hXQLjGT804ZoWkw@mail.gmail.com> <aofGOQB4TViwQQQ7@casper.infradead.org>
-In-Reply-To: <aofGOQB4TViwQQQ7@casper.infradead.org>
-From: Wenjie Qi <qwjhust@gmail.com>
-Date: Mon, 24 Aug 2026 21:34:05 +0800
-X-Gm-Features: AcwNN1UaVcaeyubnRP3fsC3CJZmuoOgGKa4w0B0il0q9I0mk8QLj8AnssfwDVCk
-Message-ID: <CAGFpFsTUBCiGEUyKzYNaT7Xe3O_7dVg6T==v3ssZ-9HGQiafLw@mail.gmail.com>
-Subject: Re: [PATCH] mm: filemap: tighten dropbehind completion context check
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, baohua@kernel.org, 
-	Wenjie Qi <qiwenjie@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 385DDA0002
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728221007.2098560-7-dmatlack@google.com>
+X-Rspamd-Queue-Id: 1B04110000C
 X-Rspam-User: 
-X-Stat-Signature: 3pe8mqjr78ig61t97mkiu4n1b6thdpgh
-X-HE-Tag: 1787578459-561963
-X-HE-Meta: U2FsdGVkX1/irRFdClNLms326kv+JpHmOcz2VILxscxBALydpcEtXhpuePwQwjvDr8RkDjdSmB3Nh17n4Ljnqjsxi44V3cY0x7Nv0Xyn3W0C+DrbWVdq/SY5sq2cy15iVyCzZwFiWJanew+liRJPTdu/JODHO49BrEYt62h6TlASgzI3Wa3jpKH3hBI4zXzeftyje9QQ6g6pU4wOig3uyGzPYBmwxOvRMoNzfww5LEbQ6zVte+L9qVAZfLKQSZYeb91H8u60NyzpKruajFkN5KVQLsHUXnnuXYBnArA7mZClEJADGci09Imu4NtRahfJqNH7Fvnx1L+RMoXxHgUTlE5N8DvFyYj+Hrt4vk/zSuA+6H6tu2GI/FqWoJtN/qgKE90fExIAnpoEPg5KHLNi1WX6Db/iY9FbiK3Z9XCneaE57Upkq9wo0JCfOAGMs2rUhl4RvRI9fZwlC6G41PnnXvPwSIeHpbcJJ5mgmJ+OgBh8/HOWFhPvv2nDZqvp9bwVkv1oqHUmPd6kZA0pnZt/BOJvexx1Mfg9uKRy/PJwkDOBGerjMsa1KX7GzBRvFZgRFibhkU1o6jyl6pQs/OhcQk2ceciJvos3dzLSVi9x/kwETxCOVWAFk56Bi+eL/QwA4+qcKSwPAuUCAkk9Cuei/ItmfxUmwDzXLdYsdZhYu448peCFviRriSBZvFtnoeJ73q50ZLDN7LGlOxzNyv3KJQWYPw0tXqD4Agpg20Rssl5mt1OAUsCoxUR+HMjmuQ12DzVf+USGvYjBP4QEyv0PQifVIl3keCj8e8eehQTBteVKWGQ2w2Nyo3gwt6laW3KVhLuRGzgLTFP2hgBKwHGKy9ca0F5SjFlcAAGEAS1BMPkCkL0VGOZ1bJ065A0bC8alWx9RZ0WFcViz9VDq1Tz7DbOSg8W//TfCdY/LOlEBwj3JjmEms0kWi5ZiHEJLmU6TuYLcICUsoxs4HbrYkKD
- vusmQtf1
- pyW40krcpSrmDiFiQ90QGspUJISTLUgO7sWF1WZzzJ7zwyG4k3liVMIkxQiGNVIC4K+1Y5iZ2q8gQzcT+6DDvvmY/OEKZdxPZoLIJfSgCbkN7OMfosbrUZpllZ4VMKNUHdq5bvksBn9DQOak3AGEjwPgbFo4kK1o+NJelaIL786WHY0jXRTyZrYs8SJnLHgPy0A/NjHg6WNckQA61n6MMtCV2prH6vKOuf0QR+eHz/nxq3TbwP4tr0syQ63VVC2PDncYP8F/x5PQJHGLsXVzXZFupQkoYzgIKTAn7cRkLIETIV9rNNbOJPFvqjt2alB3Ies1qOsn2SYPBNH1G0FBxb3QrxcZ6MWokWPo6Zou52VlqkNwxszeaF3zWzMMztbXaUMojPUP3kc8zT7m9xZmsErDZ3K2L/N5OxBef6nRltWX1mod14Kl1o7MaUK5cD092hkTSabfQNyYDLJAMg/cPuowQ04YM1/xSX7jARDmXnY49aio3b4V1pgUxYwgti+HOwwvv
+X-Stat-Signature: 5zmbumq9rrs4ktudx8y4zi3paok1a51c
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787578920-263851
+X-HE-Meta: U2FsdGVkX18ZICYQHxI2dpSQGOP1L8uTUMK136fdf+71BAbDxeOtJ9n7lRSNXrGpCW00U3irWVc+mM09mPPq6eG+TqWrZV/q8DBTfFnNkt336v6Gm+mw/GMOZiumtLmXJaa0R7vihEQtAdpDwlNRLN09VGvHv831bHkK02Vy62vg8lBf6tm91ZKL0qO/b4WrmaczHnYu1zPxrnVh+2lvEON94MxZIQoQNj3jGCGEPKbw32qPs9lxn8u+o/2a0837A5sQVA4etAqwBXZKODR7z4VGoYdP9DmoH8MBwm11DHdhBlhtx4yN41UWssEhsmCI6GT4HRqnVvRdVnDh9tvjQefhx7tLbGB6cFD+16/wa6Quwhuyiya84pZLDDraqmqJ/v8motEk5mq0dgxSwtlXU3yUMNuHUKJrmf1O9RLuF0nd/l3T2oKItqX0v5q+hEoPiX5Fr5wo9nK2qoZoMVbkC1Ho92K43yoXc9n/x/gVAmBTyK0VZPUGoZwUEvp/Y/Ok26vcQv7W8Kx1QnG+DPB4pWSedXxHWDE2/gBg5wf4YVY1yfbZqjlhK2tfO1uREZqd/BajkAG0Wqo5GY/kS9zZdk5rJAYktK7u8mKIMchu/wVCVnbDmhjDKINKR1CwHWh+UiCHyQR0JXKYWWXEPXxrd6V4qqKicjdxkQ1lLvIFIiQ99CtH8lzakYlw6GyahMNi6Uf2bgPGYl+I5MBCOMrcCW8Fz9LZzqM+qeBGZz7XkquMK9Q0XScnfmvuR9BPxsGNSSPalMEUlfBWAcVKmGKxntFX8tn3+kiq3t82VjCsPYvdRSQKPSoXrGydMLMX3VoUJGvcLF0ytcvhG1gwiNhCcnYqwORFsJBbHcRj1hbg/Ww2z+PkGNjHna6xsNKzlUCjubGAOa5WLnODi8l6IP6ZQwnAlAMYJS9JpnkyxOqJlJyAwjJjyF3HxtVT+UT53l0kDi6h5Nq7PzXsgwxHj6q
+ CRhYQjgk
+ BIQFbfgdxDaJKRH1O2hcXM6mk/XH/bydf6O85YzPJBMbPiPK6QimSZ7+6zkniVqLtLxmFHdwuT08ea75yRDB0um9ywCdn4r4sFsbqDFtjYYs623tzSLM7rsr4uFIWMPSXkTcIxq4R67ScYEi2D2ugZMklJS07vzQignpbH3gBcbUjx9vyRLmT4g1zY79iKvM6L991OYBIt3m9H0pUecJtvp2yt8viK5m3qBPwJtOKY2dFiUw2U88ghy09ChdACuinyGp7J3nLclFrZQqh75Brh7B5QDaq5jT5Z9KDUmwY2fTUg9N6kT7QYnUM4NfDdzaJCQfkGVEAYPT+oC7YZy3JbRClSh27Omv3aYHMgo7cj8PK6tbRd97tinV5RG2X4bDyyvHxO0Rqu6wpsEP1hqjDnsL+FdfqJTU1EdyZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,87 +139,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-  I think fault-around provides such a path.
+On Tue, Jul 28, 2026 at 10:10:00PM +0000, David Matlack wrote:
+> When a PCI device is preserved across a Live Update, all of its upstream
+> bridges up to the root port must also be preserved. This enables the PCI
+> core and any drivers bound to the bridges to manage bridges correctly
+> across a Live Update.
+> 
+> Notably, this will be used in subsequent commits to ensure that
+> preserved devices can continue performing memory transactions without a
+> disruption or change in routing.
+> 
+> To preserve bridges, the PCI core tracks the number of downstream
+> devices preserved under each bridge using a reference count in struct
+> pci_dev_ser. This allows a bridge to remain preserved until all its
+> downstream preserved devices are unpreserved or finish their
+> participation in the Live Update.
+> 
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Signed-off-by: David Matlack <dmatlack@google.com>
 
-  do_read_fault() calls do_fault_around() before ->fault.  For generic file
-  mappings this reaches filemap_map_pages(), which walks mapping->i_pages
-  directly and maps ready folios without going through
-  __filemap_get_folio_mpol().  It does not clear dropbehind or exclude dirt=
-y
-  or writeback folios.
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
-  If the mapped PTE range covers vmf->address, filemap_map_pages() returns
-  VM_FAULT_NOPAGE, so do_read_fault() does not fall back to filemap_fault()=
-.
-  Both the faulting folio and speculative neighboring folios can therefore =
-be
-  mapped while retaining dropbehind.
-
-  A fault-around PTE does not necessarily mean that every mapped folio was
-  accessed, since neighboring folios are mapped speculatively.  So I do not
-  think folio_mapped() alone is sufficient to cancel dropbehind.  Clearing =
-it
-  for the folio covering vmf->address may be more precise, but that would b=
-e a
-  separate semantic change.
-
-  If this distinction makes sense, I can send an RFC to clear dropbehind fo=
-r
-  the faulting folio in filemap_map_pages().
-
-On Fri, Aug 21, 2026 at 11:30=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
->
-> On Fri, Aug 21, 2026 at 09:23:12AM +0800, Wenjie Qi wrote:
-> > This is based on code examination; I have not reproduced it in
-> >   folio_end_dropbehind().
-> >   There is an analogous EROFS report where bio completion ran under an =
-RCU
-> >   read-side critical section and hit a sleeping-function warning even t=
-hough
-> >   in_atomic() and preempt_count were both zero:
-> >
-> >   https://lore.kernel.org/r/20230621220848.3379029-1-dhavale@google.com
-> >
-> >   That is not a reproducer for this path, but it shows why task context=
- alone
-> >   does not establish that sleeping is safe. Here, folio_unmap_invalidat=
-e() can
-> >   reach unmap_mapping_folio(), which takes mapping->i_mmap_rwsem throug=
-h
-> >   i_mmap_lock_read(). I noticed the mismatch while comparing this path =
-with
-> >   the stricter bio_in_atomic() check used by the block dropbehind work.
->
-> So your analysis is right as far as it goes.  But if a folio has
-> been marked as dropbehind, but was then mmaped, we clearly shouldn't
-> be discarding it!  I believe that we'll clear the dropbehind flag in
-> __filemap_get_folio_mpol(), called from filemap_get_folio() called from
-> filemap_fault().
->
-> If you can find a way to get a folio with both dropbehind & mapped set,
-> I'm interested in hearing how.
->
-> > On Thu, Aug 20, 2026 at 10:34=E2=80=AFPM Matthew Wilcox <willy@infradea=
-d.org> wrote:
-> > >
-> > > On Thu, Aug 20, 2026 at 10:29:56PM +0800, Wenjie Qi wrote:
-> > > > folio_end_dropbehind() uses in_task() to keep folio invalidation ou=
-t of
-> > > > interrupt context. Task context alone is not sufficient: preemption=
- can
-> > > > still be disabled, or the task can be in a preemptible RCU read-sid=
-e
-> > > > critical section, while filemap_end_dropbehind() may reach
-> > > > folio_unmap_invalidate() and sleep.
-> > > >
-> > > > Use the established conservative three-part atomic-context test: re=
-ject
-> > > > preemptible RCU read-side sections, reject configurations without
-> > > > PREEMPT_COUNT, and otherwise require a preemptible context. Unsafe
-> > > > completions retain the existing best-effort behavior and skip inval=
-idation.
-> > >
-> > > Have you seen this happen in practice, or is this based on code
-> > > examination?
+Thanks,
+Praan
 
