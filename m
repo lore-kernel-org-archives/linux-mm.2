@@ -4,133 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B42C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:10:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 319B5C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 109756B008C; Mon, 24 Aug 2026 08:10:31 -0400 (EDT)
+	id 115336B0092; Mon, 24 Aug 2026 08:17:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B9E26B009B; Mon, 24 Aug 2026 08:10:31 -0400 (EDT)
+	id 0ED536B0095; Mon, 24 Aug 2026 08:17:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F126F6B00A2; Mon, 24 Aug 2026 08:10:30 -0400 (EDT)
+	id F1E676B0099; Mon, 24 Aug 2026 08:17:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CAAF46B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:10:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 58ACE80109
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:10:30 +0000 (UTC)
-X-FDA: 85136045820.04.0A066D9
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 55BAD80008
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:10:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="I xf8Oa9";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=OXgLEY2A;
-	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CEC8D6B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:17:16 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B5B040111
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:17:16 +0000 (UTC)
+X-FDA: 85136062872.25.7C4DA10
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8DFF1C000B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:17:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mW/hFf5G";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787573428;
+	s=arc-20220608; t=1787573834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+BetWuGtES6FYCL43UJL392AYum+pn8KC95eoabgl+4=;
-	b=CI+45quxvGo4Db19sTvT+yaWqLPbgXnjbVHgahufrHVazOq1jnjEYXlPLo7BolcksT+/yF
-	306gNuBlRvlaEf6kMHVWTqm67TF0vuj6y/r5BqKwSW64tGm+38wsJxHWbgYQlv5L8HqYTy
-	DkgN4bQKEBUdenhxOj0M3XH9mAKkqqo=
+	bh=I9G+2pR4S+ko3JJWwpOLkXez1wvJqD3jZzDSrEX5v8M=;
+	b=nIe30B94HpJ6Vkc8zqOeQCJUVU2huHOwB52pMKMX6kE/HIdKVUT6mCDKim7AJjGFHh/ihQ
+	yrU/os8LjWhSoJqVHZ8wGhubnkXddHPOkLBdDUMZzJBoui/zFigBTeleW15HSJ5hmRo/NN
+	sYGu/y5j8ILST+3p7SsiCCPNIOY/kRQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="I xf8Oa9";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=OXgLEY2A;
-	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mW/hFf5G";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787573428;
-	b=arZdIJI3m5uGdsl7PDUUhDYRmk4S7itCZAodrGYkVqgCrw9r5ymY2h7I6h1OJQ18cD37rN
-	DdYgkwfzwI6sn0sRHk+6mC3HpKJjLAOQm4UQ95MKOf4v1VGllVMsleLb2pmt5ERcgXTGZJ
-	yAPBV/Iaw37ctL+UWgy+/x8VATHUj0M=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.phl.internal (Postfix) with ESMTP id B20B513801CB;
-	Mon, 24 Aug 2026 08:10:27 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 24 Aug 2026 08:10:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787573427; x=
-	1787580627; bh=+BetWuGtES6FYCL43UJL392AYum+pn8KC95eoabgl+4=; b=I
-	xf8Oa9CGDPitrXuxFpRTrNA/CUA4sLabnalrpbCnQQxYCTmD9GO+glAmL3vtkY6h
-	QLXiD3Hj1AHISvBlFKZLIBGppjLCqHHxa07bdE0OVsc9UdQfjLpRqtDgAIg2U77O
-	tnAjFSA8z7aiv1DX3PihtFYqDxukxvEiJRzMYdt/yqHRUHSNg34hpmIgnPsXgmLB
-	4X6AvQ2DhwD5CAJeBoj+qKjwVkvuo2Y2S5QQLu9t+MuFoGwS+3YMn8Wmf8eX/yoB
-	1dfdTWV5XJRG6HZYHyk440xfHYoDj0NQU8KajMbz+qkQHuQ4WGNutoAe4/XJ0KWj
-	VB4HeMYa8p5b4eUKrj8lw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787573427; x=1787580627; bh=+BetWuGtES6FYCL43UJL392AYum+pn8KC95
-	eoabgl+4=; b=OXgLEY2A9FwIshfHHebpmoL+yx5E+ITZcbpOPAGV+NYLBq6GmXf
-	tqbl6hT115nzi2LiraX2sQtMCAouB41P0K7ztgelcc30CIKxOKGVwAxPiXjRUNlJ
-	hhvQtHoZ7b82sTa+OQShJFcW883gdd+bBjt+z72BQSwjHyAG2F8t05MSpSyDfFTx
-	umE3vvEfytupD416/dNvaZNbpuhxdJZfuapJh3QE84YJp9eUWlceLyWw+qKvk0FO
-	pvi5rxXEPfCMZWk+emR3FuYO46O0DPHX2xehfDIi49yLMcoTfSQGpQuasd+IW+cS
-	jUsyRKtZHHukq9dy3yt4i6GTTeU2uI8eGoQ==
-X-ME-Sender: <xms:sTSMakFevnMHez-TsqKHTsGyWanYrCxBrd4Lk3gnXCC-4OprI7Za_Q>
-    <xme:sTSMatz_urE6iaOB-WyzJTICJtuu0FSjK67-8vMGykqbqeF5RseyorO3k10B-ziJp
-    uOA0wmzDAMsSmRUj1jE8uAGKOKiRAZAYbfgN0hqzmvQA6VM2b1kgHws>
-X-ME-Received: <xmr:sTSMavkusQFypit3V_l0slgntFw9tgm5BIRSseDwrXGQr2uX1oIjqPAgNAk>
-X-ME-Proxy-Cause: dmFkZTFGxilWmuF3Gl8ZPZwxYmOPn0BEaIq9i7rD4Dd/1XrTGUj4VjY7hNztkoxXS7e9ZX
-    YOYCvvo5OHvsSrHohvqkiiFE9sNB19lqguDTit2SqCzhTpIB4v7LIV83ME+lt1IbVb1ARD
-    e2/EdAAQDqfcEuYGEcfG4q+pt7q0fC/FZ/Vwcmo58WjowQAHZApEtHoFu5aD3C7z71y8Gz
-    zEBghY8bMP6bHVe/TUqSuv5AD/pO/LC3TsFeZXg8JGdhaszDVG/9i81PGz50gehDJn8PWC
-    NP7q7ABVVUq2eZhbZ330aHp8uM7GSMXzZSNR0JpPHXuEnVRObiMpWpE0UIl/UvwHR+Qxbi
-    LjgmsAooNDIMPFmX+m4464q6lesSjU7e/tnyt/a5TB9v/aGR+RPfNiUYCrz8UicH7kgOzK
-    rHR16IBtYq47Sxs1gjnHLNodrByJ2R8drPfrlc2ftPLOOr7rvKPQ4DdbZS+7xYh0Vgmnhy
-    2/0LjGGwEFpWBjeUFBtWudNveidd7/90j6jHovxDPLZQmyY1cg9CZb8dEfjrGJOgW7kIeE
-    H3WCMtKx4SHKzby3wyJshdKRJKNjd82g4Qd9I7RaJWq3NJRPfHEKV0uSmPFjBWLRJF3o4N
-    /YUfL4CmzBhuyh+mxcZu7/mHScQh79irYR2t9Svxs88/JmR08/JUxMStYqdA
-X-ME-Proxy: <xmx:sTSMamHd21CAaMomXAUVBo-FgA5wNjmNhqpK2QhqUJt_H1qk4uX0Iw>
-    <xmx:sTSMapvUfTPGmNUMJiknWiPNnSQ-SYLAuCW3ejG48vYb5PuKcs-jzw>
-    <xmx:sTSMahkDBiv3DzcXCA9aoXsj6BChh_cqnCHBtR1t1s90pYwIxkXnng>
-    <xmx:sTSMahza4TvNiccZORwLjRcEtq71ZdGd-U92dZ30euOc5yQZfOXlAQ>
-    <xmx:szSMahs7409M3gBwcHW-k22zOB_yMvq_Ys9rNUlTLNp4mIiedxwAMkWn>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Aug 2026 08:10:24 -0400 (EDT)
-Date: Mon, 24 Aug 2026 13:10:23 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev, 
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
-	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	jannh@google.com, willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
-	mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 03/57] mm/collapse: add collapse.h for the shared
- collapse state
-Message-ID: <aow0Z6mrG2esKpRZ@thinkstation>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <20260816224609.308019-4-kirill@shutemov.name>
- <3113ac8b-c1ce-4577-9e93-449b70818918@kernel.org>
- <aobglSY5L1KoIqxF@thinkstation>
- <65433d1e-95ca-4434-828e-8f381d3384b1@kernel.org>
+	t=1787573834;
+	b=NiMp22xAlmrP7olVu5XuMQhBplIMm66oUcSUG3Zz8HY4FRFPtWMeiQA+tuyTh8n2oz4GpZ
+	jfP0AMaVIHX8PUGfC3k+RNsMzBq/emzJS6K3bWepdDgQaZraKSLn908oWMNpzrlExmobGj
+	VYCtzFwoVxB5eBko63M8ZR4/PcaphlU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A9ACF41A2B;
+	Mon, 24 Aug 2026 12:17:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594591F00A3A;
+	Mon, 24 Aug 2026 12:17:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787573833;
+	bh=I9G+2pR4S+ko3JJWwpOLkXez1wvJqD3jZzDSrEX5v8M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mW/hFf5GQRaQ9wugKNZZrfdTcCRiHg95Gg5mArsWXJg+ZyTkK1fCiQsevUocW2+kk
+	 w98u41xT9vSlJ0tnn1GnY7HZ9rQMESvfWKfMHZFr2LUkwz+v+XlYn+i1IpUrCldS0I
+	 g8ZKkihlumtUH2TQjqznlLAWOtes98bfAzxMX5LJiM0nxrBsEtd3PGnUl6jXOY0bdv
+	 q6aPdnkeO+vy3Bjw89c0oDIUApCOi4iirPuNPSsJuUuAQlh6l2gD6aQQZ2nvBdHsiz
+	 fjrYFbh5HPIcvsh62m8kCUvV9SvJ07ajA/FfsKfP52LBp+M8G/CBgjkiXUNIg7KmG6
+	 skGXj7cd6v4Ug==
+Message-ID: <75738049-24f9-4056-98c8-b4075552ab78@kernel.org>
+Date: Mon, 24 Aug 2026 14:17:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <65433d1e-95ca-4434-828e-8f381d3384b1@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/6] selftests/mm: make file helpers return errors
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260813181230.483746-1-sarthak.sharma@arm.com>
+ <20260813181230.483746-2-sarthak.sharma@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260813181230.483746-2-sarthak.sharma@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 55BAD80008
-X-Stat-Signature: 3gxh8984tc1fk5anw9c1d5ofunukq7eh
+X-Rspamd-Queue-Id: 8DFF1C000B
+X-Stat-Signature: rwortp3jqkgwbnmjmjrwuomq9euj8djs
 X-Rspam-User: 
-X-HE-Tag: 1787573428-248182
-X-HE-Meta: U2FsdGVkX1+UczcLRihjI7VeiQ2K5aTYbV49EzVg/jkTLJfQO8Zu8dF1JpWqN+FIUgYlnd5FqTiMG8MubyRfxzoMZKQhv6KYSoAdFyEHc1dkGJ/AwXluZZGAgqQUHld/6584fGQRDpAANS2uDJ5skRX2YDThcq40wC5ROGRkn5jnj13YiusNywEWcxMrcCGVwo9/c4/oLUuUccY4l123IVWDx+s1REvFT6Zv6gJdDZxWlsK2fnr7TRlORQSNtaBgbOXtGnqd3J7CipeWPJJ04zt0XgK94SkTQ6NpLqVtdzxetKbdJQTy82MhufSm7WMZYJhmg/U0cJmry80JVMvH0076uwT9GQx0gEoTmvzyWYjzanR1K0zzRedW17CGA96Rgqegeae+/zaiKnx3zkNJUzDFrF9NCDZq/W+/Lbt0rIKB45b4eErinhpLd0VFN8pcwUsOgJjoIM5yiuhc+cpcmZhNdDA8g/leEo++DyJKCeTXcGnNEyXSLEaU3b881vde/uWGZJcfeFFmbiZfZ3i7pcs5Z1V+Z2LB8/S2bnSIamiGVpaQ5s0+4D/TyqQzwxfjGEX04TolMgWFWDb4QQFfWjXQtjKdOSoDNqUNjH9N/8WcOMEHKFgHPc5b4O3RAppkKHN4UEDT3UcgWSufT/wYWRD88TGDzwNbvSjtxwyI1bIHZEYgHzsazjrGEBtTpM051kBytOBjM+0fdnCnnHZIjqshnXp5kO1bEkDKHxKvvFKeHdGXgetBRQbxWhHvjZ6RdlpKhHHqT8IALaoRR0YtlWjFbA/kg4ELPpLeFcsQPJqpnwp91U/jVKTIznSicbCmH3oyINvThhs5TyDK+FqVZBLXyB/DoKTeE7vq9KKX6/aESc/JRN8DxGDALjMsOCcmBX2pZ0Uf0h9LTFjasVYM9baJ9URV2AIEyTbmduxxPxne+gb/s61FD+G7Hnt0sXanHKHyAk5EtJ99jyplT+L
- lI7+GZxU
- 4OKJeUeiJXeqMp2rH9vj/CMceAFGhWeMw7kcEz2NanTHXRXHnzgYUDE/0oOFThe00qSc5tpjY7iOvidhmcXlz3hYhNcdhHQn6HFBPue1g4FA5SZpas9iPOuWHGvy3o6NUxPGcPxmG0FgCM21oLhlBry2kxhF5n/WiJSxNGD7k55oTXbifXGmvBnTMLAzqByoDwXydYVW4qHJpflfVbfsxVHUeYZYd8dztc38tzQobWYYuD6lcGzi97I1HKm/X62raiD0Ndv+Tu3P7jcK4JOJuPCjz0F2rCv5fILxCd4n2wJde/ErDSpgSaEH+sG0ikotuSBqNnaI6VO0g8wniZ9fVpT0MLx+1GlT7og/EssdH/+Z5v3XjrXCp4tGpDQmXO80h+u42lnKFm3FhDrzncp6aIB2yInvZl1RwakTPh+sgoyNJOUJiP19M2cEXnGJqjyPahb4a6aWFae2F5lT1itdp/9Ou+g==
+X-HE-Tag: 1787573834-263012
+X-HE-Meta: U2FsdGVkX18frbnThtFhCikFYXpnQ4HxgV2hUd7kf/CfwwSsWiRA2FYjEXBuFnkKrWg7GjxMZS1V09Tx5VTnDELJqGKZVVj1fb/oe2Ji3AjTfTAE49Npc2UKWK3eZfdgI/hecvG08rjhncstm+dPF6UWUg8WEiX+bwrpvzZcWhC65CPwjvzECJuEDQVPBVXx1afVMcVSbnziKrERk5z+lJU4ZMzkhn/CVcm0tjBUYGO5qBiQqVkYw7Re8pH2RWrh2P6P9h8MF2quW4CDHD3lq7b+eQ3LqqYFoqg1ORZZXGXXe8De06uRH6yh7XXLToswYaLxibqpeDLDzuaSeh0+p8WIZcvZan/RvNoZXJTTo9iuc1dDdC0E/6ZiAQnXbMB+D1e4ls9YztqGBAK272U+JNyoTlHR0JBsKUOcSCQzjKaxEeRfSjeQOqlc6SiA42uiyn9csPVSHflvE+1jwis5trEa03cdaWqHSPaOuduSg7PsitMNCLBr6XZ+qNzPCUxoFqwJIbeaqcerWBN/fiGfdWihvQ6BpeV0B+SN5NafACpxgcWJPFHO0sU0jID8mBYKIcDr3pI7HjyF4H2NtRbNAnJMfRZYYFwPnV7FE00anDkPP1mXjB/RQZ/NjhNJGrL+y423iekegY6IMTt0h8KTAkeeBj5gkfDjCJ6HmE+hu3nXQcL9Zlgh841JVCVSyPnF7uliic0altQOAzk/97T/Op8keoMW/cqw+NJJynUVOa2Itn9QvZ30I/XE9k7ideEKq+XVBtCalacDIoZNwxLlua12Y+5I/Xib98X6PPuSoHqDMfdVzVs5xDMTYp0C0Hxs4x6huBxuK89mvabZwshp+O+GPPcclVqsWwa2CR/Sb89rYgpXwEz5ezPVfvzZhewhNInuJoCEnphGCcjf8/WyZd3+pF3Mo9q2eg/K4yxqqgJ9jyeZwqvBZ8fj2wZoQrbzc4Jn8p9L4dd3gzYX1rt
+ ooLhKSIy
+ AoIAGdlIthrjGrhtjqL0c+DdUxILjdC4Vt8u4gtTat8tOBUQJB5s0s0ZUmNGVjouqTfpJRTSPTC7oZ8bsMQxzyrmX9haQyv9/EeEtsXqOrDanQgaGIOOehI3jvKcCReGXkAGQtjJem2/aziP45xTWbaS88stkh4WpzhsMmY9bSL4fsjVo4O7twkQsAV0oYFkhgxWzXJNdvQspRcXgRmUTj4siW6X0xzMSJ7SO1E2/ndEW6Hl99tFq9SM+cl83FyL4ywAlbxGgbWcgWy2uEP8uFKqcUdNjWY9HXv6o2I/xfnDSj7XQxUe8Di0KsmsjBZQla5Q0YugMgStV7VOyHga36sYqLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,55 +151,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 01:47:54PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/20/26 13:11, Kiryl Shutsemau wrote:
-> > On Wed, Aug 19, 2026 at 04:19:41PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 8/17/26 00:45, Kiryl Shutsemau wrote:
-> >>> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> >>>
-> >>> Preparation for building the new collapse engine in its own file.  The
-> >>> engine and khugepaged.c need to agree on what a collapse result is and
-> >>> what state a scan carries.
-> >>>
-> >>> Move enum scan_result and struct collapse_control into a new
-> >>> mm/collapse.h.
-> >>>
-> >>> No functional change intended.
-> >>>
-> >>> Assisted-by: Claude-Code:claude-opus-5
-> >>> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> >>> ---
-> >>
-> >> BTW, I'm wondering whether it would result in less churn (independent of the
-> >> other changes) to
-> >>
-> >> a) Rename mm/khugeapged.c to mm/collapse.c
-> >>
-> >> b) Move stuff into mm/collapse.h that a new ...
-> >>
-> >> c) mm/khugapegd.c will need.
-> > 
-> > I went for a clean collapse.c on purpose: the engine is new code, and a
-> > new file keeps it readable while both mechanisms are in the tree, with 28
-> > as a plain delete from khugepaged.c.
-> > 
-> > Your shape is less churn, though, and it keeps blame: 29-35 move about
-> > 1700 lines as add-and-delete today, and most of that would stay put, with
-> > only the daemon -- mm_slot, the scan loop, sysfs -- extracted into a new
-> > khugepaged.c.
-> > 
-> > If you prefer it that way, I can give it a try for v2.
-> > 
-> > The rename has to open the series, so it will collide with anything in
-> > flight that touches khugepaged.c.
-> > 
+On 8/13/26 20:12, Sarthak Sharma wrote:
+> Change read_file(), write_file(), read_num(), write_num() and
+> write_num_ignore_einval() in vm_util.c to report failures to callers
+> instead of exiting from the helper.
 > 
-> Kiryl, I have to ask, are you using AI to write your replies?
+> Make read_file() return a negative errno on failure and 0 on success, so
+> callers can distinguish a successful read from an I/O error. Also make
+> read_num() reject negative and malformed values.
+> 
+> Keep write_num_ignore_einval() silent for -EINVAL while returning other
+> errors to its caller.
+> 
+> Update callers to print diagnostics and fail wherever required. Also add
+> a helper print_file_access_error() in hugepage_settings.c to print
+> TAP-compatible errors without a kselftest dependency. This prepares the
+> helpers to be moved to tools/lib/mm without a kselftest dependency.
+> 
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
 
-Yes. I use it check my claims and fix my grammar.
+[...]
 
-Why?
+> -unsigned long read_num(const char *path)
+> +int read_num(const char *path, unsigned long *num)
+>  {
+> +	unsigned long val;
+> +	int ret;
+>  	char buf[21];
+> +	char *end;
+>  
+> -	if (!read_file(path, buf, sizeof(buf)))
+> -		ksft_exit_fail_perror("read_file()");
+> +	if (!num)
+> +		return -EINVAL;
+>  
+> -	return strtoul(buf, NULL, 10);
+> +	ret = read_file(path, buf, sizeof(buf));
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (buf[0] < '0' || buf[0] > '9')
+> +		return -EINVAL;
+
+This is to reject any negative or hexadecimal numbers I assume?
+
+(essentially anything that's not a valid number)
+
+Worth adding a comment.
+
+
+Apart from that LGTM
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
