@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12857C5DF9B
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:28:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B833BC5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:29:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FF196B00A0; Mon, 24 Aug 2026 08:28:53 -0400 (EDT)
+	id B657B6B00A1; Mon, 24 Aug 2026 08:29:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD106B00A1; Mon, 24 Aug 2026 08:28:53 -0400 (EDT)
+	id B3D896B00A2; Mon, 24 Aug 2026 08:29:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C68D6B00A2; Mon, 24 Aug 2026 08:28:53 -0400 (EDT)
+	id A53196B00A3; Mon, 24 Aug 2026 08:29:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED4636B00A0
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:28:52 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F330A065B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:28:52 +0000 (UTC)
-X-FDA: 85136092104.08.718F603
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 79C2A6B00A1
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:29:50 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E79F40110
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:29:50 +0000 (UTC)
+X-FDA: 85136094540.03.68068DA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id ADDBA100004
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:28:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YUIXwQPF;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 407782000F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:29:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqN0bgAv;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787574530;
+	s=arc-20220608; t=1787574588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oNv7ijS+WXVt3LXvoJCY8yKw7rjzIvyfrsdNOo8RgCo=;
-	b=ZzH7snjnD4SH2qa44yjj57z/Ca8BvV1WFz2AMU3QqUQiGufgf883MwG8vNuVBun5DJJkyO
-	MUCJ+6sPiBWxK2xO6sClPzWxXTmpui+90KZR5EYlJDmWibAyBPfmzZOJKf/v3uXWAV9gmg
-	PYMkayGfo6JTHzyl9YnyW09kXbXnNpo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787574530;
-	b=LnFtALDps2YjXntDc5kk6j/CDxid0VgKuOXY58SSws9l6nCbmRuLRTCwwrLNrhZr9oTxVt
-	gffIu/Jpevb1GPpi5j4V6yp2M1RwiQkcTfcqckIxyw30YOWQrIX3jYpSS77l7R0iQU/VaH
-	7QMOULeM3W2kGHqdc3jZJmHxzesXT8w=
+	bh=5HIXWt6cHYsyYpDN3CnAjwEjdPOxdWvNmv8xtLz7Mp4=;
+	b=Nhk0lTByVCV4Cw/fwWpKJTcI86AGgg+RYFK/LIQA3YNz3KKHETEPQFbCfx8Vx6u4ebFREX
+	rG4ue8c5ZOBF7pgZHe0vBULRfkDr+rnKH4KVpppJz9FfuG2c9bVtd/EyN8e8n1Zqvoc+RO
+	s92vnHuZH2HhZqRnYtGeRmhH+XAfqk0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YUIXwQPF;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqN0bgAv;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787574588;
+	b=Qo1dWnQAyGVtLO0LBaQIFSqh6gl1MrlXt2mhblrmDxNaU0cM37PebWMeCGHY+8jTnRw+Hh
+	ctUCwnpZVDDbgD7q/x0KqF3r/mbjbCavI2VvOIIDikVIbHF4hxVOYwN2nRotZ6l6bAgC8y
+	AIMi2et5SeyAOD+TbsV0F19Lsq60d28=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D730D43B32;
-	Mon, 24 Aug 2026 12:28:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C941F000E9;
-	Mon, 24 Aug 2026 12:28:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B87C4062E;
+	Mon, 24 Aug 2026 12:29:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3111F000E9;
+	Mon, 24 Aug 2026 12:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787574529;
-	bh=oNv7ijS+WXVt3LXvoJCY8yKw7rjzIvyfrsdNOo8RgCo=;
+	s=k20260515; t=1787574587;
+	bh=5HIXWt6cHYsyYpDN3CnAjwEjdPOxdWvNmv8xtLz7Mp4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YUIXwQPFvhi9rTBqyyZKnxmp3a2AAz9PWJEcTYWWpuet1pTH/A6x1pvgG6luvAv/L
-	 EQpbyg5R5WgffgowgYMBeTua3i4AEyYOelkU3zRASsazScmOOWLIqQ7awKjId8Zilk
-	 Ab9psW+oMxa3lYtRkotonbX8QmYbTLfQ25ypscBvfQoPolne8tq4HgN1jMQl2+nbSc
-	 JwhHrhDgO5lVYcPur2JmJJgdMb5VMbnkcvA18bhwyeEKiKxlo9uL821XNXgCNbB2J4
-	 xplQOvfiL7+JVnpFAj4fGYlSco0kvy0UhbeRspvMixfdbyWAjmTgxshDDgQhJ3n/rR
-	 /wk44OJuk3Qrg==
-Message-ID: <e1c8c6f5-1b5a-4cad-a52a-f7eff00997c3@kernel.org>
-Date: Mon, 24 Aug 2026 14:28:39 +0200
+	b=jqN0bgAvWpo4FuZfnaVkmwwOy4A25MZ+xYiVkOk+9N1FXEUIWQVOhxKhZcmi0KFFp
+	 hH0W6yLSkhhS19gi8Yxl9oPe+L38z8k4/HHUMNqtU7bSq+OtqCtEuWnaZ/QseMqppS
+	 Qf7guI47CpnJFWQcvKPpb4Bo6xii81fnqM/7Rz1jXOPetvbGSiUUPzDkVv3KSysYB6
+	 EFK75vg6x4crFw7RMvKpVk2D80DMSwo41LFL/9Fd4YmY0e0h42siXPJMBhsrRyV/fv
+	 s1GTPpXEqNx3fTBngkHorvzYxI7be9lyFoMxj4zzYY08R+FDF+r92VDwL50SonhAGX
+	 H90yhLEXF2pPA==
+Message-ID: <e87ac26a-9712-4f6f-b144-b604b2aa643b@kernel.org>
+Date: Mon, 24 Aug 2026 14:29:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 03/57] mm/collapse: add collapse.h for the shared
- collapse state
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev,
- baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
- hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
- rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
- usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com,
- usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- jannh@google.com, willy@infradead.org, pfalcato@suse.de,
- rostedt@goodmis.org, mhiramat@kernel.org,
- linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <20260816224609.308019-4-kirill@shutemov.name>
- <3113ac8b-c1ce-4577-9e93-449b70818918@kernel.org>
- <aobglSY5L1KoIqxF@thinkstation>
- <65433d1e-95ca-4434-828e-8f381d3384b1@kernel.org>
- <aow0Z6mrG2esKpRZ@thinkstation>
+Subject: Re: [PATCH v7 1/6] selftests/mm: make file helpers return errors
+To: Mark Brown <broonie@kernel.org>
+Cc: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260813181230.483746-1-sarthak.sharma@arm.com>
+ <20260813181230.483746-2-sarthak.sharma@arm.com>
+ <75738049-24f9-4056-98c8-b4075552ab78@kernel.org>
+ <e4f8031e-20ea-46d1-914d-005595243f31@sirena.org.uk>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aow0Z6mrG2esKpRZ@thinkstation>
+In-Reply-To: <e4f8031e-20ea-46d1-914d-005595243f31@sirena.org.uk>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: j8fbdr575tqkoa1nh37r498rcon3g3hq
+X-Rspamd-Queue-Id: 407782000F
 X-Rspam-User: 
-X-Stat-Signature: 935j7wnsn15nn77budh5wadkccu168hz
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ADDBA100004
-X-HE-Tag: 1787574530-808181
-X-HE-Meta: U2FsdGVkX19Yof1hnHBEqVknFNVOZaOTjiVhp9iOLFyuuXr5vpAF4K50ePcejinoRcaNWm7W6KNg9fOq/l+h+zGlZ3/jQwTaZ5SCe9lN2o9HhFnJzv/TgaIU1xk8kyhC94DpHYon7hZeLQgN/zXFu3b04mQvmorGfdCJ1oQapc95dH2cmMc7mxN0JgyzybPZIDQigWecvRksO6YiNGGmOQr+ZgCT1BUs+hklz+c6HY8eUoJaTn4zitzguG4XTbaLOJbJXZ3BiwHfKEVDA6eaUY0DtZYPQwxBLCS/kNY7h8qxA0sncEdy4TAJBHZIbH4eciFLZdw6JQG87j1QDUWSHLJyIb/fMhahloMHhzTvmut0AWestPqDPf5vIpkjHxzmGSjeZgcWrb+86wmfaTca3KCHfXInQJzA3ZxM4jvdRZ5G0pXvBHJ0fiFIyzcvo9eIR+CnQwsXucmxS29bRbVwTZs98c2niXD7oSk0NY7k58kmEAX1GFs3vZfnCee5hc2ei5sJXr/BnamkbYaJhJM74SADQOvDpXhlQz50hw0h4fIfBgabiUBTv7p7X6xTx9iEBMKpU0GFglTBMA2WzvzpxBEEfD31HMmI9h6YjBXMycpR1c5QZUF3ndWcp4Te+1rVUSkQY7xh0oKOFXD6IM4aCusqSlSD216XNd9g1NZDFAr3Goi0VLBPNtTbfxjzeaJJbfLROANC3egqyLO2nXBL3keJw1+nICPV4GDE4J4fIfMERiwJFptBZZbkzbnr0BRPwYgGDTzUWvTveuSZg+mnpDbztUKFF2BZ1jMJ45DH9Zk7JrAlYvl2hLAS+/4KiRvXnwuf8QR+N76tEvQYrjnt2I0LBypTVePt1zPQl1iGNPFB6uq3114ky/BuNB9hOtMlGdRpyso7rMxVTRd0EKdkcTdHw/mV5sRXF0+aGvVzIRVy2B99IqVqeNoBKJgJpBmeSZ0/jHP8QbrUN6NrLQr
- QPQbRlMO
- eoaD+vJPdWWukXM1E0lKxZNFADG5Y8dseQowx0Z9NFNyGjrNrqtFTTZxdnXaNytJih2zhDkEvGYA+OeG3J6UvbYsBPJ1XtVVdyjVz9gWRz912tdMXAHZETX9idqKqFOfz3UWaBtyEVmyulGDHA+TuFY2eOKDwMAPW4HF/KDFR3cx/mbFfx6CpM1Dy0VM8Y/n5iDgz8ymj2RlX/3OVB5pLWCATRTJT+ju6FmLmJwu4ritxGexc7mnDMbn2CcyyLNOJFmmrJO4CYFanFYqZDUgOHgV7UeIxDprCa2oy
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787574588-135849
+X-HE-Meta: U2FsdGVkX1+9zYwKk5tJFed2sTERHbo5UiYEVrpDKIteZ7umpmn9P7ErTZVF63wrRW2BkxRFhw4R67j8O+EVQJjotVsHzfN/D5Tlk+IIMz3X4yC6ILnHgu7zVfVGfMgZd0exbM3UCbMHE2q3YHUUDdo2mDyFlRoijwMr6AhsYQwVe+k+enKE07caa0FHI6DZU/Q3s+3HgJnI9dNr2EA7L5CPVQNMCDErdXrCXo+aSIDCaK+7+9JoxQBtnr6wYl7PGT3fzXK/J2bTdfW2rRklevdLbTJ3vqT4tf830sO/SRNF8+8kQrdwG+z8jSYotRcWMUOYtnggpG+Vxwa5I8dSUEif9nISXMmLtp0/hsuluE8sMMhbmIYVMOYrnWSBbTBHrbXbJvqXNEoedMNOuZ1HWoMrYBMOtG/w512VtvQ/m6z3oeQdQlIDFwvUFvMfebrKQPwifaG+Ws802+cKhNbbldaqrv7lUZvn3z9QYmZOSSEzKTWgFBuroPPC1WftDtL2QB4GOjyw0taWCp+Mw/1buyZH3tDCPb1vXgY7YifwH7oOYPbrPbSlSIpxuffUwMyQHXs4z9vLURZKgrTzETmbk/IXQEPXTu9vM7N6f0RVRcTPbL6cK+0ukt8YPGO3JwO3BICTwR5UDv8bF0NkquyFeMmKCCSxcs41qtTqPwQSc3Ri41kyl46oZvFeW3CC2b2xzmu3bAf6ag9WFAUz2zFrT3sHjc7ZuIsDJZ1DjZ3PEbMSqQ0+J8eNdSu0FBuG7ZxsKIXAxGMPt1TJrcHsPFalflxNh/F0LrACHUhD7/JIs3rFE2jJq5ErvL82bEyGOIreoFUcCn5J3ksRNCPneGb+zPRgoJ/kEv1Qt95Fjg/nY7wtnm+Shaq+CsPGaeH00BmzvJfcq2Jt9XcWm+M7Iw84QL604MEo1qnnHoJbU4i3l+3C0u5NoUVs3WS3laTvj8LC0zu8zr6HkctrDuJzLqO
+ COoedjEX
+ 5Vmy4ZwaJLBG2bskBWSE3G1PsHWT+RfAOcUy2ySEEJJt86qhQhlO+n29Iif8/p6yhuPOX9FyTim/8RegxmE+FC9C6i7ruxriuuCq2qI8PA/3V544xmJgeHl7bRYxaEJ/Dk8oUH7X2idsyD0buSVihxDfAgt1CQ9i4iw8wwJ6GpHnGJJMNJocT1Rk8hRIAz08HIFp5qmiBiBr5nizO5pEBIHooAdzxhrfsWukNt7Cjvs/hdjKonCbtj/GtfWRce/AIdTiu6mZ+CRdmpbM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,54 +153,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/24/26 14:10, Kiryl Shutsemau wrote:
-> On Mon, Aug 24, 2026 at 01:47:54PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/20/26 13:11, Kiryl Shutsemau wrote:
->>>
->>> I went for a clean collapse.c on purpose: the engine is new code, and a
->>> new file keeps it readable while both mechanisms are in the tree, with 28
->>> as a plain delete from khugepaged.c.
->>>
->>> Your shape is less churn, though, and it keeps blame: 29-35 move about
->>> 1700 lines as add-and-delete today, and most of that would stay put, with
->>> only the daemon -- mm_slot, the scan loop, sysfs -- extracted into a new
->>> khugepaged.c.
->>>
->>> If you prefer it that way, I can give it a try for v2.
->>>
->>> The rename has to open the series, so it will collide with anything in
->>> flight that touches khugepaged.c.
->>>
->>
->> Kiryl, I have to ask, are you using AI to write your replies?
+On 8/24/26 14:27, Mark Brown wrote:
+> On Mon, Aug 24, 2026 at 02:17:03PM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/13/26 20:12, Sarthak Sharma wrote:
 > 
-> Yes. I use it check my claims and fix my grammar.
+>>> +	if (buf[0] < '0' || buf[0] > '9')
+>>> +		return -EINVAL;
 > 
-> Why?
+>> This is to reject any negative or hexadecimal numbers I assume?
 > 
+> That won't reject hexidecimal - 0xNNNN matches the above.
 
-It doesn't read the way you would usually write. In a bad way.
-
-E.g., "Your shape", "has to open the series"
-
-Consider telling the LLM to not change your writing style and focus only on
-fixing grammar.
-
-Otherwise it will be very load bearing to read and we'll be sorry to have to
-gently push back against that.
-
-
-Imagine I would instead have written the following:
-
-The text does not read the way you would normally write, and the difference is
-noticeable in a way that makes it feel less natural.
-
-For example, phrases such as “Your shape” and “has to open the series” do not
-sound consistent with your usual writing style.
-
-It may be worth instructing the LLM to preserve your original tone and phrasing
-as much as possible, and to focus only on correcting grammar and obvious
-language issues.
+Ugh, yes (and stuff starting without 0x would not be detected consistently).
 
 -- 
 Cheers,
