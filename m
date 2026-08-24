@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4FAC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B2AC5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC39E6B0095; Mon, 24 Aug 2026 10:27:54 -0400 (EDT)
+	id 7E22B6B008C; Mon, 24 Aug 2026 10:30:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4DA96B0099; Mon, 24 Aug 2026 10:27:54 -0400 (EDT)
+	id 793406B0096; Mon, 24 Aug 2026 10:30:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EEB56B009F; Mon, 24 Aug 2026 10:27:54 -0400 (EDT)
+	id 682476B009B; Mon, 24 Aug 2026 10:30:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59F8C6B0095
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:27:54 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EFBBDA0164
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:27:53 +0000 (UTC)
-X-FDA: 85136392026.24.44F7E4B
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3B1F212000C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:27:52 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DD3F6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:30:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40F3480178
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:30:13 +0000 (UTC)
+X-FDA: 85136397906.18.7271E68
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 797D312001C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:30:11 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uFL5cpzU;
-	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787581672;
-	b=yLLfmX1/DZx4Nnh/ROe3FNSMhmBT3xqkBUNNjxfB9xFsHmJ1DCzaOCpcA2HiBPq7VEk05v
-	ZO2swGIc/O3dC/urIEBqna+5wd6ALH33fVdKUscV/g+LnsgLh6p2kG+qgM0ONNDQh9j/yd
-	zf8s7CgZCJJgL5xtFO/+2F/RvXTbB2k=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uFL5cpzU;
-	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=f9h+3crU;
+	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=hughd@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787581672;
+	s=arc-20220608; t=1787581811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M66vr5Wj9LfuIyfBX17/YRcr9cErJu0CoiHB0PAp+Bg=;
-	b=P5o7RdD77DzsP+7ph92JoHmTig1qh6Y1EiKH8rF0DW799tA2tRVoa3UG3o5J3vRcfpagSo
-	HSl9BQKNtLwmcjIpBXGYcm+I2Oppj0OXdIZEaUfWeesAAyQW+8fXco+kIll/RHsgwrvsWt
-	UlaeBNVvErmThjMuWtW1rk4JKeL9ZM0=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7dbcb505578so40883087b3.3
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:27:52 -0700 (PDT)
+	bh=jkA2C/lQgXcypv6Ly6gx3bJF+pwu7LTevogMVJJ14Qg=;
+	b=bQiTr6WbX3yGqy3VQYLo7Wsd55x5Jbt67QueO6/k4+Z+8BPNQTCI46wQkz9XSoeJIeFc8i
+	2tg+iMtTGg6S3uifFtP8hFCiMqLvZhGmEYBYUK8rwx/ckRB1C3AyxHCyBlE6JJLcJTDPYb
+	SKiYhr7Cp/v3roMUPcdrdAfM//BE5iQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=f9h+3crU;
+	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787581811;
+	b=tTQQLwvVDFgynUJB5exqmo1viBWdlnVY5QJKKkYLnVGr+sZUI+rfqs6ZE3Gu6OLYnT5RjB
+	oBATdAAyZLAf/6iwxjYo95bRtgrvc4gtwNbaWWXQuYzLCuY1B85SmO1ct6t7EwXaLrVub6
+	3AAVI8f8z+IpIDSkDIzji8JouARoI+A=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-84c4d4f68c7so38291317b3.2
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787581671; x=1788186471; darn=kvack.org;
+        d=google.com; s=20251104; t=1787581810; x=1788186610; darn=kvack.org;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=M66vr5Wj9LfuIyfBX17/YRcr9cErJu0CoiHB0PAp+Bg=;
-        b=uFL5cpzU+7xbYECtHeq5zJQBLG4mAptlOXfdZCL4VQXFrFo9H00AkQHkahBJ+CZXzp
-         5yn/CKzXuQ6KdtOaKTUN1eUNex1lex1YRqaWQof49XP9RRneV8gI44XhaJkIOvPgiOBg
-         zhbqJKCsXi3aU9d7mMzrjtXt2rxErKs6aV2PcYwfY8auLc/2BKaPijGrI/iZR3iEDSFP
-         zi3z6BioUXchI0cRRnGu9n8NDQr+pnqcU4MlH37vexjjYvPfNbaMdHxXo087J3LIiKKT
-         xS8LCh8RndR9uygAjM615UMFP1eDC/gShOKW0fCi9zf0xSnHkEvNfPurwc6jHxO/7p7k
-         B5xw==
+        bh=jkA2C/lQgXcypv6Ly6gx3bJF+pwu7LTevogMVJJ14Qg=;
+        b=f9h+3crU7ulZoadwlDFPVc3wHh+aXzqzw4Wi3v1NPu/80DEGEbjEh+tPDIxAcS1DoK
+         f6t07WKMOIswJUTJL5nrkS5ICEtLkTbUAEo12xta2qv731QrsbCr7AqcbM7yYLnjoyvw
+         5CY1YXOyMG1qp9JKOizURjVvWO6iGwq03OZRwvMelhN665HglazGpyaWKocblUTc7lA3
+         ERqI97w4YsYow4Nlbo6QClAEIx88n6BcBCrCzZDcFyw/4p3O6R5SU8EvCXOYdxiCe/sh
+         bOzglMwky5tmD4NmnxQzp8YE433PK7zo6h3SGbJ1yrVPrkumHXFRotL55k+1CK8FAzOJ
+         zfUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787581671; x=1788186471;
+        d=1e100.net; s=20251104; t=1787581810; x=1788186610;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=M66vr5Wj9LfuIyfBX17/YRcr9cErJu0CoiHB0PAp+Bg=;
-        b=AxUYKiU6ZiIfnzilflCGYLtFKeOicImhEDTcAtQSafGA2QpifwFhfZq5MVxJuOaQ6q
-         m6Y3SeSSCqJ/Z8azmbUvc4AoW0N6fDTvCmnID2VoE3PD+SiKvX9iNHrReEKgEoPqql5s
-         FY4r25Kl+y1nD1BT/aBULLZ1xGsZgqOeNP49thybnqWukz47+exuBnJg02cT7OK7/7va
-         jC64nf1hzvem1nClYRibEDvrqZxw9nC+YrUedtUXMmnyuNKyiF4LtKHidqEyt0UegAdJ
-         S2qeNpEMAwOT0tSKkalOu8T27L+Jvtl5G4cs00ad3VUePjThzKJODQzBQwA+c0wqJC63
-         TGSg==
-X-Forwarded-Encrypted: i=1; AHgh+RrURsZ7M2mJR4lQBY7nlOEodjuldDHo/PDHPyI3IP7RMdeYZcqazQuocZm7R4gvs+35KljTodZG8w==@kvack.org
-X-Gm-Message-State: AFuF++lksZICtNoQTUwvl8R6aZYBQBsspwdReVW/jZ95xVasMIg2poG9
-	4OGsm6GDz2PU4yP724P0Hi13umIpL0n/+1nnFLlnyU+1DiRMsgJr2n2LDZb9fAD7CA==
-X-Gm-Gg: AR+sD12GsONMMSngq+K6EPz0OTBq7k7ugdcMnyFocLzM/Mh994QAQnAmoohxw0ylFWk
-	Xk5AR2Rb5KY/XIeT8mUsA9Q7AtXlQiBe8KlAg+oH9CvygBvFgVpiZ8VttQZ5BL2/SK8XFPvE/RZ
-	l8yasWzVM8CT/HpQu8c2Xk0lHtctwyYuSFOPOIX/LRq0bvLQUI4SxDgHQB9r6j5/Fv07u8Ogf9M
-	rt9LFdOjVLWbMLPKUYJgTr5bU2KmT5MBfj69AWdGsnQysCvc86nn6Re11pzIyK1q/XS/1ICfadi
-	ZmR8Czc7dxANHNDse+aFHBnKmHixnzd4ZcQLEeBF9Z61SIxBWQ3z3MSzKJHVQg5aH74oIHvXO+X
-	qhITRhLd9gq6x/lkvZNfcDvOYemUX3plM714sh27+8uEW4N5AA6tdrz9/qPDWyxlsxpv7nT3B9c
-	Z+oDuTBEoatAZbO0dcaQh5a8VkRqTpACxr/h3fHiWgiE1y/SGtsiT8Opzp9mAiUmAtmFl+LBcN5
-	4nRbsfYRQAcDwD7SzxE/isHGKJBjGHBg86dwelaVfljuhGL
-X-Received: by 2002:a05:690c:6d81:b0:851:5445:ad5b with SMTP id 00721157ae682-8515445b0cfmr26010647b3.1.1787581670595;
-        Mon, 24 Aug 2026 07:27:50 -0700 (PDT)
+        bh=jkA2C/lQgXcypv6Ly6gx3bJF+pwu7LTevogMVJJ14Qg=;
+        b=Q2pvZB29N1GOblzjjc+bVV/obt1qGKQ5np+89+fe4Ml9HPfdsFugGn/gSSoTGIENnW
+         cYgd5XxMZ6JlP0F0JxD9iQE1zvdiUy/zldIEnHpR1UAmwIT5vcCYzAr39HvAuiUYQqnj
+         17R4YO/ISdLVqzFyMzoiOfwsVxaCHPpjqBrDMC/AnB2VffPT6xIOWl8ge2a88+C/VjB2
+         dzn0Bj9YziFPqgZoENYI/zFUigcYdYb7p1qkbUpI4dgEx3hTIGArHQQKKvteGulQ3TQx
+         WtCsmNMdLwsB3dc3SckHn4kO2OO3pmbBdP9rkcLu6BmjwCSFYpD3oGOE7xTzcZ9K+Faj
+         LUGA==
+X-Forwarded-Encrypted: i=1; AHgh+RomKKtbsyu8/Wm7YvF2Gw8P5+5L73UguemE+ZthkFkxTTfYqFBDlQhkWNVyX/Up84bvsP+TAqmdjg==@kvack.org
+X-Gm-Message-State: AFuF++lapdf7Q3N5Av1GoOBuA0fPvIvAqg0bWEsSzKaeuyTy9C5cqcQV
+	QxsBZ9cHqAoJfTayYU5i8oQR2jivRlU8T0UHTMGlkE6SPUbjsZeCeqkxZR6ZGypMvA==
+X-Gm-Gg: AR+sD10surt2LwQ1kqkPAde6GPhSwz1n/oQ/a90L+wBzplsqoa3w3XxaXyoRL8VlDbK
+	DREyhdOqWyKi8YGLB+BUwZegVhE2wR4xhTJ0BESU8k8F1ZtuipXc/vdk8dKT9wJ0cCt8SdWJKhW
+	mnYOcG//pFW8NjnVdFlze3E+GjASuQG9C3TAKc203GokgWrlWvr+lEokqSNOuF96CboQvNR1zFX
+	CEKcCHhCtvvwN5KlemsXRpbiJETh+k+b89S2M6JIvsI/5pB9G6DiLLoDGto1nmT41v2NfPgpxZx
+	79GXBx+5CLdfzg1mQkGgKqTCeHgHyAJoxo+POiEWH//yVmU8Hp/6P2yDN6Cv+SM7er8u640t4MY
+	FT6d1EzFHG722te9u4IRqDBPXeRAbM/UFkT1Tb1+deqA9uoL6Y74KySY2V2DQZv5bK/1DwoFjkk
+	7bYSu86wI9beNWHD8iBnKa8UcVVPGhkGcQ7m9hJXBZ+D6RObJ0vlLojpSHUdW2NbWLJUZgRa8Bo
+	Wt70cjtFw9ddRWx1/1Qu5AO5ZmUrVQzkKaml+QHbfBS8bTlVC/306XxPZA=
+X-Received: by 2002:a05:690c:e29a:20b0:81e:eaaa:535b with SMTP id 00721157ae682-849f6c946f8mr72860737b3.35.1787581809761;
+        Mon, 24 Aug 2026 07:30:09 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84cacacb78fsm33749697b3.49.2026.08.24.07.27.45
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84caabb9e88sm34055617b3.29.2026.08.24.07.30.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 07:27:48 -0700 (PDT)
-Date: Mon, 24 Aug 2026 07:27:44 -0700 (PDT)
+        Mon, 24 Aug 2026 07:30:08 -0700 (PDT)
+Date: Mon, 24 Aug 2026 07:30:04 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 cc: Ackerley Tng <ackerleytng@google.com>, 
@@ -121,21 +121,21 @@ cc: Ackerley Tng <ackerleytng@google.com>,
     Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
     linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH 15/25] mm/fbatch: remove shake_folio() shake_page() from
- memory-failure
+Subject: [PATCH 16/25] mm/fbatch: remove lru_cache_disable(() from NUMA folio
+ migration
 In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
-Message-ID: <213f92b1-7ac2-189c-4656-ba7d00cc7666@google.com>
+Message-ID: <a5147dfb-cefb-fb9b-7162-b537e54d9bb1@google.com>
 References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 797D312001C
+X-Stat-Signature: j76fea3mwwowwyfu71tmkdi498g46znx
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3B1F212000C
-X-Stat-Signature: qjocuyjypi8k5k797xpbebdnzcqs31ps
-X-HE-Tag: 1787581672-411685
-X-HE-Meta: U2FsdGVkX18IUTqVM1w+P1rCwQCZ7iReykoBCMTdVxRdpgs9f//ziV+p3U+Ssow3fTaFozhGBeqLqDXwiNfl7BuiDWMcFQ8dLxE8JiKMsBKOxCAKE5omIU+kcgnCJaiUFr3iIn2kxSl+VGReLREvY4CpheOIxuc+01fUyaCc8F8AVrbCpxWl7qSoMHA9ZGLuzUwVvpcdngL2kHLTDaOOlz8d0gOIpiIf6GWCqu8607vEYsv4WFlihGMtzv3N/kdF6hLKnMIwezd3SfaR6FAAQuEDntMAQ6z487RYDIBiL+F7842hnrqZxe3kzyglY5ai0y5YD06Rk+7JX+jvGwss1cNefzQ2O1EJyOcSLPeMcMgNYtM307y5Uk/OWpRxa+i4ijPFN8ZM1PZUQYxxUvtLb3b3dl3w34tFLrRsL1UoDdTn/M4xx2Dg4MyDfI8bsn9BNzacnhue0ZSXNVXz7SXvEIgQRboraeN0+BDioyKo7J/4s22l3jAhRZqQLORwrMP97hblHihv7Hkv4yLuPPLjRqDMOpOVWPKyY90ylhNMhuM+lHvkIwb6F0GrZtVHRjWeMiiIXRUVt7jny6Dyz1GLRTbqC8yRzwMMDZDwqomxcYIKc8xstHI9w5yY4C05BghefpXGW9ziiwfHK+k1FbNXHXAtDG0gCtje9jCHg/kfdzunTgUIiLzrBNkp4OkqXQFA8zbzTbvpPtVucyNtKZZJLNVsQkvG238d4e1OAMuFTJEXXkYBn7c50OfASmcQwhqIIUCqawsUj7A9gc7vm5bPPVNYD+lTxsIycgVwbGHW09njGQVqZMUQIx2c8aAcasSqtMGL6IhweqbcctizEq347MXXzzhBoL7TRXk0LDiz2CVZAA/2QuSRxEIeeQiLm3The+KbUQ8Y8dywg7d52TPxjJphRedsj17xbXoPdoqDXkbuGD4y3TjKcfWfu9GrGBH+zoCU6Z9dJWtvovDJr6L
- wYfg96Jy
- UowsvRRuZrAaRqj3IQSEwl5UxtQzweIVPb3YqjvuHdrqIk1Nuc5WQdxf5HH5IgBelDU83AK6DWMwqsjycw926gifL9JG06ECVf9BebqZNIw1nBVN/BxhCIzRt+8fFc4o36LbIYA6tSxwopPV8A/lF5dmwDtv+zgSJ7Pm4U+sR0OLd+CTEvlS2t2RZxTv37YdIywRf7It8lkCdHFCkSnLzUfjGz7DElQIBR/zABfbugcvSyqk8yE7/TogH/0nXckHqYPd76CvYjL3FsNmQq/c3t+Eb5GnWayxQgiOm9t7cR74NfMtZ6QgWlERu72Fmp3JocXO0qoNk01m2/g9hGpzkKxjh3BywmzrniTeByBWxI9OsxWd0p1xeyyAaokE/PbGn7vMLNKrLEeOXYTjff/98jETyKC1cRr5be3ITPuOX0kolcX+YARaokbtFoKKb0DWLTf/LvORHiZJl2d9D6iv5UmnHBGoL3AAj1Dx8
+X-HE-Tag: 1787581811-962991
+X-HE-Meta: U2FsdGVkX1+02KaonbrWX+W/b//X2B3eEltiufqivnUpHOVdQoLQFmYNexgGK+huUQDBXrdP/ZMXnlKNhN4T8SZbzpkOvMsg37CmRPPxGtTN7OMb0JIarGYncaSC0geMxTPAVn4Od/D+K/RjprALOxC3VhhGveZOuosqdKrE0knL7IHrdKKyPOyT+DmefOVR/7DuWufZ5pQJrhpNG72zjzuof4bV5wPNQ88f7YrP/Y3NcEXglc5sUYz/rTYCnWZneQgOCcdwRP5/KixZmhtUTBuoe/j7um5IdBE3AvkH0zwrNu60r9tb2N6cDZJNp7VBkjDPRPmQEH3HXKYi1cwU2gc4AMuHxzLvX5Gng1yj1stmdxHOE3zTYqMWSjWXCJoshurQlKWRormWHtuglDcPNlvWXyth5xEb2CLyMXz0+bjJrmIjfsyE5ttTSUxe05XCJibMFVsf1XN7rJ82U9REUg6z5okooI85+Fnf+BaHbmFfDH8rbQbsuUUj+VCDw4GyEUs5RKvCGFZ4BniwgNQKsXUdzQpzXEAy+n8LQ3w2Xll586kfKEpb/+Ht7/p5wrKwaFTFcGxftHaQdWHHHvePlxXNs6SMFPGV7zBKR2Q+GshCg1tQI/02X4ueVJSIBbjCTvy/Vr1qMXBftRvDrq1j47hc+TqBEHpxq6EHRPEhgcB+8sp1Quo1hYvbxHdEKjDLLYVkcY6CmjwRd6RPfSB6ydbFLnazSl/TtxvPUN0X1U7FMWyCw0KWRpJv83oovOV2axU+Eac6rgYl8f6Q4d4491+VJvHlS4IJFF1KsUWOP5TUO+Cf2Fodv8flFX1L3/zAdx0OKXBwNeiYy6y00OuYsjustYqWDrSIRxbXxVaFiHMDzT3L2RyZmp+4Iwp56oEbNQyAMX11r8GbuXETnMKjwI2+UdTOJyCa1v5RTG9wT2vphlykafWnKD2pBY//Gp5moSxX3m5kqSnWaOPZgdD
+ IBShfM3m
+ MBoJblenfvwFFFdbPI3bcyAAmyC+CEGXalQWf9q7fLRRMGaO265LXVlp5ipkHKrQpgZndI4dNehDbEsPpqFeVdP6v8FGZbLtvXcTsi+mKwbhkwJ0MVo7WWPwiNYY8X/J3NbCgHWlmiQtuptytlWKUN+9b8hf6VoMADOn5pX4wCFxCxUvzMDZFeIpes152cGY2ZLCkRmPNsBTkCro70z5imndkBRv1Xs3p8u2KQIHyvNinJWkABfbc3QKDicQ2Df//+udxicfeFXO8xa9BNxW6izyoeg1kywuELDqPisdN/I4Bdp1NlvMMi8OdRR9k9w6pDUQ5mJq+E+qG93Ap8ny5tErmwEUHUfkiVV7o/8KJE3XTtWAzuCKGbKIAU3+Y+Moawys1nETNUzScAWUhzxAzktpQDe5G1/h19FFIeZSZhOfbPNv23XzfpEmI7VK0G+IyfIWkJPCiYMFcfOmAPbzeynrDMW97dqV8uLQ6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,125 +143,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-shake_folio()'s lru_add_drain_all() no longer serves a purpose, now that
-the per-cpu fbatch references are gone. Are the retries in get_any_page()
-then still useful? Not obvious, so keep them.
+Remove lru_cache_disable() from mbind(MOVE), migrate_pages and move_pages
+syscall handling. They do not now benefit from lru_add_drain_all() first;
+they gain little benefit from invalidating buffer head LRUs first, since
+5.0 commit 80409c65e2c6 ("mm: migrate: make buffer_migrate_page_norefs()
+actually succeed"); and it's a shame that (even without CAP_SYS_NICE)
+they can prevent concurrent tasks from enjoying the use of those caches.
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- mm/hwpoison-inject.c |  1 -
- mm/internal.h        |  1 -
- mm/memory-failure.c  | 38 +-------------------------------------
- 3 files changed, 1 insertion(+), 39 deletions(-)
+ mm/mempolicy.c | 7 -------
+ mm/migrate.c   | 3 ---
+ 2 files changed, 10 deletions(-)
 
-diff --git a/mm/hwpoison-inject.c b/mm/hwpoison-inject.c
-index a11222572f97..9eab4b7d25b2 100644
---- a/mm/hwpoison-inject.c
-+++ b/mm/hwpoison-inject.c
-@@ -118,7 +118,6 @@ static int hwpoison_inject(void *data, u64 val)
- 	if (!hwpoison_filter_enable)
- 		goto inject;
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 501e0b80d7da..44912d707d57 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1343,8 +1343,6 @@ int do_migrate_pages(struct mm_struct *mm, const nodemask_t *from,
+ 	long err = 0;
+ 	nodemask_t tmp;
  
--	shake_folio(folio);
+-	lru_cache_disable();
+-
  	/*
- 	 * This implies unable to support non-LRU pages except free page.
- 	 */
-diff --git a/mm/internal.h b/mm/internal.h
-index ff4bd3a14539..9a25552cbd83 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1140,7 +1140,6 @@ static inline bool node_reclaim_enabled(void)
-  */
- #ifdef CONFIG_MEMORY_FAILURE
- int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill);
--void shake_folio(struct folio *folio);
- typedef int hwpoison_filter_func_t(struct page *p);
- void hwpoison_filter_register(hwpoison_filter_func_t *filter);
- void hwpoison_filter_unregister(void);
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index aaf14608b30e..2a6a01e260ed 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -310,30 +310,6 @@ static int kill_proc(struct to_kill *tk, unsigned long pfn, int flags)
- 	return ret;
+ 	 * Find a 'source' bit set in 'tmp' whose corresponding 'dest'
+ 	 * bit in 'to' is not also set in 'tmp'.  Clear the found 'source'
+@@ -1425,7 +1423,6 @@ int do_migrate_pages(struct mm_struct *mm, const nodemask_t *from,
+ 			break;
+ 	}
+ 
+-	lru_cache_enable();
+ 	if (err < 0)
+ 		return err;
+ 	return (nr_failed < INT_MAX) ? nr_failed : INT_MAX;
+@@ -1530,8 +1527,6 @@ static long do_mbind(unsigned long start, unsigned long len,
+ 	if (!new)
+ 		flags |= MPOL_MF_DISCONTIG_OK;
+ 
+-	if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL))
+-		lru_cache_disable();
+ 	{
+ 		NODEMASK_SCRATCH(scratch);
+ 		if (scratch) {
+@@ -1626,8 +1621,6 @@ static long do_mbind(unsigned long start, unsigned long len,
+ 		putback_movable_pages(&pagelist);
+ mpol_out:
+ 	mpol_put(new);
+-	if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL))
+-		lru_cache_enable();
+ 	return err;
  }
  
--/*
-- * Unknown page type encountered. Try to check whether it can turn PageLRU by
-- * lru_add_drain_all.
-- */
--void shake_folio(struct folio *folio)
--{
--	if (folio_test_hugetlb(folio))
--		return;
--	/*
--	 * TODO: Could shrink slab caches here if a lightweight range-based
--	 * shrinker will be available.
--	 */
--	if (folio_test_slab(folio))
--		return;
--
--	lru_add_drain_all();
--}
--EXPORT_SYMBOL_GPL(shake_folio);
--
--static void shake_page(struct page *page)
--{
--	shake_folio(page_folio(page));
--}
--
- static unsigned long dev_pagemap_mapping_shift(struct vm_area_struct *vma,
- 		unsigned long address)
- {
-@@ -1459,10 +1435,8 @@ static int get_any_page(struct page *p, unsigned long flags)
- 			 * We raced with (possibly temporary) unhandlable
- 			 * page, retry.
- 			 */
--			if (pass++ < GET_PAGE_MAX_RETRY_NUM) {
--				shake_page(p);
-+			if (pass++ < GET_PAGE_MAX_RETRY_NUM)
- 				goto try_again;
--			}
- 			ret = -EIO;
- 			goto out;
- 		}
-@@ -1477,7 +1451,6 @@ static int get_any_page(struct page *p, unsigned long flags)
- 		 */
- 		if (pass++ < GET_PAGE_MAX_RETRY_NUM) {
- 			put_page(p);
--			shake_page(p);
- 			count_increased = false;
- 			goto try_again;
- 		}
-@@ -1627,7 +1600,6 @@ static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
- 	LIST_HEAD(tokill);
- 	bool unmap_success;
- 	bool forcekill;
--	bool mlocked = folio_test_mlocked(folio);
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 534908a0839a..bf9fe533a5fb 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2360,8 +2360,6 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
+ 	int start, i;
+ 	int err = 0, err1;
  
- 	/*
- 	 * Here we are interested only in user-mapped pages, so skip any
-@@ -1658,13 +1630,6 @@ static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
- 		pr_err("%#lx: failed to unmap page (folio mapcount=%d)\n",
- 		       pfn, folio_mapcount(folio));
- 
--	/*
--	 * try_to_unmap() might put mlocked page in lru cache, so call
--	 * shake_page() again to ensure that it's flushed.
--	 */
--	if (mlocked)
--		shake_folio(folio);
+-	lru_cache_disable();
 -
- 	/*
- 	 * Now that the dirty bit has been propagated to the
- 	 * struct page and all unmaps done we can decide if
-@@ -2554,7 +2519,6 @@ int memory_failure(unsigned long pfn, int flags)
- 	 * The check (unnecessarily) ignores LRU pages being isolated and
- 	 * walked by the page reclaim code, however that's not a big loss.
- 	 */
--	shake_folio(folio);
- 
- 	folio_lock(folio);
+ 	for (i = start = 0; i < nr_pages; i++) {
+ 		const void __user *p;
+ 		int node;
+@@ -2440,7 +2438,6 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
+ 	if (err >= 0)
+ 		err = err1;
+ out:
+-	lru_cache_enable();
+ 	return err;
+ }
  
 -- 
 2.51.0
