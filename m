@@ -4,120 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E462AC5DF9C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:37:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD58C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:38:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1C826B00A5; Mon, 24 Aug 2026 08:37:16 -0400 (EDT)
+	id BE9D06B008C; Mon, 24 Aug 2026 08:38:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF3AE6B00A6; Mon, 24 Aug 2026 08:37:16 -0400 (EDT)
+	id BC1996B0095; Mon, 24 Aug 2026 08:38:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E31976B00A7; Mon, 24 Aug 2026 08:37:16 -0400 (EDT)
+	id AD72F6B00A7; Mon, 24 Aug 2026 08:38:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C51286B00A5
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:37:16 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D774140124
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:37:16 +0000 (UTC)
-X-FDA: 85136113272.03.F888D46
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 91726C000C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:37:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=L2tBMjVc;
-	spf=pass (imf22.hostedemail.com: domain of mkoutny@suse.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B3246B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:38:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 106D8120121
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:38:01 +0000 (UTC)
+X-FDA: 85136115162.07.0C82159
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 23B0D1A0005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:37:58 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="S JOBuqo";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Y0T5/pTM";
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787575034;
-	b=6r0An1KCYBrW5PaHdVh2RkqLSbKnAwr5ifWC+dN65WOBOC0ptbQLD5f1J6jWA1FyjMtL8N
-	RVWQPOnwJ1fMG6S/S1jCybL3hbevTSjNgmFasbBRQWqPVem2GM0ryQAtkq4CVA21Zjw7li
-	hJh5HqVYNEfdSMUXHMsC6/3feyFs//o=
+	t=1787575079;
+	b=ywO7yDgKL3Rx9tBewi4coScvM/Vjd6NH6s0cXQt7ECM8z7rxxhBbtBsxTCCxRyWsSQEQPB
+	132nGz57Wpw1giKeZD6FBZ3Zlrpx7hH3q0k4mun5GLyWm2nqEVGTxWZlTjswrr7CXQzU+B
+	qCBfhIxs20+OYtFTphNsacF4qpFag/I=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=L2tBMjVc;
-	spf=pass (imf22.hostedemail.com: domain of mkoutny@suse.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="S JOBuqo";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Y0T5/pTM";
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787575034;
+	s=arc-20220608; t=1787575079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xFe7CZrh/NKPQiBuCvoXHDZxKc/OI1NirTgmnI07Xf4=;
-	b=7Yuv5uWdPCHMG15Y6I4ugLm24yt6TToQ1gc3D7t90O4yDk4kdINfNgl19bSvXi090g6D+a
-	7HUfRQLo6EgKhEOGdQjkI0LqbGiszlMYM2Gl7HePUObYNC219/4SHjSB59zPp4LOsgmPnV
-	eEJESlsd7ZthJ3BKONR2DdHZKNZekCg=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c1c26d7e951so506198666b.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 05:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787575033; x=1788179833; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xFe7CZrh/NKPQiBuCvoXHDZxKc/OI1NirTgmnI07Xf4=;
-        b=L2tBMjVcyEkigoFynYzSbM28mmbWBsc9lEToLudZTe8ZK9gQKrIRvNSMfgfc9QnfyW
-         MSFtF45Qf/PtQPwOI1tJTFoX1TDqhUcLm/gAO7mlv7A9VIkfKAyQ0XdFYQEaqtoHEOrI
-         zZ7TXBdPX5cr8XshdrTwuTNtG0oL/O4Lmp4RU+MQfbiazDPhyYz7+92sH/Yw6AI3qTm2
-         gZ3Pl/+VP+nHc5yP5BLvhVyzY1kj3Kj/tLXYkMnmAzwtr+3L6ASFfws9jXx17WkkBIje
-         ZmFhkfZaTOD2w1ooh51YZl6+G8RhFuSlZMuXV4nHw5l6ViziWLftXdndXFJhpesREQG6
-         Mtdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787575033; x=1788179833;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xFe7CZrh/NKPQiBuCvoXHDZxKc/OI1NirTgmnI07Xf4=;
-        b=J/w1NlHTab8xxQcCU4GzBMkHB3dyos5h2wVejDkK5MboFW2ar6EDhI6mCuv+LqMOA9
-         qDvINtvBanGIwbcJ0p0lrvbEtgFcgk8YEKf02vZOvN3B2Pm+scdkbZuqaRq3K757qUtR
-         4PHbaH/kkI/Vl98lAfRcJrcac2GZcDu+MICFd14yJTRN9JeAr2huxMRWC3qomIGlfa2J
-         mhds3Lxao/xcEsKvw7Fc8Do6ZvH3uiwD3CyUhxG2ZFbShTZwFD1FLPujBCgH27AtUg/8
-         lyvkuZmSsp98ggXHQI6Ux3wJilm6n7uyDjoGfEtWnpzVY6lpweY5A5GM/vqJ8ITevNBF
-         +EKg==
-X-Forwarded-Encrypted: i=1; AHgh+RryxDAy1Von29TSBPB7AytdeZbsjQATCKKU1JsRXReZIW0Sy4HOk2QwV3NT5p9jt9PlXlhfzHu7QA==@kvack.org
-X-Gm-Message-State: AFuF++mpm8lAox3YFDP8uDoSu9LkBlieJ20Mf53IbCb8kszOELeZ+BBT
-	D94aNeofbHfWZINbhE88YxCgkNcHQKgau3mL+4HLCL9YmIF0Vd9Bw41rsyvfthjfuWg=
-X-Gm-Gg: AR+sD10boCeepiZQ7ALDajhY76XTaT2GJPsDMYUrjO4tyzElxFvl7FDxlJ68YCcdchd
-	FdlJw0pc4jSgWLMQYcxa3WJshMidnWmSCNXNS3AYzkUj4Eqwvp9T5/UhfUaob44mwNwVwibspeG
-	pkveiZaD5o/s1n4Le8MD2Iqcvz6KjmZDuQZTlEaWij0yleKcgTIpKJPsvhz8AQvL5emBApE0AEy
-	hfvDo5HuM9fbmCMXD9q9+cFKo08LOT84KGc66FicLYWOIGze/JDhQaupyE9wilKzpSXa8pgYpQi
-	dEarFS4D9yTPBQ59g/UWu9ScmwyJym2BTdEBrlM+P92WjWkYrtqM4Hl66OcfUKGqA6Tk7PXDlca
-	00J7NjsbzMvQLgyOsV5EfXaAm78111+0qeujO4bu72tIkwsVoLbwCs8hMazKROBJdQMVuO4oV6f
-	y6MYHKwNt+8DYMhqikT4aXDQ35VEumWm7C5abJYOsntKQ2VFTQqj+2Jo/CMA7b/o4/PEgUkZUWo
-	Q==
-X-Received: by 2002:a17:907:7b93:b0:c20:5213:56f1 with SMTP id a640c23a62f3a-c246a60348emr2798113866b.13.1787575033111;
-        Mon, 24 Aug 2026 05:37:13 -0700 (PDT)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249606b5aasm1253429866b.4.2026.08.24.05.37.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 05:37:12 -0700 (PDT)
-Date: Mon, 24 Aug 2026 14:37:11 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/cgroup: test_zswap: fix implicit
- unsigned promotion bug in test_no_kmem_bypass
-Message-ID: <aow4tSYssWJRjzm-@localhost.localdomain>
-References: <20260824033533.2147900-1-wfelipe@google.com>
- <20260824033533.2147900-3-wfelipe@google.com>
+	bh=4+ZXrHhOcBNBIWSTKX8h/D+gSOatS4LTJk6DxU43bvs=;
+	b=VxrJ92KtiLZz3uzduJC4XvCM5jDX92CUmH3+U+D26ua83NKM3cH5Ew5WZMyFGQkHbHa421
+	7EwtQHCl3r0t/SzwTfxEnvjFiE1B6bXt6Ub3MrlkzFXUq3MoXTYaXcInlACPXr4lzd7zkr
+	MKgQa0OWHwOtUlg4cPFqY7uGWmy3/Fc=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id ACCAF1380293;
+	Mon, 24 Aug 2026 08:37:58 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 24 Aug 2026 08:37:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1787575078; x=
+	1787582278; bh=4+ZXrHhOcBNBIWSTKX8h/D+gSOatS4LTJk6DxU43bvs=; b=S
+	JOBuqoTpRZnoUcj18paDGTJxmqQMHeGAO5tqVOMb66NOsjBsqN0usyDojsqHFm8o
+	YwhyH8Qge/ybjiXY0sSwgbOXtG0A+yk6xGopSvJyVUugG6tfD9dpGLBOgVrIwuHa
+	tT3S/LPCJThrY5PEDkrjeOPNkyfM9plZ3H5R1dYxxnph67zJCb6TgGoatk7jjNJl
+	ZTFj8yrOz39JuAVZO0+XNfTybA/KLxtq/o7U2k4Sbd72q+HWV3VFbEzxj6HsDbSu
+	Kb3KeFQJe300YRMCVnbDbvI3YSy9RkzB+NIaJmMwQMMgBiqPELjbY2DuAIkxh4xj
+	npFAnGnfpJQtdoLL9uItA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787575078; x=1787582278; bh=4+ZXrHhOcBNBIWSTKX8h/D+gSOatS4LTJk6
+	DxU43bvs=; b=Y0T5/pTMB8VJ8mAceiSRNanYWt5zXnC43h3jCMJ9QAWf04l2swi
+	pD5ddTN3S+Nw1F5JW+8vuLVAorMf8hW1spoGbvc1O8Gwgot5R5z6P6J9nlUbmFG7
+	/1hv9zWTuy5ZASLdgxjfiZo/OpS85uzxwTcUAXIokMhS5v0ikDpS8JNm27I8cW8Z
+	UBKnsm+/NlfubBzl3AKjtZqVvNqAaNC1UUdg8Umse3u15hFTGUV0hbICcG9dUyFc
+	GLlYFnGREr6vb5eH1q0AylyxcPt0kh3yhmurEJ/mQZHJ68y4hLKJW39T1q/msfwy
+	CiryKQAfbho+uBRuEJLMm/BK1/MwPB7AeIA==
+X-ME-Sender: <xms:JjuMauxO6FySxIcOaHs8arOohEaT0-DcSVy5FI2jB-iQtE_makpRZg>
+    <xme:JjuMaqsadM63Co14tbsXNwp4z8utQUMx6Nm32_8qCg_8jEK18Voch4B4N2P94_jk1
+    xY2Fu-W8Z2tRdqvHghcDv0SrgI8jXoSM_QEc9VtHd5ERvLDI_oc1dBx>
+X-ME-Received: <xmr:JjuMahyTa8PTHf-d_XN6m8oBoE4uI8fSJLDXQFO4Zj16Ww4D_YWd4upLLy4>
+X-ME-Proxy-Cause: dmFkZTFatED5oZ77MZ22tmOlCD7GXKUCkzazb9gE5N4jgJhO01yYiclBrAnEbUBwSMdDoc
+    xpS8o1ggZwKBr0QTMYS32p4YvobQag58DBIKQmfASsSYKFAQkV56vf0rfC+M5T/OAxyf9+
+    0BZZrbk1y3cjZ7YKuDxC1b7JW+tNrUw6zPDKlukbK3F1Ex8Ss+kandwlYX1KARtnat28hK
+    +dtQLf49G4LcemSGTffDvkSTWzHV3mDceKuVvXIWrRZx5JR0WlkLGTn9wDNBBZi/llCEgY
+    dyPJRCsKQyE+/7S/K1X1tfD5wJhh2tcYYfhhBh9LbMoMvU6qhEbhxGy/O6t5DGZuoCPFR8
+    yte7bPjdZw6iZbXU1WqcKwdEQD+O45PZpWtLMr2N2TfP9kDgMEcFkVGBIQCGc4hZghM1hx
+    HB6bGHOO1H3WwR8Igy6WL0tBYTv2HEkz3LZkl/Uu28pT5K5aekNMDVy6452N2FOOQSl99T
+    pTQg0PGbhGIw1sz6c3kzH7JbbE+CUGVqMcgkMRsqa8VkM0K4ul76/czBecME8fJQlNok2e
+    VOnYxVTTGDk9pI8UG4hofchPXLr85+xVdD/TArfiawIBOJNLbNPW7C8IdUjB2Ebgv/ApYq
+    yvyePaUH7xTtILMBfO2o0Q+CTU9+OpD6r6t/zIEJaG8WKE7p9Jdnxbb2XkLA
+X-ME-Proxy: <xmx:JjuMakjyc-2lgDWCP_lubdQSINTnPd2c7mC3kuta_Tj3w4HCQixyCg>
+    <xmx:JjuMavZE-hmQOIB3IlqJr7s_7f2F7PxPD-3h2S0jrAUGVP7n_9YcIQ>
+    <xmx:JjuMatib15jvUIdzdqXUBi8FczOeLG2jOwd_rCWLD5tMHYsbTPydMw>
+    <xmx:JjuMam99b79C06mkp61kQLmt3F1GM_CkeV-aY-YV-zYhcOTJP-08Mg>
+    <xmx:JjuMagJMmNs3FIFLkKCEOfVwULclr412rRPHM0btNEi_XdxgVHRK83jj>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Aug 2026 08:37:57 -0400 (EDT)
+Date: Mon, 24 Aug 2026 13:37:56 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
+	dev.jain@arm.com, hughd@google.com, liam@infradead.org, mhocko@suse.com, 
+	rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, 
+	usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, 
+	agordeev@linux.ibm.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, jannh@google.com, willy@infradead.org, pfalcato@suse.de, 
+	rostedt@goodmis.org, mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org
+Subject: Re: [RFC PATCH 12/57] mm/collapse: allocate a destination per
+ candidate
+Message-ID: <aow636Xhrof8hj38@thinkstation>
+References: <20260816224609.308019-13-kirill@shutemov.name>
+ <20260824112005.63097-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pfcylgei2cxs7jeq"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260824033533.2147900-3-wfelipe@google.com>
-X-Rspamd-Queue-Id: 91726C000C
+In-Reply-To: <20260824112005.63097-1-lance.yang@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: 4yupz7pasug9cjrb6p1pmtatbo5q8aex
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787575034-748429
-X-HE-Meta: U2FsdGVkX192DyK09oVaTVSTFxuAWOcUo4xG72rUlYd9t/DTx+tKWbZ48PULL2azDW43ZvOSybiiGcCmNUEIOxKb8IIHxMgAP+GM8eFlBfCi8fHju9Rdd/3rvv8lMum76BJ2sSdxheEG1pkoQlSnzCTi3JfDunsfal1JvSWKVjWf5hnLjUJCZt/laY23hMJyTeV4n+7SmSU1rBwb2h803ssVuBCQKsDCWXFl0NoP/koXJfp0j5MM2Eoz8gRjt8lQnTS7Pw7OthUgmTvlMzTRTga+Pa48UIhPHj9ElQ9S4J5KQKA7L8PiwZSmjR2DcV/pocMOs23z8f2BWuQwzvY3EQvNmcHiu9UHn1Mqer8zT/rD25Mr1H97BRNhegdy/8hTVCz3FRrVJBWQo/dY2oz9Q3vj2CQ0MRvBDPH+ubA+tuJ/5aq5Sa1C1/X0o7ICHmtIZpW/VDZLAt+OuzhprWMQwVpzhyNxeyaBKdzN8Y6DdVszNNt3rFg7ZCg8pP1zD5iZZ8zJZmp888F91PblqtpeQqwYqeGnvTN6JDx14M0l1MCZ9mJUlv8qBtTVeD3hCyDzQJOicDbC5p6pXLM6N4dRwPTqS1arAZ4b68juNl6xePMjbnHeo6LazopEeNiJhzCZmHcL5QDPd6sLG6FBPN6k6NSogozAMaE4EOutQHpnmmLlXK4kazMD6sEnTR1KAvHLpNmkdnA1so+3IepqW1K6k7j1cDAqIlDxtF+TmFEGAc5a+h013yGGPOzGdMKeFJVDr+cpvz05tCDSkW+vpDLb0QNyfx/MX1WAWQyepD73uCT5UonV35atAxd7UVCBmdpff69/fdekmdPRc+b7aH/A9D5+EQzbvO2w92pozcEXq0CeY7rS2Y+U+ga+7OUC3qbAYlYy9DVQk+u+rtqbgqZ2VzsE02AiNxXqa+7iH1kEFOq8G/LFpzHODP9gArmUo2W/zXgqUcVyxklNxPVQZQo
- ENnzh6jv
- YlT+W/6P0LWXNolYEe1LWki6VxwBFq/FhCuDPjk29SFveUMxSDENqWc4y3+dIDk20HOT8FmQWBOtzChpGH4nq9SpQtZSpVZn74+rV0O3ST8ifKxJiG8gzR01xuHgDAsUS10n0v+i93KzJWMIPo2pSJfXhvU3ux/4eFE5jCJwNOMg0hglhNnWfcse4HLh1Gf5HlYnNMrjOiQsptx306iIHSFEvppcwVS8LDoRA6mYVkt4JgSkg037vgn5VP/nKXrWfA4aK9O4bzImANVTC4DLMkuCcyDCocPyNFXE09Mx26F3UVlU724bAYBxkwuntfLha2ZayAlQsJJyw2WM6Km+BY1GYR0zsJsktYW5H+XBCzri5zmhzm3ZDdyDDUKqNuKN5qJp/OO8ymrdU+Qu2R8b3UV2fMGGeVWySw4bApUwIuarDd/gaP3CUiVFQGz2lnnYeaL65cFexDTfPPx31kLNGe0iP00Jb+DsgvtIACTDVVkJTZ/VpAYQPGaN9CK/04tV19QsV
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 23B0D1A0005
+X-Stat-Signature: ohmnft5s6fq53t79cuj4xy9opucwrjbx
+X-HE-Tag: 1787575078-102844
+X-HE-Meta: U2FsdGVkX19drjw1LLf7FeE8y4f40ELVWJR8WRFido7eBC7XXnfjCUO0be504tmFEiucw8vAbnIBV7KNFBU+V6wDSQnnUuPeYrNhZR43YDP/QxkR0UXOvErxihI879X1wf8WTMBIzYBpgjxCelkiGD5G5oS1wHUeyWFmPTIvO/GMA+J+2ijCRcrDSs3oxOZ3MiI4ey4PdwgEnIywjFyXOAOyUsVB6vqWkaLrYZO/cimVvpk/mNQ3b2Wjypx+kDBIuBTTGF/01mYA/gFnrUfBZBg+WYhhPkYAEmQTON2Z0S9/9cYzgl+UMvuObHP6DIvbnkJHqoel3NBtbVFEqDi3DIoSFfqs+EnmI5xRshY0mvtM/VG4PG/3zB7+rklg+U6uXRQLNEHmhFCNm5Cwp/kWTZDgmsxJMHh8eOfvYn188Cjs2KpbEZfd4NIhK1broFwl8ACV1rhIAmC1fcbaovGky7ZZwZl3bdsY0oKKmeFKcMej+EzwB8RlfE7wK2E3EO+ocAgXSpppRr+bUoWiDVTcD2FX7RP0uw4s1bjO9eIOGuL513242qa0bX/ZsB5usb/IzXqh0bbGWaZK6lX0WpH3nfsy1PuzTSvc4lRmgwfSQBiYUM9Vx4DIJ7sg47UnRVYECEfsukT23vALv9v+Usx9cvg4il4aYMDBOQKPoQmfWc/SBr47gziisQYTeCB54nhkMtWbjptsSssHA/8FP2S9gFo6qZo8tg2kTp7XpZzqShzZ/3YpiNUILFdAUZwmq0IWVNBFhflWxmZSZMUlwEvs64WF4IKFRI/lej+zPpOhIGH8aPShHbMy6XCYq1Zwn6kq0RV0c6SdvKmT9mxJK4E/HBUT6SDQ7jh+7gzUEWw4rnQkDKYaRnSIZw/zKipny6g+4nLILciOaKBEjMrnwOwPWVe/j69HPY2I+6hxG8VERp62c2DoF1S268UdgIpGMEumQMIILszjM486mIGzizD
+ gemtPTIE
+ 9gI0UnaaTov7zsK/iIFMcJu/2LtXtEAVv+azRyqssqA7wGvWF35rxVEgNRU7K9o+kKXJVGQ2HVhXSCdLw4YCvRYt5wbb3LdWijO4HeMQUtWh2S0pY1PjQld6AWRweSp7FS/FD3ACHcCsBrMPt4Lv0Ck3qBjuUpSrchtTUpNAYp2seD+lJn22Eejr1w7AXH/Jn3TMaAFSmh8onnAOaAPxfgyMNfJEzqFtwMmAt9Jx3cpn5lyZDkve61ADPnAPuuhKZLrDEcR+fXRFpyJZuZ9DZYFYbknqYM3PIciQAHm9PzOizA3+d9oKVDgRHfJ5Ik57kBS1h1rKgQa7JmrYxLmagsqZj4H7qZl3yBzw8BuS6k2icDmB/u5DX2sJlD6OB7+9wAR8YrbpeipajwPumTeS87aSD33jF7XHmn+Yr+wheS0/pF5WS5FUzOAdMNCo1mZmw22Nz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,86 +136,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 24, 2026 at 07:20:05PM +0800, Lance Yang wrote:
+> >+	if (unlikely(mem_cgroup_charge(folio, mm, gfp)) ||
+> >+	    folio_memcg_alloc_deferred(folio)) {
+> 
+> One small nit: folio_memcg_alloc_deferred() passes GFP_KERNEL to the
+> deferred_split_lru allocation.
 
---pfcylgei2cxs7jeq
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 2/2] selftests/cgroup: test_zswap: fix implicit
- unsigned promotion bug in test_no_kmem_bypass
-MIME-Version: 1.0
+...
 
-On Mon, Aug 24, 2026 at 03:33:58AM +0000, Wilson Felipe Pereira <wfelipe@go=
-ogle.com> wrote:
-> In test_no_kmem_bypass(), delta (stored_pages * page_size - zswapped) is
-> checked against stored_pages * page_size / 4 to verify that the pages
-> pushed to zswap belong to the test memory cgroup.
->=20
-> Due to slight stat update timing differences, delta can evaluate to a sma=
-ll
-> negative number (e.g. -5MB out of 1GB). Because delta is declared as a
-> signed int and stored_pages is an unsigned size_t, C's usual arithmetic
-> conversions implicitly promote a negative delta to a large unsigned 64-bit
-> integer, causing `delta < stored_pages * page_size / 4` to falsely evalua=
-te
-> to 0 and fail the test.
->=20
-> Fix this by declaring zswapped and delta as signed longs and comparing
-> against a signed threshold, ensuring negative deltas correctly evaluate
-> to true.
->=20
-> Fixes: a549f9f31561a ("selftests: cgroup: add test_zswap with no kmem byp=
-ass test")
-> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
-> ---
->  tools/testing/selftests/cgroup/test_zswap.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/=
-selftests/cgroup/test_zswap.c
-> index a7ff525c1267..15cc1dfdd1f4 100644
-> --- a/tools/testing/selftests/cgroup/test_zswap.c
-> +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> @@ -621,9 +621,11 @@ static int test_no_kmem_bypass(const char *root)
->  			break;
->  		/* If memory was pushed to zswap, verify it belongs to memcg */
->  		if (stored_pages > stored_pages_threshold) {
-> -			int zswapped =3D cg_read_key_long(test_group, "memory.stat", "zswappe=
-d ");
-> -			int delta =3D stored_pages * page_size - zswapped;
-> -			int result_ok =3D delta < stored_pages * page_size / 4;
-> +			long zswapped =3D cg_read_key_long(
-> +				test_group, "memory.stat", "zswapped ");
-> +			long delta =3D stored_pages * page_size - zswapped;
-> +			long max_delta =3D (long)(stored_pages * page_size / 4);
-> +			int result_ok =3D delta < max_delta;
+> This only affects calls that find the metadata missing; after it has been
+> installed, later calls take the fast branch. Still, it bypasses the gfp
+> with direct reclaim stripped for the freeze window. Could
+> folio_memcg_alloc_deferred() take that gfp here?
 
-I'd rewrite it like below for higher type confidence (mainly, an explict
-cast of stored_pages so that subtraction is signed; possibly, implicit
-cast of expression assinged to max_delta):
+Right. Passing down gfp is the right thing to do here.
 
-			long delta =3D (long)stored_pages * page_size - zswapped;
-			long max_delta =3D stored_pages * page_size / 4;
+Thanks, will fix.
 
-
-> =20
->  			ret =3D result_ok ? KSFT_PASS : KSFT_FAIL;
-			ret =3D (delta < max_delta) ? KSFT_PASS : KSFT_FAIL;
-
-Thanks,
-Michal
-
---pfcylgei2cxs7jeq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaow68xsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ah3wQEAkD4CY79HnHFL3zUOh2xO
-fMcsSq7vsvnmYX7s4mYh8CsBAMi2iZwoDAROyEEUXSL3lUZmgimfzFx6ViqPPxyO
-Z8UD
-=UNwY
------END PGP SIGNATURE-----
-
---pfcylgei2cxs7jeq--
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
