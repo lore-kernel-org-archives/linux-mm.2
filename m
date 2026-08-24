@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0135C61CE4
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 654B9C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:19:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD2F46B009B; Mon, 24 Aug 2026 07:19:19 -0400 (EDT)
+	id 62D6A6B009F; Mon, 24 Aug 2026 07:19:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B828C6B009D; Mon, 24 Aug 2026 07:19:19 -0400 (EDT)
+	id 5DDE46B00A0; Mon, 24 Aug 2026 07:19:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4A606B009F; Mon, 24 Aug 2026 07:19:19 -0400 (EDT)
+	id 4A4B46B00A1; Mon, 24 Aug 2026 07:19:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 77AF96B009B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:19:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01EA4C049E
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:19:18 +0000 (UTC)
-X-FDA: 85135916838.01.CCE58AC
+	by kanga.kvack.org (Postfix) with ESMTP id 23B336B009F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:19:31 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AFA5DC04AE
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:19:30 +0000 (UTC)
+X-FDA: 85135917300.02.3A06E05
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E78CDA0009
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:19:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ddyyL2PL;
-	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id D887BC0004
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:19:28 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pt9mYJzd;
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787570357;
+	s=arc-20220608; t=1787570369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g2qCRhgwlWX9/P0bA+PS5udzVG7MD/qZuekO4L1dWDw=;
-	b=RbmcxG6ngfc8BD6UB4Vx9Hcdi1Z+uevM/wWtkz9WY+2dYjeJ87j2Fk8KFoj+PdmUnK2ccL
-	BrwfcEvq/h4QZFdIPmkN0Rl7IWDjP1EuprfDN1kOVaNZKbgqnffQUsQbYwa7KgJHV2iLgN
-	jqSC1UNAKsonjna9cQr4xcl2ayjv6yw=
+	bh=9JfWIbwT4//CafJUB37oPZ4gAJDTQRPaodJm/XlS444=;
+	b=pOwyo2mgiePMgL/zqktyaD7k9ktsK8efFtoh0KfxUJedXWdgLkChIaZIGlloLTEGKfeGZu
+	B06+1s6T8+sizAL73Mq8CWUvjBuV5zrJLVsjIkW+fzhlIDN2ucBPbsvXt+hldGcLDa8ZeW
+	IkgVrzWd1YbFkvuHHdNH2X2s5LldV0U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787570357;
-	b=xEy2dBheWvEHW1+RxiDqy7pS4fuuKu3hZGIV8AmjM7ENrlEiWL4aZ3gqfV1PoRIKu7LcwQ
-	SsK7eqP7ttSk4wVEzPbsrsb1AWf+OVkIpKlEEGHB98/ybGhGsFtYt8CUebNOtoyk+fBeJR
-	U44QoqXurIV70dFu6nGzetGuTENFGaA=
+	t=1787570369;
+	b=i9W+zrnMw8BmCLr69rLHOIkDB/7ly6H65ui9QbEBvs/oBMw+92DoU4H0mnSCRJvV1EG+KP
+	dGuiCXRuIMjl5XVSmWDWqWiMaUdfKJBnAYyXe5t4rF2Ph92Fjy+C4QjlR9rHJGbaxVzurB
+	Qg+2vcrL7LE7PBlaE3NDeqkwN6M82lo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ddyyL2PL;
-	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pt9mYJzd;
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 345B943344;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4BB6542A86;
+	Mon, 24 Aug 2026 11:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A601F00A3D;
 	Mon, 24 Aug 2026 11:19:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC1B1F000E9;
-	Mon, 24 Aug 2026 11:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787570356;
-	bh=g2qCRhgwlWX9/P0bA+PS5udzVG7MD/qZuekO4L1dWDw=;
+	s=k20260515; t=1787570367;
+	bh=9JfWIbwT4//CafJUB37oPZ4gAJDTQRPaodJm/XlS444=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ddyyL2PL6PLlLW2iTVSFLpwL31ciMD1OtXzckowGASVMaHIBQftZZtBcrA6dpJde0
-	 3PED2Nx9td5DG6bc1rfuu2cy7nYpHTM7rG0OGzZR+Bcv1NvcHFVXwGqruAx8iJZcY8
-	 nbyAgsN+a2UPQsn/4JD1pP8Wi7iEJJ983qrVXVHlCCE8kRYDiYX5DM/0euu3UrbV3F
-	 reAGHqCJ7hokEDIg7Z0W6HKRWPuFISpCoii6Tqgo8yaDxWgBBO0PG396MVzYq+gmUK
-	 LvrzOtGNtSVB+lGLkCcdo8tTecH7GJqPBztpS46zsNN38Y1nmEWVgUG6c47hGzmAmW
-	 Hs2NvTcg28Jjw==
+	b=Pt9mYJzdHdzl4fQzAVrswSnLK1ugEdizF+iDaboQyRXVOzra9ZiPlB/Z3pAX+gRQ7
+	 FlvuxDHz487tjiESkDMKQq+qrWU6tUF5KyEJ5N5EoOqXeSYHfees5b2NvdTeY4JzGg
+	 2ASC/szsGCPUbmXMcnP1YJhN9Voj39B3hlLhHUJuupoWLcKTtNJUxQo7g4As96pJBw
+	 cU5Waqa/ZJ9kBvahCcv4atl/fAiNgenV8MSkoIvfJkZNk75BrLcCFbWc0jAzm+P9bx
+	 VoTqsK9exzJ0Pevfe9KOF4zMp5ZeZG/LPDRC+HadCNWknQmgUdkQPzSBjTKZCbzQD8
+	 BIsVt7vDKq/Pw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 24 Aug 2026 13:17:59 +0200
-Subject: [PATCH v20 7/8] rust: Add `OwnableRefCounted`
+Date: Mon, 24 Aug 2026 13:17:53 +0200
+Subject: [PATCH v20 1/8] rust: alloc: add `KBox::into_non_null`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-unique-ref-v20-7-490735672187@kernel.org>
+Message-Id: <20260824-unique-ref-v20-1-490735672187@kernel.org>
 References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
 In-Reply-To: <20260824-unique-ref-v20-0-490735672187@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -108,33 +108,32 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>,
  linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
  linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
  linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-usb@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
+ linux-usb@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10339;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=lkUx1VbobxlmYWNdC/nDxmr1MRox1ssQduBu64GCO0o=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqjCiGte6nRf1GGg67rqtbls0poYCjepi/36kWc
- slXezf4KL6JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaowohgAKCRD6UCkIqsW9
- 0OZCD/9GWNXi6liRGGfVUwBnKuaEtuSErfHkn2qvDVM+dTxnOquHRan4YHZYXQ4qunwLh8y8u/U
- JZwTvQs24s5rEK+6xInqoHJS8puDoaiKifJOC7OIdBZGS5KqAN35ooAygyrWes4euyktz/Xvf1a
- 6lUMTqjkoMvDsAqpVlqRQgFCDDLC4zWKtWqdFofPv+4LszXFFEG/AlakaWSMmqgclVvtKMSB0Jk
- OsmTGWz1NJtIjjnipsQVQHE414ZdSjkcHhuN3NQLjzMi162AR5+cyvRvzUtFbm2CFkw41Ho2/Od
- Q/vonYDVt7xMizZjtT3+Y1Plb7WNFxGk84GJt3hxD1hrEceZh6rZiDKcqLQSk+XG0J/kDQ/mAcg
- jquu1u7FKiFA7+PYC0MKg8gZd4LE10DTlhur+CNOob86e5Zw70TIy4nZXLYXHOt8zTYzijr8n1G
- uqp5Gse0MxFbKS7T8sfa+DAe+9S2wbDx4J8ECHMbCtblPsyvkeQboTKzX3PB1aFbaQK7bm+RXmL
- l3s47VWN4n2KeIA12yVKPHXOru1+2U/r0q0VzKGRsWOxohKfz+nDIXXZJcWPwHgafK3o3kSZeDx
- J+ZnNM3Jlwh+UAaCHoz2mnROkMLxhQAf1cP4ByYZNna9wjBX8eqnBQWCfYiMNzUmdftJDgb5jnc
- WuqiGpOoSN4WLWA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1170; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=Bz9Y+wuriC6USNq9dghH0Oc0RgRceIN5mLKgknmkXjY=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqjCiANjOTA/QLk0NbdgT+Aipy/VQqpA4/e4r1P
+ uWaXDqaFq+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaowogAAKCRD6UCkIqsW9
+ 0LcUD/9JlybCkRh5vp32gkmPMvQSq6QcOhJid/ktAibn3taPc2bE2UpUDNFbJn/mQH7ZVtCu1ZM
+ Tuys8Ev6iAI3y5ohAEMU7v9qE67FroO23PPZqT3Fo/KhIAFQYpdvy5BC5GdaHEnW0RLQr/WpR5C
+ lrzj4oZaLV/RfEkuTqzwgr/RcT/tNk6g95wN+JCT/GX28fo0bksGHfkal2ewedoOfK4REnj/6W6
+ 897sw2bg+rKaHODMYi3mNwWJ/nk6crdtLhMpFjaV1m5I+m7PAKhrFK/J859fg6GceYm6Qk2qIuv
+ h2xNuhsDtW6kBHqkN2FjJQSDvsjUozwkUmr3GbpsjE99tnoN0+LzFcKD8TafAZyBQESTkAD83t/
+ Dpo3yEG6fZUHtdq29nvUu1TDnotfGPxdUDGLtKAlpvVnxGvfaC3OnEkGrsNgugffVt7ObVl+d3E
+ UZtUeA30SEzENwbdDvDLd3/SDxlBkY+vOTcv+Cxo5ZRLKr1gTMiLc+NWBFRyZWbLjboFrSDWOJf
+ GEkBbnGOC23EJMljiV9hbphKVdr8Vh1b5XdRjMkVjl9g0HiMYMlzPRxgYyFn6SIwNxvKiFnlwoA
+ JyBfok+kTwA5TiP6zAWy+d8Xo7+N/0qPbS+AwCN2XkIrv8K/hLcpPQrIUYclplEKXVyQwS9CoHV
+ AblCyvWtJHkb08Q==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 X-Rspam-User: 
-X-Stat-Signature: swkifhncs3a4r3s6nscaf9sberyoju9x
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E78CDA0009
-X-HE-Tag: 1787570356-755894
-X-HE-Meta: U2FsdGVkX18Q6v1UrKZQUNU6MvEtJB8KnhctALXAeKnUg052/p+SeMZpiKrumZZgzRhItfZE3CIzCcRlk5pL5ifc5C5S1YrHEpWm3pA17bOQupLVwzHwH8Bw3pEVL/SCt6hKgw/oHTx3WQreqw7YnVrTZobBOydYcuxyySg4Bbak6bFZ5jmnoGm43/KUqGfQzm8wi5XHQ07ez9uaqWq/AVcAnSwjuvkD3/AR5zB5ulukuEIl4rpSeH1KUHEpNQ7BPPdsyXL2NjvGG2jXRmNPe+4SltunLJKTrTtu2Pcf8eypqxK3f6tRM4zIFZzbudDsOAn39ZvZ/c1pus62gQaKz5kbnrYOodLD/dY30Vhp36sreropWgs2rvFS0FFakOLlFBKX8G5HZQjAKhb3TnJw99rcZAkrWXF8gtAO336NkwPkuvdEH+8XSTGjFkRyh/gtdRjM/xzGwDHHIx9Sz0MT2VfjeexDvT9GsQ945Ff7DXDwe/zowPO5oMotKSz+aun18bfqacbFZ2O5ArTSB9KvYnGdnxcT64ffBNT2pt0xWqYmZawiIhj7NE9fMEQZb8jwAEGy1DYgHH8S+q5mfN8zbmpzvHd6lRiu/avqFyDeVt7Idp/BnlIjbGcQdUdvJpcGE+3D760zNu4FLaK9zp2jzxidYXbGDMFBPvIF/xDUcnwDrvM7hqgJ320WKGEq5HWBjIaKTiEZDkvXPVktQqBJb1Pq/8UzsF4MYphDLzXYJoL6MB4akgoLVLE3u3XSqjS0lDAMpvYUs+C2Cj254TUn593MWlGM6VTiNcsXx9UFD16BKqlqWnWuJiVIO3vGi0aJvx52cWP16zMjQkTTaYUPVInbG8cu5Lk/idA1ic4hdXO+MOYnxPGIihGBsfDeeJKiDrLL7x7m5dha9D71RonRdHkgtL3MmTyxzonWaHJgBMMuA8exNd2AxVdPCC5V8gdb+4NwWM2o7Yqdc28vrAj
- qexFNsz0
- lNtm42XIQ1EIKjjZvnZv8xCSW/rfhFG2uuHWrgN3LLt3lUgvXY7LsGdJdGMxY0XJVI+oJS1APwws5wQRe+cP+Ai1ysyiJ6hPORm3JmJozOpNx1ruA1gL/E2Sx2HHrqW6ARJTzMpRCu9aGP3BP4NGjrkbtOou56awLfGlMrrEWlB0asg8PMpPsfzTSnKd9XmBdxcuB7E4uQrXnRixvARrdyOsCy+bUkf3kA3Nqha20QHk/ELnkQ5eNXXI85zw6ivKlFoZVal+RNLk7LbK5Iep4JliEoHHDS6geIQh3
+X-Stat-Signature: 5dpbbq4a8mn7kx1oozj4db4qy4zxyns7
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D887BC0004
+X-HE-Tag: 1787570368-273520
+X-HE-Meta: U2FsdGVkX18G8NmlS/HVPzk5aZpkFa9kxwMC84RxpE11gPJ5xP04LCr+eP32OU3qgN25+oYJY2r18JOyM5om7eUaCcbk8k5xapAJEo7FuR54czhjRucWe5eGtKmixwkKZOIXMhSZK8YrPR28sb7XVF3oiFKKNQaUgOBRvBF3f+YT5SmAhKkuDIY0Jf+fjnxf/MmA4x4zSkSdMJJH3WNvjvY+JTjF8q3C0qKp565Yz/8spNfkj4o0ayti2XJzVW2YRXFDoVe3Vv4WPBxNTdPpMUpKoTIk9gp1BwR7C6kE8guI8u5gG3zf0IirctT8Dkt5etSi4qgAUkvbNAfMqDiF6MKFrU7nJuA8ydYkIZtU80WsK0oLUQCrSaG65tbYechCc6PO8+FRdaGBtmlYJxfbYD1qciwUOoeBKnHZd5X1s06NjZEd/EhUCB/JBAT497yBck8AerU8yxUUiXy/c9EkyuMFoSyY47PR/L3Wn1zUBerguGNzNekzptNRGi5pGH31fZMg7p4kd8dxLgNmsZD20uAa5d3jUKsYSzm2V79709j1ns1vj51jwP6YdNbKnh3jfg4aBLoG5Fq9pMTHq34+Hi1QFialiaLLQRdW196gzfwJS+z4P4zERr4n6GbtkyLsyJrB4gtICUexAZEl3HoA+6t2xwoz9y6dDmDM8N8HWq6f2TG5sKFdpkN0V5KMNAKvHZACrDMfxu7ZXPZ/Sn/ukpsoIFc0x/V4IU1jXLm5R6e4PSMVtvsFVKq/bqL9SvyIC1ZGWmmPbw5gMOiFU1L/PUzgXvlVRNAULh1KU+OL/4DfLp+yUSEBQmCJ+y0iGm3TTepX1amFrBfti1MPQcMgH6+Nn8+wfS78eg/2YzYwV3Wmh0TwV+bLskCrztdNnWTfKmeR0KcfkUgag1DWswT1pBaqumYmEDDhmzkhfPtgVXS9gqA7JL7jgdN4qWSXhkuWv1UjWnzlVj5Np6CrgNA
+ d3hpFaS7
+ pJkPFtG3qJpZwvtUyAWVaAQjv0fq6E1ZJFBTflAzmGYlz/Ou5MtElKrN/87CgimaUi8Xi9Lw6ERJ/sqm6D4orebFLMP7uTOje7jxc5BWtjmb4TlCteGCc4p4IIO9DOnYZ5hOOOEEJL05AKJhNTbjMObRZj4l8Oaxlbq3IT6msfId0UXWGb2NV0sVbjcQ62KzZv1TkZQ4Kij8f3gzhf3AyGeq0g4YbTid8qyadAD6dTl+6NpG4C7HIjtQbj5ZfmHCaGOxBe3f9gPUUcGMRm4Sb4uG6NFGMDte4Q3rfm+JkDOGg06NsojCCNkWO+sdjWVSB0YsYnj2dv89VciFlKMR1UnHcpuJHf0djnMLP+a2GNLlP05A6/vm5UOdCphJ0X5EbJAY/lgZUrvqK2BOw6RXh1NFR6ViZlNoC8e9o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,262 +141,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Oliver Mangold <oliver.mangold@pm.me>
+Add a method to consume a `Box<T, A>` and return a `NonNull<T>`. This
+is a convenience wrapper around `Self::into_raw` for callers that need
+a `NonNull` pointer rather than a raw pointer.
 
-Types implementing one of these traits can safely convert between an
-`ARef<T>` and an `Owned<T>`.
-
-This is useful for types which generally are accessed through an `ARef`
-but have methods which can only safely be called when the reference is
-unique, like e.g. `block::mq::Request::end_ok()`.
-
-Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-[ Andreas: Fix formatting, update documentation, fix error handling in
-  examples. ]
-Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/owned.rs     | 145 +++++++++++++++++++++++++++++++++++++++++++++--
- rust/kernel/sync/aref.rs |  16 +++++-
- rust/kernel/types.rs     |   1 +
- 3 files changed, 156 insertions(+), 6 deletions(-)
+ rust/kernel/alloc/kbox.rs | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
-index a156267bf8bb1..acb611f084ff3 100644
---- a/rust/kernel/owned.rs
-+++ b/rust/kernel/owned.rs
-@@ -14,20 +14,26 @@
-     pin::Pin,
-     ptr::NonNull, //
- };
-+use kernel::{
-+    sync::aref::ARef,
-+    types::RefCounted, //
-+};
- 
- use kernel::types::ForeignOwnable;
- 
- /// Types that specify their own way of performing allocation and destruction. Typically, this trait
- /// is implemented on types from the C side.
- ///
--/// Implementing this trait allows types to be referenced via the [`Owned<Self>`] pointer type. This
--/// is useful when it is desirable to tie the lifetime of the reference to an owned object, rather
--/// than pass around a bare reference. [`Ownable`] types can define custom drop logic that is
--/// executed when the owned reference [`Owned<Self>`] pointing to the object is dropped.
-+/// Implementing this trait allows types to be referenced via the [`Owned<Self>`] pointer type.
-+///  - This is useful when it is desirable to tie the lifetime of an object reference to an owned
-+///    object, rather than pass around a bare reference.
-+///  - [`Ownable`] types can define custom drop logic that is executed when the owned reference
-+///    of type [`Owned<_>`] pointing to the object is dropped.
- ///
- /// Note: The underlying object is not required to provide internal reference counting, because it
- /// represents a unique, owned reference. If reference counting (on the Rust side) is required,
--/// [`RefCounted`](crate::types::RefCounted) should be implemented.
-+/// [`RefCounted`] should be implemented. [`OwnableRefCounted`] should be implemented if conversion
-+/// between unique and shared (reference counted) ownership is needed.
- ///
- /// # Examples
- ///
-@@ -99,6 +105,8 @@ pub trait Ownable {
-     /// Callers must ensure that they have exclusive ownership of the `Self` pointed to by `this`,
-     /// and that this ownership is transferred to the `release` method. `this` must not be used
-     /// after calling this method, as the underlying object may have been freed.
-+    ///
-+    /// `this` is pinned and implementers of this method must observe this constraint.
-     unsafe fn release(this: NonNull<Self>);
- }
- 
-@@ -136,6 +144,8 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-     ///
-     /// This function does not drop the underlying `T`. When this function returns, ownership of the
-     /// underlying `T` is with the caller.
-+    ///
-+    /// Note that the returned pointer is pinned.
-     #[inline]
-     pub fn into_raw(me: Self) -> NonNull<T> {
-         ManuallyDrop::new(me).ptr
-@@ -236,3 +246,128 @@ unsafe fn borrow_mut<'a>(ptr: *mut kernel::ffi::c_void) -> Self::BorrowedMut<'a>
-         unsafe { Pin::new_unchecked(inner) }
+diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+index 35d1e015848dd..e6c637bbe2009 100644
+--- a/rust/kernel/alloc/kbox.rs
++++ b/rust/kernel/alloc/kbox.rs
+@@ -211,6 +211,15 @@ pub fn leak<'a>(b: Self) -> &'a mut T {
+         // which points to an initialized instance of `T`.
+         unsafe { &mut *Box::into_raw(b) }
      }
- }
 +
-+/// A trait for objects that can be wrapped in either one of the reference types [`Owned`] and
-+/// [`ARef`].
-+///
-+/// # Examples
-+///
-+/// A minimal example implementation of [`OwnableRefCounted`], [`Ownable`] and its usage with
-+/// [`ARef`] and [`Owned`] looks like this:
-+///
-+/// ```
-+/// # #![expect(clippy::disallowed_names)]
-+/// # use core::cell::Cell;
-+/// # use core::ptr::NonNull;
-+/// # use kernel::alloc::{flags, kbox::KBox, AllocError};
-+/// # use kernel::sync::aref::{ARef, RefCounted};
-+/// # use kernel::types::{Owned, Ownable, OwnableRefCounted};
-+///
-+/// // An internally refcounted struct for demonstration purposes.
-+/// //
-+/// // # Invariants
-+/// //
-+/// // - `refcount` is always non-zero for a valid object.
-+/// // - `refcount` is >1 if there is more than one Rust reference to it.
-+/// //
-+/// struct Foo {
-+///     refcount: Cell<usize>,
-+/// }
-+///
-+/// impl Foo {
-+///     fn new() -> Result<Owned<Self>> {
-+///         // We are just using a `KBox` here to handle the actual allocation, as our `Foo` is
-+///         // not actually a C-allocated object.
-+///         // INVARIANT: We initialize `refcount` to 1, satisfying the invariants.
-+///         let result = KBox::new(
-+///             Foo {
-+///                 refcount: Cell::new(1),
-+///             },
-+///             flags::GFP_KERNEL,
-+///         )?;
-+///         let result = KBox::into_non_null(result);
-+///         // SAFETY:
-+///         //  - We just allocated the `Self`, thus it is valid and we own it.
-+///         //  - We can transfer this ownership to the `from_raw` method.
-+///         Ok(unsafe { Owned::from_raw(result) })
-+///     }
-+/// }
-+///
-+/// // SAFETY: We increment and decrement each time the respective function is called and only free
-+/// // the `Foo` when the refcount reaches zero.
-+/// unsafe impl RefCounted for Foo {
-+///     fn inc_ref(&self) {
-+///         self.refcount.replace(self.refcount.get() + 1);
-+///     }
-+///
-+///     unsafe fn dec_ref(this: NonNull<Self>) {
-+///         // SAFETY: By requirement on calling this function, the refcount is non-zero,
-+///         // implying the underlying object is valid.
-+///         let refcount = unsafe { &this.as_ref().refcount };
-+///         let new_refcount = refcount.get() - 1;
-+///         if new_refcount == 0 {
-+///             // The `Foo` will be dropped when `KBox` goes out of scope.
-+///             // SAFETY: The [`KBox<Foo>`] is still alive as the old refcount is 1. We can pass
-+///             // ownership to the [`KBox`] as by requirement on calling this function,
-+///             // the `Self` will no longer be used by the caller.
-+///             unsafe { KBox::from_raw(this.as_ptr()) };
-+///         } else {
-+///             refcount.replace(new_refcount);
-+///         }
-+///     }
-+/// }
-+///
-+/// impl OwnableRefCounted for Foo {
-+///     fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>> {
-+///         if this.refcount.get() == 1 {
-+///             // SAFETY: The `Foo` is still alive and has no other Rust references as the refcount
-+///             // is 1.
-+///             Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-+///         } else {
-+///             Err(this)
-+///         }
-+///     }
-+///
-+///     fn into_shared(this: Owned<Self>) -> ARef<Self> {
-+///         // SAFETY: An `Owned<Foo>` holds the unique reference (refcount 1), which we transfer to
-+///         // the new `ARef`.
-+///         unsafe { ARef::from_raw(Owned::into_raw(this)) }
-+///     }
-+/// }
-+///
-+/// impl Ownable for Foo {
-+///     unsafe fn release(this: NonNull<Self>) {
-+///         // SAFETY: Using `dec_ref()` from [`RefCounted`] to release is okay, as the refcount is
-+///         // always 1 for an [`Owned<Foo>`].
-+///         unsafe { Foo::dec_ref(this) };
-+///     }
-+/// }
-+///
-+/// let foo = Foo::new()?;
-+/// let foo = ARef::from(foo);
-+/// {
-+///     let bar = foo.clone();
-+///     assert!(Owned::try_from(bar).is_err());
-+/// }
-+/// assert!(Owned::try_from(foo).is_ok());
-+/// # Ok::<(), Error>(())
-+/// ```
-+pub trait OwnableRefCounted: RefCounted + Ownable + Sized {
-+    /// Checks if the [`ARef`] is unique and converts it to an [`Owned`] if that is the case.
-+    /// Otherwise it returns again an [`ARef`] to the same underlying object.
-+    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>>;
-+
-+    /// Converts the [`Owned`] into an [`ARef`].
-+    fn into_shared(this: Owned<Self>) -> ARef<Self>;
-+}
-+
-+impl<T: OwnableRefCounted> TryFrom<ARef<T>> for Owned<T> {
-+    type Error = ARef<T>;
-+    /// Tries to convert the [`ARef`] to an [`Owned`] by calling
-+    /// [`try_from_shared()`](OwnableRefCounted::try_from_shared). In case the [`ARef`] is not
-+    /// unique, it returns again an [`ARef`] to the same underlying object.
++    /// Consumes the `Box<T, A>` and returns a `NonNull<T>`.
++    ///
++    /// Like [`Self::into_raw`], but returns a `NonNull`.
 +    #[inline]
-+    fn try_from(b: ARef<T>) -> Result<Owned<T>, Self::Error> {
-+        T::try_from_shared(b)
++    pub fn into_non_null(b: Self) -> NonNull<T> {
++        // SAFETY: `Box::into_raw` returns a valid pointer.
++        unsafe { NonNull::new_unchecked(Self::into_raw(b)) }
 +    }
-+}
-diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-index f26ca39b84d0d..e6ffe7c650c39 100644
---- a/rust/kernel/sync/aref.rs
-+++ b/rust/kernel/sync/aref.rs
-@@ -23,6 +23,10 @@
-     ops::Deref,
-     ptr::NonNull, //
- };
-+use kernel::types::{
-+    OwnableRefCounted,
-+    Owned, //
-+};
- 
- /// Types that are internally reference counted.
- ///
-@@ -35,7 +39,10 @@
- /// Note: Implementing this trait allows types to be wrapped in an [`ARef<Self>`]. It requires an
- /// internal reference count and provides only shared references. If unique references are required
- /// [`Ownable`](crate::types::Ownable) should be implemented which allows types to be wrapped in an
--/// [`Owned<Self>`](crate::types::Owned).
-+/// [`Owned<Self>`](crate::types::Owned). Implementing the trait
-+/// [`OwnableRefCounted`] allows to convert between unique and
-+/// shared references (i.e. [`Owned<Self>`](crate::types::Owned) and
-+/// [`ARef<Self>`]).
- ///
- /// # Safety
- ///
-@@ -188,6 +195,13 @@ fn from(b: &T) -> Self {
-     }
  }
  
-+impl<T: OwnableRefCounted> From<Owned<T>> for ARef<T> {
-+    #[inline]
-+    fn from(b: Owned<T>) -> Self {
-+        T::into_shared(b)
-+    }
-+}
-+
- impl<T: RefCounted> Drop for ARef<T> {
-     fn drop(&mut self) {
-         // SAFETY: The type invariants guarantee that the `ARef` owns the reference we're about to
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 5ef763717e59a..6aa760952cb63 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -18,6 +18,7 @@
- pub use crate::{
-     owned::{
-         Ownable,
-+        OwnableRefCounted,
-         Owned, //
-     },
-     sync::aref::{
+ impl<T, A> Box<MaybeUninit<T>, A>
 
 -- 
 2.51.2
