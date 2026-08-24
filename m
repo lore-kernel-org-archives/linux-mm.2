@@ -4,101 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAD63C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67EF2C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:38:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7FA06B0099; Mon, 24 Aug 2026 03:27:54 -0400 (EDT)
+	id 3F70C6B008C; Mon, 24 Aug 2026 03:38:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2F796B009B; Mon, 24 Aug 2026 03:27:54 -0400 (EDT)
+	id 3CE206B0092; Mon, 24 Aug 2026 03:38:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C45EF6B009D; Mon, 24 Aug 2026 03:27:54 -0400 (EDT)
+	id 30BF86B0095; Mon, 24 Aug 2026 03:38:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A24466B0099
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:27:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34C94A36DE
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:27:54 +0000 (UTC)
-X-FDA: 85135333668.07.2FCC248
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 827A1140003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:27:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LisqMsMw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 034196B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:38:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA39C16047D
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:38:19 +0000 (UTC)
+X-FDA: 85135359918.11.DC9F1D3
+Received: from mta0.migadu.com (out-67.mta0.migadu.com [91.218.175.67])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BFB6520005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:38:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787556472;
+	s=arc-20220608; t=1787557098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TDmng5bNiE+YiLBp1dwqj9DRhmUVXQIS/lif+VRO/fE=;
-	b=2LprtogPVzpXOfkv8+cT/2VFhfujW5luUIRrUl3JkItCnoMS/dadIRyEUgQkKuIm3aqh4f
-	u9Jl59QieBTQHA/WmOTRA2uF1a9e75YnOOnJDhKfKci9xo7N4QjG58HNrL19JcGwu/JUlJ
-	tW2PWkNw0P/3uah0yEHYRd/1m5P2jeA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LisqMsMw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=AIdYWWKSCbRp+yyd/lZ0XSdv8FSpL5i4C45Wtxg6PfA=;
+	b=GkMCjNePnu9+MxQNYV088a6H/ge38mqd18mZajV1Vvszh6b455x9LaXYlNWMuVht9o70wL
+	ubgIZznOeNvw76nuYyzIgc/NtSvSTwejKHCHr9QOjrMVhddoxjJELc6+wpP1QPZ6jEzVzp
+	aHlJ4240tvQY5IQYnD/gXEQ7kWFCFjQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787556472;
-	b=hz21UtwXxxdy/mqgjeOFi3A+866BLgvZmG3tgI+xtqj7w9G1qF64cNwz3MwrOSJq71+WQA
-	3LJ7LRj9dMRCfGYfSgoNk6eR5psysTI6rhAnXNx3DtHcvBJFTxRUHq64dOx4XBV0Wnm1il
-	UruweNn1+Imd0eC61nz08n5TZ1DIYJE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1173E600AD;
-	Mon, 24 Aug 2026 07:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AFC1F00A3A;
-	Mon, 24 Aug 2026 07:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787556471;
-	bh=TDmng5bNiE+YiLBp1dwqj9DRhmUVXQIS/lif+VRO/fE=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=LisqMsMwto/kBuZ7gdbcgEJrUKMCvB31iYajSaP8VSdLEt16BVkX4Oh7MmltHH6/x
-	 lgJMQ/bHIDKxJx2zSKHsCi53faclUGyXrEjtwgO9HglPDbBjmzSGM601uHETfiupKK
-	 k9L2jhdovk2XzuRexJe8lI2Ja3+L6F1zhgtZeR57y04iBM9ZTxAg8R4/0hzvBRU/1n
-	 j/yQ64IOrcqDTuW2xREKaopx2MCLiJJbnIajCPVW+gYaQ/oYq0qHnMHsDEPBeQlGIk
-	 UAUiHCdZACNNtFoUCqb60H6mqsfCFPiGb92umTHv0AOcuZ/mH0PdZQm1D5ksQY3O+D
-	 A0IEUUHfnBZfg==
+	t=1787557098;
+	b=XTkQW+ZoRc2AfiZbqPHlsF9rbByMO9RKLgXYpFcYNVL3HZnsAuombMc3hBN6upXzbNyl3b
+	CArNw3oFkboeFtvvHhQwKxLP+UXHcMewi2Trx4fz1DzbVIa2yGCSLZAGYQXKWgRg+X1Pf3
+	WE0hzoGyDv2bwNooZzVX8fC5bXQwtcU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (3.112.29.171)
+	by mta10.migadu.com with ESMTPS id 41a8bfae78f4319d;
+	Mon, 24 Aug 2026 07:38:16 +0000
+X-Mizu-Trace-ID: 41a8bfae78f4319d
+X-Migadu-Flow: FLOW_OUT
+From: Baoquan He <hebaoquan@kylinos.cn>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baolin.wang@linux.alibaba.com,
+	hannes@cmpxchg.org,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: [PATCH 0/9] mm/mglru: suppress empty page table walks during aging
+Date: Mon, 24 Aug 2026 15:37:57 +0800
+Message-ID: <20260824073806.629593-1-hebaoquan@kylinos.cn>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC V3 1/8] mm: Make ptrval_to_str() generally available
-From: Mike Rapoport <rppt@kernel.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org, 
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
- WANG Xuerui <kernel@xen0n.name>, linux-alpha@vger.kernel.org, 
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-arch@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>
-In-Reply-To: <20260818040041.1891769-2-anshuman.khandual@arm.com>
-References: <20260818040041.1891769-1-anshuman.khandual@arm.com>
- <20260818040041.1891769-2-anshuman.khandual@arm.com>
-Date: Mon, 24 Aug 2026 10:27:34 +0300
-Message-Id: <178755645423.3606540.12945780031100652573.b4-review@b4>
-X-Mailer: b4 0.17-dev
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: hscxtzd1351w5c16xfcy1et94i4xm65g
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 827A1140003
-X-HE-Tag: 1787556472-351292
-X-HE-Meta: U2FsdGVkX1/kpc4BreZrm87fwLYZGcLs567md7QEn7ZbPicGO6cZZI9ZyQaL/0tdNH6/RPqQKly1uXqU3m6SUW9EIfaR3HpKrawjLQF/V8S7Jf6BAJ/1pqEdkRPpr6uGIoZ2t7PwYMM3kgsQx2fuLi0isBLXSOFbiRwFz+jMs2U32XURM7Jw77lKCMGOGyQldZMahNCyUW8C+rvMb0dV2b1GJPjcWNrUBaIdulWxH7KIUUpQ3OL+NU38JQPI4DJmmhPdDtRiO75J3hNXtoG4XGMRQXWaQ8r+O/xMNxWO9qWQ4/DoaRoBfEjJFe7Ah/S6OhFnnZz8alZSooedIx2nkeFYCESCD48pjtNKI2JmZD3H7ICV1siTOqh5jigary/LbbaeoqkKeFHw6Fuf03KS2ZER2C80c7GDkJL4DVRmZL5LhpmF0BDqsHGQNq7YZAb6N4aLL1B/hZVZotqDe4qyGh39j4plUVIJGPEmiDVoa+qtnDBeCWQbGUqQYGD1aOL4LRfU7C33So1GNd4Dl3bEgrNZmvQA1sNO/OSQ5yEi8q1/u9SyJjAKLgY00WHDqOVv0zs7iW3wYqFuuG+6VB69kUlYVvYjgD5j1bk6NSh2zESbH6rRpL55qHzC9G9fID8BHIe2QGoYyFHK2OV+6bP3aq2dwElWiO4807XcKqeakckV1j+c8C4NyKTUhh64N5JLSV6T3FeVlHoqPSSyo/VZuxjEPzuL1eHJBpXScC3NjuV0o5BKjmPUSMcwgtP9KI2goKt4DT8QsZwfrR8GPq/Te+ke+IZOMuCE3tB+uvtorbSDeBlnvwsyMtsIwBeqa3dgd5YkZWfE/GxW8+PjwAFWZcZxehs9osbxP+knH8p/5EMqFYL9o1QO6qB5BAKRHycY9aNK0OBtSSqa+h7A+7ZezBM1HU5RWvlc5fzoaou3leGAKN/IOXlZ6v6qrhZeXJJA+0IPR+hWJAHC0q0oxNX
- 2xNwbN8f
- ENslsVzpjy+qMmWYXIkL56JtISg9/V2+SvH2C8vGqzcMnstimXU+S1ribkfFr/3IXppYw7TkfuL+i5s43C2sfyNvv31ogS4ZEhk9gqgUzlU+pA0TLMi9Hs7m4rVZ/2TPNMA4znU3Lrd7xyAWJtGlmNqPpwnXWnlCR1Jeg+C2qSIA+jj13Qyw+fGoP1g23cws54z5mY7QFTKtLdiyYgV9XB2cuC6mZf6rhKH4F9T1QcrpOWZbfoQO9zYCaQetkz/utz/oyAvCjkCxzUhqAaedWPzAx1CoXy1S6GIUxOoVnaEVmjypxzduo2EHVE98+j9DJNYLqt+1E7Xph46I7ghLmum5Sf0VikdysDwJ0I2Hlli6yclWo2qjpJkLYF9p4akcS4aPz5UGVp9wiF0iNhgmzSR4Lmbygx6gkBb/OnZ0B/Wlu6aGCf+ZBEjW+Hjk+KnqaCAqX4PmCc4ZmdGvb63ZqYm7MbClhukFH1lfFc3PUvohJF6VE/CxwYwS6xxf3QoL/q+GNWxSVZvnAJiJK9YWevcbFo0FImn42X91N
+X-Stat-Signature: s3t41bqa7ghsp8koq1dn381jjej9fpdh
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BFB6520005
+X-HE-Tag: 1787557097-98754
+X-HE-Meta: U2FsdGVkX1+MS9Uz2uFk7CFLVA2wtL7LeRj5io/2FGMGGPhcE7uLfMSlqqkK5ddumxJOtgrgHqsdxgfM0ciJq3FbhFxP2/OuZtufNLjzsJZDRnG5q7FZpAvNH0r1sswTZw3uwPzsdu2LlhVQ9y+Kuf8cx5B8aQEonDr7lPvELrOhjZpYySGYn42TKM2KWY1dwDSO7g5J0s81Vra3nzXBrjbZxBANJZnQk9sYTMoaqikhnhwCnUMZUtgD4vUQcSj6p6Q1g5np03Nshk0Vm7XtX3u/Wn/g0nC6c+CdxaFRtfY4vOQgA8pT5IZ0ciOefC9NECRTjBX8nxyns8MvVQhiOmZGL4hmL2Nd00/0X8KyL9JiwPSHFPFHyZBTOFepxDol0Nkb3MuJyjCKDohdXP7lAVvwoM8HJ/SFanw/EDloHN3tak7gnTMiV9/iuK69m1k4QqIfPmLOMGrqlTipuoV5PR4yU2pmZSA+YZrTYn/XXXS41cuEswEfJbKzKhR6diT5Gkjq5xnAaiEtYGiiD75Be1tO5jSaK73GHI+k1lHeV0zw+YnUrayQDIeGdTolrnfMyBl0cuot4sHsXgNYjDlCaVi1sNxDpVUIeYxaxMXrN6pQ3dtcncQiPjJlUv3YLVZbuWcSXwBD/oiNg+5RoD3Y0eVE8DY9JvSlZo559bZqC48AXL3MlBkYdXMnAUIPBdiYcr2cJIZAcCdR4iQoIg8LSYe2IpxU9G2WGm+/OKkUFqN5bjX/pmN3a7DgEiO39hB8PHhiy6Yqjz8I7fDTQ/kHkRsk3d0pzRUCCetuQU44ZQMq7rnBBXUCfmivKjAOf7ULM4ZTPch3MD/fJmPM581UHPsM5s4oEUj0545XV45X5OzyH30RQ/B/mW67Ca83r5KpEwPD897OfDITFGWjKlc3Ny8KuSAucuP6YivC089K5ol3uq0sgSMBZyDHaRjsPzoOCw/Mv4jS5iM7bOw1W3c
+ LXK848SM
+ a3gIB7vK7QxiKPA1zZ62pitrT4ZPowPQ0ZUz6wX03D/INYvKYol5uoEKJpVo3dR8MCGdY/OYgczNrhZ+kUTiccFedzmePNYpVXEm1wiyST8N0XbWFpn08fljK6zjga1QtsFNeG1ghN5kq2PW1ilF+6LH+ZKABqb0qneIzqWIScqeVDu2E80Kb2YALjcNZvkOxD3VY+xZOSOo8MtJAgmWs17gfRSWy9aqOxkUoBlwcX5Mq9+LRqUXONm6IV4gZDB4NAufPUaer5MH/lH7hDblRd6t+87u+FrZEhQ9RFHhZN0Sjn6gapXmCvZrF5EYsjr8J4s65M42TrUQh5zzX+SWv4bRQyHG8Y1lcQObzSOd7V6YrbFIH9mZokwK1C+8zeipDkhSyStzSm6wm+kQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,23 +91,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Move ptrval_to_str() inside a header thus making the helper more generally
-> available for new users which are being added later. While here, also move
-> another related string size macro PTVAL_STR_MAX inside the header as well.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+In the current MGLRU, lru_gen_use_mm() will mark an mm for all nodes at
+each context switch, so on each node aging will walk into each mm's page
+table independently. On a multi-NUMA node system, one process launched
+on one or a subset of nodes, its mm is walked by all other nodes's aging
+while finds on pages for their lruvec. This is pure waste (100% walks
+are empty on those other nodes)
 
-I agree with David, include/linux/pgtable.h is better.
+This patch series suppresses these empty page table walks with two
+complementary mechanisms at different levels:
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+  - empty_map (cross-node specifc). At mm granularity, one process's mm
+    whose walk found no pages for one node's lruvec is skipped on that
+    node between re-scan passes.
 
+  - PUD-level Bloom filter (general). One level up from the existing PMD
+    filters, it skips any 1GB PUD that had no young entries last
+    generation - namely whose 512 PMDs all failed PMD test. Cross-node
+    empty walks can prove its effect the best, but it also suppresses
+    purely code PUD inside local mms. So it reduces unnecessary walking
+    in any workload with cold areas.
+
+The two complement each other: empty_map reduces the *number* of
+cross-node walks, the PUD-level filter reduces the *cost* of the walks
+that remain.
+
+Measurement test (3-socket Xeon 6766E, 32 x 256MB workers pinned to node 0):
+
+  node 1 (foreign mm walks):
+    empty_map off (PUD filter on): 3300 walks, all empty, ~1238 PTE scans/walk
+    both on:                       900 walks (-73%), ~0 PTE scans/walk
+
+  - empty_map cuts node 1's walk count by ~73% (every 4th pass re-scans
+    to close migration/fault windows).
+  - the PUD-level filter makes the remaining walks nearly free: the 1GB
+    subtrees are skipped instead of iterating their 512 PMDs
+    (leaf_total drops from ~1238 to ~0 per walk).
+  - worker RSS is unchanged in both modes - no premature reclaim. A
+    force_scan pass confirms the local pages are found young and eligible
+    (leaf_eligible == young == 21320 on node 0) when the filters are
+    bypassed, i.e. the pages are hot and the aging walker can find them.
+
+Performance regression test (make -j4 in a 3G memory cgroup, 4 vCPU / 8GB
+2-NUMA VM, median of 3 runs):
+
+                  baseline   patch    diff
+    build time     10m01s    9m41s    -3.4%
+    pgpgin        136868    138080   +0.9%
+    pgmajfault      1832      1862   +1.6%
+
+Build time, page-in and major-fault counts are within run-to-run
+variance of a no-patch baseline - no measurable regression. The build
+time is if anything slightly lower, consistent with the suppression
+reducing reclaim overhead (fewer cross-node empty walks) during a real
+memory-pressure workload.
+
+The test codes/scripts (numa_workload + run_test_v4.sh) are available at:
+https://github.com/baoquan-he/mglru-empty-walk-test
+
+RFC-v1:
+  - Bloom filter helpers are named symmetrically -
+    test/update/reset_pmd_bloom_filter() alongside the PUD-level ones, and
+    the struct field filters -> pmd_filters (Barry).
+
+  - An mm is marked empty only when its page tables were actually walked
+    (a failed mmap_read_trylock() or a stale seq is not empty), and the skip
+    is invalidated on the major page-fault and migration paths. (Sashiko)
+
+  - Reworked the re-scan: the old shared counter across nodes got stuck at
+    the slowest node, so the skip never really engaged. Now each node re-scans
+    its empty mms every N passes on its own clock. N is the skip_empty knob
+    (default 4, proper read/write with input validation). (Sashiko)
+
+  - Added measurement counters/tracepoint, and a kernel-build regression
+    test (no measurable impact).
+
+
+Baoquan He (9):
+  mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+  mm/mglru: suppress cross-node empty page table walks
+  mm/mglru: add debugfs knob for the empty-walk skip threshold
+  mm/mglru: invalidate empty-walk skip on page fault and migration
+  mm/mglru: add PUD-level Bloom filter state
+  mm/mglru: refactor Bloom filter helpers for two filter levels
+  mm/mglru: skip PUD subtrees during aging
+  mm/mglru: report hot PUDs from the rmap feedback path
+  mm/mglru: count PUD subtrees skipped by the PUD-level filter
+
+ include/linux/mm_types.h      |  22 ++++
+ include/linux/mmzone.h        |  13 ++-
+ include/trace/events/vmscan.h |  30 +++++
+ mm/huge_memory.c              |   3 +
+ mm/memory.c                   |  15 +++
+ mm/migrate.c                  |   4 +
+ mm/vmscan.c                   | 205 +++++++++++++++++++++++++++++-----
+ 7 files changed, 264 insertions(+), 28 deletions(-)
+
+
+base-commit: efecab401cb15fd3bb9bc05990609acb6b267ff2
 -- 
-Sincerely yours,
-Mike.
+2.54.0
 
 
