@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACA24C5DF8C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 03:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0D46C5DF8C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 03:35:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D19E6B0095; Sun, 23 Aug 2026 23:35:48 -0400 (EDT)
+	id 81DDE6B009B; Sun, 23 Aug 2026 23:35:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AA316B009B; Sun, 23 Aug 2026 23:35:48 -0400 (EDT)
+	id 7AA446B00A0; Sun, 23 Aug 2026 23:35:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 698906B00A0; Sun, 23 Aug 2026 23:35:48 -0400 (EDT)
+	id 6717A6B00A1; Sun, 23 Aug 2026 23:35:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E7B66B0095
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 23:35:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9AB03120407
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 38F7E6B009B
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 23:35:50 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BE36316042C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:35:49 +0000 (UTC)
+X-FDA: 85134748818.09.365E5E1
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 153BC40006
 	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:35:47 +0000 (UTC)
-X-FDA: 85134748734.07.B593D88
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F1A7940005
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:35:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r499xabK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of 3ELyLagcKCBMFyx418xz77z4x.v75416DG-553Etv3.7Az@flex--wfelipe.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3ELyLagcKCBMFyx418xz77z4x.v75416DG-553Etv3.7Az@flex--wfelipe.bounces.google.com
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=akQ+cDay;
+	spf=pass (imf17.hostedemail.com: domain of 3EryLagcKCBUH0z63Az19916z.x97638FI-775Gvx5.9C1@flex--wfelipe.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3EryLagcKCBUH0z63Az19916z.x97638FI-775Gvx5.9C1@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787542546;
+	s=arc-20220608; t=1787542548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uLeWQI8viIKf2ncJdeLCdpToNayUvXof6lXIwZBpCjQ=;
-	b=EEq9XOIYdgMoy/vLIaOV1XujmzY3MtE3/6H6yEv/tLfEsRP9WYtxi03daxtn1rmj2h8NfN
-	oxq+JryhlmEXcmz7R+mLbssUNLipgzyYWY/eJE8LoG4dvpc/IFLcq9gHH5Y2bkqEWAGSLI
-	EYRQW+ppmVUuSNWu9v11LCX8n2jkrPo=
+	bh=DZMAXxlnSgWC5Kd65SinCWudGpzS4DSeLZoz+Rd1kKo=;
+	b=TUy/P6zgcuwfomZd5KSURWw1pimoe8Ypeqn3DeA4ZvYsex8XFJ+BbR7kk+FZKjf9OGDyRg
+	da5lQoZWNmBoZ20zot/mdbvJ1WF4Ob4YCs1Mb/l/xeWhF6/izs/Ytn2QwOSq+1cZBjiShR
+	xF3w7ppPj/1KDjuEm9jJQgpLbX9kXX0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=r499xabK;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of 3ELyLagcKCBMFyx418xz77z4x.v75416DG-553Etv3.7Az@flex--wfelipe.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3ELyLagcKCBMFyx418xz77z4x.v75416DG-553Etv3.7Az@flex--wfelipe.bounces.google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=akQ+cDay;
+	spf=pass (imf17.hostedemail.com: domain of 3EryLagcKCBUH0z63Az19916z.x97638FI-775Gvx5.9C1@flex--wfelipe.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3EryLagcKCBUH0z63Az19916z.x97638FI-775Gvx5.9C1@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787542546;
-	b=hBibjPRCYrdSkJ38gAR3GlZZxb33jLCX0g7Zj+3lwU34d507fBer+CsboRwoWqu+fJlMST
-	zofAgvYTTF3V88kRxo9oAvr7x0COsOIAIYJpXrMhnYOdsTMgNgv5zBcyKfv4bO0GhOieCZ
-	GkwcXi1KHJbAPg1fSSTlJUr1NEF6jGM=
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ce7dff6253so39089245ad.1
-        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 20:35:45 -0700 (PDT)
+	t=1787542548;
+	b=oeaA2sxVheEeF5JufoaIjaSzP7jF7bzcAqV/S7G/lsRjq+2d5VJdzKDPXjnDHPRR+OEHLv
+	axPK4mMO9/D27y7+hQjm3AC9VXSTRUTGfdDW0gFFeUV43diOEGBMCIlzjuIoSHEQzMpkXY
+	/OX99gougEnHfuSG2W4okVfR7qdUSkM=
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84865f326efso2845695b3a.0
+        for <linux-mm@kvack.org>; Sun, 23 Aug 2026 20:35:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787542545; x=1788147345; darn=kvack.org;
+        d=google.com; s=20251104; t=1787542547; x=1788147347; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uLeWQI8viIKf2ncJdeLCdpToNayUvXof6lXIwZBpCjQ=;
-        b=r499xabKeAXV/TT2Z7e8UGvRbQWHiGaXEtfnCTTkUnIHRJX9TCLv7QIp783SB21oHO
-         821GQ0QgoTlzY4pNXeQ1bVXSC1Zpnl6Ck2fYuAEQqsBmojhdltApowEvOWzOHcdABj9f
-         6ZI7CyGfZwXfFLjp6jAQA6L3AYnjwHP/XA63iuXcGeJj8ElJEEJ6x9hJ97tf1yuyzRt/
-         G7hj7yWkJ2gxrW1R7N6vLfPUVh98z0k5dRHqgOwJF7mu3UvEaMPK9q992uvJyzMGM5Wq
-         zzQF/ZsVRx9FZeL6v2z1/tQl/08v3T8d4X7tjEZxsXjTdEVEB+HyPOTuQyRALM1LhAUT
-         HShQ==
+        bh=DZMAXxlnSgWC5Kd65SinCWudGpzS4DSeLZoz+Rd1kKo=;
+        b=akQ+cDayl6DngxT8p44zcn+pHw1Bx0XXSoPD29U0V7uDiHG0cLcu6gMrCegXeEGTRB
+         zgjfa/YGv0yFucylgjNl24zARYSAWcyIOTnLOJEb9BfBWvCM1Td9cL5QiJzikCsDCRDY
+         Z9Ung2i71Gb7WIs+2RfJEtwM+W05uCurLDTbYGXus1/BWiHxFqzGYUDapb+7lzY6F125
+         jnvR/5B0j3v21diGvGT/V0B3Ps5SZkgWoNl8QLA4ez3KRbmM6l/oDvJpZRS2GODosvDZ
+         WkXsfR1cx2HiuPN6M24hPprj+0Q7qupYLfQKgX6EpEQNXkqsYvAtIwEA5POo6zAv7A1f
+         Z45w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787542545; x=1788147345;
+        d=1e100.net; s=20251104; t=1787542547; x=1788147347;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uLeWQI8viIKf2ncJdeLCdpToNayUvXof6lXIwZBpCjQ=;
-        b=hUuYGSTxstHiRsaspVcpg8gk0kKgEfiPMfqZgThm4K8K8IMGdOq2VSjioCAcWlOunR
-         /PALjD/bVb3/HApunwrn31HXUzqboH0TnsWwn6v6yvTQnNwrr5X6S1MS5bkv8lk07Cxp
-         nk+PVdWQOeD/Q9zN4NX6wLA8i0EY5uaJgX5/+EH+Z9ugA0RhDlTw8wjaDIBYQvROWZ1d
-         qw//PLyI8cU8RperG4CLnO1yRm3u8MX/kdAComvhh7h2Kkovl/vPC7+1CdzIP+6pVO92
-         Jdk2gXcUubtGi9SLtB+/XDCJ+3Q3YH6hlfM7yzstdtvvrQ5iz1aWB2SZl5UtyNiiTbag
-         NLnA==
-X-Gm-Message-State: AFuF++mkZY0h5Y8V+3GzAiLlojoNe8lXA5XwVRSVyP3S+MGl8ZEdFJaa
-	CKv+YJwCG7wSfffkZjU7i6Pt0+tI5i1/MOCt1Y1q4MXn7jZtVX26elB3WoXlu9O91NQ1XNKReZ6
-	7UpHAAQRBPQ==
-X-Received: from plgk2.prod.google.com ([2002:a17:902:ce02:b0:2d5:6077:5a69])
- (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3b85:b0:2cc:ac15:ff4c
- with SMTP id d9443c01a7336-2d61a0da51fmr357601025ad.8.1787542544728; Sun, 23
- Aug 2026 20:35:44 -0700 (PDT)
-Date: Mon, 24 Aug 2026 03:33:57 +0000
+        bh=DZMAXxlnSgWC5Kd65SinCWudGpzS4DSeLZoz+Rd1kKo=;
+        b=fl/GCUcN0jJgDcCwAOUsUyxazKUcdNecHr847QUGmlEpHNYyaquQllDckPAKv5unpD
+         01ah4GBz0SKqRsaAfGMtCOCz/LFahzFipBFecALNtS8Ps3BqHebF2V1G2eG5TBfR+/cd
+         usnHQjz3ogiN1BVx/AXmnqUz9yCmamK3qIoLggofUq7hNCz4yeQiefjh8sZ446AVOZLu
+         nJqd9b7wKh4W+HaDCIHPkyWCy1/5hww9ent1L9p9VSqL//FBMalU3aDPVBKjWgDHxgj6
+         7xFNwdf5CiO/vaQFxokGn7nhV7hvBf8VbWe//8Gi9UNxDdbpUpZ8pfqGkd4OE/Ll2OF5
+         YX+A==
+X-Gm-Message-State: AFuF++lfw5Ul3NnvvViMsO/6Y7r6/B1L/sZDDDnTCIGDdxeux9kMDhbe
+	IrGzRck+kHyGdkBAV6lIbHA0aCVYIP3DhmmPgOjLy4v0CWyPvz2sxYkoWaLctxEgT6pNsYOmf3i
+	fy6+WwcbAeg==
+X-Received: from pgnf25.prod.google.com ([2002:a63:7559:0:b0:cc1:513e:8b94])
+ (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3b89:b0:3c3:7a0a:18a6
+ with SMTP id adf61e73a8af0-3cd4bca353cmr29799231637.18.1787542546697; Sun, 23
+ Aug 2026 20:35:46 -0700 (PDT)
+Date: Mon, 24 Aug 2026 03:33:58 +0000
 In-Reply-To: <20260824033533.2147900-1-wfelipe@google.com>
 Mime-Version: 1.0
 References: <20260824033533.2147900-1-wfelipe@google.com>
 X-Mailer: git-send-email 2.55.0.766.g2966f0265a-goog
-Message-ID: <20260824033533.2147900-2-wfelipe@google.com>
-Subject: [PATCH v2 1/2] selftests/cgroup: test_zswap: wait for cgroup to
- unpopulate in test_zswap_writeback
+Message-ID: <20260824033533.2147900-3-wfelipe@google.com>
+Subject: [PATCH v2 2/2] selftests/cgroup: test_zswap: fix implicit unsigned
+ promotion bug in test_no_kmem_bypass
 From: Wilson Felipe Pereira <wfelipe@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
 	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
@@ -98,14 +98,14 @@ Cc: linux-mm@kvack.org, cgroups@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Wilson Felipe Pereira <wfelipe@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: F1A7940005
-X-Stat-Signature: tg8upujnyzdofu7kwqanknptmhnpujii
+X-Stat-Signature: n8i3qmiwt45o43na7etq7udtm5xajfba
+X-Rspamd-Queue-Id: 153BC40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787542545-957558
-X-HE-Meta: U2FsdGVkX1/LVpvLhaDzOLRXdV5fLgxmjEWFAUZLwinTwCuDjCd79VdzLq893GORfPbDHd8429VIGYTGlXOWvKLPKQcqTKgDetCp3RAZB8mxfKGisGQ4TsACxCseAZI6YEgAnHL1ZLzZ92+h1WUuczPw1j2WQxnaAGbKA0PvjQAFIQbrf1A6s7SQlteun124tsKt3Yw52l2dTmxortQXxYhJqHpnuch4B+HeOfmuGdKChxQt2wl5VP6xX8vdYR2FwS72VPVcZUyHOuEWh9Jq47pg3uVcjwt1rGBiH2JduVvSIqmq+VuobUFnU/i6dRsoKCEY9wZWBA3FJR6Mdm65SmA9YTkfdDvzvRqe0eonOJW0BRd+QoEPVjho9KhudA+mGuFKTuBtuBiF3RuUREjvsQWElafNE2/Be0nXfYkdysD8c82KF1KKTxN83LkZ7sIZSceh2M8lpJPOHR5QC8ctCZ4zPJk22j7aXj6Eayydf1mPInl2V0PuWJ9pJYeeD2XCYQ0IwjPJK0lxTS2EkPgYMhlG69D1nJkPldGfCI9ZLGtOMqdqKlWRr0Nu+18qWk+iT5+INy2ew6ruJndh8LV/rHLC+HdEVOmFyMIxCVIJR2+rcwd11sxi51/juwq+mQNA7e7IcvwcXoDLMdpXneAs+pkBfbfg1YdH7+oHdfGWO74vyjeJKPy5n1iGMYq2s9ZkWRiy0YvBHUUcYisz0lieAZ0yGb0s8pp1gQdXGlwZI2XT/+Dt22xwLyn0R5/v56ZdVIuycXdQhZyTWQL/KtiamJl8H8+WgF08D6wAZWSQ2oACooGn6CT7mdBLUaunr+/sCYHGSzqsNOOZ9pPWSPNHkgL8CJpD1o5KvsmkE6dnRsihUB12TP2UYp3bR3R6mewcs0UGVcwPjXujgF3Q51DzZplFmHt2qfHhgipoWnV+jL9R+VS3rUEE21JrEANjB6sPvCDO+jk6IqNnKnjVX1R
- FXDsbG+A
- HXbQLK/c5vkbNq3fdGJBr+XsN3eOi4+6biPIrnaIX7IDVra3QpgYTUVYNtPjR1cdOlpZvjHx9wNKx5X15ssi1azQynmaEWkZtshoKLeLEe9yxZx0x0RxHp5wYBBB9l8FugGRCxxgskq/p27bPU/6zitJoKGOkWt0kQUW5F40zQR7mtD14zy40NY631fPM+p/91k1bzoWk3aryvFJMsxWOK470fiDvb119jga1O59CQhmFBEaLi4uAnPof7pzBlYG58XkO+4cJXs3Ok2PMgwq5RsxS2MlSezld+79Jp8LUuh/MNo/IJCMfIj8zrz0BTd2c0Gy4sPBJE56o7/WOE1NbzJnA8122AYWrJDlY25xZuFstIyyjapj6La+1xkXJLkURUg1r9TGJMlZMgR0bUrET4IB0ymcJhpwxZCe/rWqpae/mr471H9jat1L3855ojcJaXBQ7ig+wWe0KNV/2eIdNtKL0PgjkXOxXAJXJ++qNNKEYNvliKW1JK+2Cs5EJ3DAVuQmDzbRkLNH5FLX2eDQbtUmNcWeTcM52GKSHtuJ66agdPL93QNIhUmib7kduEn8WgrPT1k5ZhZ6IWc1KjuUioCK9LQ2DerWPNQLyPgSlzt63VxK9Ruc3MgVlo0iA5tCgT76S
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787542547-787309
+X-HE-Meta: U2FsdGVkX19Aq1upTje/amf4svguMrnZWSl+zXBjZarQtCeW+B0BEI26TKAhZAJjlHSgMajV5f8D3NtSUJbPv2ogGTVLT9beVNzn8xHUGGOCYvFlixWIcwBBLhrzw8tfmHX72wYcjDUfWPEtS0Q3iSxpIqhZBe0UEHk7StHqkOV+UxTk5ZTGtvw72fIgB7wbXb5j8Vw3ml7YBZ/IkfmWSBqmi/Ykge9wFln7ZZZTeYmhcGPWm1Iunh38BUETS65qSP/tbjS6bdMDJ4oB5agTLMdW2MDS0zvglsc4D+Zeg+tBUjuKmGJOG5UVY/nuiefpWeUH34xzhJHu6RG0yLNwY+G9T+dBCgMWhgiF3HbwH3Co4ljTFywO28cq8knDvfzgTS9lDw/bNF3Ehwd5j0viA2+ORhaVcdT8MuM1aAd0DycQISSwX/LoYfw8Whx3gksfNpu7alTnBh5l7dpscRMshm4JnuCe7IDgCEzxtZtP/V0hj4JMXLPdk+1DPY7/TOu6U5nzQnTDaWX/gk4lgXvIEqWyYpP0CClbieOdZpHCN+eykj6Ol5UZ4KyL23kRfscpAqJQGDeBWDqt6aPEZe7MYJbluuBnDaNaYn+NZyXWmR6nlBZVgyThyVRx3cJ7bigP9OFGVCG+bCYBz8WOq8Gppg8MZlG+O9y23EU7+j5LRmLJ/Huaij/qtYUWzmZAGpEunb5cOzY/xn+vGLwX/raCBkToSCIgq1X8sdcopB5S8KzX6U0NwqxzA32idZTMdE3ZWxc0bkr0ifBkdwhK8KfuwcDo4s80wmOPZAVuBt9jkMgAlQMXl9dI+uzzzbsRBWiLn+IYd3x8mH3hz5Qo9wOL7gAX6qBYUoV24YfLXD2E+IcXg+l+f6utf/h6zwcD7itZyDlB1LURaSw7Fy3aF1svYUPf0ySbyy5+NJbI0wK2lPacxmZ4ilan2P9eRf60GUWdfwvrM/bBgz0ntA7bxML
+ JuFVNCjL
+ ofAETIG1rQD1el7bLg4bY8uglntJ4cDBPnqCYT0BxhFZufywH0m1nO53dDPORfVCwx8upQz5uBB/PYP9bmtx2DFL0aTL/gHMXL5MKT8KEyUbtDOjaWZwjF2Kh7KPVjz/KRD2gXNpvKPHEZhtReyq7iAWmv3fC/fZPgfUCLLsQikWmMyfUBB8te2VS5zdUOy6MnQmpmTQDWHY8t1yk3l/G9GZwLJpbFiXFxio1NCYpBCWZkSlz83649ooD7TCISQmXj5gA5Pf4iUmHyPp2lmY8+zJxXOUmxBUBs2C0YOxXTtP+iDZ7EvqJkQyRphvHiEr9W652vgW9i0xyOC42UfveZPu1b7YxlnaQBS01MvXSyqgm1zWIL2Y+9jSU8G6538CTcHpbIXp9QrUXvR3C4GknGyTzZwh0gL83k5dnxgK9dsY2GFLlD/WcegZmL10LTkM9FNQYyU7UK/0XdY8GnfPCCuTb/FLwRr6lENcUtCBxa4UB70Iw8Ywe9PTFDxxP+Y6QqqNz44dPe1JifXja4CT/VGd/frmswb6nLpcSER2V8CW1bjey6RlGDu7KNcZ5k+d0QsA96jnRX2+DwUktESYodkC/i7mYEb3E3n4Y+rtisyR3F7zgCTwnERgCql63Df1wf9/4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,43 +113,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When running test_zswap on a single-core VM (-smp 1) with 4GB of RAM,
-test_zswap_writeback intermittently fails on the initial run after boot.
+In test_no_kmem_bypass(), delta (stored_pages * page_size - zswapped) is
+checked against stored_pages * page_size / 4 to verify that the pages
+pushed to zswap belong to the test memory cgroup.
 
-In test_zswap_writeback(), after waitpid() reaps the child process created
-by test_zswap_writeback_one(), writing "+memory" to cgroup.subtree_control
-can fail with -EBUSY. Under cgroup v2, enabling domain subtree controllers
-is forbidden while any tasks remain in cgroup.procs.
+Due to slight stat update timing differences, delta can evaluate to a small
+negative number (e.g. -5MB out of 1GB). Because delta is declared as a
+signed int and stored_pages is an unsigned size_t, C's usual arithmetic
+conversions implicitly promote a negative delta to a large unsigned 64-bit
+integer, causing `delta < stored_pages * page_size / 4` to falsely evaluate
+to 0 and fail the test.
 
-When a child process exits, exit_notify() wakes the parent process,
-allowing waitpid() to return immediately. However, the cgroup populated
-task count (nr_populated_csets) is only decremented when the exiting
-task is switched away via finish_task_switch() -> cgroup_task_dead(). On
-single-core systems, the parent runs before the dead child has been
-switched out, causing "+memory" to fail with -EBUSY if written immediately
-after waitpid() returns.
+Fix this by declaring zswapped and delta as signed longs and comparing
+against a signed threshold, ensuring negative deltas correctly evaluate
+to true.
 
-Fix this by waiting for cgroup.events to report "populated 0\n" via
-cg_read_strcmp_wait() before enabling subtree control.
-
+Fixes: a549f9f31561a ("selftests: cgroup: add test_zswap with no kmem bypass test")
 Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
 ---
- tools/testing/selftests/cgroup/test_zswap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/cgroup/test_zswap.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index 49b36ee79160..a7ff525c1267 100644
+index a7ff525c1267..15cc1dfdd1f4 100644
 --- a/tools/testing/selftests/cgroup/test_zswap.c
 +++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -407,6 +407,8 @@ static int test_zswap_writeback(const char *root, bool wb)
- 	 * Thus, the parent's setting shall be what's in effect. */
- 	if (cg_write(test_group, "memory.zswap.max", "max"))
- 		goto out;
-+	if (cg_read_strcmp_wait(test_group, "cgroup.events", "populated 0\n"))
-+		goto out;
- 	if (cg_write(test_group, "cgroup.subtree_control", "+memory"))
- 		goto out;
+@@ -621,9 +621,11 @@ static int test_no_kmem_bypass(const char *root)
+ 			break;
+ 		/* If memory was pushed to zswap, verify it belongs to memcg */
+ 		if (stored_pages > stored_pages_threshold) {
+-			int zswapped = cg_read_key_long(test_group, "memory.stat", "zswapped ");
+-			int delta = stored_pages * page_size - zswapped;
+-			int result_ok = delta < stored_pages * page_size / 4;
++			long zswapped = cg_read_key_long(
++				test_group, "memory.stat", "zswapped ");
++			long delta = stored_pages * page_size - zswapped;
++			long max_delta = (long)(stored_pages * page_size / 4);
++			int result_ok = delta < max_delta;
  
+ 			ret = result_ok ? KSFT_PASS : KSFT_FAIL;
+ 			break;
 -- 
 2.55.0.766.g2966f0265a-goog
 
