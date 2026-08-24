@@ -4,96 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB73C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 06:37:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C468EC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 06:47:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A38B6B0095; Mon, 24 Aug 2026 02:37:26 -0400 (EDT)
+	id D0ADE6B0092; Mon, 24 Aug 2026 02:47:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26F8F6B009F; Mon, 24 Aug 2026 02:37:26 -0400 (EDT)
+	id CBB806B0096; Mon, 24 Aug 2026 02:47:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C0356B0096; Mon, 24 Aug 2026 02:37:26 -0400 (EDT)
+	id BD1D76B0099; Mon, 24 Aug 2026 02:47:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CD56C6B0099
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 02:37:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 32BD34045B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:37:25 +0000 (UTC)
-X-FDA: 85135206450.10.BF5940C
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3372D180009
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:37:22 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=DKFhCyrX;
-	spf=pass (imf24.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 938FC6B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 02:47:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21D50A047B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:47:56 +0000 (UTC)
+X-FDA: 85135232952.29.B65AE30
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5256B180003
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:47:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vZTUFyFZ;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787553443;
-	b=v9/4VBT9bKv5C6db+VCHpZcvrfJVxtK/s8dAAkj0U2z6ZN0caFjXs0NNgX9pXd5RKGdMWt
-	MmerbXnmeivbUDxMmcieCoE4W9j423hw4qJMtGLcA5hEYzimDLJONUozEBComixWeJqNff
-	SYeDbdRkrwakwMFvFyRlHhERss9CaBY=
+	t=1787554074;
+	b=0FshAfRCZygSDNMW2LzrBLK+YdjRnpuDOKGugJPO+VcKu+hJMjP1Ai6I1xM/9oj7Zmyz9X
+	ukcMy+N4od0+SQUMc92gnmKOHt0Yc5cFb+rmIYVgPczT7lIQL0ZNUdHsZKNat3hh+sHW8f
+	yvAv1YHNSWbdyQB2CsWJEgcxujg3NoU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=DKFhCyrX;
-	spf=pass (imf24.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vZTUFyFZ;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787553443;
+	s=arc-20220608; t=1787554074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YoZYmxUiL1Mjzl5GKAt2FPQ4t7mEjRszWa8yWlQtOVo=;
-	b=cY1mCO4Qg1V0UDS5OYadE1dsivZ60eBORW6xKrh7+mR4gmqmOCNv816mVSfbmDfT+DzyiJ
-	6iqLQN51mnBFiY4aiA0Zm3DnCSz9D/v3anNOfmKZJXkcstYNXFP4lOHSqP8A/sbyBw9a6e
-	l7JiT2kGsoN+S0eadFGZpeLbfns7P2M=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YoZYmxUiL1Mjzl5GKAt2FPQ4t7mEjRszWa8yWlQtOVo=;
-	b=DKFhCyrXpytqlvHZG4S++sZJhdUbLqxUdStsmCEe3eX9ctG243jMTsz9pzReiVTPz2vJLLVTt
-	4oAoAJ0izqx5nPOoh6aAS/dUv9RE1m7xoFjsDU3rjv8fF54mSEnWS4df9l+SPO1bfpnXG6uiKP2
-	kgzhM9zx/fnidttoxVQgIlg=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4hT1CD6Sl1z1K9BV;
-	Mon, 24 Aug 2026 14:26:32 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5866D40578;
-	Mon, 24 Aug 2026 14:37:17 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 24 Aug
- 2026 14:37:16 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <ljs@kernel.org>, <liam@infradead.org>,
-	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
-	<shr@devkernel.io>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-	<tujinjiang@huawei.com>
-Subject: [PATCH v3 2/2] mm/ksm: fix advisor_min_pages_to_scan description
-Date: Mon, 24 Aug 2026 14:10:10 +0800
-Message-ID: <20260824061010.3343959-3-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260824061010.3343959-1-tujinjiang@huawei.com>
-References: <20260824061010.3343959-1-tujinjiang@huawei.com>
+	bh=GK/MIea32e4NUGMWanxCuajUxRGuMhSI8qj69sbXJ1U=;
+	b=5ntLFztQN4m52gEyknV8OxH8dafxNae3G7rd1eiCfsKqD4OxYpNE8+vZqspC0VvjM2Eldt
+	8ZWpVYE4IeAFZfRH2dRoIGsQAzty9hZ6sU0b+t+opvpn3SzWOnTZ7Dl9AgqyiEYrUYBceI
+	FauRznh1Iu87oogsbICUOcaV2Pba80k=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787554069; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=GK/MIea32e4NUGMWanxCuajUxRGuMhSI8qj69sbXJ1U=;
+	b=vZTUFyFZQwgrcxU7k7MIP3l7irUMQwnKP7b9P30/o+JQpBr6baaMVIk5xmUCMHKdzdXO2pVWbmakTqqYrvuJHV05VLsXA9/yLkdBW9otjlKsICoDj30SWVrxiByZDjLgh/g8LwL2FSzaLuZFjbnzxbw/uERAQABEGoM3XXGMHx4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X9U.yEG_1787554065;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9U.yEG_1787554065 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 24 Aug 2026 14:47:46 +0800
+Message-ID: <5e0b17f1-a9db-4317-aa4f-924c6c767ee1@linux.alibaba.com>
+Date: Mon, 24 Aug 2026 14:47:45 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] mm/mglru: improve scan_folios() exhaustion detection
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: axelrasmussen@google.com, baoquan.he@linux.dev, chenridong@xiaomi.com,
+ david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
+ lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
+ lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, stevensd@chromium.org, wangzicheng@honor.com,
+ weixugc@google.com, yuanchu@google.com
+References: <20260820045603.68809-1-baohua@kernel.org>
+ <20260820045603.68809-3-baohua@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260820045603.68809-3-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5256B180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3372D180009
-X-Stat-Signature: qjjoftzs1if671op8z6og158nyxbytop
-X-HE-Tag: 1787553442-950306
-X-HE-Meta: U2FsdGVkX1+H2usAP4RO8IQ5lhZuo+qmX3utnTme8+vOhigSozRVmqFaU/GZuLv0BJwojd1+5CxU5lg8hVsmXAFvN7+oqmTh8RTWf8X5CS8AkeEP7o/TXbH2TS0QBlQuNodtLHeW+3pA3C6sWonTqtj8b6w0Vq2W44cmmb+V0YeMCvZQT6UJwC9NRvLEEz7C7Hfy4hTJqo0afYWZpUJ/XIWadkm22BqTdclMwpgxkIdthiKXsLP3XPStCmNutFz+PY+Brh72HQSvfZ98/W6s9/nEgvpRdwIOcx1O6k0HI9lSXCF5PyKEHnEZxFkBbpZ4wDw+msxLuksIVqWkN/8ZmJ+fXQLqGdqkD8AaR7l1lxOtFOUXKSH/4i22/9DGOJXW2USu+JIlfzLbYQay7qnNkjTcdJYruSmwXwCQF1Kw7sdlR4cdO+U0ksu7vXZIuJebUcqdCR6GPuuMbUgwKH/j3TmCeS8PQTZwj6d+iicEPxUB8z09IbsKwNaJvcK3/OSIzY9btgreI3iUmscPn+wnTWZMfIriIzDIcysQJ/70+VSMUu8uqrCbp6a3STw+yuht0zT9gBLz6b5Autosf8fnmDyRmB63RBOTjh6/mmPA4Mf2p7LG+CnIie5uMP9QZ6jt9FmRx+aouQzEXwjOMngqasqjDs3Dh04wrHwtUgY5Ck9cY842Ct2smNa3D6zJ5Tol6IVoYbsjSJVO7uhEI+X2dfc3v8HrgNVEOSf4m/vLt1WYXUXMz6nFd4smNs+RM8YKO6wVZv9kkzSTJAubt8amdEatrZt50rjxtYZlJiAD+VtmfRAURqYt5D+poNTme3SzaCps00zjAj0qeTX0tcIz5DJJ81X6gqRoFFONAw+KRym7+UoQLhlLgkIS8HVnNz+QblHt4vQ3LV3pfc7GlLfWqT0uo31VkZ/5GFNDoCnLACi9TgPez4q8fi+4ayjImVP3Mf8Lt1X5a1PGtHzwRd4
- KXKQn/NY
- GhqjkMl9kSwiSnx1IQ7yRqyO/6fWvQhuPD8uLhXTF21ExbqxkQ7IGu3Ss2qyYUa76OlneDA5tzU7vGTPpV8yWEDwjMlkNRTmSet5puGxq+wQJy715JkRiKzISyJrNCzHxKtOtjxd+LAdfZeeq0zykVxXUvttIKhy6S2OhybZIy1dDQHjYQi8+tDsU/ShegJjWARq8dvXC98NP4/o5GNTHMhuo4gmkuD50+GhfoaWGQLcN63d1+iKCzZe2YSL5q6HonWx68qR/rX9I8LBaffJr3D8Ppdw8hse3pz/w8V6IkYdyEneFRZ3na3y7zh0ezni071sJjjyjUvP7CquFA1PzU1+fukcutJeMQg01FRcyvKb4GCY=
+X-Stat-Signature: db6jm73wd6arxmtrorrao8dtkyfet5nj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787554071-846026
+X-HE-Meta: U2FsdGVkX18QyySur7wAvEK91E9t89N9b04dEMoz7fepHhFvnwwl2XSs6jCI/GXrVZf2yFEUy6nDW3RRTGW/qU7LmH+IoKtafoCJdGPiWDVkuMmp+VSljNBiyYtiOREgqV37mwU0bmELpvSaV6GaDKfn+5ccSAuycW2u5u1LlL6fPtuqsVTFDII6bGomEvcKUp2LbRKqXhnP4310we8Noi7owJ3O3gBBmn7Tzp5jv3yFqta5Zh1jHnjqNR0ciBmSG4HRwDZl7JfTMFdPCZlY9ugI/KHDHDOwrAcsV0KJ3Mp3gl+4SF1U+oG7qnVgAnrtpWYOMjl63Hh6mGnC5o3QBTtKweJIpeSzHVN1k1nG+g88teRcjeSfs8ypQOAVsGoN+amUeh291lhwSMqI9yAbmYR9GAVahuyQiZMo89RmbQBIdTPNcTCCj2FvKmrbwH3w5M5Yuq7AfiDIKWu4XwXI4R/nu7PGTbjEMszRqpna5ibVCItzJqq89VQEA1jKudWN/jtD7IpTkCgcPju8pmoJEaxUE//N3NV8xMpHUBtVQ5OJyBD9B805a3dyAHjQIdm5wjtQjsmHZvhIi7XGAdPSD2X9dLYsPFk5MQ+Vj5EqDAgEiXt8cf8nIBiNOe9GCg4SbI61AXW1BkITgwbDmPCQeMmiSK5T3XKLkQTYSVw9R8gwIpOQofi/4Rvx4V+vTfrhdG2lu72VF4E0h+T5LhhrR+xiUc/ge+8PBM01dhlC3EYAgZD5Oaoeea+oK4JLK/CqHpilHhQtnpOZLu01zpt9CTM25uiQajxWuArtt4lDpTRDnjmTyBAIaP+Ogv0jysiUXI7N1APGSxPr2C/5o3a0a12g9yRm7RgtxSdHarqv01Lk1MmprZK22bRvk/uuShkYwdzTnpBiYmAkrBIDDy1zzeHhk8ZEafrFtvPUs3d0YTT5r3InV8kF7RrhD8KQboWpqhpxlUNDt+J2KB+bFSH
+ tH0Do6CM
+ /b8udNieLjJMgNaAXZxZ0mPKXAw7if1/YUUShgYzWUQsvmDa6rjnSzZ1Kk/nwNdHw+JbFGPrSjyTK+JyiEvURQ8WPmkpmNCVvOxP6w2o33IGkfGgGX3O4eO7B+RXh/kkZzzmlZvIIJ9TISctDzsVQD4R3UqoNLFNSshHKcH+6XomrFRj3576lpb/F94B1rLZ15tM37uPN9RHbfn/WcAYAhrhHy2yAMgCaS9kMqAC4rqorx74dcDyKHZg8dSlav3C5nxhEleStrV5PxauUer2NDsovQebgbymq2sjyqtH/78d7J5orreeWn1C11h3T+9GSkffEVYT4wEhiETebQuzJHi8tsxHD29fQI2jB3Yw5E7qYqkZsBXJiECHClliFGeOurB9kKKdpdj/4QrSnBoB7w82WcO2pu5YM7OgEz/XUuLnRmddO8rVghLewnfm8cCwRctEZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,62 +92,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
-variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
-lower limit of the pages_to_scan parameter, but that is not how the
-scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
-advisor") only uses it to initialize ksm_thread_pages_to_scan when the
-scan-time advisor is enabled.
 
-ksm_thread_pages_to_scan is adjusted by scan_time_advisor() after a full
-scan finishes. ksm_thread_pages_to_scan could be increased or decreased
-depend on the real scan time is longer or shorter than the target scan
-time. The min value of ksm_thread_pages_to_scan is only limited by
-KSM_ADVISOR_MIN_CPU, so ksm_thread_pages_to_scan could be smaller than
-ksm_advisor_min_pages_to_scan.
 
-The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
-[1], but the documentation wasn't updated.
+On 8/20/26 12:56 PM, Barry Song (Xiaomi) wrote:
+> Commit 16b475d2ac3c ("mm/mglru: avoid reclaim type fall back when
+> isolation makes no progress") uses scanned == 0 to determine
+> whether scan_folios() has exhausted a reclaim type. However,
+> this is not always sufficient. It is possible for scanned > 0,
+> while the oldest reclaimable generation is exhausted after the
+> first scan_folios() call.
+> 
+> We detect early_stop in scan_folios(). If we stop early for any reason,
+> it means the current reclaim type is not exhausted yet. If early_stop is
+> never reached, it means we have exhausted the current oldest generation
+> without hitting any scanning limit.
+> 
+> Another issue is that if the lruvec has 4 generations, we might have
+> exhausted the oldest generation while the second oldest generation is
+> still reclaimable. In that case, this type is not exhausted yet.
+> 
+> Add an exhausted output argument to scan_folios() so it can
+> explicitly report whether the reclaimable lists for the current
+> type have been exhausted.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
 
-Update the documentation and comment to match the semantics of
-advisor_min_pages_to_scan.
+LGTM. One nit below.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Link: https://lore.kernel.org/linux-mm/20231028000945.2428830-2-shr@devkernel.io/ [1]
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
----
- Documentation/admin-guide/mm/ksm.rst | 4 ++--
- mm/ksm.c                             | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+>   mm/vmscan.c | 28 ++++++++++++++++++++++------
+>   1 file changed, 22 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index d5cc30b667ad..1f2e574b0061 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4721,7 +4721,8 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+>   
+>   static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   		       struct scan_control *sc, int type, int tier,
+> -		       struct list_head *list, int *isolatedp)
+> +		       struct list_head *list, int *isolatedp,
+> +		       bool *exhausted)
+>   {
+>   	int i;
+>   	int gen;
+> @@ -4732,12 +4733,15 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   	int skipped = 0;
+>   	unsigned long remaining = nr_to_scan;
+>   	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+> +	bool early_stop = false;
+>   
+>   	VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
+>   	VM_WARN_ON_ONCE(!list_empty(list));
+>   
+> -	if (get_nr_gens(lruvec, type) == MIN_NR_GENS)
+> +	if (get_nr_gens(lruvec, type) == MIN_NR_GENS) {
+> +		*exhausted = true;
+>   		return 0;
+> +	}
+>   
+>   	gen = lru_gen_from_seq(lrugen->min_seq[type]);
+>   
+> @@ -4768,8 +4772,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   				skipped_zone += delta;
+>   			}
+>   
+> -			if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH)
+> +			if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH) {
+> +				early_stop = true;
+>   				break;
+> +			}
+>   		}
+>   
+>   		if (skipped_zone) {
+> @@ -4778,8 +4784,10 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   			skipped += skipped_zone;
+>   		}
+>   
+> -		if (!remaining || isolated >= MIN_LRU_BATCH)
+> +		if (!remaining || isolated >= MIN_LRU_BATCH) {
+> +			early_stop = true;
+>   			break;
+> +		}
+>   	}
+>   
+>   	item = PGSCAN_KSWAPD + reclaimer_offset(sc);
+> @@ -4790,6 +4798,13 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   				scanned, skipped, isolated,
+>   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+>   
+> +	/*
+> +	 * If we didn't stop early, all reclaimable folios in the current
+> +	 * generation have been scanned. We are exhausted if this is the last
+> +	 * reclaimable generation.
+> +	 */
+> +	*exhausted = !early_stop &&
+> +		     lrugen->min_seq[type] + MIN_NR_GENS == lrugen->max_seq;
 
-diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
-index c9f533b10f6f..c329ca747b8c 100644
---- a/Documentation/admin-guide/mm/ksm.rst
-+++ b/Documentation/admin-guide/mm/ksm.rst
-@@ -183,8 +183,8 @@ advisor_target_scan_time
-         pages. The default value is 200 seconds.
- 
- advisor_min_pages_to_scan
--        specifies the lower limit of the ``pages_to_scan`` parameter of the
--        scan time advisor. The default is 500.
-+        specifies the initial value of the ``pages_to_scan`` parameter of
-+        the scan time advisor. The default is 500.
- 
- advisor_max_pages_to_scan
-         specifies the upper limit of the ``pages_to_scan`` parameter of the
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 7d5b76478f0b..4a6cf8cf5d60 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -342,7 +342,7 @@ static enum ksm_advisor_type ksm_advisor;
-  * Only called through the sysfs control interface:
-  */
- 
--/* At least scan this many pages per batch. */
-+/* Initial number of pages to scan per batch. */
- static unsigned long ksm_advisor_min_pages_to_scan = 500;
- 
- static void set_advisor_defaults(void)
--- 
-2.43.0
+Nit: using get_nr_gens() looks more readable to me:
 
+*exhausted = !early_stop && get_nr_gens(lruvec, type) == MIN_NR_GENS + 1;
 
