@@ -4,79 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75A8EC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:10:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AA56C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:12:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 697A56B0095; Mon, 24 Aug 2026 06:10:40 -0400 (EDT)
+	id 38D846B0099; Mon, 24 Aug 2026 06:12:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66E766B0096; Mon, 24 Aug 2026 06:10:40 -0400 (EDT)
+	id 33F4F6B009B; Mon, 24 Aug 2026 06:12:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50FE86B0099; Mon, 24 Aug 2026 06:10:40 -0400 (EDT)
+	id 208FC6B009D; Mon, 24 Aug 2026 06:12:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 274C76B0095
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:10:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F0D0A37E1
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:10:38 +0000 (UTC)
-X-FDA: 85135743756.08.05122E9
+	by kanga.kvack.org (Postfix) with ESMTP id E34BF6B0099
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:12:34 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6FE55804A8
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:12:34 +0000 (UTC)
+X-FDA: 85135748628.19.EFADDF0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 62C804000C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:10:36 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZZ2kfgI8;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9CE71A0005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:12:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WozWsLt+;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787566352;
+	b=yycm3nAOc6JGp++55s6CJqUw7okUFkj/VpTqkxWm1iHa4OwpAl8wyIc1RnN7eyvMFpJJ8z
+	CCBoTU5qRtUASyFR3xpqwaDna1tdK6XFCpmhK2qeDvawpsYnWefE7jzELNVCQfcPhHUVhO
+	FgS6K3LQRPsfPIy1at+nyw57CjTVD20=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WozWsLt+;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787566236;
+	s=arc-20220608; t=1787566352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ruAV9WVJZvTMqMCHyyT5jtOkCTLN7kP5QaYxm/Ke2Vg=;
-	b=zt3dAetF2AEVeYfJaRNM+YnNgpGZjy+tYJKp0t/l6r+SIT7IC782pUOk/5RBaK3GMmWxnr
-	hVC7mLaQnAkP8wwKWQ0+MfaGXzIe/7r3FOexROyfpzasOdzxr0WrxndjQE2Fz2wyDDPYdh
-	5XJ7iWNihl2eKFn5gIrCt0M+QjJj43M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787566236;
-	b=kiRFHmsw0edVoXP2eCsVBDXS6Op1hQUHaW+fR8ztTPaUlK2jRWPhSgtJDfJ8hpj65/YnJo
-	oF3TjSEFktdONVQf2+3lZKbz/o1MWLsV1sk/Dd3GNQUINKxv2dEK/9tziSwZOVZoc9mhPE
-	gF6aHwneg7XNKPyXs2CuFB+4iG6SDjQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZZ2kfgI8;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=WhPzGv/jLYWIV5rqDmfbQ8SCSY37BPj6+XKV+nPgTVw=;
+	b=8Eo1R8NND6IQhQV8XkSldMXqObqzI4PdvhxnYqQec/V7UJk3xiqneOh9dAzw9BTL8a05hS
+	3wxTRvGTqgNuye03pAi/l64Nt6YjDzJSAQZjQSAFNnPrvZDmky51URvluBPvcol2jPSyeX
+	DxDpCpO5z5vIZ+v+DnWfJyqQu1tId0c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43AFF4367F;
-	Mon, 24 Aug 2026 10:10:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E00A1F000E9;
-	Mon, 24 Aug 2026 10:10:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C532E42D54;
+	Mon, 24 Aug 2026 10:12:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE80D1F000E9;
+	Mon, 24 Aug 2026 10:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787566235;
-	bh=ruAV9WVJZvTMqMCHyyT5jtOkCTLN7kP5QaYxm/Ke2Vg=;
+	s=k20260515; t=1787566351;
+	bh=WhPzGv/jLYWIV5rqDmfbQ8SCSY37BPj6+XKV+nPgTVw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZZ2kfgI8b4lxA6uxl6PdeXIdNCVRfoXG6EXJ6a9Eige/3ODiLOsAIvQs1OP2f6qJi
-	 x08efzbtgW864ad5xlLDMaa5z9l5LJYwRi4XRGEWtXEmL/0zr1fFG72xJCVYrepPxC
-	 FlVXl0rT61Ily4BgCj7Dg5mTgX549zGEiFhJyV1adcBuLC7MXZuEFTiVY5R/elKBlQ
-	 BE/vuzAA25C/3IYqbV6eL8HtDR1UEWEcNe/zuZCRZ2VEyI8H5Ky/n4oDxuBwv/yCvt
-	 hxZGhX8NvNj4I8Wz9r1Umi3SrMcnYBAKietEDpVeVY0DE/AVI+yzAZpxvlWuDknf7t
-	 4+fCaxcujRUTg==
-Message-ID: <d9a33e74-ad87-4993-84b4-1dc87d0fe875@kernel.org>
-Date: Mon, 24 Aug 2026 12:10:27 +0200
+	b=WozWsLt+jB/GwRyOYpg2/YGtYULCzHHuEJpJhazxcp8ETvCFkDdwRoNSym+MQGejs
+	 sw07//fH8xUWLNlxFkxJBqDzZsOv+VCC2oqyFOow2V8rtcYQJKa2W4zk5uWoXRe2wp
+	 vf4lN/qY4ylXf6s3RQURtB7g2gceM8spgXjsx7diC+PjElapTxuzpe8ejROVGvwVCq
+	 jVuk7WRd/TamkCkgLV08AarxtRCXlQ7pPvAKelcSJWZyn1W5+T3XUBGRlPRxXAj7vc
+	 RWD+iWeIXKXjzq+5rHjyQnKXZCkHlwJvaYoyfO1OE3Fv210uvY1zUsJYQrH1aX/jSN
+	 rKQjxGzwSEZvg==
+Message-ID: <19de764c-467d-4472-8c85-a84de87bb702@kernel.org>
+Date: Mon, 24 Aug 2026 12:12:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] mm/ksm: fix advisor_min_pages_to_scan description
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- xu.xin16@zte.com.cn, chengming.zhou@linux.dev, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
- shr@devkernel.io, linux-mm@kvack.org, linux-doc@vger.kernel.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260824061010.3343959-1-tujinjiang@huawei.com>
- <20260824061010.3343959-3-tujinjiang@huawei.com>
+Subject: Re: [PATCH] mm/mempolicy: Fix sleeping allocation in
+ alloc_pages_bulk_weighted_interleave()
+To: Eric Dumazet <edumazet@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>,
+ syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
+References: <20260821170407.3721004-1-edumazet@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260824061010.3343959-3-tujinjiang@huawei.com>
+In-Reply-To: <20260821170407.3721004-1-edumazet@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: fbncqjtz4wtshg547eqhzd6qpxi1ke7d
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 62C804000C
-X-HE-Tag: 1787566236-379116
-X-HE-Meta: U2FsdGVkX1+QAi63/ZqLPEq0hUVbqtlyvV8TM9zEGaGnQ6jkru55FBc8cSZ7QEG7+VD7ncSWx8mCyLoGWA1ADQq1Ixm2YoUOu5r1V7BsMw3lRday+KvN4qIe10bsI7vY+gNZ6+Rid5FBarb8xvuG3poIAE5wLwP4uJNZij24I79Z0ag4Bg4eIkmd72252s2VSM2vp45nr7Ured8NaHeBKs+aL8CmPQloEEhAf9w/TnpoJZpdNdNQWwfBjSL21Ixe64ZfUA27OSAGQDKM/S1CEqvgDHmISM9pnlqb1sAObphqxeHtR9RlcvqdfHpTnwRUTG46eHkqamqiNdTq0uNyzruH5jMNrkofgM8OkCuBdoZVnEUwuL4VQfMIxPW9COC6XohOgKQKewiNcfxMgmct0NdAVRdv6l+i2vOJnWtlxi9C24B5vGVHgpUGRb6OyvrQm185Rq6kM0DBiAYmW4VuA5DK5QAe77ZJgUa/5M5YEO0Prs3LXxd5qL9Y35AQXEpZvTKWlxLwqwl2z8b4sna9sVtHWwCO/KIroqj8KnHG3++d33hrr/HMed5KTuSBkRP8iv0qo7bmC44L9TORWSXcZXl4Y0Q36ug5VqePpGRYEvAnDSMfOs4X6DMoZLoifmqGlAgc6nym4sekHanWGGM6uTyffDkCxfnsg90RvhkQqSDbN3T6bOL+V6OweMdwtl+cnLY9dDdJvmn7/z6e/Km3CT+1Bmo69ZAdQTGWTunLB+RHJSUtzGD0HKgfjdoBGeHSwE1BkkoAJSnCknMaLqiEjQ7iKScl906vY334ELpQ+3yzPRMjiBoOP7rvQQxWvHygUXIgcebfNeijR2fO+Qf5PeK+FqqzPFaYhu6pCanvcgI9m+5WNh8BOpNQrbmg3dxtL2QlsWltqaN3r8+h1yzix1p4R0y5P0k6jc9zI3KOfxCwYREJqJkwJlXHB5u4EV/4pIbh0j0yIH3GOrTuoIM
- BhwkVFu6
- I41sz8HaSo3UDDodPQ1cihJ5ys7tG1ZjAzR4jt2XOUYMrbS+GMJYUuhiK1Vodtu1DQ+u4Vsm8qTHvLIbjQoMGm82xTBZCEWSJAWmwghFt/XPFvs2Br2nmuHjQzAxQC3EuGEHWu78Wd9ucjfKXjge9hRIaLwnJEmdr6juxrHJyp17VmRsL8i7ikHWL8zmvytnfxPJ8RE/jwu4y07TSy/otiGges/b5jw9uhI8e/oyuF9YbAEF8lh6KEMvNViCZqXAhugLGMfKoS0Ibrrncy7QdXV3CB2zN8OcubSpLL5YavgTHN+pFlJs+GVss+3Krn8U/rt4wJaqNvwlMM7XukUbF6+/dFEtck5Syab29
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9CE71A0005
+X-Stat-Signature: ddhrm6mtqfydbaq3gf6mjh4tnpkjfght
+X-HE-Tag: 1787566352-97700
+X-HE-Meta: U2FsdGVkX19iP2spKLydWg+WQ76LqNJBWruB5GpDlaeIcanfs3fwpZo8dKKkoITGajCYbhwpTPzsCm0+ZJ/E099qP6cGVgfzYN5FqBkfR36mRfe0oI5N7mX5p2SmnO3K74yrgetMSssV//2clH+8MpnwSfjn9gZWAew2z4QVUCbW0Dr6AdTdqzh73b6abkluWRVaNl1cRlYieRytwLcBGfF5N/KqK2TB+EUzMF1EsSgQ61nbNYEXVn/5B+5h3RpYpSN3YWr6UC2O47SHwFICAS22IHfSjOYkZ2gliAbY5PaE6rYKDOOJF0ERSY1mWW1HtJflg/ajiJTRX7Y2qApZn4trzWT/K5I4Q+tmVLRREVEWs+O6ENgBepXNu7SdrHUxUaI8XJK5yVtiu2UefZnQkKC8JHGQaIwokorfwFwKnaSurc/PjwegpBst/vrb6zsNlfoJM1mFUn5hsJ4trBG4oFfnQ6vmdeQsGu2QKKmHDL3cpo6yBUXf6xU8IyDazSVnSfPEsqESRlfplmVc/9Qy0TKmNkigLrcIkTsjI+Ccb/0F2JAv3iGUwNycLKXLGVCxdXITE3d6h5JqegRoiItFra7DE3DOyL6gHorYmjKKg8jUqncVSmw1jgPW3mFoXiNiEicdl4aUqEQidudSnP0I7pX2Mal892Mz3DGwBREFZovVw1PiTJHBkfnZvIwYfjuuz2+Zt1wV0SEcwKUVnU4EpeNuMn3CWWCaWIliyFR09XBOtFIQsONBqFLwUXjeDJ9cBAwwRZm6TAfqXk6oVej5qnVssY9B6ugYw9ui+vxHtgSheciFvKH3SSE3e2jHRYFaYJAhEZUSCfaOeTDECK2Zll7y9T8ZjEZd/3lnvVrfgD7zleyfj0l67J5JNnxgCrzOsjWukV7+4WQ8yz7WEeGb4mVtppPdcHjx3CGn5gh7YGkeyTewSsZGRY1NcJ2gvxRttGOKQXzaGCAHBygh5J2
+ ZTEgmLdn
+ f6apPzx/z58v7M4p0vcEuzAbPW078h/VGAH4Onv8gEgWkYgg8WAqegSvL2KFySAtQ53p6mZ+2TONGStp/WD8LQLkz/SB0osaezj1AxerJYmJECWTlcaIkj8DbYUhcHKBt5GW/fpJv0e2XHKc/2LyAlJaKzjOGxM4HQelwZVf3XQr3rngCouVp3b88FNyGeKW+ULOpjU4zrMuu5yBETmn5nSLfrgFtgR80JgI4nxqikrQ/32ibTGv0vH94CdsbtYXjrPiVeNwSIRrU7nwG9Kq6y64d7yrrwDRsP8Z1/FZHcQiVqNRh4E7BJAcHI96RKv3aXp06DO1zcugFY5+GMOQ9taDycXOBO21yrLgU8Buy368+01UsRREKwTw+LOLCwoxgh3QB5mMAQ6wZjs90OBhkWnD3XgULwTg6g26tqqAo2DvvVQnKJ5GqdcdJa9+quTySJf1SDxMvxjEVJuXhqG7OteDBoMVuw09/CDc9+vWXeu7izbTimMqEj9hdKIUGsXWkNnOb9jEagKLi6I3iBQbAuklzWW6861zxrUIfOPL0sZ6CfeE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,29 +144,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/24/26 08:10, Jinjiang Tu wrote:
-> Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
-> variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
-> lower limit of the pages_to_scan parameter, but that is not how the
-> scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
-> advisor") only uses it to initialize ksm_thread_pages_to_scan when the
-> scan-time advisor is enabled.
+On 8/21/26 19:04, Eric Dumazet wrote:
+> syzbot reported a sleeping function called from invalid context splat
+> in bucket_table_alloc().
 > 
-> ksm_thread_pages_to_scan is adjusted by scan_time_advisor() after a full
-> scan finishes. ksm_thread_pages_to_scan could be increased or decreased
-> depend on the real scan time is longer or shorter than the target scan
-> time. The min value of ksm_thread_pages_to_scan is only limited by
-> KSM_ADVISOR_MIN_CPU, so ksm_thread_pages_to_scan could be smaller than
-> ksm_advisor_min_pages_to_scan.
+> When rhashtable_insert_slow() rehashes the table under rcu_read_lock(),
+> it calls bucket_table_alloc(..., GFP_ATOMIC | __GFP_NOWARN).
+> If the bucket table allocation uses vmalloc, __vmalloc_node_range_noprof()
+> invokes vm_area_alloc_pages() -> alloc_pages_bulk_mempolicy_noprof() with
+> the passed GFP_ATOMIC flags.
 > 
-> The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
-> [1], but the documentation wasn't updated.
+> If the current task has an MPOL_WEIGHTED_INTERLEAVE mempolicy,
+> alloc_pages_bulk_weighted_interleave() is called and currently hardcodes
+> GFP_KERNEL when allocating the temporary weights array, triggering
+> a might_alloc() splat in atomic/RCU contexts.
 > 
-> Update the documentation and comment to match the semantics of
-> advisor_min_pages_to_scan.
+> Pass the gfp flags (masked with GFP_RECLAIM_MASK to strip page-allocator
+> zone modifiers like __GFP_HIGHMEM) received by
+> alloc_pages_bulk_weighted_interleave() to kmalloc() instead of
+> hardcoding GFP_KERNEL. Since the weights buffer is immediately
+> initialized in full, kmalloc() is sufficient.
 > 
-> Link: https://lore.kernel.org/linux-mm/20231028000945.2428830-2-shr@devkernel.io/ [1]
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> Fixes: fa3bea4e1f82 ("mm/mempolicy: introduce MPOL_WEIGHTED_INTERLEAVE for weighted interleaving")
+> Reported-by: syzbot+0dbf6d295b3350944f0b@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/lkml/6a88837e.ae6ddae5.3da009.0040.GAE@google.com/T/#u
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 > ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
