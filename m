@@ -4,136 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49C6FC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:59:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C547C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:03:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 426DC6B0096; Mon, 24 Aug 2026 10:59:58 -0400 (EDT)
+	id 36A116B009D; Mon, 24 Aug 2026 11:03:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D7586B0099; Mon, 24 Aug 2026 10:59:58 -0400 (EDT)
+	id 3412E6B00A0; Mon, 24 Aug 2026 11:03:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2ED446B00A0; Mon, 24 Aug 2026 10:59:58 -0400 (EDT)
+	id 27EB26B00A1; Mon, 24 Aug 2026 11:03:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0137C6B0096
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:59:57 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7ADAAC01A0
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:59:57 +0000 (UTC)
-X-FDA: 85136472834.05.04CA3D3
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7AB471C0008
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:59:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="M GT9z1S";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=R9Wb13ZM;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EF1436B009D
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:03:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E3B98018D
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:03:39 +0000 (UTC)
+X-FDA: 85136482158.25.5DA1AAE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 68170180012
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:03:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KI0vHaFK;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787583595;
+	s=arc-20220608; t=1787583817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yu9P/sTLYPHFQVWmVS7Y7Dli1B95EhFAwCCsGt/ZaaY=;
-	b=RhPW6nELeD90L5Y3gBaTP2y+RpJfMLQgEUdUxDe1wcZ7bRbrzWZwbEZCSL5J1xy8Rk6Sax
-	vlcGQu3Fj9ZwXGXDY2Nb+2uRl1PPP8tFQlZzGIUNmkTATwe8R9APaj8B6N3JxT1UxDJzZe
-	YzuEClcNpy4aWgbaYtm3impulUqF9Xk=
+	bh=1N4Dgg6M9ZUavS0An6jb6rtj/L03r3LLP7KAMFYdsrQ=;
+	b=pph0k/5Ide/YqD2O/Kq02WJ6NFva58hRyeY6ysXm03k8+P5I6bctOJNTs15KPPGtrXnslQ
+	DqtF3DR6Kw4+COq6i6Ed8qnonjshSHsd0ldExTQ8FEMLzCPH+e7KFLdlJEz5N4/XSKj01n
+	yVV751hRIz9fgXeWrZ6wNJ05ehizoaQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="M GT9z1S";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=R9Wb13ZM;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KI0vHaFK;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787583595;
-	b=dgY/ZJPiIbhvPcEiapeGhZeKkAazVFxYON9DhnPJSDWPHyzvl0yDzByvoCEHmosktmyi1C
-	f0pWVwVegVMqz/FeTIpbitF9PzzKyreo3SnUDVPU4xOIdbKdTuxwo4/KcUiZzSGaPEAHtV
-	cAI15QgE+Bbx6hvh2URnj3hTg8ET1CI=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id D48A813802BF;
-	Mon, 24 Aug 2026 10:59:54 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 24 Aug 2026 10:59:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787583594; x=
-	1787590794; bh=Yu9P/sTLYPHFQVWmVS7Y7Dli1B95EhFAwCCsGt/ZaaY=; b=M
-	GT9z1SxWlB/4TFVji7vo9tPCdCuK/gc08BF5AJxPHyA0iw3i4X8SAyhafQtyCres
-	/0FSTuz4YJztAs7t3lMFV63ci5h1vi894Ok+AnqmyNN3CAcqc24mI40sjyMvj8wj
-	PQ59o6+tcmOZpzI4ag/J6OSRh9e4OGYW4NuGygJGuDyiDsj50tij2YzG4ms1o0Uo
-	h12/46SPWxmGD04cGuQ7uS5Oh+E2/2pIpwAxrYaJxMCTnWJU3Vr9eL2rIudgMb/8
-	FY8cIeP0GzLiV9Kcyt38VI2aV3C+fHtu4bJtDGSUy8dx2Z+RVCerpAI8hbF75MJe
-	XLqd0p0IpJNZHpZLNCX+Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787583594; x=1787590794; bh=Yu9P/sTLYPHFQVWmVS7Y7Dli1B95EhFAwCC
-	sGt/ZaaY=; b=R9Wb13ZM4u6qNWWJQuTlLX5XFswHrSROHybTuFX0w516wPdrm9k
-	fk+yFdV4uIDJvhcEbx8ZRhyYKL2nNOs0Fe5uSALsGbTiyTIBeRrEi52Qq+8m9Zzc
-	/PeeTv1+iB5CjFiVewMc1Pe6yUUiool+QzBwQUjjHKuJSnyJiv1f5kmy6wdW47VC
-	zozvkPyShdJSU+2sNEx1C0Swi0zIi/un93n5nYllykJx9o0HPWQ//OnGnNlcA+sW
-	OjoJ/8H0bDgBJZ/oyZhOew8XvKvCTWatFRt/opbObrZpEfYVzaOEbbuw1PRAywnL
-	abDRU4V1vccxp2FGi9JTFxeqP5BkoLYUWWA==
-X-ME-Sender: <xms:aFyMaphnihHBiQZNoi7T389o1QTZbtMl2akARdWzQgCaTdYfeuHClg>
-    <xme:aFyMaucjM0A6qKXe9E1-iGljJbInsvNsCBKamTairpB0ZbNvF6tJZiuaJuW8qPO4R
-    ft-k4xnpN5t_GgO73GjusZD61IFzsd5qfrUaaDMoYDX89e1iVqDw5s>
-X-ME-Received: <xmr:aFyMaqhpXl8qyNdtn0eD-FoUVVr94to_TDzYTJ_Cu9NRaZ-8pwuDRL9ksWI>
-X-ME-Proxy-Cause: dmFkZTFa7qxHA3qw09qMM0lVFcj/nmVHnRJ0m27uYJT6lMLZ7v1xzgdvd5p6U/QBOQTfkA
-    10cJ+0Icwv6tyE9AIciaBSopNETAHkeNH8otyAPTL4UeuxqJpy7nz4i/xGDZlwvRkCXIPm
-    0yTGMiT7QIObxGSYPnJ6lbBAlLaGqN99Pisa653oUGH0S0u5rxDTMVZxGCG32mXAP1dKXk
-    dMrYaODJGgDXYh6sU8EikjdwkjxNj8YCQ9etN4LJa3av2TnlVTnUKWyZi+Ea3e9YQHJ0QY
-    WAWSZFOmBspb4p46AXwaKJRFFRr88VqQ3E4YELG4yvXtevIuuehkYkhSrktLQi4OAr05d2
-    CHqx2eywsgxYn5epfHNDF2ZfCYYYWomwJJpHejDRWVNcVRcHovhq5pTLxwf5TZaa++R2D6
-    qgTgAfWsFG9kCXRuSBMkvSVNMWAxjfBwOCszJR/Ois+Efkj0B48suowg93eYyLUS1CU57L
-    edmv2OcFEKBnswdwkWsxnFum7HJf3g9okI8NBSRWK1c5lDUSXLvwtXo6X9WECibp1L5GeL
-    +qSn8UTsBkFDkqw8C64eNO1JAd8g1V7AZsHs/NsQGkBK2CaK4HWl4iP4OBoaV86LVAxfbI
-    mTLS9lLSGc42Mn+Ab7nqJOLJzm2Rf+KxZJofVpVDwVvdbTmr8jcThpB1ThjQ
-X-ME-Proxy: <xmx:aFyMauQTq7FNe43FkdTdZ1xmY4EuDBBtJivVng_yDA7oqEk3QPMw8w>
-    <xmx:aFyMamK8dXH13ZK0xjswRGu0Oh8JfE1Z-eMXPZCxsmDn22bUoWoaeg>
-    <xmx:aFyMatR8RIV83iQosn6prU5RDRdiQT_1oz7UUhMw8_uD57JEiR6PTA>
-    <xmx:aFyMaruwPSyawHNRKwHvMdXAbu8ET1Zk0BVLqXekf_CWi1J75UJq8A>
-    <xmx:alyMap5dO2oBDGIh4DBhvvknyQVXRI2wad-Y0wwN7EJ63nGbX_5UgCZQ>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Aug 2026 10:59:51 -0400 (EDT)
-Date: Mon, 24 Aug 2026 15:59:50 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	akpm@linux-foundation.org, nico.pache@linux.dev, baolin.wang@linux.alibaba.com, 
-	baohua@kernel.org, dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, 
-	liam@infradead.org, mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, 
-	shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, 
-	ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, jannh@google.com, 
-	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
-	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
- primitives
-Message-ID: <aoxcN7jrfbK_Ac8V@thinkstation>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <aoLAly-oL2OAa4n8@lucifer>
- <aoLkMUtmzRVuv2Hx@thinkstation>
- <aoQ77EcD3M2kjeya@lucifer>
- <0153303d-f9d6-45ea-a276-fbf2e5625ef9@kernel.org>
- <aoXn1B7cPnPq7uxd@thinkstation>
- <aoxRs0mjyQnpO-IT@gremlin>
+	t=1787583817;
+	b=UonFSod9+Y3JO56DD42LoIMHzMPRccgV3ZQ0sdj8svazJyjIau+wQ7g/hpQR244ODEg40E
+	jyPMhA7p6cO8m5Sh0On+5RDjEun0eOSB7DIgTbbWy/AfnoSDujI7/C9AotTISburWI4v6D
+	TeF7Mo6jZAugsXoTH5D/B8cR07MfpLo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8816640446;
+	Mon, 24 Aug 2026 15:03:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33F81F000E9;
+	Mon, 24 Aug 2026 15:03:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787583816;
+	bh=1N4Dgg6M9ZUavS0An6jb6rtj/L03r3LLP7KAMFYdsrQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KI0vHaFKs2iuJuLBxJTIK9hzpbfb70XWVZdAMV9ZNmSB1s5dX3EODo6iK2rwMvff3
+	 o1zo4uNkOUy09uxeY227ljEze1a3rJTOdghr5kYtStFuCASrN68C5wXq15sm38+bAT
+	 Ws7tjHRZmtjHfxUXLJR7Yuwo/17LwBS6i/9QuCr3b4J8f6QnJnCtXixlT8ArO6Iz1s
+	 Om22oh+E7kYUjI76NqdsR4QjPcwMNRS1j/ASCgkr8ipXbaMycJ7ls7Hc1vaozvBhem
+	 V9GLPj4tNytQrv1bFOrJFpWnbWNOhms6MCk2QEG6JzFO7PgXOtlsfOddDdj7QhxkAg
+	 YQKYaFLUEoNJg==
+Date: Mon, 24 Aug 2026 16:03:28 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
+	Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/6] userfaultfd: constify VMA parameter of
+ userfaultfd_*() helpers
+Message-ID: <aoxcY5n99-Pzlw_b@gremlin>
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-2-3086981b33cf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aoxRs0mjyQnpO-IT@gremlin>
-X-Rspamd-Queue-Id: 7AB471C0008
-X-Stat-Signature: 4no4juax1r1nexpyu5drdno4zmyx4wk8
+In-Reply-To: <20260823-uffd-vm-flags-v1-v1-2-3086981b33cf@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 68170180012
+X-Stat-Signature: us1xrbdc7so9bthdstfxo8ya4u9hgq9f
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787583595-474598
-X-HE-Meta: U2FsdGVkX1/LhHNwd9w10H8vxgJngumOSscdoc+TxTUoHbUR4QJvtRx4ikn1sqpV1jAsruZZr/oQUfxsbLJQgZYhxFdPoof5088d31O0qnxdMwDQTfZdd8ERkYN79mfdOSOBt/GUqQ98RYOu9Crkz1vs1zRCV1KpkWfYXrkPNpBOYVN0ZrwqkroOd0m8vVzCuHIGjAnYEU92i8tJAYeYZJTFxVS9Rp9XgCa4JO1bnJhy3ZCYuy93fdg9pkc6SyEj/c/nxqG8QbsBGcByd7tgvMU1uAt9GPbWmJbZKrpgHBoZ20IDWbymybVGXM0s+fQHaW4SzxOFsaQdpSJzrcw++pGRWmL7en+1L1ADVhng8FR7hBRm/dEDTSb+a3QSlUqQO05WMeMHbqpewIZfeszlgRqnDZMndwMW8YKwQ9O32RHYK1mlESaQOOqxKN7IC8G/PVGmqfQIjOXLUyO9ax5xO7xAlcPpe4iCGS5nB6trFDHmumj1YxwqSthds5ifNydM7EhUfS9Tof872+6JKe68mGAsoJdG9QKXJ/WS5M2vKnJkZ6WznP0gVyfqb11GaNF3NdyJJJSRjV4JnCS4+r2Su8GIm48K5bnjn5EwWH0I8ZfVaxUtg7rq9w899H9oNgp4qDb6tkNMrSRSmvEKhqoppzeR8PKQyDCkZKDHjMkugi9y0BN2zcKxm3e8Z/5mymYMdzKd3Caw/e8cil/jJQwUbNK8WIdS5ssyhEDwHbaTPRaKwc7uEGIbjQk9bwox+WhHnE2zdkHySoZFAL5B2CDSxU+wSeiB/+k+1iNR3iZf772yHPQ/5efeS2VxgB//IIDgdBKtFQRNI6IbIfooD6vhQi+l6F/VIFicTUwSovdjepzJaMhl/Rh6VGeoV1koIJ+TDxtjJ3WCtm2pIb5qn7vcO43fjaJsZaAAjlaUlBBEaEcqUM7EcqjuaSCw6kCCrvh1+kvkBSNeaPLI23X28eF
- puH35tVV
- CYXDnPRRLaQzSJ8zBWyWQbP6ZQXvXtkMdRNsGX7E3uskGPCZ5alLGJ05RCRpQWUV/MrohBKiabVcsKa2lZzqDiQ1ed+PIdVyd1KTqSnhopNg1hnPYXRpWpHJqKoXmKU2ArGu9hhW+zMLmTTBqCcd/2a4lsW3INWatmwa57cqE5eO6QRmiJ5CJCXcV5TrIP2gZjaD3aaoZRAaytbuIRilswMeAEH2nLj7zM7psSm7UUVtjg2B8X9+SXpg2SqoAktjEfiMOnO4zLQFOrPRrkSiioEZSFIvhZPWO1seGSkYRac2kIEaHRjxQrwasL5BTdVqnwcFiE3qPIRG5p3YMZLpLys8G5IfexVA8ADBZeghbzpx37feAgx2HTenMtURcZx8xB80cGzINsQPexP0qIDvL16AoqjN34iGjaR96pbZ7woY7wa0jy+pNCx77zvzZlOv+V8/q
+X-HE-Tag: 1787583817-185567
+X-HE-Meta: U2FsdGVkX188gEmegmYPlUtpu+qwfHQGRZf56N01e0Nh0CuiOZTzGUudGrVxfitqIoTyyN1OlOM/Q/4pUcw9qn9r/t7uX9rqs1+U04xoQlPV76ey8z2ceVteclr/x4MrisnFNn66ZHFkrLCW11/UyUgopKzEppGKPqI3Vav4ZhyId14ySQvSGf3AI2cfqXdsNOhPb4QPV8xLCwAKyvwNTr2dvSzq3jwgUJ3g9soKopkmtx0hED+cZwd2oEH+Vw6FS4ZDKYCvlT8W9aDL0iJSzUhHQDu/8D1NGpi+PQ7IxhltLtX+AwaCIZYgeXgMrX7hEjWvumJftGom+dO2zNaFVIHdZxXFkataJCR2BJJy/cqmDCtpQdSM2RMCjDqp3Q0T94vXo9dv96Os/qCrSn3mVlcM0LCAKCBs4VwGk646CaF7/Txzx8MH/pLRCnAvrPmSSzZvOoeDui87i/P1M6YjnTyD+mlWOn3fqiZmn5umzYAvaOY8RYfUweqmwB2c7fmjZwf9STUiS9aKNG4nXfS6EEZBGfv2vFON9aGlpgvpXWFrBSibY3KQWlBxVe9MPEs/blqTNm3Yl1ju7Rz5hqb605HzZoIX3YMu0YlRu6TyDJ40nX53C3vDRvMNdGPEta7XH343T/kuxEVKcjGKw1KGKxHoCpCa/A74nvMyb6mxosxv0pmw4Avbm7q0UqyNYniq1hH72mK1YT8FPyXjU8UTafwa4zLYovthsseFyeZFgFyeDAZgHDb8iqTuXjsrNU/9LHkc8r7DhjJkeBWntEyGQNiykLkvZbnZuCIaW6OY1Fy7mxMMuk4rI078nhjj0og59R+C2Dc/yNpoimmlkil36WuH1Bft+CI/lQsI0r0OL+MhFPYkFX+gg26syXw1nM/60B8cUB+71K4w+DeRTabztbx9+HG5xPfFcjYStGS8mwWUkpDds6lc0+06u+Ci0XN9JsRkRfF2HsuJZs6m8iU
+ MvrVqosG
+ uv3rURZIoWUqfGIO7AK4aLJgLO77uEWouGK3XhcS/NxES9IXM95UqtKV/iGRJzJB2Yshc/X2a8RZRmmLaWoBIMJAXNuDLNlFUu/M3R97FciDBq/XYmaL4T4Ep1YhF9eTx8HH6aRJWxd5XhinKZGZTmnaipSRdIUDWLX77G4IMma1O3n1Rk9921amLMLr39B7kDOb3n7c4eLUDi7EhGfcUrO0UF0Lo3+qDBGbs5HXQKEu4jhX/JT0feaMaeHZlsomAn/exP2GDhnugK8+T+URA1JsLs+bsFARmd9Ez48Jx90uSrboarpxG7muX7IPNUlmwBbkGB2uKd+b47pk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,25 +106,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 03:22:02PM +0100, Lorenzo Stoakes (ARM) wrote:
-> This whole reply seems AI-generated...
+On Sun, Aug 23, 2026 at 03:17:39PM +0300, Mike Rapoport (Microsoft) wrote:
+> userfaultfd_{missing,wp,minor,rwp}() and userfaultfd_protected() only
+> read the VMA.
+>
+> Make their vma parameter const.
+>
+> No functional change.
+>
+> Assisted-by: copilot:claude-opus-5
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-It is not.
+LGTM and compiles GTM so:
 
-I heard David's feedback. Will adjust accordingly.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-> 
-> You replying only to David twice in this sub-thread which isn't exactly giving
-> me warm fuzzy feelings about the working-around-me concerns I raised here.
-> 
-> So simple feedback - send a relatively small, no-functional-change series that
-> improves THP code and lays foundations for future changes. After the merge
-> window.
-> 
-> Can you explicitly ack this please?
+> ---
+>  include/linux/userfaultfd_k.h | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index a4351cffc60c..3396d270b159 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -204,22 +204,22 @@ static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
+>  					VMA_UFFD_MINOR));
+>  }
+>
+> -static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
+>  {
+>  	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
+>  }
+>
+> -static inline bool userfaultfd_wp(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_wp(const struct vm_area_struct *vma)
+>  {
+>  	return vma_test_any_mask(vma, VMA_UFFD_WP);
+>  }
+>
+> -static inline bool userfaultfd_minor(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_minor(const struct vm_area_struct *vma)
+>  {
+>  	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
+>  }
+>
+> -static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
+>  {
+>  	/*
+>  	 * Callers gate PAGE_NONE usage on this; PAGE_NONE is a BUILD_BUG()
+> @@ -230,7 +230,7 @@ static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
+>  	return vma_test_single_mask(vma, VMA_UFFD_RWP);
+>  }
+>
+> -static inline bool userfaultfd_protected(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_protected(const struct vm_area_struct *vma)
+>  {
+>  	return userfaultfd_wp(vma) || userfaultfd_rwp(vma);
+>  }
+> @@ -353,27 +353,27 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+>  	return true;
+>  }
+>
+> -static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
+>  {
+>  	return false;
+>  }
+>
+> -static inline bool userfaultfd_wp(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_wp(const struct vm_area_struct *vma)
+>  {
+>  	return false;
+>  }
+>
+> -static inline bool userfaultfd_minor(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_minor(const struct vm_area_struct *vma)
+>  {
+>  	return false;
+>  }
+>
+> -static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
+>  {
+>  	return false;
+>  }
+>
+> -static inline bool userfaultfd_protected(struct vm_area_struct *vma)
+> +static inline bool userfaultfd_protected(const struct vm_area_struct *vma)
+>  {
+>  	return false;
+>  }
+>
+> --
+> 2.53.0
+>
 
-Ack.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+--
+Cheers, Lorenzo
 
