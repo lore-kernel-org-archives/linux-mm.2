@@ -4,104 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 877ECC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9DF9C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:09:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 910176B00A1; Mon, 24 Aug 2026 11:03:47 -0400 (EDT)
+	id C76216B008C; Mon, 24 Aug 2026 11:09:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E7C76B00A2; Mon, 24 Aug 2026 11:03:47 -0400 (EDT)
+	id C270C6B0092; Mon, 24 Aug 2026 11:09:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AE2E6B00A4; Mon, 24 Aug 2026 11:03:47 -0400 (EDT)
+	id AEECD6B0095; Mon, 24 Aug 2026 11:09:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 57D3E6B00A1
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:03:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC636140173
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:03:46 +0000 (UTC)
-X-FDA: 85136482452.30.3003319
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B08EA20009
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:03:44 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DoXWHiTU;
-	spf=pass (imf31.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787583825;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8181F6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:09:43 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C2841C0223
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:09:43 +0000 (UTC)
+X-FDA: 85136497446.27.147FF0B
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 21C7140007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:09:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NWb1zcl1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787584181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZ3erjJduSWntjWxjPCCJpediljarFwjV+7IHAqxu6o=;
-	b=FKV1dzxUFj4hGH2QwuEHRN3chI1W+aF7k8IJup7PLQMbYw9ST/yB4yr6JimquCUwFajLou
-	aLQVBIeh7X4ixoERtgeZURiUNZhpqRihSQyZFC0Yhxhlfu/LVaSMK0uIMFM9vSH5Dy2cy3
-	aAnBJxLRs2rPCDfH0cwFz2xJjhN61OE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DoXWHiTU;
-	spf=pass (imf31.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787583825;
-	b=4B33/CNp6dX1Dc6jWozMtB2pXeK5vxD4yUZwoxu5oPOMWChaFXNtkIfEaH2GVkQs3oTYsv
-	pnyGWW3lJl4vLfLB3bPm+8je5MMff1sXsl3t+81UDLzHqxxoPWPyIXGmVyWt6+8JHGuUcc
-	gnS/we0QXYAy/rV2a/mUom2QU6KDAPo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787583824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aZ3erjJduSWntjWxjPCCJpediljarFwjV+7IHAqxu6o=;
-	b=DoXWHiTUWI9RArWLzJNxvceZ/qttsOqQxUe9t9S6Ovxo/JoAnhh1Nr7d6K1hVwBWXgRKj+
-	gNrPwb0Uloc00hYqfDmd3pt8R2ftyTJrL3wfoNRnNky2gn9+p+dk3deByCH4qgb9mUQhAu
-	j90RJUHnR8ZIqJL721nSX3MlMcsgDvg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-2cWygwANNtm8DIgIiEXztA-1; Mon,
- 24 Aug 2026 11:03:38 -0400
-X-MC-Unique: 2cWygwANNtm8DIgIiEXztA-1
-X-Mimecast-MFC-AGG-ID: 2cWygwANNtm8DIgIiEXztA_1787583816
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9B3BD1944F01;
-	Mon, 24 Aug 2026 15:03:36 +0000 (UTC)
-Received: from fedora (unknown [10.44.32.9])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 4B0C630002ED;
-	Mon, 24 Aug 2026 15:03:31 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon, 24 Aug 2026 17:03:36 +0200 (CEST)
-Date: Mon, 24 Aug 2026 17:03:30 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Peter Zijlstra <peterz@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Steve French <sfrench@samba.org>, linux-fsdevel@vger.kernel.org,
-	bpf@vger.kernel.org, linux-cifs@vger.kernel.org, linux-mm@kvack.org,
-	stable@vger.kernel.org, Paulo Alcantara <pc@manguebit.org>
-Subject: Re: [PATCH v2 0/5] Stop TIF_NOTIFY_SIGNAL from interrupting work
- that can't be restarted
-Message-ID: <aoxdQmFMK7pjH9qk@redhat.com>
-References: <20260824-work-tif_notify_signal-v2-0-6609e42b3157@kernel.org>
+	bh=xCITwuJY/5I+fZvxebAJG0MATII2H/0d6uwBA3oASW8=;
+	b=IHW3/3TSwd+dAo2SyzHfhAkslatBPs4goRfMGnzEXYUDyG3gK6gQdaTeSPa/br/JgeDlbK
+	hOfUmQce9wxvZw/tKNS1ESmPRJXJxnn+FrN5P27nlyyYT/8dEyT8tBVol8ISHD+WCU7u9M
+	lMNBg9YYPO1QUsd0z0cLm1Oj+jRjwjI=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NWb1zcl1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787584181;
+	b=dQ8RQpiNpG9/vFS86BwP+NZHbp74FNKKanmYZIr3FVES82jtcMAgSpYrEgG08nCEYYrbgy
+	O4S3Vu1jr+Z4HZpu1d6RULYDz7B9RUtlVhq89I9xNtyQYVZC2Za92SbfwmrT3X55qn0XFJ
+	WQRdNrbWlzqOyU1mMxb0z2tKHZ3eHmU=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4980dc26022so24919445e9.1
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:09:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787584179; cv=none;
+        d=google.com; s=arc-20260327;
+        b=brnpruYxXeBG2v0IjgIUgEr5qFw+tT/JrbxgA/MqVlbHEIhzqg+39b4iUQZ7vpgLsz
+         ipXgv0t/jY8Sv2ZONq5C2Hv18XVleBHFhpYPip/cdo1W2HXYnybnHzFODTsmN3hLvDYc
+         hqitRqTrgvUbWFTpuMGTvM4QaMJpZT+MZMASnhx2wWOcxMPmT53VJzsoqdyJRPk7HkrR
+         OEZtraK+I2YMQqeB7Snxg5o5wMkP4OVdpzSHx80o1EGo959tMjWy91q2liVBw7vEANz6
+         S30gyL9UTLNc9lLc/5HuJcdYch7YZmVWS6Jx5YG6Q5C4jbxbxM187ER2jbcLrFbFNH8z
+         3PnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xCITwuJY/5I+fZvxebAJG0MATII2H/0d6uwBA3oASW8=;
+        fh=KYUKJ7BhPwsc7nrmOLIty4AdK/oZNhRHG/WYJK/QswY=;
+        b=WZuzWSmcnHdcHDkZ5WAubIGqx8PrHSnc1THX1e0RRu62nggOC7RCXVmyiMzvxqTOnU
+         srCaWfR8UaorwXm0RUoPI3xRfgk5bYEYUWrQnnFSc1ZJRMaQwrijYXhPTsnC/Tp8vV2D
+         g0iL8TGmCyWxwaVxVkQFipzWFuA3sS2mO0YH8IJ1oDdBZOeP5n2uacOMoe1sqQYH72zs
+         P20982s/CMe8F16123JpOg3weHiR4WVVggUomrcgw07EdoTJlBQyZBK2koL1eCUZ0Vqt
+         irwfOhd4jy8c5N8+e96RqqipBcQcfM+yEUC9y9blasFSAyznZdqLltLlYYmwYc0FC5xq
+         dvQQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787584179; x=1788188979; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xCITwuJY/5I+fZvxebAJG0MATII2H/0d6uwBA3oASW8=;
+        b=NWb1zcl1CdxsUyLQ8RS/wkGbpkvKGWbbiA6ai04ylBwcEMVcN2Q430/48a3dfUoW6r
+         2K5NgoZNLJNdW+5ZcY8CPWFL1MIxeYFobft0NLTsDMqeK8Lm9UlhcQtQzQtctAyL2jK+
+         Sh+890jYvcrmOU3ypxMKyA/CJSW700Wztgms1CuEqiZP+XO0EuXfVcWKCTabwpJMR0c8
+         rZWMv4nUgLUENfVJtuMJVRa58JEteeYT8+OCidgBQm/8pGk53JjBHkUgdIx4ktWP5iZn
+         0SfFhGXLqlWRpkjf4CGDpdWWm4Yip3RB9fkW+NO4x7M97ohLl2yo8mkFUwCq7Atiwpdt
+         UD8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787584179; x=1788188979;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xCITwuJY/5I+fZvxebAJG0MATII2H/0d6uwBA3oASW8=;
+        b=XJ9GgLzdphRKqBTapnLMOXHVIzTyG1rpSrGsgtIt23+V+5Kj9KEBsQ9lSGMDCXTy6l
+         hoi5sAIEBpXpIQic7CdExyT6ZwO42FiwgEyChiOkOSElAmjor1hTRG7lxbD3ye+YISbh
+         u7tyhGIig2/bhmAfKTSHZeuA+4bVyPIqG3SlFdQd08EbUeB/DVVgH8uf6dMqBSpDQx0o
+         /iLMtxmJRYFiFkk/O5T1pdaUaQh/ZuuAXv6f2OyME/kSPkYuqISNL3WSSSOO5O0cnwUH
+         jNJZ+Jsi+SGXv0En+pz8HChyDVnBjzuty+K++UfhvuH39VXqBR6MmiFx0IME0vYJXNHx
+         kalA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqj9hH9m24kN+Wr/vyk+kDUcutZ6tP6+y0bij0XLCT/3U7+gmZBIo0sgA0Sg/hlJcXxETrtzP0aUg==@kvack.org
+X-Gm-Message-State: AFuF++m+ffRKolZEoH2nqhNdY0emMQCIu8RfXL4eY6o6HdxprrZ61atY
+	R+1YKnpeTZAoM1Wsq23jQLq3iE5uPSDwc8kpkeatncl7jRMR1ptLwgKndqII81PgzNjM0Ttzp2y
+	Pm06svQsruL5YQEnFuT23ptLjApbTEzA=
+X-Gm-Gg: AR+sD12FEdZE/B0Wf5L5sYnJtJTepdM//KQ3++ZhoD1splcPKMt2zsyzjY1vr/XDcL4
+	z3Aa2640tyIKzUFizz3NhuO4PjQK++DOGQow3GST+MAi7U0XC/chvEYkOj7MdGAoquF/IvTCUdS
+	usni10Tj6OkuvDDJrMUNAXZIUFdw3Vi7p3hywrKOUxjruITi1ufbVjPTYhVOrA1RdihE5jH9ka3
+	sj1xTrD7941Ao2vF31VGZe9vcDkl8bXAzm8StwZcl6m2Pt42mWi01NgYzfu43Kc1Ww2cTzZIlfb
+	SNvs36O+U1wBYwNjazPzIj+lDG5SSwmN4tJIVk/rcFn0dw==
+X-Received: by 2002:a05:600c:4ece:b0:499:484a:81d0 with SMTP id
+ 5b1f17b1804b1-499c19e973fmr212050255e9.9.1787584178832; Mon, 24 Aug 2026
+ 08:09:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20260824-work-tif_notify_signal-v2-0-6609e42b3157@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: oBSvJMV9T9mSaiyNYWK2x0RLAmr6QLAJteXxATwYmCg_1787583816
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B08EA20009
-X-Stat-Signature: jfc4ydp6c13bsh9akiw8r76zdzyxtmqg
+References: <20260529165640.820-1-ravis.opensrc@gmail.com> <20260818073546.832476-1-kunwu.chan@linux.dev>
+ <CALa+Y16xODsaFZDfh7ZeP3gWbycK92gvP5N8_NFpOvW=R2BWbg@mail.gmail.com>
+ <CAN_Opa_h2W1hRimy2YXPC4EgueCi2UNwnZ5gSYV=cr8M7yfCmA@mail.gmail.com> <CALa+Y15zNhpubyH5GQgu_BHesrwRdH0B8k5cqT3o_U0h5A2e-w@mail.gmail.com>
+In-Reply-To: <CALa+Y15zNhpubyH5GQgu_BHesrwRdH0B8k5cqT3o_U0h5A2e-w@mail.gmail.com>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Mon, 24 Aug 2026 23:09:26 +0800
+X-Gm-Features: AcwNN1Un4mBIKrUBo5pV6pSoeblVjDHYRZMA2eMa4t47pkuOoxnZ-4altPzxyQc
+Message-ID: <CAN_Opa_JorKoVcyhPPLOnFOOGOMCd0r4Lr-eU1e1OraRq-FAMg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/6] mm/damon: hardware-sampled access reports
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>, sj@kernel.org, akinobu.mita@gmail.com, 
+	damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, akpm@linux-foundation.org, corbet@lwn.net, 
+	bijan311@gmail.com, ajayjoshi@micron.com, honggyu.kim@sk.com, 
+	yunjeong.mun@sk.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 21C7140007
+X-Stat-Signature: 6nrg9ggfan6aiab9hgr33ff159r7c7yp
 X-Rspam-User: 
-X-HE-Tag: 1787583824-170408
-X-HE-Meta: U2FsdGVkX180+HuD7JRK0QpxTU9wu5GCr2VBo8OXfPGluDB7kOFhsRzxW5ijfyq5tTW2psMkuGuPgCxt34Jwps1Xt6h2MRY2EQ2QzwDSnrg2uOrCnshftC3ppgQcYjAN1KfZE73oOE4JSjhBfmDLWUmgY5E5Vj5nzmzrxmlqaRWlnGD2aMFCZN82d+F2u+K6A2Cw/vo1V7CzsZRSgNWzlpKbzZcOVMiFq26MZDeCtq9vvc4gjgGnwQZrVq4wJ/zonylLOnoDoGZ+t4GAxPSm/VStlIyxqiaKFVbDjd2uf75oNq7zJUPNXQquX4pJMYdROB+UounKlk6y3IG7bwyl/Wk84tSEduNRfmVWAADcYP1qX6DbErYf51wI/E5hCv7Y8xgDa79W+XUT32FVNl5UjBKWf8ftn4aWdC0r/XgmNFIiSXvoMTZ6d+I9WPFk7c4IJPi9y78oT/3VMMRGhIHVLyJfCgZl8ObJ9b80yY9j6ovCS6iIHA+4Gs8911VopQoFveNKwy9wGwaO0quZ46w0PPn2NcWBZxp1p/43JYsrkyEfH3Qs/K4zo3o0d/uv08iZoynsSirOGomw0fgOGRWOw747SqzvLb4XMNV02Nj74ayCcRG9gmPkbfdfcIToQ5/2qfFrG613Xizhgrb8SzKyVThABiavh1QPu/nmzphQTZ1NhODi26KACmyQNGq92zAXSEL0wTRWDqYbHYrhU/kGNdWCRjP9JGlbfO4z++dqcKHXiTnQFgw8qi5KwBL2cQkfbskdXMQGc7pbvVM8bfvW39IHfdlHiYj4b3WD7rgK5S2I2p0TK++T+B8hDjUrUKvqZuWdhXMC3HRQed8TxWvMVbJ+8tJpUxK1p8b7BzQtgbOBupDnUOdhuLcRfwsWN7eoq/GgH+93VdUGlql+Abw6MkUqYeLCzkJNxrRbpI5TsGllGbvEobGs6AJ83MzlYtvgTKimCN+DM1TtDJ3tpfa
- EbXBDfe1
- 9vIx7oQTQzSS8EEOGHc0O2i/dH8sxujwoklvOI8RCVOpQCBobuKWsbPk4pKLC3oQPUeuxCZkRHcjtBriHmAN5p0OPLG+02sZ77X20NpDNYoc19nbI6O3ases77eskMBVOPLiBoKUju7Mtrpkagov2WDNtpmksiebL7FOzRpbxih3/uwIMkvmdeoRbZtOFb0HvOFz2XConJmJ9l7c+0Tga3+sNoN//FNCDqbPsPX70KeJEatSc8yWPG5qq59DLmH/M1O+yh9/XO4aGFa6JrzyYTo3JjTWU7lLj9m69Xspd7vAqUX0Y/MiEap0lB1M9MPxD/A8PrO+Ti9/p2pNvUh9gs1Un+0g6RNZJaNlsLv3AAGDx6babhBCWXDp4c7T8aqpt6RqtAD9lscZoXcIgjkptlAi5C9vKWe5JzeZdSZrzB/a8bGg=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787584180-827977
+X-HE-Meta: U2FsdGVkX1/w97ZZFZyTEJKjsOdr4yFmPeZvf98n2u/CbvbxZrKOD+JsMHGvH6+I97n9pbqPj3BQLQvUBOPXb0jTrFZWNp+p9WPykSvEj3fcOzQKltPAoV5CrBSQ/ipBhr8dOtLprPR9J0IXNIIK6SIPKBvP/T3vTCAFP9frDd5SPkHoJtuBELWm/4T8tFhR/W8+yzYeANN7eRRbVTr4UDOHw+pC28EfZhJdQbw7iAMGZrZuvQDyz89wUWRHsF1vJNbxP0Kdl8yQ9MB0nuWJYmP2UBgGoG/gl70LrO76OhcsEhU9RJ/MAwWldzMDpLAyWV0XqLNb0mHukN2CAcvCENR2W1IIFkLcYElmy7WRZIv75QXxxCWhzbBXhxvN7lW2SbxPToATTWz+A5iUzsAmaY8fVA5WaakKVaHTpVwQbcceLy9C7zaTRfGypV3mGnR9e2gwS+rz0FkM7tG9LhvQlV8VbNDLBeBewRAWjEQC8x3cCekurch/iqLFv6a/DEEFAI3AWwYEDMFbbTdXHvCSZ9yOciW6glyzvArEQjb0I1AaIDrOoPAkFCdXsyj66HlVU4U0679qtIdLb1Y3rBtgbgMoukgVwpp0FfwfytVObiTtZst84xRbsiGvuNR4YAQw10naKc4ZXlUgzqdBDMpJyGSKK1l25HDFrhwS5sZ75zWBsYN3i30piRkqIZimpqL2c9BPe0l02a+ZtUEsBt14pFfk3uhFpacR2z4Rc73yx2yyBuX+HRN8zwlI3PIto6VXKiH4RVB+2af0w8JdvgPs2aEd1v7Viupch5f7qyTlE1yCisxaB1KLsvsyl9iIvD13io7pEieskAqoXneulpP/9YfCGLk1q3PnvVFGqMotkblT1JX0+t4HNnrUReDGNeB6Hh17IzSuCbWNhmQVaaAx2N9PDjnJdGwFB38crKoQi85YmQAWECcmiSyeoSqeonOQK2NoaH/Hhp5wTQWv7Hj
+ 2gJsIsRf
+ infiRWxglplAdiGUVa16S16tZA9MZ/N3Oa6SjjNAYPBww4bVyVpFaGqIt1ywUoCYB6egw9voVTrhg/64CVKOozDYr7GDmEpPbBE6o1/lBObkGeN7fgqn9zUdHWNCfd7/t4ZJcH17F5CAbh+PjVyzfpIG2FF6P+m5I+aa0NOf7fNgmwX4pEusH5IYItKovNpjz4nnnKAGR2SPfm0FrqWMJ35u2TRxTjga/jaGit95VP0RwIGVarexfrkX796Y2MHHMhcK8QCOVZk6/0RHhAPdIBruF0iy+10+/fZ5IugUDou4+T0u7engvg0RWh9bQn0OfA3KM0bd8E7iuGCad6zuI3gGg0NSpzyMCelieQ24U5EBG0s4LiOBGCwM9PeMR1msvyct7yOpYHn/qLvCZS8ty8rfBzqb+eAmqlMAcuA86PKs7IA+Hk3NYZJ++gDWoFVy8ESOiy9i9howOlBxrPsE/4flKwCJv5gefanpgj+4IwYrO40nQUJmZ57CdibXJJZCnuWxBt/IaC6AAJje7ddDO0ZvL4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,25 +144,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/24, Christian Brauner wrote:
+On Sat, Aug 22, 2026 at 12:32=E2=80=AFAM Ravi Jonnalagadda
+<ravis.opensrc@gmail.com> wrote:
 >
-> Christian Brauner (5):
->       signal: allow taks to temporarily block TIF_NOTIFY_SIGNAL
->       coredump: prevent TIF_NOTIFY_SIGNAL from interrupting coredumps
->       selftests/coredump: test that TIF_NOTIFY_SIGNAL doesn't truncate a coredump
->       smb: prevent TIF_NOTIFY_SIGNAL from interrupting
->       pid_namespace: prevent TIF_NOTIFY_SIGNAL from interrupting the reaper
+> On Fri, Aug 21, 2026 at 2:55=E2=80=AFAM KunWu Chan <kunwu.chan@gmail.com>=
+ wrote:
+> >
+> > Hi Ravi,
+> >
+> > Thanks for the detailed reply.  The fan-in diagnosis makes perfect sens=
+e.
+> >
+> > > Your series is based on the v1 substrate, and the way an event is
+> > > configured is the part that moves most.
+> > >
+> > > [...]
+> >
+> > Glad to hear v2 is on the way.  The probe-based model is actually
+> > something I encountered while building the AUX backend. When multiple
+> > sources can feed the same region (e.g. PTE scanning + SPE/IBS), the
+> > question of how to combine their reports becomes interesting.
+> >
+> > For example, CXL tiering may care about physical-address locality, whil=
+e
+> > per-process monitoring may need virtual-address attribution.  How do yo=
+u
+> > see probe weights being determined =E2=80=94 is that expected to be
+> > scenario-specific, or is there a more general principle behind the
+> > weighting?
+>
+> Hello KunWu,
+>
+> SJ can answer that authoritatively -- the probe and weight interface
+> is his. Here is my understanding which SJ can confirm later:
+>
 
-For 1-2 and 4-5 feel free to add
+Hi Ravi,
 
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Thanks for your detailed reply and for sharing your understanding.
+The probe-weight framing clears up the part I had backwards.
 
--------------------------------------------------------------------------------
-sigprocmask(SIG_BLOCK) in fs/smb/client/transport.c:__smb_send_rqst() looks
-a bit suspicious. Even if we forget about TIF_NOTIFY_SIGNAL, sigprocmask()
-doesn't necessarily clear TIF_SIGPENDING, nor it can protect from (say)
-do_signal_stop()->signal_wake_up() from a sub-thread. But this is offtopic.
+> Weights are relative, and only among probes. A context can hold up to fou=
+r;
+> each report carries its probe index and credits that probe's own hit coun=
+t,
+> so two PMU-based probes in one context are scored in proportion to their
+> weights, and that is where a scenario-specific choice belongs.
+>
 
-Oleg.
+This makes sense. I had initially been thinking about using the weights to
+tune SPE against PTE scanning within the same context. I now understand tha=
+t
+the weights are for combining multiple PMU probes within a context, rather
+than blending PMU reports with the existing PTE-based access checking.
 
+> What does not mix is a weighted probe with the other two sources. Any
+> nonzero weight switches the whole context to probe-weighted scoring, whic=
+h
+> turns page-table access checking off -- so SPE cannot be blended with PTE
+> scanning, it replaces it. Page-fault reports carry no probe index; they
+> credit the region's access rate but have no hit count, so under weighted
+> scoring they are not part of the score either. Both coexist with a probe
+> only at weight zero, where everything feeds the same access rate and is
+> indistinguishable afterwards.
+>
+
+The "replace, not blend" distinction was the key correction for me.
+For PA locality versus VA attribution, using separate contexts therefore
+makes more sense.
+
+> So for your case I would read it as: PA locality and VA attribution are
+> different targets and different address kinds, which points at separate
+> contexts rather than one context with tuned weights.
+>
+> >
+> > > 2. The 67.9% drop rate is fan-in, not sizing
+> > >
+> > > ---
+> > >
+> > > [...]
+> >
+> > I completely missed this.  The observability framework showed the
+> > symptom (67.9% drop) but got the root cause wrong =E2=80=94 it's not a =
+ring
+> > sizing issue, it's a fan-in problem.  With a single kdamond thread
+> > draining the per-CPU sources, the samples effectively get funneled
+> > into a single ring, which explains the numbers.
+> >
+> > The per-CPU drain approach using `system_percpu_wq` and `queue_work_on(=
+)`
+> > looks like the right fix.  Our AUX backend already carries a CPU argume=
+nt
+> > through the ops, so adapting it should be straightforward.  I'll take a
+> > look at your v2 branch and re-test with the per-CPU drain.
+> >
+> > Two questions:
+> > 1. Is `damon/perf-rfc-v2-08-20-26` ready for me to rebase the
+> >    AUX backend and observability framework on top of it?  I'd like to
+> >    validate the per-CPU drain fix with real SPE hardware.
+> >
+>
+> Yes:
+>
+>   https://github.com/ravis-opensrc/linux.git
+>   branch damon/perf-rfc-v2-08-20-26, tip 9c0410564596
+>
+> That is the branch I used to exercise the AUX path. It carries all five o=
+f
+> your AUX kernel-consumer API patches unmodified, and from the SPE series,
+> patch 1/4 plus the generic half of 2/4. 2/4's SPE backend and parser, and
+> 3/4 and 4/4 which test them, are SPE-specific and I used an x86 box
+> with virtual PMU.
+>
+
+Thanks for making the testing branch available. I'll use it as the base
+for the rebase and testing below.
+
+> The branch is force-updated post fixing two trailers please re-fetch
+> if necessary.
+>
+> None of it is meant for my v2 posting.
+> This branch is only the vehicle for testing the AUX report path.
+>
+> The SHAs you will care about:
+>
+>   808519650a7a  the per-CPU report side
+>   e3323a3bdc75  your AUX interface, ported to the probe model
+>   1c347519c626  parse each CPU's AUX buffer on that CPU
+>   9c0410564596  perf/core: balance the AUX buffer reference on kernel
+>                 release
+>
+
+Thanks for this detailed information.
+
+> 1c347519c626 drains with one work item per CPU in the event's cpumask, vi=
+a
+> queue_work_on() on system_percpu_wq -- system_wq would not do, being
+> unbound it silently ignores the CPU targeting.
+>
+
+Understood. This also matches the fan-in issue you pointed out earlier.
+I'll keep the CPU-local drain model when reworking the AUX backend.
+
+> Two things came out of a quick test in a VM:
+>
+> - spe_backend_init() calls perf_event_setup_aux(), but I could not find a=
+ny
+>   path calling perf_event_release_aux() -- spe_backend_cleanup() frees on=
+ly
+>   st->win, and your kerneldoc says the release must happen before
+>   perf_event_release_kernel(). Left alone on my branch.
+>
+
+Thanks for catching this. I'll trace the cleanup path and make sure the
+missing `perf_event_release_aux()` is called at the appropriate point befor=
+e
+`perf_event_release_kernel()`, then re-test the lifetime path.
+
+> - 9c0410564596: the explicit ring_buffer_put() in perf_event_release_aux(=
+)
+>   is one too many, since ring_buffer_attach(event, NULL) just above alrea=
+dy
+>   drops the event's reference.
+>
+
+Thanks for catching this as well. I'll keep `9c0410564596` when
+rebasing the AUX work.
+
+> > 2. For the probe-based configuration, does the `prep_action =3D "perf_e=
+vent"`
+> >    model preserve the same event lifecycle?  Our AUX path needs to crea=
+te
+> >    and bind the event during apply, keep it disabled initially, and ena=
+ble
+> >    it when kdamond starts.
+> >
+>
+> Yes -- created disabled during apply, bound, then enabled. Per CPU, on th=
+e
+> kdamond turn-on path:
+>
+>   perf_event_create_kernel_counter()   attr has .pinned =3D 1, .disabled =
+=3D 1,
+>                                        so the counter is installed but no=
+t
+>                                        yet schedulable
+>   ops->init(event, cpu, perf_event)    your backend attaches the AUX buff=
+er
+>                                        here, via perf_event_setup_aux()
+>   perf_event_enable()                  only now can the PMU be scheduled =
+in
+>
+> So the buffer is always attached before the counter starts. If ops->init(=
+)
+> fails the counter is released without ever being enabled.
+> kernel/watchdog_perf.c uses the same pinned + disabled-then-enable pairin=
+g.
+>
+
+This lifecycle is exactly what the AUX path needs: the AUX buffer is
+attached during `ops->init()` while the event is still disabled, and
+the event is only enabled after successful initialization.
+
+> Sanity-tested both report paths in a VM.
+>
+> Best Regards,
+> Ravi.
+>
+
+I'm looking forward to the formal v2 as well. I'll continue working on
+the perf-side changes so that the new model can be exercised with
+hardware-sampled access reports in practice.
+
+My next steps are:
+
+1. Re-fetch `damon/perf-rfc-v2-08-20-26` and rebase my AUX backend and
+   observability framework onto the probe model, including the SPE-specific
+   backend/parser and tests.
+
+2. Integrate the per-CPU AUX drain from `1c347519c626`, using
+   `queue_work_on()` on `system_percpu_wq`, and validate that the fan-in
+   problem is gone.
+
+3. Fix the AUX lifetime path by making sure `perf_event_release_aux()`
+   is called at the appropriate point before `perf_event_release_kernel()`.
+   I'll also keep `9c0410564596` for the `ring_buffer_put()` fix.
+
+4. Re-test the complete lifecycle and the per-CPU drain on real ARM SPE,
+   including stop/restart, CPU hotplug, and failure paths, and compare the
+   observability counters with the previous 67.9% drop result.
+
+I'll report back with the results.
+
+Thanks,
+KunWu
 
