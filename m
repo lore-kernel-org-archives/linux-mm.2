@@ -4,215 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D98BC5DF9C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 22:39:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A962EC5DF9C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 23:38:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B501E6B008C; Mon, 24 Aug 2026 18:39:35 -0400 (EDT)
+	id AFA906B008C; Mon, 24 Aug 2026 19:38:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B260E6B0092; Mon, 24 Aug 2026 18:39:35 -0400 (EDT)
+	id AAA5D6B0092; Mon, 24 Aug 2026 19:38:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C9F86B0095; Mon, 24 Aug 2026 18:39:35 -0400 (EDT)
+	id 9720D6B0095; Mon, 24 Aug 2026 19:38:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D12A6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 18:39:35 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3EEB14022F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:39:34 +0000 (UTC)
-X-FDA: 85137631068.07.7D45A55
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B634540006
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:39:32 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmx.com header.s=s31663417 header.b=abVHuQ1m;
-	dmarc=pass (policy=quarantine) header.from=gmx.com;
-	spf=pass (imf07.hostedemail.com: domain of quwenruo.btrfs@gmx.com designates 212.227.15.15 as permitted sender) smtp.mailfrom=quwenruo.btrfs@gmx.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 75DEB6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:38:34 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E86AFC02A5
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 23:38:33 +0000 (UTC)
+X-FDA: 85137779706.01.0C6F3F0
+Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D96F5140005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 23:38:31 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm3 header.b=XBhGMGf0;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="I lzNSJW";
+	spf=pass (imf26.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.136 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787614712;
+	b=z9L1ICms9DsJxUY7vemabzTVQXrrsxvVf387cMLchchSbpOhGkdrXkOAcP5ufy31AgzG0e
+	8+qiUjCnHwAd7MWmLCFAtQxeb5rjnKZxTUtB1lmYazf3DvRI1dSh7h2Kd/TMgkn1+rJkLE
+	5+dkn6KNpjKKSyv/rr3ZuOBOI3cG5Uc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm3 header.b=XBhGMGf0;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="I lzNSJW";
+	spf=pass (imf26.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.136 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
+	dmarc=pass (policy=none) header.from=ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787611173;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	s=arc-20220608; t=1787614712;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PvJ+ETJslp1voOjbAvu9PzDEfFryU3UX80G3ol5d0pc=;
-	b=H8VC7sFF03NU/N8SR3A2qYMJ3wsVc2I6NFdlezc2xCI7t2EHPSlkwiRXfzIQ9UdxMYoqF/
-	BPOQIMBO9nav6hHNHTbxzRuvNts8WKOdOIQ0xaRKcnlXZnCWwsSh+Vd981iYlOQg0b7QWy
-	D8M+zD1rw5JikF6QHyOkf0ezFQogMgs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmx.com header.s=s31663417 header.b=abVHuQ1m;
-	dmarc=pass (policy=quarantine) header.from=gmx.com;
-	spf=pass (imf07.hostedemail.com: domain of quwenruo.btrfs@gmx.com designates 212.227.15.15 as permitted sender) smtp.mailfrom=quwenruo.btrfs@gmx.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787611173;
-	b=12CkzrTFAKAL5XH8scIFE4RIO2HTbPvCvY3kP4dTOrYJDeQ7NDhCnig2xzmiO8JcTDFcQX
-	6EnKo/OVnr5vOmqob4Z9tdb+U29RJfTz0FTD4awVSj5hj1EOXeLWRNtyscWJLeOrYphkXm
-	0LZR9FVOphaLzKlx9AcGkwkZjL89zGA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1787611138; x=1788215938; i=quwenruo.btrfs@gmx.com;
-	bh=PvJ+ETJslp1voOjbAvu9PzDEfFryU3UX80G3ol5d0pc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=abVHuQ1mxdYMDfIrBb5UUx8AAaJhX4YcckxHM4lfLzJAoxCeS/fB7XOLJX2J2lY1
-	 8qcAIPMigDed8GB6DUaCgW3/JhwuexYRL1v0qfq9NlgSjbXuB8ZfDoB3scMxre3rp
-	 VggYG2vxAWM+xc5qY5QkkINhu71PeqqZhY33YLYew2fAakGwWr5mxaWQBc+o3W3G2
-	 miYREI8Du4xGkAk9GF4O0oqLjpq3YjSq4aB4/VUR4ypDaRvxHNyYdubxfPKOhaOo0
-	 h9TNi1Jq7QQNmTE9ZGunzdoK/KnaLKQYP3g2QSBIO6B2hR8eiYdtNwtYD3JqlXQzW
-	 RX0lqYFt23lmSZsJMw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1MWAOW-1xRl4C0hic-00MlXO; Tue, 25
- Aug 2026 00:38:58 +0200
-Message-ID: <a1f8902b-72a5-40fd-a36b-89b6ea271cdd@gmx.com>
-Date: Tue, 25 Aug 2026 08:08:48 +0930
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Removing ->dirty_folio
-To: Matthew Wilcox <willy@infradead.org>, Pedro Falcato <pfalcato@suse.de>,
- Christoph Hellwig <hch@lst.de>, Jann Horn <jannh@google.com>,
- David Howells <dhowells@redhat.com>, John Hubbard <jhubbard@nvidia.com>,
- Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>,
- Qu Wenruo <wqu@suse.com>, "Darrick J. Wong" <djwong@kernel.org>,
- linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-xfs@vger.kernel.org
-References: <aoyWln-Gt-yvZQkE@casper.infradead.org>
-Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <aoyWln-Gt-yvZQkE@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	bh=1ks+pZPsMFw/dX/SaAC+B9uhzl7GasUHVZ9HfOG6GYI=;
+	b=ozNQlmh8Ogtc8dtvz2ltEpHbx+6n0/QYSbM6wp8ekJWpfSqZu4x/tahqTAKKqbjF6hBOzW
+	f1V1KRPNYXaV2JylI4ghvxrSa6usy8yCwYcPOlzS30aXqGJ6f2fIU/54Ed8I3msb9NhDv2
+	BVQwZKhfFi5row0indjmJZwIPNaSsnI=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id 2D1D01300083;
+	Mon, 24 Aug 2026 19:38:26 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 24 Aug 2026 19:38:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
+	1787614706; x=1787621906; bh=1ks+pZPsMFw/dX/SaAC+B9uhzl7GasUHVZ9
+	HfOG6GYI=; b=XBhGMGf07QdE2qp575VTBn2lqjfeSn8rsfkfLCsM/Oyww79wzpr
+	ApE3lQnrKoKXPaR0AbukURBDsEpzjpZweEngjZwwjsdH9qRwACpaeJanhQMFIhCr
+	dL3/dlnRNmyY2j2u+W+CipVxCIJb6vhNXP2C4CkNEGyZlipst9/MLs7k5gSRn+SN
+	0quDrwjC2k2VRQGqs+zwgB/delGuW8VyU+zGtcxaHB1sn6ywd60as4c7iW0EPzSE
+	92xvuUYOrQEshiIW/INtUWY7tI7Bwmm7colbKFqt8Q5QGdrch76Fr7Plgw62Rqyr
+	Jv6QgWDRLEDm/DeYpdwqJ+h+XUAg+043sSw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787614706; x=
+	1787621906; bh=1ks+pZPsMFw/dX/SaAC+B9uhzl7GasUHVZ9HfOG6GYI=; b=I
+	lzNSJWico+svMdus2gBAc3HIZDjiFr3cckIgnsASVB4TdasKY3A7/axRo3a8Dlu8
+	UmIPoTkwXXQFiIUQavHV3nTdGVcPGawQ+n+YgCa1oiUwsu1VUziOY7oMW0Lvfa2T
+	wmasGsZCKt9ahl1HWHHWhZYKGUMx+a1Fpq8mWL4iBSbnzjAYIsyb/btw0r2MoUh7
+	zvLeWL3H2dn7Kz2xakvXBkOQaQ4rZWbWkpTFHaOEJ6bUsKCCuNX2HfvNCC/w40AJ
+	kMFcNkAPwwJjPvtCGWrAft+YK2E7UoCvGd1cQjqbOm4YgcGP1sXFBqNBvmEIKRgJ
+	cVTPKjQmGCi0BcJWxcFKQ==
+X-ME-Sender: <xms:6tWMao3MGXfEgZ2hm2rhJ71A-6ZVub-9zpOsoFZN2tiw6iThTBuwzQ>
+    <xme:6tWMaj7LeLQe0L41ggA0tcRjTkl9-GpsxTnxiTGYyYN5yIAzniuLbkD6EQECYCsEK
+    7Mzb2xbWmZiJbLOhwCmDXxyCQmmc8ItDh28Twvl1zl3UUIbdA>
+X-ME-Received: <xmr:6tWMaq0AmSmgSL256G9_XnlUhr7KJ5Y6VaebmpSrnHeHBRVqGKgfoc5ceuuKsFRFQtRz2tJPuSvfafSrKm5R8VcBJIxJ-dg>
+X-ME-Proxy-Cause: dmFkZTFrEmQssS56tdgzvy9yebBt5E0gIk2nhGFkQJdPkBb8h8m7nM4ZqL1LHvw+mehMwh
+    SuskV2FjoEkeI+MG8HTwFAriu5Q6OkP/hQVA5ynEUh3wAYbRSBZIsgskB8Fx4Wcz8GJ310
+    UDJQteufz/bw/Bw4Zubkj9pGGvYWCVB2usE09lF2iKKwZ51xN7XwzuON1GjKoLgtSooAPS
+    Z8k0+xsDpc6+7r0zmKuwWWaa04PYjqkjOaRrvBIcWl6EZWvN462VRhzf4aa4qLvSyuJgiX
+    IxiZbGoL6xvgKgowADVQoe0bCo/iQpSX/L/ODuY4BqB3a5cgRS/Pv/It4YpoMEFrrnb4S4
+    xaHdANv5XmZhj5jUtQUM+tbBd3v3vyobnvGmKS8r6iIefPGgdZ6m7FkjfOkUwwxardZIBF
+    ov3rXrrjWY4LqAMHQGxdQF0tf9e2+LhvSHn4O0tUUhDCb7/X1NX7HV0RpQR4HyUwIb2hST
+    /fLf3kKA3KLnmOzPSg1CrvY3neXXPTpIeB4LH2wU8TpCHMiW/VGkYoQvDHsb1+g6V5qAzm
+    w2khMNxTKBB0iEhJ5JIuexGlH+74WbRFJbR2/Yo2fV83CG5jiE1w5XKkTwMMd3XsHCynVm
+    mj24vQMvXowNJqDWzd2Bq4Pbj4dLEIMXsFcPpSxJimaXGcg56pIfSKtLhp/w
+X-ME-Proxy: <xmx:6tWMaufjzla0ip1qs-FrtSacwDRI3EAzO1bOezUmuRVGRnFnBS7RMA>
+    <xmx:6tWMaoU519ST5ee1SE38PMgk1GORN1rpC2xttFjtO_OI0yK7o9XM1A>
+    <xmx:6tWMaglJLrawf2a_NkBTlQ5UlrLCBmgEBzrfq0Yg3tigyBrWdxQ-eg>
+    <xmx:6tWMapZO_qV_XfrR3y1XelcvL6bR7AlBBrT5_bVrVIjnPfrWBW0m0A>
+    <xmx:8tWManlmlHzgk4wctTycNwj4xlJ5R-159qG6IeaQBCmxaIJGdyiqoABK>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Aug 2026 19:37:38 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:98C4vPmZvt5sbhRsX7O3yJ74jYXElvD5aAttI/y6QbkZCf8d9hM
- C8h49tDEGArVYelgo9hP1jOHke2tnxb5HQ6gDyLCj8rEz/2Q4g+VrPtpXYRLqSjOoz3pIHn
- 0FuD1+8wN5oYdbjY6lkPE9CojmdMNl8TfgNp41RNvviZPyYRu4vkg3gCyDnRnaGiJ40dXB9
- UNus50OuGQiobjb6lmVGg==
-UI-OutboundReport: notjunk:1;M01:P0:kqnkzUlOG/s=;GyORpdyZHOoTVknEEpzTDqEqxKr
- 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
- iLSHTuUwCaf8YQ/Vg==
+MIME-Version: 1.0
+From: NeilBrown <neilb@ownmail.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Byungchul Park" <byungchul@sk.com>, linux-kernel@vger.kernel.org,
+ max.byungchul.park@gmail.com, kernel_team@skhynix.com,
+ torvalds@linux-foundation.org, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+ ngupta@vflare.org, linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ hch@infradead.org, djwong@kernel.org, dri-devel@lists.freedesktop.org,
+ rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+ hamohammed.sa@gmail.com, harry.yoo@oracle.com, chris.p.wilson@intel.com,
+ gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+ petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+ paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+ joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+ mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+ qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+ vschneid@redhat.com, chuck.lever@oracle.com, okorniev@redhat.com,
+ Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org, anna@kernel.org,
+ kees@kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+ broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+ shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+ yuzhao@google.com, baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+In-reply-to: <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
+References: <20260706061928.66713-1-byungchul@sk.com>
+  <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+  <20260821042143.GA40890@system.software.com>
+  <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
+  <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
+  <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
+Date: Tue, 25 Aug 2026 09:37:34 +1000
+Message-id: <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Rspamd-Queue-Id: D96F5140005
 X-Rspam-User: 
-X-Stat-Signature: juxeqa5zayqps5scqq1ofbfwy1g3imj9
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B634540006
-X-HE-Tag: 1787611172-133461
-X-HE-Meta: U2FsdGVkX1+I0+iY5wsYm5omCPXOd0Ssu4pLgi5x39cgTRzN5kZ2iGzwAl1JETqnWt3e6NvHi+gTVtHIA+h+HexwZs36lGCY7zOY6uJq5dAWbI9Q+XrvKMLP7XJP2f8YTLArin+qPbKkF3n1ZtsO6dzMcW99GqgqDbSiIz5BL9gcE4313YRQjmAj4YfENn+uGjDflEoIU0Qn+gdLrrp22ro7AMgwYTPMp/7xRplUnE7FKum/Ly+efMiqlNe4w/Jpo/pDgvQ1RS+/6X1I/MO2xjqmpvWwU4eK3+MnEPvhEeAkpRa0JNqXE7uwCGZ0Y/lULLE6KGEOR5WQe6OBxhEI4BKCrs3Kin1JpiM9Fx0Aa5iRrYoe58FdjQ8hRwncvjqUl2H4U/TowMwkZawWAbjTT+1VpjCddURWlkVTdQpgkuylZGlQsi0KQNh0ph/qdw2cElb1w/RNN/0f6JxzAQHGCozfze7M+0idk0YF/vxsWlkCKpYkrlB+lJak50oylJZuXPayyPl6qW+7c773tzAbX0jexb8qbBGmwOCSJYASL8Bh9+aiWUPoc1lefyThATs3g6QnE2ss8XT2Etayqb5E2QbJXgrmF+Gk4R1eg1DNthEj2EXiQ2nMQcSQs5dPqCY/fS7RZogdokidWfsmlOP3h6siCTIlIW2BghTPK6mVXVGsXatsQawpbCZUT+nVROEjg28LyU7qf1AEwOBjeen4yREV5mPMfcPUfN0Y7BIi0+dIs6jFCFYYBUbExwW/HAImdNl4YWFoxmTnLMB226lFqnSD8F3YstLEJ7qOIZEufktT2W5evkvisbrhee820C58e1VXXNVgE2oKTrpdQgm9IG+/cm6pdExzq8zqQJsjbWv2c/PG3M9Ahpk5xjYBBKRKxEUP0oDtagyoXlwH+ciuZsLdr0B2rMomRdiegSoxif2BdWHKWKQTJzV4Z9XzgZpL8dHht3GYYIbIUY5UGqO
- HHFqp7FU
- Sod4q7dwcxuKAK8WnFH5I0VsxzGHd5KiLtEycmS0EXXpE2LHZXMHSILYS3wDa6SkijAolKwBj0cZvWUAPhKzHaYXKyELtB8JMuSvkmsKwwxFNKb7hn0xqoxlADP8g43FIELbCldg2bPn9+ATlhvV927li5bcQqNdI9PeapchcZOjSGoMl9ktR2km8rrhZIWg9XJtQ3XI/AZiLcEOUv6Dp68WGQJYsE8CEMixVq8v7eymuA41hhbnJsxy2aLQDqUjR1DhLKaYXFEl/+gvcUjUBe8CiY9FbHRVG4gQc+JG3iMmOgpEPRxfi00TUk5RH4BQn7EcuPoxL3VM4xF/IcoeBFLSQX8BxmGB6RKHtFdssa6n1b55KEpY6ckT0/8ZQuEISZe0HZlo3jfmi/8g=
+X-Stat-Signature: su3rkpgpohwrw4tamzcuqjun8ehszbmh
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787614711-127572
+X-HE-Meta: U2FsdGVkX1+jLP35iDGzUOCk1ZRUfp13BXImt0T7yFh2MVmEC1LH5XOXkzRnxcpdjqB7nmiHj2gBL6ZT0OvT206iyPNmxevW+BKajZwqCH+xJgHlAonuXy83lYiRi9Rptxsm3Pc4CD0aSfQv9yZET5eL5JkZlJ65ejwyxt8UFly8GXnQgKtdj5H8RNp9CYkY9TM8Vd4vueFejMwJ5Br/8mbloIxkzaYDthryu6UzzTB+bYn15jPwaeRIgScvfuUKoq7M5tmPKPskM9A92RmgxMXHAErfoosTqnDb6kUg//9b1vHg3i9D8cmm7fHr8/S1JZm39iZ0LSLXL27wOYg48Oz3xlom347pB29596GzZeI65KAqLphpMdkouhdCPCGJ2PyUG9R6/qIHl0OTZUDQ+PlLy3ezsR0SnmU3kk/OTnCNtwky33MdRGRaz5l5oI0DyiwrkuX6L7EdRlJICl8fo1DsF3nrZf8fq9sqNMzkFUnvyJFMTe6NAEv2Q45tE5LLMstYnN6PXf0wh/XlhIFZiFKVKS/RxWZRw+uIaCQL3yTroSFt9vb8eA9qwAgU2fcZtg90fX/lgxLIM4Bt2ADLhDr7lH9rMp0FySSnBy2dd2xP7bS9us1v2nuwkRMmFbSYz4Rq+XjWvymSxT6AemkVUJfsuc6tJdaxuemO9b/MmopqRbI5uZoWgtWAnpVlte4yVpaO4j4k50F8pOWQvBrdFLTNrLhCAIr6yqB67HEYCiREVfu67MpOUK1zsVLA0G6l1ulsv6SXXgIIVzSvRstzb3sGlxdUnhJ2YYb8aXy0JVzchSYyO4Vb7lV0wi82Tn6Hr0M29Qg2zwL24EZtD2expQzxcQV4Ah8zWAlAHcs2Y7j13tvkQnOhqOreQXnCVQ0VMMGJpM1GD07VClFkcv1tNt85fJvHMEwn2DNg3D2+b4RClN0DP7sXbx3iYHBa4awtRQbvFHnND+nnyN7bI02
+ az+mykK3
+ 1UvC9JKyOf30zMGIwaPIAw5euNdveP/FfjdnEtZobH3pOII13J7dQ06uCDCsEQQL5mx7BYt/sqxkjTaGN3yukA3rg56wJoyZwDae1N27z7mk72cC7ee+/q47cyevqvTUEv0jJb1l08l3sc8vTCvzSTvR/TtPYFjp41E1ilqGrgS7zM4sGjgabsPeQNo1YmQxobJZusMwSKPmaSFYn/lZT66okL7L+tUQKB3sgqYbKeWNy9HhVRIWXIMNadA0Iyc1pEMwIKAVMue0QEJ/NJYb0qPArYCTcCxu34gTdzzRW+7vKcxF2WHIMRE0xKhdGLhnHEXr93hQms6DRk1YG9DX0HudEipljbnAdsu5edQHco5ExOE8l3s0cdSPVjKoHe6c3WIxws/E78X3pdzBd3WA7cdFRlt+kpl1lsYbt3UfdAojyVF4uvjuKKSb9RLvWhH/Pxk1QcwaTDiJymQ3vZSYbkNjQSemepKWt04vsISXQc7ELFhStmGCAKRD3y5U/a3urIJNfrDdta/ZH9jhAVM58QPlH7VzqV4+Cjg5bAKS34x+hZaxjvpn81mtLf/xRZFJ6WS897iQ0dzjIUw9ZD8U9tHnWYYZSYvBBEjMXzNTEnUfygQ6F2i1h7A0Zq9yhC180bVIbURL1Wzl8cTCWgSy1jTjb3Vnh2dPvnAI+ID0JI75XzHJP6YR6cGnAxCpttuRG3f9/Jf0GvGA3QTdxb2hBwuVQIUVYIBNHyX7jLP5iShp78CM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -220,67 +191,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-=E5=9C=A8 2026/8/25 04:38, Matthew Wilcox =E5=86=99=E9=81=93:
-> I think it's time to remove folio_mark_dirty(), ->dirty_folio() and so o=
-n.
+On Tue, 25 Aug 2026, David Hildenbrand (Arm) wrote:
+> Hi!
 >=20
-> This is not how filesystems want to be informed of folio dirtying.
-> It was fine for ext2, but anything that's journalled or COW has work
-> to do before the folio is made dirty, and it's hard to do that work
-> under the page table spinlock (not all callers hold that lock, but the
-> filesystem has to be able to handle the cases where it is.
+> >>>
+> >>> That's a good news for lockdep.  (And even for DEPT :)
+> >>
+> >> He :) Where do you currently store the additional per-page information?
+> >=20
+> > lockdep doesn't need to store per-page information.  Possibly DEPT
+> > doesn't either.
 >=20
-> Filesystems want the page_mkwrite() entry point to be how they find out
-> about a folio being dirtied -- and that works great!  Except that we
-> can writeback the folio for a number of reasons.  If it's been dirtied
-> due to a shared writable mmap, that's fine; we map the folio read-only
-> and any subsequent writes will re-enter the page_mkwrite path.
+> That would be even better.
 
-That's exactly my previous expectation, really hope this can become true.
+A little bit more on this:
+ lockdep *does* store per-lock information - a "struct lockdep_map".
+ I don't fully understand how it is used, but it seems to be mostly
+ for convenience and performance.
+ When you lock something, lockdep need to know what class the lock
+ belongs to.  The lockdep_map maps from the lock to the class so the
+ caller doesn't have to explicitly identify the class every time.
+ The lockdep_map also contains a "name" and some wait_types which I
+ *think* are only used for more descriptive error messages.
+ There is also a "class_cache" which makes it easier (faster) for lockdep to
+ find the target class for different subclasses.
+
+ rhashtables "bucket_table" is an existence proof there there doesn't
+ need to be a lockdep_map for each lock.  Every bucket has its own
+ bit-spin-lock, but there is only one lockdep_map that they all shared.
+
+ You could conceivably put a lockdep_map in each "struct address_space"
+ for folio locks (assuming all lockable folios still belong to some
+ address_space).
 
 >=20
-> The problem is GUP.  We have no way to force the GUP caller to go
-> through page_mkwrite again.  So instead we make the GUP caller call
-> folio_mark_dirty_lock() which many just don't, and generally we get away
-> with it.  But it's a bug, and a bad interface.
+> [...]
 >=20
-> There's also the problem that GUP users bypass the folio_wait_stable()
-> mechanism.  If a page is written to while somebody is creating a
-> checksum over that page, the checksum will be corrupted.  If we want
-> to fix this, we have to bounce-buffer the page.  There's no way to
-> prevent or delay a GUP user from writing to the page.  Enjoy your RAID.
+> >=20
+> > maybe you put the folio which is locked on a queue or an lru or
+> > whatever.
 >=20
-> My proposal is this:
+> For readahead, I think that queues / lru are not involved. We submit the I/=
+O,
+> and once the I/O is done, we unlock the folio from interrupt context.
+
+"submit the I/O" means "attach the page to a "struct bio" (or similar)
+and attach the struct bio to a transmit queue for the device (or
+similar).  So there really is a queue.
+
 >=20
->   - Fileystems take note of folio_maybe_dma_pinned() during writeback.
->     If it's true, do the writeback, but retain/recreate whatever data
->     structures you need in order to write the folio again; behave as if
->     ->page_mkdirty() had been called again for each page in the folio is
->     marked as dirty.
-
-This may make COW more complex.
-
-For folio_maybe_dma_pinned() case, we will need to do extra space=20
-reservation similar to page_mkdirty() again, so that the folio can be=20
-written back again.
-
-I'm not sure if we will have a good timing for re-reserving space inside=
-=20
-btrfs.
-
-Would it be possible for MM/VFS layer to trigger page_mkdirty() instead?
-
->   - The MM behaves similarly; we do not clear the writeback flag for
->     folio_maybe_dma_pinned().
+> end_buffer_async_read() / iomap_finish_folio_read() end up calling
+> folio_end_read(), where we do the magic
 >=20
-> This will have the effect of writing pinned folios back every time the
-> inode is scheduled for writeback.  But since we have no idea whether
-> the folio is actually dirty (because the GUP user won't tell us),
-> this is the correct behaviour.
+> 	folio_wake_bit(folio, PG_locked);
+
+Exactly where the lock ownership should be reclaimed is not immediately
+clear to me.  bio_endio() might be early enough but there are probably
+better points.
+
+A small difficulty here is that a bio has multiple folios and they are
+all locked.  I cannot see that lockdep has a concept of holding an
+arbitrarily large set of related locks.
+We could just tell lockdep=20
+  "I have some folios locked"=20
+or maybe enhance lockdep to allow
+  "I have N folios locked"
+or even
+  "I have N folios in address-space A with the highest offset being O".
+
+This would allow lockdep to check the validity of locking another folio
+- only allowed if the address space is the same and the offset is larger
+than the previous largest.
+
 >=20
-> I'm probably missing some stuff here.  Let me know.
+> It's interesting, that for writeback we never unlock the folio on the I/O p=
+ath,
+> but instead have the dedicated page flag to tell us when writeback is compl=
+ete.
+
+PG_locked and PG_writeback are two different lock-bits with two
+different meanings.
+When a folio is PG_locked the content is invalid and shouldn't be accessed.
+When a folio is in PG_writeback its data is not safe even though
+PG_dirty has been cleared (if I remember correctly).
+
+So these are two separate, though related, lock bits that would both
+need to be tracked.  lockdep would detect how they are related.
+
+>=20
+> >=20
+> > There is no way to say "that queue owns this lock".  Maybe that could
+> > usefully be added - assuming coherent semantics can be designed.
+> >=20
+> > Somewhere else some other task takes responsibility for that folio and
+> > the lock.  maybe it dequeues a page, or maybe an lru callback gives the
+> > locked page to some code.
+> > That code then calls
+> >    lock_map_acquire_try(&the_lock_map)
+>=20
+> I'd assume that's what the unlock path would do from interrupt context.
+
+exactly.
+
+>=20
+> >=20
+> > This says "this task is now holding this lock" (or more accurately "now
+> > holding a lock of this class").
+> > Note the "_try" - that says that the task didn't have to wait for the
+> > lock, it just got it for free, which in fact it did.
+> >=20
+> > Now if that task takes some other lock, lockdep will see a dependency
+> > between the page lock and the new lock, and will accept or reject it as
+> > you would expect.
+>=20
+> I guess on the interrupt path, we primarily unlock the folio lock only. But=
+ we
+> might take some other spinlocks temporarily indeed, like
+> iomap_finish_folio_read() does.
+
+Yes.  It is hard to see there being locking problems in interrupt
+handlers as the folio locks are sleeping locks and an interrupt handler
+can only take atomic locks, so getting the ordering wrong is likely
+impossible.
+
+You would be more likely to see problems in a workqueue which takes the
+completely IO and does something with it, maybe verify a checksum or
+whatever (it is a long time since I've worked in the block layer).
+
+>=20
+>=20
+> >  But I'd like to see a coherent
+> > explanation of how the functionality offered by DEPT is clearly better.
+>=20
+> Yes, that's also what I am missing.
+>=20
+> Stating that lockdep is stable and should not be destabilized is not really=
+ a
+> good argument.
+
+No it is not.  We change "stable" things all the time.  Replacing one
+big thing with another big thing is almost always rejected.
+Incremental development is the preferred approach.
+So developing something like DEPT to explore and learn and demonstrate
+a cool idea is great.  Making it completely separate can give a
+developer freedom to innovate.
+But the path from there to upstream acceptance is to take the lessons
+learned and to apply them one by one to the existing tools.
+Yes, that takes longer.  Yes it can be frustrating.  Yes you need to
+be able to work with people - not just code - to bring the community
+along with you.
+But the result is generally much better.
+
+Thanks,
+NeilBrown
+
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
 >=20
 
 
