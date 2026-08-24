@@ -4,138 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 675A8C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7347AC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:52:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 610B36B0092; Mon, 24 Aug 2026 10:51:23 -0400 (EDT)
+	id 6894F6B009D; Mon, 24 Aug 2026 10:52:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C1FC6B0099; Mon, 24 Aug 2026 10:51:23 -0400 (EDT)
+	id 639E26B009F; Mon, 24 Aug 2026 10:52:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B2136B009D; Mon, 24 Aug 2026 10:51:23 -0400 (EDT)
+	id 504886B00A1; Mon, 24 Aug 2026 10:52:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 23FCF6B0092
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:51:23 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B1F0EA0146
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:51:22 +0000 (UTC)
-X-FDA: 85136451204.15.E125344
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EFDF140010
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:51:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pXbp6+Ap;
-	spf=pass (imf27.hostedemail.com: domain of hughd@google.com designates 74.125.224.46 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C88F6B009D
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:52:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D5E614018F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:46:27 +0000 (UTC)
+X-FDA: 85136438814.30.DCAEE69
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 26249A0013
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:46:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b41+8o8I;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787583081;
+	s=arc-20220608; t=1787582786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oBC/SAP50I4KxaPevcH0bVL/Jm4cuaV8N0/RCICjbNo=;
-	b=xDqnou4qEahuLFJqAUBFCH/x/DjhJQnIuO4ENUy31N0nsT+KBAMgjGXbvvYa9Hojld2Psd
-	oMH7CroBmHjgoo9J8MRp2aL2etv4lJPW2L37zZCRopjS3WacdAclDoyivrpHguwXK/Wh1X
-	XqcTEKTSF3YJzxqrPApQvib9rj13I0M=
+	bh=uOdefC3ft+rIrM+lRzrzTelVuZoqvjKq0Pla1Vm3VSg=;
+	b=FrQysYT0bc8TKaQrdUr3e3yfaJi+ObKVYMOY4gsk5Z6/dYVp5FTAAVvQ+EEq5MHj/nRpe4
+	GwREJY+S8mlvg0q1iRTUsik4qB3QBPDOtgVx8Q3Sa/iATXjtHugr+T4vpR7jssRwNgDFmY
+	v191P5Ui+yaURry1dSdS3T5Y8XCj9as=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pXbp6+Ap;
-	spf=pass (imf27.hostedemail.com: domain of hughd@google.com designates 74.125.224.46 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b41+8o8I;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787583081;
-	b=fu1OFhhnAleDonPUyiDBOmYsCBhhGW3dezdw7BQZkXiPw0WcysMGToWlHmZ/XuN8eiQHc+
-	1plGMLzEhJdgJdWR0QaIEDcrtZoNp6kU15xIeWdC/KXtxO8knxPS8jLTPrpEsTUxdf4Oip
-	J7nunwPKXu2IxuD46tZ5KSLMCfflCIQ=
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-66c67a73eb7so6826421d50.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:51:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787583080; x=1788187880; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oBC/SAP50I4KxaPevcH0bVL/Jm4cuaV8N0/RCICjbNo=;
-        b=pXbp6+Ap87+RF0LUsWY1ywsPQy5HEjl9DdTsY/0VNO4jYhnNWYukHS74H8iTBmGI8T
-         933SnFKjfQNC52dSnkzskO+cqqccR6pICkEfZDy9JuJlLkUaMG+JYSbh0s7xkweoe8S9
-         L2cZreNcWVYQhKfk0IBoe8HiKwrl0c/gViejeqnTbLrPd/Wr+XKlVUY+PElbKOlKvlL5
-         vlCetfegF0dP2eUm/uJp81QIx2QlLSlz3BLJwHy4j3aTYOLpX3Ky3pCmB9FHZq06fNGu
-         8KDJvzTIQOYVSKZLqNm73MkvT3T01SXnq7vcwvW/9EkAw0VeOn3SczLUsOOIF6jGjiCR
-         lpCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787583080; x=1788187880;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oBC/SAP50I4KxaPevcH0bVL/Jm4cuaV8N0/RCICjbNo=;
-        b=ljwU33PhemoQGmVI4VOxHpD+kgx0wzkoLlazuD2HzRsycqFjzYhrOVDsKA1gnhcakO
-         NCi1/Yh//FMj5UTfZdC2NEZEt2+wxExd3ed0sA6DGBu6GP7NUe3k1KK1fYb2KFh7f0n6
-         sHYF6/LYrlmL9DlIt6401EjnsqCJz3/I4QChm+iel5bTa+X41V6qlmG8uy0OK4pwrgVZ
-         gD3PUTDtM1GJI1tqO4ETGewN2SBfXBP0OFZXCmmoEHqpBPf7hBsl06Hsxdu4y5NP34ar
-         9rI0asV4ZBDDU9E1h/9xgYp1Cl3KVSbcthUwty+Kcue2sNf5trVOh6hk404B/excxOfr
-         U6Vw==
-X-Forwarded-Encrypted: i=1; AHgh+RrfPZ2l4aT+AAwFSQ3CwdPbEzs2sXgQGu5P9vlM/CVJ1sRKiCIA4fTTpmCwZ+6++zQcrGhM3WDltg==@kvack.org
-X-Gm-Message-State: AFuF++kK0of9ZpZsqaBW/+LnFgE0x60W5Kl4kL7xUJ0hP1Q9NxbGb+0S
-	Lrw+snLnVWNpIzXpHs0yo6wIZ43rlcyuy2OtgpSfZAVquVjnwg1XQIWEwNP/2uWf3A==
-X-Gm-Gg: AR+sD1397Fi3o5z3pqdHtfccM5t+G2yglshywCRwDl0wDxUQs/QOfAOUqMtjbuHETQT
-	WVk6DvABXC60ALCFUVAGaabEtLcbmuczLJDcRe0m0LWG1OsrKJqoZaELjShNPSMUbwRbWWZUcq3
-	Cf62Y8RMGEGuHvpmdTbiblGtRzmvRNLOrI5G26cs5ZIVmwwikJOWl8I8vwJHtUZezmJlXOg9JmM
-	SE+nPdjRdZgfXaisZkUeOpBvQg21F8EICXUNyyGnowLC/fG7vANaVHQ75znQJCtFZ5HgpFUQeaH
-	rHgNQIZYC9Ly9/zJqmU7rNmTimVN6NF2Eg8Nr/ZyO/ybT6lxDkPnaz2kCA7hFDWWk3r7OCTB7Pl
-	wis28mvyC61wG8+Nnv6XM6cI2mQwseE2N4IOJBH9m95GGE2MTd/FrPpxamhl4uSyqAYExUez/l8
-	Yyei0iuoM55SKMIk7eU/s4qtk95hf7YXgPl2+lT9VGA4QK5V8IgOvGcl/pwP+UwSjritxng87v0
-	ZF+M3yKoLtTPtXuRtth1r08cmpn3l8FZ2ApMM6mwO3aytwTdxjQKn804yA=
-X-Received: by 2002:a05:690e:4843:b0:66c:e378:bd2 with SMTP id 956f58d0204a3-66ce3780eecmr7793232d50.22.1787583079315;
-        Mon, 24 Aug 2026 07:51:19 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84cac01868dsm34817937b3.42.2026.08.24.07.51.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 07:51:18 -0700 (PDT)
-Date: Mon, 24 Aug 2026 07:51:12 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-    Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH 25/25] mm/fbatch: move lru_add_drain_all() declaration to
- mm/internal.h
-In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
-Message-ID: <552d4644-995b-e605-175d-3268b67adb66@google.com>
-References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+	t=1787582786;
+	b=8ggEDEdlmvZ9cCtt8sg1TbSv9x1qAyA5pxG0SKueFCI3Y28wc2/fosSyMtdXyqeKQhSg3A
+	aRUVy1N8V7WGIHT1CuYq8YDkgOYPDmrdCsDJeUdcUy/5FK3no/yMu1Sj/cnAzFC8NQZoLi
+	CsLiTPK3dGx7OhRDO/cDZZ/u2cxfl1g=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 95ECB6011F;
+	Mon, 24 Aug 2026 14:46:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06261F00A3A;
+	Mon, 24 Aug 2026 14:46:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787582785;
+	bh=uOdefC3ft+rIrM+lRzrzTelVuZoqvjKq0Pla1Vm3VSg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=b41+8o8IJgBxDHtRI6Tjnf9CM9J5j7Wpr08L9h4SkEN4zb9xlhboO6fa2EYO4zIZl
+	 sdWw3YJjUhNAWD7KdcvLEZNGcsRQNWqOlGqMHDg+TxRG7kNVkA+vdr2xJkdvknL/qB
+	 mPvP33WQVDJrkciOrZybBGyyh/1NNq6U9ywOoci9m/Q3TcZzdua8N1wZAAdGBDITuS
+	 jyCSP2oFp9YGQG4Qp6ZlxchyScmDZfKO3PAMS5HdMhTNdpNBVxuw/MfqzoNwwFWoi5
+	 KIHkUfgwAZ2DybB6RBTPsGah/+63Ev53H6zpuWubJqmj3Waob9OZxqaLdwmRjAM5AU
+	 1A47zHPy7WF3g==
+Message-ID: <5bb86e34-6196-4b50-b553-be2ff7c1fa32@kernel.org>
+Date: Mon, 24 Aug 2026 16:46:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EFDF140010
-X-Stat-Signature: 8dc1qcwzuq6zg5zn1huok3otjbpt68ag
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] userfaultfd: decouple fault reason from VMA flags
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Lance Yang <lance.yang@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rer3t4gezzpa76uy69gcwsgs75891hs1
+X-Rspamd-Queue-Id: 26249A0013
 X-Rspam-User: 
-X-HE-Tag: 1787583080-457208
-X-HE-Meta: U2FsdGVkX1/JGAxEuItOgH0WGKb4C15bD5nkyTfaOwLwLIFGufMeGBC9l/N25fCxJ5BwY/6la2hGs7YeBtdtV5TnW75rkrMJM1wAkC8dyxrBdcnvurlJpawDZd0aCHyK+JWXMxdjv26YrKJVRxRw38etkqViTGk2AZ4Pd2SojMhKMRuRJ2jVMp22XsfGLjPTLS5IoVoIB4k7qvVwqCaRkAk4606WFppLxx3kTl1IFA56H6C2Ejk+32e5VoPTJ+IzV2se3YlcwRDLwB81fCcuf7/KusIDeBM366eQY0KvE4TUwMh8rjbuGzEZVvZboXq0fkdGZL8BFgpB8teu/3cGuYC6vhOPz8R5PA10I245lu56pTKineIRqpHZrFSas2W38Plm1lWFPbyzjaLw8/5JGj9uIoZ2QijqxtLQXwRlvMeBCF25KW//I2o+Luyc1bIOfZ+6lvzQiYBYCIYIbkef7p/1geqw9dQ+RgIVyUij+rrzA3xS5FRBm2O5trEhrhSG3w0yc3OxyUWI01WnKFxk4X3HsK1VSmpYItsQqY/Z2W6FStizH/YkajjduvFWUitVNppgxfhK2lp1/jPUtjk7DcztcT7w/d/FxdyJg9uLU5WvgT8Xc4bNWNq0Wrz/Koi+td29xbjNU0bASox9fj9Tos7/4nWDo7x83KFUOj4LTZ9kkCS52ppFLX+jOSCijb4sZggnSESES8STzWSxp+TboYst77WD5b9UeSd6AgrRAtah2KiNTZtqKHnAHIcxMBYn5JB8/3lQfbOl/GHCOh5F06sqC6UwaC6F/D/OsJFLlTK9P1OcKFfBMc1rW85EtImpv6Gin22KjXrRtNaPwqSgdaL0long00QZof2r43on6D9LXyJZHoJ2XpbzwukNwcokwiiColtAafDkGF8afWZMb0iUgXlM/nXH/sXZ3fCg1OVMUTVKvUj+0D3/2nMvkdZ6Nk0AQn9THL70MVGzHz8
- UgjrKXFO
- ZEhgjSGI3GlSjtZmhviVdu4+K6970IZTVlP2ghqKksOdU2t086/6OhYycVxZb74ESKzhlK5hI7QU+BB5W84mosngsih/7cCuZRhBzrABicnCeCuFlCl27/+xYOtVscryQw7xHAnfWfIthtFz6oYWT/bCatK3Xub39s+bv0sSe/WZVSQYZ12iXa2zvAQLx3wWAbLMbTMfMO+3NxX5cP+POz/ykjUIO1rO9dAVH1gKFCLxpEkAQpkCJOkRPPn/zwXB89tStY8XSo3FOx5opiPONg+ktJQtLPdlm25twEF3dp0WG3osj0PsVqbD7jUmpvyt5znu8EpVv5VYfs5q1WvxaWJ3C1smsHUMNbg+vyVZfpV8P+EBLBljNb3gCySgOnmLd0xO8yvW1cdqws9F/cikWXzUVAxZclbLjAX9RaNI2JbFTR7CvGMvSc5A1UOohe6s0VJG9fpv4qs0WcEtR4Cb8/r+JIA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787582785-297261
+X-HE-Meta: U2FsdGVkX19v0RW7Ej6r1quY/nzJVn1mLvD8Rssaa84zdO3AzsrJT+BAjrN2RF7fqWzkeFdbfs+FWBjqBvWmFPfkrxbDah7PfMKjn6PWvYCJDX4o4pqqxEcmY4FVqc0wVW7ycunVM4nzDDQgskH5vmLTegjTyZTiMIML1myQPmgnDKBOk/7bFxFl4i5xIhlQoWVGTRKA611p48S5pVDb6al25wgAcJO+CfwUmpAmLD1tor9eLxstRUvJl6Agy2g+HWuARH9Bav3OVMaLoaRbYIuu95VfijO51Co6EbLAJg/NsFLhQvRIIde1DEb/ql8so/bHy9GfmUk9ydXW6m0uIhiuq+cvXKGbOhkyOGg4k9CKtOQ8ON1uGHgHLMd/s3mxc5T++/VxECuT/81bQ/brV+0wMjDmWYmiSqPNjqu5/tRyOqNUR5Cht1BrCO/RR0dAjf3lwaYWtn3d11CssdpsN+GDTk/Ptp95Kh4OFCra8EmjZT7XWi79xSu7YWO9OuWJ7E9Xun04CjFvJA4PkV6R1vuMlR8ogKzovy/HQpDNBr8rwkurP67c/emegEYH4/i0TyRSMxgURqn0W/4MaCf7v+F6DBSnhBcEzBcjChb49gf/1FxfMzj8nGzZ1wdipjklY0TCVNzSZlkVDONvDii567ZYbvZpTC7orQ/Hjjus9/RF5oQXkXA5hCdJ/CiXfguMeXfGrrd+k4fnWNSzMOQqiB49e9y440/6ylkQyUfeyx7qlJb4tFduKTJSzapE1nCP/+3cr50xouOM9fTqfxijUkqs8CrvOkzCsQfJ3lyfVUcJdXNLETmOdaDNrYUiux3NsU0QVAorhht/y2aG3dl9JE5HfIuswwq+KuwueA87bOJm/AjBiqyX3f/SEHeDWVNpkUpcpUEUHKiHiwGasZA/GDKNFUBQW/gxJqESWroKfbQhX9K7BtzFFY9lNl9z27GaqGmjX2QFsTjs9joVcI+
+ Ot0dNpv/
+ LCsG17qW6CIsGcnn9maBCZAOWmJUQdp3aJW4hneHUgTUSegVaHRxncZeU8iHNxzokDfmBHf3a1Nh2zm/B5rM8WxgmajdzO6q5rWqvAfiGNtZvbKuOk1hqPfSndL8uwKR0Ohf0/pvGZWexSHZrTCnJvfuiwsq9RymvYE9eI1iawX4VS/d7vzxltZAODkiZS61RzzcqxnY3JAIbPxCNhNNoobzqU+DYj1fP+0Kmj38yKOHHh4tg47UMYh0NGdXIvACi/fvz671L/Tiz1Oop34BwUXibMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,41 +155,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Only mm now uses lru_add_drain_all(), in forced reclaim and in memory
-hotremoval: help to keep it that way by moving its declaration alongside
-that of lru_add_drain() in mm/internal.h.
+On 8/23/26 14:17, Mike Rapoport (Microsoft) wrote:
+> Introduce enum uffd_reason to define reasons for user faults rather than
+> overload VM_UFFD_* VMA flags for that.
+> 
+> Using a dedicated enum makes the code clearer and decoupling the fault
+> reason from VMA flags clears the way for moving the uffd mode bits out
+> of VMA namespace.
+> 
+> No functional change.
+> 
+> Assisted-by: copilot:claude-opus-4.6
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  include/linux/userfaultfd_k.h    | 16 ++++++++++++++--
+>  include/uapi/linux/userfaultfd.h |  6 +++---
+>  mm/huge_memory.c                 |  6 +++---
+>  mm/hugetlb.c                     | 10 +++++-----
+>  mm/memory.c                      | 10 +++++-----
+>  mm/shmem.c                       |  4 ++--
+>  mm/userfaultfd.c                 | 30 +++++++++++++++---------------
+>  7 files changed, 47 insertions(+), 35 deletions(-)
+> 
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index 45355bdb4ec7..f401623f315d 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -9,6 +9,18 @@
+>  #ifndef _LINUX_USERFAULTFD_K_H
+>  #define _LINUX_USERFAULTFD_K_H
+>  
+> +#include <linux/bits.h>
+> +
+> +/* Fault reason #PF handler passes to handle_userfault() */
+> +enum uf_reason {
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
- include/linux/swap.h | 1 -
- mm/internal.h        | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+Can we just call this "userfault_reason" or "uffd_reason" ? Maybe the latter is
+actually what we want?
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index ddfd9b7bb861..94b694328ee7 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -300,7 +300,6 @@ static inline void folio_add_lru(struct folio *folio)
- 	__folio_add_lru(folio, false);
- }
- void folio_mark_accessed(struct folio *folio);
--void lru_add_drain_all(void);
- 
- /* linux/mm/folio-compat.c */
- void mark_page_accessed(struct page *page);
-diff --git a/mm/internal.h b/mm/internal.h
-index 7a301c401d39..73d618254a3b 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -57,6 +57,7 @@ static inline bool folio_may_be_lru_cached(struct folio *folio)
- }
- 
- void lru_add_drain(void);
-+void lru_add_drain_all(void);
- void lru_add_drain_cpu(int cpu);
- void lru_add_drain_cpu_zone(struct zone *zone);
- void folio_deactivate(struct folio *folio);
 -- 
-2.51.0
+Cheers,
 
+David
 
