@@ -4,102 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10EE0C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:24:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19004C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:26:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D21A6B008C; Mon, 24 Aug 2026 11:24:10 -0400 (EDT)
+	id 347606B0092; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AADE6B0096; Mon, 24 Aug 2026 11:24:10 -0400 (EDT)
+	id 31EC16B0096; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F28E26B009D; Mon, 24 Aug 2026 11:24:09 -0400 (EDT)
+	id 25C416B009B; Mon, 24 Aug 2026 11:26:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D61316B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:24:09 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D27F1160184
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:24:07 +0000 (UTC)
-X-FDA: 85136533734.25.E03893A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 052816B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:26:34 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9374FA0165
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:26:34 +0000 (UTC)
+X-FDA: 85136539908.05.DA892D4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 435EE40006
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:24:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DJGSGg/b";
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9EB8C160002
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:26:32 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jf5rfTik;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787585046;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787585192;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mcw1FaqpqN1fC2wyOxEQI80FG3a+BD9XUeXDJIlvzec=;
-	b=sWtR2bz+9XM43rAawZQhZ9Bv91M9nc7AvraxkdlD6pxy9Az7VCYUu0TDvaWJRao1rppJqQ
-	FEAdZJO+W4gj879RV4WeHtnWnXgOhsKP/+5raM3vdNqCYOZFzYkQHwrr6xFH7j6VHzbTQ/
-	iMtnXtMLPws0OYNr7+O3Ob3PvpetnxY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1NaZhy7K71qTHqCgzEo7uhdf+4ntNxAB3uAJ4u7EDLs=;
+	b=5Sl6E5sKumKMSxrEVv0V0/hXAzJQ/3Hb4kXsusXvk8DrGkGa0viOmCUVKlSbSmMjdXDxAs
+	RymS6y61A/6vp3sY/8bJmzmR8qkitKBiY+yU9/nMk5L1jLnR5VIWGf6uSkIGuuXcrgYoXK
+	s89wfFAKM0gqoC7C2VEbX1GGXUcrKOo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DJGSGg/b";
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jf5rfTik;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787585046;
-	b=f8wG02b7SInAIGolUJDvJ8saRLEideuxqhYbM8rPjNlSJplzeeL1xEnJ45hd72bl/NTZdR
-	MtfF9hJINz+mhweiPtuSZNLGhXm3saSgOxblUrgcHJzNitjPBGHMB1vFMYVsOTx0Gi5KQc
-	Qpfzsa6+WGqM+lymBfb1vZskXy3Tkjs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A814660120;
-	Mon, 24 Aug 2026 15:24:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257291F000E9;
-	Mon, 24 Aug 2026 15:23:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787585045;
-	bh=mcw1FaqpqN1fC2wyOxEQI80FG3a+BD9XUeXDJIlvzec=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DJGSGg/bjUAW6H+yCzR0IePkcLMVg6lpFFuJzo46rAW9B3BtEaYUULCpInzdAqUWe
-	 vcaRx1Jx/UhRpu0qLAKSgT9KAXEfeHIYrGC3WJnOuIh0A/TMlfm8IX60QgW5rBZ5Ty
-	 z9KkznHNyo2VPQefi824jviu+tkLIvtkx4cP9AVQo3KjdBGZuWvSxrRT/HYTOmcr6I
-	 i/nvI+3bJlAFq7uflyCBPdUTUwprHSmujalKrwNengBMSmDtqO+FrvFDTJvP3W/RUC
-	 MKGbfsbxI/S0F52UNWpLbSvgbh6CsplJAXRLexTykf7z9DvVxUimeLEHFzko/qLNE+
-	 d6LlExTi11C6w==
-Date: Mon, 24 Aug 2026 16:23:57 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	akpm@linux-foundation.org, nico.pache@linux.dev, baolin.wang@linux.alibaba.com, 
-	baohua@kernel.org, dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, 
-	liam@infradead.org, mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, 
-	shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, 
-	ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, jannh@google.com, 
-	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
-	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 03/57] mm/collapse: add collapse.h for the shared
- collapse state
-Message-ID: <aoxhUy6198VLCryN@gremlin>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <20260816224609.308019-4-kirill@shutemov.name>
- <3113ac8b-c1ce-4577-9e93-449b70818918@kernel.org>
- <aobglSY5L1KoIqxF@thinkstation>
- <65433d1e-95ca-4434-828e-8f381d3384b1@kernel.org>
- <aow0Z6mrG2esKpRZ@thinkstation>
- <e1c8c6f5-1b5a-4cad-a52a-f7eff00997c3@kernel.org>
- <aow6J1i2G7U0spjH@thinkstation>
- <aoxPzKTVRmZgmBKg@gremlin>
- <aoxe92BxF-5xaScD@thinkstation>
+	t=1787585192;
+	b=HdABOrAmkeVTbeORkMQ/WTdRNORlTB59PCuFhmMZhyhwYVVu7OSpamF4VJF09HIqcZYk0t
+	JiOZJ2SiI+NNsSLHxjj4Sry1KFxuh+4SmoJhp2NUrhPgMmna5JGywhfEsLWB8AtUzHZ/W8
+	HMbB361Sa0Se2QsV2gCEqzX58taJGV0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 267256011F;
+	Mon, 24 Aug 2026 15:26:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C059EC2BCF6;
+	Mon, 24 Aug 2026 15:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787585191;
+	bh=h/haknnj8pSvM1JoVwSzP1DECAsXwqNBvWxA9kRJxV0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Jf5rfTikOx0VrEQU0bgQUo3pujh8B4YWi731mwpPplwS/taKWi75TM6Y2TKXjUcmS
+	 CZaMT7fNaSOpQwcw7oCsPDnWUxGZkgiFLCbcUPC77dJuLpMOz7X19arlua8J2B5GMW
+	 AOJ6/dhoR0ZwMA10lFfnd0xGKuH0wYCLVjMqEJI0IQXi30n6NRyPkq+lZUBf428eIz
+	 aifkyB5AiNnLJoBLY5GhWmQFD+Ur66WjX0nMts43WQIK7z4JzDBCqJjBPi/HJficnk
+	 ooOaDTN5TVkFIkfph97cjhBz1i6Vw4dFKYeWAQgL7+IWLVWjGcDfO4oAHNXBm6sjy8
+	 1giYRuMAVChew==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 985F9C5DF81;
+	Mon, 24 Aug 2026 15:26:31 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Subject: [PATCH v2 0/6] mm/mglru: clean up folio counters and flag usage
+Date: Mon, 24 Aug 2026 23:26:27 +0800
+Message-Id: <20260824-mglru-flags-cleanup-v2-0-0104132114ae@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoxe92BxF-5xaScD@thinkstation>
-X-Stat-Signature: ogtr4bguqtdxnt19g1izdn8qrodwbbmh
-X-Rspamd-Queue-Id: 435EE40006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6CMBBFr0Jm7ZjSIKmuvAdhUaZTqIFC2kI0h
+ LsLuHf5kvffXyFycBzhka0QeHHRjX4HecmAOu1bRmd2BilkKVSucGj7MKPtdRuRetZ+npCouJP
+ VprwVFvblFNi691mt6h/HuXkxpSN1GJ2LaQyf83bJD+//w5KjQGWaxmgSRip6JvbEPl1pHKDet
+ u0LpB498coAAAA=
+X-Change-ID: 20260818-mglru-flags-cleanup-cc49cfad654f
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Ridong Chen <ridong.chen@linux.dev>, David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+ Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Kairui Song <ryncsn@gmail.com>, Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787585189; l=2302;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=h/haknnj8pSvM1JoVwSzP1DECAsXwqNBvWxA9kRJxV0=;
+ b=a4Y23NvntoKAxWeXth0PVBJK9aQsc8tTuri17H2veCuuj+DP1oDuHP9/uIBmNoeGrNBypDJji
+ 9B/iyN22v/2Bs99/hfZzTq/PeAxTqFSLKyQcHl0lLzR88jeEEb7aKST
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787585046-126709
-X-HE-Meta: U2FsdGVkX18rUVB7qTo2i08N9pk9kuiOBSCoE6GmuPo61jJQ2nVWN8yPHpqC83gzBl4LK2L3bwIDhxzfTsrsdce3w0SFNmm+IOv3SxpEHpwkRaymSSzR95v/YlvbPekhI6t78A1ULzBVflrtHD2t7KX6zWqvDZ0rHWZNAfSKvT9s3Gx0oIlrQJAnucQjZNoI0AbKTF5Y3K/FuZ4t0fzLU15wNlrNo7cypROyHPoTCULzUL34+sKXHaQIQteLDi9kuWVTVD5KhqYAS6J4a4b/ZJnLJFC7lEtMK5ATn+Y4KPc3t7oNzlf4VuztcBi0eo2KZgnvAXuDjHE3pWo4Q9WizDG9vTyjfm+cZ5oT9jqToJBo50+xssrjWmnjXi4KXVCzCiEBWq6iH3NPZ5VFFQ9YK59y3GBE9hcLHHKt7jqb8Wo2lO7E3zYKV8LueR3Pf+6smLku2DUbHQEBg0qI0dNTp1uambWWkHAng8v7f+dOjqPUgPzd3YETPx0DIElh+yH7s5IOHtRZvvr2VY6RDjKMcj/wPOYpF1STtLSTnLmQLLOW0Br9wCqgcMbypc2HD4+prhdBizUsmm0RfCweEhgt32Bf0LcHWAjFAG3HbcAftCmTTnAvTmpRJHMvLTaQPOJ5kQJ3MdHH3NoygFIorqoBrbS2V4ogd1uv2ALwd/3VzSA2ZN46DJGZmUapZWw+rtJ0EFfwDVmBesSZ3MAcciLKbGOeoERi62aV/1x/6fMscYcXVLEpy0XrjAr6MLzc/+S7bHLzpqvvKmdI4Tvr28l0nqvd/QnAi7hRiyKmSG58BI6MaVVE18iB95zyRokBaV9mrAr1SY+IZKKELMcRuGfEKvWXsL5YOfaqBSYUF3/Td9S/QHXH9idtZTkIdEI3Z26OGZSkyMqNO8+tECHvc4ZzH8hvMdpUHF6zdBG/j141hEsrIfx2BcG7u4B3WiZ89xAgUw4EDOQgCFDaBH8Dwvc
- fcaDdMKt
- +wv6l8yUhhYDw/5MELQKNtgCIoefqucdUg5q12b/Vm6GZHpJcH6NbYsi8Oi2SSf6TKav/54mrJLwWtFDdeWU0aLO6+I+3HdzswnFS7x0L+VzrTJiIIHzw5JT+0F5druTBJ8JSHYQN2AIBwjZSctVzgTXW7L0tB/DoUm6cgzWPbfV1EhqBB3VDiw7J2BNFIbV93io+WvKeDBHK6Csc3X+AH3lHLoKiK8oo+64uuVnpzbC7Xm3EIAnnsSLERvJSxR1qMZt6Lo06/PK3wcVq8SZxLzE+3g==
+X-Rspamd-Queue-Id: 9EB8C160002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4hfkoxhqcn8bk8qhqzncgmkq5rgar3un
+X-HE-Tag: 1787585192-600754
+X-HE-Meta: U2FsdGVkX19yquMjMwJgctcRj2JbtT7NYPM4XgYgZY9wcPN4l0zy8PPl6mWPYHUWj5Sd0EQXJdomfJYk1m9/UpxJAQwcKuqUM49RW+8gUTpQYjxIRiyOyhV9Y6S3KdGqTFdvdGyuFmgJ9syxznbLsrGeuWA/u8QnA5mF0/veocD9Lr6biwVXcixyo82GZJ1BqRZPnWATMbwFLzszZvAtPQCwXa1oacePK/AyzDr2ds80SlcozjxgHq5oC2EKTRsMA74Ou+CRaIVKQWJJkMCmMDcQ08jxm29yIyab8vcP1qNCrw2t0FBsvun1ZKyfTj3IQBvXaqcUvb8MKF57ipyy2zydlbedU+tSRm4GPCeIxe5ckTiUe4D1bdiFSQA7nvilhgDrH6+4T2AwmPsdW7I4SQBirNo5bsnLX6Zxlwxni/tfndAiDJBNGRYJeHGlDptWShf5ha+wXwinSxYJGUrg5iVydSLkoa7DHvnPVG461MB5clupoZVqr8Ard6CXTuERwCumStMGEsPi0NwsDXNIZdSuzOFAAKWp9AtrGrxlVJCY6GSuWbiLxoWOV1gZjFPgtq5B0GyqvxzyrqxsItN3a4T7uhWPavxqr0j7/hHibrg+bnwSunZjtXu+jneUlZk4nDN/hTCmr5cxJ45IO83zYnnITGQclGQ5KMjYM84S1qhZp+8FBvoQMGUNNr6b/Nv6OwHR9NrITmxlGtuDA98qt7O3vP71ejtQGrYMeUUBWtGCbsPxzyTmatVBPF8FcAvdwhxFrlmqedrALso9Ud+XUJGTyq2F9pEDwc/hnrcpzhvO0UjwI5yzdb5Akib4rnWR2o5wN1EaH/AnK9H1RWI6NcqYvsK0F5ZuhooEPJlhumSeIwAF+OxFu2U8ujK0IwhAo5QTDTQk8sLQAzGxV/p+iwXxZn77AAJkOPQwggLTGcO8kV9fG+oB9EQyh8Rl2mhpng9/efkz19k54aN/ZGn
+ gvHRQ4Ez
+ oO9yehYMSFZ7N0CgqGMpIPQ9v8LxUJPySuiYDL/l+W0pu7IkG4veZIyy2LjLrdRRY6H19P9p7e9SyoTP2N03LqqselT1CTNZ92LvRTjqBvljy3phe8Xc7XCSOHHKAYpFcj38z1wGnuTFFuciZbXAZJ822NTJPKpBEBbSx71KetnvUNdarTd1/+d3Leyo92HM0qQ3JGM4K4hb5OdlJIIaZJOihPP+PsRJwj7ej9sHDgWzSvjOtDvBUzX+b84RKnlaqybB848CQmAGcVKZMp8cf6hEwkG1zpdcM0Z3H4+aXLruSYoftWAopw8TZwtoKyXEG27HuWb1cS1UKXnUjCUqb+/N5MQ3i+opqMkPRTvejk4f+SoSC40j3AShz4W2w9ajD3t4MN6GdEdzxzhcwJoNuSN8SrwMmSKn5OaOdAWZ0A6wH+EeB417qB02moXaxWcxVqN3z0rUDVsS0CJBjP14/6vaOxtAy6erowq4RJ2RfcJ49N9ZRgahP6komFmnYl/SI5vfc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,31 +120,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 04:18:09PM +0100, Kiryl Shutsemau wrote:
-> > Even this reads as AI-generated... Consider writing the replies yourself
-> > please.
->
-> Seriously? This is border-line insult.
+This is a cleanup series separated out from the MGLRU-FG series [1]. As
+that series is getting too long in following updates, seperate out the
+clean up part for easier review and merge.
 
-Sorry that wasn't intended as personal. Text is a bad medium.
+No feature change is intended, except one bugfix. It mostly replaces
+the open-coded bit operations scattered throughout the MGLRU code with
+new helpers, with proper kdocs, sanity debug checks, and hardens a few
+MGLRU functions.
 
-What I meant to say is I agree with David re: the use of LLMs in replies, it's
-not helpful in that it leads to the usual issue of very large blocks of texts
-that are difficult to parse.
+A subtle generation counter leak is also found during the refactoring
+and the fix is included.
 
-So put in a clearer way - I meant to say that writing them yourself would avoid
-this issue.
+Also collected review feedbacks on the cleanup part from the posted
+series.
 
-My experience is that the series as a whole is overwhelming to review in its
-current form, and adding more material to get through this way makes it more
-difficult.
+Link: https://lore.kernel.org/linux-mm/20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com/ [1]
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Changes in v2:
+- Dropped the redundant LRU_GEN_MAX macro.
+- Renamed folio_migrate_refs() to folio_migrate_lru_refs() and reworded
+  its commit message to describe the referenced state being transferred.
+- Rewrote patch 6's commit message with a detailed analysis of the
+  anon/file accounting race.
+- Dropped patch 7, it doesn't really fix anything, and might be in
+  conflict with other updating series.
+- Collected Reviewed-by tags.
+- Link to v1: https://patch.msgid.link/20260818-mglru-flags-cleanup-v1-0-8dbbdac0d28c@tencent.com
 
-Hopefully this clears up what I was trying to say... :)
+---
+Kairui Song (6):
+      mm/memcontrol: make lru_zone_size atomic and simplify sanity check
+      mm/mglru: introduce helpers for manipulating gen and refs flags
+      mm/migrate: copy all referenced state via folio_migrate_lru_refs
+      mm/mglru: move max_seq read into walk_update_folio
+      mm/mglru: use explicit tier range in read_ctrl_pos()
+      mm/mglru: fix potential generation folio number leak
 
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+ include/linux/memcontrol.h |   9 +++-
+ include/linux/mm_inline.h  | 103 +++++++++++++++++++++++++++++++++------
+ include/linux/mmzone.h     |   3 ++
+ mm/folio.c                 |  19 ++++----
+ mm/memcontrol.c            |  18 +------
+ mm/migrate.c               |   6 +--
+ mm/vmscan.c                | 117 +++++++++++++++++++++++----------------------
+ 7 files changed, 175 insertions(+), 100 deletions(-)
+---
+base-commit: efecab401cb15fd3bb9bc05990609acb6b267ff2
+change-id: 20260818-mglru-flags-cleanup-cc49cfad654f
 
---
-Cheers, Lorenzo
+Best regards,
+--  
+Kairui Song <kasong@tencent.com>
+
+
 
