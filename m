@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FC7C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 09:17:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10C9BC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 09:20:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 771C16B008C; Mon, 24 Aug 2026 05:17:13 -0400 (EDT)
+	id F3F216B0095; Mon, 24 Aug 2026 05:20:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 749EA6B0092; Mon, 24 Aug 2026 05:17:13 -0400 (EDT)
+	id EEFD46B0096; Mon, 24 Aug 2026 05:20:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 686196B0095; Mon, 24 Aug 2026 05:17:13 -0400 (EDT)
+	id E05D26B0099; Mon, 24 Aug 2026 05:20:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4788D6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 05:17:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B3D7E404A4
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:17:12 +0000 (UTC)
-X-FDA: 85135609104.21.476208C
-Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1108840003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:17:08 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lYrHWXUs;
-	spf=pass (imf11.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787563031;
-	b=D9ar9UFmAU3AJ1/4Ry0NubtIoCP3/yEtYEjIfJ6CMlTmcndhjWyADcwEAQouvT9tsR4EbL
-	Uu+wRB56ltN9xr77yWsFPH1WRVQE/LukzC2pbfwLneEICwWPIAfVrZnPwIH/9+nj79UfPJ
-	ourmrizh1+Wm8kKidwqA0qPGsRfTypo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lYrHWXUs;
-	spf=pass (imf11.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BCBA06B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 05:20:03 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 424971603FB
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:20:03 +0000 (UTC)
+X-FDA: 85135616286.14.EC146CF
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A04601A0007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:20:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=bL+PHrQM;
+	spf=pass (imf19.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787563031;
+	s=arc-20220608; t=1787563201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=tMWq4t8RC/hjRPJ5wsJm46tq7OOKj1IaYJLgWmAvNpc=;
-	b=nBr2PN1uHun3T2/hqsMcEUwtIqtjBBxxYvZ3TJu6H+SEJ+Z4zVAKa0HMBIWwp2ylVG+D/b
-	S8enSLYqyCoRYGmno5nuihmdLM1bRVVxysep9fkQjEmTZ2ri/KO5vMGcwChV6ft6xnfRHJ
-	ZNY1nMqLWW5J0uFNPJoXaA0NYzyjkRY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=O/9kZBkuJKeSt0mvaZpQcJ4Mx4IyhlVLvwU3R2sLsUw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787563027; v=1; x=1788167827;
- b=lYrHWXUsbJLYgQaupe9hjNej2voPhzHCBLPxt6H0Z9l4J3rzmbTbF041GrMdQRsGFk2aH+tI
- L2LoI2Ix0BqoGpU7hoKA5LM5SBTsMlIjOR+RIQwuE+uCkrs/e74iW7n4Iack98zfvTxMLROeMiI
- 3113e+xcdWDJeum9B+uxEO7E=
-X-Envelope-To: linux-mm@kvack.org
-Received: from teawater-KVM-Virtual-Machine (39.156.73.13)
-	by smtp.migadu.com with ESMTPS id e1b4ba6028b59e6b;
-	Mon, 24 Aug 2026 09:17:07 +0000
-X-Mizu-Trace-ID: e1b4ba6028b59e6b
-X-Migadu-Flow: FLOW_OUT
-From: "Hui Zhu" <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
+	bh=qq6CTw9aog03XEKs9hMeWAiZoyfqTL2ZWlIAp3UfVfQ=;
+	b=7WPSKhpGNQWiMOBqNHOlzCJ/n+THpFHcjNjWgUPREkZK/TKx0kDoG8ARc/psEM925bKg55
+	BSI2ql28kG0X+KXSPAF3/hJQ5kSXqpQ4qPTvCsMXz6Xzn2/HXn92nvINirBgzwGVpE2fWr
+	rC6GQahu8yC+vCURsnEfVEwTXkaemRU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=bL+PHrQM;
+	spf=pass (imf19.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787563201;
+	b=SujlgoC+NLhmIeMMUOr4tBgzUsy3qrjtFaB+0m5BsRduiy2zshog9af59iLSIfxp2Ept59
+	cuPia0FRwxEUMLdgSJciGukBFiqHdV7yY16Mopp9vRiLgKM08btFpPe+nmrooFkqfLQo0Z
+	tL0M0l1zr41HUSV0g9MWBPatZvbQa0Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=qq
+	6CTw9aog03XEKs9hMeWAiZoyfqTL2ZWlIAp3UfVfQ=; b=bL+PHrQMD9HvsXVgg5
+	g+gdvFry3YQw2ywvp8Mdl8PkXAhC9IIP9Q0LYDe9HOzofOJfgYVZadOHLdqmN/Bt
+	DKmMIL+pHoFhtkdYAkntcLbVKYNgV00fl84Q1GvxTdqY2CUIgPAWYomC3QWf406V
+	dcGGnaKrvclWOZ5cETz+iWf08=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgAnWPeZDIxq17gxMw--.50121S2;
+	Mon, 24 Aug 2026 17:19:23 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	akpm@linux-foundation.org
+Cc: hao.li@linux.dev,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH] mm: workingset: account MGLRU pages in count_shadow_nodes()
-Date: Mon, 24 Aug 2026 17:16:30 +0800
-Message-ID: <20260824091631.836473-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.53.0
+	linux-kernel@vger.kernel.org,
+	paulmck@kernel.org,
+	rcu@vger.kernel.org,
+	Longlong Xia <xialonglong@kylinos.cn>
+Subject: [PATCH 1/1] mm/slab_common: fix shrink budget underflow in kfree_rcu_shrink_scan
+Date: Mon, 24 Aug 2026 17:18:38 +0800
+Message-ID: <20260824091838.1692153-1-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1108840003
+X-CM-TRANSID:PSgvCgAnWPeZDIxq17gxMw--.50121S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tr18JF4rKr4xGF43tw47urg_yoW8JFyxpF
+	WjkFyUKr48XF4UZr4kA3W8Xay5X3ySyFZ7GrWqkw43Jwn8Xw1fta4xJry29Fy5Ka48Xaya
+	vrnF93WUZa4jkFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbAwsUUUUU=
+X-Originating-IP: [39.144.46.203]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC3Bvm32qMDJuUSQAA3S
+X-Stat-Signature: 9ggotnommtd9e9kg416dj4yj7jcjupz8
+X-Rspamd-Queue-Id: A04601A0007
 X-Rspam-User: 
-X-Stat-Signature: qfse4nnoygzuzf1fwdk96hm5sptfuqt5
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787563028-997062
-X-HE-Meta: U2FsdGVkX18Fj0cIbZWeRXbj64Lzuyj1yX483eqyoCYNZdDiJgiZIAA8EVfGrOAfqxnQAEulgaLSLGw76E01nesIt+ttNz4EQruPLNeO1Djy1tdRWmxRaSV8T18dFGj6KsZrxC3OvCrBzniLRxs83o9s4MxGW7kf+suERMpZIsmEzt/6tYMjApBbPYyN2xThy/LiU/P6/5c21XRajxaj2JiAhPsn1anNpP974i2lasDP1/DmaUWImvKArxpne2CSTTSJzk2Ft7WkWyj852X2HGdDFWhegZz3idm211LgzDJE9kIwpXuDvcCd2mTwtKLlQOf1yH4HqgbDkIzd1Rqn5MJUaF8JWdZGY1RZi9vhYXgOPrnwsS/ihhhdpd0LRrmyjRRxsYX+DMtsWPx3cdTmLh/NZPkki01iwOYTHL1Iu8SPgbUBDsk6I1/k+PvXsmH3OyY5PqIYwzayBhwB5ns8yIxIYRECTcHiKGk2DrL4r9pueMSoaA+6QSoQ5cnLmOO+1D2eINjTUwvSTojBaG1V0yJhpAD8Bdcw9cHnsbXLelhG0t9Nx5GqdyyUIOqf6Tbf9yVmaXxyDXRJQpfq9TZcGfaYOKjj8ri/AIr0v0RCO84SxOM2bnaIfCgHBNOwhFCu13yMt6XSaDhgAx1lNoycQel5GwRQ1YABj5qj94QTQj+UI3M25iyJ8HLf1qLl/BHIIAblG9yVpL1+AJiEUXrpV6P2VSkO522EugeIoBb73swGV3V2UX7lsmfygTxDjjM1KCzvAVML3PpyyijSm6Ze7r0UPbWDWVcAD/4maKqHbpzK4VO8MS5MFfh6/bM2iv3ruALrgQ+KSMWrFI4nPa50EBMNkr6Umc6T3J0psuWyMHlEYpB56NaBFM5nbgRZl8aIetizSshFcl3iMA82pgEGjJlonVaPQRthNBuyXi1sax0PewJsL8lomQRU8PomJD86Pb2QSR6r+hrfkWEWB6J
- d2DYTv8t
- IsctZ72sJ/uAGVwVk1DCh+uEQnRpQn3gkoZB2RAOcwTqjMQZ4+1xvwNxwaMbFZ3JhXnyXkQfGk7pG+blqKhK+Nm7GrkbK8zXAFBttqfWMbDNir+9Dnwp9VtqPIIP9mL0seyk2QXpAlZPxzvxBGzcciee+QUPapD5Lc0LHb72DJsxJ1Xf8NKHCnNqoHVq1GNjpeHVqNNNfJUdbughARp6e1731hdzo+Qbo8dzA87nJi5jgAAuoBKckpcJgtW5z3tn0qVAPn6aQhMGRH+ND1c1JqS9C1Q==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787563200-377319
+X-HE-Meta: U2FsdGVkX18YYKIfxN0Ab3npsPbI6hlT6ap2/KKJlnKyj0770BrmScInJi7oUdkHF2y5XNrLuWfVaOB8H5Tx+IZc5pCmia/vwD1S36qYMMEol9AFuwjN47kRQwHSv0a4MryEdHtzxvUJLSQQeOIqM8jfYcGxyCrJRR/2UohgoAlbRzlEjV3Yg8yL0czjHrKd0KnemDcBrYTANU3cxo9H4tzsP63GpHF9RNenYMIihzafnOxYupoDYp30aiPX7bKDtHLIkWmB86tGNfLUGo99L6kjtcmpX0dLgsUhHcYdovv4PrXS9bnlAyymk/YOnkyLCrVp1AfExCLKgQji31LagUJCgDlh6Rs9/DcmXlBfq8hvyL/Rck//Y1vT6T1dabXkHZ/gNwFKGmLCz3tIMXLLkOhj1Qd+5U4TluM34RPqQ+4pXQg5q7MiC0PiFk+H30cXtse+oLOE4xLx0TZ5kx7jPgYH6O7rsqwsJQufVI/srMceJdBjsXdhFs//60FALlANIQZbzazHHcE8Uj7JDw8mnMlzxjKNyO1buG6Cdwgrc0Fg/Fv0FRirgMRWCMaD58bArJ/o96zF2qjCqtxJ5GkAofnY2LpC6x+YVog9nmf9d3FQ35wAvoRLoK6l2hHz/aW9pSD1hp4O4ZQmdiDQRpzBOTkh7lCWe2bCqWbhyRrJuuqMFTRT67nQjh49l90DmvCYa6NQ5g6UAgNR71Op6Zjtu0ZvUXkxMgF8eairPF+3e3QBR576htNNweADuzF8ZNG8MymmbjGJcJLA1VVQEOeeX4hLgDRfOI3YmrW8WqrUQWLWtM03/QqbaoHo7MVvzM2E9wQzpycHwJ714CSY8PVS/Dh0+rfsLxHPoZ47hvHQnkaeCGihmuejHRmEGRrtgq/oQb2NDOFR4oFpmnOVmpD1ssHUYJ3+KSwT/N7sMhWPT3s0z/1oMGUt9cxpQkc3mylMXmllFtYuOCPr2lU5zSl
+ aJHPao6z
+ 1jmZYMAEwafVLU3wz4Xzqj6v+zeYbiSWwv0vL4sFZj71+Cq8+3+2WAj9QbKgXUErnYQCa+pQ/kLJxr3XE/ZeE8PuW+81czpWabZw8cgjgXOaD9L1uTP2UTbK8oGdnwWUzidZhFTTzsAYDgKgtMsdEdU/8vhbsy2qDvflRdgKM4rwjKtr+rfay3ygS+rnoWKlzEu+oMWtDYdv1md+2FVQX3V1zb4tpC8u8RoqILYRKUPvDCbfZiecAk2wDOz/ktfnDbZlkF8s+V4v5pzddj20UKiXNEAZLzF/g7rsJZweynpyjoLUPK7oB/IzKq/05C2XBtlN2tWhJLJmmMOCqbYg9hoZ+OCoChLsZG9Gq0gASUiwSB6udnMf3d++Y/6hWm8IIEnzml8LkCMHJq3I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,99 +98,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
-number of lru pages") switched count_shadow_nodes() to
-lruvec_lru_size().  With CONFIG_MEMCG enabled, lruvec_lru_size() reads
-mz->lru_zone_size, which is only maintained through
-mem_cgroup_update_lru_size().  MGLRU never goes there: all of its
-accounting (lru_gen_update_size(), reset_batch_size(), inc_max_seq()
-and __lru_gen_reparent_memcg()) uses __update_lru_size(), which skips
-the memcg array, and the classic lruvec_add/del_folio() paths return
-early once lru_gen_add/del_folio() succeeded.
+The kfree_rcu shrinker decremented sc->nr_to_scan (unsigned long)
+and then tested the result with <= 0. When a single CPU's object
+count exceeds the remaining budget, the subtraction wraps to a large
+positive value and the <= 0 comparison, which is equivalent to == 0
+for an unsigned type, never fires again. The scan loop then iterates
+through every possible CPU instead of honouring the reclaim budget.
 
-The four evictable LRU lists are therefore always seen as empty when
-MGLRU is on, and the shadow node budget (pages >> 3) is based on slab
-and unevictable pages only.  For a memcg holding 1 GiB of page cache
-and 64 MiB of slab the budget drops from ~35k nodes to ~2k, so the
-workingset shadow shrinker reclaims eviction tokens almost as fast as
-they are created.  Refaults then find live pages instead of shadow
-entries, lru_gen_refault() cannot restore the workingset state of hot
-pages, and thrashing protection is lost.  This hits every memcg reclaim
-and, since the root memcg is iterated as well, global reclaim too.
+Reorder the logic to compare count against nr_to_scan before
+subtracting, so the loop exits as soon as the budget is met.
 
-Fix this by adding the per-generation counters of an enabled multi-gen
-LRU to the budget.  lrugen->nr_pages[] is eventually consistent and may
-go transiently negative while batched updates are pending, so clamp the
-sum at zero.  Keep lruvec_lru_size() as it still accounts for the
-unevictable pages.
-
-Fixes: 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the number of lru pages")
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 ---
- mm/workingset.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ mm/slab_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/workingset.c b/mm/workingset.c
-index f351798e723a..da20034d28fc 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -653,6 +653,37 @@ void workingset_update_node(struct xa_node *node)
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 657fd75776ea..95ddbab290d4 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -2172,11 +2172,11 @@ kfree_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+ 		count += drain_page_cache(krcp);
+ 		kfree_rcu_monitor(&krcp->monitor_work.work);
+ 
+-		sc->nr_to_scan -= count;
+ 		freed += count;
+ 
+-		if (sc->nr_to_scan <= 0)
++		if (count >= sc->nr_to_scan)
+ 			break;
++		sc->nr_to_scan -= count;
  	}
- }
  
-+#ifdef CONFIG_LRU_GEN
-+/*
-+ * The per-generation counters are eventually consistent and may go
-+ * transiently negative while batched updates are pending, so clamp
-+ * the sum at zero.
-+ */
-+static unsigned long count_lru_gen_pages(struct lruvec *lruvec)
-+{
-+	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+	long nr_pages = 0;
-+	int gen, type, zone;
-+
-+	if (!lrugen->enabled)
-+		return 0;
-+
-+	for (gen = 0; gen < MAX_NR_GENS; gen++) {
-+		for (type = 0; type < ANON_AND_FILE; type++) {
-+			long *cnt = lrugen->nr_pages[gen][type];
-+
-+			for (zone = 0; zone < MAX_NR_ZONES; zone++)
-+				nr_pages += READ_ONCE(cnt[zone]);
-+		}
-+	}
-+
-+	if (nr_pages <= 0)
-+		return 0;
-+
-+	return nr_pages;
-+}
-+#endif
-+
- static unsigned long count_shadow_nodes(struct shrinker *shrinker,
- 					struct shrink_control *sc)
- {
-@@ -697,6 +728,15 @@ static unsigned long count_shadow_nodes(struct shrinker *shrinker,
- 		for (pages = 0, i = 0; i < NR_LRU_LISTS; i++)
- 			pages += lruvec_lru_size(lruvec, i, MAX_NR_ZONES - 1);
- 
-+#ifdef CONFIG_LRU_GEN
-+		/*
-+		 * MGLRU accounts for the evictable pages in
-+		 * lrugen->nr_pages[] instead of mz->lru_zone_size, which
-+		 * lruvec_lru_size() reads, so the loop above misses them.
-+		 */
-+		pages += count_lru_gen_pages(lruvec);
-+#endif
-+
- 		pages += lruvec_page_state_local(
- 			lruvec, NR_SLAB_RECLAIMABLE_B) >> PAGE_SHIFT;
- 		pages += lruvec_page_state_local(
+ 	return freed == 0 ? SHRINK_STOP : freed;
 -- 
-2.53.0
+2.43.0
 
 
