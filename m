@@ -4,115 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88303C61CE3
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:12:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC21AC5DF9B
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:19:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85E656B008C; Mon, 24 Aug 2026 09:12:38 -0400 (EDT)
+	id 6BC1D6B008C; Mon, 24 Aug 2026 09:19:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80E826B0092; Mon, 24 Aug 2026 09:12:38 -0400 (EDT)
+	id 6944F6B0092; Mon, 24 Aug 2026 09:19:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FD876B0095; Mon, 24 Aug 2026 09:12:38 -0400 (EDT)
+	id 5AA126B0095; Mon, 24 Aug 2026 09:19:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EB306B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:12:38 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CEABF1C00D8
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:12:37 +0000 (UTC)
-X-FDA: 85136202354.17.5CC9B1D
-Received: from mta0.migadu.com (out-13.mta0.migadu.com [91.218.175.13])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 32DE6C000F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:12:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BOoEAsLQ;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.13 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787577156;
-	b=0JjnBhxx7XKSnuj7uUVvYNwGU55axHfUkJtLonTgn2La6+6L3dbtuI2Q3Fx9PF3xVZyoi/
-	Q2jzU3J4wPh0B5oCkFrtLGfOFZyKE09vhqmRP5cEbVC1DukB7s2R1te53rlqv4VAn3upxH
-	RReLVc4bN5cxECb6joEFRNcCKVOfo/A=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BOoEAsLQ;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.13 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 369696B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:19:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB086160131
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:19:00 +0000 (UTC)
+X-FDA: 85136218440.11.BF28EBD
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AD6DF4000B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:18:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=UA4ldoU5;
+	spf=pass (imf17.hostedemail.com: domain of mkoutny@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787577156;
+	s=arc-20220608; t=1787577538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jy74hI6olsf+ojDiYLkj6HZW1r3SpS9Og/xmFBtznlc=;
-	b=dOwo+zGDrmSARKBcwu7z6WVWj+OP8KpUMxZ3qw6azqcYJlm33SiJbGmzIupzpYaaVtzZs8
-	gAxqGYFp6H8zKMsrMEwNddJoASnX+vJbhO9+Mo+5GliX18GuR0OibptOSWqZvUWRbfuRv7
-	9duxfStNfVcDUYuPUZ5jINshaiEy9Zo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/b5A6pKJXdJDFq/apoa26JYD1JiLS7wRusBfDVE9t8A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787577152; v=1; x=1788181952;
- b=BOoEAsLQzmYT5bu8nMEdHCRy4VSguhfQDyPBJVE08HYsAbcPlwtozpevsCGaw0BmAWqGImn7
- AU0stAAd9jWj1TN8fShNItWqm8sIy0sP8mZ5iVm7oU3ymin3EQBGctmsWLcDkGNhQmhJT5R2prP
- xdKZGsGtcsafYgphfDWmYcsU=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id c9d12fd6d0b2f922;
-	Mon, 24 Aug 2026 13:12:32 +0000
-X-Mizu-Trace-ID: c9d12fd6d0b2f922
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: kirill@shutemov.name
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	nico.pache@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	hughd@google.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shuah@kernel.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	ziy@nvidia.com,
-	usama.anjum@arm.com,
-	agordeev@linux.ibm.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kas@kernel.org,
-	jannh@google.com,
-	willy@infradead.org,
-	pfalcato@suse.de,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 16/57] mm/collapse: freeze the sources behind migration entries
-Date: Mon, 24 Aug 2026 21:12:24 +0800
-Message-Id: <20260824131224.73344-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260816224609.308019-17-kirill@shutemov.name>
-References: <20260816224609.308019-17-kirill@shutemov.name>
+	bh=8RHTXuRYUUKOJBcAw84Ji+ZmzZO1dHfvXXjiERNb6fU=;
+	b=D/3qCIJQ50EMlYPEtlLMnyVeYws3AJ1xTOKFfOnmRSiZOIQTD93343RPw5PUp1Cq+7NCyI
+	RHo5yHkJpRb6syB9b270dg12ZxwN9uBW8Pe5GD4ovPwzLMyd2Zt8Wfki+16zZ90tar4By7
+	epPxVD7udFkt376JLGJqg5iKPIRlJXI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787577538;
+	b=7zA1mmmapWZr8zEi34qeweg5gCkTYAaGxR759DuvUUhGrAqVp5OifseXUUwOylfj4ftdct
+	XskocQq7DUCG7T98YM5p5D96KL6yN/5HAQRyHslKzNoQVoTvFd/Myutn12vxt6uAkdmOEv
+	EnYXCMbMa2rPZ+Z63u3JIpccMNO/Epc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=UA4ldoU5;
+	spf=pass (imf17.hostedemail.com: domain of mkoutny@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c197e7e4e94so615126666b.2
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:18:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1787577537; x=1788182337; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8RHTXuRYUUKOJBcAw84Ji+ZmzZO1dHfvXXjiERNb6fU=;
+        b=UA4ldoU5rZJYERhjvxW/zLQUV+qXx2Xom9E80QPwILTLUZUht0UEAk5KOQCeBi5XtQ
+         EgOhMMXkU/7KYTvh+aQ7qWAsNjE6DqTIzRMT53dCxIAEdZhpshlZOqRY3duEEQq0w4Yd
+         R4aM7h8RG66YQ9TATYYO/ydaVLWKLhhCUnm1gHIuCCEQsGlKwCXOOkbPyCFB/RvTVviP
+         /dCXEc7JqERBSE68ZhpNAQ7wkL1TeyvLQ+kNzE56Id+Os7zKKrL0yyF02MlTwSk7FAgw
+         eyowL8Sh0dSgvG811ltLgwk+5JDLiZYl+fZXfwM502DqLLaymAE3c+7jDgYugMEAiwBM
+         MqPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787577537; x=1788182337;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8RHTXuRYUUKOJBcAw84Ji+ZmzZO1dHfvXXjiERNb6fU=;
+        b=BVF5a81mAz6CXrnlaP3hI9LhLZuwSv2RieEC6MNqvkKHQHMpYDrOj9PU0jH6Ch1vUB
+         Qgr5sz5/8AQIrU3tBuJ1SUWdKhuxfwpFekT4xg1cYuTqlkTPWBUU0hGhD7IjQwByM0pP
+         X5+OV9j8qhQ/Jo3t3qZ4JUAd80JGQUFjNZmsnu+krBZ01Y9EfGAW1EN3rvEngC8m74sq
+         RXWV9LrNEMPYwH38bzZzM8ESZgngiocqrucA4CEd8M0bbl5OxA/7bOhHNbigClvPlJu8
+         zVGD4G08XppdRX8HNPGeS8zALs1hi5nrkyutG2A628vkh7vX3+Ktwbhyvh3qXocIQgju
+         e/yw==
+X-Forwarded-Encrypted: i=1; AHgh+Rou4Mtkds3YwiQlDZN8ADIMqz1+gmgGwDTEyv12xYg4Svtjy8/rpMOHc5kjet5ILCAKOlPQ8bAlVA==@kvack.org
+X-Gm-Message-State: AFuF++kSRmcL8WRVHDnA+tZh3RLnAwKPWDarTf/fG8mvbj+TaTxuT1KU
+	t3TILa7QD1Jvm0SI3b+8pVS+BSjaDREfOEpnzwUbSwScDI9ORNsDnIn5QyZgMBdr3+w=
+X-Gm-Gg: AR+sD10aLCFwmgM7Bxmc3bycL2eIj+O6066i3bpzZ6yPpABv8LyB1awCKzdYgyqRahV
+	Fu7GhJJ639wXfhbf6taZoxnnDThF3ttptRzsaszcAP9YNOw3pT+6aHWkcx256/JuClJ/OHNtakK
+	fEC/boaP+285B8sfLhD+iTnbjJER8vMYcCF7tWWEykgGo1GSFhA9wtlqqTBvSsZYTMvGOUGF0V4
+	KfT1ORPh3TsAK7gS24aSPYm6QuQg/ODDVSrWmRHyHNiWct6PTFdbneVJyV/cyBM1x1oIq7763Jv
+	K5OCvW0/phxds7VTcq/l4gmBoEaPP8+g5MvVqVcVj0kQLV5+7W/cbV/rNDOI9ebtj8vsa8IJnpr
+	HZT9p225FeW91OzP5y2jbKCTMk7LNAxmB+EW7jMPmqvJjVcZd7JC+Tcjdp6wHHRxXM1at/YCbwa
+	ZbPzf3zIk1slO9v5mH4SNB+1FPX0be5TZ5Tdaj86voDF1gFqrapnBwAicGqpZ8p2Y=
+X-Received: by 2002:a17:907:72c3:b0:c20:2d38:e518 with SMTP id a640c23a62f3a-c249238c382mr2130827666b.2.1787577537181;
+        Mon, 24 Aug 2026 06:18:57 -0700 (PDT)
+Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24dfd91dd4sm20165366b.16.2026.08.24.06.18.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 06:18:56 -0700 (PDT)
+Date: Mon, 24 Aug 2026 15:18:54 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Eric Chanudet <echanude@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+Message-ID: <aoxEGzZ1eVzIU8xH@localhost.localdomain>
+References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 32DE6C000F
-X-Rspamd-Server: rspam10
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4jd5dcmb4dfal7fx"
+Content-Disposition: inline
+In-Reply-To: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
 X-Rspam-User: 
-X-Stat-Signature: 5uyxq81pfwo79nzyijtkcg5ic6wmst4b
-X-HE-Tag: 1787577153-843135
-X-HE-Meta: U2FsdGVkX18NEj9hM4+j3OD9kLpLs0BOt0DNkRr52u3Xl85celCKVqOjuvDyljfCWk0XqaT9T38MW7+6/VM7e6mG34/U5opSNJTzhkibcyPube0nGM8rYIGBSoeddcsOQPiBT9XrUGh38gFApGFzWKDLNe1cTpdiQ+0w3u8a0GMpOJxxnSD9/PrHBPr2QMGCjntxX1LVrMW4okk6Sqgodh390OZrVZgqaUimgcND5++zg9SC6ZRciuGYHs/fJxtY2+BCJp5FtLwpS6lViBvyEc9pfiMpCcNkABDkp+JJ4Coz40qFwMT89QCOi8qdREmRiUniSmMd+S+R0n1OD0eO1h+bednnoop2ch/0zauTi9hoS6yh0fvwKAVIxqJaVt7wtoJoOyHVjbvpzjhhZ/QAJ5l01d/Ew7I4veTxJL1XC7lKDPt5PXQdkFHTcV88EFnlEm5KMr3MUY6oW0HcNxWzeObBpcgVYVxw88ql6qj34KphlFui4+gJBx1i2u8amULLQnE5vC4mMeEb55fqqKxDJD+DOQiFP/ZGTlpRQ9SmCLmO/G640kcDpmILBMa52x0nyh0+SXP6lTy2FwNCsbKOP+qBdbgq6K70wFwPugJ7kuOjOq7TtfOSnTkSfFBAy+l9kIUy9QHNaDTVUxE/w4YDiY1ZbTPOzeEdW4S/wp9JK6RRY2nv4LfQ33EtDPx3Vg5e2ULi0CCIyhDvOh7mdjyi0BSkaqzdOxfADcioUKb7rOnWaqqYhbbuPg8y3IFkG2v3MKOpIgpotHsTYlyNeq1JdZ+tBn/YkSechDwH3yT9YhJtCPQw0rUf+JdZuSPUPQ2tN+gpjF+okiAcJdXxRuPcC266aNMGWYmbFdTrE9cAYlZEXcrbQw81RLIzYirzEHYTtWrVIUtEvnBTvGiPXg7pv1uYzd4yiBC36h70n4yyNuPtODm5WTV4YdfkS82gflA3n2Tq7SBHdDeHRU+6BSb
- iXBYqTgk
- OmJf018OiuDnY4ITViCMwOw96Ut6JkaAYwVDdNZmzutIz6DF9pxXyY4dVmF6S7XvehKd126yGhOcdIICioVZUR0zhYWORcXnrUPl6fLWYugkd0Z2g7QkI3zwEKtuwFtxwNX4KQOPCzpqiyEFFQBYBRARMFBml4Q6C2vi0kOhLZjo7txDby7Gc8tKyHR//FI579gndRhq8n2sBpbIDyf27s2WszqUAoZGI4s7OcDA7f5/59cE5+ABNE8eHqDKTvsMmWrp/CWcleJEiVDiN02q4Hpubkd5fi/j/WCIWqnyX4UNVQj81pnPRvvGkfw==
+X-Stat-Signature: fayd63e3jqcy71whyewqaicgornxd6tj
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AD6DF4000B
+X-HE-Tag: 1787577538-250046
+X-HE-Meta: U2FsdGVkX19emaV8Pw4v85zTB2fHv5Js/mg/GQJFP/qOdzlRC/lvsWfv04qi4ptmKPGnbu/8FOaVYdlj2BO5lyYwa2+6dukYGsPwNCYgBUe2z3mvj/YDpzJGiImokNYScelvVqf56tiFGitJfI5ivcudY1JVCibNijZJhlteZhF01p1cQWSs3Xfco6tu1AiCVZ3fY6TjjBr16mutApnH5+WrNMH/gQqMzpb/gV/MgKBqqWuk3P6mOBLwTvPkbBj44C8JteWnPKuv5UroAa6H2MXbgmaWsIIWxzLsI2qbS5bAEd9IoEwSVJSMmo321VdY9y9dHINDBfWasheF3Jmuv5Y5kqHdNb6VZuym/ms0qsIulHJwySEvmMb9xYasVEzvxHM8F00X6VU2jIyEPorGwD2J2jWmft56dIIKKUAjwITqhfiispPmD2E5nSwU5AV84vVrgrYPTzEGxgbV+EBGraVt4xVhSwbziPx1QclJHjI86M6BEpSJiXNm4dmxRwPnhvyTYL7u+xpkjjwUu74YX9Oea12tfxtVKyRve6bdse/6Jppb8vsmRIL3+Wj/4baeW1QkYC35+MhPJV/FT3jdV+ltgl/bmiWW4HDPYkz22Aq08YX8IQ5dLeuYVtrmtU8SBrwKNkYtGoGGh0jwYp1OO7xCUCWAidld9jtZGsD/b5yunlYFMbbFVXA3hGLM+zDjVaVnCVUKNuUYsUJgciqAKw2mkbIokHFSY+W8jd1Jgq/QPKfn1mEVXvbhiiI/biG4Lq9vpKeSe20Aw9aUAiR0tcxnwHx9f64o3czeODZ33eRa48dlsJaScsZjEeUmqMU43/CZqrSln1jXELoNaRzUugXw4FIh8xO5z3V/2E7tWokp6jgd4jCe8mtSxt2+o3ptgcuImGXk0xzfZin1oB3QJ5FgLwhfpPzonAsbvhIXDGPdJk3wxM/0Npn9X1JjOXWEotTnWFBVMTaFlyAwueM
+ y7wMPufX
+ G+dP7KaXa3ZHr2iiI2pxLWs0ocNLriRb3VRFPWeEg6DsVzuLPMhRFiOhjBScyE3RLex+hZeFWPuJrIYa/2ssPTwiwznKZsHx8Hzj9rPY3AYBeT7D+/I8D8Y7mrGDQ/5nJmpRmFy/ccWzdBCHLnLAHCjtznK40V5IwlEIvF15zVyQZ35x9zkhprpDtoXLcq43kjXsqugZ4994OE17kpPqvAhUsfD9ilwiOHBMtbQENZP5uDW0ZDaxnov6VIW0Rk1xyGBMnICSaSFieUWKiOLRe0xNfoOgg0kJN6SAzcKpujgnZbEVkwjMkl0pkoDSPGuEXdATG1W7qFtuaMqTTwl50vUm4XWyS5Cumjc71PHm0Yh1lu0U+CpSDMhXx8s05GNVS60QBBcm6osQnsluZW6DDctY/40Bl7N4MAUoi4SSDRwRThVxT+yshpyr01UWnCUjWYSpv4hV2Trj5sCHB6JMDhlEW4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,272 +130,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Sun, Aug 16, 2026 at 11:45:28PM +0100, Kiryl Shutsemau wrote:
->From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->
-[...]
->+static enum scan_result collapse_freeze_candidate(struct mm_struct *mm,
->+		struct collapse_candidate *cand, pte_t *pte)
->+{
->+	const unsigned int nr_pages = candidate_nr_pages(cand);
->+	unsigned int nr_saved = 0, nr_frozen = 0;
->+	enum scan_result result;
->+	struct folio *folio;
->+	unsigned long addr;
->+	unsigned int i;
->+
->+	for (i = 0, addr = cand->addr; i < nr_pages;) {
->+		pte_t ptent = ptep_get(pte + i);
->+		unsigned int nr, nr_max, k;
->+		pte_t rep;
->+
->+		if (pte_none(ptent)) {
->+			/* Hole: nothing to freeze; install verifies it stayed one */
->+			cand->saved_ptes[i] = ptent;
->+			nr_saved = ++i;
->+			addr += PAGE_SIZE;
->+			continue;
->+		}
->+		if (is_zero_pfn(pte_pfn(ptent))) {
->+			/*
->+			 * Clear the zeropage mapping now, covered by the round's
->+			 * ranged flush: overwriting a live PTE at install would
->+			 * be a valid->valid transition, breaking arm64's
->+			 * break-before-make.  The zeropage has neither rmap nor
->+			 * per-map references -- the saved value alone undoes it.
->+			 */
->+			cand->saved_ptes[i] =
->+				ptep_get_and_clear(mm, addr, pte + i);
->+			nr_saved = ++i;
->+			addr += PAGE_SIZE;
->+			continue;
->+		}
->+
->+		folio = pte_folio(ptent);
->+
->+		/*
->+		 * A folio revisited by a second span of this round is already
->+		 * ours and frozen at its first span: folio_get() on a zero count
->+		 * is a bug, and try-get fails cleanly.  Scrambled layouts
->+		 * (mremap) construct this; nothing else can hold a folio frozen
->+		 * while its PTE is live under our ptl, so it is not transient.
->+		 */
->+		if (!folio_try_get(folio)) {
->+			result = SCAN_PAGE_COUNT;
->+			goto unfreeze;
->+		}
->+		if (!folio_trylock(folio)) {
->+			folio_put(folio);
->+			result = SCAN_PAGE_LOCK;
->+			goto unfreeze;
->+		}
->+
->+		/*
->+		 * Never freeze a folio under writeback.  PG_writeback holds no
->+		 * reference of its own -- the swapcache reference keeps the folio
->+		 * alive, and everything that would drop it waits for the flag --
->+		 * so folio_end_writeback() plain folio_get()s a folio it may
->+		 * assume is alive: a BUG on a frozen one, or with
->+		 * CONFIG_DEBUG_VM off, a free under our copy.
->+		 *
->+		 * Unlike every other hazard here, the freeze does not catch it.
->+		 * folio_expected_ref_count() counts the swapcache reference, so
->+		 * the count is exactly right and the freeze succeeds.  Nor can
->+		 * "is it in the swapcache" stand in for this test: that would
->+		 * refuse the pages the fault-in pass just swapped in.
->+		 *
->+		 * Reachable even though writeback starts on an unmapped folio: a
->+		 * re-fault from the swapcache maps it back before the bio
->+		 * completes, and folio_free_swap() will not drop the cache entry
->+		 * under writeback.  Testing once is enough -- writeback starts
->+		 * only under the folio lock, which we hold from here through
->+		 * putback.
->+		 */
->+		if (folio_test_writeback(folio)) {
->+			folio_unlock(folio);
->+			folio_put(folio);
->+			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
->+			goto unfreeze;
->+		}
->+
->+		/* Each slot's own value: a span agrees on the PFN, not the rest */
->+		cand->saved_ptes[i] = ptent;
->+		nr_max = collapse_span_max(ptent, nr_pages - i);
->+		for (nr = 1; nr < nr_max; nr++) {
->+			pte_t tail = ptep_get(pte + i + nr);
->+
->+			if (!pte_present(tail) ||
->+			    pte_pfn(tail) != pte_pfn(ptent) + nr)
->+				break;
->+			cand->saved_ptes[i + nr] = tail;
->+		}
->+
->+		/*
->+		 * The clear is the GUP-fast linearization point: a grab landing
->+		 * before it elevates the refcount and the freeze below fails
->+		 * (the candidate unfreezes); one landing after fails its PTE
->+		 * re-read and retries.  Clear and store sit adjacent under one
->+		 * uninterrupted ptl hold, batched per span
->+		 * (get_and_clear_full_ptes() unfolds contpte), so the transient
->+		 * none window is invisible to installers, which all take the ptl.
->+		 */
->+		rep = get_and_clear_full_ptes(mm, addr, pte + i, nr, 0);
->+
->+		/*
->+		 * Dirty from the clear -- including any the hardware set since
->+		 * the reads above -- goes to the folio, the way unmap does,
->+		 * rather than onto PTEs that never had it.  Young needs no such
->+		 * care: a migration entry drops it either way.
->+		 */
->+		if (pte_dirty(rep))
->+			folio_mark_dirty(folio);
->+
->+		for (k = 0; k < nr; k++) {
->+			pte_t saved = cand->saved_ptes[i + k];
->+			swp_entry_t entry;
->+			pte_t swp_pte;
->+
->+			entry = make_readable_migration_entry(pte_pfn(saved));
->+			swp_pte = swp_entry_to_pte(entry);
->+			if (pte_soft_dirty(saved))
->+				swp_pte = pte_swp_mksoft_dirty(swp_pte);
->+			set_pte_at(mm, addr + k * PAGE_SIZE, pte + i + k,
->+				   swp_pte);
->+		}
->+		nr_saved = i + nr;
->+
->+		if (!folio_ref_freeze(folio,
->+				      folio_expected_ref_count(folio) + 1)) {
->+			result = SCAN_PAGE_COUNT;
->+			goto unfreeze;
->+		}
->+		nr_frozen = nr_saved;
+--4jd5dcmb4dfal7fx
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+MIME-Version: 1.0
 
-Just one thing I was wondering about ... can deferred_split_isolate()
-remove a source folio from deferred_split_lru while its refcount is
-frozen by collapse_freeze_candidate()?
+Hi Eric.
 
-Assume an earlier span belongs to an anonymous large folio on the
-deferred split queue, then a later span fails folio_trylock().
-collapse_freeze_candidate() continues after freezing each source folio
-and calls collapse_unfreeze_candidate() on a later failure:
+On Fri, Aug 21, 2026 at 02:56:52PM -0400, Eric Chanudet <echanude@redhat.com> wrote:
+> Finally register the per-area usage counters in the cgroupfs. Each CMA
+> area creates a memory.cma.<area>.{current,max} pair for reporting and
+> limitation for each area.
 
-static noinline enum scan_result collapse_freeze_candidate(struct mm_struct *mm,
-		struct collapse_candidate *cand, pte_t *pte)
-{
-...
-	for (i = 0, addr = cand->addr; i < nr_pages;) {
-...
-		if (!folio_trylock(folio)) {
-			folio_put(folio);
-			result = SCAN_PAGE_LOCK;
-			goto unfreeze;
-		}
-...
-		nr_saved = i + nr;
+These areas quite resemble dmem regions.
+What is the relation to the previous dmem double-charging [1]?
+(Successor, alternative,...)
 
-		if (!folio_ref_freeze(folio,
-				      folio_expected_ref_count(folio) + 1)) {
-			result = SCAN_PAGE_COUNT;
-			goto unfreeze;
-		}
-		nr_frozen = nr_saved;
+Thanks,
+Michal
 
-		i += nr;
-		addr += nr * PAGE_SIZE;
-	}
+--4jd5dcmb4dfal7fx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-...
-unfreeze:
-	collapse_unfreeze_candidate(mm, cand, pte, nr_saved, nr_frozen);
-	return result;
-}
+-----BEGIN PGP SIGNATURE-----
 
-folio_ref_freeze() takes the source folio's refcount to zero:
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaoxEuhsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ai6WwEAt6IhJ1j5eKMrYIQuXx6H
+vcVhIKJYy4uCLIiKXOf6/zMA/jVVm1UxH8BKR0Myu49nuRzoWqbLCU9ie1WLGOPG
+nZIA
+=+xTm
+-----END PGP SIGNATURE-----
 
-static inline int folio_ref_freeze(struct folio *folio, int count)
-{
-	return page_ref_freeze(&folio->page, count);
-}
-
-static inline int page_ref_freeze(struct page *page, int count)
-{
-	int ret = likely(atomic_cmpxchg(&page->_refcount, count, 0) == count);
-
-...
-	return ret;
-}
-
-While collapse_freeze_candidate() still holds the source folio lock,
-deferred_split_scan() can call deferred_split_isolate():
-
-static unsigned long deferred_split_scan(struct shrinker *shrink,
-		struct shrink_control *sc)
-{
-	LIST_HEAD(dispose);
-	struct folio *folio, *next;
-	int split = 0;
-	unsigned long isolated;
-
-	isolated = list_lru_shrink_walk_irq(&deferred_split_lru, sc,
-					    deferred_split_isolate, &dispose);
-}
-
-static enum lru_status deferred_split_isolate(struct list_head *item,
-					      struct list_lru_one *lru,
-					      void *cb_arg)
-{
-	struct folio *folio = container_of(item, struct folio, _deferred_list);
-	struct list_head *freeable = cb_arg;
-
-	if (folio_try_get(folio)) {
-		list_lru_isolate_move(lru, item, freeable);
-		return LRU_REMOVED;
-	}
-
-	/*
-	 * We lost race with folio_put(). Read folio state before the
-	 * isolate: folio_unqueue_deferred_split() checks list_empty()
-	 * locklessly, so once removed the folio can be freed any time.
-	 */
-	if (folio_test_partially_mapped(folio)) {
-		folio_clear_partially_mapped(folio);
-		mod_mthp_stat(folio_order(folio),
-			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-	}
-	list_lru_isolate(lru, item);
-	return LRU_REMOVED;
-}
-
-And folio_try_get() fails because the source folio has a frozen refcount.
-deferred_split_isolate() treats the failure as a race with folio_put(),
-clears PG_partially_mapped and its MTHP_STAT_NR_ANON_PARTIALLY_MAPPED
-accounting when set, then removes the folio from deferred_split_lru ...
-
->+
->+		i += nr;
->+		addr += nr * PAGE_SIZE;
->+	}
->+
->+	cand->state = CAND_FROZEN;
->+	return SCAN_SUCCEED;
->+
->+unfreeze:
->+	collapse_unfreeze_candidate(mm, cand, pte, nr_saved, nr_frozen);
->+	return result;
-
-And collapse_unfreeze_candidate() restores the source PTEs and refcount,
-then unlocks and puts the source folio :)
-
-The source folio is not added back to the deferred split queue, so an
-underused or partially mapped folio can remain off the queue.
-
-Should collapse unqueue the source folio after folio_ref_freeze()
-succeeds, remember whether it was on the deferred split queue and whether
-PG_partially_mapped was set, then requeue it if
-collapse_unfreeze_candidate() restores the source folio?
-
-[...]
-
-Cheers, Lance
+--4jd5dcmb4dfal7fx--
 
