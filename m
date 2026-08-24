@@ -4,89 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF6BC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6390C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:05:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 859576B008C; Mon, 24 Aug 2026 07:03:14 -0400 (EDT)
+	id E9F2B6B0092; Mon, 24 Aug 2026 07:05:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 830D86B0092; Mon, 24 Aug 2026 07:03:14 -0400 (EDT)
+	id E772C6B0095; Mon, 24 Aug 2026 07:05:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76DCB6B0095; Mon, 24 Aug 2026 07:03:14 -0400 (EDT)
+	id D65BA6B0096; Mon, 24 Aug 2026 07:05:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 58BFD6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:03:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8EB6C04B1
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:03:13 +0000 (UTC)
-X-FDA: 85135876266.29.A314D2C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 22F4318000E
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:03:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SzPCSzAJ;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787569392;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFA126B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:05:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3FD89140472
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:05:48 +0000 (UTC)
+X-FDA: 85135882776.20.10896B4
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3C7FF1A0007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:05:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MUFjAjDz;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787569546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UdCOtUzK9WsMiHEbiXYD8f6q2FcIgH+IdV2r7/ydGwo=;
-	b=sAzH27z94xULd8K6ul4ILwOjRvAOewbR1HO5Iq+8814vUPL/Wp3LfiJyHPxtcb3hp+It3/
-	WSJ1EvJc460OR8qIaPvYrgPOuLYNiDqGD4Dcclhu4E/hhGXdQcBjwTKJO7N5edU19dvf9W
-	b8dWqZzXvvYUXU4tpkV7i24M1s1WY1c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787569392;
-	b=nPgVBQsvulkSIROs1zdenqUSMNH6cMJNf1hpmN8Ry6NZDGOsyObCjcgFDynd890WEsWBNZ
-	W+qK7TplKbjdxNCr/tCb/mNRRYbEipgKxCdcyeuRMaHKDjro2WpT9myXXB/4+aNm5sbsip
-	57Do03Tfhj7qyv8sl4bZ49cVJT4QW/U=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SzPCSzAJ;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5930C600C8;
-	Mon, 24 Aug 2026 11:03:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1039E1F000E9;
-	Mon, 24 Aug 2026 11:03:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787569391;
-	bh=UdCOtUzK9WsMiHEbiXYD8f6q2FcIgH+IdV2r7/ydGwo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SzPCSzAJGs3UGrpf2l5Ux5IkhIojvbrune2DyFgFdqytpk8KxvGYe4xy0mn9cvJpc
-	 kTKyQ431BDuqkXn823kR2GrIbjkA5YAe1Els36lu393h7RjRapU5wFEyLCOoGLYhMW
-	 f4PoB9ugcvMcYFUp1hEaBnvhfXG+Ul5AgPhr+hXG5ox0OaE1ExDs0fE8arUZslL4+F
-	 mJQVLeXzSeHbrF4NiYc8JvdDxe/+yCIj/132zC6+zLpIeitDTEWvzJNLafHfTAdB78
-	 pFgxBJluHzQ0in44PHlF27OJWnRNTy16WwoInCMPZyA3CXaZepPvqKrzQ7uFg0x8VN
-	 4TkDhS5adwhow==
-Date: Mon, 24 Aug 2026 12:03:05 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, xu.xin16@zte.com.cn, 
-	chengming.zhou@linux.dev, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	shr@devkernel.io, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-Subject: Re: [PATCH v3 2/2] mm/ksm: fix advisor_min_pages_to_scan description
-Message-ID: <aowk3FVFNAT1EIsE@gremlin>
-References: <20260824061010.3343959-1-tujinjiang@huawei.com>
- <20260824061010.3343959-3-tujinjiang@huawei.com>
+	bh=xbWHx8W1MVljpMD2nJgZ+iZRUHBwV4fQn+7ykl2MkBg=;
+	b=up77xyba1SBvR7nU9tUPGqOPYJTaFhV8UjwUUJVwn8zwMKXHWomlsn16+xf/7VHDcGJN7O
+	T/zzcguxwm5dZnG3h1SQlj+CuNvaxPp9f4F3W7f9p1S/IWfnrEL3gQkCkStMMtAIN8qzKH
+	lpAN4vW8VEPwRrYyj2ShcR/bu/N3FUs=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MUFjAjDz;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787569546;
+	b=WIakAxDnai9Ndkufq0r+pjUbSdBXTfyuuXyvsQ+cpMTBtqos0U0kPRqB7MDtp2yrEPXDNT
+	eYsewoLgV4hVJ7v37sGDh2qPYPlpaubGiJ8F8BCM4A2M7ab2jflBKivcdHyenuRzUrj9I9
+	qIykKDGVq9akd14OQhjT3oRB0s7nnSo=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a0c8283146so5669364a12.0
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:05:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787569545; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KDon+1qrGKbWyNkQtlABxVtjpdJIeabrg6d+uLDt3OdcQJaHS2pN9uBZ4PslkuCbRt
+         xaLqqzuvFSRri0Ectq+qKIqNv2ySbm0HcUJrhJqwC/GaE5/mTzf/vdkCC0IwNwBkqMSk
+         nBT4UwJcpCukfgwY6gxN77R6pVnkSTRMYukClleIOHwiUBDmN8J+gbd7yhpdkdbIvkTi
+         33CFQ0SPdvOGCBlUUCw9grk1FU8BGNiErqtD5ALUfx0b8k6AWBJkQ3M9tXK1e7EkCY8K
+         Q58/RTnG/ntaixXg/LXi65GHDgU21Ng23LU0NNvIUPMEulq/AhuhqUw67y/WIh/wFhEH
+         7VgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xbWHx8W1MVljpMD2nJgZ+iZRUHBwV4fQn+7ykl2MkBg=;
+        fh=1ovLHli0DJ+fNCfpl1S33NN6LOm035aN0uCWbI9mXRg=;
+        b=rUIEMXZKF7Z9/KaF2iyoDcM0WzUOCZ5a+GuKMcfLLb/4yJhQDqiiz/+E+mhROrC/op
+         prnpc6acyEkE3YPWnk/sIC3TcW6j/nK3c8JYpcZT/fS2IiLDQUwd/4sGFEI2aOtREIKK
+         r3bvt7YOJziHey4ABGZ7nSOrPM/QiQwaV0T+Vqg660c53+th04Dt2uYBlIXBHG0r/7kL
+         jT3wOjwWomYHylP3INAM7xgwThRSAukMw7NwrBWlVbx5vcg97Mz+PpzHfIuUvD0zF6NC
+         kneg/bdAkDiC12EBllaiJuf3dSgMJeSvhRIywnkYD3UhobgzaOKLxolhO2BqFa8bkIUI
+         pbGA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787569545; x=1788174345; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xbWHx8W1MVljpMD2nJgZ+iZRUHBwV4fQn+7ykl2MkBg=;
+        b=MUFjAjDzO+TlPwrpJXcO1jzbZ0q8LxAR3D+c55Ghpp09QMKIHUB+ynN/06E64Wr+WD
+         5XZl7LZZccYs5AqcjZs0Vrshrv2w877v5A1F3/1K2i/C2HvakJobHO4k6JQ8zyH0tqDu
+         hiIH34RDIWbm+chk9kXte02Ks99cY/TgiZZcggGRaKZ3tyqJN0MAJ3T1V7jGN4KKwBSl
+         tHGDn8sd1DG3zr6UY8nibUcDNf41PXXpwFhgj1KH4W0SVQvRy+hjj1vu0QMhOhVF58s+
+         WKzhoimbRPHh4zQ4jUAgvt+FEK6llylTm4pdpoVqr99RuCrEeEYrfRwN0yGQDgT3YPjN
+         PSJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787569545; x=1788174345;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xbWHx8W1MVljpMD2nJgZ+iZRUHBwV4fQn+7ykl2MkBg=;
+        b=TPqBSsF9ZL60Rji42tnfvCrFbE2/uKTk5mRxhfhSMTTcCn/QdBI6Wvp13lA3/mUbfB
+         1pb8oeabzm1dm5g0HcUdIht0qBId8TV8lGquLfzmuuHzO1/RbP2FOzIdyQ8tgvjINf4W
+         nWlrq23ZXc6s5qWFKqFeXWKcu5+XSaMzn4sTl5o4+orlLz7218EU1+R26LCnfGGIpBqF
+         C4L46YAOOhVxRMybEnPfolOndlhieUDHoE2mv9DTahh9Ivtdej0W66n1MboPyQ/4pghc
+         EepP/KgESBeOEiajw/WGuPuh9l6Ahn8TyVbApNaZPooRZ0N93SB0jJztJaOlugbVoFgS
+         Jtsw==
+X-Forwarded-Encrypted: i=1; AHgh+RocNxaWPSW/MF2Retsj+BWkLKJE3jPzbquL8MW2YOGBCYpFqedEK91f65SeFhuxhYKMWvluaGVUUA==@kvack.org
+X-Gm-Message-State: AFuF++lFiufsYl2ETUoSv0cu/I0EeVcc+z4MSTUnxnqOF6NL4JEmLePa
+	QBwAdsx84Xdt1rcnF6RQgSNNV5CP084IJ1Cs1TuFqgusL4P11L55LaTxCUg7Olm6kASn4/vU12Q
+	xLUEc0rPugP2wkFprI4SjxRZ3Rhkq7SdF0eWMYj4=
+X-Gm-Gg: AR+sD13053wvPz6MCC2ly4HRBUBpVRBLjShUsbsSh1EYZDWg2AWQG/suBUWTEZTK0It
+	HoBW28CkHqXTOwkPE6Xm6w9+1fi+l4yUsC1R7a/q82t9y7RDXt1DZO8GZHVBcNhSV3aADXHiaeZ
+	a49zQ8ta52x8g/TGsJkTj/ZsHxukwVddzp8reXs/flF7ML+wgztDDDmPmmBmzUE/iVuLWzkCqEg
+	GExFNS4pggLudUPX7k4If4KvmQdS5KRcr5j4ZhpUbUGpEVWi5umeC3vlvFE/ndBz3kGQI62itT7
+	bszSFTMlIa5ZFIx56Fii/Nvk8LaniX0g4ejFfouGwdruTpnaTTxgQ8IzTFJk/+L3VjALVoNw1kh
+	rJsHZMjzGvF4T
+X-Received: by 2002:a05:6402:a0d8:b0:6a0:926e:f907 with SMTP id
+ 4fb4d7f45d1cf-6a42f184b7dmr31867176a12.1.1787569544515; Mon, 24 Aug 2026
+ 04:05:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824061010.3343959-3-tujinjiang@huawei.com>
+References: <20260820045603.68809-1-baohua@kernel.org> <7e897a4e-2075-485a-8cc5-5bb928fba437@linux.alibaba.com>
+In-Reply-To: <7e897a4e-2075-485a-8cc5-5bb928fba437@linux.alibaba.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 24 Aug 2026 19:05:07 +0800
+X-Gm-Features: AcwNN1UPfr78Gu6KdSgUdG9sx3OPrdXit-fwBczuLNxYcgUffHGSUWogJ7UVBXg
+Message-ID: <CAMgjq7DFpKU=QdT4QNAREL8oLg-OAxM6zMcYkCECBVg=U5ECsg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm/mglru: clean up isolate_folios and scan_folios for
+ readability and clarity
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	axelrasmussen@google.com, baoquan.he@linux.dev, chenridong@xiaomi.com, 
+	david@kernel.org, hannes@cmpxchg.org, lianux.mm@gmail.com, 
+	linux-kernel@vger.kernel.org, ljs@kernel.org, lyugaofei@xiaomi.com, 
+	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	stevensd@chromium.org, wangzicheng@honor.com, weixugc@google.com, 
+	yuanchu@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3C7FF1A0007
+X-Stat-Signature: 7p1cixx9uzzgkyxis67y7gfs73sh35q1
 X-Rspam-User: 
-X-Stat-Signature: ps4ubyofnmw65e1ymgx1wwkijrj9fxy1
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 22F4318000E
-X-HE-Tag: 1787569391-137605
-X-HE-Meta: U2FsdGVkX1/Ia8SmPqsuwf3QeDTH4aV+79u3a/2qOSeiuykzSPC6UaEySqlylrJGTQDHsA0D484AWrR+qbEGq6b/W2FL6soBRdghDlwPN42C9tBv5MUDoFPNB57g8Z8bRwWIfniF8VwQJkzAMVaZn6endubMjuSIBCqlirteRbw6WVkvjw/SdOUqa/6MfBMnDoTFG16W6CN4AJTo9vqEGl7IDONj/90iEOcL6kvPxtUuN2zKkCCmuT+58LoGbbm3FD5/ljXrP+kkLHF1rLTkCdoDIKlyAurRo9YE0+ZjtqS12R/bD/FOWrEichgHS1PBRAID8Wr8F2tQycYd4Fa/LRFoLhJR0raH6TzzUJR77Ox4mGAFoArLNHwziPWWfFmgyenAIrplFVBf8vX7oHv5O45GfujgGbrgFBQ63mIpAb5kUw6Hm4EOfDNYQQI3ntyI2W/VAkEr0NutYXnBJc3FdjDux1K/656Jb/MtrN+bIMoVA1BsCan08XxsV7fL+JJrL7oXFa1+A2kf0i+m7OUQkrisbz+DE4jDCaQ2MgeYRXG20l0zJJnYPbtyvagAvW+xk6BrEgqG4BMoZQOQbG3wci6yUvPPeRsPOvdNqDyO7G+llO74smcYboH5mJDlKOkSwtj9szkJUou18IYOEHXH66oDra4KhNCUmKQc9hFgJpuyPSpfmwUwDdwoKbyej2qPjHFIF+4duY88Y1thgX4DVA/IwHF2qkQCx3tNMzDw3z/MNbKPXCGy84ORp1fVSyYEixRSgyRxuRwnEnMUBwjSDVl2C+1kL/1zu+CQ7aZ4L9Ejmc3bcsi/jMx4iNPmMPkAX9Z7hHo6ZOAvDfeI58hpRmLmvQ8h/Opjzh7a7hi3vmrlvctqsBmJHvbD4TMeMt/nXq9v3fMCDFxDyPsZFjJRhDsJ7EsFeZAivqwKM1BrXe+EgwB0s+vIVfb8ryrpIYb6Cchvy7osUXqepvmSgts
- iUHnHAOY
- qz8WzlAxKwPQveIgRYOut2iFEYgihMnbriPGaV8H8XTZkg6axfMuPHwllOyUvwZX5aKQSZbLygiy5Fpw8BrSphwPPkfA1llAZRIxXgu/O/TjAcmZMtU7tos92KT01LPEj6slrApVe/EL1As8clwK4K4QtYMPqN6E/dz2NzN+sY2jDhyVCi1tXKp6ki7AXNC/6xDkzwlPRTfQJRq17aeegG4f45acDiU6WBIedF1qdTgzc1gXmQidCmwa1SfGRVQc5x9UqE2xVZct/FACp3cg2lo3pu9NM7/cSVKhen6ZSDZZEVuvlMu/P78nJhqHMDBlPzqJoVyPj5k1Kxobqzp/PB39FZJYMjRd95GWR
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787569546-25026
+X-HE-Meta: U2FsdGVkX1//HNyrww/+RTlAtE2MhLTCE2uW2lxxl4eNyR4cyc/vlbF0Qt0zvgKWxQ3NKM1kJQSd1+BnvNhzDT1unax0boMth0dO2MHw7FAZPhsbQOkrPGBRU8nO7RgzYhJRpM+d6jQU85YsYWd7QlYSnoBc4O5bYFI9IqLbHUbASD75izz7OVQHCAdu3Z6SZGEyKLDifgmi9QVPpZCWbR7WW18hKZmjIq2sF3FNycnd/Dr384JrRrdrT3+bqrthEE9gNDAFg8SrjstWsAjzDzCzBPFfeJShnv+LwXt3dYO7KbLyUI3cs7InZG/tSNpmAsqmc3qiFIyo8DxHpIcvgx4gZbUoR5JooKLU7FHC0PexJp77vutUtblMx9iN6GxU61CvFsA6o/H0doOK5ba0iKg2ebXH9dDUn/cjSOMZq6v/U7xds3OmZMjAkO9TJgjKqw0fSGox/8aNR5Uw8XnKehE4gb5PTdDt0MjcBFluAPgqmPSQ4zVwMn4jMIeANrcriWrS+OL9CVgT/1SA/ZXhjVGtBjr36dDGOI/rq3LMYOmykstNb4VWFNz8nTmai1fr9cV43JgPwX/aKQL4j96bk135/XehWSsCimMSQ6VreBM+Y4fqNAXYLTr6MTr8wu4vdJ2267NdXbU593Nbt+D69fsBJJyuXJnB2Ml2rCjkBNla2pnt50zXsjDZPsXpWfCmQI2xYbUmRlv/IPSdipCLnTD+qSFzZ7Bo12lOEzH4mXnPSntTztbqI+aBcroOgdlcSCb1YMij4Mp6D0DSYMMdC+UM2wVl8/st87EPl4tW4Ux9af+hkEp+XNqBlzTYWzaHGEFf7uVV4NdqsQEXDPL/3/ZbsO6fBIBDjUsROeTPDzD1P1/DR8+lHGxTwGAE3JcaidN/WUwqMtihzpF1SqEORSqRP1LfxrSUMcrH5ODC1PVeqBksaxewl47hIQTGnLilX7R8jAU4HQygpRFHdjL
+ 4QwG06IP
+ /ZOjdi+V/wZVUm/CFksmQap/K4AgiAMBO4CLDEHHWW1ASHO2DG15MtalJ1kAW37d2VnKteGAViragvnwIkn93q9VtLchQe5VyhfoerOdHZX6YuZH2gtxCxxTUH+YkzVN85ku/FSu7yCsWCvV8bfhWzGJIzyqfou0SPRbc3RuBqYQF5q0qscYYWW7vFqwC2vK3hYrC4N/enKLvtKQD1OotA90Gaj7gYFkrUQD0kBL/8kvBkqOGmYgKvSD3xvIq3Ygc1Z2ync4vj2EcSuc2ZiChZa9rEy3QHLVPSy9SsjVj2F0B/35VaFsrMZPXC4hLYC/3lyl5wREMuJyXeLcr0nsTojs0Rn7E3KZwZPyl2tSQaPptEgp565lHl7BgcnEaBVNTNm2xQSwJu9d3i+pxhu8HrwHmzfNI0Bdnu7oVbVXN3mBgupTSuFuOt7JGew47Ctzc8nJjo6/JCzqFeyKpEGftynaimHZ01Twzs/RMoNucBEqYVfvD6Bs+UEClwlJDIub7YsKGroM3yqclfF7HK788kX9UwWF8k7GY+V7PyNdbe183VOs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,71 +146,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 02:10:10PM +0800, Jinjiang Tu wrote:
-> Both Documentation/admin-guide/mm/ksm.rst and the comment next to the
-> variable definition in mm/ksm.c describe advisor_min_pages_to_scan as a
-> lower limit of the pages_to_scan parameter, but that is not how the
-> scan-time advisor actually uses it. commit 4e5fa4f5eff6 ("mm/ksm: add ksm
-> advisor") only uses it to initialize ksm_thread_pages_to_scan when the
-> scan-time advisor is enabled.
+On Mon, Aug 24, 2026 at 3:25=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+> On 8/20/26 12:56 PM, Barry Song (Xiaomi) wrote:
+> > This is a cleanup series split out from the MGLRU swappiness series [1]=
+,
+> > with the cleanup changes separated to make them easier to review.
+> >
+> > Right now, isolate_folios() is quite difficult to follow:
+> >
+> > 1. It uses for_each_evictable_type(i, swappiness) to iterate over the
+> > types, but i is not actually used as the type within the loop body.
+> >
+> > 2. It uses scanned =3D=3D 0 to detect whether the current reclaim type =
+is
+> > exhausted, but this is not an accurate indication.
+> >
+> > 3. It has an internal retry when no folios can be isolated after scanni=
+ng
+> > some folios, but the retry is implemented in a way nobody can understan=
+d.
+> >
+> > This patchset makes these behaviors explicit and much easier to follow.
+> >
+> > Run kernel builds for several rounds in a 1 GB memcg and take the
+> > average build time. The patchset shows almost no performance impact,
+> > with a very small improvement that could simply be noise:
 >
-> ksm_thread_pages_to_scan is adjusted by scan_time_advisor() after a full
-> scan finishes. ksm_thread_pages_to_scan could be increased or decreased
-> depend on the real scan time is longer or shorter than the target scan
-> time. The min value of ksm_thread_pages_to_scan is only limited by
-> KSM_ADVISOR_MIN_CPU, so ksm_thread_pages_to_scan could be smaller than
-> ksm_advisor_min_pages_to_scan.
+> Just FYI:
 >
-> The semantics of advisor_min_pages_to_scan was updated in the v2 patchset
-> [1], but the documentation wasn't updated.
->
-> Update the documentation and comment to match the semantics of
-> advisor_min_pages_to_scan.
->
-> Link: https://lore.kernel.org/linux-mm/20231028000945.2428830-2-shr@devkernel.io/ [1]
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-
-LGTM so:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  Documentation/admin-guide/mm/ksm.rst | 4 ++--
->  mm/ksm.c                             | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
-> index c9f533b10f6f..c329ca747b8c 100644
-> --- a/Documentation/admin-guide/mm/ksm.rst
-> +++ b/Documentation/admin-guide/mm/ksm.rst
-> @@ -183,8 +183,8 @@ advisor_target_scan_time
->          pages. The default value is 200 seconds.
->
->  advisor_min_pages_to_scan
-> -        specifies the lower limit of the ``pages_to_scan`` parameter of the
-> -        scan time advisor. The default is 500.
-> +        specifies the initial value of the ``pages_to_scan`` parameter of
-> +        the scan time advisor. The default is 500.
->
->  advisor_max_pages_to_scan
->          specifies the upper limit of the ``pages_to_scan`` parameter of the
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 7d5b76478f0b..4a6cf8cf5d60 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -342,7 +342,7 @@ static enum ksm_advisor_type ksm_advisor;
->   * Only called through the sysfs control interface:
->   */
->
-> -/* At least scan this many pages per batch. */
-> +/* Initial number of pages to scan per batch. */
->  static unsigned long ksm_advisor_min_pages_to_scan = 500;
->
->  static void set_advisor_defaults(void)
-> --
-> 2.43.0
+> I tested this patchset with a 3G memcg limit and a 10G zram device,
+> running 'make -j32' to build kernel on my 32-core Arm machines, and got
+> some performance improvement for ths sys time:
+>         w/o patch       w/patch
+> sys     1845s           1570s
 >
 
---
-Cheers, Lorenzo
+Hi Baoliln
+
+That's a very interesting result, can you share a bit more info about
+it? e.g. vmstat? I'm curious how this happens.
+
+I suspect patch 2 or 3 changes the swappiness / reclaim / aging type
+selection behavior, or maybe it reduced the reclaim amount?
 
