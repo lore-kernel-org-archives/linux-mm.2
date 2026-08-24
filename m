@@ -4,132 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D898AC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 21:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5870C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 21:58:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77DDA6B008C; Mon, 24 Aug 2026 17:57:45 -0400 (EDT)
+	id D26186B0095; Mon, 24 Aug 2026 17:58:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72EA06B0092; Mon, 24 Aug 2026 17:57:45 -0400 (EDT)
+	id CFD076B0096; Mon, 24 Aug 2026 17:58:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61EB76B0095; Mon, 24 Aug 2026 17:57:45 -0400 (EDT)
+	id C13456B0099; Mon, 24 Aug 2026 17:58:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E7186B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:57:45 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A4C24022A
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:57:44 +0000 (UTC)
-X-FDA: 85137525648.02.A86A909
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9518180002
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:57:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b=FNWWEQmz;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="lBGAw/I3";
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of boris@bur.io designates 103.168.172.152 as permitted sender) smtp.mailfrom=boris@bur.io
+	by kanga.kvack.org (Postfix) with ESMTP id 9FF626B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:58:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 343404026A
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:58:57 +0000 (UTC)
+X-FDA: 85137528714.16.9E9F617
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C8F2D100004
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:58:54 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fzPMhn35;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787608662;
+	s=arc-20220608; t=1787608735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=br0ZJAK4IXIy8kwo/WXMM3d+veAzs8uRALVZi5vGptg=;
-	b=CSNPVJmZrXvobimxglnjV1PvNHT6SnszYmxvuz3ppXCOhtfldOPerFy8FxT0mcGGJZ0SYc
-	HgEROg78E/4DC42z/cCH823K5NQNvxE1xieU+EuKVSYMlSpkOeMtGWHpsKs1yMT0WK9qAi
-	p0gSnlAaJTPhRei7OFv6KDC2W6DxU0E=
+	bh=KBpVXvNSIu/VB+Hjuc+28Xij0/FItj9lSc9IUEB2grs=;
+	b=b0MBviS2tWe50iH5RTOZzrMmGC1rBN8+buJ+/Pg5hEa8T9+UPOQDBV2M7ei3X/SjWevlWY
+	c6dRr7HmiXtWviahnle9Mm/VX6DEuwBb79cnzieEQQYvFtlGEMuLEvsU1xnMWOYm0gG6vz
+	gYMrhmEJIuGtiHo3XnX+qW/Gh3o92yA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bur.io header.s=fm1 header.b=FNWWEQmz;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="lBGAw/I3";
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of boris@bur.io designates 103.168.172.152 as permitted sender) smtp.mailfrom=boris@bur.io
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fzPMhn35;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787608662;
-	b=5w2X8Vqq+Z3RCaJlItRPbNAvmytViEPO4T2RGDeB+WR3cg/IwGAuHBae05iWclJkmikE+d
-	wRphLoqM9bQ52ALis6cvwyTSx+6b5MgFvqY/zOHCNFR81i6pYs1IVRr4hv5WTZmEftuLx/
-	N9mdT7n2HrLN/1IdnqKS5eNKA1cxbhE=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id EC0D11400077;
-	Mon, 24 Aug 2026 17:57:41 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 24 Aug 2026 17:57:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
-	:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1787608661; x=1787695061; bh=br0ZJAK4IX
-	Iy8kwo/WXMM3d+veAzs8uRALVZi5vGptg=; b=FNWWEQmzEd1qyyWvePwgFcmcRh
-	SdTDISybhfuzBDdmuAewb/cNV6JpywabKgINVGDt/mXC5iKLkoixZCqYTKSelNPv
-	ID0CdT8x+xKk2a7u/Qz7eYSUC1zDP0YEjo9ovUSxa6Agb02107/i6t1pghkfTNo4
-	S/aayMIdKpP+GmjCY2zjGCmLuzD+6jveuz9D6APJkZD7WgiXR6P1/8AEptFFgA4H
-	6a4SUGB/lto+DQ4FZIn9jnXlxjpTtB+M/WYty/5vF23TL13CwGLIl6z3r+4pEq/h
-	OO+CHgFFDFZlJhV1Y7ketuL1Mn3uDE5XqvQMVf7MH0ySgg/VH1g2AFw4lA0Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787608661; x=1787695061; bh=br0ZJAK4IXIy8kwo/WXMM3d+veAzs8uRALV
-	Zi5vGptg=; b=lBGAw/I3t+Yi/Sa+CxZeHVLqcCILr01czD893qqjA/TQO2J4IIw
-	gVRcqlfrl7adfTsSSDhyCO1z0e6UeRN8DBRx61Bt54/oL19d+wlImKQCzHpG4ebk
-	bs2Hmwj3sjRVqC9i7JAMUtLpo5YDTmgvAg7Ty2DsT4SRlFRbtaV103OTSxps17F4
-	1/jZhb8e1zOXuhkm3TfZkLF5t/I8ewYwJD/yl7H3N4GHyqrQ6dWrxKOMepJxtd+V
-	iybomIDebQNbzDC8OYaoWtRaYf1STThFACe8GhfTsQrzhikbbeL7a8LKW+imudS9
-	1lCaPnsW07m3pFu7NBbxZJe0TMVX0uW7yoQ==
-X-ME-Sender: <xms:Vb6MalmfLtI5O3lhLKcjJBpP5ZQHMiyr9OdA7Tdj-KidFuypOQRBHg>
-    <xme:Vb6MavO4gshkSaUOWeUmZCS4bIluvEcak3ALc9fEdVyoCGcxqoGBGkioGd7UY8MBB
-    xPHx9kYhixyxOi2jblgox_CKME1Et5-33PT8HD5r7R41bhxXSJznvFw>
-X-ME-Received: <xmr:Vb6ManrKQoe3zrAuft29csb52t9_1qGksWDUCPA2Uu3l_9rUI71v-dX0KmNRWFZRuvRlFSgmJqxOJbRQXzfh5Rl4OmY>
-X-ME-Proxy-Cause: dmFkZTGqEyykA1sOnyeBdFBZbfPmYjAPXliUF3xVtonO1PONGbI/HUGTKz6CIcPE+ajJlB
-    NRtYDck65qi3MRs/v8pzQmypGRsZnzqLrTPndbJdH0iMs1/XferK9Goja2IhbuucbvTeio
-    8llUXcBogYs8jeock4al/vTTHwQMI8F20qW31IP7lUOqoxCtO1FlvbDi+N6vYBf0AtuHYC
-    7T8hWs3larCSIVbNRk90Chci+p1tEbOw0kOHJBezbzGjy/LoOrwIv6fFy9Rt0gkFZYJr/+
-    sVOYT9XIYiN/uRpl+moQAzWBuRCvhNb1BKtrEQ/nMKescxsUFQx3y6BtJY7woG1AyXyRY4
-    WQrwGGkB4FAANePkMLJvqrgeghrxhIhk6yku5ckvUjzvWjULHY2tjiFr645hy4CRDoksui
-    Ovyh6g9964Dx/QNTR67/D6ZfdRVVTCebqaSia7BlC/LYInTMZM6lVpuFZeU2JaJAovOMiJ
-    eWvKOGHING1/fEtAQ3TZ44gRNp/N15HgZALUY6lVOcfoWxY7Yh4ZKUIAwNoL5cPX/yHNEI
-    dZUIhEJHn4Idf1f+3nTmbYo9i+vVsCDQXL8o685j6dtPl7NtWPttejm8nImb+s4SsM5twl
-    Y1L8+7Vfud+fozVFi4u8vSHoxFtG6LbO8WNNYIy2CY8fWyAEwN6FhC6esujA
-X-ME-Proxy: <xmx:Vb6MaotoLc5Iylk5B3iqY4LVqkDX5waHOQx8_FVFV2BbPZ4X9WlamQ>
-    <xmx:Vb6Mar6GMInl1Bg16G_pevTsi0NFwJQQShIEap_ntUGiPbZlqHwckQ>
-    <xmx:Vb6MahTH7sc7AdPsKNDf2HLH7AIDMtgk9h5amFGI2sQf4kprdkaMpA>
-    <xmx:Vb6MajnJsAQ4_iHX2Ra1JlfwYjgRLsPZJqYR60rbpMPkbBrOgbUeGw>
-    <xmx:Vb6ManxzZpL2hhuKnDhTCvNtQwDsEsq-Do7OwmbG9vZbFUEUQzrwfIWi>
-Feedback-ID: i083147f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Aug 2026 17:57:40 -0400 (EDT)
-Date: Mon, 24 Aug 2026 14:57:13 -0700
-From: Boris Burkov <boris@bur.io>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	fuse-devel@lists.linux.dev, linux-nfs@vger.kernel.org,
-	devel@lists.orangefs.org, Pavel Begunkov <asml.silence@gmail.com>
-Subject: Re: [PATCH 3/7] btrfs: Use filemap_invalidate_pages()
-Message-ID: <20260824215713.GB3664690@zen.localdomain>
-References: <20260820193343.3852967-1-willy@infradead.org>
- <20260820193343.3852967-4-willy@infradead.org>
+	t=1787608735;
+	b=MfLqpqbctA00C/GAUJL8S2rrurqAsB5jm/pdWgslw2PTAZ7zyvVz+QGZCd0mDs3HKQ/VNJ
+	oJCoXLCdAD9TPU8Tdk7k833fHOp/qkHLq6GiFSy+Eq/qN9Ivy5djFONxdqDT+AIiTIr1yg
+	aVzY8MlhntogZdkBK5pNtwW/oM3qkOs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787608734;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KBpVXvNSIu/VB+Hjuc+28Xij0/FItj9lSc9IUEB2grs=;
+	b=fzPMhn35I2Lpz7VWka8VgkdWcAP0BGFHDdbkZWNmUBZ4LBtsxQrDGaz8a24ZRW+bQnWkkw
+	SS7xzPhSrltnGtLL4srexdOcoOuriGbjPEzg1JQlWZDDrVeLCWWXU55x8qwaB6mkwZoc6j
+	2Jy8PHq6inPu9R7zpbihw65KEocvXqU=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-GjcVLx-KML29W4ysMiTf1Q-1; Mon, 24 Aug 2026 17:58:53 -0400
+X-MC-Unique: GjcVLx-KML29W4ysMiTf1Q-1
+X-Mimecast-MFC-AGG-ID: GjcVLx-KML29W4ysMiTf1Q_1787608732
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51bf321d786so33544001cf.1
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:58:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787608732; x=1788213532;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KBpVXvNSIu/VB+Hjuc+28Xij0/FItj9lSc9IUEB2grs=;
+        b=fgLFzMNCzbeX6/umw1bBOaPDzdk0O5dFY1VQE7JZIdP3uRaExkElGAlBCoVkN9rkNg
+         TsxYRYXsvVj9MBZTVriwg00ruOAzxKj5Qnzr6DfAgBhJErqA1mwFGAr1niiSmG1WaYkd
+         kOfKkAgWIeSH8Wg5N4p0e0Q+SPUj3mCy6rpFpOIvkJDC1q6AijtDM5L/dvqnRdAUAsMy
+         URtOk2by1dh+o97qCbE2QkTNE91dblX8u2XMzKB65yegWu1nHeqkf/0OXXoHp9SaMtDf
+         IL8ZhfufmjcL81Zx2oh8ucIWxEdxLg0243S9LjD1UKUN5v7bEAcyS+C+k7gv8IxsHYLp
+         eWLg==
+X-Forwarded-Encrypted: i=1; AHgh+RpFzBv6fe/FgQt+8+1IG6UzMeKem58TB/gGTZUJSs8thnSSS0S6DSRhv9ZED/tmIDTFt0RHTGvfjQ==@kvack.org
+X-Gm-Message-State: AFuF++kiAqCn8IXCnD3aVwu/zHKTgI1LEDoZEi8hfY8Dtros21I8Kb8J
+	Y5OMHLMil6KF52VVirW0a22aipab0B7MWMlt7m8y9RAHRyRdlRwbVkquuf3KJWJvnlrYelXM7Pm
+	fdiB0puHqiQ0KK3/R6goMIZpfIdv/xMzZrrDY7Ha/+r8uvtQFaStY
+X-Gm-Gg: AR+sD12dIxMNEz2IS4eCXnCOBkfjyFPGS906QM/twg1VRGyc1SlZlULulgcf2MAFwN6
+	TnsMFoiZE9zNn5RZChxaLvETbD5MJAsE5EWDTs/SPDo4BEtjNX313mGP8xM3lAUehzC0y6KNWWS
+	k6+ztR/BvgJ3myubwKbLuCYF6axESxKsG4oO4Z8QIWln/7vvs9AX/dwHRG0yv87BW9CVpXH99US
+	PEZOoLhAmNB5mPQtu5HORRLw/wfVcw0u3qLQmS5I74mu91u6XA/kZ2RXkV51sYiESe2d9XiM/iw
+	07jAtykXHuwGTWZBA3YMTlvocULlTELtjwEvlU5BMv4ghoOScidYS1zb2iSHRmSbNxqlubvmcdY
+	QO+8Ky39hpOl0Alsn3uU0pnKpSYC143mqhyfiOuLt9GwP
+X-Received: by 2002:ac8:7f4e:0:b0:521:934c:bcf with SMTP id d75a77b69052e-52e2f17d066mr22919031cf.41.1787608732353;
+        Mon, 24 Aug 2026 14:58:52 -0700 (PDT)
+X-Received: by 2002:ac8:7f4e:0:b0:521:934c:bcf with SMTP id d75a77b69052e-52e2f17d066mr22918481cf.41.1787608731836;
+        Mon, 24 Aug 2026 14:58:51 -0700 (PDT)
+Received: from localhost (pool-100-17-17-231.bstnma.fios.verizon.net. [100.17.17.231])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e099baf17sm55607001cf.12.2026.08.24.14.58.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 14:58:50 -0700 (PDT)
+Date: Mon, 24 Aug 2026 17:58:49 -0400
+From: Eric Chanudet <echanude@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+Message-ID: <aoy88hVQcA6Gkfuk@echanude-thinkpadx1carbongen13.rmtusma.csb>
+References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
+ <aoqbCyX-32doBJwd@kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <aoqbCyX-32doBJwd@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ZiefOQvo86oQMDu6i_Zef4tPdsgUed3RTIpUlH1YzMA_1787608732
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260820193343.3852967-4-willy@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9518180002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: uxcr64p7iqj4mefh1g7j4npr9mryznmk
-X-HE-Tag: 1787608662-65725
-X-HE-Meta: U2FsdGVkX1/K2UP7PdamIS6GGtmAEZtTDJhOfVd12qjOAnu31Hfp0IMkTjnT4UvM8m7wD9JSBhPO3jo+DGDuzFekOqaHE2lerHKv3TtMJZtrgjcX0ZxzBNF2s+gqE69LYGwCMttzevXcte1X8eLANaKvXsOvipyAp9UCP/K2IRwjLX5LaWAq6hidHX5F1G6tgBMrIoFlnZVCEv26MJXZGcqHWkN5w+qdBNWoeHNxuTRx6ziONJ/gKT/UiRPrEJPlK5qjXlX1ziKJf7TAPEyToffZhrxpt7E2AmdqXBf+QFrb5QOYZz5ALEEgncFnK8Q2pZDITKNDW8v3DujwbTw1DjKp71xUdKBxVilGdzIFZVuUbt8ppsBNLOT96Nf6Aq3JqYmMHJ7m+p8oJd8BTKKDrxGo/IRAH9fD9xLX5k8KJ4q8B64OMKKgdG9FEEOqhGX472o5eRfxT0VHpxiGTG1jNdyQlNuodsoYD4kuphf/XZXYpYIsnJ5sgI9SFghk15pMBqZSm77eY5m6/Tsza5FUapkIoa3rDVyOVe5AMK2SASFuGUgxY2lKC1lgUi4x+DsCnDTq5du1gbMxG2kox5C6zZvsbrnyelL67ok3ys4BYMb245i5ofCh2bSU74pBbD/Hh5Qx+XfIBKe0Q7mCIjxkDsX85ml8+dkpXjvxLcgeoAsuS+Jl/SatNgZPl9QqxtA5SsxPOaLAgWwDCVQXpk1ABVnGW3fWgrqHmpNkM9WbbgU/7f4Ks4v3ZR6M8gL44h0grdDfdvCNcHS8gM3miWqTMsqtK48+drNqn3QGQ8Ta7N147IPnEWps/zjiIPTgitGZBmp1Pj0EAVJxcq5FpGctEzPKgXM7rGLHusiyGDT1iURhlQTeIWEDfqBUdOfveHYvexcqZIFgLXcUKHLw28p53VvJsU5fyBFiYhWoDHUlauZ7lf0cml0RyzazZQYLubxsepXltM1TEDLhAIHfAzx
- TkvnjCWV
- OlpHyLcjnBd2oJ22WH7+SRryIYiHx4QiFnLB3xDPI4YaZDBoWPVArOefaSwWXeLOUCEX8Lj5DSfZ1tbf262GO7vqaE0Y7zDv0pAnTo+d+Q92n6siN04U5qUYEsWxAxgqW1++18tvdz6mq+RFQWOiEkt+/dtXeUlBYBUM8s3rpwt8wasdWSZv1RPHwb+QiM2m2DRhvQSo67NL1mObZZh6/ie7wYPQQEoCQICHtm3Zhn4ZjhImadgB7kLNh84CRDrUiqV2nDRbKeVJgsuMjPmUnDFla2mW0n+CHbda99FMuitlcx2NTj1lUdeLAXLHBlRuTemOT1aNcYGzilud7lwPdwKbfNCCjy2gzb7Rtj7+g4rsZP6VTy+rOSVoxstRkHM03fW8E6F1+oR+PWf7jVz9jFPtyK8MMBUgD+Zx1R7tYmtIorv4EZ0E7dabPHiD1LOD0m98AO31K2sViNx6m3jQ89wDpww==
+X-Stat-Signature: gbucj9ygjkraztjzd4cjkj4kxfiscafp
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C8F2D100004
+X-HE-Tag: 1787608734-628527
+X-HE-Meta: U2FsdGVkX1/lJRfxs+UPy8FnlG1LfZ6DPK2GBPRq07hgE/+UMKb1iudzfJphVAuFv/+DjWRrzV3Wvqtr4cMcSznFDYs/HJU7BjJduz5aWrZ/ikNUy1afkD6N7mM7pXNj5rucTdihXQDH5B6CBK+IQH606o/HSDtU3yu6qFNpwO2vVASumC8P7r/wo35gUDYCdrEN9zKVEpWYDoytLWMlwQ+ohLw7rMsd49hunHRMx+s/5olFegp+dlVG+Uj0bTPXKDbhEfPswUftGmWS/zsOAWgxQZURZsCgxGoaNfxTGej0QTK/YjpIVeyE5LWFlrlWKpW23NybnRvBEYm/1r+ZpGsCtzg/T24pDX9Ca9y9wDZdDgCLI9IWTom6mBFUj3aRuZh7Bq0krSXmhdVdi9NDL1FvWgL17rflWaARJsM0uE8aQ3P8+IMM6y2lyk3h0aEWf0aw7dRubMFXSt7yPfLliU4ldIfGMb1hwwcrwj+LmlVWmsAkQiUW3HPZdqspy2yFHkAi0ierrycKRn/OcDq1yUKxAIhXWVak0EdWM0ugymjUsa1Q0US4mjXXJ0OV3NZ5YlaFSf1lUA7O8gQsaA50eCgrvByU5yWWXLsqsRMNbzdt9qIityNw1cmRztPRiNgDZlvW0D0rpJqH3ov7sDsuMcLWW+9nhg7pzOT+Uy3fNLVUPAw7JO+7/cTgRrzx69Gx7al9w/AvYyZ084nCTD327iWfPtgOnYqiVlRD2cJE62LjMPFrm51ko55Ut1UI6iEDmZsYdPLnzZWqSJPs0pssO8eBR0/u/rS3JvqxT3Ea+3ZKFNEX9L4DV7vQ5lPKNvm4kEIGd3DJbdzH28bOw1zgj2OBnyCKyt3utEJ7JNRIXh8vQzdEvIv3CnntlpaVJoCLxAsqPwBb9mzjOEAe7UC1bp//5aRa/yoRkym/l2RsC3xCF84vjF27zKhv9HjKpLoE98Z66RRnZtfBS9MGi2b
+ zK55VNG5
+ BT60xvjLXBMWFcKHknHa2iM4zQEckXGaiPmnbBmsDwvK6npBxzaiXAtNw/UZtTnZuHKQnPgSCcVo5WAF3s44sO8naRGTDDHNKFqBhATbigXedcoZsr9Yk0e56PFdaxVOyPGEIsXTQe/aWE1JiCEbOkZBtnX5+w3tlDCFJDZ8hHKa1Eb1+JAsV4XQpHaTxIApG6HQjFtcyp4SxKAEmBP/I0/F48M3u+h3FfuI6BuaW+BE/wv7HCE7m3XUNGlSwxSeEbpOejXg1PdQv0tWQKVkTuk99xtQXYA6+QzMSq1cc+pptgCDm6XwxqCthgb9CkXUjVloKyvwFj12CbRsjsVzGnxNXXfNNKreHb89+qacv4N7qA6n4BamTF6+KeP740VjZnwXkKI+SsM8ff28=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,180 +137,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 20, 2026 at 08:33:36PM +0100, Matthew Wilcox (Oracle) wrote:
-> btrfs relies on invalidate_inode_pages2() /
-> invalidate_inode_pages2_range() doing writeback by calling
-> btrfs_launder_folio().  While this works, it is inefficient as each
-
-I don't believe btrfs_launder_folio() is doing writeback, it is just
-dropping otherwise leaked qgroup reservation. So this part of the
-commit message feels inaccurate to me, at least.
-
-> folio is written back and waited for individually.  Far better to call
-> filemap_invalidate_pages() which will do a bulk write first, then remove
-> the page cache.
+On Sun, Aug 23, 2026 at 10:02:35AM +0300, Mike Rapoport wrote:
+> Hi Eric,
 > 
-> With this done, btrfs_launder_folio() no longer needs to exist so
-> delete it.
+> On Fri, Aug 21, 2026 at 02:56:52PM -0400, Eric Chanudet wrote:
+> > CMA allocations are currently unaccounted for by cgroup memory
+> > controllers. As system resources, they should fall under memcg, but CMA
+> > areas partition the available space for different purposes and memcg
+> > doesn't have a good representation for that.
+> > 
+> > Add a memory_cma_accounting cgroupfs option in preparation for the
+> > following new behavior. Make it disabled by default since it will
+> > account for CMA allocations in memcg which may affect existing systems.
+> > 
+> > Provide CMA charge/uncharge functions to memcg that introduce a CMA area
+> > specific counter per CMA area. Charges are issued to memcg and to a page
+> > counter for the CMA area used. The allocation's folios are marked with
+> > the cgroup via commit_charge() (once for large folios, per-page for
+> > 0-order ones) so they can be later uncharged correctly.
+> > 
+> > Add the new memcg calls into the cma allocator under __cma_alloc_frozen,
+> > for both cma and hugetlb_cma allocations accounting.
+> > 
+> > Finally register the per-area usage counters in the cgroupfs. Each CMA
+> > area creates a memory.cma.<area>.{current,max} pair for reporting and
+> > limitation for each area.
+> > 
+> > Selftests and a vmtest script are added to this series for convenience.
+> > The tests are simple accounting and limit enforcement verification using
+> > the default reserved CMA area (cma=) and hugetlb_cma.
+> > 
+> > Signed-off-by: Eric Chanudet <echanude@redhat.com>
+> > ---
+> > Eric Chanudet (11):
+> >       mm/cma: drop const for struct page on release API
+> >       mm/cma: include linux/cma.h in cma.h
+> >       cgroup: add memory_cma_accounting mount option
+> >       memcg: add cma charge/uncharge functions for area counters
+> >       mm/cma: charge cma allocation to memcg per area counters
+> >       memcg: register per-area usage counters in cgroupfs
+> >       selftests: cgroup: add cma configs for cgroup selftest suite
+> >       selftests: cgroup: add memcg cma tests
+> >       selftests: cgroup: add a vmtest script for memcg
+> >       selftests: cgroup: add memcg hugetlb_cma tests
+> >       selftests: cgroup: amend vmtest-memcg to run the hugetlb cma tests
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  fs/btrfs/direct-io.c        |  2 +-
->  fs/btrfs/disk-io.c          | 11 +++++++----
->  fs/btrfs/free-space-cache.c |  4 ++--
->  fs/btrfs/inode.c            | 12 ++----------
->  fs/btrfs/volumes.c          |  4 ++--
->  5 files changed, 14 insertions(+), 19 deletions(-)
+> CI found issues:
+>  
+> https://github.com/linux-mm/linux-mm/actions/runs/32519133924
+
+Indeed my apologies, I messed up CMA=n it needed a forward declaration
+and gating for mm/cma.h content included in mm/memcontrol.c.
+
+I queued this up for a v2, with the other issues reported by Sashiko.
+
 > 
-> diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
-> index 460326d34143..4bb5890d0898 100644
-> --- a/fs/btrfs/direct-io.c
-> +++ b/fs/btrfs/direct-io.c
-> @@ -115,7 +115,7 @@ static int lock_extent_direct(struct inode *inode, u64 lockstart, u64 lockend,
->  			/*
->  			 * We could trigger writeback for this range (and wait
->  			 * for it to complete) and then invalidate the pages for
-> -			 * this range (through invalidate_inode_pages2_range()),
-> +			 * this range (through filemap_invalidate_pages()),
->  			 * but that can lead us to a deadlock with a concurrent
->  			 * call to readahead (a buffered read or a defrag call
->  			 * triggered a readahead) on a page lock due to an
-> diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-> index 2f1666d9544e..2cf9189225c9 100644
-> --- a/fs/btrfs/disk-io.c
-> +++ b/fs/btrfs/disk-io.c
-> @@ -3304,7 +3304,8 @@ static void invalidate_and_check_btree_folios(struct btrfs_fs_info *fs_info)
->  	struct extent_buffer *eb;
->  	int ret;
->  
-> -	ret = invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
-> +	ret = filemap_invalidate_pages(fs_info->btree_inode->i_mapping, 0,
-> +			OFFSET_MAX);
->  	if (likely(ret == 0))
->  		return;
->  
-> @@ -3339,7 +3340,8 @@ static void invalidate_and_check_btree_folios(struct btrfs_fs_info *fs_info)
->  		rcu_read_lock();
->  	}
->  	rcu_read_unlock();
-> -	invalidate_inode_pages2(fs_info->btree_inode->i_mapping);
-> +	filemap_invalidate_pages(fs_info->btree_inode->i_mapping, 0,
-> +			OFFSET_MAX);
->  }
->  
->  static u32 calc_block_max_order(u32 sectorsize_bits)
-> @@ -4739,7 +4741,8 @@ static void btrfs_destroy_delalloc_inodes(struct btrfs_root *root)
->  			unsigned int nofs_flag;
->  
->  			nofs_flag = memalloc_nofs_save();
-> -			invalidate_inode_pages2(inode->i_mapping);
-> +			filemap_invalidate_pages(inode->i_mapping, 0,
-> +					OFFSET_MAX);
-
-I believe that this was the original motivating call to
-invalidate_inode_pages2 that I cared about. The context it runs in is
-when the filesystem has failed on a transaction and needs to invalidate
-the remaining dirty pages that have delalloc associated with them.
-
-I am trying to figure out if trying to force the writeback in this
-semi-failed context will also result in freeing the reservation, and
-also testing this patch series on the test that I originally fixed with
-launder_folio().
-
-With all that said, thank you for working on cleaning up the mess I made
-by adding this "creative" usage of ->launder_folio(). Hopefully we can
-figure this out cleanly.
-
-Thanks,
-Boris
-
->  			memalloc_nofs_restore(nofs_flag);
->  			iput(inode);
->  		}
-> @@ -4837,7 +4840,7 @@ static void btrfs_cleanup_bg_io(struct btrfs_block_group *cache)
->  		unsigned int nofs_flag;
->  
->  		nofs_flag = memalloc_nofs_save();
-> -		invalidate_inode_pages2(inode->i_mapping);
-> +		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
->  		memalloc_nofs_restore(nofs_flag);
->  
->  		BTRFS_I(inode)->generation = 0;
-> diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-> index e2af75a205ea..a5d5eba2c85d 100644
-> --- a/fs/btrfs/free-space-cache.c
-> +++ b/fs/btrfs/free-space-cache.c
-> @@ -1307,7 +1307,7 @@ static int __btrfs_wait_cache_io(struct btrfs_root *root,
->  				io_ctl->entries, io_ctl->bitmaps);
->  out:
->  	if (ret) {
-> -		invalidate_inode_pages2(inode->i_mapping);
-> +		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
->  		BTRFS_I(inode)->generation = 0;
->  		if (block_group)
->  			btrfs_debug(root->fs_info,
-> @@ -1500,7 +1500,7 @@ static int __btrfs_write_out_cache(struct inode *inode,
->  	io_ctl->inode = NULL;
->  	io_ctl_free(io_ctl);
->  	if (ret) {
-> -		invalidate_inode_pages2(inode->i_mapping);
-> +		filemap_invalidate_pages(inode->i_mapping, 0, OFFSET_MAX);
->  		BTRFS_I(inode)->generation = 0;
->  	}
->  	btrfs_update_inode(trans, BTRFS_I(inode));
-> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-> index 2534cd9284d5..a1bb73f083aa 100644
-> --- a/fs/btrfs/inode.c
-> +++ b/fs/btrfs/inode.c
-> @@ -7616,12 +7616,6 @@ static void wait_subpage_spinlock(struct folio *folio)
->  	spin_unlock_irq(&bfs->lock);
->  }
->  
-> -static int btrfs_launder_folio(struct folio *folio)
-> -{
-> -	return btrfs_qgroup_free_data(folio_to_inode(folio), NULL, folio_pos(folio),
-> -				      folio_size(folio), NULL);
-> -}
-> -
->  static bool __btrfs_release_folio(struct folio *folio, gfp_t gfp_flags)
->  {
->  	if (try_release_extent_mapping(folio, gfp_flags)) {
-> @@ -10027,9 +10021,8 @@ ssize_t btrfs_do_encoded_write(struct kiocb *iocb, struct iov_iter *from,
->  		ret = btrfs_wait_ordered_range(inode, start, num_bytes);
->  		if (ret)
->  			goto out_cb;
-> -		ret = invalidate_inode_pages2_range(inode->vfs_inode.i_mapping,
-> -						    start >> PAGE_SHIFT,
-> -						    end >> PAGE_SHIFT);
-> +		ret = filemap_invalidate_pages(inode->vfs_inode.i_mapping,
-> +				start, end);
->  		if (ret)
->  			goto out_cb;
->  		btrfs_lock_extent(io_tree, start, end, &cached_state);
-> @@ -10782,7 +10775,6 @@ static const struct address_space_operations btrfs_aops = {
->  	.writepages	= btrfs_writepages,
->  	.readahead	= btrfs_readahead,
->  	.invalidate_folio = btrfs_invalidate_folio,
-> -	.launder_folio	= btrfs_launder_folio,
->  	.release_folio	= btrfs_release_folio,
->  	.migrate_folio	= btrfs_migrate_folio,
->  	.dirty_folio	= btrfs_data_dirty_folio,
-> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-> index 6eab4cc73ce4..0301465ab87f 100644
-> --- a/fs/btrfs/volumes.c
-> +++ b/fs/btrfs/volumes.c
-> @@ -1370,8 +1370,8 @@ struct btrfs_super_block *btrfs_read_disk_super(struct block_device *bdev,
->  		 * Drop the page of the primary superblock, so later read will
->  		 * always read from the device.
->  		 */
-> -		invalidate_inode_pages2_range(mapping, bytenr >> PAGE_SHIFT,
-> -				      (bytenr + BTRFS_SUPER_INFO_SIZE) >> PAGE_SHIFT);
-> +		filemap_invalidate_pages(mapping, bytenr,
-> +				bytenr + BTRFS_SUPER_INFO_SIZE - 1);
->  	}
->  
->  	filemap_invalidate_lock_shared(mapping);
+> >  Documentation/admin-guide/cgroup-v2.rst         |  35 +++
+> >  include/linux/cgroup-defs.h                     |   5 +
+> >  include/linux/cma.h                             |   4 +-
+> >  include/linux/memcontrol.h                      |  19 ++
+> >  kernel/cgroup/cgroup.c                          |  15 +-
+> >  mm/cma.c                                        |  14 +-
+> >  mm/cma.h                                        |   6 +
+> >  mm/cma_debug.c                                  |   1 -
+> >  mm/cma_sysfs.c                                  |   1 -
+> >  mm/memcontrol.c                                 | 205 ++++++++++++
+> >  tools/testing/selftests/cgroup/.gitignore       |   1 +
+> >  tools/testing/selftests/cgroup/Makefile         |   2 +
+> >  tools/testing/selftests/cgroup/config           |   5 +
+> >  tools/testing/selftests/cgroup/test_cma_memcg.c | 402 ++++++++++++++++++++++++
+> >  tools/testing/selftests/cgroup/vmtest-memcg.sh  | 197 ++++++++++++
+> >  15 files changed, 903 insertions(+), 9 deletions(-)
+> > ---
+> > base-commit: 98f21c54f99519329c18e2625b0ea6db14524d09
+> > change-id: 20260706-cma-memcg-regions-696cb5ef7998
+> > 
+> > Best regards,
+> > -- 
+> > Eric Chanudet <echanude@redhat.com>
+> > 
+> 
 > -- 
-> 2.47.3
+> Sincerely yours,
+> Mike.
 > 
+
+-- 
+Eric Chanudet
+
 
