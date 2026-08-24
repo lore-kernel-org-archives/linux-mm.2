@@ -4,124 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 476EDC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4233C5DF9C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:33:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 428D86B008C; Mon, 24 Aug 2026 06:32:46 -0400 (EDT)
+	id EB1A46B0092; Mon, 24 Aug 2026 06:33:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B28E6B0092; Mon, 24 Aug 2026 06:32:46 -0400 (EDT)
+	id E626B6B0095; Mon, 24 Aug 2026 06:33:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F1C26B0095; Mon, 24 Aug 2026 06:32:46 -0400 (EDT)
+	id D2C496B0096; Mon, 24 Aug 2026 06:33:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D0F26B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:32:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 818EC1604B1
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:32:45 +0000 (UTC)
-X-FDA: 85135799490.08.D6CB86B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7FA22160002
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:32:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MWvJClqu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A238D6B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:33:19 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32CB2140463
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:33:19 +0000 (UTC)
+X-FDA: 85135800918.27.9106ECD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5CB5280005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:33:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dA9P810z;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787567563;
+	s=arc-20220608; t=1787567597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q5frcXO7zyG1Iq+1oYF/eoeXxIiDw2PLXMirPuyU5Ds=;
-	b=ncpNFRxf1+GX8Q9XMOwK3yQ84MEYVwsSs8CJNQjoNT6gy33Dk2aka/T9ux86F8mRO23+kS
-	cfiwa6vY/qAISCJEV2rczkqXGuvUHfnd7SBMe6iFARegL4rn9PqGsdYDMSxumZUTjd0fRT
-	utMyqYXyNQdyLDMBa20ZpUpNDUNlOIU=
+	bh=Bg71OX1b/jhiRpPtjWiE4T7Rr7gYxguTgtyPDfmDXSM=;
+	b=o7EvDhybNfPowlVD5ZJfC310CPRdD3Viwe3nmpCdswuFsJTIBOcRzmluTuZnBmh8FTeOSn
+	MFvOt8GT2hzjZwLNNwA8Xl2MApjBaOOvf27luT9MiiE14w/tBJc+IXLNmDunrXUO/GjQnR
+	vWt0jpr5wi+iEyJV3xLXQhtmQu1H+zo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MWvJClqu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dA9P810z;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787567563;
-	b=jvftn3RS8hcsPtN61u+VBcjuEw2SB4E1CzVk6bt00Q2YiPAxzSxFOre9FraJwvKYN1ra0m
-	AwrmYrgRvMbmOr4FsKD8sEN/qLVsHzhsU3vfoFl2S2/kAg1LTjL4hqLNYKlZT9f2PgLF+s
-	aBCLEJA7GScSABfT8JZNcfa5quC03oI=
+	t=1787567597;
+	b=a00sFc5ysPXpz+hJu1w9SDs5r9V6hkcf/OsDnN2qvIKXjEBTpJbLw7ZejZpQsZRzgiCTTy
+	bIJlYz9ZInNguxwhE+jkcWgEEjK2CixFaw8TnN1vkZ22vgaqA2DTVsJwMY9eJjgp+p+bZk
+	UQ6Nbo9+kBLnr2NGBo/Y0MNpSn5oe6w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 07BCA600C8;
-	Mon, 24 Aug 2026 10:32:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A433B1F00A3D;
-	Mon, 24 Aug 2026 10:32:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D351643AA1;
+	Mon, 24 Aug 2026 10:33:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF9C1F000E9;
+	Mon, 24 Aug 2026 10:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787567562;
-	bh=Q5frcXO7zyG1Iq+1oYF/eoeXxIiDw2PLXMirPuyU5Ds=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MWvJClqu/WoX2vNp1HHpt69dELCdRP1LmQUOkfPsNqbmy3STXvgyGbQLTVIh4rxQ4
-	 AhCvRa/b0IlPXt2+JpUiWfgOzBmksgA2DcMh9mUGOfMgoE772RS2gv7iqXIiiaGEDa
-	 v5w4YC4pweJOnLyT3UOc0Vas+hbShvayjuVUhWuyE05V/ftQXM4tmgQTMteGA+hGk/
-	 0Cmp9UMN6aXsJZvAKLXUk1d6B3/6wQMUz47lVATKLg9UENmhHNsICKsWZCr5/+KL+z
-	 RvA3sNk0YxMmWGwqRFSmku8Hu9aF4SgeIhW3TSuk7QgDGg5zt9EjYfxO4MU5L4b+nx
-	 jQZYNPbql0s9Q==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 340EB1980045;
-	Mon, 24 Aug 2026 06:32:38 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 24 Aug 2026 06:32:40 -0400
-X-ME-Sender: <xms:xR2Mat51Dq14Ifc99aUyb95-S5hDCrIQDHd4xnuOtiZsMKmRPdO-Jg>
-    <xme:xR2MaoXpjywZrb2LVkDn3i2Rxre9MeflCMDt_JKDDb-twDqUsCbh2LPeDICEv0-pJ
-    _z9Y6YzvOTpXK0RkxC4_E36RyIKYQzXlBMdZ4DqMDiH9sHOobBvoXcP>
-X-ME-Received: <xmr:xR2MakanAAB0IBgBEF-10p2bLsG49PZQud9x4elumks30x6zuROGkEo-rJ4>
-X-ME-Proxy-Cause: dmFkZTEYnC3pImoohK99eGhBRTTR7KcVIkdV/ZQBL04BJxb8LYLYJ2gAtfA/2F8kCqKLMQ
-    k2kZF/VDDj3pfDzPgVoz381cNo+3r3BSgIqYqZLNYbyqfTz/JHigmzZ8oniTQYrhneKQOf
-    EEHdzcTrayFcRlmp5EAZRfT4AYlmPCJfm6md4UjrcbbZ8jHY/3Oc7j8plhP5euwZeuHfUH
-    0XcDnrUwXLrzmSxfa75UA7uHzeedDIX9sbAlzTFvmKdd2UxrAiXttuU7y/lfP2onlgcWLy
-    /w1CYl5XRSdFYLHkqIo2jI9ebN35arPjMv8Boufoa1sbgloqdErdGlNWkj+ra2OeT2armT
-    tBl9hJZ9vFHo06r7FvUgNcpuCc32sIcvvCRfblb2WBG0fQykN0mA3H0z5SiN3rGl5ClKpb
-    4oa2g3Z2zarUza7fKkdZgbq0RgGytdm6eufyf/DAf9QH26ndizuw2Z72G9c4d9oW8PXr+M
-    HKnQ5UReYPUBTVtWSdDnoSU4Ud/jjbkyo5CQgy8tbbTLYa9QI0p5JTxgtdZN7B8uOzPIGL
-    ggSC2cVugUf8xTN7KEYpG9kYBGLljA0/Tr0JydL4GAkn4pxf6s9bL5UWag99cUmOiGnrTQ
-    9VjccRmOhi75HC8vqBM/wAxhlPl4O/tedw/d0EzARF8XI3FdGsyJ9WN2ZAVg
-X-ME-Proxy: <xmx:xR2Many1XOn6sZW8o77T3GenwaWJ4pHxyfjwSxTuJUTiTwawNUGtMg>
-    <xmx:xR2MahIGm6ijXwUWG82qSwyM1phY77W7TNMVWihsL8VRFApu3dOO7Q>
-    <xmx:xR2Mamfzazfc8qC3_r-kjSsWlYO_Ze2Yige1nsM7A5LNSeVir119Nw>
-    <xmx:xR2MahuWapSxqwL7_2IrnW8Z-9OUwQEZXdkOojC7sdt3PNwaCCBZvQ>
-    <xmx:xR2MasGKMQO20ssgPzr_UTuR2xaJmtgHltL8NRTLhF7f9DAacfaBWZ__>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Aug 2026 06:32:37 -0400 (EDT)
-Date: Mon, 24 Aug 2026 11:32:35 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rmikey@meta.com, riel@surriel.com, kexec@lists.infradead.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 6/6] efi: respect the poisoned pages coming from
- previous kernel
-Message-ID: <aowcYuXEeqdfHmn6@thinkstation>
-References: <20260821-hwpoison-kho-v2-0-5743791e48e6@debian.org>
- <20260821-hwpoison-kho-v2-6-5743791e48e6@debian.org>
- <aog_uH5fTsJzXjjx@thinkstation>
- <aohIF6MmjiQpbz5j@gmail.com>
- <aohldTtzE2GJ76md@thinkstation>
- <aoh-3XJw82O8SmsA@gmail.com>
+	s=k20260515; t=1787567595;
+	bh=Bg71OX1b/jhiRpPtjWiE4T7Rr7gYxguTgtyPDfmDXSM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dA9P810z7x1JH1ynoG6lOwf84Mb0bqTX9/ie1bX0VDXMx7xGoKjtIrkaaccrMHuyD
+	 ydhlM37CTf1GCeYUe7zMDcylp6K0Gy9R1u8o+57GkLWmPyoBKt0TVK85sv9dGtFYba
+	 R/KOoNGFpbBIfNv1w4WxhddVxVEWkLA5imbDhurLp+/Eo1cvqYazCZsoqW0hJLjN3y
+	 QzEjnHu8wqz+zqJvf/zSgL0he6HfTRt3w7rka72w8zxFtPMNTWvhcQHOJFl3WkRH3d
+	 iQbJEUGDEn2vA6TTU7cALEUIagm6gVR8ItP8ypktR4IHYWywINWbBW883fdEnxJjwM
+	 mspMSgXwzV70w==
+Message-ID: <24cdec9c-28b5-4e44-bb05-fef27ef09846@kernel.org>
+Date: Mon, 24 Aug 2026 12:33:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aoh-3XJw82O8SmsA@gmail.com>
-X-Stat-Signature: eqkkw78kythzfccmfk3oxt9u6med1gjm
-X-Rspamd-Queue-Id: 7FA22160002
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: disable smart scan for ksm_tests
+To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ shr@devkernel.io, ljs@kernel.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org
+References: <20260823184314.45044-1-zenghui.yu@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260823184314.45044-1-zenghui.yu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5CB5280005
+X-Stat-Signature: 1monwxdw78qwjhr8wxkg93ph1iksup3r
 X-Rspam-User: 
-X-HE-Tag: 1787567563-964136
-X-HE-Meta: U2FsdGVkX19hbq91hk6sKox5ZdYZMmNZf6rzDKDnkR8iZEayH6IIN07IsoeZ4kytt74aHcT85/vKUSk7eGBZqpigGN2+3hgRfkjiqb4F6tXQh9c6SWW3y4f4+uE1IGVuWKt1vArA9eEtmogx5HQujwuxuhjvefCot5twC/ieSupdNotIXJFGW2ujnitMS/eN0tqv0NbNsuL2OBwZUuAZT87x6tTZCYUf4SF5K5PnLt3oIQGibycEskqfQ4dW/fO3On8roZcF9NEVn8mwl1Toivs8UxW4aQ4mp+JsoPLFj46e47PxwD+yRp5G2rSt5u7q9s88N3KAKdLYhkS2HmK/UxvyNE9ccTzzloIQ//zJw9uBPXQI2ks3aLgepoB/WHupLC7ZRGH2c2k5djbhemZXlw/Zc+1BUvugmDri+ThQ0ZF/XvM6PcvshlJSqlqPuWNYznD299EP6qOSz/fcFqePHmn6NhB7FcEODuH9ulwUe+kc1ls82H2LPtkBsf+h+jILRW8DWpCU/qxs9hrDx+NeBH+7KIKsrmp0EYt+Z5qld2lZgR3TUpMyYdpBzb4za27e4XMQmSG7oQp2NNsGhrbPq6Vy8oQtPiY17V7L9C/d3F6yAITPN+kepDeNdnY9xSf0ZD1xH7UszswGEv3PgbVhLmL9YRZnQlsjUx186xZnRo+9qh6RwOqQ6/Spub0TOXRLf4oGOqMEtWDlCrNIKKo0TKYf15NYHHvwvwV4D8lkwIPcYIi++4HUnrtec/9/VqeqjjnsMjIC3eIDs2lyeZgRO/43mVyIpsaVvMsAiL5+vkWgsDbRmN5AkplZnJUHzeYHB2qCXVMeU4V1HNdIWvJUFvx9sQmBlo37x6bEUsON3zlRlRNqZQf912Wj5lEjENpDfNOj2jdKO10tKnm6eF1Hv/YFoAFgRMbn45LVqQ+dixcja3FBo2HdFvxQ3dDC0IBgKUGGyk0tOdAIsXi9F1H
- 64G2x+tQ
- iXy9g+MjAPLXIHjppcyrsY019MzuYICKHf1goUknUFJLiqsab4KGKjwuVwUHLC8KY/5FOoqd/garLQBPERrAzz4EGbHieuLU72cUwhirZR8bvw1Iit2J/5vwqRG6fMDHW+E2bT/4Xa1xAPxA3AFZMOw+ZAzFVhUHdltPI4ngNEYdvWgt4KlpuD9InuJPv5SNHFIpARp9M/l3MrJvil3mELVM//iMC6PK9qqjDg7skPwSslix9HZghFFrnSXMbHOO8Y3zWEmDqaXJvFiwEAmASAcz9pwSyBupMbUAcWprv7l3um5Lb40u02JZ7rkeaIdEKz/+syhFHDBNSmhWL9r9TOh4qUG+PV+FtDmdD5F1AYWPlDwSt8cVzv7EckN2dkAxnwgxrXE3bbw3EnYz+OmyI680oEo+axgKmEmceKnETHs/ntFU=
+X-HE-Tag: 1787567597-449628
+X-HE-Meta: U2FsdGVkX1/8E04H0K5daVrnEHjTmA//XHGQ1WyaxeN3x41noR8nEuZm5qbG5CDhZpvx0tITdjrMZzDiVQXeaeUB/ynlVZCeyVpD9H9wE3sk1mXzP+VaCO0KfNZJ16X8QIX73TDFoDZtaO20OxDtGHAXt0NpbFavwe7MZwqB4+XX5kKPS6hM0/sdFo9qJa80L7kF8qr25Jn9NtRkXhoPpuc1AxBUZcfmPiIjdF0z4vIJCRFXqe3PIWOKvaEtdEQSQCxNHuxU/bZAyO/UW7vdmi97OmlgJN51kKgwn4cHHodQkEoEjdUvslktKuKPHVgL1SahKCBcKCX7uBVx0Yj63My979bqlXKBm7mIWG3W30PjZoTFhlXjeLBNWjtRtmVrDDF9qcngl/YG8qM6dsIi0I+GnMcSNwo6dj78J0u3N+QON4xlqNHSi2d4XY0E3kuPhG9/Ijs19QPTUlD47BLmHrhbaz5wYsNCGXhf7MBYZKwCtgL8NdGyQb53FWiNWzs6g8N2BzDAIwC+gQOleVaU/MvGrtyYSGLOI2CddDC3f8OcD2wCclLu3Y5uUY1WiFxHg5SwcrBVGmh0uw0qXfUdFxvR08D/UWNLy35/ZQzSoTjjdfLawznrh68uKrl5cbj/rKZhx5DJRPlUk2GuHGgHusFoW1ZHZgg3Dnp2yZASE6vqUbCCH27wRzvtVIzB1sYw1mx4U8fS3/KBQbJ8JBzz33LdC6Uift9yNbZ8IF6oQiIpf7YOCpb4aL/b0ac0TScYymx7FuUJYnoAGY5gb0NB2/SpPNZaIweEuTpXK6Fitkakji2ErwplowdxRbOW4KmUS2LKbQP1J1wW9tKGW6Xc5KwDOkg9P+VhaOub8HXP5g0i5txicvUA/1GAKqj4jwVUv3+vidI6f6/o63CH5NrVBstf0acSyqkDsfcEBCdCyPUUofdHBgkgtZAB5krGw3L9pNDTFOxSl7DTdUMMWyP
+ g61TH8C7
+ sXoCyvwmhNGL19ltkxBA4xV1i0kbnjWWOn3NjPK9BRwyJVDmz9WcbPv7vD6au2d5fTohWHd198Sw1+ITTXVqVq7Fk5yX2c7bZ9y0ZZ79D/b1h0BjZhBjnM2iJjqWOPT3gbawaYOFZd9xjVHiXW/AIRE5nKByfP/yWZL3dCq+9NJdS28b5xi7Q8zui4E9hh/k4ASYDG6jTKbK/GmkTnE59hSeeWggKQrlFjNa0oicurKPDkQEuaPmAsYYZ46e4vR0pC6xoC2HegVo9TPBh3TIYRRcRI0R/IzeChQlBXqSJ5QpxBGjusFkwhZGreQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,55 +139,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 09:43:37AM -0700, Breno Leitao wrote:
-> On Fri, Aug 21, 2026 at 03:53:32PM +0100, Kiryl Shutsemau wrote:
-> > On Fri, Aug 21, 2026 at 07:03:06AM -0700, Breno Leitao wrote:
-> > > On Fri, Aug 21, 2026 at 01:13:55PM +0100, Kiryl Shutsemau wrote:
-> > > > On Fri, Aug 21, 2026 at 03:06:06AM -0700, Breno Leitao wrote:
-> > > > > +	/* Reserve the table itself so it survives a further kexec. */
-> > > > > +	memblock_reserve(PAGE_ALIGN_DOWN(ppm),
-> > > > > +			 PAGE_ALIGN(ppm + sizeof(*pm) + bitmap_size) -
-> > > > > +			 PAGE_ALIGN_DOWN(ppm));
-> > > > 
-> > > > Hm. I don't think it is enough.
-> > > > 
-> > > > On x86, kernel doesn't keep memblock around after boot (see
-> > > > CONFIG_ARCH_KEEP_MEMBLOCK). Reserving in memblock exclude the memory
-> > > > from page allocator. But kexec can place the image there.
-> > > 
-> > > You mean the third kexec?
-> > > 
-> > > 1) Kernel A hits an ECC error and marks page X poisoned.
-> > > 2) Kernel A kexecs into kernel B, which won't use that page since
-> > >    it's in EFI_POISONED_PAGE and memblock-reserved.
-> > > 3) Kernel B kexecs into kernel C, which doesn't respect
-> > >    EFI_POISONED_PAGE.
-> > > 
-> > > Is this the scenario you mean?
-> > 
-> > No. I think nothing prevents kernel B from putting kernel C image into
-> > the reserved space in !CONFIG_ARCH_KEEP_MEMBLOCK case.
-> > 
-> > Kernel B excludes poisoned memory from buddy allocator, but kexec
-> > doesn't care about this when look for placement for the next image.
+On 8/23/26 20:43, Zenghui Yu wrote:
+> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 > 
-> Right, that is exactly the case I meant above — sorry for not being
-> clearer.
+> The "KSM NUMA merging" test allocates two identical pages on two NUMA nodes
+> and verifies KSM will merge these two pages after 2 scans (see
+> ksm_merge_pages()). But when smart scan is enabled, pages that have
+> previously not been de-duplicated may get skipped for some scans. Verifying
+> KSM behavior after only 2 scans may not be enough.
 > 
-> Agreed, this is a gap.
-> 
-> Can we keep it separate for now and address it as a follow-up?
+>  $ ./ksm_tests -N -d
+>  TAP version 13
+>  1..1
+>  pages_shared      : 0
+>  pages_sharing     : 0
+>  max_page_sharing  : 256
+>  full_scans        : 211
+>  pages_unshared    : 1
+>  pages_volatile    : 2
+>  stable_node_chains: 0
+>  stable_node_dups  : 0
+>  general_profit    : -128
+>  ksm_rmap_items 2
+>  ksm_zero_pages 0
+>  ksm_merging_pages 0
+>  ksm_process_profit -128
+>  ksm_merge_any: no
+>  ksm_mergeable: yes
+>  not ok 1 KSM NUMA merging
+>  # Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
 
-I wounder if the fix would be to make page allocator consume the table
-and not do memblock_reserve() here? So we would allocate struct pages
-for the memory and poison them on init. And your fix by the link below
-would do the rest.
+How did you reproduce this? Is this an actual test result?
 
-> Similar
-> to the one covered the initial issue [1] first.
+
+~/linux/tools/testing/selftests/mm$ cat /sys/kernel/mm/ksm/smart_scan
+1
+~/linux/tools/testing/selftests/mm$ sudo ./ksm_tests -N -d
+TAP version 13
+1..1
+pages_shared      : 1
+pages_sharing     : 1
+max_page_sharing  : 256
+full_scans        : 1283
+pages_unshared    : 0
+pages_volatile    : 0
+stable_node_chains: 0
+stable_node_dups  : 0
+general_profit    : 3968
+ksm_rmap_items 2
+ksm_zero_pages 0
+ksm_merging_pages 2
+ksm_process_profit 8064
+ksm_merge_any: no
+ksm_mergeable: yes
+ok 1 KSM NUMA merging
+# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+
 > 
-> Link: https://lore.kernel.org/all/20260812-kexec_posioned-v6-0-e477887086f0@debian.org/ [1]
+> This specific test fails because KSM started scanning the second page
+> whilst the first page had already been scanned for 16 times
+
+How is that supposed to happen? The sequence we have is:
+
+numa1_map_ptr = numa_alloc_onnode(page_size, first_node);
+numa2_map_ptr = numa_alloc_onnode(page_size, second_node);
+...
+memset(numa1_map_ptr, '*', page_size);
+memset(numa2_map_ptr, '*', page_size);
+...
+if (ksm_merge_pages(merge_type, numa1_map_ptr, page_size, start_time, timeout) ...
+
+KSM smart scan operates on rmap entries. rmap entries are per MM.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
