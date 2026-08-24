@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E612BC5DF9C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 18:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99098C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 19:08:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A98C6B008C; Mon, 24 Aug 2026 14:58:26 -0400 (EDT)
+	id 7F2C56B008C; Mon, 24 Aug 2026 15:08:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45A616B0092; Mon, 24 Aug 2026 14:58:26 -0400 (EDT)
+	id 7C9DB6B0092; Mon, 24 Aug 2026 15:08:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 370446B0095; Mon, 24 Aug 2026 14:58:26 -0400 (EDT)
+	id 6E07B6B0095; Mon, 24 Aug 2026 15:08:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 18CB66B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:58:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9532AA2FF6
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 18:58:25 +0000 (UTC)
-X-FDA: 85137073770.01.3416B1D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E801720007
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 18:58:23 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Zn0EqbIN;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787597904;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9iP0OYVCyA9jgeKgRoeawI5DGtD6ETSLXhd9snKsJOU=;
-	b=6fMBZN9F037X6C4WVUWdkyzIJ/riaQzHTQoSkniBXOpr0NQG0HV5JP5Cz4saC6ITp948cY
-	oEyhWalXETXAtL1lyUu83n/BqndkdudtqoZx+LG1WhVfB+Rkq/cBX/+NJmaWOhJJjEsBOR
-	8Ej1juAwS9qNhplgKMZl1FMXOFaJ3js=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Zn0EqbIN;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4EC516B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:08:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D466B140238
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:08:19 +0000 (UTC)
+X-FDA: 85137098718.23.5472AF7
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AD09440002
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:08:17 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fVJ5WxBy;
+	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787597904;
-	b=ffZJD8ItHXkQ1jeNzukvxm3vn2FNgNzGRAI2q+eVnPkhftobV/K6z0gnkhKcliWTR3pu7p
-	eOub2I7orHskifgo5G9vHFmorXel8ghYM1Ertzzaxr8Wi7F0CIGqfhLhllb8qBxHJxQlNX
-	I7CYS1ytGk7PosU3CPnd/rKbGz/eIDk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59F6A6011F;
-	Mon, 24 Aug 2026 18:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF351F000E9;
-	Mon, 24 Aug 2026 18:58:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787597903;
-	bh=9iP0OYVCyA9jgeKgRoeawI5DGtD6ETSLXhd9snKsJOU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Zn0EqbINJtWhi+ebHF5yPai8wjnoqI7W81FKrw5+1OpvQiKgGI46XYLDgJ48/JBpN
-	 DiR0ODdtsocSDbsG04qE/9514sGzFOHebTwoW1HqJvNw2lc7azXwJWMs8w5ZYeh58g
-	 OWcwblGQcxLHRWRwrnAjj+V3UtFQbA9xqBDCpG84=
-Date: Mon, 24 Aug 2026 11:58:22 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v2] memblock: remove conditional return with no effect
-Message-Id: <20260824115822.6e41bd0cacd471a8074623f8@linux-foundation.org>
-In-Reply-To: <20260823154840.3793140-1-ekffu200098@gmail.com>
-References: <20260823154840.3793140-1-ekffu200098@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	t=1787598498;
+	b=rThlfaBstXl05QoRzLzdzFh9m1XKCX2DqOrGSKPu/+aw5rU9T3ntz470r1Q/UOt9JPbJiy
+	RqduzeAivF2w47fA7eaTEoxZ7L7FQ8i/twrz2o4wai2B8KlmmOpelZuIRxvQhaYAy0R59/
+	kK8OS+z7j0UbvAg2Jg+dV3RmNjghK0w=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fVJ5WxBy;
+	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787598498;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rXZ7ZE15rvwerUJ9OHaFUdA7osUeOjHjAwPp1v8D3Z8=;
+	b=f41zD26/9nDvsKmuGEz5xM9+fBL6SZhX+jKwI7gGXYi4H/cdftqeNJ97MbhRgpAY2O1yXl
+	wojGPicRF1FJwxmmDZjodxyL83YGwzQYhaQ5B8WXheSDX0ALHaaCWX//IyjlOmizOA9GoR
+	pCpMdbznANjIAuXMmnm5eiRtqyuL3CI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
+	Subject:To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=rXZ7ZE15rvwerUJ9OHaFUdA7osUeOjHjAwPp1v8D3Z8=; b=fVJ5WxBy21PuBmR1rP+fz/pIl2
+	5Iuy6MNrN7UowmFAKk8XIDnE7WC9ITFHIuJe/0qyEScfD8Aq3HNb5e1Kiri2u+3H6fiY8aSK9fyu2
+	XQevVKRrCMTmBlMNadaWX+V+rVqPbAv62qHyPJkOraieP/ZkEWspLWVMewUYnHGMh8BJIZEINI0kQ
+	WqcLUXDbgQn6v4HUweUI71vOv6UCWcA57cnwYfI19WbBrRGpDLMBANTfSay7oE9/4QNvDmF113AH/
+	LcERCZFuIfNDm5T712CokJ4O0JmENbSA+FD66cAVZV7EUpVaHpnhFOd3m7dcWbozPDNtmMWL2CyMn
+	A7Laf5Zg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wya1e-00000007gW8-3U3q;
+	Mon, 24 Aug 2026 19:08:06 +0000
+Date: Mon, 24 Aug 2026 20:08:06 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Pedro Falcato <pfalcato@suse.de>, Christoph Hellwig <hch@lst.de>,
+	Jann Horn <jannh@google.com>, David Howells <dhowells@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>, Jan Kara <jack@suse.cz>,
+	Rik van Riel <riel@surriel.com>, Qu Wenruo <wqu@suse.com>,
+	"Darrick J. Wong" <djwong@kernel.org>, linux-btrfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org
+Subject: Removing ->dirty_folio
+Message-ID: <aoyWln-Gt-yvZQkE@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: AD09440002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E801720007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: jq5y8ymdzkr5d475iooffddwkek5brm1
-X-HE-Tag: 1787597903-822695
-X-HE-Meta: U2FsdGVkX18j10fFGh7loYWM4HGF8noaStDHqSqLlHTOySY3gvMTmvBkI+2dfwNnz7MDfNfI4f8t9/h8AVjzFl47tQiuWtZhxDqkwh0g4pskNy/yackOGLT/dbwh6P7ZLnZdtxPmPDQxS00oFWs68bAApZOpsXcVG70yti09SjPEMNB1pTGA2gcWKaTkU8okpP37o6eIPPSJ+wXXhbLiJzsmuWcwDpl6Kgf7wCZ4HifLA23ycxx4wfDHpjztNwNFkIRrzRBmKIsI75WJ7ccRqUU24p59RmyOBK6L0nBvrN4ZtGkr/mwPLOHOuU8cHgUClkwsUJYOj+v/z0i2PfvCA9Myp7PFykfagHTxkLWYoIB6HzWQuU2fkJI7StzjlBg3lTknEgTfQenboUrTiq0CBOYq+irc0Ap51H0ZyMN8hWhwebF+sXsw7ckzhRLRxu75Kau0fA5cEegoo+M42ori203oqP4SxqA0tWiTVSl0fEWXmXsA7hlAIn5/Cn114dpQsIb8k2ALVF2On9NXCGNNIEmFGfrvS2diIRQFCRcPdzfzixOClZqbIxczGAM4CrNFARxn0e7kbsLT1U0A9gwXxJruUFBB02gNSsrbiFJ4twUCeOCSi+hB9Yd7BcnAWUBbqJTSeCtbe0KBqqchOkeWpFdt/Wp8mhKNFjUsE1uPtsADxFlQctSr+oYDwWbqB2I4QUoEcDFCXtdBbkKrzYgFF5nTSP6BCW1HqiPpL4BlQJUy3frkpisVH76E+vrQvdaDPWDIxw80ngJaNkFvxIJaFETPCkWOuxFkyXMn7Ay+JGv7bNLv0KgZPodXd56ZDcKd9uVuF6ST12Fk0Tw1/usev5n8wiqh/MpnbF6wqEJSRf5XVs1xRooOss8wb15L7WrdkOQm3p9LFUjSVIWZyutJnrXKoMn3tmdUkvomBH1HrIxVURQJYK2TTCgEhk182KsndQ/sm5Ktnz5QBVBsziU
- dTrAlZcm
- FiotxylAF49EbfM/MSk5/iw3GRDWxCBc3faESwQPkjGSGFDTs/bBavRLbIrO52z8HEDkhVwQVrTa1S7fEujSqj8IfcRnnjECMY5FyW5SclSTK5GiHbyS45UDTxUFSKVCnCI6I32b0zc4PzKW53/+ime1lvUMVl+2CD2DUtuPyL1EJrEya32jblu3Xyr7/XoiFIctWSnrL+9iWXQ7iE51J13wMRSQ/UrfMp+ZgR/yOjMFTT7ZzBycUgXH1qhowDAu9eG944iJyYpgx1kUifGOF3dL67zzacpeQdNI0+FkBNDeyR3bmmPfKhrngtfvXq6NLO75o4Ap9AoP4O/ATDjs9cnNXYlchYx8MvcJfxV3b9+zFUb7GrLENZEAphvGrD/KabIB8WUQLjENz/5k=
+X-Stat-Signature: 6z9r98ubwatn4mhof5znfbb3nstozekh
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787598497-298726
+X-HE-Meta: U2FsdGVkX194ukhxsbMAc04fDMzcIz9HsnkI1SjgJK8y4H2n9i+jabjDKzwk9D2bObal8VrMfxtgBiJGdZFGd6SpF4aI3PsUS19VouQ3lwX+t/DWJFXhtjmrr3DHDAXnA6aw4BVgFyGELjWmbOBU+5b2XAQV4g8Gfz86u/g0ss7BiMCXFryHdYhVOq/D0WiwGvFXZdLixajfC3McQd+C3qa5pyx/tFkIQ6PsHMfOX6k7p/xsgPrYfbe4WjxH/QjXva2MjZn4J3jyF8gZ71pNVZMybI0iC+7wakwc03QPle+BuRKVpFo4/+NCuq2BTxIrpsbtYzBNeH4M9enc3wQgW013asJepp55OdfMcGGGNTqvpppDT//IRHLy9oDinBzg+TvhsY+TF/nxtUH2sRPYMZrY1ecUimhw82iSkrC/sFUsp4CcTLdHF1koBWyCiypANREYz9tuuNEEIetxfVp3SywJSPK/5e0z1N4q+EzrCihGFCYnZ7/kYpfjIoa8AYxQ41CVr0w9HZ6ORhDU/HJ91mHLYrzzwcaqLVcq0iY4g9Tx3SupqBgy8ppjc3/zkWef63XsvA0EdeNdDf6gYPSXEUGmCpZLUxcU1ycpWEbTiwHy1Ij6NGuv4wiOkDI1R45/u9PzGmHMI+DrUIC/ahFzv0708aYPz2z5ueWE9LrolTILsZIRDKlsrBKwkqiX5gu/mUn9S0NcRszrtdT8x3TlFKgogs38SqziF++siL4oiAw4er9AX4NbpXIY8eXn3hWypSxnVUeUfhqYOg+hg7v0xIPoDq/Ro/37IVdmuTUuIJvIXm4sn4g+1qyBc2vYtB3C/lN3doIgv2Or3WfElPXES/uyHn8D562EJg+fV3m9Hu9yy25+FsjQKsdU2N+G2bq9BRMZe7kUstvegddJxKcRA7r9p9UZtZVSxdBVOF4Sg6m015lc4Wa9QY7R0LzZ6GAT0zznZtNWNWLLzp8aHJ8
+ k9IfHtnT
+ sWNyo8WXvRHIdpLw2Xfcl1LjewbbvPUnjQenswT+UvBp8MNt2+ZWYEoEqAmXrEk8wYpWM5xsiTM9gT+r2dO5jgthP9Pdq4rl7H9x0+hQcP9bmo/BjFThocRi29qQ/CRln7RBBCY1Q1LfixVA5dmeuLxAdKjbPzDhcZ0TEMgjvmdYGGmFb14b5NAN7Xpmp8uchxJdyQFSHxoqPADsPyfNKSP+8FsZTZ7XHH8H/6EhebL2zfXCf8j9ZuxtQ6hXxdhcay4sR8tNLOYysko+PKuj7EbLEdSa4UFSgKgq4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,39 +89,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 24 Aug 2026 00:48:38 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+I think it's time to remove folio_mark_dirty(), ->dirty_folio() and so on.
 
-> Both branches of the check return the same value, so the check has
-> no effect. Remove it and return the value directly.
-> 
-> This is the result of running the Coccinelle script from
-> scripts/coccinelle/misc/cond_return_no_effect.cocci.
-> 
-> ...
->
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2613,15 +2613,10 @@ static int __init prepare_kho_fdt(void)
->  
->  static int __init reserve_mem_init(void)
->  {
-> -	int err;
-> -
->  	if (!kho_is_enabled() || !reserved_mem_count)
->  		return 0;
->  
-> -	err = prepare_kho_fdt();
-> -	if (err)
-> -		return err;
-> -	return err;
-> +	return prepare_kho_fdt();
->  }
->  late_initcall(reserve_mem_init);
+This is not how filesystems want to be informed of folio dirtying.
+It was fine for ext2, but anything that's journalled or COW has work
+to do before the folio is made dirty, and it's hard to do that work
+under the page table spinlock (not all callers hold that lock, but the
+filesystem has to be able to handle the cases where it is.
 
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Filesystems want the page_mkwrite() entry point to be how they find out
+about a folio being dirtied -- and that works great!  Except that we
+can writeback the folio for a number of reasons.  If it's been dirtied
+due to a shared writable mmap, that's fine; we map the folio read-only
+and any subsequent writes will re-enter the page_mkwrite path.
 
-Your patch led Sashiko to suggest the addition of a round_up() in
-nearby code:
+The problem is GUP.  We have no way to force the GUP caller to go
+through page_mkwrite again.  So instead we make the GUP caller call
+folio_mark_dirty_lock() which many just don't, and generally we get away
+with it.  But it's a bug, and a bad interface.
 
-	https://sashiko.dev/#/patchset/20260823154840.3793140-1-ekffu200098@gmail.com
+There's also the problem that GUP users bypass the folio_wait_stable()
+mechanism.  If a page is written to while somebody is creating a
+checksum over that page, the checksum will be corrupted.  If we want
+to fix this, we have to bounce-buffer the page.  There's no way to
+prevent or delay a GUP user from writing to the page.  Enjoy your RAID.
+
+My proposal is this:
+
+ - Fileystems take note of folio_maybe_dma_pinned() during writeback.
+   If it's true, do the writeback, but retain/recreate whatever data
+   structures you need in order to write the folio again; behave as if
+   ->page_mkdirty() had been called again for each page in the folio is
+   marked as dirty.
+ - The MM behaves similarly; we do not clear the writeback flag for
+   folio_maybe_dma_pinned().
+
+This will have the effect of writing pinned folios back every time the
+inode is scheduled for writeback.  But since we have no idea whether
+the folio is actually dirty (because the GUP user won't tell us),
+this is the correct behaviour.
+
+I'm probably missing some stuff here.  Let me know.
 
