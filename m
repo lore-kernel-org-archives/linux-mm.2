@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 049A1C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63F52C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02AD16B008C; Mon, 24 Aug 2026 10:18:33 -0400 (EDT)
+	id 783096B009B; Mon, 24 Aug 2026 10:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 002BB6B009F; Mon, 24 Aug 2026 10:18:32 -0400 (EDT)
+	id 734086B009D; Mon, 24 Aug 2026 10:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5A4E6B00A0; Mon, 24 Aug 2026 10:18:32 -0400 (EDT)
+	id 649306B009F; Mon, 24 Aug 2026 10:20:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B72506B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:18:32 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F70C1A0108
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:18:32 +0000 (UTC)
-X-FDA: 85136368464.05.1A22806
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8E8BBC0008
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:18:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XbbuKZlO;
-	spf=pass (imf28.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787581110;
-	b=ZjndxRlI+6MxyBW0oAibt3ki9mOVirpbgCEss6spPPbKnbfT8K796DyLGhWEXNfh24JRTs
-	MuuGATw4MvX2ZbvO6Fe8PLhU7GqtZz+Ys0cE25iBnOcurrIH5KAFVTcTf7CTaLBBYABRzS
-	cM7NAlxnbYDC6gBGhdfEmtJOLAgAHFc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XbbuKZlO;
-	spf=pass (imf28.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 439C16B009B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:20:59 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D61F1C0231
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:20:57 +0000 (UTC)
+X-FDA: 85136374554.07.858321F
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 86EAA40008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:20:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=UmVltek0;
+	spf=pass (imf07.hostedemail.com: domain of hughd@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=hughd@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787581110;
+	s=arc-20220608; t=1787581255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p1RKlgv7gfcdgd0R95YOF5t38k1glOotR90LR4kTqgc=;
-	b=4E6R9D5qrM+Jbc4FojFaVwbJ/9npLbgxBxLDVfgYlV9Gbqf3WGkmau/ykubLanDBq8vwio
-	ZYUpi/gktoYoKe1FIwCZITcmj+Ah3RknoX4Q2FdeyRa4p3yaifJjg2Wm1SyIcGnAD94tta
-	OgCw960KrbJ/hZp1+P/o2hII2NLVw4w=
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7ff05e5d009so48156547b3.1
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:18:30 -0700 (PDT)
+	bh=YRoTlYAeNn0iQ+Akcq71dtDJ5mRi19RmdUI1yCGlg3o=;
+	b=r78WDP5xGFL7JQ4iRKJDUtR54GOGGHznhCQlAWooAtVtkbLIfR6Y/RnqML/zKVMNwsbNtu
+	iP4hM6E1N4Ia1/Fi56jpCHCojPcAdfvfos/TaFPLFjo1F3Tht0bv1K7uX8r+iCuU0rJkoA
+	4P51nqHgCzbMveN4pbcxpT3ULsE0qbk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=UmVltek0;
+	spf=pass (imf07.hostedemail.com: domain of hughd@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787581255;
+	b=INMAkIOGunlw559syGp74HZxTwf4sNn7VFKk2DA5oZJt40YKxjniWBhEHFomnGP/IjwGP7
+	VHtgDCz7lyJCYnuKYI+k1EblsrK7hB915QzU3MtGcs50OnWPccFa29eFPhswJk6eXdNoSP
+	FqUWWRne++qz6/od2C/PoK8s5lylYtE=
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-81ea0b7d137so30381137b3.2
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:20:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787581110; x=1788185910; darn=kvack.org;
+        d=google.com; s=20251104; t=1787581254; x=1788186054; darn=kvack.org;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=p1RKlgv7gfcdgd0R95YOF5t38k1glOotR90LR4kTqgc=;
-        b=XbbuKZlOj02zYperj9Cpylqgfw9TtbGI4XNc5L101JL/VDzXiOvIJE0hhO/PK7u/Qj
-         GCTyy0JKQE3O6PMR1dKZw0qIQksuHNZ3/voVKaB5bW7MlBBMGiFa0+k2QsYBmqZiEasj
-         TWHdnscPtDKbO8F9kDiWK2Dsb2hIpyg6wbv+o9SuqPjuh/aqPicoCSmS8O7xNvoHdorJ
-         EsZaEEfPw5NMuMsaawQb5LwKFf/JijjlXtcKk4/6M1o/LalS3izVn97dMNkGNuzwncCS
-         GujrjNyub5JSf8Foz/iJkeFLvt8gr9NMtGX4N93z/EYIFRklUE8LrEXCEBknxj6nnDtS
-         S4kg==
+        bh=YRoTlYAeNn0iQ+Akcq71dtDJ5mRi19RmdUI1yCGlg3o=;
+        b=UmVltek0ns9DH53LH7MuQ9/UJLWLGZ4EYI0d5oM9bpiV9VfhJqYDeyw1MPMsm8Yixj
+         HGg6f/jm4SJttZ7siQh/D5jNFYO/BV1PNbYFLbBJFg8o1tDzBHdeupF2JZLCRg3ikhlv
+         oGgqcCP3XtwA9UiWkre6ri4UrIPBhi2e11S3Pyw4zB7bJSuqgygTbS+uBotyoP26TVPx
+         RswZ3qRnKU34XMFR1jBLOEMz6lD+ROSss/cmR8LFzhPoZfVr4DQsOpziLtIYaF87dFlU
+         FKu3YffRbS2ePSrlFKJqpn2ILe6pfywxyzAfkD2H3TLEBPYKRXmmvvX88H9UvcC04dOV
+         d0uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787581110; x=1788185910;
+        d=1e100.net; s=20251104; t=1787581254; x=1788186054;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=p1RKlgv7gfcdgd0R95YOF5t38k1glOotR90LR4kTqgc=;
-        b=XRLfYNt83/epdIoc8uDdfV0bbAp6eNa86u+VutG4ckyeL0w/z6NU4Mf1RvyKnJAnYe
-         wGqidNSHoZFDDFTaVMAlL5sBvDtFYlcNLYaDVXZNtAhcTJDvoPc0FpbXJzOj0H45bYLG
-         wMYdMRpwTqLfloh60cDQnXup7k1idep6AaaN/kBJ9wyabtwAMILdDNhl4hAFPNwBWuc3
-         K/cUlM9Aa6EW2HRjebgA+WCklcaqCNapko8dhXY0nTOe9z+fRpWJCFyB+fk5sSia6lNY
-         ScLYrJ5K7Umn8xxnTPCRuGPyYgPDHvHKXZF0sTNb3d8ciTMOtiw468YkXy1V1zB0qc0z
-         6Esg==
-X-Forwarded-Encrypted: i=1; AHgh+RpxD+jEDuLukTimWLzogVsGGLqgtZZAXTSVyjv4v7kltmIyR5Nu1rdmHcXRqPhE/DdvQq3ibUo50g==@kvack.org
-X-Gm-Message-State: AFuF++klkCFJvP5i2ob+bHQgDOHO/v6QdhdyYafObcYFSgT1KPK8S3Mf
-	lsTSJEaGFptJYlDEeLlwKwWfCQ3fyv+qV/uKfIN5c9I+JzUk5BBjeblaUukSCZJZLQ==
-X-Gm-Gg: AR+sD12UVxL5WA8hroCxddW0vszHReIn7G+rfuD7EV1IBiYyL8rAAvfJNhGnAMSSG0F
-	Sa9P0LOzx3f/TU/kVIelwQrgfWTlO2NpfaaLRw3+WfcxYRvR8kXkP7kDOQm0HuySmALZ+kaeGoU
-	arBGqlnGw2fr993AMYxCL/7syw7IQWPktSvQR6NFi7LTEPsjkkxxyhH/jG5wnakcgwfVn6J+kCB
-	8lyjX/MmtAkrhCcQUPZPOYdBDqvQVTd6+JAxm0m/So6ITSTs2Wrru0dI9NOamczjQ6PKW2H2esg
-	ssXMY7gfeQKC4cOwAV5wxkCr+H5ohbAlc4YfafwdMaXqA5yM5nWmc11TJCRT/j3opmAjcshHF0h
-	llphXs6VuEouW+663JpJjT+1MZ/bRNce0St0GJqF6Q/nW44z0mqsWSheQXyeyubks0h05nfiGDz
-	T1IDd0mnMwoKrtes/pEIlpAfHGptr5ynSlWryAgAcGa9Nsq+HWaZizukePy6obKDMhZZIO8jTqR
-	QbhsDJRNB7SompkM1/riphmn+BWOZMlOOt7l8w6LXpmduoT
-X-Received: by 2002:a05:690c:e0d5:10b0:821:1013:b420 with SMTP id 00721157ae682-849f090e309mr91327927b3.2.1787581108999;
-        Mon, 24 Aug 2026 07:18:28 -0700 (PDT)
+        bh=YRoTlYAeNn0iQ+Akcq71dtDJ5mRi19RmdUI1yCGlg3o=;
+        b=e1cySFCAkPjVc9xEEj39AKhzdAJQYMx71A2X1eVwGWeGTVozPklOyA86EpAKqlClLN
+         YOjTRAiwcIjzKV9N5CFFc3lppmz/SaWJeJWiZiC8hfvtwsuuSgSXGZ8YBRSXCHtf9eO3
+         QUm/AQWQGkC7w2W3ckguGnxPRkgPt1cwbQQKokfoYY61Db0XO7QAkOIm93NpM8xpJ4nc
+         XYTlFpsTE3HdtfcHfzHoHUr911G8hSQkkLc3uFV4zr1tlbtIteq6OS0PCiDGmwOxfWuZ
+         y9lT9uQvTEunSgB9nZjiM4Nq/tUc3zF2xDeiaMLoxiwmq+EseUZUB1r9mH51sGpgSjZ7
+         toGQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpmfl8qZttfrraP8IHJX63n1y7ewklBLsRM0FUtbKxyuSRvVX/ZO6j4+4mCF5JilyC+vYxAieEzxQ==@kvack.org
+X-Gm-Message-State: AFuF++m6uKQ6VOUDZdV3jxnytfsWFBI282j5kfknIORmb8ATu7/qflrU
+	KFQmkbU0c8H94ktpjq3F1yW0a7b5kWv3oRu556wXdT2Hmvdc0EJuEe91tNsJaiwwHA==
+X-Gm-Gg: AR+sD11xKZPmpzqMiOLyat/7GCEiWD1X4poE3Evv/UFbEBqBR2cYsPlVMMmniFZlfY6
+	dj02qbk8P1/9xMOcFdB5fHe4+kU5Ts8jPgTXy0r/3QHxfnwmn37oqGHy2KjyZOrdZTocjGSW5iZ
+	Nc9ddo5CcjBhD6CVso9Hd/Dwb4EBl1kzmTJZFvem4/dbFx8saaw1voyLMwGsollVspCwJuM0ZRY
+	4TM+zU59awSgiTJqViBA/1IcZFBCECSkNfZKKu1yyC3rcF5xggCXvdr9qbgGIld6+dPKF96+q7I
+	wz0SQcf6PIP6Hkb+bna4qzPwVLlztS5D/fYp42jQZt4Y4YsmbMY0oujqKPRlw3C/XKbLMRXau5H
+	QGk1g+T1EioXgcnHfBbeoSq8HsrJvis6osCZCCgxumYCx15PBdRWCCA1a5DIQTWQ0gm64aunlbR
+	b17VOYMuc2QCsVGGEiOwwwLNbcCVv80UAaSvOLCSIiX5bZBva+IYR+VEWzjtwHxIoz2Af3kE6qH
+	JSmcLKXhb8WSJcTFxIhSEJZNggfmE0uoE/fAHphUatACuK2
+X-Received: by 2002:a05:690c:e217:10b0:81e:a471:e8b2 with SMTP id 00721157ae682-84c95f4df1amr53178007b3.2.1787581253476;
+        Mon, 24 Aug 2026 07:20:53 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8542a633964sm1660667b3.37.2026.08.24.07.18.25
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84cac3f525fsm33909927b3.44.2026.08.24.07.20.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 07:18:28 -0700 (PDT)
-Date: Mon, 24 Aug 2026 07:18:24 -0700 (PDT)
+        Mon, 24 Aug 2026 07:20:49 -0700 (PDT)
+Date: Mon, 24 Aug 2026 07:20:44 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 cc: Ackerley Tng <ackerleytng@google.com>, 
@@ -121,21 +121,21 @@ cc: Ackerley Tng <ackerleytng@google.com>,
     Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
     linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH 11/25] mm/fbatch: remove migration's PAGE_WAS_MLOCKED
- lru_add_drain()
+Subject: [PATCH 12/25] mm/fbatch: remove percpu_pvec_drained and
+ folios_put()
 In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
-Message-ID: <6b1ccb51-be6d-5f1b-147c-771e6adaf55c@google.com>
+Message-ID: <3599e5ac-b74f-87ad-ab65-78d24c148fd1@google.com>
 References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 86EAA40008
+X-Stat-Signature: syxuksy4ye3jezt614m5xrfn4mxmujwj
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8E8BBC0008
-X-Stat-Signature: 9kxxkyz7aj3kcy1wupp7cn3hs43bqas1
-X-HE-Tag: 1787581110-513580
-X-HE-Meta: U2FsdGVkX1/ySVgsiAIlvvQcpzBKEHtVusbr4F/AEiGP3KRzpsbHmEGoXRM7kVMZDR9EBZog/AAoXwVX1/3u4Lf8Q6+LonW+wR9+nE0uma8R4ZjlXOUBpUY4TrCkCUbEmsNPP4dhQ+cERO63dTr/K6nWVy+Xmsvgv/TUkAXtq3X4DMN7umHaO4XbOca8KVDYGpTaG6aWxVr6DHms3wRZpLjCWeQaMYx0hsPQ2bFa4w+Fpb55ROxriRihoKNRj3QLPtmqvWmLpLsr1J7fqoqM8QWIrnYayt3xhUks9bWIrIVIHWbD+9vjYH4HeIlGzqqboYL0s+RnpD7wImRE1ZXHAyXR4zXHqNKNskkl6IL2Mf6gWDznkPtW9YcIfx0t0F4jHoh0Z8MDqcPaWclUvR/V/qANabor52o4Zc6b5WGUw4osfd/sGzOPdWZoIgSLwOXnjianxrPIXZwBTasV7JdByB374cAwDN+rsveqYi1bJzJNuN0TFcYdiaC8GvzyvIn2gvR9ipjxuBhHibpN9o0fsN8XNeBxmMfk/uMSo1zFnFEbbyqNDDXKuRFyKhyiiKWQlue5avehZGjxN0MQqLHcGZiSInXBXVtYYXu0O2pM9dQ0m/SXy6krVTwPlnocMBEvnAlzHlCCf4rrQTfLqLcGeCg90+6kRQzyHpKBcm8zK1ShYXhqH7L4Euzmb+MmrdIArrvm3SdgvgrWdC2xNAWKaLDI2xW2hHC3u9BM0pjR7tOLY2YbYsgLT/9DdrJzVIm4N1DoGl4rX3iHYqO6Kr028HeJW3wZ5bJA0Stv40ySExjeUKR14uMITeAuRlW1PwJZMhZAU8qMXJyMhuhT+APO8KdBWpECc+ZOhPkIeTf5+XTG4HwZK2HYlRfuVMl42wez/R7nQShYxEV5SypPCSQ4wxDNHxMaa3sf+Ai8Ok4ya2xqm5mABsJ9FrOJvwof6hzuJgM3sfAXAxZAjPvBCWP
- cGhryxRN
- AYQb02Lzeb5cfWCOAWqBzDAmpvs2kYODzAnZNUjFxKPdu7MTcJJYBmy8ojROHg6C6MzWOuKMD/kD3FGrm8a5xVt+KghsZZNLTm0Xia3xkYH0RK549/xP5bCYX3M72toRVx/NsOgBXp6jjtrgk3TWtKE97jhumIm6F6rKxP4tgOLs5MF0gjxzR4NksJPoaupIUMY4HO8ojOf9jzNvxVI4Az7WOznZK3l61NJQnjBfoqlfP/AaenZLdykppvYBJIR2kL8wrf9QCxqSdxaf0qwC3IPUAUXXfVQNlnovfxcrajCktHY2MNHpT+HAxDnXWNtl9aS5Scw5kUrJhd1VE9LCK/Z60zKqzglv2QdwjgCg63XlrIvh8uXWb5S+lhABQ75ss1OvTq5kLqhoTJkekzc3mgazWHSetL1fu6gn3XzCWYYVwif8E3pL48gbggkIvp9PEXP7vdRxfANHU1CquCiIGxBDRewTVPrsavXif
+X-HE-Tag: 1787581255-174793
+X-HE-Meta: U2FsdGVkX1/ApQ2XjKR+ZEqGYGdMhrhOXOFAyTzZDzdbfRNVN+kqjDE5avV3mG7EvUjpRUFc1b/098hDhbLQvzqbCmScp5AC+curOE0Kn0MIs1LVLn4ybiwRRcdPljV4vl6zzqjLrV+VH9YF2zKDVVZ4aNmolyVnH1hUpu/4F8lsPc7n8fzEdXT0eBOGDhwyiHoOICGCeu72c17tFD7D4uOZTRpCX67deM6us2H10Fm2/hECNqHfQVqHClR1uwIPFnvWI29tPaH5BsLZ8aJ0l2IbcZII7D2vYSxWPYRZlros7uLBwDljc7GOFvrWkya19zj3HFKLQCJk3rKpBa9edsUXldmK1H/H44aW9/UamMrQhvJ8rW7aocW9xpQwsq9TvSN2XlUWonK/vpmV6KdXSPSJIJE22Yst426RaH2gI1/+dqMfM5QALvtdWV1u7XDqQBgaenpwb6R7XIBuZvBN3V83LA0tzCyqPeLe4chfBmqgRX7cMGlu7dCoRwhJURfa7KNf4cGgf32ksTTBUsCrGhE3r0ry5GpYyVLIJF0V7HqmUktWaAyXYuLIGfplaVUKFb0iXWckGJqd3zBewlsuUng5Csp9RYhEfH7WI6htLdXieNLd84VxRDhxhX2NeyfDtughFr6tMmsJeYEfM5mDF8HjbP86c1JH4Nx59VPiVBuX6FVQox316hkB94vrBfy4wZNLeI00UzNekvJOnY66FO7G/nY2xU63xvWS9sTRUXhbf0Hfeyl2/AhqDmD9O4E7AW1J1ewtHv49cZzPMk/GkT0cBCwRiiZWQXFwXxB2AGur9E5K2eR+6cFyN46ntREVeQd41zW9oNNja73CMiXJfZPw+bHQ8fbgpWcIEWJRNQaRjoE/uUYf8bfIskiaKTM8Dl+dPbpZIEMZMJom2dAZX4bk3BjOlT4KbNiReiby+LE9HPzgbyTjscnU57XsgizC6D/p15VeaQAvz2e42zy
+ kIm5gtib
+ Hzn/QW81kBkw7Sf2+B9wuRkyNoUEFsW+/RJyWfZWkB58LEJd1yuQFDlKGGGTnS4Wixim+IpJLCVglNcQ7+qghJZ30St7C7R7WZD56XuFB4fwVElHKyjcILxxXF3ZgiTMzI4hsJOiUqXb8twPSchJNp9b9w4eE1GdyIoOXibAzT7NBRQ9lAvhNyKubFkazmsDypsyb81uI9YIUFS3plAzgJuGXj65g0cHfOxsffrSvlPZzRZ12hb5WVQRXR9abd21v6z0d7dDsmTFghWmm9fcL8KInIOEpNyESLTQ0eX7++KxaRn0SpYpOOtZri90gce7xeH3jkgE0mKjI1J/rIDZYU3JxKn48gQwniTqmx8OxrCqEimWl8wuWpOEoa+cwUzdSDT5QhnCVvbzOne8oyiUz42gCsZ3KKeuPHZ4YM2FJPNwTzrhgLn8x74nEPuAS7XdgzxVkM0Rpxtai2KDYC96LDJ07r1sCtQzt/Dha
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,53 +143,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A welcome side-effect of mm/mlock.c's mod_mlock_count() succeeding on
-folios on the per-cpu lru_add fbatch, is that migrate_folio_move() no
-longer has to lru_add_drain() before remove_migration_ptes() restores
-a PAGE_WAS_MLOCKED mlock_count: so remove PAGE_WAS_MLOCKED altogether.
+Remove the percpu_pvec_drained field from folio_batch, and its only use
+in __folio_batch_release(): remove that now pointless lru_add_drain().
 
-Re the "We would like to do something similar for the old page, when
-unsuccessful" comment above it: that may be easier now, but involve
-some rearrangement: not researched, so just leave the comment as is.
+Which leaves __folio_batch_release() as an exported name for folios_put()
+which is itself just a wrapper for folios_put_refs(): mm/mlock.c and
+mm/folio.c don't need such a wrapper, just say folios_put_refs(,NULL).
+
+Or should folios_put() be the export? But __folio_batch_release() is what
+drivers/gpu and net/sunrpc are using: don't change them in this series.
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- mm/migrate.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ include/linux/folio_batch.h |  2 --
+ include/linux/mm.h          | 18 ------------------
+ mm/folio.c                  | 17 +++--------------
+ mm/mlock.c                  |  2 +-
+ 4 files changed, 4 insertions(+), 35 deletions(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 6b71b2415d00..534908a0839a 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1148,8 +1148,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
-  */
- enum {
- 	FOLIO_WAS_MAPPED = BIT(0),
--	FOLIO_WAS_MLOCKED = BIT(1),
--	FOLIO_OLD_STATES = FOLIO_WAS_MAPPED | FOLIO_WAS_MLOCKED,
-+	FOLIO_OLD_STATES = FOLIO_WAS_MAPPED,
+diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
+index e1cc8ae023f1..a3337f70e109 100644
+--- a/include/linux/folio_batch.h
++++ b/include/linux/folio_batch.h
+@@ -27,7 +27,6 @@ struct folio;
+ struct folio_batch {
+ 	unsigned char nr;
+ 	unsigned char i;
+-	bool percpu_pvec_drained;
+ 	struct folio *folios[FOLIO_BATCH_SIZE];
  };
  
- static void __migrate_folio_record(struct folio *dst,
-@@ -1259,8 +1258,6 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 		folio_lock(src);
- 	}
- 	locked = true;
--	if (folio_test_mlocked(src))
--		old_folio_state |= FOLIO_WAS_MLOCKED;
+@@ -41,7 +40,6 @@ static inline void folio_batch_init(struct folio_batch *fbatch)
+ {
+ 	fbatch->nr = 0;
+ 	fbatch->i = 0;
+-	fbatch->percpu_pvec_drained = false;
+ }
  
- 	if (folio_test_writeback(src)) {
- 		/*
-@@ -1411,9 +1408,6 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
- 	 * isolated from the unevictable LRU: but this case is the easiest.
- 	 */
- 	folio_add_lru(dst);
--	if (old_folio_state & FOLIO_WAS_MLOCKED)
--		lru_add_drain();
+ static inline void folio_batch_reinit(struct folio_batch *fbatch)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 87feaa5a2b78..a426f7351787 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2201,24 +2201,6 @@ typedef union {
+ 
+ void release_pages(release_pages_arg, int nr);
+ 
+-/**
+- * folios_put - Decrement the reference count on an array of folios.
+- * @folios: The folios.
+- *
+- * Like folio_put(), but for a batch of folios.  This is more efficient
+- * than writing the loop yourself as it will optimise the locks which need
+- * to be taken if the folios are freed.  The folios batch is returned
+- * empty and ready to be reused for another batch; there is no need to
+- * reinitialise it.
+- *
+- * Context: May be called in process or interrupt context, but not in NMI
+- * context.  May be called while holding a spinlock.
+- */
+-static inline void folios_put(struct folio_batch *folios)
+-{
+-	folios_put_refs(folios, NULL);
+-}
 -
- 	if (old_folio_state & FOLIO_WAS_MAPPED)
- 		remove_migration_ptes(src, dst, 0);
+ static inline void put_page(struct page *page)
+ {
+ 	struct folio *folio = page_folio(page);
+diff --git a/mm/folio.c b/mm/folio.c
+index fa4cf9d7d51b..782b8245d213 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -159,7 +159,7 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
  
+ 	if (lruvec)
+ 		lruvec_unlock_irqrestore(lruvec, flags);
+-	folios_put(fbatch);
++	folios_put_refs(fbatch, NULL);
+ }
+ 
+ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+@@ -1062,22 +1062,11 @@ void release_pages(release_pages_arg arg, int nr)
+ EXPORT_SYMBOL(release_pages);
+ 
+ /*
+- * The folios which we're about to release may be in the deferred lru-addition
+- * queues.  That would prevent them from really being freed right now.  That's
+- * OK from a correctness point of view but is inefficient - those folios may be
+- * cache-warm and we want to give them back to the page allocator ASAP.
+- *
+- * So __folio_batch_release() will drain those queues here.
+- * folio_batch_move_lru() calls folios_put() directly to avoid
+- * mutual recursion.
++ * This used to optimize with a drain before putting: no longer helpful.
+  */
+ void __folio_batch_release(struct folio_batch *fbatch)
+ {
+-	if (!fbatch->percpu_pvec_drained) {
+-		lru_add_drain();
+-		fbatch->percpu_pvec_drained = true;
+-	}
+-	folios_put(fbatch);
++	folios_put_refs(fbatch, NULL);
+ }
+ EXPORT_SYMBOL(__folio_batch_release);
+ 
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 1050010bbe0b..97134eff6b56 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -191,7 +191,7 @@ static void mlock_folio_batch(struct folio_batch *fbatch)
+ 
+ 	if (lruvec)
+ 		lruvec_unlock_irq(lruvec);
+-	folios_put(fbatch);
++	folios_put_refs(fbatch, NULL);
+ }
+ 
+ void mlock_drain_local(void)
 -- 
 2.51.0
 
