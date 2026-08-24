@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA7FC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:29:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E26F8C61DB4
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:29:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71DCF6B008C; Mon, 24 Aug 2026 11:29:39 -0400 (EDT)
+	id 769756B0095; Mon, 24 Aug 2026 11:29:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CE7B6B0095; Mon, 24 Aug 2026 11:29:39 -0400 (EDT)
+	id 656496B0099; Mon, 24 Aug 2026 11:29:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BCB46B0099; Mon, 24 Aug 2026 11:29:39 -0400 (EDT)
+	id 4AAF76B009F; Mon, 24 Aug 2026 11:29:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D2736B008C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F342F6B0095
 	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:29:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 98F111C01C3
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:29:38 +0000 (UTC)
-X-FDA: 85136547636.30.C70CCAB
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D8AEC14000C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:29:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Y89fmpj7;
-	spf=pass (imf26.hostedemail.com: domain of 3X2OMagYKCLIdjarrgYggYdW.Ugedafmp-eecnSUc.gjY@flex--lrizzo.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3X2OMagYKCLIdjarrgYggYdW.Ugedafmp-eecnSUc.gjY@flex--lrizzo.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 698D814017B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:29:39 +0000 (UTC)
+X-FDA: 85136547678.08.86C4558
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A9CFD180009
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:29:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=WPezMAUt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3YGOMagYKCLMekbsshZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--lrizzo.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3YGOMagYKCLMekbsshZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--lrizzo.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787585376;
+	s=arc-20220608; t=1787585377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4S+Q+WbZhfdTv2oIAFNepA3QU93t9DANybxh3vuKjoU=;
-	b=d8zy08+ihI0lQKWAwkfhVcjLVp9MCvQyfy5QE0QajGBAWzqF9eTSps5f8NBPiGgjgWsj7N
-	sP6LLYs+2lXg+tiMDIaokieI3HNEdXGDpJt8GQgjm0PRtTrxXuxU5RLawqa838n8TLZXKw
-	r5YBRJ62BCpiM8d8rVwpVO50N1aAUfI=
+	bh=XxtYpttAkkFeNCs4heKfMrvlAQRBvH9LjM7sWbysPCs=;
+	b=lJ8pAWPmX0LF/zuNlnDq3PLRiqiqOfwBLo5tYr+frxix69ZBdymqDAd5Id0q+tRzZWz0qj
+	zZUPuTewv/ohio7d2hlzwI7oHQBc1HcnKHfmt1PbrPCywQEnhbTHeScb9a1oQ54S5ABLi9
+	bt8ck64Q45MiO15y5bu2hNS53gEgctQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Y89fmpj7;
-	spf=pass (imf26.hostedemail.com: domain of 3X2OMagYKCLIdjarrgYggYdW.Ugedafmp-eecnSUc.gjY@flex--lrizzo.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3X2OMagYKCLIdjarrgYggYdW.Ugedafmp-eecnSUc.gjY@flex--lrizzo.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=WPezMAUt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3YGOMagYKCLMekbsshZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--lrizzo.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3YGOMagYKCLMekbsshZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--lrizzo.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787585376;
-	b=O1pWUOfVAaKJKz298gyWUplI0SmRKf7gLOruR0ji++ICFoMRXlgK0Lk/nUBQeqO50pcwhG
-	HQIWC/4t9rNJXD++UudcH9rOPoKFQU4BEfGY0f607hQF7mBjqHs42Y19qnaMEO/LapbCa7
-	/FFkssGr5OOxW35OM4fzQBGLkhV9xE8=
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c15fed5653eso267839666b.2
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:29:36 -0700 (PDT)
+	t=1787585377;
+	b=qvfDlOaTg3Wb7k4Z+F3HZIH3QIrEsnaM22MHZ4fc42174+nVBjKF66yEpC4oyRNOV2XUPY
+	2rgOGqn6N95sdjOuSZMmvUlkPnrymcT+4tvuSjEnaGApTOSvcwDR5JWtn5xFoIOH56fyXh
+	qfWrG7KewO8OyOa5/xLvC2E4iS2e02c=
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c20e5890680so124434466b.1
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:29:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787585375; x=1788190175; darn=kvack.org;
+        d=google.com; s=20251104; t=1787585376; x=1788190176; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4S+Q+WbZhfdTv2oIAFNepA3QU93t9DANybxh3vuKjoU=;
-        b=Y89fmpj7moyxcL5B/4cdk+iLpvtPatDk9DFJMecFkMbgA7d9vctGH1c7aDgC2U4K7n
-         YBUGOS+nSggO41dwWGnmqez96X2XRcwBzYHPGYW1K7RLFpQbopoX4Qy5LGNG/eIsE2w9
-         n4tEDVl70WH0mk1oYvw6yXfo4RmKqw+Gy05cLiTM21HqUuON3KcJLthMwyaydCk8apq8
-         a09UEcR/QorQAcowqyzZ5geGvAS9Zs0qUGpxoiRfbK8JNACrQcihN2nZx3hIjaDwPqfz
-         WHZa2HgszEkDrAyrxLxfcI5QdI/4d011A2mNEk+klx/1zHM/PZGjdQAQXKbOJkMdMIvp
-         BfjA==
+        bh=XxtYpttAkkFeNCs4heKfMrvlAQRBvH9LjM7sWbysPCs=;
+        b=WPezMAUtgsizyWZyN3dog791lebu4TkN2cHqwW1w/DOZz0CWH0xR/hgck89EnRM5nD
+         LAW9NM3QFh0g5vB6ivqzqCG9FxyqcNQ7qo2J84e0JM9pib8i6SUTbi6vAfb2XHD8Eabl
+         MT/cWUAth4OjqScuiHJoShXKhIB27rkG7lufK5Ar/zroDOApf2cHTnUcP9H1tigO5LQA
+         IqdsWUcwQ0Nj8NsNHWZokIN0jwm884giP+yLtH2eYbg8Bll0r2Bsf3d547s6NSAmWTYu
+         yMTm4FMYhQc5oX3GOxxtmyxyDyZ/be7mbFzW123ib9ms7VY0J2PYfqjGrIzcwYpfhGGE
+         nXXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787585375; x=1788190175;
+        d=1e100.net; s=20251104; t=1787585376; x=1788190176;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4S+Q+WbZhfdTv2oIAFNepA3QU93t9DANybxh3vuKjoU=;
-        b=mkDyBDmKe8+12vBO9WOFs36lsl+9fIipCNW0ZPhlmYsKXVIna9xtgO+gpX0SPBXFqB
-         v0uVYtAZ2XKzec8oCuEhaPANm7+2d3OdXoyQSGcQu0Rg2xmVVy89QjsSQwIpLAZwQpzZ
-         lkOih/C851VpgkiZXOmQMD+pA8g9Ju6qwSNDnL/KexHMMBvZGVWSiMCtZ5bOtn4Pr07g
-         1bHCB79dY3lJKd86XeAnUc55LPz0PEyw3OXy0UPCFX51ADGmpH3dQ+9KjfZX6La+zA0y
-         14A+7j488NugnfvISatzYyMDq0pHX9gUwvgnc7ajQheetWIEVEPgoTKKiahPejlEoEM0
-         APsA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq45OxbkHEi106+y9IF4R1y2Xq6GuHB7RJeOfB6mleOziLX0Vs1TilrFJWOT3qsJB5sOCQYuFtGsA==@kvack.org
-X-Gm-Message-State: AFuF++ktCZuxqIcMJZAK2lm48CkJZAHzCFz7JBasTopzq8wtgjiU1J++
-	pxJaYy5eKEB0l0vekG/LFlMJF9T/wT+h2YRM8hJXMmYpKPUnOVTMwitqbYno+bddIWuq2m2r0QD
-	jaRvqaw==
-X-Received: from ejcdi21.prod.google.com ([2002:a17:906:7315:b0:c12:8b42:7bfd])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:1caa:b0:c20:53c7:488d
- with SMTP id a640c23a62f3a-c246a5f7664mr2951802166b.14.1787585375128; Mon, 24
- Aug 2026 08:29:35 -0700 (PDT)
-Date: Mon, 24 Aug 2026 15:29:27 +0000
-In-Reply-To: <20260615234220.3946885-1-lrizzo@google.com>
+        bh=XxtYpttAkkFeNCs4heKfMrvlAQRBvH9LjM7sWbysPCs=;
+        b=CkHDFrCTQXg7+xulsFoPdr3Fg+Bvwi9gzHrqm+9nh5iFBCAlXFNgjbz7w2jDuxGaKG
+         u8sLQrpSguOKiQ9d1nUVdnQOa3y5dIpCC4btNjSMzhApHXJRnjEP/40gPiJBrM9GxAct
+         Bpt8+6SOp0zmmCQzOCwhWd4/e+ttV8AJrzfy+KBoED57zERDOs8WzJd2dIY+iVlYp0KC
+         Nm0Q05ae+e4S9Ky30dZ1OaZnwzzzZS7yAsEIwF3S6qE6ngfomv1p1Qa1uRkSkDv9y/2r
+         dqQsWUIQUSowPG9ZlqOQzg8wRFr/xF++L+2nNIOJqthjSNNgAapX/CuS1GX/FaegHhQx
+         yHRw==
+X-Forwarded-Encrypted: i=1; AHgh+RqPYQGFEvxBdN6zmTKuZWYMRQb2ynduK+a/Dg3UML3benW3ElT7yeVnUyCluHxqQdkZJZmDAbib2A==@kvack.org
+X-Gm-Message-State: AFuF++kE+wtoc/hItwCROPVKlQTYmowkb+mOLKnugKG7D1Q7E6964x8N
+	C4cbmBU3xAOF1FlXDoG1umFxnQah5g6MW8fxj3lTxVXhJy+Y8KkVlDc8UzulctHrmt8DyY44NzO
+	s9yXV+w==
+X-Received: from ejcfb18.prod.google.com ([2002:a17:907:3a12:b0:c21:94a2:c168])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:c245:b0:c24:6f95:4f0e
+ with SMTP id a640c23a62f3a-c2492719d94mr2282288466b.18.1787585376193; Mon, 24
+ Aug 2026 08:29:36 -0700 (PDT)
+Date: Mon, 24 Aug 2026 15:29:28 +0000
+In-Reply-To: <20260824152932.1583506-1-lrizzo@google.com>
 Mime-Version: 1.0
-References: <20260615234220.3946885-1-lrizzo@google.com>
+References: <20260615234220.3946885-1-lrizzo@google.com> <20260824152932.1583506-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.55.0.766.g2966f0265a-goog
-Message-ID: <20260824152932.1583506-1-lrizzo@google.com>
-Subject: [PATCH v2 0/5] swiotlb: avoid swiotlb copy on network sockets
+Message-ID: <20260824152932.1583506-2-lrizzo@google.com>
+Subject: [PATCH v2 1/5] swiotlb: enforce pool nareas and nslabs invariants
 From: Luigi Rizzo <lrizzo@google.com>
 To: Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
 	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
@@ -101,14 +101,14 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dragos Tatulea <dtatulea@nv
 	iommu@lists.linux.dev, driver-core@lists.linux.dev, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D8AEC14000C
-X-Stat-Signature: y6mg5ysdd6d7casksr4sg8q7q3jpcnjn
+X-Rspamd-Queue-Id: A9CFD180009
+X-Stat-Signature: p8auwdmky6uqhhjriuujwa4zy3mxgbzi
 X-Rspam-User: 
-X-HE-Tag: 1787585376-72444
-X-HE-Meta: U2FsdGVkX1+9YQkXsrkLR7K6FIhwVddnkaot+kDS3GeZghno0D6ZfDfqmPkLIpkTIjMjeC8XIWddX6KtGK918+ATw1RQrUm97FK9q94aSmktjjkqvvUly7Ji7WwUQlRddz5HB/Fc5s6BnVArWExkRr1iNeP2hdyCewqvd5834EIQMDh5c/FICYrXwBN6gi7csc8p8Cph8KNUFsKKtLRkGi/hnrYbvr+P1E30QhzKbWwXEA9GyihWB+UlNu9cgmm7CG4OFh6VMWFekbisN7Wluz/ZYnvAfjVYlZ2+iMiNzYG9V9EZUoBoJzijcAgYXwI+a4/b4aatDoHomvpj13dlZvHaEwqXgR6Zk961Dg23vAXQkeB1PE1ADgn65CMiZZrN35cXfQpLrB8Nlj5CZnKVk4lGXliIqKCxjN4IXlCYdDuKZLB21abY7HaYkJYB1QZ6JgSQQL5YRxVlz4Bg6AUVBFdZXl1ItFORdXUosBsuYvbm0tg3H0dHUoiLZrTFh3mfdxFOmgOOEZ1XyoldwgyrvRX07pOhzd/wPP4fBXLHIEt1UvjJvLJwJexJ9Hwt+R6Vky/Bq4My/6j2+Qb1SmzxKpUjSJaP8vPOMxpFabhKovIkSsxzFlaO203kkUKoCcuYvfRlfM6FRRaJZO1uO0l4OEs2PqLkR78TmvUD3jMnqkaeM2COkpVpXIsP2CIpeLYOFhNKAjm5UYxtg28pjzIEhdOOCDY8Q9tmuv4H6lRHN1FPgRP1MvxJ7hiyzV1i1LkHMen+7EupdYg7HQgH9CCxpAciUGUc8mqgDogQq5xdvyS6MHo/x1q/gzrOBxYz0zDNBsgUje5RvHZbSsTrAfp5kFJw/mrgrfM6SJx7RtmbnOaM8DIlUhG3/WB7LsiTF5r7hJc3egQxUiOUQC7Ww4EjP78i5SlHvsvXlc2AgZhEzQQAfWbO3sqSK9QGR6DBkZh7sx4Z/9Vrprs+JpHcNXm
- CdHbbxKI
- RFpomC8NMAIELYYn6zRRCnANRaobXXfVySybfO1hstk70wAReNeNAvmSxBjFDQy0EiOYLH3Y9OSSfeV6TGutoxABDrKVqe/QUqSb1Y4sDD1KvuRq1SB3olBPTzXuqJop8iZI1Ts8AUGKNxOCvL1PniMcRnelvAb9CQz4DMG3PhFSij1b7S16l3ZNA9Vjg7CMjQBzWAdDOX+idbrDC9t3N0yFNaS8dv/s+sNZz5aDOYjLDuDYXCJ3KfhM0yQ+Q7jrYKoBjESXkXVYIlQBoN7GfMHD18hhDx41dVLvQtr71lCeLbgbn2sG+uuYKZX4REm2fWCtb5Td8Mtdztvc5RBO0GIK5XJCNvcTLcJRdxtXxj++8pPZ4tNvEWK3T/xvXrYpQgxphQ30VcpK86E2Zc8YkpyyBWnVAPB1TvS6bDmdPb5ArFgOx7IPElGAObEoJ+yTsV5I41b5mn6HvmE/mGxtJjz2g36NkZi9gMnZEPMdOz/80+/T7GG9T4FffwR6I0N5993bYQLvv8xa3IeEkDohgZiSO1WTl8cEs6WxwkHdcyZb8OInrq+wWuO1ebl03Yx0BTKe2qrT2raivRU+7/ixTM+UM3COe0yNxc0ICL/VlZbNlhkndMnFe1D5tDjXFuDNVVIG0
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787585377-928187
+X-HE-Meta: U2FsdGVkX19dVrcxI2pnY14UHaWv7Y2Ta5ivCzKh923oS7haeHihnPc3cWlRyQEIVnd62tK4rOcz3hc9EfYQ0A8arn1JKwBZDTrO1hmYYK8z36wOSeF0wK3XfCvk4uXAx6RSjQNSh6JTDWz3oVU8Yc0FrNQIU4ZxAzAW1q8tvsrcgJKzWu4+1bLyUExP0uyu2XPGcXPYMyDS21TOfc/x6X60HcLTFvqExD5X+TsjZb1t9aPJzc3BeG6I/5vNQdC4ZYrnZZgyr0mDJEOi1JTKA9KKpg1eFqOIJ2dWVQbRr3/CHCkZ3XOUZBioOC8nMJ4Vnrgy9+7aYwrca8cqh27jrC00K3hTxhTPHEl8n7cHd4gvuqw1W8WztjMZ2RNEb0he2kSM+EIlgt8utZSXEd+/k39+yhUDSvTwZMGck2XxnD8haLP/Oel3YffsURvibmM5Lh1n0NSPss3V+5xxSt5NRpU2tDeSh0UKg8PFrHHJfKDbh6B1ZSDxB60znqVtcD518h30kOPEHV/1Fj6yABObTGYovgUjCIHD+2ijtF/5YRfOU0ix6roFMDuvIGHEWLsoS6pcw/ozbXmbA4LNP1RIR7IUwbaiPx2h0AnRhWl8ZcsG0eH2ZE3whJrYEEz/Oz5dZnIdD/DgLiRaWLC5pAeNHCZv82cTeiQDPXnW64WlMrm3KHKEfLod2M491Hic9GXlvQneiiaSMiZ22tI9YFf1XY6l0wZM2Yew++5qCIo0qPOU3kZM2hhH20nySIAfuaTdxrVc9EfYpSBGJANfplEnAOBt60va/JXUgC5yRNsW+UlX0wXlkZ0mBqayRoX9CXLD1QYnIts5JTPmsGxMoOexsUJTJ+Xp4tvC4UQmeGP3CzBQurLXBVyq+ES/Bu40QTF387u+mrQ7p8d8BN9ovxEg1MVPiW/XnS+gLRRJ+JbOpc/7bP4ZAcRwbX7sk0IW8DuWedFsYELDHlUgYepzt/I
+ oETwTrtq
+ kzeD+oTuI6yLT8adq0KO+IcTnAU/dJiPnvupDpKxhdEO0v3BZvF2JdmFM/c24TTlXQE2jslBlJpCkfUqP92At9AOLLGVxCMUR0D2dXSWCn4/N+4b+/Mledxx6kqsfgBGtzZtGtrki95WIU/Idl2Oda3fxMOAlleJsuvk3qSAZY1ynbXsZU1Ugp6WzFWZknS4eOYWEuwdzmJEQKJZ2mDfXYmPfF0G7Bha9xcBCPlyfrk+EZoqaE02Pppm5rJ0AnYvBrQB4+J0pbDsKb62B4NVlh6kfRqtD5H3Ua6e0VZC5VL26ljeGvGEmCloHMAwCtBY9myudIR9JQGz4JB1GhgBVUxrmo+5MPPK6nScNWwWYKOpRg0WXWBLkXFoVaWfRLZ6Jl8bX1URD5EXbNinJPhw88KunW228QouZ2m/9DDDsJ/apFc2uCGaJT4bLM2O7rpHvxQ0bujTwTGzB2FmtGt4fy/VQhFO75gy1ojrdJMxFHYU9YfSvSpxpBrk+A6sO4XDAinHrleR+LsHd1nrj4AQuXU7vuXMoswGKeBFZG6cRQAXxyIFoEAtjQgIsrEbk+nu0pUTAbro7+i/ZQvc32FkOwUMXxZbSAbzkRWSS529BVtFDxO1GFHEBfYkN9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,89 +116,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The use of swiotlb, common in Confidential Computing, causes an extra
-data copy on each I/O. Focusing on network sockets:
-- on tx, the copy has a high chance of happening in the tx softirq handler
-  (especially with greedy senders where the device queue is often full)
-- on rx, it is guaranteed to happen in the rx softirq handler.
-Thus, on top of the copy cost, swiotlb concentrates the overhead on an
-already constrained resource (CPUs processing network interrupts).
+The SWIOTLB allocator relies on two runtime invariants across all
+pool initialization paths:
 
-Reduce or remove the extra copy by conditionally allocating socket buffers
-directly from the swiotlb buffer pool.
+1. pool->nareas must always be a power of two so that a slot's area
+   can be located efficiently via bitwise masking (index & (nareas - 1))
+   instead of integer division.
+2. pool->nslabs must be a multiple of nareas * IO_TLB_SEGSIZE so that
+   each area contains an integer multiple of IO_TLB_SEGSIZE (default 128)
+   slots, preventing contiguous allocations from crossing area boundaries.
 
-The feature is controlled by runtime parameters to set the percentage of 
-swiotlb buffers that can be used for this purpose. This avoids stranding
-the entire swiotlb pool in socket buffers.
+Enforce these invariants consistently during early boot, pool
+initialization (swiotlb_init_io_tlb_pool), and restricted DMA pool setup.
 
-The implementation is made of four main parts:
-- introduce a swiotlb page allocator that can be used instead of
-  regular pages, and teach __free_frozen_pages(), free_unref_folio()
-  how to handle them
-- dynamically track the leaf device for each tx network socket,
-  so we can tell at copy_from_user() time whether we need to use
-  swiotlb for this socket
-- modify skb_page_frag_refill() to allocate from swiotlb if needed.
-  This implements the copy elision for the transmit path
-- modify __page_pool_alloc_page_order() to allocate from swiotlb if needed.
-  This implements the copy elision for the receive path.
-
-The savings are especially visible with fewer queues. In synthetic
-benchmarks, senders with 1-2 queues would cap around 50Gbps with
-conventional swiotlb, and reach over 170Gbps with the feature enabled.
-
-OPEN ISSUES
-
-Currently the swiotlb allocator looks for free slots using an
-approximately linear scan of each pool (with some hints to likely
-candidates) and then does a linear scan of subsequent pools.
-This works extremely well when the number of pools matches the number of
-CPUs, and there is plenty of memory available. In fact, it is almost
-unbeatable by any more complex strategy.
-
-Under high load or buffer fragmentation, a CPU might repeatedly do a
-full scan of its starting pool before finding a suitable candidate.
-Even worse, with multiple tx/rx queues, what happens is that multiple CPUs
-will trail each other on the same sequence of pools. The effect is that
-some allocations will end up costing O(100us) and more.
-
-I have tried to implement two improvements:
-- a buddy allocator on top of each pool, so to make it quicker to find a
-  candidate of the requested size
-- make each CPU use a different sequence to explore other pools in case
-  one is full, so they will not end up queueing one after the other
-While they are very effective on the tails, for low load scenarios the
-current linear allocators is better. Thus this will take more
-investigation.
-
+Fixes: 8ac04063354a ("swiotlb: reduce the number of areas to match actual memory pool size")
+Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
-v1 -> v2:
+ kernel/dma/swiotlb.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-- split components into separate commits
-- simplified allocator, no need for a new page type
-- many code cleanups
-- also implement the rx side
-
-Luigi Rizzo (5):
-  swiotlb: enforce pool nareas and nslabs invariants
-  swiotlb/mm: Implement SWIOTLB nocopy page allocator
-  net/swiotlb: Track bounce device per socket
-  net: Divert socket allocations to SWIOTLB for nocopy TX
-  swiotlb: Implement RX nocopy with fast recycling eviction
-
- drivers/base/core.c       |   1 +
- drivers/iommu/dma-iommu.c |   9 +-
- include/linux/netdevice.h |  21 +++
- include/linux/skbuff.h    |   7 +-
- include/linux/swiotlb.h   |  63 ++++++++
- include/net/sock.h        |  46 ++++++
- kernel/dma/direct.h       |  11 ++
- kernel/dma/swiotlb.c      | 296 ++++++++++++++++++++++++++++++++++++--
- mm/page_alloc.c           |  61 +++++++-
- net/core/page_pool.c      |  25 +++-
- net/core/sock.c           | 101 +++++++++++--
- 11 files changed, 617 insertions(+), 24 deletions(-)
-
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 1abd3e6146f45..8e4bd9d47735a 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -33,6 +33,7 @@
+ #include <linux/kmsan-checks.h>
+ #include <linux/iommu-helper.h>
+ #include <linux/init.h>
++#include <linux/log2.h>
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
+@@ -176,7 +177,7 @@ static void swiotlb_adjust_nareas(unsigned int nareas)
+ static unsigned int limit_nareas(unsigned int nareas, unsigned long nslots)
+ {
+ 	if (nslots < nareas * IO_TLB_SEGSIZE)
+-		return nslots / IO_TLB_SEGSIZE;
++		return rounddown_pow_of_two(nslots / IO_TLB_SEGSIZE);
+ 	return nareas;
+ }
+ 
+@@ -269,7 +270,16 @@ static void swiotlb_init_io_tlb_pool(struct io_tlb_pool *mem, phys_addr_t start,
+ 		unsigned long nslabs, bool late_alloc, unsigned int nareas)
+ {
+ 	void *vaddr = phys_to_virt(start);
+-	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
++	unsigned long bytes, i;
++
++	/*
++	 * If we have multiple areas, ensure each area's size is a multiple of
++	 * IO_TLB_SEGSIZE slots by aligning the total pool size down.
++	 */
++	if (nareas > 1)
++		nslabs = ALIGN_DOWN(nslabs, nareas * IO_TLB_SEGSIZE);
++
++	bytes = nslabs << IO_TLB_SHIFT;
+ 
+ 	mem->nslabs = nslabs;
+ 	mem->start = start;
+@@ -1813,7 +1823,10 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
+ 				    struct device *dev)
+ {
+ 	struct io_tlb_mem *mem = rmem->priv;
+-	unsigned long nslabs = rmem->size >> IO_TLB_SHIFT;
++	unsigned long nslabs = round_down(rmem->size >> IO_TLB_SHIFT, IO_TLB_SEGSIZE);
++
++	if (!nslabs)
++		return -EINVAL;
+ 
+ 	/* Set Per-device io tlb area to one */
+ 	unsigned int nareas = 1;
 -- 
 2.55.0.766.g2966f0265a-goog
+
 
