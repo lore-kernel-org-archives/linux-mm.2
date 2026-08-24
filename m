@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C652EC5DF97
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 02:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EACB3C5DF97
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 03:05:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 821926B0095; Sun, 23 Aug 2026 22:54:26 -0400 (EDT)
+	id 8F8BE6B008C; Sun, 23 Aug 2026 23:05:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F96F6B009B; Sun, 23 Aug 2026 22:54:26 -0400 (EDT)
+	id 8D0716B0092; Sun, 23 Aug 2026 23:05:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 738346B009D; Sun, 23 Aug 2026 22:54:26 -0400 (EDT)
+	id 80C756B0095; Sun, 23 Aug 2026 23:05:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 527076B0095
-	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 22:54:26 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8FCBC03DD
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 02:54:25 +0000 (UTC)
-X-FDA: 85134644490.19.C6B38EA
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 00F84180003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 02:54:22 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="I3Zhc/oD";
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787540064;
-	b=7zOSbzqxIW2A0RAg7q5AIkXrwjxMSJQg/Uewq34p1yQJCKd+MPQzGvOzAfLBBT4WXvVo/M
-	hvJGP4f7o5HRQcoxHlqS/Q+Y0ZoOzSVon8VM5HYd7MJxzp7d6saS67bkca3h7WickKpVON
-	Zt5Kdd5E+5W/vfjNSvR+s6C31HEpXAY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="I3Zhc/oD";
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 547DB6B008C
+	for <linux-mm@kvack.org>; Sun, 23 Aug 2026 23:05:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE005C03F2
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:05:21 +0000 (UTC)
+X-FDA: 85134672042.17.25C06A3
+Received: from mta0.migadu.com (out-240.mta0.migadu.com [91.218.175.240])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A2BCD140003
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:05:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sO9BQ/fq";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.240 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787540064;
+	s=arc-20220608; t=1787540720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wFdw7194L4fQEjhILHsILl9N8tSIJ2MhybMqVmE6L9c=;
-	b=jPbMNGXIBQqAxmaI/AvfyRCJ82kq6BYq8TzAkhpHQvK61X7sBCgqhNLKVt1C0Ch5sl65dH
-	uGoMlBGRVDtlX3ZjPFG2cSmDfOR2FXwka/E+wZnLTi08XRC7kxd4hKEmAkREFVWBP6oHLx
-	l1muvTDTmDKTWdo0klSW80J9f3qU8e8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wFdw7194L4fQEjhILHsILl9N8tSIJ2MhybMqVmE6L9c=; b=I3Zhc/oDSZneTHNYEcBzwB7KwE
-	IgYOz6SYVEGwUZ7c7+eWBOnZo9sC47x0//cEJTiJNJimNS/yaFJIEj0kOPCEbCeNSJ0qtky6x5nRa
-	8kHHPfRVtdYOjj5aI/fxWHSDypOawBjXjd+asw8mys0PcX0Vc8c7XASu1eZC3qt7PngTkkZ1nxzGq
-	kGFkdtg63vEEGnjaeuYAAjTUurHJDo9mnW0ofEYxNsVvKEDXbmjuJmOWQDs494gIsoah1JWuQpI4V
-	bWSFipWf2u//ng+3KHQVKsJz5ZCxV+BBUkaRWYnLJlRC9uXFWliYif8pg6/7QrH+h6mNhuNuBaefT
-	o8m2mUFA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyKpG-000000058gY-2yd1;
-	Mon, 24 Aug 2026 02:54:18 +0000
-Date: Mon, 24 Aug 2026 03:54:18 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: LongWei27 <longwei27@huawei.com>
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	hewenliang4@huawei.com
-Subject: Re: [PATCH V2] kho: Convert error handling to immediate return
- pattern
-Message-ID: <aouyWs39qxGI7CP0@casper.infradead.org>
-References: <00c96a62-f783-497c-a7ac-1de495e4af06@huawei.com>
- <20260824024448.550552-1-longwei27@huawei.com>
+	bh=CycmvM2fajUETRfArGp6auHoCgCbKeON5qQKnKERhQo=;
+	b=2HnI/7Z9HAw4EuQ1ykPVPGjK/xyId0chmVux8SD9eB+/dOroENQGwOpkB06Ao4bCi2Ozkw
+	ZGJKB14HUN0IV5530k0M8eLDLIxWfF2O+RFRKR87KPxPhzB176bHmbcMOINM7nUCC3EYiH
+	GYqbQWgeZPKlx2pTIt6OuEVEVwY1H54=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sO9BQ/fq";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.240 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787540720;
+	b=qU78895RQTW1Ya5lDLxGlXmb01rlL76kyIZdqV/wqR02C0gKtro/eGjOzbtTFHG+0wELHh
+	XBnEB5ViefnUjoHw79MqWwuDMVGQaaQNESt7HvTjsHjFiKGaGe++r8BX8RM+JYEvy4uG0D
+	PvdRgZVYdXL4P2dqJTfW/ZpzThALWIU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=TqxJYfxm291IpdzCBiyyGro/c+1ngMIo68kvFi7jpgw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787540718; v=1; x=1788145518;
+ b=sO9BQ/fqXTkAmaWH0m41sN8IgWKMQ8Ncx5UzT2kiVFPJpbi4mwuVsbOk4d9NrIU9PUU3NFby
+ DfvOjNHkjcaw/GOjMxjXf4JZy29sUkR59iTGdZGT1cL5m2gIU2tpoFK2i7ggZZZCQrx8i8FEeYi
+ qz///EzoKDUH39Jughydfqss=
+X-Envelope-To: linux-mm@kvack.org
+Received: from webmail.migadu.com (2001:41d0:303:fc7a::)
+	by smtp.migadu.com with ESMTPS id 900464cc304e1d33;
+	Mon, 24 Aug 2026 03:05:17 +0000
+X-Mizu-Trace-ID: 900464cc304e1d33
+X-Migadu-Flow: FLOW_OUT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824024448.550552-1-longwei27@huawei.com>
-X-Rspamd-Queue-Id: 00F84180003
+Date: Mon, 24 Aug 2026 03:05:13 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Hui Zhu" <hui.zhu@linux.dev>
+Message-ID: <90ff25cba63491e21a29e92b99f884bffde4eba2@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH mm-unstable v4 0/2] mm/vmscan: fix NR_ISOLATED accounting
+ and throttling for MGLRU
+To: "Kairui Song" <ryncsn@gmail.com>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Qi Zheng"
+ <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Barry
+ Song" <baohua@kernel.org>, "Axel Rasmussen" <axelrasmussen@google.com>,
+ "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "David Hildenbrand"
+ <david@kernel.org>, "Michal Hocko" <mhocko@kernel.org>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, "Hui Zhu"
+ <zhuhui@kylinos.cn>
+In-Reply-To: <CAMgjq7BSy0ReiwsJzDroQUZuJ+W8eakjRdUOyVxSJJDkUo1DFw@mail.gmail.com>
+References: <cover.1787193916.git.zhuhui@kylinos.cn>
+ <CAMgjq7BSy0ReiwsJzDroQUZuJ+W8eakjRdUOyVxSJJDkUo1DFw@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: raj893pgp53836jdzeetkmtecdneoeuk
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787540062-692769
-X-HE-Meta: U2FsdGVkX1/HVzhIzbf2G2mKIBqyYntAc8hh4Vr/CdcBcocpzagCD6ZPzdfk0uJwl/cEpPIG5OuQ/xXHLFpD//bUW6gza037mJlRKk2Q8rBIqOroLw9wxOiLf1T4oTazMVbUViBV0McZBC9rzjY8JzKEoQHprSj6Pi6AYCIaGmYMn7hJmQ/YPKj0xczzkK12RH75e9XiUDYf6ExNvyvvhwL4zdE/8HnpdWR/fCxt9ppWkwepOvqkzenP3x9M4aVabP6SG98ecvwnxCYGwYzQr8YDsKAjhu/itjQ7TlWyDa4831Vz2j04NKZd+D7q8KRvMtxU/81B6RyyaLlcAq9/iMFRX2CjsZ5opdHwHMpFULQ9Toao0sJMO6NvOykLz/1C4MvHsYNPxwqZKRDFtjOslA6nwyou1um2ArRwRFXPutBPQZETwWdGIWj9JI/NSBJnUhrXsEWURV5V1tZrvM+AfAMp2slea27yA/8j8cDZcGOtGWUe3/BpeB0ra+EONCEtngvKL2sB3qUAwCCeUcEOy4WKrSWqwSegAS300NwcP5o8us1Y/1Armug2rg5bnVnY97ibEUCtmYWE+KuuCQq4p/ygXLd9pxtk+eqT3dnoofRjEPY244fq7kjw6dWaWyfQXe7ZIwP20uAfcsbjvHFK32m/M7JG6P0XWNs1WFrqCKtu/x2OPahgxeUiiVpxNPx210TPSxjg0o5F/gcJjlhEgI0sof65g3aVi3kT5fwDpdoAchsLejDyHkkWASlBVORBWw+TbSUqfPdrp4UhOTW+NTwJ2iQy8SL0IVoDfATvzlZoe9K5F+xdmI1G/p5500e1rKz4luXwKAdaArBtUt7nFBdbz3O4/keIjNaeDBsaKaCyH3wXPLd3Peu8kRvlswWzb3nqy1rIb+isZRuy/ptYV+Pin4Q24i/oxb7HmiKFtIfTyuptUiK6TWsIqirm91q1xNLWurgYEHI11H8eYZz
- pure+Cvg
- ClwY80Rx58gcm9jv3dOFK5hVZuj6FwnTGIaCDoUnXYmxJ5YDq8dlxMwszLpQ2XmPuf+0MFY88J6elyMzWuD9+iTLVYhtiSEqR8IItEzwj3HljQOfDG0uHXuSBJjOCCBBVbqBgO+fFqjLTwrBgh/NBTaBmG+2qFUPrJn2lw22EmZJhBTynUAOkT5A1+xazr5x/FZslIE9ecQx30l5KE090+MlcOGktYwmuLu7LiGAT8koHcpxW+UGXXz06xQ==
+X-Stat-Signature: wospm1frjjm8dso1jctcuxdax9kxn6m6
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A2BCD140003
+X-HE-Tag: 1787540719-353406
+X-HE-Meta: U2FsdGVkX18CiCDHap9ALErCk1+7q0obHQC5IlOaytHuvZQeXrD9RJzLS9DL1Giy7zGrBrGS/QSz7dmpmSWXMIURfuIPsfC9COQwFHmXAFbuQmF9ysMvVf+nWqLYXXnOtnjzvDkwJRXXmb3x4hUa/WhLCCAONhB3x3feqCZpv09zsfXCVTWNqD8cd43I4hO0Vs/kgxnxZ2vF85qqsHWc/I7mT49qhZo1verQVR53DUkzj0D+9UUIOzC/CmblRkEGHrgS7MnErD+7Pin8QLZnAj3vACAV6KX1t7Mr8Jl0rpCAo48XUrbhLN3YUoJ1myjkedfuCbcHP/HbMuBEIjApplxSZ+ncRi0QX+o9+lvxlhCu1pYk48oagP9XzZZChpFrGX9vl6yWYMbnCo9iwQvUFvKLk5LuiKconwRKabvAVX7KDHVmBBaflbe0lChf0fDV6fFP2wKTgnEWJbCM/4WKMKi92LzkW1eDjTFuH6CHMX/Pt/XEtnWd+YmSa8rzl64GCvlbzR6x5/fiC/VwqEStfunuTBR7rcBlR+rGQkNVoesoDVMBW+wpqiPbIjLErFXpK2RdBBSmcNnAcLMu+Q+3j54ApP9NK92xXx7rHQKfAIdpSeIUms1VdsvEMAxmgjZRBCGI6c+4ap2lKOGGs8rDhr7G3xM/a9JbO6bnxVfETBOYcOlQ4SyKLUGhU7A4vVzc5+3r0lAPuWs55t7Lxl/iPwG/xhmWkpFyHobVfUTpa7B5+40qjP6M7jE+xIvaQqQ1roPiJbxzsWi57eo8/atLyVI9YGzNUeaoFVnY0lOwwqQCCbxk0fJ85nG/ZsggsdjvyJ5gYwB+KMAN/sKPBa3OZv6mhn6f8ean7R7ygoaUpj70ienxMaQg7rFbEtZCUGehtkSZTMmPiuEWHl5HlktQCVTV62RgBv8kty0QiA6d09OlGgwdgzX6nbd4OUV7uzQt0haNv5RIFRG0usik24u
+ Xb6PrO+P
+ +/FuYQ349p1mBQrkgmhWQwsSngst4oAjuhT0jX7KleeUZPdwGKk+4eOTssgIvy09QSjfXypiwX9+SRfoWGSCpfsB3sXvngUKvTI5gKZP2HHQc0qZdA4qrsJ+Dx2odP4v+08RYhxcLLKnpNS2FYwriNMZgv3dCKrx5RuV4yGnpQMg2RadOR1M5JY8KN8wz+SOKy/28U02SCZQcd5RXRbOr3ecVH0JD20kNxCzhU8vMNhgTDRgFTU5+agSzUQD7h6JBynVcUMeiHlcD8CdaUUmtdGkAtQdR5DfikVtIodd9GRouXON50+ubJF9P8Il4VvuwAbHL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +100,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 10:44:48AM +0800, LongWei27 wrote:
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1438,20 +1438,34 @@ static __init int kho_out_fdt_setup(void)
->  	int err;
->  
->  	err = fdt_create(root, PAGE_SIZE);
-> -	err |= fdt_finish_reservemap(root);
-> -	err |= fdt_begin_node(root, "");
-> -	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
-> +	if (err)
-> +		return err;
-> +	err = fdt_finish_reservemap(root);
-> +	if (err)
-> +		return err;
-> +	err = fdt_begin_node(root, "");
-> +	if (err)
-> +		return err;
-> +	err = fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
-> +	if (err)
-> +		return err;
+>=20
+>=20On Thu, Aug 20, 2026 at 10:49 AM Hui Zhu <hui.zhu@linux.dev> wrote:
+>=20
+>=20>=20
+>=20> From: Hui Zhu <zhuhui@kylinos.cn>
+> >=20
+>=20Hello, thanks for the update!
+>=20
+>=20>=20
+>=20> The legacy reclaim path updates the NR_ISOLATED_ANON/FILE node
+> >  counters around isolation and throttles direct reclaimers via
+> >  too_many_isolated() when isolated folios pile up. The MGLRU eviction
+> >  path does neither: evict_folios() isolates folios without touching
+> >  the counters and never consults too_many_isolated().
+> >=20
+>=20>  Patch 1 updates NR_ISOLATED_ANON/FILE around isolation in
+> >  evict_folios(), reusing the existing nr_isolated. Without this the
+> >  counters stay at zero while MGLRU reclaim is active, so compaction's
+> >  too_many_isolated() cannot see the pages MGLRU has isolated.
+> >=20
+>=20>  Patch 2 adds throttle_evictable_types() and calls it from
+> >  evict_folios(), before the lruvec lock is taken since throttling
+> >  sleeps, leaving the legacy path untouched. The MGLRU check differs
+> >  from the legacy per-list one in shrink_inactive_list() because
+> >  isolate_folios() picks the type to scan from the refault feedback
+> >  and may fall back to the other one: it computes the set of evictable
+> >  types that are not over-isolated and only sleeps when all of them
+> >  are, waiting once for concurrent reclaimers exactly like the legacy
+> >  path. The mask of the remaining types is passed to isolate_folios(),
+> >  which restricts both its initial choice and its fallback to it, so
+> >  isolation never lands on an over-isolated type and a type that is
+> >  merely over-isolated never blocks the reclaim of the other one.
+> >  This way the MGLRU eviction path backs off when isolated folios pile
+> >  up instead of thrashing the shrinking LRU lists - the scenario the
+> >  too_many_isolated() check exists for. A dying task fakes reclaim
+> >  progress exactly like the legacy path so it exits reclaim quickly.
+> >=20
+>=20Hmm, could too_many_isolated gets over aggressive or over passive,
+> since the inactive number of MGLRU is just a compatiblity shim and
+> does not have the same meaning of classical LRU? Especially when you
+> run out of swap space or hit a memcg's swap limit, the anon inactive
+> number becomes a jumpy random number. Proactive aging also makes the
+> inactive number become huge for MGLRU. I still think even a "/
+> MIN_NR_GENS" is better than using inactive value, MGLRU used to use
+> that as the aging trigger like this:
+>=20
+>=20if (young * MIN_NR_GENS > total)
+>  return true;
+> if (old * (MIN_NR_GENS + 2) < total)
+>  return true;
+>=20
 
-Less verbose:
+Agreed.=20The next version drops the inactive-based threshold and
+instead compares the isolated count against the total evictable pages
+of the type divided by MIN_NR_GENS, and makes the check per lruvec,
+where the MGLRU isolation happens.
 
- 	err = fdt_create(root, PAGE_SIZE);
--	err |= fdt_finish_reservemap(root);
--	err |= fdt_begin_node(root, "");
--	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
-+	if (!err)
-+		err = fdt_finish_reservemap(root);
-+	if (!err)
-+		err = fdt_begin_node(root, "");
-+	if (!err)
-+		err = fdt_property_string(root, "compatible",
-+				KHO_FDT_COMPATIBLE);
+> >=20
+>=20> Testing
+> >  =3D=3D=3D=3D=3D=3D=3D
+> >=20
+>=20>  Test on 8G RAM qemu.
+> >  The reproducer confines stress-ng workers in a 192M memcg and swaps
+> >  through dm-delay (300ms write latency) so pageout is slow and isolat=
+ed
+> >  folios pile up; the workload is intentionally extreme. nr_isolated_*
+> >  is sampled every 50ms against the per-type too_many_isolated
+> >  threshold (inactive/8), and throttle events are counted via the
+> >  mm_vmscan_throttled tracepoint.
+> >  The test scripts and test log are in [1].
+> >=20
+>=20>  Test 1, reclaim throttling, parallel direct reclaim in the memcg:
+> >=20
+>=20>  before after
+> >  throttle events (ISOLATED) 0 0
+> >  - from kswapd 0 0
+> >  nr_isolated_anon peak 0 3166
+> >  nr_isolated_file peak 0 174
+> >  - samples above the
+> >  too_many_isolated threshold 0/1088 89/1077
+> >  pgscan_direct 1540044096 858332151
+> >  pswpout 6299497 725819
+> >=20
+>=20The throttling avoids premature OOM and over scan when there are too
+> many reclaimers, it is not for IO balancing. Because writeback folios
+> are not isolated, they are putback to LRU waiting to be rotated, not
+> isolated. So reclaimers never wait on the device however slow the
+> device is (except cgroup V1 have some special quirks I think we should
+> ignore), it's mostly CPU bound. I think the mechanism might be a bit
+> outdated, even for classical LRU.
+>=20
+>=20The result just shows that swap became less aggressive when under
+> pressure, which is somewhat counter-intuitive. Overly aggressive
+> throttling will unnecessarily slows performance if anon pages are
+> actually cold or should be evicted. These results reflect a reclaim
+> behavior change, not a performance improvement. And I think we
+> shouldn't rely on throttling for balancing, those are two different
+> things. Heat or I/O cost-based methods are better.
 
-up to the maintainer which one they prefer ...
+Right. This script is only meant to show that the isolation accounting
+and the throttling kick in; it was not intended as a performance
+evaluation. As you pointed out, it also sampled the old node-level
+inactive-based threshold, which no longer matches the new check. Will
+provide a new test aimed at the premature OOM / overscanning scenario.
+
+>=20
+>=20For example the test you posted, it just stress-ng which only spawns
+> anon memory IIUC, so when you reclaim file, your code segments got
+> reclaimed and hence the process stall and has to wait for code
+> segments IO, which I think it will only slowdown the actual
+> performance?
+>
+
+Yes, will fix that in the new test as well.
+
+Best,
+Hui
 
