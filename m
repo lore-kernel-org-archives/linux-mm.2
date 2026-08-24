@@ -4,92 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 240F9C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:51:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2E45C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:59:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 286196B009F; Mon, 24 Aug 2026 12:51:55 -0400 (EDT)
+	id E2D8E6B008C; Mon, 24 Aug 2026 12:59:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25D5C6B00A0; Mon, 24 Aug 2026 12:51:55 -0400 (EDT)
+	id DDDE36B0092; Mon, 24 Aug 2026 12:59:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14D886B00A1; Mon, 24 Aug 2026 12:51:55 -0400 (EDT)
+	id CCD526B0095; Mon, 24 Aug 2026 12:59:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EC0C26B009F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:51:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7AA1BC01D2
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:51:54 +0000 (UTC)
-X-FDA: 85136754948.08.782001C
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3712380003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:51:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=bG+n8mRv;
-	spf=pass (imf02.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FDFD6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:59:47 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3DA91A1FCD
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:59:47 +0000 (UTC)
+X-FDA: 85136774814.27.3C4EF15
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 69620120007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:59:45 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TFfJP9Ki;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787590785;
+	b=XW9mpPQ42q9blQZ8WUPsJEf5M+eZPbLfG41Ys5I+ap3fEJdokIgnZUVXKiE1Ff+7bUBVJg
+	sPyY13aQ2vivH/7gEDnJAcUsxFaCMcDfIVySWsQXNQdWh8OK1k6FPzSkHdErpZ6NTw/9Gx
+	rjaLVczUA+oD3jujFas4O7bAwZGwA+M=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TFfJP9Ki;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787590312;
+	s=arc-20220608; t=1787590785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/pRcrUPOXsyrdeVukIWc4SE+545428m5LfB8zUsy5Ao=;
-	b=2QVhcRdhb1ExkYuhf9WngiYMBPWk6imrIUBTyf6y5VjVpki+wGJ0JgnI/iMbnd94vIaXW7
-	VrS4s+3lTXwo6aoqZdGYbfaG/29Jpg0whP+ctjAXSNdwolpllmJBK/2pSOyk0if7QU1SSE
-	Q03XDwoss0oFRD5zkaE94LxnlbMxLxI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=bG+n8mRv;
-	spf=pass (imf02.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787590312;
-	b=OuMStwvlpVVq/2Oja5AbiCMnD18bsaV425K8L6Y5rcSFyW16Kc3kvVyIys/s8kW1PGRVU1
-	RotlFF2JJ+zFRl4Q67zjkxXQo0r961M919Jh8oSwumUlVxLbFQ3cy6ZA8KDrN+s2482Ehl
-	Y3aXMnlKLjd/Noe/nos78mjnlIXBP5o=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=/pRcrUPOXsyrdeVukIWc4SE+545428m5LfB8zUsy5Ao=; b=bG+n8mRvz3YPeVpOAFdo2e8pEs
-	G5B5WFMth9vxiAb8J4pdP2TPxa0bunQlK+XfFvGl2wRkWoAoOcNe+z2J9cpH9wCzBa6RvgMP/3613
-	JsL4Gkm6bxP+/zz1mhs+NssNNrrfwVjKnrxpg3ZHtjG6qsfMOMh+PV1Pf/ftzXJQNFN0ivrhTb/ug
-	+lTiI1/a5a3HzNUl/SR12F0tVZ4xDLsUo7RWgVT3cUC17ZseFBYFvdhd7F2DmN/AqPr1uG45kbO+9
-	rp7ArQwdOb3Jq85FUCrBVqHZ7ZfxNqBb4aH3CreWqPWyEgHvbxc/cn+dysHn5fvTN0y62hAURNCEm
-	JGfv3Juw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyXtX-0000000H59U-3tBK;
-	Mon, 24 Aug 2026 16:51:36 +0000
-Message-ID: <6075472a-9ec5-48b9-bfbd-c3d8ac29d98d@infradead.org>
-Date: Mon, 24 Aug 2026 09:51:35 -0700
+	bh=MA9J/J4dz8CmMza6uNEHvAF2e5np5uw3UUGqTjXdZKA=;
+	b=pPxqRf0QZau64L01sSYWuKzzrCIq9sd9yaMxD0SITmvBfH8fcqHUPL3Kat6z5ESyb++vF+
+	Tgkbghx209SQTIHNkDjwPyaCpZRZ/exbK+K6H1BYd1iGyqAAxBU1BynlYc4QTthpd7Atui
+	wjvMvwz5QlA8un5CHYye5ZSltUHXv2w=
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7eb6573bd52so3759412a34.3
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:59:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787590784; x=1788195584; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MA9J/J4dz8CmMza6uNEHvAF2e5np5uw3UUGqTjXdZKA=;
+        b=TFfJP9Kit52aywF8qLHultv02ErJPqGkrhW3rHTEMARtM8RmSZaD7PJGQry7Tm9Lt7
+         uphokz/NebjqMHF22R+gPHPeau8CcKNX2wuYFR0A9HbDVdlflxRPMTaRDCpXziQnkMwQ
+         VLdRUVFmDK69GmJx8WD6Otwp/HZfA/wR2WNXi43TKg2txUT1//N/plHpzsPOjgK2lDr7
+         3Y/MT339cJc6ix1JCBkTtuiOnjs8S6rRR/BA6fzFxvlrN4kSfRQpH+9aLA04P2/ALAFK
+         1lLFV86K4sPO8niCRTL5bpWLsuLkxv1u/CWCDfT1I3/aIiIgwdQdA5lWFfso2L+/N8W+
+         xOdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787590784; x=1788195584;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MA9J/J4dz8CmMza6uNEHvAF2e5np5uw3UUGqTjXdZKA=;
+        b=EM2yiAFrPjTsd4JCj3ueg+yIe+/4vQf8kLw0EGz0aJGLlARDxRAU1oT/XOIIol7jBm
+         yRaoalylLAva4cOh+K85MOwJa0qKR0yEaqQbLkXcW4uf2qoJNzXhIYWYoTnWclfIVoBi
+         vjLdOGRwi3vNg/R1I9Y6QpJDoEqK0Bpv7eZ1q0kyrSY2V0E1cNdQ8qSom8ZzgTLIE0Bn
+         SdVaApULRxhHgVaRhLMRxP6jD3g2to1r00fTOvs9u1pFbJV2SDEIWdcy5CTPZysEBQfq
+         k2Rd/KzJ7RIr2D0WGHIqNpVnNquwsRa9a7sBJ/wYcum4iVzN9B0wraJIDu34xUi/FvkI
+         f/rg==
+X-Forwarded-Encrypted: i=1; AHgh+RrB2xu8988gdramshPryQtFtvACnOofenKE+MYtPodwFXqWBfcaSud//oiZBEP0Pw5yeWJgVbaEyA==@kvack.org
+X-Gm-Message-State: AFuF++mBHzzJedhOqGedBJjNabgLmxkNkLNayOLRXgdgT1c8yuGw1sGg
+	Fe7hk4DlaoGvUdLo0SWuo8hbBJnzCG6CwHT/ACtkLqU0MqeQZs/WYMXY
+X-Gm-Gg: AR+sD10CQpxnbSvEeoG2wYCAFPejELr38iTxb8y5FY+0CZv87t38W2W4x+cGEgefy6+
+	wPSILvF6/1A2vvsaOgldNYaSH9trvgcVJwqoAFq8suhcrvOXrsncQZAawGP9Zi1d27Qqtn/xMGF
+	hvMBVXa8q8Afq7wwAFUykn20k73GLUX81Up0f5j3/KaKBPVOKW5kvRkR/S++2r3FSiZiLRrhoEq
+	ehsnr5KtVBqPhtTl6Y16gXCqu+T506JyrYIFnNudk6FxbIAI0IRmtHHMOBcR/YhefUsIIazRXGb
+	4bCBOrhYR1WQYda/9lVo42gUqnxZuhC7MQtumINrjyAb56DhRaVnShOfkjezIOf+K0y39Wdwihj
+	pZyaAFU4kjI13EhjupMPlcdusBR0PDEKhaQ5pZY91iskbwVf1P6eYCFwpAI3u3mtHbBmbDQL4ui
+	lz5njlM//AwlMslOzZogAuKwzuqD21ECLDhQLyz7axnaVec+jcXruzWFJzpNhEeG+G5xptorsGX
+	d8UpkyxT56OezRC3ow=
+X-Received: by 2002:a05:6830:6187:b0:7e9:e257:81cb with SMTP id 46e09a7af769-7f461845b89mr33734265a34.7.1787590784236;
+        Mon, 24 Aug 2026 09:59:44 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:2a::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f48fae8e1fsm4566560a34.1.2026.08.24.09.59.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 09:59:43 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kaitao Cheng <chengkaitao@kylinos.cn>,
+	Joshua hahn <joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH] mm/hugetlb: use hugetlb_vmemmap_optimizable() in boolean contexts
+Date: Mon, 24 Aug 2026 09:59:40 -0700
+Message-ID: <20260824165941.2354729-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260824151655.30840-1-kaitao.cheng@linux.dev>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] docs: ksm: fix typos in sysfs knob names
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- david@kernel.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, corbet@lwn.net,
- skhan@linuxfoundation.org, shr@devkernel.io, linux-mm@kvack.org,
- linux-doc@vger.kernel.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260824061010.3343959-1-tujinjiang@huawei.com>
- <20260824061010.3343959-2-tujinjiang@huawei.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260824061010.3343959-2-tujinjiang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3712380003
-X-Stat-Signature: jqy3h3fjny15upiuq3emge53gh7erzio
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 69620120007
 X-Rspam-User: 
-X-HE-Tag: 1787590312-676589
-X-HE-Meta: U2FsdGVkX18/f52mwn/E4kBkiRjB/DGcjAnoC4h7eflJu4kx+d4q4JEx/ybo/1PVmB1KIq2otMxZYGRTi+tLMdKIFRddE0ZYGXofEk5ZZ9muJwAGGV/GzD1OuHKXQ8AlsVoX2Pi1J6Q+hrnL0u5H0djMuS7TQZVLrpn59X8qH1ui5/yV4wCeAmPgqrB2cH/kU6rHrkiFP3xbCv9McSSTTCDK4dAbU+1mRZtooLEcSeElxyjsspbufKAU7fkPkSl8cIddQ6udzqWIvU4gjmY+f2sTVyfmc+PEvp7afV/GDaGmNSh5rt48GAdSNECk+nZpNqnbMMmJn20g743ZW+ZbdhgJdf9o/Mp5dI7FThJr3D4/+AsQ8b4bZF8DJ4WgAyK/5SRaYdhqM8kbthW9Tf2TF8MegMxBsbbwxOBGPUm35w86o/RtTyrVI9SdvGS3+GIviWqjDLeiWznDzEKxLnsPh3PZ5AbXaf407AzNIvbtghP8gRddBEiCU25g26TuBLEkwerdCH0ryy5v0jDKvcCL4BGeRCJtpO21v9BBBhokJHlrNZArn/HCnTHIAGOlseXyYDQXL0Gh4qXzzYYLk4X/9m6wU0IMSt9HEsK7Ld7s1zSPbgXsUWfTjjqZ9MfURAwNjW3KxgNLEGLTTfxKM9a5IkZJK6Xnh/LJpZKf7Rohzix9NeQSDx1AF+uSSPLQX54/dgB3GdEYhFlEmtk2KWCOsKveYvGaS9SXJaHm/ewsHZ797VyNnhayIpPtCH46JgTbTdm8VBq8hLT8yJ/lCmdmUPxquWXueHNtE3/Tdo4iFa8HTfSmUGJwsZzSS5qI27bC7JQIaJtUMRHzlnAIAJCAMIRLis/JyZKMiu1A1hDbW4pvdWQVkWYeWSjOJjVkfDBUomx9kI8q7KcDTJhsb0mOiU7pUwvEcmFCy6QzhkQS2Dm+tNVifxmyin6TD2DLHD/6fvFsH50oFRfKoFhu9d3
- iLKrAuVU
- 8dlcjk/h3ESUosIozAf9UhKh/2n/+vX2LQGu1B73zxJdUUHtOjSVHnuZecYOgLdZCov/yi3DrGnijg4W18LudatFzUqU1UsXspC5zK3ZCKVjSr5TQnIRg19cC50ju7HdQae361iVwOBhy/bbUvLHHU91MUZLGPIUuslDskjO5tMdfy1MarcV94fRsiHYr6CGnT5FpHwIPs/pKV0XJ3nGDYknnNCFRZjfu70Xca6p26QIhODrK79r/LMgbAgTVa+6ztnQQIgdUvoYv1Gge/+OjKcG8TGZFtHR7gSJBfkyfjSsXilrcpYc8AqC8AYvubMH3zAvdBmBTNL0Taelqc7XFx/6Bpumra+DHPdTsmHnuyU/1Du+1LNghHVSWJVskqCiWhU6yNg/Bg2JOM8Q=
+X-Stat-Signature: cwc1yyro4jbpfp73mmktw7uquzekna5d
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787590785-841716
+X-HE-Meta: U2FsdGVkX18uYsZ7kBNPMlLwnmCKHMsujXg3+q70gkAXDdjM9o/dVeJifjLDqUPWq4B835Zw6ra6yXzDuXS4ZygbStKeMIk9H2snKyZjBQzHmkdclitvZZPYryaIgGZzkMCt3AYB88MoRxVnLyyEy17f9LUzedaNPrbmGQdAvlWxJ87oK3uvdIWlM3Vc5kjvtbNjcmUdzQbDC+ykaP/nTVHvOV3rKehyuBRK57lOttFwxidBgTZvKuVPzty6pKbGV/LPOGD6QUhboVa9fgaGpOGx5tcX187h4A8XjWWyG0bGmJFJ8V7MdsklgRwWrmnu16gfjniQCF8FUr5rPUQSHV0/lxg3O1gGc8gl4qhyaT1GbKpySlSVCSWjO/fFAPEWFMS0niFC/Apg3mGpXFiujPXJaOvsWM82CcUYZdr3u9yv5ujnuI77muIVLzAmzyqXwT0P1DWiTOGadqKrx1GAczfnGYExhxkJYJXiHr2jREN7Rin+jDHWfRAw50J7y3b1RzeClToNnssB32CcWllGsk3d84ZUWOOkuG+Yd0MH+uCCuQo8umFp7leh26vKfvB4wd/X/5tpceqzdd+czUrYLdxx8mx/Anao+0UnagBtlQ8cIVtXnbmhPZeevtl3QMt1XYMKszILd3EAKND6F5roOux5wC9R9DOZQKbg7X5lG/jK2hFwlmhSwpXNhckMDMD89VjB5SN3WWcY4nDZsUyWxFvqLRuJoDWDZYKDW0J/KLXLfSlBm9fkvu3o6yPbKts69Z9e8MVDvjT2t7V73/Hpxc6TLGYc4WBBbI45qK7WGu/oGK4Iq9SuYMMy8Xiu2HjjLiLp7IfFK+FkLmV0cIgIebAxWlNi0kELAg31gh22Q0ijKedpqv69p+4Oe9s0I3N5qBoMpL2txz4EMTyIenUYQ3qGdr1kBnX6XKh0D+CsX+7XoQHhUJKhTb6fDARSZpIBHrBh/uHqgJCcHzifo+N
+ tT0d+Hap
+ l9ibfav3m2uTYlSo5ecyw/AsRefWY4x1jBM+Hdd9nciCv0h8tDmg50e19437E13lknUVVGddW9vXEcBkUR9RZUDI9u7KGj46tA+VPEfXiAtCgnopZLQPuji4R3HwX/DaGXhzin8hu0YfdRaHALfQT8+oQ3Arp16w4ubGOJtnSpRan0/tHeWQTbSgfyRjNOAixVAsP1+3vkMoiVCGFMGWXvzNdxC88086BoNhc17pepVUXQN46R0F8JdWNaMmAb7/EvPGY/ytmHmUZgAcUFrGSFdeZgsh7EQSETwPvG+QrgocvkFJpb7DQBtK0WEA7d8ATxTZMKEP6Ip9p2BI5FaH4rslf8BBIJXKs+S8fb0UVfM7PvRc2kleRZN1M6OrgAzfF3MVB5nRMmTG97169u+UXcmxqziMhbyCuz38/3Y2QjsAukEYjBGDA8iRZFRQvSnTxY3Wv9q57yjsg++F1KVKWOSuV5QSLXj3k6AwAdpOKXeShefwjiqLuKueUxf08rOt8P1PFwU2TpmtmczTGiE1EtCgD+p4ZZufOCsHEqpn0WBttQqyIRcnmirAPipuN3bAykj4kGyDnngvlTAEFV7H+XSqE39D2kVUqfWrB3wQXk4MLk93DvnPmS8OaWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,47 +124,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 24 Aug 2026 23:16:55 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
 
-
-On 8/23/26 11:10 PM, Jinjiang Tu wrote:
-> The sysfs knob names in mm/ksm.c are "advisor_max_cpu" and
-> "advisor_max_pages_to_scan", but the ksm.rst documentation spelled
-> both as "adivsor_*", fix the two typos.
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
 > 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> The two boot-time sites in hugetlb_hstate_alloc_pages_onenode() and
+> hugetlb_pages_alloc_boot_node() only need to know whether HVO is
+> applicable, not the exact optimizable size. Switch them from
+> hugetlb_vmemmap_optimizable_size() to hugetlb_vmemmap_optimizable()
+> to make intent explicit.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+Hi Kaitao, thank you for the patch.
 
+I think the changes look good. hugetlb_vmemmap_optimizable is just a
+oneliner that checks hugetlb_vmemmap_optimizable_size != 0 anyways
+so this change seems clean with no side effects.
+
+Notably this leaves the only user of hugetlb_vmemmap_optimizable_size
+an inittimepr_info statement. Just thought I would note that here.
+
+Have a great day!
+
+Reviewed-by: Joshua hahn <joshua.hahnjy@gmail.com>
+
+> No functional change intended.
+> 
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 > ---
->  Documentation/admin-guide/mm/ksm.rst | 4 ++--
+>  mm/hugetlb.c | 4 ++--
 >  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
-> index ad8e7a41f3b5..c9f533b10f6f 100644
-> --- a/Documentation/admin-guide/mm/ksm.rst
-> +++ b/Documentation/admin-guide/mm/ksm.rst
-> @@ -174,7 +174,7 @@ advisor_mode
->          The section about ``advisor`` explains in detail how the scan time
->          advisor works.
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index a03a75fd7fa8..885f721999e6 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -3416,7 +3416,7 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
+>  			folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
+>  					&node_states[N_MEMORY], NULL);
+>  			if (!folio && !list_empty(&folio_list) &&
+> -			    hugetlb_vmemmap_optimizable_size(h)) {
+> +			    hugetlb_vmemmap_optimizable(h)) {
+>  				prep_and_add_allocated_folios(h, &folio_list);
+>  				INIT_LIST_HEAD(&folio_list);
+>  				folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
+> @@ -3485,7 +3485,7 @@ static void __init hugetlb_pages_alloc_boot_node(unsigned long start, unsigned l
+>  	for (i = 0; i < num; ++i) {
+>  		struct folio *folio;
 >  
-> -adivsor_max_cpu
-> +advisor_max_cpu
->          specifies the upper limit of the cpu percent usage of the ksmd
->          background thread. The default is 70.
->  
-> @@ -186,7 +186,7 @@ advisor_min_pages_to_scan
->          specifies the lower limit of the ``pages_to_scan`` parameter of the
->          scan time advisor. The default is 500.
->  
-> -adivsor_max_pages_to_scan
-> +advisor_max_pages_to_scan
->          specifies the upper limit of the ``pages_to_scan`` parameter of the
->          scan time advisor. The default is 30000.
->  
-
--- 
-~Randy
+> -		if (hugetlb_vmemmap_optimizable_size(h) &&
+> +		if (hugetlb_vmemmap_optimizable(h) &&
+>  		    (si_mem_available() == 0) && !list_empty(&folio_list)) {
+>  			prep_and_add_allocated_folios(h, &folio_list);
+>  			INIT_LIST_HEAD(&folio_list);
+> -- 
+> 2.50.1 (Apple Git-155)
+> 
+> 
 
