@@ -4,186 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A962EC5DF9C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 23:38:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67E1EC5DF9C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 23:43:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFA906B008C; Mon, 24 Aug 2026 19:38:34 -0400 (EDT)
+	id 2C5136B0092; Mon, 24 Aug 2026 19:43:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAA5D6B0092; Mon, 24 Aug 2026 19:38:34 -0400 (EDT)
+	id 29D6C6B0095; Mon, 24 Aug 2026 19:43:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9720D6B0095; Mon, 24 Aug 2026 19:38:34 -0400 (EDT)
+	id 1B2B86B0096; Mon, 24 Aug 2026 19:43:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 75DEB6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:38:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E86AFC02A5
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 23:38:33 +0000 (UTC)
-X-FDA: 85137779706.01.0C6F3F0
-Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D96F5140005
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 23:38:31 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm3 header.b=XBhGMGf0;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="I lzNSJW";
-	spf=pass (imf26.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.136 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787614712;
-	b=z9L1ICms9DsJxUY7vemabzTVQXrrsxvVf387cMLchchSbpOhGkdrXkOAcP5ufy31AgzG0e
-	8+qiUjCnHwAd7MWmLCFAtQxeb5rjnKZxTUtB1lmYazf3DvRI1dSh7h2Kd/TMgkn1+rJkLE
-	5+dkn6KNpjKKSyv/rr3ZuOBOI3cG5Uc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm3 header.b=XBhGMGf0;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="I lzNSJW";
-	spf=pass (imf26.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.136 as permitted sender) smtp.mailfrom=neilb@ownmail.net;
-	dmarc=pass (policy=none) header.from=ownmail.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787614712;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D159F6B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:43:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 515121C1100
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 23:43:05 +0000 (UTC)
+X-FDA: 85137791130.30.FA89797
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5CEC880005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 23:43:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J8zz2uq0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787614983;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ks+pZPsMFw/dX/SaAC+B9uhzl7GasUHVZ9HfOG6GYI=;
-	b=ozNQlmh8Ogtc8dtvz2ltEpHbx+6n0/QYSbM6wp8ekJWpfSqZu4x/tahqTAKKqbjF6hBOzW
-	f1V1KRPNYXaV2JylI4ghvxrSa6usy8yCwYcPOlzS30aXqGJ6f2fIU/54Ed8I3msb9NhDv2
-	BVQwZKhfFi5row0indjmJZwIPNaSsnI=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 2D1D01300083;
-	Mon, 24 Aug 2026 19:38:26 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 24 Aug 2026 19:38:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
-	1787614706; x=1787621906; bh=1ks+pZPsMFw/dX/SaAC+B9uhzl7GasUHVZ9
-	HfOG6GYI=; b=XBhGMGf07QdE2qp575VTBn2lqjfeSn8rsfkfLCsM/Oyww79wzpr
-	ApE3lQnrKoKXPaR0AbukURBDsEpzjpZweEngjZwwjsdH9qRwACpaeJanhQMFIhCr
-	dL3/dlnRNmyY2j2u+W+CipVxCIJb6vhNXP2C4CkNEGyZlipst9/MLs7k5gSRn+SN
-	0quDrwjC2k2VRQGqs+zwgB/delGuW8VyU+zGtcxaHB1sn6ywd60as4c7iW0EPzSE
-	92xvuUYOrQEshiIW/INtUWY7tI7Bwmm7colbKFqt8Q5QGdrch76Fr7Plgw62Rqyr
-	Jv6QgWDRLEDm/DeYpdwqJ+h+XUAg+043sSw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787614706; x=
-	1787621906; bh=1ks+pZPsMFw/dX/SaAC+B9uhzl7GasUHVZ9HfOG6GYI=; b=I
-	lzNSJWico+svMdus2gBAc3HIZDjiFr3cckIgnsASVB4TdasKY3A7/axRo3a8Dlu8
-	UmIPoTkwXXQFiIUQavHV3nTdGVcPGawQ+n+YgCa1oiUwsu1VUziOY7oMW0Lvfa2T
-	wmasGsZCKt9ahl1HWHHWhZYKGUMx+a1Fpq8mWL4iBSbnzjAYIsyb/btw0r2MoUh7
-	zvLeWL3H2dn7Kz2xakvXBkOQaQ4rZWbWkpTFHaOEJ6bUsKCCuNX2HfvNCC/w40AJ
-	kMFcNkAPwwJjPvtCGWrAft+YK2E7UoCvGd1cQjqbOm4YgcGP1sXFBqNBvmEIKRgJ
-	cVTPKjQmGCi0BcJWxcFKQ==
-X-ME-Sender: <xms:6tWMao3MGXfEgZ2hm2rhJ71A-6ZVub-9zpOsoFZN2tiw6iThTBuwzQ>
-    <xme:6tWMaj7LeLQe0L41ggA0tcRjTkl9-GpsxTnxiTGYyYN5yIAzniuLbkD6EQECYCsEK
-    7Mzb2xbWmZiJbLOhwCmDXxyCQmmc8ItDh28Twvl1zl3UUIbdA>
-X-ME-Received: <xmr:6tWMaq0AmSmgSL256G9_XnlUhr7KJ5Y6VaebmpSrnHeHBRVqGKgfoc5ceuuKsFRFQtRz2tJPuSvfafSrKm5R8VcBJIxJ-dg>
-X-ME-Proxy-Cause: dmFkZTFrEmQssS56tdgzvy9yebBt5E0gIk2nhGFkQJdPkBb8h8m7nM4ZqL1LHvw+mehMwh
-    SuskV2FjoEkeI+MG8HTwFAriu5Q6OkP/hQVA5ynEUh3wAYbRSBZIsgskB8Fx4Wcz8GJ310
-    UDJQteufz/bw/Bw4Zubkj9pGGvYWCVB2usE09lF2iKKwZ51xN7XwzuON1GjKoLgtSooAPS
-    Z8k0+xsDpc6+7r0zmKuwWWaa04PYjqkjOaRrvBIcWl6EZWvN462VRhzf4aa4qLvSyuJgiX
-    IxiZbGoL6xvgKgowADVQoe0bCo/iQpSX/L/ODuY4BqB3a5cgRS/Pv/It4YpoMEFrrnb4S4
-    xaHdANv5XmZhj5jUtQUM+tbBd3v3vyobnvGmKS8r6iIefPGgdZ6m7FkjfOkUwwxardZIBF
-    ov3rXrrjWY4LqAMHQGxdQF0tf9e2+LhvSHn4O0tUUhDCb7/X1NX7HV0RpQR4HyUwIb2hST
-    /fLf3kKA3KLnmOzPSg1CrvY3neXXPTpIeB4LH2wU8TpCHMiW/VGkYoQvDHsb1+g6V5qAzm
-    w2khMNxTKBB0iEhJ5JIuexGlH+74WbRFJbR2/Yo2fV83CG5jiE1w5XKkTwMMd3XsHCynVm
-    mj24vQMvXowNJqDWzd2Bq4Pbj4dLEIMXsFcPpSxJimaXGcg56pIfSKtLhp/w
-X-ME-Proxy: <xmx:6tWMaufjzla0ip1qs-FrtSacwDRI3EAzO1bOezUmuRVGRnFnBS7RMA>
-    <xmx:6tWMaoU519ST5ee1SE38PMgk1GORN1rpC2xttFjtO_OI0yK7o9XM1A>
-    <xmx:6tWMaglJLrawf2a_NkBTlQ5UlrLCBmgEBzrfq0Yg3tigyBrWdxQ-eg>
-    <xmx:6tWMapZO_qV_XfrR3y1XelcvL6bR7AlBBrT5_bVrVIjnPfrWBW0m0A>
-    <xmx:8tWManlmlHzgk4wctTycNwj4xlJ5R-159qG6IeaQBCmxaIJGdyiqoABK>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Aug 2026 19:37:38 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	bh=sHnXZHT8WiiUeAdh+tKiJaengtnfesqTEZdJsUGA+8I=;
+	b=iXI/q9AoX/vlSrlvpgJd8k0CDMpNHtMdnb5KU+Z8uC47PnaJkvQ0ccJQxA6nJgM9W56lfl
+	o4cGRLVeul4OtLk3tLWNeQ8NeYUrlPkJYyn7+fx62w4A+UyDZ42bK5NiruNyZF41pLTjpW
+	B+UxKOlAQJ+Zy97CsOE0Jsa+zikpWgM=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J8zz2uq0;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787614983;
+	b=GyKRFrNUWBazY/jJhAug25hFU2buRzNBy5mHjm8PhXa4Yu0elNDLoOSr01zteXACo2CAQo
+	yLOWJpUAh+d1X69UG/IqVIC9ysH1vAScELc0Hrk+pdNSveQNd3dPZSP4UHAHHIugVo1ZJd
+	98EdqoR8lwyuc28B+rD5QyifV1jXio4=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-495590dde14so35467145e9.0
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:43:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787614982; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WXYTvVtEH7fDLhSbp9n6/kyx1tB+WKu77uwy9WOTLqHv2l/I8O/YHRpGj8eHoRFjoz
+         iimP+4UjImN6WstL16mUj9bSAIU+fluSnrACw4T9LeCpTZzFaEJO4QREfmHD3yF4VbX5
+         HCRIHvBoCFo9XknwLaSVpThMrzv8LT3RJBiUHO2DJ6TzJ9LQYi/IXDy+yDNe1ONUPEcw
+         JgTUEeZVtziVdba3FMxGwduAZg9cYsWaPvEBZ3sz4wanHP6AAh6O8iGXRJweErhTRn58
+         Nd5HqbYA3dKSGc7JxK/5NVft+fUdsc5vKs+voyZO7YNP+zgXhy+IWBVIzQ/TAqBTRxpL
+         oznQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sHnXZHT8WiiUeAdh+tKiJaengtnfesqTEZdJsUGA+8I=;
+        fh=+6td3RMenRswC4/P8Th+ZVYq8kiPrRSaNSwfjHNaJho=;
+        b=lEFax/MUd6McpWHyJS0Hfx0rCpmPy/O00x9F6h7IqF2m3pLEoNJBn0ZtJj+D1+Zr/v
+         tMF4fd8bqRfUjqQSZ83BVq/xt7j3HK33w77v92JtrId7PR3Sk7TlAs4S/gNjnIuFKyzU
+         L37w8ZdilpEKRynwtiosN9Lmag8ifodZPvKIOxVBzpfOpN4Tx9LEauEGD9BP23xNHTcy
+         dcEFKC4j5Ee8iOTtNfVuc7sA0F8Cqh8vtq0oFd1G5w9fXRDOIjfuQS3aNGxnnGCYHQ/9
+         DCWOQc3A+/QJJ4yDUdQjvy9LmHoG+iFj8s73uxHL+H8SWj/RnkggXHROtBSg03BnYpHa
+         IfMw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787614982; x=1788219782; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sHnXZHT8WiiUeAdh+tKiJaengtnfesqTEZdJsUGA+8I=;
+        b=J8zz2uq0Umbqvp2tan+3laq4+yW1O+YyEfsdJhtOVZt84fULLOAmXBG3tJfLWBd7PN
+         oAtMkKJ6WLWd0p9wMiLWxcRFZaegF96J/Te/CEmHvM6LRCarIXWJclrflJNVVdxtr+QQ
+         Qz1BP1t9/IjhtDfEPjDkguThM7omF/GUaM7q1HrdD2WpYWzrI0EqYsETDeuA5LYqedo/
+         fXvZnI+tlA2nntjkjqqEmbMF5p2Xech1XRCmLtc3zsYkBgkjIr/8kNboprjzHu/sq3Wa
+         mWoJw/tiQTxnBE8J5GlOMAXlF+0ePyhMIrGsJO7OzihktRVbb+kiWaN9Rw3gsBcHRIIm
+         NTVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787614982; x=1788219782;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sHnXZHT8WiiUeAdh+tKiJaengtnfesqTEZdJsUGA+8I=;
+        b=o+ywvIowG0DAKy6Omir0N+sDKdEDMTueMhzGALXMG9shg1UbG/Y2bbLeCO2FiYlJRI
+         R2BNdkckq+xyhkzjDmTpbLcCIWxjv+354OM+4c7MRS3j8alYSbxUx0qy7pNk9unk/BTP
+         HDdl99uv6gTijEDZyiN5s+HXpO+9yFrMtRKiMaGJJ6JR8LtfAbrexNYakxdge5JvaC6l
+         8fCTtgmF31oXLk1KHg2rnzTUvWI06fAeNFKnnieEQ8tqnQlb8Xh1UC3esEt4ochd1DIH
+         B+XXSecebO0tcUD3USmKsBLsVXrmsnspjXubGAArudY5iUvaMvDqTFzh74eaEGlLBreg
+         pzDw==
+X-Forwarded-Encrypted: i=1; AHgh+RotEFz38Mf9OlOH4ki6HM94NeZCER5Eacfd1I3WMklWn2UiAA4NMc9W2Sv/XisEsOi7gQjjO++Ofw==@kvack.org
+X-Gm-Message-State: AFuF++k8PwyFPa0DVX9E0zSb1U9+jAH7wy1k4IgorwKTLXVf3oHpWFk3
+	THktxafQtwqFsi6j9GAgH5ph0Os5xF74nwMJSe21MphcuTD5MaRLgNdv8mNfOUTywaLXvYiyRYS
+	GH8uDvoX5LDGqeo6vkkhjiDW/KiWsSKo=
+X-Gm-Gg: AR+sD13UrEutu/qviDFmziBaeRAZAcTiGYcndAaAJeoUbo14rRlpj9JBxSHcHLVnkOu
+	3Vutg0xAyTPg5lIP2K2Wwva0N0sMmsZno3zMoK7AhOQe491blg8lfH+oHQSyOz6I6EFnjSyR7bM
+	Jp7A8hwZthc72YnMnt2BXq7UUkGutGBgbGiWHcf9A5UYgb8NfHlq3b+STAZwdivMwztjv5vhkEf
+	h+u4mccaYylWdJcsfolLfevJtbWWgQ5DwqvJgVEbH8CNP3JByHTT6HoPBNT/J4zPlWOJ0R1oFNl
+	lgEZpmBVqd84Pt391JWMj+fpVERTRG0EImLcWPCyNOpRg35ia1FMvcBs3+qqnmMKE3wxhA/efNk
+	riZzkMghl78nIhpetZbSnwUBlA1s=
+X-Received: by 2002:a05:600c:5294:b0:499:7f38:d77 with SMTP id
+ 5b1f17b1804b1-499b830f690mr402396315e9.6.1787614981730; Mon, 24 Aug 2026
+ 16:43:01 -0700 (PDT)
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Byungchul Park" <byungchul@sk.com>, linux-kernel@vger.kernel.org,
- max.byungchul.park@gmail.com, kernel_team@skhynix.com,
- torvalds@linux-foundation.org, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
- ngupta@vflare.org, linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- hch@infradead.org, djwong@kernel.org, dri-devel@lists.freedesktop.org,
- rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
- hamohammed.sa@gmail.com, harry.yoo@oracle.com, chris.p.wilson@intel.com,
- gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
- petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
- paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
- joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
- mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
- qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, chuck.lever@oracle.com, okorniev@redhat.com,
- Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org, anna@kernel.org,
- kees@kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
- mark.rutland@arm.com, ada.coupriediaz@arm.com,
- kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
- broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
- shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
- yuzhao@google.com, baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
- bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
- dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-In-reply-to: <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
-References: <20260706061928.66713-1-byungchul@sk.com>
-  <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
-  <20260821042143.GA40890@system.software.com>
-  <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
-  <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
-  <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
-Date: Tue, 25 Aug 2026 09:37:34 +1000
-Message-id: <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
-X-Rspamd-Queue-Id: D96F5140005
+References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
+ <CAO9r8zPpe6fWOSXtRUjFB8WNMroeBqvLT+2QtAU4E27AtLUXMQ@mail.gmail.com>
+ <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
+ <anpsLy_pCanocgS1@google.com> <CAJnrk1Yoj7fqbzurmHkbA-vegpQu3cf-_dfvKor_VxuNhPR-AA@mail.gmail.com>
+ <CAO9r8zPLipVW6bvyDK1ypSawbo=LHKvmLqWH0xA6WMR9GYNJpg@mail.gmail.com>
+ <CAJnrk1ai-TqcudPoK-qFRYAJnUjBmg1kVa6Vxg3eDm5w5ivqSA@mail.gmail.com>
+ <CAO9r8zNJ=Fpc0pZExrttVTDCM3yzSmLPCAU=+RS0k5Pm+hY96w@mail.gmail.com> <CADrL8HV7_f68qfd6hG=xCTqzupPqr77ynbwdz8jm0hzjdgDVeg@mail.gmail.com>
+In-Reply-To: <CADrL8HV7_f68qfd6hG=xCTqzupPqr77ynbwdz8jm0hzjdgDVeg@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Mon, 24 Aug 2026 16:42:49 -0700
+X-Gm-Features: AcwNN1Wa1AOcfS35Y1v_bgY_n2l1WDv-MkAP-PHL7EYAY7Mw9O0j_aJCxbHrZ54
+Message-ID: <CAJnrk1ZU1UO35n46acq9My77G8=h3JUCLXchiamBCFbiDZXJzg@mail.gmail.com>
+Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
+To: James Houghton <jthoughton@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Jan Kara <jack@suse.cz>, Miklos Szeredi <miklos@szeredi.hu>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
+	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	linux-mm <linux-mm@kvack.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>, Song Hu <husong@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5CEC880005
+X-Stat-Signature: dxmwrrai6nm1pt8e3r6wq5xwffbasirc
 X-Rspam-User: 
-X-Stat-Signature: su3rkpgpohwrw4tamzcuqjun8ehszbmh
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787614711-127572
-X-HE-Meta: U2FsdGVkX1+jLP35iDGzUOCk1ZRUfp13BXImt0T7yFh2MVmEC1LH5XOXkzRnxcpdjqB7nmiHj2gBL6ZT0OvT206iyPNmxevW+BKajZwqCH+xJgHlAonuXy83lYiRi9Rptxsm3Pc4CD0aSfQv9yZET5eL5JkZlJ65ejwyxt8UFly8GXnQgKtdj5H8RNp9CYkY9TM8Vd4vueFejMwJ5Br/8mbloIxkzaYDthryu6UzzTB+bYn15jPwaeRIgScvfuUKoq7M5tmPKPskM9A92RmgxMXHAErfoosTqnDb6kUg//9b1vHg3i9D8cmm7fHr8/S1JZm39iZ0LSLXL27wOYg48Oz3xlom347pB29596GzZeI65KAqLphpMdkouhdCPCGJ2PyUG9R6/qIHl0OTZUDQ+PlLy3ezsR0SnmU3kk/OTnCNtwky33MdRGRaz5l5oI0DyiwrkuX6L7EdRlJICl8fo1DsF3nrZf8fq9sqNMzkFUnvyJFMTe6NAEv2Q45tE5LLMstYnN6PXf0wh/XlhIFZiFKVKS/RxWZRw+uIaCQL3yTroSFt9vb8eA9qwAgU2fcZtg90fX/lgxLIM4Bt2ADLhDr7lH9rMp0FySSnBy2dd2xP7bS9us1v2nuwkRMmFbSYz4Rq+XjWvymSxT6AemkVUJfsuc6tJdaxuemO9b/MmopqRbI5uZoWgtWAnpVlte4yVpaO4j4k50F8pOWQvBrdFLTNrLhCAIr6yqB67HEYCiREVfu67MpOUK1zsVLA0G6l1ulsv6SXXgIIVzSvRstzb3sGlxdUnhJ2YYb8aXy0JVzchSYyO4Vb7lV0wi82Tn6Hr0M29Qg2zwL24EZtD2expQzxcQV4Ah8zWAlAHcs2Y7j13tvkQnOhqOreQXnCVQ0VMMGJpM1GD07VClFkcv1tNt85fJvHMEwn2DNg3D2+b4RClN0DP7sXbx3iYHBa4awtRQbvFHnND+nnyN7bI02
- az+mykK3
- 1UvC9JKyOf30zMGIwaPIAw5euNdveP/FfjdnEtZobH3pOII13J7dQ06uCDCsEQQL5mx7BYt/sqxkjTaGN3yukA3rg56wJoyZwDae1N27z7mk72cC7ee+/q47cyevqvTUEv0jJb1l08l3sc8vTCvzSTvR/TtPYFjp41E1ilqGrgS7zM4sGjgabsPeQNo1YmQxobJZusMwSKPmaSFYn/lZT66okL7L+tUQKB3sgqYbKeWNy9HhVRIWXIMNadA0Iyc1pEMwIKAVMue0QEJ/NJYb0qPArYCTcCxu34gTdzzRW+7vKcxF2WHIMRE0xKhdGLhnHEXr93hQms6DRk1YG9DX0HudEipljbnAdsu5edQHco5ExOE8l3s0cdSPVjKoHe6c3WIxws/E78X3pdzBd3WA7cdFRlt+kpl1lsYbt3UfdAojyVF4uvjuKKSb9RLvWhH/Pxk1QcwaTDiJymQ3vZSYbkNjQSemepKWt04vsISXQc7ELFhStmGCAKRD3y5U/a3urIJNfrDdta/ZH9jhAVM58QPlH7VzqV4+Cjg5bAKS34x+hZaxjvpn81mtLf/xRZFJ6WS897iQ0dzjIUw9ZD8U9tHnWYYZSYvBBEjMXzNTEnUfygQ6F2i1h7A0Zq9yhC180bVIbURL1Wzl8cTCWgSy1jTjb3Vnh2dPvnAI+ID0JI75XzHJP6YR6cGnAxCpttuRG3f9/Jf0GvGA3QTdxb2hBwuVQIUVYIBNHyX7jLP5iShp78CM=
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787614983-323824
+X-HE-Meta: U2FsdGVkX18VgDzyEB/Zrg7HcCdj8f2Ky6A3vlui/obWqXcpFATDxDCT+X/KEcCqkas8ZRHjQpbChcKiuKUyCJmHQuI+/+anoE1+suZxtjRZ1xPZPegAJjbfK3zihxjo+o67GX4/zABpIa1yxIF5pJ4wzFRQRGr9pmcpoAGL8aJd7DCwr1eek2mbOEOqyzTv3QW3xNVl488kkARrpuOcD53mmYnLze9syl4SqaxYqfuxgvLsKiyZmSqzzTjzWfDPg9FhWj39pmxOzbjd/+F5flxHyKKNBJmQEeWL5coGcSTiIt8j+75tu3OopcOD4sCCif3mdPH8yfm837qZrNCO1qEmXyQHgdzh6QRzh492mM4VP3JDnJJQRWQlk7alvJjJGQJd9qqtmRBm829QfNske+R7x2BbPX4upK49Ek2dlYDTXjtROP3NCPS4Fw4f+h6OT2+iSN5qqrBCSezeVymlwAukXh800ZM7hg2pj9Xl5zUf7cl42tKNyv1EM0A4h+zlag8xjO8vVViKnG5kaaxVrWhTrW0JvdJJuDff9chPIzLdf6I+aynPb6J2rDbnAWPiqCzfsbBVtKdfaw+1HixoRbb1hMYFpZm797ohyJQ/wIus4CJZpvzT6nC91JoDulFjAJiSheVaXBYZHiZlX8CwyLOjOygp4AU4DeNiE/hGz4QcBkRl3WAe2FdYzpgSdKWxPd73Gnlj1Y8QliwJ0yV+S5Hu/XSkdEtTNNzHX0bkWH7Q/Etdr4lkTNqpKPkcv+oTjNUS4VAiYDBeJ+NaLJIzoQk5Zm7T14EqmNgtZE8tBrLvuwNo7M+jZ1rCshTaxl+3nY4SletDFhi0zSCHiOmkpUSf5U9azbAXZISc7TlMUxgdpOEvjODP+RpC7DqzMF/lzz0Psq5Ke3w7iTyfz+ITgiG1mT/QLA724x6r/EW3cdde/B4sCF/sP/8Pe/j2W1SS/UTWol3iDUULf61qlIK
+ nG6Wz18g
+ 077aGXl5KxkwCE0iif6NBIl5coP3LyRkraiWeorRwtY/KtnxoDObsnLxl9cQ6Bnj2JRZo1e+yOgLGvfwC5D79bW1uJ+uD/DpcyyDLP+w52adrZFtcpZcOP8OEAgOU+3nsQE3ZK1F94m1IYZSeuOzYj7eWWB7g6Y9WXBlyp9b8KtzuAd0miaq1D4fHZN4jz8ZRSXZzSZhalhToOLOuhdrutZkvKxODRyL3mZzsxaBVQc/9iz1X33CJghidSUF0ub8j3I/cJrzpscwESeixsDepcKlIIXmU/2ZqrDKcXfefjSlEg9oRC6IeeDaaJJdr8XYhQpJ4yVkAA8W2wr9kabOyxbCmnb4Ni1FNFqOLFyEUG/SaD8/HnFw5u78WYEHJ+8pUMpTLIDwAsx0mpIndUIEljhmXTvuLqrCGHfQb4sESlkn9EnKxSntxLlBzDDJ1C6S2erN3kjEKLtP2K7WdritmY1XkwluGuuBLz9Z/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,166 +152,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026, David Hildenbrand (Arm) wrote:
-> Hi!
->=20
-> >>>
-> >>> That's a good news for lockdep.  (And even for DEPT :)
-> >>
-> >> He :) Where do you currently store the additional per-page information?
-> >=20
-> > lockdep doesn't need to store per-page information.  Possibly DEPT
-> > doesn't either.
->=20
-> That would be even better.
+On Fri, Aug 21, 2026 at 6:39=E2=80=AFPM James Houghton <jthoughton@google.c=
+om> wrote:
+>
+> On Fri, Aug 21, 2026 at 12:41=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+> >
+> > On Thu, Aug 20, 2026 at 4:39=E2=80=AFPM Joanne Koong <joannelkoong@gmai=
+l.com> wrote:
+> > > Would you be able to share the test you're using? I've been trying to
+> > > repro it locally without much luck.
+> >
+> > The exact test uses some internal testing libraries, we're looking
+> > into whether we can translate it to a standalone C repro.
+> >
+> > From a high-level, the test:
+> > - Creates a VM with 260 MB (256 MB for testing + 4 MB margin) in a
+> > cgroup, backed by shmem THPs. The VM is not a fully fledged VM, just a
+> > KVM VM running bare metal code (so 4 MB is enough margin).
+> > - Enables zswap in the cgroup.
+> > - Tells the VM to write to 256 MB of its memory.
+> > - Checks the cgroup shmem usage and that no swap occurred (no limit).
+> > - Sets the cgroup limit to half the VM memory.
+> > - Checks the cgroup shmem usage and swap again, usage should be ~half
+> > and so is swap.
+> > - Tells the VM to read the 256 MB of memory again. This should cause a
+> > lot of thrashing and reclaim, but no OOM kills as all guest memory is
+> > reclaimable.
+> >
+> > With the ratelimited flushing, the test started flaking 5-10% of the
+> > time due to OOM kills.
+>
+> Hi Joanne, Yosry,
+>
+> I've attached a reproducer for you (as a patch that should apply to
+> Linus's tree).
+>
+> In tools/testing/selftests/kvm, `make` should build it. Instructions
+> for running it (like setting up swap/etc.) are in the comment at the
+> top of the file.
+>
+> As part of the patch, I've also included a sysctl to dynamically tune
+> whether or not the memcg stats flush is rate-limited. You should find
+> that when it is rate-limited, OOMs occur, and when it is not, OOMs do
+> not occur.
+>
+> This reproducer behaves slightly differently than our internal
+> version. This version, when run with `-b 512M` anyway, seems to OOM
+> simply by setting memory.max, whereas our internal version would OOM
+> upon re-accessing the memory. Not really a meaningful difference, but
+> just wanted to point it out.
+>
+> Please let me know if you have any trouble running this test or if the
+> test is wrong in some way.
+>
 
-A little bit more on this:
- lockdep *does* store per-lock information - a "struct lockdep_map".
- I don't fully understand how it is used, but it seems to be mostly
- for convenience and performance.
- When you lock something, lockdep need to know what class the lock
- belongs to.  The lockdep_map maps from the lock to the class so the
- caller doesn't have to explicitly identify the class every time.
- The lockdep_map also contains a "name" and some wait_types which I
- *think* are only used for more descriptive error messages.
- There is also a "class_cache" which makes it easier (faster) for lockdep to
- find the target class for different subclasses.
-
- rhashtables "bucket_table" is an existence proof there there doesn't
- need to be a lockdep_map for each lock.  Every bucket has its own
- bit-spin-lock, but there is only one lockdep_map that they all shared.
-
- You could conceivably put a lockdep_map in each "struct address_space"
- for folio locks (assuming all lockable folios still belong to some
- address_space).
-
->=20
-> [...]
->=20
-> >=20
-> > maybe you put the folio which is locked on a queue or an lru or
-> > whatever.
->=20
-> For readahead, I think that queues / lru are not involved. We submit the I/=
-O,
-> and once the I/O is done, we unlock the folio from interrupt context.
-
-"submit the I/O" means "attach the page to a "struct bio" (or similar)
-and attach the struct bio to a transmit queue for the device (or
-similar).  So there really is a queue.
-
->=20
-> end_buffer_async_read() / iomap_finish_folio_read() end up calling
-> folio_end_read(), where we do the magic
->=20
-> 	folio_wake_bit(folio, PG_locked);
-
-Exactly where the lock ownership should be reclaimed is not immediately
-clear to me.  bio_endio() might be early enough but there are probably
-better points.
-
-A small difficulty here is that a bio has multiple folios and they are
-all locked.  I cannot see that lockdep has a concept of holding an
-arbitrarily large set of related locks.
-We could just tell lockdep=20
-  "I have some folios locked"=20
-or maybe enhance lockdep to allow
-  "I have N folios locked"
-or even
-  "I have N folios in address-space A with the highest offset being O".
-
-This would allow lockdep to check the validity of locking another folio
-- only allowed if the address space is the same and the offset is larger
-than the previous largest.
-
->=20
-> It's interesting, that for writeback we never unlock the folio on the I/O p=
-ath,
-> but instead have the dedicated page flag to tell us when writeback is compl=
-ete.
-
-PG_locked and PG_writeback are two different lock-bits with two
-different meanings.
-When a folio is PG_locked the content is invalid and shouldn't be accessed.
-When a folio is in PG_writeback its data is not safe even though
-PG_dirty has been cleared (if I remember correctly).
-
-So these are two separate, though related, lock bits that would both
-need to be tracked.  lockdep would detect how they are related.
-
->=20
-> >=20
-> > There is no way to say "that queue owns this lock".  Maybe that could
-> > usefully be added - assuming coherent semantics can be designed.
-> >=20
-> > Somewhere else some other task takes responsibility for that folio and
-> > the lock.  maybe it dequeues a page, or maybe an lru callback gives the
-> > locked page to some code.
-> > That code then calls
-> >    lock_map_acquire_try(&the_lock_map)
->=20
-> I'd assume that's what the unlock path would do from interrupt context.
-
-exactly.
-
->=20
-> >=20
-> > This says "this task is now holding this lock" (or more accurately "now
-> > holding a lock of this class").
-> > Note the "_try" - that says that the task didn't have to wait for the
-> > lock, it just got it for free, which in fact it did.
-> >=20
-> > Now if that task takes some other lock, lockdep will see a dependency
-> > between the page lock and the new lock, and will accept or reject it as
-> > you would expect.
->=20
-> I guess on the interrupt path, we primarily unlock the folio lock only. But=
- we
-> might take some other spinlocks temporarily indeed, like
-> iomap_finish_folio_read() does.
-
-Yes.  It is hard to see there being locking problems in interrupt
-handlers as the folio locks are sleeping locks and an interrupt handler
-can only take atomic locks, so getting the ordering wrong is likely
-impossible.
-
-You would be more likely to see problems in a workqueue which takes the
-completely IO and does something with it, maybe verify a checksum or
-whatever (it is a long time since I've worked in the block layer).
-
->=20
->=20
-> >  But I'd like to see a coherent
-> > explanation of how the functionality offered by DEPT is clearly better.
->=20
-> Yes, that's also what I am missing.
->=20
-> Stating that lockdep is stable and should not be destabilized is not really=
- a
-> good argument.
-
-No it is not.  We change "stable" things all the time.  Replacing one
-big thing with another big thing is almost always rejected.
-Incremental development is the preferred approach.
-So developing something like DEPT to explore and learn and demonstrate
-a cool idea is great.  Making it completely separate can give a
-developer freedom to innovate.
-But the path from there to upstream acceptance is to take the lessons
-learned and to apply them one by one to the existing tools.
-Yes, that takes longer.  Yes it can be frustrating.  Yes you need to
-be able to work with people - not just code - to bring the community
-along with you.
-But the result is generally much better.
+Thank you so much, James! This is very helpful - I will run some
+experiments with your repro this week.
 
 Thanks,
-NeilBrown
-
-
->=20
-> --=20
-> Cheers,
->=20
-> David
->=20
-
+Joanne
 
