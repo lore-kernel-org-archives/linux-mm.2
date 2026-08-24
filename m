@@ -4,100 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A8BAC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:59:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49C6FC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:59:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2789F6B008C; Mon, 24 Aug 2026 10:59:37 -0400 (EDT)
+	id 426DC6B0096; Mon, 24 Aug 2026 10:59:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24F396B0092; Mon, 24 Aug 2026 10:59:37 -0400 (EDT)
+	id 3D7586B0099; Mon, 24 Aug 2026 10:59:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 164E56B0096; Mon, 24 Aug 2026 10:59:37 -0400 (EDT)
+	id 2ED446B00A0; Mon, 24 Aug 2026 10:59:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D681A6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:59:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6559180178
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:59:36 +0000 (UTC)
-X-FDA: 85136471952.02.C17AF34
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C107C14000D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:59:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WGFVkLHL;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0137C6B0096
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:59:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7ADAAC01A0
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:59:57 +0000 (UTC)
+X-FDA: 85136472834.05.04CA3D3
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7AB471C0008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:59:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="M GT9z1S";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=R9Wb13ZM;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787583574;
+	s=arc-20220608; t=1787583595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AccNNgKH6mpdiOZn+TQ6yi+YTRFl1ckABXXlP5qNp0s=;
-	b=UvubDwMJ6Vt1nUF0mXaHLN2hGcs+S2nRqIbrikglmYF8/IoedgluIas45heeSx8LGF/bKN
-	gxvbYAKePWm9hJm/5Rx4vs3jW+RW5qjRriF0Flpn7tL5i/N5yZqKoDWcqI4rk/XSXUGuxM
-	haiGjYnzpJEMMZDBsmJrOlF/cf8fl+I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787583574;
-	b=euKLb74p2QJ0Bw+1ii5antwDijYs7yjkLRCaE+NgPomRSQu3/chJGUqw+7plK5P7fAGpsW
-	cWSWeDMBr1UzNmfFtNPbBr5jIjSt9/+fsfEEpvVB17dqm/mMdJehTZ9k8DadIjlTFeQkDG
-	Eou19QLKLk5QO1ZgiSDscig92ys1lrg=
+	bh=Yu9P/sTLYPHFQVWmVS7Y7Dli1B95EhFAwCCsGt/ZaaY=;
+	b=RhPW6nELeD90L5Y3gBaTP2y+RpJfMLQgEUdUxDe1wcZ7bRbrzWZwbEZCSL5J1xy8Rk6Sax
+	vlcGQu3Fj9ZwXGXDY2Nb+2uRl1PPP8tFQlZzGIUNmkTATwe8R9APaj8B6N3JxT1UxDJzZe
+	YzuEClcNpy4aWgbaYtm3impulUqF9Xk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WGFVkLHL;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C5FD600CB;
-	Mon, 24 Aug 2026 14:59:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2CC1F000E9;
-	Mon, 24 Aug 2026 14:59:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787583574;
-	bh=AccNNgKH6mpdiOZn+TQ6yi+YTRFl1ckABXXlP5qNp0s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WGFVkLHLt8glwJyNyzpbegLiEczgB3KRRpoxrsKbnYBufxLJsdfqDhjhdP7T16Tx5
-	 bqxKzSNDAJCPhN/X/3zf+HiOu+g0MnTXFumI1OQd9LYWSCC54AQS8bvMlvM7Q7DEdB
-	 F6+Y9XiTmfKwR+wo5sGnM0dgZnSkFBQxie7k+L7q0HtnN0kovChN6zZm2ic4jGevda
-	 Hkd+WMr6ZxnA/yTIZcDJL8LfULRtlUE+8UlWLZyr4gIuAu5E7JTeg9qNc7tLpPrH+L
-	 z5FuXi7SjxSz37zwDb/a62Uf6rEkWJgcBNM1Kin4Iwuk7WW72JJ2lAu6X7xGJJIEi9
-	 2kVhcK32BgG3Q==
-Date: Mon, 24 Aug 2026 15:59:26 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
-	Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
-	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/6] mm/gup: move gup_can_follow_protnone() to gup.c
-Message-ID: <aoxcRstdSy99lNEA@gremlin>
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-1-3086981b33cf@kernel.org>
+	imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="M GT9z1S";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=R9Wb13ZM;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787583595;
+	b=dgY/ZJPiIbhvPcEiapeGhZeKkAazVFxYON9DhnPJSDWPHyzvl0yDzByvoCEHmosktmyi1C
+	f0pWVwVegVMqz/FeTIpbitF9PzzKyreo3SnUDVPU4xOIdbKdTuxwo4/KcUiZzSGaPEAHtV
+	cAI15QgE+Bbx6hvh2URnj3hTg8ET1CI=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id D48A813802BF;
+	Mon, 24 Aug 2026 10:59:54 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Mon, 24 Aug 2026 10:59:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1787583594; x=
+	1787590794; bh=Yu9P/sTLYPHFQVWmVS7Y7Dli1B95EhFAwCCsGt/ZaaY=; b=M
+	GT9z1SxWlB/4TFVji7vo9tPCdCuK/gc08BF5AJxPHyA0iw3i4X8SAyhafQtyCres
+	/0FSTuz4YJztAs7t3lMFV63ci5h1vi894Ok+AnqmyNN3CAcqc24mI40sjyMvj8wj
+	PQ59o6+tcmOZpzI4ag/J6OSRh9e4OGYW4NuGygJGuDyiDsj50tij2YzG4ms1o0Uo
+	h12/46SPWxmGD04cGuQ7uS5Oh+E2/2pIpwAxrYaJxMCTnWJU3Vr9eL2rIudgMb/8
+	FY8cIeP0GzLiV9Kcyt38VI2aV3C+fHtu4bJtDGSUy8dx2Z+RVCerpAI8hbF75MJe
+	XLqd0p0IpJNZHpZLNCX+Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787583594; x=1787590794; bh=Yu9P/sTLYPHFQVWmVS7Y7Dli1B95EhFAwCC
+	sGt/ZaaY=; b=R9Wb13ZM4u6qNWWJQuTlLX5XFswHrSROHybTuFX0w516wPdrm9k
+	fk+yFdV4uIDJvhcEbx8ZRhyYKL2nNOs0Fe5uSALsGbTiyTIBeRrEi52Qq+8m9Zzc
+	/PeeTv1+iB5CjFiVewMc1Pe6yUUiool+QzBwQUjjHKuJSnyJiv1f5kmy6wdW47VC
+	zozvkPyShdJSU+2sNEx1C0Swi0zIi/un93n5nYllykJx9o0HPWQ//OnGnNlcA+sW
+	OjoJ/8H0bDgBJZ/oyZhOew8XvKvCTWatFRt/opbObrZpEfYVzaOEbbuw1PRAywnL
+	abDRU4V1vccxp2FGi9JTFxeqP5BkoLYUWWA==
+X-ME-Sender: <xms:aFyMaphnihHBiQZNoi7T389o1QTZbtMl2akARdWzQgCaTdYfeuHClg>
+    <xme:aFyMaucjM0A6qKXe9E1-iGljJbInsvNsCBKamTairpB0ZbNvF6tJZiuaJuW8qPO4R
+    ft-k4xnpN5t_GgO73GjusZD61IFzsd5qfrUaaDMoYDX89e1iVqDw5s>
+X-ME-Received: <xmr:aFyMaqhpXl8qyNdtn0eD-FoUVVr94to_TDzYTJ_Cu9NRaZ-8pwuDRL9ksWI>
+X-ME-Proxy-Cause: dmFkZTFa7qxHA3qw09qMM0lVFcj/nmVHnRJ0m27uYJT6lMLZ7v1xzgdvd5p6U/QBOQTfkA
+    10cJ+0Icwv6tyE9AIciaBSopNETAHkeNH8otyAPTL4UeuxqJpy7nz4i/xGDZlwvRkCXIPm
+    0yTGMiT7QIObxGSYPnJ6lbBAlLaGqN99Pisa653oUGH0S0u5rxDTMVZxGCG32mXAP1dKXk
+    dMrYaODJGgDXYh6sU8EikjdwkjxNj8YCQ9etN4LJa3av2TnlVTnUKWyZi+Ea3e9YQHJ0QY
+    WAWSZFOmBspb4p46AXwaKJRFFRr88VqQ3E4YELG4yvXtevIuuehkYkhSrktLQi4OAr05d2
+    CHqx2eywsgxYn5epfHNDF2ZfCYYYWomwJJpHejDRWVNcVRcHovhq5pTLxwf5TZaa++R2D6
+    qgTgAfWsFG9kCXRuSBMkvSVNMWAxjfBwOCszJR/Ois+Efkj0B48suowg93eYyLUS1CU57L
+    edmv2OcFEKBnswdwkWsxnFum7HJf3g9okI8NBSRWK1c5lDUSXLvwtXo6X9WECibp1L5GeL
+    +qSn8UTsBkFDkqw8C64eNO1JAd8g1V7AZsHs/NsQGkBK2CaK4HWl4iP4OBoaV86LVAxfbI
+    mTLS9lLSGc42Mn+Ab7nqJOLJzm2Rf+KxZJofVpVDwVvdbTmr8jcThpB1ThjQ
+X-ME-Proxy: <xmx:aFyMauQTq7FNe43FkdTdZ1xmY4EuDBBtJivVng_yDA7oqEk3QPMw8w>
+    <xmx:aFyMamK8dXH13ZK0xjswRGu0Oh8JfE1Z-eMXPZCxsmDn22bUoWoaeg>
+    <xmx:aFyMatR8RIV83iQosn6prU5RDRdiQT_1oz7UUhMw8_uD57JEiR6PTA>
+    <xmx:aFyMaruwPSyawHNRKwHvMdXAbu8ET1Zk0BVLqXekf_CWi1J75UJq8A>
+    <xmx:alyMap5dO2oBDGIh4DBhvvknyQVXRI2wad-Y0wwN7EJ63nGbX_5UgCZQ>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Aug 2026 10:59:51 -0400 (EDT)
+Date: Mon, 24 Aug 2026 15:59:50 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	akpm@linux-foundation.org, nico.pache@linux.dev, baolin.wang@linux.alibaba.com, 
+	baohua@kernel.org, dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, 
+	liam@infradead.org, mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, 
+	shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, 
+	ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, jannh@google.com, 
+	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
+	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
+ primitives
+Message-ID: <aoxcN7jrfbK_Ac8V@thinkstation>
+References: <20260816224609.308019-1-kirill@shutemov.name>
+ <aoLAly-oL2OAa4n8@lucifer>
+ <aoLkMUtmzRVuv2Hx@thinkstation>
+ <aoQ77EcD3M2kjeya@lucifer>
+ <0153303d-f9d6-45ea-a276-fbf2e5625ef9@kernel.org>
+ <aoXn1B7cPnPq7uxd@thinkstation>
+ <aoxRs0mjyQnpO-IT@gremlin>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260823-uffd-vm-flags-v1-v1-1-3086981b33cf@kernel.org>
+In-Reply-To: <aoxRs0mjyQnpO-IT@gremlin>
+X-Rspamd-Queue-Id: 7AB471C0008
+X-Stat-Signature: 4no4juax1r1nexpyu5drdno4zmyx4wk8
 X-Rspam-User: 
-X-Stat-Signature: kqpm7pawg6e39y9uodi8q1iezadz8d8w
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C107C14000D
-X-HE-Tag: 1787583574-600918
-X-HE-Meta: U2FsdGVkX1+StK/bYd62JjfBFrOhFyjQSd8ai5op/rOAokGPajC/0ql1Q0JBsQje91U1imfrd9StyFzYfd+brkEu1XdECsCHMwAdcVbiHACwuUiuW1nBrNdMS+H8dRoKo6hOvy09+1UrAnSwljvZS1ez2RM+URVjgP4r+pdv0O9tDod243YBvKo1UhTamV2xF0z6X4oM20sJvuz44KSRixQ+s0nPzpR/5UlOySdM61byQSsxoWH0aeaPDj6Ao6TUz84VVnOfdIwl5joUz6aadWJRJVSDnCPmxmH8w1yB14LybMcqdeAsemgAFo0GncsffYle3S84Xil6LRTruvn9t70Zk+yGrTq8l/0810YhJ8ryNDCYIV0ZFb0GWhs83n1T867a9rDrwM9T6saJ6CCjNvkhUUr+1CJLlyikHtEjatUi18cAfbsF68NTMgYj1D0lpZWT+irBGjaxAZoEND/jKuOROUwroyQMZLEMg0DeHvIcMocCSStr5+m+dVCc87Qvaq/klqM4odHflQGdBG8bDgCte3TQAyJoSj1S/T4fQxy7UHqUUNaJTlitWbYJHYW6+f5txkOZgxtKD8drtcJo6jYNKdCiok0ANvGk9qx+ws1voI9w/TClk9RDvUT0KIpjrvlxTJDceqnevs+ibVYwwM+3t73n+PhSSVCvSR3+o+sNbOLglU32rcyRqpLJlfQLGWPQy8iZcue2xvk2ddkXQSts8n3Tn3nt/dVho4w+9l/svgH/yByJ6HLgDkQWQPcRyb0stRVCJb5SerQyBYOHYXnNxlT+ymF/4G7VqczLBYbI5zMcy8SwVEVBTerViF0BH1lmdMPa0xS21aEpeMEysjyxfwWUhoWnqQBJIm3/dEMiwZkFGxel160Itcx5fKsfgETe+A2IF9C0CGBbhBoBbiFM87vvGWveRVBgtliP2bi04FkJo1QYpggJHZ6PZ4kXzvKpbKAxQ1dq6D6G1X7
- NQLPNfbk
- oRVnX0GhoeUBczO9N1oTFBN31DBVDPIVo2vIu/S07QCxTe1o2PKW09wmu6Xp3f7Tp0QpOO2ogMo3+0gavxJ1f7dUdS3fJA2hZfdpHx1mXKZt8QPSyiQz0wBPPTxw9jhJtcSptCZ7FvpclP8J5epHZVIgDY0Mzf/uQARkWsqtky3LCzXKdNo46vBD6tjRP0S+OZe69EF4NKWds+pMqUevxDs6e+3JzLZ21s+WcfEkggwt1u0jpXaKbiUgnCI3YEfUPAezT/uHBhiebC64nlKYJkyTM6z5GZxgDwAspgIcFOiAhPvhBEB9SKPOEw2ZC8bBy6Nrw
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1787583595-474598
+X-HE-Meta: U2FsdGVkX1/LhHNwd9w10H8vxgJngumOSscdoc+TxTUoHbUR4QJvtRx4ikn1sqpV1jAsruZZr/oQUfxsbLJQgZYhxFdPoof5088d31O0qnxdMwDQTfZdd8ERkYN79mfdOSOBt/GUqQ98RYOu9Crkz1vs1zRCV1KpkWfYXrkPNpBOYVN0ZrwqkroOd0m8vVzCuHIGjAnYEU92i8tJAYeYZJTFxVS9Rp9XgCa4JO1bnJhy3ZCYuy93fdg9pkc6SyEj/c/nxqG8QbsBGcByd7tgvMU1uAt9GPbWmJbZKrpgHBoZ20IDWbymybVGXM0s+fQHaW4SzxOFsaQdpSJzrcw++pGRWmL7en+1L1ADVhng8FR7hBRm/dEDTSb+a3QSlUqQO05WMeMHbqpewIZfeszlgRqnDZMndwMW8YKwQ9O32RHYK1mlESaQOOqxKN7IC8G/PVGmqfQIjOXLUyO9ax5xO7xAlcPpe4iCGS5nB6trFDHmumj1YxwqSthds5ifNydM7EhUfS9Tof872+6JKe68mGAsoJdG9QKXJ/WS5M2vKnJkZ6WznP0gVyfqb11GaNF3NdyJJJSRjV4JnCS4+r2Su8GIm48K5bnjn5EwWH0I8ZfVaxUtg7rq9w899H9oNgp4qDb6tkNMrSRSmvEKhqoppzeR8PKQyDCkZKDHjMkugi9y0BN2zcKxm3e8Z/5mymYMdzKd3Caw/e8cil/jJQwUbNK8WIdS5ssyhEDwHbaTPRaKwc7uEGIbjQk9bwox+WhHnE2zdkHySoZFAL5B2CDSxU+wSeiB/+k+1iNR3iZf772yHPQ/5efeS2VxgB//IIDgdBKtFQRNI6IbIfooD6vhQi+l6F/VIFicTUwSovdjepzJaMhl/Rh6VGeoV1koIJ+TDxtjJ3WCtm2pIb5qn7vcO43fjaJsZaAAjlaUlBBEaEcqUM7EcqjuaSCw6kCCrvh1+kvkBSNeaPLI23X28eF
+ puH35tVV
+ CYXDnPRRLaQzSJ8zBWyWQbP6ZQXvXtkMdRNsGX7E3uskGPCZ5alLGJ05RCRpQWUV/MrohBKiabVcsKa2lZzqDiQ1ed+PIdVyd1KTqSnhopNg1hnPYXRpWpHJqKoXmKU2ArGu9hhW+zMLmTTBqCcd/2a4lsW3INWatmwa57cqE5eO6QRmiJ5CJCXcV5TrIP2gZjaD3aaoZRAaytbuIRilswMeAEH2nLj7zM7psSm7UUVtjg2B8X9+SXpg2SqoAktjEfiMOnO4zLQFOrPRrkSiioEZSFIvhZPWO1seGSkYRac2kIEaHRjxQrwasL5BTdVqnwcFiE3qPIRG5p3YMZLpLys8G5IfexVA8ADBZeghbzpx37feAgx2HTenMtURcZx8xB80cGzINsQPexP0qIDvL16AoqjN34iGjaR96pbZ7woY7wa0jy+pNCx77zvzZlOv+V8/q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,135 +141,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 23, 2026 at 03:17:38PM +0300, Mike Rapoport (Microsoft) wrote:
-> gup_can_follow_protnone() is defined in include/linux/mm.h but only used
-> by mm/gup.c.
->
-> First, there is no reason to have it in already gigantic header.
->
-> Next, the upcoming refactoring of userfaultfd flags will make
-> gup_can_follow_protnone() depend on userfaultfd_k.h which would cause a
-> cyclic header dependency.
->
-> Move gup_can_follow_protnone() to mm/gup.c.
->
-> No functional change.
->
-> Assisted-by: copilot:claude-opus-5
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Mon, Aug 24, 2026 at 03:22:02PM +0100, Lorenzo Stoakes (ARM) wrote:
+> This whole reply seems AI-generated...
 
-LGTM so:
+It is not.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+I heard David's feedback. Will adjust accordingly.
 
-> ---
->  include/linux/mm.h | 38 --------------------------------------
->  mm/gup.c           | 38 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 38 insertions(+), 38 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0829e0d3b2d1..4daf9cd6ae8e 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4860,44 +4860,6 @@ static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
->  	return 0;
->  }
->
-> -/*
-> - * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
-> - * a (NUMA hinting or userfaultfd RWP) fault is required.
-> - */
-> -static inline bool gup_can_follow_protnone(const struct vm_area_struct *vma,
-> -					   unsigned int flags)
-> -{
-> -	/*
-> -	 * VM_UFFD_RWP uses protnone as an access-tracking marker, not for
-> -	 * NUMA hinting. GUP must always take a fault so the access is
-> -	 * delivered to userfaultfd, regardless of FOLL_HONOR_NUMA_FAULT.
-> -	 *
-> -	 * Only do so while the VMA is accessible. If it has been made
-> -	 * inaccessible (e.g. mprotect(PROT_NONE)), fall through to the guard
-> -	 * below: forcing a fault there would loop, as handle_mm_fault() makes
-> -	 * no progress on protnone in an inaccessible VMA, and the access is
-> -	 * denied regardless of RWP anyway.
-> -	 */
-> -	if (vma_test_single_mask(vma, VMA_UFFD_RWP) && vma_is_accessible(vma))
-> -		return false;
-> -
-> -	/*
-> -	 * If callers don't want to honor NUMA hinting faults, no need to
-> -	 * determine if we would actually have to trigger a NUMA hinting fault.
-> -	 */
-> -	if (!(flags & FOLL_HONOR_NUMA_FAULT))
-> -		return true;
-> -
-> -	/*
-> -	 * NUMA hinting faults don't apply in inaccessible (PROT_NONE) VMAs.
-> -	 *
-> -	 * Requiring a fault here even for inaccessible VMAs would mean that
-> -	 * FOLL_FORCE cannot make any progress, because handle_mm_fault()
-> -	 * refuses to process NUMA hinting faults in inaccessible VMAs.
-> -	 */
-> -	return !vma_is_accessible(vma);
-> -}
-> -
->  typedef int (*pte_fn_t)(pte_t *pte, unsigned long addr, void *data);
->  extern int apply_to_page_range(struct mm_struct *mm, unsigned long address,
->  			       unsigned long size, pte_fn_t fn, void *data);
-> diff --git a/mm/gup.c b/mm/gup.c
-> index eb898ea1ee22..500e2aa99e48 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -633,6 +633,44 @@ static struct page *no_page_table(struct vm_area_struct *vma,
->  	return NULL;
->  }
->
-> +/*
-> + * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
-> + * a (NUMA hinting or userfaultfd RWP) fault is required.
-> + */
-> +static inline bool gup_can_follow_protnone(const struct vm_area_struct *vma,
-> +					   unsigned int flags)
-> +{
-> +	/*
-> +	 * VM_UFFD_RWP uses protnone as an access-tracking marker, not for
-> +	 * NUMA hinting. GUP must always take a fault so the access is
-> +	 * delivered to userfaultfd, regardless of FOLL_HONOR_NUMA_FAULT.
-> +	 *
-> +	 * Only do so while the VMA is accessible. If it has been made
-> +	 * inaccessible (e.g. mprotect(PROT_NONE)), fall through to the guard
-> +	 * below: forcing a fault there would loop, as handle_mm_fault() makes
-> +	 * no progress on protnone in an inaccessible VMA, and the access is
-> +	 * denied regardless of RWP anyway.
-> +	 */
-> +	if (vma_test_single_mask(vma, VMA_UFFD_RWP) && vma_is_accessible(vma))
-> +		return false;
-> +
-> +	/*
-> +	 * If callers don't want to honor NUMA hinting faults, no need to
-> +	 * determine if we would actually have to trigger a NUMA hinting fault.
-> +	 */
-> +	if (!(flags & FOLL_HONOR_NUMA_FAULT))
-> +		return true;
-> +
-> +	/*
-> +	 * NUMA hinting faults don't apply in inaccessible (PROT_NONE) VMAs.
-> +	 *
-> +	 * Requiring a fault here even for inaccessible VMAs would mean that
-> +	 * FOLL_FORCE cannot make any progress, because handle_mm_fault()
-> +	 * refuses to process NUMA hinting faults in inaccessible VMAs.
-> +	 */
-> +	return !vma_is_accessible(vma);
-> +}
-> +
->  #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
->  /* FOLL_FORCE can write to even unwritable PUDs in COW mappings. */
->  static inline bool can_follow_write_pud(pud_t pud, struct page *page,
->
-> --
-> 2.53.0
->
+> 
+> You replying only to David twice in this sub-thread which isn't exactly giving
+> me warm fuzzy feelings about the working-around-me concerns I raised here.
+> 
+> So simple feedback - send a relatively small, no-functional-change series that
+> improves THP code and lays foundations for future changes. After the merge
+> window.
+> 
+> Can you explicitly ack this please?
 
---
-Cheers, Lorenzo
+Ack.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
