@@ -4,110 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A58E5C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9528CC5DF9B
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:27:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A74B36B0088; Mon, 24 Aug 2026 08:26:17 -0400 (EDT)
+	id B60B86B009D; Mon, 24 Aug 2026 08:27:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4CEA6B009B; Mon, 24 Aug 2026 08:26:17 -0400 (EDT)
+	id B38B76B009F; Mon, 24 Aug 2026 08:27:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93B3B6B009D; Mon, 24 Aug 2026 08:26:17 -0400 (EDT)
+	id A4F576B00A0; Mon, 24 Aug 2026 08:27:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 579636B0088
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:26:17 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C1E838011A
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:26:16 +0000 (UTC)
-X-FDA: 85136085552.08.A43965E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 36AC9120006
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:26:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PwNPX2NR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ukleinek@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ukleinek@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 781736B009D
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:27:22 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0FA4DC011D
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:27:22 +0000 (UTC)
+X-FDA: 85136088324.24.135CA9E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4027AA0004
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:27:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AfTqi6Wq;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787574375;
+	s=arc-20220608; t=1787574440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=upukaXZkr84gwak4ggRO0ndAK9t7zaBT3owzkfM3Fdk=;
-	b=KBUqSRCWxP3cU7IJ0d2fr7PeTbUd2rVMWc1gkaDzVwu9jcfqgeEdrp0JDApQFjrGvZ92Ln
-	0lb3ygSsG7qR4N5k5z+O+4sJsZwjAJBcKGIgIFqBeb5GVAcQIOOaK7QS5sIndEH5JwKVfJ
-	unaYmGfYB/87ugrbrkHS4ALVH0s2SjM=
+	bh=XK6BMX/K8bxWE6uT077ZbVDAn0hz/OBQnd7y6m4pTRM=;
+	b=Ta7XSDw4XmR8xTWpv3IWmhx+A4c+TXQuRcVE/MILXTkxVEvQcUeDT7JVUnoRkNfUD+KUSA
+	ewObycnP7uK5BrRfe2HJJoYAcaf1lpwoLe1oLL6uSn4GwrePxxjy7zaON3IA/BAeanUMer
+	n6ZcX079IvlOMAuw+Sioaf8wzw4USWs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PwNPX2NR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ukleinek@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ukleinek@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AfTqi6Wq;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787574375;
-	b=auZ/2dsveXzC8uGaoBeTGthAg98ThDuY6K+r3aBYbvLXcRcpY80xZtfv9fFlC5iITBG2Cq
-	iCVwyANYXyOqFrTPm1HiYBBwRyDxcQBfbmGvcDyXjygHCFymYUbu3Ymk+goFk+Vp3JAYMc
-	aCQx+o190CbKsLVpgubyNDlZYPFnNw8=
+	t=1787574440;
+	b=WtVff8/ivHaXbcyTXOmXmTt7Ptn2d1p19CAVxu17uEqwRg9shSNlsd954lzJ192CD5Kicx
+	q5SZHxXL2Ku2moeNhHVc6VWQI4V63XMbEAdecumJsW70NRfELSCTGUap3AcqDKLwfxXsNC
+	KjaLphrN8lKs9z9s4K+lKQFRhK1g0WU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with UTF8SMTP id 676C4601E9;
-	Mon, 24 Aug 2026 12:26:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 874ED1F000E9;
-	Mon, 24 Aug 2026 12:26:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3011343288;
+	Mon, 24 Aug 2026 12:27:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111611F00A3D;
+	Mon, 24 Aug 2026 12:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787574374;
-	bh=upukaXZkr84gwak4ggRO0ndAK9t7zaBT3owzkfM3Fdk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PwNPX2NRFVN0Bz+S6KhhJDxiLSSZueaI23ct1PXVX8KFblpux4F/bG76u6TxrwCtv
-	 UBlSiGxKVvBTRYKxoEml8G+yJNr5LUcxCVHAJkkApNdp1pLMOe/M1VjBTgCXwU7U6V
-	 5IgTBRfAEyOLQqvyJJiMl62FQy0LIfHZ1uydX9Y4AhNiRmTr2057vOspY1cC7nY6+Q
-	 qZ3KAqtRYMVxL80qEDUwO6SUdJGBXEpXuEZNK6b9Z8cRlU4tajvzt2DKIM8cr4Vboc
-	 q/Ct4jN9XMSxR0SxukEoUtbJdV8txAyM9aXphiu3NaGi6TMPM5g8mGMXa0XMTMt2gj
-	 F9NjqiDJeK5BA==
-Date: Mon, 24 Aug 2026 14:26:11 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Lyude Paul <lyude@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, 
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Ira Weiny <iweiny@kernel.org>, Philipp Stanner <phasta@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-usb@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>, 
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [PATCH v20 5/8] rust: rename `AlwaysRefCounted` to `RefCounted`.
-Message-ID: <aow36NjRc5Ig0hG8@monoceros>
-References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
- <20260824-unique-ref-v20-5-490735672187@kernel.org>
+	s=k20260515; t=1787574439;
+	bh=XK6BMX/K8bxWE6uT077ZbVDAn0hz/OBQnd7y6m4pTRM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AfTqi6Wqzpx/tredHEiHgdezpxu/atudamHaXRBHm6NRUgIafPwPQ+Wz/NrD6ifsw
+	 0umR0r04gOvd39aSEmPyI92xnc1gZihFKl1NKCqr3apDZSLuJfr/1YoqQI4/m5Y9a8
+	 129+oTQW5is/Ki8RJqqaBmD3LgbLGefHU9iaYxNeqp5/FPpZlxilxKGRlV3dkR0q/O
+	 NqDlo0rVST5z6rF9E9EfXhIxNhlubV9AdhNU/a+rHyVLAbitEUVwxCLMI5bY43UhtW
+	 sh6cLagp/XihceuN5GwlhiAE0NcQSOLEcqU0nXs3uuPRHRltE+ZwuCfglPO5zFrbTF
+	 NMGmMSXxFPBjg==
+Message-ID: <ad6296f2-dae7-4be9-89ce-78a974b94c82@kernel.org>
+Date: Mon, 24 Aug 2026 14:27:09 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nwuv4cl3v42iarkt"
-Content-Disposition: inline
-In-Reply-To: <20260824-unique-ref-v20-5-490735672187@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/6] tools/lib/mm: add shared file helpers
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260813181230.483746-1-sarthak.sharma@arm.com>
+ <20260813181230.483746-3-sarthak.sharma@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260813181230.483746-3-sarthak.sharma@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: pwzygdzduqq39f3k9zxco61xqxt5owxw
+X-Rspamd-Queue-Id: 4027AA0004
 X-Rspam-User: 
-X-Stat-Signature: 47x6xexhmqjysz3x8ju84srwhbc8m1nn
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 36AC9120006
-X-HE-Tag: 1787574375-933372
-X-HE-Meta: U2FsdGVkX1/5pBFAtYP8ELwM+FletOhra+6HXm04eSLL4D/gKaNvoTE9J5wEXkMd4G7+IKM2FLdDDTl3Tv5GzlOzxejif6eXe1GFNNMX2AD2N6H4a4Akj0jZt92Dk0wej6P5XhZCgEJ1khqyRrw/gq0Amwzhv6JfsWWMC3JTTuhMu7+gg5A+7puPC5D8vcpYh4RCi1ftth+nfpCdIv0TU14cCptMAjqdNH9yH8kkzN5kQ2mqGR8HZ7SNPvBlLceQWIdu9vqbcp68iwBGzQOeGRKmslXXJxlkKlVdYm7nnAahuz9nypXY3XHzdYADtcoqKbyRc4xV2Z+07RqF6NwfsolJxezgzGj48YMpN/PXiRhstzuALc+WwepMN9/GSCS97cfYX9L2nD2WmE7F/KLoEPD9BA+0GQ1LHD2lYLXS9fXe3k0z+QL/FSLF/5/vNWtzSUtp4aSw8bxLnofEPV0Mcyezv3h7igfw8/3PCWjA8jMhbAtlinnVvbQCVGpoxuS2zEaVVWk23fs0WIUyKGUCPgOsROe1bM6dOICxeT8HhO5tUCiwhW9xc61qLWrOCgtlMWUEUjq0kksHjTc/uaZjpEZcHXF/c+HlgRc+xBh+l5Hxi8jVCFBtmsRLZfwv5QMy/hwRp9QCoazz8qPWOkp2l9P89B7W1SccEEYjFkjFj1mjnUrrtDGu68yFQSPLiPkmn0P7VVCpNP60ZOkReIa6GTamD3RQqbFnVtx6EkpHAnHnv4h+ccWDX1B478etgl6li+vULQnpJL0h108L48un2Q2GFg9DDVT4fpmnvZ+Ihhrv3YYXf71mWClWd6zoiw4pveeiFoTSCdf+rmCgyEDBfoGt22fSq5g5aycc4nto090X8l3225X9uMbE1MsYaAC8MW/O4fATuia/izZkZIFeHyx2TjTMVlVdGO/98DPEBqkp2nCXVGah1Ipu2NkhglvEimlMotwpcYxcSsDpx/O
- fVyI9y6p
- XuRIPCIeWPr/8HYxJvSc0Pdfo1BljsIQ2X399jhbRbLPB68eYji+vYGiGLWv3yc8dLfEjkUyyLhy+j1Q8ZgCreSBcz0pMtXBL95YUiKbbro55nJFA43wuQmHDeTEd2zGTWzcU/dr951wSu8qMFGpSgSb7htRmLthF283Sro/gnuCII5i3tJaJTM2wpXBoW1jeFvXJIkSu3M3COQMej/DvmnkAmYv1tZvI/5SufD26cwy93DveMq9/efBYdE/Sg9sRcAfr+jwCiGw6aJpGZjf6NEMVniYPzdRx73UnLLiTY9PDna86UI3axZKsFMq40UoWetP9C5UE81ugvBi64s91hoAPMcbFhAHT5yUkdzb2SwD5sF8HwIOuHpSeuMYHxpNdDC8r7z27wYCx8DY=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787574440-99277
+X-HE-Meta: U2FsdGVkX1/i9GsfPE0NUPzdpFp1BO35JiOGjMMFsa561A61dmIKmDoKf/Q1vjUcrNfISKwZ8G9aL2rI3ADWue3vvlHxdIbjVTHS1I3UwukgHMHxZu6ykaR0cZ3WTwt+0zcU87B6MRZ/HSMf3JWvMSNOUl+ZOhD/v2EVJHH8SKDwQDSvPSn5PBBQe5CDnbztvEYxnzKrE4hdVPAQItyYdH6OFDbTa387EZuC47ZVbIYZkzXNkxh3dC9lImqbwU0REJz6ZUPboedCm64uFKLUa/z6IIeVeoTMXZvoAgx2qbdX3a3FcwF+qGeJVObCLtaT/346sYoa+th1WYASj9zc2EoBsshzyX9VNE1PLAg0f60SfYNDMH34et+FOW6Cc0S3b2/G9VyP97KFYeYwMTZkWEzNUwb5+eeQcgeAliOAreK7jzKA5ZJ1dSsOBKNdVarm4iKmYytfoRP63/+0iCltu5OX5ZiSXcrSO7qW1u3SW+9M48h3BRlU7/5f3Wf1p0p8TR751Rce1JUMD8QDYxJP1UYz0lANYzxENN2YJmhQ1GOCQMTwz5sQyQ8ig0MKEYu2VItyA+kJsqdHbjETpQ+I9aYBvqmU6iXHJS0zaeYBcFEPShJEyIBHBJDEFdLhsKCA0DiXZ8bxKKr9j7wqAbISJkqWDV5mqfMqsBuxWMCzezz5iUs3xvqdzPx76a7in1EANw8whyLQZtEshzlT5ed1ZYt2UHn6oPpMyhIYMHAhMbfyCEp8wi4ccwf0oJ/Xf+rNZ1byCg9dx6QITeETvIWL+r6BRjbS9D5GJg3gMJLxQNyAbbtPR7GxDRQLRuOSuNZfcw+mdTPjx3Y5nbq5yXseQFzddJWwSj8Bkf0kfSZtuMVKPs0c94FKoyWVVVol7qqd1Cu8dAbRU8vxJZqYbjkmFKshqAOR9m3X2136OG4WqYnw/g76dJaF2QRFQSpKqPd5l2C20NPdGGy0lIVzZTa
+ SAP1ajBZ
+ Bd9m9k3+OYY09qU8fk9vA7wwBXQ/RurqKnYHyfKVXEoEczGP05Qw4rw49TCGxI8gg11xDoiHX9/CeRPXcFudHwgKk3Wcwfb+o288V4zPW9paWJdnn7wPCuMUizfTZ2BUpGt+oytYIVNFskWnod4pVtC3GMPFKF9UK1oZTvNc2W0iOlgWFrUBV1OzWaBetjiyz77qvC4yLhWzAjS6YhPnAngvtpI0AjQLS70FoKs0xt9T79Mn5DgAlZCD8Pw0K9LIVWraKXibY0jzWSQ3Oqxh01DZgl5BkvS2EAqG2uWt0lx48eLmateCQMyZXal7gLf2BaAV9kY28XORXQsz1oqqS1/9uLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,83 +151,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/13/26 20:12, Sarthak Sharma wrote:
+> Move read_file(), write_file(), read_num(), write_num() and
+> write_num_ignore_einval() out of tools/testing/selftests/mm/vm_util.c
+> into a new shared helper under tools/lib/mm/.
+> 
+> These helpers are used by mm selftests today and will also be needed by
+> shared hugepage helpers in subsequent patches. Move them to a generic
+> location so they can be reused outside selftests as well.
+> 
+> Keep the helpers exposed to mm selftests through vm_util.h by including
+> the new shared header there, and link the new helper into the
+> selftests/mm build.
+> 
+> Update the explicit x86 protection_keys 32-bit and 64-bit build rules
+> to preserve prerequisite paths, now that file_utils.c is built from
+> tools/lib/mm.
+> 
+> Add tools/lib/mm/ to the MEMORY MANAGEMENT - MISC entry in MAINTAINERS.
+> 
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
---nwuv4cl3v42iarkt
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v20 5/8] rust: rename `AlwaysRefCounted` to `RefCounted`.
-MIME-Version: 1.0
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Hello,
+-- 
+Cheers,
 
-On Mon, Aug 24, 2026 at 01:17:57PM +0200, Andreas Hindborg wrote:
-> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-> index 6c9d667009ef7..2d1cd74dd98e1 100644
-> --- a/rust/kernel/pwm.rs
-> +++ b/rust/kernel/pwm.rs
-> @@ -13,7 +13,11 @@
->      devres,
->      error::{self, to_result},
->      prelude::*,
-> -    sync::aref::{ARef, AlwaysRefCounted},
-> +    sync::aref::{
-> +        ARef,
-> +        AlwaysRefCounted,
-> +        RefCounted, //
-> +    },
->      types::Opaque, //
->  };
->  use core::{
-> @@ -629,7 +633,7 @@ pub fn new<'a>(
->  }
-> =20
->  // SAFETY: Implements refcounting for `Chip` using the embedded `struct =
-device`.
-> -unsafe impl<T: PwmOps> AlwaysRefCounted for Chip<T> {
-> +unsafe impl<T: PwmOps> RefCounted for Chip<T> {
->      #[inline]
->      fn inc_ref(&self) {
->          // SAFETY: `self.0.get()` points to a valid `pwm_chip` because `=
-self` exists.
-> @@ -647,6 +651,10 @@ unsafe fn dec_ref(obj: NonNull<Chip<T>>) {
->      }
->  }
-> =20
-> +// SAFETY: We do not implement `Ownable`, thus it is okay to obtain an `=
-ARef<Chip<T>>` from a
-> +// `&Chip<T>`.
-> +unsafe impl<T: PwmOps> AlwaysRefCounted for Chip<T> {}
-> +
->  // SAFETY: `Chip` is a wrapper around `*mut bindings::pwm_chip`. The und=
-erlying C
->  // structure's state is managed and synchronized by the kernel's device =
-model
->  // and PWM core locking mechanisms. Therefore, it is safe to move the `C=
-hip`
-
-I don't understand that, but if this is considered ok by the Rust folks,
-I'm fine with merging it via their tree.
-
-Acked-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org> # for pwm.rs
-
-Best regards
-Uwe
-
---nwuv4cl3v42iarkt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqMOGEACgkQj4D7WH0S
-/k7Eqwf+MmntLyABjsJ6u3n0tfvFXtT43FkhKWBYTvfrSkkGSwvZSD/ZY5rm4TJa
-bXNvGj/meY+tjoiL+lqEl91gKDUE91djmvVcfXDoceliQzIKh2cKRqYubSng7etR
-4cjqGN+2sGoPMqw/DE4AHSt6FjN7PW9atWXCHSqgj1X59q+Il9zzPvJoUf5LoJGl
-M03B0IF/eZP8vEHvwBR+bKlVqdJnU8LD7vn7fYKS9w8EcXVmRNet0ARjs8XnIUhd
-mRyFbmkqewycYxQaQdFwYsqkvc+ZdQfjXofOkRIorYXk2OXiZy3oqy94wwwiGntm
-xaLKESdeyy1mp9Q0CzYXHqcQr8nU5Q==
-=h9TM
------END PGP SIGNATURE-----
-
---nwuv4cl3v42iarkt--
+David
 
