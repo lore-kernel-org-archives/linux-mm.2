@@ -4,119 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2E45C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:59:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 922ECC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 17:00:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2D8E6B008C; Mon, 24 Aug 2026 12:59:47 -0400 (EDT)
+	id 8FD8C6B0092; Mon, 24 Aug 2026 13:00:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDDE36B0092; Mon, 24 Aug 2026 12:59:47 -0400 (EDT)
+	id 8D4EC6B0095; Mon, 24 Aug 2026 13:00:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCD526B0095; Mon, 24 Aug 2026 12:59:47 -0400 (EDT)
+	id 7EB266B0096; Mon, 24 Aug 2026 13:00:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FDFD6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:59:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3DA91A1FCD
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:59:47 +0000 (UTC)
-X-FDA: 85136774814.27.3C4EF15
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 69620120007
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:59:45 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TFfJP9Ki;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787590785;
-	b=XW9mpPQ42q9blQZ8WUPsJEf5M+eZPbLfG41Ys5I+ap3fEJdokIgnZUVXKiE1Ff+7bUBVJg
-	sPyY13aQ2vivH/7gEDnJAcUsxFaCMcDfIVySWsQXNQdWh8OK1k6FPzSkHdErpZ6NTw/9Gx
-	rjaLVczUA+oD3jujFas4O7bAwZGwA+M=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TFfJP9Ki;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 601FD6B0092
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:00:15 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD7851401D6
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:00:14 +0000 (UTC)
+X-FDA: 85136775948.12.C25CB91
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 38DE7C0012
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:00:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gJ9OvYKh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787590785;
+	s=arc-20220608; t=1787590813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MA9J/J4dz8CmMza6uNEHvAF2e5np5uw3UUGqTjXdZKA=;
-	b=pPxqRf0QZau64L01sSYWuKzzrCIq9sd9yaMxD0SITmvBfH8fcqHUPL3Kat6z5ESyb++vF+
-	Tgkbghx209SQTIHNkDjwPyaCpZRZ/exbK+K6H1BYd1iGyqAAxBU1BynlYc4QTthpd7Atui
-	wjvMvwz5QlA8un5CHYye5ZSltUHXv2w=
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7eb6573bd52so3759412a34.3
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:59:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787590784; x=1788195584; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MA9J/J4dz8CmMza6uNEHvAF2e5np5uw3UUGqTjXdZKA=;
-        b=TFfJP9Kit52aywF8qLHultv02ErJPqGkrhW3rHTEMARtM8RmSZaD7PJGQry7Tm9Lt7
-         uphokz/NebjqMHF22R+gPHPeau8CcKNX2wuYFR0A9HbDVdlflxRPMTaRDCpXziQnkMwQ
-         VLdRUVFmDK69GmJx8WD6Otwp/HZfA/wR2WNXi43TKg2txUT1//N/plHpzsPOjgK2lDr7
-         3Y/MT339cJc6ix1JCBkTtuiOnjs8S6rRR/BA6fzFxvlrN4kSfRQpH+9aLA04P2/ALAFK
-         1lLFV86K4sPO8niCRTL5bpWLsuLkxv1u/CWCDfT1I3/aIiIgwdQdA5lWFfso2L+/N8W+
-         xOdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787590784; x=1788195584;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MA9J/J4dz8CmMza6uNEHvAF2e5np5uw3UUGqTjXdZKA=;
-        b=EM2yiAFrPjTsd4JCj3ueg+yIe+/4vQf8kLw0EGz0aJGLlARDxRAU1oT/XOIIol7jBm
-         yRaoalylLAva4cOh+K85MOwJa0qKR0yEaqQbLkXcW4uf2qoJNzXhIYWYoTnWclfIVoBi
-         vjLdOGRwi3vNg/R1I9Y6QpJDoEqK0Bpv7eZ1q0kyrSY2V0E1cNdQ8qSom8ZzgTLIE0Bn
-         SdVaApULRxhHgVaRhLMRxP6jD3g2to1r00fTOvs9u1pFbJV2SDEIWdcy5CTPZysEBQfq
-         k2Rd/KzJ7RIr2D0WGHIqNpVnNquwsRa9a7sBJ/wYcum4iVzN9B0wraJIDu34xUi/FvkI
-         f/rg==
-X-Forwarded-Encrypted: i=1; AHgh+RrB2xu8988gdramshPryQtFtvACnOofenKE+MYtPodwFXqWBfcaSud//oiZBEP0Pw5yeWJgVbaEyA==@kvack.org
-X-Gm-Message-State: AFuF++mBHzzJedhOqGedBJjNabgLmxkNkLNayOLRXgdgT1c8yuGw1sGg
-	Fe7hk4DlaoGvUdLo0SWuo8hbBJnzCG6CwHT/ACtkLqU0MqeQZs/WYMXY
-X-Gm-Gg: AR+sD10CQpxnbSvEeoG2wYCAFPejELr38iTxb8y5FY+0CZv87t38W2W4x+cGEgefy6+
-	wPSILvF6/1A2vvsaOgldNYaSH9trvgcVJwqoAFq8suhcrvOXrsncQZAawGP9Zi1d27Qqtn/xMGF
-	hvMBVXa8q8Afq7wwAFUykn20k73GLUX81Up0f5j3/KaKBPVOKW5kvRkR/S++2r3FSiZiLRrhoEq
-	ehsnr5KtVBqPhtTl6Y16gXCqu+T506JyrYIFnNudk6FxbIAI0IRmtHHMOBcR/YhefUsIIazRXGb
-	4bCBOrhYR1WQYda/9lVo42gUqnxZuhC7MQtumINrjyAb56DhRaVnShOfkjezIOf+K0y39Wdwihj
-	pZyaAFU4kjI13EhjupMPlcdusBR0PDEKhaQ5pZY91iskbwVf1P6eYCFwpAI3u3mtHbBmbDQL4ui
-	lz5njlM//AwlMslOzZogAuKwzuqD21ECLDhQLyz7axnaVec+jcXruzWFJzpNhEeG+G5xptorsGX
-	d8UpkyxT56OezRC3ow=
-X-Received: by 2002:a05:6830:6187:b0:7e9:e257:81cb with SMTP id 46e09a7af769-7f461845b89mr33734265a34.7.1787590784236;
-        Mon, 24 Aug 2026 09:59:44 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:2a::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f48fae8e1fsm4566560a34.1.2026.08.24.09.59.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 09:59:43 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>,
-	Joshua hahn <joshua.hahnjy@gmail.com>
-Subject: Re: [PATCH] mm/hugetlb: use hugetlb_vmemmap_optimizable() in boolean contexts
-Date: Mon, 24 Aug 2026 09:59:40 -0700
-Message-ID: <20260824165941.2354729-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260824151655.30840-1-kaitao.cheng@linux.dev>
-References: 
+	bh=nct0GfFThXU+uRAh3/FXFDpq9aYkue9rlgNBVH3JitQ=;
+	b=KwX7K2mhbudQIr+tLGn5tNA9B2k2+maEfMqhR4THFoTCw+wewNx51sAc4YWEdt+niPBIoP
+	908jSWMWDx7GZxHUVf0Z4kDvpg0AC32S1nJc4WpaJpql5igHg8160tHd73OkLbJuoy6wve
+	Xt3dRag1qTs8tfHJokXMvIOvzUxzbhc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gJ9OvYKh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787590813;
+	b=ANIP5uVLaXigyAx0khKJdBfgB3pRnqt53mV2w2pSpt3HsipyTzGz8j0v14NPI2UE0AS/2A
+	yRnNA3BgryemnsnLwjqLS6z8SvdhQm9XdcfmM4nrA3c8H5KodbNbl7MLyd8d1SKJ4E+SY1
+	wKYMwWq4aeOfAcDIJXs6223Cx04wsKs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CA3DB6013A;
+	Mon, 24 Aug 2026 17:00:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771851F000E9;
+	Mon, 24 Aug 2026 17:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787590811;
+	bh=nct0GfFThXU+uRAh3/FXFDpq9aYkue9rlgNBVH3JitQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gJ9OvYKhhQq27htNgGOlt/P3H6X3YfPsxzL1b0quFovndKNySknU9vErizFoTX35D
+	 UavqVf5YhxWwSYt+4xbQeWMObpe3fgx8RQX6/0luwvoOS8iK8/zkSNQR4139rvqSgn
+	 L6VUwC/lcizYu+L0Hy4M/ZJta3h5hXKYZ5M/Iov83m84a2bcfW2ckhVXfj/xQx/QDF
+	 u89w8ZEOyYZGcXQhbofr78vKqpZrPE1e9OPogOnZxnNyIRxfJKm85NVP4OFCzsAKwV
+	 cCesI1wh9DSON+jHCRkNA3sKSk0vPLZOvlpP1N2TCJwNl+Gt3Myrm09ZjRm5JbrywH
+	 BiOJPA9+kyPbg==
+Date: Mon, 24 Aug 2026 18:00:04 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	akpm@linux-foundation.org, nico.pache@linux.dev, baolin.wang@linux.alibaba.com, 
+	baohua@kernel.org, dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, 
+	liam@infradead.org, mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, 
+	shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, 
+	ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, jannh@google.com, 
+	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
+	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
+ primitives
+Message-ID: <aox36P0DMLqYD7py@gremlin>
+References: <20260816224609.308019-1-kirill@shutemov.name>
+ <aoLAly-oL2OAa4n8@lucifer>
+ <aoLkMUtmzRVuv2Hx@thinkstation>
+ <aoQ77EcD3M2kjeya@lucifer>
+ <0153303d-f9d6-45ea-a276-fbf2e5625ef9@kernel.org>
+ <aoXn1B7cPnPq7uxd@thinkstation>
+ <aoxRs0mjyQnpO-IT@gremlin>
+ <aoxcN7jrfbK_Ac8V@thinkstation>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 69620120007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoxcN7jrfbK_Ac8V@thinkstation>
 X-Rspam-User: 
-X-Stat-Signature: cwc1yyro4jbpfp73mmktw7uquzekna5d
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787590785-841716
-X-HE-Meta: U2FsdGVkX18uYsZ7kBNPMlLwnmCKHMsujXg3+q70gkAXDdjM9o/dVeJifjLDqUPWq4B835Zw6ra6yXzDuXS4ZygbStKeMIk9H2snKyZjBQzHmkdclitvZZPYryaIgGZzkMCt3AYB88MoRxVnLyyEy17f9LUzedaNPrbmGQdAvlWxJ87oK3uvdIWlM3Vc5kjvtbNjcmUdzQbDC+ykaP/nTVHvOV3rKehyuBRK57lOttFwxidBgTZvKuVPzty6pKbGV/LPOGD6QUhboVa9fgaGpOGx5tcX187h4A8XjWWyG0bGmJFJ8V7MdsklgRwWrmnu16gfjniQCF8FUr5rPUQSHV0/lxg3O1gGc8gl4qhyaT1GbKpySlSVCSWjO/fFAPEWFMS0niFC/Apg3mGpXFiujPXJaOvsWM82CcUYZdr3u9yv5ujnuI77muIVLzAmzyqXwT0P1DWiTOGadqKrx1GAczfnGYExhxkJYJXiHr2jREN7Rin+jDHWfRAw50J7y3b1RzeClToNnssB32CcWllGsk3d84ZUWOOkuG+Yd0MH+uCCuQo8umFp7leh26vKfvB4wd/X/5tpceqzdd+czUrYLdxx8mx/Anao+0UnagBtlQ8cIVtXnbmhPZeevtl3QMt1XYMKszILd3EAKND6F5roOux5wC9R9DOZQKbg7X5lG/jK2hFwlmhSwpXNhckMDMD89VjB5SN3WWcY4nDZsUyWxFvqLRuJoDWDZYKDW0J/KLXLfSlBm9fkvu3o6yPbKts69Z9e8MVDvjT2t7V73/Hpxc6TLGYc4WBBbI45qK7WGu/oGK4Iq9SuYMMy8Xiu2HjjLiLp7IfFK+FkLmV0cIgIebAxWlNi0kELAg31gh22Q0ijKedpqv69p+4Oe9s0I3N5qBoMpL2txz4EMTyIenUYQ3qGdr1kBnX6XKh0D+CsX+7XoQHhUJKhTb6fDARSZpIBHrBh/uHqgJCcHzifo+N
- tT0d+Hap
- l9ibfav3m2uTYlSo5ecyw/AsRefWY4x1jBM+Hdd9nciCv0h8tDmg50e19437E13lknUVVGddW9vXEcBkUR9RZUDI9u7KGj46tA+VPEfXiAtCgnopZLQPuji4R3HwX/DaGXhzin8hu0YfdRaHALfQT8+oQ3Arp16w4ubGOJtnSpRan0/tHeWQTbSgfyRjNOAixVAsP1+3vkMoiVCGFMGWXvzNdxC88086BoNhc17pepVUXQN46R0F8JdWNaMmAb7/EvPGY/ytmHmUZgAcUFrGSFdeZgsh7EQSETwPvG+QrgocvkFJpb7DQBtK0WEA7d8ATxTZMKEP6Ip9p2BI5FaH4rslf8BBIJXKs+S8fb0UVfM7PvRc2kleRZN1M6OrgAzfF3MVB5nRMmTG97169u+UXcmxqziMhbyCuz38/3Y2QjsAukEYjBGDA8iRZFRQvSnTxY3Wv9q57yjsg++F1KVKWOSuV5QSLXj3k6AwAdpOKXeShefwjiqLuKueUxf08rOt8P1PFwU2TpmtmczTGiE1EtCgD+p4ZZufOCsHEqpn0WBttQqyIRcnmirAPipuN3bAykj4kGyDnngvlTAEFV7H+XSqE39D2kVUqfWrB3wQXk4MLk93DvnPmS8OaWg==
+X-Stat-Signature: fqfs3mkjz6nkbx388n1qgpbpok8ndmsg
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 38DE7C0012
+X-HE-Tag: 1787590813-310128
+X-HE-Meta: U2FsdGVkX1+WBmlYW2t1n0fVXv91/KNQP8utaHfcL7a7Q7RsbN3/jGJPRSRqdAn3btCVTW1l2GRMKHNp4SZfdF7DMkq+u8+V+7vUvDuYTSmcnx0V3SgaJFSXRsnBtDo6MK2Re6H2kO7olWpMZV4joa2x+yNdl5ieNHzq0Y3zeHX8Oev/IirJlEFe7ZdHgU9RkHfBhurXIn7N7sOgbdkDIccJfOIBaQddbmq2/qJZKBjdkGxt+mrqv+PPCTvjWfCiX/8yczMwz8SpKAJrtVnhzfHWFXnqPR67kxa7NE9t9Jow1kbQFYCeo6nhvExZWF3brGM9eSvaE3ZaKOvtGGuco1xfD5ksgGymX7GN49plb2vT39xGt+8PAK8YKucbQU7NikV93q6UFyQCGsra1BJkQY76L4DcJaq05JgwSfy5yGz1L19Mr36ANvogvzou4B5i7S7OotTOFpVjgYG+y/xNAx/xthlCr1Aufbkqm4lqzhdeAq4bBxS4kodg1tJikoLKmoejKJBUQE5ZDLlQot2zHxJo/k8acaBvQ5sPzN/bTsdBQtC7Os772JTVLexICqWBi8miZ5JiYAU9R2XbtPG3yWnQ5YpuZ+xVNf1YCNqMMsqou9xP6gQoAxj81BLmpY9DdvmiFhnIr3UPmoQ3RauO2uGBFfJ8sXayyw1QgY/idyfZ23CuT9ekD3j1OLL2WAlaNeomZbIERNC4HyssnmrTl5rAFHUn4V6xDXERZhfeiHn2LWe31N35q5Pk/H/8/1SscQnM+Qw4ZcqFGAAVRkqdxHQ+3yRKVXskUsjSqJ3sc10Gy8Qt8ZQYwRofjhsPHHS4Tga4M+iYJpnh4O7mYiu6ZpRvLpNXkOYK1Qp5U+lFUPZSJzwZMYcEWpwTUhyBIsjIYg8ZifqduJ/Y3GcsDISpDZQAOCgM3/g1gTk+egm4PlC5D4mfwk91njPXsholW9KY+2c7EkVB3dALS0kjjzy
+ Ewij10DJ
+ j7lKS/2YohTaK1Wrpez71tiIelHS3gZx8lhX9WJAMcu7d9VcdL0jqVI39MyJVhcY1hbwCIMGvEZFnIGjzL7vwLoTjfWWXd7eyiJzu2CSXUyijURI5tHZ+Re0S/MCVyRxJa4t6Z6X/gJvcI+JIQ3Y06lTNEHIAwUCQogxyN2loQzYL2jr27NtM1PVmPdWLmUaqt+oKlTMQxEcsRrJH+2Uz6B0zi/erUQFhAnkQIQEUkF4qioFo6VPn32LkJrY91/L3559Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,60 +105,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 24 Aug 2026 23:16:55 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+On Mon, Aug 24, 2026 at 03:59:50PM +0100, Kiryl Shutsemau wrote:
+> On Mon, Aug 24, 2026 at 03:22:02PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > This whole reply seems AI-generated...
+>
+> It is not.
+>
+> I heard David's feedback. Will adjust accordingly.
+>
+> >
+> > You replying only to David twice in this sub-thread which isn't exactly giving
+> > me warm fuzzy feelings about the working-around-me concerns I raised here.
+> >
+> > So simple feedback - send a relatively small, no-functional-change series that
+> > improves THP code and lays foundations for future changes. After the merge
+> > window.
+> >
+> > Can you explicitly ack this please?
+>
+> Ack.
 
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> 
-> The two boot-time sites in hugetlb_hstate_alloc_pages_onenode() and
-> hugetlb_pages_alloc_boot_node() only need to know whether HVO is
-> applicable, not the exact optimizable size. Switch them from
-> hugetlb_vmemmap_optimizable_size() to hugetlb_vmemmap_optimizable()
-> to make intent explicit.
+Just to follow up - Kiryl and I spoke directly (much better medium than text :)
+and it's clear  that there's just been some miscommunication here.
 
-Hi Kaitao, thank you for the patch.
+So - in general all's good and we are it seems in violent _agreement_ about
+moving forwards (split out to reasonable foundational series that build upon one
+another -> eventual switch on).
 
-I think the changes look good. hugetlb_vmemmap_optimizable is just a
-oneliner that checks hugetlb_vmemmap_optimizable_size != 0 anyways
-so this change seems clean with no side effects.
+Let peace reign :)
 
-Notably this leaves the only user of hugetlb_vmemmap_optimizable_size
-an inittimepr_info statement. Just thought I would note that here.
+>
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
-Have a great day!
-
-Reviewed-by: Joshua hahn <joshua.hahnjy@gmail.com>
-
-> No functional change intended.
-> 
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
-> ---
->  mm/hugetlb.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index a03a75fd7fa8..885f721999e6 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3416,7 +3416,7 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
->  			folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
->  					&node_states[N_MEMORY], NULL);
->  			if (!folio && !list_empty(&folio_list) &&
-> -			    hugetlb_vmemmap_optimizable_size(h)) {
-> +			    hugetlb_vmemmap_optimizable(h)) {
->  				prep_and_add_allocated_folios(h, &folio_list);
->  				INIT_LIST_HEAD(&folio_list);
->  				folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid,
-> @@ -3485,7 +3485,7 @@ static void __init hugetlb_pages_alloc_boot_node(unsigned long start, unsigned l
->  	for (i = 0; i < num; ++i) {
->  		struct folio *folio;
->  
-> -		if (hugetlb_vmemmap_optimizable_size(h) &&
-> +		if (hugetlb_vmemmap_optimizable(h) &&
->  		    (si_mem_available() == 0) && !list_empty(&folio_list)) {
->  			prep_and_add_allocated_folios(h, &folio_list);
->  			INIT_LIST_HEAD(&folio_list);
-> -- 
-> 2.50.1 (Apple Git-155)
-> 
-> 
+--
+Cheers, Lorenzo
 
