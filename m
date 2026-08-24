@@ -4,138 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD6FC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC9CCC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:57:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAAB36B00A2; Mon, 24 Aug 2026 09:55:29 -0400 (EDT)
+	id ECE4E6B0088; Mon, 24 Aug 2026 09:57:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A83056B00A3; Mon, 24 Aug 2026 09:55:29 -0400 (EDT)
+	id EA5FB6B0095; Mon, 24 Aug 2026 09:57:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998D86B00A4; Mon, 24 Aug 2026 09:55:29 -0400 (EDT)
+	id D94856B0096; Mon, 24 Aug 2026 09:57:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6428C6B00A2
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:55:29 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E6F421A014D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:55:28 +0000 (UTC)
-X-FDA: 85136310336.15.57A03F2
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 171D140005
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:55:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HiygY0rU;
-	spf=pass (imf07.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B81896B0088
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:57:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E77FC0176
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:57:58 +0000 (UTC)
+X-FDA: 85136316636.16.2636213
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 75E0340005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:57:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HDzywXpG;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787579727;
+	s=arc-20220608; t=1787579876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kV9CvWZgKJ3OzoIjmFQaCybgDiXpPYv7ZoBPddJ/7AM=;
-	b=yuzLxfCeUgGdoaZiaORDxSIZWN0YZFog9YfZSp2UhFLr2OUkNB2SzsSHm7eGtbgFPTLzZN
-	tEBmVW242MY5ShCGc4PFB2BcflBsbY60D6FnqyuUP61DtzH4Btn3BE0iF2AOos/nVBrMQG
-	qjFgKQQ8IQ/O9cMLM2z7Cp62JpNyY0w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787579727;
-	b=KPtw+3jj3TSYn/grAJznUwuhhzFaHZTi2v8uD2zlFOsJTPkiWcbJ6N1ceqMdpfbO0ZgOXM
-	kON0DJc0vaRE425RRMt/qMFDFNr4bNJkEIXa0Ryuvbeau3oskqSkQ8EsY6SI62JLj/EkmT
-	8GbOAR73+exfnB48h2ui29Xcut7m/9Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=NNp4UNhd1NOiyGzJQCdsou/sBAaBs1VLWrMHz+JJOrk=;
+	b=bKR7XYeQ5hI+TsegbdjpxmkN9W1+48yGji9GXBKxeVV9uD9EnD3SVennu3EcxVrWoWsf0h
+	5+dAnQWLLTy1E5kU+V3SJMjXfkys/ErhxmANIS7BQ4d0oTPXZ0RhPT34FyGVb+j1sgsuhx
+	4EajHrkDvkEj8vBBgeLb0gyiNDE/qQE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HiygY0rU;
-	spf=pass (imf07.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-836c4474028so40356927b3.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:55:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787579726; x=1788184526; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kV9CvWZgKJ3OzoIjmFQaCybgDiXpPYv7ZoBPddJ/7AM=;
-        b=HiygY0rU00aW9ciON0LG8eahlmmRmtQMA/2AzFwSPTB2Iu3wZtqJZ2XNgSu4Jc71e3
-         bAMUSn1r4TAporoRM4wwYgw49Xn/7MFQVPCvjRyyQ/NCURaOQ375l7u1Y9ApFYoLshyE
-         emF/tQjkEXD++WYLuVAskJF5ScA1QWBlBSt1kDJPQkdx5gmoZcoC513dlp8UqwpQ4Yut
-         G1EWO5xCszZbbpXNCWgLKlTqPYKsyWZqI1OS6EzvjCeX/ThGOFMAlTxhD5JxNTb2fVoQ
-         JQQDPfVmmeK4g2fX37P3LCIsJteu/67tmShFLl9foxNWFv1ZLAT9qUfic0PhePBRU+01
-         tuTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787579726; x=1788184526;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kV9CvWZgKJ3OzoIjmFQaCybgDiXpPYv7ZoBPddJ/7AM=;
-        b=IjeXcBdD5V2yUhtuTwOb/gJurDHoBXPHBDIIVtYm4ihWygY9TWVqZRHS+9scAIox3+
-         7ax7Fl448fW4k/hO7BZo2UQWe4Vo/0k8mXxiTjgFLAEy1V0Cq1WbAOehcJhPheIlTZN+
-         9B7hvJcmA3IYjwy16OPSkCCE7vpfMJr3lptT1rZVRYqqJbnfHL0r44y56EaviyCj9m0w
-         BOjz2lucj5Ld0yLuo4AYYzWalE103tTEBBKAGksjJy8pb8+lIUOz7NQdlHCVuadstEoV
-         xiDse9zVMs3r15GVRWrqEOO2he8Den29Wzo4o4459nNge8vXOjLWwEI4fjMw+tj/gsp3
-         JGIw==
-X-Forwarded-Encrypted: i=1; AHgh+RohEqBTE1VPc3PNuBEXZX5GLKWPF7ada3uRov5ibP+zUe2R6Vd5YQEg/c+wtmhW2Zp9XomExi2KDg==@kvack.org
-X-Gm-Message-State: AFuF++kd9EptJkm6qzVefoVcWXN3Zg+8+GoEXIEQjYQMac3TLk/AZ/Ei
-	D/kIFfS1BzpSBpVwR09sLt6E4ihlczP7+C/+aKCOI/npnWoEw8b0ahzOctaEpF8rJg==
-X-Gm-Gg: AR+sD11t9cFISvwa5NQhyDol6rTXFPy4q1QlrOogWeXZqYvIg/nSAQIiHqlUP1YReLz
-	1cH/SD+xdjC7xPDkAu8Q+YPZGCzn1k3z56N8UPVWEeavr1yybDDCcicZ2YCgQZojJVBqYkql/eX
-	FgDU0+ykK7Eb1NluCt1od2efofQFXvAwlVEEFzc2wqAzDXO//w/XLVeXPGnj/O27uCaPqznODbE
-	+QITn5gCm9wd/lKlF++Oo9KlvHoh0fU7sDqyYiaJXsoUhbgI6wy6nFgn2y8/wSe3GwM5XCBeO+y
-	XeL1pv75BBJhWCrx3nLG3pQ4ZPTNFp3oCY7+gN6u7A54LE7p05elLoydOYZUlTK+9nfpMkk5R5A
-	aI6pf48VtMdcvaTOVwZ/NBsZfvs9RIdVfN3uYTXb9HO8WiN3Fmpsyq1h3QQMhgWduuShlh3QcE+
-	fhm35C3H6ptcnhVR+drQcUbK0VOfsIrqinZX2TFMHck7dQZ3mS0ttPKzfrfZAEeWws/IJ0zBQP/
-	rOLwJCyk1nbxXVPOBjUFrtAB84wcvSBgtxs2d4dWkSj/pR3pjgV54bzYbSZ
-X-Received: by 2002:a05:690c:e3e5:b0:844:7e98:fe01 with SMTP id 00721157ae682-849f18a8409mr92007567b3.5.1787579725434;
-        Mon, 24 Aug 2026 06:55:25 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-853ff053a0esm3017297b3.0.2026.08.24.06.55.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 06:55:23 -0700 (PDT)
-Date: Mon, 24 Aug 2026 06:55:18 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-    Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH 02/25] mm/fbatch: allow folios_put_refs() to skip xa_is_value()
- entries
-In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
-Message-ID: <44c7773e-5806-d24a-83c9-f39b3a134138@google.com>
-References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HDzywXpG;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787579876;
+	b=NiiToElPHk9HZtmIsrg1VY3A2LUVc+0aZr+X5hKWkCtIie4omaqbIMJr9Rjm7dWllPgbR8
+	bdCsK+F5FRqt2ToYcXv+4Da2DzRyZZ1nEK6C4PP9VsftJnV7KpQSW4B+nNFwImkPERE3aB
+	nLIeqV5bUGQjIDlXPe1dtbPMJZZEbjU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 72F626020E;
+	Mon, 24 Aug 2026 13:57:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303ED1F00A3A;
+	Mon, 24 Aug 2026 13:57:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787579875;
+	bh=NNp4UNhd1NOiyGzJQCdsou/sBAaBs1VLWrMHz+JJOrk=;
+	h=Date:From:Subject:To:Cc;
+	b=HDzywXpGTZQHjQMlj83diff96BPieK+4YF/2KDJ1pJr3FLqbBvyHzFN1MCaYSyFHQ
+	 QoyX5Gyl/AgIFeX9SJTDF7m9y/wXQ2/bI4XaiBfWygQ3llMCQmNTSr+q1LaVTTVz+h
+	 hF4Ino48FpBuMTJ01qRmmE8C94B93CLhkzW0yzJYuVvRAOulfV8JIM5BjCHf6HE/Kn
+	 Nmw170dft3tX3tkBbr1nKPFgeBI83LpQqou7Cz4aczCzS9dvjPMX1lV6HNENUt+iIy
+	 GXG0INjbuQT8Pw30Vl5ecorae8+8Gk5MUAxwlFF1pn53hP+qpqfg/MMT56MoAU15Qv
+	 7WzZqHpMpflwg==
+Message-ID: <321f40c8-c694-4cc6-a4cb-df0c9b3d3fcd@kernel.org>
+Date: Mon, 24 Aug 2026 15:57:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [GIT PULL] slab updates for 7.3
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 75E0340005
+X-Stat-Signature: wk1b9s77gi9enhqyj917zhhyyu89rrok
 X-Rspam-User: 
-X-Stat-Signature: 9kh37jmhr8j7m5x4yy94hh8dqskrfjge
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 171D140005
-X-HE-Tag: 1787579726-761348
-X-HE-Meta: U2FsdGVkX18uUQaspmJKBbxRknypRhUwxaFsnxwoPzld9YUGegn3ISU93IusoMnNU6z43Y9Lu8UsUT6K7Bf9ZpdJJN4LJUjDwfC/CM83ZFE5Orfq8wZ+1mUCK3heJUKp9HIW0x3MBjzY21zEa2MFJJz7IPzrdCztRhJYRPMnajYYR8m7GkJBPOm+/eArVXi6GPaf8d6VkVcevCxWtVWTJDl+4t3Yq0Q7M56H1ezD2Kha3/LjW3XKMm9API5pgKoDyX5TJE32NZLpUJxFnmDn5SkMnvMHeW6P24YMBKGfpcywwyo/3RpByZkbipV+rFZzWG/x+86Hw66wKwVhjau1LIw5Jhey0jXxAacSQuzq7lci0xB/CL6D/PLjo8VxNf0lph4/6Ek0HAbaIVa8Reuux0exCkcyE/90gc44bvFdlrckwU9p5SpVLmXZa/WdnWXx1p/klCPvoGXod5zZhge0eYY2fPM36VLrFK8PR2JMj1qbQB/UYJlV6WkJU0VPBhxmJqFsRFKHWQlR/z1QgzN/iFaJATjz6NZJU6VTnJbl7GroPFQ4gGsILJYMN0R8BWYTwbhWKW7uM7At1YdacWlo+E70mD8uqnzZZId9AFuqtO9Cb4MOwGmnSn8/eEnf81bEMOC5/qnRMpPHekRxringIzPnmbHbf6tJq7/NR1xmPPhzwqWDKPcce2nqajd2amTLr05/pAc1SI+ho6q6oiwf9EYmwtJEyfUzR80/lVpfESjfeymK0dcMB+DhuUlnXcB4SitlOCVE9ehIKFzdPE0djKNFoWD+DriMjU2F7C17bGl86GwpnIJOo/BDyNbvqOyIq3/30MGxRtLam330gaRz7JwlT55XIhCXKzaBv5VdfsGLso+sx18StNflf3lLIx+vg2COB/3quFuc5asbnKvVPpGakgVXuOoSGi9iDx+ZSt3Huwwbl9vKDpO+k6OjMqKK4j+LiFkN1nv9Hoe4uPu
- M3cWYZcA
- i7L3aLEYeGlI44UD8hwC+0JxwSZLujVfrnsOoShAeP+7LxSGVR4Sg4sKu27DJzvje4a+bDepC+PrQUJ/ud6dYtbIHXV+dWM0RHPCDQZU2zQA5pcoES5HIZ8JXtOlXhz5JvfNLWMledfPVk9RZEIX4o8Kfg62G39E8c+M0+hnjI3ziIS+MDT3Hkc02j2fDRGgjoP75M8XzuyIhTymD2dWWK+jdnZ00ckd2xycedF9mlmzI4w1dGypm2OtuMX2GPOa4Ena+K6oMAKt+XPfTBXSRPW4h/DRVtI7/Z91F+FwYrfTHCI4EcBlpQOToje/9If5cYGUTQc5GwynSxjrfEazF35Mh4nc7VUh3bfEOFmv8LihCQc7MfCvy4rcHhmMKhKzE4GVGrBBCKB1rRLyvRRxVfgmbA3jKA5PIxLper/4ogyt5RX7OL+iANl9of8thkpL6FL0EbwN+68VT9ak308JiIptUBxpx9bc8TuBb3OJBQYrvheOyCFWTPV9qRV72XFZPyu59
+X-HE-Tag: 1787579876-118079
+X-HE-Meta: U2FsdGVkX19OQlAF+Zn0Q/CYVREbCBNOpGiEaHg3MDjakN/X3669E5RhUME/tedTVjBJV5KxPdUPEJESx6rwSt5YK1iNss2W/teQPFOQEWVOlPWGVMoP2K9F2pXvXTFIxfudhwaq/Tw7o/b8p+tpgoQXTwlb663sLxFvBZEUf9zwXdu6/GHcMZDIOVJAarCI277zFpm8lyzVYFUEGUuJ25du93pWxd2BWI3yzqoHcyUSUE7QzxM9buJeJbfSFIuCKOZQY6O95L2vx0LUDuhslnHYCCP4bCBnepOHJx7uatfOaQC6u7Ue/NzpF58ZKJP5EvApj//+Z+38t1oXVmd7NHQY8ojXNkc63s6qLrRh2R3QPy8AGKhLDaGe8ByDCF6NNLgd90+JORlY1YINrQYgrJ05zei8z4Xemk3MP37NwThbVQxzqVtlh5wGY6AOj40JXiddwQ1bEa3t58ESmOMBvkQkicZkjDdq2l0lEMsZpdDaCD48/SBU+sI/AZ2rN7zUlewgF/1vcKMsXy9h2BeWelimBw3s4SIoktytuCVQH6rWet8WusfgzuolL9EtnA0UAzs2P/N3ccmGM/ur+KI7BAX8z9W/kCZL7CMtIv0DhColx7OgeBEetilIRkQbwImYSXyfeO6k6YCeAU8pA1wbvsGeFHJ5r38YFC3CMcTorGahkSC5d4BroqHdIdfBLDCUHFJ5PlHWYHWOELrN5aEx16Ggi8OJ00GQ/n+Pqnj3gXXeaKR+tuZv+hHouUFv5cI2CqrFZHk/g0+8X0ur5EG/VfMeaO52ewTeEGLfHaFNrlmHYKJxN6/nB8hqRQq89UP8Qm0E/yXIo+FcRNaFxSBrAwu/0Njeq8jx21sRbHOWH91HX4LY6rIEX5Iv6TOKggPjEpTRzabxEfY/rkTIlYQwR9ixRiNb/qLbl6mGGEN6fK32xDusWS5v/rfhiQsSXFvtEEMQ/AzHU/8NNw5ag1b
+ xP3klDce
+ uiy5ID7r5WJGCDTCXbVcBDzOw8TiqrrmWt8YjWpONkjdJ8Z/WYSMychgI56F1ZfNpmxFuMDNDKJWuq/DwX7vu6O0l6Vef2nMGVaI8BVClY6fSGSlnAzKK+OhENa2Mnwe4YFwVvAjdCa43pavqyM52hy2YLeu38MrQ6CXoWA4GMlN0d2vK1043CBlfIhOBjuDSL7TNLuAoqZ0FO/bOWfhi/hJFrnH3pn63CeJ6E3CfPESFlUUpK7YhzkkFF3FNNNKoEz5tLq6Z+JoslAqlC72SsRAsIweKPzSsXxoyJjJ5utqXprwU5dCvYK0Vxss71yGQLEvt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,169 +134,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let folios_put_refs() (hence folio_batch_release()) skip xa_is_value()
-entries, and therefore remove unneeded folio_batch_remove_exceptionals().
+Hi Linus,
 
-It made some sense when introduced in 3.1 for shmem swap entries only,
-but workingset shadows popularized exceptional entries in 3.15, and it's
-silly for so many sites to be squashing exceptionals out of the fbatch,
-merely to suit an inadequacy in folios_put_refs().
+please pull the latest slab updates from:
 
-But remove exceptionals on leaving truncate_folio_batch_exceptionals(),
-one of whose callers then passes the fbatch on to others less tolerant.
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.3
 
-No longer essential to this series, since 7.2 commit 9669b87065a6
-("mm/lruvec: preemptively free dead folios during lru_add drain")
-allowed folios_put_refs() to skip NULLs; but still an improvement.
+There's a semantic conflict with changes in char-misc that will break Rust
+build due to a change of kvfree_call_rcu() parameter type. In linux-next this
+was solved by this fixup applied as part of the merge commit of whichever of the
+trees is merged later:
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
- include/linux/folio_batch.h |  5 +----
- mm/folio.c                  | 25 ++++---------------------
- mm/shmem.c                  |  2 --
- mm/truncate.c               | 16 ++++++++++------
- 4 files changed, 15 insertions(+), 33 deletions(-)
+https://lore.kernel.org/all/20260805-slab-rust-fix-v1-1-c4d4c1b69de2@kernel.org/
 
-diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
-index b45946adc50b..e1cc8ae023f1 100644
---- a/include/linux/folio_batch.h
-+++ b/include/linux/folio_batch.h
-@@ -22,8 +22,7 @@ struct folio;
-  * The folio_batch is used to amortise the cost of retrieving and
-  * operating on a set of folios.  The order of folios in the batch may be
-  * significant (eg delete_from_page_cache_batch()).  Some users of the
-- * folio_batch store "exceptional" entries in it which can be removed
-- * by calling folio_batch_remove_exceptionals().
-+ * folio_batch store "exceptional" (xa_is_value) entries in it too.
-  */
- struct folio_batch {
- 	unsigned char nr;
-@@ -100,6 +99,4 @@ static inline void folio_batch_release(struct folio_batch *fbatch)
- 	if (folio_batch_count(fbatch))
- 		__folio_batch_release(fbatch);
- }
--
--void folio_batch_remove_exceptionals(struct folio_batch *fbatch);
- #endif /* _LINUX_FOLIO_BATCH_H */
-diff --git a/mm/folio.c b/mm/folio.c
-index 62b96c9ce19e..b2bce6b77498 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -983,6 +983,10 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
- 		if (!folio)
- 			continue;
- 
-+		/* Skip any "exceptional" (workingset or shmem swap) entry. */
-+		if (xa_is_value(folio))
-+			continue;
-+
- 		if (is_huge_zero_folio(folio))
- 			continue;
- 
-@@ -1088,27 +1092,6 @@ void __folio_batch_release(struct folio_batch *fbatch)
- }
- EXPORT_SYMBOL(__folio_batch_release);
- 
--/**
-- * folio_batch_remove_exceptionals() - Prune non-folios from a batch.
-- * @fbatch: The batch to prune
-- *
-- * find_get_entries() fills a batch with both folios and shadow/swap/DAX
-- * entries.  This function prunes all the non-folio entries from @fbatch
-- * without leaving holes, so that it can be passed on to folio-only batch
-- * operations.
-- */
--void folio_batch_remove_exceptionals(struct folio_batch *fbatch)
--{
--	unsigned int i, j;
--
--	for (i = 0, j = 0; i < folio_batch_count(fbatch); i++) {
--		struct folio *folio = fbatch->folios[i];
--		if (!xa_is_value(folio))
--			fbatch->folios[j++] = folio;
--	}
--	fbatch->nr = j;
--}
--
- #ifdef CONFIG_MEMCG
- static void lruvec_reparent_lru(struct lruvec *child_lruvec,
- 				struct lruvec *parent_lruvec,
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 89a1495e55f7..3911721e1e55 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1156,7 +1156,6 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 				truncate_inode_folio(mapping, folio);
- 			folio_unlock(folio);
- 		}
--		folio_batch_remove_exceptionals(&fbatch);
- 		folio_batch_release(&fbatch);
- 		cond_resched();
- 	}
-@@ -1276,7 +1275,6 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
- 			}
- 			folio_unlock(folio);
- 		}
--		folio_batch_remove_exceptionals(&fbatch);
- 		folio_batch_release(&fbatch);
- 	}
- 
-diff --git a/mm/truncate.c b/mm/truncate.c
-index b58ba940be47..4151f7a167e3 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -53,7 +53,7 @@ static void clear_shadow_entries(struct address_space *mapping,
- /*
-  * Unconditionally remove exceptional entries. Usually called from truncate
-  * path. Note that the folio_batch may be altered by this function by removing
-- * exceptional entries similar to what folio_batch_remove_exceptionals() does.
-+ * exceptional entries.
-  * Please note that indices[] has entries in ascending order as guaranteed by
-  * either find_get_entries() or find_lock_entries().
-  */
-@@ -95,7 +95,7 @@ static void truncate_folio_batch_exceptionals(struct address_space *mapping,
- 				dax_delete_mapping_entry(mapping, indices[i]);
- 			}
- 		}
--		goto out;
-+		goto squash;
- 	}
- 
- 	xas_set(&xas, indices[j]);
-@@ -113,8 +113,14 @@ static void truncate_folio_batch_exceptionals(struct address_space *mapping,
- 	if (mapping_shrinkable(mapping))
- 		inode_lru_list_add(mapping->host);
- 	spin_unlock(&mapping->host->i_lock);
--out:
--	folio_batch_remove_exceptionals(fbatch);
-+
-+squash:
-+	for (i = j + 1; i < nr; i++) {
-+		folio = fbatch->folios[i];
-+		if (!xa_is_value(folio))
-+			fbatch->folios[j++] = folio;
-+	}
-+	fbatch->nr = j;
- }
- 
- /**
-@@ -575,7 +581,6 @@ unsigned long mapping_try_invalidate(struct address_space *mapping,
- 		if (xa_has_values)
- 			clear_shadow_entries(mapping, indices[0], indices[nr-1]);
- 
--		folio_batch_remove_exceptionals(&fbatch);
- 		folio_batch_release(&fbatch);
- 		cond_resched();
- 	}
-@@ -732,7 +737,6 @@ int invalidate_inode_pages2_range(struct address_space *mapping,
- 		if (xa_has_values)
- 			clear_shadow_entries(mapping, indices[0], indices[nr-1]);
- 
--		folio_batch_remove_exceptionals(&fbatch);
- 		folio_batch_release(&fbatch);
- 		cond_resched();
- 	}
--- 
-2.51.0
+Thanks,
+Vlastimil
+
+======================================
+
+- Addition of kfree_rcu_nolock() that can be used from contexts where spinning
+  on a lock might be unsafe, such as a BPF program attached to an arbitrary
+  function, or in NMI context. This complements the existing kfree_nolock()
+  support. (Harry Yoo)
+
+- Runtime instead of compile-time slabobj_ext sizing. Avoids wasting memory
+  when memory allocation profiling is compiled but not enabled, with initial
+  partial support to also avoid wasting memory for objcg pointers when those
+  are not needed, while profiling is enabled. (Vlastimil Babka)
+
+- Various non-urgent fixes, cleanups and optimizations. (Hao Li, Hongling Zeng,
+  Li RongQing, Li Xiasong, Seongjun Hong, Shengming Hu)
+
+----------------------------------------------------------------
+The following changes since commit 5ff172f6c94d282d83cb88bdfec5f647ad9c6105:
+
+  slab: silence sparse warning with type-based partitioning (2026-07-21 11:28:21 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.3
+
+for you to fetch changes up to 564ed40708ebc60a78f280944799cbe8e3401816:
+
+  Merge branch 'slab/for-7.3/kfree_rcu_nolock' into slab/for-next (2026-08-24 15:01:27 +0200)
+
+----------------------------------------------------------------
+slab changes for 7.3
+
+----------------------------------------------------------------
+Hao Li (1):
+      mm/slub: deduplicate NUMA policy calculation in allocation paths
+
+Harry Yoo (Oracle) (8):
+      mm/slab, slub_kunit: register kprobe to trigger _nolock APIs
+      mm/slab: handle the !allow_spin case in kfree_rcu_sheaf()
+      mm/slab: use call_rcu() in unknown context if irqs are enabled
+      mm/slab: extend deferred free mechanism to handle rcu sheaves
+      mm/slab: allow kfree_rcu_sheaf() on PREEMPT_RT
+      mm/slab: introduce struct kvfree_rcu_head for kvfree_rcu batching
+      mm/slab: introduce kfree_rcu_nolock()
+      slub_kunit: extend the test for kfree_rcu_nolock()
+
+Hongling Zeng (1):
+      mm/slub: add comment explaining intentional kobject handling in sysfs_slab_add
+
+Li RongQing (1):
+      mm/mempool: Untangle CONFIG_SLUB_DEBUG_ON abuse and switch to static key
+
+Li Xiasong (1):
+      mm/slub: fix missing debugfs entries for caches created before sysfs init
+
+Seongjun Hong (2):
+      slab: remove unused SL_CPU slab_stat_type
+      docs: ABI: sysfs-kernel-slab: mark cpu_partial attributes deprecated
+
+Shengming Hu (1):
+      mm/slub: prevent pfmemalloc objects from entering the barn
+
+Vlastimil Babka (SUSE) (18):
+      mm/slab: extract __free_to_pcs_batch() from free_to_pcs_bulk()
+      mm/slab: simplify freeing remote objects in free_to_pcs_bulk()
+      mm/slab: skip kfence objects in allocation profiling
+      mm/slab: remove objs_per_slab()
+      mm: move struct slabobj_ext to mm/slab.h
+      mm/slab: make slab_obj_ext() determine object index
+      mm/slab: abstract slabobj_ext.objcg access
+      mm/slab: abstract slabobj_ext.ref access
+      mm/slab: replace slab.stride with obj_exts_in_object
+      mm/slab: change struct slabobj_ext to a union
+      mm/slab: introduce slab_obj_ext_has_codetag()
+      mm/slab: reduce slabobj_ext memory with allocation profiling disabled
+      mm/slab: stop exporting kvfree_rcu_barrier[_on_cache]()
+      mm/slab: add cache_ and slab_needs_objcg() helpers
+      mm/slab: stop allocating objcg pointers when unnecessary
+      mm/slab, kfence, memcg: completely remove obj_ext for kfence objects
+      Merge branch 'slab/for-7.3/objext_split' into slab/for-next
+      Merge branch 'slab/for-7.3/kfree_rcu_nolock' into slab/for-next
+
+ Documentation/ABI/testing/sysfs-kernel-slab     |  18 +-
+ Documentation/admin-guide/kernel-parameters.txt |   5 +
+ Documentation/mm/allocation-profiling.rst       |   7 +
+ include/linux/memcontrol.h                      |  13 -
+ include/linux/rcupdate.h                        |  32 +-
+ include/linux/slab.h                            |  19 +-
+ include/linux/types.h                           |  10 +
+ include/trace/events/rcu.h                      |   2 +-
+ lib/tests/slub_kunit.c                          | 190 +++++--
+ mm/kfence/core.c                                |  12 -
+ mm/kfence/kfence.h                              |   3 -
+ mm/kfence/kfence_test.c                         |   2 +-
+ mm/memcontrol.c                                 |  37 +-
+ mm/mempool.c                                    |  35 +-
+ mm/slab.h                                       | 245 +++++++--
+ mm/slab_common.c                                | 111 +++-
+ mm/slub.c                                       | 660 ++++++++++++++----------
+ 17 files changed, 940 insertions(+), 461 deletions(-)
 
 
