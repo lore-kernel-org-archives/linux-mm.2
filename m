@@ -4,101 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C547C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 877ECC5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:03:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36A116B009D; Mon, 24 Aug 2026 11:03:40 -0400 (EDT)
+	id 910176B00A1; Mon, 24 Aug 2026 11:03:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3412E6B00A0; Mon, 24 Aug 2026 11:03:40 -0400 (EDT)
+	id 8E7C76B00A2; Mon, 24 Aug 2026 11:03:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27EB26B00A1; Mon, 24 Aug 2026 11:03:40 -0400 (EDT)
+	id 7AE2E6B00A4; Mon, 24 Aug 2026 11:03:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1436B009D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:03:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E3B98018D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:03:39 +0000 (UTC)
-X-FDA: 85136482158.25.5DA1AAE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 68170180012
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:03:37 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KI0vHaFK;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 57D3E6B00A1
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:03:47 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC636140173
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:03:46 +0000 (UTC)
+X-FDA: 85136482452.30.3003319
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B08EA20009
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:03:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DoXWHiTU;
+	spf=pass (imf31.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787583817;
+	s=arc-20220608; t=1787583825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1N4Dgg6M9ZUavS0An6jb6rtj/L03r3LLP7KAMFYdsrQ=;
-	b=pph0k/5Ide/YqD2O/Kq02WJ6NFva58hRyeY6ysXm03k8+P5I6bctOJNTs15KPPGtrXnslQ
-	DqtF3DR6Kw4+COq6i6Ed8qnonjshSHsd0ldExTQ8FEMLzCPH+e7KFLdlJEz5N4/XSKj01n
-	yVV751hRIz9fgXeWrZ6wNJ05ehizoaQ=
+	bh=aZ3erjJduSWntjWxjPCCJpediljarFwjV+7IHAqxu6o=;
+	b=FKV1dzxUFj4hGH2QwuEHRN3chI1W+aF7k8IJup7PLQMbYw9ST/yB4yr6JimquCUwFajLou
+	aLQVBIeh7X4ixoERtgeZURiUNZhpqRihSQyZFC0Yhxhlfu/LVaSMK0uIMFM9vSH5Dy2cy3
+	aAnBJxLRs2rPCDfH0cwFz2xJjhN61OE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KI0vHaFK;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DoXWHiTU;
+	spf=pass (imf31.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787583817;
-	b=UonFSod9+Y3JO56DD42LoIMHzMPRccgV3ZQ0sdj8svazJyjIau+wQ7g/hpQR244ODEg40E
-	jyPMhA7p6cO8m5Sh0On+5RDjEun0eOSB7DIgTbbWy/AfnoSDujI7/C9AotTISburWI4v6D
-	TeF7Mo6jZAugsXoTH5D/B8cR07MfpLo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8816640446;
+	t=1787583825;
+	b=4B33/CNp6dX1Dc6jWozMtB2pXeK5vxD4yUZwoxu5oPOMWChaFXNtkIfEaH2GVkQs3oTYsv
+	pnyGWW3lJl4vLfLB3bPm+8je5MMff1sXsl3t+81UDLzHqxxoPWPyIXGmVyWt6+8JHGuUcc
+	gnS/we0QXYAy/rV2a/mUom2QU6KDAPo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787583824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aZ3erjJduSWntjWxjPCCJpediljarFwjV+7IHAqxu6o=;
+	b=DoXWHiTUWI9RArWLzJNxvceZ/qttsOqQxUe9t9S6Ovxo/JoAnhh1Nr7d6K1hVwBWXgRKj+
+	gNrPwb0Uloc00hYqfDmd3pt8R2ftyTJrL3wfoNRnNky2gn9+p+dk3deByCH4qgb9mUQhAu
+	j90RJUHnR8ZIqJL721nSX3MlMcsgDvg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-2cWygwANNtm8DIgIiEXztA-1; Mon,
+ 24 Aug 2026 11:03:38 -0400
+X-MC-Unique: 2cWygwANNtm8DIgIiEXztA-1
+X-Mimecast-MFC-AGG-ID: 2cWygwANNtm8DIgIiEXztA_1787583816
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9B3BD1944F01;
 	Mon, 24 Aug 2026 15:03:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33F81F000E9;
-	Mon, 24 Aug 2026 15:03:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787583816;
-	bh=1N4Dgg6M9ZUavS0An6jb6rtj/L03r3LLP7KAMFYdsrQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KI0vHaFKs2iuJuLBxJTIK9hzpbfb70XWVZdAMV9ZNmSB1s5dX3EODo6iK2rwMvff3
-	 o1zo4uNkOUy09uxeY227ljEze1a3rJTOdghr5kYtStFuCASrN68C5wXq15sm38+bAT
-	 Ws7tjHRZmtjHfxUXLJR7Yuwo/17LwBS6i/9QuCr3b4J8f6QnJnCtXixlT8ArO6Iz1s
-	 Om22oh+E7kYUjI76NqdsR4QjPcwMNRS1j/ASCgkr8ipXbaMycJ7ls7Hc1vaozvBhem
-	 V9GLPj4tNytQrv1bFOrJFpWnbWNOhms6MCk2QEG6JzFO7PgXOtlsfOddDdj7QhxkAg
-	 YQKYaFLUEoNJg==
-Date: Mon, 24 Aug 2026 16:03:28 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
-	Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
-	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/6] userfaultfd: constify VMA parameter of
- userfaultfd_*() helpers
-Message-ID: <aoxcY5n99-Pzlw_b@gremlin>
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-2-3086981b33cf@kernel.org>
+Received: from fedora (unknown [10.44.32.9])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 4B0C630002ED;
+	Mon, 24 Aug 2026 15:03:31 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon, 24 Aug 2026 17:03:36 +0200 (CEST)
+Date: Mon, 24 Aug 2026 17:03:30 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Steve French <sfrench@samba.org>, linux-fsdevel@vger.kernel.org,
+	bpf@vger.kernel.org, linux-cifs@vger.kernel.org, linux-mm@kvack.org,
+	stable@vger.kernel.org, Paulo Alcantara <pc@manguebit.org>
+Subject: Re: [PATCH v2 0/5] Stop TIF_NOTIFY_SIGNAL from interrupting work
+ that can't be restarted
+Message-ID: <aoxdQmFMK7pjH9qk@redhat.com>
+References: <20260824-work-tif_notify_signal-v2-0-6609e42b3157@kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20260824-work-tif_notify_signal-v2-0-6609e42b3157@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: oBSvJMV9T9mSaiyNYWK2x0RLAmr6QLAJteXxATwYmCg_1787583816
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260823-uffd-vm-flags-v1-v1-2-3086981b33cf@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 68170180012
-X-Stat-Signature: us1xrbdc7so9bthdstfxo8ya4u9hgq9f
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B08EA20009
+X-Stat-Signature: jfc4ydp6c13bsh9akiw8r76zdzyxtmqg
 X-Rspam-User: 
-X-HE-Tag: 1787583817-185567
-X-HE-Meta: U2FsdGVkX188gEmegmYPlUtpu+qwfHQGRZf56N01e0Nh0CuiOZTzGUudGrVxfitqIoTyyN1OlOM/Q/4pUcw9qn9r/t7uX9rqs1+U04xoQlPV76ey8z2ceVteclr/x4MrisnFNn66ZHFkrLCW11/UyUgopKzEppGKPqI3Vav4ZhyId14ySQvSGf3AI2cfqXdsNOhPb4QPV8xLCwAKyvwNTr2dvSzq3jwgUJ3g9soKopkmtx0hED+cZwd2oEH+Vw6FS4ZDKYCvlT8W9aDL0iJSzUhHQDu/8D1NGpi+PQ7IxhltLtX+AwaCIZYgeXgMrX7hEjWvumJftGom+dO2zNaFVIHdZxXFkataJCR2BJJy/cqmDCtpQdSM2RMCjDqp3Q0T94vXo9dv96Os/qCrSn3mVlcM0LCAKCBs4VwGk646CaF7/Txzx8MH/pLRCnAvrPmSSzZvOoeDui87i/P1M6YjnTyD+mlWOn3fqiZmn5umzYAvaOY8RYfUweqmwB2c7fmjZwf9STUiS9aKNG4nXfS6EEZBGfv2vFON9aGlpgvpXWFrBSibY3KQWlBxVe9MPEs/blqTNm3Yl1ju7Rz5hqb605HzZoIX3YMu0YlRu6TyDJ40nX53C3vDRvMNdGPEta7XH343T/kuxEVKcjGKw1KGKxHoCpCa/A74nvMyb6mxosxv0pmw4Avbm7q0UqyNYniq1hH72mK1YT8FPyXjU8UTafwa4zLYovthsseFyeZFgFyeDAZgHDb8iqTuXjsrNU/9LHkc8r7DhjJkeBWntEyGQNiykLkvZbnZuCIaW6OY1Fy7mxMMuk4rI078nhjj0og59R+C2Dc/yNpoimmlkil36WuH1Bft+CI/lQsI0r0OL+MhFPYkFX+gg26syXw1nM/60B8cUB+71K4w+DeRTabztbx9+HG5xPfFcjYStGS8mwWUkpDds6lc0+06u+Ci0XN9JsRkRfF2HsuJZs6m8iU
- MvrVqosG
- uv3rURZIoWUqfGIO7AK4aLJgLO77uEWouGK3XhcS/NxES9IXM95UqtKV/iGRJzJB2Yshc/X2a8RZRmmLaWoBIMJAXNuDLNlFUu/M3R97FciDBq/XYmaL4T4Ep1YhF9eTx8HH6aRJWxd5XhinKZGZTmnaipSRdIUDWLX77G4IMma1O3n1Rk9921amLMLr39B7kDOb3n7c4eLUDi7EhGfcUrO0UF0Lo3+qDBGbs5HXQKEu4jhX/JT0feaMaeHZlsomAn/exP2GDhnugK8+T+URA1JsLs+bsFARmd9Ez48Jx90uSrboarpxG7muX7IPNUlmwBbkGB2uKd+b47pk=
+X-HE-Tag: 1787583824-170408
+X-HE-Meta: U2FsdGVkX180+HuD7JRK0QpxTU9wu5GCr2VBo8OXfPGluDB7kOFhsRzxW5ijfyq5tTW2psMkuGuPgCxt34Jwps1Xt6h2MRY2EQ2QzwDSnrg2uOrCnshftC3ppgQcYjAN1KfZE73oOE4JSjhBfmDLWUmgY5E5Vj5nzmzrxmlqaRWlnGD2aMFCZN82d+F2u+K6A2Cw/vo1V7CzsZRSgNWzlpKbzZcOVMiFq26MZDeCtq9vvc4gjgGnwQZrVq4wJ/zonylLOnoDoGZ+t4GAxPSm/VStlIyxqiaKFVbDjd2uf75oNq7zJUPNXQquX4pJMYdROB+UounKlk6y3IG7bwyl/Wk84tSEduNRfmVWAADcYP1qX6DbErYf51wI/E5hCv7Y8xgDa79W+XUT32FVNl5UjBKWf8ftn4aWdC0r/XgmNFIiSXvoMTZ6d+I9WPFk7c4IJPi9y78oT/3VMMRGhIHVLyJfCgZl8ObJ9b80yY9j6ovCS6iIHA+4Gs8911VopQoFveNKwy9wGwaO0quZ46w0PPn2NcWBZxp1p/43JYsrkyEfH3Qs/K4zo3o0d/uv08iZoynsSirOGomw0fgOGRWOw747SqzvLb4XMNV02Nj74ayCcRG9gmPkbfdfcIToQ5/2qfFrG613Xizhgrb8SzKyVThABiavh1QPu/nmzphQTZ1NhODi26KACmyQNGq92zAXSEL0wTRWDqYbHYrhU/kGNdWCRjP9JGlbfO4z++dqcKHXiTnQFgw8qi5KwBL2cQkfbskdXMQGc7pbvVM8bfvW39IHfdlHiYj4b3WD7rgK5S2I2p0TK++T+B8hDjUrUKvqZuWdhXMC3HRQed8TxWvMVbJ+8tJpUxK1p8b7BzQtgbOBupDnUOdhuLcRfwsWN7eoq/GgH+93VdUGlql+Abw6MkUqYeLCzkJNxrRbpI5TsGllGbvEobGs6AJ83MzlYtvgTKimCN+DM1TtDJ3tpfa
+ EbXBDfe1
+ 9vIx7oQTQzSS8EEOGHc0O2i/dH8sxujwoklvOI8RCVOpQCBobuKWsbPk4pKLC3oQPUeuxCZkRHcjtBriHmAN5p0OPLG+02sZ77X20NpDNYoc19nbI6O3ases77eskMBVOPLiBoKUju7Mtrpkagov2WDNtpmksiebL7FOzRpbxih3/uwIMkvmdeoRbZtOFb0HvOFz2XConJmJ9l7c+0Tga3+sNoN//FNCDqbPsPX70KeJEatSc8yWPG5qq59DLmH/M1O+yh9/XO4aGFa6JrzyYTo3JjTWU7lLj9m69Xspd7vAqUX0Y/MiEap0lB1M9MPxD/A8PrO+Ti9/p2pNvUh9gs1Un+0g6RNZJaNlsLv3AAGDx6babhBCWXDp4c7T8aqpt6RqtAD9lscZoXcIgjkptlAi5C9vKWe5JzeZdSZrzB/a8bGg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,103 +109,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 23, 2026 at 03:17:39PM +0300, Mike Rapoport (Microsoft) wrote:
-> userfaultfd_{missing,wp,minor,rwp}() and userfaultfd_protected() only
-> read the VMA.
+On 08/24, Christian Brauner wrote:
 >
-> Make their vma parameter const.
->
-> No functional change.
->
-> Assisted-by: copilot:claude-opus-5
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Christian Brauner (5):
+>       signal: allow taks to temporarily block TIF_NOTIFY_SIGNAL
+>       coredump: prevent TIF_NOTIFY_SIGNAL from interrupting coredumps
+>       selftests/coredump: test that TIF_NOTIFY_SIGNAL doesn't truncate a coredump
+>       smb: prevent TIF_NOTIFY_SIGNAL from interrupting
+>       pid_namespace: prevent TIF_NOTIFY_SIGNAL from interrupting the reaper
 
-LGTM and compiles GTM so:
+For 1-2 and 4-5 feel free to add
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 
-> ---
->  include/linux/userfaultfd_k.h | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
->
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index a4351cffc60c..3396d270b159 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -204,22 +204,22 @@ static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
->  					VMA_UFFD_MINOR));
->  }
->
-> -static inline bool userfaultfd_missing(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
->  {
->  	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
->  }
->
-> -static inline bool userfaultfd_wp(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_wp(const struct vm_area_struct *vma)
->  {
->  	return vma_test_any_mask(vma, VMA_UFFD_WP);
->  }
->
-> -static inline bool userfaultfd_minor(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_minor(const struct vm_area_struct *vma)
->  {
->  	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
->  }
->
-> -static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
->  {
->  	/*
->  	 * Callers gate PAGE_NONE usage on this; PAGE_NONE is a BUILD_BUG()
-> @@ -230,7 +230,7 @@ static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
->  	return vma_test_single_mask(vma, VMA_UFFD_RWP);
->  }
->
-> -static inline bool userfaultfd_protected(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_protected(const struct vm_area_struct *vma)
->  {
->  	return userfaultfd_wp(vma) || userfaultfd_rwp(vma);
->  }
-> @@ -353,27 +353,27 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->  	return true;
->  }
->
-> -static inline bool userfaultfd_missing(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
->  {
->  	return false;
->  }
->
-> -static inline bool userfaultfd_wp(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_wp(const struct vm_area_struct *vma)
->  {
->  	return false;
->  }
->
-> -static inline bool userfaultfd_minor(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_minor(const struct vm_area_struct *vma)
->  {
->  	return false;
->  }
->
-> -static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
->  {
->  	return false;
->  }
->
-> -static inline bool userfaultfd_protected(struct vm_area_struct *vma)
-> +static inline bool userfaultfd_protected(const struct vm_area_struct *vma)
->  {
->  	return false;
->  }
->
-> --
-> 2.53.0
->
+-------------------------------------------------------------------------------
+sigprocmask(SIG_BLOCK) in fs/smb/client/transport.c:__smb_send_rqst() looks
+a bit suspicious. Even if we forget about TIF_NOTIFY_SIGNAL, sigprocmask()
+doesn't necessarily clear TIF_SIGPENDING, nor it can protect from (say)
+do_signal_stop()->signal_wake_up() from a sub-thread. But this is offtopic.
 
---
-Cheers, Lorenzo
+Oleg.
+
 
