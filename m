@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28709C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 06:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54623C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 06:37:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CD1F6B008C; Mon, 24 Aug 2026 02:34:24 -0400 (EDT)
+	id 0C5326B0099; Mon, 24 Aug 2026 02:37:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17EA96B0092; Mon, 24 Aug 2026 02:34:24 -0400 (EDT)
+	id 072476B009F; Mon, 24 Aug 2026 02:37:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 093CC6B0095; Mon, 24 Aug 2026 02:34:24 -0400 (EDT)
+	id ECAC66B009D; Mon, 24 Aug 2026 02:37:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DB8F26B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 02:34:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E7101A0448
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:34:23 +0000 (UTC)
-X-FDA: 85135198806.19.07720B1
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1E53CA0003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:34:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="LZ0/DHz7";
-	spf=pass (imf15.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=longwei27@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787553261;
-	b=fS2GerzdX4gNsANXk+yxXGwJL6RiuzLgxQlUAAYxvs6DFmjOOWcth8tQ2lvfRfT32BzrFO
-	kTDIn23pju3j09p/Uq6aWe3QQbIRIylfIfHLcAkwmev6A9xeBMWmBGVC5x12gjr3Cl3IwK
-	j4+r1LTYp51jcTEmWDwQncXIGsVote0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="LZ0/DHz7";
-	spf=pass (imf15.hostedemail.com: domain of longwei27@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=longwei27@huawei.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C3B1E6B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 02:37:25 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F914C040F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:37:25 +0000 (UTC)
+X-FDA: 85135206450.06.2FAD514
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 439BA1A0005
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:37:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=YAoNliWy;
+	spf=pass (imf19.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787553261;
+	s=arc-20220608; t=1787553443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=02mzIcyNFWU0Hsiw7mRli2vS+eyyUPUCGoO00qWXUWo=;
-	b=pHstw34HqRY1AwxWyX7oQn343MJXbzfJjTA3r6/HZBqt7gEFTmBM+jSf31e/qe7kPYvzh0
-	8lrIjzywQyZyvqKZupuECWGyFKR7LT+pwdMCrvbaL4y4FktN8i55Rm2E/JWGV/Vj4BNqhd
-	hkd7qKo+sLJz2rYuv/AC823jkSMSbLY=
+	bh=Q0WP5JdN/AIOBXWgf2qmOXq0QvCni7ganoj4mKN1n6I=;
+	b=a1tDU9j9vXE9Fbxm352782k+jGnywXr8t5CbqY+FlEu3o5dchXMo3HS1yhq+YG3PFbaWLj
+	inOKgtMji6gwYz1lgCiCwYQEubpz6c+ckj/YRi2JYhAK8/rcNt+QCgo8lDiKIXFg0pTQcr
+	tE3YH9UJO8fCYawk5wqfI1w/GDbt9zM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787553443;
+	b=DuHdDTedUCdIJlQixQg2jkvXxnohe1MCPax1idLHxxnKu2qEOtL0TbLMzYkbfr+KI6LCZI
+	pJ12d3qhaPsFLU16meWw9jH6zVFvgO/6P/ktMJdr5z3j5W6JyZvnChSNbVJ8CaqBT2hoM8
+	Ddxeb3iaDstLl2UWyB6H3b0cZPNVXNw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=YAoNliWy;
+	spf=pass (imf19.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=02mzIcyNFWU0Hsiw7mRli2vS+eyyUPUCGoO00qWXUWo=;
-	b=LZ0/DHz7xa2j9yzxzP1e3NfauLKAuLx2idpzSrpgnag56gGrgINKWhZ5xmCv+x5EgwYQbEbcn
-	OPHb3y05XB3hOr05ODst+wZM3wMO4PNeQ65AS9uXZa0Ga1PbZKsoKLaiOlSMqN6vqfTMHwHJ+dB
-	5R6rc11v2EFhJLIcNt7Os8A=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hT17j3SsfzmVXX;
-	Mon, 24 Aug 2026 14:23:29 +0800 (CST)
-Received: from kwepemo200009.china.huawei.com (unknown [7.202.195.26])
-	by mail.maildlp.com (Postfix) with ESMTPS id E9D1C402AB;
-	Mon, 24 Aug 2026 14:34:13 +0800 (CST)
-Received: from [10.174.186.187] (10.174.186.187) by
- kwepemo200009.china.huawei.com (7.202.195.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 14:34:13 +0800
-Message-ID: <e1c2d008-9490-4b68-924f-dcc45a84f369@huawei.com>
-Date: Mon, 24 Aug 2026 14:34:12 +0800
+	bh=Q0WP5JdN/AIOBXWgf2qmOXq0QvCni7ganoj4mKN1n6I=;
+	b=YAoNliWyelz+I/5Dr28odx6ViEOy7u5pUiMvI06de7lcxVV6oOrV0NhvYlT4dzmwRe1qMJ4/B
+	qMugIzjQzMSZRzr2luYhY5OU/xUmtmvmWWrzJJOElES7rESHZMmW2WE2uUoZcN9+ytJMkM9a6pL
+	cpml4UW/fn7R9dkZgCt28h0=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hT1CF0bFYz1cyPY;
+	Mon, 24 Aug 2026 14:26:33 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id B45224055B;
+	Mon, 24 Aug 2026 14:37:16 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 24 Aug
+ 2026 14:37:16 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<shr@devkernel.io>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH v3 1/2] docs: ksm: fix typos in sysfs knob names
+Date: Mon, 24 Aug 2026 14:10:09 +0800
+Message-ID: <20260824061010.3343959-2-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260824061010.3343959-1-tujinjiang@huawei.com>
+References: <20260824061010.3343959-1-tujinjiang@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] kho: Convert error handling to immediate return
- pattern
-To: Matthew Wilcox <willy@infradead.org>
-CC: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, Pasha
- Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>,
-	<kexec@lists.infradead.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <hewenliang4@huawei.com>
-References: <00c96a62-f783-497c-a7ac-1de495e4af06@huawei.com>
- <20260824024448.550552-1-longwei27@huawei.com>
- <aouyWs39qxGI7CP0@casper.infradead.org>
-From: "longwei (I)" <longwei27@huawei.com>
-In-Reply-To: <aouyWs39qxGI7CP0@casper.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.174.186.187]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo200009.china.huawei.com (7.202.195.26)
-X-Rspamd-Queue-Id: 1E53CA0003
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
 X-Rspam-User: 
-X-Stat-Signature: jn3ehnmcuns58w3zqk9xc6cszajysd3i
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787553259-796659
-X-HE-Meta: U2FsdGVkX18Q/r2YmE2xV9NnXLDDw254GEgmGvwTGGRmrjLNNunUfQaUvAsQscgf7MU4XE1WlN57GZ8jUjyuqs6j5aqTZbpwjluC1JSEwDqvrsSmuufAOASAP5wj9vp097rY7ZEmcyY1yWQoTq+ln3X7pGx7Y0xzRkQNA0iwDtyZc7OOgUI0Ge/WNQ7sY1bnPeUbuS7Ux06DqfDpf6ulC569oC+WFpU0QTiNZ47JmIQZUEvOvoMuxmFl7hyWD5mRIuftMsh23mkP2517MbCteume3+yLx7PtKZlPnVuNyy20p9Q1TqslrgY1inL3dj71gKqlsFNrg0HKHXaA+fXGUrpTstwEZG+rVNOOxJykmkBCvR0vuqsSShnnohH2mjA39+vCy9MfIiHFzaI0G3KsgEv5lOYKqyaWAohlhKmw+Nan2krTAU1OINtOom0pCcNT9/k+TnwjA4j0rCStJzqtsttK1ASz9SytZpADYqKkDBPZLohFDhvIowP/bRkLMEZU3261fYS/PWdYmly0o/a3DkkaCpZwrESzWowW/bE0snVpoXJYtZ72RArLHd2Gc8iKxNjhxRR4R3TIGiMeCJur4Y7Gs0vsflyGY1aWGkvmiWnnQhyXnZy48oKXRchXTEgb6YilVM0/DZuwgQ2V9kCmvcaMHiuM4UCbyN/4OMHpDjVIWPcDp6b7w3kBuH7JoO64wBdIxtCckmgbUH/POXhm64OGfljcIVx0DztkUJEjPrN87TAIXtK0KB6YKE/CUP9ZPHNzx0UFiy2HyvhjGCApi9+B/R2sFFABnuYcOHPEGtANoewKrEzDtbLRuZgjjD3bRHIyFRkc9iWrKSRaX8kXqqYuDbapk4klh2QywBCp4crzFZw2b3SPrngDhTOypYLCPghwPvqwuX8a2vjZ8NIILPestC6kL48yLDJbJ9/BLVAHvXAqOx029NpMM8IXuQ+OdSqSzCcAd1lGTpSl/5P
- RK0RPEpV
- AhecvS/oUijGjtgWfxI+4z/5afOI4WUdlp0OQ3MHqxjI798Z+EXB5wEQZaa9WRimd0IIwj6VT6bZbScMvPfleT5ht4b58855PnkqisKSNvHJqZH0cCTht5wdWlMe2/fvuyDH+nrzoLtSKVevVxAh3iJzf5jcYRZptfCzfKVodDMjK+C8sFAcuCnOPjerZFDuaIpJSNCbcDMQscf26u0Dnr2DZd+Pk6zNh8QS1ewTFARHjXEWbb7XCl0SV8y7JGh7IrlPFVo3tdPxcrj+0I22YuCmPen+MJjY02vRvMNyd+ul6X7vvPuJrQ+pMMFhoXH7/r0hf
+X-Stat-Signature: ourzuawid3sspwmhrfn4xoharyoq1zoy
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 439BA1A0005
+X-HE-Tag: 1787553442-42526
+X-HE-Meta: U2FsdGVkX19vuJceZZ/g9b7c1u6mwfGceTSpK5DmGWO1ZQOJcx9/err509vVY/BUGXq6NgmYC2wPKUtiWkRPjBzreciEDQawK3ToBxWbdKKLCGjwtKLVW4txZQFK89tfX89WHu2KwXVIDrK1UR2H4JAKwKrEEbej8wDe1ybZ1iKQP9GV9c7jFWWEA+EkLM4I6N2zK30mIb3l8UqMZ9o97vb1wY3PEfokvp9ZGBcGqYcjZ8wq+BHU1mfDlYC9HOIvdxBy8/7vI01S9CcwTHQNJYQvi5skDWTXJhH7EOAD/p5PIYXD96PjU9H/vXRWZRk8eMYSS1m1CmHLcCRqZLShyq1FUn1JnUkU49VDI9SYPFNNisC6yV4G4nHn6yAE8nFtWQu/gIEnQ62TtP4/yDQdRTLCPo6t3RFjzN0GrNs9ZKTon+9YXl0xbcvvMnPZ2QDVGjl/bpwNf1oWt3CNcbH0vHRcWB0u82zxaNmx6N2v/s8fkMsOF4cJqC/rWb3Khieb16jdpvnvzj8kwlWbuxY/aVJpLG6MRkhocC2uq8xFrMEeU1RxpQ9z3axD58K6AC5HodlfKe8rPORTGCu2xc59i95Dx4rVZA3yO2Icz9YvgTEbL2cVacFDlqQf2AritYIhjCVlLOwaCnhKJ+S76fOWIJMOm0xtxlrjgOUvWHzsFi3NEQWi4Xd33btcMg1r1K/1Le4z3mvGbAdU3bDROlrB1XQjqTnwxoXCV/6TgYOVXHWXj0i1KeJ2OVK4PBEWQ16KdIEKRgHUHAD8eGtcugx3mhMAQDxL1zIrfcDUdQtAfigJhJPsocLw1pzdPH6Tv6O1Fjj/WKOSszAMln6W7hJ+tgcEhFuY5nYkdLecGcmCDmoMceLqYjzrOrCts7zDD1ceMSLWIxki+qZJJugwTENM0u9/LQcizLrsjR1IaMAetKzY99Osxb1yAPVPoFjeBk2O/Dg93vl84chOQ/MuiRt
+ coDkglj0
+ wNK3b/lIacp2MOKQ7LY3A6RX5fx8lxi9jQX0h8mMad1oixxeF6LW58MmsIDFZcfSovHe6MkQOQfWJwLl7FV/yGP/rfoOZn/ci0PLJdZSYRmtgb0+cMQmcUstChj4Lmw2fNwoI4QuLUHycLAm+44NIMf29DRN5RkX/rhOhAwK91gFSf6IS48H9uza/ZXuVPJzuRGfFq1ih0YNcRmm+iZAKqXis6I8DrJ2X84htcCovIx0gU4U1XSbDoy2Ptfvq4ZOjW6RVTjdiBXhSgifWi3AgcyCMVtWvUS4264i94f8gf5Ee7gUiR0hTgl3XdLiUrf4CI7JD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,56 +101,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthew,
+The sysfs knob names in mm/ksm.c are "advisor_max_cpu" and
+"advisor_max_pages_to_scan", but the ksm.rst documentation spelled
+both as "adivsor_*", fix the two typos.
 
-Thanks for the review.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
+ Documentation/admin-guide/mm/ksm.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I chose the explicit `if (err) return err` pattern for clarity and
-"fail fast" behavior. However, I'm happy to adopt the chained pattern
-if the maintainer prefers it.
-
-Thanks,
-Long Wei
-
-=E5=9C=A8 2026/8/24 10:54, Matthew Wilcox =E5=86=99=E9=81=93:
-> On Mon, Aug 24, 2026 at 10:44:48AM +0800, LongWei27 wrote:
->> +++ b/kernel/liveupdate/kexec_handover.c
->> @@ -1438,20 +1438,34 @@ static __init int kho_out_fdt_setup(void)
->>  	int err;
->> =20
->>  	err =3D fdt_create(root, PAGE_SIZE);
->> -	err |=3D fdt_finish_reservemap(root);
->> -	err |=3D fdt_begin_node(root, "");
->> -	err |=3D fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE)=
-;
->> +	if (err)
->> +		return err;
->> +	err =3D fdt_finish_reservemap(root);
->> +	if (err)
->> +		return err;
->> +	err =3D fdt_begin_node(root, "");
->> +	if (err)
->> +		return err;
->> +	err =3D fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);=
-
->> +	if (err)
->> +		return err;
->=20
-> Less verbose:
->=20
->  	err =3D fdt_create(root, PAGE_SIZE);
-> -	err |=3D fdt_finish_reservemap(root);
-> -	err |=3D fdt_begin_node(root, "");
-> -	err |=3D fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);=
-
-> +	if (!err)
-> +		err =3D fdt_finish_reservemap(root);
-> +	if (!err)
-> +		err =3D fdt_begin_node(root, "");
-> +	if (!err)
-> +		err =3D fdt_property_string(root, "compatible",
-> +				KHO_FDT_COMPATIBLE);
->=20
-> up to the maintainer which one they prefer ...
+diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
+index ad8e7a41f3b5..c9f533b10f6f 100644
+--- a/Documentation/admin-guide/mm/ksm.rst
++++ b/Documentation/admin-guide/mm/ksm.rst
+@@ -174,7 +174,7 @@ advisor_mode
+         The section about ``advisor`` explains in detail how the scan time
+         advisor works.
+ 
+-adivsor_max_cpu
++advisor_max_cpu
+         specifies the upper limit of the cpu percent usage of the ksmd
+         background thread. The default is 70.
+ 
+@@ -186,7 +186,7 @@ advisor_min_pages_to_scan
+         specifies the lower limit of the ``pages_to_scan`` parameter of the
+         scan time advisor. The default is 500.
+ 
+-adivsor_max_pages_to_scan
++advisor_max_pages_to_scan
+         specifies the upper limit of the ``pages_to_scan`` parameter of the
+         scan time advisor. The default is 30000.
+ 
+-- 
+2.43.0
 
 
