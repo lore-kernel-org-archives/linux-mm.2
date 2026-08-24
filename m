@@ -4,140 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D97EC5DF9C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 21:01:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97061C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 21:05:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F02816B008C; Mon, 24 Aug 2026 17:01:21 -0400 (EDT)
+	id 87B666B0095; Mon, 24 Aug 2026 17:05:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDA706B0092; Mon, 24 Aug 2026 17:01:21 -0400 (EDT)
+	id 82C226B0096; Mon, 24 Aug 2026 17:05:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC9D06B0095; Mon, 24 Aug 2026 17:01:21 -0400 (EDT)
+	id 71C4A6B0099; Mon, 24 Aug 2026 17:05:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93E906B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:01:21 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15418A3202
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:01:21 +0000 (UTC)
-X-FDA: 85137383562.03.634FEC1
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 118554000C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:01:18 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PIEXRLQt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787605279;
+	by kanga.kvack.org (Postfix) with ESMTP id 4BB326B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:05:53 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D0EF980258
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:05:52 +0000 (UTC)
+X-FDA: 85137394944.23.97D2B69
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CD168A0003
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:05:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=acSTKIE8;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787605551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HyMvbAPjY1T1FBP31LAHW0LPjM6RCAcdyyCk0Ooq5rM=;
-	b=GBpetidOn31DOcUUQ1AqfSbduDreqtb9pUenwh5UzNbwo6HzJ8qKPWxfZPdIGyd83XhpmT
-	5IhSjN01kaAcxFhN+etXHjkzKvOqka4Yt27QFL7j+Ve9tWw1NqJp1I3fTCPRMMEA/N2nRm
-	Vz/8vZKiYUAsA7sZLXplwC41SfJ91Tw=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PIEXRLQt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787605279;
-	b=5o7KcG7xbvpNF4mLNUej0RO3HHIKZ47aoxx+McRuE63w4m209VTKTGZI0mewl5qNWywCdX
-	9pyCEDryScAuvGAJGs0TWhZBKImyAlTWwI+M4Z2rDpQ5xm9QZaF6zTR+ClkA58TJc7eHod
-	4GKWRroh8B2uOWP4H1jFba5RAtolm4Q=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47fecbbafdaso1205473f8f.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:01:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787605277; cv=none;
-        d=google.com; s=arc-20260327;
-        b=f00IXiFRDwl9dNicWapvCDrC2zdMi/EytbcpOAL6dW8fqogf0S0C2pXnSUG0b4pKHF
-         GZ21Ow7cysTqlxDT36iavVSFRT48la2RpZJZC9U46vWke3NVtyag12EHekHLFE/UZnPX
-         cAVd9kuAJzUd5IOh0CMYXM+Ubrjf+CWtFZyM4fM5v2XfoPxPCxCSYXoNx3vvG+mnCcUB
-         yVq7SlXHNkKzbtcY0+vUZrdRXxtuiyNGWsBYlLJ7AN0LCR+c5I4fgAL17XFfMMM1c3TB
-         354sbX63ciQbEDs0QY4qn0WU6lGR3/bxTq9zzNsHPXNu3fDAhs+Gpsium0z1yveOzUwP
-         uSqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HyMvbAPjY1T1FBP31LAHW0LPjM6RCAcdyyCk0Ooq5rM=;
-        fh=cbiSxugCmf1GQy1p6fZIkzKya8Wkn0VILuPb+XycI4k=;
-        b=LDOJpcd5H9N3BPsXr/jr1RD7uzjO0ac7zzkfytJEhOckxVT3t8EBrWeGDjhg7rCp87
-         D4wr5CJhtKCBD+3MOjegW6zik9zXLGLhOLnGWXHmsMeNk6s/9brmhLxVs+2SKXaaHMgD
-         URMc1twIQgqQe58eX8rRMyLWLmk2gNutT20fhvr4VT+mcplqxiwFicNMLcAtPCDEc9PE
-         Uq/AM+LVD8Q5BteUbCiPpGaFfSB4qGu393+nCm0zRuAGCbmnWr4hm60ZVH98eMeFrcyJ
-         jO3uNZqOlBd/6WwIWe/Av+LDaND+/biXk0r8YCVSEHpau6xu7aFj9wxmGAT5IyJBELWK
-         Kg0g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787605277; x=1788210077; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HyMvbAPjY1T1FBP31LAHW0LPjM6RCAcdyyCk0Ooq5rM=;
-        b=PIEXRLQtLbsDPZRgZXF5rg4mMf48GRpzLKWReuwDv1+uvrvYswNLdUNuD6czCNYSt+
-         2C/1UP6Gqx3Wy0YVZP/EumCaGFnvuwwHkw+I4SjIAEyAsTvEp8eCXev4stjFnlYPvA49
-         eyEHwjjgTsGdkoU3og8QDBh2iplhOVmIsz1WHr0raHrRXx3bwwAvL5FWjiwIntEKhsh1
-         jfNe10OblWzp9Yf5XierfMqOZFjQJG9j1RjYFMKVrJyIpuXUjto05uXg9jADisPosea3
-         unnkUkiJjreyB9n4PjBzUhkRgFrHynAsZPylz0ZFtbI0+L+GgG17rBVONZ5WUCzY9f6f
-         6Vhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787605277; x=1788210077;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HyMvbAPjY1T1FBP31LAHW0LPjM6RCAcdyyCk0Ooq5rM=;
-        b=pbHh9T7tXobxbMXQRPTnTI6k3TyQtKAv98hi4YC2CwSEs+41XtwfLvOVZZlzNWHYlK
-         410al1PR+BbgtIIZ7Ggcvq+r6okwY2Ccwy9JIzz6JpuOjuuBBwxmlEQqrH9qhql7eBkr
-         lKOE0mz5F5PUifrwtOWfPC6zuKHAykMFiAPH6neXRRJdEidq4rvDqQJzSlj88KjEnCHK
-         VenJJSZoKhUBu5y+ZUPVbhXFtcPRSM1RW/+U671R+EYybFwYUEMpfI27tnHu9K4W7wJQ
-         Zvn0GpiF5WyNQfNJ71GddUWQNM6Wr263yBlVmn00ZsPEd38vaOrHcqVWc4/IdIeJOGkL
-         X9QQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrwlki3CFYxlC1bv9yrYDZkoYFMsA3p7qLnjPPb6AHLCnplO+2vXfKnPgm55F7SSRI1ae95gYmC3A==@kvack.org
-X-Gm-Message-State: AFuF++mFRrun13DTai6vqGW6IoHBB6nbRi9lFMMy3pt+uaAiYFET8UG2
-	Y8SN4s/9g/lkN2KDT5dPrXJKeW/crTrVaEC/8KszPus+UXSETd0RhmGVRD9jUxAKi6YURG4dY1s
-	SkMA9avKB52QmA42TYlERHaSb2HMjImk=
-X-Gm-Gg: AR+sD11XzPaD2vT55ZyvqIbVrzkbJtNO4YIZOScvREvMIwfm41aOcSrqS/2anCHmDAy
-	s3y4ntaW7uiLrG8sNIcAvHHYhlqCkg4QDls3ugJWmhgs+2/NmBluwqUTCZADMGOI2QWQSEbdjSB
-	0SgNniUB3tP0Gb7w8z/yzZ3Jb08bs3N22cLWCCr26wkzvAldo4uShFFg+Q0n3Jfev/OxJub8s+g
-	GmcfAi0kek5R01Qun8nf8ktUTI0XuOhD2cHMNFjvopC2fTEPcHp/fpsk/ISBPk4wgYJ8Qd3ZAgn
-	PER9R0w4uPcFufjCjIXhf6+w52GgT8PMLqcT+KAzAh5m1Xx57ugTL3oXHjUNQGVoyI12vWOpr2a
-	gHDRGyDfQXxmkFFpCmNM9+yBl5Xg=
-X-Received: by 2002:a05:6000:25f5:b0:482:a610:7a27 with SMTP id
- ffacd0b85a97d-482c815def2mr27207718f8f.20.1787605277226; Mon, 24 Aug 2026
- 14:01:17 -0700 (PDT)
+	bh=+LSKnKKqszrwqaH5kpE+1z9+lg3HT1GwCXbZtfOytxc=;
+	b=dmsyAPBjnNoXyoA/smyTFRHWHErOmCNKMvh5Km4Wmh3KhmW3KIBb5x3a1c7zjAAZlHwcR4
+	7/s6aTsiulZfblfqH4zSP9nGF1fZgudt8+bdSxkbps1fZk4BPtplORAYHWci8a2/3P9CCY
+	ELZVR+8XUyJi3J57eZof57ixQRNux9w=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=acSTKIE8;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf15.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787605551;
+	b=RbHOZZVte7SIzA6FAP4Kw6bks0Rv2LayxB4ihZUrYAQKI7vyWFOBNIiy1wjwicU+tDyKk7
+	G6DeQScbrkcAbcZ3j7N7x9g7GR4RTACSg/z0Gk67qlybj+HTyacFxB9nshY5qPqfSarh0m
+	ngC8JeN/AvLypePFjKuZ4CBOYMnX/10=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+LSKnKKqszrwqaH5kpE+1z9+lg3HT1GwCXbZtfOytxc=; b=acSTKIE8r0eFrM8rCaUyueqk/y
+	x4ij5/ugleIUGdVP9alCWHtV4wohqt2sooIADen/YUA0AeBYqD8Y6K3LdnTp6+qFNYi0d+CIpySi3
+	fH+hw1+bFj9873pI5/kWyEtK+M94G10GsefX6QVN0W49WH0BJdJk6GbNNs2RkVyLBd4IyPM6h/5Kn
+	g/oeZpBXKFosO0M5EDSMb6yj30pwRWeWTxrfFjR67VSF7q+mYNs/XjYhk60DBpPhIlmMmRy56U6/x
+	dMqM/031tSXT4CTorKkmPibgf2JrpL/dG+C57Fg7aH6dSAvExR5jIvzm9p/DaymlYNLk5EZKRgUCY
+	0ahaWXbA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wybrR-00000007q0b-0jWo;
+	Mon, 24 Aug 2026 21:05:41 +0000
+Date: Mon, 24 Aug 2026 22:05:41 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Pedro Falcato <pfalcato@suse.de>, Christoph Hellwig <hch@lst.de>,
+	Jann Horn <jannh@google.com>, David Howells <dhowells@redhat.com>,
+	Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>,
+	Qu Wenruo <wqu@suse.com>, "Darrick J. Wong" <djwong@kernel.org>,
+	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org
+Subject: Re: Removing ->dirty_folio
+Message-ID: <aoyyJQz4AFq-ilMV@casper.infradead.org>
+References: <aoyWln-Gt-yvZQkE@casper.infradead.org>
+ <5f4ed03c-e91f-4641-8964-cca0391971ba@nvidia.com>
+ <aoye694JQLwUuqxC@casper.infradead.org>
+ <764f2f23-09ba-4203-a304-94c0fba32db7@nvidia.com>
 MIME-Version: 1.0
-References: <20260817131843.45121-1-husong@kylinos.cn> <1787017182353556.21.seg@mailgw.kylinos.cn>
- <0689d805-45c6-4bb2-8eb2-f065457c45bf@kylinos.cn> <CAO9r8zNxnVYpwrsuB1Ofcwf-Lks2e+DL1Ys9CXZ5jozBug_ybQ@mail.gmail.com>
- <CAJnrk1bFq7J7K0=X67voeZVkAb0dmiLkqomuQ+VcXBLyP5hMVg@mail.gmail.com>
- <aoiQPrudvYZ76ZSD@cmpxchg.org> <CAO9r8zM+w-wb44G+GXev+eHVEOty5GNcmRkui4PxgeF=Hqv_DQ@mail.gmail.com>
-In-Reply-To: <CAO9r8zM+w-wb44G+GXev+eHVEOty5GNcmRkui4PxgeF=Hqv_DQ@mail.gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Mon, 24 Aug 2026 14:01:04 -0700
-X-Gm-Features: AcwNN1WeQE7_yHCQauA3HQyhqmdwOnqSt8GTqj97c9EPEGBEmz_L9Cew2TNBsQw
-Message-ID: <CAJnrk1bOdTE+YQRQqzfKUkOGR67a28t3p1r1zeBNzwz9xHEYdw@mail.gmail.com>
-Subject: Re: [PATCH] mm: memcg: use ratelimited stats flush in obj_cgroup_may_zswap()
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Song Hu <husong@kylinos.cn>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, yunzhao@cloudflare.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <764f2f23-09ba-4203-a304-94c0fba32db7@nvidia.com>
+X-Stat-Signature: 493xrsdkwuechegxuobg5xn4p4pcczy6
+X-Rspamd-Queue-Id: CD168A0003
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 118554000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: f91zezq47gefw3icnaeaokyc4o81etjd
-X-HE-Tag: 1787605278-858210
-X-HE-Meta: U2FsdGVkX19uv5ADyhpoCOIDD8kBO5GiuA/MvI5WTLTXCgMaA06X9D7I044H+2BdR21e/dZy2wf4uO/SoeUY9Hw/TkNlOJQQEtDy6iC1Id1/5L7nooot6xkuH3Tf7PpZgFigG5SD+bQH2FlxKalLwP7scmiY3Las+ilBnzn86lSvUKSN/Qqt8VOeNTiO+PPKidpb6hWA1b+8MNOHGDSXRBlbhTSw6MGBiWqH0OfQYJktij4lCHgG96yJk8WR9tqYexVdV8QbMHjI6BgdAqkI661y0YJjdZBZ0MOzy8WA1uQGtJ0XT1/iakv131RWQh9Qm7aWuHtN8afmGqK1lTlNzCSGC7nJE0kjxVA2t6LFVtizZk81D/whG5oNDYW89BMj/cDdym4eSugrcS3LbmoFz0VpMrvs6qY7dVcpIjoldu7lCnlEZ1pNmSghZGkA+OB/ijWmKlAeQPBTq1i7IYCxDGTw19pjFHLH9UFGt53G0B7hNumjCHnewNkF8l3g9/8YkKN4I5ZPHnAiVqB22zuX3YulUS3kHRkdHP5Xitdt07UvPTHzmc1bCXcCOXJxBhSJbnRD7cLGUfqXZWJBbZ8W0pcP3vMKU3bVe7KCsy8ert0cEkgQMzcTec3yXcx878G/KTPJ8cCmK9jc8/Xh/51ZIsUckQRBhvGGlzBv5ZmtzL5cQ08EZSTYP7RXkSWLxDXD9jy6aN0OfCQyPX4anpW8QhUjlPtLRBIWA2xLiSSw5Cdpq4n0+ymyn6ab9pBLTf1kE5I+9m3m1RneG8HVuhiTr9bUuBT5eDmAfJDvyFoAKrd21VgGgmDjw0ileb2slmDKSjXhxLMYxiMMFRQ4Y8qSA8xbmQp5vPYzpaLfetgT58C3nsh9pCtWJnJRguPwuVK6sR4HL4IJYZO8KEAZ0CfX24pazwfnsGX3fVfhLoo/nzSg+HqBV7RA9ZqodQOLwV1Zn2OTxKNim1/MtV5WpWF
- mdAU4koG
- w2smRvFHaAyrUHE/aqEj76p/uKJ2nR/7bZ3YP1hd4RXk9GEkxFqv8h5fLKsQn1fFhFeU0DVS3oL9NblILaELo6JgIgCYQYhR1WqkIB0+n+1ncbKTp/eHNeyyiYkrkXKiScVhFpgmaJHgmwZlCUlO5QZmA23bzgSsubHXONrYYrUSlQsu67nd7ryUfEwxB2m6N2kHM/BAod1QwcA6OtGGECdyt8SsmG0ELluAlZbCr6Q0bSJjCBZBXoD5WbBRflC8NdxpmcHgmkxDOiZXJMIAn1DhrQxD1xppKWp685HJbOqxIylVGiX0fQNXKmgOsNPRf2qEJP6JkfxAU5cq5b701ZWNPfnHWjlpZVs8J7thIjTL/rBBbBYGDm7R5mFkfvau4zMGfP1RV2GiQYEXLn1OBwewuoKWvb0YoiwemmK1Bz/f4GwtBDui9ZAoQXXOJE8zpphyhv39Rk5z5ptDzzB8Mp4W4U3RE0XyByFw+rQfm/elbY4AOrotm7LcVptRFAQFD4ZEDjLB7hb8jX9eJTDCGTgxvtA==
+X-HE-Tag: 1787605550-896448
+X-HE-Meta: U2FsdGVkX19vPU5+S+Su7XlLkXA8rtEC/Pdos+PuSsq7LXE6Z2MU20P2Kz6oGvhKmkijbyxeG2Q+n9jBk1uJDzrNdAZsE+GfMETjuyTJujr1JR+nLQ8m3WGJoedb3XGhwTU3OK9CrBbIezagt5lRTowHpptYI/utFkt0A/DV74G6yEkMwfK+8x7hSXEwlXitgkfizq2aQyZ8bm5MvDUJYyXX1xFoZOKpddOeAMB84kXyYr+wUDg5OiKNaFYZPQZTEa6jB9ACUwflcUCjzdDf43kFKbs90VqS2vwbFStl0aQE7r/TL2daFUypmQnay7uf1qpmpXVblzW2FfimQXLc8C1H3bp/rroGNQ9HQo22iEIHWY8OkJmydme169fOETAxaAtQCPak0Cw0dmHXiyvaI1ss0UzA8+h1xNWLsOnDkQlvnmdZyHe/lD0Vv53FCmetW+AQpwY5qeccXYrV4yd59DwuGaOH4AoXLBTX7FaLcdEfyQYAVW+22Fc1xvbnR4X+aBeqOL6oCaC+rtmKMq1/bU/lUd9z7OUfk9zSYNtRUnReZHDvozwYPIk4V/vROxnoxVA8RpnvnkfFHsjtJgAXy3YAn6zpCUsOQzJ+PuUwUUwqNwVrtPaz09XGN0Ewrk6KKdORohscPEtChpSRjb9+nvVcMGvC37r2FEo8pabrlqYHZON2ArGMU3wVahRHVNC9/SFEU1EkRzGX4HYjy78AlziQZTeVZBVbs6poO5kQPZZvfPW0jAiasoESIHUlaqAy3+CQj84D7rwa8YKkboo2wgFJriwbk+Rx2SrWFHB6Q3zfpDH83K1OJ5R3LIERYGrvFp5/45WtI2Gvreu3hF8Lsb93OEcq8TI44QelDssTmu/M7d9O1L31DIPVR7QP1NGuibCEwSgSwjfnXoozdXUxouatVbXxMP/fgc+MYol14fm/ZYiJ1KAQunX6oOaFYJS3XgCIouwLSVBqNG7Iukw
+ g0syrd9b
+ HtYk7V5cD7zhhj5TED6gd+wz8nKUHVL+jukBx8mZadIUTreWYYBojZLPxKQxtp6NQpgNomzj6amPxUlStjOGuEuFSPKdvm+XYeZpHKkGYUWlxEkKNMXCt53TwX3Dhl5SPFFOr3H63QpVpBx4sVl4XmkoD0DRXEvh4hyIy1My2qf8Njf6Ll9z29p+zYo6ujeTPQ8YIpEDzz4CuJHxlhELL5YVTR35SvfXoJy2Q7qSDP4INLtbVQaKK6dbOR0m33b6vkKNRQ0FI7n+51MNwRm8sOXtF/ErFi9eNaAGI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,276 +95,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 12:28=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
-te:
->
-> On Fri, Aug 21, 2026 at 10:52=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.=
-org> wrote:
-> >
-> > On Thu, Aug 20, 2026 at 03:18:39PM -0700, Joanne Koong wrote:
-> > > On Tue, Aug 18, 2026 at 11:35=E2=80=AFAM Yosry Ahmed <yosry@kernel.or=
-g> wrote:
-> > > >
-> > > > On Mon, Aug 17, 2026 at 6:53=E2=80=AFPM Song Hu <husong@kylinos.cn>=
- wrote:
-> > > > >
-> > > > >
-> > > > >
-> > > > > =E5=9C=A8 2026/8/18 00:04, Shakeel Butt =E5=86=99=E9=81=93:
-> > > > > > On Mon, Aug 17, 2026 at 09:18:43PM +0800, Song Hu wrote:
-> > > > > >> obj_cgroup_may_zswap() runs on every folio swapped out through
-> > > > > >> zswap.  For each ancestor with a non-max zswap.max, it flushes=
- the
-> > > > > >> cgroup rstat hierarchy synchronously with force=3Dtrue, which =
-skips
-> > > > > >> the ratelimit inside __mem_cgroup_flush_stats().  In a swap st=
-orm
-> > > > > >> with zswap.max configured, a container takes the global rstat =
-lock
-> > > > > >> on every swapped-out folio.
-> > > > > >
-> > > > > > Any reason you are limiting zswap through zswap.max?
-> > > > > >
-> > > > >
-> > > > > Mostly fairness on a shared pool: zswap.max_pool_percent is globa=
-l
-> > > > > only, so on a multi-tenant host one cgroup's cold anonymous memor=
-y
-> > > > > can soak the pool and crowd out the others.  zswap.max is the onl=
-y
-> > > > > per-cgroup control over that share; memory.max bounds the total
-> > > > > footprint, not the share of the pool.
-> > > > >
-> > > > > >>
-> > > > > >> zswap_shrinker_count() had the same pattern and switched to
-> > > > > >> mem_cgroup_flush_stats_ratelimited() in commit ea80da363a1f
-> > > > > >> ("mm/zswap: use ratelimited stats flush in zswap_shrinker_coun=
-t()"),
-> > > > > >> where the same flush on the shrinker side showed up at 2.88% o=
-f
-> > > > > >> kernel cycles under osq_lock on a 96-core machine.
-> > > > > >>
-> > > > > >> Measured on a KVM guest with a swap storm under a cgroup with
-> > > > > >> zswap.max set: obj_cgroup_may_zswap() was entered 198,977 time=
-s
-> > > > > >> before the patch and 198,968 times after, while
-> > > > > >> __mem_cgroup_flush_stats() was entered 281,017 times before an=
-d
-> > > > > >> 80,445 times after.  The removed 200,572 flushes match the sto=
-re
-> > > > > >> attempt count almost exactly; the remainder comes from other s=
-tats
-> > > > > >> readers in the swap path.
-> > > > > >
-> > > > > > This is a known issue. Using ratelimited interface also comes w=
-ith a drawback
-> > > > > > that the kernel may react on stale information and the conseque=
-nces might be
-> > > > > > unneeded oom-kills.
-> > > > > >
-> > > > > > There was orthogonal discussion on moving zswap limit enforceme=
-nt away from
-> > > > > > rstat. Yosry, any updates on that?
-> > > >
-> > > > I am not actively looking into that, but Joanne was looking into
-> > > > AFAICT. I will respond to the thread there and CC Song as well.
-> > > >
-> > >
-> > > For this zswap stat, I ran some benchmarks comparing 4 approaches
-> > > (switchable behind a runtime knob [1]):
-> > > a) rstat + forced flush       (baseline aka what the tree does today)
-> > > b) rstat + ratelimited         (Song's proposal)
-> > > c) hierarchical per-CPU   (Yosry's idea from [2])
-> > > d) page counters              (following what all the other memcg lim=
-its do)
->
-> Thanks for trying this. I actually thought about page counters but
-> quickly dismissed it because zswap needs sub-page charging. I see you
-> are using the page counters here as byte counters tho :)
->
-> It's probably fine, I think the risk of overflow is low (at least on 64-b=
-it).
->
-> > >
-> > > For the setup, the benchmark creates a cgroup chain at depth X with
-> > > memory.max set to 1G on the leaf and memory.zswap.max set to 512M on
-> > > every level, and spins up 20 processes there that each allocate 100
-> > > MiB, fault it in, and touch every page four more times. With that 200=
-0
-> > > MiB against the 1 GiB memory.max, it triggers reclaim continuously an=
-d
-> > > makes the swap traffic go through zswap. The machine I ran this on ha=
-d
-> > > 80 CPUs.
-> > >
-> > > I also ran it with no memory.zswap.max set (ie no reads triggered,
-> > > only update path runs) - as I understand it, this is the configuratio=
-n
-> > > that is more often used in practice.
-> > >
-> > > These are the results I saw:
-> > >
-> > > kernel cpu time (in ns) per zswap store, zswap.max set
-> > >                       a)                     b)            c)        =
-        d)
-> > > depth 1        567,116          35,604     35,841     34,995
-> > > depth 2      1,082,007          35,507     37,803     36,209
-> > > depth 4      2,153,329          37,591     40,117     39,893
-> > > depth 8      4,211,692          34,963     41,070     44,211
-> > > depth 32    15,728,220       53,575     94,685     65,946
-> > >
-> > > kernel cpu time (in ns) per zswap store, no zswap.max (update path on=
-ly):
-> > >                         a)                  b)              c)       =
-     d)
-> > > depth 1         34,787          34,062     34,930     35,630
-> > > depth 2         34,913          35,061     36,404     36,360
-> > > depth 4         36,422          36,809     36,922     37,483
-> > > depth 8         42,177          34,440     36,679     40,793
-> > > depth 32        55,309          55,321     57,671     59,190
-> > >
-> > > c) and d) are for the most part pretty comparable to b) without
-> > > introducing the staleness problem of b). Between c) and d), I think d=
-)
-> > > ends up outperforming c) as the # of cpus and depth gets larger.
->
-> The main advantage of (c) to me is that we can probably update ~all
-> memcg stats to use this scheme, or at least the problematic ones, it
-> should be generic enough. Also, I have a concern about (d), see below.
->
-> > >
-> > > I'm seeing that all the other memory limits (eg memory.swap.max,
-> > > memory.max, etc) are already using page counters. Is there a reason
-> > > the zswap stat can't? If not, does it make sense for the zswap stat t=
-o
-> > > switch over to using page counters?
-> >
-> > Thanks for running these.
-> >
-> > I used the vmstat counter on the assumption that setting zswap.max is
-> > rare and the counter is maintained anyway for memory.stat.
-> >
-> > But I never actually tested it. The assumption was that surely walking
-> > ancestors on a quick if (max =3D=3D PAGE_COUNTER_MAX) continue would be
-> > much cheaper than page counter atomics at every level. And so I'm
-> > surprised by your results.
+On Mon, Aug 24, 2026 at 12:51:43PM -0700, John Hubbard wrote:
+> On 8/24/26 12:43 PM, Matthew Wilcox wrote:
+> > On Mon, Aug 24, 2026 at 12:25:42PM -0700, John Hubbard wrote:
+> >>> My proposal is this:
+> >>>
+> >>>  - Fileystems take note of folio_maybe_dma_pinned() during writeback.
+> >>>    If it's true, do the writeback, but retain/recreate whatever data
+> >>>    structures you need in order to write the folio again; behave as if
+> >>>    ->page_mkdirty() had been called again for each page in the folio is
+> >>>    marked as dirty.
+> >>
+> >> Yes, that would work nicely.
+> >>
+> >>>  - The MM behaves similarly; we do not clear the writeback flag for
+> >>>    folio_maybe_dma_pinned().
+> >>>
+> >>> This will have the effect of writing pinned folios back every time the
+> >>> inode is scheduled for writeback.  But since we have no idea whether
+> >>> the folio is actually dirty (because the GUP user won't tell us),
+> >>> this is the correct behaviour.
+> >>>
+> >>> I'm probably missing some stuff here.  Let me know.
+> >>
+> >> OK, so working through the end of the pinning, I think it still is
+> >> correct: device finishes writing to pinned memory, device driver
+> >> unpins the memory but the page has been left marked dirty the whole
+> 
+> oh, I just thought of a minor hole that we need to fill: how to mark the
+> page dirty in the first place, in the absence of mark_[page|folio]_dirty()?
+> 
+> Under this new scheme, we will need to pin first, then mark dirty, to
+> set up. The filesystem can't do everything, because even if it were to
+> call page_mkdirty(), a writeback could clear that before the page gets
+> pinned.
 
-I think your assumptions are correct. In that second table above (no
-zswap.max set, only update path runs), d) has worse performance than
-the baseline a) (except for depth=3D8, which was a noisy fluke). Rerun
-with 20 reps, I saw similiar-ish results:
+The page fault path:
 
-depth       a)                       d)                       diff
-     1  35051 +/- 116   35635 +/- 149    +584 +/- 189   (+1.7%)
-     2  35603 +/- 142   35859 +/- 179    +256 +/- 229   (+0.7%)
-     4  36358 +/- 115   37761 +/- 167   +1403 +/- 203   (+3.9%)
-     8  39537 +/- 178   41225 +/- 240   +1688 +/- 299   (+4.3%)
-   32  52181 +/- 210   59042 +/- 161   +6861 +/- 265  (+13.2%)
+handle_mm_fault()
+  __handle_mm_fault()
+    handle_pte_fault()
+      do_wp_page() [just assuming the pte is present, but !writable]
+        wp_page_shared()
+	  do_page_mkwrite()
+	    vmf->vma->vm_ops->page_mkwrite(vmf)
 
-I think the atomics do cost roughly what you assumed, but compared to
-the overall latency of the zswap path, it's adding hundreds of
-nanoseconds to a path that takes tens of microseconds.
+and that's where the filesystem gets notified that this page is about
+to become writable.
 
->
-> +1.
->
-> I previously did an experiment with per-cgroup atomics (should be the
-> same as page counters), and it scaled more poorly than the numbers you
-> have here. I was running tests in a VM on an AMD Turin CPU, and I
-> think I tried 10, 20, and 50 processes, so maybe I pushed it to the
-> limit. I remember seeing a large regression with 50 processes. I used
-> bpftrace to measure the latency of zswap loads and zswap stores.
->
-> Would you be able to also collect numbers with >20 processes and with
+So your concern is obviously "how do we prevent the writeout from
+happening before we set the pincount", and I think it's that the
+writeout path will make the PTE read-only before it does writeback,
+and we hold the mmap_lock which prevents the page table entry from being 
+made read-only.
 
-Beyond 20 workers, I'm seeing that the additional workers basically
-just queue, without improving throughput much. I don't think this
-bottleneck is related to the accounting method used though. a), c) and
-d) all are within 1% of each other at 40 and 80 workers, so all 3
-approaches are bottlenecked by this.
+But I'm only about 80% sure that's what happens.
 
-> zswap loads? I think latency of zswap loads is more critical because
-> it's usually in the fault path. One other thing is, you need to be
-> careful with zswap loads because a miss will be really fast, so they
-> will pull the average latency down. Ideally you'd only measure zswap
-> load hits. It would also be useful to see the latency at the tail
-> (e.g. p90, p95, p99), as people usually care a lot about page fault
-> latency at the tail, not just the average.
->
-> Sorry if I am asking too much :)
->
-> Honestly, I am not sure if >20 processes is a practical concern, but
-> zswap load latency is.
+> > @@ -2717,7 +2719,8 @@ static inline bool folio_maybe_dma_pinned(struct folio *folio)
+> >          * Here, for that overflow case, use the sign bit to count a little
+> >          * bit higher via unsigned math, and thus still get an accurate result.
+> >          */
+> > -       return ((unsigned int)folio_ref_count(folio)) >=
+> > +       mapcount = folio_mapcount(folio);
+> > +       return (folio_ref_count(folio) - mapcount) >=
+> 
+> As long as the math works: need to not underflow. I guess mapcount is
+> always less than refcount, so OK.
+> 
+> So it *seems* correct to me, fwiw. :)
 
-Ah, thanks for pointing out the zswap load path and its relation to
-faults. These are the results I'm seeing:
+Yeah, and if we hold the folio locked, it's true.  But we could sample
+mapcount, then have a few unmaps come in before we read refcount, and
+we've got an underflow.  I mean, it's only "maybe" mapped ... ;-)
 
-zswap_load() latency, (hits only (retval =3D=3D 0), no zswap.max set, 20
-workers on 80 cpus, 5 runs, ns):
-                  a)              c)       d)
-  depth 2
-    p50        6,850      6,700    6,850
-    p90       10,000    9,750   10,000
-    p95       11,050   10,800   11,000
-    p99       13,600   13,350   13,500
-    avg       7,269    7,128    7,297
-  depth 4
-    p50        6,600    6,500    6,700
-    p90        9,700    9,650    9,950
-    p95       10,800   10,750   11,000
-    p99       13,350   13,250   13,550
-    avg       7,034    7,029    7,266
-  depth 8
-    p50        6,000    6,150    6,750
-    p90        9,000    9,250    9,900
-    p95       10,050   10,300   11,050
-    p99       12,500   12,800   13,650
-    avg       6,508    6,652    7,273
-  depth 32
-    p50        5,250    5,400    9,100
-    p90        7,900    8,050   12,550
-    p95        9,000    9,150   13,800
-    p99       11,550   11,700   16,450
-    avg       5,786    5,958    9,469
-
-For depths 2 and 4, there's no real difference for d), but depth 8+
-shows worse performance. In Meta's fleet, hierarchies of depth 8+ are
-common.
-
->
-> That being said, I generally prefer (c) better because it should scale
-
-I now prefer (c) as well. I hadn't realized setting zswap.max is a
-rare path until Johannes mentioned it, and with your mention of
-zswap_load() sitting in the fault-critical path, I think the benchmark
-results show a clear improvement for c) over d) at higher depths.
-
-I was uneasy about the cost of c)'s reads scaling linearly with the #
-of cpus on a system (ie for_each_possible_cpu per level), but given
-the uncommonness of the zswap.max path, I think that's the right thing
-to trade away. Either way, it's a big improvement over the baseline a)
-path that currently exists anyways.
-
-> with more concurrency/CPUs and should generalize better to other
-> stats. But I am obviously biased :P
-
-I'm still investigating the writeback and vmscan cases. For writeback,
-using (c) is more complicated since NR_FILE_DIRTY and NR_WRITEBACK are
-node stats. I'm planning to spend time this week running benchmarks
-for it.
-
-If for those cases, (c) is viable, then I'll send a patch that adds
-(c) as general infrastructure. Otherwise, I'll send out (c) as a zswap
-specific patch.
-
-Does this sound good to everyone? If there are any objections, please
-let me know.
-
-Thanks,
-Joanne
-
->
-> >
-> > But that was the sole reason. If it doesn't stand up to benchmarking,
-> > no objection to streamlining the control to a standard implementation.
+Perhaps we could have two functions, one for if you have the folio
+locked (like in the writeback path) where you can rely on mapcount
+not changing, and thus refcount always being > mapcount.
 
