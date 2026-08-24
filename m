@@ -4,140 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 072E1C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:41:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55D70C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:50:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 215E26B0096; Mon, 24 Aug 2026 06:41:01 -0400 (EDT)
+	id 646C96B008C; Mon, 24 Aug 2026 06:50:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C6F66B0099; Mon, 24 Aug 2026 06:41:01 -0400 (EDT)
+	id 5F7E16B0092; Mon, 24 Aug 2026 06:50:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DC9F6B009B; Mon, 24 Aug 2026 06:41:01 -0400 (EDT)
+	id 50D456B0095; Mon, 24 Aug 2026 06:50:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CFD636B0096
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:41:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 611C8804C3
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:41:00 +0000 (UTC)
-X-FDA: 85135820280.01.8F949EF
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 059F91C0007
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:40:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=XOZpugly;
-	spf=pass (imf21.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C2B56B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:50:00 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B0166404C8
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:49:59 +0000 (UTC)
+X-FDA: 85135842918.28.FB3A1D8
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D51CB140009
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:49:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=b02rLtm9;
+	spf=pass (imf26.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787568597;
+	b=5PQwEzCuWY1gGv5dVtCG9qGxkrHTK+bFnpOMCC2iawoHyDVJ6el7lRO9aAPPwpgu4PdIjC
+	fnfq757pe2sjXVenfXunZeCa+Ncq+Bbj8hX6Iai2IMSePXzA/j/ve10ZIOFNeew4SUdLS1
+	PK/COK5Fv2QOPI1LZDu68O1uqSsmavY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=b02rLtm9;
+	spf=pass (imf26.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787568058;
+	s=arc-20220608; t=1787568597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3/T14l5efVCoI0cNX+jlXD2DWZPGJ826RLHgjN99Qbw=;
-	b=sOMHJCnav+uBCVU/94xCKR1nafzzMdt/kvcU9ZVj5WNIGn/t8f/Xq1Bl27y74MIK+84G43
-	ae4To6BcC5Dh7/VTRqTbX0wMz7BlgXpV1Sp/sWDU3ONe1z+/D37bVVWrrLn5JHy6akqxOe
-	Os/w8PNavpn1LEAr9u78HrF41/CJ4cw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=XOZpugly;
-	spf=pass (imf21.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787568058;
-	b=5bUeiVYz4jia/v17G20MN2NkvUAsSYi2AeVSq8lVae8L5qTlhh0tyz++VS9tVV5McCYl/k
-	FTAlGu4iElFKwJOzVcYQG47uNW1wuW9L0tJrykfPXvhbvqQPjm/JozD5IIy0GyY27iv184
-	KkCCsYzDamIIm4hZIZSzdGuqSW3JZcM=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O9VgPI1464568;
-	Mon, 24 Aug 2026 10:40:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=3/T14l5efVCoI0cNX+jlXD2DWZPGJ8
-	26RLHgjN99Qbw=; b=XOZpuglywHT95XDBkKH2XQOlca9MSJeRjAzN+AGZkRni0J
-	GKKIyWOfrXPYglVth7B14eijjpKHCosOILho3RmiiFsnEMvIGm3L6ETwcgDpvHFU
-	iw4AZYuTz6+hO9OLNw1MtIuOgE/g5QR2pOyWRpe8dtpPJ6Uqup8IaX2hWhJw1VnX
-	/ybg2Se5FI9ted+4HDlTLUZ+oVV94xCJbmtSsweejythg9pM9vGPlSCuWQ8hvNuJ
-	lbv6z8SczAZ9zhX82cc/Gkezik/Q6XQ3FT7iFQeS7HWmMRAXmoaoBqTEHJhKkl7H
-	uACwheCeyVvXMzq79QA+0zyTaVRoXSSfgEhOLtpw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g7393rpe0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 10:40:55 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OAQIXS006700;
-	Mon, 24 Aug 2026 10:40:54 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7pfvwebe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 10:40:54 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OAeouP49545566
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 10:40:50 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7698920043;
-	Mon, 24 Aug 2026 10:40:50 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 197B720040;
-	Mon, 24 Aug 2026 10:40:50 +0000 (GMT)
-Received: from osiris (unknown [9.111.89.201])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 24 Aug 2026 10:40:50 +0000 (GMT)
-Date: Mon, 24 Aug 2026 12:40:48 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com
-Subject: Re: [PATCH v7 2/4] s390/mm: Batch PTE updates in lazy MMU mode
-Message-ID: <20260824104048.11040Cdc-hca@linux.ibm.com>
-References: <cover.1786956464.git.agordeev@linux.ibm.com>
- <d7fd78377a7278108ef501cf76571e80caef5968.1786956464.git.agordeev@linux.ibm.com>
+	bh=nOd8+4g2mnunbTTjfkzCI8WvVdyCHxk83j5KrKNRFdg=;
+	b=rxC/d4fvYP57xeOLD7/QacgLrbHecqTumIrSFpuso23xm56mpjUy3oDgN9CdvshSTXPCyh
+	inwFIJuX/grVNIhvprDL9rWRDf0Lp7aXSOIJaxRbpG+claj95fLjGLqU4XsAtOg8+nEOgL
+	2b3Fc4P/bdPEiMFwUfaX6sdPV0B2Rhs=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c197e7e4e94so586340066b.2
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:49:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787568596; x=1788173396; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nOd8+4g2mnunbTTjfkzCI8WvVdyCHxk83j5KrKNRFdg=;
+        b=b02rLtm9Rl4MtjD3K8YkQ390Ljt9iyAnwRfdg5twO6fRIxZumG7dR7mhV8vrXzBpv4
+         bTCidp7+TiPXcXUETvnlw002zPdM69B7+t5gw4qh8Ck3ddkucJC+d4xpxCqO7n7t33yl
+         47BMZyW+GXcovJVEd1BByC1LcqHyE0Gl946JKNxj/jgGiDqJNhfU6DpgWRBKd4+nXoYv
+         qinUCV5hDmyYFMdnaAriRZCDxZTIup86Sg6j6qsH0+W9EUcRnblu9wlXOE0vVdXxu4r3
+         rdXikXsXuIPE3uFWrOo8H9ZksH0yoQbuW5lKRRB9rUwF6qMBamahzE0TmkOruMOZpIjA
+         sAAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787568596; x=1788173396;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nOd8+4g2mnunbTTjfkzCI8WvVdyCHxk83j5KrKNRFdg=;
+        b=KanRDUJBu7mWDZB497K0Z7xkSkEd+59KuLKws9OF16tFf5hZXJJNB0HdHE9YIV9YlG
+         uqT7vL9XY+wRfiQmeRx/KsgNSg4kGbetsmumPR/2YmeM7EXdYY/G3RKvQiWA+sh+2+QI
+         t8NjR1QXm2SU+pWNDOkJl+sPuAvKinN5dpCgbfos9mxwK8qyij5SAWM14mLkjc5jZZsA
+         YYcnwd0/4rNd7soupGKWNDPtsJ+6RV/5z5mSyxXtn+qSfr7IrSKSs0WY9y2fHK+vTNEF
+         143RtG9c0tfCEPpnTLOHP8YRasZhor68lW5lX4NOcXOemso5LzDenMPLeFi9TG3PWWga
+         osHg==
+X-Forwarded-Encrypted: i=1; AHgh+RqzhrMxOrzUwvmMRvu1GmDpzrFDzFhLP9escHhcYT5ZZ9ZVfRlQ0mIwccSBZkLDM+i/yT1ana4usQ==@kvack.org
+X-Gm-Message-State: AFuF++lwOIyjpRctd+r+MZbWW8gFAY9cN3GgbF28X8TDliruKOQRE0N2
+	mjQFTHj0Ox8mKvvYMTo5BZ8Xqd23NF/IwMoaGiFA5IzYopgUs44V5Isq
+X-Gm-Gg: AR+sD13nATLyaWQ0P56J+wytKEGcDVfp1eInNgU2VobCc7nVQ2AEYb+Wu4zRsa4WEoj
+	bANPtWzpjan9Ta6QYpW7B8UFcjb/5CKmOzlBIU0UqYxz9NhZExLCR5Ibwr6/QAb/GUxv1g89oqV
+	SGCyTZOKcgsCbLU4UDhqDGtbVDl4kQsOP/+CA0rrFed1xRro3vOu0YmW881y0bZgdXIdjznSaxw
+	csYaa8gHDmsLJmw7aPN50e/WCQlkASRlRMXh0dF3GREpFh3ZgKp8Z/78tUU/UE+srMImIt932B+
+	ALqSfGzBDh5o+HxipFERqYRxPB9yZomOXIw4pf9G1YrXSY3dxh4GzY9ySnldqyh/5cMxMgyzP6U
+	j7QlTLUvER3GZLn89O73kvUlp57yVbTXBWHOxTgNj6BAEBAlMqLU+0nbWTchCySeRND04N+WGo5
+	T9dWYGN1RLrx5k74aMjnqTCm8w8aZn40b9EiLbBgKmIBzRc/d9ImUoAEiGViwp+tZQL+yp7LZ49
+	50p
+X-Received: by 2002:a17:907:97c4:b0:c20:af9d:454a with SMTP id a640c23a62f3a-c2492621bf8mr1999188266b.16.1787568595897;
+        Mon, 24 Aug 2026 03:49:55 -0700 (PDT)
+Received: from dell-desktop ([2a02:587:4b5e:1100:7303:647d:7cc4:8552])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249672becesm1236373966b.42.2026.08.24.03.49.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 03:49:55 -0700 (PDT)
+From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+To: andrii.nakryiko@gmail.com
+Cc: akpm@linux-foundation.org,
+	andrii@kernel.org,
+	ast@kernel.org,
+	bpf@vger.kernel.org,
+	brauner@kernel.org,
+	daniel@iogearbox.net,
+	david@kernel.org,
+	eddyz87@gmail.com,
+	kpsingh@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	matt@bobrowski.net,
+	memxor@gmail.com,
+	song@kernel.org,
+	tasos.papagiannnis@gmail.com,
+	utilityemal77@gmail.com,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH bpf-next 2/3] bpf: Add user memory access kfuncs for linux_binprm
+Date: Mon, 24 Aug 2026 13:49:30 +0300
+Message-ID: <20260824104930.83453-1-tasos.papagiannnis@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <CAEf4BzZTM5SehNnM83U3Kj0cz=NN=JwUtG-pcvSHdvZBsHdM3g@mail.gmail.com>
+References: <CAEf4BzZTM5SehNnM83U3Kj0cz=NN=JwUtG-pcvSHdvZBsHdM3g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d7fd78377a7278108ef501cf76571e80caef5968.1786956464.git.agordeev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: aBBJq1sYD2QAF3RL4IeZXSVPpP4Tbh5_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA4OCBTYWx0ZWRfX75fqlJoYpcj3
- VuqvoN6MREkDOZWVmhgOKtEejDguKYrGKaX9WC9AmF/wtqG8x7StZnzXT4BcbYBgGA8UABHpXmJ
- 6wSYvObgT69cn9Jv6xAb75oznLJq47zhjnY9977yWYApGudVgUctPn6Y7OJZjeoSPIwcU/Ea8De
- T6P/+lsJzcs/+pxENUZy4+DBpnsNlrj2KFAIUh97shE564PTUUDkneqLqxITgHTMijXVrVcO3ks
- O4TG0uke1SaDl06qgaReqwLzagGSiZCJFYDrOHd+6hLIHcFt9okYDGvg2KLD1rUAId/6e+yKooC
- 6e+0p4zyRzxUjpEKWfFolIfU+3xYGIUwikgrUu6lKGTSY3giO5Ot05NH1X7pQ8tonVxYl1pmoI3
- 6P4qtlRs0kAq1OfJllzCSCHmcrPeORSuWksFtBuok0CpQpGzyfLuiMfTKH3G/OTrxNJQrwNuz3V
- wwg/uL9ILC3aXn8wVNA==
-X-Authority-Analysis: v=2.4 cv=Y/nIdBeN c=1 sm=1 tr=0 ts=6a8c1fb8 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=sTYtNOhqI-yrCGmzPWoA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA4OCBTYWx0ZWRfX5Hr10v06l+bM
- vkQF72efrd/jPqOK1fLCWjVi1yDhxFlUin2rVbLlo5/YRl7U4igHaW3UBmquiQAI1ENXrabks0e
- R0f3d4+bbSCHpIsuJ8aeF4sNQzlPJuA=
-X-Proofpoint-ORIG-GUID: 5v_eDg43mIjksVXOeUwea4TJK2IWPwVm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_03,2026-08-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- suspectscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240088
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 059F91C0007
-X-Stat-Signature: fhncduzyaxyohigz6fmg8fwmi81h8wda
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D51CB140009
 X-Rspam-User: 
-X-HE-Tag: 1787568057-244880
-X-HE-Meta: U2FsdGVkX1/mYHZ4Mr9DzDYOfEApMlpsQy6ZDsR5TxTL3wXWP5xPhIazgXEaX5C+L1nBnUjD2boalr9GiA0rmtvgGZGSSVdCzyOlPPIJgJv0MplRb3EWeSp1CAf/752Av7I69LBVSLdyaQiUG7BCD+QbRxBME7xhPUUewPZEZTqmAkS7UVLbcW9rg5DHrvY+qFVwjZkyp2nELrIx+jw6CvwhL96xYr3YpXXbBOFGXEtla5vKQzIWrhKCf+Fem8mgdnbXqsmNh7GBfQKTF268938LSaoVZbFLtIA59aDzkzOlzl9FKGbDMxZakEv2FBn3U51P7I7AjfeOqDu7LM9SOmzUWNa6+dwGwuTsx5vHfBVhpDQs3o/5Ic5EO/YOOGMSlFzqPYvmbsLeXPCzpaG/swB7AtQCSCgFGox7bgddZRreBDJbExN4DLO0FYxfvwfaWzJdWzmFK8w9eoUIZx3tMNScCVQ8oXB5yyG3pu7xrbcAZZNDJHBrYUNBXVtlKus5VW6briWh9rzQehEKO1Ds/QOg1bAsJ8R4SNIKr03EMjzOk+E9oQrddaXTcYnD+rQ8qru0hUHdiGCktfAK4Drj+zbTo7LL+h3xR50tijKH56bXDUJJAhcccemxUStXEqWjWpIDiaRnaufW/lmTIihU9AxCc/hFSUEUjYqQNJixUxi1AHib2ZXCg8IVGtYpRuc2Rf20eor2xf6mk9KzobGIxqpcDoGbCe6Ehx7NsGTt7ANc1GwW4a4Qp0lHw3cx6uPCEX1CGf63lKI3xOMnc0Hlok7ylQJ2a3Sz8o7rnZHNcxtQGaMslMikplAB9Ew2ss2xqnEDXSz2GHfVmNRu2JwbWG5kYevNeykZJbXwpvUsCqNwkbjyDb4JxQw85iD2hlHwWn2Tztm2jZPTOEtN6rNboNAAEC2dLP+2hvuVl51OevwkiiGcbe/VmoQfoWTNuUT9nNUMEsoA6BtsU19yGf8
- tl0mxvs4
- 7KRoDcfpq8r1xbguYFoeR4TUhdlH1ZrVsaK7BCHvREY5weOtXJPU5Oc4/8drze+3TvrY2Blin534LmHYIOQj7NnkAm78gLa7lPKi2h5RnAQ52usy+EPB/VPe+HECgwON1gRx/bUe4zH99D6UKDRzGQMET2WBaOr8lWc+Sw1gXfWEfyB+KOl3TwmiEpHv+kbo9IoIJxZvfjIQBKQGRyyN5m7XiyO4aVCYDeu4MnVMIaS4QJwyGAWXML5OYaIwYUiQu58j0mvxz2gpalUUCxXiNbdAtMnGFZsaB7zdOATLzqAxXIdA=
+X-Stat-Signature: fuhmc5tgsgfigy3qzyo9f4m7nkn7rqkd
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787568597-476464
+X-HE-Meta: U2FsdGVkX191mpPV9hd0Bwz02VGh2A7DYMlPMyO6KK6x6aTFKIRWYX7pjwrlFlTk4b7wLFRf4bsEmyBcGVU1ynTMi7fbBmSs3GtwGnmUcs69NJJB1FJXeXyR+AyOmSCJLT+S6wnQmaP2R+SZIrKZL4JM5/S5pY97Jv0+Aev3eioFqyA2P4NnDp46XZnL6L4fhrrzsO1QsOUU60vs3jxKqUWH0n4wqOFo2V4Unqn5NNFYJ8KWIqek1sFrdbg4rYDrqNOAqHXCRgg7H2Z7CUm+PDvz5h25egihhfBLFRhskV/Q5Nn9yJFWFNEbiP8GYnS8sJakGz/5hAFWHC5wsvOHz9s8RcIjaf+CefaQbV4ROyYSM8KPpz+RcF3xC1Cd/3ns6eHQhX0jxP0o3AwBA4NhcHiis7G93uiu4SUuKEkEOTdZcaPLhzM4gyABCFSYLY0Pq0g4j2leYTRafgKouQNaFzUxfk2hse0zRAEsoN4noJZOfOI+SaC98KlUHntCC3FYocrYhzTQlej2LJga3mPQzAxMbOKSuEWpjrG1n772G3E5w8yhxppUgfCBCp0UHyIFX9exQryzvxxLoQRdRTflE1xnxIypwf+w9Wr5TVsGAKADoGL0cEsoqC0yIOqkvxLQ1dJWXsfUTqf3LiCEhWS9m5OnJwVGKYhdTwbFl6dCRHU8diUVAiHJzPGMBr/DhZi2cc6V+u/IzYJXhsWTwZoan0PqyrClaihhnFBW3w3B6mgBVPklYr5VuvUhqXNV9Px4V2AYdEl3lIy9P6Lu0OApzJhwfZqQ7V235uKXVUXzp7RzccsZmxhKoWH1y0JCvtQJQU0gc0cuyMHzjHBggBJFNLzsJ201VjqvyFcqMadYhEgEEXkczyv7sFJqmxRjoakP7LZY42UnhCLG2zAY8mM/qVN7YXw5lsrbmAMA2qyDmpQYCzy+enmuDW7fdy80DLy3JaHXJTO36+rFWVfPn1A
+ GmmvRNIQ
+ b2kXeWRdpncVv2PKnQdtB9ifx+jIcC7SYVcepiwABGyfD6YtQ/dL8tIIj21Z3eJD+EIb0gVXs6EnjmSPJ70CcgXlPLZw8e6D2X22Ei6/7qkgFwmNtYbTHwE4BKG7wZ9W+rhx7eEeYsBqWji8eXfSOSozMAa6bRnnFz2qPFgUkBcpq2731x6pbfSwTH/K/EhYaXpwErph1j4mO5uPvy3Qw7OaUU6dHnEdCLbGK9zBvrjBvIEJpUfPtU2viscb8QwBpTIlgn5ZgQtgZCC3Lwj+JDXAFfhxnuPxD9cic7GBfWOFAenDRWde6fdnfgTmOyIOrLwVh4uMwYdWxv1QywhS1xyrpaPtkMw8Cpeis1muNVmRHCoqRstjntIT9ea0qPIy3Bfdef+IkRX1+LidSLWE3wgcjU7CqgToeznyC/lFN7OioZwUJPH1hs0hiaDPUMNTAeTw5RNfFk7C6fB0OEMva8xug9Mv+UNxXNF1uhHSWKQXEm5Im+JHRwXP5u2ZR1QkfHO34oEG9PF8Lz4o6Tnk7CM8VH63sowXUdpJ4aSE40F+rBJWiK9GXG1kHcrPcRftv7WDbT83afx3CmMHAsBf8+UeHZteqlskGc6Z+2Ho99Hs+VMVUtTo+j9IShX45jSXoFocinz5jlZgHpEl+JZjwbM2jXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,113 +134,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 01:33:00PM +0200, Alexander Gordeev wrote:
-> diff --git a/arch/s390/include/asm/lowcore.h b/arch/s390/include/asm/lowcore.h
-> index 3b3ecc647993..dba236664da9 100644
-> --- a/arch/s390/include/asm/lowcore.h
-> +++ b/arch/s390/include/asm/lowcore.h
-> @@ -163,7 +163,7 @@ struct lowcore {
->  	__s32	preempt_count;			/* 0x03a8 */
->  	__u32	spinlock_lockval;		/* 0x03ac */
->  	__u32	spinlock_index;			/* 0x03b0 */
-> -	__u8	pad_0x03b4[0x03b8-0x03b4];	/* 0x03b4 */
-> +	__s32	lazy_mmu_count;			/* 0x03b4 */
+Thanks for the review!
 
-Why is this signed? Can it get negative?
+> making this linux_binprm-specific seems short-sighted and overly
+> specialized, why not pass `const struct mm *` and call new kfuncs
+> bpf_copy_from_user_mm[_str] ?
 
-> +static __always_inline bool is_lazy_mmu_active(void)
-> +{
-> +	if (__is_defined(__DECOMPRESSOR))
-> +		return false;
-> +	if (!get_lowcore()->lazy_mmu_count)
-> +		return false;
+> and this seems to belong right next to bpf_copy_from_user_task_str()
+> and others in kernel/bpf/helpers.c (and bpf_copy_from_user_task
+> variants should just delegate to this mm-based APIs and minimize code
+> duplication)
 
-I guess there is opportunity to generate better code here using an
-alternative and using a flag output constraint too.
+This is exactly what I did in my previous set of patches:
+https://lore.kernel.org/bpf/20260811112154.94053-1-tasos.papagiannnis@gmail.com/T/
+https://patchwork.kernel.org/project/netdevbpf/list/?series=1144046&state=*
+https://sashiko.dev/#/patchset/20260811112154.94053-1-tasos.papagiannnis%40gmail.com
+https://github.com/kernel-patches/bpf/pull/13211
 
-> --- a/arch/s390/kernel/setup.c
-> +++ b/arch/s390/kernel/setup.c
-> @@ -77,6 +77,7 @@
->  #include <asm/maccess.h>
->  #include <asm/uv.h>
->  #include <asm/asm-offsets.h>
-> +#include <asm/lazy_mmu.h>
->  #include "entry.h"
->  
->  /*
-> @@ -1012,5 +1013,6 @@ void __init setup_arch(char **cmdline_p)
->  
->  void __init arch_cpu_finalize_init(void)
->  {
-> +	lazy_mmu_online_boot_cpu();
->  	sclp_init();
->  }
+where I got AI reviews with 2 main issues:
 
-What makes this code so special that an explicit call from
-arch_cpu_finalize_init() is required? This is really the last resort if
-everything else fails. To me it looks like the code can be changed to use a
-new static key, and add a generic early (pre-smp) initcall to allocate
-memory for cpu 0, and if that succeeds enable the static key.
+1.  Does marking bprm->mm as trusted-or-null here create a use-after-free
+    vulnerability on the execve error path?
+    Looking at free_bprm() in fs/exec.c, when an error occurs:
+    fs/exec.c:free_bprm() {
+        ...
+        if (bprm->mm) {
+            acct_arg_size(bprm, 0);
+            mmput(bprm->mm);
+        }
+        ...
+    }
+    The object is freed via mmput(), but the bprm->mm pointer is not set to NULL.
+    Could subsequent traceable cleanup functions (such as free_arg_pages) expose
+    this dangling reference to BPF programs, bypassing the verifier's safety
+    guarantees?
 
-> --- a/arch/s390/kernel/smp.c
-> +++ b/arch/s390/kernel/smp.c
-> @@ -59,6 +59,7 @@
->  #include <asm/topology.h>
->  #include <asm/vdso.h>
->  #include <asm/maccess.h>
-> +#include <asm/lazy_mmu.h>
->  #include "entry.h"
->  
->  enum {
-> @@ -866,6 +867,11 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
->  	rc = pcpu_alloc_lowcore(pcpu, cpu);
->  	if (rc)
->  		return rc;
-> +	rc = lazy_mmu_online_cpu(GFP_KERNEL, cpu);
-> +	if (rc) {
-> +		pcpu_free_lowcore(pcpu, cpu);
-> +		return rc;
-> +	}
->  	/*
->  	 * Make sure global control register contents do not change
->  	 * until new CPU has initialized control registers.
-> @@ -921,6 +927,7 @@ void __cpu_die(unsigned int cpu)
->  	pcpu = per_cpu_ptr(&pcpu_devices, cpu);
->  	while (!pcpu_stopped(pcpu))
->  		cpu_relax();
-> +	lazy_mmu_offline_cpu(cpu);
+This is something that I believe is easy to fix.
 
-Same here: what makes this code so special that this needs to be open-coded
-into the low level cpu hotplug code? Everybody who needs to change this
-code in future will wonder why the mmu code is so special that it needs to
-be directly handled here, and then needs to understand the mmu code.
-And the answer is: there is no reason.
+2.  Does this break the BPF load-compatibility guarantee documented in
+    Documentation/bpf/bpf_design_QA.rst?
 
-Please use a generic cpu hotplug notifier to avoid that maintenance get's
-more expensive.
+    Before this patch, walking bprm->mm produced a dereferenceable register
+    in every program type. In sleepable programs, in_rcu_cs() is false, so
+    check_ptr_to_btf_access() sets flag = PTR_UNTRUSTED. In non-sleepable
+    programs, in_rcu_cs() is true but mm is not in any __safe_rcu* list, so
+    clear_trusted_flags() produces a plain PTR_TO_BTF_ID.
 
-> +static void leave_ipte_range(void)
-> +{
-> +	pte_t *ptep, *start, *start_cache, *cache;
-> +	unsigned long start_addr, addr;
-> +	struct ipte_range *range;
-> +	int start_idx;
-> +
-> +	if (!test_facility(13))
-> +		return;
-> +
-> +	local_bh_disable();
-> +
-> +	lockdep_assert_preemption_disabled();
-> +	range = this_cpu_read(ipte_range);
+    Both PTR_TO_BTF_ID and PTR_TO_BTF_ID|PTR_UNTRUSTED satisfy the guard in
+    check_mem_access():
 
-Why is it required to disable bottom halves? A comment would be helpful.
-Or a hint in the commit message - this is not obvious.
+    } else if (base_type(reg->type) == PTR_TO_BTF_ID &&
+                !type_may_be_null(reg->type)) {
+            err = check_ptr_to_btf_access(env, regs, reg, argno, off, size, t,
+                                            value_regno);
 
-Also at least for !PREEMPT_RT (which is always true for s390)
-lockdep_assert_preemption_disabled() is quite pointless, since
-local_bh_disable() just one line above disables preemption.
+    so bprm->mm->arg_start loads with no NULL check.
 
-I guess you wanted to add that check above local_bh_disable()?
-If not you could as well remove it
+    After this patch, btf_nested_type_is_trusted() matches
+    linux_binprm__safe_trusted_or_null.mm, so check_ptr_to_btf_access() sets
+    flag |= PTR_TRUSTED | PTR_MAYBE_NULL. Now type_may_be_null() is true, the
+    arm above is skipped, and control falls to the final else:
+
+    } else {
+            verbose(env, "%s invalid mem access '%s'\n", reg_arg_name(env, argno),
+                    reg_type_str(env, reg->type));
+            return -EACCES;
+    }
+
+    Any existing program that reads through bprm->mm without an explicit NULL
+    check now fails bpf_prog_load() with -EACCES.
+
+This sounds to me a bit more complicated. In a prog attached to lsm/security_bprm_check,
+bprm is trusted but bprm->mm is not trusted. So we need a way to have bprm->mm trusted
+to pass it as an argument to the helpers. In that series, I marked linux_binprm->mm as
+trusted-or-null, which breaks all existing programs that use
+linux_binprm->mm->something.
+
+Another approach would be to add one more kfunc (i.e. bpf_get_bprm_mm) to get
+the mm from bprm and have it trusted.
+
+The reason that I didn't push that further was that mm in general is
+bound to either linux_binprm or task_struct during its lifetime. We already
+have helpers for task_struct, and I thought that adding helpers for linux_binprm
+would be enough. Other than that, there is only one security_*() function that
+takes mm_struct as an argument (i.e. security_vm_enough_memory_mm), and possibly
+in that case we do not need to read the memory contents, but only metadata
+(possibly I am oversimplifying here, but this is to show my thinking).
+
+Unless I am missing something obvious, I can see two possible approaches here:
+  1. Keep the bprm-specific kfuncs as they are now.
+  2. Rework this around the mm variants that you proposed and add one
+     more kfunc (i.e. bpf_get_bprm_mm) to make that work.
+
+Does the second approach sound reasonable to you?
+
+Thanks,
+Anastasios
 
