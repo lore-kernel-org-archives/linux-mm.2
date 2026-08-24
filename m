@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD02CC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4559FC5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:59:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B71716B009F; Mon, 24 Aug 2026 03:59:44 -0400 (EDT)
+	id 6692A6B00A0; Mon, 24 Aug 2026 03:59:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B497F6B00A0; Mon, 24 Aug 2026 03:59:44 -0400 (EDT)
+	id 640786B00A1; Mon, 24 Aug 2026 03:59:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5F9B6B00A1; Mon, 24 Aug 2026 03:59:44 -0400 (EDT)
+	id 555DA6B00A2; Mon, 24 Aug 2026 03:59:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8978B6B009F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:59:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D5B0A31DC
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:59:44 +0000 (UTC)
-X-FDA: 85135413888.07.CF7D9D0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 336E56B00A0
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:59:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B976A1C191F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:59:50 +0000 (UTC)
+X-FDA: 85135414140.17.4BB685B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7679DC0008
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:59:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uf8hkcQg;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2FCD31C0003
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:59:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EPIETBtP;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787558382;
+	s=arc-20220608; t=1787558389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WJoYfBFszVnClToOHHH2o5hji7ont+MTpRkHMfc8KdE=;
-	b=WSGxiYKi8sQ9r1sT3+h3K+biQSkkTCoLdN11G08brFeGizAoJnFo4XDcHZJ6L2D1e46Sw7
-	2rXUNUOKh0yqrnRm3ouX1uWXPoYAT9iNZEljnjzjt3j9o4WbB+hS22cL8hyBVqwQkh6HZq
-	3r77UztddY6f17CBI2BRzDIlm6c8wa8=
+	bh=V3rQKObuy+xVLTlhhjHDCPVzJnAVCXtIbfvg8Aw6pM4=;
+	b=yScIA2Q+7Es9Ve6cUCrEhhIoyTARmzd68tdFRm60asZlzt5UVPRn2xAIXLmVEr5GMJD6Ss
+	KZoQlsHT4FUIlligpwefrUD7g4tqx2eXlU1T/FUnIT0/rVq2uw84TBT6If8EYDFREnAc9D
+	e0X2SN+m8pcKMw+k0o0uBm8V+0A1sn8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uf8hkcQg;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EPIETBtP;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787558382;
-	b=whPl3XS9OQGJqnCsOocOsPqSjewy8wh2PtPJ/OqJi/fWwiivi68RMTERhB6CsTEEuBL9v5
-	YiLgRt3BuYge6haRjNpzROwNzBhxsy15uoSVx7abeN1nYVqJPjQeNa15z5mE9jgrJmKGPx
-	sFfD1cTJAZaQO95lm3fBKba8wDPMnTE=
+	t=1787558389;
+	b=c6LQBeoha0VeYfb0b/Zul43yMQsTNi1OgE8NPrs+7O7RGRXmslCYpYiwyIXYydX9Y8Ub5f
+	x9r8IC1JT4vIHNk8/kt730FEv1b63ge8KHXvcWLMjnE16ZD0gtwpP8aG+XIqbes3ZTJ3VF
+	yhTxD/bnN8nD9UpfeYGA1e+CrcE7wrs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 18928600C8;
+	by tor.source.kernel.org (Postfix) with ESMTP id C5992600C8;
+	Mon, 24 Aug 2026 07:59:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3051F00A3E;
 	Mon, 24 Aug 2026 07:59:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924EA1F000E9;
-	Mon, 24 Aug 2026 07:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787558381;
-	bh=WJoYfBFszVnClToOHHH2o5hji7ont+MTpRkHMfc8KdE=;
+	s=k20260515; t=1787558388;
+	bh=V3rQKObuy+xVLTlhhjHDCPVzJnAVCXtIbfvg8Aw6pM4=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=Uf8hkcQgyJKXdHugZsCiBPziTvMAXJnVifz9UyTjgD/eZWe/nknUlm8s0O/JoBeMM
-	 zOTkqWmeWZJoTGQP8oT3O5tOnrzFTgNZzN6nujVMzarnsU3/FVXrUGlzZyltG425B5
-	 +5CNyoVrS40s3VYr7n2RcGZGU5qjozmZEVplpknmIafNO34dtivWT5sK2bzfFJDyyV
-	 kN/9elDd4dQ9pMZ0j2E/SN1bucrC2Xn49rRnACE3FdS8FH50U310+gFa3RXS9JS0RQ
-	 AGounwpHabWZsDoQJkpU7yulG7y55O16IuZkiR899OWASWOlCEITvxYxu+obYmpqy9
-	 pYkqB1Wm0371g==
+	b=EPIETBtPAyDvnpFyv/9nLIXNQF02shqJxO/4kPQLxrhMTs3g21WaXi+Qq400go5U3
+	 GcstiR975UrlG4GmmYi0PsHDz8o5o5laYnDW0z9dgTUOc/ZlE353p8pGu0eMUPcS3r
+	 UvRxQ0+eZKW4f+Jpofd078vojErLyu9pBxyJziPG3OPLTKAcI3PjfVGatIYDZ4TuNl
+	 ZXBzTS/EpdAP5koC2+RK5F4lV04wah/y3PsgBwmde2vR7P/3QacHEv+MX0S7fJpIAX
+	 tvMn9Sihh3XFFQYmGcR6oly0P9AZy54Nk7sZhhsfwkBjvqtMrWJsJtFZRrsmmWExrB
+	 33v58UOtuLxdQ==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 5/6] tools/mm: make gup_bench a benchmark only tool
+Subject: Re: [PATCH v7 6/6] selftests/mm: add a GUP selftest
 From: Mike Rapoport <rppt@kernel.org>
 To: Sarthak Sharma <sarthak.sharma@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -86,20 +86,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org, 
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260813181230.483746-6-sarthak.sharma@arm.com>
+In-Reply-To: <20260813181230.483746-7-sarthak.sharma@arm.com>
 References: <20260813181230.483746-1-sarthak.sharma@arm.com>
- <20260813181230.483746-6-sarthak.sharma@arm.com>
+ <20260813181230.483746-7-sarthak.sharma@arm.com>
 Date: Mon, 24 Aug 2026 10:59:05 +0300
-Message-Id: <178755834511.3606540.5889183666243190319.b4-review@b4>
+Message-Id: <178755834511.3606540.7162032713017782533.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7679DC0008
-X-Stat-Signature: m5s13767ndjawg7zanjm5xgsfiyy339r
+X-Stat-Signature: opdmwd5abynpktu8j4yai76i1dw8mtcn
+X-Rspamd-Queue-Id: 2FCD31C0003
 X-Rspam-User: 
-X-HE-Tag: 1787558382-964031
-X-HE-Meta: U2FsdGVkX19HX+xwuMmgAqjtjvrhbEdA1X1ca6+eNl045rLiXT3CPzSdud7rVNqGgD8U1SonsDBKB9DX9BQrZ9LFq0TcvZl6ebvgPWNgiPpBA5cun2uL2t5moS6e8cbqoRTDjjGnQIvYIerUhPhEexV64lFh+B0+3w2+1E5FIIevwbdJwleM5tD3gVMtoB+Ub+8c+HFP/yqtVZFH/U0LDbHZVVno3crE7mUPOAjjZgpPbEw93EXqO2h1cuSpfdg/n/r9Jn8mfLkoUETZFCfidmdYpTvbztnU45pCoN/U8Sr7bs9e9PA2TMrwck+iPo8D5pgfnSeiTSxNjYn/4GJTAJdHm1fI107gc6h3B0QMSJrgQuSRkQqCJfUyPt9C8f9G/D5+FKiq9kMLrTGYrwjvYX1OBbmTSl1tJCYLPsEmjpds7Q9ON6ZeWCRGicwG5hVg9r0LqSXaWYq4ov5+u4vM7Zx6N1oMCPkc2LBnsmJMT/duCsjr33YKjfndZfY+glT6v8LGwMlNftg3WcQGTm5k0BIN2zkiXYy8XwWq/yd+lSyZP3oQ2iGxxejrsRNm9m/FBzeK9oMc45lUffLJP6/dsQt9WhODJ7BvADn+DNWMIXl/A5/KQpXR+6y9o+sU5wgpi0mwBf4odqMyCbz9yTPP21+jQosZzkeog1Rbgv40oi+Yg0oEFireK/g8A99XC7vMYwy5xfm44nSCSAlSxlrufbbHUblSl4iMBGJtKv9ay7C9OFCzij5bMi9oG/P4GE3O5A6ARk5OBzqipHZ8+NLu+z4Qmtp8H7p1j1bMM47FZYEblVsiSIQYvwyREb76yopLw6pIgPA280chVy+oXJ8ujls5ujpw5pWl2OcENVr0mNbjmJCzkwrxSSpLh4FUxT9IOK800QdmX3dHsOB3wO0V2bApSLkttdmCA5RoK5nbOP9wb+iORUyNyiBEmvD0/cnEiFTD+6RTiGaxYlc95c2
- Pw8gx8v/
- eej/1rTOKWUoSw0F57EG7eFyLzc1oR4Kr1C+LwaQz0P4BLVWX6IHzrZnZ48rt2i03nawKrwLJ/QOTP5iUDKlmFUo8L65DAcGXToYKfXXjzeTODIXFISAt3dSxY/HSuMxl+xPetzPM2/GaA/QEMi8cZwgvCh4+eSOCuOnwd17qgYX1qB9J5koqKTv93Y6Ex2N+uLYrgUcSJzfHuQbqqCI+Ba78oc/qvsi84kvlz22y1glAyQk8rjq+/OTAvwfG6ytlZW2+8Y5Q91ADy8b+1c0spXVaxTp1eJdDuP59ycb+YIEPsB6+2z8g9FWNi1ajDQw5LJ3tzIZdtHNwHddpMzWpzFuS0/idshz+VI1i
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787558389-690457
+X-HE-Meta: U2FsdGVkX1+6jz4uwa3Qjwt5ovVsahPTzKlraerDwkWQUgsGpNwueqk0o/scLB37kZYU4p9e1N5E6s+TyuSA28F7lwgxcodWDN2+CJ3VonmY5t1WOtLdSEKNfqhNsko1jOmDhXBy29JfgA3jtmhNdms7xBj4XuKNLG+pQIPC023B5m3fDbEx5xm1vjgTx2GfVHrViidJs4bJHrjaq+OE1bYhWFuZFjynsPM7aJGuUIvS608zLTr2hpygliGP36hrgp1N9fLTkCMWTI9BpM+pLNmfzE/yTETA9ICO+ZIbu5b3dw5O0nFpOdYcyOxEn9/AsX1JIIYw7/o17KBUQrQMJP0LVVwrd2RTjluObAC+ZaTO945PiQ6qaI2EqBvUHODlTxdZiHQ5OmKKh+GOIwqAegepIDky8whZYd3QYWlaYcMQP2J8Zi4RSEFwHkmlfC5qeEMSVLGe1HlyVNWJTrHNUAlwTJj0v8ZNvDr+edx7XsMg8wfHsrS04k/YSDSfM+0XU7hw5S1UIxjnH/vQ9IgcrKr9y96PepapGOU/2KP0AaND8cEVyjBFmSQrl4Bl7QYjzQ8/UzWcUovzyj08n/TA1sJZWpVmwh8NU2lD8QFBfRIlWqnrnt8/vdDYRyvbXnXUo/lQk3oi2nbnys6Tf3vEXoZ3y8CTjw2d5agDR/fVTQisMaOOSWnp6m1X8CM5o0h7f7JV4VfqdM8tSf2Ats8Q7+yHxu81T7wXg6ZCvC2W4PEnZF0sjzS/eGFprG+7hAdsuWaeDUvHOtgHnzhsBdUShio0uKtcmu7S9LNECrfMJ4k+ySOS18uHGVRkW282mnsoiYCyF+VusrRMXZzZz/buTsHm/bjLgKrYcRO/4T30qE4MUDnS8MAv+2VVK6Mor9cTfCo+yQRfeLsgG/yntQEeAm8uBf+hfZOdN/rEtEkd4KSOg3uUq8vuHILp7ptcMapj2yzaRPMYM4eg/aUK2Bg
+ agizh53p
+ zImrTlpxlEcRHZqxllGVhcBxPHpuaCAdApVqzTCpjJoXbm7eTbvP7KmfffN0Uvl2E9oALAc7l6QcHALJWxDQBmhiiGDpIKr0uHUv48cw/IlIbVEZklfMQDIB/oTn6GARwL3oQOIO4Co2A7wDmB6MqX5fVbhKfzy3OW2nduzcsFvFl/rNrJytGDy+XtxK7aoO5iwWEvD+ZZhrB8l1sBKzM4LpNgxIWu9034ATz0DbpfTSVDbgY+pZzwGstmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,17 +107,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 23:42:29 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
-> Remove the functional modes (GUP_BASIC_TEST, PIN_BASIC_TEST and
-> DUMP_USER_PAGES_TEST) from gup_bench. Drop the kselftest dependency
-> and use normal diagnostics and exit statuses.
+> Add a new GUP selftest which uses kselftest_harness.h. Cover
+> 12 mapping configurations: THP enabled, THP disabled and
+> HugeTLB, each across private/shared mappings and with/without
+> FOLL_WRITE. Run 7 test cases for every variant: get_user_pages,
+> get_user_pages_fast, pin_user_pages, pin_user_pages_fast,
+> pin_user_pages_longterm, and DUMP_USER_PAGES_TEST using both
+> get and pin.
 > 
-> When no arguments are supplied, run a single GUP_FAST_BENCHMARK
-> with the existing default values. Let users select other
-> configurations through command-line options. Report ioctl failures
-> and handle errors without relying on assert().
+> Set up 128 default-sized HugeTLB pages once for the HugeTLB variants
+> and derive their mapping size from the default huge-page size.
 > 
-> [...]
+> Sweep four nr_pages_per_call values for each test: 1, 512, 123 and
+> all pages. This preserves the coverage previously provided by
+> run_gup_matrix(): 12 mapping combinations x 5 GUP/PUP operations x 4
+> batch sizes, for 240 ioctl calls. The two dump modes add another 96
+> calls.
+> 
+> Preserve the previous sparse dump coverage with a standalone test for
+> pages 0, 19 and 0x1000. In total the selftest reports 85 TAP
+> cases and issues 337 ioctls.
+> 
+> Add the new gup binary to the selftests/mm build, run_vmtests.sh and
+> MAINTAINERS.
+
+There's also ksft_gup_test.sh ;-)
+Other than that,
 
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
