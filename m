@@ -4,119 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99C72C5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 20:19:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EBB9C5DF9D
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 20:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EA1F6B009B; Mon, 24 Aug 2026 16:19:46 -0400 (EDT)
+	id 0750F6B008C; Mon, 24 Aug 2026 16:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B946B009D; Mon, 24 Aug 2026 16:19:46 -0400 (EDT)
+	id 04CF36B0092; Mon, 24 Aug 2026 16:31:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B0E46B009F; Mon, 24 Aug 2026 16:19:46 -0400 (EDT)
+	id EA5226B0095; Mon, 24 Aug 2026 16:31:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 589D16B009B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:19:46 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D41F81A025B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:19:45 +0000 (UTC)
-X-FDA: 85137278730.17.B799581
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 229854000B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:19:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GCF1qXsl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of maxi.saparov@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=maxi.saparov@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C387B6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:31:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4302D8024B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:31:35 +0000 (UTC)
+X-FDA: 85137308550.29.1323CA2
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C3FC1140008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:31:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pT6pGEy9;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787602784;
+	s=arc-20220608; t=1787603493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dDQCrhRKJv1CgmBzHk5DV2Zi2hk1jJel0LnyJEuda+g=;
-	b=YmdaaA4jZjWCOEjX95o0sJY/vTC5ZBCRrQ8a62cx2hbSkk0ys8NYszbm6sRc/3IBG2QNI7
-	b3Puy2SOENxl9irix5LEcwZuX/1kDtN3y/q9zXDuH9laEgVFhobEXShnm6nE+I5uHODZyN
-	L2DdhSgepty6XOy9TrLOdglws6FJthA=
+	bh=SIiLtMs4lFBzyUl7bXYr+rHge8z24z1y02ZKkAxdE34=;
+	b=jpgM/o6BXFKa0f6EQ1WL4aK/IM5EC/b4FZEFByH+7nm+aSjw7Q8pO/LmcIQV1hbf+q8Mnj
+	MIeaLTKJQUgsDFz+yykpHmER9lo0XU5DwxnaKkpXKxB8u5Ks5EUyqTdsfFqcFejUBd5KjW
+	qoPQEzRzycywITiGt9zs4db45EqSBuU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GCF1qXsl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of maxi.saparov@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=maxi.saparov@gmail.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pT6pGEy9;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787602784;
-	b=qOg4nWW66P3RF6+mTBfCzjb/EQB7WXKRT0wq+jl8Z2UbBxlAFcUVEZt9syHp/N8/s6aREK
-	DEpPZARD+5olMW5c/RUXdiNhDXE1ltWRCTTQzQgyRUMSEDeEW46gJQ3mR+5oEax7St5Cxx
-	qTOlcqOJlaojHqcXJ5A+/lTSrJCObP8=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-52b3934af3fso43437411cf.1
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:19:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787602783; x=1788207583; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dDQCrhRKJv1CgmBzHk5DV2Zi2hk1jJel0LnyJEuda+g=;
-        b=GCF1qXslxroI8WjHzyIbEHEmF2t05bPDcX4WzMFX/Hf9P6hnqjUoDZorLtcmvOX06Q
-         jW6PMnTREg61iEiBLIVnQmfnGQ16A5nzucrAIyQbOMOuny1l6GZ0m3FHizcWARQepWDf
-         4kCMvt+NXkRcvvBMl6yA1OnK6HAJIKV4uTe3J455cOySzwYhm7+sh+AtR5p8W2Onsn+c
-         tbxapgy4ZOKYrIkUl4rnSv3AO9EmnOYXbhMDdNXg6fTs1AGf9SCiQsKjNEEMxz5aXghj
-         0vuo+PJ7110y8ChR6BlzNQo1s8cb2Yo7Yd0IgcYEhF3w38PoJo468R6ozDFxhbTbVP43
-         eNeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787602783; x=1788207583;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dDQCrhRKJv1CgmBzHk5DV2Zi2hk1jJel0LnyJEuda+g=;
-        b=J6zs8YE6BS9TPKs1YaCHkUTKPggeV0idmO3Vrbgg+IIMTNOC8a1tkZPAHrWaKUg2Oy
-         iojT8Lf7vpjxSTZC4slUafW6KPSk1bpu+DiCgU8HXCOAadnUp5aoPe88y6BcDxYM3eWH
-         QLM6Q6Nm1B4YvjVF0TtCDgRIR2mhjDY3+Ylk3To1rgaNao0oXVvA1IpBr1ll/DCypq5p
-         R5C0ZvNet7Jofyzysj/DBDdjcPQge9U02vaaZxttAhetNkj/0tiMZUYdnBVpEJULIfdH
-         FwiRwHLcji/dTk690Xf8GQXa0QbQ+MlKt5T3m984nnGJa1b2K4/Onisn4OBYG8pP7buQ
-         IU2Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoXs32SqtfKH5l+vyaT0eM/4dJWDcavNlNpBp7n+dnyQWHCZKwRdqLDxVMVUAVL2iDgydGcGEi+Gg==@kvack.org
-X-Gm-Message-State: AFuF++lSdWWqd+Qkmqoab5XAIFwQ1mdLdKyO8xldUyZiX4pEym2M6als
-	UYiYxw7C33XWnICx4KryOUIoXFh/Cak25amtqoKz/5fR8GuuXVQCGyj5
-X-Gm-Gg: AR+sD138JwXbHpAlBu+8MimL4g2gthHH+JwTwnyWs2L1K7cEWOSqSnmWq0dFEn0wzpS
-	RPjIcBgM3berCGoNJ3+JPc2H2LDrf32qiQy85Bsn77N79+6SoVSU8tihJMVRxTux2QiFYtt1i8O
-	KILyrAr/vk+dsKzNuQ5rykF94Qyk1HSGbJBxXwm26NZUHV1AOCpiz4tocKT9FHH8BPBSV/prDhI
-	TRZNmz5Vi0vIyz5VJNuyG5RXn0m+MD+EimhEtUV0m07vBtsZFBHWCdLmi6DV8HXMYqG6E2gWLJp
-	0aocDYSRae/FxQplsAtUfdADum3JjedkxUc1TW/Ki2XCQOhE0vdOVc/TR3XY0M7y46ceTJLMK47
-	xWvOIbqgQCfXqW+JJVpRiRpLfmpaJOYpid8a+BDteGPoX3r87WhJC1DVxt4vOcc+mt0kcisyrHX
-	btviJtq9rKNgYzDugiAec2PEn6uK9SgHI00Nl7oqBEuz4j54Hmt5sw/2QYW+8P5q6ALtj+BJw+P
-	bJdRkVqFSiWYIXWAjasYSg=
-X-Received: by 2002:a05:622a:1f97:b0:51b:fd82:22dd with SMTP id d75a77b69052e-52e2f092d74mr19871991cf.15.1787602783060;
-        Mon, 24 Aug 2026 13:19:43 -0700 (PDT)
-Received: from CW-D0XG2Q16P7-L ([2600:4041:5d54:8900:65b6:6c48:5883:571b])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c939332c0sm69720456d6.28.2026.08.24.13.19.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 13:19:42 -0700 (PDT)
-Date: Mon, 24 Aug 2026 16:19:34 -0400
-From: Maxi Saparov <maxi.saparov@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Evangelos Petrongonas <epetron@amazon.de>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, sdimitropoulos@coreweave.com, 
-	Maxi Saparov <masaparov@coreweave.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] kho: do not reserve scratch memory in the kdump kernel
-Message-ID: <aoylgHzZKP8av1pN@CW-D0XG2Q16P7-L>
-References: <20260803193938.8778-1-maxi.saparov@gmail.com>
- <20260811161857.3096-1-maxi.saparov@gmail.com>
- <aoF8zPXiKpjt2Nsv@kernel.org>
+	t=1787603493;
+	b=cfKN36IHEQB4Qq55ScStUqAHb3EcHLURqhw3N9QnamIAQqvHKBgJvhz4pm0Fycj7zwgH38
+	HR2Ivje9bN/u/vUyETanNPPoxN4gbH7skBTgiN+x9RlpgazYVuJSgam3wKwZ68B/B6IDIH
+	oGqjdHpyKFm1TY3jUwSaD9G0L2hzUfk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SIiLtMs4lFBzyUl7bXYr+rHge8z24z1y02ZKkAxdE34=; b=pT6pGEy9B/KmFPdkcPv/7byZ60
+	q+06SOtrN+FUK0b2YWrWtXJydW6w5AD/8Z++8wR453TI1HAmIkqGhzfqsa1bTK1iR5vVxHH6PyqtC
+	NMWpOHzvHUf7GGvye/Y6vnSAzKDpKbmTcI++7pwp3uCHtVQcJPEsYUForfPe6ZohH4cZ5h2pky95J
+	qJqCiIXNtoC4iydFcAoL2Pkm4AiEMAFvhSaHt790qyviyageiSk+Yn0/5nqQGIREclasCHsTiwGPf
+	UqYJw1ogoHlO+ReEVB7C78pSxkh+Mt1jOFPIKVTqZXNqrZJ0Bx3qqURXtSgGqXMaCbmhFF+EtKoXv
+	h+ZDsMtQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wybKK-00000007lzg-0wG9;
+	Mon, 24 Aug 2026 20:31:28 +0000
+Date: Mon, 24 Aug 2026 21:31:28 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Artem Lytkin <iprintercanon@gmail.com>
+Cc: Ackerley Tng <ackerleytng@google.com>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Kiryl Shutsemau <kas@kernel.org>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/4] Extend xas_split* to support splitting
+ arbitrarily large entries
+Message-ID: <aoyqIBz1EoY0R8qw@casper.infradead.org>
+References: <20251117224701.1279139-1-ackerleytng@google.com>
+ <20260824194755.216000-1-iprintercanon@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aoF8zPXiKpjt2Nsv@kernel.org>
+In-Reply-To: <20260824194755.216000-1-iprintercanon@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 229854000B
+X-Rspamd-Queue-Id: C3FC1140008
 X-Rspamd-Server: rspam07
-X-Stat-Signature: t47y34q8zf917w5p1iqwn8973ph81uoc
-X-HE-Tag: 1787602783-194096
-X-HE-Meta: U2FsdGVkX1/jE9fnpT7/4ScNZrQr2rAMYZJ46aJll+UCUqS1oOphWsePu9F/+BPsg4dxLe97L2yORes1VF3ndUmCSoMxPbickJSafNu4Y0vbDR2HcSQ/AL0GZA5af7+Cypl/M+KpCJifNoRI6cJg82dNBFGWVLCA4/lWAuT10DNOALlL8jMQI+2XwQKO+HFf51atsRtOlEYFX9haTppmjKjclDapRJlQiyfw6IdFwbkMQLZPzFm/SAU7dhMfTDiyafzOYViU/xbLmcPb2AVG7ZanrbYN5LdEzbH1mndtgTAqHBVcSqYkcHGz3GxxbDcOxnXQsW2CZ4TKDnGIT//hEgJL4oD/fZWFqYImSGeMUsUa3atdlN/pEcEiTEqo8o/4YqeCp+CVIsN4KEOsK0dkrBVo88ePeLg9mbS48BxEIRlo6rbpsgUcTFyRNUWqMyrHaF5tTSIxo6Xvp0b497gEFWnK4gEoBmY7Qw6qTmtYiQXfZ5BbdESdiFIKxOAXjuQbb8PumlZFCp6L8FNoV/kZI1BwmewQu1+m4/HAC067QBi+S0RYNfjQu9pQMwJlJS9ffxmVnuABW54FPja5fP7NH/cdVucMMzRVOQb75KZWUiNEFPxdE7NBcN9WZhq5IpPc5JP7F3/bW3OWuAzvJEPb22pDlTHkO3RqUYq0IfV8RZTvUKiWp+lQv78iSCU3t9zuz1dtvM8C0zLChjqFlepS01g12UroE1Bw6HIAst4VSPfR8ESlrzWRPa/NLispZSMSKcsDSpX9RH4q0xq7FITwyPL+38XzhA6dQwSvYktgsWfQn8prXudV5Bd/s/VSbMKNaPVrDCGaUDQxbvxD+v82ER7ZURsuiny3VzSihfFXMTWaqRTuMrYvQ3T1WPwbBW9jUvsTK3rzWUIkD27LSFkDm+q9SsIKUiP5dOV3t0nvaA9HTP/NaEcUkL+cateKIWaiePIyRhtZhp6ZPWcXXI+
- hV/7MHm3
- XfQGDyDdg5tw3v2TM0ynlkInm/wb4NoZqSyhczzZ+gN2RFVeQR6Z6YsDtMqtXXv+LlzrfRx/B3d6IsX5s6M6IVofxHI8ix5ag4/aD7E+Es9nbxCe7t/O5+MDQDtXy5qizw3ydg745KEWAsZj/De2MLe+h+ywGh+cXIcxPBfIpxMFwVNTgzyce+BB2rZLv25AclpwODZeGQOeIc72Lg2NaHg4TcjstgIE+pjbeVbWLjdcdgXUJIGqnSyh5N2sYMZ4Hz9kTsQEJjzx6/8KLk0OW51hVNoBYm8J3k8uECV/oetvah7JwsVL2uIXLnszchMDP4IgulnxmVMdbH9xcxWU0GhxgbJIYk52gPGjDwUyOdhLY6w2x5R29RE5Lg/jrx6lDFzGCap8cf4qZFC54r+g7Ory5b4JV1gYJbP0YJ0Vkvm938jhgVfNJ9iS6A2s7vVwgR/bcufDWyANiMDuRZag00GJcHrMKq1tf5aPqbwA3CHGLaJNhMW9F1ZaKNo4X5DOmXv6nXN5zZuXLVMDiMWhkifgn/4U380kIsz7p
+X-Stat-Signature: yiizsnctxubj7efemzfzgxcfhujewc8d
+X-HE-Tag: 1787603492-242755
+X-HE-Meta: U2FsdGVkX19iW2ppSE8CyDMCemm75ftdMrAQsu3zm+oKwNsGIBXQ2GmW/OhxILR80jRuFuLj6IJVgka7hSDpToeM8SUFIyeXgfdq7snTrZcJmtRgeiTuu4Jxnxii5BnKf8zXYJOMWqgWcx6TW0xQBwAKD7L8mU0CCxunrERXT2TBufg8j1A38xXlOD59Lbpa0HvUKP6cVxJaOHyB5Qof7AAiFjRO37UarB++jUEqyOy7YxZBBwb0VaQ2TewROKpLSvmG7Wj7m5ukq4AJf+7IUldhCaujp1hrOiMJrEK51iLqlebk4qGabtB2O44uDxFYoDaLQWGJaWY7eLNYrjVRrmtE9GIBe9hBsF1ON/w41a1r3IKJ8r7Nw5bEUvv47cpnHUDV9qmUVmfeZDK8s9vf/wf55uYjfCVrYQXo/mnRrEuvoJKJRuRpsIv8MzFEZfgW6yeSLUU+ouKpiC7rfX/JvMUV2wNAoGCIHP66tWprWgVlrK/ppokvV1UMx0jsD+GMNHBzVvzeJRPUEowz/JAWtFBxZ/4aKFb3//GE5iRzJCO2oc1NJh7WoLBlrQLt9/CcPBr9Z1IZL2BHmBALwdbIzPIUHRts5a8K/ad8W6Kx7TCGimSsWVsLpP3rSk1JGyrvjiKUNvcpvRa1Rndu9IXCgtn1QR1tWjEY5MxxKWnaqTYmuqkxRCzGTbSwg6VJ4EnXX6PMNrBR+eKmh9L4tYL/aasJMEinqCANlR7HGqm49iKuRRgJirFc0oJDxQKQ0ithqVL4jf+lZxyfPLGAhc60HouMQE8wa6MT742g9N62CwcfgmDpviNt64bDcdmuHRNZoqNmgXOpysVOLaH3wA8IlyN2YsyThvYmS6wsjsGuOjeNbau5qA0x4Vft5VB5Oujt7QZFCdcNK6KVR+Q9CzuAqZ/d+4oslTiJ7wF3iyFWAMq6Y+IBE2mrpFO0FrtO+b0zLKdCe27gsCLCLeUDN76
+ NYypx6B7
+ pRqlYUnssW4tnzG39FlhrBqzTWB8Bc9Jfc/xEDHItKFLVMePMFP5k4/W8wCoXz2W6iyXAln0HQlTDzOxjMKhedlLSzix/+0vP3hU3vPUWfHnmKgey+0dssnk7a/g7oPgzSA3ymvw4qNCzs/bAechfPCB8dHNpC8P9ZVQuDRqZSU7lfAcSC0x7mmzcKA0x90c2kD1q5dGyhcyVHqM7bsvnN/SzyV+uKqMts8CCfodgVvEtaz6CEP8H0/OT539nSboL6yiUCcFpc8LzaIn2F86wShTvgXepd8/ZnHJb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,15 +93,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Mon, Aug 24, 2026 at 10:47:55PM +0300, Artem Lytkin wrote:
+> I'm asking because there is a second user for it that has nothing to do
+> with guest_memfd. On arm64 with 64K pages HPAGE_PMD_ORDER is 13 and
+> MAX_XAS_ORDER is 11, so MAX_PAGECACHE_ORDER clamps to 11 and shmem never
+> offers a PMD order. MADV_COLLAPSE on tmpfs returns -EINVAL there, and
+> huge=always hands out order-11 folios at best, so ShmemPmdMapped never
+> leaves zero. Every other page cache file system tops out at order 11 as
+> well, which is 128M and not PMD-mappable. pagemap.h admits it outright:
+> "xas_split_alloc() does not support arbitrary orders. This implies no
+> 512MB THP on ARM64 with 64KB base page size." Kiryl's khugepaged
+> selftest series skips the shmem and file cases altogether for exactly
+> this reason, and on 6 August he confirmed in that thread that uniform
+> splits still go through xas_split_alloc(), so xas_try_split() on its
+> own does not lift the cap.
 
-On Sun, Aug 16, 2026 at 12:03:08PM -0500, Mike Rapoport wrote:
-> Hi,
-> 
-> Please don't send vN+1 as a reply to vN next time.
-> 
+But why would you want it?  With 64KiB pages on arm64, you need 512MiB
+for a PMD-sized page, and that's just too big for current hardware.
+What's your bandwidth?  40GB per DIMM?  With 8 DIMMs, that's an
+aggregate of 320GB bandwidth, so that restricts you to 640 page faults
+per second.  That's too few for almost all workloads.
 
-Ack, sorry about that! Thank you for the review.
+The page allocator also isn't great at doing order-13 allocations.
 
-Maxi
+Since arm64 does support 2MiB TLBs, even with a 512MiB PMD size, I'm
+not sure there's a huge performance win waiting for you on the other
+side of all this work.
+
+IOW is this driven by a real need, or just some completionist thing?
+
+> That case needs two new levels of nodes rather than one: 130 nodes,
+> 73 KiB, a long way from the 1G to 4K split Matthew was worried about.
+> Raising MAX_XAS_ORDER to 3 * XA_CHUNK_SHIFT - 1 covers it, and
+> MAX_PAGECACHE_ORDER stays min()'d with HPAGE_PMD_ORDER, so no page cache
+> caller can ask for the order-17 worst case that cap admits.
+
+130 nodes is still a lot to ask the slab allocator for!  With 64KiB
+pages it's not too bad -- you get 112 per page.  But still ...
+
 
