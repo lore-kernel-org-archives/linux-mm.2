@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4233C5DF9C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:33:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42220C5DF9C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 10:39:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB1A46B0092; Mon, 24 Aug 2026 06:33:19 -0400 (EDT)
+	id 599306B008C; Mon, 24 Aug 2026 06:39:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E626B6B0095; Mon, 24 Aug 2026 06:33:19 -0400 (EDT)
+	id 549966B0096; Mon, 24 Aug 2026 06:39:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2C496B0096; Mon, 24 Aug 2026 06:33:19 -0400 (EDT)
+	id 4353C6B0099; Mon, 24 Aug 2026 06:39:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A238D6B0092
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:33:19 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32CB2140463
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:33:19 +0000 (UTC)
-X-FDA: 85135800918.27.9106ECD
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CA836B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:39:51 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9CBD3404C1
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:39:50 +0000 (UTC)
+X-FDA: 85135817340.25.E62B89E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5CB5280005
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:33:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dA9P810z;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id CC3561C0002
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:39:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mDy2PrII;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787567597;
+	s=arc-20220608; t=1787567988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bg71OX1b/jhiRpPtjWiE4T7Rr7gYxguTgtyPDfmDXSM=;
-	b=o7EvDhybNfPowlVD5ZJfC310CPRdD3Viwe3nmpCdswuFsJTIBOcRzmluTuZnBmh8FTeOSn
-	MFvOt8GT2hzjZwLNNwA8Xl2MApjBaOOvf27luT9MiiE14w/tBJc+IXLNmDunrXUO/GjQnR
-	vWt0jpr5wi+iEyJV3xLXQhtmQu1H+zo=
+	bh=+cEnHUXSEW3y9hV7Pqg+IFZMaWU/0V6kmLa+UNlhmow=;
+	b=poMX0JnrCg6fpW1FQLPYTajeAPt8ZngdYJUC4kvzlYsKtwCYgCFdEJ6oCwjsZ2bPsu1BMT
+	Bex5mO/YPgmJWpP+J8vVia92VC4IsZ+oEcYWwqkYaCx4+9GG1opyCVLT2MnPu1ojXgyfFV
+	b7aRdx4xeWxeR9hsA7NIpe3XGd22Aac=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dA9P810z;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mDy2PrII;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787567597;
-	b=a00sFc5ysPXpz+hJu1w9SDs5r9V6hkcf/OsDnN2qvIKXjEBTpJbLw7ZejZpQsZRzgiCTTy
-	bIJlYz9ZInNguxwhE+jkcWgEEjK2CixFaw8TnN1vkZ22vgaqA2DTVsJwMY9eJjgp+p+bZk
-	UQ6Nbo9+kBLnr2NGBo/Y0MNpSn5oe6w=
+	t=1787567988;
+	b=mwVTIp6tw2JPxxuCzPgOFQCyFpopVhFGBXKoVg3VSXR+eAzB0+/PROWHBKQubh4RHYd8c1
+	JZmIieYU2Antzw1d7iehUtBL8tFIMVUAb84Cjdi2jHJ8fG5mxvXxuScdygIrb3F4fS4GzO
+	sUl/xWwarVQ34kybjEWK1MjiMRe4F54=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D351643AA1;
-	Mon, 24 Aug 2026 10:33:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF9C1F000E9;
-	Mon, 24 Aug 2026 10:33:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E587404E5;
+	Mon, 24 Aug 2026 10:39:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F47F1F000E9;
+	Mon, 24 Aug 2026 10:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787567595;
-	bh=Bg71OX1b/jhiRpPtjWiE4T7Rr7gYxguTgtyPDfmDXSM=;
+	s=k20260515; t=1787567987;
+	bh=+cEnHUXSEW3y9hV7Pqg+IFZMaWU/0V6kmLa+UNlhmow=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dA9P810z7x1JH1ynoG6lOwf84Mb0bqTX9/ie1bX0VDXMx7xGoKjtIrkaaccrMHuyD
-	 ydhlM37CTf1GCeYUe7zMDcylp6K0Gy9R1u8o+57GkLWmPyoBKt0TVK85sv9dGtFYba
-	 R/KOoNGFpbBIfNv1w4WxhddVxVEWkLA5imbDhurLp+/Eo1cvqYazCZsoqW0hJLjN3y
-	 QzEjnHu8wqz+zqJvf/zSgL0he6HfTRt3w7rka72w8zxFtPMNTWvhcQHOJFl3WkRH3d
-	 iQbJEUGDEn2vA6TTU7cALEUIagm6gVR8ItP8ypktR4IHYWywINWbBW883fdEnxJjwM
-	 mspMSgXwzV70w==
-Message-ID: <24cdec9c-28b5-4e44-bb05-fef27ef09846@kernel.org>
-Date: Mon, 24 Aug 2026 12:33:09 +0200
+	b=mDy2PrIIfHZ4kB6+q+vg6gsrXD6Ppn+PIQkY64b2eaTlwmEvSgANYOcVUOpHyJCID
+	 jP1B9QCI9L7l1xspbvJXlzCffHqHrTuRl3wlKrUkJd+oeuJTmEWT83baWDHQUW6ma7
+	 Cu/Lt+HpvT8hzlL6HEbywf5NjCibx7u9D5KUVt30ezlpj/AClcal/1nTC/Su2zcbgC
+	 l61pPhMguCtirH1cf8F58USJZpybFDKUMTbl/zLbvJRca/tkF9TsnmeAF8fadrYVZC
+	 vElksBI1Z5XARW7iNRjuTYlYDPzGTvMIX6uShygEsAASSK1W6WIK1VwaTgjp/RvGd+
+	 6Scm23rIy+inw==
+Message-ID: <5501d110-9f04-4a61-b0d1-16898910eb93@kernel.org>
+Date: Mon, 24 Aug 2026 12:39:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: disable smart scan for ksm_tests
-To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- shr@devkernel.io, ljs@kernel.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org
-References: <20260823184314.45044-1-zenghui.yu@linux.dev>
+Subject: Re: [PATCH] mm/ksm: mark migration stores with WRITE_ONCE()
+To: Chengfeng Ye <nicoyip.dev@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Hugh Dickins <hughd@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260822163846.3747787-1-nicoyip.dev@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260823184314.45044-1-zenghui.yu@linux.dev>
+In-Reply-To: <20260822163846.3747787-1-nicoyip.dev@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5CB5280005
-X-Stat-Signature: 1monwxdw78qwjhr8wxkg93ph1iksup3r
 X-Rspam-User: 
-X-HE-Tag: 1787567597-449628
-X-HE-Meta: U2FsdGVkX1/8E04H0K5daVrnEHjTmA//XHGQ1WyaxeN3x41noR8nEuZm5qbG5CDhZpvx0tITdjrMZzDiVQXeaeUB/ynlVZCeyVpD9H9wE3sk1mXzP+VaCO0KfNZJ16X8QIX73TDFoDZtaO20OxDtGHAXt0NpbFavwe7MZwqB4+XX5kKPS6hM0/sdFo9qJa80L7kF8qr25Jn9NtRkXhoPpuc1AxBUZcfmPiIjdF0z4vIJCRFXqe3PIWOKvaEtdEQSQCxNHuxU/bZAyO/UW7vdmi97OmlgJN51kKgwn4cHHodQkEoEjdUvslktKuKPHVgL1SahKCBcKCX7uBVx0Yj63My979bqlXKBm7mIWG3W30PjZoTFhlXjeLBNWjtRtmVrDDF9qcngl/YG8qM6dsIi0I+GnMcSNwo6dj78J0u3N+QON4xlqNHSi2d4XY0E3kuPhG9/Ijs19QPTUlD47BLmHrhbaz5wYsNCGXhf7MBYZKwCtgL8NdGyQb53FWiNWzs6g8N2BzDAIwC+gQOleVaU/MvGrtyYSGLOI2CddDC3f8OcD2wCclLu3Y5uUY1WiFxHg5SwcrBVGmh0uw0qXfUdFxvR08D/UWNLy35/ZQzSoTjjdfLawznrh68uKrl5cbj/rKZhx5DJRPlUk2GuHGgHusFoW1ZHZgg3Dnp2yZASE6vqUbCCH27wRzvtVIzB1sYw1mx4U8fS3/KBQbJ8JBzz33LdC6Uift9yNbZ8IF6oQiIpf7YOCpb4aL/b0ac0TScYymx7FuUJYnoAGY5gb0NB2/SpPNZaIweEuTpXK6Fitkakji2ErwplowdxRbOW4KmUS2LKbQP1J1wW9tKGW6Xc5KwDOkg9P+VhaOub8HXP5g0i5txicvUA/1GAKqj4jwVUv3+vidI6f6/o63CH5NrVBstf0acSyqkDsfcEBCdCyPUUofdHBgkgtZAB5krGw3L9pNDTFOxSl7DTdUMMWyP
- g61TH8C7
- sXoCyvwmhNGL19ltkxBA4xV1i0kbnjWWOn3NjPK9BRwyJVDmz9WcbPv7vD6au2d5fTohWHd198Sw1+ITTXVqVq7Fk5yX2c7bZ9y0ZZ79D/b1h0BjZhBjnM2iJjqWOPT3gbawaYOFZd9xjVHiXW/AIRE5nKByfP/yWZL3dCq+9NJdS28b5xi7Q8zui4E9hh/k4ASYDG6jTKbK/GmkTnE59hSeeWggKQrlFjNa0oicurKPDkQEuaPmAsYYZ46e4vR0pC6xoC2HegVo9TPBh3TIYRRcRI0R/IzeChQlBXqSJ5QpxBGjusFkwhZGreQ==
+X-Rspamd-Queue-Id: CC3561C0002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6aadqubkgub1sghyf3o9eagrigpyp7ua
+X-HE-Tag: 1787567988-310508
+X-HE-Meta: U2FsdGVkX1/9KiEtUh9YrpyCJMhcqy4OLNrkygtzrvflxgpdHPunumt8YgQWNrH8GCLnUWoSE2ZtwiXiu0zNMDv1j7tLMiHWa+LynMPfBcXU6pxz5lcZpvNNgAwddnvO4z3mWHgk+GknbF/921C+50nhJQw/OYNrP2Tl4ixqVG2lc9CwgRaVy/cFH+FkmYSAcdDUuXXWMbaCh2E0Scw5QIEXAql7Cj8YdV5LAINCKW+vab7wsYTO6ETiIcpwkbX3bLR5kI9Gcrr4tx8vZzLPX6g6xk87IasSEfJjFy2Oc2gF0Xgyx1w7SWodNYuhi49Cd7B8XwnG+Chq4K+HJu3wVtbij0J3R8ZOPsZ/zvlpb8OgwD8Upi5tYu3qVdqniPKnIJ4rZRUOiy2L9CWAsl8it0/g0uii4VgHF2XoUzFdHSTiehNwssEkLmSHGRju5biToy8HHSMNcWKAIgKfgzmr0VcISQZcC2rU2MWQVF09buD4PV2ffGcncw1PmvyTnG76LRcLNwXlZXhfC9t/toePrkOkiVliGYwpfYbCcjV+z0exzeNCeQvunbjERaC130gziy3uXE89XtH249kvhYzd4H9W816z4oz/Fqo4KJutSN31zxKykkF8/E5JZ5ZWCyrCi4VUL7xFhhV9/P56SdJcfmtV4WGRQucq7krxOGX86nUOt5Z9DcOI1JgwALBUmhXHtbQPOscTEzc/xQUv7YFNzWbEx2eUTkeC/0QkfxCn/RtO5Z5WRZ8ncK0AheyLWxG3Ba6qe95kFpBtiihDFYELSAJkhOw6LzpWB85RbWDGbgqm1anM3ny30XDwmkjWIFvl6wlYiLyqmXPa6me2l92kzH3NEmNaM92rfJhkvc49ZNto9otrhDSwYWil1hGvimCAJlEoSRJf7xL6vS/Ret6meEzOJ5xd3vkrTsfNqPaUciA0jTefFBZxHDRXXaQay+wzOjxpSA2N9+wNyh+qT3f
+ o08NqOKf
+ bXrRTw2aXEggsCeoHQ/qeG1W9G/4SKS+sG11umZAuh+SXqLQkrqP47gqByAdm3lzo9uqNomdaAlBh9pQahzlsxjjv/FBzrH76iws6FFSYqbStC2R+UU09mXN4R4AmVJnOvjvna8jkx46cxW0cnwuqq/uASSY33vEO1kuA4PxSGoeQtvmr17a70qvilIonEjP/leXShv51G13CI9k1p4e8FEtleJTwNDpFfG3OMEKDsZJym1TVn074psledIZdTSe+5bkTGz/yEp2mljFGbpiYa9ZA2e3qpioL/dSHulajSB3Z+z9mI7Nh/UdSRxj5sXU4MaP9BDGZ2HGwDk4/dwoTXA3OUkudglksUfZD7QxVZtT3uZpt7nD3wB7Jsx1AjI/KW97/3moPf/r5CoXcIaarfrqtfeUUjejTFbIlMUVufn6ZdHg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,78 +138,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/23/26 20:43, Zenghui Yu wrote:
-> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+On 8/22/26 18:38, Chengfeng Ye wrote:
+> ksm_get_folio() deliberately samples stable_node->kpfn and
+> folio->mapping without taking the folio lock because the KSM folio may be
+> migrated concurrently.  folio_migrate_ksm() updates the same state using
+> plain assignments.
 > 
-> The "KSM NUMA merging" test allocates two identical pages on two NUMA nodes
-> and verifies KSM will merge these two pages after 2 scans (see
-> ksm_merge_pages()). But when smart scan is enabled, pages that have
-> previously not been de-duplicated may get skipped for some scans. Verifying
-> KSM behavior after only 2 scans may not be enough.
+> The reader can load the old kpfn, then the migrator can store the new kpfn,
+> execute smp_wmb(), and clear the old folio's mapping before the reader
+> checks that mapping.  Thus the initial kpfn load can overlap its update and
+> the subsequent mapping load can overlap the clear, with no common lock.
+> This leaves marked READ_ONCE() accesses racing with plain stores.
 > 
->  $ ./ksm_tests -N -d
->  TAP version 13
->  1..1
->  pages_shared      : 0
->  pages_sharing     : 0
->  max_page_sharing  : 256
->  full_scans        : 211
->  pages_unshared    : 1
->  pages_volatile    : 2
->  stable_node_chains: 0
->  stable_node_dups  : 0
->  general_profit    : -128
->  ksm_rmap_items 2
->  ksm_zero_pages 0
->  ksm_merging_pages 0
->  ksm_process_profit -128
->  ksm_merge_any: no
->  ksm_mergeable: yes
->  not ok 1 KSM NUMA merging
->  # Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
-
-How did you reproduce this? Is this an actual test result?
-
-
-~/linux/tools/testing/selftests/mm$ cat /sys/kernel/mm/ksm/smart_scan
-1
-~/linux/tools/testing/selftests/mm$ sudo ./ksm_tests -N -d
-TAP version 13
-1..1
-pages_shared      : 1
-pages_sharing     : 1
-max_page_sharing  : 256
-full_scans        : 1283
-pages_unshared    : 0
-pages_volatile    : 0
-stable_node_chains: 0
-stable_node_dups  : 0
-general_profit    : 3968
-ksm_rmap_items 2
-ksm_zero_pages 0
-ksm_merging_pages 2
-ksm_process_profit 8064
-ksm_merge_any: no
-ksm_mergeable: yes
-ok 1 KSM NUMA merging
-# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-
+> The kernel reported:
 > 
-> This specific test fails because KSM started scanning the second page
-> whilst the first page had already been scanned for 16 times
+>   BUG: KCSAN: data-race in folio_migrate_ksm / ksm_get_folio
+> 
+>   read (marked) to 0xffff8ce401421330 of 8 bytes by task 48 on cpu 3:
+>    ksm_get_folio+0x7f/0x2a0
+>    ksm_scan_thread+0x1635/0x3330
+>    kthread+0x1af/0x1f0
+> 
+>   write to 0xffff8ce401421330 of 8 bytes by task 102 on cpu 1:
+>    folio_migrate_ksm+0x6a/0xd0
+>    folio_migrate_flags+0x193/0x420
+>    __migrate_folio.isra.0+0x162/0x1a0
+>    migrate_folio+0x4c/0x70
+>    move_to_new_folio+0xd6/0x170
+> 
+> Use WRITE_ONCE() for both stores to pair them with the existing lockless
+> reads.  This preserves the existing smp_wmb()/smp_rmb() migration protocol
+> and control flow while preventing compiler transformations of the shared
+> accesses.
+> 
 
-How is that supposed to happen? The sequence we have is:
+We want a Fixes: tag, can you dig?
 
-numa1_map_ptr = numa_alloc_onnode(page_size, first_node);
-numa2_map_ptr = numa_alloc_onnode(page_size, second_node);
-...
-memset(numa1_map_ptr, '*', page_size);
-memset(numa2_map_ptr, '*', page_size);
-...
-if (ksm_merge_pages(merge_type, numa1_map_ptr, page_size, start_time, timeout) ...
+I am not convinced CC stable is warranted ... but certainly wouldn't hurt here.
 
-KSM smart scan operates on rmap entries. rmap entries are per MM.
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> ---
+>  mm/ksm.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index b4142746777e..bec6fea0fdb4 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -1116,7 +1116,8 @@ static inline void folio_set_stable_node(struct folio *folio,
+>  					 struct ksm_stable_node *stable_node)
+>  {
+>  	VM_WARN_ON_FOLIO(folio_test_anon(folio) && PageAnonExclusive(&folio->page), folio);
+> -	folio->mapping = (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM);
+> +	WRITE_ONCE(folio->mapping,
+> +		   (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM));
+
+That also matches what we do in folio_move_anon_rmap()/__folio_set_anon().
+
+>  }
+>  
+>  #ifdef CONFIG_SYSFS
+> @@ -3318,7 +3319,7 @@ void folio_migrate_ksm(struct folio *newfolio, struct folio *folio)
+>  	stable_node = folio_stable_node(folio);
+>  	if (stable_node) {
+>  		VM_BUG_ON_FOLIO(stable_node->kpfn != folio_pfn(folio), folio);
+> -		stable_node->kpfn = folio_pfn(newfolio);
+> +		WRITE_ONCE(stable_node->kpfn, folio_pfn(newfolio));
+
+That makes sense as well!
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
