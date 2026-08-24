@@ -4,135 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E61AC5DF9B
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:36:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EA16C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:37:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 555366B0092; Mon, 24 Aug 2026 08:36:10 -0400 (EDT)
+	id 4E24C6B00A1; Mon, 24 Aug 2026 08:37:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5067D6B0096; Mon, 24 Aug 2026 08:36:10 -0400 (EDT)
+	id 493686B00A6; Mon, 24 Aug 2026 08:37:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CDEE6B00A1; Mon, 24 Aug 2026 08:36:10 -0400 (EDT)
+	id 3A9426B00A7; Mon, 24 Aug 2026 08:37:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 185D66B0092
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:36:10 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 979DDA00F1
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:36:09 +0000 (UTC)
-X-FDA: 85136110458.03.78CB1A8
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9CD34140003
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:36:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="X NwaLhE";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=lAaqQiL6;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 14AC26B00A1
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:37:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 998498011E
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:37:03 +0000 (UTC)
+X-FDA: 85136112726.23.E6BC0AA
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9CA61140009
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:37:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=LDxNX1Ik;
+	spf=pass (imf26.hostedemail.com: domain of mkoutny@suse.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787574967;
+	s=arc-20220608; t=1787575021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Halq/ghpcpjzwRr3hDl5BiBIUuH+KlXyRVEyX5gTykY=;
-	b=f71ji4mLllnX7CrS394DRi35PfkgTEJ4SjAwI3WxHgGsSYX7ChQbEunyETKgjFDGRknZHZ
-	PRyr8rqxgkOFIycAsv1oGb9epAJiZE/Hb/4ewKX1EFC25lnSbtvFW+od4atZlFIv15RHiR
-	sdrvKimgRgqwvglviWQ8rPpNY/DiKnQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="X NwaLhE";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=lAaqQiL6;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	bh=86o2mla0Wt4YoV7NQUB6bfRSm8bpfsWlSQQ8/iZvyTQ=;
+	b=iHFRFvBenTBKu3RESjz2ghW5siG+srJYwVw5MyfxrPW2Lr0R+l8u5wKtl6PPydOtmqgY+4
+	WSRvcSA5x6O4ZYmn38gro8YUhEJWqevXjHSAqqH7srocmb25xK2C8GhCGXEdHOVHK2fYS6
+	o/St398iBXmh+pSRVW5gLoyJfP3+IIo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787574967;
-	b=3GzDWSd3AkoHCc56AObASSXRrbOTZsh9SqcsnNjpVO8ur2KUgwZHquRn2ZK11aRyxr9jQT
-	F3Ptl38lVaEw9qjFf1/j5n1P1ZV9jsPE2PsSrWkXtCzgmD0sld2hEhZnLNoh3UblgydZ5r
-	yfeauLM6J9AqauTkuxi22xqkQDoKdrw=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.phl.internal (Postfix) with ESMTP id E7350138016E;
-	Mon, 24 Aug 2026 08:36:06 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 24 Aug 2026 08:36:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787574966; x=
-	1787582166; bh=Halq/ghpcpjzwRr3hDl5BiBIUuH+KlXyRVEyX5gTykY=; b=X
-	NwaLhEt6lreAhnuNhuYe63yeUnz+8ExWqYEdcHnZCISOYS8/qXsSqpifilTYi1DI
-	8zo2jldWxtdl4pD8CJlIWfW9CG/NLLGislyFEzxc3gzE9Yf9vKZSoWATbHtVUMxQ
-	pivnCFwCWoYAl1Kpqp9SO79QylBp6KTbJlexw+k2icgNKIdtoG8AMZmQvEEVak7X
-	JRDIwY0ypINns7AT7bbRaSwSxfEBKxeXJJ8Q6sMLS/8QluI+Lwkriup7kOIe6fb8
-	58GK2W8pKO+y7ajxH7O/eM8O8EaWbu9GYQnEFaSjLPOgpGhdzTs6S6cgOOwcPVV9
-	aNDMMTqSAif9XoQFllo4Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787574966; x=1787582166; bh=Halq/ghpcpjzwRr3hDl5BiBIUuH+KlXyRVE
-	yX5gTykY=; b=lAaqQiL6lDNBiMyO3Z7e08OKXhMvrp5xhkZoYhMTbb/j8K7Q329
-	myZFj4BjPqbhIsI3djhffaIuvqkSsnJ8wXjKI7dH98N6En7feIz1tXfLNQmVmJd6
-	nJ21tQdjsbSYIyWbYWDiSmCK7iw/M0dtpn4CwgiBH8okjUQ3bbmk7f9ecL34EiN+
-	8bxghrtPFKX5rXtR3ph4tfwUWzA1IZ1XnHFYLoVV25mbsCuw6r/boNFnBbMwYEXX
-	8dZSpP1c5BnbPIPoAf3KxbAHMTz74Rj7HAqwKRiU8WNXfuH9jBlI2IuPSO4rI0Fd
-	qZsLujEYC79xHlTreIQjbkgjfdpoYzJR2IA==
-X-ME-Sender: <xms:tTqMatE9POykR7jIxPD9lT7tQRJ_-tdaFro38r-Y_nrNISjrxn8SCg>
-    <xme:tTqMaiyQ7g5tidC7DNd8cz6-HuP_MQQXOqZqmWReC0S-PIM_h3P80hUmkHC3Bt1aI
-    j5nyXQOdx7L0Tj8EVuYmruv89vq_XiTNRCEZJ0Pr0of1O47_ND5Uza5>
-X-ME-Received: <xmr:tTqMagmBDW5MjyUhQ26nLxMFm-wtpKIkyE154-qRIyzyMo2AVu-R3WZwXXw>
-X-ME-Proxy-Cause: dmFkZTF5asgg6APcHCRRNjBCQ9gXGuK668V8MVNtl2aHA4haIibMMp4f3mU+yDh2HpFJDp
-    VGKvyfsEX1iisUN0oqJLUZfcpBudESliKqaFOjN29FGcLMQCGn8WzCD04M2gPcqh2jOXxq
-    TWnruryoiEaOIooipC/o5/MDxXkEEbgRERWfvB3dt8tPQpH9AFStR2lQR4bB9O3re0vryU
-    7C3LwMzGnKw6zBjJF0G+xJ+GRjs7okbNLLc8dp5YQcQK5Six3viX2tWrqs2p/aeuTnIIcM
-    Q8+LtpYicGcP7U1JC54V/izDp1hRw8aC/tlX4mikhZ5SOri7gblL2enAiIAFgJxVoWjAYY
-    Rfval5jE8DZcqhBmfu0ydqxPIOi/NiYqlAU11QhGJpMeHrURgNFF2OA0S8Ysz6Jwt9ats/
-    B4EHeVDTOLRJebKUiFqIyvIcqp04ZI0LJ32DM0NNSWN1L+XUHuXgFR98hTlXAVgUsCZk/n
-    eq8r//W+ksz63YcYPzIZ9w+9KtMOse/d+yVYekz7F0doIARM/tnzGwBbW+SJVbcaaVmUx+
-    qe8/cKpSB64Vme+mQdTDfUZmVf8g7sD0N5nZvbxzExcHVwh2xL2wdI2WJw6LjYdDcsn+ct
-    Cu+PTZpzEPcBo00oDOWorqPCg/9nbFDNRZH4MoaEEgLwR5PdW4ACMKPIzUbg
-X-ME-Proxy: <xmx:tTqMajEupezKhPuT7WIpBHJwmpvwG2t9wQwMY0YCQDUO1cdslQ1Zjw>
-    <xmx:tTqMaisdkEYUs9T-PmIn6tTiigbTagx_vCnbRV_i7aa1vOxJT2nqzA>
-    <xmx:tTqMamlIwHsafL1sXhxVcsGwLPQvGEL_okVBmXvuostnCpngnSJUvw>
-    <xmx:tTqMaiw9NztmLX6IU7iPoQJX9YGE3oiM1shaUWUGCpWRu7UHA2lvuA>
-    <xmx:tjqMauvLoeCO_dMAYDuNOv_aqgV2Yg2Na_2VUUSSvBzyiYAq7zYd4Nv8>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Aug 2026 08:36:04 -0400 (EDT)
-Date: Mon, 24 Aug 2026 13:36:03 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev, 
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
-	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	jannh@google.com, willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
-	mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 03/57] mm/collapse: add collapse.h for the shared
- collapse state
-Message-ID: <aow6J1i2G7U0spjH@thinkstation>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <20260816224609.308019-4-kirill@shutemov.name>
- <3113ac8b-c1ce-4577-9e93-449b70818918@kernel.org>
- <aobglSY5L1KoIqxF@thinkstation>
- <65433d1e-95ca-4434-828e-8f381d3384b1@kernel.org>
- <aow0Z6mrG2esKpRZ@thinkstation>
- <e1c8c6f5-1b5a-4cad-a52a-f7eff00997c3@kernel.org>
+	t=1787575021;
+	b=NdbRhu+Xasx/85lrC6nJ1fWWYnvc1DylaX5X8OOTi/zGCwYrW/roXImTPzDk8NmEHOJG21
+	N8y4cQ9py9o/VRSFUxCsqO2f3UZBly37Qr+Gul+vHyXA151pNuxopIceA93UuQ/ETFgVzJ
+	H86mQ1idW+XXRQyh3zPbsI5kNgLu1Qg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=LDxNX1Ik;
+	spf=pass (imf26.hostedemail.com: domain of mkoutny@suse.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a38098734bso5896581a12.1
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 05:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1787575020; x=1788179820; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=86o2mla0Wt4YoV7NQUB6bfRSm8bpfsWlSQQ8/iZvyTQ=;
+        b=LDxNX1IkQ77jjCm+G8JIya/2KDJtf+7pAprRdm1LqFYxCa/w1CNJmM7Zb/jY6dGiQL
+         2szzGXrprCqle2GPm5O926nmp8jJRyo6M0B2XPTFTdzD6NFSICAtMjTG9El0EJwszNkf
+         MyOyn1qVj7u0rmODg4s8oRDOE6wT8BI0hMRVxf52AnRYkxTAkLY+s8FDGEyAkX0l7926
+         Ysg6LTK9ISb8ijPQNAjYbYuDy56WKPMp5UOca39OTAEtUqNL1cbeiLoMVxQ2uAeineT4
+         0tmQQr9vV/taCgCAGBGuqA6tMONfAn3xVagIu27j+TTi9kJFJBkLk3BsB4HRhJDnWZCu
+         C5WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787575020; x=1788179820;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=86o2mla0Wt4YoV7NQUB6bfRSm8bpfsWlSQQ8/iZvyTQ=;
+        b=WxYqtKd19Cyvu/iYNGCmR7IwzT5Cz120j+9dRqqUQ8SF/1eHgwBoxshlc5p1bZ6SR6
+         T1Re6kcHKSLFN9R8udxWBYv1sKYzIjoSfBii2/d7Np6+BCZKWbYeuFKB9bk5EzmxM6mZ
+         UbAh6U9B71VebCC65JrKvGdz0404ss8DWr6ZhKaRVj7mjvewUkRuxVaZDhA7yRLg6jt+
+         z8/UImChnqnUub4uuCQPOMkGXKocnP5f3eX+cZFG+0mbCVtw+mrBwAWLDdNjP/GGj3Wb
+         SWR9dtPnWjBqcuaLV5PMkB8B0/49Zf05Yl8aJt15lWy0NWoSkCUNOt7i+KZSms5qhqud
+         nONA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrfo6hHfBC812bJBeQEahDYDmMQuTkfV00f2AsR4axVZOhDe8ZRw5fvEOhMl/MRF665Vxk5RXPzRw==@kvack.org
+X-Gm-Message-State: AFuF++kde5T2CnceZ465KyaushUGmJAWTw1hvBsCgxY8jyB2Epil114/
+	eiPirvK2j4BqW6EZ+/cbiGP9Xze+TC7W4c/R3b9wXHYZZookaHnJ7z1xPK8s2LMgVEw=
+X-Gm-Gg: AR+sD12BpRpTV97PEa4ZHEEIK/YrvPMFJcOuW+2BAbXFjrtBWZP1zVQTq8hgh4ZwjMp
+	pwALKt56ruMSI9xUk+yV+kq6Q07L4voRa0HINLDCl4hJwGR3+DrucVN8C9ICJAHl+ziBzHcTIHH
+	LDkc9J8F7jSvILVrVTJRp3Y/jGuiY+aJfBnAS8r1HxKhNSe+YYA6H3EnBEf83JkkFBwpqSPH4kF
+	FRNlxAdjRNZs9fO6AvXdOJr4zII+rj6u1RNNDh0wjJEEk4pbV7wpau2h5y8XJIHMzzwMDADTTmj
+	0ZSrySAGCScNipD/HvRlI7htP5VIiTIUT5sZX6k3mGIyiE3IpMABoY6YiaH7jWaKpn71n48umej
+	TX2kS7c3v+KBeBZFIqm1NwHY2DSLk0niWhChZ9DNsksGSnLYtq1Q6Mpgv0jloREwdIKClJHz95H
+	a+XFAcQagAYGcCSFRtpXiom+QxATR5+ooCas2cZpzlV80eEsnka0XXCUXnO7fdf+Q=
+X-Received: by 2002:a05:6402:52d5:b0:6a0:a644:355e with SMTP id 4fb4d7f45d1cf-6a42f1848fdmr30356559a12.2.1787575020160;
+        Mon, 24 Aug 2026 05:37:00 -0700 (PDT)
+Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5ba19e053sm2079673a12.12.2026.08.24.05.36.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 05:36:59 -0700 (PDT)
+Date: Mon, 24 Aug 2026 14:36:57 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Wilson Felipe Pereira <wfelipe@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] selftests/cgroup: test_zswap: wait for cgroup to
+ unpopulate in test_zswap_writeback
+Message-ID: <aow4qP5gj9CfiOr5@localhost.localdomain>
+References: <20260824033533.2147900-1-wfelipe@google.com>
+ <20260824033533.2147900-2-wfelipe@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lsaln24baban35xn"
 Content-Disposition: inline
-In-Reply-To: <e1c8c6f5-1b5a-4cad-a52a-f7eff00997c3@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9CD34140003
-X-Stat-Signature: tx367k98gdcf5j3mct7mjjdn7aaj67u7
+In-Reply-To: <20260824033533.2147900-2-wfelipe@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1787574967-816188
-X-HE-Meta: U2FsdGVkX1+arZTPKXl3pkX779jtMth19/RCR4GxI25m1SV36Q3OCzpFrqSQUxzKpJPT//6T+SFtUUl4FKt5vb0jZENd7FTgjtihxK80ozFc5O6awkMPKQ9/mpKYyol6XA7zN9nauz2vvn1a+laDLT6b/IkFMpWQ1eNKGX+CpCqrQdacW1/QOAawOJezNez3T9MHxGHT6uKArSidxFG0GkzSKwR2QQYXUxJB52i3SGBXPoYfypKXnRNITYGjRlgxjgCbwU0I1Ea3L8ZLEa8GeRLHdj1No4wwNFh0z9oNPWNpaqnL/jGGCrgniIzmVr96+vB9pPZLmKa5yuxXq1ijVJjqcbKpdA6q6FUm12F3mqmiDPbBtEOAL4VTBBZyAu8pu6YU3l89+aypvnlFx/g26mVD2FMSAUuixUsZZP5p0z4WNV0ss19+ckDDbN+/bjV2cfUcPlSBYviifew5T4S8U5cQBSxphahcabJDUH3dHskTUl4HaUdw2UaOJHqLFh+VwRPI/98sl3edgK8YOahB9PIP4CtnJl1Sd/+e/FVNpGzv7fyEc6sbusr2xbyS4KxTwKE9WhtIwqYdgr9kgbCLusCqHNERT2fJxh76EyEObYRYMS1LWrjTTWetL2BarXkX0Tg8tYlzU4c1YM1/k+hnvHNaPB8PBGXINxBf+aBuz1PEpBbizbGtMWaW5Fs/gsIfOpy9XqvjL9XGo0vX03XqhPfCvChakJdSQJlEtJA++7qMs3OTJSdcFrpUeFmX8QTyENw2QBdCqlEXJjYKnAJX2a4ybI8d7+fxxSH/MNyvbaTXizqjrOeVuYrehWUELvdJ+bto+ZyrIxU1shU9pR3Ru4mKCX85jQb/6hzFi8wmXseVsRAcjdh7hd9hXElwll+FwsmfuYFoYQUle+eW9gSlUhtwH+xb3H2qkIUlmUkXN4hjWjFQjLWiORLbEbVNpwZi2w9GWenMbni0d/NdLCl
- 5upHtYQj
- 4NhuTg2N18+8aN051K6ovCUehN9U6UDskEK11QKIv+KQSMX6j1AlxYwzcpBKC2eVZ7MKeg6rKzZa1MGvANuLnrJq2ljIw/kIigalcuohk3iVZAOjSBCliAp8xaIapyIYX/w6jOYy2Rf1MwZrRXN0Y5+BFnGex5ae/6vbFCDEQKm6TkJ4VLVSxs9qW7YOkWq4Tsjs9aIN8YA/NTMkKSW3aCRmvUig5zlbhjm2AJWxOIXPYy8MH4NoPj5TvQg9F7kvZJJlni2vU1z2GZ1gaXsBY1ILrLi+Piqr0TO43Ad43sscW4svlDbqosKEHC5h9j2YCogWL6Fsua3KxpQ2KO7aN2Wrjlwr6/2uH/Ib6ILGdxabcOxS8iA2Ax17LersWHLp4rhM0G3n29EsojC1HvOX5/iuMrT9ahH37Z7kRFYUxltAwP8z37JFZ66OZ/axiFW6fuWyY
+X-Stat-Signature: 1jg38m38zuowmfudjhxzrrfbmz9h3t79
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9CA61140009
+X-HE-Tag: 1787575021-270150
+X-HE-Meta: U2FsdGVkX18KrI7s6MxtOWH+Wm9JDDXymkICEdIRqcHsAb2c8mavJmNu+xCMzgphwQrtFeWVwJmuXNJJ/TuZppoCzGSxUPvKi9vW7YeP/vh7BxVQpYY0PicK/yC/ta3UHbTWU1BnEbEm4c68UOdnCz2maWiZ53ED2BIh6WypY4qOCJXJrlArIfCIa1r/3OW1DYJW/YTHtZsnMeveVetPzMjGRtADxKSdskrYArmU+EnN/qqQExDiiVzeSzA1yExWw7cpACaCPLJsZZiJarjP1zPfPP086GONEtWSFsbbysgmZG8jLirl4/mikuIaX/W36L9lMy55VhvOcZXgK+4IcgoYKh7idsZWOKu59MGOT1aY8zeFrp0k5Jca5qUZw7qoiOQ/2Pj4EoNeMiRUjSm55G5ZHJLwxJELkTtGWv0VSX7ziyMz2wyhm5E8TfwowhuNIkw97zQxIIMK1i/N/rOsaD4G32Ka7VY1GxdBnzydd9eNez8WHFm9M7R001ggmxS9rKehJa6XGFHQkbTjSv4TfnuU/GD5T1QmYxYWy8yg1SVvVzv4s/MV6oZia875GL7eQTGOYORHtqPdgO5fdwnVpqKg2A+Bbh9sFjJKaMcS/POOCQdgsXa8a4CARnpS6Od3eBhcJJjaVxBTg3lBQ5gnjWR0IyMRzSz/UpjcyxBCZo8Tjpb6Kp21+kMrpEVHuM/VqNB7aJpUhcdvnZRg6YLZk2D9xaqfdoPTViwhpdz9kKMLdv8rGaP18pGDViGhUxnnHheRZYXNCTGMiOPNUy4ROQPVgRFGxKNgNUHJ9I4ovaDSi1ubfcsQ16unFGYVkU6zsuMySWrwcjbbNEsgD3uijih127gPeuAWP8TRYzsZ8uOyP1Va9Rlao+NmzZqEPuwJSU918tA/NLqZ8fYPlXQDuCgl9mB8aNipw6/0+s8dXU78EX7OIGgR7EM3KmfCA/MV34hUBpUZs46o1p7s76I
+ znXNJCo/
+ /bc3uA9uMgzhg7xqgo5mpicdjBykwWlehi9MiZYet3pYttfqKNI9dwHEkD1ET4zUYfArTJ2dt5VYvisH4oKtaH0fc5MgjaURT6vhMDaVze/CL6wK7lCmQzehWiocLimyiQZ7RafZSWxXu3+l1g/9hUWzqad3MGw0tNI7BLjoOY6OZRy64JVw7fMqM+jhN+UQUXW0zf/xEpsKLA61q0t+gzAuoxkR/B0ikZlIZrZy7v6Fo2++51Hv3xK79Os23JY6mLyz8TK1D3VdKEPcsd2burXVeX0ynG4a1tVJ4KZcSjTiPDW5Bv4886L7VDpEsQQXkrevCGkm6khE3j0VOO3uhRhqam3EgX9OITXHxXOFCzes9qeJBkRWSv/8K5StampkoQjkA0liO7PDSskZ5Ge/6Qdy1FdUDYtR0QC9ti4gZkl8W5O5QjGcK7WulAbIFFvyfFERuUTpO6mw18ov+OfqPh6S/VC0BvI7DH6jC94hqSd3raaVEm4KKHZFw/ePK77dx3JzUgvbLCkBS1PG5QiSz8yC0Hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,42 +124,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 02:28:39PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/24/26 14:10, Kiryl Shutsemau wrote:
-> > On Mon, Aug 24, 2026 at 01:47:54PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 8/20/26 13:11, Kiryl Shutsemau wrote:
-> >>>
-> >>> I went for a clean collapse.c on purpose: the engine is new code, and a
-> >>> new file keeps it readable while both mechanisms are in the tree, with 28
-> >>> as a plain delete from khugepaged.c.
-> >>>
-> >>> Your shape is less churn, though, and it keeps blame: 29-35 move about
-> >>> 1700 lines as add-and-delete today, and most of that would stay put, with
-> >>> only the daemon -- mm_slot, the scan loop, sysfs -- extracted into a new
-> >>> khugepaged.c.
-> >>>
-> >>> If you prefer it that way, I can give it a try for v2.
-> >>>
-> >>> The rename has to open the series, so it will collide with anything in
-> >>> flight that touches khugepaged.c.
-> >>>
-> >>
-> >> Kiryl, I have to ask, are you using AI to write your replies?
-> > 
-> > Yes. I use it check my claims and fix my grammar.
-> > 
-> > Why?
-> > 
-> 
-> It doesn't read the way you would usually write. In a bad way.
-> 
-> E.g., "Your shape", "has to open the series"
-> 
-> Consider telling the LLM to not change your writing style and focus only on
-> fixing grammar.
 
-Right. Asking for rewrite with proper grammar was a bad move on my part.
+--lsaln24baban35xn
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 1/2] selftests/cgroup: test_zswap: wait for cgroup to
+ unpopulate in test_zswap_writeback
+MIME-Version: 1.0
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+On Mon, Aug 24, 2026 at 03:33:57AM +0000, Wilson Felipe Pereira <wfelipe@go=
+ogle.com> wrote:
+> When running test_zswap on a single-core VM (-smp 1) with 4GB of RAM,
+> test_zswap_writeback intermittently fails on the initial run after boot.
+>=20
+> In test_zswap_writeback(), after waitpid() reaps the child process created
+> by test_zswap_writeback_one(), writing "+memory" to cgroup.subtree_control
+> can fail with -EBUSY. Under cgroup v2, enabling domain subtree controllers
+> is forbidden while any tasks remain in cgroup.procs.
+>=20
+> When a child process exits, exit_notify() wakes the parent process,
+> allowing waitpid() to return immediately. However, the cgroup populated
+> task count (nr_populated_csets) is only decremented when the exiting
+> task is switched away via finish_task_switch() -> cgroup_task_dead(). On
+> single-core systems, the parent runs before the dead child has been
+> switched out, causing "+memory" to fail with -EBUSY if written immediately
+> after waitpid() returns.
+>=20
+> Fix this by waiting for cgroup.events to report "populated 0\n" via
+> cg_read_strcmp_wait() before enabling subtree control.
+>=20
+> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+> ---
+>  tools/testing/selftests/cgroup/test_zswap.c | 2 ++
+>  1 file changed, 2 insertions(+)
+
+Acked-by: Michal Koutn=FD <mkoutny@suse.com>
+
+--lsaln24baban35xn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaow65hsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ai0QAD9GkXMc6bI0AhzKJwbSaqE
+aI4XwcIv1S0SkdLiNbkxuPMA/3XaRn1ZHXQ5i2Jrq1+ppT0VNUvfWl9IlFN0Wc/x
+KzEA
+=DvGz
+-----END PGP SIGNATURE-----
+
+--lsaln24baban35xn--
 
