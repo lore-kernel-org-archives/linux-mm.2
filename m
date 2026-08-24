@@ -4,119 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9BF9C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 08:13:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F4D4C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 08:17:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D604C6B0096; Mon, 24 Aug 2026 04:13:10 -0400 (EDT)
+	id 8D53B6B0095; Mon, 24 Aug 2026 04:17:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D37BA6B0099; Mon, 24 Aug 2026 04:13:10 -0400 (EDT)
+	id 8AD236B009B; Mon, 24 Aug 2026 04:17:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4DAC6B009D; Mon, 24 Aug 2026 04:13:10 -0400 (EDT)
+	id 7E9C36B009D; Mon, 24 Aug 2026 04:17:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3BD66B0096
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:13:10 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 327AAA36E9
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:13:10 +0000 (UTC)
-X-FDA: 85135447740.02.E30E61C
-Received: from mta1.migadu.com (out-8.mta1.migadu.com [95.215.58.8])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B28AE180009
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:13:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D64uBYFF;
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.8 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787559188;
-	b=kjsnQ5sDvlbAsnvObrprMLScu1oF6LSDxwI73YRsF9yyCZI+Ci9FCzOhK9X3z2AXGbypBU
-	DiYXWY4Wxbrpl2TMTg5g+PznIdP77Om7+jqzsZ+45iq4mTLlBz53V9BVkwbB8AOFxLYqMn
-	c2yFSE9NUAygjWlBPSMHd1lKrwCsCHw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D64uBYFF;
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.8 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DF026B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:17:16 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFDF51A0491
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:17:15 +0000 (UTC)
+X-FDA: 85135458030.22.B4036E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6F7B920003
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:17:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qpl6pTLo;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787559188;
+	s=arc-20220608; t=1787559434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IVeVPbKL49TCH2itDpGWCx8+AacsU4ms6FDLHw/oas4=;
-	b=M2xHG/xr1eX/uRxQin4yYii+jFHDMSPdnFQtHe5CDIdk9LjkH+eV3bi0BI+FkMs84+utvV
-	UZRVDC55s65FyW7kqsTxKBVRO1PhgTxedfRmmpxzh1zjqDvcyeWzXEyaGVnGGdisV2rl8B
-	Oh0DK9Ua6jbxBGdK65EYJWk0p279oqA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IVeVPbKL49TCH2itDpGWCx8+AacsU4ms6FDLHw/oas4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787559183; v=1; x=1788163983;
- b=D64uBYFFU4XpP33tb6/GlRXBwpFZIcWCQ7zIRVvZktmyso8yaditLPs0T7sN4ptGVpE/Nggo
- 94WDo1o9YUOk45Ug7pJmUy/icIkUEiRMYAXQD5WVCEiFoElhQoyefrc6hOy8rGCTf18+6+ZNRah
- 4AveuR10o5CcXfabOHBqNqcs=
-X-Envelope-To: linux-mm@kvack.org
-Received: from smtpclient.apple (114.251.196.97)
-	by mta12.migadu.com with ESMTPS id 03a5a03ad4541403;
-	Mon, 24 Aug 2026 08:13:02 +0000
-X-Mizu-Trace-ID: 03a5a03ad4541403
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 5/6] userfaultfd: decouple fault reason from VMA flags
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
-Date: Mon, 24 Aug 2026 16:12:41 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>,
- Hugh Dickins <hughd@google.com>,
- Jann Horn <jannh@google.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>,
- Lance Yang <lance.yang@linux.dev>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Michal Hocko <mhocko@suse.com>,
- Nico Pache <nico.pache@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- Pedro Falcato <pfalcato@suse.de>,
- Peter Xu <peterx@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Steven Rostedt <rostedt@goodmis.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>,
- linux-doc@vger.kernel.org,
- linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CB35D894-1B3B-4D48-BCEF-38BB091F65FF@linux.dev>
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-Rspamd-Queue-Id: B28AE180009
+	bh=IXaDWANMBlI65kh+v9rkRtQjLvm/PKZVB63CiqD6Ees=;
+	b=eXZ+lxvIcnxhnQs5wG+/YIaziFfIfCYyfYZ1NdQHpJZmHITyt1ydRP0KlHQb4A/XsmCMsT
+	juH1nMiYzavvZ0fgcj7R3tk5mu/TxoQ4SDq91jS0DO4xAOZd7w8ySSHL87OAmvnur9/41O
+	wwxjBW4r66gZTKZ5LYYX62pI0tY5UcA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qpl6pTLo;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787559434;
+	b=PUIZ9IdPl8GKHmuyRpBp2Om06v1eeV+zuVGSPZl/F4lLL0tXrYVGe5xMecGaypqCIidl6d
+	npfLimQbl5bPjR6MKFeCQ4kVVbzpcp2z7DE9NE1tzo/ahDGg+FiHensGzwyVdRKoYOkcOf
+	a4prlZM4l3kt1171VyRSheNN1tpsWFY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF294600CB;
+	Mon, 24 Aug 2026 08:17:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F411F000E9;
+	Mon, 24 Aug 2026 08:17:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787559433;
+	bh=IXaDWANMBlI65kh+v9rkRtQjLvm/PKZVB63CiqD6Ees=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Qpl6pTLoaAeBpcbEKuwh7r8MjAtDrlHX9jbAvcFpcR3CrHgdYxXx4sNdOyT+5UBKY
+	 hwZq5M/8DVldhkxcUcUBBVJpFFJx65vumAzWROkhZFaJiuN/Go9Oo5qBngNafk2Hnz
+	 4Kxq6N+gG+DKLwsJ0rRHEZidN7GEYCsTMgChe8YBhRjImyKcBI3UrAtavVAVigyJLv
+	 z676QZZTMwHGh3tA/ERm62yiT+TLykLWSMuKPn3ZFlO4phL6vWjYq5HA7PXoJyoZ/A
+	 GP89f/3ADUV4wdxx07Q2m2351EcJIaNzyIUdQOg2KcUhJ+DF4PThf+Jgvs99hwVs8n
+	 TfuPMAbNrQQ5Q==
+Date: Mon, 24 Aug 2026 11:17:00 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org,
+	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
+	hughd@google.com, jannh@google.com, jgg@ziepe.ca,
+	jhubbard@nvidia.com, corbet@lwn.net, liam@infradead.org,
+	ljs@kernel.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+	mhocko@suse.com, muchun.song@linux.dev, nico.pache@linux.dev,
+	osalvador@suse.de, pfalcato@suse.de, peterx@redhat.com,
+	ryan.roberts@arm.com, shakeel.butt@linux.dev,
+	skhan@linuxfoundation.org, rostedt@goodmis.org, surenb@google.com,
+	usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com,
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] userfaultfd: collapse VM_UFFD_{MISSING,WP,MINOR,RWP}
+ into single VM_UFFD
+Message-ID: <aov9_DIHLHynm7tN@kernel.org>
+References: <20260823-uffd-vm-flags-v1-v1-6-3086981b33cf@kernel.org>
+ <20260824071126.41979-1-lance.yang@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824071126.41979-1-lance.yang@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6F7B920003
+X-Stat-Signature: ocbcp48khmd5z8zdwnxzeeuwcqygbx8f
 X-Rspam-User: 
-X-Stat-Signature: snim5eeu5e3zd4mjko8kqzhw7debnhrc
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787559184-244625
-X-HE-Meta: U2FsdGVkX1/uSZ3Nc7Li8WIQJ4XiYzzJ6xIfCaiAjecCHA14SnOte704u/lVi7m68Z9YnA22hGo4b8jpMi2KZ7OzjC/oEijrRZ1jUq+TODF0nmoSuHxxaPlocraa8fvHZFfkTjMW2t4OEWDUidS1xkZ1G8Fm7mRlFWpICrKbGtSBrSEhmSrKiSatogr/2DK9AWalYpie6xi3+amlo1hFIAswKkm0L+WthpQWrhFKpnIoXUdpxuZ9o0/6OJnkb1e1lVd5SPm6bvtWm6vDV6fWeOXmJpTMbnczfO4PRUQjHdJsGc3giREHF1SKMVkYJ4BsEm6bt+fD2Nt9zK45whBC9HAtMjjwp4lXPY1vTBIsLv3H65bhiVSZ29bz/Jwb027ZRS3Vz6x3OkwMcNOU3MrMHmhBk5WW0B5R0UniFr8muLxSxVQg1BmK25AYgy8zwfklWwbA1fyyyJrEyS7JgMCInmAjk4dkSjBPhP2ud79l2mlqTUJ7ZhIgu9p9p+wnrJ6uYv+gzkOaUcmbpb7Yo11/V6Hmt4kqp7NuLvQYqG2AkZOFSHCQxbqP0qdIn083i4AI3tMNjTP8eJYADQMK3Co9X/C8vRTlM/AylQalzUafZbLhbOjBRpLZKDDxBXedM1hWwTzAsto+T+KKKSgOd4VrJ6zge8UM7QTtP+aznI0ogfbhYPmg/wlVTgcnU4pHsqfxlOYflCdCSNGKYtSq8otbrr1CuTX9+RFdkSgsFgdOrXCn0OA+fPzkMairV0gIZfrG860yHFeTNxPshvEXcm6Y1fJpU7ZgEwa9yF8H4tEcv1fnrtEpXofPWnaFPqpoSrDhrF1YOi2s6Wy/7d/DiTddt1NQMcg54/iMCXR+6IbAOnXia0S/9a3CJGHcgHbX38sWz7hktI1Vxmm/EWYl5iqzauRKwwpWv0GTBY1B6hg1tdRrEkuZ2o3OlMwd7yYMkTiMdOr1vgcFu3Uqc8LRIJg
- wanRF35u
- 0PnvlGD5+GoV5Tfky/8vXyB4AYghOUoKJXVwfjoQPuVZTJeshBx80iBk/3k39/UvpnY3VXwh79oqDYFZbtNft3B1D4x62X0gVrN8Ok7G6CqwsHu7FoNCdlL/LG7E1Erb92WuFbA+eWD8AMlHv7qoTscbFFvuwBLPoHxo7scnHMC7GiBHfoS9ce6gCTwMrnsA63QlkxAmW7oRoyvxW7YQaTUPCD9i/GnUFABP28hHVPWCHuHxq91Or3brhB0zgFPrZpe06VWZrrnPqzZaNrv7cALr9CBdpy8DVmKVI
+X-HE-Tag: 1787559434-463304
+X-HE-Meta: U2FsdGVkX1/WgKyCWoMmtwNlfSwYGIFCYeYfCctnb6qNt1oag46OdDekmyC2lCBUxDHf+2mhEXGHdmPZJO6jaxIbiSuqTJd08cQwiQkXo89Rhx44m4teznYMhaiz6TkNNhC1hp6b5eABWCF07k7UsxnX9de9lyHo/57natFADIGRHWJBkdchs3QH9Jylciosau6wefS2UYhDMXPzW9MBJLdnNZxW4F0RENCHGb3CI63lWADHgCmcyZcVttrrLzgiNqU0wGsK7XZ5yUH5kzlmF+XP/6u7SbAHg+n9DzcoC0JgchZ3D8xW12ULliWHVI/s9lLMtvRYrLnhNcfBd3Tc7xPk7iT8Qt9it04XcqiTYln8USAdFEF6bho/197rHAsi7xuDMWX+zCCwMjnpyyl1/D9DmKLyzfSGy2H3Zsn4l+1N03uUkMeeHEzc37TKUZtKYYaA+kbf8OM8taFkvFTaD7tlX/BC+jIHl6JzUFhY/LtIHGKg43gLsoPHmnipEZan9KXVqWzP0Gc+0zF5udtsqH8wFiRwhzF5uDWXeH7Q6yxebHBpbk5IW5ASOw5ccuMnmz7afcDBPLXkZ7Kq+2l4nO4aQcXhGcjsrxIhkqCZEBRY0WZkdRYhYKSVUlEdhpETOyriiNptFMJphtIxoKqR78SrTfbveu6jUgDVTgez1PiuL8IqAMIGfVcJFVgBSwFwGpBr5uk3nng3F5XaQhmm1FJVzx++tj7Fr0cFNGrsSJyzMZxQlI10JBlmP1NDYTd17EglDbQKSueaLv11ChQngciJC4c80HUb8l52wziXwt14Hp67Y4Y75WwdaRkZ6EAOZJRV842wL/8L4hBADah93JlVi32gaUtXsfcArrpP+eC6S++8LX/S485PweEI/3oV1u3U+b9NSAkrWAb+BVBWYPs0ELG8aABZyV7TSPQApvifP4NGZ6qSy923L988tdiGotRzlLf3lsn1kjdNqyV
+ fkBMbNOs
+ +o8kO/PEwaYdX6uDMyMQga5Jhhib7bEk0Cg2ED7IcRg2j6h1nGU+EIg8b4ApgoAXgkHXvi6KaUpiyXa3dJFAH4hDepp43OLhuTqCUtQI9aFoQnAQfc13ujTtCiVXGriXM3qOSya3zNIkBKKYQWH76fXZAw8tNjIwGk5HR6WT1HIXkvSq+w01J/JUw+sJsYb/zfE1GPeXkTVA/WlXykWin3On8MGVgTEwYFTUBV+UOmUaWsEkEh2fP1EZj4g3MnWiZX26q3BlxJwjdOo+yHgNBSlwij1oh1hYzvDM7jgDIfY+gEtk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,26 +103,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Lance, 
 
+On Mon, Aug 24, 2026 at 03:11:26PM +0800, Lance Yang wrote:
+> 
+> On Sun, Aug 23, 2026 at 03:17:43PM +0300, Mike Rapoport (Microsoft) wrote:
+> [...]
+> >diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> >index 83587d34b189..193f6e65d875 100644
+> >--- a/mm/userfaultfd.c
+> >+++ b/mm/userfaultfd.c
+> >@@ -50,10 +50,10 @@ struct mfill_state {
+> > 	pmd_t *pmd;
+> > };
+> > 
+> >-static bool anon_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+> >+static bool anon_can_userfault(struct vm_area_struct *vma, unsigned int mode)
+> > {
+> > 	/* anonymous memory does not support MINOR mode */
+> >-	if (vm_flags & VM_UFFD_MINOR)
+> >+	if (mode & UFFD_MODE_MINOR)
+> > 		return false;
+> > 	return true;
+> > }
+> >@@ -462,7 +462,7 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+> > }
+> > 
+> > #define MFILL_RETRY_STATE_VMA_FLAGS \
+> >-	append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
+> >+	append_vma_flags(VMA_UFFD, VMA_SHARED_BIT)
+> 
+> Looks like this drops registration mode from the retry snapshot. Assume a
+> shared shmem VMA is registered for MISSING and COPY reaches
+> mfill_copy_folio_retry(). While locks are dropped, the same userfaultfd|
+> can re-register the range for MINOR. VMA_UFFD, VM_SHARED, ops, file and
+> pgoff all stay unchanged, so the old COPY can continue instead of
+> returning -EAGAIN ... no?
 
-> On Aug 23, 2026, at 20:17, Mike Rapoport (Microsoft) <rppt@kernel.org> =
-wrote:
->=20
-> Introduce enum uffd_reason to define reasons for user faults rather =
-than
-> overload VM_UFFD_* VMA flags for that.
->=20
-> Using a dedicated enum makes the code clearer and decoupling the fault
-> reason from VMA flags clears the way for moving the uffd mode bits out
-> of VMA namespace.
->=20
-> No functional change.
->=20
-> Assisted-by: copilot:claude-opus-4.6
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Good catch, thanks!
+ 
+> Maybe something like this?
 
-Acked-by: Muchun Song <muchun.song@linux.dev> # for HugeTLB.
+I prefer to add mode to the retry_state:
 
-Thanks.
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 193f6e65d875..a0377f7ecc69 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -471,6 +471,7 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+  */
+ struct mfill_retry_state {
+ 	const struct vm_uffd_ops *ops;
++	unsigned long mode;
+ 	struct file *file;
+ 	vma_flags_t flags;
+ 	pgoff_t pgoff;
+@@ -482,6 +483,7 @@ static void mfill_retry_state_save(struct mfill_retry_state *s,
+ 	s->flags = vma_flags_and_mask(&vma->flags, MFILL_RETRY_STATE_VMA_FLAGS);
+ 	s->ops = vma_uffd_ops(vma);
+ 	s->pgoff = vma_start_pgoff(vma);
++	s->mode = uffd_mode(vma);
+ 
+ 	if (vma->vm_file)
+ 		s->file = get_file(vma->vm_file);
+@@ -493,8 +495,9 @@ static bool mfill_retry_state_changed(struct mfill_retry_state *state,
+ 	vma_flags_t flags = vma_flags_and_mask(&vma->flags,
+ 					       MFILL_RETRY_STATE_VMA_FLAGS);
+ 
+-	/* Have any UFFD flags (missing, WP, minor) changed? */
+-	if (!vma_flags_same_pair(&state->flags, &flags))
++	/* UFFD registration mode or VMA sharing changed */
++	if (!vma_flags_same_pair(&state->flags, &flags) ||
++	    s->mode != uffd_mode(vma))
+ 		return true;
+ 
+ 	/* VMA type or effective uffd_ops changed while the lock was dropped */
+ 
+> Cheers, Lance
 
+-- 
+Sincerely yours,
+Mike.
 
