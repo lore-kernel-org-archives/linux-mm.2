@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C62FC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD02CC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 07:59:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FD696B009B; Mon, 24 Aug 2026 03:59:38 -0400 (EDT)
+	id B71716B009F; Mon, 24 Aug 2026 03:59:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35A4A6B009D; Mon, 24 Aug 2026 03:59:38 -0400 (EDT)
+	id B497F6B00A0; Mon, 24 Aug 2026 03:59:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26F616B009F; Mon, 24 Aug 2026 03:59:38 -0400 (EDT)
+	id A5F9B6B00A1; Mon, 24 Aug 2026 03:59:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 06B5B6B009B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:59:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 89800120463
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:59:37 +0000 (UTC)
-X-FDA: 85135413594.16.1307088
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E08B7180009
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:59:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lMFV9AKJ;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8978B6B009F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 03:59:44 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D5B0A31DC
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:59:44 +0000 (UTC)
+X-FDA: 85135413888.07.CF7D9D0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7679DC0008
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:59:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uf8hkcQg;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787558375;
+	s=arc-20220608; t=1787558382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QESuUejoif21xpk97k6427Fvu+YxzkM7GDXWk9VgdKE=;
-	b=lfhLy4qrWhkZ0jPF0QrFBOKHcAkXEbmVgMy0wMG3J3aHwlQU0SgREocpZAhdM9unRN8Try
-	+xGv6cWjESvoHVCa/jh/J0nYItkLUwqlIoLGEgM5YF08X0Ts76Kg2WnXTOX/BBf2dglXKa
-	o76Gh3JoF+dlZQI9SZHlhKrV7YJqBnE=
+	bh=WJoYfBFszVnClToOHHH2o5hji7ont+MTpRkHMfc8KdE=;
+	b=WSGxiYKi8sQ9r1sT3+h3K+biQSkkTCoLdN11G08brFeGizAoJnFo4XDcHZJ6L2D1e46Sw7
+	2rXUNUOKh0yqrnRm3ouX1uWXPoYAT9iNZEljnjzjt3j9o4WbB+hS22cL8hyBVqwQkh6HZq
+	3r77UztddY6f17CBI2BRzDIlm6c8wa8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lMFV9AKJ;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uf8hkcQg;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787558375;
-	b=1FQHsL/Rmz16VLFI31wq1NqU2eCiOn7+FkUrJruME3rXtufoMG447y/9onoXsm7G4uijn7
-	uIWay7tcHYJ0EQT+8ThJmbI0lmoNdJQH/w2KetV3hsj+Qic/HdVZs92DBM5STd83aSSEo6
-	bKJoa/EqdAQSId/fL7SKZcamC/VTyC0=
+	t=1787558382;
+	b=whPl3XS9OQGJqnCsOocOsPqSjewy8wh2PtPJ/OqJi/fWwiivi68RMTERhB6CsTEEuBL9v5
+	YiLgRt3BuYge6haRjNpzROwNzBhxsy15uoSVx7abeN1nYVqJPjQeNa15z5mE9jgrJmKGPx
+	sFfD1cTJAZaQO95lm3fBKba8wDPMnTE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 334BD43D81;
+	by tor.source.kernel.org (Postfix) with ESMTP id 18928600C8;
+	Mon, 24 Aug 2026 07:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924EA1F000E9;
 	Mon, 24 Aug 2026 07:59:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93F01F00A3A;
-	Mon, 24 Aug 2026 07:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787558375;
-	bh=QESuUejoif21xpk97k6427Fvu+YxzkM7GDXWk9VgdKE=;
+	s=k20260515; t=1787558381;
+	bh=WJoYfBFszVnClToOHHH2o5hji7ont+MTpRkHMfc8KdE=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=lMFV9AKJpUzgDR2MoMR0GFxbAdwyj8PeKhtFdvRKi15qNTh3y5ASPNf3oi/I0YyTr
-	 /anHzyDhj+8le4BthTbUd3SpUje00DSuPpnmfW0Yuxl2+3DrR2gZ/X2Wp3EVaRKb1R
-	 5bacSFKuBovrNvUyL3+KWZHbjoNkesPD+pQ+uxJ9FsTVuToF6nsPM7/UWpCSolXN7M
-	 0MZ6YQJjHuqmTcL+A0wdRV/M3Y/QjsoyNwo6Ux1F9+5XRgy2Hlta7FaI8UxRZybjy6
-	 vjuEHHUwB1nQaY9wKR2dgUIhfMQVQCP6P/G5m2GLHZzFJsQszYKUxLjp8ydW3IGmDJ
-	 s26qZPlp7WTpQ==
+	b=Uf8hkcQgyJKXdHugZsCiBPziTvMAXJnVifz9UyTjgD/eZWe/nknUlm8s0O/JoBeMM
+	 zOTkqWmeWZJoTGQP8oT3O5tOnrzFTgNZzN6nujVMzarnsU3/FVXrUGlzZyltG425B5
+	 +5CNyoVrS40s3VYr7n2RcGZGU5qjozmZEVplpknmIafNO34dtivWT5sK2bzfFJDyyV
+	 kN/9elDd4dQ9pMZ0j2E/SN1bucrC2Xn49rRnACE3FdS8FH50U310+gFa3RXS9JS0RQ
+	 AGounwpHabWZsDoQJkpU7yulG7y55O16IuZkiR899OWASWOlCEITvxYxu+obYmpqy9
+	 pYkqB1Wm0371g==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 4/6] tools/mm: move gup_test from selftests/mm to
- tools/mm
+Subject: Re: [PATCH v7 5/6] tools/mm: make gup_bench a benchmark only tool
 From: Mike Rapoport <rppt@kernel.org>
 To: Sarthak Sharma <sarthak.sharma@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -87,20 +86,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org, 
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260813181230.483746-5-sarthak.sharma@arm.com>
+In-Reply-To: <20260813181230.483746-6-sarthak.sharma@arm.com>
 References: <20260813181230.483746-1-sarthak.sharma@arm.com>
- <20260813181230.483746-5-sarthak.sharma@arm.com>
+ <20260813181230.483746-6-sarthak.sharma@arm.com>
 Date: Mon, 24 Aug 2026 10:59:05 +0300
-Message-Id: <178755834511.3606540.11386137708509292188.b4-review@b4>
+Message-Id: <178755834511.3606540.5889183666243190319.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Stat-Signature: 8cz7htn7zdw1r7z7yyypmjy5d7wozdzh
-X-Rspamd-Queue-Id: E08B7180009
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7679DC0008
+X-Stat-Signature: m5s13767ndjawg7zanjm5xgsfiyy339r
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787558375-770624
-X-HE-Meta: U2FsdGVkX18YP+xzxQjAlIEO5jWwfGGBykftw9vM8TJDkAN87can8RoowLv6k2vMyTPzOtUEWoWIoQGwjeTjw/9+RbwtQPERhfsbtguJOJvGdVIU5rAiA6iFwGFp2AEOtJguNWV8dvfzyzEI8wbu9Wuwzd39JET3HMW0uQ8koyCoTCLZa6QeqJYoUHiYpzY5IL7BDHQD22ROG99uv3ytgh3Yj0TPpq+AOqMi2UFjtkJ24PnUIwxLp4+8r0BvyVCjcl/LkjrkX5hjxDXqmoz2Vz8HQSfJSZ3g1KXnkPUPiJPusuRGA2rgK/XsmBz7IBklGv2ojoV5+zfxrgCetnlKzUEmrx0PJw5pFE0l29BcDto9rOqugg1cM4SUIwi/tuVLlAX/01cJRA4f1dvKQAmUtmeNH8HMBCnM6hXXlae2pTAx0y/i9gZ/9g696qfHZ9MJ0ExcV8n+Q7WkHIdE+utzotbZXzDGlDj8pJKJAyshBW+ibGgVKRqYNisen7CWqcZZCuDD4t3nm7iLsJanc+4DKm4OsI68vVMN3Ud8i9/IPnSthdKqPaaIbCMpSYCfywK1DpglGRN5xNdJxHtEj0iB2tBEocc/c2UwvubzotQ2IoQEb+UOjrmTLdgNavUILgkPvkU0m6jRawn9pvODXO6Ad8nC1eVl1TCtEHjWz/fv0l4CKgUhdKvAHru9s8pCZAQT9xP4kUKYtIn7N6e4LLLDp7kFDBwtLqMVZUKx2oXet42s95FfBs4tJAVwg97zrxDXm8h8t8yJzlindYhqVTN/8ejTtFld/o//6HtzmHeuy0Pchr8CXZhFs/MbJZhVROtq3o7ckbkGtcuosL6rUcnN+5EGPDA2QTUcoHQMQpmA6yd7iCDCnzu0Ys0ScpXIAp2CmiuY2dmj/jzTJh20aRsFz7Dibeoi96HEcUvZ/ssDt8l888pE2bBoyJritOukRwppC4vWBxaCgqpqvNbLFcT
- BycRgNsD
- tY9dXbv4JilkKLUuB/i+mkUnCHJb7HCyMLkHuuhc+JKuLE35HIRaVhsjEfD7do31dWEBO1Ei5k9Bvze5aItwR5LqUBoHBpdj0tOk/WgMlTB/hepGasv87+haFDoehFLRYY6OG5cG2hK8zotFt35qGBoxjJs/VbIA6DP18mxpyt5eyUwVu5cg0ex6rFDaWrJOFkpajNPkIbUDY5DRGyGhPNKkblh5Xq0zG9NP4PbkJ8RFBeBWw2LoEO57ET2+JDQv6iCjWewzqZ0wS5iVUsN6ICIu2wNEBW4xfd8IsJ53LWi7d2nE9mjDRV6gxk8kARaadcCIOmf6UQg/yzYMmtmv0dldTo3PszRwSWRXQ
+X-HE-Tag: 1787558382-964031
+X-HE-Meta: U2FsdGVkX19HX+xwuMmgAqjtjvrhbEdA1X1ca6+eNl045rLiXT3CPzSdud7rVNqGgD8U1SonsDBKB9DX9BQrZ9LFq0TcvZl6ebvgPWNgiPpBA5cun2uL2t5moS6e8cbqoRTDjjGnQIvYIerUhPhEexV64lFh+B0+3w2+1E5FIIevwbdJwleM5tD3gVMtoB+Ub+8c+HFP/yqtVZFH/U0LDbHZVVno3crE7mUPOAjjZgpPbEw93EXqO2h1cuSpfdg/n/r9Jn8mfLkoUETZFCfidmdYpTvbztnU45pCoN/U8Sr7bs9e9PA2TMrwck+iPo8D5pgfnSeiTSxNjYn/4GJTAJdHm1fI107gc6h3B0QMSJrgQuSRkQqCJfUyPt9C8f9G/D5+FKiq9kMLrTGYrwjvYX1OBbmTSl1tJCYLPsEmjpds7Q9ON6ZeWCRGicwG5hVg9r0LqSXaWYq4ov5+u4vM7Zx6N1oMCPkc2LBnsmJMT/duCsjr33YKjfndZfY+glT6v8LGwMlNftg3WcQGTm5k0BIN2zkiXYy8XwWq/yd+lSyZP3oQ2iGxxejrsRNm9m/FBzeK9oMc45lUffLJP6/dsQt9WhODJ7BvADn+DNWMIXl/A5/KQpXR+6y9o+sU5wgpi0mwBf4odqMyCbz9yTPP21+jQosZzkeog1Rbgv40oi+Yg0oEFireK/g8A99XC7vMYwy5xfm44nSCSAlSxlrufbbHUblSl4iMBGJtKv9ay7C9OFCzij5bMi9oG/P4GE3O5A6ARk5OBzqipHZ8+NLu+z4Qmtp8H7p1j1bMM47FZYEblVsiSIQYvwyREb76yopLw6pIgPA280chVy+oXJ8ujls5ujpw5pWl2OcENVr0mNbjmJCzkwrxSSpLh4FUxT9IOK800QdmX3dHsOB3wO0V2bApSLkttdmCA5RoK5nbOP9wb+iORUyNyiBEmvD0/cnEiFTD+6RTiGaxYlc95c2
+ Pw8gx8v/
+ eej/1rTOKWUoSw0F57EG7eFyLzc1oR4Kr1C+LwaQz0P4BLVWX6IHzrZnZ48rt2i03nawKrwLJ/QOTP5iUDKlmFUo8L65DAcGXToYKfXXjzeTODIXFISAt3dSxY/HSuMxl+xPetzPM2/GaA/QEMi8cZwgvCh4+eSOCuOnwd17qgYX1qB9J5koqKTv93Y6Ex2N+uLYrgUcSJzfHuQbqqCI+Ba78oc/qvsi84kvlz22y1glAyQk8rjq+/OTAvwfG6ytlZW2+8Y5Q91ADy8b+1c0spXVaxTp1eJdDuP59ycb+YIEPsB6+2z8g9FWNi1ajDQw5LJ3tzIZdtHNwHddpMzWpzFuS0/idshz+VI1i
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,15 +107,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 13 Aug 2026 23:42:28 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
-> Move tools/testing/selftests/mm/gup_test.c to tools/mm/gup_bench.c.
-> This is the first step in separating its benchmarking and
-> functional testing components. Later patches will make this a
-> purely benchmarking tool and introduce a new functional selftest
-> under selftests/mm.
+On Thu, 13 Aug 2026 23:42:29 +0530, Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+> Remove the functional modes (GUP_BASIC_TEST, PIN_BASIC_TEST and
+> DUMP_USER_PAGES_TEST) from gup_bench. Drop the kselftest dependency
+> and use normal diagnostics and exit statuses.
 > 
-> Include hugepage_settings.h directly instead of vm_util.h and
-> use getpagesize() instead of psize().
+> When no arguments are supplied, run a single GUP_FAST_BENCHMARK
+> with the existing default values. Let users select other
+> configurations through command-line options. Report ioctl failures
+> and handle errors without relying on assert().
 > 
 > [...]
 
