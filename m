@@ -4,114 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A47E2C61CE3
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA7FC5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:29:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F1B86B00A3; Mon, 24 Aug 2026 11:26:38 -0400 (EDT)
+	id 71DCF6B008C; Mon, 24 Aug 2026 11:29:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C9C56B00A4; Mon, 24 Aug 2026 11:26:38 -0400 (EDT)
+	id 6CE7B6B0095; Mon, 24 Aug 2026 11:29:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DDEF6B00A5; Mon, 24 Aug 2026 11:26:38 -0400 (EDT)
+	id 5BCB46B0099; Mon, 24 Aug 2026 11:29:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F6826B00A3
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:26:38 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE7D780193
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:26:37 +0000 (UTC)
-X-FDA: 85136540034.16.4CD22B2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B3CB1A0013
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:26:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rlvEUG6n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2736B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:29:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 98F111C01C3
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:29:38 +0000 (UTC)
+X-FDA: 85136547636.30.C70CCAB
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D8AEC14000C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:29:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Y89fmpj7;
+	spf=pass (imf26.hostedemail.com: domain of 3X2OMagYKCLIdjarrgYggYdW.Ugedafmp-eecnSUc.gjY@flex--lrizzo.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3X2OMagYKCLIdjarrgYggYdW.Ugedafmp-eecnSUc.gjY@flex--lrizzo.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787585195;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787585376;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=674iHzZPNBCbHVP2H9xAu6k3kKQnVOHT03fkle6bOJU=;
-	b=yT2V2439zd7nV5opu19XJV/jout6S+JH16FOEYW1h05G8zhyTDKyv89UpebgXkA1o2Aluu
-	oQyeGxdsOxynn+WfThTS9sPM84IgLSzJFm8g424TNkLO7DCIzUD0TgYJCqWV7T5viOs3Cl
-	2fOkej/djh3Y8ZSN3KvMSfUQR0Hk85A=
+	bh=4S+Q+WbZhfdTv2oIAFNepA3QU93t9DANybxh3vuKjoU=;
+	b=d8zy08+ihI0lQKWAwkfhVcjLVp9MCvQyfy5QE0QajGBAWzqF9eTSps5f8NBPiGgjgWsj7N
+	sP6LLYs+2lXg+tiMDIaokieI3HNEdXGDpJt8GQgjm0PRtTrxXuxU5RLawqa838n8TLZXKw
+	r5YBRJ62BCpiM8d8rVwpVO50N1aAUfI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rlvEUG6n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Y89fmpj7;
+	spf=pass (imf26.hostedemail.com: domain of 3X2OMagYKCLIdjarrgYggYdW.Ugedafmp-eecnSUc.gjY@flex--lrizzo.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3X2OMagYKCLIdjarrgYggYdW.Ugedafmp-eecnSUc.gjY@flex--lrizzo.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787585195;
-	b=aPbiS7qO5rrT7pr1h1JC1A6DWtcTJuyEVjNRGMgSz/GoAmqpAAsGMSa33GK2IotIjGi4j4
-	dTlZMiE5Hg/eD1Y2kIMpls3pVAa6Arv9t5ZtaxRtgW9xAB6I0OafZ+zuaghAeWkh44opxR
-	Nyzg9QGhjNHAZKjD7YPGjG5NXFJuIV4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B297440B7;
-	Mon, 24 Aug 2026 15:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3DA26C2BCF7;
-	Mon, 24 Aug 2026 15:26:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787585192;
-	bh=LSpVtO/hFU1Y8AvNZfXAsZKiYVFMAqKDVGjSAMR2uhs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rlvEUG6n2HLPgiYttJSI/+dUdKAgxBeCajSAeASepWPCeBrBFb1Y9jS0CVOI5IhKk
-	 ig/sxzNQtpoGjmYfs0OIn177KdCUqmmfSd9a8onlzsNiQJpHHOQWNIjaxW+f0iSTLl
-	 b/yTp+P4ZHPZDiC09W44ZLEX4yXD7kW0Xvs1+GtbX/KR+wkq5YGhrtX9+3k+lJHhhO
-	 P7xh3RBgBiDYOArM8RyBy9adfysVWoPC4G2TwVH25hzf4pS/kUVi6f7Xc5rCGZNenc
-	 TYLMzul863RpYWQwtzje4zXqtcVcFYelWKUnEmMRmYCKVopvm6Tat7fKfYm4ROgThz
-	 zJCZdUZ0RTBdQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25D67C5DF81;
-	Mon, 24 Aug 2026 15:26:32 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Mon, 24 Aug 2026 23:26:33 +0800
-Subject: [PATCH v2 6/6] mm/mglru: fix potential generation folio number
- leak
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-mglru-flags-cleanup-v2-6-0104132114ae@tencent.com>
-References: <20260824-mglru-flags-cleanup-v2-0-0104132114ae@tencent.com>
-In-Reply-To: <20260824-mglru-flags-cleanup-v2-0-0104132114ae@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Ridong Chen <ridong.chen@linux.dev>, David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>, 
- Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, 
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Kairui Song <ryncsn@gmail.com>, Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787585189; l=5305;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=tj/12DD/VSfeSYVO143tuBTxpcfyZNrpYVNaXEBtCkk=;
- b=NRrbduhTkXP/HPCS8wsMxUmN6w34FdFo5lTlwiaKmyEXifN5Dfy7gXCfbo7nXlcrTNCXaHypS
- nEP9/yGzheFDNojvLfL0GGdDREFejku+i3WMu1uWQ9y/W65UzFGOI2P
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
-X-Rspamd-Queue-Id: B3CB1A0013
-X-Stat-Signature: ghigqiwqom1r39ddr38gj45hxytiituz
+	t=1787585376;
+	b=O1pWUOfVAaKJKz298gyWUplI0SmRKf7gLOruR0ji++ICFoMRXlgK0Lk/nUBQeqO50pcwhG
+	HQIWC/4t9rNJXD++UudcH9rOPoKFQU4BEfGY0f607hQF7mBjqHs42Y19qnaMEO/LapbCa7
+	/FFkssGr5OOxW35OM4fzQBGLkhV9xE8=
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c15fed5653eso267839666b.2
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:29:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787585375; x=1788190175; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4S+Q+WbZhfdTv2oIAFNepA3QU93t9DANybxh3vuKjoU=;
+        b=Y89fmpj7moyxcL5B/4cdk+iLpvtPatDk9DFJMecFkMbgA7d9vctGH1c7aDgC2U4K7n
+         YBUGOS+nSggO41dwWGnmqez96X2XRcwBzYHPGYW1K7RLFpQbopoX4Qy5LGNG/eIsE2w9
+         n4tEDVl70WH0mk1oYvw6yXfo4RmKqw+Gy05cLiTM21HqUuON3KcJLthMwyaydCk8apq8
+         a09UEcR/QorQAcowqyzZ5geGvAS9Zs0qUGpxoiRfbK8JNACrQcihN2nZx3hIjaDwPqfz
+         WHZa2HgszEkDrAyrxLxfcI5QdI/4d011A2mNEk+klx/1zHM/PZGjdQAQXKbOJkMdMIvp
+         BfjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787585375; x=1788190175;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4S+Q+WbZhfdTv2oIAFNepA3QU93t9DANybxh3vuKjoU=;
+        b=mkDyBDmKe8+12vBO9WOFs36lsl+9fIipCNW0ZPhlmYsKXVIna9xtgO+gpX0SPBXFqB
+         v0uVYtAZ2XKzec8oCuEhaPANm7+2d3OdXoyQSGcQu0Rg2xmVVy89QjsSQwIpLAZwQpzZ
+         lkOih/C851VpgkiZXOmQMD+pA8g9Ju6qwSNDnL/KexHMMBvZGVWSiMCtZ5bOtn4Pr07g
+         1bHCB79dY3lJKd86XeAnUc55LPz0PEyw3OXy0UPCFX51ADGmpH3dQ+9KjfZX6La+zA0y
+         14A+7j488NugnfvISatzYyMDq0pHX9gUwvgnc7ajQheetWIEVEPgoTKKiahPejlEoEM0
+         APsA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq45OxbkHEi106+y9IF4R1y2Xq6GuHB7RJeOfB6mleOziLX0Vs1TilrFJWOT3qsJB5sOCQYuFtGsA==@kvack.org
+X-Gm-Message-State: AFuF++ktCZuxqIcMJZAK2lm48CkJZAHzCFz7JBasTopzq8wtgjiU1J++
+	pxJaYy5eKEB0l0vekG/LFlMJF9T/wT+h2YRM8hJXMmYpKPUnOVTMwitqbYno+bddIWuq2m2r0QD
+	jaRvqaw==
+X-Received: from ejcdi21.prod.google.com ([2002:a17:906:7315:b0:c12:8b42:7bfd])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:1caa:b0:c20:53c7:488d
+ with SMTP id a640c23a62f3a-c246a5f7664mr2951802166b.14.1787585375128; Mon, 24
+ Aug 2026 08:29:35 -0700 (PDT)
+Date: Mon, 24 Aug 2026 15:29:27 +0000
+In-Reply-To: <20260615234220.3946885-1-lrizzo@google.com>
+Mime-Version: 1.0
+References: <20260615234220.3946885-1-lrizzo@google.com>
+X-Mailer: git-send-email 2.55.0.766.g2966f0265a-goog
+Message-ID: <20260824152932.1583506-1-lrizzo@google.com>
+Subject: [PATCH v2 0/5] swiotlb: avoid swiotlb copy on network sockets
+From: Luigi Rizzo <lrizzo@google.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Luigi Rizzo <lrizzo@google.com>, 
+	Luigi Rizzo <rizzo.unipi@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dragos Tatulea <dtatulea@nvidia.com>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D8AEC14000C
+X-Stat-Signature: y6mg5ysdd6d7casksr4sg8q7q3jpcnjn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787585195-400869
-X-HE-Meta: U2FsdGVkX19CqcAoze61bPVJ3htKNNOCaKow7goz1ATy8j83IAfycdeMzpeg94NagfSRrGVWxVwd/+XeIQusS/BSnmISsGDTnktNbxpkEofiZzxpUg+3BAcESYqVeZp83g7EF/1igKaDwpZPOTithObwnKjm6vLoh2J6Bcd76V+Wjjn1khMVGTbf+hHF877L3g+u1Tx791g4HpPuy6mXAOcTc+w4Zd7z8Yt855ND+TAQtzWgP3K/gCsYlLgVtRqJ1V0E3q6osxYyNDoKvMP2KzjFZhdqORatAPNvJ+XqkH4OuwOM8BjwxQZjvzFumDy9OuGNbbvPRWQbBQROq8M6AtkUW750bFqvt33g2BrXiB5Fq1Gx6iHi6e+Ne4NMDj02xwFUBN48ZEnFgnfA1t79bWigIoOBZMK2CHUj4xjzWRzZj74zu35a41rBj1GwqQa431KtbaGi5A7iYVGfuYCy3rd/kV+uqDS9O/x69Kzmo6JNP/d6FSSoW1lIwGh2nxwaHNknNDLFju3xrlFb/Lmt0WpE7Fchhm5zfN1eruB1HDJe1MAT8Me1fySI5U/NrHaaZSpuhkICd7mgI5Js+9PQj2OLTcm6GEodWN3DXXgKBK9s4/cG8gDXO6UpXEHULYseb+78upPsk3ObKunFmJHx0KicRPrzxvcrmAAgH6oI2EohijO05QXqTOgwQPYCCYDawluxdnaeYu/sJd07Wtoh1b8bH5PRtqk3zELIxyL87wUvUf/mcnbjVj592/MhqAbcm4m0vimjOohubWY5ftekIUeXUhRxEQs1rVNdZmoThcGKWpAgbVK4eCTreR1HAdXEgKv7Z1F/2z0b4a0SUBIkUzR7vQ8Km/dQDq22AhkXh6uT1HTxrh4kKpxmEFjq7AR3DlgewhHWd/IC2UbNq57qMtQ8KmcQvKwYM1ouR54MtwhmPtfOPZOD4tg6lwQQjknB2CcIj1YR6Cbaww4vL5n
- A7Vs/agU
- Rgmr2WUh79pw2pF8WDTkVo5SiHKDbNAyOJyx1Wsqxw3ZDWHZ80NYrwgmZrQ1lHZ8x8c/eu+Dk48uIuFTJvW/1seDnCVgRE4xTv4oaVR9G9Y7A8QYpyY1WVm9p06PXh1WNPSbMHBD0DTP3qXDjgMNX1TtVYolBgqj5LcNEc3R1/HWpgvnvo6XX/dSq2B5ZRhaeFEN09dCnYh8jNsmBgRzNQKkZOU2Mh+wnL94kqgtpCXOXmr0+y8u/LUEGKeZ3wbYtpWCPZcgES6bUDXEAEnpkEzTc3HCWoYoKRakMMt0Vfc2iOZeI98NClPgRVL7bPfYKY8hT+JX3/xQtvdAGsWsXPxaENSM/xP5LyEg+6o3uVUvF+lR12iN0ehNXdgPuNNJf7j36PlCH5eWuhSjcHNf3Uz2ZxVaKARcvNHi3uNZQ0GW5sl3//MrWXkJ3ieKVIx0zJs6k
+X-HE-Tag: 1787585376-72444
+X-HE-Meta: U2FsdGVkX1+9YQkXsrkLR7K6FIhwVddnkaot+kDS3GeZghno0D6ZfDfqmPkLIpkTIjMjeC8XIWddX6KtGK918+ATw1RQrUm97FK9q94aSmktjjkqvvUly7Ji7WwUQlRddz5HB/Fc5s6BnVArWExkRr1iNeP2hdyCewqvd5834EIQMDh5c/FICYrXwBN6gi7csc8p8Cph8KNUFsKKtLRkGi/hnrYbvr+P1E30QhzKbWwXEA9GyihWB+UlNu9cgmm7CG4OFh6VMWFekbisN7Wluz/ZYnvAfjVYlZ2+iMiNzYG9V9EZUoBoJzijcAgYXwI+a4/b4aatDoHomvpj13dlZvHaEwqXgR6Zk961Dg23vAXQkeB1PE1ADgn65CMiZZrN35cXfQpLrB8Nlj5CZnKVk4lGXliIqKCxjN4IXlCYdDuKZLB21abY7HaYkJYB1QZ6JgSQQL5YRxVlz4Bg6AUVBFdZXl1ItFORdXUosBsuYvbm0tg3H0dHUoiLZrTFh3mfdxFOmgOOEZ1XyoldwgyrvRX07pOhzd/wPP4fBXLHIEt1UvjJvLJwJexJ9Hwt+R6Vky/Bq4My/6j2+Qb1SmzxKpUjSJaP8vPOMxpFabhKovIkSsxzFlaO203kkUKoCcuYvfRlfM6FRRaJZO1uO0l4OEs2PqLkR78TmvUD3jMnqkaeM2COkpVpXIsP2CIpeLYOFhNKAjm5UYxtg28pjzIEhdOOCDY8Q9tmuv4H6lRHN1FPgRP1MvxJ7hiyzV1i1LkHMen+7EupdYg7HQgH9CCxpAciUGUc8mqgDogQq5xdvyS6MHo/x1q/gzrOBxYz0zDNBsgUje5RvHZbSsTrAfp5kFJw/mrgrfM6SJx7RtmbnOaM8DIlUhG3/WB7LsiTF5r7hJc3egQxUiOUQC7Ww4EjP78i5SlHvsvXlc2AgZhEzQQAfWbO3sqSK9QGR6DBkZh7sx4Z/9Vrprs+JpHcNXm
+ CdHbbxKI
+ RFpomC8NMAIELYYn6zRRCnANRaobXXfVySybfO1hstk70wAReNeNAvmSxBjFDQy0EiOYLH3Y9OSSfeV6TGutoxABDrKVqe/QUqSb1Y4sDD1KvuRq1SB3olBPTzXuqJop8iZI1Ts8AUGKNxOCvL1PniMcRnelvAb9CQz4DMG3PhFSij1b7S16l3ZNA9Vjg7CMjQBzWAdDOX+idbrDC9t3N0yFNaS8dv/s+sNZz5aDOYjLDuDYXCJ3KfhM0yQ+Q7jrYKoBjESXkXVYIlQBoN7GfMHD18hhDx41dVLvQtr71lCeLbgbn2sG+uuYKZX4REm2fWCtb5Td8Mtdztvc5RBO0GIK5XJCNvcTLcJRdxtXxj++8pPZ4tNvEWK3T/xvXrYpQgxphQ30VcpK86E2Zc8YkpyyBWnVAPB1TvS6bDmdPb5ArFgOx7IPElGAObEoJ+yTsV5I41b5mn6HvmE/mGxtJjz2g36NkZi9gMnZEPMdOz/80+/T7GG9T4FffwR6I0N5993bYQLvv8xa3IeEkDohgZiSO1WTl8cEs6WxwkHdcyZb8OInrq+wWuO1ebl03Yx0BTKe2qrT2raivRU+7/ixTM+UM3COe0yNxc0ICL/VlZbNlhkndMnFe1D5tDjXFuDNVVIG0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,134 +116,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+The use of swiotlb, common in Confidential Computing, causes an extra
+data copy on each I/O. Focusing on network sockets:
+- on tx, the copy has a high chance of happening in the tx softirq handler
+  (especially with greedy senders where the device queue is often full)
+- on rx, it is guaranteed to happen in the rx softirq handler.
+Thus, on top of the copy cost, swiotlb concentrates the overhead on an
+already constrained resource (CPUs processing network interrupts).
 
-Each generation of MGLRU accounts anon and file folio numbers
-separately, and the page table walker updates each generation's
-counters in batch once the walk is done. The walker promotes a
-folio's generation with a cmpxchg on folio->flags, and
-update_batch_size() then reads the live flags again to pick the
-anon/file column to charge. The walk holds neither the lruvec lock nor
-the folio lock, so the type can flip between the cmpxchg and that
-read: the lazyfree path clears PG_swapbacked, and reclaim sets it back
-on a dirty lazyfree folio. The batched delta pair is then recorded in
-the wrong type column. Nothing reconciles it afterwards, permanently
-skewing lrugen->nr_pages and the reclaim budgets derived from it.
+Reduce or remove the extra copy by conditionally allocating socket buffers
+directly from the swiotlb buffer pool.
 
-Fix it by capturing the type from the flags snapshot the cmpxchg
-linearized against: folio_update_gen() returns the type of the state
-it transitioned from, and update_batch_size() accounts with that.
+The feature is controlled by runtime parameters to set the percentage of 
+swiotlb buffers that can be used for this purpose. This avoids stranding
+the entire swiotlb pool in socket buffers.
 
-A folio's type only changes while it is off the LRU list, inside a
-del/add pair under the lruvec lock, with the gen bits cleared in
-between. The generation and PG_swapbacked sit in the same
-folio->flags word, so the cmpxchg snapshot captures them together.
-Let G be the generation that snapshot captured (old_gen) and G' the
-one it wrote (new_gen); the CAS can land in only three places:
+The implementation is made of four main parts:
+- introduce a swiotlb page allocator that can be used instead of
+  regular pages, and teach __free_frozen_pages(), free_unref_folio()
+  how to handle them
+- dynamically track the leaf device for each tx network socket,
+  so we can tell at copy_from_user() time whether we need to use
+  swiotlb for this socket
+- modify skb_page_frag_refill() to allocate from swiotlb if needed.
+  This implements the copy elision for the transmit path
+- modify __page_pool_alloc_page_order() to allocate from swiotlb if needed.
+  This implements the copy elision for the receive path.
 
-  - before the del: the folio is anon at G; the batch records anon
-    G -> G', and the del later removes the folio from the anon
-    counters;
-  - between del and add: gen == -1, so folio_update_gen() returns -1
-    without touching the flags and no batch is recorded; the del/add
-    pair accounts for the move alone;
-  - after the add: the folio is file at the fresh generation the add
-    charged; the batch records file, that gen -> G', matching that
-    charge.
+The savings are especially visible with fewer queues. In synthetic
+benchmarks, senders with 1-2 queues would cap around 50Gbps with
+conventional swiotlb, and reach over 170Gbps with the feature enabled.
 
-Unlike the drift of lazy promotions, which sort_folio() repairs under
-the lruvec lock, the phantom deltas from before this fix land in a
-column the folio never occupies again, so nothing ever repairs them.
+OPEN ISSUES
 
-Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
-Signed-off-by: Kairui Song <kasong@tencent.com>
+Currently the swiotlb allocator looks for free slots using an
+approximately linear scan of each pool (with some hints to likely
+candidates) and then does a linear scan of subsequent pools.
+This works extremely well when the number of pools matches the number of
+CPUs, and there is plenty of memory available. In fact, it is almost
+unbeatable by any more complex strategy.
+
+Under high load or buffer fragmentation, a CPU might repeatedly do a
+full scan of its starting pool before finding a suitable candidate.
+Even worse, with multiple tx/rx queues, what happens is that multiple CPUs
+will trail each other on the same sequence of pools. The effect is that
+some allocations will end up costing O(100us) and more.
+
+I have tried to implement two improvements:
+- a buddy allocator on top of each pool, so to make it quicker to find a
+  candidate of the requested size
+- make each CPU use a different sequence to explore other pools in case
+  one is full, so they will not end up queueing one after the other
+While they are very effective on the tails, for low load scenarios the
+current linear allocators is better. Thus this will take more
+investigation.
+
 ---
- include/linux/mm_inline.h |  7 ++++++-
- mm/vmscan.c               | 13 +++++++------
- 2 files changed, 13 insertions(+), 7 deletions(-)
+v1 -> v2:
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 7f91a89b5ba3..8cf82989ec26 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -10,6 +10,11 @@
- #include <linux/userfaultfd_k.h>
- #include <linux/leafops.h>
- 
-+static inline int folio_flags_is_file_lru(const unsigned long *flags)
-+{
-+	return !test_bit(PG_swapbacked, flags);
-+}
-+
- /**
-  * folio_is_file_lru - Should the folio be on a file LRU or anon LRU?
-  * @folio: The folio to test.
-@@ -27,7 +32,7 @@
-  */
- static inline int folio_is_file_lru(const struct folio *folio)
- {
--	return !folio_test_swapbacked(folio);
-+	return folio_flags_is_file_lru(const_folio_flags(folio, 0));
- }
- 
- static __always_inline void __update_lru_size(struct lruvec *lruvec,
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f8e291968342..a1497ad61ad7 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3269,7 +3269,8 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
-  ******************************************************************************/
- 
- /* promote pages accessed through page tables */
--static int folio_update_gen(struct folio *folio, int new_gen, const vma_flags_t *vma_flags)
-+static int folio_update_gen(struct folio *folio, int new_gen, int *is_file,
-+			    const vma_flags_t *vma_flags)
- {
- 	unsigned long new_flags, old_flags = READ_ONCE(*folio_flags(folio, 0));
- 	int old_gen;
-@@ -3298,6 +3299,7 @@ static int folio_update_gen(struct folio *folio, int new_gen, const vma_flags_t
- 		new_flags |= BIT(PG_workingset);
- 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
- 
-+	*is_file = folio_flags_is_file_lru(&old_flags);
- 	return old_gen;
- }
- 
-@@ -3328,9 +3330,8 @@ static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
- }
- 
- static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
--			      int old_gen, int new_gen)
-+			      int old_gen, int new_gen, int type)
- {
--	int type = folio_is_file_lru(folio);
- 	int zone = folio_zonenum(folio);
- 	int delta = folio_nr_pages(folio);
- 
-@@ -3519,7 +3520,7 @@ static bool suitable_to_scan(int total, int young)
- static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struct *vma,
- 		struct lruvec *lruvec, struct folio *folio, bool dirty)
- {
--	int new_gen, old_gen;
-+	int new_gen, old_gen, file;
- 
- 	if (!folio)
- 		return;
-@@ -3532,9 +3533,9 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struc
- 		folio_mark_dirty(folio);
- 
- 	if (walk) {
--		old_gen = folio_update_gen(folio, new_gen, &vma->flags);
-+		old_gen = folio_update_gen(folio, new_gen, &file, &vma->flags);
- 		if (old_gen >= 0 && old_gen != new_gen)
--			update_batch_size(walk, folio, old_gen, new_gen);
-+			update_batch_size(walk, folio, old_gen, new_gen, file);
- 	} else if (lru_gen_set_refs(folio, &vma->flags)) {
- 		old_gen = folio_lru_gen(folio);
- 		if (old_gen >= 0 && old_gen != new_gen)
+- split components into separate commits
+- simplified allocator, no need for a new page type
+- many code cleanups
+- also implement the rx side
+
+Luigi Rizzo (5):
+  swiotlb: enforce pool nareas and nslabs invariants
+  swiotlb/mm: Implement SWIOTLB nocopy page allocator
+  net/swiotlb: Track bounce device per socket
+  net: Divert socket allocations to SWIOTLB for nocopy TX
+  swiotlb: Implement RX nocopy with fast recycling eviction
+
+ drivers/base/core.c       |   1 +
+ drivers/iommu/dma-iommu.c |   9 +-
+ include/linux/netdevice.h |  21 +++
+ include/linux/skbuff.h    |   7 +-
+ include/linux/swiotlb.h   |  63 ++++++++
+ include/net/sock.h        |  46 ++++++
+ kernel/dma/direct.h       |  11 ++
+ kernel/dma/swiotlb.c      | 296 ++++++++++++++++++++++++++++++++++++--
+ mm/page_alloc.c           |  61 +++++++-
+ net/core/page_pool.c      |  25 +++-
+ net/core/sock.c           | 101 +++++++++++--
+ 11 files changed, 617 insertions(+), 24 deletions(-)
 
 -- 
-2.55.0
-
-
+2.55.0.766.g2966f0265a-goog
 
