@@ -4,98 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E1E6C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C965CC5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 14:23:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97FCC6B00A0; Mon, 24 Aug 2026 10:22:13 -0400 (EDT)
+	id DA14B6B0096; Mon, 24 Aug 2026 10:23:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9309C6B00A1; Mon, 24 Aug 2026 10:22:13 -0400 (EDT)
+	id D793F6B00A2; Mon, 24 Aug 2026 10:23:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86DF96B00A2; Mon, 24 Aug 2026 10:22:13 -0400 (EDT)
+	id C8E936B00A4; Mon, 24 Aug 2026 10:23:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 669D36B00A0
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:22:13 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08E89120161
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:22:13 +0000 (UTC)
-X-FDA: 85136377746.03.05E1912
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 51A20140010
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:22:11 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KaO+iZO2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A3C8A6B0096
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 10:23:32 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 33A794017F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:23:32 +0000 (UTC)
+X-FDA: 85136381064.24.0C17209
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6C04040007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 14:23:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=e7dBNqK4;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787581331;
+	s=arc-20220608; t=1787581410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5j5DWKJN3cdhmHqdN8rCpFWNLqVKoHQJspSwWStoi7I=;
-	b=O769qy7536qjArK0m99LGGn/VL0n5FYQ3z8juXSgBkLA0W98PA082poKCcLTiC8bmfycku
-	TBvmcIHUhobtTdPXnjn2/p/My7cvfj+fV28TUR4bRHye7vJ4CjP9t99zsOz5jQB8vSfoR9
-	elf6MQDTgYuH1LakgckFHP6yhtirrb0=
+	bh=DAA3AJBckMfL7iDkU5H4UAChzqupIeoXexgfVyLiXUk=;
+	b=oDMVN9qeS7AuxVrFc01rFhY8Yd8qDL/2VTdzfgnVgziZDBRPYkgTeHX1zxcUT+5qAaMLJl
+	zH7ZaAv88LDhpCBIWK0tcKA43alBCxZ+PZoFVl2Cr5Cp7ijWxCCoBzxG5KxPYA7GG9Elte
+	xBA1d18TyKgIcNR5w+BKzuMlZQpBC9w=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KaO+iZO2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=e7dBNqK4;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787581331;
-	b=zDG0l0/OqI56GuDWqKvxlNtzchK8CFZl+WkF/mid9ltuZ7CFMlq/p1/8zI0uDqQXWW5qLY
-	hvO6OGz8bLUf0gxFiC9wUnIIw9I0F1WJLjpt33VBvRQHYTH7UsqeePLvn3IkqRqfJ/l+5w
-	UA3Ob9sq/Knd6wqtd+Vhh0XRBN7fIkk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 73A6C41140;
-	Mon, 24 Aug 2026 14:22:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142241F00A3A;
-	Mon, 24 Aug 2026 14:22:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787581330;
-	bh=5j5DWKJN3cdhmHqdN8rCpFWNLqVKoHQJspSwWStoi7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KaO+iZO2NSk2Mb6Znp4wkLjU5Psq+sSLTkfTwe0+7WB9WPQgyt6fGHjYZV/zU3Ij4
-	 jlJwIh1FB4tUanbeYBsel3kuT6oDpApt/nGc2A/jpsx8No/76t7v8SkSIGmFPCQZHq
-	 x/stZ2CCZMEYIwBH2TMkf2I6Kb6U4Vb0qQpg+buiH2VOWmHgTwuJ7fLAW4vrSs/qqT
-	 FFfr9sG3A9qW1t2+BBLBIHX/wpRTS0+mcevOWj9fdts3KEZ9zaJXvQwRkTw4iabRz2
-	 MRD5fdodUOKKmoRUSt4jl6yvfX60M8VPs27KzmhOBhTfVgKE8xrxwTcZCVAJ/MhsjO
-	 FxmiBGAPOYNOw==
-Date: Mon, 24 Aug 2026 15:22:02 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	akpm@linux-foundation.org, nico.pache@linux.dev, baolin.wang@linux.alibaba.com, 
-	baohua@kernel.org, dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, 
-	liam@infradead.org, mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, 
-	shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, 
-	ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, jannh@google.com, 
-	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
-	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
- primitives
-Message-ID: <aoxRs0mjyQnpO-IT@gremlin>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <aoLAly-oL2OAa4n8@lucifer>
- <aoLkMUtmzRVuv2Hx@thinkstation>
- <aoQ77EcD3M2kjeya@lucifer>
- <0153303d-f9d6-45ea-a276-fbf2e5625ef9@kernel.org>
- <aoXn1B7cPnPq7uxd@thinkstation>
+	t=1787581410;
+	b=e65oX/xloaS0l2nHSDeJyiflEQjLZlJ/M8B7+AmPSP2MEAVDATt0hhSqf7bTyzPahnlJ0q
+	7UNaaJ283w1YVnK2slfc71mfKCOqOuwNSL0UORYPiRfBLIKNbCJYSfPEtFz0TS2IRvFro+
+	nMjrn4d05AjReHEGp9i3YZHtFYdu0OA=
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-8200b55dc47so54636887b3.3
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:23:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787581409; x=1788186209; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DAA3AJBckMfL7iDkU5H4UAChzqupIeoXexgfVyLiXUk=;
+        b=e7dBNqK4rafiMdypWN6awmIMFlXhYhGsdqH/45F1ArMBj0QZgR8zYbzHKdiOxzuHys
+         DUSV9RVnWRMBD//ZxkdR3ijI2ZPhd8WGMk9QMPBWVJbzQeiaASLlIeJ494zgdg8mfw2M
+         mhAiGz8w1FwrV091Gn9lVo+xsIEngQbHYNBtm2sAGkyF5ZmsiazVRUTwwoC9UQnUKGwB
+         jnLmnyOu5/9O3AR0Y5f2Or8ztXuOQd1tXow87KPr8CHN+YHGY+ke8zje3GWsnrZqhFCu
+         +T1e04Jl9ubPg7d0PaDo8E+tJLUB6ogrWk67UnYgtugABSrSmu9s57Ve34iDdPwXHlbn
+         RCAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787581409; x=1788186209;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DAA3AJBckMfL7iDkU5H4UAChzqupIeoXexgfVyLiXUk=;
+        b=VdKO35Je0JCsGSd0QhXTfjUF5zlp9Ntfs6vMxrroGjZ42oc6rBWTT/ANwg9u+Du2ig
+         WV1rjPoRuDKjV0YQj7pbw0d5yXpmQgUBjazgOotc7b9OHOkea7S19dIHyKLrMCfaz37n
+         2YXmLv+shxcwL2wysE7r9NpA77Zi/pOJ0sL6K1c8aMJ62niJIybZd0uxpg/Wh/88WopD
+         tji2TtjfgeM758e43KIIt0NtBw3gAlbnlQgkM+PBNums94o7r8anXjx3R3/NK+o0mPfg
+         TzKb8/H3zSPDOgWezOdxYM0BFWoa1LFpqL3i85RefZLfCMF3YjQHAkYCfQjd66FQOgYK
+         Q5kA==
+X-Forwarded-Encrypted: i=1; AHgh+RqkGGFMcFIzg9KaZX3EegjGXv8MvQ0sm+FvEwNZwS6cvrH3YA/I3YtPp/5KKT9/v3kNOYy/50jSIg==@kvack.org
+X-Gm-Message-State: AFuF++lu49Nz79Rb8YR/Yv2dx27f1bqZwRR3viHc0jwc1D40zA22rW/D
+	2OasaVp/6PTRcjPQMmJ+SDYV/8VqKEuG7OnvOGUocVQF60QYxa8phLOiDclPvlQY2Q==
+X-Gm-Gg: AR+sD12HGM5RCIfMlGAap1WbKzuOgpxbL06uuA7waaJnjiWnhcsT0n3A3oG3E0KM4Wy
+	Q+kxeCgIVSD/oWOSO03s9Kw/N+fsKFJNmkftI+iFZ/MYfD7hXywz4DSL5j7O9dbDdBQ5NU9Abrb
+	mKMo3IYLOE6f2buU0t4kCzPhOnTC7AnIFmjVpxOafOlpfFeOwzdNViu9j27C0pvNYxB7d/m4m5o
+	SsP9dO5vpLXBhJo5kw/zEf30wAE9X6z8pkqVeygGPnD8pGPbaU46ls9H44fkKXQFFfgzIOijZzv
+	0xtWW1KDrnFCMQfYr+4NfCmqn/HD2v6XGTaIOCL4GctyZkC4OV4uV9VWOg8OpngjJr0WEW7mtJe
+	G33XLDLZknrTAgd2e96xLKhLWJgiIvWDiDrmXSdQqdDHA4mUrWLr7AmzEOrW8NPu0sRRBQf+uq4
+	annDFel25eHSr2dL2Ibwq/gZByw0tXEdyP0jvMK4vFfw8a23CU4bANZ6K0KeYQ6bmPvtDYnHP+f
+	C7hjldBEiZCyVmO0k6cgJG8K1zGuMCcU9x0j3T356+CoA+p
+X-Received: by 2002:a05:690c:a4db:b0:80d:a249:4854 with SMTP id 00721157ae682-84c99f902c3mr43542587b3.17.1787581408945;
+        Mon, 24 Aug 2026 07:23:28 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84cab854483sm33838647b3.33.2026.08.24.07.23.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 07:23:27 -0700 (PDT)
+Date: Mon, 24 Aug 2026 07:23:23 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Ackerley Tng <ackerleytng@google.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
+    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+    Marcelo Tosatti <mtosatti@redhat.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Mel Gorman <mgorman@techsingularity.net>, 
+    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
+    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Suren Baghdasaryan <surenb@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
+    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH 13/25] mm/fbatch: no lru_add_drain() to
+ collect_longterm_unpinnable_folios()
+In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+Message-ID: <fbf3fa74-c646-8855-17e4-e8b35dfd9c14@google.com>
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoXn1B7cPnPq7uxd@thinkstation>
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: rtuxpwbpzh9oguoud4rzx3bbnmd1i5si
+X-Rspamd-Queue-Id: 6C04040007
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: gdxm9pc67eosnxmh47fwm6gnsmkp8sd9
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 51A20140010
-X-HE-Tag: 1787581331-965195
-X-HE-Meta: U2FsdGVkX19G77pBQ1G9mO9VAG9Se9ctsEfQBls4tnWdw6E50UUMND4ie27/vV7ts+N2z0hftBh/XS+NTkV6hQhz78ykSH0EKFGR+Jkhcseb4gst5J/ryK/4Bogwune4+GNpArLzsv2SLnhPh21joeWWT6q/JK8ivwo9KbOHGlPwU8czzYuc2wFDtMKUmMo7p+ka1bNhy8esi0+c0emLpLymLbFQOcx07Na6Qg2EGJReV8zU3dMHCVjyv/E8lv14DUg6hajZ9C1Swscrl/zy4/HwH+RJ7IXb9wzGOnNaH+lX1RyeNUSocMQmHNkV3MYDSBRPMLG0rQ8K2QpOlfSoyiUthCGpWZoAxmNeqn8NSNvshKha6HoKxJ5IsPhKUiNSF4YAIbC0o2A/MlDJdf4XCF4/V3P8h7n1v5DmC3HCfRd7BQKTIdazdM4xLnqtRLMRUhEjDXreaGTXDB0gQXRWx/5lcXiGj/RMPFUS5+QR/UHrvzeDToiK5SRiZNvr2G8dwH5hGLDuZNWljS00Rmsg8N+NJWWApWmlmVlyCNN+HaoOEKn2WBN/YlOPKZXpIvxNP1i02s27HDjftrmueHTKNkvXzKuxPdGBp/Eeubez6A617Nw6ivyP4kU1XoaFk6bbOzkdST+viDXT3fCm8XG9q0DKP+MTH5WjnBneh7910ZE2HsvMot56SQ34TxDv4/fxV8/ZRBAnA+Adg1rxPbREJobfiliZb5nWZpqiOlKgnR9xDisTJULGx8s3HropB6361VPIWvmmDsg3ODTxMFhfdZ8oqQyldaZCOxifhL3czXaGavazuhQTAt1a6i3i6IRnuXmUa/BNFJzX1c2Y+gRmpwUpFNkK7PXZMhadWHLum7qMeuL/m2x+r7AreM/P0g72r/NNqWUHN0un5v3rATNeK6+UYST6ApVRx1zc6+q2/5cfUC6t2CrconM3C3UlYfEEbj4epUtXSYNG0RzgS/D
- kKmXBlLL
- qh+Ps/vOCEY7RU1ZzNHBYWjNowRnl0eNxkdeLPpsBnDvoeoXvXZtzXi3N8tCa9ag1Fh9qGprKVsG5ifsR4F10TiSJunZbJ1anl+GhNMcCT+qDXQvyhtt/4msVHg4p8pPqV4TC8f7PqxU8OrevKvyatMEjPnv0QvcUY7mXM/rOlDJGzDFjFqnp+MLtWOx8COp1IJESyxq7kd/RqFlLUNYMAL1VcvaSF2NOv4qBqyyunm+K7N95k/PowvT0hhrqBWH+GvRl
+X-HE-Tag: 1787581410-751851
+X-HE-Meta: U2FsdGVkX196ZlfykIBCSlBIcwk1woDxRdW1gHXETGEfdcsKWOVueLYkFNB9uRVjoZV9ES+cMj5j9tTvSRn/Prv3EpNZJGMC9PZOtZ5ewNg/GELGJK3ri3/OYOQ5KkT0igB/7vniFn6aChxp11DAFW+G2G0Bco35UVbq7128hsoyqHm1lINcuwAdErAFolSO/RCZMc1GGDiYSOvm0hjHrFWNj50IkHWjTUuToRFb48zeZlxX1qrviMZCMTRzLH9l4xibMNb6Qa2MB/hpBy3afB3RdqNdjBAKChEAiQTsQ/m075Y5pyumbtFqFklw6hEeFghP6D2QbsL/q9kJvR+uDRrfNn1VXXAXI5lVg3aHoYYETACogLcqVqM+13cT6uXEqW2xrClgcHVYINRwSrJ9EM+upqA7MmwWR1KU+TDU4EDXa0yPkZhIZMfx7GrvZoodcHsIHGrT8kdl+1j9iP2Jge48wmyigSfe3N176rzo6js2X4Fuiw9ckInRiEaqzUpkyJAAeXbTY6STfGnJQGPcjNHSnyRDT2gw3dTL7guPD7Iebqb9EED61f4OPhayoUFHLgOM+qdILwtW5Uvq9PCrZ9S097/AEvMbW4q/hM2hKAe/h8HX8B/rkCbAwRXaMG6dEF/bl0kSLLPKMoTXpKjw5dQPSJYLDIJQTv9IOucC6j93FE2MfMC3CE+U/glnKh8shomdYuMH26F3l/pM8Idz6tT1TH9LsLbWdpgXmIzm//2jzqkJUD9vXMLVj82WpAx56SKm2/Bd9IOHyqrtHls8d0lgrKbO4Rst6nt556Pgs9gT9w9ppWYCGvRq5S1d7JSfKskIjyv4VS9H7g33uWY9WAqYJk4KKUNAc3WhP6Fv9+T+7YiD2zxVhz32VWNLgWYLArWCjdmLIQ+AM100BIVVKS5lLV6gJAEvlOlj4nwkOC9Sz6Ms921GOPmFaERLRlec0jMUiUGj/1YZHk8XF+n
+ RNDSM0L9
+ ozo4rctIWRY8DtNEgpUOoq6MA/UOlO8kCCOENjXBpsfx/zX2wOb5ruIloBUFfSvDpVdICz7/e6GgVxuFCD6v9OlA+hwMIgTmhrPafZ58/95sEtarQlixs1gwKBjFMQ3jyQxi/2KWbAri7F51C7YVPa8w7x1TX/1I8oYcRN+szOw0kmTT2uKUFc+DTCS9ic5tVKVnv3Ywqeh1FeicJtDipH3UZLjfLVN/mPwCz2oH5thsMbSAsHs1CI2g5SrR24b6VKcU623ctXhQJwWef79+cPdarzAg7FhwDmk5zo8gvTcdQY/BpfTP0kgAWe0y8qDFidp40/8PfBJLyHc1NILFtJ3REhhmbHAUpuwoNQqEoynWXKvhoT/Uc+gzkxRlP1TwtPM0sDS+UsYrse58kbIqE2/JjvJcDQ+3mf5WgvrB/BNOw6GbI7XgB+RCrzzZUdsvxUgzXxIyWZ+AbAjE4ZOueVbbiFUv9OQHJqFP+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,104 +143,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 19, 2026 at 07:08:07PM +0100, Kiryl Shutsemau wrote:
-> On Tue, Aug 18, 2026 at 04:12:17PM +0200, David Hildenbrand (Arm) wrote:
-> > I think we all agree that there is a lot of room for improvement, but the big
-> > question is:
-> >
-> > (a) When does it stop being a cleanup and is a new feature in disguise that
-> >     makes the code more complicated and even harder to maintain.
-> >
-> > (b) Can it just naturally be made looking like a cleanup.
-> >
-> > Ideally, we'd get b), in small, nice-to-review chunks that incrementally improve
-> > the code without inflating it heavily or moving everything around.
->
-> It is not a cleanup and I would rather not sell it as one.  It replaces a
-> mechanism, so judged as (b) it fails by construction.
->
-> I believe the end result is much cleaner. But I might be biased. :)
->
-> > The current locking is nasty, so anything that moves us one step closer into
-> > something that is not only simpler but also more scalable is nice. I am a bit
-> > concerned with the churn in the series as is.
-> >
-> > After this series, mm/collapse.c itself is way larger than just mm/khugepaged.c
-> > originally, which raises some eyebrows.
->
-> Line count is a poor proxy for simplicity or scalability.  What the
-> engine changes is the serialization model, and that is the part collapse
-> needs changed: the PMD granularity and the exclusion both come out of
-> the locking.
->
-> Incremental does not reach it, though.  The old mechanism is correct
-> because it holds mmap_write_lock, the anon_vma write lock and a reference
-> from the LRU; the engine is correct because the sources are frozen behind
-> migration entries.  There is no halfway state that is correct under both,
-> so the switch lands as one patch.
->
-> What can be incremental is everything around it: the engine goes in beside
-> the old mechanism, patch 25 points the anon path at it, and 28 removes what
-> it replaces.  Until 28 both are in the tree with only one of them
-> reachable, so the switch can be reverted on its own.
->
-> > We should also be aware that people are proposing file/shmem mTHP collapse, so
-> > ideally what we refactor would naturally unify some of these code paths.
-> >
-> > I am wondering whether shmem mTHP collapse should come first. (I'm hoping that
-> > shmem mTHP collapse can unify some of the anon+file collapse code in a nice way,
-> > to similarly just look like a cleanup while enabling a new scenario.
->
-> mTHP collapse as it stands has limited usability: PMD-aligned windows only,
-> and one VMA has to own the PMD.  Bolting file collapse onto the same
-> structure adds to the debt instead of paying it down.
->
-> It would fit the new design.  The frame -- scan, candidate selection, the
-> round and its passes -- has nothing anon-specific in it; what is
-> anon-specific sits in the freeze (folio_test_anon(), PageAnonExclusive())
-> and the unshare in the fault-in pass.  A file source would bring its own
-> check, freeze, copy and install.
->
-> I am not sure it should, though.
->
-> Do we want to find file collapse candidates by walking the virtual
-> address space at all?
->
-> collapse_file() already works on the mapping -- it builds the folio in
-> the page cache and then repairs every mapping through
-> retract_page_tables() -- so the VMA walk only picks which inode range to
-> try, and it reaches only what a registered mm maps right now.  Large
-> folios buy more than TLB reach: fewer page cache entries, cheaper
-> writeback, natural locking batch, etc.  Those apply whether the file is
-> mapped or not, and going at the inode directly would reach them.
->
-> > Agreed, I think we really should unify+cleanup the existing code first before
-> > doing more drastic changes.
-> >
-> > Having a series that throws all of khugepaged.c into a mixer and pours something
-> > new into collapse.c is ... concerning :)
->
-> The moving around is patches 29-35 and the tracing after them.  None of it
-> is needed for the engine: 1-28 add it, switch the anon path over and delete
-> the old mechanism, without moving anything else out of khugepaged.c.  If
-> the churn is the problem, v2 can stop there and the moves can come later as
-> their own series.
+collect_longterm_unpinnable_folios() has no use for lru_add_drain() nor
+lru_add_drain_all(), now that the per-cpu fbatch references are gone.
 
-This whole reply seems AI-generated...
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
+ mm/gup.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-You replying only to David twice in this sub-thread which isn't exactly giving
-me warm fuzzy feelings about the working-around-me concerns I raised here.
+diff --git a/mm/gup.c b/mm/gup.c
+index 99902c15703b..9616379ab069 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2268,7 +2268,6 @@ static unsigned long collect_longterm_unpinnable_folios(
+ {
+ 	unsigned long collected = 0;
+ 	struct folio *folio;
+-	int drained = 0;
+ 	long i = 0;
+ 
+ 	for (folio = pofs_get_folio(pofs, i); folio;
+@@ -2287,19 +2286,6 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 			continue;
+ 		}
+ 
+-		if (drained == 0 && folio_may_be_lru_cached(folio) &&
+-				folio_ref_count(folio) !=
+-				folio_expected_ref_count(folio) + 1) {
+-			lru_add_drain();
+-			drained = 1;
+-		}
+-		if (drained == 1 && folio_may_be_lru_cached(folio) &&
+-				folio_ref_count(folio) !=
+-				folio_expected_ref_count(folio) + 1) {
+-			lru_add_drain_all();
+-			drained = 2;
+-		}
+-
+ 		if (!folio_isolate_lru(folio))
+ 			continue;
+ 
+-- 
+2.51.0
 
-So simple feedback - send a relatively small, no-functional-change series that
-improves THP code and lays foundations for future changes. After the merge
-window.
-
-Can you explicitly ack this please?
-
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
-
---
-Cheers, Lorenzo
 
