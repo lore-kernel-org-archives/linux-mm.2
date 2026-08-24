@@ -4,95 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DDD0C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:18:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A0DC61CE2
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 11:18:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 393B46B008C; Mon, 24 Aug 2026 07:18:54 -0400 (EDT)
+	id 456ED6B008A; Mon, 24 Aug 2026 07:18:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36AE46B0092; Mon, 24 Aug 2026 07:18:54 -0400 (EDT)
+	id 407F56B0092; Mon, 24 Aug 2026 07:18:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 280CA6B0095; Mon, 24 Aug 2026 07:18:54 -0400 (EDT)
+	id 2A7D96B0095; Mon, 24 Aug 2026 07:18:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F0A306B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:18:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20123A0500
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC6E16B008A
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 07:18:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 52D1B404E5
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:18:55 +0000 (UTC)
+X-FDA: 85135915830.29.FB9DF21
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9AF79100003
 	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:18:53 +0000 (UTC)
-X-FDA: 85135915746.11.3742B72
-Received: from mta1.migadu.com (out-137.mta1.migadu.com [95.215.58.137])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 67BE0C000B
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:18:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GoJC1by9;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.137 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787570331;
-	b=4/C+llrlJgohouG2UM4VS6W+feIjMo5T3Ye5hZK9bxV5RdxEpTA1twhNo1NXFfbgg6crTw
-	wAoT88MS0k2cBXeZ/C4/mlk5IWnaAWXd48cTs0ZeqJqxui2q27O2+d4tKtOrAtUK5L9X87
-	IaJ3AipNxUcCJ/3ap//hUUg2s9ia7Gs=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GoJC1by9;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.137 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vw0PQSv+;
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787570331;
+	s=arc-20220608; t=1787570333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+f7RHO8n9X9Z3Jua2985//05pIscHzIEy+D7mW+vd/M=;
-	b=hGBI4HHaDoaLIs2j9Eo+DtC/l6oC3tM13iNoefDhsVRO/A/W7wwRLKmvOjEAI+9OL6olCZ
-	MIxfbCeMr8hfwI3CiEVIbeHVlC+LAvhlicOir8IWk+PtiTzVrR+NMkzYCrD98voUqKsmL7
-	jHMwi/RmLHXF+EVRANuhVCaAlmO1tmc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=32itMfmpMIT+qkqntr949fZUt3gdG2/oFwkIwIa+FkI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787570326; v=1; x=1788175126;
- b=GoJC1by9GxLQ910MDvdF1Cr8YH/Gh1/AKhTNFnn6Ldo3blWD0YZQDs22W5gc08Mh/030dLYh
- sxTNa2gDBv5sud6PAoeim5ilnVj22wpGK7olGAd4N1EyjPg5LbeQkvZXcs/AA/MPQGs3kgMD2U0
- 0TIKDqqypQQgqImrQCpC7LhA=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.67.158.60] (114.251.196.104)
-	by smtp.migadu.com with ESMTPS id 0250bd41515bb170;
-	Mon, 24 Aug 2026 11:18:46 +0000
-X-Mizu-Trace-ID: 0250bd41515bb170
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <42b6e1b4-96ed-4364-a502-369b4a96705b@linux.dev>
-Date: Mon, 24 Aug 2026 19:18:37 +0800
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZPgpXhjxhEp6fWTX8R/4rZ+5C7Ou3ihy4+RxC5piU2s=;
+	b=GGKrA3yBfCLBx0oNe0fv4QSlhlQGN3f5+h0W1/YzJ2nMEVGTCESASXVHSBuFRSxW03LtPw
+	RXHXN4ciedFDoXpZ5cw8H4akxfDU99hABAYDhieWRn0B9a0N1a130fLEmCcSKGOpMajMeW
+	/gIrZtc3PIommqovDgV7fDNSyqg2BeA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vw0PQSv+;
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787570333;
+	b=se+YOeSD910FngwHJTtjOdun+6/emlQkFNyMpU5VjTi8CoLOJdma8n8LwMAyU6c2Di5xVi
+	On2gIIDUZHa95hHtTYHWGeFCMQTY/H8WAlUwkwpALoIVvlrr/N4yChruOGAU6ViyzPEnjU
+	E46/xakRtsDeDjfyfH3Wq6c/3tyOdQA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 052B0600C8;
+	Mon, 24 Aug 2026 11:18:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED21E1F000E9;
+	Mon, 24 Aug 2026 11:18:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787570332;
+	bh=ZPgpXhjxhEp6fWTX8R/4rZ+5C7Ou3ihy4+RxC5piU2s=;
+	h=From:Subject:Date:To:Cc;
+	b=Vw0PQSv+m2sSzvQdhc4TDb0WDpr+01fCnuvdB15EljTpcaVG/CEZNCfXWJ18k5cbf
+	 rOM4RvQstU8ej522JYaq1Etl32edd5rr+086wK9VM4+aqaF6vTU8E0DOnalaNhx3jp
+	 CcAavN0ecOpT3H/9Kwb2ewJ4YT6rlPnWPja4eN2SjTMIWcZqBRxjkUXBb1FPlQvowP
+	 YqaOw6mAMGYokPf2fOJvcjbWayBJBot2697U53Tdxhj5oDq2rtGx9+FTuZw4c74g9o
+	 SpopHBJEYYTLBcS2C3NJvK9ARiG/g2czjvAYSwrTb5vuirgjpPYogCE+s7598wpTb0
+	 n+cNxWlsPznsg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Subject: [PATCH v20 0/8] rust: add `Ownable` trait and `Owned` type
+Date: Mon, 24 Aug 2026 13:17:52 +0200
+Message-Id: <20260824-unique-ref-v20-0-490735672187@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/17] mm/mm_init: skip initializing shared vmemmap
- tail pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
-References: <20260819095140.17252-1-songmuchun@bytedance.com>
- <20260819095140.17252-4-songmuchun@bytedance.com>
- <178756196748.3606540.14377746709923091802.b4-review@b4>
-Content-Language: en-US
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <178756196748.3606540.14377746709923091802.b4-review@b4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 67BE0C000B
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGAojGoC/2XOPW7DMAwF4KsEmquC+pc69R5BBkuiEqGFncqN0
+ SLw3UtnqR2PfMT3yDsbsVUc2dvhzhpOdaxDT4OElwNLl64/I6+ZAiZBGlBg+K2vXzfkDQuXoaR
+ snSkBAyNwpbD+PNqOJ5ovdfwe2u+jfBJ6iZceCxL0uod2HLhwKcqAsUsxvn9g6/HzdWhntjRNw
+ qy0hK02pH1QmL2NYFPaa7vWT7ct6SRFV1IUwme11+5f2+fPHWkXdVJZBgUx7LVfaWm22pPWCDY
+ aH2zWbq/DWtutDqQpd6nzPpdcNnqe5z8COcD13gEAAA==
+X-Change-ID: 20250305-unique-ref-29fcd675f9e9
+To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Lyude Paul <lyude@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Carlos Llamas <cmllamas@google.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+ Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, 
+ Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
+ Michal Wilczynski <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, 
+ Ira Weiny <iweiny@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ linux-usb@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>, 
+ Oliver Mangold <oliver.mangold@pm.me>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
+ Asahi Lina <lina+kernel@asahilina.net>, 
+ Igor Korotin <igor.korotin@linux.dev>, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12294;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=FqNgKrXDIDlNBJAVOF/eN4RowgtxLQyzOYJqyvOoOPA=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqjChsf8CMKbtoVQ11KhWy3uKfRya4/CJC7zafO
+ zeTkhrgEwiJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaowobAAKCRD6UCkIqsW9
+ 0BIXD/4/h22+gOTb1sZHiEYU947FTv3rFPNwyrNF4963NKrXxxhP6qYXQjZs1ypmmhbM/oTCtFD
+ BAP71XODOpghHN2mb17Z/0OX4r1AN0uOKpDbmZSK3HfZYEYGWURO7Sc5Rj2KUSJ8uAzDFWAynVK
+ eKcMb/AfqyvnatdFGv3vxWvx7108a5vSISch1AxfACDfx8Kd0tT7Rc0wPZtN/jvOSHUVEXORNAP
+ IvMutAiF5X6KUuQw0XkxNh1y7uP3ezQ7zc2pvPxmJSrXBLL0h46O9WUiK72DnfHhlX6mk+T5rQs
+ P235JkLHBM/zu7iSnyAFSyXOOytkjWlJIB4bn6M5t3dSfqN9nndZCV4md1AytCMy9BnUwpnJ6h8
+ 5OHmWRYxqtv0AJCBKG8+nlPoIAQfCgqSkDXN8C8omy0AChQVOReNsgF1+4uoknuA3/yzqfGN9Ki
+ reEcMZuZq8q6dVCFaw3gsrBPdlWKKR2uMHTCFhB4yD0c4q680X4D2uGszzk1AUltO/yy6CrthMX
+ sqy+/Mw4U/5vx07ZLK4fxN2W0RMNoOhUjCosJI4xE3qFCJelKVHmEm5ktciDlZ2gXgP8yuTjeEh
+ nikWM5q1evHTccgrTLzlouSMTQHNwnVVvHWHqvUWTpkkU2Rd8HUd2BrUP7qhbqziwkOrcjgeM8q
+ XogP2ZfLfiTfAqA==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Stat-Signature: q4t4mbrish896hgoor7jkx1nfffgm3j1
+X-Rspamd-Queue-Id: 9AF79100003
 X-Rspam-User: 
-X-Stat-Signature: cm6e4wm4knezcodu98q9on7q8mk4or7j
-X-HE-Tag: 1787570329-485577
-X-HE-Meta: U2FsdGVkX1+iAnz5yn+olKa0upmisg3fnS3UYHPXegy5yF/pL4GIxYogXNzHiJhRTmG5TAt18UTPOG+tvtOgNiAJzk2QY4R5XCOBRpmp0ghZWDWcI5tqa3EsENDn/50aD+H9VbSH5lcptPA0o/r2Fck1DtqriJOkQHo2e9pd1xMbJs2iF5er5TJ6qF1LZLjv3dsJga5ZsGDS4/o5xRqwzg1GxK4byJd0urpJ9/BKjk1kgCp+vtGAoqAOQLToc9ZFEQE8TewZbP8nf5pWI29Z2GrRXhHu56BsfONE/PTqDvCjtBqp+b7+Eyx6/IrAOurrEqKkYZbe5vzBahYLyb3s3oqAzVBit3oUmwJcUNfninHS//s5aTREFDvmEIH+9gAI0uvOh3lh0RLEtyen0y01OiQcno3S8VThcVHASpkj1BGRg8+BqSbDvFr9i4Quiqtov8PZ5tdQd2uDjZCdq4VjKzCOZT3e9HEI0j5WO5SgDmQq9JKYNyZS9MPynrGNSCLQjx3o0P+V9CbTNZmnm2A5PRCXwFjyaZTu1co8oMTLwYd+vHCkM15CidL1YxO4BrRx9Hq3UhdfVJYMUKh8rhUOkJ09lx4GaFpfkfghCbXfQsbStMvbU580Y/lnN+7OdR3itBS980z356bhl/r3xiH678mDxhZW+ITwDsnWLkJRZca1hULQqJaKh++bUtLUAe/ZcCikgYWmeWOdoMs2j+95Jl0dXpDcFW7suBXljDbl4ieafcci7G23M0p6xJrd6JmLcBpv5Uz1D6Ly89b0SNQgWOsHKYQ/d3vYRtxubR7hjoCeEPlt+SzYSLeCkfpfUmcg9WSxO9WWaf/cjwJxBi8keTvwEUycIFJhiGLwxNWz9Ni3nbnk2aOAVlTRDppph2qmZwlykiD33QgxAzmW2oiZY4sBc6jzo6GvOxk9dJtVu/vEiFIXqnuWQwGbG7Z2AY7fANQR0gaATnO9eLcml6L
- lsFwORrc
- SbJbgHSlIYkhYiLkFXrTRb/Q8xlLWIYm6Fy4osvi9R6Jf7B0Eui1Fs2PMwJbSLORxhzTjUiglEnirmEuSCdH7bZyxbERSk4Z0Vf/dhJqyrxVu1bEGrwlBJVZQNStVPmolBhJSUOL4wCLZsOB99dCok6zzs0x4EqN72MHNdViGt+f/XOWkc+Q+VEO87P9xhbt5sGBWOdXfurkBiXgga4vY5VpQO6LAXe2pBiVHtxETfFmZMKBbsW85NlDzlJNKZ3OyN+cj2jI323YDWTKLF/x4ZrOcoTTrpHeO3Msqqe8rk7J87zdQMIxYfYL2NNU8mr6vBp1j5QuwiiI5T4W3/rAEdds5Rrp8/RGSxKrl/pwPYeHCM6+eXo4+EOwURIwoaiCe15Q3sY0MFbCoHGm18PLxpuWRhJyNyNZoTLSobqgsu0byd1+vHlue7C5/IFYY3wILPZQdoN9M0CZXx7E=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787570333-600010
+X-HE-Meta: U2FsdGVkX1++4qwgk2hwZWeynL9apsEP6WN2mrJSq/sXnDddryShbUYn0184M+cr7zbVSwvdCUdHaKfipYei4v0/m7qnJixuXPJ5L+aC7bt4lnL3rOPLsYah/5T79CGrxF04NHoNmtl6dKBTQReUysMrPeQFx2MVKVjd5P2x+W0WU0OP06De8r/xtoA4KW8TCwOTxLkUj0SeZ/KwybRjfbvUXu39DlfoCtRPNodQR5zExZKq/IzGDVpXxeuJDpH9wtLVIg7vi0uzKA15v/AFvMFlvmvStw1kOVHL6r5BCxqE8Msp/3XqDQHMmh/w5tcG6no6BGeRxZaAoJGnGxt0KI8jxy1WgWHTd5UyuKR08bxy/aSSFghCTz3at/AO3HFPb5+tg6rn3rwUf9gCTz6tvMDFVJwYpcU5MP5HgOR+l3MCUql/05Ft17VpKNm1SIFFtVs1/xd9gjzD8Vf007CByPh3MS+hpFqRo/Wae/PxZAfKvIHXeTlQ2ytVMFYEWSW0DhYJg1NCD7Tf5TgeTZUC6/h3RypK3NcxTHhrcuEadq+JzI6uer5hkD0jJBKrhujuXiUymFM3eIWFGijxQFMLZAicID0fCnCU34I8mJdlgdIuO8DZHp2/PJvcviEdlg6wnKZEU7e6cl4a/srTUPoTxub+Js2ZHzIe08/LBwG4qbIvre/oMIkgnI6xxKxf11SyQeMFz8T0Zxu1osi2Gz3RMVT3ha6FKzjY5UjQ5bKXrI1xRyMNRkDiH5Xl20J2iShgqmCND5Tp/+Z+2hdgcJSTikDq5tJpZWdY6b/apJqG2fJFiGpydocdP0FUbQ2+IOSEWrnHp8WIc/AdFTYvi+jBVM6NqE3HKd/GvymSL4DivbqFGmNiVU/XmZvoh3Ubn9poeFo29IlMkV6MuMPntktkYR0E+vIPjP+P6HUZijHOgVqA6+oJWg4meU1+ek+QouJqt2pCYOJr/kYOv/M9Uzx
+ iRO99hOc
+ /R/vK0rAN26VGW+rRXGFbGnBRZpRNTn0R8STLlCjZInwG8RBVe2w6fDobhnKtQx0uscTbEF9Fx5gyJ3Yze4wW9ZtoXJjQi3zO8r5LaKJS95wtFb0k2SUSFu8e5b84EKlNKOlADVCwiFbAT0/c+0M/P60NKrG0YtZIzUq/oXdI7w5zlM94YTEN2xTHf4CxrYI7hCeTYPff861vuPk5cIHxeP99hnV7Xu2vEUZnPeuCVGkZYXHnbXJqRoRdjNg4CVEkjA2km6n/80/uOfWDGqi7xbkB6g/YXD3CC+bXCbxf+7UIzoo7UP5cYSMMu7c4hVd5xCFtOmQYbOmOmWaDbwCbXLHzkhFl137YhFXcacWgC1yfotu9EAgWiUD6fX9Wyhqto6HbR187pwvwlOafyvzUwtVqnf8DZRehklXjNoR6EMi1NKpkTsRNU7aBbkOF+3smFfuui3SgC/kA1OKMgoZnHM6jbgnOkXiwkm1OE9OI76OMcUNQhI2unJqWXtx0I1uPg1j/7dn4+AboLHUtXszc1XjBcUteWfY69o7vOCLs2Fvsxt7QZUXu4F/b3nPHzjYqCwb+6bGLdEAFOGZxt/zhRQ2S2UiTKhs7v578q0sjbatPAxjDUXuKRT5LLXWOSYKaJnwa7YfyEZ1D4k6c1gxKTeS9angwdSjndRWm1N6uA0TtKq3hV2vkdIpFIndEZuAQcNu3G+CnhbnSGzvj9TFF9R6PMcuf4KID8r/C8I9Ihqb0YUqcfb9wlhhbN3Z8WxFUNexkggeQUBeINGCk3I4SGK2DFtuOFoYw74X8jUbwOMPfznP+x9Z76nWRWwB9aRglxQMqFsa44EeZ9n44X+JwG3qfusnzQjN+G+7ZSm0a4V5ZNb6d/FCoTmN2jEM/QZtl7sI6qKxlYG77a2iUUsob5f2w6gcqNOSHvWoLPgWBgeg+G9AtDurdRPUYzFczg/zmTQQPhG1X8OIxyXAWzylAlndqQbLc
+ 7OBlqerV
+ WOf5QVqdV3Cso5Yb/+FEPKRm/wyIPy8CO1cTpTs5Lt7PSQXs24zMOMY1XpXnJVxASSBgyLJI10cZfFKXGQ4uzqv8MrSDjSC1Kgdvd+M3PGu+1bs89EZEmBwPFCapcnw2nBUXqgGPLmuaEFkvPzz8UAlA58iKSNegX5YnHyUgWInyUIMfvmEVsS5zCAJO5f6f6IgwcTnEeuMN84a6MxjZMB/bLmhSpavfUV6jJ9Njsy1MFr744u6nCX7M/1fw0jDnHaAsXmi+gnc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,106 +152,278 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Add a new trait `Ownable` and type `Owned` for types that specify their
+own way of performing allocation and destruction. This is useful for
+types from the C side.
+
+Implement `ForeignOwnable` for `Owned`.
+
+Convert `Page` to be `Ownable` and add a `from_raw` method.
+
+Add the trait `OwnableRefCounted` that allows conversion between
+`ARef` and `Owned`. This is analogous to conversion between `Arc` and
+`UniqueArc`.
+
+Patches 1-4 implement `Ownable` and applies it to `Page`. These patches
+can be merged on their own.
+
+Patches 5-7 add `Ownable` -> `ARef` interop and can be merged later if
+consensus on their shape cannot be reached.
+
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+Changes in v20:
+- Fix a few copy/paste errors in safety comments (Sashiko).
+- Use `self.page.get()` rather than `Opaque::cast_into` (Alice).
+- Add a space between generics in a comment (Sashiko).
+- Change a safety comment to reference Box rather than KBox (Sashiko).
+- Link to v19: https://msgid.link/20260626-unique-ref-v19-0-2607ca88dfdf@kernel.org
+
+Changes in v19:
+- Update `workqueue.rs` and the `aref` module docs to use `RefCounted` instead of `AlwaysRefCounted` (Sashiko).
+- Remove the default `OwnableRefCounted::into_shared` implementation to keep the trait safe (Sashiko).
+- Fix the `ARef<Self>` rustdoc link (Sashiko).
+- Reuse `Owned::into_raw`/`from_raw` in the `ForeignOwnable` implementation (Gary).
+- Link to v18: https://msgid.link/20260625-unique-ref-v18-0-4e06b5896d47@kernel.org
+
+Changes in v18:
+- Rebase on `rust-next` (2026-06-24).
+- Drop the `'static` bound on `ForeignOwnable for Owned` (Gary).
+- Make `Ownable::release` take a raw pointer instead of `&mut self` (Alice, Sashiko).
+- Drop `types::ARef` re-export (Alice).
+- Drop unneeded `#[repr(transparent)]` on `Owned` (Gary).
+- Fix `FOREIGN_ALIGN` for `Owned` to report the pointee alignment (Sashiko).
+- Remove `BorrowedPage`; use `&Page` directly (Alice).
+- Update Rust Binder for the `Owned<Page>` conversion (Alice).
+- Update `pwm.rs` for the `RefCounted`/`AlwaysRefCounted` split (Sashiko).
+- Fix documentation nits: missing `// INVARIANT:` comments, stale `Page` docs, and a stray `mut` (Sashiko).
+- Expand the `use` statements touched by the rename patch to the multi-line style (Onur).
+- Link to v17: https://msgid.link/20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org
+
+Changes in v17:
+- Rebase on v7.1-rc2.
+- Reorder patches so that `Ownable` can merge without `OwnableRefCounted` (Alice).
+- Add `#[inline]` directives to short functions added by the series (Gary).
+- Link to v16: https://msgid.link/20260224-unique-ref-v16-0-c21afcb118d3@kernel.org
+
+Changes in v16:
+- Simplify pointer to reference cast in `Page::from_raw`.
+- Use `NonNull<Page>` rather than `Owned<Page>` for `BorrowedPage` internals.
+- Use "convertible to reference" wording when converting pointers to references.
+- Fix formatting for `Page::from_raw` docs.
+- Leave imports alone when adding safety comment to aref example.
+- Use `KBox::into_nonnull` for examples.
+- Add patch for `KBox::into_nonnull`.
+- Change invariants and safety comments of `Ownable` and make the trait safe.
+- Make `Ownable::release` take a mutable reference.
+- Fix error handling in example for `Ownable`
+- Link to v15: https://msgid.link/20260220-unique-ref-v15-0-893ed86b06cc@kernel.org
+
+Changes in v15:
+- Update series with original SoB's.
+- Rename `AlwaysRefCounted` in `kernel::usb`.
+- Rename `Owned::get_pin_mut` to `Owned::as_pin_mut`.
+- Link to v14: https://msgid.link/20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org
+
+Changes in v14:
+- Rebase on v6.19-rc7.
+- Rewrite cover letter.
+- Update documentation and safety comments based on v13 feedback.
+- Update commit messages.
+- Reorder implementation blocks in owned.rs.
+- Update example in owned.rs to use try operator rather than `expect`.
+- Reformat use statements.
+- Add patch: rust: page: convert to `Ownable`.
+- Add patch: rust: implement `ForeignOwnable` for `Owned`.
+- Add patch: rust: page: add `from_raw()`.
+- Link to v13: https://lore.kernel.org/r/20251117-unique-ref-v13-0-b5b243df1250@pm.me
+
+Changes in v13:
+- Rebase onto v6.18-rc1 (Andreas's work).
+- Documentation and style fixes contributed by Andreas
+- Link to v12: https://lore.kernel.org/r/20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me
+
+Changes in v12:
+-
+- Rebase onto v6.17-rc1 (Andreas's work).
+- moved kernel/types/ownable.rs to kernel/owned.rs
+- Drop OwnableMut, make DerefMut depend on Unpin instead. I understood
+  ML discussion as that being okay, but probably needs further scrunity.
+- Lots of more documentation changes suggested by reviewers.
+- Usage example for Ownable/Owned.
+- Link to v11: https://lore.kernel.org/r/20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me
+
+Changes in v11:
+- Rework of documentation. I tried to honor all requests for changes "in
+  spirit" plus some clearifications and corrections of my own.
+- Dropping `SimpleOwnedRefCounted` by request from Alice, as it creates a
+  potentially problematic blanket implementation (which a derive macro that
+  could be created later would not have).
+- Dropping Miguel's "kbuild: provide `RUSTC_HAS_DO_NOT_RECOMMEND` symbol"
+  patch, as it is not needed anymore after dropping `SimpleOwnedRefCounted`.
+  (I can add it again, if it is considered useful anyway).
+- Link to v10: https://lore.kernel.org/r/20250502-unique-ref-v10-0-25de64c0307f@pm.me
+
+Changes in v10:
+- Moved kernel/ownable.rs to kernel/types/ownable.rs
+- Fixes in documentation / comments as suggested by Andreas Hindborg
+- Added Reviewed-by comment for Andreas Hindborg
+- Fix rustfmt of pid_namespace.rs
+- Link to v9: https://lore.kernel.org/r/20250325-unique-ref-v9-0-e91618c1de26@pm.me
+
+Changes in v9:
+- Rebase onto v6.14-rc7
+- Move Ownable/OwnedRefCounted/Ownable, etc., into separate module
+- Documentation fixes to Ownable/OwnableMut/OwnableRefCounted
+- Add missing SAFETY documentation to ARef example
+- Link to v8: https://lore.kernel.org/r/20250313-unique-ref-v8-0-3082ffc67a31@pm.me
+
+Changes in v8:
+- Fix Co-developed-by and Suggested-by tags as suggested by Miguel and Boqun
+- Some small documentation fixes in Owned/Ownable patch
+- removing redundant trait constraint on DerefMut for Owned as suggested by Boqun Feng
+- make SimpleOwnedRefCounted no longer implement RefCounted as suggested by Boqun Feng
+- documentation for RefCounted as suggested by Boqun Feng
+- Link to v7: https://lore.kernel.org/r/20250310-unique-ref-v7-0-4caddb78aa05@pm.me
+
+Changes in v7:
+- Squash patch to make Owned::from_raw/into_raw public into parent
+- Added Signed-off-by to other people's commits
+- Link to v6: https://lore.kernel.org/r/20250310-unique-ref-v6-0-1ff53558617e@pm.me
+
+Changes in v6:
+- Changed comments/formatting as suggested by Miguel Ojeda
+- Included and used new config flag RUSTC_HAS_DO_NOT_RECOMMEND,
+  thus no changes to types.rs will be needed when the attribute
+  becomes available.
+- Fixed commit message for Owned patch.
+- Link to v5: https://lore.kernel.org/r/20250307-unique-ref-v5-0-bffeb633277e@pm.me
+
+Changes in v5:
+- Rebase the whole thing on top of the Ownable/Owned traits by Asahi Lina.
+- Rename AlwaysRefCounted to RefCounted and make AlwaysRefCounted a
+  marker trait instead to allow to obtain an ARef<T> from an &T,
+  which (as Alice pointed out) is unsound when combined with UniqueRef/Owned.
+- Change the Trait design and naming to implement this feature,
+  UniqueRef/UniqueRefCounted is dropped in favor of Ownable/Owned and
+  OwnableRefCounted is used to provide the functions to convert
+  between Owned and ARef.
+- Link to v4: https://lore.kernel.org/r/20250305-unique-ref-v4-1-a8fdef7b1c2c@pm.me
+
+Changes in v4:
+- Just a minor change in naming by request from Andreas Hindborg,
+  try_shared_to_unique() -> try_from_shared(),
+  unique_to_shared() -> into_shared(),
+  which is more in line with standard Rust naming conventions.
+- Link to v3: https://lore.kernel.org/r/Z8Wuud2UQX6Yukyr@mango
+
+To: Danilo Krummrich <dakr@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Uladzislau Rezki <urezki@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+To: Björn Roy Baron <bjorn3_gh@protonmail.com>
+To: Benno Lossin <lossin@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Gross <tmgross@umich.edu>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+To: Tamir Duberstein <tamird@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+To: Onur Özkan <work@onurozkan.dev>
+To: Lyude Paul <lyude@redhat.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Arve Hjønnevåg <arve@android.com>
+To: Todd Kjos <tkjos@android.com>
+To: Christian Brauner <brauner@kernel.org>
+To: Carlos Llamas <cmllamas@google.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Dave Ertman <david.m.ertman@intel.com>
+To: Ira Weiny <ira.weiny@intel.com>
+To: Leon Romanovsky <leon@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
+To: Serge Hallyn <sergeh@kernel.org>
+To: David Airlie <airlied@gmail.com>
+To: Simona Vetter <simona@ffwll.ch>
+To: Alexander Viro <viro@zeniv.linux.org.uk>
+To: Jan Kara <jack@suse.cz>
+To: Igor Korotin <igor.korotin@linux.dev>
+To: Viresh Kumar <vireshk@kernel.org>
+To: Nishanth Menon <nm@ti.com>
+To: Stephen Boyd <sboyd@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+To: Krzysztof Wilczyński <kwilczynski@kernel.org>
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+To: Ira Weiny <iweiny@kernel.org>
+Cc: Philipp Stanner <phasta@kernel.org>
+Cc: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: driver-core@lists.linux.dev
+Cc: linux-block@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-pwm@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+
+---
+Andreas Hindborg (3):
+      rust: alloc: add `KBox::into_non_null`
+      rust: implement `ForeignOwnable` for `Owned`
+      rust: page: add `from_raw()`
+
+Asahi Lina (2):
+      rust: types: Add Ownable/Owned types
+      rust: page: convert to `Ownable`
+
+Oliver Mangold (3):
+      rust: rename `AlwaysRefCounted` to `RefCounted`.
+      rust: Add missing SAFETY documentation for `ARef` example
+      rust: Add `OwnableRefCounted`
+
+ drivers/android/binder/page_range.rs |  10 +-
+ rust/kernel/alloc/allocator.rs       |  19 +-
+ rust/kernel/alloc/allocator/iter.rs  |   6 +-
+ rust/kernel/alloc/kbox.rs            |   9 +
+ rust/kernel/auxiliary.rs             |  10 +-
+ rust/kernel/block/mq/request.rs      |  19 +-
+ rust/kernel/cred.rs                  |  16 +-
+ rust/kernel/device.rs                |  12 +-
+ rust/kernel/device/property.rs       |  11 +-
+ rust/kernel/drm/device.rs            |   9 +-
+ rust/kernel/drm/gem/mod.rs           |  16 +-
+ rust/kernel/fs/file.rs               |  23 ++-
+ rust/kernel/i2c.rs                   |  13 +-
+ rust/kernel/lib.rs                   |   1 +
+ rust/kernel/mm.rs                    |  22 ++-
+ rust/kernel/mm/mmput_async.rs        |  12 +-
+ rust/kernel/opp.rs                   |  16 +-
+ rust/kernel/owned.rs                 | 373 +++++++++++++++++++++++++++++++++++
+ rust/kernel/page.rs                  | 136 +++++--------
+ rust/kernel/pci.rs                   |  10 +-
+ rust/kernel/pid_namespace.rs         |  15 +-
+ rust/kernel/platform.rs              |  10 +-
+ rust/kernel/pwm.rs                   |  12 +-
+ rust/kernel/sync/aref.rs             |  84 +++++---
+ rust/kernel/task.rs                  |  13 +-
+ rust/kernel/types.rs                 |  12 ++
+ rust/kernel/usb.rs                   |  17 +-
+ rust/kernel/workqueue.rs             |   8 +-
+ 28 files changed, 728 insertions(+), 186 deletions(-)
+---
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+change-id: 20250305-unique-ref-29fcd675f9e9
+
+Best regards,
+--  
+Andreas Hindborg <a.hindborg@kernel.org>
 
 
-On 2026/8/24 16:59, Mike Rapoport wrote:
->> memmap_init_range() initializes every struct page in the target range.
->> For compound pages with vmemmap optimization, the tail struct pages are
->> backed by a shared vmemmap page.
->>
->> Initializing those tail struct pages would overwrite the shared
->> vmemmap page contents, requiring users such as HugeTLB to restore the
->> metadata afterwards.
->>
->> Track the compound order for HVO-backed sections and use that metadata
->> to detect struct pages that fall into the shared tail vmemmap range.
->> Skip those shared tail pages in memmap_init_range(), then initialize
->> pageblock migratetypes for the processed range with a helper after the
->> per-page initialization loop.
->>
->> Keep direct mem_section access inside sparse helpers by exposing
->> pfn_to_section_order() to users that only need the order associated with
->> a PFN. This lets memmap_init_range() skip shared tail vmemmap pages
->> without exposing __pfn_to_section() to !SPARSEMEM builds.
->>
->> This is a preparatory change for consolidating handling across users of
->> vmemmap optimization, and it also avoids redundant initialization of
->> shared tail vmemmap pages during early boot.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>
->> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->> index 5fb9b37819d5..df31cac12311 100644
->> --- a/include/linux/mmzone.h
->> +++ b/include/linux/mmzone.h
->> @@ -2022,6 +2022,14 @@ struct mem_section {
->>   	unsigned long section_mem_map;
->>   
->>   	struct mem_section_usage *usage;
->> +#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->> +	/*
->> +	 * Normally, sections hold regular (order-0) pages. However, for
->> +	 * sections with HVO enabled, this tracks the compound page order
->> +	 * to enable deduplication of redundant vmemmap pages.
->> +	 */
->> +	unsigned int order;
->> +#endif
->>   #ifdef CONFIG_PAGE_EXTENSION
->>   	/*
->>   	 * If SPARSEMEM, pgdat doesn't have page_ext pointer. We use
->> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index 1533aebafb68..05c09e755e0b 100644
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -29,6 +29,7 @@
->>   #include <linux/cma.h>
->>   #include <linux/crash_dump.h>
->>   #include <linux/execmem.h>
->> +#include <linux/sizes.h>
->>   #include <linux/vmstat.h>
->>   #include <linux/kexec_handover.h>
->>   #include <linux/hugetlb.h>
->> @@ -677,21 +678,19 @@ static inline void fixup_hashdist(void)
->>   static inline void fixup_hashdist(void) {}
->>   #endif /* CONFIG_NUMA */
->>   
->> -#if defined(CONFIG_ZONE_DEVICE) || defined(CONFIG_DEFERRED_STRUCT_PAGE_INIT)
->>   static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
->> -		unsigned long nr_pages, int migratetype, bool atomic)
->> +		unsigned long nr_pages, int migratetype, bool isolate, bool atomic)
-> Growing boolean flags makes the callsites harder to read.
-> One way to deal with it is to add comments to the callers saying what
-> each true and false mean.
-
-Make sense.
-
->
->>   {
->>   	const unsigned long end = pfn + nr_pages;
->>   
->>   	for (pfn = pageblock_align(pfn); pfn < end; pfn += pageblock_nr_pages) {
->>   		enum migratetype mt = kho_scratch_migratetype(pfn, migratetype);
->>   
->> -		init_pageblock_migratetype(pfn_to_page(pfn), mt, false);
->> -		if (!atomic && IS_ALIGNED(pfn, PAGES_PER_SECTION))
->> +		init_pageblock_migratetype(pfn_to_page(pfn), mt, isolate);
->> +		if (!atomic && IS_ALIGNED(pfn, PFN_DOWN(SZ_1G)))
->>   			cond_resched();
->>   	}
->>   }
->> -#endif
->>   
->>   #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
->>   static inline void pgdat_set_deferred_range(pg_data_t *pgdat)
->> @@ -886,6 +885,13 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
->>   			}
->>   		}
->>   
->> +		if (vmemmap_optimizable_pfn(pfn)) {
-> A short comment above would be nice :)
-
-No problem. Thanks for your review.
-
-Muchun,
-Thanks.
 
