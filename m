@@ -4,129 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC9CCC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:57:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68000C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:59:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECE4E6B0088; Mon, 24 Aug 2026 09:57:58 -0400 (EDT)
+	id 8670E6B009B; Mon, 24 Aug 2026 09:59:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5FB6B0095; Mon, 24 Aug 2026 09:57:58 -0400 (EDT)
+	id 83EEE6B009D; Mon, 24 Aug 2026 09:59:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D94856B0096; Mon, 24 Aug 2026 09:57:58 -0400 (EDT)
+	id 72DA96B00A3; Mon, 24 Aug 2026 09:59:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B81896B0088
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:57:58 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E77FC0176
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:57:58 +0000 (UTC)
-X-FDA: 85136316636.16.2636213
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 75E0340005
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:57:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HDzywXpG;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 49B626B009B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:59:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C8D16140125
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:59:02 +0000 (UTC)
+X-FDA: 85136319324.11.D57E837
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 14D8218000D
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:59:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hL8+sDkG;
+	spf=pass (imf24.hostedemail.com: domain of hughd@google.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787579876;
+	s=arc-20220608; t=1787579941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=NNp4UNhd1NOiyGzJQCdsou/sBAaBs1VLWrMHz+JJOrk=;
-	b=bKR7XYeQ5hI+TsegbdjpxmkN9W1+48yGji9GXBKxeVV9uD9EnD3SVennu3EcxVrWoWsf0h
-	5+dAnQWLLTy1E5kU+V3SJMjXfkys/ErhxmANIS7BQ4d0oTPXZ0RhPT34FyGVb+j1sgsuhx
-	4EajHrkDvkEj8vBBgeLb0gyiNDE/qQE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8DePtEtd6bTjy8gbPPUEJydq7WmfU3cohWIB8nVvJ4g=;
+	b=SdPteKGlqPHgE0n+wDUj38PNfr6voT+ya44WBJkCDqymSbym7AlJ6dD8BuBMGlk4UMNaXO
+	jeV1iwNouPPTT+kvrGvYc2aArSlJ2Ds39ApRrSMBelB7soBapb2i7M4IZjUPGV9KzYdtbl
+	L4hzUGgk9jnty5ad73kdqWXuZ/TbPMY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HDzywXpG;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hL8+sDkG;
+	spf=pass (imf24.hostedemail.com: domain of hughd@google.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787579876;
-	b=NiiToElPHk9HZtmIsrg1VY3A2LUVc+0aZr+X5hKWkCtIie4omaqbIMJr9Rjm7dWllPgbR8
-	bdCsK+F5FRqt2ToYcXv+4Da2DzRyZZ1nEK6C4PP9VsftJnV7KpQSW4B+nNFwImkPERE3aB
-	nLIeqV5bUGQjIDlXPe1dtbPMJZZEbjU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 72F626020E;
-	Mon, 24 Aug 2026 13:57:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303ED1F00A3A;
-	Mon, 24 Aug 2026 13:57:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787579875;
-	bh=NNp4UNhd1NOiyGzJQCdsou/sBAaBs1VLWrMHz+JJOrk=;
-	h=Date:From:Subject:To:Cc;
-	b=HDzywXpGTZQHjQMlj83diff96BPieK+4YF/2KDJ1pJr3FLqbBvyHzFN1MCaYSyFHQ
-	 QoyX5Gyl/AgIFeX9SJTDF7m9y/wXQ2/bI4XaiBfWygQ3llMCQmNTSr+q1LaVTTVz+h
-	 hF4Ino48FpBuMTJ01qRmmE8C94B93CLhkzW0yzJYuVvRAOulfV8JIM5BjCHf6HE/Kn
-	 Nmw170dft3tX3tkBbr1nKPFgeBI83LpQqou7Cz4aczCzS9dvjPMX1lV6HNENUt+iIy
-	 GXG0INjbuQT8Pw30Vl5ecorae8+8Gk5MUAxwlFF1pn53hP+qpqfg/MMT56MoAU15Qv
-	 7WzZqHpMpflwg==
-Message-ID: <321f40c8-c694-4cc6-a4cb-df0c9b3d3fcd@kernel.org>
-Date: Mon, 24 Aug 2026 15:57:51 +0200
+	t=1787579941;
+	b=WeNdlO2tCXRu0DYkSB1C8J+hXgkyVazGbZiwv8s7K+/qA2PYhXWCVuV3zGDabvQCT7TkEp
+	PLv6wWBfHAsGHuzO7Q/D36PQkXZryCMrErjrNpK7rVzsQDf4ymYF/F/6NoSlxAz6ccdUUS
+	BO9apWZmR/gEdb42BHe6NfSmmWG6tG4=
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-66d110aaa7cso227950d50.3
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:59:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787579940; x=1788184740; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8DePtEtd6bTjy8gbPPUEJydq7WmfU3cohWIB8nVvJ4g=;
+        b=hL8+sDkGdHYoWOZoqDfQbRICIPC5RAw36Q/BGxBKf0qvL52AnTMoC4/6wP3AXItXkH
+         QjqPh/dSbpeZWMJCBkIxUo/JwI4CN0Cd3e6aqfZlvqctz74KxXaMmx5aDvdoBVUeK29q
+         UGKphKmxmnfUR3cZmhz6nBttPD7GL18hG0b0c7WeJ4pObSncjS6TYi0pRUbOK75Ha8qK
+         FuVePFtToT2bcj1QLK83KxHgdEFGNaWO2VneKesxbQ2BfySzgqvSIqFlPeUCuLPF0WDi
+         f/3tmDpxCjWSxjT+aJM/hYbWEeru2f+HExyOac/kIBJaq7ofuHZS3FwlSz1MFoNXjyQJ
+         OxnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787579940; x=1788184740;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8DePtEtd6bTjy8gbPPUEJydq7WmfU3cohWIB8nVvJ4g=;
+        b=b4aacu5vgGi8ndUPUCUtlt0Dpqbbx9zCn7wTS15wP6onvwq+EnOJ2fGHB7zoC/TcWR
+         7lu78/NiqOijmgQhCClIj4CdxH7hWDspcgH2VzsOQaWtNgiuM8Ho8Rd4bRB92n8yGH5o
+         TzhCq2vcfdVoWpF4v16YupHMjNiFlI1ukMBMCQO1WlFRuHqSWXSyo4nPh1ODsNqw/1V8
+         P9i8sAlqDY66gfeQ9jv/HhyS4wIqHHYhJOCpsWLUQmbeC/MTqBUG7WwV3eoxznQaZkKN
+         J0TFTLEa2T26urUcwpcD7GK9OTIT+bQOOb10tBnpyW+xweWyS4C2K2s5AGVQuCNwMr0/
+         VYlA==
+X-Forwarded-Encrypted: i=1; AHgh+RrsP4iv8Em0pjq76Feym8fDF0CussEPbqsj0FCyQVN8vDfNo6gRreHnPyQyPtFvb3ngVx3RkupxaQ==@kvack.org
+X-Gm-Message-State: AFuF++n1hMPSrYRIyhBpTQ6xoHkurdJ+FqcPxizmPXrnHuWK1AXlNxyC
+	qM6MB9BSsJHMboRMpui5E5mF0kZAW4Our9500mwRc10WITPO/Ay9Ck701w7NUb0HKQ==
+X-Gm-Gg: AR+sD13+kNZagspLYTndJA9K8PZmDukdG//8FZ/E6w+vG3vPiGflkNDWKB/ayjJQY37
+	FmPlDkX1YQ3iREIufojrkT7rIN/BAzrdk4RcIEJNTLIzQImq1kUAIaWyHWWPW8+xBAGtGxytjYB
+	wy9CgaTJPiielUjmdV2L6y5CR/h9gWDDMfmP+aV/xuz4QpZ+NxerVTi6QT9FPgLj9GlMNdnnD2z
+	D22tDT9t1Caya3s1JtCzdRXwD9P17UieVUqrGx3d5ZgU31UVIax37h1Eys65EOo+JEabj2wMiZA
+	/SZZA6GRumJlfeppLbC9A3UvYL46KfTMw5GAlcqEbGWZ+DqlwHvnJ/XxZYdVeOrevDeNI4Y8itf
+	GnUo8QYDSO+b+dPhHRP0ohJUD7yuRa1xLFAT2H0QYlla4WTpOju7HECBL3dE/EG3ajXawpJCCMX
+	Z9mi7rq8OMJgy9Q9MAOuEHIITRECjkVYIv4i6+3J7PRj7KDG7jkmTHLJvfDTqQSUcEhVkp87eJh
+	JyLzHmjimc+LXQTrXdc7NYIPswtGziuaoPkWUHcVqD2BTEu5WbvT96pKC8=
+X-Received: by 2002:a53:ac9c:0:b0:66c:fb45:77e2 with SMTP id 956f58d0204a3-66cfb457872mr3574386d50.28.1787579939500;
+        Mon, 24 Aug 2026 06:58:59 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84ca68c1b14sm34163727b3.21.2026.08.24.06.58.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 06:58:58 -0700 (PDT)
+Date: Mon, 24 Aug 2026 06:58:54 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Ackerley Tng <ackerleytng@google.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
+    Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+    Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+    Marcelo Tosatti <mtosatti@redhat.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Mel Gorman <mgorman@techsingularity.net>, 
+    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
+    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Suren Baghdasaryan <surenb@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
+    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH 03/25] mm/fbatch: temporarily disable lazyfree and mlock+munlock
+ batching
+In-Reply-To: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+Message-ID: <9593975e-8732-999a-73d1-37fd332eb840@google.com>
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [GIT PULL] slab updates for 7.3
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 75E0340005
-X-Stat-Signature: wk1b9s77gi9enhqyj917zhhyyu89rrok
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: t9mwrmednj45qs1x4anx1kn56jtj98kf
+X-Rspamd-Queue-Id: 14D8218000D
 X-Rspam-User: 
-X-HE-Tag: 1787579876-118079
-X-HE-Meta: U2FsdGVkX19OQlAF+Zn0Q/CYVREbCBNOpGiEaHg3MDjakN/X3669E5RhUME/tedTVjBJV5KxPdUPEJESx6rwSt5YK1iNss2W/teQPFOQEWVOlPWGVMoP2K9F2pXvXTFIxfudhwaq/Tw7o/b8p+tpgoQXTwlb663sLxFvBZEUf9zwXdu6/GHcMZDIOVJAarCI277zFpm8lyzVYFUEGUuJ25du93pWxd2BWI3yzqoHcyUSUE7QzxM9buJeJbfSFIuCKOZQY6O95L2vx0LUDuhslnHYCCP4bCBnepOHJx7uatfOaQC6u7Ue/NzpF58ZKJP5EvApj//+Z+38t1oXVmd7NHQY8ojXNkc63s6qLrRh2R3QPy8AGKhLDaGe8ByDCF6NNLgd90+JORlY1YINrQYgrJ05zei8z4Xemk3MP37NwThbVQxzqVtlh5wGY6AOj40JXiddwQ1bEa3t58ESmOMBvkQkicZkjDdq2l0lEMsZpdDaCD48/SBU+sI/AZ2rN7zUlewgF/1vcKMsXy9h2BeWelimBw3s4SIoktytuCVQH6rWet8WusfgzuolL9EtnA0UAzs2P/N3ccmGM/ur+KI7BAX8z9W/kCZL7CMtIv0DhColx7OgeBEetilIRkQbwImYSXyfeO6k6YCeAU8pA1wbvsGeFHJ5r38YFC3CMcTorGahkSC5d4BroqHdIdfBLDCUHFJ5PlHWYHWOELrN5aEx16Ggi8OJ00GQ/n+Pqnj3gXXeaKR+tuZv+hHouUFv5cI2CqrFZHk/g0+8X0ur5EG/VfMeaO52ewTeEGLfHaFNrlmHYKJxN6/nB8hqRQq89UP8Qm0E/yXIo+FcRNaFxSBrAwu/0Njeq8jx21sRbHOWH91HX4LY6rIEX5Iv6TOKggPjEpTRzabxEfY/rkTIlYQwR9ixRiNb/qLbl6mGGEN6fK32xDusWS5v/rfhiQsSXFvtEEMQ/AzHU/8NNw5ag1b
- xP3klDce
- uiy5ID7r5WJGCDTCXbVcBDzOw8TiqrrmWt8YjWpONkjdJ8Z/WYSMychgI56F1ZfNpmxFuMDNDKJWuq/DwX7vu6O0l6Vef2nMGVaI8BVClY6fSGSlnAzKK+OhENa2Mnwe4YFwVvAjdCa43pavqyM52hy2YLeu38MrQ6CXoWA4GMlN0d2vK1043CBlfIhOBjuDSL7TNLuAoqZ0FO/bOWfhi/hJFrnH3pn63CeJ6E3CfPESFlUUpK7YhzkkFF3FNNNKoEz5tLq6Z+JoslAqlC72SsRAsIweKPzSsXxoyJjJ5utqXprwU5dCvYK0Vxss71yGQLEvt
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787579940-971035
+X-HE-Meta: U2FsdGVkX189s6hbZYpfPf9HGcLb82Jg3uY8/C9kX/bskbh5+e1ckFnxmvmrIDwEoMaIaV2WRle6iv0jounQQ0jqsNJ09NVA7s32wW4sYXr9RJ4BbwW2eUK8GwCCA4kJfU0xLDc0IwYcCkkCTNeolP5fesrbKJUruPdFrtpp15GzbfuoTNm0BtRwGV7HzHByilVTbhowtJLxh/oceqU2/dgf1ANDQIDLqUuGsvp63YaaUJen1a4swqAdSAtTaK70jAkVdHw1bZj5xFy3LPUrFv4ztkbXnH7vAFq2TiMQLuSuGopsiGRIc9m6h29X2ZZD0MaJm9h6e5rPPHhK/fDM3MpNLjHxAUO7EEJHztLw7yjYOKCT59nhMN4M8IqgkZLflloWtH2+RaUDzgCtQfQnE1DPOw+LnJGcupXKU1hxVByHCsZ6zta9w7UNWxymv1ue6HAbmMXCuro6HvdXczvF9htLmT2uvCPjpI64hElvPSbk+n9rHyQLOgwqrHDT1bU8grOEuB4rlhAu0jydE+bYZUlRzcbXBCKYKx40FZQSoPOa13ylP78qWkGFh0lpqUCWuIqXH6YrX9PDwCU5yCqawtBkM5JBpbv1F+pCUtYgujdkEecPBz6M1RGgfevx8SfZT7rpxWaBFFosSERXynEzctxEbyJ63pq14m6MxrEnAjC6l0Pg3z7ygFT0Lm0VMglc2e4in/rXdduoF8IK0Ruber+OUq6dB248beEP0BI083Cd6fF1xGoKMlnxrbAFqvg2odZ2sfUiKMsT9qvBif8O7wwJnquD0apPSRU7hVx03Dg5IU7Zhmi6RHK5muA6cU7tkwUHhK9QfTGHc4fz13cbWTjFuN/SGxU8dJP8t6bNwwJgVbZTN9RGreVDPJyqmzThfahS4D14HzmO7EWqCrQMLY3mZbmpJpuDE+/+GHM3jYTmycBFe2MsnVredsOz//6FLFz6yj0OrSfnjiX3VlB
+ PPLl+ERI
+ D19qURE5wZL1GYWqFaEOc3rcmTH34HSP0cL+O+FbmW3t2/Q75TFxnBXW0GQphuW/A+ZECVw21tNATOBEQPrXMr06xcVAhvuAZI2eD+Cf7RLy9rjND13QJBJwRs4Rj64Ur06+GzGImg4iwfR3ECwy396gsmFqZZlwluZ92kkT4lOpfA/NDNYGgfNNu6G7sM07E0hfPeThNBWidDYXaY4hLyF9hSBYHG2WX+liv14bqvE7zc8kahQvLPQMNqOuTcp0IN5VmjeKJg4b+hQGhT0/1cYfXBA74H58ebJ2QQggNa3Cr+K5CzukVGz16k2CZoDCENKd1R/zwFQVzvX+8hRFPHzWdY9m4nNUiGSIvviSdLAVDpCg9hGkcJ/4NmAWPs1rawq9mglzgBb7ld4Txisf/tablhTe8LxQ3+ZWxPLXM6vou4Kk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,120 +143,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+It will not matter if we occasionally get activation or deactivation
+wrong; but a mistaken lazyfree (MADV_FREE) would likely cause dataloss.
+So disable its batching while reworking the per-cpu fbatch handling,
+then re-enable it with more thought afterwards.
 
-please pull the latest slab updates from:
+Similarly disable mlock+munlock batching temporarily: they will need
+some redesign before re-enabling. Just insert one disabling line for
+now, leaving the rest of the code as it was, for consideration later.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.3
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
+ mm/folio.c | 2 ++
+ mm/mlock.c | 3 +++
+ 2 files changed, 5 insertions(+)
 
-There's a semantic conflict with changes in char-misc that will break Rust
-build due to a change of kvfree_call_rcu() parameter type. In linux-next this
-was solved by this fixup applied as part of the merge commit of whichever of the
-trees is merged later:
-
-https://lore.kernel.org/all/20260805-slab-rust-fix-v1-1-c4d4c1b69de2@kernel.org/
-
-Thanks,
-Vlastimil
-
-======================================
-
-- Addition of kfree_rcu_nolock() that can be used from contexts where spinning
-  on a lock might be unsafe, such as a BPF program attached to an arbitrary
-  function, or in NMI context. This complements the existing kfree_nolock()
-  support. (Harry Yoo)
-
-- Runtime instead of compile-time slabobj_ext sizing. Avoids wasting memory
-  when memory allocation profiling is compiled but not enabled, with initial
-  partial support to also avoid wasting memory for objcg pointers when those
-  are not needed, while profiling is enabled. (Vlastimil Babka)
-
-- Various non-urgent fixes, cleanups and optimizations. (Hao Li, Hongling Zeng,
-  Li RongQing, Li Xiasong, Seongjun Hong, Shengming Hu)
-
-----------------------------------------------------------------
-The following changes since commit 5ff172f6c94d282d83cb88bdfec5f647ad9c6105:
-
-  slab: silence sparse warning with type-based partitioning (2026-07-21 11:28:21 +0200)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.3
-
-for you to fetch changes up to 564ed40708ebc60a78f280944799cbe8e3401816:
-
-  Merge branch 'slab/for-7.3/kfree_rcu_nolock' into slab/for-next (2026-08-24 15:01:27 +0200)
-
-----------------------------------------------------------------
-slab changes for 7.3
-
-----------------------------------------------------------------
-Hao Li (1):
-      mm/slub: deduplicate NUMA policy calculation in allocation paths
-
-Harry Yoo (Oracle) (8):
-      mm/slab, slub_kunit: register kprobe to trigger _nolock APIs
-      mm/slab: handle the !allow_spin case in kfree_rcu_sheaf()
-      mm/slab: use call_rcu() in unknown context if irqs are enabled
-      mm/slab: extend deferred free mechanism to handle rcu sheaves
-      mm/slab: allow kfree_rcu_sheaf() on PREEMPT_RT
-      mm/slab: introduce struct kvfree_rcu_head for kvfree_rcu batching
-      mm/slab: introduce kfree_rcu_nolock()
-      slub_kunit: extend the test for kfree_rcu_nolock()
-
-Hongling Zeng (1):
-      mm/slub: add comment explaining intentional kobject handling in sysfs_slab_add
-
-Li RongQing (1):
-      mm/mempool: Untangle CONFIG_SLUB_DEBUG_ON abuse and switch to static key
-
-Li Xiasong (1):
-      mm/slub: fix missing debugfs entries for caches created before sysfs init
-
-Seongjun Hong (2):
-      slab: remove unused SL_CPU slab_stat_type
-      docs: ABI: sysfs-kernel-slab: mark cpu_partial attributes deprecated
-
-Shengming Hu (1):
-      mm/slub: prevent pfmemalloc objects from entering the barn
-
-Vlastimil Babka (SUSE) (18):
-      mm/slab: extract __free_to_pcs_batch() from free_to_pcs_bulk()
-      mm/slab: simplify freeing remote objects in free_to_pcs_bulk()
-      mm/slab: skip kfence objects in allocation profiling
-      mm/slab: remove objs_per_slab()
-      mm: move struct slabobj_ext to mm/slab.h
-      mm/slab: make slab_obj_ext() determine object index
-      mm/slab: abstract slabobj_ext.objcg access
-      mm/slab: abstract slabobj_ext.ref access
-      mm/slab: replace slab.stride with obj_exts_in_object
-      mm/slab: change struct slabobj_ext to a union
-      mm/slab: introduce slab_obj_ext_has_codetag()
-      mm/slab: reduce slabobj_ext memory with allocation profiling disabled
-      mm/slab: stop exporting kvfree_rcu_barrier[_on_cache]()
-      mm/slab: add cache_ and slab_needs_objcg() helpers
-      mm/slab: stop allocating objcg pointers when unnecessary
-      mm/slab, kfence, memcg: completely remove obj_ext for kfence objects
-      Merge branch 'slab/for-7.3/objext_split' into slab/for-next
-      Merge branch 'slab/for-7.3/kfree_rcu_nolock' into slab/for-next
-
- Documentation/ABI/testing/sysfs-kernel-slab     |  18 +-
- Documentation/admin-guide/kernel-parameters.txt |   5 +
- Documentation/mm/allocation-profiling.rst       |   7 +
- include/linux/memcontrol.h                      |  13 -
- include/linux/rcupdate.h                        |  32 +-
- include/linux/slab.h                            |  19 +-
- include/linux/types.h                           |  10 +
- include/trace/events/rcu.h                      |   2 +-
- lib/tests/slub_kunit.c                          | 190 +++++--
- mm/kfence/core.c                                |  12 -
- mm/kfence/kfence.h                              |   3 -
- mm/kfence/kfence_test.c                         |   2 +-
- mm/memcontrol.c                                 |  37 +-
- mm/mempool.c                                    |  35 +-
- mm/slab.h                                       | 245 +++++++--
- mm/slab_common.c                                | 111 +++-
- mm/slub.c                                       | 660 ++++++++++++++----------
- 17 files changed, 940 insertions(+), 461 deletions(-)
+diff --git a/mm/folio.c b/mm/folio.c
+index b2bce6b77498..a7010ae3edff 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -218,6 +218,8 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+ 		local_lock(&cpu_fbatches.lock);
+ 
+ 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
++			/* XXX Temporarily disable lazyfree batching */
++			fbatch == &cpu_fbatches.lru_lazyfree ||
+ 			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+ 
+diff --git a/mm/mlock.c b/mm/mlock.c
+index efa6716e4dfb..14c02e155d68 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -255,6 +255,7 @@ void mlock_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
++	    true || /* XXX Temporarily disable mlock batching */
+ 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+@@ -278,6 +279,7 @@ void mlock_new_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
++	    true || /* XXX Temporarily disable mlock_new batching */
+ 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+@@ -299,6 +301,7 @@ void munlock_folio(struct folio *folio)
+ 	 */
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, folio) ||
++	    true || /* XXX Temporarily disable munlock batching */
+ 	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+-- 
+2.51.0
 
 
