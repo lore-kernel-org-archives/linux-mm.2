@@ -4,116 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70457C5DF9B
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:19:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D71C5DF81
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 13:20:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86B8E6B0092; Mon, 24 Aug 2026 09:19:48 -0400 (EDT)
+	id 22C016B0096; Mon, 24 Aug 2026 09:20:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81D1A6B0095; Mon, 24 Aug 2026 09:19:48 -0400 (EDT)
+	id 1B5766B0099; Mon, 24 Aug 2026 09:20:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75B596B0096; Mon, 24 Aug 2026 09:19:48 -0400 (EDT)
+	id 0F2506B009B; Mon, 24 Aug 2026 09:20:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BF6A6B0092
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:19:48 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D1A58160131
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:19:47 +0000 (UTC)
-X-FDA: 85136220414.26.04A8B23
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 02FE8C0007
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:19:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DeNCO4cd;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D8CE86B0096
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:20:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6903D8012F
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:20:33 +0000 (UTC)
+X-FDA: 85136222346.29.609A36F
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 16506C0007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 13:20:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="GdsbHh s";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787577586;
+	s=arc-20220608; t=1787577631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yUP9UlMsBWRJmeASo8LmnRIcQu22MzYbbDAVky2m5Rk=;
-	b=cOPDl2CmkQ2lytMU2E0Srr/3zXcH/L0fjBFrgkImJ59KCn0yCPLd6YvoqUGwlUDIxDD4eN
-	6jLQVlT3YwPDD1duZsNPHk3n86RNhKZ1O+E446Qq07Qz2zpklSC2nN6IQi/dYeZu0EBK0n
-	DK1MNKLE+/d+Fv06yQpVDDYCgx30sig=
+	bh=fI5J35zZVeodU54e2f/003tiost3YB+AH7moLkYpx9Y=;
+	b=m3Epi7exSLuYNzYP5/dklclrXFw+oHY5gzXkf/MGkqF4TWDDiQhpg/Mgm0R7Pw9b6CRMqX
+	G+ZfPq/HaJkozK4GLLujHKon5R9U077txMmymOhzHUBTcdE/vBO+S+nSzK8oDETmpZqRuo
+	SJqfFBL5jPE8866AmZfgaYYk+ugMRIY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DeNCO4cd;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="GdsbHh s";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf10.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787577586;
-	b=3jBZxsHJil3QXdjvx1mbK9+DJDqxRy4pQFaofUAxxrt5HoLgGkY9CPhtVZVT5/aU0fdVQo
-	3BnKbKgaMWJBuSFW7d3bV4iVSKv0VfpHeHMM6vE9+qOXSaKwcCPys00x0EGb4otIMsRbMp
-	xgbJ+TGl4TszwsalY2hpYBfOBDgdKWg=
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69fab5a852cso5854117a12.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 06:19:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787577584; x=1788182384; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yUP9UlMsBWRJmeASo8LmnRIcQu22MzYbbDAVky2m5Rk=;
-        b=DeNCO4cddjfrsOUUu2SIGGP7p6K0XivuVjSY85Buk97JTG0aEdlwLMvY8DXihAR4ON
-         sKBdsFya+OCfsV9W5EKCf8YUIPIX8ykyxrfptMoau0jWtrMzSUpe/9W6jrM3B3Y9fbfI
-         ac9dRTX9ozmpIM+cVzfC+YLkPq39CRj/OlU/AoJLwZB6i6g4edOxpvhV7Fg0jeLOEFK6
-         bEE2ZnRXbOorpgiVLoRwH/qsM9l+pDEeO94IJg9Ac4RVoiedtzEBc3HxjmYAvXjmuM9/
-         dNdrJFmXl1H50inK+O0W2Lyxr3v06LzrExBmi6NbmSJKlhMrTVBZldHqBVu48+yx4UGI
-         UqYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787577584; x=1788182384;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yUP9UlMsBWRJmeASo8LmnRIcQu22MzYbbDAVky2m5Rk=;
-        b=bT/JEVKIep/JWIRmkZsiS8LSTeJ0Lpl5K7K+59uK+E1CR4Cc2bBFO0WFR7uDYEX1tw
-         p3dty+YSrcjrNFf+fDdde92SWG/tTrDVWp8G3gZogRML/MfLGn+mo83QMQFQBL3117Fn
-         VmLuHYwu1QW2oFuMzVB3h8DlaW5cWpYcsw0/lLHWDPeqEXFNNSE+5pXwfShGwScu+fKD
-         I9JCF3GAvjfvwB6JgkMb8uKQq0wtPurub8aequHK/aARkppXVRlY0v23Yo0tVFJ16yPB
-         vPCqv3d1t5OdUg2ZNSofNLCW7G0dWVEvcgKhbaHA1Uc7AEzPdIgSZoePCL89XCiA+LiQ
-         9GcQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqGLIiOxXgs7JIJU1Ml4QBHOP2kx0Dp3c4ZEoyaazhAe1imjgqiMDmy+Gl1n6zS7LwOVaBGzN8spA==@kvack.org
-X-Gm-Message-State: AFuF++kot49LfhWSE+xZw6XYwMA7Omolvte9+x00Ow/rmdFE5vI6tWaM
-	qKLiv7DTsU/w81keqHY0N08o100emJzO+gxx8zWqDcE9BosCgN29MhVD
-X-Gm-Gg: AR+sD1391sXz3zCPQ2vbF/+JUdygTsyZkNm1kYPNzStGPJRrYFZyh57654eHTBBkAaG
-	+VLHgS6G9qKCvWop/dYboQ0uuQqMjPdkT38x00fMtXobbL2TnOoxkoVPGu+X+By0KqBm36lVanT
-	c+caXBkveebllAEbg/yLA3g/aKJDa+AVtnvoKPmDeEUW1yxNqiKYlQHukzrn/n2g6Uj/pTplrfC
-	ZHAvxUzkFjERkSgYFLyzp1kU4V+bBIhvXGsfWQ7P94QW1FVxBJs7cdtPWkc2eC8o2t7LKWIwT3a
-	8JM5Ek724H2owdySH1sgeOvIW31q0zaEC4y37ZNwnwA1ixYTp050svxTeIrzXvOHiWaF+QGlHzW
-	zGN2/jz0gIpouvAyu+ZhYZQ7DBq397v1GpQbL5UyVndQ6pPTjtR2gfqVxvZEfcmU/4x1vX3oup0
-	cItmoMwil+RwMGY0tscZpZLOZx7Q==
-X-Received: by 2002:a17:907:e901:b0:c16:769b:9838 with SMTP id a640c23a62f3a-c246a2eba8amr2906625466b.5.1787577584401;
-        Mon, 24 Aug 2026 06:19:44 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249673d43bsm1191762766b.47.2026.08.24.06.19.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 06:19:43 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 24 Aug 2026 15:19:42 +0200
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Ye Liu <liuye@kylinos.cn>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc: fix vmap_purge_lock livelock under memory
- pressure
-Message-ID: <aoxE7rw6gru13DB5@milan>
-References: <20260824095020.1225189-1-ye.liu@linux.dev>
+	t=1787577631;
+	b=pYVynKuxeMQECfImjAHt9CArJL3UNBSfqIe6jcyOfpNt3Ah2YFljTUPpukQggd6hCJRQlp
+	jdwiRZy6DHc0NJ31FmEA0z9UXK9LeciODSJWN2/UoFx/GR/jJ/gShNHdyF+tV3GWSu8aeS
+	hVrrpd02ZzfWRSu4m/clxQf9UjhAJ74=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=fI5J35zZVeodU54e2f/003tiost3YB+AH7moLkYpx9Y=; b=GdsbHh
+	sqngHZZica6D95+3QCPlSq6hHkQrPU7DKwvRAYadqPHQqEICABi0iS03N2JcLGiFNdDipD57s6AbY
+	eghePhj8FkWax4ax7Fu04yWLrA3QXXla6EoVVAG7wwto4SkLrtKR9vlfwqc4G+NIQz0uWqGL73LT4
+	eSwf5CRhj8zPSxBRtHq64orT8bRBhDrodNE5hwHFso0yE7cKMZULpvBltJwLEe1CRDJ7678ywCaah
+	TPFRdqS0ROjzzxIeMzuT2BOfMkC0aio3htpyXB80Hm8QH+QkUyN2Ozhk0FHXLpQcySjwDHqcg/1RO
+	KOHmVleepqzG448gLmv6MKrw9hkA==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1wyUar-0000000328N-23lS;
+	Mon, 24 Aug 2026 13:20:05 +0000
+Message-ID: <99b9a43505c0dba4c656bf950869f76f95e399ce.camel@surriel.com>
+Subject: Re: [RFC PATCH v3 3/8] mm/gup: split follow_page_pte_commit() out
+ of follow_page_pte()
+From: Rik van Riel <riel@surriel.com>
+To: John Hubbard <jhubbard@nvidia.com>, "David Hildenbrand (Arm)"
+	 <david@kernel.org>, linux-kernel@vger.kernel.org
+Cc: kernel-team@meta.com, Andrew Morton <akpm@linux-foundation.org>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org
+Date: Mon, 24 Aug 2026 09:20:04 -0400
+In-Reply-To: <42d8fc20-4ee6-4bed-b2b4-3f968bd29f5d@nvidia.com>
+References: <20260811025157.1632867-1-riel@surriel.com>
+	 <20260811025157.1632867-4-riel@surriel.com>
+	 <8a9d5a6f-a7c6-468f-8b50-a7aa2b4dea2c@kernel.org>
+	 <30b747de6202cd875b7669f8d76ad8ded5c0a4e7.camel@surriel.com>
+	 <3b8cb743-702a-4362-9abb-7c30e687c3c2@kernel.org>
+	 <ab1661573257d7755d5a48e4f9165ff22febba29.camel@surriel.com>
+	 <fe9f0bb5-73e3-4509-951d-e529e37011fd@nvidia.com>
+	 <f86ca125a9b63cdab8edeb3c3b02a29141f18c1a.camel@surriel.com>
+	 <42d8fc20-4ee6-4bed-b2b4-3f968bd29f5d@nvidia.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824095020.1225189-1-ye.liu@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 02FE8C0007
-X-Stat-Signature: faa4ja9qowf9ixbq9bdde865inxey1sg
 X-Rspam-User: 
-X-HE-Tag: 1787577585-728696
-X-HE-Meta: U2FsdGVkX1/ytZWeyj1mjFdk2o+gPFnbNm+QrnNkgTbzhR5A8mMnX2DetdYOABTtr1ab1fDZms/AuZ8Ejk7c9fm5fe+CZxhgBn/rI4Wlm9gsu/PHjoe0xs/d9vaxmN0Yj2mCX1Xum00v5YQAJEdFi5OF3RkxlJwngO7N8C3UnMep97AaXP2VmpjfY3c0VP8EUOLK2QAcMaBXB96yIcVlOVCc/dtuvy2CT5Cf6nhOqDxcqIaWK6OWT/8IcB9G/YRG128nEzlgVBPpdCgCl2s/IGWVAZgJnYKVGxRw8AoH1q7nZrmpOsLr705M3AGfWunN7sKnQcx01KFKzze3uxf6tRXrP1u55YdUODhG+49ogMNqmc9xiVqWGwccKrykO5hyi8f15Jwne+BSwAV1o4qYDWS9F+zadf/tnvcsscv2IAjtIWgHb7wKb1WYCh6WKhCQOqWop8R5eLKUUN7JfXjkOqTqbwnGZts6xpVUnCUS9wLZP4MzGmc8PUdbD0Ul5m+92wHZnQ3WIS5n+T6kpz4aAHYyCLO/bKFSf5Xl4c1x0sDLbc5Gbb3CPO6YLmpQKXVe4tavhNPco//Dp0sUVGPS14SsfCWwHQlBApLOA+pZuv2ALswr43ZUhaeM+B0H17K2hszr5fQM0VRxwmI8YJoiRhJ+ASVdAohrextITUwFii2dn1WIV58C8ejO5+TpskM3nrw/EPzslyIzFaxC3B0hqQHx6d3qIp0iMsD/SqLDkOpjcwd0qbgw5SPhuJadvXdWsBKDATqwwaMelmWrYE3mHTMsRkQSP6QCZcMcKMwRhQxxFLQLDv8Qh9sqfFZXI5SQVKbGoHbFmaGcC7L6mfXS5Wfl5LpiMTRzOEcnNFoeiou8oIFr1+2LNWfm7bojD/aQWJN8t/r2UnFBlhkiHAZDMDqV5MDzK+paskPOkcwSXIrtCrozp5Qx1V2YkfVcJw3twPhZq/Upg+HhkopbSnt
- T9JYHP/+
- Rw7Vwf9F1KJShB5Bb1+ZG2kadMfIiRKc5Ebw0OPwJE4mDvbf/+jmB0sGDgHQhr/egSHohBeoQ8Kl6PRVFDBVHgzpZ2D541WU7Vd5/m2cecjbNTuWshxnICBMPJphCSlG4vmoO5RaCQd/H8s9b3o49vnRsberoyc0nNl31FjdPGonFcFLTrXv/Wg98oJUrqwfiqu4vidFRVuMXO6aX0UojRGbyGWplsrT0fXk3zZ4nbHQi8AW42hvH3CjCYhrXMKR2NHjoM3cxUMtGUyXMpkyfludGD7v7d0XQphsoK5/Yt44950rZBDS+YvnLWoXQCcbmmkFwhnNWzVN9EOiQmhmyy3w/rgp7fmkjk8ife5klyok6Vo6qIrQeqVvS7N0I+RDdZ18jCRCinTuqX2E6A6ap0Rx+PxMJI/tkU3MSx9UD2M3jZikFoWaYeIFq5WCc1wv1knybLcWj/h2oABsda66mrqd6kzMifY6EXLaIyeDAVKHsDpTn7biOuXeoG6zIcKjZlb6nS4wSAMabKqo=
+X-Stat-Signature: bp3urea6bkaqen18gaedemutuaze843y
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 16506C0007
+X-HE-Tag: 1787577629-82949
+X-HE-Meta: U2FsdGVkX18rDGXp2Xxt5BLTEkqDPoxQpioiDFbwOIZxxmf5srM7JETuuRWMnMoGGocaZX/iker4y9mvsGYqcI100VommnquNv8uOpg+MK80YoBpv9ueJyaLOCIg9Aq1gtTfr5JJOmrFeswzu5UHZgnbhSwrDCa7h+m2TSDVC0wqLr8Tz+rSs/JuXjon1xiAUn1mIp4ezTYkl9dIh6m3rUTdbmWY+XB9WK7W8sGXIzQqUhlM/xDfLhnqXVkwGYtiHrw5EOnmU/2c/4+vQCycu2/2cLA9q9wuswvIPc4kXjV4C//l1fA40CkCzxBB5JMDR3+TjkG76rJzu3sdyUN47w4S+bOii2mI9P4C4k/+QC/Cku1tBMka41cA08Inn1f1uDWSEG+5nFcXNKLB+PztOoRE6csxbWpC12RtytqY/9vDh+na9ZFus5wXwkIYOr9lKR+pSIRJzsE0pFtXkZd/ZE0FpPgT/CizPggArSsd/VU9g1oE8DUlRRKCvMXiJZtw+Rd6CgoloTHv6lrF32f+U5PsO2flNiAMtbijXLwjzZ3XjUiLHntgcaOgtzhRUCvzEU50QWeegvEN+nTDYQ/+4quxzcbwyKZW2MPTT7NmU/oRDcEuBigJO/zx1xqbhAlqp4UOwyWtz/nKV3Z4k26kSk2JNnK8sOjwhl2FuZ+gOc5nBZTi9hklR9VVBOaWBkmQ5j1Ooh04GfvJc4z0gpcp23shsdMO2i3W07AlcfBx+l3DmDGdG4JBHadawq8YiJ9atfBmSl+CowMj5Rn1/hQNEBlSuXS8933Ech7iBpzlRKQozVUiBEGA+uPkGa8heM+AHGHH+/e03Gq+4f1HC5XNgqPOw1YowXdkPbCYTiZG8QqiQgdR5dtONABLphGBDHL0I3Ov6Pi73ujlRKOMFNvUmPsjWbRZxhGddgduTfCleKnW67wWREy535whxPhznzcV7Bo4n44p1AACBPoNguh
+ 0oynCe/H
+ cxzsrcFsuoYVT5rIdF9DgBWWa0f219jnMEfH6qa5FtdAr8lGGapa132axXvtuXcEZY/htIyurOH8U1iw5yhlEDGfL6sLuelvBbl1tItmXbgR0DlfG6JbRvjZqJvkdxonTLIieFjKoG7uObPmlnadg6Kt80BrwveTSshAl2qXiiZfj2jIgweDFjgP8TXP+Hcc4I73BDnOiYqWULLW492U8HATOj4uRNfYQ+Vm5812SAXGlVZZv+Pb9IYEyODUSpCGV5BoDs+/jeIkH5CrNHkBjFaWMa+nS/rkaZqdQ2OK86OZSOr+4RswZqouC3I7NcLrtR2+r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,124 +127,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 05:50:19PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> The vmap_purge_lock mutex can be held for an extended period by
-> __purge_vmap_area_lazy() which calls flush_work() to wait for
-> purge_vmap_node workers while holding the lock.  Under memory
-> pressure, those workers may themselves be blocked in direct
-> reclaim trying to acquire the same lock via the
-> vmap_node_shrink_scan() shrinker callback, creating a circular
-> dependency that deadlocks the entire system.
-> 
-> Two changes:
-> 
-> 1. vmap_node_shrink_scan(): replace blocking guard(mutex) with
->    mutex_trylock().  This is a shrinker that only decays the vmap
->    pool and returns SHRINK_STOP without freeing memory; skipping a
->    decay cycle when the lock is contended is harmless and prevents
->    tasks from piling up on the mutex in the direct reclaim path.
-> 
-> 2. __purge_vmap_area_lazy(): purge all vmap nodes inline instead of
->    scheduling purge_vmap_node via workqueue and calling flush_work()
->    while holding vmap_purge_lock.  The workqueue dispatch + flush
->    pattern under a mutex is the deadlock trigger: if no free worker
->    threads are available (all blocked on the same lock), flush_work()
->    never returns and the lock is held indefinitely.
-> 
-> Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/vmalloc.c | 51 +++++++++++++++++++++------------------------------
->  1 file changed, 21 insertions(+), 30 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index bea9f76ed7e7..41443708d22d 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2358,7 +2358,6 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
->  		bool full_pool_decay)
->  {
->  	unsigned long nr_purged_areas = 0;
-> -	unsigned int nr_purge_helpers;
->  	static cpumask_t purge_nodes;
->  	unsigned int nr_purge_nodes;
->  	struct vmap_node *vn;
-> @@ -2397,36 +2396,17 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
->  	if (nr_purge_nodes > 0) {
->  		flush_tlb_kernel_range(start, end);
->  
-> -		/* One extra worker is per a lazy_max_pages() full set minus one. */
-> -		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
-> -		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
-> -
-> -		for_each_cpu(i, &purge_nodes) {
-> -			vn = &vmap_nodes[i];
-> -
-> -			if (nr_purge_helpers > 0) {
-> -				INIT_WORK(&vn->purge_work, purge_vmap_node);
-> -
-> -				if (cpumask_test_cpu(i, cpu_online_mask))
-> -					schedule_work_on(i, &vn->purge_work);
-> -				else
-> -					schedule_work(&vn->purge_work);
-> -
-> -				nr_purge_helpers--;
-> -			} else {
-> -				vn->purge_work.func = NULL;
-> -				purge_vmap_node(&vn->purge_work);
-> -				nr_purged_areas += vn->nr_purged;
-> -			}
-> -		}
-> -
-> +		/*
-> +		 * Purge all nodes inline.  Do not schedule_work() and
-> +		 * flush_work() here: flush_work() while holding
-> +		 * vmap_purge_lock can deadlock if the worker pool is
-> +		 * starved (e.g. all workers blocked on this same lock
-> +		 * in the direct reclaim path via vmap_node_shrink_scan).
-> +		 */
->  		for_each_cpu(i, &purge_nodes) {
->  			vn = &vmap_nodes[i];
-> -
-> -			if (vn->purge_work.func) {
-> -				flush_work(&vn->purge_work);
-> -				nr_purged_areas += vn->nr_purged;
-> -			}
-> +			purge_vmap_node(&vn->purge_work);
-> +			nr_purged_areas += vn->nr_purged;
->  		}
->  	}
->  
-> @@ -5519,10 +5499,21 @@ vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
->  {
->  	struct vmap_node *vn;
->  
-> -	guard(mutex)(&vmap_purge_lock);
-> +	/*
-> +	 * This shrinker is invoked from direct reclaim path where memory
-> +	 * pressure is already high.  Blocking on vmap_purge_lock here can
-> +	 * cause a pile-up of tasks all waiting for the same mutex while
-> +	 * the lock holder may itself be blocked in flush_work() waiting for
-> +	 * a worker that is stuck in the same reclaim path.  Use trylock to
-> +	 * avoid this; skipping a pool decay cycle is harmless.
-> +	 */
-> +	if (!mutex_trylock(&vmap_purge_lock))
-> +		return SHRINK_STOP;
-> +
->  	for_each_vmap_node(vn)
->  		decay_va_pool_node(vn, true);
->  
-> +	mutex_unlock(&vmap_purge_lock);
->  	return SHRINK_STOP;
->  }
->  
-> -- 
-> 2.25.1
-> 
-Have you seen any report about the problem you described?
+On Sat, 2026-08-22 at 14:31 -0700, John Hubbard wrote:
+>=20
+> Its workaround is folio_set_checked(), which defers the real work to
+> ext4_writepages(). If ext4 can't do the preparation from inside the
+> dirty call, a driver can't either.
+>=20
+> So for a file-backed page there's nothing the driver can add. What's
+> missing is a way for the filesystem to be told before the device
+> writes, and to revoke the pin when it needs to, which is where the
+> lease proposals come in. None of that exists today.
+>=20
+> And yes, unpin_user_pages_dirty_lock() is in the same awkward mess.
 
---
-Uladzislau Rezki
+That still leaves the question on what to do with
+code paths that rely on get_user_pages(FOLL_WRITE)
+to set the dirty bit on pages, and then do not set
+the dirty bit themselves after they write the page.
+
+Would it be better to move the dirty bit setting
+till after the write (to the page) has happened,
+even if that code does not queue up a filesystem
+write?
+
+Does unpin_user_pages_dirty_lock() need to call
+Folio_set_checked() ?
+
+You've made it pretty clear what is wrong, but
+I'm confused as to how we could improve the situation,
+at least without waiting for extensive filesystem
+changes first.
+
+--=20
+All Rights Reversed.
 
