@@ -4,141 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7546DC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC7C7C5DF9C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 16:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 768286B0099; Mon, 24 Aug 2026 12:31:22 -0400 (EDT)
+	id D5C5F6B009B; Mon, 24 Aug 2026 12:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73F3F6B009B; Mon, 24 Aug 2026 12:31:22 -0400 (EDT)
+	id D0D8D6B009D; Mon, 24 Aug 2026 12:31:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62F486B009D; Mon, 24 Aug 2026 12:31:22 -0400 (EDT)
+	id BD5B06B009F; Mon, 24 Aug 2026 12:31:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FB806B0099
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:31:22 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A93CF1601C5
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:31:21 +0000 (UTC)
-X-FDA: 85136703162.24.4BBCAF4
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BB3CA1A0006
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:31:19 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qqNmSgiu;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787589079;
-	b=D5p53a5AraJpkLW7TepO80k4uacKZ6javFQ3UyTf7F6N/WDJweZVLfHpTvDVbNpeNxLqzq
-	853HKDJECYakRt7AmtYEs3yFwtO5QMO6iVLKb93aOclBjHPa5G1RIWS9Vw27KcJorwNgDZ
-	jS/GCOZp3il8FhR6cBcIJ5lvtZgqjhU=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qqNmSgiu;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C5246B009B
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:31:36 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 088DE1201F6
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:31:36 +0000 (UTC)
+X-FDA: 85136703792.03.840BED2
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 15C1920011
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:31:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lR0HAzuf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=lrizzo@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787589079;
+	s=arc-20220608; t=1787589094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jKDnyhtd0eENDwLDsf23GJYh56L3iJu19fRA635QnCc=;
-	b=05ljbpH52XhIyrJ6Xdstuj1vx+nwkxtJGS52Hf1CqVPYtOnR7i3uYh5/c8rcTNwKjbvY/X
-	m6o0a4kzT5nW811g15EXeRCN63yi3lGOayoo7plJuhd46Dxm+D4O9cUdD5B4Huzr9DZJJR
-	BYcwXdF7BxWy429KZbVg0hYrUeNaDiw=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c1677c91969so449714666b.1
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:31:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787589078; cv=none;
+	bh=q6jDXnJz5bszG8pnLHnZK0KeQdaX8tcSfusG1JTMhO0=;
+	b=cfDdOQyGCQoGylvmdw5EzY8NzwvC/W48wPoxMg6HIlXlkcn++J1e2A62inIyg07+xvMFw4
+	hbRWEPCl50rcvNKQwijgVoxkCutKL/yTyjuCVSgkCxj9Z0fd8MFHAjYJoZAGApIVu408Nz
+	IOr2yDQMgisiGken/zBXf2+jKoEHQXg=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=lR0HAzuf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of lrizzo@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=lrizzo@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787589094;
+	b=MBlQCtZJsMdsP6js1iL99FC8yPFs1XVAdrVkGSKS+HBqIe2PGjqhtd1Nn0vnQZD4ZAczuv
+	oPCKOyZJo0E/+sjoLyVYqTq86ONMYp8ivEK8+cq9Eo4bDuESg5xSeYJDRiFfXVEKPHK6hD
+	KtxAnwgxBQRn0nsw8hkbtSYhM3ZaFa8=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cede6375caso195125ad.0
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 09:31:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787589093; cv=none;
         d=google.com; s=arc-20260327;
-        b=fwOeCKDMi+93eYopyO4WPX9OgNUbXBGGO8paTd2bqIX5ajERWOTnD0+h3a28uZkFgw
-         3e76A4c9+SVPulpot12MkrntwN1CIfN4baLz2ULKl02VIsRBC/X1pfgf65qJfbI/F0ZR
-         eK81CMcuge7RP0rRTgHBBsCcpuNPhdpQ/HX2dW7XCiv/oV3OrJpujU9bDpWUteKK1BOP
-         QnNWABfvWOIK/JTCcxofAnb9bE+AYnwMmNxr6JVhd6ortZQI7Qqw6EUf/E7k6K+FOuzH
-         mRxMM5jl+SGgpr+v1O7XrBxPCWnioabkcNew+qYtGlU232BszEeNazF+HOcE6vNkfXiO
-         16bg==
+        b=l2npskzAYCzHB9g8ekwTqOE4N3lUQvfwuK145X5DlR7JY1P5QZmp+v6IcJ9JDf9Y+l
+         QsbmKl0Zyzxhjwx4KQ1Wa8Zinb8YmIN5wVUmKfp7r0AVDre7ZK7coS2Yq4bWNjugwSa7
+         qw2vmahPqfHvohiyAWdw2RZbzQi66cEI011ukWyZsFg8gzNPe6JZtNVOXph5M9SXPfAI
+         kUgdwq7S6LNIcj4lP4+gz+QtIw9znBBFHjLK4AMMaFo6ByzX2E0EJkcxGdpPp2vTblqu
+         v/JFXRABPiympcYgJhqhwjvYd0tRFkwI2xW7t4Bs5r2Xf7v8Eud7SRZHnj9qIK6TFBlz
+         WfAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=jKDnyhtd0eENDwLDsf23GJYh56L3iJu19fRA635QnCc=;
-        fh=sSxWdZkaFVeQjqnPWV27Nlezj+mkFUIjYDnQV3tX/BQ=;
-        b=LuzORG0TGTHswgMZA38IOwh/e9/EZujbsIrJJqiBCgSDFq0MdI1u13hfn/VBsIPVeI
-         OfKIo2nZHsclig7cu4Myqud7g76+znkXoOqYmybzTojw9spUNgxA4gXd3A/D6aD/UHeC
-         ymj1Xjeg3v0wDmHGvwykwbkVnps022d2L4Wcrj8YFqjdbvh8gZtct0vNICP6eoevbrJq
-         kFR4avjoo92PePVXFy8WnJ3JllyAXIH8w0AUSbAZpubZeBXVUCtfZtpJIKRpaRzSejuJ
-         t/ukd2sXVvJmnxX8gcdzgllZKyOUTnw519VuhC3IIJbQOw/XuAdLC0M+f4qxQUnhO47n
-         M2kw==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=q6jDXnJz5bszG8pnLHnZK0KeQdaX8tcSfusG1JTMhO0=;
+        fh=XhMqX/XQeHTFgxHmUbaf8FW/EG5CCx02AhHMPh2Zs9c=;
+        b=mmKsjIU4R3hEmoUCDnTh8ix/xdWHKmpMdcRoJ2tyY5NVBpZzaP9qS4VV6D+as3BtEC
+         wJQvcPgZQBN3+5zTZ5VFTGIT0Clx73aySP03wuPlDABBxRjmHWGBv74Ujmks4UC0MzRR
+         3Wvxs5af2QK/IhA6Os3tC9bRtlyQmxPQAWE+sKWVyR531dYpczoN3ls5wLXFpPGyKWUK
+         LcaY+z60AOiRKZrnftobCfiNConH/ZLBBc9vxWLKhf6JyKTq5dnqH9X16QdorLIVnJ+d
+         02VkP6htZNh13aXiiVrr2oqUI6qoOKWBPgk25z5Cc1T+0IC1qjXH1hkrtKYBnxDUos5g
+         +MwA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787589078; x=1788193878; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jKDnyhtd0eENDwLDsf23GJYh56L3iJu19fRA635QnCc=;
-        b=qqNmSgiurdQ6YG1kLS7OsVqDUytCv3dieILB2xYlWC+/oBzzAHOLe4Aa7M6dzwS/le
-         9JaAS8tqz8bYbVEnzJk3Rg96gQ9e6R9N5vdDmQQ6Zs4zuWizggJPfZtkcOWCtJ0vC3fv
-         DI4bGuaVtp/tkarYkrljrSHXtdO9SuIF71pavdE2b6azMrx3mu9sAyfacm7OlkqR14Ud
-         o4CZ336laEpREywcHCHrxW/EiZ32PHWth9tyVwJWHN7q6n3w4loHJEaAJP1uHgtqaHLb
-         accKzlHoAluGdE6bjpI2i2X8/U4g+GQHEtPDnCdKLGnvi9VMnwRq4v8tc1P4eBYSe0tO
-         FXeQ==
+        d=google.com; s=20251104; t=1787589093; x=1788193893; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=q6jDXnJz5bszG8pnLHnZK0KeQdaX8tcSfusG1JTMhO0=;
+        b=lR0HAzufrxRVIvQ2oCMN63m7V5ySun9sJFnASWeSP1mO3/9qvMbyl3v7zQ0gpwkXAZ
+         4/noz33Q24S4ylMhnSbG4fDK3+pB3OsnFR6uK5fT5Cavh2WDzvg+OnAd+SAbJ8bd3y+P
+         /Emtpj3cekeLL3bTs7zJlFjFyNN2Gxu73QdoI5MAsUiTItKOxA0Q8tUTp1jJGhzaayKs
+         ufgmLLtL9NZ4TLxx/TxQh1XdcvrX+47QjSThY+BHAllRiMz0CT+9wgUdQ2TqUVoYairV
+         OeajZKapQy3E+XEcWsXwJHJTUDvxPQ4RKrw8W+mcuhZ+49LVr88Z3nee3YSJFYv6UxlY
+         ZfNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787589078; x=1788193878;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=jKDnyhtd0eENDwLDsf23GJYh56L3iJu19fRA635QnCc=;
-        b=nfFk0k6CvuwLwzqKt3NJlU1VCsGSKn/p+tATQ8RMzXvyd9CDI+HiuTD95q7akV8AUi
-         Wo5PDFXiFqubcD9CIPpkxyymKL9ysEpko6TxvotpemA49qpcGTSy1+WZrl/Kn0PmQrWC
-         clDBzFfhffSe+hFR2PtsG6hInAik1uSYsErO/ajphONnMGyG9JyAnqU1xGVptuziutXC
-         F82wrfC84xI6Fdbzn+V47XC4031K9bJpR+kXrFIQHX099Fdvd31u6IVq/BGLKHMPuF+j
-         fyVRxdEF7as9sW0RBjGW6ax9Kry6+A8fttGXPzWbcFOodQQ/ftEJroFcKEZGh2AorZ/Z
-         PlXw==
-X-Gm-Message-State: AFuF++kciDmdhOZRizz/MXiPybL5t55d4MwBMm7mUVw3QKTYU3sv1hIq
-	95UBRVOsTyaxKJtaH97QSmTDwBvIhRRl2CcXvtY25R95tXyqG1Xnp+hVGR0VSKzBrH2Ge/VMMmf
-	spKrlD8ipQKYeJOHV3ZHX//uGfPGLrvU=
-X-Gm-Gg: AR+sD13piMqfmf3IDl6YKCHOeWFoC0f0vxoen5s0yRcrVwAVpzhJCZRCdkiS1f3936h
-	ZVgBNGh2JC+a7lamRHzTV1jkyuG7ONp2PgPepb6KjewUM7dGAuk/SSyPooPQwaMiCztPwM+tRLY
-	fm3dVAG0smt2XLRqnKPYK55yOhcWnUN1NU47jPP4CzNxj/Nnwcrj6dRmkSfFhsaAuqD3cduFZU8
-	NJRDJSijCPO0s0qnJG36/oVrz3Er2zmiKeKQmFI4YpOGp4+1zLH0YY6Zh6aT+0Nt4avjHV95v2r
-	V4B7mC/p0xcrXZ7etgKMds3sLCCOzeVOY9BLlRIUkQ1bF8mZwWgaW28ze3Z2QNRMQbKp8hX4tEO
-	QLiQfpalNCdQd
-X-Received: by 2002:a17:906:209c:b0:c24:cc3c:db11 with SMTP id
- a640c23a62f3a-c24cc3cdcf3mr595871666b.21.1787589078066; Mon, 24 Aug 2026
- 09:31:18 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787589093; x=1788193893;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=q6jDXnJz5bszG8pnLHnZK0KeQdaX8tcSfusG1JTMhO0=;
+        b=c98pmKtvYWqMjhmzXvoB/yz4sjOUfn7Wo7WDE6NKW6YS4mR68kQZXhP7FGazNLCNjo
+         8Y3pUsQy5VIVcH2Ls6gxBgAueugu7bN2iwztkihjIkEe+C7tJKbB1UPviSianf/yPQC7
+         HNQzqWKO5z2b4ZE5yLQDLzohZJfGZ7rIV3zmmFWsblXzXw6tIp4KwimZ7Z/F4bO/jWL4
+         bOoHDNBCuc3Ovie7wR8lYCWWvehmb+cMKCA5nY2tbnjZBab967IMrzRW5IsAWUiLBeV0
+         Hm7TzH/tm33Gc28jMpFmXpOhlb2wYj0Pui3w0zNiYg3R0uol5p9DCWXR3P8p0ZOgmiW+
+         bmCA==
+X-Forwarded-Encrypted: i=1; AHgh+RpViKTI0mDOwAz1+MDjjptsqpucgy9mq0ZgsxWiSjwPh1kB1C/OViPz95HisL8G1PeE3oxv/VdgDw==@kvack.org
+X-Gm-Message-State: AFuF++nIFXryYbeLxQKQBRZGn1u5fo4EKBpD7wbpl7R40EcXmgSzYa0o
+	9C0F25Q/Q4U+cxEtBP4imCZ1K/gFRPq9geFUl4/Bu8gmd3BZfKR9apUl5/5mduhT0NArzQaEYQZ
+	HGQN1e37tnWiUsJF5FerYYcD1UG5tvWpJGcSebbLo
+X-Gm-Gg: AR+sD11eHd09zzUHfVgrvKDJP+mS/k8mMzmWGrKb+zwRaa+Ppcf5ubohyzmZTGKP//H
+	mhTTgfxCsQA7/k8OFAiRBMCM1lCu4EJGGwnJ39uK1HfBx0Tq+JhUbNs5pkhvHrnITu9hikssjzt
+	FksBdVRYj/JrxnR1l7qih6CWlDtap/KSzi6HT42C9q3P8eumnAL6BIbyK6evl+jEIqEnG2OVQH0
+	lQMlTws6XqsTgr8jzCuf5THnSylfplKH2jXcmfKV6HVDZvSpYvVyaZPqMuMvv4fYwoL5iGe8i8e
+	9qgZ45/HlSP+mG/5iAyg4mpKGXHbQBZ0WgZ1mVXLqjQjog==
+X-Received: by 2002:a17:903:3c4b:b0:2d5:db3d:1a45 with SMTP id
+ d9443c01a7336-2d66ffd7057mr11511785ad.18.1787589091990; Mon, 24 Aug 2026
+ 09:31:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260824-mglru-flags-cleanup-v2-0-0104132114ae@tencent.com> <20260824-mglru-flags-cleanup-v2-2-0104132114ae@tencent.com>
-In-Reply-To: <20260824-mglru-flags-cleanup-v2-2-0104132114ae@tencent.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 25 Aug 2026 00:30:41 +0800
-X-Gm-Features: AcwNN1VH8-bOniuA8E6yY3_HjFay55kxzw2lY4Eo1sZSYSutQu4Ycnu52ZLcbp8
-Message-ID: <CAMgjq7BYze16AVf7O4qBzYiNBOuTo_ayza3AjWFEQ=LG4pwuxg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] mm/mglru: introduce helpers for manipulating gen
- and refs flags
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ridong Chen <ridong.chen@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260615234220.3946885-1-lrizzo@google.com> <20260824152932.1583506-1-lrizzo@google.com>
+ <20260824152932.1583506-3-lrizzo@google.com> <a826c7cb-5e77-4c21-a649-d40a9f0ef564@arm.com>
+In-Reply-To: <a826c7cb-5e77-4c21-a649-d40a9f0ef564@arm.com>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Mon, 24 Aug 2026 18:30:55 +0200
+X-Gm-Features: AcwNN1XmT87hJkoGkp9jcEKvjnY9kL9lu9ePxKQtYVAUZgS8n1wQenRujPZyI_4
+Message-ID: <CAMOZA0JstwiwoWFuFjpoC1W12ir2b=SrWPO9i9tto1rOksKGgQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] swiotlb/mm: Implement SWIOTLB nocopy page allocator
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Willem de Bruijn <willemb@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Luigi Rizzo <rizzo.unipi@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, iommu@lists.linux.dev, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: BB3CA1A0006
-X-Rspamd-Server: rspam10
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: q8n3kndj58oja4hjpuhfcaet9143fu6n
-X-HE-Tag: 1787589079-417963
-X-HE-Meta: U2FsdGVkX1+dvvniM6kn5moh2h8kOMPkExKq7RAtAf4Byd+YFZ5kR9TVPCOR1D6BYJ71pWneVNpM2Y/Unw3GvDwl80eHI0WZFOSXlr6r6jknIi2tF+WeqxrqTmi1v84g73RaoqzJpt3uwwW1XgIvcG/VdF9mmc7hyrC2ujElVge2brUEPUc7/p/cBX/mMuYu1JXzGwNwKJXxXV6EGW21uz77JA73NWCkWg7kWy7nPufEyaQEGsc7Z2toJwAVfU/nHUlUUAxnoU6F08sTsp2VrNyIDmOikBvfOkLnkqj2UfxWR0mESMoZxb0uu+OCxOMeM7OokaKu9I+oeLDAD7Der8HDmvVFJYjarjCK3r1xo77AutFd3dNyupn4Yg2tz9S7gAfgrC6pFCQB3nBm/Jxm+FReR3PmS309z8qDxpl2PuS1nOtwyArJtGzWhUoGJaCo4fIbwZqEUHQt724e2VwDD2SJyBOR6W7JwvqWXYpPcjl7Sx21jVX99UK2dc49eNVUIhefSlkMR6nGCB3zhTUOoW72SnSUU/RnXnU7Q02yaiqTqTfcV7WjcQui8qTk1uCAvkDesBvASWM9PruM88FLNPzoKwnD7gLru6/JCLHbkuqaXdnMY1Vmi0LzsYFYIMqLwBEs6OJO9Ig1jem4Nl90H+QwRJrGXpgxiYSk0DgpXpRhyHQDlWew1uzlgCyBCQFxz7g2lBxzCrFbsSdVEf9PWICV1mTPeamMvLAU8WiIh8fYNBN3FGaGDCCqOUYCVeMmmgI/xeWSnhHGn+8EXBCtZtz1vbrTa9eHROKUyn1ggroWU1mIxKpFIE9bMZT30XB2azhzpRywPH4FCYqZFTfvBVLMkAUn/jGu4EkBFDyyPMsbQv2kiNk4AmigbPYsYXCQivllEtjVeM4TfBdUuDQbUubPZrnKzlKSKNH+MryW2+IwTM+xGEIJBloZCmM1TGz41/MtNRkGSXnc5CXoR3d
- CFa9X+zr
- ocSbe7NN7eSuG/lPXFwXlOJL88uGWAN47YFOgu0fP/Dn0TzJD4p+al1DoxqNp1WKytkGP/1SyNtMGiyhTNrSP7VOX4pzryYFMLnqFdNCzoJAySv/6iKDClvtYgHgzJsoAH97nV6pm1E4cu4pH9qb55MoB0RhbeKlEx6/nBJFjsJufeXNf2LMGI+wDNgL8wA8LAPg6pKiB+7zzWDknvQQelltpgo37EIP14BjxUPJ+fwz2Z+bW348cKDJ073WRUvEIXxlWp+3jpRfUwVQANWy09JDmkQ0bOuLtxFzQifXOtBNLCAQcVTC6x43KfS0tE4AnAVL8gU1JBjMKv0Z7cGOWCCKE7V9EC1PZJRZkBRFArTqJVdbOgrMOqea8bU8AaWofPSYJazax5YzkaMdHKwDq9lhHXdpKqYnWiQR2VA847BdHQ5I=
+X-Stat-Signature: rzebmsieq4gykg6a5j3tn5xx5johfryd
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 15C1920011
+X-HE-Tag: 1787589093-425260
+X-HE-Meta: U2FsdGVkX19dzYX2nQSLmsW0XfKuMJKDxX/F+3nObBhLkTnN1v7IYlTcjmXL35DAdws2NtibEViW1O3Dp+CIMlPXu0jQGpsUBnxvypZL1fvJ1ozvWF23+/jJcNlx5QY02Ju91tQo4xuyrv+YjpBzieh76PyZ0cnLjvHIeiZ18NSHoqOem4znBEKxn9WXAFkE4bKLe4TIgznAXn6asIjC9RIkoS1jK4pnyDXZDSb6wv+Luoup0Iu3BJorgGQfMjHVqpF65OkbyQGoehP4G/wYSyEs4Ey9wHunIBjYBkPot57yIfQ3tcMWsL9c1Qa0Xxp53RlK2VCiCp2mHk/jYLl+q5rShVvYf111J4TQjXYiWDHsaq0SYMIviW+WXdNamHifTZV+xpcNSg2y4n/rpYR8Ud7dC7xa00kZvdyxg5EEkxmZ6wgvrlNApsJ1rZ1oiWsyIgJoTxrxVDMFgBkfFqMgnlFnZybTezwy/SN0RRywexM1PGR28G/3se3r6VH2A5BEQYRa/m2ADpdGD508QSzbfNWcGw896ELuksgZiTjkJK47ShAfUtWWvb9bEhcq+d/q0HuFZEneM/092HEMxITriy0cUW0B/6QXdPpVCF/K+CW7sYfGAIxE9hGEH6BidWlyVfn/4RnKntQ6mz2+xV+Y5su1z2/GpXbRzEKs3MTEw9yt7P8sV43TubDlzixY9s/aa+pj5hJX/ayCAchHfh6gNO7Co1aIGWNKP4CyFivEX1b1/zC7aK6T40/iadKKCCrejt6AwBi0WCy5xap7y8Ti+y4cdSp1K2OSyIbV4QdBNeq4YZTNeO6zSMVK6eTtoc7vHpbV2pKRHIVA6b+I1awoTpD1ujpfCpAFuODCZ+cDU9OJy/QuDsEsA3piKgzRVX0yaC+3St9gWaVacdxoL2XbjzIbw/QfU0F/U3NPZM5dHXqkZssEBT5G5KO9hzTerH4Y2E/noAUekIxJn352M2F
+ bfyIumqn
+ bA0qr0SsZTfbuI3DrXlj/SN0+dFvB1qWWca+QbXIN9mvxafJbvp+5zTI10cuUTLowARhuM/miPsNalADqD4FzhN/wvBl82Nh/yFpycxjc93kVfHek0sqscOqfaWkgm6morhG0BogON/2cchJxgOzv8Jh7U9Bt57yqHx80bJ4UoL9h6qBy95w4/SeWXajQImyONrT3fIF+LlPI8cHKvsmQ9R1RiZI4i7CIFi46VoPrM7g7ED1PSox9bhAkHcEGW0Unx6ywCFYE9mnD+m3z9HkHD0hyAlNT9MD2p2+Axn/xog11Ax5I0UT/aUBV6VwWeUMGAbMw4EumZGrbyotPWOC2O0LlwcbKYRjt6XO2orwTBnHJbX/XRVP7gvDoaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,98 +146,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Got this from sashiko (I consider it false negative since that is
-extremely unlikely to be an issue):
-
---- Patch [2]: [PATCH v2 2/6] mm/mglru: introduce helpers for
-manipulating gen and refs flags ---
-commit f0369e7dfac3789b1433352b10e442443527f4cc
-Author: Kairui Song <kasong@tencent.com>
-
-mm/mglru: introduce helpers for manipulating gen and refs flags
-
-This commit introduces helpers for adjusting a folio's refs and generation
-info. It replaces bit operations on folio->flags.f, splitting some combined
-operations under the assumption that the resulting transient states are
-harmless.
-
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index c1404a59523d6..080132997d876 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-
-[ ... ]
-
-> @@ -843,19 +843,22 @@ static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
->   if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
->   /* Activate file-backed executable folios after first usage. */
->   if (is_exec_file_folio(folio, vma_flags)) {
-> - set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
-> + folio_set_lru_refs(folio, 0);
-> + folio_set_workingset(folio);
-
-The commit message mentions that splitting these atomic operations only
-creates harmless transient states, but could this specific split break
-lockless MGLRU protection?
-
-Because lru_gen_set_refs() can be called locklessly (e.g., from
-lru_gen_look_around() holding only the page table lock), this creates a
-transient window where the folio has both its LRU references cleared
-(refs = 0) and the PG_workingset flag not yet set.
-
-Concurrently, evict_folios() runs under the LRU lock and evaluates folios
-for eviction using sort_folio():
-
-mm/vmscan.c:sort_folio() {
-    int refs = folio_lru_refs(folio);
-    bool workingset = folio_test_workingset(folio);
-    int tier = lru_tier_from_refs(refs, workingset);
-    ...
-    if (tier > tier_idx || refs + workingset == BIT(LRU_REFS_WIDTH) + 1) {
-    ...
-}
-
-If sort_folio() reads the folio's flags during this transient window,
-it will see refs = 0 and workingset = false, causing tier to evaluate to 0.
-
-Will this cause the MGLRU protection check (tier > tier_idx) to fail and
-incorrectly isolate actively used executable file folios for eviction?
-
->   return true;
->   }
+On Mon, Aug 24, 2026 at 6:06=E2=80=AFPM Robin Murphy <robin.murphy@arm.com>=
+ wrote:
 >
-> - set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
-> + folio_set_lru_refs(folio, 1);
->   return false;
->   }
+> On 2026-08-24 4:29 pm, Luigi Rizzo wrote:
+> > Introduce swiotlb_alloc_pages() and swiotlb_free_pages() to allocate
+> > and release compound pages directly from the default SWIOTLB pool.
 >
->   /* Promote on second access */
-> - if (folio_lru_refs(folio) > 1)
-> - set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_workingset));
-> - else
-> + if (folio_lru_refs(folio) > 1) {
-> + folio_set_lru_refs(folio, 0);
-> + folio_set_workingset(folio);
+> Huh? The sole intended purpose of SWIOTLB is for bounce-buffering data
+> which already exists in some other memory that is unsuitable for DMA for
+> whatever reason. If you want to allocate directly from some kind of
+> pre-shared DMA page pool to avoid bounce-buffering, set up some kind of
+> pre-shared DMA page pool and allocate from that in a manner which can
+> avoid bouncing entirely (see DMA_ATTR_CC_SHARED). The idea of getting as
+> far as calling swiotlb_bounce() to then have a special case saying "haha
+> not really" seems entirely absurd. Don't hack stuff into the SWIOTLB
+> code which has no business being there.
 
-Does this have the same transient state race with sort_folio() as the split
-above, potentially causing actively used folios to be wrongly evicted on
-their second access?
+Ah I see DMA_ATTR_CC_SHARED did not exist when I implemented the
+swiotlb allocator. Cool, one less piece, it should be possible to replace
+this chunk witth the DMA_ATTR_CC_SHARED.
 
-> + } else {
->   folio_mark_accessed(folio);
-> + }
->   return true;
->  }
+The other pieces are still relevant though ?
 
-===
+- use these dma-able pages for page pool allocations (small)
+- [PATCH v2 3/5] net/swiotlb: Track bounce device per socket
+  or one would have to unconditionally allocate from that pool,
+  even for e.g. local sockets
+- divert socket allocations for eligible sockets to a DMA-able pool
 
-In theory, yes. In practise, it's very unlikely to occur, and even if
-it did, we are totally fine.
-
-And I have often observed that folios stuck in highest tier due to
-PG_workingset is actually causing worse reclaim. But if we are very
-paranoid here we can do folio_set_workingset and then
-folio_set_lru_refs. (This may cause a in theory, still very very
-unlikely, aggressive protection. And in fact I think we are definitely
-fine either way). I might update this if there is a v3.
+cheers
+Luigi
 
