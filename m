@@ -4,99 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A435BC5DF81
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 08:28:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B09FC5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 08:39:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 827226B008C; Mon, 24 Aug 2026 04:28:08 -0400 (EDT)
+	id C5BB66B008C; Mon, 24 Aug 2026 04:39:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B0C16B0092; Mon, 24 Aug 2026 04:28:08 -0400 (EDT)
+	id C0BDE6B0092; Mon, 24 Aug 2026 04:39:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67CAD6B0095; Mon, 24 Aug 2026 04:28:08 -0400 (EDT)
+	id AFAF66B0095; Mon, 24 Aug 2026 04:39:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 33E496B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:28:08 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7CA11C0450
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:28:07 +0000 (UTC)
-X-FDA: 85135485414.16.0C24BCF
-Received: from mta0.migadu.com (out-25.mta0.migadu.com [91.218.175.25])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5BC2FC0007
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:28:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LjJ6LwxO;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.25 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787560085;
-	b=VSr2f0CsoT3UMbZgIBPUXmWT3bGDQT4S/97E2+ILZRB/JgPnnPRyAhZKlGcXK8/A93Uw3r
-	UK58hv3PH7kjOeL3jxc4ox0OLbgtKmJnU29sUQ0xBG0ERAIdrH3tbv5DmaPJvghR5Cs25N
-	3xWUJnB2WOmxyIyXQ8ieRnR7B3VURmY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LjJ6LwxO;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.25 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 890966B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 04:39:15 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 17D81120478
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:39:15 +0000 (UTC)
+X-FDA: 85135513470.24.47544C4
+Received: from mta1.migadu.com (out-230.mta1.migadu.com [95.215.58.230])
+	by imf12.hostedemail.com (Postfix) with ESMTP id CF5C740002
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:39:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Doxy8Ff/";
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.230 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787560085;
+	s=arc-20220608; t=1787560753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mlBZQlIinQ5KKnZrbICashz/fC68Fz7GnIJhwKZISAc=;
-	b=ZYZBPV+Hng7YX/vEzcQGmgXMxl+BC8tbkNBlRCuwEhTM5RG3kESflinnLBQzaA4rqbW3nC
-	Q0hpOPIBPKjVOPRR0j+fc3k3t1jlN0qPKT+SuTTCwFohL1ppLP+dh2nVN8CTmwCCAvS0s3
-	UCkYsrsaEisvL/xhNGKC7LvGhxuCx5I=
+	bh=USk/WYn0UujvJWjwZ8axO9qdeMc5F1Hp1me9FG+LaYk=;
+	b=STTWLZhEQEvaz2RwVZnpZyXZ399E/ykQe7hkYc9MIKBHs3RvTt2z0WOyHnK6O98ORykAUQ
+	Gop9czBe9LFIkFmwPeBWRf7llRTfRrwuFe1u8X6tWv76tC8Jy5rF78pLXjb5AxJVHa9mg3
+	TT+qlg5sljxymEhWfAUA4hGABu0BTwk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Doxy8Ff/";
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.230 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787560753;
+	b=aB8gjwv+bCbx3+Jr+aatLGAWiJj9bnMjcMytyckQdwcmQ3l7pCw4ugN6ptR99+t2OD+Lhc
+	NaNfj6BxYCGvPLRD4y5Dg1Q5jKLWxeCzdN/FmbtVUv93G7RIIxROs5sYgz3yb9BjQLEwr2
+	zirZDxFOosyvLxV3VlO509b14qoNHjY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=8Pl7rmcIvwX+tzegpkwJKg5akKbpn9WU8gbrZ1f0X8M=;
+DKIM-Signature: a=rsa-sha256; bh=1njyCI97mQgHujx4ZxP/EggIo2sx526M8cgC9mSdhy0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787560081; v=1; x=1788164881;
- b=LjJ6LwxO2XPMd9oUysjq8G0CYOWF4VzDt09U8RGs0WH8lFAhfhCHNMnUTeQ9JE83869mX1TK
- EWbZLkG1UPpibY/1ZklwKooBXY18Nt44P586BiTfw2lnPLEfxfMBS2E71xXXxoPUwK4t3VHGXSd
- huWKoKD2Z72W8xJ1K0wdXGvU=
+ t=1787560751; v=1; x=1788165551;
+ b=Doxy8Ff/dKkJImOMLlf/srZ1ybW2gzK6bunjN3aIu6zecrR4JBqnEOmbf5kRaRvlB6uhdgZO
+ SapxqFvE3cyNjTPZMxjUg7BQ6zUywHun537iQG5Iz3IKLUZiPwmqMe7ySjtM6605u/sZRXxjWcK
+ coHQEt1puW5RxIBtGBmN3Hrk=
 X-Envelope-To: linux-mm@kvack.org
-Received: from [10.244.244.3] (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id 8e0a79e38506ea9a;
-	Mon, 24 Aug 2026 08:28:00 +0000
-X-Mizu-Trace-ID: 8e0a79e38506ea9a
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id 7d8e2a6175a77d65;
+	Mon, 24 Aug 2026 08:39:11 +0000
+X-Mizu-Trace-ID: 7d8e2a6175a77d65
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <cff17006-b534-440a-8be7-651fb0a940cd@linux.dev>
-Date: Mon, 24 Aug 2026 16:27:39 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] userfaultfd: collapse VM_UFFD_{MISSING,WP,MINOR,RWP}
- into single VM_UFFD
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
- hughd@google.com, jannh@google.com, jgg@ziepe.ca, jhubbard@nvidia.com,
- corbet@lwn.net, liam@infradead.org, ljs@kernel.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, mhocko@suse.com, muchun.song@linux.dev,
- nico.pache@linux.dev, osalvador@suse.de, pfalcato@suse.de,
- peterx@redhat.com, ryan.roberts@arm.com, shakeel.butt@linux.dev,
- skhan@linuxfoundation.org, rostedt@goodmis.org, surenb@google.com,
- usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com,
- linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org
-References: <20260823-uffd-vm-flags-v1-v1-6-3086981b33cf@kernel.org>
- <20260824071126.41979-1-lance.yang@linux.dev> <aov9_DIHLHynm7tN@kernel.org>
-Content-Language: en-US
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aov9_DIHLHynm7tN@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5BC2FC0007
+To: kirill@shutemov.name
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	nico.pache@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	hughd@google.com,
+	liam@infradead.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shuah@kernel.org,
+	surenb@google.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	ziy@nvidia.com,
+	usama.anjum@arm.com,
+	agordeev@linux.ibm.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kas@kernel.org,
+	jannh@google.com,
+	willy@infradead.org,
+	pfalcato@suse.de,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [RFC PATCH 08/57] mm/collapse: scan a table for what a collapse could use
+Date: Mon, 24 Aug 2026 16:39:03 +0800
+Message-Id: <20260824083903.52962-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260816224609.308019-9-kirill@shutemov.name>
+References: <20260816224609.308019-9-kirill@shutemov.name>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CF5C740002
+X-Stat-Signature: hsnjz8x1wmyopyi4kyfi194nm74s1bae
 X-Rspam-User: 
-X-Stat-Signature: f9ij396fq48miipo9uqyn59q9mhnw7tk
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787560082-613130
-X-HE-Meta: U2FsdGVkX18YAbXHKJPlYDP0lbg26za0UMWkODygppklJtUl8mjBnjdJsB/dflj61F2klsM4pach1bjzV1SigQkhFRbMKVBKdo/kdu2TXZgITAdYmUPbWNHpexHijZXZ4lpPbpeVQiDoY37cdmSYgWLjWQ0hOfCR646q5jPBEuzG7z35vZR42z8Ja0CWoY/cWjiHoW9Gf1CxygLdNB6gIPE2A+mC27dVhEOg6YxsNOlStH/tEy1TNSmHpjrA0jYKUNWGwSjnHm0rmvCatDQ+WgHOnezC7CgThsdCQ9Xe8XYDTds06lLDWSyB346uPEqrVOZQzkfPxhOpL157drrOaq5Lgkb0n9ihKFyGkWD+fnl24vo7+7w6T1bTQj8WTISSu4w1WidEWWL3yHTDf+ZCREp2wWunSw4zGa7A3vCSU/K6lJCTqx7DTS1gzHS6RmHJw93SNpx7NqO0tYGTzJoeTctEcHPJT72bdOutlMkg4xEzORv4+KkY6xG/XSGryVgI71NjinP3sF8mUNVesgrytS/s/epNUoGE7dAu+kS1oc+c5898QENxx3kCHD9EPHgTkTxaikyPDRAPi6xujHrW8t1iir4AMMv73jnAJbwwGe4pSmCY/+U7UuFu1Q0ZDp+RfCfp+v33zpJA1CLtwWcV4FKBZwtH+3RSy/iQdLIGycrMZKKOksCFHUf/iYC1ZhFXBUmhL9Wu26JaZ5xGUdWRDoM/swzaAyTWX1NbzrWHQ84q7pDjN+Gqruhb1HvkAh6ombMjME6id9/eFeUT3jJNyjurp5STjnMqHvOVR46ltJq/WemzOXGrDn04XS/rgo0QWxh31ILTRnpRtUQygyASI/wTD6nyBhbDFsIxL318HNxSZDTNykMjKspWcY0cNCswE9G28nzJUF3vjqizqKObZLFL4TG9lmAY5NHcNjkVmFaNEcTUs0aLjWmFy/6VYOupv2mAhY6bkfvnj8Hduxh
- rqUA+oZK
- kd4UWnD7nZSi6tYbnTM9vIx1QE3322Swhy8aWquUzLCOMDGMhTCG89wmJsVxDRbeG1BSdaICWCFTHU/1JKbw2cwgI/OjtcZCYo/DUGHwFoO1nCeFWo93KOltWbxzru9wB4S2BrB2/C7PxH1aWllUhcsvWE5KmsiUfkvzx/w2ln+ppLb17DcJxx/TiyNLk7jUa3immgplrhVL9aw8YB3gQ4SLtciT9x/Rnc/lBunaaPAP541nXLvJrHaiqYwsiH66uKAPYT6kEf0LpyQxmFgqLu9cXvceB4PmZP428Ecibhm9hk8W+ac9VOfcowCXJObAYDTPE
+X-HE-Tag: 1787560752-359339
+X-HE-Meta: U2FsdGVkX1/pkPReZrORdSfbcsNNmkP+w2dWWI9CvfDh6tVeDENiv3Mh6mTjhMghVLhWIEpA14lUcDngrOmbZp6NlyvsZJc7sqwB6Q8EQBLEHppjrE26GrYThYcRwoEllPT+bEhkXrZwbie6bVMklWXmw4tkhvfPcs2kgY9/ryRenuQN6hDoaqVDFj7BebmNCs1NGGXIZaLdnFjPmtxLrSYu+qtf7BaPJ7trw0WVXbB5j1PUw4uJwegLJeggyIUgEYBramvSo9ALJeVFVcP0WX04Bnfo7/XSar6liitoEFc3xzGtdfiozp8vDIn1i5wtwYGKrXf0LF2dVjzJxgFlVW3pfMo9MSCpXJZMyHAhI+1j/s2T8OXruHpC/RMcd5ncl37xaxitiLJKJ2CjkgrGJCJXs12voqATPRNXZQWshK9EL2o2WfR9Wo/1b1JXEaZp+GyForxzHbaOL9vXM3s46IcU/Hbivs1aszZVzNATswlwY6U735tE3YkaBDQlCFOXwZayrxSzQzavY8qZaKmg4ljziEbBJyMg6FUwTvD5kN7p7dtjC2BSu1FyFYWCwVzu7pFJLK2QCRe/dEtRUqUk7OJvnseEuHte+/Pn02Lg/46ZfF7UpUh32WPZHZfGTtyVawSUucN+bzHLNHwbL9Fy77Sg4GQOkdRRzynlMAICI8FHv4m9DwmL5wBentBa1vWi+lAZlrLD4gEtAq5ZkAe+VsEBMgK/RHRkMp3vW/NToLPyoqaz/fe25BpxqYiPCAjJLNZj+BB5XLSRHNST2VdOsY/Z3lcyq0/pXTXMECgdA2nVcfX10+z53PZ1CufX5MUFkEnslkxhklZQlwi3lbgFCLuhj7XwuNzRK6YEGcjYWQjojln+vDLGPhdCoijR+sOwPD97JoDBN2tFk7zrEvuXcB4NY6DHg6eF9y2A6xUk7KnmugqrfEOnRCeer2EYBLRJ4dzeOvaUuJlk8UHDCxY
+ oXjdT53G
+ mxeZA8ib8//jQme1m233Za0oa6+3k1SeWccoG6rHDnW7Rp8gTzXOhSNLxYhH0lSMZBxITRzsza1wZt7qkKU0qLimOJ6o5g1BEaE3sceNW/h/OtA8pBta+VxFgeOgbP+GxWvh/t2/fDyojGEEYC5VI+FHsmbueqejCv5v/1+ji/U7/tGARNq/VYTVoffmcTDLhlNxRe1wk4WS1x9gU4r3OK6Y1w8L5MoMybvvNFPsoNs2ZwaLZeIBxiKq3H7/8JLz9f5UfFoTua16YIGgcmI3tRGmawdm+kaJJMGRyqwXBBbBzFKnxSB21olFXYA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,96 +121,451 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-
-On 2026/8/24 16:17, Mike Rapoport wrote:
-> Hi Lance,
-> 
-> On Mon, Aug 24, 2026 at 03:11:26PM +0800, Lance Yang wrote:
->>
->> On Sun, Aug 23, 2026 at 03:17:43PM +0300, Mike Rapoport (Microsoft) wrote:
->> [...]
->>> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
->>> index 83587d34b189..193f6e65d875 100644
->>> --- a/mm/userfaultfd.c
->>> +++ b/mm/userfaultfd.c
->>> @@ -50,10 +50,10 @@ struct mfill_state {
->>> 	pmd_t *pmd;
->>> };
->>>
->>> -static bool anon_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
->>> +static bool anon_can_userfault(struct vm_area_struct *vma, unsigned int mode)
->>> {
->>> 	/* anonymous memory does not support MINOR mode */
->>> -	if (vm_flags & VM_UFFD_MINOR)
->>> +	if (mode & UFFD_MODE_MINOR)
->>> 		return false;
->>> 	return true;
->>> }
->>> @@ -462,7 +462,7 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
->>> }
->>>
->>> #define MFILL_RETRY_STATE_VMA_FLAGS \
->>> -	append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
->>> +	append_vma_flags(VMA_UFFD, VMA_SHARED_BIT)
->>
->> Looks like this drops registration mode from the retry snapshot. Assume a
->> shared shmem VMA is registered for MISSING and COPY reaches
->> mfill_copy_folio_retry(). While locks are dropped, the same userfaultfd|
->> can re-register the range for MINOR. VMA_UFFD, VM_SHARED, ops, file and
->> pgoff all stay unchanged, so the old COPY can continue instead of
->> returning -EAGAIN ... no?
-> 
-> Good catch, thanks!
-
-Cheers!
-
->   
->> Maybe something like this?
-> 
-> I prefer to add mode to the retry_state:
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 193f6e65d875..a0377f7ecc69 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -471,6 +471,7 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
->    */
->   struct mfill_retry_state {
->   	const struct vm_uffd_ops *ops;
-> +	unsigned long mode;
->   	struct file *file;
->   	vma_flags_t flags;
->   	pgoff_t pgoff;
-> @@ -482,6 +483,7 @@ static void mfill_retry_state_save(struct mfill_retry_state *s,
->   	s->flags = vma_flags_and_mask(&vma->flags, MFILL_RETRY_STATE_VMA_FLAGS);
->   	s->ops = vma_uffd_ops(vma);
->   	s->pgoff = vma_start_pgoff(vma);
-> +	s->mode = uffd_mode(vma);
->   
->   	if (vma->vm_file)
->   		s->file = get_file(vma->vm_file);
-> @@ -493,8 +495,9 @@ static bool mfill_retry_state_changed(struct mfill_retry_state *state,
->   	vma_flags_t flags = vma_flags_and_mask(&vma->flags,
->   					       MFILL_RETRY_STATE_VMA_FLAGS);
->   
-> -	/* Have any UFFD flags (missing, WP, minor) changed? */
-> -	if (!vma_flags_same_pair(&state->flags, &flags))
-> +	/* UFFD registration mode or VMA sharing changed */
-> +	if (!vma_flags_same_pair(&state->flags, &flags) ||
-> +	    s->mode != uffd_mode(vma))
-
-I assume you meant
-
-s/s->mode/state->mode/
-
-With that, LGTM :)
-
->   		return true;
->   
->   	/* VMA type or effective uffd_ops changed while the lock was dropped */
->   
->> Cheers, Lance
+On Sun, Aug 16, 2026 at 11:45:20PM +0100, Kiryl Shutsemau wrote:
+>From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 >
+>Fill in the scan.  Walk the range and set a bit in cc->eligible_ptes for
+>every PTE a collapse may take as a source: present, anonymous, not
+>uffd-armed, on the LRU and unlocked.  The bit is set last, so a PTE that
+>failed anything leaves it clear.
+>
+>The walk takes no page table lock.  What it produces is advice: the
+>freeze settles every question the scan asks, by re-reading the table
+>under the lock and freezing each source to the count it expects.  A racy
+>read can only cost a candidate the freeze then refuses, or miss one the
+>next pass finds.  What it buys is that a fault in the range does not wait
+>for a walk of the whole table.
+>
+>pte_offset_map() holds rcu_read_lock() until pte_unmap(), which keeps the
+>table from being freed underneath the walk.  mmap_lock keeps the VMA
+>attached, without which free_pgtables() could free it without waiting for
+>RCU at all.
+>
+>The verdict is two-sided, which is the point:
+>
+> - A PTE that disqualifies only itself leaves the bitmap clear there and
+>   drops the PMD order, since a PMD candidate needs the whole table.
+>   Selection still gets the smaller windows that avoid it.
+> - What refuses the table as a unit -- a limit the whole range exceeds,
+>   or sources spread across nodes too distant for one folio to serve --
+>   leaves no order eligible at all.
+>
+>Limits on swapped-out and shared PTEs are stated per PMD and scaled to
+>what was actually scanned, so a partial table is held to the same density
+>as a whole one.
+>
+>A folio whose reference count its mappings do not account for -- a GUP
+>pin, say -- is left to the freeze rather than refused here.
+>folio_expected_ref_count() wants a folio that cannot change order while
+>it is read.  This walk holds no page table lock and no folio lock, so a
+>folio splitting underneath it would have its count read for the wrong
+>size.  A reference of its own would not help: that stops a folio being
+>freed, not split.
+>
+>Whether a range has to look used at all is the caller's policy, so only a
+>caller that asks gathers the young/referenced evidence.
+>
+>Assisted-by: Claude-Code:claude-opus-5
+>Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>---
+> mm/collapse.c   | 239 +++++++++++++++++++++++++++++++++++++++++++++++-
+> mm/collapse.h   |   7 ++
+> mm/khugepaged.c |   8 +-
+> 3 files changed, 249 insertions(+), 5 deletions(-)
+>
+>diff --git a/mm/collapse.c b/mm/collapse.c
+>index 0e6c3c68b44c..66931ef6a6d0 100644
+>--- a/mm/collapse.c
+>+++ b/mm/collapse.c
+>@@ -86,6 +86,20 @@
+>  * replaces, and is switched over once both halves are complete.
+>  */
+> 
+>+/*
+>+ * Is @count past a limit stated per PMD, when only part of a table was scanned?
+>+ * Scale the comparison to the table so a partial scan is held to the same
+>+ * density as a whole one.
+>+ */
+>+static bool collapse_exceeds_limit(unsigned int count, unsigned int max_per_pmd,
+>+				   unsigned long start, unsigned long end)
+>+{
+>+	const unsigned long nr_scanned = (end - start) >> PAGE_SHIFT;
+>+
+>+	return (unsigned long)count * HPAGE_PMD_NR >
+>+	       (unsigned long)max_per_pmd * nr_scanned;
+>+}
+>+
+> /*
+>  * Scan the PTEs between @start and @end and record what a collapse could use: a
+>  * bit in cc->eligible_ptes for every PTE that may be a source.  Returns
+>@@ -97,7 +111,230 @@ static enum scan_result collapse_scan_table(struct vm_area_struct *vma,
+> 					    unsigned long end,
+> 					    struct collapse_control *cc)
+> {
+>-	return SCAN_SUCCEED;
+>+	const unsigned long pmd_addr = start & HPAGE_PMD_MASK;
+>+	unsigned int max_ptes_none, max_ptes_swap, max_ptes_shared;
+>+	int none_or_zero = 0, shared = 0, referenced = 0, unmapped = 0;
+>+	enum scan_result result, pmd_result = SCAN_SUCCEED;
+>+	unsigned int first_offset;
+>+	unsigned long addr;
+>+	pte_t *pte;
+>+	int i;
+>+
+>+	max_ptes_none = collapse_max_ptes_none(cc, vma, HPAGE_PMD_ORDER);
+>+	max_ptes_swap = collapse_max_ptes_swap(cc, HPAGE_PMD_ORDER);
+>+	max_ptes_shared = collapse_max_ptes_shared(cc, HPAGE_PMD_ORDER);
+>+
+>+	/*
+>+	 * No page table lock: what this builds is advice, and the freeze settles
+>+	 * every question it asks by re-reading the table under the lock and
+>+	 * freezing each source to the count it expects.  A racy read can only
+>+	 * cost a candidate that the freeze then refuses, or miss one that the
+>+	 * next pass finds.  What it buys is that a fault in this range does not
+>+	 * wait for a scan of the whole table.
+>+	 *
+>+	 * pte_offset_map() holds rcu_read_lock() until pte_unmap(), which is
+>+	 * what keeps the table itself from being freed underneath the walk;
+>+	 * mmap_lock keeps the VMA attached, without which free_pgtables() could
+>+	 * free it without waiting for RCU at all.  Nothing below here sleeps.
+>+	 */
+>+	pte = pte_offset_map(pmd, start);
+>+	if (!pte) {
+>+		cc->progress++;
+>+		result = SCAN_NO_PTE_TABLE;
+>+		goto out_no_table;
+>+	}
+>+
+>+	/*
+>+	 * The bitmap and the selection offsets stay relative to the table:
+>+	 * natural-alignment math needs the table-absolute position, not the
+>+	 * position within an arbitrarily placed VMA.
+>+	 */
+>+	first_offset = (start - pmd_addr) >> PAGE_SHIFT;
+>+	for (i = first_offset, addr = start; addr < end;
+>+	     i++, addr += PAGE_SIZE) {
+>+		pte_t pteval = ptep_get(pte + (i - first_offset));
+
+Hmm, ptep_get() does not look right for a lockless scan ...
+
+On arm64, a contiguous PTE sends ptep_get() to contpte_ptep_get():
+
+static inline pte_t ptep_get(pte_t *ptep)
+{
+...
+	if (likely(!pte_valid_cont(pte)))
+		return pte;
+
+	return contpte_ptep_get(ptep, pte);
+}
+
+contpte_ptep_get() explicitly assumes PTL is held and therefore has no
+consistency retry:
+
+pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte)
+{
+	/*
+	 * Gather access/dirty bits, which may be populated in any of the ptes
+	 * of the contig range. We are guaranteed to be holding the PTL, so any
+	 * contiguous range cannot be unfolded or otherwise modified under our
+	 * feet.
+	 */
+...
+}
+
+The lockless accessor uses the matching implementation:
+
+static inline pte_t ptep_get_lockless(pte_t *ptep)
+{
+...
+	if (likely(!pte_valid_cont(pte)))
+		return pte;
+
+	return contpte_ptep_get_lockless(ptep);
+}
+
+pte_t contpte_ptep_get_lockless(pte_t *orig_ptep)
+{
+	/*
+	 * The ptep_get_lockless() API requires us to read and return *orig_ptep
+	 * so that it is self-consistent, without the PTL held, so we may be
+	 * racing with other threads modifying the pte. Usually a READ_ONCE()
+...
+	 * and we can't read all of those neighbouring ptes atomically, so any
+	 * contiguous range may be unfolded/modified/refolded under our feet.
+	 * Therefore we ensure we read a _consistent_ contpte range by checking
+	 * that all ptes in the range are valid and have CONT_PTE set, that all
+	 * pfns are contiguous and that all pgprots are the same (ignoring
+	 * access/dirty). If we find a pte that is not consistent, then we must
+	 * be racing with an update so start again. If the target pte does not
+...
+	 */
+...
+retry:
+	orig_pte = __ptep_get(orig_ptep);
+
+	if (!pte_valid_cont(orig_pte))
+		return orig_pte;
+...
+	for (i = 0; i < CONT_PTES; i++, ptep++, pfn++) {
+		pte = __ptep_get(ptep);
+
+		if (!contpte_is_consistent(pte, pfn, orig_prot))
+			goto retry;
+...
+}
+
+The later freeze can reject a stale candidate, but the earlier PTE read
+is still lockless. Should the read use ptep_get_lockless() so arm64 can
+retry if it finds an inconsistent PTE in the contpte range?
 
 Cheers, Lance
+
+
+>+		struct folio *folio;
+>+		struct page *page;
+>+		int node;
+>+
+>+		cc->progress++;
+>+
+>+		if (pte_none_or_zero(pteval)) {
+>+			if (++none_or_zero > max_ptes_none &&
+>+			    pmd_result == SCAN_SUCCEED) {
+>+				pmd_result = SCAN_EXCEED_NONE_PTE;
+>+				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>+				count_mthp_stat(HPAGE_PMD_ORDER,
+>+						MTHP_STAT_COLLAPSE_EXCEED_NONE);
+>+			}
+>+			continue;
+>+		}
+>+		if (!pte_present(pteval)) {
+>+			unmapped++;
+>+			if (collapse_exceeds_limit(unmapped, max_ptes_swap,
+>+						   start, end)) {
+>+				result = SCAN_EXCEED_SWAP_PTE;
+>+				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+>+				count_mthp_stat(HPAGE_PMD_ORDER,
+>+						MTHP_STAT_COLLAPSE_EXCEED_SWAP);
+>+				goto out_table_refused;
+>+			}
+>+			/* Swap entries armed with uffd-wp are refused too */
+>+			if (pte_swp_uffd_any(pteval) &&
+>+			    pmd_result == SCAN_SUCCEED)
+>+				pmd_result = SCAN_PTE_UFFD;
+>+			continue;
+>+		}
+>+		if (pte_uffd(pteval)) {
+>+			/*
+>+			 * The huge PMD could be marked write protected when any
+>+			 * of the small ones is, but that could deliver
+>+			 * userfaults outside the registered range.  Keep it
+>+			 * simple and refuse the PTE.
+>+			 */
+>+			if (pmd_result == SCAN_SUCCEED)
+>+				pmd_result = SCAN_PTE_UFFD;
+>+			continue;
+>+		}
+>+
+>+		page = vm_normal_page(vma, addr, pteval);
+>+		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+>+			if (pmd_result == SCAN_SUCCEED)
+>+				pmd_result = SCAN_PAGE_NULL;
+>+			continue;
+>+		}
+>+		folio = page_folio(page);
+>+
+>+		/*
+>+		 * A VM_DROPPABLE VMA keeps the lazyfree property across the
+>+		 * collapse, so there is nothing to preserve by skipping.
+>+		 */
+>+		if (cc->policy.skip_lazyfree &&
+>+		    !(vma->vm_flags & VM_DROPPABLE) &&
+>+		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+>+			if (pmd_result == SCAN_SUCCEED)
+>+				pmd_result = SCAN_PAGE_LAZYFREE;
+>+			continue;
+>+		}
+>+
+>+		if (!folio_test_anon(folio)) {
+>+			if (pmd_result == SCAN_SUCCEED)
+>+				pmd_result = SCAN_PAGE_ANON;
+>+			continue;
+>+		}
+>+
+>+		/*
+>+		 * A page counts as shared if any part of its folio is, which
+>+		 * bounds the cost of CoW-breaking rather than the count of it:
+>+		 * collapse_faultin() unshares on !PageAnonExclusive(), a broader
+>+		 * test -- a page whose fork co-mapper has exited is
+>+		 * single-mapped, so not counted here, yet stays non-exclusive
+>+		 * until a write reuses it.  Those are the cheap ones, reused in
+>+		 * place.  A page that has to be copied is one this test catches,
+>+		 * so the limit does bound the copying it is there to bound.
+>+		 */
+>+		if (folio_maybe_mapped_shared(folio)) {
+>+			shared++;
+>+			if (collapse_exceeds_limit(shared, max_ptes_shared,
+>+						   start, end)) {
+>+				result = SCAN_EXCEED_SHARED_PTE;
+>+				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
+>+				count_mthp_stat(HPAGE_PMD_ORDER,
+>+						MTHP_STAT_COLLAPSE_EXCEED_SHARED);
+>+				goto out_table_refused;
+>+			}
+>+		}
+>+
+>+		/*
+>+		 * Which node the sources are on decides where the destination is
+>+		 * allocated: the one with the most of them wins.
+>+		 */
+>+		node = folio_nid(folio);
+>+		if (collapse_scan_abort(node, cc)) {
+>+			result = SCAN_SCAN_ABORT;
+>+			goto out_table_refused;
+>+		}
+>+		cc->node_load[node]++;
+>+
+>+		/*
+>+		 * Usually a folio somebody else is already isolating, whose
+>+		 * reference the freeze would refuse anyway.  Not exact: one
+>+		 * still on a per-CPU add batch reads the same, and the freeze
+>+		 * drains those before it starts.
+>+		 */
+>+		if (!folio_test_lru(folio)) {
+>+			if (pmd_result == SCAN_SUCCEED)
+>+				pmd_result = SCAN_PAGE_LRU;
+>+			continue;
+>+		}
+>+		if (folio_test_locked(folio)) {
+>+			if (pmd_result == SCAN_SUCCEED)
+>+				pmd_result = SCAN_PAGE_LOCK;
+>+			continue;
+>+		}
+>+
+>+		/*
+>+		 * A folio whose reference count its mappings do not account for
+>+		 * -- a GUP pin, say -- is refused by the freeze, not here.
+>+		 * folio_expected_ref_count() wants a folio that cannot change
+>+		 * order while it is read, and this walk holds no page table lock
+>+		 * and no folio lock, so a folio splitting underneath it would
+>+		 * have the count read for the wrong size.  A reference of our
+>+		 * own would not help: it stops the folio being freed, not split.
+>+		 *
+>+		 * So leave it to the freeze, which reads the table under the
+>+		 * lock and settles the question by freezing each source to the
+>+		 * count it expects.  What it costs is a window selected here and
+>+		 * refused there.
+>+		 */
+>+
+>+		/*
+>+		 * Every check passed: this PTE can be a collapse source.  The
+>+		 * bit is set last, so a disqualified PTE leaves it clear.
+>+		 */
+>+		__set_bit(i, cc->eligible_ptes);
+>+
+>+		/*
+>+		 * Whether a range has to look used at all is the caller's
+>+		 * policy, so only a caller that asks gathers the evidence.
+>+		 */
+>+		if (cc->policy.require_referenced &&
+>+		    (pte_young(pteval) || folio_test_young(folio) ||
+>+		     folio_test_referenced(folio) ||
+>+		     mmu_notifier_test_young(vma->vm_mm, addr)))
+>+			referenced++;
+>+	}
+>+
+>+	if (cc->policy.require_referenced &&
+>+	    (!referenced || (unmapped && referenced < HPAGE_PMD_NR / 2)))
+>+		result = SCAN_LACK_REFERENCED_PAGE;
+>+	else
+>+		result = pmd_result;
+>+	pte_unmap(pte);
+>+	goto out;
+>+
+>+out_table_refused:
+>+	/*
+>+	 * The table is refused as a unit -- a limit the whole range exceeds, or
+>+	 * pages on nodes too distant for one folio to serve them all -- so no
+>+	 * window inside it is eligible either.
+>+	 */
+>+	pte_unmap(pte);
+>+out_no_table:
+>+	cc->select_orders = 0;
+>+out:
+>+	/*
+>+	 * A PMD candidate needs the whole table, so anything that disqualified a
+>+	 * single PTE rules it out.  Smaller windows that avoid the offending
+>+	 * PTEs are still collapsible, so drop just that order and leave the rest
+>+	 * to selection -- dropping it also lowers the order selection roots its
+>+	 * windows at.  MADV_COLLAPSE has no other order enabled, so it is left
+>+	 * with none.
+>+	 */
+>+	if (result != SCAN_SUCCEED)
+>+		cc->select_orders &= ~BIT(HPAGE_PMD_ORDER);
+>+
+>+	return result;
+> }
+> 
+> /* Everything a table is judged on starts empty for each table */
+>diff --git a/mm/collapse.h b/mm/collapse.h
+>index e2af4c47cb60..ad88b91d9a72 100644
+>--- a/mm/collapse.h
+>+++ b/mm/collapse.h
+>@@ -130,5 +130,12 @@ unsigned long collapse_possible_orders(struct vm_area_struct *vma,
+> 		vm_flags_t vm_flags, enum tva_type tva_flags);
+> enum scan_result find_pmd_or_thp_or_none(struct mm_struct *mm,
+> 		unsigned long address, pmd_t **pmd);
+>+bool collapse_scan_abort(int nid, struct collapse_control *cc);
+>+unsigned int collapse_max_ptes_none(struct collapse_control *cc,
+>+		struct vm_area_struct *vma, unsigned int order);
+>+unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
+>+		unsigned int order);
+>+unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
+>+		unsigned int order);
+> 
+> #endif	/* __MM_COLLAPSE_H */
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index 26d25093260b..9823884a83c9 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -305,7 +305,7 @@ struct attribute_group khugepaged_attr_group = {
+>  *
+>  * Return: Maximum number of empty/shared zeropage PTEs for the collapse operation
+>  */
+>-static unsigned int collapse_max_ptes_none(struct collapse_control *cc,
+>+unsigned int collapse_max_ptes_none(struct collapse_control *cc,
+> 		struct vm_area_struct *vma, unsigned int order)
+> {
+> 	const unsigned int max_ptes_none = cc->policy.max_ptes_none;
+>@@ -341,7 +341,7 @@ static unsigned int collapse_max_ptes_none(struct collapse_control *cc,
+>  * Return: Maximum number of PTEs that map shared anonymous pages for the
+>  * collapse operation
+>  */
+>-static unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
+>+unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
+> 		unsigned int order)
+> {
+> 	/*
+>@@ -362,7 +362,7 @@ static unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
+>  * Return: Maximum number of non-present PTEs or the maximum allowed non-present
+>  * pagecache entries for the collapse operation.
+>  */
+>-static unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
+>+unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
+> 		unsigned int order)
+> {
+> 	/*
+>@@ -934,7 +934,7 @@ static struct collapse_control khugepaged_collapse_control = {
+> 	.is_khugepaged = true,
+> };
+> 
+>-static bool collapse_scan_abort(int nid, struct collapse_control *cc)
+>+bool collapse_scan_abort(int nid, struct collapse_control *cc)
+> {
+> 	int i;
+> 
+>-- 
+>2.54.0
+>
+>
 
