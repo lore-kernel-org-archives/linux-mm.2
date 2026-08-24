@@ -4,101 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AFB4C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:11:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 875C9C5DF9C
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:15:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 302A46B0095; Mon, 24 Aug 2026 11:11:03 -0400 (EDT)
+	id A0F686B008C; Mon, 24 Aug 2026 11:15:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B38B6B0096; Mon, 24 Aug 2026 11:11:03 -0400 (EDT)
+	id 9C1136B0092; Mon, 24 Aug 2026 11:15:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17AE16B0099; Mon, 24 Aug 2026 11:11:03 -0400 (EDT)
+	id 8FDF06B009B; Mon, 24 Aug 2026 11:15:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E11116B0095
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:11:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8AC881A014F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:11:02 +0000 (UTC)
-X-FDA: 85136500764.12.D34EB2D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0027C80002
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:11:00 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 718C36B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:15:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 102C1A29A6
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:15:22 +0000 (UTC)
+X-FDA: 85136511684.29.675076C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 64F0C80007
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:15:20 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIeM4nw9;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fMmZABfg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787584261;
+	s=arc-20220608; t=1787584520;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wx9f9XPX6UaTsyTsSp+lWebUiETju9PeSHKWEVZrKvQ=;
-	b=qf8m3MMi0SBtI71FAw9S9XQAtpQItdRSBGrHf9/cAaTOR7K8V8uu7pCfSqmMF6TvzafmeK
-	6zi5NKXk6vckoX2u2PMNWdYnHRb+c60iEYzPzNGyk9doa7Ho8vMfqpmJx901ceGVyDmovg
-	xU/xxbGUdT7+pkgjp38lkbfoX/u327Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787584261;
-	b=0RTStxMVegjLbfF7Bo3Z5cMP/bpmpG8fRvKaIj4JZg5C7TLc6rzavKCokjb5JuTyaB1eHq
-	wE6j1HI7BblkobGNc3HFSijh6wnNKs9e9wiKSiQuFlH/A5D7vlTx7NN/NVnnHSubMZ+SNx
-	b7cO8RVv5Gibyp/kN2JwSapAcyHZVSI=
+	bh=dnL3NIui6/xO3HGPt06qkNh1ukWzVG67kuq9rhxtTII=;
+	b=Xv5/eZdDYsxZ9qky9BFTLSe8emEhrhFbf3WpUBa7h8c24YKzBZp9NPJx7tG25MISEq0jE4
+	1UW8Asa+NdRXD1nH6zVSlA5h3hYpsQ0yoty/x+K6MER2Ya6DR3kw/8eNlOfLx0IzVlBoUG
+	iFKRMt+bo+8ZDJXWYAsxqmLs98lCMvA=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIeM4nw9;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fMmZABfg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787584520;
+	b=JaZr+ZWiD3qEwnSZlcPrDSO2evaoRwUpLt9qcUA8RBHcOSiNNPE3Imi3xG3L3DnhmnO7dO
+	7X8aFvHm0GBBAgsJ+X47bfNMI+QncwnPVwFfbGU/iZrZNh4jo9D64L6iOvazTLGBoaWGo5
+	sMDlEg/+akEcaXHCIgaqy8Edm6MxAB8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5FD7A600CB;
-	Mon, 24 Aug 2026 15:11:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2423E1F000E9;
-	Mon, 24 Aug 2026 15:10:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DCDD40298;
+	Mon, 24 Aug 2026 15:15:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0AD81F000E9;
+	Mon, 24 Aug 2026 15:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787584260;
-	bh=Wx9f9XPX6UaTsyTsSp+lWebUiETju9PeSHKWEVZrKvQ=;
+	s=k20260515; t=1787584519;
+	bh=dnL3NIui6/xO3HGPt06qkNh1ukWzVG67kuq9rhxtTII=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aIeM4nw9zSLp14C7Qg/aoWJ+Gibkr1HmmR0ckBQ4y26T1NYNtGBzmDSU3/xnRFaoV
-	 TuzTZNLgmDM9Q08D5Yzggqivp3V83HsLluIKSwBD+aVrE53Ku2YeWV1SMVRw1b+oVv
-	 WlqOq3JhDUknsD4U/dUlvXguIpg2M9YY9kuprCHgTPYml9GsRiKR1abr4/MGUglhw8
-	 P0swNBzh5TBanefQbSD7CTT9M15MwtjMlbZh8xrpLK5szSEfkcbGMw9vqK000/4003
-	 /mbEjamc8pSlzLFaYVI9BuaqwBPBc18xTuyi5oze1LI6PTCMFPD1qLTgli+1JpTkhb
-	 q10MUO6pdJrJQ==
-Date: Mon, 24 Aug 2026 16:10:51 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
-	Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
-	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/6] userfaultfd: use userfaultfd_*() helpers instead of
- open coded flag tests
-Message-ID: <aoxdWWMEeQbcG5Pq@gremlin>
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-3-3086981b33cf@kernel.org>
+	b=fMmZABfgdEK6C8vXUApy+4qYu+g50cCS7qrqCWXLuhVwRMnSZQZV/xkO18HUGV7uO
+	 d7D5iT3XcCNgEdCv5dpkZ93oovNDBrQgg4AQGb3KqFB94p2IQGIsp3rsWt1AG3nCWl
+	 h736aBexqYknhhQVo9M7RdcFLM5WqXmH+EQdADh253UMENMP9yPCXVPXr/n0Ld1eWY
+	 25kO5ZaWjHNZNxXPumEQZ0HYHC02yz7GQCBqoYJ7k5oQYJkLx3RpjnznyohfSqo4fM
+	 sKPeW7DFyRzsTNhEKfG/LwvTA1SZ7eG/UpPgeABKZlN4fyz3SAz+UNsky+bwJUNBTh
+	 SUJvbf9GwySug==
+Date: Mon, 24 Aug 2026 18:15:13 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Meijing Zhao <zhaomeijing100@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Wandun Chen <chenwandun@lixiang.com>,
+	Meijing Zhao <zhaomeijing@lixiang.com>
+Subject: Re: [PATCH v2 RESEND 2/3] mm: memblock: show all region flags in
+ debugfs
+Message-ID: <aoxgAYXqXvs0GFYM@kernel.org>
+References: <20260821020910.3428585-1-zhaomeijing100@gmail.com>
+ <20260821020910.3428585-3-zhaomeijing100@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260823-uffd-vm-flags-v1-v1-3-3086981b33cf@kernel.org>
+In-Reply-To: <20260821020910.3428585-3-zhaomeijing100@gmail.com>
+X-Stat-Signature: f8hnxnomo3jtheo54ndrun37awdh4cgi
+X-Rspamd-Queue-Id: 64F0C80007
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: pnrwz9uoj63kmdpi4nrye3qckfb1iezo
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0027C80002
-X-HE-Tag: 1787584260-487072
-X-HE-Meta: U2FsdGVkX186/GR4Hsze8k2FzYWq9URR3oqaBXaFIWE2lzcVJyuedfBtlnoJxdVVC1xikC2p7TUDR+eMgumgUvLUzrZcahhH5xP47Cq6tPSBt+blWXiCz2DHMewQ+0SM4fVysmJ8byumf1NdW3LUskWr/vIdmpYLI6uTUJPMOE9X8+9xpkZ/omhVDgjE/25RycRAltjLUuvFU2J8ZTcQccXZKsVCoIkfW+9yuDv1WmwU7TrTv16LV2ZXhzfkr4v5AJi5Vsr19c04LrC5xCvj7bpd/HLuH6INqAHgksHhdPg5qL/KwTMMA9WJnJTUDG94HB8XTJiibmR0Cl4/9/932jJLztferweTLXJe4KEQdCn+g3nwZfy+tT55sKyrs48tPkPGnfK965DBOidk4ZWzHnfsgu7X0sCz7Ad8iL3dYqY9JOtBCi6tykyby/tdHfYKr4G/clSmUaByTkFF1CjWLkicj0Lho8SMxER8wh1xw3Lco3q3fwZZeBk05H3PCXVe1K9a/Kft6P6LyB7jhn5ceTPKRvz1uTS0qOlEgWYjHxOKn9FJjxFlqfujfYPTmGh3PEqXpQQ4VoAxS14gTnueOqrBqltCv1QeuHuSsaYMPYuuELLERyM2YUQAseHh9eHHpv1kAWM3bvf43DJ1pLk/pEfO74nfUuU1WtMigRN8kF192mIslpNMPyZ0GirXEveG2CFTpnGD3Gb1crFOAs2fiES6AMhzn10AXw9j/kB5j09Bz0sEXUSzWQN9RXznpsCfUPddtlfPx+N6PUPoPJncq9o9kL7FXUhtR+rw3T8DlpAd8ODQZEHI6IAwvdSF3Kau4kW/Fve9506XBHgu13Y3Q13hl5vESVmJxu5CaednGVaSy2ycQ9wt+de75pNf1NHrP6Dqhi3vPuTwBpaU32ED2k7Wb5dMKsFtARccJcriCQv1Sy8cK94XyJ63qOGUhOe5m9WnamhArhGmFZb91d7
- zNUwO9T0
- 4zyoecDObHXoHbExaxvi2kkTG39zY+gdWs1sOTMvoU20pFqwmI+fTzrzg0LYVYZFeOG9k/fa8wL7EE0RSduY0CWQzO5tTx+eRo/kdoCD79bTqap+6jDJy0UDWyKjg3h5KXmykeDs8TbVzrQBz2Z/1ViUimqN91HCDrGvPFUsP95xwXzadk7jysm7IkhTGlJEoXYqfHMWXlaFLv/exVre9n546v0HMukzgLyvw1ymNTtsBymZYA6rXCoiTJRS38NUQ9RoK9gsrF/VgO/7PoygKGy/eMBFOh+8T5mIdgtJK4brtHe7xOwm00vZTGqW5imWQOIdX
+X-HE-Tag: 1787584520-240113
+X-HE-Meta: U2FsdGVkX1/jhwy9xaRulifksHJIHozfCYLiHabBOSPqMctVItLaEHBJAN/CN1VPk3FOBtzmE4YIXaC74Ogvh8MkVDQeAN8/ZLG70yOYwbpmgkiUlk7CtuRAeHk62Uw0+QecVPRl3c4xL/e25hYetSgBmgDACZthfKH2hcW9tINbPbh0B2Zok1TbZeSffgAcXQxt210c6JVztLii106FAw7Vn2eaa/FU2FjhBBQjQhQNyGvUkXLJ5+4XClY0itUg+Cxm17nYR8Ae+G1iIke+Iay0YFH7+ARvSoVwLfkXNQp35ghDEZIogYBF0SiCsl8xwyEweAFON+o/Xsf1BtfbWm5AeW3q8WTbMJYP1yGnUNkNDygv228zMOfmRZJB127OBNTYc7NcjmZI5yiwD6VnpzBvmR9C83BC2qx4LyjTbiGShtBFhMgddV8jBhZMW/2oooUCFYAFwaF0twKD0LoTEAbF6U/6mDni2z5hMhPcZl6XK+qPruUmqwkDcPXeK9ofMP/Nm4vsFGBpn2cIuRA0nOCnA8Yv8GZsIPk93cGUFOcYvjZKtOdn5WVieVkESkyCDl7cob4qIklAQ6lxvSSXa4ugUqpzfihj9LI5RLGu8c0h6eUsIZmMPiC2vIis827ntokQq01Wye6okF808UII6hM6siPy+I21uC0vxbsxWmhl3dDr47vxXc6EdGnt0GB3gA111IONC0/NfyO+ZgwxI2H7A6VjQCtbNP/YfwcXuHAVjnVXiV/5bj151FC3U4c7bxoJc3n8wa7qd88WOnasPxQ7J8LUtk8yWx+PtzDlBTbJOxQ88IS57UaYThrsEsMPVZ1wu+Ya5ijMWn/UVEYSgi7tN1aZEtxYkUqXLjeIzYCt14/gSrhqHjuooDs8v8jTC34ehi/2xEuBJzk81jjPBJqCwxf+qBpP4HSlTtepA8pluIbVzDCI4sK2OxoIYYFrhHsM7hCmBlM0yKVhA6r
+ qfSeUB/o
+ lPDhZtdy3JOvsIB1SWelVxJXh6yGYklb8qRuVR/JDMUt6AUM9k7siUs1++j++cuEIYZEaoKTzqyJTlkr4cFvY2KkXkg82KhTefRZAqP0x8MkJNUuH1R8urIlgRb8HQJ1f3hycUSY7UUvaieTaAGrMXBxXU43/OQU6OBMIWycXIPRV3JMwxCpBOLqADOAT6IONzmucGrj+R38Xgsgq7mYltnX/grwMvdW6KgFRwlYiQ0RhLCq22iMvZl6ZBhFZu0kmZkEYE0hOxzvR+EZMtBMD0AMNNFPpO+UjDKx6ViTYFaEn5uoBRZDQ9Y0nTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,178 +93,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 23, 2026 at 03:17:40PM +0300, Mike Rapoport (Microsoft) wrote:
-> Move userfaultfd_{missing,wp,minor,rwp}() and userfaultfd_protected()
-> ahead of uffd_disable_huge_pmd_share() and uffd_disable_fault_around()
-> and make the latter two use the helpers rather than open coded VMA flag
-> masks.
->
-> Convert open coded VMA flag test in mfill_get_vma() to userfaultfd_wp()
-> as well.
-
-It'd be better to do the moves and the reworks separately. We don't have a limit
-on patch count :)
-
->
-> With every user of the per-VMA uffd modes going through the helpers,
-> their underlying representation can be changed in the next step.
->
-> No functional change.
-
-There is a functional change, or at least seems to be, see below.
-
->
-> Assisted-by: copilot:claude-opus-5
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Fri, Aug 21, 2026 at 10:09:09AM +0800, Meijing Zhao wrote:
+> From: Meijing Zhao <zhaomeijing@lixiang.com>
+> 
+> Commit 493f349e38d0 ("memblock: Add flags and nid info in memblock
+> debugfs") made memblock_debug_show() stop after finding the first set
+> flag. A memblock region can carry multiple flags, so the remaining flags
+> are hidden from debugfs.
+> 
+> In particular, memory allocated for HugeTLB pages is reserved with both
+> MEMBLOCK_RSRV_KERN and MEMBLOCK_RSRV_HUGETLB, but debugfs only reports
+> RSV_KERN.
+> 
+> Walk all bits in the region flags and print every set flag separated by
+> "|". Keep walking beyond flagname[] so that a set flag without a known
+> name is reported as UNKNOWN rather than silently ignored.
+> 
+> A HugeTLB reservation is now shown as:
+> 
+>   RSV_KERN|RSV_HUGETLB
+> 
+> instead of:
+> 
+>   RSV_KERN
+> 
+> Fixes: 493f349e38d0 ("memblock: Add flags and nid info in memblock debugfs")
+> Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
 > ---
->  include/linux/userfaultfd_k.h | 70 +++++++++++++++++++++----------------------
->  mm/userfaultfd.c              |  2 +-
->  2 files changed, 35 insertions(+), 37 deletions(-)
->
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index 3396d270b159..d8262e3dc134 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -168,42 +168,6 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
->  	return vma->vm_userfaultfd_ctx.ctx == vm_ctx.ctx;
->  }
->
-> -/*
-> - * Never enable huge pmd sharing on some uffd registered vmas:
-> - *
-> - * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
-> - *   tracking information is per pgtable entry.
-> - *
-> - * - VM_UFFD_MINOR VMAs, because otherwise we would never get minor faults for
-> - *   VMAs which share huge pmds. (If you have two mappings to the same
-> - *   underlying pages, and fault in the non-UFFD-registered one with a write,
-> - *   with huge pmd sharing this would *also* setup the second UFFD-registered
-> - *   mapping, and we'd not get minor faults.)
-> - */
-> -static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
-> -{
-> -	return vma_test_any_mask(vma,
-> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
-> -					VMA_UFFD_MINOR));
-> -}
-> -
-> -/*
-> - * Don't do fault around for WP, RWP or MINOR registered uffd range.  For
-> - * MINOR registered range, fault around will be a total disaster and ptes can
-> - * be installed without notifications; for WP it should mostly be fine as long
-> - * as the fault around checks for pte_none() before the installation, however
-> - * to be super safe we just forbid it; for RWP, pre-faulted neighbours would
-> - * be indistinguishable from accessed pages in PAGEMAP_SCAN (PAGE_IS_ACCESSED)
-> - * and pollute the tracked working set, so each page must be populated by its
-> - * own fault.
-> - */
-> -static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
-> -{
-> -	return vma_test_any_mask(vma,
-> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
-> -					VMA_UFFD_MINOR));
-> -}
-> -
->  static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
->  {
->  	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
-> @@ -235,6 +199,40 @@ static inline bool userfaultfd_protected(const struct vm_area_struct *vma)
->  	return userfaultfd_wp(vma) || userfaultfd_rwp(vma);
->  }
->
-> +/*
-> + * Never enable huge pmd sharing on some uffd registered vmas:
-> + *
-> + * - uffd-WP and uffd-RWP VMAs, because the write protect / access tracking
-> + *   information is per pgtable entry.
-> + *
-> + * - uffd-MINOR VMAs, because otherwise we would never get minor faults for
-> + *   VMAs which share huge pmds. (If you have two mappings to the same
-> + *   underlying pages, and fault in the non-UFFD-registered one with a write,
-> + *   with huge pmd sharing this would *also* setup the second UFFD-registered
-> + *   mapping, and we'd not get minor faults.)
-> + */
-> +static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
-> +{
-> +	return userfaultfd_minor(vma) || userfaultfd_wp(vma) ||
-> +	       userfaultfd_rwp(vma);
-> +}
-> +
-> +/*
-> + * Don't do fault around for WP, RWP or MINOR registered uffd range.  For
-> + * MINOR registered range, fault around will be a total disaster and ptes can
-> + * be installed without notifications; for WP it should mostly be fine as long
-> + * as the fault around checks for pte_none() before the installation, however
-> + * to be super safe we just forbid it; for RWP, pre-faulted neighbours would
-> + * be indistinguishable from accessed pages in PAGEMAP_SCAN (PAGE_IS_ACCESSED)
-> + * and pollute the tracked working set, so each page must be populated by its
-> + * own fault.
-> + */
-> +static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
-> +{
-> +	return userfaultfd_minor(vma) || userfaultfd_wp(vma) ||
-> +	       userfaultfd_rwp(vma);
+>  mm/memblock.c | 22 ++++++++++++++--------
+>  1 file changed, 14 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index f2952d725c10..36a8d2a9378d 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -2895,7 +2895,9 @@ static int memblock_debug_show(struct seq_file *m, void *private)
+>  	struct memblock_region *reg;
+>  	int i, j, nid;
+>  	unsigned int count = ARRAY_SIZE(flagname);
+> +	unsigned int flags;
+>  	phys_addr_t end;
+> +	bool first;
+>  
+>  	for (i = 0; i < type->cnt; i++) {
+>  		reg = &type->regions[i];
+> @@ -2909,16 +2911,20 @@ static int memblock_debug_show(struct seq_file *m, void *private)
+>  		else
+>  			seq_printf(m, "%4c ", 'x');
+>  		if (reg->flags) {
+> -			for (j = 0; j < count; j++) {
+> -				if (reg->flags & (1U << j)) {
+> -					seq_printf(m, "%s\n", flagname[j]);
+> -					break;
+> -				}
+> +			flags = reg->flags;
+> +			first = true;
 
-This is changing the logic.
+first and flags can be declared here.
 
-Before we were testing only the flags, now we have:
+> +			for (j = 0; flags; j++, flags >>= 1) {
+> +				if (!(flags & 1))
+> +					continue;
+> +				if (!first)
+> +					seq_putc(m, '|');
+> +				seq_puts(m, j < count && flagname[j] ?
+> +					 flagname[j] : "UNKNOWN");
 
-static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
-{
-	/*
-	 * Callers gate PAGE_NONE usage on this; PAGE_NONE is a BUILD_BUG()
-	 * without CONFIG_ARCH_HAS_PTE_PROTNONE, so fold to false.
-	 */
-	if (!IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE))
-		return false;
-	return vma_test_single_mask(vma, VMA_UFFD_RWP);
-}
+Can we really have both j < count and !flagname[j]?
 
-I.e. adding in a CONFIG_ARCH_HAS_PTE_PROTNONE check.
+> +				first = false;
+>  			}
+> -			if (j == count)
+> -				seq_printf(m, "%s\n", "UNKNOWN");
+> +			seq_putc(m, '\n');
+>  		} else {
+> -			seq_printf(m, "%s\n", "NONE");
+> +			seq_puts(m, "NONE\n");
 
-BTW side-note these:
+No need to change this
 
-static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
-{
-	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
-}
+>  		}
+>  	}
+>  	return 0;
+> -- 
+> 2.25.1
+> 
 
-static inline bool userfaultfd_wp(const struct vm_area_struct *vma)
-{
-	return vma_test_any_mask(vma, VMA_UFFD_WP);
-}
-
-static inline bool userfaultfd_minor(const struct vm_area_struct *vma)
-{
-	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
-}
-
-Should all use vma_test_single_mask() really :)
-
-
-> +}
-> +
->  static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
->  				      pte_t pte)
->  {
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 74f04c323c50..32003aa04943 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -261,7 +261,7 @@ static int mfill_get_vma(struct mfill_state *state)
->  	 * validate 'mode' now that we know the dst_vma: don't allow
->  	 * a wrprotect copy if the userfaultfd didn't register as WP.
->  	 */
-> -	if ((flags & MFILL_ATOMIC_WP) && !(dst_vma->vm_flags & VM_UFFD_WP))
-> +	if ((flags & MFILL_ATOMIC_WP) && !userfaultfd_wp(dst_vma))
->  		goto out_unlock;
->
->  	if (is_vm_hugetlb_page(dst_vma))
->
-> --
-> 2.53.0
->
-
---
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
