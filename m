@@ -4,138 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F8ADC5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:23:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10EE0C5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 15:24:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 034076B0095; Mon, 24 Aug 2026 11:23:20 -0400 (EDT)
+	id 0D21A6B008C; Mon, 24 Aug 2026 11:24:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00BD76B0096; Mon, 24 Aug 2026 11:23:19 -0400 (EDT)
+	id 0AADE6B0096; Mon, 24 Aug 2026 11:24:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D7C6B00A2; Mon, 24 Aug 2026 11:23:19 -0400 (EDT)
+	id F28E26B009D; Mon, 24 Aug 2026 11:24:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B03736B0095
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:23:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21B3BA2AF6
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:23:19 +0000 (UTC)
-X-FDA: 85136531718.07.CE43AD6
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 16D86140010
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:23:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="mI5Vkg/d";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787584997;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D61316B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 11:24:09 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D27F1160184
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:24:07 +0000 (UTC)
+X-FDA: 85136533734.25.E03893A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 435EE40006
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 15:24:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DJGSGg/b";
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787585046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jH77beqs+5zKV6amTfBDwxpeesgjCtaEPDf8Q4m2/ZM=;
-	b=ULLbIcJMToVuqCtN0XqgRL1MQhrie9vzl6kRDuLrEqEu9NTuM8H7z5EgxYgbPwgHAL/xdq
-	SdN5a3WlEaR52WJ/IqMi2/rVlXAR57bNPGzXnPUBzRVPjSVNE7tib6Sqq0uTuXDIgYw3CC
-	37KbG4yjlI0RQReYMKYANuoTuUrOOAQ=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="mI5Vkg/d";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787584997;
-	b=zhZFw4bdCs2rf3735zNB6BRlZuOY2pqtqmEFfDNHPEpnrPq/Wwyl86kSYXjKCpjDbrKdW7
-	fu9qiIAL8CQ/14uuTYkICPm1L7+D4E+OMBIwG3OW/2MduE06NUd5+ZDWqmnbavelbiXpoS
-	9Kg4nDEkSc+tSQNSP8vGyzbS5vPN9Sk=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a173ad7cf4so6593128a12.3
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:23:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787584995; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qkmTGrTTkQkTMEiTPNTYkzPH0SszbqWJWikzUVoV5rSvqSUESQmPeagC3mF8X5l1ln
-         XnuWn+B9E2hLS+062vTPualu2aO4v2nEDRl/GizddVVVfRw2BcmbGdpgHVV6TkF3TFKJ
-         YpfQPEBGvRNjbfd/t9Und10UxPOrY6qRX/jzn6m45CLxKvDSps6OiMFC0c6K6LDiROLE
-         AChblP+vzIk4lxRn6P+ENt+qLVVzC7lh/3n++x91BXqSrn9pXbptHgtpeiY9b05+5wJe
-         OW3P8NGrmvEN/PE8+BeM1DpYrmzS6tpASxr/C2vaIxkjRNEi1cO5Yk8DDex6Zmsd86ek
-         y3PQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jH77beqs+5zKV6amTfBDwxpeesgjCtaEPDf8Q4m2/ZM=;
-        fh=o21v/VfyC2TwPwU/IcJZEETR4XH0+t7B5F7wfu7Mbkk=;
-        b=G0RSYbKee2l00VCRXn0nZqsXpMPs2+GR8fhg/Rc9UvamPEdonysrhR6z5aualJ8J6D
-         G0yKEA0q3tieq0qOOBXhzGst2htQFKCPDreT6INFbgd2Cs6ptwahhMBHlwqw8CiApVQ8
-         zIMkA3lry/uTmEnyE/3InRbHo0J/IIt9yu/N9GDcVxK08ZreXRzrPIb+274fXiMz0V59
-         Ht2ZMi0HRIcFzKm4LcDRs/jpFOfT3lzguyvYQk6XquP+KmwGn9n1pIw3eXxHTujVcPWJ
-         Ckhg+Q7NxGCTimEOUWvVji37ppAb2l76iTcc2L9CDPlbJvtfwk/9qSFdDXNIZHQUPxo6
-         dYDg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787584995; x=1788189795; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jH77beqs+5zKV6amTfBDwxpeesgjCtaEPDf8Q4m2/ZM=;
-        b=mI5Vkg/ddEAFXN675oBlBb0T5/77ZGdEdoP9eYS2PhbkDTH7pXWDQe7WA77FCAkL+D
-         O8r66T+v3Lxh6XzPDz1TWL/6aV/Jjrt/sywQ4kfgmY86bqP78OyxGz/V8BgbEPyfOUMh
-         1jCLUnpEGSVcYW3lQAQkIsICgup2j846Q+ScB0BM+8WSV/bDaJj69yCTHAPmBY9gHA76
-         fEIS/iweiJkB/d4x74weuYSASwxjOy6VorPNRwkcluUz4885t9RS5iEvo10S9lESXGJu
-         6YpAFBHpChaptlWU3+TDJIC27ngiyFNSyN4+yR0R8djfobrfRFemyiKeTzVLesNhAd1t
-         dqsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787584995; x=1788189795;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jH77beqs+5zKV6amTfBDwxpeesgjCtaEPDf8Q4m2/ZM=;
-        b=eU3A88gJFPIOt5zDuJSevrHqYWvhoN/Ujb/bK2SR8xpAE/eYe3iL0JdAfgDZg5anfL
-         894WDxx2y8V+5iqXLn/RPKBt9aYxp5fSBrjGYbnk8iTIN3JLdUnNC3YV7gcfy1lFG7Sr
-         ujElKBpJbfsOHUNpVVze3cmCbUx7JN0f5HlFOr4xlDoWDKsvylstZRJoThD/JkfmvRjL
-         NEIJoBi4QVksSMWFg1ocZNRpWprx2Xm/zk+/DysRwXxYDideSwabdzlBG60XoSapobar
-         BFNuzOBykI8LMDnkB6BR9mUKnqe1ZY/Hxr9ZdnbV+T+OUAq0zDdbUwuIaRXkpxO3/7F5
-         481g==
-X-Forwarded-Encrypted: i=1; AHgh+RpC+4gDzCn259dI61olmx720RhmQ9he8flJeaB24ITc0UwXm8Ejp782m9Gt05lTZFPWmsWlTMlZnQ==@kvack.org
-X-Gm-Message-State: AFuF++k+Y4Mu8PAy0etGlNTZZLJP5F1oKXjEw519yH1oWHGi+cO71l9O
-	wdR3S5noS3GNRJUTargglPl9lv/06IRHu093IkYWo03mVlFFo4wpstNb7gKx6C7ktR4R1UaQC9s
-	5bcZTDwnmUS5kqWI2Du2F4wI4tsGX6cg=
-X-Gm-Gg: AR+sD10NWStaxXD54El1R8nmuUMPMJrZvJJuXjD2CjvQMS5tOQCKSqI/kRAfkTXTHSW
-	TIcu4rtXnGC45RLvLWYBgOvc1cqme2YxTO/3pw2hhQM/WJxrCcYAOFeKqxJfBh9JkbowfF6y62M
-	f3OucMZoSNUMoAIVQ/0d1+oO5omMfgEERhGpQvfKiZHdMjnODYvmTxT3vAoolNgJ8wVKe5a/T+4
-	y7zQZaGZ09lLGLptSkECoWhIHfBCjH1ThIFEUOSKIEkaaDU0eu24iZh1ADZi3DITDX2BmlLTcT+
-	46f5Yyf0qmrq2HD+vv5BTXefKus4ywZXWsIVyC5OGwczfw==
-X-Received: by 2002:a05:6402:3705:b0:698:8847:e2f8 with SMTP id
- 4fb4d7f45d1cf-6a582ba7883mr23687259a12.15.1787584995174; Mon, 24 Aug 2026
- 08:23:15 -0700 (PDT)
+	bh=mcw1FaqpqN1fC2wyOxEQI80FG3a+BD9XUeXDJIlvzec=;
+	b=sWtR2bz+9XM43rAawZQhZ9Bv91M9nc7AvraxkdlD6pxy9Az7VCYUu0TDvaWJRao1rppJqQ
+	FEAdZJO+W4gj879RV4WeHtnWnXgOhsKP/+5raM3vdNqCYOZFzYkQHwrr6xFH7j6VHzbTQ/
+	iMtnXtMLPws0OYNr7+O3Ob3PvpetnxY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DJGSGg/b";
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787585046;
+	b=f8wG02b7SInAIGolUJDvJ8saRLEideuxqhYbM8rPjNlSJplzeeL1xEnJ45hd72bl/NTZdR
+	MtfF9hJINz+mhweiPtuSZNLGhXm3saSgOxblUrgcHJzNitjPBGHMB1vFMYVsOTx0Gi5KQc
+	Qpfzsa6+WGqM+lymBfb1vZskXy3Tkjs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A814660120;
+	Mon, 24 Aug 2026 15:24:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257291F000E9;
+	Mon, 24 Aug 2026 15:23:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787585045;
+	bh=mcw1FaqpqN1fC2wyOxEQI80FG3a+BD9XUeXDJIlvzec=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DJGSGg/bjUAW6H+yCzR0IePkcLMVg6lpFFuJzo46rAW9B3BtEaYUULCpInzdAqUWe
+	 vcaRx1Jx/UhRpu0qLAKSgT9KAXEfeHIYrGC3WJnOuIh0A/TMlfm8IX60QgW5rBZ5Ty
+	 z9KkznHNyo2VPQefi824jviu+tkLIvtkx4cP9AVQo3KjdBGZuWvSxrRT/HYTOmcr6I
+	 i/nvI+3bJlAFq7uflyCBPdUTUwprHSmujalKrwNengBMSmDtqO+FrvFDTJvP3W/RUC
+	 MKGbfsbxI/S0F52UNWpLbSvgbh6CsplJAXRLexTykf7z9DvVxUimeLEHFzko/qLNE+
+	 d6LlExTi11C6w==
+Date: Mon, 24 Aug 2026 16:23:57 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	akpm@linux-foundation.org, nico.pache@linux.dev, baolin.wang@linux.alibaba.com, 
+	baohua@kernel.org, dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, 
+	liam@infradead.org, mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, 
+	shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, 
+	ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, jannh@google.com, 
+	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, mhiramat@kernel.org, 
+	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [RFC PATCH 03/57] mm/collapse: add collapse.h for the shared
+ collapse state
+Message-ID: <aoxhUy6198VLCryN@gremlin>
+References: <20260816224609.308019-1-kirill@shutemov.name>
+ <20260816224609.308019-4-kirill@shutemov.name>
+ <3113ac8b-c1ce-4577-9e93-449b70818918@kernel.org>
+ <aobglSY5L1KoIqxF@thinkstation>
+ <65433d1e-95ca-4434-828e-8f381d3384b1@kernel.org>
+ <aow0Z6mrG2esKpRZ@thinkstation>
+ <e1c8c6f5-1b5a-4cad-a52a-f7eff00997c3@kernel.org>
+ <aow6J1i2G7U0spjH@thinkstation>
+ <aoxPzKTVRmZgmBKg@gremlin>
+ <aoxe92BxF-5xaScD@thinkstation>
 MIME-Version: 1.0
-References: <CALa+Y15zNhpubyH5GQgu_BHesrwRdH0B8k5cqT3o_U0h5A2e-w@mail.gmail.com>
- <20260822003237.88274-1-sj@kernel.org>
-In-Reply-To: <20260822003237.88274-1-sj@kernel.org>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Mon, 24 Aug 2026 23:23:03 +0800
-X-Gm-Features: AcwNN1UfGZhL6wlAt_EY1z_vCXyRGndLOrHHNLYnegIDLisoABbScauoZxjolc8
-Message-ID: <CAN_Opa9dQsz0hA_-+SS7hyHHtrYu2esK2Cp5X=G-YNFr5vgVZA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/6] mm/damon: hardware-sampled access reports
-To: SJ Park <sj@kernel.org>
-Cc: Ravi Jonnalagadda <ravis.opensrc@gmail.com>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	akinobu.mita@gmail.com, damon@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	akpm@linux-foundation.org, corbet@lwn.net, bijan311@gmail.com, 
-	ajayjoshi@micron.com, honggyu.kim@sk.com, yunjeong.mun@sk.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoxe92BxF-5xaScD@thinkstation>
+X-Stat-Signature: ogtr4bguqtdxnt19g1izdn8qrodwbbmh
+X-Rspamd-Queue-Id: 435EE40006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 16D86140010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: qsgj6df1rnb7ica3iayuuf9349gp91xt
-X-HE-Tag: 1787584996-522245
-X-HE-Meta: U2FsdGVkX19G2CpMzVoKoJhjSZCeqGau6c8XLNNsYslUoUbjOChrgvbU6JCxu4g755ycKk9QIhiovcz5aYJMAzXxyf2rwDiR8PyxJ2Md/C0rWe29te4DxZEi+29esrh0h+mSpjWDpjkuIG34tAiWk3eVA8HwBKY+a1MDTfDWq2fs7otd44GrQhtf0BTtCGzxo7VW//I+MbkcCafdXvPN3unhyrxMyrg4Wn2U7ug3CfmjeU6gInu9c4H0zAy9hwqUKc1S6e81pPnqd9U27NTKXqyXlK6b4lifijUr2bIaym8fuyGva0IsFo6xtc3l/CA9JLaF54s00aKi9zy3A6+K71dbLm+bh4N/hgKftJS/25JssiQIxSBrB4Zv2SQMTmMP4iygJZ0eozzAFRtcojlTrsw1LvIUGBgWBiKREQlUvpnVagIWM8ETKu3+W5Edh/2cR3peJ2LHiBJzHVbZNI71cnGsZWXrv6542PaCoux2da4ExWjpvoe4wXID++nCxwapC+WknZMllQ+0I7UWEmohLsTmnlZlDtcy9TFa9fxbqLAMJZ4LdlRJIcqlaL5FvY6/gqdG1MpPQxMyPfj5gFzNAPfKpmU/AIDcLp9jmVgUhVeqOj4Mcuv23XeUEMUq1Spyw8aTCmrsYaRR+cLA7Obq8MYU1E1T8qca2gpqDjKwziZjKV7D3TOvvUHJgoJCYlSq+h90yZjFzIxBsqdWhWp6LyqZfaicTZ9bQurnbGsMxNHj4x+Sdo8lHtZXT7r/VptPLm8468VXWq7hHBXK/bXE6wsZwGLz5ZI0ktkk+WmNU5ebTY25tlynJaVh2zxscucGYMLcPYlN29iUqozZfMSsT+17i9UH+U+w6HBDfq/oVDrVggrG/wVWTMmATtcA3kSSL83R6lKwOXLToy8ZEMjDM/0g+49WFUHcGvLq5MmMN8YDMZJLR9WkdY0bFxz687JAHbPMDPPN4GBi4+PWz6r
- dH0pXj90
- HYpAXBMDWffrq6pOOWg1PRsaC5G7QGeb/1yNgOwMLeWujnJf56wzLG2kSXb3N1ZrkCNNmWTtJE8/x/J6UAmHWmmPyvs8b3zyVRx9ED/Z9VNVuFlruKJclh9BQ4mnUUFpBC/EpAzkNqp6BXbc6qtqXa9+Ru4vEDbZhebuHt6iCg3pjKdkKJP4wcZU9A3qgd7De1yJBAu4cWELghVNC4PkJMF5JJ5yJTmI6ybpB+ybUw7Kvn+VeWvSCsPdAVWXAwDAdXKL9wOO0U6+kYtClo9fQuJI2mSOlxospryrvpugH5IJWCMW0IRPKuv1Q3vDKNYK1hk+6mTv7Rcw6cwa2UxBSly86Fm6b1a9vUkvYKh+Z4KGWXswmreFgvIP25pKYpgX+G4assG0vKWDiub6KAyY455IgvDE4OkEYFKYd6mZib3gfiBuqjV5SGF57pCx0cWo9nZwV+u43F1JG1PF3vzHsuvd0QDIrx/GK7aHz9il3gsu4+Z6/lWvO2/BCQeEUIZieaNl0SgmWDlwlGYy5VX5WHiraCg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787585046-126709
+X-HE-Meta: U2FsdGVkX18rUVB7qTo2i08N9pk9kuiOBSCoE6GmuPo61jJQ2nVWN8yPHpqC83gzBl4LK2L3bwIDhxzfTsrsdce3w0SFNmm+IOv3SxpEHpwkRaymSSzR95v/YlvbPekhI6t78A1ULzBVflrtHD2t7KX6zWqvDZ0rHWZNAfSKvT9s3Gx0oIlrQJAnucQjZNoI0AbKTF5Y3K/FuZ4t0fzLU15wNlrNo7cypROyHPoTCULzUL34+sKXHaQIQteLDi9kuWVTVD5KhqYAS6J4a4b/ZJnLJFC7lEtMK5ATn+Y4KPc3t7oNzlf4VuztcBi0eo2KZgnvAXuDjHE3pWo4Q9WizDG9vTyjfm+cZ5oT9jqToJBo50+xssrjWmnjXi4KXVCzCiEBWq6iH3NPZ5VFFQ9YK59y3GBE9hcLHHKt7jqb8Wo2lO7E3zYKV8LueR3Pf+6smLku2DUbHQEBg0qI0dNTp1uambWWkHAng8v7f+dOjqPUgPzd3YETPx0DIElh+yH7s5IOHtRZvvr2VY6RDjKMcj/wPOYpF1STtLSTnLmQLLOW0Br9wCqgcMbypc2HD4+prhdBizUsmm0RfCweEhgt32Bf0LcHWAjFAG3HbcAftCmTTnAvTmpRJHMvLTaQPOJ5kQJ3MdHH3NoygFIorqoBrbS2V4ogd1uv2ALwd/3VzSA2ZN46DJGZmUapZWw+rtJ0EFfwDVmBesSZ3MAcciLKbGOeoERi62aV/1x/6fMscYcXVLEpy0XrjAr6MLzc/+S7bHLzpqvvKmdI4Tvr28l0nqvd/QnAi7hRiyKmSG58BI6MaVVE18iB95zyRokBaV9mrAr1SY+IZKKELMcRuGfEKvWXsL5YOfaqBSYUF3/Td9S/QHXH9idtZTkIdEI3Z26OGZSkyMqNO8+tECHvc4ZzH8hvMdpUHF6zdBG/j141hEsrIfx2BcG7u4B3WiZ89xAgUw4EDOQgCFDaBH8Dwvc
+ fcaDdMKt
+ +wv6l8yUhhYDw/5MELQKNtgCIoefqucdUg5q12b/Vm6GZHpJcH6NbYsi8Oi2SSf6TKav/54mrJLwWtFDdeWU0aLO6+I+3HdzswnFS7x0L+VzrTJiIIHzw5JT+0F5druTBJ8JSHYQN2AIBwjZSctVzgTXW7L0tB/DoUm6cgzWPbfV1EhqBB3VDiw7J2BNFIbV93io+WvKeDBHK6Csc3X+AH3lHLoKiK8oo+64uuVnpzbC7Xm3EIAnnsSLERvJSxR1qMZt6Lo06/PK3wcVq8SZxLzE+3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,101 +107,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 22, 2026 at 8:32=E2=80=AFAM SJ Park <sj@kernel.org> wrote:
+On Mon, Aug 24, 2026 at 04:18:09PM +0100, Kiryl Shutsemau wrote:
+> > Even this reads as AI-generated... Consider writing the replies yourself
+> > please.
 >
-> On Fri, 21 Aug 2026 09:32:02 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail=
-.com> wrote:
->
-> > On Fri, Aug 21, 2026 at 2:55=E2=80=AFAM KunWu Chan <kunwu.chan@gmail.co=
-m> wrote:
-> > >
-> > > Hi Ravi,
-> > >
-> > > Thanks for the detailed reply.  The fan-in diagnosis makes perfect se=
-nse.
-> > >
-> > > > Your series is based on the v1 substrate, and the way an event is
-> > > > configured is the part that moves most.
-> > > >
-> > > > [...]
-> > >
-> > > Glad to hear v2 is on the way.  The probe-based model is actually
-> > > something I encountered while building the AUX backend. When multiple
-> > > sources can feed the same region (e.g. PTE scanning + SPE/IBS), the
-> > > question of how to combine their reports becomes interesting.
-> > >
-> > > For example, CXL tiering may care about physical-address locality, wh=
-ile
-> > > per-process monitoring may need virtual-address attribution.  How do =
-you
-> > > see probe weights being determined =E2=80=94 is that expected to be
-> > > scenario-specific, or is there a more general principle behind the
-> > > weighting?
-> >
-> > Hello KunWu,
-> >
-> > SJ can answer that authoritatively -- the probe and weight interface
-> > is his. Here is my understanding which SJ can confirm later:
-> >
-> > Weights are relative, and only among probes. A context can hold up to f=
-our;
-> > each report carries its probe index and credits that probe's own hit co=
-unt,
-> > so two PMU-based probes in one context are scored in proportion to thei=
-r
-> > weights, and that is where a scenario-specific choice belongs.
-> >
-> > What does not mix is a weighted probe with the other two sources. Any
-> > nonzero weight switches the whole context to probe-weighted scoring, wh=
-ich
-> > turns page-table access checking off -- so SPE cannot be blended with P=
-TE
-> > scanning, it replaces it. Page-fault reports carry no probe index; they
-> > credit the region's access rate but have no hit count, so under weighte=
-d
-> > scoring they are not part of the score either. Both coexist with a prob=
-e
-> > only at weight zero, where everything feeds the same access rate and is
-> > indistinguishable afterwards.
-> >
-> > So for your case I would read it as: PA locality and VA attribution are
-> > different targets and different address kinds, which points at separate
-> > contexts rather than one context with tuned weights.
->
+> Seriously? This is border-line insult.
 
-Thanks, SJ and Ravi, for the detailed clarification.
+Sorry that wasn't intended as personal. Text is a bad medium.
 
-> Thank you for detailed response, Ravi.  Ravi is correct.  Physical addres=
-s and
-> virtual addresses wouldn't be able to be monitored with a single DAMON co=
-ntext.
-> The user may need to have a DAMON context for physical address space, and
-> another DAMON context for virtual address spaces.
->
+What I meant to say is I agree with David re: the use of LLMs in replies, it's
+not helpful in that it leads to the usual issue of very large blocks of texts
+that are difficult to parse.
 
-This also corrects an assumption I had about how the DAMON access reporting
-model currently combines different sources.
+So put in a clearer way - I meant to say that writing them yourself would avoid
+this issue.
 
-I had previously understood the new push model as something that could
-be combined with the existing pull model within the same context. I now
-understand that, in the current design, probe-weighted scoring switches
-the context away from the existing PTE-based access checking rather than
-blending the two.
+My experience is that the series as a whole is overwhelming to review in its
+current form, and adding more material to get through this way makes it more
+difficult.
 
-My previous understanding was therefore off. Thanks for the clarification.
-
-I'll update this point in the blog I'm currently working on, which I've
-been writing on and off for almost a month. I'm using it to document the
-evolution of the DAMON architecture and the transition from the
-traditional pull-based access monitoring toward the new push/probe-based
-reporting model.
-
-Thanks,
-KunWu
+Hopefully this clears up what I was trying to say... :)
 
 >
-> Thanks,
-> SJ
->
-> [...]
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
+
+--
+Cheers, Lorenzo
 
