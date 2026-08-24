@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00CF4C5DF94
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C65EBC5DF94
+	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 12:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCB496B00A4; Mon, 24 Aug 2026 08:32:47 -0400 (EDT)
+	id E2EB96B00A5; Mon, 24 Aug 2026 08:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7C216B00A5; Mon, 24 Aug 2026 08:32:47 -0400 (EDT)
+	id E02B36B00A6; Mon, 24 Aug 2026 08:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6A336B00A6; Mon, 24 Aug 2026 08:32:47 -0400 (EDT)
+	id D18966B00A7; Mon, 24 Aug 2026 08:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ED2D6B00A4
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:32:47 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2FA851A006F
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:32:47 +0000 (UTC)
-X-FDA: 85136101974.23.549DE15
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B1DBE6B00A5
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 08:33:43 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C16216012A
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:33:43 +0000 (UTC)
+X-FDA: 85136104326.09.702DF5B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5511018000D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:32:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lamlZeId;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8869A12000C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 12:33:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F+tF29nw;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787574765;
+	s=arc-20220608; t=1787574821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zqlFWmE7mdoPXGZ20KnqQ/XM8s+nHIOBkClz/EjLnkA=;
-	b=Td5jyrH96KhoGGIWOrsn2c9RsxIbrbcwIAiyyqsesdNNSaKCAeDrdmIhCqw6OYFiOvyPBY
-	14GzGt4QH3b8UBwat+sKghpAUOeCuIqEaA0AFHENyVSJ4RRPYF12/GoomnrShBIFi4v+tL
-	1x8pmpEWqHyFBrvIr7+4IZnEQpcWKA0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lamlZeId;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=8vpukjlWR+PMzdNZ1W3YPHPHq8x2wf/T1Pima1mpBR0=;
+	b=UC6oByuPVcpdya0YaDmlGxul4MZKDWLkAxL/M5COfR2zju1ZxFd9/Ufx0PI59kGuRQoavM
+	UlmL05c3/asJ+OCSWUx8BQe0WTjRiXyMUG2N3j1QEO+1VikZ+6LCNT9OzEwOa4Buaur07g
+	q3bR5WO87ik8XSY35M+cZcLs2pShiwY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787574765;
-	b=gw1tOEx8yWjq3hu5WsUHziLKBwUG4YfdjLNJJFSD7SwNPbHFfXJkLo5+1j7koNqaiLCDhF
-	p4u3Nt7NLLln/v3XkwvIyMr1dVemtaEtSTXcPGD6tnOqZxRFr7DE7WUsSS8mP3HzNxwiIW
-	3D70up5WnKsM2JUAgoN+Xegz9s7/2LQ=
+	t=1787574821;
+	b=D/e+Dg1PtsusI2HpjD5OElXydHMeMB6ft/9IuOsLJqWzKGQP4zWPx6OA+vpwTTkxrOS+32
+	AgG1XebYt9Djm9UonAkfLWHt7bA3SPfOnYBR435P4RGFcmeb65ATjgVO2TcHbyIDta6d+r
+	jVw9Dy7EXFZMXMbLD4CoN77zFt/Zef0=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F+tF29nw;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6EFB440BB8;
-	Mon, 24 Aug 2026 12:32:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73231F00A3A;
-	Mon, 24 Aug 2026 12:32:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DF9AE43945;
+	Mon, 24 Aug 2026 12:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB5F1F000E9;
+	Mon, 24 Aug 2026 12:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787574764;
-	bh=zqlFWmE7mdoPXGZ20KnqQ/XM8s+nHIOBkClz/EjLnkA=;
+	s=k20260515; t=1787574820;
+	bh=8vpukjlWR+PMzdNZ1W3YPHPHq8x2wf/T1Pima1mpBR0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lamlZeIden2T7H96cAGP3JYCXFRJHvO7TKYBqByTFY/tbx8hLgbafEj3FOa1hLCXo
-	 bvT47pEqO8NGGvRnREP0MZ5U9T9bw9WOSsLeWIiOOARHUkZ33tNMc2RlAuKTy9i7DV
-	 +4sUw0fKHTlEhyU5GrugvrVElTuIoxoFsnlj0eVC1caSA0h0aVd+a6BjvGupe9BBpK
-	 At97pfmODC5igqlEaRe9fpWFZw6fJ0irq6puf2fcqWrtOVyAU1YCnFuB3bCccZpPyp
-	 3dUPrV7ncUy623pmM/CqJ8KZyAetuzS9ge+y9RptHHG0wUe+Y//wNVnNWKG/YAwo3v
-	 ATZe41e10DA5g==
-Message-ID: <df35f58a-fe11-4cea-938a-f4b036a5bcc8@kernel.org>
-Date: Mon, 24 Aug 2026 14:32:33 +0200
+	b=F+tF29nwIuQv1aVvflAgq+bILiTSbnwQ8lYomNjhMzXw3jXHvugTukYJsgcrOFJCx
+	 2AQJYKCtezFme7T7wlnjVvZag3Xw1L9zQRdJ3fFmZgsrsi7YKnOrPxgVgU/BGK9QvW
+	 +seVY2QXqG0dr2y8oxlc+RcWo6i43OhGsD+SKPdQXzUebhZObFdDPJhawq5Ybyryrz
+	 w6ajQkl0YTSQCrHupD2b67JYx3Ogm5bgi+9Zp0NC8Le1g7AWyqeMzI5XeXz6gL/VjH
+	 0SHWAVYOt4iHvta6SQgBjLWxjQ0MEaHqB6y6H04BaNryNHj7VPUMaWYE/Lg/J835Vm
+	 uQsWWEgDlz6QA==
+Message-ID: <8aa0e0c6-bc6d-478d-981f-3e0d5907eb11@kernel.org>
+Date: Mon, 24 Aug 2026 14:33:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/6] tools/lib/mm: move hugepage_settings out of
- selftests
+Subject: Re: [PATCH v7 4/6] tools/mm: move gup_test from selftests/mm to
+ tools/mm
 To: Sarthak Sharma <sarthak.sharma@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
@@ -87,7 +87,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260813181230.483746-1-sarthak.sharma@arm.com>
- <20260813181230.483746-4-sarthak.sharma@arm.com>
+ <20260813181230.483746-5-sarthak.sharma@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260813181230.483746-4-sarthak.sharma@arm.com>
+In-Reply-To: <20260813181230.483746-5-sarthak.sharma@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: szoymogbrfxfkmdynsnqzowmddunnqph
-X-Rspamd-Queue-Id: 5511018000D
-X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787574765-180420
-X-HE-Meta: U2FsdGVkX1+KxnE9RtQZ/Pkk2fnkc/DBLre+lwF2CA5w06YFeQHwCoJEOjAgQcFqmP3aDmh9dsWG2t0BRYUikBaDP+y0DY4NifkhWa/wNe/gdZxxYVPCVkq3L953IbC+irWzyGC6MWFoyUyEUryh/m6MsGfkIffpifLR45nNzhgPVEFHA4BONOh0BmB/NFSP7trFEd+L3+knZAQpIYWvHUfAU+ULAupUbyvGDaVky/mMM3cdYrc1GPorTyhZ/UCiCqTy2WzDdBpI2X3bovC0CP8LDHpkNFmJye3Th/m1PSB3I62VmdtaKJsKiVMqWyB7t7YU6zkOmt6Ur3XcWdyHBgelulghUckul3f0f1MY8Ibp1WfEPlLPfheXL2gjc/QGVjySE80kyiD0K6xENS5uBI2FXyx+igoRnk07yEYbzOF50VIkrBTcw94Nc48uia5E+Ub+GGWKL7x07ZdH+0G16QfB2Su/E0bixB6ig4IJmBdiUbBPpdewzl0p2AADr2EBhuudrQzTL0k5pZsbTtgB5P0WXFEtkGy2xsEP6+j7MIwOhqcXR3OA3kJzvyp5aDU08182wKSfIHIR0EtXP5yrE/bjFaGHG/MQKlv32MnR0kj3yvlcHe0v+WQRG9Gt+N/o2Qy7ZrLbWwxNGQK1scz78W4Q/tHKsVNO/oHmMFU8kckLit/xRTi93W/KmIgAN8IwUIL4PQSrl7IFOG6xJM9iJr2ksEmxLQ6OZUsQgU6XAuDhanZtn4IHlSFE6t0BiS9UsyGNKFn+AcX0OiM7QFbVRCUd47Wfg/YmkNjUYYN4ejvkiKHM2oW2sn3ga5OHYCceFVx3rSmlI3nCubMUCoCnQ8jtZyahk0mb2eIdtK2XmI7vtGqrU4Te7zeIScKaRG6++AaueHPKLQfuMF4cCNWrqLO/k86QY6AHW0v1gc52MeGhr/F5OR7Mpi/hOw4wIGJBJkAsw0rmwQ7P2hW0VFL
- YHNlnn5o
- ibcOgYGlmgKHMDkzJv0lEomtEV9uJ2zQoiwQPm2sn0klT5Aowajx6TwE5HwFynHfu7TbQCljwvloP7JrIaGiL8TzgGmBtRxfoEoWZ3V5kyF//8Lgm//fhKPFwQooZVNVR7jphqlgSKiea0I1xcfg+n+GYwRgVqjUUxkgIJWLpG1s9JKGyDkaLM4lF56xUuXAbm5SCh0fD19K7rQ5uQblCjWBpggg5dQOg/57ouH1Y5GZyNpmM2Gt8kdgZMv4AEwO96G9iF2cOz2DMpvIcKq68iN/ZwEWv/nqGzeI+TNgZmkaqK7+sAfs/xsvZPd17JbT4ZmyTE7iH7ojG5nr3y7rYfPV4II1x7lfDCPEIDydgu/R5CEL49aBd5W5+Qs5Ayq7gg6WcMWz5yoXuRL8=
+X-Stat-Signature: 1eptdmcyax1ru4q9ufwnn7hhiqw3j4e4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8869A12000C
+X-HE-Tag: 1787574821-439996
+X-HE-Meta: U2FsdGVkX1+VCExtyEHm+3w2/Mvh6mxnpoUIwS2mWjZrldP9rPQjFbhwbETUsYUSNFfRXPDOa7mGnWUymeSiTHu1BaUqH5HluiUIeDueg0Ifi6+kvbD2h1aE1dn/KAIoJR67qRHFB8+DlSTrdrXR7MR79mDbl8aTuivzdzCTk13BRz9XQG2sTXG60rIxE5KYZtO4Nf64KRUi5kpGeaQ6hqEgJrX9ppOCM+H4uozGQNjk0ye9MjN1xVWHp1iWyJVtSm7nptXAQNu/apF8U8EW2/D0ikUgZe4sf7pj46zx129WqtU91+241tb2q8irwdxWr9l4uTtTepskJUktY88aKJp4zitLNitVTR1wYNdh4WLeSLyHG49FHZuDc/o7+yRGQIsH/ZT/CjLH1Rqg7S8c/1wQtimM28fVCT47jppbXdNEXO/QmIScJgimbd2OyH45p/P2x5WdB3N/tEeu96tAGsJD2+9UcPEp9dCyrqiZASr/43Io48HE45CHD0EWcjuhiI1zxnQPlVDC2Qw84KwAWWYpZot7YfhQSL4lGPz5f2D8b/FoJfCswyupCsO8oPf+7pQRPxir3Zxp2jZDvxp8csC9VsXujw1ksmb7NH0AzxSTQ0sih7SbAL2eaTGT/jWB/ZR1lCdm6LQMm8La/FTRb30Hrn3jWUmLwuwWGa2NQy0iQ4D2fRJue0nKjf0efV9Ba7gdjnYhYQdOuLHqlx/qedTT16gv1GJT7PNyw3Qo8cALnSQZReZvZIl4IlGVsCZ26/VUBLn1SrCmY1wQb+F+Jw3aoN+OMk/c749vSPNgk44ChJqiRISMo5aKwplhp+xbCfrtceIhIPu65gBT91AYJCU90DiiNAGwnuWfAxBnAvT51tVjI6c3J1kwNsAGJoFuHFr/E3Zcfv05ar9G8HPwtN1yOYuDhEXdyf1roEFXWe1B2cJcqXMmdk8tmCNADDsSqVzBfCLk1XSy/H4gd2q
+ 4bju1Xxp
+ SllUurqq0JN38KAPMrT9KbQrYnjv45/C4cS3Jea/xx825h0LWKvfcWwa+pmCAsq5/CLdKnTdk5ossFet8rCwyu7RaWfIW2GGOjVw4gOl7pVfNBVPb/DHzshduLSR6ntB52oHVw5lJxpKZqZjqgxxyB+sMFoAJ9wYr3phcFt0McJr+kViQGc4tXq7iDeFkqd1lxsRSNKH14sQ4BZrFOnbHtN3yZ5q/lo5PYX8lMOKtfQtA4oFZr6GG8jMKbGJY7cgWp+AcZYHYdyMvcVL88JJsUGgPR7XCIVwv3l2dCjUGbigoCbqrA3HWjzeUkKVx33XKq/yHfB32m+PuPtThD2Qz0VPsXPeH9hzYwuUD9Y28WSvkHAN6U7eaFLEMNPqwKMlXNMkKCMGgr1oEJt0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,19 +153,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/13/26 20:12, Sarthak Sharma wrote:
-> Move hugepage_settings.[ch] from tools/testing/selftests/mm/ to
-> tools/lib/mm/ so the THP and HugeTLB helpers can be shared more easily
-> between selftests and other tools.
+> Move tools/testing/selftests/mm/gup_test.c to tools/mm/gup_bench.c.
+> This is the first step in separating its benchmarking and
+> functional testing components. Later patches will make this a
+> purely benchmarking tool and introduce a new functional selftest
+> under selftests/mm.
 > 
-> Keep the helpers exposed to mm selftests through vm_util.h where possible,
-> and use direct <mm/hugepage_settings.h> includes for files that do not
-> include vm_util.h. Adjust the selftests/mm build to compile the moved
-> implementation from its new location.
+> Include hugepage_settings.h directly instead of vm_util.h and
+> use getpagesize() instead of psize().
 > 
-> Remove the remaining kselftest dependency by including file_utils.h
-> directly and using EXIT_FAILURE in the signal handler.
+> Adjust the Makefiles in both locations and add gup_bench to
+> tools/mm/.gitignore. Remove the gup_test invocations from
+> run_vmtests.sh and update MAINTAINERS.
 > 
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
