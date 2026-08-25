@@ -4,128 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50317C61DB6
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FF11C5DF94
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40B716B0095; Tue, 25 Aug 2026 04:26:09 -0400 (EDT)
+	id 45AE56B0099; Tue, 25 Aug 2026 04:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E3566B0096; Tue, 25 Aug 2026 04:26:09 -0400 (EDT)
+	id 3E4FD6B009B; Tue, 25 Aug 2026 04:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D2506B0099; Tue, 25 Aug 2026 04:26:09 -0400 (EDT)
+	id 2D5456B009D; Tue, 25 Aug 2026 04:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00B696B0095
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:26:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5BFFAC02E5
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:26:08 +0000 (UTC)
-X-FDA: 85139109216.06.6576C6F
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3DD3F4000C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:26:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=us4Z6weh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6YnH89Py;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xWsSSuj5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nG04rm6S;
-	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 091D46B0099
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:26:51 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 437951C18A7
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:26:50 +0000 (UTC)
+X-FDA: 85139110980.08.065177E
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D81EB140005
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:26:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N1fwoPfA;
+	spf=pass (imf23.hostedemail.com: domain of xiaoyao.li@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787646408;
+	b=PPNWTYUUZKlsQJWogSIXyzzaUJOPKBKjJmTlUS0DocytXNCJsn/xGuFsXppHORg2rT3qj2
+	omvbIxoKy01gysAaifE0B1hT1LUrOpVgEEwkilR6oq6JgdrFq7/lKoinhkyGx/NPMyk66W
+	o2PAH02HZF9K0h3Fgw6lkEuCXcVy1mE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N1fwoPfA;
+	spf=pass (imf23.hostedemail.com: domain of xiaoyao.li@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787646366;
+	s=arc-20220608; t=1787646408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
-	b=rg/XjF4aH/77aIlA7dHIyosimke5XaxrJ3REwIh8oA/67OIUnGN9/zoNH2SdDVlqxIrMlK
-	h2uTAo2iaOtoCIF9k6zW1VSbqLrMaHf/lgu962o4mZiOkKVow3wk4nG63y5XSL4e20vZcp
-	KyuUdQ+2bPRPB/K2Rzowp2gPkp7lwfs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=us4Z6weh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6YnH89Py;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xWsSSuj5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nG04rm6S;
-	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787646366;
-	b=Lqh27/MYoEWlDEDb55wTj5XbNYRg5u6YToZtB5VYnpABnc/2qPkISa6yowEXu0My4RknoY
-	PTrv2Lf4g6nSHEu8Gf1+04XYKl/D7cValAstqIcybAkk+0RjnzVjZbqCy/VbKP1Tmlan0J
-	gdZLP11hXkLlhr+p1cwHdQhCgM3W65k=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8BE3D1F769;
-	Tue, 25 Aug 2026 08:25:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787646360; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
-	b=us4Z6wehV1zJOnbgd+wLk9dBc+b+Lhebd9tctl1a2i+5C6CyWPxBUWszlO2YAgz2nDFbZE
-	G8CeCsqerh5u5vDwtMKc1LS3COE0W1yPONHrVmq6CY5MFSbG4Z/j/Bv+i7Si0LU3pPh0PI
-	4jQqwV8n11YnnzMC6lmOWXBnA3yW4Cc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787646360;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
-	b=6YnH89PyKzHmLHbEeuuzJ7xzmi/U+DZXYKVdLuHwXpY6O+Z2kXZfZkhKeB1+QH4lKD6pVv
-	FlYvKSNgMy1h5yDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787646356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
-	b=xWsSSuj52XuRC9BXOjAbr92F5naYxlTePRPxt5kOvq4/soZrDGT2WWdmMVenPCjY3rdLJx
-	DZXPYQCqbsCU8K5h/57YnVVNLKCbBo5LbuP2Lr3XBwMC7el0J/PtUEsCx+rVCvEKsMF5MP
-	T/W95s2v1+eJGjsH6RRSoSsVD+gBcIA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787646356;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
-	b=nG04rm6SXjrdYR3jrQs8AQX1hxMpXe0h2YmFm8+pQxihuqd+rNZIXM4h0kS3OXUssyBBTZ
-	RKh24vuJnrhUWUBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA8CC13331;
-	Tue, 25 Aug 2026 08:25:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hBxAJpNRjWoYDAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 25 Aug 2026 08:25:55 +0000
-Date: Tue, 25 Aug 2026 09:25:53 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>, Jann Horn <jannh@google.com>, 
-	David Howells <dhowells@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Jan Kara <jack@suse.cz>, 
-	Rik van Riel <riel@surriel.com>, Qu Wenruo <wqu@suse.com>, "Darrick J. Wong" <djwong@kernel.org>, 
-	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-xfs@vger.kernel.org
-Subject: Re: Removing ->dirty_folio
-Message-ID: <ao1Lo6TKhPcqV42B@pedro-suse>
-References: <aoyWln-Gt-yvZQkE@casper.infradead.org>
+	bh=qW7Fn+CTXs5Aol1aKED5nijw4eSHorzVltOmv7enE1c=;
+	b=ej2Lgaxeu5K4x2QRFLk0NzgEOYIsIgV6jGhJnj9L9kydHCnXfEAGOlug6rqc2L/kG+qp5I
+	SykiW1I9++U362Bti8fnz0BkYo4FQnqDAGyQUhw9Cyn93IUkK24O71ytld5gutYJfl/wGk
+	ZIKwnILJfieeO/oe68Xc2J2JGKeDqac=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787646408; x=1819182408;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=04fCXQwIzzVhpPEdhP0bQfk8MOV6YRVQ9CSm1/h1hi0=;
+  b=N1fwoPfASJdQcHdBSnZLUs5AxeaM+7ZunqM5F8jYmdHAlaZvL1Ka/71G
+   Sc3pbD1OEPBClPmOSkU95GYLRd+VfEOARNWT8r00wmmJpwKwJb020HYGN
+   9PTUuxAsYC7MYngbRbNFjIX0QvD6asjij1t947k9S+B7SyI0gX3Mpe2DO
+   MpRJI8+x+dyIYvTc9zX9t/hov1hfrak+r4KRI1lDyY/gXRGRP+vDiDUBP
+   hIWSsgHTD+JsDdn/KgIBj1ean5leo1ijr8UFgKLXYgJuCt0wSiSvXaQhw
+   O/SheWhG9l/pOY8f2v/r/cBB1BiCU2FYqHYT2+hOQ5djO2wxarU+7Q3LP
+   w==;
+X-CSE-ConnectionGUID: qDiE4s00TxqK2xVS8eDaqQ==
+X-CSE-MsgGUID: UI16nuDVTfiu6cyUn4UyfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="99454856"
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="99454856"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 01:26:47 -0700
+X-CSE-ConnectionGUID: h55LQIi+QsOn6JDnmuR4DQ==
+X-CSE-MsgGUID: qni+GOQ/RrGZlEN/DsYqxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="270695755"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 01:26:33 -0700
+Message-ID: <45d51e32-a8da-4ca0-bba9-94b2086c57dd@intel.com>
+Date: Tue, 25 Aug 2026 16:26:30 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoyWln-Gt-yvZQkE@casper.infradead.org>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3DD3F4000C
-X-Stat-Signature: 9zxxq4stdaxnmy8k9jbwgknk1todaedk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 18/41] KVM: TDX: Make source page optional for
+ KVM_TDX_INIT_MEM_REGION
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-18-2fc18ee6d3ba@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260807-gmem-inplace-conversion-v10-18-2fc18ee6d3ba@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787646366-631799
-X-HE-Meta: U2FsdGVkX1/fzrWqVoGsg29JEhm+1+XmULrEzT0PrfPrBJOKDzfddcU/fDM0WM1eS+79/7ek0fVuq7NKWD4tIszjAZWVQUn29d40K4Qk2rbfos5TvMUWj0sVHPWeBko5uEw52OeQ8PG4NR1LyEuOb/ckzV7kpr+YEE0NJa2WifgMvyL/zaxVanSof0HKXj0kSSNKRJx+YIghIKuvXD12krEA4E0s6CW8wFvY8JHYL2DXCYXFpCTqhvFz4otuD3Hf1N/2+2m7JRZJ7Q6txkICYmqaBuQbRIdZ6DMYZqDeEhS0MvGcAiroIdLCO43GSfB2dw5utrEmPq1TLJNiTExzE3cS5z8BYBSs5mfmwNfeqA50N6aMYjJ4gYGWrTEfoS3lBkr3D/jhSj+nka9N80ki6BxKDtiMlyg35zHTR28OCUA7epK7L31x8fKsOWVlcLu6WilLSK0tkU6/17SfHBBpKcSh+HClsZ7IOev7a7OF8pWknLAcPakqIoQTLuKhYt3Pe+KXF0/aC28B9+ZFfOynNHxJwUYyMtlMftr09KHK5aCWT6zhR0zlSyzatuPzArr2sGf3SNnaU24PTziDuBLIS4RKKKPbU2ehnLiPaayVLFCEHVdB0Mck8zS52/cKbjCNZmtnaiO/ZdnOnMajPqxyJ2E9kydRyflPwyaMf/euBnmZEpqj9TLRuMLeanVIX+DubjQlz1JQSc9SIL9lrDiTaJdxYxPo77TC/TEkpPZJg2x+RvegytKw9uPsHh9KHo8Y23my5263DDjloPeyvUC2W5Enq5PYRYGVviBFJCnrEEBVSpTChl7OFwHyBg7r7V+L5WlBY9QraQyCPyWGW/XJ7pUEmnqdpcmI675qKInyGMlP6y4EApz9UccFV5UXJzbCW6eVC/26l01QWVKh49gmnVKF/12wnf+mEGzFYX5PSpTsyduB1ucc8FAJfBtuCgmYOD9w0MLVJ593bxrjgPl
- AVguZhvZ
- HGFXkmqFEUIxX3hE4kJ9FX773w3ScNN1khWrOef5MSYdLt0zySf4q+FxqRMWADuWECapl3rwBGyJVk85MLBVBAz1j3POyzqmIFHqnIEYK9kGalz5p3L5XFhYRXPZ65eSbJ+MI7z8KdfgiNHwwARJymNO7VoFA5Q2lp3chMdeQDCfGO2E75363XifdhqcTppURXqZb9ob61W1oe2524Ckhc8JtUcWhx8C8GLtFBUalj7ioexZqTc1TTzBeh1rGkVliiuGpC+4eT9GcnY68eieCYVWBHM2hZESrjVvBasDh7gP3kjYtRBSnXrADlj7WmT8Exgtzf9w090u31oTGBoBnumGwWs5jXEY7y+Gt
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D81EB140005
+X-Stat-Signature: 7zkc6totexrnuurw7obfhcrjhnatdjf8
+X-HE-Tag: 1787646407-78439
+X-HE-Meta: U2FsdGVkX1+4czVTLgbI7pyqFhirrsYL9H1hhJx3SR2PxeFmMLZG1P0uvWeIGDZL0S6Ms+29eDzEi6XvoYNrqB7wBZKpi8d/gEb7bUVOom5+ZPxjG19b6v4Fp2R8zxSoYaQrDA4TOHDSME/cBvbT17XdxD+Ylwg4Lff0hydHo9OyCPxKHUTTqjKzUYoUW1v4MFBfsnNDJk6LZZdpau4QeGkxM83jSq7UcpvZYRKiwwypaBN1V4ncVZSgRFJJwLxxPkpRsPggcHnBJ0tf9NDCEWy+zTyuG/Wf4hR+00bgXLGa4yEneGLA+rzYwY//0WySIbsTAqeguPLkN6TchaOIvA7l0fY1RHEkNOKvq6fKfaAFoJugBXMNWjN52PI/f0qho6KDh/1U9l7lRs/UMOW70EApL7mQAvUCRzIWUQ1CNRXiTKB/v5GlkF0jQbHIzLPNvMHWzDaE3pBUxtREVIv3OcFpDNSuM5KXm2wP5NdBQZbFYKKjDcunWY/R+rfkf2yYFO1C/LlKaxav38Ph9UTiie74ZI7ibOo3oo8JiU1vGHPkBbOcIH6PdS9WDomAKGkwjBmWLW+WRD7ErW/6cy99J8kH8J97Kjn+6jobn9Iqa7Aqcp73MR8TJOu0kcSjeLyXaiQh0p+ROTnGQ796mprBXtu9UTRutqreHoYOJsUHydI+Ee4REoiNXVf9i8bbA3bORkJOO1IzTR+aJMbNMmIzN8k7vp/rSyXJBm+Ep/FQBnHNZDBCfdnr4bGFuYk15x8nhw4TJ6yRXsP3tbbJSIQUqHHmaqghdayUPJswNNolHrhv58PzrFgso06uvoQYqz2dTiVmM7hJlLwJrZnPwdc4WU88cRF6cRvD6QT5APEB2BoWnlXghMvkFvMrh7+yo1SfjuuetmMal2R1F/e7AsjsXqWSstBuTRn2gqYJrlP2EXxNK7j1NIJg9m7zkBpuGzxLk69h3Xd549Ai+9Eumxm
+ m9mqKTQi
+ y3qc7bsn0PqlT0KtYBl1xq4J+owzt8vaYZ0yK7BWNtcus8xd+2q3MD2EwAFFXMkv5n/mlVXOX64Vq6HnrCVvhJZDPEQJMl/LzVwfXWnI+T+jePJkoyGlrrSgTcM8HayedpcOOUHki+3FlCI+Qm4WTlW2Uxjt72w0v7khCZMZFVTFh4sLg/XDMOJ5jRRTPfqY/B5QaqxUL7MUwFgZwfV/Dp1bBoO5PEIoU9MBNIayJ++yE1x8cFItPk4GFU5Ph19eQS9IYcpTFZ3KwDWI7koMZf1bV/GDEEZAofZ4Q2Y4SMCxRq4z1w+PrU/yUmaRyb7RNCiKu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,70 +136,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 08:08:06PM +0100, Matthew Wilcox wrote:
-> I think it's time to remove folio_mark_dirty(), ->dirty_folio() and so on.
+On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> This is not how filesystems want to be informed of folio dirtying.
-> It was fine for ext2, but anything that's journalled or COW has work
-> to do before the folio is made dirty, and it's hard to do that work
-> under the page table spinlock (not all callers hold that lock, but the
-> filesystem has to be able to handle the cases where it is.
+> Update tdx_gmem_post_populate() to handle cases where userspace requests
+> "no source page". To handle "no source page", populate (perform
+> TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
 > 
-> Filesystems want the page_mkwrite() entry point to be how they find out
-> about a folio being dirtied -- and that works great!  Except that we
-> can writeback the folio for a number of reasons.  If it's been dirtied
-> due to a shared writable mmap, that's fine; we map the folio read-only
-> and any subsequent writes will re-enter the page_mkwrite path.
+> Allow "no source page" only when gmem_in_place_conversion is enabled,
+> because retroactively adding support for out-of-place conversion would mean
+> requiring a userspace update for a feature that's being deprecated.
 > 
-> The problem is GUP.  We have no way to force the GUP caller to go
-> through page_mkwrite again.  So instead we make the GUP caller call
-> folio_mark_dirty_lock() which many just don't, and generally we get away
-> with it.  But it's a bug, and a bad interface.
+> Also, KVM supporting "no source page" without in-place conversion would
+> effectively be an obscure zero-page optimization that relies on the page
+> being zeroed when it is allocated by guest_memfd.
 > 
-> There's also the problem that GUP users bypass the folio_wait_stable()
-> mechanism.  If a page is written to while somebody is creating a
-> checksum over that page, the checksum will be corrupted.  If we want
-> to fix this, we have to bounce-buffer the page.  There's no way to
-> prevent or delay a GUP user from writing to the page.  Enjoy your RAID.
+> Rejecting "no source page" without in-place conversion scenario is valuable
+> for KVM developers since it helps newcomers understand what exactly is and
+> isn't possible.
 > 
-> My proposal is this:
-> 
->  - Fileystems take note of folio_maybe_dma_pinned() during writeback.
->    If it's true, do the writeback, but retain/recreate whatever data
->    structures you need in order to write the folio again; behave as if
->    ->page_mkdirty() had been called again for each page in the folio is
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-I don't think you can do this for stable writes. It's probably ok for
-!stable writes filesystem stacks, as long as the filesystem & writeback
-can handle making no progress at all. But since stable writes' writeback
-can't race with "writes", I don't think you can Just Do It as long as the
-folio is DMA pinned.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Perhaps we should give up trying to writeback these folios, and start
-writeback right after they're unpinned? at least on the stable case.
-
->    marked as dirty.
->  - The MM behaves similarly; we do not clear the writeback flag for
->    folio_maybe_dma_pinned().
-
-This sounds like a problem. You don't want users expecting writeback to make
-progress to suddenly stall on e.g folio_wait_writeback() indefinitely.
-
+> ---
+>   Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
+>   arch/x86/kvm/vmx/tdx.c                   | 8 +++++---
+>   2 files changed, 9 insertions(+), 3 deletions(-)
 > 
-> This will have the effect of writing pinned folios back every time the
-> inode is scheduled for writeback.  But since we have no idea whether
-> the folio is actually dirty (because the GUP user won't tell us),
-> this is the correct behaviour.
+> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
+> index 6a222e9d09541..d8d9409120e61 100644
+> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
+> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
+> @@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
+>   Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
+>   provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
+>   
+> +If guest_memfd in-place conversion is enabled, pass 0 for @source_addr
+> +to represent "no source page". A source page is required if in-place
+> +conversion is not enabled or not supported.
+> +
+>   Note, before calling this sub command, memory attribute of the range
+>   [gpa, gpa + nr_pages] needs to be private.  Userspace can use
+>   KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index b272c20586a74..7654a9f5fa128 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -3189,7 +3189,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>   	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+>   		return -EIO;
+>   
+> -	kvm_tdx->page_add_src = src_page;
+> +	kvm_tdx->page_add_src = src_page ?: pfn_to_page(pfn);
+>   	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+>   	kvm_tdx->page_add_src = NULL;
+>   
+> @@ -3235,7 +3235,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+>   	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
+>   		return -EFAULT;
+>   
+> -	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
+> +	if (!PAGE_ALIGNED(region.source_addr) ||
+> +	    (!gmem_in_place_conversion && !region.source_addr) ||
+>   	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
+>   	    region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
+>   	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
+> @@ -3266,7 +3267,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+>   			break;
+>   		}
+>   
+> -		region.source_addr += PAGE_SIZE;
+> +		if (region.source_addr)
+> +			region.source_addr += PAGE_SIZE;
+>   		region.gpa += PAGE_SIZE;
+>   		region.nr_pages--;
+>   
 > 
-> I'm probably missing some stuff here.  Let me know.
 
-I don't quite understand what your plan for getting rid of dirty_folio,
-et al is. page_mkwrite has the fatal flaw of being directly tied to VM
-page faults; I don't think it's the ideal interface for notifying filesystems.
-It's also the case that page_mkwrite can trivially sleep, and GUP calls it under
-the PTE lock. So how can we replace that? Would callers need to manually dirty
-folios after GUP, in process context?
-
--- 
-Pedro
 
