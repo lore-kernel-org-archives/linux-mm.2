@@ -4,112 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A27C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 134A5C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:34:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7259B6B00BB; Tue, 25 Aug 2026 09:30:24 -0400 (EDT)
+	id 04FD66B00BC; Tue, 25 Aug 2026 09:34:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D6846B00BC; Tue, 25 Aug 2026 09:30:24 -0400 (EDT)
+	id 027796B00BE; Tue, 25 Aug 2026 09:34:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6153B6B00BD; Tue, 25 Aug 2026 09:30:24 -0400 (EDT)
+	id E7EF76B00BF; Tue, 25 Aug 2026 09:34:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A9E76B00BB
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:30:24 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5EFA3C0403
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:30:23 +0000 (UTC)
-X-FDA: 85139875926.09.4FF74E9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 97FC71C0007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:30:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=U0GU8Aap;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CAE796B00BC
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:34:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BBEDA2535
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:34:19 +0000 (UTC)
+X-FDA: 85139885838.17.6133B6C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C1A69100004
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:34:17 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c4RbNxx9;
+	spf=pass (imf14.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787664621;
+	s=arc-20220608; t=1787664857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ffr61aL56KgBLt/J6XPN0BmtDpJCqOJr3brUaXaDkBk=;
-	b=vMPm2tQtgzGuH2rKu8PEXvJfzv3VPgqRD5vG+CfblGGmpTDisYt9pMEhp8WoiqJ394+VjR
-	r3J3Zxi+WRHphh90hDDpMafvaY2tW7qXFcUdn7aeavM6WWz4ZTckFgRFQxqkPizQospLnX
-	hnn5MgiaL3QyPIq9mKtbs3DoLwrum1Y=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=U0GU8Aap;
-	spf=pass (imf21.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	bh=izCY9jl5ux+/xwp3G6xz7Y4XyXtp+0iGLhW/GtYSXuI=;
+	b=17UJ9WaALax09uQmnaA3IAsDeU2PxLwP4Pq+dEMV9KQod/JtM4mflSUD/70WVtRzB2Txaf
+	I4KMLenF+PEj6+wLZbx07v/idKX/uOuOTjXtXqjaRh7ie7OPB/n9OADjgDgEHIm8cksY9f
+	EzhLs/OEpK3wXeGNHremrdQmiZRiLQo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787664621;
-	b=aHNgW7AGFp/QhuiLMvmzQauafAeoygdqLOAqgfCQejqNPbb1isFWdZdCds7YrjAgB/0g25
-	aPY9eA8F+LxL6vwR2h1tc3xT7nb9uJsC7I71OzCZtNXu3UiquzdohFZ1UbV2fFnZ8ecOjz
-	RM4AwhIRxtkk8+74QJ6jYycfyijNb0I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787664621; x=1819200621;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=c9Nacj099i9lPcssMyGzzh2RUKgFpgy/wc1032AQhHQ=;
-  b=U0GU8AapE0o6UDZVDjSEvY9qMW/u89HOVXnUql32TSHkH7MG+/qYcciU
-   qAuAOgRH6rn+5CH6X2Ip5gJif/XN13/mwWQhIzRy/mBNcFn77Mjspq4pU
-   FSqvru/5xRyJ732QHjKO4Mfowa3bqIAyFk1zxIqJw8lNgJ5TQDT6KJOUH
-   maxCW/VLWVWX6maIAoq9KrMt5jL+AiOUDdHbtpG6gXxHyilmiKVJAsYMe
-   3ZFuRqWfVKPy0YsQ53pxAePXNRL557wOZJmDt3SY6sE2RAsaLXqSeT8DD
-   xancmLXeyKDdatCfUKDw0U9AnwhD5jHhGOdswB6kB3orfwJIiqWL2o9Ps
-   g==;
-X-CSE-ConnectionGUID: PeswoGXwTDq0UGFxfZ4yZA==
-X-CSE-MsgGUID: JN4IV2EES7mct92XUpvwdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="87895808"
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="87895808"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 06:30:19 -0700
-X-CSE-ConnectionGUID: MEWBwBDZRsa/qt+torgjBg==
-X-CSE-MsgGUID: 9HFvW8+aQ0+q20RIrypkow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="267857094"
-Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 25 Aug 2026 06:30:16 -0700
-Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wyrEC-000000005uV-3vgb;
-	Tue, 25 Aug 2026 13:30:12 +0000
-Date: Tue, 25 Aug 2026 21:29:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH] mm: workingset: account MGLRU pages in
- count_shadow_nodes()
-Message-ID: <202608252128.XbcsGfzh-lkp@intel.com>
-References: <20260824091631.836473-1-hui.zhu@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824091631.836473-1-hui.zhu@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 97FC71C0007
-X-Stat-Signature: f4gz45oqz6nzuo3fmas9ktkd3tue9ph4
+	t=1787664857;
+	b=nYT8bM++ItoAd9pctiVbIWzzAzCNAZ22VtBz0CgBIAKnjMhQkUlS87cjM9sZqLfDaTptM0
+	z8pZBSseLB3mB33q5rkh9MJIKUV0rVgmghCT2nQ0IEgWWyukpsTVeiBDVui27sWKLiYZ88
+	1VB6OBBkIfhLkAcjurQDB+/8iPPcWQw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c4RbNxx9;
+	spf=pass (imf14.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EB60A601E9;
+	Tue, 25 Aug 2026 13:34:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8EF1F00A3A;
+	Tue, 25 Aug 2026 13:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787664856;
+	bh=izCY9jl5ux+/xwp3G6xz7Y4XyXtp+0iGLhW/GtYSXuI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=c4RbNxx99qdAIlVUMDjcrwSrwiTcf+KRMHIyspQT8BsnpDvm2SZoSKkm+P2EHu2Ro
+	 gI13x+I9KOAEC8fKB/NPiJ9JQfUbZrz1Q8dpZtAjsHOHUJjrnpFKnlZsA6R14/1+0N
+	 82zFG7K8e70solKEqr73wvJixiwXqaACm5Se9k4RlhnfvVAh+vYk1n0SoTM/0tcPfk
+	 aB+O2kumYbpwHuGdwNbv97z29ZGkJLRye5zustBansQZHpJNIXodNyArBYXjhu5rqd
+	 5TaWL+Kh4tR1pQylB8IoBYRj1utmbnfcXvy4BBuVAzQUtRNTk3OxHbvukx20ZBNsTl
+	 mpoZu06r840Ag==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 25 Aug 2026 15:34:05 +0200
+Message-Id: <DKY2ASIS7VLQ.3LP3N33T5V6N7@kernel.org>
+Subject: Re: [PATCH v20 4/8] rust: page: convert to `Ownable`
+Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
+ <tmgross@umich.edu>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Tamir Duberstein" <tamird@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "Lyude Paul" <lyude@redhat.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=
+ <arve@android.com>, "Todd Kjos" <tkjos@android.com>, "Christian Brauner"
+ <brauner@kernel.org>, "Carlos Llamas" <cmllamas@google.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>,
+ "Leon Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>,
+ "Serge Hallyn" <sergeh@kernel.org>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Alexander Viro"
+ <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>, "Igor Korotin"
+ <igor.korotin@linux.dev>, "Viresh Kumar" <vireshk@kernel.org>, "Nishanth
+ Menon" <nm@ti.com>, "Stephen Boyd" <sboyd@kernel.org>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Pavel Tikhomirov" <ptikhomirov@virtuozzo.com>,
+ "Michal Wilczynski" <m.wilczynski@samsung.com>, "Ira Weiny"
+ <iweiny@kernel.org>, "Philipp Stanner" <phasta@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <driver-core@lists.linux.dev>,
+ <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-pwm@vger.kernel.org>, <linux-usb@vger.kernel.org>, "Asahi Lina"
+ <lina+kernel@asahilina.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
+ <20260824-unique-ref-v20-4-490735672187@kernel.org>
+In-Reply-To: <20260824-unique-ref-v20-4-490735672187@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1787664620-303679
-X-HE-Meta: U2FsdGVkX19uhV88m92iAgUj/WD5npGYImIyUO/oGBwF2zvckCa12zei12aeduxL5KxqqZjmfR3V0qkhzVs/yp+2OjqIvCBlCkLGSw0R+50ojkeAp+nweKLS0wG5FDegtu6mAS6/nm05oJOV0FDcriaJhkCHQsaFd0WJ+3aGYO2NqoSi1sXZ1LVEnswaPrMSsjcC/hyDvM4z2Z9oZmwq5gwbeEV1x+PxiS4Fd+7i5ury/fw7mFl7hHlpwrTKgNp62jCt0PZjcv/7/cpJScK3ZyXFSZuh11Vk5hop73ziIDU3XVOwNvngSVU//AddgalWDsJfBaxpkIYD0Cw5nb6rqQBm2D7D9coRfJ/y87MdkyA8qBpuEUZ0DHFdbQ2n6CNS+EJN3GJVGBQDsGR6quzDNVNWaIYHZl2t9oP6Q/V8lCLfZsgPgUvAQIUF4RJ1Rnr9p2+cpoCkJrNccRNZGUZ+2sdZ5qRzkiCS3Dq176ZSVxic8lnWznM2x+CdPV0zlQ50aD3gyaY56EKG67/QDzaltu5Fz+/MTHus0Y//r+N2oLdiV/Uo9+FDu8P60ok8b8UuvnyOBktoa+HxNtaGIqBPvtFgC96kbWEXnBpLs8QTJ1CSqaKcl1OybgJ0hwA0f8L6E16AuUBq2+P934f3uStz09VzGDWmpbHbBULCrP/Uic7jpXPKQSsmLOnv+rYqAgVZZCbvvWqbn6UQjcHRNjXgsggdSo27clfBXjLbEsEIJiZVXnxyg6tNuI3bhRlsN0B44CFqQkCtfYfLOI/KfteoZBzmtsRGqfd+xJU8eX9YjsLxixpbofX+DBpdlWQCHEaLF3HhwECBWSFQhAjBwlGUYGIX7DyTMumtLlaTCNbE29tmB6AW9uaMIBOcRLdxZwwEZ3OJaSuqNIoKwwZ6/ehm1+fk9G6HzlDuLim0aHkKVgMcR/Kh3snhcVQbjGFQ2SDrgt2stsRo/HAizz3tIyB
- wcjbtMOU
- Wgfd9U+G/J7WSBuQe8ZZpuIczWixEPl3atqEEZBUXfSav21Y838Ke6zXpU4K9/01JPyAnM8VJ8EzNNgtORrfguRzuNKHKUhEIldpkmGF1djxi3+BMtT872c3NOlCDxrzcN0/DP2551v3hsQl8rW+xC+n6C6icbSvkSY+ujJ9tyDKHW/gen3NeMcHLNDaIhUyuJETkm+8KFbEWq56ZhExZDHNqm+h08BTYtDnJ8csOkCrbHUSM558aK0lVDBFrHCc0Vae1qjirn7UvVcAbgm1mzP7UyWzVnWmk2u2dEe92HCHcoe250t6JMXvuwGuv8G57M2J0+H0DMlzliOAB7Dpm+7QaJU0ImYCLGSSM5eMyKQCa+hcliLm3gdlZiA==
+X-Stat-Signature: q3bwsdbcxt7ptsm9zdy8nq3h8w66w5ms
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C1A69100004
+X-HE-Tag: 1787664857-43261
+X-HE-Meta: U2FsdGVkX1/vCNsSZqb7V14lfk3O+B+AQGHMML9JpNKml1hiHZFUe0JOdvbMcu2F5JbBQ68AhrEcRx5uNXrFD9yGecXBAo/Ae8pqanb/eKhUeZvU6XJAeO4/wFXfwRWpY/9A0g3e05J7BkSFN9CjXgyFnDHfnc5auzCsKwoz+LVeXEajkNiPcq3s1kL/tRCWpSqQKcO1jdruZa4e98Ur/6Zv8fJ5DvImaMJhhEqKD+KF2MGJGYrv21scU98yRjCDfM9eFGNuftC81TV/7vpxadm4b0JJcjz0X1pBXpi6ydT5QPzVeUyeKJTWlmCfuN8tqQdZ3mY6tiSceXZ0zJPc4PqI9dP9DK7e/Mu+p+DOQTKcCq2aGPgKHgPsOYm1wqa5GuRWvocJv7azJrz4saFHKinxHJb9L2Ll/TGzo0p1Ms9BSDKKVzeC1REipIaB1lYZ95I5xwtiaN3i2+0IkjvemIXbte/uOUJob8kuuZo2Ypqxkdo+qNxTw0NfU2VuJDynWIsViyR3C7OEjbIj9+xCjxt5gCPCkGi6tdqsXji48wiirANPzPiiXBBtSDDsQ5fPlGmdOUE0e6j4tA0i2b5xkUkpSDkBfI+v+7zP0WCNIcnitS8fIABfiXsLlaulYiH3Tm6mh3Czv0HhKUb9n+bDCgnspukCLn1mb+y6zBnXaB1CjUP2/E3V/HCNzRpgnhqnCjC5dJwyi8OP3S6aWQHZIv7oPqFYOuhAeMmFieEZQyirbNvqtQRprXc7M+V+J5HNWEWcb2el2WCp5TgySfLvBBmyrU9mv3fgYaZ4euOebwzj8Q47up84Q5OFCWO9AdcLZL2wPc+a3CLp2jEaAae1bDFdTzGm/tyOxGTjFQ/mcQp5k51CUfPeJP6u15aLSRpC+2pKjLPIOziEwAbvmfXQJt6KagL+e2KSOZKtJ6G4b0YhWn4/yLBtG/mOIxJOqcENhi9VUT6HyFv3cH1d3Pd
+ +VxUWIcj
+ uDoBrJi1sYbh3+omrHgi/L19wCgIN2R7Be/TVLHSWmlqkcB4MxVfKZqfeh6aYpNMybfDcZWF0vh7EAp6fhUcODongSFQzYAwe29d1J3nPS93CADC6fkKYkE/WB+4zfRc70BOtznC5W+7/niTlFZ+jAOLIJfSWAeJFmnIpT3REF2/g2UUCwPHGkY/VK4MYNkTvUVJY++4BMLsufxoPPFr0Sf2Y6g/6N02UXfouECKUYo4OZAys+Yc/mMJWBgQiPhEouGLa8LG5PBxxt8avqi8CLHNRemhMeZxCnbj5cfd8wt8teCyC0dZIyx1Zc1lpCF8OSqcgxTs6XdOJ6xH8j9Fed3riBd8lbBK7vmqSV5q8AF8BgRuODhRC3h+JYvB+9Pm0E2FHmvi580i/SPZ1cmCad4lLR0U3HoJ7M3Ea
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,68 +121,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Hui,
+On Mon Aug 24, 2026 at 1:17 PM CEST, Andreas Hindborg wrote:
+>  rust/kernel/alloc/allocator.rs       |  19 +++---
+>  rust/kernel/alloc/allocator/iter.rs  |   6 +-
 
-kernel test robot noticed the following build warnings:
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-[auto build test WARNING on akpm-mm/mm-everything]
+> -    pub unsafe fn to_page<'a>(ptr: NonNull<u8>) -> page::BorrowedPage<'a=
+> {
+> +    pub unsafe fn to_page<'a>(ptr: NonNull<u8>) -> &'a page::Page {
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Hui-Zhu/mm-workingset-account-MGLRU-pages-in-count_shadow_nodes/20260824-171630
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260824091631.836473-1-hui.zhu%40linux.dev
-patch subject: [PATCH] mm: workingset: account MGLRU pages in count_shadow_nodes()
-config: parisc-randconfig-002-20260825 (https://download.01.org/0day-ci/archive/20260825/202608252128.XbcsGfzh-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 14.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260825/202608252128.XbcsGfzh-lkp@intel.com/reproduce)
+Of course the mechanical conversion is fine as is, but while at it, mind to=
+ just
+import Page, such that the odd page::Page thing goes away?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608252128.XbcsGfzh-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> mm/workingset.c:657:22: warning: 'count_lru_gen_pages' defined but not used [-Wunused-function]
-     657 | static unsigned long count_lru_gen_pages(struct lruvec *lruvec)
-         |                      ^~~~~~~~~~~~~~~~~~~
-
-
-vim +/count_lru_gen_pages +657 mm/workingset.c
-
-   650	
-   651	#ifdef CONFIG_LRU_GEN
-   652	/*
-   653	 * The per-generation counters are eventually consistent and may go
-   654	 * transiently negative while batched updates are pending, so clamp
-   655	 * the sum at zero.
-   656	 */
- > 657	static unsigned long count_lru_gen_pages(struct lruvec *lruvec)
-   658	{
-   659		struct lru_gen_folio *lrugen = &lruvec->lrugen;
-   660		long nr_pages = 0;
-   661		int gen, type, zone;
-   662	
-   663		if (!lrugen->enabled)
-   664			return 0;
-   665	
-   666		for (gen = 0; gen < MAX_NR_GENS; gen++) {
-   667			for (type = 0; type < ANON_AND_FILE; type++) {
-   668				long *cnt = lrugen->nr_pages[gen][type];
-   669	
-   670				for (zone = 0; zone < MAX_NR_ZONES; zone++)
-   671					nr_pages += READ_ONCE(cnt[zone]);
-   672			}
-   673		}
-   674	
-   675		if (nr_pages <= 0)
-   676			return 0;
-   677	
-   678		return nr_pages;
-   679	}
-   680	#endif
-   681	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Danilo
 
