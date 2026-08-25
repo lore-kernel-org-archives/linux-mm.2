@@ -4,80 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7D35C61DB6
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:47:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F4DDC61CE2
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:47:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC4AE6B00BA; Tue, 25 Aug 2026 06:47:21 -0400 (EDT)
+	id 6E2A46B00CA; Tue, 25 Aug 2026 06:47:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B75D86B00C7; Tue, 25 Aug 2026 06:47:21 -0400 (EDT)
+	id 694046B00CB; Tue, 25 Aug 2026 06:47:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD94E6B00C8; Tue, 25 Aug 2026 06:47:21 -0400 (EDT)
+	id 5D0B56B00CC; Tue, 25 Aug 2026 06:47:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9027C6B00BA
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:47:21 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 248041A03A4
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:47:21 +0000 (UTC)
-X-FDA: 85139465082.08.2A96EF7
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0059880002
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:47:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of jonaszhou-oc@zhaoxin.com designates 210.0.225.12 as permitted sender) smtp.mailfrom=jonaszhou-oc@zhaoxin.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D1476B00CA
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:47:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB3C91C18CA
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:47:35 +0000 (UTC)
+X-FDA: 85139465670.20.A7654D1
+Received: from mta0.migadu.com (out-13.mta0.migadu.com [91.218.175.13])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A4328140009
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:47:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EBFnMX9+;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.13 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787654838;
+	s=arc-20220608; t=1787654853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=tJcAL6xNUu/GJZAHhDxKU6CoPgP/2NwCREl4ICsPgLk=;
-	b=55zVpvJ2iXHScWlnZ0WSd8+oUIO4TXiMr3EQJMP5CD9PKe3ONTza5Gn1T/gnovnucw8UGZ
-	LAucBAN8n/tRygGLwdHKiLzWnem+P4hGcoJMbgs0exjwwdZ+D/0hlvk41TlY25mRMAohqQ
-	7a1djfJDVFTzWGW5ujCuAr97hvtKwxc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787654838;
-	b=4STqj+OeYpnUrO3ffAR/qM5GjXUDaVA1P16cx4Dw3fdkruEcm/MgLjj+EK6WZRPp3/aUXr
-	8cc0FvcbYzrNn+u5FYXCF8xQ/Ziht9M4ehJMKCPAjX33OhsxD+nR0ddmCCaOSmIKwtGqlY
-	yqm0cIPMP9SrF3PbYq88rmTtDBIpjrM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pLH6sSBSRD9ZYQLtphBhG84Hf24X3sZQjuhSjzN6Ues=;
+	b=waCJ+ZN+0MqjPGNN7axjf3/5P72FQNfFYhTONp6HXo52tbPoX+umjLxHwcpM+dVxe1w405
+	sakAwggI7aE/W54WTkVy+njAp3n9YIzlzoFqre9h4EswENcrNhxZtLJF3Rn88FMKiRMPd4
+	IgylXAU+IhG+xQ5aQ8eQ6lU1d7Tm2r0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of jonaszhou-oc@zhaoxin.com designates 210.0.225.12 as permitted sender) smtp.mailfrom=jonaszhou-oc@zhaoxin.com;
-	dmarc=none
-Received: from zhaoxin.com (unknown [127.0.0.1])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4hTkxX3mRrzb0tjv;
-	Tue, 25 Aug 2026 18:47:12 +0800 (CST)
-Received: from zhaoxin.com (unknown [10.28.208.166])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4hTkxT6xn3zb0tjv;
-	Tue, 25 Aug 2026 18:47:09 +0800 (CST)
-Received: from zjh-os.zhaoxin.com (zjh-os.zhaoxin.com [10.28.24.13])
-	by zhaoxin.com (8.30) with ESMTP0dcdd9a0ab20575ea6a786a0762250d2
-	Tue, 25 Aug 2026 18:47:08 +0800
-X-Eyou-Smtpauth: jonaszhou-oc@zhaoxin.com
-X-Eyou-EnvelopeSender: jonaszhou-oc@zhaoxin.com
-X-Eyou-From: JonasZhou <jonaszhou-oc@zhaoxin.com>
-From: "=?UTF-8?B?Sm9uYXNaaG91LW9j?=" <jonaszhou-oc@zhaoxin.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	jianhuizzzzz@gmail.com
-Subject: [PATCH] mm/vmalloc: avoid false sharing with drain_vmap_work
-Date: Tue, 25 Aug 2026 18:46:59 +0800
-Message-ID: <20260825104659.100134-1-jonaszhou-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.43.0
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EBFnMX9+;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.13 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787654853;
+	b=3rNZ5lF0wPL170RS6bD8SMXYzA1l+kDTReZJUMP97UVqRGrAo8xrdwxQM/WkgI6cSZCPSA
+	cRUXqmjajPHtAXtEz1BIT44fqeMaCZR5JDf4lNegfng9onaVbSBzUTT40o7+1ohw7stEsy
+	guTqopUACLs6UrGlqa5rZMrOQ2YXeyA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=n2aH1LW4zBf5JFqhZeoA8jQ7gEcZolG4XK0C5vf317Q=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787654849; v=1; x=1788259649;
+ b=EBFnMX9+WMZeQIjhoes8vZuXoMzmKBeNcF34h/QJ3lUokZZjOGsgaZ53PTc0uFRytXGrkSwG
+ 4Fu2EjYsuPbFhYGUOpeeLbH3Rs7dWNw/7192bNoTE6xwZHiu6qT0FGU31AC+I6UpnI01kkliU/a
+ iOLfz1EqjjLjaplEjE+Kxl0s=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [100.82.85.74] (101.71.133.200)
+	by smtp.migadu.com with ESMTPS id fa391d319a902b86;
+	Tue, 25 Aug 2026 10:47:29 +0000
+X-Mizu-Trace-ID: fa391d319a902b86
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <196ff683-13e2-475a-8cb4-cb0d94f08213@linux.dev>
+Date: Tue, 25 Aug 2026 18:47:20 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Eyou-Sender: <jonaszhou-oc@zhaoxin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 05/17] mm/sparse-vmemmap: support section-based vmemmap
+ accounting
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-6-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260825084608.47437-6-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: oxuoaqspg377chtdqrj7wpsnhtr5xwue
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0059880002
-X-HE-Tag: 1787654837-952678
-X-HE-Meta: U2FsdGVkX18hcTSWQruOqagqyCZ+OEsHMechTPDbEcyejAvG6nLr37qrswhiS6P+roPGQ43SKx7HJ0t/tUrp4eSEWiyy2rgs/hoshUgkElhV/c8gRW2ZdUWd9scJSzSTBceQ6gHNW2nF6sfrpgZhEGjFrE3vmmGZV0dcRakIcbgeRoAm6VRvz5QekXM8/whrDlhesW1Tz9SPh5SsWM3q2PYhYyT4hoZZp+yTs4M+o5Oq+vXk40+X1epCTNRYhQuTQTgBO3p+4ZlmKP5WQat8AxpCoBIPzTBtrtIffrXrtsSkaf/ZO5nkOeFNDIUW3gHrCmhnC9u0R1P0iYgaazW9bBONJPvwr8xefyp1FpYeomF1r+zJp1EViwNEwIindc8REjJYJyUBzzJf+RH3YCg0ywHpAG250UTa0D9P+JFFBytYfAwQcSOisk0sHl4mcAXszBdvQLZPnZ0DNnq/9zNJbxFtF7JDKY/7gUwiK4WYtoEJN+v5oTpAOfAZLz2jJ097xlmG7C6deDZyflDSed4wSjao8y0DZlUfSjwYYLO/zfF4gpZ+SERXGMjJMIVgqoQw7OQxafDwDARqW89s0qsU3rUJcXGT57JzevoIecT4Pprr/gdvpkApvvt/Q1gw8QEYLuCOKpo+M0nu/wAgI6mPh8jNX7tmPdK0aqGpVWTSicXP4WxSLzztZMVyOeVQcee7CpZ3xDb3V62UWsdYw9gaxdDoWEzh8leRR0+aHEOzESV4+yVHa7EF2dBPj11e+10pmYh1C1DEVpPhPtLFQCVxT/o/3LJbhDFN230kRB5nWmmucLTRqqJTD24KK5vq/ok4ZlIIRD7GLwA01Yndb2DfqTF10HsQpuuC5/X6wiiu+x+TRYSAsBllZEGema5oC/l5M6prycueUlVlvTUpgCpuKPXC+yrgAtKGDd0y4pMHihCcCxw0J49zousp+e5EbweVUCgUYWTpUg/fSD0iBat
- XwmIQgUg
- /s2HoGX76UuVjxgeHusc3iKPbWoOVb1Mpbcx39fvW/piwHIy/7PJPNFHwwjZs9BPf72rGDQMPAMmGa30wnV33LTSJg0RSnwl7zix2dkfcLymgK2On2HTxzRXAZ+4a85GkAV5ENi1O1kalneOrj1xdxr8Zg6ExDI4dj4ZZ1AUWzroPgWU=
+X-Stat-Signature: b9nn6pqn7tfwrdx6t41yqtdn458d8snp
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A4328140009
+X-HE-Tag: 1787654853-436885
+X-HE-Meta: U2FsdGVkX185axXuemYrL/W8yAyvGPliig8qLQpBb7SvMDEp1CqqTbxCayuBs/g6lWPjVtZt2eup0N8an+fjyNJCRMy1xf9oeCyxwtwvEoprnYxeT/JFL7Xqt+4Z/UA8zHtEMoT05wAqvaUm0cl1O0m2BPn1KNczJTDBJE1jwRBqhFGFAhFVwXGHwyc+RbRu7NTiswZQ2XCoZmdL65oYcSXVCuXApMaY4am+NVhUUKzvADQ9ZQy8MUKEJdQqxna//Lvd/p5xM6ZbtpPqqKoWcP2AUy2TxasT17TljeqwLWtv4NipjtodY88TpW+VyaDXKJckmUuwIgTGQR11COgCTp+5NSOzOBojOGC4artjDO9yZ/yNxIo4GNa1FGfd9XrocrRUIVgNW6yDiv0g39cdNgnaF2twgRcwa0kSbHnftMIqjYaq8AxVnvfkRF8GMZpUJBB/Lfn6WTpz2floUPh0NR/RZUt0Xc59PN/rS14onXbPpSTuoBQo4Qnbsox719CyzisnDG/s/Xidl1fIxfM3ZUlICtLDmjBTCeXUP3XwtnQca5TXLKQUnMrp0xXDYdlRTxIReWVU+tcWwJzOq1B9BaGD9fBE7Lppbasd0I4ojdW5xY5dmjmIjPA8gV5M5Fu9C/kd0J/GnqQlqmRrAMW30ZetHRiR5zuaqzhc7Hn8SPWqF750oCvun5ZkYzbd+kn+XAbqai55Yk7zzV8RyDbMTCmIpnHPaXDTKRitp2uDxnwWYvs0WNYRA8vQJTo+xDGiU8Rtz/2QOITDT3l+eDWimbaj5UU72dQNZsNqzgeDLuLiwxg+3oN3IyKRBUIuEXjBq/0GSLuRCfhPGKccSd0QsywxSYSeAS5x3PdbuKlEN/WlFumge4XYCTFoYbvV0cPfG5iYGG1rm2aYfDFvVZhlM1CtsHz3z5/GLdKIY2tQ9170dbKs/pQnLZtJNtOOkDVgr72gk7ANZqoo1Kks6kb
+ kSU1ztEn
+ T9g3pw6GzneN8LCzGrGG9DQZ+TD3Sa6TYD5dLIGJE519ClUezV6Ui3Z5lul0YyVmhReDy2MFmmrGtKO3cKBsINu+VvERqUQR178OqguFaOL+dG8vI3X8NioHxmlcAe2tBIeokXE4NxyC6mKWPI/75VcLQ/17MIDrQ+izjSHcqHQuuQG5RfvmLUQuw3sq+QST8CMT9t8BsqswBA5Unv52SeBzVko8FFCYAkhFyrzsDEM1ZiL/9BS/OIbXGRem+94LPLfsLgUlIrNLKajJCg/Kj9M24EyIYnAOVs6xa789QbVgCVDM+ChcTVsLSaE8OlPrPJYqwPAjlCXJdmnCrhoM8h7Y8vW4vZVSs/yW07nnsht57ucz4M50uy2RRiL6XqRiXgVyVo8hgYh4Zdr6c8bxr/N6CJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,52 +99,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-free_vmap_area_noflush() queues drain_vmap_work after the number of
-lazily freed pages exceeds lazy_max_pages(). Until the worker purges
-those pages, concurrent frees keep calling schedule_work(). Even if
-the work is already pending, queue_work_on() performs a locked
-test_and_set_bit() on the pending bit in the work item.
 
-On the tested x86-64 build, drain_vmap_work and vmap_nodes occupy the
-same 64-byte cache line. The work item starts at offset 0 and the
-vmap_nodes pointer at offset 32. The latter is read by vmap allocation
-and free paths, so updates to the work item invalidate a cache line
-read by all CPUs.
 
-Put drain_vmap_work in the cacheline-aligned data section. Tests were
-run on Linux 7.2.
+On 8/25/26 4:45 PM, Muchun Song wrote:
+> section_nr_vmemmap_pages() can account ordinary sections and DAX sections,
+> but section-based vmemmap optimization keeps its compound order in struct
+> mem_section and retains a different number of vmemmap pages.
+> 
+> Teach section_nr_vmemmap_pages() to recognize section-based optimized
+> sections and calculate their vmemmap page count from the section order
+> and the HVO retained page count.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+> v5:
+> - Collect Acked-by from Mike Rapoport
+> 
+> v3:
+> - Add vmemmap_optimizable_order() for order-based optimization checks
+> 
+> v2:
+> - Remove an unnecessary vmemmap_can_optimize() call to simplify the code
+>    (suggested by Mike Rapoport).
+> - Rewrite the commit message for better understanding.
+> ---
+>   include/linux/mmzone.h |  6 ++++--
+>   mm/sparse-vmemmap.c    | 10 ++++++----
+>   mm/sparse.h            | 16 ++++++++++++++++
+>   3 files changed, 26 insertions(+), 6 deletions(-)
+> 
 
-On a two-socket Intel Xeon Silver 4208 system using 16 workers, the
-runtimes of vmalloc.fix_align, vmalloc.fix_size, and
-vmalloc.no_block_alloc decreased by 12.61%, 5.78%, and 6.87%,
-respectively. HITM samples for the affected cache line and total HITM
-samples decreased by 96.55% and 13.36%, respectively.
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
 
-Signed-off-by: JonasZhou <jonaszhou-oc@zhaoxin.com>
----
- mm/vmalloc.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index f4fa227a8d7f..6b4b287e91f6 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -1088,7 +1088,12 @@ RB_DECLARE_CALLBACKS_MAX(static, free_vmap_area_rb_augment_cb,
- static void reclaim_and_purge_vmap_areas(void);
- static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
- static void drain_vmap_area_work(struct work_struct *work);
--static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
-+/*
-+ * Keep the work item, whose pending bit is updated by freeing CPUs,
-+ * away from vmap metadata read by allocation and free paths.
-+ */
-+static __cacheline_aligned_in_smp
-+DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
- 
- static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
- 
--- 
-2.43.0
-
+Thanks,
+Qi
 
 
