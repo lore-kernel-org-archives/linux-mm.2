@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6690CC5DF9C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:27:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB22C5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:27:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E5AE6B00A6; Mon, 24 Aug 2026 22:27:50 -0400 (EDT)
+	id B03D16B00A7; Mon, 24 Aug 2026 22:27:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6959D6B00A7; Mon, 24 Aug 2026 22:27:50 -0400 (EDT)
+	id ADC396B00A9; Mon, 24 Aug 2026 22:27:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AAD96B00A9; Mon, 24 Aug 2026 22:27:50 -0400 (EDT)
+	id 9F1746B00AA; Mon, 24 Aug 2026 22:27:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D2D66B00A6
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:27:50 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 74DEB6B00A7
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:27:57 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BCCA91C156F
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:49 +0000 (UTC)
-X-FDA: 85138206258.13.CD0C624
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B1B81C0A61
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:57 +0000 (UTC)
+X-FDA: 85138206594.13.A4AAC79
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 850871A0008
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:47 +0000 (UTC)
+	by imf19.hostedemail.com (Postfix) with ESMTP id CE4E21A0006
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:54 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Bh+h1HKv;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GP48R5NT;
 	spf=pass (imf19.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787624867;
+	s=arc-20220608; t=1787624875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KY/aFj/stJo1CE7RylgoJbEoIPDAMPyqnpDBZzXjraM=;
-	b=5HjJEger+ez9kgUE9qGMuBYVCcvreaI8EKFO6TcoglqPKTZt2cZpzTxifDC20LuXd6rHqq
-	w5agAvObpaXDFLpN0P5RUbzS/xEStZ5hOoqrgqf6ITPAtnsfCzAvdjrlc0W3bggIUpNPzw
-	jeUkiA13rlTjZPZM3nsB5A0tHFJ+wBg=
+	bh=3qnSgN8ieQaK57/HpMwxcpo8p1qwX9bNA3TNfUlqUl0=;
+	b=cBOAXr/K56Z5yHcSzehM0Hrh2DWs6+Rcopx5WKi9gHeKKb6gsagHvYSoXGcX816VLv/bhY
+	bxPy/pHDF02sZtqH4MzBcZ7Nd05zL2wkIkZKLUWxswO5ecYu2nNIDIRxMmTa9oKYXuFJ1U
+	xrBc1CrGcIxKjSzkNxk/0qsh2e5MiCQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787624867;
-	b=k+6Rnq5Ox/RLNiyt7IbpOXpUN7UX0a9edYawN0L13OD320GY3IiO7Al/T/XgfI95KrnnRk
-	arKMddsW7kHOmR/Yw0ECUlExEI5Zf+O0cnrJuZFHDb4VPqSx7XxsgmHZh/P+KNpBjQYQS0
-	Hk89ZoF8Hziv5WXljmFQBiX+Vv+rNKs=
+	t=1787624875;
+	b=6LFVhwKPlZFmumNJBdS3UhJgMOiyYwVaKPYZVIk21IIKwPdKExkKKO4SQAoYq6UqkLy82h
+	XUOqakSK9cLcCk1KVfHA6S/8wPgPatUTkAB1TstM6TLLMQ+6b5x7jQkkI0MXRf3/5uQ8Wr
+	xj3QnrZwKNwbSYd6L0+stje6IivGv/s=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Bh+h1HKv;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GP48R5NT;
 	spf=pass (imf19.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787624867; x=1819160867;
+  t=1787624875; x=1819160875;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0VoRnnTQayChxBzG4acN6XeGhlm8VUhd+VjdCd1S3xA=;
-  b=Bh+h1HKvPzSIsMn2zyw8nncGmNBaPprn1lilUWCXUhy8y3bQBgLt89A5
-   TTIKR52P7oILluUWE4p2PzeBSO6sywbS/OEFj2q8nMN4J+nnHDDeV84Br
-   PmyME1KgmECRB81wj2xIm+aSHa+14CBDdTYl3lBDOwDMzXGtsgw2z40hp
-   MI3iM9k8E1Hx8hBHF6iV4mwvgDJSw+SVE3NlsVAg3JfICF3aZ+pDYSPJp
-   Isdnste84OScgDNpT8rUDnPLM0EpsHvmpnqU2HNYRxEn1mVwj77AZY6cg
-   Hw2rsiQZhXOBvmkNKTIuFNNpSNIg8G4ZU9bQcwCGNJymDL5sLqcZW2Ebj
+  bh=Vfx757PrKz0Q6r04Wq1LSBdOnlYkh38t0RKtlBGogL0=;
+  b=GP48R5NT935X2G8NELAJonqhI6GsZMyJ1jj1mKYrCBrq8hqCukpru1sF
+   WCPHzHyGGRMARfaH1bdf84NHWWuAi+RtWv/rc6l9Uxj0sZiZdvwFgfK+/
+   op1c6hyDzllhTOGI7UFApJjoVgXPptb5lxxc1Nm2ncXBWlTDlUBdmJY8n
+   v6dDHWgCJptlZLdal1dIa8fdfO2sOs6biej1ZOl7/tQZ8GJv2wpOfbAUM
+   S/xx6B/DOX4VPa+ci/i0GXHmRfq14dgXxX9PITkeadxFAh1C3K/zWUWPe
+   IOGjOY2DVDhD7RpS7aDIhHwLgx9fLLFYsbodW5BcbaM9w7Mh6vXfDuir5
    g==;
-X-CSE-ConnectionGUID: 3QaJW1sCTKWi6fa6XwaoQw==
-X-CSE-MsgGUID: wSXjp2nHS7y0TYl1k9GgHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98761152"
+X-CSE-ConnectionGUID: XYqxyBfgSy6kRQPksdCkNA==
+X-CSE-MsgGUID: RYzWLGfESyCzXYkAIM2gUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98761180"
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="98761152"
+   d="scan'208";a="98761180"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:47 -0700
-X-CSE-ConnectionGUID: FzrjbiKsTl227JOq1FD4UQ==
-X-CSE-MsgGUID: IuaxB+CZRSy5ERI6aEK7+g==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:54 -0700
+X-CSE-ConnectionGUID: 01Xxo1LWT+6/FYg9bL0TTQ==
+X-CSE-MsgGUID: EBvx3coUR5Sy8yZZqadSUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="265390111"
+   d="scan'208";a="265390114"
 Received: from fdefranc-mobl3.igk.intel.com ([172.28.182.157])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:40 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:47 -0700
 From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
 To: linux-cxl@vger.kernel.org
 Cc: David Hildenbrand <david@kernel.org>,
@@ -105,22 +105,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-pci@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: [PATCH v2 09/13] PCI/CXL: Disable and re-enable CXL regions
-Date: Tue, 25 Aug 2026 04:26:24 +0200
-Message-ID: <20260825022628.3651434-10-fabio.m.de.francesco@linux.intel.com>
+Subject: [PATCH v2 10/13] PCI/CXL: Clear ACS SV across an SBR of a CXL DPort
+Date: Tue, 25 Aug 2026 04:26:25 +0200
+Message-ID: <20260825022628.3651434-11-fabio.m.de.francesco@linux.intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 References: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: jdi8emdtgcwgyeornpxo3zwoducua733
+X-Stat-Signature: qiwufjjjjqbkzkx4f5eknk4s9pcxzm7x
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 850871A0008
-X-HE-Tag: 1787624867-120156
-X-HE-Meta: U2FsdGVkX1/5HeM3UZmNy4NufB9Mec37CaSR9Ete9S9NA/x73NqG6G5aGeksIRo8QUJaXXMAD3tHwsAX526QcX29V3xS+/5gjVBZBDWkn318tXTV3pZ+I6yEGFaTghy/Zm0nlzNlFwTC9KWjDGZkos91x59Firi1oBkW7HiWzRVfG8/JDaVuTL7TEbY4wKa5LQ0c7rV+0aSOIxy1iz4CXkb3CV5VltSi3NDhBlU2wYLZ2Zn8kka+1ojZkaSKZEnropD+ozCKSRLzFhwswdW8axXoORa3zpyD2yWhiDnabEeYEgWSa+X6tmnwJp/kADO+tT6RNDitM7TtmF4CG+gdQOdHreDLJEoauxSJLs2SZtckKrl4H0wDPLsnb0XtXVDWedITj9XVxmHi3+bsPMVhwDH8+nXcSUdVyRFOSz6Eog9Ea5+qBYo3drgPXlEcjqh7R1zw6FKX7U5OTZLODeO5NkjiLeX9Jv9X1EgJkQyJciJhI648TKo+ZOfuWs+DcG8u1DPSIMjorF7F4Y0uJdstbVeSjaKILzUjOjVIUAWkkIPG4s2C9RwzjW4iYjfdeTgeBGBYgWgrcRI62s7VThoQJ8Pzu91CGfG2ksNrTEQcpSgXOPcHJxLj9eAz0kq3NjZFbxTPd+TI5e3b0eOVOmQfQpZJN9uSyOExbmZsAg35nyRMWcX5LoNt4+RMCtNJYr9xIfJ0QV3kZWBVOaCLUhykA5aKIf68wDRABMOIELhTlT/RyPbMY8uEwZpYSrIWPg5eHGfCbSBolGpSQebRQ0bcxGlgXdil1abhoxUGXAbnR6+hoUid7P2YyfaBOXYvPIEFxZhrVwm7S3vbB3JiRZIocmEsSxJLB3Q6rs3KyelGP9/qkHBuM/HN2/7Ezp2mggpJmgx3CUwGX9eb96JsuvFf9a5x75lEA4vVhrQdq1toeHJlXNfwWEZj0juPs5Ls0lVZBIKF4SNhdUbU7awXbwi
- JwpVTsOH
- 1MKWDGF3aQvf8g+YDwCIdFbhc3sPFNTxcwpsSccLtS6aogV5Ch+uOFj6yz6lGqGPx76nsj9a0RjYjOTrbR6hQZYFwoXEJ09u89aIr6nYybAX2rHVwbT1mZzv0mlmdzlB5woobGwLmpeHSmo0mOEb9UsOippCPtuo2Isje0pjp4XzIXYrgjgkp7NsLVA==
+X-Rspamd-Queue-Id: CE4E21A0006
+X-HE-Tag: 1787624874-666506
+X-HE-Meta: U2FsdGVkX18i6MZkQM/Rz99kdRXXzc5Bnw35URb5FnNynF2+PpE1RV3AaJmJixv6vQXbAw+qnOolOhGWRMpFAc2byhC/HOC66GCuBU4Gqdhz2DsRvJ2T6Rr7F18NbeUivc/q+NjIa46pedm1r8hJmJXwd+jMT2xo/JL8C1SXshIOa8Ay74FrhICO8K+wyzi/tx6B9PC/kakOdh44l1ahYVH23bvrpVZdlZFMEFvrl694NvC9eaChSW6hRH1B6ryEdf75b5OJJeqRgN8tPubilzF/WT4j7OY2v7rMhgZdx692/UkLtATLzUZudvxSljKSN+JIjF+mxeY8DDC5cW12xi91nep1hyk1CKE3LmMlZcKonpaGJLk2L8RA477x/rq+VT4Gfn+KFOKtP5Qe3F8d7l3L6QUnAm9U0DeY6A/BeTY/OTTuzrnh4KznD1d7NWSkhqQqqkSbir9S95T/MJKXG3shtseo3++VxLPHeIz9g2vpkjRe7KLh5/I122HrKWnW8aemGEXVN0JfOIo34eAqF+sbAypLAF7neqDVbZBgPiqUg0Z0dazlZ+qlL9BAItPtOOaw8opILIFMFI6fJ2VKDOIm1KwFta22IBATomYJJ819NUeQrDmZRajPtfU245a6/tkYW9NLCtafUl+Vd0meXE3WcIEw5onnLk0BYdoRZSSNXmnr2ujG9fTyVF+4ZD1CyDyVCOg8tVRoW/s7tJXtkCKuZZ+u4FOsC4FCIhxdIaN2T63lIeuOwWMXi6B8K1RCkSF/GJlAnsz18MFxrhvQmZj2lDpjUamkbJZqytBdH+7FF5j/tcKNeGlxrEkQmb73EBCwduheFu1k0uTEVzyngUplS1Vq8ykOj+VNEs6sX9cFfnMbRoXZ90YkrGaDcBqo9UbNR4i2O9AS/iknp45bBuCO9RhGQgkJUCiTaIVLKteZ/6zgSjgigC+Ddxq87UMsd+czBCdt1ZzeQXLLqwF
+ pxOIZx5M
+ OAXmB3W2+I19Zw1ObIhu64BAFaWUNefVdYh9NfPltar7tRK3kdB5eiohkkGY/7qfrHK9TWs9uuKwVDuUIj7tuigZ8wf0Ek1hxAC5AwKHB09BnsxJRTkcYLk/wwnisTyBYnHUOpw8bMrttiY4haT58oaU707gtSG+JluPwLz1URjxJgtI7R+DOZVzNkD3Vlwv5Rn6nZLU8PcaG7Ts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,332 +128,252 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A Secondary Bus Reset of a CXL Downstream Port needs every CXL region
-routed through that Port disabled for the duration.
+A Secondary Bus Reset (SBR) of a CXL Downstream Port clears the
+Downstream Component's (DPort) captured Bus Number. CXL r4.0 sec 8.1.5.1
+notes that if a Downstream Component issues PM Init messages to a DPort
+with Access Control Services (ACS) Source Validation (SV) bit enabled,
+PM Initialization may then fail to complete, and that a further SBR
+alone does not recover it. PCIe r7.0 sec 6.12.1.1 makes that rejection
+an error that is a reported as ACS Violation.
 
-Add struct pci_cxl_sbr_region_ops, holding a disable_regions() and an
-enable_regions() callback, and pci_cxl_set_sbr_region_ops() for the CXL
-core to register them. The pointer is NULL whenever the CXL region code
-is absent, either not built or built as a module that is not loaded.
-
-Add cxl_sbr_disable_regions(), which collects the regions with a member
-endpoint below the Port and disables each one. If any fails, re-enable
-the whole collected set and return the error, so the PCI core aborts the
-reset before touching hardware; re-enabling a region left untouched is a
-no-op, which also recovers the one that failed midway.
-
-Add cxl_sbr_enable_regions() for the other side. It restores the HDM
-decoders below the Port before it re-attaches any region driver, since a
-region cannot serve memory through decoders that are not programmed.
-
-cxl_sbr_disable_regions() records the decoder registers before it
-touches anything and cxl_sbr_enable_regions() hands them to the restore
-and releases them. They are held in an xarray indexed by the Downstream
-Port's struct pci_dev, so resets of different Ports do not share an
-entry, and they are released on the abort path too, where
-enable_regions() never runs.
-
-Register both ops from cxl_region_init() and clear the pointer in
-cxl_region_exit().
+Reuse the recovery sequence described in sec 8.1.5.1 but make it
+preventive, so that PM Init don't fail and don't need to be recovered.
 
 Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 ---
- drivers/cxl/core/core.h      |   9 +--
- drivers/cxl/core/dport_sbr.c | 152 +++++++++++++++++++++++++++++++++--
- drivers/cxl/core/region.c    |   3 +
- drivers/pci/pci.c            |  13 +++
- include/linux/pci.h          |  12 +++
- 5 files changed, 175 insertions(+), 14 deletions(-)
+ drivers/pci/pci.c             | 177 ++++++++++++++++++++++++++++++++--
+ include/uapi/linux/pci_regs.h |   2 +
+ 2 files changed, 172 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index 077a2af9cf0c..b250fa346184 100644
---- a/drivers/cxl/core/core.h
-+++ b/drivers/cxl/core/core.h
-@@ -57,13 +57,8 @@ int devm_cxl_add_dax_region(struct cxl_region *cxlr);
- int devm_cxl_add_pmem_region(struct cxl_region *cxlr);
- void kill_regions(struct cxl_root_decoder *cxlrd);
- int cxl_region_invalidate_memregion(struct cxl_region *cxlr);
--int cxl_region_disable(struct cxl_region *cxlr);
--void cxl_region_enable(struct cxl_region *cxlr);
--struct pci_dev;
--int cxl_sbr_collect_regions(struct pci_dev *dport_pci, struct xarray *regions);
--void cxl_sbr_put_regions(struct xarray *regions);
--void cxl_sbr_recommit_decoders(struct pci_dev *dport_pci,
--			       struct xarray *hdm_state);
-+struct pci_cxl_sbr_region_ops;
-+extern const struct pci_cxl_sbr_region_ops cxl_sbr_region_ops;
- 
- #else
- static inline u64 cxl_dpa_to_hpa(struct cxl_region *cxlr,
-diff --git a/drivers/cxl/core/dport_sbr.c b/drivers/cxl/core/dport_sbr.c
-index 233499bc1fad..2b6f840e22a7 100644
---- a/drivers/cxl/core/dport_sbr.c
-+++ b/drivers/cxl/core/dport_sbr.c
-@@ -21,7 +21,7 @@
-  * Context: process context. Offlining and driver unbind sleep and take the
-  * memory hotplug lock, so this cannot run in atomic context.
-  */
--int cxl_region_disable(struct cxl_region *cxlr)
-+static int cxl_region_disable(struct cxl_region *cxlr)
- {
- 	struct cxl_region_params *p = &cxlr->params;
- 	unsigned long block_size;
-@@ -72,7 +72,7 @@ int cxl_region_disable(struct cxl_region *cxlr)
-  * Rebind the region driver. The System RAM is left offline; bringing it back
-  * online is a separate administrative step.
-  */
--void cxl_region_enable(struct cxl_region *cxlr)
-+static void cxl_region_enable(struct cxl_region *cxlr)
- {
- 	struct cxl_region_params *p = &cxlr->params;
- 
-@@ -93,8 +93,8 @@ void cxl_region_enable(struct cxl_region *cxlr)
-  * cxl_region_disable()/cxl_region_enable() run with the rwsem released (they
-  * unbind and rebind the region driver). Hence snapshot the set first.
-  */
--int cxl_sbr_collect_regions(struct pci_dev *dport_pci,
--			    struct xarray *regions)
-+static int cxl_sbr_collect_regions(struct pci_dev *dport_pci,
-+				   struct xarray *regions)
- {
- 	struct cxl_region_ref *cxl_rr;
- 	struct cxl_dport *dport;
-@@ -141,7 +141,7 @@ int cxl_sbr_collect_regions(struct pci_dev *dport_pci,
- 	return 0;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 417b6b44473e..f3781d1e8f6e 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -23,6 +23,7 @@
+ #include <linux/module.h>
+ #include <linux/spinlock.h>
+ #include <linux/string.h>
++#include <linux/string_choices.h>
+ #include <linux/log2.h>
+ #include <linux/logic_pio.h>
+ #include <linux/device.h>
+@@ -4857,21 +4858,189 @@ void pci_cxl_set_sbr_region_ops(const struct pci_cxl_sbr_region_ops *ops)
  }
+ EXPORT_SYMBOL_GPL(pci_cxl_set_sbr_region_ops);
  
--void cxl_sbr_put_regions(struct xarray *regions)
-+static void cxl_sbr_put_regions(struct xarray *regions)
- {
- 	struct cxl_region *cxlr;
- 	unsigned long index;
-@@ -159,8 +159,8 @@ void cxl_sbr_put_regions(struct xarray *regions)
-  * requires. The caller has already disabled the regions, so nothing reaches the
-  * decoders being reprogrammed.
-  */
--void cxl_sbr_recommit_decoders(struct pci_dev *dport_pci,
--			       struct xarray *hdm_state)
-+static void cxl_sbr_recommit_decoders(struct pci_dev *dport_pci,
-+				      struct xarray *hdm_state)
- {
- 	struct cxl_dport *dport;
- 	int rc;
-@@ -179,3 +179,141 @@ void cxl_sbr_recommit_decoders(struct pci_dev *dport_pci,
- 	if (rc)
- 		pci_warn(dport_pci, "HDM decode restore failed: %d\n", rc);
- }
++struct cxl_sbr_ctx {
++	u16 port_ctl;
++	u16 acs_ctrl;
++	u16 command;
++};
 +
-+/*
-+ * The HDM decoder control registers the reset is about to clear, held from the
-+ * disable to the enable of one Downstream Port and indexed by that Port's
-+ * struct pci_dev, so resets of different Ports do not share an entry.
-+ */
-+static DEFINE_XARRAY(cxl_sbr_hdm_state);
-+
-+static void cxl_sbr_drop_hdm_state(struct pci_dev *dport_pci)
++static bool is_cxl_dport(struct pci_dev *dev)
 +{
-+	struct xarray *hdm_state;
-+
-+	hdm_state = xa_erase(&cxl_sbr_hdm_state, (unsigned long)dport_pci);
-+	if (!hdm_state)
-+		return;
-+
-+	cxl_port_put_hdm_state(hdm_state);
-+	kfree(hdm_state);
++	return pcie_is_cxl(dev) && pcie_downstream_port(dev);
 +}
 +
-+/*
-+ * Record the control registers of every port below @dport_pci before the reset
-+ * clears them. cxl_sbr_enable_regions() consumes the set and drops it.
-+ */
-+static int cxl_sbr_save_hdm_state(struct pci_dev *dport_pci)
++static u16 cxl_port_dvsec(struct pci_dev *dev)
 +{
-+	struct xarray *hdm_state;
-+	struct cxl_dport *dport;
++	return pci_find_dvsec_capability(dev, PCI_VENDOR_ID_CXL,
++					 PCI_DVSEC_CXL_PORT);
++}
++
++static int cxl_sbr_prepare(struct pci_dev *bridge, u16 dvsec,
++			   struct cxl_sbr_ctx *ctx)
++{
 +	int rc;
 +
-+	struct cxl_port *port __free(put_cxl_port) =
-+		find_cxl_port(&dport_pci->dev, &dport);
-+	if (!port)
-+		return 0;
++	/* Abort before touching hardware if the regions cannot be disabled. */
++	if (cxl_sbr_region_ops) {
++		rc = cxl_sbr_region_ops->disable_regions(bridge);
++		if (rc)
++			return rc;
++	}
 +
-+	hdm_state = kzalloc_obj(*hdm_state);
-+	if (!hdm_state)
-+		return -ENOMEM;
++	/* CXL r4.0 sec 8.1.5.2, Table 8-32: set Unmask SBR so the Port issues Hot Reset. */
++	pci_read_config_word(bridge, dvsec + PCI_DVSEC_CXL_PORT_CTL, &ctx->port_ctl);
++	pci_write_config_word(bridge, dvsec + PCI_DVSEC_CXL_PORT_CTL,
++			      ctx->port_ctl | PCI_DVSEC_CXL_PORT_CTL_UNMASK_SBR);
 +
-+	xa_init(hdm_state);
++	pci_read_config_word(bridge, PCI_COMMAND, &ctx->command);
++	pci_clear_master(bridge);
 +
-+	scoped_guard(rwsem_read, &cxl_rwsem.region)
-+		rc = cxl_port_save_hdm_state(port, hdm_state);
-+
-+	if (!rc)
-+		rc = xa_insert(&cxl_sbr_hdm_state, (unsigned long)dport_pci,
-+			       hdm_state, GFP_KERNEL);
-+	if (rc) {
-+		cxl_port_put_hdm_state(hdm_state);
-+		kfree(hdm_state);
-+		return rc;
++	/* CXL r4.0 sec 8.1.5.1: Disable ACS SV bit before SBR */
++	if (bridge->acs_cap) {
++		pci_read_config_word(bridge, bridge->acs_cap + PCI_ACS_CTRL, &ctx->acs_ctrl);
++		pci_dbg(bridge, "%s: ACS SV %s\n", __func__,
++			str_enabled_disabled(ctx->acs_ctrl & PCI_ACS_SV));
++		pci_write_config_word(bridge, bridge->acs_cap + PCI_ACS_CTRL,
++				      ctx->acs_ctrl & ~PCI_ACS_SV);
 +	}
 +
 +	return 0;
 +}
 +
 +/*
-+ * Disable the regions routed through the Downstream Port being reset. On
-+ * failure re-enable the regions already disabled and return the error so the
-+ * PCI core aborts the reset with the topology unchanged.
++ * CXL r4.0 sec 8.1.5.1, Table 8-31: the Port sets PM Init Complete within
++ * 100 ms of link-up. Restoring ACS Source Validation before then makes the
++ * Port reject the downstream Component's Requester-Bus-0 IP2PM message, so
++ * poll for completion before restoring config.
 + */
-+static int cxl_sbr_disable_regions(struct pci_dev *dport_pci)
++static bool cxl_port_pm_init_is_complete(struct pci_dev *bridge, u16 dvsec)
 +{
-+	struct cxl_region *cxlr;
-+	struct xarray regions;
-+	unsigned long index;
-+	int rc;
++	unsigned long start = jiffies;
++	unsigned long timeout = start + msecs_to_jiffies(100);
++	u16 status;
 +
-+	rc = cxl_sbr_save_hdm_state(dport_pci);
-+	if (rc)
-+		return rc;
++	do {
++		pci_read_config_word(bridge,
++				     dvsec + PCI_DVSEC_CXL_PORT_EXT_STATUS,
++				     &status);
++		if (!PCI_POSSIBLE_ERROR(status) &&
++		    (status & PCI_DVSEC_CXL_PORT_EXT_STATUS_PM_INIT_COMP)) {
++			pci_dbg(bridge, "%s: PM Init Complete set after %u ms, ext status %#06x\n",
++				__func__, jiffies_to_msecs(jiffies - start), status);
++			return true;
++		}
++		msleep(10);
++	} while (time_before(jiffies, timeout));
 +
-+	xa_init(&regions);
++	pci_warn(bridge, "%s: PM Init Complete not set after %u ms, ext status %#06x\n",
++		 __func__, jiffies_to_msecs(jiffies - start), status);
 +
-+	rc = cxl_sbr_collect_regions(dport_pci, &regions);
-+	if (rc)
-+		goto out;
++	return false;
++}
 +
-+	xa_for_each(&regions, index, cxlr) {
-+		rc = cxl_region_disable(cxlr);
-+		if (rc)
-+			break;
-+	}
++static int cxl_sbr_restore_config_space(struct pci_dev *dev, void *userdata)
++{
++	pci_restore_config_space(dev);
++	pci_dbg(dev, "%s: config space restored\n", __func__);
 +
-+	/*
-+	 * On failure restore every collected region and return the error so the
-+	 * PCI core aborts the reset before touching the hardware. Re-enabling a
-+	 * region left untouched is a no-op, so enabling the whole set also
-+	 * recovers the region whose offline failed midway.
-+	 */
-+	if (rc) {
-+		dev_dbg(&dport_pci->dev, "%s: disable failed (%d), re-enabling collected regions and aborting reset\n",
-+			__func__, rc);
-+		xa_for_each(&regions, index, cxlr)
-+			cxl_region_enable(cxlr);
-+	}
-+
-+out:
-+	cxl_sbr_put_regions(&regions);
-+	/* No enable_regions() call follows an aborted reset, so drop the set. */
-+	if (rc)
-+		cxl_sbr_drop_hdm_state(dport_pci);
-+	return rc;
++	return 0;
 +}
 +
 +/*
-+ * Re-enable the regions disabled by cxl_sbr_disable_regions(). Restore the HDM
-+ * decode first: a region cannot serve memory through decoders that are not
-+ * programmed, so its driver must not re-attach before they are.
++ * The CXL region ops that run next read the HDM Decoders through a Base Address
++ * Register the reset returned to its initialization value, so restore the
++ * header of every device below @bridge first. Restoring also re-captures each
++ * Bus Number before the Port's ACS Source Validation comes back: a device that
++ * has completed no Type 0 Configuration Write since the reset sources Requests
++ * with Bus 0, which the Port rejects as an ACS Violation.
++ *
++ * Only the header is restored. The capability state each caller saved is its own
++ * to replay, and the ->reset_done() callbacks pci_dev_restore() invokes must
++ * fire once, from the caller that owns the reset.
 + */
-+static void cxl_sbr_enable_regions(struct pci_dev *dport_pci)
++static void cxl_sbr_restore_subordinate(struct pci_dev *bridge)
 +{
-+	struct xarray *hdm_state;
-+	struct cxl_region *cxlr;
-+	struct xarray regions;
-+	unsigned long index;
++	if (!bridge->subordinate)
++		return;
 +
-+	xa_init(&regions);
-+
-+	cxl_sbr_collect_regions(dport_pci, &regions);
-+
-+	hdm_state = xa_load(&cxl_sbr_hdm_state, (unsigned long)dport_pci);
-+	if (hdm_state)
-+		cxl_sbr_recommit_decoders(dport_pci, hdm_state);
-+	else
-+		pci_warn(dport_pci, "no saved HDM state, decode not restored\n");
-+
-+	xa_for_each(&regions, index, cxlr)
-+		cxl_region_enable(cxlr);
-+
-+	cxl_sbr_put_regions(&regions);
-+	cxl_sbr_drop_hdm_state(dport_pci);
++	/* Parents before children: a child answers once its parent forwards. */
++	pci_walk_bus(bridge->subordinate, cxl_sbr_restore_config_space, NULL);
 +}
 +
-+const struct pci_cxl_sbr_region_ops cxl_sbr_region_ops = {
-+	.disable_regions = cxl_sbr_disable_regions,
-+	.enable_regions = cxl_sbr_enable_regions,
-+};
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index fc0bec991a69..d1dd4924fba1 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -12,6 +12,7 @@
- #include <linux/idr.h>
- #include <linux/memory-tiers.h>
- #include <linux/string_choices.h>
-+#include <linux/pci.h>
- #include <cxlmem.h>
- #include <cxl.h>
- #include "core.h"
-@@ -4263,12 +4264,14 @@ static struct cxl_driver cxl_region_driver = {
- 
- int cxl_region_init(void)
- {
-+	pci_cxl_set_sbr_region_ops(&cxl_sbr_region_ops);
- 	return cxl_driver_register(&cxl_region_driver);
- }
- 
- void cxl_region_exit(void)
- {
- 	cxl_driver_unregister(&cxl_region_driver);
-+	pci_cxl_set_sbr_region_ops(NULL);
- }
- 
- MODULE_IMPORT_NS("CXL");
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 77b17b13ee61..417b6b44473e 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4844,6 +4844,19 @@ void __weak pcibios_reset_secondary_bus(struct pci_dev *dev)
- 	pci_reset_secondary_bus(dev);
- }
- 
-+/*
-+ * Registered by the CXL core to disable and re-enable the regions mapped
-+ * through a CXL Downstream Port across a Secondary Bus Reset. NULL whenever
-+ * the CXL region code is absent: not built, or built as a module not loaded.
-+ */
-+static const struct pci_cxl_sbr_region_ops *cxl_sbr_region_ops;
-+
-+void pci_cxl_set_sbr_region_ops(const struct pci_cxl_sbr_region_ops *ops)
++static void cxl_sbr_complete(struct pci_dev *bridge, u16 dvsec,
++			     const struct cxl_sbr_ctx *ctx)
 +{
-+	cxl_sbr_region_ops = ops;
++	u16 val;
++
++	/* CXL r4.0 sec 8.1.5.1: wait for PM Init before restoring ACS SV. */
++	if (!cxl_port_pm_init_is_complete(bridge, dvsec))
++		pci_warn(bridge,
++			 "restoring ACS Source Validation before PM Init complete; Port may reject the Component's bus 0 traffic\n");
++
++	cxl_sbr_restore_subordinate(bridge);
++
++	/* CXL r4.0 sec 8.1.5.1: Re-enable ACS SV bit after SBR if it was enabled before */
++	if (bridge->acs_cap && (ctx->acs_ctrl & PCI_ACS_SV)) {
++		pci_read_config_word(bridge, bridge->acs_cap + PCI_ACS_CTRL, &val);
++		pci_write_config_word(bridge, bridge->acs_cap + PCI_ACS_CTRL,
++				      val | PCI_ACS_SV);
++		pci_dbg(bridge, "%s: ACS SV bit set\n", __func__);
++	} else {
++		pci_dbg(bridge, "%s: ACS SV bit not set (was not enabled before the SBR)\n",
++			__func__);
++	}
++
++	if (ctx->command & PCI_COMMAND_MASTER)
++		pci_set_master(bridge);
++
++	if (!(ctx->port_ctl & PCI_DVSEC_CXL_PORT_CTL_UNMASK_SBR)) {
++		pci_read_config_word(bridge, dvsec + PCI_DVSEC_CXL_PORT_CTL, &val);
++		pci_write_config_word(bridge, dvsec + PCI_DVSEC_CXL_PORT_CTL,
++				      val & ~PCI_DVSEC_CXL_PORT_CTL_UNMASK_SBR);
++	}
++
++	if (cxl_sbr_region_ops)
++		cxl_sbr_region_ops->enable_regions(bridge);
 +}
-+EXPORT_SYMBOL_GPL(pci_cxl_set_sbr_region_ops);
 +
  /**
   * pci_bridge_secondary_bus_reset - Reset the secondary bus on a PCI bridge.
   * @dev: Bridge device
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 64b308b6e61c..2feb0e355305 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1606,6 +1606,18 @@ int devm_request_pci_bus_resources(struct device *dev,
- /* Temporary until new and working PCI SBR API in place */
- int pci_bridge_secondary_bus_reset(struct pci_dev *dev);
+  *
+  * Use the bridge control register to assert reset on the secondary bus.
+  * Devices on the secondary bus are left in power-on state.
++ *
++ * When @dev is a CXL Downstream Port, clear ACS Source Validation and Bus
++ * Master Enable across the reset, per the workaround in CXL r4.0 sec 8.1.5.1,
++ * so that Port Power Management Initialization completes at link-up. The
++ * bits stay cleared until the secondary bus is back, then are restored.
+  */
+ int pci_bridge_secondary_bus_reset(struct pci_dev *dev)
+ {
++	struct cxl_sbr_ctx ctx = {};
++	u16 dvsec = 0;
++	int rc;
++
+ 	if (!dev->block_cfg_access)
+ 		pci_warn_once(dev, "unlocked secondary bus reset via: %pS\n",
+ 			      __builtin_return_address(0));
++
++	if (is_cxl_dport(dev))
++		dvsec = cxl_port_dvsec(dev);
++	if (dvsec) {
++		rc = cxl_sbr_prepare(dev, dvsec, &ctx);
++		if (rc)
++			return rc;
++	}
++
+ 	pcibios_reset_secondary_bus(dev);
  
-+/**
-+ * struct pci_cxl_sbr_region_ops - CXL region callbacks for a bus reset
-+ * @disable_regions: disable the regions below @dport, 0 or errno
-+ * @enable_regions: re-enable the regions below @dport
-+ */
-+struct pci_cxl_sbr_region_ops {
-+	int (*disable_regions)(struct pci_dev *dport);
-+	void (*enable_regions)(struct pci_dev *dport);
-+};
+-	return pci_bridge_wait_for_secondary_bus(dev, "bus reset");
++	rc = pci_bridge_wait_for_secondary_bus(dev, "bus reset");
 +
-+void pci_cxl_set_sbr_region_ops(const struct pci_cxl_sbr_region_ops *ops);
++	if (dvsec)
++		cxl_sbr_complete(dev, dvsec, &ctx);
 +
- #define __pci_bus_for_each_res0(bus, res, ...)				\
- 	for (unsigned int __b = 0;					\
- 	     (res = pci_bus_resource_n(bus, __b)) || __b < PCI_BRIDGE_RESOURCE_NUM; \
++	return rc;
+ }
+ EXPORT_SYMBOL_GPL(pci_bridge_secondary_bus_reset);
+ 
+@@ -4917,12 +5086,6 @@ static int pci_dev_reset_slot_function(struct pci_dev *dev, bool probe)
+ 	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
+ }
+ 
+-static u16 cxl_port_dvsec(struct pci_dev *dev)
+-{
+-	return pci_find_dvsec_capability(dev, PCI_VENDOR_ID_CXL,
+-					 PCI_DVSEC_CXL_PORT);
+-}
+-
+ static bool cxl_sbr_masked(struct pci_dev *dev)
+ {
+ 	u16 dvsec, reg;
+diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+index facaa324bd86..0eaa34db93ce 100644
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -1371,6 +1371,8 @@
+ 
+ /* CXL r4.0, 8.1.5: Extensions DVSEC for Ports */
+ #define PCI_DVSEC_CXL_PORT				3
++#define  PCI_DVSEC_CXL_PORT_EXT_STATUS			0x0a
++#define   PCI_DVSEC_CXL_PORT_EXT_STATUS_PM_INIT_COMP	0x00000001
+ #define  PCI_DVSEC_CXL_PORT_CTL				0x0c
+ #define   PCI_DVSEC_CXL_PORT_CTL_UNMASK_SBR		0x00000001
+ 
 -- 
 2.55.0
 
