@@ -4,125 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DFA1C5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03D3C61DB6
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:58:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39D856B00B3; Tue, 25 Aug 2026 04:50:15 -0400 (EDT)
+	id AD8596B008A; Tue, 25 Aug 2026 04:58:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374C76B00B4; Tue, 25 Aug 2026 04:50:15 -0400 (EDT)
+	id AB0686B008C; Tue, 25 Aug 2026 04:58:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 263106B00B5; Tue, 25 Aug 2026 04:50:15 -0400 (EDT)
+	id 9ED566B0092; Tue, 25 Aug 2026 04:58:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED1C26B00B3
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:50:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B7ECF1C18DF
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:50:13 +0000 (UTC)
-X-FDA: 85139169906.10.A94142C
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id F28B6160002
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:50:11 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=RKFdwAWa;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf08.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8185B6B008A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:58:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0103A0338
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:58:57 +0000 (UTC)
+X-FDA: 85139191914.30.CEAFC38
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DA63740002
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:58:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787647812;
+	s=arc-20220608; t=1787648336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=imD7OJcy+PM8Ecas8hhVPwhNIQNnPaNcrXb98j5hJcc=;
-	b=N+6DgQ9NdOHy79nx6nkUEEL1l50yfDKMM9c7+/2xqpUMCOkLVbrdNxSkcKAt9gjC6L2e5T
-	YsrdTOoFWYzKU4geR/VyS00SGn++CnxvkS4zHFVa88+19o+VVz66KS+E9We55qS5PCQcMx
-	AzWhA6MEoB8w9lYQj+58aPCFNOY9yJE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=RKFdwAWa;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf08.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	 in-reply-to:references; bh=PRxtczeWQXbpr0x7hgXlJGQSVB9jbrQam9QiSSZqF6c=;
+	b=4PWuhDlMXzy9ziK4savpIa3PAuqh2gdEF83CjxEkxxRBzHCGWCeIk5NfGyrlFRVhY3+TwV
+	zZxVHEE0aCCrd/NmxSsOWbN1gSZ9vQnAx0Ax1hAVAmp+NmMloDb69PMbopF1nb2NOjfpiW
+	sviT+0xyLhIRW/E5dA3j1/6rbXbQqsY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787647812;
-	b=pUuzn/kO8yMglXeeYFRVWqf5HaiB2r7WjrR19ZlBmqTfcUUxy6gyh0F7nE50ZPHbUPgx5M
-	LfcL+6R3C2wHKyeUh5zKy+iy0FtgJaJg3HOrULvFQYYZdSkrH6Z45/lvEAA3gq3e6HiYQC
-	RuicpB27LIx1jIxvkQsM9+ENRoXfXq0=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-39652a6e963so377049a91.0
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:50:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1787647811; x=1788252611; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=imD7OJcy+PM8Ecas8hhVPwhNIQNnPaNcrXb98j5hJcc=;
-        b=RKFdwAWa8QjD2FcCWsukCTi0xtjwNLrJd61ooGFmMImfnDDLWlQh+lNqQuM0RLMtbn
-         ttm2QganZMjTnTJr841i62AdH8oH9dgEtvfDPqOkw06EnQHsHlwY1NWvCbny9GvHRZyc
-         M2v+vE1KQlaNKZnt/HGjkiH3mdBQ7JbQ9fDbzKVyJvAU/wM5XAc6V7qdNiewHWqlQj0u
-         iewpcYMbU/UIIb8RC/HHdvjCwI8bl74D96rI4w1TIfKwUG2DKZz8IfMxrkeCRRIiFHxQ
-         KGcx74v+oi1ck+CtihJWwt85yMW/rwNnhvc4BbmrFBlUySei3mbCSWV3X8M8BYgvq9EN
-         hE9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787647811; x=1788252611;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=imD7OJcy+PM8Ecas8hhVPwhNIQNnPaNcrXb98j5hJcc=;
-        b=ZKkPQPTIKA/KhDvsNKBVeNjh7YSe4tFIs4OXFYKRlHgt1HOlsGQq66wu/Y0a7hDg7P
-         Vzqg0/XbsfU85bOf14JEKy8p2idyBVcfmnnYFefPnn21JXzEIp8DeP4YvLhxF1wrvq6h
-         TB8IJuVHQgvDKMEm1wJvAIxLTt1Kjeh0riU3ctwwwLzz1ssfpLgWVHwQrCWz9st4RppQ
-         +kBdVEbw15fJkktwb0FwP28X9FAhqran6akqS7cnu4pOXb6KxyCeDaeyqKFW8EEo6pjT
-         x2xuxCwhzCoD6o8jj9FoxIfiU7yNc8TZDCcwQS2B1yDvwZVH26dwsM09sczRgg2lBTn9
-         E5SA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq5CvBKsy4fG4z/AJqjA18Rdirl9F8dEm12J6qmtplHzjIKyV+4tlX646sHdCCo3ZH+jTYsaGOMVg==@kvack.org
-X-Gm-Message-State: AFuF++mVvFNWxPah7qjxCJfyuz6QzGxjj2lTieXX0MB8JDJxGywqIADx
-	ClOzo5KRJXIsx6MQtI67YU6Oy3+DO4MphCJGHlh6DbPblLrp3K3LKvFha7uTJgX1/DQ=
-X-Gm-Gg: AR+sD10OKAcyFGpxbX9fhXPtRVbxOzVagyl8feGD+GPbwMbjt81qBfKHLH1SmOIrloT
-	YHo2Kiqng7O3nTvQ9+lB0W78LD5JHvjiTkkkqOnKxb8uy66y+q3+Brd9eZkfTsF9545Q+cPptBg
-	hN/y5O8WR0RmZcAZekuzr+3tzYn+FKapwBY7IK9kOOLCpXuUOO3hTJk+0biXyMEGCM+TBOsXYmY
-	672C12nBxiUYZTjmO3CACAbv7+koXTNx0NvzgefUnfSDWajsmbKovBRjr0S/Uv65ORl+s7Dw9zY
-	VnUpvBf3zwmh/Fx0ErNHgWCZr+ERbT9/QTioQVCVNWntFq9ulhaJmrAMBt9cno6XNAiE5jSaGXJ
-	3Ioq+08f5lLqhrCmiATTuJbAK2qe/YBTbSKqjgBVBNoar0f4Spw4rC5fI/C/DbDtUJ7ZK7ijbe3
-	hPlHULEr4WN7Pu63sofoPFQ4h0MPGKerWX9+sq6XrvA3ey+FlOV2xbDZbQWHLlp/5A2G77Gv278
-	XQ8mmh8zjVr/CftLoCY9o5ubg==
-X-Received: by 2002:a17:90b:2543:b0:395:8124:ac53 with SMTP id 98e67ed59e1d1-39645aaa837mr5929896a91.6.1787647810763;
-        Tue, 25 Aug 2026 01:50:10 -0700 (PDT)
-Received: from G6L4RL2QG9.bytedance.net ([61.213.176.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645da08desm2873386a91.17.2026.08.25.01.50.06
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 25 Aug 2026 01:50:10 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	linux-mm@kvack.org,
+	t=1787648336;
+	b=FRZJNCehZ3Aai9cc2gQ9DYNUpwWfi9LlBrkmb6e1NL3HHpM0r9y/B9zE4vb9cM31kJVB1x
+	25QAV5/+07fOzD8KzJQ+58mVtgDQCCr3kE1gIooOeWUIj2wAE5W9QdJ8ZrfuM+vh6w3IEz
+	yWv7BBs7JSBNeJIt/ydGHRyBNyI/myo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+X-UUID: 2d86fddea06311f19a56ed5b684f684d-20260825
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_C_CI, GTI_FG_IT, GTI_RG_INFO, GTI_C_BU, AMN_T1
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:df9ad7aa-906e-4814-9f3f-45fc084a67c9,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:35
+X-CID-INFO: VERSION:1.3.19,REQID:df9ad7aa-906e-4814-9f3f-45fc084a67c9,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:35
+X-CID-META: VersionHash:7db8b62,CLOUDID:6a7a5721c16a400f63271eb0392519bf,BulkI
+	D:260825165848ITGJ0LFM,BulkQuantity:0,SF:17|19|38|66|78|102|127|865|898,TC
+	:nil,Content:0|15|50,EDM:5,IP:-2,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,
+	BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 2d86fddea06311f19a56ed5b684f684d-20260825
+X-User: husong@kylinos.cn
+Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 2114683762; Tue, 25 Aug 2026 16:58:45 +0800
+From: Song Hu <husong@kylinos.cn>
+To: akpm@linux-foundation.org,
+	usama.anjum@arm.com
+Cc: linux-mm@kvack.org,
+	shuah@kernel.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	sarthak.sharma@arm.com,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>
-Subject: [PATCH v5 17/17] mm/hugetlb: localize HUGE_BOOTMEM_ZONES_VALID
-Date: Tue, 25 Aug 2026 16:46:08 +0800
-Message-ID: <20260825084608.47437-18-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260825084608.47437-1-songmuchun@bytedance.com>
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
+	Song Hu <husong@kylinos.cn>
+Subject: [PATCH v4 0/3] selftests/mm: TAP output and global-state fixes
+Date: Tue, 25 Aug 2026 16:57:53 +0800
+Message-ID: <20260825085756.63030-1-husong@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 5uz1k9qnh4btwocq78rtciieo8no9iai
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F28B6160002
-X-HE-Tag: 1787647811-605584
-X-HE-Meta: U2FsdGVkX1+Guf4nkFy7wVf199M7HZclovLHN+9prc6UkFqvt3UqMqZETUOgmm1xT2fH/5fnHjLG770YMPamqVQd0Wfd1B35pViaiNyLcIK8OT3BscnyWQlpdB2xz5bgBakVvEhVGxwS/OY9glR0J7y7OgUtCMkzCMgMHD9IEPBIqQ1uX4g3adU8wXj9Z4ekXM3FABkQ4fYdFDqxHPnBOt60vYCUh8S0vKtx/ulJ4GjC5pKRE+3ZBAIerRoqpSikc0snf4exvimlksZ8sn1zv3Kx2TSzppNI4WqXBHPMwa36jMGEF47W6g0ZYKuUD82stEcEU8fuv7Q+sX6y0X2iQxKwLMLzzcJfIoxiskNHDFvScpg5xAcqdeFw9Oe4k6qZGWRXTAqDuzd6xvqthAwGe4o2DpqJJ9voc9d4+00arTjks+lCI8TocFIb9VzXgeO9zJ1zvvwlaLpm3SuAqbsVnnbMZ5l0dSeQr0JmRWPQ6ZEugUI66XqkHB0rwwPgGGhiYIX5b6oFCXkq/aVpYst+fyQC9zFWPqTGkizvzE9kicD4TKAp+2+7S54lTZ8tT1qBVt99c4nWAxp5PQcHZF//uLaUtzPQRXbJOdf8PRrLm1gUuCJ8+Jf3YrbNhy8THBVkA3vlNeVc/z1zh/XqoAoRqtj5Gusj3ZLpH+yBSBWSdbUB4rqVoBxhPJIel/ylzeeystqLfYWnfqiBVh8Q7/ZnV71rk4FuQdfdq7+/nziwZ8plM5AYtEqdtQxQT7pQ6UrbFbX4XPrJEyU0xgwT4ulFudeUY/tySlRMCJK1Vs/JMgxDMA5AZEhkfXGF2gWGoIVl8xVXe7R2jFoP76nh8HDqalkNRUqNCHEpTPlGmfXwF67FfpLT+ePm37oQpMbGJR7hQHhKC4QUA0uytAdg8E31+iSdaRnvq1+/JfhfqIqx6EWL8OcwOYNsN7mb9X65WdHp1kOBDKzW0aUgnqQ6xjp
- 66/w7g5o
- RdY1PZgxE5kYl1A+3rAzRo6Yuqi0OhxbPDbPZgNQnkOnyMpKnb2o9F5HvGF7kr384vyskMAPFCiAvoJwm4CGmMnsFEKSOe3puP7Zfx8gD9BGWBiEoBvVuARaOiiepx4WpaFZNqIbc9gA8SD8QqISU7bAjKxYVZ4QXEMJAlUNqTA6vNR8XqWSM3QGSSEpwdqnJwoIbIYLTIXbvYOGeIax7GTMFa6tKz0RZR/fgavaKnmeKG94SumMq4DkvbhvIDmqqHDaivgtrvQfcB3HqztPgkSjDk27lmFIPzRptYZ+x2IyVMnealpJF1qYANcGJT6t8/4fUmMPZqtCy/plLi8j5sYEgT6pPEXDtRI0mIWKC+7fEcretwWksX08CfZejkOX7zaj9mU0Md6DiffMsHfU6eoQ14bUxQ+JiwE0W0fs1jf31YOpfF0/pqY8eVXt/ZurjRZZWdamCNVwvwIQ=
+X-Stat-Signature: gadnkznweuj6ussfc7s66bumte9nfa65
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DA63740002
+X-HE-Tag: 1787648334-204618
+X-HE-Meta: U2FsdGVkX19LMgS7e1Wfm1RYps33dRtxMG3KDJkEgpi+1Ss8efhkILjceecXkmaIRIPaP6dtfPPXnX5IVYZ5vnKiCO+ePueFVa6D0yAh/PWSuQLKPZsCQ4hMP4unoOYTkfzYjxerJvdFREN9HHFk1yGBImST+nEInZaAlqOuBAJV7WLQ8DafKl/zPPYpofKXMRnp5drT5t98dbD4mUNDDbDvlZGRwALb6GT3LR+fP/bZyw1jBzSC5WdTccVfuhT891JkMUd+35c8v5WCD2JnbU/iX9AW5PAfNocijX6P9Zy4Y7YXGpSZuf3GtxgFUNV0DClXJ3WtAY0R6xxBCWHyJkC9aeXvptLBleu/nKCK+1JKURXgIZsRDlZetTMODZKP0chk5k1EaWiXXJlG1KjWoqmXZ5PjIIgGJFcYEsu5ST4/WyzXYCpyhxI+iHqIeBTYKbFBudno7DLsRVMsQeTGJc0dbNqeCw+WMrfqz4TY3nj0xJJUS0gd0a9vYT/OONSMXEBHndVeLnC0emrzTv0zcZK6PyVItStj41wuT2V1QZytyPjoepckJbTwMtSMRifv1e/qgGnhT0EY7LKGK3GV37Mw+LnfYqzfR3qXluKfkOet4kj278foTc8HxJUjXg1WyMh3vyYMBQOSnPUszD9fE+IRnrmyqKJfIXmckt0mWGuYD98kuLuNGU8gWilWJe780qOlUAAoEjnNVI06iDaytP5qhvuWn0OYLHEc1bgIKOHgXeSlKvXhPJgZtSA56Y5X0G34O3SB5sir4N2OyD4HpfrB6kc2oGLBRuSl2zenjiflqZjRvOyjs5po5QYqRJJ88agZZRNEoTbWcrgbkjQrpe2R2B+HTPwxG9Fl1LvzGEMRbq/VogwG4z5BRB4mNw/LYYTpQEesXSxLb7rK1cOupVNa9rXI85p2miGXjsk+OfO5Bj3/ysN38LJjSj0wZvbq4RU43HhRhL0Zp69w0Jc
+ oC8WunXj
+ jvsYOZf2SJuG9AJuK7FMx7ECZ8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,49 +115,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-HUGE_BOOTMEM_ZONES_VALID is only used by the huge_bootmem_page flag
-handling in mm/hugetlb.c. Keep the definition next to that private data
-structure instead of exposing it through the public hugetlb header.
+uffd-wp-mremap and mremap_test never print the TAP header (and mremap_test
+skips with a bare exit(KSFT_SKIP) rather than a KTAP skip), so their output
+is not valid KTAP; hugetlb-soft-offline toggles enable_soft_offline during
+the run and leaves it disabled afterwards.
 
-No functional change is intended.
+Tested on x86_64.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Song Hu (3):
+  selftests/mm: emit TAP header in uffd-wp-mremap
+  selftests/mm: emit TAP header and use TAP skip in mremap_test
+  selftests/mm: restore enable_soft_offline in hugetlb-soft-offline
+
+ tools/testing/selftests/mm/hugetlb-soft-offline.c | 49 +++++++++++++----------
+ tools/testing/selftests/mm/mremap_test.c          | 43 +++++++++++++---------
+ tools/testing/selftests/mm/uffd-wp-mremap.c       |   2 +
+ 3 files changed, 55 insertions(+), 39 deletions(-)
+
 ---
-v2:
-- Collect Acked-by from Mike Rapoport
----
- include/linux/hugetlb.h | 2 --
- mm/hugetlb.c            | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 255a258f11d1..900c95e346b2 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -675,8 +675,6 @@ struct hstate {
- 	char name[HSTATE_NAME_LEN];
- };
- 
--#define HUGE_BOOTMEM_ZONES_VALID	BIT(0)
--
- int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
- void wait_for_freed_hugetlb_folios(void);
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 51d386b8b5c1..3fb261d9214f 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -55,6 +55,8 @@
- #include "sparse.h"
- #include <linux/page-isolation.h>
- 
-+#define HUGE_BOOTMEM_ZONES_VALID	BIT(0)
-+
- struct huge_bootmem_page {
- 	struct list_head list;
- 	struct hstate *hstate;
--- 
-2.54.0
+Changes in v4, per review of v3 patch 3/3:
 
+- hugetlb-soft-offline: the atexit restore handler no longer uses
+  write_num(); on failure it re-enters exit() through
+  ksft_exit_fail_msg(), undefined behavior from inside an atexit
+  handler.  Restore with plain open()/write(), best effort.
+
+Changes in v3, per Usama Anjum's review of v2 patch 2/3:
+
+- mremap_test: cache mmap_min_addr in main() before ksft_set_plan(),
+  so the skip paths in get_mmap_min_addr() are taken before the plan
+  is set; a skip after the plan leaves the run with fewer tests than
+  planned.
+
+Changes in v2, per review feedback from Mike Rapoport, Sarthak Sharma and
+the Sashiko AI review Andrew Morton pointed at:
+
+- mremap_test: save errno before fclose() in get_mmap_min_addr() so
+  strerror() reports the actual failure, and split the ksft_*() messages
+  embedding "\n\t" so continuation lines get the "# " prefix.
+
+- hugetlb-soft-offline: restore enable_soft_offline from an atexit()
+  handler so it also runs on early exits, and use read_num()/write_num()
+  from vm_util instead of the hand-rolled helpers.
+
+v3: https://lore.kernel.org/all/20260820061426.356869-1-husong@kylinos.cn/
+v2: https://lore.kernel.org/all/20260815080716.3596514-1-husong@kylinos.cn/
+v1: https://lore.kernel.org/all/20260812120821.523860-1-husong@kylinos.cn/
 
