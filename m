@@ -4,125 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FDB0C5DF9C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 00:19:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DC3C5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 00:19:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79B826B009D; Mon, 24 Aug 2026 20:19:37 -0400 (EDT)
+	id 5ED876B00A0; Mon, 24 Aug 2026 20:19:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74C736B009F; Mon, 24 Aug 2026 20:19:37 -0400 (EDT)
+	id 59F566B00A1; Mon, 24 Aug 2026 20:19:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 614296B00A0; Mon, 24 Aug 2026 20:19:37 -0400 (EDT)
+	id 48DBE6B00A2; Mon, 24 Aug 2026 20:19:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 377A76B009D
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:19:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A0BEC1C0F5B
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:19:36 +0000 (UTC)
-X-FDA: 85137883152.18.D3F2D7D
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9CF6D1C0003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:19:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HlJoFHZM;
+	by kanga.kvack.org (Postfix) with ESMTP id 21D116B00A0
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:19:48 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9BF9B1C142D
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:19:47 +0000 (UTC)
+X-FDA: 85137883614.02.50AAEFF
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A90871A0007
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:19:45 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nJXPN2r1;
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf18.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=jthoughton@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787617174;
+	s=arc-20220608; t=1787617185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zI08/Pq8IYiYHARKiGwzqOQw4uoqAVEC7og/atFPetY=;
-	b=bSRDmV8DPcO1nGsGoE4irMMOY8qYg8EWxtZKi9UAkNmXc++tkcssNhPNK3Z4cie/eRrGxl
-	MwEh5anHYQasL/+Ety0E6OFk0Wr1KX8OSrpX9vMgTs63Fk9SA2Eu5I4X51+/Sg9dYAnlIo
-	X2uERYx9Wxf5DEVsUG5fAac/c4ZUKPo=
+	bh=oi2XJsVVO+vc7c1/zrjvYVUavZv1Bhhh2/RTVMd7WoQ=;
+	b=OCMU02gs8+IAI+uJPHgKUQhsWXvzMwjCeVJ6QoVy2i1VeKcOAoKs5INcws9nxtjRWjHEYM
+	cBLpwmWwPUDbiStW1ryGPoDtYXjbERmSnsKlDMhuEwyo12Q1qFj2z0C9G3ItPTYOgmKWg1
+	zp4k2+L+AfGw4vI1BP2dIO9dJ5uMhyQ=
 ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HlJoFHZM;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nJXPN2r1;
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf18.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=jthoughton@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787617174;
-	b=H+WLIsRpnKkFqe8hEr4hO+ImQqV30yxORPDPNSdSpu0qSBnNFGdlaav1181bAagxPmR59F
-	ED2QliQFU3uQmMqSUtGX+CtO+zLSf35rAgkBjclLPO7GNBvWeQAmvOTFNnX5hplNTokvxq
-	E0mKptLFtyaTOSsNya6bS35DwBa5KjU=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c20fb91ed0fso638356566b.3
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:19:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787617173; cv=none;
+	t=1787617185;
+	b=R2fk6Z4MnahHqyV9gqYdOKww7EspTo03c5WG2Flw1yLDNd/Eb1VYtdf/6n15Au4ojg321B
+	8rm90MsafYeDfHK/N9SvmcfqfaNq+xU9mWj6v9mbUiU/0d6xe+/3wFL5mHIjwzTfDCYB+k
+	r1dM3tmWPYkPpV1CipUEGYNQsrbEReM=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c1712a04ddaso695838666b.2
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:19:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787617184; cv=none;
         d=google.com; s=arc-20260327;
-        b=WlkpoGJujrVVOK0weOsvbXIxBj0UCB8zwsrjUl7FOtpbstKVf3qiLwVEDa611eO74H
-         nTFOvQMLvbtw4dBLzCdYbY9GUY+x0bLM2ZLXwl+f+VBKWN7+22Nkmp8+dku3sXzFjQ+D
-         SrNnXD6KoFPpDtGvN1BXhtFd/jKU7GyObqZ6wI+/pp+RqoXJ2qkVgwkAxGpVA33sa9nY
-         jhhDJRHLvN28Tf5S43Uvn562R/BP4c6RpQ2CMX6weSTnMEhUqwFTIjC5DhN/xvRkio3z
-         r6qWDEZxSC6T8LtbpAggeoUpaZLMqgcC2+4tY64wUzGFIjks1Ml556Xem72uDOo11vdj
-         QVqw==
+        b=RaoP2N/POHnQyK4pUtd8q7wQrEjO/1QteqGl0bQtPRZFOxHpyKcrHgNaalfjug56NH
+         eK84D7Fc7HDW/EQkCj81i56HjJuhmGNnIJUIVZ06z01BYOosGfS0CS8hp8Xic/ymC9x2
+         8u8kzjx3SrfqusECC2N4W9rZvD5U1keo1fZkzILHN1fhzmVVyHReXE7d9V4DDDfdMFGu
+         HseqZKV0vRgf/1/PPtv4QFTWIqKwMX15Hr+uYB1Cu/QbJWUIFDThz4jqJMpqvMpHoXGh
+         i+nVgBDUKFfUEQZNosyY58vtzGVdSB4bHEed2ZxZMHLfvrY/meq85vcvvsifUTncPgJ8
+         mPEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=zI08/Pq8IYiYHARKiGwzqOQw4uoqAVEC7og/atFPetY=;
-        fh=bhCmn7VKbX8dBPAYI9kKB/keYNnh1CPGRTGjbFRttv0=;
-        b=I0ybRBlSZ111DJLcK0qf1LeJBuy14Z0DzvyUBZxbmUjB0wehkpj2MKr6ZirjgnQauE
-         hNN2QSgzUBVOYibIP5uORwF4FxHC0QdqjLW/U9+ipuUFD1gETG+9BdY9ljW6VVlVg6H1
-         ymlcdhPpzGJyEFmlwmXFl/ZYazcONsichkZfzJhVwFtt6A5tqY9szd6KkM8ScA9NAS3N
-         P2gsLBidjO4hwU3mKo1NklSRk+IRcsNkXaFXUAeGSidZxAlz8OHzwHwgPY+rCnyptkZo
-         yI2IgTSIX+bHrOShpVYp8SeoN2cQ0U1F1irmnDjV+6BsjMK/24Cc9wfr5Nd6ra69PrgO
-         PH4A==;
+        bh=oi2XJsVVO+vc7c1/zrjvYVUavZv1Bhhh2/RTVMd7WoQ=;
+        fh=FqVyFTeH7S2n+r+6XhPqYXDbM6e+x54L+SEIjrC0Gc0=;
+        b=RtnTyVXrbZdiN2FTpg1gtXtfgImnd118MhkYcVoUpobQuLKt5fcCS0L0n5WalXm+DD
+         XTw7nDyx/0eoUIH81cqUNiRqXvtGXS96qePeBAKvKsa/nttb6oElErkmDZUo93hlvJz9
+         14zfiAtEpuTvAbOXVl6Xeba8ouQpNrdrrv6RSumJj6jGIIGU+Xa/pgUk9BP3jzCstDbC
+         wP9LKvS5O9BlcgnRyzh0T5qIZWqbmdSLuEIOwuNzxbNQe6DwcFQ4SSAVVutY7hLSTQXl
+         HVzqYos1R9ryWrVvG4YmRKn/Aq4Hyof68U6QjJlrF8DWY5os06gEaEYjqva5i8oZtClB
+         GOkw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787617173; x=1788221973; darn=kvack.org;
+        d=google.com; s=20251104; t=1787617184; x=1788221984; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=zI08/Pq8IYiYHARKiGwzqOQw4uoqAVEC7og/atFPetY=;
-        b=HlJoFHZMy4iSPlpBYzbKc4MtA7pJLdXzOHg6PVcQpsOc3NG4bNaouzMDd8WHAZn5OA
-         lWyHbEkThC65gSYrhvskzGQfMSaLrJd5dTADLViatoZCWgPK5q2Rgqng0W+OGCitcVKd
-         br3IHs6M2u7CvcQkVm5i3+epbAeY1FRN20fsgf/sZPmwCDLMV3ZQYhx+VZGK6eVrrvhY
-         kqL+Wsg/un1Zq439vmHiq/4QnzFb0LMk7gfQjqj5SBzsTMBrj7MJUCrdWTO2cgqWJ9IX
-         zJS5hVj/AcKTDh0z7sJy+aA5OB1J7hNTJHPhBi60sJeDWmXlyMnokWn3zlsoFuPVovRT
-         WVhA==
+        bh=oi2XJsVVO+vc7c1/zrjvYVUavZv1Bhhh2/RTVMd7WoQ=;
+        b=nJXPN2r1cfwe1gi8DOjge/lt8XIpDd6vXMTIMO0B037dgSjFlCI0ldzstxT3KmlAYP
+         o+6jFfe2jOigEbkpHvVbAQUISqjhEBWnu5WYZjeJqoUhe5ZcGtZKgEHNfMmPFlBPYY8m
+         N6+IuF+yHXlG1J7hFmzRzZL3Yq+8RnJ6+OuiT64HpL4n0rBETWMjX4bvBqGKR6IipTx1
+         IbGua+3AWBRdE3YDxNTBY7BXXGXGMDPVvB2ahQH9X/c8LsqmYYMqlzXbtVBA64NYHIbG
+         6tXKsjHYA+VPwtvZJ6K1pV5DARknZJPi9Q0d5OU6V+NSwMROEOtnLFV3dWhQwiXl3Lcg
+         OPQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787617173; x=1788221973;
+        d=1e100.net; s=20251104; t=1787617184; x=1788221984;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zI08/Pq8IYiYHARKiGwzqOQw4uoqAVEC7og/atFPetY=;
-        b=mMJvWqCCSKZDyruF1BZqtfmaBax4mi8M3x6sB/IGjs24C0z4QnYBezOnHSGzMY7FxX
-         bZJS+QJ1/1Jj8mXrVEhtvm+lzy6ykJUlPH9baQMT3/OML1UteODiCeRxjC7wh6scux0p
-         p7zhUBIwhunN16a2YMnyVTiW51BleDsKULnIjZ340TrcMl2IF5Z/TL4VO9QA3BopHxBA
-         qFudFS6wVt82+NseKr+JbhMoyFhL5URmYWtf7XUbGvInk3iFBur5tcdjRen/koQWoqe3
-         Zkd50EpiYdl/g9hR9Cr8WGYs3pwpGro4+tQlOxYRKQIaGpQNx+G8/88LAeO4K5TZ9XTl
-         C4dQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqydW7pD/7ORemzMV/fLqF1zLX+Ptk3JtqXbrZ5LkNis2uC03XgZ20pOFOCtADrWl7FaM52MbHNmw==@kvack.org
-X-Gm-Message-State: AFuF++m4upRmU0z48J0s0yd6Dwr7AD4ze+7iwzZC3gnwNiUe8PeagCrl
-	VFR3gJGc7FimpBBYjgopmTPrJQ2TKklqjoxf2YqTZTDpv0qKiO2B3K10XUeOEkEnLyeVXAm4wcb
-	6GXkKmaKg6oZzTLJNc+jaNHH2b5pfwt1dmnozvhzw
-X-Gm-Gg: AR+sD10uwf1p+PMikqj7LBJSKVbNOaCNG9BLeHMRBzAYIbwmr5KPA9SgkoK6WLmhEbR
-	ztpbKwUaLLcuVj8HmxTV8t0ksd3yBDYxEeZVCj0OvBTfAGSSXqtVRq6nuP+c6DHotNbT83FIEKI
-	ZCupHLN4bVnN8KpTNayJEdktbOL3QtZNY4KATH7j70VWaiGf7wrXOUgfn8/oOeutPTijA09ZIcP
-	6yqN1//e2nBxmd8VIp1A1JXvRvtBmpOvuhugHngpDWvGB67OrKrSNfKIQMglP8dvKDXhHWC2AX6
-	p2/Sz6VQje1IK8hR084wgmIFRfy6PoBoWHAuqlRBusq4h79CJE0zSBWWzAh4Q/IwJPhko9gVXoE
-	7I61nIqj7RXj8S102aadmGC5iirNN8oyqmpX9omkO/nXPbmWmspfv7bsTbbLiTZTw6hfVrlzTfA
-	JvIefbTgCy0jk9
-X-Received: by 2002:a17:907:3e9a:b0:c15:e118:9b99 with SMTP id
- a640c23a62f3a-c246a6a3e6cmr3322345466b.23.1787617172901; Mon, 24 Aug 2026
- 17:19:32 -0700 (PDT)
+        bh=oi2XJsVVO+vc7c1/zrjvYVUavZv1Bhhh2/RTVMd7WoQ=;
+        b=OvGRQLWXzdevVDIraLCIImV3tPX15UEQGeFzf04CV2V5XrMEA+o2qPq9zrsD2fsiWa
+         WDdw2YVrc3ub8I1YJETjMOrGoToooMG6kHUM8ZRoQgBjPtW36UAL05XKoTdFX1ssaZ06
+         7mocJCAtfdFztbIzXYkhkSm3fl/sfVun7yHOOwiypTAfV0CjIExHc37gf9BD97WJdlTA
+         pGv+TYEPQ/FlsYEFW3PWdeUr6CcDyo02y8iWI4Z8qv0won6dm9laqAg52SLnKety8glR
+         MHcSVu5UKeXAEXtJSh76DOeV+2KUA2/TSfABazEGoRrVqjuQBZYyQO1ToFjpPDoAdC3P
+         GErw==
+X-Forwarded-Encrypted: i=1; AHgh+RplCVslXnaS7e8OLBDe4rPvJtMY5GYdEzG9B+AanymuoFq3SruA6z8OfI3aNvFVzZJu32lJsfvUrA==@kvack.org
+X-Gm-Message-State: AFuF++ll8F9YHitSdJfWKSq4JBNwWLT8KfLllUgfHP/RSgQOX61DZhcV
+	zryEmk7rAXjkrWu+TvG80PCWELLOHDSDihxheEbumRyXZtNFR9Q6lu8PyrneFBGTF80FyxoZlFz
+	B9mOtyGVG+oiNucAv9gAxV4xgm7o9CN7vu4wZhyRZ
+X-Gm-Gg: AR+sD12Rq3mNxWxyhg12WBK3DctySKa5gzM0f7xe7Q2+wvoKDDK3ml1jroamwr/3GVb
+	d91+mL4gqeASHWiiHz/nMlHyy3mj8/fh2by6DN8vmi/G7/IW5aubu0wxuylmu7zmHdAlQAcatYC
+	/mXAeMN0k3x7mu5Smf3bGt+usp75cL1SR4MlItdPEl5DFQtXYURfVyXDn1XeD/KX5OMS57xnpzU
+	vBo76cfjbcMReBxd97Vq767Vnp2CBBDYsVtLtw5RZMcQe80TZOTmP2Fik41HFk1J0Tyk2q2DMPh
+	s97b1QgKVBHMAXSrgGr3mXTn0oVuW+AcibPTirMA7rpF2R6cc1P+KPRNOpxmwMc0F7CqrK9qv/Y
+	YMWQ4DlZZqb3AyXBcRYq3DFVxlZAmYoWKdW4A8WZQxPAXd9NQt9DSSTxWO2Z25sgL9Cw06N4rgY
+	LWcbIUshKWtS1a
+X-Received: by 2002:a17:906:478d:b0:c20:31d1:a89f with SMTP id
+ a640c23a62f3a-c24921149camr2175651466b.24.1787617183877; Mon, 24 Aug 2026
+ 17:19:43 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260708031129.3503195-1-jthoughton@google.com>
- <20260708031129.3503195-18-jthoughton@google.com> <aoWBPU9XKmKjfLnb@arm.com>
-In-Reply-To: <aoWBPU9XKmKjfLnb@arm.com>
+ <20260708031129.3503195-4-jthoughton@google.com> <aoRnHjaQ9Y61OB5Q@arm.com>
+In-Reply-To: <aoRnHjaQ9Y61OB5Q@arm.com>
 From: James Houghton <jthoughton@google.com>
-Date: Mon, 24 Aug 2026 17:18:56 -0700
-X-Gm-Features: AcwNN1UvsCHgbvBzolQYlq-95gNp0yB_1rsCr8sUqEoaXoE7K7ke-wjKJ-gZEVA
-Message-ID: <CADrL8HVLsiuBGj1X+m89WWLUn+nwBEqGQfwixDnqCYm3cjpiTg@mail.gmail.com>
-Subject: Re: [PATCH 17/18] arm64: Permit onlining of HVO-incompatible late
- CPUs if HVO is not in use
+Date: Mon, 24 Aug 2026 17:19:06 -0700
+X-Gm-Features: AcwNN1UQZKYyQWHzZvf5pN87Sz8ZppUU1k5HLeGcPZGcMuCryj8aeaANnsSFHi8
+Message-ID: <CADrL8HXGZxkOhz5QVNzvJhh98akCzrGJd6sC_Nj07CMCXCJUSw@mail.gmail.com>
+Subject: Re: [PATCH 03/18] hugetlb_vmemmap: Leave pages partially HVOed upon
+ restore failure
 To: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
 	Oscar Salvador <osalvador@suse.de>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
@@ -134,14 +134,14 @@ Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>,
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9CF6D1C0003
-X-Stat-Signature: puxhjr9imt83mkmrh8d1z5t8ryan1aef
+X-Stat-Signature: bqdmb6mw3ifnc5amzwm3go8q55nrs94w
+X-Rspamd-Queue-Id: A90871A0007
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787617174-16263
-X-HE-Meta: U2FsdGVkX1+zB9b0SVgrRjNMX27Sa1eLjkv1xC9gTVOcpFQKObtWuOAfvoMZCwCJ3+eFn9hIOcT0IOu5dENynsmZ0dXlFyASknxUU1KVz1g+qM+BacPVDkhaTEH1v3E1FOeiX9NR6M/Kn34Xw1lkQdP/6HJ3KY6AKpd+3XFNcCFtJVJyVymK+F9zWnxzqQV40RRwB0RYARVa6oN7Yva3YPi4ibk4G6siyD7zriUwEq2Q98lCMeKdcWtOrzrk6qncqM2CC42dxqcwvytohNsTOjio3nQmmLfE+gQUHE/KSg+5fVXl/w+CqmLoF92wYgtXStYkvOpCpvxWx7YdJQ1zEA9AXJ64JGgH1owdptqrNmyUOB3/pwTrjq5Wurc0Zt6xLrV050RmW6CRlOEwZVzEMvhnAhwZdisMaiTeJVZfoMv6TOeixiiogtsrZUGDGHMun1TrzvbXLAnJCroQa50AFNZaXe7AP2kVj4q/dTz0kAQisFY97uWBBJeEPecr+59uvkgsXgxOkE1vvUxcdACvtrNXklMeOTBl7G0CkGcc0t7t9QTDhNLlQV+PvzivYPp9FM3wd2HU1n+bWk749wb7bqbvJSK6v11eGRv6Q05et9LfVKNEVUysA3yY9CBgKstUmvnm3YIpa2MIaQNaPMhrvC31DWdQdz/saOK96wkogjWRp9+bq7FyV94l8iSXyyNU642JxrgQJLp5cnYnK6r5iJ3W1hlumh04aS0MxtjNW3tAOxezojTNE9TH1QdwdF08r+7AHEOy6aIY/iUvxbIdfWXZ3LxpBnSrkQV2M4gvJF/Ovet2v88CmVEUXQISgkyixKnI7gy2HsOzy2EsvWcQeYDioL8nqRFug26swhD+yqVfddzuMF0n8FSs77PVGh3mVFiHSV1K47ADVQFcmUE7iiYBQIhIlVblOz7aRXSh74Wu0CrjI+0TFpxWWGcd6gKdYphWPfSiuquj/pTADKv
- MKEn7Ws6
- idmEfwTprpX3dnX8QQSdL1lCIkdJTbwCQ3rxPjB69giai9HNSqfy/4xRonAmfBAmjf/3wjbsozxmLZEIi2jpvQzUwcN84R+6sJ/zW4nSJx2G+UDnwXQaZ5FBUO3VgHbUtdczeJzXZoRYSccV5NA+e7BzSoZRbDMSDXpanj9v44sUpBEVDPlWPsrJ8k8tufpKwDpEWWUnYmes4J4NJrIZCbdzSHHR5RETgerP4jNZoCSFiBQ7nAZpHYn4dXb42DKIssIEoV49UDLUKkJth+bSD7UeBznu31gkJ/2uCgA0BWTI7TAw=
+X-HE-Tag: 1787617185-44210
+X-HE-Meta: U2FsdGVkX1+an7wXcJSeuvIEVqa5WOBTtLoxwueWj6mawYJMXpMiexplODMUYjDU2Y3I7TS+j7lScfE7UVHI/CGhuQQawBr4W4NO10bZB1e+4MG0Oz2Jh67yfFlHyCkL3hSq5f9Ri8SDhR0jKeTpgJqYuWmitWjPDX7lm1gHSiOexxB08jFgm3fw5UJPg5m/h+Pmqw4VBcQI0iYpdOHbIWiil7yAswkd79VbcIP6tuws5RW6WmDUirW+p7GLSBhsn9o7QnOQc85mYn0pK7rFhPp9Qdv3xBjoDKT7sHmY3LYl00ZfgQavDjYPeBV1hGwl8OCUtMEPZYu0NfRV4qEOeusstkMj59WHtX+cZ8oilACoNZQkBHpBaoa6+df12GWDSPyQQJeb7mN4dVALR4xrsOI0m2I7iNUcyWC95nc878Mpq6rYt0AlNmMblFNspsdtte+tK4Tlr2Zgt0fKhYTHZYxfDg+OgxlJu7ehoobvcg5dyFCxPjtqAFsE9ArXuro1JlBl1+hf9P3dXi5HhlFeHKTAYyYJULSMBo6zDJzG9zDj2MEf84//7YXF9AJ/Y1uaAWlJNtYpd0TQHaNvhhX3c41K1T4RnidSVjS2aWweRLL1QRiCMH83BCT+TYhq+qHiLmU1h+2EFdtnfZ2WPm8tORA+d1Ouf2P5pgzgsRecQaqOL9zVDofPtC5kyjyd//tKhpQS05LNmtSlEWrvR9sKa1F+r2alLGFbM0hsDeBAv4BDNXeKlNy3D5oQn+NKESOZSR20BN+m0bvAVyibqnLLTqp2bn5wdLeRHzIcVJOvPomNqO0nFUrmq0yTLtMBEZV7NJIQoFqgRxyY+HQmQuHm8RzK1K5YAlnh25zVbFId9muUZMmm+G3/dD798Yzck5pN3tnBOlpr9QrPCK5Uf//GkTDZhA7pkNlt4XIROEub/pDqq2A/0pz2z2bZ+IbER4KJjSx8UT7g3nZOnoG08nh
+ djG95Fbn
+ QSWUsYr8Z0bZVIzyGDipMgURVTxOcPIDWA+UM6nyBsSF2Nzog6twJ23GjxtHnu1uMfOckTjNBs/eSefJPWbzDnKnlMoTf/AKY9vCnC8cBwpdXQlLLlPcWdqWDSlMZuaalmn0mfRC1vj7vOgMjRPi6+ohxsBoFUAehvReBwDKD0wONBoI0UO422zOlrh9pEZlhryTsw2tmLGe+iz2jruzGpXMMQyLi4Ju8oP4oDCURbwAbsJrWifDp8yaAuHlM5u2bqYnTtfpARfJBHiG+JE+KpT8eEoH7ppi26H1SOTO89nLUuIimxVzo+vXH6tfBGtxVBLVJJiUltBr2iV5G3s8tvMzVWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,53 +149,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 19, 2026 at 3:11=E2=80=AFAM Catalin Marinas <catalin.marinas@ar=
+On Tue, Aug 18, 2026 at 7:07=E2=80=AFAM Catalin Marinas <catalin.marinas@ar=
 m.com> wrote:
 >
-> On Wed, Jul 08, 2026 at 03:11:27AM +0000, James Houghton wrote:
-> > First, HVO must have ARM64_CPUCAP_OPTIONAL_FOR_LATE_CPU so that
-> > incompatible CPUs can be onlined if HVO is not in use. The
-> > late_cpu_enable() callback is used to check if HVO is truly in use.
-> >
-> > If the late CPU is incompatible with HVO and HVO is *not* in use, HVO
-> > becomes permanently disabled.
-> >
-> > If the late CPU is incompatible with HVO and HVO *is* in use, the CPU
-> > is not onlined.
+> On Wed, Jul 08, 2026 at 03:11:13AM +0000, James Houghton wrote:
+> > +static const int VMEMMAP_REMAP_INCOMPLETE =3D 1;
 >
-> I haven't looked in detail at the logic here but do we actually care
-> about this? We still need to solve the BBML2 requirement around patches
-> 12 and 13. BBML2 won't be an optionally late feature for other reasons,
-> so such CPUs won't be allowed. This leaves us with HW AF. In mainline,
-> the check is done on the sanitised regs but IIRC these can still be
-> overridden on late CPU onlining with a warning. We only use this check
-> as an optimisation, so not an issue in mainline but can be come
-> problematic with HVO.
+> Nitpick: I get it's all within a file but a static const int feels a bit
+> weird. I'd use an enum or #define.=3D
 
-I just tried reading through cpufeature.c again, and I think, because
-`ID_AA64MMFR1_EL1_HAFDBS` is marked as `FTR_STRICT`, we will indeed
-get a taint if there is a mismatch for HAFDBS. When this happens, the
-sanitized register value should be set to the lowest value. This value
-should indeed be safe to use.
-
-ARM64_HW_DBM implies that it's expected for CPUs to have mismatched
-support for HAFDBS (indeed, this was the impression I was under as
-well), so it seems like a bug that HAFDBS is labeled `FTR_STRICT`.
-What do you think?
-
-I still need to work out exactly how cpufeature.c is going to learn
-about whether or not HVO has been enabled on the command line
-(hugetlb_free_vmemmap=3D1) for the purposes of preventing incompatible
-CPUs getting onlined; I'll figure something out.
-
-> If we don't have a strong use-case for mismatched HAFDBS support, I'd
-> drop these last patches for now.
-
-I'll drop these last few patches (14-18).
-
-The only caveat is that by doing this, I don't see a way to keep HVO
-runtime-enableable. In other words, if the user booted without
-specifying `hugetlb_free_vmemmap=3D1` (assuming
-HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON=3Dn), they cannot dynamically
-turn it on after the fact. This is not a problem for me.
+Fixed now, thanks.
 
