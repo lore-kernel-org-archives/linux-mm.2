@@ -4,150 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 339E8C61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 15:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AAF9C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 15:46:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 379546B00A3; Tue, 25 Aug 2026 11:33:07 -0400 (EDT)
+	id 0FB7E6B0095; Tue, 25 Aug 2026 11:46:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329A66B00A4; Tue, 25 Aug 2026 11:33:07 -0400 (EDT)
+	id 0ABD16B00A7; Tue, 25 Aug 2026 11:46:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CA876B00A5; Tue, 25 Aug 2026 11:33:07 -0400 (EDT)
+	id EB78C6B00AF; Tue, 25 Aug 2026 11:46:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D978C6B00A3
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:33:06 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5600C16048E
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 15:33:06 +0000 (UTC)
-X-FDA: 85140185172.27.239924A
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7F255120010
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 15:33:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=C+Qtx8BJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C0BE26B0095
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:46:09 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59724A3A40
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 15:46:09 +0000 (UTC)
+X-FDA: 85140218058.22.04ECBA8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 82E35C0011
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 15:46:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ldb23ZRD;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787672767;
+	b=4IKvv3mjagWSYuwziHPjHX94gTOz8lzlMlrXj2o3nVlKZKRXJlIVgFr4eJnzK3EzGEVS5i
+	eqD+v5u7e8nniszViXk8C6PIIefshOv4dEguBNhhYOSz+msEBYClzio9+zgJom9WcvMVDT
+	j01NMKQOJi5WhztJxmWTa9mzZOEnxFg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ldb23ZRD;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787671984;
+	s=arc-20220608; t=1787672767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uAKqLnS2duDg8f3jGAvM1PgrDRSN4wgtQcZNf8+IpfY=;
-	b=6A350rkKzHnDR+BW/pAyHeuSUT8Z6/55FujJvZxIA7/qSwdeHuf9zKJhEWO3V3g6/VYVAj
-	2vhkUvRFfPW1FQCdLWqGlO3TRBd8JrHxpE/WG0pMAX+r5mYOfsQ5Hyo/nTdy3Encay/oEu
-	hWTbyGlxix9KYy8e74gKPo8FVOALyu0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787671984;
-	b=Trj16iJ3mPmNM03WATUP7QF0DqOUmRuzsrxJemsW6xY8phDXLMkdljMF1u+HlHLq4ASl3k
-	8zzPsWXPqThff2t5t2/uwENHzDYjdJY1HKmfMSjlRgpxomt6g8pU0vcDrKrWQQdeTnQZzc
-	JtLVulCxUUVLOo5i0WEs5ReCgnvyJPw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=C+Qtx8BJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-4a46a53abc9so3906178b6e.3
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:33:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787671983; x=1788276783; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uAKqLnS2duDg8f3jGAvM1PgrDRSN4wgtQcZNf8+IpfY=;
-        b=C+Qtx8BJ1SS4Jef2OtmfbweGa4yxZKKMK3+Fk/Ra8xa02RBqa34FXq/7SEjV7D09Fb
-         Yx0wmGOjJPSN8jK/2ofyzeFuVbMTED/LH9/WvIxwfqOMyOb7R6x+Juml2ye0mnZKbtiz
-         J9HYiUp1DZXIlNgx3xdz7WLW7MNn1jHaMlD6kKCADqbQaSEaC5y7LEdZg93zhkqIFNTx
-         5GH4Gv6KcA8B865GI/8tejbNdKEPY32clO6ij540ch4RjMkXTbjO9GSzD/dlcUI1QXOZ
-         A3KKfQT4FQDcHccop/YnHrHwogFMevWT22bIQ1YOia3oyXFdFIghFm/7gOXsVYoPhmIo
-         VFSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787671983; x=1788276783;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uAKqLnS2duDg8f3jGAvM1PgrDRSN4wgtQcZNf8+IpfY=;
-        b=Q84vSTUOMQTmsJ3nYFcSUSZAtyq4DvaqC8KtWhlMyGiKLKekiJcBlizUeG03/AbAtW
-         5QPhtroscVBb7O9jUPhumf3kQgJ4K/xc9Wdw1wHS9exHLZ2K3o9T8nPD2Pi2rKKL6dhe
-         yaVQpbFebM+/qhzbx3SYKdmuigul6F0vZntIXSHWCRbR5ydao2RjoowMmhPqkYTWe1e+
-         vW1fZo3UNnBSqcVumPNUA47dp9yVnfFHwZ/2i/RMjfx4jhGg/+IpTvkQ7nWDLb9nf7Mi
-         Vfb7icpm652YnrvE3qrk/DKsHl3QJvZFehurvvRdbgm2z/Pb17QIsHCXUbYQnvgpz2mJ
-         Wujw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp1fFt44Mp70KknCRvNKqfs488gqb8w6qyRhw3F65KkiWWkkxGf5xaccXuskaHcUg/XwUUB5MdQ3g==@kvack.org
-X-Gm-Message-State: AFuF++nxaBLAwaY8nhoFmiHGwDdeYsDMapm0a04lnLBYi1wOkk4q++TA
-	RqndM8LNFxuPB3P1g3XGn14Fueam38APpF8Qn4ifaLQYV6FG/6HgILMc
-X-Gm-Gg: AR+sD13VwB9CX3LZEqYN65SH4HpOvTtGokR/DeAj1msqXtLrU/FRgyeHKHvi0GjQnI2
-	LwDWj2ANA5Bwk9RqrnnGNtSwG6wYVR5hRecZearfY7KHjjPpqw3LqWSXMdut7aGi1gCqW1f2l3v
-	TGnHyr+umrp+kPrKryrytabLwBl8Sp0cd/XCntVeEXN1QPMb5T4xuVKkXkiFrLZNCODTykCdA1b
-	5AjbZYdG5jEyYMchAIZjkl7JR/sviqfXAG9ahSuAYqLfjcKG2VhEdi1Drr76FL8gZsHETsiUGI8
-	AcxbV0ZDtZ8h5VhHo/YuIKuRAvJy2fnbDVK5HSDB/3Qx061mJMqazIFh5DI5ZWiQDfDUYHdHtp3
-	BpvBcsKqTnr6RWkzUXqcAPusOIqbpJ9MqmVXbuAg8TY1pckSdaQiq4y0AKZcP36iQWLx2gCC7y/
-	bqf7muHtPb2CPjv9zc6HwfJR8BHLoqwnVYBTiCdNf8BhCz1IIdVXnntjyT5wbOo60EaeEPMau55
-	iuRV1pL5LA=
-X-Received: by 2002:a05:6808:4f49:b0:495:ff85:d33d with SMTP id 5614622812f47-4b35059a824mr7724933b6e.12.1787671978714;
-        Tue, 25 Aug 2026 08:32:58 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:28::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b32c690f27sm5952581b6e.7.2026.08.25.08.32.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 08:32:58 -0700 (PDT)
-From: Nhat Pham <nphamcs@gmail.com>
-To: akpm@linux-foundation.org
-Cc: chrisl@kernel.org,
-	kasong@tencent.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	yosry@kernel.org,
-	david@kernel.org,
-	muchun.song@linux.dev,
-	shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	chengming.zhou@linux.dev,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	qi.zheng@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	riel@surriel.com,
-	gourry@gourry.net,
-	haowenchao22@gmail.com,
-	corbet@lwn.net,
-	hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	skhan@linuxfoundation.org,
-	kunwu.chan@linux.dev,
-	kernel-team@meta.com,
-	nphamcs@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: [PATCH v4 11/11] mm, swap: widen swap_info_struct max/pages to unsigned long
-Date: Tue, 25 Aug 2026 08:32:37 -0700
-Message-ID: <20260825153238.2695446-12-nphamcs@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260825153238.2695446-1-nphamcs@gmail.com>
-References: <20260825153238.2695446-1-nphamcs@gmail.com>
+	bh=4ZS6vls3JJvraikbo58pM3Byu1hOLRqYEyusdsObgZQ=;
+	b=F2J3j/cxJtksHU66cvJk8kM6ODc7+g6Yt2vXLZrQMRcp6nDmMnhYmM2YN6vO4KFhYzf/Bw
+	blkvl2BFXfZaMxw0Gni/7j13euPODIaT05VHMam1DFrzRkqUvWeaR+myyKphQEAS4Gu2kX
+	rJ15msxqIRERjqm9rTWHhzaQUaW4B8Y=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 51898401FB;
+	Tue, 25 Aug 2026 15:46:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B1A1F000E9;
+	Tue, 25 Aug 2026 15:45:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787672766;
+	bh=4ZS6vls3JJvraikbo58pM3Byu1hOLRqYEyusdsObgZQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ldb23ZRDdCE+NR/qzf3ORdHVGJXRkcBRGijiRjYrlJNvjKXObnTdKWyPIZCDJcDzm
+	 RShkQ/flAw0okf21wCi8biSaT4GTCUqE++tZZdUD451vSrs0KdNOjPYxOI3YJWIPTC
+	 35h6QTRoKf3TIV8/UIvPUfRxBLmVNatdJUMpTsys7wgU8bf06MDm4rlS8v2RLn4OkA
+	 7m/Z/rWwqHQ7ST181CHP8FJPe9WZcGr50Zr21XKQXhc2OKsc8QknFx0H0hFZkhhlUh
+	 DDQawLEGXCDPQe1TVMTjgWHYpGCj9L7zK4OLLCM7TgypAYFxeRfD2T1/8Fjv4J4wTx
+	 l0Z6YCDKzDS/g==
+Message-ID: <5970a8d4-fe7c-4dde-bdc8-1c66bfb57f12@kernel.org>
+Date: Tue, 25 Aug 2026 17:45:56 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7F255120010
-X-Stat-Signature: pg3w8dudo7n7cbph1qbxcaq7kz9mwzt3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+To: Eric Chanudet <echanude@redhat.com>, Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>
+References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
+ <aowHqqaqK7TeexQH@tiehlicka>
+ <ao2gA_m3BCBu2esy@echanude-thinkpadx1carbongen13.rmtusma.csb>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ao2gA_m3BCBu2esy@echanude-thinkpadx1carbongen13.rmtusma.csb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 82E35C0011
+X-Stat-Signature: 8ofwtakrgkydo1t9rz7ftnz6nbgzjz63
 X-Rspam-User: 
-X-HE-Tag: 1787671984-156571
-X-HE-Meta: U2FsdGVkX1+3ydJtCm2sjCG21TZTEPW0Glp7yINPnCDS7nzZb0QJnj/SaYSKUxedM+RdnekkD+pmdCmChACxN65Rt3l4spZneUKXz3TDfPxmBBeQrfF/s/ES6pTs2+ekYmP5jLgPpEhY0FRY0jgiCR+ukb0HIVPGTknlfYD/u2QRJG3AVFXXyC/rhfsDMNCenSwAi2zHAENDj/gkZKe0pbCrEpbuswQq1Fl68ikgWMkKqjbf4e3CqfeG3K9GLk8aZEBJrZ4wnkUUDas0mCknYPLGldUFmFTjOvvjoQ0LQkGUTpthaRTabo9OzV26G2jE4gbwoJOcWB5Llsu3KaE6y+jobgxs2/UclBb+QyRHvJRZESMDrDxskTykhAOFF0DExB2SotbbRlNhuAwFamRkpd20cOnn3C3pI5EziRG0LgLN/3DgotIBN6YyVt3ziZhrfDIcUjoc2qEtpnlSHbBULuJ6WUgOZeGc+WjtUM5klQ4dJFjMbC1NdBOFhVjHNpMiVaR/MSG0nfpWP85qurwnumDK8REdkcigi9ZC1hf0shFS3JK36flrg+f+80YVUYFzvWWz8XNIUYuUgBR9lwuGTgKzuTURXG9trBm4TrmvA0c2HeSc4NPgGODckSKISoTdfqDOF9BLXDPUXRlzMcv3Z2oqiUNI3ZUAuvTG7AkFW2k2lqvge+5EAR9gj9q1+ycg73EjVBcjDjyLgLQChn/CEq4U6wgP1K394JIqYe7WjSfeUqLlJL4n+Ca+esThUWmvPYiJ4KoKKFsspXOsChpeHxQAhRWckNPLbpNIhwVdjasgPy57lUwasztRijo5sPwgTGLpzjrXK5WakXs8xs5E3+MrcPK9ETl16fk02pv9gTR8RB8eef4nk3CPMZ6GCiI15+NRtgFJDlv83XLAsTzZMqkJv8vzr6vc3fNryGQBpBEJN1xPS2BHl+1n/MI8yfQD4n+LIO6flqGVpritk5Z
- xuEOKYmv
- jzqcSy/GWbDAf4dKJgpm/XVBTjw64rKkntq6JzgZNgG3Zgv3i5sSveBxXhccmf/rvqiO00X9W2vYudVPklF8jcWe6sfzPzijuf05HIjq8iHv357jie1jAdnIjcXgOhpNCU+PyiZ5uTYZ5kVPMsFABx7jYy1VAw5LFyXwjlY583CWACPctAgyKS+VIA9ZmWGIsQotL0Zk1op9IHV6ZU//Q85HP20VINZgFTCIwkWp/LEq6NekIlFuiCNP+IX5K/nj1GpGnzdK3rGr4nCzojkkwGYLH9qEnt+8iUFqgcNo5ULs0jLa0FUuoTSw38GavivvtLX4tqWzJ3usWnxaqM8/e3OHsmy1ldul2+D2LYFxejyR2qGwh3QSfKwZwtXI4M2GWZGR8WsieKLOS75Fdiz01+UvKCudAZiIAiBBXx6qBXIma+w4QmQGky8tvrcQtIZgbwCIunwWHIxma3yQ7HU2e9wNflRO/Yewc0IbZ0MhFzLjacrrluUjl1sbYYdlg0lo7zXkF
+X-HE-Tag: 1787672767-888603
+X-HE-Meta: U2FsdGVkX1/qgz0HmaxfEjqhPoyBlUSqzCpD0engKLH3A4an9NoVUBjmfr7eFS4RIQlxhTItLjk1ZFxTEkXh1I/syexRb7bkrbUabh7R5OZJzCVDl+LwN/RQhO8fGN6wVhmvxgdM1Soc097RqBMmdR0vnaswebu+JILvKaMJlkDClbZQ2gKQBAXsZ4Lud579JFzi4E+ND5qvFmfXAr8dRHu68kY9FYf925lqM46Pf0O5g/rG0Nf4SQfdJBbFZe436dCiVY3GLd8HzxIhswipxXZiZPidod6nBqdJXbYapr0SugfUsNuxY0t1DmI3cwQ6Y6rorSl089FiIF9DPnhgabliLVi5snYduA3egGVjTs6TduMPHOeCGCss+lcMmfLzm7e25fG9cpHgfPNxDk/hd7unm2B6+Upp3QFe50wb+jA8M5DU2Det8W8qGPUrdJ8irZLRU5VTrmY5iWTWNidClkt1B1bFNUJEtWiAOfMMG3t8foE0vDEi/oAhb2j2uqsrDXmp2B27BspoyEtPgIl6MEGi7PQtBxEebNXPZcAuExZfWG/gggUx9i2JIC7h0x3RM2ScU9MlJu+mDjebUEFFqZV2h3wHqTIlrYXUWeTMe5lA3S6hQHOmqd8tUmsJxxIJH7y2V9HU2t3ywe324fCqf+8fOq9LroU1WM5CpgdB6WqvC9/HsFZz7zm2CZXEgSdcJnukIy5b3LCSuO3jz8e/xvTYHW6p4OMlDL1x5XzndJf0OKV4wYQIpZQKupHg6Xkf6lr3r00E0b5Q/ouHh+7KN0iMsn1G8QJpcHmGbvGvmO0tfYk8307uBm+0T837q9uB8E6SglheOeokA0OvVfG7mU9elxuwsM/vEFd9e153VmCCVkzUUgT4q/D8SqXviaj/GfSSejOltWIt1rfaZBxJXL2GnigAoTjP57pFyDhTfjvBE5mZe0TnBIqb4EiEEUAZgyXcTAXEquAfVcXBI8H
+ lKoudPEX
+ +bxjzYWnvzDTFTDk2HE0ErG4J7O5s5x5Axcgp5td+fKiLTOFRKV3M4rzB9j8s2c5xhqU+d1xevMm8Yn+1Vncqx+yNyAF7EEs8ZP9sBElCfVH8YzvCE1C6wvbCYTFCCx8vNCt6M0MpGW155c7R4oUtxxgqRSRrTvlNXR50QKIsD5phGXu2s4ALxTnR3xei9VfT0j+r8O7+ZU18eMtDlYtHsP5RxAHBGMkZPgjF/BWn1PmWMmVFNX0RY0At9otl6rvZnTge
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,208 +151,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Widen swap_info_struct->max and ->pages from unsigned int to
-unsigned long so the vswap device can exceed the previous 16 TB cap
-with 4 KB pages (ALIGN_DOWN(UINT_MAX, SWAPFILE_CLUSTER) pages).
+On 8/25/26 16:47, Eric Chanudet wrote:
+> On Mon, Aug 24, 2026 at 10:58:18AM +0200, Michal Hocko wrote:
+>> On Fri 21-08-26 14:56:52, Eric Chanudet wrote:
+>>> CMA allocations are currently unaccounted for by cgroup memory
+>>> controllers. As system resources, they should fall under memcg, but CMA
+>>> areas partition the available space for different purposes and memcg
+>>> doesn't have a good representation for that.
+>>
+>> Which CMA usecases are covered by this work? It would be also great to
+>> spend more time describing usecases.
+> 
+> We would like to offer some usage guaranties to userspace processes
+> ending up doing allocations in CMA.
 
-The new vswap cap is the cluster_info_pool xarray's allocator
-limit. XA_FLAGS_ALLOC stores allocated IDs in u32, so
-max_pages = UINT_MAX * SWAPFILE_CLUSTER (~8 PB at the typical
-SWAPFILE_CLUSTER=512 layout).
+How does this e.g., relate to hugetlb allocating from CMA, to then charge to a
+hugetlb cgroup?
 
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
----
- include/linux/swap.h |  4 +--
- mm/swapfile.c        | 63 ++++++++++++++++++++++----------------------
- 2 files changed, 34 insertions(+), 33 deletions(-)
+I always thought of CMA being a low-level allocation mechanism with various
+different use cases, and actually the higher-level users should decide how
+to/what to charge instead.
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 95386a86d3fd..5310ac0f3faa 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -246,7 +246,7 @@ struct swap_info_struct {
- 	signed short	prio;		/* swap priority of this type */
- 	struct plist_node list;		/* entry in swap_active_head */
- 	signed char	type;		/* strange name for an index */
--	unsigned int	max;		/* size of this swap device */
-+	unsigned long	max;		/* size of this swap device */
- 	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
- 	struct list_head free_clusters; /* free clusters list */
- 	struct list_head full_clusters; /* full clusters list */
-@@ -254,7 +254,7 @@ struct swap_info_struct {
- 					/* list of cluster that contains at least one free slot */
- 	struct list_head frag_clusters[SWAP_NR_ORDERS];
- 					/* list of cluster that are fragmented or contented */
--	unsigned int pages;		/* total of usable pages of swap */
-+	unsigned long pages;		/* total of usable pages of swap */
- 	atomic_long_t inuse_pages;	/* number of those currently in use */
- 	struct swap_sequential_cluster *global_cluster; /* Use one global cluster for rotating device */
- 	spinlock_t global_cluster_lock;	/* Serialize usage of global cluster */
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 8c80544a7d25..9860fb3b079f 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -429,10 +429,10 @@ static inline unsigned int cluster_index(struct swap_info_struct *si,
- 	return ci - si->cluster_info;
- }
- 
--static inline unsigned int cluster_offset(struct swap_info_struct *si,
--					  struct swap_cluster_info *ci)
-+static inline unsigned long cluster_offset(struct swap_info_struct *si,
-+					   struct swap_cluster_info *ci)
- {
--	return cluster_index(si, ci) * SWAPFILE_CLUSTER;
-+	return (unsigned long)cluster_index(si, ci) * SWAPFILE_CLUSTER;
- }
- 
- static void swap_cluster_free_table_folio_rcu_cb(struct rcu_head *head)
-@@ -848,7 +848,7 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
- 
- 	/* si->max may got shrunk by swap swap_activate() */
- 	if (offset >= si->max && !mask) {
--		pr_debug("Ignoring bad slot %u (max: %u)\n", offset, si->max);
-+		pr_debug("Ignoring bad slot %u (max: %lu)\n", offset, si->max);
- 		return 0;
- 	}
- 	/*
-@@ -1085,13 +1085,13 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
- }
- 
- /* Try use a new cluster for current CPU and allocate from it. */
--static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
--					    struct swap_cluster_info *ci,
--					    struct folio *folio,
--					    unsigned long offset,
--					    bool *nomem)
-+static unsigned long alloc_swap_scan_cluster(struct swap_info_struct *si,
-+					     struct swap_cluster_info *ci,
-+					     struct folio *folio,
-+					     unsigned long offset,
-+					     bool *nomem)
- {
--	unsigned int next = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
-+	unsigned long next = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
- 	unsigned long start = ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
- 	unsigned int order = likely(folio) ? folio_order(folio) : 0;
- 	unsigned long end = start + SWAPFILE_CLUSTER;
-@@ -1168,12 +1168,12 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
- 	return found;
- }
- 
--static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
--					 struct list_head *list,
--					 struct folio *folio,
--					 bool scan_all)
-+static unsigned long alloc_swap_scan_list(struct swap_info_struct *si,
-+					  struct list_head *list,
-+					  struct folio *folio,
-+					  bool scan_all)
- {
--	unsigned int found = SWAP_ENTRY_INVALID;
-+	unsigned long found = SWAP_ENTRY_INVALID;
- 	bool nomem = false;
- 
- 	/*
-@@ -1196,8 +1196,8 @@ static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
- 	return found;
- }
- 
--static unsigned int vswap_alloc_cluster(struct swap_info_struct *si,
--					struct folio *folio)
-+static unsigned long vswap_alloc_cluster(struct swap_info_struct *si,
-+					 struct folio *folio)
- {
- 	struct swap_cluster_info_dynamic *ci_dyn;
- 	struct swap_cluster_info *ci;
-@@ -1324,7 +1324,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- {
- 	struct swap_cluster_info *ci;
- 	unsigned int order = likely(folio) ? folio_order(folio) : 0;
--	unsigned int offset = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
-+	unsigned long offset = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
- 
- 	/*
- 	 * Swapfile is not block device so unable
-@@ -3423,10 +3423,10 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
-  * Return 0 if there are no inuse entries after prev till end of
-  * the map.
-  */
--static unsigned int find_next_to_unuse(struct swap_info_struct *si,
--					unsigned int prev)
-+static unsigned long find_next_to_unuse(struct swap_info_struct *si,
-+					unsigned long prev)
- {
--	unsigned int i;
-+	unsigned long i;
- 	unsigned long swp_tb;
- 
- 	/*
-@@ -3464,7 +3464,8 @@ static int try_to_unuse(unsigned int type)
- 	struct swap_io_ctx ctx;
- 	swp_entry_t entry, vswap_entry;
- 	unsigned long swp_tb;
--	unsigned int i, j;
-+	unsigned long i;
-+	unsigned int j;
- 
- 	if (!swap_usage_in_pages(si))
- 		goto success;
-@@ -3921,7 +3922,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	struct file *swap_file, *victim;
- 	struct address_space *mapping;
- 	struct inode *inode;
--	unsigned int maxpages;
-+	unsigned long maxpages;
- 	int err, found = 0;
- 
- 	if (!capable(CAP_SYS_ADMIN))
-@@ -4343,12 +4344,8 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
- 		pr_warn("Truncating oversized swap area, only using %luk out of %luk\n",
- 			K(maxpages), K(last_page));
- 	}
--	if (maxpages > last_page) {
-+	if (maxpages > last_page)
- 		maxpages = last_page + 1;
--		/* p->max is an unsigned int: don't overflow it */
--		if ((unsigned int)maxpages == 0)
--			maxpages = UINT_MAX;
--	}
- 
- 	if (!maxpages)
- 		return 0;
-@@ -4589,7 +4586,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 		goto bad_swap_unlock_inode;
- 	}
- 	if (si->pages != si->max - 1) {
--		pr_err("swap:%u != (max:%u - 1)\n", si->pages, si->max);
-+		pr_err("swap:%lu != (max:%lu - 1)\n", si->pages, si->max);
- 		error = -EINVAL;
- 		goto bad_swap_unlock_inode;
- 	}
-@@ -4677,7 +4674,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
- 	enable_swap_info(si);
- 
--	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
-+	pr_info("Adding %luk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
- 		K(si->pages), name->name, si->prio, nr_extents,
- 		K((unsigned long long)span),
- 		(si->flags & SWP_SOLIDSTATE) ? "SS" : "",
-@@ -4884,8 +4881,12 @@ static int __init vswap_init(void)
- 		return 0;
- 	}
- 
-+	/*
-+	 * One u32 xarray ID per cluster, so the device cannot be larger
-+	 * than UINT_MAX clusters.
-+	 */
- 	maxpages = min(swapfile_maximum_size,
--		       ALIGN_DOWN((unsigned long)UINT_MAX, SWAPFILE_CLUSTER));
-+		       (unsigned long)UINT_MAX * SWAPFILE_CLUSTER);
- 	/*
- 	 * SWP_WRITEOK enables slot allocation. SWP_SOLIDSTATE selects
- 	 * per-CPU cluster allocation; vswap has no si->global_cluster.
 -- 
-2.53.0-Meta
+Cheers,
 
+David
 
