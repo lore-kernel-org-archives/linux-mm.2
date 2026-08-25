@@ -4,104 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE89C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 14:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86D9CC61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 14:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E4646B008A; Tue, 25 Aug 2026 10:24:39 -0400 (EDT)
+	id 8074B6B009B; Tue, 25 Aug 2026 10:28:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3970B6B0092; Tue, 25 Aug 2026 10:24:39 -0400 (EDT)
+	id 7DE516B00A9; Tue, 25 Aug 2026 10:28:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A71B6B0095; Tue, 25 Aug 2026 10:24:39 -0400 (EDT)
+	id 6F6FC6B00AA; Tue, 25 Aug 2026 10:28:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0490F6B008A
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:24:38 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B318A3325
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:24:38 +0000 (UTC)
-X-FDA: 85140012636.21.2B51EE5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EABF520008
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:24:36 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D9916B009B
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:28:36 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D77FF1A0420
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:28:35 +0000 (UTC)
+X-FDA: 85140022590.14.5232C1A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3C46B20005
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:28:34 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cSJuJPMk;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HMNJ8UgG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787667876;
+	s=arc-20220608; t=1787668114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qjHXTa0s8zvN8eWbsgZQbbsnAvUJrCviQOkjU8WoR6o=;
-	b=Buvevu+iUVv9F6RjiEeTeW2s5vLuRPu3uerMEx6To4dHPso5GrQKd5AgSEZOcTMl9cz22v
-	8D4ZvqEWZQnmSvMD2gFA02exDgU+qYY1PJ/JS1aqXaNqulIUTcHJk2cyIoy7YR6Lps1rfu
-	4+Go1kpNT3gPT6GEs1W8Xjqjtp1RC+U=
+	bh=Z12uxGrbsG5ycXsxT+NNx4PFXhBYN+3qRQ7WmF+ATxk=;
+	b=wyYdvR15qEK/yL4b8Oz7dg0HOu8JeGFBhAC5ekrQT4eiW0rncxO1W7OxbbxFBNaSImcLw5
+	/u+GlmeZqnAB2jTUEvbhw/JojoxZRJevT63HrlgJdPtcdMpm9iX9b1Dfm6HCu7zkrGrA9T
+	8p6ZeGrFV3x6OOpo/G0059u6EWPkwjs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787667876;
-	b=RdPLxGWNVxtHtNthn9/zZx1JzBV7Se2UnsWqVaLq+ynV9FbkfTY5yMB/uX55a8q+tWlj0D
-	ZkJEpVGa0MBI5iuuXvZK0YNwPX7kP8sMQhiV2u55RndZEGevEqvZb7ZM/iucqMFmJxKyT8
-	JRUZIxDpgK49hoJUHAyPEjUO344DH8E=
+	t=1787668114;
+	b=iRe9vezbC/T21v+rGmVmAZIIQ7KWUeD5mFVJJK0pVaqpR+6PVaoaJasxmdGe+s+ZrhkYJC
+	ZFsMpU7NnBtQLEZdD88ZSPnat7K97ICc82hq0xAUzweQpHUPtRssWg2baAtKa4zz9d91+D
+	XKiFtzSj7KmydJ4LAaYJVVWXSPfmm4Y=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cSJuJPMk;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HMNJ8UgG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D50136011F;
-	Tue, 25 Aug 2026 14:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C5F1F000E9;
-	Tue, 25 Aug 2026 14:24:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D9F6406B8;
+	Tue, 25 Aug 2026 14:28:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779791F000E9;
+	Tue, 25 Aug 2026 14:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787667875;
-	bh=qjHXTa0s8zvN8eWbsgZQbbsnAvUJrCviQOkjU8WoR6o=;
+	s=k20260515; t=1787668112;
+	bh=Z12uxGrbsG5ycXsxT+NNx4PFXhBYN+3qRQ7WmF+ATxk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cSJuJPMkWhZS4E2xMS/50Ko0vEa6gX59SNuYWUKf/rZlhN6uiK7pfq4bT2DZWA5gO
-	 RDAgnPa4GZV0irpj8/69hCLcQUcqKtnbqd497v4e7hcPVE7SXltC4RIBI9AumZbfrQ
-	 EYlEDD//W1f2zayHjmjmDYXqqmlpdJi8ND3upHF+CJNXYJ47dZATgpllmSFLIeugxc
-	 oOg+IaNv+SPZc+7MJmp0l58vCg79Ncp0EFwjUAF2kGmA8VqcHXLKouMrhv6/IpEinf
-	 fKdWXnPqsVh6HCggLLWZfYIk+dUmUX5fQ/ppQfjCW80/9CsduRnztcPGU/3mKUQXTE
-	 Jrfk2DhjJ3qHA==
-Date: Tue, 25 Aug 2026 15:24:28 +0100
+	b=HMNJ8UgGmzljeesIDsBPDrDy2/WpRCkDYIvVGSRSEtQjmJ6jQSlfeSO0otHWXQlP5
+	 Rny3tvsqwo+DWFz5VSguGK+SiCFMLx9CfGhXbNqTL0oKe847zFpTCC2LX7b74J7Snk
+	 AzkPS0ko6FzBkT+xTm1y8Y7ZYYeF4paAB74AcSCY/+nJFk9iT0CQzYIJpJRVqlsH/J
+	 6dyTnV0lR5qfRtOvZW0AoX4jvsFiY385MDoSLBTG9zn5yjrVeZPQj4REelusb0VTAf
+	 tEsONApkMcuyyEwIXPPJibZAPowgMKGYHc57P1YA61hxnHrRji3Ub3dI5GL6B25gKl
+	 tvUvR7yZT0WEA==
+Date: Tue, 25 Aug 2026 15:28:24 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
- PROC_MEM_FORCE_ALWAYS)
-Message-ID: <ao2jfUGzbtlW0LBI@gremlin>
-References: <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
- <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com>
- <dd8c34a9-0e09-453b-88e1-0a5511816627@kernel.org>
- <CAG48ez2bZEV+3ww2x9XV_5vRPZ_3jU_zg6+h=BDKQ94Xrd3Tqg@mail.gmail.com>
- <aoibvf6CY99IXynk@gremlin>
- <CAG48ez0CX-PT5Yk5gYJuB6wPe26j0gHHXQqYoNtTA=iHe_5Wdw@mail.gmail.com>
- <aox7tVIQBMuz-xFO@gremlin>
- <CAG48ez2-8UjzOp=St5eTPyG_yd2iBmPF6y7qVBTNaPNJgoX=BA@mail.gmail.com>
- <ao2a33Xf3U0kQmM_@gremlin>
- <CAG48ez00PjoaXt4xJn1DCNdZfmFn4faya++=U2EeW0_vcYXcqg@mail.gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org, 
+	liam@infradead.org, rbm@suse.com, akpm@linux-foundation.org, luto@amacapital.net, 
+	brendan.jackman@linux.dev, liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, 
+	broonie@kernel.org, mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, 
+	surenb@google.com, vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, geert@linux-m68k.org, 
+	daniel@thingy.jp
+Subject: Re: [PATCH v2 0/2] support kselftest on nommu platform
+Message-ID: <ao2l9Ao7BQI6uRKC@gremlin>
+References: <20260825015945.141739-1-thehajime@gmail.com>
+ <f2ac9432-4fea-4007-aab0-ad80597b284c@kernel.org>
+ <ao2Tl9CLL7WjHYun@gremlin>
+ <bb9a3add-4849-4928-8b6a-0afc0c73b112@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez00PjoaXt4xJn1DCNdZfmFn4faya++=U2EeW0_vcYXcqg@mail.gmail.com>
+In-Reply-To: <bb9a3add-4849-4928-8b6a-0afc0c73b112@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3C46B20005
+X-Stat-Signature: tg8uz8cd7kjcw3ebfqkd1af46mc6cpdw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EABF520008
-X-Stat-Signature: uhc9kgapy9cmty3wopd1rrhn39tmeyod
-X-HE-Tag: 1787667876-276715
-X-HE-Meta: U2FsdGVkX1+5eHSGwzT/xFVbfYwEO6VVWJ0mgRXP3g/Ck0fwiCPkCs0hCSjtjHDlEDSR7LJfHvj2pFZLNOcnvKQTI9uQL+WVGvnfXvaNSZfpb469+37QqWTSGv1lpKWwzSaTW9G57JR3Q+dGSyX9q4CWdbUTwIaYyxxaudeLS4ge4ek85pzHImN377Ks+BxMjLFrD3rEI7Qy8xfbUcG1F+u98RbYoN6rSCKdlsbGOIM7wslZXTBr9UX8wLolf/+pSRjvWBDMTew+i1BpRlksqoXEwZtzdlnQuFKyU5XkukA5PL9xb2iHquY/qedPipBWDRBZ+TJTlA/blSgo1h9c/uTPQ/q99dymF5z946KWcZ9J48l3pNFvlILZpHcXDMGLQA2cP9ltjo76WnHLUwA7Mgw+h0oqdBR1QEZUf6uYsDuhrk4m2Ry03QXbrktZr9fHZsPVaMK8vQ45KtkwIq2Rn2eAlU7qq/TOTO/IZdpvCVBYUpej6JexjHwXlxizDDDyGrH4+ngfCqCllsp2YM8qCD8qzFQL08XDwLzsez8/MQ2Z+Htc2s869+3qFj1jZTmY+v2xnzyU5sVmYAtXNS/EGgP40361p7glLJdP/vkGSpECWx6DiYMnYWN8R4n+LG8pRLHUr1PeaHamz5ssLsp76Ou0ZYia1PHr/4pYtUjbM1qOlcZ2pja5U3qvXZOrgSNSWy68VfrrKa1q6WeLDxp6lUk0wtEXX1q+wjGBK87k9es0fAAg/MO5focIhXoRc+We/Dw3oCvj3TDCtVm5Eq3UgWXAv9lRUO9FB0/MnFhFc9HqciaruWhHck6rmi5q6xnafYnA9gTmZISCfRN9DWJ5T96486UkE14AA5NZP+sKPJWH3SOsXqgvcy6fXrhV6QB4tVnBMopPC+lwjwmYVIyEodJP1xVcoKNIVSNqWGSbKlQivJJU+TkMQwyADEZUY/6VDjvHVlFTGEI8NEc132W
- cpisxT07
- AwO5BZ1sXPmwLE+A582B8nZD8hx0uS/npFEmVfOmIxk2mXBgDjkiXVZqN9+4FYcacyeFYfphPw3UthaH7N4xx52/a46yEQO+pMDeIo4re7OQD8PC5CvcS8zIeY6/5iiw19sDQoHvcRxnN+2AN71mg9WP4/kF8l9I2CgTURtFTTk8APhGI/cqIwBJHKLMHgAjefJvyFVWDjNQkz2d2znuu33G0gZzO1+iUfsovr2xuoHcYxHe4+iWNvsbUbUpl2OKp+v8g41Nxe8QHR6ErRDBnMMI9pMM2S8GlIyKuCOIn3XAAJSYNCbc8EEWg1AdBQzFQRf1AtD/pbgCGii9NbNZygRLr0XgcxpauTd86M+VLaH+lyo0uOe8fnz1/vQRK4IDkq4oKETy1TkHNmg6ngJAc3pswxVbi10MnPUky8ntu9KPNSC2qMv4NYv/VpnrUhOUJt5Sk
+X-HE-Tag: 1787668114-439894
+X-HE-Meta: U2FsdGVkX18G7GgsNGnPjH6AWDOiMTDZXPQycnFI6icMs2/sfEH07G5Z+qQRMOG3k+jCuIprLlZoouXlEzd05fMOZIiKIjfiE0kbKrHWBsmDHm6Y270gSYz82rlb0/5BtRcEgPab73tViqDmsx2QN2qf0FHgx3WD0Q2pkVBuQMQ7ALVSa4CH7rgXC/MVPlWznngCJgUYmSNE3163zZt186sGOB09v5pAAmwhne24YVlRXGSVgFOq0WitnrLf7wvaQJ+wr4BrODQwnB8P9KKWY2QytMWKnZECheTsVrq45qc8j4e6944LiFSKyjgEsIfrQDz9C9ItQnzZZJSRKfda4ON9EvRViqI6WzVITeFRdHJqw6DsImraGkfysS4uC7kgz/+fAc9afSYLkW8GHwWyOyFmkOkd3u+qIck97wTtOUcsm8JNvgh2JBkxlUzIcEFxP/eSWkNTFA5OppFoUKPSVmPUsDfM9nme+JOJw8fRkeg9sppYKlEde7MVlz8AFmG5t0Zkb/zVpyscZNryIYT/KRAaO+lgPHIgLdhdIJEgMP8wItfdpHlxeCzlnaKZGiEFB04E+HbKVt5wPeTSwZu7PK38YG7hhRq7cBWvd4s/hQkh4bS0inXxwjfnq86/DVqrdypWwtncHgdpmm6LafnC/1B7XeSuDEO8Hde5qSQJ3FruUmVG/NFpyNFIxLSoVpdr8vNdVkn08+r6wEYoJ4mQOBLYxe70hfYcJEwl28oF046lgRPrk63bqAVYKIYva1089mpjqxTheHIYrGcaL+wSKRZGPvin162WESP/HiZPOhsaJDP+x3YZQsAlbJ2c6sar2K2c41vulPv1yNiIOTNkQe88MPkvRKw84xBNdXELLiGPwXOgHXKe4/M5pFp2KXLSMPmSpk5N48aidqk1lxAtfqj8GKuRjaqXBE0pwK8KvOmCEMJoYzILr24+gcrY1DrDBl7LEVSbGghkQOVl0EI
+ oL9/Mgjo
+ 2oL4SAGzPrMZJ6pwHYpKvPTLw63EdvUBTQMNbjjWIzo9/dD/wRSZ5UriYZVkgjNPkXCzrGlI/p2EdV07CAtA45R53/T0tWerrgK9ypCWXAgPkaqfCCBCNyOMoVTGJc9bnicsZGmk2M11S7MV8UIX6KIZhV4EGrIFTupvDI9pvk4qMQePrmfLWfFKfMYcUHOuXJWzGtAZh4EGOL4PQtTTzOzDFeYq7VWHP20NMM2t5o4ttRKgL+Iu+1LtJT8HMl55fFMLXcU1geJa09UsJYaSMWVtqH8HuwAfi4brwFNzSQrjouJw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,66 +98,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 04:08:42PM +0200, Jann Horn wrote:
-> On Tue, Aug 25, 2026 at 3:42 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > On Mon, Aug 24, 2026 at 07:43:02PM +0200, Jann Horn wrote:
-> > > On Mon, Aug 24, 2026 at 7:33 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > > > On Mon, Aug 24, 2026 at 07:06:04PM +0200, Jann Horn wrote:
-> > > > > On Fri, Aug 21, 2026 at 8:52 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > > > > > The sharing a /proc/mem fd seems like that's a pretty dumb thing to do in
-> > > > > > general :) but I guess you have to protect against that.
-> > > > >
-> > > > > Yeah, it's a kinda weird thing to do...
-> > > >
-> > > > Yup :)) but I guess we have to account for people doing weird stuff...
-> > > >
-> > > > In this case (I do mention it in a reply elsewhere I think) it does seem
-> > > > like perhaps you should separately check for current->mm != mm of (what was
-> > > > originally /proc/self/mm)?
-> > >
-> > > I wouldn't want to do it for this access check, since that could lead
-> > > to "confused deputy" problems.
+On Tue, Aug 25, 2026 at 04:17:54PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/25/26 15:12, Lorenzo Stoakes (ARM) wrote:
+> > On Tue, Aug 25, 2026 at 10:37:41AM +0200, David Hildenbrand (Arm) wrote:
+> >> On 8/25/26 03:59, Hajime Tazaki wrote:
+> >>> We add an ability to execute kselftest on nommu platforms.
+> >>>
+> >>> Currently there are several issues if we wish to run kselftests on nommu
+> >>> targets:
+> >>>
+> >>> - it cannot compile/build test binaries because the current files mainly
+> >>>   assume to build with glibc,
+> >>> - some of the tests are not able to run on nommu targets as there are no
+> >>>   fork(2) syscall.
+> >>>
+> >>> The first issue can be avoided if we can build static PIE binaries (if
+> >>> targets support it), but in our case (build on ubuntu/glibc and run on
+> >>> alpine/musl-libc), it fails to invoke due to lack of the GNU ifunc
+> >>> mechanism.  Thus, we need to cross-compile with musl toolchain, which
+> >>> needs to be solved the first issue.
+> >>>
+> >>> The second issue is the lack of fork(2) syscall on those platforms.
+> >>> Especially the test harness helper (kselftest_harness.h) uses the
+> >>> syscall, which cannot be simply with vfork(2).  `timeout` command used
+> >>> in `runner.sh` never works for nommu platform as it uses fork(2).
+> >>>
+> >>> nommu component in the mm subsystem has several known issues and having
+> >>> test cases should help this situation, thus this patchset is very first
+> >>> step toward enriching test environment which has not been well tested
+> >>> for a while.  The test cases is implemented based on the document
+> >>> (Documentation/admin-guide/mm/nommu-mmap.rst).
+> >>>
+> >>> So, for the first step, nommu targets only support low-level API of
+> >>> kselftests (kselftest.h), and implement tests in a new target,
+> >>> TARGETS=mm/nommu.  Other targets are currently not even able to build
+> >>> due to toolchain issues but will be addressed once the initial
+> >>> introduction which mainly focuses on nommu test will be settled.
+> >>>
+> >>> The patch was initially combined with other patches but is decoupled to
+> >>> only focus on test framework and testcases.
+> >>>
+> >>> - rfc:
+> >>> https://lore.kernel.org/linux-mm/20260813063401.1786548-1-thehajime@gmail.com/
+> >>>
+> >>> Hajime Tazaki (2):
+> >>>   selftests: run tests on nommu architecture
+> >>>   selftests/mm: add nommu mmap and mremap behavior tests
+> >>>
+> >>>  Documentation/dev-tools/kselftest.rst         |  14 +
+> >>>  tools/testing/selftests/Makefile              |   1 +
+> >>>  tools/testing/selftests/kselftest/runner.sh   |   9 +-
+> >>>  tools/testing/selftests/kselftest_harness.h   |   4 +
+> >>>  tools/testing/selftests/lib.mk                |   8 +
+> >>>  tools/testing/selftests/mm/nommu/Makefile     |   7 +
+> >>>  .../selftests/mm/nommu/nommu_mmap_test.c      | 265 +++++++++++++
+> >>>  .../selftests/mm/nommu/nommu_mremap_test.c    | 353 ++++++++++++++++++
+> >>
+> >> That's odd.
+> >>
+> >> 	tools/testing/selftests/mm
+> >>
+> >> itself should know which tests can be built and ran on nommu. nommu-only tests
+> >> can be placed in mm/nommu, but I would expect tools/testing/selftests/mm's
+> >> Makefile and run script to compile and run only selftests that are supported on
+> >> the given platform.
 > >
-> > I guess if it got the decision wrong somehow that'd be a problem? Or wrongly
-> > OK'd it on one level but then that led to the fd being passed on assumption it
-> > was OK to do it or something?
+> > I mean I think at this point with mm/nommu/nommu_xxx.c it'd make more sense to
+> > simply have selftests/nommu/ + update the mm makefile to not build stuff that's
+> > broken on nommu there.
+> >
+> > That way positively nommu-stuff is put in its own place and what's broken on mm
+> > specific to nommu can be fixed there.
+> >
+> > I'd rather isolate them clearly rather than having them live in a subdirectory
+> > of mm.
 >
-> The problematic scenario would be something like:
->
-> 1. process A opens fd1=open("/proc/self/mem",O_RDWR)
-> 2. process A does lseek(fd1, <address of libc>, SEEK_SET)
-> 3. A sends fd1 to privileged daemon B as a "log output" FD
-> 4. privileged daemon B write()s into fd1
->
-> In this scenario, daemon B is just trying to write log output into a
-> file descriptor. If we checked the current credentials on write(), we
-> might enable FOLL_FORCE just because daemon B is generally permitted
-> to use ptrace.
->
-> This illustrates why, in general, the "ambient privilege" that a
-> process has must not influence write() access decisions.
+> My understanding is that some MM tests could be enabled/changed in the future
+> that support both MMU and NOMMU. Not sure how to best handle that.
 
-Ahh. That makes sense.
+Well by default won't everything run? And it becomes a list of what doesn't
+work with nommu?
 
-But I mean in this case the check would be that the mm is the one belonging to
-the process in question so wouldn't you need in the first place to have obtained
-a privileged mm anyway?
-
-If the check is literally mm of /proc/$pid/mem == current->mm?
-
-And wouldn't prilileged process -> fd to /proc/$pid/mem -> less privileged
-process be a fail in itself?
+I really don't want to see any maintainership burden or extra work added
+for nommu as it's afaic deprecated.
 
 >
-> For a similar historical example, see
-> https://project-zero.issues.chromium.org/issues/42450869 where we used
-> to do capability checks in the old expand_downwards() logic, which
-> could be reached by writing into /proc/$pid/mem. That made it possible
-> for an unprivileged process to map virtual address 0 by providing
-> /proc/$pid/mem as stderr to a setuid root binary.
+> So wiring up mm/nommu as a separate thing did sound wrong to me. So it should
+> either be integrated or the tests in fact completely moved out of mm/
 
-This does raise questions about /proc/$pid/mm as a whole but I guess that ship
-sailed long ago...
+Not integrated, because then it starts adding work for people. I'd rather
+have separate nommu tests, any mm tests that aren't compatible with nommu
+can just be somehow excluded.
+
+Having a 'don't run on nommu' or even just some means of setting which
+tests to skip (I think Mark Brown suggested as much in reply to an earlier
+version of the series) seems a good idea.
+
+But yeah, tools/testing/selftests/nommu seems the best place for the
+nommu-specific stuff.
+
+Can maybe do some ../mm/ horror show thing for reducing duplication as
+needed...
+
+>
+> --
+> Cheers,
+>
+> David
 
 --
 Cheers, Lorenzo
