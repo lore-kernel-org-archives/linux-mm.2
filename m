@@ -4,137 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65AFBC5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:37:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5584DC61DBC
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:40:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 710776B008C; Tue, 25 Aug 2026 04:37:55 -0400 (EDT)
+	id 33D366B0092; Tue, 25 Aug 2026 04:40:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B9A76B0092; Tue, 25 Aug 2026 04:37:55 -0400 (EDT)
+	id 314466B0096; Tue, 25 Aug 2026 04:40:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A8566B009B; Tue, 25 Aug 2026 04:37:55 -0400 (EDT)
+	id 22B976B0099; Tue, 25 Aug 2026 04:40:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 31B956B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:37:55 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78FAC1C1478
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:37:52 +0000 (UTC)
-X-FDA: 85139138784.16.A2D278B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B9260160006
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:37:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z//QVUE1";
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EAFAC6B0092
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:40:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6EE95A0329
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:40:46 +0000 (UTC)
+X-FDA: 85139146092.15.4BE3D03
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5669740004
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:40:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EYYdCdiw;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="NrOw/zmj";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TWQ+t5aK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QURYyCTb;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787647070;
+	s=arc-20220608; t=1787647244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9COt1w3P1MdstF38GuaEny+JKaDo98J8bEQBshdYhKo=;
-	b=tsUb6y+xuWPEeSB9aRiVCPhzyEWOkN7Kl27XVE4ed9sit5btCroRVieQR6w8ypwzjFKtCQ
-	4H0SJrPo7k5nQ7ey30nUES0XYdmUailGUuH+IWqX2ISUTW7BRK7kV+ovIIp+2QOvSAYhd7
-	mlv3344tikjhBj7eYTPIhaNZ/DHCRzQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787647070;
-	b=oyzaQ38ZfxRVmagyzmwg49Kt3UsD1a8lWUYgiP0tEElHNcHQacfUvph4KYma69djgO0EhY
-	GSvKVN50iDEAx8jnVNIT1if8KLGiHYXtIWs+VOqJffQpVlSe1KSt/BCwAUVXGMnZ8OQ+56
-	CtHw6OnxzOLy+HJCj4X8H6MbKE6T0Us=
+	bh=9RmSEUx5DQwDo4gSgt9njDplt37d7EmELQcf1wHlvzo=;
+	b=sUeXC/W7jeWZrjTeaCpikJH5bXXHJuPjGbjyh5SoaC/ygNCmjnPMAehoHFIZIs9neJeNtm
+	qsKDygZkU4bw7O3Lik2NNkQwtVTt40KEsbe3jqmisiNprY2ISLI+q5Vj7T2OVGWJXAcfda
+	XYD33/IIZzlxfNkO2/gKP/bWu/x09R4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z//QVUE1";
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 31D15601E9;
-	Tue, 25 Aug 2026 08:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1B51F000E9;
-	Tue, 25 Aug 2026 08:37:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787647069;
-	bh=9COt1w3P1MdstF38GuaEny+JKaDo98J8bEQBshdYhKo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Z//QVUE1GnHBGMaWgJTJyKF7qhlNX9G/P1wEgSjJPMjcxdPbi8Iv2wQVGKz5UUDdo
-	 4zpFVmESnVz4I3S2DT764lLMxbRFjktGsFau54l92KImS2rU0NMZJv1hSdvybY0Xg5
-	 DZUCgvw5u/4bEGE2kV5+9ea/ans6d0rYLQofsBg582EX2Okl+bfym5HF/DOgijOZTv
-	 Op8yakmihGw+NiVEkZPqyLHzxwYNl1nvPRghurehhDSdb4ngiZRWYbcOyYAqWRZCoM
-	 hwO2+QPg+mTQ4xZ7bJJsEtmTJScmBjnhbovLqbwVh8MaRIxAZTbprx7VPpwsdeCED9
-	 pVLQy1kX0XuTw==
-Message-ID: <f2ac9432-4fea-4007-aab0-ad80597b284c@kernel.org>
-Date: Tue, 25 Aug 2026 10:37:41 +0200
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EYYdCdiw;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="NrOw/zmj";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TWQ+t5aK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QURYyCTb;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787647244;
+	b=dpiwwhvmhbAoeW54zpL3b1TmpJEZvXGNqflx4cXdoAkRmvBA2tc3PUZ+X1+GbOQU/XM6By
+	wBHmvZxsL5iVhrnTfh2v6tkmuDKz/i2Z4I3cdQNTv3gsrBIlNmEqyT/pxc14bnLBabZV27
+	whfkJ3CfI9RtohMzGD5JDcLvH629b+U=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C6AAF1F7B3;
+	Tue, 25 Aug 2026 08:40:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787647238; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9RmSEUx5DQwDo4gSgt9njDplt37d7EmELQcf1wHlvzo=;
+	b=EYYdCdiwzbwm2XbfG83NClbayGhlooeQcFhtxQcX9FcoG1+uMXYn5D3DXjew/zIoUultCR
+	eAynFepWrPCEbqphcLWFYiyeOjrwCsKCsXVLgCSTmQ5SfvfP5m0+fm8bpd33+jiCkH2tLZ
+	W+zyc71UHL58aXzrbNcFAYtVGjBi3i4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787647238;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9RmSEUx5DQwDo4gSgt9njDplt37d7EmELQcf1wHlvzo=;
+	b=NrOw/zmjxnCIxFsAAl1No4JLgnuZdNaMWHaSYWKkkyx4bvHA5ZQxjObwJEdcnvJkhjHX0B
+	WnBQ4PKtbOZJkhBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787647234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9RmSEUx5DQwDo4gSgt9njDplt37d7EmELQcf1wHlvzo=;
+	b=TWQ+t5aKUEmQsPj+oJQDdPn156f/KLn7ugDyjYRMmKArrkz9MqNanDp8iFxMMcKubkKu2k
+	dOw2gHmq6x4ZJFAq27uRKR4H+hKBIZThthSsXBFvZ/hVxSYFtApjQItHn/8HpLV05Us8KP
+	w45GT0qF/B98rot5Vfm6u73WnCW7tHs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787647234;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9RmSEUx5DQwDo4gSgt9njDplt37d7EmELQcf1wHlvzo=;
+	b=QURYyCTbBcyztX2JZcsKq9ZlNCoNCRQcvlMIls4cebfLJMoFKYXKA5E/SA4WaUsU8dofPO
+	HBPr3OR+R8N3vADw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4860313331;
+	Tue, 25 Aug 2026 08:40:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5bBvDgFVjWo2GgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 25 Aug 2026 08:40:33 +0000
+Date: Tue, 25 Aug 2026 09:40:31 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Christoph Hellwig <hch@infradead.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	usama.arif@linux.dev, hughd@google.com, akpm@linux-foundation.org, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, dev.jain@arm.com, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, nico.pache@linux.dev, 
+	ryan.roberts@arm.com, ziy@nvidia.com, nphamcs@gmail.com, hannes@cmpxchg.org, 
+	riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com, 
+	stable@vger.kernel.org, willy@infradead.org
+Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
+ on zap
+Message-ID: <ao1R1Dh-42ALMq7o@pedro-suse>
+References: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
+ <20260820061337.24669-1-lance.yang@linux.dev>
+ <aobp2CtWZBlw4w7E@pedro-suse.lan>
+ <aob9PF_H6CCJMdkk@thinkstation>
+ <aocFPRgqieScf_yo@pedro-suse.lan>
+ <ao0vSde26_Qar0IZ@infradead.org>
+ <2614286d-19ed-4848-8ce6-59ebecf19d1d@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] support kselftest on nommu platform
-To: Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org,
- liam@infradead.org, rbm@suse.com, akpm@linux-foundation.org,
- luto@amacapital.net, brendan.jackman@linux.dev, liuhangbin@gmail.com,
- corbet@lwn.net, kees@kernel.org, ljs@kernel.org, broonie@kernel.org,
- mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org
-Cc: geert@linux-m68k.org, daniel@thingy.jp
-References: <20260825015945.141739-1-thehajime@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260825015945.141739-1-thehajime@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2614286d-19ed-4848-8ce6-59ebecf19d1d@kernel.org>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Stat-Signature: xe37k9h9wguwrytudx9at9i46byxnsz9
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B9260160006
-X-HE-Tag: 1787647070-619818
-X-HE-Meta: U2FsdGVkX1/Ylqhnt8UkrHaj8iUrwIuulgqT4viGQ4r4TznkDSD/g9icVhR2MlsYrXqeCuGxORP2n0hzqhsRbXs1+CmuUPzT40S/EL5Twgk/v6JGz2a+RrFTKsd0OVaUYjC8k4fdRxpC7xMi06DY70ZfSicyjhzLTWkhrKGvS8mYQCF6OHk6E+QJRuXkCnHrur9DEK06Dt9xNCzfGnPpge24hLG42dYa2IMNszvtL2pPGAUPX0bVl5kjB6mbT1Jr8MWaxwCDH0G639E19M86bIGWBJL2acI2sRhal2xatUzcCQCK5JcjNynoKIBs8Hr3RzU3uI2PSLv9wFfXFT6yysCh8gSteLXOU2WDwNiZLxyzOO16FSFK1mIei2eoTAzw0ErUJg85t0FRAZ8kV6v5/liXANSODacyUgD2l4Z8PMWOzCDD6kHpSXqeV6MKBTuryT+lA7dyimyZro4KrJjiMNLZ1gwIsvkL5ZetfZzYM84Y52n2YXDATvju8OYDHGonZM7CHagfqNp4xovz7/64tyQHyWH/sB+squxvW93WExpWq7uNcFwHuXX3rmp1ItXdfXrGMtUyClefy40EPSZIxRgTOr84SDhw5JahnpsKqQ14L1jcvZ70zj6XEKkocpUsuUux/p8L5dkCjQQivVd8LjdVrGMeW02KzaBCqdsljupx/ccWzWqsaYgkqKBnfATpf6qWeDBnPpwtyGJlQcwII0+XqewKElJGuJW4f8JYv9SH0HajjaJNfOXBsck+t8EgirqwQuvzispeXC0Aa9GdI9spfzQ3z47zuDPeSCfcAp5vRVlhjXrOQcgtaret7LBXuuMuaK9Q0DaWGD+Et6W3PpHXwePXd5iN809z8MxX9GBknXQKMDPeeC+S5rWLwV0/0e6ZHTx7LKGkDFHnY+W89NMqpR1HAIqtyG14oiPStDNnm0gv4CC9Cq6slAQs/3quzeh3KkclAOIDl3+TkKi
- zaP3Lta+
- N0E3wW0UGwgWPyT0+Eh8wCWBnOc3o2qjM0P+oVeXzU1YY5mttzozoEe/qqzsptNctJP5cJxRRy8Z9jp2Gnr4LFooT1Hmce3Qzg/GIweHJcwhx1kA+paMoV71dJqzD9qz7Onzy2tltKgRu/Y92GMHCtIfkzRO3YSld8KpKQvA/ETxzCecmJg+8sEmlF58SfL91VNx0HTrlGke7znn24YKJjg+d4Z5t9BC2z4Jsq6hakPPRreQSTSovTAW81NA4smnuwe+VEXXh25T2Cb3k1lP8QrTdW1u1V8qQFrqoMpX53SBy0mlHdDm3MKFOkA==
+X-Stat-Signature: hhd3w9n3qq7ij7u6bgowj1khx5ppfpy1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5669740004
+X-HE-Tag: 1787647244-762932
+X-HE-Meta: U2FsdGVkX195RZW3F84m6JV8NNuw2iwxdGtpKMAS+B8eX+ziXKYgLOmhIrV255oit2nc+yobe28syt/vfalLp2Nn96clrcaUyeKZ3BTQGy4UoPXozu1aUZQ8V7vXTHuPryEtkwUkYmxQNkcc3B2Y19i1nZToGuSNCLkphcvYrbbeynEH+YmIb7FKloVPOTkDzjeiUgsh1C7sfwOFjI4yuIjWUAnK1qOkmUm/8agwvlobQ71pIxNBOvV73Q5ys/dg/nM4Atbd4se00Ux/1o58iJyInCpQglXN1R9SVh7funNaaHn6UWa37ufas/YSNMkjNHQYmjf1q1vja06V03la6ZplFkxMpMlxkqbW9GUnzMVYFHpZxWKCtMwAOUQVMQsZloeY1QrKRoCEpjiGaHkTforHXNHLwqJh4/rtANncQHamIHhkvmo2h2v6zoz+DHgSI02ojORAfUEVeSf96oJPzrBiKlD/hm14m90/k23LQLwtCCw5S70cEteHpaDd4hir8TDo3AUVrVzLBONkVJ8Edq27chd+tcdrBv6agC8i+bADZSGMA+Qtj2hzTrllG7RlyM+cAnyc4rQ9ntD0obzio8fZL76j3MUv29+KddArPFXgFL30QZJklqvTH+aptVZyfpMVvTJzUJwa8s2kHCoSivL6yQMDkr2Qxgc9ANnvqqtWWEuNV10Im66/oTBE+CPOUKuFtSRhMzMC1SzgAMEs85OslRGmz/Ek1z/ccRx4ICZtyjpLnTgJ+eUo9cLrl9yfm6LiARuzHygRDbVl5BodONbO++EC3OCMZe2nHUVRFb/dGS7TbxFfNtmfroAJ4i1duI4nxSpym2+4rWOogj5V+zKxZEzv9jcwPq2jlnDDpZmkT2JvpPFTcGnIFHiJDiQnivqvmVIwse+BGpIiySQ+UoHQMGBVeR3xEDDeng3hTuUHtIqGC5dDh+HLa6/mJpCprrU6KK319oLSvpeh1OE
+ VknhdYhd
+ RU/j0MMi9Q02HxPZVpewNe9695ezauYbYCzUY30GS8QUO0lD7Yp/++uS8te+VCN9wzbGL4KU8ff0FTAy4QkVd3nyNYqzJ89q53+K8AeNuvrGR/fdlq7pEjZyKVYwX4qJWVOG2qIyUm8ainfFcqT5L+iPHnVhM9k8L+nKm0Z3kh64fozL11H4yoYhroRpt5i70AIhhIIGVBK5dkHw0eLoGMOdabznTIydUoXKAolJc+m/v/bHgSasgxA7qFCLMDSNY1Eggx7q/OS15a+5W05fguD9/QHebb6OifAbHtXrbat2U58oxByzB7dWe5An/MV6DEjqfJLWduDbL6dnSZTfumaFMSCvOe+hdp94G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,70 +143,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/25/26 03:59, Hajime Tazaki wrote:
-> We add an ability to execute kselftest on nommu platforms.
-> 
-> Currently there are several issues if we wish to run kselftests on nommu
-> targets:
-> 
-> - it cannot compile/build test binaries because the current files mainly
->   assume to build with glibc,
-> - some of the tests are not able to run on nommu targets as there are no
->   fork(2) syscall.
-> 
-> The first issue can be avoided if we can build static PIE binaries (if
-> targets support it), but in our case (build on ubuntu/glibc and run on
-> alpine/musl-libc), it fails to invoke due to lack of the GNU ifunc
-> mechanism.  Thus, we need to cross-compile with musl toolchain, which
-> needs to be solved the first issue.
-> 
-> The second issue is the lack of fork(2) syscall on those platforms.
-> Especially the test harness helper (kselftest_harness.h) uses the
-> syscall, which cannot be simply with vfork(2).  `timeout` command used
-> in `runner.sh` never works for nommu platform as it uses fork(2).
-> 
-> nommu component in the mm subsystem has several known issues and having
-> test cases should help this situation, thus this patchset is very first
-> step toward enriching test environment which has not been well tested
-> for a while.  The test cases is implemented based on the document
-> (Documentation/admin-guide/mm/nommu-mmap.rst).
-> 
-> So, for the first step, nommu targets only support low-level API of
-> kselftests (kselftest.h), and implement tests in a new target,
-> TARGETS=mm/nommu.  Other targets are currently not even able to build
-> due to toolchain issues but will be addressed once the initial
-> introduction which mainly focuses on nommu test will be settled.
-> 
-> The patch was initially combined with other patches but is decoupled to
-> only focus on test framework and testcases.
-> 
-> - rfc:
-> https://lore.kernel.org/linux-mm/20260813063401.1786548-1-thehajime@gmail.com/
-> 
-> Hajime Tazaki (2):
->   selftests: run tests on nommu architecture
->   selftests/mm: add nommu mmap and mremap behavior tests
-> 
->  Documentation/dev-tools/kselftest.rst         |  14 +
->  tools/testing/selftests/Makefile              |   1 +
->  tools/testing/selftests/kselftest/runner.sh   |   9 +-
->  tools/testing/selftests/kselftest_harness.h   |   4 +
->  tools/testing/selftests/lib.mk                |   8 +
->  tools/testing/selftests/mm/nommu/Makefile     |   7 +
->  .../selftests/mm/nommu/nommu_mmap_test.c      | 265 +++++++++++++
->  .../selftests/mm/nommu/nommu_mremap_test.c    | 353 ++++++++++++++++++
+On Tue, Aug 25, 2026 at 10:04:31AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/25/26 07:59, Christoph Hellwig wrote:
+> > On Thu, Aug 20, 2026 at 03:10:11PM +0100, Pedro Falcato wrote:
+> >>> Why? Write batching from large folios is a win.
+> >>
+> >> For some context: we were discussing (off-list) the recent report that
+> >> systemd-journald had horrible write amplification, worsed quite a bit
+> >> by large folios. At the moment, there is quite a lot of write amplification,
+> >> but _only_ on mmap writes (if you look at the write(2) paths, you'll see
+> >> write_begin and write_end which tactically only dirty what you actually wrote
+> >> to, block-wise in the BHs or iomap IFS). This doesn't need to be true.
+> > 
+> > So don't use mmap to write to storage.  That is always a bad idea for
+> > many, many reasons.  We should not work around broken applications that
+> > do this, but change them.  It only took about 10 years of bad reputation
+> > for MongoDB to finally fix their act, so it should be possible for
+> > systemd as well.
 
-That's odd.
+That is true. However, I don't think that should stop us from providing
+reasonable semantics for those that use mmap.
 
-	tools/testing/selftests/mm
+Fundamentally:
+ - For the common, PTE-level case: we get the granularity for free, the
+filesystem only needs to be notified accordingly.
+ - For the less common, PMD-level case: we already aggressively break these
+down on mkwrite faults; I think doing this is the right tradeoff. Screw the TLB
+in that case :)
 
-itself should know which tests can be built and ran on nommu. nommu-only tests
-can be placed in mm/nommu, but I would expect tools/testing/selftests/mm's
-Makefile and run script to compile and run only selftests that are supported on
-the given platform.
+And, frankly, half of the problem (and related to the GUP thread) is that
+page_mkwrite is a crap interface... Something like ->write_begin() being
+generalised to more than read(2)/write(2) could possibly solve most of these
+issues (or a ranged dirty_folio).
+
+> 
+> I was in contact with systemd folks (and pulled in Willy and Jan) regarding
+> that, and nothing should really block that.
+
+Awesome!
 
 -- 
-Cheers,
-
-David
+Pedro
 
