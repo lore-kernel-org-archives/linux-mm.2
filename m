@@ -4,81 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AD73C5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65AFBC5DF94
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28F456B009D; Tue, 25 Aug 2026 04:31:43 -0400 (EDT)
+	id 710776B008C; Tue, 25 Aug 2026 04:37:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 266DD6B009E; Tue, 25 Aug 2026 04:31:43 -0400 (EDT)
+	id 6B9A76B0092; Tue, 25 Aug 2026 04:37:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17D4F6B009F; Tue, 25 Aug 2026 04:31:43 -0400 (EDT)
+	id 5A8566B009B; Tue, 25 Aug 2026 04:37:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E6A1C6B009D
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:31:42 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6045C02E5
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:31:41 +0000 (UTC)
-X-FDA: 85139123202.01.48CC5E2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D890AA000B
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:31:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S5OCbYap;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31B956B008C
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:37:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78FAC1C1478
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:37:52 +0000 (UTC)
+X-FDA: 85139138784.16.A2D278B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B9260160006
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:37:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z//QVUE1";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787646699;
+	s=arc-20220608; t=1787647070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6jcVuJtrzfEtM9prxYlosEdDpFr5qr6LnwE7Zah30QA=;
-	b=Ha+LsOjZ5BQq1p3Q+H5k4yK1dxopTAUwLqQWUMMJ7yzWkQyw7JUs46FM6ED1QT1RHH6/lN
-	9G+JqxMlritQpSA9TmEGIOcDWoXlk0vLMwxlhqp2zISG7LoIlGywdwmWPoa16c7yBzKaxH
-	drSD7z+2wFDgvYyStc9/oZ3VlGZXvi4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S5OCbYap;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=9COt1w3P1MdstF38GuaEny+JKaDo98J8bEQBshdYhKo=;
+	b=tsUb6y+xuWPEeSB9aRiVCPhzyEWOkN7Kl27XVE4ed9sit5btCroRVieQR6w8ypwzjFKtCQ
+	4H0SJrPo7k5nQ7ey30nUES0XYdmUailGUuH+IWqX2ISUTW7BRK7kV+ovIIp+2QOvSAYhd7
+	mlv3344tikjhBj7eYTPIhaNZ/DHCRzQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787646700;
-	b=GxIJRL8YgE49tIGgxF5MZYt17zuMSFpuyLB8ryhuU3GdAEdCYA2Xj4tlMK7JZ1Q5u31dCa
-	iZXngjDC7BclUEEaW03vZfWmlXG8dVgLudzXecDMkcaQMGwVHjKA+0cmvpywJcA3V16Vhd
-	eIOT/2AeOcShyg9un5xdqSH3cLzM484=
+	t=1787647070;
+	b=oyzaQ38ZfxRVmagyzmwg49Kt3UsD1a8lWUYgiP0tEElHNcHQacfUvph4KYma69djgO0EhY
+	GSvKVN50iDEAx8jnVNIT1if8KLGiHYXtIWs+VOqJffQpVlSe1KSt/BCwAUVXGMnZ8OQ+56
+	CtHw6OnxzOLy+HJCj4X8H6MbKE6T0Us=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z//QVUE1";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 053CA4397A;
-	Tue, 25 Aug 2026 08:31:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C731F00A3D;
-	Tue, 25 Aug 2026 08:31:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 31D15601E9;
+	Tue, 25 Aug 2026 08:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1B51F000E9;
+	Tue, 25 Aug 2026 08:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787646698;
-	bh=6jcVuJtrzfEtM9prxYlosEdDpFr5qr6LnwE7Zah30QA=;
+	s=k20260515; t=1787647069;
+	bh=9COt1w3P1MdstF38GuaEny+JKaDo98J8bEQBshdYhKo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=S5OCbYapRm0km9uPuedMjFuUoxnXo8KQTa3IlLYLUskH3GYCpqf52og9RaA8UQkPc
-	 1YxdPmzOzNe7mvsoOMzDXvnRrkjtWMZFF+2op7RselwwXEfRU+mMrbpqfivhdCcfMK
-	 TS9anlNRbaPJAQf0+vjOKPpRhfSJjBMSC3FFd93WG81HQfuemV4ff1F0QaIRMy3EoP
-	 NKG8/JodK9AiefK/PsvbLZFPQc3qXkKdxsgqfwtku4zEBAokFTk9PKhU/Oa52Cu0Gq
-	 eFJNzvvvT9IR7FJhJwdNOxOQ5w4hdHZ/U35ix9bEH1k7s2Cf0YaVLL2YB9XcIoc9AR
-	 6kCyHK2T6WIrg==
-Message-ID: <b682a12f-ac03-4032-851a-f4f7ced4ffa0@kernel.org>
-Date: Tue, 25 Aug 2026 10:31:34 +0200
+	b=Z//QVUE1GnHBGMaWgJTJyKF7qhlNX9G/P1wEgSjJPMjcxdPbi8Iv2wQVGKz5UUDdo
+	 4zpFVmESnVz4I3S2DT764lLMxbRFjktGsFau54l92KImS2rU0NMZJv1hSdvybY0Xg5
+	 DZUCgvw5u/4bEGE2kV5+9ea/ans6d0rYLQofsBg582EX2Okl+bfym5HF/DOgijOZTv
+	 Op8yakmihGw+NiVEkZPqyLHzxwYNl1nvPRghurehhDSdb4ngiZRWYbcOyYAqWRZCoM
+	 hwO2+QPg+mTQ4xZ7bJJsEtmTJScmBjnhbovLqbwVh8MaRIxAZTbprx7VPpwsdeCED9
+	 pVLQy1kX0XuTw==
+Message-ID: <f2ac9432-4fea-4007-aab0-ad80597b284c@kernel.org>
+Date: Tue, 25 Aug 2026 10:37:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/4] Extend xas_split* to support splitting
- arbitrarily large entries
-To: Matthew Wilcox <willy@infradead.org>,
- Artem Lytkin <iprintercanon@gmail.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, Zi Yan <ziy@nvidia.com>,
- Kiryl Shutsemau <kas@kernel.org>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-References: <20251117224701.1279139-1-ackerleytng@google.com>
- <20260824194755.216000-1-iprintercanon@gmail.com>
- <aoyqIBz1EoY0R8qw@casper.infradead.org>
+Subject: Re: [PATCH v2 0/2] support kselftest on nommu platform
+To: Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org,
+ liam@infradead.org, rbm@suse.com, akpm@linux-foundation.org,
+ luto@amacapital.net, brendan.jackman@linux.dev, liuhangbin@gmail.com,
+ corbet@lwn.net, kees@kernel.org, ljs@kernel.org, broonie@kernel.org,
+ mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
+ vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org
+Cc: geert@linux-m68k.org, daniel@thingy.jp
+References: <20260825015945.141739-1-thehajime@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aoyqIBz1EoY0R8qw@casper.infradead.org>
+In-Reply-To: <20260825015945.141739-1-thehajime@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: itffw48e5jrfc7mu9ngramxzd6n9bba6
-X-Rspamd-Queue-Id: D890AA000B
-X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1787646699-909922
-X-HE-Meta: U2FsdGVkX19o/rATojEA+hmZyPG6JCpYPlKs8n/YjVcowhSc7/qBpKSHKGhWYo7TjAhopaRskuSgjrwpXGLlmey48fEGt4xVq23L3C00gmr2my/Nbr1aP0pGsi+4n/lOhqXp7cHkzwFGv9SCEenABxYwHFGNsABcrjV5iXiviZA7yNXCHLu28Oa2gU8ZSuDYahzE0psmIP4IHNtsIpC3IsD24YIiI91B8iBZ0gwD8pcz5NbI7X8inYVxxsAdYhma09ZEd50wBrMgrvUr8a17l64awplJXEFOmRbBJ6L7E0UEXDliRY/JGFHy1heNXyaeSolbA+6wlR1oSq7YVVF6lClGRVahxXdSe4qaso4/OiiCZwVQzoJPtwXVC/rtS6QatszkdZhB9hqPaLsySA3+GEt6m1KiRtr5saaMgxlYa0Dt0z8ryRKRldbJ4FZ15J9Xdu3BRgKeZMZJqy8SpJjSF8Y/B/LwpdWe1D8T7xxCgWobStQtzgJ5N3Z6x6l1IRafoRanSVKzAki+GUENN/wfc1tqzrUoV1eG/Gx59QWef1Cc89catEyRscZS7GDexHs8YNtzWTwflaouEXAfv7uhBFce+wCsKltVQsVSq/prGyH67OhHdjHEffTMSUbvQ1kH0yjHM/WaFaJ5uFSOfyvb/yzgaT+/3xLWOJTv2VP9s1Whj8Grg5c3KkYPsbyjHcsrHLtV6CvHHoeHKCah3GPBVsQoBtyert+SUP2AS5SrPMdLfGWvFawnAn8GJmnn62NR4geSm3Gurc/RqXUNtvL/uW9lLDNAV8JZTMAhe/Aff2ee03K8XeZGpM7PoRLppShO/fAA8ROwUr0X6NSVoC21SVA43415LHWqziCw8+/pK+EuLnDYBjAIjRtzbPbUn8R/SIOx6hsegzzRzbJ4BnRlHtx8h8FY2hxjg1l5huRzuoI1xYsFnjylGX6Jenoils3C1Sa4VoLf64meTFmNdyq
- tEhlL/pY
- 1jBg+zigNzLDVwfvopovxqxEwObuHjNGMTXztKeMHwkqJQhx7L+tOvaOlL+iBtvinxSTALQ6hHZuPfHEgSMO5+lBqzdNb4ZMleB+dyfV7L4XVDjqH7WMEBJp/rHlo3VvXAhuKTLXOdgZ4O+Ve7SykKi13mBQ80nU7r9lOMoqhaXQACKHEVVvrLZXgh3+SithlFFjkbDMSfmjR79lVJFFC6atSjkMGciOLDwzVersOUaIDswNv2iWRlTeCq5812EPOPPlXMUujhEpAFLjGx1lR+IfiJUF55x4B4I/7u+0u8nYXCiyLfxqbYVs0ig==
+X-Stat-Signature: xe37k9h9wguwrytudx9at9i46byxnsz9
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B9260160006
+X-HE-Tag: 1787647070-619818
+X-HE-Meta: U2FsdGVkX1/Ylqhnt8UkrHaj8iUrwIuulgqT4viGQ4r4TznkDSD/g9icVhR2MlsYrXqeCuGxORP2n0hzqhsRbXs1+CmuUPzT40S/EL5Twgk/v6JGz2a+RrFTKsd0OVaUYjC8k4fdRxpC7xMi06DY70ZfSicyjhzLTWkhrKGvS8mYQCF6OHk6E+QJRuXkCnHrur9DEK06Dt9xNCzfGnPpge24hLG42dYa2IMNszvtL2pPGAUPX0bVl5kjB6mbT1Jr8MWaxwCDH0G639E19M86bIGWBJL2acI2sRhal2xatUzcCQCK5JcjNynoKIBs8Hr3RzU3uI2PSLv9wFfXFT6yysCh8gSteLXOU2WDwNiZLxyzOO16FSFK1mIei2eoTAzw0ErUJg85t0FRAZ8kV6v5/liXANSODacyUgD2l4Z8PMWOzCDD6kHpSXqeV6MKBTuryT+lA7dyimyZro4KrJjiMNLZ1gwIsvkL5ZetfZzYM84Y52n2YXDATvju8OYDHGonZM7CHagfqNp4xovz7/64tyQHyWH/sB+squxvW93WExpWq7uNcFwHuXX3rmp1ItXdfXrGMtUyClefy40EPSZIxRgTOr84SDhw5JahnpsKqQ14L1jcvZ70zj6XEKkocpUsuUux/p8L5dkCjQQivVd8LjdVrGMeW02KzaBCqdsljupx/ccWzWqsaYgkqKBnfATpf6qWeDBnPpwtyGJlQcwII0+XqewKElJGuJW4f8JYv9SH0HajjaJNfOXBsck+t8EgirqwQuvzispeXC0Aa9GdI9spfzQ3z47zuDPeSCfcAp5vRVlhjXrOQcgtaret7LBXuuMuaK9Q0DaWGD+Et6W3PpHXwePXd5iN809z8MxX9GBknXQKMDPeeC+S5rWLwV0/0e6ZHTx7LKGkDFHnY+W89NMqpR1HAIqtyG14oiPStDNnm0gv4CC9Cq6slAQs/3quzeh3KkclAOIDl3+TkKi
+ zaP3Lta+
+ N0E3wW0UGwgWPyT0+Eh8wCWBnOc3o2qjM0P+oVeXzU1YY5mttzozoEe/qqzsptNctJP5cJxRRy8Z9jp2Gnr4LFooT1Hmce3Qzg/GIweHJcwhx1kA+paMoV71dJqzD9qz7Onzy2tltKgRu/Y92GMHCtIfkzRO3YSld8KpKQvA/ETxzCecmJg+8sEmlF58SfL91VNx0HTrlGke7znn24YKJjg+d4Z5t9BC2z4Jsq6hakPPRreQSTSovTAW81NA4smnuwe+VEXXh25T2Cb3k1lP8QrTdW1u1V8qQFrqoMpX53SBy0mlHdDm3MKFOkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,56 +142,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/24/26 22:31, Matthew Wilcox wrote:
-> On Mon, Aug 24, 2026 at 10:47:55PM +0300, Artem Lytkin wrote:
->> I'm asking because there is a second user for it that has nothing to do
->> with guest_memfd. On arm64 with 64K pages HPAGE_PMD_ORDER is 13 and
->> MAX_XAS_ORDER is 11, so MAX_PAGECACHE_ORDER clamps to 11 and shmem never
->> offers a PMD order. MADV_COLLAPSE on tmpfs returns -EINVAL there, and
->> huge=always hands out order-11 folios at best, so ShmemPmdMapped never
->> leaves zero. Every other page cache file system tops out at order 11 as
->> well, which is 128M and not PMD-mappable. pagemap.h admits it outright:
->> "xas_split_alloc() does not support arbitrary orders. This implies no
->> 512MB THP on ARM64 with 64KB base page size." Kiryl's khugepaged
->> selftest series skips the shmem and file cases altogether for exactly
->> this reason, and on 6 August he confirmed in that thread that uniform
->> splits still go through xas_split_alloc(), so xas_try_split() on its
->> own does not lift the cap.
+On 8/25/26 03:59, Hajime Tazaki wrote:
+> We add an ability to execute kselftest on nommu platforms.
 > 
-> But why would you want it?  With 64KiB pages on arm64, you need 512MiB
-> for a PMD-sized page, and that's just too big for current hardware.
-> What's your bandwidth?  40GB per DIMM?  With 8 DIMMs, that's an
-> aggregate of 320GB bandwidth, so that restricts you to 640 page faults
-> per second.  That's too few for almost all workloads.
+> Currently there are several issues if we wish to run kselftests on nommu
+> targets:
 > 
-> The page allocator also isn't great at doing order-13 allocations.
+> - it cannot compile/build test binaries because the current files mainly
+>   assume to build with glibc,
+> - some of the tests are not able to run on nommu targets as there are no
+>   fork(2) syscall.
+> 
+> The first issue can be avoided if we can build static PIE binaries (if
+> targets support it), but in our case (build on ubuntu/glibc and run on
+> alpine/musl-libc), it fails to invoke due to lack of the GNU ifunc
+> mechanism.  Thus, we need to cross-compile with musl toolchain, which
+> needs to be solved the first issue.
+> 
+> The second issue is the lack of fork(2) syscall on those platforms.
+> Especially the test harness helper (kselftest_harness.h) uses the
+> syscall, which cannot be simply with vfork(2).  `timeout` command used
+> in `runner.sh` never works for nommu platform as it uses fork(2).
+> 
+> nommu component in the mm subsystem has several known issues and having
+> test cases should help this situation, thus this patchset is very first
+> step toward enriching test environment which has not been well tested
+> for a while.  The test cases is implemented based on the document
+> (Documentation/admin-guide/mm/nommu-mmap.rst).
+> 
+> So, for the first step, nommu targets only support low-level API of
+> kselftests (kselftest.h), and implement tests in a new target,
+> TARGETS=mm/nommu.  Other targets are currently not even able to build
+> due to toolchain issues but will be addressed once the initial
+> introduction which mainly focuses on nommu test will be settled.
+> 
+> The patch was initially combined with other patches but is decoupled to
+> only focus on test framework and testcases.
+> 
+> - rfc:
+> https://lore.kernel.org/linux-mm/20260813063401.1786548-1-thehajime@gmail.com/
+> 
+> Hajime Tazaki (2):
+>   selftests: run tests on nommu architecture
+>   selftests/mm: add nommu mmap and mremap behavior tests
+> 
+>  Documentation/dev-tools/kselftest.rst         |  14 +
+>  tools/testing/selftests/Makefile              |   1 +
+>  tools/testing/selftests/kselftest/runner.sh   |   9 +-
+>  tools/testing/selftests/kselftest_harness.h   |   4 +
+>  tools/testing/selftests/lib.mk                |   8 +
+>  tools/testing/selftests/mm/nommu/Makefile     |   7 +
+>  .../selftests/mm/nommu/nommu_mmap_test.c      | 265 +++++++++++++
+>  .../selftests/mm/nommu/nommu_mremap_test.c    | 353 ++++++++++++++++++
 
-I heard some use cases using 512M THPs on arm64 to back VMs, but it's mostly
-anon pages, and not really ordinary pagecache.
+That's odd.
 
-> 
-> Since arm64 does support 2MiB TLBs, even with a 512MiB PMD size, I'm
-> not sure there's a huge performance win waiting for you on the other
-> side of all this work.
-> 
-> IOW is this driven by a real need, or just some completionist thing?
-> 
->> That case needs two new levels of nodes rather than one: 130 nodes,
->> 73 KiB, a long way from the 1G to 4K split Matthew was worried about.
->> Raising MAX_XAS_ORDER to 3 * XA_CHUNK_SHIFT - 1 covers it, and
->> MAX_PAGECACHE_ORDER stays min()'d with HPAGE_PMD_ORDER, so no page cache
->> caller can ask for the order-17 worst case that cap admits.
-> 
-> 130 nodes is still a lot to ask the slab allocator for!  With 64KiB
-> pages it's not too bad -- you get 112 per page.  But still ...
+	tools/testing/selftests/mm
 
-IMHO it would be nice if we could just support such splits.
-
-I've always been thinking of it like this: you end up consuming the exact same
-memory if you wouldn't have allocated THPs in the first place.
-
-But a buddy-like split is clearly preferable. (or avoiding splitting in the
-first place :) )
+itself should know which tests can be built and ran on nommu. nommu-only tests
+can be placed in mm/nommu, but I would expect tools/testing/selftests/mm's
+Makefile and run script to compile and run only selftests that are supported on
+the given platform.
 
 -- 
 Cheers,
