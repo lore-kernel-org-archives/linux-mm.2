@@ -4,138 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E80C5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 07:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8DEEC5DF94
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 07:12:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA5EF6B008C; Tue, 25 Aug 2026 03:08:30 -0400 (EDT)
+	id 7790B6B0092; Tue, 25 Aug 2026 03:12:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A56ED6B0092; Tue, 25 Aug 2026 03:08:30 -0400 (EDT)
+	id 72A3E6B0095; Tue, 25 Aug 2026 03:12:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9455E6B0095; Tue, 25 Aug 2026 03:08:30 -0400 (EDT)
+	id 618CD6B0096; Tue, 25 Aug 2026 03:12:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D1DF6B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 03:08:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D33B80344
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:08:28 +0000 (UTC)
-X-FDA: 85138913496.17.5ED3BD7
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 303FD40003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:08:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=IdqS9Cis;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787641706;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 347486B0092
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 03:12:46 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75674C0200
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:12:45 +0000 (UTC)
+X-FDA: 85138924290.02.ABD0D1D
+Received: from mta0.migadu.com (out-193.mta0.migadu.com [91.218.175.193])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 254FA1C0003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:12:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RZ2vBCYU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of atish.patra@linux.dev designates 91.218.175.193 as permitted sender) smtp.mailfrom=atish.patra@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787641963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FUPUaRwtppzW7Cz0zNlhCOY1JMoitTGaOwtquxqzhgM=;
-	b=KQIIW4pbleJW7VgiOEbCUUBaWhSb8P8tsDeosHRIC3Lpndk5PwxrOmj5buGzbPyIzYixM7
-	PVBiojWr9Lk5nGq1MvzO+F8XZFOhB9BrII4kkr8C1g2T2uxtAI+euBB6P/ynkB5zBrk8d5
-	o1DKXExa34jNdSIJH0hgnIP/KIFcthc=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=IdqS9Cis;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787641706;
-	b=Sf1u0Dl/gquczmEVqkOgi4ka///nk8Ek5ow4nU9DKReRfOBJ3Q98oYgkeaAouNrHPwwVw6
-	qWOJJ7dshl7JlL2xlvHg6QR0kNmYCA55P2UpbGzmvDbeLkJPxg3l+0te3C3injTMmWkz7l
-	b1UKYUmb6gan8nz/xRr0MbKKMeXlsds=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c0c45c580so28005521cf.0
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:08:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787641705; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Q65NRSI3Ji5AQVb0cPH8tnj4ljsbY2q03i7lEI6hd3uGx+h56vZsH7VycPUguJQ3Ry
-         D4SU3ShT8fUb+Wlp14gPMYWaQFMcR+sGfBqf5u5cqGxXKWW6vfTEtsJ3fuImfogSJg5z
-         Nl8vukie1Ycc9LViSw92pzPw2ws37mm2KrIDXThDVgrR38/pLr31VAzvMA7l5/J59/eS
-         05N27gnhBdaU84HNCerhPQwN/iqUSQmRukOTEJtAKCztXu4x9y8sS6btYTnxmJUOW+Fu
-         ujOJtjy9K33vES7K3iSFlhgFMSm/FsICrxF2/HbYxqAvtzxF70wWUDWh2gtuK23V3PtK
-         egfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=FUPUaRwtppzW7Cz0zNlhCOY1JMoitTGaOwtquxqzhgM=;
-        fh=DLYCiCQ+6DYJxmQwWuOfpgHFgVhh+1yMpbWSzgF7f2g=;
-        b=tBWTyp3AugZPFlLdHdg93cpR36DJTYDPZEfX1Am3SHLzvT7Yg49hjmd/Z3DgSjdKe5
-         EuZWTHGap7ZOmXLEJTjcRCJvouxvT22uyXPBVnfX3+J5o1uzy6yn4SiFjTaOGmXEjBvU
-         pwfmKoBw0TnUXb8NYKnBu2eFrQm1nr3rJ/nn5MzAb89gzoOURNgZEnsGN6YyxP0n1kkR
-         o+dFljotbewTlXe3gY2KajA71cyCJS0vBbopJqxxLBsYUWvcU5rDrTU9OWDy/wN2Gj0N
-         pIoMpW9vX3uRNJufDiRtaWCdMjCLrzZ8LLbDlVZSxEFTCIXzVhKWWL4DsMi2QA1YMX7J
-         5zLg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1787641705; x=1788246505; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FUPUaRwtppzW7Cz0zNlhCOY1JMoitTGaOwtquxqzhgM=;
-        b=IdqS9Cisi6aHY9+FyhJCvfOIYTF9rxO32QsdrG0zBiH6KhO6wipE9KX0Mxelx1XEip
-         0Kcw6h2B2dV1I2Csx1XCmZvtNJwP1Fj9FpvWFAe5+im1MkBd1jSVJue2KkDA1ZUjv+6S
-         XJveiDFW2dYYWexQZX5cXMj72IU20pJNhDXlY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787641705; x=1788246505;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FUPUaRwtppzW7Cz0zNlhCOY1JMoitTGaOwtquxqzhgM=;
-        b=GMGE27yC5C6WjTfoyxX7SKrm3iWAm26GfFkJkRG4vAT6cLRaYYqV1jRxskP+ctChpu
-         ANtYDaffBvsrq3SKZScP8sd9+Tw8Fza4F7TKRupmGhYtlEbxq0TgDX3hMsVguJtYVPTm
-         OZMpKA6HAGI9Yj1zlglbz27eO+szY7K+mewtlMHBHpC4bLbhjukBahrj8DzKcCpNbDNo
-         XFUWrbyaMAUg61dT8A3h3bo4RQ70ca819S00yV9Txgp418ageHl/9/+m7Vw5ItqExUpU
-         bCyT9ECMSm8tzWi+08TdU6XEZ4NTP/NX/8+KpFSWdlQtPwJgqDOldD7WWsc4W1AvmFL4
-         3QIA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/Ac//edt1ZfVQlEPr4urmwYfbyxT3/wHPqYOaqCRHCQ7JzTJuxLYrAtJHUYLCiiNw7aTvryCtlQ==@kvack.org
-X-Gm-Message-State: AFuF++mHIyvtv39dSHmH57uTzW5vjgS4WR8p++at4oprh5RzEKReFxeY
-	6RFFBo5z07PRZIN9duGTjEkrVrr1UEB0LV/u66h+0bBn4MlGsFDp/iT35ZreR3xLsfPUqgPTPWZ
-	Yhki1aF8gZWdaV09yW0xrs623lKMhgxn0m/L48L1ANad6Q+7ipnw2l2kJCw==
-X-Gm-Gg: AR+sD10+0MAQILiBicbCHm8ortg4K3iqYj52EFcf7lEd3Zu6s9urPgmUodonnz/vG09
-	06M6FRtZDnY1RWkNxQUdSVQN7gc2RrNWNrObYLneMGd2cO+keYhh0L0bwlwq/21fi5KT8XR0Pa3
-	aZzEJKj87S6XBZwxsfLldjb+neVrkHzglqrbtyba8VyiuvbaWkCq8Bo8gnsj+RMpElb9XL28WG9
-	J8Y/5p51yqD2phUn7raCLbU+LH3sLLPhfjfi5fAbCtJRjGc1+2XcmewyFb17PMXtTwLoB04CnDr
-	SPpdlaqimSEwv7xIc/+yd1HzI5Gufx88/t9Rl3FsajISfFa8t8+YrHKij3vzEyVHynZSEgTstdE
-	NoBM=
-X-Received: by 2002:ac8:5f53:0:b0:52d:6afd:7db5 with SMTP id
- d75a77b69052e-52df59ec0d3mr342600351cf.25.1787641705339; Tue, 25 Aug 2026
- 00:08:25 -0700 (PDT)
+	bh=3306+CUzdH8GiI988xRpOo9PofrRR1DqWx90ydnRE9A=;
+	b=pW97N9TcgoZRpLvNv0RSAfxgenf2RT5upS3/acL7/ZGUbeMS6FYu/l4ZHuD6Z5hWu9soeu
+	7F66+/5LolWQA05uQSV/oI9D/p5F5LXnnl8ViO4Cde2bCEvhFmg/vQvhqYWEtwcZOJ3SU4
+	1Cbly/9Ah7hRT4+ntIzm59TSTO8OvVo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RZ2vBCYU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of atish.patra@linux.dev designates 91.218.175.193 as permitted sender) smtp.mailfrom=atish.patra@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787641963;
+	b=TV+2GCKg3V2CExorVc/fCKnzgtesvRrRIcsC3euPW4A/oSkweecCxvluoTu+qUprY26t3y
+	8UY6wLz+JJy0P30EUocnLt6AkYtigiR1X6DYcseXOS6aJMxl2+c/JitX0a3kEYAOGDjsHn
+	emLI1MKKPDGSwKC7ThnmQZA0fvI12y8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=vrqAFbQm5tBczLY4hb4nFOlOxMC1/kc+DDXxwinK16Q=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787641961; v=1; x=1788246761;
+ b=RZ2vBCYUJdlQ2ouUbpplBqf0V0IfdZLhmUhRPBFubqs5J7C1o2Tl/sLF4DvU+JPz3goGPA4R
+ RSBGovrjrO7ZisJXlZQiZkwYt42mBOr1XRwPC7WU1sU6cVt7G1eSIrfHWh2tFlOetQZGPNxIwu5
+ EOiCcFpU4qevjltscGqgZmaE=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [IPV6:2620:10d:c085:21d6::12f9] (2620:10d:c090:400::5:e4ca)
+	by smtp.migadu.com with ESMTPS id 29ba699e53c601c6;
+	Tue, 25 Aug 2026 07:12:41 +0000
+X-Mizu-Trace-ID: 29ba699e53c601c6
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <556337a8-5e2b-45fe-a1ba-90a90c1f3c4d@linux.dev>
+Date: Tue, 25 Aug 2026 00:12:32 -0700
 MIME-Version: 1.0
-References: <20260820193343.3852967-1-willy@infradead.org> <20260820193343.3852967-3-willy@infradead.org>
- <CAJfpegvP3i8ZJc2T=+f4rAhZ4E1QcT5+jC6mQPLxtB-yoK9Brw@mail.gmail.com>
- <aoxHOSC9kTPbKeNq@casper.infradead.org> <CAJfpegv3Ak+qNLb=fTSCSz7-taQ3Ui-Hkmqgn4PaGPe=CR4cbQ@mail.gmail.com>
- <aoyKxvdQdeJQfPHj@casper.infradead.org> <CAJfpegtgenUaudDcvecJuV2_WkkVw=gdcB0Eqg=UFKPMZP1uKQ@mail.gmail.com>
- <aoyt5pL7mXYwSqsG@casper.infradead.org>
-In-Reply-To: <aoyt5pL7mXYwSqsG@casper.infradead.org>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 25 Aug 2026 09:08:13 +0200
-X-Gm-Features: AcwNN1VLOxg4TFDsQzXPHVySuwqrEIZSjxOFz1CuAgo80c2cUSWOrt0F79eOWzI
-Message-ID: <CAJfpegv_SKhArUNBFUtsmkXSn+JzYgOjhFOqVf-Yd9MnsjBY_w@mail.gmail.com>
-Subject: Re: [PATCH 2/7] fuse: Use filemap_invalidate_pages()
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Chris Mason <clm@fb.com>, 
-	David Sterba <dsterba@suse.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	fuse-devel@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	devel@lists.orangefs.org, Pavel Begunkov <asml.silence@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: fsm5upm5tkmbfiytz5yfwit94w34tpmm
-X-Rspamd-Queue-Id: 303FD40003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] x86/mm/pat: CPA fixes
+To: Mike Rapoport <rppt@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ David CARLIER <devnexen@gmail.com>, David Hildenbrand <david@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jiri Slaby <jirislaby@kernel.org>, Juergen Gross <jgross@suse.com>,
+ Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Pedro Falcato <pfalcato@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Steffen Dirkwinkel <lists@steffen.cc>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Toshi Kani <toshi.kani@hpe.com>, Vishal Moola <vishal.moola@gmail.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ stable@vger.kernel.org, syzbot@syzkaller.appspotmail.com, x86@kernel.org
+References: <20260813-cpa-fixes-v2-0-39b4ff90f91d@kernel.org>
+Content-Language: en-US
+From: Atish Patra <atish.patra@linux.dev>
+In-Reply-To: <20260813-cpa-fixes-v2-0-39b4ff90f91d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: e5y7hcfsqj7sya1uz1whwu6xtnqc9ya5
+X-Rspamd-Queue-Id: 254FA1C0003
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787641706-123517
-X-HE-Meta: U2FsdGVkX1/Xpyn5tJitVAsNmek1EyGsufcbyVVpr+TwLBAMKsm3ZbTrP7iyOdR8i7khiWHMi7ds58SN/fFLO9Atr7s4x0k/gu8GQ79dWDml3SxWzZsgQLCDo5nA53uZDYTLbp/0y7Q4CaurMpNh4SNA8IrFuXSrrtcmN2+CLxCuibfK1Ai3phjanKz9kcSp3pjNxxRy+EN2xV46gPo2+a+cPK5MOpCHBkMVseqLQKdLUKOV3Jtol9JJos33yYfz2l1dbWDcy8dWX+7xgYBhjxf/4hgkWoGyUhhd3vJjXnXXusC/f4jy/jWURVQjR6JpkW7m9Sbh2Nv8908c4dKKhdlmDXVq0CJiICO/U6IscUotjUHJM1mDaYgPI3ceg5Vz5LL4qaU+d6zxr0RV5YQRJCa08GOvOQfIxKc/cJ28rYrk/RyL+ldZK6+IzobKsyhSPHm8i6Yw7sonvz15NVtvavfm/tkgxBBdvKTIdMu4KmFeX8k0z3LHaUIRyx65oPazLgFFc2aPU0MmLZlKgHluOmwRtosyE6xSh4GCM+aJ/Fueo1eG5qB5eKoyNkj8TOgAEOtuC6uB9zTz0Ps2dohEyV5qNZb5nA6ycdlLg64Nsjvwr/ZTUbvPQGr7VE3B4KNvgygCBKfdmxBZFc9INKHSbbzDJBGjlmF8p9mPvXgmtfdnoXwEhmxRAFI7mX0zNqfiOin7xI5Ohb9C9EOm0m0oHgV55QOQTYGf8LbAfxS6m/Yewzj8PB1qunOtFLwY/JG3QWnWInwTI3KFUV8NFK+El+CpXrdbg7JrvvMFKQiUjatn6zwK0kys91debi6PsfxyvraEFVvKPRk7d0KgkSu5DZf1V7jskCcm7hkwNXkUmr/koKm+P67l60ru/MwaWzKLwVZri6Dl3TDVRqmgblXaMGoonr1WiNFx/WxOokbphu1re1Te8ZpUlmkmuLGOVnhDnH+I0eBAP/kUDO7BSA8
- gx44EMNs
- TscF1SByrNJ0WnDRNz/jhYyGkLoYd4UxtfAfoy9Q9QjrBSqQcMyrlyu89+Lu5/lkI5y0ZKVu1zMCSvdg3UcKNPpjjdTiXf3jf1ALp+FF8GMVij/1lOccL7mtMTAEnMtr3Utse343cWzzvlzPw1EZXVppbWlX7ZiqGKiaVknY67B0yOJh+YCsh8CUxhOrEntgoaRWvXh/H7P7C+Pk3Xc0oGsnbsI2b0PYfSozqw8MDdiTOc3KBSpNfd5Z5748/IDpZEozt75dzfh5vdr3YlswLs2SCeO2g69JHWWnj29hMi83fpa/Ug4ThzVbDR3dgUgPc3omePqIx0IcopyYzpPckVj+2F5LbA6/I0UENfAad4LfhjQS+MYrAinY/bOBluk9QQVyc/FR5BNDp8gzd+Wl2dQzile4SKhtUgObPKmKZrMdvOqw=
+X-HE-Tag: 1787641962-818421
+X-HE-Meta: U2FsdGVkX19AjqWSTgzFf9xdAx1IqmXkHV57kaZZ9tVaKDHQZW2MteKa/fV/7Xrda4JU5ptOOUAgK15Tw0Ov+sv7TB82OPBxIEx6XNxlyLs4yS0/DoEmQ3hs4Is5N75B4H7TMzhSPyJ0oWFNP3626syYHXX2EYaeoKBNwDTfDlxVzflQGvOTfheM0+tu8nyzZzNAghDtzW5wgkrB9VFIXFTUPy4dfgtrm3zwL7xK58lFZgJZthiHkrTKU/SXriHfShUm9lUcOWYUuRHMT9sBj/86R1fV+bOn4RY6/1GysQQRMG7h21PCi4BZwz4/eCr0FtNDgXdXy683Y74Rgcmk/AvOezLBGRMyvUPdw2pwSW84uf07qsfgZ+5SipBIra3a4OfeT/z5mn4wuwuV1YbE+za8V77g/oGlWySu7PW3SkuoQkv4XQEU2Lc//DmwKokOSq4/cIRu43LwjB6SNErCkIFX7uw7owiZsDfAG6cWxx9NKxkVe+R7FtIO6A9BCwXgYy2QgE5r6zzBn0LDL1dFiMVnoTlzcPpBah6XtyX+ROhufxGkzhg0bDYOldT4YrsUf9+W24lQRM4MU8PZmILTIPcgt54/jZ+IGRFhwCudL2pspdDFHKT6BwRirLRnHVe0y8q1rIJGNVPdQS6ZfL1R5G4xTnfx7ssXJsZjHZeo5egj7Vx6+6Zf53P7KH9NqIBNi3fGStl5zHlZay058jEWju5Uhq5rNQFX+uo9+ayr90LAxh0WWPP2teTYJzDpRW85+06f2UmyblvXKHtIi1/ahxPJSmMvLJ7DuldgUvuTd57js5pXADWOXw5K8/jPY9C/zMKK7RxOVPW2CfskAJKcoaHeHRDo00kGqCH3uBv4yjMNRmThs9JTRMVEdQRycKaIoYSBjqA7tc35HclNKDce0GS/efsMRTm2hvg1s32gyJw+nL3v7x2Zrv1YiVyaumGqAIOtH7ldv9gqghiK7AH
+ 8MLipBvh
+ EnZuU2sNjRml/L508bxIAe+oCCxM8ZXvwGHVzKOvEaYexAvTh7DKDamDe9JMqEOeEfkjjLeb+/reLYCRSfbI/xH3C4q2RBUHD/g2G2/BQoxpTbWtFSSrKV+K2btLtL+jN5j6LoCJO8SL2bl+CZF0hF5fLsuOK5fwtloGCE/+UfXuxAKXqcAr1iQsXXCx6mZBShRAbgIn8iv6noYsD62H68XaWhcq5RnsyMVgRvILIWIdUkB5KmujL1LkgOnrU3k8cz0LWyVtzLyjPV5GjbYMdOHLKfpFlve1rL0BKfvQwJlsVwvRUnNM6BHyc2UPQtvXeDnj6NouVpZU9E90GiAoJx5Y62VA4nTPMaSD2458EGbK4uf0bkcsmUKXUpTAT32lqYYhhE9r77OKQvfkbI9oO8NL0P44hu2KAiD5nrsstchVcwSbmHr4feHKe5Km5+WRqSNPFuausC10QB36N2AhndFZkCVxy0P27vtyBVG5l2j7ODSj4brDSEBbCRUpklimHxnDU96KWJLIySGRjuTgisbTJTnHRgAksyo8DkFbKbfOSBFFL6j3llhGP59BIw8HyMWHwNMXsX2HibJ4rLWckDfc/pALTUJm/1Sru
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,85 +106,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 24 Aug 2026 at 22:47, Matthew Wilcox <willy@infradead.org> wrote:
+
+On 8/13/26 2:01 AM, Mike Rapoport wrote:
+> The first three patches are urgent, the third patch fixes BUG() reported
+> y several people and it depends on the first two.
 >
-> On Mon, Aug 24, 2026 at 09:33:03PM +0200, Miklos Szeredi wrote:
-
-> > In the second case filemap_write_and_wait_range() won't write protect
-> > or unmap the page, so it may become dirty after the writeback.
+> There were no bug reports that the last two patches fix because bug
+> manifestations won't yell at users.
 >
-> But that can also happen in the first case.  page_mkwrite() can be called
-> immediately after the folio is unlocked, for example.  Or the folio can
-> be evicted and replaced with a different folio which is then dirtied.
+> TL;DR version:
+>
+> There are a couple of CPA fixes floating around:
+>
+> Denis Lunev fixed races between split and collapse of the large mappings:
+>
+> https://lore.kernel.org/all/20260715183453.2381141-1-den@openvz.org
+>
+> Lorenzo Stoakes fixed UAF caused by races between CPA and ptdump:
+>
+> https://lore.kernel.org/all/20260723-series-vmap-race-fix-v6-0-8cc77dcc0018@kernel.org
+>
+> and an issue with stale page tables in IOMMU:
+>
+> https://lore.kernel.org/all/20260721-fix-cpa-kernel-pagetables-v2-1-2b255deed710@kernel.org
+>
+> Mike Rapoport fixed a check of RW attribute in lookup_address_in_pgd_attr()
+> used for the verification of RWX:
+>
+> https://lore.kernel.org/all/20260715144519.934289-1-rppt@kernel.org
+>
+> Pedro Falcato closed a race between text poking and collapse of large
+> pages:
+>
+> https://lore.kernel.org/all/anCK3eWFMwZqq5ka@pedro-suse
+>
+> Some of the fixes got merged into x86 tree, some of them got merged into mm
+> tree and some are still hanging in the air.
+>
+> The changes here are collected from all these fixes into a single coherent
+> set on top of tip/x86/mm:
+>   
+> * fix for races between CPA and ptdump causing UAF
+> * update to the fix of the race between split and collapse of large
+>    mappings
+> * fix for races between CPA and vmalloc_to_page() in text poking
+> * fix for stale page tables in IOMMU
+> * fix for effective RW computation in lookup_address_in_pgd_attr()
+>
+> ---
+> v2 changes:
+> * rebased on the current tip/x86/mm that includes peterz's changes for
+>    DEBUG_PAGEALLOC
+> * added fix for CPA vs text poking race
+>
+> v1: https://patch.msgid.link/20260728-cpa-fixes-v1-0-2ed2352300b3@kernel.org
+>
+> ---
+> Lorenzo Stoakes (ARM) (3):
+>        x86/mm/pat: acquire init_mm write lock on collapse to avoid UAF
+>        x86/mm/pat: acquire init_mm read lock on attribute change to avoid UAF
+>        x86/mm/pat: allocate split page tables as kernel page tables
+>
+> Mike Rapoport (Microsoft) (1):
+>        x86/mm/pat: fix effective RW computation in lookup_address_in_pgd_attr()
+>
+> Pedro Falcato (1):
+>        x86/alternative: exclude text poking against change_page_attr()
+>
+>   arch/x86/kernel/alternative.c | 39 ++++++++++++++++++++++++---
+>   arch/x86/mm/pat/set_memory.c  | 61 +++++++++++++++++++++++++++++++------------
+>   include/linux/mmap_lock.h     |  2 ++
+>   3 files changed, 83 insertions(+), 19 deletions(-)
+> ---
+> base-commit: 7da514d819a0afb148634aac92b3d190f34947c3
+> change-id: 20260727-cpa-fixes-d3c73c075672
 
-Let me try to make up a very concrete example.  It's not realistic and
-very unlikely to exist, yet something more subtle might be relying on
-this behavior.  I don't know.   At this point I'm just trying to show
-you that the two are really not equivalent, not that this has any
-practical significance.
+Reproduced and verified this series (patches 1-3) on 4vcpu guest running two different kernels
+1. mainline (commit: 77ae27fd98f3)
+2. Ubuntu Resolute 7.0.0-26 (production kernel hitting the issue in a VM)
 
-Let's imagine a distributed filesystem based on fuse.  It wants to
-serialize accesses to a file to avoid sub page writes reverting to
-stale data on cached writeback.  Cached writeback is unavoidable in
-case of writable mmap, so it tries to handle this case correctly by
-totally excluding cached aliases existing on different nodes.   If one
-node reads a range of pages, that range is invalidated on all other
-nodes.
+The Reproducer consisted of
+1. A debug patch a cmdline-gated stall between the two *pmd reads in vmalloc_to_page()
+2. One taskset-pinned insmod/rmmod worker per module over stock cfg80211/dummy/veth modules
 
-The below example show store to a single page on node A and B with and
-without launder_page, starting with both having the page mmapped but
-not yet in cache.
+With the above reproducer, both BUG within seconds in unpatched kernel.
+1. Resolute in 0.71s at alternative.c:2564 (BUG_ON(!pages[0] ...), RAX=0)
+2. mainline at alternative.c:2473 (BUG_ON(memcmp(addr, src, len))).
 
-1) with launder_page
+With patches 1-3: zero splats across 10 runs each (600s/11,378 module load/unload cycles on mainline and 1200s/55,980 module load/unload cycles on Resolute).
 
-store on A
-  - send READ
-  - server checks that no aliases exists
-  - returns page
-  - page is mapped in address space and dirtied
 
-store on B
-  - send READ
-  - server sees alias on A, sends INVALIDATE
-  - INVALIDATE is processed on A:
-     + page is locked,
-     + unmapped
-     + data written to server via launder_page
-     + unlocked
-  - returns updated page
-  - page is mapped in address space and dirtied
+Tested-by: Atish Patra<atishp@meta.com>
 
- store on A concurrently with previous store on B
-   a) happens before page is unmapped:
-      - change is written by launder_page together with previous store
-   b) happens after page is unmapped:
-      -  page lock waits for writeback to finish
-      -  sends READ
-      - server sees in progress READ on B
-      - wait until READ on B is finished
-      - sends INVALIDATE to B
-      - ...
-
-2) without launder_page
-
-store on A: same as above
-
-store on B
-  - send READ
-  - server sees alias on A, sends INVALIDATE
-  - INVALIDATE is processed on A:
-     + page is written back
-     + unmapped
-  - returns updated page
-  - page is mapped in address space and dirtied
-
- store on A concurrently with previous store on B
-   a) happens before page writeback:
-      - change is written together with previous store
-   b) happens after page writeback but before unmap:
-      - since page is still mapped, store succeeds, page becomes dirty
-      - at this point we have differing cache contents on A and B
-
-Thanks,
-Miklos
+> --
+> Sincerely yours,
+> Mike.
+>
 
