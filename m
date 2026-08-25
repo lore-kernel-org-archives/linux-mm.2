@@ -4,147 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67E1EC5DF9C
-	for <linux-mm@archiver.kernel.org>; Mon, 24 Aug 2026 23:43:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 476C3C5DF9C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 00:03:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C5136B0092; Mon, 24 Aug 2026 19:43:06 -0400 (EDT)
+	id 2E9586B008C; Mon, 24 Aug 2026 20:03:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29D6C6B0095; Mon, 24 Aug 2026 19:43:06 -0400 (EDT)
+	id 29A9D6B0092; Mon, 24 Aug 2026 20:03:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B2B86B0096; Mon, 24 Aug 2026 19:43:06 -0400 (EDT)
+	id 1B1E76B0095; Mon, 24 Aug 2026 20:03:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D159F6B0092
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 19:43:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 515121C1100
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 23:43:05 +0000 (UTC)
-X-FDA: 85137791130.30.FA89797
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5CEC880005
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 23:43:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J8zz2uq0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787614983;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA13D6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:03:37 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 51C3212028A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:03:37 +0000 (UTC)
+X-FDA: 85137842874.02.3EB6D29
+Received: from mail-oi2-f0.google.com (mail-oi2-f0.google.com [74.125.231.192])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AB34B1C0007
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:03:35 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of 31tuMagkbAB0LRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.192 as permitted sender) smtp.mailfrom=31tuMagkbAB0LRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787616215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sHnXZHT8WiiUeAdh+tKiJaengtnfesqTEZdJsUGA+8I=;
-	b=iXI/q9AoX/vlSrlvpgJd8k0CDMpNHtMdnb5KU+Z8uC47PnaJkvQ0ccJQxA6nJgM9W56lfl
-	o4cGRLVeul4OtLk3tLWNeQ8NeYUrlPkJYyn7+fx62w4A+UyDZ42bK5NiruNyZF41pLTjpW
-	B+UxKOlAQJ+Zy97CsOE0Jsa+zikpWgM=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J8zz2uq0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787614983;
-	b=GyKRFrNUWBazY/jJhAug25hFU2buRzNBy5mHjm8PhXa4Yu0elNDLoOSr01zteXACo2CAQo
-	yLOWJpUAh+d1X69UG/IqVIC9ysH1vAScELc0Hrk+pdNSveQNd3dPZSP4UHAHHIugVo1ZJd
-	98EdqoR8lwyuc28B+rD5QyifV1jXio4=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-495590dde14so35467145e9.0
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 16:43:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787614982; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WXYTvVtEH7fDLhSbp9n6/kyx1tB+WKu77uwy9WOTLqHv2l/I8O/YHRpGj8eHoRFjoz
-         iimP+4UjImN6WstL16mUj9bSAIU+fluSnrACw4T9LeCpTZzFaEJO4QREfmHD3yF4VbX5
-         HCRIHvBoCFo9XknwLaSVpThMrzv8LT3RJBiUHO2DJ6TzJ9LQYi/IXDy+yDNe1ONUPEcw
-         JgTUEeZVtziVdba3FMxGwduAZg9cYsWaPvEBZ3sz4wanHP6AAh6O8iGXRJweErhTRn58
-         Nd5HqbYA3dKSGc7JxK/5NVft+fUdsc5vKs+voyZO7YNP+zgXhy+IWBVIzQ/TAqBTRxpL
-         oznQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sHnXZHT8WiiUeAdh+tKiJaengtnfesqTEZdJsUGA+8I=;
-        fh=+6td3RMenRswC4/P8Th+ZVYq8kiPrRSaNSwfjHNaJho=;
-        b=lEFax/MUd6McpWHyJS0Hfx0rCpmPy/O00x9F6h7IqF2m3pLEoNJBn0ZtJj+D1+Zr/v
-         tMF4fd8bqRfUjqQSZ83BVq/xt7j3HK33w77v92JtrId7PR3Sk7TlAs4S/gNjnIuFKyzU
-         L37w8ZdilpEKRynwtiosN9Lmag8ifodZPvKIOxVBzpfOpN4Tx9LEauEGD9BP23xNHTcy
-         dcEFKC4j5Ee8iOTtNfVuc7sA0F8Cqh8vtq0oFd1G5w9fXRDOIjfuQS3aNGxnnGCYHQ/9
-         DCWOQc3A+/QJJ4yDUdQjvy9LmHoG+iFj8s73uxHL+H8SWj/RnkggXHROtBSg03BnYpHa
-         IfMw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787614982; x=1788219782; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sHnXZHT8WiiUeAdh+tKiJaengtnfesqTEZdJsUGA+8I=;
-        b=J8zz2uq0Umbqvp2tan+3laq4+yW1O+YyEfsdJhtOVZt84fULLOAmXBG3tJfLWBd7PN
-         oAtMkKJ6WLWd0p9wMiLWxcRFZaegF96J/Te/CEmHvM6LRCarIXWJclrflJNVVdxtr+QQ
-         Qz1BP1t9/IjhtDfEPjDkguThM7omF/GUaM7q1HrdD2WpYWzrI0EqYsETDeuA5LYqedo/
-         fXvZnI+tlA2nntjkjqqEmbMF5p2Xech1XRCmLtc3zsYkBgkjIr/8kNboprjzHu/sq3Wa
-         mWoJw/tiQTxnBE8J5GlOMAXlF+0ePyhMIrGsJO7OzihktRVbb+kiWaN9Rw3gsBcHRIIm
-         NTVA==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=ghidRltZKHo1k7fmy+IdUK7PxGwGYHFGIq/aVrSbUhQ=;
+	b=RhmPlaOMz4K9nJdio44cnFnwYL2mWSwUz8O6eT56xL4K/7Gb2uJL3wPwEfiX3lKTuoqwH5
+	JO4YMHchWCWJuLUWyoooFRG+EUhrKPSw1i+PnxfXvDBWCcMwFHd3e4HfNHcyLN9rFnLz0P
+	/xqPLDZybG483DvJV/1i77LGusn08QQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of 31tuMagkbAB0LRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.192 as permitted sender) smtp.mailfrom=31tuMagkbAB0LRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787616215;
+	b=1bOsHLpCazYDEEdbdmGMXyewViLE2NsVRKggYKiMp8kYyiPKl5SHqFzYoaspOqDx8Ig7Pq
+	9huntcAI0R9i8/Hg+fdabyeMKH3ddZOPeGaYUa5nGexleA9lvcj6ntlYqcL56wh50D1bCV
+	je3MkwToPN2uIqeTaltxHHUsLaQ/nmU=
+Received: by mail-oi2-f0.google.com with SMTP id 5614622812f47-4a41b6fb855so1559161b6e.1
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:03:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787614982; x=1788219782;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787616214; x=1788221014;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sHnXZHT8WiiUeAdh+tKiJaengtnfesqTEZdJsUGA+8I=;
-        b=o+ywvIowG0DAKy6Omir0N+sDKdEDMTueMhzGALXMG9shg1UbG/Y2bbLeCO2FiYlJRI
-         R2BNdkckq+xyhkzjDmTpbLcCIWxjv+354OM+4c7MRS3j8alYSbxUx0qy7pNk9unk/BTP
-         HDdl99uv6gTijEDZyiN5s+HXpO+9yFrMtRKiMaGJJ6JR8LtfAbrexNYakxdge5JvaC6l
-         8fCTtgmF31oXLk1KHg2rnzTUvWI06fAeNFKnnieEQ8tqnQlb8Xh1UC3esEt4ochd1DIH
-         B+XXSecebO0tcUD3USmKsBLsVXrmsnspjXubGAArudY5iUvaMvDqTFzh74eaEGlLBreg
-         pzDw==
-X-Forwarded-Encrypted: i=1; AHgh+RotEFz38Mf9OlOH4ki6HM94NeZCER5Eacfd1I3WMklWn2UiAA4NMc9W2Sv/XisEsOi7gQjjO++Ofw==@kvack.org
-X-Gm-Message-State: AFuF++k8PwyFPa0DVX9E0zSb1U9+jAH7wy1k4IgorwKTLXVf3oHpWFk3
-	THktxafQtwqFsi6j9GAgH5ph0Os5xF74nwMJSe21MphcuTD5MaRLgNdv8mNfOUTywaLXvYiyRYS
-	GH8uDvoX5LDGqeo6vkkhjiDW/KiWsSKo=
-X-Gm-Gg: AR+sD13UrEutu/qviDFmziBaeRAZAcTiGYcndAaAJeoUbo14rRlpj9JBxSHcHLVnkOu
-	3Vutg0xAyTPg5lIP2K2Wwva0N0sMmsZno3zMoK7AhOQe491blg8lfH+oHQSyOz6I6EFnjSyR7bM
-	Jp7A8hwZthc72YnMnt2BXq7UUkGutGBgbGiWHcf9A5UYgb8NfHlq3b+STAZwdivMwztjv5vhkEf
-	h+u4mccaYylWdJcsfolLfevJtbWWgQ5DwqvJgVEbH8CNP3JByHTT6HoPBNT/J4zPlWOJ0R1oFNl
-	lgEZpmBVqd84Pt391JWMj+fpVERTRG0EImLcWPCyNOpRg35ia1FMvcBs3+qqnmMKE3wxhA/efNk
-	riZzkMghl78nIhpetZbSnwUBlA1s=
-X-Received: by 2002:a05:600c:5294:b0:499:7f38:d77 with SMTP id
- 5b1f17b1804b1-499b830f690mr402396315e9.6.1787614981730; Mon, 24 Aug 2026
- 16:43:01 -0700 (PDT)
+        bh=ghidRltZKHo1k7fmy+IdUK7PxGwGYHFGIq/aVrSbUhQ=;
+        b=NjhRnNbZ7Wok7g7yKzP7rD7/XTLMcDDavgU++Fo5url8P7AD466nBsynBylhYCqtSb
+         HzqN5nAcHtCRC2AA8qeld3kY8xpkwZDnEokQEdlattYGBJgLya6qETgrHb42xebyYtI2
+         1GJCb13EcXJAx+XYHhG0XT8f9aKVG/lWs53dXVqLPgvc/2kf16d/x+obRGq51vrFRzC6
+         3kS5PoJqIDqB1SlDZ/pJpsOVhE/dhqAXw85Sp+Tnfm53bnHit6HWxAF0UUG46nRDSu+7
+         q35VSKC0D0Pube93XvVv+DUs57J6vHNbd3JtUhmRUtUIbHOAPrEH3PvuTL/FAHD4D3RD
+         hTOg==
+X-Forwarded-Encrypted: i=1; AHgh+RpDYykv6ON0QHp8Kkv738Hu40lmZ3klMr0u3fGAGWHNSzAeaxlj96gqNS37Ur75hW2lU+WboJslGA==@kvack.org
+X-Gm-Message-State: AFuF++kpcmI+mGhGmUjov84jl0wK9F+1ka8SXKdUWzHUCyQmLlVqt8ya
+	7DSDT2UsNW8F835vFa5nGcSmSM1iad2ptZOJLEvki7Hz9Lyim17Z6pRX5hq9gNjoZOIMw/k6gsi
+	M5hWdLBORlMgGdn8wAlqKNe73CvpGzBS/DNm7X/ffxlAayFhA2/2x9CdjNZQ=
 MIME-Version: 1.0
-References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
- <CAO9r8zPpe6fWOSXtRUjFB8WNMroeBqvLT+2QtAU4E27AtLUXMQ@mail.gmail.com>
- <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
- <anpsLy_pCanocgS1@google.com> <CAJnrk1Yoj7fqbzurmHkbA-vegpQu3cf-_dfvKor_VxuNhPR-AA@mail.gmail.com>
- <CAO9r8zPLipVW6bvyDK1ypSawbo=LHKvmLqWH0xA6WMR9GYNJpg@mail.gmail.com>
- <CAJnrk1ai-TqcudPoK-qFRYAJnUjBmg1kVa6Vxg3eDm5w5ivqSA@mail.gmail.com>
- <CAO9r8zNJ=Fpc0pZExrttVTDCM3yzSmLPCAU=+RS0k5Pm+hY96w@mail.gmail.com> <CADrL8HV7_f68qfd6hG=xCTqzupPqr77ynbwdz8jm0hzjdgDVeg@mail.gmail.com>
-In-Reply-To: <CADrL8HV7_f68qfd6hG=xCTqzupPqr77ynbwdz8jm0hzjdgDVeg@mail.gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Mon, 24 Aug 2026 16:42:49 -0700
-X-Gm-Features: AcwNN1Wa1AOcfS35Y1v_bgY_n2l1WDv-MkAP-PHL7EYAY7Mw9O0j_aJCxbHrZ54
-Message-ID: <CAJnrk1ZU1UO35n46acq9My77G8=h3JUCLXchiamBCFbiDZXJzg@mail.gmail.com>
-Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
-To: James Houghton <jthoughton@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Jan Kara <jack@suse.cz>, Miklos Szeredi <miklos@szeredi.hu>, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
-	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>, Song Hu <husong@kylinos.cn>
+X-Received: by 2002:a4a:ec44:0:b0:6b1:7ee2:da31 with SMTP id
+ 006d021491bc7-6b17ee2dc66mr10382010eaf.11.1787616214704; Mon, 24 Aug 2026
+ 17:03:34 -0700 (PDT)
+Date: Mon, 24 Aug 2026 17:03:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8cdbd6.dbb3a75c.7844.0013.GAE@google.com>
+Subject: [syzbot] [mm?] WARNING in setup_conf
+From: syzbot <syzbot+75f49ec552cc74d9d69b@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
+	david@kernel.org, gourry@gourry.net, joshua.hahnjy@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, 
+	rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5CEC880005
-X-Stat-Signature: dxmwrrai6nm1pt8e3r6wq5xwffbasirc
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AB34B1C0007
+X-Stat-Signature: tehxa4hszy1cdxut4k4k49t3rugqpa3e
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787614983-323824
-X-HE-Meta: U2FsdGVkX18VgDzyEB/Zrg7HcCdj8f2Ky6A3vlui/obWqXcpFATDxDCT+X/KEcCqkas8ZRHjQpbChcKiuKUyCJmHQuI+/+anoE1+suZxtjRZ1xPZPegAJjbfK3zihxjo+o67GX4/zABpIa1yxIF5pJ4wzFRQRGr9pmcpoAGL8aJd7DCwr1eek2mbOEOqyzTv3QW3xNVl488kkARrpuOcD53mmYnLze9syl4SqaxYqfuxgvLsKiyZmSqzzTjzWfDPg9FhWj39pmxOzbjd/+F5flxHyKKNBJmQEeWL5coGcSTiIt8j+75tu3OopcOD4sCCif3mdPH8yfm837qZrNCO1qEmXyQHgdzh6QRzh492mM4VP3JDnJJQRWQlk7alvJjJGQJd9qqtmRBm829QfNske+R7x2BbPX4upK49Ek2dlYDTXjtROP3NCPS4Fw4f+h6OT2+iSN5qqrBCSezeVymlwAukXh800ZM7hg2pj9Xl5zUf7cl42tKNyv1EM0A4h+zlag8xjO8vVViKnG5kaaxVrWhTrW0JvdJJuDff9chPIzLdf6I+aynPb6J2rDbnAWPiqCzfsbBVtKdfaw+1HixoRbb1hMYFpZm797ohyJQ/wIus4CJZpvzT6nC91JoDulFjAJiSheVaXBYZHiZlX8CwyLOjOygp4AU4DeNiE/hGz4QcBkRl3WAe2FdYzpgSdKWxPd73Gnlj1Y8QliwJ0yV+S5Hu/XSkdEtTNNzHX0bkWH7Q/Etdr4lkTNqpKPkcv+oTjNUS4VAiYDBeJ+NaLJIzoQk5Zm7T14EqmNgtZE8tBrLvuwNo7M+jZ1rCshTaxl+3nY4SletDFhi0zSCHiOmkpUSf5U9azbAXZISc7TlMUxgdpOEvjODP+RpC7DqzMF/lzz0Psq5Ke3w7iTyfz+ITgiG1mT/QLA724x6r/EW3cdde/B4sCF/sP/8Pe/j2W1SS/UTWol3iDUULf61qlIK
- nG6Wz18g
- 077aGXl5KxkwCE0iif6NBIl5coP3LyRkraiWeorRwtY/KtnxoDObsnLxl9cQ6Bnj2JRZo1e+yOgLGvfwC5D79bW1uJ+uD/DpcyyDLP+w52adrZFtcpZcOP8OEAgOU+3nsQE3ZK1F94m1IYZSeuOzYj7eWWB7g6Y9WXBlyp9b8KtzuAd0miaq1D4fHZN4jz8ZRSXZzSZhalhToOLOuhdrutZkvKxODRyL3mZzsxaBVQc/9iz1X33CJghidSUF0ub8j3I/cJrzpscwESeixsDepcKlIIXmU/2ZqrDKcXfefjSlEg9oRC6IeeDaaJJdr8XYhQpJ4yVkAA8W2wr9kabOyxbCmnb4Ni1FNFqOLFyEUG/SaD8/HnFw5u78WYEHJ+8pUMpTLIDwAsx0mpIndUIEljhmXTvuLqrCGHfQb4sESlkn9EnKxSntxLlBzDDJ1C6S2erN3kjEKLtP2K7WdritmY1XkwluGuuBLz9Z/
+X-HE-Tag: 1787616215-510844
+X-HE-Meta: U2FsdGVkX1/LBNtqFGvf7Y1FP9PrduYMAOO35u07T/TZuIRcL32sL/6TMNhyvSWiE+NvhhJz6Sg2sPHQwXeTYzf5abjv88tbqlrPdKsa1p/BGvUddaoNAFTRYHX7fENLrVjUqTraoPxejUWxxDE1nxCcbhMekXg+o7DBeqfYHbiw6yuMi7WzxV69oxLHpHIBMn6iE/9XyIjS3NlkAdkMsmDcUtHjK1dzT7zZjssDxaiyZSgLEHJxUMef3GTVhVGVFOTjWILTLRYrvi4pHje/7acFtgVmIvql5xtovUDkXETgcegSI5FswZzxeeqE9Xs+MFYbyHLFafj15TROxIEAY5RlHP9YzZy9a8SybpDJs/7AGQl3mznHJnvXqXr29O6ww+ZdKFt+7DolRFZ4U8Kq1M6xu9N25OUrE7SoI51RHxAJtoGuN8ApgCvpcNKnukvo7tsQchtvtSFWZL4lVB1bkgGt+7tN4NOkRrgEwCtY2GdXrfk36KSAmt0bF6KH8ukEdvzY85LWfCV6XmOTvLhcERNUhfcDameGiuuI6KX1EaulfZW+aeFhEHPdLPDaVAr/i5x1r4CFOYAps9u+r45tT44O0svnlBKwWQVa0kqf10zqqI2/h2FgLUOLyacdJEMimanFCVvCwyd9EAZvJmYUs2a+CUFjZVnjD5cXK2qXRF0Cj3EJx2q8hyegx8SKm2WD8aWUXz3oiZWvDVr/EVGjz7si8d6aXQmn4wsLi89F5eiEo+w6dxvxUqBzaeieoorR/sOMPJQ6s2NK6+iQruG2hp0558/p9ROu4rm7T7R2HqdNRo3cq1lRA9oo87nwb87w5oxQZMsstleYqINYVSkbwGZ41pkdjSoZ+Omv7CZGnS/xyxBxPiuQ3zDV0Nm93hx1srgVWvgPCntZwWh9JmbfyOiP2fkzjRSqgWR+vW+ik74WQm8hI6UdYdVbxR/fHeImFiYfa6R6ozw18ClV4BU
+ w5EYT/1x
+ mO9cSNyA+aceDbHds4HqXkzIPRGugMrxtbmLM2asJy4QV0Xwr4KrQYpxhJj9fzHViSosQaFCHXqRsOVMCwwYyJgBMCtho7C0Q/X18jvY52+kn14Fku0+umextTDy4mVdtNERFYr3eJzDWOQRRrYCYY381yFOw9GyQZATp4+Tmp3Q958s/oLnJUHxH1pqawcDTQ8socFmKBS8LkH3z7fCz8zAEtEjk4dz5SfpQ20Y/gSTYdmPco8L6VdNwqqHPuu2FGlHcEvanPHj/CNnOkJqvB8JNxBihFlSjt2k8yJj/017Gf+J5A9Wx3DxHUzFOFwZHSeMI2lSepunNduT+0/cwDs0XhzrU0g1lqruBUXlykiYQNW3ojDR4PgkW5YmwsDlf12fVkMgeYGYI+bKTV1ghyfbjVEeQoQWky7Fyk5RYP0lSiGk3FhTat6kG9VOYzLrn6Uxu3I9EmJsTyEvWgxKFhhSUBr66eNggCDRGNHVO9zmI14KH4o+ZKqlo6e9PTrcV2W6Suvat+GDGdUuk87/ozA6wd7g63dJg6ntdgcGqrs/+aAkVCpG0VaJEpinDIo9RWTzJj5TguBL5dbceNSfN3VzWQ98yC1JJHGuX1jTEZyuHL5emg69AeXNBuHENYNXqF6hkZ+X2gi7ZIEtf//z9WPdPfwnMYuJBmxFtd+odbmI8dGdlDJx3tax5WGFSLVS+VZ4kfPZiwKpo7qO7VC4vDQdBcCzq5Y+87HWLXxZyLSBSdksD2dY51w7MyTJbHWoRxZv7zQryFGilisAOoLfp4bzV1Po6sGU4MgAuRRfcKMr7okLaB4cUnY7yCAjU8XtFC01ZHQfIaoshVo7cP2ZTGX4O2LVpxnHDs/9E+r3Xwk1l/Z9nKYhZhC4VkQYJ98i7KFd3rwSxbft5Bz6Zha9d/WfK1ybWbaihs4g76XXZNuwjp3GsMvxICn6DqtlIkj11GXp0n3S2Yk9hAK8NArnmmXAhCjW8
+ s+awZ71N
+ tPXOkCNt+QWkxr1McfOYfYZcCYZ8hGmEeubVcH5iOHKnGM+fO0fXSJj8Hu6eoxI4FvaEYeGOeWX+qzwkIxLMADM+jof9IQiPG2ytCNevuj5lWfIIfunOoBFJ6eYYZ5+nSenSQjYU6Fvwq9fI+DNTxyNlYxUZGfYtni+X02WmrezkfJa1FTD54jwVY6nbD+YqF75O1k/twPXkCi8CggzE1LZZtxNg3Amcro42IDOU8Rz1xjnXbVMoIlIJ4z4UWBFN9g4TaCYQQp7vkFCFPZubSWUDnX0PbEw8pDd8FUMLTl7vMB76WgMOTing61XE1JtS6H7Kdt9CfdcTax3EZ1goWYFCO542OUdiH5JMUsPrmVYWUG5CFkq1qySgCufxXj7aFb8c18QjTkZKbN5cnUQz5/vzqMsLpU5aBfUTsawTzvi+rIKc3TZczxeXYOYD4GuVp2H0oDUgAIOnghZnkD/hlnaH+W1jz9wPnXgalIwS4W8FSjIVIoH1RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,64 +98,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 6:39=E2=80=AFPM James Houghton <jthoughton@google.c=
-om> wrote:
->
-> On Fri, Aug 21, 2026 at 12:41=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> w=
-rote:
-> >
-> > On Thu, Aug 20, 2026 at 4:39=E2=80=AFPM Joanne Koong <joannelkoong@gmai=
-l.com> wrote:
-> > > Would you be able to share the test you're using? I've been trying to
-> > > repro it locally without much luck.
-> >
-> > The exact test uses some internal testing libraries, we're looking
-> > into whether we can translate it to a standalone C repro.
-> >
-> > From a high-level, the test:
-> > - Creates a VM with 260 MB (256 MB for testing + 4 MB margin) in a
-> > cgroup, backed by shmem THPs. The VM is not a fully fledged VM, just a
-> > KVM VM running bare metal code (so 4 MB is enough margin).
-> > - Enables zswap in the cgroup.
-> > - Tells the VM to write to 256 MB of its memory.
-> > - Checks the cgroup shmem usage and that no swap occurred (no limit).
-> > - Sets the cgroup limit to half the VM memory.
-> > - Checks the cgroup shmem usage and swap again, usage should be ~half
-> > and so is swap.
-> > - Tells the VM to read the 256 MB of memory again. This should cause a
-> > lot of thrashing and reclaim, but no OOM kills as all guest memory is
-> > reclaimable.
-> >
-> > With the ratelimited flushing, the test started flaking 5-10% of the
-> > time due to OOM kills.
->
-> Hi Joanne, Yosry,
->
-> I've attached a reproducer for you (as a patch that should apply to
-> Linus's tree).
->
-> In tools/testing/selftests/kvm, `make` should build it. Instructions
-> for running it (like setting up swap/etc.) are in the comment at the
-> top of the file.
->
-> As part of the patch, I've also included a sysctl to dynamically tune
-> whether or not the memcg stats flush is rate-limited. You should find
-> that when it is rate-limited, OOMs occur, and when it is not, OOMs do
-> not occur.
->
-> This reproducer behaves slightly differently than our internal
-> version. This version, when run with `-b 512M` anyway, seems to OOM
-> simply by setting memory.max, whereas our internal version would OOM
-> upon re-accessing the memory. Not really a meaningful difference, but
-> just wanted to point it out.
->
-> Please let me know if you have any trouble running this test or if the
-> test is wrong in some way.
->
+Hello,
 
-Thank you so much, James! This is very helpful - I will run some
-experiments with your repro this week.
+syzbot found the following issue on:
 
-Thanks,
-Joanne
+HEAD commit:    9d2ed026f031 Merge tag 'sysctl-7.03-rc1' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1124919e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6e414d6e0a79e71d
+dashboard link: https://syzkaller.appspot.com/bug?extid=75f49ec552cc74d9d69b
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9d2ed026.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/89c0c0c0f535/vmlinux-9d2ed026.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/80d7adeb0e7d/bzImage-9d2ed026.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+75f49ec552cc74d9d69b@syzkaller.appspotmail.com
+
+tipc: Started in network mode
+tipc: Node identity 2007ff, cluster identity 4711
+tipc: Node number set to 2099199
+md: async del_gendisk mode will be removed in future, please upgrade to mdadm-4.5+
+------------[ cut here ]------------
+1
+WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2ce/0x380 mm/page_alloc.c:5280, CPU#0: syz.0.0/5310
+Modules linked in:
+CPU: 0 UID: 0 PID: 5310 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__alloc_frozen_pages_noprof+0x2ce/0x380 mm/page_alloc.c:5280
+Code: 74 10 4c 89 e7 89 54 24 0c e8 8e 2d 0e 00 8b 54 24 0c 49 83 3c 24 00 0f 85 ab fe ff ff e9 ac fe ff ff c6 05 74 6e 18 0e 01 90 <0f> 0b 90 e9 17 ff ff ff a9 00 00 08 00 48 8b 4c 24 10 4c 8d 44 24
+RSP: 0018:ffffc9000d50f520 EFLAGS: 00010246
+RAX: ffffc9000d50f500 RBX: 0000000000000015 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc9000d50f588
+RBP: ffffc9000d50f610 R08: ffffc9000d50f587 R09: 0000000000000000
+R10: ffffc9000d50f560 R11: fffff52001aa1eb1 R12: 0000000000000000
+R13: 1ffff92001aa1ea8 R14: 0000000000040dc0 R15: dffffc0000000000
+FS:  00007fe2b9aac6c0(0000) GS:ffff88808c519000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffc93d2c090 CR3: 0000000044100000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ alloc_pages_mpol+0x212/0x390 mm/mempolicy.c:2490
+ ___kmalloc_large_node+0x4c/0x120 mm/slub.c:5274
+ __kmalloc_large_node_noprof+0x18/0x90 mm/slub.c:5305
+ __do_kmalloc_node mm/slub.c:5322 [inline]
+ __kmalloc_noprof+0x409/0x720 mm/slub.c:5359
+ _kmalloc_noprof include/linux/slab.h:992 [inline]
+ _kzalloc_noprof include/linux/slab.h:1309 [inline]
+ setup_conf+0x28b/0xce0 drivers/md/raid10.c:3883
+ raid10_run+0x1d2/0x16c0 drivers/md/raid10.c:3984
+ md_run+0xdbd/0x1e00 drivers/md/md.c:6760
+ do_md_run+0x35/0x720 drivers/md/md.c:6861
+ md_ioctl+0x1c58/0x2580 drivers/md/md.c:8492
+ blkdev_ioctl+0x5e3/0x740 block/ioctl.c:797
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe2b8b9e0d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fe2b9aabfe8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fe2b8e25fa0 RCX: 00007fe2b8b9e0d9
+RDX: 0000000000000000 RSI: 00000000400c0930 RDI: 0000000000000009
+RBP: 00007fe2b8c35024 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fe2b8e26038 R14: 00007fe2b8e25fa0 R15: 00007ffe1ca65d58
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
