@@ -4,131 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 555A9C5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:25:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50317C61DB6
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:26:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DF326B0092; Tue, 25 Aug 2026 04:25:50 -0400 (EDT)
+	id 40B716B0095; Tue, 25 Aug 2026 04:26:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 568A76B0095; Tue, 25 Aug 2026 04:25:50 -0400 (EDT)
+	id 3E3566B0096; Tue, 25 Aug 2026 04:26:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4301D6B0096; Tue, 25 Aug 2026 04:25:50 -0400 (EDT)
+	id 2D2506B0099; Tue, 25 Aug 2026 04:26:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A9106B0092
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:25:50 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6271E1A0368
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:25:49 +0000 (UTC)
-X-FDA: 85139108418.11.06448E5
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 66B79140005
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:25:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GND00vCh;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of xiaoyao.li@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 00B696B0095
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:26:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5BFFAC02E5
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:26:08 +0000 (UTC)
+X-FDA: 85139109216.06.6576C6F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3DD3F4000C
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:26:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=us4Z6weh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6YnH89Py;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xWsSSuj5;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nG04rm6S;
+	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787646347;
+	s=arc-20220608; t=1787646366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZKMrUCQDNqWk8ocF8KL5USQHhwQXnnAyM+MD1VuXNEo=;
-	b=4g60BnNKWYKdWjFLSpn8qUmOwd98DkWydzUps1qWjoD6mUcNEfwxwE8L98eM5AZUpDQy7x
-	hD7hNCnaiiCYLXq70Ffe6lcFWR1YGHmtbuGX4aQZTJ+IZ+VplDSK+Sgv712ZnHhoN3xnqC
-	20FLEVFpsFDJx9OSt2I1tg2RsGD0+dk=
+	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
+	b=rg/XjF4aH/77aIlA7dHIyosimke5XaxrJ3REwIh8oA/67OIUnGN9/zoNH2SdDVlqxIrMlK
+	h2uTAo2iaOtoCIF9k6zW1VSbqLrMaHf/lgu962o4mZiOkKVow3wk4nG63y5XSL4e20vZcp
+	KyuUdQ+2bPRPB/K2Rzowp2gPkp7lwfs=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GND00vCh;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of xiaoyao.li@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=us4Z6weh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6YnH89Py;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xWsSSuj5;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nG04rm6S;
+	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787646347;
-	b=csEvGv51x1RT/p8Wxrd75On3rzXONIxcmWTg2nrttRSOyesd34Z7/86uhI0SNNRVQQ4L/0
-	EvW86uT18gR4n7ehwmENX6Ixi9sOZOd3JpDYYeJdwqssIOsN2VYslwaF/uI40tLfbBNR/l
-	Rfin15HrMnfqlqJNeUqyFl3xNvdvhrY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787646346; x=1819182346;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=gedJs0vtoiKBYvIXCEhQKxHm0BSByi7gwLqVFH+/z/Q=;
-  b=GND00vCh4KEHhXaPHUT/B/pIfMUDFgGJcGJt1TULu/iMQcUks9l6MXPx
-   eSeV2IHrQ79ny8uTVJ2qt2gtuI2+4edAb6Bre7E8ljcLxV5fbSTKjB3Dr
-   xw/Qxb1A0EaT4t+FS4hyflFy2fDulmUnrIOEvK101O3An3z2SmDa5BkyQ
-   jukF0H5ynMAexYSs/I3SKJ+b8ru3IIu7hIJRQG/r4y70kD65iK46eMSLW
-   afo2SwtGC3Tl+sgS1B3pDk3UO9deTMRa7wNMCNPHF78XjddpIONli/RUN
-   jOhyNwYiHH5LOQCoKgW6b1QHHiInljSubHTOlQf/YGb3FSXyF9UhLE/8P
-   A==;
-X-CSE-ConnectionGUID: iISGzk+RR0aMJ77vzTsBfA==
-X-CSE-MsgGUID: CN1U3pTiSYOKUecpTi/ptQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="99454712"
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="99454712"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 01:25:45 -0700
-X-CSE-ConnectionGUID: dbEuODyNSE2d0o/gDaizJg==
-X-CSE-MsgGUID: 4cGhqpINTNCvR1Dnz+3ULw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="270695629"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 01:25:29 -0700
-Message-ID: <f7c2e245-ab9d-4ac7-b3f8-815fe111881d@intel.com>
-Date: Tue, 25 Aug 2026 16:25:26 +0800
+	t=1787646366;
+	b=Lqh27/MYoEWlDEDb55wTj5XbNYRg5u6YToZtB5VYnpABnc/2qPkISa6yowEXu0My4RknoY
+	PTrv2Lf4g6nSHEu8Gf1+04XYKl/D7cValAstqIcybAkk+0RjnzVjZbqCy/VbKP1Tmlan0J
+	gdZLP11hXkLlhr+p1cwHdQhCgM3W65k=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8BE3D1F769;
+	Tue, 25 Aug 2026 08:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787646360; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
+	b=us4Z6wehV1zJOnbgd+wLk9dBc+b+Lhebd9tctl1a2i+5C6CyWPxBUWszlO2YAgz2nDFbZE
+	G8CeCsqerh5u5vDwtMKc1LS3COE0W1yPONHrVmq6CY5MFSbG4Z/j/Bv+i7Si0LU3pPh0PI
+	4jQqwV8n11YnnzMC6lmOWXBnA3yW4Cc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787646360;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
+	b=6YnH89PyKzHmLHbEeuuzJ7xzmi/U+DZXYKVdLuHwXpY6O+Z2kXZfZkhKeB1+QH4lKD6pVv
+	FlYvKSNgMy1h5yDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787646356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
+	b=xWsSSuj52XuRC9BXOjAbr92F5naYxlTePRPxt5kOvq4/soZrDGT2WWdmMVenPCjY3rdLJx
+	DZXPYQCqbsCU8K5h/57YnVVNLKCbBo5LbuP2Lr3XBwMC7el0J/PtUEsCx+rVCvEKsMF5MP
+	T/W95s2v1+eJGjsH6RRSoSsVD+gBcIA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787646356;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O1kJ796bUabjdL5phaBza1F1D/Go+uEZ00Mj5JL+fNM=;
+	b=nG04rm6SXjrdYR3jrQs8AQX1hxMpXe0h2YmFm8+pQxihuqd+rNZIXM4h0kS3OXUssyBBTZ
+	RKh24vuJnrhUWUBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA8CC13331;
+	Tue, 25 Aug 2026 08:25:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hBxAJpNRjWoYDAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 25 Aug 2026 08:25:55 +0000
+Date: Tue, 25 Aug 2026 09:25:53 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Christoph Hellwig <hch@lst.de>, Jann Horn <jannh@google.com>, 
+	David Howells <dhowells@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Jan Kara <jack@suse.cz>, 
+	Rik van Riel <riel@surriel.com>, Qu Wenruo <wqu@suse.com>, "Darrick J. Wong" <djwong@kernel.org>, 
+	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-xfs@vger.kernel.org
+Subject: Re: Removing ->dirty_folio
+Message-ID: <ao1Lo6TKhPcqV42B@pedro-suse>
+References: <aoyWln-Gt-yvZQkE@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 13/41] KVM: guest_memfd: Return early if range already
- has requested attributes
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
- <20260807-gmem-inplace-conversion-v10-13-2fc18ee6d3ba@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260807-gmem-inplace-conversion-v10-13-2fc18ee6d3ba@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoyWln-Gt-yvZQkE@casper.infradead.org>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3DD3F4000C
+X-Stat-Signature: 9zxxq4stdaxnmy8k9jbwgknk1todaedk
 X-Rspam-User: 
-X-Stat-Signature: a3triqwps5zhauhtsqw5gsabmkhko1oh
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 66B79140005
-X-HE-Tag: 1787646346-444020
-X-HE-Meta: U2FsdGVkX1+50re8IeWb8Sa8GMKRrfyPG0Hnj52VMmf3us09TNUcTfGQgDe5662prE5aI18Fg2I+r7O9Nh5wY7YW0Y6JfK/Oeo/J7XLNeh7L1Ux/jMvogVwDVux1I/BboVRkWoukPkwYgkpiQ5JMoFffOhPONGc+Z4CoZcDD1qm/O9nqRiygrVjQKaiREFdbuXLzX8l2vyJRacX72aS3mFGm6XCQT3ff0RhLtZxX9UZBcTQmCpbuFN0zWCpVTLZ4z7OGDlVYgPBK4QTgMChC05w1XF25kg7hJzn16SP972/XeHLsKkYFPBnKSBHLcGbAZkSGhq6pxtFI+MDE046KxjTx1GawlCCMmFrbrfxU3Z30FaiV5msKJ2ZkqTUqDpUck79HG0NCre+3f+uFEsTQdHGmhvoWZV+bsLdhGIMAnC3V2stiaXmouExAFaxhwSCHL9VrXPZfu5OMH2Y7jg0zNcWWVY0piPSRR2iavoZBkq3ffLFqf4kAr6P7716rmDkrajxwv6dGi2BVOQWLATGDu8hSrp1OpflslwF5Chy/YmKzGJCYDsgdZVCme8YG5tz655+5UusZh8Wt8pcDBnYiDxj42+jNRdKhwMglkwQ/AYg/LBpy6eQJUGMax6LW/20jxkvaOKalV890MxFxkPoOIAurnudc8ehOTFnD4RLJRKTZImJLaT+XlEeomBL8WnbBB0R/AJ1N5ZzEKAbxe8ApTg5hc3aFzIvrBiQldMARSgI80x69WrTp8EzCjrHBOkmPoWBc6iZXyycWlIdMJ+PHLu4aCoy1fC9yaTzyzrg2MLDpNLV9GN1NtHW1UQUnYM01iXj8UkxiiYUd9zfbyBWBFv9qD2udoCMmy/hmr73G5mXNCpO0AkJGNysv49qBiWcpNUNIsYye23o1E+7CGsx8l1iQCTG4mJmyUSptA2/10VgvNrwdIfg+GiwcYNv/zkFVIzJGtgc9I1RsxICCSz4
- O8UUpmVG
- OoDyUA191P7+zoh2j63TQxGOsR0+EXQ5Eyn46JZEgyzQUUiMZBO8DyMOmxDkxAqy0ZfIxF2H1RoC1sZdxGCJmRRVmBFj0U3fCQxZKUNH+DZ3qB8ogTHqb4NmS+/WSWrCUf12eiGAOhn93dYy7tAxj3BZF9A+i1TGD6424zfAtfjhnyn9B6WjJCKx2AB9vTU63P5AqqBayjoZ2jizAwgXpk/6fDRf560WK+UyK/GG9m0+fTz6f5k59vOMVYEq8eJ+0hYvYGJrd+nD4MzUVnc+h59HehE1ha37z6Cc7/O9KQ0A5MCLGB465yKdXS0tUx8Qzw7i2
+X-HE-Tag: 1787646366-631799
+X-HE-Meta: U2FsdGVkX1/fzrWqVoGsg29JEhm+1+XmULrEzT0PrfPrBJOKDzfddcU/fDM0WM1eS+79/7ek0fVuq7NKWD4tIszjAZWVQUn29d40K4Qk2rbfos5TvMUWj0sVHPWeBko5uEw52OeQ8PG4NR1LyEuOb/ckzV7kpr+YEE0NJa2WifgMvyL/zaxVanSof0HKXj0kSSNKRJx+YIghIKuvXD12krEA4E0s6CW8wFvY8JHYL2DXCYXFpCTqhvFz4otuD3Hf1N/2+2m7JRZJ7Q6txkICYmqaBuQbRIdZ6DMYZqDeEhS0MvGcAiroIdLCO43GSfB2dw5utrEmPq1TLJNiTExzE3cS5z8BYBSs5mfmwNfeqA50N6aMYjJ4gYGWrTEfoS3lBkr3D/jhSj+nka9N80ki6BxKDtiMlyg35zHTR28OCUA7epK7L31x8fKsOWVlcLu6WilLSK0tkU6/17SfHBBpKcSh+HClsZ7IOev7a7OF8pWknLAcPakqIoQTLuKhYt3Pe+KXF0/aC28B9+ZFfOynNHxJwUYyMtlMftr09KHK5aCWT6zhR0zlSyzatuPzArr2sGf3SNnaU24PTziDuBLIS4RKKKPbU2ehnLiPaayVLFCEHVdB0Mck8zS52/cKbjCNZmtnaiO/ZdnOnMajPqxyJ2E9kydRyflPwyaMf/euBnmZEpqj9TLRuMLeanVIX+DubjQlz1JQSc9SIL9lrDiTaJdxYxPo77TC/TEkpPZJg2x+RvegytKw9uPsHh9KHo8Y23my5263DDjloPeyvUC2W5Enq5PYRYGVviBFJCnrEEBVSpTChl7OFwHyBg7r7V+L5WlBY9QraQyCPyWGW/XJ7pUEmnqdpcmI675qKInyGMlP6y4EApz9UccFV5UXJzbCW6eVC/26l01QWVKh49gmnVKF/12wnf+mEGzFYX5PSpTsyduB1ucc8FAJfBtuCgmYOD9w0MLVJ593bxrjgPl
+ AVguZhvZ
+ HGFXkmqFEUIxX3hE4kJ9FX773w3ScNN1khWrOef5MSYdLt0zySf4q+FxqRMWADuWECapl3rwBGyJVk85MLBVBAz1j3POyzqmIFHqnIEYK9kGalz5p3L5XFhYRXPZ65eSbJ+MI7z8KdfgiNHwwARJymNO7VoFA5Q2lp3chMdeQDCfGO2E75363XifdhqcTppURXqZb9ob61W1oe2524Ckhc8JtUcWhx8C8GLtFBUalj7ioexZqTc1TTzBeh1rGkVliiuGpC+4eT9GcnY68eieCYVWBHM2hZESrjVvBasDh7gP3kjYtRBSnXrADlj7WmT8Exgtzf9w090u31oTGBoBnumGwWs5jXEY7y+Gt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,70 +133,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/8/2026 5:52 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On Mon, Aug 24, 2026 at 08:08:06PM +0100, Matthew Wilcox wrote:
+> I think it's time to remove folio_mark_dirty(), ->dirty_folio() and so on.
 > 
-> Provide function to check that a range has given attributes.
+> This is not how filesystems want to be informed of folio dirtying.
+> It was fine for ext2, but anything that's journalled or COW has work
+> to do before the folio is made dirty, and it's hard to do that work
+> under the page table spinlock (not all callers hold that lock, but the
+> filesystem has to be able to handle the cases where it is.
 > 
-> Optimize setting memory attributes by returning early if all pages in the
-> requested range already has the requested attributes.
+> Filesystems want the page_mkwrite() entry point to be how they find out
+> about a folio being dirtied -- and that works great!  Except that we
+> can writeback the folio for a number of reasons.  If it's been dirtied
+> due to a shared writable mmap, that's fine; we map the folio read-only
+> and any subsequent writes will re-enter the page_mkwrite path.
 > 
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> The problem is GUP.  We have no way to force the GUP caller to go
+> through page_mkwrite again.  So instead we make the GUP caller call
+> folio_mark_dirty_lock() which many just don't, and generally we get away
+> with it.  But it's a bug, and a bad interface.
+> 
+> There's also the problem that GUP users bypass the folio_wait_stable()
+> mechanism.  If a page is written to while somebody is creating a
+> checksum over that page, the checksum will be corrupted.  If we want
+> to fix this, we have to bounce-buffer the page.  There's no way to
+> prevent or delay a GUP user from writing to the page.  Enjoy your RAID.
+> 
+> My proposal is this:
+> 
+>  - Fileystems take note of folio_maybe_dma_pinned() during writeback.
+>    If it's true, do the writeback, but retain/recreate whatever data
+>    structures you need in order to write the folio again; behave as if
+>    ->page_mkdirty() had been called again for each page in the folio is
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+I don't think you can do this for stable writes. It's probably ok for
+!stable writes filesystem stacks, as long as the filesystem & writeback
+can handle making no progress at all. But since stable writes' writeback
+can't race with "writes", I don't think you can Just Do It as long as the
+folio is DMA pinned.
 
-> ---
->   virt/kvm/guest_memfd.c | 23 ++++++++++++++++++++++-
->   1 file changed, 22 insertions(+), 1 deletion(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index c9874bd85c5d8..896699afcad9d 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -95,6 +95,24 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
->   	return !kvm_gmem_is_private_mem(inode, index);
->   }
->   
-> +static bool kvm_gmem_range_has_attributes(struct inode *inode,
-> +					  pgoff_t index, size_t nr_pages,
-> +					  u64 attributes)
-> +{
-> +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-> +	pgoff_t end = index + nr_pages - 1;
-> +	void *entry;
-> +
-> +	lockdep_assert(mt_lock_is_held(mt));
-> +
-> +	mt_for_each(mt, entry, index, end) {
-> +		if (kvm_gmem_get_attributes(inode, entry) != attributes)
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->   /*
->    * Returns a locked folio on success.  The caller is responsible for
->    * setting the up-to-date flag before the memory is mapped into the guest.
-> @@ -605,12 +623,15 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->   	pgoff_t end = start + nr_pages;
->   	struct maple_tree *mt;
->   	struct ma_state mas;
-> -	int r;
-> +	int r = 0;
->   
->   	mt = &gi->attributes;
->   
->   	filemap_invalidate_lock(mapping);
->   
-> +	if (kvm_gmem_range_has_attributes(inode, start, nr_pages, attrs))
-> +		goto out;
-> +
->   	mas_init(&mas, mt, start);
->   	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
->   	if (r) {
-> 
+Perhaps we should give up trying to writeback these folios, and start
+writeback right after they're unpinned? at least on the stable case.
 
+>    marked as dirty.
+>  - The MM behaves similarly; we do not clear the writeback flag for
+>    folio_maybe_dma_pinned().
+
+This sounds like a problem. You don't want users expecting writeback to make
+progress to suddenly stall on e.g folio_wait_writeback() indefinitely.
+
+> 
+> This will have the effect of writing pinned folios back every time the
+> inode is scheduled for writeback.  But since we have no idea whether
+> the folio is actually dirty (because the GUP user won't tell us),
+> this is the correct behaviour.
+> 
+> I'm probably missing some stuff here.  Let me know.
+
+I don't quite understand what your plan for getting rid of dirty_folio,
+et al is. page_mkwrite has the fatal flaw of being directly tied to VM
+page faults; I don't think it's the ideal interface for notifying filesystems.
+It's also the case that page_mkwrite can trivially sleep, and GUP calls it under
+the PTE lock. So how can we replace that? Would callers need to manually dirty
+folios after GUP, in process context?
+
+-- 
+Pedro
 
