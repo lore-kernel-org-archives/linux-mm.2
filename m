@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16C93C61DB4
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4685AC61CE2
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:39:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 091BD6B00B4; Tue, 25 Aug 2026 06:38:24 -0400 (EDT)
+	id 5C3C76B00A0; Tue, 25 Aug 2026 06:39:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 042786B00BA; Tue, 25 Aug 2026 06:38:23 -0400 (EDT)
+	id 5758A6B00A1; Tue, 25 Aug 2026 06:39:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9AD46B00BC; Tue, 25 Aug 2026 06:38:23 -0400 (EDT)
+	id 48A4E6B00A4; Tue, 25 Aug 2026 06:39:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB0BE6B00B4
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:38:23 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C8061C18B4
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:38:23 +0000 (UTC)
-X-FDA: 85139442486.05.F55C954
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A3304180009
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:38:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KAqlGJg0;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 222D56B00A0
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:39:34 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3003E1A02D2
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:39:33 +0000 (UTC)
+X-FDA: 85139445426.26.04EF6AA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 757D740003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:39:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U4ZJI5zY;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787654301;
+	s=arc-20220608; t=1787654371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tGt9QkkIZkOpgxyzezPzdqLO3Es6n+KkX1u4t75qrqU=;
-	b=XCNS4EiYKKy5EiIJDT1rMsBGXDsWQdN6Jmd16WgE42iSe81d7qfrLQXY8+LzzUi2VkVzb4
-	xC7cgl7aJqp4dIIyKexYhODAhlxbbj8+jnacpbR1sEZ9/bec3yXJe4l608Np9LMmS/UKuP
-	0cGW6RCvTKCv2X6djIt+MHanxy7ykAg=
+	bh=2pfyC70VTeEHNhi8GTqGjc/VA+Hc6QL5N9qVfae32WA=;
+	b=XGwx2wfrGUdw2b47iAfzsq0Qsw9tceq8Oo1Eqs3ovk+HFUF7TLUv5rqiCwACVXyqa/mo1E
+	R0UfplLaPXYMLjSoc7KCLjUDCdUcHJK3623O+Qb65Fwt9uI7oyyAGM4WoEw0Vnw34eFRuN
+	9Nlllu2v3IXnrYRyOUZkXl9v1xbSi3M=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KAqlGJg0;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U4ZJI5zY;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787654301;
-	b=hXOFyRGc/Kt+Usv5/Gvs0p5rhNiO2kuAzfd/0B4wQHPXJToH8+5LpU6yBQmHBFRKA6M2LV
-	DNk423pNDbb4QhALAIOPIZfrYyqZ64nWnZmYVJMK/VFyyguoTyIpDq++3zn585ywytk+lT
-	VzS2Uwpv044uad1i1bXagoF2czRARcE=
+	t=1787654371;
+	b=UBiDxTLu6V0FrL9pStFsC1nuFAlpAtR7dgbsF25Gxi/Byn+tSIX5IzFzF1zzf+tCjBi01u
+	mvWefEWQKaFn6iSNj05pTW3MDadWu1KTT5Dpdt/ZBpzX2tb+AAAg0R7e2KgdtPLk9xMas+
+	D0mcfSuO7zsUu0XNRnPIIimy0F7dJ8A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EF6FF41FBE;
-	Tue, 25 Aug 2026 10:38:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CE21F000E9;
-	Tue, 25 Aug 2026 10:38:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 41C346011F;
+	Tue, 25 Aug 2026 10:39:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376981F000E9;
+	Tue, 25 Aug 2026 10:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787654300;
-	bh=tGt9QkkIZkOpgxyzezPzdqLO3Es6n+KkX1u4t75qrqU=;
+	s=k20260515; t=1787654370;
+	bh=2pfyC70VTeEHNhi8GTqGjc/VA+Hc6QL5N9qVfae32WA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KAqlGJg08//w1rP7YCSEN94YBMNVBxh0lbr/5p0jfr84sMcj0fBdiub5lSeQGS6xb
-	 8plH0qlz4u6suogMkywM9mAu1FB3E4+gPIR4IbhuECe+xF13CfYanOmIQ+1nSFKdQn
-	 +nr1ms4FPZcGKXTTitz6PpdtO3k07TwY9wktUts8IeN4WVhLlej/QU+QU/qhB0Ol6y
-	 T5XlNw5eDmPz3tNhZKdGQt2m8LxLfSMsdnQHR7Iz6uJvyCDq50yhxNj+8Pq04otkc8
-	 JmOtQ9WOX733vFmotMeW6Cz4PrDLhGNRm73A+dbs4QOk4tzM4HKlqMERKNCHAcnGDr
-	 sZyBRrm3o9rmQ==
-Message-ID: <7fc80ce2-23c4-4a3e-8e67-101cde58ec6f@kernel.org>
-Date: Tue, 25 Aug 2026 12:38:14 +0200
+	b=U4ZJI5zYP2V6EPIIYN2kcn1jUE+EGkfhzbAlUhtKoU8NzO/mTfcj2xW8DLsZi8WiI
+	 qfg9GLq6a0vS0JZl6oSA20GvHC2lKlGn92ciNwwdKVHK8u+MjiMki20DWYjG+4WOmf
+	 j7Vu7qT7Du652OPAv98mTOWrvA02WG966PVMb9ARPnyo1VCjUrLDwuS1O9Hu6wubw8
+	 hpOyZJ189fDI27lzKYRdFmdk/PFGz7udyyMMJg80/dLrEgKe4fZvi/9v2tsNJ5gVTP
+	 wvUZnt7N+IN6r/HDe9FzhcLRpd6W0CSCCuO5gc7r+O74pfMWpWc4aC3zhQbD78te6q
+	 SWXWjbOcryRiw==
+Message-ID: <efc49438-bc24-416f-af3e-fd2b2867486c@kernel.org>
+Date: Tue, 25 Aug 2026 12:39:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/memory.c: simplify error handling in
- insert_pages()
+Subject: Re: [PATCH v2 1/3] mm/memory.c: rename walk_to_pmd() to
+ populate_to_pmd()
 To: Avi Weiss <thnkslprpt@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
@@ -79,7 +79,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Eric Dumazet <edumazet@google.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <cover.1785847364.git.thnkslprpt@gmail.com>
- <ffb2c5669a69aeafa6c95ce792326caaae938ace.1785847364.git.thnkslprpt@gmail.com>
+ <1d3d22df3b43080855d4728095f9ebaddfd7bf88.1785847364.git.thnkslprpt@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ffb2c5669a69aeafa6c95ce792326caaae938ace.1785847364.git.thnkslprpt@gmail.com>
+In-Reply-To: <1d3d22df3b43080855d4728095f9ebaddfd7bf88.1785847364.git.thnkslprpt@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A3304180009
-X-Stat-Signature: rfeiwwictf7s4i7ekby86r743h1ky47p
+X-Rspamd-Queue-Id: 757D740003
+X-Stat-Signature: q83e74q5w87b588h4zcy4gn4nx9i7j78
 X-Rspam-User: 
-X-HE-Tag: 1787654301-382060
-X-HE-Meta: U2FsdGVkX1+tnAopiNlnvyF4lSCKj+11vZD6nOTVMo6zMb2l42Zl7tQstDZGnujpoJ7A0FQH4KL3KhRRt3/vo61WDz0N2+ba5kDcL15vgH5D9j8rljOrKXZHAQ85Xc64ZjPgi9Mf/OBpK5z7I5Y1kf7cftnTRellGPEb9IJ0hl9UdAT7CiHxRgl+BYD5EPN4ucFTZqGRHb5o+/7/LxdooRIS6E+7VNTMYVhfJSJ/f1DzNq2bLRpYP0tWhUtmEGgW2ETbGormGBbKzRboaXj//keXQsZfGtdbfno4qM0pGmNM7zzcq5y2WZsgq7g9aOhT34XPKuE7sCxcQvVwqSDbetgfOei6CMbH5Fj0VpMgneboGpDZw+5sSzZC3M/h/YA3k2eurqHdl2zG2s2TFuuoEKtHT544THE8MWVDos1Hj8qHPazgPdk7vN66aJYzUXrr7WE2WYaeQnQWhHkzs2eS5VJatBPifeilA45PTAiWDoXXH4GAuFL0gkmcPM1Jy3sg2YUwb6ygV8GyKfQjdzaNANYJ/X0KgyWOJWTNyS6P7IcsW2bbyPzB8EbCK0tLR/MkV4BqFCQALOfvKdo5oVfbpswgUgrcOYY2fPC4DslWK0BQkBX6amksph5jpzzlZ2tQUZuaA2KsCkU4qMSuOSfzqzEpu/QhGVgbM7BUy+TNnixQwi+SKTqCOjtBLfmR/qkN9XeyQU6VSAEcHZAECw7ww56v9Ai1NVZQP99DZijp3oI8ulFk610iflFvf6bAfDhnh/WIU8pVvuupMAzv5iG5tj2MKlLO+kKJQPzpv+Fbv+2GPoFZyXAcq4Ou1yVDZV1B9uD27Ry4ArgoaCfNReDnGHvb3pmsgRWumWo4/jPnUEbumZrTAC77PkBPS03iGw8WS4gDtKci9rmODWpiIbWu/vEhkUf7tEK18+RYHmJ2sD19qMzbTUcz/D721IifLtey9TWoGIEVuBEbMd3TLxM
- 71OIMl5X
- x3KLlpvaKt/dch1cfVFKbw1AIE8IFvjREb0df48CCoDac+gzxpsg/sgZ5OdtBfRB4lO/R2O912hEGaTqhrK4YhI0agyqsl3bAmc0+FjNO5/IuAUE5fytrytC4XrSVYeEBPlB626oB/HadK8xV86UyJxFCzVFAwEzfUqCxnyJJoAVPTF3QSnYRpTW/whdZgTt1mhwlE7wNSredE4jLS/5KZu/DlCA1nL6dpq+LVb0Xgw8azVp5k5TKfIDKy7PyLnnMbVr/XxmABEkWUliHYa4drylwe9ZZqO4UlgYe67j1T5WU5P3Wkj0H/oPyddR+R4f20EDBHzrB5GC2XXE=
+X-HE-Tag: 1787654371-478659
+X-HE-Meta: U2FsdGVkX1/nFVi0fDfidokdiBQwU3BFqzMF7ivBj9dpdxuLmebTj7OB4mLTNHj9GvmRjcRe+3IUXejjghrCCtGfIvGwC7y52aksLA2nsXd4yUjm1xTjqM1T5xkFWvXU6SiJRCwII2gasKiF7XSMolikPT3dbxUZDlWqHLf+REvX1EmA8cjyHYvfPkYM4EELS7XdLX54+ZthcpsaUDkE5rW1wpsl2xZ10c8yU2UV7sJyoRfBDbKub+rHXiujKMFEKSy1sUa1zNk2A10J+ZQWPFZc2d8twuCLG2xVECVMgZNcLTrrd98tIF+m7b7fL5TB/dik3gRxNVT0dmbu0N/cN5d01qf6oHSxNZwOMXLp0h1bNfJCaDz6V4emuz5tHRysnUQjj+GHp274DcLDXtk7aq0+/0ZXn5K5VlmLD9Xvr+g1okJewmfGDNMaJX3mN+etw/3OPlJsntxuAsPhJLoanlFR6WfJA+uzul+YaC0vrOHv0X2VzZlYxp5oas4HSI0/mIgWIrfIVjBJTyTsXvWAgrXDMAIkH6XHkjLb/wsD+B8XGDuvgDwi9dVHEnQF3VEOw5mxkXCDL4GaCphktu5jyAH8lZprjSxbW84goRD33fDeNVztQi0UUh5+Qo/VeRJF505HznbR5oTHSBNBk9p+fPKHjBKf3Trh+42VkehovI2C0/c5I7jJHHraUYG+XBM3iKxomk6uo7s2jbh/TrSOJtl4VY1hy8m3CEWql+nwLthrsFmZiVV2wos0dF18xinXD44gwagcdAhrwol3DbQV15G2B1UP61T4ZWrqG/ijsMNlXGN/sY9BSZAIiohAXUTlqNzKwzdl0Qs1vziItpu8VsPnxpO8raGAOUfol8pcRX/3VR1QEp7XaX0UL17NaBta9R7hjV6gF8DgiU1pqVygIxuHl/6FTtbGJn4nhDlcMteIRHXcbLKC8cUzQghdQxnSz07gColt6DMQLbqqVD7
+ UYqOwK0Z
+ 3pu4N8+HHu6+VTmA49Js5FweIhRfoN7ewNSGN6EBNbpbafozTSY6Ac9eCjS6F1cSM93Wx8MGAP+NBViDQMu/2C0NLhDCgx8Bfx/E2z3HeSe2LsWMGIJyXwYTBF5Bkk1H5P16Q2dMtZbTfvw9LmmniBT1EI6rBLc+7KmcvhI4bbNlzpQ4GxtLQhV3tbaK2IEm0kX1GNd8h46InXQaXo8uAfvY2FO9AOnMfnSxCPM3pKBtn3jXNHQryu3J8bh+AtlzH9az1BaZ8JW4K5vQVM3sEFe/CMlGgG1nwOfKE0epxbwm2ZSCrZN066h82zQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,15 +145,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/5/26 16:42, Avi Weiss wrote:
-> Initialize error return status to zero and then set it as needed at each
-> point of failure.
-> 
-> Assign -ENOMEM explicitly when pte_alloc() fails as the pte_alloc()
-> macro returns a boolean.
+> This helper allocates any missing page-table levels (it doesn't just
+> 'walk'. Rename for clarity.
 
-Subject should be "mm/memory: simplify" ...
+I don't think that's any clearer. The point it that population is just a
+side-effect of performing the walk.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+The main job of this function is to return a pmd_t pointer.
 
 -- 
 Cheers,
