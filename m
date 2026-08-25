@@ -4,100 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EE17C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:54:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EB25C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:54:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA676B00D7; Tue, 25 Aug 2026 09:54:35 -0400 (EDT)
+	id 815C16B00D8; Tue, 25 Aug 2026 09:54:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C2336B00D8; Tue, 25 Aug 2026 09:54:35 -0400 (EDT)
+	id 7C6D66B00DA; Tue, 25 Aug 2026 09:54:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D98A6B00D9; Tue, 25 Aug 2026 09:54:35 -0400 (EDT)
+	id 7041F6B00DB; Tue, 25 Aug 2026 09:54:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 638456B00D7
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:54:35 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE17C120454
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:54:34 +0000 (UTC)
-X-FDA: 85139936868.22.A871A1B
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D6DC280007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:54:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.194 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	by kanga.kvack.org (Postfix) with ESMTP id 4545C6B00D8
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:54:47 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E26AD120408
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:54:46 +0000 (UTC)
+X-FDA: 85139937372.28.86CE100
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 15CBF14000F
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:54:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IZrlZfRB;
+	spf=pass (imf09.hostedemail.com: domain of sef1548@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787666073;
+	s=arc-20220608; t=1787666085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XNF3YZfLaqg7Zbwd/w+li4n1E+o4c3AB1KA87rhZtPM=;
-	b=m3CMTTEp+QvLsk3t2kgWE2fFslZiiUBPAIyLNWWNXLXIRiqpYcMUQQGQgZUG6pzUgL7Cjg
-	yvdvrSFPMnR4bQieA8DU9wF9hfOmQdZPMDqvdkGDIs+/pDNrk+x+zVnh3RnFaKNa2m5ZXw
-	pUP43ki5uvNC3gW2mWK5ulugmx418rk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.194 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hJUjDtXJ/jwDQ43yJqCCQ+BzF83DPTYawiSXPF0jph4=;
+	b=Teli3+wtjAQPi8/g+f1XEnlhT30Nr8CkcnotQYTRMuzqXeqXJX+gGaCvGalDnhdevNFZgp
+	pvn5wznHb9ppJUG3OOeqzmp1pShY3TVBVV9Wl22JfGdrWSLi6sqU4zN5yZcb9wjDwT4Llo
+	d+V1n5h/hcv9pVsgp7G5nGlj8kirAZ4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787666073;
-	b=IbeSHSzFKNIK81wMlz23PSZKt22UcMWDv7Sr+mANdUxZab/lW1WQH4iybHU5kvDv8mAt7T
-	ZkzSwTfekwhc9gAGWd0RCGaN2lLGZqi08OmoaUy/4YJOSGD+Krqcq1Zr1Ol/Zeaw9Lbc6Q
-	GqLDYTnsfdHitoVKSGeWptffOQ1FktY=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5E0683EDDC;
-	Tue, 25 Aug 2026 13:54:28 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
+	t=1787666085;
+	b=i6YK9mh50IcdjdSqIxnus+uVix0Z1Rv2Ph8BL2MVDVVM+y8SxH1qe/Z6S7694fGBsTYrdr
+	kD9PCJnC9BtkqlrSowbZJK+2Tcb856lbPQwhkCg587YYSLZiEhh9X5YcorhtkmGNeFDOa9
+	6lYi728Mafx6y1atuen6rn+vSi353KE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IZrlZfRB;
+	spf=pass (imf09.hostedemail.com: domain of sef1548@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6a422090b14so6430588a12.1
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:54:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787666083; x=1788270883; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hJUjDtXJ/jwDQ43yJqCCQ+BzF83DPTYawiSXPF0jph4=;
+        b=IZrlZfRBJg+FBcOOWfg0UutxrBfLaj3/VXtUYto3X3i1Au1kFU6+3L/QvGEH+rr39x
+         dPoaPl1EkmYq72KyW2M4IxAjE7UkIN9BY4jcowNwWkpPsZgZ/lyiqzghMmCKMUL2biHD
+         eTUhe3XXuxSIo4DUxsSXIusft4yta58mf9Bb5rKkMCkvKiyR8ua++c6NX9fE8ZWSk7Tw
+         kTqCyGAWmtgSRVA0wvfs8MASgi0WqTW9DixGwuzf1A59mzu/dG2NUqep8wKLsu9hT7sU
+         lO9cUUUZFlX4dXNZVwEqSwg4Tsyvyu/2W+Sz/fuJ1cwUS920jdZbeoN1aQmRTgDBIO2O
+         7DTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787666083; x=1788270883;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hJUjDtXJ/jwDQ43yJqCCQ+BzF83DPTYawiSXPF0jph4=;
+        b=qb1qWH5HaKRGFHuapsun3aI7wpXUxCAfCumqWWX4YlVKz5+1fCnOdPKYDqHUDwITEv
+         a9Jqc+4yxQnMdIt4J21uzRnNMgr0wur7lebBHH0XTZd2zTeyB8IUe9AY/e+Z5pVPxWNi
+         UKJpNBPv/eRA4IjpOUdvkmC3917B5rSMapR9/MEjrP6p7p+2NFOZybNA6iPTPwj1mQv3
+         HvfM1OZtwE3XC9KQ3WSdexA5Adjngx4SO1TqItlYvKIe9ck7DoofTyoSfJRXGYSGMEda
+         xlVeoHKrH9kpNhLxAakyEr46LVwbVo1iZ2bm1XBFcYPtNDYq8+zGU+FlJbn1zcseaGRl
+         S9Rg==
+X-Forwarded-Encrypted: i=1; AHgh+RplBwOO4R4og4CP04BmPDyG2Vx5w8pa63tWmzQtCuoRztFehXUzZrfiTlwV6JqHSUWj5dF941sJ6w==@kvack.org
+X-Gm-Message-State: AFuF++luislpZq82bUmvge49FJXOQz3u/syUg4ndXxcjZyzlc0nThCUr
+	hydDhVpV3OVCh+92HQgAqGBeFwX/Ase3hgy2j1G9NWPh2HQ+i/BL2E8v
+X-Gm-Gg: AR+sD122HbSqCK05TmtOlF3FuQThuFc2wJKE00mAVQAWiJYOmGhz9y75H++mZqrqNWj
+	KK2qoXVxZClrvo9Bte+6unJssRl1mb67ohvff3frHI2xajKp6TWh3PS4GaLE5swVPONo8+tpeY2
+	cx8fC2vdPyjU3cmO9MZLXhrKtqPPoaL4Auh+bdUl3iJ6O9Pq5XKNFQ48Rrcft0yCrPk77KzMNLV
+	2QweHQ1c2gXXW1n0+rZYuy4zETelPt8WGGnUHl70bKqfmx6WiW1EwW/EGpPEbKmbbSYXqCJ+UQn
+	RXLcXl1K1YRkaPdTQgBoN5nPP4uhG3JGlxmagZJt7NcfVYL4GDNgsERBkSibv9PsFhCYmi01jMQ
+	ndEvYPzHbF5M61oWznAKuidSEwfhVwVrXg++32TNdYQtg+qdKkM4SihXb2DlqazhOwCrmjaXkAI
+	dxNislpAge/xGofXXbM6jygJF5zlEqpnDWoy8QBB/yV096Nz63nJcYnh2s4Xu1zmHXOMw7VEypI
+	1ROkz1qmkK88NjUEQR0h64awm9g+A1cYxOln8RnE/opIg6k1nw4wdJNNlVXpA+ho8MqqLjEVOVs
+	l8BZR5eGM6Q=
+X-Received: by 2002:a17:906:478d:b0:c20:31d1:a89f with SMTP id a640c23a62f3a-c24921149camr2705228966b.24.1787666083234;
+        Tue, 25 Aug 2026 06:54:43 -0700 (PDT)
+Received: from nickhuang (2001-b400-e2d1-934f-70e0-d480-12a2-0163.emome-ip6.hinet.net. [2001:b400:e2d1:934f:70e0:d480:12a2:163])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249606b5aasm1843939066b.4.2026.08.25.06.54.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 06:54:42 -0700 (PDT)
+Date: Tue, 25 Aug 2026 13:54:33 +0000
+From: Nick Huang <sef1548@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>
-Cc: Kairui Song <ryncsn@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Wei Xu <weixugc@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v4 2/3] mm: swap: drop dropbehind swap cache folios on writeback completion
-Date: Tue, 25 Aug 2026 15:52:06 +0200
-Message-ID: <20260825135209.3135169-3-alex@ghiti.fr>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260825135209.3135169-1-alex@ghiti.fr>
-References: <20260825135209.3135169-1-alex@ghiti.fr>
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Zenghui Yu <zenghui.yu@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>
+Subject: Re: [PATCH] mm/shrinker: do not hold RCU lock in
+ shrinker_debugfs_count_show()
+Message-ID: <ao2emWNMkthyVXn6@nickhuang>
+References: <20260610232048.62930-1-shakeel.butt@linux.dev>
+ <aoxKKXjs3o6jUanE@nickhuang>
+ <041af2b5-9136-4027-b35a-72e5044c63ab@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: -100
-X-GND-Cause: dmFkZTE5yRoPOtXaeVjz9nQYgYdgB2auKAdjCUIr5fKYD4tdDaE1rs3LHZQc4Y+i/VGPnn893m6ZXKNvOHjIpP0WvxT1xRkSxTAmSD74k5h/QvYA5e/Qd5Qp+C+1l/DaTi8AhfimOpo9Hb/M/tYAzEgQ8mJpPSqgcAOHSEeUKAFK6+Jfc5ACHK4WH5T526qhUWIUJwtcTcKZAD6bevELJuJmneh86u1cgECUmL27fSiv7RBksWh3FxjVFmXOYZkitH61oBWQZOvCWZXxb3FwYRES+GIVDfBZysSnq4f/n5MyAXRWt/BFEaqWacVR1vTB2r/AICAplFmbCabDE651DW+YI5R0MiadWc/QraQBB74Gpzn/mui0X/sfjIUwnOZiGiD6R9fjMzia+THvV3eU/pqFJcpa5AiOFBG7jHRqE7m2M0nde/lddf0N/IO9jaAllKtNcpNxHET+eJ2HLgOeurGb3ZJymrfTO5WLDVNy996zV/T9LQt67lWKEZKmb70WvRn5+mEAuJO6NVCNGSofgxM8MpPpSm0bu9a/u8pkn/UPn/Lu7q33O7Kfz64jozefevC9CxyGbgFBTI7CkFDYcLh9/ht9LiQzTzQoSslVYP4S6WdSWnmp2sF/0X6lOPGUqp/GMYUlDpILRmIDABSzGBb8aitWwdtbuaS+/p7SjMyYFD4ZUw
-X-GND-State: clean
-X-Stat-Signature: zyicru815qa3ac65jbc1tuw5j3yhw56u
-X-Rspamd-Queue-Id: D6DC280007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <041af2b5-9136-4027-b35a-72e5044c63ab@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787666072-241549
-X-HE-Meta: U2FsdGVkX1+2NxDXr9Z3YCBezOJpwo26DN2xg4s/rzMc9/XuyfSet/LgSqhX18u+TM0ZuE5v6qGL3peRm3maX7kHdI2tCGQHyUPUBpPgADiEDB54J4XUESCc0mRP+khxGc1gQYG9ujDRW1kTLGi4maTNTruxkrIWCQCrayAyxwdE7MPHABX3ylgk/jiAcklFlf2Xn+IGLD+gFhSn7iUrTraPtqD0MhQt9YRmmb5ZGkHjfp+bDMMSjrUqGN0zMDQu6BKTgHWLGD+8phiBFQIqfwkUbd+eeD1xqkxJXpLwYbeGHM9FTL4G66HupFkRp4trFTPWm4jt6z4qcQ7D0vddbYXU7WSqneYoHogGFGidrjuxqoYyMsgG9BR30aX6TyGtX6si1It2t0Psbqd4L+CSxcnO+oZ1zOwHa/oEKCJ6JJHZuQ3wzCWZf88tZpnUvRJ6TqMVA/qZQTEaPSqgqU9lN2Th1e4+XfkTZZm3bJY8EAqr47rrLTUobcVFJWvvPkARzaKdlsJFG0KojTdurPU6lJ8lFHd+MQJUqj+sT1W64zLMUfZqfYB4Dy6yrZdKZXNgwSsdqHHayQQa6Wrz91TF9hnvmL+WpGQ2NSkR+0RWMva1Rrln6n2F/14hZit7Unkt0xM7AbRy326l2NHzbm6EtPtBkWFw0EH6y4iq7cuJpoqGJSeT6zAeJt+AmJl7VsyJy6zvCBdiXa3SxRLQjhT05BcswbVD7R6RCydFwwsfpIkpq9Gq7dZ3C6rAtFGFta37xOBBt78HpULcMRW0HjVG1lF6DT37D30a+bY/7TUriHCbnIYSEMAgwsxHf2GgAigtBkqQvk74b+kw9xEnwgH6NuY5TC3kRRlg4nPKo/iqdzatIiS/rPUyyz1ORRrHFbBJXsQbgqryBhSg5PxZrDCYpHt4wHH8IPNNXEit+OfUItQkR0l/Ye6BeSHxE49dT4yUEzGV0PREobVKRV2APC+
- biPxTk7m
- /lDXmzOmGoxc8FFXfhYVA3CiJWquXvENJm9IMgxcMb2xXXO+KAbXFfI5irNftieaBesIQvem6AkR7xtH9WPSur9HgwvrqS3AFwHzOa0gfgFHaM1TYIloA0ETKZWo19Bh+exrfrHih6aaW/B2Q9cYaKqm+afQin7rRRXVg+oWHpyUZa/4BrXqFT/x1zEzENjiNLLmd
+X-Stat-Signature: ok4nptyqb5djrxfqt5mdrkua74b4u851
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 15CBF14000F
+X-HE-Tag: 1787666084-854143
+X-HE-Meta: U2FsdGVkX1+xwWZOizrJKbNqLQ8vL4QzV10oJ5mRNie5GuqY3887W6T95tVh6VUQ1La2080V7YrSMpKzbfy0WqBQSWxzVhkBctExAJIHG8X5ECkYOiG1a+hSM76ruslfswJ28W3GwgzyIGY8A3rNaaXAmkz0vl7FX8NkpqzIc5qC9dwxGgPb1Al70B0oZ8pgLRVtSkAp1VN2F436+94du2+XFpsfvt4A5xF0vdnoTaIq0qMqapnY4kLKoHQNNRdQ4B/W9DdkRaH5wpnLTSdPizP+Z10zxWq6gxKoS12ufwNiKj60trvci7jwxILOciJeDOABRWH46P0BL3gTd1ZaCj1f9+cGqt1oVmwHs1R/WDqMxSlxrMouvv8hVOTR6abd5dpbA9LpYYvXKM9Nx6P/vUmplmZrzuAWcILLcRiU2d624WLSzcBCXcUAsHpkVPzUc4wgHTJ3XFOT/zurKRcQpSrZ2CQrue9lz1L6Lekhvb4hU07Jmi7rml9NNJz+3HA+WtFZjfmwDXyWXL/vANFBtetR/Vkg0SiqCK2vxXJ7KxsowooD9a3sb5cuDg51GPGyFknq61EV8v3vRIoGNR/TRDG9tFBWY6HsYnWWoigEc+FBuljwIdpqswQdrySZuaruXoRKQ+SOxhSMlKYwg5Ywhy0EbJFCT43GGl5YAbmv0XW+tkg/hJhxbJKSr5KLdP5sikFXbuummiWEz2hK8a5OU8mPDTGBSvX7iywDP9oxw7NxvBcoOJd5do/BGrcSaQCl6bR/mDW6hPoiqYooM1lzBxEIyOeKru4xHuE/ZxIR3e1WEXeaIYEicYgl76BoHbw4f8UKOP1QoEOrnitsutuvLjNkyhJh0LjHH5B7FVkEDi2dLqIWxBhCImm7ob8+U7z6SlldPNKDvJUUxGwCGPldsEkKKjn5U/8jaYPUD9cmDcic4YYzSMAZ7gHnV0QjnPYeEIV4kobnNfrKlH+5KA3
+ 1yHytgv6
+ gyEzXEoMqfi/aipUbC152eLF/6sfCCNtgMsgjtuKVd2C8mvbDVW78F6t+cn7F4An3XO6GKbVILiNe73njl/MKOTBjvJxRZ9D4VCooDc6oRJElJz5DneK1P5gxbNgYTxxCYPtjXee+qBaP0buI4sSFG9m3iLph1P6H+53BzFx5NkVujsGMgWIH53T9GVutrDhYDqyX8yfCnjwHe5ohZeq24ekmQxOmtAmWM3yIIbo/babYoi4c3P8E4nlq9Ipx+uVFS1b//2TFeB5QzXqvRVBrch8t5Y1fcienOSS1M4oj/0Dk/xvjVjDKTrYh7ysrRyl0ZNOVB4Yju/ddKOpjqeRrSq5ZbA85KUsAGNZOwSQjxFTcWtGm4Um9ZoeWcoY8zqDldgGxlJqUzCvaF37+YIB/HDVz4/SIN0hmWUXb82/+l3pWpfPZw2E3VGC8VfqeKzEmcnoApDIL2Tv0TfPUy4vj/fsl61EbTLsWoaBOliVkMnX2V8rSPzpOTrGbAl7t/OgQWCAG+bkoGvv1vU+lnu0/q9uTXtEJQpO5lB3R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,232 +129,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A PG_dropbehind folio is dropped from its cache once writeback completes
-rather than left for reclaim to find later; this is implemented for file
-folios in folio_end_dropbehind(). Extend it to swap cache folios.
+On Tue, Aug 25, 2026 at 08:12:09AM +0200, Krzysztof Kozlowski wrote:
+> On 24/08/2026 15:42, Nick Huang wrote:
+> > On Wed, Jun 10, 2026 at 04:20:48PM -0700, Shakeel Butt wrote:
+> >> Reading the debugfs "count" file of a memcg-aware shrinker can sleep
+> >> inside an RCU read-side critical section:
+> >>
+> >>   BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
+> >>   RCU nest depth: 1, expected: 0
+> >>    css_rstat_flush
+> >>    mem_cgroup_flush_stats
+> >>    zswap_shrinker_count
+> >>    shrinker_debugfs_count_show
+> >>
+> >> shrinker_debugfs_count_show() invokes the ->count_objects() callback
+> >> under rcu_read_lock(). The zswap callback flushes memcg stats via
+> >> css_rstat_flush(), which may sleep, so it must not run under RCU.
+> >>
+> >> The RCU lock is not needed here. mem_cgroup_iter() takes RCU internally
+> >> and returns a memcg holding a css reference (dropped on the next
+> >> iteration or by mem_cgroup_iter_break()), so the memcg stays alive
+> >> without it. The shrinker is kept alive by the open debugfs file:
+> >> shrinker_free() removes the debugfs entries via
+> >> debugfs_remove_recursive(), which waits for in-flight readers to drain,
+> >> before call_rcu(..., shrinker_free_rcu_cb). The sibling "scan" handler
+> >> already invokes the sleeping ->scan_objects() callback with no RCU
+> >> section.
+> >>
+> >> Drop the rcu_read_lock()/rcu_read_unlock().
+> >>
+> >> Fixes: 5035ebc644ae ("mm: shrinkers: introduce debugfs interface for memory shrinkers")
+> >> Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+> >> Closes: https://lore.kernel.org/all/c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev/
+> >> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> >> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> >> ---
+> >>  mm/shrinker_debug.c | 4 ----
+> >>  1 file changed, 4 deletions(-)
+> >>
+> >> diff --git a/mm/shrinker_debug.c b/mm/shrinker_debug.c
+> >> index affa64437302..cda4e86428c8 100644
+> >> --- a/mm/shrinker_debug.c
+> >> +++ b/mm/shrinker_debug.c
+> >> @@ -57,8 +57,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
+> >>  	if (!count_per_node)
+> >>  		return -ENOMEM;
+> >>  
+> >> -	rcu_read_lock();
+> >> -
+> >>  	memcg_aware = shrinker->flags & SHRINKER_MEMCG_AWARE;
+> >>  
+> >>  	memcg = mem_cgroup_iter(NULL, NULL, NULL);
+> >> @@ -88,8 +86,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
+> >>  		}
+> >>  	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
+> >>  
+> >> -	rcu_read_unlock();
+> >> -
+> >>  	kfree(count_per_node);
+> >>  	return ret;
+> >>  }
+> >> -- 
+> >> 2.53.0-Meta
+> >>
+> > Reviewed-by: Nick Huang <sef1548@gmail.com>
+> 
+> Sorry, but what exactly did you review here? In the past you were
+> sending AI slop:
+> https://lore.kernel.org/all/aeNGbNyPxJssnkbO@lucifer/
+> 
+> Not even properly following the process.
+> https://lore.kernel.org/all/20260724143408.175870-1-sef1548@gmail.com/
+> 
+> https://lore.kernel.org/all/?q=f%3Asef1548%40gmail.com
+> 
+> Why suddenly reviewing MM patches?
+> 
+> Best regards,
+> Krzysztof
 
-The drop takes the folio and swap cluster locks and may sleep, so it
-cannot run in interrupt context. Set BIO_COMPLETE_IN_TASK on the write,
-as the file dropbehind paths do, and drop the folio directly from
-folio_end_writeback().
+Hi Krzysztof
 
-Suggested-by: Yosry Ahmed <yosry@kernel.org>
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Suggested-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
----
- include/linux/swap.h |  5 +++++
- mm/filemap.c         | 19 ++++++++++++++++++
- mm/page_io.c         |  7 +++++++
- mm/swap_state.c      | 41 +++++++++++++++++++++++++++++++++++++
- mm/vmscan.c          | 48 +++++++++++++++++++++++++++++++++++---------
- 5 files changed, 110 insertions(+), 10 deletions(-)
+I saw this patch on the mailing list and was interested in the RCU issue, so I looked at the related code.
+I checked that removing the outer RCU read-side critical section doesn't break the memcg lifetime, 
+since mem_cgroup_iter() returns the memcg with a CSS reference held.
+I should have explained what I checked instead of just adding a Reviewed-by.
+Thanks for pointing that out.
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 8f0f68e245ba..29ec60dcae21 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -374,6 +374,8 @@ extern unsigned long mem_cgroup_shrink_node(struct mem_cgroup *mem,
- extern unsigned long shrink_all_memory(unsigned long nr_pages);
- extern int vm_swappiness;
- long remove_mapping(struct address_space *mapping, struct folio *folio);
-+long remove_mapping_reclaim(struct address_space *mapping, struct folio *folio,
-+			    struct mem_cgroup *target_memcg);
- 
- #if defined(CONFIG_SYSFS) && defined(CONFIG_NUMA)
- extern int reclaim_register_node(struct node *node);
-@@ -465,6 +467,8 @@ void swap_put_entries_direct(swp_entry_t entry, int nr);
-  */
- bool folio_free_swap(struct folio *folio);
- 
-+void swap_writeback_dropbehind_folio(struct folio *folio);
-+
- /* Allocate / free (hibernation) exclusive entries */
- swp_entry_t swap_alloc_hibernation_slot(int type);
- void swap_free_hibernation_slot(swp_entry_t entry);
-@@ -475,6 +479,7 @@ static inline void put_swap_device(struct swap_info_struct *si)
- }
- 
- #else /* CONFIG_SWAP */
-+static inline void swap_writeback_dropbehind_folio(struct folio *folio) {}
- static inline struct swap_info_struct *get_swap_device(swp_entry_t entry)
- {
- 	return NULL;
-diff --git a/mm/filemap.c b/mm/filemap.c
-index d721986d5f46..040c97a121de 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1686,6 +1686,8 @@ EXPORT_SYMBOL_GPL(folio_end_writeback_no_dropbehind);
-  */
- void folio_end_writeback(struct folio *folio)
- {
-+	bool swap_dropbehind;
-+
- 	VM_BUG_ON_FOLIO(!folio_test_writeback(folio), folio);
- 
- 	/*
-@@ -1695,7 +1697,24 @@ void folio_end_writeback(struct folio *folio)
- 	 * reused before the folio_wake_bit().
- 	 */
- 	folio_get(folio);
-+
-+	/*
-+	 * Sample this before folio_end_writeback_no_dropbehind() clears
-+	 * PG_writeback: until then a racing swapin cannot remove the folio from
-+	 * the swap cache. Afterwards it can, and the drop below then finds a
-+	 * non-swapcache folio and puts it back on the LRU instead. The
-+	 * reference taken above keeps the folio alive across that window.
-+	 */
-+	swap_dropbehind = folio_test_swapcache(folio) &&
-+			  folio_test_dropbehind(folio);
-+
- 	folio_end_writeback_no_dropbehind(folio);
-+
-+	if (swap_dropbehind) {
-+		swap_writeback_dropbehind_folio(folio);
-+		return;
-+	}
-+
- 	folio_end_dropbehind(folio);
- 	folio_put(folio);
- }
-diff --git a/mm/page_io.c b/mm/page_io.c
-index b23f494fcc83..586c79c3bb3d 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -456,6 +456,13 @@ static void swap_writepage_bdev_async(struct folio *folio,
- 	bio->bi_end_io = end_swap_bio_write;
- 	bio_add_folio_nofail(bio, folio, folio_size(folio), 0);
- 
-+	/*
-+	 * Dropping the folio from the swap cache takes sleeping locks, so the
-+	 * completion must not run in interrupt context.
-+	 */
-+	if (folio_test_dropbehind(folio))
-+		bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
-+
- 	bio_associate_blkg_from_page(bio, folio);
- 	count_swpout_vm_event(folio);
- 	folio_start_writeback(folio);
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 07418fc94f00..231fa87cbbe0 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -537,6 +537,47 @@ struct folio *__swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
- 	return ret;
- }
- 
-+/**
-+ * swap_writeback_dropbehind_folio - drop a dropbehind swap cache folio
-+ * @folio: the off-LRU folio whose writeback has completed
-+ *
-+ * Context: task context, with the reference taken by folio_end_writeback()
-+ * donated to us.
-+ */
-+void swap_writeback_dropbehind_folio(struct folio *folio)
-+{
-+	struct mem_cgroup *memcg;
-+
-+	folio_lock(folio);
-+
-+	/* The folio was allocated off the LRU and nothing re-adds it here. */
-+	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
-+
-+	rcu_read_lock();
-+	memcg = folio_memcg(folio);
-+	if (!mem_cgroup_tryget(memcg))
-+		memcg = NULL;
-+	rcu_read_unlock();
-+
-+	/*
-+	 * Gate remove_mapping_reclaim() on folio_test_swapcache(): a racing
-+	 * swapin may have freed the swap slot (folio_free_swap()) and dropped the
-+	 * folio from the cache, and it must not run on a non-swapcache folio (it
-+	 * would trip __remove_mapping()'s mapping == folio_mapping() check).
-+	 */
-+	if (!folio_test_swapcache(folio) || folio_test_writeback(folio) ||
-+	    !remove_mapping_reclaim(swap_address_space(folio->swap), folio, memcg)) {
-+		/* Raced: the folio is now owned by the swapin; put it back. */
-+		folio_clear_dropbehind(folio);
-+		folio_add_lru(folio);
-+	}
-+
-+	mem_cgroup_put(memcg);
-+
-+	folio_unlock(folio);
-+	folio_put(folio);
-+}
-+
- /*
-  * If we are the only user, then try to free up the swap cache.
-  *
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 848bd3e5eee2..4cc3a3ed6db6 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -780,6 +780,22 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
- 	return 0;
- }
- 
-+static long __remove_mapping_unfreeze(struct address_space *mapping,
-+				      struct folio *folio, bool reclaimed,
-+				      struct mem_cgroup *target_memcg)
-+{
-+	if (__remove_mapping(mapping, folio, reclaimed, target_memcg)) {
-+		/*
-+		 * Unfreezing the refcount with 1 effectively
-+		 * drops the pagecache ref for us without requiring another
-+		 * atomic operation.
-+		 */
-+		folio_ref_unfreeze(folio, 1);
-+		return folio_nr_pages(folio);
-+	}
-+	return 0;
-+}
-+
- /**
-  * remove_mapping() - Attempt to remove a folio from its mapping.
-  * @mapping: The address space.
-@@ -794,16 +810,28 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
-  */
- long remove_mapping(struct address_space *mapping, struct folio *folio)
- {
--	if (__remove_mapping(mapping, folio, false, NULL)) {
--		/*
--		 * Unfreezing the refcount with 1 effectively
--		 * drops the pagecache ref for us without requiring another
--		 * atomic operation.
--		 */
--		folio_ref_unfreeze(folio, 1);
--		return folio_nr_pages(folio);
--	}
--	return 0;
-+	return __remove_mapping_unfreeze(mapping, folio, false, NULL);
-+}
-+
-+/**
-+ * remove_mapping_reclaim() - Remove a folio from its mapping, as reclaim does.
-+ * @mapping: The address space.
-+ * @folio: The folio to remove.
-+ * @target_memcg: The memcg to charge the eviction shadow to; the caller must
-+ *                keep it alive across the call.
-+ *
-+ * Like remove_mapping(), but stores a workingset eviction shadow the way page
-+ * reclaim does, so that a later refault can be detected and the folio
-+ * re-activated.
-+ * Return: The number of pages removed from the mapping.  0 if the folio
-+ * could not be removed.
-+ * Context: The caller should have a single refcount on the folio and
-+ * hold its lock.
-+ */
-+long remove_mapping_reclaim(struct address_space *mapping, struct folio *folio,
-+			    struct mem_cgroup *target_memcg)
-+{
-+	return __remove_mapping_unfreeze(mapping, folio, true, target_memcg);
- }
- 
- /**
--- 
-2.53.0-Meta
-
+Regards,
+Nick Huang
 
