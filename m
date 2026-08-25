@@ -4,97 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8249AC5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:03:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B3C4C5DF94
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73E6D6B008A; Tue, 25 Aug 2026 04:03:53 -0400 (EDT)
+	id 6A3026B0095; Tue, 25 Aug 2026 04:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6EEE36B008C; Tue, 25 Aug 2026 04:03:53 -0400 (EDT)
+	id 67ABD6B0099; Tue, 25 Aug 2026 04:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DDCF6B0095; Tue, 25 Aug 2026 04:03:53 -0400 (EDT)
+	id 5693C6B009B; Tue, 25 Aug 2026 04:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 309BC6B008A
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:03:53 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 87A9E12038C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:03:52 +0000 (UTC)
-X-FDA: 85139053104.06.068858A
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C4A93100002
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:03:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf14.hostedemail.com: domain of 3ZUyNagkbAI4AGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3ZUyNagkbAI4AGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FC796B0095
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:04:42 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC45EA0342
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:04:41 +0000 (UTC)
+X-FDA: 85139055162.25.F698F86
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C998E20008
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:04:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOgh1FFa;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787645030;
-	b=kxTJUg4jMNZmhGNJWoukvxWkNmp1CIFhC3TzIAxzIEmV0mTqPqty2ELkXG5wgUeXA+DzGD
-	LjM1JYkGKxBl1ar/glSuA5vEsSNNvKM6plvCKcOfjql2B1dRGDqTzRLqS472ehcHwDqjyj
-	6kB3v5Mm6VXJG8Wsgmj+ZJhL99Mj4EY=
+	t=1787645080;
+	b=SeumdwM5pGElNQC34p0d+iy2e5tzfoFI2mkU+0ctSJ8HYPMmDWgu68IA0o/zlEWVzLZ1la
+	9U/oAJlA6kf6xo58oj/N9t/pLYX5Fiqtd6terOddYADXQTROQFdxNOXQnofyDmeINBU+Ss
+	wFniFlY7OG+lZlXisxnXzpy2sHlOeY0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf14.hostedemail.com: domain of 3ZUyNagkbAI4AGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3ZUyNagkbAI4AGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOgh1FFa;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787645030;
+	s=arc-20220608; t=1787645080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=AtGfEt5fG2go9z5Op71wQEx7a+tRBKr+1KtptibDM+E=;
-	b=UsLCqm+Hxkmn9M+AD3JHyCOHnlM3K2bbTR6xTYtTcT49yxkE6Oc4yoqlkksChwiLrGr85N
-	NwXrbzDv+c4VHz5MKFqfsFOgtBSuTqc+3M8GHbaN2IqNP85rP9TtF79L1eDSesDSlXOLZJ
-	FUicMRSCEEuJgvpaOIQBR2T+J2eTKpc=
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4ad778bacbeso8856640b6e.1
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:03:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787645030; x=1788249830;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=AtGfEt5fG2go9z5Op71wQEx7a+tRBKr+1KtptibDM+E=;
-        b=ZTfSFoZ7IcLf0e/yERYUSz8f0+orhFLETEqxMk4odTNvUoFfMBcQq9N5/Xf1KoaLUO
-         4ZjuY9gz2M3snvTyQJfNnYljBCy1BXz6sL6jsWvm9pFJAE2hwC7mAnAFf3DtRHg62Qip
-         xQUMQM8SVC84J1Kv8nfXT2fBz85MvZffUnvm4TrhAkAKCx+zQc9jCAWKlBatwgaumkJl
-         huYVPYvP6vM1qIbd4f9Jz7gkO98Yi5fG881gcH6zIiGe90zk2P7PV9yO8ZGyV5GSxkzd
-         O5aH0YSy52W4Bm/wwj46qsSHmgHi/r9BqSgfx0UQomeBRZTp9na2HwtLI70ue3HJo61A
-         WdCg==
-X-Forwarded-Encrypted: i=1; AHgh+RoW8nHWkMnCuSsykSQuKuNi6PtDWvGDae0I1rWeqIBZvvEj90t+1Eiss63jGc4+JjOaksFB8eE7+w==@kvack.org
-X-Gm-Message-State: AFuF++lZFUfs8eVGtoarSNvheot/ltvfXhfAA2O6kUwcBsN+pOCTYc8n
-	i+ezsRcfIAjTARbJY/zNcZnm17u3v9iKFivE2uxN3fKBIrbXhrFvHLHf4CLdXgqDSeM+mSLT6w5
-	lfoB6pJqHDTNWd/YFlCUGU0PzpKjvBxyFhEWBTT6t0lC1MB8YMon8lpeKp5Q=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/MaN5UZb6e671DzcVquD6HpICimiFBgIihH7ywUhh1o=;
+	b=liw+XVphiZUAwimdXR6E+k9IQCPqnWwtBgjhoF9ZiLYlw8ZBEv4VMenuWLlyvrX7VMKT1j
+	25UD6vdm/5eDnbQYSZv1FyNcTM25YpKSLrsnnu23eqv2ITHfzP8sGA8LgDyKNaSSyQwYDu
+	HsRoxGOUo5optLxGdIrF+8H6qK542Xk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1D665410B9;
+	Tue, 25 Aug 2026 08:04:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA211F00A3A;
+	Tue, 25 Aug 2026 08:04:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787645079;
+	bh=/MaN5UZb6e671DzcVquD6HpICimiFBgIihH7ywUhh1o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=SOgh1FFa3rCTdan8VrIPmUNWe+htDMxlO5ZSqRaj47x7pRumLA+mRbBR6s6zdnSd6
+	 thToeAXogSG+RtEzRPhlajHf6wrSZ9mwfTM+q8JE8doYh6YGHNVTQaIp73CvdY08w5
+	 N40m+QHqdvS/ZG1S6ffvb2ryETrybHMRtL1qlhjDtz6Uc0O78/7M83KGIP3MViRcqx
+	 2h8Uc6FuQFIMP6cj9FgT+r1gMuoY08mwfFMzghLjEvFdvRPJPZ9EqeeHPpAU1MOw06
+	 jm2f31WAZLGOr2z77Ci4XaymCqtz3Jo7bRmKXYPZtBUsydotjUle0i2/JdCBOgEZWn
+	 QMvjXlVLsVVAQ==
+Message-ID: <2614286d-19ed-4848-8ce6-59ebecf19d1d@kernel.org>
+Date: Tue, 25 Aug 2026 10:04:31 +0200
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1c09:b0:496:a36:b5e5 with SMTP id
- 5614622812f47-4b35089c71bmr4724901b6e.17.1787645029903; Tue, 25 Aug 2026
- 01:03:49 -0700 (PDT)
-Date: Tue, 25 Aug 2026 01:03:49 -0700
-In-Reply-To: <20260824152932.1583506-1-lrizzo@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8d4c65.a5a502ce.31d34.0049.GAE@google.com>
-Subject: [syzbot ci] Re: swiotlb: avoid swiotlb copy on network sockets
-From: syzbot ci <syzbot+ci194162eefbbbb459@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, davem@davemloft.net, david@kernel.org, 
-	driver-core@lists.linux.dev, dtatulea@nvidia.com, edumazet@google.com, 
-	gregkh@linuxfoundation.org, iommu@lists.linux.dev, kuba@kernel.org, 
-	kuniyu@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lrizzo@google.com, m.szyprowski@samsung.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, rafael@kernel.org, rizzo.unipi@gmail.com, 
-	robin.murphy@arm.com, willemb@google.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: C4A93100002
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
+ on zap
+To: Christoph Hellwig <hch@infradead.org>, Pedro Falcato <pfalcato@suse.de>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ usama.arif@linux.dev, hughd@google.com, akpm@linux-foundation.org,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, dev.jain@arm.com,
+ liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ljs@kernel.org, nico.pache@linux.dev, ryan.roberts@arm.com, ziy@nvidia.com,
+ nphamcs@gmail.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kernel-team@meta.com, stable@vger.kernel.org,
+ willy@infradead.org
+References: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
+ <20260820061337.24669-1-lance.yang@linux.dev>
+ <aobp2CtWZBlw4w7E@pedro-suse.lan> <aob9PF_H6CCJMdkk@thinkstation>
+ <aocFPRgqieScf_yo@pedro-suse.lan> <ao0vSde26_Qar0IZ@infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ao0vSde26_Qar0IZ@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: qduqww1xs9rea9bwe96ztxpdb9dtm6z9
-X-HE-Tag: 1787645030-610076
-X-HE-Meta: U2FsdGVkX1+VKYqtABQBwCLBFq6MUzqZ8UZvbF+32HaWp5bDHhLCFxPbgzPx15hiKiDzJ1ccdV9eFkySneJ35nLb8cNGjj2wzO/iyhrDNngJ9Aqjuo4O2agBOuE/qBgSoCmyqPREXGuY/IHhETU8jl81y/IwtV4RCTSAvfeFUuYI0pzzL7Plbt2/FPTQCKncIZCOYT22t6DY+P8GX6tnNcTmaJsSe7pYgblPVrWkcIrm3s5GFfdyKzl6oAkTHtws8afUBOXC+Q7fGRs1PXpqJMmsAq9XKKL57B4c22wd+JU3ZKOdy88Tll31Veh4j4mVxoPJXUtW1HF06BBN+9H0q9Y1EguE3kyXBdlcvH1QmbINH03BbyptbmM2B7sjJRPfAGRZrOHgVUHM86LeLN591U0i8hid6pB5Cz0fq0i/Gfqy8S3GKzu8soyDTZRdf8QzcXD1ERtMloWrxR3aexk68SKoYCijOmqLu2O6ou2mUk29Mb6btsQmDzz7TNkwCDq/pUo6cHsdrk3v4ZuVEKxJW35CM689/LxRB/8k7IS6yRCH2m+WmWBvm02JK4IPgcJDVSqEslLj0RwKQsOEWP/6KuagsSDB9S/r2GgXZP+ofZtByNwTXyXAPsL1pu/v6pSqGOyuqg2mCMOSHDgtv05bMNkH28tq2A+vu6QCE2zvJrD99oX951YDxmeZEAVg9UFWa1Ax36WfJhfnQ6kRjLiYXuIxO21uQMNGwdBV69XwWvNbmptpv1bAtJgh1YH9cinAIi8RIU32Q6T8wWFBTVst4N+d0EDOrSf2IG+RTv/5fXI2ETyl3lBamXaQLY3ceO7LPb1CE8qr/n6i4DX9/859tg5Fh6PH2ETAoFLRFdr1DlAnhJ+y+RG++iJ+/zk+gOsPoOh/F2+wJIfQmCJ3HVWRRq1XjylHileHDbVZZzlIhqouMKPogDtz5V5Z1ymEtWB1MLJk7dqCk13xIkVZe1b
- PEBE7lze
- Zh/S1YaI113edy13Sq5Ndy15qJTiJOxX1k4vfoc5UmBLGcQ/G0joa/LqvBHuLX8+Tn+NKoAis5aXKgfNIgD8bDWJHNJ7q8ulENAWg8p4Ii8nuh6jxLqQJYNSrdfFbiYbT4CjejOkoS/vtn8Yz7uKljmcnLJj0ha9m0PHdK/QZ9F/Mv0Ud5W43fm2YyFKj3B6/S70ikHlAExFQkW5+Vz/s7xG/hBaPQSPK+A11JZ6q/lZZrOYXoHSZMbzRneaWmp5agtSLrTDGg04nyKqLcDP/AMz2xygeeJdtLyajcg9F2wuUtuGj1qv/sKVhbYLfOorua55HPYmW32KRqPSQhnIGdM3oY9ig1LqHZmWUei1swvVINk1nH7ewryfI3dMkUhiAeUTY9ccuUNXIFKneI3Q1KcZ3Q6I5LP08VU+ETlemV8hn1wYkQZ83op98H4JnkpY8DBdyeysiGDAFjf2K+4yxgPIZBCsKq7AWzAQo/gNBhm08ORhFTH8O5FM41AF70Gl3+n9zLcIDxpDKtYWxKhgpEAzSN39lKTF+FaKlGQkZZw1MiBqx45fhg/C1JGv5pJZLTi1s+/27Gx7HGMZt+4lmGVGDgjI6+2uSruw1FyCSTgUviG8AqajCdhqwK4mJ0n4yuMwPFNVUGuYem8mtb40xHPwh57X3qCQWCf8jOU5mEMADDXJiBbqMKRiDQmRoPirBEknuY3JvARl9bXy+aIWCEVyHapybM21pfWAATsRhdUQ1xIhmZX+QYr7SkutUnNv+v8fm7snwHsYMCqAycEUSGpE3DtCJJ8iKkw2zM5GdQv/U28cx1FT2MsQxM4zzsDSDZMKZE9LXXqPJeThbuX92wkWP0tvn6NN/o67a6kxjopgoLZwiOqJ94eNiPm0RNubaFtD0sZ+un+/dDkZyO9np7EPVOKBlteuN2BLiFUJJHkhahdvhYs2/hVb6C0wZNtr19+z103ZgD0Houli85fDASANQ83A9
- y82sEj7b
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C998E20008
+X-Stat-Signature: u4mjekgcuajzx8wccykeckxshy15zznr
+X-HE-Tag: 1787645079-177548
+X-HE-Meta: U2FsdGVkX1/GuAdYXmOmSLh7RRCSqakJuyhDpvRObLVRPgnxLYCdg+vueZU18KFh9xl06S71uBS4DS3y2tWU/NMA8eH1xmDUsLWMLEd3NYea+Djz0qFcMG3/HY5YU5k3drxvOVwEegVUklLGZervgOJ5tyO1jM76QN/e6kPF8yLB1RgQVyL3ykSqp6tR53RXkLdepZZ/v3yWSpAEtH0mBPeNg7oEr0suKiw4xeUevQnXpOwV6BmKGPmHTlsoVRWeLNAFIoB5oUSRwm7cPZdeCUBm/wsNxJ8ywDBbdWSgDnJtGAn2jvo7LIXhJIc+pWccbDM3EkKIt4jUNcQf8DKUTrzbuVRTF8LtXjsb8e23iER74xboM2PFuDm5OJd1Nyd21QPfDLLXtvAGLHXqCVlfvcjW+WN0SC+4GfeJ1rOcWU4UrrKMsuJulG/wL1BARs2JfM6DsE1E6ZX7up0hmPNueALWzLUpS6a8kSKo7kZvV+ZmQEXOZHd56vpLn7QEdPcZeSwbsXTAoGS6/HMvYvO8gGxSyPTBcUwoj7jS7xUnuzNHoshQvI/jRNWJu0QfIur4y3GLcpP5L3mjImUS7Noi7WbjVXate+bsxGwFEIjafmPcXtDLskcYQWOqrFCE4vu0IGhhFKhZmKvEQvuYhIwSym7I8Blfzjq44XBNs3ls+jGomrmS8rX+D0I++OWRC5w/xH9HxLD8kYtbQ0epxAmcXSbMcB914qEhG+XA19LNWh4FTm3qzzO7rh3N/cAGgDxqNkio44eKjuFt8tZEYl5OLwBdph0v7niS2gsmw8RIba5hPKEIm5SNIE1iWmZE/Yz0A29Cm8muCZ/lgtQY9lLtBz/P5chNLs6tuIDcl8El6XMzLB2p14uNB9b1FO3Ltj+MpV/qvQVd5QWI2ZEXeuZ1uNrAb2ZbXTXf1z+mL91CSTjNRAYOf/iDrdjLntKITdDAWiadaFePoP/qe/mxE+G
+ +W9PCrF9
+ v4HHCdzXbKI8M4N7DpQJ4J4OFzCrVLGP913H8uON1341x5s2xbNSeMd73lInx7W7W3xcuuiMo3f+ONk+UVo9rLFI4j3B7/H1zAsZiYR0d6oi9dWR4be/U9uiC/IecB1xqxs0jihuEhFqAvL7/OCUAdMEemBvENpyH1Q0i6SxqP2XUXzSXNjFVLjdmdhqqjaJSEvNJwmDTtq5yHl7xtURBYLRvVEqlIw4zijZjsC5XLUtGEzqSutgGEI/R03aWd18WyghX7jJrrT+G+PhITnfyoYd+07MWwHGEO6QupIeuOqQ8gH6G8c2sdK6SMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,143 +147,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+On 8/25/26 07:59, Christoph Hellwig wrote:
+> On Thu, Aug 20, 2026 at 03:10:11PM +0100, Pedro Falcato wrote:
+>>> Why? Write batching from large folios is a win.
+>>
+>> For some context: we were discussing (off-list) the recent report that
+>> systemd-journald had horrible write amplification, worsed quite a bit
+>> by large folios. At the moment, there is quite a lot of write amplification,
+>> but _only_ on mmap writes (if you look at the write(2) paths, you'll see
+>> write_begin and write_end which tactically only dirty what you actually wrote
+>> to, block-wise in the BHs or iomap IFS). This doesn't need to be true.
+> 
+> So don't use mmap to write to storage.  That is always a bad idea for
+> many, many reasons.  We should not work around broken applications that
+> do this, but change them.  It only took about 10 years of bad reputation
+> for MongoDB to finally fix their act, so it should be possible for
+> systemd as well.
 
-[v2] swiotlb: avoid swiotlb copy on network sockets
-https://lore.kernel.org/all/20260824152932.1583506-1-lrizzo@google.com
-* [PATCH v2 1/5] swiotlb: enforce pool nareas and nslabs invariants
-* [PATCH v2 2/5] swiotlb/mm: Implement SWIOTLB nocopy page allocator
-* [PATCH v2 3/5] net/swiotlb: Track bounce device per socket
-* [PATCH v2 4/5] net: Divert socket allocations to SWIOTLB for nocopy TX
-* [PATCH v2 5/5] swiotlb: Implement RX nocopy with fast recycling eviction
+I was in contact with systemd folks (and pulled in Willy and Jan) regarding
+that, and nothing should really block that.
 
-and found the following issue:
-general protection fault in page_pool_put_unrefed_netmem
+-- 
+Cheers,
 
-Full report is available here:
-https://ci.syzbot.org/series/b17756c4-983f-4d7a-8415-3da06c0dda99
-
-***
-
-general protection fault in page_pool_put_unrefed_netmem
-
-tree:      torvalds
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-base:      0a0d1d55dad570724bf8c7ea83409639cfb4be9b
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/20e51ca2-88da-4674-9797-a62c64743095/config
-syz repro: https://ci.syzbot.org/findings/4385dd7f-d1fc-4627-ad19-6862c780a90c/syz_repro
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000082: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000410-0x0000000000000417]
-CPU: 0 UID: 0 PID: 5836 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:swiotlb_addr_in_default_pool include/linux/swiotlb.h:177 [inline]
-RIP: 0010:swiotlb_is_nocopy_addr include/linux/swiotlb.h:184 [inline]
-RIP: 0010:__page_pool_put_page net/core/page_pool.c:851 [inline]
-RIP: 0010:page_pool_put_unrefed_netmem+0x22a/0xd20 net/core/page_pool.c:930
-Code: 5c 63 00 00 89 c5 31 ff 89 c6 e8 61 17 04 f8 85 ed 0f 84 07 08 00 00 e8 54 12 04 f8 49 81 c4 10 04 00 00 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 37 c7 73 f8 4d 8b 24 24 4d 85 e4
-RSP: 0018:ffffc900039df230 EFLAGS: 00010206
-RAX: 0000000000000082 RBX: 0000000000000000 RCX: ffff888160efda00
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffffffff89c3aca5 R09: 0000000000000000
-R10: 0000000000000000 R11: ffffffff8ed5a4e0 R12: 0000000000000410
-R13: dffffc0000000000 R14: ffffea0004450300 R15: 0000000004450300
-FS:  00007f08f83e86c0(0000) GS:ffff88818d6fc000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd455a8fe8 CR3: 00000001134ac000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- page_pool_put_netmem include/net/page_pool/helpers.h:343 [inline]
- page_pool_put_full_netmem include/net/page_pool/helpers.h:373 [inline]
- napi_pp_put_page+0x133/0x1e0 net/core/skbuff.c:1036
- skb_pp_recycle net/core/skbuff.c:1047 [inline]
- skb_free_head net/core/skbuff.c:1091 [inline]
- skb_release_data+0x8c3/0xab0 net/core/skbuff.c:1122
- skb_release_all net/core/skbuff.c:1197 [inline]
- __kfree_skb+0x5d/0x210 net/core/skbuff.c:1211
- llc_rcv+0x77a/0xcb0 net/llc/llc_input.c:-1
- __netif_receive_skb_list_ptype net/core/dev.c:6312 [inline]
- __netif_receive_skb_list_core+0x784/0x830 net/core/dev.c:6354
- __netif_receive_skb_list net/core/dev.c:6406 [inline]
- netif_receive_skb_list_internal+0x995/0xcf0 net/core/dev.c:6497
- netif_receive_skb_list+0x67/0x480 net/core/dev.c:6549
- xdp_recv_frames net/bpf/test_run.c:268 [inline]
- xdp_test_run_batch net/bpf/test_run.c:349 [inline]
- bpf_test_run_xdp_live+0x1875/0x1c20 net/bpf/test_run.c:378
- bpf_prog_test_run_xdp+0x7d8/0x11d0 net/bpf/test_run.c:1463
- bpf_prog_test_run+0x2c5/0x340 kernel/bpf/syscall.c:4804
- __sys_bpf+0xa22/0xd90 kernel/bpf/syscall.c:6385
- __do_sys_bpf kernel/bpf/syscall.c:6486 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:6483 [inline]
- __x64_sys_bpf+0xba/0xd0 kernel/bpf/syscall.c:6483
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f08f759e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f08f83e8028 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
-RAX: ffffffffffffffda RBX: 00007f08f7825fa0 RCX: 00007f08f759e0d9
-RDX: 0000000000000048 RSI: 0000200000000600 RDI: 000000000000000a
-RBP: 00007f08f7635024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f08f7826038 R14: 00007f08f7825fa0 R15: 00007fffc4c69778
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:swiotlb_addr_in_default_pool include/linux/swiotlb.h:177 [inline]
-RIP: 0010:swiotlb_is_nocopy_addr include/linux/swiotlb.h:184 [inline]
-RIP: 0010:__page_pool_put_page net/core/page_pool.c:851 [inline]
-RIP: 0010:page_pool_put_unrefed_netmem+0x22a/0xd20 net/core/page_pool.c:930
-Code: 5c 63 00 00 89 c5 31 ff 89 c6 e8 61 17 04 f8 85 ed 0f 84 07 08 00 00 e8 54 12 04 f8 49 81 c4 10 04 00 00 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 37 c7 73 f8 4d 8b 24 24 4d 85 e4
-RSP: 0018:ffffc900039df230 EFLAGS: 00010206
-RAX: 0000000000000082 RBX: 0000000000000000 RCX: ffff888160efda00
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffffffff89c3aca5 R09: 0000000000000000
-R10: 0000000000000000 R11: ffffffff8ed5a4e0 R12: 0000000000000410
-R13: dffffc0000000000 R14: ffffea0004450300 R15: 0000000004450300
-FS:  00007f08f83e86c0(0000) GS:ffff88818d6fc000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd455a8fe8 CR3: 00000001134ac000 CR4: 00000000000006f0
-----------------
-Code disassembly (best guess), 2 bytes skipped:
-   0:	00 00                	add    %al,(%rax)
-   2:	89 c5                	mov    %eax,%ebp
-   4:	31 ff                	xor    %edi,%edi
-   6:	89 c6                	mov    %eax,%esi
-   8:	e8 61 17 04 f8       	call   0xf804176e
-   d:	85 ed                	test   %ebp,%ebp
-   f:	0f 84 07 08 00 00    	je     0x81c
-  15:	e8 54 12 04 f8       	call   0xf804126e
-  1a:	49 81 c4 10 04 00 00 	add    $0x410,%r12
-  21:	4c 89 e0             	mov    %r12,%rax
-  24:	48 c1 e8 03          	shr    $0x3,%rax
-* 28:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
-  2d:	74 08                	je     0x37
-  2f:	4c 89 e7             	mov    %r12,%rdi
-  32:	e8 37 c7 73 f8       	call   0xf873c76e
-  37:	4d 8b 24 24          	mov    (%r12),%r12
-  3b:	4d 85 e4             	test   %r12,%r12
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
-
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
+David
 
