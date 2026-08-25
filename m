@@ -4,136 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92FE1C61CE2
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:16:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40ED6C61CE2
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:27:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87FC56B00AA; Tue, 25 Aug 2026 06:16:41 -0400 (EDT)
+	id 3157F6B0099; Tue, 25 Aug 2026 06:27:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 830516B00B3; Tue, 25 Aug 2026 06:16:41 -0400 (EDT)
+	id 2A03F6B00B5; Tue, 25 Aug 2026 06:27:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F7B26B00B4; Tue, 25 Aug 2026 06:16:41 -0400 (EDT)
+	id 167ED6B00B6; Tue, 25 Aug 2026 06:27:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D0D86B00AA
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:16:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A00BDA310C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:16:40 +0000 (UTC)
-X-FDA: 85139387760.02.0578740
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CD69480007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:16:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gOeAChmB;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787652998;
-	b=BQWO4XBJwQiIHlpM4X+TgHbyGSOUHScJ716SjsJfmvi0Ocxm/tOPp8LH7o00NN2M4dCinG
-	N5NB17J44kIQ4sJivlLnS8JLpDUy8PzhYB/54oL4GfXDZloNoYqK/AWcfi5Yioik/Fg9yx
-	VGNB7X7Jc/R/dcE/8IiEBm3apqR69JE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gOeAChmB;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DF9306B0099
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:27:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 55390120323
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:27:47 +0000 (UTC)
+X-FDA: 85139415774.29.A284D22
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9A743180004
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:27:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ShPy4092;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787652998;
+	s=arc-20220608; t=1787653665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0aICPP46hK3A0wWz/sGRhfqx/SzPeFmU/8o49XOoh1g=;
-	b=rI+NpUd9qlLYrY5qs4UV5SW/7mjhoBpyafZ3rMDyJQBGq2W4VYAlQJLrOc0cRmEnazB2yB
-	MSjBFPENy+nzjynEnxh4NeeXRugCq/nAJfaVoUPLVXsib4nTrIOYfNiPNIQ936ZCzfM6Ch
-	nJF7/sbxzY7f5rH66N1BxLgrrX/G5Fw=
+	bh=AmTIRDghT5aZb5UGuzctLRIrFioVqTHUxr0Sp616qgk=;
+	b=iDRd7V+2c/anXI7WOzy0Ko5AVnoUQfmuTFkmMy7r/kqEU1GGBRVgdGPCdo+Ao7yK3xqTK2
+	/HTCKMIp8f6cYdUDD0X72Oqj6k8tqPQt9Fbg15NKZGNgBDmO0uSbdHEGLpZa73NelyHonI
+	14VESdl7bCTsuhAku85NXARy+dM8W4k=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ShPy4092;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787653665;
+	b=7BBJWc9JimlT09eahFLAbif89rRl1pnvWQ7nZw8TSpsVAYG+nm68RuIBqBl/6YoxaEMnF9
+	Y4z7yNYUdLofs+1tsWNnr+HzQM4qgFk4HONn76TGcYPU72zEOdkhE1NFOug71ETmOUTFnV
+	VYpEeQKLbMmXNks1e8qwcuLkA396D/E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C99E84351C;
-	Tue, 25 Aug 2026 10:16:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCB51F00A3F;
-	Tue, 25 Aug 2026 10:15:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4DBE3601E0;
+	Tue, 25 Aug 2026 10:27:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12F71F000E9;
+	Tue, 25 Aug 2026 10:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787652997;
-	bh=0aICPP46hK3A0wWz/sGRhfqx/SzPeFmU/8o49XOoh1g=;
+	s=k20260515; t=1787653664;
+	bh=AmTIRDghT5aZb5UGuzctLRIrFioVqTHUxr0Sp616qgk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gOeAChmBSrTLHzBf87ButvM2PY7Fm604Tdgfyt6xo8MWEtNQIuKsDX0N7WwwT/V9v
-	 fs2UmYjp4ccPpM2hdArDjMMLwGJ4lKhDLy1YiwCddsbEXlJW4n4lJxLKn2Y2Tppd5n
-	 LS+TQs84pDt0E5wbSQQq1+HsAsdLrfBmOWJmvZwX/RLOmpCbYL/mTGNxQIahrh07Ix
-	 cCBxxxz4Vvrj9r02UDwurB5+V1rivg64lw2SPi2IIUr1dmRpgTTZTdRj8/vPr/grRV
-	 8HHV6Qn9rYSK1GTlrv4ifCko3gjohntQseaGJajUrdP0R51eBJVOBIN+j5hMrU+ECI
-	 bAtyejmwvehXQ==
-Message-ID: <7db786d5-5665-44b4-9c1f-a88596be0560@kernel.org>
-Date: Tue, 25 Aug 2026 12:15:49 +0200
+	b=ShPy40928OrdedT4DDHV3NrG1zdtp2MAf0KfSjOriqJwJmwdEeebXZhjY+cP2bG2P
+	 DX24DZ2urmbwyD7akQHe+1sPrqr6SvuMKK2AK4T+u3tuHhzhSUtFVd3SlyGLPHZP7o
+	 uzFwIK7JLx1I4W702S7bhpj+DSm5lZETQqTbTsWzYkubU9wFJ64sUIFk4STrffBu5A
+	 sZBmGRklT2j1Em37fLf7jYrNhqyPiELdLO5jBis/uvJwAi1P+U9XCiDsHvtYDqLpu4
+	 9ddSlAgY0CDyl4OLm66DB5z76DhHubcqRw7NHxEWgHWXTb81quv2FoS+kO52uUzrx5
+	 L9srPGLmeeWEQ==
+Message-ID: <fa60a766-6cc2-4db6-a38c-9a8e33925eda@kernel.org>
+Date: Tue, 25 Aug 2026 12:27:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-To: NeilBrown <neil@brown.name>
-Cc: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org,
- max.byungchul.park@gmail.com, kernel_team@skhynix.com,
- torvalds@linux-foundation.org, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
- linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- hch@infradead.org, djwong@kernel.org, dri-devel@lists.freedesktop.org,
- rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
- hamohammed.sa@gmail.com, harry.yoo@oracle.com, chris.p.wilson@intel.com,
- gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
- da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
- frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
- josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
- jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
- anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
- kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
- kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
- ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
- baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
- bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
- dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org
-References: <20260706061928.66713-1-byungchul@sk.com>
- <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
- <20260821042143.GA40890@system.software.com>
- <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
- <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
- <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
- <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
+Subject: Re: [PATCH] mm/hugetlb: fix missing migratable flag on same-node
+ hugetlb migration
+To: Wupeng Ma <mawupeng1@huawei.com>, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org, baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260707110254.3147686-1-mawupeng1@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -180,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
+In-Reply-To: <20260707110254.3147686-1-mawupeng1@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bpqwp7jqpeb8nzd53ucizzrzsiti4hix
+X-Rspamd-Queue-Id: 9A743180004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CD69480007
-X-Stat-Signature: 16q48t3gh1dbae8ockzk6dys8offu4qi
-X-HE-Tag: 1787652998-731115
-X-HE-Meta: U2FsdGVkX18IbEKAqAj4OC2m9a5UvO6+AzUa1De32Pt7KqHDSxfHPgzS43nTPsniUuCQn2+Bbglwh2jrmfijwuYQCwg8AFIoBatF2HiCak849kYg7U/eA4hhGqHMPE+gIATMQJGkdZ+g+6yqsyugKILs+EZunjSE3WGsT+TrmNxNIpCwY8lX5uJcumgwh/zpjUMFsCLBoRQcZOtwJgyPfAd7W4LEsa47JSE73g5qrnORxe6xtWYqXfUDYm5C/Enxcj4Ijdqrv7+LO1PqkeOsbZuD3elfrqHDd23L2P2/bGZBSJESooxtEw9BmSTKmNmTqPBqG8+t84rqvvIYOrTQoNi3YpAP6RwKrRaoVvNnQkF527IWDotvI4Ykcud5LOYoA8j2dZW+N4U8s0toM66Ij+fW6lCzgFntSMIc7OT7qDQYfWDU5NEOWYIjodvSuWSAlU0lCLHwbQzwQQqIMA2psnTkvQNRlVCCvxEuRC/TrQiZJSboNZUdq7itR2IviBDYP0NapDg2IsFOiQDZivOXMJHqfx6XDuEOGmIUzBy8XHO2nsG0XO9BFEWRCqyWj3WjyplaHh6AaR+bZp7l5bvdJ+AWbLTPXey3lKDVbVU0u9DMziSf3pxhgAH4wtYBAc4PUBDCKnbERwWkViDvazUTmD80WynpaEx/FtXwINd9C2YUwOdPY4nE6kHujq+axu+NwFpUlrFT3gOcbVEIE6vkRrkidEuVooDpiLY7oe9BR+BlUrO1nyiUwe0kuPKJafp8Z/J3wtfqUl7fdZkVbANJagbgrTk7zEWWZDRHEgbkN0zhquZYjoHpfCJE9adKirz2FDxV6Jue2iU/6/xvGXd01ab1zXLao6+aGns0vZbvCQggRVNV+EFow1+L0lhyuvpOIKSC07AcxWr8XJOyQqqVBcAgj4L/sAnPG7FS+524gMl0mEzTT0Syi9fdggbzRy145M5g8Q15FLnXAYx6+D4
- 2aespqSw
- GjD6KUZWlBUHMi4RXtk0IfCy8eCFiRr+RdQ3cpO29tLoKDtuiEqGGIMeBhOJBnfh/8Izzvv5wn1Yxxq/Zfl4kqRwC4I5oz5HC1C+ZmS5akw7uPmYlY0Al+n5lAGDMcRwR2x7WrnCy7F1Q1nwvKzBxlUWuUcMvr3/mrF008Elk5TRLGcghJWfjPlsULDP1CX4FqYZoIdsemOY1FNHGqeVxPgHlJy16vj3ajdy+pwSp4cYkENUkK3PEz4L+rRe1FWr4j2pMIHXvix1c8GVrvPc2oo3Q039md0EtBdG8as7aMzrESN4Eg60PJPFEE8hXq8KZ2OQP5aLFgW6byrzFcKKW5ACFtQ9JmdLCtMrH9ktdlpmlwyyIYiCvCuIALw==
+X-HE-Tag: 1787653665-898148
+X-HE-Meta: U2FsdGVkX18dLJ7iAxQCK2n/kllvSqdDlMdUBhfu/AWSrV9ge6nxnk3J+ZVkedZXvcM04u2TP8zct9JsgHYTobeMj6ZIWiDUooiKmp+3MfzMZmk9U62+1MW9jhy7PL9eTCbcAijhQ4y9G5Qktyb2Uj3GQJgVMRcsVGS5V6C6RK+tJ4Hj//VDS3Y8tidsQ+sZI1EQ572dfrrJfEDQ6ONIH0frfKlbOELlLYtxlVunz8LN1KRii7RrbMlR1tf+s9Cm5+zHASIvfy7Ob0dBG7THhrKv9NnOttxVsTxTEb4HpRyJC1ewcbfSWoREEUfMf2G/OqAEiCglvIZL9H5KaGk9jmn9Bw6mcj3YH0AfeTxWO7zw5curl2S0clW65mUYtXwN5IJN5NBp5RDg4ccPmOOmGjOD1E378GLUJqJkfRwXWgoQtLmh211ymb0SESq5Cy4hdHRbR3n0iOS1PYaDEjFSpTG3Aw2xHr5a3f+geIJkzdavr3HDPjDrpFvmHmABJn2sjDQM9Bw7NpuP/wlRSx1N1ABxvAUWrWI7TEoXWqeEo20A/7GU3X+rv7dLSQuy0r3OgUIjYpEsqH/rrvrrZpxoJz7chTADYzxZjltf3NQ74y99B93BpUQ04hINZOGV62k+Y9pX9UA1Bj9k7Uipbt2fZkzqrP4et2V4SOyVNZteilzmkCrPLvvfufdnUdAcwYosbLhIocaWTWNaWTLEJ2l4Yc/GMc7OK0ZVlpSGPUS1wIM5nRMOe65NY0qixcJPfwdtCH3aDGNtSiGLBHgYwdGx+GT0Zu4aTLKjv8zuIP5bILHCTNf0LsraWLgXf8TcqZVu2y00TXTsOhILE9rNSq4l3gZRFwQ6wIsZSgN4QbFx/MKoJTalvRM1fN4VQhEO5a+kXEoryjc2X4WB1fti0t+tPegTuNrH/dLFBCRKJzWQiC0QD7K2xWiuLxOaX0bs62+RCBJB+0yPqF4AUs7wkcu
+ n9iBfRrb
+ fhnvTDt/5DnA7oe6DZFFurPuPeGPXyTOAn4NC/KctYVkmZF0cQkhbZkWYq4MIXU+q9Sw628CEmqogvsh/TRuAKWxYX3gACT8UnfKV4f95L5928tBGWBndgIlI1p+7U77Yfde2E3j1YHE3wjDtz9ABYc0111959iZN/cMiRQgh+lhjv3O54Sb69puweEmaiE04hLrODWSYkW6gJ9qaKhvMcGcGFJnIWTcdeydAPr34EMtR0JMs5RfwHH63ZKD5Ia8VTcHskSFbrVi7y874TegSMgVUtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -198,32 +138,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>
->>>  But I'd like to see a coherent
->>> explanation of how the functionality offered by DEPT is clearly better.
->>
->> Yes, that's also what I am missing.
->>
->> Stating that lockdep is stable and should not be destabilized is not really a
->> good argument.
+On 7/7/26 13:02, Wupeng Ma wrote:
+> Commit ba23f58de896 ("mm/migrate: don't call
+> folio_putback_active_hugetlb() on dst hugetlb folio") moved setting of
+> the migratable flag and active-list placement from
+> folio_putback_active_hugetlb(dst) into move_hugetlb_state(), so that
+> the freshly allocated destination folio is handled where allocation is
+> known to have succeeded.
 > 
-> No it is not.  We change "stable" things all the time.  Replacing one
-> big thing with another big thing is almost always rejected.
-> Incremental development is the preferred approach.
-> So developing something like DEPT to explore and learn and demonstrate
-> a cool idea is great.  Making it completely separate can give a
-> developer freedom to innovate.
-> But the path from there to upstream acceptance is to take the lessons
-> learned and to apply them one by one to the existing tools.
-> Yes, that takes longer.  Yes it can be frustrating.  Yes you need to
-> be able to work with people - not just code - to bring the community
-> along with you.
-> But the result is generally much better.
-I mean, I agree, and that's likely the direction DEPT should take.
+> Unfortunately, the new code was appended after the existing
+> temporary-folio block in move_hugetlb_state(), which contains an early
+> return added earlier by commit 5af1ab1d24e08 ("mm/hugetlb: optimize
+> the surplus state transfer code in move_hugetlb_state()"):
+> 
+>   if (folio_test_hugetlb_temporary(new_folio)) {
+>       ...
+>       if (new_nid == old_nid)
+>           return;                       <-- skips the new code
+>       ...
+>   }
+> 
+>   /* added by ba23f58 */
+>   folio_set_hugetlb_migratable(new_folio);
+>   list_move_tail(&new_folio->lru, ...&h->hugepage_activelist);
+> 
+> When the destination folio is temporary (i.e. the hugetlb pool was
+> exhausted and the migration callback fell back to
+> alloc_migrate_hugetlb_folio()) and the migration does not cross a
+> node -- the common case, and always true on a single-NUMA system --
+> move_hugetlb_state() returns before setting the migratable flag or
+> adding the new folio to the active list. The destination folio is
+> then installed in the page table but cannot be isolated afterwards,
+> since folio_isolate_hugetlb() rejects folios without the migratable
+> flag; a subsequent soft-offline, hard-offline or memory-hotplug
+> offline of that folio fails with -EBUSY.
+> 
+> This was reproduced on a single-NUMA arm64 VM: a second
+> MADV_SOFT_OFFLINE on an already-migrated hugetlb page returned EBUSY
+> and logged "hugepage isolation failed".
+> 
+> Keep the surplus adjustment, which is the only part that depends on
+> the node crossing, guarded by `if (new_nid != old_nid)', while making
+> the migratable flag and active-list placement unconditional. This
+> preserves the cleanup intent of ba23f58 and closes the early-return
+> hole.
+> 
+> Fixes: ba23f58de896 ("mm/migrate: don't call folio_putback_active_hugetlb() on dst hugetlb folio")
 
-... unless there is something so fundamental different that it cannot possibly
-be integrated into lockdep ... or can but overcomplicates things such that it
-really must stay separate.
+Agreed, let's CC stable.
+
+> Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+> ---
+>  mm/hugetlb.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 571212b80835..cafadfdb63c0 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -7211,14 +7211,14 @@ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int re
+>  		 * There is no need to transfer the per-node surplus state
+>  		 * when we do not cross the node.
+>  		 */
+> -		if (new_nid == old_nid)
+> -			return;
+> -		spin_lock_irq(&hugetlb_lock);
+> -		if (h->surplus_huge_pages_node[old_nid]) {
+> -			h->surplus_huge_pages_node[old_nid]--;
+> -			h->surplus_huge_pages_node[new_nid]++;
+> +		if (new_nid != old_nid) {
+> +			spin_lock_irq(&hugetlb_lock);
+> +			if (h->surplus_huge_pages_node[old_nid]) {
+> +				h->surplus_huge_pages_node[old_nid]--;
+> +				h->surplus_huge_pages_node[new_nid]++;
+> +			}
+> +			spin_unlock_irq(&hugetlb_lock);
+>  		}
+
+The return was really rather hidden, thanks!
+
+Can't we instead just turn the "return;" into a "continue;" ?
 
 -- 
 Cheers,
