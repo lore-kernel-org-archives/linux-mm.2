@@ -4,87 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8194EC61DBC
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 07:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06201C5DF94
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 07:55:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C9D06B0092; Tue, 25 Aug 2026 03:52:42 -0400 (EDT)
+	id 051316B0095; Tue, 25 Aug 2026 03:55:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57B366B0095; Tue, 25 Aug 2026 03:52:42 -0400 (EDT)
+	id 0287D6B0096; Tue, 25 Aug 2026 03:55:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4696F6B0096; Tue, 25 Aug 2026 03:52:42 -0400 (EDT)
+	id EA8436B0099; Tue, 25 Aug 2026 03:55:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 258E16B0092
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 03:52:42 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 957A51601B7
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:52:41 +0000 (UTC)
-X-FDA: 85139024922.12.C6996BE
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7BF1E40003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:52:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=memm6yJk;
-	spf=none (imf12.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB2416B0095
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 03:55:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3B9A68028B
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:55:39 +0000 (UTC)
+X-FDA: 85139032398.21.95BC4A2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 709BB140006
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:55:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HhUM9DpS;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787644359;
+	s=arc-20220608; t=1787644537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CVaLUtmQZ+lo3k9HI0lk+lS5cr/55GIIaizc2rZZWKY=;
-	b=uIzJK0YHqd3/sGKxcv54uFgwP2gN7oPAS6LljDMXw/3jx4f4QE+5DzCG8FhNVDpnY03iFY
-	hqRuXqsg//HW1iWxISksAwHgBAnXn0Lka3grMh4tnv8QGVJIK4V1fWta9Czt7Yu+N1Bz5T
-	Ma9CBc2PCBnahpuUUUgKQe8tEFgwMJQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yhrTrxCBc00NwW0qUXfxz5rqpATbkL+cccg5ndk3DOA=;
+	b=4hqZjrfrTAhLdDOi9wLMgSgcxR67s6g06uiCMjwza3FMO/YU1BVCF84UUbNEgN3vE82DdN
+	tL9K43hBAGfZyoF08y19JQRghDeV4sHZ5SdvBQttAJRryNu2D51RoRHbnB+8M/EuGwBAU3
+	A6IrqQ6H/u9BCABQm7b+u/iX0LruuMA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787644359;
-	b=eKd/4E0eKmd/aPawl93esyaDyz8AXcPaFyb2CKMG20nA7uU5avDa1zN03rU/+2hN5POP63
-	H2CyyPmC4NQSmenLasIy5BjeqATnz+Kd+M6EBb+WzZQH86bpLfQus1b6T0j/P+Otjv7gPp
-	rJbsvs2ndGRQL47UPpZgjiP/Fu2vVPE=
+	t=1787644537;
+	b=2SCxUs/x1ZKN82vK/KLXcJa5umWcLMoreLNkspzGkL9Tdq9DoWgbM6tE/e27H+mkfoHVW3
+	neuxripGaFHFizYhIyYvWrurIoF0prRbSxw33AfLQWaquJpBTo9oQ6QYwJouke/ccl7z2+
+	069+V89LFEWh+OClgEEOQqhRvOHGxfY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=memm6yJk;
-	spf=none (imf12.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=CVaLUtmQZ+lo3k9HI0lk+lS5cr/55GIIaizc2rZZWKY=; b=memm6yJkJ4ijgsuHxHuws1dYrr
-	+Beq6HH2viHZjubrWi+Tff+e1aq9+Z+4rmfokFIYkKv6i88fkaOPhsWgBpNKHrPXJApgkqJSyYrp1
-	yu00hhqvIitnnPtHUQGeHgEDgu6Sk2IBdrBzfKKCjzQUDdxWOlpuN9ECd73zQaJ8rOi0rNjY2UEQF
-	MhyVgzjD7/jwgDmGUCwlgP7lPpla5buCo6dQQIFgkISXUcKo4XjMIlduqC+yMiB+3g7hiQqvbEmC6
-	Kgtv0m/GIHGB2xsHVWz+3jGKO4XH/4rNRfvHSK4755aL36Aeiu5INcKBOAWSYiyPWdjdllBLzFtOw
-	yEF1Bhcw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wylxQ-00000000K5L-36MN;
-	Tue, 25 Aug 2026 07:52:32 +0000
-Date: Tue, 25 Aug 2026 00:52:32 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 0/8] batch lookups in follow_page_mask()
-Message-ID: <ao1JwEAeNcP9OyKR@infradead.org>
-References: <20260811025157.1632867-1-riel@surriel.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HhUM9DpS;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 57779419C1;
+	Tue, 25 Aug 2026 07:55:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914011F000E9;
+	Tue, 25 Aug 2026 07:55:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787644536;
+	bh=yhrTrxCBc00NwW0qUXfxz5rqpATbkL+cccg5ndk3DOA=;
+	h=From:Date:Subject:To:Cc;
+	b=HhUM9DpSj6ZkEzU5cwmyQ5RXsssO8cVqBAGv/VeXMmcTHyAmHUQ24pCgP047DjJj4
+	 gqrhNq8/Ae0JRp1nr3gBVa4XYJ61+ecUvkD0X6UgoBN545Jrefi6UUO1aaS0ks9nme
+	 yubv4nfOBEajsfM0NOTO+PTAYZxSo2Pf3AghAxB7M1ZWzdvQtBZoxSNDHeYFrof+YK
+	 UM26+ThGmkiZoLtGpRs9C8PX/GlWMYokZKCMpGoxqGOJbXeDl+xOQCQ2XXZGL7AhIl
+	 GU2u8mi9/Uownq0zkEkesRzPWs6rL4Cw6L0m6Jsjc6LXze5TAQRe7feGLjrrm/IGB7
+	 Olw+zNie+1D1A==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Tue, 25 Aug 2026 08:55:26 +0100
+Subject: [PATCH] mm/mremap: reset unfaulted VMA page offset for
+ MREMAP_DONTUNMAP
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811025157.1632867-1-riel@surriel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MywqAIBAAfyX23EJZ2eNXooPUantIRSuC6N+zb
+ jMwzA2RAlOEIbsh0MmRnU1S5hnMq7KGkJfkIAohi07UqPnCLdCmPC7O7of9yBunNSrZtWVVU98
+ 3BGngA6X6n4/T87xdfPTObAAAAA==
+X-Change-ID: 20260824-fix-mremap-dontunmap-pgoff-a687134e995e
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Li Xinhai <lixinhai.lxh@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ syzbot+f12658786a4153df5113@syzkaller.appspotmail.com, 
+ stable@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2999; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=XAjv6WtrWWzCB6YeREY2fuaNyp9p5PNb3fFaAqJ2NVM=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJ6vYo2Ht5/Yt8eMwWhH+nyQiprNOdO7+4+YKIsNa96W
+ sCs2ae/dZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAidk8ZGbo3rwxj9fv0f/UE
+ kdbLE1ecNl36+2B/2MvF9T8LtdZp585nZLh+mvPfTjfvv0JR/x7psqi2edybGCHLduiAtEJxvcN
+ 2PQ4A
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Stat-Signature: b6q3h7gia77uzefsjaf937r3p8dxb6of
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7BF1E40003
-X-HE-Tag: 1787644358-371864
-X-HE-Meta: U2FsdGVkX1+I90vOQ6UANCI6idoyaDsd/nAPCL1KBhZkcmE1+dAXBYjWeMSTuCyhvoJxH5q/euLuh2UQ6xVG1j7hxr5SHQ2NkTolFWfPv4DoKldxFJSbWYCHsKiw331VsDt1qp6Kx3JyuYmPznd7jerroHorC2Q+o8qReiJwIsiRI+ar2fOpQPheqB1ymzF4YdwziUsPbQXPnKB79HZd97etz/ezmxYQgJdqw2QL8nHaA4Sx/Vug/a4zgGJh7AlmPtOzYEhcD9JcBylzMj346Ean9hc59rYG9Lb3mO8Ce43nDCctsUeAmyb3glVDS2Ivzp7GUYzaggR69k+DymaYAz4lYiEVdCzAFbjcs0+nnpOyzIyuPLdXtj44C3FLa8oL61VXKz7qCABc9SUIhiZpzqHCsF1Pq5D6OBcSHRH/7sKo24Jhug/gxQwRx2brE27/b2EAP1qPn613SUDnq5ZkABaXKp8xFjTvYChC78OjhGPeDEurG3Dy7IoTb03MS+o9vEwJOsqF4sOe/PvRQoqfC4ePdPxlJwMaqrGLfBYA/HUHbuYQVxuAQd42TMplNWcbApoxtXWHBjcJMYGE6T8Ht5g3VD+51zz2qnaBWR5ZcNdecbZopSVbM8U6Lc8l1fRksyyYQDWvcjyf0/eiLL5h5zgdXcHUhc0v3hlcz8ZBhkQWNqrG9V0RxfNe5Zm9ADrO5WKySQ2pLAAutF3ZmJG5SJKj4oGqDzOBq3blHaa2ROIqyWrtuto64u7eVHKu0Jr+FtWV1RtNFyaNW50hOkHjaWy+r1tL0+FS3gi/HYk4OOZK5tcotAsdJWdWMTBj+9ZCs0NlO09jnD+YFrVKPV8f6Rbgq7Hj8Sg8haszZQe+ndeT5nM9G2F07jGSZxzxeKUaj7SjXOn/64ju9k6KkdzMh18KTRzWt28EBMy1dOgfECz9LGCetRrry0M88neg+YHkcFwbtnzvqPv0YqLxHht
- 4axyKM9n
- TOSxGjxZRrodkluq1Btq82tgWDeKANkU24Uxq8+6kBfSfgGrw5taYI8zShNO/oAWq30dLmnlhmlwIiqdmlqoETdxRP72NoSV5MR00fIjJe6bBBxsKhAItMVF9Hnmv9EPaGXFpf6g8cCj9LLbIgTtIHkTYfsmvooyjp8Iu+gQA+T1RqiPcE+cR+P2i4lVodbF1rDsSLOogiXdv2KZsDTnb+NnxdhdJg9cv8LbxnsFB4h1vAX/ccC7yO2U+vpUmhcW0ZO7rk2hXT0OOJiszouWNRZs9FiaTxv6e/1oOD7jF+35F2VShfhhA3B3ypidQq/UhbiAOtJ9+FXcGIp/ltDHg4h4sQYtPlzJ4KzU4BxpoW1K1K03rKxpMTfPCkMrEXFaiu9JClIIZYXSDqdu9Z97hJu/s0hxKijD1REsrNRWdweXaQS/vJwouDn28emATPberDAkd2j971idCVouKPTOaZkAz0x/PJpkcM5xkfl17JcKRqBSYXzpiOE+oaJtEZ4qHcdDJniO0LYE4vNOz/H7rpKehdryjMRPQtpKOCTtnfmHMfDLhmEy5s8nJ9IZ+x7ZJpWrEvwAoGz6LJ1g=
+X-Stat-Signature: 377op9r1e9tjn5etyxm8jk7ofmhdmg1y
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 709BB140006
+X-HE-Tag: 1787644537-897425
+X-HE-Meta: U2FsdGVkX18SRP36phxR7KyepSnK+Hoq3rYFCcR5KWmafBReW1FfFl85wZdRbOvJaeT+BPqpYbxYQ1TpkEmIqF53ws+yk/A9lb8FQuYMksUZQa2hI2hN54Ciffm/HOgTVOty2bMRU4PNOSQf5dxYn9wcbTYhL9MXzgy+pZmSOMDO657p2YA/Gp8FIpdMCX1R+un9+iTX+j3b6hprihy9+ps6mtMxNAaA5sLK/iXW70HPVN+gkVW01sXDn01RhvE6a24YepmR6U2coAuggoUubcFT3JCzupSMdOIEk/dEKgA+JSGZV8EjV7tJGg3/c9cly6SpTogZKBI9ntHkae1AygijK/kDX4x5rK7jdiIww2bJPESWiYOrqMF27qbuI+XlCXpB4onhLUYH0n0FxWLGVIhdmBpYNE2FNSXcBELOgaUOREjZRm5W0d+wC9RXTQO0lJ6LKIt7/NvhF7VuzbLIBXIQ+v7h38cibJbyPJRV3HKIqvgbHqTVfStkCRjKhRSPaauoMyKqPkS2hy6jWVS5+ZGoH8ycEi67Q/fGAbTliQZzE1ydM9og8k42Y3ouHwCqK3Td/ZJDcIesxTAER4jfAXYbWj3WMhUQKL7/pxgVv3JZrrF9HXY73UTE19RGaZ2BuMFKhdLX0gAdMuEHeTO1M/XhjkHiUTWb6rR+pRhrIwLuyXPhQbtetziP6IRaPHU8o1VZkBkSge8X3OCsxviZN9oOAWu4ugfKK3KTJQcV0kA/CtdB0NPfMJIY9hrQlS9mpvvfnktqC0NGrB+pR8nRU6EFtGy6H2W42ZVVtFnayLzWM0PV+fQDV6vXNNPi9bypfvLqOqKTxfRxVFYIEIUTs82cEqYX8efBLuALvh2cDsf2x8UcDl8llxli0SWRlR2pr7LKi7AMY4f8jCS+fcNgidX7VzGtMybMr17iQjxITKnUC3E5VZkte5UAPfya5X3rUCCfrPe+SSutm4X0iw8
+ V+rpRn0l
+ pA2PszTJu94t8njybpLpA9PAkbVmL5e7Gpb9ajQ2pzELKuU4CsOBycd2RUvBgXZ0haNYvVdgUxidYTJfXE1rCaje3i/UlErs1dfchA0CMe3BZL0wcWQ8RWDvV9PEVsjpOxhg5Vd5PBQ54EQicN27ei4M6ThrgdyGoWIP0SirasNuaaZU8xaLi8QsfbZOJ0dynlW6226Dui8/OEEuPr2OTdkEt68LccAnKdTh0wuqgMYVIh6n+2VRwcV5qZ7JrF/i4oVBhOEDrf0ZHyxBqfnL3xeIXjJIJpmvFiCzb05y2o01gLq7SGcBiYpVnTlxcHYIDXQ8sLNQXYSKmEZ8R3iIU3775Ndcc6kV/nBYPPdZMq0+IiXpFMrVNlBRAM3gCAPuCZaPq22vxCzyLxt7UVMwFa5Nl/vyxESM+mRQD6Ps7cqODn908XIESoHUojYXZ8T3dAaJI1eooRmf4on2StIluCJijhg3wtmrDqcSfrtlQ/8o8R9pm9ui3QCOHcg/IBJ6XI4CF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,17 +106,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 10, 2026 at 10:51:49PM -0400, Rik van Riel wrote:
-> follow_page_mask() walks the page tables one page at a time, even when the
-> caller asked for a whole run of contiguous pages. Every page of a large folio
-> re-enters the pmd/pud/pte walk and re-takes the page table lock.
-> 
-> This series changes follow_page_mask() to return a page count and a fill an
-> array of pages, instead of a single struct page, so a walker can hand back
-> more than one page per call.
+Uniquely an mremap() invocation using the MREMAP_DONTUNMAP flag can reset
+a faulted VMA into an unfaulted one.
 
-And what many including the most performance critical callers want
-instead is really a single bio_vec.  Maybe we can go the extra step for
-that, as it would reduce the number of calls into gup significantly.
+It does so after the page tables have been moved to the copied VMA with
+MREMAP_DONTUNMAP leaving the old VMA in place which is naturally unfaulted
+as the page tables it had are no longer present.
+
+However, in doing so, it violates the invariant that the anonymous page
+offset of an unfaulted VMA is vma->vm_start >> PAGE_SHIFT.
+
+This is because a VMA may have been faulted in, mremap()'d (causing a delta
+between its page offset and vma->vm_start >> PAGE_SHIFT), and then
+mremap()'d again with MREMAP_DONTUNMAP resulting in the unfaulting.
+
+This condition is a violation of a fundamental assumption in mm, but now
+also triggers an assert in assert_sane_pgoff() which explicitly checks for
+this condition.
+
+Correct it by resetting the VMA's page offset at the point of completing
+the MREMAP_DONTUNMAP operation.
+
+Reported-by: syzbot+f12658786a4153df5113@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a87853b.ae6ddae5.3da009.0023.GAE@google.com/
+Fixes: 1583aa278f5f ("mm: mremap: unlink anon_vmas when mremap with MREMAP_DONTUNMAP success")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ mm/mremap.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
+
+diff --git a/mm/mremap.c b/mm/mremap.c
+index e8df5cdb0ac9..2b4b523a86b8 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1331,18 +1331,30 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ {
+ 	unsigned long start = vrm->addr;
+ 	unsigned long end = vrm->addr + vrm->old_len;
+-	unsigned long old_start = vrm->vma->vm_start;
+-	unsigned long old_end = vrm->vma->vm_end;
++	struct vm_area_struct *vma = vrm->vma;
++	unsigned long old_start = vma->vm_start;
++	unsigned long old_end = vma->vm_end;
+ 
+ 	/* We always clear VMA_LOCKED[ONFAULT]_BIT on the old VMA. */
+-	vma_clear_flags_mask(vrm->vma, VMA_LOCKED_MASK);
++	vma_clear_flags_mask(vma, VMA_LOCKED_MASK);
+ 
+ 	/*
+ 	 * anon_vma links of the old vma is no longer needed after its page
+ 	 * table has been moved.
+ 	 */
+-	if (new_vma != vrm->vma && start == old_start && end == old_end)
+-		unlink_anon_vmas(vrm->vma);
++	if (new_vma != vma && start == old_start && end == old_end) {
++		const pgoff_t pgoff_unfaulted = vma->vm_start >> PAGE_SHIFT;
++
++		unlink_anon_vmas(vma);
++		/*
++		 * The VMA is now unfaulted and it is an invariant that
++		 * unfaulted anonymous VMAs have page offset equal to
++		 * vma->vm_start >> PAGE_SHIFT.
++		 */
++		vma_set_anon_pgoff(vma, pgoff_unfaulted);
++		if (vma_is_anonymous(vma) && !vma->vm_file)
++			vma_set_pgoff(vma, pgoff_unfaulted);
++	}
+ 
+ 	/* Because we won't unmap we don't need to touch locked_vm. */
+ }
+
+---
+base-commit: efecab401cb15fd3bb9bc05990609acb6b267ff2
+change-id: 20260824-fix-mremap-dontunmap-pgoff-a687134e995e
+
+Best regards,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 
