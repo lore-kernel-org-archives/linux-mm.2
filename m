@@ -4,93 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3894EC61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02DA9C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:19:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3676B6B00AC; Tue, 25 Aug 2026 09:18:53 -0400 (EDT)
+	id 0A9166B00B3; Tue, 25 Aug 2026 09:19:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F13E6B00AD; Tue, 25 Aug 2026 09:18:53 -0400 (EDT)
+	id 059556B00B4; Tue, 25 Aug 2026 09:19:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B9B26B00AE; Tue, 25 Aug 2026 09:18:53 -0400 (EDT)
+	id E64326B00B5; Tue, 25 Aug 2026 09:19:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EA5E66B00AC
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:18:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5E353A03A0
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:18:52 +0000 (UTC)
-X-FDA: 85139846904.03.14B026C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 96AF32000E
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:18:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tosz2tLY;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787663930;
-	b=OLE0YxonmJdycR/payBFmiHqa3FnrBu3c0dea016B7zNCa3DqHqiu0aa8kMIjeQPtT+XmG
-	aO4ZK92gIg2bx/4RklX1G56QKX08xp7kCB6JFzlfutFJSXaP62qMw8gC4xQhbDjqNW1nrT
-	rujjLMYM4FZ4qI0Na+WSiIaZAV+y+74=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tosz2tLY;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC1706B00B3
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:19:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 42444803FB
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:19:13 +0000 (UTC)
+X-FDA: 85139847786.11.E892C5F
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BA9E64000A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:19:10 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf01.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787663930;
+	s=arc-20220608; t=1787663951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OsKqana+TRC3+50ZBf9a3d0NzXhzGqX/8AB52gbPxJI=;
-	b=lgo4A2wN4wYSP3r88HfTiZbIX+qkx6+JGP9IIF3yz7E314Pt+UNlqo6Mq0TdKnuCX4tC8D
-	SuTQd2bUaVqpTn23dbm1LVJcDM1uubqaguqyvDpNz0tWU/1MyaPLQAYJcgCMi28izErnkd
-	3gRBCxk80lQL9fM43jAAQSsybQK6aCk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 903D81A9A;
-	Tue, 25 Aug 2026 06:18:44 -0700 (PDT)
-Received: from [10.164.19.33] (unknown [10.164.19.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 95FA03F66F;
-	Tue, 25 Aug 2026 06:18:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787663928; bh=oqx4vw6gp8Mj0VrjxvBO3V7o0meDa+xwNBbns4qZeZM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tosz2tLY/eQrRQrkLmdgQFx72H66rn94BA/7jp2lmSTuv5n21hCcBicIY1XlxZRZr
-	 nWmSFIQeYFGukbCsW+LW6qCipcPlNYPNqtQ+mk7baZJ0SPwQjs0KZ7y7n0rESswu5x
-	 R9jFpFM33OYXwBO/AFl9VK63sZA4HwkmswLAO7fo=
-Message-ID: <482ad8b2-680d-4682-80e4-baf4023bcef7@arm.com>
-Date: Tue, 25 Aug 2026 18:48:40 +0530
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kH5MVggWeSq1SefTcg/6K/tb1NMrR4tq2AreO77Uhwg=;
+	b=cTb2NjU0Znfx+7a7ljOCGu+NijCy9jVRJEQj85wyXNqEpJZEKXG3L5pMbyvfL4hpKyCxxt
+	5n8n+Ladcrp/L1Nsn6ico5lhjElGT+2qLvlJJaBnZd4n90zT4mDw4PQ538a73XByjsFLSM
+	6MKjY/UwhoxU8u4slReCRXN7cRmzu4Q=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf01.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787663951;
+	b=oDsakbLGZoccQOIB16Pqf+VlJCHNrdU/Ft6mTJOgjkF0xTIY48pXbndLV1aWR2fe5h1mXo
+	efJ6j2oJmK40etyZ3Z/U2bFJ90xgSKVFYiza5C4pUhMVgREOQ1fchK9kc3e6fRJcJa6drF
+	yV8kA65bhJ7U5v/KNN697mAbyXvsKVU=
+X-AuditID: a67dfc5b-c2dff70000001609-0c-6a8d964b3a74
+Date: Tue, 25 Aug 2026 22:19:06 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
+	kernel_team@skhynix.com, torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
+	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
+	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
+	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+Message-ID: <20260825131906.GC23086@system.software.com>
+References: <20260706061928.66713-1-byungchul@sk.com>
+ <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+ <20260821042143.GA40890@system.software.com>
+ <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
+ <20260825121322.GA23086@system.software.com>
+ <e0c589d0-d17b-48c2-8e1b-d41b69ecaadc@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: khugepaged: remove str_dup() usage
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260825-remove_str_dup-v1-1-0ba2121a820c@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260825-remove_str_dup-v1-1-0ba2121a820c@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e0c589d0-d17b-48c2-8e1b-d41b69ecaadc@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0yTZxTe+37XdnZ7rSy+4rK4LssWkjkwZDvJnLjEZF8yF5fs1y6JNvJN
+	yrhZLooLDnRoh5fWZkAoOiuOezOwXASxMhC5aIh4qelGC6K1rDB0soKzlmLLYuafk+c85znP
+	c34ckVGf5GNFXUaOrM/Qpml4JaucWXbqnU/KjqTGdwTjwT3u5WAuYGDheJONh4XKswIY7BUc
+	jPzaiGB8zoAg8HhUgH+awzyU+4tYsPgqBfBf+hhmxrs4qPGGMUyX/c3Dk+GrDJSXjiA4NeFh
+	oLV/DMFkWxDBDe9LMFR6iIeZa8cxWPc5OOi8fU6Aa9MhDI32T+GKqQpHvHkoO7MSKsv340j5
+	E8OdOosAoYkEWLRmgsdYysLQ2C0OAjcnMNgO+xiw3420FT+7eTjvGGLBsBBA0N9xB8OYbZGD
+	pkkXhiv9g5E1Sz0Lo8NGAVymewim52sYqJl7IEBRz2kWfM4DGMy+WQHauosRuI9OsXDglzMY
+	bv7ehSDo6eAgWHsJweyJMAfND2t5uG8KcBs/kh4VH2WlhpZ2LBVfX+ClQPV+Rio22ZB08a8H
+	jPRDyy7JMW9lpctVVOq0eATJas+VWuripNPn/Vj6Y/pDyd7wIy/ZZ83CZ69/qVyfLKfp8mT9
+	uxu2KVM8xmouy8Htbr9tFArRMbYEKURKEqm52cU/w50OG1OCRJElb1LfvaQozZO3qMv1mIni
+	GBJPJwf34RKkFBnS+Br9aXxAiA5WkPdpq/sQH91VEaBXL78c1ahJE6ZmZ+uSRkWW06EK71Iu
+	Q+KoK+zHUT1DVtPasBilFWQDtV3wLmW9Qt6gv7UPLGVR4lPQqYPV+L87V9GeOhdrQsTynK3l
+	OVvL/7ZWxDQgtS4jL12rS0tcm5Kfodu9dntmuh1F3ramIPRVB5od+bwXERFplqlGjh1JVXPa
+	vOz89F5ERUYTo/quoCRVrUrW5u+R9Zlb9blpcnYvWi2ympWqdfO7ktVkhzZH/laWs2T9sykW
+	FbGFKHUzfZHLEU50b+G/tllL/91c+MIHX7y3M1QVHBAvLlY2bnQix9bQ+m/2rupLqTh5OFbd
+	tqdohWHQkBhucWdtSlD0JJj7zuVOuv13lzvr1zgK7m+bSvJefzKs6Vd2dQvDTsVZ/UBD/Tpv
+	3/fbR2MOTrz96GHWTNLiBSO6IexYs/fVLRo2O0WbEMfos7VPAWCHzluyAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxTGfd/39vbS2O3aod6IWUxl0ZD4lWg8m4sf2RbvNDOaLEFnnHbj
+	RgqlaqsgW4xSaAZ1alttCa0ogq1M6mDlw3WujGAEUYitH6NRsJhciwQQo1QjUFhLYuY/J+c8
+	5/nlOX8chihiknmMWntQ0GlVGiUto2Rb1hQu2Ww/kbW82s5AsfEo9IRFCfxb0EJBdLSYgrO1
+	HhpizqtSKPaWSeBmt4GCwO81CMLRYgRvxp0EjL4pCmLWNimMvn0kBVsBgil/GwJ70EogFPiH
+	gKehAMOrukkaBq+/RGB7ItJQOlBAwYj7VwSOiFMKAzc2wnD4mgSmevsxdL8eQuAWJzGILb8g
+	iNmz4XxlfRy3v6BhvOsOgVJbAMGFJ70EXg70IWhoe4ygv3EMgb/aQMNTcyOBe+IHcD86QkOH
+	7TgNw8GzGJ7X0VBh8Esg2DmIoNxpRRB56MdQWFVLg73cS4Gv7y8pBAcnMPTYrRhqvN9A2B2h
+	4La5Esdvjrv+mAvO0kIcL88w2K5cw+vdiH9jPEnxl+ubMG+8G6N5zzkP4sfHrIgfdRUS3miO
+	j9eHRghfVJ/Hu24P0fxY9AHN+19XUPytSo6/WDKGeUvXEt7n6JVu3fCd7PMMQaPOFXTL1u6R
+	Zfaeckn2+yWHm/pOSY8hC2VCSQzHruR8fg8xIYah2E+4yNN1CZlmF3Gh0FuS6JPZ5Vz/TQM2
+	IRlD2JqPuTPhdmli8RG7mmvoOU4nWDkL3J1bHyY8CrYWc9YHDdMeOTuL6ygTp7MIm8aFJgdw
+	wk/YFO7SJJOQk9i1nKdZnM6azS7kWprasRnJHe/Rjvdox/90BSKXUbJam5ujUmtWLdVnZ+Zr
+	1YeX/rgvx4viT+k+MmH5E43e29iKWAYpZ8oDlhNZCokqV5+f04o4hiiT5T8fMWUp5Bmq/J8E
+	3b7dukMaQd+KUhhKOVe+KV3Yo2D3qg4K2YKwX9C922Imad4xZG4v2TX/i5IFXak7872z1Zlf
+	Pg6EijTN5KTPtmOoSL/z+23LtKldaYcaXdVKU2k0b05VimgNlnV7A2dM4WrX1XLVloX2Hzqp
+	zzIu8es76hbvdVZ9Onzh24ruPEPqb191bp+RHli3Rvza0pceOdCcc9r899SMzQvuh3J3Tww+
+	G+/A55WUPlO1Io3o9Kr/AKCz9huQAwAA
+X-CFilter-Loop: Reflected
+X-Stat-Signature: 93f6xf997wbbdnjhtk6a1ncee7h6q8ff
+X-Rspamd-Queue-Id: BA9E64000A
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 96AF32000E
-X-Stat-Signature: 4y9sigc753on4d4mbh9wb1qbcorxbdwp
-X-HE-Tag: 1787663929-901270
-X-HE-Meta: U2FsdGVkX19VLJ9UU2WOSfHi6LGCaf+1THil5IWmSVqM/enrpiqV5eDOICNCJ4h4ow3Xq5LQo7BbFXMvOY/L0WpPWO/270AOp7UG/OlXH3gJUUevTPkSI5ltc9AH8SViJnwbU8n09dXmwR/DoF0uvAeNG/HuxAr4GQzb21HEpgoInk+0qLPvJXhu2xjzdmMeZUrEBrXl05A6yah+8abAr4qma9CBADywLzz4MEo1cCS+YPuIwmdjgMYC1IcI50ZCxGKbpHgg/Jt2VoOJAsCmVW/ChxTCfNy6LW6qbcJ+gvxg7e31paIIXuH5lWcCiQSEJgU+YwQpSOYpz4UsFU5sV7ACK3bczlb+4aysrUOp0VgN4e5R1GLn0UUdI8e7AnsxifDW/DzJyMgcSmPs74rapEXmanEa7ZR4/X2WtbSuFKDH2/pdkc089SuGAhR0x4F51ugeR6JdeftB7vmUREV5c6WBpZO0v+Z+KpiedELtPluPGL3hLEhocMGVh9V8elNSO/i+fjV5eXA5DxBveTWY3UpgQ/VreLDXByACm5swKZ5i/7fU1pBIJMP5SDPwrI+uxkhD4rUlMBgqIkcV/3K+SyF5ducSc3+8PDe9FW3eJjWK2NLhivY8DRsgddHvixGdh/i4Km56cs0sxiGDLS2jGR9yh/JBVn4TmuTim/TRUUFirvpXk6h99w267nWPkYVLl0DZ0UrBQ7Jthta7PSp+nzgpqqvq/DrvLThL8/lWz+kHqOoxa0CuU0IkT61FsJar+3Pu7DCvB0rNXgCvkJSeV4HA07usCm5mP/IsdqTXz/RowyLgh8fe0f+BY264884XD0jq3hS5pR3td7A5oP4DxmDgDGyd7H0R4Eao0tJKw0izhHweiMmJiquPxbm5FMAGS1hoiCeUwEu1gsMAIERZMS2rRDbekIX6rZh4+9+vWJCzawXrt7iUIEvHAG6TKr7R4yi4cafOqvSd3PjTh+i
- BcAb7EEH
- CGk7Odu8mkbTYol6RYpU50KEhHSfcBecdSn/cETEL7tDY6A2graCQ5PW3jK3c5QoNzt0QjIFMtNIOCukxhU/qtcCRXtigd5p9AZFCGTT95vZ6eeUWPQfTnJovRHYskDs7jrwbUtsoUUUQU+Upr5auCSGrkFVK1DndrhmAibg6GxGSqX6uo0i8AV4ig1ulsxvidC26hgxIxExIvj3h1/ty+JXtGVoGvKWM2ao1ptdQ2EJLB72VOVlnl7d+i7oYQQW2Fo1ylqlD6OlZO5qLYQ2W8HTK4dyZUpSHvjwJD4n1Eq+AReLwnggMPchEixWd8J0FLiw2QtaGFLKhlttj3s20a+GHqKvpJ2NT96310k3p+QMsP5t7+zOUUYLsPtUwXU5+n/dVxzeiVkOHOWU=
+X-HE-Tag: 1787663950-572973
+X-HE-Meta: U2FsdGVkX1+OagzBBcdhfwQmLqxaw+hqM4m8k6OGTgjvDAXQPEX7PZ2ftWFznucpBxVO0mKp9XibY7XNatsPEXdWmGmv3+kAQOODgIrrD/a2mloOOUBus+T/rZKQM81tsinKwpjjw2shHK+8Rvpvq51yzCh8vjPBJUkENW2MjbHtLZWq1itiDgbEYDEl5ueTizVWVrSIui+43IJ3dhBB8CSPXON4XeFGjj+XWM3q3iY7dEr/88EG3/ilgDVqv310jivwxbhbwK/nt3SSk86FtrUHub3wSM7xY/c+y85yRGJ6lDy4SjX1VmHf9dVt7H0Wp9nP/2t4Xbgo0rpDooVZb4jcWrjwfkey5D9Z3VH2FMFOGCrc7juNejXNBQpquTWxbDbA0UC7WoBXMRIpSoBXfgiuCzvcZdY2fPcbqzOtmqqwXjWNtmxPQTmOVQlDmxgAxvpC+kfvN81+0bXFKVf/18h5d19d1FeO+LDjZuOpQYTDozx/HmWiH0F6MpOUDRemDdyCDgSgjpJF13ue2k1bS+TMrEvvsQehpFsF0Qhjye2VnqNZ8eM292cGztMdLh4cN71ZugCYqUCskPzFy0Wlf3/kpC/BjDlawIX6J8O0YrhUYm8lynVCsW/96ssMwtqAYAJrEymJ75tc694csxLtTlRMrGcbzn1qmVA0sJSikE7unCiLCbDA3TtaWYjMxO6sQxFmsIRgUMe1hqXSp+rkCDSeU4vepvrXxB/f22Lk3MH4dwruymQGb9Vnew0n9UhYXvOtQP7ufKfmt+CPvczzoK5deRYtkm2fFiszTrO/HlR5TM70p7y6ZLfQ6+00vSgGTEIBpQ8fueuVfn1AP8o3EC93hqIFOLDl+6ylseaadj+2BY6aADRDKxCFCEfqhRYzfa1OXKKOvVMMOzF2tJ/3q9N6Yoly5geqxpMtWNL2iqwDDPt1ZtcTTE6URwaO6YlUHfwxqrzZmC7JwWh8G0P
+ kgRfy4Nh
+ YzpLIK5UFv+o9oWrNTAGIYow5aaTUNsFPiz4ETEVXBpXTUT+NdUyqCCmWoO/6yCOgeYJzmq+OWJ5cueA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,53 +180,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Aug 25, 2026 at 03:10:28PM +0200, David Hildenbrand (Arm) wrote:
+> >> As the saying goes, it's hard to teach old dogs new tricks, but in the end
+> >> taking care of two dogs is likely harder than only a single dog? :)
+> >
+> > Or it's better to train a unmatured hunting dog than to teach a pet dog,
+> > how to hunt, for better hunting, even though the pet dog might
+> > eventually become able to.
+> 
+> I'm not sure whether "pet dog" is the right analogy to lockdep in that scenario,
+> though ;)
 
+Ah.  Okay.  I will be careful in using terms.
 
-On 25/08/26 4:50 pm, David Hildenbrand (Arm) wrote:
-> We don't check str_dup() return value and never free it. While both
-> things are irrelevant in practice, let's just clean it up by working on
-> argv[0] directly and avoiding the str_dup().
-> 
-> Nobody after us needs these parts of the argv[0] string anyway.
-> 
-> This patch is inspired by previous work from Anshuman Tewari [1].
-> 
-> Link: https://lore.kernel.org/r/20260821114416.12255-1-anshumantewari123@gmail.com [1]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+I wanted to tell DEPT has its strength, lockdep has its own, and they
+are different.
 
-LGTM
+	Byungchul
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-
->  tools/testing/selftests/mm/khugepaged.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 1d2d6bd72fd2a..83d27d069c413 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -1227,7 +1227,7 @@ static void parse_test_type(int argc, char **argv)
->  		return;
->  	}
->  
-> -	buf = strdup(argv[0]);
-> +	buf = argv[0];
->  	token = strsep(&buf, ":");
->  
->  	if (!strcmp(token, "all")) {
-> 
-> ---
-> 
-> base-commit: 169393fff5d1ec2690934067eeb95544ff5ebdd7
-> 
-> change-id: 20260825-remove_str_dup-bb089e93094f
 > 
 > --
-> 
 > Cheers,
 > 
 > David
-
 
