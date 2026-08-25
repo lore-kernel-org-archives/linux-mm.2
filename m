@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0539AC61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64107C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:49:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D1706B00DE; Tue, 25 Aug 2026 08:49:39 -0400 (EDT)
+	id 728436B00E0; Tue, 25 Aug 2026 08:49:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AEDE6B00E0; Tue, 25 Aug 2026 08:49:39 -0400 (EDT)
+	id 6FFFD6B00E1; Tue, 25 Aug 2026 08:49:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 098BF6B00E1; Tue, 25 Aug 2026 08:49:39 -0400 (EDT)
+	id 615F36B00E2; Tue, 25 Aug 2026 08:49:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE7A86B00DE
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:49:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B9B5B8033D
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:49:37 +0000 (UTC)
-X-FDA: 85139773194.20.F36ECE2
+	by kanga.kvack.org (Postfix) with ESMTP id 41EDB6B00E0
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:49:43 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF5C4A3367
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:49:42 +0000 (UTC)
+X-FDA: 85139773404.13.802EACD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 22BC0A0006
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:49:35 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HikYPoa7;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2BFA940003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:49:41 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZP+pEiR8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787662176;
+	s=arc-20220608; t=1787662181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O9842YOfkl7jVdgu9xM+nFnlV2QSjnl2wpfKIXF58SQ=;
-	b=5Vh6juKhhpBTkaqn1WfQIhwu7L4sNiKbiH3romOUFaJpferesrdI1ZC13nAKQc73HlTBwg
-	Eq5c73toP/CaLNLuZMLIcrcV80yLMXAuY9IZLg0n7Lpa5hSYtIyNMUyCZLV+wdq8kRlfgD
-	TBBFyXua89FWrfc2Mi1brIAqginlxS4=
+	bh=5S0tmCZF1FGYSoh1dt8V0x40wzyFaRUchPJ+JMtP8Sg=;
+	b=QCkvS+hFhWwAwu3OriteqIO1M6lGyasXaw3Xr1RK7w8r+cxVozpT24tu/uaZAS59hQpDsJ
+	NXePsH5JRgBNyfuQeOuKkeTlwpVwyZa0L6zvD11nekZURZNyZyLEY1CoZz6C3z6CGEj3b7
+	kvJK05eGfZ3J6x8bd++9jl7fyvmVgtU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HikYPoa7;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZP+pEiR8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787662176;
-	b=hD+7TQLM41XZ7zeD4IR894rGRXUrqWzaFizI/5DdIoSiI1EVCtP/WbiI0vYBOuHv+sVEzU
-	LK+NPAz0m9OnycHC0h3RT63fWtc5yZ+VC2YSJV+q1ZknIhfkm1r+fvCizNfRXn4xyNOapd
-	XJR4mU9kX2rGIzcgoKq0dCGdxPeAcKw=
+	t=1787662181;
+	b=ZtjMR48RkgrarC2PpkQ0NmAZwnGPx5imbayCqYlU0bfz5TGFMGn7WpoQ1d1GZ7Ll4eFxXq
+	G1awIjhzcV9gHmVyiGYhtTQpXvvB4TiX9ewd1+CL/cJe1aF5UsxWII20ONtFemcjfzC6EM
+	M0Esn48EKGiO8TtjFLXzapx66q6p3HI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1EE1D4036C;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C7F543BCA;
+	Tue, 25 Aug 2026 12:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04EA1F00A3D;
 	Tue, 25 Aug 2026 12:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309411F000E9;
-	Tue, 25 Aug 2026 12:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787662175;
-	bh=O9842YOfkl7jVdgu9xM+nFnlV2QSjnl2wpfKIXF58SQ=;
+	s=k20260515; t=1787662180;
+	bh=5S0tmCZF1FGYSoh1dt8V0x40wzyFaRUchPJ+JMtP8Sg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=HikYPoa7HAyv4D4viLvGDUQp0DqjWqnU/qBxADx0dT+UzZrgbp6vXmYYiDV/ckMTT
-	 LhrS1mMqFtbW8DDIWXsrb0goXkeqFzY2Pr7bcvr4BZl6o+pt9tW4D9whpK3ODHcEB/
-	 qqi7gKgguthkZdaePHabzv5eLRMml/KS7w9P/GN0udmW6+hJfHhBFUurspzh5cN5yI
-	 T9LhfoFMxqEHohpsy7fKnKgQuLX1yhghZE+4svDYwYeQ+w/WvaFP2/ldI9EFO1eTFF
-	 LvP7bwfh3/p1U3QWXKdpUUPQVAMlOc8+7nPM6StpHxlKYPh651eMNvLzkvpH3OUx+g
-	 Kur+47/aLKQZA==
+	b=ZP+pEiR8OlpKovfu85qnWPif9OXHg4xV9AUFozytZ4uR+UGOrXPRb0R9LeM5+dKcU
+	 Q43sf25wxZqp1ORokWwH5JedtYwTFpSQae5NAodPmo4aVh3VE573imqsrHepTx703z
+	 NIqqCNHzHVOaI801S/rUKf9oXxok08itqtgwdlx0xmwEYbvjD17xJELc4+Z/tj27zR
+	 xcszg+nZKq8uEzXncMsnpRwOyIHDU8pEEiJfakf09oGNRJ8yimfp7CpWuTUKE9VCyU
+	 HOh5BkwNqD6jrgGXWwbi9mnXgpkWwpWIb3jDBnR6/6N4c8M1AeeCzwy5otJ2MV+qV2
+	 oXZu1HUcQz5+Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Tamir Duberstein <tamird@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -78,23 +78,23 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, Daniel Gomez
  <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 07/11] rust: xarray: add entry API
-In-Reply-To: <178067251358.96312.14084909265600226392.b4-review@b4>
+Subject: Re: [PATCH v4 06/11] rust: xarray: add `find_next` and `find_next_mut`
+In-Reply-To: <178067251353.96312.9527123475656114033.b4-review@b4>
 References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
- <20260604-xarray-entry-send-v4-7-965f6028790e@kernel.org>
- <178067251358.96312.14084909265600226392.b4-review@b4>
-Date: Tue, 25 Aug 2026 14:49:13 +0200
-Message-ID: <87mrua74c6.fsf@kernel.org>
+ <20260604-xarray-entry-send-v4-6-965f6028790e@kernel.org>
+ <178067251353.96312.9527123475656114033.b4-review@b4>
+Date: Tue, 25 Aug 2026 14:43:38 +0200
+Message-ID: <87pkz674lh.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 22BC0A0006
-X-Stat-Signature: opjzxrz6fhko8ddzojbm5xq4poir4hk5
 X-Rspam-User: 
-X-HE-Tag: 1787662175-692577
-X-HE-Meta: U2FsdGVkX18mqoW5qs9PSWkSGo750NsPTiJO4xjzlnwUdPXbRssfzUTu8MUAxGxYc8nJGQU81bqbB8a9ezNPvgrI0OQjr89wzAemYjCNv+FQW4JQPe0wNo7f53cIKtAs9tNCHSl2WgY1XWNL2Nt6yDHOlLsZHERk2UFz2n7aJ5reSGzbfchM+oRW7Vz6/VQrZ3kIe/5YGyYqlB/c3jaD2xQKui1O6+w271holNlYlONERvHAl8L3xz0bV2kiHoFtTzCgyISDTE14w8dlRTkyKeot77dlKqxvAOzfh3aJc9C+S4vyAk8mwidfawC/yjmpBjwh3ia6/6I5TojNBGaUQ4UwCKgwEFp5riuwhPtFN5vFESjYKXXFpeV3q46ntRPmppxi5Ig4Nc9SyjKudMVX4acGsrk7BDZgyyl0Fwwe+GcS/+FO0TAJx8pe58nbtjGcxrcCupq9jL6D8aKWb+F7TyrivG9xKaSaaBgLH/JSOjA5vPEkOwpsmvLvO0sAcFQNuFnJGQepvguSDNfsMZkoXQzJaVKcxB4lNvas1BZ6HtktHMxOhjHCysEyhVhLSn9e+fLHbfmZGTIeEIl00nNrRmfBn6JksqMhPRqoXYAGJWbdRvRryHEFMl1QVp8UPQOOjUyP4o1p34H71w5iMl8N7SqKhGpM3nDMRFICWk7PPa5oFNHqneVZpoPerc4/1fihyH5wWm3nDBM7t7nXmCuHMVvU8+4xhAuhiD4Rvxz6cLDlkpfahPBck0PGBOuGTpRxkizQ3VCiMzftyXNQGBA2yaD3wQk6j6QwdfdVW+3iKKMT8C59lxnyOqZcP8fHJN3x4faI3HUYWrpXy18w3rscFUHzRQFEVQHkmzLYziNDNyfSeBivsOFtCMXCliHrCVkeHpyM48Gx85s+7l3z0snKyf8nzrNufWPqQPkQut60phbGRbjWPod5OZCouGSrfUM3DrbqH7aZk1hkkQlAr7w
- cutJ/Y7b
- EnX7ntvji2kOS2PLUZZ1MyamiJK2TmjoyBmgYf/rlpCXdjnsm0v6u9hcL3eXKih5+AO2mba6oESwa8lHFDWs+RXjy3VuCrf9cmutXhfTcaGtpTOzJX686ttUICJ0yv4w8rDjvnbLJh7b3CCXHLDeP2DkgSQkmNeQzZtI+6GG/L8Xgn6McRpeXlGjbXlSe57d9Ie4IWTEuTHUBXGUFQMURxNHBPXSO4NPhlS0KP1XdbFKK0P/ySls1Kv8oBNhxXyQ8300XX5bOjGbcKjILNOMsyqevkQde0e4t0XEGk+Dx+UoV7X40pSf/aNw/2JWuTfOqDKfKrEPZBgecULzQ3lQYnNm/wceN7bcsQVEU
+X-Rspamd-Queue-Id: 2BFA940003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6t8staj6eq767943g3ydx3ee1rqarxef
+X-HE-Tag: 1787662181-427928
+X-HE-Meta: U2FsdGVkX1+iTYY4KI1jTH1LBvYmQsl+KlXukxGrENK1MKatKCwOXfVMhzx8xYfXWwMf1nbqjjZ0k864vM8NakzyYEfcpyIaj92dDjPqMfJzuU5AhqJ9KNTdBoN7+ybku3RLORF+HBIeDQs5F046BXBKGmkxPrGwNFEkuplDh9tIVcIZxZ3xSp8eX0BGaFjnomwKOVF5cGgkEUigX1OvqU22/jLvxWtRGxA7M7ziDJPEOidkGLixM9CAAyRo/UzsmlgOssN+MFgolsdTCO/aRc3Jvcw2+ybH2dgGZfjtFOtqfInPDdo4nTrGKrpb3BWkweSnYUzFjlozs35Wkb27CG71a5bcS3jTFNgwMA8cHv/4A1LPN19tj6heTp3ifKFL8UZUShKZDMzXwmoJuEqaiYGjwW31Eh9PYyRFxOAD7dSnIBKHnq064RF0lToBS9Y6gOgjmc93/v7+dHvsPmMECZLGqkgHmP43bBA37pINz860wLnEm3Tkq31V2NEDovlcQoIrHp7VLoTIC1MuIHI0AR/9cdVxEC/ky7yUfdZohOpILvOGwm2QRYcqgPILY+W1BFG8xnrCVcgJ8PR+lkFt598ZIYKHF96AFgxYlX3NI7x4+8BbuTVJa7bXYaaKM2XeqVkvx9UohjXOa7yHeEph1U17Igp/G/87Fh3W23fJQ940NSv5caZDzsxM+g5hwRqj6e19n30Fx5cV+zj2Fzftuhn2eWBd9iMpGrtZ1BkM3INFFWPYxKSSbim/da1M/GK/jPOJ9bqtGibWVjs6vt+DXCbd44ilQCNL7iXhBJNhiVLKnDY911BQ/YQRhkmlQ8qlyuTPsIquAS7I1zpsAlB5F1R7z6RbiCo/gvvGGQ7N2w1n2102tS5EV6yvDcd2blldnq1WKT++D085IZNYbgfhReofhRv7Dt+k2ePNMrwdSGqvP5gtcAiQ49M5Ck3f6TAoPS7sNAiBjnU8H7vFQVd
+ SlcxBNCq
+ SaeNisY19e6NOfKQcIfeI6obW8D1/IA9gx5co8tUspzSPHW2UsURUpWaO13T895dnleiNVv6wtTN+shCsqlsFz4D6WgTPjBL2ViHjo5MBELdqFZZRwhKhDDFOCjPbwpo8+PdI5xmFwhLhcg4V63TzRrm3c0eSarbTCuW4rbbLqwC28YpCbmX0i+XcYXPDIkz4qvCD8qXZrSOXhg9LJQ0hENgvwCyk91QYkjtSn32Bl9CTB6yPFBc4TR5YKQ/wPCBPW70kxeCFFOL7xSa9D4MsefzuaqHiKNmFxEWX0SZDH9EhDNDXNaQappyAEYaVpVEHQlDDz5Vtu2Dy2O9QWqcFcaMjErcsNfwB6PnGA06jlsNhDtMP4tm5hdr0HxnG6+aLsNvdl8wcX4cfXcWIg0SAb5IJhCuYCTxSGj9g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,66 +104,26 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Tamir Duberstein <tamird@kernel.org> writes:
 
-> On Thu, 04 Jun 2026 21:58:13 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
->> Add an Entry API for XArray that provides ergonomic access to array
->> slots that may be vacant or occupied. The API follows the pattern of
->> Rust's standard library HashMap entry API, allowing efficient
->> conditional insertion and modification of entries.
+> On Thu, 04 Jun 2026 21:58:12 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>> Add methods to find the next element in an XArray starting from a
+>> given index. The methods return a tuple containing the index where the
+>> element was found and a reference to the element.
+>> 
+>> The implementation uses the XArray state API via `xas_find` to avoid taking
+>> the rcu lock as an exclusive lock is already held by `Guard`.
 >
-> There's a lot more API here than this lets on.
-> `find_next_entry{,_circular}`, `Entry::is_occupied`, `into_guard`,
-> `insert{,_entry}` (do we need both?), `index`, `OccupiedEntry::swap`,
-> `Deref{,Mut}`.
+> The previous patch re-hosts existing XArray methods on XArrayState, but
+> this patch and subsequent ones are choosing to grow the XArray API
+> rather than promote XArrayState to a proper abstraction that users
+> should prefer. Are you sure that's the right choice?
 
-I can amend the commit message to enumerate the added methods.
-
-> It's not clear that all this API is needed, and this message does not
-> attempt to justify it. It is also inconsistent with the split in patches
-> 3 and 4.
-
-What do you mean when you say that it is not clear that the API is
-needed? Are you referring to callers of this code? This is initially for
-the rust null block driver, as expressed in the cover letter.
-
-I'm not sure why you think this is inconsistent with patch 3 and 4?
-
-
->
->>
->>
->> diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
->> index 08979b304341..19fce6862c78 100644
->> --- a/rust/helpers/xarray.c
->> +++ b/rust/helpers/xarray.c
->> @@ -26,3 +26,20 @@ __rust_helper void rust_helper_xa_unlock(struct xarray *xa)
->>  {
->>  	return xa_unlock(xa);
->>  }
->> +
->> +void *rust_helper_xas_result(struct xa_state *xas, void *curr)
->> +{
->> +	if (xa_err(xas->xa_node))
->> +		curr = xas->xa_node;
->> +	return curr;
->> +}
->> +
->> +void *rust_helper_xa_zero_to_null(void *entry)
->> +{
->> +	return xa_is_zero(entry) ? NULL : entry;
->> +}
->
-> These functions already exist in C, but are `static inline` in xarray.c.
-> Can we move them to the header instead of duplicating them here please?
-> That is what I did in 79ada2ae ("xarray: extract helper from
-> __xa_{insert,cmpxchg}").
-
-This is a great idea. I will follow up with a cleanup once this stuff is
-in. Getting changes in the xarray C code has a rather high latency. I
-would rather not be blocked by that at the moment.
-
+We have the `Entry` API (introduced in patch 7) for users to interact
+with the XArray in a stateful manner. I think adding these public
+methods on `Guard` makes sense.
 
 Best regards,
 Andreas Hindborg
+
 
 
 
