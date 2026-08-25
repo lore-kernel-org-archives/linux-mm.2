@@ -4,113 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86035C5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:59:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1283EC61DB6
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 09:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EAAF6B0099; Tue, 25 Aug 2026 04:59:13 -0400 (EDT)
+	id 2A6AA6B008A; Tue, 25 Aug 2026 05:05:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0F36B009B; Tue, 25 Aug 2026 04:59:13 -0400 (EDT)
+	id 257F96B008C; Tue, 25 Aug 2026 05:05:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1892D6B009D; Tue, 25 Aug 2026 04:59:13 -0400 (EDT)
+	id 1469F6B0092; Tue, 25 Aug 2026 05:05:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F1E336B0099
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:59:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BB391203AC
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:59:12 +0000 (UTC)
-X-FDA: 85139192544.17.1BAB428
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DE8BB40006
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:59:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E29A06B008A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:05:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1FDAC0351
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:05:17 +0000 (UTC)
+X-FDA: 85139207874.02.9D48DAA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E068C4000A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:05:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="j4O/fy9I";
+	spf=pass (imf12.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787648716;
+	b=lrEvUBJ2Qm7J32mQNwIvpPc63b6CwLtvldTdO+VQ/6MOitS/htBhyLys1J9FRiu+ZZB8Li
+	ZaFPR1KVLABWHs50OD1sycNFoTqIFAGINEY0yjB+kvaQjFa8IQgWNSRcGy3jdkx69Mj4CY
+	gFYZ/4Z3aS/1OD1KxfDyXnV7b/HqWZ4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="j4O/fy9I";
+	spf=pass (imf12.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787648350;
+	s=arc-20220608; t=1787648716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bGauQNMhLp6g1k7M5O7gIqjRxqEHKwyV5dSFW1E4Fxw=;
-	b=yy6bDPCu8KJXUwLhKD6nAsXZKmfQrzjSbG4hhZkEzqtRJ6Gd8MLqaln2XKEnZyJX1+i21i
-	MM131H3HZzsaZCfv4Fqc/xt03LOKGxYUWJnrLRQvqnzKufxdT1tQe4madyraFWDIXEWOYj
-	FjPOraxOjvFBFEZ6or8ziITQu0vHZtQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787648350;
-	b=AQQfmLFDn1PgDYbByugwQqv/neiaPXPkhUGiTNiX/7fGeFulrbTOtFaoY02AkRMLMeRwsi
-	7iJB4U6LX+4USBzP9ENyHdS/Nm1X4OQ8N8f7DVOmo6sr0H7xgfsh8OHhuA8Hf43cg+zSFs
-	AR47kJ6PHViouWwR9YvuWcQ0gtmh9OY=
-X-UUID: 3638108aa06311f19a56ed5b684f684d-20260825
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:82749ddd-5abf-47df-87ac-e335f40255ec,IP:10,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:35
-X-CID-INFO: VERSION:1.3.19,REQID:82749ddd-5abf-47df-87ac-e335f40255ec,IP:10,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:35
-X-CID-META: VersionHash:7db8b62,CLOUDID:9f4af4901fe8095e1c04f2e2c1a67177,BulkI
-	D:260825165903ABRGIBZD,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|865|
-	898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:n
-	il,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC
-	:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3638108aa06311f19a56ed5b684f684d-20260825
-X-User: husong@kylinos.cn
-Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 727345008; Tue, 25 Aug 2026 16:58:59 +0800
-From: Song Hu <husong@kylinos.cn>
-To: akpm@linux-foundation.org,
-	usama.anjum@arm.com
-Cc: linux-mm@kvack.org,
-	shuah@kernel.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	sarthak.sharma@arm.com,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Song Hu <husong@kylinos.cn>
-Subject: [PATCH v4 3/3] selftests/mm: restore enable_soft_offline in hugetlb-soft-offline
-Date: Tue, 25 Aug 2026 16:57:56 +0800
-Message-ID: <20260825085756.63030-4-husong@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260825085756.63030-1-husong@kylinos.cn>
-References: <20260825085756.63030-1-husong@kylinos.cn>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=//wkWol9/qz5Sg8Qaccg3IRIcPlETPhBtTWYuUxnbF4=;
+	b=r3mUTJyr9H5cxCrCznb0CaI1pk8nQjSJcVxbkgfIIOK2iVponCzfcJXUwR8u7XVxIAbZ1t
+	pX/ZTPoPWzbaFb1TrOn/yF4fuc9lsrYUzDEXQO5MqUH8VLZynGejfQtOS2EzTHJvUIoqdl
+	6g0XByi69u8+XMThLfePpEm2ULUgx6k=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E9C321D13;
+	Tue, 25 Aug 2026 02:05:10 -0700 (PDT)
+Received: from [10.2.198.93] (e142334-100.cambridge.arm.com [10.2.198.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 46F1D3F66F;
+	Tue, 25 Aug 2026 02:05:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1787648714; bh=VVA5b3Sxn3jAB87yPqIx2puxbJ9K3S8Qelt3HRI7aIQ=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=j4O/fy9I+ygjtNreY+klv5AoJtgbDvbBWTvWDbq1W3RKg4P7VH3WAlzSHP3c5jEYN
+	 d8FrvNpaER9MQETbZk6BDkIIFoNCVlvNex+W4FBxTtEs3aqkAUhF5UHpnA5KGCeACh
+	 zF575a7ktuq01hSAcHAz3fpywlSEFxovuUoSkoIo=
+Message-ID: <2d81928a-3463-493f-bfa6-71869882489e@arm.com>
+Date: Tue, 25 Aug 2026 10:05:09 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DE8BB40006
-X-Stat-Signature: pauns7dq65inudd1tz3podkzqb9j655b
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Mark Brown <broonie@kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH v7 1/6] selftests/mm: make file helpers return errors
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+References: <20260813181230.483746-1-sarthak.sharma@arm.com>
+ <20260813181230.483746-2-sarthak.sharma@arm.com>
+From: Usama Anjum <usama.anjum@arm.com>
+Content-Language: en-US
+In-Reply-To: <20260813181230.483746-2-sarthak.sharma@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787648348-503382
-X-HE-Meta: U2FsdGVkX18UJvV3t94iedqTtSsjQ4KIbFag8ey5zVl6lyCB3nGi/OhXl9R0LkYV/tmZE0xCLbOY117j1xCJ6xxzVqsguSA2KEyJyrQLt6pK4R8dtdoHt76NheMKKck6ZWxPqEJZhISKvAGd8QGVvH4PfTGcNp3kB30iuHmS8DvteJjzgKmluXlNwlDlreDcKeNN1/xQR1Fr38j3r9FH5yKHxzvpTwgVHvHkXCbnyiHsO4nTQYLJmPbfM1plR1eJyCSlVEjV9yaaooDMw1LDkkaBwMQo64epGIB5FQzcaCBdQpfWZ1BGqdqBbb9s3Kh+SIoR1I1jp1exp8iz9NSKw635kKWevzvBQOTX5LEQwKEJKZGiILDJgPbDpxRNVPlWbj3VvnayF63Ir+3L7nHhNmTUy6FE41p1vYG/Y7kA4MZw4zPvWWpypZ/PV2prvmWIhLbRqe1g3ONTyXuEfZL6NiqGdWfdPrbw12Vh5CvzQfTnRunBHVHHkyUTSbtKel/0oKa4ueTR7CVa6EFWck9YPOQOK27GMjTnd8Ea+IkhIsjG75DKrFVSFaPYBaEk0tQ1OC5YcOB77dbJ24K7Quwvy1F6vodL95pzWwk+uTqYiSOaqMIKkpbVMlgWAnexhau4vLWqemhF43JbvDZYscIPl26u78agd70+mxJ3FvkRpUsn50AdkW93KRw7eDk9QixQraMxE7yYZrmsD0dDJpfT0HlU5f9zr/PDBkV3286uIO4ytA3E9e8nzpWJpai0QjuSDHlUabVBAD6XkDd7YksHMrQRCXJK/gZeH4JFnCIKbtVF+QQknYKTsaGNm3VQ01CsGsFTxL+0E7o7dL0OIBHtHsYXtgpMeXB1J0QL6wdiOEX2djWJz3JXGnRCuItmPcWhYfhfOPoKdY/J7bExsul6M/8+5GeLZ5WQFAKvCW4p+dHFkdkdvMXePj4Pb/GYYSEXYiSNVmQzVDD/ilAwrRz
- nzLYMtwH
- B69Y3Qcv/3Mj3qf3nbLLAebUtFV9Kz9A80lDmQ88HOqKjuSwfZfqf4+r+zQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E068C4000A
+X-Stat-Signature: t48q11998ns1jztwupopf7oytgr6dait
+X-HE-Tag: 1787648715-51382
+X-HE-Meta: U2FsdGVkX1+Oe++UG1SjteaRoamPkYr4zKbefjEJcSbnLascuxocpPZ820OcX31LGgJHCpctK5xJ6MLrN6YZ/UXSEc8ZpS5K0DznwAIBwz4MniGf+8GkAgzgGuj2QZEr2T7swNHJKfwCPZaRWOfKt+vNOZ8MWbcDRFQhHOcYa3Uasjv9UwCrjoujBuOdwcwSI1xpXZcsvVlNvvibT1kxpcoFkegd/VpZ7uLISZdWKi1pe7pDcydsz01YXUbr4asmKR8GuS4b1bX9zcw1zr7TeeXOO9y2yX52mdtkRGsPFf1IgqHbugFvKM7BlfoDwCcwFk645l17jbi9cJflZoXOSfVHWnNN3rL+9L39je1yy4BbwunDQXFYupw6i6+B71AQ0uDavZd4x/h4g3qSRRlmnj++5/5oHV8xDxx6KZNeVVG9crg+CEIqQX2bCy/FTEiClA7kuOW33f3JOShUZB0GiXXGmmu12pzq+46P98XqlF+MWMF4mc5gGDrQopnANZyUG2ZJefAQXEr6HukoAmCHuty4DYoagMPLlwOY1QXy/id2IW4p3mbzWzUtjmRcKPoWU+Wi7DGpd670kcrrWa+oj2LFfVe/TIy/aSEMpXeW8/GUugbXLx6HQC4Kb58k9XJYB+yZbitWTmeLEtJF54WQBokBLTk1fRoykQcu99Hthay+AjXafCsYrW+cnaK6SfKbGO82Imk7Py0S3pQeJ24/3nR3DJReWiSZcGzPfGPTOYjaaL7T6REA/uTEjhFe1QJMswCR2jb166p0OAdsfFiGGSa0DRk2K2yXVdrvr5ND7l30UuXUrPQhJbEfqWJ4I7ocMb8tdGX6TjSiE2wvjdwrNxQgJ15yYhs7EPeZMmKdmAz3u22xHTIqFFEw3cuqmuoeJDfjl6S/Th4aWtl+8CJ5iYXFZk7HOKwlFPE8S0NWyDAcv3l/+rpekv47MtFJDpiQrs20oU+/6g3hgRcCGUK
+ ifcl1pV/
+ EmZC10t3XRYRlCnYj/PmTJmDACrKCByPaBYnBXjurKhdyWLpRBkfXEpCAKRlnqKyXTftWGeS4QN2R9g23uE5k5ngzx093+X7Kmp/z+B8LoLP6dLfodz7w6supJ8J0Y5PeFaBYCEpFo9q3y7BbIabnupDYCUQ0C29P8QSsynMiNbJfQOAu1NOBRRvLVgCn0XtIpATPqjgv5vE9SXF2QDc+2mWXibtJXkijKDrvuJz3fKDEljeDclraG8O4VKAjQkCMNmazHgvOLHNf3eqFR0nsezqiW5I4gj77u7HK9l/Hhgxht/8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,134 +105,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb-soft-offline toggles /proc/sys/vm/enable_soft_offline between 1
-and 0 (test_soft_offline_common(1) then (0)) and leaves it at 0 when it
-finishes, silently disabling soft offlining for the whole system after
-the run.
+On 13/08/2026 7:12 pm, Sarthak Sharma wrote:
+> Change read_file(), write_file(), read_num(), write_num() and
+> write_num_ignore_einval() in vm_util.c to report failures to callers
+> instead of exiting from the helper.
+> 
+> Make read_file() return a negative errno on failure and 0 on success, so
+> callers can distinguish a successful read from an I/O error. Also make
+> read_num() reject negative and malformed values.
+> 
+> Keep write_num_ignore_einval() silent for -EINVAL while returning other
+> errors to its caller.
+> 
+> Update callers to print diagnostics and fail wherever required. Also add
+> a helper print_file_access_error() in hugepage_settings.c to print
+> TAP-compatible errors without a kselftest dependency. This prepares the
+> helpers to be moved to tools/lib/mm without a kselftest dependency.
+> 
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
+>  .../testing/selftests/mm/hugepage_settings.c  |  98 +++++++++++---
+>  tools/testing/selftests/mm/khugepaged.c       |  14 +-
+>  .../selftests/mm/split_huge_page_test.c       |   5 +-
+>  tools/testing/selftests/mm/vm_util.c          | 120 ++++++++++++------
+>  tools/testing/selftests/mm/vm_util.h          |   8 +-
+>  5 files changed, 178 insertions(+), 67 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+> index d7917dce3aba..5bcda01ac4f6 100644
+> --- a/tools/testing/selftests/mm/hugepage_settings.c
+> +++ b/tools/testing/selftests/mm/hugepage_settings.c
+> @@ -8,6 +8,7 @@
+>  #include <stdlib.h>
+>  #include <string.h>
+>  #include <unistd.h>
+> +#include <errno.h>
+>  
+>  #include "vm_util.h"
+>  #include "hugepage_settings.h"
+> @@ -48,6 +49,11 @@ static const char * const shmem_enabled_strings[] = {
+>  	NULL
+>  };
+>  
+> +static void print_file_access_error(const char *path, int ret)
+> +{
+> +	printf("# %s: %s (%d)\n", path, strerror(-ret), -ret);
+ksft_print_msg() is what you want here. It adds # by default.
 
-Save the original value before the test and restore it from an
-atexit() handler, as hugepage_restore_settings_atexit() in
-hugepage_settings.c already does.  Use read_num()/write_num() from
-vm_util instead of hand-rolled popen()/fopen() helpers.
+...
 
-The restore handler must not call write_num(): on failure it
-re-enters exit() through ksft_exit_fail_msg(), which is undefined
-behavior from inside an atexit handler.  A non-root run hits it
-directly - the restore write fails the same way the write that
-triggered the exit did.  Restore with plain open()/write(), best
-effort.
-
-Signed-off-by: Song Hu <husong@kylinos.cn>
-
----
-
-Changes since v3: the restore handler no longer uses write_num(),
-whose failure path calls exit() from inside an atexit handler -
-undefined behavior on a non-root run.  Restore with plain
-open()/write(), best effort.
-
- .../selftests/mm/hugetlb-soft-offline.c       | 49 +++++++++++--------
- 1 file changed, 28 insertions(+), 21 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
-index bc202e4ed2bd..4af9d3db7b5b 100644
---- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
-+++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
-@@ -11,6 +11,7 @@
- 
- #define _GNU_SOURCE
- #include <errno.h>
-+#include <fcntl.h>
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
-@@ -23,6 +24,7 @@
- #include <sys/types.h>
- 
- #include "kselftest.h"
-+#include "vm_util.h"
- #include "hugepage_settings.h"
- 
- #ifndef MADV_SOFT_OFFLINE
-@@ -31,6 +33,8 @@
- 
- #define EPREFIX " !!! "
- 
-+#define ENABLE_SOFT_OFFLINE_PATH "/proc/sys/vm/enable_soft_offline"
-+
- static int do_soft_offline(int fd, size_t len, int expect_errno)
- {
- 	char *filemap = NULL;
-@@ -77,26 +81,29 @@ static int do_soft_offline(int fd, size_t len, int expect_errno)
- 	return ret;
- }
- 
--static int set_enable_soft_offline(int value)
--{
--	char cmd[256] = {0};
--	FILE *cmdfile = NULL;
--
--	if (value != 0 && value != 1)
--		return -EINVAL;
-+static unsigned long orig_enable_soft_offline = -1UL;
- 
--	sprintf(cmd, "echo %d > /proc/sys/vm/enable_soft_offline", value);
--	cmdfile = popen(cmd, "r");
-+/*
-+ * Runs from an atexit handler, so it must not call anything that
-+ * exits on failure: write_num() would re-enter exit() through
-+ * ksft_exit_fail_msg().
-+ */
-+static void restore_enable_soft_offline(void)
-+{
-+	char buf[24];
-+	int fd, len;
- 
--	if (cmdfile)
--		ksft_print_msg("enable_soft_offline => %d\n", value);
--	else {
--		ksft_perror(EPREFIX "failed to set enable_soft_offline");
--		return errno;
--	}
-+	if (orig_enable_soft_offline == -1UL)
-+		return;
- 
--	pclose(cmdfile);
--	return 0;
-+	len = snprintf(buf, sizeof(buf), "%lu", orig_enable_soft_offline);
-+	fd = open(ENABLE_SOFT_OFFLINE_PATH, O_WRONLY);
-+	if (fd < 0)
-+		return;
-+	if (write(fd, buf, len) != len)
-+		ksft_print_msg("failed to restore enable_soft_offline: %s\n",
-+			       strerror(errno));
-+	close(fd);
- }
- 
- static int create_hugetlbfs_file(struct statfs *file_stat)
-@@ -145,10 +152,7 @@ static void test_soft_offline_common(int enable_soft_offline)
- 	hugepagesize_kb = file_stat.f_bsize / 1024;
- 	ksft_print_msg("Hugepagesize is %ldkB\n", hugepagesize_kb);
- 
--	if (set_enable_soft_offline(enable_soft_offline) != 0) {
--		close(fd);
--		ksft_exit_fail_msg("Failed to set enable_soft_offline\n");
--	}
-+	write_num(ENABLE_SOFT_OFFLINE_PATH, enable_soft_offline);
- 
- 	nr_hugepages_before = hugetlb_nr_default_pages();
- 
-@@ -192,6 +196,9 @@ int main(int argc, char **argv)
- 
- 	ksft_set_plan(2);
- 
-+	orig_enable_soft_offline = read_num(ENABLE_SOFT_OFFLINE_PATH);
-+	atexit(restore_enable_soft_offline);
-+
- 	test_soft_offline_common(1);
- 	test_soft_offline_common(0);
- 
--- 
-2.43.0
+Thanks,
+Usama
 
 
