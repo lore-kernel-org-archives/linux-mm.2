@@ -4,94 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B6BC61DB4
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:40:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6036C61CE2
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:40:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDC5C6B00AE; Tue, 25 Aug 2026 06:40:23 -0400 (EDT)
+	id 095F36B00B2; Tue, 25 Aug 2026 06:40:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB3B46B00BE; Tue, 25 Aug 2026 06:40:23 -0400 (EDT)
+	id 06DA06B00B3; Tue, 25 Aug 2026 06:40:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF1226B00BF; Tue, 25 Aug 2026 06:40:23 -0400 (EDT)
+	id EC7536B00B5; Tue, 25 Aug 2026 06:40:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ACAE66B00AE
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:40:23 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28CBF1203D6
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:40:23 +0000 (UTC)
-X-FDA: 85139447526.26.8ADCCDE
-Received: from mta1.migadu.com (out-70.mta1.migadu.com [95.215.58.70])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A08EFA0007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:40:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dBOcOR09;
-	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.70 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C6AC36B00B2
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:40:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 54B2E8037D
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:40:45 +0000 (UTC)
+X-FDA: 85139448450.21.C9F5ABE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 841F440006
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:40:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RRDkgqvR;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787654421;
+	s=arc-20220608; t=1787654443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SIIA6zvrxZiJ0B5UZd3zzfBNUj3IfmAWwyMpLfTiAsw=;
-	b=Y8MdBUf3hdwhc5Ii7b3LItl4chsAYWm0rVUBFL9116k3t3wnmYm/KvcrFdTWZjxN6b3D9u
-	/Jl8oiWpjxOWW248W+YQEDQXxxkPzGOsEcD2Q217Si+eumsJRTDfV4cJDHg+NmEl4uUx2f
-	apKu8ZBLeJlJ8jr6aBcEcRGxxDbBF3Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787654421;
-	b=gAYugGJ1VIKzWIrmvZDb5Xnam3RHVpGYxkJwvbtvtuAMLIucTaXtZ7Jjau+6zPhM8YZ9rC
-	NhSXt/mxdbcNRcHCQ6n84mT9Km4gJz6vWW2FQC4dfVcmR2NVMFHqrwSGAh7+Zq33tJdO20
-	3A8T1wjugdRCw2SVk0MFYy/hFwkERxU=
+	bh=7a0vBDAZCAZbORacmTwi1iUSuIX0elcEO78pOODZsdQ=;
+	b=gOZ/grUB24ulPrti2359TZvqEQQj0fV3qhdv9iPnShN7TjKVDdqm8sRcMSLt9K2njw4qPq
+	EEFTqK9djIwhzmZrT+lG8+2UGQ5arsG4zV7p7SND3iHUMxXvor1H8Nj6zBQIoqAVYuGAnj
+	F64d0GdUtvS9tgcB/cMnN/fxZy/8bT4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dBOcOR09;
-	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.70 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4HCdqaL2UsJl3vhnbCh80t3WyCZKmIVtpPQk8zrG2d0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787654419; v=1; x=1788259219;
- b=dBOcOR09+4/zZYWeFG/SjOn26eOzwP1JmzqHOiZBrVeAPoRm8ZuGTwBIZylKr5wUCGOwl+va
- mP3/eNbWWiQBoI0rek60AbnfG6mK54vw6x68EtHm9btgj7JuMmK0MhRPaKjn/h8Y9d+i3AQ8SDL
- NnhRLedgLxa9kaFZJLjtjROc=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [100.82.85.74] (101.71.133.200)
-	by smtp.migadu.com with ESMTPS id 22f5c38e0082be38;
-	Tue, 25 Aug 2026 10:40:19 +0000
-X-Mizu-Trace-ID: 22f5c38e0082be38
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <5d60e20a-64cd-4ce5-bc8b-86f0c976e618@linux.dev>
-Date: Tue, 25 Aug 2026 18:40:09 +0800
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RRDkgqvR;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787654443;
+	b=xsDNDJuQYhL6jkla2LT9CZpHbD7a0YLxM+Ok0VaiYaHbDFJTSQ3boVZ+cl8uBh6kVTj91J
+	XEsPo8al+tg/5DJYhveR0OMMnTSq0NoWpMrzw/GV9VthLTTe6oBTTzoMUcxh6KDcl3YcQu
+	wnCVqQ86SscdVKIJOQStAoEdan/3WN4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C202840A5D;
+	Tue, 25 Aug 2026 10:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E5A1F000E9;
+	Tue, 25 Aug 2026 10:40:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787654442;
+	bh=7a0vBDAZCAZbORacmTwi1iUSuIX0elcEO78pOODZsdQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RRDkgqvRApxEUth7tevBcyX2AqvBqsRPcn9yAX57BaOU80PQP6iAdgSgOVW+05K/a
+	 XRmqGz0BvZ9t1k6I4545I4wVKydWszGWDsfA/SiWkvIjrUVe+3T0NB1U6pk/jxbecA
+	 kBOEL2n9kZkbZVhidbWlgVp1QTxE38MtA+ou+A8d0a2q0qDUbNLLAb1GOYGMGsNL7Q
+	 +bVxZiBae1xLJKlbL/zklqpmmVIa4C79FdXydCKGPBbMcnUokXXg1miZFiabMK8QeV
+	 KLG4o9SO2VT+xMLp6ApfkF9nx1Mpe2ovaP3ZWrvEURO0SjMrSUUp5iYn60Vfg6n2aI
+	 RqWAuYDDQ3kOw==
+Message-ID: <e4a7bffe-7d23-4d7b-8ec6-5b966419c615@kernel.org>
+Date: Tue, 25 Aug 2026 12:40:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/17] mm/sparse-vmemmap: initialize shared tail
- vmemmap pages on allocation
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-5-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260825084608.47437-5-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 3/3] mm: return -ENOMEM for page-table allocation
+ failure in insert_pages()
+To: Avi Weiss <thnkslprpt@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Soheil Hassas Yeganeh <soheil@google.com>, Arjun Roy <arjunroy@google.com>,
+ Eric Dumazet <edumazet@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1785847364.git.thnkslprpt@gmail.com>
+ <a486e90cca91f443552b70ab2a18510bcc5dd8b6.1785847364.git.thnkslprpt@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <a486e90cca91f443552b70ab2a18510bcc5dd8b6.1785847364.git.thnkslprpt@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 841F440006
+X-Stat-Signature: ftr3mk9no36we5qkf59hf9optexayjdq
 X-Rspam-User: 
-X-Stat-Signature: qz4n3cz8pxiayrb49mnrx79ctda57144
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A08EFA0007
-X-HE-Tag: 1787654420-556798
-X-HE-Meta: U2FsdGVkX191QISZ38/46GMTttKRu/cfCSX4xufWgsIe0FeOtJk8u+IyR2wq22MM2kU2OyFDfgiSS1y8roW+/lZnmMkKzfzAUmazP+A15nWAbFj8lHnqDaPxSpewIWmgXISn40vkdYWz9GpbvS+oe4hdGMWdveyC8mlOGa0EKd7s74JyVzEIv/+yvY5DKhBEWjmGnb+ZdIL9YO+Y740OwBs2yI0QvmI5jGNSymjKEPBhI3FoK+7YitfcYiDPrbVzGr55jojt2HWHk05vNDTlNLaxKZv/1Hm0T9V3GWTcIiDOvPvMi0AZ2zPqtN+sBD9ZNIKI9s0cZBTt/SMW+oXAlagTwBAQuNhJieXNCYdoBBMg5Xhw00GMbSPQ5dF841OMdfIJfPf+n9iayBMG6c0BLDhGd42iE+wlEhAjDkOmUbdnNpHCEUbK1e2wZ7EeS8/zsmQ0cBJusCWhEbrJm477hKHc/2AM32KEPhFvzkbBLZgnxsuds0tM/JBZboLmaa4huDfAOZ0zgaX6u9vk1qXRIN0dVhIQkq+Nn7LCd9cRoMjCtIFEWj9OEn5Hia5/rxOh3bBJFdN3JqWKA8IYt/Rkrkfw2qRGyv739M0/T249dqEiQvplygGXbhErf1GAFzEe2rrA1vdkCCNeQhlOhOhMqWpHF/wnuNLQFu46siaRMhLwAW18NobwRAO/8ZqsZg4RNRggnxtgXp8VeLBRhMPhSa0/RqvPGqFdKgq+OqVCu1cjnIbolHPlHGtNmlqHnBgNZE1LvDzKOPMs+xZ7cQqpV+s9BSR2Ln1esHWkqv3cK0vpSMpgrfxYpgGL4fFgBK5HQBqP/WDjYyofiU1dv9b8CJf857NgO5gVoxSbR+Wus8benigdd8GgRTvEmlapr0BWWnQPcC8u39IdHWGXNM1BXn3J2JECjDwXRb4QSbqk++pzID7/3VjWBa8Oa8T8U/jpw+b514Bn2SkXjkLu6KM
- 9M6dfcbf
- j5KKml4nZbhsV3MbqwrWZpbg+oBcXAWYhenK4PlBso7PTJIS9drU6ghuMzBeHz+3zTvoh9tWqGVPJyuMo+TVqC43w+Oer/hHMas6LQMyk7aazbkFXZOGkosEJmyFcdbtXXIP4YCF9ChQpFWRkh4CWuO1noQmX6wWl5tMZddsbX1FS1+fGUgUVe+v6q4do9iu6lbBBbZzoKk3+Zxb9ZX6Q6KZraaxERQWSqNNQP1WoB9fcOlkub7uluwk6e8LAR0K0xlhY2/A7c3WU0xjnTh3dzhJudsdqaqpKB8lx5cbeBhTKu/qGgw5NAfY35DwMb+cvVsWmIUSetpO42uQe+6I8Zy6T6sP96+A/m2qKIlK2Y5sd7GLRWW+fhmfqHY6whdiGRhf/Off5tU+1EvEPKS+k46JVPi+I9ZJUrbfV
+X-HE-Tag: 1787654443-627852
+X-HE-Meta: U2FsdGVkX18otdSynJJhdP+04DivTQqqwulQEihxuYogIeqvtbMabbZZwLUhytnAxj7ThnugkvuS9Ww4O55wk+KPNSXj+a0IHDlhTqnG0jc/HZgblglzVlfqHEZ6GbT2yH4veRWCz0juOTajh1Tiura0Ek9TrxiddMaL9evjtn6/bzmZ4111u3BbKqJTzLT9lHXBeKMwMiJj9w0c1pzAuPUeo0nvig8sMhrxzasI5eTNaoxiozkDgK9E00YJAenJvnB2vFUXrhzOmwqTTmPippXHyVWdy45YSM7rgnvgdJ0BeSekGDqclQv0pJvLHqQ0E8zjyhSm685pbsSnHdN24KSpsTJT8mYA2stPyat8CMsMZzhRBLyQYRlNvlu6Ocv+IHWH9WHsAnBOXpMra2m5che23brKBvME/wh+Ao5PwKv6Aoe6sfQyttZaDAEwEFT+J8kkWHJ9+URRUfxdvL+R+Btb0mgjuk9+Z091yfRa2AVGywAYcwPsZPk2nJuy0knkRHW5ooOt5KUEQjxLo70TCx3MjdUWlqj71LmtQU7se9zUyTb75I2eebR9erBMY4UWkvcHy/aUw1+Ihe1RMz7X/TMCrVAQPWQk6BLwFtASML8YPpmAlhGjQUbAQJNTQwF5a1SyKo1xfRFhYtxcCn3h8B6GcdAR1GbmELzPDpCdc6Iepx3Hqbcy4CkzH9vCoAZKuq3YQUZ0zePQ2+tvtyq8/ls5pgoxacQa4YEH3WwwYPqdI6yA+NZi2vHkt0FXT6KXZEyTa5nm1QYTmnERiFi5wDLTdE48cwFgxs9487qoaQ7hB1H1ijNqQY0uAgnFdyw4MSh/gKRezJpkc5+fizwgrKH1j3fnPYVTvBufZemC5BWbvXnNsHpXeDyLeOrL72SIsPFfXMJuDFe4efGMOnHtNRBlbmeE45rSTCbaQgOB4DqWAfnXgw0relW64yA0FewZUWKbrZGdFMX3cEh3Fwj
+ iL4NbnGI
+ LzDEbGr0Hy1wMsDqQxdSHS/wuBh1WaTMD3eLlq3RBFT/Qiz3HK3qZKe7g6PrL8FWN2m26o7j20O5EcjJD46JefRajRGOxacTGWS2ib93/IKDVKckGsobK/ZEQNLF6tWLBHY3O71M42EI9m9SccpgsrqbvCLsO9RY6iZJ7xd+NvNt1qgOYFTtSiVLmirHxrkNXiLUZ61+ZBu3hUlRATy1Ot+kWzRMzBthew9BLg7JFOlKiYShPggCTTY+DUppublUkSNh0DxRhtTZbvXnXL4QV5WBeOIIzO3DpattLYOqFRI/5MTJRMi4HXnDNvjNgcEki5apIqDw4aPaGMGvWO/yIX8EfrHkKbtxpA7se
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,63 +144,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 8/25/26 4:45 PM, Muchun Song wrote:
-> The shared tail vmemmap page allocated in vmemmap_get_tail() used to be
-> left uninitialized, because memmap_init_range() would later overwrite
-> it.  That forced users such as HugeTLB to defer the initialization to
-> their own setup paths.
+On 8/5/26 16:42, Avi Weiss wrote:
+> populate_to_pmd() returns NULL only when p4d_alloc(), pud_alloc(), or
+> pmd_alloc() fails. These are page-table allocation failures, but
+> insert_pages() currently reports them as -EFAULT.
 > 
-> Now that memmap_init_range() skips shared tail vmemmap pages, initialize
-> them immediately in vmemmap_get_tail() with init_compound_tail()
-> instead.
+> Return -ENOMEM instead, consistent with the subsequent pte_alloc()
+> failure and with the single-page insert_page() path, which reports
+> failure of the same page-table allocation chain as -ENOMEM.
 > 
-> This moves the initialization to the point where the shared tail page is
-> allocated and avoids relying on deferred handling in individual users.
-> The remaining deferred initialization in HugeTLB will be removed once it
-> switches to the section-based vmemmap optimization mechanism.
+> Address and range validation failures in vm_insert_pages() continue to
+> return -EFAULT. Keep the later -EFAULT return for
+> pte_offset_map_lock(), which is not an allocation failure.
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
 > ---
->   mm/sparse-vmemmap.c | 12 ++----------
->   1 file changed, 2 insertions(+), 10 deletions(-)
+>  mm/memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index aa6a4a2fae98..107215cf8488 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -338,19 +338,11 @@ static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *
->   	tail = zone->vmemmap_tails[idx];
->   	if (tail)
->   		return tail;
-> -
-> -	/*
-> -	 * Only allocate the page, but do not initialize it.
-> -	 *
-> -	 * Any initialization done here will be overwritten by memmap_init().
-> -	 *
-> -	 * hugetlb_bootmem_struct_page_init() will take care of initialization
-> -	 * after memmap_init().
-> -	 */
-> -
->   	p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
->   	if (!p)
->   		return NULL;
-> +	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
-> +		init_compound_tail(p + i, NULL, order, zone);
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 11bb4fb98761..16093479d341 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2438,7 +2438,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
+>  more:
+>  	pmd = populate_to_pmd(mm, addr);
+>  	if (!pmd) {
+> -		err = -EFAULT;
+> +		err = -ENOMEM;
+>  		goto out;
+>  	}
+>  
 
-Until section->order is set, vmemmap_optimizable_pfn() (introduced by
-patch #3) will always return false. As a result, the initialization here
-won't actually take effect until patch #10.
+For this patch:
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Thanks,
-Qi
+-- 
+Cheers,
 
->   
->   	tail = virt_to_page(p);
->   	zone->vmemmap_tails[idx] = tail;
-
+David
 
