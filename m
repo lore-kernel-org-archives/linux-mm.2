@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52ED1C5DF9C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:26:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82DB6C5DF9C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:27:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 582C36B0092; Mon, 24 Aug 2026 22:26:52 -0400 (EDT)
+	id 7315B6B0096; Mon, 24 Aug 2026 22:26:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55AD76B0095; Mon, 24 Aug 2026 22:26:52 -0400 (EDT)
+	id 6E2416B0099; Mon, 24 Aug 2026 22:26:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 449876B0096; Mon, 24 Aug 2026 22:26:52 -0400 (EDT)
+	id 5D0C56B009B; Mon, 24 Aug 2026 22:26:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D4146B0092
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:26:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55DA6802CC
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:26:51 +0000 (UTC)
-X-FDA: 85138203822.21.5303294
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F91B6B0096
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:26:59 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 94F961C0FBA
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:26:58 +0000 (UTC)
+X-FDA: 85138204116.22.D514264
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E7606180005
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:26:48 +0000 (UTC)
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5777E180002
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:26:56 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="cws/Av2W";
+	dkim=pass header.d=intel.com header.s=Intel header.b=g3AA8koT;
 	spf=pass (imf16.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787624809;
+	s=arc-20220608; t=1787624816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fJzASNNSG+QiH++4gzj7pnCDSF9TUeGXmyxhBzuXNVY=;
-	b=OBHDp7sO72tRQGV4jO42FkV3VLjOH7LAF7Xlc8mLkrX/cBqyhtG7wPDTBWkrIwDjPtVW7n
-	89xyhoN6Yyttq9kDXNy4wSrdlGIFCJSOAsu8WoIBoN5/uDjWI3bzHpT3tE/4Zn0Juy0RNX
-	+EVKh4nRDGuTMv/8KbROZuW1V/4eHyY=
+	bh=mQfsLGaHvuliDKoqmaZ+rY86JaqmyeIy70spXQfN6YQ=;
+	b=Q8KGHridW2CZ9o8r6C0RQsmEfRilI/8owwb4L18nN2D72te1MY8f5Z/7LIGldDr50xmsBh
+	PpGv7OYzHj1gR80s1POC+/jg17ken6jRl+XKliX8v56PapgebRUDEFJvb/b+KaTG3PHCB4
+	OyWSrmhP/13lGUUvFXmlJt99+CyPcSg=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="cws/Av2W";
+	dkim=pass header.d=intel.com header.s=Intel header.b=g3AA8koT;
 	spf=pass (imf16.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787624809;
-	b=dBSd++zCvNAO8LlYOaHr9DQpw5qbgfmUtCFChgdimY9xsL9G3t9oU1AbYymkhBqLFsnxBi
-	9yrQwOt85OaRF7P04lX4Pgi2U9bMrR79bJuvwDMDp8nP7JKPyvoBzVTCMCfinl6JcZU+ur
-	10wDAY4vjlvAokwdwhPgRmVIoYYlvEE=
+	t=1787624816;
+	b=gm7RBNzS0wEpaekulIKoe77OE+TAks+vG46NRaVZ+XGbtd0cw0w6qvYKqssda8qM0jnNEj
+	OF2YwxZj/m6zaXdigWMHpewRLW8jUua0cEDcebMCWaEOZNdQSGOC98RJC9lCB85eAcat//
+	lVuw65UAV6eUzIMsb2YSNB6jCgDwfo0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787624809; x=1819160809;
+  t=1787624816; x=1819160816;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=tsn1ZiUbzdaF4vYy7trPOo26c92bIqiH3qklxnc8dFw=;
-  b=cws/Av2WPClSWzPL4v4fYeHeCbr1o9Kemr0aWZEZV2EBY5WkkE0fcfXV
-   N3lymV+zyYxlZlt/2GkAZCZq2sQa32cJWCqdnb4oZ5sUNHuQ49fjTOt8j
-   wH+khob8Aq/gf0/wZ48Rdul7hgQ3meI4fNXCDTxTApSxyAHP7SpbqXvKV
-   3YJ8hmf79vf3IcZNhE4hWJGZehwlnd4OGR6GYmB4lvEVgFDNLmj2u3//r
-   EmLJWaBZA9VIBbbHnG93hmF4zDJg9qZdJ4HsFUL5eEi1kXccAm5+/yD+K
-   Rbgtyb3zNKNqjmSG+mwm6LhaANShvpr+2biG/IJlQHFwJN/MQhZiuKiI8
+  bh=luXAFR5A0hd2IqVdgYztssDIQ6BwQc+LTt+HmX9tnxo=;
+  b=g3AA8koTzLZ37hVEXRvfmM7LkEWNGhSFdfsWOdeOzq5GPpDripEG5RKO
+   gFmRBYKco5vhH2Bauu0JapsIz9XWckD9cGIrT9X3QaZEs5j9MLTAukstq
+   6BaUoL1f7sVEsxomzhvPQRdCofLo677qUk1ezOkOjPatN56utOaOm9/pI
+   MPicvtg3CUwemysKBK3YvroJdb20VaDvavIjS3Quj53ySs89JymBAyfkP
+   MS6u+RQV+97kCzYWy6hCuS0MMVwpLGfxo3LCgqEl5UPW5Bi2qGc7MSRwE
+   AofLrXpopHPoUKeSKdlL4EuPV1ESRPTA3HoUMUFnw1B/M4i2VKuTULmaZ
    w==;
-X-CSE-ConnectionGUID: pOn1CBQERRuFS6BOM3sePw==
-X-CSE-MsgGUID: gZtn94d9TfixzNT1RSysHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98760941"
+X-CSE-ConnectionGUID: Ub1If253S8avYLYbBKaS2Q==
+X-CSE-MsgGUID: lxUEwTV1QCGJdCbC0zLJhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98760968"
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="98760941"
+   d="scan'208";a="98760968"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:26:48 -0700
-X-CSE-ConnectionGUID: lF9tHVnlTmmDi5NsgwZhEQ==
-X-CSE-MsgGUID: NWBh33+kSD+0V6l964YYkQ==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:26:55 -0700
+X-CSE-ConnectionGUID: MB+GDsTWTrS4G9U7JS2ynw==
+X-CSE-MsgGUID: OFbwcOqSRaGkEg9HTVIQ7g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="265390038"
+   d="scan'208";a="265390053"
 Received: from fdefranc-mobl3.igk.intel.com ([172.28.182.157])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:26:42 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:26:48 -0700
 From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
 To: linux-cxl@vger.kernel.org
 Cc: David Hildenbrand <david@kernel.org>,
@@ -105,22 +105,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-pci@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: [PATCH v2 01/13] cxl/pci: Make the HDM and Mem_Enable writes callable from CXL
-Date: Tue, 25 Aug 2026 04:26:16 +0200
-Message-ID: <20260825022628.3651434-2-fabio.m.de.francesco@linux.intel.com>
+Subject: [PATCH v2 02/13] cxl/hdm: Add function to restore one HDM decoder
+Date: Tue, 25 Aug 2026 04:26:17 +0200
+Message-ID: <20260825022628.3651434-3-fabio.m.de.francesco@linux.intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 References: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E7606180005
-X-Stat-Signature: wm3xmjm3i1f471mch9b5a4gaghbg94xf
+X-Rspamd-Queue-Id: 5777E180002
+X-Stat-Signature: rwegpen67n61kqgpix5898zbw49nqoo6
 X-Rspam-User: 
-X-HE-Tag: 1787624808-605881
-X-HE-Meta: U2FsdGVkX1/JF8nPHfK9Fn6QZSxhpDbtmNmVrCK2xhGAtoUwID6iOcauLt3SgtYOCcixASv0SWe3Zt4vXtFcCGhjH+670ldKCnDJ1OKwY7KVhGnjSYMZYNaOWQfxmMX5vxf59f/rYsvTea4pOxYs1L9Ah3+THLnWmZJe8bHP2qFLvR6PtYqnB1GboT7VWFSqJDeMp/4UJ9wut/8tJgNO2VUcuU2+NobOhgLMTvfmCHgOyXkGzaVTLyG9iNlECoibUxC02iiGEkpTph/5+shHPJ2gkgaQ3PAQR0LsVT9Hc8331tOvpOa+aVaOkciVeQyM0fcWam+X82v+y2/Fqfuvyj3iqmIAlgpytyaEIHrKftzsoVIDlIdeqzHqZtQck8VSGQGb52bNPiqk9mLvtvLijHUbYT2TFEzOQi6yHvhUrFE21mXJOCxtqr7nynOpi5Jjy/vcaX9mwpalniBDkLsk5H9kMFSGle5svdJ96LhIa9jKTQ6U2Tf92ieWB02/TXvBTBZ+XckMPD7mbpQF/hDBK0Z3W385XSg15DVruHCXmBnje8RfYcT36s3o59JdnCCQ+JKVqsuTEnfvKf894pHwwGuWyG3hGfEqkULfi+qyzBD5Y8GghBEGD0q0XyOubf/AhsVYLxpnSp1qJbY5E4CBQNY+CrOaG0ZpDiN8+uzxshaCoNX01k1YvSPLd/zGs/NCa8tknqmTE3LKy64mxp9U51dBp8rfekaQmVNJ6GwOkkkcwMEhOLIEUNqDbjhuj5lj8vdBOiVwESvjKSUk9h6hZut1t0DstmoqG5lTzLN6XLWrq2MGdn0SfCyzmnXplo49KgDIXDs0H63PWo3OmUUuZ/yfxARZ9dqolZCt4sQL9/6Gc/cGXdxQlwU3MXh8k2GvwcLnua4Df3ntniH5wVrnTbG/AR5FcXZdOvAUKySjy+j+ZVUcRGuh9/AyAYHC1SEcV6oo8mnnpfG42HzOcvS
- gHVmJQ/t
- cVBcJIEL9KnszDbQxx2iK9y/7qgnFQn9Ysp+UJnYur/yWtXdi0M2t3LUg0K13orlf4ciEta2b0IFQFjfqS+P198/IgbXwvHs2moJ9nsISK3VlIJoJucc6dR22KI6xzbkrUh57QVXC3Zf9GbUPZXuSjTJBohrJcOtSHibdAKunZXGTc32MyeZnWniFvMM/xkZbHm3pG5Ak5EKFO0WAbSTaORjBqjyXxi3wbO1W
+X-HE-Tag: 1787624816-819829
+X-HE-Meta: U2FsdGVkX19ow9UL+eq4+CWlFRrGYu0iAY0xSfb24bakO0pg/7vl9a6PBaiiyIGwHsQnsDN9zrB+8Ktu1lOIYacJotRBvmmgv4AbtZ0iQJ0n1wUcQhZe3cK4/X4iwVihncH0PMAZJgq8D9Xwlc0PI6nP7yRVu2uipP2G/pvPxWnTLpyga7Ek3eicq8FXRKVGGwhwKgHQs3MGiUELiZTRSglnKivq34yv9SefyOVQWeL62BsouldMzSoxi5FWKdtEvNDG3qYUOdcxYZTUMaUeuET27N2YB2GOYrt6MptxZN2nNNWdCoQ31HAV7TVuQShGiIipIeCGL5dChc4oKIzILRiSRIAYa9OjUnGNpR7oCVQkBZI16UtE1O29Dfbfp5OQidLDO/IxBfrpbwQ8hP71dwCKu5PYLVYzUmoOrl0xeT+2fonjJwUNE7Mc+YUyD4VIEAaGS6Pvdlx66uGUvtgBVfxC8QAzZVAX6h8G1TXKnL3OndwEM8OxEHIe8W9N1cP+cosLT4VTM5D3QogJ+/tYaDmMIF3YCLHwgYK1E8s20ek6+aGEPuu+jTYeNmTNdR5gf64GweBMF48q7EIRU7m5p3nNezZuOTBnPKb8VEUzGiCRz4obVoaDKGMSNwi9PvGBDgGqQEkwFZSaDrFMpeOBp1yo/7Qqz07EdmSS+UXYAQsXgWxLgeiaoDHCCln3QsLeanLLkYsZsDHT5/ynWbeFAs1uHbft+BA0rXZXsnI1S55BiavaHsGFiWARDX++iy8bG5D5x7nfI1bj9C5ZCgQAlrF21s4vOit7bxtsVP9xmiAhSEoXjdE0OGEsTj8vpo8oG4De37kd/RH43RAg1+vihEp27ZR8cy4DZHYH3spxrD8dHgrQI4tTdijcZQ+IGc6h4aND4Nfx/NKCudfutBhSlwCEFWUu++mO4fGy/QqcGx0duA993nkg6Z6Cza9SMWy2LoSsVjlKmGw1+RoYssQ
+ ps89OWRN
+ C7LKKxexQvbf0HEjO3WaLt+PPFSyJtYBfHRpTd8U1lzNroQBOyBI2IvVQpWklCgVnXp7aZHiyqDzjs/wzZcat9Cd0wIzhLFmym4sIlX9PFurmh7cTe2flU9lqbyRLhNDuJ1e2H+Vz5Ct7+OMHj3/mwNZ3GZCqB8F7UiiE37PR//GXQzgSe/zuCyjW2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,78 +128,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Split the Global Control write out of devm_cxl_enable_hdm() as
-cxl_enable_hdm() and drop the static from cxl_set_mem_enable(), so both
-are reachable from the rest of cxl_core. Declare them in core.h.
+Add cxl_decoder_recommit() to restore one HDM decoder that the driver
+holds as committed but hardware no longer reports Committed, rewriting the
+cached settings and committing it again.
+
+Restoring the decoders below a reset Port means reprogramming each one
+along the path to every affected endpoint. cxl_decoder_recommit() does that
+for a single decoder, so it will be reused later for the full path.
 
 Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 ---
- drivers/cxl/core/core.h |  2 ++
- drivers/cxl/core/pci.c  | 19 ++++++++++++++-----
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ drivers/cxl/core/core.h |  1 +
+ drivers/cxl/core/hdm.c  | 71 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 72 insertions(+)
 
 diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index 07555ae63859..4dc324f019ab 100644
+index 4dc324f019ab..6d536fe7b446 100644
 --- a/drivers/cxl/core/core.h
 +++ b/drivers/cxl/core/core.h
-@@ -213,6 +213,8 @@ int cxl_gpf_port_setup(struct cxl_dport *dport);
- struct cxl_hdm;
- int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
+@@ -215,6 +215,7 @@ int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
  			struct cxl_endpoint_dvsec_info *info);
-+void cxl_enable_hdm(struct cxl_hdm *cxlhdm, u32 global_ctrl);
-+int cxl_set_mem_enable(struct cxl_dev_state *cxlds, u16 val);
+ void cxl_enable_hdm(struct cxl_hdm *cxlhdm, u32 global_ctrl);
+ int cxl_set_mem_enable(struct cxl_dev_state *cxlds, u16 val);
++int cxl_decoder_recommit(struct cxl_decoder *cxld, u32 ctrl);
  int cxl_port_get_possible_dports(struct cxl_port *port);
  
  #ifdef CONFIG_CXL_FEATURES
-diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-index e4338fd7e01b..a7a2b84293e9 100644
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -179,7 +179,7 @@ int cxl_await_media_ready(struct cxl_dev_state *cxlds)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_await_media_ready, "CXL");
- 
--static int cxl_set_mem_enable(struct cxl_dev_state *cxlds, u16 val)
-+int cxl_set_mem_enable(struct cxl_dev_state *cxlds, u16 val)
- {
- 	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
- 	int d = cxlds->cxl_dvsec;
-@@ -247,14 +247,23 @@ static void disable_hdm(void *_cxlhdm)
- 	       hdm + CXL_HDM_DECODER_CTRL_OFFSET);
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index 0c80b76a5f9b..d55d764895f8 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -849,6 +849,77 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
+ 	return 0;
  }
  
--static int devm_cxl_enable_hdm(struct device *host, struct cxl_hdm *cxlhdm)
-+/*
-+ * @global_ctrl is the CXL HDM Decoder Global Control value to enable decode in.
-+ * A caller restoring decode after a reset passes the value it saved, so the
-+ * fields the driver does not model are not left at their reset defaults.
++/**
++ * cxl_decoder_recommit - reprogram @cxld's HDM decoder registers and commit
++ * @cxld: decoder to reprogram from its cached settings
++ * @ctrl: CXL HDM Decoder n Control value to restore under the cached settings
++ *
++ * A reset of an upstream link clears the HDM decoder registers of every
++ * component below it, dropping Committed while the driver still holds the
++ * settings that were in effect. Restore those settings and commit.
++ *
++ * setup_hw_decoder() rewrites only Interleave Granularity, Interleave Ways and
++ * Target Range Type, so the rest of the control register would come from a read
++ * of the reset defaults. Per CXL r4.0 sec 8.2.4.20.7 Table 8-123 that register
++ * also holds BI, UIO, Upstream Interleave Granularity, Upstream Interleave Ways
++ * and Lock On Commit, none of which the driver models, and sec 8.2.4.20.12 makes
++ * device operation undefined if a device that requires BI is committed without
++ * it. Write @ctrl first so those fields are in place, with Commit masked off
++ * until setup_hw_decoder() has written the range.
++ *
++ * A decoder that hardware still reports Committed kept its programming across
++ * the reset and needs no work. A decoder with no ->commit is driven through the
++ * DVSEC ranges or is a passthrough decoder, and has no registers to program.
++ *
++ * Section 8.2.4.20.13 requires the traffic targeting @cxld to be quiesced while
++ * it is reprogrammed, which the caller owns. @cxld decodes nothing until the
++ * commit completes.
++ *
++ * Return: 0 on success or if @cxld needs no reprogramming, negative errno if the
++ * commit times out or if the hardware reports a commit error.
 + */
-+void cxl_enable_hdm(struct cxl_hdm *cxlhdm, u32 global_ctrl)
- {
- 	void __iomem *hdm = cxlhdm->regs.hdm_decoder;
--	u32 global_ctrl;
- 
--	global_ctrl = readl(hdm + CXL_HDM_DECODER_CTRL_OFFSET);
- 	writel(global_ctrl | CXL_HDM_DECODER_ENABLE,
- 	       hdm + CXL_HDM_DECODER_CTRL_OFFSET);
++int cxl_decoder_recommit(struct cxl_decoder *cxld, u32 ctrl)
++{
++	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
++	struct cxl_hdm *cxlhdm = dev_get_drvdata(&port->dev);
++	void __iomem *hdm = cxlhdm->regs.hdm_decoder;
++	u32 hw_ctrl;
++	int rc;
++
++	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
++		return 0;
++
++	if (!cxld->commit)
++		return 0;
++
++	hw_ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(cxld->id));
++	if (FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, hw_ctrl)) {
++		dev_dbg(&cxld->dev, "%s: still committed, no reprogram needed\n",
++			__func__);
++		return 0;
++	}
++
++	writel(ctrl & ~(CXL_HDM_DECODER0_CTRL_COMMIT |
++			CXL_HDM_DECODER0_CTRL_COMMITTED |
++			CXL_HDM_DECODER0_CTRL_COMMIT_ERROR),
++	       hdm + CXL_HDM_DECODER0_CTRL_OFFSET(cxld->id));
++
++	scoped_guard(rwsem_read, &cxl_rwsem.dpa)
++		setup_hw_decoder(cxld, hdm);
++
++	rc = cxld_await_commit(hdm, cxld->id);
++	if (rc) {
++		dev_warn(&cxld->dev, "%s: failed to commit decoder: %d\n",
++			 __func__, rc);
++		return rc;
++	}
++
++	dev_dbg(&cxld->dev, "%s: reprogrammed HPA %#llx-%#llx\n",
++		__func__, cxld->hpa_range.start, cxld->hpa_range.end);
++
++	return 0;
 +}
 +
-+static int devm_cxl_enable_hdm(struct device *host, struct cxl_hdm *cxlhdm,
-+			       u32 global_ctrl)
-+{
-+	cxl_enable_hdm(cxlhdm, global_ctrl);
- 
- 	return devm_add_action_or_reset(host, disable_hdm, cxlhdm);
- }
-@@ -398,7 +407,7 @@ int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
- 	 * enable and use the HDM Decoder Capability registers.
- 	 */
- 	if (!info->mem_enabled) {
--		rc = devm_cxl_enable_hdm(&port->dev, cxlhdm);
-+		rc = devm_cxl_enable_hdm(&port->dev, cxlhdm, global_ctrl);
- 		if (rc)
- 			return rc;
- 
+ static int commit_reap(struct device *dev, void *data)
+ {
+ 	struct cxl_port *port = to_cxl_port(dev->parent);
 -- 
 2.55.0
 
