@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B9F1C5DF9C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 05:57:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD51BC5DF94
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 06:00:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 318C16B008C; Tue, 25 Aug 2026 01:57:14 -0400 (EDT)
+	id A98A36B0095; Tue, 25 Aug 2026 02:00:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C9C16B0092; Tue, 25 Aug 2026 01:57:14 -0400 (EDT)
+	id A49666B0096; Tue, 25 Aug 2026 02:00:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B8556B0095; Tue, 25 Aug 2026 01:57:14 -0400 (EDT)
+	id 9860C6B0099; Tue, 25 Aug 2026 02:00:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E84E96B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:57:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A5FFB802D2
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:57:11 +0000 (UTC)
-X-FDA: 85138733862.01.1DA0CB5
+	by kanga.kvack.org (Postfix) with ESMTP id 722896B0095
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:00:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF4A514032B
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:59:45 +0000 (UTC)
+X-FDA: 85138740330.09.48418A4
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4FCCF40003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:57:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4hivPyVH;
-	spf=none (imf17.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 17823160006
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:59:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SiuYedWA;
+	spf=none (imf08.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787637583;
+	b=wlT5N8cTiXZeuawkGagz1n8XK4fe/oKFtu7A45RxHUyyomCK5Ywrbv6TYmn+Ot9eWSZm13
+	fCNazoVz6kusZO/oseuteFBCULA5AFiQkIR0jZ0b0gcAb+Ou3ywVxbXLuXbfQnd0ZghK2n
+	GAPwmS4rRwjRxvc/Pksu5KIzS0EwcAQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SiuYedWA;
+	spf=none (imf08.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787637430;
+	s=arc-20220608; t=1787637583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3n8sKxOLY9bY1Jljt7EDfRL2ryQR3dKEADtbegGl4j4=;
-	b=sPlBlCNyqVbnbHKxP0dixv7B+OhxAPGOb7zXkxzlqXO5Qp6M9atmn4TvtSHtEYoHnUlNxC
-	JY2wUwLKZ39boPagbcrHFOikez76JlB6rsCzaVLcQdH+4/stXmyKLQNhJbRYRN/rig8Lol
-	qUzXB6pkrbWL2k/LF5Wcc5/gc/4csYo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787637430;
-	b=ZZfXAcxrmM0wOjom6Qa54PfrEfsZy7V+qLMMZOk/gpo2WYHhsoTwWQmoWHYBBmcBI+oZEq
-	lRBfZSyQXNtbVT6jfBTxKHE1XJchXn+n19GSe2b92pEuzn+4haZjpnkzhcpidKj9kcA3Zz
-	w+MUNUDcwZVps5XkxLJT6nFNR9yRY/E=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4hivPyVH;
-	spf=none (imf17.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=IR3Zm75E3ko+jggu/rLc8YgY9r9WUIC+1cB4Z43RoXQ=;
+	b=1EvmL7Tdoqlv9eGsZ8UDDxkzw4Jv0jzgpFgkB/I6MKhjhcdONmrcnKKMyfDenbP6xynhoh
+	iYzgazLe+UNNabpprVERJfSor3A4iHgmrcf8TlJQhoAETdWazthrreLkfYlhLI09q3bN6w
+	iggcJh43kaUfElR5Kb2jaMt5Tsx1bFg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3n8sKxOLY9bY1Jljt7EDfRL2ryQR3dKEADtbegGl4j4=; b=4hivPyVH/E7aqxa198tsBYDhtT
-	pheZRlehn97+Pn+qzZaamy4FMBMqTsG+w+pkWof61SjtSa9zehOQ74t1NrJjVEf9r/JJsmeqJyLa9
-	fBTbTLLiYWmmi3cTiTHnpobC+AzmGunnKistH6FS80+HKogiTyOLdD1uCZEHaPATXdecv2Y3kzsNb
-	/EBYP+I/hoJIhzQU4bobyba03Nfl/g65gyYRW0qqrdo2uJn8rvlut1397NlYgCBj9E6dLPWjKUzJg
-	MUKlmO/qw1j5IIU9m55sC1Y4+KFkL4YbVaa1aXZC1jyurhvheXv+3OzXzdThqJMPuoxtd6icvr+DD
-	05wedv1Q==;
+	bh=IR3Zm75E3ko+jggu/rLc8YgY9r9WUIC+1cB4Z43RoXQ=; b=SiuYedWA31qkaLMP1orR0Kj7/0
+	ACtAFA9hestsD4rtRCzNOADP6T9vEIix2ZLj8kiCPTcLfRAYuYIkZ4vqC1f0KwzVSitnXrRpgnjJk
+	/YCVdiKjhYrwIjF2I8ce1xZDP3+86zsoR6K/cXDG2C2UhsV81FBU3BNexqLmSgLp3OO9cfiRuhEMZ
+	6X/82ARyhospkcDFbUcXnyEliSjqbt9XQ+uBt0B8MqebP6bbeL/aSN1m+kj58w4b9N9C0tjGLg9o4
+	KRhi1jcZskQB+MJW2loiCd9Mf7lt1iuGG8bOxB6EoPayybY5WNveGmx1l8qBaPlHWEfSw0M9e10Eq
+	TAZVZXAw==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyk9d-00000000Cqf-15be;
-	Tue, 25 Aug 2026 05:57:01 +0000
-Date: Mon, 24 Aug 2026 22:57:01 -0700
+	id 1wykC9-00000000CuF-3J2W;
+	Tue, 25 Aug 2026 05:59:37 +0000
+Date: Mon, 24 Aug 2026 22:59:37 -0700
 From: Christoph Hellwig <hch@infradead.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: pfalcato@suse.de, kas@kernel.org, usama.arif@linux.dev,
-	hughd@google.com, akpm@linux-foundation.org, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com,
-	liam@infradead.org, linux-kernel@vger.kernel.org,
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	usama.arif@linux.dev, hughd@google.com, akpm@linux-foundation.org,
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, david@kernel.org,
+	dev.jain@arm.com, liam@infradead.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, ljs@kernel.org, nico.pache@linux.dev,
 	ryan.roberts@arm.com, ziy@nvidia.com, nphamcs@gmail.com,
 	hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
-	kernel-team@meta.com, stable@vger.kernel.org
+	kernel-team@meta.com, stable@vger.kernel.org, willy@infradead.org
 Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
  on zap
-Message-ID: <ao0urQFF6IOFAorx@infradead.org>
+Message-ID: <ao0vSde26_Qar0IZ@infradead.org>
 References: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
  <20260820061337.24669-1-lance.yang@linux.dev>
+ <aobp2CtWZBlw4w7E@pedro-suse.lan>
+ <aob9PF_H6CCJMdkk@thinkstation>
+ <aocFPRgqieScf_yo@pedro-suse.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260820061337.24669-1-lance.yang@linux.dev>
+In-Reply-To: <aocFPRgqieScf_yo@pedro-suse.lan>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: 17823160006
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 7ei811xxjf81r6mwre61mfgwud5ug1oh
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4FCCF40003
-X-HE-Tag: 1787637429-192274
-X-HE-Meta: U2FsdGVkX18gkPG0FThB+96qATjxiOlRBjG893L+5xPQf7wRs/qbOUKGl1EsriUjv4OiNMlA5psFV2/zbriqhZlKbfqnUqS2qZ6i0AGrpotZuVgmseJlT+GsSNTaVzKsRId129PjsOTk0gvNHp4IM3h+eBzIRT1vL/INXOfKGv8e+/CbsRvI1FRpigGtn4OO6tANdw2YGWt9tZtPZ1xSVBHG5Wu8EqhM6dZq6EAViUVdXJ4pn+J5nwKUMo1wUIV9pHPGxmQMJV0es8m55YJ3kTggXq+yO9QXg6TB9d0YmIvYN1c4SPtFlYgO4yE53ni5aCqun7kWmOCIpB+QR+jYqizicypfR37RZOL+9lYxUxszNg6x1WUWjPugV2yW6RvCNhjPjJRHXn2K/weaYYIH4VgnU9b9PwnjwCAA0VSzEJ1FVHsxz98R5mMuJg+mnDIX4pHfc/Dt0uy4QJpwLbiI6Q+s9xYwFuIEGFouCGL8mN/s4DR7beD8N8l+5573DP8UeX0gZH3Mbg1M5fS8XQ2Q/kmTliQPaIhqc4+Yu9WRRunHbFus7wqV8X9KjTc6/x5A2uU3np7Wym3V+W/eyVNMKXE7/yIHOFjqn+rvA03WnAJKcFGIUepavrwccPqMzSHX16IW9pcQWyLNUtpoB5Fbf/uM8Y57FGY4cgu+TV/sqG+XCWcHFo/ob2w0ycEKgdHQtMJwhVvpny4IQoiuTUxjbB3rRXuLOKjTIGyBuwtzdpUqNQ7LgA71sjsYFw9KUzN7f0e7UVxI++I38bX3hbq3IXImH8T5IDCEMYCNyiF/JToOLOUDLR+jcZ5Xw01z2Tg5OXaE3rRIOCACVIh+ievNJDWujsH8CnXX+53HF4imi26f8OoiT05VQYYpiRV52RHItABXSEquOmHl4Qvf3S6y+CQcPVsRW9IW/mWSW8jldagOLi06cKjcI13Ztl81IOfpDImAhNY5UoTTzFF8/um
- pXdoYUTJ
- 2rA9eRDK+BkPug8fX8rX1EYpIVM8rWeLbUZfrA6DDLygLFOOgWpOnrHMxGd+8giJi3GAd/gnhUG/hbEh8brUJ4Gb0rY47jlqP7mcaUF05vKV9h89yPc0P3BjoD/h4itXyeRwRVf2Hg9Sv7SZroGa5Z+/UcqUkVbcr6To26jFvv6KaSG/wa/S+FUZ+NrbwidW0u4n5BM42WLQj2IMc51+3ML5EgpCbyTtcp3OiVs/lz7G7xK1OTUMbmQzpbG2VrVKQEKSNegQIYsDQ1I6ghujNYVMLrDX3327DuAUBdqaR298aGkFkj5wyD9cr7yGQXLzdSHSu4zyOJA+ot1IU6xbebmuV1CREjiLgw2spJmhys+WqVs7Mv3iEMut27KnGxQasXUm1IsWpNrdqnsDBImSFONgQwbbZ+gDHRCSECEOdeMNX4ADo58IEYf8PCALSUV4bJUlp7wC1UnJlkHAuwOGm4WW23P9kQuE4aLAIAPISVU584w5vyf4NFBEEGoBorc8LyqCwH5GtrfvlunUN2UtvBljeOkIz2ipOB5WAhGE7Ez52/f8L/oQ/DGs69uN99VhGw1RP6kWX9yCtcrM=
+X-Stat-Signature: w5ebxx6wtahun1ey4a9n5gw11oh8osqn
+X-HE-Tag: 1787637582-374699
+X-HE-Meta: U2FsdGVkX18vuwr3TABn0LTebLyHYI/7iUsn98T+uPXVeRSSZ9CVwPcbqZcQ5c5XnMINm/RXjZZLtgT2Kbgqg4UcR32ma6VBG7o485TrHZ3Tchgh0hu7J98g5N4Ozoetihe+ejpsKVvtUTLgYWXbU5Ufa4hQ0cl875qnTg2XfXeSeDgfazBHv6xsOnc2yiDZewi+f0UxcDQZsEZMxH0uX5iKoKxhoj4iohdqa6PT1MNHGsSq5uullvQvBpPCXwhEw26gFpP+4DHTbbwsPGB4F7XhuaSh0MnnP+SG2QDrnhMI1+rbF1LUOwLxxzVlJDJ+Qe5trrSiJU93BW9OGFRrA+Rvu6A7wGJShyEMQxHWzoQgDWZtRHZPhn/i96AqiOoMx/B3vdPGl3c8JRX4Ak4/37el+nskJOf+AJHwd39fgeG7qzL0PVrcFXLFIJo4cCU8woisZdztWKDgoygacuZPX0sEU87RsJ0/j1eNPjl3DbbN07/lOokA9laCwmg5lR2cyi4WSJvV2+oMEcXIXXmukizdkhrnM9wgiIAPUrC82X9fEGsSYinDJPJOIzhgYEZdscK2G5RGD02D5SPs5ONx8wwW6eFBqQ2nxvbaUNLEGYIG7HBjd6SaBCQyIj2cR7cGu1NI42CRrbcbpU6MH1AkcWtc03zY93d/K2fPR5YVFbffrouaNfkXirX3r7YVIrU730zRyRCouJHAqn/5E8VkkJ6dPRthF4CZHcPTIQgRZo9GOK8HM1mT+yzRTDB+UdOjOax78BQ3e618D6eEo4HNnF7ZTGKd/orOfVDECumq6oabELdqZYCmhZ/5Nem4cO6l36vQKY10PEM4zoXLPT88CeT2NVaJSfKXNjlCW9pcsKqSkM8oyjaU2d8xnSbWkOhYyJ8ZnsnU8mUcIlXxiM4pTKxvZFLOgoRbGhx9wX3hIwUjG6w/D6H3UoZpIz+CiD4aJm3niNYDh9bEMUJDHsq
+ n6JkHsLd
+ 3euyB+zgmOIsGYwLVrKtUeiV+dRpwauQ9rcBsGunuLgBDMqMsGQ+CVH4z5qYeNPFQH6xG1yu9MBNLF15gQGL+1kJUktVxgoiHchNTY4DceF+L7ZTuhTUYdflS3KlBsccN+1FiHBn0c/NUC4Juk1pNDEpHWnxLAMbLXazr+KDTlWJKhWlzI7raxcnZz531Mag7o8u2Bkrvc6EFCoy40sl4fCB0/RJ179O7QFF/JK4gfDaD22jE36U/SKDxwRtc6OHFSiWdrEx3PkEptnM5xCUxWmTd5kOwSrmAKbh7KRnHca7AzdF2//3UDCAwpdRq2pSyZJLf2DyL8UBssGXsZhGuRG33fKbj+TyOlCGcWECFFmE5ActB40hOGCml9D4zsWA0VyPsflwClfoLT4gUwtK+I2nu+9hXIhIP2t+OmzACjRVZYn0t0O6xjM1E7kwPsbMBwRJia+7hviu+n+yhEdvtN6yuc39pps0ubWOaEMowQ8yum04LSt3o91bZS3O70Xj6yZWQeshFc66dLCAvLpBiKMsflyrlumyRSKU8hlNb4ZWSG1BEHYqdhiBnwVR4VSxstLCSpR6FpTOBFNc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,24 +100,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 20, 2026 at 02:13:37PM +0800, Lance Yang wrote:
-> XFS installs the huge-fault, regular-fault, and page_mkwrite callbacks
-> in the same vm_ops:
+On Thu, Aug 20, 2026 at 03:10:11PM +0100, Pedro Falcato wrote:
+> > Why? Write batching from large folios is a win.
 > 
-> static const struct vm_operations_struct xfs_file_vm_ops = {
-> 	.fault		= xfs_filemap_fault,
-> 	.huge_fault	= xfs_filemap_huge_fault,
-> 	...
-> 	.page_mkwrite	= xfs_filemap_page_mkwrite,
-> 	...
-> };
-> 
-> On the fallback path, handle_pte_fault() leaves an empty PMD without a
-> PTE and calls do_pte_missing():
+> For some context: we were discussing (off-list) the recent report that
+> systemd-journald had horrible write amplification, worsed quite a bit
+> by large folios. At the moment, there is quite a lot of write amplification,
+> but _only_ on mmap writes (if you look at the write(2) paths, you'll see
+> write_begin and write_end which tactically only dirty what you actually wrote
+> to, block-wise in the BHs or iomap IFS). This doesn't need to be true.
 
-Just a reminder that it would be extremely helpful if we could refactor
-the vm_operations_struct so that file systems could register one single
-fault handler to cover all these (plus .pfn_mkwrite) to remove all
-the annoying boilerplate code in the file system and the confusing
-fallback logic in the VM.
+So don't use mmap to write to storage.  That is always a bad idea for
+many, many reasons.  We should not work around broken applications that
+do this, but change them.  It only took about 10 years of bad reputation
+for MongoDB to finally fix their act, so it should be possible for
+systemd as well.
 
