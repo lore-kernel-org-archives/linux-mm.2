@@ -4,94 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A918C61DC2
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:39:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 559D3C61DC4
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:44:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9866C6B008C; Tue, 25 Aug 2026 08:39:26 -0400 (EDT)
+	id 60D476B00D7; Tue, 25 Aug 2026 08:44:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 937F26B00A0; Tue, 25 Aug 2026 08:39:26 -0400 (EDT)
+	id 5BEB76B00D8; Tue, 25 Aug 2026 08:44:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 875576B00AB; Tue, 25 Aug 2026 08:39:26 -0400 (EDT)
+	id 485706B00D9; Tue, 25 Aug 2026 08:44:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 68C196B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:39:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0695F1C18C2
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:39:26 +0000 (UTC)
-X-FDA: 85139747532.22.42DD9A6
-Received: from mta1.migadu.com (out-243.mta1.migadu.com [95.215.58.243])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 04A9618000E
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:39:23 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bu+zn39Z;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.243 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 200AD6B00D7
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:44:37 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 91829803DD
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:44:36 +0000 (UTC)
+X-FDA: 85139760552.04.6893D5A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D9EEC40008
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:44:34 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/VqmKgx";
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787661564;
+	s=arc-20220608; t=1787661874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8jBoCvOZgu3TJX11/FJiGM1chFiNkdMB0eUrxy7gcA0=;
-	b=t/j9F05UKb6I7aC/EWCNC8pf0R8Gkg5joabh0wkW4V3BZKVjd0Z5Q08+cEF2y3eEv4I2MW
-	O+6IgEZCqhnfCxrtJO1Hg449hVdfKJr1OfqdDa9p79jTSRizE4JJF8175NZpHNFw1SYlIe
-	9hOWbAJUVKq7iFoKTo1P64dhCkr+WOU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787661564;
-	b=7sQe8mIUIdLC/zk7Wyubrtn4v54AopBOCY/UMCn/tpQf10QkQr6E/JtrQqDglWGBhHyUd2
-	aEEAez501Q5O32TmzcCaiSkLltejTzLD1pOOeOyv94RiUPQzI4+cfgCydCLsjpVU+pSASd
-	ylcvEZP+ri6ub4ScMzbRS6tRBvt/I/U=
+	bh=6VTiyEcSix4oIoLFiGt/wMRFw+qah/FnwlUhXR+tPBs=;
+	b=M9dNpgpts5/WoUBAJ/dJQFfiLpJoQW/GzJoGl1acHi2HOl4La+XK1KSajdzgUBN8xLozUg
+	knsRMJBPzdGCSuIYzPY0PDXocCF7EQ4CN1Bj4NahTLgV4zBYk0kMeOvEGmPd7enL4JCsre
+	7kr8fzi72d/3FByh8uLHYwutazUWKWk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bu+zn39Z;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.243 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Pzwlf//Bvy46LelD2lYa9+LILpMnz7M9KVbRyTt1z78=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787661562; v=1; x=1788266362;
- b=bu+zn39ZAmUhPMP6eQi4M856XzugIccqrAw1XhWUv1Ex+I7DIaQW4JgQm86+SwB/WwVZ3wrz
- jWMIt81tTErULxqy1vGgVJi8WxZSdgPl/36h5mTn+QXC76zisRtNRPyQ0xt5g5XcjQ32trZcluF
- Xe3384+5ftrB4yyN241LnVRo=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.254.116.35] (101.126.56.83)
-	by smtp.migadu.com with ESMTPS id a43f18b9a5ea956e;
-	Tue, 25 Aug 2026 12:39:12 +0000
-X-Mizu-Trace-ID: a43f18b9a5ea956e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <59e0f96f-6405-4e7c-9561-456f18a658b8@linux.dev>
-Date: Tue, 25 Aug 2026 20:38:52 +0800
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/VqmKgx";
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787661874;
+	b=iy3u4ltCA/cCqRbFxleP3JRlASsBmANzlaIf3XyuFh4u0IZ2S3MDb/Aer6I+u+tG08fQYV
+	y/vyaQLW88+LmtzuMLj8/ISuk1QNr1xJqJ3/182gXFzSFF99RAxNxmJXYytnDYTEYYSC1K
+	mAcBxwy6HJQ2ZXA45YLPtz8PA7Y5fdk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 397A86013A;
+	Tue, 25 Aug 2026 12:44:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386991F000E9;
+	Tue, 25 Aug 2026 12:44:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787661873;
+	bh=6VTiyEcSix4oIoLFiGt/wMRFw+qah/FnwlUhXR+tPBs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E/VqmKgxK3byrkDMYSvZGrIANldMAQ2t31mbaqAIYWCfP5nc0YMDhcBIfMS25r+Qe
+	 Fa1w/QPdceT67pBuFYOGK96MlwtXOQIKTq8jdkrO3GyX2js1ZMuH7z+oZrKBJGBaes
+	 /iZJjpZiU2HGBWPoho6qSwM6Y/1ZzwcZuIwL6BHK0A5NilG7nDi+G7kQpdqY21tSPJ
+	 J6nST88odTqAb5dnQ+gTTMD5D6iNZVBGzEAqX1K1wdVlvCkqrlBp+5B6WOkuug8LVa
+	 SN8kuk4A8ieCfXv5fSONUwNQVm7VGwSj9i+o8YvSgdMiJX0mXscSBHLQ6yw1LdNLN9
+	 CWIBVyPLUl0Iw==
+Date: Tue, 25 Aug 2026 13:44:23 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
+	Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] userfaultfd: collapse VM_UFFD_{MISSING,WP,MINOR,RWP}
+ into single VM_UFFD
+Message-ID: <ao16VxNvaYzlt2WG@gremlin>
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-6-3086981b33cf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/17] mm/sparse-vmemmap: support section-based vmemmap
- optimization
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-9-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260825084608.47437-9-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260823-uffd-vm-flags-v1-v1-6-3086981b33cf@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D9EEC40008
+X-Stat-Signature: 5nexy15fo9ogtwyfzbij6zc3hb34bjm5
 X-Rspam-User: 
-X-Stat-Signature: iqmqch6qyz6g7kqggipcibhds9emsb8z
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 04A9618000E
-X-HE-Tag: 1787661563-911251
-X-HE-Meta: U2FsdGVkX19u007O43f44q6sIsDWrIocl6y/CB+NJL8i3fg3qnZgBzYH7ngTAoDLB/Zl2yL2kyLYEPGAbOh2nYoMg8a5PaFKWOCy10lqWW222yNlQbaEtM5btC0mvU/L0CZqLnohP+fwWdXee6hfd0c5r9tXC6VHo1KvDSfOSEtj3ag0Tn80yY5hH/tyXChWcTTlcYwFAVq3TD6Xr7uluEZo0vGymFtyIEZe0sWzFS5eVfx5EQLjHDwYNaV+V17FAAIiuiYL4q2Ev5Tuj2s2+xIIf4YPNDc2oU5hFEDF+fsMxbyv1HGUVo2RQu4i2pn7kCDuVRE6aM9hpBZqwJlyxuyKqSyCzmCzjW4jaMb7/mM2QKxIXgf7AAS9SW6JaDAvZeN5PD0a1FV2/ScqrI655g0cyli+nS0XXPfQO6P4rlbcx8oBMm3bARU8DoUi2KuVG+bYgv6Oc0Va7IguHTdRMA55yVSmpLy/AI513NjoKKgO1YcM5Q1xkxKC+dz4JX2ZCedESU3LEjCpk0rJKoKj3QP19hFWjG36EGiCkmRAgzvCLamKuJNY2Q88itMu7Bn1/tz3LriwRvKl9z50kPhcJrh/yVcQXsM3W4QDi/sJcs6nyaraBWCFoLJdYnDs0patkoyVQPATwkE/K94QKy4dUO5dUOcMGSCrqbalZ0x2qyozpxOctOvv762ROd+p9MAE61u2yL259Bh1OjOjPZu4NZh3ukaAbK8ibNUYojrVgD6Rml2l48uG/fTarIZhY+KnSwPJASQj6qX3SxJVmPv3tnjJ4x0EcVOq+CGgqpeuuF9GBhsgKXgtzE6Mb0LRe2+23k6d3cGfX18T7QyGtAFpkFxnuFoTYSZU2C0mXMLCXgxHHFS69ZuUCIInMCZvTWQUKNPA0PS7wd44tR4DaWG1ysmFi4+RApgBGTYxXvY3X5i3j5qgFp9ZY1DneeldYWIDNo5cyCzyYWCP5Ni5NIJ
- mYfQaS0N
- JHnUolqzO5Sl/3ppLvg+1PznVud3LLYTRWL38IwRLJuGPSpxDLNF/WdqC4J8qMRTsueMb43j1nmIDJu5Rck2Ec27SHUKDXGfW2gd81pDvDgHlWnNcT536bWdNPoDXEdIqToyA5mI1zStS2LUCggUhW7o0prqqG4TCtHt22BzC88pjBnsnRQdYCnKdSFEhsW/PqcGrZw7Gc+OZ610s56EepoqYtWAxhJyF+wecZJ3aPOPUt4vIrAPxNZW2J2e/Nx9l8K5Jg8PYE5yM3E0Yp/2zTqfzE9r+VUJDse+ZAkvPFPloL7hn0PzZRKNC9fGGn5O0KIH60+r1gwZdYxtY61Jq+2guQFwnb8KMrApZlknWysVQ+XCHlonyWaAOhw==
+X-HE-Tag: 1787661874-69616
+X-HE-Meta: U2FsdGVkX18eGteNVp9ZOZtYjIIA4PqlHfOdjzme4XTyINpGnH9JKYLH6FYYsx13uqmEfeFFjxvCb6e07AU8CM22KZN08E7xHxcbtyobCdt2yq95igyZsVNWxeW8LJ8wU3ggswItgPggAg5HV0nX7fMLymkA/vF08OTUucbjIhpKTaTQcXBqBpgNDRLSS+bpmnfFvFiRziEsFNLjN6CWYtxoF2xfb4qAMKJb/eOrPvaRBCuQKPNqM/QGZmam76wYBa7R6q1nOHZDGQ47L30OHR2y/ebdup7SNGn5/I1jXRN3Q/1e8uGYDCXGTFiEY8Ui7EwuP264PNomScIeTP8/BJohQKQdt0c2UePntRJdD3COgLus3/aLwKMjN0UQg5lMYLz8FFb/Bp4KH/svsZKD5gDqWK8DvnhTasj/e+YBlntnqQ2d3207lJaR/tHWheBwWqVwoJNaML+6hjZLGxHuinFVQN2DW6yKB4mcawQTdoOBtWpfoKGzHDPyOI2sMKBsCTSa9jxdIfBx5VTYa86rGH6RekmzFDoRfqlZ10ktQU0A0hM+7TmnIhCQoZflWW70baWrZC7vqXTWHeNfI9lNhEU5o2LCkv2h0L3AsPj9m91HaPqjAEntWQXDkAeaIRuX7LsJMsUkPlFX3sUHZ+Pf/EagJkRQ5emqHm9n8Dg+/gAhD5H8nQx07X7ryAQNZbChGuiPYVaxaC2hdsNhMZ2M/ZI97IjRgNCgFPSGqRyQkDL07KGjlv8aeaVS1tma6OzDuh7eDK8PG4pK36hqOUokcXLGNIMzRU+clnO64xp0BehgBKbs1pgcRyT1oQ3FS665yhyaKSZ91XKgyFPrsM3K4Gn9Uo0VexlvqCE/1xPKsiI8CRwHdz82Hsg+1ViipxONn9sNQaH4YkYaVuzTMnM6P9C1m2aGI3e96+D+oWaNVou8X+cRbG9R3+x1/RFNQmj6dDVNh3+3JNTljaa1CIG
+ W3/begJj
+ Ph0CSiZPujSVhBJIWTYhTeqWp2Vlwb4dEPFvwNVoJADi4virASedaVCD0BbS1suALpYLhTWrczl2WYyb2YuBX7Eye8mJ9tF1q3ZAgCprNZeBIga4FMnYKNyU62AOayr8d59woewhXW/O0tp7r9jMKeojweJ+Krr/A24tE5neqkPqK35TexcfX0MtK0lktxb2M6l8qsYTGz2+7vnOJgACZFDEfwjgMbBSqNDTL1gCM2y1UQfK6jTLXb7oTf5WUd+9yGYl4d/FfGluUSvtVa9k4JoBrQM2m0WhXOj37YyMRbIT7ZxtI8mqfZvN0VqrKjzK8TEuLY4HfYEZuSyEFfRFmBZFYY71EGoa4Eixy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,26 +108,1131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+I don't love referring to the legacy flags in the subject but I gues you
+have limited space...
 
+On Sun, Aug 23, 2026 at 03:17:43PM +0300, Mike Rapoport (Microsoft) wrote:
+> Add 'mode' field to struct vm_uffd_state and define UFFD_MODE_ flags.
 
-On 8/25/26 4:45 PM, Muchun Song wrote:
-> Teach sparse-vmemmap population code to use the compound page order
-> when deciding whether a vmemmap page can be optimized.
-> 
-> With this information, the common sparse-vmemmap population path can
-> allocate or reuse shared tail vmemmap pages directly instead of relying
-> on HugeTLB-specific handling.
-> 
-> This centralizes vmemmap optimization logic in the sparse-vmemmap code,
-> based on section metadata, and prepares for sharing the same mechanism
-> across different users of vmemmap optimization, including HugeTLB and
-> DAX.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Can you mention that you're increasing the size of the VMA by 4 bytes
+please? (8 bytes if __HAVE_PFNMAP_TRACKING I believe too).
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>
+> Use this field to differentiate VMA registration with userfaultfd
+> instead of relying on VM_UFFD_* flags.
 
-Thanks,
-Qi
+Here you should reference non-legacy VMA flag names.
 
+>
+> A VMA registered with userfaultfd will have a single VM_UFFD flag set
+> and its registration mode (MISSING, MINOR, WP, RWP) is determined by
+> vm_uffd_state.mode.
+>
+> This frees three vm_flags bits (12, 41, 43).
+
+Is the primary motivation here to eliminate these flags? We're paying a
+cost in VMA bloat here so I think you need to argue for it. I wouldn't say
+freeing up VMA flags justifies adding 4 or 8 bytes per VMA.
+
+We've put a lot of effort into reducing VMA size so I think any size
+increase in standard shipped 64-bit kernels has to be justified.
+
+Also there's weirdness around the flag behaviour with WP. As I recall
+there's strange situations where you have to examine state of the
+destination VMA when doing a UFFDIO_MOVE or something like that and there's
+just strange edge cases.
+
+I'm guessing the change is just independent of this and in both cases
+you're checking for state just in different please?
+
+>
+> Update the relevant code to use UFFD_MODE_* instead of VM_UFFD_* flags.
+
+USERFAULT_, UF_, UFFD_... Can we settle on one?
+
+>
+> Remove VM_UFFD_WP and VM_UFFD_RWP from VM_COPY_ON_FORK, adding an
+> explicit userfaultfd_protected() check in vma_needs_copy() instead.
+>
+> /proc/pid/smaps representation of VmFlags is slightly changed:
+> - any VMA registered with UFFD shows 'uf'
+> - the existing userfault markers ('um', 'uw', 'ui', 'ur') are shown after
+>   VmFlags rather than in the middle
+
+That should all be fine.
+
+>
+> Assisted-by: copilot:claude-opus-4.6
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  fs/proc/task_mmu.c              |  18 +++---
+>  include/linux/mm.h              |  67 +++++-----------------
+>  include/linux/mm_types.h        |   1 +
+>  include/linux/pgtable.h         |   4 +-
+>  include/linux/userfaultfd_k.h   |  37 +++++++-----
+>  include/trace/events/mmflags.h  |  17 +-----
+>  mm/gup.c                        |   5 +-
+>  mm/hugetlb.c                    |   2 +-
+>  mm/khugepaged.c                 |   2 +-
+>  mm/memory.c                     |   6 +-
+>  mm/mprotect.c                   |   2 +-
+>  mm/shmem.c                      |   2 +-
+>  mm/userfaultfd.c                | 123 +++++++++++++++++++++-------------------
+>  tools/testing/vma/include/dup.h |  18 ++----
+>  14 files changed, 134 insertions(+), 170 deletions(-)
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 5c54aebe2118..8d344c6ee14e 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/minmax.h>
+>  #include <linux/overflow.h>
+>  #include <linux/buildid.h>
+> +#include <linux/userfaultfd_k.h>
+>
+>  #include <asm/elf.h>
+>  #include <asm/tlb.h>
+> @@ -1216,8 +1217,7 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+>  		[ilog2(VM_HUGEPAGE)]	= "hg",
+>  		[ilog2(VM_NOHUGEPAGE)]	= "nh",
+>  		[ilog2(VM_MERGEABLE)]	= "mg",
+> -		[ilog2(VM_UFFD_MISSING)]= "um",
+> -		[ilog2(VM_UFFD_WP)]	= "uw",
+> +		[ilog2(VM_UFFD)]	= "uf",
+>  #ifdef CONFIG_ARM64_MTE
+>  		[ilog2(VM_MTE)]		= "mt",
+>  		[ilog2(VM_MTE_ALLOWED)]	= "",
+> @@ -1234,12 +1234,6 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+>  		[ilog2(VM_PKEY_BIT4)]	= "",
+>  #endif
+>  #endif /* CONFIG_ARCH_HAS_PKEYS */
+> -#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+> -		[ilog2(VM_UFFD_MINOR)]	= "ui",
+> -#endif /* CONFIG_HAVE_ARCH_USERFAULTFD_MINOR */
+> -#ifdef CONFIG_USERFAULTFD_RWP
+> -		[ilog2(VM_UFFD_RWP)]	= "ur",
+> -#endif
+>  #ifdef CONFIG_ARCH_HAS_USER_SHADOW_STACK
+>  		[ilog2(VM_SHADOW_STACK)] = "ss",
+>  #endif
+> @@ -1259,6 +1253,14 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+>  		if (vma->vm_flags & (1UL << i))
+>  			seq_printf(m, "%s ", mnemonics[i]);
+>  	}
+> +	if (userfaultfd_missing(vma))
+> +		seq_puts(m, "um ");
+> +	if (userfaultfd_wp(vma))
+> +		seq_puts(m, "uw ");
+> +	if (userfaultfd_minor(vma))
+> +		seq_puts(m, "ui ");
+> +	if (userfaultfd_rwp(vma))
+> +		seq_puts(m, "ur ");
+
+Isn't this patch then a bisection hazard where the previous one makes the flags
+
+>  	seq_putc(m, '\n');
+>  }
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 4daf9cd6ae8e..416de7663951 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -303,7 +303,7 @@ enum {
+>  	DECLARE_VMA_BIT(MAYSHARE, 7),
+>  	DECLARE_VMA_BIT(GROWSDOWN, 8),	/* general info on the segment */
+>  #ifdef CONFIG_MMU
+> -	DECLARE_VMA_BIT(UFFD_MISSING, 9),/* missing pages tracking */
+> +	DECLARE_VMA_BIT(UFFD, 9),	/* userfaultfd registered */
+
+Since we're getting rid of other flags, can we just have UFFD occupy a flag
+that isn't conditional on CONFIG_MMU? Maybe bit 12 instead?
+
+Presumably nommu will never set/use VMA_UFFD_BIT (CONFIG_USERFAULTFD won't
+be set) and it'll make everything easier this way.
+
+>  #else
+>  	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+>  	DECLARE_VMA_BIT(MAYOVERLAY, 9),
+> @@ -311,7 +311,7 @@ enum {
+>  	/* Page-ranges managed without "struct page", just pure PFN */
+>  	DECLARE_VMA_BIT(PFNMAP, 10),
+>  	DECLARE_VMA_BIT(MAYBE_GUARD, 11),
+> -	DECLARE_VMA_BIT(UFFD_WP, 12),	/* wrprotect pages tracking */
+> +	/* Bit 12 is free */
+>  	DECLARE_VMA_BIT(LOCKED, 13),
+>  	DECLARE_VMA_BIT(IO, 14),	/* Memory mapped I/O or similar */
+>  	DECLARE_VMA_BIT(SEQ_READ, 15),	/* App will access data sequentially */
+> @@ -352,9 +352,8 @@ enum {
+>  #elif defined(CONFIG_64BIT)
+>  	DECLARE_VMA_BIT(DROPPABLE, 40),
+>  #endif
+> -	DECLARE_VMA_BIT(UFFD_MINOR, 41),
+> +	/* Bits 41 and 43 are free */
+>  	DECLARE_VMA_BIT(SEALED, 42),
+> -	DECLARE_VMA_BIT(UFFD_RWP, 43),
+>  	/* Flags that reuse flags above. */
+>  	DECLARE_VMA_BIT_ALIAS(PKEY_BIT0, HIGH_ARCH_0),
+>  	DECLARE_VMA_BIT_ALIAS(PKEY_BIT1, HIGH_ARCH_1),
+> @@ -408,14 +407,14 @@ enum {
+>  #define VM_MAYSHARE	INIT_VM_FLAG(MAYSHARE)
+>  #define VM_GROWSDOWN	INIT_VM_FLAG(GROWSDOWN)
+>  #ifdef CONFIG_MMU
+> -#define VM_UFFD_MISSING	INIT_VM_FLAG(UFFD_MISSING)
+> +#define VM_UFFD		INIT_VM_FLAG(UFFD)
+> +#define VMA_UFFD	mk_vma_flags(VMA_UFFD_BIT)
+
+See above, in general it's annoying to figure out whether the flag is
+available and it's easy to slip bugs in.
+
+It's also weird to have flags before that were always declared, and now one that
+is not.
+
+But I'm not sure you're even using this now?
+
+>  #else
+> -#define VM_UFFD_MISSING	VM_NONE
+> +#define VM_UFFD		VM_NONE
+>  #define VM_MAYOVERLAY	INIT_VM_FLAG(MAYOVERLAY)
+>  #endif
+>  #define VM_PFNMAP	INIT_VM_FLAG(PFNMAP)
+>  #define VM_MAYBE_GUARD	INIT_VM_FLAG(MAYBE_GUARD)
+> -#define VM_UFFD_WP	INIT_VM_FLAG(UFFD_WP)
+>  #define VM_LOCKED	INIT_VM_FLAG(LOCKED)
+>  #define VM_IO		INIT_VM_FLAG(IO)
+>  #define VM_SEQ_READ	INIT_VM_FLAG(SEQ_READ)
+> @@ -499,36 +498,6 @@ enum {
+>  #define VM_MTE		VM_NONE
+>  #define VM_MTE_ALLOWED	VM_NONE
+>  #endif
+> -#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+> -#define VM_UFFD_MINOR	INIT_VM_FLAG(UFFD_MINOR)
+> -#else
+> -#define VM_UFFD_MINOR	VM_NONE
+> -#endif
+> -#ifdef CONFIG_USERFAULTFD_RWP
+> -#define VM_UFFD_RWP		INIT_VM_FLAG(UFFD_RWP)
+> -#else
+> -#define VM_UFFD_RWP		VM_NONE
+> -#endif
+> -
+> -/*
+> - * vma_flags_t masks for the userfaultfd VMA flags. The two high-bit modes are
+> - * gated on the same configs as their VM_* flags above -- both of which imply
+> - * 64BIT -- so an out-of-range bit is never fed to mk_vma_flags() on a build
+> - * whose bitmap cannot hold it.
+> - */
+> -#define VMA_UFFD_MISSING	mk_vma_flags(VMA_UFFD_MISSING_BIT)
+> -#define VMA_UFFD_WP		mk_vma_flags(VMA_UFFD_WP_BIT)
+> -#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+> -#define VMA_UFFD_MINOR		mk_vma_flags(VMA_UFFD_MINOR_BIT)
+> -#else
+> -#define VMA_UFFD_MINOR		EMPTY_VMA_FLAGS
+> -#endif
+> -#ifdef CONFIG_USERFAULTFD_RWP
+> -#define VMA_UFFD_RWP		mk_vma_flags(VMA_UFFD_RWP_BIT)
+> -#else
+> -#define VMA_UFFD_RWP		EMPTY_VMA_FLAGS
+> -#endif
+> -
+>  #ifdef CONFIG_64BIT
+>  #define VM_ALLOW_ANY_UNCACHED	INIT_VM_FLAG(ALLOW_ANY_UNCACHED)
+>  #define VM_SEALED		INIT_VM_FLAG(SEALED)
+> @@ -668,32 +637,26 @@ enum {
+>   * reconsistuted upon page fault, so necessitate page table copying upon fork.
+>   *
+>   * Note that these flags should be compared with the DESTINATION VMA not the
+> - * source: VM_UFFD_WP and VM_UFFD_RWP may be cleared on the destination
+> + * source: uffd WP/RWP mode may be cleared on the destination
+>   * (dup_userfaultfd() -> userfaultfd_reset_ctx() when the parent context did
+>   * not negotiate UFFD_FEATURE_EVENT_FORK), while all other flags propagate.
+>   *
+>   * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
+>   *                           reasonably reconstructed on page fault.
+>   *
+> - *              VM_UFFD_WP - Encodes metadata about an installed uffd
+> - *              VM_UFFD_RWP  write- or read-write-protect handler, which
+> - *                           cannot be reconstructed on page fault.
+> - *
+> - *                           We always copy pgtables when dst_vma has the
+> - *                           uffd PTE bit in use even if it's file-backed
+> - *                           (e.g. shmem). Because when the uffd bit is
+> - *                           in use, the pgtable contains the protection
+> - *                           information, that's something we can't
+> - *                           retrieve from page cache, and skip copying
+> - *                           will lose those info.
+> - *
+>   *          VM_MAYBE_GUARD - Could contain page guard region markers which
+>   *                           by design are a property of the page tables
+>   *                           only and thus cannot be reconstructed on page
+>   *                           fault.
+> + *
+> + *       uffd WP/RWP modes - Encode metadata about an installed uffd
+> + *                           write- or read-write-protect handler, which
+> + *                           cannot be reconstructed on page fault.
+> + *                           This is checked separately via
+> + *                           userfaultfd_protected() in vma_needs_copy().
+> + *
+>   */
+> -#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_UFFD_RWP | \
+> -			 VM_MAYBE_GUARD)
+> +#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_MAYBE_GUARD)
+
+Really this should be converted to the new VMA flags model, but I guess
+it's outside of the scope of this change.
+
+>
+>  /*
+>   * mapping from the currently active vm_flags protection bits (the
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index d6deb655d82e..8354d1c18b29 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -723,6 +723,7 @@ struct vm_region {
+>  #define NULL_VM_UFFD_STATE ((struct vm_uffd_state) { NULL, })
+>  struct vm_uffd_state {
+>  	struct userfaultfd_ctx *ctx;
+> +	unsigned int mode;
+>  };
+
+Hmm this is adding 4 bytes at least to every VMA is that OK?
+
+I was going to say this adds a cache line but no it shouldn't as it's right
+at the end.
+
+VMA size scaling is a real issue though and this increases every VMA by 4
+bytes, can't it be put in userfaultfd_ctx? I guess not as it's a per-VMA
+thing.
+
+And does all of the NULL stuff now actually still work?
+
+>  #else /* CONFIG_USERFAULTFD */
+>  #define NULL_VM_UFFD_STATE ((struct vm_uffd_state) {})
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 8c093c119e5a..4b74c298cc14 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -2119,8 +2119,8 @@ static inline int pud_trans_unstable(pud_t *pud)
+>   * In an accessible VMA, pte_protnone() reliably indicates a present
+>   * PROT_NONE page protection. Today the kernel uses such PTEs for two
+>   * purposes: NUMA hinting faults, and userfaultfd RWP tracking on
+> - * VM_UFFD_RWP VMAs. The two are distinguished by the uffd PTE bit and
+> - * the VMA flag; see include/linux/userfaultfd_k.h.
+> + * uffd-RWP VMAs. The two are distinguished by the uffd PTE bit and
+> + * the VMA uffd state; see include/linux/userfaultfd_k.h.
+>   *
+>   * So, to reliably identify PROT_NONE PTEs that require kernel handling,
+>   * looking at the VMA accessibility (and the uffd bit on RWP VMAs) is
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index f401623f315d..b4261038d10a 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -32,12 +32,13 @@ enum uf_reason {
+>  #include <asm-generic/pgtable_uffd.h>
+>  #include <linux/hugetlb_inline.h>
+>
+> -/* The set of all possible UFFD-related VM flags. */
+> -#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_MINOR | \
+> -			 VM_UFFD_WP | VM_UFFD_RWP)
+> -
+> -#define __VMA_UFFD_FLAGS mk_vma_flags_from_masks(VMA_UFFD_MISSING, VMA_UFFD_WP, \
+> -						 VMA_UFFD_MINOR, VMA_UFFD_RWP)
+> +/* Per-VMA uffd modes */
+> +#define UFFD_MODE_MISSING	BIT(0)
+> +#define UFFD_MODE_MINOR		BIT(1)
+> +#define UFFD_MODE_RWP		BIT(2)
+> +#define UFFD_MODE_WP		BIT(3)
+> +#define UFFD_MODE_ALL		(UFFD_MODE_MISSING | UFFD_MODE_MINOR | \
+> +				 UFFD_MODE_RWP | UFFD_MODE_WP)
+
+An entirely new set of duplicative flags?
+
+And now we're flitting from USERFAULT_ to UFFD_ for some reason...
+
+Mode also seems to me to imply a specific setting not a set of flags.
+
+So you probably want to put the word 'flag' in there somewhere... Or say
+'mode_s_'. Since multiple can be set right?
+
+And weird/inconsistent to declare the USERFAULT_xxx as an enum and #define's
+here as well as the naming?
+
+I have to say it's confusing.
+
+>
+>  /*
+>   * CAREFUL: Check include/uapi/asm-generic/fcntl.h when defining
+> @@ -99,7 +100,7 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, enum uf_reason reason);
+>  /* VMA userfaultfd operations */
+>  struct vm_uffd_ops {
+>  	/* Checks if a VMA can support userfaultfd */
+> -	bool (*can_userfault)(struct vm_area_struct *vma, vm_flags_t vm_flags);
+> +	bool (*can_userfault)(struct vm_area_struct *vma, unsigned int mode);
+>  	/*
+>  	 * Called to resolve UFFDIO_CONTINUE request.
+>  	 * Should return the folio found at pgoff in the VMA's pagecache if it
+> @@ -174,25 +175,34 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+>  			unsigned long dst_addr, unsigned long src_addr);
+>
+>  /* mm helpers */
+> +static inline unsigned int uffd_mode(const struct vm_area_struct *vma)
+> +{
+> +	return vma->vm_uffd_state.mode;
+> +}
+> +
+>  static inline bool is_mergeable_vm_uffd_state(struct vm_area_struct *vma,
+>  					struct vm_uffd_state vm_ctx)
+>  {
+> -	return vma->vm_uffd_state.ctx == vm_ctx.ctx;
+> +	return vma->vm_uffd_state.ctx == vm_ctx.ctx &&
+> +	       uffd_mode(vma) == vm_ctx.mode;
+
+You see it's things like this that make the naming problematic, now it
+seems that mode (whose very name implies a singular state) is being checked
+against another which can either be in one mode or another but actually
+you're doing a flags check...
+
+>  }
+>
+>  static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
+>  {
+> -	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
+> +	return vma_test(vma, VMA_UFFD_BIT) &&
+> +	       (uffd_mode(vma) & UFFD_MODE_MISSING);
+
+This is broken assuming this can be executed in a context where VMA_UFFD can be
+VMA_NONE.
+
+You should use vma_test_single_mask(). Or preferably, as above, just always
+provide VMA_UFFD_BIT.
+
+The problem is with bits we can't express a VM_NONE equivalent, which is
+why VMA_UFFD is defined.
+
+It seems the only places that's used are ones where you could, or already
+do, gate on uffd being enabled:
+
+include/linux/mm.h: * vma_flags_t flags = mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR);
+
+(This is a comment that needs updating see my comment at the end of review).
+
+mm/userfaultfd.c:	vma_flags_clear_mask(&new_vma_flags, VMA_UFFD);
+mm/userfaultfd.c:		vma_flags_set_mask(&new_vma_flags, VMA_UFFD);
+
+>  }
+>
+>  static inline bool userfaultfd_wp(const struct vm_area_struct *vma)
+>  {
+> -	return vma_test_any_mask(vma, VMA_UFFD_WP);
+> +	return vma_test(vma, VMA_UFFD_BIT) &&
+> +	       (uffd_mode(vma) & UFFD_MODE_WP);
+
+Same comment as above this seems broken.
+
+>  }
+>
+>  static inline bool userfaultfd_minor(const struct vm_area_struct *vma)
+>  {
+> -	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
+> +	return vma_test(vma, VMA_UFFD_BIT) &&
+> +	       (uffd_mode(vma) & UFFD_MODE_MINOR);
+
+Same comment as above this seems broken.
+
+>  }
+>
+>  static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
+> @@ -203,7 +213,8 @@ static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
+>  	 */
+>  	if (!IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE))
+>  		return false;
+> -	return vma_test_single_mask(vma, VMA_UFFD_RWP);
+> +	return vma_test(vma, VMA_UFFD_BIT) &&
+> +	       (uffd_mode(vma) & UFFD_MODE_RWP);
+
+Same comment as above this seems broken.
+
+Obviously I don't love the &&, & but that seems a moot point.
+
+>  }
+>
+>  static inline bool userfaultfd_protected(const struct vm_area_struct *vma)
+> @@ -271,7 +282,7 @@ static inline bool userfaultfd_huge_pmd_rwp(struct vm_area_struct *vma,
+>
+>  static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+>  {
+> -	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
+> +	return vma_test(vma, VMA_UFFD_BIT);
+
+Same comment as above.
+
+>  }
+>
+>  static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
+> diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
+> index 935893e5ea53..aacdd90e0a64 100644
+> --- a/include/trace/events/mmflags.h
+> +++ b/include/trace/events/mmflags.h
+> @@ -180,18 +180,6 @@ IF_HAVE_PG_ARCH_3(arch_3)
+>  #define IF_HAVE_VM_SOFTDIRTY(flag,name)
+>  #endif
+>
+> -#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+> -# define IF_HAVE_UFFD_MINOR(flag, name) {flag, name},
+> -#else
+> -# define IF_HAVE_UFFD_MINOR(flag, name)
+> -#endif
+> -
+> -#ifdef CONFIG_USERFAULTFD_RWP
+> -# define IF_HAVE_UFFD_RWP(flag, name) {flag, name},
+> -#else
+> -# define IF_HAVE_UFFD_RWP(flag, name)
+> -#endif
+> -
+>  #if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
+>  # define IF_HAVE_VM_DROPPABLE(flag, name) {flag, name},
+>  #else
+> @@ -208,12 +196,9 @@ IF_HAVE_PG_ARCH_3(arch_3)
+>  	{VM_MAYEXEC,			"mayexec"	},		\
+>  	{VM_MAYSHARE,			"mayshare"	},		\
+>  	{VM_GROWSDOWN,			"growsdown"	},		\
+> -	{VM_UFFD_MISSING,		"uffd_missing"	},		\
+> -IF_HAVE_UFFD_MINOR(VM_UFFD_MINOR,	"uffd_minor"	)		\
+> +	{VM_UFFD,			"uffd"		},		\
+>  	{VM_PFNMAP,			"pfnmap"	},		\
+>  	{VM_MAYBE_GUARD,		"maybe_guard"	},		\
+> -	{VM_UFFD_WP,			"uffd_wp"	},		\
+> -IF_HAVE_UFFD_RWP(VM_UFFD_RWP,		"uffd_rwp"	)		\
+>  	{VM_LOCKED,			"locked"	},		\
+>  	{VM_IO,				"io"		},		\
+>  	{VM_SEQ_READ,			"seqread"	},		\
+
+Shouldn't you update the tracing logic to obtain these from uffd
+modes/flags?
+
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 500e2aa99e48..9243c41a0c0e 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/swap.h>
+>  #include <linux/swapops.h>
+>  #include <linux/secretmem.h>
+> +#include <linux/userfaultfd_k.h>
+>
+>  #include <linux/sched/signal.h>
+>  #include <linux/rwsem.h>
+> @@ -641,7 +642,7 @@ static inline bool gup_can_follow_protnone(const struct vm_area_struct *vma,
+>  					   unsigned int flags)
+>  {
+>  	/*
+> -	 * VM_UFFD_RWP uses protnone as an access-tracking marker, not for
+> +	 * uffd-RWP uses protnone as an access-tracking marker, not for
+>  	 * NUMA hinting. GUP must always take a fault so the access is
+>  	 * delivered to userfaultfd, regardless of FOLL_HONOR_NUMA_FAULT.
+>  	 *
+> @@ -651,7 +652,7 @@ static inline bool gup_can_follow_protnone(const struct vm_area_struct *vma,
+>  	 * no progress on protnone in an inaccessible VMA, and the access is
+>  	 * denied regardless of RWP anyway.
+>  	 */
+> -	if (vma_test_single_mask(vma, VMA_UFFD_RWP) && vma_is_accessible(vma))
+> +	if (userfaultfd_rwp(vma) && vma_is_accessible(vma))
+>  		return false;
+>
+>  	/*
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 5e2ed80c1938..a15c443474d5 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -4808,7 +4808,7 @@ static vm_fault_t hugetlb_vm_op_fault(struct vm_fault *vmf)
+>
+>  #ifdef CONFIG_USERFAULTFD
+>  static bool hugetlb_can_userfault(struct vm_area_struct *vma,
+> -				  vm_flags_t vm_flags)
+> +				  unsigned int mode)
+>  {
+>  	return true;
+>  }
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 79effd3f3da4..7f590a1d3ca3 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2112,7 +2112,7 @@ static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
+>  	/*
+>  	 * When a vma is registered with uffd-wp or RWP, we cannot recycle
+>  	 * the page table because there may be pte markers installed.
+> -	 * VM_UFFD_RWP ranges similarly rely on per-PTE uffd state
+> +	 * uffd-RWP ranges similarly rely on per-PTE uffd state
+>  	 * and cannot be recycled to a shared PMD. Other vmas can still
+>  	 * have the same file mapped hugely, but skip this one: it will
+>  	 * always be mapped in small page size for these registrations.
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 1a9b41704b0c..c12ec979199c 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1565,10 +1565,12 @@ vma_needs_copy(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
+>  {
+>  	/*
+>  	 * We check against dst_vma as while sane VMA flags will have been
+> -	 * copied, VM_UFFD_WP may be set only on dst_vma.
+> +	 * copied, userfaultfd WP/RWP mode may be set only on dst_vma.
+>  	 */
+>  	if (dst_vma->vm_flags & VM_COPY_ON_FORK)
+>  		return true;
+> +	if (userfaultfd_protected(dst_vma))
+> +		return true;
+>  	/*
+>  	 * The presence of an anon_vma indicates an anonymous VMA has page
+>  	 * tables which naturally cannot be reconstituted on page fault.
+> @@ -6563,7 +6565,7 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+>  	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma)) {
+>  		/*
+>  		 * RWP-protected PTEs are protnone plus the uffd bit. On a
+> -		 * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
+> +		 * uffd-RWP VMA, a protnone PTE without the uffd bit is
+>  		 * NUMA hinting and must still fall through to do_numa_page().
+>  		 */
+>  		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 2888ee638d87..b98d4372677b 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -297,7 +297,7 @@ static __always_inline void change_present_ptes(struct mmu_gather *tlb,
+>  		ptent = pte_clear_uffd(ptent);
+>
+>  	/*
+> -	 * The uffd bit on a VM_UFFD_RWP VMA carries PROT_NONE
+> +	 * The uffd bit on a uffd-RWP VMA carries PROT_NONE
+>  	 * semantics. If mprotect() or NUMA hinting changed the
+>  	 * base protection, restore PAGE_NONE so the PTE still
+>  	 * traps on any access. pte_modify() preserves
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 2138a4e6b549..c8db9f93dde1 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -3220,7 +3220,7 @@ static struct folio *shmem_get_folio_noalloc(struct inode *inode, pgoff_t pgoff)
+>  	return folio;
+>  }
+>
+> -static bool shmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+> +static bool shmem_can_userfault(struct vm_area_struct *vma, unsigned int mode)
+>  {
+>  	return true;
+>  }
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 83587d34b189..193f6e65d875 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -50,10 +50,10 @@ struct mfill_state {
+>  	pmd_t *pmd;
+>  };
+>
+> -static bool anon_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+> +static bool anon_can_userfault(struct vm_area_struct *vma, unsigned int mode)
+>  {
+>  	/* anonymous memory does not support MINOR mode */
+> -	if (vm_flags & VM_UFFD_MINOR)
+> +	if (mode & UFFD_MODE_MINOR)
+>  		return false;
+>  	return true;
+>  }
+> @@ -462,7 +462,7 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+>  }
+>
+>  #define MFILL_RETRY_STATE_VMA_FLAGS \
+> -	append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
+> +	append_vma_flags(VMA_UFFD, VMA_SHARED_BIT)
+>
+>  /*
+>   * VMA state saved before dropping the locks in mfill_copy_folio_retry().
+> @@ -2194,7 +2194,7 @@ static ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+>  	return moved ? moved : err;
+>  }
+>
+> -static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+> +static bool vma_can_userfault(struct vm_area_struct *vma, unsigned int mode,
+>  		       bool wp_async)
+>  {
+>  	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
+> @@ -2205,13 +2205,11 @@ static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+>  	if (!is_vm_hugetlb_page(vma) && (vma->vm_flags & VM_SPECIAL))
+>  		return false;
+>
+> -	vm_flags &= __VM_UFFD_FLAGS;
+> -
+>  	/*
+>  	 * If WP is the only mode enabled and context is wp async, allow any
+>  	 * memory type.
+>  	 */
+> -	if (wp_async && (vm_flags == VM_UFFD_WP))
+> +	if (wp_async && (mode == UFFD_MODE_WP))
+
+Yeah again this is so so confusing and the naming really doesn't help.
+
+I wonder if helpers similar to the vma flag helpers could come in handly.
+
+I know you claim that kind of thing is overengineering but you're
+open-coding checks all over the place, then doing a subtle variation like
+this which is really really easy to miss.
+
+Something like userfault_test() would be nice.
+
+At any rate 'modes' or 'flags' or something would be clearer here.
+
+>  		return true;
+>
+>  	/* For any other mode reject VMAs that don't implement vm_uffd_ops */
+> @@ -2222,19 +2220,31 @@ static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+>  	 * If user requested uffd-wp but not enabled pte markers for
+>  	 * uffd-wp, then only anonymous memory is supported
+>  	 */
+> -	if (!uffd_supports_wp_marker() && (vm_flags & VM_UFFD_WP) &&
+> +	if (!uffd_supports_wp_marker() && (mode & UFFD_MODE_WP) &&
+>  	    !vma_is_anonymous(vma))
+>  		return false;
+>
+> -	return ops->can_userfault(vma, vm_flags);
+> +	return ops->can_userfault(vma, mode);
+>  }
+>
+> -static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
+> -				     vm_flags_t vm_flags)
+> +static void userfaultfd_set_ctx(struct vm_area_struct *vma,
+> +				struct userfaultfd_ctx *ctx,
+> +				unsigned int mode)
+>  {
+> -	const bool uffd_wp_changed = (vma->vm_flags ^ vm_flags) & VM_UFFD_WP;
+> +	const bool uffd_wp_changed = (uffd_mode(vma) ^ mode) & UFFD_MODE_WP;
+> +
+> +	vma_start_write(vma);
+> +
+> +	vma->vm_uffd_state = (struct vm_uffd_state){
+> +		.ctx = ctx,
+> +		.mode = mode,
+> +	};
+> +
+> +	if (mode)
+> +		vma_set_flags(vma, VMA_UFFD_BIT);
+> +	else
+> +		vma_clear_flags(vma, VMA_UFFD_BIT);
+>
+> -	vm_flags_reset(vma, vm_flags);
+>  	/*
+>  	 * For shared mappings, we want to enable writenotify while
+>  	 * userfaultfd-wp is enabled (see vma_wants_writenotify()). We'll simply
+> @@ -2244,16 +2254,6 @@ static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
+>  		vma_set_page_prot(vma);
+>  }
+>
+> -static void userfaultfd_set_ctx(struct vm_area_struct *vma,
+> -				struct userfaultfd_ctx *ctx,
+> -				vm_flags_t vm_flags)
+> -{
+> -	vma_start_write(vma);
+> -	vma->vm_uffd_state = (struct vm_uffd_state){ctx};
+> -	userfaultfd_set_vm_flags(vma,
+> -				 (vma->vm_flags & ~__VM_UFFD_FLAGS) | vm_flags);
+> -}
+> -
+>  static void userfaultfd_reset_ctx(struct vm_area_struct *vma)
+>  {
+>  	userfaultfd_set_ctx(vma, NULL, 0);
+> @@ -2269,7 +2269,7 @@ static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
+>  	bool give_up_on_oom = false;
+>  	vma_flags_t new_vma_flags = vma->flags;
+>
+> -	vma_flags_clear_mask(&new_vma_flags, __VMA_UFFD_FLAGS);
+> +	vma_flags_clear_mask(&new_vma_flags, VMA_UFFD);
+>
+>  	/*
+>  	 * If we are modifying only and not splitting, just give up on the merge
+> @@ -2313,11 +2313,10 @@ static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
+>  /* Assumes mmap write lock taken, and mm_struct pinned. */
+>  static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>  			       struct vm_area_struct *vma,
+> -			       vm_flags_t vm_flags,
+> +			       unsigned int mode,
+>  			       unsigned long start, unsigned long end,
+>  			       bool wp_async)
+>  {
+> -	vma_flags_t vma_flags = legacy_to_vma_flags(vm_flags);
+>  	VMA_ITERATOR(vmi, ctx->mm, start);
+>  	struct vm_area_struct *prev = vma_prev(&vmi);
+>  	unsigned long vma_end;
+> @@ -2329,7 +2328,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>  	for_each_vma_range(vmi, vma, end) {
+>  		cond_resched();
+>
+> -		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vm_flags, wp_async));
+> +		VM_WARN_ON_ONCE(!vma_can_userfault(vma, mode, wp_async));
+>  		VM_WARN_ON_ONCE(vma->vm_uffd_state.ctx &&
+>  				vma->vm_uffd_state.ctx != ctx);
+>  		VM_WARN_ON_ONCE(!vma_test(vma, VMA_MAYWRITE_BIT));
+> @@ -2339,28 +2338,31 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>  		 * userfaultfd and with the right tracking mode too.
+>  		 */
+>  		if (vma->vm_uffd_state.ctx == ctx &&
+> -		    vma_test_all_mask(vma, vma_flags))
+> +		    (uffd_mode(vma) & mode) == mode)
+>  			goto skip;
+>
+>  		/*
+>  		 * Pre-scan in userfaultfd_register() already rejected mode
+> -		 * switches that would drop VM_UFFD_WP or VM_UFFD_RWP, so a
+> -		 * stray bit here is a bug.
+> +		 * switches that would drop WP or RWP, so a stray bit here
+> +		 * is a bug.
+>  		 */
+>  		VM_WARN_ON_ONCE(vma->vm_uffd_state.ctx == ctx &&
+> -				vma->vm_flags & (VM_UFFD_WP | VM_UFFD_RWP) & ~vm_flags);
+> +				uffd_mode(vma) &
+> +				(UFFD_MODE_WP | UFFD_MODE_RWP) & ~mode);
+>
+>  		if (vma->vm_start > start)
+>  			start = vma->vm_start;
+>  		vma_end = min(end, vma->vm_end);
+>
+>  		new_vma_flags = vma->flags;
+> -		vma_flags_clear_mask(&new_vma_flags, __VMA_UFFD_FLAGS);
+> -		vma_flags_set_mask(&new_vma_flags, vma_flags);
+> +		vma_flags_set_mask(&new_vma_flags, VMA_UFFD);
+
+This is oddly arbitrarily using VMA_UFFD inconsistent from all uses of
+VMA_UFFD_BIT.
+
+>
+>  		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
+>  					    &new_vma_flags,
+> -					    (struct vm_uffd_state){ctx},
+> +					    (struct vm_uffd_state){
+> +						.ctx = ctx,
+> +						.mode = mode,
+> +					    },
+>  					    /* give_up_on_oom = */false);
+>  		if (IS_ERR(vma))
+>  			return PTR_ERR(vma);
+> @@ -2370,7 +2372,7 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>  		 * the next vma was merged into the current one and
+>  		 * the current one has not been updated yet.
+>  		 */
+> -		userfaultfd_set_ctx(vma, ctx, vm_flags);
+> +		userfaultfd_set_ctx(vma, ctx, mode);
+>
+>  		if (is_vm_hugetlb_page(vma) && uffd_disable_huge_pmd_share(vma))
+>  			hugetlb_unshare_all_pmds(vma);
+> @@ -2420,7 +2422,7 @@ static void userfaultfd_release_all(struct mm_struct *mm,
+>  	for_each_vma(vmi, vma) {
+>  		cond_resched();
+>  		VM_WARN_ON_ONCE(!!vma->vm_uffd_state.ctx ^
+> -				!!(vma->vm_flags & __VM_UFFD_FLAGS));
+> +				vma_test(vma, VMA_UFFD_BIT));
+>  		if (vma->vm_uffd_state.ctx != ctx) {
+>  			prev = vma;
+>  			continue;
+> @@ -2876,9 +2878,9 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, enum uf_reason reason)
+>  	 * NOTE: it should become possible to return VM_FAULT_RETRY
+>  	 * even if FAULT_FLAG_TRIED is set without leading to gup()
+>  	 * -EBUSY failures, if the userfaultfd is to be extended for
+> -	 * VM_UFFD_WP tracking and we intend to arm the userfault
+> +	 * WP tracking and we intend to arm the userfault
+>  	 * without first stopping userland access to the memory. For
+> -	 * VM_UFFD_MISSING userfaults this is enough for now.
+> +	 * MISSING userfaults this is enough for now.
+>  	 */
+>  	if (unlikely(!(vmf->flags & FAULT_FLAG_ALLOW_RETRY))) {
+>  		/*
+> @@ -3723,7 +3725,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+>  	int ret;
+>  	struct uffdio_register uffdio_register;
+>  	struct uffdio_register __user *user_uffdio_register;
+> -	vm_flags_t vm_flags;
+> +	unsigned int mode;
+>  	bool found;
+>  	bool basic_ioctls;
+>  	unsigned long start, end;
+> @@ -3742,21 +3744,22 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+>  		goto out;
+>  	if (uffdio_register.mode & ~UFFD_API_REGISTER_MODES)
+>  		goto out;
+> -	vm_flags = 0;
+> +	mode = 0;
+>  	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MISSING)
+> -		vm_flags |= VM_UFFD_MISSING;
+> +		mode |= UFFD_MODE_MISSING;
+>  	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_WP) {
+>  		if (!pgtable_supports_uffd())
+>  			goto out;
+>
+> -		vm_flags |= VM_UFFD_WP;
+> +		mode |= UFFD_MODE_WP;
+>  	}
+>  	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_RWP) {
+> -		if (!pgtable_supports_uffd() || VM_UFFD_RWP == VM_NONE)
+> +		if (!pgtable_supports_uffd() ||
+> +		    !IS_ENABLED(CONFIG_USERFAULTFD_RWP))
+>  			goto out;
+>  		if (!(userfaultfd_features(ctx) & UFFD_FEATURE_RWP))
+>  			goto out;
+> -		vm_flags |= VM_UFFD_RWP;
+> +		mode |= UFFD_MODE_RWP;
+>  	}
+>
+>  	/*
+> @@ -3764,14 +3767,14 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+>  	 * cannot coexist in the same VMA — the bit would carry ambiguous
+>  	 * semantics. Reject the combination up front.
+>  	 */
+> -	if ((vm_flags & VM_UFFD_WP) && (vm_flags & VM_UFFD_RWP))
+> +	if ((mode & UFFD_MODE_WP) && (mode & UFFD_MODE_RWP))
+>  		goto out;
+>
+>  	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MINOR) {
+>  #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+>  		goto out;
+>  #endif
+> -		vm_flags |= VM_UFFD_MINOR;
+> +		mode |= UFFD_MODE_MINOR;
+>  	}
+>
+>  	ret = validate_range(mm, uffdio_register.range.start,
+> @@ -3814,11 +3817,11 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+>  		cond_resched();
+>
+>  		VM_WARN_ON_ONCE(!!cur->vm_uffd_state.ctx ^
+> -				!!(cur->vm_flags & __VM_UFFD_FLAGS));
+> +				vma_test(cur, VMA_UFFD_BIT));
+
+Same comments as elsewhere re vma_test() on VMA_UFFD_BIT.
+
+>
+>  		/* check not compatible vmas */
+>  		ret = -EINVAL;
+> -		if (!vma_can_userfault(cur, vm_flags, wp_async))
+> +		if (!vma_can_userfault(cur, mode, wp_async))
+>  			goto out_unlock;
+>
+>  		/*
+> @@ -3829,7 +3832,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+>  		 * mprotect() must still be unregisterable, so this is not
+>  		 * part of vma_can_userfault().
+>  		 */
+> -		if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(cur))
+> +		if ((mode & UFFD_MODE_RWP) && !vma_is_accessible(cur))
+>  			goto out_unlock;
+>
+>  		/*
+> @@ -3857,7 +3860,8 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+>  			if (end & (vma_hpagesize - 1))
+>  				goto out_unlock;
+>  		}
+> -		if ((vm_flags & VM_UFFD_WP) && !(cur->vm_flags & VM_MAYWRITE))
+> +		if ((mode & UFFD_MODE_WP) &&
+> +		    !vma_test(cur, VMA_MAYWRITE_BIT))
+
+Really weird indentation and I think on one line it's 80 chars anyway?
+
+Thanks for switching to new VMA flags model though!
+
+>  			goto out_unlock;
+>
+>  		/*
+> @@ -3872,13 +3876,13 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+>  			goto out_unlock;
+>
+>  		/*
+> -		 * Mode switches that drop VM_UFFD_WP or VM_UFFD_RWP would
+> -		 * leave PTE markers without the flag that describes them;
+> +		 * Mode switches that drop WP or RWP would leave PTE markers
+> +		 * without the mode that describes them;
+>  		 * subsequent mprotect() would then promote stale markers
+>  		 * into the other mode. Require an unregister first.
+>  		 */
+>  		if (cur->vm_uffd_state.ctx == ctx &&
+> -		    cur->vm_flags & (VM_UFFD_WP | VM_UFFD_RWP) & ~vm_flags)
+> +		    uffd_mode(cur) & (UFFD_MODE_WP | UFFD_MODE_RWP) & ~mode)
+
+I mean this is just horrible beyond words aesthetically (and was before
+tbf). But you've already rejected this kind of feedback so I guess, yeah I
+object. Using bits or wrappers would make this potentially nicer.
+
+Same objection to the use of the word 'mode'. You really need to say flags
+here somehow.
+
+>  			goto out_unlock;
+>
+>  		/*
+> @@ -3891,7 +3895,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+>  	} for_each_vma_range(vmi, cur, end);
+>  	VM_WARN_ON_ONCE(!found);
+>
+> -	ret = userfaultfd_register_range(ctx, vma, vm_flags, start, end,
+> +	ret = userfaultfd_register_range(ctx, vma, mode, start, end,
+>  					 wp_async);
+>
+>  out_unlock:
+> @@ -3986,7 +3990,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+>  		cond_resched();
+>
+>  		VM_WARN_ON_ONCE(!!cur->vm_uffd_state.ctx ^
+> -				!!(cur->vm_flags & __VM_UFFD_FLAGS));
+> +				vma_test(cur, VMA_UFFD_BIT));
+
+Again you should use vma_test_single_mask(). I'm not sure why you dropped
+one for the other unless provably all of these paths are CONFIG_MMU.
+
+But it'd make life a lot easier to just use a bit number that isn't
+predicated on CONFIG_MMU.
+
+>
+>  		/*
+>  		 * Prevent unregistering through a different userfaultfd than
+> @@ -4003,7 +4007,7 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+>  		 * provides for more strict behavior to notice
+>  		 * unregistration errors.
+>  		 */
+> -		if (!vma_can_userfault(cur, cur->vm_flags, wp_async))
+> +		if (!vma_can_userfault(cur, uffd_mode(cur), wp_async))
+>  			goto out_unlock;
+>
+>  		found = true;
+> @@ -4024,7 +4028,8 @@ static int userfaultfd_unregister(struct userfaultfd_ctx *ctx,
+>  			goto skip;
+>
+>  		VM_WARN_ON_ONCE(vma->vm_uffd_state.ctx != ctx);
+> -		VM_WARN_ON_ONCE(!vma_can_userfault(vma, vma->vm_flags, wp_async));
+> +		VM_WARN_ON_ONCE(!vma_can_userfault(vma, uffd_mode(vma),
+> +						   wp_async));
+
+Nit but pretty horrible alignment. Gues it can 't be helped
+
+>  		VM_WARN_ON_ONCE(!(vma->vm_flags & VM_MAYWRITE));
+>
+>  		if (vma->vm_start > start)
+> @@ -4329,12 +4334,12 @@ static __u64 uffd_api_available_features(void)
+>  		       UFFD_FEATURE_WP_ASYNC);
+>  	/*
+>  	 * RWP needs both PROT_NONE support and the uffd PTE bit. The
+> -	 * VM_UFFD_RWP check covers compile-time unavailability; the
+> +	 * IS_ENABLED check covers compile-time unavailability; the
+>  	 * pgtable_supports_uffd() check covers runtime (e.g. riscv
+>  	 * without the SVRSW60T59B extension) where the PTE bit is declared
+>  	 * but not actually usable.
+>  	 */
+> -	if (VM_UFFD_RWP == VM_NONE || !pgtable_supports_uffd())
+> +	if (!IS_ENABLED(CONFIG_USERFAULTFD_RWP) || !pgtable_supports_uffd())
+>  		f &= ~(UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC);
+>  	return f;
+>  }
+> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+> index 1a01c3529d22..05a39c14eab2 100644
+> --- a/tools/testing/vma/include/dup.h
+> +++ b/tools/testing/vma/include/dup.h
+> @@ -109,7 +109,7 @@ enum {
+>  	DECLARE_VMA_BIT(MAYSHARE, 7),
+>  	DECLARE_VMA_BIT(GROWSDOWN, 8),	/* general info on the segment */
+>  #ifdef CONFIG_MMU
+> -	DECLARE_VMA_BIT(UFFD_MISSING, 9),/* missing pages tracking */
+> +	DECLARE_VMA_BIT(UFFD, 9),	/* userfaultfd registered */
+>  #else
+>  	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
+>  	DECLARE_VMA_BIT(MAYOVERLAY, 9),
+> @@ -117,7 +117,7 @@ enum {
+>  	/* Page-ranges managed without "struct page", just pure PFN */
+>  	DECLARE_VMA_BIT(PFNMAP, 10),
+>  	DECLARE_VMA_BIT(MAYBE_GUARD, 11),
+> -	DECLARE_VMA_BIT(UFFD_WP, 12),	/* wrprotect pages tracking */
+> +	/* Bit 12 is free */
+>  	DECLARE_VMA_BIT(LOCKED, 13),
+>  	DECLARE_VMA_BIT(IO, 14),	/* Memory mapped I/O or similar */
+>  	DECLARE_VMA_BIT(SEQ_READ, 15),	/* App will access data sequentially */
+> @@ -158,7 +158,7 @@ enum {
+>  #else
+>  	DECLARE_VMA_BIT(DROPPABLE, 40),
+>  #endif
+> -	DECLARE_VMA_BIT(UFFD_MINOR, 41),
+> +	/* Bit 41 is free */
+>  	DECLARE_VMA_BIT(SEALED, 42),
+>  	/* Flags that reuse flags above. */
+>  	DECLARE_VMA_BIT_ALIAS(PKEY_BIT0, HIGH_ARCH_0),
+> @@ -211,14 +211,13 @@ enum {
+>  #define VM_MAYSHARE	INIT_VM_FLAG(MAYSHARE)
+>  #define VM_GROWSDOWN	INIT_VM_FLAG(GROWSDOWN)
+>  #ifdef CONFIG_MMU
+> -#define VM_UFFD_MISSING	INIT_VM_FLAG(UFFD_MISSING)
+> +#define VM_UFFD		INIT_VM_FLAG(UFFD)
+>  #else
+> -#define VM_UFFD_MISSING	VM_NONE
+> +#define VM_UFFD		VM_NONE
+>  #define VM_MAYOVERLAY	INIT_VM_FLAG(MAYOVERLAY)
+>  #endif
+>  #define VM_PFNMAP	INIT_VM_FLAG(PFNMAP)
+>  #define VM_MAYBE_GUARD	INIT_VM_FLAG(MAYBE_GUARD)
+> -#define VM_UFFD_WP	INIT_VM_FLAG(UFFD_WP)
+>  #define VM_LOCKED	INIT_VM_FLAG(LOCKED)
+>  #define VM_IO		INIT_VM_FLAG(IO)
+>  #define VM_SEQ_READ	INIT_VM_FLAG(SEQ_READ)
+> @@ -297,11 +296,6 @@ enum {
+>  #define VM_MTE		VM_NONE
+>  #define VM_MTE_ALLOWED	VM_NONE
+>  #endif
+> -#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
+> -#define VM_UFFD_MINOR	INIT_VM_FLAG(UFFD_MINOR)
+> -#else
+> -#define VM_UFFD_MINOR	VM_NONE
+> -#endif
+>  #ifdef CONFIG_64BIT
+>  #define VM_ALLOW_ANY_UNCACHED	INIT_VM_FLAG(ALLOW_ANY_UNCACHED)
+>  #define VM_SEALED		INIT_VM_FLAG(SEALED)
+> @@ -387,7 +381,7 @@ enum {
+>
+>  #define VMA_IGNORE_MERGE_FLAGS VMA_STICKY_FLAGS
+>
+> -#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_MAYBE_GUARD)
+> +#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_MAYBE_GUARD)
+>
+>  #define pgprot_val(x)		((x).pgprot)
+>  #define __pgprot(x)		((pgprot_t) { (x) } )
+>
+> --
+> 2.53.0
+>
+
+Also, in the mk_vma_flags_from_masks() macro, there's a comment that
+explicitly references VMA_UFFD_MINOR:
+
+/*
+ * Combine pre-computed vma_flags_t masks into one value, e.g.:
+ *
+ * vma_flags_t flags = mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR);
+ *
+ * Unlike mk_vma_flags(), which takes bit numbers, this takes whole masks --
+ * each of which may be EMPTY_VMA_FLAGS when its feature is unavailable -- so a
+ * bit that does not exist on the current build is never materialised.
+ */
+#define mk_vma_flags_from_masks(...)					\
+
+You should change that... Could even be with placeholder flag names potentially.
+
+On the engineering of this - this is one quite big, fiddly patch, if you
+abstracted some of the tests into another you could do the change and the
+abstraction separately.
+
+Overall I like what you're doing _in general_ but we have to:
+
+a. Figure out whether we want to pay the memory price for this (and the
+   case has to be made in the commit message.
+
+b. Fix the VMA_UFFD_BIT stuff ideally with a bit that's just always set not
+   predicated on CONFIG_MMU.
+
+c. Improve the engineering so this stuff actually makes the code clearer
+   rather than just reimplementing the same old confusing uffd mess.
+
+d. Fix the naming... modes, flags, uffd, userfault, uf, etc. let's stick
+   with one and be consistent.
+
+IMO before it can move forwards.
+
+--
+Cheers, Lorenzo
 
