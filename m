@@ -4,135 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 945ADC61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 18:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3BD8C61DBD
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 18:55:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69A886B008A; Tue, 25 Aug 2026 14:50:24 -0400 (EDT)
+	id DA91F6B0088; Tue, 25 Aug 2026 14:55:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64AF96B0092; Tue, 25 Aug 2026 14:50:24 -0400 (EDT)
+	id D335E6B008C; Tue, 25 Aug 2026 14:55:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53A636B0095; Tue, 25 Aug 2026 14:50:24 -0400 (EDT)
+	id BFAAA6B0095; Tue, 25 Aug 2026 14:55:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 234F56B008A
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:50:24 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0B45514013F
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:50:22 +0000 (UTC)
-X-FDA: 85140682284.11.7F1B530
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id ACE6740003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:50:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A6yc6QOT;
-	spf=pass (imf04.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787683819;
-	b=s92iOzrKbpMoseDoRBj6yaxMuR/0qpdew9+T0jPwXAFMCOhp9ovC+84p191XnrnYAZDOjA
-	VYS9Uu0Y0s8Bg2zUzJmJfXL9eNhclpFpflcbn7tHQECAVqowX+Wu8grkQap9Bqnc+LVLLw
-	AV4t/pEttoHBdzC4HY1ZJUl8lL1zV/w=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A6yc6QOT;
-	spf=pass (imf04.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 93D486B0088
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:55:58 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0660D1C01BD
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:55:58 +0000 (UTC)
+X-FDA: 85140696396.29.D3EA881
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 564CC40008
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:55:56 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CZgOaPXF;
+	spf=pass (imf11.hostedemail.com: domain of 3OuWNagYKCJcJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3OuWNagYKCJcJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787683819;
+	s=arc-20220608; t=1787684156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bY+uq+O6hs+OCaV9/h1J0zsMTaL2h9lRcnb5h7llFxE=;
-	b=75ecscqoiOQJ4BC0mecdnvo4vGyFrD3Kw6BGcCrwpNblEfXax2Spe3eITHUXoF3P7m8PH0
-	WryLa127mUMBGLhlSTfdLYBiM53G8kZuVYBnrXmZG+rjV3bqDZ/S4uIZStydafMocjk+S3
-	LgoDUdJyKGt/Fio6Gu81xhaQacsVeWQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787683819;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bY+uq+O6hs+OCaV9/h1J0zsMTaL2h9lRcnb5h7llFxE=;
-	b=A6yc6QOTsZpiE5MIdHTDrhFWX5b3piNQ26brbY412fGdavqKdS3nuZEVnZ3EqszsgvkB/2
-	me2W1jDyTM2HQjmLcpyDXzpKX9dRMttzY15xCyqJT8upY2H6phoucz6h6422TR9oYzKg4s
-	BXG5b3DDxmCwhSSMUyIofz9GckcKdLk=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-KzN3DC52PD-_ND4LXRM4MQ-1; Tue, 25 Aug 2026 14:50:18 -0400
-X-MC-Unique: KzN3DC52PD-_ND4LXRM4MQ-1
-X-Mimecast-MFC-AGG-ID: KzN3DC52PD-_ND4LXRM4MQ_1787683817
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8f45dde7595so1647936d6.3
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:50:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787683817; x=1788288617;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+	bh=xccKXo6SW1SbkIzehhqjd8J3GgWcAs1E82/+Xs14ta0=;
+	b=P6yftrbZceUZiM1JOtU0B+h57jxCorR5Dzq3njTkVjVZXDPBCsCUvTb2DuSQs7z936VUTh
+	5wt1DzII0AQlBRM6iDodwjoUiJ8GFUGFXT3ulGaFMzmKSonYftTr6H2J6dCtP27hXYHMNL
+	zx4fmCtpfPsJI7ux0WdFlwH4LM33oBw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787684156;
+	b=zXxLEVP+uFm+p24GoVPkh4P2yp0uQED0nogj+ZOZUocsUYVyO8dvp+7Cqr5bksyd5rkhgV
+	kTH/BySgsUpEmasx4RyAwodqWCzsGrlUgcgXc3qtI7ZrLiJtTDXdyeU/LUwUbiRbPXbL5c
+	kImeeUiUgSrOQoHhrltWBd1wSfI080g=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CZgOaPXF;
+	spf=pass (imf11.hostedemail.com: domain of 3OuWNagYKCJcJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3OuWNagYKCJcJ51EA37FF7C5.3FDC9ELO-DDBM13B.FI7@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cf1c86963bso11966815ad.0
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:55:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787684155; x=1788288955; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bY+uq+O6hs+OCaV9/h1J0zsMTaL2h9lRcnb5h7llFxE=;
-        b=d3p157rVzUfRJ3RGuKL9zbjuviQteuC31Bf2gqCUWMjN/po2vppr3WoalI8B3E2ja/
-         2smHvJgh+S07OqUdlVYOGYEjv7YKtgNWr1jowGvADC+w+6tWz60zEtBtQI6e5g2G3Gmu
-         osazfJq0HIs6w46sUskLFTK4tGdofy43HrjaFHdHk/5gRHRSFNfIXMoBnIk8y6RDYqZ7
-         uo849CXbsygpe2Cm197lOl1TZKJ3ju60yU1EiwiGdpbqYL78pGMvo0T5TAn9s+zDUEfh
-         KI5W0WvkDTM3aJ/hAog7XXaioSaZfhlRtzMfjKOpFfuKCbv5mCzgz0JsDhbSeRLC7FF5
-         7/5w==
-X-Forwarded-Encrypted: i=1; AHgh+Rph/n+gRyJQtIduby80INVsGuCLRs14aqytsCjQjl3iFvnzlxJVBmEVWayEpnNqx5LBpzjShdK1qQ==@kvack.org
-X-Gm-Message-State: AFuF++mK7M3Rc1edK/47xvrsimIWQyiNFwiXBTFTb2bPqBL5isw1QgB5
-	fjW9v5tjG98J0G3kPSD8FZxAkuUr8MfmQoenckScuKv8gBEz3POY9xjG9epVVYcS/geFa8St1gn
-	YccHsCQe8l6OzjyVJJHg7G666wW/oJOBiW970YUddXoxvnSGIy4Lm
-X-Gm-Gg: AR+sD12+u8Bpe/j8fUHVj1ZQ023RKaQ+wegy+ytIcRn/yZZtepkhtVzxtvWhqUWIEMl
-	mRh33/WwRsscKA2eLLGWR3Iw0CWcZfmBjnC5gq6rPJhc3kPe9LwTjU8SO1jdjjfX1rk9SPQMj1L
-	eNSs7w8AO6wRd36LUcsWKtTELu8Mnnk7OvK+VlrBW3d7mvLN2mD/CP+JnhZTzrg0rRncxE7w826
-	FRvDc0kNorNVLFzoySWnrerylNK/6ZaSQCTcZAVL5kvov8YSDdC3ejRz1vyEMtWlzZ4SFMTnCti
-	pDZbZ9xfYCnWLJgZiUSvIEE8O+rgU11Hp9I8c3NfuQ19PQ7eXqam5NeDJF9VIeqKAOfql844UeI
-	8gL32DheWfyoe5bA6SxEA9tn04xvAxhNCxjwsMAy4BJXp
-X-Received: by 2002:a05:620a:4055:b0:92e:db1f:185c with SMTP id af79cd13be357-937804594b8mr54686685a.43.1787683816944;
-        Tue, 25 Aug 2026 11:50:16 -0700 (PDT)
-X-Received: by 2002:a05:620a:4055:b0:92e:db1f:185c with SMTP id af79cd13be357-937804594b8mr54681085a.43.1787683816399;
-        Tue, 25 Aug 2026 11:50:16 -0700 (PDT)
-Received: from localhost (pool-100-17-17-231.bstnma.fios.verizon.net. [100.17.17.231])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e30ed0esm42285485a.9.2026.08.25.11.50.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 11:50:15 -0700 (PDT)
-Date: Tue, 25 Aug 2026 14:50:14 -0400
-From: Eric Chanudet <echanude@redhat.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>
-Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
- area counters
-Message-ID: <ao3gLqsF4WSeKBIa@echanude-thinkpadx1carbongen13.rmtusma.csb>
-References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
- <aowHqqaqK7TeexQH@tiehlicka>
- <ao2gA_m3BCBu2esy@echanude-thinkpadx1carbongen13.rmtusma.csb>
- <5970a8d4-fe7c-4dde-bdc8-1c66bfb57f12@kernel.org>
- <ao3CQicH0t-k95NA@tiehlicka>
-MIME-Version: 1.0
-In-Reply-To: <ao3CQicH0t-k95NA@tiehlicka>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OK7B6YoP7GYRTzHLfDNFuMco7Py7vmblJ4fk2vNnsK8_1787683817
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+        bh=xccKXo6SW1SbkIzehhqjd8J3GgWcAs1E82/+Xs14ta0=;
+        b=CZgOaPXFDwUyBgkRqclgBryYyl/jhfRPq4bh8m0ADn9s3Li4tI5mSDUoEImJ7vFvdU
+         cveMujEUw51z6wdBq4BlBABn6L7V72gp5q/McBjAR9iWkVQo8o26LtlCIy//2FzUZcbP
+         WFwvUmK+rPfpgLGZAq+qP9ybhkao1ElVV45hsmY0vBSHThbGjqckPyVChtTzM0lSC5PG
+         rVxBTUTYUF8jGzERckOllWyPy01SZWrU1mbDqkdI3Bdi8yJwpDlI2sPsvPxCnowakEFh
+         Q1DOYUfAtNP8rVIvumTgljzxeuRmPQ/NqWOlWARlPK5jhtkPqo1hHxP45Ox83FSB+Ea1
+         ghhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787684155; x=1788288955;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xccKXo6SW1SbkIzehhqjd8J3GgWcAs1E82/+Xs14ta0=;
+        b=hJRNrc+bX4AvEwfzSE2Mkg4I4lQmn6waBj54SkVBduLL1ef0fW3RIg7YaWT/xuUqEp
+         k8XRBxHvuilP6tB3VRuHVujLCulAC2r2TaGjhWqBWCkQ+V8j8FgaSLTB8qbcKeUHGmyL
+         k4OYHttrJVpVqrgWHR9dES8whEBfhiUXRVJxlPQfVgBwFWcLtbPhpmVHW5Vag4I4qr+G
+         WoztZrL23r2brznbrpvKGRRKtK5aiYuYRln+YbLVTxIbcGJCViG9y7MreDhsO1O79GjZ
+         ttz7G3ESJTcDpmyQ+JiSD716R3in2uCFVpY5phjplLfHGt9JAGBBL3ExeudDWgxRvLFG
+         hQug==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6DgSLkTKv0GAP5LxPv5yXgVArXTPyvdyQvEaACVsWNhBrC+1cmNqxpNLEbgY4ft99nXgmMuqL0A==@kvack.org
+X-Gm-Message-State: AFuF++n5PUPGVui6RncaySg1AF2smHrOFj2msCZklKo4tYNyJqWBJtpu
+	HmZydPxyptbnu3uFcVo7FHR7WR4E/HY0PnFebO3dD9cPl2qdO0JA1EwJEdHua/A74Oc+wvsWVjS
+	/I0qIYg==
+X-Received: from pgbdm4.prod.google.com ([2002:a05:6a02:d84:b0:c79:39f0:12f2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1398:b0:3bf:8de9:c64e
+ with SMTP id adf61e73a8af0-3ceed381cdcmr1617377637.2.1787684154733; Tue, 25
+ Aug 2026 11:55:54 -0700 (PDT)
+Date: Tue, 25 Aug 2026 11:55:54 -0700
+In-Reply-To: <meww2a2uf3yeevsfpicyrlg3hch2x4bsdqv2lsv3vfjxg4qzes@co5eogmhkxrk>
+Mime-Version: 1.0
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-9-2fc18ee6d3ba@google.com>
+ <13ca60c6-e154-4397-8092-09f861e90fe0@kernel.org> <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com>
+ <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
+ <aoZZMQ3Uc8yQWPNA@google.com> <7eba513d-cdae-4832-abac-038dcdd88517@intel.com>
+ <meww2a2uf3yeevsfpicyrlg3hch2x4bsdqv2lsv3vfjxg4qzes@co5eogmhkxrk>
+Message-ID: <ao3lOu8-wpGTs2wd@google.com>
+Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
+ private when invalidating
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: ACE6740003
-X-Stat-Signature: 54dtupgs98goh45hqsbccegqzj5bms1m
-X-HE-Tag: 1787683819-219477
-X-HE-Meta: U2FsdGVkX18eopERjZBt9789833OpNGUDRtnwEM+WvVUH3YqPoMO+MW+2WLp1sGMmaLAd7gx2WvQfOf1AQF+kQcre68egn+pUcU0QmDvbZaFiYXE8ZO2B7LLNlelAcukmKSB6lF5W8v5DugzRwSl1PqmooyG0EnGjUk98JBi1JV/G91+62GjrB9z+QmNSP9UsMX9c9KFQBNZFIQsfhc76aDXcjnjXKP/Gy4X7niYmIXQlkoqN2pGp21tmeu3AQTvdAi5ifC3HvZTUPd9ld3WeZnqytcbWYJERnYNOLggS3/MYLG+DsA0x5957q7HdCHP9B8O4un0f/M32eyA8ZdcJVA2OD+IYc+MpKC9yDRmopCLBVbGbaeCmlbFspif+vJuseXHjYfAWdE/dKfW92iCHFmBFRs3WCZSlbvqp1dCBzzCtTscrBjH9OggRr0nUB7tmswp6A4WqSmKGO76vmf+bpBi9K8RFoaMYUaeEKbaBCUmYnQczRq73kVHsQF6/rfIvbXM3NCINoPt/XyqM6mNFYtlymXjxXMFd3Am63dOYSHsHL/03RM25e9OGkpHw4Qf4ZWQSHHyDpaSxojoRvOQeUKx0CEA9Y1Iy8MRJ5dEiWex9cXFPTeY1ubOJ5pzDT8Ltn3CRlog+OH+F8gz02H6mPr81FZdJPMdEZ9HbrNZOJq7RgVNdOrlUN6d0ZIhNe33H1YSYyuX7i+i7q0aBwVXLmwYXJj8tRgO72dfu4q9qAJqAa+Ok/yhQagLIb9wwaNu4juj3DM1wxUcK2nn8RM6XHoE+4RPw+KFArDyn/SZn302d8d0ZOodm2kGSUD5W7AFQJ8p4XU7IJ1kj5NpynloGxY6XSfGHo3VvRHUukgKBlg/yd1NBR1F0IV5EejgSHdkRekAq/G26u7Pmo1yniiyXtgqbpm1+BzhfPU0KqEOKPvovgFpN/R88NsewSQTJ6NbyJnsRDtq1z82b+b1M3k
- +2YiaK4H
- QHJ/2q3lvQjBdH5mO0J0SjR6TLTPcM3Nb84UXPmVMIQ/XJiXhMCRjwlyiPf6+/cMCZIDdjHJAbU3mSm14azgGJl5mVUVuDKAKP6QFZgYY3Op5Fd9hqbFwU+7AKNh+F+dpTt+iQ+9Yc5XSpw/AygWh6gszspExubzFkKJICM8mkmsJ0A8sr/9nccmYIe/5K299Ck4Pe8wy2RSJDFiU40tSckPxnqJEpcYqEfjuZ4v3jes6aEfXu2HqTxANxes3cHgt1gwUTdxvLM6M/K/93v2vRchH8jrRtLo8cluLmnsBXCG+E1R0qKZ8Ya63MGgBaSxrV6wjvWNGHmy/r/iYvI9RFBenwg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 564CC40008
+X-Stat-Signature: bgr513tqxx5rutxx87k9f3guwdbrns6q
+X-HE-Tag: 1787684156-935771
+X-HE-Meta: U2FsdGVkX19z7Owb6TXEPW3fOwT8+krzdaqigZ8OinKtclKMu5oCqvztCaiXuGHgD4GoEe/UyGChbr7C5Rq9szhZzLfHp/ahdWKDL3r+ySZslMdnE95Sw5Yj1cV7sRVJiHioDcWMyPnnRAbD43sImtccqtvS+No46p2UmRZPfQ1H/vuwv8ACjXWnAPvDoTBJJnYL32VVwf8FhdufmRSNtAwbof5HybkrcahXWGpPGQhegDdv23dkbqGYrKoJL99/nj6DA5bWtsZBzTIESG8B1T5dG0LNAKBpmbOtAfODzRWouR0D/4BRlWBm1arfAMcF2UB+SB7i6FI6noCLUoWXBLDje1btTR4Pg+JviM7cE6DozxT6GUS9USf7gknACcDTeoVOPOOrIt90yjbpnSUbCNTIYrzTjT5Yd5NgGPld0BaX7R2tLcWgCOBLiqdTWp1KLLEAbpLiLYGK1Pew2vMv2x2VSmRJub3VjdscAbh4jUmGB45iRYiSW29Nd82nhNf+HAFY6rdtIbJTFqHJpKA9kUwGiQLy817FG4HlOvIIF0puG+fZ05wNTffRL0i6IinSFvaLB++UIkwYlPFTX/oqtXU2+qUlZ/o/W9477hNblhA2DvvcmyL0AxD99qBmtYEOIaoLB7rVydRKsbYF7HCYMzopyKNkzUylaCXjFI2wkOZx7H13X+zvRFS6m7ncBqEckb7rXQaRGLU9xkdchABziJxKpaVxVAJUJbGAfHz0Ow+GA8zjJAPzDsvkUpT4ml3qhuN9/7RAmAuGCG7HY3Uea/oYfRhOeyizRfYS7R+zGk8ek+qQwL77iv74fzmvMBKS1963CTEhEMxEFS4Rn+lZwFSL31YUdyfyAhafeHRSg3xDZV3SLAAZGRXZQ2hNGZzR735W/kEemesd97iGRteBWU6QxH5c6LjC5nURbVglFbA2VIXjIM+3iMhgO6iBx5Qms82W0+3KtLjZ6Ocrvwv
+ raB1qM1K
+ 2Nl7dkxriBKkNnjHQikrKktb326RV5U+GyW30ak0MP+IlfgwkiBIIZJsy/JVklRhmr1hmJgZxSuxv4rQoLAjxn6zmwRyDvfUGJXsOh43tqGskjsAv6pdZljktVo6I9UurRpKJX7ZXg7QEFf4Fm4huxT4X3s52RzfxftiZlT/VgfKMbd7rPZ5IJM5suG4wBqjhYrrfNBrk/c+TGhEG0Dfkj/hMRDILRh/qgYLlGJcqdk8pxm1cTqxpXF2Z4vHlyfY91iJP6NV35tqI0fcjftWW9pXdoaWjFP+SyOyLZwEmxWIJyJGKROtBJ+6+1AqZo2d5K/F7uOJx2UPrkw688uRdrk7eXlsgkehAvvEmBHICFOHrzUDYzlLgBjkmh+v/gUXX8VSKtWSwKhHv9BksFgQHDsTSRodTMHOzvhrHNaKX3agPT3txoOTrtwa7QJTbTAE+/tAceFnp0VfwF+LSsljWj1CDuzV3bMAEqEmSXIyG7QDApoLEAFc4h03x1KVeMdzHyMYMAfsKoVqe95oik0mRp8NYjSpKrwID//r2lajgMZPoGCikG0hxoGaIRmYagtCJOcKGVCL5kedId71ZMWFAmtKFBwJRCHeFkHwdM+4eZtVZImyjON8DZbeDwM+/eAa8TA44e6NS39bSLTFnlX6+TtIWR6dqP3s3B7gwL3+2/8+EdV4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,58 +139,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 06:26:42PM +0200, Michal Hocko wrote:
-> On Tue 25-08-26 17:45:56, David Hildenbrand wrote:
-> > On 8/25/26 16:47, Eric Chanudet wrote:
-> > > On Mon, Aug 24, 2026 at 10:58:18AM +0200, Michal Hocko wrote:
-> > >> On Fri 21-08-26 14:56:52, Eric Chanudet wrote:
-> > >>> CMA allocations are currently unaccounted for by cgroup memory
-> > >>> controllers. As system resources, they should fall under memcg, but CMA
-> > >>> areas partition the available space for different purposes and memcg
-> > >>> doesn't have a good representation for that.
-> > >>
-> > >> Which CMA usecases are covered by this work? It would be also great to
-> > >> spend more time describing usecases.
-> > > 
-> > > We would like to offer some usage guaranties to userspace processes
-> > > ending up doing allocations in CMA.
+On Tue, Aug 25, 2026, Michael Roth wrote:
+> On Wed, Aug 26, 2026 at 12:13:47AM +0800, Xiaoyao Li wrote:
+> > On 8/20/2026 9:32 AM, Sean Christopherson wrote:
+> > > And vice versa, a PUNCH_HOLE on a SHARED gmem (if userspace is
+> > > using an INIT_SHARED gmem for the shared branch of a memslot) could invalidate the
+> > > PRIVATE mappings (of a different gmem instance).
 > > 
-> > How does this e.g., relate to hugetlb allocating from CMA, to then charge to a
-> > hugetlb cgroup?
+> > I'm wondering now how this could happen.
 > > 
-
-AFAIU the system defines CMA areas to allocate hugepages from. For this
-initial series, I failed to handle it. The intend was to consider it as
-any other CMA area. It entirely missed that hugepages are already
-accounted for by their controller (cgroupfs opt
-memory_hugetlb_accounting) and they are charged when faulted in from
-their available pool.
-
-> > I always thought of CMA being a low-level allocation mechanism with various
-> > different use cases, and actually the higher-level users should decide how
-> > to/what to charge instead.
+> > the requirement for PUNCH_HOLE on gmem to trigger mapping invalidation is
+> > the gmem is bound with the memslot. But how can a memslot bound with two
+> > gmem instances?
 > 
-> Exactly. There are many different users of CMA all with different
-> requirements. Then there is CMA reservations if an area is shared and
-> the overall memory consumption. That is why I am really not able to
-> wrap my head around this proposal.
+> I think this is for when userspace uses an mmap'able guest_memfd instance
+> to handle shared memory, and a 'normal' guest_memfd instance for private
+> memory. Each instance is bound to the same memslot/GPA range, and
+> KVM_SET_MEMORY_ATTRIBUTES handles switching between the 2.
 
-It is nonetheless available almost directly to userspace via dmabuf
-heap, or as a result of drivers ioctl providing a contiguous buffer, and
-unaccounted for by existing controllers, with the exception of CMA
-hugepages with memory_hugetlb_accounting. The dmabuf heap use would have
-userspace choose the area(s), but allow for no limit to be applied
-beyond that, which is desirable for areas shared by multiple userspace
-components.
-
-> 
-> 
-> -- 
-> Michal Hocko
-> SUSE Labs
-> 
-
--- 
-Eric Chanudet
-
+Yep, exactly.
 
