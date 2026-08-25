@@ -4,139 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4685AC61CE2
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B6BC61DB4
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:40:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C3C76B00A0; Tue, 25 Aug 2026 06:39:34 -0400 (EDT)
+	id DDC5C6B00AE; Tue, 25 Aug 2026 06:40:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5758A6B00A1; Tue, 25 Aug 2026 06:39:34 -0400 (EDT)
+	id DB3B46B00BE; Tue, 25 Aug 2026 06:40:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48A4E6B00A4; Tue, 25 Aug 2026 06:39:34 -0400 (EDT)
+	id CF1226B00BF; Tue, 25 Aug 2026 06:40:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 222D56B00A0
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:39:34 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ACAE66B00AE
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:40:23 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3003E1A02D2
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:39:33 +0000 (UTC)
-X-FDA: 85139445426.26.04EF6AA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 757D740003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:39:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U4ZJI5zY;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28CBF1203D6
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:40:23 +0000 (UTC)
+X-FDA: 85139447526.26.8ADCCDE
+Received: from mta1.migadu.com (out-70.mta1.migadu.com [95.215.58.70])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A08EFA0007
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:40:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dBOcOR09;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.70 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787654371;
+	s=arc-20220608; t=1787654421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2pfyC70VTeEHNhi8GTqGjc/VA+Hc6QL5N9qVfae32WA=;
-	b=XGwx2wfrGUdw2b47iAfzsq0Qsw9tceq8Oo1Eqs3ovk+HFUF7TLUv5rqiCwACVXyqa/mo1E
-	R0UfplLaPXYMLjSoc7KCLjUDCdUcHJK3623O+Qb65Fwt9uI7oyyAGM4WoEw0Vnw34eFRuN
-	9Nlllu2v3IXnrYRyOUZkXl9v1xbSi3M=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U4ZJI5zY;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=SIIA6zvrxZiJ0B5UZd3zzfBNUj3IfmAWwyMpLfTiAsw=;
+	b=Y8MdBUf3hdwhc5Ii7b3LItl4chsAYWm0rVUBFL9116k3t3wnmYm/KvcrFdTWZjxN6b3D9u
+	/Jl8oiWpjxOWW248W+YQEDQXxxkPzGOsEcD2Q217Si+eumsJRTDfV4cJDHg+NmEl4uUx2f
+	apKu8ZBLeJlJ8jr6aBcEcRGxxDbBF3Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787654371;
-	b=UBiDxTLu6V0FrL9pStFsC1nuFAlpAtR7dgbsF25Gxi/Byn+tSIX5IzFzF1zzf+tCjBi01u
-	mvWefEWQKaFn6iSNj05pTW3MDadWu1KTT5Dpdt/ZBpzX2tb+AAAg0R7e2KgdtPLk9xMas+
-	D0mcfSuO7zsUu0XNRnPIIimy0F7dJ8A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 41C346011F;
-	Tue, 25 Aug 2026 10:39:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376981F000E9;
-	Tue, 25 Aug 2026 10:39:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787654370;
-	bh=2pfyC70VTeEHNhi8GTqGjc/VA+Hc6QL5N9qVfae32WA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=U4ZJI5zYP2V6EPIIYN2kcn1jUE+EGkfhzbAlUhtKoU8NzO/mTfcj2xW8DLsZi8WiI
-	 qfg9GLq6a0vS0JZl6oSA20GvHC2lKlGn92ciNwwdKVHK8u+MjiMki20DWYjG+4WOmf
-	 j7Vu7qT7Du652OPAv98mTOWrvA02WG966PVMb9ARPnyo1VCjUrLDwuS1O9Hu6wubw8
-	 hpOyZJ189fDI27lzKYRdFmdk/PFGz7udyyMMJg80/dLrEgKe4fZvi/9v2tsNJ5gVTP
-	 wvUZnt7N+IN6r/HDe9FzhcLRpd6W0CSCCuO5gc7r+O74pfMWpWc4aC3zhQbD78te6q
-	 SWXWjbOcryRiw==
-Message-ID: <efc49438-bc24-416f-af3e-fd2b2867486c@kernel.org>
-Date: Tue, 25 Aug 2026 12:39:23 +0200
+	t=1787654421;
+	b=gAYugGJ1VIKzWIrmvZDb5Xnam3RHVpGYxkJwvbtvtuAMLIucTaXtZ7Jjau+6zPhM8YZ9rC
+	NhSXt/mxdbcNRcHCQ6n84mT9Km4gJz6vWW2FQC4dfVcmR2NVMFHqrwSGAh7+Zq33tJdO20
+	3A8T1wjugdRCw2SVk0MFYy/hFwkERxU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dBOcOR09;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.70 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4HCdqaL2UsJl3vhnbCh80t3WyCZKmIVtpPQk8zrG2d0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787654419; v=1; x=1788259219;
+ b=dBOcOR09+4/zZYWeFG/SjOn26eOzwP1JmzqHOiZBrVeAPoRm8ZuGTwBIZylKr5wUCGOwl+va
+ mP3/eNbWWiQBoI0rek60AbnfG6mK54vw6x68EtHm9btgj7JuMmK0MhRPaKjn/h8Y9d+i3AQ8SDL
+ NnhRLedgLxa9kaFZJLjtjROc=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [100.82.85.74] (101.71.133.200)
+	by smtp.migadu.com with ESMTPS id 22f5c38e0082be38;
+	Tue, 25 Aug 2026 10:40:19 +0000
+X-Mizu-Trace-ID: 22f5c38e0082be38
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <5d60e20a-64cd-4ce5-bc8b-86f0c976e618@linux.dev>
+Date: Tue, 25 Aug 2026 18:40:09 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] mm/memory.c: rename walk_to_pmd() to
- populate_to_pmd()
-To: Avi Weiss <thnkslprpt@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Soheil Hassas Yeganeh <soheil@google.com>, Arjun Roy <arjunroy@google.com>,
- Eric Dumazet <edumazet@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <cover.1785847364.git.thnkslprpt@gmail.com>
- <1d3d22df3b43080855d4728095f9ebaddfd7bf88.1785847364.git.thnkslprpt@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <1d3d22df3b43080855d4728095f9ebaddfd7bf88.1785847364.git.thnkslprpt@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5 04/17] mm/sparse-vmemmap: initialize shared tail
+ vmemmap pages on allocation
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-5-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260825084608.47437-5-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 757D740003
-X-Stat-Signature: q83e74q5w87b588h4zcy4gn4nx9i7j78
 X-Rspam-User: 
-X-HE-Tag: 1787654371-478659
-X-HE-Meta: U2FsdGVkX1/nFVi0fDfidokdiBQwU3BFqzMF7ivBj9dpdxuLmebTj7OB4mLTNHj9GvmRjcRe+3IUXejjghrCCtGfIvGwC7y52aksLA2nsXd4yUjm1xTjqM1T5xkFWvXU6SiJRCwII2gasKiF7XSMolikPT3dbxUZDlWqHLf+REvX1EmA8cjyHYvfPkYM4EELS7XdLX54+ZthcpsaUDkE5rW1wpsl2xZ10c8yU2UV7sJyoRfBDbKub+rHXiujKMFEKSy1sUa1zNk2A10J+ZQWPFZc2d8twuCLG2xVECVMgZNcLTrrd98tIF+m7b7fL5TB/dik3gRxNVT0dmbu0N/cN5d01qf6oHSxNZwOMXLp0h1bNfJCaDz6V4emuz5tHRysnUQjj+GHp274DcLDXtk7aq0+/0ZXn5K5VlmLD9Xvr+g1okJewmfGDNMaJX3mN+etw/3OPlJsntxuAsPhJLoanlFR6WfJA+uzul+YaC0vrOHv0X2VzZlYxp5oas4HSI0/mIgWIrfIVjBJTyTsXvWAgrXDMAIkH6XHkjLb/wsD+B8XGDuvgDwi9dVHEnQF3VEOw5mxkXCDL4GaCphktu5jyAH8lZprjSxbW84goRD33fDeNVztQi0UUh5+Qo/VeRJF505HznbR5oTHSBNBk9p+fPKHjBKf3Trh+42VkehovI2C0/c5I7jJHHraUYG+XBM3iKxomk6uo7s2jbh/TrSOJtl4VY1hy8m3CEWql+nwLthrsFmZiVV2wos0dF18xinXD44gwagcdAhrwol3DbQV15G2B1UP61T4ZWrqG/ijsMNlXGN/sY9BSZAIiohAXUTlqNzKwzdl0Qs1vziItpu8VsPnxpO8raGAOUfol8pcRX/3VR1QEp7XaX0UL17NaBta9R7hjV6gF8DgiU1pqVygIxuHl/6FTtbGJn4nhDlcMteIRHXcbLKC8cUzQghdQxnSz07gColt6DMQLbqqVD7
- UYqOwK0Z
- 3pu4N8+HHu6+VTmA49Js5FweIhRfoN7ewNSGN6EBNbpbafozTSY6Ac9eCjS6F1cSM93Wx8MGAP+NBViDQMu/2C0NLhDCgx8Bfx/E2z3HeSe2LsWMGIJyXwYTBF5Bkk1H5P16Q2dMtZbTfvw9LmmniBT1EI6rBLc+7KmcvhI4bbNlzpQ4GxtLQhV3tbaK2IEm0kX1GNd8h46InXQaXo8uAfvY2FO9AOnMfnSxCPM3pKBtn3jXNHQryu3J8bh+AtlzH9az1BaZ8JW4K5vQVM3sEFe/CMlGgG1nwOfKE0epxbwm2ZSCrZN066h82zQ==
+X-Stat-Signature: qz4n3cz8pxiayrb49mnrx79ctda57144
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A08EFA0007
+X-HE-Tag: 1787654420-556798
+X-HE-Meta: U2FsdGVkX191QISZ38/46GMTttKRu/cfCSX4xufWgsIe0FeOtJk8u+IyR2wq22MM2kU2OyFDfgiSS1y8roW+/lZnmMkKzfzAUmazP+A15nWAbFj8lHnqDaPxSpewIWmgXISn40vkdYWz9GpbvS+oe4hdGMWdveyC8mlOGa0EKd7s74JyVzEIv/+yvY5DKhBEWjmGnb+ZdIL9YO+Y740OwBs2yI0QvmI5jGNSymjKEPBhI3FoK+7YitfcYiDPrbVzGr55jojt2HWHk05vNDTlNLaxKZv/1Hm0T9V3GWTcIiDOvPvMi0AZ2zPqtN+sBD9ZNIKI9s0cZBTt/SMW+oXAlagTwBAQuNhJieXNCYdoBBMg5Xhw00GMbSPQ5dF841OMdfIJfPf+n9iayBMG6c0BLDhGd42iE+wlEhAjDkOmUbdnNpHCEUbK1e2wZ7EeS8/zsmQ0cBJusCWhEbrJm477hKHc/2AM32KEPhFvzkbBLZgnxsuds0tM/JBZboLmaa4huDfAOZ0zgaX6u9vk1qXRIN0dVhIQkq+Nn7LCd9cRoMjCtIFEWj9OEn5Hia5/rxOh3bBJFdN3JqWKA8IYt/Rkrkfw2qRGyv739M0/T249dqEiQvplygGXbhErf1GAFzEe2rrA1vdkCCNeQhlOhOhMqWpHF/wnuNLQFu46siaRMhLwAW18NobwRAO/8ZqsZg4RNRggnxtgXp8VeLBRhMPhSa0/RqvPGqFdKgq+OqVCu1cjnIbolHPlHGtNmlqHnBgNZE1LvDzKOPMs+xZ7cQqpV+s9BSR2Ln1esHWkqv3cK0vpSMpgrfxYpgGL4fFgBK5HQBqP/WDjYyofiU1dv9b8CJf857NgO5gVoxSbR+Wus8benigdd8GgRTvEmlapr0BWWnQPcC8u39IdHWGXNM1BXn3J2JECjDwXRb4QSbqk++pzID7/3VjWBa8Oa8T8U/jpw+b514Bn2SkXjkLu6KM
+ 9M6dfcbf
+ j5KKml4nZbhsV3MbqwrWZpbg+oBcXAWYhenK4PlBso7PTJIS9drU6ghuMzBeHz+3zTvoh9tWqGVPJyuMo+TVqC43w+Oer/hHMas6LQMyk7aazbkFXZOGkosEJmyFcdbtXXIP4YCF9ChQpFWRkh4CWuO1noQmX6wWl5tMZddsbX1FS1+fGUgUVe+v6q4do9iu6lbBBbZzoKk3+Zxb9ZX6Q6KZraaxERQWSqNNQP1WoB9fcOlkub7uluwk6e8LAR0K0xlhY2/A7c3WU0xjnTh3dzhJudsdqaqpKB8lx5cbeBhTKu/qGgw5NAfY35DwMb+cvVsWmIUSetpO42uQe+6I8Zy6T6sP96+A/m2qKIlK2Y5sd7GLRWW+fhmfqHY6whdiGRhf/Off5tU+1EvEPKS+k46JVPi+I9ZJUrbfV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,17 +99,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/5/26 16:42, Avi Weiss wrote:
-> This helper allocates any missing page-table levels (it doesn't just
-> 'walk'. Rename for clarity.
 
-I don't think that's any clearer. The point it that population is just a
-side-effect of performing the walk.
 
-The main job of this function is to return a pmd_t pointer.
+On 8/25/26 4:45 PM, Muchun Song wrote:
+> The shared tail vmemmap page allocated in vmemmap_get_tail() used to be
+> left uninitialized, because memmap_init_range() would later overwrite
+> it.  That forced users such as HugeTLB to defer the initialization to
+> their own setup paths.
+> 
+> Now that memmap_init_range() skips shared tail vmemmap pages, initialize
+> them immediately in vmemmap_get_tail() with init_compound_tail()
+> instead.
+> 
+> This moves the initialization to the point where the shared tail page is
+> allocated and avoids relying on deferred handling in individual users.
+> The remaining deferred initialization in HugeTLB will be removed once it
+> switches to the section-based vmemmap optimization mechanism.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>   mm/sparse-vmemmap.c | 12 ++----------
+>   1 file changed, 2 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index aa6a4a2fae98..107215cf8488 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -338,19 +338,11 @@ static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *
+>   	tail = zone->vmemmap_tails[idx];
+>   	if (tail)
+>   		return tail;
+> -
+> -	/*
+> -	 * Only allocate the page, but do not initialize it.
+> -	 *
+> -	 * Any initialization done here will be overwritten by memmap_init().
+> -	 *
+> -	 * hugetlb_bootmem_struct_page_init() will take care of initialization
+> -	 * after memmap_init().
+> -	 */
+> -
+>   	p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
+>   	if (!p)
+>   		return NULL;
+> +	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
+> +		init_compound_tail(p + i, NULL, order, zone);
 
--- 
-Cheers,
+Until section->order is set, vmemmap_optimizable_pfn() (introduced by
+patch #3) will always return false. As a result, the initialization here
+won't actually take effect until patch #10.
 
-David
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
+
+>   
+>   	tail = virt_to_page(p);
+>   	zone->vmemmap_tails[idx] = tail;
+
 
