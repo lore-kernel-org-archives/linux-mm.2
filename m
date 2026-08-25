@@ -4,199 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FF0DC5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:44:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EDE5C61DB6
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:49:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2F536B008C; Tue, 25 Aug 2026 04:44:53 -0400 (EDT)
+	id 0B54F6B008A; Tue, 25 Aug 2026 04:49:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB8AD6B009D; Tue, 25 Aug 2026 04:44:53 -0400 (EDT)
+	id 08BE76B0095; Tue, 25 Aug 2026 04:49:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B342E6B009E; Tue, 25 Aug 2026 04:44:53 -0400 (EDT)
+	id EE4166B009E; Tue, 25 Aug 2026 04:49:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E1366B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:44:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 46F3E16038B
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:44:52 +0000 (UTC)
-X-FDA: 85139156424.10.A3421BC
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013043.outbound.protection.outlook.com [52.101.72.43])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 297044000B
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:44:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=cEyru5zH;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=cEyru5zH;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf01.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.72.43 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787647488;
-	b=y7sw2f2pxuOfKCjBf6F47hWTwSIrw6Zgsg3Gv96/RDH7EGwsmwh1SBtP2T41LxtPeT4B7s
-	L6WP3Y9kyB52cOuw23dXxLpWTxv6MFQAF9JKBDbRtRX+T2OBwfvOz9tGkfsg51YqaA+pD6
-	SeU3OV+fWtda1jYdmMR5ztaulbNWZw8=
-ARC-Authentication-Results: i=3;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=cEyru5zH;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=cEyru5zH;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf01.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.72.43 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787647488;
+	by kanga.kvack.org (Postfix) with ESMTP id BF4646B008A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:49:05 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96697160390
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:49:04 +0000 (UTC)
+X-FDA: 85139167008.09.56122EB
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 23F7640002
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:49:01 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=RHKLAdCL;
+	spf=pass (imf12.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787647742;
+	b=TU6HCZACA/7sjDSD0bYuqYUKRSRBoKsWT994NH0tWQmVIx9vHonPknvCOX52vSvTervjqj
+	qVZq9LODqztJhgkIQLrfKGRhJCY1pG7Dzh26A3bL4fxAETIZcPAWXzVNN/l4edLaJne8Zf
+	ncZhqNy83VL2mwerYWGzxrNwWIdu+3c=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=RHKLAdCL;
+	spf=pass (imf12.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787647742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gh2hmec5w/ZCUmDkgz5CU6sucE01IDCplkoPoC+O5FU=;
-	b=fm1+6yy61zsyVq+Q82Yy78vOU0an3wIVTZSnf380xho/EXITraA9Yuz63Txq0wnspJU4Ld
-	yvZJU5F++P7owzlKGPMWbqlXsLxacEHZMWRckIXOCn/llJh8fn5DBI0lfuuzDeRwGFZBHV
-	/02ftQsDEvZQtsx4nadaMmco0ElVqh4=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=JCtdE+R4JJpdU+LP+jNNt/9GTQBGTLmm1uR0fDmeZnuyidmffVcTHVFAYc5SLoiOeLEunH7LShMycqtdUt2e78m9EO3NIo3Vp4iWgOKTnhabofpaHpH43st/vMyloN1uJ8E+Vyn0bA3U1yGDZDb5m3GztWxrtUUcNUgmv8zCnZ8N1tyXiXo6uGnGuVPUVGrlDY1eB8P9wRzz2KDlyUg4yFkPTEUO0k/LQZoNwpq0Bg67M8d2YhTJAqXGLqaEKxIhl0qMOUE+xCKqPMcHU3loBZeMhWjaSFM4lV/KGQEG53WOSd16Qnlk/t4vFk7YE0tnytAb+CLemEad3uppRUvTBA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gh2hmec5w/ZCUmDkgz5CU6sucE01IDCplkoPoC+O5FU=;
- b=ajZTncHrD8hFbV6wIslBa5P0yA+gW/Z+3A0C+wuN4Hs0LvdmHY53AAEVdRCOf0bZSY4FcmstKqX4g6Qa3a1nEbU8lZmtQ2ZH5EM1z2tylocaBIU5KrX1o91oZyJHCSOsRqrFVTNrZ7OXuOHk/NhvbHOvgyqw37v76YCL97NIEsa9uZjqtasgrjoQamAH+3flDTIWqXkib1pyDSxViR6LmNAVvcSloDmP3GMUJys7rN2xX4siQrGJJxbzv8JiMu0vaeizkG4c7fNYcTTne2dNDj4j3hxGRhh+EBOwRK6yrjlNWE1hIbgguzScHNJH+ZXMpfGLI84HD5IBxh8XrA1ldA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gh2hmec5w/ZCUmDkgz5CU6sucE01IDCplkoPoC+O5FU=;
- b=cEyru5zH5fLsG75WP/ZcI8nB8aADaBY4A7KBQqna0kq7dyQWdSQNdNdatv9ImBGnIyGHbXO95TFOLfUO5sLZa8I0sazfoW97SLIIcKVKMGtNw3LbdofMOnZN+NaG1LcT8Mn8vrdMQTdpGLEqNpFFVFAcsP7aCvqmTtmYavxJjVc=
-Received: from DUZPR01CA0051.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:469::15) by PAWPR08MB11015.eurprd08.prod.outlook.com
- (2603:10a6:102:471::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
- 2026 08:44:34 +0000
-Received: from DB5PEPF00014B9C.eurprd02.prod.outlook.com
- (2603:10a6:10:469:cafe::6) by DUZPR01CA0051.outlook.office365.com
- (2603:10a6:10:469::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.6 via Frontend Transport; Tue, 25
- Aug 2026 08:44:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB5PEPF00014B9C.mail.protection.outlook.com (10.167.8.170) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.3
- via Frontend Transport; Tue, 25 Aug 2026 08:44:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BIzsfUAqkVoAgDlgJAQMpeuTu9174vULq/s3kbdhUGpS3FKBK8C2b5SPl+5I++UlLQT3PdolsEEnk4wqIRDwUueLRSriO3SafUslHBom+IeCCdjjalDmBR9DWpmJnrOepvsi2GUHjQuC6pzIwr4i7SZJyDC0K9ivMCIiKU6oVOa+p7dQnE4NlB2vXo7xBifey8iagPrq6Ewh9pT5sCMRx6c/QW1DrjRyltsUOB/Rk38BK6vnHscw92ZKl0q8Yydz5y43ofxaP50jGz6zshDJfXu4bUeF2rd788LTx8XYK8jKZfFnRowu5SKbSfldUs5U8Ya71QjpJBQYyUsuo8VR7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gh2hmec5w/ZCUmDkgz5CU6sucE01IDCplkoPoC+O5FU=;
- b=JKrG7rupz09B1SHx5REifnOaTcpVyW7V7kL9sQi1UqH25V/6OrQjWzLeS1exEVUxC3rjUAcS9e4ZNsAnksFUMsdL89KglmoIr1QlcuPogscDBj6YWQI7xwjOCAe1W0f9d+PpE1sdFobiujZab/VQx0+uBc5L4l/7HBjSo2rIzXKQc2YCxBleGB9eRPhkRix56KRSKR2KWly3I94t9FmBasy8C++ADSow0A0m2I/HE+DgH/EOKa5iF8sxufk8/fujIWpj6FUGVVr7Joc8+2iYOopszSYjJm13lSTnYc1d0kNrJPMc0WPWe16lhYzkydaTQoTgtrcs0aKDRhmGMudmuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gh2hmec5w/ZCUmDkgz5CU6sucE01IDCplkoPoC+O5FU=;
- b=cEyru5zH5fLsG75WP/ZcI8nB8aADaBY4A7KBQqna0kq7dyQWdSQNdNdatv9ImBGnIyGHbXO95TFOLfUO5sLZa8I0sazfoW97SLIIcKVKMGtNw3LbdofMOnZN+NaG1LcT8Mn8vrdMQTdpGLEqNpFFVFAcsP7aCvqmTtmYavxJjVc=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
- by AMDPR08MB999844.eurprd08.prod.outlook.com (2603:10a6:20b:750::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Tue, 25 Aug
- 2026 08:44:00 +0000
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047%6]) with mapi id 15.21.0360.005; Tue, 25 Aug 2026
- 08:44:00 +0000
-Message-ID: <1712e68f-f95f-4200-8079-d471cd486c72@arm.com>
-Date: Tue, 25 Aug 2026 14:13:51 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/6] tools/mm: make gup_bench a benchmark only tool
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260813181230.483746-1-sarthak.sharma@arm.com>
- <20260813181230.483746-6-sarthak.sharma@arm.com>
- <c635db29-9067-4783-b706-92e81ba8ce88@kernel.org>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <c635db29-9067-4783-b706-92e81ba8ce88@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0340.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:21f::15) To DU0PR08MB9203.eurprd08.prod.outlook.com
- (2603:10a6:10:417::12)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=S3hKQUMatSsldJGL1EQZgNBrWtZeW478Fj/hzsUT3a0=;
+	b=GU1vAUD8AZGWvpAJDp1SbhZc5ZsBv0qoo9QUIveKdVGa+XdcsgzsM6i4GLmpJkTttprBth
+	/qYa8qmqZG1xDTpjTq/aRgWeC7qF8u+h5bGc58P5Afvsykucp0UzpKXHn3xmExN12k+7aB
+	9TlhRKzy3qP7zAwbJjxDNiu5LCRKQbA=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ceaf8a1265so51008585ad.2
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:49:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1787647741; x=1788252541; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=S3hKQUMatSsldJGL1EQZgNBrWtZeW478Fj/hzsUT3a0=;
+        b=RHKLAdCLLWz/qeeKDWkpkhU3bHcPZ6a0EvNuSjBQjrl0feTjOGfAAu892GlUKszp5a
+         g+9ijtUaXa/NJB2DTZXy1g0PLydXyeeD+tgQM/H/xg4sTPhhGGpL9aaVhf7RvDlDbaNT
+         WwlQOTlIs8mxxPeQgzWedtRZmEZv3JE/k3EpXGbnQlWBD5GZLflV5rBksiw1bXXhhqxX
+         GJ4xhpLJqW42ogPHZqq8kwfEOJEVzv2RAgFt1gqLLi3YW7s+AqXvwRbgumSCfpFyBXkg
+         ItBaMEZsbqqc5Ho4i4a43Mz+vNRxg5cGmzXrry+FBpAq4c90ZPQjn9E1gnoqR5N7zZx2
+         uKAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787647741; x=1788252541;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=S3hKQUMatSsldJGL1EQZgNBrWtZeW478Fj/hzsUT3a0=;
+        b=lFdpomo4tLVWDBbdwuHVm8qTZ3eWKbeNUinqVYe6LYDwiYM4uIL8gN85NXb7nen4+Y
+         NMzudxjgMBfElBKqrZTMRz37qz+QpnxkqCTj/FQBTe8sNGTqmf4fBO73pbP+Whk8qmge
+         Rfp76LaNuzIBjvNy4WuyZ3lEpSNqdYs61iP0Z75zWxdmLx6bxaKPSdB6wPGUU+Jw/lBc
+         7xF6M0BZShVUGONGoy3UTSLQwdYG4a9HY4RlbeUqzqN0Ng1b6NmpfNsC3vn4W1fMsC39
+         zBlZ9uuqATuAdW6otdGs7CUkRej9YBgs/vL493ta4vG0sKEmewIWt7ow3uHv9kK267DM
+         62Eg==
+X-Forwarded-Encrypted: i=1; AHgh+Rps2KILrt9iD7/PYiQvggNu6lyHKLvL/oGWKJKSnMez1fGz5Sv80aE88NZeECRQ2VPjW9gL3lIZ0A==@kvack.org
+X-Gm-Message-State: AFuF++lDIviIfbaxAQSyzMycEkNG7cdHhYUtRRU1XzI+m4Lqyip/oL7N
+	XNMvZEC6inXgos6ZMfxzYoEItwBKQFwBjOpinkKXXt0u5KDLGkys7OiS+IzWKNoNR9Ve07eWyDr
+	C8CDJaO0=
+X-Gm-Gg: AR+sD10GYk3WNS4iZFqYWAJtVwZHNmFneNVxrg66t5fp+Nd2iwPlV3U9pfAEXUGtXOT
+	/7U1V7YpXbJV8mAXJmoBlIn0mEopHhHmN4GMNyh0+YXSVs+pgDvTSu5QwzTWU2BEHwUMEUuWIBJ
+	9nY+vfImVjT/t6+LDC7JGvKoBFjg5mfvipelLrlmzV2Okn2s3E/dj0G74Vm3I9jaIZ8b2RLe2iC
+	NE/uG9gua+6x92ZzMMIckKFdEgIZzIPvvDmLvIW2Mi5TyJahjjJHzDyeI8S0+3mhH1dgeOsZuHQ
+	uR+RgWOdVtUA8+lwzUtqLAPcT9Siw37SPOjnHga6/gVYJq2vDRq7ChVYCeypxJxfiQjtD6e2szp
+	pWCZ22ejuyQWA1w11nxeK8SAdbxbil30R+IzYGcqBmVwd1j8GovOiwlEdeSy50kkeZtpnj+UJCB
+	yggXVADWLqGXveTJUjFCzzwz8Iv0jqYla2FCTeTI2diri72OJiLDcx9RZ5N46+Y3a3jRG3qF02b
+	kk2RcfMSmgMWFlemIeTK+dG/A==
+X-Received: by 2002:a17:90b:520c:b0:37f:ed7e:7e42 with SMTP id 98e67ed59e1d1-395c3867ac5mr63054426a91.14.1787647740376;
+        Tue, 25 Aug 2026 01:49:00 -0700 (PDT)
+Received: from G6L4RL2QG9.bytedance.net ([61.213.176.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645da08desm2873386a91.17.2026.08.25.01.48.56
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 25 Aug 2026 01:48:59 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>
+Subject: [PATCH v5 00/17] mm: Introduce section-based vmemmap optimization for HugeTLB
+Date: Tue, 25 Aug 2026 16:45:51 +0800
+Message-ID: <20260825084608.47437-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	DU0PR08MB9203:EE_|AMDPR08MB999844:EE_|DB5PEPF00014B9C:EE_|PAWPR08MB11015:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c88af7b-ca50-437e-90c4-08df02851611
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|10067099003|6133799003|18002099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info-Original:
- Kxvti1E2Gh/DrxpnUmsA0mSKk25X+QMUNRazDjJPCyLDoRlDZYTQcbS72m1REtWng5RlD3hwMmPHiKFe8XkBZr5HkIDukR5yURFcKrE1gdNr4+zv6oeauMnSF5st31JSb7sf0nBOf/MyD9XLhdbH5WeMkB/RBugRFF7S/0birwu8cSudt+f6UnJrUHgpG6RQSRKdNWjr9h0Pl/BQfxwbwQsG3QMxUSvEOwHmUXFr4cEbEjWh+7Qdk8klThOR+r2/2KV5ZalHP86U3SRe+Cv89PQ9kIq/a8SVMkOEQwKQdxHYpKYf+m0jYDkmiBHGnYur8fBq7QRMtbetxDTx6dNRNfvOfENhVVQZrP7aJYkhnZ82GgbtwSelXw7n1mb8sjOCPsY4UXkw2UzmTOR5rZfJRQVC/6S3I94g/g7bkB5Vfe7pao/dIh81xRvSPGI5ViEeYe3t8GKXDrZD+LnAdQ5bvDcfHIF1WqSNNVH5XevYNlzBud+cI7eky/q3sXjMB0hxSIo2TxK8XibjtEuIcNWsXPg9Vkrkf4mnsCViOW4b1jZko97X0WnCOZWLMbxSrI1SmtbETccVW7XPZ1F/9jXALpPePqMsEgBYa+kIKs3Zkqrxdui/66lLlvkSrR5FxssBNvft4M6ZKpJ221x2qg4PJ0Vw4175zERWmjsyWhPjN5Y=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(10067099003)(6133799003)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- TWFLYyHyErvHZ6r2NPo1tryza+8ZNVfj/ivVjVwB0RAKYyFCUgxJSAPhPjrzUf5DI87tySDSVbomi7TLM6ngAXkltHEMdwg/ydU2wn0TProF6/kVMAgib1tlj8nxcNAlTAi9Vw4B50CnSI+WBG7i5C0baASfEaTAGPIv4wIambE2FcOPmzRz2uPIZC1s53w/thbX5QWtBnKi08dUMgo6LZWTAIBR8tfuY1Xyk85RavVJwERDOeIlpgW4y9fhqVOWT7uJUkIQXE5TGmwrRsn4tfqSIvYcsyxwvfkS1wqrhV/I1GNhDstAtegwMNxWtcc344tWsrBTKITfL/zMBp7qYQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR08MB999844
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB5PEPF00014B9C.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	1fe0c755-bc95-4f3f-bd6b-08df0285027b
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|14060799003|35042699022|82310400026|23010399003|36860700016|7416014|376014|1800799024|10067099003|4143699003|56012099006|11063799006|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	CXWToWZG1wYd0p8CUPJTHLwboBRmX3qZdSSZ1mfLSsr1LognAfTJdmEX+BPOj6WUlBmp4oqtoora5+5CIMpN2/dGySVPbo1/BUrXpYrFBbwjggQFKMnfh4OBYdbD5UpuTeC86DqtXYotM0iKupDWW/PpyMwQqsQFbpgVrtG//EJMXjowf/j7gzSixzPp1ZOeOFOfetCIizg9urnC+q0pH2sBFG3AWH23CEN4pi6RXMiEd7iKM8ugqTDnA5tsyG3nVL0WlssAj3QRA+WaDpqK82wz6wQucC6ORTUd5TDIvTbFcEFuTP5w8ZyYXs7bLrSL4oUKfTkhGwlol9T9mCv9iQ6cCo4EcGqN+mHb8MwsfjzwpBPUH5rLmipqfoCsosQbCYH/X0oLMCKJewzIpdYLLcRxND8QzfvOdlfydIdsZ57be+OIGg8Np0lOrdmUsPEU461cYei+07N2pkM6yJLrixi3MGdaPATVnH5mVBLI83hGVOShPIPeRsTpcAYYJKuFVeown46eCvDPWvTmwSMOgYReGrmlRi7as5mojqpbvCbsihyo6fF0LXcOfbZJifLRkAmzJf1DHPB/wE9bLpCRo6fkImwGwehivnb/v1S8gPuRmPVrOpR4q6rK2hgPaA9Uvjhv3baY3HQEE4iFIMy9ZCMwUyIFhi24u8pYRYGjd20kOUR1XDQhMejg6aYKu9lCBocgFE966HC+Cu/YsxwFPQ==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(35042699022)(82310400026)(23010399003)(36860700016)(7416014)(376014)(1800799024)(10067099003)(4143699003)(56012099006)(11063799006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	qwWNyDZiTNXKeHNESSn453lfRhpJJW6WI/04WfJPuyUqdyuZaM2R4bCSJnVsfXZ7HGFOVduJRrRpx85dgoGYBn+U5kIUi88rbub5FPtzMo3Nmzu/vHz9kQeCuAUMD68bplFgBPQa72BWgnbsKvWHTB9+jRAdMIfySdSnn4H6KxU+hx4k7b6TsHy0PPl3NSIzZN4bhAfaw/wPjpWz66/X+JRTqlZL58CJ1PIXCK204qWVNbjKvkRM7wKcRmrJAc3lvfuN5KVESses+kB0sljUDpF5KA6fxurHuWzEywQkxiMV8KtiJ2TtM5UDkCXXLBoRwvU9jeDYQvVLkvTDrgM9a60cyve1Rk+69ePwHkzDzRK9VYh3KIidebR4VraK6dpPxS38gFghM6evtVh6/71VaRQqwFFfVTkio+icPo3D5NokPAp1R/orhxKqGyMBuw6F
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 08:44:33.3035
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c88af7b-ca50-437e-90c4-08df02851611
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B9C.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB11015
-X-Rspamd-Queue-Id: 297044000B
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: qwpaxga1akmxgnpg9p7unybc1zbn3png
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787647487-157397
-X-HE-Meta: U2FsdGVkX18+nEwxobqaSBYb0ZWWqzVylW9qhv1bNJYaOdCE0QkwK+7uURH4uuI/A8Orie0K2OOPRmbfGblgLqSuqHb3QLb8RWSBGiQw5QxzvASCeDa1F2QyCQjM1NGQ8bbFK9Tl9MKfmxM3kntkueX5lkqtEXYDahg87usIsPPipQAtTW0gYvUVy7xzAk0b8CWpWuHWDXJW/xrFx6RENVtfs7OvKgVSzwWXMKls2Al7K9HFs/l/OZnoTMQ7uPOXvhTiTTEu+hyfVIl+HlJSoOykhC3aXKk/l6y/PBLCTY8nNtXVA6dZhaVUUfr15G62kuHuisYOINS50kex56dJrKIqa+cDtd+s2KufYOdKi5B5Xq7MiXKBD10BB/G6h9UWQQwuN5yS1BIcuAD4OQMsuVWE7sYC1a4AIARI/odZy6qeUra1jOERPnF2ZPzIL7YJRSW/hfpGPie7TZI9crhjjuoczhW42fkHK5sdHvgDTLMnXNPxooE0ltfli5D5JNaHsFXfstD7tfAWTrufUXPjMYkKw5CDvx8uNcpD91Up2EYjuG7Y7C0QehNV4HUULtbSZWk6k5QJZMMs0/hf0K/S22hRHUd+JRulO38MzpiBm6NvAEvoWva4/HW2dyP9lpfnkyan5hd95E6W4h8HT52tK8wWgogqi8SQ4mlWn9HPsNgr1eMnHyMzcsweUu46OP+rwLu6Xb0D5XDGEYe3sdJsCb9QPUfGG2rKvW69Dygdwx1+k+0i6oochCuMJXk8BNoOLwYvCcLi5Fm6cMc9TJEXSbjH5vxYSddwirIn6xVFzG5zgrEuURqOZPLNik1KqA2NaVT57sq/bsZsuBZcv2xHAfc5Lj6TatXtTk8Qs95Sb8cwYgPZ9wzdtDWVFxEvsO7dgT+zJWU96TesaD/1TsjDko8Z6bm8pEO7iZjrgKQnOBXS8o6Lm+Cko73svTKntQ+fIpNMkhKqW+cb1kpE/2G
- YTl+YLtV
- dohHYcSr3+nvPyRroHxfRRNkGsrR8v9KOWcDlgUZl3xrW4l2TjQ2t8SMdCd5uw8cirId+znUzv+5ivH1A7LAY7X7qyViOu4FjseZDWOjxbUX7Z1Gm7wSHLCpPJH29DRbFNECv46cbICFMcnAg4YGtzCbrPJTJXZ2m6h5fzzT24v80xj5AE4R2qtjktFkbcUzkWa9pPsvPUCZ7kb9Bhi4PZclqIXpnSvcRj8QihP2Zl4/wZLtHA7GZKvPkPfZgZhIRJpttSmljHEAfOlVx2LL6u5t9Z/i3oSDixFY6GfJoDsf114hrEw20z9eDcToPVFFRtc3y/Ahx1oid3UCkU10dQ4r8/6nKWa6BPpc07QNGagv9I7ptL0cK16n8hMgAqNsgmq/4RfU5j8fzH/EupgLvsMc6WfE4JVQfn5+eul1fWu9jljFPXaaFvsZ9+o+Y+yT/9ZrIRFSwa+PxdR7yTJKFf6ntftivs3wR3MHll7nwSu8+SoZALWvuI0I5V2KxO1x64Mj0z0LSBfoSCggaosuGrpEaA/HqWIZWl8rvsBRkhim+dusp7dOiR0vwHyb9sMTcbFauh4HFN3hWxt5DhbaHpRZEt6W7p9DC5BaJmz8aZnUM7HbzZedSYiXFCyOL/XpRJfZ7oRjkOsFak/Y=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 23F7640002
+X-Stat-Signature: 4487qnadgxti1rfyg77ni6deo5x3ycqy
+X-HE-Tag: 1787647741-754803
+X-HE-Meta: U2FsdGVkX18g8LMaePIqFnitn4EMpx3wIRnPcXIyq0uHBmr9uWS87Ol5XZuajIP8C6+R5GV3TO5zEZqgn7d7h44HBahL+8h7idnjLVNQIQ0X94wIR+Xr/VBKa4wVpjPe6chH7qak2vs+j1YNFP0hUETG7zT7JZYH5QYOZm9gktXr7DZfrAjIQg6vjtF2jokpkATjFeQrRly/QjK8x/pmnYG3RzP5E4wEmzU8nuQwN6LZW0R/4nus0vKAIMAb4dyG6NkKzWSDVjykQp3cYSlZYg9Zey+fDj1XRc6E9QXMZ/z4/84ikB7dG7MPNKARkY9ScGCgZPL8RgAPFqcDUJdpDpK2gCCPG9TYb6a3OVKwG6NLtBbNdJBwakcv80jxe90HcV+dXxYSUfj9+TigMvfKaXcqOuUPMUEBPU5BhRW60z4xFnINCSea5fHv+FbO+7L7Y/ldogtPxFDlQwFCF0zUXmyyyJl5yK+7C3zRhlQ6W+5GT7Q9RBjTv7/rNFjzIiQvN3aeNc6nJq4dwrAxZ7Gvl3U3wTAVHQJk+Ilwx6/OmPPBMstW7EFrSg/l/QhOMaALyStmDmRl+MxJ/LT1jzVEPH9HRAC2sQp8SL+tNalH2NzZ323QayVPntmGuH8897UmVGkQfiluH0tYEouwaO2YeYD9oUI+ZRcFkQsak7AFVolK99MDwgCK3XTkeWtGEIMnd6KmrHNVzqa9BjCoH9hVPSfm9nS96tS+D1VNXJf9SJ5Xi6lBEUU4h694REYzecLTzLsf4PbTyFnG3/vo4DSNrWvJvI+uRBujKHstD/gip9K62Yv8PI2PBCeixRYSaqvixDkL2dJXorUljSnqrbL2eg9+M1kgdrCw8NtffPyUijWf3ms8cDEDC2sEl8n7Ph1H9h1uDkvc5WmdbM2IBjaJsevTqeOhHPcJT9OVnTmn2FTQZ9mTkiD9tC1oEb9MbAJlAhaKNN1/+OLS8TC7OFm
+ ueNIXBCa
+ XCB6MzZxuSA3pHiTIDmbyAqBsKLo4bFFRltVSloo3SxNE5uDnGnxb0NOKsXPI6ogJ2K2OjrDOdRSxUled3x+xEw5npxf4iTpZm/3tBU7ekT/5ygy/ldBfdrt32sy8dYfxIDQ0e1wcAZXYtwRBl2ae4EJIGVWshsTe+DfphVPbCdbSu3wdK3u8v7Wdy/CLw4ihbnTSIW2N6tHOQRx/kLVdXK/NoPUmfutiDpFSES4/hcCMDHSBh8OdwKvWHP9j3RgwHr0asnZI95mLdoHFDQLYr90+FFNeZxcAmIuaSf6r3iX1e6nQ6cCncpA9hajK63ICoxhn7qEdKw1TCnrJPnD3eSf2aLIrzTaMqcBJvibjYk/LF1dtS+Eleu0YMwx2oW3zJa473ySeeaBFhS3YFY4q8EMsWmcy323pHBHL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -204,57 +128,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David!
+This series is split out from the earlier, larger series "mm: Generalize
+HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
+vmemmap optimization across HugeTLB and device DAX, this subset addresses
+a single, self-contained step: making the generic sparse-vmemmap code
+section-based optimization aware and switching HugeTLB bootmem pages to
+this path.
 
-On 8/24/26 6:07 PM, David Hildenbrand (Arm) wrote:
-> On 8/13/26 20:12, Sarthak Sharma wrote:
->> Remove the functional modes (GUP_BASIC_TEST, PIN_BASIC_TEST and
->> DUMP_USER_PAGES_TEST) from gup_bench. Drop the kselftest dependency
->> and use normal diagnostics and exit statuses.
->>
->> When no arguments are supplied, run a single GUP_FAST_BENCHMARK
->> with the existing default values. Let users select other
->> configurations through command-line options. Report ioctl failures
->> and handle errors without relying on assert().
->>
->> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
->> ---
-> 
-> 
-> [...]
-> 
->>  	free(tid);
->>  
->> -	ksft_exit_pass();
->> +	if (thread_error)
->> +		goto err_unmap;
->> +
->> +	munmap((void *)gup.addr, size);
->> +	close(gup_fd);
->> +	close(filed);
->> +	return 0;
->> +
->> +err_unmap:
->> +	munmap((void *)gup.addr, size);
->> +err_close_gup_fd:
->> +	close(gup_fd);
->> +err_close_filed:
->> +	close(filed);
->> +	return 1;
->>  }
-> 
-> Why not have a "int ret = 1;" and just befor ethe err_unmap, do ret = 0;
-> 
-> That way you avoid the duplicate exit code.
+HugeTLB vmemmap optimization currently has its own early boot setup
+path. It pre-populates optimized vmemmap mappings before the normal
+sparse-vmemmap population code runs, and sparsemem carries
+SPARSEMEM_VMEMMAP_PREINIT only to support that special case.
 
-Makes sense. Will make this change.
+That makes the HugeTLB vmemmap optimization path harder to share with
+other users of sparse-vmemmap optimization and leaves a fair amount of
+HugeTLB-specific boot-time state in the generic memory initialization
+flow.
 
-> 
-> 
-> Apart from that
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+This series introduces section-based vmemmap optimization support in
+the sparse-vmemmap code and switches HugeTLB bootmem pages over to it.
+Instead of having HugeTLB pre-populate optimized vmemmap mappings
+itself, HugeTLB now records the compound page order in the corresponding
+memory sections. The generic sparse-vmemmap population path can then
+allocate or reuse shared tail vmemmap pages based on section metadata.
 
-Thank you!
+The patches are organized as follows:
+
+  - patches 1-2 prepare sparsemem and vmemmap optimization metadata
+  - patches 3-8 teach the common sparse-vmemmap paths to use that state
+  - patches 9-10 switch HugeTLB bootmem optimization to the
+    section-based path
+  - patches 11-17 clean up sparsemem and HugeTLB bootmem code that is no
+    longer needed after the conversion
+
+This is intended to be the second smaller step toward the broader HVO
+generalization. The device DAX conversion and the wider HVO
+consolidation are left for follow-up series.
+
+v5:
+- Add comments for pageblock migratetype helper callers and shared tail
+  vmemmap skipping (suggested by Mike Rapoport).
+- Move section_nr_vmemmap_pages() earlier under its own
+  CONFIG_MEMORY_HOTPLUG block to avoid code movement in the later
+  visibility change (suggested by Mike Rapoport).
+- Add vmemmap_alloc_pte() to keep PTE allocation handling clearer
+  (suggested by Mike Rapoport).
+- Collect Reviewed-by/Acked-by from Mike Rapoport.
+
+v4:
+- Rename pfn_vmemmap_optimizable() to vmemmap_optimizable_pfn() for
+  consistency with vmemmap_optimizable_order().
+- Move section_nr_vmemmap_pages() outside CONFIG_MEMORY_HOTPLUG to fix
+  CONFIG_MEMORY_HOTPLUG=n builds (reported by kernel test robot).
+
+v3:
+- Replaced the !SPARSEMEM __pfn_to_section() stub with
+  pfn_to_section_order() so callers can keep mem_section access inside
+  sparse helpers (suggested by Mike Rapoport).
+- Added vmemmap_optimizable_order() for order-based vmemmap
+  optimization checks and used it for HugeTLB bootmem decisions.
+- Fixed the pfn_to_zone() commit message to name mm/mm_init.h instead
+  of mm/internal.h.
+- Collected Acked-by tags from Mike Rapoport.
+
+v2:
+- Kept struct mem_section aligned after relaxing lookup constraints
+  (suggested by David Laight).
+- Folded section order tracking into the first user instead of keeping
+  a standalone API-only patch (suggested by Mike Rapoport).
+- Renamed the HVO order macros with a VMEMMAP_OPTIMIZATION prefix
+  (suggested by Mike Rapoport).
+- Moved pfn_to_zone() before the sparse-vmemmap optimization changes
+  (suggested by Mike Rapoport).
+- Kept vmemmap accounting and population logic in sparse-vmemmap.c
+  (suggested by Mike Rapoport).
+- Renamed the early sparsemem helper to sparse_sections_init()
+  (suggested by Mike Rapoport).
+- Fixed the !SPARSEMEM stub name so SPARSEMEM=n builds compile
+  (reported by Sashiko).
+- Guarded section_order() with CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP so
+  it returns 0 when HVO is disabled and lets the compiler optimize the
+  code as much as possible (suggested by Mike Rapoport).
+- Collected Acked-by tags from Mike Rapoport.
+
+[1] https://lore.kernel.org/linux-mm/20260513130542.35604-1-songmuchun@bytedance.com/
+
+Muchun Song (17):
+  mm/sparse: relax struct mem_section size constraints
+  mm/sparse-vmemmap: rename HVO order macros
+  mm/mm_init: skip initializing shared vmemmap tail pages
+  mm/sparse-vmemmap: initialize shared tail vmemmap pages on allocation
+  mm/sparse-vmemmap: support section-based vmemmap accounting
+  mm/mm_init: factor out pfn_to_zone()
+  mm/sparse-vmemmap: move helpers ahead of future callers
+  mm/sparse-vmemmap: support section-based vmemmap optimization
+  mm/sparse: initialize memory sections earlier
+  mm/hugetlb: switch HugeTLB to section-based vmemmap optimization
+  mm/sparse-vmemmap: remove SPARSEMEM_VMEMMAP_PREINIT support
+  mm/sparse: inline usemap allocation into sparse_init_nid()
+  mm/sparse: remove section_map_size()
+  mm/hugetlb: remove HUGE_BOOTMEM_HVO
+  mm/hugetlb: remove HUGE_BOOTMEM_CMA
+  mm/hugetlb: localize struct huge_bootmem_page
+  mm/hugetlb: localize HUGE_BOOTMEM_ZONES_VALID
+
+ arch/x86/Kconfig        |   1 -
+ fs/Kconfig              |   1 -
+ include/linux/hugetlb.h |   5 -
+ include/linux/mm.h      |   4 -
+ include/linux/mmzone.h  |  66 ++++--------
+ mm/Kconfig              |   5 -
+ mm/hugetlb.c            |  64 +++---------
+ mm/hugetlb_vmemmap.c    | 103 +-----------------
+ mm/hugetlb_vmemmap.h    |  13 +--
+ mm/internal.h           |   7 --
+ mm/mm_init.c            |  69 ++++++++-----
+ mm/mm_init.h            |   1 +
+ mm/sparse-vmemmap.c     | 224 +++++++++++++++++++---------------------
+ mm/sparse.c             |  94 ++++-------------
+ mm/sparse.h             |  85 +++++++++++++++
+ scripts/gdb/linux/mm.py |   6 +-
+ 16 files changed, 299 insertions(+), 449 deletions(-)
+
+
+base-commit: 4b18edbd8e70f7e6860d56370f13244896d0f95c
+-- 
+2.54.0
+
 
