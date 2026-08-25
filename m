@@ -4,115 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53DCFC5DF94
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 06:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E80C5DF94
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 07:08:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E53016B0092; Tue, 25 Aug 2026 02:49:16 -0400 (EDT)
+	id AA5EF6B008C; Tue, 25 Aug 2026 03:08:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E29C96B0095; Tue, 25 Aug 2026 02:49:16 -0400 (EDT)
+	id A56ED6B0092; Tue, 25 Aug 2026 03:08:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3ED76B0096; Tue, 25 Aug 2026 02:49:16 -0400 (EDT)
+	id 9455E6B0095; Tue, 25 Aug 2026 03:08:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 87EC76B0092
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:49:16 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 40789A02BD
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:49:15 +0000 (UTC)
-X-FDA: 85138865070.09.34C014B
-Received: from mta0.migadu.com (out-81.mta0.migadu.com [91.218.175.81])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7A9C720006
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:49:11 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HZAIV6r4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.81 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787640553;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D1DF6B008C
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 03:08:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D33B80344
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:08:28 +0000 (UTC)
+X-FDA: 85138913496.17.5ED3BD7
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 303FD40003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:08:26 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=IdqS9Cis;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf17.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787641706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SfDBiHJhx/rGo/mS+Hge7byRE9FP22N0o3g+++Gqo+4=;
-	b=yIxCnTWT9vTv7vI0bNgoTlwJUGe2hMsfpVLgyLe3uo9ZAG8l060EeODyjuhSXAhkGIGB3l
-	7y+kgX+4hyx5TKE32QA4FwAARaMzvhvTRZcRFBs8bTOAlNbDmuVo73PIbqyLIEUrV/JPg5
-	GKlAZWUUOb468At4Ir2piVB/TV4uGfU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HZAIV6r4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.81 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787640553;
-	b=YyNMVLiKONtbRLs6ZONSZMoeh9TElRSx8imk4chu3b+YjpyTpZfI0q4YDZ3+TRpkmwLlvG
-	X3Jvp89+IRJHuULWQwqhqbrn/ml5cWMq6nvU8EO9r8MS460GxH9GF6GEPnOT+L4Ddy9j/K
-	fDm/yX+s/ikCy6/Fjzq1s90e6Vtekkg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=leFlssTWRx1UcgWYTfrxtqn2gdLNeOhJcAUCtbZrvfk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787640546; v=1; x=1788245346;
- b=HZAIV6r4+YpMCjokhMpK2yp7f008j33lP5mLnema0iFQhUpcdZGqtHRcBn1tM598Pqb+5YjV
- mIWw9Ts5TGIvZrNURrbYK0/lYtw3vs2D+EVKH/Shb87eEkSVnW/Vks23gSGA/8k2mpFEAGEyFnT
- 7efi3HjJVE3DJl9Lx69mSE5U=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id 47ae94857be340a8;
-	Tue, 25 Aug 2026 06:48:56 +0000
-X-Mizu-Trace-ID: 47ae94857be340a8
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: kirill@shutemov.name
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	nico.pache@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	hughd@google.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shuah@kernel.org,
-	surenb@google.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	ziy@nvidia.com,
-	usama.anjum@arm.com,
-	agordeev@linux.ibm.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kas@kernel.org,
-	jannh@google.com,
-	willy@infradead.org,
-	pfalcato@suse.de,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 18/57] mm/collapse: install the destinations at PTE level
-Date: Tue, 25 Aug 2026 14:48:51 +0800
-Message-Id: <20260825064851.87309-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260816224609.308019-19-kirill@shutemov.name>
-References: <20260816224609.308019-19-kirill@shutemov.name>
+	bh=FUPUaRwtppzW7Cz0zNlhCOY1JMoitTGaOwtquxqzhgM=;
+	b=KQIIW4pbleJW7VgiOEbCUUBaWhSb8P8tsDeosHRIC3Lpndk5PwxrOmj5buGzbPyIzYixM7
+	PVBiojWr9Lk5nGq1MvzO+F8XZFOhB9BrII4kkr8C1g2T2uxtAI+euBB6P/ynkB5zBrk8d5
+	o1DKXExa34jNdSIJH0hgnIP/KIFcthc=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=IdqS9Cis;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf17.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787641706;
+	b=Sf1u0Dl/gquczmEVqkOgi4ka///nk8Ek5ow4nU9DKReRfOBJ3Q98oYgkeaAouNrHPwwVw6
+	qWOJJ7dshl7JlL2xlvHg6QR0kNmYCA55P2UpbGzmvDbeLkJPxg3l+0te3C3injTMmWkz7l
+	b1UKYUmb6gan8nz/xRr0MbKKMeXlsds=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c0c45c580so28005521cf.0
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:08:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787641705; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Q65NRSI3Ji5AQVb0cPH8tnj4ljsbY2q03i7lEI6hd3uGx+h56vZsH7VycPUguJQ3Ry
+         D4SU3ShT8fUb+Wlp14gPMYWaQFMcR+sGfBqf5u5cqGxXKWW6vfTEtsJ3fuImfogSJg5z
+         Nl8vukie1Ycc9LViSw92pzPw2ws37mm2KrIDXThDVgrR38/pLr31VAzvMA7l5/J59/eS
+         05N27gnhBdaU84HNCerhPQwN/iqUSQmRukOTEJtAKCztXu4x9y8sS6btYTnxmJUOW+Fu
+         ujOJtjy9K33vES7K3iSFlhgFMSm/FsICrxF2/HbYxqAvtzxF70wWUDWh2gtuK23V3PtK
+         egfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=FUPUaRwtppzW7Cz0zNlhCOY1JMoitTGaOwtquxqzhgM=;
+        fh=DLYCiCQ+6DYJxmQwWuOfpgHFgVhh+1yMpbWSzgF7f2g=;
+        b=tBWTyp3AugZPFlLdHdg93cpR36DJTYDPZEfX1Am3SHLzvT7Yg49hjmd/Z3DgSjdKe5
+         EuZWTHGap7ZOmXLEJTjcRCJvouxvT22uyXPBVnfX3+J5o1uzy6yn4SiFjTaOGmXEjBvU
+         pwfmKoBw0TnUXb8NYKnBu2eFrQm1nr3rJ/nn5MzAb89gzoOURNgZEnsGN6YyxP0n1kkR
+         o+dFljotbewTlXe3gY2KajA71cyCJS0vBbopJqxxLBsYUWvcU5rDrTU9OWDy/wN2Gj0N
+         pIoMpW9vX3uRNJufDiRtaWCdMjCLrzZ8LLbDlVZSxEFTCIXzVhKWWL4DsMi2QA1YMX7J
+         5zLg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1787641705; x=1788246505; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FUPUaRwtppzW7Cz0zNlhCOY1JMoitTGaOwtquxqzhgM=;
+        b=IdqS9Cisi6aHY9+FyhJCvfOIYTF9rxO32QsdrG0zBiH6KhO6wipE9KX0Mxelx1XEip
+         0Kcw6h2B2dV1I2Csx1XCmZvtNJwP1Fj9FpvWFAe5+im1MkBd1jSVJue2KkDA1ZUjv+6S
+         XJveiDFW2dYYWexQZX5cXMj72IU20pJNhDXlY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787641705; x=1788246505;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=FUPUaRwtppzW7Cz0zNlhCOY1JMoitTGaOwtquxqzhgM=;
+        b=GMGE27yC5C6WjTfoyxX7SKrm3iWAm26GfFkJkRG4vAT6cLRaYYqV1jRxskP+ctChpu
+         ANtYDaffBvsrq3SKZScP8sd9+Tw8Fza4F7TKRupmGhYtlEbxq0TgDX3hMsVguJtYVPTm
+         OZMpKA6HAGI9Yj1zlglbz27eO+szY7K+mewtlMHBHpC4bLbhjukBahrj8DzKcCpNbDNo
+         XFUWrbyaMAUg61dT8A3h3bo4RQ70ca819S00yV9Txgp418ageHl/9/+m7Vw5ItqExUpU
+         bCyT9ECMSm8tzWi+08TdU6XEZ4NTP/NX/8+KpFSWdlQtPwJgqDOldD7WWsc4W1AvmFL4
+         3QIA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro/Ac//edt1ZfVQlEPr4urmwYfbyxT3/wHPqYOaqCRHCQ7JzTJuxLYrAtJHUYLCiiNw7aTvryCtlQ==@kvack.org
+X-Gm-Message-State: AFuF++mHIyvtv39dSHmH57uTzW5vjgS4WR8p++at4oprh5RzEKReFxeY
+	6RFFBo5z07PRZIN9duGTjEkrVrr1UEB0LV/u66h+0bBn4MlGsFDp/iT35ZreR3xLsfPUqgPTPWZ
+	Yhki1aF8gZWdaV09yW0xrs623lKMhgxn0m/L48L1ANad6Q+7ipnw2l2kJCw==
+X-Gm-Gg: AR+sD10+0MAQILiBicbCHm8ortg4K3iqYj52EFcf7lEd3Zu6s9urPgmUodonnz/vG09
+	06M6FRtZDnY1RWkNxQUdSVQN7gc2RrNWNrObYLneMGd2cO+keYhh0L0bwlwq/21fi5KT8XR0Pa3
+	aZzEJKj87S6XBZwxsfLldjb+neVrkHzglqrbtyba8VyiuvbaWkCq8Bo8gnsj+RMpElb9XL28WG9
+	J8Y/5p51yqD2phUn7raCLbU+LH3sLLPhfjfi5fAbCtJRjGc1+2XcmewyFb17PMXtTwLoB04CnDr
+	SPpdlaqimSEwv7xIc/+yd1HzI5Gufx88/t9Rl3FsajISfFa8t8+YrHKij3vzEyVHynZSEgTstdE
+	NoBM=
+X-Received: by 2002:ac8:5f53:0:b0:52d:6afd:7db5 with SMTP id
+ d75a77b69052e-52df59ec0d3mr342600351cf.25.1787641705339; Tue, 25 Aug 2026
+ 00:08:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260820193343.3852967-1-willy@infradead.org> <20260820193343.3852967-3-willy@infradead.org>
+ <CAJfpegvP3i8ZJc2T=+f4rAhZ4E1QcT5+jC6mQPLxtB-yoK9Brw@mail.gmail.com>
+ <aoxHOSC9kTPbKeNq@casper.infradead.org> <CAJfpegv3Ak+qNLb=fTSCSz7-taQ3Ui-Hkmqgn4PaGPe=CR4cbQ@mail.gmail.com>
+ <aoyKxvdQdeJQfPHj@casper.infradead.org> <CAJfpegtgenUaudDcvecJuV2_WkkVw=gdcB0Eqg=UFKPMZP1uKQ@mail.gmail.com>
+ <aoyt5pL7mXYwSqsG@casper.infradead.org>
+In-Reply-To: <aoyt5pL7mXYwSqsG@casper.infradead.org>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Tue, 25 Aug 2026 09:08:13 +0200
+X-Gm-Features: AcwNN1VLOxg4TFDsQzXPHVySuwqrEIZSjxOFz1CuAgo80c2cUSWOrt0F79eOWzI
+Message-ID: <CAJfpegv_SKhArUNBFUtsmkXSn+JzYgOjhFOqVf-Yd9MnsjBY_w@mail.gmail.com>
+Subject: Re: [PATCH 2/7] fuse: Use filemap_invalidate_pages()
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Chris Mason <clm@fb.com>, 
+	David Sterba <dsterba@suse.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	devel@lists.orangefs.org, Pavel Begunkov <asml.silence@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: fsm5upm5tkmbfiytz5yfwit94w34tpmm
+X-Rspamd-Queue-Id: 303FD40003
 X-Rspam-User: 
-X-Stat-Signature: m4ed8tof8naacpr45szas1uusojrxyr6
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7A9C720006
-X-HE-Tag: 1787640551-667199
-X-HE-Meta: U2FsdGVkX19NzDxuNuh+tShSo1taAGV1OMsqgolq4rP/3qHHxazLL19lpYdgntmZusCXtTMoqWB6Ol9NhGh89OtrymO8RFCBCZGOi7Cd9BztHVzVUpudz51RS6c3wkLsZpTTRTTzpcdd08iDjBR6CUPtV1x13M68Rmaacj+5sEZoUhBT8GrrdbbeNyZ5MhWIRLWFoKE8TEyKCkHPxHDYnJ0xQUsrhVDGl1j8dqc+r01uRrhINvMrblQVCcO3psIyZF19ijL7GFEd90oPpG5A5T+iGzOLiEPKF3Pgp60LR6GFDXkcaP1YI6zHid1Q5Mv9MWUzpxsIu189kox556ZfHRAbRf44A7a0bUY87sSj9J59eNosWJ0XefqKGd4UPLY/bQURvgw/SXNhtXG+fgGQQW9EVVBdINW6tHucUkEuTFef1hN8GWJ3gr74QF8vlOsmrcnvE07VdGTg/OcWXsBQ8dWBuUOJQ1T7ZMbmtuvctoA0qUSQuUuoeQc0/lLtpBpY7zkABkYhjd5ujTmnDBB74y0TKJ25SsQ3r/sntlTMjG+BqjwZjS5UtrdXHZBNeR0axYpX24rVkDdC1uVbPRvHZzYey62UEpnzi0GqwfSQqzYBm2VQyXlLVKL8QTYTZTeGmPHHqGjd+kfZ0mWR5G/wvGSYs6adUh86fMAskTGOyswrunetVA2WzxxamPkME1JBzeGKV/dKx4OeEbq4wf4kK9zVk2hciIrkiwFxnvAeDgSSx2GZA1j6Pg7SXlM59PKJvW8VtQKDS+w8M9dW0r/LWCikDyeEooGSsdLO9HjlIMZWHVSvcXV08iGMy2Zft3LOi+NLOcwBhkROAQnA7C28NkslA/TENvmfyF9cdb/xSN/pjJGofvZCEFXan5iNpHmpm1Un3OerKjAsH3sKKhxjQBaIfJ1z681mOhAk+ARVFe0kHgl6LqYtX39F+8APLPt3hGfu6eWKy9ruCGEXOoj
- urd10y/F
- 8KfPh9fXCHQ047VDK4QxooyRn/lKDJIBCWFlhfS1wr0aIeSJA0wWYCD8bG/4mg3B11LG4wYnISnTpc6IZiPJ23t9EoYPvluOmjrkJqP07LwMdgXev8FoAUP66Ptl0iuXYvWBtI8PpVUjJCOjzsMyOjxY8H6BFDqhR2RlP8dnV2BXwOfgi4AadYQRSkyvbp0AGJQihVM6QdEBNiuML4Zewf3cYkiBc8LGkpRrdy3KIxfRv99zAdni806E7iIniyRlvLhXJ8m59u0Id5c5lGwrhcpFK35ffvspnXTbk8sVKgtGAefIwmnWWDweiEg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1787641706-123517
+X-HE-Meta: U2FsdGVkX1/Xpyn5tJitVAsNmek1EyGsufcbyVVpr+TwLBAMKsm3ZbTrP7iyOdR8i7khiWHMi7ds58SN/fFLO9Atr7s4x0k/gu8GQ79dWDml3SxWzZsgQLCDo5nA53uZDYTLbp/0y7Q4CaurMpNh4SNA8IrFuXSrrtcmN2+CLxCuibfK1Ai3phjanKz9kcSp3pjNxxRy+EN2xV46gPo2+a+cPK5MOpCHBkMVseqLQKdLUKOV3Jtol9JJos33yYfz2l1dbWDcy8dWX+7xgYBhjxf/4hgkWoGyUhhd3vJjXnXXusC/f4jy/jWURVQjR6JpkW7m9Sbh2Nv8908c4dKKhdlmDXVq0CJiICO/U6IscUotjUHJM1mDaYgPI3ceg5Vz5LL4qaU+d6zxr0RV5YQRJCa08GOvOQfIxKc/cJ28rYrk/RyL+ldZK6+IzobKsyhSPHm8i6Yw7sonvz15NVtvavfm/tkgxBBdvKTIdMu4KmFeX8k0z3LHaUIRyx65oPazLgFFc2aPU0MmLZlKgHluOmwRtosyE6xSh4GCM+aJ/Fueo1eG5qB5eKoyNkj8TOgAEOtuC6uB9zTz0Ps2dohEyV5qNZb5nA6ycdlLg64Nsjvwr/ZTUbvPQGr7VE3B4KNvgygCBKfdmxBZFc9INKHSbbzDJBGjlmF8p9mPvXgmtfdnoXwEhmxRAFI7mX0zNqfiOin7xI5Ohb9C9EOm0m0oHgV55QOQTYGf8LbAfxS6m/Yewzj8PB1qunOtFLwY/JG3QWnWInwTI3KFUV8NFK+El+CpXrdbg7JrvvMFKQiUjatn6zwK0kys91debi6PsfxyvraEFVvKPRk7d0KgkSu5DZf1V7jskCcm7hkwNXkUmr/koKm+P67l60ru/MwaWzKLwVZri6Dl3TDVRqmgblXaMGoonr1WiNFx/WxOokbphu1re1Te8ZpUlmkmuLGOVnhDnH+I0eBAP/kUDO7BSA8
+ gx44EMNs
+ TscF1SByrNJ0WnDRNz/jhYyGkLoYd4UxtfAfoy9Q9QjrBSqQcMyrlyu89+Lu5/lkI5y0ZKVu1zMCSvdg3UcKNPpjjdTiXf3jf1ALp+FF8GMVij/1lOccL7mtMTAEnMtr3Utse343cWzzvlzPw1EZXVppbWlX7ZiqGKiaVknY67B0yOJh+YCsh8CUxhOrEntgoaRWvXh/H7P7C+Pk3Xc0oGsnbsI2b0PYfSozqw8MDdiTOc3KBSpNfd5Z5748/IDpZEozt75dzfh5vdr3YlswLs2SCeO2g69JHWWnj29hMi83fpa/Ug4ThzVbDR3dgUgPc3omePqIx0IcopyYzpPckVj+2F5LbA6/I0UENfAad4LfhjQS+MYrAinY/bOBluk9QQVyc/FR5BNDp8gzd+Wl2dQzile4SKhtUgObPKmKZrMdvOqw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,184 +143,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Sun, Aug 16, 2026 at 11:45:30PM +0100, Kiryl Shutsemau wrote:
->From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Mon, 24 Aug 2026 at 22:47, Matthew Wilcox <willy@infradead.org> wrote:
 >
-[...]
-> /* Publish each destination folio in place of the sources it replaces */
-> static void collapse_install(struct vm_area_struct *vma,
-> 			     struct collapse_control *cc, pmd_t *pmd)
-> {
->+	struct mm_struct *mm = vma->vm_mm;
->+	pte_t *pte, *table;
->+	spinlock_t *ptl;
->+	unsigned int i;
->+
->+	if (is_pmd_order(cc->candidates[0].order)) {
->+		/* A PMD candidate fills the slot pool: always alone */
->+		VM_WARN_ON_ONCE(cc->nr_candidates != 1);
->+		collapse_install_pmd(vma, cc, pmd);
->+		return;
->+	}
->+
->+	pte = pte_offset_map_lock(mm, pmd, cc->candidates[0].addr, &ptl);
->+	if (!pte) {
->+		/*
->+		 * Table gone under us (see collapse_abort_candidate() on @pte).
->+		 * Tear down every frozen candidate -- stranding them would leak
->+		 * frozen, locked sources.
->+		 */
->+		for (i = 0; i < cc->nr_candidates; i++) {
->+			struct collapse_candidate *cand = &cc->candidates[i];
->+
->+			if (cand->state != CAND_FROZEN)
->+				continue;
->+
->+			cand->result = SCAN_NO_PTE_TABLE;
->+			collapse_abort_candidate(vma, cand, NULL);
->+		}
->+		return;
->+	}
->+	table = pte - pte_index(cc->candidates[0].addr);
->+
->+	for (i = 0; i < cc->nr_candidates; i++) {
->+		struct collapse_candidate *cand = &cc->candidates[i];
->+		pte_t *cand_pte = table + pte_index(cand->addr);
->+		unsigned int nr_populated;
->+
->+		if (cand->state != CAND_FROZEN)
->+			continue;
->+
->+		if (cand->result != SCAN_SUCCEED) {
->+			/* Machine check during the copy */
->+			collapse_abort_candidate(vma, cand, cand_pte);
->+			continue;
->+		}
->+
->+		/* No destination: the provision pass could not spare one */
->+		if (!cand->new_folio) {
->+			collapse_abort_candidate(vma, cand, cand_pte);
->+			continue;
->+		}
->+
->+		if (!collapse_verify_candidate(cand, cand_pte, &nr_populated)) {
->+			cand->result = SCAN_PTE_NON_PRESENT;
->+			collapse_abort_candidate(vma, cand, cand_pte);
->+			continue;
->+		}
->+
->+		/*
->+		 * The smp_wmb() in __folio_mark_uptodate() orders the copied
->+		 * data before the set_ptes() that publishes it.
->+		 */
->+		__folio_mark_uptodate(cand->new_folio);
->+		map_anon_folio_pte_nopf(cand->new_folio, cand_pte, vma,
->+					cand->addr, /*uffd_wp=*/ false);
->+
->+		/* Slots with no source gain anon memory that no zap accounted */
->+		if (nr_populated)
->+			add_mm_counter(mm, MM_ANONPAGES, nr_populated);
+> On Mon, Aug 24, 2026 at 09:33:03PM +0200, Miklos Szeredi wrote:
 
-Well ... KSM zero-page accounting gets out of sync here.
-
-Say a saved zero PTE came from KSM. ksm_map_zero_page() has already
-bumped global + per-mm counters. ksm_might_unmap_zero_page() uses its|
-dirty bit to drop them again later:
-
-#define is_ksm_zero_pte(pte)	(is_zero_pfn(pte_pfn(pte)) && pte_dirty(pte))
-
-static inline void ksm_map_zero_page(struct mm_struct *mm)
-{
-	atomic_long_inc(&ksm_zero_pages);
-	atomic_long_inc(&mm->ksm_zero_pages);
-}
-
-static inline void ksm_might_unmap_zero_page(struct mm_struct *mm, pte_t pte)
-{
-	if (is_ksm_zero_pte(pte)) {
-		atomic_long_dec(&ksm_zero_pages);
-		atomic_long_dec(&mm->ksm_zero_pages);
-	}
-}
-
-Right, once a candidate reaches install, those counters stay valid only
-if collapse_abort_candidate() restores the saved PTE. A successful PTE
-install doesn't restore it. Neither does an abort after the slot was
-refilled or the PTE table disappeared. Patch #19 has the same
-successful-install case in collapse_install_pmd() ...
-
-I was thinking of something like this:
-
----8<---
-diff --git a/mm/collapse.c b/mm/collapse.c
-index 7c10888031f7..68b37e706341 100644
---- a/mm/collapse.c
-+++ b/mm/collapse.c
-@@ -8,6 +8,7 @@
- #include <linux/highmem.h>
- #include <linux/huge_mm.h>
- #include <linux/hugetlb.h>	/* x86 flush_tlb_range() uses hstate_vma() */
-+#include <linux/ksm.h>
- #include <linux/leafops.h>
- #include <linux/math64.h>
- #include <linux/memcontrol.h>
-@@ -1430,6 +1431,8 @@ static void collapse_abort_candidate(struct vm_area_struct *vma,
- 		if (is_zero_pfn(pte_pfn(saved))) {
- 			if (pte && pte_none(ptep_get(pte + i)))
- 				set_pte_at(mm, addr, pte + i, saved);
-+			else
-+				ksm_might_unmap_zero_page(mm, saved);
- 			continue;
- 		}
-
-@@ -1499,6 +1502,16 @@ static bool collapse_verify_candidate(struct collapse_candidate *cand,
- 	return true;
- }
-
-+static void collapse_unmap_zero_pages(struct mm_struct *mm,
-+				      struct collapse_candidate *cand)
-+{
-+	const unsigned int nr_pages = candidate_nr_pages(cand);
-+	unsigned int i;
-+
-+	for (i = 0; i < nr_pages; i++)
-+		ksm_might_unmap_zero_page(mm, cand->saved_ptes[i]);
-+}
-+
- /*
-  * The PMD terminal layer: verify, detach the table, deposit a fresh one and
-  * install the leaf, as one atomic section under the pmd lock.  A pmd_none window
-@@ -1616,6 +1629,7 @@ static void collapse_install_pmd(struct vm_area_struct *vma,
- 	/* Slots with no source gain anon memory that no zap accounted */
- 	if (nr_populated)
- 		add_mm_counter(mm, MM_ANONPAGES, nr_populated);
-+	collapse_unmap_zero_pages(mm, cand);
- 	cand->deposit = NULL;
- 	cand->new_folio = NULL;	/* ownership: the mapping */
- 	cand->state = CAND_INSTALLED;
-@@ -1708,6 +1722,7 @@ static void collapse_install(struct vm_area_struct *vma,
- 		/* Slots with no source gain anon memory that no zap accounted */
- 		if (nr_populated)
- 			add_mm_counter(mm, MM_ANONPAGES, nr_populated);
-+		collapse_unmap_zero_pages(mm, cand);
- 		cand->new_folio = NULL;	/* ownership: the mappings */
- 		cand->state = CAND_INSTALLED;
- 	}
----
-
-Cheers, Lance
-
->+		cand->new_folio = NULL;	/* ownership: the mappings */
->+		cand->state = CAND_INSTALLED;
->+	}
->+
->+	pte_unmap_unlock(pte, ptl);
-> }
-> 
-> /*
->-- 
->2.54.0
+> > In the second case filemap_write_and_wait_range() won't write protect
+> > or unmap the page, so it may become dirty after the writeback.
 >
->
+> But that can also happen in the first case.  page_mkwrite() can be called
+> immediately after the folio is unlocked, for example.  Or the folio can
+> be evicted and replaced with a different folio which is then dirtied.
+
+Let me try to make up a very concrete example.  It's not realistic and
+very unlikely to exist, yet something more subtle might be relying on
+this behavior.  I don't know.   At this point I'm just trying to show
+you that the two are really not equivalent, not that this has any
+practical significance.
+
+Let's imagine a distributed filesystem based on fuse.  It wants to
+serialize accesses to a file to avoid sub page writes reverting to
+stale data on cached writeback.  Cached writeback is unavoidable in
+case of writable mmap, so it tries to handle this case correctly by
+totally excluding cached aliases existing on different nodes.   If one
+node reads a range of pages, that range is invalidated on all other
+nodes.
+
+The below example show store to a single page on node A and B with and
+without launder_page, starting with both having the page mmapped but
+not yet in cache.
+
+1) with launder_page
+
+store on A
+  - send READ
+  - server checks that no aliases exists
+  - returns page
+  - page is mapped in address space and dirtied
+
+store on B
+  - send READ
+  - server sees alias on A, sends INVALIDATE
+  - INVALIDATE is processed on A:
+     + page is locked,
+     + unmapped
+     + data written to server via launder_page
+     + unlocked
+  - returns updated page
+  - page is mapped in address space and dirtied
+
+ store on A concurrently with previous store on B
+   a) happens before page is unmapped:
+      - change is written by launder_page together with previous store
+   b) happens after page is unmapped:
+      -  page lock waits for writeback to finish
+      -  sends READ
+      - server sees in progress READ on B
+      - wait until READ on B is finished
+      - sends INVALIDATE to B
+      - ...
+
+2) without launder_page
+
+store on A: same as above
+
+store on B
+  - send READ
+  - server sees alias on A, sends INVALIDATE
+  - INVALIDATE is processed on A:
+     + page is written back
+     + unmapped
+  - returns updated page
+  - page is mapped in address space and dirtied
+
+ store on A concurrently with previous store on B
+   a) happens before page writeback:
+      - change is written together with previous store
+   b) happens after page writeback but before unmap:
+      - since page is still mapped, store succeeds, page becomes dirty
+      - at this point we have differing cache contents on A and B
+
+Thanks,
+Miklos
 
