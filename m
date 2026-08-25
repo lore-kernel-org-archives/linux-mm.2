@@ -4,89 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 773FDC61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 18:35:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A23CC61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 18:39:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DE046B008C; Tue, 25 Aug 2026 14:35:32 -0400 (EDT)
+	id 574226B0088; Tue, 25 Aug 2026 14:39:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78D6F6B0092; Tue, 25 Aug 2026 14:35:32 -0400 (EDT)
+	id 524316B008A; Tue, 25 Aug 2026 14:39:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 658B86B0095; Tue, 25 Aug 2026 14:35:32 -0400 (EDT)
+	id 413F26B0092; Tue, 25 Aug 2026 14:39:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 439336B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:35:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C7D1A140135
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:35:31 +0000 (UTC)
-X-FDA: 85140644862.29.9CB8F4E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6A94C140003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:35:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=LXRyEqv3;
-	spf=pass (imf09.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 183966B0088
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:39:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89114C0164
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:39:32 +0000 (UTC)
+X-FDA: 85140654984.05.5A99466
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9439B20002
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:39:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Mzg/XxUU";
+	spf=pass (imf03.hostedemail.com: domain of jannh@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787682930;
-	b=jlXpLPqwWxD6qLmxpmPlZYAafEGKjxlEUGpMiGiibEmPzCb+d3loQO7bjC0gL1rma82Xpq
-	4gCVuT9kbAvO/Ag7SoR9BvoWGPmuPqr7jPrVxwe5gWdEjxpv9x0+gDLtvy8/JO7q/chLmQ
-	yb93IDK8Q0dV4gWihlPqIF9cP7BKd6E=
+	t=1787683170;
+	b=BC7VmGeoBI3IeGL3T0oZZ6bZme2VarF2dFzpFToBdoOiZ9NuX1sMuwZBCTINFB+J4T4Afe
+	ce4RP/GoEfkZ1f2ek2yOuECaZ4Ekhe9nY9nGgzjSYy19ZOkgbobyAaSx+aCvmPYNCLPRbW
+	rFmR1PlM+Qpqk7JUSfzDChMQO9n1f64=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=LXRyEqv3;
-	spf=pass (imf09.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Mzg/XxUU";
+	spf=pass (imf03.hostedemail.com: domain of jannh@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787682930;
+	s=arc-20220608; t=1787683170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NzdQdDzy9an+ad2ujHM4K87j7IVbsCNSw+/FSI8vDqQ=;
-	b=T4sv3UkG7toqOGCqrwa7onTIGTJr3dzhgWxf6SK5zSwqzz1QAkvnbEmP1qLr+xoBqxiMOS
-	YGZhRJL42qENZRy29IJqYfZ7cd/S3qOdzmI46b5FxpSF6ARDINRUrKA2nXGzFSJYAPkwOl
-	22K56NTcgi6ASqbY8TF6tIv24V/MdUI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NzdQdDzy9an+ad2ujHM4K87j7IVbsCNSw+/FSI8vDqQ=; b=LXRyEqv3luyRGaNhx9QcZkACii
-	0DKvqLDdWONegOg3YmykHdEwYxNA9R2kquCB42nIt6EHrA52otHoe1WjbQaoNFK2aqqtusT/gQeXJ
-	JFYkgLHg/zad0zJTzOD3lPUyJ/0d610qpC4N7p+Cca9zrtE0GoEpBhjIy8mxRyWc7WCMe3atU/7aL
-	J+ijmZJBfx98iQhq+I1AnO1TilXv/52BDJqbhElR8iF9vCIUpYc4rH2jhdxbgIeCHeuP7o17REHnW
-	soR2dy9Jws0Ymq/BznZz1WeI/jfpgBbeA8Qhyx/qceFGgSJybEJf75RNf9waPdG7MwxL/Zokf2XRc
-	QvpQTY/A==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyvzR-00000009XHS-2xcn;
-	Tue, 25 Aug 2026 18:35:17 +0000
-Date: Tue, 25 Aug 2026 19:35:17 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Christoph Hellwig <hch@lst.de>, Jann Horn <jannh@google.com>,
-	David Howells <dhowells@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>, Jan Kara <jack@suse.cz>,
-	Rik van Riel <riel@surriel.com>, Qu Wenruo <wqu@suse.com>,
-	"Darrick J. Wong" <djwong@kernel.org>, linux-btrfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org
-Subject: Re: Removing ->dirty_folio
-Message-ID: <ao3gZRa7HOEg209P@casper.infradead.org>
-References: <aoyWln-Gt-yvZQkE@casper.infradead.org>
- <ao1Lo6TKhPcqV42B@pedro-suse>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tT3C8RmqnSUSZm6wZr0ulCb4Q+ThIVoSjKYEyKvDdpQ=;
+	b=YFt8fo2j6LgfOcLqdguFiT6whQIMtW+8RinJm4WVC+KLG7dpclfOiznJ7GI5BFmd2VS8Jt
+	PSvBUm6M643RDgpqZ7wnu1InISdmoIq1EA66UVTZrHzQRdZD3kA7syTa7Uv9xT8wOmCuQW
+	whwnIex8StPNub4RnHMdvK5OCQMhXX4=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-69fec8b4638so2200a12.0
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:39:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787683169; x=1788287969; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tT3C8RmqnSUSZm6wZr0ulCb4Q+ThIVoSjKYEyKvDdpQ=;
+        b=Mzg/XxUUZbl0iAANARPgSGGNjcepPZO2gn/tASNCOZ1Ab8yaQ3puG/Gp+OCHghMS2K
+         oxdIqrB7dybxIYlbvvze2f6+6XMcrreOEyIQ6SFf6dBaqFCPxfvHlugXn9daeeFms6a8
+         Evoy3F9RC0jkbUn/6LRGUXvcJkzv5s/h1iqrEaC7usaj62SpIq2509s4PMJmh+Q8XLuz
+         SgQGf9dOy5sIaY4iARCNADXl/HFRKkIy7w+cshEKFhYfEJSxwIfhmzSPIB9VaJttrhm7
+         09F4+F87xno7Grfelyv2Y0TMLg/18P2bTfq4vMdnm5HQ8ANXDZin46LomebrPgRlglPk
+         wx9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787683169; x=1788287969;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=tT3C8RmqnSUSZm6wZr0ulCb4Q+ThIVoSjKYEyKvDdpQ=;
+        b=mfqpo9zFSeEJJEx5mpLJU2j4+dP5S0BjBbfTH8ZfCktIKhzhl1kZ75yfTF9wDRdfT3
+         xRaXTkT8fSsspVlq6XyEm2qkoRtLC+wRHKKGBRUrFWUgS3EJt7dx4EoyxN5GH7A3k5Y5
+         wEWc/5LZMVvU14c04LCZPn9dEbzxEdRUL0YwOs2GZVGFpnRhXLl6KXL4eg73/HbINl7G
+         ouhTVJ4zBOWqNcnyHXnFopRaQv2F/0n3MXGbTKDSllDaGbrpQklZeurBHnIDjP5D5wDZ
+         KAqwsLL0kjUos2dFsLmMH2ZnhU9QY/9n31ORjea4J2IyzxnfdiyFZtxQ7i0qQd1pDrpE
+         RTgw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp922h/IR4cddHJWredcPlzu6UdJ1HAa2+QORpiKNOlSfqeK3nSw10mW35Mb3DopXshPF7aPjg8ow==@kvack.org
+X-Gm-Message-State: AFuF++naRNjo2M0zXTseBL+8eirCL8+hnjxtTgoKbf+tb3KuUsOIPBne
+	PxQsUWhS9GIm5jiJIa9EZjEAFnw2kZIDzNAY5N+vBzIa3uqbSb2jQenJNJPOQ33mGA==
+X-Gm-Gg: AR+sD13lsm5MkevIuNf/i6Wh0BU+ovYQyTKMeNrzWiQ9Btaz0MM6F+2SgNk//hCP1lm
+	h4le8qPiojIvlqB+ydyaHadueXZvo0+hQDSeJDOi0/57mcrxeUUmuNGr4JWNsaGRJgIipBCSOV8
+	5pTTOc6vkRJJZ8GUmWEFUjRDug2eJ5k7XB6GuwKp7gk5jMHKkgWbfbb9D0W78uYDsB27KBB4M9h
+	l6mUgd2dpjfAKqrl5zQcqrucKcdrdpqkPtnPOc8/vblnUmh+xE/ive8eTvVXQWOZGXxTPJARZU+
+	PeeHpBdCyU7kmIVH1T7DTDU9a2hB+DvqBg6bXCCCT60JqXClXrG+beAmPCJyRq5G4XR0fNywADe
+	Z+WYo+5uIqZN8PGacTkScb4VdZ4/teV+Ng1/PwwZz2ZT4jRVYyGVqoh9NpkMlQsa3mC8KJgW7rk
+	tq+J3eSMCuUYUsE5WIFAMUEHdkluit7enq3rHVbG1C9X1xdn/QiNH80wtpupmrugqpJyTjoaWfP
+	iFh9IzGyHZzy4avGCPh6fIMS57NyX0hOy4O034YUNd8l6Q=
+X-Received: by 2002:a05:6402:b18:b0:6a3:f7d8:3ad4 with SMTP id 4fb4d7f45d1cf-6a5dfca7b3amr1462a12.9.1787683168580;
+        Tue, 25 Aug 2026 11:39:28 -0700 (PDT)
+Received: from localhost ([2a00:79e0:288a:8:980a:b43:2df6:51f2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a5d68f9sm80514866b.1.2026.08.25.11.39.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 11:39:27 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Subject: [PATCH v2 0/3] proc,security,selinux: let SELinux block FOLL_FORCE
+ for /proc/self/mem
+Date: Tue, 25 Aug 2026 20:39:16 +0200
+Message-Id: <20260825-selinux-pokemem-v2-0-b46bc64916d8@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ao1Lo6TKhPcqV42B@pedro-suse>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFThjWoC/2WNwQ6CMBAFf4Xs2ZpSW0BO/ofhoGWFVUpJCwRD+
+ u9SjCePk8ybt4JHR+ihTFZwOJMn228gDgno9tY3yKjeGAQXGS9SyTx21E8LG+wLDRomZSaUUrm
+ WtYRtNTh80LIXr9WX/XR/oh5jJhot+dG69345p9H71Yu/+pwyzs5c1+KkckSuLo21TYdHbQ1UI
+ YQPKEUY48EAAAA=
+X-Change-ID: 20260814-selinux-pokemem-44625557c4d4
+To: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ Jeff Xu <jeffxu@google.com>, 
+ =?utf-8?q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787683163; l=2342;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=3my+l3PYWeZMFRCIaaE0JNhFutiymOpmnRDdudUrsB4=;
+ b=CzHbK0+zJQEADKtDDA6uH3pn6OIbkz9AIyUC7L2oco+isP3+dILkPd73rgxSL8Zp2Mfh41/xz
+ R/eca/Dd4dYAuMNNed8z8xlHOsoo0c0+4YBDeYEufBVe+D9K7QOAEz+
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 X-Rspam-User: 
-X-Stat-Signature: mba54t74gasioaooa4x53cmnocqd6eeb
-X-Rspamd-Queue-Id: 6A94C140003
+X-Stat-Signature: wpmcpn3wyis33mugbdnes5ur9r7gxark
+X-Rspamd-Queue-Id: 9439B20002
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1787682929-385824
-X-HE-Meta: U2FsdGVkX1+cKTHdDQ/TJK5dTl4XUv02oCHjjKHChGqglYjY27uSD0kJfj5L5sTPZCFjnrKM1/MzZcJAInBDWU6XAauBJDvTjfvyK8dOV4UloTe/C6LC2NPnQ0T5vUC0oUSw0i7qbYXqFaLDU0KOF44UfK6CCH/m9jsFnDUr3ucf9gPr0Sw1hzI6Q8fg6I/QQh4nFBRwQeLatZNqYEm5bHozMmPVSVXir0S2b3QQZMYvEpXtcHL+LeKX3qswJ5kuvGXZw84gN8neRL9RDnnQ/OSQHODizyXCSjrT9qKXWAZCBqXPbCoWKrpo4/KgJf26wusqzCiymMmohWxTP1PLpG308IXnwBMbVx8AzKBwIODH85IM0oyGzxlxVGCd9DoE1YwTdA6NkDFOUTpt2pQ9uTgsA1NyIZelyhZfJYRQsdP0EJG2ohDmieafvojigqDXBpqh6KP08yxXqflBqkUfx8Es40+soYtgu1BeYlsrzm1ZQvqDb8H+fFGCiQL5P3kRoBM6VewYS1CCjEco8aRAwnYfs44OuG+xqLokysPcPT1NeU52sMtHPoVMws0ji4MpaG4Tlvo8T5TEOKW3CD15zxLGNJRXBXb2h6CBr2wnkjUiFoJL9rPIaU6z540MVe8+LuQU8VFKPjyO12wbyp5eoKvphC7pxMxmW3B0z0ec6furSvvjnhpnUoDVQ+eYEhMQdh/4tLfrfQ+k534cmDfKAXEcqgHAGFnnng77kDB8uTV9Nnt7w0ih7ysZT7UXDxgg4gJ8M/lAFD4dWNqOIMHiUftGXsUXl7qXg7d6aBkap8MF2Yf6Q8ewkqwUt5L4n09mmfVDcmKMYaUjqAlZ949MHO2/tgNGXkFEBlqwfq9LOu9VfRYTX6OLe7y+y0t7gi9E3NCJs+zemTdFKxmVkPrgqpBhTBuJV7VcnZZrotNIJU1T9kOVsrdYflUDnBdOE60iPWJd8JfC41SwokEaBPI
- niLmKQWc
- jMeDbmRvq1sBfIQd1dk/Az145acIdcG0wO0a3V7YOjV2BV0c/Ll7Izpe/kxHZ6VDfwpZdGexax2tQEDXS6liPyVjib43A8l69UZvSMBAVXGIhz8hpmyphfEA76+6otJEGTGWoMOGMjzE7bn4bHHWfcp9czwYr5YdooHEhhiSoRF+XXyG0QzMA8+kR3RP2cSWejP0c/lGJ3oysMEYbhJ8SRw9dLenViMFl2eMe2N5HdQnQCu/ikqE8u+J69S9VHTiPOfZZaL7A1iANkF1SxSmwKuDCaS9qOnVoMSfX+CO3xpAOY9w=
+X-HE-Tag: 1787683170-566963
+X-HE-Meta: U2FsdGVkX19JgnUOPMey+jIgiUpHk/k2t7JACCa4B9h/tsY+HkeqgDaeXgNtRB6gE8pZh+SF9WNnm3UJgusAC0tNFEe01cf9iKZ7saeRz0WQlwd6jM4ajRDdOL+P38vIowRdHcEZ/ywwB6CuqVUtFTUZ/4K11svmBwSJkW+S56P9DRVVVCeVX4bUAg8cAcu9N0HAy7j83zIWCS+Zq7PLYiapf3X7bhMSrYfb/GQ3LrLgmWPk6h+KNfMjdZWkNldMS487L+p83yQQW7tEs/2RMbHBt7L6TVsjlL/rRp3ADW5BSHPyuhdknXZD/r6uOakC2EmL3jmzq8FJhPqwhWKdPy3a0Xkqx65HdcXx72FEbSqPl/NeeS0Pevfls/8EccT3ZFJFAjyKxSQVl1fQ5cj3F0zNMMTQCETd5BeYUjqERyfft/1kN+Q/gw4jBMg989Lk+QlzFyX9YmStTFvjnKLCEUWMM7tFxbHiPGQao/e9CQO5cUkNL3elQjsDplaaQYeX0kaKFm46PQ19qptVyQ8yMO4Op4Ve6LX377xH6FgLp3CwnGVP7pWE9dVC2kUbwAdjJSUQcrOynhCOF9l8VjTkhiYjMWDuL6Tz2bmcgcbuUNB1N04kl7qQXpbtA33sdiLraL1Z7J3JvaHT8YTIWziYLvv0ez5WgEdkzRAHZvsrE6KBm7GmuhxWcSUl6MtWMRg7x9elm32pm6cmlgf+QyvpeXpafeOL+Vtundv5m/n1On1yVla1EKRDiNIHUN5K+dbWnZHF+mKJ/OyJJiatB+lwMFt0m4HqgSsZUC27JAmpu3QIW5VGgfZaVIXvyoKQul0mZxk6NQ8W5u+YK/9bznxs16BIhpYaA63A97CCBl/HH8L+0TdD5jzABdK+2M/5LAxBJ2NXXYoOFJLa+ZDn5VDtEjLT783QQYH41ev5ZwnkLG57+9Q6GowIf7z6vT9lgCy1LPEiPIEt/HOkJ2HzMgO
+ dYqe06Ma
+ F4RYLLd8xkv3JZOuAS9v8L3g3P/3rlD0cYAjKlH4ZLt2MlSMtNzFqaeVynEUJlMc1lQZRjN+2O6ojnqIPm3UueLFkQF6fCjW7siJ99NGGhKy6ujDPnX1fN83fSCXb90qPIKvm9TjsKT6LbVuh/DWbaPUzki1fvf6Gj3jg9pZHcRCeIG74v5tF8tWPOPherQbztk0uKY3NIXlYDBnzDtwPacpRxMe7far/AYeB5klZGoXB3liHBUD3eBAbv+r4SpQEbELLydZtCBcE3bBOZcFKmD/HCnNbvHv8ejopw+PnGW5Fu43nVoSHc5mbft4fCsQ71zwCqOXiE4hGQyO+hN0oSj/j5yAVCaqokUgnxp2YSb/9Z9ML8NHvvg1yWpf8RoG0RqDEGHh+M8L98iDDZuWq1KBc48knHk5QFNJHg6L9RUQ2j1HItldH6ycbqT/oTnz5W68lkApExk3horPdLhJiLnM0/Z4N5ZxBB+42grpGQUbzbnczeFKjTxkQATpXcceetHFD8NVrY+ChZVY/EfdaIfta4kc7hUsiTiXelzCxv1+l9dfp87Xu8iMWccA7FIRVDHqtiHroyRu54g20z4NzPvSc6zLfvcQqe6ZznqyChXIusJmcsakec6G4lPzXCcXWWLobZ3yGtGBbD+O+FfEiWpaDsDhZNHggt9Q5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,83 +141,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 09:25:53AM +0100, Pedro Falcato wrote:
-> On Mon, Aug 24, 2026 at 08:08:06PM +0100, Matthew Wilcox wrote:
-> > I think it's time to remove folio_mark_dirty(), ->dirty_folio() and so on.
-> > 
-> > This is not how filesystems want to be informed of folio dirtying.
-> > It was fine for ext2, but anything that's journalled or COW has work
-> > to do before the folio is made dirty, and it's hard to do that work
-> > under the page table spinlock (not all callers hold that lock, but the
-> > filesystem has to be able to handle the cases where it is.
-> > 
-> > Filesystems want the page_mkwrite() entry point to be how they find out
-> > about a folio being dirtied -- and that works great!  Except that we
-> > can writeback the folio for a number of reasons.  If it's been dirtied
-> > due to a shared writable mmap, that's fine; we map the folio read-only
-> > and any subsequent writes will re-enter the page_mkwrite path.
-> > 
-> > The problem is GUP.  We have no way to force the GUP caller to go
-> > through page_mkwrite again.  So instead we make the GUP caller call
-> > folio_mark_dirty_lock() which many just don't, and generally we get away
-> > with it.  But it's a bug, and a bad interface.
-> > 
-> > There's also the problem that GUP users bypass the folio_wait_stable()
-> > mechanism.  If a page is written to while somebody is creating a
-> > checksum over that page, the checksum will be corrupted.  If we want
-> > to fix this, we have to bounce-buffer the page.  There's no way to
-> > prevent or delay a GUP user from writing to the page.  Enjoy your RAID.
-> > 
-> > My proposal is this:
-> > 
-> >  - Fileystems take note of folio_maybe_dma_pinned() during writeback.
-> >    If it's true, do the writeback, but retain/recreate whatever data
-> >    structures you need in order to write the folio again; behave as if
-> >    ->page_mkdirty() had been called again for each page in the folio is
-> 
-> I don't think you can do this for stable writes. It's probably ok for
-> !stable writes filesystem stacks, as long as the filesystem & writeback
-> can handle making no progress at all. But since stable writes' writeback
-> can't race with "writes", I don't think you can Just Do It as long as the
-> folio is DMA pinned.
+The goal of this series is to let SELinux prevent the use of FOLL_FORCE
+when a process writes into /proc/self/mem and the system is configured
+with PROC_MEM_FORCE_ALWAYS (which used to be the default behavior, and
+is still used by current Android devices).
 
-Ah, yes, I forgot to specify that.  For mappings which need stable pages,
-we have to bounce buffer them.  I wonder if that's something we should
-do inside the VFS or if each filesystem should try to do it itself?
+Android has SELinux policy that attempts to ensure that only trusted
+code can be mapped as executable in several system processes, but this
+protection can currently be bypassed by writing into /proc/self/mem.
 
-> Perhaps we should give up trying to writeback these folios, and start
-> writeback right after they're unpinned? at least on the stable case.
+I wrote this series after discussion with Android security folks about
+the state of proc_mem_foll_force() restrictions on Android.
 
-The thing is, what do we do for somebody calling fsync()?  I don't
-think that "Oh, sorry, someone gave its address to an RDMA device
-so we just didn't bother" is acceptable as an answer.
+I'm sending this to:
 
-> >    marked as dirty.
-> >  - The MM behaves similarly; we do not clear the writeback flag for
-> >    folio_maybe_dma_pinned().
-> 
-> This sounds like a problem. You don't want users expecting writeback to make
-> progress to suddenly stall on e.g folio_wait_writeback() indefinitely.
+ - maintainers for LSM hooks
+ - maintainers for SELinux
+ - maintainers for VFS (because I think they generally own procfs?)
+ - some MM folks just as FYI since this touches GUP usage
+ - the Android folks I talked to about this
 
-I should have written "the dirty flag" there.  I do not propose to keep
-the writeback flag set indefinitely; it should be cleared after I/O has
-completed, as it is now.
+I think this should probably go through either the VFS tree or the
+LSM tree.
 
-> I don't quite understand what your plan for getting rid of dirty_folio,
-> et al is. page_mkwrite has the fatal flaw of being directly tied to VM
-> page faults; I don't think it's the ideal interface for notifying filesystems.
-> It's also the case that page_mkwrite can trivially sleep, and GUP calls it under
-> the PTE lock. So how can we replace that? Would callers need to manually dirty
-> folios after GUP, in process context?
+The motivation for this series is that Project Zero managed to write a
+remote exploit for Google Pixel partly because of /proc/self/mem, see
+<https://projectzero.google/2026/01/pixel-0-click-part-1.html#whats-the-plan-seth-and-jann>.
 
-GUP doesn't call page_mkwrite() under the PTL.  See my reply to John,
-or just look at do_page_mkwrite():
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+Changes in v2:
+- change SELinux hook to only check PROCESS__PTRACE (Stephen Smalley)
+- rename ->introspection to ->opened_by_owner (David Hildenbrand)
+- rename introspect_mem_foll_force hook to mem_foll_force_opened_by_owner
+- improve comments
+- add ack/review trailers
+- Link to v1: https://patch.msgid.link/20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com
 
- * We do this without the lock held, so that it can sleep if it needs to.
- */
-static vm_fault_t do_page_mkwrite(struct vm_fault *vmf, struct folio *folio)
+---
+Jann Horn (3):
+      proc: refactor /proc/$pid/mem to use struct as private_data
+      proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
+      selinux: require PROCESS__PTRACE for FOLL_FORCE introspection
 
-folio_mark_dirty() is called under the PTE lock.  My point is that (with
-the proposed changes) we won't need to call it in zap_present_folio_ptes()
-because the filesystem will already know that this page is dirty.
+ fs/proc/base.c                | 38 +++++++++++++++++++++++++++++++++++---
+ include/linux/lsm_hook_defs.h |  1 +
+ include/linux/security.h      |  6 ++++++
+ security/security.c           | 20 ++++++++++++++++++++
+ security/selinux/hooks.c      | 22 ++++++++++++++++++++++
+ 5 files changed, 84 insertions(+), 3 deletions(-)
+---
+base-commit: 2f1baf1fc8929e6c48370be543ad028ac7ad4131
+change-id: 20260814-selinux-pokemem-44625557c4d4
+
+Best regards,
+--  
+Jann Horn <jannh@google.com>
+
 
