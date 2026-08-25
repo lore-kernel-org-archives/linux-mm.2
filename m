@@ -4,142 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACC15C61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 16:53:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23D9C61DBC
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 16:55:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEF2E6B0088; Tue, 25 Aug 2026 12:52:59 -0400 (EDT)
+	id CC87F6B008A; Tue, 25 Aug 2026 12:55:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC7866B008A; Tue, 25 Aug 2026 12:52:59 -0400 (EDT)
+	id C79486B008C; Tue, 25 Aug 2026 12:55:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98E146B008C; Tue, 25 Aug 2026 12:52:59 -0400 (EDT)
+	id B8F996B0092; Tue, 25 Aug 2026 12:55:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BEE36B0088
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:52:59 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A1D0A09F1
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:52:59 +0000 (UTC)
-X-FDA: 85140386478.03.2A19414
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1515A1A000D
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:52:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T3rPBcWK;
-	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787676777;
+	by kanga.kvack.org (Postfix) with ESMTP id 90A5C6B008A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:55:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F40FB140112
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:55:53 +0000 (UTC)
+X-FDA: 85140393786.07.E45740B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2271B40008
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:55:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bD/+50qH";
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787676952;
+	b=dlq4rripKAVGE6G16zCni940BJ7DwaVlE8WdcQsv4A9VgIvShUmliaGD/XFifOduWETbiy
+	h7WDeGXP0wxo5VeONUq/NhsQisYzTJji5leTP0gjCCyhQXQI0hfEiE3iMtATCs1wOa2X6A
+	alFotzwZFFE8uKK+YN+6bnWTfET7MPs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bD/+50qH";
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787676952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ImkuahcqiET0r0yh2i1x0Wqcf5zuafLmEw6TOE3oMq4=;
-	b=Vnx03EdckkJy5r5DjKUnysIZsJ6l+gOS3IJrUSUTyBu5Jf05MrA0gkNR2iE5dbtvFm2YVZ
-	ZIlDGUCyBXPDujrvO9nrngqtzG8tmYUJMxRXrhKrKO4YnoBQYCEInPV5RbI1xzmqS7ZSXf
-	/iw1a6Qtyek5NMDt9oXxi2qaR/dIxb0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787676777;
-	b=ja0cd369/EMXUYT3XtDEpGy29WWvET+g1DRX7eXanb3tuCMQJRXeW9l5iTufsIoKk8pV+d
-	4XFrlptlIf6PmDdL83nza8/dOFKxiAf/AVSywedYyzdbYWRaxRegXX7gS7sUc9q0nZHeFI
-	yrJqgaplJqHFMgKjam6p7NQQsjiUMjc=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=T3rPBcWK;
-	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d3b445a84fso128945ad.1
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:52:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787676776; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UimNYz6lsciZaiLAuf3/yWjWQlAgXBAzijA+uQE+HlK+9zSEP0EqfYsAEpTvCvVs2r
-         drg95pNfd5vR3NisESeujY45AbtAjBU+Yt6vtGeao6iGa0mYDrwhlnopLwqf0pGFWiGy
-         3oubeEbUhgytQ5brb0Rtnz77UIdre12MpMol1G9JOorujw8AlCTbwIrVlNQWwjSWHKn3
-         InonnpqQJ0bAPg9cTXHGMcBX/BWRB6MCjp85ZF0SHLd1tF3yya5mL8Whxduhd4mMVjIU
-         kAE/SDBb3XTrJ0JrIBTEUrt+1elFF5barL4mi7AM/EcaMTc3DqycAVYFf9y89Iqvdalf
-         WUkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ImkuahcqiET0r0yh2i1x0Wqcf5zuafLmEw6TOE3oMq4=;
-        fh=dO8bIUIb+nVw51Jq6x6tpS68JHT9T3/wIULPAHckqEw=;
-        b=P8vCs6FHs0fi7beW7jxpNEIzTdVbITI/8hISILgwnsmnO1zHgpbf6rfb27hpxBddDY
-         4SwzJfLVLsRYtFa3d8wsXaT3GsRavOnUupWQBOtd2rRYgir3609HeLHvtygPX8/hUkVx
-         4N8QRr/qZXaR/bH67tskJ8v62xoL8eQVHf+00BQzcmRaZ917FRSgL0fDReueyPKPmp0v
-         gdzE11j/yV+NSM50wOTMKqmQu7d7vsLMVSfKfl/+emRhfUo40rRiQkoZSrrTP+AlLKU5
-         kADCnTU16BIvVITSiZBxIvHnL1FM4a662AaBSw1kHbw5uHGV2Rpoc0Nf1WrAF5c/fJgk
-         XCNA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787676776; x=1788281576; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ImkuahcqiET0r0yh2i1x0Wqcf5zuafLmEw6TOE3oMq4=;
-        b=T3rPBcWK5GQSkDGWEHvSiQ0C8u1w5ULYSbdocfxF1qUn3IH9U9L/DflTb9ftI+JNos
-         KhzgI2iCsejYeaiKmFa8U7KAgpDElqXsKnQVN3keYPkULJGdUpfAVl7NiOIryY2ce6n6
-         46ScUXMaVoXajZpykEDUiOr1GUqLbqER6PCFFDLdf0s/Qow8DZEgB7641/bPS70zM4Nv
-         hQWO7JX1iDGFgdRZPqT2JiJqIxMJKRlM6UVpAZNv7nBxq0YC5463lbSic9ZzmwwDKTZD
-         48KkeKuR7r84nl+b0Uf1odPxklfQ8XOlAj9rKn/QbAswAZzRRQimfmYNaDYa78PjL5IA
-         9pjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787676776; x=1788281576;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ImkuahcqiET0r0yh2i1x0Wqcf5zuafLmEw6TOE3oMq4=;
-        b=XyGahVTis/RWjF0nc7GWGjDOZ4UtmtbOjpOAGJR8w//pkZwQmc0bipt39ChsJj9hZ3
-         5fMSLVdTbplA4mrleERYyHrRgDz/c2gHgJZx3GhVjJ3t03oSbU3uC7SL8Cq2FfN9xBng
-         dQacy2Pq8cp5P7j6CmkKIEw5ZbgiAmp0T0xS6Jr01KYnV1VHSUC1kHeXtteoMmtXToSk
-         0dTc5AG4IDF8TEd202v0qgdUNZthLgeE8xJphzVPucYna11yiVl37iQ1OjZio7Y5hQpn
-         GbUO2lE3ru0WRM3li9H475uvoKgLOnWBSv8rfJ8prxi8w3qaNC+dR3kvTjrEQd/eUe5N
-         Zofw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr4Z5uXGi7SaBrLnFdTSIfwQvtRtV4/OVrK6l8MOFmBVyi9nUzL8gxih0adPYZNtznhOkh7CPe2JQ==@kvack.org
-X-Gm-Message-State: AFuF++l6OYctdSIJDd+Oinsg4rHXCwEMSmS5XYzjhD9QK/XefXImlTE9
-	J2iA6V/GI0V+mFHWhRiruLucY3eAT3G/g2xiUtn/Cjxa7DVRhOY6SVGoK0ZVav5BDK0wyQPzbSF
-	+Cs2PlvtONxDfDSkuKYv7JmKKbE00v+03DAXgpGnl
-X-Gm-Gg: AR+sD12HxKdru4Y0Idi3SwY0TU8I3AoSaQmTnCWVZQIg3vLp8BEQbylMc/qBdtMbsct
-	pXCqumfCMka0anVw7kqwZDNVAbgEc5LGXqGs1DoejInkry6HOZazOwJzP5UFNBbdcTX/d6V9tcx
-	EH9EeR5xyEPZuA6o4lPE+uQJrfggbE083LV42ATj5D+vjuV4fBrOxKi5u11CWdFIRIcBThh+o0P
-	qT/wyhjuh3v0H129SoPCfkw4HmsF8zqH9RG8i6JHUrrzXGCz6lArKGvnjWbjid2Rm9MJ1VqYufj
-	ZK8tAvEe7agpimmrBznPwfKBmRHugaDoT6UubU1CuVAWro8zcBSjYyDxB1AjA7NPccmgwPyjbsu
-	0D2hjuTdaA/QerV5t4l71XBQw2AUq1IeRyCDd0h34
-X-Received: by 2002:a17:902:f705:b0:2d5:db3d:1a41 with SMTP id
- d9443c01a7336-2d6e0757d7amr9055105ad.14.1787676775185; Tue, 25 Aug 2026
- 09:52:55 -0700 (PDT)
+	bh=EtodH4ePqYNUd1xafLHkHKnE2CTxkQO+HNMDBGq3kKQ=;
+	b=SkvtUyqu2+ra+Y8MThKeUHySr8tbfnQwx+s9wjlLlF+gTnjbeSmwxTa7ykItSSENUXJWoJ
+	OKdEv42Vm+uq2aQXFaukXTltTKxI8vruzTwA0omA3vUPJKj+QalbIQrA9pKN1IVX0WvpoW
+	XPIs/F3ncJ6rplpFQPkxY8duXl/Lxp0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3EC3860A77
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:55:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAE01F00A3F
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787676951;
+	bh=EtodH4ePqYNUd1xafLHkHKnE2CTxkQO+HNMDBGq3kKQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bD/+50qHXoV7t67vDJZT72HJWp5mnQytMtwe4Nya/vG0E9JUmmpM40g+uWCKUrHhG
+	 7T4s54277nqzWRMv+ymmT6r4SAODdfVjB84gyDiKEaDsnd2YmDyUP3af8kZFJWpJMI
+	 D8qB04dUrVg0fDRh85WIk2DCTpZtTBDyj1ID+Ti9EJguMMDGAOCh5fP2MZi7QlMHrD
+	 OFPMpTiRWOEtim2bcqZRvIMhBPlP1aFaaOEb1k5hfA+0huTSqTeT4W7f92KpQ2+c6Y
+	 v3Rm0n5Qf11v65z1EO5UXmkRexlulzyHmrVkZvuDnWGmLFOrkhYZyzmP6mGDc7Et/1
+	 UH9RVSIApYbZQ==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15cd3fd760so616452366b.2
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:55:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoA8h21NZgDpscWKTkdFzeo3VcbKKXAM7E1ZjGO/NsbOf4Qoes4YUkJBpJ2EiWtKE9BPj3UQcR1Hg==@kvack.org
+X-Gm-Message-State: AFuF++kt2c9gUdW4UCbcGcmbK3eZGSZG1r0zUJUfYdoKLUpe0pQz3JqV
+	SIRYxX245PDu80VnOCPRKEOUD1b6hBwrI93zKPTfsW0cwAum9jYdjDadRWS39Nirrtl4xydgKB2
+	DepsBvWOx1kZbu2ytC+gmOA32OovdPU8=
+X-Received: by 2002:a17:907:7a94:b0:c25:541:fd3a with SMTP id
+ a640c23a62f3a-c250bb76bdemr1260666b.7.1787676949864; Tue, 25 Aug 2026
+ 09:55:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260816224609.308019-1-kirill@shutemov.name> <20260816224609.308019-20-kirill@shutemov.name>
-In-Reply-To: <20260816224609.308019-20-kirill@shutemov.name>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 25 Aug 2026 18:52:17 +0200
-X-Gm-Features: AcwNN1Vvom-LUSAxEjMWXrQR9qZrcTO8aY2l_-w47SQrAcC9eH4E9yF2js957ac
-Message-ID: <CAG48ez1fiCzTMATN07HHfzvUGFuZ5gELNpZXdXx=ySa7nihxmA@mail.gmail.com>
-Subject: Re: [RFC PATCH 19/57] mm/collapse: install a PMD leaf as the terminal layer
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
-	dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, liam@infradead.org, 
-	mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, 
-	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com, 
-	usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kas@kernel.org, 
-	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
-	mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260815-shrink_zswap_entry_0815_v2-v3-0-0171bd86a667@gmail.com> <20260815-shrink_zswap_entry_0815_v2-v3-1-0171bd86a667@gmail.com>
+In-Reply-To: <20260815-shrink_zswap_entry_0815_v2-v3-1-0171bd86a667@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 25 Aug 2026 09:55:38 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOGUKnyro5G7p8dnWchDKJ0KWobJSPv8aRw_R3QnjvS0w@mail.gmail.com>
+X-Gm-Features: AcwNN1XhLX7e-NhXbAWqedG1K-cjSN8FsgLrD8FErtrkVatFmBGV035fO2ZasGY
+Message-ID: <CAO9r8zOGUKnyro5G7p8dnWchDKJ0KWobJSPv8aRw_R3QnjvS0w@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 1/3] mm/zswap: release retired pools via call_rcu()
+ instead of synchronize_rcu()
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: syiwi11g5obhw6qdxdffxxfxysjr873m
-X-Rspamd-Queue-Id: 1515A1A000D
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787676776-310129
-X-HE-Meta: U2FsdGVkX18amzAVFTkWRlJ/trRMO957+C2QpO91AfZYgiDRJsBDLeg/ikMAL9mVMyDbNA5mGAXCxctzWLZSh1FgbOG8y9h9acJJ97Poh6HKI0V9m7MFBYFXK3TtEHp3Xt14NT3q4a6dLrReSmdjCzOuAGDlqhfEx1LUPeqYp5RxezpqWD6zx4oAr9jqHVwKH3ZDw2RNRjCl0jV8Br+Y04mZnyQpA/GvuW1mB+urvd7Cd8AlknOW27E4/UHYcdRlaQ0GTrklA4dRh1h/uxRvuSisFqsFfuAgqPUMqbAHFdYYKjK6/fMMwHWcGgkxNnf1Xf/H8B5eU60VWOTQTPSDC7bhMlHqqoG8YYml+ET8Fjy+fZiOI6wBa3baYEDsNYL0dU74s5NY5rKIHGOWWF6jG9g8GGUk4a8jSZT45w6VxFKIKxkA1CzIvcHLKvtKUJZXV9VeVyiGBEn7JM8uqhJ+MblFSLWS3HnPjCZfHmoYMiOwOtJ3iFeUJXrOB7ugtE4ELZm5pRztjY3CQImGoXAIZy6yE3umojAsNWzJe1nPUUTfsybOzcFqBnsPBM/9NR+heP9FUBxi4T0pvqT0Ifv/i+T3zphJbdJmPeVMDn/kM6lcINoWIzS7twa2uAyBxuhyxVbq0kjM4VbSvW0LJJ+ozWZQkV/BRde411KaUwY9T0mAOYe+uhZotCO5ItFJk2IGV7UVrJ15LeiV9NaqKfoU6/QPQV2ET2BbBTW1s8dKB5hx6id/aeyP6yIsP5VTigSbtdz/W5GNb7g0NuCs7R655r8R1IjeqVhNYc8DkTiczcreX4CCIdwDvWXqEonqyL2OrnlwLR+xKR2aFjwz6wWft9mP9T5Ducr5Dg66aHakFFHajJ2QlcONKA2C5cpt7BaMkXq1TjB1N7+VYthKISHjLkecUWFI9KogQaVT6O7lZ+2O83uZkjkWbGEiy2UiuKFZpzTohy67YGPw6f7IJyY
- V3pUOHKF
- Ag8TjiXI5j4z5GFtBEIYUzz/GRF20ifJjzPrCK/wL643s1gWNYzn9t9JZfNovoVqdOBHnD6CSIqNkv9xzcOjm63yCIUxtXkk/Kq086rUM9spwZHmgPu0AcsVzNG6wM4A2i50FGg8RnFEm0tocTCN/BlXf4aOC9X4BP1XywBuFibn6s5l8y/G16uGUtazS8Bc6N7u6QRxAXEG7EIeQV325DzzkAbrlKODX6o1+4r/ZtVKOVvyxFuLD7O2sGA==
+X-Stat-Signature: 1cfr5147oycsydqmazxgnpaaerf99wss
+X-Rspamd-Queue-Id: 2271B40008
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787676951-727497
+X-HE-Meta: U2FsdGVkX1+IM2Ub9ggAqsrG0Vgiu8oCKEs8q1kxK+i/9MHCG2rTGrA9qhLtDRZC4iwLmQckGOV/bQNJI+9Q+hFtwaUm2aUfYTYig1941mDWJqv1mfCs7uTXG0paixINARYQYkvc/8HJiIcN1Y5g0Wd0jlZyt/ywuFAJnMCWuRLUn/CzRa6HJRLloXHAfm3RkL8RUNi0aiCCQWv3S8U9zBZb+9uIbedjWa4YfRPkUjyUwNpR/c6N+S2tfEZBdHLriMzPD7SrYPGpQRj6lPJKH/vLId8L5rsfUrIXP3Gqz1zCJBVhqq5yU0y7oukKhRGFTNymjoHD3nkgc6SBWL2h/8aoQqPTpv6ax9zsWcSUtPZfEX1LdV70jWupX/4+EOyrLtPX4Ol3I7Hhl0t0pTtALUUSfL4+HqcUoArz8zQep++IErU9O0L7ei3cIUMeBnwDrQY4LgHOizfA+aUTAhTA3GIkOvWG0/gcYxjEgY5ZyBtiZ82Zj+mfQbyM7Hg3R6jaQ70v9O48iNUiMHRUFmpP2IYAx9fyidNXmEQ20dR9BAUXroZICmPY40uCiuX0MqO5DGd+MEH7OpvAphGdrKRBJX8Uo97AXgH7mByCSxxF6by6gtwzac3/LS03nItmqMu7xYmHxT1AiBnbHIaFErirdtn6oVmQ3nRdOhhqxwL976yKa/Nt2XQnCxDguY39C5YLn80lcCNVoa1lFYwscq4kIdRCARKRXByJW+NCjusCUOWpFo+JItOa1RCf/xj6JCeNtUES4ZKyjgEnGWiRfASck8MoOQLKOr/HNdDFxGc9FDTR2ZgK6bBFOgUAcdFhv72lTolEVuXLgHEompy2Mp+92oqIOsRFTjCkw56ogF9bNbQOIf2bwwd75SEBySuyUbrQtCqKoocn86HYD+59aj1Ho9zuBizhA1lF6RWBHvl77ixQBSLtHnlwp/on8XhsKAaKcr+05e+c1mBNolXzjBc
+ /qqXLoqR
+ Cbjo2GHLAXJNmrJ80xPMGwFkvIzNQSO1ieo3L9V3mL8bi/0MifeQLvKy8bMTpzMnkHCLTqEUzYI91qaq84pOiYgAREURHrk8rPO/B6kLyJIg+UKW8Cr0yucUZQIGwsnzS+KXuKfgALTlSUfa/NXHJfiXtEHjm4A40Cz4BIb8r2zOy61gf7CBSHyqMoiuEjY9+Ig17l1qa0sy3qqTEe3oLCeuEo3OrOoNf4RFpg3UXzneh5OzjP3cwTYdhNuJsMEd3jrNNcD0CN9CyXG9P82RyPem7OYCAXr2bD6wyHk8gu4zdQpOt72cn0Mb0E3VO2iDSEnZOBf2dEZ+sRWpwqGnvcwiIr3hvj2BclTqHw3sUFgDEuM6WzESSJNZvvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,99 +104,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 17, 2026 at 12:46=E2=80=AFAM Kiryl Shutsemau <kirill@shutemov.n=
-ame> wrote:
-> Fill in the PMD install.  Under the pmd lock, with the pte ptl nested
-> inside it: verify, detach the table with pmdp_collapse_flush(), deposit a
-> fresh one and map the leaf.
+On Fri, Aug 14, 2026 at 11:54=E2=80=AFPM Jianyue Wu <wujianyue000@gmail.com=
+> wrote:
 >
-> That is one atomic section, so no pmd_none() window ever exists: faults
-
-What do you mean by "atomic" and "no pmd_none() window ever exists"?
-Is that supposed to be with respect to a subset of readers?
-
-While the PMD table spinlock is held, you clear the PMD entry
-(pmdp_collapse_flush) and set it to a new value
-(map_anon_folio_pmd_nopf). But codepaths that walk page tables don't
-take that spinlock unless they already know they're in a THP case.
-
-zap_pmd_range() does not lock the PMD table before checking
-pmd_none(), and if that is true, it skips over the PMD. I think this
-means that THP collapse can race with MADV_DONTNEED or zap_vma_range()
-such that the zap wrongly has no effect?
-
-> stay held down at pte level by the migration entries throughout.  It is
-
-But you don't have a migration entry at the PMD level, right?
-
-> what lets PMD collapse run under mmap_read like everything else here.
+> When a pool's last reference is dropped, __zswap_pool_empty() removes it
+> from the pool list and schedules __zswap_pool_release(), which calls
+> synchronize_rcu() to wait for readers before tearing the pool down.
 >
-> Two things force that nesting, which is the one the tree already uses to
-
-I'm lost, what is "the tree"?
-
-> reinstall a table.  A racing zap of a frozen entry takes the pte ptl, so
-> the verify has to hold it.  And the table must not come apart between
-> verify and detach, which is the pmd lock's job.
+> synchronize_rcu() is a synchronous, potentially long wait.  Replace it
+> with an asynchronous call_rcu(): __zswap_pool_empty() now hands the pool
+> to call_rcu(), and the RCU callback defers the sleepable teardown to the
+> release worker (the callback itself runs in softirq context and must not
+> block).  The grace-period guarantee is unchanged; the retirement path
+> just no longer blocks on it.
 >
-> Nothing leaves the section early, aborts included.  An abort only
-> restores PTEs and would need no pmd-level exclusion of its own, except
-> that its pte pointer came from pte_offset_map_rw_nolock(), whose caller
-> must establish that the pmd is stable.
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+> ---
+>  mm/zswap.c | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
 >
-> The deposited table is the freshly allocated one, never the table just
-> detached.  A deposited table has to be quiescent, because whoever
-> withdraws it frees it immediately with nothing to hold a lockless walker
-> off first, and a table that has never been reachable is quiescent by
-> construction.
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 37f34e406c8e..cc4243356e21 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -155,6 +155,7 @@ struct zswap_pool {
+>         struct crypto_acomp_ctx __percpu *acomp_ctx;
+>         struct percpu_ref ref;
+>         struct list_head list;
+> +       struct rcu_head rcu_head;
+>         struct work_struct release_work;
+>         struct hlist_node node;
+>         char tfm_name[CRYPTO_MAX_ALG_NAME];
+> @@ -382,8 +383,6 @@ static void __zswap_pool_release(struct work_struct *=
+work)
+>         struct zswap_pool *pool =3D container_of(work, typeof(*pool),
+>                                                 release_work);
 >
-> The detached one is not: GUP-fast and RCU pte walks that read the old PMD
-> may still be inside it, and on broadcast-TLBI architectures the flush
-> expels nobody.  Quiescing it would need an IPI, which has nowhere to go
-> here -- outside the pmd lock it opens the pmd_none() window this design
-> does not have, inside it is a broadcast under a spinlock.  So the
-> detached table goes to pte_free_defer(), which holds the free until those
-> walkers finish.  One transient table page per PMD collapse is the cost.
+> -       synchronize_rcu();
+> -
+>         /* nobody should have been able to get a ref... */
+>         WARN_ON(!percpu_ref_is_zero(&pool->ref));
+>         percpu_ref_exit(&pool->ref);
+> @@ -392,6 +391,20 @@ static void __zswap_pool_release(struct work_struct =
+*work)
+>         zswap_pool_destroy(pool);
+>  }
 >
-> No anon_vma_lock_write() is taken, unlike the mechanism being replaced:
->
->  - rmap walks on the sources are unreachable, their refcounts frozen and
->    their folio locks held from freeze to putback;
-
-To be clear, we can concurrently rmap-walk into the PMD, right?
-Because we might be looking at a different folio which was created in
-the parent process or something like that? And so a
-page_vma_mapped_walk() without PVMW_SYNC might look at stale PTEs?
-(Which may or may not be fine, but would not be what this commit
-message claims.)
-
->  - non-rmap pte walkers see migration entries;
->  - pmd-level observers see either the old table or the leaf, never an
->    intermediate;
-
-(or pmd_none(), see above)
-
-> +       old_pmd =3D pmdp_collapse_flush(vma, cand->addr, pmd);
-> +       old_table =3D pmd_pgtable(old_pmd);
-[...]
-> +       pgtable_trans_huge_deposit(mm, pmd, cand->deposit);
-> +       map_anon_folio_pmd_nopf(cand->new_folio, pmd, vma, cand->addr);
-[...]
-> +out_unlock:
-> +       if (pte_ptl !=3D pmd_ptl)
-> +               spin_unlock(pte_ptl);
-> +       pte_unmap(pte);
-> +       spin_unlock(pmd_ptl);
+> +static void __zswap_pool_release_rcu(struct rcu_head *head)
+> +{
+> +       struct zswap_pool *pool =3D container_of(head, typeof(*pool), rcu=
+_head);
 > +
-> +       /* The deposit balanced the detached table, so the count is alrea=
-dy right */
-> +       if (old_table)
-> +               pte_free_defer(mm, old_table);
+> +       /*
+> +        * The grace period has elapsed, so no RCU reader can still obser=
+ve the
+> +        * pool through the list it was removed from in __zswap_pool_empt=
+y().
+> +        * Hand off to a worker for the sleepable teardown, since this ca=
+llback
+> +        * runs in softirq context.
+> +        */
 
-What does old_table contain at this point - migration entries? I
-wonder if we should zero all the PTEs inside it before dropping its
-spinlock and scheduling its freeing, so that a concurrent
-pte_offset_map_rw_nolock()+spin_lock() wouldn't see dangling migration
-entries. (I'm not sure if we actually have a codepath that does that,
-but even if not, this seems like it might cause problems later.)
+Oh I didn't realize that call_rcu() cannot be used with blocking
+callbacks, sorry about that. What about queue_rcu_work()? Seems like
+if we use that we can drop the intermediary callback?
+
+> +       INIT_WORK(&pool->release_work, __zswap_pool_release);
+> +       schedule_work(&pool->release_work);
+> +}
+> +
+>  static struct zswap_pool *zswap_pool_current(void);
+>
+>  static void __zswap_pool_empty(struct percpu_ref *ref)
+> @@ -406,8 +419,7 @@ static void __zswap_pool_empty(struct percpu_ref *ref=
+)
+>
+>         list_del_rcu(&pool->list);
+>
+> -       INIT_WORK(&pool->release_work, __zswap_pool_release);
+> -       schedule_work(&pool->release_work);
+> +       call_rcu(&pool->rcu_head, __zswap_pool_release_rcu);
+>
+>         spin_unlock_bh(&zswap_pools_lock);
+>  }
+>
+> --
+> 2.43.0
+>
 
