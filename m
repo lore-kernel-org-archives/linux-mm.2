@@ -4,108 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33FDBC61DBC
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 16:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACC15C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 16:53:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2581E6B0095; Tue, 25 Aug 2026 12:47:15 -0400 (EDT)
+	id AEF2E6B0088; Tue, 25 Aug 2026 12:52:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E2756B0096; Tue, 25 Aug 2026 12:47:15 -0400 (EDT)
+	id AC7866B008A; Tue, 25 Aug 2026 12:52:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F7C46B0098; Tue, 25 Aug 2026 12:47:15 -0400 (EDT)
+	id 98E146B008C; Tue, 25 Aug 2026 12:52:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D34DA6B0095
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:47:14 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD3E7400B8
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:47:12 +0000 (UTC)
-X-FDA: 85140371904.23.DC16A99
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F0F4F1C0008
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:47:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MsslkUCa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of "SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787676431;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BEE36B0088
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:52:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A1D0A09F1
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:52:59 +0000 (UTC)
+X-FDA: 85140386478.03.2A19414
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1515A1A000D
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:52:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=T3rPBcWK;
+	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787676777;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LKynmMcCNdHBz7/vpvw9+vH0+hvMd9pKSWrGj0p1+Tk=;
-	b=gPpeQF97BlMZ8QUU7UZEv/1eHfHcdfcHEDa1PdogPPnTQEJFSBm2f9YmhCYUyif4d7yuaK
-	tl5IuDnSPIRlgqzYnIs1apq3pkRCbQlYh9FpelM3M1Cz7x1Ow012Kou09FYbYs+LBLrdNF
-	/NUFHSSuRsKKvs5z5QvqUNXC04yl45Y=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MsslkUCa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of "SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787676431;
-	b=12USJTt93lkZCf+thIPZVn9/qRvFbCPzI9YZ7ZbZTuXFjXMyzzaK30lE2dIN/uMzRiPZm0
-	mRkr7xOyCznbPM1C7UHIP4xxiIFYct6j4MoEZ0KwAvV1dN57GWLU2r+XwRMc5K579M/tXO
-	XuHAiprPVtR8SE7TaSkbsAozwFPDhU4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3AFF24072D;
-	Tue, 25 Aug 2026 16:47:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A26F1F00A3A;
-	Tue, 25 Aug 2026 16:47:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787676430;
-	bh=LKynmMcCNdHBz7/vpvw9+vH0+hvMd9pKSWrGj0p1+Tk=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=MsslkUCawPPJeN74Hlb3+xGB//zBOdRkL34fZCyp8WAyspCTnqr8s5JXlxE4O1Dc4
-	 xdr13esqX/XWBl2PbLDnjcrPc16zMfHB9nr4mcW+qZEUdgn6QAKIhY1W8vzs/8tDRI
-	 7OZHpX+a9jaUWuzBGWNuCKHWKOSKYux6LDJRg1ykrp1Zd679/nGJZaPKtHFRY+/Gsr
-	 J68K2it4JEgroslYTDz9ltduO3r75rfFAGyzAkigr5s1OB+X0y2mDao8ut3MbagpYf
-	 CfTe6UKsFfSdrk+BWLjZlEsCDQFbr746spauWJqsqfwqE9EeFuvBiOzMb/lLMbpdb+
-	 /pprk0cdbSTqg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id D37C9CE098D; Tue, 25 Aug 2026 09:47:09 -0700 (PDT)
-Date: Tue, 25 Aug 2026 09:47:09 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
- <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
+	bh=ImkuahcqiET0r0yh2i1x0Wqcf5zuafLmEw6TOE3oMq4=;
+	b=Vnx03EdckkJy5r5DjKUnysIZsJ6l+gOS3IJrUSUTyBu5Jf05MrA0gkNR2iE5dbtvFm2YVZ
+	ZIlDGUCyBXPDujrvO9nrngqtzG8tmYUJMxRXrhKrKO4YnoBQYCEInPV5RbI1xzmqS7ZSXf
+	/iw1a6Qtyek5NMDt9oXxi2qaR/dIxb0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787676777;
+	b=ja0cd369/EMXUYT3XtDEpGy29WWvET+g1DRX7eXanb3tuCMQJRXeW9l5iTufsIoKk8pV+d
+	4XFrlptlIf6PmDdL83nza8/dOFKxiAf/AVSywedYyzdbYWRaxRegXX7gS7sUc9q0nZHeFI
+	yrJqgaplJqHFMgKjam6p7NQQsjiUMjc=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=T3rPBcWK;
+	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d3b445a84fso128945ad.1
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:52:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787676776; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UimNYz6lsciZaiLAuf3/yWjWQlAgXBAzijA+uQE+HlK+9zSEP0EqfYsAEpTvCvVs2r
+         drg95pNfd5vR3NisESeujY45AbtAjBU+Yt6vtGeao6iGa0mYDrwhlnopLwqf0pGFWiGy
+         3oubeEbUhgytQ5brb0Rtnz77UIdre12MpMol1G9JOorujw8AlCTbwIrVlNQWwjSWHKn3
+         InonnpqQJ0bAPg9cTXHGMcBX/BWRB6MCjp85ZF0SHLd1tF3yya5mL8Whxduhd4mMVjIU
+         kAE/SDBb3XTrJ0JrIBTEUrt+1elFF5barL4mi7AM/EcaMTc3DqycAVYFf9y89Iqvdalf
+         WUkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ImkuahcqiET0r0yh2i1x0Wqcf5zuafLmEw6TOE3oMq4=;
+        fh=dO8bIUIb+nVw51Jq6x6tpS68JHT9T3/wIULPAHckqEw=;
+        b=P8vCs6FHs0fi7beW7jxpNEIzTdVbITI/8hISILgwnsmnO1zHgpbf6rfb27hpxBddDY
+         4SwzJfLVLsRYtFa3d8wsXaT3GsRavOnUupWQBOtd2rRYgir3609HeLHvtygPX8/hUkVx
+         4N8QRr/qZXaR/bH67tskJ8v62xoL8eQVHf+00BQzcmRaZ917FRSgL0fDReueyPKPmp0v
+         gdzE11j/yV+NSM50wOTMKqmQu7d7vsLMVSfKfl/+emRhfUo40rRiQkoZSrrTP+AlLKU5
+         kADCnTU16BIvVITSiZBxIvHnL1FM4a662AaBSw1kHbw5uHGV2Rpoc0Nf1WrAF5c/fJgk
+         XCNA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787676776; x=1788281576; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ImkuahcqiET0r0yh2i1x0Wqcf5zuafLmEw6TOE3oMq4=;
+        b=T3rPBcWK5GQSkDGWEHvSiQ0C8u1w5ULYSbdocfxF1qUn3IH9U9L/DflTb9ftI+JNos
+         KhzgI2iCsejYeaiKmFa8U7KAgpDElqXsKnQVN3keYPkULJGdUpfAVl7NiOIryY2ce6n6
+         46ScUXMaVoXajZpykEDUiOr1GUqLbqER6PCFFDLdf0s/Qow8DZEgB7641/bPS70zM4Nv
+         hQWO7JX1iDGFgdRZPqT2JiJqIxMJKRlM6UVpAZNv7nBxq0YC5463lbSic9ZzmwwDKTZD
+         48KkeKuR7r84nl+b0Uf1odPxklfQ8XOlAj9rKn/QbAswAZzRRQimfmYNaDYa78PjL5IA
+         9pjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787676776; x=1788281576;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ImkuahcqiET0r0yh2i1x0Wqcf5zuafLmEw6TOE3oMq4=;
+        b=XyGahVTis/RWjF0nc7GWGjDOZ4UtmtbOjpOAGJR8w//pkZwQmc0bipt39ChsJj9hZ3
+         5fMSLVdTbplA4mrleERYyHrRgDz/c2gHgJZx3GhVjJ3t03oSbU3uC7SL8Cq2FfN9xBng
+         dQacy2Pq8cp5P7j6CmkKIEw5ZbgiAmp0T0xS6Jr01KYnV1VHSUC1kHeXtteoMmtXToSk
+         0dTc5AG4IDF8TEd202v0qgdUNZthLgeE8xJphzVPucYna11yiVl37iQ1OjZio7Y5hQpn
+         GbUO2lE3ru0WRM3li9H475uvoKgLOnWBSv8rfJ8prxi8w3qaNC+dR3kvTjrEQd/eUe5N
+         Zofw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4Z5uXGi7SaBrLnFdTSIfwQvtRtV4/OVrK6l8MOFmBVyi9nUzL8gxih0adPYZNtznhOkh7CPe2JQ==@kvack.org
+X-Gm-Message-State: AFuF++l6OYctdSIJDd+Oinsg4rHXCwEMSmS5XYzjhD9QK/XefXImlTE9
+	J2iA6V/GI0V+mFHWhRiruLucY3eAT3G/g2xiUtn/Cjxa7DVRhOY6SVGoK0ZVav5BDK0wyQPzbSF
+	+Cs2PlvtONxDfDSkuKYv7JmKKbE00v+03DAXgpGnl
+X-Gm-Gg: AR+sD12HxKdru4Y0Idi3SwY0TU8I3AoSaQmTnCWVZQIg3vLp8BEQbylMc/qBdtMbsct
+	pXCqumfCMka0anVw7kqwZDNVAbgEc5LGXqGs1DoejInkry6HOZazOwJzP5UFNBbdcTX/d6V9tcx
+	EH9EeR5xyEPZuA6o4lPE+uQJrfggbE083LV42ATj5D+vjuV4fBrOxKi5u11CWdFIRIcBThh+o0P
+	qT/wyhjuh3v0H129SoPCfkw4HmsF8zqH9RG8i6JHUrrzXGCz6lArKGvnjWbjid2Rm9MJ1VqYufj
+	ZK8tAvEe7agpimmrBznPwfKBmRHugaDoT6UubU1CuVAWro8zcBSjYyDxB1AjA7NPccmgwPyjbsu
+	0D2hjuTdaA/QerV5t4l71XBQw2AUq1IeRyCDd0h34
+X-Received: by 2002:a17:902:f705:b0:2d5:db3d:1a41 with SMTP id
+ d9443c01a7336-2d6e0757d7amr9055105ad.14.1787676775185; Tue, 25 Aug 2026
+ 09:52:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F0F4F1C0008
-X-Stat-Signature: i1p9cayhodsguzhxe65uup6dhzjt8dj1
+References: <20260816224609.308019-1-kirill@shutemov.name> <20260816224609.308019-20-kirill@shutemov.name>
+In-Reply-To: <20260816224609.308019-20-kirill@shutemov.name>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 25 Aug 2026 18:52:17 +0200
+X-Gm-Features: AcwNN1Vvom-LUSAxEjMWXrQR9qZrcTO8aY2l_-w47SQrAcC9eH4E9yF2js957ac
+Message-ID: <CAG48ez1fiCzTMATN07HHfzvUGFuZ5gELNpZXdXx=ySa7nihxmA@mail.gmail.com>
+Subject: Re: [RFC PATCH 19/57] mm/collapse: install a PMD leaf as the terminal layer
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	nico.pache@linux.dev, baolin.wang@linux.alibaba.com, baohua@kernel.org, 
+	dev.jain@arm.com, hughd@google.com, lance.yang@linux.dev, liam@infradead.org, 
+	mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, 
+	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com, 
+	usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kas@kernel.org, 
+	willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
+	mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: syiwi11g5obhw6qdxdffxxfxysjr873m
+X-Rspamd-Queue-Id: 1515A1A000D
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787676430-970704
-X-HE-Meta: U2FsdGVkX18Q5POdjeWufY19P1amQn0f5SOdH/dB7dQjonaemvh8nn756tzNxBjtwckYG5cgPvX78Fhk4Yh0schoRSeCKULait4vEIsP18x886zi50QSFoxXOg+ErRHDNZTprUeV2dEHuJ+v6plYzjpk0m2gX7BN+UrCWczVdgedDRoA57KlB+w8aq8lqlTom1b/ViouJxfO0TXJMy+VVCQFytAphLODRGrhMqoBKK6sghkXffIQIW0lM6GQPOS9dQ8+ZZOnHsqKdfCIvfvbgv3MEtdMvjbfSXq4+A7QSdAusBfx1+09geu9nPQ8wnVzqyzODeu2CjZkv8eLMftrp2E9/apbyYV5uo0/hZSOjk2inh2hHq3xZOcXsp4OjZ2Nk2oRMP4MnwMS+AW7lWvD0lLjfPKxhoipC4wlhSabBuBQId1jaASvWanXXgegbviXY//Tb1FJZb4ngWmWsQ1DYGv2uCFxuzHJokQgaV3UAJyoZMc1LzHSfeTPMr92DqfnncAXQtC9yNiKGWh9qsbD+BqJufrUfFO8D0e/47kqxoU63aH9zaZ+XjBBXrXAyWck2Elde+4gpESRhy9l9qpIXYHyAXXW9AulfDuetV6bcAooapPuKGXi8E52nJ4HQ7OlMpleEoWbNsrLGTls1ZgB0U85J38hn4pNaUaSm+SyNEn3+YCCynhlZRLz/8Tr/uHStiud4BiVTT2rCgxaj1ZZ0UgjmL3dpzI0dq8s/VWYBOVI9BvwKweYYY2nngoZBzF7Ktj83FTFECAD5GHBTBsz322rECOZpC+gchBJ3PwQR8YQdJQJItgxGWOzuhPDYwjgG9LqbtlSXJ1E/tBxoXSGP7E1olGz9m9eIOA2mSVwKny8fLlRvr25nNJgYgN1OxX93Gfraaay6RwNvj7tg4ks1y3ES8AA737pLgC4ZcnQyC+uriwnNvTrM+ZYrulvYC70RnPWgTktvCMl2e/9XNI
- aJc2Pso2
- Dgq7euqid7/7pTwz2d+AH+dKnmLvs1sY8syDwd1gQg4TV3EbmizXaP6AGFBcjY9DrpFPDSAgW2PR6AMOwuyc1y/C00teK/6TZvwIVZlCtB2XEwv9E0ClfBWJiJ+SKNLFsgXIBkDYewPjKgS8zzTyqZNO4dVT1Wxkzx1nPiTs3OpivY5RdeKoFeRCjqLibJOUxXBb1stJpXmc0WjXFTjpRRsS4TFth8kDGPYRj7Ov9yydAPQIXBVz8nmhCHC/8AkD2eDHova21TyV1mSvemvWO+/6JE9ODFsmayEr9RQc2ynA1qEoUC00Q/AidFD/kytwMyvNwdt61mfCM+zV+dbkJy7IXhRhWA9txbrSTGdTw+DdL/LVCeNnmCswWNbdEmqqHgG6gWXgFY7hkF9g6txIDezBuArvPI2TdO/hOGl7RyTNL3MStrIyZhC/NbncZoFBFbKJSNV4xK5rrl6k8mVXiWGyoOltDS3HYZ5onCfJJAdD0GiY+PVJJSgzanVm8n+U1mMMRW9jnG0uH6vzUDUtB1XyMUt0WzFaDXAoCI+ULrkKPHFJmq9SAXxvCt/hyn3h7l7ZqhJCtaR3itY3JMGUbyH2rE/RWcHCra9tOZrKH7+NeC2eu+kiVfe3EzycVSY7ihmYGakyKBu6r83kcdXp1hWe08u9uVMQVVYyfExF7OkwmODxi1Ci6lfRksc73sEVZR/RQkfFCiGNdmTJ5ObBzqimGCBFBiatzMWrfDTNmWREz8rDaIsWze77edPnl1xW51mPkoImn5dE61DqGmpu45eNLPcqYCvjPSILh0mETWI9dDymDEwZb/m+MO1vOq774UaKsXO4thvzQTna+bS+FUJe/Yw==
+X-HE-Tag: 1787676776-310129
+X-HE-Meta: U2FsdGVkX18amzAVFTkWRlJ/trRMO957+C2QpO91AfZYgiDRJsBDLeg/ikMAL9mVMyDbNA5mGAXCxctzWLZSh1FgbOG8y9h9acJJ97Poh6HKI0V9m7MFBYFXK3TtEHp3Xt14NT3q4a6dLrReSmdjCzOuAGDlqhfEx1LUPeqYp5RxezpqWD6zx4oAr9jqHVwKH3ZDw2RNRjCl0jV8Br+Y04mZnyQpA/GvuW1mB+urvd7Cd8AlknOW27E4/UHYcdRlaQ0GTrklA4dRh1h/uxRvuSisFqsFfuAgqPUMqbAHFdYYKjK6/fMMwHWcGgkxNnf1Xf/H8B5eU60VWOTQTPSDC7bhMlHqqoG8YYml+ET8Fjy+fZiOI6wBa3baYEDsNYL0dU74s5NY5rKIHGOWWF6jG9g8GGUk4a8jSZT45w6VxFKIKxkA1CzIvcHLKvtKUJZXV9VeVyiGBEn7JM8uqhJ+MblFSLWS3HnPjCZfHmoYMiOwOtJ3iFeUJXrOB7ugtE4ELZm5pRztjY3CQImGoXAIZy6yE3umojAsNWzJe1nPUUTfsybOzcFqBnsPBM/9NR+heP9FUBxi4T0pvqT0Ifv/i+T3zphJbdJmPeVMDn/kM6lcINoWIzS7twa2uAyBxuhyxVbq0kjM4VbSvW0LJJ+ozWZQkV/BRde411KaUwY9T0mAOYe+uhZotCO5ItFJk2IGV7UVrJ15LeiV9NaqKfoU6/QPQV2ET2BbBTW1s8dKB5hx6id/aeyP6yIsP5VTigSbtdz/W5GNb7g0NuCs7R655r8R1IjeqVhNYc8DkTiczcreX4CCIdwDvWXqEonqyL2OrnlwLR+xKR2aFjwz6wWft9mP9T5Ducr5Dg66aHakFFHajJ2QlcONKA2C5cpt7BaMkXq1TjB1N7+VYthKISHjLkecUWFI9KogQaVT6O7lZ+2O83uZkjkWbGEiy2UiuKFZpzTohy67YGPw6f7IJyY
+ V3pUOHKF
+ Ag8TjiXI5j4z5GFtBEIYUzz/GRF20ifJjzPrCK/wL643s1gWNYzn9t9JZfNovoVqdOBHnD6CSIqNkv9xzcOjm63yCIUxtXkk/Kq086rUM9spwZHmgPu0AcsVzNG6wM4A2i50FGg8RnFEm0tocTCN/BlXf4aOC9X4BP1XywBuFibn6s5l8y/G16uGUtazS8Bc6N7u6QRxAXEG7EIeQV325DzzkAbrlKODX6o1+4r/ZtVKOVvyxFuLD7O2sGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,139 +147,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 01:15:42PM +0100, David Woodhouse wrote:
-> On Fri, 2026-08-21 at 10:38 -0700, Paul E. McKenney wrote:
-> > The current state is that if you invoke synchronize_srcu_atomic()
-> > from a given context, then srcu_read_lock_atomic() must be invoked
-> > from that same context, or a more strict one.
-> >
-> > So, for example, you can disable preemption across your invocation of
-> > synchronize_srcu_atomic(), but only if you also do so across the entire
-> > reader, starting before srcu_read_lock_atomic() and ending after the
-> > matching srcu_read_unlock_atomic().  Or you could instead disable
-> > interrupts across the entire SRCU reader.
-> >
-> > Does that work?
-> 
-> Yes, I think that should work; thanks. I don't think we *need* to
-> disable interrupts or even preemption for the KVM case, but I played
-> with it a bit to look at the tail latencies that Sean was concerned
-> about.
-> 
-> I converted the GPC series to use srcu_read_lock_atomic() and
-> synchronize_srcu_atomic()¹ and redid the same invalidation flood
-> testing: 8× shinfo + 4× vcpu_info reproducers on 128-way Ice Lake.
-> 
-> On its own it isn't much of a win for this use case AFAICT, but it does
-> work nicely when combined with the try_synchronize_srcu() thing that I
-> posted before².
-> 
-> I compared three variants: synchronize_srcu_atomic() as in your dev
-> branch; the same with try_synchronize_srcu() as an inline fast path
-> in front of the GP spin loop; and my previous try_synchronize_srcu()
-> + synchronize_srcu_expedited() fallback for comparison. With
-> PREEMPT_DYNAMIC, and without all the KASAN and lockdep debugging I had
-> added for correctness checking:
-> 
->                     avg     max
->   atomic spin       8.0µs   6.0ms
->   try + atomic      3.6µs   326µs
->   try + expedited   3.7µs   4.4ms
-> 
-> The try fast path more than halves the average — it skips
-> srcu_gp_start() and the flip-driven advance loop entirely for the
-> no-readers case, which is >99% of them here. It also seems to fix
-> a problem where synchronize_srcu_atomic() calls spend their time
-> queued behind *each other* — atomic alone has no sub-4µs drains at
-> all, and 40% of its drains take 8-16µs, presumably contending for
-> the driver role and waiting out each other's flip cycles. With the
-> try in front, only the genuinely-contended calls enter the GP spin
-> loop at all.
-> 
-> I was initially dubious about that 326µs max — the slow path is still
-> just spinning like the atomic variant, just with two orders of
-> magnitude fewer entries into it, so perhaps it just didn't hit the same
-> p100 in my test runs. So I redid it with the try-failed slow path
-> instrumented separately, and it does seem to be real. Of ~5M drains,
-> 3474 took the real GP slow path: avg 13.7µs, max 326µs, none over a
-> millisecond — and the *fast* path's max was 282µs, so the worst case is
-> something like interrupt noise, not the actual grace period. For
-> comparison, the expedited fallback was consistently producing drains
-> over 1ms (sleeping and waiting for the workqueue under a saturated
-> machine). There were about 100 such >1ms waits in each 300-second test
-> window (of about 60k fallbacks).
-> 
-> So the tail win over try+expedited is real, if we care about hundreds
-> of µs vs single-digit ms. Which I think we do — that's what brings the
-> p100 to parity with the existing rwlock code (~330µs on the same test)
-> while also scaling better on the readers and resolving the whole
-> PREEMPT_RT issue.
-> 
-> One thing I didn't expect: the try falls through to the slow path about
-> 10× less often in front of the atomic variant (0.07% of drains vs 0.5-
-> 0.7% falling back to synchronize_srcu_expedited()). I suspected the
-> preempt-enabled readers in the latter, but rerunning that test with the
-> readers non-preemptible made no difference at all. So it's an effect of
-> the wait side itself somehow. It looks like the sleeping variant lets
-> the abusive invalidate/refresh cycle churn about twice as fast (11M
-> drains per window vs 5M), so the try observes readers in flight more
-> often? I'm not sure that higher throughput of the abusive test is the
-> metric we're here to measure though.
-> 
-> Could we put try_synchronize_srcu() at the front of
-> synchronize_srcu_atomic()? Without it, the atomic version is slower
-> than what I had before, across the board.
-> 
-> However...
-> 
-> Testing with my KASAN+lockdep kernels showed the p100 latency going up
-> to 200ms for the atomic version, while with try+expedited it was only
-> about 25ms (the same order of magnitude as the existing rwlock-based
-> implementation in the debug setup):
-> 
->                     avg      max
->   atomic spin       10.2µs   172-212ms
->   try + atomic      10.2µs   173ms
->   try + expedited   14.7µs   25ms
-> 
-> Pinning the grace period driver with preempt_disable() didn't make a
-> difference. A sched_switch-instrumented run showed the >1ms tail is
-> bimodal: half the samples ~100% off-CPU (the *waiter* descheduled after
-> the wait was already over), and half genuinely on-CPU spinning and
-> waiting for readers.
-> 
-> So on a debug kernel under CPU saturation a spinning waiter has a much
-> worse worst case than a sleeping one; on a production-like kernel the
-> try+spin mode does seem to give a big win in the tail latencies that
-> Sean was concerned about. I think that's OK.
-> 
-> ¹ https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-atomic-dev
-> ² https://lore.kernel.org/all/05e5a29a95793651062dc5d165661b4d590f08ab.camel@infradead.org/
+On Mon, Aug 17, 2026 at 12:46=E2=80=AFAM Kiryl Shutsemau <kirill@shutemov.n=
+ame> wrote:
+> Fill in the PMD install.  Under the pmd lock, with the pte ptl nested
+> inside it: verify, detach the table with pmdp_collapse_flush(), deposit a
+> fresh one and map the leaf.
+>
+> That is one atomic section, so no pmd_none() window ever exists: faults
 
-Nice!
+What do you mean by "atomic" and "no pmd_none() window ever exists"?
+Is that supposed to be with respect to a subset of readers?
 
-Things are getting more stable, still a few corner cases that I am
-chasing, mostly in rcutorture testing.  (No, I did not design rcutorture
-to deal with atomic grace periods, and no, it did not take this sitting
-down!)
+While the PMD table spinlock is held, you clear the PMD entry
+(pmdp_collapse_flush) and set it to a new value
+(map_anon_folio_pmd_nopf). But codepaths that walk page tables don't
+take that spinlock unless they already know they're in a THP case.
 
-The no-readers fastpath is in place for Tiny Atomic SRCU (though with
-a bug that I am just now fixing), and it should not be hard to set up
-for Tree Atomic SRCU.
+zap_pmd_range() does not lock the PMD table before checking
+pmd_none(), and if that is true, it skips over the PMD. I think this
+means that THP collapse can race with MADV_DONTNEED or zap_vma_range()
+such that the zap wrongly has no effect?
 
-On the tail latencies...
+> stay held down at pte level by the migration entries throughout.  It is
 
-The easiest way to reduce them is to require that preemption be disabled
-across srcu_read_lock_atomic()/srcu_read_unlock_atomic() regions and
-across all calls to synchronize_srcu_atomic().  Without that, the problem
-is that the scheduler does not know that the spinning is pointless,
-and we cannot use the blocking primitives that we could otherwise use
-to tell it what is going on.
+But you don't have a migration entry at the PMD level, right?
 
-So, is it feasible to simply require preemption be disabled as called
-out above?
+> what lets PMD collapse run under mmap_read like everything else here.
+>
+> Two things force that nesting, which is the one the tree already uses to
 
-PREEMPT_RT might need something different?
+I'm lost, what is "the tree"?
 
-							Thanx, Paul
+> reinstall a table.  A racing zap of a frozen entry takes the pte ptl, so
+> the verify has to hold it.  And the table must not come apart between
+> verify and detach, which is the pmd lock's job.
+>
+> Nothing leaves the section early, aborts included.  An abort only
+> restores PTEs and would need no pmd-level exclusion of its own, except
+> that its pte pointer came from pte_offset_map_rw_nolock(), whose caller
+> must establish that the pmd is stable.
+>
+> The deposited table is the freshly allocated one, never the table just
+> detached.  A deposited table has to be quiescent, because whoever
+> withdraws it frees it immediately with nothing to hold a lockless walker
+> off first, and a table that has never been reachable is quiescent by
+> construction.
+>
+> The detached one is not: GUP-fast and RCU pte walks that read the old PMD
+> may still be inside it, and on broadcast-TLBI architectures the flush
+> expels nobody.  Quiescing it would need an IPI, which has nowhere to go
+> here -- outside the pmd lock it opens the pmd_none() window this design
+> does not have, inside it is a broadcast under a spinlock.  So the
+> detached table goes to pte_free_defer(), which holds the free until those
+> walkers finish.  One transient table page per PMD collapse is the cost.
+>
+> No anon_vma_lock_write() is taken, unlike the mechanism being replaced:
+>
+>  - rmap walks on the sources are unreachable, their refcounts frozen and
+>    their folio locks held from freeze to putback;
+
+To be clear, we can concurrently rmap-walk into the PMD, right?
+Because we might be looking at a different folio which was created in
+the parent process or something like that? And so a
+page_vma_mapped_walk() without PVMW_SYNC might look at stale PTEs?
+(Which may or may not be fine, but would not be what this commit
+message claims.)
+
+>  - non-rmap pte walkers see migration entries;
+>  - pmd-level observers see either the old table or the leaf, never an
+>    intermediate;
+
+(or pmd_none(), see above)
+
+> +       old_pmd =3D pmdp_collapse_flush(vma, cand->addr, pmd);
+> +       old_table =3D pmd_pgtable(old_pmd);
+[...]
+> +       pgtable_trans_huge_deposit(mm, pmd, cand->deposit);
+> +       map_anon_folio_pmd_nopf(cand->new_folio, pmd, vma, cand->addr);
+[...]
+> +out_unlock:
+> +       if (pte_ptl !=3D pmd_ptl)
+> +               spin_unlock(pte_ptl);
+> +       pte_unmap(pte);
+> +       spin_unlock(pmd_ptl);
+> +
+> +       /* The deposit balanced the detached table, so the count is alrea=
+dy right */
+> +       if (old_table)
+> +               pte_free_defer(mm, old_table);
+
+What does old_table contain at this point - migration entries? I
+wonder if we should zero all the PTEs inside it before dropping its
+spinlock and scheduling its freeing, so that a concurrent
+pte_offset_map_rw_nolock()+spin_lock() wouldn't see dangling migration
+entries. (I'm not sure if we actually have a codepath that does that,
+but even if not, this seems like it might cause problems later.)
 
