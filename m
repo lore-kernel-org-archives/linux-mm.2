@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D25C61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:52:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45207C61DBE
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:53:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E591F6B00E5; Tue, 25 Aug 2026 08:52:22 -0400 (EDT)
+	id 55AE66B00D9; Tue, 25 Aug 2026 08:53:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0A166B00E6; Tue, 25 Aug 2026 08:52:22 -0400 (EDT)
+	id 50BE16B00E6; Tue, 25 Aug 2026 08:53:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1FD46B00E7; Tue, 25 Aug 2026 08:52:22 -0400 (EDT)
+	id 449C86B00E8; Tue, 25 Aug 2026 08:53:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B658A6B00E5
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:52:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D135C0334
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:52:22 +0000 (UTC)
-X-FDA: 85139780124.20.8B63B3E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 270556B00D9
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:53:42 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A63E2120191
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:53:41 +0000 (UTC)
+X-FDA: 85139783442.13.5A08F3D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A854EA0007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:52:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQ5nvPxj;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787662340;
-	b=o98A5uGxx6bmxnRiwIKO8E4Sf5pwz+7LvLYHL/gZnGHndPbHNro3JZBuNSPtMoPMwDaNJc
-	4HJqW1WPJ+U/9b20ncsp5v8h3WFcJp95o0HIY8jyrB61JQmEjq7iGbn/oj/WRDpigQyZyY
-	SJb5JfyiRRnCepJdLJyowOzO6k6SjxU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQ5nvPxj;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 175C316000A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:53:39 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WMgPGuE4;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787662340;
+	s=arc-20220608; t=1787662420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OxThQMjnWy7RIkTnG90BC8uPhJYun+rex4exdMBz3hg=;
-	b=3AH/cwDTmSQeZuKaANrFTPkNWRaP5Z6Xx/l0LDej3yXEh1ZjDTtsdcLhAEgogyVI8VWkFN
-	esmT4go9FG3VFNiqNISSnHmYEeh6dZZehGFXGAWOSR9TO3djxeJjSr9lWJVjxEhHNtOoek
-	K9uuOSS9ysVi55rLQ30ogFIScl12jZQ=
+	bh=cFqy0iZQM8tBm4oUMpoq1Y2sfynDkv1QLYRiCrkswLE=;
+	b=35XfhCKysOxbltZzOO1zU8xDtgVhiUyxMRcgdkboLo3JVi9XDFZkLObciEII4KnLJc2sC8
+	pXSYoS1vk835fQhXqCVHC2c4AvVhrhUSWqsvMhVte48RXQ/zHYQToIBpUY34v9eAv2b4kS
+	yGbQuexlm8LwQwpr/FdeI4YNoj+AjlE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787662420;
+	b=btDhiGPogIT/wPtaiWSHKCtjzBVOlJfAqHfYOtMT+1kZE0f1ob+ew5Fc/4nOIlMsefVPOZ
+	5G4d8yWGADVgJCT0v7uyGa1NF4YBtE3jLJ1lZSU38WWwdYrq04CWWwZ68deh/otdPUev6r
+	cEWca196gxF3oUfTk9ibg3UCQz49s+8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WMgPGuE4;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2D9CD6011F;
-	Tue, 25 Aug 2026 12:52:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2401F00A3A;
-	Tue, 25 Aug 2026 12:52:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 85CCF6011F;
+	Tue, 25 Aug 2026 12:53:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08231F000E9;
+	Tue, 25 Aug 2026 12:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787662339;
-	bh=OxThQMjnWy7RIkTnG90BC8uPhJYun+rex4exdMBz3hg=;
+	s=k20260515; t=1787662419;
+	bh=cFqy0iZQM8tBm4oUMpoq1Y2sfynDkv1QLYRiCrkswLE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LQ5nvPxjEUoH4UEpC+8nl9nHb7+a3spWZ1e6xJHVYG5VYUQp9ECoGZjRh0QYQAqEz
-	 QRmN5Nm/8IQRzcLqU4LyjAVB9DwnZgeuhVVgavbmtoryP8S6i08KZ6DkYIXDtvUA9B
-	 p2vF8vfnmvJBfadpy1P5t6y+27ZzOfS68O+M/jIsjQ+7Hi8Acc/qsPMOV4K7TQaT/I
-	 fB8VvYeiPpD+sCEDS33e49JgZMUJc8NGFpeVqKrQdLHlI6kBJWENW4v9zfm/dVKN92
-	 qM4w1G10t43d9PPWmNzGVinKbB4k173ze1dCaggrxVmzddSxHgoz6c4Q7wqDqXuRBR
-	 1FjM8KkoSdBeQ==
-Date: Tue, 25 Aug 2026 13:52:13 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Avi Weiss <thnkslprpt@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Soheil Hassas Yeganeh <soheil@google.com>, Arjun Roy <arjunroy@google.com>, 
-	Eric Dumazet <edumazet@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] mm: return -ENOMEM for page-table allocation
- failure in insert_pages()
-Message-ID: <ao2P4Ey3fy9MxRUJ@gremlin>
-References: <cover.1785847364.git.thnkslprpt@gmail.com>
- <a486e90cca91f443552b70ab2a18510bcc5dd8b6.1785847364.git.thnkslprpt@gmail.com>
- <e4a7bffe-7d23-4d7b-8ec6-5b966419c615@kernel.org>
+	b=WMgPGuE4HqraYVZGzhXNVOSIgDO27+l8s/aPGUiNZT7UtGArJEBzBt5UmUmrn1Idb
+	 0K5L304bw1C63sT/dJSsF0cxthKDnjDYybwwjzycNEsdHTbWw2nsbS/b4byRYN3ff8
+	 aRskB3LruXllKqarOjnhf0f9e30uW1iBL7+ldqlrBswwLd5gCOQAebG3vnqFUjffQT
+	 lDlDh97OrbS/guxsqzeCCDv2IxUTChh3+TA8GsydTD94ZuVY2DYa9+8KLVHFHb+zID
+	 wObzsX+sqlT8iqky78FYjLsbrgVJxEQcXouLZREpgCR6O87MEMDjmo0wWf2Apya0Yb
+	 pVMDPFjhTcjjA==
+Date: Tue, 25 Aug 2026 14:53:34 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Amir Goldstein <amir73il@gmail.com>, linux-unionfs@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	Laurent Vivier <laurent@vivier.eu>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] ovl: don't warn when the mount is completed from
+ another user namespace
+Message-ID: <20260825-ganoven-waldweg-lappalie-3252be210162@brauner>
+References: <20260802-work-fill_super-warn-v1-0-4e987911a39a@kernel.org>
+ <20260802-work-fill_super-warn-v1-1-4e987911a39a@kernel.org>
+ <CAJfpegtXbdpFZmV2dYSbp6eL0DBGmZin98TFr42nxJCfuryfrw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e4a7bffe-7d23-4d7b-8ec6-5b966419c615@kernel.org>
-X-Rspamd-Queue-Id: A854EA0007
-X-Rspamd-Server: rspam10
+In-Reply-To: <CAJfpegtXbdpFZmV2dYSbp6eL0DBGmZin98TFr42nxJCfuryfrw@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: eun4yk9jk1wxwrbr1y771e7udb84qtaf
-X-HE-Tag: 1787662340-878615
-X-HE-Meta: U2FsdGVkX1/2RhfQF98l4+znUz0RWZVTTI8fBcRLG+VZaKKjf/eSz5cygWz8qQ2IZNbil7br64QKdOMKutZA8N3Tf8bz2xi/vKw1HmKut++m7hZgoWcIRYmNgHxMCZfTWjEDdiNPu7uww8pKNJOycHo8AjsCQgpMvvtSzDwOw0N0IFsmsiuWESevCDoFGIwmksBNf0JxdHvKwmetWrQEOOBXKY+Pt5hEXuyEsu6Lp/gPFWvl4WLW975v+h8Oxm3eKUd2tlwr+xHa+NMvtTsoxcLTWsoKkLW7J4yOrjGXYyxcbXDAlnEuvjmZjeMZmT981Dps7M8SlQ0IqILRVnMDRShDikZB8dVkpjSAXqb3jOItW23XL2P4fguta9dMBEnuI2fClobQy2XiyXYTOXUismBSZUVjUlkY3K8unl9D6nMf3aY58UlJqxn1YauVousNCjw5GOrHV/kRE64UeJHUWeZVeoJeCvLAEbQ5df3385sa/CE4Kx9NePcTKFvtrNXQ1qBuZpii6Li9705tLtPhL83O1Nh7Vdd1DZp1luWgEtGCEvhsMSJ4J1ll0EogMwA1jnYOpy3oCfGpjDmKP6gT+K0gjLIFl4s/GcfMmAzeS4UuPrTfPIyuu2V5+RYFMewgifR3+UVg5+YQJoTMKRu03GE6JQdkSND2lKyVsZv3ATCjW1AuMT7Ip1lA7ijVzmrajRtjdxzFnMj6nRQoY9WThjZA0qdOVKyw4MI2wzSrpBtN72+MpdQc1eB4nMvWV7ZT6clmjOlTpI4LdiA7k2vdE/fij8kn0v6OBIGTmNjJH3kIRZDs9kPKZ1mB0lfGETvgp3PxjIrJU+WQDth0As+XR4zqmo0sqMGwJvYEQ1SHddMibw2nKnPdSzXWjYf95A/As61D2lGsww6oUk67tBfz9wslNngjBMyIu4r69t6QSg7OybxioJcAqPFT51zJoi8f7eeNtl7ff78B5tFWYgt
- UjuJvhCb
- g2xM61/1LTHsUgj3PFiYkYlphfOgMegDzw1dZJuxNgaGkE1s98P0qE/UME6GtZq80geAiEHGCSS2idODn1rX4mKkWF9qyhRkvEGsopg5V7tl6t5Z/zAj8tcLky64gqf00Z3C3HpBZ3KW46Lc1IW8BR/8r403T5a/Mulgy0pLuqX8qeF/0Xb6R4dccyDYJkkqZYO2V4KxsHBQRqD98A3I2W24IXoPE/zucxlo8mtR1QBOe3yTAP4ixmGQMR06qe1NGxWbmBAzQyaxuT58Dh/pS0TV9sdCEQcSdEbw8xybDrmAzJx7r8MEn/P6cEivVeII9TeHZnwlbYJNfoiMLtNnVJHeWNw==
+X-Stat-Signature: rizm6afqegmk49fk56kme6si9g7fga3f
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 175C316000A
+X-HE-Tag: 1787662419-561110
+X-HE-Meta: U2FsdGVkX1+hg4P2Ob8JEXuBX3bPdmN9dr1ZLuz7XEL+RRWYwcdUvvx73q+/MKwZqZ8EfKEYv/cOCOAu0wtMplfjeFjQ/a0QVjYwR5uOQMqZnuapJfqnv3pJOXfqIcXrIVbGsPiQQc5n5JfBqlEQqSfKBvjEZsRkQZ4Jl2/9vLQo71QUbPasMtPzyCjsm+5LF2dr3QGCGAu4Z5RHgAvp/X3W0xw+pRhZYuEW+0GhIBwU+mLC3QwPQJusUPeBd0Ca6rZMOzPxdbC8tT1fc4zbCd31T6+/czERHijih/BVYiglUZFgKiRzEetCRvX0r9sD3tC5Mj97IMDGskYqIp2UadgbEAxOLoJpOlrs+f6ajT/SGIdJ2T2NWT9QbN32ksZEZ+URgPzmgvcXOdRcjzKw+oy9Lur9GW7ngvBpGbF/ZglIeELH+wWoSlpWT9x9EejtDFbhoODmpYsw3Cd+kGxWARMV/cLQr5g24F7tuIpQMzA+6Sc3WjMj79Hj4zBOQ4mOVAdN5DLRyNHA3+BUQ8nTBeq3wEZCsd+OsE2COIApZwYsYYtFJ8ED/18fQD+wrFFvYqEzlf1fR+PTIdJTybYWnNHzyxJbraXJxw3jMhktDtcWD05Wrumq4cqB9rEK6NDIAyeZvVkItRoa/IZ+pPxphFhbDJ9aL0BZXYdSOsreIqsQqV67v0d8Hn0yS07bsa5b4tQ1195stLUtc+9D71xgqXqPPR+vaN3XacGJFPkabjry1Nr+VORqzTak369toqDwx9EYFgyNQVQncbScPFBrMeDb9We8EdHrTByKHHCesh7PIecMORIHR8XxTN5+2ekGHDo+XnaVfzpDWP4F0dhZNwheKcWrFTlsSUujQPeb6hdTVCmBu7dUJCSF5+BUpUWkY+UrX+RzgeHGDeQ0cTiMPaQ8fqrZ8AMqQ5YL049ZQLhByzg5yi03W1COGUNQWazOTGSzBMpaQ0M4UdRdPI2
+ s2Wf+Om8
+ 0pDfmKQJ3toHieqNMh5jfRRh0VhlWFnjahI2NT3g3YiJtY3zoIXo2EB4TMABsAZdpe6RNhZIYQwcl9Sz2cJw9AzTa4kVeHA11wGqN6As8/0In0xG3yBda6rKxIJdZriMpIEXL413Rn3fCAL2cPw1vhy7JKqbvfsz414IppjgS6mZYIjPVAIpG7Bi4WEfcVgnF4i/jXVuyp/U/frjt6hiKmgwEZEo8XXSq42yKb8/3qVcdSlZVKqKhCkzCZcnJ4KT/6IwhkZuX1dXoraJXMrDrbPPQOszwtVBnhG7q1/V8tgtqnyE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,54 +95,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mm/memory: please let's be consistent on all of the patches in the series.
+> Just one comment on this (I know it's been merged, will do a fixup
+> patch):  EIO should be turned into EINVAL.
+> 
+> The EIO was used to signal an internal error (commit 9efb069de4ba
+> ("ovl: add warning on user_ns mismatch")) , which is no longer the
+> case.
 
-On Tue, Aug 25, 2026 at 12:40:36PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/5/26 16:42, Avi Weiss wrote:
-> > populate_to_pmd() returns NULL only when p4d_alloc(), pud_alloc(), or
-> > pmd_alloc() fails. These are page-table allocation failures, but
-> > insert_pages() currently reports them as -EFAULT.
-> >
-> > Return -ENOMEM instead, consistent with the subsequent pte_alloc()
-> > failure and with the single-page insert_page() path, which reports
-> > failure of the same page-table allocation chain as -ENOMEM.
-> >
-> > Address and range validation failures in vm_insert_pages() continue to
-> > return -EFAULT. Keep the later -EFAULT return for
-> > pte_offset_map_lock(), which is not an allocation failure.
-> >
-> > Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
-> > ---
-> >  mm/memory.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 11bb4fb98761..16093479d341 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -2438,7 +2438,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
-> >  more:
-> >  	pmd = populate_to_pmd(mm, addr);
-> >  	if (!pmd) {
-> > -		err = -EFAULT;
-> > +		err = -ENOMEM;
-> >  		goto out;
-> >  	}
-> >
->
-> For this patch:
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->
-> --
-> Cheers,
->
-> David
-
-LGTM too so:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
---
-Cheers, Lorenzo
+Sounds good, thanks!
 
