@@ -4,138 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B98F1C61DBD
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 20:07:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4018BC61DBD
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 20:51:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A39C76B0098; Tue, 25 Aug 2026 16:07:12 -0400 (EDT)
+	id E32376B0088; Tue, 25 Aug 2026 16:51:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EA526B0099; Tue, 25 Aug 2026 16:07:12 -0400 (EDT)
+	id DE29C6B008A; Tue, 25 Aug 2026 16:51:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D8CC6B009B; Tue, 25 Aug 2026 16:07:12 -0400 (EDT)
+	id CD14D6B008C; Tue, 25 Aug 2026 16:51:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F53D6B0098
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:07:12 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D227B8019D
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 20:07:11 +0000 (UTC)
-X-FDA: 85140875862.13.E8F6A7F
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E62BBC0009
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 20:07:09 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 97BEC6B0088
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:51:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EDA86A0144
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 20:51:17 +0000 (UTC)
+X-FDA: 85140986994.29.4979372
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3B5D2C000E
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 20:51:16 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GKKj71yg;
-	spf=pass (imf22.hostedemail.com: domain of jannh@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787688429;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="URS/D749";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of "SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787691076;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QmpPvlugr4sJVMK76hZIVWaN8XuXLrWZ5bMIrs2ohCE=;
-	b=1wrEWuliK4UfjI5F8PKeinGjrI3e77bEFghdfjQaUwFyQB2uRkYYXTN9ZCeKLjOF2ggPoz
-	HoJUo4kJ0zqIuZWQbhDjJkS8nktaWzdPy0sjXuHY8aUWFhC4ZrUfMq44WDnjmoR/BvVnJ4
-	MOn8XLvhb/+ecpgvZniEZk9A/Flz+A0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787688429;
-	b=v0CyW+cLUJq0hd5YXlt38TW789huSvFtEZlD/453+bIZpBxXZxgLH/SbmN+GKzRbZP5UM8
-	k/j8+Rp7xfyGalSx9dhUfik8tWfSQqjJzv2h+yVlZqkG1xQeBChl513hAOili3trHAmMjB
-	I2JWtVVf6+N4iyojuiFNBzpaQnMH92E=
-ARC-Authentication-Results: i=2;
+	bh=i6BE0nH5fKyGi4DIZ+qOoMqZyC6oX0Uqj521Z9Rq1wI=;
+	b=KoNLfR7O0tcjSFVBxBrM9pNeePumu0yp3rzAR/QCuhc3Y9WZgVsOGw+r/7F99UfKqCUMke
+	T1BZd0ZKoBmITfd80q6aBdTOw5ABK904CxkVpPVj4SFhVwYtmGRmrTDdCn7lIj7pkZeybM
+	NcbVYPccolQb1isDLSin3SIKS6/HU1o=
+ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GKKj71yg;
-	spf=pass (imf22.hostedemail.com: domain of jannh@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d3b440b97aso6435ad.1
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:07:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787688429; cv=none;
-        d=google.com; s=arc-20260327;
-        b=izx3VrFlKySXSOegI6aNHiR0by9eD/PpBm9K7weP4Zm//5hARVM65ZgfVbmXFG2zeo
-         LO4wiG8skJv/HdkgdTeDhFf4vH8hOA8Sq+J/vTezrsjvyGPPg+hG4SaF9prqqmZbuB7f
-         J9qRq6ijcM55AbQlZA1drKypRn+bIgSIgnyrELcOzhH0ocpe7SAsog/Ze0aQFQGcNgAi
-         bNGO3QvGyBRK+8FdKMkkgRGLcjwkuh8u39AOAyLGFq5s4DX4j71cmUZ2RIArwteMqJCH
-         WW1qYIAoUqp5dzMt8XzqnxGX6SofhhN7D2qL1VVpW7/SfbxW87HrMwia24tHAwa1Mvoo
-         Ce5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QmpPvlugr4sJVMK76hZIVWaN8XuXLrWZ5bMIrs2ohCE=;
-        fh=W5srpOP1OWTsfTDI+Cx0RD1E03Gaz9EScwfkaK7WChI=;
-        b=L4JlQzYZWVnRtpfhjONtmZDMzqOdDM/SzsmuV47dWaA32TrBUp4RSV1OBRe8gt+9k/
-         0uW7rXLKsiwYdPNsr9+GYq2G7SGNQwFBzIJ2pw2NYpz5agaeZFMAwlBchQ8/BNXzQzFc
-         WeqJONKcZrU3Gkh4xpBuEOOLC+tlF9UIdUi92+4N/x4ENeuZIYQqGEuv5x/K0iLrzyj2
-         W8wmpN8RDpaXS5GdxqwtxNIbSZJeh7TrQzZIbS8EfOfyo22kWpJaME0oa5jd9qJ0m2mq
-         fpE3Dm5/51+ZEdpSjDmp4okSeE9zD5EC1tFbhJ5zNlSGapk+B5WkfF+GGiSakylsZKKA
-         GzUA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787688429; x=1788293229; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QmpPvlugr4sJVMK76hZIVWaN8XuXLrWZ5bMIrs2ohCE=;
-        b=GKKj71ygk3KAVYxpGiYsGAIaoHBbyZy6N0Qd0hlNBKAt6YCGsvtNzecaBepnIEa/yP
-         Ln8xVCmfNAjuR27PiLLUCBw/ajt7nLXAJK+6UUf5AyfsvOaHDG8hCUqK9FLvt6lbXlYH
-         OGqbrynnpZIWUgw/uc1h7p8nT+onqaWZOjlkP55+mZkM0SiTbZJ0/giLbAIRBIKpj2RQ
-         ClUJar16/7RcHKRmWi5J8Pw7bejsZmmwZoMrqwJY+LH8uAXGBGLrF+i6VeOlKz8px4y+
-         B5wUHpnZ1/tt4Tr0wxjBlFn95b5sMRmdTgOm7sLg9s1JWiyD2XbJoQzq8saYd9oFAtJV
-         XgJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787688429; x=1788293229;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QmpPvlugr4sJVMK76hZIVWaN8XuXLrWZ5bMIrs2ohCE=;
-        b=ZT1z3DvcokeWpSlTzjV0JaGjkzHNC09dQeWyncVM898kTe8xkWS8BKIxB19HAqxN7F
-         rDyEq8WmtgAw4RuG/x13M2n/kwXvJnXkALmBfgSJ6HEb2o56JbCa8LBR0z1528sPNeIj
-         v90pkDpMbenPvLYQfGobv4Kosjp2+8uQdDfXh7WfbjhAOlLl6ubRKQhWR8qsCh0M4JZg
-         ufzX2ZgOyQ5l5m6AaURdfipJjvoubI8vUVzV8I3qQiALpxMB1UBTVI3LHYbhHYYIbHfL
-         wfpQpwcYhjEe65rn7HKFxX7erlGAX2xLE7jpwdH2GpjrINNmpNidW8M6vSA8UBkVzMao
-         +rnw==
-X-Forwarded-Encrypted: i=1; AHgh+RpZVsc3P6n1HN+4VdrF0ZYQ9jzUnEMifnZ/+APOWT1A4zZFS80Dew79dC07qT6ti+8sJtH+4qDjiw==@kvack.org
-X-Gm-Message-State: AFuF++llX1OQxVnX6Rlf8g2qYorP3QWZ13+6R7tOCYUsUElOxnbEZoT1
-	aAVhJFIQI7WfaA7ReDywfmtjNV2kVAQkPK8I/mfelFUYi07l9ly/g/CZ9Rh8glH/LmeVCwUXiYm
-	zJQgVeihLdKLotYpTuQN9/GhikRBorDglFzPUN8V1sPlJM6vA0V6rLHsz
-X-Gm-Gg: AR+sD10+2z+1vPEl0oQWkLRYsTr2gzoiME20htqvoUTvVM7Ym0PR0t/VO9uJUbM6xq/
-	qp5at9pR9e9JiTmhPU2zw7g26gdaThy0gQnUBM8icqqUXhzH02hV1DAqYV50vUiuNV+KMxrWIKa
-	NNudV2Nl7v1HANVtocbUR+H1XRuDg4fumtf6F90psYRR9a2G+y97K647SI+p8eBi70JZf55OyE4
-	9QaMBJhc0gJkcmzu32eYqVAhFDinBq+Ym9NrSXgb7hstx5hdtryXomFV8Ngrb2SCeosVxGn7o+e
-	sGH/q6yt3XCPAevTz5cTxUsGCdH98IZWjuSQuEf7iH74BGXZ8FMTg7KP3SP8mKbm4ekU7xBg81A
-	dZsVh8q89WbigjBfQmDS6kCG1G3lvCA==
-X-Received: by 2002:a17:903:4b4f:b0:2d5:c090:3810 with SMTP id
- d9443c01a7336-2d70baa1fdemr376215ad.2.1787688428259; Tue, 25 Aug 2026
- 13:07:08 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="URS/D749";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of "SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787691076;
+	b=yw2Rxo7wAshimOHRRtp49mayNgpf3bIEdUB5Lzh5A6HMP+GqyAZTrZX4fKLk+X24nLwrxW
+	1LRRO9W4lwblq64qFwzRIJmlByl36JIUJM1IdkBM+TyM4aLW14BdqNRvhi9MBp1IxV9E0t
+	QFEjJkpeUL3fIyd32shPoAANBB2srpM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 629E560053;
+	Tue, 25 Aug 2026 20:51:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F661F000E9;
+	Tue, 25 Aug 2026 20:51:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787691075;
+	bh=i6BE0nH5fKyGi4DIZ+qOoMqZyC6oX0Uqj521Z9Rq1wI=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=URS/D749ZpGm5+vV0slOT5ZirKgXoYaeoaJBkyKND2mNiINk9MzqmrtQrnzu0q0qJ
+	 jz5mny2czckBcRW/92+lp3pXWYi2zVAkC3M3sJW+I5mE5/SoKvAzLuqO46loVuqhIk
+	 fEU72r5t+R9iFblU7J4y9KTT2YPIRa/Cpq/A2ePCRGaqw59SDj6tpnjQUTVcBp2AVX
+	 4m47/8WW3ibuZem4FHWW8PmvLPznqy1NA0/rgYlkutlJzPdSEXw/LsYeUrsAjUAjrE
+	 vGkWAoplG2/n3eeEI1ylgeR/poOvq5A99VIQQpusmzUIJYBPjqd+ri6HpMGcl/qiux
+	 BHcwxygcx+7KA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id C275BCE1DA2; Tue, 25 Aug 2026 13:51:14 -0700 (PDT)
+Date: Tue, 25 Aug 2026 13:51:14 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
+ <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
+ <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
+ <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
+ <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
+ <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
+ <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
+ <ao3z7Rtw2FROkVpy@google.com>
 MIME-Version: 1.0
-References: <aoyWln-Gt-yvZQkE@casper.infradead.org> <CAG48ez0vXVUu9j4rYUeCqgwyHKAiN_6fL--D90WvX9q7B41V-A@mail.gmail.com>
- <ao3y8TtEGjniZ_4f@casper.infradead.org>
-In-Reply-To: <ao3y8TtEGjniZ_4f@casper.infradead.org>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 25 Aug 2026 22:06:30 +0200
-X-Gm-Features: AcwNN1U7imKfFFWcqWcxt2X9g3kXc7_YW65q6sOXIrpi9lP4BGYdXKwulbCkr7w
-Message-ID: <CAG48ez1yGUcS6AgtPXnmPQDmVCnJyptu64YGsTw=9vxAN9BO6Q@mail.gmail.com>
-Subject: Re: Removing ->dirty_folio
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, Christoph Hellwig <hch@lst.de>, David Howells <dhowells@redhat.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
-	Qu Wenruo <wqu@suse.com>, "Darrick J. Wong" <djwong@kernel.org>, linux-btrfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: bce3ty9nausab7ama7663en545nkf17n
-X-Rspamd-Queue-Id: E62BBC0009
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ao3z7Rtw2FROkVpy@google.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787688429-828152
-X-HE-Meta: U2FsdGVkX19qwcepC8O8nWJKF1E7X/BqH0hDCBlr6ybXSxpNHIYJoacMxKzKOVyeEAvBUi2Q03zHGXBFRmimxe+BmSRL3WEEvm+Yizc3yo/2TH+3AwFJ6v5UyniPkahS+ajP1j7n8rEqKItUe7AJjJczB5iRUNI62zvM/Ygh0Jod1LVHMTqPwpXEiYpSIRSEHqlGf0oY3Veq7NlzZJdpFeDi4dXtkpLxrzKTMThmqf0p8Hg1K5k82flkkebUCICWppTKZoOCdlVGfz1Kb4QcSgII6s+VGAUBEfGDQDCUaTUEZcPOF5brX8ICIp4ZTIMgDO78z0maq+Ar6acqJjQRFs3sT3N4x+WdtyJBn1FPN8YBolOgEUpBUxKwZWWkbzxf/kD/A9+67n3lRnJ8QM6moLMx3IlKcQM5LvYCNSvshndz10+bPdvBr4Lkylhj5NvpZ7J1K6fdXVh8lP8a7d3CWOaR9nUyDHs4MPKJMYPJBBPv0z9UBBtF45I0IPg2dEk5wspjtlbyMabyxZ8FM6Z8QJMFJLq/2GnCvfB2xhVRZIZM4Rp2kEqwYg/lWe5uNYb6VOPUbqse4m5fUUcpqcD3JFi0Fg0/9EKkqy/O+bK5aH1k/r2wbDjfngKCUrrx/Q+vqsdujgXYXLlt4yVW171kn8FXEZBbeqVzKBxPxMBYaeX6pQFlMb8qahT+3w2AaDNo9y9BhMpwEc9W9LTc3kvhvBg4STUUTz2TdP6Gs2dYZ/tZIjgmor8OJSPQ2MFWPoyf0RRuTDSo69YlSr9Rickb1xPBeLGYHMrrKtsUNUxjrIv8xPv+88RikXmrozrCMUKbuw+liB9+JYIvFfcecMnu0F/9flh8HuQTi09dqOutgC4WUE01gNNvJMQk2T3VCuHUGr/PQddNOghdF5TQDnri7TxT1xgM0KFvU+/G5IUC445l7r4LNkrFA3ZH8dUH+Wq79Ni3IJgfl8Bwt0KL3j7
- NqWf/EWS
- rcxTOrUHVcoqLE0RBiPMSmVRAosnDm3+Yi5MO1Kix9RDyK0HhAbgS5qOhr3PD22FIZrq+rhvjt32/UuCY/2Fwf4UbLQ039bEv3iVURvRCeVT9LNWIE+X2sde/P8K0tCqTQLkgkfqEYJmGItcIZ2kXDcPoZwn8CJbWeusEGuthLoXEROWfBk4o9u6Hp0Hd9p9bfkAvbevHz+ZCoIOnZAx/gt0vkjC6L6pVBT/fgUQyTPeskHHRrFRwyf9FcB3x3T5sGa2+BnWnL3e3XRG0zspNdFd8T8FoLBIOV25FJbkhIedY+9ItesfPrOokfN69sg6CPQ+CNDsTtcRcIrsfMPkwrgeEnftNr4SWA8sMe1shJi6rmJyJSpMAAv9+XA==
+X-Stat-Signature: 5cmr4e99c8piscqy5k5ukn1n9ogqr9ok
+X-Rspamd-Queue-Id: 3B5D2C000E
+X-HE-Tag: 1787691076-437727
+X-HE-Meta: U2FsdGVkX1/jsoh8XkEwP5KQbBXwrzgk+Us+bq6ETFj/sYApVUOGifiSY/lLD434p6gm3uefhZ7uhOy7EjiJ3SHgbm3jcWaWoxlxGlvyC1k6s+50i0rjARAZfX808+ZL8jrTcT2itmgL7ZmIkmJolhmVozLpcWJ0V+TsONluCxQbJcRHfX5UjbOlnanzmZPOReWj7qFRMNsSKeX5g5tCGLZ2omgzsu6mJ9pRAe3bRHZSaNU4e0nM6XThuyQj4gMXItJ8/n6qtg2+kjwbGawMCA7wiJHr1Fqb95c9ocLYQFXeOAPoHs5j9qhgQ1zvZAxNTMjokKJ4o0ANT51Chroid47k6bxo69ClnEtxDOtvttxJm4piOg4YxMBpE00Ni6MuPoKLFMWs6rX+N4LbSZ7IOHaFyGG8gRdWLTp0p0Zp3noCfrO7LFLxoi4/ycy950SJwzC1NGnYnGeL8hkXcFyKIUuSKA8BvfbHaZKqPyHuCqGeM9/OywdDzdPoYg4rarXz/PcSjQZgOAkl8pBItBMRyb4wVdYH8MGz2RGakAYcaOW/Y465xrIZpexw25CFfmpqlm8tEfQ2e7U+BfkWqbAu7vW5dDGlUSGYA4omM/tWH8ZHzrzYpKxvEioHGPrm2tz/aIenobxIaCV/+M9xm/oO9tLju/mHh4B2p6wka9vkrrP8woe7/Y/8ek3Zz2i54vmBbI+T+z2+7JN3ctlQAqrvTJEi3hXHZY1mZ//9z1Oup7OPvbDE6MjiWCvomrpbWjDrgKRtOh9Z4Gg3YWCZ0X7g71lZvCaIuGrarX796JzPBjbxv+uj5omz4ILfrHT57XoTXDABFKjJUWgnM9Roqh8Vv5qheg43LmCPVnk5n4oxrtyZ1DXqP4eoBolWscPn7otlXx0Fn8FGIQKDck4xx4poNb/9GjBJByTz+O3pID65CBHZl8aaLQE3ViWI1mcxgxLdLxy7w/oqKtKzatjJl+h
+ uGkMtOnW
+ 4hLzyS34DmOXUd6+U9siQih0tWb3nOfsn/z7kqAbt81OhRcTlThwbJxoyLZawwBPU2J5QGR5gCymfFiKOvj5AaO8SCeUZkdvSRcCeSRwNRlyiURHuNrFy5AwJ1/bhPIMGBFw23vCy5MN+6F3QcANzmjQREYJROPCrx/0503hXWidsXzkpLs76q9htmuhXU0KtlbnN+A7s8lF4xunULXVbaM7pFgQ0ojkx1UrWeiKY7aTJ6A1KbEwcJQArRM5MIZ6Uf/Yl+XgqWbgh3MnALiRVLut7u8G8f6bPfc9v5UvyU/LqYmdlkogFW6uOtH2D1SuV9cKtDTQ/wYauyIT9fVRGWWjfJa+UwjwXCBaRB+5UzHO3+SIihI5sfgUw0kmQtdxHmJ+NOK3+RQjtlgyj+1t6nzAaT22fd+6w6CKEFVezMRrlOHRBVb71augf4lBmnV6xAtr+Olaf1pyjvfUuDRxoRMe3LEdKwWcFjMqYT2IcD5JVb8iCBH7/7/7YCQZeEHkaqpcGvcE2tqpB0bAvteR7PkaIw2Mhk9o838cnGaxfL7iL710NzfA15MifPXiu3sGRMRrBYUfdUI7OfrSvqZgfHekWqSQzly0typxRV4jlOnJejVskbZkc4zpqhF8LM7Igq3hG3Hpi72mo/0joGJTsswJuRfsaDJlA1sdyBTvuLb+z5m5Y0gVAJks7wamia3Amjr1CglhHUx8ItnXOuUM13xnQd1Lzwdgf9khVpQKTefqQMD0Cp6GZB8dBwj0r6jt2AyJFmrhrXT9zPm8Z4GBLhXCcdAofewmbqGf+zy7AOpUzZq55aCFsqFz3PizATSm3frAb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,20 +119,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 9:54=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
-> wrote:
-> On Tue, Aug 25, 2026 at 09:35:57PM +0200, Jann Horn wrote:
-> > Could we strictly ban using get_user_pages*() for write access, and
-> > use the unpin_*() helpers to somehow enforce that folios are always
-> > dirtied on unpin? I guess the problem with that is that we have no
-> > state that tracks whether the pin was read-only, and finding free bits
-> > in struct page to keep track of this is hard?
->
-> We'd need a count, not just a bit or two.  A pincount for all folios
-> is on its way (eventually) but I wans't planning on tracking writable vs
-> read-only pins.
+On Tue, Aug 25, 2026 at 12:58:37PM -0700, Sean Christopherson wrote:
+> On Tue, Aug 25, 2026, Paul E. McKenney wrote:
+> > On Tue, Aug 25, 2026 at 06:48:08PM +0100, David Woodhouse wrote:
+> > > On Tue, 2026-08-25 at 10:19 -0700, Paul E. McKenney wrote:
+> > > > On Tue, Aug 25, 2026 at 06:05:54PM +0100, David Woodhouse wrote:
+> > > > > On Tue, 2026-08-25 at 09:47 -0700, Paul E. McKenney wrote:
+> > > > > > 
+> > > > > > On the tail latencies...
+> > > > > > 
+> > > > > > The easiest way to reduce them is to require that preemption be disabled
+> > > > > > across srcu_read_lock_atomic()/srcu_read_unlock_atomic() regions and
+> > > > > > across all calls to synchronize_srcu_atomic().  Without that, the problem
+> > > > > > is that the scheduler does not know that the spinning is pointless,
+> > > > > > and we cannot use the blocking primitives that we could otherwise use
+> > > > > > to tell it what is going on.
+> > > > > > 
+> > > > > > So, is it feasible to simply require preemption be disabled as called
+> > > > > > out above?
+> > > > > 
+> > > > > I'd experimented with disabling it around the GP driver loop in
+> > > > > synchronize_srcu_atomic() as seen in
+> > > > > https://git.infradead.org/?p=users/dwmw2/linux.git;a=commitdiff;h=07165e79340e
+> > > > > and that didn't seem to change anything (which seems reasonable, as
+> > > > > it's the *waiters* that were descheduled, not the threads driving the
+> > > > > actual GP). So your suggestion that we do it around the whole function
+> > > > > certainly makes sense too. I'll test it.
+> > > > > 
+> > > > > I do wonder if we're really doing the right thing here by selfishly
+> > > > > blocking preemption because we want a specific tail latency to remain
+> > > > > low in a contended system. Maybe we should allow preemption and trust
+> > > > > that the right thing will happen?
+> 
+> In my experience, preempting MMU operations, especially mmu_notifier invalidations,
+> is rarely a good idea.  E.g. see commit d02c357e5bfa ("KVM: x86/mmu: Retry fault
+> before acquiring mmu_lock if mapping is changing"), which worked around an issue
+> where KVM would drop mmu_lock and yield in an mmu_notifier callback on preemptible
+> kernels.  We "fixed" the issue by avoiding mmu_lock contention, because it was the
+> easiest fix and benefited all setups, but the underlying problem that made us take
+> action was very specifically yielding mmu_lock on preemptible kernels.
+> 
+> This isn't exactly the same, but it sounds quite similar: being greedy and hogging
+> the CPU to complete an operation can actually be beneficial for overall throughput,
+> not just for the immediate operation's latency, by avoiding trash and overhead that
+> is incurred as a result of yielding or being preempted.
 
-My thinking was that once a folio has been pinned writably one time,
-it should be fine to mark it as dirty every time it is unpinned, even
-if some of those pins were read-only?
+Very good, preemption disabling it is!  It is quite possible that the
+PREEMPT_RT guys will need something else, but one thing at a time.
+
+> > > > > Maybe the p100 isn't the right benchmark to be chasing... I'm looking
+> > > > > at it because Sean expressed concerns about it, but it's not the only
+> > > > > consideration.
+> > > > 
+> > > > My concern is algorithmic, not benchmark optimization.
+> > > > 
+> > > > Suppose that there is only one CPU, or, alternatively, that one of the
+> > > > atomic SRCU readers is pinned to the same CPU occupied by the (higher
+> > > > priority) task running synchronize_srcu_atomic().  In this case, the
+> > > > call to synchronize_srcu_atomic() uselessly burns CPU time until its
+> > > > priority decays, real-time throttling kicks in, or in some configurations,
+> > > > maybe never.
+> > > 
+> > > I certainly have no problem with a blanket preempt_disable() around
+> > > both sides for algorithmic reasons. As long as we aren't *just* doing
+> > > it for the selfish reasons I described. 
+> > 
+> > Suppose I simply disable preemption in srcu_read_lock_atomic(),
+> > enable it in srcu_read_unlock_atomic(), and disable it internally to
+> > synchronize_srcu_atomic()?  It might be against all RCU tradition,
+> > but might also be easier to use.  ;-)
+> > 
+> > > > Requiring preemption be disabled across both the atomic SRCU readers
+> > > > and the synchronize_srcu_atomic() avoids this, at least when running on
+> > > > bare metal.  My (perhaps naive) hope is that guest OSes get some use
+> > > > out of those cpu_relax() calls.
+> > > 
+> > > Yeah, an overcommited guest vCPU should be able to get preempted there
+> > > by the hypervisor, allowing other vCPUs to run.
+> > 
+> > Whew!!!  ;-)
+> 
+> Ya, and on KVM x86 at least, cpu_relax() => PAUSE will conditionally trigger a
+> VM-Exit after enough spins that causes KVM-the-host to try to yield the vCPU to
+> another vCPU in the same VM.  The intended use case is to detect when a vCPU is
+> spinning waiting for a lock, to try and give cycles to the vCPU that is holding
+> said lock.  IIUC, the same principle should apply here.
+
+Again, whew!!!  ;-)
+
+							Thanx, Paul
 
