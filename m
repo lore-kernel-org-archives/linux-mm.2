@@ -4,145 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16B2DC61DB6
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 07:50:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8194EC61DBC
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 07:52:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 048346B008A; Tue, 25 Aug 2026 03:50:42 -0400 (EDT)
+	id 5C9D06B0092; Tue, 25 Aug 2026 03:52:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3B4B6B008C; Tue, 25 Aug 2026 03:50:41 -0400 (EDT)
+	id 57B366B0095; Tue, 25 Aug 2026 03:52:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E29BE6B0092; Tue, 25 Aug 2026 03:50:41 -0400 (EDT)
+	id 4696F6B0096; Tue, 25 Aug 2026 03:52:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF6DF6B008A
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 03:50:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 43A751A0343
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:50:41 +0000 (UTC)
-X-FDA: 85139019882.06.2BA28FE
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DAF1F20007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:50:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=c58WFFYK;
-	spf=pass (imf03.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 258E16B0092
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 03:52:42 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 957A51601B7
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:52:41 +0000 (UTC)
+X-FDA: 85139024922.12.C6996BE
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7BF1E40003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:52:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=memm6yJk;
+	spf=none (imf12.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787644238;
+	s=arc-20220608; t=1787644359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8M1RtMP5dGDh7WaM7pLyX+UNoVUR6vtG5dGbHWHRrz0=;
-	b=7AiisUytD+dCDdqTPXtiIZiDKvZK6CzaK4zyhTuJffTOzXJueFIzxhzrP7k0PUk8jO9SAw
-	/+SDbA5G7mMKOdqU6p6mybAKBNbr0eNhCPHPtaoHtNMgZhRz+jpAF8RvXh/k+NMTkU77zt
-	0syV7cJmY7yvpwHpX2+msFIQ9fiDkCk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=c58WFFYK;
-	spf=pass (imf03.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	bh=CVaLUtmQZ+lo3k9HI0lk+lS5cr/55GIIaizc2rZZWKY=;
+	b=uIzJK0YHqd3/sGKxcv54uFgwP2gN7oPAS6LljDMXw/3jx4f4QE+5DzCG8FhNVDpnY03iFY
+	hqRuXqsg//HW1iWxISksAwHgBAnXn0Lka3grMh4tnv8QGVJIK4V1fWta9Czt7Yu+N1Bz5T
+	Ma9CBc2PCBnahpuUUUgKQe8tEFgwMJQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787644239;
-	b=Itp9x3Gg0vFBv4qjSaOSkPtp4gLSxja67vNS2a8Zg/7RA+mLE4sEiTbmJ2k+VSP/Vq8BVy
-	3PKsES9OD34+R/LL806ETTziINBz2hdQnHx+9CG3t5vmoAwRwF/jmdB4HoiNnE1oZDlGVE
-	/ioeSyg8SJYuwqbyEqQMUO6tfS6bVWY=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67P2WC062619881;
-	Tue, 25 Aug 2026 07:50:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=8M1RtMP5dGDh7WaM7pLyX+UNoVUR6v
-	tG5dGbHWHRrz0=; b=c58WFFYK9KM178PdMhMSiBOgXiSkNVmR4zI6/FiW0pfetO
-	Qn0EICfLuEB2+blm1HU9Q0rPbm51ucxRcJf7jxA2wwkM8IQWZunOAb/yAfmEZUcv
-	h1GyFbYOsw7uICwEjp1LAoODpoOFUZJ6DszkQWyy9Vn5QVS6KzuQeYh8DpQwIa8i
-	zSeBTC7kM+xGWFv+8TMN0DTzwTrrwgP447/GRHccUcb95nn7vQ0Upy2OuN9OkBV0
-	7+FKUcsEFeAdLa1t58R6W+FJYmzMCskn5Im1UDqDPeMYKVxBVD181eYdjsVbuFDY
-	62eUePdxhnrlMGeQvkPXIlOTzjSEpy/4UVkUZHlA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g726eepc2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Aug 2026 07:50:37 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67P7fJbJ015238;
-	Tue, 25 Aug 2026 07:50:36 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7qkh2urp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Aug 2026 07:50:36 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67P7oWCw53215572
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Aug 2026 07:50:32 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6709120040;
-	Tue, 25 Aug 2026 07:50:32 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DE67620043;
-	Tue, 25 Aug 2026 07:50:31 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.94.220])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 25 Aug 2026 07:50:31 +0000 (GMT)
-Date: Tue, 25 Aug 2026 09:50:30 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com
-Subject: Re: [PATCH v7 3/4] mm/kasan: Introduce helpers for lazy MMU mode
- sanitizer
-Message-ID: <c4ea355b-9807-4a9d-8f90-246b4e650684-agordeev@linux.ibm.com>
-References: <cover.1786956464.git.agordeev@linux.ibm.com>
- <52c9be0cf71a8896a5d76c148c38fb24a2005dd9.1786956464.git.agordeev@linux.ibm.com>
- <CA+fCnZfMkPDVyy0t9W-3d55M2ba9wXoRyzj2EWWYLEW=QO3zWg@mail.gmail.com>
- <20260818120130.1411942A70-agordeev@linux.ibm.com>
- <20260824095635.11040Be5-hca@linux.ibm.com>
+	t=1787644359;
+	b=eKd/4E0eKmd/aPawl93esyaDyz8AXcPaFyb2CKMG20nA7uU5avDa1zN03rU/+2hN5POP63
+	H2CyyPmC4NQSmenLasIy5BjeqATnz+Kd+M6EBb+WzZQH86bpLfQus1b6T0j/P+Otjv7gPp
+	rJbsvs2ndGRQL47UPpZgjiP/Fu2vVPE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=memm6yJk;
+	spf=none (imf12.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=CVaLUtmQZ+lo3k9HI0lk+lS5cr/55GIIaizc2rZZWKY=; b=memm6yJkJ4ijgsuHxHuws1dYrr
+	+Beq6HH2viHZjubrWi+Tff+e1aq9+Z+4rmfokFIYkKv6i88fkaOPhsWgBpNKHrPXJApgkqJSyYrp1
+	yu00hhqvIitnnPtHUQGeHgEDgu6Sk2IBdrBzfKKCjzQUDdxWOlpuN9ECd73zQaJ8rOi0rNjY2UEQF
+	MhyVgzjD7/jwgDmGUCwlgP7lPpla5buCo6dQQIFgkISXUcKo4XjMIlduqC+yMiB+3g7hiQqvbEmC6
+	Kgtv0m/GIHGB2xsHVWz+3jGKO4XH/4rNRfvHSK4755aL36Aeiu5INcKBOAWSYiyPWdjdllBLzFtOw
+	yEF1Bhcw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wylxQ-00000000K5L-36MN;
+	Tue, 25 Aug 2026 07:52:32 +0000
+Date: Tue, 25 Aug 2026 00:52:32 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v3 0/8] batch lookups in follow_page_mask()
+Message-ID: <ao1JwEAeNcP9OyKR@infradead.org>
+References: <20260811025157.1632867-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260824095635.11040Be5-hca@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=TfimcxQh c=1 sm=1 tr=0 ts=6a8d494d cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=UUUDspzaHmeMqvLuHH4A:9
- a=CjuIK1q_8ugA:10 a=zZCYzV9kfG8A:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI1MDA2MyBTYWx0ZWRfX1UHCLV5+e1ku
- Bgn8RhOV7C6kM93dO+8ZojEFJxd3UxNobEmy2rwhytC1uQf9w9+9o88eWRIR3m+FXdMYpAxtc/g
- 3jIYLqLjXuVFEOeYLLkZkIF9hKjrvls=
-X-Proofpoint-GUID: cHEBOSUK2gjUGPKucThiW1yn6xPnJ6ye
-X-Proofpoint-ORIG-GUID: QUiBDcHGUMJNuhKLd6qzRIM5vSKsBumz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI1MDA2MyBTYWx0ZWRfX5XNKnD3AcB/l
- 60zzrpu3M/nJBAHn1S4j77pylmm2Xv3rLRsy8PoSsYbPmmJzM1P1hoRVSaPppyLrV6I3VRxtnvC
- Qyvez7nqN9ADdnyFMj//rnSfACuWt14MrGZ841V5Ao0xKjXk7wwEU4XOp+OfefjP2JHXFLJjwsw
- j8oz3tZ8APPuNMCeNElUo8uy0jUf9Fj0hlDq0Y6VZ9aeFuzGpDyqvuNDkPtBss1V0vx+b0sgItO
- CbrFZts6mH24N6J+a9Rix2nmdPnhPPLF/tF7t+165IpYGijcCQDHB674W9WnKyWASMV+DLFpKCy
- i7+mPGaV9neTj4e7cexQjKXoHQZg7blcC+XqkCU5DfyWUqLkrMin/pPimkZa7tJ8d6GadSXSjVs
- IhvJlzVRSWtqZ+z45I+OmfUL44AOZf/zVA+OO5R60eJ9aXoZn/QpbPVeC6Yo97F/P24fskG1lDD
- NsehB+v/fYx1i/CGJlw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-25_01,2026-08-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 phishscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608250063
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DAF1F20007
-X-Stat-Signature: kiw9px33yaob8ua5eouj9oy6cbnjyrc3
+In-Reply-To: <20260811025157.1632867-1-riel@surriel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-HE-Tag: 1787644238-476889
-X-HE-Meta: U2FsdGVkX1+uqUrndPlNTBWitwE0F5c1sTJAfFjYHy+NdSqJEcSNdC0aCcK3xJYGzgqnCjDZVpLgOt7Pa69cQDRW6V9FZNPpO7NmODJZWqzmyUoIbT4ONsfbuPBHeRsTtC749qm225q9blL1b33mkDrLkVvEFvORR7SDeWnpMwXMaQMnDujna4FXu2iJUxAZvtTVmpV8HN7X6IXC/PLAy6CY0d/INMiu6T5xxKBkXZC3EAVinwFb6pCsV69aBh/aSFqGzp/J1qQ6hv9nRLjIA39pH2drby5TnGKOAsT1s671+v5RjUEF8A0LaKm/FByYpqREh6mLFS2n2h9JqCFEhvrXiM//g2K36xhafHFgCZroK/+Kcz2qDC1aZ6PXrc0JkPntTxTvcZ8XIpxJzO5Wo6kYosgU/htaTSyn0NxZUstssD0kHeq+GkM9CZwmTKGZUeS53IyVBxVy0yP0dyvvzop+oPdnhJf8V1mcJheVdFN1usNUJ1f+NA5dbeBr/O/61j0FP7zrXiPZLXMZVHYaAwLkZlWOBE2vHTZTz2y6UWKhWsZT/74uMbaYPkwc9OAf0c3sGWrdl8mcYQLu1TQxMraxhAz72sPMSAARfWosfGs+xsQkdilP1THOPEpwVuvm4WoE2ET3TNFsupcQnJaksqxp39zBrLTM8oIRW6NY5//Lbk7LU7f6X1VMWWD6zFRC6POWNfD3lLlzyA432qn2BS8WHMvFirPi8kvnDy17P9clrBdBHlCSEiI/rN713Ug2T5R2sqKECSnpefvxEw8DsU2occ7sTFfGJhwcfbfQNSQgJUuK6ef4KXTHQS9NaAlE+WmzLWVyk7BWid32LALgU3tx0FY/OxMhrm7mwyIrVTZbfcmPoYUmwaAy2WnRp104yW1DW4SBQFhzlrbROKknpvcfI2krgta0t8tkqZQbCu+6mAtkU0zlYyTpAbMxAyMCqI++zx4P7kd/k754ByS
- q+EXu/L5
- raU9fMxBmn9+aXZl6EIjXONos7GbhGoBsJ4Pc9iDQ/8VHDBhiH05bjhOwbL2hWxEQ57ZMSx0khMPd1kHalqv6JIvGnIqbUdT9ISIaGaJbZ7m78C98Y/oQxOJSxImSfJ1zqM4k3reffK80Akwe0HdIVHhydiDG5WAo3rM1dfECk38XDJ9TWW6AhuJqHwuq3g7qTzCO70N6w8JwAc241LJp2qjcS89KBB75gpkTElVbGwgdOrJKQOlHN9SyTwMNMmkHWdNEUTUQfWyaDHB66/VQVhCaChTcHR+eRdjTZZO1U5yH1VeAN1EXoa0LNVkK3r9BniXM
+X-Stat-Signature: b6q3h7gia77uzefsjaf937r3p8dxb6of
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7BF1E40003
+X-HE-Tag: 1787644358-371864
+X-HE-Meta: U2FsdGVkX1+I90vOQ6UANCI6idoyaDsd/nAPCL1KBhZkcmE1+dAXBYjWeMSTuCyhvoJxH5q/euLuh2UQ6xVG1j7hxr5SHQ2NkTolFWfPv4DoKldxFJSbWYCHsKiw331VsDt1qp6Kx3JyuYmPznd7jerroHorC2Q+o8qReiJwIsiRI+ar2fOpQPheqB1ymzF4YdwziUsPbQXPnKB79HZd97etz/ezmxYQgJdqw2QL8nHaA4Sx/Vug/a4zgGJh7AlmPtOzYEhcD9JcBylzMj346Ean9hc59rYG9Lb3mO8Ce43nDCctsUeAmyb3glVDS2Ivzp7GUYzaggR69k+DymaYAz4lYiEVdCzAFbjcs0+nnpOyzIyuPLdXtj44C3FLa8oL61VXKz7qCABc9SUIhiZpzqHCsF1Pq5D6OBcSHRH/7sKo24Jhug/gxQwRx2brE27/b2EAP1qPn613SUDnq5ZkABaXKp8xFjTvYChC78OjhGPeDEurG3Dy7IoTb03MS+o9vEwJOsqF4sOe/PvRQoqfC4ePdPxlJwMaqrGLfBYA/HUHbuYQVxuAQd42TMplNWcbApoxtXWHBjcJMYGE6T8Ht5g3VD+51zz2qnaBWR5ZcNdecbZopSVbM8U6Lc8l1fRksyyYQDWvcjyf0/eiLL5h5zgdXcHUhc0v3hlcz8ZBhkQWNqrG9V0RxfNe5Zm9ADrO5WKySQ2pLAAutF3ZmJG5SJKj4oGqDzOBq3blHaa2ROIqyWrtuto64u7eVHKu0Jr+FtWV1RtNFyaNW50hOkHjaWy+r1tL0+FS3gi/HYk4OOZK5tcotAsdJWdWMTBj+9ZCs0NlO09jnD+YFrVKPV8f6Rbgq7Hj8Sg8haszZQe+ndeT5nM9G2F07jGSZxzxeKUaj7SjXOn/64ju9k6KkdzMh18KTRzWt28EBMy1dOgfECz9LGCetRrry0M88neg+YHkcFwbtnzvqPv0YqLxHht
+ 4axyKM9n
+ TOSxGjxZRrodkluq1Btq82tgWDeKANkU24Uxq8+6kBfSfgGrw5taYI8zShNO/oAWq30dLmnlhmlwIiqdmlqoETdxRP72NoSV5MR00fIjJe6bBBxsKhAItMVF9Hnmv9EPaGXFpf6g8cCj9LLbIgTtIHkTYfsmvooyjp8Iu+gQA+T1RqiPcE+cR+P2i4lVodbF1rDsSLOogiXdv2KZsDTnb+NnxdhdJg9cv8LbxnsFB4h1vAX/ccC7yO2U+vpUmhcW0ZO7rk2hXT0OOJiszouWNRZs9FiaTxv6e/1oOD7jF+35F2VShfhhA3B3ypidQq/UhbiAOtJ9+FXcGIp/ltDHg4h4sQYtPlzJ4KzU4BxpoW1K1K03rKxpMTfPCkMrEXFaiu9JClIIZYXSDqdu9Z97hJu/s0hxKijD1REsrNRWdweXaQS/vJwouDn28emATPberDAkd2j971idCVouKPTOaZkAz0x/PJpkcM5xkfl17JcKRqBSYXzpiOE+oaJtEZ4qHcdDJniO0LYE4vNOz/H7rpKehdryjMRPQtpKOCTtnfmHMfDLhmEy5s8nJ9IZ+x7ZJpWrEvwAoGz6LJ1g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,19 +92,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 11:56:35AM +0200, Heiko Carstens wrote:
-> On Tue, Aug 18, 2026 at 02:01:30PM +0200, Alexander Gordeev wrote:
-> > On Tue, Aug 18, 2026 at 12:11:34AM +0200, Andrey Konovalov wrote:
-> > ...
-> > > Hi Alexander,
-> > > 
-> > > Should all this be limited to only s390?
-> > 
-> > The idea is to allow any architecture to opt-in. Once [1] is accepted
-> > this may look redundant, but I still see the benefit in having it.
+On Mon, Aug 10, 2026 at 10:51:49PM -0400, Rik van Riel wrote:
+> follow_page_mask() walks the page tables one page at a time, even when the
+> caller asked for a whole run of contiguous pages. Every page of a large folio
+> re-enters the pmd/pud/pte walk and re-takes the page table lock.
 > 
-> What would be the benefit if [1] is accepted?
+> This series changes follow_page_mask() to return a page count and a fill an
+> array of pages, instead of a single struct page, so a walker can hand back
+> more than one page per call.
 
-Just another mechanism for verification, and pretty cheap one.
-I would dare to say [1] does not rule out an invalid access completely.
+And what many including the most performance critical callers want
+instead is really a single bio_vec.  Maybe we can go the extra step for
+that, as it would reduce the number of calls into gup significantly.
+
 
