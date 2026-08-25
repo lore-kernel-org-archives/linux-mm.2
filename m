@@ -4,140 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E410C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:56:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29377C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 14:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A7426B00D2; Tue, 25 Aug 2026 09:56:16 -0400 (EDT)
+	id 2F2896B0088; Tue, 25 Aug 2026 10:01:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 558486B00E1; Tue, 25 Aug 2026 09:56:16 -0400 (EDT)
+	id 2A2846B008C; Tue, 25 Aug 2026 10:01:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447516B00E2; Tue, 25 Aug 2026 09:56:16 -0400 (EDT)
+	id 144106B0092; Tue, 25 Aug 2026 10:01:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AD9D6B00D2
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:56:16 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8DF3E1A01BB
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:56:15 +0000 (UTC)
-X-FDA: 85139941110.04.6FDFCE6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B4B1FC0004
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:56:13 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ooeyY7C7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787666173;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E4B436B0088
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:01:23 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 85D031C1A99
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:01:23 +0000 (UTC)
+X-FDA: 85139954046.25.C65EFEF
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6D59C100015
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:01:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="EZc4Z2Y/";
+	spf=pass (imf14.hostedemail.com: domain of jannh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787666481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FMK9RB8BHr7FFWJqHW9duwXzfQjY/GK6Lj1xCAYHp5Q=;
-	b=zRXMQKvgGBj86ewPE4xujorQgemsBPi4ScMcHndMbKxmYwUUE+5/xThjeXKEntip4rc4AD
-	Kcdad1/dpS7LR9Z0oGRN6xNsd5P9KSeSAONkBjjctY1O1AtfhpCWJmVMxb/j90TMMoYyRR
-	QvfR6Lzau2M4/cmDHZrekPfEEm5QSYY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ooeyY7C7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787666173;
-	b=LNJwVkzrS56E2NQf9XBhvKyPoU7dOu8dSvceZBQn5gpWruPAhfr9caLraACUUbx76YC+av
-	xPgLh/8CC0ujPS7j+S/NdSeNjpcaz/ltLFgtt5ALhEf1JhF/sY/Q0/285qvjQ1RKIsWw9e
-	/BWSJ64p/kXcNVoLWJNnAlpKf8G7I4s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64E2F601E9;
-	Tue, 25 Aug 2026 13:56:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0A71F00A3A;
-	Tue, 25 Aug 2026 13:56:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787666172;
-	bh=FMK9RB8BHr7FFWJqHW9duwXzfQjY/GK6Lj1xCAYHp5Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ooeyY7C7Wy+YNpKjA2xzRnySKqHQGeyZlbDkB4S4jvZJBVaFN2aPfF6a73GXK8j4A
-	 hbBC7iaiSbQoXcTQFTcIflyIY5Au6eOqVeMsUuCPe1DE0dSY6EsIMi3f7pQwFDKegI
-	 +Icsgu39D8nqhFklbzqRoibaHY7ynIvNy75ys5oijRslY6Y9cdUHuEtBzeh9n8dLCj
-	 S2fyYw/sULPat7bu4OQ8fuWvdFBlg3lcArY2ceJVkn9J+goEWcdobH4zjS7HO63K8C
-	 WS73BTT8F64SEfZ0Kh8lfhNiUkjGGDi1fWTLbbaJg9T37w1Gd+KGRtc4snyWAWnwhC
-	 CJc80O6LyAeKw==
-Message-ID: <8969b1c2-360b-4fd0-ab70-eb4a68365f50@kernel.org>
-Date: Tue, 25 Aug 2026 15:56:05 +0200
+	bh=XkjZxCxJdfT2LMn1D0Amm2coBqwtgPaPywf77Df6Gqc=;
+	b=xC9weM4Y7Q0S/ODuaD/a2dghfd3hAej3cpY9/YyIdUCfloN6UIKVoORRNTflHjcDn/XPf2
+	9z1JbclG9MrEn1WzHokmIKgFYmkRa4fhnJdfOSJbgPuCZTzT5r5uOOIDgadHkz8a3g+GkX
+	WsfFIJF62YDY6hBXtmlSJzPB7N5ey+o=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787666481;
+	b=PPDVYAvrdl7h6qJNqmfZz8K/wbETxy9MBtXJC+hGzTXJDfyj8QetMAcHWidsJvScO4zIWo
+	kRWdCuR3mXlTV9n4a54mZ9eZkQvOKtaqJh9VYg1eFJOUHpwhP6nadmIX0duLltubNgMWZ6
+	SA46/Yz3RUsXgr64BfKv1pLdwkQL99g=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="EZc4Z2Y/";
+	spf=pass (imf14.hostedemail.com: domain of jannh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d3b445a84fso94425ad.1
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:01:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787666480; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CXM6AeAGwqJQ4vJN+gRdwanz6IHFj9/s9r/B1UH1Cpfq38vFgtp/BoHWzKVDO3TgDy
+         iXx1U8jUGrkBhH0EG9fXhoPaYTVMGdYeuO4nNBEVWbmf5EAJnhe4J9QcIhaONHK1suCL
+         OszRfcXhKwI/RtumrpzKP3gj64g9UyngZBLt0gw6jTKg3qt3InaS7nc2WOY3J319ICyK
+         AxMTUj9qmZjVgiDOqKH2f/X7Vw0yEN2b4afqy2IBS5CxOH5E/0++7xqEH8ncdwwKe+jX
+         ZZ79kbrU/9GpAI3VbyaYQohzrKlKZXkpHdVcYScVH5IyybFHuNSsF8HernNMrOQdurd3
+         vKzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XkjZxCxJdfT2LMn1D0Amm2coBqwtgPaPywf77Df6Gqc=;
+        fh=BoIKiuyslMSlQSTLwpLyakTMg10XSNPkYDus07jUsBs=;
+        b=KoVLXunTOesvs1zhCvlDbhoqDANYuLcsRF55wo9MmA8xme5KEMZj55koc5Vt7YE5Fg
+         cC5LZyfoVVm7FkSg00/88HhIANcnzSnP0qjCBYL3ziIi9nbB2DbffT9NZhilFhPAvnSh
+         0cL+6JT2rWJNtb0rS9Vn/LA/lJwzgS0/FylclU7wYR7adMjCo7amL2bIN/Q8e3l0vHN0
+         Jc8tUdXsfTI39+cPcDdPFnl2C5FMWdGKJcotx5Lx3Vkcty/xGSauf//A65RCorzD9U91
+         epiibbEy2tk2n5MbXCubkCdXZZKzkp14x51+UilQmBJbpZ1/HpupNpBOfTEq3L0HxNoj
+         Y5HA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787666480; x=1788271280; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XkjZxCxJdfT2LMn1D0Amm2coBqwtgPaPywf77Df6Gqc=;
+        b=EZc4Z2Y/nKph7xh75HF/bWbs1PdU6IZ51tPndDmjE7XiekcjdKAeRMl9x7S2QWqMCB
+         8MIBtDommF+6sq4mS6ZKeNkc2Kb6L9HL9kp1QLLLLCDodE4pHsDHAZ+vWgVettr/nfs5
+         Tfs3h6QNG4xb/RtSV0cQc/cYmzMbfr1kvYEoKohkERe+0bfvG0eR3Frm8BuKXFqVTpj9
+         Pr2dahm82q2zKVMC4WzPjjj6/NxDv5WYzr+5wQROTwhGyii3w/UdfX50iIettIrJidXH
+         LvmGMOg0dXjH+nXIg1zaIXrEJJrK8AaA9SDkGIAKRbjgjJ9W+pw1VJS58u+DGUJtCr1X
+         Pixg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787666480; x=1788271280;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XkjZxCxJdfT2LMn1D0Amm2coBqwtgPaPywf77Df6Gqc=;
+        b=CF6729tOO1bSX/c7KQg5dM0fOwG2WLXRRMHcLegrpQLAQQiFg8+MCmnq+8PRD7Tjxf
+         isBBXFIMcKQwZPYmJybiBNfsF4Zh18luJgcwrowVBKArWBtDumRCbLOB2AC/PWO8kDFW
+         1EmfmqqcuuteaYq1Kg+xaPYkx32/PSzn81NzfbdqyL5Mwb0FovpOmCtJGtH1+XuoKVzM
+         xOFmte0XnqmxakKdA1Zn09Pj5kdVvLWIXM2FAbolN9VNFH2ppLZzLZ7DtV9HHkq9nQVB
+         u7+BHjziM3+9l+r/60tBqPz6BBhwGRPPSmeFNdW6NjppWtYV2NG/J97/9l6U8Relv7Um
+         rbpA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro57P7FkA05Tx7xXkqC3SoihcfhhdaoXeWqrOVmKWbr092JToXT7yKJAKEtTwXEVqd13Rx+xp62zQ==@kvack.org
+X-Gm-Message-State: AFuF++mz8kQK73hjvjSlWq90fwEfWg9h2uC6vPUTbYKTH11T5vo4F25T
+	fjYNnq2p5u13x/lDcEijIyKL0U2HsHxcJ0a18DIHV259UmRKNUfUeKKAPtr1I16mNxgKdQ59ofo
+	eI6UoLUJn1NewwC67pLXA26JGG3I83I/oOS7yQwqI
+X-Gm-Gg: AR+sD13OAdh32ErrrfVJBAhgnaignPM3lgaLVlk/0pnzO32REoCm+pAG2bmJdWF94lt
+	iypPZu5pGvRJVSnwGoRIXiYl+UPJSbzCGPhcQSNgn7kA2Xmq11t/HnYbh+UK30E69jTStHVnvP1
+	ya5m1AHvYpiznYrwwxi517nVaWGtuT9kjJBjhS4x1oMCLCfWm5juE+FbfgNePTJ95HIc/qbbOfl
+	tC9DO1i/l6XHVCCMIjS197u82x0pwJIeduw7dZenekaFiL48HbD4OKXqETgrF+n0DWnD02VjDsp
+	SAeqr4leE0lXfMHczF1hojOrY32SD+61hia6zou1yV8HFiHeemo2hgCloMmrVV6su0+tgxuiCFk
+	/yCqPQQs2Lj53YFeKlZrlqWnpBLV05g==
+X-Received: by 2002:a17:903:98b:b0:2ce:b436:272a with SMTP id
+ d9443c01a7336-2d6e07f16dfmr936545ad.3.1787666479395; Tue, 25 Aug 2026
+ 07:01:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shrinker: do not hold RCU lock in
- shrinker_debugfs_count_show()
-To: Nick Huang <sef1548@gmail.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Dave Chinner
- <david@fromorbit.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
- Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Zenghui Yu <zenghui.yu@linux.dev>,
- Nhat Pham <nphamcs@gmail.com>
-References: <20260610232048.62930-1-shakeel.butt@linux.dev>
- <aoxKKXjs3o6jUanE@nickhuang>
- <041af2b5-9136-4027-b35a-72e5044c63ab@kernel.org>
- <ao2emWNMkthyVXn6@nickhuang>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <ao2emWNMkthyVXn6@nickhuang>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8ymqb5eb3ijkinf8u7y5b8twtd8twfyp
-X-Rspamd-Queue-Id: B4B1FC0004
-X-Rspamd-Server: rspam03
+References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
+ <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com> <20260825-unweigerlich-biotechnologie-abnormal-accff844337f@brauner>
+In-Reply-To: <20260825-unweigerlich-biotechnologie-abnormal-accff844337f@brauner>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 25 Aug 2026 16:00:40 +0200
+X-Gm-Features: AcwNN1Vfg8wgAQZTxYtddPbSXEdmTL4JLXmxKeMr_IG98S_z91XZ1jHBOrg8fJk
+Message-ID: <CAG48ez14F42BgHm5dKeP4g8D_6CNhnAfF7BXdcBwa4NdtFiaiw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
+To: Christian Brauner <brauner@kernel.org>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jeff Xu <jeffxu@google.com>, =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Ondrej Mosnacek <omosnace@redhat.com>, 
+	selinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1787666173-644173
-X-HE-Meta: U2FsdGVkX1/hgWJRaFThVNtNK93Q7+ymgvWYJb/qzyujKPbE1XoEZzUvf5H0j4aQoWg8GVOyoiWO26Rz8nPgW7IyXRfFp9a749FycGd6yBpXOiZlUYYcTxAwqLotbiQmH8hK4RY+UrlhSSMPYGcB+GcYI9OEIrb9gMULUoV0oUS6c8BiwjYenARLluASCRTKT8asPGo89MzL3AiVHEUtkoWa7CQ5RYT6JCYhnZqTzH3fMeYsyWxSTTgLS4PDyCZszmhDbkekcqzMuT4wbNc7QKrhgnVWaMYKep0Mh++E06GsFmDJAWSG1fJn4/hYhLoxwRqmUT3ljBvpfSb08O4oCkzcmPh4W/6N7FfGZTQSkAL54FhHYJPM1S2EsoS28/ZkXU4MVSRbcEvxLMDALBdLkUw9CxChveVeIt2LPV6zlJ2BpjHMArptrrp6z9SbhA7qYY/MTFef2rzfXv0BKl6ICGd1o0/RJ6jmLa/MQEQfMPX3fsAxUqFVCrwnFr8idFvB2sd/XA7nQ90I7eH5e/ZTGpfcilSms7CiAoG/dvh2INZeAWhrOjJahYLmgZINaxtWoGgjOx/pAKGMti8WHLL3KVt0MN8FJJJDOm2mPNy0zfhEk3x2BbYXZMnwf1ae0PwMmA35w+fr6/XoHVjl6JomDsHuIRHtV2YZlVWIUzmT4qtOoBGBEWTYIbLdN3NYY+xrWcv+EH55Ag/posx02963Vjlat9yhOE0iuM1cNpUUGbaub5FG2Qs+HxkU7xNHDd7HQf20dvozT08viFJ1veus+642dvAWgdK3OXI3S4izpEzvnbIal7nwcG1X/G66gK5bTXOSww6l66BBZq5o89PaGF4o11vI+oTZH1YYC5h3XvVlcWMHXDCen50Z5Ot2zeXpM5jgvR0PSEWf1KPPx/V2+zv8CsOy5kGxlKSUJgLZcoBON/DIWomBl11oC0gggql4M0cyPCKQXYbmzQO2au/
- s5VsnOma
- m1RxPHIlB2QBRDNZGi+hLCq3lC+v3jSTa4pSdUXwqx7gyrEPW0PMdf/SReXlmryG8Qhb8gHBzjz3NR9EJPpO3AjvQN/LySu+xAuoJ/Zc6/ShSE5XcQ3p238UKVcQ/CD9QThwKYrhMUEzJtlXTUfd77ahA4cyjUVkI8u44su7tkmbKU31zwy6pPLNMzSwKctXbU+V5VmubEJqSrSMa8G2deaIzQw0F8nj4yiBu5KdKgS7C57tAuyy7S6FppA78xn6Yi2HdgrFhS2JotnrWqXrWmdRZvsjONjq0XFEI4Ks0Pxuu1KPoHZkRLpo4jJPFMA38xk4ji9BaLQuZqkRSIuAm+wH6J2E325aN69sC
+X-Stat-Signature: 3bmd1q7keuttw519ybem3dmkxzp3damd
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6D59C100015
+X-HE-Tag: 1787666481-936031
+X-HE-Meta: U2FsdGVkX1+1PKKlPAu5w60cs4D9iP5SXEDdn5aHcXcAbY7p4yojNiX8BFg7cBr/NB2sM+3OH1yW1oxncUkAHoaH+3SOhWh/oOpdGLYz1ULGaDZ95PBAryKGdit7INuFgg0j5y2X/KBLIgtrTFfmpMuvDlxv/rNb9ty0Irr0e4gRlMnhMswEdweMAckkR3VMd6NoKJvM2HUcFF+7nKbT9G8EqrEsKFkrYE3A3DiJMx5pZhxgboKlvqYPsJH2G28pDmO7TKq4yKgUC1SchCAkZO/PjdSWOaS8GSQeoLZwpF/mhv1euLMz4+Mi4NukVNvTLGylQWCseeJ0pt2Fw7brP/0ZvgG/JxIaAK/Ewq/M74Kpp5yhpW0bkRR2CfYVkhOfnYjVyGoFnB9hknR7UATtzUknz3Y6M/Qrx2wGo9uXrilz7r/QYKv2CQFPru2Gc/D/aJUdfXHoFj3slCSQ2aYWcgBPBBk0wp4wR7DtY+dZ+YOrkiDOJjWU63TiH7p5Gi5hgAq1kPSXVdTCQ9McwAIsKuW9+qnLUf6+XbhF5cpp+zsWiUoDBpXipo6DXAu6D444vfedRJt+PD1bRb3IH8RlRYhNbfxSi1IQraPLIo2i619Ni4b/Dz5LsGIMu0HysFTBh2JH96XW7Q7pcPytsXt1oNJJdUVZqXm2QXwznN5Z6HxhDzxQXBPLZtAqSPjEtftxLrwYcUK7SofM6RTqFpOPkP++gqit/vQUWfih3YHTZX7CochZ9pPDvENANOWXAQZmOXSKVxb2vv4nVc8mXPldyu2u4PIt/Uo5pQp4kJLzBWmEbBFOxz0HkjNu/FwGMRP2X1AqKXhDxWihaUt3N9tXU324hEfRnf+HM8k2XSEit6D8r5vdNkWblYgzPYbTYAu97QIwAvtjbX4PIg4XiIZoGOwZX2p7yUHWGnBsy2Wxgb18+5Wnw7mkRLH82n8lBdVlT395NYdKmluoHzed/GB
+ xuRJZcj0
+ 7P1rIVvK47wQ1VJz7JSWKidefX+brGWkL2wHRBcnMtUsXWTdhLokB56ZfCmfQCVR1qMFwaTleRhsPxrw3EIpWgf+dRETpIe+lZUMpc0UFXmnCL4upJeslLyZ4gba3EWfLEYPYpJ1lCpF10dIIzcdEm+fcKVJm+Mnd2U28OeWhy8HJI+licE5c48Q5UypaRWR5Fgj49ZHxm4pWyYGbU/O5dZB9hjOjbnIpBtXKACDd4nGCFAYYyz0vj5UmK6Udk5LmwEcd0klpdQLlcjQy8y9FKh4OEYKWLIxbGwrS85kILygC1o93KhEL1o5SONDpSJdtgFiXG29DqKWUWp7X8eu+jP3Ltl9FZfqf8N/lPdqM7SF8k45kRAKTP+14nhF1b/jfwr1MF2SEY1ZFYrfTwFZa3/6yrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,96 +147,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25/08/2026 15:54, Nick Huang wrote:
-> On Tue, Aug 25, 2026 at 08:12:09AM +0200, Krzysztof Kozlowski wrote:
->> On 24/08/2026 15:42, Nick Huang wrote:
->>> On Wed, Jun 10, 2026 at 04:20:48PM -0700, Shakeel Butt wrote:
->>>> Reading the debugfs "count" file of a memcg-aware shrinker can sleep
->>>> inside an RCU read-side critical section:
->>>>
->>>>   BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
->>>>   RCU nest depth: 1, expected: 0
->>>>    css_rstat_flush
->>>>    mem_cgroup_flush_stats
->>>>    zswap_shrinker_count
->>>>    shrinker_debugfs_count_show
->>>>
->>>> shrinker_debugfs_count_show() invokes the ->count_objects() callback
->>>> under rcu_read_lock(). The zswap callback flushes memcg stats via
->>>> css_rstat_flush(), which may sleep, so it must not run under RCU.
->>>>
->>>> The RCU lock is not needed here. mem_cgroup_iter() takes RCU internally
->>>> and returns a memcg holding a css reference (dropped on the next
->>>> iteration or by mem_cgroup_iter_break()), so the memcg stays alive
->>>> without it. The shrinker is kept alive by the open debugfs file:
->>>> shrinker_free() removes the debugfs entries via
->>>> debugfs_remove_recursive(), which waits for in-flight readers to drain,
->>>> before call_rcu(..., shrinker_free_rcu_cb). The sibling "scan" handler
->>>> already invokes the sleeping ->scan_objects() callback with no RCU
->>>> section.
->>>>
->>>> Drop the rcu_read_lock()/rcu_read_unlock().
->>>>
->>>> Fixes: 5035ebc644ae ("mm: shrinkers: introduce debugfs interface for memory shrinkers")
->>>> Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
->>>> Closes: https://lore.kernel.org/all/c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev/
->>>> Suggested-by: Nhat Pham <nphamcs@gmail.com>
->>>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
->>>> ---
->>>>  mm/shrinker_debug.c | 4 ----
->>>>  1 file changed, 4 deletions(-)
->>>>
->>>> diff --git a/mm/shrinker_debug.c b/mm/shrinker_debug.c
->>>> index affa64437302..cda4e86428c8 100644
->>>> --- a/mm/shrinker_debug.c
->>>> +++ b/mm/shrinker_debug.c
->>>> @@ -57,8 +57,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
->>>>  	if (!count_per_node)
->>>>  		return -ENOMEM;
->>>>  
->>>> -	rcu_read_lock();
->>>> -
->>>>  	memcg_aware = shrinker->flags & SHRINKER_MEMCG_AWARE;
->>>>  
->>>>  	memcg = mem_cgroup_iter(NULL, NULL, NULL);
->>>> @@ -88,8 +86,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
->>>>  		}
->>>>  	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
->>>>  
->>>> -	rcu_read_unlock();
->>>> -
->>>>  	kfree(count_per_node);
->>>>  	return ret;
->>>>  }
->>>> -- 
->>>> 2.53.0-Meta
->>>>
->>> Reviewed-by: Nick Huang <sef1548@gmail.com>
->>
->> Sorry, but what exactly did you review here? In the past you were
->> sending AI slop:
->> https://lore.kernel.org/all/aeNGbNyPxJssnkbO@lucifer/
->>
->> Not even properly following the process.
->> https://lore.kernel.org/all/20260724143408.175870-1-sef1548@gmail.com/
->>
->> https://lore.kernel.org/all/?q=f%3Asef1548%40gmail.com
->>
->> Why suddenly reviewing MM patches?
->>
->> Best regards,
->> Krzysztof
-> 
-> Hi Krzysztof
-> 
-> I saw this patch on the mailing list and was interested in the RCU issue, so I looked at the related code.
-> I checked that removing the outer RCU read-side critical section doesn't break the memcg lifetime, 
-> since mem_cgroup_iter() returns the memcg with a CSS reference held.
-> I should have explained what I checked instead of just adding a Reviewed-by.
-> Thanks for pointing that out.
+On Tue, Aug 25, 2026 at 3:19=E2=80=AFPM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+> On Tue, Aug 18, 2026 at 09:51:06PM +0200, Jann Horn wrote:
+> > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently hav=
+e no
+> > good opportunity to block a process from overwriting read-only code in =
+its
+> > own address space through FOLL_FORCE writes via /proc/self/mem.
+> > The security_ptrace_access_check() LSM hook is bypassed when a process
+> > opens /proc/self/mem because this is considered "introspection".
+> >
+> > This causes a hole in SELinux EXECMEM enforcement, which tries to ensur=
+e
+> > that a process cannot create executable anonymous pages.
+> >
+> > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
+> > accesses are only possible when the LSM allows ptrace() attachment; but=
+ it
+> > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
+> > environments running lots of third-party code, such as Android.
+> >
+> > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically fo=
+r
+> > such "introspective" accesses.
+> >
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > ---
+> >  fs/proc/base.c                |  6 ++++++
+> >  include/linux/lsm_hook_defs.h |  1 +
+> >  include/linux/security.h      |  6 ++++++
+> >  security/security.c           | 15 +++++++++++++++
+> >  4 files changed, 28 insertions(+)
+> >
+> > diff --git a/fs/proc/base.c b/fs/proc/base.c
+> > index bec6197329dc..3dfaef49bb70 100644
+> > --- a/fs/proc/base.c
+> > +++ b/fs/proc/base.c
+> > @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct f=
+ile *file, unsigned int mode)
+> >  /* private_data for proc_mem_operations */
+> >  struct mem_private {
+> >       struct mm_struct *mm;
+> > +     /* Was the ptrace access check bypassed due to introspection? */
+> > +     bool introspection;
+> >  };
+> >
+> >  static int mem_open(struct inode *inode, struct file *file)
+> > @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct f=
+ile *file)
+> >       priv->mm =3D proc_mem_open(inode, PTRACE_MODE_ATTACH);
+> >       if (IS_ERR_OR_NULL(priv->mm))
+> >               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+> > +     priv->introspection =3D priv->mm =3D=3D current->mm;
+> >       file->private_data =3D no_free_ptr(priv);
+> >       return 0;
+> >  }
+> >
+> >  static bool proc_mem_foll_force(struct file *file, struct mm_struct *m=
+m)
+> >  {
+> > +     struct mem_private *priv =3D file->private_data;
+> >       struct task_struct *task;
+> >       bool ptrace_active =3D false;
+> >
+> > @@ -886,6 +890,8 @@ static bool proc_mem_foll_force(struct file *file, =
+struct mm_struct *mm)
+> >               }
+> >               return ptrace_active;
+> >       default:
+> > +             if (priv->introspection)
+> > +                     return security_introspect_mem_foll_force(file->f=
+_cred) =3D=3D 0;
+>
+> Hm. Why not pass the reason to security_introspect_mem_foll_force() and
+> call it unconditionally? Similarly it could also be called for the
+> active ptracer case. Then you'd just need to pass a flag to the security
+> hook and the LSM can decide based on that.
 
-After all the maintainers already provided a review...
+A process which is attached as a ptracer can modify memory with (for
+example) PTRACE_POKETEXT and registers with (for example)
+PTRACE_SETREGS. LSMs that want to prevent such debugging operations
+are supposed to prevent ptrace attachment with the ptrace_access_check
+hook.
 
-Best regards,
-Krzysztof
+I am just trying to plug the enforcement hole where ptrace-style
+modification of process state is possible without going through
+ptrace_access_check - which means just looking at these
+"introspection" cases.
+
+If I wanted to provide LSMs with a more granular ability to do some
+PTRACE_MODE_ATTACH operations (like attaching via ptrace) while
+blocking other operations (like PTRACE_POKETEXT or changing register
+values), that would require more plumbing, so I'm not trying to do
+that here.
 
