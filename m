@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE4ADC61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:39:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBC6EC61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:40:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDD706B00C4; Tue, 25 Aug 2026 09:39:21 -0400 (EDT)
+	id BCD876B00AB; Tue, 25 Aug 2026 09:40:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8D426B00C6; Tue, 25 Aug 2026 09:39:21 -0400 (EDT)
+	id B7D996B00AD; Tue, 25 Aug 2026 09:40:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7C406B00C7; Tue, 25 Aug 2026 09:39:21 -0400 (EDT)
+	id A93E16B00AE; Tue, 25 Aug 2026 09:40:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 955CC6B00C4
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:39:21 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C925A40418
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:39:20 +0000 (UTC)
-X-FDA: 85139898480.18.699B794
-Received: from mta1.migadu.com (out-121.mta1.migadu.com [95.215.58.121])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B088540010
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:39:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eYEU2Vl3;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.121 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 842C86B00AB
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:40:36 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F29E120414
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:40:36 +0000 (UTC)
+X-FDA: 85139901672.15.114D78D
+Received: from mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1510710000C
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:40:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QIJi4YWi;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787665159;
-	b=Qlhvu8p4S9593n9EoIPY4hgHdSOYmGTuBGNQVgniA/u1OIUuCM5ym/4TnK49+V7hjO4PZc
-	T9JKDMyZO3OOSS34Xg2vl3G9S+yeHDv2n0U4hDiJINbtAQOYwtPryPzDmEbSR6oC2wzaGO
-	ltwVxQimeJwRKjsjg+bHbznT5FB+dMA=
+	t=1787665234;
+	b=hFU1LErLmJP2nrua+qyuAmGmv8/PHw6jv2isb2oucQOIIGViCONJ+s9eAgLFRIuUoQEwQ0
+	tbMVEar3ex7SF60zzbPEht8L95boMvGg0vpahMpYcND7LyZaoiuZ/ofbz2OokRr0DJE9Z9
+	Ppn/Yvl6HVX+aQbdNEEEsLSN0uTfwWk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eYEU2Vl3;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.121 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QIJi4YWi;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787665159;
+	s=arc-20220608; t=1787665234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7oXPgIIhkzB+dLa96WMQyErh9iHbDsIlQ9Tg7PfAk58=;
-	b=kVbSrMAceA5kmqLRuRTGsSLz0bepCA+EKSfwpFvDtqP3TQld55j8XQoziYu746fuR31z8E
-	65nxmRchF2MG7CAeOBW4qQ0BJLPKyvypOH3bF1rcNXHIIqeSSOr05yZoebWaKlDgOb3weg
-	aCZvPWvOGfxhodWxbHQiYTNQgi4QQMk=
+	bh=P5+f7/VZeBnmjMMG/j87eFYyiez7Mmr/7O8LsWFBxAw=;
+	b=liF4O3JZUWboT9QWqo+DlSWf2h729Clx6spWYqjlWjxDeP8hRmZrB6hKywV+mLfJg3lQw/
+	9l103JulTP8/7N4cRM+3pCU4H8gp5Czfgv5R1Xu7ZmojyNNSQQlOBSf+DTOTUf9Vm/MCHi
+	8/0qtG0ZasMr9JiU9/sg21HZB/C3oq0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=hP+K8Ebe2kc9ztciYZ4PaIPMJflSO6fNgvlSGw26+I0=;
+DKIM-Signature: a=rsa-sha256; bh=0A3Ji21+yf4EPW8I2x+QmKHNXnWo8d4jWhEB3lqoREs=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787665157; v=1; x=1788269957;
- b=eYEU2Vl33X93zUlQ1rBRk0oVLlE3UuL0lfoP2YE3+iD+zF03jaClyqPbGMvx8Fer5wRLzmr7
- tqqhClXz3QKEGr62BfyEWewt1+exyGRpSmPVX6qw37bEPny9M5WkLDkJZne25NxC/fHKAZ0g2qq
- azhQNBl0ckbe4ByfyXz8tRRk=
+ t=1787665232; v=1; x=1788270032;
+ b=QIJi4YWipiH/JWYaQAGC/0pR5+wRdnaR0LYs91IUcHZoLCfGDExVUoWaB1Ig4e8axjQSDeQN
+ W5hR2mBQajsppiefyN5OKsec51GQ9wTf923yqBm6p8xyZP6Lve8XdEozPUz52BnCqIgNjRH1nAF
+ PH7RyMPGcpyu9+MVQm4+SSg4=
 X-Envelope-To: linux-mm@kvack.org
 Received: from [10.254.116.35] (101.126.56.83)
-	by smtp.migadu.com with ESMTPS id 4d13fbc4cbc00d6c;
-	Tue, 25 Aug 2026 13:39:06 +0000
-X-Mizu-Trace-ID: 4d13fbc4cbc00d6c
+	by smtp.migadu.com with ESMTPS id 09d1a17ef30c8715;
+	Tue, 25 Aug 2026 13:40:32 +0000
+X-Mizu-Trace-ID: 09d1a17ef30c8715
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <c5f50310-0fc8-4d87-8567-a6f352d4cd6d@linux.dev>
-Date: Tue, 25 Aug 2026 21:38:44 +0800
+Message-ID: <0d300afb-cc12-498b-a350-77fde67d85f3@linux.dev>
+Date: Tue, 25 Aug 2026 21:40:17 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 16/17] mm/hugetlb: localize struct huge_bootmem_page
+Subject: Re: [PATCH v5 17/17] mm/hugetlb: localize HUGE_BOOTMEM_ZONES_VALID
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
  <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
@@ -78,19 +78,19 @@ Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
 References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-17-songmuchun@bytedance.com>
+ <20260825084608.47437-18-songmuchun@bytedance.com>
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260825084608.47437-17-songmuchun@bytedance.com>
+In-Reply-To: <20260825084608.47437-18-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1510710000C
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B088540010
-X-Stat-Signature: m3iu5gwoupydudm5kuhqcbkb1himb4tq
-X-HE-Tag: 1787665158-624261
-X-HE-Meta: U2FsdGVkX1/XzJjomsKkmJhgmMj0/73EW0RDNqT5SuuRmoWwQEKCinoUADcvGTDAXHvrGiqJHqYx4sLGu+VLXtUqRrSJ/Dq++g0LySW9RLvPz0t/Z9TYqhPcRX2DS1SC15JJb9Rf+1M5UFHm9Hiwl4J0MoEUOaHmfyctDQX8uW+P0ydyWpBNeV/c7QjoWev52AmecE7KsB+HZ7KRsk5kQh4pD8jcZekhbVitWENa80RqIqhoZ177zoi3+6k0wZO8IBXfx6ciwzIrC5Y+eQktqywY0LDag2fp/1a8NdOFrBWByj3/nWTfidxM0f+qxWCFI94G4EuD+sMW7ODqcOaqpfGHP9ux9Y2l79b1cXgsdxEB8ndwRTjdtT2uIc4ZnsCc81q+/HpuNsl1A82biHOXstR/sR05LfhwfVaeTPzeNbA/+CzgonIUIPsTxDXjV2nKF2ApjSg5KRGIF0WmVtHYBdpAm9833QMip9f7J/pBRhNTR0fAKwn1+nEonzFZO2raBixyrvv09AfKD54Q6HBSY01UTTtQD8+MEZO5XJUBU7X9rgIfxPJC/+3iEjmidVXqSvXmOAKNppgvtlqb05cOAqNSX9f7s2sQtta/2IXDq7vzqMZ6UK94FL45fi3a9Tv5SZ7h2R0Jgtxi5MTbLIn64fBuJjFalEnV/rp0uXXmaVJ+giDDIoc/ANtpvt17MyUHDbgN86NAgRMpE/LsFiYGiV3qLUFLcFtUGwN4Lac9a5gxR4zdCOP6JD2vy6SM20ktFulRavYVrvgjXg+D6IsMcZDE7LvGDCEh9iu7Z6dNx5QgOEFKGxjDkOs6eVAEhr5eelfjtfhc54ETUyUjRTvhvE2T6sqOWxWRbGnSLjzEWQ3ogrGw+zlBOeVSKkRgdd6oi2GNMZ/zs+ybRgGX5e5jtbS68AK3P/IHNuyZgLKDYs1MfuKJ80wfA8F6yskJnBoGXPm68afOJ9tp9LLPT5d
- CkU/ecnz
- 9B2nISCbVV6Lko7PFmWCzb8nlLwV3CDa8FtoKuEVk9JZ0ajdMoqIioHly/J3X9jjniVfq9wqrl7T5JgK+mRNfiDYomgYtSzqScuRhk4rSsjWApDevRIdmq0Qe+E3IJ0r+MTnRSlyOxrlsuPWawYCSYDjjLV8aL9WWESd38glSW4MqSCF56Y8qBsuo3poih89SCbclUzk31xqRCn9zCcdkX3YmbebwfkDG/KbB8SOWJRYjM4Dpp47anDYnVWh2tSEv038/b/TFLDVGPf5xSNyVw9IF9GVw41YfjIElSkE1vjXP9mPF+BfOCoxpoiEkO18NfOKy/e3TNgOUL6ceMpRnMkjHy19ztpNENUe9m/pP8FY4ipyntuuUa8RxiNo8qQUgNLrhCJ8UYRCV9F6mYQaYJhyfNdRra9tS7ORpi+/qqIw4tW2bQlmxuzeFAJc5KpAEYEk5
+X-Stat-Signature: 1o4qcxfoea7hz9kxm6fzmkd15w6es765
+X-HE-Tag: 1787665233-322909
+X-HE-Meta: U2FsdGVkX1//WHaDbLWE4uHqZFYcnVZDM6FmRHvnKSF34NZ1ziY0nKue2bzhgQK5Q3X6FbaK+8vaIS7N51VYXrHVl7V5UqW/nCzR/KtrFeFFa672VzV2yPUnjQdph64CrdW5fGMDRxsGw/sBmI9N0yLyc9lmfTpsSDnMyebneP1uy19/AYG2Tf1egrM8dRGMdm5ogMkPXL1HbSUzUJrCvYC6SsY6WzXVPGOYQaBKfT7surUKwIRKl/dMIQ7wZgFLgUYeXjQOBdYIjIYukVMPnthjyQd+r0uagtCLVU1+jdMCpMB7CT+TkBUgbZ7KgeZFixRK9zRVAuggyH2QM6ShsepiJQ9cty46SFgXLS1dbUeXD6tvuCF0dixyPBKWVVifRsjrjl+7CG3a1fMQ88o9Jf4Gl3J8MS2pC5U6OYolNBRtHxUGVdVW+vGqn4kFK841mx5sQxxzdMHW8yNHM3vBVtwS7mfAufPgGsrOtuDspnylzOZ2hUhYsnWWvecjxZILyyxsEJ0VzhQJLEJ55F/ZzjHGJlm9XV4pzg3M3gXURqzwHyXQryEqVBXUIBdIhmwAlmK4ngzG4Jw7e/+Tcbr9WtUGrMefplNmJ1uwCZQtF4PwBnTfbq/AinmLHDJXf3JAvH3GTBJ8vSKiKpdgvj7or6g6ka6R7+LMHnKDKrsUbhCQidNWbqhzzEemnHcg97TVVbu62g+pgeFwgJlQ9NeudyYDefPVfQ4WcHnTP3FWdE2SuADZ5an0TVh+2QkiLAJ4AT2gcbbxSEVhfQmjtxjW8KPLKm8wfTyhT2u5nKk5xob3MejyTl5gA0ABFsnTQNhHG2KIT/tsGHQCrDOISdBDXpsxCCfwzpy3B1AS00+ycxZKwu/xSzmbyTEojjq49NDzSKOI53E7RB1J0o2QZqFgwuVmJXlxGDOMNugiiSyWBRjPeUcq3m/Zw9K9X0vQWm1gEWQMk72C4tZgDMKAi5g
+ qzT0QPju
+ XGMOXS+iGGuAPTsy3uoZ8qIe5dZxSWnLXKjEt2cBGJF2Fvh185uAr7Z5HlFb+KoXkLpe9/iZCS+1WYS9ZZnnRMUuMpUsZxOo9zR9N2/4gBl43nN6aDa/xbcjfNp7UoPSa2KxDpyKC4VrOQf+5/5D6kBCVg/CKuRtSapqIoAU05UtXDCl9DWLpKUnsSJWEt/SMNzOyZObA7ZjuvhSieSiXe01be5dyMa6doI2dHzCWHG8BU53AZHJYgXzswW4hq0uDOb/hDzKj66tGkuTv2Y6+mOFs7L5yyyHu5zNN1V8kUCnWxOfqUd9eT+FjHAYPT6uJeAYx/y+EJ/trae/KVLa0ra35hKVJm9AW68w8pvRIk/aUVzbXmtPAaXwoy6+p2txQLuZr2T66qvqEfoEQxpZh4MjZCmARFr37vpg6Fln7Fh9GpIp7FOjMDXSVdiuDlbvqIZqx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,29 +101,21 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 8/25/26 4:46 PM, Muchun Song wrote:
-> struct huge_bootmem_page is only used by hugetlb boot-time allocation
-> code, but its definition currently lives in mm/internal.h because
-> hugetlb_vmemmap_optimize_bootmem_page() takes it as an argument. This
-> exposes a hugetlb-specific internal type more broadly than needed.
+> HUGE_BOOTMEM_ZONES_VALID is only used by the huge_bootmem_page flag
+> handling in mm/hugetlb.c. Keep the definition next to that private data
+> structure instead of exposing it through the public hugetlb header.
 > 
-> Change hugetlb_vmemmap_optimize_bootmem_page() to take the information it
-> actually needs. With that interface, mm/hugetlb_vmemmap.h no longer needs
-> to include mm/internal.h, and struct huge_bootmem_page can move into
-> mm/hugetlb.c.
+> No functional change is intended.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
 > v2:
-> - Pass PFN and order to hugetlb_vmemmap_optimize_bootmem_page() instead
->    of struct hstate and bootmem metadata to simplify the code further
 > - Collect Acked-by from Mike Rapoport
 > ---
->   mm/hugetlb.c         | 8 +++++++-
->   mm/hugetlb_vmemmap.c | 8 +++-----
->   mm/hugetlb_vmemmap.h | 5 ++---
->   mm/internal.h        | 7 -------
->   4 files changed, 12 insertions(+), 16 deletions(-)
+>   include/linux/hugetlb.h | 2 --
+>   mm/hugetlb.c            | 2 ++
+>   2 files changed, 2 insertions(+), 2 deletions(-)
 > 
 
 Acked-by: Qi Zheng <qi.zheng@linux.dev>
