@@ -4,98 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EFFBC61DBD
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 14:03:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CBC2C61DBD
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 14:07:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0BD66B009E; Tue, 25 Aug 2026 10:03:08 -0400 (EDT)
+	id 3258E6B00A5; Tue, 25 Aug 2026 10:07:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A95106B009F; Tue, 25 Aug 2026 10:03:08 -0400 (EDT)
+	id 2D6266B00A7; Tue, 25 Aug 2026 10:07:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 984776B00A0; Tue, 25 Aug 2026 10:03:08 -0400 (EDT)
+	id 1EC006B00A9; Tue, 25 Aug 2026 10:07:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C9396B009E
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:03:08 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5F5BA39D6
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:03:07 +0000 (UTC)
-X-FDA: 85139958414.16.EBB71E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9AF7820013
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:03:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7veB8l2;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787666585;
+	by kanga.kvack.org (Postfix) with ESMTP id D639E6B00A5
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:07:41 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FA0A80420
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:07:41 +0000 (UTC)
+X-FDA: 85139969922.27.09C6357
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 46E464000D
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:07:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sRHiM1dK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of sef1548@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787666859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T32td7y5ccdnhZesB3Pf8GJA69ToD/C95AdlirXQkOs=;
-	b=lhtQGk8lNapqImPiT/40sl0rzU2wh1+eQjK9BfuoC2Mq77/R5uegZACrajm7U6eSsFVtWc
-	uAT25BniuhkOjhr0Jcc0zXLz9cDmzNm5zAsJ9TuKHQs6GybySqq8hmS6chI7dCbUALo7U3
-	Kly48vYUDheWE1ZWkHOjEvATmtWe20k=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7veB8l2;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787666585;
-	b=Mt95IqAn18+UlPMX1BejwaM4jXioAIa6G6F/CsIOCZAjxWgS5wPoKka/HfzLtmGqO1u8bS
-	f9XedCtA9c7W4A0znYxPfV7wnK8Ppsj+lzImCN58I5gmUZaA5Wkj3ARu1RB+a+5LsqKD5b
-	rbSN13hr802TJJYXNcZaf3y1+9c4NX4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD0B540BCD;
-	Tue, 25 Aug 2026 14:03:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20AF1F000E9;
-	Tue, 25 Aug 2026 14:02:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787666584;
-	bh=T32td7y5ccdnhZesB3Pf8GJA69ToD/C95AdlirXQkOs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=h7veB8l2u74wR/f36KIFQZSKVtGKq+qmae6kMloaQFEc/ao1ue4iTX/6IJbhtJcy4
-	 0snjrsBT3sbND7D++wQlUx8vx5FUwua8SYx9Q1ad0PfZAS3at5Jk6BEtvXG403jgpV
-	 lhnQ2fTG+jNRM6oyw8O5UM3GTaxsclZjpPOqcjSVCvg70tbK8yUPjDD7cg8sSjP7Dc
-	 Ld28Mn87ZSdFL8iEHOYTFNcti3FSy0slLpAZOpC8RIRaTQdG51gVvpy+SJ0X7vE9YE
-	 gO991L1ntARaAvWczPLf+mbv32ln2bNQcbPoFrChaUM1xaKUr47Mm8lHFvvqT7NvqE
-	 0OLUod+yYUvQg==
-Date: Tue, 25 Aug 2026 15:02:57 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
- PROC_MEM_FORCE_ALWAYS)
-Message-ID: <ao2gZQuyfegmotS8@gremlin>
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
- <aoifijlkCRzeO4bj@gremlin>
- <CAG48ez1HA30JUi-R=6KydkQy2P3_ineM1ZzRMQC6QP1UAwjewg@mail.gmail.com>
+	bh=A40bq1NKMzpbz5lol0Y+pOu2AxUSylcKXeFYq0SAZNE=;
+	b=zxLao6gS59vpqHE9nbptPO6sEaV24Xe3yo5RQ9XozOXrTjQfYHmmRH0H5r+Up0o657ZFEQ
+	PmRdIVwCKdWxIUQnCrTH+xX/NqcyMHSxexZTfGy0bDo8Y/ViTT8rW2MYIucSa+M8K6m4Rr
+	JNNM7amtWTJbrW7pL6i6YOVY7regvYw=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sRHiM1dK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of sef1548@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787666859;
+	b=QiJTHVI5UMRFiopzQxAPqo2+c3oCuX/kob47gNSj4ef+hRYDfVl8g/BAWB3NvdLZ7TMbm8
+	WNd9wla3p26RSvsvz5QxOyxWX24+wJA1VRrgZRNBgX4rnsCV2ewoDVvYcY5LimxUI0qUl6
+	sAm7Y1qP3doYIzQbYc8PNUzj9mczryo=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47db714766aso521844f8f.0
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:07:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787666858; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GuHbkDzyz2i6KGYQrF1GAlKwak0ozH6/0G41iOn5tbqHvPoMa5sFfCmWqCnSmhCut2
+         V1iJWed6ufr4hsgg8xEGB+wjLr6Yng++cmULdyGK+DhVkd3GdBob+s3XlHDUf601IbIq
+         4XkXcK/rdCSb0t/HeEwCbYgv9WiCcw+U/XQ/z+l6FermApmZPqM9rQ4iGRTTV47z+qHv
+         qria94R52/bFCH6hIA54/fHQFh8FEPmGN68Q+4sesT3OdZQAWlDbhsKw+FgeWfkM4ydF
+         T72f8PPMZ7F2IdEgY3PNmMfdgCKq/+EiScLRtY0YL3c7Kn4G8Z6O2KFEIITTa4GxH0q7
+         gRuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=A40bq1NKMzpbz5lol0Y+pOu2AxUSylcKXeFYq0SAZNE=;
+        fh=VfVGR/zz8Fqjwj53hn8t8EvYWlNX7OBgZbOhQCCBSt8=;
+        b=Ay+wCtGk4++ykdXodzDgMK0H9CAnURmvGGuXwdWwYzfvh+ad1JD0IRUIZT/7ky46se
+         HTV/5pxVHHLpKB9+Pllgw3qlw/y2cqIXmhF/YGpGoO5OGANNQTlF02XMaNYyLBmIq5DT
+         n5JZnmYD/UMViOMQCAkUb0BwdMIBZXW4apJP0u6WvyDMx/TOJbjGciuj0XCuS47K4Q6e
+         0FaRanBIGAd1eVRW/Q+gT4d06fesxO3UQ4/wVwSUg1hRTVyMoGgb4OYp7HIo0zrHKDmo
+         NBCqbPL4bK0s+BkRj//0o9cZyvE5ktxYXq7uJ/me+FyL6owDQKlTL0ODSKYmJ2Dn2FaO
+         JwtQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787666858; x=1788271658; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=A40bq1NKMzpbz5lol0Y+pOu2AxUSylcKXeFYq0SAZNE=;
+        b=sRHiM1dK8xIIletfvZOmDZ87uHNUXRgKntnTZ6d1RE2CxXgbzk+xaENXRpWt1yOuOz
+         6XQsOVrNlumnyCPtKPjpr6I9z2QfHpgm5c6rnEhkRjh8N8ptnlgUeqEIvcX2B6L/2E7n
+         EMsbK9tBGV1eghEJlJMB90goVIUmAUYTOEE9PTga0jNZ+5XeFDRPgU8qV9+WK13IUsTI
+         XhHGhFT8GzYllcUI6obitI0+vKwq+AS6O4dO/1n6336eA2ZyEnpdtF8T7hvwN0liFqli
+         Di/KkA1+VcWQdlF+mvLQMq/6bcaGkgB33EYMBusiIVImd1bZj/QeZLkufBo6nxqtgrIG
+         ONkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787666858; x=1788271658;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=A40bq1NKMzpbz5lol0Y+pOu2AxUSylcKXeFYq0SAZNE=;
+        b=RKVvKSZ8QItwcQyS511rl5b2ul2M8C6otaSObRmEdp8CDTnqLnYQHZ/QeF5xtXhSA4
+         xZiBIVuTcKmEEoXZ0CxModpnIHLyhivifPmPeOHV+3CW+bqHupGWbPyIZC0qaGk1fu9H
+         Z+Vlnwq4NCB2hink6vVlJ+GI7xtG2n1fygU9nEJt/x1ifcGlj5RErMfLsrv0iM5oqxmB
+         JehlmyhS/8Zf9ArMjUdiylfOwe4085h3gj6e/cDb7PZnYGDg1akhjr2t82jfP9BC0Exq
+         MUM10rKSi5PaSF8Cl03YQKbtsvZPuS3XVf/PqaNi3LB5lQ7XuoIvWf+En9gAW+yPFnKB
+         ihrA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq66zyGKRTf8pafsgkrfPviGpe+nYdT+xkcPVTF03b4ttgoqzfqwujP4eOYSZ3PpTQU/5VCL70hvw==@kvack.org
+X-Gm-Message-State: AFuF++mYQQ67tX1MQWPhcsB+gSp1OQFQc+v+EncHDWv3/m3reH7S6YAK
+	L/JPiKvCMBMU8Yn5H1Ml/3i4DmyLbO9WcWeznca31Ow8HIaKw3s1w4ad8uJGGrdbKPjV0FhD3tw
+	JNV3m5CeAhPNGRvP3ij5g5A1NowzT80k=
+X-Gm-Gg: AR+sD10+1OlZJoobGEcyh/XCtNSPqkd6AfE7pWwXN0ljam1seUNAxLgOpqOcX9lEtrA
+	/7D5rIuQ3krALn4yv+UX3gsODwpYZuk9l/jvPjOIeBA1cyhDPcaRuj2f7Km5T/fjzsU/j264Cb8
+	Zo54tBHMyvDytGo4LpuQ73DRqv/ZZm6SKyg7AspZ2JTvxx59n/dyQ6cYliL91NN+arG9uYQrWWW
+	JixhXvyvgg9tCDDgadQgvrTa1JJB8V8//Hh2eG0wxKXbuboXiQA6Id79i+OozoPXPczTn07UxOb
+	mzMworsyew8vf4OcrFD5Yuc0oATuZ8Ifxt2V02+l2Lq/a/wAhGf4tpP70h3emI9MlpuSJiaIsRq
+	qvCK1jv/R8Jo/UYFcyNrN
+X-Received: by 2002:a05:6000:3106:b0:480:b3:aaf4 with SMTP id
+ ffacd0b85a97d-482d993937fmr8620955f8f.4.1787666857237; Tue, 25 Aug 2026
+ 07:07:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez1HA30JUi-R=6KydkQy2P3_ineM1ZzRMQC6QP1UAwjewg@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9AF7820013
-X-Stat-Signature: e6rymzka4rpirjorgzumpru56gh85e89
+References: <20260610232048.62930-1-shakeel.butt@linux.dev>
+ <aoxKKXjs3o6jUanE@nickhuang> <041af2b5-9136-4027-b35a-72e5044c63ab@kernel.org>
+ <ao2emWNMkthyVXn6@nickhuang> <8969b1c2-360b-4fd0-ab70-eb4a68365f50@kernel.org>
+In-Reply-To: <8969b1c2-360b-4fd0-ab70-eb4a68365f50@kernel.org>
+From: Nick Huang <sef1548@gmail.com>
+Date: Tue, 25 Aug 2026 22:07:25 +0800
+X-Gm-Features: AcwNN1UETsWAXQxt7Pfh73CA-2c02AWedsOU-um3XgS03nN4vktj3OkfCJVp3o8
+Message-ID: <CABZAGRHe4vGMRqT3v82JXqMTg74bCL3LONgCfP8EUa7GPOA_QA@mail.gmail.com>
+Subject: Re: [PATCH] mm/shrinker: do not hold RCU lock in shrinker_debugfs_count_show()
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Zenghui Yu <zenghui.yu@linux.dev>, Nhat Pham <nphamcs@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1787666585-527906
-X-HE-Meta: U2FsdGVkX1/9gZyIhqxwqwuEDLK3PsJfFLpxoPNKS3t293dCiApgCO0tWOZ0UHyIauOM46zog/p17TPD3qWnL5gXyjzmrd01XzcEbI/emfVcprD97BEP4XkPhJc+Y/aPv2/F+43C7DYFTRkFfkciolLuoJfUVO9cDL1asl/QVy3LhWgPuDdeqnbrc+uEWTRHOdFh9aUuWgWQwKP68A7xG0y7a7FqwTu9dbLG86X/2XLHDvboqp8ZNm6uTN2feLmG/8vhy48Qy1ro9OPfHvSi0IlAbRzX++4DLUUNy4sp6kw7It+h5p4ctp/GUBmxz66anX3lNQDxmX1tVFV4VUI28iWqrEnJTObJYleUq5Uyfg1fLiVGUOMNbM/Je0JGr2iWKUmUcD833hzMWOrKU5ZREPeUS7y/yeV1sB0ATNwc6+PfFODjGEGySiFKcwesPCB9rWv6fkWyiL271NyDkn6/p3K2ID4GrDE4iH8dZCTQaW/BjjFnTgVKG8z408JWnIST3fTvVNqTnwBQvNfT92Qj+K21Cads8NYZSo+MuW4TBDQaNJqAn0tGflVErtUZ6kNsGy3c/MRFhFG/jBheJp2auwNdmBhW0WsGHsw73vE8BS792DpcSdkuiymS9om1jiTTbJ+QC4MQChFxDFRXRxx98+dtBkpy08kP1unHR7IAdGSWzLRajG5mHTK3WkN7eVJL7SL10oHWh6m8x9qMjslve/eTH4dmQWc/EIq6+l6nct3c/7ZRsTbgM1YJvNkuSIoxokJXVWPWOeC/Z+p3JDRE65kFFzFMLoZXvwr9BtJhP+OQSKMOjxOVp0Ahf/ie56+1rCPmeH3Li0uaguNkhcizkeecLs95ePUscnQHR4fDuVqG9WaLo04OZZtupaR2hUlTsuAfHzgCIJS4vFJOa228nro1WxrJO7JVBTMFVdBOQp2WYRySRtPhXia0xCmvt7N4pqclkSFVyiOWKYtgNF1
- erq/fwDa
- Eah0p0Ag2SDh69yTfn7nXZnYuYu1l+/dVlGiXgbHbl6/hjZNp1/jin7m4H+4udSPbasVYQHsf3+uWqHy+7w5jw6ZI1LyQA/7lzyuAbuZKyx1BVtT3R4P0DmWUB6qz2cLstcEWUUKwoy/pt0Xo7QzNVlhFsOcRXBgxz4/Zp0XnWIKjdmBXSymqZX745/aIdAqiXlJ1UaL1WoRyGaVqfX2yJ15BQ1WhbVaCiEmi5LO0Ijtio6/lGPQtj756dHZNmCl6+unK/qSx61shfK89EeF/VNKjnYlBRLCEkHUWNvunkzbysP2JEc18Eb8+hhZkWYFM82K+wCnr54XxAu3NvpW35zSKt+BXHJDnekI8+LsmiAe6St3HgANCeASHlmjw68+gdYJPtFSJFrDb7wuMqpNdIME47ddacdY4cvJ94E3Y0tl0/qiXS00ObvsGZYw82kxZyybk
+X-Stat-Signature: 1j1zessjfsmiksrwthqxdnfpmepti4dc
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 46E464000D
+X-HE-Tag: 1787666859-546777
+X-HE-Meta: U2FsdGVkX1+Tr2eUE8nFiMX/lCTDmY0jLnMRVfN2V6CnhtCAWEnLhFZyvO+E98JnxkNC0KN2t+3KW8UROTNhJIcpYwmixK7n7YePnaE52ezYBpHFxI52lAt+86o9IV/ysywkME71eyp+kqqnAWe/qGUT9++/k1OQ/poT58ZrUD8Wsy5SvAoDOw9OpPdJa6AC9aiz5TkcnSQVO0lr4mA6ygNfgOVsoNSo6JpLlusyc1wmVneu4QPMFnadqCItPzuX+gdmxbuEkRA6Q0bkhDBCwN5qSMHuCGyLnF3rldDIzEKIVk84BqT7yOgs+30K2f+mjPgDtN1dcdMvPAofArvHl/btQ0s7PLERum47gqNbXCS9ks1IE/s1bNBUaWBuc8qlKUlN/fqksBKnIcs8XKdN/7mX5PuVLX7oKiV4T6HQc91F+e4clVKL2Uszx5aBCog6Q5HSgivgH9yLfwMaN4By2ghW9/iwe0SKhe5Bppv+xO6ewyjFBeIJDXgtv3sphi2HMA8iLVmRhUQ4FFB3MrD/PODiwSKksYF77Pb5kI2+Am1eWUTxuREVjuuN0vn8KNKjjSZb6ijG2LZh5XJF82xW8B5PILTkxf8/DO3+9ih416CPbCbO/3w95QUW5esUlFPNtj6iyOnZEpmDVSxqvteIUMy9a0DH2wcIEZ+Mp+0T1m9Zl2C+5cm2TYbBLwC94Z2lQuIRNVSKKlEb2Y5tOwtT4wTKAszI8Gaam0T1oo5jdZUlf7usnjvb3xetPuSmWEkyhwLAtyfP0imXPVPEnQPVo3v3ZQJ4LsS7r0gBr6TMQE1eULO1lefuXje4dUDvHn0MbAZQ/lLU9NFA/ZouHVCEbBmSECxnQlVZV16BjgkP5QkPt1EAmbl7fqdQwlcvVio+/8tjsmRmS3zVrK4wIvnf6q7gg93CfWNNabsN3jda4kpIMcL+hMb8CTfEGp15cYWsJFSQd4QrNRQERQiG47B
+ A3PeEXyp
+ GmIqbAXc+Zpu/lc6KmSuGQKWRbGqz4pvWakKG5uvCCCWJ66n/+DmJcT6yo4lEfueC5+c+9P0GduNfu6xBn4mL64eqGcSB/t9sivlXidnzocPImGHUC9XCdb42EbZd1Hc6xxZhO36nJHZgHp/G9BANa0mhNg+sXo4ZhXeIizdlu1nqdU4T4c2w5rCAbF6EmnG6cQ7iYypc1ciyM6jiq0W8BbbASrzOVq5LBus0oQM3N/f2HRu+gh22ilsTmfooA9HTb67o/wJtgXSXld7uTGoS8eQPJ3zWpCqjPBfFKwkE8EA8JUX7igfGFC51Z6zFLn3IGyRv3fTQ2wms9V7sxVI8fo7hDtWozoYblmEdnOi0S0OCDti86wAYSHiM3O8lzZiMtyEtZ9fvHux1uwYYXKWUyTRc4CFmPnqZjBu3gDolG1x6DfPa4GQFb48HtI8GFE9DnExX8w7+fEnUo4fzBLCqrd7iPbheGbZzXENKu9/tnx1O7VUjQ82kcSs8ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,83 +145,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 07:28:24PM +0200, Jann Horn wrote:
-> On Fri, Aug 21, 2026 at 9:00 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > On Tue, Aug 18, 2026 at 09:51:06PM +0200, Jann Horn wrote:
-> > > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
-> > > good opportunity to block a process from overwriting read-only code in its
-> > > own address space through FOLL_FORCE writes via /proc/self/mem.
-> > > The security_ptrace_access_check() LSM hook is bypassed when a process
-> > > opens /proc/self/mem because this is considered "introspection".
-> > >
-> > > This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
-> > > that a process cannot create executable anonymous pages.
-> > >
-> > > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
-> > > accesses are only possible when the LSM allows ptrace() attachment; but it
-> > > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
-> > > environments running lots of third-party code, such as Android.
-> > >
-> > > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
-> > > such "introspective" accesses.
-> > >
-> > > Signed-off-by: Jann Horn <jannh@google.com>
+Krzysztof Kozlowski <krzk@kernel.org> =E6=96=BC 2026=E5=B9=B48=E6=9C=8825=
+=E6=97=A5=E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=889:56=E5=AF=AB=E9=81=93=EF=BC=
+=9A
 >
-> > > @@ -886,6 +890,8 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
-> > >               }
-> > >               return ptrace_active;
-> > >       default:
-> > > +             if (priv->introspection)
-> > > +                     return security_introspect_mem_foll_force(file->f_cred) == 0;
+> On 25/08/2026 15:54, Nick Huang wrote:
+> > On Tue, Aug 25, 2026 at 08:12:09AM +0200, Krzysztof Kozlowski wrote:
+> >> On 24/08/2026 15:42, Nick Huang wrote:
+> >>> On Wed, Jun 10, 2026 at 04:20:48PM -0700, Shakeel Butt wrote:
+> >>>> Reading the debugfs "count" file of a memcg-aware shrinker can sleep
+> >>>> inside an RCU read-side critical section:
+> >>>>
+> >>>>   BUG: sleeping function called from invalid context at kernel/cgrou=
+p/rstat.c:421
+> >>>>   RCU nest depth: 1, expected: 0
+> >>>>    css_rstat_flush
+> >>>>    mem_cgroup_flush_stats
+> >>>>    zswap_shrinker_count
+> >>>>    shrinker_debugfs_count_show
+> >>>>
+> >>>> shrinker_debugfs_count_show() invokes the ->count_objects() callback
+> >>>> under rcu_read_lock(). The zswap callback flushes memcg stats via
+> >>>> css_rstat_flush(), which may sleep, so it must not run under RCU.
+> >>>>
+> >>>> The RCU lock is not needed here. mem_cgroup_iter() takes RCU interna=
+lly
+> >>>> and returns a memcg holding a css reference (dropped on the next
+> >>>> iteration or by mem_cgroup_iter_break()), so the memcg stays alive
+> >>>> without it. The shrinker is kept alive by the open debugfs file:
+> >>>> shrinker_free() removes the debugfs entries via
+> >>>> debugfs_remove_recursive(), which waits for in-flight readers to dra=
+in,
+> >>>> before call_rcu(..., shrinker_free_rcu_cb). The sibling "scan" handl=
+er
+> >>>> already invokes the sleeping ->scan_objects() callback with no RCU
+> >>>> section.
+> >>>>
+> >>>> Drop the rcu_read_lock()/rcu_read_unlock().
+> >>>>
+> >>>> Fixes: 5035ebc644ae ("mm: shrinkers: introduce debugfs interface for=
+ memory shrinkers")
+> >>>> Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+> >>>> Closes: https://lore.kernel.org/all/c052a064-cddb-494f-a0d8-f8a10b4b=
+1c4d@linux.dev/
+> >>>> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> >>>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> >>>> ---
+> >>>>  mm/shrinker_debug.c | 4 ----
+> >>>>  1 file changed, 4 deletions(-)
+> >>>>
+> >>>> diff --git a/mm/shrinker_debug.c b/mm/shrinker_debug.c
+> >>>> index affa64437302..cda4e86428c8 100644
+> >>>> --- a/mm/shrinker_debug.c
+> >>>> +++ b/mm/shrinker_debug.c
+> >>>> @@ -57,8 +57,6 @@ static int shrinker_debugfs_count_show(struct seq_=
+file *m, void *v)
+> >>>>    if (!count_per_node)
+> >>>>            return -ENOMEM;
+> >>>>
+> >>>> -  rcu_read_lock();
+> >>>> -
+> >>>>    memcg_aware =3D shrinker->flags & SHRINKER_MEMCG_AWARE;
+> >>>>
+> >>>>    memcg =3D mem_cgroup_iter(NULL, NULL, NULL);
+> >>>> @@ -88,8 +86,6 @@ static int shrinker_debugfs_count_show(struct seq_=
+file *m, void *v)
+> >>>>            }
+> >>>>    } while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)) !=3D NULL=
+);
+> >>>>
+> >>>> -  rcu_read_unlock();
+> >>>> -
+> >>>>    kfree(count_per_node);
+> >>>>    return ret;
+> >>>>  }
+> >>>> --
+> >>>> 2.53.0-Meta
+> >>>>
+> >>> Reviewed-by: Nick Huang <sef1548@gmail.com>
+> >>
+> >> Sorry, but what exactly did you review here? In the past you were
+> >> sending AI slop:
+> >> https://lore.kernel.org/all/aeNGbNyPxJssnkbO@lucifer/
+> >>
+> >> Not even properly following the process.
+> >> https://lore.kernel.org/all/20260724143408.175870-1-sef1548@gmail.com/
+> >>
+> >> https://lore.kernel.org/all/?q=3Df%3Asef1548%40gmail.com
+> >>
+> >> Why suddenly reviewing MM patches?
+> >>
+> >> Best regards,
+> >> Krzysztof
 > >
-> > As per 3/3 I wonder if you need an additional parameter to cover the fd -> some
-> > other process case?
+> > Hi Krzysztof
 > >
-> > Like:
-> >         if (priv->owned_by_owner) {
-> >                 const bool is_remote = current->mm != priv->mm;
-> >
-> >                 return !security_fd_from_owner_mem_foll_force(file->f_cred,
-> >                                 is_remote);
-> >         }
-> >
-> > (I'm not sure how LSM hooks are supposed to look :)
+> > I saw this patch on the mailing list and was interested in the RCU issu=
+e, so I looked at the related code.
+> > I checked that removing the outer RCU read-side critical section doesn'=
+t break the memcg lifetime,
+> > since mem_cgroup_iter() returns the memcg with a CSS reference held.
+> > I should have explained what I checked instead of just adding a Reviewe=
+d-by.
+> > Thanks for pointing that out.
 >
-> We could do that if we wanted to treat cases differently based on the
-> identity of the writer, but I think in general that's not a good idea.
+> After all the maintainers already provided a review...
 >
-> In general, if you send an FD to some daemon, and the daemon writes
-> into the FD, this should not cause access control decisions based on
-> the identity of the daemon, because it can cause "confused deputy"
-> bugs - the daemon might think it is just writing log output into a
-> normal file, or something like that.
-
-Ack yup, variations of a theme of this, I think I was overly confused by
-the fd-passing stuff vs. the key reason for the series.
-
-In general the thing LGTM other than the naming so a respin should be good!
-
->
-> > > diff --git a/security/security.c b/security/security.c
-> > > index 71aea8fdf014..d0f790a534eb 100644
-> > > --- a/security/security.c
-> > > +++ b/security/security.c
-> > > @@ -595,6 +595,21 @@ int security_ptrace_traceme(struct task_struct *parent)
-> > >       return call_int_hook(ptrace_traceme, parent);
-> > >  }
-> > >
-> > > +/**
-> > > + * security_introspect_mem_foll_force() - Check if introspective FOLL_FORCE is allowed
-> > > + * @subject: credentials of the process accessing its own memory
-> > > + *
-> > > + * Check if FOLL_FORCE is allowed for a process accessing its own memory, which
-> > > + * bypasses the security_ptrace_access_check() hook.
-> >
-> > This should be updated to also explicitly mention the fd case. As surely in that
-> > case this is not true? Unless I'm missing something.
->
-> Yeah, I'll clarify this comment.
-
---
-Cheers, Lorenzo
+> Best regards,
+> Krzysztof
+Hi Krzysztof
+Sorry, I misread it and didn't realize that the maintainers had
+already reviewed it.
+Thanks for pointing that out, and thanks for taking the time to respond.
+--=20
+Regards,
+Nick Huang
 
