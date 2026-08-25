@@ -4,104 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42211C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 855F4C61DBE
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B7266B00CB; Tue, 25 Aug 2026 09:42:49 -0400 (EDT)
+	id A4AA66B00CC; Tue, 25 Aug 2026 09:43:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58E8F6B00CC; Tue, 25 Aug 2026 09:42:49 -0400 (EDT)
+	id 9D3E46B00CE; Tue, 25 Aug 2026 09:43:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A4406B00CD; Tue, 25 Aug 2026 09:42:49 -0400 (EDT)
+	id 89C1A6B00CF; Tue, 25 Aug 2026 09:43:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 22CBE6B00CB
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:42:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A1DECA2B20
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:42:48 +0000 (UTC)
-X-FDA: 85139907216.12.6F26E32
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E8CF4140006
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:42:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhBex4Nf;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DC626B00CC
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:43:02 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C3DBC4035F
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:43:01 +0000 (UTC)
+X-FDA: 85139907762.27.3E8E58C
+Received: from mta0.migadu.com (out-191.mta0.migadu.com [91.218.175.191])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 92ED2C0010
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:42:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mT2IUX3K;
+	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.191 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787665367;
-	b=z/0qnLAZwOs/YA4tzcEEDmVZAygTuMPZKfw9FW/JFmqKj+3eQ/3SuJ1y8KjQmvCPOi0SMK
-	ofb6DyAxwJ6eN56U9AqglazGRZq5BrPOPxCxiE+8I9mOxYYCfTR2XsSc9+/yVrHm3ex7yz
-	36/v5NPnRS8ni8mPBOuBMG8/zgg0KMo=
+	t=1787665380;
+	b=XlmGIwQvcoE8ItESlDv1//4D8ECiq25Hdf27yESV7VKGDpKzZZK7F9rwbsX/Ghv8QqIQqQ
+	PrV4Y2j9CVGwAi/fnXBU+RA154w/6dSbxqZFyXnQxc5JXjyaAMzaTDWXM2G7mCR1HgrTP3
+	sgoS4UYSQndogmAvCHPsUwjJXgh7HT0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhBex4Nf;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mT2IUX3K;
+	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.191 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787665367;
+	s=arc-20220608; t=1787665380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RAeO6nyzsto4THOPII8Lhn2KD/5f7sb4XDD8FP4is4I=;
-	b=v3HvUSlI6Tr2KojYDVgExOsX94kly9hQTkX2QynNX/ayqPQ8wMnhgnR3sAlUfgzAdqIgih
-	z/kKaWsUmuLErP0i9/pZj8AEwNc7XyOkgY29FdHbmjK2uYHIFTZuVbt+5qDRKyNotHbCZp
-	hmlmAyJo57ukToGZvVV26wl2QR6L8lI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1771841A02;
-	Tue, 25 Aug 2026 13:42:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D931F00A3D;
-	Tue, 25 Aug 2026 13:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787665366;
-	bh=RAeO6nyzsto4THOPII8Lhn2KD/5f7sb4XDD8FP4is4I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GhBex4NfYPWHAIis5wTwo0tQjKG0lEFiWWqT4AQg20VnPw65oPAP/ZjSBF87ydOy2
-	 Dj5OuprDFDH9S2asvTA9JHcSPvk0+8xggfaitkr3FK2GGKPGPl5xETSIR0dVpWvAfC
-	 cXQWCNYrMYu/fgRgUR5Zwg91ussB2GAA8VT7l1VZgOatlF0HnMgp+XrUnGGSYJYzOO
-	 Ckv9lrJOtp389yjaUjC80xmQDUkR/SqEJd1GkGSkqmgmPzC12z0nNoHBt6esAy6l9Z
-	 CiXZuotZstCJD+E81JYGtDcC/6JESfGN+93090PCKU9OCWimw/uqBIYF+n9m7Re59L
-	 RwiIpFdanGSRQ==
-Date: Tue, 25 Aug 2026 14:42:38 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
- PROC_MEM_FORCE_ALWAYS)
-Message-ID: <ao2a33Xf3U0kQmM_@gremlin>
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
- <741a833d-6889-4ee6-9322-d6a3a8b95893@kernel.org>
- <CAG48ez2Ngo3=VtyykXY6ynVzGwA8px-p4zV3V6U=YfgV-Hy4BA@mail.gmail.com>
- <dd8c34a9-0e09-453b-88e1-0a5511816627@kernel.org>
- <CAG48ez2bZEV+3ww2x9XV_5vRPZ_3jU_zg6+h=BDKQ94Xrd3Tqg@mail.gmail.com>
- <aoibvf6CY99IXynk@gremlin>
- <CAG48ez0CX-PT5Yk5gYJuB6wPe26j0gHHXQqYoNtTA=iHe_5Wdw@mail.gmail.com>
- <aox7tVIQBMuz-xFO@gremlin>
- <CAG48ez2-8UjzOp=St5eTPyG_yd2iBmPF6y7qVBTNaPNJgoX=BA@mail.gmail.com>
+	bh=UdHF2mFt+hNfOQQjf3NwqAsnZCfSAX677V2FA9NTOMY=;
+	b=j8WLCKMByRw7amcmEGbqb4kE91O5VIwG+1H4e3+6Lai93YfobJ0bgtz9XSubDZebw20Yuz
+	ExZ+ztrITA2CqpIsTswyHPk8lsFS9m3n3+zsc4m2ewR7goDt5tgoAcFoZgjd5kUoIXxoWD
+	btGvyP1z0ghF3ZPvq1dP2cFZPOqvRMY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=FfZDNuOqOdy6idQcHsHOcRGqdcW1dVvnf7/eAaFIrq0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787665378; v=1; x=1788270178;
+ b=mT2IUX3KOhNWdf3sv5YkZjo/qRolzKHmu0ai+tkVUGE+c/NbpiiQ8jRRh37VW/0Nd72EuvCf
+ 5cuOAR/cIUS0iu1MIFslJbG/atm/JLg77NmfkC8e2DK/YtpAkC50kyjx3IZFk+rwdeOw/1Bww1S
+ agfNNfXvwP7Vg3ZJWtzZV9cc=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.254.116.35] (101.126.56.83)
+	by smtp.migadu.com with ESMTPS id f72d55ae91586379;
+	Tue, 25 Aug 2026 13:42:58 +0000
+X-Mizu-Trace-ID: f72d55ae91586379
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <cccd0211-6fd8-42bc-aec4-fb7d643e415d@linux.dev>
+Date: Tue, 25 Aug 2026 21:42:43 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez2-8UjzOp=St5eTPyG_yd2iBmPF6y7qVBTNaPNJgoX=BA@mail.gmail.com>
-X-Rspamd-Queue-Id: E8CF4140006
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 15/17] mm/hugetlb: remove HUGE_BOOTMEM_CMA
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-16-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260825084608.47437-16-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: an9myq7z4ikb575fto4w39tto6qeheoj
-X-HE-Tag: 1787665366-528986
-X-HE-Meta: U2FsdGVkX1/cBVBxP+/SZiVv566YU5kjgFDFXcv11FuYO4pHLS1+D/H4aaalwYIpFr3orM4zlw+6vyz3gv6Qog6IcOYFwMTgE3yAY1LbTwN3RJ4TycYeVMjm4Gd7hSE/+l4SowkWS/ArbTAluRok9GuS6R/3aUDGWBLLVbhDn2YRUngov/7tse+/bMV1zMxjKOYO0OSg0Utsj04wd0Qr4XA1QbGXPc0yhBGyQGaTOZHq27arfdN5UwNZta7q7uHhhDacdAEzJRnRSlHomFp0oQKRTvy0bi30O/J2C5f9jLHZdzGIXK8bBg2AyvJzYXgXQMw6+gOeWJpz5S8R+I3OaRRss1NIx3bzR2d+mJNB2WA5M4CyGdq1xiBXjapQ2TL2K+fyXVwB91TpRK/kGovMKC3s26eCUIf+TRYkJToSylnhziqiT8/dC6YK+exRmnk9IASTcOAc125e2GENebeMCNk0Jp7FswvUEWBcL0EjOoyujkybQAmOMjz5khA8Wdep13XZY7SV8jfGVijyn2MntMriAJfeq2Viq/YTHI7HO27Jebp44V/9Zo4BvLp8duftqhAtuRv3JADJQv8X0wq7ACXk9tbgut1pC6nU8HmCohrTPeujXlrj0OAv06sjCg5x/6wf/fmssEiWgy7hrgaQW399AIKRovC5Gt8HZ4cWKpH8MgnMC5eaO75bxsoRiiWYtYDpQObpJLKjdZCLtShG+1bxHGr9sM0n0a/+8tH8f028kuXrdxppc0xXm2x+VMRWNOEXgD4nNPs0UyXk9IIxxrH2ClWqGVg7YeFnU3Ty0t8JVbb/n5wzraMXSoTxkky+tYGRyoQAnRcqEzthQyXGsW/OFzHNMtr19uydbNttc4KZSB+oKJjUPZZUsBj6rTSFpGmDQht+fIwBGOaL/dBzUKmFWpkMfIWaYKxzVQ4XE/JHdxLj5F7oYNO8l0jN2/jJFrs1lMwXctcoSkI6S/V
- y8Wl5UCV
- 75Ti9yL9sFx9em6siluynty4zF9Bs10eqG3uBvDbwN0N3/TyKJy65Ti9lXnKIiPBON5Cwnb8Un+E8pd5mAL3YKHHA07RVU9M1b5Ofo3Q8xUYjxilNFORuIzfs3NphGRPh6hJYvzV4+1LhVnzWGWD71Bh/a+uZbUvem4WXht/3J4PI5vFIe+Wfo/XbrhMpikQ2be7J9doqEzsdjmECUiUVumgqj+np1OMdtX+9GBn26ELtLGWEPNKFqp1RWfosk0WIw+ixdfox5Lcu2PX8AzABCB3Uu2U0neMmDEVFXJKlzsVCQnMZNYsW7/A4LQtR0cFn/nHnWivxDaAnCyBBclSNQbWpKG11eq+QtFiMqMa1Kd2EH3r/h9Vk+9Isp2aiWgJQpKd2qEv/dFbhNwpZAadDumRwf2a9VIU0IPYL447zX0/f1P8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 92ED2C0010
+X-Stat-Signature: kyha5cs8xqghxt6g3ffzyko753sadw73
+X-HE-Tag: 1787665379-945835
+X-HE-Meta: U2FsdGVkX1+dYbsFlxhlh27ybe5N8zx8GME2UWiFgcJq5Zs4ydLAvr+2kKyvBnx4DjDTkBSm51LkoqRRuY0a26qzSb8GhXpIefgLCAkzWCQK3/hIMU1O95dzI7AaXAU5NlIJojXSAA+Mv21HL35+yLdtcKpk05iKuqPoHohOuC6cfiS0VJ+aEuk+4I8gzcm8I7BWF9XuGIawYOeTSD1GaLjrEB42vGnrcwyt5BM/S2/XKC2AxcLjfTXG9V14lhgDTWGZB1iCmQIGULkVNcg+RALOLW6QBklpimaqoB5V0VvlniKkofZtQWaydVICUcqnvyyM1gAFTJuVWVMBGR20Ft1BD5wAcA+MpJMw/yeDJVEnIVtRUx8F4UWMLoRI2/Bm5J3TT+LRGwO333cYgH4EINAKbhUJKV+JQqG9J3fBnAf41Zbfx/DL9zPPlen9dPWN1eGYgNCcFCuaCvnO1rw6fcCDIqy/+99NEskL+hSqHXbrmuCSG++Z6Z1Tfyh3mIuD4oFjB7VXQvmxCWA7FiYQwzaY7h7tDOiI0Rdf9CS73xNtTT+sKQ9UVh2OFNRTQjlslbnxuJkWSdAtyF6gVTPXvO2Rji/kuGarnaBp+IssgjeULj4VXYJRQP6Vg7pmJce9LUuKoYK5ihJQpltXbMLd5L5fpzBZhFRBgfUg4eMdlBGI6rZ8Zccu7LkrpntfBHZjdBOjexbcDo46GFiXqoJx+GYAfHZqmWViAz30WB9Ae05/znE1k2J/WUnv7oZqoRKcvZ+FFYXOOaTwS+LiBIYtz/BUd+11FDqf0ql0esn03JnN57Rx0wV1eEYRYwQBtEM+lX2vIT2CYmVwH5jTcDxzKgO0L6hQiYjTmpsAlncZ3R0Ib7EEnXAr3AvzB4uv9DOdz5TbkdT72D0fcCa1cSVP3kg9B6Nw87RbQ8yUMmJAq4a5K9d0FJL86AHByJcf2/qRHe0bHTW9c3WuqhZmf1W
+ bV4Vg1fz
+ CwUN0GM/W23Fv4SDCpAIrNehYCXWfUUrVPs/+kFlp+sj3AO9E5ATocVZRArI8lwfOPaODljs1/ta8LAIxQOP04CnBme02Rd3/KAUNvy3CCP5ZnXyVcPKRXtoLGbehffhPaGxsXCH3iW71/vK/M1QIgrBY99a/53SsvEgKEn1UpgGj3O25prAw46w2YwMRYNG56GhhGLRdE+OJhu06hb0Sj77mYaCLWxzQcJxb732FoLXqNj8d7rtyaXfcAaCwak8q1DSU2l0/lrFZj1c7IPmt6W7J1V3puJkCNlYVHRJP9I+REFWg9Rjvtkeax2vseN3kYmdZMCSaoRhDd5hyCcVeYH5XBskQshtiadFpLQ5nVsVjUTmFPNzKy0VB2Nca4jd2rIJlfThkKhEExqLeSrk6DpWyCN7cDMR/u6JDBZIMyjwiYzLMaBIAMlyl3Px4NWjbiyRR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,45 +98,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 07:43:02PM +0200, Jann Horn wrote:
-> On Mon, Aug 24, 2026 at 7:33 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > On Mon, Aug 24, 2026 at 07:06:04PM +0200, Jann Horn wrote:
-> > > On Fri, Aug 21, 2026 at 8:52 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > > > The sharing a /proc/mem fd seems like that's a pretty dumb thing to do in
-> > > > general :) but I guess you have to protect against that.
-> > >
-> > > Yeah, it's a kinda weird thing to do...
-> >
-> > Yup :)) but I guess we have to account for people doing weird stuff...
-> >
-> > In this case (I do mention it in a reply elsewhere I think) it does seem
-> > like perhaps you should separately check for current->mm != mm of (what was
-> > originally /proc/self/mm)?
->
-> I wouldn't want to do it for this access check, since that could lead
-> to "confused deputy" problems.
-
-I guess if it got the decision wrong somehow that'd be a problem? Or wrongly
-OK'd it on one level but then that led to the fd being passed on assumption it
-was OK to do it or something?
-
->
-> > Or at least it seems like a crazy thing to be able to get full access to
-> > another process's memory (that it... gave you though).
-> >
-> > Anyway perhaps overthinking it :)
->
-> Hm, yes, though I guess that is kind of orthogonal.
->
-> For what it's worth, SELinux can prevent such things happening across
-> domain boundaries - it enforces that, in the SELinux ruleset, the
-> process calling read()/write() on an FD is granted FILE__READ /
-> FILE__WRITE permission to the file's inode.
-
-Ah OK that's good that it's at least possible to check for this class of problem
-so the rest is moot then :)
 
 
---
-Cheers, Lorenzo
+On 8/25/26 4:46 PM, Muchun Song wrote:
+> Track early CMA hugetlb pages from the hstate instead of storing a
+> redundant bootmem flag. This removes the unused helper and keeps the
+> bootmem metadata minimal.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+> v2:
+> - Collect Acked-by from Mike Rapoport
+> ---
+>   include/linux/hugetlb.h |  1 -
+>   mm/hugetlb.c            | 14 ++++----------
+>   2 files changed, 4 insertions(+), 11 deletions(-)
+
+It looks like this patch is unrelated to the rest of the patchset.
+
+Is it just a drive-by cleanup?
+
+Anyway, LGTM, so:
+
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
+
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 3559041a5a57..255a258f11d1 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -676,7 +676,6 @@ struct hstate {
+>   };
+>   
+>   #define HUGE_BOOTMEM_ZONES_VALID	BIT(0)
+> -#define HUGE_BOOTMEM_CMA		BIT(1)
+>   
+>   int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
+>   int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4bb5a25849b1..6822fb4159fb 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -3122,7 +3122,7 @@ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
+>   	 */
+>   	INIT_LIST_HEAD(&m->list);
+>   	m->hstate = h;
+> -	m->flags = hugetlb_early_cma(h) ? HUGE_BOOTMEM_CMA : 0;
+> +	m->flags = 0;
+>   
+>   	/* CMA pages: zone-crossing is validated in hugetlb_cma_reserve(). */
+>   	if (!hugetlb_early_cma(h) &&
+> @@ -3198,11 +3198,6 @@ static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
+>   	prep_compound_head(&folio->page, huge_page_order(h));
+>   }
+>   
+> -static bool __init hugetlb_bootmem_page_earlycma(struct huge_bootmem_page *m)
+> -{
+> -	return m->flags & HUGE_BOOTMEM_CMA;
+> -}
+> -
+>   /*
+>    * memblock-allocated pageblocks might not have the migrate type set
+>    * if marked with the 'noinit' flag. Set it to the default (MIGRATE_MOVABLE)
+> @@ -3293,9 +3288,6 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
+>   			folio_set_hugetlb_vmemmap_optimized(folio);
+>   		section_set_order_range(folio_pfn(folio), folio_nr_pages(folio), 0);
+>   
+> -		if (hugetlb_bootmem_page_earlycma(m))
+> -			folio_set_hugetlb_cma(folio);
+> -
+>   		list_add(&folio->lru, &folio_list);
+>   
+>   		/*
+> @@ -3306,7 +3298,9 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
+>   		 * For CMA pages, this is done in init_cma_pageblock
+>   		 * (via hugetlb_bootmem_init_migratetype), so skip it here.
+>   		 */
+> -		if (!folio_test_hugetlb_cma(folio))
+> +		if (hugetlb_early_cma(h))
+> +			folio_set_hugetlb_cma(folio);
+> +		else
+>   			adjust_managed_page_count(page, pages_per_huge_page(h));
+>   		cond_resched();
+>   	}
+
 
