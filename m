@@ -4,93 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 476C3C5DF9C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 00:03:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45706C5DF9C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 00:17:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E9586B008C; Mon, 24 Aug 2026 20:03:38 -0400 (EDT)
+	id 23FFE6B0095; Mon, 24 Aug 2026 20:17:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29A9D6B0092; Mon, 24 Aug 2026 20:03:38 -0400 (EDT)
+	id 1F0676B0096; Mon, 24 Aug 2026 20:17:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B1E76B0095; Mon, 24 Aug 2026 20:03:38 -0400 (EDT)
+	id 0B8BA6B0099; Mon, 24 Aug 2026 20:17:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA13D6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:03:37 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 51C3212028A
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:03:37 +0000 (UTC)
-X-FDA: 85137842874.02.3EB6D29
-Received: from mail-oi2-f0.google.com (mail-oi2-f0.google.com [74.125.231.192])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AB34B1C0007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:03:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of 31tuMagkbAB0LRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.192 as permitted sender) smtp.mailfrom=31tuMagkbAB0LRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787616215;
+	by kanga.kvack.org (Postfix) with ESMTP id CB3796B0095
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:17:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4EC7F1202F1
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:17:38 +0000 (UTC)
+X-FDA: 85137878196.26.1FFB449
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 60F98A0005
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:17:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wJ59VmWm;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787617056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=ghidRltZKHo1k7fmy+IdUK7PxGwGYHFGIq/aVrSbUhQ=;
-	b=RhmPlaOMz4K9nJdio44cnFnwYL2mWSwUz8O6eT56xL4K/7Gb2uJL3wPwEfiX3lKTuoqwH5
-	JO4YMHchWCWJuLUWyoooFRG+EUhrKPSw1i+PnxfXvDBWCcMwFHd3e4HfNHcyLN9rFnLz0P
-	/xqPLDZybG483DvJV/1i77LGusn08QQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of 31tuMagkbAB0LRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.192 as permitted sender) smtp.mailfrom=31tuMagkbAB0LRSD3EE7K3IIB6.9HH9E7NL7K5HGM7GM.5HF@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787616215;
-	b=1bOsHLpCazYDEEdbdmGMXyewViLE2NsVRKggYKiMp8kYyiPKl5SHqFzYoaspOqDx8Ig7Pq
-	9huntcAI0R9i8/Hg+fdabyeMKH3ddZOPeGaYUa5nGexleA9lvcj6ntlYqcL56wh50D1bCV
-	je3MkwToPN2uIqeTaltxHHUsLaQ/nmU=
-Received: by mail-oi2-f0.google.com with SMTP id 5614622812f47-4a41b6fb855so1559161b6e.1
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:03:35 -0700 (PDT)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cFqARnaWsfVIsueHxYAc51tuCHmb5rqqqqfMHtoWdZU=;
+	b=IQ24VON93MBlK8fNDMwhg6pjEqjeu5PDjZupapIgKvDffuXbs0de5EJF5xy1CJbgoFohyP
+	hZmsYGr2yQBM8PEH4ldFFbvfv2BPDm6xPJGGuB/4Q2PSIuNIiY4lIwvoIC0rv9YeS/RkAz
+	hBxRs8AFk84lqDK3/7HbY7ZvqF+Q6yU=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wJ59VmWm;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787617056;
+	b=YqiBhYWpR607NsscS4+Pmk6ZWC46GqvRgtPHRZHfRVYrr1EJNf0i2lZObBCbqQWVuqJCYB
+	vaGzuc8NsFiJYNwzxNOSHt/dck2GVM1UqwpdI/XyflrrTPtkdniKrl3ar242KtWrVZK1Fh
+	4pop8VCD6IDfvrGXlS6jAfoRAFVf1/0=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c214321dc32so810043866b.0
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:17:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787617055; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IjXju4b4f5y27KlLnB3jcSJ2Au7aWp4+mt3OzlhnqVf3dy4neLXw1IsqDzDk0ws3iK
+         b2/w/xEeP1HETpcSkYvoEyPot9+CQx8reoxvpLctJzyqx49cdB3CIR3CK5KGkZeZB2J2
+         l/3rhfGYYWDOwL09K8JQnr+h6HDYmLv7xFH/B03b4pkQN7jpNDreSIe8W6rqNyLjQj8l
+         o1xAT8/wOvgpRtB4p520YeirXOyE3Z7wNf/OFmnnUmmFe6aHCeWxPdXe8joWn5J7ozP5
+         bcNjhzePsAae19yxYqYCba/jPcXXqvx5jl4jgBphlScjkntbowx3BkFFH5wCEM5bXMOj
+         6eiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cFqARnaWsfVIsueHxYAc51tuCHmb5rqqqqfMHtoWdZU=;
+        fh=geCL76dH9g/Zk6nfB+7Vqdt38iFOm9YEwOQI1WYOFKk=;
+        b=amVcq4JE7rmV6CKbt4F2cvqnrw7WywvpnAmhnyxxpX3i/2K2XpMo55sFmIG249P2ZN
+         HB58bmUFxKmPi2poXA7a9uR6FuCoVRUox8KxDRZzqmnGWdhA2+ZxJp4KiVd0/Tdo6bnX
+         6n22ny+0+eiYzWXIiahkroRBPPyiOz4UrRb1Uaxd9HvRJeLNkBGjELAVSD/6AOalog2i
+         DHmpOG0bXJqJNV2HXEBHb7R626w77MwaoPxeFetsYMbzp4VilWsXIVwRFGLJ2de48G42
+         Stexm9fiHPDS63g/6naycDssoZbx6mGSvHfioix96h12lIaU/eY9yrYVkbIHAtWzDQnC
+         qNrQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787617055; x=1788221855; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cFqARnaWsfVIsueHxYAc51tuCHmb5rqqqqfMHtoWdZU=;
+        b=wJ59VmWmjcHRHQ1suewkWKLhXiO6RUrP1+2+FNsa60GWrlrrFB/lve1ukaql8yEmUn
+         ZI2s8Fc4bdR1YcPt9ATv7uk7/1cJJiHKT0BBgx9yFudN6uFo3nExqfmARiFyKeSsQFHw
+         QtJIRlsdq5zPb2xHUWFI7/9Es77IsuhtRQf/zTm0EAnxrawN3YyBUtkDNBjY54wLWVn1
+         MdccY0UY/EPhUD2cTK/M/sqSjTNC9g18j5ZFw7szNYzwyuND5r7HFvpXAfaLSazIBDEh
+         1cPCAuPvqUNvod7qAOZiSpK8Itj5n0R2rPRT+3mFc/mtbKLfkjbbe2cRj+b4ck7553rR
+         Px8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787616214; x=1788221014;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1787617055; x=1788221855;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ghidRltZKHo1k7fmy+IdUK7PxGwGYHFGIq/aVrSbUhQ=;
-        b=NjhRnNbZ7Wok7g7yKzP7rD7/XTLMcDDavgU++Fo5url8P7AD466nBsynBylhYCqtSb
-         HzqN5nAcHtCRC2AA8qeld3kY8xpkwZDnEokQEdlattYGBJgLya6qETgrHb42xebyYtI2
-         1GJCb13EcXJAx+XYHhG0XT8f9aKVG/lWs53dXVqLPgvc/2kf16d/x+obRGq51vrFRzC6
-         3kS5PoJqIDqB1SlDZ/pJpsOVhE/dhqAXw85Sp+Tnfm53bnHit6HWxAF0UUG46nRDSu+7
-         q35VSKC0D0Pube93XvVv+DUs57J6vHNbd3JtUhmRUtUIbHOAPrEH3PvuTL/FAHD4D3RD
-         hTOg==
-X-Forwarded-Encrypted: i=1; AHgh+RpDYykv6ON0QHp8Kkv738Hu40lmZ3klMr0u3fGAGWHNSzAeaxlj96gqNS37Ur75hW2lU+WboJslGA==@kvack.org
-X-Gm-Message-State: AFuF++kpcmI+mGhGmUjov84jl0wK9F+1ka8SXKdUWzHUCyQmLlVqt8ya
-	7DSDT2UsNW8F835vFa5nGcSmSM1iad2ptZOJLEvki7Hz9Lyim17Z6pRX5hq9gNjoZOIMw/k6gsi
-	M5hWdLBORlMgGdn8wAlqKNe73CvpGzBS/DNm7X/ffxlAayFhA2/2x9CdjNZQ=
+        bh=cFqARnaWsfVIsueHxYAc51tuCHmb5rqqqqfMHtoWdZU=;
+        b=qy8fOHnyt3DFV4Zt6qvGV2Tg5ebDv7VD+OBIrCokfCWUfYCJOAvJxcTt4SKPAIDbgP
+         URH6uREtgt7jhhlbkyt2qF1fQEWdhbHKd7K8kJ1JIsYaEfhCkV2fHNJiafihgZUsnnkR
+         9JOr8xYUmpSYnSKfHDJn7y1B8E7HnlQ7Ol6gF8XYPBq/6W5sb/DoDv0z5o/BXjxxooRa
+         DDVz/0KHcnihYYP+Xr5cv8zW6DfruTbFJbaOGPTPm+7Mw/glQlsgQB3xgWyZXH8DGPSe
+         ySzPq3hufSHQXaiQxvZOIQWKZrumvheHQBaRCBPQewOCA1FKWLMvF/pJcxziCCqyEQOn
+         PBPQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrOQ4tCDxHDvL79VJ5l/pKl/7qw8Vnht+wYoKC/GKMxx4n63owD49StEohz6f1Yj1RfxcXtCglSrg==@kvack.org
+X-Gm-Message-State: AFuF++nSQ0TESnp6F6S5Rc1NBbqRWUzSb1zLNgIF6nH8it72xNV7aWvl
+	X6MEt8FYt5HK5OBD8ZjB+FZwdmjeQBGNQ88A32IkjQO/uA1RiAbrehvr+2hdBE8b2k3DaPsELnN
+	AQD2rXoG9by0zk2EW3Yl2Cpw0SnfjjNukxRQG0ocf
+X-Gm-Gg: AR+sD13eX8mM+ZXIAOKN9Cb3yZGk5Kpgr7aU6oW+BlgnaEM1cJCKjxxSNFIDO1bKb1O
+	S9Zh96lZBZKtjo6aSG4BkKpFBmJfl6R9mzuGAzTlMDihMQWC4Cx0pS/lewWly97zUZLD0192kt3
+	vg8NvVeyibYXMKHcdUlJlgSPg4VxK5KR9jP7hOXrXAQpehx7HhZhOt0JphEx9+5lX7/WAuELuwt
+	C066Ug2LBtM3i8sLSrI0yBTCf2XhDeh+pfbMqxGMMrBDPZSAB7MvVIfuca87SlYz053/7jB54Jc
+	LUOnoiFAkZrNzha8vE9d1gnLDqDaEGgR24tBtz4bipeBPdDuZn9noCTajiC4alj+JRmN5A+K08X
+	K5bn48xIzjmQJhUh3feCoEQlBHUmEmkj1nZgFP5YDPzffXdvGGGHuCrOoc6JtoZhQOCP/YWiB9W
+	VlrH7V4x92HfRS
+X-Received: by 2002:a17:906:3e5a:b0:c20:2165:d74f with SMTP id
+ a640c23a62f3a-c246a6ca4f5mr2781903566b.22.1787617054440; Mon, 24 Aug 2026
+ 17:17:34 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a4a:ec44:0:b0:6b1:7ee2:da31 with SMTP id
- 006d021491bc7-6b17ee2dc66mr10382010eaf.11.1787616214704; Mon, 24 Aug 2026
- 17:03:34 -0700 (PDT)
-Date: Mon, 24 Aug 2026 17:03:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8cdbd6.dbb3a75c.7844.0013.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in setup_conf
-From: syzbot <syzbot+75f49ec552cc74d9d69b@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@kernel.org, gourry@gourry.net, joshua.hahnjy@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, 
-	rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
+References: <20260708031129.3503195-1-jthoughton@google.com>
+ <20260708031129.3503195-12-jthoughton@google.com> <aoR_5LHPsVXUnxt6@arm.com>
+In-Reply-To: <aoR_5LHPsVXUnxt6@arm.com>
+From: James Houghton <jthoughton@google.com>
+Date: Mon, 24 Aug 2026 17:16:56 -0700
+X-Gm-Features: AcwNN1XeyQDNjfznf_slsJ2-WVr_gTFPPucM9IuBLkDPTtT4L5ACRlCs4qb6Unw
+Message-ID: <CADrL8HXpA7D3UAScj0+TpuqEPcQvLGA6htABnwYnOBXorBQrNw@mail.gmail.com>
+Subject: Re: [PATCH 11/18] hugetlb_vmemmap: Use try_populate_vmemmap_pmd for
+ replacing in-use PMDs
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
+	Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>, 
+	Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>, 
+	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AB34B1C0007
-X-Stat-Signature: tehxa4hszy1cdxut4k4k49t3rugqpa3e
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 60F98A0005
+X-Stat-Signature: wiu4ebqwhdbisa9ok9xsajegzk5mwz1u
 X-Rspam-User: 
-X-HE-Tag: 1787616215-510844
-X-HE-Meta: U2FsdGVkX1/LBNtqFGvf7Y1FP9PrduYMAOO35u07T/TZuIRcL32sL/6TMNhyvSWiE+NvhhJz6Sg2sPHQwXeTYzf5abjv88tbqlrPdKsa1p/BGvUddaoNAFTRYHX7fENLrVjUqTraoPxejUWxxDE1nxCcbhMekXg+o7DBeqfYHbiw6yuMi7WzxV69oxLHpHIBMn6iE/9XyIjS3NlkAdkMsmDcUtHjK1dzT7zZjssDxaiyZSgLEHJxUMef3GTVhVGVFOTjWILTLRYrvi4pHje/7acFtgVmIvql5xtovUDkXETgcegSI5FswZzxeeqE9Xs+MFYbyHLFafj15TROxIEAY5RlHP9YzZy9a8SybpDJs/7AGQl3mznHJnvXqXr29O6ww+ZdKFt+7DolRFZ4U8Kq1M6xu9N25OUrE7SoI51RHxAJtoGuN8ApgCvpcNKnukvo7tsQchtvtSFWZL4lVB1bkgGt+7tN4NOkRrgEwCtY2GdXrfk36KSAmt0bF6KH8ukEdvzY85LWfCV6XmOTvLhcERNUhfcDameGiuuI6KX1EaulfZW+aeFhEHPdLPDaVAr/i5x1r4CFOYAps9u+r45tT44O0svnlBKwWQVa0kqf10zqqI2/h2FgLUOLyacdJEMimanFCVvCwyd9EAZvJmYUs2a+CUFjZVnjD5cXK2qXRF0Cj3EJx2q8hyegx8SKm2WD8aWUXz3oiZWvDVr/EVGjz7si8d6aXQmn4wsLi89F5eiEo+w6dxvxUqBzaeieoorR/sOMPJQ6s2NK6+iQruG2hp0558/p9ROu4rm7T7R2HqdNRo3cq1lRA9oo87nwb87w5oxQZMsstleYqINYVSkbwGZ41pkdjSoZ+Omv7CZGnS/xyxBxPiuQ3zDV0Nm93hx1srgVWvgPCntZwWh9JmbfyOiP2fkzjRSqgWR+vW+ik74WQm8hI6UdYdVbxR/fHeImFiYfa6R6ozw18ClV4BU
- w5EYT/1x
- mO9cSNyA+aceDbHds4HqXkzIPRGugMrxtbmLM2asJy4QV0Xwr4KrQYpxhJj9fzHViSosQaFCHXqRsOVMCwwYyJgBMCtho7C0Q/X18jvY52+kn14Fku0+umextTDy4mVdtNERFYr3eJzDWOQRRrYCYY381yFOw9GyQZATp4+Tmp3Q958s/oLnJUHxH1pqawcDTQ8socFmKBS8LkH3z7fCz8zAEtEjk4dz5SfpQ20Y/gSTYdmPco8L6VdNwqqHPuu2FGlHcEvanPHj/CNnOkJqvB8JNxBihFlSjt2k8yJj/017Gf+J5A9Wx3DxHUzFOFwZHSeMI2lSepunNduT+0/cwDs0XhzrU0g1lqruBUXlykiYQNW3ojDR4PgkW5YmwsDlf12fVkMgeYGYI+bKTV1ghyfbjVEeQoQWky7Fyk5RYP0lSiGk3FhTat6kG9VOYzLrn6Uxu3I9EmJsTyEvWgxKFhhSUBr66eNggCDRGNHVO9zmI14KH4o+ZKqlo6e9PTrcV2W6Suvat+GDGdUuk87/ozA6wd7g63dJg6ntdgcGqrs/+aAkVCpG0VaJEpinDIo9RWTzJj5TguBL5dbceNSfN3VzWQ98yC1JJHGuX1jTEZyuHL5emg69AeXNBuHENYNXqF6hkZ+X2gi7ZIEtf//z9WPdPfwnMYuJBmxFtd+odbmI8dGdlDJx3tax5WGFSLVS+VZ4kfPZiwKpo7qO7VC4vDQdBcCzq5Y+87HWLXxZyLSBSdksD2dY51w7MyTJbHWoRxZv7zQryFGilisAOoLfp4bzV1Po6sGU4MgAuRRfcKMr7okLaB4cUnY7yCAjU8XtFC01ZHQfIaoshVo7cP2ZTGX4O2LVpxnHDs/9E+r3Xwk1l/Z9nKYhZhC4VkQYJ98i7KFd3rwSxbft5Bz6Zha9d/WfK1ybWbaihs4g76XXZNuwjp3GsMvxICn6DqtlIkj11GXp0n3S2Yk9hAK8NArnmmXAhCjW8
- s+awZ71N
- tPXOkCNt+QWkxr1McfOYfYZcCYZ8hGmEeubVcH5iOHKnGM+fO0fXSJj8Hu6eoxI4FvaEYeGOeWX+qzwkIxLMADM+jof9IQiPG2ytCNevuj5lWfIIfunOoBFJ6eYYZ5+nSenSQjYU6Fvwq9fI+DNTxyNlYxUZGfYtni+X02WmrezkfJa1FTD54jwVY6nbD+YqF75O1k/twPXkCi8CggzE1LZZtxNg3Amcro42IDOU8Rz1xjnXbVMoIlIJ4z4UWBFN9g4TaCYQQp7vkFCFPZubSWUDnX0PbEw8pDd8FUMLTl7vMB76WgMOTing61XE1JtS6H7Kdt9CfdcTax3EZ1goWYFCO542OUdiH5JMUsPrmVYWUG5CFkq1qySgCufxXj7aFb8c18QjTkZKbN5cnUQz5/vzqMsLpU5aBfUTsawTzvi+rIKc3TZczxeXYOYD4GuVp2H0oDUgAIOnghZnkD/hlnaH+W1jz9wPnXgalIwS4W8FSjIVIoH1RQ==
+X-HE-Tag: 1787617056-926624
+X-HE-Meta: U2FsdGVkX1+JgwsLGIk4eQwwlgr6mlMfPBzFy815WsxscKDNCEsm6QgStY6+uvvSz6MVBGGdj47x5cucq0bQD2QwPHfUDvLFtweBEyO9LYsIo7ZvsCOEjUIcXa9A4IdGCAiPUtoPLgarh8m8EGVkWeTYOjMveK5a3YFNnecbWjyh3NMETfpVM6mSCaLLqsPL6zrxBRdrQzPa2yQZiFCT/N3++9sYqQg46ANrGM3tW8UcwAYvZNlPNgs+uJ4SlCnFixZb1XbCyPoHQ+28/F3G0TPWwiQWhEeYvnQjRbF8Kzdgx+xh2bwHqOa4iZlfLZTM+fjZhWD3TF8VdtzrR6f5KkUyDy42+O6ktatbEfYqf7ZgVl3bggtEO3/P2w+QvvzXMBUDk31b3YnkCfqPd5YSzoc8bQ2q1EvI0wzx6KA/nmd4+Vw+yK5+u8pvhXfd8zWyUdzMNAmdrzy6UYF/HxlOEpxL2lfaFM5Sk4JlHHzHbQr2D68/ti7sPXCni5hohUzO2afZ8IpL0Vxo4R4BGEgQJ5Hyoc9K6375iUklLNU0+t/mEIWINwZCDEiosYVOUVhw9/PrDGcY5OFo6r0cLeaSpJ7sTHvfIzzxbIbJbqkXVZeKxb26sIgkqJdvzpze+RJmV0rgbOMGkAM8zmKGLmQyaLmO1yuL9EVUrZSthfUZVqGYLzbMynlNsUNDMlPokj35VgycY8CjQYsqJNGjFOlNjMK86i0YufAPLxdQG9zfr8nkRMf+Ll4inJOJedsEaOpNqQaKptWSmWHnMEKuxMKCkFK/N6WEwUJE0AnFLRaHhuT359xRaQcQ+c/R3lQ4zOWwACFm5tePlhLDTV/AvCtR6KI9zvXv4lEvH4NnhorKbXcVQZiCnFaZlWK7rxSuPD0tW7ocDH0MHKCCZAU7KpP4ZBO3vPWdBpkh0lAu5IfqIDDovVQen/Dnu3QZPGFdpjiCQeYwkqqkt066u99pyM7
+ woDyhzba
+ 0vSXTSOD2qBe3jAsZeqDw65SFvRJuQT+pVSR1OMIMa2Tde4lVLIga2Tbg9+XM19/jxAubZxM/0DaWl/LiSTGcbkjPVEHVM1JaJ6jBOdbG9rc3V30/vlRRBp+k3mBS0vkS2fx7OI0M0Iwai+1/ayIgPSqUP796nlZgnzbQrxPQzGOKqvI6yiL1Yifi+taNfLfo+32dvOklCvs2Mhn3dxCGVZNqq/54kdUHeE7Q8ceCp686i1XTaqXMHrVX9t2jbPv9dyb110OnWOtIethzcwrefwqGmF+TrCXmVCCKbDrpIeKI9P7qyXGwoMPSfObVU7vGsfQQiyQH+0w1nzEiIlSG6LcQybsYJlomcmNN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,98 +149,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, Aug 18, 2026 at 8:53=E2=80=AFAM Catalin Marinas <catalin.marinas@ar=
+m.com> wrote:
+>
+> On Wed, Jul 08, 2026 at 03:11:21AM +0000, James Houghton wrote:
+> > diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/=
+pgalloc.h
+> > index 1b4509d3382c..c8946250d431 100644
+> > --- a/arch/arm64/include/asm/pgalloc.h
+> > +++ b/arch/arm64/include/asm/pgalloc.h
+> > @@ -121,4 +121,13 @@ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pg=
+table_t ptep)
+> >                      PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_PXN);
+> >  }
+> >
+> > +#define __HAVE_ARCH_TRY_POPULATE_VMEMMAP_PMD
+> > +static inline int try_populate_vmemmap_pmd(pmd_t *pmdp, pte_t *pgtable=
+,
+> > +                                        unsigned long addr)
+> > +{
+> > +     /* BBML2_NOABORT is required. Its presence has been checked. */
+> > +     pmd_populate_kernel(&init_mm, pmdp, pgtable);
+> > +     return 0;
+> > +}
+>
+> This patch adds the same function in 4 different arch files. Can we not
+> have a single generic implementation in linux/pgalloc.h, bracketed by
+> some ARCH_WANTS_* (macro or config)?
+>
+> I think the same goes for patch 4 with try_update_vmemmap_pte(), we can
+> reduce the code duplication.
 
-syzbot found the following issue on:
+Yeah putting the generic version behind an ARCH_WANTS ifdef is so much
+better. Then I can just nix the EOPNOTSUPP branch; a compile error is
+always better.
 
-HEAD commit:    9d2ed026f031 Merge tag 'sysctl-7.03-rc1' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1124919e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6e414d6e0a79e71d
-dashboard link: https://syzkaller.appspot.com/bug?extid=75f49ec552cc74d9d69b
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> > diff --git a/include/linux/pgalloc.h b/include/linux/pgalloc.h
+> > index 9174fa59bbc5..ed446d95ca37 100644
+> > --- a/include/linux/pgalloc.h
+> > +++ b/include/linux/pgalloc.h
+> > @@ -26,4 +26,24 @@
+> >                       arch_sync_kernel_mappings(addr, addr);          \
+> >       } while (0)
+> >
+> > +#ifndef __HAVE_ARCH_TRY_POPULATE_VMEMMAP_PMD
+> > +/*
+> > + * try_populate_vmemmap_pmd - Populate a PMD that is in use by the vme=
+mmap.
+> > + * @addr: Base address of the remapped PMD.
+> > + * @pmdp: Page table pointer to be overwritten.
+> > + * @pgtable: Pointer to the page table that the new PMD will point to.
+> > + *
+> > + * This function is only to be used to update PMDs that map the vmemma=
+p to
+> > + * point to a page of already-populated PTEs that map the same pages.
+> > + *
+> > + * Implementations of this function must ensure that, while the update=
+ is taking
+> > + * place, CPUs will not fault on the remapped virtual address range.
+> > + */
+> > +static inline int try_populate_vmemmap_pmd(pmd_t *pmdp, pte_t *pgtable=
+,
+> > +                                        unsigned long addr)
+>
+> Nit: if we follow try_update_vmemmap_pte(), we could place 'addr' first.
+> It matches pgd_populate_kernel() as well in this file.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Will do.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9d2ed026.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/89c0c0c0f535/vmlinux-9d2ed026.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/80d7adeb0e7d/bzImage-9d2ed026.xz
+> > +{
+> > +     return -EOPNOTSUPP;
+> > +}
+> > +#endif
+> > +
+> >  #endif /* _LINUX_PGALLOC_H */
+> > diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> > index 977249e22ed0..b445febac0d2 100644
+> > --- a/mm/hugetlb_vmemmap.c
+> > +++ b/mm/hugetlb_vmemmap.c
+> > @@ -55,6 +55,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page =
+*head, unsigned long start,
+> >                            struct vmemmap_remap_walk *walk)
+> >  {
+> >       pmd_t __pmd;
+> > +     int ret;
+> >       int i;
+> >       unsigned long addr =3D start;
+> >       pte_t *pgtable;
+> > @@ -74,8 +75,15 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page=
+ *head, unsigned long start,
+> >               set_pte_at(&init_mm, addr, pte, entry);
+> >       }
+> >
+> > +     ret =3D 0;
+> >       spin_lock(&init_mm.page_table_lock);
+> >       if (likely(pmd_leaf(*pmd))) {
+> > +             /* Make pte visible before pmd. See comment in pmd_instal=
+l(). */
+> > +             smp_wmb();
+> > +             ret =3D try_populate_vmemmap_pmd(pmd, pgtable, start);
+> > +             if (ret)
+> > +                     goto free;
+> > +
+> >               /*
+> >                * Higher order allocations from buddy allocator must be =
+able to
+> >                * be treated as independent small pages (as they can be =
+freed
+> > @@ -84,21 +92,17 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct pag=
+e *head, unsigned long start,
+> >               if (!PageReserved(head))
+> >                       split_page(head, get_order(PMD_SIZE));
+> >
+> > -             /* Make pte visible before pmd. See comment in pmd_instal=
+l(). */
+> > -             smp_wmb();
+> > -             /*
+> > -              * On arm64, this requires BBML2_NOABORT. Its support has
+> > -              * already been checked.
+> > -              */
+> > -             pmd_populate_kernel(&init_mm, pmd, pgtable);
+> >               if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
+> >                       flush_tlb_kernel_range(start, start + PMD_SIZE);
+> > -     } else {
+> > -             pte_free_kernel(&init_mm, pgtable);
+> > -     }
+> > -     spin_unlock(&init_mm.page_table_lock);
+> > +     } else
+> > +             goto free;
+> >
+> > -     return 0;
+> > +out:
+> > +     spin_unlock(&init_mm.page_table_lock);
+> > +     return ret;
+> > +free:
+> > +     pte_free_kernel(&init_mm, pgtable);
+> > +     goto out;
+> >  }
+>
+> Would 'free' first with fall through 'out' read better?
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+75f49ec552cc74d9d69b@syzkaller.appspotmail.com
+Yes, yes it would. I think the current ordering is just a holdover
+from earlier attempts at writing this function.
 
-tipc: Started in network mode
-tipc: Node identity 2007ff, cluster identity 4711
-tipc: Node number set to 2099199
-md: async del_gendisk mode will be removed in future, please upgrade to mdadm-4.5+
-------------[ cut here ]------------
-1
-WARNING: mm/page_alloc.c:5280 at __alloc_frozen_pages_noprof+0x2ce/0x380 mm/page_alloc.c:5280, CPU#0: syz.0.0/5310
-Modules linked in:
-CPU: 0 UID: 0 PID: 5310 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__alloc_frozen_pages_noprof+0x2ce/0x380 mm/page_alloc.c:5280
-Code: 74 10 4c 89 e7 89 54 24 0c e8 8e 2d 0e 00 8b 54 24 0c 49 83 3c 24 00 0f 85 ab fe ff ff e9 ac fe ff ff c6 05 74 6e 18 0e 01 90 <0f> 0b 90 e9 17 ff ff ff a9 00 00 08 00 48 8b 4c 24 10 4c 8d 44 24
-RSP: 0018:ffffc9000d50f520 EFLAGS: 00010246
-RAX: ffffc9000d50f500 RBX: 0000000000000015 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc9000d50f588
-RBP: ffffc9000d50f610 R08: ffffc9000d50f587 R09: 0000000000000000
-R10: ffffc9000d50f560 R11: fffff52001aa1eb1 R12: 0000000000000000
-R13: 1ffff92001aa1ea8 R14: 0000000000040dc0 R15: dffffc0000000000
-FS:  00007fe2b9aac6c0(0000) GS:ffff88808c519000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffc93d2c090 CR3: 0000000044100000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- alloc_pages_mpol+0x212/0x390 mm/mempolicy.c:2490
- ___kmalloc_large_node+0x4c/0x120 mm/slub.c:5274
- __kmalloc_large_node_noprof+0x18/0x90 mm/slub.c:5305
- __do_kmalloc_node mm/slub.c:5322 [inline]
- __kmalloc_noprof+0x409/0x720 mm/slub.c:5359
- _kmalloc_noprof include/linux/slab.h:992 [inline]
- _kzalloc_noprof include/linux/slab.h:1309 [inline]
- setup_conf+0x28b/0xce0 drivers/md/raid10.c:3883
- raid10_run+0x1d2/0x16c0 drivers/md/raid10.c:3984
- md_run+0xdbd/0x1e00 drivers/md/md.c:6760
- do_md_run+0x35/0x720 drivers/md/md.c:6861
- md_ioctl+0x1c58/0x2580 drivers/md/md.c:8492
- blkdev_ioctl+0x5e3/0x740 block/ioctl.c:797
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe2b8b9e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fe2b9aabfe8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fe2b8e25fa0 RCX: 00007fe2b8b9e0d9
-RDX: 0000000000000000 RSI: 00000000400c0930 RDI: 0000000000000009
-RBP: 00007fe2b8c35024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fe2b8e26038 R14: 00007fe2b8e25fa0 R15: 00007ffe1ca65d58
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Thanks!
 
