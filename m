@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB4BC5DF9C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:27:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D58C1C61CE2
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:27:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6961D6B00A1; Mon, 24 Aug 2026 22:27:28 -0400 (EDT)
+	id 906D86B00A3; Mon, 24 Aug 2026 22:27:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61FF26B00A2; Mon, 24 Aug 2026 22:27:28 -0400 (EDT)
+	id 8DE026B00A4; Mon, 24 Aug 2026 22:27:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5355D6B00A3; Mon, 24 Aug 2026 22:27:28 -0400 (EDT)
+	id 77F4A6B00A5; Mon, 24 Aug 2026 22:27:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 279DB6B00A1
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:27:28 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A53F81C171A
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:27 +0000 (UTC)
-X-FDA: 85138205334.02.C9C64C6
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 517B36B00A3
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:27:35 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF3A3A02D3
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:34 +0000 (UTC)
+X-FDA: 85138205628.27.83D6054
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 74C9940007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:25 +0000 (UTC)
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9AF2540005
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:32 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=l98Y5shB;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LSqWKhxW;
 	spf=pass (imf17.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787624845;
-	b=ZUyMIRQs92IlKmsx522is7g2YywV0T9xr0taDE835Cb4Y2pHFo+VK5dxOTJlSDuYx5KuDT
-	zdxXBHXT9pL3Ni7i9oJRbxTukuniXubeDgaylBkWi1rSdyguNno0qy/FgfIcWW1kDqzdu+
-	XX8efLowrS+OYSLRbugP7GLEzcpFero=
+	t=1787624852;
+	b=vbN42UHic08xpjut/+3kWfX2sUGgb5EMHs2YTz9Cg3AAfdpMqpK/cUqTrwHqroufeuu1nT
+	dc3jzRHMb4GkJCiZ7gl/Kqo0F8KD2jish/yoDxgAnBcGoU406oH5rmK5OtzhU5zQ9zigjd
+	mqLVbMbyV0pnjLuhMx3zlvFPiQ4qSes=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=l98Y5shB;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LSqWKhxW;
 	spf=pass (imf17.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787624845;
+	s=arc-20220608; t=1787624852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YEdJik5d7Qt4RJJH8YjwskAz6j1p5QH/xqQKb6YvaA0=;
-	b=BjwCTFR8Tl2lbMlV2nqbzBTp+UsJeXOvVfyanO/gy6zlMziIp4hb/G1iIJGQvWAYsIEaHu
-	DFU3rLx1CCZ6VRl4dTvbe0KHGaW44O6zlOU0ywo1duQNwrYe3MVbDFX9VX2NUKA07R1qVY
-	mvPJVzhgq7qGnAznrYAkYck/tdtdmmk=
+	bh=Gg63PhMraaFvL8DloQlOafHaxDCdsaa0LL08JCLdwZ0=;
+	b=qw0LGdyBjarjZw+10teD/d+Nf8Rko5jvntcD0jFDvNVx8tHa4kpAKQ5rAhAPnKO6qdeGhZ
+	TcyrFhHWRFO0ZDtYaJ7C+B+geTMoqDL58F7wCMcx6UyWMhOp1G8TCW9XWnPOxwUYo9Ljzr
+	kZnjuCNjQCX8PjqEx0smAIpfobr/CBI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787624845; x=1819160845;
+  t=1787624852; x=1819160852;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=mlXvc2rRoY2YlNiSOc7Za57w/VMQm4ZP5P9P9htgZBo=;
-  b=l98Y5shBGGVXYa4ZqJICVe6ALizPiauM1O0B2jc4UzlT3t81oIC3CxSO
-   5PS6jp4SRloaIHVdI0xEQNyyPXj2YJXPMJU8H1WLZ6AHe+OkrkUhNKijG
-   cxLiZ4GyuHf0422WeU5GDPKp/h9LbvuYzv106y3C668EeSJLWsVh/h7be
-   EGuyqXTs/8JzOXt8xPDDcoOB7TEOL/pSmNdr3RlbquaH48IO0aoV79Sud
-   J9hB8ymMYosb5FQuA1buKgZf3Okkwq12dXtzmHTsjDwjKLrOb5BNdRpvZ
-   fq25hYQ2EoeJ92v5BkEvQYUbtXioYwBhp3hCsS8jxUCOo4YuRn06NTygi
+  bh=pWL2Fx2f1XZ+ch7E4+5dIo1Wx0My4gYiTT+UYgnRcCg=;
+  b=LSqWKhxWagvIIkOZDUSWCV0Hw+87KSAXzVOpc9MdyXkfZnBgfLgMfBN8
+   kaQVxXxxNZYfsAJU4P9WFUnmIy/Wnv+n9pEZhqhxjtBKYTQj61ukxfjOc
+   O1m3iOwTJdRj+nCbnCdVi9awJjVgxBEVNfUnsHpkOPScaMuO+6DeWLbfC
+   yDWRi0gz0TZhsPAyIdVeQB3YXGY3L6F6W+RCuCDAsK5Z2PJpw/cHgdFI7
+   6rjtOl2/uDDgA2XhN6yVoYTu5voltH0uCRwsdJx6izR8srvvbDhPaTsvL
+   IfhO4yX/Af9fp6t8xER6dqC2KsDbOKmLsagMmwPZI/EAKJtCi2K4/sTK9
    A==;
-X-CSE-ConnectionGUID: c0m7ghhGRMygWDOdXaaB0A==
-X-CSE-MsgGUID: vYh0/Dc7TOSMxYuuLEBkDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98761096"
+X-CSE-ConnectionGUID: 3u7yq89rSKS6Ne/FhuRWTw==
+X-CSE-MsgGUID: eanMcn/AQgm+rbuZUpKfvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98761125"
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="98761096"
+   d="scan'208";a="98761125"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:25 -0700
-X-CSE-ConnectionGUID: dBw0ZWZbTCKZ3Pil1roFLw==
-X-CSE-MsgGUID: kbHXBOSMRlutXt3xqVFERg==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:32 -0700
+X-CSE-ConnectionGUID: 7NtM2xUoQvWwCT7qK5iedg==
+X-CSE-MsgGUID: cG6ZbR99R2KFBRJD6RIbrA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="265390092"
+   d="scan'208";a="265390100"
 Received: from fdefranc-mobl3.igk.intel.com ([172.28.182.157])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:18 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:25 -0700
 From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
 To: linux-cxl@vger.kernel.org
 Cc: David Hildenbrand <david@kernel.org>,
@@ -105,22 +105,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-pci@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: [PATCH v2 06/13] drivers/base/memory: Add cxl_offline_memory() to offline a physical range
-Date: Tue, 25 Aug 2026 04:26:21 +0200
-Message-ID: <20260825022628.3651434-7-fabio.m.de.francesco@linux.intel.com>
+Subject: [PATCH v2 07/13] cxl/core: Add region disable and enable for a DPort SBR
+Date: Tue, 25 Aug 2026 04:26:22 +0200
+Message-ID: <20260825022628.3651434-8-fabio.m.de.francesco@linux.intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 References: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 74C9940007
+X-Rspamd-Queue-Id: 9AF2540005
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: gyfwe15ficcd14g8wx7u5acmc3jzezb6
-X-HE-Tag: 1787624845-935690
-X-HE-Meta: U2FsdGVkX1+cu+Wista52trObw2p+qHjhCUV5G+PreMApFY2JX8TpivKsj4B23UDbbcvKFt2aeeAXu/Ffsb6dtCfSzym2hsG6st5hNmXnAcERjhID/E5hHSmRjtUdtutDtOC7UmgOHtBGeNNs/QfCUcOfrlVvMBMqKOA3SoxqkWvcMMT5EZuO5X/WfZfL7tOvQG91Im/ZU+4uLaH+8UrRlF26bm/cXLnqjnKdqV9xl2zWb8a4wfsUaIhmadBLhiSA2G96/Hx0FhcQbsGqHtybIuQwAmU9IwBawqOzEeKoX/vlUVwF9Pw5eoPOJqoli1MjbAmUSRJE5PLNOOweKTI2MsAUNPo7HR9e0XxH5Aep/HxOS8XnxgYArrnouDByiP2irnJlz5ksPT7kDkFNwenMbUoxiKZeSZJ/iHcU6LkU8cKE5Wu85UqoDJvOhNykOVGQ/itNzSPPDnf636E8rKuh/6yiDUQb52SstYbK0AHT5OGcBa1ZskFynw8iPe1wYbauFedKyMmZBPWqTFKqRj5HJyyaA8RwiKVvJgEkIY7DrTLhGqrjM+CxYjvCDLyG8bIP2Xq0DpdcGAPNx92+p5A7kuzCGbF8yjPzeskTzYofEtkyidKoyuiwgW6/FDBT2vUP+TpeLqrFlkCLHiiqirVYMVNIjtLORDUh1ShWxxBFyLvgYfgs7+72K3skM6ivXXf0yH+S7Oo5vnH+XWGZ4/PQ/v+y+0ASXbUQ7oTL7pkt1ki8xtzj1SvpIX6oUaXKRNR1XPLqqgZOMnAFSZXMxXjqsvJIu4GjayMMuxjof5sGCG+cHiJ7bUa7KSP1kF0qrMw+knGeiORrgXdJU1vIGueW7ODP1M3AXHsgihvjTjcKRltIwtBRu3SFZdmb1BNi9UE1heDQCJmFmd90b64gJukrxrD9iZ3uR85ifuQkpUU6OiZwYP67cKCnwIrm9d+jZcNcEPULq046S5yFkmFPnN
- ZvEY0lPL
- XbT5BM55aeGkrCLEfkUoXMF78Zz3FPY4eDskCmOdJvU22IJ2UC0jA8ut5Fcq+bEMMbf+QCaRAokzEJCS4aiPxPi5ICdTgSmyTuJ+4l+xJGxaiKjjwB91G4vLOvHrEFM5Ith14vp3VuuIRxinbfaYHuAtGPGrydnY8Liv0IvqylPNlcNhZ12TdDgDzEMzw92ohwokBi9+TLJVEQ0L4RL5bqL80ulGkY1QwM56065cdIPbCkU4=
+X-Stat-Signature: prmq7z15iawddmwyr87iyg7xtrsjdp7q
+X-HE-Tag: 1787624852-382653
+X-HE-Meta: U2FsdGVkX1/VizpWHW8w5oW7gYv3UK2TSMd6B9FYdy9KgmWOb9qg6r2Xu+Ro44H2pr51k9L+7B7wVAccsj1NpJ66fytT1F+Dj8TmiAagbnypJNd7oV21SP9h5D9E8l2h8S98KYnSdD+GblLF/uS9VDOjEEeISE5NOO7+FFVxKZP69xp2r425MlrOu/MyZQcRC/BQfqfydYPHZrUuujTlUE/yw98jw6BCw9JHVBp8XW/3OIpVokZ3R7a18xErAIY4Imbm9lSw2vFA/V5i5aBws/IH07MgKsnSe1pWPNnvAkB09XVAKjYhW4JOd10zY5zFAQ8/Kvc98HkU6BryjEEDEBx+mu72QvMvwDECZDXrujM5GN5XhexOy3cPhwFw4YNGvLZ/irAiqoxxEQj9DKN5T0hU7orRWZy4OtywjZ7Y7mFy7+MqiN0vMm62ZkXzfRV2HBtcGxjfnJvdsyV1vXez8KLcX0ylMU7Y7otZIRXBEvJ0L/FVfOu2C1yfLEKDylX1qvucrSaILt6W37jgbDOwNwYYzxvKAJnY76YUecI6VefIU4/BOi1u0ujZw90RDIhn/fEznkqQZ8U7v0yxbBJfT8NIXLTO8MRoy/V5/evuc6XcBiGuO+StC0RJ30BCyHS1BptjWQNtNNpf7fYKtrMBSxdZW1Z6kMyE+HTD+Wk3+xQZKEEAMqey4uFR8WJTNZEw96QV2/YIWnQI8UxhwErqXTs8CqNouHdP93N6x1kN+URTPADPSwU/AsA4ipfCVxFgETrGDxm1W4h4qJPwI/c0hfQ4BDoghoPsXmn+klPJtSxLgupL3qI6rXp2oJxb9OP8M3ncuXyR/p9jMXuTv5E+FKMJfujBdU/dDafVJ7Ejnkm4WddVvvRs2VAleQwbAm3GdMmBPnpYcXDZsEzYW8zRlJXAlhI7vE0cagbumxQczgAh7z1LV5IG5pMEnXbIEmVJ9qE8hBBh36frmNn0YAN
+ jMInWg7J
+ Ua/e8C4NYwk+Jzn3LDTJSc3AYP4Nwi0VcTeJISC9bmlVBjGZL9P24WSwsCNJ5yyPvnsxFNhPQGv7mbdRTco0u8/ihsX2KcZ0jEhmtBEeibjNiIUiIJrmXGv8Qjo9o44GtxR+q6c5+1gL0i9xaeAZ10oE+j/szqzga6R/Dz4lVnvcGu4WJ4NLt8s+EAgyfPdAduQ2s8G7gRQwAtLmmQrDbZfMbnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,90 +128,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A CXL region whose capacity is online as System RAM must be taken
-offline before a Secondary Bus Reset of the CXL Downstream Port it is
-reached through.
+A Secondary Bus Reset of a CXL Downstream Port removes the downstream
+component from the bus, so a CXL region reached through that Port has to
+be disabled while the reset runs.
 
-Add cxl_offline_memory() to offline the memory blocks spanning a
-physical range, exported in the CXL_MHP namespace since the CXL core is
-its only caller.
+Add cxl_region_disable() to offline memory, invalidate the CPU caches
+for its range and release its driver, and cxl_region_enable() to
+re-attach the driver afterwards.
+
+Neither function has a caller yet. Both are driven by the reset once the
+set of regions routed through the Port is known.
 
 Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 ---
- drivers/base/memory.c  | 36 ++++++++++++++++++++++++++++++++++++
- include/linux/memory.h |  5 +++++
- 2 files changed, 41 insertions(+)
+ drivers/cxl/core/core.h      |  3 ++
+ drivers/cxl/core/dport_sbr.c | 79 ++++++++++++++++++++++++++++++++++++
+ drivers/cxl/core/region.c    |  3 +-
+ 3 files changed, 84 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index bcfe2d9f4adb..ce89b251d34a 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -1018,6 +1018,42 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
- 	return ret;
- }
+diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+index a8b9d7990d32..ac55f9e8160e 100644
+--- a/drivers/cxl/core/core.h
++++ b/drivers/cxl/core/core.h
+@@ -56,6 +56,9 @@ u64 cxl_dpa_to_hpa(struct cxl_region *cxlr, const struct cxl_memdev *cxlmd,
+ int devm_cxl_add_dax_region(struct cxl_region *cxlr);
+ int devm_cxl_add_pmem_region(struct cxl_region *cxlr);
+ void kill_regions(struct cxl_root_decoder *cxlrd);
++int cxl_region_invalidate_memregion(struct cxl_region *cxlr);
++int cxl_region_disable(struct cxl_region *cxlr);
++void cxl_region_enable(struct cxl_region *cxlr);
+ struct pci_dev;
+ void cxl_sbr_recommit_decoders(struct pci_dev *dport_pci,
+ 			       struct xarray *hdm_state);
+diff --git a/drivers/cxl/core/dport_sbr.c b/drivers/cxl/core/dport_sbr.c
+index 55c35386d0cb..0f398ab0d3a4 100644
+--- a/drivers/cxl/core/dport_sbr.c
++++ b/drivers/cxl/core/dport_sbr.c
+@@ -1,11 +1,90 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /* Copyright(c) 2026 Intel Corporation. */
  
-+static int cxl_offline_memory_block(struct memory_block *mem, void *arg)
-+{
-+	int rc = device_offline(&mem->dev);
-+
-+	/* device_offline() returns a positive value when already offline. */
-+	if (rc > 0)
-+		return 0;
-+
-+	return rc;
-+}
-+
-+/**
-+ * cxl_offline_memory - offline the memory blocks spanning a physical range
-+ * @start: start of the range, memory-block aligned
-+ * @size: size of the range, a multiple of the memory block size
++#include <linux/memregion.h>
++#include <linux/memory_hotplug.h>
++#include <linux/memory.h>
+ #include <linux/device.h>
+ #include <linux/pci.h>
+ #include <cxl.h>
+ #include "core.h"
+ 
++/*
++ * cxl_region_disable - make a region inactive ahead of a Secondary Bus Reset
++ * @cxlr: region routed through the CXL Downstream Port being reset
 + *
-+ * Offline every memory block in [start, start + size). The blocks are offlined
-+ * but not removed, so the range can be brought back online afterward. The
-+ * caller owns the range and this performs no validation on it.
++ * Offline the memory blocks the region owns and unbind its driver. An SBR
++ * zeroes the downstream bus number, so a region left live as System RAM would
++ * be accessed while the device is in reset. On offline failure return the error
++ * so the caller aborts the reset; the memory is never force-removed.
 + *
-+ * Return: 0 on success, negative errno if a block cannot be offlined.
-+ *
-+ * Context: process context. Sleeps and takes the memory hotplug lock.
++ * Context: process context. Offlining and driver unbind sleep and take the
++ * memory hotplug lock, so this cannot run in atomic context.
 + */
-+int cxl_offline_memory(u64 start, u64 size)
++int cxl_region_disable(struct cxl_region *cxlr)
 +{
++	struct cxl_region_params *p = &cxlr->params;
++	unsigned long block_size;
++	u64 start, end;
 +	int rc;
 +
-+	lock_device_hotplug();
-+	rc = walk_memory_blocks(start, size, NULL, cxl_offline_memory_block);
-+	unlock_device_hotplug();
++	/*
++	 * Per CXL r4.0 sec 9.13.1 an Interleave Set has a Base HPA and a Size
++	 * that are multiples of 256 MB, while a memory block spans up to 2 GB.
++	 * A block overlapping either end of the range therefore also covers
++	 * memory outside this region, so round the range inward to block
++	 * granularity as dax_kmem did when it onlined the range. Offlining a
++	 * straddling block would migrate pages that the reset does not affect.
++	 */
++	block_size = memory_block_size_bytes();
++	start = ALIGN(p->res->start, block_size);
++	end = ALIGN_DOWN(p->res->end + 1, block_size);
++	if (start >= end) {
++		dev_dbg(&cxlr->dev, "%s: HPA %pr spans no whole memory block, no System RAM to offline\n",
++			__func__, p->res);
++	} else {
++		rc = cxl_offline_memory(start, end - start);
++		if (rc) {
++			dev_warn(&cxlr->dev, "offline System RAM failed before reset: %d\n",
++				 rc);
++			return rc;
++		}
++	}
 +
-+	return rc;
-+}
-+EXPORT_SYMBOL_NS_GPL(cxl_offline_memory, "CXL_MHP");
++	rc = cxl_region_invalidate_memregion(cxlr);
++	if (rc) {
++		dev_warn(&cxlr->dev, "CPU cache invalidate failed before reset: %d\n",
++			 rc);
++		return rc;
++	}
 +
- struct for_each_memory_block_cb_data {
- 	walk_memory_blocks_func_t func;
- 	void *arg;
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index 463dc02f6cff..5dc0b96fb004 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -149,6 +149,10 @@ static inline unsigned long memory_block_advised_max_size(void)
- {
- 	return 0;
- }
-+static inline int cxl_offline_memory(u64 start, u64 size)
-+{
++	device_release_driver(&cxlr->dev);
++	dev_dbg(&cxlr->dev, "%s: System RAM offline, region disabled before reset, HPA %pr\n",
++		__func__, p->res);
++
 +	return 0;
 +}
- #else /* CONFIG_MEMORY_HOTPLUG */
- extern int register_memory_notifier(struct notifier_block *nb);
- extern void unregister_memory_notifier(struct notifier_block *nb);
-@@ -167,6 +171,7 @@ typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
- extern int walk_memory_blocks(unsigned long start, unsigned long size,
- 			      void *arg, walk_memory_blocks_func_t func);
- extern int for_each_memory_block(void *arg, walk_memory_blocks_func_t func);
-+int cxl_offline_memory(u64 start, u64 size);
++
++/*
++ * cxl_region_enable - restore a region after a Secondary Bus Reset
++ * @cxlr: region disabled by cxl_region_disable() before the reset
++ *
++ * Rebind the region driver. The System RAM is left offline; bringing it back
++ * online is a separate administrative step.
++ */
++void cxl_region_enable(struct cxl_region *cxlr)
++{
++	struct cxl_region_params *p = &cxlr->params;
++
++	if (device_attach(&cxlr->dev) < 0) {
++		dev_dbg(&cxlr->dev, "driver re-attach failed after reset\n");
++		return;
++	}
++
++	dev_dbg(&cxlr->dev, "%s: region re-enabled after reset, HPA %pr, IW %d, IG %d\n",
++		__func__, p->res, p->interleave_ways, p->interleave_granularity);
++}
++
+ /*
+  * The reset cleared the HDM Decoder registers of every CXL component below
+  * @dport_pci, so restore them from the settings the driver holds and from
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 1e211542b6b6..fc0bec991a69 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -222,7 +222,7 @@ static struct cxl_region_ref *cxl_rr_load(struct cxl_port *port,
+ 	return xa_load(&port->regions, (unsigned long)cxlr);
+ }
  
- extern int memory_group_register_static(int nid, unsigned long max_pages);
- extern int memory_group_register_dynamic(int nid, unsigned long unit_pages);
+-static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
++int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
+ {
+ 	if (!cpu_cache_has_invalidate_memregion()) {
+ 		if (IS_ENABLED(CONFIG_CXL_REGION_INVALIDATION_TEST)) {
+@@ -4273,4 +4273,5 @@ void cxl_region_exit(void)
+ 
+ MODULE_IMPORT_NS("CXL");
+ MODULE_IMPORT_NS("DEVMEM");
++MODULE_IMPORT_NS("CXL_MHP");
+ MODULE_ALIAS_CXL(CXL_DEVICE_REGION);
 -- 
 2.55.0
 
