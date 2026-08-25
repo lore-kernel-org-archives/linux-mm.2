@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C007C61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 15:52:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDCD0C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 15:53:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 797936B0088; Tue, 25 Aug 2026 11:52:32 -0400 (EDT)
+	id E75426B00B4; Tue, 25 Aug 2026 11:53:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76ED56B00B4; Tue, 25 Aug 2026 11:52:32 -0400 (EDT)
+	id E4C6F6B00B7; Tue, 25 Aug 2026 11:53:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6840C6B00B6; Tue, 25 Aug 2026 11:52:32 -0400 (EDT)
+	id D633E6B00B8; Tue, 25 Aug 2026 11:53:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CE076B0088
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:52:32 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C4C361C1B99
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 15:52:31 +0000 (UTC)
-X-FDA: 85140234102.06.A97056E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AF5696B00B4
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:53:04 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4DC92140470
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 15:53:04 +0000 (UTC)
+X-FDA: 85140235488.14.0762EC9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E75C3140004
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 15:52:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oI2Zk6aP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6DEC9100003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 15:53:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oRoZMsWl;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787673182;
+	b=6Jrwd8Gp9jvT66L8WMLIxVAcmbsV0vHAcaucYwSk70QPQpCYyyZl4+699tDi1pb2PLePL3
+	pOpKtdqPkrWTsqOU0RDMKUlLvPOU3Exi4/kWk2+ygZpXFUn8a71olJ83xY99Fhe7y907QR
+	N/48Wek+wuJX7sYzDV/3fWmdoNCHz3o=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oRoZMsWl;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787673150;
+	s=arc-20220608; t=1787673182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZXk+8AC9tMdedJd5dFONsAVyXoD+TKxKvDZGwEn5NWc=;
-	b=N3bE2Y4iQXR8naYkFOjE+413kwmBMj6+ljrU8oK03odNmdsp5d3ije1u2Qd0WpSIzPRoDr
-	VC6UADdFlRXp6ShBwoLtBi7jBiFyBH+CJO+R9atC+YZFv271rWVcWj8oi3WfJsFKzcszPD
-	ZfyXeRfMmEYfW71uUWOH2VZEamAmvyE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787673150;
-	b=bXWYP585dIS0tMv2KcRij7w0yEJbsayd8KDx3bv2Fa4ijefsL/w704coR2nNBjN+bS6LMf
-	F8gppCWg0fkjG1f7bfeeB1fpKR8a01RX5mc3qQVMuIJdYpEokyxLTmEPwFQY/pXhqg8P+w
-	glzxD60gD6c0i9Y7OA50xODHDc46qzI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oI2Zk6aP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=y0JHVvurql813KlZzufsG9y4LfXw6aq5+c0ANPzcrIU=;
+	b=ab1ZV4l0xOHRr5qwn2bwktADCaHwq6zQr5EGuYOOr2vcPIcepbxC9H4HPW017fC1epu49U
+	jQwZClKDrkTJauGr33XhLdsB6jTNFZ6qhrtt1/VpjviQKdSIjXk2wpcAR6ueseSk4cjaU2
+	wJ7e6rrodnQDHuBTcmz53qVQbWeQl5Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 40A5440266;
-	Tue, 25 Aug 2026 15:52:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23831F000E9;
-	Tue, 25 Aug 2026 15:52:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A412040268;
+	Tue, 25 Aug 2026 15:53:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AE71F000E9;
+	Tue, 25 Aug 2026 15:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787673149;
-	bh=ZXk+8AC9tMdedJd5dFONsAVyXoD+TKxKvDZGwEn5NWc=;
+	s=k20260515; t=1787673181;
+	bh=y0JHVvurql813KlZzufsG9y4LfXw6aq5+c0ANPzcrIU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oI2Zk6aPcKkinmBuXHsTZ0lPJ4zsulOOd+7Q8ro+fhQrEaP7SevErk++Sfea1CJHw
-	 RTBp0SQ0bSsWlDvvcmXRJ0fkpWy7wuwH18ye7GWtdS442r3bFLRANmLUtv0GBoMf4k
-	 loic+XmPvhLSIQlKZS3Otbd5tQDJe9tlzll4BHZzYLDH00tWHwOKOQdrmEdE8C2tHa
-	 E6Y2ySQ+ywO71VP3c7v9uDXbV9Fo+xdyoP2wyUOH9bSLvYStTgwwTNsEmeqk+ZddGd
-	 nKb4s3xFXsLeVwCfjLCXrP20slkDnhpBM2ZVH0Vs0QxetWz+wIrI6DkAcu9PjWZm86
-	 UGrGKqcDgz/WA==
-Message-ID: <c81ff923-800c-4ef4-b6e4-ec9f5eb1671f@kernel.org>
-Date: Tue, 25 Aug 2026 17:52:20 +0200
+	b=oRoZMsWlCsqG/kH8NFUEkZxiPsDKdcCtYzz7thSV/CAFEIPu3j/S0Y4RW9X0jCyDd
+	 2JpjAhBidHd4+EbFbyQMrkSkCgIX14zrKvABjoKYbx2N35behllJfFQDqR6PXmszkN
+	 4t13gsjDclvxPCk4btEfvq260PKC9v/wJUTMAkb5f2oXNMR7EtEeuV9pvkClKmqeRk
+	 q9wmgq2GenNq1RjdJUxv9FY4hRmiW9YcUjTfQHmMb51ZYgfUmthBb8gupbVZIszXUN
+	 lHNwghHp/LwjmhA6tNX9LYh5FF5LST3jTOY1ZS+bw+Tv3rye66Hxgd15i+C3Agw+4j
+	 cKrXM/SNIlUwg==
+Message-ID: <149b9dff-9c96-448e-9c20-96ba92ff6971@kernel.org>
+Date: Tue, 25 Aug 2026 17:52:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] arm64/mm: add set_direct_map_ro_noflush()
+Subject: Re: [PATCH v6 3/3] x86/mm: add set_direct_map_ro_noflush()
 To: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org
 Cc: ljs@kernel.org, usama.arif@linux.dev, catalin.marinas@arm.com,
  will@kernel.org, linux-arm-kernel@lists.infradead.org, tglx@kernel.org,
@@ -77,7 +77,7 @@ Cc: ljs@kernel.org, usama.arif@linux.dev, catalin.marinas@arm.com,
  baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Lance Yang <lance.yang@linux.dev>
 References: <20260730090647.2401252-1-xueyuan.chen21@gmail.com>
- <20260730090647.2401252-3-xueyuan.chen21@gmail.com>
+ <20260730090647.2401252-4-xueyuan.chen21@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260730090647.2401252-3-xueyuan.chen21@gmail.com>
+In-Reply-To: <20260730090647.2401252-4-xueyuan.chen21@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E75C3140004
-X-Stat-Signature: iqmkjyd4eusffhbfodho4nofs4ao5ztr
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6DEC9100003
+X-Stat-Signature: 18jnzysppwzforah5xtc4un3nnpcyboe
 X-Rspam-User: 
-X-HE-Tag: 1787673149-11949
-X-HE-Meta: U2FsdGVkX19i0y8Hp3XS91skOOTuQ4Ve1xxvHyOxw6vRs26T1UqOIWOIoUOTa3b2GIAUwgSUYfh87csBuM01xDTOB+IFJkRprtXB9lMiRc1PS2Bp9BZ76hHObGsTTiqzGTPSeqnpfLXRWKuSmTJpDjO8tk/ibkSnRpSAoXNlvftqzffD00F+M/I+A9jYlLEZgdc+xBbLVKs/xW9mXy66iNtdOv6K929UPwht5va+5dm4yyKAO18r5Ib7AUmAPtd/T5IswAiyJd5DOF8xruHw4y0wMl8JOPJLvHrDbJOKOhaY7hf4UST5NJahk7lBBNP7c96l5PCF0voiIATjYnhQO8xXEjr/kfUvwH/g6XAgq4NtcKGB2cN67Huo8xUDKLlPvmPNeaMsNPJ+F7O4K8HnFiBg/BcqeBb55Vcu8oaVkuDfTFUiKT4MjLPfjywKNoqHYkqcwhMWB9XEcxbyRy0VOs2zB+pLci503OPqh4mS1udpT2st9+2LdnOZkmvA8lrYYCjYcEEoW7kikMqJ175sXMs669La9SGiyDat0O9QL4i7gWDqmRnt1Vi1Lrl07YksPEHDcf2bYQ0bVB9Kn7FKRwQvJPKNov3f1Gxr+mwXpNA/HIo7wrtHqsofA2G3L3sTJWJU7VMhZBVvg/DCJpNQoYvO96d2zeJ7a22NSBzrhtFB/x3/EtamNOsAvOxocpfNVGeuI2iz+4ORsSLgmd2MrmOOZg06EgC2himjX7GJ233tY+urLCbzVyqTsCHnbdxtDuZqNBt7yIdWyFE7GhuxGbUkEh4IGY7di450A86bKvFxKjQf9l+iA79E97DtdBk4UByuQfLRo2U1udZOTCMMrh+BS1sIXQxoCZSTzKYjJ8rFPVimqIwNH/Xljj12gto2ts77kJLdvAJonDxKXMFj6Yw4iInBFQKvle7gNMuWzGg8yUZDLGsZdgmuzLA3onnqIfPMO6jdDa6En7JK1nI
- 3XKoYnK0
- YFH72rjWqC3bqr6tzwPmK30DSR8L1ZmvFE23UhTDaAhCQ3lWboQjjH2xX9zls4eirKmn0LONF7BuvypE+OR7sjFEfEINQB+85EZgZ0xfIS64U8S6q1Bw1VFDGBB+bqZTpMO6Rj6xaTaj6dsF7S+ryLoYZ/IbbP8/F6HBgOmAhIrhw4Zi9ZP7q+Da432h2mEoMUw3ERCPJtclcUcDg5iHrJjddSf4e6hQL7jDONi9kGg+wD6xG+m73Gr7EAh8GdFDu8UwFmKUV7dSDc9lCxDAS4VN/z8J7mu8LvYhh1mkl1ly6Uhym73xGPReYES/9vzqmQo21hojfLEgK4VM3tWXZ2V07X6Tw5SQZhLHCMOO5pmOfXOmv2fwuMPrpzZEpnKsdFon2UzBFVKhC3VvRzQBHt7fiiQ==
+X-HE-Tag: 1787673182-428190
+X-HE-Meta: U2FsdGVkX1/cTbpWvAH4kX9m7NLSRUZjmHk+Z/fZ+rjsKfYIGGR/XNpcq89QEWeWrExRTs44B1B/h9wamaICxJK0HDRtyKW9kFbzBJ1wFDobooXMGVSeFhws5bgresfA6dksF0Zy3+dBFtnJ4L5K3TobSfaSdE1QwIEoPwX6cExMMGPIjcvMw+UVl84DHZ4mkwpNHVGMpukOUfIXrC1K5L3OMSlz2gzKcJvXtwccYKt0xgFVgc5SaImjyrDuMtjM3sjssZIVRYJZFEJVHuMVVVdn0Ea6MrOu7mXKNsV6R3zlynMtgywZwOEj1Y4fqPDqKIyx5qgrHK6s/LnCZdl3Ssdj/6o4wTHK5hGNJbnJj0s/QE07DeHC+WFp4AVT9Hq6QPdP4ATPaTzo+VNbuN0O/yijYdPCNEYc4IkQR1CRypJC+DMSpGWrruM+/eTae/qnl7IyIlupZC1mNznS79T6wb93T/JFbGKBATRibD9Hz/q7ROKPKJaDNYHyVDFzeweP3/CSm/b+aeOVYcG2CkPXmCioE3i+VpvGYyFH3flZVH75uxG4B/ru7eAkrif1ylM3aGMrRO9XMSx8izkNtTYtB+VvIDIcBT15Ew+ROqRUwQLiKLVHKVqFD4gjX00DemOljaWF78jHnhZfmnc1pp0bFnpY2Eqi7AVB1sN7IhhWWVO/7bVcOKDzfax3kpeRRCzPHDNs8KARf8FbL/5RFIKfhrEuFFgGUu+1KfMEZzT5FXQGV20NhD8MNisR3VC46GdBpYnuoIuy/auWGI4Q5bTh/1622izYrMU/eOGyWb76TU3J++JILh3pyCjX9hOXQIs3f9e8OxLoaHigWSjhwgds7g26GIKKFm1hy1OEBdcheZbvzeNeoDeNookBitY6Unkvy1E0E8LWL38ABFSCrKmK9oKJO8AUow2Yu6xl2BNhj1upLjm11WM+YW0uMPjZ8kEH+4vlxrq7ZQ95w7aeS9q
+ 9lDSVudU
+ TzbP6H/U2gjdVJq+G2Q8C25oeTTDdcBM/9iBU92g4OruagvJws7/Mw+xSpe8DiQLs70Mu+3t3JJ+P8qFAUrtsiYtmnJmNB8CAivfHlDHiAYRG7jM/Qw5q+ulT3KKO1PR9lGENyItiTO/kfsdP5tsH05o/qw1gPhIMzkKU461odavyHn1/p2UO03F1aRpRTV2ZI7xXVpdE338i30A5xeqmG94JTQVA8kwgHfgZlFG8ygOyHfqUnORt6SPS8Cx843YtqO3vfVaTioSIZSQgx8qv4/PJnGnZ3QZOl4jUM//Tmk9NtbsrElkK2yx3c4+U0hHkWklrhQ0opiDvfTmiWjJf9Kp+QQUGAmGxqNZV/CAG/46s/iD5uOatu5p6xLJzjggcYrhWVxjnCucCUSkEGfv3iR2nGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,24 +143,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/30/26 11:06, Xueyuan Chen wrote:
-> Implement set_direct_map_ro_noflush() for arm64 with update_range_prot() on
-> the linear map, setting PTE_RDONLY and clearing PTE_WRITE. Keep the
-> existing can_set_direct_map() guard and leave TLB invalidation to the
-> caller.
+> Implement set_direct_map_ro_noflush() for x86 using CPA directly on the
+> passed direct-map address. Clear _PAGE_RW and _PAGE_DIRTY, keep alias
+> checks disabled like the existing direct-map _noflush helpers, and leave
+> TLB invalidation to the caller.
 > 
 > Co-developed-by: Lance Yang <lance.yang@linux.dev>
 > Signed-off-by: Lance Yang <lance.yang@linux.dev>
 > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 > ---
->  arch/arm64/include/asm/set_memory.h |  2 ++
->  arch/arm64/mm/pageattr.c            | 10 ++++++++++
->  2 files changed, 12 insertions(+)
+>  arch/x86/include/asm/set_memory.h |  2 ++
+>  arch/x86/mm/pat/set_memory.c      | 15 +++++++++++++++
+>  2 files changed, 17 insertions(+)
 > 
-> diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
-> index 90f61b17275e..7083260303c3 100644
-> --- a/arch/arm64/include/asm/set_memory.h
-> +++ b/arch/arm64/include/asm/set_memory.h
-> @@ -14,6 +14,8 @@ int set_memory_valid(unsigned long addr, int numpages, int enable);
+> diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
+> index 4362c26aa992..bd3817e06052 100644
+> --- a/arch/x86/include/asm/set_memory.h
+> +++ b/arch/x86/include/asm/set_memory.h
+> @@ -89,6 +89,8 @@ int set_pages_rw(struct page *page, int numpages);
 >  int set_direct_map_invalid_noflush(struct page *page);
 >  int set_direct_map_default_noflush(struct page *page);
 >  int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
@@ -168,30 +168,35 @@ On 7/30/26 11:06, Xueyuan Chen wrote:
 > +#define set_direct_map_ro_noflush set_direct_map_ro_noflush
 >  bool kernel_page_present(struct page *page);
 >  
->  int set_memory_encrypted(unsigned long addr, int numpages);
-> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> index ce035e1b4eaf..c51236b61651 100644
-> --- a/arch/arm64/mm/pageattr.c
-> +++ b/arch/arm64/mm/pageattr.c
-> @@ -365,6 +365,16 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
->  	return set_memory_valid(addr, nr, valid);
+>  extern int kernel_set_to_readonly;
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index d023a40a1e03..5987f4c84f6f 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -2662,6 +2662,21 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
+>  	return __set_pages_np(page, nr);
 >  }
 >  
 > +int set_direct_map_ro_noflush(const void *addr, unsigned long nr_pages)
 > +{
-> +	if (!can_set_direct_map())
-> +		return 0;
+> +	unsigned long tempaddr = (unsigned long)addr;
+> +	struct cpa_data cpa = {
+> +		.vaddr = &tempaddr,
+> +		.pgd = NULL,
+> +		.numpages = nr_pages,
+> +		.mask_set = __pgprot(0),
+> +		.mask_clr = __pgprot(_PAGE_RW | _PAGE_DIRTY),
+> +		.flags = CPA_NO_CHECK_ALIAS,
+> +	};
 > +
-> +	return update_range_prot((unsigned long)addr, PAGE_SIZE * nr_pages,
-> +				 __pgprot(PTE_RDONLY),
-> +				 __pgprot(PTE_WRITE));
+> +	return __change_page_attr_set_clr(&cpa, 1);
 > +}
 > +
 >  #ifdef CONFIG_DEBUG_PAGEALLOC
->  /*
->   * This is - apart from the return value - doing the same
+>  void __kernel_map_pages(struct page *page, int numpages, int enable)
+>  {
 
-We'll need an ACK from arm64 maintaines. To me this looks good.
+We need an ack from x86 folks, to me this looks good.
 
 -- 
 Cheers,
