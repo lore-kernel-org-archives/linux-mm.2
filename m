@@ -4,140 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A842C61DBC
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 16:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33FDBC61DBC
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 16:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DA236B0092; Tue, 25 Aug 2026 12:47:01 -0400 (EDT)
+	id 2581E6B0095; Tue, 25 Aug 2026 12:47:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58B9F6B0095; Tue, 25 Aug 2026 12:47:01 -0400 (EDT)
+	id 1E2756B0096; Tue, 25 Aug 2026 12:47:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 452E66B0096; Tue, 25 Aug 2026 12:47:01 -0400 (EDT)
+	id 0F7C46B0098; Tue, 25 Aug 2026 12:47:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A57F6B0092
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:47:01 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 83C9BC010D
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:47:00 +0000 (UTC)
-X-FDA: 85140371400.15.E4E35A5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D34DA6B0095
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:47:14 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD3E7400B8
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:47:12 +0000 (UTC)
+X-FDA: 85140371904.23.DC16A99
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B63DC1C0003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:46:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A1QvjT4C;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787676418;
-	b=raRJKzmAvVt5PsjlFrhsJr6USIHs9Lk2+Ie9sPzxYO2BttpZhZ3x95cmYscMXsfJcoimzO
-	koK9r+LLMsCl9q9HwlIDUcSwQTT1hON2nTM/6/+c4/r4dgZ3jM1BtRFYXpIopbOg6ChZF8
-	e5fos3dSj8jExskVf6nyK4d3SYu043Q=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A1QvjT4C;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id F0F4F1C0008
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 16:47:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MsslkUCa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of "SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787676418;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787676431;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fljagmBbQwC/iRaXRhNF4fLMKhBQZFdPhsqh8nbR+XQ=;
-	b=hbkIFgZCTEvlGLa1Sqv3Zyto+wda9/aOvNPgd/7kmT3EhvnkBGNRTqRdeNMRAH0yZu+NaT
-	reqsJwVWPMW5d1/222XP34DLT3igeAob01zghxHZlxDoTTuaTweBtegjkCsmJAZNqppgnf
-	qU0onMVkWNrHaM0S68ao3GHFEcBTTfQ=
+	bh=LKynmMcCNdHBz7/vpvw9+vH0+hvMd9pKSWrGj0p1+Tk=;
+	b=gPpeQF97BlMZ8QUU7UZEv/1eHfHcdfcHEDa1PdogPPnTQEJFSBm2f9YmhCYUyif4d7yuaK
+	tl5IuDnSPIRlgqzYnIs1apq3pkRCbQlYh9FpelM3M1Cz7x1Ow012Kou09FYbYs+LBLrdNF
+	/NUFHSSuRsKKvs5z5QvqUNXC04yl45Y=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MsslkUCa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of "SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787676431;
+	b=12USJTt93lkZCf+thIPZVn9/qRvFbCPzI9YZ7ZbZTuXFjXMyzzaK30lE2dIN/uMzRiPZm0
+	mRkr7xOyCznbPM1C7UHIP4xxiIFYct6j4MoEZ0KwAvV1dN57GWLU2r+XwRMc5K579M/tXO
+	XuHAiprPVtR8SE7TaSkbsAozwFPDhU4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9DFFC40729;
-	Tue, 25 Aug 2026 16:46:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F61F1F00A3A;
-	Tue, 25 Aug 2026 16:46:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3AFF24072D;
+	Tue, 25 Aug 2026 16:47:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A26F1F00A3A;
+	Tue, 25 Aug 2026 16:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787676417;
-	bh=fljagmBbQwC/iRaXRhNF4fLMKhBQZFdPhsqh8nbR+XQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=A1QvjT4C2hH4HwlAkKlxYcWyc7NJSnyh31obmC1DkPVWqDcK89dcrWToUUBfqLiHc
-	 pGrP7OqyMSNK3b2H6WZQ8bOeI/ahyqXC7GDoF12FYzhyNoVEtHdSHNkH0E0Grm0Ves
-	 GHJDw/X/P914CN6y57NDnIm8ZICMmFbkfFhFAechratc0JrKodyCz7wivd7p1YdcWT
-	 zca8nPTVuDvm8iNXaOIpVnRWwMWY1OjAJ8EP1sTn+50sjK5P1ghesUTpLPgvdDCdI1
-	 D1zUrj/QuN/cG8qkFZ/Hv9Ki23QBuXPhDduH9rs88/TlA9R1JXHOMItDD9E4YaAuv/
-	 2jYMB3UX+FQCQ==
-Message-ID: <86823e2b-f739-4ebe-b92f-a35b9dcfa0c7@kernel.org>
-Date: Tue, 25 Aug 2026 18:46:49 +0200
+	s=k20260515; t=1787676430;
+	bh=LKynmMcCNdHBz7/vpvw9+vH0+hvMd9pKSWrGj0p1+Tk=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=MsslkUCawPPJeN74Hlb3+xGB//zBOdRkL34fZCyp8WAyspCTnqr8s5JXlxE4O1Dc4
+	 xdr13esqX/XWBl2PbLDnjcrPc16zMfHB9nr4mcW+qZEUdgn6QAKIhY1W8vzs/8tDRI
+	 7OZHpX+a9jaUWuzBGWNuCKHWKOSKYux6LDJRg1ykrp1Zd679/nGJZaPKtHFRY+/Gsr
+	 J68K2it4JEgroslYTDz9ltduO3r75rfFAGyzAkigr5s1OB+X0y2mDao8ut3MbagpYf
+	 CfTe6UKsFfSdrk+BWLjZlEsCDQFbr746spauWJqsqfwqE9EeFuvBiOzMb/lLMbpdb+
+	 /pprk0cdbSTqg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id D37C9CE098D; Tue, 25 Aug 2026 09:47:09 -0700 (PDT)
+Date: Tue, 25 Aug 2026 09:47:09 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
+ <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] arm64/mm: add set_direct_map_ro_noflush()
-To: Will Deacon <will@kernel.org>
-Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, usama.arif@linux.dev, catalin.marinas@arm.com,
- linux-arm-kernel@lists.infradead.org, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- rppt@kernel.org, ryan.roberts@arm.com, ziy@nvidia.com, baohua@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Lance Yang <lance.yang@linux.dev>
-References: <20260730090647.2401252-1-xueyuan.chen21@gmail.com>
- <20260730090647.2401252-3-xueyuan.chen21@gmail.com>
- <c81ff923-800c-4ef4-b6e4-ec9f5eb1671f@kernel.org>
- <ao3GXvT2ltf89_rG@willie-the-truck>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <ao3GXvT2ltf89_rG@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F0F4F1C0008
+X-Stat-Signature: i1p9cayhodsguzhxe65uup6dhzjt8dj1
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B63DC1C0003
-X-Stat-Signature: 6krjjzrz3p9s5xgmstqyaxyhtwkwqoc7
-X-HE-Tag: 1787676418-62824
-X-HE-Meta: U2FsdGVkX1+n2NpMIOy1bB2GrPY7n4owA+wGonIeG5BWhit4LUhAN2eJR3wFYUCm+HEZSpSc3JLm4eF1gYuozyRzWq+GxcIWA+C0tbRjWPeJiqZRoQAxAs3vIqPqT+4CDQZf0EtHXb2lypcr5TivctLnM9hRBwWP14oiHVRBUoHiBHVbAHgrpSZngMq/MB6nextrp9WAAhT3YFCHQfo17Tr833eGZRYJ+nZ6xS+vjIkbUHi+OKWILq+V3wBL/+NnFYTwD9pF1q6He1WLDiZVNdcU6pWCLn8R4Fw9r4swnssHX5zskSZGyG+5QJ7nxgCE3XR0Jgf34yc997Le0MUrEfnN6tnX6qEW8APS1S2BoLdYuRZi6SS4mGaJhQXpXR+VCogjMHRTcXU7ychmjEbCyOtEyve6T+3SkN9gbjfeQN3G7Av8B1Dr3bcda8s7JeX/0vDNxj4t33U4IaYlDq+fs7bm6elJnJ1SSfwjJk4Hjv2OK+ETB25feW4zJYxxERDEQxnNSLEOKqMXjLw+lEFZW32F79DdoX3HAamIBqbJecwnoq7rqeV5C8cL9odkmDX0SAEkPkSLcAu0IKP+Skuiemsinp9uTBvqI9asftgou64hIdpBD+88fK+WCmb3JvDu11TvSL0pf4uzftdD/4tVqhHmPNHJ0pEfB5sXnKLhtABlhgwN3sHMzN16JicPwO4ttP4kFVYRyNM4wW336hDFCiN+V7l6xu/HisFZxf1Jt9D90TrgwPpoLgL0/y3SYHRAvuh0zo2UmwSCwj5wBbKNPTQD2zCFTO+HwP3dVsRYVG028jYShY+GqwIIyQAF9U2X2S9hnfeReSQnF4SUA4O+dIhJmTwRlc8qZhHxawqdEROaxjYeLMWonmh5b3M0spxcr6uR+xeJyqIPaaxzXvFjNvUzvHZgSWfM9pJNIUvIsxRY8RUiNu+nS9f/xtsqmwSGL5bk8jrDaZEoxbHnlqQ
- x5E73mnt
- NNzCOePeD9chbItq9X1Yj5JwWbZTr5gHkv+DeqPgA3S2yrFZnzXoNYvd3QfcqPPELSink+sKSP506FlhCYApiwJu1ixcbyIpnlRj3jthRv52dMRqBLwhj6zzMVfUDEMMiI83BHq+2GUM1M8FjCP+n+5IzUrIfkJEOmxu1HEqZnnLfpHWl017phbap3S6UJwn42n0z5YdjULYbCpTfGe9NUSPQcYu6DW/YszFQxI6aNI2RlSggGNCCCDFjN11thSflrPuCB+KKmZcaTazZ9QUVWPbKQYYO+3JlgSGD9ZX250R8UN+0fiZAhK1vsbPiuROv1rn50pxovDuZlPTVLuT52aECGG2qKdgOc0asKyMxGxmxM81WuHnQD+xxKGn6JCfLsb6z18BYDhqhExMd0TNewkAYyg==
+X-HE-Tag: 1787676430-970704
+X-HE-Meta: U2FsdGVkX18Q5POdjeWufY19P1amQn0f5SOdH/dB7dQjonaemvh8nn756tzNxBjtwckYG5cgPvX78Fhk4Yh0schoRSeCKULait4vEIsP18x886zi50QSFoxXOg+ErRHDNZTprUeV2dEHuJ+v6plYzjpk0m2gX7BN+UrCWczVdgedDRoA57KlB+w8aq8lqlTom1b/ViouJxfO0TXJMy+VVCQFytAphLODRGrhMqoBKK6sghkXffIQIW0lM6GQPOS9dQ8+ZZOnHsqKdfCIvfvbgv3MEtdMvjbfSXq4+A7QSdAusBfx1+09geu9nPQ8wnVzqyzODeu2CjZkv8eLMftrp2E9/apbyYV5uo0/hZSOjk2inh2hHq3xZOcXsp4OjZ2Nk2oRMP4MnwMS+AW7lWvD0lLjfPKxhoipC4wlhSabBuBQId1jaASvWanXXgegbviXY//Tb1FJZb4ngWmWsQ1DYGv2uCFxuzHJokQgaV3UAJyoZMc1LzHSfeTPMr92DqfnncAXQtC9yNiKGWh9qsbD+BqJufrUfFO8D0e/47kqxoU63aH9zaZ+XjBBXrXAyWck2Elde+4gpESRhy9l9qpIXYHyAXXW9AulfDuetV6bcAooapPuKGXi8E52nJ4HQ7OlMpleEoWbNsrLGTls1ZgB0U85J38hn4pNaUaSm+SyNEn3+YCCynhlZRLz/8Tr/uHStiud4BiVTT2rCgxaj1ZZ0UgjmL3dpzI0dq8s/VWYBOVI9BvwKweYYY2nngoZBzF7Ktj83FTFECAD5GHBTBsz322rECOZpC+gchBJ3PwQR8YQdJQJItgxGWOzuhPDYwjgG9LqbtlSXJ1E/tBxoXSGP7E1olGz9m9eIOA2mSVwKny8fLlRvr25nNJgYgN1OxX93Gfraaay6RwNvj7tg4ks1y3ES8AA737pLgC4ZcnQyC+uriwnNvTrM+ZYrulvYC70RnPWgTktvCMl2e/9XNI
+ aJc2Pso2
+ Dgq7euqid7/7pTwz2d+AH+dKnmLvs1sY8syDwd1gQg4TV3EbmizXaP6AGFBcjY9DrpFPDSAgW2PR6AMOwuyc1y/C00teK/6TZvwIVZlCtB2XEwv9E0ClfBWJiJ+SKNLFsgXIBkDYewPjKgS8zzTyqZNO4dVT1Wxkzx1nPiTs3OpivY5RdeKoFeRCjqLibJOUxXBb1stJpXmc0WjXFTjpRRsS4TFth8kDGPYRj7Ov9yydAPQIXBVz8nmhCHC/8AkD2eDHova21TyV1mSvemvWO+/6JE9ODFsmayEr9RQc2ynA1qEoUC00Q/AidFD/kytwMyvNwdt61mfCM+zV+dbkJy7IXhRhWA9txbrSTGdTw+DdL/LVCeNnmCswWNbdEmqqHgG6gWXgFY7hkF9g6txIDezBuArvPI2TdO/hOGl7RyTNL3MStrIyZhC/NbncZoFBFbKJSNV4xK5rrl6k8mVXiWGyoOltDS3HYZ5onCfJJAdD0GiY+PVJJSgzanVm8n+U1mMMRW9jnG0uH6vzUDUtB1XyMUt0WzFaDXAoCI+ULrkKPHFJmq9SAXxvCt/hyn3h7l7ZqhJCtaR3itY3JMGUbyH2rE/RWcHCra9tOZrKH7+NeC2eu+kiVfe3EzycVSY7ihmYGakyKBu6r83kcdXp1hWe08u9uVMQVVYyfExF7OkwmODxi1Ci6lfRksc73sEVZR/RQkfFCiGNdmTJ5ObBzqimGCBFBiatzMWrfDTNmWREz8rDaIsWze77edPnl1xW51mPkoImn5dE61DqGmpu45eNLPcqYCvjPSILh0mETWI9dDymDEwZb/m+MO1vOq774UaKsXO4thvzQTna+bS+FUJe/Yw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,75 +113,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/25/26 18:44, Will Deacon wrote:
-> On Tue, Aug 25, 2026 at 05:52:20PM +0200, David Hildenbrand (Arm) wrote:
->> On 7/30/26 11:06, Xueyuan Chen wrote:
->>> Implement set_direct_map_ro_noflush() for arm64 with update_range_prot() on
->>> the linear map, setting PTE_RDONLY and clearing PTE_WRITE. Keep the
->>> existing can_set_direct_map() guard and leave TLB invalidation to the
->>> caller.
->>>
->>> Co-developed-by: Lance Yang <lance.yang@linux.dev>
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
->>> ---
->>>  arch/arm64/include/asm/set_memory.h |  2 ++
->>>  arch/arm64/mm/pageattr.c            | 10 ++++++++++
->>>  2 files changed, 12 insertions(+)
->>>
->>> diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
->>> index 90f61b17275e..7083260303c3 100644
->>> --- a/arch/arm64/include/asm/set_memory.h
->>> +++ b/arch/arm64/include/asm/set_memory.h
->>> @@ -14,6 +14,8 @@ int set_memory_valid(unsigned long addr, int numpages, int enable);
->>>  int set_direct_map_invalid_noflush(struct page *page);
->>>  int set_direct_map_default_noflush(struct page *page);
->>>  int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
->>> +int set_direct_map_ro_noflush(const void *addr, unsigned long nr_pages);
->>> +#define set_direct_map_ro_noflush set_direct_map_ro_noflush
->>>  bool kernel_page_present(struct page *page);
->>>  
->>>  int set_memory_encrypted(unsigned long addr, int numpages);
->>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
->>> index ce035e1b4eaf..c51236b61651 100644
->>> --- a/arch/arm64/mm/pageattr.c
->>> +++ b/arch/arm64/mm/pageattr.c
->>> @@ -365,6 +365,16 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
->>>  	return set_memory_valid(addr, nr, valid);
->>>  }
->>>  
->>> +int set_direct_map_ro_noflush(const void *addr, unsigned long nr_pages)
->>> +{
->>> +	if (!can_set_direct_map())
->>> +		return 0;
->>> +
->>> +	return update_range_prot((unsigned long)addr, PAGE_SIZE * nr_pages,
->>> +				 __pgprot(PTE_RDONLY),
->>> +				 __pgprot(PTE_WRITE));
->>> +}
->>> +
->>>  #ifdef CONFIG_DEBUG_PAGEALLOC
->>>  /*
->>>   * This is - apart from the return value - doing the same
->>
->> We'll need an ACK from arm64 maintaines. To me this looks good.
+On Tue, Aug 25, 2026 at 01:15:42PM +0100, David Woodhouse wrote:
+> On Fri, 2026-08-21 at 10:38 -0700, Paul E. McKenney wrote:
+> > The current state is that if you invoke synchronize_srcu_atomic()
+> > from a given context, then srcu_read_lock_atomic() must be invoked
+> > from that same context, or a more strict one.
+> >
+> > So, for example, you can disable preemption across your invocation of
+> > synchronize_srcu_atomic(), but only if you also do so across the entire
+> > reader, starting before srcu_read_lock_atomic() and ending after the
+> > matching srcu_read_unlock_atomic().  Or you could instead disable
+> > interrupts across the entire SRCU reader.
+> >
+> > Does that work?
 > 
-> I generally dislike deferring critical things like TLB invalidation to
-> the caller, so it would be good to see an example of a caller that really
-> needs that. The caller in patch 1 unconditionally  calls
-> flush_tlb_kernel_range() immediately after calling
-> set_direct_map_ro_noflush().
+> Yes, I think that should work; thanks. I don't think we *need* to
+> disable interrupts or even preemption for the KVM case, but I played
+> with it a bit to look at the tail latencies that Sean was concerned
+> about.
 > 
-> In fact, that means we have a pointless invalidation if
-> !can_set_direct_map(). See exhibit A :)
+> I converted the GPC series to use srcu_read_lock_atomic() and
+> synchronize_srcu_atomic()¹ and redid the same invalidation flood
+> testing: 8× shinfo + 4× vcpu_info reproducers on 128-way Ice Lake.
+> 
+> On its own it isn't much of a win for this use case AFAICT, but it does
+> work nicely when combined with the try_synchronize_srcu() thing that I
+> posted before².
+> 
+> I compared three variants: synchronize_srcu_atomic() as in your dev
+> branch; the same with try_synchronize_srcu() as an inline fast path
+> in front of the GP spin loop; and my previous try_synchronize_srcu()
+> + synchronize_srcu_expedited() fallback for comparison. With
+> PREEMPT_DYNAMIC, and without all the KASAN and lockdep debugging I had
+> added for correctness checking:
+> 
+>                     avg     max
+>   atomic spin       8.0µs   6.0ms
+>   try + atomic      3.6µs   326µs
+>   try + expedited   3.7µs   4.4ms
+> 
+> The try fast path more than halves the average — it skips
+> srcu_gp_start() and the flip-driven advance loop entirely for the
+> no-readers case, which is >99% of them here. It also seems to fix
+> a problem where synchronize_srcu_atomic() calls spend their time
+> queued behind *each other* — atomic alone has no sub-4µs drains at
+> all, and 40% of its drains take 8-16µs, presumably contending for
+> the driver role and waiting out each other's flip cycles. With the
+> try in front, only the genuinely-contended calls enter the GP spin
+> loop at all.
+> 
+> I was initially dubious about that 326µs max — the slow path is still
+> just spinning like the atomic variant, just with two orders of
+> magnitude fewer entries into it, so perhaps it just didn't hit the same
+> p100 in my test runs. So I redid it with the try-failed slow path
+> instrumented separately, and it does seem to be real. Of ~5M drains,
+> 3474 took the real GP slow path: avg 13.7µs, max 326µs, none over a
+> millisecond — and the *fast* path's max was 282µs, so the worst case is
+> something like interrupt noise, not the actual grace period. For
+> comparison, the expedited fallback was consistently producing drains
+> over 1ms (sleeping and waiting for the workqueue under a saturated
+> machine). There were about 100 such >1ms waits in each 300-second test
+> window (of about 60k fallbacks).
+> 
+> So the tail win over try+expedited is real, if we care about hundreds
+> of µs vs single-digit ms. Which I think we do — that's what brings the
+> p100 to parity with the existing rwlock code (~330µs on the same test)
+> while also scaling better on the readers and resolving the whole
+> PREEMPT_RT issue.
+> 
+> One thing I didn't expect: the try falls through to the slow path about
+> 10× less often in front of the atomic variant (0.07% of drains vs 0.5-
+> 0.7% falling back to synchronize_srcu_expedited()). I suspected the
+> preempt-enabled readers in the latter, but rerunning that test with the
+> readers non-preemptible made no difference at all. So it's an effect of
+> the wait side itself somehow. It looks like the sleeping variant lets
+> the abusive invalidate/refresh cycle churn about twice as fast (11M
+> drains per window vs 5M), so the try observes readers in flight more
+> often? I'm not sure that higher throughput of the abusive test is the
+> metric we're here to measure though.
+> 
+> Could we put try_synchronize_srcu() at the front of
+> synchronize_srcu_atomic()? Without it, the atomic version is slower
+> than what I had before, across the board.
+> 
+> However...
+> 
+> Testing with my KASAN+lockdep kernels showed the p100 latency going up
+> to 200ms for the atomic version, while with try+expedited it was only
+> about 25ms (the same order of magnitude as the existing rwlock-based
+> implementation in the debug setup):
+> 
+>                     avg      max
+>   atomic spin       10.2µs   172-212ms
+>   try + atomic      10.2µs   173ms
+>   try + expedited   14.7µs   25ms
+> 
+> Pinning the grace period driver with preempt_disable() didn't make a
+> difference. A sched_switch-instrumented run showed the >1ms tail is
+> bimodal: half the samples ~100% off-CPU (the *waiter* descheduled after
+> the wait was already over), and half genuinely on-CPU spinning and
+> waiting for readers.
+> 
+> So on a debug kernel under CPU saturation a spinning waiter has a much
+> worse worst case than a sleeping one; on a production-like kernel the
+> try+spin mode does seem to give a big win in the tail latencies that
+> Sean was concerned about. I think that's OK.
+> 
+> ¹ https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-atomic-dev
+> ² https://lore.kernel.org/all/05e5a29a95793651062dc5d165661b4d590f08ab.camel@infradead.org/
 
-Ack. I recall that the patch set originally didn't do any flushes, but we really
-have to flush even though we are early during boot.
+Nice!
 
-So agreed, the interface should just flush internally.
+Things are getting more stable, still a few corner cases that I am
+chasing, mostly in rcutorture testing.  (No, I did not design rcutorture
+to deal with atomic grace periods, and no, it did not take this sitting
+down!)
 
--- 
-Cheers,
+The no-readers fastpath is in place for Tiny Atomic SRCU (though with
+a bug that I am just now fixing), and it should not be hard to set up
+for Tree Atomic SRCU.
 
-David
+On the tail latencies...
+
+The easiest way to reduce them is to require that preemption be disabled
+across srcu_read_lock_atomic()/srcu_read_unlock_atomic() regions and
+across all calls to synchronize_srcu_atomic().  Without that, the problem
+is that the scheduler does not know that the spinning is pointless,
+and we cannot use the blocking primitives that we could otherwise use
+to tell it what is going on.
+
+So, is it feasible to simply require preemption be disabled as called
+out above?
+
+PREEMPT_RT might need something different?
+
+							Thanx, Paul
 
