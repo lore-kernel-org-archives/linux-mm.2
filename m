@@ -4,146 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 036A4C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:51:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EE5AC61DBE
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:51:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8B26B00C9; Tue, 25 Aug 2026 06:51:09 -0400 (EDT)
+	id 84A686B00CE; Tue, 25 Aug 2026 06:51:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E89886B00CB; Tue, 25 Aug 2026 06:51:09 -0400 (EDT)
+	id 7D4146B00CF; Tue, 25 Aug 2026 06:51:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D50BE6B00CD; Tue, 25 Aug 2026 06:51:09 -0400 (EDT)
+	id 6C5FC6B00D0; Tue, 25 Aug 2026 06:51:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F8686B00C9
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:51:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0918314037C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:51:09 +0000 (UTC)
-X-FDA: 85139474658.07.6F66BED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4B52040008
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:51:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQPZds2K;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 41F5F6B00CE
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:51:55 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3C70C0389
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:51:54 +0000 (UTC)
+X-FDA: 85139476548.20.ED2D7FB
+Received: from mta0.migadu.com (out-72.mta0.migadu.com [91.218.175.72])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9ED6D20002
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:51:52 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U2Rh0scN;
+	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.72 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787655067;
-	b=eci00k7UoPImw19Y9rwXuXo/2l6aswxHkYgMvUiU91BNidXzOvATRBap2hwv6rfZZwZZBQ
-	eF8k6XLYMYpjH2F5XNnrVVv7kq05wNPfxVqlA/SC/ACqMtxvfzwcDNhs5fk92g2KU/ZeqR
-	FU36H3bc6utdvJaeFV5S7+n5PGFcJUQ=
+	t=1787655113;
+	b=cTwTyP7B92KXtuAv+DLWqjqbQm5Lr8ERaf48V8DTESQ4DUTPUb3c9bdqFFoWAef/i0QAl/
+	HdxVXVT724FuwnKdyasqvxKjiiOVtzz9MS7Vofwl67N1y6GP1cYD3j0Pum7F5J6FXGsrnN
+	N2HbuWC9L5yubSDGMgOubW6XlcuTRkw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQPZds2K;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U2Rh0scN;
+	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.72 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787655067;
+	s=arc-20220608; t=1787655113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4dWbDNh7SefaqEmDQxom8V4ar9Vn3mt6p/4U2QAZfh0=;
-	b=WzVrAoJ6VGU0dmDMU3sev8PTyV1K2+MCR2/tcRd8Us9k1UFN/O5Eu8cQBDZbPfjyPsDrlV
-	kizHi4MOWNvwvL27zcs4M/yUdoovVMnb8YQMMNhD3wsiotKrr+NrEq5BQiIWf62CurWYfn
-	56A3edEoEYENTUk4eKmsQy+VXoRcUWI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD54D6011F;
-	Tue, 25 Aug 2026 10:51:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB6B1F000E9;
-	Tue, 25 Aug 2026 10:50:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787655066;
-	bh=4dWbDNh7SefaqEmDQxom8V4ar9Vn3mt6p/4U2QAZfh0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RQPZds2KrGv64fSlv8dfSkfENvn4AkQ4dJQWtdOG2edngpo35SmYXFrizNznv4LV+
-	 ic67xjuq6VP5prYkXjr0s8IxgPnlclWoPxLynljPP6LKP1BcO7lZlLEXoN2Kt0hWzv
-	 1Sk+SF+I7mFzbhWGeATiKlPQKof1b/Y4Oh59E5hY7U9WnpNj0vNIrwzHoGGCUCr6Ck
-	 4qiPIgXHyb4zStAeqqjPPk3On9pQzfWy7qE8rRplrF0gq/UrhIT8kqQjR1XAkJ3+7O
-	 eHgJbbX3uv4GLKohzTnK4Z/2e4AePT6sGvIIzZqZA698rKIWhBNc+vzC/YOe0makdC
-	 HWP/uVH5WTeRQ==
-Message-ID: <17e9f7d6-d095-44ee-9997-8dc10646f3f8@kernel.org>
-Date: Tue, 25 Aug 2026 12:50:57 +0200
+	bh=QdkDvLUUuVg9gB2EomGx4vsYuQpqiMTx/DSjJe4vLaM=;
+	b=6Q7l1OAWm8xi2Tm54moCprRHryiBFp5Kc27UE3oCRg4XlAvC2kBvbWkTur02qyGjUZjpX4
+	xea1Nkcq+e3rc/7yZPeYHZiedi0R7830NOdiGHbvcgriJuBLcTIZ8/U+IGipEoqnocIXm+
+	+4xh+4EY70nJa+tkhe8tBgpEDcaUzO8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=1kptbS9Xxr7JsUyG7MV7yG3aF8sPPAp67Bzvk/FeIxQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787655111; v=1; x=1788259911;
+ b=U2Rh0scNWwHQJKif0nwLMAYvE7V4kc1flkm5K5HnO3s1O0qRowArnVHTNaeF5YHVQXkHyfpU
+ qGu86avCqGIZAyD2ba4IlPyo6hIzprZvWYPyw8aR2PSgWQyetFC+6Hv3k3NBetsb+58TNxpTtqe
+ GlRdZ8nIEeHgZip2T4qWZc/g=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [100.82.85.74] (101.71.133.200)
+	by smtp.migadu.com with ESMTPS id a8ec164d6dcd91e4;
+	Tue, 25 Aug 2026 10:51:51 +0000
+X-Mizu-Trace-ID: a8ec164d6dcd91e4
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <3a3d0eb3-8350-4786-b5fa-bbde9d83abeb@linux.dev>
+Date: Tue, 25 Aug 2026 18:51:41 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/secretmem: properly account locked pages
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- Hagen Paul Pfeifer <hagen@jauu.net>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5 06/17] mm/mm_init: factor out pfn_to_zone()
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-7-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260825084608.47437-7-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4B52040008
+X-Rspamd-Queue-Id: 9ED6D20002
 X-Rspam-User: 
-X-Stat-Signature: c9f8nbmxow3btibcka69tz776w1q418m
+X-Stat-Signature: 73hdeqx8ak6z5whkzy7zgx4chx8jeopy
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1787655067-624072
-X-HE-Meta: U2FsdGVkX1/tx+voQ4nBaIxinniBhTvtlELRIP7/1wBv5AcU22xgt0oMZxhde94t2LhbakIDTDaBuFrPG6jlf2APv5B1XBwRE8JR/IJ777O0pwQSHbrntd05mN8tU/VhEzts/HCvh33BWdZ9Ms2xZ+96cV5u+5RmgIgamU9SyfgKYZ0tVVUZP6XUU4Q5wj5ZAsavE4JShDo0VgkHXMUfoZdfwFHLToVUuNfa8LbE2hbf0bok/x3wfKRQcHjCgrPecWuqCSkIef7yR6n1L+5/uIjk/XgJlPeBu9nZdZ1wqbLL0tMJtIUT7rk3kCmIqRY7GnwpuOzqN9qru26yt0yxKnNMSnC6auMgd6LF2tYG0Qyc2V8e3tMuaXVhV82K5E0cfHDuh074foiYs0ePpZno+t2XLPOwrxRZaNhA+ZS0YF8ovMH6aIH2njg/BJ5bh7wBq6fUD00/DzrMZMQ+LorGp1yKoN2lm/rFiVLqqpmUjGujv6O+uUzh3JNb+uuUQQ3kLZWTsYULJHscWnEGyoIUQtDSPEU51Xa4arggI/Z7NVn0ylVUOLk6S7MphHbGqGW6GYnusQ01PmowIwdqu84O+SZtv3T+QDvZalGmLmw18+wZ59Htc/AY5XNnxQaOB4LvX/ayCG+0ppN0AD2u9KeSWvDT0MGfSOCRr9rBvaR/p6ZRqZi6Q7xXiTPsAGpgMfSgZLai6BJQWTS3Cg+bFEWhwf3uEoFY4iDmwOc37U4lF5jYASVptWAcavWes0D0ComdAgc4cuUk55R17LBKstOlUaiLOYAIw1xNb6n95LRfx+/WEVT7vE9VDrlIB9xkgU3wzjnks8k2w7G1YsNz0jCS0pZbaH3dgzcKmNA8SujpWoOJD2D1KRZsXGnsqom79UegmXT9xM7oav3wSq2bX8VO0iXj6A8ozI//oRC1ucrzWkO4u2bbeN7pqHOLXxw0voBriXcvR6yqbW+k5QoI5aV
- QhlMl37e
- 5jtR87yO6eJ/yf9U+Eia3aIp2sxgDPpwVaqXtTKRTAH0JzCz/KoqaJwmQeDfb7JN62NgcRqJTrpI5gv+YcBfQj35pRhUyPLFRUc3+WVItACdqejn0QmM7pUypHiGfyWLLMDJs6zi26jUSXh5gCk7BdQd728CMK25j3yB2T11XJZHYGp0Phei5lPSUy0hWGLg9QdG17wI+2UN0iXhZgg+oFrtyOlf8LOUTxHAffDNR03raQoDAunbJMf+HdtFEzMJ9jRb7enGDBZ1SY8J5NDkfcEQwr8j4JoYtp74pqpfTxAYMvzDo8x5HDpmImO1hLtBQaQg4qQ1UgjsCJNkqZkC5bzQ2bNgulvWHCSVfpoOiUv8iAOoLKM07AigPp5ooTnPuBZDTONEaY/k7CC20N+M2FiLWeDyYm3bcI5FpIhUaWx8n5YUe1wt7Ji4gLHvXfYtiWUsnr/Uw3pZKGwnf3jD+gFvOTp8Xj3qPqi6bCyQegbMGPgM+ixuaa9T4gUffdw9oV+8IsofSUEkQpWqbcm+MXP578hb7o3Upy2d9E20kcD6fHVLehQd7rezzRjYxRsB4m7PCnXEOzaeSc/1//o9DI5cZbc4ydk+uMdpYeVJvFR4sJkms9RGme0ikJ78gSdDIb0F2MkiR08ROETfqbdP2YQIVja6mbKxZKMiOTJMHSww0Vb4Tzdc6lbeQQ2lYshImW8/Ic2RJPNviM+CEU3WewuIX/vVl+OvuToF8Ds8ZOpYr7svum2nei92i5zY07QPjeSKe9sOsdTI5udYqNsuNdQ4aj77q66BeVzZ9iwSoKsFxE7NNqP9vszf5d1hwYx9rOC7I4SRDd1eZVOAwFpYSXrxAsi+pQzNfScaWGkJTShNqC1vY/MJmnrJJHOSzT/FExjMqnhiXYVvCNEPA+1FfPfMc3Ebw03N7VirS5qW0mY/CbmQkvSlJ07kAUc15u4hPfunNM9EZ+bwnj4sb8TFFM8wqYOjU
- 9Op/4DZl
- UMVadKdUQmg=
+X-HE-Tag: 1787655112-883970
+X-HE-Meta: U2FsdGVkX18LuhhnFMhXwCln4TRPPkPPCoxRi9jugKn/DU001kvLcsjcSpS4kFVcUVmbEYOi8rkNLbafkyRPFNRqMWDE3ygbaiX/6tk5EkiSy3pVXRZF0bXJdWWRecQ6JJnQDsqrK+s4I6jIzvL44AQAkDTutsIMv37c0qyWfXIJ/DNdiCYsxAEqOYE+6cOXG6FnmcNitTSna55O4Bzk+Hb2+57mxT+8rhOt/4OmBMzUhhO18NYu/XG+WMBPBn1VXxjPkjHf/vfBpTP8RMkcL9X6EXtFlW+07mpNqvo9fuGdSflxXNZG+gZ1hUYcuj0F5HwRRTTxvJanbxiY/U5t/TcU70n2rnUExb1GahNxcMzCBXBVlSmVWiVcViiTv2VM8m4uF+/njjizsWT6nbfgnJL0I2eBYbxbfBlHnn2KJmEYPOk2rTkzCHrEsyFd7i5gTlSN0gLK2ru9agIpxjVxeHjWSu/e5lhtnqrUW3Puo/FqyUDJLYMqQGqBeH9Pm1R96pZqs8TxzEalo9D1W5pQh4rK4CWP8MNWqkHJU4iuN5yGrv+UvS3gjYo3vKFBVpK5vnAmGaxOyqal2o5w4mNzsCIgQgHXQqnx6HWVyK/N4ghojv0fm2q8YI+EfMM9bztzcuiT7QInTBcO/fnVSrURZNnwD50t7PyRiG/bcCb+O/PEXVatX5i1kscF3eo6z40Dndq2lcdh5e/R0kKGvET6EiTL7LzomeMuV9iabRGY3oS+7pwO0wAcAKiuj1v4Fh4iiRdsgHO9cLTmO0juukwg0/p5SRwRJLuUc9LYWd9y3owNeRvZfeC/3chIpDPmrO/WmqVH53f0/2WIYFvfJK0JPBjljSGFr7G49WJEt2QJKTrQ2afSSBM/kez08rUz2h47QV15/kAfQoPWb9JzKTr3J/B/79QKkaPnagvsuqKnNSskVxyyMOAgHn8cfW0mR79/UAJS1dtFv9UKdFDHEue
+ 3e1137aB
+ WIWcvKfPdBeYSP5fo+pBpydkZnsmcKsF9u1J5lyyZm5rmJ64ync0W7JbrSopCYTBEgfqCqcl/Ib54x+CCb1r9QI+sdxOwp6Y3fLcysEaHWHuGlUTQOOtjHj3/K6GTL0E3Cu4qOvjHDdQjmD9TMgssp3Q6nPj0Od5EQs3qCxK6Ntuv70CpULTC0uAXrfMdns9znWspgreV5uLSSXq36+LGv6/5o3G+NCZ0MGRbDGjS8l1yLB0VlFh68o2UWzIR+IduIgqdpGw0zsecnM6hpcj/p4fzUVtFq8K4kLapxKMdflh7T95SO640atsCXaihJbBbQkTFdUS9c6XSwFiSwtbP8cU+bw3CRV5zsBZnWHgbMZD7riQI0Gdv+ZAydTcaS8tZq6spTWidG8VirCSSqFvgPsj6HQKSHhWveChWqXwh39QW64EmS8QUCH2n2ncoBp/6yvnH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,167 +98,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/22/26 21:14, Lorenzo Stoakes (ARM) wrote:
-> secretmem has a relatively laissez-faire attitude to accounting the folios
-> it allocates.
-> 
-> The intention is that the memory is treated as if it were mlock()'d and
-> thus is limited by the RLIMIT_MEMLOCK limit if the CAP_IPC_LOCK capability
-> is not in place (which broadly allows unlimited ranges of mlock()'d
-> memory).
-> 
-> The lifecycle for memfd accounting against this limit is - account on map,
-> unaccount on unmap but the lifecycle of memfd folios is allocate on fault,
-> deallocate on inode eviction.
-> 
-> This mismatch is problematic because the folios are unevictable and remain
-> so until the inode is evicted (set using mapping_set_unevictable()).
-> 
-> This is problematic as it eliminates usual mlock() semantics - mapping
-> folios then unmapping them does not clear their unevictable state, since it
-> depends on AS_UNEVICTABLE, not PG_mlocked.
-> 
-> A user can therefore easily work around the RLIMIT_MEMLOCK limit - simply
-> map then unmap and VmLck no longer counts the secretmem range (or more
-> involved - fork which also achieves the same thing).
-> 
-> Worse - they are not accounted in the process's RSS even if mapped again,
-> meaning the OOM killer won't know to kill the process.
-> 
-> A user without the CAP_IPC_LOCK capability can therefore repeatedly
-> map/unmap (or map/fork) and consume all available system memory with
-> unevictable folios and cause system instability.
-> 
-> A secretmem fd can be passed between processes and over fork so a
-> per-process limit simply does not make sense.
-> 
-> So follow the precedent set by io_uring, perf, skbuff, iommufd and xdp -
-> track the number of locked pages in user_struct->locked_vm.
-> 
-> Since the scope tracked is actually inode lifetime, the RLIMIT_MEMLOCK
-> applies per-user not per-process. Also given the change in scope it doesn't
-> make sense to bypass for users with CAP_IPC_LOCK, so remove it.
-> 
-> There is simply no reason to carry on marking the mapping as mlock()'d
-> since it's misleading and the lifecycle is now correctly handled, so remove
-> this too.
-> 
-> Additionally, fix the selftest which checks the limit as this now must
-> assert SIGBUS on limit violation on fault-in.
-> 
-> __secretmem_account_pages() is more or less a duplicate of the code that
-> io_uring etc. use, but since this is a bug fix that needs backporting,
-> defer any de-duplication efforts to a follow-up.
-> 
-> Reported-by: Daehyeon Ko <4ncienth@gmail.com>
-> Closes: https://lore.kernel.org/linux-mm/20260813225328.2010303-1-4ncienth@gmail.com/
-> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Can we split off the selftest changes? This stable patch is already pretty big.
 
-I'd assume the changes to the selftests are not required just to get if fixed,
-because the changes should not be breaking existing user space (and cosnequently
-existing selftests).
-
-[...]
-
-> v1:
-> https://patch.msgid.link/20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org
+On 8/25/26 4:45 PM, Muchun Song wrote:
+> pfn_to_zone() in hugetlb_vmemmap.c duplicates the zone lookup logic in
+> __init_deferred_page().
 > 
-> To: Andrew Morton <akpm@linux-foundation.org>
-> To: Mike Rapoport <rppt@kernel.org>
-> To: David Hildenbrand <david@kernel.org>
-> To: "Liam R. Howlett" <liam@infradead.org>
-> To: Vlastimil Babka <vbabka@kernel.org>
-> To: Suren Baghdasaryan <surenb@google.com>
-> To: Michal Hocko <mhocko@suse.com>
-> To: Shuah Khan <shuah@kernel.org>
-> To: Alexei Starovoitov <ast@kernel.org>
-> To: Daniel Borkmann <daniel@iogearbox.net>
-> To: "David S. Miller" <davem@davemloft.net>
-> To: Jakub Kicinski <kuba@kernel.org>
-> To: Jesper Dangaard Brouer <hawk@kernel.org>
-> To: John Fastabend <john.fastabend@gmail.com>
-> To: Stanislav Fomichev <sdf@fomichev.me>
-> To: James Bottomley <James.Bottomley@HansenPartnership.com>
-> To: Hagen Paul Pfeifer <hagen@jauu.net>
-> Cc: ljs@kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kselftest@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: bpf@vger.kernel.org
-> ---
+> Move it to mm_init.c, declare it in mm/mm_init.h, and reuse it from
+> __init_deferred_page() and HugeTLB early vmemmap initialization instead
+> of open-coding the zone walk there.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[...]
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
 
-> +
-> +static bool secretmem_account_folio(struct secretmem_inode_state *state,
-> +		const struct folio *folio)
-> +{
-> +	unsigned long nr_pages;
+Thanks,
+Qi
 
-Nit:
-
-const unsinged long nr_pages = folio_nr_pages(folio);
-
-> +
-> +	nr_pages = folio_nr_pages(folio);
-> +	if (!__secretmem_account_pages(state->user, nr_pages))
-> +		return false;
-> +
-> +	atomic_long_add(nr_pages, &state->nr_pages_accounted);
-> +	return true;
-> +}
-> +
-> +static void __secretmem_unaccount_pages(struct secretmem_inode_state *state,
-> +		unsigned long nr_pages)
-> +{
-> +	atomic_long_sub(nr_pages, &state->user->locked_vm);
-> +	atomic_long_sub(nr_pages, &state->nr_pages_accounted);
-> +}
-> +
-> +static void secretmem_unaccount_folio(struct secretmem_inode_state *state,
-> +		struct folio *folio)
-> +{
-> +	__secretmem_unaccount_pages(state, folio_nr_pages(folio));
-> +}
-> +
-> +static void secretmem_unaccount_all_folios(struct secretmem_inode_state *state)
-> +{
-> +	unsigned long nr_pages_accounted;
-> +
-> +	nr_pages_accounted = atomic_long_read(&state->nr_pages_accounted);
-> +	__secretmem_unaccount_pages(state, nr_pages_accounted);
-> +}
-> +
->  static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->  {
->  	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
->  	struct inode *inode = file_inode(vmf->vma->vm_file);
-> +	struct secretmem_inode_state *state = inode->i_private;
->  	pgoff_t offset = vmf->pgoff;
->  	gfp_t gfp = vmf->gfp_mask;
->  	unsigned long addr;
-> @@ -72,8 +134,15 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->  			goto out;
->  		}
->  
-> +		if (!secretmem_account_folio(state, folio)) {
-> +			folio_put(folio);
-> +			ret = VM_FAULT_SIGBUS;
-> +			goto out;
-> +		}
-> +
-Okay, that works because secretmem does not support any form of truncate, in
-particular, no FALLOC_FL_PUNCH_HOLE.
-
-Overall, the idea sounds good to me. Nothing jumped at me.
-
--- 
-Cheers,
-
-David
 
