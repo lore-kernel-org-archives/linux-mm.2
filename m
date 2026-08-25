@@ -4,93 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8EE8C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:19:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44EACC61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:21:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2A26B00B4; Tue, 25 Aug 2026 09:19:36 -0400 (EDT)
+	id ABF2E6B00B6; Tue, 25 Aug 2026 09:21:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D53D66B00B6; Tue, 25 Aug 2026 09:19:36 -0400 (EDT)
+	id A48C66B00B8; Tue, 25 Aug 2026 09:21:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C41AA6B00B7; Tue, 25 Aug 2026 09:19:36 -0400 (EDT)
+	id 938036B00B9; Tue, 25 Aug 2026 09:21:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 95A0A6B00B4
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:19:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C945A03DD
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:19:36 +0000 (UTC)
-X-FDA: 85139848752.02.83B280E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6619F40003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:19:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=irA18ZYw;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 73B6B6B00B6
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:21:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A084C0410
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:21:02 +0000 (UTC)
+X-FDA: 85139852364.17.E2E2F28
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7D061100004
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:21:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Sng6iSCk;
+	spf=pass (imf14.hostedemail.com: domain of 3upaNagkKCHkXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3upaNagkKCHkXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787663974;
-	b=fgO8GuepE0ulwCE4+JWSzMaV1v35Yl6UtXL7Vmgo/zZqCzsxE5M5ygacAFpPFD/1DNBlNU
-	U422SDPKI1PVkapQg1MbF9KYqreIm/+xsY1HO0/c9sKNE6XI3P/tpVIfhcGViHoQcXN7CI
-	Pra1CfzOFlPH3ZHoFD3RnMClVmOvdDc=
+	t=1787664060;
+	b=49i+PtE6vdYx6uuAW9IFQFd2DSCETDrHrBmSJ3MvS8foL3k5XfNvOs1T3Ij5xhh4Wofb6B
+	pY8w0l2lGgiE0pHvZ4GJPNtduHv+eJgLlQzL9UWUoBF/K+8Tf7ScxR7+SUe9jA71OeVWq1
+	Up1Zzf2V/6hTYorC1ERYweA309kLroI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=irA18ZYw;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Sng6iSCk;
+	spf=pass (imf14.hostedemail.com: domain of 3upaNagkKCHkXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3upaNagkKCHkXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787663974;
+	s=arc-20220608; t=1787664060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/S8lJXP4Su77nb9Qz5npefmL7dibQbuTDmwSH7ctnBQ=;
-	b=snL4tGf54WFcA0ys8/mwTdX/l/+5Zz7rKDwIUUQ/gns0B8Bv+JsGCZNQ9Zozknc5Cy6WUc
-	8IXt8HQP5LN4nDmZ6GR6bL5p86Y8UGHu0YsmEWb1iTw4HcJSqJ8SHgzqTXjmXc4r6XKxNq
-	+HcbhwmwzIlOZZuKmGR5bUAp0ODIlrw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE8BD40789;
-	Tue, 25 Aug 2026 13:19:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AEF1F000E9;
-	Tue, 25 Aug 2026 13:19:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787663973;
-	bh=/S8lJXP4Su77nb9Qz5npefmL7dibQbuTDmwSH7ctnBQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=irA18ZYwPthr+6QDgVK5lD+/BFmBQ/ISwoKbz6KWGhRcXqHCqhjYsah0If9m4jhnd
-	 IeG1WnsJmKgUnPFOTdDKk0OXHmdE7NXrm9L/gGZALrxuqFgZMP3ECaflyJEmgie+NV
-	 K0diRUSxGq00KjTwDJoZUMhcoDs6Itv9TT+jsPus6UBbRUrXl4/BN9ER7A9bm/gQ+7
-	 +E+IGbgQAa5IaQiSTwRcUe8SiVVR7/mpfWAvIdKLwM0Ub/KgAgW+JEblIBGzYnEt0W
-	 C720h9N71y02pCFVqiciA/FJP4JOJC3YP+qSLNhgd2sOdVJ4b11JbgqnZHyqvnWAZH
-	 vpKBRRFgaC3+g==
-Date: Tue, 25 Aug 2026 15:19:27 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
- PROC_MEM_FORCE_ALWAYS)
-Message-ID: <20260825-unweigerlich-biotechnologie-abnormal-accff844337f@brauner>
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
-X-Rspamd-Queue-Id: 6619F40003
+	bh=/wDF0hN/FW6BAXrcHvW79QxhTrkNJERnJhXR31M87d4=;
+	b=yQ7GVnM0D1lS/crcuGr3DsYs32GzZDq1i4rSkcuYN+ToWEDA0v4XrSp/b/x+1Y4t8uqNwJ
+	jgSiHv0s8MHZp7u9K0gf5vWlyjYN11hrDg7Xv48kF8Dtuytu5lErm0SxsKx/V35YjTmORV
+	80mftjMZUL7BcbT53o1LmfKwTnIPDQw=
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49808ea1b64so6536285e9.1
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:21:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787664059; x=1788268859; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/wDF0hN/FW6BAXrcHvW79QxhTrkNJERnJhXR31M87d4=;
+        b=Sng6iSCk9S0X8Uzl9/sk5atc5atOOeYDkVeoBd3vSqnYW8n5X3eoUxK7FiwmLJ2zho
+         1mWndRpmALwqUIHjrdng+BtExqNcmCdi1motI+e7ex5/RpHSUfPSuI1K8dkwvWgQF+IV
+         Mg2BrTX/JpsR9s9dQKBEKbItzLaXF6t/F86Bpb3q+yxm47ujZaO33+8ji5u6STiEV7XL
+         E1cstkLH2XA7mi66wnPujIOHQjQrsOxk/MX18tI9JME58xvF5ss2v/nE+Fgjl7KqeLTr
+         GlxSn1EYA66TLWpTZTOGnmQ6mkF4nOPKWhdyYKIpogmjInz1uSRpw7dcZcJnByPIHSAG
+         hSmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787664059; x=1788268859;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/wDF0hN/FW6BAXrcHvW79QxhTrkNJERnJhXR31M87d4=;
+        b=HX2QV/RqvGs86AzstMEN4E+6DautaPzwDp5mm6FoQ+jhTDwpIPfNKtMcQRAZwMwIgE
+         Aq1lkntEuQq0cmQ7u90xDH18oPogJJ+LajJz5GKTYc4xfMULhBgieveZRpaRmsk61IB5
+         fpC0Je7+I88Nu/Rttdsaw9UlXkUFdXo2fcrvHFSAs6EnOn7op9CIztO4r6H72ccv52c4
+         0zz3UfqJEyl9/aFTN5+HDBdjKRivJMoytF1GR0qEsCavQYEkT5qof1y6N/fB8w/EghhX
+         y6TQMiBg/J5mdUgntRz9sfzyYcy9Cka8C/G9N34h6gUBD8H8aagAjpttVXhnpI6IAW4J
+         yJng==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6o6kMCvDewGwPQ56lhmTZI3H8wrQbYvUqgAVRuHCrXzlv3tMjozvcGErH9y08LpHAJkidvWwfuA==@kvack.org
+X-Gm-Message-State: AFuF++nRfwNlHLHXR0ZLalJz3sV3YtTwRS94gwD8rUHeOKF+3lxG+tve
+	AZNoUr3kihXq/DvKi9kt7IbeNDsJ4rtSfORDX3Gs+XAQb+DP0+zcN45WOBhHliSl5sX3ugV6fRL
+	XAjBZCq1vz9KZ5qfZog==
+X-Received: from wmjs24.prod.google.com ([2002:a7b:c398:0:b0:499:9f79:18de])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f89:b0:493:f783:c46a with SMTP id 5b1f17b1804b1-499d63308fbmr60648795e9.6.1787664058484;
+ Tue, 25 Aug 2026 06:20:58 -0700 (PDT)
+Date: Tue, 25 Aug 2026 13:20:57 +0000
+In-Reply-To: <20260824-unique-ref-v20-4-490735672187@kernel.org>
+Mime-Version: 1.0
+References: <20260824-unique-ref-v20-0-490735672187@kernel.org> <20260824-unique-ref-v20-4-490735672187@kernel.org>
+Message-ID: <ao2WubjLtDuHvRzx@google.com>
+Subject: Re: [PATCH v20 4/8] rust: page: convert to `Ownable`'
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, Lyude Paul <lyude@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, 
+	Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev, 
+	linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Asahi Lina <lina+kernel@asahilina.net>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 7D061100004
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: to4si7ai1m7rtcdeq6xf5b78s3ktmc1f
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787663974-503814
-X-HE-Meta: U2FsdGVkX1/4mOkGB8SQ7VbjJNWzGufDy4RY/O9lt2fNk9CunoOFs6XKw4pKDRW4fOYRBRIbEZebi81pZNkdPqCodLwAoeublU0ocu0Opr/ZsKi7P/Qja5WBj3gpk/bWRfTCYpHDMfskcpEvpFeWQokpmT3B0W6jsPZw17LxnUGMb113cDItb+DE83j8Zg66l+/gGIGSgydrfsi4jnHgM+b4KxI4m/2wnNUwM0Kdik6YWTi3q1t0n7SzrSMq4H8vF9zkhdevjDSQxNc/MjUfs54Yrj3zEC6Lni/treQ81gwdD4MUViAqN+pG03w1mabp9pHvqMYEOHJ4rY8UyMjUqqpRpAJCJyzaSZ2nsNDtYSYM1bUMj7xzz+NAqslhEV1KKCCQCKu+DUZ7JSdnGq7P+R72OC2oWnFmam8EIZvgx3ZIe+IaKSBaY0ZSQntzsyMP9REGNqUMHWKmeDkJAsb1jmOSUy64J7RYZEocq/ri3xBx74l0Y5brIHfoMT6OySLU8OKUd3McbbzmhsO7TYpztnaF+Xv2O7nV+WNiCZirL0tp+Xm+avuIh+YAA93YtHOAx162oYu3b0AROx9fLfca78T32W4tI5srYYZ9o/6K5CMRNDy4RFKIjG4BcnTOVk5DTe/VApyGULRcEjkp7oJFU/Irg6Qr8XwlDwwvlPOoOHcC7Xlrnpd99hJMMm3YLtKgwJPmVzo2MxxvgnytkKykB7t5s1jeX3IGXguBJ9cU8Cj9AEXch8AdxFKio41zxqMTz5m+mC8EE6C0nFhTpUCRnosxPHir3rGIbVt549hCwIB+zeRJvCwN6+2oICRvJ9PsuIN/ycjdTW7GjJ+y0wEG9H8TvGxjpff9XtIpYxIEKibQMtOak3pXrjXeJfT5CLN+PHn4sJlWOjBWF9EfgSOqBcqq7EhXVRlfhzElFrT0k5iB9jmskcF3lgujDtXKdappSIT7EWsYn7mmge+tozN
- vsHCHEmk
- mhQIEK4E4B74meymoW0hwl3zzXcbi8k0OtcyhajnLhqIzBeIyAHir4xp/zzBMX7MW6II/ZZOVxOL7kDd+xpvQsdDcfGEuWspkGy1bVS2NUmLfeQCrULezgGExv3+wqjx0L9n0wJJ3QCZ9Howz84juv+rUXqa+uIbC6oLkyobGVHq4iu0FlVhA2ncJpOPb7JdYYuF90EiYNA/1sBUeETT8ldLSDneKSwcWhqD++TEujEkni3FsHbqsjIipFVAmVDXRgClfRT5hmfZwpM5IBwETLg6EifHojfsSvTvukwsukmyJ85gBdjbWfWriHCpbIOg+aC5JpBIbFSSt+RvPNoUJi/kLOybkxZjwmIHriCah6sZakGAKG/4Xs/6VEcPhUyeEbztw4QoKgARcfcPYXNlqJOc2CJzHFv8meY+/ct9KbZdwExb698wzlaa0C8bjGhqsoFkz
+X-Stat-Signature: p3bjgbh3uekf8rsgd57bk5wn4jxeebud
+X-HE-Tag: 1787664060-542104
+X-HE-Meta: U2FsdGVkX1+AJ6JDJBV4x4EaF5TmFB9gq6+0wsdixg6Dc6/saEGvnhsYGW8AlOrZ4dUkLpVfv0GK92I8f3/rZF0kotnv0XQ7knlVXsaVNNbVwpCtbroLHRsG0r/PVJyQ/Y9UDK5vBxoSCAcq7RIUt1bei0QpTZeiY+oYh8tYWaqNVEEp3/qjq1HFdg6ZYOC7eRLuIwkM2YSNQirTgZdQmD7BAZstv4Mzn+4saUINMmJ5LF8ruvDh+elOrZRlspU1YksV2+bOEaYdW+jbfca5NCPKv6Re10Jt48+T+5/YXzVHZfummIp7eY8KpL6oeQHIV1BJ2NSR2lr6hTSiyT63Pybz20jKNdQNAcSmi9CR8Voc+eJG4vnN3DoZBC5a2p2DjtwWcyIG1wWYywk8j48JeMK5LbYFqoqQjGb3CHu5hYyaNIY5ftci3ntsAGqWuIn8J3H2cwRor7i1x/SyBlmdKms0oX/DQ8SFj1XVddYAupZgQxqZOzDHICA/Ns4aZdNhwl6hwi2rRsYYf46Vy0rClLmjG0W24wU7kqw5LqKnIzlkN5v/Zw6+B8eDNZuRYcMYpWEcK/lWgHp4fpEKf9svDeIoBl0znXIfHvIUGddlmQPaJ59REP3OaSETwu/qdf4uXbVB0XdbrrPH3NwQyIMgi0bOEd+GFNzMA/CrKH9hWDow6XVaZ7ICjz0YqKw+s+WArSWOTJASsnszym0zvv81p87/8BAYKXuxI6A9MjwklXjCbcvohOS/UCPpwujkNNInlLZi73/YSNlq/4/as03gRxkpV/VcmswDf2M4VaibsMBcj5JGe+MVEfTtskupSwgdDCtZAuH0W/1QI5KcB/jkAiFo2E7oTY36O+93LjVlatW8ZJdszw0F4LOUtt359sdeXrUe5/r3JSD0hQjgf1PiTgiTPcV0UKo1b4HzBE9sP8iAYxZ0iWuH/Ts2y83zlaxNdHq7M+V+C5ONrLCME6r
+ B5SgYCax
+ bg6eruy+9A6+yDY+mk0VN9sXzLHLni5Zc0cvvcrEmIuSeiGmIiUQQRCmxd4Wg97qE/KtaXBGFAFQ559kRMG1Z36Iw0afQspBz32W1fcHvtdQxDRHy3f+bsNY1jwxp2glkLw0hucJVkVqFd4qXOQVkRF7I0zLfpd3Q0p6lVd8+jfDKN8SoC0IOmlXDzFEuw78WwV8m6Lf7af1astMN9w7epNN3VTzAECCrqdBn7bSjrzdcwjrGUuB6kJ2P9vG3BZU2dQU5kScn6G4FpOeIyC5gzl6ulBARdRqVFUlyOM/lLbBoGbMY/LD9cV+g8cG3nzPogxpu2d8H7h2bIXeLPT/tHIxAWx7k8vekkhN/Hijw2RjM5ZZfBK9H/7xuGs8nIyj37KgWiDWsx6IjR3A2KKEzF4DP3tPWZ8qQIayk2w2Ztg9PCIwqqSxOeQLZo8FbpGEyHvkQMq0mx7A3zks8uVbJMPohgzpmXr4ph9eMqFHRFnptnT7/+kYcYH8PzSxdMGbFWs5AR2wP010+jEgE6z3MajNM+E1O+vfB2AnyA4saGmVK3Lalla3HvVchZm46hVpiDMdWYfcfbVgZU/tWzDjeMyZTXhNS2xGQiO03uM1j+diktGBiOKc07fIBrL19gPXnQK2rsZRfgUEmL849B3b2rYFc3ZMnvK6OuUgiTY6X+AunGBHMfXF9aakpuLQG6d/13m4it7IS0Bm73mDQHEKBNkqga/2wY7oseEH0IcckL6hP4WPW4rRy1vo9vw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,69 +131,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 09:51:06PM +0200, Jann Horn wrote:
-> If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
-> good opportunity to block a process from overwriting read-only code in its
-> own address space through FOLL_FORCE writes via /proc/self/mem.
-> The security_ptrace_access_check() LSM hook is bypassed when a process
-> opens /proc/self/mem because this is considered "introspection".
-> 
-> This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
-> that a process cannot create executable anonymous pages.
-> 
-> PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
-> accesses are only possible when the LSM allows ptrace() attachment; but it
-> is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
-> environments running lots of third-party code, such as Android.
-> 
-> So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
-> such "introspective" accesses.
-> 
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
->  fs/proc/base.c                |  6 ++++++
->  include/linux/lsm_hook_defs.h |  1 +
->  include/linux/security.h      |  6 ++++++
->  security/security.c           | 15 +++++++++++++++
->  4 files changed, 28 insertions(+)
-> 
-> diff --git a/fs/proc/base.c b/fs/proc/base.c
-> index bec6197329dc..3dfaef49bb70 100644
-> --- a/fs/proc/base.c
-> +++ b/fs/proc/base.c
-> @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
->  /* private_data for proc_mem_operations */
->  struct mem_private {
->  	struct mm_struct *mm;
-> +	/* Was the ptrace access check bypassed due to introspection? */
-> +	bool introspection;
->  };
->  
->  static int mem_open(struct inode *inode, struct file *file)
-> @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct file *file)
->  	priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
->  	if (IS_ERR_OR_NULL(priv->mm))
->  		return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> +	priv->introspection = priv->mm == current->mm;
->  	file->private_data = no_free_ptr(priv);
->  	return 0;
->  }
->  
->  static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
->  {
-> +	struct mem_private *priv = file->private_data;
->  	struct task_struct *task;
->  	bool ptrace_active = false;
->  
-> @@ -886,6 +890,8 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
->  		}
->  		return ptrace_active;
->  	default:
-> +		if (priv->introspection)
-> +			return security_introspect_mem_foll_force(file->f_cred) == 0;
+On Mon, Aug 24, 2026 at 01:17:56PM +0200, Andreas Hindborg wrote:
+> +        // SAFETY: We just successfully allocated a page, so we now have ownership of the newly
+> +        // allocated page. We transfer that ownership to the new `Owned<Page>` object.
+> +        // Since `Page` is transparent, we can cast the pointer directly.
+> +        Ok(unsafe { Owned::from_raw(page.cast()) })
 
-Hm. Why not pass the reason to security_introspect_mem_foll_force() and
-call it unconditionally? Similarly it could also be called for the
-active ptracer case. Then you'd just need to pass a flag to the security
-hook and the LSM can decide based on that.
+This doesn't satisfy the safety requirements of Owned::from_raw()
+because the page may be used with vm_insert_page(), which increments its
+refcount and causes it to be shared the vma system, and this occurs
+before Page::release() is called.
+
+Alice
 
