@@ -4,125 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DC3C5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 00:19:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65C0DC5DF81
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 00:21:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5ED876B00A0; Mon, 24 Aug 2026 20:19:48 -0400 (EDT)
+	id 728C36B00A2; Mon, 24 Aug 2026 20:21:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59F566B00A1; Mon, 24 Aug 2026 20:19:48 -0400 (EDT)
+	id 6D8AE6B00A4; Mon, 24 Aug 2026 20:21:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48DBE6B00A2; Mon, 24 Aug 2026 20:19:48 -0400 (EDT)
+	id 5AB296B00A2; Mon, 24 Aug 2026 20:21:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 21D116B00A0
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:19:48 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9BF9B1C142D
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:19:47 +0000 (UTC)
-X-FDA: 85137883614.02.50AAEFF
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A90871A0007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:19:45 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ADDC6B00A2
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 20:21:07 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AAC0AA265B
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:21:06 +0000 (UTC)
+X-FDA: 85137886932.09.5F4C539
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf19.hostedemail.com (Postfix) with ESMTP id AF83C1A0003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 00:21:04 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nJXPN2r1;
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Y91rY8Ca;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=jthoughton@google.com
+	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787617185;
+	s=arc-20220608; t=1787617264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oi2XJsVVO+vc7c1/zrjvYVUavZv1Bhhh2/RTVMd7WoQ=;
-	b=OCMU02gs8+IAI+uJPHgKUQhsWXvzMwjCeVJ6QoVy2i1VeKcOAoKs5INcws9nxtjRWjHEYM
-	cBLpwmWwPUDbiStW1ryGPoDtYXjbERmSnsKlDMhuEwyo12Q1qFj2z0C9G3ItPTYOgmKWg1
-	zp4k2+L+AfGw4vI1BP2dIO9dJ5uMhyQ=
+	bh=MOccCJ+s3b7MTFGKQlT/SH3M4GxfcnJ6QVVNw7oc3jc=;
+	b=fX8VDoYbsIVdwW1Ry1hxDk2sKCIAi2MvJV2w5rLcB281l6Wqi7u4fFE8vOknYnFpZBL/QJ
+	LE2hdUZ+ZPmsa2uX0o/43PXDBdXvt5mCem4lcPXVc+eVSOB4eXN1r10M4doOblZmfo/ap0
+	sQVFHKWM7+Cs2zIEQ20DVnL+o/0W+/I=
 ARC-Authentication-Results: i=2;
 	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nJXPN2r1;
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Y91rY8Ca;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=jthoughton@google.com
+	spf=pass (imf19.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787617185;
-	b=R2fk6Z4MnahHqyV9gqYdOKww7EspTo03c5WG2Flw1yLDNd/Eb1VYtdf/6n15Au4ojg321B
-	8rm90MsafYeDfHK/N9SvmcfqfaNq+xU9mWj6v9mbUiU/0d6xe+/3wFL5mHIjwzTfDCYB+k
-	r1dM3tmWPYkPpV1CipUEGYNQsrbEReM=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c1712a04ddaso695838666b.2
-        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:19:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787617184; cv=none;
+	t=1787617264;
+	b=opEudP768E9BYu1S7cfHsSGbeA7Nb+KepdrfQpO48HkMuPSIW78GmtWb3IVBeeBf3dPldc
+	ZlMwBmlG9ZvX8ocOzKTP2xImXcx7YvFUW4MkJEY2NFDzquX1TltGFyju5Rtmz7RFjPKUOv
+	Mp78PVUkvXzYGlP7ID2m0t64v5T+xT4=
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c1712a04ddaso695981166b.2
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 17:21:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787617263; cv=none;
         d=google.com; s=arc-20260327;
-        b=RaoP2N/POHnQyK4pUtd8q7wQrEjO/1QteqGl0bQtPRZFOxHpyKcrHgNaalfjug56NH
-         eK84D7Fc7HDW/EQkCj81i56HjJuhmGNnIJUIVZ06z01BYOosGfS0CS8hp8Xic/ymC9x2
-         8u8kzjx3SrfqusECC2N4W9rZvD5U1keo1fZkzILHN1fhzmVVyHReXE7d9V4DDDfdMFGu
-         HseqZKV0vRgf/1/PPtv4QFTWIqKwMX15Hr+uYB1Cu/QbJWUIFDThz4jqJMpqvMpHoXGh
-         i+nVgBDUKFfUEQZNosyY58vtzGVdSB4bHEed2ZxZMHLfvrY/meq85vcvvsifUTncPgJ8
-         mPEg==
+        b=pJFD5v4DpDsDa0cIGEiO1UogkJE7QKMWcWZ/0dBN4cnZ5Cc4Hnz1TSNiKoQHYU2Ctv
+         Xfvrj7zNPAYF4YwQDqYAqUyjYPxvyc7sUeSSQdxfVBf9U19u04zZECunUPh0nTg5TJNL
+         sBEo9g/YjRqmZSM83pimMHf+0wXvumscHyyufwhKt64ayaRg3VWfc4dAzSyeZ+xYuo3m
+         3MsExH0bUCta+PQ/cj9CVp1b/t1z5eWHcGteboH9s3DzoHGTZbXhT7hxIEVKgl5+m5QJ
+         oMBHQ32bw3ydTjevxKEr6UcjeTcSfUeFlH3p+4wIusht+EwzklDqUnFrAjOLHLd7UFWm
+         /p6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=oi2XJsVVO+vc7c1/zrjvYVUavZv1Bhhh2/RTVMd7WoQ=;
-        fh=FqVyFTeH7S2n+r+6XhPqYXDbM6e+x54L+SEIjrC0Gc0=;
-        b=RtnTyVXrbZdiN2FTpg1gtXtfgImnd118MhkYcVoUpobQuLKt5fcCS0L0n5WalXm+DD
-         XTw7nDyx/0eoUIH81cqUNiRqXvtGXS96qePeBAKvKsa/nttb6oElErkmDZUo93hlvJz9
-         14zfiAtEpuTvAbOXVl6Xeba8ouQpNrdrrv6RSumJj6jGIIGU+Xa/pgUk9BP3jzCstDbC
-         wP9LKvS5O9BlcgnRyzh0T5qIZWqbmdSLuEIOwuNzxbNQe6DwcFQ4SSAVVutY7hLSTQXl
-         HVzqYos1R9ryWrVvG4YmRKn/Aq4Hyof68U6QjJlrF8DWY5os06gEaEYjqva5i8oZtClB
-         GOkw==;
+        bh=MOccCJ+s3b7MTFGKQlT/SH3M4GxfcnJ6QVVNw7oc3jc=;
+        fh=r+OMbq0bj1FLZEZMhptVAuJyteKi56TShIbCZwi3Rck=;
+        b=grQoD4eMtu0428RZswjdV3XdlXXeEyWiXuMFIJ3mDBqdJda+haGb5qYujJxD6R/l2L
+         ix2WWEickaHtMXBZsyCC4LZF6uVM5xp0touo4dP7MbxFlfYAeatAFSwmDWM+ZumQ1fD7
+         IqqrPXjPJzLBOZRYEvIh68JNh+c11DDOWQuD0Pu30AulLtsbHMaKWuUDEvWyNZHzyrpn
+         LHbRckKPkRUJn8HPxJZ3Y5m3yWlfLIWCjUh03Wr3b0Jk+FwiuzialBnTQbp+4gxAmNCB
+         uPITHn0ohzWPI6cAbqQKE+p9jXterPspa4K8H5Tx81eE0OUkVVQUeBLKoRbVZYUKb3R5
+         KjAw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787617184; x=1788221984; darn=kvack.org;
+        d=google.com; s=20251104; t=1787617263; x=1788222063; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=oi2XJsVVO+vc7c1/zrjvYVUavZv1Bhhh2/RTVMd7WoQ=;
-        b=nJXPN2r1cfwe1gi8DOjge/lt8XIpDd6vXMTIMO0B037dgSjFlCI0ldzstxT3KmlAYP
-         o+6jFfe2jOigEbkpHvVbAQUISqjhEBWnu5WYZjeJqoUhe5ZcGtZKgEHNfMmPFlBPYY8m
-         N6+IuF+yHXlG1J7hFmzRzZL3Yq+8RnJ6+OuiT64HpL4n0rBETWMjX4bvBqGKR6IipTx1
-         IbGua+3AWBRdE3YDxNTBY7BXXGXGMDPVvB2ahQH9X/c8LsqmYYMqlzXbtVBA64NYHIbG
-         6tXKsjHYA+VPwtvZJ6K1pV5DARknZJPi9Q0d5OU6V+NSwMROEOtnLFV3dWhQwiXl3Lcg
-         OPQA==
+        bh=MOccCJ+s3b7MTFGKQlT/SH3M4GxfcnJ6QVVNw7oc3jc=;
+        b=Y91rY8Caj6/2BLqMb880cW/1DslW49tK98kDDZHlDbT9WdA9I6DDKpAwG+Dg4OKXj9
+         saEAgihGbgx1B1Jico7bYcZZIDYClBqwQ4+6MKu4JSxlZjLlKhU/+UQ4aKql77ViKRUk
+         71Lyn90yq5R3PVG88CGbxcwIPasteveG/9YO+T6PCSaJxc9E7l9FuZzCi39YllxmmVpo
+         tFedXyrBNvD+8aUTizS2hREZBwCMwIbG1u6YsI1SBFQ5FnDuCinG58zsyWC6ALxFNDFF
+         5L3+BrmbbxLAhGBGwawW6y85YL6dFC33rMBKKhf44P0vDg5hZtU7c5nbvcyIu5i5EYoA
+         uD/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787617184; x=1788221984;
+        d=1e100.net; s=20251104; t=1787617263; x=1788222063;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oi2XJsVVO+vc7c1/zrjvYVUavZv1Bhhh2/RTVMd7WoQ=;
-        b=OvGRQLWXzdevVDIraLCIImV3tPX15UEQGeFzf04CV2V5XrMEA+o2qPq9zrsD2fsiWa
-         WDdw2YVrc3ub8I1YJETjMOrGoToooMG6kHUM8ZRoQgBjPtW36UAL05XKoTdFX1ssaZ06
-         7mocJCAtfdFztbIzXYkhkSm3fl/sfVun7yHOOwiypTAfV0CjIExHc37gf9BD97WJdlTA
-         pGv+TYEPQ/FlsYEFW3PWdeUr6CcDyo02y8iWI4Z8qv0won6dm9laqAg52SLnKety8glR
-         MHcSVu5UKeXAEXtJSh76DOeV+2KUA2/TSfABazEGoRrVqjuQBZYyQO1ToFjpPDoAdC3P
-         GErw==
-X-Forwarded-Encrypted: i=1; AHgh+RplCVslXnaS7e8OLBDe4rPvJtMY5GYdEzG9B+AanymuoFq3SruA6z8OfI3aNvFVzZJu32lJsfvUrA==@kvack.org
-X-Gm-Message-State: AFuF++ll8F9YHitSdJfWKSq4JBNwWLT8KfLllUgfHP/RSgQOX61DZhcV
-	zryEmk7rAXjkrWu+TvG80PCWELLOHDSDihxheEbumRyXZtNFR9Q6lu8PyrneFBGTF80FyxoZlFz
-	B9mOtyGVG+oiNucAv9gAxV4xgm7o9CN7vu4wZhyRZ
-X-Gm-Gg: AR+sD12Rq3mNxWxyhg12WBK3DctySKa5gzM0f7xe7Q2+wvoKDDK3ml1jroamwr/3GVb
-	d91+mL4gqeASHWiiHz/nMlHyy3mj8/fh2by6DN8vmi/G7/IW5aubu0wxuylmu7zmHdAlQAcatYC
-	/mXAeMN0k3x7mu5Smf3bGt+usp75cL1SR4MlItdPEl5DFQtXYURfVyXDn1XeD/KX5OMS57xnpzU
-	vBo76cfjbcMReBxd97Vq767Vnp2CBBDYsVtLtw5RZMcQe80TZOTmP2Fik41HFk1J0Tyk2q2DMPh
-	s97b1QgKVBHMAXSrgGr3mXTn0oVuW+AcibPTirMA7rpF2R6cc1P+KPRNOpxmwMc0F7CqrK9qv/Y
-	YMWQ4DlZZqb3AyXBcRYq3DFVxlZAmYoWKdW4A8WZQxPAXd9NQt9DSSTxWO2Z25sgL9Cw06N4rgY
-	LWcbIUshKWtS1a
-X-Received: by 2002:a17:906:478d:b0:c20:31d1:a89f with SMTP id
- a640c23a62f3a-c24921149camr2175651466b.24.1787617183877; Mon, 24 Aug 2026
- 17:19:43 -0700 (PDT)
+        bh=MOccCJ+s3b7MTFGKQlT/SH3M4GxfcnJ6QVVNw7oc3jc=;
+        b=ifsxnuFjopaCivgB+jhu99mMp+eWv9MX90Pxh10KFxmKClXLNTnronF0VA/pVVC84B
+         JcMq6cmIma5t2RO1ND1eUmJIYm+yerb9KeSVPorxRmZ3a3uuW8MfHO4oDpZVlVzRCfSh
+         pjuN6wECXziPMJeGnKThn8UUPWQo8DJRttnN/U4iVG2fHeuAZO2YLyFg7JEhfrTWWEFx
+         soFX02mHsSrjDgQCEf6raTGbjcfCl5zAhlGr/ScJtcTBY7sgGLGD4aCs5wK79SSnSMb5
+         TfUiLV12MOC8RjPDHVqT6dkH3QSm4Kz7FHs+fX5sYIyHqchMrfUqaDHJRQGthcFMqgwK
+         x0nQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ros/smwa+WookXKf/IZqdFHcZHrgKHjolKOpeZ/PDlPY+Ap6eR7I1UMFy1+8ek5fmjX0OgclzzpNA==@kvack.org
+X-Gm-Message-State: AFuF++khk7eOuRyhBekQJzFqhqqLq26pbhXeRgHDs4Kk7A7Pdp2d/Hn5
+	n1rzN7miPpUkTtxNwjNMFA+tnr2/h6EoBapobO8tck7Sn9HZ/VMDm54+YeIzh293olYNsAPBPzx
+	iS0r1vgpNseOJgwTi+hRNulFRDq7WsL/TaHUqqUJ5
+X-Gm-Gg: AR+sD12fLNSw95R8K4z1tPOWsceaXdW0XVOnx69zNb40rSH3I19ad0UrjR9Je/LZeOH
+	j0DS1iYNa6vWMfLftE7KJUiCtTYuRNmpeINhuj8q1OjJmHn16rej41JADMo+WjB/75xl2rFF7vO
+	7awUos3/sPTp/VT/XVNuuR0t5WxanCdnkifLZC2g6e2jISlxuDYJUxJhcxn42ojvrfj+8hVPsju
+	M4ZltmGv/vJdqhc/pg5reOAxt8BlKAkkhSgEq4UMXenah5vBPyJDJaC52CF5+oRgQbqVvwp9Fc6
+	n1l2/BA39ZEKMZfOW1GzZMMmGbEz8NgGvGqUTimw77Topl5xjAWCXlowq7JKXY+/lFzdoiZ6MqY
+	NxamEWMuXxOwLH5sCQ13ivJxntNqLtI0Wh/7jg2gxpp1S7ZWBoPefg4EUW3xee9kdY99V/XiHpv
+	4Y7NqC5HedVHvIFrmcoA==
+X-Received: by 2002:a17:907:930e:b0:c1c:4e36:eec6 with SMTP id
+ a640c23a62f3a-c2492099898mr2233901066b.18.1787617262791; Mon, 24 Aug 2026
+ 17:21:02 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260708031129.3503195-1-jthoughton@google.com>
- <20260708031129.3503195-4-jthoughton@google.com> <aoRnHjaQ9Y61OB5Q@arm.com>
-In-Reply-To: <aoRnHjaQ9Y61OB5Q@arm.com>
+ <20260708031129.3503195-9-jthoughton@google.com> <aoRn3Fn1dhTdsk6d@arm.com>
+In-Reply-To: <aoRn3Fn1dhTdsk6d@arm.com>
 From: James Houghton <jthoughton@google.com>
-Date: Mon, 24 Aug 2026 17:19:06 -0700
-X-Gm-Features: AcwNN1UQZKYyQWHzZvf5pN87Sz8ZppUU1k5HLeGcPZGcMuCryj8aeaANnsSFHi8
-Message-ID: <CADrL8HXGZxkOhz5QVNzvJhh98akCzrGJd6sC_Nj07CMCXCJUSw@mail.gmail.com>
-Subject: Re: [PATCH 03/18] hugetlb_vmemmap: Leave pages partially HVOed upon
- restore failure
+Date: Mon, 24 Aug 2026 17:20:25 -0700
+X-Gm-Features: AcwNN1VDT0z61JeW37ejfojh06XWJMZpjbgbk_244A1kNUnBGA4i1Z7ktlukd9E
+Message-ID: <CADrL8HVaa9a=E3+ABThCFzZWd15RPvXzR3QafDrztgJMAoG_Nw@mail.gmail.com>
+Subject: Re: [PATCH 08/18] arm64: Implement try_update_vmemmap_pte using the
+ AF trick
 To: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
 	Oscar Salvador <osalvador@suse.de>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
@@ -134,14 +134,14 @@ Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>,
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: bqdmb6mw3ifnc5amzwm3go8q55nrs94w
-X-Rspamd-Queue-Id: A90871A0007
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AF83C1A0003
+X-Stat-Signature: z7ac3es5bakxny9edkshjhxigrc97g8p
 X-Rspam-User: 
-X-HE-Tag: 1787617185-44210
-X-HE-Meta: U2FsdGVkX1+an7wXcJSeuvIEVqa5WOBTtLoxwueWj6mawYJMXpMiexplODMUYjDU2Y3I7TS+j7lScfE7UVHI/CGhuQQawBr4W4NO10bZB1e+4MG0Oz2Jh67yfFlHyCkL3hSq5f9Ri8SDhR0jKeTpgJqYuWmitWjPDX7lm1gHSiOexxB08jFgm3fw5UJPg5m/h+Pmqw4VBcQI0iYpdOHbIWiil7yAswkd79VbcIP6tuws5RW6WmDUirW+p7GLSBhsn9o7QnOQc85mYn0pK7rFhPp9Qdv3xBjoDKT7sHmY3LYl00ZfgQavDjYPeBV1hGwl8OCUtMEPZYu0NfRV4qEOeusstkMj59WHtX+cZ8oilACoNZQkBHpBaoa6+df12GWDSPyQQJeb7mN4dVALR4xrsOI0m2I7iNUcyWC95nc878Mpq6rYt0AlNmMblFNspsdtte+tK4Tlr2Zgt0fKhYTHZYxfDg+OgxlJu7ehoobvcg5dyFCxPjtqAFsE9ArXuro1JlBl1+hf9P3dXi5HhlFeHKTAYyYJULSMBo6zDJzG9zDj2MEf84//7YXF9AJ/Y1uaAWlJNtYpd0TQHaNvhhX3c41K1T4RnidSVjS2aWweRLL1QRiCMH83BCT+TYhq+qHiLmU1h+2EFdtnfZ2WPm8tORA+d1Ouf2P5pgzgsRecQaqOL9zVDofPtC5kyjyd//tKhpQS05LNmtSlEWrvR9sKa1F+r2alLGFbM0hsDeBAv4BDNXeKlNy3D5oQn+NKESOZSR20BN+m0bvAVyibqnLLTqp2bn5wdLeRHzIcVJOvPomNqO0nFUrmq0yTLtMBEZV7NJIQoFqgRxyY+HQmQuHm8RzK1K5YAlnh25zVbFId9muUZMmm+G3/dD798Yzck5pN3tnBOlpr9QrPCK5Uf//GkTDZhA7pkNlt4XIROEub/pDqq2A/0pz2z2bZ+IbER4KJjSx8UT7g3nZOnoG08nh
- djG95Fbn
- QSWUsYr8Z0bZVIzyGDipMgURVTxOcPIDWA+UM6nyBsSF2Nzog6twJ23GjxtHnu1uMfOckTjNBs/eSefJPWbzDnKnlMoTf/AKY9vCnC8cBwpdXQlLLlPcWdqWDSlMZuaalmn0mfRC1vj7vOgMjRPi6+ohxsBoFUAehvReBwDKD0wONBoI0UO422zOlrh9pEZlhryTsw2tmLGe+iz2jruzGpXMMQyLi4Ju8oP4oDCURbwAbsJrWifDp8yaAuHlM5u2bqYnTtfpARfJBHiG+JE+KpT8eEoH7ppi26H1SOTO89nLUuIimxVzo+vXH6tfBGtxVBLVJJiUltBr2iV5G3s8tvMzVWw==
+X-HE-Tag: 1787617264-545808
+X-HE-Meta: U2FsdGVkX1+KZj7MmyYikM6GCiGF2WQvKsGgzTY3bf5QBZ9uxBLsf5NkAQ10Q9zsk+aD7JnadVAxV/F+uD2vCExZz+r2z4torTL6EUze/7n0sT1ExKFH1jM+4G2grsEJjGswhgzf6dP8z9lD+rmvo/8PI9X9xpnZljDl6Kr0Rt42Vx4FGJZAw/5sYl3enhL4Gir3swE6tjVvJekPHRkjGLcNKsNPfUE61F8J74Q5JadyInKhUFipHzXnuhVz2WiTzqIAXcrlcU98cSvcihKFhvZQPnRS3lUsUIc8MxlYa1Le1JLUWUiTzkYHbxwK2xFAyuObf7P8utzQLht04DLrPIDXlWzC+GAAxwmRWN2IiREnVatJ25rVM4BJl3mllY+z31RGXsGuivJcXTdl3tnwMMgboWpNs9Ixq50YVLV28jLloim2o8z8wXDLuj8w+4qQWfT55xFl4yRu21aWuzW7wbcvb+CYFQfAV6xJdraL+0RtTj/SqBARFFiPkSBAVRKGfMUgcNMGciP3tuwDPhDLQxxLeM31v0jxehIopq/YWAjolqrr7i4C2qPZ+Yt9GAfedUutX1pvy+mFE023pGjMi5JbEFri1EKqigpuiNg7XwQHaA+5VOmfuNfQHnJI+Rpe+aPfLJb7+/s3/m22P6Uetmn2sYxz/ggAJgQMK0rEA1Osc2YkbUm6tIxguj/gPuAW8gl/exSOLKiUVIouxTORqzmOWbm+VY/evOjIWCJ77T9MysmlA+QOpjmSzn0gJA+HiA71l/qzc/hgpilisXMCBv6ZA8xsi79kecGo+WaEKtNOTna6cN0YDM0Xn1S5EKav7GBQ+XPIqZPJM1yW40xPYeHXn4M6fFdvU0ooCvKuplLB6QUFXi+newD+iAskWe6stYHS5I6A33UYNrYQXM4POThvWDyqPNDOSQM64C/QDT7KjP9rVDGvUhHKzjMvoZT8Y6EzO4nFbNLdcVoQb51
+ bsfuLkTg
+ 2mn1JYFFyJehvW4uKmoxOe7scvOUQ5w3GJKZ4pWbRfXVozOyoJU3F3Lj1HeQ6IK2f5sE/4CawW2uS7ZgmDrqqw5E8wO2oCAWHkF05+OhzTdeb9cBxgsBFhMmIXXVv5pRqmsc06nQugfHFbZagjlZagHh3FSoCpcVAOfg5ZGItnKz6nxU9hJaC7pSLYtGz/XLYyw06K88wK7SKKK6lQJjK+awT2BFOaTSFnW4rJ7lhhADiKbbp+kQTRSSYNGmcEUrZGTq1Hb9NWEXg7sdbuktvLUGbRHpdr2HgM4qORRN+rwLq2AVlKDoW9nGOne8LqbAUYUfBS7SW9d8IUn+UDqxKx3HR59Ywxu46Stak
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,14 +149,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 18, 2026 at 7:07=E2=80=AFAM Catalin Marinas <catalin.marinas@ar=
+On Tue, Aug 18, 2026 at 7:10=E2=80=AFAM Catalin Marinas <catalin.marinas@ar=
 m.com> wrote:
 >
-> On Wed, Jul 08, 2026 at 03:11:13AM +0000, James Houghton wrote:
-> > +static const int VMEMMAP_REMAP_INCOMPLETE =3D 1;
+> On Wed, Jul 08, 2026 at 03:11:18AM +0000, James Houghton wrote:
+> > diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/=
+pgtable.h
+> > index 5f21d3a738ee..7b11aa41d0a0 100644
+> > --- a/arch/arm64/include/asm/pgtable.h
+> > +++ b/arch/arm64/include/asm/pgtable.h
+> > @@ -1302,8 +1302,7 @@ static inline void __pte_clear(struct mm_struct *=
+mm,
+> >       __set_pte(ptep, __pte(0));
+> >  }
+> >
+> > -static inline bool __ptep_test_and_clear_young(struct vm_area_struct *=
+vma,
+> > -             unsigned long address, pte_t *ptep)
+> > +static inline pte_t __ptep_clear_young(pte_t *ptep)
+> >  {
+> >       pte_t old_pte, pte;
+> >
+> > @@ -1315,7 +1314,13 @@ static inline bool __ptep_test_and_clear_young(s=
+truct vm_area_struct *vma,
+> >                                              pte_val(old_pte), pte_val(=
+pte));
+> >       } while (pte_val(pte) !=3D pte_val(old_pte));
+> >
+> > -     return pte_young(pte);
+> > +     return pte;
+> > +}
 >
-> Nitpick: I get it's all within a file but a static const int feels a bit
-> weird. I'd use an enum or #define.=3D
+> At some point, we should use LSE atomics directly here if supported
+> rather than a CAS loop (well, this is LSE as well if supported but it
+> doesn't guarantee forward progress of the loop). I reckon we can replace
+> it with some test_and_clear_bit_relaxed() call.
 
-Fixed now, thanks.
+I'll put a patch (or two) at the front of this series to do this. :)
+Will mentioned it too in my offline discussions with him.
+
+Will also pointed out that FEAT_LSE relaxed some of the forward
+progress guarantees[1], pretty strong justification to just use LDCLR.
+So unless you feel strongly, I'll skip performance testing for this
+change.
+
+[1] B2.12.5 (M.c) The bullet that begins with "If FEAT_LSE is not implement=
+ed".
+
+> > +static inline bool __ptep_test_and_clear_young(struct vm_area_struct *=
+vma,
+> > +             unsigned long address, pte_t *ptep)
+> > +{
+> > +     return pte_young(__ptep_clear_young(ptep));
+> >  }
+> >
+> >  static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma=
+,
+> > @@ -1793,6 +1798,48 @@ static inline void pte_clear(struct mm_struct *m=
+m,
+> >       __pte_clear(mm, addr, ptep);
+> >  }
+> >
+> > +#define __HAVE_ARCH_TRY_UPDATE_VMEMMAP_PTE
+> > +static inline int try_update_vmemmap_pte(unsigned long addr, pte_t *pt=
+ep,
+> > +                                      const pte_t pte)
+> > +{
+> > +     const int max_attempts =3D 16;
+> > +     int attempts =3D 0;
+> > +     pte_t old_pte;
+> > +
+> > +     if (!system_supports_hvo())
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     /* This routine is only to be used for valid-to-valid transitions=
+. */
+> > +     if (WARN_ON_ONCE(!pte_valid(pte)))
+> > +             return -EINVAL;
+> > +
+> > +     old_pte =3D __ptep_get(ptep);
+> > +
+> > +     do {
+> > +             if (WARN_ON_ONCE(!pte_valid(old_pte)))
+> > +                     return -EINVAL;
+> > +
+> > +             /* We should never get a contiguous PTE here. */
+> > +             if (WARN_ON_ONCE(pte_valid_cont(old_pte)))
+> > +                     return -EINVAL;
+> > +
+> > +             if (pte_young(old_pte)) {
+> > +                     /* __ptep_clear_young() returns the overwritten P=
+TE */
+> > +                     old_pte =3D pte_mkold(__ptep_clear_young(ptep));
+> > +
+> > +                     flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> > +             }
+>
+> I think this is going to do a lot of TLBIs given that the default kernel
+> prot has PTE_AF. It somewhat defeats the VMEMMAP_REMAP_NO_TLB_FLUSH
+> flag but I haven't figured exactly how this optimisation works.
+>
+> If it becomes a problem, we could do a first pass to clear AF as an
+> optimisation or later via vmemmap_split_pmd(), only map with AF=3D0. We
+> still have some page copying that touches the vmemmap, bringing AF back.
+> Of course, you'd still need the above flush, just wondering whether we
+> can reduce/coalesce it.
+
+We could reduce/coalesce the TLBIs (it should be very unlikely for the
+page structs of a to-be-optimized (or to-be-unoptimized) HugeTLB folio
+to be accessed, which is nice), but as far as I can tell, the TLBIs
+don't seem *too* slow yet.
+
+On my test system (single-socket, 80 CPUs, Neoverse V2), the TLBIs
+seem to take about half the total time required to free the vmemmap.
+This isn't great, but the absolute time taken isn't a problem for me
+(maybe because my machine is single-socket?).
+```
+$ echo 0 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+$ time perf record -g -- bash -c "echo 288 >
+/sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages"
+
+real    0m1.271s
+user    0m0.076s # this is just perf :)
+sys     0m1.180s
+
+Trimmed perf report:
++   47.44%    47.44%  bash     [kernel.kallsyms]  [k] try_update_vmemmap_pt=
+e
+# In try_update_vmemmap_pte, it's the TLBI + ISB taking all of the time
++   33.66%    33.62%  bash     [kernel.kallsyms]  [k] prep_new_page
++   10.71%    10.71%  bash     [kernel.kallsyms]  [k]
+_raw_spin_unlock_irqrestore
++    8.57%     4.86%  bash     [kernel.kallsyms]  [k] __free_pages
+```
+
+Also checking to see if HugeTLB-2M is problematic; it doesn't appear to be.
+```
+HugeTLB-2M
+$ echo 0 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+$ time echo 10000 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+
+real    0m0.080s
+user    0m0.001s
+sys     0m0.079s
+```
+
+
+
+
+> > +     /*
+> > +      * Translations without AF cannot be cached, so we can replace
+> > +      * them without BBM.
+> > +      */
+> > +     } while (!try_cmpxchg_relaxed(&pte_val(*ptep), &pte_val(old_pte),
+> > +                                   pte_val(pte)) &&
+> > +              ++attempts < max_attempts);
+> > +
+> > +     return attempts =3D=3D max_attempts ? -EAGAIN : 0;
+> > +}
+>
+> Here, indeed, we do need this bounded, otherwise some pathological cases
+> may set the AF continuously.
+>
+> --
+> Catalin
 
