@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAFEFC61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04907C61DBE
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:31:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04E4A6B00A7; Tue, 25 Aug 2026 08:30:45 -0400 (EDT)
+	id 139306B00D1; Tue, 25 Aug 2026 08:31:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 026436B00AB; Tue, 25 Aug 2026 08:30:44 -0400 (EDT)
+	id 111B76B00D2; Tue, 25 Aug 2026 08:31:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA56F6B00B0; Tue, 25 Aug 2026 08:30:44 -0400 (EDT)
+	id 04E896B00D3; Tue, 25 Aug 2026 08:31:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF79F6B00A7
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:30:44 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 457E61C18C2
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:30:44 +0000 (UTC)
-X-FDA: 85139725608.19.E80E2DC
-Received: from mta0.migadu.com (out-64.mta0.migadu.com [91.218.175.64])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 51F2C140010
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:30:42 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jbXpDYkS;
-	spf=pass (imf09.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.64 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787661042;
-	b=PnJExtD09uJlGjDJEGSHIha+UGpgkeVQ0FFDvUJXOulyw0EGMf8dVkrGTdDFjNp2NYBVUh
-	8N3DAWSk+88mdjWhgimVGvGOVC6PlRyVWjxFdVAoZAuGyYkEUnC0chG7MKkHBRtTaHPicL
-	FZmDx0cIxpCJzHI4lmE5o1meX3gh+98=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jbXpDYkS;
-	spf=pass (imf09.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.64 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D68046B00D1
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:31:17 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5FFE01203EB
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:31:17 +0000 (UTC)
+X-FDA: 85139726994.06.C441E1F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AC50518000A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:31:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ofT11nQA;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787661042;
+	s=arc-20220608; t=1787661075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1UeYWR3KEVgTWXl7oP3i7BHbXYcdbuHUgWeQhar23GU=;
-	b=jkVRrhEKAg2/j8mtDR+k30AaimfeVuNaBRoDn8O8a2XRdwm5m/YyOcknYVEHBIqss1DCyH
-	cuXLzHVnYljaY2/TS12QT/33zmzBE5IZND2ELxPm8FA2z86VTLIE7yD0vFB5iGfW3wDH8F
-	QOBeo/qOy8D9NkLIB3cJ4Kc4a8TAK9M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lKJdbgYc40Jcdb2LxGXn1NfTq3I444jKQUjSdN+FxF4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787661040; v=1; x=1788265840;
- b=jbXpDYkSSpE3/fKdMTtIu2NfFmrbZAqBzRZ388JbIUwLFBziMQYAybduM46RMoEvpdkYhRhP
- LG4BXOEeYX8+uUhSDQ0SLmZP1o7iGtwyXZbyBRJOf+EwqOYvKw+c9+obxSKnF65N7epfn7CO2KK
- KbVrjBqsjal1s2vBSduNR4w4=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (139.159.170.87)
-	by smtp.migadu.com with ESMTPS id fdb6cd8b86f8c3a8;
-	Tue, 25 Aug 2026 12:30:40 +0000
-X-Mizu-Trace-ID: fdb6cd8b86f8c3a8
-X-Migadu-Flow: FLOW_OUT
-From: Zenghui Yu <zenghui.yu@linux.dev>
-To: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-Subject: [PATCH] selftests/mm: fix incorrect skip output in pkey_sighandler_tests
-Date: Tue, 25 Aug 2026 20:30:23 +0800
-Message-ID: <20260825123023.64418-1-zenghui.yu@linux.dev>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xsNEWNi39UPPJLm1+sc4ZRXUG0ihBnLDmHXk5dXeQgQ=;
+	b=v9fsidYoCCW6SlMc1HQYgtSDOOUzwtvs6VancykgWtUCbBcIsNrgFB3A7eMPzJwpESeaGd
+	itd+guihmp6j74RfkUhVQfAY2RicfYdqdzkjL+wgQSkNJCQU6yGYE3BQ1J+v01pW+S5vTF
+	Gn/YQP3u6mWRj0U7hAdUao9lwWz4SCU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ofT11nQA;
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787661075;
+	b=LB9xkCIeQF0oSpO594+1LHYT5BRUBn/5yNW03rJFOBfD4dYqKgdF0PXx1zpUbQbCSKZWjI
+	jmdF9UQqucxrjy83xEfOeD9AGNIU887xK8ILtx1v46Fdur855XIYEJFAnTwpznYYyKi4aT
+	w72MppaeSuN1vb3ErRt8ktIHoYS2aoQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E7C296011F;
+	Tue, 25 Aug 2026 12:31:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3BB1F00A3F;
+	Tue, 25 Aug 2026 12:31:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787661073;
+	bh=xsNEWNi39UPPJLm1+sc4ZRXUG0ihBnLDmHXk5dXeQgQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ofT11nQAHKRBlGPgKi3v4szvihkQNzTb1w8uYeVH8n7nu6YU9r+smfAe5YEONEysS
+	 ZiSV5ecEsptyKeUZveViAqUPRtqVual9dbogk50MEhTf/eMYkIylU4WxuiJ15mvMdd
+	 TSJrJzOOYGwLFj9ciXOwPxNYZn2NnzhJZzLA/bMe4lnr4drVZHCG5b8DsCyFqCBiNI
+	 3/Gg25a3bjkMb67W77yD0yY46uVPmJF6m+FTHyzd2njJm0BzSMS7SRETbQqLf/0a5I
+	 w1ls5vSOCoUi2f70nqILQokejRuc//N9ao8Z+x4gLU6B9kFh/guBDXAzkn7FHDzd+G
+	 /o82JOJxr51+Q==
+Date: Tue, 25 Aug 2026 14:31:02 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Xin Zhao <jackzxcui1989@163.com>, david@kernel.org, ljs@kernel.org, 
+	rppt@kernel.org, pfalcato@suse.de, viro@zeniv.linux.org.uk, corbet@lwn.net, 
+	skhan@linuxfoundation.org, akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
+	surenb@google.com, mhocko@suse.com, mingo@redhat.com, peterz@infradead.org, 
+	juri.lelli@redhat.com, vincent.guittot@linaro.org, ebiederm@xmission.com, jack@suse.cz, 
+	jlayton@kernel.org, chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
+	keescook@chromium.org, mcgrof@kernel.org, j.granados@samsung.com, allen.lkml@gmail.com, 
+	rdunlap@infradead.org, kuba@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v8] coredump: Add bit 9 of coredump_filter for pre-exit
+ files before dumping
+Message-ID: <20260825-singt-panne-gelage-fc5d58f101c5@brauner>
+References: <20260808052732.2589657-1-jackzxcui1989@163.com>
+ <20260811-zerfallen-boiler-bissfest-cdb998278337@brauner>
+ <CAGudoHG8ff=8RA+8e6JUtESDxBHFjZ65UiCaM4X_6qSU6-Q9Nw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 51F2C140010
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAGudoHG8ff=8RA+8e6JUtESDxBHFjZ65UiCaM4X_6qSU6-Q9Nw@mail.gmail.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AC50518000A
+X-Stat-Signature: 5uf8et5a51ykpeqy7jkj4ogh57odo8po
 X-Rspam-User: 
-X-Stat-Signature: ogrn7mzapzbjpx1a9d7haachnjjerhxj
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787661042-964873
-X-HE-Meta: U2FsdGVkX1+KpWA+xHyGTS0OBugXYqIGReBkBhGoCQNSahxUJj0O7N5DZDZPWAwFOplKhBtqSa9YeyNmTTDyUCbCuUNx2m/wiSuW0SLIg4b38D1XXWuRhifVafKLkaJBexFj/4ie7GL7une6quVpSivu2Mbe10RNE3dUjeMWrRiRQd2POEEFxgGoHCfr8+NVm41OpnZUMnmhonDjiZbXOp6KDfhYhW4tnorppsIvRNL631TMCLYVOuGxuFos56LjHHNU/q9nTkTsVpyBGJsNq4hmSozRAW5vq8H2BRwWOQVb0oFpwo+ZCIFpRsK5hMK9BuJ3QppWRe2wgMYtOXNVDdk0CdEeKwhusAP/hlP1Q2/U/YygEPjZgxXHYA9+iHe24bK321YeS7+e/hRhjvc4ZXFKTnKB8bhPgpy6GW9lBzGa4DGSyYaWTnbZd5DRcHdl6A0N9U8Q3uticJBKbsktd/LxDYjrmYrc2QIt/CYdxzb57prz1tWoNSw3dIGERrOww3n5QB41IFOIm2MkpEVxRUCUNrnPTSMhC46ci+Owtrk2pVq3BVvM6vVWjZbNfefieDTVD59in1Or+uZWk3D7ioxZ4kGRVUd66//vHzZL9WGVQSHECm9vSnXBWAtn7Yeq28eScysFWrX/pbbOB01o74cWITcr1l2v+sKzlA30RCZGXNE22Ol8YEVQUUd/ujwA3t8Y3rKt+v2pMxjiKX79wPmqbEYTE98278hEree315YpxbyzDDT+upFLoQqz/d7e3W9QHbXGZrYCzNqiXqbl26tplS7UMHA71z/ESj/UwJ4xDsWEWD3AcPSwSAK3a6noqfjaIEd01Gx2DJ3LwG1F/GEZFZWIa8tyGHs2zDkNXbV4Sovzuq04zKCSip9iDFCynH8OMCHGGKW0cJN57DyiaOsIahwyvHyxWzmIhOvmah5HT8yfCigz+X68UyPTNh0YRtaM3HvIv00HW1QRpQn
- imdGlk2W
- BlG6UpGijqVh4iKL3hpdOvMF6rTSx3iNYM1z1o298UfO9OF7M2/wqY3cAbmxuDRi2uGYA0QBtnYxc0DkLg3cX5FQZoj1mbUXK5AtWrSHzJtXNzVygRzIPRQ01GAqnXM5IHpDtj/h7q79WQZU7AT2CXGA4Kwu7SGkRphsC6ITJyxzIFU5p6RMqTQuGDPy6VkjUzxzOJz+KVncUl7FC2OvAhKBsFGEl3G4k7ayJFJ9XsJDaZV0672JmUF89fnBYOLauMmgJ8FoERaNsRRxSl2tY6/zRDQ==
+X-HE-Tag: 1787661075-364411
+X-HE-Meta: U2FsdGVkX1/2VDKA8TspVu29hpXm/1WFgi+o5EG5QEEih3s6eQXN5fA4O6CSHr80vLBphnqN+GnN53wC7QismYG9HdGkIPU20OyJ2bSiyNo67Lc7OgcFL89RzBE4tFLmPlsM9sWld4anOmPxyNouhCk1POB0ICVqpij1stclvf2f05iyFrEbkZ5APiWuSCpB1M+dg0T53uBL1zxYIC6CPITB2FHnO3MjRQN149jEIcvbO7ODZJ698WKmobvDPEaeieEcnq2Upl4TALCWjV1sYnAeytKvQWP14yjXzGb2Q9gb8A5Hj6WeJ/Q9emNt2l8xJVJFPReTUgkLc+C9JJHt4D50usEJP3g7fxwaRlQb6P+LGXUErynLq0b+ixeQ3lqkyHHS95LhuPlfQRKGp4KKDVE1/En4CpLnw+2nfKgN73C2rtyB8wKwBUQK2nkauoUbNwkSQQptjpX9FQpCLfJkFWBsLV3G3vGQJiVCsJQJ3GW5bmwCcDATCAnrBxISDUUDe99Ke/AraFwMCgbhRJ/G/f3sSv0svxxMTnarIyyee0b1n/PhULTYseu+s6dInxdW4ZZPqZj2x8WNhrGjFMFnMerSGIAmZB6xl7gUAOaeapV6mCiWoJ3oVjrW2IZ1wzgCXAZM6ed4UC8a/iiEzUpg4nDcjOL0i+eW5aMJINGN70sh2vLQBqs1fUqliavJL0n0don93w20CCNwDCntNV4UQg+d3nYGCevvGDFGXM0Q9tUutsb7DWV5XdVsBOKQBKK3voblx4clZi7VemN26ky/5wQkT85IfCnMmTmQhvwBoxyU1vZnUJo9+IFFVAOt7TTbiSr1ZU3U0UHCkKy4gGths314AN1jfiOtF0ceGc19KmFvwRbrmeK6L+aSeCycAHH5qFvnOOjKtJLizxhNw1pOpW5x9IwAbslCb6RXk/7/VlM+tvNvUZ3PG36UKXkrldmafKQCbDxWvs2Hoi0fDji
+ ybM6mOnl
+ Fo8xbdl9I2sV+zeVpM3v6MltzoPO2+1Ato6Tv6yG6yvS5N0I+Z6WImBxEyJoH6RNo+rHGyWj7WucsZVtgWtu0lHTccRfJ0uuOMS8UKeuTuxysM07Udjbn7Q3f/1O8D1pH/AlPP5or8ayOhj/HjR2i/H/iRgTz3cp94bjrURF2JJaEZ0f+xCyF3it2xJvgaX527cENqtIbHFxAfYhLPaJjSwv5zDdBgkSYfX++ZoMiOwIvVF8FysmkQEEtTXG9jkJ8esVS0JcoFTZ1MvPXthtTxLIhDhcC03VJO1/3AizguA9HRzV2KVxyNspfEX3cawvx2cG9NG0+vZvyD78X6Cr+LO90iYzmBdyzplK/9QZoVIfihsMb/WmZa9Hjp6psrutd4OCTPAU5GTYkZ4A8czgWXAAI9CpcMgdfJsY2pROxeli+JGs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,52 +101,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+> > Still NAK to this whole appraoch.
+> 
+> Would you be ok with a variant which merely unlocks prior to dumping?
+> File descriptors remain in place like they always did, but that bit
+> about them is changed.
 
-When pkeys is not supported, ksft_exit_skip() runs with ksft_plan already
-set, which takes the "ok N # SKIP" branch intended for skipping a single
-test case.  The result is a TAP plan of 5 but only one result line.
-
- $ ./pkey_sighandler_tests
- TAP version 13
- 1..5
- ok 1 # SKIP pkeys not supported
- # 1 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
- # Planned tests != run tests (5 != 1)
- # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
-
-Move ksft_set_plan() after the skip check so ksft_exit_skip() takes
-the "1..0 # SKIP" branch, the correct TAP representation for
-skipping an entire test file.
-
- $ ./pkey_sighandler_tests
- TAP version 13
- 1..0 # SKIP pkeys not supported
-
-Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
----
- tools/testing/selftests/mm/pkey_sighandler_tests.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-index c218d0510a2a..74bf79a5399d 100644
---- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-+++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-@@ -543,11 +543,12 @@ static void (*pkey_tests[])(void) = {
- int main(int argc, char *argv[])
- {
- 	ksft_print_header();
--	ksft_set_plan(ARRAY_SIZE(pkey_tests));
- 
- 	if (!is_pkeys_supported())
- 		ksft_exit_skip("pkeys not supported\n");
- 
-+	ksft_set_plan(ARRAY_SIZE(pkey_tests));
-+
- 	for (test_nr = 0; test_nr < ARRAY_SIZE(pkey_tests); test_nr++) {
- 		tracing_on();
- 		(*pkey_tests[test_nr])();
--- 
-2.53.0
-
+Fyi, I've sent an alternative proposal (you're on Cc).
 
