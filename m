@@ -4,180 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29129C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:55:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E410C61DBE
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:56:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2003D6B00DE; Tue, 25 Aug 2026 09:55:43 -0400 (EDT)
+	id 5A7426B00D2; Tue, 25 Aug 2026 09:56:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B16F6B00DF; Tue, 25 Aug 2026 09:55:43 -0400 (EDT)
+	id 558486B00E1; Tue, 25 Aug 2026 09:56:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09D1D6B00E0; Tue, 25 Aug 2026 09:55:42 -0400 (EDT)
+	id 447516B00E2; Tue, 25 Aug 2026 09:56:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C9F946B00DE
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:55:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C65C120452
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:55:42 +0000 (UTC)
-X-FDA: 85139939724.06.012E397
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A5665120004
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:55:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=CAiq477W;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf29.hostedemail.com: domain of "prvs=6697db029e=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=6697db029e=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787666139;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AD9D6B00D2
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:56:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8DF3E1A01BB
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:56:15 +0000 (UTC)
+X-FDA: 85139941110.04.6FDFCE6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B4B1FC0004
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:56:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ooeyY7C7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787666173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUE5gbKvw3ZCdVV44GNbAtmKwKkuOG8ivuC5PtQ36/8=;
-	b=j0Kc+VOuXdhk4WHSq3oMjkzHovCZbHW+gsQ1dMIeLBk2nM9wD0Sv9A7m6g17WgNeDBytxd
-	rp2jBIlK/iZL8ixlOeqSONbkP4I29qUOaHhxH+gDE/8JHnSi79IxqSdz5Sf2h/n4Y+zwml
-	ep0kYrNaReeQI1hBmBJ+bDup8gR/Of4=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=CAiq477W;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf29.hostedemail.com: domain of "prvs=6697db029e=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=6697db029e=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1787666139;
-	b=kmBQDksaoSjWXj4U7WCSpnyJjwF7X8Esa48XLUz5rApsw+SvdYKkN44nFuhtjpIrlGWgj7
-	UHX7yev65X3ZYsW6cP6wNglfh7ZJ1jqbF+Bx87l4yDZEf0Ao5nh2h2hj9qGKekleJTqo11
-	i6eLkbspF7SSM8v41e7lTi0D8j/RtOc=
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67PAvTZL2936951
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:55:38 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=AUE5gbKvw3ZCdVV44GNbAtmKwKkuOG8ivuC5P
-	tQ36/8=; b=CAiq477WtkSW4zXHyOLTD1LnW83mVM7+h4JrFR7GUARbJ2Pxwf5/E
-	f7M3JEr2LlhqoUz7DeT0eq62g3yjh7d/px1jpFdiSKsF/I0UNQW381kz2XwN9pTj
-	qUAeCB5oUJkVnqGWvPyhZVLooq28XsBTcwcu8sQyJwrmi5W8pyCOU+I+yqZV6D5v
-	nz17gymxQ5EziiuN7+uyk1YLacTC1wuFiTQAuWCJWKeEkY6TOZf0zpdOytSqXisJ
-	1ORyKrVazzcx3FfaXkdWQF/U2hsf5Z0CbtEXMU3P5SfUlJD7raLcEJUB3uv68Ggy
-	qxOdoO9g9Rd8DArT4/NjtFJuimQE2jDrw==
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4g77t2jm85-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:55:38 -0700 (PDT)
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a17c83732fso5057600a12.2
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:55:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787666136; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AMrrYTwLyNq4Eiy4yS0hA0S0nFtcHfVJtt/fvN1o1lwSBvjhx10IiTgkVnU032yFOG
-         RcDIWsEe+YV2o383CjvgvimP3R8UbuPt12Ll+PgxR3qFnW9RxVyNLu+U0KulJ24Hork3
-         pbe5ibtiR41p11Th9W9wbapzRNCwa1dpuyPXhnxDdNIVbJh1YBrcSOoOkNsUa3ba9rwW
-         0bSx9HNZnBUcBh2SQqlYR2rgjFwrVB72rg07wWDyWKY8F0Hs+oX2K7gXSs5p5InCGe2T
-         uPXS1HvR4gDhK7kP8rMZZJVevfAm4qFeMO86Mf/BA2zlrbNbO+RFVU/bdlmcpEN6Gqqp
-         h/yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=qx00t6fKPLNvWhLaxrxwMViaY+wZYeSOBENsfzBwwV0=;
-        fh=K4NedPmJ+r4Lmr1YUPu/J/9b5bJn/69aZ8A/DN9woFk=;
-        b=jiap2x1F5kDmfcd/2w9LyTE8YxPK8zMYTaA8zzhDmYX03aPQ/STAIjWePNFOGsy4XM
-         Ldi2sVSI4PLRClSEZt6dsvLRCWmXN7LfB+tqIVVEwZg4XJEum6/0aIKB+havbi1YVO6n
-         LPdIjEHDTRZiW0w3FRjKCg/lUaovARahLYEXhqZUQgJEtTGM7cMb5nfpZymliGSyUugy
-         ELzCte6+2IDIvqbBfbnOvSkxVmdNzEfT1dczV2RCtR33m1ZSP5HKUxs5xcUnqzYBN8eU
-         fVZwcKwIXRU9L9MgBP4cjeDHb35GabuRTE6TcD/6cXyqw/D8uYWlBlRzE75ECS+wLvSV
-         ivAw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787666136; x=1788270936;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qx00t6fKPLNvWhLaxrxwMViaY+wZYeSOBENsfzBwwV0=;
-        b=sZBIRAJJW16KOL5iGBoBQsz6/zL0P1eFD4CpTmcHPwgzp3XD7vTYtFjjUhbMw1VjR+
-         hnhzPknoNs4BoaB5SGm5s3CBNSWTF5veP29pII1qaXbOKTIdf6O/YwPBX0XPMOM7gFh+
-         +4b4heZFfNK34mn9lLamdvVQClTbr+0wPZGp3G/5t/5avjtpMiid6k3as1fB1rNAMXsN
-         gmRihf9pSOIQFLEJwRXAbqDauHHc36vPZGxTyQ5rIjuTg+xB3VXDDgF3rr9KJt4buFbt
-         dbvaeTirnPqmqGy4yuBDbjVjFA22h2v+xys80JVhxUrd1FTrnyOhtWNuXMhWI++DDaS1
-         XSKQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpa7cd9h4d0f/1PitR3Nh4uWDEPIaet1tTukOWt0pSy4CrLDNfjtqpKtHE06bpiESWOEEEDl0XhsQ==@kvack.org
-X-Gm-Message-State: AFuF++nkW62C7Bwro6GwaMvyQ9a0fD+3axms7s/mKlFcKaVXhcNqHX6q
-	PhR7cAcRlEUEc39kgUfDLkHBU5mIW5htlNXT73qzbETCFYAryFydruHL6hehHMoXlhkCOcw29GO
-	afbtntVZDazOLBoZp6JkNT5r4UOS312X2qEeJLaUULjb9ew8P/fdXJurPsepoCzPBvlEYZcqO9l
-	NZxiorNkfm+czESYIofwH9/itz/w==
-X-Gm-Gg: AR+sD11ugHk0oVelLpy2Ar4FAdV/vSoUFn9jaUYF98UvpX0vQYnwNuMjNanBzTuWBZG
-	eHDsptFI/js/9F3l7dLTxjnaDXDWvlPwArNp6vClnw3bOyHnPTlWl3DwqbTaQ+yih+od4z+7jYQ
-	81aKw5rn45cIBKS4Jz3/n1wG2O1h1U2CBwbCavzYGSSf0ov4tPmbekULXx9Tr5FlsU6nO3dYfr
-X-Received: by 2002:a05:6402:321a:b0:6a3:f3dc:d7f3 with SMTP id 4fb4d7f45d1cf-6a42f216053mr43322389a12.16.1787666136067;
-        Tue, 25 Aug 2026 06:55:36 -0700 (PDT)
-X-Received: by 2002:a05:6402:321a:b0:6a3:f3dc:d7f3 with SMTP id
- 4fb4d7f45d1cf-6a42f216053mr43322329a12.16.1787666135702; Tue, 25 Aug 2026
- 06:55:35 -0700 (PDT)
+	bh=FMK9RB8BHr7FFWJqHW9duwXzfQjY/GK6Lj1xCAYHp5Q=;
+	b=zRXMQKvgGBj86ewPE4xujorQgemsBPi4ScMcHndMbKxmYwUUE+5/xThjeXKEntip4rc4AD
+	Kcdad1/dpS7LR9Z0oGRN6xNsd5P9KSeSAONkBjjctY1O1AtfhpCWJmVMxb/j90TMMoYyRR
+	QvfR6Lzau2M4/cmDHZrekPfEEm5QSYY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ooeyY7C7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787666173;
+	b=LNJwVkzrS56E2NQf9XBhvKyPoU7dOu8dSvceZBQn5gpWruPAhfr9caLraACUUbx76YC+av
+	xPgLh/8CC0ujPS7j+S/NdSeNjpcaz/ltLFgtt5ALhEf1JhF/sY/Q0/285qvjQ1RKIsWw9e
+	/BWSJ64p/kXcNVoLWJNnAlpKf8G7I4s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 64E2F601E9;
+	Tue, 25 Aug 2026 13:56:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0A71F00A3A;
+	Tue, 25 Aug 2026 13:56:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787666172;
+	bh=FMK9RB8BHr7FFWJqHW9duwXzfQjY/GK6Lj1xCAYHp5Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ooeyY7C7Wy+YNpKjA2xzRnySKqHQGeyZlbDkB4S4jvZJBVaFN2aPfF6a73GXK8j4A
+	 hbBC7iaiSbQoXcTQFTcIflyIY5Au6eOqVeMsUuCPe1DE0dSY6EsIMi3f7pQwFDKegI
+	 +Icsgu39D8nqhFklbzqRoibaHY7ynIvNy75ys5oijRslY6Y9cdUHuEtBzeh9n8dLCj
+	 S2fyYw/sULPat7bu4OQ8fuWvdFBlg3lcArY2ceJVkn9J+goEWcdobH4zjS7HO63K8C
+	 WS73BTT8F64SEfZ0Kh8lfhNiUkjGGDi1fWTLbbaJg9T37w1Gd+KGRtc4snyWAWnwhC
+	 CJc80O6LyAeKw==
+Message-ID: <8969b1c2-360b-4fd0-ab70-eb4a68365f50@kernel.org>
+Date: Tue, 25 Aug 2026 15:56:05 +0200
 MIME-Version: 1.0
-References: <20260821093606.2231216-1-alex@ghiti.fr> <20260821093606.2231216-2-alex@ghiti.fr>
- <CAGsJ_4zHcW8oJBRmCDB2WYFc_uv9KP+M0fxOgnnfmA3+x06t4A@mail.gmail.com> <CAEmasaXU9n2Kxjf-+gvjevGJ6LS0EU8fWWHtb09SDEi3phUJmw@mail.gmail.com>
-In-Reply-To: <CAEmasaXU9n2Kxjf-+gvjevGJ6LS0EU8fWWHtb09SDEi3phUJmw@mail.gmail.com>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Tue, 25 Aug 2026 15:55:24 +0200
-X-Gm-Features: AcwNN1UkZPwv5wQyxl-BHwY8sLw4TH42lpY4bevPgMKUhtwinwr-WWziM5iRyPE
-Message-ID: <CAEmasaUrof29qq9hXaUmtPstepZktmPMyMdQoBn0zCq4nF_UsQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] mm/swap: move LRU insertion out of the swap cache allocator
-To: Barry Song <baohua@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
-        Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>,
-        Baoquan He <baoquan.he@linux.dev>,
-        Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI1MDExOCBTYWx0ZWRfX/FJdOtpRC12u
- e+lrk08/LeXiMYt5mpB3wApzFJep6MWQxqEXlimUISD8Z03g22j7ZQ4/WGeZheoBI1OwG/2Oc8o
- M+CSfn7eWyemBJN782i66//nGQzzYbYpDtRNs+lPakiecwPYWdaMToq9xgy5qxLOs0bSnc6Piet
- QWT9BRzUa2NtEm2psfjf3Cea+lykFIDk3Lv1zHbRk6nRzr2uMmF1cxhpCgXcSaOhk8BCWmYoRV/
- BXRhoVZAhl2PIKUMpdaa+bh1Dfy2NXo6WgyaPCYlz5soho1X90EamWMQMDmcZv4fIXP9xB26DCz
- c69rspFOEI7aZAiHZqy+CrJicVf+YvD416wt04UXkjgnjwouEHaII2stlwa5EydKfTVXOiazPxR
- i9eRmLgE4sZ8yyKTXqwQUsQFwaZMXSy2Q0eTewFh08uig/0mNXnycosXtVYi6t1T/jRCahKtxjn
- F4hOsGPAwCD2k4fCCVQ==
-X-Authority-Analysis: v=2.4 cv=d9DFDxjE c=1 sm=1 tr=0 ts=6a8d9eda cx=c_pps
- a=DTy5UCxgudPLKrSn28m7Kw==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=tpM8CJlwf7uhpglF1g9U:22
- a=VwQbUJbxAAAA:8 a=c92rfblmAAAA:8 a=VabnemYjAAAA:8 a=GvQkQWPkAAAA:8
- a=LhV25RCuhJYuqqpyPu8A:9 a=QEXdDO2ut3YA:10 a=VzYV69SsQLkmnS9OQLw-:22
- a=GvGzcOZaWPEFPQC_NcjD:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: Ma8rsVy0ZSVAlh5j50ocjt51TlNCwJLI
-X-Proofpoint-GUID: Ma8rsVy0ZSVAlh5j50ocjt51TlNCwJLI
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI1MDExOCBTYWx0ZWRfX61TTwomFA2f+
- rTy+hChvCgLMmReuyCk0ZeFqY0ySH3kpBPYWlZ+hr/Nl7pejnyVSF6s//ImRfgp0cgpMTUOfLlh
- EpXewO/nbLRaWuMd5rbZeCGn8L0EvYU=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-25_03,2026-08-24_01,2025-10-01_01
-X-Stat-Signature: 35yykkagj876wh9wmu1i9xn6iwpbt84x
-X-Rspamd-Queue-Id: A5665120004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shrinker: do not hold RCU lock in
+ shrinker_debugfs_count_show()
+To: Nick Huang <sef1548@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Dave Chinner
+ <david@fromorbit.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Zenghui Yu <zenghui.yu@linux.dev>,
+ Nhat Pham <nphamcs@gmail.com>
+References: <20260610232048.62930-1-shakeel.butt@linux.dev>
+ <aoxKKXjs3o6jUanE@nickhuang>
+ <041af2b5-9136-4027-b35a-72e5044c63ab@kernel.org>
+ <ao2emWNMkthyVXn6@nickhuang>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <ao2emWNMkthyVXn6@nickhuang>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8ymqb5eb3ijkinf8u7y5b8twtd8twfyp
+X-Rspamd-Queue-Id: B4B1FC0004
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1787666139-965112
-X-HE-Meta: U2FsdGVkX19/hcMVO8r1WcfcnDtxQClKJgjE4vm6Km2qnZG/giIodquOLHwFbsapiq51VJ4AEiMmmC50LiI/pfqau4ZwXInMOuSZl0nhgQyuARhaGw+VVp4jlElLg9aWfbqWZQUij1bKkCModO5mM3PR1BsE+7k+TeUw5pEoY4yKaFPPWYJPvCfz5c/QReH3htkUTU/BRf+YwY2TkWrCarGXbqPpfXpjhaP87R9Kh8oD1txXO/+5wV4oZwTs1/p/czk6mAM5q6jiR1vnmNzpFuYgYjZZliUF271qSVW9chFu4kbsTJCaWophA0fUmBl2voA8eEhyd0qs3reifuyypSm3QykjLvL2Av5ldAJb5je31HaCcLYs6EzGnNfqn8r4FjQnMBbaB8Z6o8ZCJECu1GWAcnvnp0td1rGPOu+QXcVQQiEKbIyn9HsjnuWWjwfpM69Z2zkXj3fbvWhWOHePOcbKD8cZLUu2BtXqo2zTSY0j8g4wYMAZrp2KnyGf7bgJgY6zO5pfkXXedeyhhCKgstVXGlqSWqC79xP/eegRlsHc30Tx4ZXA3Oska/3CS7XtvexX2lb1+gqCGmGFOF6YIO/b1VVOkASYlHtcTKIGrh6Hmmrp4F/Vj6/ez1N/2kiJ64bLmhxBNQbjx9dSHRNU6Z206LwGy+hhZfwJboJhwNrmvkjpsiNDTWeUxhLVDMnxyybBIpZ8QoM3IcHDmXADXOLn8kP00NZvERknYzKQMSUlc/rm3wrIxt8VFmf5hGoqjeTPU/r8tp1+t8ze4zVuAHvAlpGGyaXDNiWCxpF2LG/RqwLl+/XXlIFCqNmbc0ThXrRGy4TJAc2qa9rGfIZxzZuKiaX+kmF0sef16onJGelUucFeXtnCBdDXLKgcmRupKx3EnsnTj2AkYNsY8xZF+N0zgqwyOJmBbDB+qY4gSTSq1X2GbPnHfUJgrmHPTjYf/rOz8BaAzpXp+KQGOV5
- oPt48Mn/
- BazMQBThEvpDBIcaHXMIyWWOS+8PpV7wzrrvU5zKX1MqUtRhrXQrmqxmCXPyP1qmZC6ni9/wbmBbrFgcRWGDIC4jQmQAI2KWeJckNz7OK+YlyedsUQY4z3sJcF7e4XLxcxPRfyrTnpaa5l+mc8oq65Gpjc/KOlvinjgzxR9/fh5yx3WQ8sq/sz0vgKg7U4UohFWNNlyZwre39XR8t9rrnWz3JHULkBKQtsjBrkJJXqpd4zGH6A+MZfuNEhKuA32WBYj1bHltcFiT/2ZCZZ1dTCYyeTRXT408vhDmp8+MXOW8M/pNRlkbAGnq9pXr2Y909bHWvAq2+g8eA951U+4UBXXTgWkWbGCSfmcSfo3Y9eKTaH+W5W/X+t7IY/xF4Ss2NDDBotnu9ZH8DmLqCL80TVbTalPUkQWkJ4XOZyNs/bx565ZfL58BuwRhJYIzuS46+ZyqS+ZpWAD1/cW1QHrmOBFD0AMRCxNWY/zZRbKHSDju7PWSM03DGRbn66fKqflZvkrVSyvMHap2CdTJuBlQUnEH/rm/rNewBZDb25A2Fc0GvAKPJDEH+0x40PYVhSpMEdZNqVpSh/y4avIJ1f1N/+8R8HzIM2K7YYt3gp/v6CYuBUAmYi20RACXP16i8rxMqvSFP93EBaYR1L83V2jDgDJh/s2YA3qsHx+1cEQiR80/MaOBReICKZ7+3KRuduRL2P3IRKJoQ7Jpgpttp992zyEdUU62saMBGPemg
+X-HE-Tag: 1787666173-644173
+X-HE-Meta: U2FsdGVkX1/hgWJRaFThVNtNK93Q7+ymgvWYJb/qzyujKPbE1XoEZzUvf5H0j4aQoWg8GVOyoiWO26Rz8nPgW7IyXRfFp9a749FycGd6yBpXOiZlUYYcTxAwqLotbiQmH8hK4RY+UrlhSSMPYGcB+GcYI9OEIrb9gMULUoV0oUS6c8BiwjYenARLluASCRTKT8asPGo89MzL3AiVHEUtkoWa7CQ5RYT6JCYhnZqTzH3fMeYsyWxSTTgLS4PDyCZszmhDbkekcqzMuT4wbNc7QKrhgnVWaMYKep0Mh++E06GsFmDJAWSG1fJn4/hYhLoxwRqmUT3ljBvpfSb08O4oCkzcmPh4W/6N7FfGZTQSkAL54FhHYJPM1S2EsoS28/ZkXU4MVSRbcEvxLMDALBdLkUw9CxChveVeIt2LPV6zlJ2BpjHMArptrrp6z9SbhA7qYY/MTFef2rzfXv0BKl6ICGd1o0/RJ6jmLa/MQEQfMPX3fsAxUqFVCrwnFr8idFvB2sd/XA7nQ90I7eH5e/ZTGpfcilSms7CiAoG/dvh2INZeAWhrOjJahYLmgZINaxtWoGgjOx/pAKGMti8WHLL3KVt0MN8FJJJDOm2mPNy0zfhEk3x2BbYXZMnwf1ae0PwMmA35w+fr6/XoHVjl6JomDsHuIRHtV2YZlVWIUzmT4qtOoBGBEWTYIbLdN3NYY+xrWcv+EH55Ag/posx02963Vjlat9yhOE0iuM1cNpUUGbaub5FG2Qs+HxkU7xNHDd7HQf20dvozT08viFJ1veus+642dvAWgdK3OXI3S4izpEzvnbIal7nwcG1X/G66gK5bTXOSww6l66BBZq5o89PaGF4o11vI+oTZH1YYC5h3XvVlcWMHXDCen50Z5Ot2zeXpM5jgvR0PSEWf1KPPx/V2+zv8CsOy5kGxlKSUJgLZcoBON/DIWomBl11oC0gggql4M0cyPCKQXYbmzQO2au/
+ s5VsnOma
+ m1RxPHIlB2QBRDNZGi+hLCq3lC+v3jSTa4pSdUXwqx7gyrEPW0PMdf/SReXlmryG8Qhb8gHBzjz3NR9EJPpO3AjvQN/LySu+xAuoJ/Zc6/ShSE5XcQ3p238UKVcQ/CD9QThwKYrhMUEzJtlXTUfd77ahA4cyjUVkI8u44su7tkmbKU31zwy6pPLNMzSwKctXbU+V5VmubEJqSrSMa8G2deaIzQw0F8nj4yiBu5KdKgS7C57tAuyy7S6FppA78xn6Yi2HdgrFhS2JotnrWqXrWmdRZvsjONjq0XFEI4Ks0Pxuu1KPoHZkRLpo4jJPFMA38xk4ji9BaLQuZqkRSIuAm+wH6J2E325aN69sC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,80 +145,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry,
+On 25/08/2026 15:54, Nick Huang wrote:
+> On Tue, Aug 25, 2026 at 08:12:09AM +0200, Krzysztof Kozlowski wrote:
+>> On 24/08/2026 15:42, Nick Huang wrote:
+>>> On Wed, Jun 10, 2026 at 04:20:48PM -0700, Shakeel Butt wrote:
+>>>> Reading the debugfs "count" file of a memcg-aware shrinker can sleep
+>>>> inside an RCU read-side critical section:
+>>>>
+>>>>   BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
+>>>>   RCU nest depth: 1, expected: 0
+>>>>    css_rstat_flush
+>>>>    mem_cgroup_flush_stats
+>>>>    zswap_shrinker_count
+>>>>    shrinker_debugfs_count_show
+>>>>
+>>>> shrinker_debugfs_count_show() invokes the ->count_objects() callback
+>>>> under rcu_read_lock(). The zswap callback flushes memcg stats via
+>>>> css_rstat_flush(), which may sleep, so it must not run under RCU.
+>>>>
+>>>> The RCU lock is not needed here. mem_cgroup_iter() takes RCU internally
+>>>> and returns a memcg holding a css reference (dropped on the next
+>>>> iteration or by mem_cgroup_iter_break()), so the memcg stays alive
+>>>> without it. The shrinker is kept alive by the open debugfs file:
+>>>> shrinker_free() removes the debugfs entries via
+>>>> debugfs_remove_recursive(), which waits for in-flight readers to drain,
+>>>> before call_rcu(..., shrinker_free_rcu_cb). The sibling "scan" handler
+>>>> already invokes the sleeping ->scan_objects() callback with no RCU
+>>>> section.
+>>>>
+>>>> Drop the rcu_read_lock()/rcu_read_unlock().
+>>>>
+>>>> Fixes: 5035ebc644ae ("mm: shrinkers: introduce debugfs interface for memory shrinkers")
+>>>> Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+>>>> Closes: https://lore.kernel.org/all/c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev/
+>>>> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+>>>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+>>>> ---
+>>>>  mm/shrinker_debug.c | 4 ----
+>>>>  1 file changed, 4 deletions(-)
+>>>>
+>>>> diff --git a/mm/shrinker_debug.c b/mm/shrinker_debug.c
+>>>> index affa64437302..cda4e86428c8 100644
+>>>> --- a/mm/shrinker_debug.c
+>>>> +++ b/mm/shrinker_debug.c
+>>>> @@ -57,8 +57,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
+>>>>  	if (!count_per_node)
+>>>>  		return -ENOMEM;
+>>>>  
+>>>> -	rcu_read_lock();
+>>>> -
+>>>>  	memcg_aware = shrinker->flags & SHRINKER_MEMCG_AWARE;
+>>>>  
+>>>>  	memcg = mem_cgroup_iter(NULL, NULL, NULL);
+>>>> @@ -88,8 +86,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
+>>>>  		}
+>>>>  	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
+>>>>  
+>>>> -	rcu_read_unlock();
+>>>> -
+>>>>  	kfree(count_per_node);
+>>>>  	return ret;
+>>>>  }
+>>>> -- 
+>>>> 2.53.0-Meta
+>>>>
+>>> Reviewed-by: Nick Huang <sef1548@gmail.com>
+>>
+>> Sorry, but what exactly did you review here? In the past you were
+>> sending AI slop:
+>> https://lore.kernel.org/all/aeNGbNyPxJssnkbO@lucifer/
+>>
+>> Not even properly following the process.
+>> https://lore.kernel.org/all/20260724143408.175870-1-sef1548@gmail.com/
+>>
+>> https://lore.kernel.org/all/?q=f%3Asef1548%40gmail.com
+>>
+>> Why suddenly reviewing MM patches?
+>>
+>> Best regards,
+>> Krzysztof
+> 
+> Hi Krzysztof
+> 
+> I saw this patch on the mailing list and was interested in the RCU issue, so I looked at the related code.
+> I checked that removing the outer RCU read-side critical section doesn't break the memcg lifetime, 
+> since mem_cgroup_iter() returns the memcg with a CSS reference held.
+> I should have explained what I checked instead of just adding a Reviewed-by.
+> Thanks for pointing that out.
 
-On Sun, Aug 23, 2026 at 2:16=E2=80=AFPM Alexandre Ghiti <alexghiti@meta.com=
-> wrote:
->
-> Hi Barry,
->
-> On Sun, Aug 23, 2026 at 10:39=E2=80=AFAM Barry Song <baohua@kernel.org> w=
-rote:
-> >
-> > > >
-> > On Fri, Aug 21, 2026 at 5:37=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr>=
- wrote:
-> > >
-> > > The swap cache allocator adds the new folio to the LRU itself, which
-> > > forces every caller to live with that ordering.  The next patch needs=
- to
-> > > evaluate the refault of a swapped-in folio *before* it becomes visibl=
-e to
-> > > reclaim, because folio_add_lru() consumes PG_workingset/PG_active whe=
-n it
-> > > picks the LRU list (and, under MGLRU, the generation).
-> > >
-> > > So defer the LRU addition to the callers of __swap_cache_alloc_folio(=
-),
-> > > no functional change intended.
-> > >
-> > > Suggested-by: Kairui Song <kasong@tencent.com>
-> > > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> >
-> > Hi Alexandre,
-> >
-> > I=E2=80=99m getting a bit confused, as I noticed that you also have this
-> > patch in another patchset:
-> >
-> > https://lore.kernel.org/linux-mm/20260818163221.589352-2-alex@ghiti.fr/
-> >
-> > Why are you including the same patch in two different patchsets?
->
-> Sorry for the confusion, I explained it in the cover letter but should
-> have explicitly answered Sashiko's review on v1.
->
-> Sashiko pointed out that moving workingset_refault() out of
-> __swap_cache_alloc_folio() breaks MGLRU folio placement:
->
-> "swap_cache_alloc_folio() calls folio_add_lru() which places the folio
-> in the per-CPU lru addition batch. If this batch drains before
-> workingset_refault() executes, lru_gen_add_folio() calculates the
-> generation without PG_workingset being set, placing the folio in an older,
-> suboptimal generation."
->
-> https://sashiko.dev/#/patchset/20260817144622.137133-1-alex%40ghiti.fr
->
-> But good news is that v5 of dropbehing will drop this patch :)
+After all the maintainers already provided a review...
 
-Nope, correcting myself here: I need to keep the zswap writeback
-folios off-lru because folio_add_lru() puts the folio onto the percpu
-lru batch which holds a reference and for synchronous devices, this
-reference prevents the folio from being freed by remove_mapping() (it
-certainly happens to asynchronous devices too).
-
-I have just sent v4 of dropbehind.
-
-Thanks again,
-
-Alex
-
->
-> Thanks, Barry, for all your comments.
->
-> Alex
->
-> >
-> > Thanks
-> > Barry
-> >
+Best regards,
+Krzysztof
 
