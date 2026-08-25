@@ -4,76 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40ED6C61CE2
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:27:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5227FC61DB4
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3157F6B0099; Tue, 25 Aug 2026 06:27:48 -0400 (EDT)
+	id 327876B009F; Tue, 25 Aug 2026 06:36:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A03F6B00B5; Tue, 25 Aug 2026 06:27:48 -0400 (EDT)
+	id 2FF4C6B00AC; Tue, 25 Aug 2026 06:36:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 167ED6B00B6; Tue, 25 Aug 2026 06:27:48 -0400 (EDT)
+	id 1EDE06B00AE; Tue, 25 Aug 2026 06:36:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF9306B0099
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:27:47 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 55390120323
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:27:47 +0000 (UTC)
-X-FDA: 85139415774.29.A284D22
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DE5A36B009F
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:36:56 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD7EE1C1888
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:36:54 +0000 (UTC)
+X-FDA: 85139438748.26.F2A1E60
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9A743180004
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:27:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ShPy4092;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1A50D40008
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:36:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XTA/Mt2V";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787653665;
+	s=arc-20220608; t=1787654213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AmTIRDghT5aZb5UGuzctLRIrFioVqTHUxr0Sp616qgk=;
-	b=iDRd7V+2c/anXI7WOzy0Ko5AVnoUQfmuTFkmMy7r/kqEU1GGBRVgdGPCdo+Ao7yK3xqTK2
-	/HTCKMIp8f6cYdUDD0X72Oqj6k8tqPQt9Fbg15NKZGNgBDmO0uSbdHEGLpZa73NelyHonI
-	14VESdl7bCTsuhAku85NXARy+dM8W4k=
+	bh=MZb/JK/Dh5FAmjEvCkE963w53qfA4KfGbuSXikdZ8yc=;
+	b=s/QCDnIzmNJ/NhIsOser749aYfL1qAACTLUV5Gq84sLxegD0q9XG9EZjqj0WWjGYwU4ETQ
+	fLwCfx1bWeAJlEMeUv06tS/CWP9HASVYTXLhxSixex7eF6z4IzC+6mQyBSTuUgiIExmVdO
+	yR/bZfwNm2Ti0mkLM9f2MEkzEyDSSrM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ShPy4092;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XTA/Mt2V";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787653665;
-	b=7BBJWc9JimlT09eahFLAbif89rRl1pnvWQ7nZw8TSpsVAYG+nm68RuIBqBl/6YoxaEMnF9
-	Y4z7yNYUdLofs+1tsWNnr+HzQM4qgFk4HONn76TGcYPU72zEOdkhE1NFOug71ETmOUTFnV
-	VYpEeQKLbMmXNks1e8qwcuLkA396D/E=
+	t=1787654213;
+	b=NZ4qx05m6lUWEn9F2pNRu8fSUkE9bksnCLfpzDJ89g5qPWM7l0krIsyIec+88Fx6DBVK4N
+	3WqbUN0rTa7b16aiSmBd34JkCIwSVvDz+YKjibZ79CUwAcgXmVgVLQKD3Lg64OTcQ80qPi
+	ec+oP7/kL6W4LFL0YxtvSSlmQT400Ng=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4DBE3601E0;
-	Tue, 25 Aug 2026 10:27:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12F71F000E9;
-	Tue, 25 Aug 2026 10:27:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 780C36011F;
+	Tue, 25 Aug 2026 10:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540A51F000E9;
+	Tue, 25 Aug 2026 10:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787653664;
-	bh=AmTIRDghT5aZb5UGuzctLRIrFioVqTHUxr0Sp616qgk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ShPy40928OrdedT4DDHV3NrG1zdtp2MAf0KfSjOriqJwJmwdEeebXZhjY+cP2bG2P
-	 DX24DZ2urmbwyD7akQHe+1sPrqr6SvuMKK2AK4T+u3tuHhzhSUtFVd3SlyGLPHZP7o
-	 uzFwIK7JLx1I4W702S7bhpj+DSm5lZETQqTbTsWzYkubU9wFJ64sUIFk4STrffBu5A
-	 sZBmGRklT2j1Em37fLf7jYrNhqyPiELdLO5jBis/uvJwAi1P+U9XCiDsHvtYDqLpu4
-	 9ddSlAgY0CDyl4OLm66DB5z76DhHubcqRw7NHxEWgHWXTb81quv2FoS+kO52uUzrx5
-	 L9srPGLmeeWEQ==
-Message-ID: <fa60a766-6cc2-4db6-a38c-9a8e33925eda@kernel.org>
-Date: Tue, 25 Aug 2026 12:27:39 +0200
+	s=k20260515; t=1787654212;
+	bh=MZb/JK/Dh5FAmjEvCkE963w53qfA4KfGbuSXikdZ8yc=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=XTA/Mt2VEn4QF+qKmJtNDTROxT68LJvWjnP/FbYThQypthq48pctFFdXh3GV54Iy2
+	 QAagZKbHaKbxHp1ru2/7HYm8CmdGhcHddVnsHIEnfDFKRqKG/pl0X7hlgNszBrf5kW
+	 DWrmF3nWXeQxjURlRgjHtwB2MBeV+BOr4E35BdQewhRNecZsixOTJdW4y+dnnNmf2+
+	 Hg7RWk3PIyW1uRtRpK6YXJnR0KCpbjL9KJkXwDQ+jY/G57QtoQLFQGfTZbD7cnqYDv
+	 NH60sP1sO7lC85HrF6Zg3u2bpnmLWxqN5vmQRkI5sJiQrFcF0LftR7kPUnK5K63jCU
+	 MUDBJJodTAdVQ==
+Message-ID: <79daa73b-0d34-4e84-8450-56f90bc700d4@kernel.org>
+Date: Tue, 25 Aug 2026 12:36:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: fix missing migratable flag on same-node
- hugetlb migration
-To: Wupeng Ma <mawupeng1@huawei.com>, muchun.song@linux.dev,
- osalvador@suse.de, akpm@linux-foundation.org, baolin.wang@linux.alibaba.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260707110254.3147686-1-mawupeng1@huawei.com>
+Subject: Re: [PATCH 4/7] maccess: Use a scoped guard for page faults
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:BPF [GENERAL] (Safe Dynamic Programs and Tools)"
+ <bpf@vger.kernel.org>,
+ "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>
+References: <20260824160523.3907021-1-usama.anjum@arm.com>
+ <20260824160523.3907021-5-usama.anjum@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260707110254.3147686-1-mawupeng1@huawei.com>
+In-Reply-To: <20260824160523.3907021-5-usama.anjum@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bpqwp7jqpeb8nzd53ucizzrzsiti4hix
-X-Rspamd-Queue-Id: 9A743180004
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1A50D40008
+X-Stat-Signature: 39xq739jr3d3i98aijmaxaasaxfmmuie
 X-Rspam-User: 
-X-HE-Tag: 1787653665-898148
-X-HE-Meta: U2FsdGVkX18dLJ7iAxQCK2n/kllvSqdDlMdUBhfu/AWSrV9ge6nxnk3J+ZVkedZXvcM04u2TP8zct9JsgHYTobeMj6ZIWiDUooiKmp+3MfzMZmk9U62+1MW9jhy7PL9eTCbcAijhQ4y9G5Qktyb2Uj3GQJgVMRcsVGS5V6C6RK+tJ4Hj//VDS3Y8tidsQ+sZI1EQ572dfrrJfEDQ6ONIH0frfKlbOELlLYtxlVunz8LN1KRii7RrbMlR1tf+s9Cm5+zHASIvfy7Ob0dBG7THhrKv9NnOttxVsTxTEb4HpRyJC1ewcbfSWoREEUfMf2G/OqAEiCglvIZL9H5KaGk9jmn9Bw6mcj3YH0AfeTxWO7zw5curl2S0clW65mUYtXwN5IJN5NBp5RDg4ccPmOOmGjOD1E378GLUJqJkfRwXWgoQtLmh211ymb0SESq5Cy4hdHRbR3n0iOS1PYaDEjFSpTG3Aw2xHr5a3f+geIJkzdavr3HDPjDrpFvmHmABJn2sjDQM9Bw7NpuP/wlRSx1N1ABxvAUWrWI7TEoXWqeEo20A/7GU3X+rv7dLSQuy0r3OgUIjYpEsqH/rrvrrZpxoJz7chTADYzxZjltf3NQ74y99B93BpUQ04hINZOGV62k+Y9pX9UA1Bj9k7Uipbt2fZkzqrP4et2V4SOyVNZteilzmkCrPLvvfufdnUdAcwYosbLhIocaWTWNaWTLEJ2l4Yc/GMc7OK0ZVlpSGPUS1wIM5nRMOe65NY0qixcJPfwdtCH3aDGNtSiGLBHgYwdGx+GT0Zu4aTLKjv8zuIP5bILHCTNf0LsraWLgXf8TcqZVu2y00TXTsOhILE9rNSq4l3gZRFwQ6wIsZSgN4QbFx/MKoJTalvRM1fN4VQhEO5a+kXEoryjc2X4WB1fti0t+tPegTuNrH/dLFBCRKJzWQiC0QD7K2xWiuLxOaX0bs62+RCBJB+0yPqF4AUs7wkcu
- n9iBfRrb
- fhnvTDt/5DnA7oe6DZFFurPuPeGPXyTOAn4NC/KctYVkmZF0cQkhbZkWYq4MIXU+q9Sw628CEmqogvsh/TRuAKWxYX3gACT8UnfKV4f95L5928tBGWBndgIlI1p+7U77Yfde2E3j1YHE3wjDtz9ABYc0111959iZN/cMiRQgh+lhjv3O54Sb69puweEmaiE04hLrODWSYkW6gJ9qaKhvMcGcGFJnIWTcdeydAPr34EMtR0JMs5RfwHH63ZKD5Ia8VTcHskSFbrVi7y874TegSMgVUtQ==
+X-HE-Tag: 1787654212-85587
+X-HE-Meta: U2FsdGVkX1+KPKmviut9PCb9Rkh+6AH517TM70LYja7I6nt2/RYrh7NYXD2UsJ5+fy6KobVB8dbgvs8bTQYsoAYB8lP1sI3UBxSYlNPnclclO+NhrusikRw0uzoehiLx6OtudWfalvpPc21ca52gHyMTCQs+Qi88e0a2dBWknbERiywzZ9NwvgJ+hxAO8HxSREMSOvVxlABkPNbcGurFT2seErrQHvhrU4UxY2IRIftPih9vGWKsHyyzXkzxKv5A0Rey1fwiwtJ5TJtfuGZlOC5zHapaGCx7zpyFRqKfUjIE/onkM1mgA7gvjOMGuuZcKUYx5sd6mgsyjLWqmTfQr8p8YT+Z/L5gzdC3Uy4QyirKEMjsQtWQTfJDLmYvg4MhIydVNex4kmZ7r6XKMHl7CWKhURAgwQzuaYiHHnpQk0Cpt7ZZowidCr665TWMcXK7oGReX+v5egl5FhV0ZYuBQzStCzxJM0ujdt/aNqcWAkWkqkQVmZZThTGsTXDTphEQkSMholyfITpPQT6hdY9sU5xZ8tVEZlnk2mG+JGQqTGFJhKsXpD4Xm1GFBAWcAiJSV6LD3wkOcsAofxBn6zIJJaQk0HswRD8zuYg0pqq2JqwsBG22U0xWjiZYIWLf5HG3GcKZXwL4pTY3XuaoWPKIvQ/PvEt3B+txaZP/4/xg4wRnClKd4mU3jzWhrl7enD5uQtMQEIQ1scxooQXlqh2gP1S8Rc+MYephPQ/WqEnB9b885yFIGQDzdlnssDfBiAhuA4vOj5PWDdUeQ8EUMP+SuWGvABApU1kjr/ZcvCNryV6YL2J/92HBKZ1eJvqcprnwbtY9tDoRXhU5p1/RLjlPpTQTgr913AcGW0ghO8L8J03Zy1k/jZcr9HAqPay+ODCXZ38yO7ha06fuJn1XRYORrWrIW2/T3KZ+8fYVBVnZ4e/IfWaFjQwPSZeYZsIYQharM4xTigXW/rfO+CszbqI
+ sMOR7I2x
+ YyOsVYorM6OQU9vPPsNFHTAzXfeaQY+CUgXha4gvVKQHcdxxkoEd0BS7Q1aQZcWdGi+YMjnWtifgjkapD1lVZdakyjOPnLVGEE14uHVD1fll+oyTgzo2X46/CNRFP4lnP+EqZmVLayg9AVU6+5XxarQqhBmJBqNy0wNPSesBhYle+bWFN8lbDWWTR24RwgBOOhQUMuew6vD72yTP5bw6nASHfW/w9kqwXD0Lv7Pp8LxR0tDyRNZmYgnw57MkDL5AQcvK59Q2YKHZgIjbz7XYLiDLA6oB/FZsTCzeHoyrS/AiD1n5FBgP89ui5yS9acz1ifAZH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,86 +155,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/7/26 13:02, Wupeng Ma wrote:
-> Commit ba23f58de896 ("mm/migrate: don't call
-> folio_putback_active_hugetlb() on dst hugetlb folio") moved setting of
-> the migratable flag and active-list placement from
-> folio_putback_active_hugetlb(dst) into move_hugetlb_state(), so that
-> the freshly allocated destination folio is handled where allocation is
-> known to have succeeded.
+On 8/24/26 18:04, Muhammad Usama Anjum wrote:
+> Kernel nofault copy and string paths open-code page-fault disable and
+> enable around label-based loops, duplicating cleanup on success and
+> failure.
 > 
-> Unfortunately, the new code was appended after the existing
-> temporary-folio block in move_hugetlb_state(), which contains an early
-> return added earlier by commit 5af1ab1d24e08 ("mm/hugetlb: optimize
-> the surplus state transfer code in move_hugetlb_state()"):
+> Use a page-fault scope guard instead. Leaving the scope now re-enables
+> page faults on both paths without separate cleanup at the fault label.
 > 
->   if (folio_test_hugetlb_temporary(new_folio)) {
->       ...
->       if (new_nid == old_nid)
->           return;                       <-- skips the new code
->       ...
->   }
+> No functional change.
 > 
->   /* added by ba23f58 */
->   folio_set_hugetlb_migratable(new_folio);
->   list_move_tail(&new_folio->lru, ...&h->hugepage_activelist);
-> 
-> When the destination folio is temporary (i.e. the hugetlb pool was
-> exhausted and the migration callback fell back to
-> alloc_migrate_hugetlb_folio()) and the migration does not cross a
-> node -- the common case, and always true on a single-NUMA system --
-> move_hugetlb_state() returns before setting the migratable flag or
-> adding the new folio to the active list. The destination folio is
-> then installed in the page table but cannot be isolated afterwards,
-> since folio_isolate_hugetlb() rejects folios without the migratable
-> flag; a subsequent soft-offline, hard-offline or memory-hotplug
-> offline of that folio fails with -EBUSY.
-> 
-> This was reproduced on a single-NUMA arm64 VM: a second
-> MADV_SOFT_OFFLINE on an already-migrated hugetlb page returned EBUSY
-> and logged "hugepage isolation failed".
-> 
-> Keep the surplus adjustment, which is the only part that depends on
-> the node crossing, guarded by `if (new_nid != old_nid)', while making
-> the migratable flag and active-list placement unconditional. This
-> preserves the cleanup intent of ba23f58 and closes the early-return
-> hole.
-> 
-> Fixes: ba23f58de896 ("mm/migrate: don't call folio_putback_active_hugetlb() on dst hugetlb folio")
-
-Agreed, let's CC stable.
-
-> Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > ---
->  mm/hugetlb.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  mm/maccess.c | 53 +++++++++++++++++++++++++---------------------------
+>  1 file changed, 25 insertions(+), 28 deletions(-)
 > 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 571212b80835..cafadfdb63c0 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -7211,14 +7211,14 @@ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int re
->  		 * There is no need to transfer the per-node surplus state
->  		 * when we do not cross the node.
->  		 */
-> -		if (new_nid == old_nid)
-> -			return;
-> -		spin_lock_irq(&hugetlb_lock);
-> -		if (h->surplus_huge_pages_node[old_nid]) {
-> -			h->surplus_huge_pages_node[old_nid]--;
-> -			h->surplus_huge_pages_node[new_nid]++;
-> +		if (new_nid != old_nid) {
-> +			spin_lock_irq(&hugetlb_lock);
-> +			if (h->surplus_huge_pages_node[old_nid]) {
-> +				h->surplus_huge_pages_node[old_nid]--;
-> +				h->surplus_huge_pages_node[new_nid]++;
-> +			}
-> +			spin_unlock_irq(&hugetlb_lock);
->  		}
+> diff --git a/mm/maccess.c b/mm/maccess.c
+> index c59a0e092d24a..f695ceefe6fcc 100644
+> --- a/mm/maccess.c
+> +++ b/mm/maccess.c
+> @@ -38,18 +38,17 @@ long copy_from_kernel_nofault(void *dst, const void *src, size_t size)
+>  	if (!size)
+>  		return 0;
+>  
+> -	pagefault_disable();
+> -	if (!(align & 7))
+> -		copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
+> -	if (!(align & 3))
+> -		copy_from_kernel_nofault_loop(dst, src, size, u32, Efault);
+> -	if (!(align & 1))
+> -		copy_from_kernel_nofault_loop(dst, src, size, u16, Efault);
+> -	copy_from_kernel_nofault_loop(dst, src, size, u8, Efault);
+> -	pagefault_enable();
+> +	scoped_guard(pagefault) {
+> +		if (!(align & 7))
+> +			copy_from_kernel_nofault_loop(dst, src, size, u64, Efault);
+> +		if (!(align & 3))
+> +			copy_from_kernel_nofault_loop(dst, src, size, u32, Efault);
+> +		if (!(align & 1))
+> +			copy_from_kernel_nofault_loop(dst, src, size, u16, Efault);
+> +		copy_from_kernel_nofault_loop(dst, src, size, u8, Efault);
+> +	}
 
-The return was really rather hidden, thanks!
+While I understand what pagefault_disable+pagefault_enable does, it is
+completely unclear what scoped_guard(pagefault) does.
 
-Can't we instead just turn the "return;" into a "continue;" ?
+Should this be scoped_guard(disabled_pagefaults) or sth like that?
 
 -- 
 Cheers,
