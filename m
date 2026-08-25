@@ -4,102 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEB75C5DF9C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 01:48:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94BA1C5DF9C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 01:57:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 846736B008C; Mon, 24 Aug 2026 21:48:27 -0400 (EDT)
+	id 968A26B008C; Mon, 24 Aug 2026 21:57:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F7696B0092; Mon, 24 Aug 2026 21:48:27 -0400 (EDT)
+	id 919D66B0092; Mon, 24 Aug 2026 21:57:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70D8A6B0095; Mon, 24 Aug 2026 21:48:27 -0400 (EDT)
+	id 808DB6B0095; Mon, 24 Aug 2026 21:57:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4447F6B008C
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:48:27 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD387C02D1
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:48:26 +0000 (UTC)
-X-FDA: 85138107012.02.98EBF08
-Received: from mta1.migadu.com (out-9.mta1.migadu.com [95.215.58.9])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7182840009
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:48:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jOEuyHVq;
-	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.9 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 61B9F6B008C
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 21:57:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 602E0120310
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:57:00 +0000 (UTC)
+X-FDA: 85138128600.15.70BC882
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 99A5680004
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:56:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QXB2oxdu;
+	spf=pass (imf30.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787622504;
+	s=arc-20220608; t=1787623018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tM95BHdRdet6LO8J9BWeZQNX6Tg8sEng0X6lWtyfTJ0=;
-	b=WPuK2IXDmNyJj1vRjcQJgWtmOTH7PYhWBd6jATYv8UnMXHmx0ku/sCDGPWKtUeSbMGPcHB
-	UFepqiPbDc250u+f/OrPSE7afSbkPDpkHzGV8WT/hV3jZKNhN5bqyMMpTtySuFLKaSHM7F
-	0x53TL17fEJ+ZSP5SSoXEzPXFal1FjU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787622504;
-	b=WDpukAFOUs7K5pBT56qezrj4VqQS6TAQo1h/bgwdz1Yh529dOt25MRPz6UcGKE2RoYb1me
-	5yuccwAvIyu9ORdUJ3cKhXmUofjTd0VV5OODG58o7TNzBR47tMsyQlrxg1t5YGeS86mu0p
-	qSI4W0QKxsclIL6x1rJ8fe3jaz8kaHc=
+	bh=+Oo8NDm9dvwfDBbQ2Wad7p0r2TT4On7jjKPyUzxLsDc=;
+	b=k7akG5Mok91vwLJZl3f3COQR+tl265eqoBxGZmQ/lDpHUNos0cQvRPEU9BS9UvB+rfxBw4
+	4BVrgdwsVzPYNJsYoQ/mGv6dnACetkKQam6unqqzd+h81DSrw6SMhBJcRKMeWpGcA0sX1Q
+	ssPV0ajCeSfdipnKHZmejqkbsgjUcVU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jOEuyHVq;
-	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.9 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=prN5H8SaiZTV7pApteisCiLH+mKhQksL1qSnd7wzZjo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787622503; v=1; x=1788227303;
- b=jOEuyHVq7k3pykS/uKauSLbdnVgQU/BENKUapkq/zZmLrauZ4h5PmGfeuZxG/CuLLZ08YQIh
- AL1QZlCoGmht/9oR8nyisW6IwsXKFJvuDzW+kCYHZc/FUro2Cg5IaqJ+0TCKu0FSKtGoi15IdSq
- 862PkzHbDVw97hdEQq8qS4As=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (3.112.29.171)
-	by mta10.migadu.com with ESMTPS id a2e5a6a88a84bda4;
-	Tue, 25 Aug 2026 01:48:13 +0000
-X-Mizu-Trace-ID: a2e5a6a88a84bda4
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 25 Aug 2026 09:48:07 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Yu Zhao <yuzhao@google.com>,
-	Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v2 1/6] mm/memcontrol: make lru_zone_size atomic and
- simplify sanity check
-Message-ID: <aoz0Q-PARiEKF8_H@fedora>
-References: <20260824-mglru-flags-cleanup-v2-0-0104132114ae@tencent.com>
- <20260824-mglru-flags-cleanup-v2-1-0104132114ae@tencent.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QXB2oxdu;
+	spf=pass (imf30.hostedemail.com: domain of zhaomeijing100@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=zhaomeijing100@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787623018;
+	b=oCFwtiPA5WWWEr1jCD2fb1vPWOxA308xO05rDmQEWyK7jYiAkDA0LwGdWRLxm4cgrPGlz1
+	7ERCWcCz7Fh9+sdZB/Z+AJDVyDX/OuV+tA/iftX96elBGY4Dbt23VWUbDrA1H6IahHMfRt
+	kTP6qOG8J6Hvxo/DXkzCkpNvj/EkSI8=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so4653077a91.0
+        for <linux-mm@kvack.org>; Mon, 24 Aug 2026 18:56:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787623017; x=1788227817; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+Oo8NDm9dvwfDBbQ2Wad7p0r2TT4On7jjKPyUzxLsDc=;
+        b=QXB2oxdu4Ib6wP3RUxjaLqUR+/z/duMezdeQienUHM4xPB9cXGAzTG4LtyQ0pPSGTb
+         vE3W7VKmfs5mFG+cQKsJuwBIfiPWIFx5bKZPaUubp+a03twe5FMpLQbX6X7derW100nJ
+         Vzzr+fyyE0nO83BKUH2DDK1ORJvgkGGE4c1vJMUpSifAKPa6NCKG2r8ysSwHlOOJcja5
+         +TMGJhEmbaXL1pL9H5fYMlIHeNiSelFq0Pu+BbSfKObcye8M5o573iq0SBz9C5jaIj4D
+         m38Si/7z1SL0vUuxQ9y3X181xd6padBVfsvPW3ID221LATOaubeGwIRy0x+Bianpqavi
+         /5ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787623017; x=1788227817;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+Oo8NDm9dvwfDBbQ2Wad7p0r2TT4On7jjKPyUzxLsDc=;
+        b=bguBzPlr+yA3LCeDZYbZUIn0rKO/TgehDYQ89c7uq8vckRQjBP5Vv55Vze2sWL5zbB
+         hbhngnnYFRcIZymI7ZJv19Mq4bIQ/NMu/qsEQVRHui/Z+bSSm3nbEfuU0Qbashul5+Kv
+         hMWtLmPtQYIm8dJlt549USfulGck+PwfpJrUGZtI2WkJaHnVMNc3fPLpOlwQbmkHZ5c+
+         GSOXHXhuz9pcShWaQNM+hDYV4t3JAADr2RqQvxTkCdFpasvmw+DFQ9GeNMmGY1zitF0V
+         owWl0HJVVd2qsLV0DIG2F7QDbDUGWHrCzqaB9Hq3QlIjTB7NoqcsDONEDdQPaQUEss+K
+         DgYQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr0//vImcnxqf+wM26589XYnUwv1EUobjxVB89n2dkYeswg79/rhNjbK8vFSwTsnwl2Pgnsc7IVOQ==@kvack.org
+X-Gm-Message-State: AFuF++lyhAbwTsRD7IS9a1Yr31sl5vjPhKcydH2TLvOuDyrCdPrxlXvU
+	Ovx+evGhDBaxmL0aQy/TiMufJQfkaU/FL/wLXbHWXRbD/nW6jpFiQNMw
+X-Gm-Gg: AR+sD110ohMjEZWPRUKq0HWEUkMatUfPCcO09y4pJCoSlQeI1iRu0Gv7HKGlPgtUTd9
+	t5NMRREDno35k0MzlTMNcdCCpzX9aSsbGdclcR2GxG2xgwPRuWLehb8fnSSl2iGzEN1ZTL/K6sv
+	gqqe3LaPDqoAIJ70csil1Crhm3Y3ul1rg5c8P71iGz2ShTTM6PUnErQ13KIxZY2OHNcPrvbIK7D
+	3xFqmDK/AkEAGKZO3yb0zDu4ZgpC8svPPdsCfp6TjkBUS9n4M7yIelp5SZFXgPcN91pAFDhand7
+	ZS42Mtk9IDEs8/qPsyeMC2tvAwbHPfvpY3q2cLquqEtL2dkPDrlFR94bTIwNbq6czowie4hloKB
+	naiknPhbFDwgQFkhhjOLaahhiOJM56M6uelM5JwzH9FlHOmGMF5kRQNoz/5aoigQBC/UbKbbG8a
+	hbwkkPBVPIVqW0y6qkZUsWrLS3r2zWvFSuCAxDUkP4qtmExvfa+wxKHWmJL98wFSZU0LKE3iZtj
+	meWMRM6xOTeWRJsRro=
+X-Received: by 2002:a17:90b:5485:b0:38e:11ba:992c with SMTP id 98e67ed59e1d1-395df6080e0mr45204432a91.12.1787623017392;
+        Mon, 24 Aug 2026 18:56:57 -0700 (PDT)
+Received: from PC-2B0BA31200898.company.local ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396433a54cesm604819a91.4.2026.08.24.18.56.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 18:56:56 -0700 (PDT)
+From: Meijing Zhao <zhaomeijing100@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Wandun Chen <chenwandun@lixiang.com>
+Subject: Re: [PATCH v2 RESEND 2/3] mm: memblock: show all region flags in debugfs
+Date: Tue, 25 Aug 2026 09:56:50 +0800
+Message-Id: <20260825015650.205656-1-zhaomeijing100@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <aoxgAYXqXvs0GFYM@kernel.org>
+References: <aoxgAYXqXvs0GFYM@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824-mglru-flags-cleanup-v2-1-0104132114ae@tencent.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 99A5680004
+X-Stat-Signature: we4rafm84azt13p8r8k7h7q975jksgts
 X-Rspam-User: 
-X-Stat-Signature: az3w1dmybefpc68usf9dx4fquizw33tc
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7182840009
-X-HE-Tag: 1787622504-237122
-X-HE-Meta: U2FsdGVkX19BuhanfiitXLr2a+lvz098B6aKytQkVbzS7iTYcO52i8DP5YsNHxj7NbOgqT+Fz5qIgrPXnu+sCh6PcXxTFfQyAJWbNzVWGUb/8pQlYC5ttbSMskdYqixFv2A2oJ7Hs3o/VvcxWo0rGCwPGaOJBhOzkpNg9akZV0G6H9BCBfQ8Tqzx8K1wxxhbBdDrOPlnBrkN4KcmKb1EfXKpfpQb1A1W0GuC6yhpWVdO/wkamJch+Gkk5vPipiGN9+YlRRTzHk4QlmUnbuzfQAFIaWF5Jkt0VSWViFLGaViHYf0hDNE/l8s6R1hAvgmVgy6BMMXDAXHMyUnYcEfaU39A5jEAVfvkmoNhVLWEEl/bqZQH0KIpRpdKLTL7Rhi1lGEGPsd26tjSDGd6T+o1dVk/PSxojwNC99GjZ05F+IsLjz5GJO7pu+Zoy7Ezpj5uN2a5l6aGonfVus/T5Htdlxe45Im70bKKa9EMUgz8nMTFNrUw2FnGRhiyD+1ulzBVsYhUkO2gX6jDkP5Hf1cCRhbqaxWRDWGMkAE378B/GZBC0CYcI2bsJDM5fa+vxCmWLb7QVXxtM86R0PUSqGtC+mTVPRQFvvQZ4ifWWoVv4qxS1BOA6HgeGynKxd4jxzK9h7I/0XyyJKrMafhi+1IlcWIUZJVg/8665xP/Qu1298bSkuRKfv5C2P5DE1075zonqaau544KJBP2RlIu+Bxos29F9pUBauN30p/jhvHLruGq+ME9wlLfWRh73sv2/EUy5ySgmyxI6iE+Axuoct71HryFd5b5Opj9Wr/qO+Z8/Xh3/CerCOLhz/AGitgu5/45lxuxE/pQU7shNBsP9lY1ajwJxb+ECHLE+Z0pwTjbjIX6wUDU0ruC7bYdnbIAtC0lRAtoqdX3WqD2rbhgShwGQTVEHTAGY+/uiwEfTeqlEL9A/x5S4ApJX4rCw3+XBSokrRplyoZA3cJ5Lsyiqgd
- 0k+4HE+Z
- 6035CjpugEheUi01ia6Pw42Y4AdGLWYSE13qSWk+FhfH97qsrtkMlEwJklyAIKwwMLUN8ZPKAcMBYqUUSHMn69FMXtTcFYHLTR1xVHwoPjIIS2h4htujK+epjXtaxBbiWMwN9M1eSQ3+49vvjGQmseo6ECs0pv4W+in5AIALDwDGuD7q0ph5dnDymKZIyivJwWqf2GBA7IOZ7Hu9jaW1aRrbZX+9CoSCRZZOcS9t7eyi/MK6sZy87icu+L5JmnzVGiGjHEVJ4nf7zvv5tJKq7/JiPK7FQMXAh9m07VCAc3J4LLfNr3Q5VWzxEfQND6jhriYpDHP1nP6fBcK9mENI+gfO4Edq76hAR/KiLTCZepMzXB41LCE6a6AdSVYw2/YDR0w6v/9SiTqUZ9XtVcB0WaDmgxOx1a/2vJ09rZqgReNZDq92pXj4VdVcRE3mvCjHmf3YNDlIF7bf4ccdms7xoeljFBwEa0Q+mQFKM
+X-HE-Tag: 1787623018-167770
+X-HE-Meta: U2FsdGVkX1962E/DmLZwQcuIkdP7kA08X6HruJcKU3Em8Lw1G44nR49D9GQ+2Sd4F6LXqGpOSu67cqNT8agH4gZKYy/f1f685LnsLz6ygnunbCBZko44ipNlk0xGViesvLNKJtECDtBGLu2lpEPlEOdm2GktEL0kxi2QsnR05j5qitCcR+7Ewya4LegyF8a7Y75rTwy/ytieP6LO6nttp3XhGJFcCK5HDiz3nxwm2AAnrFBA93HbTb1UgbdQj4I0xYVOnU7aogd5P4LWjfNWzV4Ac5jCsTsD9xJZLXD8TYvg7OziY2/83VIGR0OmgfFngewRkOfLveowAV+jzUvoHc/9TBHkIWx+nNA3TmDxYKupnj++gMCqw5oRlAKHszOxbOclZpc+CzqDLrQnzKHn4aceOZtV5pVytaSbofJEtiazgCCDq3S2+EoBgSqSqLkJkdPkv/S8AiOAXRHbRDsjkg0mE2QEtq4YMLN4i2j4TrKxQ2ubu6Snv0NZmHgt16euMBviNBu6wKOuTjFJO6/+05zXBKpIKsfTk5Y2afoPx1rjzdV51U23eRi4dqy9woH85ZGwNHIsqgpF9p5wvRngm6zFYkALARcWxgpVxq+29AsgDnuHwQAXY3HpZFg+Fx6CMO2qAHtYJgPnl0MrL6vPwWGx1BZPiFB7vkUpsZpD3RBjt543jdAC9eYBj3Gor4t9qjmxZtg3TbRTdQpmrJE7I5c+fJhix9i5xPJH9uKs0R+FPCGGWvpd00F3izhJVN/9JuNix33Zc7eaQwBYxqucNU1GtrBVhQVHe9C1/Mxnp4dXGQcjfqaxhK9OO/EeIo7di97gbjJFQGhiHYt8U+SmC7woJXKNzP8ZkhpWSeHZROyB4A2MbFhZwCCIQbUyCVRK3YT+qjX5+UaD1jWyinFOT1fFtSmyPp+JSCHwUbVaAtQBO/97fsw6PWwQzw2M9SCK1wHlCdcXMYPEUyvQHAu
+ bg0gK8nC
+ FX7EV2jSK1Y/GqwFQwbyWS3d5IwFhmo4YXVJ85hE88rfxBcHflbxD8DVsXadK+Zob/yK4QJmAbSvmrTo+Uutj9daYWsNqj6udsYiHbLx+O620ahCGK1cjY8M3kUzlnOoyE4HLfY5dX5SwtC/7DSHuJWRyHKsvQwZUSnzS+VVa/PDmXxMKbtV67eKLI6uyi+VeBitsbFirJCRGWssk0qj01MIO3H8F3FKw9OPF4CSka1J0iXVmZlUqGtbK8fwqzsxBoaKprLf+bwHi2Yu4naLW3L1JIMbNXIDybIi2AEq102qeMEsQHaRxQniceZlTVGEezOA1q6p3bszY+35TdK457lkZ6WQBZSanyNAD3rbItEbki/UNfDMmcc/kshK/l20PK5sjkVhD3OFpmCahZ/e3QdtpSAN6SzNWiz6n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,114 +120,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/24/26 at 11:26pm, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> commit ca707239e8a7 ("mm: update_lru_size warn and reset bad lru_size")
-> introduced a sanity check to catch memcg counter underflow, which was
-> more of a workaround for another bug: lru_zone_size is unsigned, so
-> underflow wraps it around and returns an enormously large number, then
-> the memcg shrinker loops almost forever as the calculated number of
-> folios to shrink is huge. That commit also checked if a zero value
-> matches the empty LRU list, so we have to hold the LRU lock, and
-> handle the positive and negative deltas separately.
-> 
-> But later commit b4536f0c829c ("mm, memcg: fix the active list aging
-> for lowmem requests when memcg is enabled") already removed the LRU
-> emptiness check, so handling the deltas separately is no longer
-> needed. And if we just turn it into an atomic long, underflow isn't a
-> big issue either, and can be checked at the reader side, which is
-> called much less frequently than the updater.
-> 
-> So let's turn the counter into an atomic long and check at the reader
-> side instead, which has a smaller overhead. The underflow correction
-> is removed: a massive leak of the LRU size counter would indicate
-> that something else has gone very wrong, and one should fix that
-> leaking site instead. Besides, the updater-side sanity check is
-> unlikely to catch the leaking site anyway: if a folio was removed
-> without updating the counter while other folios remain on the LRU,
-> the WARN only triggers much later, from a likely innocent callsite.
-> 
-> Reviewed-by: Ridong Chen <ridong.chen@linux.dev>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  include/linux/memcontrol.h |  9 +++++++--
->  mm/memcontrol.c            | 18 +-----------------
->  2 files changed, 8 insertions(+), 19 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 215e2e87f42b..7b89d0cb5f6c 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -113,7 +113,7 @@ struct mem_cgroup_per_node {
->  	/* Fields which get updated often at the end. */
->  	struct lruvec		lruvec;
->  	CACHELINE_PADDING(_pad2_);
-> -	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
-> +	atomic_long_t		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
->  	struct mem_cgroup_reclaim_iter	iter;
->  
->  	/*
-> @@ -902,10 +902,15 @@ static inline
->  unsigned long mem_cgroup_get_zone_lru_size(struct lruvec *lruvec,
->  		enum lru_list lru, int zone_idx)
->  {
-> +	long val;
->  	struct mem_cgroup_per_node *mz;
->  
->  	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	return READ_ONCE(mz->lru_zone_size[zone_idx][lru]);
-> +	val = atomic_long_read(&mz->lru_zone_size[zone_idx][lru]);
-> +	if (WARN_ON_ONCE(val < 0))
-> +		return 0;
-> +
-> +	return val;
->  }
->  
->  void __mem_cgroup_handle_over_high(gfp_t gfp_mask);
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 11b85f4b6828..a7572ded56c9 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -1529,28 +1529,12 @@ void mem_cgroup_update_lru_size(struct lruvec *lruvec, enum lru_list lru,
->  				int zid, long nr_pages)
->  {
->  	struct mem_cgroup_per_node *mz;
-> -	unsigned long *lru_size;
-> -	long size;
->  
->  	if (mem_cgroup_disabled())
->  		return;
->  
->  	mz = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	lru_size = &mz->lru_zone_size[zid][lru];
-> -
-> -	if (nr_pages < 0)
-> -		*lru_size += nr_pages;
-> -
-> -	size = *lru_size;
-> -	if (WARN_ONCE(size < 0,
-> -		"%s(%p, %d, %ld): lru_size %ld\n",
-> -		__func__, lruvec, lru, nr_pages, size)) {
-> -		VM_BUG_ON(1);
-> -		*lru_size = 0;
+On Sun, Aug 23, 2026, Mike Rapoport wrote:
+> first and flags can be declared here.
 
-If it happened, the resetting to 0 is removed, will it cause anything
-unexpected and different behaviour? mem_cgroup_get_zone_lru_size() just
-read minus value and always WARN_ON_ONCE() if no new adding to this
-counter.
+Agreed. I'll move them into the reg->flags block.
 
-> -	}
-> -
-> -	if (nr_pages > 0)
-> -		*lru_size += nr_pages;
-> +	atomic_long_add(nr_pages, &mz->lru_zone_size[zid][lru]);
->  }
->  
->  /**
-> 
-> -- 
-> 2.55.0
-> 
-> 
+> Can we really have both j < count and !flagname[j]?
+
+No. All currently defined memblock flag bits are contiguous and every
+entry in flagname[] is initialized. I'll remove the redundant NULL
+check.
+
+> No need to change this
+
+Agreed. I'll keep the existing code unchanged.
+
+Thanks for the review.
 
