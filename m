@@ -4,191 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F105C61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:11:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 795C3C61DBE
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:12:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B87B6B008C; Tue, 25 Aug 2026 09:11:20 -0400 (EDT)
+	id 8B3596B009B; Tue, 25 Aug 2026 09:12:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 490B86B0092; Tue, 25 Aug 2026 09:11:20 -0400 (EDT)
+	id 88ACB6B009D; Tue, 25 Aug 2026 09:12:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3587D6B0099; Tue, 25 Aug 2026 09:11:20 -0400 (EDT)
+	id 7C7F86B009E; Tue, 25 Aug 2026 09:12:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 01FFF6B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:11:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E1829C0407
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:11:18 +0000 (UTC)
-X-FDA: 85139827836.09.44084FD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1D1611C000C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:11:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vib8ZSXL;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 555CF6B009B
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:12:53 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DAAA7403E5
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:12:52 +0000 (UTC)
+X-FDA: 85139831784.17.7CAE939
+Received: from mta0.migadu.com (out-200.mta0.migadu.com [91.218.175.200])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A646B12000B
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:12:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eVH7+Tfs;
+	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.200 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787663477;
-	b=zFrT856pclUXe4xSKPwgjWq1YFlO4BymtGcx/sZfRc9NfgoF23GVe7G9tECXBGfrVyEGi+
-	Q0YL8du90PSrYcJZmbv6eHhJCZCNF90XIQSbrxOh5DZK7SJTe4Rhsyf1hPg9UprQPOKBJ3
-	8ZEXT00xXIE6SDqEYTGwQjysVH6yN1A=
+	t=1787663571;
+	b=HPVc3u1SfN8FEOLrQ6tJ40gmB+VCBCoc3dpdlXSAlcbfE7kN6dDQrZhzEoswTCUSwRTOJ8
+	lm4d/WXuATXJCxBhsaiYafLas2IFwpZ1X0p3g6CcsugB/zozGcYQOODsH6wk4Gssr8D5Go
+	nlukhFqo9/JT76xaeaNBny3jNcD6Fbo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vib8ZSXL;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eVH7+Tfs;
+	spf=pass (imf29.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.200 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787663477;
+	s=arc-20220608; t=1787663571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iv9Rm6pjjqT/nsawEUFZYe9h9cDCxcBSarkn+EjrOcY=;
-	b=fA5nruxFyRvHr53pVX/ebrUV16RmAg2tVfK++6SbEinux7M6krbuTvCK/klUHVGEJuTAUk
-	hN6g0WBahCpsbLrjCHAfOdHLcqyY5L0Syhjc0Qf4sfhrlqOGNCTutUHqPpEfbSYz+Hdj16
-	eVtoZKMCiSy/Uts9tymoEt/HK8ZYYio=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1D2BE43DBC;
-	Tue, 25 Aug 2026 13:11:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20261F00A3A;
-	Tue, 25 Aug 2026 13:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787663476;
-	bh=Iv9Rm6pjjqT/nsawEUFZYe9h9cDCxcBSarkn+EjrOcY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Vib8ZSXLUG/qKlTYQpkSyzCHH1MEAK5baFzVT0Ow2rxbFilAyMa/ZDrf0y24+2TTF
-	 w+Kysuuxe+Uo9U/eeq3vBNDXQNlSLBqPcHJ9iW+V6QB3m+jPm1fE+4/tQwxoWu81M8
-	 Gv94ljlMefMW2tq7c5+1z2x6WPnAGZFpczYUrCB+WPf9l2rsnh6z5EXCC0Dp65aQy0
-	 9HkULbflOYSVwlnjZ1l5svfwi7pdRoBHi5ByFXjLiIcjJASXhDiiYhbnfvjjtL+cEM
-	 RuRR2AePEUgbOZ5+pxs4Mj+zpPSJgGVY65BXSzFfaHErj7jkh26pneuZoq973gVCyj
-	 gx+zzCo/ivnCQ==
-Message-ID: <e0c589d0-d17b-48c2-8e1b-d41b69ecaadc@kernel.org>
-Date: Tue, 25 Aug 2026 15:10:28 +0200
+	bh=ms5NJx+E9o0WDeA8RbrRi2M8b/xNVY3j/zcZ36rZUqA=;
+	b=oP2IUWhkoviDWJXk3aTV9ihKfG49LcrDmkwm31zGbGXZimImrNA7wZewwLkHwtsOrblOS2
+	lA5G2wp0N/nUVhmaDC/yBTh46JTDVn//jHsVSZXUYKtCmfs+B1bz7xVkXaWkAGzd2HNXhw
+	45btLTdYfQ/wy2dyLa6UzmPOzRnOzQ8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=SyupUXu+xf0c5j4OJeekg8pSM7sTf9BYYYALL5PIKBA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787663569; v=1; x=1788268369;
+ b=eVH7+Tfsfu1L/lmtoNI71ik+/jCieTHWZHAG9gr4sO+NczF+bJjUSNF50c1JwOtg8du03dSo
+ cqwdsS+8eN5E2ztD2Ls2Q69LiXiGwSMuYQf+XEFuqWkFpQt5RWohKknxJ87dGpsbC+FDSk6sJaw
+ RF6C/lIr0b8pIt0zHoV+Z02U=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.254.116.35] (101.126.56.83)
+	by smtp.migadu.com with ESMTPS id 7ee5856995299be2;
+	Tue, 25 Aug 2026 13:12:49 +0000
+X-Mizu-Trace-ID: 7ee5856995299be2
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <83d8d1f2-6ca2-4c72-a494-23ce07bb4181@linux.dev>
+Date: Tue, 25 Aug 2026 21:12:34 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
- kernel_team@skhynix.com, torvalds@linux-foundation.org,
- damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
- linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
- dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
- melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
- chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com, boqun.feng@gmail.com,
- longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
- yeoreum.yun@arm.com, netdev@vger.kernel.org, matthew.brost@intel.com,
- her0gyugyu@gmail.com, corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de,
- x86@kernel.org, hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
- da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
- frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
- josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
- jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
- neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
- trondmy@kernel.org, anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
- kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
- kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
- ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
- baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
- neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
- dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org
-References: <20260706061928.66713-1-byungchul@sk.com>
- <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
- <20260821042143.GA40890@system.software.com>
- <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
- <20260825121322.GA23086@system.software.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260825121322.GA23086@system.software.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5 10/17] mm/hugetlb: switch HugeTLB to section-based
+ vmemmap optimization
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-11-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260825084608.47437-11-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1D1611C000C
 X-Rspam-User: 
-X-Stat-Signature: 15t5fhd9ajzkapam6yi8t81gjxgrags4
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787663477-642624
-X-HE-Meta: U2FsdGVkX19d6uHEpR+2rX9xKo331USCOeyIpGTe2AuF6xBPeT2E7MMts93TgSBjm1LJ3gDHnxOARgZ7w0H3zj9tNRAtIna0ZeegLxfkon1XTeToa26bRZzYNyzzIuibxHJAxbL7HE9i3MMPAMYOlwd+Dw0hnXF0ZtkrYJrwg++7WkLs1RN+MLYkw+v0Pg2ZjxVNDVbFb7yZ6UtI2hhdroviRewoX2yO9LimTaH5L0eysnd7R8bxIJFl1jLrhH3uqKVODfcz3GHMmwGZOIA7EwN4KLeftaiQBYoNOEt/WTEFp6QuNRqVKYeywUzcDczPytUKp48rJjMp77lvioqIlUx8odL8nVvb3iSn2qSXFfa8JnWCDhPGvXpeUkN7rX3srawctyZyqunCRKScFFPH07cCcEgg+FDhqSK8KU9EX2AR3nKBWBnh/Cv/Ecs3GzzUtPuKysZw1Ge4CV6hcAJQWMpS8elt8fkk5RtScCNss/bBkJAfu/MKywDsOkvqCE4A7Tdb6+h3ND4Up4bvrmEE4ji/kO/B8exRO1SDsRgf4bXRZYs15BZ7kdBGSplDyNl3vj1F/swhniWvyPOSfOYKIG07vYhT76nK6cK/r3ZSWHCL0K5Nokbq5kMzhMNPHg6T1PrRmNp5VOsSTfe2cuUVkpQwXZm8WC+kSyTCGTZa3y0v760658SK9xHY8Lt0Nb/xIZqNxqIKVRa1Q29KUUHI+64eR7klPzDlnFRIU/2oMixiDj1ba93rVWAziAt7Kc3t8h+W6c/AKwdNi0iXn/xT+TZbt0o1hWMLTRX33ddR/jxiS1SvkjQz7FqUxzTCv7KB4svGu4BwwLQw1mswNw1xxHCpfjgQq5jOEWx+DjNPEx0h8JAuBiOBU5+sUyRNiTgoy1uDsXEQdg7rWBkAGbZzxn5AtdaRjav5LFxtz+qmZySYvy+VRyVvqXf21L9459wup0W6Nba9nMUIPZF63WS
- E0pFddeK
- zIi5XFcSN9wamQMBtfkKDWHYAIQkDMj0rpY/B/3K/Rcdp3Bpe3SOt4zQ+g2cJiE5wWQCIWpifdEzIHJh2MoHxpmVN1Tks4KmvYyjvkegoWYev5V/44eQ+8r0T7oAX1rAG3CORS7SVtm3Lv+7SF4WUMH+3XvVXvZoH2mjRtloBl95aZSXWSuO7mAwH6m0sd0G7Cr/JcRrcjxa88HfYGr+QfGK2lCfJQUo+VJ+70cOtZu2LXfWjP7QMPRaOrluJPGHI38145ODGuwxuyDfhFv2ZL5B8gWixSZiMfgyeUVp+Pw7Svxzx10/SzEOYjQii+9Ajnh+NDENN6mIIL95716eQKWDDOw44TVWSbQAV3InT/JHnoJe+Oo5BJg3Acg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A646B12000B
+X-Stat-Signature: f1rt8nys5b1j9y13qjow5xikyc39rw3c
+X-HE-Tag: 1787663570-416507
+X-HE-Meta: U2FsdGVkX1/lqW5miAmvvXu2m0sVVfpvtg/C4EO3FtN4F4CadOBCwWTAe4AiidaFMP8h5nEy8Fr62K5HEHsiW36tEbmcq1RK1UPD8H8yTajaEBJ9IvirF+GuSvI/5k1B8D4oz5uc2X5lWxPfTiQn/JPxUkN/h/a9AYGLRWuyPz5O6x3/fsbARO83znrDXilP3K9+zGWhxmbsLByVxRK9ofEb6DrFFP8aDljJEGxX+jQpgNWbqC+ZGCmSGX8UwXMaX4m85GcWQbNJud1p1PeEg1J+3AYlnBpiQryEv6iGUGNaZ2RF6YzTTwBei+QD6X0TSLrMY/Ivv+QqUwH1eY/oZbDwMGQaWQ8K2175f4FM50nyt25Etrhjoso1arkmkX8wUV9rtwAe/aCtGoYqBRlihn/tUarP7bgMFJ+rFEWrgZd3dSYm3cwudSPTnsJC3eq+/MhG5UWwPCKJUOqG/AT0AOF0pyx2O/6MK6snyUGXLLx/hmUK9hyuIZyj2ZOufTpKNu27MeHgv4nf3qTIc2XO6VmDIKMpleXpJ6LGfTDTzKR6bcheTV4AZ2s+S3cSvqHiNzgOUdF2SHUMayOBOZwzNH2+bdumU4pkdkcMB2E0rygLNDMX5oR2kwi1vARXbafX/LV7RxrECo9aNm9q1y8aA2g3gxv68q9WDaQx/C77rI9j9ILoJalxJWQc1MnlsAh5bEpEQDgamPOEPHRNj3mAeuvXhVq2zqPLPwkkhmjZgvhtD9RlDNCYlk1Lpfn0koOwwLCgW16HIh/b83kKJoYbc8WczK8eaxHtU6mmXrKfLUeCeZnU9l1esuq3EhgQfavdAdGTs7jhiwigqs6qKpyTeHy1/iEp21YBpaVk/pDCced7H8QrJE/67zi5gf31ZA6EXi4iKDcPj6P3LbwWjSMY6ZyeWpNGlqjeF/QVWzr1pv4U7EUogLsRj/vQevzHUhRib68UFAf+wBBa8fFTsxG
+ 7GSfEAqo
+ VTztKipsNZc8qJIudYZ8hwYdkHMI6vZd1k4PQw3hITA2P8e2LCwccu5m7wqu6UihV/C0SNgoXCoSGepGcJkLWlaE7O1S3MUdteaXvSpwKdieOVfI8OwAkk8zrK4RrIAsFeb/mljw+iUhCOkvzZyVy7vcyXpwHmNBh9jv5CDF1ejdDWYsVhIgxUQsgHEl2wCyLQS6l9kHFQDMvCeTN1pEk28Bwyj04gvItHAzVOIpZSuMdsdo/vB/QGLborrAd2f5rHzoJcySiJtIs0bG+EWhBJbTG6UrbzopWVZeQjujQwMZr97e7Tls4CvtwqJOv6XmeY5JX6Wwo6vHSxNZFvnJaQq9r8OT8vvZBnSLtlXQayTR+Pb1CN/kFDwe65IO/OwThGIh0o1BtEOYnIgHl6AB1lW8Oeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,19 +99,365 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>
->> As the saying goes, it's hard to teach old dogs new tricks, but in the end
->> taking care of two dogs is likely harder than only a single dog? :)
+
+
+On 8/25/26 4:46 PM, Muchun Song wrote:
+> HugeTLB bootmem vmemmap optimization still carries its own early setup
+> path, including pre-populating optimized mappings before the generic
+> sparse-vmemmap code runs.
 > 
-> Or it's better to train a unmatured hunting dog than to teach a pet dog,
-> how to hunt, for better hunting, even though the pet dog might
-> eventually become able to.
+> Now that the section-based vmemmap optimization can derive HugeTLB
+> vmemmap deduplication from section metadata, HugeTLB only needs to mark
+> the bootmem huge page range with the appropriate order. The generic
+> sparse-vmemmap population path can then allocate and map the shared tail
+> vmemmap pages without any HugeTLB-specific early population code.
+> 
+> Do that by setting the section order when a bootmem huge page is
+> allocated and dropping the dedicated pre-HVO helpers and related
+> special-casing.
+> 
+> This removes duplicate early setup logic and switches HugeTLB to the
+> section-based vmemmap optimization path.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+> v3:
+> - Use the order-based helper for the bootmem vmemmap-optimized check
+> 
+> v2:
+> - Collect Acked-by from Mike Rapoport
+> ---
+>   include/linux/hugetlb.h |  1 -
+>   include/linux/mm.h      |  3 --
+>   mm/hugetlb.c            | 30 ++------------
+>   mm/hugetlb_vmemmap.c    | 90 +++--------------------------------------
+>   mm/hugetlb_vmemmap.h    | 14 +++----
+>   mm/sparse-vmemmap.c     | 31 --------------
+>   mm/sparse.h             | 27 +++++++++++++
+>   7 files changed, 42 insertions(+), 154 deletions(-)
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 16c4c4caa126..fe28f98e1b22 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -171,7 +171,6 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
+>   
+>   extern int movable_gigantic_pages __read_mostly;
+>   extern int sysctl_hugetlb_shm_group __read_mostly;
+> -extern struct list_head huge_boot_pages[MAX_NUMNODES];
+>   
+>   void hugetlb_bootmem_struct_page_init(void);
+>   void hugetlb_bootmem_alloc(void);
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index dd09c438fa23..441bd39eab73 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -5159,9 +5159,6 @@ int vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+>   			       int node, struct vmem_altmap *altmap);
+>   int vmemmap_populate(unsigned long start, unsigned long end, int node,
+>   		struct vmem_altmap *altmap);
+> -int vmemmap_populate_hvo(unsigned long start, unsigned long end,
+> -			 unsigned int order, struct zone *zone,
+> -			 unsigned long headsize);
+>   void vmemmap_wrprotect_hvo(unsigned long start, unsigned long end, int node,
+>   			  unsigned long headsize);
+>   void vmemmap_populate_print_last(void);
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 04e6c4244cd6..fbb0c83bea79 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -52,6 +52,7 @@
+>   #include "hugetlb_cma.h"
+>   #include "hugetlb_internal.h"
+>   #include "mm_init.h"
+> +#include "sparse.h"
+>   #include <linux/page-isolation.h>
+>   
+>   int hugetlb_max_hstate __read_mostly;
+> @@ -59,7 +60,7 @@ unsigned int default_hstate_idx;
+>   struct hstate hstates[HUGE_MAX_HSTATE];
+>   
+>   __initdata nodemask_t hugetlb_bootmem_nodes;
+> -__initdata struct list_head huge_boot_pages[MAX_NUMNODES];
+> +static struct list_head huge_boot_pages[MAX_NUMNODES] __initdata;
+>   
+>   /*
+>    * Due to ordering constraints across the init code for various
+> @@ -3139,6 +3140,7 @@ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
+>   	} else {
+>   		list_add_tail(&m->list, &huge_boot_pages[nid]);
+>   		m->flags |= HUGE_BOOTMEM_ZONES_VALID;
+> +		hugetlb_vmemmap_optimize_bootmem_page(m);
+>   		/*
+>   		 * Only initialize the head struct page in memmap_init_reserved_pages,
+>   		 * rest of the struct pages will be initialized by the HugeTLB
+> @@ -3299,6 +3301,7 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
+>   			 * this folio.
+>   			 */
+>   			folio_set_hugetlb_vmemmap_optimized(folio);
+> +		section_set_order_range(folio_pfn(folio), folio_nr_pages(folio), 0);
 
-I'm not sure whether "pet dog" is the right analogy to lockdep in that scenario,
-though ;)
+So section->order is only used during initialization. Is it ever
+accessed later at runtime? If not, can we just skip zeroing it out?
 
--- 
-Cheers,
+>   
+>   		if (hugetlb_bootmem_page_earlycma(m))
+>   			folio_set_hugetlb_cma(folio);
+> @@ -3342,31 +3345,6 @@ void __init hugetlb_bootmem_struct_page_init(void)
+>   		.max_threads	= num_node_state(N_MEMORY),
+>   		.numa_aware	= true,
+>   	};
+> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> -	struct zone *zone;
+> -
+> -	for_each_zone(zone) {
+> -		for (int i = 0; i < VMEMMAP_OPTIMIZATION_NR_ORDERS; i++) {
+> -			struct page *tail, *p;
+> -			unsigned int order;
+> -
+> -			tail = zone->vmemmap_tails[i];
+> -			if (!tail)
+> -				continue;
+> -
+> -			order = i + VMEMMAP_OPTIMIZATION_MIN_ORDER;
+> -			p = page_to_virt(tail);
+> -			/*
+> -			 * prep_and_add_bootmem_folios() can access pageblock
+> -			 * flags on bootmem HugeTLB pages, so initialize the
+> -			 * shared tail struct pages here before bootmem folios
+> -			 * start using them.
+> -			 */
+> -			for (int j = 0; j < PAGE_SIZE / sizeof(struct page); j++)
+> -				init_compound_tail(p + j, NULL, order, zone);
+> -		}
+> -	}
+> -#endif
+>   
+>   	padata_do_multithreaded(&job);
+>   }
+> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> index c48fcea076a5..7293706b532f 100644
+> --- a/mm/hugetlb_vmemmap.c
+> +++ b/mm/hugetlb_vmemmap.c
+> @@ -18,8 +18,7 @@
+>   
+>   #include <asm/tlbflush.h>
+>   #include "hugetlb_vmemmap.h"
+> -#include "internal.h"
+> -#include "mm_init.h"
+> +#include "sparse.h"
+>   
+>   /**
+>    * struct vmemmap_remap_walk - walk vmemmap page table
+> @@ -706,95 +705,18 @@ void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h, struct list_head
+>   	__hugetlb_vmemmap_optimize_folios(h, folio_list, true);
+>   }
+>   
+> -#ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
+> -
+> -/* Return true of a bootmem allocated HugeTLB page should be pre-HVO-ed */
+> -static bool vmemmap_should_optimize_bootmem_page(struct huge_bootmem_page *m)
+> +void __init hugetlb_vmemmap_optimize_bootmem_page(struct huge_bootmem_page *m)
+>   {
+> -	unsigned long section_size, psize, pmd_vmemmap_size;
+> -	phys_addr_t paddr;
+> -
+> -	if (!READ_ONCE(vmemmap_optimize_enabled))
+> -		return false;
+> -
+> -	if (!hugetlb_vmemmap_optimizable(m->hstate))
+> -		return false;
+> -
+> -	psize = huge_page_size(m->hstate);
+> -	paddr = virt_to_phys(m);
+> -
+> -	/*
+> -	 * Pre-HVO only works if the bootmem huge page
+> -	 * is aligned to the section size.
+> -	 */
+> -	section_size = (1UL << PA_SECTION_SHIFT);
+> -	if (!IS_ALIGNED(paddr, section_size) ||
+> -	    !IS_ALIGNED(psize, section_size))
+> -		return false;
+> -
+> -	/*
+> -	 * The pre-HVO code does not deal with splitting PMDS,
+> -	 * so the bootmem page must be aligned to the number
+> -	 * of base pages that can be mapped with one vmemmap PMD.
+> -	 */
+> -	pmd_vmemmap_size = (PMD_SIZE / (sizeof(struct page))) << PAGE_SHIFT;
+> -	if (!IS_ALIGNED(paddr, pmd_vmemmap_size) ||
+> -	    !IS_ALIGNED(psize, pmd_vmemmap_size))
+> -		return false;
+> -
+> -	return true;
+> -}
+> -
+> -/*
+> - * Initialize memmap section for a gigantic page, HVO-style.
+> - */
+> -void __init hugetlb_vmemmap_init_early(int nid)
+> -{
+> -	unsigned long psize, paddr, section_size;
+> -	unsigned long ns, i, pnum, pfn, nr_pages;
+> -	unsigned long start, end;
+> -	struct huge_bootmem_page *m = NULL;
+> -	void *map;
+> +	struct hstate *h = m->hstate;
+> +	unsigned long pfn = PHYS_PFN(__pa(m));
+>   
+>   	if (!READ_ONCE(vmemmap_optimize_enabled))
+>   		return;
+>   
+> -	section_size = (1UL << PA_SECTION_SHIFT);
+> -
+> -	list_for_each_entry(m, &huge_boot_pages[nid], list) {
+> -		struct zone *zone;
+> -
+> -		if (!vmemmap_should_optimize_bootmem_page(m))
+> -			continue;
+> -
+> -		nr_pages = pages_per_huge_page(m->hstate);
+> -		psize = nr_pages << PAGE_SHIFT;
+> -		paddr = virt_to_phys(m);
+> -		pfn = PHYS_PFN(paddr);
+> -		map = pfn_to_page(pfn);
+> -		start = (unsigned long)map;
+> -		end = start + hugetlb_vmemmap_size(m->hstate);
+> -		zone = pfn_to_zone(pfn, nid);
+> -
+> -		if (vmemmap_populate_hvo(start, end, huge_page_order(m->hstate),
+> -					 zone, HUGETLB_VMEMMAP_RESERVE_SIZE))
+> -			panic("Failed to allocate memmap for HugeTLB page\n");
+> -		memmap_boot_pages_add(DIV_ROUND_UP(HUGETLB_VMEMMAP_RESERVE_SIZE, PAGE_SIZE));
+> -
+> -		pnum = pfn_to_section_nr(pfn);
+> -		ns = psize / section_size;
+> -
+> -		for (i = 0; i < ns; i++) {
+> -			sparse_init_early_section(nid, map, pnum,
+> -					SECTION_IS_VMEMMAP_PREINIT);
+> -			map += section_map_size();
+> -			pnum++;
+> -		}
+> -
+> +	section_set_order_range(pfn, pages_per_huge_page(h), huge_page_order(h));
+> +	if (vmemmap_optimizable_order(pfn_to_section_order(pfn)))
+>   		m->flags |= HUGE_BOOTMEM_HVO;
+> -	}
+>   }
+> -#endif
+>   
+>   static const struct ctl_table hugetlb_vmemmap_sysctls[] = {
+>   	{
+> diff --git a/mm/hugetlb_vmemmap.h b/mm/hugetlb_vmemmap.h
+> index 7ac49c52457d..20eb03df542a 100644
+> --- a/mm/hugetlb_vmemmap.h
+> +++ b/mm/hugetlb_vmemmap.h
+> @@ -9,8 +9,7 @@
+>   #ifndef _LINUX_HUGETLB_VMEMMAP_H
+>   #define _LINUX_HUGETLB_VMEMMAP_H
+>   #include <linux/hugetlb.h>
+> -#include <linux/io.h>
+> -#include <linux/memblock.h>
+> +#include "internal.h"
+>   
+>   /*
+>    * Reserve one vmemmap page, all vmemmap addresses are mapped to it. See
+> @@ -27,10 +26,7 @@ long hugetlb_vmemmap_restore_folios(const struct hstate *h,
+>   void hugetlb_vmemmap_optimize_folio(const struct hstate *h, struct folio *folio);
+>   void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_list);
+>   void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h, struct list_head *folio_list);
+> -#ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
+> -void hugetlb_vmemmap_init_early(int nid);
+> -#endif
+> -
+> +void hugetlb_vmemmap_optimize_bootmem_page(struct huge_bootmem_page *m);
+>   
+>   static inline unsigned int hugetlb_vmemmap_size(const struct hstate *h)
+>   {
+> @@ -76,13 +72,13 @@ static inline void hugetlb_vmemmap_optimize_bootmem_folios(struct hstate *h,
+>   {
+>   }
+>   
+> -static inline void hugetlb_vmemmap_init_early(int nid)
+> +static inline unsigned int hugetlb_vmemmap_optimizable_size(const struct hstate *h)
+>   {
+> +	return 0;
+>   }
+>   
+> -static inline unsigned int hugetlb_vmemmap_optimizable_size(const struct hstate *h)
+> +static inline void hugetlb_vmemmap_optimize_bootmem_page(struct huge_bootmem_page *m)
+>   {
+> -	return 0;
+>   }
+>   #endif /* CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP */
+>   
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index 8d39196f6d93..e48758805a8f 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -32,8 +32,6 @@
+>   #include <asm/dma.h>
+>   #include <asm/tlbflush.h>
+>   
+> -#include "hugetlb_vmemmap.h"
+> -
+>   /*
+>    * Flags for vmemmap_populate_range and friends.
+>    */
+> @@ -404,34 +402,6 @@ void vmemmap_wrprotect_hvo(unsigned long addr, unsigned long end,
+>   	}
+>   }
+>   
+> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> -int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
+> -				       unsigned int order, struct zone *zone,
+> -				       unsigned long headsize)
+> -{
+> -	unsigned long maddr;
+> -	struct page *tail;
+> -	pte_t *pte;
+> -	int node = zone_to_nid(zone);
+> -
+> -	tail = vmemmap_get_tail(order, zone);
+> -	if (!tail)
+> -		return -ENOMEM;
+> -
+> -	for (maddr = addr; maddr < addr + headsize; maddr += PAGE_SIZE) {
+> -		pte = vmemmap_populate_address(maddr, node, NULL, -1, 0);
+> -		if (!pte)
+> -			return -ENOMEM;
+> -	}
+> -
+> -	/*
+> -	 * Reuse the last page struct page mapped above for the rest.
+> -	 */
+> -	return vmemmap_populate_range(maddr, end, node, NULL,
+> -				      page_to_pfn(tail), 0);
+> -}
+> -#endif
+> -
+>   void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+>   				      unsigned long addr, unsigned long next)
+>   {
+> @@ -634,7 +604,6 @@ struct page * __meminit __populate_section_memmap(unsigned long pfn,
+>    */
+>   void __init sparse_vmemmap_init_nid_early(int nid)
+>   {
+> -	hugetlb_vmemmap_init_early(nid);
+>   }
+>   #endif
 
-David
+This turns into a no-op function and can be removed right away. I see
+you already drop it in patch #11, anyway.
+
+Besides that, LGTM, so:
+
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
+
 
