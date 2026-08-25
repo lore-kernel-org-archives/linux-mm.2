@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B370FC61CE2
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:27:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB4BC5DF9C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:27:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8D906B00A0; Mon, 24 Aug 2026 22:27:21 -0400 (EDT)
+	id 6961D6B00A1; Mon, 24 Aug 2026 22:27:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A64986B00A1; Mon, 24 Aug 2026 22:27:21 -0400 (EDT)
+	id 61FF26B00A2; Mon, 24 Aug 2026 22:27:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92D5A6B00A2; Mon, 24 Aug 2026 22:27:21 -0400 (EDT)
+	id 5355D6B00A3; Mon, 24 Aug 2026 22:27:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ABD66B00A0
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:27:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3E45A02D9
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:20 +0000 (UTC)
-X-FDA: 85138205040.29.89157CC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 279DB6B00A1
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:27:28 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A53F81C171A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:27 +0000 (UTC)
+X-FDA: 85138205334.02.C9C64C6
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 71AC440002
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:18 +0000 (UTC)
+	by imf17.hostedemail.com (Postfix) with ESMTP id 74C9940007
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:27:25 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="A/h3yFp4";
+	dkim=pass header.d=intel.com header.s=Intel header.b=l98Y5shB;
 	spf=pass (imf17.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787624838;
-	b=EI56qE4gNIjLlUFWv8aQRur4rqauk4dUWblSmhiogM6tesTRGu/G7PWYIXg8+554cxZrxp
-	8+YsUCyLXv0vS9eAdvcS7ScG/MFn10cLioldOvdxurJViRX+z8Zf8MPELmxNyYYVOroQzg
-	F6EMB50IH9IUe6zvD8MbCL9cQLER0lk=
+	t=1787624845;
+	b=ZUyMIRQs92IlKmsx522is7g2YywV0T9xr0taDE835Cb4Y2pHFo+VK5dxOTJlSDuYx5KuDT
+	zdxXBHXT9pL3Ni7i9oJRbxTukuniXubeDgaylBkWi1rSdyguNno0qy/FgfIcWW1kDqzdu+
+	XX8efLowrS+OYSLRbugP7GLEzcpFero=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="A/h3yFp4";
+	dkim=pass header.d=intel.com header.s=Intel header.b=l98Y5shB;
 	spf=pass (imf17.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787624838;
+	s=arc-20220608; t=1787624845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7jeLjlOYa7PXwb2mErSpf6zXoDgFdbgFFzGGOuic07s=;
-	b=59/1UQuuZ5U6T834Gn11e/rmV2kSsWyWUUfk7AdhX4F+yZNmYtlPYByz+dSmYeWeG6KCNx
-	Uk7RIkvDvAt6WYWoOaAYrXt+W0z3/Of2AP4y3c5/0J1pbW7jrun1BmDIGNeTDd/kS8vE+k
-	S+aA5FT0ic5QqUdv64PIp/KF0FksdNc=
+	bh=YEdJik5d7Qt4RJJH8YjwskAz6j1p5QH/xqQKb6YvaA0=;
+	b=BjwCTFR8Tl2lbMlV2nqbzBTp+UsJeXOvVfyanO/gy6zlMziIp4hb/G1iIJGQvWAYsIEaHu
+	DFU3rLx1CCZ6VRl4dTvbe0KHGaW44O6zlOU0ywo1duQNwrYe3MVbDFX9VX2NUKA07R1qVY
+	mvPJVzhgq7qGnAznrYAkYck/tdtdmmk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787624838; x=1819160838;
+  t=1787624845; x=1819160845;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=aXTtEnO6MnuWppdHZS1gvwOd5SjDHPsW8ORjbcfJWQQ=;
-  b=A/h3yFp42yOuaB4r5WNBUvIHBAuco+IQWf6/TzTCYrQZf/oikilJrukD
-   eWqx4vVWWILpl0+MHERb57oS0O6iuG7AfT0I4mxQPIJj9EuNAPQ0ooFxH
-   VQ8LzaBM8FMYAzgcbULqOkOoH9zy8zyQQ5j8qtApHxwb6nuDAQA4Ak7W5
-   5fpWWjP8B9PZ4GmZTDj9LoUsBwURfAb8XIN7zJVEOeA4ISDAfpHwGVBng
-   hXImBk/dLj0p7NgzjXx+yv9xFdoFdig2kSesh7NQ3mndPCvMIOqp9UtXp
-   vuxhDiQEVoge2xEFHUBue/sSMVFk0n8tBA0A/B5UPYIqT7hkjrBSffggT
-   g==;
-X-CSE-ConnectionGUID: KVi+l2HZQmGkk5c8Bxgrgg==
-X-CSE-MsgGUID: Icy8XRtKTLy0XZ1u0RG67Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98761078"
+  bh=mlXvc2rRoY2YlNiSOc7Za57w/VMQm4ZP5P9P9htgZBo=;
+  b=l98Y5shBGGVXYa4ZqJICVe6ALizPiauM1O0B2jc4UzlT3t81oIC3CxSO
+   5PS6jp4SRloaIHVdI0xEQNyyPXj2YJXPMJU8H1WLZ6AHe+OkrkUhNKijG
+   cxLiZ4GyuHf0422WeU5GDPKp/h9LbvuYzv106y3C668EeSJLWsVh/h7be
+   EGuyqXTs/8JzOXt8xPDDcoOB7TEOL/pSmNdr3RlbquaH48IO0aoV79Sud
+   J9hB8ymMYosb5FQuA1buKgZf3Okkwq12dXtzmHTsjDwjKLrOb5BNdRpvZ
+   fq25hYQ2EoeJ92v5BkEvQYUbtXioYwBhp3hCsS8jxUCOo4YuRn06NTygi
+   A==;
+X-CSE-ConnectionGUID: c0m7ghhGRMygWDOdXaaB0A==
+X-CSE-MsgGUID: vYh0/Dc7TOSMxYuuLEBkDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98761096"
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="98761078"
+   d="scan'208";a="98761096"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:18 -0700
-X-CSE-ConnectionGUID: bh8BLriISryoZmUmpOxQeQ==
-X-CSE-MsgGUID: pETfxswFQYytmM6PaR59QA==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:25 -0700
+X-CSE-ConnectionGUID: dBw0ZWZbTCKZ3Pil1roFLw==
+X-CSE-MsgGUID: kbHXBOSMRlutXt3xqVFERg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="265390086"
+   d="scan'208";a="265390092"
 Received: from fdefranc-mobl3.igk.intel.com ([172.28.182.157])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:10 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:27:18 -0700
 From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
 To: linux-cxl@vger.kernel.org
 Cc: David Hildenbrand <david@kernel.org>,
@@ -105,22 +105,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-pci@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: [PATCH v2 05/13] cxl/core: Restore the HDM decoders below DPort
-Date: Tue, 25 Aug 2026 04:26:20 +0200
-Message-ID: <20260825022628.3651434-6-fabio.m.de.francesco@linux.intel.com>
+Subject: [PATCH v2 06/13] drivers/base/memory: Add cxl_offline_memory() to offline a physical range
+Date: Tue, 25 Aug 2026 04:26:21 +0200
+Message-ID: <20260825022628.3651434-7-fabio.m.de.francesco@linux.intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 References: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 71AC440002
+X-Rspamd-Queue-Id: 74C9940007
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: ncbt6oss3173dsymo5s11bmedc1stncs
-X-HE-Tag: 1787624838-878265
-X-HE-Meta: U2FsdGVkX18d3+MwWLAzByXv93igdaF6nq+Scs28xNSyGW1k3bumVUfQ8mNpe6mA78iluGSsa6AjslZeiIecEXosQ5GoJVNnIPxOaT/PmVHrR2q4gSxm/yV2TVHLy4ucqyF47o8McHmIHxgLzuw2tnPMzAoIZbonPzTkf/QTMiac4av0rAQVHuG7oKugizOGz1d6UcQBPaWi6DsHxywMPtaJIKdyO4GBPOCpAn7wOtKO1kEEaRB3iJrF//90TtpSKwgE91duVb8QLrrJYN2XTfUhas19syrGfOuUDJkB0egkcXR4tuYK0heZo6mynOa0h69zLvxS8UGQ7gI4e8hJZ7ZOXQ0/Is/Wa1AYbWPYllOnwxjH67eyiXfa3iBXFiSjGVv6vAAIyVkn9M1YnbXDEeWIu4QryZF/zlAVnfzOfOdgoB5SxD6hSczhofqGObYyCCixz7avY7qBJQ/rcWPmEjQqNio+FWKZhCQOsBgeXrxp6yAlNigzI1XYatrcCOTnlRJrgoP1Gd6feJ/ePAKyGo/Om1xoyM8kR6SHXeAM6nZdoqJa336/sE0DGAc1Z+tiyWFjishSrM9DE3/+0ibxIowxaU32gWZfuFxbnlSsgD0btZnF/madKDJU7YQwOaXeAZ13tLl7x9hJR3IDSjiYAJFaE1QxR35KkaZ214N+kz56va7oyRotIc6sF0LVHl1JQIuGF0T6KWfemj4PHnEDJN3vNuPN5XwXt/24UEqiJYAn9/H6b1h9N4SCpAci5XKirp1jjmNwTLXZHXvfzf/qOJXV+N11nXs5SIO+5LHsFl6y/VPjW7vsnhQSXj3nS31Usq+hIeXyDKp2V2KkZdqL2w35jhQF6/wnEkmxPIKRx7nQRutYJ4c8FVw6+4u1MvwhbvUSMXNgYCjWqRQWTfS1847MGLJQwITN9wsd9bJtNseyu2932leaIuMrdT1Cb9MYRJUvZfqiLsTJZ71wWDT
- Qt8k30G6
- 23Q1xfht3WNRwAGqy+WKmhjyHN8lG8mfVoc3R4NbhAkQxR4xmmHvCFh9YjCBEibXllVQPvwGQLyBwa/JqgpTENr3Yqpf38Nv1qQ+AGOasc2GRSJMbqMLhRqTZJuInHd12c8in1ffMx6TYZxgFSBMBD3w23O6rPQ/dQQ566CcpJjDRN6NETwOn0EM9Hw==
+X-Stat-Signature: gyfwe15ficcd14g8wx7u5acmc3jzezb6
+X-HE-Tag: 1787624845-935690
+X-HE-Meta: U2FsdGVkX1+cu+Wista52trObw2p+qHjhCUV5G+PreMApFY2JX8TpivKsj4B23UDbbcvKFt2aeeAXu/Ffsb6dtCfSzym2hsG6st5hNmXnAcERjhID/E5hHSmRjtUdtutDtOC7UmgOHtBGeNNs/QfCUcOfrlVvMBMqKOA3SoxqkWvcMMT5EZuO5X/WfZfL7tOvQG91Im/ZU+4uLaH+8UrRlF26bm/cXLnqjnKdqV9xl2zWb8a4wfsUaIhmadBLhiSA2G96/Hx0FhcQbsGqHtybIuQwAmU9IwBawqOzEeKoX/vlUVwF9Pw5eoPOJqoli1MjbAmUSRJE5PLNOOweKTI2MsAUNPo7HR9e0XxH5Aep/HxOS8XnxgYArrnouDByiP2irnJlz5ksPT7kDkFNwenMbUoxiKZeSZJ/iHcU6LkU8cKE5Wu85UqoDJvOhNykOVGQ/itNzSPPDnf636E8rKuh/6yiDUQb52SstYbK0AHT5OGcBa1ZskFynw8iPe1wYbauFedKyMmZBPWqTFKqRj5HJyyaA8RwiKVvJgEkIY7DrTLhGqrjM+CxYjvCDLyG8bIP2Xq0DpdcGAPNx92+p5A7kuzCGbF8yjPzeskTzYofEtkyidKoyuiwgW6/FDBT2vUP+TpeLqrFlkCLHiiqirVYMVNIjtLORDUh1ShWxxBFyLvgYfgs7+72K3skM6ivXXf0yH+S7Oo5vnH+XWGZ4/PQ/v+y+0ASXbUQ7oTL7pkt1ki8xtzj1SvpIX6oUaXKRNR1XPLqqgZOMnAFSZXMxXjqsvJIu4GjayMMuxjof5sGCG+cHiJ7bUa7KSP1kF0qrMw+knGeiORrgXdJU1vIGueW7ODP1M3AXHsgihvjTjcKRltIwtBRu3SFZdmb1BNi9UE1heDQCJmFmd90b64gJukrxrD9iZ3uR85ifuQkpUU6OiZwYP67cKCnwIrm9d+jZcNcEPULq046S5yFkmFPnN
+ ZvEY0lPL
+ XbT5BM55aeGkrCLEfkUoXMF78Zz3FPY4eDskCmOdJvU22IJ2UC0jA8ut5Fcq+bEMMbf+QCaRAokzEJCS4aiPxPi5ICdTgSmyTuJ+4l+xJGxaiKjjwB91G4vLOvHrEFM5Ith14vp3VuuIRxinbfaYHuAtGPGrydnY8Liv0IvqylPNlcNhZ12TdDgDzEMzw92ohwokBi9+TLJVEQ0L4RL5bqL80ulGkY1QwM56065cdIPbCkU4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,145 +128,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A Secondary Bus Reset clears the HDM Decoder registers of every CXL
-component below the Port, so the decoders have to be reprogrammed from the
-settings the driver holds before anything reaches the region again.
+A CXL region whose capacity is online as System RAM must be taken
+offline before a Secondary Bus Reset of the CXL Downstream Port it is
+reached through.
 
-Add cxl_sbr_recommit_decoders() to find the CXL port that owns the
-Downstream Port and reprogram the decoders below it. It takes
-cxl_rwsem.region for read across the walk: the walk reads the endpoint set
-below the Port, each endpoint's parent chain and the switch decoder target
-lists, all of which change only under that lock held for write.
-
-The driver's cached settings do not cover the whole of either control
-register, so the saved state that cxl_port_recommit_decoders() needs is
-passed through as well, an xarray of struct cxl_hdm_state keyed by
-struct cxl_port and read before the reset.
-
-Put it in a new dport_sbr.c, which collects what a Secondary Bus Reset of a
-CXL Downstream Port needs from the CXL core. find_cxl_port() loses its
-static since the lookup now has a caller outside port.c.
-
-It has no caller yet. It is used on the way out of the reset, once the
-regions routed through the Port are back.
+Add cxl_offline_memory() to offline the memory blocks spanning a
+physical range, exported in the CXL_MHP namespace since the CXL core is
+its only caller.
 
 Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 ---
- drivers/cxl/core/Makefile    |  2 +-
- drivers/cxl/core/core.h      |  6 ++++++
- drivers/cxl/core/dport_sbr.c | 36 ++++++++++++++++++++++++++++++++++++
- drivers/cxl/core/port.c      |  4 ++--
- tools/testing/cxl/Kbuild     |  2 +-
- 5 files changed, 46 insertions(+), 4 deletions(-)
- create mode 100644 drivers/cxl/core/dport_sbr.c
+ drivers/base/memory.c  | 36 ++++++++++++++++++++++++++++++++++++
+ include/linux/memory.h |  5 +++++
+ 2 files changed, 41 insertions(+)
 
-diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
-index ce7213818d3c..4d4538182d81 100644
---- a/drivers/cxl/core/Makefile
-+++ b/drivers/cxl/core/Makefile
-@@ -15,7 +15,7 @@ cxl_core-y += hdm.o
- cxl_core-y += pmu.o
- cxl_core-y += cdat.o
- cxl_core-$(CONFIG_TRACING) += trace.o
--cxl_core-$(CONFIG_CXL_REGION) += region.o region_pmem.o region_dax.o
-+cxl_core-$(CONFIG_CXL_REGION) += region.o region_pmem.o region_dax.o dport_sbr.o
- cxl_core-$(CONFIG_CXL_MCE) += mce.o
- cxl_core-$(CONFIG_CXL_FEATURES) += features.o
- cxl_core-$(CONFIG_CXL_EDAC_MEM_FEATURES) += edac.o
-diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index d23f0bbd7bf0..a8b9d7990d32 100644
---- a/drivers/cxl/core/core.h
-+++ b/drivers/cxl/core/core.h
-@@ -13,6 +13,9 @@ extern const struct device_type cxl_pmu_type;
- 
- extern struct attribute_group cxl_base_attribute_group;
- 
-+struct cxl_port *find_cxl_port(struct device *dport_dev,
-+			       struct cxl_dport **dport);
-+
- enum cxl_detach_mode {
- 	DETACH_ONLY,
- 	DETACH_INVALIDATE,
-@@ -53,6 +56,9 @@ u64 cxl_dpa_to_hpa(struct cxl_region *cxlr, const struct cxl_memdev *cxlmd,
- int devm_cxl_add_dax_region(struct cxl_region *cxlr);
- int devm_cxl_add_pmem_region(struct cxl_region *cxlr);
- void kill_regions(struct cxl_root_decoder *cxlrd);
-+struct pci_dev;
-+void cxl_sbr_recommit_decoders(struct pci_dev *dport_pci,
-+			       struct xarray *hdm_state);
- 
- #else
- static inline u64 cxl_dpa_to_hpa(struct cxl_region *cxlr,
-diff --git a/drivers/cxl/core/dport_sbr.c b/drivers/cxl/core/dport_sbr.c
-new file mode 100644
-index 000000000000..55c35386d0cb
---- /dev/null
-+++ b/drivers/cxl/core/dport_sbr.c
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright(c) 2026 Intel Corporation. */
-+
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include <cxl.h>
-+#include "core.h"
-+
-+/*
-+ * The reset cleared the HDM Decoder registers of every CXL component below
-+ * @dport_pci, so restore them from the settings the driver holds and from
-+ * @hdm_state, the register fields the driver does not model, saved before the
-+ * reset. Takes cxl_rwsem.region for read, which cxl_port_recommit_decoders()
-+ * requires. The caller has already disabled the regions, so nothing reaches the
-+ * decoders being reprogrammed.
-+ */
-+void cxl_sbr_recommit_decoders(struct pci_dev *dport_pci,
-+			       struct xarray *hdm_state)
-+{
-+	struct cxl_dport *dport;
-+	int rc;
-+
-+	struct cxl_port *port __free(put_cxl_port) =
-+		find_cxl_port(&dport_pci->dev, &dport);
-+	if (!port) {
-+		pci_dbg(dport_pci, "no CXL port owns this Downstream Port\n");
-+		return;
-+	}
-+
-+	pci_dbg(dport_pci, "restoring HDM decode below %s\n", dev_name(&port->dev));
-+
-+	guard(rwsem_read)(&cxl_rwsem.region);
-+	rc = cxl_port_recommit_decoders(port, hdm_state);
-+	if (rc)
-+		pci_warn(dport_pci, "HDM decode restore failed: %d\n", rc);
-+}
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index 1215ee4f4035..66a6d513843e 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -1392,8 +1392,8 @@ static struct cxl_port *__find_cxl_port(struct cxl_find_port_ctx *ctx)
- 	return NULL;
+diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+index bcfe2d9f4adb..ce89b251d34a 100644
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -1018,6 +1018,42 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
+ 	return ret;
  }
  
--static struct cxl_port *find_cxl_port(struct device *dport_dev,
--				      struct cxl_dport **dport)
-+struct cxl_port *find_cxl_port(struct device *dport_dev,
-+			       struct cxl_dport **dport)
++static int cxl_offline_memory_block(struct memory_block *mem, void *arg)
++{
++	int rc = device_offline(&mem->dev);
++
++	/* device_offline() returns a positive value when already offline. */
++	if (rc > 0)
++		return 0;
++
++	return rc;
++}
++
++/**
++ * cxl_offline_memory - offline the memory blocks spanning a physical range
++ * @start: start of the range, memory-block aligned
++ * @size: size of the range, a multiple of the memory block size
++ *
++ * Offline every memory block in [start, start + size). The blocks are offlined
++ * but not removed, so the range can be brought back online afterward. The
++ * caller owns the range and this performs no validation on it.
++ *
++ * Return: 0 on success, negative errno if a block cannot be offlined.
++ *
++ * Context: process context. Sleeps and takes the memory hotplug lock.
++ */
++int cxl_offline_memory(u64 start, u64 size)
++{
++	int rc;
++
++	lock_device_hotplug();
++	rc = walk_memory_blocks(start, size, NULL, cxl_offline_memory_block);
++	unlock_device_hotplug();
++
++	return rc;
++}
++EXPORT_SYMBOL_NS_GPL(cxl_offline_memory, "CXL_MHP");
++
+ struct for_each_memory_block_cb_data {
+ 	walk_memory_blocks_func_t func;
+ 	void *arg;
+diff --git a/include/linux/memory.h b/include/linux/memory.h
+index 463dc02f6cff..5dc0b96fb004 100644
+--- a/include/linux/memory.h
++++ b/include/linux/memory.h
+@@ -149,6 +149,10 @@ static inline unsigned long memory_block_advised_max_size(void)
  {
- 	struct cxl_find_port_ctx ctx = {
- 		.dport_dev = dport_dev,
-diff --git a/tools/testing/cxl/Kbuild b/tools/testing/cxl/Kbuild
-index 2be1df80fcc9..f18d41b299fe 100644
---- a/tools/testing/cxl/Kbuild
-+++ b/tools/testing/cxl/Kbuild
-@@ -63,7 +63,7 @@ cxl_core-y += $(CXL_CORE_SRC)/hdm.o
- cxl_core-y += $(CXL_CORE_SRC)/pmu.o
- cxl_core-y += $(CXL_CORE_SRC)/cdat.o
- cxl_core-$(CONFIG_TRACING) += $(CXL_CORE_SRC)/trace.o
--cxl_core-$(CONFIG_CXL_REGION) += $(CXL_CORE_SRC)/region.o $(CXL_CORE_SRC)/region_pmem.o $(CXL_CORE_SRC)/region_dax.o
-+cxl_core-$(CONFIG_CXL_REGION) += $(CXL_CORE_SRC)/region.o $(CXL_CORE_SRC)/region_pmem.o $(CXL_CORE_SRC)/region_dax.o $(CXL_CORE_SRC)/dport_sbr.o
- cxl_core-$(CONFIG_CXL_MCE) += $(CXL_CORE_SRC)/mce.o
- cxl_core-$(CONFIG_CXL_FEATURES) += $(CXL_CORE_SRC)/features.o
- cxl_core-$(CONFIG_CXL_EDAC_MEM_FEATURES) += $(CXL_CORE_SRC)/edac.o
+ 	return 0;
+ }
++static inline int cxl_offline_memory(u64 start, u64 size)
++{
++	return 0;
++}
+ #else /* CONFIG_MEMORY_HOTPLUG */
+ extern int register_memory_notifier(struct notifier_block *nb);
+ extern void unregister_memory_notifier(struct notifier_block *nb);
+@@ -167,6 +171,7 @@ typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
+ extern int walk_memory_blocks(unsigned long start, unsigned long size,
+ 			      void *arg, walk_memory_blocks_func_t func);
+ extern int for_each_memory_block(void *arg, walk_memory_blocks_func_t func);
++int cxl_offline_memory(u64 start, u64 size);
+ 
+ extern int memory_group_register_static(int nid, unsigned long max_pages);
+ extern int memory_group_register_dynamic(int nid, unsigned long unit_pages);
 -- 
 2.55.0
 
