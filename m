@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D823AC61DBD
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 17:06:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 561CDC61DBC
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 17:16:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C19A66B0088; Tue, 25 Aug 2026 13:06:18 -0400 (EDT)
+	id F38C56B0088; Tue, 25 Aug 2026 13:16:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF1136B008A; Tue, 25 Aug 2026 13:06:18 -0400 (EDT)
+	id EE9E56B008A; Tue, 25 Aug 2026 13:16:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2DB16B008C; Tue, 25 Aug 2026 13:06:18 -0400 (EDT)
+	id D8AA96B008C; Tue, 25 Aug 2026 13:16:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 857196B0088
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:06:18 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CD13912011A
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 17:06:17 +0000 (UTC)
-X-FDA: 85140419994.23.70CC8FE
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BE00F4000B
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 17:06:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ps2aNbDX;
-	spf=none (imf11.hostedemail.com: domain of BATV+cac146c21b70fe15126d+8402+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+cac146c21b70fe15126d+8402+infradead.org+dwmw2@casper.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AB0A96B0088
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:16:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42FD9A0143
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 17:16:16 +0000 (UTC)
+X-FDA: 85140445152.24.AC2005C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4CF1240006
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 17:16:14 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kg1OO2R3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787677576;
+	s=arc-20220608; t=1787678174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UL8vgL8HowsGABI/g9ih3hUelJdS+/CWcso0YubRxOE=;
-	b=KW6kW3S6HFKMQ7/YGWQOCiVIXopd3fNfJBSNEMaJcLEQ/mFpHJQAJ2eIQZMLnAa+l9Hxk6
-	6Glwnr3OBuZ4bRK9yB0xV9z3V0FeZNKOa9+rPI5tHCfMPKDAYGjwf4prKN5FWtIO1f2jPE
-	eG9V7H5YX/KwswY4wCZJ6giSjg71nUc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787677576;
-	b=ExSYxHcYiD0/K2dIOwPS5zr1sILeUZnejJsNyUCr1QrwVEoJIWTcIl333e1QYMzzYtxIIZ
-	aZa2HN8NFaNnFxqsvGSFJFjEytD4Du0kTY1aCqhoAlYgPx5pQr7pTY9IJgBUuqrfBFJ6I+
-	CAemNVdIuo9rpcgLACWOfeofqWUEwSI=
+	bh=5FpU6PmaxasRUE/cNoODWB/68M0CfwjGVJ2810dgrTA=;
+	b=BGwz6R6GHHJiDXIl53V4cn7WLIZWS+uF+wpi5MEDEKvnVn+XUjL1dGAXhRD/nkYPjyOl25
+	6YeeZbru04U1BSKHkDwgzloVMgQacOEbbr0tVhVv7kQJ0mMFZOQrpf10SNkGrVr9uMvfIT
+	zFRmGNiUyLcQmgzEVh0gIfi/6Mza19s=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ps2aNbDX;
-	spf=none (imf11.hostedemail.com: domain of BATV+cac146c21b70fe15126d+8402+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+cac146c21b70fe15126d+8402+infradead.org+dwmw2@casper.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UL8vgL8HowsGABI/g9ih3hUelJdS+/CWcso0YubRxOE=; b=ps2aNbDXHsXJMb273wBPNgUQK0
-	saJSoDwk54DZ7exlviNcWg9KUN1I3sMmFHUlIF2j66HMUcyrvcgsK8fOrrv25EVoNOhsyJDGBdn7P
-	g45Pw2Rbp1so1DbQFDkaZdYO6hEfbxcy8qribxy21pJmbdXiN5S1A9heEIc3pA/CKIJBJ/oqHfjNa
-	qsBLZ+LqZ/NphE61zckmM1mRC3V3lBOVcLHefMnHV2fSL2y1C7o7Ujr/ecSNbpZQ8ZNfoZoIm1/rG
-	J7F79x70IctsPujDH+bmHCXddrbbu80+1shVI4V8y/fOXYpxVLq2tqmWSUaeynrgXUjJ4t94Z7Ky2
-	B4SWr7Vw==;
-Received: from [2001:8b0:10b:5:faaa:2547:1b33:7d6f] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyub6-00000009Qyg-2jcE;
-	Tue, 25 Aug 2026 17:06:04 +0000
-Message-ID: <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-From: David Woodhouse <dwmw2@infradead.org>
-To: paulmck@kernel.org
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-  Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Andrew Morton	 <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>,  Clark Williams
- <clrkwllms@kernel.org>, Simona Vetter <simona.vetter@ffwll.ch>, Jerome
- Glisse <jglisse@redhat.com>,  Christian Koenig <christian.koenig@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, 
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 25 Aug 2026 18:05:54 +0100
-In-Reply-To: <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
-References: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
-	 <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
-	 <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-ihPDX9ElNbuDCnwxsKpA"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kg1OO2R3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787678174;
+	b=hO50PEqLHFlfBxeUuo/H4SiikSYHBfiL+eVLiHrl4cJtUDM+fOkc+upakXplrn0ckPNPE+
+	upGrvGy2/npAfmDoCMQGC8nd466dGBDqceQUzOkCkgXE3f4GMb0GhRO7e7sXI7YDmnx71V
+	icv1/mEdvUzIA+2cnII16mIPYdqX+2I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D0474096B
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 17:16:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489FC1F00A3F
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 17:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787678173;
+	bh=5FpU6PmaxasRUE/cNoODWB/68M0CfwjGVJ2810dgrTA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kg1OO2R3pd1StCd/dW9hKgZrY3KvUCPXsm8EeJUFVXP/SriLGIQ2W1K1YGf6VcaoQ
+	 z1RmZKFUzpZ0X42uHIIYCuCW+5s7ua/ax6lbLXnxI3bP7z6MxCy3QDqwhP6+974V64
+	 wonyg6VBuKIPZbtUCtVE7Rgsy8xEWDPpUI60Qnj7Fa87kFOzQEOQH9eLUcUMA88Cvs
+	 IEelaZThak/xvl5tHCjlhUuhp3NQXzh39PTH0wYzX+zdhGRyQ//706b3vQ0T4TS5lm
+	 WYFhNIkII+G+bun7U65EQB1k0RQQutFeaPOw3GyPvhaMEhwYl+ILZ5HbYQnUOHLb8W
+	 9t1CN6ZYt5Nvg==
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c169ae1cb26so220723266b.1
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:16:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoEc3fUh9znop9yPYgnORARsGIXEoHOf7Y0EQq8MhSHFuTS3ZPrHQYxBukc7T0iNLudCnq0tweEUA==@kvack.org
+X-Gm-Message-State: AFuF++kFLAMTQkF2lx0RxXhWmQpjYhfrQFMSjqiwpZ2JIO99njd4M9qg
+	s9OPkkGD77DT1wBhkhpKNT+9rUvHLjUi6YzZ460kboE1SsHk+8VO8GWTbm+9QR2zyMVKlf8T7mv
+	l8ubAQyn+4B7dIPqAMyRkqRFU3TvaJ2A=
+X-Received: by 2002:a17:906:9c93:b0:c16:785:cfb6 with SMTP id
+ a640c23a62f3a-c250aa9fd27mr99460566b.3.1787678172115; Tue, 25 Aug 2026
+ 10:16:12 -0700 (PDT)
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+References: <20260815-shrink_zswap_entry_0815_v2-v3-0-0171bd86a667@gmail.com> <20260815-shrink_zswap_entry_0815_v2-v3-2-0171bd86a667@gmail.com>
+In-Reply-To: <20260815-shrink_zswap_entry_0815_v2-v3-2-0171bd86a667@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 25 Aug 2026 10:16:00 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNFYM1bry0DwDRNtpnEL9yyXQ3h=1wcLbGsO1sFtGgvjg@mail.gmail.com>
+X-Gm-Features: AcwNN1WFmeczMru_aTC3-n5xb3oUB4PfiSXiveph6_yFD4yANQ7GK6wWfR1PjZw
+Message-ID: <CAO9r8zNFYM1bry0DwDRNtpnEL9yyXQ3h=1wcLbGsO1sFtGgvjg@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 2/3] mm/zswap: replace the zswap_pools list with a
+ fixed pools array
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: dyusnk43madcg8wek4oxg5yyeca38qtn
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4CF1240006
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BE00F4000B
-X-Stat-Signature: feuypxu3gkkg8ec69g3uk8ou7rss5guy
-X-HE-Tag: 1787677574-772907
-X-HE-Meta: U2FsdGVkX18vkUFozzncDHkwzxZ11BHf0rviZiVPiP8EBMvdSWUNL0wy8ic+LiVhwUaZJZNAP+KjCVOiVE6FD5lm5t4BbtkchZETD0TUoXBjApHGGrvy7QkowFUgNKQNtZQZv2pTbf0CES3laB1nkn5PSfMW/aMYleIo2NO62Ri9nObJNc3KddQJOYKykbK6Ov9Dx1ufk6Z+wV/LxEPmXbgzX9lcE1q8stj8t7xWTYLIw98wFuI4frBT5fdpbtP0DzBOQdbyN02seuBLhPp2MVbpxoDlRzF3SliliRIrsqATLqK2fbpXU5n+Pes9BbZLX0i/Vd6yvqSaJMRoGZW8dzs1PRBYMC1IA0awAUyL6zAAJ1llMsbKPijsqcypbHFZKHYYmSHIFtDdk/QiNE9Ae6+Sq7XhoyH04t7LPRn90KejPkKMh2qZHTx5+ifq06aYHtLKfzdBFaRAoEj9c0EUDdfFpuCuu1Ns07d0la0HT6o2yJ9bNF9ivvIh9xWrZGHCFzLEuayJNwF2LjhhHtMXDIXDOZ7cfex7rT/mi+F8wiBSy5Vjmivb360rEB6w/AtoBb5OdaCr1UJo367sJOO8+cTwcto9xZqxAgVgCxQZg6H7VOqY3kEzZjuNX7S2xVAB8S27opYllonnUlZi3jKiWQ47We12Y31lMmsVrwlI2R6R7KZfAPoAMtK8p6L8Ya6Qqxgt02C8kzy6kGGncn/OBhgeqfVlwjfKAfvJkldM5ODD4kG45FxpIuKcQurIuWMDeOjJby47OjSjCCtzfmrLzBRNSsxpycYJwEAuMa0DdOp7FtMm6O/IbJJBfKn5weK6tLmVQBNK8zz+PYSg8o6ZChThO4XiTthktq/bysHg1jgU8H37FQD30jmm1wO90OUMpWFr1+doTo8skw1FtyjDLcE8vfs3KCfsI3zZNtIMPzxyHFqs/ZBsqqru2bXlxm/b5A8upOWB3FniNI7doMA
- TTc2gpVM
- Y7xt5p8SEXAeFvr8Yn+loL/M7JaMaUMy6P7YLklOLuRJwonWv+ERW5Qz5hHWEQAWL5agODx7DhD14WSiC9kg89LM/Az4FP3xlJWCAnHKzZxoENOPYyu7kwFP4n72Hq3DytwRG4fLGRb9cKDzeM2t4oJXye6yL2AZKNvrCsYl1MmZawHF480Kz+FmVCKQPpXqs89l4FXVEnnQ2FZxOEiliFFgH5s1l69lenFKOPZooED/xMhFMdTCcMRZF4U8SeF+40y0Hyv/Pm8PFbgqFxtPOJTUHtm23KBt7GvlTwvuvH8iobTfKyCAkhk1ys8pJEtr89Zne8TuYQWS+P6lohayXgoJyfuGCfd/WQsqVprYw1g90pTYUpKGz9cJmxL5tvALuGBB/R88bkuRo+OHmxjoXYjDnfAkevp3x3rNYAcaS+KoIq8pastpwvcML5nGerqfSFSSjl2rpNKE92CmUzJQaFnWVSiueFh2ospiAzuUDJ4VMPOL9oXYvkfXhQH+5zrG6s7SFV8dKrK+9vlVkinRexjjkEYHfBGVAMxza51h4iUuA9z7375XRN7vYwdwOemedmygEw2kqzq1o1Bj3T49kHSmzT+FFmX/46ZmbhcSqzspZzVQSBvihX8jdSPyKXt1prfy2AYrm4/fX8tintm9Bq0gC+RDRxZQw12zhccenPCmRUqK+fJqf6RARKpOLVV/JntCLEUtFlO+9ML0UVWiqCNsaeSkHxw3E36AGoXJMjYpGcS3HdWte30bNmdS//7PI4bIrYYsrsPVKjTbsQZ8DTV+JodRZQ9vPqIAHEEqkCJHcnsg69WVlCC72whQ48Qtpqo98QRJwWBxUpp8=
+X-HE-Tag: 1787678174-672444
+X-HE-Meta: U2FsdGVkX1+JdHnXT+cC9jDK6vzrHIla16CKb8IjMi/YVFHOD98prPKomLDv+J/r+DVQGcOSv7qoOLDxitX6wn3eiJrY0yjpfSvYuqV7jNov7cqIGRD8PXBHG2HRw5zZu6b1JVyofMAyr05d+bAU26WxczchBdOXP7t1KEOx4HJck/bbfLyWSnOBoSNCCoN97eUwlJS0PyOvMROHf1QKAf+KnsGd1ffzmtkO2+gzpnP16EOpUtcFXU1o1hghFP3I4iQRyXk6Zw4MFB9SgtQFNGzM0UBnEeQ9Ji2u5fw6+LHuoev4kTei53g7CyqHHnMvhax9kLI9iY0XP5+cKalKWRdJcXZMpcD5BQkRjRncoj17Fenz0hDXdb5s8zdY3gDCZsNRDN7TyrJrhDJa5nYphzC3bmesRsgT15PUm4ZvYMCDSHXiQ/BXCeDpw8YLhF/IUJ4B+8EWawfYKXBCxUEKlA4HPqQ8fAa5KWvhYyT1QasHGvikQHwwg9Ut0NqI4od3LASi7J/hII++qAsLhra5D0sM6uuJci9Wfr/ekFbFHTndOmD80XwnOrkJ7OaH+0Drqk+9sdWzKj/zEYv4O4vwUMcCInFZ8045iEE6RjR45ah9TaefIJvFoRunZTLA0XMQ5D65EzqL0PvuSz5MV/Ncl0ptYcihnSj5XYx+ANBvPL7runU7cC/lXtlDAVHcTCqmYGDqL3IWwvqA7XxVnKXkBFU0kq5xWZ7aP2hK9yk65maBCKjXp2ForC3aQnIPZEHccp9Q+qlEE4/H6xkRcSERlq0cPstDxyoMXGniGZmCU16GqRtzBV44iI3zyRKRVpjY7J+F9TLMqfDzmtaELAWffEquXCAcud0ict7/s56gkxdwua/nWHVxOw4c/sDZMXSd9fWXGZlaEKXfm//vPsDbOX+1oQ/phRu/HWte5KPTPj+LV/KQs8jgmzGFKxe2TKwFc2t5dmwDqh/iALlqfmb
+ iDm2Uu82
+ NE8KvbTret5kSN8RqjULXgQpBgdlLg5htc1IQ3wZ69ma4T6D9qGjlF8nFKvCTbj4zISj59lIvaSo/ufgGrnWs5Zvn6ehzpI4NstQuxi+NEkd1WdJzq1MJLJMLLpi9+ikALf8WEhN2mTevDUH3eCepbT29VFTuNXgClO6pam55Gwha25yBgj8/tqGs11gyuDhBfkakgueThUpo3HRBSDddJdmuuuj4o8GuOeKmsXovLqLQzd2HMqQkBtUMlGIRTjU2dXMCBU7PT1/xEP786vPG8jd3qohwbJYioTl3r1wwv7uE5+TzzZZR8y3aOl65o91sTC1kVplZYynXOn+GoUPDNaK5cmSwXqsM7D22w6WGmUh1Sm/kw8uRMjW55Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,162 +104,386 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Aug 14, 2026 at 11:54=E2=80=AFPM Jianyue Wu <wujianyue000@gmail.com=
+> wrote:
+>
+> Originally zswap holds its pools on an RCU list whose head also serves
+> as the "current pool".  Only a handful of pools are ever live at once,
+> since a new pool is only created when the compressor is (re)set and
+> pools are reused across compressor switches.
+>
+> Hold the pools in a fixed ZSWAP_MAX_POOLS-element array so each pool
+> has a stable slot number, and track the current pool with a separate
+> rcu-protected pointer.
+>
+> Slot 0 is intentionally left unused (always NULL): a zeroed or
+> incorrectly initialized pool index then resolves to NULL and trips a
+> WARN rather than silently aliasing a live pool in another slot.
+>
+> The array keeps the same RCU publish/retire discipline the list had,
+> so lookup and teardown stay equivalent.  A pool first reserves its
+> slot with a placeholder marker and only stores the real pointer once
+> it is committed as the current pool, so array walkers never observe a
+> not-yet-ready pool as live.
+>
+> Behavior change: the fixed array bounds the number of simultaneously
+> live pools at ZSWAP_MAX_POOLS - 1 (15, since slot 0 is reserved),
+> whereas the old list was unbounded.  A pool is only live while it is
+> the current pool or still has stored pages referencing it, and pools
+> are reused across compressor switches, so 15 is far more than any real
+> configuration needs.  Once all slots are occupied, creating a pool for
+> a 16th distinct compressor fails: zswap_pool_create() errors and
+> returns NULL, and the compressor switch is rejected with -EINVAL
+> rather than silently succeeding.  The cap can be raised by increasing
+> ZSWAP_MAX_POOLS (bounded by the u8 slot index, so up to 256).
+>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+> ---
+>  mm/zswap.c | 140 +++++++++++++++++++++++++++++++++++++++++++++++++------=
+------
+>  1 file changed, 114 insertions(+), 26 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index cc4243356e21..603fdc418041 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -13,6 +13,7 @@
+>
+>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>
+> +#include <linux/cleanup.h>
+>  #include <linux/module.h>
+>  #include <linux/cpu.h>
+>  #include <linux/highmem.h>
+> @@ -154,13 +155,42 @@ struct zswap_pool {
+>         struct zs_pool *zs_pool;
+>         struct crypto_acomp_ctx __percpu *acomp_ctx;
+>         struct percpu_ref ref;
+> -       struct list_head list;
+>         struct rcu_head rcu_head;
+>         struct work_struct release_work;
+>         struct hlist_node node;
+> +       u8 idx;
+>         char tfm_name[CRYPTO_MAX_ALG_NAME];
+>  };
+>
+> +#define ZSWAP_MAX_POOLS 16
+> +/*
+> + * Slot 0 is intentionally never used: it stays NULL so that a zeroed or
+> + * incorrectly initialized pool->idx resolves to NULL (and trips a WARN)
+> + * instead of silently aliasing a live pool in another slot.
+> + */
+> +#define ZSWAP_FIRST_POOL_SLOT 1
+> +static struct zswap_pool __rcu *zswap_pools[ZSWAP_MAX_POOLS];
+> +static_assert(ZSWAP_MAX_POOLS - 1 <=3D U8_MAX);
+> +/*
+> + * The current pool (NULL if none): an alias of one zswap_pools[] slot.
+> + * It always holds a ref, so a pool is never retired while it is current=
+.
+> + */
+> +static struct zswap_pool __rcu *zswap_current_pool;
+> +
+> +/*
+> + * A slot placeholder used to reserve an index before the pool is commit=
+ted.
+> + * A reserving pool publishes this marker first and only stores the real
+> + * pointer once it is ready to become current; walkers of zswap_pools[] =
+treat
+> + * a reserved slot as empty and skip it, so a not-yet-ready pool is neve=
+r
+> + * observed as live.
+> + */
+> +#define ZSWAP_SLOT_RESERVED ((struct zswap_pool *)-1UL)
+> +
+> +static inline bool zswap_slot_is_pool(struct zswap_pool *pool)
+> +{
+> +       return pool && pool !=3D ZSWAP_SLOT_RESERVED;
+> +}
+> +
+>  /* Global LRU lists shared by all zswap pools. */
+>  static struct list_lru zswap_list_lru;
+>
+> @@ -201,9 +231,7 @@ struct zswap_entry {
+>  static struct xarray *zswap_trees[MAX_SWAPFILES];
+>  static unsigned int nr_zswap_trees[MAX_SWAPFILES];
+>
+> -/* RCU-protected iteration */
+> -static LIST_HEAD(zswap_pools);
+> -/* protects zswap_pools list modification */
+> +/* protects the zswap_pools array and zswap_current_pool */
+>  static DEFINE_SPINLOCK(zswap_pools_lock);
+>  /* pool counter to provide unique names to zsmalloc */
+>  static atomic_t zswap_pools_count =3D ATOMIC_INIT(0);
+> @@ -271,6 +299,40 @@ static void acomp_ctx_free(struct crypto_acomp_ctx *=
+acomp_ctx)
+>         acomp_ctx->buffer =3D NULL;
+>  }
+>
+> +static int zswap_pool_reserve_slot(struct zswap_pool *pool)
+> +{
+> +       int i;
+> +
+> +       guard(spinlock_bh)(&zswap_pools_lock);
+> +       for (i =3D ZSWAP_FIRST_POOL_SLOT; i < ZSWAP_MAX_POOLS; i++) {
+> +               if (!rcu_access_pointer(zswap_pools[i])) {
+> +                       /*
+> +                        * Reserve the slot with a placeholder rather tha=
+n the
+> +                        * pool itself: the pool is not ready to be curre=
+nt yet
+> +                        * and must not be observed as live by array walk=
+ers.
+> +                        * Set idx before publishing so readers never see=
+ it
+> +                        * stale.  zswap_pool_publish_slot() stores the r=
+eal
+> +                        * pointer once the pool is committed.
+> +                        */
 
---=-ihPDX9ElNbuDCnwxsKpA
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, 2026-08-25 at 09:47 -0700, Paul E. McKenney wrote:
->=20
-> On the tail latencies...
->=20
-> The easiest way to reduce them is to require that preemption be disabled
-> across srcu_read_lock_atomic()/srcu_read_unlock_atomic() regions and
-> across all calls to synchronize_srcu_atomic().=C2=A0 Without that, the pr=
-oblem
-> is that the scheduler does not know that the spinning is pointless,
-> and we cannot use the blocking primitives that we could otherwise use
-> to tell it what is going on.
->=20
-> So, is it feasible to simply require preemption be disabled as called
-> out above?
-
-I'd experimented with disabling it around the GP driver loop in
-synchronize_srcu_atomic() as seen in
-https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dcommitdiff;h=3D071=
-65e79340e
-and that didn't seem to change anything (which seems reasonable, as
-it's the *waiters* that were descheduled, not the threads driving the
-actual GP). So your suggestion that we do it around the whole function
-certainly makes sense too. I'll test it.
-
-I do wonder if we're really doing the right thing here by selfishly
-blocking preemption because we want a specific tail latency to remain
-low in a contended system. Maybe we should allow preemption and trust
-that the right thing will happen? Maybe the p100 isn't the right
-benchmark to be chasing... I'm looking at it because Sean expressed
-concerns about it, but it's not the only consideration.
-
-I'll have another look, but right now I'm in the middle of rebasing
-onto kvm/next and the whole nested story has fallen apart and I don't
-know (yet) what broke... :)
-
-
---=-ihPDX9ElNbuDCnwxsKpA
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-YoVxpQpfPm0+KF5OrT7K7+wAAAAAAAA=
+I think the reservation logic is self-explaining, the comment here is
+not warranted. Especially the idx part, I believe we only set
+pool->idx here to keep track of the reserved index, not really to do
+it before publishing as publishing happens later. If anything, maybe
+replace this with a smaller comment to the reader that we reserve the
+slot at pool creation but only assign it when we make it the current
+pool, with a small explanation of why that is needed (the actually
+issue Sashiko pointed out)?
 
 
---=-ihPDX9ElNbuDCnwxsKpA--
+> +                       pool->idx =3D i;
+> +                       rcu_assign_pointer(zswap_pools[i], ZSWAP_SLOT_RES=
+ERVED);
+> +                       return i;
+> +               }
+> +       }
+> +
+> +       return -ENOSPC;
+> +}
+> +
+> +static void zswap_pool_publish_slot(struct zswap_pool *pool)
+> +{
+> +       assert_spin_locked(&zswap_pools_lock);
+
+I think we can drop the assertion since we already have the lockdep
+check below, especially because it uses BUG_ON().
+
+> +
+> +       if (rcu_dereference_protected(zswap_pools[pool->idx],
+> +                                     lockdep_is_held(&zswap_pools_lock))=
+ =3D=3D
+> +           ZSWAP_SLOT_RESERVED)
+
+Hmm let's read this into a variable first then compare it to
+ZSWAP_SLOT_RESERVED instead? It's not very readable.
+
+> +               rcu_assign_pointer(zswap_pools[pool->idx], pool);
+> +}
+> +
+>  static struct zswap_pool *zswap_pool_create(char *compressor)
+>  {
+>         struct zswap_pool *pool;
+> @@ -314,19 +376,28 @@ static struct zswap_pool *zswap_pool_create(char *c=
+ompressor)
+>         if (ret)
+>                 goto cpuhp_add_fail;
+>
+> -       /* being the current pool takes 1 ref; this func expects the
+> -        * caller to always add the new pool as the current pool
+> +       /*
+> +        * The initial ref is for the current-pool role.  On success the
+> +        * caller must install this pool as the current pool.
+>          */
+>         ret =3D percpu_ref_init(&pool->ref, __zswap_pool_empty,
+>                               PERCPU_REF_ALLOW_REINIT, GFP_KERNEL);
+>         if (ret)
+>                 goto ref_fail;
+> -       INIT_LIST_HEAD(&pool->list);
+> +
+> +       ret =3D zswap_pool_reserve_slot(pool);
+> +       if (ret < 0) {
+> +               pr_err("cannot create more than %d pools\n",
+> +                      ZSWAP_MAX_POOLS - ZSWAP_FIRST_POOL_SLOT);
+> +               goto slot_fail;
+> +       }
+>
+>         zswap_pool_debug("created", pool);
+>
+>         return pool;
+>
+> +slot_fail:
+> +       percpu_ref_exit(&pool->ref);
+>  ref_fail:
+>         cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->no=
+de);
+>
+> @@ -387,7 +458,7 @@ static void __zswap_pool_release(struct work_struct *=
+work)
+>         WARN_ON(!percpu_ref_is_zero(&pool->ref));
+>         percpu_ref_exit(&pool->ref);
+>
+> -       /* pool is now off zswap_pools list and has no references. */
+> +       /* readers drained by the grace period */
+>         zswap_pool_destroy(pool);
+>  }
+>
+> @@ -397,9 +468,9 @@ static void __zswap_pool_release_rcu(struct rcu_head =
+*head)
+>
+>         /*
+>          * The grace period has elapsed, so no RCU reader can still obser=
+ve the
+> -        * pool through the list it was removed from in __zswap_pool_empt=
+y().
+> -        * Hand off to a worker for the sleepable teardown, since this ca=
+llback
+> -        * runs in softirq context.
+> +        * pool through the array slot cleared in __zswap_pool_empty().  =
+Hand off
+> +        * to a worker for the sleepable teardown, since this callback ru=
+ns in
+> +        * softirq context.
+>          */
+>         INIT_WORK(&pool->release_work, __zswap_pool_release);
+>         schedule_work(&pool->release_work);
+> @@ -417,7 +488,13 @@ static void __zswap_pool_empty(struct percpu_ref *re=
+f)
+>
+>         WARN_ON(pool =3D=3D zswap_pool_current());
+>
+> -       list_del_rcu(&pool->list);
+> +       /*
+> +        * Clear the slot before retiring the pool so new readers cannot =
+see
+> +        * it; the call_rcu() below drains readers that already observed =
+it.
+> +        * The slot may still hold the ZSWAP_SLOT_RESERVED placeholder if=
+ the
+> +        * pool is torn down before it was ever published as current.
+> +        */
+
+I think this comment is unnecessary.
+
+> +       rcu_assign_pointer(zswap_pools[pool->idx], NULL);
+>
+>         call_rcu(&pool->rcu_head, __zswap_pool_release_rcu);
+>
+> @@ -447,7 +524,8 @@ static struct zswap_pool *__zswap_pool_current(void)
+>  {
+>         struct zswap_pool *pool;
+>
+> -       pool =3D list_first_or_null_rcu(&zswap_pools, typeof(*pool), list=
+);
+> +       pool =3D rcu_dereference_check(zswap_current_pool,
+> +                                    lockdep_is_held(&zswap_pools_lock));
+>         WARN_ONCE(!pool && zswap_has_pool,
+>                   "%s: no page storage pool!\n", __func__);
+>
+> @@ -480,11 +558,15 @@ static struct zswap_pool *zswap_pool_current_get(vo=
+id)
+>  static struct zswap_pool *zswap_pool_find_get(char *compressor)
+>  {
+>         struct zswap_pool *pool;
+> +       int i;
+>
+>         assert_spin_locked(&zswap_pools_lock);
+
+Let's drop the assertion here as well since we're adding a lockdep check be=
+low.
+
+>
+> -       list_for_each_entry_rcu(pool, &zswap_pools, list) {
+> -               if (strcmp(pool->tfm_name, compressor))
+> +       for (i =3D ZSWAP_FIRST_POOL_SLOT; i < ZSWAP_MAX_POOLS; i++) {
+> +               pool =3D rcu_dereference_protected(zswap_pools[i],
+> +                                                lockdep_is_held(&zswap_p=
+ools_lock));
+
+I would align the second parameter with the first one if it stays
+below 100 characters.
+
+> +               if (!zswap_slot_is_pool(pool) ||
+> +                   strcmp(pool->tfm_name, compressor))
+>                         continue;
+>                 /* if we can't get it, it's about to be destroyed */
+>                 if (!zswap_pool_tryget(pool))
+> @@ -509,10 +591,14 @@ unsigned long zswap_total_pages(void)
+>  {
+>         struct zswap_pool *pool;
+>         unsigned long total =3D 0;
+> +       int i;
+>
+>         rcu_read_lock();
+> -       list_for_each_entry_rcu(pool, &zswap_pools, list)
+> -               total +=3D zs_get_total_pages(pool->zs_pool);
+> +       for (i =3D ZSWAP_FIRST_POOL_SLOT; i < ZSWAP_MAX_POOLS; i++) {
+> +               pool =3D rcu_dereference(zswap_pools[i]);
+> +               if (zswap_slot_is_pool(pool))
+> +                       total +=3D zs_get_total_pages(pool->zs_pool);
+> +       }
+>         rcu_read_unlock();
+>
+>         return total;
+> @@ -574,7 +660,6 @@ static int zswap_compressor_param_set(const char *val=
+, const struct kernel_param
+>         if (pool) {
+>                 zswap_pool_debug("using existing", pool);
+>                 WARN_ON(pool =3D=3D zswap_pool_current());
+> -               list_del_rcu(&pool->list);
+>         }
+>
+>         spin_unlock_bh(&zswap_pools_lock);
+> @@ -601,16 +686,16 @@ static int zswap_compressor_param_set(const char *v=
+al, const struct kernel_param
+>         spin_lock_bh(&zswap_pools_lock);
+>
+>         if (!ret) {
+> +               /*
+> +                * Remember the old current, then publish the new pool in=
+to its
+> +                * slot before making it current: array walkers must neve=
+r see
+> +                * the current pool as a reserved (not-yet-ready) slot.
+> +                */
+
+This doesn't really explain why. Also, does ordering really matter
+with the lock held?
+
+>                 put_pool =3D zswap_pool_current();
+> -               list_add_rcu(&pool->list, &zswap_pools);
+> +               zswap_pool_publish_slot(pool);
+> +               rcu_assign_pointer(zswap_current_pool, pool);
+>                 zswap_has_pool =3D true;
+>         } else if (pool) {
+> -               /*
+> -                * Add the possibly pre-existing pool to the end of the p=
+ools
+> -                * list; if it's new (and empty) then it'll be removed an=
+d
+> -                * destroyed by the put after we drop the lock
+> -                */
+> -               list_add_tail_rcu(&pool->list, &zswap_pools);
+>                 put_pool =3D pool;
+>         }
+>
+> @@ -1815,7 +1900,10 @@ static int zswap_setup(void)
+>         pool =3D __zswap_pool_create_fallback();
+>         if (pool) {
+>                 pr_info("loaded using pool %s\n", pool->tfm_name);
+> -               list_add(&pool->list, &zswap_pools);
+> +               spin_lock_bh(&zswap_pools_lock);
+> +               zswap_pool_publish_slot(pool);
+> +               rcu_assign_pointer(zswap_current_pool, pool);
+> +               spin_unlock_bh(&zswap_pools_lock);
+
+Is this a pre-existing bug, or why do we need to hold the lock here now?
+
+>                 zswap_has_pool =3D true;
+>                 static_branch_enable(&zswap_ever_enabled);
+>         } else {
+>
+> --
+> 2.43.0
+>
 
