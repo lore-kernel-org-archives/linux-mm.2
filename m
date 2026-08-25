@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C9B1C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 11:03:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9F99C61DBE
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 11:08:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 725946B008A; Tue, 25 Aug 2026 07:03:33 -0400 (EDT)
+	id DE6366B00A4; Tue, 25 Aug 2026 07:08:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FF246B008C; Tue, 25 Aug 2026 07:03:33 -0400 (EDT)
+	id D97976B00A5; Tue, 25 Aug 2026 07:08:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ED686B0099; Tue, 25 Aug 2026 07:03:33 -0400 (EDT)
+	id C850C6B00A7; Tue, 25 Aug 2026 07:08:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D6BD6B008A
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:03:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D20941203EF
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:03:32 +0000 (UTC)
-X-FDA: 85139505864.21.E07F8BF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 07CF34000E
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:03:30 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rie4uKYq;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787655811;
-	b=APx6gytNN+mAiM49Y14n91fMTGBgX21dh8y7pJ6Urb+yRzQ8QO3dqBQo9LU05HKlxku9IF
-	yZCDX7eEc4nS8ireSMXdy14tJum7AnfpAS91hTHHknwbRnhzmF1EMBoYfV/GdvbhhAdm2k
-	iorDI0fqZJnUBGLPMRvp41cJuVraVpU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rie4uKYq;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A04AB6B00A4
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:08:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 26858403AB
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:08:46 +0000 (UTC)
+X-FDA: 85139519052.03.62A1B8C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 70F9012000E
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:08:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fr1kC5O7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787655811;
+	s=arc-20220608; t=1787656124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yUsVvGNTJJ8vH85zI0BxP/tUgJdg6oFjKiu2qgiDR5A=;
-	b=0isW6hu8AMI54s/Ww2SB/lVIBx/3DSHQbFpaQUVdGid20plhftez1d1mlbK8IRFzQmx+vL
-	R60ZObkOObd141PqR23NPLtS/4OP8EWIk/UFmqnNhytPZ/ukJkJOy+T0dRnDtjg3XW0YM5
-	M5cPyi0izP2380cMpJQzygQpD8AFwOE=
+	bh=FbafY2VwTbcRXjCw+IW3Zrp5SUgLFheVDeMNko0UlpE=;
+	b=SSkdajDy6/rePExM+MzoNmS9pMFLEcpAT8Kar0eK5uAWjGju0Y1BQULUm/SZccMyxoLXhm
+	8KcuMsv45X7wR/br/t50x6wAbaVNkZ6PQOuXr9aEl60uBiorkDpLQaiZu+ZGkTRFsGBkgH
+	VSv3pN+bwGXRSTsVbCyI63oGt0O7mb0=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fr1kC5O7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787656124;
+	b=xh90hak7uVUmQs7bQPwr+N/xI8SVYdJ46QfeZdsG+ukCO2J7uGs0ThHAg+DB3yXreo1PZp
+	g+8bmNwRz+1xI+z0XRf/B0hApNgjcMKUcEyo6iMBviXpVWFiuV6Ts+zrCWorVVXL/rjj35
+	Zj6dj8Hr90mCR4Izs6r5cvRHkYdrHj4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 269E04398E;
-	Tue, 25 Aug 2026 11:03:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DE31F00A3A;
-	Tue, 25 Aug 2026 11:03:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AE4C06011F;
+	Tue, 25 Aug 2026 11:08:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA13E1F000E9;
+	Tue, 25 Aug 2026 11:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787655810;
-	bh=yUsVvGNTJJ8vH85zI0BxP/tUgJdg6oFjKiu2qgiDR5A=;
+	s=k20260515; t=1787656123;
+	bh=FbafY2VwTbcRXjCw+IW3Zrp5SUgLFheVDeMNko0UlpE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Rie4uKYqZ3RsZiSuS8KHd6OsLQbEb26a7jOWXxg6ztJriu3gn2Nm1HrN4k75Z6mfx
-	 1r31QD12FFVhPwnZYL9mJOdoWWWRbv83kTM1nMhxT+HI69EzDmXaUGkEsayefG6fiA
-	 N5/+NcVe9R0aI/fFx5bD8Ib3fQKRBNNqP+VfEZ1Ta5LIaL4E6FuFuAX0EIrQIP5T7c
-	 GJojZ4s8JYzlMDYimOtWsvZN2LICCzFO54+xaafhPlt+8TEpXIVnRxZ1eNFz5kwKni
-	 LZ7L7CCiLGFswfUwhbfURfk1Tob6CVkR3m365hJSmGj8xqkYV4WxkFG6PmfvnGCNex
-	 h3Rj0t/klzmuQ==
-Message-ID: <b993b8b3-351c-4d2e-9bd9-12c622f427ff@kernel.org>
-Date: Tue, 25 Aug 2026 13:03:21 +0200
+	b=fr1kC5O7u52AQcmSM8hOLx4OrGvSW/CTEZ4sSs4aQLuFyajHVZd5CanV9rVXwvLBG
+	 /f+Be3jCiJMPtdXBHISfXmye4h9n6BfxvGSRpUdACgs1qH8qWAt0H4vuVyFhLXnkkF
+	 YUzDKaF6uHIgV8ZQ7TypSbFNfk4bkaUGfAL8dFtVWHGzSbCEzfhVdkjTkk/Mv2N/vC
+	 2MEfhOGTBU8nWaIiXZoJI17LzByAmA3u8ru6tjVKURuJN2niwhdC9lQbjPX1KTEL7d
+	 M72dcifVPZV3eSqEIVHwZBnbiq22TrfILYJNlhNM9W7goD1ZyTwSkcwaDgY0K6agxj
+	 YYoaITxLum8eQ==
+Message-ID: <1bd9eac9-e078-42c2-b12c-bd8b92efeae5@kernel.org>
+Date: Tue, 25 Aug 2026 13:08:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: check strdup() and fix buf leak in
- parse_test_type()
-To: Anshuman Tewari <anshumantewari123@gmail.com>
+Subject: Re: [PATCH 5/6] userfaultfd: decouple fault reason from VMA flags
+To: Mike Rapoport <rppt@kernel.org>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
+ Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
  Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260821114416.12255-1-anshumantewari123@gmail.com>
- <7bb2d581-924e-4a59-9955-b8afa2b51268@kernel.org>
- <CAJqi8kJf9EzfZWBo=1KpEzGiq+vGRz0J0mN+-NXAjrtq9HDrMg@mail.gmail.com>
- <e7c339b8-b936-40c7-b121-1a4c14838dd9@kernel.org>
- <CAJqi8kKaNsxBM86Hg4W09gLo2rj0+kc9dAvps48jmQCshUkxqQ@mail.gmail.com>
+ Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
+ <aoxm4jUrmL1eQlCJ@gremlin> <ao1waln1lklfk8th@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAJqi8kKaNsxBM86Hg4W09gLo2rj0+kc9dAvps48jmQCshUkxqQ@mail.gmail.com>
+In-Reply-To: <ao1waln1lklfk8th@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1ua3x78srx7waepepfchgi7heum7m9kq
+X-Rspamd-Queue-Id: 70F9012000E
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 07CF34000E
-X-Stat-Signature: g3cb1zcf1jfab337aeexxqrp6w8yxmck
-X-HE-Tag: 1787655810-60381
-X-HE-Meta: U2FsdGVkX18b8RZem5xHyX22SDK+ow7OepwlNwklUEsYUqmxO4QdYmodqFQC1H85wU0AyQHfYsSaxYatBsjzdm6UcK4L9AJDy+g8OG5me6OmpkydRWwM/h3fjRacxHTWvs9+MDzREZqPv0pOPlYyDhzWnRzEcwvFaeA4BScJjy6scTjh4xJGuDDzarcFyDDlcX9EXPeJ8tm+A11VtKkTmCK4bGxcnQNHSJ02i9DW5pEwmalFA2TOmyeHENeawCCkp0r504nunLk9DBh0vPi2GmSV6vOPyi7FbZHkb2WdxAbYlnGWd1aczvD0BiWRyFUmikmfxC3Ouu3gNc1aDrJNdnRW/9WnD2U8Pw8Axi7/YB83fkEDz5mn1sbY9091+lHGGCAmN7bQAg2FdHxrcinF5kAL2LMpu7rlczmUW37xGLzgNO59fU2CAfQcZ09xJq8HaJcQkRsbWg85+fEniQ6VkC75CrNJCpxQsDiVyKlXIAwUMLNT3RdxPYWZtRvP1PQVRBZnWWa6dSINZM5M8siV88yMs6lfC8NjyE4AIZKxXtLCn47S8++mc+9WiHHLgJDs3OB9LIairtiRT7iNwXVsm6EnwbEYfuJ7Um4D9i5E6ppwCMQFw9KEKKuDWUMFVADXIPN3K2PkvKNQ3wXNnMmII1t0+QxNBb5Z5ohE/V2p7X6rAw14OwEaUwE+vhF8q/S9FWmti5MdG5uaDtuU8ZWB3m2d/DSNsYVADhggkd1La+rtZplQSUtuQkiM85qZubtIodPFpFnH4+aabgkNJwpUCUYhN2Hyrmslaf5GWRcsFpUt6oAdIWOXboYbRSqyK/FH9yLVt6X5it52g4VketzRn/ZLubtcb0rK7xaiudMFFcpBXwuyaL6TzJPLuY9orpFC3rJEwC1628HBv+lg8QG/mFnq+/j5KKDkUGQh4j7tstwJUY5UnlMfOPJXAyAI+YoPzYoM6SwablWnn+umYxR
- JS0qo4gw
- 8OnFUOoCbhlDysSSkYAzjP7QiWFPFlhM4wO1PzeoUXyEkzTobZKpG9M3q/LTEjQZ2bXquhTloVJEYMGWnKhGkZ+Uu10gkrLYCYcYo1ssQASw9gfAeXAfRKyZObc+vr39MsrCzeOHZz23kWpXK6BLtrgJyEhP7XuKK5TdLdIOj5ykVDHgfmVKdeYzIc0WBNcN8+oPHywmOqMT9u9NQopbGjzC7DddXHpQFVLHo4Tnm0nAL6V+H3KTjuhqHXKNI/9viPJq7zLkGZhNxYsRXcam9H5N3urhiK4tqWz9motGskpxUnr1MX+bfY3PPrf3k+PrFfQe9ieanREHYGjGPfkaRWCFnNkf390zlG+XPLki79L0f3yAubTtSlm43VjSwRzpB8qrd
+X-HE-Tag: 1787656124-673641
+X-HE-Meta: U2FsdGVkX19TbN3MSHcZ1MsUcOc/vH8aBjtymj0m5GaDKP1lsRpFV1yBMx32IaZTExAMAvKW4fEgTZGSeq+yhX995nxSVfmbVwOHfoJ03KF7nV1I9EwKxv/ZPg6a6xrlcHd7/QsRrrcvbmR7oDAvxvxNZ91Rkc3KCNfBs8eSKoDIy6ywzBWk8iD28VsLQdtBhxbihUB76ZqY64x4rT4u8vdgIKPCTK/QvjLGmCBnE0ZRsGGJiJ89DKrVc9CVDknqRQpCdiC/6IVPbuIBfPJzPCugvBZM1aE6H4k2hZHJ62jtVdi+4pQucuc3wPcQjWzojc4jpStC4VFsgP1rVSGtumjMT0YXkzbViaHNyOM06hVgITsjdA0xdmcfhSJBeeh/qGRol2rJKrBmdaaWGNJUH9XOTzPrq2DswE2eILhle7Ah00G6l7KzNA0EN7Mqr3oTL+GUJDi5VGc5qFa1KT2E/jbpms3KWFpzQwC8/BV5MjYl9Uo8aUZ4sRfxee8yhThctDpJfvy9c3BTR03RiIK4PEVUoXflzDWPVO8dnwm3FN9otO8zt8l0Lfkh1MWuq6WwmGYx60CT+IFMhaV6X3vWjbiL5z+GGPh1xCcBaKgQWr2935BsZ/vL2s54NuuX8Lf81Fnn22f3jZJ8IWn8jwt15SS7PfHohmaEbTvLYtdWY6Vsq2/Uu6auhSRZUul0H1XR4/EuBd14OJ7ZjAP38CNR4moJestx6XygF68Vq6p8yiOzt00543t3O/ibL+asZ+4qEaaczr1uHzTPZTylnSHqen6pbVRMrH67NnJbv/uRLndE5G+udZnlVYYlXNC7yk/9rtqEcuOlbR4r5nzNet05F2iIclIzqLav6Snpsc0G3yP5FqarghUia1CrMJOU61sQtwAa/2XI0wyt0Ix20X8h/hahbywkH4wc/fvcjBnhP+7NbFpvgnjozeIYCtuIjx+TyBOHFxCc9foizuAYt24
+ +l44qQA7
+ n5Q6B05b+R5iUAb7hFAPm8O+RsPNLgojm2ZmUmKvi6ZO3HNxyYACR9De8TEuaYqu3iUdOsCjgPChYwo+dc52NFQTcR3juw8AT4nGSxVrBBYkuN+zpvzizNyMo/q5LzEv4dhQ1bY7F/2qfQAelcGqXR7TEUztucecAevS6zYBJy6F0GUb8u0xnGLKqJaKFRH2hQVX6ex6Pz4j01wa1VYJ46ARlNNumyICPOQU+SWZ9DqXTwdzBdqLm8mI/MIhQZptx6Zz/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,29 +155,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/21/26 22:14, Anshuman Tewari wrote:
-> Sounds good, no objection from me — happy to go with your version.
+
+>>> @@ -2793,14 +2793,14 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+>>>  	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
+>>>  	 * resolve the fault.
+>>>  	 */
+>>> -	if (!pte_write(ptent) && (reason & VM_UFFD_WP))
+>>> +	if (!pte_write(ptent) && (reason & USERFAULT_WP))
+>>
+>> I wonder if you could actually
+>>
+>> You do this quite a lot and they read a bit horribly with the && and & on the
+>> same sight-line. With the changes to the enum proposed above you could do:
+>>
+>> 	if (!pte_write(ptent) && test_bit(reason, USERFAULT_WP_BIT))
 > 
-> One small ask: since this fixes the issue from my original patch,
-> could you add a Reported-by: Anshuman Tewari
-> <anshumantewari123@gmail.com> when you post/apply it?
+> I find && and & perfectly readable and adding _BIT defines looks really
+> excessive to me.
 
-We typically use Reported-by: for actual bugs and must accompany it with a
-Closes: link. That doesn't quite apply here because this isn't really
-something that would ever trigger and really needs fixing. It's
-
-Suggested-by or Debugged-by also don't apply here.
-
-I will add
-
-"
-This patch is inspired by previous work from Anshuman Tewari [1].
-    
-Link: https://lore.kernel.org/r/20260821114416.12255-1-anshumantewari123@gmail.com [1]
-"
-
-If you want you can send your Reviewed-by or Tested-by tags once
-I send it out officially.
+Yeah, that looks alright to me as well.
 
 -- 
 Cheers,
