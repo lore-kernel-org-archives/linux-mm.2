@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD26C5DF81
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B53DFC5DF9C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 02:28:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F6E76B00AB; Mon, 24 Aug 2026 22:28:13 -0400 (EDT)
+	id CB2176B00AC; Mon, 24 Aug 2026 22:28:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CE3D6B00AC; Mon, 24 Aug 2026 22:28:13 -0400 (EDT)
+	id C63456B00AD; Mon, 24 Aug 2026 22:28:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E4506B00AD; Mon, 24 Aug 2026 22:28:13 -0400 (EDT)
+	id B78DF6B00AE; Mon, 24 Aug 2026 22:28:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AD9C6B00AB
-	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:28:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1739A029F
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:28:12 +0000 (UTC)
-X-FDA: 85138207224.10.BD80392
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B9226B00AC
+	for <linux-mm@kvack.org>; Mon, 24 Aug 2026 22:28:19 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BAC51A01D8
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:28:19 +0000 (UTC)
+X-FDA: 85138207518.15.C6E5545
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AFF7B80003
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:28:10 +0000 (UTC)
+	by imf02.hostedemail.com (Postfix) with ESMTP id DBCAC80003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 02:28:16 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GwB7NaZZ;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EcsPSqjd;
 	spf=pass (imf02.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787624890;
-	b=LqjhsFR/pMCXi1jK0kTzTJONiBwK6MeStTenaDikT3NV/eaJNtjsc9G8t421C0b8YVIr7f
-	DaXkxr+KfhHTrmQQP0VJ6LW9FUx3bl+fMYyWJ2WRVL3qyhqk2oitMTxVLHTNKtK0vxAOAW
-	S0N7LJekv2nPDEG+hpeOEBh3Rg9S0j8=
+	t=1787624897;
+	b=odvvu0ynM1hVMELZIYqEW1dxcjiEVkzam94d6wi574hLf4W79vdOjWDr6vST0YoQ3FdJ2u
+	xRnKCzwezQbcnmsZQd/SdmHdzg/25RhJxujzHre8+3P+1ZM2ljq79s7+rObWRUOjMvRg0u
+	S9SQP0wbyTfHMgF1at+L8K+3HnI33e8=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GwB7NaZZ;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EcsPSqjd;
 	spf=pass (imf02.hostedemail.com: domain of fabio.m.de.francesco@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=fabio.m.de.francesco@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787624890;
+	s=arc-20220608; t=1787624897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lxwt5S9a8aHbU9JG+LPHXLs7p3zY9QoQR657xNSuzIk=;
-	b=rI26eE41UQIAhpyBrLkWNISpj5PagbP4r3T/l2Aaus2GpjZp5r0+hSP1A4X93qOhpznQJ5
-	kSIF0wzZNFQfpS+nssFJUFsZfO0YLNuBxYOaMiJF8p5yb05As9Hj21utEdUmw+3uu7x49m
-	wlLU8evB/zlEhJU9JjszlSCslEpRAZc=
+	bh=eFoGkw61yrTpvSi9Hrtm/h8z3f6hMLs6W1Ix5GODQJU=;
+	b=7lJbqdq8PdBCsRmOCWfG9TPv3kSrJ0wNqFsob1Hb1S45BTH3xw41iTHXWfcSJlCBjSTLoC
+	oVktK7miVNbIDMF6zYksUZkt6TuBW97Rnuway2EhBNb68G+d2lFY6r+Ykxh6lKJyne6eBr
+	VhdYBtdlMQ4UDYVngTjZcHFhscmr1g4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787624890; x=1819160890;
+  t=1787624897; x=1819160897;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FUdOrKAllFyNGlbt+7H02DeS9Es+Uvq5pCkFtZCzCVY=;
-  b=GwB7NaZZRylVPK8y08q6A7VpGV3ap13v/f/Y+rQkeUcIkhE3gSos6KNg
-   pbNEwympOlH/i5cOUBv3YWD7eRSH7QcafZmzoItX2dEcAqm15oQgMUAIw
-   PiVRSYpi/1tWO74xmKiFvp6E0WWAgGGV76vKpZ6TODWDxyejaeCqYxqss
-   gKW6guIkCsehvN0ztif0nb5S4IXrYV7FeWt5Y9zpj8QHp9kE/M1/AdR52
-   j4oq4dwJ+OXVN6rWiky215Eg8atNmpxHnlMGLFaZfRb8mA/t6K1z75oKk
-   LGsNGvvfZNl2Xx3Iw3hDE94Bj5YwRj8O6nY3EnnR3dg/6sz0ufKt+qpR1
-   Q==;
-X-CSE-ConnectionGUID: RI3S+nEWRW+6BegRqvnOvg==
-X-CSE-MsgGUID: HvHnRkmdSQ6umGYenaBfWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98761223"
+  bh=p35ooKxDDEqYJs00+ywe+gwGYag0qhbr8UgYGTT8yA4=;
+  b=EcsPSqjdcQzMIwzL8QuxbfHx6N9Ii29yYHQlqe1aQ19Ls0pDnqSIm2Yo
+   ptVwERD7ScE0GRAxoeAJ1cYSqCv5Rz1w2a3qXOUdnxLqrN6aSdJisFn48
+   fog6XSIZbjTrB2s4ojmdjZtmb4jPF4fUSNWNvDwnSs9eJN17JpWX7yeJj
+   p19dJsfi85IPHOjqZlsgwko5J13G793JR+28OCRqh6Kb5Nd9P5i5UyRBm
+   FRjXsDeCpB65FzDgWo/y0HxzpbE8v84TI4cwWfcjmH1XfRoEUBnqTMfnz
+   6EkWAfnTlhQVHxXErLfHZOujR/U8ynKlwCMi1OSzVTMhVxcq2ZHfLPV/w
+   g==;
+X-CSE-ConnectionGUID: IxYRYC0DSSKkGJI9FmuK4Q==
+X-CSE-MsgGUID: 4+EOrZX6QJG7OdFNvYofzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="98761238"
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="98761223"
+   d="scan'208";a="98761238"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:28:09 -0700
-X-CSE-ConnectionGUID: FDcQU3FlQ1CYUmjpJn2HKA==
-X-CSE-MsgGUID: jZ8XDkaASU+FbuakNuw/nw==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:28:16 -0700
+X-CSE-ConnectionGUID: KQlGpQmQRWef0MiKW/Zq2g==
+X-CSE-MsgGUID: n6NeHPHmT6KWhioKt0tOhQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="265390142"
+   d="scan'208";a="265390156"
 Received: from fdefranc-mobl3.igk.intel.com ([172.28.182.157])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:28:01 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 19:28:09 -0700
 From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
 To: linux-cxl@vger.kernel.org
 Cc: David Hildenbrand <david@kernel.org>,
@@ -105,9 +105,9 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-pci@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: [PATCH v2 12/13] PCI/CXL: Add a sysfs entry to unmask SBR
-Date: Tue, 25 Aug 2026 04:26:27 +0200
-Message-ID: <20260825022628.3651434-13-fabio.m.de.francesco@linux.intel.com>
+Subject: [PATCH v2 13/13] PCI/CXL: Refuse an SBR of a CXL DPort unless authorized
+Date: Tue, 25 Aug 2026 04:26:28 +0200
+Message-ID: <20260825022628.3651434-14-fabio.m.de.francesco@linux.intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
 References: <20260825022628.3651434-1-fabio.m.de.francesco@linux.intel.com>
@@ -115,12 +115,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AFF7B80003
-X-Stat-Signature: 3mmthkau67xi5rhhs34qs85pzz6npu9z
-X-HE-Tag: 1787624890-913836
-X-HE-Meta: U2FsdGVkX18jfDQEWIMoZ8eOVjc1ae6C1SomSS2D3ZPUB2AwDxHzGLsbkIMrrytgkgh1zosxXIQ80fjz4g7MIOrl4QEG/mo4q/201MKt5HBr5epS+yejAk2VVPb9qBW8qbeLkaiDBxMoUw85DjjBKW6pQeOyX6V7zenfejvXn+bI54/8VwJtIahesclkLGDmI14p46a7fguJEJ9NCxGqVq4TOHGaiC3Kmw2lVwlBdDZ3km2ZaQ4syepfd7ZLZ1bOkfcHwNdZPiA9pjO9cu/y+A3yJ6lGLGYAPFIK07Y1D2X9MnUR9BVfVF8+Oy36x00vh1fp2ZH6qRyXzgccILQmLn/LwAcYxn8TEPtTQnq0zNH8ZWDKQIeCjs7RBjd7PeFH//M1dFT4jbsQJCcugNQcEV8J59pSTyfFK89WwnzHhoavx+085lRl+PB4WGCfRfrngyW0agb0ZvZvr+UoELXnvH6WxO7F3JmmmDgTvSepGX6ZlCwiPow+EcZiY/hZQmKi6bMADvITwvapOFSpw18uM1bSmsAgGrggo02FGXmJRiJQ297aQAezbxWcizSIV3ercxdDQZpyJ583NGZejhTjuoFzURT+KRYoHyhDDtuPnBc7TydsB7VjLL/X90J1ENYrShf2TRTNn0sgrirpALgIDmKB5tagG2BOAsmebFel8A7LILUHwzrkAAolYLpmdAt0boyTn4L+ggQPpVa+ydQiKZDgAZhpi1AYndpYMg+vA27crmYMNu7yzHh/rr7+ou1f3GgD2f70l/8IfMyUTNkHiXaEcB+smyOLSTYy0LhbYHM6V0yBezmeKunM08Yp/1rfy0LXT7hKDSLO5FD7Dmj/akIwfltCqk4tx4W+Ee1bsnNwFiWkQXH99DFumAKrkvAjMOUaFIKYZS4j1sJEpCzb2hjvXcpuf8cWyLslfyNymClwsas9heeuvuUHbaJmLyeYDR33ngm74zive6zcNWk
- kJoWviLf
- Kf+zbQtwxIfGcNvb6hbKixL9CcXLxCGgqXjrQDHE9g8lXc5poby8RwZbAg+eQ7RIfhk5HpQu5K+tyTjbNbyKjMRar4NVLDWhJ1B4Jram8zq5tNX7y4ld0B+PQePSCr1xkYA09fxFS/XlwWSLQjRR9/6POwRg7XokZge6s852xk3pdFOLtuvITS6Cr0I+hQBZd4GJF08DCobYoK7M=
+X-Rspamd-Queue-Id: DBCAC80003
+X-Stat-Signature: suptxuq8655hd4ony9tchma93n3krcio
+X-HE-Tag: 1787624896-52284
+X-HE-Meta: U2FsdGVkX18bpSLqWIv/Ew5Tfzg1QesQX+qaj2cQbqvM3r2xjPOu4FJkXOkGe9Jwcro90CZjl5u85UL9QQ8uSwvAPYvWj10UUTCwV4xv2ZEw8tm28Pu7z4OhKxAJdD2PGBnhaPKHbp0UvS/uICJwn0Lrzxh6P/dsZtjcmI7iFdHCvCIfnyqngVK9w+9IBggCpF2Y+1fijrMJCO1+SCbTdocv+m+nyD7ejIZ0EjXzo/tb3JP0TVUm04KmrlyR727RULR12gYd7cLAZCMycehAU1jZs2keSERiE4aVl/XFFdOKX3eAjbgGpjVzcR7JrSjqiun9XMdSRga/YBYhJ8WoENvatUEO504xsU5TWPAgLG7uVb4c0Gch46AtL/c0MnZSTDCFBKrQKgMQW8zJiEoxNy3ZiSdtpXldw4YSt0E89GKGfytW0y89pC2Tv/ZQM8lx1TeOVSuoKcVURNi5ZlDU077GkQ5jFKCz9s1bvn21EgIw1DYJKQziQ/h96NZDQmTtYIB9v6GoZkZb+K7ElSE16QqcpTVBfla3kQI6U2R9LRq8Skv33JX86UaqueXlC0Vh3m12pA1/pGFJZ+cKUQPksIDMl07JWOb74o25nTkWz8r/MJl2SyLqxZqQqPMP7Hot2KPgyXo0WFJhrcDtuILGYd/QjMvBDnamF/jBtMyzwPoV2dkOr89kKpzfL0uRMzgG5KapDuiTtIaSNu+CAA0TJEZX/uDq3Ji0AV+fBJ9kyiU9LjvyKsNERmKl9nGJ6286fmoeamleW5aQl3oNv1bl7YsksOhfXulLIrPUvndy7ugBlfkkLOaZCaZd6omjLEvVeWugsSQx2CxxBBLcFybKoWk5OVGlY7K0CSQLSh4p9NecE/9JEM/sijUSzqBwVO2d95AoEWkxlJyGPzsCpqAThPlPUQGbuQyJJtfR/C82vqaRrwCljz2ZYfjoUmkngctIPJhSblrZ2Jo3GHSKcCp
+ 4EK+oozN
+ 1dmRNKUc2s/7K6p3jjB1QaFKJv1wbvq7gLWS4IzxxERl3ckqDnL7d2vj0lqwwhA1nkY0gtJAWsS3jIs82hFIexeXoLwOrNw865LLhNJ7fb30fMNehF4N+P7XqDkyLae2Sd9/fseZgyjufPJAaiO0kn3+Y61KnofX1ySPmbDFIJAR/1yLQDfjzS8f2+sNfvPzCJSEymuX4QNKZSLQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,117 +128,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A Secondary Bus Reset of a CXL Downstream Port only reaches the component
-below it when the Port's Unmask SBR bit is set. CXL r4.0 sec 8.1.5.2
-Table 8-32: "When cleared to 0 (default), the SBR bit in this Port's
-Bridge Control register has no effect." A kernel that unmasks it on its own initiative overrules
-that for every path reaching pci_bridge_secondary_bus_reset() SBR.
+CXL r4.0 sec 8.1.5.2 Table 8-32 describes a bit that makes the SBR bit
+in Bridge Control take effect at all, so a Port left at the firmware
+default is one the reset must not silently unmask.
 
-Add a cxl_unmask_sbr attribute beside reset_subordinate in the Port's
-sysfs directory to allow kernel triggered SBR of CXL DPorts.
+Add cxl_sbr_allowed() to answer if SBR is allowed: check if a Port whose
+Unmask SBR is already set needs no consent, as it happens with cxl_bus
+reset.
 
 Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 ---
- Documentation/ABI/testing/sysfs-bus-pci | 16 +++++++++++++
- drivers/pci/pci-sysfs.c                 | 31 +++++++++++++++++++++++++
- include/linux/pci.h                     |  1 +
- 3 files changed, 48 insertions(+)
+ drivers/pci/pci.c | 26 ++++++++++++++++++++++++++
+ drivers/pci/pci.h |  1 +
+ 2 files changed, 27 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
-index b767db2c52cb..7b0314da6f4d 100644
---- a/Documentation/ABI/testing/sysfs-bus-pci
-+++ b/Documentation/ABI/testing/sysfs-bus-pci
-@@ -174,6 +174,22 @@ Description:
- 		similiar to writing 1 to their individual "reset" file, so use
- 		with caution.
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index eedd516f8484..08873ea3957b 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4881,6 +4881,11 @@ static int cxl_sbr_prepare(struct pci_dev *bridge, u16 dvsec,
+ {
+ 	int rc;
  
-+What:		/sys/bus/pci/devices/.../cxl_unmask_sbr
-+Date:		August 2026
-+Contact:	linux-pci@vger.kernel.org
-+Description:
-+		This is visible only for a CXL Downstream Port, that is a Root
-+		Port or a Downstream Switch Port that publishes the CXL
-+		Extensions DVSEC for Ports.  Such a Port ignores the Secondary
-+		Bus Reset bit in its Bridge Control register unless its
-+		"Unmask SBR" bit is set, and system firmware leaves that bit
-+		clear by default.
++	if (action == CXL_SBR_OFFLINE_AND_UNBIND && !cxl_sbr_allowed(bridge)) {
++		pci_info(bridge, "SBR masked, write 1 to cxl_unmask_sbr to allow a bus reset\n");
++		return -ENOTTY;
++	}
 +
-+		Writing 1 allows the kernel to set "Unmask SBR" while it
-+		resets the Port's secondary bus, so that the reset reaches the
-+		component below the Port.  While this reads 0, a bus reset of
-+		the Port fails instead.
-+
- What:		/sys/bus/pci/devices/.../vpd
- Date:		February 2008
- Contact:	Ben Hutchings <bwh@kernel.org>
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index 5ec0b245a69b..ba1cae6ab4fa 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -573,6 +573,33 @@ static ssize_t reset_subordinate_store(struct device *dev,
- }
- static DEVICE_ATTR_WO(reset_subordinate);
- 
-+static ssize_t cxl_unmask_sbr_show(struct device *dev,
-+				   struct device_attribute *attr, char *buf)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+
-+	return sysfs_emit(buf, "%u\n", pdev->cxl_unmask_sbr);
-+}
-+
-+static ssize_t cxl_unmask_sbr_store(struct device *dev,
-+				    struct device_attribute *attr,
-+				    const char *buf, size_t count)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	unsigned long val;
-+
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	if (kstrtoul(buf, 0, &val) < 0)
-+		return -EINVAL;
-+
-+	pdev->cxl_unmask_sbr = !!val;
-+
-+	return count;
-+}
-+static DEVICE_ATTR_RW(cxl_unmask_sbr);
-+
- #if defined(CONFIG_PM) && defined(CONFIG_ACPI)
- static ssize_t d3cold_allowed_store(struct device *dev,
- 				    struct device_attribute *attr,
-@@ -650,6 +677,7 @@ static struct attribute *pci_bridge_attrs[] = {
- 	&dev_attr_subordinate_bus_number.attr,
- 	&dev_attr_secondary_bus_number.attr,
- 	&dev_attr_reset_subordinate.attr,
-+	&dev_attr_cxl_unmask_sbr.attr,
- 	NULL,
- };
- 
-@@ -1824,6 +1852,9 @@ static umode_t pci_bridge_attrs_are_visible(struct kobject *kobj,
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 
-+	if (a == &dev_attr_cxl_unmask_sbr.attr && !is_cxl_dport(pdev))
-+		return 0;
-+
- 	if (pci_is_bridge(pdev))
- 		return a->mode;
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 0d9832ce6f3d..bc0f652eff80 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -485,6 +485,7 @@ struct pci_dev {
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
- 	unsigned int	is_cxl:1;               /* Compute Express Link (CXL) */
-+	unsigned int	cxl_unmask_sbr:1;	/* SBR unmask allowed by user */
  	/*
- 	 * Devices marked being untrusted are the ones that can potentially
- 	 * execute DMA attacks and similar. They are typically connected
+ 	 * CXL_SBR_UNBIND: the link is already down, so offlining the regions'
+ 	 * memory would take the reads that page migration performs as a machine
+@@ -5138,6 +5143,27 @@ static bool cxl_sbr_masked(struct pci_dev *dev)
+ 	return true;
+ }
+ 
++/*
++ * cxl_sbr_allowed - whether an SBR of a CXL Downstream Port may go ahead
++ * @dev: Downstream Port to test
++ *
++ * Per CXL r4.0 sec 8.1.5.2 Table 8-32 the SBR bit in a CXL Port's Bridge
++ * Control register has no effect while the Port's Unmask SBR bit is clear, and
++ * sec 9.12.3 says System Firmware may leave it clear "to prevent CXL-unaware
++ * PCIe software from resetting the device and the link". A Port that already
++ * has it set needs no further permission; otherwise unmasking it takes the
++ * administrator's consent, given by writing 1 to the Port's cxl_unmask_sbr.
++ *
++ * Return: true if the reset paths may unmask and generate an SBR of @dev.
++ */
++bool cxl_sbr_allowed(struct pci_dev *dev)
++{
++	if (!cxl_port_dvsec(dev))
++		return false;
++
++	return dev->cxl_unmask_sbr || !cxl_sbr_masked(dev);
++}
++
+ static int pci_reset_bus_function(struct pci_dev *dev, bool probe)
+ {
+ 	struct pci_dev *bridge = pci_upstream_bridge(dev);
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index b6d873b077ed..bea05acc58f0 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -248,6 +248,7 @@ int __pci_bridge_secondary_bus_reset(struct pci_dev *dev,
+ 				     enum cxl_sbr_region_action action);
+ bool is_cxl_dport(struct pci_dev *dev);
+ u16 cxl_port_dvsec(struct pci_dev *dev);
++bool cxl_sbr_allowed(struct pci_dev *dev);
+ int pci_bus_error_reset(struct pci_dev *dev);
+ int pci_try_reset_bridge(struct pci_dev *bridge);
+ 
 -- 
 2.55.0
 
