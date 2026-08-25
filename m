@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF928C61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:50:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D25C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:52:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2F586B00CB; Tue, 25 Aug 2026 08:50:17 -0400 (EDT)
+	id E591F6B00E5; Tue, 25 Aug 2026 08:52:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDFC46B00CC; Tue, 25 Aug 2026 08:50:17 -0400 (EDT)
+	id E0A166B00E6; Tue, 25 Aug 2026 08:52:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF5F66B00D2; Tue, 25 Aug 2026 08:50:17 -0400 (EDT)
+	id D1FD46B00E7; Tue, 25 Aug 2026 08:52:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B24BA6B00CB
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:50:17 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 40FEBA03C3
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:50:17 +0000 (UTC)
-X-FDA: 85139774874.29.57135E8
-Received: from mta1.migadu.com (out-133.mta1.migadu.com [95.215.58.133])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 306DD100004
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:50:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=metmLUmX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.133 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B658A6B00E5
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:52:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D135C0334
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:52:22 +0000 (UTC)
+X-FDA: 85139780124.20.8B63B3E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A854EA0007
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:52:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQ5nvPxj;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787662340;
+	b=o98A5uGxx6bmxnRiwIKO8E4Sf5pwz+7LvLYHL/gZnGHndPbHNro3JZBuNSPtMoPMwDaNJc
+	4HJqW1WPJ+U/9b20ncsp5v8h3WFcJp95o0HIY8jyrB61JQmEjq7iGbn/oj/WRDpigQyZyY
+	SJb5JfyiRRnCepJdLJyowOzO6k6SjxU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQ5nvPxj;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787662215;
+	s=arc-20220608; t=1787662340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7afrx/UxksLEj5p1pUtRVkjaChuJj6IxaBDuc7wjrfw=;
-	b=ZvHpNaguojHZjvG5aFOL29vDyyZ/mAaq5x+GE/ab1X8uzuFA6ybmD6mQ7sIIId3TdUoIvm
-	+/Rfxlp6J7JwYSNxcrJ+zzQDeqBqE952oYxO6TsS2jCCIPod7pU/b8K0QGx9fsS8YPd6XV
-	5cWsdBZ9ESMubiVE55sqwbWFuix6pPU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=metmLUmX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.133 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787662215;
-	b=p8g7UXnc/X6v8nj9mMWm4Lj7XB3OSNEFeeiZr+QniigWULUPNu8+oSn4Ck0fIdIat6HR5g
-	IrddSKLok2DBbHxH56BuWy48pS2ofEEgnXYaJqTehSh1QsK2D407Ju44BigrWXcM/Gc1PL
-	HzwqqJeF6ztg2sdO12ygZSvdtBrnW94=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/JEQv7N3pOC5lUkF3ZduCEmcdMDk6jtj3oMONbUDQz0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787662213; v=1; x=1788267013;
- b=metmLUmXxsotmmWuB0aukH/5GAGZAqUu/8bVAhA4FEKJnVFcTTChKQ0UASX1IO4+yk5ZQ/4y
- nYZQI1zhZ4+JWk7xzY+ZDHDzZfYhsAXjSXL7Ed90vykIHlWE/oNXDY/tf8gEis9RCkSu92n+717
- HxJSrlzCUBK+CUYhPn/POc60=
-X-Envelope-To: linux-mm@kvack.org
-Received: from [10.254.116.35] (101.126.56.83)
-	by smtp.migadu.com with ESMTPS id 3f54450150a7adc7;
-	Tue, 25 Aug 2026 12:50:04 +0000
-X-Mizu-Trace-ID: 3f54450150a7adc7
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <babba0e1-a07e-4e98-a69b-cbba8f201c00@linux.dev>
-Date: Tue, 25 Aug 2026 20:49:45 +0800
+	bh=OxThQMjnWy7RIkTnG90BC8uPhJYun+rex4exdMBz3hg=;
+	b=3AH/cwDTmSQeZuKaANrFTPkNWRaP5Z6Xx/l0LDej3yXEh1ZjDTtsdcLhAEgogyVI8VWkFN
+	esmT4go9FG3VFNiqNISSnHmYEeh6dZZehGFXGAWOSR9TO3djxeJjSr9lWJVjxEhHNtOoek
+	K9uuOSS9ysVi55rLQ30ogFIScl12jZQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D9CD6011F;
+	Tue, 25 Aug 2026 12:52:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2401F00A3A;
+	Tue, 25 Aug 2026 12:52:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787662339;
+	bh=OxThQMjnWy7RIkTnG90BC8uPhJYun+rex4exdMBz3hg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LQ5nvPxjEUoH4UEpC+8nl9nHb7+a3spWZ1e6xJHVYG5VYUQp9ECoGZjRh0QYQAqEz
+	 QRmN5Nm/8IQRzcLqU4LyjAVB9DwnZgeuhVVgavbmtoryP8S6i08KZ6DkYIXDtvUA9B
+	 p2vF8vfnmvJBfadpy1P5t6y+27ZzOfS68O+M/jIsjQ+7Hi8Acc/qsPMOV4K7TQaT/I
+	 fB8VvYeiPpD+sCEDS33e49JgZMUJc8NGFpeVqKrQdLHlI6kBJWENW4v9zfm/dVKN92
+	 qM4w1G10t43d9PPWmNzGVinKbB4k173ze1dCaggrxVmzddSxHgoz6c4Q7wqDqXuRBR
+	 1FjM8KkoSdBeQ==
+Date: Tue, 25 Aug 2026 13:52:13 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Avi Weiss <thnkslprpt@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Soheil Hassas Yeganeh <soheil@google.com>, Arjun Roy <arjunroy@google.com>, 
+	Eric Dumazet <edumazet@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] mm: return -ENOMEM for page-table allocation
+ failure in insert_pages()
+Message-ID: <ao2P4Ey3fy9MxRUJ@gremlin>
+References: <cover.1785847364.git.thnkslprpt@gmail.com>
+ <a486e90cca91f443552b70ab2a18510bcc5dd8b6.1785847364.git.thnkslprpt@gmail.com>
+ <e4a7bffe-7d23-4d7b-8ec6-5b966419c615@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/17] mm/sparse: initialize memory sections earlier
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- "Liam R . Howlett" <liam@infradead.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>
-References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-10-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260825084608.47437-10-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 306DD100004
-X-Stat-Signature: jeipo9sk5ozqoh6uzftsycc3ri5oud1o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e4a7bffe-7d23-4d7b-8ec6-5b966419c615@kernel.org>
+X-Rspamd-Queue-Id: A854EA0007
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787662214-209450
-X-HE-Meta: U2FsdGVkX1945WfQ5AUIv+zBRBQQG3hBKXxLWr+3ThCmqoz7tvmg29Ux7xF6rVTqHzefk2XNck6Cfv4ICuu/X9SeUGtMG9FZHaleVdx0en67CyqIU9VsPXW3qKnyXDMessMegzvWLAxVxQbcF57VVkXTjySTCCgYNKD1ib249HWVojgBm6x6YDSx5auQcAwaxxAPOwrgoT9OOBaw8KgK+rnneuQCcMr114VN/UuQMPNBhOv6shNc+VtTBZjrxZ+zxbX88eUshcAcdq0yrY8BeLC4j2nM9c3xszKboJf/MhdZl1erlN9AuifXp6b5AgyqEHDqcUsHuFtoOmhYhq1Tvbw2jlNfiVqW14pHtJX7bBelgygfeQoaVNNxaBMSf3zdEf+ZfZPsac0UBFs2XYIrCHkhsWihMRWpc6KglO+dZ1tO9FqASh7uqRnvlCkfuCs7aBdknbvMRCoUEZMOBT94T6cN5sywcQ9yd+XMqqIQtm9M9p2HcgWXC6K7puvzTuK3HDRjmaqIgDpYJWHpRd2qkEWXdezbI0fCbKFElFeqCbmDtpY5BjTGQVHm1xXPFGYqbhm2Ycy8j0S3E1ahdafCHRwpu574XtkLcxP3T1XNemzYp4k1NwBSnD9RZDoHpSWaxiel2I8kkXtQC5JVr2AuenLTsgNCmjgD0vq33TGvKv3Yrdi6EynA/aD8iyJACEwjpmsd6zU9xyyRPSjB9Ee8C7pXqoPHeq0JpNIN7QZURC7gYkRZv+HK9hN08/DuOG4hlkxS5wa4uSzgeYUYf9m+1Qjyabo+1p3KFHRHndkiSZB0Hdad+bm5ZEXm77ZZnUUo0PQC1oRJgkomumEOYg12eNE+mEGqYQImyeZD3Vcbto8wHUjPSKn2EnPMIhWHtvmZhWD+xOBcO1+NAaOBwZbf48staHamBQklMJrOvs+8FRfyIYqYnCyC3nYbu9VKRxEKYgyppKFVGto6eaJY4BM
- 5jF2QvtS
- 2HOQoO1fnutbEI3cTrVHY/pFW70UEXwMW3/jD5fV57hOezjyxOCMMMRRklsMrpWllECLP3UQNPPwb/C59pBk3bpHmMCiggzE3LlsU8fQ8Q6E5buGUFXqcduW0D9EwxQ0ilFkqkHXeEkbNIYCaGyyyR5L4jFWeXsmGyuJzdAahMEo5gyyY+FeX/cmacvrSQwAEJ51XQYN6crIElJptecHTXpE6hiF3fIne0XNnzeyCeP9xT0fWbcKY84eU41dBMxrlAiQXOJCyIFWgwVFqfZwU0Z2KsfrF/1FFlMJ2z4aE80xd0UA+uRmVCXj79Q06awR0Qn7kb1poJ60q37MMijYtBVIgDpL2fqv7pAsE0k9ks9vzd/+jCdaJIxKu4eahn9Ql8Jcsp+HJ4tfsn0HEhsfQzwqygw==
+X-Stat-Signature: eun4yk9jk1wxwrbr1y771e7udb84qtaf
+X-HE-Tag: 1787662340-878615
+X-HE-Meta: U2FsdGVkX1/2RhfQF98l4+znUz0RWZVTTI8fBcRLG+VZaKKjf/eSz5cygWz8qQ2IZNbil7br64QKdOMKutZA8N3Tf8bz2xi/vKw1HmKut++m7hZgoWcIRYmNgHxMCZfTWjEDdiNPu7uww8pKNJOycHo8AjsCQgpMvvtSzDwOw0N0IFsmsiuWESevCDoFGIwmksBNf0JxdHvKwmetWrQEOOBXKY+Pt5hEXuyEsu6Lp/gPFWvl4WLW975v+h8Oxm3eKUd2tlwr+xHa+NMvtTsoxcLTWsoKkLW7J4yOrjGXYyxcbXDAlnEuvjmZjeMZmT981Dps7M8SlQ0IqILRVnMDRShDikZB8dVkpjSAXqb3jOItW23XL2P4fguta9dMBEnuI2fClobQy2XiyXYTOXUismBSZUVjUlkY3K8unl9D6nMf3aY58UlJqxn1YauVousNCjw5GOrHV/kRE64UeJHUWeZVeoJeCvLAEbQ5df3385sa/CE4Kx9NePcTKFvtrNXQ1qBuZpii6Li9705tLtPhL83O1Nh7Vdd1DZp1luWgEtGCEvhsMSJ4J1ll0EogMwA1jnYOpy3oCfGpjDmKP6gT+K0gjLIFl4s/GcfMmAzeS4UuPrTfPIyuu2V5+RYFMewgifR3+UVg5+YQJoTMKRu03GE6JQdkSND2lKyVsZv3ATCjW1AuMT7Ip1lA7ijVzmrajRtjdxzFnMj6nRQoY9WThjZA0qdOVKyw4MI2wzSrpBtN72+MpdQc1eB4nMvWV7ZT6clmjOlTpI4LdiA7k2vdE/fij8kn0v6OBIGTmNjJH3kIRZDs9kPKZ1mB0lfGETvgp3PxjIrJU+WQDth0As+XR4zqmo0sqMGwJvYEQ1SHddMibw2nKnPdSzXWjYf95A/As61D2lGsww6oUk67tBfz9wslNngjBMyIu4r69t6QSg7OybxioJcAqPFT51zJoi8f7eeNtl7ff78B5tFWYgt
+ UjuJvhCb
+ g2xM61/1LTHsUgj3PFiYkYlphfOgMegDzw1dZJuxNgaGkE1s98P0qE/UME6GtZq80geAiEHGCSS2idODn1rX4mKkWF9qyhRkvEGsopg5V7tl6t5Z/zAj8tcLky64gqf00Z3C3HpBZ3KW46Lc1IW8BR/8r403T5a/Mulgy0pLuqX8qeF/0Xb6R4dccyDYJkkqZYO2V4KxsHBQRqD98A3I2W24IXoPE/zucxlo8mtR1QBOe3yTAP4ixmGQMR06qe1NGxWbmBAzQyaxuT58Dh/pS0TV9sdCEQcSdEbw8xybDrmAzJx7r8MEn/P6cEivVeII9TeHZnwlbYJNfoiMLtNnVJHeWNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,26 +97,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+mm/memory: please let's be consistent on all of the patches in the series.
 
+On Tue, Aug 25, 2026 at 12:40:36PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/5/26 16:42, Avi Weiss wrote:
+> > populate_to_pmd() returns NULL only when p4d_alloc(), pud_alloc(), or
+> > pmd_alloc() fails. These are page-table allocation failures, but
+> > insert_pages() currently reports them as -EFAULT.
+> >
+> > Return -ENOMEM instead, consistent with the subsequent pte_alloc()
+> > failure and with the single-page insert_page() path, which reports
+> > failure of the same page-table allocation chain as -ENOMEM.
+> >
+> > Address and range validation failures in vm_insert_pages() continue to
+> > return -EFAULT. Keep the later -EFAULT return for
+> > pte_offset_map_lock(), which is not an allocation failure.
+> >
+> > Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+> > ---
+> >  mm/memory.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 11bb4fb98761..16093479d341 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -2438,7 +2438,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
+> >  more:
+> >  	pmd = populate_to_pmd(mm, addr);
+> >  	if (!pmd) {
+> > -		err = -EFAULT;
+> > +		err = -ENOMEM;
+> >  		goto out;
+> >  	}
+> >
+>
+> For this patch:
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>
+> --
+> Cheers,
+>
+> David
 
-On 8/25/26 4:46 PM, Muchun Song wrote:
-> Upcoming HugeTLB bootmem changes need sparsemem section metadata before
-> the HugeTLB bootmem allocation path runs. The memory sections are
-> initialized from sparse_init(), which is called too late for that setup.
-> 
-> Move the code that initializes sparsemem section metadata for memblock
-> ranges into mm_core_init_early(), before free_area_init() and the HugeTLB
-> bootmem setup. Rename the helper to sparse_sections_init() so the new
-> caller describes the sparsemem-specific initialization step.
-> 
-> This is a preparatory change.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+LGTM too so:
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Thanks,
-Qi
-
+--
+Cheers, Lorenzo
 
