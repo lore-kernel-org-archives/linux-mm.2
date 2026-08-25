@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A37C61DB6
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 09:30:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F04C61DB6
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 09:31:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4D336B008C; Tue, 25 Aug 2026 05:30:55 -0400 (EDT)
+	id DCFAE6B0096; Tue, 25 Aug 2026 05:30:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FDCE6B0096; Tue, 25 Aug 2026 05:30:55 -0400 (EDT)
+	id DA7976B0098; Tue, 25 Aug 2026 05:30:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9149B6B0098; Tue, 25 Aug 2026 05:30:55 -0400 (EDT)
+	id CBD826B0099; Tue, 25 Aug 2026 05:30:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 67C966B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:30:55 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D41841203BF
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:30:54 +0000 (UTC)
-X-FDA: 85139272428.05.5EFCBB7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 349EEC000B
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:30:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hKF+y7ah;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ACE8D6B0096
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:30:59 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C0A321C1695
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:30:58 +0000 (UTC)
+X-FDA: 85139272596.16.779D0F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 16B934000E
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:30:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a8mqEMXw;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787650257;
+	b=lVixR3+FUCMRiX11UjX6jR2D50oNInQbD3l6X+gCWY5gZm7Ne48w6egMRZ0/UJhQLQ3MOM
+	7UbMLiriXUo9p8LzXiJ4r82JloL7uzeqgunLTt3oliI/rbY9yPtMIcrBRZ1eYzIcjZ/oR7
+	079TNEXeZ8hAkxNz3PdMv4i7Wh3ng0Y=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a8mqEMXw;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787650253;
+	s=arc-20220608; t=1787650257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZJp1vykiBBg7jSWOFYXU2rnni57JcUVe3Q+SFvtecA=;
-	b=B08y7FdbXySWGIdnNoyIRim4rT8qSA+Y3XfAw0fQqsaW2T/H8++Pf5Mf6/yV7jRgbCbLuz
-	5F8QdG5GrMWsCV0Ov42OAcqOKAC1k2yZLi6LC9aix6ymEfmUUq+bXPnULjeCNxV7cQBsJ7
-	jIYp/PEvOdFsgKexZBljKeMMm1cpSzY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hKF+y7ah;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787650253;
-	b=c4E0SgnPwwSronWTYhPc4hIPeeS0BjNrWrbnj42yTkux2IGPjDBaaGapRWvilPZ6S9w0FP
-	FWLS+eKBCqzd3roDdhzYNaXKE1yj9pkuTdzd3dMjZhJ/NC+kAGvAVxxx6ROyN2OPZ4XuI5
-	kKLbyRVt++xqPe5Lu1SVHqUViu4xiVs=
+	bh=gh8/pecl272MBCAYPbJmmBSjqy/rlKlt0zMBNAm1cvg=;
+	b=MZSRXFryG331CmUQhtdKjrFyIHlfQlM/ithRE1Z9omW1NTfnB7ZrA8P3pQREZvOMzJ6tAu
+	lo/33NEQBecS9wwSkycYHCu16rBep8yj43b56g1Oywj9l96cjd31ZoMzqVEXeAqnBNCzRo
+	vWmbcdW7bj2zkjZywysF7pZ/0HvHpbU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4C0AE43C7A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4311C6020E;
+	Tue, 25 Aug 2026 09:30:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E541F00A3A;
 	Tue, 25 Aug 2026 09:30:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70EC1F000E9;
-	Tue, 25 Aug 2026 09:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787650252;
-	bh=AZJp1vykiBBg7jSWOFYXU2rnni57JcUVe3Q+SFvtecA=;
+	s=k20260515; t=1787650256;
+	bh=gh8/pecl272MBCAYPbJmmBSjqy/rlKlt0zMBNAm1cvg=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=hKF+y7aho1w7hBDs4D3oYLClApYzCumBNriz7FqKLyJijE95MVTC4u0EqPEJgEudL
-	 /UYmvYO9Ulr4j5lS5sBBuKxCk1dSplGVT68bK8BB5YR4BvqbhTAUOloyrRoAdkFsOg
-	 V+uZts5raKeljNBnlFxLTwLW+1uoGNchdI3Edx52VI6AG8KU99NkUlJySGiS0qeYY/
-	 wmEfGxUWeImBPjnlie4MPDyxQRuYYV+Ciz3S4LQtWIcL5xd1hi5bFsT3ozE7oKTzGm
-	 C8SpdUt+t2+Ap/cIb8ZOCsr2eps73K4V1RKV0rcIn9aMrlyLwA+cCn1yKzeru0vChg
-	 DqaJxQMYpeUeg==
+	b=a8mqEMXw4UyHnqOLnccP4+hpmDVIOsw7ZQImwS/L9gT2NlupjBoCQDTVUG9Hl68qJ
+	 8PO1Tbu/xoxaK6FYrmAaouXBACePTcX2aFubpuWAvbMBvub3Wp/RvSzrDlUp4u30j7
+	 Sy74OmDng0L55vIMACt2sq+Z3dewQ5Y1Zom5aTzHkkQ39iypYgFycih2PbXrYNsdjW
+	 PjSuXy5eqvK3KbUNXrSlkjI/HiAIk8dFr+I1LI2ys2LOlCPc04bM0i2KBa8M1SaSNG
+	 FvOX7GPnWI21Vd/3y9Z3h+TiLQuA9Ic9voS94dISAY2vkEDoIwDTZYXbAA0jwGccv8
+	 392i9RZYIyrhg==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 03/17] mm/mm_init: skip initializing shared vmemmap
- tail pages
+Subject: Re: [PATCH v5 04/17] mm/sparse-vmemmap: initialize shared tail
+ vmemmap pages on allocation
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -80,20 +80,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Suren Baghdasaryan <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260825084608.47437-4-songmuchun@bytedance.com>
+In-Reply-To: <20260825084608.47437-5-songmuchun@bytedance.com>
 References: <20260825084608.47437-1-songmuchun@bytedance.com>
- <20260825084608.47437-4-songmuchun@bytedance.com>
+ <20260825084608.47437-5-songmuchun@bytedance.com>
 Date: Tue, 25 Aug 2026 12:30:45 +0300
-Message-Id: <178765024511.3691569.908186399028844007.b4-review@b4>
+Message-Id: <178765024511.3691569.7297082667315232689.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 349EEC000B
-X-Stat-Signature: r85oa3tb5an4awc364xccqciddbifbo4
+X-Rspamd-Queue-Id: 16B934000E
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1787650253-225795
-X-HE-Meta: U2FsdGVkX1999otmHfVIg0LQe/sX40p0V0Tf6E6krNEhJjoMkd1pe9xrnJzikbnulG8wXdgtUwTIx4A1xudidh84Zr0bKAZQ2O5ntOyladrG+kffHCksgCcRPVOLB4Adz6HDCUPOAesvB6GsTEADqPbVvPky/rrmfn5NDAr1JjvXAM5wCDNuX8ft9cWgoCLRp2yZwE0R4Zh/Qn06XMCMf1wSFe/3eHcexrVRrvP6yNnIIiVH6cG/OFPgwH24M4IbhXOgk7olVRijO0Fc6r8/gWk6YmTuOkK6ckZjtn+o/i/OF4pfNmiT6w+kkrXnTM+r3nz8WMIqlzcvAEPvIScIkwHMKwNVsQVPujL2NfK2S+aLKOWYp5McBV91uRL2we18m+cC4tGYZDBuYHXUxkgMGeQjIzgVOHLDiQxtep5tUpslWx9rUOayjbpC3Q6g4O4v1xJuExVl8cprh9xKZUnAxb6sfSEuL0TK8KMD0UiGv0huabOZkUWhK2hE+fiBUs9KByBIAEr02fjR3ovTaZ6QutjJyRQV3FdFUuObbJBe3ViBjQoJPHTHEbNzSjCVV9e64Nu+nod193sikFuHDLKdXLLjGHiNzCSn11hSkk0SGb2J8TtG1wbjyqS5PgnZOiIzknaUBZRtkkHXx3eEJfcHTjT9fRhmNW40+z9qMlrWMuNOzEmB5KphF7x0oxqd4fgHs2agb+e5ELepfMQoa1k/UVsyHILbgIggsZ8Vt9grclzT9iyqF/Zcut51TzQsztMaJAcCod1tSJKxttXlK7fnO93SscpWMFQLxfNzDITS1jRWFkuY5u09XYQ1nZ+VPzdH6Zq+mDPljRtxXM5SR8rJ9uBtXx8ptKscP91QH8W2qPDP3zCc0RNZIxJ6giHa5HlE/4hYV7oBNccG2f+9v0iwPnbd6JqHdOqHrhyVeKjD9MJ/riGpJ+295DutiaRiGkrxFqNTOjtUjCgoQ10HrNl
- Ug7ChZci
- EL7UiJlANCDZdqtyKkdpJp/BUXI1O1R0SzoQGF+O52EktHyHcjuuvlFvrLLxYjxWwQ0h4/zLfqUnkjb94x3+zkNKws0SQgVmk2vEl+54hhncILWirBRtn08DITqSjGwayzWh1LzH68BLG0gcwoaWpatFYfDe3/xE1/9h2Z9BYvpsqVS51IjrZovSdq7vo2+LPZTd0V+pyGrInIiAPYaWA5W2IDBd7/eIXJSstmrxrMTChst1y9J2UWaEAecZwf9O0TAs4liyTt9RfMnbYvn0vA3tVt9WvHh/V8kZeUWkI6wUx9JOqodHjjW/ZgYJm4kAQub8Hqi3TIGMpg6I8Bpp0gATdAR0v2zf5zG5t0jtBB/7EJGM7Wh02J0N+Sj0+hkdgUyut
+X-Stat-Signature: ga7f1gmqsf5k93rpcrwsun117zddh8rg
+X-HE-Tag: 1787650256-896637
+X-HE-Meta: U2FsdGVkX18fwidr2cViioMGf6uYLoa23Y2vgHhlwd6Om73WIiftNfMEOTkUHvcgqx6zOQQzgh6ifbEu0BMgz79uCtQu12SdPeD/hh14MBP/81XbIWFghIQMflFdjl9qct3TtCChUeHl44uMNUYqOGsGcZ5SF4YpGdY3BEVVrADAtUZmXnZyHhPCHmQ2rmDfGw1KGxEjw3aD/M/wCTcYVH7umSVBdAAhR3Tr5p9HcLRqP7JHPqIrAkimv/Rxy6qHhjN6G0OCSUrtLSnxNxZ4N9bp2GTXiMxgzZKACCijoaEZKRg/9oBZwDGWR7tzkC79ZQaIB0mibhRLujxgj7FJkqmNAu7cqc1GTGYJG5nh187a47Bn7CBPBg6vkiEIlb2iInWE1Cfnf9au2gqa0ing03Mreg8SQmvmy5PG6cfSoJVjp16mcBBEBS4JG0YEtapsseDmAvja4ITtqbQ87L8oe3bUCmn5RjsZnLBLhgOYqvg1yMUfgM6wpjEQ91MQV8RzmJnNf3VkSF7MKnCQx+/pmWO2uD+CtrrY0jCNla4MAMvwDv5LIF7HJ0v9TYR+BjSqprCLMfwPvHw7btEhVPM82hdAhg7IH5HcpohIJXkjasWvRROrofxKzaQwe+q61DW55ozBlcaLqMXWoa1ZHm2afXVERElDUVD2TErpMCjSMTLfdvyKQ8Ba+pY5ZJ1UDvdSCnsAvSTbgo1tqiJqpdSXLJUvfNTN7W28oYrZ5gHJi/ykQeKqThSdu/L9kvr/0lzoZDmfczSXn9Yc7+FYoJ69Pp6dS6Ep+f2mnao8U4O0HGAfRDkWOsmbpcHdHSv40TR7NTvt2mnrWaVGATsEl2w/iVA9PrOhQgKilfhEH2saY6V7512gUSvbjsjBfZ4c18FW5IMhdOvQJ/sh/1lU5J09tDSo3lCIXTRBJ0vUWttL+j3ZNflW3ArUo7/vuO5gm3ZMLsQIqnaINdGsbQLbQUu
+ Y2poupW7
+ V9HocZKo+HMTFtr8lXd5j1U5apkhFWgLZmNeeXjK+58ewIY+o7gam3rPcT+xGntkkpMkM41CAlW9SXBrb5TjICRLNoIy6jcAs9SbG+4kCqANAEAhPDXDgs88/EUTfmOJMqveX1VXIEe0cWWUwLY4NORtiOdCyctLnxzZGFrJDU0gKTPQY5zWtaaWNhAcflPBLsZ90DzR7CZ3vLHGdYyGimBnEd8IV/39nH3nbuSDWKVwm4bHABl7IoEbsQKt6Bp2DE3wUs65Iur4vUxqSanWb3TsYbwTej9YB+/gDK8rlm66FYWftV8/+5aMwnhShPeQ0fBtGw8e9Jrpu56QYfinHHBg9Pw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,18 +101,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026 16:45:54 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> memmap_init_range() initializes every struct page in the target range.
-> For compound pages with vmemmap optimization, the tail struct pages are
-> backed by a shared vmemmap page.
+On Tue, 25 Aug 2026 16:45:55 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> The shared tail vmemmap page allocated in vmemmap_get_tail() used to be
+> left uninitialized, because memmap_init_range() would later overwrite
+> it.  That forced users such as HugeTLB to defer the initialization to
+> their own setup paths.
 > 
-> Initializing those tail struct pages would overwrite the shared
-> vmemmap page contents, requiring users such as HugeTLB to restore the
-> metadata afterwards.
+> Now that memmap_init_range() skips shared tail vmemmap pages, initialize
+> them immediately in vmemmap_get_tail() with init_compound_tail()
+> instead.
 > 
 > [...]
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 -- 
 Sincerely yours,
