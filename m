@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CDBEC5DF9C
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 05:43:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B9F1C5DF9C
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 05:57:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 066676B008C; Tue, 25 Aug 2026 01:43:10 -0400 (EDT)
+	id 318C16B008C; Tue, 25 Aug 2026 01:57:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 016F26B0092; Tue, 25 Aug 2026 01:43:09 -0400 (EDT)
+	id 2C9C16B0092; Tue, 25 Aug 2026 01:57:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6EA26B0095; Tue, 25 Aug 2026 01:43:09 -0400 (EDT)
+	id 1B8556B0095; Tue, 25 Aug 2026 01:57:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C912C6B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:43:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5164B140322
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:43:09 +0000 (UTC)
-X-FDA: 85138698498.15.AF88919
-Received: from mta1.migadu.com (out-63.mta1.migadu.com [95.215.58.63])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8B5A740005
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:43:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VzMIlPI1;
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.63 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787636587;
-	b=Baufro4LOBtS0hEovyzEB4/2v/H2okynM9fE3WnPcJk7wAvlBKEkQVWeBsqKf6u8+r/D3O
-	FY7EFGt9DrZ/Ni3arg26CG+AS+yRGuXeTrB0848vJJCoA5h8SMX/lWYF5qHH/X6844h7t3
-	EEMKp94hjHzSmKTn+Al6n2x0K3nhCeA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VzMIlPI1;
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.63 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id E84E96B008C
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 01:57:13 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A5FFB802D2
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:57:11 +0000 (UTC)
+X-FDA: 85138733862.01.1DA0CB5
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4FCCF40003
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 05:57:09 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4hivPyVH;
+	spf=none (imf17.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787636587;
+	s=arc-20220608; t=1787637430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gcjl2N5K2V0WQZAdyJmxOIbWiWEmkbZR/Ri2p1CGi5w=;
-	b=YRQ3uWFJmwTlEfdq0S1ND42Sm6J+wo3A/fb+GdE2McQ18LgHvxRNP+BolLRwQcfdqy1cws
-	nn5HWDULORK05KtUl7tYy1HQzO/4sKRuw9JqQEFUKZKOa8PdyB+0+EkecVNCD9zosmOzMJ
-	iRkarif2H8Y70/z1IvuJAdIqhZ152dw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=gcjl2N5K2V0WQZAdyJmxOIbWiWEmkbZR/Ri2p1CGi5w=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787636582; v=1; x=1788241382;
- b=VzMIlPI1jfvaFMQkZTsPfPuUM3Xk+x7Drlbv4lGTX3p8HhISpJ6mVrFRS+ZQim02phh+HBuV
- /KqMti5jpBmwS5ycCkl9Oa8Sid2FoQoeQQwUKwJtx167uARd8IzrAsPKIVhzeFnEGnthcGl5SH/
- 1YQYso81ur+dY/DrF3ThpAUc=
-X-Envelope-To: linux-mm@kvack.org
-Received: from smtpclient.apple (114.251.196.101)
-	by mta10.migadu.com with ESMTPS id 9570901acead3ed9;
-	Tue, 25 Aug 2026 05:42:52 +0000
-X-Mizu-Trace-ID: 9570901acead3ed9
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH] mm/hugetlb: fix resv_huge_pages double decrement in memfd
- error path
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260825021013.25672-1-hongfu.li@linux.dev>
-Date: Tue, 25 Aug 2026 13:42:33 +0800
-Cc: osalvador@suse.de,
- david@kernel.org,
- akpm@linux-foundation.org,
- steven.sistare@oracle.com,
- vivek.kasireddy@intel.com,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6C152511-DA9E-4047-B1AA-94887F7CBEA5@linux.dev>
-References: <20260825021013.25672-1-hongfu.li@linux.dev>
-To: Hongfu Li <hongfu.li@linux.dev>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-Rspamd-Queue-Id: 8B5A740005
+	bh=3n8sKxOLY9bY1Jljt7EDfRL2ryQR3dKEADtbegGl4j4=;
+	b=sPlBlCNyqVbnbHKxP0dixv7B+OhxAPGOb7zXkxzlqXO5Qp6M9atmn4TvtSHtEYoHnUlNxC
+	JY2wUwLKZ39boPagbcrHFOikez76JlB6rsCzaVLcQdH+4/stXmyKLQNhJbRYRN/rig8Lol
+	qUzXB6pkrbWL2k/LF5Wcc5/gc/4csYo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787637430;
+	b=ZZfXAcxrmM0wOjom6Qa54PfrEfsZy7V+qLMMZOk/gpo2WYHhsoTwWQmoWHYBBmcBI+oZEq
+	lRBfZSyQXNtbVT6jfBTxKHE1XJchXn+n19GSe2b92pEuzn+4haZjpnkzhcpidKj9kcA3Zz
+	w+MUNUDcwZVps5XkxLJT6nFNR9yRY/E=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4hivPyVH;
+	spf=none (imf17.hostedemail.com: domain of BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+b87911c0b4807dbed12c+8402+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3n8sKxOLY9bY1Jljt7EDfRL2ryQR3dKEADtbegGl4j4=; b=4hivPyVH/E7aqxa198tsBYDhtT
+	pheZRlehn97+Pn+qzZaamy4FMBMqTsG+w+pkWof61SjtSa9zehOQ74t1NrJjVEf9r/JJsmeqJyLa9
+	fBTbTLLiYWmmi3cTiTHnpobC+AzmGunnKistH6FS80+HKogiTyOLdD1uCZEHaPATXdecv2Y3kzsNb
+	/EBYP+I/hoJIhzQU4bobyba03Nfl/g65gyYRW0qqrdo2uJn8rvlut1397NlYgCBj9E6dLPWjKUzJg
+	MUKlmO/qw1j5IIU9m55sC1Y4+KFkL4YbVaa1aXZC1jyurhvheXv+3OzXzdThqJMPuoxtd6icvr+DD
+	05wedv1Q==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wyk9d-00000000Cqf-15be;
+	Tue, 25 Aug 2026 05:57:01 +0000
+Date: Mon, 24 Aug 2026 22:57:01 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: pfalcato@suse.de, kas@kernel.org, usama.arif@linux.dev,
+	hughd@google.com, akpm@linux-foundation.org, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com,
+	liam@infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, ljs@kernel.org, nico.pache@linux.dev,
+	ryan.roberts@arm.com, ziy@nvidia.com, nphamcs@gmail.com,
+	hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+	kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
+ on zap
+Message-ID: <ao0urQFF6IOFAorx@infradead.org>
+References: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
+ <20260820061337.24669-1-lance.yang@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260820061337.24669-1-lance.yang@linux.dev>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Stat-Signature: dsbgmuurjsqxdnt4mcbncosn8q984yzp
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787636585-714119
-X-HE-Meta: U2FsdGVkX18AdXCjEBxh52YYkLfCEuoTh3pRK7MOrcIHW72So+SAOXSH+rqpNQGL/IdzqSoDO5S5KPGDweJ+a2eBn0BxovXR3S34laUN++x9/dIcOa4FxisIQClh8+RsvMkxTpW4zvo2VYEIMpNzvq8cPOYwAw1Nw1LGpA+xDrIfnDnwEuoY9BGJ76Q/gmWmymqrflG45tvc0MHuRBFwtuQwsCoAglibxiacBgMLZ7oNoh51ykrfA7zaNPBXAKm5bMlRYgmMNs1lNcIPK4/SSZGHDqm01Uihgv99b3CSOIRquAOO69AXvetsMdTzcdMbYLxhBK90T/EXUQB3j9rzW+D/0RjAsmpQ4OZO++tw807IfxcSZbwxgGL5H0wEdT0txDlRVXR+N3yrrDTEECOYqnTyfnfEDAX91C8TC2bCrE+q2hLWSooDr56JRR89gNf3CfbRcDegr2sSBUXq8kMFztXgag63lnerxGBUaGWDubEaCzaP4B6EWMVqBEbccxf8HHR3mnIBYbg5q5lQlczZXL5sR5AY2vXu3NQmeMGeSW4p/N35lolgUwtJOtWXtzB13AV8cdnaeZanfs6i+0FKQH12DY5CH3lCY12+bNA+PxoFYZ1aFG2XTdf8G8OgNxkdYWyC5qLpHRP3jbpd+OlerNq1BDEsF/WHu9G5bRX4LC7m7wvv1k1BiTBSmkrjVpaFws/QcWdHEMeyapTsCnb/Hzi7ocVzWpBuirT3GS76JJbcb4LyKlm9aDDdm1HbDHXlVeIKl1Aa+JGLuvSro28mhQYeU8lJpkDTen9Np9pG+JLu5Xe9uDC/bp6im75qpthZc+0nPvT4UmHi1eMK7u3ep9BW3LDKR+n+tLu/lCazT0QMdXdr8C2ArR62kc9hYwZwsqTuMf6mMsFobc6wViX3icN3mghGPOfBBFLtWXAKoO2AOOsuPjqXoM8iKxsFo0/BN9el2wKqwfN/lzjXEMT
- gKwhsIRn
- wd9MZ27KE7AdYq98kJZbXeoRk9nPmgq5cvonso0yhHKSwb/LtlBRaws5lbniywPcL8k9YgyEomU385fSX9zir/1W5kfgL65V3VEu+hvwi1ZXHKhHAfA1jYYq5zgvBCCweVhxc/4Q7GRxuVaEpN6gjg4M944YoKUw8SvYFJ8kWqdRGpnvwyRxHf/GKWzVKesR7Tn+X/OQfIeIFjvWg73yGMAmvHPdp+J+LTlSy5K3w2svtQKHBUNTSa+qERG5/gDettyX8EMeMJB10TVs8PcAmWpHru6N2ntj0x60kJFn+2R6RyQ7oyU8TNbp9Bg==
+X-Stat-Signature: 7ei811xxjf81r6mwre61mfgwud5ug1oh
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4FCCF40003
+X-HE-Tag: 1787637429-192274
+X-HE-Meta: U2FsdGVkX18gkPG0FThB+96qATjxiOlRBjG893L+5xPQf7wRs/qbOUKGl1EsriUjv4OiNMlA5psFV2/zbriqhZlKbfqnUqS2qZ6i0AGrpotZuVgmseJlT+GsSNTaVzKsRId129PjsOTk0gvNHp4IM3h+eBzIRT1vL/INXOfKGv8e+/CbsRvI1FRpigGtn4OO6tANdw2YGWt9tZtPZ1xSVBHG5Wu8EqhM6dZq6EAViUVdXJ4pn+J5nwKUMo1wUIV9pHPGxmQMJV0es8m55YJ3kTggXq+yO9QXg6TB9d0YmIvYN1c4SPtFlYgO4yE53ni5aCqun7kWmOCIpB+QR+jYqizicypfR37RZOL+9lYxUxszNg6x1WUWjPugV2yW6RvCNhjPjJRHXn2K/weaYYIH4VgnU9b9PwnjwCAA0VSzEJ1FVHsxz98R5mMuJg+mnDIX4pHfc/Dt0uy4QJpwLbiI6Q+s9xYwFuIEGFouCGL8mN/s4DR7beD8N8l+5573DP8UeX0gZH3Mbg1M5fS8XQ2Q/kmTliQPaIhqc4+Yu9WRRunHbFus7wqV8X9KjTc6/x5A2uU3np7Wym3V+W/eyVNMKXE7/yIHOFjqn+rvA03WnAJKcFGIUepavrwccPqMzSHX16IW9pcQWyLNUtpoB5Fbf/uM8Y57FGY4cgu+TV/sqG+XCWcHFo/ob2w0ycEKgdHQtMJwhVvpny4IQoiuTUxjbB3rRXuLOKjTIGyBuwtzdpUqNQ7LgA71sjsYFw9KUzN7f0e7UVxI++I38bX3hbq3IXImH8T5IDCEMYCNyiF/JToOLOUDLR+jcZ5Xw01z2Tg5OXaE3rRIOCACVIh+ievNJDWujsH8CnXX+53HF4imi26f8OoiT05VQYYpiRV52RHItABXSEquOmHl4Qvf3S6y+CQcPVsRW9IW/mWSW8jldagOLi06cKjcI13Ztl81IOfpDImAhNY5UoTTzFF8/um
+ pXdoYUTJ
+ 2rA9eRDK+BkPug8fX8rX1EYpIVM8rWeLbUZfrA6DDLygLFOOgWpOnrHMxGd+8giJi3GAd/gnhUG/hbEh8brUJ4Gb0rY47jlqP7mcaUF05vKV9h89yPc0P3BjoD/h4itXyeRwRVf2Hg9Sv7SZroGa5Z+/UcqUkVbcr6To26jFvv6KaSG/wa/S+FUZ+NrbwidW0u4n5BM42WLQj2IMc51+3ML5EgpCbyTtcp3OiVs/lz7G7xK1OTUMbmQzpbG2VrVKQEKSNegQIYsDQ1I6ghujNYVMLrDX3327DuAUBdqaR298aGkFkj5wyD9cr7yGQXLzdSHSu4zyOJA+ot1IU6xbebmuV1CREjiLgw2spJmhys+WqVs7Mv3iEMut27KnGxQasXUm1IsWpNrdqnsDBImSFONgQwbbZ+gDHRCSECEOdeMNX4ADo58IEYf8PCALSUV4bJUlp7wC1UnJlkHAuwOGm4WW23P9kQuE4aLAIAPISVU584w5vyf4NFBEEGoBorc8LyqCwH5GtrfvlunUN2UtvBljeOkIz2ipOB5WAhGE7Ez52/f8L/oQ/DGs69uN99VhGw1RP6kWX9yCtcrM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,40 +97,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Aug 20, 2026 at 02:13:37PM +0800, Lance Yang wrote:
+> XFS installs the huge-fault, regular-fault, and page_mkwrite callbacks
+> in the same vm_ops:
+> 
+> static const struct vm_operations_struct xfs_file_vm_ops = {
+> 	.fault		= xfs_filemap_fault,
+> 	.huge_fault	= xfs_filemap_huge_fault,
+> 	...
+> 	.page_mkwrite	= xfs_filemap_page_mkwrite,
+> 	...
+> };
+> 
+> On the fallback path, handle_pte_fault() leaves an empty PMD without a
+> PTE and calls do_pte_missing():
 
-
-> On Aug 25, 2026, at 10:10, Hongfu Li <hongfu.li@linux.dev> wrote:
->=20
-> From: Hongfu Li <lihongfu@kylinos.cn>
->=20
-> alloc_hugetlb_folio_reserve() decrements h->resv_huge_pages when
-> dequeuing a folio, but unlike the use_global_reservation handling in
-> hugetlb_alloc_folio(), it does not set HPageRestoreReserve on the =
-folio.
->=20
-> Its sole caller memfd_alloc_folio() pre-allocates a reservation via
-> hugetlb_reserve_pages() before allocating. When =
-hugetlb_add_to_page_cache()
-> fails, folio_put() drops the folio without HPageRestoreReserve set, so
-> free_huge_folio() does not restore the reservation. The subsequent
-> hugetlb_unreserve_pages() on the err_unresv path decrements the =
-counter
-> a second time, leaving resv_huge_pages off by one for every failed
-> allocation.
->=20
-> Set HPageRestoreReserve when consuming the reservation in
-> alloc_hugetlb_folio_reserve(). On the error path, free_huge_folio() =
-then
-> restores the reservation before hugetlb_unreserve_pages() releases it.
-> The success path is unaffected, as hugetlb_add_to_page_cache() clears
-> the flag once the folio is added to the page cache.
->=20
-> Fixes: 26a8ea80929c ("mm/hugetlb: fix memfd_pin_folios resv_huge_pages =
-leak")
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+Just a reminder that it would be extremely helpful if we could refactor
+the vm_operations_struct so that file systems could register one single
+fault handler to cover all these (plus .pfn_mkwrite) to remove all
+the annoying boilerplate code in the file system and the confusing
+fallback logic in the VM.
 
