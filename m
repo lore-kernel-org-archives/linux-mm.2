@@ -4,110 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC10C61DBD
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 11:20:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C574C61DBD
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 11:21:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 856716B00AE; Tue, 25 Aug 2026 07:20:10 -0400 (EDT)
+	id 4AF316B00AF; Tue, 25 Aug 2026 07:21:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82E296B00AF; Tue, 25 Aug 2026 07:20:10 -0400 (EDT)
+	id 486AD6B00B1; Tue, 25 Aug 2026 07:21:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71D1D6B00B0; Tue, 25 Aug 2026 07:20:10 -0400 (EDT)
+	id 3C4AD6B00B2; Tue, 25 Aug 2026 07:21:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D7116B00AE
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:20:10 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D43921603D4
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:20:09 +0000 (UTC)
-X-FDA: 85139547738.23.74D0703
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FD906B00AF
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:21:21 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0355B80396
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:21:19 +0000 (UTC)
+X-FDA: 85139550720.14.98292C9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 38944A0008
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:20:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H4S9/yoy";
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787656808;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FWf3P/SKIaJRRAsSvxTvo5izA5oqfXztVDKK4GY3V7o=;
-	b=oJHxzWlfpoKJSLsIblEWdM+3Pm5bbTQWSnRdHTAMLzEe4r2/PAjc8WGXe+4yJUcGrz7Ufd
-	AvKO5xbWSTTePuy2Qw9a0f0ZrKQ4NWq0SPjr7kuZStS/zMk1LcfVGXR9ab5nTtiyy+GBfX
-	NDAvEm3ynIcUSmgHEWM0IBMkJJ97SD0=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H4S9/yoy";
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4C0DCC0004
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:21:18 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWzSPvTl;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787656808;
-	b=5cMD/5U6YmyWlkdL0BkvPo+mDOzpDi6ox0Q2Tmx52EaqbHAfiDRwtBfWVZn0mfrLh+WVDr
-	PMPXqJ8LJSOz0V2x4sPDjYQgHz0ojE/FxxdtV594euus0+Q0FHjmN3IzfcGffOBzRX3sPO
-	wVdyB6Ldqe1SlJjnWpWT5oJPsiuWU/8=
+	t=1787656878;
+	b=6o8imyQCZGPPBlZQjQQVuZhImlSDJa2MFYjplEizaXV7hyE7Av5gWyu3xjAA9qh98lwKbz
+	QbNEM5Up9zbsqnm3U7aMbOhy42+bAqs85Ec6F9x0volZ+Z0e8W4X/QsZCFlI/3Kclyn60/
+	Ko16+Mzrng3Y4nqugVbWmlRNkDGjJ6k=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWzSPvTl;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787656878;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=h8WSm5E7RlGy21wvox/gCKYIqtupoRWvitRuKuzB5iI=;
+	b=Q17QFhQbsFNHyrwwqdorrVN9oqnxYrA7U6rxUtjOOmmRBUbc68qv7CHBMIbSyPNpHzrBSk
+	lEZLT5au+j9edDj5sgJBdzKlcovYIJV3OkJtpSx8KsFFxH7fq9AmsCdYZZmUaPL6xl040K
+	CZ772a+ujF0utGKhDSZXn5CWdASPYKs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A4E8C6011F;
-	Tue, 25 Aug 2026 11:20:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBDC1F000E9;
-	Tue, 25 Aug 2026 11:19:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BF7016011F;
+	Tue, 25 Aug 2026 11:21:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B42E1F000E9;
+	Tue, 25 Aug 2026 11:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787656807;
-	bh=FWf3P/SKIaJRRAsSvxTvo5izA5oqfXztVDKK4GY3V7o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=H4S9/yoy2Yjopf5gJYiLZlxYDa/LboiBgyS4EuOYw9JqJD7li/qlty74bcEQgzwtH
-	 4wTenkCXmKrBVCieVML0QhQRsiBRWfj+Vo5U1ZXbrxiQjg+8+jfypo4OCeSwWIkAMZ
-	 tGi4hRTou0eYuIgORrwa23WZJNaOQ2w0LPm0GiNcQKnT6h+UueNqYbGBzx2i4aBbpJ
-	 tEvONlrvVtodXsR5TcH2v8srrbxYCaD/HxUG5j3Vgg3FbW++fP2cqi6mlT7pQ23/d7
-	 DTlQTkMRWi3hjEddNZo4G30JKiM9m2wQEl0uhtjRtMAiRlPyva24nEyUbl9OCvsV3j
-	 TdPxHX9JMazIA==
-Date: Tue, 25 Aug 2026 14:19:52 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>, Lance Yang <lance.yang@linux.dev>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nico Pache <nico.pache@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/6] userfaultfd: use userfaultfd_*() helpers instead of
- open coded flag tests
-Message-ID: <ao16WPoLpdIdU3ID@kernel.org>
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-3-3086981b33cf@kernel.org>
- <aoxdWWMEeQbcG5Pq@gremlin>
+	s=k20260515; t=1787656877;
+	bh=h8WSm5E7RlGy21wvox/gCKYIqtupoRWvitRuKuzB5iI=;
+	h=From:Date:Subject:To:Cc;
+	b=UWzSPvTlT17GOPXKdB2QDqA27AvjHK2nMD/TzWVxOyffkoNG1q0ENJWpQ1HjB6JBR
+	 Q0hPzAFedJMTH4MRz5qAYglF2NmDiCxAU2bVoctsQrNEUf3Bnpwpzx1+kXWtpuMqV1
+	 tuxfqm0GfCvRiMfzHzae19/gLrsq3cQ5HrC2IDA1lFJQkY2hqqBpftYcT1AQuipcIJ
+	 OoMc+GU9WoJHnRmdqm1ih8jHn0rEgFHamhUxQwTC+D6go+2dmcVzQYiXArF3ZFT0+W
+	 kxIRBcngGACA1g6kmvoTNlPWbMcMEJvncbPsfzXVXyu3RFaKbcfNrNM+rJ1Y9dsTL+
+	 jinm2F7iHcO2A==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Tue, 25 Aug 2026 13:20:59 +0200
+Subject: [PATCH] selftests/mm: khugepaged: remove str_dup() usage
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoxdWWMEeQbcG5Pq@gremlin>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 38944A0008
-X-Stat-Signature: 3i89oss7cro8cbue1gc4k8x963ynbgbd
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260825-remove_str_dup-v1-1-0ba2121a820c@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAJp6jWoC/yXMQQqDMBBG4avIrBtIYxXTqxSRRn/tFKoyoyKId
+ zfV5bd4byOFMJSeyUaChZWHPuJ+S6j+vPsOhptoctbltnCZEfyGBZVOUjXzaEKwhYdPrX+0FKN
+ R0PJ6Dl/lZZ3DF/X0v9C+HzyTaHpyAAAA
+X-Change-ID: 20260825-remove_str_dup-bb089e93094f
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1154; i=david@kernel.org;
+ h=from:subject:message-id; bh=qZnOR8M4AndwDXO1OfuZmJMJJhPcOsrYOXkrmMVezfQ=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLJ6q+YWHl2+pORhy5P5u06cfNYb/tSIqX/RQqMDiXNvN
+ RyVXKMf21HKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBEFL0ZGW4Z/7i7tp1LK7qr
+ fXunywfDXI5/7nnctiYuru91l2ro7mb47zt5dyj7/I6bGkrHJ0Z84+2yt/q5JNRfcOmaO5ob11Z
+ HMwAA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
 X-Rspam-User: 
-X-HE-Tag: 1787656808-282393
-X-HE-Meta: U2FsdGVkX1+N16kw4ESfIRRUYwVh9oXMYCb+K0ZqXuLyb+Z40h289GPM5HPksULj6HvoNIbbtYV6/1+6YcOC5BxlOjRu4An+F0hLHEEaFPIflOBVCAoNfSHHCqhtz3CHK6XhN4kruHFVzQMFxeJSiqtUXieCmFTiDwc+kQRudpR2Zlga6iSdu44TgBpF03CpR6Q28icaZQrO+3fKxKGedVAza+PqzTHfISb+24Eu+4qtJ11auB3sdduWTCdp0P6zlOmvJfrZX4qQ/q2D7UnTU21KrrOV+/QV24ds7Y/0hQLlribc/B3NhD56yHmr7x6XVYT2TwdSghxTmRIVTxlUKtVbPijX0DfOixkz/PWIHs1QdrYJeXEZeXUmK4Po5DabOHgQzWf5IPYfTmmWv/k30BvZhQX7CYiIOZDyW/x1AgzGh9Kct2Ue6zNeQeYX2P7zJk3FsMUaA48jfXU2mBJRtD/CAyt6/8Luy0z2XobX6NQrfkmLfmbBIMjcJ5/9sNPa8c299nQNesSYjrHuNixKlJj4UNOe8bYLV0CJceh4QHp6VPBHe+W0z9DuiAUkLrYwKhSLEjwABMB0l/RdSeczuEcRjZ5jvRIj38O7qGY5z3AcNC2AEqALJFYMyEp+aXECbK1nbeFvjAHGpgBJytXxi4WsvCqcM7AGZvaP+FwrenZNtzXI8Cbv/Z2QILPVnWj4Pq+8ycpi5xWuqpwCmHypFosG9S6DoPal0FhUIxiKA8ivZJrSGREHLtLaUmYomYA+w5Id+onILioy4HNFMIvXdTX4upWFoEM0oZ8N0Xg2FcELlqP0dVPvYcuMp7eliQMJZ16l9MBflMQFAKEgw8AlxWbGXRMb7GTi8ZygsgLinwQn7eXKdKvouwvgzQc3vZij7cNU22v32MVYr4ZM/MXdH+9hIH6wzciRAi/IGRK8g7+ZWbuawt88whvSYRkesdAsc1hUm0zItBnyL/kSsuW
- ODampWtM
- LgYLEG0UqDgeapyKVFDe6CiyJVRogia/cWjpuAadbMWB/IYIAr2g6NmTaI9cwqiu8RoLoiUrwWfcX1x+Gk+j2nmFloLgzUYhISO1sYMmhAiqjRGoB1JN6DV9JCAzuynboMOuL5LWDPDJBrmhHX1edfKfaj31eOiQcyNs8xkZve6LyuBgnAf6Q7x9rlUenClpoXKrR8bjaKku5G9TLF24XH0eqhjhk6pLmaArQGIkKFYNMAU5HtRzyywwR5CWrBl3yWgP6fVon6gYuRsIZxRhsgYlG9wkXt1zOWXitYnWG987SJ0N9+RewKs8SYzlKGqobrZayfAyOcVvnQNI=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4C0DCC0004
+X-Stat-Signature: wuxs65jaxzr1rmxz88tkbg4skdnw9ff8
+X-HE-Tag: 1787656878-5434
+X-HE-Meta: U2FsdGVkX18EV+XEL6vq1+i/fGShORhXibVZsCrFWzlFFI+QPjzhIchntyMIcYZ5PSDojhwAQ33X/TRAnc3v91SW/bQhHW8yMOu3OpOayttG9oLSscazru7RUS8oFJrYHL5aejNrSVAKq1lW5rRtwVmj2kKUgcVaaCPxYXbMt9RIGD17jOJ8rnjFMZHdEybxn5jsQWoJYf5A+acbqt7FtUSkwt/mS0XM8WTYxfuKoJlyRc3MSrbq8BtsD1vn92FgL32+jYYNHbcqi0F+jHhJKgy8KcTss1CrqqUQfRrMYRXxjYldLlFpG/8ZlTDCLbdljXgXhFQYzdjzt+4+He4iLlGO+vtZlYT6S88GY8KVMpAzqfG+msnZ8uxXgVqqZLkg9nyrl+2w8X3F+UjEOEpBkRL+aNy+u0TaCuuoH8Fgniv22Pwob4eKp5eHUvCMUKNvJrymvlH0ojmz2sllOFjefSKKUmlptScT02WSgzQBlYTDLt2YW0mNcmMAkPzyvyHsp2x9vIP9+YmsT88UVvgHHzH2Gvegdpdw0M4jWzbDeZz1FjZqyQCrbjrgJlk/1G+6oAanWyU3M0MeCUWML/tQ/tU+JNxmPWryMSaBa3WIy77kdfP8P+JepfgrQwY+F6V0obIrWXE3fZFCDUDndoIEEruUaadB0LaB40cSZCPoAnYXdePgVH2S9n9uEYdOl2GXydXWLnjbJuPZ9rKXGyRQqX4kEH1PT+6IFYhtYNeg0oPbjU2NBwxrtaf6xacG4345kqBhcdvMxn8Z6d1Xgg6XohsYEaBlAaGY9+5YJpI6GcVKGbH/LohkJeZlXXCw/ZRNQUrhonrRzVc3NkFTfvkJSU7WEk5VCs3vh8uOsbH/HVY0ottPvhteHXG9MLqXXw1Ya+IzE87MtqS2cwiqq60tZoElwHd85kkgz3dkqfSupRRijh80G9rwUFTC2I4zXfVimd6mhZDmpBk4mHShbrf
+ oeW3B8cv
+ AJ+gYnRB/uiZWDI974Sev2BBsCP/dHfF3U5tH8M2FS9YkWw1UL1XVGd1EK9MCAXBu9JQCD1CdSIlXuEgGql1N4wxc5YCGSHEBOE8yTH/TqEWYKHnaFhVpdpWhGD7APqrosiCznysBmsVrtjBQwgOUSjDuSKymSQc9txrJra4dQ6QkWvUrEJ9C6xj1Hk/91ywbDogpCkA+C/3pDcvvLO7NSptjQJp2gBJxmouPMUkoEQGmBRjk3Bnyf6jKgWW+ORnvv9cQc6rSV4ZuzG13sZdWQJo5jSkMLPa50+sxZMM6HFCAXVeWlumESBKek6kU5+HxWwAW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,164 +109,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 04:10:51PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Sun, Aug 23, 2026 at 03:17:40PM +0300, Mike Rapoport (Microsoft) wrote:
-> > Move userfaultfd_{missing,wp,minor,rwp}() and userfaultfd_protected()
-> > ahead of uffd_disable_huge_pmd_share() and uffd_disable_fault_around()
-> > and make the latter two use the helpers rather than open coded VMA flag
-> > masks.
-> >
-> > Convert open coded VMA flag test in mfill_get_vma() to userfaultfd_wp()
-> > as well.
-> 
-> It'd be better to do the moves and the reworks separately. We don't have a limit
-> on patch count :)
-> 
-> >
-> > With every user of the per-VMA uffd modes going through the helpers,
-> > their underlying representation can be changed in the next step.
-> >
-> > No functional change.
-> 
-> There is a functional change, or at least seems to be, see below.
-> 
-> >
-> > Assisted-by: copilot:claude-opus-5
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >  include/linux/userfaultfd_k.h | 70 +++++++++++++++++++++----------------------
-> >  mm/userfaultfd.c              |  2 +-
-> >  2 files changed, 35 insertions(+), 37 deletions(-)
-> >
-> > diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> > index 3396d270b159..d8262e3dc134 100644
-> > --- a/include/linux/userfaultfd_k.h
-> > +++ b/include/linux/userfaultfd_k.h
-> > @@ -168,42 +168,6 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
-> >  	return vma->vm_userfaultfd_ctx.ctx == vm_ctx.ctx;
-> >  }
-> >
-> > -/*
-> > - * Never enable huge pmd sharing on some uffd registered vmas:
-> > - *
-> > - * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
-> > - *   tracking information is per pgtable entry.
-> > - *
-> > - * - VM_UFFD_MINOR VMAs, because otherwise we would never get minor faults for
-> > - *   VMAs which share huge pmds. (If you have two mappings to the same
-> > - *   underlying pages, and fault in the non-UFFD-registered one with a write,
-> > - *   with huge pmd sharing this would *also* setup the second UFFD-registered
-> > - *   mapping, and we'd not get minor faults.)
-> > - */
-> > -static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
-> > -{
-> > -	return vma_test_any_mask(vma,
-> > -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
-> > -					VMA_UFFD_MINOR));
-> > -}
-> > -
-> > -/*
-> > - * Don't do fault around for WP, RWP or MINOR registered uffd range.  For
-> > - * MINOR registered range, fault around will be a total disaster and ptes can
-> > - * be installed without notifications; for WP it should mostly be fine as long
-> > - * as the fault around checks for pte_none() before the installation, however
-> > - * to be super safe we just forbid it; for RWP, pre-faulted neighbours would
-> > - * be indistinguishable from accessed pages in PAGEMAP_SCAN (PAGE_IS_ACCESSED)
-> > - * and pollute the tracked working set, so each page must be populated by its
-> > - * own fault.
-> > - */
-> > -static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
-> > -{
-> > -	return vma_test_any_mask(vma,
-> > -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
-> > -					VMA_UFFD_MINOR));
-> > -}
-> > -
-> >  static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
-> >  {
-> >  	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
-> > @@ -235,6 +199,40 @@ static inline bool userfaultfd_protected(const struct vm_area_struct *vma)
-> >  	return userfaultfd_wp(vma) || userfaultfd_rwp(vma);
-> >  }
-> >
-> > +/*
-> > + * Never enable huge pmd sharing on some uffd registered vmas:
-> > + *
-> > + * - uffd-WP and uffd-RWP VMAs, because the write protect / access tracking
-> > + *   information is per pgtable entry.
-> > + *
-> > + * - uffd-MINOR VMAs, because otherwise we would never get minor faults for
-> > + *   VMAs which share huge pmds. (If you have two mappings to the same
-> > + *   underlying pages, and fault in the non-UFFD-registered one with a write,
-> > + *   with huge pmd sharing this would *also* setup the second UFFD-registered
-> > + *   mapping, and we'd not get minor faults.)
-> > + */
-> > +static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
-> > +{
-> > +	return userfaultfd_minor(vma) || userfaultfd_wp(vma) ||
-> > +	       userfaultfd_rwp(vma);
-> > +}
-> > +
-> > +/*
-> > + * Don't do fault around for WP, RWP or MINOR registered uffd range.  For
-> > + * MINOR registered range, fault around will be a total disaster and ptes can
-> > + * be installed without notifications; for WP it should mostly be fine as long
-> > + * as the fault around checks for pte_none() before the installation, however
-> > + * to be super safe we just forbid it; for RWP, pre-faulted neighbours would
-> > + * be indistinguishable from accessed pages in PAGEMAP_SCAN (PAGE_IS_ACCESSED)
-> > + * and pollute the tracked working set, so each page must be populated by its
-> > + * own fault.
-> > + */
-> > +static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
-> > +{
-> > +	return userfaultfd_minor(vma) || userfaultfd_wp(vma) ||
-> > +	       userfaultfd_rwp(vma);
-> 
-> This is changing the logic.
-> 
-> Before we were testing only the flags, now we have:
-> 
-> static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
-> {
-> 	/*
-> 	 * Callers gate PAGE_NONE usage on this; PAGE_NONE is a BUILD_BUG()
-> 	 * without CONFIG_ARCH_HAS_PTE_PROTNONE, so fold to false.
-> 	 */
-> 	if (!IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE))
-> 		return false;
-> 	return vma_test_single_mask(vma, VMA_UFFD_RWP);
-> }
-> 
-> I.e. adding in a CONFIG_ARCH_HAS_PTE_PROTNONE check.
+We don't check str_dup() return value and never free it. While both
+things are irrelevant in practice, let's just clean it up by working on
+argv[0] directly and avoiding the str_dup().
 
-Without CONFIG_ARCH_HAS_PTE_PROTNONE VMA_UFFD_RWP is hardwired to VM_NONE
-so it's functionally the same ;-)
+Nobody after us needs these parts of the argv[0] string anyway.
+
+This patch is inspired by previous work from Anshuman Tewari [1].
+
+Link: https://lore.kernel.org/r/20260821114416.12255-1-anshumantewari123@gmail.com [1]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ tools/testing/selftests/mm/khugepaged.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 1d2d6bd72fd2a..83d27d069c413 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -1227,7 +1227,7 @@ static void parse_test_type(int argc, char **argv)
+ 		return;
+ 	}
  
-> BTW side-note these:
-> 
-> static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
-> {
-> 	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
-> }
-> 
-> static inline bool userfaultfd_wp(const struct vm_area_struct *vma)
-> {
-> 	return vma_test_any_mask(vma, VMA_UFFD_WP);
-> }
-> 
-> static inline bool userfaultfd_minor(const struct vm_area_struct *vma)
-> {
-> 	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
-> }
-> 
-> Should all use vma_test_single_mask() really :)
-
-These are changed anyway in a later patch.
+-	buf = strdup(argv[0]);
++	buf = argv[0];
+ 	token = strsep(&buf, ":");
  
-> --
-> Cheers, Lorenzo
+ 	if (!strcmp(token, "all")) {
 
--- 
-Sincerely yours,
-Mike.
+---
+
+base-commit: 169393fff5d1ec2690934067eeb95544ff5ebdd7
+
+change-id: 20260825-remove_str_dup-bb089e93094f
+
+--
+
+Cheers,
+
+David
+
 
