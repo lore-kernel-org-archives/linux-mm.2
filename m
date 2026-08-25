@@ -4,145 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B7BCC61DBE
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 890FEC61DBE
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 12:59:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 622B76B00E9; Tue, 25 Aug 2026 08:56:15 -0400 (EDT)
+	id 937BE6B0088; Tue, 25 Aug 2026 08:59:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AC4B6B00EA; Tue, 25 Aug 2026 08:56:15 -0400 (EDT)
+	id 90DF76B008A; Tue, 25 Aug 2026 08:59:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44D0F6B00EB; Tue, 25 Aug 2026 08:56:15 -0400 (EDT)
+	id 827C06B008C; Tue, 25 Aug 2026 08:59:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 20FDC6B00E9
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:56:15 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B67C1A03C5
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:56:14 +0000 (UTC)
-X-FDA: 85139789868.12.4072D04
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0138280007
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:56:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OMQGthC/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C9A46B0088
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:59:20 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E083712034D
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:59:19 +0000 (UTC)
+X-FDA: 85139797638.13.3A1F0E0
+Received: from mta0.migadu.com (out-237.mta0.migadu.com [91.218.175.237])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EDB3D40006
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 12:59:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mHcZVZ44;
+	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787662758;
+	b=7OyC3G8flkJ10EcMdc5g4l0dw7hJiFVHdSu8sC0wzBL7awQ9D53PR0hh5GAHGMrHy4Pg9I
+	tsHsyyEltekihoq+Etf8F1+PDcsxIrfU5B1grFl6qa45La2lxO+X3dEgVqTQTIcmfQy15O
+	5VgdEpoMTX2DZoeB+DWaIKdFizfTuqk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mHcZVZ44;
+	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787662573;
+	s=arc-20220608; t=1787662758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S1NH11Ux2Q+TJnSYsBGICr/Vyj9y9q11Lv0osnSbWhM=;
-	b=AsY/930fZGw590daNK3Dqcf5D4JwKoiia5CEnUFNgOoKB4D6vRAfhFFJaOQPESlZCE+waP
-	TjdIArXVPp0WI/tPkHERiSf5GeB8EIeIOD4JWrcXBnvF97B+tmI2DirF2ZhaMtWvR5cKIR
-	uupHmlmzobcQS8iwg+t09Jvr61+gtnM=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OMQGthC/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787662573;
-	b=zACGC3cRPlpDdbMqcCG2vek3UMPte0CeqbyZ8zr0tWldUJgfgcRGs9tJYZ19rm8evfFBY9
-	Zwl9+uA0S+0+ln5JkvQFsPBIom9YUBUk3mG+5oqtuyo35lxF8ElCU8bNqD7QJOauc0eVuZ
-	NbO5chroXaw2Dbk3bXIBffQky2Ib/Uc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 799FB6011F;
-	Tue, 25 Aug 2026 12:56:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 517F51F000E9;
-	Tue, 25 Aug 2026 12:56:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787662572;
-	bh=S1NH11Ux2Q+TJnSYsBGICr/Vyj9y9q11Lv0osnSbWhM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OMQGthC/1IYPhZ7gn3YDFvyeihk04dHDWcFaQAJTzF0quTzsZSXR7EffI3xkEXtJe
-	 3vTrLi5dijjdsklRGC4BB2wXB3/70yRqw0MHgjB0hWkirN0L6Gi7HbdXb4fjGKQWo5
-	 cimxLTw6uvlfG2GmiZpaMgCbG2cRD+JOK5HufU+N0i88O1NXDfA9t2VAG112Jxx04c
-	 ZPqSi3nMhiklo9SauadhAcMpuVgCZzoQEpTR4zowJKQqQ4M/RvjOPf5DykvbnT5ob/
-	 KBG4R11kh0ALLHaCbNvnFg/9DxQlWEfvA/+KvC6kM8+db9PuXZabSP23IYVl+XZfMD
-	 HDQy4u5aAaXyQ==
-Message-ID: <d58bfaaf-5849-43aa-9c18-271fd0500aaf@kernel.org>
-Date: Tue, 25 Aug 2026 14:56:02 +0200
+	bh=uK5Ad+Btukfe8tO5oA2/EPLxTa7S+nCASEqgqHQPlX4=;
+	b=X92kgokyhfvVdhMrXzaLT7jaiTmGDiJ0T31QQa88bj7vuhKPpPVKk5Igd1xE4cfmvtI4Sz
+	0sq9LQsCu4KRp0zMutnnau6UQO8hSoqAHseseCID7yvNkRRuuYv73byzHuIO7rZDQnzZ2O
+	cmHtOmRgoj+i/fOSwPPgsHy3a/ElQY4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=vPycpKER/JF8kLZX9oLztJNJWeKo4SFsQwqcjLqYHsY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787662756; v=1; x=1788267556;
+ b=mHcZVZ44HgphCjleFFgUINq9OIsPmkAba+7UrqZi1e5RU05SvUglQ786mM7BrQavFvj8VFcw
+ rkoY+gwjxhu1/7yJoERYB1hehA3GkeDuCr0RUQwZOSHnuCPqjxWltvrxo2N03MqB3uD9VlO+vSP
+ OyBV+Xix3aPSwQ0QI+JHGAc4=
+X-Envelope-To: linux-mm@kvack.org
+Received: from fedora (117.129.78.49)
+	by smtp.migadu.com with ESMTPS id 059bbcde781145e8;
+	Tue, 25 Aug 2026 12:59:16 +0000
+X-Mizu-Trace-ID: 059bbcde781145e8
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 25 Aug 2026 20:59:08 +0800
+From: Hao Li <hao.li@linux.dev>
+To: Longlong Xia <xialonglong2025@163.com>
+Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, xialonglong@kylinos.cn
+Subject: Re: [PATCH 1/1] mm/slab_common: reject zero object_size before
+ calculate_alignment
+Message-ID: <ao2RAVvU5g9Am7_J@fedora>
+References: <20260824092454.1693745-1-xialonglong2025@163.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/secretmem: properly account locked pages
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- Hagen Paul Pfeifer <hagen@jauu.net>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
- <17e9f7d6-d095-44ee-9997-8dc10646f3f8@kernel.org> <ao13TmFVVpsv0zO4@gremlin>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ao13TmFVVpsv0zO4@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7zyystefrr7g9xc3hfi35sq85gqc7okw
-X-Rspamd-Queue-Id: 0138280007
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824092454.1693745-1-xialonglong2025@163.com>
 X-Rspam-User: 
-X-HE-Tag: 1787662572-721030
-X-HE-Meta: U2FsdGVkX1/f9Bddd09PGjL8vtO/zvIWiJdttlbHC9k0MVJmKIeegkfZTEKcHfrgY9u2aWUOZsVmPX220+2LtGWLjGhaNBVXTikSjDMyTrV8m7tVdCe05KNMLPCmoO4kxyRWfSCDSZFRYTdhbDfxycCIxzw6ZDVjW+5o2lXYFQZyF28jRHR+aHth9TOIS241ch0P7xIMradKNhI20cam6e5RWX3Y1+otpyJ5uEe4RcHZq2FO+JCJyKFJnObx+4leXXi164AhN73IDV2MKKafpH56h4zn8w2xCr6oEvRMWKY5PstOkoUXJ4HtFRdk7yzu5lacM+D1D7K+cA5SOzD41Lbg0T4ZVlrJOIvthxkoee3BD12e9t9779qTrYRl43d33CNyY0uMccptdbquG7J+5UF9xNYjBehm89cYehhJ6RivKLiJz0WbkGdDVYAvV108mMiCvoVKPwsXdRfNV9Eqqgl+0huBAKgZoRDMEBWlWznxWP00ImMzBYqvCeWbZAXHxBh37QSsypK519XO0bHnw8MgkXxS261WY0fNmK+lx6Ge/tjSC8fezCJ9EsdGu1B4gIpy+z9qLPlfJclFgdng/Hruuvo4LHpgorO1WKVCVluOUgZ+eQF4i0k5KbBv0pwWgax789I/YahZs42jyY6zuQv6cb1x9RGzmhPSLizJxPez6/wub7VWEe+Qv5I9FSzKgV38DG+MRHaYWbFpHQomuqAtBzlUoB8rxdsWj2l9WG7e58CH4Zk+Sy7rPXOLT0NzXRvYRv2wySxAPr9TXrR83TbMjql3WLAESodBHQQBAvRzMyr1xWwBxnJxPaBcq3EQcYSS8ubbzGCjimMGzvQjQEP83jhO8DTRjHIn2nhT6od/Ln4jyTOpMJjidpqAT0Xdt1JkiJaLn++c+nmhB9QoMxJ1ZEabaKR81exiYEVzsVZcH5of2H5DfxL4hIQyL9pXmg5p3JMjiNGw8wqayW1
- WrBm81GR
- q88lhJy68AlzfYFeGolS7tpy7zErUpINDcFN93DM3Z/iH/KJMz2ZgQ5iAyfzCsHf/APYe4Xul1poWL7noJcWmYbgAcfTijNPiasrQC8nhtKLu3sFrtQQLlO0j7h2+IXWuNI8jhSEYpQ9jmx4XtNO1DyGsb+Pbe8FbrWq70XGtZxquJ+g3T3mulrgxLliinggduYpHAHDz5rDjRSgqzYtH16Rjq/Or62R+fVXUWhH5BApXk1RYyc8cGcik2z+6MzGZS18m7jJSpUp9JYsr0EiPTx5l9pQj/21PGSI3kLIF73jyYNvw7W1iFLOJk+Tfcff1X5BTXc28kHbTpWVh49abpnSRxnzlGL9+jEMbHwsosaOtAAYchmWEML3VxZ6SzPqr981Fr8ozgF8789ppsuxMYHXfQg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EDB3D40006
+X-Stat-Signature: 9gtjurretder8yhrastym85beny89jqj
+X-HE-Tag: 1787662757-989582
+X-HE-Meta: U2FsdGVkX1/IQVqfa1wRhuUkBAKq6dET7Xj28IAWcQmkapknxTlcFsG+7AytbGwPA0X1LCBhTB6S34ngVmIV3iAXqi8Qhyae5gsYn5aZom1epENyd2K4UNYarwV5oHpy3GwdzF56Sgt+76OXg6PF7/X9LkLgGdCTMQjyX1V6SuWwRFdS4ydMQZlGVEwRA7N698GcsM6O3ZAzWVVVft7sjspLCPr1ALqbfVKWF2qRjYtRzTOw9B1gpeG9/Kf8QpZxcBt31WAaFr60qHgiOUFjcceMDlIydPBN/z3eyY6fkjGBuAG8lC2WKNqWwRY9XovW7TYPTlRPYIUdJdNhoJBb3RoZGlwCNFT4R7zfXMovTgwxvD6uSd2GQJNczm5Fary2v+tPpryARvkkIhHWljpYVvoLC/6epiGEmHyPNHKRwYrqvSY3BQC+28E7X5W8NBQKa762B1PPU4k6VKfYyPOEiU2qCgPJ+etopC3yZmLwE2bVlGSYwcbpXW4XJMusJi4dXixtaQyOHpfPhgULiCg9bE8CCKgR09bsPCNQlopxDWO4BRVL3uNgg1prWXmGoGNi23EWp0KxoMqnO+CwqJeRfZaMo3a4y7rBxMdayNJbS+laSbOgicZ/qOksiRdF8kLGT8qcPoyownS990iffdOdkQO5HeJ9IjARaBSr2ex7MTl4mndMn6rsspTUFYVxaaOpUl130x02zsoK8jz71DtJs0nrW7qWeDkW1Czkz2moEGwRaQwMFrEX0AZ2IuvH261QbS0N+c+RWM7gtY7NUD6lz4LrTUvNWutD+L81RtOIoxw+1+HcRWos1td45C0cEg71OpicY1qHRCK99+pkmeO+uA6UjXOUFtv/XkVoW4OSM8UqxXRrXOodr0Cn2w9RJGHHV22cJWVSBALa0lBoSi2K8ArXAYm0DAbjhmLvRxkyOHTcbLXG2x/Hr70XUc2E8664X52YUKu+KocSZbq4o4w
+ Qbmpd6mA
+ +52hun94VDHKwGdDcoAgnKMTSWS3CwBQx9igrX7o3H+XNzfqioghJWUipHvIuW0al00zGYRXIjV9VGHVH1M2eTzCDWZB5KVF0+3zzgn5bOiJDe0rAT2sg0gpkzwtbICpsmfjAE7b/9C4SzxiKqcGbLDXNkzaWpkb8EM/BbxaTDLi6Ng8Tk/F+7aG9jaPuyjAsobQLGxo6lkeD1cOU25wVuXH6B4Nc3PbjiRDob73C7+cXWpC8Es/jjDZcJ5gqn9XlIRd2tSQQf3q4k0TnOtYIJKG2S6oTzffBzu4ZucJHcCm1MAJFh3GehHvD1TaEJ3dF2Leq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,34 +91,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>>
->>> +		if (!secretmem_account_folio(state, folio)) {
->>> +			folio_put(folio);
->>> +			ret = VM_FAULT_SIGBUS;
->>> +			goto out;
->>> +		}
->>> +
->> Okay, that works because secretmem does not support any form of truncate, in
->> particular, no FALLOC_FL_PUNCH_HOLE.
+On Mon, Aug 24, 2026 at 05:24:54PM +0800, Longlong Xia wrote:
+> From: Longlong Xia <xialonglong@kylinos.cn>
 > 
-> Yeah exactly. I think I covered that off somewhere in my essay-length
-> commit msg but if not but yeah that is a thing that I noted.
-
-I didn't quickly spot it, but it would be worth adding it if not already there.
-
+> calculate_alignment() with SLAB_HWCACHE_ALIGN halves ralign in a
+> while (size <= ralign / 2) loop. When size is 0, ralign eventually
+> reaches 0 and the condition stays true indefinitely, hanging the
+> kernel.
 > 
->>
->> Overall, the idea sounds good to me. Nothing jumped at me.
+> kmem_cache_sanity_check() rejected size > KMALLOC_MAX_SIZE but not
+> size == 0, and the sanity check is compiled out without
+> CONFIG_DEBUG_VM. Add a !object_size check in
+> __kmem_cache_create_args(), which is always compiled, and add !size
+> to the DEBUG_VM sanity check for diagnostics.
 > 
-> Thanks! So in a way you kinda... Ack it right? :P If only there were a tag
-> for that 🤔 ;)
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+> ---
+>  mm/slab_common.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 657fd75776ea..209fe838fe71 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -102,7 +102,7 @@ static bool kmem_cache_is_duplicate_name(const char *name)
+>  
+>  static int kmem_cache_sanity_check(const char *name, unsigned int size)
+>  {
+> -	if (!name || in_interrupt() || size > KMALLOC_MAX_SIZE) {
+> +	if (!name || in_interrupt() || !size || size > KMALLOC_MAX_SIZE) {
+>  		pr_err("kmem_cache_create(%s) integrity check failed\n", name);
+>  		return -EINVAL;
+>  	}
+> @@ -354,7 +354,7 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+>  		goto out_unlock;
+>  	}
+>  
+> -	if (flags & ~SLAB_FLAGS_PERMITTED) {
+> +	if (!object_size || flags & ~SLAB_FLAGS_PERMITTED) {
 
-Well, on the split patch without the test ;)
+under !CONFIG_DEBUG_VM, I think we ignore the sanity_check deliberately, so it
+seems we don't need to add !object_size check here. right?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
+>  		err = -EINVAL;
+>  		goto out_unlock;
+>  	}
+> -- 
+> 2.43.0
+> 
 
