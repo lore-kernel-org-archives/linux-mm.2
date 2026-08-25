@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F8B6C61DB6
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86035C5DF94
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 08:59:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 338396B0098; Tue, 25 Aug 2026 04:59:11 -0400 (EDT)
+	id 2EAAF6B0099; Tue, 25 Aug 2026 04:59:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30FB06B0099; Tue, 25 Aug 2026 04:59:11 -0400 (EDT)
+	id 2C0F36B009B; Tue, 25 Aug 2026 04:59:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2257D6B009B; Tue, 25 Aug 2026 04:59:11 -0400 (EDT)
+	id 1892D6B009D; Tue, 25 Aug 2026 04:59:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 027246B0098
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:59:10 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2DB6280309
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:59:10 +0000 (UTC)
-X-FDA: 85139192460.03.CC311A7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F1E336B0099
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 04:59:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BB391203AC
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:59:12 +0000 (UTC)
+X-FDA: 85139192544.17.1BAB428
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 692AF180006
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:59:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+	by imf04.hostedemail.com (Postfix) with ESMTP id DE8BB40006
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 08:59:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787648348;
+	s=arc-20220608; t=1787648350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ny05vEAMljaI2j95/eWI2OGoVPjUdJUtO+82jUn8DOY=;
-	b=IEueucyXHAyxG6+mqSN4Pvr85jTJAoCVnoyxFiq40a+l9UP/0t7GoZQVD7VYwNlEe1H7m6
-	Qvud62cEjo5XkFA19YjbKND9DYZ5WQxbUsrcnQQ4POUkAfZI9fVaa5qZOkojoLWpRF4C5s
-	bqX4/++H/FzklV+ryM5Ad0eR9KCBlJA=
+	bh=bGauQNMhLp6g1k7M5O7gIqjRxqEHKwyV5dSFW1E4Fxw=;
+	b=yy6bDPCu8KJXUwLhKD6nAsXZKmfQrzjSbG4hhZkEzqtRJ6Gd8MLqaln2XKEnZyJX1+i21i
+	MM131H3HZzsaZCfv4Fqc/xt03LOKGxYUWJnrLRQvqnzKufxdT1tQe4madyraFWDIXEWOYj
+	FjPOraxOjvFBFEZ6or8ziITQu0vHZtQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
+	spf=pass (imf04.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787648348;
-	b=UoXxoxv+fO1p6tbBH9PBZ06VSGT8Vk4CQNFsolZS7GgSG9r8nuOuDwRYhb0WwGYaHvXFtS
-	+HrjWnRynjB+JUe8aOi4zVH3PkYDwvzBAc4XZpr5QbRtessUPJem/tkagCavDwg0vnRf3b
-	eWJOP9HOmuj+5BtU1/s5WKVHXRmEi5o=
-X-UUID: 340a63a8a06311f19a56ed5b684f684d-20260825
+	t=1787648350;
+	b=AQQfmLFDn1PgDYbByugwQqv/neiaPXPkhUGiTNiX/7fGeFulrbTOtFaoY02AkRMLMeRwsi
+	7iJB4U6LX+4USBzP9ENyHdS/Nm1X4OQ8N8f7DVOmo6sr0H7xgfsh8OHhuA8Hf43cg+zSFs
+	AR47kJ6PHViouWwR9YvuWcQ0gtmh9OY=
+X-UUID: 3638108aa06311f19a56ed5b684f684d-20260825
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -57,27 +57,27 @@ X-CTIC-Tags:
 	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
 	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:d15b4706-d242-483d-acee-2c5a758a1985,IP:10,
+X-CID-O-INFO: VERSION:1.3.19,REQID:82749ddd-5abf-47df-87ac-e335f40255ec,IP:10,
 	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
 	N:release,TS:35
-X-CID-INFO: VERSION:1.3.19,REQID:d15b4706-d242-483d-acee-2c5a758a1985,IP:10,UR
+X-CID-INFO: VERSION:1.3.19,REQID:82749ddd-5abf-47df-87ac-e335f40255ec,IP:10,UR
 	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:35
-X-CID-META: VersionHash:7db8b62,CLOUDID:371e4b14d4f9886783239c063ed44db9,BulkI
-	D:260825165900FI2LVGZY,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|865|
+X-CID-META: VersionHash:7db8b62,CLOUDID:9f4af4901fe8095e1c04f2e2c1a67177,BulkI
+	D:260825165903ABRGIBZD,BulkQuantity:0,SF:17|19|38|66|78|81|82|102|127|865|
 	898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:n
 	il,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC
 	:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 340a63a8a06311f19a56ed5b684f684d-20260825
+X-UUID: 3638108aa06311f19a56ed5b684f684d-20260825
 X-User: husong@kylinos.cn
 Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
 	(envelope-from <husong@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 342430873; Tue, 25 Aug 2026 16:58:56 +0800
+	with ESMTP id 727345008; Tue, 25 Aug 2026 16:58:59 +0800
 From: Song Hu <husong@kylinos.cn>
 To: akpm@linux-foundation.org,
 	usama.anjum@arm.com
@@ -95,22 +95,22 @@ Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Song Hu <husong@kylinos.cn>
-Subject: [PATCH v4 2/3] selftests/mm: emit TAP header and use TAP skip in mremap_test
-Date: Tue, 25 Aug 2026 16:57:55 +0800
-Message-ID: <20260825085756.63030-3-husong@kylinos.cn>
+Subject: [PATCH v4 3/3] selftests/mm: restore enable_soft_offline in hugetlb-soft-offline
+Date: Tue, 25 Aug 2026 16:57:56 +0800
+Message-ID: <20260825085756.63030-4-husong@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260825085756.63030-1-husong@kylinos.cn>
 References: <20260825085756.63030-1-husong@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 692AF180006
-X-Stat-Signature: ejpyi5e3rk4mn6t9dgabykwtfu1a6ioj
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DE8BB40006
+X-Stat-Signature: pauns7dq65inudd1tz3podkzqb9j655b
 X-Rspam-User: 
-X-HE-Tag: 1787648345-628348
-X-HE-Meta: U2FsdGVkX1+T4Jo1LXP9i2rPqAQStAIYTRam9cbWhqLAOFrZPjaZUlnMP3I9jM6bYju69A38RYc00Z1xmN0+5yUpsz9vrIvREGvidz8Y9934k/rUH8WbX6efqm87P4336vUhSqxlSGWhsgKwntBUkptltTiDy63S75VzkLDY46H5UXbdEuJgycu9fUUNJR6vLBVsVxTk+rjp8u+KDso1vqsHpE5irFazIw864C9FRLG+gPyZgwp17bGf7XlKrp3hRGL4cQ6B0/nUKoXKjq0j1cUB2bk7QaCeD/fAJGr+1k5YNlNvWE3TuALMhQP98kVp6x7Q9GZoES7O8RHJmrgu5LjnMeohBcZ+CohMINo62I87+URHeufUnVjj0Ym6YqA+MT9eucE76b7VzAd/nZ7mQ3SzVJAZCAtoaVThhZeaaqU/DXrQmp/ZRXe7TQqPJrpgv9pIEX3CQrBGRmbZLQXmQlpmU2F8qe4EKs3i2DGfuX2FVZa42omtnImfVA2TXatmauBOvyMxpBbIFIbx/hdGgcJxzm6QR0p4oIdD+VeUxXNdJF6Fqz5fX2HFnphSxv/fYcGCdDjJuDA2anqgznhz7LeYevW1bVv92z8I/OtBDvu8vGmYCqTpE/0lD9NnSSdnB717e9Up7uT9j0ep1SjKLb7DFZgh/kobxHTAhJvhEsFetZmOoALf1V9FfYtvHn0PSu2TPzEqO1627ZGxJGjSmBIc9eFF0Y1lDHLnNygJVxtd3+GbofMhdlnowrUMD/UV8IV0+IC4ucDjV4QJe94UHGtDHkLOBJKzaMpc2gL45TgIOooF3ZNZEllAilERsIXcwHUw2K2UlGu5nfxaYT0ZaZ+IEWpFryDVo5mIFZOwjJIKbW+Eh4Aq6s/lxPDN2jl9o3VLhwg85NIi1xA+LtTIZuWF9Oacf5p4mhght8nACJ2C4pZ80N+DvGY6R2cjzgcwMHuCuGTLNgkcEaQhhq9
- eDtcanhu
- PoiXGfmX27tTLroZsqyXS0eyPAly1gzqQ+ooVEoQkOP/x7ppT04EuJTFYo8BE2dAT9xFcnFFGnWiIhYFMJ0WCnJg9F/+zDlUaaN1Cw8oXKZ30aJIL52ru9NMJ0fAplZnxxuG9Uh+liNZTw8A=
+X-HE-Tag: 1787648348-503382
+X-HE-Meta: U2FsdGVkX18UJvV3t94iedqTtSsjQ4KIbFag8ey5zVl6lyCB3nGi/OhXl9R0LkYV/tmZE0xCLbOY117j1xCJ6xxzVqsguSA2KEyJyrQLt6pK4R8dtdoHt76NheMKKck6ZWxPqEJZhISKvAGd8QGVvH4PfTGcNp3kB30iuHmS8DvteJjzgKmluXlNwlDlreDcKeNN1/xQR1Fr38j3r9FH5yKHxzvpTwgVHvHkXCbnyiHsO4nTQYLJmPbfM1plR1eJyCSlVEjV9yaaooDMw1LDkkaBwMQo64epGIB5FQzcaCBdQpfWZ1BGqdqBbb9s3Kh+SIoR1I1jp1exp8iz9NSKw635kKWevzvBQOTX5LEQwKEJKZGiILDJgPbDpxRNVPlWbj3VvnayF63Ir+3L7nHhNmTUy6FE41p1vYG/Y7kA4MZw4zPvWWpypZ/PV2prvmWIhLbRqe1g3ONTyXuEfZL6NiqGdWfdPrbw12Vh5CvzQfTnRunBHVHHkyUTSbtKel/0oKa4ueTR7CVa6EFWck9YPOQOK27GMjTnd8Ea+IkhIsjG75DKrFVSFaPYBaEk0tQ1OC5YcOB77dbJ24K7Quwvy1F6vodL95pzWwk+uTqYiSOaqMIKkpbVMlgWAnexhau4vLWqemhF43JbvDZYscIPl26u78agd70+mxJ3FvkRpUsn50AdkW93KRw7eDk9QixQraMxE7yYZrmsD0dDJpfT0HlU5f9zr/PDBkV3286uIO4ytA3E9e8nzpWJpai0QjuSDHlUabVBAD6XkDd7YksHMrQRCXJK/gZeH4JFnCIKbtVF+QQknYKTsaGNm3VQ01CsGsFTxL+0E7o7dL0OIBHtHsYXtgpMeXB1J0QL6wdiOEX2djWJz3JXGnRCuItmPcWhYfhfOPoKdY/J7bExsul6M/8+5GeLZ5WQFAKvCW4p+dHFkdkdvMXePj4Pb/GYYSEXYiSNVmQzVDD/ilAwrRz
+ nzLYMtwH
+ B69Y3Qcv/3Mj3qf3nbLLAebUtFV9Kz9A80lDmQ88HOqKjuSwfZfqf4+r+zQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,119 +118,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mremap_test calls ksft_set_plan() without ksft_print_header(), and its
-get_mmap_min_addr() skip path uses a bare exit(KSFT_SKIP) that prints no
-TAP line, so its output is not valid KTAP.  Add the header and switch
-the skip to ksft_exit_skip().
+hugetlb-soft-offline toggles /proc/sys/vm/enable_soft_offline between 1
+and 0 (test_soft_offline_common(1) then (0)) and leaves it at 0 when it
+finishes, silently disabling soft offlining for the whole system after
+the run.
 
-Also fix two more KTAP compliance issues spotted in review:
+Save the original value before the test and restore it from an
+atexit() handler, as hugepage_restore_settings_atexit() in
+hugepage_settings.c already does.  Use read_num()/write_num() from
+vm_util instead of hand-rolled popen()/fopen() helpers.
 
-- get_mmap_min_addr() calls strerror(errno) after fclose(), which may
-  clobber errno; save errno before fclose() instead.
+The restore handler must not call write_num(): on failure it
+re-enters exit() through ksft_exit_fail_msg(), which is undefined
+behavior from inside an atexit handler.  A non-root run hits it
+directly - the restore write fails the same way the write that
+triggered the exit did.  Restore with plain open()/write(), best
+effort.
 
-- Some ksft_*() messages embed "\n\t", so the text after each embedded
-  newline is printed without the "# " prefix.  Split those into separate
-  messages.
-
-And cache mmap_min_addr in main() before ksft_set_plan(), so that the
-skip paths in get_mmap_min_addr() are taken before the plan is set; a
-skip after the plan leaves the run with fewer tests than planned.
-
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Signed-off-by: Song Hu <husong@kylinos.cn>
----
- tools/testing/selftests/mm/mremap_test.c | 43 ++++++++++++++----------
- 1 file changed, 25 insertions(+), 18 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 131d9d6db867..ab5420f2e875 100644
---- a/tools/testing/selftests/mm/mremap_test.c
-+++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -111,18 +111,17 @@ static unsigned long long get_mmap_min_addr(void)
- 		return addr;
+---
+
+Changes since v3: the restore handler no longer uses write_num(),
+whose failure path calls exit() from inside an atexit handler -
+undefined behavior on a non-root run.  Restore with plain
+open()/write(), best effort.
+
+ .../selftests/mm/hugetlb-soft-offline.c       | 49 +++++++++++--------
+ 1 file changed, 28 insertions(+), 21 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+index bc202e4ed2bd..4af9d3db7b5b 100644
+--- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
++++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+@@ -11,6 +11,7 @@
  
- 	fp = fopen("/proc/sys/vm/mmap_min_addr", "r");
--	if (fp == NULL) {
--		ksft_print_msg("Failed to open /proc/sys/vm/mmap_min_addr: %s\n",
--			strerror(errno));
--		exit(KSFT_SKIP);
--	}
-+	if (!fp)
-+		ksft_exit_skip("Failed to open /proc/sys/vm/mmap_min_addr: %s\n",
-+			       strerror(errno));
+ #define _GNU_SOURCE
+ #include <errno.h>
++#include <fcntl.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -23,6 +24,7 @@
+ #include <sys/types.h>
  
- 	n_matched = fscanf(fp, "%llu", &addr);
- 	if (n_matched != 1) {
--		ksft_print_msg("Failed to read /proc/sys/vm/mmap_min_addr: %s\n",
--			strerror(errno));
-+		int err = errno;
+ #include "kselftest.h"
++#include "vm_util.h"
+ #include "hugepage_settings.h"
+ 
+ #ifndef MADV_SOFT_OFFLINE
+@@ -31,6 +33,8 @@
+ 
+ #define EPREFIX " !!! "
+ 
++#define ENABLE_SOFT_OFFLINE_PATH "/proc/sys/vm/enable_soft_offline"
 +
- 		fclose(fp);
--		exit(KSFT_SKIP);
-+		ksft_exit_skip("Failed to read /proc/sys/vm/mmap_min_addr: %s\n",
-+			       strerror(err));
- 	}
- 
- 	fclose(fp);
-@@ -1164,10 +1163,11 @@ static void run_mremap_test_case(struct test test_case, int *failures,
- 					    rand_addr);
- 
- 	if (remap_time < 0) {
--		if (test_case.expect_failure)
--			ksft_test_result_xfail("%s\n\tExpected mremap failure\n",
--					      test_case.name);
--		else {
-+		if (test_case.expect_failure) {
-+			ksft_print_msg("%s: expected mremap failure\n",
-+				       test_case.name);
-+			ksft_test_result_xfail("%s\n", test_case.name);
-+		} else {
- 			ksft_test_result_fail("%s\n", test_case.name);
- 			*failures += 1;
- 		}
-@@ -1177,11 +1177,13 @@ static void run_mremap_test_case(struct test test_case, int *failures,
- 		 * was faulted in.
- 		 */
- 		if (threshold_mb == VALIDATION_NO_THRESHOLD ||
--		    test_case.config.region_size <= threshold_mb * _1MB)
--			ksft_test_result_pass("%s\n\tmremap time: %12lldns\n",
--					      test_case.name, remap_time);
--		else
-+		    test_case.config.region_size <= threshold_mb * _1MB) {
-+			ksft_print_msg("%s: mremap time: %12lldns\n",
-+				       test_case.name, remap_time);
- 			ksft_test_result_pass("%s\n", test_case.name);
-+		} else {
-+			ksft_test_result_pass("%s\n", test_case.name);
-+		}
- 	}
+ static int do_soft_offline(int fd, size_t len, int expect_errno)
+ {
+ 	char *filemap = NULL;
+@@ -77,26 +81,29 @@ static int do_soft_offline(int fd, size_t len, int expect_errno)
+ 	return ret;
  }
  
-@@ -1250,13 +1252,18 @@ int main(int argc, char **argv)
- 	time_t t;
- 	FILE *maps_fp;
+-static int set_enable_soft_offline(int value)
+-{
+-	char cmd[256] = {0};
+-	FILE *cmdfile = NULL;
+-
+-	if (value != 0 && value != 1)
+-		return -EINVAL;
++static unsigned long orig_enable_soft_offline = -1UL;
  
-+	ksft_print_header();
+-	sprintf(cmd, "echo %d > /proc/sys/vm/enable_soft_offline", value);
+-	cmdfile = popen(cmd, "r");
++/*
++ * Runs from an atexit handler, so it must not call anything that
++ * exits on failure: write_num() would re-enter exit() through
++ * ksft_exit_fail_msg().
++ */
++static void restore_enable_soft_offline(void)
++{
++	char buf[24];
++	int fd, len;
+ 
+-	if (cmdfile)
+-		ksft_print_msg("enable_soft_offline => %d\n", value);
+-	else {
+-		ksft_perror(EPREFIX "failed to set enable_soft_offline");
+-		return errno;
+-	}
++	if (orig_enable_soft_offline == -1UL)
++		return;
+ 
+-	pclose(cmdfile);
+-	return 0;
++	len = snprintf(buf, sizeof(buf), "%lu", orig_enable_soft_offline);
++	fd = open(ENABLE_SOFT_OFFLINE_PATH, O_WRONLY);
++	if (fd < 0)
++		return;
++	if (write(fd, buf, len) != len)
++		ksft_print_msg("failed to restore enable_soft_offline: %s\n",
++			       strerror(errno));
++	close(fd);
+ }
+ 
+ static int create_hugetlbfs_file(struct statfs *file_stat)
+@@ -145,10 +152,7 @@ static void test_soft_offline_common(int enable_soft_offline)
+ 	hugepagesize_kb = file_stat.f_bsize / 1024;
+ 	ksft_print_msg("Hugepagesize is %ldkB\n", hugepagesize_kb);
+ 
+-	if (set_enable_soft_offline(enable_soft_offline) != 0) {
+-		close(fd);
+-		ksft_exit_fail_msg("Failed to set enable_soft_offline\n");
+-	}
++	write_num(ENABLE_SOFT_OFFLINE_PATH, enable_soft_offline);
+ 
+ 	nr_hugepages_before = hugetlb_nr_default_pages();
+ 
+@@ -192,6 +196,9 @@ int main(int argc, char **argv)
+ 
+ 	ksft_set_plan(2);
+ 
++	orig_enable_soft_offline = read_num(ENABLE_SOFT_OFFLINE_PATH);
++	atexit(restore_enable_soft_offline);
 +
-+	get_mmap_min_addr();
-+
- 	pattern_seed = (unsigned int) time(&t);
+ 	test_soft_offline_common(1);
+ 	test_soft_offline_common(0);
  
- 	if (parse_args(argc, argv, &threshold_mb, &pattern_seed) < 0)
- 		exit(EXIT_FAILURE);
- 
--	ksft_print_msg("Test configs:\n\tthreshold_mb=%u\n\tpattern_seed=%u\n\n",
--		       threshold_mb, pattern_seed);
-+	ksft_print_msg("Test configs:\n");
-+	ksft_print_msg("threshold_mb=%u\n", threshold_mb);
-+	ksft_print_msg("pattern_seed=%u\n", pattern_seed);
- 
- 	/*
- 	 * set preallocated random array according to test configs; see the
 -- 
 2.43.0
 
