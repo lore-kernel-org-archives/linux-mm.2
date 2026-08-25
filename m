@@ -4,98 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32329C61DBD
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 11:18:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC10C61DBD
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 11:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 212306B00A5; Tue, 25 Aug 2026 07:18:32 -0400 (EDT)
+	id 856716B00AE; Tue, 25 Aug 2026 07:20:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EB1C6B00AC; Tue, 25 Aug 2026 07:18:32 -0400 (EDT)
+	id 82E296B00AF; Tue, 25 Aug 2026 07:20:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D8E16B00AD; Tue, 25 Aug 2026 07:18:32 -0400 (EDT)
+	id 71D1D6B00B0; Tue, 25 Aug 2026 07:20:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D2B686B00A5
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:18:31 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 531161203E9
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:18:31 +0000 (UTC)
-X-FDA: 85139543622.10.CEA869A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A908212000E
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:18:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YGEZC8Fp;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787656709;
-	b=rkea/HnelNthzw6ayjQchOq3m/ZVVsHnazMPEt0bgltG0jTQALRq/WoHmeayGFTNANdmPD
-	3XtTv39sBMuF1OYZ/97yehPaKe2HB9/x0l3CM57t+4EcnBiDD4mDCdEwFX6A2IaCSoIxCR
-	epmqGmJqCAjPLCJKSHgp/+TpmVuq25c=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YGEZC8Fp;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D7116B00AE
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 07:20:10 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D43921603D4
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:20:09 +0000 (UTC)
+X-FDA: 85139547738.23.74D0703
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 38944A0008
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:20:08 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H4S9/yoy";
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787656709;
+	s=arc-20220608; t=1787656808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W05Dx/VZMWvzT1SSodsvq4ca5CdFdSoDwnfBlPLV4jk=;
-	b=wLJaK5C3aYbdB8Pn0v2aWa7AD7zOQ1jI1JdT5cAAbyZAPJ+BwhuV50f376VmHVqKk4hvV6
-	cnzL8QiSeE5icPObISCpXAKu4MNXWvTbil+IsoBbNV/Hw2Z5ZXuQ/F8G2T1r+BUQacSDik
-	65deYelT5WtLWZ+84qFzz1zkcVWwaz0=
+	bh=FWf3P/SKIaJRRAsSvxTvo5izA5oqfXztVDKK4GY3V7o=;
+	b=oJHxzWlfpoKJSLsIblEWdM+3Pm5bbTQWSnRdHTAMLzEe4r2/PAjc8WGXe+4yJUcGrz7Ufd
+	AvKO5xbWSTTePuy2Qw9a0f0ZrKQ4NWq0SPjr7kuZStS/zMk1LcfVGXR9ab5nTtiyy+GBfX
+	NDAvEm3ynIcUSmgHEWM0IBMkJJ97SD0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H4S9/yoy";
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787656808;
+	b=5cMD/5U6YmyWlkdL0BkvPo+mDOzpDi6ox0Q2Tmx52EaqbHAfiDRwtBfWVZn0mfrLh+WVDr
+	PMPXqJ8LJSOz0V2x4sPDjYQgHz0ojE/FxxdtV594euus0+Q0FHjmN3IzfcGffOBzRX3sPO
+	wVdyB6Ldqe1SlJjnWpWT5oJPsiuWU/8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A238940A9F;
-	Tue, 25 Aug 2026 11:18:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2851F00A3A;
-	Tue, 25 Aug 2026 11:18:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A4E8C6011F;
+	Tue, 25 Aug 2026 11:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBDC1F000E9;
+	Tue, 25 Aug 2026 11:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787656708;
-	bh=W05Dx/VZMWvzT1SSodsvq4ca5CdFdSoDwnfBlPLV4jk=;
+	s=k20260515; t=1787656807;
+	bh=FWf3P/SKIaJRRAsSvxTvo5izA5oqfXztVDKK4GY3V7o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YGEZC8FpPuaGJTkbj+O22U5UJ5eHCoQdZKhpk0mREl2Yhk1RMhKjSQpZVNe31G3m+
-	 YlAF98rAHthuPnCeEeP2BDBRfWFYWrhFCZSj+FQ012T9VJ1eTTtm8QPVK7syzOLegH
-	 V9ZiVnNdgicGC8JEfJxGAVgabPWhYKdwE/FTOoMtBnJtXlOq6HM00gzfgnm0ePGNyT
-	 bdQx6Ohwqgi0e5QDnLrTGTLLnSBNt+v7tVseSXE2lVvvw6LR7b4r2lfLpcpG/CikO0
-	 0JE1rSzDikmxz0iMjjpw5PlAkn59CAORWeqRN3yCOvyMc0pM7RMZU6Byhgi7nSFckA
-	 cGJv4dRxlzK0A==
-Date: Tue, 25 Aug 2026 12:18:20 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Hagen Paul Pfeifer <hagen@jauu.net>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v2] mm/secretmem: properly account locked pages
-Message-ID: <ao13TmFVVpsv0zO4@gremlin>
-References: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
- <17e9f7d6-d095-44ee-9997-8dc10646f3f8@kernel.org>
+	b=H4S9/yoy2Yjopf5gJYiLZlxYDa/LboiBgyS4EuOYw9JqJD7li/qlty74bcEQgzwtH
+	 4wTenkCXmKrBVCieVML0QhQRsiBRWfj+Vo5U1ZXbrxiQjg+8+jfypo4OCeSwWIkAMZ
+	 tGi4hRTou0eYuIgORrwa23WZJNaOQ2w0LPm0GiNcQKnT6h+UueNqYbGBzx2i4aBbpJ
+	 tEvONlrvVtodXsR5TcH2v8srrbxYCaD/HxUG5j3Vgg3FbW++fP2cqi6mlT7pQ23/d7
+	 DTlQTkMRWi3hjEddNZo4G30JKiM9m2wQEl0uhtjRtMAiRlPyva24nEyUbl9OCvsV3j
+	 TdPxHX9JMazIA==
+Date: Tue, 25 Aug 2026 14:19:52 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>, Lance Yang <lance.yang@linux.dev>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nico Pache <nico.pache@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/6] userfaultfd: use userfaultfd_*() helpers instead of
+ open coded flag tests
+Message-ID: <ao16WPoLpdIdU3ID@kernel.org>
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-3-3086981b33cf@kernel.org>
+ <aoxdWWMEeQbcG5Pq@gremlin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <17e9f7d6-d095-44ee-9997-8dc10646f3f8@kernel.org>
-X-Rspamd-Queue-Id: A908212000E
-X-Rspamd-Server: rspam10
+In-Reply-To: <aoxdWWMEeQbcG5Pq@gremlin>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 38944A0008
+X-Stat-Signature: 3i89oss7cro8cbue1gc4k8x963ynbgbd
 X-Rspam-User: 
-X-Stat-Signature: kz61czq9ywrkpqe87gqinwgafz7z9rra
-X-HE-Tag: 1787656709-381255
-X-HE-Meta: U2FsdGVkX18hOkhjzUF53J/Du9LEDQQ3YweFTKX3hF6Rc9upqUp3kCzyiUuWWUzhwjknT6jIgs6LrMebbwn1WlLSCZLuJHAgyPi5aIPuboeHJ8WHmBStbF/KR9dsJoWO79Cp3wVnidDToyE/cEHYnj4y8mDBAF7ykuwJC55/eo3oWIr1i6mhWqNwC1gG2mG3s9okBERcCmwCLr/SXWnOZISkQqfrhbnTh65YTt0ohRAcn1eM+3ruXsSj6phMtnzqtaFXkRlAsScfc4zmIw20W+qH/p63dlBWpwUZ7PJILbUGj6zJ8269rbDoE9xkoRXdIPXwwNu8wUaHCsgbePQqICUNEtV1KRgTvb0RsEU5BebyDrFiZRrgDxGRyX/zpoDp1WDfpfMH3Mpl13LxFOmlaCDg5nbJAePxz5QaHe3r93D0EWYtPObrOujs89HSgfT4DEl0vCMQvWZMPpC7Z3JCc1ezcbZaLxSqfvYu4WsRSj9EZcSC4n5xS6Qg1TFVQUDgzkdKVnmAS5kUgg4aFwjPbtsJVnvpNMzrmuxFlln0XOQbPWqsBwQ4+JoIANsgCAK6SU6SlAfBnQsU2vPDfq1ZnATtA6xgTRvn6zJ2Eop2hEEGhoylwQqqE98S8pcMF4ILWuPSkfj5zuP459rZTzFdgkAPcmUk98LMWSvgvYRapjypWtuvkrJXY3k/GdtPl4bCGBAynWZpzgpRnYzFkTvLKfcN7DLlPhjfbhj3CvifVQO0+Ufakpg3SEEFj2wA0SJDXnoNfdrYklXVWid45STOP49pZWGOeqNf7nHjRWIM8l7OTcoKmIZcP6Cgc/wFYl5+tIkAayK+aIW4EUENIMeCd9Ypuexj6BVacLb1GzUf2TQ3ZbbbWVXqLLCwWPN9MpjhASEUj2ctuvnGQWTzNFCvtx5ksu8NYOQ+MGJl+088AgVBwa2dkDjWvex4AnX2CXTnp6JASaN5U4U1tCQz5kk
- Boh2mZgH
- iP1bnqMl/WPjLmULvJjZJxHsWv82mDpFCxDEJ9YoHPvZtyBiPmblzvg0+98zvd5Fa+u6e2TwAj4Nmb8O2GcNFD2Ecf9PyODpa8fx7VsMsyJt87GSJ6VLPYq91yYC5scDtfnhsUT4+pLgZLmDVWTSvLQ5idXRxdWQXu4rV7tCk2LuUchGi/aAK6+8FB03p9XJiDAGX9le+HofP6lWazIfwDa9NiSWpOuovYGjIkOcGcV822o+8l0gW8uUMGb2waEotFuJoLVNH9ESwPXOi1Lo17wiT8xhMfWPJsTVBWvNmfU+1Vj+YKmC6Jr5B9dcnTCZ/AssRFCeZYEsY7s5qUDTOskCpboXdSI1fzuNasOQ4RrNYZdq9Rc1B+zVvCBIX05zI3yWuLbf6xqxiUWy3K3atdts+8yyRnfTU9Fl6+BHGFovKUNheKm1Xx7nreChkGEqxC9FC9hKCVkM0E7CKCkknHLqhTZvWYLkHJQEorlNw+8yQe39zp1ZO61V+z2JjpNCXnnY2HWSSwSURfA1zuSJvHFTY8JKCTJ2EqpT1Pd1bpVLxHMKwr0UA7o72927ISCZE9sEADc+Sh5XG137Qbjdzc58fFnLuP/MwQTd5I7kv7Eu+Xi5b40cDY89LJb5bunLdYsz24ejrHn+W63v2FFA2JzDiOQJYjPvFDFuHfy4o54hvFEXuaO84NNZiEcPaY25GltG1GgiIIunpnhIPD8p8IxiuKTNY+lXF6iEiEwq8If3hCh63WYn8MT221M/p+RiS3FoFMA+x2aH0ty+/C9YPomGS8nHQc2VzSSLuzAtzqSsoFmQFQ1Xy83XSniVGHZm0etTejlLiy12Y8BcBQ0d63cG858n2ZEXozR1hCSZq1LCmNwD4hfiwTCG/R/bgG3FWZV3u2XUwhyCAkUdw3sd0RlmL9dYVSXEgw4vNEyTREi2c+Tagie0kYJXRKZWHPbJINuIGUDj8ssrCPhxS2IQqrB2Rcr9t
- 9/Im7rZ4
- FV26jAaWAeReZhd0s45LwUU0HfsPC7Wr
+X-HE-Tag: 1787656808-282393
+X-HE-Meta: U2FsdGVkX1+N16kw4ESfIRRUYwVh9oXMYCb+K0ZqXuLyb+Z40h289GPM5HPksULj6HvoNIbbtYV6/1+6YcOC5BxlOjRu4An+F0hLHEEaFPIflOBVCAoNfSHHCqhtz3CHK6XhN4kruHFVzQMFxeJSiqtUXieCmFTiDwc+kQRudpR2Zlga6iSdu44TgBpF03CpR6Q28icaZQrO+3fKxKGedVAza+PqzTHfISb+24Eu+4qtJ11auB3sdduWTCdp0P6zlOmvJfrZX4qQ/q2D7UnTU21KrrOV+/QV24ds7Y/0hQLlribc/B3NhD56yHmr7x6XVYT2TwdSghxTmRIVTxlUKtVbPijX0DfOixkz/PWIHs1QdrYJeXEZeXUmK4Po5DabOHgQzWf5IPYfTmmWv/k30BvZhQX7CYiIOZDyW/x1AgzGh9Kct2Ue6zNeQeYX2P7zJk3FsMUaA48jfXU2mBJRtD/CAyt6/8Luy0z2XobX6NQrfkmLfmbBIMjcJ5/9sNPa8c299nQNesSYjrHuNixKlJj4UNOe8bYLV0CJceh4QHp6VPBHe+W0z9DuiAUkLrYwKhSLEjwABMB0l/RdSeczuEcRjZ5jvRIj38O7qGY5z3AcNC2AEqALJFYMyEp+aXECbK1nbeFvjAHGpgBJytXxi4WsvCqcM7AGZvaP+FwrenZNtzXI8Cbv/Z2QILPVnWj4Pq+8ycpi5xWuqpwCmHypFosG9S6DoPal0FhUIxiKA8ivZJrSGREHLtLaUmYomYA+w5Id+onILioy4HNFMIvXdTX4upWFoEM0oZ8N0Xg2FcELlqP0dVPvYcuMp7eliQMJZ16l9MBflMQFAKEgw8AlxWbGXRMb7GTi8ZygsgLinwQn7eXKdKvouwvgzQc3vZij7cNU22v32MVYr4ZM/MXdH+9hIH6wzciRAi/IGRK8g7+ZWbuawt88whvSYRkesdAsc1hUm0zItBnyL/kSsuW
+ ODampWtM
+ LgYLEG0UqDgeapyKVFDe6CiyJVRogia/cWjpuAadbMWB/IYIAr2g6NmTaI9cwqiu8RoLoiUrwWfcX1x+Gk+j2nmFloLgzUYhISO1sYMmhAiqjRGoB1JN6DV9JCAzuynboMOuL5LWDPDJBrmhHX1edfKfaj31eOiQcyNs8xkZve6LyuBgnAf6Q7x9rlUenClpoXKrR8bjaKku5G9TLF24XH0eqhjhk6pLmaArQGIkKFYNMAU5HtRzyywwR5CWrBl3yWgP6fVon6gYuRsIZxRhsgYlG9wkXt1zOWXitYnWG987SJ0N9+RewKs8SYzlKGqobrZayfAyOcVvnQNI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,189 +115,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 12:50:57PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/22/26 21:14, Lorenzo Stoakes (ARM) wrote:
-> > secretmem has a relatively laissez-faire attitude to accounting the folios
-> > it allocates.
+On Mon, Aug 24, 2026 at 04:10:51PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Sun, Aug 23, 2026 at 03:17:40PM +0300, Mike Rapoport (Microsoft) wrote:
+> > Move userfaultfd_{missing,wp,minor,rwp}() and userfaultfd_protected()
+> > ahead of uffd_disable_huge_pmd_share() and uffd_disable_fault_around()
+> > and make the latter two use the helpers rather than open coded VMA flag
+> > masks.
 > >
-> > The intention is that the memory is treated as if it were mlock()'d and
-> > thus is limited by the RLIMIT_MEMLOCK limit if the CAP_IPC_LOCK capability
-> > is not in place (which broadly allows unlimited ranges of mlock()'d
-> > memory).
+> > Convert open coded VMA flag test in mfill_get_vma() to userfaultfd_wp()
+> > as well.
+> 
+> It'd be better to do the moves and the reworks separately. We don't have a limit
+> on patch count :)
+> 
 > >
-> > The lifecycle for memfd accounting against this limit is - account on map,
-> > unaccount on unmap but the lifecycle of memfd folios is allocate on fault,
-> > deallocate on inode eviction.
+> > With every user of the per-VMA uffd modes going through the helpers,
+> > their underlying representation can be changed in the next step.
 > >
-> > This mismatch is problematic because the folios are unevictable and remain
-> > so until the inode is evicted (set using mapping_set_unevictable()).
+> > No functional change.
+> 
+> There is a functional change, or at least seems to be, see below.
+> 
 > >
-> > This is problematic as it eliminates usual mlock() semantics - mapping
-> > folios then unmapping them does not clear their unevictable state, since it
-> > depends on AS_UNEVICTABLE, not PG_mlocked.
-> >
-> > A user can therefore easily work around the RLIMIT_MEMLOCK limit - simply
-> > map then unmap and VmLck no longer counts the secretmem range (or more
-> > involved - fork which also achieves the same thing).
-> >
-> > Worse - they are not accounted in the process's RSS even if mapped again,
-> > meaning the OOM killer won't know to kill the process.
-> >
-> > A user without the CAP_IPC_LOCK capability can therefore repeatedly
-> > map/unmap (or map/fork) and consume all available system memory with
-> > unevictable folios and cause system instability.
-> >
-> > A secretmem fd can be passed between processes and over fork so a
-> > per-process limit simply does not make sense.
-> >
-> > So follow the precedent set by io_uring, perf, skbuff, iommufd and xdp -
-> > track the number of locked pages in user_struct->locked_vm.
-> >
-> > Since the scope tracked is actually inode lifetime, the RLIMIT_MEMLOCK
-> > applies per-user not per-process. Also given the change in scope it doesn't
-> > make sense to bypass for users with CAP_IPC_LOCK, so remove it.
-> >
-> > There is simply no reason to carry on marking the mapping as mlock()'d
-> > since it's misleading and the lifecycle is now correctly handled, so remove
-> > this too.
-> >
-> > Additionally, fix the selftest which checks the limit as this now must
-> > assert SIGBUS on limit violation on fault-in.
-> >
-> > __secretmem_account_pages() is more or less a duplicate of the code that
-> > io_uring etc. use, but since this is a bug fix that needs backporting,
-> > defer any de-duplication efforts to a follow-up.
-> >
-> > Reported-by: Daehyeon Ko <4ncienth@gmail.com>
-> > Closes: https://lore.kernel.org/linux-mm/20260813225328.2010303-1-4ncienth@gmail.com/
-> > Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->
-> Can we split off the selftest changes? This stable patch is already pretty big.
-
-Yeah I can do! I seem to recall people wanting tests backported too hence
-the change.
-
->
-> I'd assume the changes to the selftests are not required just to get if fixed,
-> because the changes should not be breaking existing user space (and cosnequently
-> existing selftests).
-
-Yup confirmed locally that the changes don't break the tests.
-
->
-> [...]
->
-> > v1:
-> > https://patch.msgid.link/20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org
-> >
-> > To: Andrew Morton <akpm@linux-foundation.org>
-> > To: Mike Rapoport <rppt@kernel.org>
-> > To: David Hildenbrand <david@kernel.org>
-> > To: "Liam R. Howlett" <liam@infradead.org>
-> > To: Vlastimil Babka <vbabka@kernel.org>
-> > To: Suren Baghdasaryan <surenb@google.com>
-> > To: Michal Hocko <mhocko@suse.com>
-> > To: Shuah Khan <shuah@kernel.org>
-> > To: Alexei Starovoitov <ast@kernel.org>
-> > To: Daniel Borkmann <daniel@iogearbox.net>
-> > To: "David S. Miller" <davem@davemloft.net>
-> > To: Jakub Kicinski <kuba@kernel.org>
-> > To: Jesper Dangaard Brouer <hawk@kernel.org>
-> > To: John Fastabend <john.fastabend@gmail.com>
-> > To: Stanislav Fomichev <sdf@fomichev.me>
-> > To: James Bottomley <James.Bottomley@HansenPartnership.com>
-> > To: Hagen Paul Pfeifer <hagen@jauu.net>
-> > Cc: ljs@kernel.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-mm@kvack.org
-> > Cc: linux-kselftest@vger.kernel.org
-> > Cc: netdev@vger.kernel.org
-> > Cc: bpf@vger.kernel.org
+> > Assisted-by: copilot:claude-opus-5
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > > ---
->
-> [...]
->
-> > +
-> > +static bool secretmem_account_folio(struct secretmem_inode_state *state,
-> > +		const struct folio *folio)
-> > +{
-> > +	unsigned long nr_pages;
->
-> Nit:
->
-> const unsinged long nr_pages = folio_nr_pages(folio);
-
-Ack
-
->
-> > +
-> > +	nr_pages = folio_nr_pages(folio);
-> > +	if (!__secretmem_account_pages(state->user, nr_pages))
-> > +		return false;
-> > +
-> > +	atomic_long_add(nr_pages, &state->nr_pages_accounted);
-> > +	return true;
-> > +}
-> > +
-> > +static void __secretmem_unaccount_pages(struct secretmem_inode_state *state,
-> > +		unsigned long nr_pages)
-> > +{
-> > +	atomic_long_sub(nr_pages, &state->user->locked_vm);
-> > +	atomic_long_sub(nr_pages, &state->nr_pages_accounted);
-> > +}
-> > +
-> > +static void secretmem_unaccount_folio(struct secretmem_inode_state *state,
-> > +		struct folio *folio)
-> > +{
-> > +	__secretmem_unaccount_pages(state, folio_nr_pages(folio));
-> > +}
-> > +
-> > +static void secretmem_unaccount_all_folios(struct secretmem_inode_state *state)
-> > +{
-> > +	unsigned long nr_pages_accounted;
-> > +
-> > +	nr_pages_accounted = atomic_long_read(&state->nr_pages_accounted);
-> > +	__secretmem_unaccount_pages(state, nr_pages_accounted);
-> > +}
-> > +
-> >  static vm_fault_t secretmem_fault(struct vm_fault *vmf)
-> >  {
-> >  	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
-> >  	struct inode *inode = file_inode(vmf->vma->vm_file);
-> > +	struct secretmem_inode_state *state = inode->i_private;
-> >  	pgoff_t offset = vmf->pgoff;
-> >  	gfp_t gfp = vmf->gfp_mask;
-> >  	unsigned long addr;
-> > @@ -72,8 +134,15 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
-> >  			goto out;
-> >  		}
+> >  include/linux/userfaultfd_k.h | 70 +++++++++++++++++++++----------------------
+> >  mm/userfaultfd.c              |  2 +-
+> >  2 files changed, 35 insertions(+), 37 deletions(-)
 > >
-> > +		if (!secretmem_account_folio(state, folio)) {
-> > +			folio_put(folio);
-> > +			ret = VM_FAULT_SIGBUS;
-> > +			goto out;
-> > +		}
+> > diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> > index 3396d270b159..d8262e3dc134 100644
+> > --- a/include/linux/userfaultfd_k.h
+> > +++ b/include/linux/userfaultfd_k.h
+> > @@ -168,42 +168,6 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+> >  	return vma->vm_userfaultfd_ctx.ctx == vm_ctx.ctx;
+> >  }
+> >
+> > -/*
+> > - * Never enable huge pmd sharing on some uffd registered vmas:
+> > - *
+> > - * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
+> > - *   tracking information is per pgtable entry.
+> > - *
+> > - * - VM_UFFD_MINOR VMAs, because otherwise we would never get minor faults for
+> > - *   VMAs which share huge pmds. (If you have two mappings to the same
+> > - *   underlying pages, and fault in the non-UFFD-registered one with a write,
+> > - *   with huge pmd sharing this would *also* setup the second UFFD-registered
+> > - *   mapping, and we'd not get minor faults.)
+> > - */
+> > -static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+> > -{
+> > -	return vma_test_any_mask(vma,
+> > -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
+> > -					VMA_UFFD_MINOR));
+> > -}
+> > -
+> > -/*
+> > - * Don't do fault around for WP, RWP or MINOR registered uffd range.  For
+> > - * MINOR registered range, fault around will be a total disaster and ptes can
+> > - * be installed without notifications; for WP it should mostly be fine as long
+> > - * as the fault around checks for pte_none() before the installation, however
+> > - * to be super safe we just forbid it; for RWP, pre-faulted neighbours would
+> > - * be indistinguishable from accessed pages in PAGEMAP_SCAN (PAGE_IS_ACCESSED)
+> > - * and pollute the tracked working set, so each page must be populated by its
+> > - * own fault.
+> > - */
+> > -static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
+> > -{
+> > -	return vma_test_any_mask(vma,
+> > -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
+> > -					VMA_UFFD_MINOR));
+> > -}
+> > -
+> >  static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
+> >  {
+> >  	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
+> > @@ -235,6 +199,40 @@ static inline bool userfaultfd_protected(const struct vm_area_struct *vma)
+> >  	return userfaultfd_wp(vma) || userfaultfd_rwp(vma);
+> >  }
+> >
+> > +/*
+> > + * Never enable huge pmd sharing on some uffd registered vmas:
+> > + *
+> > + * - uffd-WP and uffd-RWP VMAs, because the write protect / access tracking
+> > + *   information is per pgtable entry.
+> > + *
+> > + * - uffd-MINOR VMAs, because otherwise we would never get minor faults for
+> > + *   VMAs which share huge pmds. (If you have two mappings to the same
+> > + *   underlying pages, and fault in the non-UFFD-registered one with a write,
+> > + *   with huge pmd sharing this would *also* setup the second UFFD-registered
+> > + *   mapping, and we'd not get minor faults.)
+> > + */
+> > +static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+> > +{
+> > +	return userfaultfd_minor(vma) || userfaultfd_wp(vma) ||
+> > +	       userfaultfd_rwp(vma);
+> > +}
 > > +
-> Okay, that works because secretmem does not support any form of truncate, in
-> particular, no FALLOC_FL_PUNCH_HOLE.
+> > +/*
+> > + * Don't do fault around for WP, RWP or MINOR registered uffd range.  For
+> > + * MINOR registered range, fault around will be a total disaster and ptes can
+> > + * be installed without notifications; for WP it should mostly be fine as long
+> > + * as the fault around checks for pte_none() before the installation, however
+> > + * to be super safe we just forbid it; for RWP, pre-faulted neighbours would
+> > + * be indistinguishable from accessed pages in PAGEMAP_SCAN (PAGE_IS_ACCESSED)
+> > + * and pollute the tracked working set, so each page must be populated by its
+> > + * own fault.
+> > + */
+> > +static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
+> > +{
+> > +	return userfaultfd_minor(vma) || userfaultfd_wp(vma) ||
+> > +	       userfaultfd_rwp(vma);
+> 
+> This is changing the logic.
+> 
+> Before we were testing only the flags, now we have:
+> 
+> static inline bool userfaultfd_rwp(const struct vm_area_struct *vma)
+> {
+> 	/*
+> 	 * Callers gate PAGE_NONE usage on this; PAGE_NONE is a BUILD_BUG()
+> 	 * without CONFIG_ARCH_HAS_PTE_PROTNONE, so fold to false.
+> 	 */
+> 	if (!IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE))
+> 		return false;
+> 	return vma_test_single_mask(vma, VMA_UFFD_RWP);
+> }
+> 
+> I.e. adding in a CONFIG_ARCH_HAS_PTE_PROTNONE check.
 
-Yeah exactly. I think I covered that off somewhere in my essay-length
-commit msg but if not but yeah that is a thing that I noted.
+Without CONFIG_ARCH_HAS_PTE_PROTNONE VMA_UFFD_RWP is hardwired to VM_NONE
+so it's functionally the same ;-)
+ 
+> BTW side-note these:
+> 
+> static inline bool userfaultfd_missing(const struct vm_area_struct *vma)
+> {
+> 	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
+> }
+> 
+> static inline bool userfaultfd_wp(const struct vm_area_struct *vma)
+> {
+> 	return vma_test_any_mask(vma, VMA_UFFD_WP);
+> }
+> 
+> static inline bool userfaultfd_minor(const struct vm_area_struct *vma)
+> {
+> 	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
+> }
+> 
+> Should all use vma_test_single_mask() really :)
 
->
-> Overall, the idea sounds good to me. Nothing jumped at me.
-
-Thanks! So in a way you kinda... Ack it right? :P If only there were a tag
-for that 🤔 ;)
-
->
+These are changed anyway in a later patch.
+ 
 > --
-> Cheers,
->
-> David
+> Cheers, Lorenzo
 
---
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
