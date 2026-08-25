@@ -4,112 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65A2EC61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 18:17:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E120C61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 18:20:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D9196B0088; Tue, 25 Aug 2026 14:16:59 -0400 (EDT)
+	id 948496B008A; Tue, 25 Aug 2026 14:20:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AF656B008A; Tue, 25 Aug 2026 14:16:59 -0400 (EDT)
+	id 8F8CA6B008C; Tue, 25 Aug 2026 14:20:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C57F6B008C; Tue, 25 Aug 2026 14:16:59 -0400 (EDT)
+	id 7E75C6B0092; Tue, 25 Aug 2026 14:20:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E48CA6B0088
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:16:58 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E191DC016E
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:16:57 +0000 (UTC)
-X-FDA: 85140598074.15.3FF4284
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 281EE1C0005
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:16:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IAf83z3g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of "SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787681816;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A2056B008A
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 14:20:56 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1762160167
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:20:55 +0000 (UTC)
+X-FDA: 85140608070.26.1711BC9
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E4239A0009
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 18:20:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=B87IUPXF;
+	spf=pass (imf25.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787682053;
+	b=0UheGaVhZjWrespGZXCwWd3h8mMdyTjJD5aIDGPQHup7popTk2jJ3idQy46rs1mKRBfKl2
+	dUZiPzIj9GW3+hYViqPjM56UWgJHwWzFk7GS5KdHT908Zrc58wFDLD8t+KCvftP2BpzKyh
+	QnSZsxQWJvLb3DbuxUjZaGEu4/rJrKg=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=B87IUPXF;
+	spf=pass (imf25.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787682053;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DzVEjVkRW6HxHuHwKFpTtnTA+OQV/p8rhJpcnutWj+A=;
-	b=QsBrDy1ikuiNz6V8OMVuWmK9CCPn4lX4Sib8t8X47uVye0FENcQ/TBn+3SZLwTdjiXMGgv
-	MP0hbPulSkuaIUxNtlpxUf6PzJGkIJjeXtDp+5mKoBtuqNIDdBDNO9qEHAq6jYJS6ieDPk
-	5gqeAgOQUqXOaRxbyravn1NJ4O4X8+o=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IAf83z3g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of "SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=fj1m=GS=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787681816;
-	b=Rlgh/9UP0xmZ4pPY5nsoPb9NqFBEE4ggh0HIBads2rngxzJbc+HFMhpPqIat2VNbi+jzPE
-	HezXMYsHI7EVxcuB4bFafu81QlfFWBEz97z8yL+EaGzYR+pd4T4vofamCCxgJ/yLQzwbys
-	XhAkox/m13bG8EOOL4GeKW4i8/QmoXc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3919B6011F;
-	Tue, 25 Aug 2026 18:16:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC4B1F00A3D;
-	Tue, 25 Aug 2026 18:16:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787681814;
-	bh=DzVEjVkRW6HxHuHwKFpTtnTA+OQV/p8rhJpcnutWj+A=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=IAf83z3giM+IdSU1Wx7HPfLxMgJ1LuLBEYyP1tz0NRK0xkqPtMZfhzBeIJbewdCr4
-	 EvaB18dUYG6KIagSmlgJkM5HsyvuZUWiBi0kiLXp4XcB3WYQv+io6Amn5wlp9wm44U
-	 40VlLgFO0y0TTuvhlPZsjX9Wyv+1BP5i+5+D28x+BNrMT7Ey+SD6c81cvID0Nmwp52
-	 ZHeU9vcQ81wMIc3M7aPp+OVOdB/O3tI64i4Mu8xXgG/Iadtcb/X/v/C0d9hGGduQDn
-	 X2MqaclqUquFCmBk9Sz/TNudKA0RJcO8ARwIEl1Rd6wHltYQAC5JO/X992KSgdWPnp
-	 NKPcnzRi46p5w==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 98437CE098D; Tue, 25 Aug 2026 11:16:54 -0700 (PDT)
-Date: Tue, 25 Aug 2026 11:16:54 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
- <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
- <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
- <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
- <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
- <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
+	bh=L8vnnD4wqEAQFZKUQ+x9frnB9gGI7jKoJfDp0bNGiIc=;
+	b=MFOyg+7fwJ6bwZ4yED30mzSJQ30molXhvuhD3izKFOWhB4iNZKptNuCSGjr9Vwd0cWmUHF
+	mQaIlRUJOdph029xc/yFdMIEIjidEL3XLdo1PHRz7zSSguZNIWgeoqCADsnw+x8SvZehJb
+	PMZ7inc7D1m+GwfKD4vkhwTSNdyzTrU=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so160230a91.1
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 11:20:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787682053; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Mg2rv3ONlAIgXnJ4PeWjHWBSDs7xGPzabHNHwRDivr0yo7lZCr+tAhXuWEdF0DFSQi
+         RS4PCi5QkWLT37fYwMPEf+AW5VykGSqRBANKPQjCU8dzVeHd1ERAfRxcvT00rKRncrDX
+         Ah+aCJ+bKkxmYw3iauLe8ClFGMTqwBW9worBABJ4j26QxrbGEj1bM1FExyGB8bfI3USZ
+         aGdTJSiaxqYPSuEa7RhEcIha7IhAGzk0xN7Og6yFvPzMpvNod00IE98UFiVCfy9zGysO
+         Yd6tC9MziABbLyI7BJcKoMk1JrdlBhJNek+HUoVzFocnzcF8zmdmz4p8cgV64yS2zOjr
+         hdww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=L8vnnD4wqEAQFZKUQ+x9frnB9gGI7jKoJfDp0bNGiIc=;
+        fh=RQ6Xt2w4S/AJKy5S5u+0o6zt6lQJEAy2WQ/+EjS2XLs=;
+        b=c5rzMtjeVhxzwCRR3MXqk8/fKQ4jTbfI/Bv6FNwfMalr3aCGE9zy71XO5hxOu202Mt
+         jiGaER1cBEv+6mVOSQoxreju7HL9wRr2FBfe3Tbbd8Fey1PLQZEqacEGvAD3LoLjnctz
+         hHQ5EArYnKndC1e4I3PdlJqNy13+euxuCgyDbpJYN6bUg33EfkT57U+/zA9UDYawJ+lw
+         s+f7vi2fc9C0H6Rld5gDLrdCvkWq6GGZRV0RNXqm45wVwNC3EFF6ZKXbkn8D0TwKWJgI
+         UK1wCoQ80sUSEYEbexRKZr3sGQRAuCTS4VBd8/Mguo3+XPzzhGwnFaes5Pu/VpgW5tDw
+         bMwA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787682053; x=1788286853; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=L8vnnD4wqEAQFZKUQ+x9frnB9gGI7jKoJfDp0bNGiIc=;
+        b=B87IUPXFnJuHmFsN56pOsw6CWOLrS6FqBZzKVxwnhbZ55bRe6qqL1o+q97CMlOCEs7
+         pd+m9psOeuWAdAGyIo7OFijnX/7hiz4YRnQhZRpJLIcITak3BtdF/lOPqO2CW9w63wa5
+         qbui9TwKxcP2uV+h403CBIfApOEJmeD7Q3TNliw0frRqIZiQBKogTsnBs6abVEllHmuM
+         g4Q7BsPmsqzfmc+a0YBLvLp+sH43pGNPSRv4OM1aGB+55APZJ+koitzE01Xzyla6q19W
+         rDHx1OfwZNvQe6r0zf16HsLpN18g7k0elJ+w2808xnluMFS3d2f79SzDOV+U1Ti1KDeh
+         8C9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787682053; x=1788286853;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L8vnnD4wqEAQFZKUQ+x9frnB9gGI7jKoJfDp0bNGiIc=;
+        b=N1YYI9me8ti24gGm1fmvtuxRaGtzpfkPaRVA4JzeJ3VC9sEDmHul7fvrtpSTO2mF6W
+         TPXBFMaA+663DF3e6vWpen6A0wzuV7hsvdtRCE8Hrmn1pVc+YwRCDnBmp82FL8KgLfzH
+         JiAtginMRgcdxHxBTUoJ7G0Qusp9eNXWueQb7DAfjkKhVp8A4UbSJ6l2rpjsPc25QOgW
+         lFjY/VvwPERhhLyVwHg0xV4Yo/Cpu0kIZYdRt1BN3I3yNvci9zoeyArMggcSG6ifu09G
+         9pm5vavCI6wATRgU0THCXg/3UClPwbPpvbZ3kNqzLJuRcLmS9ongC0LJBC+GsZBItHjN
+         dRTQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrj6ukF3O3UuGkCxvQaf7Od/8tKtLxuvWOJMgVPQqjFSflDu1QaGJk0vIG12llr1NZgPgzXlXqRTQ==@kvack.org
+X-Gm-Message-State: AFuF++nv147ZmjiKMZm92g5C/2b5r/XfYCRkQ/lsxtLFcdqxXkA1Syvg
+	+u5k9x1QA64ljDL36lEu2SJkgYblbs4vxReqcHp82MDnGxaiF7fE8eQsOJX3Ut0F3JxlQavvuZu
+	FZY7JP7HFZtB4cBZ57/usUplXhkjhYWc=
+X-Gm-Gg: AR+sD13iq0lGgFyzH9uYz+DZV81H+HikWYrlZCIaTI8JryFW/0GXkl3BsBJR/NIpHFf
+	gXOwRRK2IbP3cLeZIHjxKCRfAG4Qsh/EHJzGBNqVrW/7GcGRwELLlTmQP5W7CJt92PIUv8zqY+4
+	jk5mCMTjX+5KnmrN+xBux52maWXUdyYqbJs3jOrRUaEBpsip5Gy98HASWooRXnXDKUZ7OijKWFP
+	zIf2spYafVS239oz9ucEGfPK3RmU3C5EG7Kfz9vYsSXliNZx7AmrTS6dZYeqVipfaHoKfY/NGFo
+	50lYuWRGXcyOezPR8gsbDahh3euw6D5NJ+Gh8azy/Ro41R3+cHXVUr03A6kIn9w/4IgUIL/amyB
+	vMQ==
+X-Received: by 2002:a17:90b:4f49:b0:395:4de9:b30 with SMTP id
+ 98e67ed59e1d1-3966d1baf30mr1848749a91.5.1787682052569; Tue, 25 Aug 2026
+ 11:20:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
-X-Stat-Signature: tphazsuw9ss7pchs63eyf9o3j5578693
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 281EE1C0005
+References: <20260821114416.12255-1-anshumantewari123@gmail.com>
+ <7bb2d581-924e-4a59-9955-b8afa2b51268@kernel.org> <CAJqi8kJf9EzfZWBo=1KpEzGiq+vGRz0J0mN+-NXAjrtq9HDrMg@mail.gmail.com>
+ <e7c339b8-b936-40c7-b121-1a4c14838dd9@kernel.org> <CAJqi8kKaNsxBM86Hg4W09gLo2rj0+kc9dAvps48jmQCshUkxqQ@mail.gmail.com>
+ <b993b8b3-351c-4d2e-9bd9-12c622f427ff@kernel.org>
+In-Reply-To: <b993b8b3-351c-4d2e-9bd9-12c622f427ff@kernel.org>
+From: Anshuman Tewari <anshumantewari123@gmail.com>
+Date: Tue, 25 Aug 2026 23:50:39 +0530
+X-Gm-Features: AcwNN1Ull72X_WS0KMiw_4u9rzH-HYvB6Zo9b63KvXBECPIeUZSEqjnT49MAQLY
+Message-ID: <CAJqi8k+cTXvvk4Pz0RdjQMPvSNCszzORH746fb7YgQUgngykbg@mail.gmail.com>
+Subject: Re: [PATCH] selftests/mm: check strdup() and fix buf leak in parse_test_type()
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1787681816-776748
-X-HE-Meta: U2FsdGVkX19DAIUWtkmtGK/fN8tGNsFUAY/Ko71s7ttk5OfkJYk60S8sux8QUGxFFPBX4+4rCyP/lTHg6NqGXwiugi4BzdvkcTvoonmz6A6WiBFL/fV1b+eRfyDAXa5mdO5FdZ42xdFUOKoWT661WwsaNlIgZDc6Vz3iHL/Qa8g/KzllupYZzgyLNm91H+g8jhRmIAqyWTFNPGQhpeR8pUiLuukoGSbAxduA0ODlDsDMk5IF6ifzjc1u0yr4qS7qijxWYTSHONPg51+NrDsKgYk6RYfv5EQJbuNVOoUcN+1e54pLNbJbkRw7lCA69Dw00WRH0nYPMttfAmkxh171lJP8meA/R1vLMA/3QlxsbVjVXxH56/CYRIgCqnOfa5CHF4ZtaVr+8V6Ax3LNiaOUv0A2FjOC9FnOaRkLsRxDS3dCAe1ucDcD2YVEPde+4AjcQmJSFV3xPfSgoxkGqlcHSv508bqQ4KS6fL9UltuSog3N0zaqlnXaxb1tnI8AySaG/IoV4QPfceOOrRTo41AHVtkgcr7rpDQkc0m0aGFHTW5WjtIZpmpWyN4OuY7fWidW1nJyPshVqwhl0b4jCBQMD1TA7+6YSA6R727g+lOL4XAViWEypbrzCki6YuUbR2pCb3rPPvgcUHsrBLtSpQFDWcb9hhxarvsRu40pQXFM4eQiCY7L26t++vn/iunQwGEYBVfsIIxwTy2Mw2GmNv0PbIBLNKP8JyoxeOApr52g9IAyislmGcfE9spAeiyGXcP2E+vtYmQyTZfWPtAUSt1FD3DfH4+9Z624VzVW/cy/PKRBHr+zTyUe7qCgr/ohu6BWh3baH1SS9LuzJvqfbycUuJICVlOactbS1MOE1p76rhSXlkC+nzipy0uJAY2bMYVxRGAR/5522KjZc14KPJ2nRU3XnqtBMz45IPVNOXQJQr4VjI4I5278LHZBKLaI2VVnV0hnlHcyUBGilTaLTDE
- pQ34oE9+
- ZOsgsR4pf1YZNf0zay+BkTVhIvXwUIGSyuZSQ156zd50c0IDF6m+6ARPsXVufn/z0DAgmuwOnpqkTYcO5Goh0zCICwaR8qxRUj3eDigX4MVdxO+LoxbkjOdOhJVeMvK7NHdETIqcMEg/vy3CLlyQy1xbcBgtwevVm0IPGZWC5It5Kc0uEW4h5F8UdxZiKmFw79gZPGYxwRzKiaUQh9pDvEPPU3cV7zKGulsSuhZ/FwfO2nX0SYCVo+PCHJ2D5sIwzHg1+eecWW48Mr8kp4h3a8KHhqOQhe4bKqUTVInfDO9qNNDL1r8KqJAuwPr+pdbIwI1/03I0j2++wACzmkmTzj5NEUSwea7yHMCvPuSeiP6znKu4TvXUF3VoFHIPkdLFbB5BTqZZuhzWOCeAsf8+QcfOGpyLfTvOFQyxd/YRthyIRX+v5oDIkL+nf2qdPmSD5kHQ+6ouFvkS74DoS19chmLXNqc+AIchxXFbpt7GDuooLhakoh/XSm79+44H2ftp8FcduufZT7v060q4Fwkdtbr+/LduAaCnoUjjyQ9N6bT6lmUHYT47LYq/LkBVRAzW/Fnwr9PvGRNdGbial1C7hFp4tcNDHqZwRApv4f0B+LMMInHf3rqx8r1J0YyJoWEmY4utVzvwFTaTCj0jfitvmZueZHI9fTpmSJn/paa8eH6/zDD/KwAnKPa9dd5LgMKcoJRP3LRpGFp06OTYo3swll+LTPGfgCyDXPqGc601YjEELHBmg8LS20MbpRLTr6pfdNlRW3mM5GPvwnfdO7lHKvtmXs0IgDlb/kPHcC6C2+D0t4Hpl0RPWQvYaKw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E4239A0009
+X-Stat-Signature: ruw71mzicpcih6f9mpnmekimagoctqxr
+X-HE-Tag: 1787682053-689476
+X-HE-Meta: U2FsdGVkX18PlcQLQ2Evsa9ixlYTD9Qm4NznVQRjvgN9ORxj/uLpWPbvU3xaGKs0cNXndqWjIpV+2OuwUEUO01S0E4jtXYGRdYJ1JRmzm70F/zH/4MG5B+x45Z6U1791qKqbVDvMUMuGs9BcOOepQ1fzbuaByUqjMoavJwI+v3GKCDwKufa0dJan2jlZJEe2ye84FRYjXPzWrcPDfKOhDUNDoB0Kfzew61wkl6look4g0/hdeXl1aoKKhOL1x5CfVV9pzXnKTQCw304fnCuEM7Rte2S+sDdPe4WG2Bd+9Owg2W4l9J/N7G6J6GaorVvYGL5M4sYmGJixQKRV7HGJrt10xHt9OKJM+sMUDW0DzKo2L6+V/bvYWHdw3+AVdsFV7RKwiqwy1O/jGqbeeBz+qZOiQwpDV/K6z9nKVyXbFNjoWCKmmYhJLxFU8PbXP+8qubSDuPZHnTNyUhGhfjPm38bGg8uS8D4VbVwno8PW/JG+pjM4X66+uTQURfSOwWoQ4nERLIGCe521JV7Ic3AUW1xu7w4MmLyJxTX4TZSNhpDMo9KwiDZcSQUQxKGpW/Gy0n/IuupC0205l3R3zu867FjbEcrnqV+3ilKZRtiHDH26nsYzCuMNfm4sNn7XmCdDI+jY9qeos9mQM/GLV7pOJe1c3vhC3MVj/zp6DYtZlAGicpaDmEwhhB98UlaSFPgI9etKeuWihMCEJ+QX1fG04oy+hRohqlMMtHOVT65aD5ZkAUQYBkFR7PD043rqUUJJIiBQ9419Wl4Grjyd4q8mwSBr9ui7+bq8itq4PcGm0pg33Jo0/Bu2m7iDftIf3uCDpN3pz2ZFlhUzBxiVUNVPAc023QEz3484Ijpdy9HhVgd4mo1ngvXQeuPCmNvVJnIJmPKk14e/FWCXyDfaakSQ3R8rcu3AxTlLZjMAkjeEI5Gb27bp8xiNFiZ6SFsT9kARUZNMENzidg+m8ZP/5DN
+ B8VJN4pk
+ gBs7iabb3zsbKBpFoXFVNZbTOfBAoP3z1yK/0gxpYYFg5cJ7srIqCZAtvo6eNZzGx0iLv5rbOPXooS9xiwRIh/0SwTrG2rp5WNUHZnfMA2teTEV79YI3+4XdlMWel96JdwyH8Z4hqk/+g1b7HzAKzGMqv7H6QTsXmHVdiQGfcV8jZYsBvqCWBEL0TVVPyLAP+6l8plRQBKguRE2Ia+2zJjpXKMV0U7JI5Nn03LZN5iATnVV2HXaZPTfDysA3Q1K/9NkRKBD0853ojlYJKoBs5Hrt/Luhk9Ygy8SZ/HhnH4eie8ndVKKRpkk2T8a4tMUtSFPKik7DN7U5LDF/OlG8FwvpZz5S8z2RHT70vz39t0nstJUafw9a+IIvJW6mC562dBHcDNnIqhLtMQyIkNkkB/AeoTKnvy8iUxrrochqES9rgApIJMESx2h6p/SyGeiJvT+ABD68YOkKVgBY1+LZ6mO3tkTKcEL/OpmzUWkylU3fQXaQv3Od+r6qG0DK+QDrl+bnO851Pb5NXBOs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,65 +150,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 06:48:08PM +0100, David Woodhouse wrote:
-> On Tue, 2026-08-25 at 10:19 -0700, Paul E. McKenney wrote:
-> > On Tue, Aug 25, 2026 at 06:05:54PM +0100, David Woodhouse wrote:
-> > > On Tue, 2026-08-25 at 09:47 -0700, Paul E. McKenney wrote:
-> > > > 
-> > > > On the tail latencies...
-> > > > 
-> > > > The easiest way to reduce them is to require that preemption be disabled
-> > > > across srcu_read_lock_atomic()/srcu_read_unlock_atomic() regions and
-> > > > across all calls to synchronize_srcu_atomic().  Without that, the problem
-> > > > is that the scheduler does not know that the spinning is pointless,
-> > > > and we cannot use the blocking primitives that we could otherwise use
-> > > > to tell it what is going on.
-> > > > 
-> > > > So, is it feasible to simply require preemption be disabled as called
-> > > > out above?
-> > > 
-> > > I'd experimented with disabling it around the GP driver loop in
-> > > synchronize_srcu_atomic() as seen in
-> > > https://git.infradead.org/?p=users/dwmw2/linux.git;a=commitdiff;h=07165e79340e
-> > > and that didn't seem to change anything (which seems reasonable, as
-> > > it's the *waiters* that were descheduled, not the threads driving the
-> > > actual GP). So your suggestion that we do it around the whole function
-> > > certainly makes sense too. I'll test it.
-> > > 
-> > > I do wonder if we're really doing the right thing here by selfishly
-> > > blocking preemption because we want a specific tail latency to remain
-> > > low in a contended system. Maybe we should allow preemption and trust
-> > > that the right thing will happen? Maybe the p100 isn't the right
-> > > benchmark to be chasing... I'm looking at it because Sean expressed
-> > > concerns about it, but it's not the only consideration.
-> > 
-> > My concern is algorithmic, not benchmark optimization.
-> > 
-> > Suppose that there is only one CPU, or, alternatively, that one of the
-> > atomic SRCU readers is pinned to the same CPU occupied by the (higher
-> > priority) task running synchronize_srcu_atomic().  In this case, the
-> > call to synchronize_srcu_atomic() uselessly burns CPU time until its
-> > priority decays, real-time throttling kicks in, or in some configurations,
-> > maybe never.
-> 
-> I certainly have no problem with a blanket preempt_disable() around
-> both sides for algorithmic reasons. As long as we aren't *just* doing
-> it for the selfish reasons I described. 
+That makes sense, thanks for explaining =E2=80=94 I wasn't aware Reported-b=
+y
+needed a Closes: link specifically. The inspired-by note with the
+link is great, appreciate it.
 
-Suppose I simply disable preemption in srcu_read_lock_atomic(),
-enable it in srcu_read_unlock_atomic(), and disable it internally to
-synchronize_srcu_atomic()?  It might be against all RCU tradition,
-but might also be easier to use.  ;-)
+I'll take a look once you send it out and add a Reviewed-by if it
+looks good.
 
-> > Requiring preemption be disabled across both the atomic SRCU readers
-> > and the synchronize_srcu_atomic() avoids this, at least when running on
-> > bare metal.  My (perhaps naive) hope is that guest OSes get some use
-> > out of those cpu_relax() calls.
-> 
-> Yeah, an overcommited guest vCPU should be able to get preempted there
-> by the hypervisor, allowing other vCPUs to run.
+Anshuman
 
-Whew!!!  ;-)
-
-							Thanx, Paul
+On Tue, 25 Aug 2026 at 16:33, David Hildenbrand (Arm) <david@kernel.org> wr=
+ote:
+>
+> On 8/21/26 22:14, Anshuman Tewari wrote:
+> > Sounds good, no objection from me =E2=80=94 happy to go with your versi=
+on.
+> >
+> > One small ask: since this fixes the issue from my original patch,
+> > could you add a Reported-by: Anshuman Tewari
+> > <anshumantewari123@gmail.com> when you post/apply it?
+>
+> We typically use Reported-by: for actual bugs and must accompany it with =
+a
+> Closes: link. That doesn't quite apply here because this isn't really
+> something that would ever trigger and really needs fixing. It's
+>
+> Suggested-by or Debugged-by also don't apply here.
+>
+> I will add
+>
+> "
+> This patch is inspired by previous work from Anshuman Tewari [1].
+>
+> Link: https://lore.kernel.org/r/20260821114416.12255-1-anshumantewari123@=
+gmail.com [1]
+> "
+>
+> If you want you can send your Reviewed-by or Tested-by tags once
+> I send it out officially.
+>
+> --
+> Cheers,
+>
+> David
 
