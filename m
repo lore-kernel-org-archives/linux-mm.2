@@ -4,90 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7512C61CE2
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7D35C61DB6
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 10:47:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD2BD6B00B5; Tue, 25 Aug 2026 06:44:39 -0400 (EDT)
+	id BC4AE6B00BA; Tue, 25 Aug 2026 06:47:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C83886B00B7; Tue, 25 Aug 2026 06:44:39 -0400 (EDT)
+	id B75D86B00C7; Tue, 25 Aug 2026 06:47:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B99EB6B00B6; Tue, 25 Aug 2026 06:44:39 -0400 (EDT)
+	id AD94E6B00C8; Tue, 25 Aug 2026 06:47:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 948816B00C5
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:44:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D6751A039D
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:44:39 +0000 (UTC)
-X-FDA: 85139458278.21.0EE6386
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7937918000F
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:44:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MnbPkSUg;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787654677;
-	b=p+36LHue6p6LFdpNoT+pG46xBJR0o75mrlCioGM/Eslo22b8xJqU/g89BYR9o20c7UQ0YJ
-	25K135pYn6FnFX9gPPJ88QsVf40Wfrf66rNBqZMP8qP0YsWUV9LSjIHlkEDwnAYDlikLU0
-	SAxUkyXj2slPPL/px7Xpfj483XGTJpg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MnbPkSUg;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9027C6B00BA
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 06:47:21 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 248041A03A4
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:47:21 +0000 (UTC)
+X-FDA: 85139465082.08.2A96EF7
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0059880002
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 10:47:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of jonaszhou-oc@zhaoxin.com designates 210.0.225.12 as permitted sender) smtp.mailfrom=jonaszhou-oc@zhaoxin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787654677;
+	s=arc-20220608; t=1787654838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AdMg1fd/nLmt54Fd6YaLbChI//Uem2/WNbMOl8JDKdA=;
-	b=qVpE58OWyxOuVh6r7i+fWRrA388fJPGRmoaUvbqMtrGaiQF7YwLA7WxM7IeJVPCnDZREMY
-	2twsbL6Q0rWZmZCnBBsWLLW6irPgeDWIMINe4H+JmrkvXXayQOzowvbPrqlXA7ja357y07
-	y+bzkAXHIfGr0DXtOpJgh3w1EvNOiXU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A6624419BF;
-	Tue, 25 Aug 2026 10:44:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784FE1F000E9;
-	Tue, 25 Aug 2026 10:44:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787654676;
-	bh=AdMg1fd/nLmt54Fd6YaLbChI//Uem2/WNbMOl8JDKdA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MnbPkSUgtNYDc5Btnke6OSE5T/lysSA0MMRliw5RkFFRI9xTVDdyA+Jj00+qTNZOu
-	 SEEoXy5myd9kgbC4XO+jZyGtBwnMpH0J+EHpiDOh1gnN0PUTzPZO9DB1/f1IQopk8A
-	 2dZWHgpzD21uwffcQ/fVfWBL+HxLdKv+SzQaJvCLufKrYkcBILTl+7lCeyl+IC2SGp
-	 +o4cC1/w5ryYqFF+Fd/c0FGFJKryPdKTxTXj3Py+QiykBmck3uJoY5cSg0G+iTRspX
-	 G8/p7fhngiSdd6x7GRfSIYM8Ll2YkJGcgjzPfLUajHSP41pLs/eHh+xIgAxS+fxQKF
-	 sE1v9i2GBULlQ==
-Date: Tue, 25 Aug 2026 11:44:30 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Artem Lytkin <iprintercanon@gmail.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
-	Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Deborah Brouwer <deborah.brouwer@collabora.com>, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
-Message-ID: <ao1KrhWs7m1aTy0l@gremlin>
-References: <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
- <20260824194808.216021-1-iprintercanon@gmail.com>
- <ao1E_6yo9hE17e2E@google.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=tJcAL6xNUu/GJZAHhDxKU6CoPgP/2NwCREl4ICsPgLk=;
+	b=55zVpvJ2iXHScWlnZ0WSd8+oUIO4TXiMr3EQJMP5CD9PKe3ONTza5Gn1T/gnovnucw8UGZ
+	LAucBAN8n/tRygGLwdHKiLzWnem+P4hGcoJMbgs0exjwwdZ+D/0hlvk41TlY25mRMAohqQ
+	7a1djfJDVFTzWGW5ujCuAr97hvtKwxc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787654838;
+	b=4STqj+OeYpnUrO3ffAR/qM5GjXUDaVA1P16cx4Dw3fdkruEcm/MgLjj+EK6WZRPp3/aUXr
+	8cc0FvcbYzrNn+u5FYXCF8xQ/Ziht9M4ehJMKCPAjX33OhsxD+nR0ddmCCaOSmIKwtGqlY
+	yqm0cIPMP9SrF3PbYq88rmTtDBIpjrM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of jonaszhou-oc@zhaoxin.com designates 210.0.225.12 as permitted sender) smtp.mailfrom=jonaszhou-oc@zhaoxin.com;
+	dmarc=none
+Received: from zhaoxin.com (unknown [127.0.0.1])
+	by mx1.zhaoxin.com (MTA) with ESMTP id 4hTkxX3mRrzb0tjv;
+	Tue, 25 Aug 2026 18:47:12 +0800 (CST)
+Received: from zhaoxin.com (unknown [10.28.208.166])
+	by mx1.zhaoxin.com (MTA) with ESMTP id 4hTkxT6xn3zb0tjv;
+	Tue, 25 Aug 2026 18:47:09 +0800 (CST)
+Received: from zjh-os.zhaoxin.com (zjh-os.zhaoxin.com [10.28.24.13])
+	by zhaoxin.com (8.30) with ESMTP0dcdd9a0ab20575ea6a786a0762250d2
+	Tue, 25 Aug 2026 18:47:08 +0800
+X-Eyou-Smtpauth: jonaszhou-oc@zhaoxin.com
+X-Eyou-EnvelopeSender: jonaszhou-oc@zhaoxin.com
+X-Eyou-From: JonasZhou <jonaszhou-oc@zhaoxin.com>
+From: "=?UTF-8?B?Sm9uYXNaaG91LW9j?=" <jonaszhou-oc@zhaoxin.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	jianhuizzzzz@gmail.com
+Subject: [PATCH] mm/vmalloc: avoid false sharing with drain_vmap_work
+Date: Tue, 25 Aug 2026 18:46:59 +0800
+Message-ID: <20260825104659.100134-1-jonaszhou-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ao1E_6yo9hE17e2E@google.com>
-X-Rspamd-Queue-Id: 7937918000F
+Content-Transfer-Encoding: 8bit
+X-Eyou-Sender: <jonaszhou-oc@zhaoxin.com>
 X-Rspam-User: 
-X-Stat-Signature: asn51idfd4j3j5ad4oo5wn6zbynuff4p
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787654677-718618
-X-HE-Meta: U2FsdGVkX1+TKD6Y9K8WRVChAHTG8ODGWCtcT4Asj6g+Zv9flj/stUz7y9NdQoBqhz0dWIKIYWf78xSJUgbgAEtp/x4N2czVkXoZKYD5ZI8b1ZXxsV9DCGmWrDHXEr9xV0EOXmPcneG1JlvI+PuKXl+KHl4U5NwUpAvu2Xj+fnM7l6MMtKnnoSG1ZrCbTXsIDj/OCeoxYqimEADh7agbXvAmyYIRFTgIyCokYWrPqoCj9XUxfULx4DCEFDi4cS0icY5P1UMfAEASTbSmlN/BX9wN9szoeHMGArPi0kGBX+Tv1EhZ5zVZPCOnmAzp04Izh6UK1yTguvmT1ie4y6EhChxIRaoEQ4Fhy+uSXJBtQTzZ2Yp4Y6a/RUYT15vfIRAZrsuiTUOk2zMkHJWUUrog/lKa/TZQNOq6BTS8C/DVFROaK5y7sfrhe5/9rCEW82Z2NwVAgWEopFIL+AX0LlVUV4k7ZgXqpLxCGZrfWXKkmGDM/d0pbZHMy9Jh0VX9OBV165jUqzUKxjKQMxlJObtU4FahTu+PPhdawpDxZgJxuGHcna5H8M4OtC/6V7OHVsU8IFtMkuEKjX2i9JEXBtckbfAw0zGLknOnf1i41Eb+TSP+/W8KaI+y9nWj28bKYtXgsRWOg5p73HXHACzXaUU71+hwfvzcoyVZA89+GyIdhirYR3xjs3LtuPAfMifJi4ZgCQTiWGRzbdw0UCpe6JzQkEsj44dQNYg74LB+u4Daztaaf+YrBAXgtpsfUqNopS24PkbTF7ClkOH0TnXd541ofXRrEpSVw4dvDF0iBWgbmfI5cZx3fDrvutq0qdpPrf/lvTKT8K8EJ6wPXM+OCD77mynwNSnzkc6s7dEefLl9YQFuqlMB4bD6BMOdIgdTr9xpIEJiozGTOZ6yjJ44a/ThfS32zsNNjaIzMatu++7uGBRnHI+irpbDKuSBsGzhbgxPLq6nwjLF6NiROwabMv9
- aef2+AfG
- qiPuU1ZBJuJdAmb2nzLRTZAy1PFyduXlAX/CNvs+y7I9qOrxKlY2X8L/gemDxPu8tEVIP4UQ8LfZ9HEDBO5zAetlLW0GLDGHT+l7l5aoob6EyjFdK/ge475yODir8SJYUzVAutY3bHGlStgDFlDuYPiV93YogRyv/J9ZcuV3+r0sYmBzSBKJRJKtUddN/38iqAEMKm4A1VWUxmSFwH6TBWT4iJ3Td/j1tnME9AoGurvTYJk/MliIujuNZmcJ2eBmfsiudSAhc1HoU5Uza0LXFI2qcjjT59ecwUK8+U7/ZIRFKfh0j52ELcLcFc0ttlmLpq2OFi6Bi5NzeQy58Wy+UPRG35I1iUWcPvzgBGMHRlltJNLfJNE3/8FGDeZx0N2vRh1i6d3K/hvKmyyNee7Eyo3C/njv4dSm6lzwO
+X-Stat-Signature: oxuoaqspg377chtdqrj7wpsnhtr5xwue
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0059880002
+X-HE-Tag: 1787654837-952678
+X-HE-Meta: U2FsdGVkX18hcTSWQruOqagqyCZ+OEsHMechTPDbEcyejAvG6nLr37qrswhiS6P+roPGQ43SKx7HJ0t/tUrp4eSEWiyy2rgs/hoshUgkElhV/c8gRW2ZdUWd9scJSzSTBceQ6gHNW2nF6sfrpgZhEGjFrE3vmmGZV0dcRakIcbgeRoAm6VRvz5QekXM8/whrDlhesW1Tz9SPh5SsWM3q2PYhYyT4hoZZp+yTs4M+o5Oq+vXk40+X1epCTNRYhQuTQTgBO3p+4ZlmKP5WQat8AxpCoBIPzTBtrtIffrXrtsSkaf/ZO5nkOeFNDIUW3gHrCmhnC9u0R1P0iYgaazW9bBONJPvwr8xefyp1FpYeomF1r+zJp1EViwNEwIindc8REjJYJyUBzzJf+RH3YCg0ywHpAG250UTa0D9P+JFFBytYfAwQcSOisk0sHl4mcAXszBdvQLZPnZ0DNnq/9zNJbxFtF7JDKY/7gUwiK4WYtoEJN+v5oTpAOfAZLz2jJ097xlmG7C6deDZyflDSed4wSjao8y0DZlUfSjwYYLO/zfF4gpZ+SERXGMjJMIVgqoQw7OQxafDwDARqW89s0qsU3rUJcXGT57JzevoIecT4Pprr/gdvpkApvvt/Q1gw8QEYLuCOKpo+M0nu/wAgI6mPh8jNX7tmPdK0aqGpVWTSicXP4WxSLzztZMVyOeVQcee7CpZ3xDb3V62UWsdYw9gaxdDoWEzh8leRR0+aHEOzESV4+yVHa7EF2dBPj11e+10pmYh1C1DEVpPhPtLFQCVxT/o/3LJbhDFN230kRB5nWmmucLTRqqJTD24KK5vq/ok4ZlIIRD7GLwA01Yndb2DfqTF10HsQpuuC5/X6wiiu+x+TRYSAsBllZEGema5oC/l5M6prycueUlVlvTUpgCpuKPXC+yrgAtKGDd0y4pMHihCcCxw0J49zousp+e5EbweVUCgUYWTpUg/fSD0iBat
+ XwmIQgUg
+ /s2HoGX76UuVjxgeHusc3iKPbWoOVb1Mpbcx39fvW/piwHIy/7PJPNFHwwjZs9BPf72rGDQMPAMmGa30wnV33LTSJg0RSnwl7zix2dkfcLymgK2On2HTxzRXAZ+4a85GkAV5ENi1O1kalneOrj1xdxr8Zg6ExDI4dj4ZZ1AUWzroPgWU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,152 +85,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 07:32:15AM +0000, Alice Ryhl wrote:
-> On Mon, Aug 24, 2026 at 10:48:08PM +0300, Artem Lytkin wrote:
-> > On Wed, Feb 18, 2026, Alice Ryhl wrote:
-> > > The plan is to introduce more vma
-> > > abstractions to avoid this unsafe access to vm_ops and vm_private_data,
-> > > but for now let's start with the simplest possible fix.
-> > [...]
-> > > (We probably still want to do both, but
-> > > the vm_ops->close callback will be added later as part of the follow-up
-> > > vma API changes.)
-> >
-> > Alice, is that follow-up still on your list, or would you rather someone
-> > else took it?
-> >
-> > I'd like to add the missing pieces to kernel::mm::virt: a VmOperations
-> > trait with open, close and fault, a typed way to install it together
-> > with the private data on a VmaNew, a VmFault wrapper, and a PFN-map
-> > typestate next to VmaMixedMap with vmf_insert_pfn_prot() on it. Binder
-> > would then drop BINDER_VM_OPS and the raw vm_ops pointer compare and get
-> > a close callback like the C driver has. Tyr needs the fault and PFN-map
-> > half of that for its user MMIO mmap. The first two patches of
-> > Collabora's Tyr series are the pgprot_noncached and pgoff helpers; they
-> > have had no replies since 7 May, so I'd build on those rather than
-> > duplicate them:
-> >
-> >   https://lore.kernel.org/all/20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com/
->
-> I have a draft for the vm_open callback somewhere and it's still on my
-> todo-list, but I'm not actively working on it right now. I'd be happy to
-> let someone else work on it, but it's somewhat nontrivial, so perhaps we
-> should have a call to discuss the design to work out the details?
->
-> > One design question first, for you and Lorenzo. f_op->mmap is
-> > deprecated in favour of mmap_prepare, where a driver sets desc->vm_ops
-> > instead of touching the vma, and the Rust side only has the old mmap
-> > path today. Should the vm_ops abstraction be built around mmap_prepare
-> > from the start, with a Rust mmap_prepare hook for miscdevice next to
-> > it, or is landing it on the existing VmaNew an acceptable first step?
->
-> Lorenzo, where can I learn more about this new mmap_prepare API? What
-> are the main differences?
+free_vmap_area_noflush() queues drain_vmap_work after the number of
+lazily freed pages exceeds lazy_max_pages(). Until the worker purges
+those pages, concurrent frees keep calling schedule_work(). Even if
+the work is already pending, queue_work_on() performs a locked
+test_and_set_bit() on the pending bit in the work item.
 
-Luckily I wrote up a guide at
-https://docs.kernel.org/filesystems/mmap_prepare.html which should be helpful in
-general! :)
+On the tested x86-64 build, drain_vmap_work and vmap_nodes occupy the
+same 64-byte cache line. The work item starts at offset 0 and the
+vmap_nodes pointer at offset 32. The latter is read by vmap allocation
+and free paths, so updates to the work item invalidate a cache line
+read by all CPUs.
 
-The TL;DR of mmap_prepare is that the mmap hook is problematic because it gives
-a driver access to a vma with much state that it shouldn't touch and it does so
-at a point before the VMA is mapped into the maple tree (or locked) but after
-merge attempts and quite far into the mapping process making failure teardown
-problematic.
+Put drain_vmap_work in the cacheline-aligned data section. Tests were
+run on Linux 7.2.
 
-mmap_prepare fixes this by:
+On a two-socket Intel Xeon Silver 4208 system using 16 workers, the
+runtimes of vmalloc.fix_align, vmalloc.fix_size, and
+vmalloc.no_block_alloc decreased by 12.61%, 5.78%, and 6.87%,
+respectively. HITM samples for the affected cache line and total HITM
+samples decreased by 96.55% and 13.36%, respectively.
 
-a. running right at the start of the mapping operation
-b. getting a pointer to a descriptor whose fields you update to affect changes
-   you need
-c. being able to do actions such as ioremap, etc. by setting state in the same
-   descriptor, in C abstracted by helper functions.
+Signed-off-by: JonasZhou <jonaszhou-oc@zhaoxin.com>
+---
+ mm/vmalloc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-It's idempotent in general - if you need to set state like a refcount or similar
-you should do it elsewhere (the VMA might get merged or an error might occur so
-it's not the right place to do iit).
-
-In implementation:
-
-In general, looking at the file_operations struct in include/linux/fs.h:
-
-struct file_operations {
-	...
-	int (*mmap) (struct file *, struct vm_area_struct *);
-	...
-	int (*mmap_prepare)(struct vm_area_desc *);
-};
-
-(file->f_op)
-
-struct vm_operations_struct {
-	/**
-	 * @mapped: Called when the VMA is first mapped in the MM. Not called if
-	 * the new VMA is merged with an adjacent VMA.
-	 *
-	 * The @vm_private_data field is an output field allowing the user to
-	 * modify vma->vm_private_data as necessary.
-	 *
-	 * ONLY valid if set from f_op->mmap_prepare. Will result in an error if
-	 * set from f_op->mmap.
-	 *
-	 * Returns %0 on success, or an error otherwise. On error, the VMA will
-	 * be unmapped.
-	 *
-	 * Context: User context.  May sleep.  Caller holds mmap_lock.
-	 */
-	int (*mapped)(unsigned long start, unsigned long end, pgoff_t pgoff,
-		      const struct file *file, void **vm_private_data);
-};
-
-(vma->vm_ops)
-
-Basically instead of getting a VMA you get a struct vm_area_desc:
-
-struct vm_area_desc {
-	/* Immutable state. */
-	struct mm_struct *mm;
-	struct file *file; /* May vary from vm_file in stacked callers. */
-	unsigned long start;
-	unsigned long end;
-
-	/* Mutable fields. Populated with initial state. */
-	pgoff_t pgoff;
-	struct file *vm_file;
-	vma_flags_t vma_flags;
-	pgprot_t page_prot;
-
-	/* Write-only fields. */
-	const struct vm_operations_struct *vm_ops;
-	void *private_data;
-
-	/* Take further action? */
-	struct mmap_action action;
-};
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index f4fa227a8d7f..6b4b287e91f6 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -1088,7 +1088,12 @@ RB_DECLARE_CALLBACKS_MAX(static, free_vmap_area_rb_augment_cb,
+ static void reclaim_and_purge_vmap_areas(void);
+ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+ static void drain_vmap_area_work(struct work_struct *work);
+-static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
++/*
++ * Keep the work item, whose pending bit is updated by freeing CPUs,
++ * away from vmap metadata read by allocation and free paths.
++ */
++static __cacheline_aligned_in_smp
++DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
+ 
+ static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+ 
+-- 
+2.43.0
 
 
-You get given a pointer to this on the stack, you read what you need to and then
-update mutable/write-only fields (the guide goes into detail on that).
-
-If you want to take actions such as ioremap etc. there are helper inlines for
-that in mm.h, e.g. mmap_action_remap_full() (you'd possibly have to port these
-to rust) which makes doing a PFN remap really easy, e.g.:
-
-	mmap_action_remap_full(desc, desc->pgoff);
-
-This sets state in the descriptor that tells the kernel to go do this work
-itself (a nice byproduct of this is that any buggy stuff drivers did is now
-replaced with one code path).
-
-The VMA mapped callback can be used to set state in vma->vm_private_data (you
-are given a pointer to a void *vm_private_data on the stack which is assigned to
-the VMA afterwards to avoid any driver container_of() abuse :)
-
-BTW if you're going to LPC this year happy to chat in person about it if that'd
-be helpful!
-
->
-> Alice
-
---
-Cheers, Lorenzo
 
