@@ -4,116 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 134A5C61DB9
-	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:34:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DC3AC61DB9
+	for <linux-mm@archiver.kernel.org>; Tue, 25 Aug 2026 13:36:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04FD66B00BC; Tue, 25 Aug 2026 09:34:20 -0400 (EDT)
+	id 8DEBA6B00B1; Tue, 25 Aug 2026 09:36:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 027796B00BE; Tue, 25 Aug 2026 09:34:19 -0400 (EDT)
+	id 8B77E6B00BE; Tue, 25 Aug 2026 09:36:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7EF76B00BF; Tue, 25 Aug 2026 09:34:19 -0400 (EDT)
+	id 7CD246B00C0; Tue, 25 Aug 2026 09:36:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CAE796B00BC
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:34:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BBEDA2535
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:34:19 +0000 (UTC)
-X-FDA: 85139885838.17.6133B6C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 512096B00B1
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 09:36:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D40071A03F2
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:36:32 +0000 (UTC)
+X-FDA: 85139891424.07.7FD55B6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C1A69100004
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:34:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c4RbNxx9;
-	spf=pass (imf14.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 416B4140011
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 13:36:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bL/6T7Pt";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787664857;
+	s=arc-20220608; t=1787664991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=izCY9jl5ux+/xwp3G6xz7Y4XyXtp+0iGLhW/GtYSXuI=;
-	b=17UJ9WaALax09uQmnaA3IAsDeU2PxLwP4Pq+dEMV9KQod/JtM4mflSUD/70WVtRzB2Txaf
-	I4KMLenF+PEj6+wLZbx07v/idKX/uOuOTjXtXqjaRh7ie7OPB/n9OADjgDgEHIm8cksY9f
-	EzhLs/OEpK3wXeGNHremrdQmiZRiLQo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787664857;
-	b=nYT8bM++ItoAd9pctiVbIWzzAzCNAZ22VtBz0CgBIAKnjMhQkUlS87cjM9sZqLfDaTptM0
-	z8pZBSseLB3mB33q5rkh9MJIKUV0rVgmghCT2nQ0IEgWWyukpsTVeiBDVui27sWKLiYZ88
-	1VB6OBBkIfhLkAcjurQDB+/8iPPcWQw=
+	bh=j3O0jUa3F64kLLrL5LogQDPv2j12GdtTejlIkXela4M=;
+	b=mXGeH/QrMCUDEVZ8u0nUuGT2aJSlPs6vThLGeJSt1LnT7on0aauO1WE3vdjw4+z/U2Gb4K
+	T8/pzsWmT4t2AqRNKC93R8FSEiLqSLnLCd002IJOYzbLFArwkCO4CInCk2DqbxM1u7049J
+	uEY5RNG3nu2732fxL0xLrd0OUFRnqaY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c4RbNxx9;
-	spf=pass (imf14.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="bL/6T7Pt";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787664991;
+	b=pUViT7L0Spr0Mf11b5SSXzpN9pgtctlkC9leiRme5b81PMQw80ysAGbZTkwq4NQLtS7T0T
+	sPLUjHEwPt/vjNIY0Qjea2Umsg41DfhIc5P0EgmlBG6NaHVdo3pUOrCibCfQH/8JRPpnf1
+	cGJw6+Kevfspjy0B7MT2jFCoahK3X/8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB60A601E9;
-	Tue, 25 Aug 2026 13:34:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8EF1F00A3A;
-	Tue, 25 Aug 2026 13:34:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D3F2D6011F;
+	Tue, 25 Aug 2026 13:36:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996F61F000E9;
+	Tue, 25 Aug 2026 13:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787664856;
-	bh=izCY9jl5ux+/xwp3G6xz7Y4XyXtp+0iGLhW/GtYSXuI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=c4RbNxx99qdAIlVUMDjcrwSrwiTcf+KRMHIyspQT8BsnpDvm2SZoSKkm+P2EHu2Ro
-	 gI13x+I9KOAEC8fKB/NPiJ9JQfUbZrz1Q8dpZtAjsHOHUJjrnpFKnlZsA6R14/1+0N
-	 82zFG7K8e70solKEqr73wvJixiwXqaACm5Se9k4RlhnfvVAh+vYk1n0SoTM/0tcPfk
-	 aB+O2kumYbpwHuGdwNbv97z29ZGkJLRye5zustBansQZHpJNIXodNyArBYXjhu5rqd
-	 5TaWL+Kh4tR1pQylB8IoBYRj1utmbnfcXvy4BBuVAzQUtRNTk3OxHbvukx20ZBNsTl
-	 mpoZu06r840Ag==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 25 Aug 2026 15:34:05 +0200
-Message-Id: <DKY2ASIS7VLQ.3LP3N33T5V6N7@kernel.org>
-Subject: Re: [PATCH v20 4/8] rust: page: convert to `Ownable`
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Tamir Duberstein" <tamird@kernel.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "Lyude Paul" <lyude@redhat.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=
- <arve@android.com>, "Todd Kjos" <tkjos@android.com>, "Christian Brauner"
- <brauner@kernel.org>, "Carlos Llamas" <cmllamas@google.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>,
- "Leon Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>,
- "Serge Hallyn" <sergeh@kernel.org>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>, "Igor Korotin"
- <igor.korotin@linux.dev>, "Viresh Kumar" <vireshk@kernel.org>, "Nishanth
- Menon" <nm@ti.com>, "Stephen Boyd" <sboyd@kernel.org>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Pavel Tikhomirov" <ptikhomirov@virtuozzo.com>,
- "Michal Wilczynski" <m.wilczynski@samsung.com>, "Ira Weiny"
- <iweiny@kernel.org>, "Philipp Stanner" <phasta@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <driver-core@lists.linux.dev>,
- <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-pm@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-pwm@vger.kernel.org>, <linux-usb@vger.kernel.org>, "Asahi Lina"
- <lina+kernel@asahilina.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
- <20260824-unique-ref-v20-4-490735672187@kernel.org>
-In-Reply-To: <20260824-unique-ref-v20-4-490735672187@kernel.org>
+	s=k20260515; t=1787664990;
+	bh=j3O0jUa3F64kLLrL5LogQDPv2j12GdtTejlIkXela4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bL/6T7PtIl1SE4jX/P04Rg3Ro8uDMTXBR+IfVYE+x9UAvjV6ffKU5KIi2UYbb2Azk
+	 p5jWRud8g9M6fKt/WdbCiANY8IOY6E0GO9tF+/y3HH2CIDHPBZRk4lM4v8EXdA9xIV
+	 vvdmBV3MJpokO9m4uxF0kV9DadEr5xUgE4g1MEcQyIKv4p2QffHM5m8kqMZ5wAcpr1
+	 1OFmbyY/SJk7SamSMGhyjmip1vkbS4m5jfEpR9huTf9xGy3VQG/pSuJr6VdL+amyfz
+	 85Uhn+kpEjV22Ml8U417c58fgjFzYStIqvm9LlIaMeR72+D3VnMuYgSB9ZwSdjt5wy
+	 9BywduZwpF00A==
+Date: Tue, 25 Aug 2026 14:36:22 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Hajime Tazaki <thehajime@gmail.com>
+Cc: linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, 
+	akpm@linux-foundation.org, luto@amacapital.net, brendan.jackman@linux.dev, david@kernel.org, 
+	liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, broonie@kernel.org, 
+	mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, geert@linux-m68k.org, 
+	daniel@thingy.jp
+Subject: Re: [PATCH v2 1/2] selftests: run tests on nommu architecture
+Message-ID: <ao2aTD1ZGObPfp4T@gremlin>
+References: <20260825015945.141739-1-thehajime@gmail.com>
+ <20260825015945.141739-2-thehajime@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825015945.141739-2-thehajime@gmail.com>
+X-Stat-Signature: j5ssceo9md3jo6i4tun41uoq1m3secfh
+X-Rspamd-Queue-Id: 416B4140011
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: q3bwsdbcxt7ptsm9zdy8nq3h8w66w5ms
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C1A69100004
-X-HE-Tag: 1787664857-43261
-X-HE-Meta: U2FsdGVkX1/vCNsSZqb7V14lfk3O+B+AQGHMML9JpNKml1hiHZFUe0JOdvbMcu2F5JbBQ68AhrEcRx5uNXrFD9yGecXBAo/Ae8pqanb/eKhUeZvU6XJAeO4/wFXfwRWpY/9A0g3e05J7BkSFN9CjXgyFnDHfnc5auzCsKwoz+LVeXEajkNiPcq3s1kL/tRCWpSqQKcO1jdruZa4e98Ur/6Zv8fJ5DvImaMJhhEqKD+KF2MGJGYrv21scU98yRjCDfM9eFGNuftC81TV/7vpxadm4b0JJcjz0X1pBXpi6ydT5QPzVeUyeKJTWlmCfuN8tqQdZ3mY6tiSceXZ0zJPc4PqI9dP9DK7e/Mu+p+DOQTKcCq2aGPgKHgPsOYm1wqa5GuRWvocJv7azJrz4saFHKinxHJb9L2Ll/TGzo0p1Ms9BSDKKVzeC1REipIaB1lYZ95I5xwtiaN3i2+0IkjvemIXbte/uOUJob8kuuZo2Ypqxkdo+qNxTw0NfU2VuJDynWIsViyR3C7OEjbIj9+xCjxt5gCPCkGi6tdqsXji48wiirANPzPiiXBBtSDDsQ5fPlGmdOUE0e6j4tA0i2b5xkUkpSDkBfI+v+7zP0WCNIcnitS8fIABfiXsLlaulYiH3Tm6mh3Czv0HhKUb9n+bDCgnspukCLn1mb+y6zBnXaB1CjUP2/E3V/HCNzRpgnhqnCjC5dJwyi8OP3S6aWQHZIv7oPqFYOuhAeMmFieEZQyirbNvqtQRprXc7M+V+J5HNWEWcb2el2WCp5TgySfLvBBmyrU9mv3fgYaZ4euOebwzj8Q47up84Q5OFCWO9AdcLZL2wPc+a3CLp2jEaAae1bDFdTzGm/tyOxGTjFQ/mcQp5k51CUfPeJP6u15aLSRpC+2pKjLPIOziEwAbvmfXQJt6KagL+e2KSOZKtJ6G4b0YhWn4/yLBtG/mOIxJOqcENhi9VUT6HyFv3cH1d3Pd
- +VxUWIcj
- uDoBrJi1sYbh3+omrHgi/L19wCgIN2R7Be/TVLHSWmlqkcB4MxVfKZqfeh6aYpNMybfDcZWF0vh7EAp6fhUcODongSFQzYAwe29d1J3nPS93CADC6fkKYkE/WB+4zfRc70BOtznC5W+7/niTlFZ+jAOLIJfSWAeJFmnIpT3REF2/g2UUCwPHGkY/VK4MYNkTvUVJY++4BMLsufxoPPFr0Sf2Y6g/6N02UXfouECKUYo4OZAys+Yc/mMJWBgQiPhEouGLa8LG5PBxxt8avqi8CLHNRemhMeZxCnbj5cfd8wt8teCyC0dZIyx1Zc1lpCF8OSqcgxTs6XdOJ6xH8j9Fed3riBd8lbBK7vmqSV5q8AF8BgRuODhRC3h+JYvB+9Pm0E2FHmvi580i/SPZ1cmCad4lLR0U3HoJ7M3Ea
+X-HE-Tag: 1787664991-254480
+X-HE-Meta: U2FsdGVkX1/ARjsXetdT3zEFC3BWXwu0xnORkrkco40wm8YgtnlxLxwFjs0RAf/eZxp5JzUnJaR6SbepalDEpnX5s4VQt9D3XapzWLGcEX4g+V2oSTrCuRSeLotgLpmrZAZ3zvxfbGTEewjzSxZ8XFn4sV6cCHBdAXK6CDPc2Ywtjpz9wC3T7oPEcJUxOeIPb92JmsfgoeYqlgs2k8l3uzRp9h/6Rg5aOBPiQOA/8uZ66kwqaix/8A9SnFIyPgG4XI9Uv2WVwdxhtJVYmdsnq4eAIJwfgVySIwS830EXwWdmj6RWZF4b3EqsuAuxeA/6JL1u8zL39zhMW23iYNqi9Lxb90y7MCynQ+R+vtng5i6Qk1M4QMGR1jSQzcyFBpYjoftMzHyHhlcfcpjDi5yPl0PlrbvuAW2GVX30TqwUIaZFe/ypF9tsOcoDIT9KaSPWF7eX9HemB2xTkQ00Z+PAshUMKUA5PvPnY1eWPaGmMUJweuF7Ril9XHZ4coGse6kJVo4zvwG8xbmcYAGBbpFICatjj4gz4cAI7Nhbt3mfEq8lxScS3PnpQtT+8n1+dRcc019MILa9E1h69IpiKxzVH4OhsonyPEhuv1AHjSrrtmGCT+XXS9pSwL6dHIyahsuTn/HwXHwM+6hlwodijQZ0uOCtJshQ3wjNVhVaPQgD6iFprchP5de7DyZoIP6Jzq+ZtBKqyH0haBmYAYP+7QBioBzGzW125NLQ84B3aqBiHqzp/CW/HsckME4iwS9TpKrUvvtjH1ZjmC1w+V9oLisFA+eyysoG8WrcVDKC3f0M3fSAegbXL/DWZDpNYyZG7WPQA+sm6Ozh7wNs6vta2cf/HYsQcO6lsH36C9KmB2U7rM0+mRT6ATddF1Wywe9bYRWnqpNzTzTqPV9ZuEaWJeUcOq1t3iNwAlpxMg6TPXL6T9roiRuuvILoUtHqAmLiuFkq5YBl6bMACQ+NSlnq1zD
+ omfPE1y9
+ g+U5/t1okR9L54R525a94dqQueXykukW7ajTv80QT0Q7EEWZI/s/kdB165+gLCanHur/Y3w2K2l7zEox02E7zLQzcB3PJMk9pH8U530Zgn8ucws8D6pBzWTSHTrQAeXgxe5QsnlAN8/IOKCbODy49Bl2DN4DlcnMuqrjBRFMkHuPpHacdVmUMJITyTvrG2+WcXH6015lXqj4Sswl+AJbdurogp8ZDqkg1eBjJ60fTlufkKTJrY/AF9yH7Dsn6sGB4FpCUn/owpk+O2EBpqIuPXXFBoSAyt49+04MEeB3mT6W0z8lqGi3169AnMrUCIDCxviA5yQB/s2csK2dLdhWSgm0RdeTATl7yH45ZbErGWeoiBSjTj78acGf/fS/VSp56GwLTrvP1HXRH3FTxL/x+GA+h0cB5ztt33lAYrNJIJAlNmzHLvrszOhTDFliZeFCcxw9SH/K0j794afIC+g9e6r3jDFngumx+wWfvKcEubEIq+Bn0FGYVWOjhL/yiKvQz5V+aaXNbB8tQ5sLfDm29lZ5YCYrvzltiQwBUjh5U9nzr6XxrDnviUlWiTJsPWYmwMWQuE7XE/B5M8POWdo4S/8DiXcsQsKG06K/6zRgIxWWPIhD5mUCEvfhrkfgxBlPEnG6x7D4sG/TqehAydabeTnkRf7kycvc9bOz0Aipi+7GZqKskDC8a1n5Lt0EQTEbhh//MvoAYNPAjEt6LcPvbiY7ikRTvLQcykSlkBgDay16eIvcdlhq2PWZMow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,20 +96,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Aug 24, 2026 at 1:17 PM CEST, Andreas Hindborg wrote:
->  rust/kernel/alloc/allocator.rs       |  19 +++---
->  rust/kernel/alloc/allocator/iter.rs  |   6 +-
+On Tue, Aug 25, 2026 at 10:59:44AM +0900, Hajime Tazaki wrote:
+> Architectures lacks MMU doesn't support fork(2) syscall and only
+> vfork(2) is available with limitations.  Thus, we cannot run kselftest
+> on nommu architecture as is.
+>
+> This commit addresses this issue with the following changes:
+>
+> - on build stage, add -DCONFIG_NOMMU to CFLAGS when NOMMU=1 variable
+>   added to the build/make argument.
+> - on test run stage, avoid calling timeout command when NOMMU=1 variable
+>   added to environmental variable, since timeout command uses fork
+>   syscall which nommu platform doesn't support.
+> - kselftest_harness.h: skip the tests if the file is include when
+>   executing on NOMMU platform, as there is no fork(2) syscall.
+> - replace "cd -" use as it is not available a shell supported on nommu
+>   (e.g., busybox hush), use cd "$OLDDIR" instead.
+> - describe the difference of nommu tests in the document.
+>
+> So command line to build/execute tests for nommu should be like below:
+>
+>  $ make ARCH=um NOMMU=1 O=build kselftest-all TARGETS=mm/nommu
+>  $ make ARCH=um NOMMU=1 O=build kselftest-install TARGETS=mm/nommu
+>  $ NOMMU=1 ./build/kselftest/kselftest_install/run_kselftest.sh -p \
+>    -c mm/nommu
+>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Andy Lutomirski <luto@amacapital.net>
+> Cc: Will Drewry <wad@chromium.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Brendan Jackman <brendan.jackman@linux.dev>
+> Cc: Hangbin Liu <liuhangbin@gmail.com>
+> Cc: "Ricardo B. Marliere" <rbm@suse.com>
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: linux-um@lists.infradead.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-doc@vger.kernel.org
+> Closes: https://sashiko.dev/#/patchset/20260813063401.1786548-1-thehajime%40gmail.com
+> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+Doesn't seem too crazy, but some nitty comments below.
 
-> -    pub unsafe fn to_page<'a>(ptr: NonNull<u8>) -> page::BorrowedPage<'a=
-> {
-> +    pub unsafe fn to_page<'a>(ptr: NonNull<u8>) -> &'a page::Page {
+>
+> --
+>
+> rfc => v2
+> - reformat ktap header, reported by Sashiko review
+>
+> rfc: https://lore.kernel.org/linux-mm/20260813063401.1786548-1-thehajime@gmail.com/
+> ---
+>  Documentation/dev-tools/kselftest.rst       | 14 ++++++++++++++
+>  tools/testing/selftests/kselftest/runner.sh |  9 +++++++--
+>  tools/testing/selftests/kselftest_harness.h |  4 ++++
+>  tools/testing/selftests/lib.mk              |  8 ++++++++
+>  4 files changed, 33 insertions(+), 2 deletions(-)
+>
+> diff --git a/Documentation/dev-tools/kselftest.rst b/Documentation/dev-tools/kselftest.rst
+> index 64c0ec7428a2..a65f3ebc5906 100644
+> --- a/Documentation/dev-tools/kselftest.rst
+> +++ b/Documentation/dev-tools/kselftest.rst
+> @@ -230,6 +230,20 @@ section::
+>
+>  .. _tar's auto-compress: https://www.gnu.org/software/tar/manual/html_node/gzip.html#auto_002dcompress
+>
+> +Build and test on nommu target
+> +==============================
+> +
+> +If you (cross-)build kselftests for nommu targets, or run tests on nommu targets, use
+> +``NOMMU=1`` as a make variable/environment setting to tell build system to do the additional
+> +checks.  These nommu targets may differ in several ways, such as not supporting fork(2) or
+> +using musl or another libc.  Set this variable to apply the necessary build and test adjustments.
+> +
+> +::
+> +
+> +  $ make ARCH=um NOMMU=1 O=build kselftest-all TARGETS=mm/nommu  # <= build-only
+> +  $ make ARCH=um NOMMU=1 O=build kselftest-install TARGETS=mm/nommu
+> +  $ NOMMU=1 ./build/kselftest/kselftest_install/run_kselftest.sh -p -c mm/nommu
+> +
+>  Contributing new tests
+>  ======================
+>
+> diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
+> index 311811dc55a0..7287d8290b6c 100644
+> --- a/tools/testing/selftests/kselftest/runner.sh
+> +++ b/tools/testing/selftests/kselftest/runner.sh
+> @@ -38,8 +38,12 @@ tap_prefix()
+>
+>  tap_timeout()
+>  {
+> +	# nommu doesn't support timeout command (missing fork(2))
+> +	if [ "$NOMMU" = "1" ] ; then
+> +		echo "timeout isn't supported for nommu"
+> +		$1
+>  	# Make sure tests will time out if utility is available.
+> -	if [ -x /usr/bin/timeout ] ; then
+> +	elif [ -x /usr/bin/timeout ] ; then
+>  		/usr/bin/timeout --foreground "$kselftest_timeout" \
+>  			/usr/bin/timeout "$kselftest_timeout" $1
+>  	else
+> @@ -130,6 +134,7 @@ run_one()
+>  				return $KSFT_FAIL
+>  			fi
+>  		fi
+> +		OLDDIR=$(pwd)
+>  		cd `dirname $TEST` > /dev/null
+>  		(((( tap_timeout "$cmd" 2>&1; echo $? >&3) |
+>  			tap_prefix >&4) 3>&1) |
+> @@ -147,7 +152,7 @@ run_one()
+>  		*)
+>  			ktap_test_fail "$TEST_HDR_MSG # exit=$rc";;
+>  		esac
+> -		cd - >/dev/null
+> +		cd "$OLDDIR" >/dev/null
 
-Of course the mechanical conversion is fine as is, but while at it, mind to=
- just
-import Page, such that the odd page::Page thing goes away?
+Hmm, why are you changing this bit?
 
-Thanks,
-Danilo
+>  	fi
+>
+>  	return $rc
+> diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+> index 261e4df94d9d..0d05946a5e7a 100644
+> --- a/tools/testing/selftests/kselftest_harness.h
+> +++ b/tools/testing/selftests/kselftest_harness.h
+> @@ -1274,6 +1274,10 @@ static int test_harness_run(int argc, char **argv)
+>  	unsigned int count = 0;
+>  	unsigned int pass_count = 0;
+>
+> +#ifdef CONFIG_NOMMU
+
+Let's not prefix with CONFIG_ :) I think this is pretty confusing vs. the kernel
+CONFIG_xxx flags, esp. as this obviously inverts CONFIG_MMU.
+
+maybe just 'NOMMU'?
+
+> +	ksft_print_header();
+> +	ksft_exit_skip("kselftest harness requires fork(2), unavailable on NOMMU\n");
+> +#endif /* CONFIG_NOMMU */
+>  	ret = test_harness_argv_check(argc, argv);
+>  	if (ret != KSFT_PASS)
+>  		return ret;
+> diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
+> index f02cc8a2e4ae..fdb895967768 100644
+> --- a/tools/testing/selftests/lib.mk
+> +++ b/tools/testing/selftests/lib.mk
+> @@ -97,6 +97,14 @@ TEST_GEN_PROGS := $(patsubst %,$(OUTPUT)/%,$(TEST_GEN_PROGS))
+>  TEST_GEN_PROGS_EXTENDED := $(patsubst %,$(OUTPUT)/%,$(TEST_GEN_PROGS_EXTENDED))
+>  TEST_GEN_FILES := $(patsubst %,$(OUTPUT)/%,$(TEST_GEN_FILES))
+>
+> +# detect if users request NOMMU build or not
+> +# User can set NOMMU to 1 to build/test for NOMMU platforms
+> +NOMMU ?= 0
+> +ifeq ($(NOMMU),1)
+> +CFLAGS += -DCONFIG_NOMMU
+> +export NOMMU
+> +endif
+> +
+
+I wonder if this could be put into testing/selftests/nommu/something.mk? Though
+I guess would have to be included for all builds to account for nommu trying to
+build any kind of tests.
+
+
+>  all: $(TEST_GEN_PROGS) $(TEST_GEN_PROGS_EXTENDED) $(TEST_GEN_FILES) \
+>  	$(if $(TEST_GEN_MODS_DIR),gen_mods_dir)
+>
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
