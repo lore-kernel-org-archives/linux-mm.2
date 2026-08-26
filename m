@@ -4,116 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9AF1C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 15:05:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 808A8C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 15:15:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 521D16B0088; Wed, 26 Aug 2026 11:05:10 -0400 (EDT)
+	id 005456B0088; Wed, 26 Aug 2026 11:15:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F9836B008A; Wed, 26 Aug 2026 11:05:10 -0400 (EDT)
+	id EF7BC6B008A; Wed, 26 Aug 2026 11:15:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40F8C6B008C; Wed, 26 Aug 2026 11:05:10 -0400 (EDT)
+	id DE6456B008C; Wed, 26 Aug 2026 11:15:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D1D36B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 11:05:10 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9219B40164
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:05:09 +0000 (UTC)
-X-FDA: 85143743538.02.6C929BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B36FC2000C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:05:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h8bDSvms;
-	spf=pass (imf13.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B916E6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 11:15:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B474D1A0152
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:15:35 +0000 (UTC)
+X-FDA: 85143769830.17.5270E56
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D3C75A0006
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:15:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gWZl7co3;
+	spf=pass (imf25.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787756707;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787757333;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P++naScNZowUvRJGvpwZuOXHFESG3Sw1NB7yivdb/jg=;
-	b=nH8iEHEAYTl78LosEcHco2ypB45kYnBjvDtqVSwZqbUJ8MtgzCfUysjK9+kZqMk/LowyTL
-	rSjt4FO7+W4Cc0ItHlDgnjDkbIeP5PsIR64uemPAxw2O5WowJtw30mZTNn3JnIWSDUaiHv
-	4SxS9n20aYpWBhbWTqUyMy2WCkfBON4=
+	bh=iabL4kgmT7SgLzPah6x1/xIKKVEsvB6N2EyVIOlzTHg=;
+	b=Me1hqWhqfXSaFf/Eipytz6l76ma5Rf2vocT6g/8cILeBjnzow1synyoW0YJ2yf79tTmNVF
+	JQw038lx1XFt6My6eAe0p0ho3GayUBm8UItDWK8YlCyMvlDj8TtzCHxg/bu/nSf6OyY0hw
+	TYkJthibbRM1Qg82NhjCmg4be+jBS0Y=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h8bDSvms;
-	spf=pass (imf13.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gWZl7co3;
+	spf=pass (imf25.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787756707;
-	b=kK0QiGErWSAzV774YgrQ73WHepb6bRDw9sJ3rUz1Ozt8+WG7h9yz2DzVjn7R+qkWRhTrMi
-	aBALL5dYVFlkMadvsx4cm7tlz8Y+IbRJ1AQFPnH0atyvG5zBKcqFQjjODDcJtO8w0EXhFo
-	RWOO6kcI55LEQe6rWXHcZi0sOxWn7Aw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CAEF2413C7;
-	Wed, 26 Aug 2026 15:05:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A481F000E9;
-	Wed, 26 Aug 2026 15:05:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787756706;
-	bh=P++naScNZowUvRJGvpwZuOXHFESG3Sw1NB7yivdb/jg=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=h8bDSvmsmumTK1wPZfvvnD6Mh7l4lkruuUlW4NmjgzaGmgJ59OW6MHEVHxbpSn93i
-	 nb7BjisVl9X6I5GXUN/85C7ho409ilqX7Mu8P+jxd6Id9mAkDC5Lb4q5ezn3SYXrAF
-	 /yl7HMA7m8r2fWSi22hFgiLA3eKzuUoVYKfc85y4HWs2pU3FEfr4QHQp6uWKoDLNOZ
-	 M7ICBWkKbd6Ypel4vrldLgXEuNM5iTJsfU8yg2YDh+RAVQDiRNAkhtEC8A2cwevHo6
-	 ZorGmhZu4xIbuEvFYl0z7cSprK8zR9wsNpFjMwVVrzjoldxui6KlMckMwAQbuoO1x7
-	 tAN2oODb3bjEg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 693BECE0484; Wed, 26 Aug 2026 08:05:06 -0700 (PDT)
-Date: Wed, 26 Aug 2026 08:05:06 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sean Christopherson <seanjc@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	t=1787757333;
+	b=jDtNDOwg0SPjyxXTM5Aclby2TbitwFv2f6XhIF/ZXJ066fEOum1NdMUcb+/VZPtJcXSvoa
+	ItHgpGjb1KXcnCH8mH7brrfFzELd731r6A5rbNQh2SO8hy1VGmB63397+orWRFANs8sdRC
+	f/LF4cIktIKXGwFvMKsTTFrOgq0WrWs=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cace91f112so13267015ad.0
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:15:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787757332; x=1788362132; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iabL4kgmT7SgLzPah6x1/xIKKVEsvB6N2EyVIOlzTHg=;
+        b=gWZl7co34ToXDCRctVfZMC/ujlZ7tvvzYbt1PTWSrmiskFWqO/Am/RQ3nNZRqjpbVV
+         7lobGMVRP4mHH8O0viCXjM38ihlp9ufG1ToCjm3nj/sgRqj5eYSAB/olK5fL5N87f0CR
+         /3FJgRiPwX5PY/i6gcp0Hz+zkzsHzgUylUOZPj1WP1uGnbfyDnndfBlCVapKTLezXGXW
+         bItZegrs0yft2cZbNYWoT7r93JoNkkm8R43COfMrM4Nezw+SJtndL7y2kz4kR4rAkVN7
+         1frT68ktrjsrdUASMhrI3UKG24P/hBGlxlmNXC9JqDwFyoa5IBjD7MbshfFmFeijtCsN
+         hxMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787757332; x=1788362132;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iabL4kgmT7SgLzPah6x1/xIKKVEsvB6N2EyVIOlzTHg=;
+        b=WfbhFqDEtKgwddK46E4QxwIAT9P9GE2FQk6H1yre5Le+r9IIFEhkK9+1bCHkBkxfZ3
+         0qQM1m3NwHZ+75iH6u0eo3rpQFG6tFw2FWweZrMocua1j16uqjH/OzjgQGUIf/N1Nuvf
+         uHdEVjla9FWuvXBZqIuhmzdSwrecAdI7J2vBsxddQG8ZzXiedVJpClC119OQEdHWTyKS
+         anEFn2X5a0nTNfdYkak0xzQh2FWWG1J5EkMeeT/Wtl5dcgLbXn3vDOvaQmxzHzse4rW9
+         N6c1FvRIzQDiHnXvIQAzJrrqC8SVvQWTe0CYGdsMD6bhiqpcNMlycw/k2I+YrEVTK2gK
+         CSjg==
+X-Forwarded-Encrypted: i=1; AHgh+RoGb0yLoJChr64v7tC+Yy/cqzd1zXAMN5LGEAy1sc7oQ7iTs9wF8yWjbawvUaIPMDo9Xw9CKlAVfw==@kvack.org
+X-Gm-Message-State: AFuF++nlkSfcImJ2A4pwFaLgEMGQWPCTz3wgkhp2dLsz4R+VncYpv0UZ
+	w4bYdSMu2As8cWlW/nbrL8UHgq3QMOSZggnp3kYnc23x2c5F71bJwRu1
+X-Gm-Gg: AR+sD13EBhygSL6IPq+MynfEGWyRVgAD8xhGgAK76BsQCWJSPlhPYOJR6QYkMPTkxzu
+	/axMWIeVFqd3B5B/BjzRfpxb2jbU74at7S8HVVK2TzsZvQ9hODSVhyRgcjb8xkdiKFQNIlchLvn
+	V/lW70GCtveTxfqpnZsZWkKe+ivH49P6zn5wAGXIe894r5suHflAZ8cBBdcf4o5ZIlw3DumifJQ
+	blZFGfPsl0mckLFEnn3OcBZ7X1h+BGcu8cpr6cscbOD7YYdlMptADQxRLLuhEKYtzOC2NqzueAD
+	yTO8DIEFIS3WUPriey9eMhmZo3PVgCCN9wswv+hKm+PFZRmpWfkUOj+7lOZhQi7SLhY+adu5G58
+	PInJsBpsoCTrEJ+CXTZlh6YJrSFwB7CDYNiqPaGQo3tMC31QEvboSL2hi0/ArE+Ao1Q3+obVhmx
+	tAAUkUpPsJzfjoFZ/wvm26XQ61tqobejtU9jUzixNa9tHsujhmbJHroPD6xXpTqtzfp6pI3kaJZ
+	ayEMcU=
+X-Received: by 2002:a17:903:2c03:b0:2d6:ee6b:1b08 with SMTP id d9443c01a7336-2d707a2f363mr134001285ad.3.1787757331763;
+        Wed, 26 Aug 2026 08:15:31 -0700 (PDT)
+Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d704baa758sm8932645ad.52.2026.08.26.08.15.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 08:15:31 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
- <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
- <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
- <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
- <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
- <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
- <ao3z7Rtw2FROkVpy@google.com>
- <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
- <20260826073233.T-KtFXmj@linutronix.de>
- <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Li Xinhai <lixinhai.lxh@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+f12658786a4153df5113@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/mremap: reset unfaulted VMA page offset for MREMAP_DONTUNMAP
+Date: Wed, 26 Aug 2026 23:15:18 +0800
+Message-ID: <20260826151520.202465-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
-X-Stat-Signature: ychr1imdxbg6ho8z4rip7kk53jj5r9yn
+X-Stat-Signature: u1nf557e8wk81hq3oszas3oi3xhori9p
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B36FC2000C
+X-Rspamd-Queue-Id: D3C75A0006
 X-Rspam-User: 
-X-HE-Tag: 1787756707-730576
-X-HE-Meta: U2FsdGVkX183/mEZSiJVNr2BW7lRAa7zTIv0xqg32gbflwvs1cgG01sP1HbcR/aGxBiQHX96BHVcbM1rACP4xaBt67inLB3VJv5qDv/R8zDyqZlmzohURzSJJdsEAk1exiaZj5YD1hpttxI0XEHUzeJBNQFuEaPocYF3fKw2zbQpCKpBfPK56gi71MGieEM+wrch2KJnvcURcgd4V5qoCcB4gfPRLZBQTgzos0RYg4eYA9bUG8hJwlhvn7HdNQTIysoyZauiNnVtX8AQfmMuT0drbmmHFESXf4ahlnN3cye1oFnPvDlUNlHuaVe/gCjsh4LQo1EO/uWaK3gmyF5pvcd9JC6K/YDe2R9xrLWt5h504LAFMCO93UxcFvbrwzOR/nyGdmH0pQVZ7N0ybIfM8nvRKi4SSSxZ/wp1mZOuR5Isi9gVAG6P7HAFEIlIhykGhW4B+irwFR5wIB1jsO1RbnsfAVP+v85WLEgRrY6/6zNjuN3GX+kZiVM+zNGaZJsL2Afo4UxY+wyBEbV1Z4OAJZlX6bqPDZBuMQik1PDqdahoEsGWGFi1RWqT4WDOaeGwCm2I9A2DMmvj+7s9Irs3UF2SYh3euWu+AzFFt2Eooa3K9C2HGkI4WF6PsrJPf0bQjbRymgrs8s7idMxqyj5j+plTVSKBbpouH63ZrcPrWrDMjntbu7pjSEl/hxu0UvAJf7Ph9lWcM03F7nh/mGCJoKIqVscCuoBHmA3k5L4dUuvS3GtibFe1ai6XtD7LbDuxwBK9b0vsZs3OQ87QWRV4quBkxEIimtWjW+iLD+Z8qtw7ASIbodQlQbpgDWSKqzLXDEwWouXmu72W4RnafepWlkKwMVz5zoKgJnwWXcOnUYGfCElYJQoTtfXu6CkptEmv0LRhoyT7i6nn0hnjGA20d9Bfv05pC58kpcAYNB3dnEAe+MJJpydutCksEMsuqUE7L0EyX5abwGUEuRZ4dC0
- fo77fPXS
- u2RNETpFN75UFXC04MudphzTMbnfn1+WmFFNUNbcWdUqGm+K/rG3oWZ0yWjM5uLQv/XfsTq/Avunh6trhE0new2qPOOASUZhyuX6tMj1eEFhoVq9laO+ltbHYINj0siXX1SHPsRIqyslCtLs255nCH9+XKsCThVHv4LKnMfT7RKvaTSKpccWgWwCbpIUqzieuR0tgs00ggcB7BFVg+q3kfulPEyV7qpvrk7bctbxu89lupCmJ0UFshyiLUSY14f4I6SPevcvzGUklGGxC5ZU/klbwGxrmK+81mjV7Z1pfEiVF0kH8IvzZa/gKHoKm/H6IZjBrwJwiLATXt9EetEpQncLOgMC1YuqQbzHlGAoSKSmAl6aVkbeMovzUohFmwSQHOZ2e17dCeUFY+sZRFEMEK1rU+03AFcwqs2Gj2f0XCLTOKWBZXuRA0YIAl4ZGz3bQXLGNkINBXZm6Ro5TJpLTjbHlfa4M0He+w4rT7t2BwoIGS2iNNgsUvJ2xL4XI/TegnPW7kTZRzQ3BTYq30+loQ/OOawOkQxz/r2XnbNIkwa1tiRdThok0TJMho5OY0VfSO+gu+6s29PKFqgU0ramo8r5LIp9VEcdax013Iu10G+JTYKMUo/Eq7r91+J8Bd4YwHxQA2jVAELxrhbwzTwrYFV19EyzY0dNqLhp7nmUyW/cPxYQj0BdU92WMDdE+PyiwMaCaXTumF2h6kVJUsNLt9NmUm/AKWkn48oTpcVErr3vkhX4W+M+i165z7jw/X0ErFlUR
+X-HE-Tag: 1787757333-276270
+X-HE-Meta: U2FsdGVkX1//16H4CF6oFBdVFLcjHDsvwRgtN7wT9M87o1+RTu0PjUX2QiWbq2ebhgfI35wTbu43+WEIbYN4rUyftVW8JFSP0wTxySRdS2UIW8tW1f9qLlJTraPYcoTffa2LrBT7QkpaWRe/HuZmJ/czyUeb8wVbsl4AonWlzJ1MerB6o5fHykKJ5Fl1440PQhkIaCEW++abPfwOoehouGO4NkGjJTXle6z1IT/qV/Ls94Eza5hyuPw/MKyTw/Jyk6aDdAcN1yvHBq7J0l770ePZmMwg2gyuqInojovQ7hfQ+HmRLRiSWtgI7jc481A6vyav61j+JMHRSd0W4kg++Bn2l7kc7cuE15PseWYBM1edPDXJNUMGw62HuVUWCIuLT0FewFW2c5U6AQH3lxG5HDSoEYhhZ5I2+0nxFDpiY5G+XqLwRf8FSbAdN0Rwd0Y36DTDKlUWbGn9MsVhhyQG8PMdV0OYuoJ/r4TirW55kmpnNvwXGsoDdx+e+z1Z44uqEQlojnhIB2S3eCbpsi1l1l4ycY2vPrm57PtJisekNLi+yfB/wtBb/1yBE9K4s4PtZU0zEXOaqnW69FK37OnESemasowlcY9d2ckj8Upwpn4+OfUjyxub8Q7UMao6yerjUIcgKnuDG1VYJ/GHzd/RXy43nznw+0C7T4qwR4mYZznK/qrhRGZzVEe+g2fAOz0sD0hJTHrsq3Q0KCMnbjp5LUBez0Sx2yQ6Edlj6d5DoV/e7Lo7NV1aMZG5yJAR5YEOuFlkghJWjhYaVGXiCZWZft8hmL3Nwk/zDOixzxWuv8hZEuZvELB1XvuJLB1dZqzIA67CWPtH5YF1BbuLwSBSYIFkAeuX+CZVscYjbc37zry9Dc+sATUcdjsYGLekCfvbIjyV8FB1JkRO3RBvxaw6L4otiN2uQ/6yG9rO9pJD4Sty2/RyQmt9KoSy9HtX/xWCuC+WGttUQ/XOpWJzTA9
+ /l8F4rQJ
+ hsVFufYHLfS4EAPDrg0kYz0DH+6es/8pG2KPg9JLSHYuSak01h4wD1Wxu8FD8OsRdgjolf7JaEN/XSQPNKNYSqOji60JI8Tvrbq04VAiw8shN9MqtcPIWBlxJ8tB3l7jWiCMydW5jsF6us4j9fxI/se/lOcyYZ8+gaendoO8oyQ3lupvF+Yx904GYztb2g3htiTBXO5P+M7LKLF7+/sxi4SdKxemeVDFbT0t6/9bholL5IBYygjOn3KLtmX4bkNEMUIrolJEJTFnuQJ8Yovcqx/5DJHF5x+6HeW1wsEB4y/Y7QTc2uSm+/kI+yXJ5D2Obrjyt+8btRV3YKuNfhYtFKZP2l9dtvepF2xEY+ZDyv2Y1wB8DKUH0B8k+mX5Jh9U7VC2qJ3fYPVhs48WIHuB1eDUBwvLNS+xpsP/XIc6w/BGH3s12b/1+MUoVA5X/eE6s52JT2sPrNzTCke+kb9s0+DwGIe1UEBVOClOpnq2RF2ftStA7Oo3wdxfOJuAdvo3PVr4hxYVR4MxFr2Wqn28wSZWia0A/Oz/MiUHxsBWz0s42NjIQDEyBdDhOnG0drtgi1FNsC0DVpEZte7YS3VaifjhZIpRaOO1FqBougsbr8djOcKvVHGpEVIJR9/V5vIb7n29o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,30 +128,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
-> On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
-> > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
-> > > Very good, preemption disabling it is!  It is quite possible that the
-> > > PREEMPT_RT guys will need something else, but one thing at a time.
-> > 
-> > This reminds me of classic RCU ;) It might work in this use case but I
-> > am afraid that other users might come along where it actually hurts.
-> > With PREEMPT LAZY the preemption within the read-section should
-> > hopefully be the exception.
+On Tue, 25 Aug 2026 08:55:26 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+
+> Uniquely an mremap() invocation using the MREMAP_DONTUNMAP flag can reset
+> a faulted VMA into an unfaulted one.
 > 
-> Given the way that PREEMPT_RT treats other locks like spinlocks and
-> rwlocks — turning them into sleeping locks — I suspect it makes most
-> sense, and is consistent, to also turn rcu_read_lock_atomic() and
-> synchronize_rcu_atomic() into plain rcu_read_lock() and
-> try_synchronize_srcu()+synchronize_scru_expedited().
+> It does so after the page tables have been moved to the copied VMA with
+> MREMAP_DONTUNMAP leaving the old VMA in place which is naturally unfaulted
+> as the page tables it had are no longer present.
+> 
+> However, in doing so, it violates the invariant that the anonymous page
+> offset of an unfaulted VMA is vma->vm_start >> PAGE_SHIFT.
+> 
+> This is because a VMA may have been faulted in, mremap()'d (causing a delta
+> between its page offset and vma->vm_start >> PAGE_SHIFT), and then
+> mremap()'d again with MREMAP_DONTUNMAP resulting in the unfaulting.
+> 
+> This condition is a violation of a fundamental assumption in mm, but now
+> also triggers an assert in assert_sane_pgoff() which explicitly checks for
+> this condition.
+> 
+> Correct it by resetting the VMA's page offset at the point of completing
+> the MREMAP_DONTUNMAP operation.
+> 
+> Reported-by: syzbot+f12658786a4153df5113@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6a87853b.ae6ddae5.3da009.0023.GAE@google.com/
+> Fixes: 1583aa278f5f ("mm: mremap: unlink anon_vmas when mremap with MREMAP_DONTUNMAP success")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  mm/mremap.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index e8df5cdb0ac9..2b4b523a86b8 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1331,18 +1331,30 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+>  {
+>  	unsigned long start = vrm->addr;
+>  	unsigned long end = vrm->addr + vrm->old_len;
+> -	unsigned long old_start = vrm->vma->vm_start;
+> -	unsigned long old_end = vrm->vma->vm_end;
+> +	struct vm_area_struct *vma = vrm->vma;
+> +	unsigned long old_start = vma->vm_start;
+> +	unsigned long old_end = vma->vm_end;
+>  
+>  	/* We always clear VMA_LOCKED[ONFAULT]_BIT on the old VMA. */
+> -	vma_clear_flags_mask(vrm->vma, VMA_LOCKED_MASK);
+> +	vma_clear_flags_mask(vma, VMA_LOCKED_MASK);
+>  
+>  	/*
+>  	 * anon_vma links of the old vma is no longer needed after its page
+>  	 * table has been moved.
+>  	 */
+> -	if (new_vma != vrm->vma && start == old_start && end == old_end)
+> -		unlink_anon_vmas(vrm->vma);
+> +	if (new_vma != vma && start == old_start && end == old_end) {
+> +		const pgoff_t pgoff_unfaulted = vma->vm_start >> PAGE_SHIFT;
+> +
+> +		unlink_anon_vmas(vma);
+> +		/*
+> +		 * The VMA is now unfaulted and it is an invariant that
+> +		 * unfaulted anonymous VMAs have page offset equal to
+> +		 * vma->vm_start >> PAGE_SHIFT.
+> +		 */
+> +		vma_set_anon_pgoff(vma, pgoff_unfaulted);
+> +		if (vma_is_anonymous(vma) && !vma->vm_file)
+> +			vma_set_pgoff(vma, pgoff_unfaulted);
 
-That makes a lot of sense to me.
 
-For that to work, we will need a wrapper sort of like what we have for
-synchronize_rcu_tasks_trace(), but one that does SRCU for !PREEMPT_RT
-and vanilla RCU for PREEMPT_RT.
+Hi Lorenzo,
 
-Sebastian, thoughts?
+I think the fix makes sense. One thing I wanted to make sure 
+I understand correctly is the distinction between anon_pgoff 
+and vm_pgoff here. 
+Is the intention that anon_pgoff should be reset when the 
+VMA becomes unfaulted, while vm_pgoff should only be reset 
+for a truly anonymous VMA, since it may retain file-offset 
+semantics for VMAs with a vm_file?
 
-							Thanx, Paul
+Thanks,
+KunWu
+
+> +	}
+>  
+>  	/* Because we won't unmap we don't need to touch locked_vm. */
+>  }
+> 
+> ---
+> base-commit: efecab401cb15fd3bb9bc05990609acb6b267ff2
+> change-id: 20260824-fix-mremap-dontunmap-pgoff-a687134e995e
+> 
+> Best regards,
+> -- 
+> Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> 
+> 
+
 
