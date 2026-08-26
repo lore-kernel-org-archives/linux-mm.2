@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA33C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 15:56:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D95C6C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 15:56:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38B5C6B008A; Wed, 26 Aug 2026 11:56:05 -0400 (EDT)
+	id 7D0726B008C; Wed, 26 Aug 2026 11:56:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ED976B008C; Wed, 26 Aug 2026 11:56:05 -0400 (EDT)
+	id 70C556B0092; Wed, 26 Aug 2026 11:56:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22AD46B0092; Wed, 26 Aug 2026 11:56:05 -0400 (EDT)
+	id 623496B0095; Wed, 26 Aug 2026 11:56:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00AC46B008A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 11:56:04 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F8C1C0108
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:56:04 +0000 (UTC)
-X-FDA: 85143871848.29.6423F17
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9D2BFA0009
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:56:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aG2+GO6G;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 383FF6B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 11:56:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B255C1A0188
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:56:07 +0000 (UTC)
+X-FDA: 85143871974.03.59B43CF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E360F1A000A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:56:05 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NpNbeG7Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787759762;
+	s=arc-20220608; t=1787759766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xv6LvbJXor25svpyF1shB5+LUX7dxOQBbe5g57lme0s=;
-	b=QHF6npS03Nq9jOd2rYJmuIlZwC0W+lVBd4h30c7lHpXABLSxfKVIX/86czhNxJs0BKF2hi
-	SSFP8uZa0cSbuCR7QpOBQjJd8NiMaoEXhM1tAOVyMvh521cgVdf03drWn7l79xRGw0225M
-	zofC3hSN69DbmLIMPjGSJKtWhNOzr+k=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aG2+GO6G;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=7AJOXS7+FmhIjs+QHaVJiOWkg62Yl8bLA9jCz7ES/Zg=;
+	b=IIJOKE3sgkgw4Z8z5Ch+uO2JzfrIPBbLRLRY8iTBI6JuPj9/eubhYORNgdDZ9MrW8ORiDW
+	zTjskx2oXtM+6RVKSXJFIZL/ac9I4TkPg5NBkXa79wsy1JWUs6ATmJBdrtcP0DFpieLbP0
+	8CX7u9zq/Ivu1BJC3AMOWGaoKQcV4bg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787759762;
-	b=C+zZb7hehDhrYDYt44fvwQKJ3vLKq1eMsNzDMH2fC3qM7wtswxAjGxjVukNSW5fbwAXmHQ
-	iqG9I2paeK57Bs249dgNZXw3lE6MLiF6AAZI7bzf0kYQ0B8pFkpT7lZiy2xDU772zE4uOa
-	Oh4LAgCZR+yF2RGQDp5Pn8lBg4IW5fw=
+	t=1787759766;
+	b=e8lB/K+NIxwbw0iBBKd346igmDt12E09vEGIljPGwbVJi3dlD7DjNkNvgZaF4ttK56Go/d
+	Rckrt/CYJvZXeGXlXS1TO33zky3s321GakdjkJM1nPXxZcy8FHway9SeSDfpgACoW6eKQQ
+	37If0GSEeWEgXAWgfrHkk3d6BIIQ6u0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NpNbeG7Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2E8D560A63;
+	by sea.source.kernel.org (Postfix) with ESMTP id CD41C43CD0;
+	Wed, 26 Aug 2026 15:56:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620831F000E9;
 	Wed, 26 Aug 2026 15:56:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3DF1F00A3A;
-	Wed, 26 Aug 2026 15:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787759761;
-	bh=Xv6LvbJXor25svpyF1shB5+LUX7dxOQBbe5g57lme0s=;
+	s=k20260515; t=1787759764;
+	bh=7AJOXS7+FmhIjs+QHaVJiOWkg62Yl8bLA9jCz7ES/Zg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aG2+GO6GAZcXlhCpgH4qqw7omdbZ3lTajbsgfjPtKnShfu336O/+yok0gpWBwbMyW
-	 UnC3yKhfup2dfl8lfHCHm19GXWaVZy3azoYf08PvN+emHgQA68VZmlbExfYvzG4ekO
-	 yB1ubax7/mGSYGYh7XcMZqHFdcvDb9Ka7DtDiYl1HMXEsh8yginUNM2seFi/jfnExZ
-	 7k42I0xrAC9bIOd8BJ49XyO5DrZa5syu9TCHEDgn3iFFmDyKa3pXDmiSNUkNu4UJoM
-	 kUuQEOZyLKlJSMPF63ra2VbzjCIRXHlhL0QFhj6CKWD5OyK1lW4h7TEsF5DE3f6A+w
-	 7kQdiwLbw+CMQ==
+	b=NpNbeG7QIzDMh6RL6aLU7mL5L8eblE+RXsu59K3or1cIT0ZfKd6YOIDldAxxy6PsE
+	 EKZ0/lzI5WH+IZz6S0byhCGimtJ3IlkiBMDu5AMkI9YcIhc4AIK/OYehGL2njx790N
+	 FOk1APnd++One2KJ3LZs1dJGUDj1U7eF/a0MeAz/hHa0uqe3oGVF367wiTZpDwupia
+	 479kDzuC33TyZz+o9T+67z/py39Ob7GIS7CaTVuWlGk8SO/Ixn8WObgJ6MCU7m0JXY
+	 0L5Rbs52IrXmUWlxZSX0rhNoDsqpg2eGreTy7U9pOfS2ddDFHkZD4YC1sQ0s+3hdmP
+	 XRPJqbdPBUD/w==
 From: Christian Brauner <brauner@kernel.org>
-Date: Wed, 26 Aug 2026 17:55:46 +0200
-Subject: [PATCH 1/3] binfmt_misc: only let punctuation delimit a register
- string
+Date: Wed, 26 Aug 2026 17:55:47 +0200
+Subject: [PATCH 2/3] selftests/exec: test delimiter restrictions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260826-work-binfmt_misc-delim-v1-1-43618adf8599@kernel.org>
+Message-Id: <20260826-work-binfmt_misc-delim-v1-2-43618adf8599@kernel.org>
 References: <20260826-work-binfmt_misc-delim-v1-0-43618adf8599@kernel.org>
 In-Reply-To: <20260826-work-binfmt_misc-delim-v1-0-43618adf8599@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -81,22 +80,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
  linux-doc@vger.kernel.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1730; i=brauner@kernel.org;
- h=from:subject:message-id; bh=/DI1LeiV4wOLRgjpw4V8nHUf0uW01ksKySY2chdDeSU=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT183Qz6cbvOhpjcTr2U+iqQ49fPVTbfn5tje3Mt9t/r
- rkoOeHixI5SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJsOkyMkzVKO9/Z66x/tG9
- n8vYinpqf/s85Ft4z/Drr7KZE0WOGl1kZLgotkVbfnXS9FDJX/cXL1pcsXyFxu6F6z6/z+bsteP
- teswNAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4526; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=653qz3nDY95B3k6oyXltdsVnQQkTWcEE8ubSGxx0fbo=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT183RnqfOu+t3y0NQ09cTdpOdv9ixyur1gv9XrmKMHt
+ 775dbrtT0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEousY/ju+ZDrk1WCvmp42
+ 6xXbpikMBZ9yPEI+PnQ9t2KRxaZYx8eMDBvqXbqXrGSVy55oudc2vvvm4xtJl5peJ638f+Hr/wu
+ PJBkB
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: gq5m9h5ruwy6ripygrxom7cw5f3pfd44
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9D2BFA0009
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E360F1A000A
+X-Stat-Signature: fjpi6gz33xfuauwnfhisayrco5ufwd8d
 X-Rspam-User: 
-X-HE-Tag: 1787759762-464759
-X-HE-Meta: U2FsdGVkX1/V7YwAhHQCZwrPb45oqye007zyCfZjsgWQ2SDgfHtWYf56k4WrtBJSG1sP6tzcpWaQN0/LHo4utGnEOyUYesiNXab1lNBLie/ZU8B32EiCUq6Fa5GVOvwFZVVW7MYBBdSB3e8eBOSR6ZA3jNFn31nj4oBkdg5faTV6siNZP3WIgkBJfv7cWQPybDPsIxGrVmqLR4Tuns0UUWiv7TyvNDgePz2a3y1N65AZdoCsh4ggXEWgjhxVq2tdn94/SasfzZ5Px6X5cwYofPciyD12Rb+E5RF8lbt88+WJ5ETuODukHjqiQ6z7y9j5fWFOEuIiOBPBkhA8lCcRdlTcRwtWuSfSR60aveIsylYIB/AMGFuDcaEMHZnYKwJSvnbOuDlFYyLZ8DQC/f2HXKhLnWNypurKXZqF1z2aCghB23Ne6s6ZZGVBd+8CbWMq89PUcaFTmZ8ukbkQMC1o85YJVL9+34SPbkDCLAD7E78kE2dZU1A+f5wGLE3DSdjVLWOt2ZuhtINAb8LBCiht5SUL4A0ZKuzOAlT5dIbgsy670dZOY/EkMOvPpPNQkS/JUrjgZsTUf+8MGADaRbUb+LfWB4tp/gsJY04X3q2SqpwL7x/1Vt21OdtbRX0uJSJFGOWPFJR24twm4wd3VFCyi+DlVVDnknkzsU6u+oQMdjP0Q0gZgFUmZqsPaGRAfy3/DQIMxjDMC49stLeIID1Z3E0hXx4fYvKUBBWwemx4FZIp/j+x0d7wRh8//6kmC4NmKhpl820lMh7ds4wNLobqUDUV4uoPenBh6bqwonEo91QTKjsnzT7YrkFASJgIx57oLmWFo/5n1V3VXaDECR7V1ypRY5lhi+NnN3WKbUGP7kXjrkWpjMb+5h5e7mZANzIwpuZ+nzpvL6WVcQD4EeHSNE5wPlwN3/1n4b7jAkvl8rVRFGoT7+vm1NX70ic+hWrU7s1oc7yw3vKZDcaUvgb
- sIj+HFwp
- mAj12hdPhoZwVEWU6HlAYGjbcHqcG4dnJRQttzvV6hYkj2n3tocnHjEb+rABCamlmigA3oJxaEzpxLd+KcS07GWQSeUr+jVTparpnGBfGylmeLjlAEB/0LPzEwaDLyFsHzVjdOO0HR9oa9u9kt6TItwHkCMsGRXxn/r2MTcnaAfwdKnvnC6emj0oMycwzH+ccWQdDOR1Zg5VpxMtzMnOOUb0n+MV/E75rITlknL3xyYvnUS+2xA7Ukuj88STu3O0MXyDIVwwfn8znNHpVl6SqxXCmENO0YBbfuLRR7EGU0CS59HZd3Vg5+sSkJxyvKyjLnVQUyG6/LkVbCY+eI0KxPGWHa1H99T32DQCZxyXRJqOjKZyHSHDfYh5OgqUh6sQi6RQx
+X-HE-Tag: 1787759765-394424
+X-HE-Meta: U2FsdGVkX18MPfMkYpSuE3jIhG91pXiBoXNOQtEeKO13c4m3UI4xB7BgNCDDT7Tyhdft0c0tJI7Mc/YSlLb4OXgP5ISWf0h8bw8DXgFEKpK30+1bk9GsLIO/mYkFvfK/cFyVoTo0s4g3wU3qBRyRilWtf6OQINzftqsWRhSQ4RbdHRjZgTYa19B1CSR4g4IAVATV4+6mc/RaxBM+gSkjThAwZTsU4Xc1zkqX5EbhIQnCCuDvt7jHuTvmgIk1mXxehexuacgYM95hEz++wLHLavr1FeTEBLdX1FNCtEv6J/ZEwWwK8Q0Bskt49FDI9hjhHp0BZxpI5f1lAbVEZhT5nd+H0FE9DEyolHHgq35mQnAi8Z2g8FBt4ILp46ShtgO5Kuzzk6gkOfKo4/z+mNLyOcu3J+f5aJkNSOJ6Gi71i7uvR+59Zn64ZqXAXJzs+FebL4X3KvmNbwnVRo8DoxjtSY1dCAFSHq5Hn2JWxocRKtO4fLY3gz5+5T0kBeEogjCP8iknrWqE9KCfopIVsFVAa1CrpBXov7aGw1y64XuEWHSFmKYos2V3ONA8F9FsW1+h+903Qz3kLB5f6qCiM1Z7Nw12n2onG0ec2TnYNuyoKv0zknJ6DUxDyKyQueFtIXKR339jbUwjqmSMUw5qcVEWs6pkgu+Z4ah/BPVmr5GTNbfYU9i8hKLMOvdB7lH7Pbch2JmlfN1y1RetQIyDSluWO0l/m/4xz2ymJjsqFs3qoyFMAPwB7fQsitldn6QszNh7MRaJDw+cevZQvdm4DJOQRnDznZXekWDBPl16p5ex5u1tKh5FiRquH9+0VxmHM+XNnmV9pXrbw2aGK0MfWcMvJk7uSKYXAciOCzsiqUS9ebwk4hCWo3O/BKyscydroHWqgeTjBzXMUZ96QrN7OmqEKcYPlf42tR5aTsBc5LOxpNZ8I5pzH8DJdTxjbSrRqAIR29RJfllKIP+B6QjTaII
+ 0ftWZnfa
+ Xxo8XCbfkK5j80C06l8KzofKy3YndHUQ+2BHtIkCw3KRtI7Cm8ZWUDeYVark+/uuLtzOmW118RPkVCffh1syGXVWhzyM0D/OTlcFeSm0zXZ/SErDeq3USfrbkXvo/VMoi96BnBDmvVM7o7rhJ74SIKGMbaY/lI0L/rlnI7ODjyo/P+yeZF9OVY2Fdp8UfrIV3NxRBtzqZ08MT9oJCNis5xQ5HXhy0zrB3kSV4MfOSe+mxuR5cJkQ629023vV9DkfUYDw1DUZlMxiHx3UrOZlSzahUZzAq2C6usxxb0XzcLtye4LVgLf+GSvHi+Emrq0M6Cgi4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,55 +103,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently we accept arbitrary delimiters which really makes no sense and
-from looking around it's an unused feature. Everytime we add a flag the
-number of possible delimiter shrinks and it makes extensions much more
-hazardous than they need to be. Stop it and only accept punctional as
-delimiters.
+Test that the new delimiter restrictions work.
 
-This extends commit 8e85d50ba111 ("binfmt_misc: reject a flag character
-as the field delimiter").
-
-Letters, digits, whitespace, control characters, bytes above 0x7f and
-the backslash now get -EINVAL. Everything deployed uses ':' anyway.
-
-Suggested-by: Farid Zakaria <farid.m.zakaria@gmail.com>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tools/testing/selftests/exec/Makefile            |   4 +
+ tools/testing/selftests/exec/binfmt_misc_delim.c | 127 +++++++++++++++++++++++
+ 2 files changed, 131 insertions(+)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index ddfd3aa57ac8..809c91d21b39 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -100,6 +100,13 @@ static const struct binfmt_misc_flag *misc_flag_by_char(const char c)
- 	return NULL;
- }
+diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
+index b640af8f02b5..2220ed345e92 100644
+--- a/tools/testing/selftests/exec/Makefile
++++ b/tools/testing/selftests/exec/Makefile
+@@ -45,6 +45,10 @@ TEST_GEN_FILES += binfmt_transparent_interp
+ TEST_GEN_PROGS += binfmt_misc_loader
+ TEST_GEN_FILES += binfmt_loader_payload binfmt_loader_payload_static
  
-+static bool misc_valid_delim(const char c)
++# Only ASCII punctuation delimits the fields of a register string, so a new
++# flag character cannot change which strings register. No bpf toolchain.
++TEST_GEN_PROGS += binfmt_misc_delim
++
+ # binfmt_misc bpf-backed ('B') handler test: a libbpf harness plus its
+ # struct_ops objects and the test interpreter/app it routes between. Only
+ # built when clang, bpftool, the vmlinux BTF and libbpf are all present
+diff --git a/tools/testing/selftests/exec/binfmt_misc_delim.c b/tools/testing/selftests/exec/binfmt_misc_delim.c
+new file mode 100644
+index 000000000000..ffc17cb78545
+--- /dev/null
++++ b/tools/testing/selftests/exec/binfmt_misc_delim.c
+@@ -0,0 +1,127 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Test which characters may delimit the fields of a register string.
++ */
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <stdlib.h>
++
++#include "binfmt_misc_common.h"
++#include "kselftest_harness.h"
++
++#define ENTRY	"bmdelim"
++/* Shares no character with the sets below, or a refusal proves nothing. */
++#define MAGIC	"bmmagic"
++#define INTERP	"/bin/true"
++
++/*
++ * ASCII punctuation without '\' and '/'. The backslash is refused because
++ * it would cut a magic that uses \x to escape short. '/' is accepted
++ * but cannot delimit a rule that names an absolute interpreter.
++ */
++#define PUNCTUATION	"!\"#$%&'()*+,-.:;<=>?@[]^_`{|}~"
++
++/* 'M', 'E' and 'B' name types, 'P' through 'D' are the flags. */
++#define LETTERS		"MEBPOCFTLDqz"
++#define DIGITS		"0157"
++#define WHITESPACE	" \t\n"
++#define CONTROL		"\001\033\177"
++#define NON_ASCII	"\200\244\377"
++
++/* ':bmdelim:E::bmmagic::/bin/true:' with @del in place of every ':'. */
++static int register_with(char del)
 +{
-+	if (!isascii(c) || !ispunct(c))
-+		return false;
-+	return c != '\\';
++	char rule[128];
++
++	snprintf(rule, sizeof(rule), "%c%s%cE%c%c%s%c%c%s%c", del, ENTRY, del,
++		 del, del, MAGIC, del, del, INTERP, del);
++	return write_reg(rule);
 +}
 +
- struct binfmt_misc_entry {
- 	struct hlist_node node;
- 	unsigned long flags;		/* type, status, etc. */
-@@ -872,10 +879,9 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
- 
- 	del = *p++;	/* delimiter */
- 
--	pr_debug("register: delim: %#x {%c}\n", del, del);
-+	pr_debug("register: delim: %#x\n", del);
- 
--	/* A flag-char delimiter runs the flag scan off the buffer. */
--	if (misc_flag_by_char(del))
-+	if (!misc_valid_delim(del))
- 		return ERR_PTR(-EINVAL);
- 
- 	/* Pad the buffer with the delim to simplify parsing below. */
++/* No character of @set may delimit a register string. */
++static void expect_refused(struct __test_metadata *_metadata, const char *set)
++{
++	const char *d;
++
++	for (d = set; *d; d++) {
++		int rc = register_with(*d);
++
++		EXPECT_EQ(rc, -1)
++			TH_LOG("%#x delimited a register string",
++			       (unsigned char)*d);
++		if (rc == 0) {
++			unregister(ENTRY);
++			continue;
++		}
++		EXPECT_EQ(errno, EINVAL);
++	}
++}
++
++FIXTURE(delim) {
++};
++
++FIXTURE_SETUP(delim)
++{
++	if (getuid() != 0)
++		SKIP(return, "test must be run as root");
++	if (!binfmt_misc_available())
++		SKIP(return, "no binfmt_misc");
++
++	/* A kernel without the allow-list takes any character but a flag. */
++	if (register_with('q') == 0) {
++		unregister(ENTRY);
++		SKIP(return, "kernel without the delimiter allow-list");
++	}
++}
++
++FIXTURE_TEARDOWN(delim)
++{
++	unregister(ENTRY);
++}
++
++/* Punctuation delimits, which is all anything deployed ever uses. */
++TEST_F(delim, punctuation_accepted)
++{
++	const char *d;
++
++	for (d = PUNCTUATION; *d; d++) {
++		EXPECT_EQ(register_with(*d), 0)
++			TH_LOG("'%c' refused with errno %d", *d, errno);
++		unregister(ENTRY);
++	}
++}
++
++/* Letters name the types and the flags, so none of them can delimit. */
++TEST_F(delim, letters_refused)
++{
++	expect_refused(_metadata, LETTERS);
++}
++
++/* The offset field is written in digits. */
++TEST_F(delim, digits_refused)
++{
++	expect_refused(_metadata, DIGITS);
++}
++
++TEST_F(delim, whitespace_refused)
++{
++	expect_refused(_metadata, WHITESPACE);
++}
++
++TEST_F(delim, control_refused)
++{
++	expect_refused(_metadata, CONTROL);
++}
++
++TEST_F(delim, non_ascii_refused)
++{
++	expect_refused(_metadata, NON_ASCII);
++}
++
++/* The escape character would cut every magic that uses one short. */
++TEST_F(delim, backslash_refused)
++{
++	expect_refused(_metadata, "\\");
++}
++
++TEST_HARNESS_MAIN
 
 -- 
 2.53.0
