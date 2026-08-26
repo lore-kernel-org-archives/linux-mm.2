@@ -4,138 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 237A9C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:21:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23228C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:23:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF70B6B00A1; Wed, 26 Aug 2026 12:21:20 -0400 (EDT)
+	id E94326B0092; Wed, 26 Aug 2026 12:23:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA8476B00A2; Wed, 26 Aug 2026 12:21:20 -0400 (EDT)
+	id E1C8C6B00A5; Wed, 26 Aug 2026 12:23:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6F6C6B00A3; Wed, 26 Aug 2026 12:21:20 -0400 (EDT)
+	id CE5356B00A6; Wed, 26 Aug 2026 12:23:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A45E6B00A1
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:21:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6FAF5801A2
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:21:19 +0000 (UTC)
-X-FDA: 85143935478.26.7E6049C
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 894F220004
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:21:17 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="B P8PYzt";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=OZkFPany;
-	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787761277;
-	b=499twfmLhMFx6Oic2Sl+3hpXV4uvoQ64x5CZqazGVrxQwIxzR/jLv+Op3aDvKjLmoT7585
-	N38R//bzB1fNflBAAOIaA6pF8zev6gz6QkjsgisBSE9bMrQnc4Eqxl954Vt5m12txe53fY
-	WrN7iyw/h1GLv4A3TvOs46+aOEMNu3o=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="B P8PYzt";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=OZkFPany;
-	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CEC16B0092
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:23:31 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 280671A016A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:23:31 +0000 (UTC)
+X-FDA: 85143941022.27.BF91B70
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DB4B1180009
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:23:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Nih8bIuM;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787761277;
+	s=arc-20220608; t=1787761409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5mSjV0I5LbWvQ9sczjJL6C6KyVdbqTRz8cyjnim/Edo=;
-	b=wmAus/flmyC6tcRHX/UhLK6g7WOSG4OKbXOaREym9Gg2APS7oPT1c0aygM7omUBS5+m5FH
-	qqE1yFKlrnce9UBTALvcM1vLtZ2ApXWxSR69agfQTTyKISc42P8FU9OBv4uHhxVs9x7o4+
-	hojqgs92kZ1X0h+bv9fd6atXVBlXvF0=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1949CEC01B8;
-	Wed, 26 Aug 2026 12:21:17 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 26 Aug 2026 12:21:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787761277; x=
-	1787847677; bh=5mSjV0I5LbWvQ9sczjJL6C6KyVdbqTRz8cyjnim/Edo=; b=B
-	P8PYztGw2WCo+TvJSt+P6YuyWjwWc6g3OnhflMvlOKY73JNJqQZAS8rWpIkxa7jS
-	5sy6kSLTNR6ZXg7Ye3++lUvIyDTBwJxL30+fyxiy8aWJ9Qs29R9VAsAP51Fq+dVi
-	TORC/TNINXsILdoMIPh1jA/L6ujS/OddMjvAzebYyDDz9x6F5iEW/t9ulpIAamRl
-	E+9VniKxIojwVi9x1hzFV8j2bVbrmhe3a3oytIexxkiCjpAM9t1z5tVm9uEicNF+
-	TdMVh97zYqfBKWb8qK/G7fO9UKHp+DJg2/O9wTVyX60e0vx55u4hiwMd9gOfrHq4
-	WFmzBNonn6CLm/ONCxPbA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1787761277; x=1787847677; bh=5
-	mSjV0I5LbWvQ9sczjJL6C6KyVdbqTRz8cyjnim/Edo=; b=OZkFPanygMXeDszE7
-	n2A4Y4veWU+G9z5j3qcLApIpDZxDsfy/clS/lf3LKvFGzEQpIhjq0CLjDJ/LY4iU
-	wJXNO/TFbHOHNsVa6hVWL9BI8vGauPInF2P44IMTVQji1L7XvJ2KMJpUJMTWAyf2
-	4iSVkSvGu7Ri/5EWzwtjPZCNSPMEV9jqn8z4vIDbqqdPu4MTYtWBplRcSLQS14zj
-	tIk5ZcFrKYMRWOa0bxyLEjqOuGIkHp7nasSHI5yGXrW5GTUI0vuOF/zN2VWFMCuw
-	3Q5ZwLeKtXZbMBBmzhx7boygrk7vUcVle72ejnI4G5A/XG6RxL1WEzSeYpFOdkK5
-	Cstgg==
-X-ME-Sender: <xms:fBKPahdMo_r-egmMubW0YSx4uVn2zMI4o5rv9VFZ_FBOKC53_aKwUQ>
-    <xme:fBKParLOXM5IfIbKlCkKNJqm5GBFtOJgZ5z_I11Tf8L9oBZ5WjBU2kBwm4oWwpVHX
-    Zfj18SGQSjDuVKfim38cl_O2VlTbQI6sKZEILdF4BU5jCwc7HXCJP0>
-X-ME-Received: <xmr:fBKPagqKMeqTEU-qnIAXX1h0vNCmaMRAXq0Ee0QFbd8w8KkAQ1kSuvDI0IA>
-X-ME-Proxy-Cause: dmFkZTEpX8HBQysEAMlAbdyKFX4BLzWtS7+Qo1RjxAJeMJnS381384CQaxM92QA8W5J6jo
-    7r0RHbsPcTs1IpTXqcOu2ofgimA8w2hMK3OeOMvPUWs2NDJNBlDL/23E29uU3eWq90a8Ny
-    uayj7GqONoh0NEQ91mQ/H+TE3rTPuVZ+wfrdHbeyaEyRe40ZIUYJyXTHqnubEDskXnqfPu
-    FIQsvLmT+4mxeisAsg0TmWv4Y7l9NdKef8tTMihpDmjKvNxij8lw310+ofBfGEkzSLqnuN
-    AyozbfZUQr702Kz+RkXguKuGQfBCnKcQhC5EFdpLjS6L6jWqh1sGvO+4Vl+gX27JPRP8Ht
-    szkLAhJPkmHmsMuK+YkYr9yTyscVe3c0bf17pnNuHqUsHycYFqkLlrF5TB5u7lUu8OB/wM
-    DV5bI0v3NOIPdRF9o4laEl7rxuvns0/4qf6WByMLMYQby4xvvTzd619MkHG7vrfgrIajil
-    9xrS+oFmBCtWr0VBzXNyMXnf0FwgHZ5PK75YysAf2sIgyHUj7LJL1q92xLX6X1MBq4U7uW
-    lhwF/3qJ1OK36392uADRBMFSzHu8Lqs4TMnvmDfirdJRnCCZGu0TGiK789fROlpmrPHxnW
-    Q4Y5yNtbL6/Q5184MpQJ3sa7GKBP7KWtEmd2SUmUnu6UiB8GFfT1xjDdsnxA
-X-ME-Proxy: <xmx:fBKPahWb-khyZOPyd2mpwNTBm5DFuvm2hVRrFRXRGCoMONke2zaejA>
-    <xmx:fBKPar2YJHTRWMC3O3NWgvWKqA_HdYXs-4yn96wkxcgP96sJ3pYwaw>
-    <xmx:fBKPai1yM6aMG0txUqE83j0j7xPiDWqodfWHy7cDugfuT6yvGXePCQ>
-    <xmx:fBKPaqkql46GyvS23W_LXsuMmZH7j7jVT6wzjhAE1n9y02NStBKAUQ>
-    <xmx:fRKPasmzk5pUV6uaz6rpLCWKy1FmrQapYrUNAazabmPEbKOmUXwurJTE>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Aug 2026 12:21:16 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	hannes@cmpxchg.org,
-	usama.arif@linux.dev
-Cc: lance.yang@linux.dev,
-	ziy@nvidia.com,
-	hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	dev.jain@arm.com,
-	ryan.roberts@arm.com,
-	balbirs@nvidia.com,
-	linux-mm@kvack.org,
+	bh=ixqAsn6TGsKjb4uz8wyzxl1SAvJQxPNub0k9fwjenCg=;
+	b=7SiJ6iEwtZ7o9GFOQWcRH28N2tNxCFqzACc2zCrILgcHIeiJuDoBK8PapWLtG8OP8/6nvT
+	bwJtDr6sydXIjCWaO9MQN/g6doA/sqS2rs49Hshd4nwpmgcdTPryaLsdetdSyX1hSaLOO6
+	vB14Ml9zuQuu+dmVM8u5nZsNXaw1kR4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Nih8bIuM;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787761409;
+	b=c96dUruzvEbZBwFDRe6IWn53y2FDoJpP2rAXJ1ahA6MqxhmLv00CR1Fy6/lEDaen6L5IrH
+	BvTnAjlzNscE6Y5w2qsXQwo/ZARXFJG80bZ+EHevAg3KG8kLtXl1u5cbUSjjE1vRNJ5pmg
+	XwepE9n2WYUW/jTK0vOFHbqijY7Xl3I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787761408; x=1819297408;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6kzQ95U1YQGNGVH/1wyaYETJmIZw4uwWKvlsrvcnlv8=;
+  b=Nih8bIuMicgdw6fsMYgnaUW6XkkwwOvLuMUJ3yF7Jqit98sI6BqrgVh9
+   KlQBfaETlrrT0rto9DWDebpAUGjXzDPm7y8BdkWZYbzYa8ai965/cDx88
+   vEMggOUIqrLJvvCOmrpRC2xIt1MvQO0ctAp3pHDUyDpWmpz5MSL8+PLNE
+   inQ7TLYZ+onKPl5BktjReU2+0Lz9dY0+nf7iewaRxUMIf1mXZzG27f1N5
+   jwExSjns0K+KbOCaCqGZJCmOiM6ZMn87F0Ypm0egR8o37ILTmw6+0euG1
+   h9NRN70XChRP5TW9Az/Wo0JqiMqox+MLtOmM5Dt3s/h8wBoCr34SfXIAP
+   Q==;
+X-CSE-ConnectionGUID: DYwmB+vpQJeL6LvL4c1rhA==
+X-CSE-MsgGUID: 6TXV9OIYTwes14rwN4zN/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="87378563"
+X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
+   d="scan'208";a="87378563"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 09:23:26 -0700
+X-CSE-ConnectionGUID: lR7Q+sj3S6C+exrR/EcD1g==
+X-CSE-MsgGUID: sTlQIIJsTYG1G5BfCPibWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
+   d="scan'208";a="291144168"
+Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 26 Aug 2026 09:23:23 -0700
+Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wzGPH-00000000837-3X1S;
+	Wed, 26 Aug 2026 16:23:19 +0000
+Date: Thu, 27 Aug 2026 00:23:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH 5/5] mm/huge_memory: turn the swapcache-with-mapping error case into an assert
-Date: Wed, 26 Aug 2026 17:21:01 +0100
-Message-ID: <20260826162101.1314941-6-kirill@shutemov.name>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260826162101.1314941-1-kirill@shutemov.name>
-References: <20260826162101.1314941-1-kirill@shutemov.name>
+	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH] mm: workingset: judge cross-memcg refaults by generation
+ age
+Message-ID: <202608270037.JUsg3wm5-lkp@intel.com>
+References: <20260826075133.751049-1-zhaoyang.huang@unisoc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 894F220004
-X-Stat-Signature: 8p1677bdr9uxroy7o1x796uy7dwew9xt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826075133.751049-1-zhaoyang.huang@unisoc.com>
+X-Stat-Signature: 9u69wf7hwxr3g7pza8aebgdaun4y9b5s
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DB4B1180009
 X-Rspam-User: 
-X-HE-Tag: 1787761277-817185
-X-HE-Meta: U2FsdGVkX1/P2p4pD7KBv2TLlqY77pll7oGSDN8fq0pFg+te1OQz1IAe5KtYusWbr+6+xdb8Vuqds01IDiO8bv08r7sLwxqi9ulvz+HtdniBneaJkn9xOgzPmGLQvEgvKiCIPQhk+mToxKaj1mXY/DrnUA+gBqWBsRxJaioutQ/IaJdCAFUvZxIa8+LeUn/D5eu98AUEmwMXfLXutbpyWO0hSX4zb3zlwJywyTaA9BlM3cIzDuJWBf/nc57ERcV4H9ox1RD9hKc19JlfbG8rUpExBSLf3/NE5TB6Uk3c9DH8brS0prv/6vS2mRgTaWzRudzXcgNuhoJTv35NWByv8VH/mGPpzukD+FXSW9z/F+OonLsLogjkfa+p/LnCINSsSiGEPbfzkRcEJtmDAVHNQD+o41ol6OTz5koGxc2tu58U3m2zCW9WhOdWY8QhoWlc3aLeNAY0waB1Uz6ik23fR6iAbwNhTVvMpMh7rxb5NofX4TclUHhSbKfFWXUb9jsQNQoCynYp9yTaMMzFlU0DH+edRrftVQSaUTHirCTDlAG5k3sE7M7nE1FFTY8KdQ6CoUZy2DKAdDy/Rn51Vhp6mTUVuhaNG+im5XB+stDIRWSGj1oIUsxuBqOaBCtrMC4Ka0ua32DcA9VIYKDeecf9bLpzH6tRSlKTcLJVgEUN9+T+jPqS3LXetjJOqyUvfHjnhsR84BJC0tm80e27JwT/1GiijKfDAvLdqnaJvXOu/R76nhCYxRAJuwJgTJXdkhsgwwCS6iJxFu/ABpvC1p8hPXX2w/Cc9OGL38fZmoRd12SOkBxL+gEDMYZCQ4GijUbO44mynQ0UhEvP1oqkp3/Yz7C0s+Cg1yqSytdW/lZttzcJAhF22pxw4P4IRn168Q+p2zacvTouupQNyd2i0d9PIQh+yk0Ra8psqRGl9zQknHkUJqLZ+7cBF2W5hxZJ6E7V+zFl/umNChIrtA+e5F+
- AZiar8Sd
- 5R+S1rpuwFeSeA6KKNS56nryJIyKhDT451WSvxxPjWup720VKRqfYetUAUGc6rQ406zhDPp+pLQbyil8SLhd2POkrEkAC5u1g/M1WssXiEufQBFCVGQd9F/2OGpSiPSrgTIqUd/hDdLHsx8L82HRpjY1Yv9aSNI5G7dn9wT26W2Avk7BNIyQ5rnyWLjREyfUJkIu84fdU39LkIFzvthh8T7n6CryhdKHt93ahFYHrcekGbxKxNwjEkM9SASg738JAZjvEBD7dXACRty+OYsTUpN4mtsI4D/bN3+zJsD4+IgtComoIzV3+x8CidWb2k7uksaAu6BRWWOyOeQXEWXtvD0NK0l0ISX+kawMb1bIY28F0KU+zM4kBS92ufDEonBLfHhchNBI3r+ie3/sL9KSUGGboMWPiIPMm/hy2gWWgzV6jtGAQy3YJDhm2O7DS4YhtynFqPObKhgF34u1O6+DULZnd/E3+8P15BY+7LVNxXJmwlxO/wYG1JOl5lw==
+X-HE-Tag: 1787761407-298434
+X-HE-Meta: U2FsdGVkX1/R1LBz47mRrjloUNMJfFZgMb3LBeRCOPMr3Uyd9LH9IZFzGRurzX3odUUs0oGg2bnoBj+Tysf+PjTGM+/x///qM0zwTxSL1i9n/ekWCoRPGOoAoF39rum3wHjQPrxuXMuuyPXLHIS9YHDWczxZxKwJW/WgqpUg13hQfFrNxCYojdcXn6wugMajFJttoucB6k5mcjUN6XboMhFHPu0DiCMkvZ1u0b0R/qctTT7wVbeaJuknPuI3lIGqfH502t2ipOv68JqDhu5na4SBj7jPvygHOmtyXvTvjaf+o+qHIQfFbuAQhXP62OqG49NpUcDtOCuPps2C7+c/wtgHXdzQPsTMPcx8U/Zi7woOB55VQbsewA79IJXPnz4ashq2X5LtbLXqXR0X8X0vF8rEjWeIsUc0t4EELgI+to8rKhsPrQ+WSY279qCK8/MBoUHNMI5mb8E2AqRDLE9jfozbkb+r7I5zYgbVdaL+q1RreLEFnM+2eeK9B8IRGqpGuUdUIGCjRTCmWO2QaQAgrdf25gSb5BnLuyPz4oQfywDzYa41FCgvWf0BqN0/tQYP4QinNZjBNxsGcc4QtxFS/gqF6U2fziGB+jG+D70s38UTL2gfYBd27jHZrsYzxIl/mCJSSABycLu7uMoKkHKYg57rOD8XoCYrzQjg7P/J6X7NEwvngYvZ3n9oDf+fE54k9AU6GV9Bc2UBnmtnLO7FfwxpLtVXzQMJ2QCsWF6lworQTd8uFOQWkJHCPHuWhcoJaCxmEQyxYKubY8ju/kQ27XywUS4Au4FaxEFFm7v7/O7Mgw2qP6i2Qpi4Loc3ngOY7pDydqIKL8I9D3cIJIUpNcgzYW0HKEo8ZdHbdPE8UMuRvn4/Kx2F2M1kkaRhTt/9ooRDVNw78cGPxHxBqa2+nIk3Mfk3syo+5h2n1lS12AQoVVKLEs+zCWtBCZPRblXUK6gRKrGQYdV3HJ6nUGY
+ e5aYzZvV
+ 6s+fmuqs6Fe7EPt9kMA6ABvipdqkzvURsRYq+NulO3CQ61g7V4W/9IbSAuknlgSqrN4idVfL9G3K8Af6AWGalwBffhtfvpVbA/9sxSKYo054jTVyxpzd1y5ef5vCQpWXUUwC2bnUz46MS8GyVbDVjOsXTjriTfVxPMrLEZkWEBurSCU2VtriZakw11sQNVjZT3Jwe7IArmBpv+VbbsXW+ByeIuZ7qc+s/jWJ9F9aF4EYj5h8srJVojcZk++GrvafRRcOizq75qpwZTnj5RbTTExOxnOKWtasUswbF/p0qWRtM7DGsoMTHlNUNaDay9+XT0tunEtqWRr3Hb0mtILIWHB1PbHXXtaGFk1cuOonIfV/QfW1NOOke2jpj2gVl5PAK8W2XZY6rYYLtMVo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,55 +118,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Hi zhaoyang.huang,
 
-A folio in the swapcache has no mapping.
+kernel test robot noticed the following build errors:
 
-__folio_freeze_and_split_unmapped() tests the combination after the freeze
-and returns -EINVAL. It leaves the folio frozen. It is not a real
-recovery.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-Assert the condition with VM_WARN_ON_ONCE_FOLIO() upfront, and do not
-pretend to recover from an impossible state.
+url:    https://github.com/intel-lab-lkp/linux/commits/zhaoyang-huang/mm-workingset-judge-cross-memcg-refaults-by-generation-age/20260826-155133
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260826075133.751049-1-zhaoyang.huang%40unisoc.com
+patch subject: [PATCH] mm: workingset: judge cross-memcg refaults by generation age
+config: csky-allmodconfig (https://download.01.org/0day-ci/archive/20260827/202608270037.JUsg3wm5-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 16.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260827/202608270037.JUsg3wm5-lkp@intel.com/reproduce)
 
-PG_swapcache is protected by the folio lock and stable from the start of
-the function.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608270037.JUsg3wm5-lkp@intel.com/
 
-Assisted-by: Claude-Code:claude-opus-5
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- mm/huge_memory.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+All errors (new ones prefixed by >>):
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 001d89c57fa2..8fc844ba67a1 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3936,6 +3936,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 	int ret = 0;
- 
- 	VM_WARN_ON_ONCE(!mapping && end);
-+	VM_WARN_ON_ONCE_FOLIO(mapping && folio_test_swapcache(folio), folio);
- 
- 	if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1))
- 		return -EAGAIN;
-@@ -3965,14 +3966,8 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 			lruvec_stat_mod_folio(folio, NR_FILE_THPS, -nr);
- 	}
- 
--	if (folio_test_swapcache(folio)) {
--		if (mapping) {
--			VM_WARN_ON_ONCE_FOLIO(mapping, folio);
--			return -EINVAL;
--		}
--
-+	if (folio_test_swapcache(folio))
- 		ci = swap_cluster_get_and_lock(folio);
--	}
- 
- 	/* lock lru list/PageCompound, ref frozen by page_ref_freeze */
- 	if (do_lru)
--- 
-2.54.0
+   In file included from <command-line>:
+   In function 'lru_gen_eviction',
+       inlined from 'workingset_eviction' at mm/workingset.c:459:10:
+>> include/linux/compiler_types.h:702:45: error: call to '__compiletime_assert_649' declared with attribute error: BUILD_BUG_ON failed: EVICT_TS_WIDTH <= 0
+     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:683:25: note: in definition of macro '__compiletime_assert'
+     683 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
+     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:40:37: note: in expansion of macro 'compiletime_assert'
+      40 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:51:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      51 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+         |         ^~~~~~~~~~~~~~~~
+   mm/workingset.c:275:9: note: in expansion of macro 'BUILD_BUG_ON'
+     275 |         BUILD_BUG_ON(EVICT_TS_WIDTH <= 0);
+         |         ^~~~~~~~~~~~
 
+
+vim +/__compiletime_assert_649 +702 include/linux/compiler_types.h
+
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  688  
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  689  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  690  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  691  
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  692  /**
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  693   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  694   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  695   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  696   *
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  697   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  698   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  699   * compiler has support to do so.
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  700   */
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  701  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21 @702  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  703  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
