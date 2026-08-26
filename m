@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23228C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:23:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2FDCC61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:28:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E94326B0092; Wed, 26 Aug 2026 12:23:31 -0400 (EDT)
+	id B41646B0088; Wed, 26 Aug 2026 12:28:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1C8C6B00A5; Wed, 26 Aug 2026 12:23:31 -0400 (EDT)
+	id B19016B008A; Wed, 26 Aug 2026 12:28:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5356B00A6; Wed, 26 Aug 2026 12:23:31 -0400 (EDT)
+	id A2DC86B008C; Wed, 26 Aug 2026 12:28:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CEC16B0092
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:23:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 280671A016A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:23:31 +0000 (UTC)
-X-FDA: 85143941022.27.BF91B70
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DB4B1180009
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:23:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Nih8bIuM;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 851626B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:28:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1690D1A015B
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:28:30 +0000 (UTC)
+X-FDA: 85143953580.24.9E14DDD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5FF471A000D
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:28:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKQYZxJK;
+	spf=pass (imf19.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787761409;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787761708;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ixqAsn6TGsKjb4uz8wyzxl1SAvJQxPNub0k9fwjenCg=;
-	b=7SiJ6iEwtZ7o9GFOQWcRH28N2tNxCFqzACc2zCrILgcHIeiJuDoBK8PapWLtG8OP8/6nvT
-	bwJtDr6sydXIjCWaO9MQN/g6doA/sqS2rs49Hshd4nwpmgcdTPryaLsdetdSyX1hSaLOO6
-	vB14Ml9zuQuu+dmVM8u5nZsNXaw1kR4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Nih8bIuM;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	bh=H+8RJcHYuvgzjE0Wp/aIuWWk301iPXwhRKQVqXWTdEk=;
+	b=TPwD8lazszT1iYspPXvpLjURGfZQqE2yigTskPa8mEyI60kGkNb9U5m+EO+dOche7b4lva
+	KrNONXS39uzsT405m8y1e1ES+gLEUAuvuK6rIikhPxWjjMVI0L83v95AmrJ+wliT+qzys8
+	jrk6ZBkWsPoYbarkDep2/Wju4dIRD/g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787761409;
-	b=c96dUruzvEbZBwFDRe6IWn53y2FDoJpP2rAXJ1ahA6MqxhmLv00CR1Fy6/lEDaen6L5IrH
-	BvTnAjlzNscE6Y5w2qsXQwo/ZARXFJG80bZ+EHevAg3KG8kLtXl1u5cbUSjjE1vRNJ5pmg
-	XwepE9n2WYUW/jTK0vOFHbqijY7Xl3I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787761408; x=1819297408;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6kzQ95U1YQGNGVH/1wyaYETJmIZw4uwWKvlsrvcnlv8=;
-  b=Nih8bIuMicgdw6fsMYgnaUW6XkkwwOvLuMUJ3yF7Jqit98sI6BqrgVh9
-   KlQBfaETlrrT0rto9DWDebpAUGjXzDPm7y8BdkWZYbzYa8ai965/cDx88
-   vEMggOUIqrLJvvCOmrpRC2xIt1MvQO0ctAp3pHDUyDpWmpz5MSL8+PLNE
-   inQ7TLYZ+onKPl5BktjReU2+0Lz9dY0+nf7iewaRxUMIf1mXZzG27f1N5
-   jwExSjns0K+KbOCaCqGZJCmOiM6ZMn87F0Ypm0egR8o37ILTmw6+0euG1
-   h9NRN70XChRP5TW9Az/Wo0JqiMqox+MLtOmM5Dt3s/h8wBoCr34SfXIAP
-   Q==;
-X-CSE-ConnectionGUID: DYwmB+vpQJeL6LvL4c1rhA==
-X-CSE-MsgGUID: 6TXV9OIYTwes14rwN4zN/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="87378563"
-X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
-   d="scan'208";a="87378563"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 09:23:26 -0700
-X-CSE-ConnectionGUID: lR7Q+sj3S6C+exrR/EcD1g==
-X-CSE-MsgGUID: sTlQIIJsTYG1G5BfCPibWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
-   d="scan'208";a="291144168"
-Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 26 Aug 2026 09:23:23 -0700
-Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wzGPH-00000000837-3X1S;
-	Wed, 26 Aug 2026 16:23:19 +0000
-Date: Thu, 27 Aug 2026 00:23:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>,
+	t=1787761708;
+	b=QhsDbs0pE1yGGxTb2g65/C97esXMM3kuMW+3/Msu7RTSZ+1KrCRcdikcNVSd1BxTKtL8cT
+	FHMvIRF9+vWs4/LIT2vf+iTuMMnl1vcvLdnWkE2tz06jNiqnWtDYsyLd8gDK21KWFH++1m
+	m64GUMMwIjHub3sMS1jIm/NAbZeOaB8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GKQYZxJK;
+	spf=pass (imf19.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C356D6001D;
+	Wed, 26 Aug 2026 16:28:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758081F000E9;
+	Wed, 26 Aug 2026 16:28:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787761707;
+	bh=H+8RJcHYuvgzjE0Wp/aIuWWk301iPXwhRKQVqXWTdEk=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=GKQYZxJKcQmnvwN68lqseYEgoh5n3xMKVr0SKHGlTy/Axf4GEb87KhMzLY2yTiYyD
+	 kNGnShWdpnCJrR3n3EtyhantGf/89bsfc/kndaqZQOCjRCB0lt2cjbfDSUjE63/r7i
+	 9FC7uzMO3wbOYQzVf2qI0SLLBypn+P5UiwdkmPhOBpEuHubCsa1raabO02RT2lur9l
+	 gH3e/uKAqyrLP+R+aqSfo6/ZEl8E5RVCdE1pOXq1CphaYspJLne8c+/8iTvgYvkxM2
+	 VL4deB4phqGtWvPokNdlv++5mXW1OFjCOh7HXxYWLul6N76NpEitBOsbZMxOlUTFku
+	 ryILv6/aPMoiQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 332E5CE0505; Wed, 26 Aug 2026 09:28:27 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:28:27 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH] mm: workingset: judge cross-memcg refaults by generation
- age
-Message-ID: <202608270037.JUsg3wm5-lkp@intel.com>
-References: <20260826075133.751049-1-zhaoyang.huang@unisoc.com>
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
+ <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
+ <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
+ <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
+ <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
+ <ao3z7Rtw2FROkVpy@google.com>
+ <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
+ <20260826073233.T-KtFXmj@linutronix.de>
+ <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
+ <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260826075133.751049-1-zhaoyang.huang@unisoc.com>
-X-Stat-Signature: 9u69wf7hwxr3g7pza8aebgdaun4y9b5s
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DB4B1180009
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
+X-Stat-Signature: 5yjgmmohskgadkmius7rwcz7zs8j87jw
+X-Rspamd-Queue-Id: 5FF471A000D
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787761407-298434
-X-HE-Meta: U2FsdGVkX1/R1LBz47mRrjloUNMJfFZgMb3LBeRCOPMr3Uyd9LH9IZFzGRurzX3odUUs0oGg2bnoBj+Tysf+PjTGM+/x///qM0zwTxSL1i9n/ekWCoRPGOoAoF39rum3wHjQPrxuXMuuyPXLHIS9YHDWczxZxKwJW/WgqpUg13hQfFrNxCYojdcXn6wugMajFJttoucB6k5mcjUN6XboMhFHPu0DiCMkvZ1u0b0R/qctTT7wVbeaJuknPuI3lIGqfH502t2ipOv68JqDhu5na4SBj7jPvygHOmtyXvTvjaf+o+qHIQfFbuAQhXP62OqG49NpUcDtOCuPps2C7+c/wtgHXdzQPsTMPcx8U/Zi7woOB55VQbsewA79IJXPnz4ashq2X5LtbLXqXR0X8X0vF8rEjWeIsUc0t4EELgI+to8rKhsPrQ+WSY279qCK8/MBoUHNMI5mb8E2AqRDLE9jfozbkb+r7I5zYgbVdaL+q1RreLEFnM+2eeK9B8IRGqpGuUdUIGCjRTCmWO2QaQAgrdf25gSb5BnLuyPz4oQfywDzYa41FCgvWf0BqN0/tQYP4QinNZjBNxsGcc4QtxFS/gqF6U2fziGB+jG+D70s38UTL2gfYBd27jHZrsYzxIl/mCJSSABycLu7uMoKkHKYg57rOD8XoCYrzQjg7P/J6X7NEwvngYvZ3n9oDf+fE54k9AU6GV9Bc2UBnmtnLO7FfwxpLtVXzQMJ2QCsWF6lworQTd8uFOQWkJHCPHuWhcoJaCxmEQyxYKubY8ju/kQ27XywUS4Au4FaxEFFm7v7/O7Mgw2qP6i2Qpi4Loc3ngOY7pDydqIKL8I9D3cIJIUpNcgzYW0HKEo8ZdHbdPE8UMuRvn4/Kx2F2M1kkaRhTt/9ooRDVNw78cGPxHxBqa2+nIk3Mfk3syo+5h2n1lS12AQoVVKLEs+zCWtBCZPRblXUK6gRKrGQYdV3HJ6nUGY
- e5aYzZvV
- 6s+fmuqs6Fe7EPt9kMA6ABvipdqkzvURsRYq+NulO3CQ61g7V4W/9IbSAuknlgSqrN4idVfL9G3K8Af6AWGalwBffhtfvpVbA/9sxSKYo054jTVyxpzd1y5ef5vCQpWXUUwC2bnUz46MS8GyVbDVjOsXTjriTfVxPMrLEZkWEBurSCU2VtriZakw11sQNVjZT3Jwe7IArmBpv+VbbsXW+ByeIuZ7qc+s/jWJ9F9aF4EYj5h8srJVojcZk++GrvafRRcOizq75qpwZTnj5RbTTExOxnOKWtasUswbF/p0qWRtM7DGsoMTHlNUNaDay9+XT0tunEtqWRr3Hb0mtILIWHB1PbHXXtaGFk1cuOonIfV/QfW1NOOke2jpj2gVl5PAK8W2XZY6rYYLtMVo=
+X-HE-Tag: 1787761708-610127
+X-HE-Meta: U2FsdGVkX19R5SxyvxqGHUVrXux/ZXy7GxttsXVbWk4+KKFgbJUNLjFA/6JO6HGdFrK1EsEzDdsqjXZPaSoR0IQ38gYA5s+3T+ZjbrMu1Darp2WwAMQq3fBLoJLq0MwMdMibmhiIPdGmXzwDY9CaDSxqJ2ucbCf4Go9YroL1/DlDwh+C/BC/p1NPG3urWsWDMEJr86V21ESjfak92s1dFAFiPgA5uYAJfpx1KgPxjGmujaDW4+fGkJNxQ9uNBNYnZTnwGGMhhege+WQ3VveJsa3cIRd6jwEI0C4xq4nwbeomNBpaCfhpxjtSjAIWLAxRApazMqkIvKHispxvtkdyNxRb89YJuD+wjdXdseBjnldyXu/cVT9c39e5vgb7YLHXj+gTAs6jxrtbam2lIpX8aprdQ+7AAF39JqyrkR7qISLtYYnWugqqOa/ZDrvEJ9rQM8bC20i0NJ0OHcMg4yXix9lRUzZCGi/jHa7AZ2e5vqy1eUfd9HmhKV9iiszOcOyUgzRgSjTAYuOvy5XjbiQM4yf7qpRlgiOro+/45SLDqmbf8TCp5k9a7ifYR+0zN2IlK+hegJfK9B09MvR1CFZLHISdXQIeYVYkziIl7kHUXGoZ2KvV74HzBpZJa2Q/UAkSRmsiVytVaEL4sE6qoeMqz0hyO4eqhxNzwiVyCrTVrp4LLSzvgMOqw8lyxSn3WtoF1CrwemxAZlyh+Y1+dgl89yT/EFBEYRD0CY9DD5XVhyiZjIkZeihLT5MKicv7u5dIhIAysMelo/5huLfGL4G0HThK0zNwTVjXyi2/QTDl9oCSXRwbsq61mLq59IuMZ89W0KSRsG8NWDaewP3/9Hs8TZX2GNP5tohIQD0Nr7VQEwMD59YZnRlywx8gmbhbuSX5AkE6yBjNNYK0PmwYvXi3LQCRSy6X/W+HtXcbf3mJRqboUbBZ67fXQSCNH/YhPARdK8OnDy7zwEqr0QLr+2Q
+ jGWv3G73
+ jRBL1Gsj8bY3AkOr0+WWkk+vV1aS3IJADw3iKSNP2yiXkpsbw0PIzEw3gRjOfpNdEvkJxFQLYKPvPfpNSu1NbO2inHged1y6Fm3p0ZZYlRyP06k2d80jFiwHST7sFGi9cAmdP4uhz8+ibU7sNUc8KZEimGmbaBa323uppDcupxkvWb1H1kV94LvFRLEEK+x8BpScFVuXib+lj+vCJy87CCylz7P6Cv+LblyEcq1HXNC7xBPDLZeY6U0ou/LFx+A+8GN9B7qZ9RFAxQ75KkjvNMP9/KhRojrkXNnRfVkGaghuFRb0gGy4stI6ztojM6d2Sl0xdrrcKKPayIzz4ju4qI9/c8T5Ja81B4l7HOgWnilETtS75UIsITbWQDSntF4KppCQO8A4blvLucxZ9Rl0z0lGAqTrXk0Blw3vHxQu2qFbKFCurAUunZOR6Qcxlv6pzL4m5XsNpCWfzjQg4pLdZcoyktRF5u4cIy2oPsuTSxJ8NoYsaJYLWxPtDsIc2ZsP7LXL0QbIe7j37G99uXW0nfRtKmEbd8oY1DES9P94AxgfEGiGOO3hswxqEAf/yo279Af2++gLwJPR5/54KBm7ixXfUyKtl1vMQc7KE8u/L2xGfg1YOhjLoyHFyLxrRlX+yU5M1fNrC5Ry50ne4lklMkZ/aQgV9OVAsfO3XKtUPxMizgAqDvP3xt65gLT+8nps9deVsvLGbsqpY8Kp8YWEDcmUP/vSUHfWOduiZ3r2Oti9u7G6dfKAWwn/ZxayZmN8312Bi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,70 +121,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi zhaoyang.huang,
+On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E. McKenney wrote:
+> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
+> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
+> > > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
+> > > > Very good, preemption disabling it is!  It is quite possible that the
+> > > > PREEMPT_RT guys will need something else, but one thing at a time.
+> > > 
+> > > This reminds me of classic RCU ;) It might work in this use case but I
+> > > am afraid that other users might come along where it actually hurts.
+> > > With PREEMPT LAZY the preemption within the read-section should
+> > > hopefully be the exception.
+> > 
+> > Given the way that PREEMPT_RT treats other locks like spinlocks and
+> > rwlocks — turning them into sleeping locks — I suspect it makes most
+> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
+> > synchronize_rcu_atomic() into plain rcu_read_lock() and
+> > try_synchronize_srcu()+synchronize_scru_expedited().
+> 
+> That makes a lot of sense to me.
 
-kernel test robot noticed the following build errors:
+Another option is to instead fall back to non-atomic SRCU.
 
-[auto build test ERROR on akpm-mm/mm-everything]
+> For that to work, we will need a wrapper sort of like what we have for
+> synchronize_rcu_tasks_trace(), but one that does SRCU for !PREEMPT_RT
+> and vanilla RCU for PREEMPT_RT.
+> 
+> Sebastian, thoughts?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/zhaoyang-huang/mm-workingset-judge-cross-memcg-refaults-by-generation-age/20260826-155133
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260826075133.751049-1-zhaoyang.huang%40unisoc.com
-patch subject: [PATCH] mm: workingset: judge cross-memcg refaults by generation age
-config: csky-allmodconfig (https://download.01.org/0day-ci/archive/20260827/202608270037.JUsg3wm5-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260827/202608270037.JUsg3wm5-lkp@intel.com/reproduce)
+Everyone, thoughts?  ;-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608270037.JUsg3wm5-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from <command-line>:
-   In function 'lru_gen_eviction',
-       inlined from 'workingset_eviction' at mm/workingset.c:459:10:
->> include/linux/compiler_types.h:702:45: error: call to '__compiletime_assert_649' declared with attribute error: BUILD_BUG_ON failed: EVICT_TS_WIDTH <= 0
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:683:25: note: in definition of macro '__compiletime_assert'
-     683 |                         prefix ## suffix();                             \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:40:37: note: in expansion of macro 'compiletime_assert'
-      40 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:51:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      51 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-         |         ^~~~~~~~~~~~~~~~
-   mm/workingset.c:275:9: note: in expansion of macro 'BUILD_BUG_ON'
-     275 |         BUILD_BUG_ON(EVICT_TS_WIDTH <= 0);
-         |         ^~~~~~~~~~~~
-
-
-vim +/__compiletime_assert_649 +702 include/linux/compiler_types.h
-
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  688  
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  689  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  690  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  691  
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  692  /**
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  693   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  694   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  695   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  696   *
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  697   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  698   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  699   * compiler has support to do so.
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  700   */
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  701  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2d Will Deacon 2020-07-21 @702  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  703  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+							Thanx, Paul
 
