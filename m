@@ -4,116 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88EDEC61DBE
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 21:04:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE010C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 21:39:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97A196B008A; Wed, 26 Aug 2026 17:04:37 -0400 (EDT)
+	id 3C3C96B0088; Wed, 26 Aug 2026 17:39:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 951BB6B008C; Wed, 26 Aug 2026 17:04:37 -0400 (EDT)
+	id 34DEF6B008A; Wed, 26 Aug 2026 17:39:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 867456B0092; Wed, 26 Aug 2026 17:04:37 -0400 (EDT)
+	id 217DA6B008C; Wed, 26 Aug 2026 17:39:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CCC16B008A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:04:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B247120259
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:04:35 +0000 (UTC)
-X-FDA: 85144649310.29.2BC45C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 86ED618000D
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:04:33 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lhQSVXjd;
-	spf=pass (imf06.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787778273;
-	b=lS6aCXT0nN5rZnIJuM9xfBtH60YVeahqG41ol46Hjj2Ibvq4BrT8Ga8A/uOktiIbaT5+Hx
-	xu7IA91pC6/vLBfiEmcBmv1r2nQjWoPhbZwQ1TtoCeDhwiozhVgUTkN5TXswJH7uDHAOyR
-	L92WI3FRBmrKcVYbHNDvKITyJm0pYME=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lhQSVXjd;
-	spf=pass (imf06.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E04D66B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:39:06 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6158D40247
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:39:06 +0000 (UTC)
+X-FDA: 85144736292.24.43A552B
+Received: from mta0.migadu.com (out-110.mta0.migadu.com [91.218.175.110])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8482FC000A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:39:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AfgKPkr5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.110 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787778273;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787780344;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wd9D8o6DYVa1N38/T0CvGYo4puGoZ+VeLzsnpIr+Xj4=;
-	b=Paqcs1A1VD4PmLcJAWagV3kgRowcEE0LpnZmcVZK2bHpdVrLLUSU0hcnKTrB+l6U2hdGaJ
-	kI8PupdBoSNysxNJ0rWc08JwAZxQ9hz3xVrYrSwt6o6hnTcErd3sy5pqxHpf8K/Hd/pvB9
-	N25XK1Eoy6fyi5NqMoj7WXC5m5fNFwo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD75541671;
-	Wed, 26 Aug 2026 21:04:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9975E1F000E9;
-	Wed, 26 Aug 2026 21:04:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787778272;
-	bh=wd9D8o6DYVa1N38/T0CvGYo4puGoZ+VeLzsnpIr+Xj4=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=lhQSVXjdgZwex5bvjjr7tkNgtCyI0uh3QOi97Mn+cGoo7bug7cBFqPh4Bcvz/TW1M
-	 haTgWlQYOjVnbxfJx3B/DsL6ZSG/kf9n1MrX6q26iIpenqY10g/rg2fzjlgJt14sWG
-	 3dSP5E2srWDX+MEwBm0xlxAYMEf7oC9hyARAxYmEsiZnl61DzYrTeBGqgOlt994U6V
-	 i0JOpFzibPy2UxMEjVA1dC53FAjJ/qrCFVWNaBQqfi9CKA3NMZttw9YiEWBG6oDoC9
-	 G/UCMlmFl1i8BdHtuy/WX37Q/rns6nlG5d9xsX6gn+ww/fTV8ZHmgPc5lTz1AEvnWz
-	 JWfsvLvEd2KUg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 64492CE086B; Wed, 26 Aug 2026 14:04:32 -0700 (PDT)
-Date: Wed, 26 Aug 2026 14:04:32 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sean Christopherson <seanjc@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
- <ao3z7Rtw2FROkVpy@google.com>
- <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
- <20260826073233.T-KtFXmj@linutronix.de>
- <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
- <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
- <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
- <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
- <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
- <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
+	bh=SBAaHTC05kDyTfVs/edtWfWDs2EAU5TwYbHkquZ2nJE=;
+	b=1EOHPnvXLnOjXOh7p4phW+Qex0kWL4898dGxrGI8bpl5U2BdslG3j0rOucblaS5XTn71sE
+	MrlsqyDzrGyip1+jwqKD1NuMn8TbC1LOHweKk4k5PHbmYDPHFsY89tCwGSffMiwP/kQXq7
+	49XWyLOf6RRMp8D9qA5mJ7TwRsmpNLw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AfgKPkr5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.110 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787780344;
+	b=D44BPaQAGIQsUcrOUbBFEeEC3x8aaSPuogt7Ga9SBdLFkhDKaCA8IcsVqYa9dCsAL9KSUI
+	QhB6mQLeWIM2pKmFGSQc+mlsmJja9phkjM+y74IEEjxjdvyiw4oIubqxsOj+7rimp5vanQ
+	rFYo4j/vOiE1soMg5ljmMPMjOJEwq5Q=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=rr1XuPrkOX8eKQzmG/WT1cO+LdHsUfL+FjKLXbliwxo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787780337; v=1; x=1788385137;
+ b=AfgKPkr5WZBo3Vdwu6R+55wzHKSO48pB02cFOpE7YO3RziuZO7mNccx1C24QaS4hsQxzsQ/t
+ MwXUry7yUlziNVC+sNO4rdOPbc4uB47vIB+4c6TNNfFopL2uRBQCSUIF5Ys93PIPNlYuvVGIQXd
+ srBpA+ZKrsR5dVSw6KWwNy38=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:7::)
+	by smtp.migadu.com with ESMTPS id c5bf447cd533342a;
+	Wed, 26 Aug 2026 21:38:47 +0000
+X-Mizu-Trace-ID: c5bf447cd533342a
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 26 Aug 2026 14:38:46 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Joanne Koong <joannelkoong@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Song Hu <husong@kylinos.cn>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, yunzhao@cloudflare.com
+Subject: Re: [PATCH] mm: memcg: use ratelimited stats flush in
+ obj_cgroup_may_zswap()
+Message-ID: <ao9YFgBQJEy-85iB@linux.dev>
+References: <20260817131843.45121-1-husong@kylinos.cn>
+ <1787017182353556.21.seg@mailgw.kylinos.cn>
+ <0689d805-45c6-4bb2-8eb2-f065457c45bf@kylinos.cn>
+ <CAO9r8zNxnVYpwrsuB1Ofcwf-Lks2e+DL1Ys9CXZ5jozBug_ybQ@mail.gmail.com>
+ <CAJnrk1bFq7J7K0=X67voeZVkAb0dmiLkqomuQ+VcXBLyP5hMVg@mail.gmail.com>
+ <aoiQPrudvYZ76ZSD@cmpxchg.org>
+ <CAO9r8zM+w-wb44G+GXev+eHVEOty5GNcmRkui4PxgeF=Hqv_DQ@mail.gmail.com>
+ <CAJnrk1bOdTE+YQRQqzfKUkOGR67a28t3p1r1zeBNzwz9xHEYdw@mail.gmail.com>
+ <CAO9r8zNQzqwVeOoZr71juX3xV06LUTntBp+7bmGdwK_s6FoT6w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
+In-Reply-To: <CAO9r8zNQzqwVeOoZr71juX3xV06LUTntBp+7bmGdwK_s6FoT6w@mail.gmail.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: sm14r858u9ah18cqut9dija1upgoweg9
-X-Rspamd-Queue-Id: 86ED618000D
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787778273-356707
-X-HE-Meta: U2FsdGVkX19tbqMsQFGqEDJMuhNdddubcxBn/amSfDcRx2l2QxiNJ0q8lFcyEnnLsYUfzf6p6FfOn3T7L1kdNpdd73qwF/04bgvx0oWmSUHiccLa4Y2jGgHNn2ZEUdM34wu67p5X1OJTfX8VzhvdgBKINpolON0N1drpRebDIaAh7wnsybQnUFb5uyEsm9YuVRaVB/1ay3w5Jm0hQG5dhe3k+j9pmNVGwaOg54dgd0atKbFTj/Ap9EwmB9eGCDwUq4KVopqM/qvaBl7UnXlV9jF7SZg6ib+YAubdirslzmG4QFb9C/dcEii/IdVNpooN/OW4eKo5ueiBqSA9gVGmWQAYU+dKj+iZoy74jgOmm9Or7YcGq+XjAHGMS7NcoXAyK92tJIOS2bEprsOEM6ByKLld8ecvPMk3Hw1/ykpXNEWImVY2FCR6fQzbsmbglS+uzh/WebalpzKCTqv7ezWN/QGiOIdVm8kmiIGG45vrd5R1SmMRy0WM5fADr8Vgr2KFmPT/QjexcjvOkLxD5/hYKv8cbZBR2p9RUVkEAaEFdmvqdlDfTLwlabdpWUUw9Q0zsoGzquydLY15KMV4JPHRWvZlAnlyg0I9QtoOl8oZX1who3azkAr4WQ6sn3vssmC3b/IGhNeMhFMMzh8JvcDhLN0T1+ZXrR9lbQdvjx/ZnreQdtxIPa7myvG60NMImNNIKQIZEDkyb8r3cSVJcA8DlaS/x4DHuk6F7L7P/OP9WenY86wR3sVHapB3oc1140hvVC+P1d2YtJ3J1lZO79r3F3Rpiu5isw1WQ0qxS/NxakV6OoqT51DreB+VeLwNEpwFDyYIi5dBylj/JV6CmONhLUEvZESTe29N+E+zxRR7FziE+N8IaM5OYyDlYpiRDZwVyedifhUioncq0bICGyzeWZzA4J/2GY02gGB/UwmV7I0OtzFPvj92kfyLoFChqtsiCR91mtSH/pxczce/MHQ
- yMAF/8DH
- 8+SwpRlb39XREhs0xWhPXKk7LxF7XUST6EGMeSJlkaT7+8CoWXSmW/wI6X26pJ+GLKefxJCj9eEXq2OISwFUSXCSRCba+mRnpFlZTRRcvWeri15i1TCHiNiljHoWBFYMZDZFuijen//bViNrgUZ/CenRyJKOwvF18xW5AfF+98zRUnRqwiXv9tIr3bHOtQeWSp9TNeADd3JcYeJhDJG1edfvJyMM7L15vyxWRu455dZljlJL/etbAbY67LUi1UvO8Jl3sxAQYxrKoGESRzu4qnjWhls2xZD/Y92ITDuIincpd3Bw3EGmJPKEcWBKpO3QQZj22tXR7+M1/2rJd1JGTK8SbAigLg7n5DhUYAP8T0kIeC2ibcBhgVQkq0EHE/HSdxOhFHuRHE4nyeHkhSpix4pZRmXZpdTCV0I6DyQqwy2VOro0cf/0xo6CPC4k0LTIIqCwBeyZWQ4RCp3Z5Jy2Aukzs8vt5URZ04JZINM2k8i1WawBaEDo0WYPvPOZIOfvFD0MMEztybr2rAP3WE3oNouI5fC/9d99VWkjg9CEiENPml6k2E26MuCySjoNE5dbevZRcxn/F7COU0+91rbcSFv2sbfYxt8Mkm6uBBT2ujiPkIEAYXOO0m+yhspHTwXn9vS8YBo7sovSD3DzdF2ZPLV0Mhw/3hoUgfGSz6HYe/QutjMyW1nhVerOMkU7J268HMZtMf2BsOBXgQ7Rsre2X5pJjBjCDucLspBbmDFRb1DicdylEoNln1jHvZ6FEUS8OqfsyZF44RIBf7M7XflxtPOPV9Vlb5BS+pTq6d2XmXhw0EcBI27FMhMBbncGuaeZvhL/o
+X-Stat-Signature: 45tiex1946suuar173p6jt9r1epcszd6
+X-Rspamd-Queue-Id: 8482FC000A
+X-HE-Tag: 1787780342-469756
+X-HE-Meta: U2FsdGVkX18dC55uOZWwfUWnS0qIl7nRgUTBOIgBQbI4IyEcNgCZzwKFx4XPQKtkd3UM8AxUB+exDm4j2Zc2W3ChfYJVhDyMLV+6XN8EXyqPEtQx+InsyaMF7lECQWGrACwmFHkkQom2ClhLJGE3BB/paEuG/davwCF2MCQb2hmDaWT3XHYjPVfQuBjm45B4RyJ14rF+QLMu96gYpni0q4m7BDQjvDgb+6xY5WUFsWwfW7IIKDIRmiK/YJAhQdbVytRtR6O0YIzH0hi7mDUQk8IQNpVtD5XJ1hxnpxlkQVpP5KyGls/2rKk9IYHOEvBusX2Pv98+/VIcAK6tX4SraTsyFNBR7RGgxGsKNvJy+xz4dCKcyp1CJxkfypbbKYB96Oaub9mvOkyrXY/N8IP8ZJZV8tJd+lKWJnojxiR6LDIfSbOl+KZEr/09ylzdreHHnqfZVpx9PhKX+86JbvnA5HaHrLbLrUknkWFXCLEm4TKTsOxISWApD2j6mg7VDmrNLhJbU/WW3P/EF3QPLzv+19UmZVgv/uXBbfQ6gT8KrQco+nAozXHpwtHXMvEngstvExaLLZoM0PWIG8ha0ZmUNavFAh9zjd6USTPtvfH/ALYIyLhG146TWvsneCYBGR0q2RXILq0vOpxFxCxWZa0lHMss8VfXats51WIPNhe/ojwNkXuVQBvfqM7yyoQCDukouqecVSg6cp1IushogxLoRbh5/2k7WUZwziGzlHC+jl7e4gEkLJtB2ZNeX6TU+8owAXfrYi3RM8gb0O4rCVilTFkCEhkudfqgyjAJCWSNUgnblO2sBMuUhn4d9pne7BHupHMUBKJjOQ/mEm33scfPJTuFR6o9dI2c0otTm4yuHBOx1u6MSZA8YJZAs2Khgy9+TP4Wmt1EDr9DmVLasR0PB2ws26l0D8gyQx71Woukj0CE6W1ip3LYPwQOqlsXFCHem7vrT5CAL1qjhU7bsxJ
+ AWQcBQG4
+ hGBOOh6Gaei1v3ZtXESXuwYsWHXoXvz4w4GtLv6FF1m8hba3oyNQVtk39Vjh8r2/Uf5t8wXcIsQywRvFu/KP3sF1yiaIu3HYjRlR2AM1cq3p2BFWkMxLUzHW+dFppJ0+F7V0Eg5rEvDzvG0Ro5qwIBWQhowY1ezmit09nCgBAusfh1AYfClrJYW9HNH7pJZw2Kw1xHtHa06A0Bfu7mzhxajtJpKEz4Y25WjuvQmFOHkfGeSZMKWy5s/ApPAoMtLVZLi4HY+mfV4ThVGVgRbtuoOFLsRd505sjufBOyJ6eUcYWYCeNRztPpZX6YdP8VSTcqQ+R7syvuq8+dt0W6+nOpTajhpU2nQFvoTeYvt775WYFGhfVD038uI1xIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,69 +100,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 09:30:43PM +0100, David Woodhouse wrote:
-> On 26 August 2026 20:59:31 BST, "Paul E. McKenney" <paulmck@kernel.org> wrote:
-> >On Wed, Aug 26, 2026 at 07:01:24PM +0100, David Woodhouse wrote:
-> >> On 26 August 2026 17:28:27 BST, "Paul E. McKenney" <paulmck@kernel.org> wrote:
-> >> >On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E. McKenney wrote:
-> >> >> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
-> >> >> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
-> >> >> > > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
-> >> >> > > > Very good, preemption disabling it is!  It is quite possible that the
-> >> >> > > > PREEMPT_RT guys will need something else, but one thing at a time.
-> >> >> > > 
-> >> >> > > This reminds me of classic RCU ;) It might work in this use case but I
-> >> >> > > am afraid that other users might come along where it actually hurts.
-> >> >> > > With PREEMPT LAZY the preemption within the read-section should
-> >> >> > > hopefully be the exception.
-> >> >> > 
-> >> >> > Given the way that PREEMPT_RT treats other locks like spinlocks and
-> >> >> > rwlocks — turning them into sleeping locks — I suspect it makes most
-> >> >> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
-> >> >> > synchronize_rcu_atomic() into plain rcu_read_lock() and
-> >> >> > try_synchronize_srcu()+synchronize_scru_expedited().
-> >> >> 
-> >> >> That makes a lot of sense to me.
-> >> >
-> >> >Another option is to instead fall back to non-atomic SRCU.
-> >> 
-> >> That's exactly what I thought I was suggesting; I think I left an 's' out though :)
+On Mon, Aug 24, 2026 at 02:16:40PM -0700, Yosry Ahmed wrote:
+> > > > > For this zswap stat, I ran some benchmarks comparing 4 approaches
+> > > > > (switchable behind a runtime knob [1]):
+> > > > > a) rstat + forced flush       (baseline aka what the tree does today)
+> > > > > b) rstat + ratelimited         (Song's proposal)
+> > > > > c) hierarchical per-CPU   (Yosry's idea from [2])
+> > > > > d) page counters              (following what all the other memcg limits do)
+> > >
+> > > Thanks for trying this. I actually thought about page counters but
+> > > quickly dismissed it because zswap needs sub-page charging. I see you
+> > > are using the page counters here as byte counters tho :)
+> > >
+> > > It's probably fine, I think the risk of overflow is low (at least on 64-bit).
+> > >
+> > > > >
+> > > > > For the setup, the benchmark creates a cgroup chain at depth X with
+> > > > > memory.max set to 1G on the leaf and memory.zswap.max set to 512M on
+> > > > > every level, and spins up 20 processes there that each allocate 100
+> > > > > MiB, fault it in, and touch every page four more times. With that 2000
+> > > > > MiB against the 1 GiB memory.max, it triggers reclaim continuously and
+> > > > > makes the swap traffic go through zswap. The machine I ran this on had
+> > > > > 80 CPUs.
+> > > > >
+> > > > > I also ran it with no memory.zswap.max set (ie no reads triggered,
+> > > > > only update path runs) - as I understand it, this is the configuration
+> > > > > that is more often used in practice.
+> > > > >
+> > > > > These are the results I saw:
+> > > > >
+> > > > > kernel cpu time (in ns) per zswap store, zswap.max set
+> > > > >                       a)                     b)            c)                d)
+> > > > > depth 1        567,116          35,604     35,841     34,995
+> > > > > depth 2      1,082,007          35,507     37,803     36,209
+> > > > > depth 4      2,153,329          37,591     40,117     39,893
+> > > > > depth 8      4,211,692          34,963     41,070     44,211
+> > > > > depth 32    15,728,220       53,575     94,685     65,946
+> > > > >
+> > > > > kernel cpu time (in ns) per zswap store, no zswap.max (update path only):
+> > > > >                         a)                  b)              c)            d)
+> > > > > depth 1         34,787          34,062     34,930     35,630
+> > > > > depth 2         34,913          35,061     36,404     36,360
+> > > > > depth 4         36,422          36,809     36,922     37,483
+> > > > > depth 8         42,177          34,440     36,679     40,793
+> > > > > depth 32        55,309          55,321     57,671     59,190
+> > > > >
+> > > > > c) and d) are for the most part pretty comparable to b) without
+> > > > > introducing the staleness problem of b). Between c) and d), I think d)
+> > > > > ends up outperforming c) as the # of cpus and depth gets larger.
+> > >
+> > > The main advantage of (c) to me is that we can probably update ~all
+> > > memcg stats to use this scheme, or at least the problematic ones, it
+> > > should be generic enough. Also, I have a concern about (d), see below.
+> > >
+> > > > >
+> > > > > I'm seeing that all the other memory limits (eg memory.swap.max,
+> > > > > memory.max, etc) are already using page counters. Is there a reason
+> > > > > the zswap stat can't? If not, does it make sense for the zswap stat to
+> > > > > switch over to using page counters?
+> > > >
+> > > > Thanks for running these.
+> > > >
+> > > > I used the vmstat counter on the assumption that setting zswap.max is
+> > > > rare and the counter is maintained anyway for memory.stat.
+> > > >
+> > > > But I never actually tested it. The assumption was that surely walking
+> > > > ancestors on a quick if (max == PAGE_COUNTER_MAX) continue would be
+> > > > much cheaper than page counter atomics at every level. And so I'm
+> > > > surprised by your results.
 > >
-> >Heh!!!
+> > I think your assumptions are correct. In that second table above (no
+> > zswap.max set, only update path runs), d) has worse performance than
+> > the baseline a) (except for depth=8, which was a noisy fluke). Rerun
+> > with 20 reps, I saw similiar-ish results:
 > >
-> >About 20 years ago, I was shocked to learn of a valid use case involving
-> >sleeping RCU readers, which resulted in SRCU.  And now it is time
-> >to be shocked at non-sleeping sleeping RCU readers, and especially a
-> >non-sleeping grace-period wait.  ;-)
+> > depth       a)                       d)                       diff
+> >      1  35051 +/- 116   35635 +/- 149    +584 +/- 189   (+1.7%)
+> >      2  35603 +/- 142   35859 +/- 179    +256 +/- 229   (+0.7%)
+> >      4  36358 +/- 115   37761 +/- 167   +1403 +/- 203   (+3.9%)
+> >      8  39537 +/- 178   41225 +/- 240   +1688 +/- 299   (+4.3%)
+> >    32  52181 +/- 210   59042 +/- 161   +6861 +/- 265  (+13.2%)
 > >
-> >Anyway, easy enough:
+> > I think the atomics do cost roughly what you assumed, but compared to
+> > the overall latency of the zswap path, it's adding hundreds of
+> > nanoseconds to a path that takes tens of microseconds.
 > >
-> >#ifdef CONFIG_PREEMPT_RT
-> >DEFINE_SRCU(whatever);
-> >#define my_srcu_read_lock() srcu_read_lock(&whatever);
-> >#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
-> >#define my_synchronize_srcu() synchronize_srcu(&whatever);
-> >#else
-> >DEFINE_SRCU_ATOMIC(whatever);
-> >#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
-> >#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx));
-> >#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
-> >#endif
+> > >
+> > > +1.
+> > >
+> > > I previously did an experiment with per-cgroup atomics (should be the
+> > > same as page counters), and it scaled more poorly than the numbers you
+> > > have here. I was running tests in a VM on an AMD Turin CPU, and I
+> > > think I tried 10, 20, and 50 processes, so maybe I pushed it to the
+> > > limit. I remember seeing a large regression with 50 processes. I used
+> > > bpftrace to measure the latency of zswap loads and zswap stores.
+> > >
+> > > Would you be able to also collect numbers with >20 processes and with
+> >
+> > Beyond 20 workers, I'm seeing that the additional workers basically
+> > just queue, without improving throughput much. I don't think this
+> > bottleneck is related to the accounting method used though. a), c) and
+> > d) all are within 1% of each other at 40 and 80 workers, so all 3
+> > approaches are bottlenecked by this.
+> >
+> > > zswap loads? I think latency of zswap loads is more critical because
+> > > it's usually in the fault path. One other thing is, you need to be
+> > > careful with zswap loads because a miss will be really fast, so they
+> > > will pull the average latency down. Ideally you'd only measure zswap
+> > > load hits. It would also be useful to see the latency at the tail
+> > > (e.g. p90, p95, p99), as people usually care a lot about page fault
+> > > latency at the tail, not just the average.
+> > >
+> > > Sorry if I am asking too much :)
+> > >
+> > > Honestly, I am not sure if >20 processes is a practical concern, but
+> > > zswap load latency is.
+> >
+> > Ah, thanks for pointing out the zswap load path and its relation to
+> > faults. These are the results I'm seeing:
+> >
+> > zswap_load() latency, (hits only (retval == 0), no zswap.max set, 20
+> > workers on 80 cpus, 5 runs, ns):
+> >                   a)              c)       d)
+> >   depth 2
+> >     p50        6,850      6,700    6,850
+> >     p90       10,000    9,750   10,000
+> >     p95       11,050   10,800   11,000
+> >     p99       13,600   13,350   13,500
+> >     avg       7,269    7,128    7,297
+> >   depth 4
+> >     p50        6,600    6,500    6,700
+> >     p90        9,700    9,650    9,950
+> >     p95       10,800   10,750   11,000
+> >     p99       13,350   13,250   13,550
+> >     avg       7,034    7,029    7,266
+> >   depth 8
+> >     p50        6,000    6,150    6,750
+> >     p90        9,000    9,250    9,900
+> >     p95       10,050   10,300   11,050
+> >     p99       12,500   12,800   13,650
+> >     avg       6,508    6,652    7,273
+> >   depth 32
+> >     p50        5,250    5,400    9,100
+> >     p90        7,900    8,050   12,550
+> >     p95        9,000    9,150   13,800
+> >     p99       11,550   11,700   16,450
+> >     avg       5,786    5,958    9,469
+> >
+> > For depths 2 and 4, there's no real difference for d), but depth 8+
+> > shows worse performance. In Meta's fleet, hierarchies of depth 8+ are
+> > common.
+> >
+> > >
+> > > That being said, I generally prefer (c) better because it should scale
+> >
+> > I now prefer (c) as well. I hadn't realized setting zswap.max is a
+> > rare path until Johannes mentioned it, and with your mention of
+> > zswap_load() sitting in the fault-critical path, I think the benchmark
+> > results show a clear improvement for c) over d) at higher depths.
+> >
+> > I was uneasy about the cost of c)'s reads scaling linearly with the #
+> > of cpus on a system (ie for_each_possible_cpu per level), but given
+> > the uncommonness of the zswap.max path, I think that's the right thing
+> > to trade away. Either way, it's a big improvement over the baseline a)
+> > path that currently exists anyways.
+> >
+> > > with more concurrency/CPUs and should generalize better to other
+> > > stats. But I am obviously biased :P
+> >
+> > I'm still investigating the writeback and vmscan cases. For writeback,
+> > using (c) is more complicated since NR_FILE_DIRTY and NR_WRITEBACK are
+> > node stats. I'm planning to spend time this week running benchmarks
+> > for it.
+> >
+> > If for those cases, (c) is viable, then I'll send a patch that adds
+> > (c) as general infrastructure. Otherwise, I'll send out (c) as a zswap
+> > specific patch.
+> >
+> > Does this sound good to everyone? If there are any objections, please
+> > let me know.
 > 
-> We could do that for the KVM GPC locking, but more consistent would be to change *all* users of the 'atomic' lock under PREEMPT_RT to silently get the sleeping version instead, like PREEMPT_RT does with spinlocks and rwlocks.
+> If (c) is holding up for writeback and vmscan, I would question a more
+> radical approach of tearing apart the rstat framework and using it
+> across the board. That is obviously a heavier lift and more
+> controversial,
+
+Yes controversial because we used to have similar mechanism which did not work
+and we had to move to rstat. Check the commit 42a300353577 and fixes to it.
+
+This worked for zswap stats because their update and consumption are not on
+performance critical code paths i.e. these are on the way to compress or
+decompress or in reclaim context.
+
+> but if we can get away with it, I think it will
+> simplify things greatly and honestly rstat has been causing a lot of
+> trouble in the last few years.
 > 
-> So it's srcu_read_lock_atomic() itself (et al) which would get that if/else treatment.
+> But this can be done incrementally too, we can start by separating out
+> the problematic stats to use the new update/flushing scheme,
 
-OK, the traditional approach is that raw_synchronize_srcu_atomic() and
-friends with the raw_ prefix are always atomic, and without the raw_
-prefix it is atomic for !PREEMPT_RT and non-atomic otherwise.  You would
-use the non-_raw primitives.
-
-Easy enough to do.  But does it do the job, both from a PREEMPT_RT
-perspective and a notifier perspective?
-
-And notifiers (though a different type of them) were the first use case
-for SRCU.  ;-)
-
-							Thanx, Paul
+This I think we do need but for specific stats. I think the stats which have
+in-kernel consumers need this. However not all such stats might be fine with
+slow update side like zswap. So, we need to evaluate thoroughly.
 
