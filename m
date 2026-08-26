@@ -4,136 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9AD9C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 08:04:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72126C61DC2
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 08:08:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFB046B009E; Wed, 26 Aug 2026 04:04:33 -0400 (EDT)
+	id 43E396B0088; Wed, 26 Aug 2026 04:08:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD3FC6B00A2; Wed, 26 Aug 2026 04:04:33 -0400 (EDT)
+	id 414D66B008A; Wed, 26 Aug 2026 04:08:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF02F6B009E; Wed, 26 Aug 2026 04:04:33 -0400 (EDT)
+	id 3549E6B0092; Wed, 26 Aug 2026 04:08:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A4ACB6B009E
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:04:33 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3794DA02C8
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:04:33 +0000 (UTC)
-X-FDA: 85142683626.30.4E23CE9
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 03B7540008
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:04:30 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=WJfksUnk;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787731471;
-	b=Cwlc+63Ss6bes0KBMIxVHGT2P/o7zcldhHB6ib3f+eD389W991LmUShP+sj2m9UvgQXxIf
-	zwWzzjUc4zgaflqZDjunq2pqeED9XKHJZnNiQIUFS21gwfyEmFSAEgAWrgqHA0IEE4bSr/
-	ZhKUtTuroeBN6ET8gIETA4+1AyNkXE0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=WJfksUnk;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F1CF26B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:08:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02E9DA3490
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:08:03 +0000 (UTC)
+X-FDA: 85142692488.01.956DEF1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 599D814000B
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:08:02 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DR7QvqSz;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787731471;
+	s=arc-20220608; t=1787731682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wB7gr+OEBdPvQV2wk9lYHYxAzB0Tgui+S11+5Xp/rXE=;
-	b=PbVkvDU67BDVa9oWePG3S7xITLfbt2202jU1AOD9hb2Cl42EqUwhtbhPOiiLU0L1IxAJI0
-	lvmOr2cgq/t5le9hDz2KT58pD/5lBXSpRq5Uqoi/lrAiYSY/eoFNRmBha6qzvYLVxSY39W
-	nMFxq1gSznsGRxmFKoWXjim1Wy7L/6E=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c15e592da74so87091266b.1
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 01:04:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787731469; x=1788336269; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wB7gr+OEBdPvQV2wk9lYHYxAzB0Tgui+S11+5Xp/rXE=;
-        b=WJfksUnk0SqyQwXp7A50lY+zyunfJUJjiwsHddXIZLpZpBt1CPhXcnMl0UUC+4N4rA
-         Hk1pQ4M+GuBZxjGmm9LbqrnZj8ij/wXNDZuOKinlAb1zW9zwvCfC9LXbEG5VrE6h5lfO
-         VLIG7Rmi15MgWTWR3BW2YZhFDCfe/xYaGPsUzejI3VDR8PeK+wvGlopdmX9TLKNWHQDJ
-         rS2dj3I30+utePm7RolIH5ZhCXRNQvGi5I5Y0FPRfe2Rcq+igfuvvw3VBiZwgfQUw3gV
-         IfvePiocGeRGxPjOL/2653I0ZoMAVTI1Mq3Hp0na+NDh97zCynrA0dXjdN8rpWtKqDdS
-         VzKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787731469; x=1788336269;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wB7gr+OEBdPvQV2wk9lYHYxAzB0Tgui+S11+5Xp/rXE=;
-        b=WTESpwfhl2W1+RUl9I8o5MUdLLquHX+X9iuyzudaJXo42We3m83UJMxxWDlspSSGJ9
-         BtmpmmrZ7L1KwtuZ14pWMESMMV3W5dHWy9NBQZFQo6pi4c/sQvKp+4BdTKluj3vOE90V
-         uT+lUmeeNbcEH6MkgrwXtOrxwfNxv1p0LHuxNTaqEDAm3pH3xqbNMdnDvvsR7oR27PcR
-         OL4FiwOOIU1Fh9yAVu6DBPWyTDmn2XXRRI3c2UxJ2YZGc2uaOFiU7dAFxrMefpl18e5u
-         VFLrUF/mrM59ZCxzvJpUJYsWgpCELsjBLyZHyv8v8dE9uxKGdrDH4QI373m6McQXWPYZ
-         xwJA==
-X-Forwarded-Encrypted: i=1; AHgh+RowDz0CcU0ZguMuTWa7fIh/YqpsyRrzhEDb7dIAY+DFasRX3JnsaI0gGWd+vSFrNw5goCoKCiGTlw==@kvack.org
-X-Gm-Message-State: AFuF++kRP2cBmGCecA2a/CjrizsRJbmUdugrp523sE1h7TRyLb1ZXi8Q
-	tAZaVqE9V+ailu+3VnxiCqsXK3elEI+Ks1NlUXWqR/QhPpNyJk9Kv1fsmDRi0HIXdnc=
-X-Gm-Gg: AR+sD10UPGQzdouRaBRExteBdqURK8MABF4RyfHIvpD6bNl2b2TuC/Qmfap+jsMH8Di
-	QZozzLmKzaUGwsbwtWmrTNkUgRFv4uPnuU0/4WRRBtL76/Yfy4IjhoEPYoTfNwOAFAGCqn/Y5d3
-	MQ3FbqIoI4G2+nAJc+DJjSoWrNnz6zC9ieuvs/6CTsDY7+9jyAnTjPB/hO2Yrb/lvju4657c+s3
-	tKQxipZw21h03D7oNp8dFkhsag4SG4V9Ia9FdEKT6vMkzChLVPNnEOcA9mUMcDyu5Yt/4jteEm+
-	jPsAd9VcDCCnoEiMvH6LAw+WReFiiC6dmnA84aMLymO92KschfNRaiTKSUM32ecaFa4cr8ObNfO
-	g2s9AtLfd9FBOqSzaqut6aqm/tVhCOoTyvFGQuLfrYvPtNYraXb8u1HINYsryA3rfaU3IsEAvTk
-	D4ePYwV+aXhoYL/JyvSWO/8nwNhgB73xmv7MkmrPMtr1PINyO37YIflYcsZgWaLfQ6aK4m2RY=
-X-Received: by 2002:a17:906:f58b:b0:c21:450d:cd88 with SMTP id a640c23a62f3a-c250bbcc64amr476059866b.6.1787731469299;
-        Wed, 26 Aug 2026 01:04:29 -0700 (PDT)
-Received: from localhost (109-81-80-32.rct.o2.cz. [109.81.80.32])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a88ab65sm356259366b.37.2026.08.26.01.04.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 01:04:28 -0700 (PDT)
-Date: Wed, 26 Aug 2026 10:04:27 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Eric Chanudet <echanude@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Maxime Ripard <mripard@redhat.com>,
-	Albert Esteve <aesteve@redhat.com>
-Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
- area counters
-Message-ID: <ao6eC2SUIGVz3Qct@tiehlicka>
-References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
- <aowHqqaqK7TeexQH@tiehlicka>
- <ao2gA_m3BCBu2esy@echanude-thinkpadx1carbongen13.rmtusma.csb>
- <ao2t6HP-Zt5KDg30@tiehlicka>
- <ao3UKM5SbxBmxuR0@echanude-thinkpadx1carbongen13.rmtusma.csb>
- <ao3quaSze8YjPjxZ@tiehlicka>
- <ao3tFg4JLNlbylTR@echanude-thinkpadx1carbongen13.rmtusma.csb>
+	bh=QQdtBssAwwKPp/yVBHLqOxmBB73GFT/M0a43+g7tuu0=;
+	b=11g8MQjV7rlqYquJD8PGSkqQ8JPLpQN9SPIY8pjfn5W0oH8SWtcFWfclNQTbuLBwVFGfxL
+	c2ZcqRTyKnqo9oYuiL1LpnckUtsAw7lz5npWjlDyl4Jrvl1jnbVAoUkPH76+C3pERpZFyS
+	+hPcC2opz8vHiSdIm+jMstzvWgcRH3U=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787731682;
+	b=Eiz5Lplkuv2Xo5rRTNcYFHkUc1mnSVNB3HOozA6G6ldj+6yiahxFrEs29ViP+evQ48mQ8c
+	SEicgGg89brfkMqXZA4VqhyYcuH0wqRgjexAce1eqfMYjr1PxumZRwjbTvWba3NQNI2Mha
+	pvrCwygUuvTVNss9IO44i5g7Y8sQbV0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DR7QvqSz;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B734160A59;
+	Wed, 26 Aug 2026 08:08:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41001F000E9;
+	Wed, 26 Aug 2026 08:07:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787731681;
+	bh=QQdtBssAwwKPp/yVBHLqOxmBB73GFT/M0a43+g7tuu0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DR7QvqSz+6My6tCuflSAf6AqnatJqWsaMh3RP7hk4YEA4FzjSmojxxWBLFeiV+Ejn
+	 1oaldsgxytC3EixN725F6VQ0bRO2T/ae9L7KeLoHPgxBsazha8g3jpsvK1/finMsDr
+	 1E8Mi0TiEz2A/eAFphoVdL/ckxOzkFx5oggf04eTTxoUHHC2g7YtUGSOCSNWryjHtS
+	 u34f5qoKsO1xjoVhMW1hf8ZtVzB/lWD0dRFYL7eeTUDyXAFjS2k3qG9dUgfvi/IAoj
+	 zUelNYzlCy5nEbnBjqJCi45iejK6Co5uMPjg/ukLc2Kjf4reLkiPYfbvXnEhQuHrlS
+	 kxHGnJWI4wJ7Q==
+Date: Wed, 26 Aug 2026 09:07:55 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org, 
+	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, usama.arif@linux.dev, zokeefe@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v3 1/3] mm: khugepaged: fix swap entry value to
+ folio_pfn()
+Message-ID: <ao6c6Oe_KV0O1LJn@gremlin>
+References: <20260824092935.73892-1-vernon2gm@gmail.com>
+ <20260824092935.73892-2-vernon2gm@gmail.com>
+ <edd7ed8d-0f2c-4de3-89e5-f2b23c2dd1e5@kernel.org>
+ <6a9c2369-5589-4f2a-bcfe-c6e3b46a1ccd@gmail.com>
+ <c8e3bb54-e4f1-45d3-8059-3ee1910a920a@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ao3tFg4JLNlbylTR@echanude-thinkpadx1carbongen13.rmtusma.csb>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 03B7540008
-X-Stat-Signature: gnszd3z6so8gw3qfg1n8hycqwbgdemw4
+In-Reply-To: <c8e3bb54-e4f1-45d3-8059-3ee1910a920a@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1787731470-663698
-X-HE-Meta: U2FsdGVkX1+D1sNrfjWPVKnNdLcp7kcU5cwYdUS/u1Qw7OioeKPQbXAjFFOSwx1WNFbBOm6t3M1h3B7mQbBzGX7DfzmzYFbMJUmGg48G22uHN5BS8E38C9DofYkVoy9/3IToe/YFhQXRPrpwitM/rEYmznLiEryp5NZzYUCQj74b5ySTtQ9PKzODVsK0Q0swdwBva4jxg1eNGXXwlimLjPryQp5nL5TaUY8VxMmoUhr5sW5Ap4Is6zWfBpEQUAgjtXzCOGPv7ikHsUCd8tr3Obun7thSrpTkXNRijSsFsJ7QvOA+slp/nPk/MoaC1ZcXP7lmA9PNzUoIrwr3U7FweOC44nOkb5yRUrf5l7rr8vyURwfL9NQlGupAru4cu4zuImn1FF3mJAb6NVyWMY+NHTG8iAgasoXchj6rshEU+t3TUgOnQ+aG/2Nl230naVErQ+V5oiyjRT2dEcoA731ZJIbHP2AhbkocKximW5PaXzy51Y9NKxspLqBKXvl0Oh6CskJNrgTjx/n7OkZ9k9hwNnsUzfEXAJ+0xnOH2qXqOJM6ZSLD1nlqTicQx1Ia34B7d9fVWm/aCu7CpBrvBSd5iA33jp+2JbYDuKdYtY6Bs80Q2nEPT2LMFfk4rO4rzpDnMS8oT/B3+HXJjH9QGM+qM1FAitLxwQd5a61l51rwrTNRFfOpcWwMj7AZgRY/y52RoX9nQpSXvJxeBth5JeK2lzUbzRzDZ5kw5mThBh0Vom/WoREA3bfNhgQTgzp+XTqJv2bHrlZ4BCmJNPzbJvNXedcq7j8EMz3/v5V3jTQumg4V4F5Aju8rR0/fJz0W+LmczbNRInvAZDJj7BD0FCtfLm2DFfxEPTEeU9xSDO9FLpDNyC1iD1ZC0uQON+RLYa6FH+wBMbymiqdn4/LyENDuP2jg5W58ZX330q+XFo1ReRUOPHzupMHtlPHSrg5/9VQoyTe2fcbyrWXdf+1VPuV
- IWqCfbNs
- /xUt3N8THRxk3Hgf7hWf9DKvHJkM8QK3DCJtKxSnH7ansqxezuYk+nFoqoUzT3NPiHz3XO8YvTWPkAD2vcKshxXU1BdTPy1phoUJuRd8YJgxsTOA8PqVag4yNbFCE4UnZnlapB/kw/fYe3Ou6GSqbpG6mh+fywh2Nix3mBH0meRJYPVmcuMg3DlPGtz1qevdM+zVOO9H64XcoROgqNCxkbcQDexpVbSKxT2x1NX5JY7Ajs0YlUKCcNUdBj7yvIUb1mIPULHcvXympOR2toLkthNaZL9npM4ZBliutBf06jTLl77kIrJPKHhzPq7cRrS5svrQrYhIumbLwh5m5mpzxOSMBCG/+R1BK6UGPgVMSdUytQ8I=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 599D814000B
+X-Stat-Signature: q8hrbxfkro8utpnewdidbgbkqgwq4jz7
+X-HE-Tag: 1787731682-364799
+X-HE-Meta: U2FsdGVkX1/wYOpnzuxmg0mKw0iLcExsSp8aFUH/xjVL2GCGo/Ghbcy4skzrXfrMmnwN7x4lJ7oHO0EKJIcWIGI55gMuWH/5nrGPd3vcHPXXS1ncZQKdkhUtyh/02sMm7uEYUh5rcnEIdqP40oGUtfsB3Us47kb/Kr3L2CfNuDMyl5vjwbRW6GTHJNN0w6yvzgOGi1BSSrRAHXtinqafylsNBtOVLgvAyR8TJZi+ISpkKCR7QUuQJ19uU0F8Nrqg51MaQEnAs3x3PncpuNP6r/2puF/oJiHSDPJrKvtI0iIfFuO6CG2wW636r3svGWpErT8MR8FTZPv+OPv7V7yNX0FMC0v6yRvztX3Ee1ozK1rfTCf1H3IZ2BS/DWt/Ezdl2B2rc/XK4g+MAYXyYZ2Z+mxOcwg2r6IXnl1e2TmCfVJnICRE3R2giHXyxQ7Qtvzkpr/3w7qeAaRWX7WykJ/b7GHb0GWHY0KDhUq2FswhecSMsp9HFQgKcL9qh/xAlk32GLDJ01b8cP4jJUk5G5/3oFseETnBVql7NIXM69cAMoarxHbypgiX4YSV0snFvXhftrSHKILnp7cBbIGzuS+KKtvOc+XJ9hohBhAI/P+6MtpA+1szIFzLDfDqMAfzqJBQPvUX8kJ1ETfoZ/4EVEVyoRAbxQfCNZXr4CQW86Vt4TjmWxu+eQIFBvp8RoIA4FI5tXEaXvvR6+DE9GT+968GkJu0ZYDwjkYoHpg+7ozcIg+gqWOHix9qrckB2fzWmr/M4iU3vvZmb9xxxI/UV7pPr7zlFJ993hELH+IUOEJaNYDMTOiwMO1dRKV3gCBUnfmpWUFr35ZkbOXGlLkBzZV1/A9m0Z5uyUiuX6/wvpZWS/XLH9fGfnjFG/tCnHRpS/0hNN8ly3tjeTEROtu0G/jbnpZtbptZe3deAMYEqsNYjcWfTqWVi10aQnmiSknZUBh7ndJp+j+7oJzhDPE1vGJ
+ b4WoSHK9
+ MKhaPJ/6oCErS43I8GOeWXoHxbzqvS42icq0K+7Ud9TriABWh8m7AzffdfqN8Oi7UlaUhsnRRGcmoKmcZsZp8amG2nJqEBPVX2mpsYvLmMdSI8f+DMohpvkMeTWYf1L8rxOf14c7+aH2eyybB2hB3JDOswRRGIGgerv7ubwj0R0wrfRI20nxIBV0UcE+WinOxc7CdzzfxRcHDv2DlGNxN6Z7BDXkyeNUZLVIOis+guAiMXx2hZKGEdU4LahcPn5GmXAjIO9M7WzCbL8hMToLFtJfK18Jz+edPXuwNLxPSpD3curs7mkQ2pR1k6DH7h9jQ07Br
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,154 +98,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 25-08-26 16:58:51, Eric Chanudet wrote:
-> On Tue, Aug 25, 2026 at 09:19:21PM +0200, Michal Hocko wrote:
-> > On Tue 25-08-26 14:33:48, Eric Chanudet wrote:
-> > > On Tue, Aug 25, 2026 at 04:59:52PM +0200, Michal Hocko wrote:
-> > > > On Tue 25-08-26 10:47:53, Eric Chanudet wrote:
-> > > > > On Mon, Aug 24, 2026 at 10:58:18AM +0200, Michal Hocko wrote:
-> > > > > > On Fri 21-08-26 14:56:52, Eric Chanudet wrote:
-> > > > > > > CMA allocations are currently unaccounted for by cgroup memory
-> > > > > > > controllers. As system resources, they should fall under memcg, but CMA
-> > > > > > > areas partition the available space for different purposes and memcg
-> > > > > > > doesn't have a good representation for that.
-> > > > > > 
-> > > > > > Which CMA usecases are covered by this work? It would be also great to
-> > > > > > spend more time describing usecases.
-> > > > > 
-> > > > > We would like to offer some usage guaranties to userspace processes
-> > > > > ending up doing allocations in CMA.
-> > > > > 
-> > > > > For example, a shared CMA area is described in device-tree for an ARM64
-> > > > > platforms. Userspace components could then, for example, allocate from
-> > > > > it through the dmabuf heap, or a device or framework-specific ioctl for
-> > > > > that matter, to use the buffer with sensors. The dtb may have other CMA
-> > > > > areas described additionally that may or may not be used by that
-> > > > > component. In this context, we would like the ability to limit one of
-> > > > > the userspace component to over-allocate and choke the other(s).
-> > > > 
-> > > > How exactly is this supposed to work? How is the CMA access controled
-> > > > and opted in for accounting. What happens when memcg limits are hit. And
-> > > > many more details, please.
-> > > > 
-> > > 
-> > > The administrator opts in by mounting cgroupfs with
-> > > memory_cma_accounting. At which point the cma allocator will charge CMA
-> > > allocations against memcg and manages a per area counter depending on
-> > > what area the allocation was made into.
-> > 
-> > So each CMA area will have its own counter and limits?
-> 
-> Yes, in order to enforce a limit per CMA area this series add a page
-> counter for each area. Areas are fixed and discovered early so the
-> counters are added to struct mem_cgroup and initialized when the cgroup
-> is created.
-> 
-> An admin would then use the cgroupfs entries to assign an area limit to
-> a given cgroup, something like the following, using the reserved area
-> for example:
->   mount -o remount,memory_cma_accounting /sys/fs/cgroup
->   echo +memory > /sys/fs/cgroup/cgroup.subtree_control
->   mkdir /sys/fs/cgroup/mycg
->   echo 16M > /sys/fs/cgroup/mycg/memory.cma.reserved.max
->   echo 64M > /sys/fs/cgroup/mycg/memory.max
+On Wed, Aug 26, 2026 at 09:57:05AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/26/26 04:44, Vernon Yang wrote:
+> > On Mon, Aug 24, 2026 at 01:54:18PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 8/24/26 11:29, Vernon Yang wrote:
+> >>> From: Vernon Yang <yanglincheng@kylinos.cn>
+> >>>
+> >>> When the swap entries found exceed max_ptes_swap, the loop is left via
+> >>> break with folio still holding the xarray value that encodes the swap
+> >>> entry, not valid folio pointer.
+> >>>
+> >>> That value is passed to trace_mm_khugepaged_scan_file(), which feeds it
+> >>> to folio_pfn(). On FLATMEM and SPARSEMEM_VMEMMAP, the page_to_pfn() is
+> >>> plain pointer arithmetic, so the trace event merely prints bogus
+> >>> scan_pfn. On classic SPARSEMEM, the page_to_pfn() reads page->flags,
+> >>> dereferencing the tiny encoded integer and oopsing khugepaged whenever
+> >>> the trace event is enabled.
+> >>>
+> >>> So when folio is the swap entry value, simply set pfn to -1, just like
+> >>> exhausted scan naturally.
+> >>>
+> >>> And the folio_put() has maybe dropped the last reference of folio. The
+> >>> trace_mm_khugepaged_scan_file() is left with a dangling folio pointer.
+> >>> so using the folio_pfn() before dropping the reference, closing
+> >>> use-after-free window.
+> >>>
+> >>> Fixes: d41fd2016ed0 ("mm/khugepaged: add tracepoint to hpage_collapse_scan_file()")
+> >>> Cc: stable@vger.kernel.org
+> >>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> >>> ---
+> >>>  include/trace/events/huge_memory.h | 6 +++---
+> >>>  mm/khugepaged.c                    | 5 ++++-
+> >>>  2 files changed, 7 insertions(+), 4 deletions(-)
+> >>>
+> >>> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+> >>> index 5a48c5406cce..7b526528f85b 100644
+> >>> --- a/include/trace/events/huge_memory.h
+> >>> +++ b/include/trace/events/huge_memory.h
+> >>> @@ -178,10 +178,10 @@ TRACE_EVENT(mm_collapse_huge_page_swapin,
+> >>>
+> >>>  TRACE_EVENT(mm_khugepaged_scan_file,
+> >>>
+> >>> -	TP_PROTO(struct mm_struct *mm, struct folio *folio, struct file *file,
+> >>> +	TP_PROTO(struct mm_struct *mm, unsigned long pfn, struct file *file,
+> >>>  		 int present, int swap, int result),
+> >>>
+> >>> -	TP_ARGS(mm, folio, file, present, swap, result),
+> >>> +	TP_ARGS(mm, pfn, file, present, swap, result),
+> >>>
+> >>>  	TP_STRUCT__entry(
+> >>>  		__field(struct mm_struct *, mm)
+> >>> @@ -194,7 +194,7 @@ TRACE_EVENT(mm_khugepaged_scan_file,
+> >>>
+> >>>  	TP_fast_assign(
+> >>>  		__entry->mm = mm;
+> >>> -		__entry->pfn = folio ? folio_pfn(folio) : -1;
+> >>> +		__entry->pfn = pfn;
+> >>>  		__assign_str(filename);
+> >>>  		__entry->present = present;
+> >>>  		__entry->swap = swap;
+> >>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >>> index 79effd3f3da4..00337405c0e0 100644
+> >>> --- a/mm/khugepaged.c
+> >>> +++ b/mm/khugepaged.c
+> >>> @@ -2689,6 +2689,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+> >>>  	int present, swap;
+> >>>  	int node = NUMA_NO_NODE;
+> >>>  	enum scan_result result = SCAN_SUCCEED;
+> >>> +	unsigned long pfn;
+> >>>
+> >>>  	present = 0;
+> >>>  	swap = 0;
+> >>> @@ -2719,6 +2720,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+> >>>  			continue;
+> >>>  		}
+> >>>
+> >>> +		pfn = folio_pfn(folio);
+> >>>  		if (is_pmd_order(folio_order(folio))) {
+> >>>  			result = SCAN_PTE_MAPPED_HUGEPAGE;
+> >>>  			/*
+> >>> @@ -2779,7 +2781,8 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+> >>>  		}
+> >>>  	}
+> >>>
+> >>> -	trace_mm_khugepaged_scan_file(mm, folio, file, present, swap, result);
+> >>> +	trace_mm_khugepaged_scan_file(mm, (!folio || xa_is_value(folio)) ? -1 : pfn,
+> >>> +				      file, present, swap, result);
+> >>>  	return result;
+> >>>  }
+> >>>
+> >>
+> >> Shouldn't we just reset PFN to -1 at the beginning of the loop (and set it
+> >> initially)?
+> >
+> > When the `xas_for_each()` iteration to terminate and the folio operation
+> > preceding is normal, but pfn will be incorrect.
+>
+> The PFN is only relevant when a folio participated in the failure. Maybe the
+> following would be cleanest?
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 75639298efc27..371ee0b16d10c 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2683,6 +2683,7 @@ static enum scan_result collapse_scan_file(struct
+> mm_struct *mm,
+>         int present, swap;
+>         int node = NUMA_NO_NODE;
+>         enum scan_result result = SCAN_SUCCEED;
+> +       unsigned long problematic_pfn = -1;
 
-OK, thanks for the clarification. This confirms my initial suspicion but
-it is better to have it clearly articulated. I can see several problems
-with this approach. First and formost I do not think dealing with all
-cmas this way is manageable. This can become a mess very quickly if we
-have one limit per cma and too coarse if there is a single one. I also
-have my doubts about space allocation control through a simple limit for
-something that is effectively a reserved physical space.
+I find this name... problematic :)
 
-I might be proven wrong but unless cma serves objects of a uniform
-size then this will simply not work in practice. Hitting ENOSPC without
-hitting limits and thus impractical for shared space management.
+What about:
 
-[...]
+	pfn_t pfn = -1; /* Assign on failure before dropping ref */
 
-> > > It looked consistent to use memcg since movable pages from regular
-> > > allocations may end up in available CMA regions until a CMA allocation
-> > > needs the space and has them moved. So in an extreme case, hogging the
-> > > CMA space of a large enough area could trigger system memory pressure.
-> > 
-> > I really do not understand what you mean here. 
-> 
-> Non-CMA allocations can end up in CMA physical regions when necessary
-> (ALLOC_CMA flag).
+Then:
 
-Correct. But those are a subject of migration so any such placement
-should not be blocking real CMA allocations.
+	if (result == SCAN_SUCCEED) {
+		...
+		trace_mm_khugepaged_scan_file(mm, -1, file, present, swap, result);
+	} else {
+		trace_mm_khugepaged_scan_file(mm, pfn, file, present, swap, result);
+	}
 
-> Since both CMA allocations and other system
-> allocations are represented the same way, with differences only in
-> properties, and they can live in the same regions, it sounds reasonable
-> to account for both under the same counter.
+?
 
-From the memcg POV we do account physically consumed memory. So yes,
-it makes no difference where the memory comes from. We only care about
-the overall capacity you can constrain or protect. Generally speaking it
-makes sense to charge heavy memory consumers directly triggerable from
-the userspace.
+Other than that I do think your approach of assigning it on failure is the
+right one.
 
-That is all memcg can provide you with. Specific requirements for
-specific types of memory is a different story. We currently cannot
-control per-numa node for example. There is an ongoing work to make
-memcg memory tier aware. 
+>
+>         present = 0;
+>         swap = 0;
+> @@ -2714,6 +2715,7 @@ static enum scan_result collapse_scan_file(struct
+> mm_struct *mm,
+>                 }
+>
+>                 if (is_pmd_order(folio_order(folio))) {
+> +                       problematic_pfn = folio_pfn(folio);
+>                         result = SCAN_PTE_MAPPED_HUGEPAGE;
+>                         /*
+>                          * PMD-sized THP implies that we can only try
+> @@ -2725,6 +2727,7 @@ static enum scan_result collapse_scan_file(struct
+> mm_struct *mm,
+>
+>                 node = folio_nid(folio);
+>                 if (collapse_scan_abort(node, cc)) {
+> +                       problematic_pfn = folio_pfn(folio);
+>                         result = SCAN_SCAN_ABORT;
+>                         folio_put(folio);
+>                         break;
+> @@ -2732,12 +2735,14 @@ static enum scan_result collapse_scan_file(struct
+> mm_struct *mm,
+>                 cc->node_load[node]++;
+>
+>                 if (!folio_test_lru(folio)) {
+> +                       problematic_pfn = folio_pfn(folio);
+>                         result = SCAN_PAGE_LRU;
+>                         folio_put(folio);
+>                         break;
+>                 }
+>
+>                 if (folio_expected_ref_count(folio) + 1 != folio_ref_count(folio)) {
+> +                       problematic_pfn = folio_pfn(folio);
+>                         result = SCAN_PAGE_COUNT;
+>                         folio_put(folio);
+>                         break;
+> @@ -2773,7 +2778,7 @@ static enum scan_result collapse_scan_file(struct
+> mm_struct *mm,
+>                 }
+>         }
+>
+> -       trace_mm_khugepaged_scan_file(mm, folio, file, present, swap, result);
+> +       trace_mm_khugepaged_scan_file(mm, problematic_pfn, file, present, swap,
+> result);
+>         return result;
+>  }
+>
+>
+>
+> --
+> Cheers,
+>
+> David
 
-> > > > > memcg
-> > > > > looked like a good fit to achieve this, albeit handling the areas, so a
-> > > > > cgroup has a quota in a given CMA resource.
-> > > > 
-> > > > Please expand more on why do you think this fits into the memcg model.
-> > > > AFAIU we are talking about a unreclaimable memory and reservations of
-> > > > CMA areas.
-> > > 
-> > > Since memcg already accounts for some unreclaimable memory (kmem,
-> > > hugetlb),
-> > 
-> > hugetlb pages have their own controller
-> > 
-> > > or induces failure if no reclamation is possible, I did not
-> > > see CMA allocations being unreclaimable to be a blocker to track what is
-> > > otherwise system memory.
-> > 
-> > yes, we can have unreclaimable memory charged to memcg, that is not a
-> > real problem. We have all sorts of memory consumers that need to be
-> > capped charged to the memcg. If dmabufs are another ones then fine, just
-> > charge allocated pages from the cma area. It is the "make all cma users
-> > memcg aware and have per cma limits" that I am really struggling with.
-> 
-> CMA is system memory independently from its usage though, and in cases
-> with shared CMA areas multiple users can allocate from them. Yet the
-> kernel cannot enforce usage limits.
-
-Correct. Those are effectively a shared memory pools without any
-control. I do not think memcg is a good method to enfore any usage
-limits for that though for reasons mentioned above. Memcg is effective
-at capping the overall memory consumption of a workload. Not really
-great when it comes to a specific memory pool control.
-
-> > You cannot really assume usecase, requirements, lifetime etc. for an
-> > arbitrary cma area. I do not think this is a viable way forward. Focus
-> > on your real usecase, which seems to be dmabufs.
-> 
-> While dmabufs are indeed my main use case, they are quite generic and
-> may not always have system memory backing them (device memory). Working
-> at the CMA allocator alleviated these disparities.
-> 
-> > Explain what do you want to achieve and then we can think whether memcg
-> > is the right model for that usecase
-> 
-> Hopefully I expressed this in a better way by now. In short, enforce
-> usage limits for concurrent CMA users using shared CMA resources.
-
-Thanks. Yes this is more clear now. And it resembles hugetlb situation
-more than memcg. You simply need a memory pool specific access and usage
-control. Dispersing that to a global memcg limit seems rather coarse and 
-I would say impractical. So it really calls for a per pool control with
-an understanding of how the specific pool really works.
--- 
-Michal Hocko
-SUSE Labs
+--
+Cheers, Lorenzo
 
