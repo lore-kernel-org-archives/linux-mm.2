@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACC77C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:17:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71196C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:18:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E8B16B0096; Wed, 26 Aug 2026 09:17:51 -0400 (EDT)
+	id 58E746B0099; Wed, 26 Aug 2026 09:18:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 898926B0098; Wed, 26 Aug 2026 09:17:51 -0400 (EDT)
+	id 564F76B009B; Wed, 26 Aug 2026 09:18:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D5DA6B0099; Wed, 26 Aug 2026 09:17:51 -0400 (EDT)
+	id 47B716B009D; Wed, 26 Aug 2026 09:18:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 559706B0096
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:17:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D37871C1809
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:17:50 +0000 (UTC)
-X-FDA: 85143473100.17.2ED446E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1601D6B0099
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:18:31 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 568EEC03AA
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:18:30 +0000 (UTC)
+X-FDA: 85143474780.25.82993BA
 Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7FCEC40004
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:17:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=aMMrKVlr;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0E5CF100007
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:18:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=cptM55Wd;
 	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf11.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	spf=pass (imf05.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787750268;
+	s=arc-20220608; t=1787750308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Me0VmWoWAYHkVt/MT/VZKdgMLOyOPPoKW1qhK464E4Y=;
-	b=1AJ4COQW1h6eq/T8c2RPU+yThyIi22sORzh+IOfAVOtdu1qXD+hA/f8obhUkwFtc9dihsZ
-	X2xD9UM8Mb8PP3Cc735EGtzlBAGYIY8dIUV4s8Reog4MzQtv6lGX6L77wzQ6q64QpeBgWj
-	/2hqsuQlLyURWieSs6ptd3KkAFl2fpA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787750268;
-	b=bDXc9U0zfwRD3PYk/5PTV6R40E6T/ZpDHPN5zU5pHfLBBZDvpUQf2x5NiYvWFsrES7CNEa
-	vE3//+gfz+J0v6iGYUQzTtL3+Xfe6tzX1mZ+TKoEFtrmdjzXpqOKO0Ns3XzkXIIJu6GEcr
-	XtUIuBS/p3kv10B8W8Z3h9oxIdTGLps=
+	bh=rw0+g5eoKmahgtE3CqR+4VOpRqHEDZMoAaxPRmz5Fvs=;
+	b=Zm5l9Bojnz/GLYfZ5pK8XubHa7UCTQXCsNFkkTFcmB7LAGdSDy7swHQ+92liKtCm0c4vqy
+	Lmbb+h3cYRopsyy4eNWriMffMymaImp0MihxaXfN8T67zvXTOKAezi9XU94LOstmTIIWRX
+	jTWngHujmqBKUUudarpwtVVo1AeIZvs=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=aMMrKVlr;
+	imf05.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=cptM55Wd;
 	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf11.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	spf=pass (imf05.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787750308;
+	b=JLPe4XHN6hUk0FUh1QGF6SmrA8Aw+xQ+bhO6J52qV0x9/ayUZn1DQvhZXQ+wmap8O2XsuG
+	vA4Kc1kSWowiIJWWwXNDuwuzzuFSICaj2d+xLJnT3Okf5QWv7AGDhDpnHlM5oLh51vXWby
+	wfPe5S+FThCS1SzFSVAEGhEIt4gBg54=
 Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260826131747euoutp02122a3209aaf1a9a4c0bb45050d5ed41a~PXWV2JNYv0588305883euoutp02W
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:17:47 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260826131747euoutp02122a3209aaf1a9a4c0bb45050d5ed41a~PXWV2JNYv0588305883euoutp02W
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260826131826euoutp02435ee2d0afc4fdbde2aac2f83f6c53c0~PXW6a4Xqh1127211272euoutp02B
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:18:26 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260826131826euoutp02435ee2d0afc4fdbde2aac2f83f6c53c0~PXW6a4Xqh1127211272euoutp02B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1787750267;
-	bh=Me0VmWoWAYHkVt/MT/VZKdgMLOyOPPoKW1qhK464E4Y=;
+	s=mail20170921; t=1787750306;
+	bh=rw0+g5eoKmahgtE3CqR+4VOpRqHEDZMoAaxPRmz5Fvs=;
 	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=aMMrKVlr5oXAHFFawFLnkYgSa/sThUsBpW0oq1j/1ACdrYDGqS5Tb00SUGzaTMB5E
-	 FK22rrgip4DS/1cEakMKGoLD/1kvYjSWDIJCXQQPEaIGe5PK9jNw17H/90gjr+MPWX
-	 6K/XdbuAxnUrFfS9nBwInfUfPCLsKttBh0Lb6AYo=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	b=cptM55Wdq3sMeNOoEAR2ynQcJThhoMnGBKRBzr9uCY0ycpNq/GnjNrsGnTMeYDWFQ
+	 zFKq+MdvUuB9EaQ2BLvBkgHviwBbs0TsvFFM0TYIKIKWk0aD3nWdFpWcMbXRdLdQ35
+	 XayFhH7ICIF7Ax4Yrd8o5ZmBRvwcdYLu0NR0+nsA=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
 	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260826131747eucas1p213224e419e6b00c8c84b85a0bedc84e6~PXWVl6Ksu1479414794eucas1p2P;
-	Wed, 26 Aug 2026 13:17:47 +0000 (GMT)
+	20260826131826eucas1p21156d47d87f5b0f5206e81457ae63092~PXW6KCuYl2176621766eucas1p2g;
+	Wed, 26 Aug 2026 13:18:26 +0000 (GMT)
 Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260826131746eusmtip12f599e284d828f3483e2e6ed3c54a55d~PXWVCb-nm1351413514eusmtip1M;
-	Wed, 26 Aug 2026 13:17:46 +0000 (GMT)
-Message-ID: <8948e46d-bcc2-47e9-84de-dd6907cf0876@samsung.com>
-Date: Wed, 26 Aug 2026 15:17:46 +0200
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260826131826eusmtip2a69d2b2f4487d00ec98febb8fe8a669a~PXW5wXy-E0873808738eusmtip2V;
+	Wed, 26 Aug 2026 13:18:25 +0000 (GMT)
+Message-ID: <cb8a910d-a1e8-46a3-bd3a-bf56b2a2848b@samsung.com>
+Date: Wed, 26 Aug 2026 15:18:25 +0200
 MIME-Version: 1.0
 User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v2 4/5] of: reserved_mem: release dynamically allocated
- no-map region on init failure
+Subject: Re: [PATCH v2 5/5] of: reserved_mem: retain static no-map memory on
+ init failure
 To: Wandun Chen <chenwandun1@gmail.com>, robh@kernel.org,
 	saravanak@kernel.org, rppt@kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org
 Content-Language: en-US
 From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20260818092420.2859026-5-chenwandun1@gmail.com>
+In-Reply-To: <20260818092420.2859026-6-chenwandun1@gmail.com>
 Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260826131747eucas1p213224e419e6b00c8c84b85a0bedc84e6
+X-CMS-MailID: 20260826131826eucas1p21156d47d87f5b0f5206e81457ae63092
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260818092450eucas1p1f1d7f5ad5fc8d786580dd9dcad6ce196
+X-RootMTR: 20260818092456eucas1p14bc953974fe7bb755d530829af4060cc
 X-EPHeader: CA
-X-CMS-RootMailID: 20260818092450eucas1p1f1d7f5ad5fc8d786580dd9dcad6ce196
+X-CMS-RootMailID: 20260818092456eucas1p14bc953974fe7bb755d530829af4060cc
 References: <20260818092420.2859026-1-chenwandun1@gmail.com>
-	<CGME20260818092450eucas1p1f1d7f5ad5fc8d786580dd9dcad6ce196@eucas1p1.samsung.com>
-	<20260818092420.2859026-5-chenwandun1@gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7FCEC40004
-X-Stat-Signature: dcd5qzutoe9g95roi4czfbpu8ok7ye85
+	<CGME20260818092456eucas1p14bc953974fe7bb755d530829af4060cc@eucas1p1.samsung.com>
+	<20260818092420.2859026-6-chenwandun1@gmail.com>
+X-Stat-Signature: tc519dfcx7yimj19nrursic6d1tt6zmj
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0E5CF100007
 X-Rspam-User: 
-X-HE-Tag: 1787750268-990804
-X-HE-Meta: U2FsdGVkX1+L/5HAwcoEWKZlwpb3qBmF5R/tHu8oX8jm0BO34WbCTXB8wbsnmZfo5VnecmbvfaHSYnQANqLy6OR/yZpSR9dWgki9hxtyo4oWsOt9tSyQUdIBDUiknTsrO1k++qcu7YVAPr8a8Kk0C5MlpCeNovokg7/T6I8HM0X7EstQgocFuj2WUAjqKEC2xUsx/PK+72wtXx4t6g1EkKQ6eYXzKbxKs+D0FCnjSZF2prXWp2srj004fepQfZzOeuu/ywaRgpnFbmsVRyt7RQQ9/S6xlNMHxaphNI01pK/RcN2vZ2Blx+Sc+Ltn3hmxqzbu7mbeKisQc5optBT8pExJ3iq4eAfnA/+myRQwoUsxX08Zd3Xq9XePAJBJTXvhMIe6Ja5jOT1K2/cUHJlUzZjAbBuXS+Lfq5iQrqx2TobWrjAfFOtziEyZJt9sm+9v1PEtOB6B4QM+/nUPZfvGoYSGPW/a6idGbQCunCJLrX2Ca/ymxRqJjFFkgfwroGGZIC8bBMIYCBOcxuNxS7YZGYrU9Sbu/w+vB2E4kqzrYzD+p4MVPBIBJwHM0QrO8SwhmtVq4P7Xh5VircGi7Oe4sAICGsUzhIL4zFMj+rE0s9zWfcfw3YUvdMZFOpk9RFT/qAhBch2/shhwDyrrbchoROCXWgMzqOpJIcN+uObsGNQuewG2qJ9hY1L+BGALlQ8w4e7uK6a0DeEWE5T3vDJRzY6Q52Nt49Q3aKJt54DSeHzp1gYBExcoRVhCI/Sc+5RVqACVSfHxlMurZ3t1X7lr5oolOP3tvRs6eJKl48PHlf+QpyRkpCiw5mEKPqo2LCR6QzeAHKD1qYpQvl2ImdGTdUIqPZobitkeFE+9G7NEo08twBCXycuJSwph9+dIFVgVwP2VWdg02X7LRss0Qi6j6bfSmlRyfUnXE28ByAUgOTIVVFZcsy68qAYVxeeU8l1UfUBf2VlEPq3BZuGUGs4
- HyINo+yU
- wG5leTzY8vaVlXZ1zr78Tqs+W8kV4LDuozJApvrUHxE6UZoZBuGk5e9ZSZU5CxSufnqBBKHx2JB1Wjk0XP0MAiJeIp48KEAV6lTwBQXdlQMlcfOClzo2f88p6ovA4JeniHrlfFFQ+H5ahnyqJ3V6rMwnLY8rQx5MpGhwpsLbyIRj7PoM5DSkdPxNMJw==
+X-HE-Tag: 1787750307-435564
+X-HE-Meta: U2FsdGVkX1/HVU28TRfLlcCoxidGGul4FfXvdBAw5o93jAiPsJJ0BFPQS57WvxEF3VQT1zM0dThRgYPxp1v6CbT7/Cp/kgYAs7/EcP50XcpnxzGX+I3ZNAhngcluA92u0pGcAZVUWoLbkGOQbUXbaUvII4EPdSxRvIy41xzV4lNE7Mu8uSj1iIIbBvTKQ2gq329EU8S+xksImOQIiXE91o8TPbgJdf87/L2FL0KDfBVpwUiR0juUnDN7t0e50UifTncfvDl1dTqp0P+T94dxKWO4St160TkXGv6jsWqEd/UJaR3QsVZCzID5xmptAFoQpaoKi8NwEB/CB6UD/C03SeLE6t9dGk53alPpCmTLik8G/NZBUinayb2WOIVxMTV3gbEMk1wn5cOx5AajMJl7vs55Kam0UFX7tnyK7HR0bDSj5x3vEk8iB1YaKxPnJTiyu65LQCYuoX6qUs34XZC/s3ebmh/u3xYuQysPBKTJRYW8ircXNLJKY/xKLsd3575sDsBDHY2c/tdl70d3DB6V6O/vC8zZnc+777/uSw2N7zSx/iY5dDS7jJQrAdH67cTfhPuVg4J9S8sD80usNZ7BnyrIgZzKPRH2sk+dURfICxD4Ge6fMC5KYf/MaKe1R/FcUeauhxCtXHZXU7bvjRyYj06mj+qez5nH38iULXPdHdKDCo4fs4DTseEoPuPDR467w0jAJcb7uzwu4u1Igc77BZSLJZPU2REdE/vQUh/7oRluH/LN+/e8xQMx/JE07lu5QSwsyYvCnbR8lq1X3zdRXh3CeDubmKjnSHLj6hL54Yjp/1nzDf4OxMJyC/JsKwVHHb5lVIECJM9dsrOyKokZ4Nusc/nwrcTeBral/6UB6VTw/q0HmdmXUXygAbrCozzAM9jT0IjUuX1lQnpkcvXSMg/VzhbohbX9OXpxX2435qpKB7qb0Uq7LAcmy0PH8sZ3vLqYKXs+687GLRcjjD1
+ gs8rtqGQ
+ oW1HjGNGCGbTdZuzT0d3G6F+LmFvxYw+I+erNrcJmEUemq+2RN4Y21vHtZG0+EN/ZC7WI4AC6KTdnpVDMjo4PCKWhJRD9a4oKBn6fjHumJSp+tdkiWlHwwKFp20eY97XYVFxishrfos9SvlKXi98SuUr6LLXWy/cVqfWTkKnedeUm6X8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,85 +109,38 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 18.08.2026 11:24, Wandun Chen wrote:
 > From: Wandun Chen <chenwandun@lixiang.com>
 >
-> Dynamically reserved-memory regions are added to memblock.reserved by
-> memblock_phys_alloc_range() during __reserved_mem_alloc_size(). When a
-> reserved-memory region's driver initialization fails,
-> fdt_init_reserved_mem_node() cleans up the reservation. For no-map
-> regions it only calls memblock_clear_nomap(), leaving the range in
-> memblock.reserved and unavailable for normal memory use.
+> Static no-map reserved-memory regions are initialized after paging_init().
+> If initialization fails, MEMBLOCK_NOMAP would be cleared, and the memory
+> is available to the buddy allocator even though it was excluded from the
+> kernel linear mapping.
 >
-> Fix it by freeing the region on init failure when it was dynamically
-> allocated.
+> Clear MEMBLOCK_NOMAP only for dynamically allocated regions, which are
+> initialized before paging_init() and can safely be made available to the
+> kernel linear mapping.
 >
 > Sashiko found this issue in [1].
 >
-> Fixes: 7b25995f5319 ("of: of_reserved_mem: mark nomap memory instead of removing")
+> Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
 > Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
 Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Link: https://protect2.fireeye.com/v1/url?k=37bb3269-68033acb-37bab926-000babff88b5-00648778f1201363&q=1&e=40542077-d5ad-41ca-88fd-1cf102a816c1&u=https%3A%2F%2Fsashiko.dev%2F%23%2Fmessage%2F20260806100605.2C2C01F000E9%2540smtp.kernel.org [1]
+> Link: https://protect2.fireeye.com/v1/url?k=b169dca9-d0f63c99-b16857e6-000babe403ab-705f8403a3aaee16&q=1&e=a8dd8ad7-74ca-479d-8b2d-d49b0225734b&u=https%3A%2F%2Fsashiko.dev%2F%23%2Fmessage%2F20260814090305.4C8741F00A3D%2540smtp.kernel.org [1]
 > ---
->  drivers/of/of_reserved_mem.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
+>  drivers/of/of_reserved_mem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-> index 767ef702392e..ac5db19dcc93 100644
+> index ac5db19dcc93..0090fa86dd10 100644
 > --- a/drivers/of/of_reserved_mem.c
 > +++ b/drivers/of/of_reserved_mem.c
-> @@ -136,7 +136,8 @@ static int __init alloc_reserved_mem_array(void)
->  }
+> @@ -709,7 +709,7 @@ static void __init fdt_init_reserved_mem_node(unsigned long node, const char *un
+>  		pr_info("node %s compatible matching fail\n", rmem->name);
+>  		rmem->name = NULL;
 >  
->  static void fdt_init_reserved_mem_node(unsigned long node, const char *uname,
-> -				       phys_addr_t base, phys_addr_t size);
-> +				       phys_addr_t base, phys_addr_t size,
-> +				       bool dynamic);
->  static int fdt_validate_reserved_mem_node(unsigned long node,
->  					  phys_addr_t *align);
->  static int fdt_fixup_reserved_mem_node(unsigned long node,
-> @@ -352,7 +353,7 @@ void __init fdt_scan_reserved_mem_late(void)
->  			continue;
->  
->  		uname = fdt_get_name(fdt, child, NULL);
-> -		fdt_init_reserved_mem_node(child, uname, base, size);
-> +		fdt_init_reserved_mem_node(child, uname, base, size, false);
->  	}
->  
->  	/* check for overlapping reserved regions */
-> @@ -567,7 +568,7 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
->  	}
->  
->  	fdt_fixup_reserved_mem_node(node, base, size);
-> -	fdt_init_reserved_mem_node(node, uname, base, size);
-> +	fdt_init_reserved_mem_node(node, uname, base, size, true);
->  
->  	return 0;
->  }
-> @@ -676,13 +677,15 @@ static int __init __reserved_mem_init_node(struct reserved_mem *rmem,
->   * @uname: name of the reserved memory node
->   * @base: base address of the reserved memory region
->   * @size: size of the reserved memory region
-> + * @dynamic: whether the region was dynamically allocated
->   *
->   * This function calls the region-specific initialization function for a
->   * reserved memory region and saves all region-specific data to the
->   * reserved_mem array to allow of_reserved_mem_lookup() to find it.
->   */
->  static void __init fdt_init_reserved_mem_node(unsigned long node, const char *uname,
-> -					      phys_addr_t base, phys_addr_t size)
-> +					      phys_addr_t base, phys_addr_t size,
-> +					      bool dynamic)
->  {
->  	int err = 0;
->  	bool nomap;
-> @@ -708,7 +711,8 @@ static void __init fdt_init_reserved_mem_node(unsigned long node, const char *un
->  
->  		if (nomap)
+> -		if (nomap)
+> +		if (dynamic && nomap)
 >  			memblock_clear_nomap(rmem->base, rmem->size);
-> -		else
-> +
-> +		if (dynamic || !nomap)
->  			memblock_phys_free(rmem->base, rmem->size);
->  		return;
->  	} else {
+>  
+>  		if (dynamic || !nomap)
 
 Best regards
 -- 
