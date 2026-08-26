@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C09AC61DC2
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97A4BC5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:21:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C85476B00CD; Wed, 26 Aug 2026 05:19:27 -0400 (EDT)
+	id 77CA66B00CE; Wed, 26 Aug 2026 05:19:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE88B6B00CE; Wed, 26 Aug 2026 05:19:27 -0400 (EDT)
+	id 7060B6B00CF; Wed, 26 Aug 2026 05:19:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A88C16B00CF; Wed, 26 Aug 2026 05:19:27 -0400 (EDT)
+	id 57F716B00D0; Wed, 26 Aug 2026 05:19:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D3B7C6B00CD
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:19:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1FC50A02D2
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:19:26 +0000 (UTC)
-X-FDA: 85142872332.03.8C7753B
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 51ECC180007
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:19:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=awJxAirS;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2683C6B00CE
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:19:28 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC2E0A33E1
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:19:27 +0000 (UTC)
+X-FDA: 85142872374.10.830AA1E
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EC9AC140004
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:19:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uLPrcGaM;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3mq-OagsKCI8tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3mq-OagsKCI8tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com
+	spf=pass (imf26.hostedemail.com: domain of 3nK-OagsKCJEvx5zC6zJE8119916z.x97638FI-775Gvx5.9C1@flex--ackerleytng.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3nK-OagsKCJEvx5zC6zJE8119916z.x97638FI-775Gvx5.9C1@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787735964;
+	s=arc-20220608; t=1787735965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jz7w3ahlJ2XXJ+zdKH+uz7IHVQmm2wlsntFHCBVHzEo=;
-	b=6U+nE0pFsodyuZnU5DfFelOY2W8HdMrPj1j8HtLs1CVUR1LOy4UOrQ7UZWm5WzPl547Iuc
-	9e/TLQNctLRyiszzc8RI7j5t6ZZTufj28DyMTzeQutFldeUMa9A0Z5vbh3kYbc1OLSmrJy
-	RmgaDDCutRVuJkhWqdhX6bnmh0ejrJ8=
+	bh=LbRUvfXufo/53FByarAgnrpLej2qb+vPYL1z/tXSG2A=;
+	b=kaUvzLb8bunjE5pVmh5BILF6pE+V6XSXc41BiQZlAJ/R+A1Zw/BtwDpVoos5DQ4JoDc3f/
+	+c91cALjVkRHq/bxukXm34E0URjCg3re85hkCePPF+GYDdkhEjr1HSqlxFm/k0FwouXt1Y
+	DHyM1YY8QYJuAvbrk33SNfTupvpHBRk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=awJxAirS;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uLPrcGaM;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3mq-OagsKCI8tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.210.198 as permitted sender) smtp.mailfrom=3mq-OagsKCI8tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com
+	spf=pass (imf26.hostedemail.com: domain of 3nK-OagsKCJEvx5zC6zJE8119916z.x97638FI-775Gvx5.9C1@flex--ackerleytng.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3nK-OagsKCJEvx5zC6zJE8119916z.x97638FI-775Gvx5.9C1@flex--ackerleytng.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787735964;
-	b=kqVAkNTEA5LdUgsw9fUcsGuvjZIHyU4sLhfOpqQFXA5XgOkeL17ZdKZgdDJQVBLJYxLZFj
-	q5aUPWaG63YfwADL9g6ugGW5JTdJL1mLo2xKZKIym9U47YMZqYbvN1y18y60DAXoGmCr/z
-	Hv0d8UuAEGN0D+pH+PSpDtwMORN9VOk=
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84870e7f498so52549b3a.3
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:19:24 -0700 (PDT)
+	t=1787735965;
+	b=gYM/AqKvyG5VevcUlPVTXGbDnJvtZPUWz251jpSRSXEClGw5jHz/86Ace7qC1k9ukETW4E
+	rWH0iOpBlfoX2JXIFdq9YC9lKnRVCL2r40i0DjArmgU1Ke0F/e803WbJ+8qZlbFrw9aAvw
+	QIxGAo2EWBS3cK3niMW20Vvm8fEqi+M=
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d6fb956002so11304085ad.1
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:19:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735963; x=1788340763; darn=kvack.org;
+        d=google.com; s=20251104; t=1787735965; x=1788340765; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jz7w3ahlJ2XXJ+zdKH+uz7IHVQmm2wlsntFHCBVHzEo=;
-        b=awJxAirSo8lxE45gMiCkFhOerzFtVwuBcid5/tv7GgYXTybxg2eqDs1briihNJZKKS
-         44gAEKsB8DzBi/jv6Omxs7zsN7w5L1zLl/nG6KvQQJn3s0HUcKibC9AzeujA//Iety2I
-         /A3/Hq7xuwp3r34EXbWISgp9trXc6QJzSOfrNPwHzZdHrDSW3HTdR+GbgXOXMqCHC/vP
-         3XG2mWBENSNL05pMS7l/Qbrwy6tA/p2duE6uywMSPNwhezTRSBxl7dczuzlNjI9REcBP
-         jZORTqh9kZo/1XzjGldvachLre25dAQy1SMTNERXSqzAXNOcoJOM9EeUfW1HGoILdcXi
-         Y+dA==
+        bh=LbRUvfXufo/53FByarAgnrpLej2qb+vPYL1z/tXSG2A=;
+        b=uLPrcGaMEhSgp/lZzOC148I+zwF6XmMkdJ1dPnfkImiWN22CZlj3I+hzpdgRVWPx/c
+         gYiEb62J+8a+a4r2NRx6syt/wdWp1bg7HXHDNYLF70peGEYftJQjEBhNanS1Xjj3V0wy
+         ywzYdBfW/ZGfpaykNIBLomkF8nkelsQmbDpTDuOrdkx6RSFhGTcydcbMmubQgUgOC7kF
+         z2ZxOzVTcOahdW1/kNq1gNE3m4ZIYNZN8I70g2NQGbrxGN4BqJNhbZVv5Bi6+SW0Ee/a
+         oj3qRloUfB44dDZQteyma5mwH+xYsJNejwc+N+N9DOBeVtfvoXhMx0Y8Zm6Cphx8RS2F
+         eDnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735963; x=1788340763;
+        d=1e100.net; s=20251104; t=1787735965; x=1788340765;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jz7w3ahlJ2XXJ+zdKH+uz7IHVQmm2wlsntFHCBVHzEo=;
-        b=eUHzMctS5Qiezhxc3omANJqtGkprX9AYjwVL3nYn5R0hD6V5FmG3FDmVRz9E7HnM0u
-         8N2Y4IsMmb7eGOCNCbfnitBsqyIz6hSJDSjm5cROrClUezGm60R6V6wewKkXX12e6WZe
-         G2yR+oYP6JXQHyVDiJ6/nsy48bnt9gfU5sEX16JUZwN/lnWChncWG4AmucZtJuHqhCRK
-         ZhVHCCXxNWxYAJ8EDdeoWlbwXoRTfcCovFnlTP/tTMKocNvrxs0KlE3wP8b12pXVNIQm
-         WvtWvwfXCMuxGsz2wcocVkCqltdI7osQ5a62Q43X1WkFZ4ufZu1wltv9gWlps5PbGokU
-         mrPA==
-X-Forwarded-Encrypted: i=1; AHgh+RqP05W019D7JTIgvmx4boIMuxi31XXu+ep0mevv785MGbQx/J0PW7ukzFtJ3JOcMvxP6m2ytMknHw==@kvack.org
-X-Gm-Message-State: AFuF++nfuMiSK1ftnEkUvrERCmYIaNXf0KfqIi1RteLA+jwUVuQn3YTs
-	y3KBXM1dlwWaobo/WnuxlO4FyGHGyYlLXoU4MS4G9qt0lOEtKx0hy+mBskJRdVZSAX89ri5lg6s
-	UQ4gLb9eSpix1P0jrmZvItYkIKg==
-X-Received: from pgbcr9.prod.google.com ([2002:a05:6a02:4109:b0:cbe:e120:3788])
+        bh=LbRUvfXufo/53FByarAgnrpLej2qb+vPYL1z/tXSG2A=;
+        b=EAilGI1H6EZcYmraA3/qaYpe9yQvGP2rFmUoiLwqqm+XI1Q78tDY/ntlrTtGGX55Lh
+         AO/h0ZXkgTWYFJBRDDWvky9tRA6V92ed9Rk+vul4JbS2TPNqsFh+rkOytbSHpUYUZ1vV
+         k3v0cflqk2Ii6Mp3VNw+CxrvKStpGjjz+P1b9ddJBjHeLfLUFG/YTmmTkOskP08kPgRK
+         2odlLiNUw2/D6uf7l54ohjfT6GHPTYvhKQfHBNMayt7/Df6F5MoQ0+iXhVkA/Z8XjBNg
+         NkDOlLJxtaC7zL1ciQYR9irPof6ODWjafJjttjcV8R5DzqPhhpLBnDdhh5cItwnrv3TF
+         fvXQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpA2kpSYLUMjLkYu5nYZDMwsy2bJhDN+50QbBXfMtRePtlIIAYtLHOM/4KsfKaDEDQW0DrqVSnrqw==@kvack.org
+X-Gm-Message-State: AFuF++kWSrgIwWsF+BjJSxVDCPQ9sycTNwp2CnFEC1uHHBicnBjFa5QI
+	j+sZ4nDki4aZCvWupCBjlDlcy4fHBKSnGRsfMi87iDeiw0xgCs1qjHT6StxOq4GrEsp6dtn7jfm
+	6py/2SKqJSoMuQelahPoGH6mAFA==
+X-Received: from plbmo15.prod.google.com ([2002:a17:903:a8f:b0:2cf:bf3e:41f0])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:bb0e:b0:847:8acd:747c with SMTP id d2e1a72fcca58-85374ebe486mr8878186b3a.13.1787735962670;
- Wed, 26 Aug 2026 02:19:22 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:42 +0000
+ 2002:a17:902:e54f:b0:2c0:a555:80d6 with SMTP id d9443c01a7336-2d707a2f08bmr89613835ad.2.1787735964425;
+ Wed, 26 Aug 2026 02:19:24 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:43 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5603;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5438;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=sPZHu6CIw+fRiMalmPEts6Uh4jsHKlHCx6VuhBaSH7g=; b=bc/CQRB4ghM7RBxbU4UEgzRadqchF8JqcorHB5X+jTCT4Ow+7Y+I0O0F99fDiLd5s3UobJ854
- 7jfsBkZtDy0AJ7cv9qPJR7hlIRFbgTbM0OIMWLsXAcqj1brU61YZrtq
+ bh=xH/AetAOiAVfkVCScjPegESZvTMnvecRQ5W1mdHVya8=; b=rBjdK8/qbBIySb4GV8EG74eZYYgnmFDHuYJd/UqCRYD0UNnjEq1/oCm1vlkEqhjZzxSbXcN7L
+ +83jZ96iK2MDTs6i5y0XZawZfieoRqtZqJPahiBUo5v1PNUnNYnk+8w
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-44-0a15d8a799aa@google.com>
-Subject: [PATCH v11 44/46] KVM: selftests: Set up page size and alignment
- independently for guest_memfd
+Message-ID: <20260826-gmem-inplace-conversion-v11-45-0a15d8a799aa@google.com>
+Subject: [PATCH v11 45/46] KVM: selftests: Test in-place conversions in private_mem_conversions_test
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -125,14 +124,14 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
 	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 51ECC180007
-X-Stat-Signature: 5dt3sk6yqnebnarjogrmeczqdnrrfrwf
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787735964-880744
-X-HE-Meta: U2FsdGVkX191t2EDJYpcc4+b3AOt6VFGWXOPyABVyfz3/qNwU5EZqyC4g41Nsll+1RNfyGOQUo2jm/aNGJh6VLL1TqLMaN+Ok3qYLdRkoXGNiQQlM4pLC7mBvlEqEfEljztbXJQvd4buIaDzUG7ijy2XB758kKb3HXG3ys/VIgvUGJnfeMVHaHwQePju3aHUcwFKrpMr+66xyRfWWsF0677r71hQ4qk2ZIWERS6yQNP/PCuyjgVv9Z6x8DutOrUMLIn9/z6i3v4r5AJYKkh+6HGQ5ea/PjS7rluKSyNpYLlppXrIZFAgPJda+tHe8d2uFQ0vUhEjiPMPDetj85fchX24Er5GhMgtMm/6X8G5NeMVZsYIEGOqVwY3MpeEwLKmlJNBKidXJp3kBLX7pzaKTTr8yRlOncDExQlzy6HmmZDCIzPwFNN2S7QACS9d9L53k6wuThSfL7wXWLtLyKI1O+yVKm9cmPyNQ0zwA3irEiRaIa78u2NX9n9owU6Km31LphXVvDPWrsGXbcLueUXqcaNOki0PsWjUOsuDGhNu/ygnk0sE8y2EYGhjQ9PwfJj7v0YmAFt1kGmUYQMqxsus8W0oYJluGdfzOdj7ZdUuWh0u2eOG8vzOjiSbpaoos/0I3P2o95TxzIRiPbyRFw8IunZ874wkMNZHY97zHwtqRg7qr7ZVetXzi/CdEKW+Y6a8GHlfdGdQRH3WN1BwuaHDC74Ew2cqzMru7Zh40GRS7P7i70D3AFqvB+mXPnPQjTCDdpoYAyaJpyICInhO4s508hVZW6Qih9v/u/f609MP45Hq7z3zURiJ8o5+/PBJpVMKChZZzamyibKy8hIyBpivB/bAjaVgoZtbng9lIRkIjBjl3Bdgt6DmsdSXACu2sUI0idTQUnqrRfZsRVoXR1UzGDlXu2pOQ7KtLB3MpZgGd8hImTsCWkLJJlIxZsEzJYeuOrXy7P8GQTgbiVGDwDJ
- vWv8hNGG
- fnYI+l/2jpZjliADCCP7DQAbiE1V6W1FcEJ7Z22oxf2gz/eklb8PChj31Asyt3NbJesJ92kw3PPOio/oQPVZtwJhpkJLuo/2HjZlGsNX4WmzN14/l05ChI/NFcAhDFvTeQrdosTBv9wcDsQ/KKbf/1MHkDEcxxbofaqTH51G75lbUzGtyoI3xxUz201UqBi8PUGLOVzb9z8PHM0DiXfM/HqffU5uQ4flsxB4GWsR0288HQY+5xlrPqaMeWC16dr0HdKtfCerMZIfIdVMtfFpf8d/lE/E8LvqNemXf8cnLNSyXMFC4qExcn/TwCGacHb+7CcBIQ7N49pBTmcuUNEFOrD9fOXiqdUlvLh0BAf51TDkkYqkmDD0pMRGUGY5MH+S3DZSOLj2zhiRRi/9NIulxyJqDCTmv9FHlGvobjw7uRUoBRm1C7NfoIT7lU2c6NalB2lubGlT0kYsK3rlRanORuijzF62t91e6RV1YdEsJQMb0WniYTLRUC2BP0iMwkvHn9GfwFy8xSpjYh7JWOI9boNbEb1kXMrIn6XEfECspaY48WheI54eewLKKN+na4QWqnmjBmbt8hLSBRafl10OvpVyA/VmlU8mPbz8qYTkJvM1ONzUkZsWGy4ehHaSa9IT1eWBe41Ij0lF4MVF6plRoR3iKrVZX31EMghzqhnozqOsSv38=
+X-Stat-Signature: ot1ap6dwoget36137yu4ran478nwtmos
+X-Rspamd-Queue-Id: EC9AC140004
+X-HE-Tag: 1787735965-855093
+X-HE-Meta: U2FsdGVkX1/vdWwOjDcTRgM+nbP/32mmpcRceme3OkHeffp12qke1/vvKri4mJGDC9OEvJZ3lnmB1g5xaiJRZw2fFdzhMMA+nQEWh+yjnDsjLpQQFJKGIsdfKF5dSDdoh225MoSnRB2G+cDClt+qsCPEE8mnGBmkY+Qfl1V6MHgn8x5DPAoFwt2DLMTtz976jDCFmr1FLXqTvNRWrQ5RIo0iP7tfn8Wd7xhD3E8dpyrx58RAuvGtMVkEvg7lVifkwcmolOu6LDNO2EhN2bny5i1nyds/7pFcDNwiEXYS3whENyMtQry7xA7fqa6keJH0Ci9i+/PdXuuPOlnxc7XTEq/DDuDHKkuajpLJusNNJ55lGcyHN7YYQEppCFEs+4EpC41wsHkBKOvGtHWCdKW7aNVmh23jE67akFbu6zkF4Lu0qeO4C/6qtYfwo3wvpVDTtFdJAT0Y6T9u4lbVyvD4lch9ovF97SnbpiWi4PV7MHGqYB/WK/v7pXQ7f1i/AIOsUyO5GTghS7u6ZIIsAsPycBYYEwtHLv+x4EmY3SjcPCUwIpEBwg7nffuQGh1mVebImQ4N59ktv3fLLdSVV6GEFlsDfGyF6Lf6GmO5qXwxAqewQdPeF/O7MSFGBBNlRrBJfQ0os+WCviJKBMB4PnL8fOEPHuxZPyql1sKXhYjLPBxshUhKXhwqqKK26BiCHa3HsVOYAMNhS3R3Vsq67OpvOh4RlSKI0JSD0ZWcDiOwUt5sQxAkzl0UGl6ZWGCTFf0kokowOL59X74R7aCf77SfNJnwBbMPx8egVbLlxEllqee7buTbV2p0SyWGtqu+oUDGEFetaJLxa37T1ohdmlbUYeiyGR9r8Vwn2Ds9b09exV4lECHRJIsbKCOF0PMQvZ/5Sg4aLm1Q3LQXateBqlHgL9X+TICLNIXLogPOoO0gF8E57RiZ7GXTtILa6gi/FPSxvHq82+fPi05434njYf5
+ ilIBbVgD
+ Iec8qQ+px8AFC8czweLveMNn9bxPXgMsfrf1JMDxEcZCisYVrW1zozeUgyqKhdUsY1d1JTI2fSsaEnNA6HnDP905OgEUp6IOfQjDpu0X7oUntUlUFHyK8FGdAq7nmgYmBUcq/mnZd+n3rBAqHmHc4YmLRVFL/9rTULb9z/xCPXD36xIvG/lnHWviQ+efkC7GD84AcbUiinEFXoZ1X7FL0OL0EwJXw4fCWbsqSPDS5M8bs3+3ejZFOTrvHiu0/TeJ4Uf3U4X535yO3ZD/766BtehIwFcb7VwxTVAEmlkOXp16mDO8NDZBR82tIl1lY2q5HNq1KIky3CLE0tTF3g30PIxaln2dpEtzwShXsmpwA12YmCjUChKJU66WB5YEGSchvwlLWDEvWJzAPbNW8ssmwEHVR0BpYQJGewazU7iu/evhnu/JvuQYs+c4aPejIKta/inLZ9E0p0orueW7xDWDRJWNdgJ78pb/8itT2udzrFOfKvdgeYoPpohNlEH4uGmUB2+SpE0zAsIdT/ioJcBHQqSEnc/mesCMtgA29ojP/CS/x65L+RaeaUC5kfJZB+15Jq8X0915Cfqj6FPFN/bmWdVUdQyTQuZyOhQXjVypt1n4TF5EadJiNSFonNwo+h86wk8dbX/58W1S2kdlUn3nScZMHFTTvV8M8eleBybcnhWyJkUg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,140 +139,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, vm_mem_add derives the backing source page size, alignment
-padding, and mmap size from the backing source type upfront before checking
-if guest_memfd is being mmapped.
+Test in-place conversions by setting up the guest with a single backing,
+using the same guest_memfd for both private and shared memory.
 
-With shared memory also mmap()-ed from guest_memfd, the alignment of the
-mmap-ed address needs to respect guest_memfd's backing page size.
+Make testing single backing the default when per-guest_memfd memory
+attributes are supported (kvm_has_gmem_attributes). Continue to support
+testing of double-backing by accepting a -2 flag.
 
-Refactor the backing store setup to configure the backing source page
-size, alignment, mmap flags, and mmap offset directly for guest_memfd
-when it is mmapped, ignoring the backing source type.
+When testing single-backing, don't use src_type to determine alignment for
+rounding up per-cpu test memory size, since guest_memfd's backing page size
+is always the system PAGE_SIZE.
 
-Skip hugepage validation and anonymous memory madvise calls when mmapping
-from guest_memfd, since those are not applicable when mmapping guest_memfd.
+To test in-place conversions, set up guest_memfd with
+GUEST_MEMFD_FLAG_MMAP and GUEST_MEMFD_FLAG_INIT_SHARED so that both host
+and guest access the same backing physical memory.
 
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 74 ++++++++++++++++++------------
- 1 file changed, 45 insertions(+), 29 deletions(-)
+ .../kvm/x86/private_mem_conversions_test.c         | 55 +++++++++++++++++-----
+ 1 file changed, 44 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index cac5624e99774..3f559f207408f 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1034,11 +1034,12 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- {
- 	int ret;
- 	struct userspace_mem_region *region;
--	size_t backing_src_pagesz = get_backing_src_pagesz(src_type);
--	int mmap_flags = vm_mem_backing_src_alias(src_type)->flag;
- 	size_t mem_size = npages * vm->page_size;
--	off_t mmap_offset = 0;
--	size_t alignment = 1;
-+	size_t backing_src_pagesz;
-+	off_t mmap_offset;
-+	bool is_gmem_mmap;
+diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+index 0c94e36575a5e..8f03eea9e2fb6 100644
+--- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+@@ -26,6 +26,8 @@
+ #define BASE_DATA_GPA		((u64)(1ull << 32))
+ #define PER_CPU_DATA_SIZE	((u64)(SZ_2M + PAGE_SIZE))
+ 
++static bool use_double_backing;
++
+ /* Horrific macro so that the line info is captured accurately :-( */
+ #define memcmp_g(gpa, pattern,  size)								\
+ do {												\
+@@ -355,8 +357,15 @@ static void *__test_mem_conversions(void *__vcpu)
+ 				size_t nr_bytes = min_t(size_t, vm->page_size, size - i);
+ 				u8 *hva = addr_gpa2hva(vm, gpa + i);
+ 
+-				/* In all cases, the host should observe the shared data. */
+-				memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
++				/*
++				 * When using double backing, the host should
++				 * always observe shared data, since the shared
++				 * memory is a separate page.
++				 */
++				if (use_double_backing)
++					memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
++				else if (uc.args[0] == SYNC_PRIVATE)
++					TEST_EXPECT_SIGBUS(READ_ONCE(*hva));
+ 
+ 				/* For shared, write the new pattern to guest memory. */
+ 				if (uc.args[0] == SYNC_SHARED)
+@@ -372,15 +381,23 @@ static void *__test_mem_conversions(void *__vcpu)
+ 	}
+ }
+ 
++/* Align each vCPU's chunk of memory naturally to the size of the backing store. */
++static size_t compute_per_cpu_size(enum vm_mem_backing_src_type src_type)
++{
 +	size_t alignment;
-+	int mmap_flags;
- 
- 	TEST_REQUIRE_SET_USER_MEMORY_REGION2();
- 
-@@ -1090,19 +1091,31 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 	/* Allocate and initialize new mem region structure. */
- 	region = calloc(1, sizeof(*region));
- 	TEST_ASSERT(region != NULL, "Insufficient Memory");
--	region->mmap_size = mem_size;
- 
++
++	if (use_double_backing)
++		alignment = get_backing_src_pagesz(src_type);
++	else
++		alignment = getpagesize();
++
++	return align_up(PER_CPU_DATA_SIZE, max_t(size_t, SZ_2M, alignment));
++}
++
+ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_vcpus,
+ 				 u32 nr_memslots)
+ {
 -	/*
--	 * When using THP mmap is not guaranteed to returned a hugepage aligned
--	 * address so we have to pad the mmap. Padding is not needed for HugeTLB
--	 * because mmap will always return an address aligned to the HugeTLB
--	 * page size.
+-	 * Allocate enough memory so that each vCPU's chunk of memory can be
+-	 * naturally aligned with respect to the size of the backing store.
 -	 */
--	if (src_type == VM_MEM_SRC_ANONYMOUS_THP)
--		alignment = max(backing_src_pagesz, alignment);
-+	is_gmem_mmap = (flags & KVM_MEM_GUEST_MEMFD) &&
-+		       (gmem_flags & GUEST_MEMFD_FLAG_MMAP);
+-	const size_t alignment = max_t(size_t, SZ_2M, get_backing_src_pagesz(src_type));
+-	const size_t per_cpu_size = align_up(PER_CPU_DATA_SIZE, alignment);
++	const size_t per_cpu_size = compute_per_cpu_size(src_type);
+ 	const size_t memfd_size = per_cpu_size * nr_vcpus;
+ 	const size_t slot_size = memfd_size / nr_memslots;
+ 	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
+@@ -404,6 +421,8 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
+ 	gmem_flags = 0;
+ 	if (kvm_has_gmem_attributes)
+ 		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
++	if (!use_double_backing)
++		gmem_flags |= GUEST_MEMFD_FLAG_MMAP;
+ 
+ 	memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
+ 
+@@ -448,7 +467,9 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
+ static void usage(const char *cmd)
+ {
+ 	puts("");
+-	printf("usage: %s [-h] [-m nr_memslots] [-s mem_type] [-n nr_vcpus]\n", cmd);
++	printf("usage: %s [-2] [-h] [-m nr_memslots] [-s mem_type] [-n nr_vcpus]\n", cmd);
++	puts("");
++	puts(" -2: use double backing (guest_memfd for private, src_type for shared)");
+ 	puts("");
+ 	backing_src_help("-s");
+ 	puts("");
+@@ -461,16 +482,22 @@ static void usage(const char *cmd)
+ int main(int argc, char *argv[])
+ {
+ 	enum vm_mem_backing_src_type src_type = DEFAULT_VM_MEM_SRC;
++	const char *backing_src_str = NULL;
+ 	u32 nr_memslots = 1;
+ 	u32 nr_vcpus = 1;
+ 	int opt;
+ 
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
+ 
+-	while ((opt = getopt(argc, argv, "hm:s:n:")) != -1) {
++	use_double_backing = !kvm_has_gmem_attributes;
 +
-+	if (is_gmem_mmap) {
-+		backing_src_pagesz = getpagesize();
-+		alignment = 1;
-+		mmap_flags = MAP_SHARED;
-+		mmap_offset = gmem_offset;
-+	} else {
-+		backing_src_pagesz = get_backing_src_pagesz(src_type);
-+		/*
-+		 * When using THP mmap is not guaranteed to returned a hugepage aligned
-+		 * address so we have to pad the mmap. Padding is not needed for HugeTLB
-+		 * because mmap will always return an address aligned to the HugeTLB
-+		 * page size.
-+		 */
-+		alignment = src_type == VM_MEM_SRC_ANONYMOUS_THP ? backing_src_pagesz : 1;
-+		mmap_flags = vm_mem_backing_src_alias(src_type)->flag;
-+		mmap_offset = 0;
++	while ((opt = getopt(argc, argv, "2hm:s:n:")) != -1) {
+ 		switch (opt) {
++		case '2':
++			use_double_backing = true;
++			break;
+ 		case 's':
+-			src_type = parse_backing_src_type(optarg);
++			backing_src_str = optarg;
+ 			break;
+ 		case 'n':
+ 			nr_vcpus = atoi_positive("nr_vcpus", optarg);
+@@ -485,6 +512,12 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
+ 
++	if (backing_src_str) {
++		TEST_ASSERT(use_double_backing,
++			    "src_type is only configurable when testing using double backing.");
++		src_type = parse_backing_src_type(backing_src_str);
 +	}
- 
- 	TEST_ASSERT_EQ(gpa, align_up(gpa, backing_src_pagesz));
- 
-+	region->mmap_size = mem_size;
- 	/* Add enough memory to align up if necessary */
- 	if (alignment > 1)
- 		region->mmap_size += alignment;
-@@ -1129,10 +1142,8 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 	}
- 
- 	region->fd = -1;
--	if (flags & KVM_MEM_GUEST_MEMFD && gmem_flags & GUEST_MEMFD_FLAG_MMAP) {
-+	if (is_gmem_mmap) {
- 		region->fd = kvm_dup(gmem_fd);
--		mmap_flags = MAP_SHARED;
--		mmap_offset = gmem_offset;
- 	} else if (backing_src_is_shared(src_type)) {
- 		region->fd = kvm_memfd_alloc(region->mmap_size,
- 					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
-@@ -1141,22 +1152,27 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 	region->mmap_start = __kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
- 					mmap_flags, region->fd, mmap_offset);
- 
--	TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
--		    region->mmap_start == align_ptr_up(region->mmap_start, backing_src_pagesz),
--		    "mmap_start %p is not aligned to HugeTLB page size 0x%lx",
--		    region->mmap_start, backing_src_pagesz);
--
- 	/* Align host address */
- 	region->host_mem = align_ptr_up(region->mmap_start, alignment);
- 
--	/* As needed perform madvise */
--	if ((src_type == VM_MEM_SRC_ANONYMOUS ||
--	     src_type == VM_MEM_SRC_ANONYMOUS_THP) && thp_configured()) {
--		ret = madvise(region->host_mem, mem_size,
--			      src_type == VM_MEM_SRC_ANONYMOUS ? MADV_NOHUGEPAGE : MADV_HUGEPAGE);
--		TEST_ASSERT(ret == 0, "madvise failed, addr: %p length: 0x%lx src_type: %s",
--			    region->host_mem, mem_size,
--			    vm_mem_backing_src_alias(src_type)->name);
-+	if (!is_gmem_mmap) {
-+		TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
-+			    region->mmap_start ==
-+			    align_ptr_up(region->mmap_start, backing_src_pagesz),
-+			    "mmap_start %p is not aligned to HugeTLB page size 0x%lx",
-+			    region->mmap_start, backing_src_pagesz);
 +
-+		/* As needed perform madvise */
-+		if ((src_type == VM_MEM_SRC_ANONYMOUS ||
-+		     src_type == VM_MEM_SRC_ANONYMOUS_THP) && thp_configured()) {
-+			int advice = src_type == VM_MEM_SRC_ANONYMOUS ?
-+				     MADV_NOHUGEPAGE : MADV_HUGEPAGE;
-+
-+			ret = madvise(region->host_mem, mem_size, advice);
-+			TEST_ASSERT(ret == 0, "madvise failed, addr: %p length: 0x%lx src_type: %s",
-+				    region->host_mem, mem_size,
-+				    vm_mem_backing_src_alias(src_type)->name);
-+		}
- 	}
+ 	test_mem_conversions(src_type, nr_vcpus, nr_memslots);
  
- 	region->backing_src_type = src_type;
+ 	return 0;
 
 -- 
 2.55.0.887.g758fc8c411-goog
