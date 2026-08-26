@@ -4,116 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8E3EC5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 19:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98B73C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 20:16:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9221E6B008C; Wed, 26 Aug 2026 15:59:35 -0400 (EDT)
+	id 6CFD06B0088; Wed, 26 Aug 2026 16:16:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D31F6B0092; Wed, 26 Aug 2026 15:59:35 -0400 (EDT)
+	id 659936B008A; Wed, 26 Aug 2026 16:16:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C0EA6B0095; Wed, 26 Aug 2026 15:59:35 -0400 (EDT)
+	id 5227A6B008C; Wed, 26 Aug 2026 16:16:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 575B06B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:59:35 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D8C291A0200
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 19:59:34 +0000 (UTC)
-X-FDA: 85144485468.07.97E2DD1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0DC594000B
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 19:59:32 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HpkDQYM3;
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787774373;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eKPW/iuHg1j2h6dZ9e5C+Ipu3cGJwB9tdZgvrYICRsM=;
-	b=sBivrBwEp1AXAJ5E6Z44GvCAYhxT0Bt2zX+cayyWi9uIhapAX0AdRCs1KOEf1BfEfWmfIE
-	AKB8MBYOcfYmw42IPuXia1fntU8zHGFJXVZPa7Rz4TukIjpg81MUgQroUdc+Gq4EH1Ufdx
-	jdtAwgsFaD4AlPGuD9m5UR1KNFQDgqg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HpkDQYM3;
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 27F7A6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:16:02 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7656F140246
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:16:01 +0000 (UTC)
+X-FDA: 85144526922.05.ECFF271
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 201764000C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:15:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bnD15MZL;
+	spf=pass (imf07.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787774373;
-	b=rkROdRfheeKQWiCrng7XFPROfGOBRKkjbwliowjlMDx0YTYCiKht0DbVcInBj4XVpNNh0G
-	Blec3P6edy2IjFRXse4Lvx4YYr/dtc/qbJU1LBqft3D6VgV++0UcQ+u6W4zitvtCp04RWu
-	122emLexoFDqPwtT6vH1oZa7oUhRQws=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D0E2841604;
-	Wed, 26 Aug 2026 19:59:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9BF1F000E9;
-	Wed, 26 Aug 2026 19:59:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787774371;
-	bh=eKPW/iuHg1j2h6dZ9e5C+Ipu3cGJwB9tdZgvrYICRsM=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=HpkDQYM3bLmHle/vutflxN8rq3rytEYtj22NqgqqtG5Bw9X1U05PRmODYavLMAHmV
-	 bg7HR8c2uL88D/2tG+arrf/CDP9QXzfP9z8agK1NSHmO1Hcm8e9LR4iSKg1DnhExIU
-	 rzZHaM8LjDc5/YchWQbldEYz/IWzfZAuUDasVpMPkL6pH4v7gsuaJLDD45JiOE9+N7
-	 NwqIsw41ntp5M5ePHPacE3q3w48FU+egzG2HoOHjcWnouy9v2JN1dsqaZKFuTmXSmW
-	 UfVFLuhUUACyiWv9Qax63v96g6mtcR3iJQ+k2Mh5ExGhlL2N1nIkRF2DHiaMKV2aCI
-	 PLf1bWiXpVOoQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 6C907CE086B; Wed, 26 Aug 2026 12:59:31 -0700 (PDT)
-Date: Wed, 26 Aug 2026 12:59:31 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Sean Christopherson <seanjc@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
- <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
- <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
- <ao3z7Rtw2FROkVpy@google.com>
- <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
- <20260826073233.T-KtFXmj@linutronix.de>
- <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
- <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
- <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
- <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
+	t=1787775359;
+	b=I02rLcH/rJEcI5LLhfbgklqvP/qJh6v66y/FnGr0dgMRkQmYqop/wi/yNQy24K0tfcG9Ui
+	GmLAzUV0q54boZ94BgS0ESXqMbTqAa6Wh75ZPqYAbmKu+CxNCYZxUar+BXCF/8gfehypzk
+	YYWjxMylDReL9wCnqpfMI/68bgbnfWE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787775359;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5XOoAhfyz9xtKGJKuczZNY14PVIcWN7EMcbfAjCg3O0=;
+	b=3361xxcaHVOTwkocmZ7JHAciJqNfD+kH7PsMiowcUvKB6sCq79MbZXdJaG31EnCpnFKBbN
+	/0RLCBTL51rsq+izY/hEnu97U193M7ILNzctd3cjl87OlIzKWUIn6qzFcQNswCVr7AofIH
+	fxFZeByykcczf8eaf5g/98/4W9Ahnb4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bnD15MZL;
+	spf=pass (imf07.hostedemail.com: domain of echanude@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=echanude@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787775358;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5XOoAhfyz9xtKGJKuczZNY14PVIcWN7EMcbfAjCg3O0=;
+	b=bnD15MZLvhgLAfEQgcoWDNHu42nQC8I1A23KXTndOA0jShNqsL5Iim33yOtfveCs7dYRmL
+	t+s5Np5C5fKmKbfcNbAOvvFFxh1gTkt/QqlpXnZ7b1N8uXXlWvxKHYRbUeiy7aHMYFgzjx
+	PxOSizYCKjVfqvDMX/TPEscf+M5v+nQ=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-pytaszYGOuSzxXZTtpb60g-1; Wed, 26 Aug 2026 16:15:57 -0400
+X-MC-Unique: pytaszYGOuSzxXZTtpb60g-1
+X-Mimecast-MFC-AGG-ID: pytaszYGOuSzxXZTtpb60g_1787775357
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-9368f2b7b2bso133910685a.0
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:15:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787775356; x=1788380156;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5XOoAhfyz9xtKGJKuczZNY14PVIcWN7EMcbfAjCg3O0=;
+        b=BVPIFY/dx7PFb3lfGUukj5oidAcuTXEETsTCxQ/u/zWtJxzpgvOeY2wPGJa4yiFaxy
+         ibFTzEv6V22dz/owEn7rd5UIdcuTUda9OxGcYEmbGh74RoKmw1ojYnqkjhFUKHP/+1Qc
+         wbdS+0XprmFaukpLSJnbutyRtOWw01cmKbylMAX6UZT7bM91y24iI8hSMg5gho6xtpXG
+         ssJ/iVT10dOQoIS4ix+q/qYUSicIgF5Nqk3jnt74X0kLRqNu5JMHNsIp/+G70yFtzzUx
+         PnAXaPlvS0Gx8ZCfLBTeeWw4S6SHeaqy9vhK2dcU0FduNAu4IbeokQsufTmlsOkcB5cL
+         qm3A==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+t923klHBlrO0mVwaw5IpZP7StBXL5N5M8quVWxUMPYSA7ZQ+rMqZ/mxNud+2NqQWR2yHubpoJw==@kvack.org
+X-Gm-Message-State: AFuF++m2GPODo7z8HMs4GKZHRZnrlmMKBelcQf/fpymckux5NjX99vNC
+	u7jTre0oFV7ngw6qlJ7mUDZv9bxdxR8Bnyr+sZfONls2D0bAXUYhbVpCbUGZtEMAxVikX1vz1iR
+	F5hVZRRTtWIJClk1u4ouQ2klm07u9V7g1d0ulH4zVBqhuhb4wystJ
+X-Gm-Gg: AR+sD12gWPJ9tX2/19i613Y35rDhIZo9YNRAF/7F93RRlpLw94/F5motieRdvqmvg7y
+	zEOuxFsHC7q+2aN/nzApEy5H8m7enAGYvKFAF5cII1KtwnFwVoWMxyuh7lxOdmvYr4QuyIaou1i
+	rl2klwBL5Yrolfle3tErCzvgez5z4+m7BtSMW+RDAhH41Ou20DMRFQ7URlzOyJ9nGabUvyxDJlr
+	pKLP3B521tdCTeonyzdvtpxED69r/h+r4oXeVhlBYtWel8Vne5v3Eyh7BJlvIw1itQOhJkXD0mE
+	x7/83yNR2W5WY/Xkz6/IXWSut7fVDmGYJALgTnxYbjr7fjeQw3+dXVN6v4o3AUHjgD4skvsKHTw
+	DV4QKoRjHU3zayA+4VkCAa1tn6UmmjNIkbVKdHo4Od1/S
+X-Received: by 2002:a05:620a:3bd0:b0:936:a407:98bb with SMTP id af79cd13be357-937800f72b0mr763376785a.9.1787775356464;
+        Wed, 26 Aug 2026 13:15:56 -0700 (PDT)
+X-Received: by 2002:a05:620a:3bd0:b0:936:a407:98bb with SMTP id af79cd13be357-937800f72b0mr763358185a.9.1787775355027;
+        Wed, 26 Aug 2026 13:15:55 -0700 (PDT)
+Received: from localhost (pool-100-17-17-231.bstnma.fios.verizon.net. [100.17.17.231])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e30ed19sm292126185a.8.2026.08.26.13.15.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 13:15:53 -0700 (PDT)
+Date: Wed, 26 Aug 2026 16:15:52 -0400
+From: Eric Chanudet <echanude@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+Message-ID: <ao89rgCB4VhNt7n0@echanude-thinkpadx1carbongen13.rmtusma.csb>
+References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
+ <aowHqqaqK7TeexQH@tiehlicka>
+ <ao2gA_m3BCBu2esy@echanude-thinkpadx1carbongen13.rmtusma.csb>
+ <5970a8d4-fe7c-4dde-bdc8-1c66bfb57f12@kernel.org>
+ <ao3CQicH0t-k95NA@tiehlicka>
+ <ao3gLqsF4WSeKBIa@echanude-thinkpadx1carbongen13.rmtusma.csb>
+ <7e4e9662-d876-4493-a0b3-e31640937dd1@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <7e4e9662-d876-4493-a0b3-e31640937dd1@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EosoEpDjtTAE7u_FCVCUpvrKMXxTBlF2yV-66S9aPLA_1787775357
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
-X-Stat-Signature: te8php3jenx4ragffu84t61h5chmfs9g
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0DC594000B
 X-Rspam-User: 
-X-HE-Tag: 1787774372-273269
-X-HE-Meta: U2FsdGVkX19SguXcWvS4ZIldppCeyXwNda1Gg6i5Lnpvj9wiceEX5wlKFuLJSFMCLoZxD9xis/e1Lh76YIFHWEFam/DES6BaRLuckJVJLKMbNZutp7qs0UGh/E/X++eLnfX/8FzkMMeHgfm3OppRmxjBXdPmOw8W+VqR1WmzlxUWHppNtwtye0og10rZS5bCRmnifqS4oV8aRAuS9frFlq0MyU2nsabC/4bed3JT7quWV/IGXGrVn1pPpVLHMZgFeUgIGbXUHjHpdzowzqjlLyf0b2/3gg0MXrrzxrwk4wNSqdYQ/aDpbiQ2Utm2UiVr1DNZyNMF/LzHx9FJsIwRskUiAdvSN7gxQRoRlHm9uL1gsXrTstFAGOjhHkxSseIO+4RsDdaqBTxTswFJx+tgCTlR0m0EhfEdftvkiQtDCQ2JRZOZYM7nGETbvCqEoXxP54HZdBnRB7pqIsJHORecy2MNvvUWmOkaYS3siBHHGBSeBZOVZfwIwNaWII74UIbM1DGFCCm+lx3s+l6GU6xFhpdnEoegc+ubC53Ie8t3DKR9539987pHQvg7gtd8I5uVfOgOD3LFjL7u4EYcZcsb4DUVibfzN1/76iT1dgM5xKXBtb0hb5eNrrDZMCd9TPN4RffY0+N5Ul7MtwSm5MMf2fPWTDD0VSe/jl1imCKmy+X+OfBL9PIi9GCOMGU1KkgsOfyeuuiwgItIugKMpK5ijWGCIghDJ9H67xa+u6uceweLZXCLQk2ftiR1+hC/OFzMFDRdH5lrDl/iXadsFJ3zr0kOiCUT9Zt+HezudnkE1+xJCHCHlpi1IN4IZ/Pzx810aleZk9/s3AFDr92CXih3lAbpdMiTclnOchRLoNoAG3emNSSpwl14DHP9bQffi0UGSyUxqrnPA5nQs8LyZ5XSjVVJpNO+oqZskVMg6zdemD2jjRhuXKMu1SuwkBtop3zVNdMJyE81+xWYd8MAQib
- Q2hI8OJe
- HoclT5PvPWGwY653N8QXpE1KJiz9haSJ02tGfhZ6v/iG2Vdf1M10Vy0LRmaq2Cw09xkyfFT21UbbMsJJBBDVgAqr5/ebgCvmkatkiTqUdpIhFhT/yvqSd38X+vlZ15iaQRvU8BaFR+XFO8Vho0rm17oAL80Z4qnQg3/yAZcNA1lzcsvRJ/Dz4MV2PxaCwB/+lUEMPN1FrxgxqzS3y3IdI0LUTUpT/xqOOL/r3PEktTUb6GernujADtQbtakHun+SsfriE71j0RM9SGKtpi3ddy5pugTBZuOIrsoHrhEXh5C5spUhuFwc1WdhWFpTKSBIq83oA/N+7T8GQtOBiKIHyBUeF0NB5QkSp/rJm72kT7uuD9UphM11fOs1tOP1Tyx+tRdvqwsPGm8MVil6IpbmdpSRM6QKT3t+xfrC0PFwuMo91qkf1rPaWko9FxQiCxZuGnZF/lmmWNq9jx6qhsSYYjhiH8byemA6wq1qmQP2IDdgPTZ5GAcUOLev/eJO/1LHAoz0iecIZz8/aAhC3oJvo0MtooKsCoHHEOD5ZmmbuvVX4wWvcgRQRD50z/qIoN6TsgzmtOnaBBIMInBkPLDGJATS30v5iIY65QcPHpLSU3ybHCi4U3MyRxmnzxUtB0fU7Y8Cn/lO2pcXu2mfAiyn1SYSblab8uk0nWg7UCuTANzJH1ItA4uA8MH9o+wUZ6Xm4OrpImVOQXwgs44/AFbr/QZfymosX5g/0eAA2VIJT0kxOiHHHiMEJiHy/UkNvKNRvCXaICEwpYIa4g0KAYvfCg7WgjQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 201764000C
+X-Stat-Signature: dx649x5xkj1tstro84i1jmus9qcswjmd
+X-HE-Tag: 1787775358-110684
+X-HE-Meta: U2FsdGVkX19bu0BiSywQdsj1kedA2PG62Pyb0crvtzGH5ca8rcZ3/aUPHXA+QskuZwI2Ycrr5M0nw6rd1scr5f7XByb5liwV+Ez/LKYuMoGfmAlLG5rJXbdiQr7IS/g6TFmpr8F7oIRFfQR8ZvvPmwkm/d52TFXggQLfrwqIT2+dGst6bMzMH67bPitRq5G5OP0N4TsteTopNR4vJ2PYZsc/VQyYDcXjSDY2z0UwTFQN55pKGgDgEQlE88VMqod4BwtBdQ2HoWJr9hvNB4Nu/cCLq3zcRHgyDFP1Kij0AlZEXUrZl6MK9+exNkhwWwL7GX6XY1oTh0YuHt/ofSTRMPoZAo8FZGCCIzG0Nfdi9qf7/soCtWb5etaJoAGctE6JS+T19WAmnZ2ISfsiYPG3FPXuJWqkSrWsY8Ncuxr5PzRjZR7LWKFVWvikD2YaeZO+e6sv2kPGrzIvSeY1IkfUy51DN7OTdsBYzvM6QpU2WU33EQFMFiChQvXf7ELpsptzesXLxKC+TOrlKmFm411+6+mfKPP6c10AbEZCEqyjNsT44CiPOHxkLnZ8QMw0hCdZZlK4TZC+j+37UD4aI8W9cBd7JC2LufFGDMf8Q3i67BDJdSCaPm2+PT0LnmOLwWqm6sSQ6Z9oQL7n5TdyZA26CMWU6i2DS71F7SUi5/xSWS+RxddTU2uh3LOF0/E5G+fGTUvhJBTP+p+eOToxkXT0Wd1TnM+1IvYCOS9kNvUtfJ78nPEST+sW8OcRp8yKigOxr/CsqIeKwbxZAI4YAZXsxgtQoRaaeTWa3mxn9YImP4I38Zqm4dUk0hbxEII65UWdMqWFDbAdJ+aRlp8xAfRFE9VDj6/QyP0vf7K+cVj0r4lYpJ3ih/WeaQAFZXTTbAgfXupNOuXs5pMM2cXDor4OdwbSqMdsbSdVCNA8Nwe5aXnFqiUWz6baJXiOa61WsvNpJOkIvyis3+7jicl+3k0
+ hVYVjfYB
+ J774oMR+CowL/KxClxBlEA5prUMKZfioTzzOuWuLX/2SoGWG4iFN3buETexTWzXBiE0hJIkmqtzC9Ffz62CzWr2RlG2Zoz5PsoJTY3DFPrgpkrxjmNGlY/quDj3D787zcIjJ6B/nLvqu+Zdl3B8cwp19Upjz+Ysbk72FwjiJuFdfxUNQMlbkJmUbe74OaTJD6Q9iYtl9LRjURp1tJhBJeNDIfONRwjiJHemh844nE8RRizFk52/GKD3zu99lE8RuLVT5/cuPe4h8rCHNNyOsZ0qE+F35M+oiVkw+BlCek/IswobH+6YNvjMCBX6nVgss09RXZoKDwrYfcYfCVe8me9o+u2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,54 +142,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 07:01:24PM +0100, David Woodhouse wrote:
-> On 26 August 2026 17:28:27 BST, "Paul E. McKenney" <paulmck@kernel.org> wrote:
-> >On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E. McKenney wrote:
-> >> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
-> >> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
-> >> > > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
-> >> > > > Very good, preemption disabling it is!  It is quite possible that the
-> >> > > > PREEMPT_RT guys will need something else, but one thing at a time.
-> >> > > 
-> >> > > This reminds me of classic RCU ;) It might work in this use case but I
-> >> > > am afraid that other users might come along where it actually hurts.
-> >> > > With PREEMPT LAZY the preemption within the read-section should
-> >> > > hopefully be the exception.
-> >> > 
-> >> > Given the way that PREEMPT_RT treats other locks like spinlocks and
-> >> > rwlocks — turning them into sleeping locks — I suspect it makes most
-> >> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
-> >> > synchronize_rcu_atomic() into plain rcu_read_lock() and
-> >> > try_synchronize_srcu()+synchronize_scru_expedited().
-> >> 
-> >> That makes a lot of sense to me.
-> >
-> >Another option is to instead fall back to non-atomic SRCU.
+On Wed, Aug 26, 2026 at 10:02:08AM +0200, David Hildenbrand (Arm) wrote:
+> On 8/25/26 20:50, Eric Chanudet wrote:
+> > On Tue, Aug 25, 2026 at 06:26:42PM +0200, Michal Hocko wrote:
+> >> On Tue 25-08-26 17:45:56, David Hildenbrand wrote:
+> >>>
+> >>> How does this e.g., relate to hugetlb allocating from CMA, to then charge to a
+> >>> hugetlb cgroup?
+> >>>
+> > 
+> > AFAIU the system defines CMA areas to allocate hugepages from. For this
+> > initial series, I failed to handle it. The intend was to consider it as
+> > any other CMA area. It entirely missed that hugepages are already
+> > accounted for by their controller (cgroupfs opt
+> > memory_hugetlb_accounting) and they are charged when faulted in from
+> > their available pool.
+> > 
+> >>> I always thought of CMA being a low-level allocation mechanism with various
+> >>> different use cases, and actually the higher-level users should decide how
+> >>> to/what to charge instead.
+> >>
+> >> Exactly. There are many different users of CMA all with different
+> >> requirements. Then there is CMA reservations if an area is shared and
+> >> the overall memory consumption. That is why I am really not able to
+> >> wrap my head around this proposal.
+> > 
+> > It is nonetheless available almost directly to userspace via dmabuf
+> > heap, or as a result of drivers ioctl providing a contiguous buffer, and
+> > unaccounted for by existing controllers, with the exception of CMA
+> > hugepages with memory_hugetlb_accounting.
 > 
-> That's exactly what I thought I was suggesting; I think I left an 's' out though :)
+> No. The charging really only makes sense for selected mechanisms that built onto
+> CMA.
+> 
+> It does not make any sense for subsystems that declare CMA for their own use only.
+> 
+> Like hugetlb. Or s390x's VMCP region. Or PPC KVM stuff. Or the crash kernel area.
 
-Heh!!!
+I see. The crash-kernel does not use the CMA allocator it would not be
+affected, VMCP or PPC KVM HPT use specific areas and do not have
+userspace use AFAIU. They would default to the root cgroup that does not
+get charged. Maybe it should instead be more like GFP_ACCOUNT, making
+charging opt-in when the allocation happens on behalf of userspace?
 
-About 20 years ago, I was shocked to learn of a valid use case involving
-sleeping RCU readers, which resulted in SRCU.  And now it is time
-to be shocked at non-sleeping sleeping RCU readers, and especially a
-non-sleeping grace-period wait.  ;-)
+From the other thread it doesn't seem like memcg is a good fit either.
 
-Anyway, easy enough:
+> 
+> -- 
+> Cheers,
+> 
+> David
+> 
 
-#ifdef CONFIG_PREEMPT_RT
-DEFINE_SRCU(whatever);
-#define my_srcu_read_lock() srcu_read_lock(&whatever);
-#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
-#define my_synchronize_srcu() synchronize_srcu(&whatever);
-#else
-DEFINE_SRCU_ATOMIC(whatever);
-#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
-#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx));
-#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
-#endif
+-- 
+Eric Chanudet
 
-Or is there a better way?
-
-							Thanx, Paul
 
