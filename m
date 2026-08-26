@@ -4,100 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C011DC5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 04:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83F1C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 04:44:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 926306B008A; Wed, 26 Aug 2026 00:42:48 -0400 (EDT)
+	id 24AB66B0092; Wed, 26 Aug 2026 00:44:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D6EC6B008C; Wed, 26 Aug 2026 00:42:48 -0400 (EDT)
+	id 222616B0095; Wed, 26 Aug 2026 00:44:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EC7C6B0092; Wed, 26 Aug 2026 00:42:48 -0400 (EDT)
+	id 138416B0096; Wed, 26 Aug 2026 00:44:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 55DA56B008A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 00:42:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96054A33A8
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:42:47 +0000 (UTC)
-X-FDA: 85142175174.23.4ED1B00
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7A740180006
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:42:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=eVVT9JXB;
-	spf=none (imf06.hostedemail.com: domain of BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787719366;
-	b=67nnazWwB2L8tw0SrPRhOU1UwZukG3/j9exD0Tq02YG3z3103GS9VL0Fb0ZxxJsyYCcK70
-	exzsQFNq7o9bHnM+qYE+r3Vf7DJuNk1ZqvzE0vdWnjBZwqNH9nnSlZL73dB2YRKhXh+gtx
-	HX19DNuf1RrU0uPqQpb/iwp02qf8NR8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=eVVT9JXB;
-	spf=none (imf06.hostedemail.com: domain of BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E465C6B0092
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 00:44:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8C0A160270
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:43:59 +0000 (UTC)
+X-FDA: 85142178198.16.F44C43B
+Received: from mta1.migadu.com (out-217.mta1.migadu.com [95.215.58.217])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A9A95140006
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:43:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=N1F7ELc5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.217 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787719366;
+	s=arc-20220608; t=1787719438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CTnPcAwpdtslp34DtESY4j72LmM8BtuutB92mivhMWo=;
-	b=IViPUc6sLI87LTKirx7Xj9yUkCFZAzDcjnbAMpBU+djzdGJCnCAOJ8ax7la7RYOUJriGyz
-	fgRDSuyWywdyiqA+187WKyFHPd5+d/G99v3xeHchqHD6zY9R226DEGmzmAyBplK1LHqotF
-	7Y/zC+LmLR9Hr+BHMDSbpNhsysC+gKY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=CTnPcAwpdtslp34DtESY4j72LmM8BtuutB92mivhMWo=; b=eVVT9JXBdSRKUp6qQxUQLXchhT
-	qj8QBK9B962lxL046rXbK1vBJPd+a43Rup6i70SvKU3jCe2CzFYFhbzOrfMU/YOlnVn6D9Ae7XShT
-	g5yr7AArmwxZZwFjE8s8Tc8fEj2sZ1F0L7Iek2JSPqKm+TwP5tRnp40I7Ebr7tI7fwNKRGp+UXt3M
-	/WVg711wrSU82epSp+572hJp9MEqgvSi5YH+Lg4ryDlY79Vg7ODaspwAP5qnaiNEofm+bphChbVZ5
-	UPzj586ray+f9d9JeEDLkS0syJNRvWpuh/khp2uCKGy+s+EQlpG3jVRdCRBWyKxo4vRbXNbtXvY+p
-	xtlSodyA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wz5T7-00000001tSg-2zds;
-	Wed, 26 Aug 2026 04:42:33 +0000
-Date: Tue, 25 Aug 2026 21:42:33 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	usama.arif@linux.dev, hughd@google.com, akpm@linux-foundation.org,
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, dev.jain@arm.com,
-	liam@infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, ljs@kernel.org, nico.pache@linux.dev,
-	ryan.roberts@arm.com, ziy@nvidia.com, nphamcs@gmail.com,
-	hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
-	kernel-team@meta.com, stable@vger.kernel.org, willy@infradead.org
-Subject: Re: [PATCH] mm/huge_memory: transfer the pmd dirty bit to the folio
- on zap
-Message-ID: <ao5uudXQVj8JVoG-@infradead.org>
-References: <aoXYh9EPF6QnlvIK@pedro-suse.lan>
- <20260820061337.24669-1-lance.yang@linux.dev>
- <aobp2CtWZBlw4w7E@pedro-suse.lan>
- <aob9PF_H6CCJMdkk@thinkstation>
- <aocFPRgqieScf_yo@pedro-suse.lan>
- <ao0vSde26_Qar0IZ@infradead.org>
- <2614286d-19ed-4848-8ce6-59ebecf19d1d@kernel.org>
- <ao1R1Dh-42ALMq7o@pedro-suse>
+	bh=u2bvytAuvGYEqs9efhtRsLXdWhJiexRreJOmqm0VjtU=;
+	b=Op8WQLzVLxm3rGkF6yH7Au71+17kCnn6+joVqJ3glydu3Q7YiZhJHt13+Cir9Z6wMt+VyF
+	M4jeMtLd1srOJ+TdMQXhp+W578SG5v2Ou9KAZKG/O/DwDCR4Vv5q4rn7pzi6lV65nKdS7U
+	p0usp7t5f9Ag7DE0hbXqmlvbohXtV4I=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=N1F7ELc5;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.217 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787719438;
+	b=r0OAeuXPiglze4XLUAwSgvHBskgf5oQY2rZQXGmnEGy8P+5CvXM7XMfZaiRdUKU+Fb9KaM
+	mxyM0+J72tHqrEMTp4G89Zn5/WtyX6XKFAlCNbBaC+Vk94FoO6nyHPR25zI4VWRNV5zlfr
+	mXEftS3TGGZocTP/bDvKudyvgXpoQ2k=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=cvAC78os6bsdbW8XgBgcHaxo7gGIY2XAK7sGylBvEnc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787719436; v=1; x=1788324236;
+ b=N1F7ELc5rDkuwft/4qHqUCi2YMlDHT8cTnKDePPYTtoOmiaUJI9pTqi0MoY5zq852F+pnxBn
+ 2uutfKIll2VbInhLzNRj7/b9ae5dYxwGlaC3/W9pPO6oXZ9kSpibcYAquBx1P2S6hbx4hqwNeIS
+ bvspPNtns6RSmomGa09gy0XE=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2602:fce1:44f:115e::)
+	by smtp.migadu.com with ESMTPS id d945f1d31c09ef98;
+	Wed, 26 Aug 2026 04:43:55 +0000
+X-Mizu-Trace-ID: d945f1d31c09ef98
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: pedrodemargomes@gmail.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-stable] mm/khugepaged: avoid unnecessary checking for swap entries when collapsing a mTHP
+Date: Wed, 26 Aug 2026 12:43:50 +0800
+Message-Id: <20260826044350.24284-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260825192433.3185880-1-pedrodemargomes@gmail.com>
+References: <20260825192433.3185880-1-pedrodemargomes@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ao1R1Dh-42ALMq7o@pedro-suse>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: jg5hpsqpki3t3hard9ubd8cdi73rbxon
-X-Rspamd-Queue-Id: 7A740180006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787719365-585247
-X-HE-Meta: U2FsdGVkX1+ZIadA5Ef3TY8pgfW3aAf9puh9VjbM4+ELytO5hQcjRMp/jcQur6WS1FLt2phaHBmTg76L7kQxYFvRAvbPK13CEbNgHDU9Vkt3y/CHSc9DG6JrVtRPhrHFLryn90L6x4u/pK2I1rVNnNikxVpPH495oZuOq0pThsu3tJzr7ferg3PfxAxP6SZBx3c2jbpUiBfHmiilVgZzqaQ6LvfRsjOhD74+FKIxteSi9utiEFmzb44ZHCcefKsZKoJrV1Qk3FfVj7hEgYRwr1sIUMFVM2czW59QaR82lfIqWcjQ53K4s3WR7ceHhb7/WIgUhqFyiAuyF2E0clahIp5BtYKBSRwupalxSdKvEj5Fjp30wZaERvS6ylIZ5+tDBk3CSKVN8/+cqdRNfGMlQ2UpQIpEtRPCvy9/ogw3VnJcdakUC+BWJKZqA8rhwQCqgAzML2BNpUFTq20VaOx+ShG1KtWeq152rVLm3BssPx3LlB/jNTU69y1HDCoWy1+4NW3dfWOALvamnPPv5XyZPyG916wYqpvDoFSYHRdf8krS15y9n/seX0oKWqx3xztMIlb8fp5xO5CnJBH6/VqMO6p79ivuRl27DbdVTIxgBLC/DbAXujzETJenNgPxZOpssMphBzLu+g87bK8Ixq++wMNRRm1LaO0FrsuIOfQtNdH2NGVVy2xqyk3mciMwyPSjaqJQm89wHeJzWueEVbBsdVdp/uqOrZHDYh/4NOhvuun4hQVW9B0geKJZaffZ5OXdmVYTOMb7jdVmrXCTvJnh5kvM5qnO3z6cZ1Wg+Z6rJ5rIqV4vcCJnhJoz5ji7pO6MD8JW2wfmLjf1nQmuAy4zJ8luf4+d3TVpLLEO7QMirlS9hNEVNOhmzi2CEKSbLq53WWcpMy/cF4nAXpB78XORvxYgJGna4PSmaySKb4j9IAtekM2zmFqALH4iLPwetU1CjCXeFjy5NExEa24x/xi
- npnuKrFI
- Ag7Izzd5fx8K7KBfS5e+Pf08TZa7Vv94Y7k1DDMxeZBTfpCvLQhP8NqMXQvuniRtrQKnTqkEBfwaClvTZ1RDc4AGi9J4Y1k+HaK2OHabb01N20kOI5MZjuZ4SXGbBIZvFOy/lTViK1be1mJpmTgoGl2qNGKcu2wENbvwItf+2J7dilXcvvFtXNZZqePskJh/S9hO5KK0HOXFzGuHdWAykNMkEpn8i+0DNZdpNMiRJAbJwb0Bly7c6olELtXyv1c9ZoQItet+Fi3tS5OmnSSDCkWRk4bszOLVEV0BytPzBV2BWgA8IBY0jB+YuDGnlrd/l61HUxrF44NMf5q/L4HwMNR9us9EL4Oz/4+md4N8NdwXi603WowCHp9LdVMIjokVTzR5NSr3hisv4EhHhDB3of35CX/lsgR/JrONkKDheYV2cfZ49/wyZMHIupA4TbJ2EGPn9SIbnm9i1PEW+/hlkzSUoPuuJgCnIZjIXs3CSbKOX4+3Laun83hWtUi9+YRQN3nnEe4CgmShJZELZcuVU7dDj/mEwYwRJXU3vThhynHhbFdGXNBxTNLp7MMqvRzaGW5JY7PHtFz832Bg=
+X-Stat-Signature: 947wc96nownmiuwjpcnsa9o8hyxdd5tt
+X-Rspamd-Queue-Id: A9A95140006
+X-HE-Tag: 1787719437-14427
+X-HE-Meta: U2FsdGVkX1889OAStm32mhj9sND9O79dcrYyWndjj+nSkBRuWm7Iarfpck82rIMiJe1Jsk27//bsthnBriD9ST7tZeJ9RUCLwgxV1xJO3f1CL9DfqIG9RjgG9yfuuSuXF6xKeyV45rRwxqzrW0VOWFV8JGIsXPG144vhXUXT3Xim8KFH2yzXsdItrvAxOhsLE4WxdWUyqLkV4DdN2AQxxR3nhF/83YZqVyGyTt+EjyCE2i132S58xbMVVy0oeVVwW9TycMDhoOj7aU5LiAHULAAmwM5RyUt9PMtDUFw8JPBh0c4JADrBWz5tLawjsD+1HOv/iP0lGr3hhuCm+C6CZ5+6inMNz4hYyI6VizTHMnuTw+sUPYaB99gbYxAh54NIVUByJoCLYjMS90sSGMD68C6LjHW3PzaUNdk9NcjG46YdAvsXpkDDbciKJIOaq0u2gHaNIPl6HFgz5lTR7mVOZR0GfH/BTTY8T8CkbaKl4VGmAu06nQjimS6j+o7Rxq8TkrkUfuK60kMtsQLlkzyhwXDxlT8AkNm6xX2ZZdFqlYMc58KStOOkpxa/PvjuT5qoA6g9NbJJmb1h9ppZVZGm/UfObHRJl3yFZlmANI0QqmC3gU+IMqiCK7e26UqMLPMdKX7SgFG29gnNskDxm7WRXQd6i+DxCFtDq3ulJfxBQ+OE1RLSlFnHLsU3JXgEfQwExPZWBBIi4m+gctag6rnmEL12Gy74wivNRxtFEGdHRry7OuwsmyMzbuH7as5mx2WQWbu8ET2MNBZxGrU8tpE86RhxXTD6u4BwbZlXmHqug75fUHh1RGftwQXdOG9ycgFe+xQ/71qI/mlk0x0OG551vbbZaaOGhkiqoZcgmldA2DSi4nrlSgyb1JSz4ZKf3lIgKGVqEby0sxPN3JZk0qxpkbUzZP+sLobzilUCGR5kpacUzV1PiUJ0Jk3xJ01Y80+7TSadUlpKXIo2HbwW4fb
+ JvOPj99L
+ gG1xD48KZldkItlVhSNTTkBfvZjsVB2W2rlXTaRH1/vtDAKMdF3FaADwkaqFSUTRV9RDryrOiPUb+iZYAtT8TaMALNVBnpnmHUfvLhIFJZF4unX5DsdipJhwEXxB9pd3uUKZ52fnoOn+EEyzeVjArW7mlT//gOW8JlyjUAYZ7x/YtjViz71Qw/HA7P6tTcXJjM2Z11L5q4CdhwATM/UnkOQhl4/yQsDeaBIxMvXSvBvNdAY2g8wVFjLQQAcRuNRZZjrPIF8dZQ+uBuOrzNyNMnvQbWH8gZo7hN7R9Xon1ROmIUEjlxwkB4VbEtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,30 +103,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 09:40:31AM +0100, Pedro Falcato wrote:
-> That is true. However, I don't think that should stop us from providing
-> reasonable semantics for those that use mmap.
+
+On Tue, Aug 25, 2026 at 04:24:33PM -0300, Pedro Demarchi Gomes wrote:
+>mthp_collapse() tries to swap in PTEs when collapsing a mTHP if there are any
+>swap PTEs in the PMD range, even if none of those swap PTEs are
+>actually part of the mTHP's range.
+>
+>Track swap PTEs in cc->mthp_unmapped_ptes so that mthp_collapse() can
+>tell whether the mTHP's own range contains a swap PTE, and skip the
+>swapin check when it doesn't.
+>
+>Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+>---
+
+Yeah, the code itself is fine, but ...
+
+Any numbers showing how much the extra scan costs? khugepaged is already
+quite a mess and badly needs some cleanup. TBH, another bitmap + more
+bookkeeping doesn't feel worth it unless the win is pretty clear :)
+
+> mm/khugepaged.c | 29 +++++++++++++++++++----------
+> 1 file changed, 19 insertions(+), 10 deletions(-)
+>
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index 11ff98d55c76..38596172f7dc 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -117,6 +117,9 @@ struct collapse_control {
 > 
-> Fundamentally:
->  - For the common, PTE-level case: we get the granularity for free, the
-> filesystem only needs to be notified accordingly.
+> 	/* Each bit represents a single occupied (!none/zero) page. */
+> 	DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
+>+
+>+	/* Each bit represents a single not present and not none/zero pte. */
+>+	DECLARE_BITMAP(mthp_unmapped_ptes, MAX_PTRS_PER_PTE);
 
-Where "for free" means that the mapping granularity has to be reduced.
+BTW, the comment is a bit of a mouthful :)
 
->  - For the less common, PMD-level case: we already aggressively break these
-> down on mkwrite faults; I think doing this is the right tradeoff. Screw the TLB
-> in that case :)
+How about "Each bit represents a non-present, non-none PTE." ?
 
-Puh.
+Cheers, Lance
 
-> And, frankly, half of the problem (and related to the GUP thread) is that
-> page_mkwrite is a crap interface... Something like ->write_begin() being
-> generalised to more than read(2)/write(2) could possibly solve most of these
-> issues (or a ranged dirty_folio).
-
-I agree that everything around page fault notifications is a mess.
-But ->write_begin is worse, it's not even a proper method but a layering
-violation that needs to go away (or rather moved out of address_space
-directly into the user of generic_perform_write).
-
+[...]
 
