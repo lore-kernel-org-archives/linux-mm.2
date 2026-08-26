@@ -4,100 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34CFBC5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1114CC5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:31:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FAE86B008A; Wed, 26 Aug 2026 09:31:35 -0400 (EDT)
+	id 2491E6B0092; Wed, 26 Aug 2026 09:31:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ABD46B0092; Wed, 26 Aug 2026 09:31:35 -0400 (EDT)
+	id 1F9DA6B0095; Wed, 26 Aug 2026 09:31:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E8DB6B0095; Wed, 26 Aug 2026 09:31:35 -0400 (EDT)
+	id 138236B0096; Wed, 26 Aug 2026 09:31:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB7E76B008A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:31:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75770A038B
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:31:34 +0000 (UTC)
-X-FDA: 85143507708.09.D9607E3
-Received: from mta1.migadu.com (out-53.mta1.migadu.com [95.215.58.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D6A011A0011
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:31:30 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="vDeC/xKS";
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.53 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E28AB6B0092
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:31:38 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F732C038E
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:31:38 +0000 (UTC)
+X-FDA: 85143507876.02.434773B
+Received: from mta1.migadu.com (out-60.mta1.migadu.com [95.215.58.60])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7D9931C000F
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:31:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=C7d7rAfs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.60 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787751092;
+	s=arc-20220608; t=1787751096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ybBYFsWV0RkdYXDOifD6FYIYBznP3ZofoO2/JA1HNM8=;
-	b=UqE6eVpNhnibi7SS4cbOHt5PZYWhz+d0Rpwx4/5qy2XcM91JTJlVaMqZhzE3jLExVF0fwZ
-	XVtEP5VD8Rx1apFzrnV8FPBQ8orotHI13yRWSmFNh1SSinOlVLVYoPN4l3KDt0Kt7sPu8o
-	LXWe9GA4mmhK+RkhWGFCczN3QnvFsWE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787751092;
-	b=Ys0Z4K83l4hrUVEaf9WOinEQdvZPXqp94kz2vHOg8s5iO141dyNSqW6pNU+Ul5UM/Dzd1e
-	/GdloLReUHTCFBnCgS4YGD0aoRnWoA1b1hFPUhZa7Sebx4FyPCk4W6sbdBuLY68BwGZwH3
-	QEqgPwnmIltqPZBdLb29yyOUg3FoCio=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=z7COlPnPt96sXgAr1UJEQMrW+e4A73s5JoHxHPizxms=;
+	b=GV0ycf3KDyobPbfhfA3ZGUbXhHsxohxqi6luzp8JVeB1PLYgwxyU8ODmEobI/mdh5EvOAp
+	xqgzoXGBaPD/8CPfBbwdb7xHMNok1+hdlQNCYUQm0f+Gs5uL8btbzZxqxZKX+USaxT9i+v
+	11ISQFyc6/jHWx5TGUxePfp54k5IBh4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="vDeC/xKS";
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.53 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=C7d7rAfs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.60 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787751096;
+	b=3gWEv0+SULeVh3eZNAb0ZzcBZC+D8ikhKp4XvyJe+YaG5LLxrb8q7nmKdVaxffmdcvErO5
+	USuBPwsaCLpVxpdGAiA+XXf1BLp0h8Luhcz0FaEup6D+q+jM3T/uT9Lvg0g+p29y1loNqY
+	s8CHoc7V9WeQvVwm5m+FiL91EvCiUHM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lR4mZ8qczUfYMvA6XHhKi70YkLbB/IMG+ilRAttzYlY=;
+DKIM-Signature: a=rsa-sha256; bh=x3tyovTSuHPSGETPwcjNdH5ZDZ4Zl6jfQyrC3+aX5GQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787751089; v=1; x=1788355889;
- b=vDeC/xKS72xq6on1IBD9TTHTMWdk482q+EU/+ACiO/M1dr7lUIMai1G8Bhsrez5QIgKhag9f
- gtNSnxpXN9jvCsgFxCcRYyXrA8TjjHBM8auipJWn5hs8dbIOw6Fmcw5fqTNeKA4kd5zK3OSa/Vk
- G7kAHbDoGPTUToGcY43B8xvc=
+ t=1787751093; v=1; x=1788355893;
+ b=C7d7rAfscWZy0lLuMytPxF9pgrfuOaRgMYISc1/Z/1ekH7m6KwUUUVs7I/FQk5fFxanGRNr1
+ FfLjlV9SjV3Q1aosChAyoGtGq7gr9vGv5vtnBQQQozVs6nJmb825Sf4melvZFebpCsEpUyh6Y/C
+ 708zwiatiA5PHri6t9I7Twus=
 X-Envelope-To: linux-mm@kvack.org
-Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id 57b289fe451a8707;
-	Wed, 26 Aug 2026 13:31:19 +0000
-X-Mizu-Trace-ID: 57b289fe451a8707
+Received: from localhost (2a03:2880:10ff:5b::)
+	by mta11.migadu.com with ESMTPS id 4f3da476f759c30b;
+	Wed, 26 Aug 2026 13:31:33 +0000
+X-Mizu-Trace-ID: 4f3da476f759c30b
 X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
+From: Usama Arif <usama.arif@linux.dev>
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
 	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>,
 	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baoquan He <baoquan.he@linux.dev>,
 	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Wei Xu <weixugc@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>,
-	stable@vger.kernel.org
-Subject: [RFC PATCH] mm/mglru: fix ineffective memory protection for non-kswapd reclaim
-Date: Wed, 26 Aug 2026 21:30:54 +0800
-Message-Id: <20260826133054.88529-1-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] mm/swap: refault on swap-in, not in the swap cache allocator
+Date: Wed, 26 Aug 2026 06:31:28 -0700
+Message-ID: <20260826133130.806177-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260825172604.3243589-3-alex@ghiti.fr>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D6A011A0011
-X-Stat-Signature: 4zhyycr7eut9k6fpi8kg7dueixksanxu
-X-HE-Tag: 1787751090-302889
-X-HE-Meta: U2FsdGVkX184XrcWN7C7IVsserX/T2EeVsC8KeuwnKZzj4Ej+SdndQ8gUTAX/G6X3LP6o3Fy3Iv8TZJU6chK24MZPvPY06jZz5Yt3xf+FGRP2ecFKBFatftapnLG9WsveIRgD4Fi4QvZ3n8yWGU2L9WHjcFQAYjtHCgwuln4f6TxAZ4/H/9If2RPMPelE0kD7BUt4s4rLp5heyYvQUqTUKUtrjuzgJwtt7UIxg0LByVCPZU+eilzXXsO0Rvf5lob08oOsLjzAqk0/G4r9/JVBARHBE0LIUpjALsHPZmKne6DFgoGS2z67O5lc7r4Ssab5UmqbK6+H6LubYDSgLReq0kDSAedf6rCdUfEZgT67/uZuxtLNU1+eD0ycxpTqlIEVSH4F+a2yrg/hANIHy3B7zcg1AEutBnllfCku0Jhj3eFfZGl0GNxPEK9CsVpCx5jBSzNQDMZOohj/aK6cosSMEuBKT2Mu47iZo8IrMZExhZGRLmmCpzm/6us9xbKUbWUxb4oCcpG0ZWIVsfaVaY1KY7B/xUsk25UN89eLLyT1qBjOlHwN/Q4NFg4rV0N0OR/dBFj0R51vJdrrseVV7WNGMxYKSmTHOc26FamjBf9CBAKNo+HDdFILRRPn0uIvivYOwGXbTyRwVH7XlyhsRicLEDIQZPnPSoZ63bZC88rg0T884OzEAXuD1RJ6P86s8ib6fCPK6m7sLOd4MFzhRUaeG9cH3MG78uHFeOU89k2XO9pZMv6IaxVOHi2qLgjlMYqxpYYcSJBhIZWgWocyUVt1hBAqZnkmMsJJdu88bNj96Kzv7L8hKcx/fCsAE7f84zL7s+TDc0/eLOywAwRkMjxEEWgECfjhjs29vUsUAyM+TSF4CkNgkKvTkyPSGdsP3GRQB1obQr+mYKHCaCKuK0vri9fPecWJXVfy79lIs9vOVrwqkBP/yamOuXpeCOSnSSlXwOFmRDSiT6BGCy4u35
- 71SrI5zP
- S29iIE3NgllSYWfbCeFqAtNNgrQvk8XPIH5EtkEgqlUVAedbjbRZSMW+NApdQdZb3vk+yaBQZvyrNde8aJGqs3cHWBnKCPqdUPTWLxHpSv6rTfnylKd4+dG5dBbOTe/61CzoFiWx8ZeFUskHuenXM2vKjPuUqF4gTYCrC1kBpEfFBZdK/EvLNhNq+JV5lueZSzXhMxEXXaI23mYQRFkrumpbnn9sr73en1JI9h5DwYHm4+8p2vxUBcqwVeZKUPB8jXgoPraTP8U4bKH348isTdhvh/6hWdClXLXVGO17ZWUBdX3qTE543LOaAxf6fgzn+FxfjS7BJacj/1jCRtaiy8f5vDSgPVTeR7vbhHOHBSzqPQFV21nEwZqx8ZFd0VGmgskyOubG6+y+KR0ZJwPxlk1L6pt/CNExs//SXyxDfd/pV0cSg1J1yGqDJ350IYAgBm8JLq5lFDByNPkRLwe4cPQRwGAqhDnk88BPm0L2jMzOLCu4WUrT9Nja+7roGf6onP7cAJHkYCsO3L6V4cQw3yhCFCl7GzlNOtzaiEVYcmIuZl7knLfk7fDawrKbu9Akf7chGC/Y/gbfYUAGqYrVSH7ISR+C3VQa4SKhX/A8t4a9n/t2CIj02r8I1t/3tGTPPrhlPVvnisy5H/aTCT1JHiRF15ZW/DgGL8lsPsAQZZKhbVU+Kf5N/0cqQ2HKS6BjDZSk0bVGnV2lwJEOXAMVvGTd1et5ANDREEQ3r3PEtqHsIypYlJ4xylkQhTwj+shoTRNTj
+X-Stat-Signature: 6i7tqymmscwehkjiwhusq6tqh1xha96a
+X-Rspamd-Queue-Id: 7D9931C000F
+X-HE-Tag: 1787751096-111609
+X-HE-Meta: U2FsdGVkX1+7NsJ9ESfjyG8M3LC4qGU6ZHqBUlCPGbqbigpTylSi0ggJoe8t26uGQ3aBJLRbjlTi9ugyjYwlSA+zDEiSfrpA49DPZwP/elHJyN2oeujpVGS4I6blfhKyb77ig8lnY/1f/YkJ3kB/7FMkrrNe2VRVzWUZgitjrkERm8JWGlNDi4Vb9+8VaHGRxlBIlozdH9HLd2Qflm8tiRRgwTwivBdA0B8TE8sT0KizTdGDA2lDbsYCiFCyv7xW09X2JKEA3O3rKwSIGbNAgOM3KQi4TNbj6jtheOvScqg4BYCFY0RpwTHFbuwDp/SXKVOB//Fw2qQnPqXkoUDr9REJXd5ufQYDAYpynQicPZkmXteyO6KsyuClo06cHpoEsm+P7bg8o+7n+V6XBjcr1wKymkjsH5e5qI2aViRpCKLzEWS3ew0sFyNazTGZvSvEHbpn8WQVW8v+s2xZwYE9aV8mGfLC77ggLqndrqAUe6LTPktbqcaHXcSmUHKPdBxBQROGsTdSs+zVsmglHmvbt+wYgn8M94g58ZnUmqLnig9PZSWZ/GKeymzIYo0aVVdUoKr9VNeQLo845VTiQlG9a7EkVq/HI15RhavrDtAk2EioBim6d5gL7QPWOs2ELBLuqsIprFD9F3ErKNUS2g7pEAN0X8tCP0Klbtz7h7ONXj1o+FhE7gVfg4qkGrm1A0LsFwzpygkRSrw18sWzAW/GJ8V1PIr2HeDAIW3S360i3Osh7a79E6BPr4OmfJMNvdNNA88LWQPGKsPHtzHEa0hkXifouv3V2Sq5sDz6ViazTGA4UDtu0qaRy/cJjNXri67QhHCeVrpwu+nUTEbrhSIdHhSv9UwGkWzeXbfB32X2witTnz1LZZpT6RDEOw9UVePEEBmtFOkD4o1I635sCNb6iNfRJesGWYmUbpI+KLbjYkZpaIPkfdQxhszzlnn0kF06F6XBaTz/yNV7oS73VJg
+ 64Z1b/uV
+ 4FsaHcb0rVNfoscKKBErU5NZ2ZykbKlPXf5ZtefhXQS92dg0OT4TKojLtJ6MG7Iff4BsG4twv9ETpYKRvYy3xBDf/hYPjSP3l+mdTHFkjH06mynKmZgOABVC1IZ+UCtAMgDOJO1V/H0KON3XWcYIAwJBumbYsl7+7K00iOms/y+ilKI3iDjTc1/mgzIZ36tCoWJqicy0SKj2ND1ADViShpe0sUBG5sbPtKK0ytMiUffYyuLf8zK6rbi6kK1YamJ4oeGocssy+lhcY4ZGA4Ac4Q6bAPKtHTHPF3B3hmjrffM7umWo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,154 +116,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+On Tue, 25 Aug 2026 19:24:52 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
 
-memory.min/low is silently bypassed for MGLRU during global proactive
-reclaim (writing to the root memory.reclaim) and global direct reclaim.
-It can be reproduced as follows:
+> The swap cache allocator evaluates the refault of every folio it
+> allocates.  zswap writeback also allocates through it: the shrinker puts
+> a buffer folio in the swap cache to write the compressed data out, and
+> that allocation is then counted as an anon refault (and, if the eviction
+> looks recent, as an activation) even though nothing faulted the page
+> back in.  On a workload that writes back continuously this inflates
+> workingset_refault_anon and workingset_activate_anon substantially.
+> 
+> Move the refault evaluation out of the allocator and into the two
+> swap-in callers, which read the slot's shadow before the allocation
+> overwrites it.  zswap writeback keeps allocating the buffer, but no
+> longer reports a refault for it.
+> 
+> The refault is evaluated before folio_add_lru(), as it was before this
+> patch, so workingset_refault() still sets PG_workingset/PG_active while
+> the folio is off the LRU: folio_add_lru() consumes both when it picks
+> the LRU list, and under MGLRU when it picks the generation.
+> 
+> Fixes: aae466b0052e ("mm/swap: implement workingset detection for anonymous LRU")
+> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> ---
+>  mm/swap_state.c | 20 ++++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index bf8ff2d2dbf1..8046fea015c9 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -483,8 +483,6 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+>  
+>  	/* memsw uncharges swap when folio is added to swap cache */
+>  	memcg1_swapin(folio);
+> -	if (shadow)
+> -		workingset_refault(folio, shadow);
+>  
+>  	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
+>  	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
+> @@ -646,17 +644,26 @@ static struct folio *swap_cache_read_folio(struct swap_io_ctx *ctx,
+>  		pgoff_t ilx, bool readahead)
+>  {
+>  	struct folio *folio;
+> +	void *shadow = NULL;
+>  
+>  	do {
+>  		folio = swap_cache_get_folio(entry);
+>  		if (folio)
+>  			return folio;
+> +		/*
+> +		 * Capture the slot's shadow before the allocation overwrites it,
+> +		 * so a fresh swap-in can be evaluated as a refault below.
+> +		 */
+> +		shadow = swap_cache_get_shadow(entry);
+>  		folio = __swap_cache_alloc_folio(entry, gfp, BIT(0), NULL, mpol, ilx);
 
-  # echo 7 > /sys/kernel/mm/lru_gen/enabled
-  # cd /sys/fs/cgroup
-  # mkdir -p a/b
-  # echo 100M > a/memory.min
-  # echo +memory > a/cgroup.subtree_control
-  # echo 100M > a/b/memory.min
-  # echo $$ > a/b/cgroup.procs
-  # dd if=/dev/zero of=/tmp/testfile bs=1M count=200
-  # cat a/b/memory.current
-  222650368
-  # echo 500M > memory.reclaim
-  -bash: echo: write error: Resource temporarily unavailable
-  # cat a/b/memory.current
-  6070272
+Can this refault against a shadow from a different cache generation?
+Another swap-in can replace this value, reclaim its folio, and install
+a newer shadow while this caller is allocating.  This caller can then
+win the locked insertion but still use the older snapshot.
 
-memory.min is 100M, yet reclaim drops a/b down to 6M, breaking the
-protection.  The traditional LRU path is not affected because
-shrink_node() calls mem_cgroup_calculate_protection() for each memcg it
-visits during a top-down tree walk.
+What I think should be done here is have an optional shadow output to
+__swap_cache_alloc_folio() and return the value captured by the successful
+__swap_cache_add_check() under ci->lock and se that output in the swap-in
+path?
 
-Commit 30d77b7eef01 ("mm/mglru: fix ineffective protection calculation")
-moved the protection computation into lru_gen_age_node(), which only
-runs for kswapd.  Non-kswapd global reclaim reaches shrink_one() through
-lru_gen_shrink_node() -> shrink_many() without any protection
-computation, so emin/elow remain stale or zero.
-
-Introduce mem_cgroup_protection_path() which computes emin/elow along
-the root-to-target path only by iterating through the cgroup ancestors
-array top-down.  This avoids the full tree traversal that would be
-needed with mem_cgroup_calculate_protection(), limiting the cost to
-O(depth) per memcg - typically 3-5 levels.
-
-Call it from shrink_one() for the non-kswapd path so that each memcg
-about to be shrunk has correct protection values.
-
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- include/linux/memcontrol.h |  7 +++++++
- mm/memcontrol.c            | 42 ++++++++++++++++++++++++++++++++++++++
- mm/vmscan.c                |  8 +++++++-
- 3 files changed, 56 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 7d1c0ce189a8..26be8277d64b 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -605,6 +605,8 @@ static inline void mem_cgroup_protection(struct mem_cgroup *root,
- 
- void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- 				     struct mem_cgroup *memcg);
-+void mem_cgroup_protection_path(struct mem_cgroup *root,
-+				struct mem_cgroup *memcg);
- 
- static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
- 					  struct mem_cgroup *memcg)
-@@ -1133,6 +1135,11 @@ static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- {
- }
- 
-+static inline void mem_cgroup_protection_path(struct mem_cgroup *root,
-+					      struct mem_cgroup *memcg)
-+{
-+}
-+
- static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
- 					  struct mem_cgroup *memcg)
- {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1271d390b617..c739db33b917 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5198,6 +5198,48 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- 	page_counter_calculate_protection(&root->memory, &memcg->memory, recursive_protection);
- }
- 
-+/**
-+ * mem_cgroup_protection_path - compute protection along root->memcg path
-+ * @root: the top ancestor of the sub-tree being checked (NULL for root_mem_cgroup)
-+ * @memcg: the target memory cgroup
-+ *
-+ * Walk the ancestor path from @root down to @memcg and compute the effective
-+ * protection at each level.  This is safe for isolated queries because it
-+ * ensures parents are computed before children.
-+ */
-+void mem_cgroup_protection_path(struct mem_cgroup *root,
-+				struct mem_cgroup *memcg)
-+{
-+	bool recursive_protection =
-+		cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_RECURSIVE_PROT;
-+	struct cgroup *cg;
-+	int root_level, i;
-+
-+	if (mem_cgroup_disabled())
-+		return;
-+
-+	if (!root)
-+		root = root_mem_cgroup;
-+
-+	if (memcg == root)
-+		return;
-+
-+	root_level = root->css.cgroup->level;
-+	cg = memcg->css.cgroup;
-+
-+	rcu_read_lock();
-+	for (i = root_level + 1; i <= cg->level; i++) {
-+		struct mem_cgroup *cur;
-+
-+		cur = mem_cgroup_from_css(cgroup_css(cg->ancestors[i],
-+						    &memory_cgrp_subsys));
-+		if (cur)
-+			page_counter_calculate_protection(&root->memory,
-+					&cur->memory, recursive_protection);
-+	}
-+	rcu_read_unlock();
-+}
-+
- static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
- 			gfp_t gfp)
- {
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6dff207ad8c6..e572d2742c8c 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5102,7 +5102,13 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 
--	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
-+	/*
-+	 * For kswapd, lru_gen_age_node() has already called
-+	 * mem_cgroup_calculate_protection()
-+	 */
-+	if (!current_is_kswapd())
-+		mem_cgroup_protection_path(NULL, memcg);
-+
- 	if (mem_cgroup_below_min(NULL, memcg))
- 		return MEMCG_LRU_YOUNG;
- 
--- 
-2.34.1
-
+>  	} while (PTR_ERR(folio) == -EEXIST);
+>  
+>  	if (IS_ERR_OR_NULL(folio))
+>  		return NULL;
+>  
+> +	if (shadow)
+> +		workingset_refault(folio, shadow);
+> +
+>  	folio_add_lru(folio);
+>  	swap_read_folio(ctx, folio);
+>  	if (readahead) {
+> @@ -688,17 +695,26 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp, unsigned long orders,
+>  {
+>  	struct swap_io_ctx ctx = {};
+>  	struct folio *folio;
+> +	void *shadow = NULL;
+>  
+>  	do {
+>  		folio = swap_cache_get_folio(entry);
+>  		if (folio)
+>  			return folio;
+> +		/*
+> +		 * Capture the slot's shadow before the allocation overwrites it,
+> +		 * so a fresh swap-in can be evaluated as a refault below.
+> +		 */
+> +		shadow = swap_cache_get_shadow(entry);
+>  		folio = __swap_cache_alloc_folio(entry, gfp, orders, vmf, mpol, ilx);
+>  	} while (PTR_ERR(folio) == -EEXIST);
+>  
+>  	if (IS_ERR(folio))
+>  		return folio;
+>  
+> +	if (shadow)
+> +		workingset_refault(folio, shadow);
+> +
+>  	folio_add_lru(folio);
+>  	swap_read_folio(&ctx, folio);
+>  	swap_read_submit(&ctx);
+> -- 
+> 2.53.0-Meta
+> 
+> 
 
