@@ -4,79 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED58BC5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 05:07:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE200C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 05:39:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6970C6B0088; Wed, 26 Aug 2026 01:07:43 -0400 (EDT)
+	id 6D1946B0088; Wed, 26 Aug 2026 01:39:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 620D86B008A; Wed, 26 Aug 2026 01:07:43 -0400 (EDT)
+	id 683256B008A; Wed, 26 Aug 2026 01:39:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E7E96B008C; Wed, 26 Aug 2026 01:07:43 -0400 (EDT)
+	id 5772E6B008C; Wed, 26 Aug 2026 01:39:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 29A7B6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 01:07:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2BD44402A5
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:07:42 +0000 (UTC)
-X-FDA: 85142237964.10.312DED9
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5523D40008
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:07:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf01.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	by kanga.kvack.org (Postfix) with ESMTP id 24A956B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 01:39:30 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 817BE402C1
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:39:29 +0000 (UTC)
+X-FDA: 85142318058.15.100D751
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 202CF20002
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:39:26 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=p22gyRo0;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787720860;
+	s=arc-20220608; t=1787722767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kYE6uo50ctYt2OqlztctQelhe0ySe0E5mvCBJ0+MHvc=;
-	b=qP2H5BNMrOmOxqDjQaJa14MwADj1O3PCcTG6hFLMJD5YGfzOZwSRKVgT8ouxT4qZol2cCt
-	ImLaAfk+GQynfYnbpqNeV8txu2D6n5j4uQfe2lhjACrkSxnmEB465OJaNNYLZsf+jIz3rh
-	j2jSTZaYPRG5z5WOBH0mdJ6QA1LSsGs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/qh1+xLG4+pzaAW6xJmGxwPiqzL6zJ0ehyPkdaiagKo=;
+	b=bRFUV2FY9b2gYrYHGaddTt+u7oJiMBdiAdU07ugkpGfa4p/PL6eQ4SEhKz13eCL23K5tx1
+	sLjmtukhDOSpFkXvdw4hP/iSnOsifXIXG6pt7u8gGJVffZPrQDBvF0ozxhSjBfLhAWEYrM
+	hUyvk0TvhIKIzSMUIGaP73yjsSlofzI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf01.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=p22gyRo0;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787720860;
-	b=c9ldKrGNs+yMJJdNDR3oQAUTJE2dO997VzmGNmI/juOnmZskQ6nPLDVxPFTEnMuYZGuwgI
-	WGYFI6qu4NwY2DoEmiqVYc7FaZhiIDwqyWwLR0Ay1UON/HruhmC2ryl7Kh2HPqHIP2UnNY
-	aYjIfVRTcTVpqVqZvuP2em6z879lT/A=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 21E1A68BFE; Wed, 26 Aug 2026 07:07:34 +0200 (CEST)
-Date: Wed, 26 Aug 2026 07:07:33 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	Christoph Hellwig <hch@lst.de>, David Howells <dhowells@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>, Jan Kara <jack@suse.cz>,
-	Rik van Riel <riel@surriel.com>, Qu Wenruo <wqu@suse.com>,
-	"Darrick J. Wong" <djwong@kernel.org>, linux-btrfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org, linux-rdma@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: Removing ->dirty_folio
-Message-ID: <20260826050733.GB15122@lst.de>
-References: <aoyWln-Gt-yvZQkE@casper.infradead.org> <CAG48ez0vXVUu9j4rYUeCqgwyHKAiN_6fL--D90WvX9q7B41V-A@mail.gmail.com> <ao3y8TtEGjniZ_4f@casper.infradead.org>
+	t=1787722767;
+	b=RIuqmoz2bbfZHYOXTm3jtuKebUVeJIJNLvenzoYbaTIJu50f3tkhOJaJqhzeRzatve1+7s
+	4Jd3S+Jv7tUVJsNF3sDGyukXgJEXbkzPWVgZKFadai2frpc14Wi+l/maqMFHvkcTafWRvQ
+	Q82EGVDcIRVdcDE4KJ49NGm1/N6Rwsc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 37784176A;
+	Tue, 25 Aug 2026 22:39:22 -0700 (PDT)
+Received: from [10.164.19.33] (unknown [10.164.19.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D78683F66F;
+	Tue, 25 Aug 2026 22:39:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1787722766; bh=dYFktqpD50swePzEK4dhMVo6rMcF+craq+5N4YetwXo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=p22gyRo0wnxYzwukKoFNrLNrcfjLktz7j2+ydITrC7GjgyxoHtFXM4BkMRXLegGlc
+	 bcnyPgXDaW40Bxgpk2CsHkYh8PFi77PyUUHv/gco3aRq6nSLAkiOtkeKRx5/bvpZST
+	 DSPaAOEBnDslBOedmb8XC6yIY9b2byr6nX900vio=
+Message-ID: <3b7abe37-4f6b-4af8-a78c-49ff5edff298@arm.com>
+Date: Wed, 26 Aug 2026 11:09:21 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ao3y8TtEGjniZ_4f@casper.infradead.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: e8oxqo3uz48q1bphgkgp9gyqu8gwsjgs
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5523D40008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmalloc: fix vmap_purge_lock livelock under memory
+ pressure
+To: Uladzislau Rezki <urezki@gmail.com>, Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260824095020.1225189-1-ye.liu@linux.dev>
+ <aoxE7rw6gru13DB5@milan> <0c34aab2-9b73-45c0-8fbe-e33895bc8eef@linux.dev>
+ <ao3Tf193sQpS22c-@milan>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <ao3Tf193sQpS22c-@milan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 202CF20002
+X-Stat-Signature: 8oqbfyhsrn9t8mf5ggbdda4bfsnxq7mo
 X-Rspam-User: 
-X-HE-Tag: 1787720860-70483
-X-HE-Meta: U2FsdGVkX19jpHDvJtn/Vl5+4SNsaJkx7dZjjyXrKwBtX4k31vqTrc5H2iD1VoMFifwKOJVn4VwYTdFTsvVd7uA0KBeNFVycTtUq9EAHAV8GmvrdZpRiZycLtSD55hqW5vMZZzGzzT8WtPe1TUkz8OCmdt0Yg68tZEBdBYY2gs1VQ0IifciKWTgSBr4nmL5mCVY7tXwliMMlDHrfPoo4cjh0vbS+DuAZ0nCqi4VzeqVVdTd8FjjV2TezWkSC5R7suokYF4L5uFpLR9F8uKsRc928gG4cTNPB7L0nydRnGuxOfhnR/S6/6myn9OJjlLHtn7TeFp2TiKo2hzgF2M3kKW5HVdrr+6AUjBgAKYNO4nVu8ZBkbweOrvMjlfFyqXf4fxa2Kg8ygp6BrOmDDqQ6HWZ1Fnp84suleQ1+mjaoBujhbM/V+S111oGewXa72L/xcWV+QaHk1q1TVchai1lTqT+i2nmn8m0alHf1M++yKOJ5FJobcbbREY6v1QZ8g4ifkVXN+m3F9L6XQw+tq0vysVfWsGsQcD0EZl4ylA142lu3g33b/nH3m7h+2lQSgauBY/psQs1eKWETdCbcW6vnGtm+e+oCmwrqjaWCmIFR8mVHg5YQD2Iq/yYUi1GrCNC8S4An04mKLT4O2NA78ILuWVQz+Z6rpNv9aI/xdPJYN9tfpYPrFMkfQc4NHM7jYcWmoabVs6rwn99jA0yKAvXMm0scNExb76hHd5xyLJjOZgZ2XZ+z/1xDEY/zQjlbk9NymO+HcqXXplavPLwIk09dl/nkG5qP2RXPmCKS6rGEIPEz97+tn+5X8rrwZpPuFFTwX77kkbFvRoYkPotuAKU2Prr6Rl09u8+LAJ/ugh9qSpYcKtPpzG5iKVefn+KjHYq21BPc6iYezC5u5fCmRofh08YTBlyjpmIPLN2s41+pKykMZw9oQDnCUC3rshfu1D6yHCjEJ52gLmNItDsbJNa
- vqOGCQRJ
- EVLKWDKNRpvg1QI3yJtE9Oph5M0//7dPwbjyJ33xlT/TUMMjR1SdjVrX7Nnyg/boDOdXwGB6n5HYVmd6Dvs8Vai3EQw7NMfBHZ/Vb8o6L2RssCmtLIEnXooe3WpOVmEtT2FUZU69JxG9xeKwbtS73XtrnkQ==
+X-HE-Tag: 1787722766-11618
+X-HE-Meta: U2FsdGVkX181OamibiQQdo+Cdt0IUqAMq7nVRt+NdQ7URqgCMAjELz/B8SU4x0Z0pNTQV8lkJ3iMJ+gf0x0eGNdUd0jkkwCYYl+dt1mLRN5knoCqUBfKGmNyQfDhFphllGsG5TiENSdgezv6E9DQ6+6PusbjX2jEBkIRLTqFiuVQ8tLvikbqZGOHBQhF/7d9H0q1iTXOifiapljVv7xy9400wglXBL18+/uljkZrw92jdE+oBbKNVKflPlu/2tT7IJGdRTji5qfMGVva7qTYMzgP+xBADfi+rLsdKZ5HwPBprMpyIhfzzODgY/oEvt98yANQMsspTKRD7T+hWKyLq13q72JvRjEdVri6IREqyUnqC7SMyvkgZ4e/rRDIDo+q+hocgPOEnsoRpcVyBvlJjwE9A+gpw5Spvf5utiy7LUg6EbG0SumnfLB/A8/l9ISFmYf0tTK7cvb+z3/6q6Y4uGHBeE63XUkwKBFwqxddBQjj0l3K/JmCyiVD8HDPk3YXnZ+nZpOpGJKOW+V2IDcDGtO6UanTjZKwvKaPWaGS/RiJ4dpMvLvFGyq90e2fGVHNGsYa8q1tYH6f9a2czsV4oju60moVEwo4x4LoIr3FTOX9zgLF2inCL6zgDO9Mf4AnZa5NMrcJaVwvkDXcISfCnuQVapuR3XxqP6D8VITxy2/OfO6smBbRIIDXm9M0WhSUxwPSWdwfKIEPYIl1Ga1mKpVETjUfTbsQmAuVQDvsL35oasMRE/KcYigHG/xYfL9fNRrsJIXEt3zb/inEck9hwmobSvm6xCoe1jBzZjf7RTO66y8HZmt5zmaN6l2osDvM27SVHG+/IJYlKI6B6x+9HybDrBBzxdGfxUY97qoxbawz9qFaDymfZL5X7ofWL2pQC98wqCvlMXKFfp3E3WAMUWNFeyeztD1mEsnYCBNzX2q9ZnQ/vMZXr3k8pn2yDa84eCmdnaeSnnbaFup4E6f
+ lvrk8G99
+ S+aXh2umlb79UHPQOCNxHowQpPZIqCcffVRFdMvu9EwU2Lio5txxNC4TiYjBCa+AVLpIL1BwpPeSLEfXODqn8cAQCUEnTmoff9A0sIPynJfaK4VE8dLnDo8QJXtT6nyjDBqRWkkRPz7VHdYl6kw4lHlPcgeCCemS5Qugt/eZGXNn6DVviHwU04/ayUQdWHi5N2l0SbdXt1QAtmKi7vLETpFML8ujLuXwIwNn45iYMJHl2U7f+qxoDjJMHWftLnnW4ND1qeZFG4g3oK7i00lC7USr5HErYSL4a7ZZT3bPFRaY0tY0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -84,72 +93,881 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[adding rdma/hmm folks]
 
-On Tue, Aug 25, 2026 at 08:54:25PM +0100, Matthew Wilcox wrote:
-> On Tue, Aug 25, 2026 at 09:35:57PM +0200, Jann Horn wrote:
-> > > The problem is GUP.  We have no way to force the GUP caller to go
-> > > through page_mkwrite again.  So instead we make the GUP caller call
-> > > folio_mark_dirty_lock() which many just don't, and generally we get away
-> > > with it.  But it's a bug, and a bad interface.
-> > 
-> > We currently have get_user_pages*() and pin_user_pages*(), where only
-> > the pin_*() version is properly usable for write access, right? And
-> > dropping such pins should always go through unpin_*() helpers?
+
+On 25/08/26 11:10 pm, Uladzislau Rezki wrote:
+> On Tue, Aug 25, 2026 at 09:04:24AM +0800, Ye Liu wrote:
+>>
+>>
+>> 在 2026/8/24 21:19, Uladzislau Rezki 写道:
+>>> On Mon, Aug 24, 2026 at 05:50:19PM +0800, Ye Liu wrote:
+>>>> From: Ye Liu <liuye@kylinos.cn>
+>>>>
+>>>> The vmap_purge_lock mutex can be held for an extended period by
+>>>> __purge_vmap_area_lazy() which calls flush_work() to wait for
+>>>> purge_vmap_node workers while holding the lock.  Under memory
+>>>> pressure, those workers may themselves be blocked in direct
+>>>> reclaim trying to acquire the same lock via the
+>>>> vmap_node_shrink_scan() shrinker callback, creating a circular
+>>>> dependency that deadlocks the entire system.
+>>>>
+>>>> Two changes:
+>>>>
+>>>> 1. vmap_node_shrink_scan(): replace blocking guard(mutex) with
+>>>>    mutex_trylock().  This is a shrinker that only decays the vmap
+>>>>    pool and returns SHRINK_STOP without freeing memory; skipping a
+>>>>    decay cycle when the lock is contended is harmless and prevents
+>>>>    tasks from piling up on the mutex in the direct reclaim path.
+>>>>
+>>>> 2. __purge_vmap_area_lazy(): purge all vmap nodes inline instead of
+>>>>    scheduling purge_vmap_node via workqueue and calling flush_work()
+>>>>    while holding vmap_purge_lock.  The workqueue dispatch + flush
+>>>>    pattern under a mutex is the deadlock trigger: if no free worker
+>>>>    threads are available (all blocked on the same lock), flush_work()
+>>>>    never returns and the lock is held indefinitely.
+>>>>
+>>>> Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
+>>>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>>>> ---
+>>>>  mm/vmalloc.c | 51 +++++++++++++++++++++------------------------------
+>>>>  1 file changed, 21 insertions(+), 30 deletions(-)
+>>>>
+>>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>>> index bea9f76ed7e7..41443708d22d 100644
+>>>> --- a/mm/vmalloc.c
+>>>> +++ b/mm/vmalloc.c
+>>>> @@ -2358,7 +2358,6 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+>>>>  		bool full_pool_decay)
+>>>>  {
+>>>>  	unsigned long nr_purged_areas = 0;
+>>>> -	unsigned int nr_purge_helpers;
+>>>>  	static cpumask_t purge_nodes;
+>>>>  	unsigned int nr_purge_nodes;
+>>>>  	struct vmap_node *vn;
+>>>> @@ -2397,36 +2396,17 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+>>>>  	if (nr_purge_nodes > 0) {
+>>>>  		flush_tlb_kernel_range(start, end);
+>>>>  
+>>>> -		/* One extra worker is per a lazy_max_pages() full set minus one. */
+>>>> -		nr_purge_helpers = atomic_long_read(&vmap_lazy_nr) / lazy_max_pages();
+>>>> -		nr_purge_helpers = clamp(nr_purge_helpers, 1U, nr_purge_nodes) - 1;
+>>>> -
+>>>> -		for_each_cpu(i, &purge_nodes) {
+>>>> -			vn = &vmap_nodes[i];
+>>>> -
+>>>> -			if (nr_purge_helpers > 0) {
+>>>> -				INIT_WORK(&vn->purge_work, purge_vmap_node);
+>>>> -
+>>>> -				if (cpumask_test_cpu(i, cpu_online_mask))
+>>>> -					schedule_work_on(i, &vn->purge_work);
+>>>> -				else
+>>>> -					schedule_work(&vn->purge_work);
+>>>> -
+>>>> -				nr_purge_helpers--;
+>>>> -			} else {
+>>>> -				vn->purge_work.func = NULL;
+>>>> -				purge_vmap_node(&vn->purge_work);
+>>>> -				nr_purged_areas += vn->nr_purged;
+>>>> -			}
+>>>> -		}
+>>>> -
+>>>> +		/*
+>>>> +		 * Purge all nodes inline.  Do not schedule_work() and
+>>>> +		 * flush_work() here: flush_work() while holding
+>>>> +		 * vmap_purge_lock can deadlock if the worker pool is
+>>>> +		 * starved (e.g. all workers blocked on this same lock
+>>>> +		 * in the direct reclaim path via vmap_node_shrink_scan).
+>>>> +		 */
+>>>>  		for_each_cpu(i, &purge_nodes) {
+>>>>  			vn = &vmap_nodes[i];
+>>>> -
+>>>> -			if (vn->purge_work.func) {
+>>>> -				flush_work(&vn->purge_work);
+>>>> -				nr_purged_areas += vn->nr_purged;
+>>>> -			}
+>>>> +			purge_vmap_node(&vn->purge_work);
+>>>> +			nr_purged_areas += vn->nr_purged;
+>>>>  		}
+>>>>  	}
+>>>>  
+>>>> @@ -5519,10 +5499,21 @@ vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+>>>>  {
+>>>>  	struct vmap_node *vn;
+>>>>  
+>>>> -	guard(mutex)(&vmap_purge_lock);
+>>>> +	/*
+>>>> +	 * This shrinker is invoked from direct reclaim path where memory
+>>>> +	 * pressure is already high.  Blocking on vmap_purge_lock here can
+>>>> +	 * cause a pile-up of tasks all waiting for the same mutex while
+>>>> +	 * the lock holder may itself be blocked in flush_work() waiting for
+>>>> +	 * a worker that is stuck in the same reclaim path.  Use trylock to
+>>>> +	 * avoid this; skipping a pool decay cycle is harmless.
+>>>> +	 */
+>>>> +	if (!mutex_trylock(&vmap_purge_lock))
+>>>> +		return SHRINK_STOP;
+>>>> +
+>>>>  	for_each_vmap_node(vn)
+>>>>  		decay_va_pool_node(vn, true);
+>>>>  
+>>>> +	mutex_unlock(&vmap_purge_lock);
+>>>>  	return SHRINK_STOP;
+>>>>  }
+>>>>  
+>>>> -- 
+>>>> 2.25.1
+>>>>
+>>> Have you seen any report about the problem you described?
+>>>
+>> Our testing team discovered the issue during testing with syzkaller 
+>> on kernel version 6.6.89. The relevant warnings are shown below.
+>>
+>> INFO: task kworker/u80:6:141 blocked for more than 143 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:kworker/u80:6 state:D stack:0 pid:141 tgid:141 ppid:2 flags:0x00004000
+>> Workqueue: events_unbound call_usermodehelper_exec_work
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> __alloc_pages_node_noprof root/klinux/./include/linux/gfp.h:244 [inline]
+>> alloc_pages_node_noprof root/klinux/./include/linux/gfp.h:271 [inline]
+>> alloc_thread_stack_node root/klinux/kernel/fork.c:367 [inline]
+>> dup_task_struct+0xa4/0x6c0 root/klinux/kernel/fork.c:1161
+>> copy_process+0x4eb/0x57d0 root/klinux/kernel/fork.c:2261
+>> kernel_clone+0xdd/0x910 root/klinux/kernel/fork.c:2849
+>> user_mode_thread+0xcb/0x110 root/klinux/kernel/fork.c:2927
+>> call_usermodehelper_exec_sync root/klinux/kernel/umh.c:133 [inline]
+>> call_usermodehelper_exec_work+0x69/0x170 root/klinux/kernel/umh.c:164
+>> process_one_work+0x90d/0x1aa0 root/klinux/kernel/workqueue.c:3235
+>> process_scheduled_works root/klinux/kernel/workqueue.c:3315 [inline]
+>> worker_thread+0x633/0xe80 root/klinux/kernel/workqueue.c:3396
+>> kthread+0x317/0x420 root/klinux/kernel/kthread.c:388
+>> ret_from_fork+0x4ae/0x5e0 root/klinux/arch/x86/kernel/process.c:152
+>> ret_from_fork_asm+0x1a/0x30 root/klinux/arch/x86/entry/entry_64.S:293
+>>
+>> INFO: task syz-executor.0:37820 blocked for more than 143 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:syz-executor.0 state:D stack:0 pid:37820 tgid:37820 ppid:1 flags:0x00000004
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> alloc_pages_mpol_noprof+0x1ee/0x530 root/klinux/mm/mempolicy.c:2270
+>> pagetable_alloc_noprof root/klinux/./include/linux/mm.h:2982 [inline]
+>> __pud_alloc_one_noprof root/klinux/./include/asm-generic/pgalloc.h:174 [inline]
+>> pud_alloc_one_noprof root/klinux/./include/asm-generic/pgalloc.h:195 [inline]
+>> __pud_alloc+0x40/0x650 root/klinux/mm/memory.c:6222
+>> pud_alloc root/klinux/./include/linux/mm.h:2939 [inline]
+>> copy_pud_range root/klinux/mm/memory.c:1270 [inline]
+>> copy_p4d_range+0x95e/0xb70 root/klinux/mm/memory.c:1314
+>> copy_page_range+0x432/0xa30 root/klinux/mm/memory.c:1408
+>> dup_mmap+0x1127/0x1ef0 root/klinux/kernel/fork.c:773
+>> dup_mm+0x93/0x4e0 root/klinux/kernel/fork.c:1722
+>> copy_mm root/klinux/kernel/fork.c:1781 [inline]
+>> copy_process+0x2c89/0x57d0 root/klinux/kernel/fork.c:2436
+>> kernel_clone+0xdd/0x910 root/klinux/kernel/fork.c:2849
+>> __do_sys_clone+0xcf/0x120 root/klinux/kernel/fork.c:2992
+>> do_syscall_x64 root/klinux/arch/x86/entry/common.c:51 [inline]
+>> do_syscall_64+0x74/0x360 root/klinux/arch/x86/entry/common.c:81
+>> entry_SYSCALL_64_after_hwframe+0x76/0xe0
+>> RIP: 0033:0x45d778
+>> RSP: 002b:00007ffc4d846860 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
+>> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000000000045d778
+>> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
+>> RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000013782980
+>> R10: 0000000013782c50 R11: 0000000000000246 R12: 0000000000000000
+>> R13: 0000000000000032 R14: 0000000000000000 R15: 0000000000000000
+>>
+>> INFO: task syz-executor.10:56553 blocked for more than 143 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:syz-executor.10 state:D stack:0 pid:56553 tgid:56553 ppid:1 flags:0x00000004
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> __alloc_pages_node_noprof root/klinux/./include/linux/gfp.h:244 [inline]
+>> alloc_pages_node_noprof root/klinux/./include/linux/gfp.h:271 [inline]
+>> alloc_thread_stack_node root/klinux/kernel/fork.c:367 [inline]
+>> dup_task_struct+0xa4/0x6c0 root/klinux/kernel/fork.c:1161
+>> copy_process+0x4eb/0x57d0 root/klinux/kernel/fork.c:2261
+>> kernel_clone+0xdd/0x910 root/klinux/kernel/fork.c:2849
+>> __do_sys_clone+0xcf/0x120 root/klinux/kernel/fork.c:2992
+>> do_syscall_x64 root/klinux/arch/x86/entry/common.c:51 [inline]
+>> do_syscall_64+0x74/0x360 root/klinux/arch/x86/entry/common.c:81
+>> entry_SYSCALL_64_after_hwframe+0x76/0xe0
+>> RIP: 0033:0x45d778
+>> RSP: 002b:00007ffc6a4dad70 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
+>> RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000000000045d778
+>> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
+>> RBP: 0000000000000000 R08: 0000000000000000 R09: 000000002d906980
+>> R10: 000000002d906c50 R11: 0000000000000246 R12: 0000000000000000
+>> R13: 0000000000000032 R14: 0000000000000001 R15: 0000000000000000
+>>
+>> INFO: task kworker/12:13:56977 blocked for more than 144 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:kworker/12:13 state:D stack:0 pid:56977 tgid:56977 ppid:2 flags:0x00004000
+>> Workqueue: events drain_vmap_area_work
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_timeout+0x268/0x2b0 root/klinux/kernel/time/timer.c:2142
+>> do_wait_for_common root/klinux/kernel/sched/completion.c:95 [inline]
+>> __wait_for_common+0x3ea/0x600 root/klinux/kernel/sched/completion.c:116
+>> __flush_work+0xf4/0x180 root/klinux/kernel/workqueue.c:4125
+>> __purge_vmap_area_lazy+0x8e5/0xcf0 root/klinux/mm/vmalloc.c:2324
+>> drain_vmap_area_work+0x2c/0x40 root/klinux/mm/vmalloc.c:2349
+>> process_one_work+0x90d/0x1aa0 root/klinux/kernel/workqueue.c:3235
+>> process_scheduled_works root/klinux/kernel/workqueue.c:3315 [inline]
+>> worker_thread+0x633/0xe80 root/klinux/kernel/workqueue.c:3396
+>> kthread+0x317/0x420 root/klinux/kernel/kthread.c:388
+>> ret_from_fork+0x4ae/0x5e0 root/klinux/arch/x86/kernel/process.c:152
+>> ret_from_fork_asm+0x1a/0x30 root/klinux/arch/x86/entry/entry_64.S:293
+>>
+>> INFO: task kdamond.0:66163 blocked for more than 144 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:kdamond.0 state:D stack:0 pid:66163 tgid:66163 ppid:2 flags:0x00004000
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> alloc_pages_mpol_noprof+0x1ee/0x530 root/klinux/mm/mempolicy.c:2270
+>> alloc_slab_page root/klinux/mm/slub.c:2315 [inline]
+>> allocate_slab+0x27a/0x3f0 root/klinux/mm/slub.c:2485
+>> ___slab_alloc+0x889/0x1060 root/klinux/mm/slub.c:3727
+>> __slab_alloc.constprop.0+0x52/0xa0 root/klinux/mm/slub.c:3817
+>> __slab_alloc_node root/klinux/mm/slub.c:3870 [inline]
+>> slab_alloc_node root/klinux/mm/slub.c:4031 [inline]
+>> kmem_cache_alloc_noprof+0x385/0x3e0 root/klinux/mm/slub.c:4050
+>> damon_new_region+0x29/0x1a0 root/klinux/mm/damon/core.c:124
+>> damon_va_evenly_split_region+0x1f8/0x2c0 root/klinux/mm/damon/vaddr.c:85
+>> __damon_va_init_regions root/klinux/mm/damon/vaddr.c:271 [inline]
+>> damon_va_init+0x2b5/0x470 root/klinux/mm/damon/vaddr.c:283
+>> kdamond_fn+0x289/0x1240 root/klinux/mm/damon/core.c:1432
+>> kthread+0x317/0x420 root/klinux/kernel/kthread.c:388
+>> ret_from_fork+0x4ae/0x5e0 root/klinux/arch/x86/kernel/process.c:152
+>> ret_from_fork_asm+0x1a/0x30 root/klinux/arch/x86/entry/entry_64.S:293
+>>
+>> INFO: task kworker/u80:5:67724 blocked for more than 144 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:kworker/u80:5 state:D stack:0 pid:67724 tgid:67724 ppid:2 flags:0x00004000
+>> Workqueue: events_unbound call_usermodehelper_exec_work
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> __alloc_pages_node_noprof root/klinux/./include/linux/gfp.h:244 [inline]
+>> alloc_pages_node_noprof root/klinux/./include/linux/gfp.h:271 [inline]
+>> alloc_thread_stack_node root/klinux/kernel/fork.c:367 [inline]
+>> dup_task_struct+0xa4/0x6c0 root/klinux/kernel/fork.c:1161
+>> copy_process+0x4eb/0x57d0 root/klinux/kernel/fork.c:2261
+>> kernel_clone+0xdd/0x910 root/klinux/kernel/fork.c:2849
+>> user_mode_thread+0xcb/0x110 root/klinux/kernel/fork.c:2927
+>> call_usermodehelper_exec_sync root/klinux/kernel/umh.c:133 [inline]
+>> call_usermodehelper_exec_work+0x69/0x170 root/klinux/kernel/umh.c:164
+>> process_one_work+0x90d/0x1aa0 root/klinux/kernel/workqueue.c:3235
+>> process_scheduled_works root/klinux/kernel/workqueue.c:3315 [inline]
+>> worker_thread+0x633/0xe80 root/klinux/kernel/workqueue.c:3396
+>> kthread+0x317/0x420 root/klinux/kernel/kthread.c:388
+>> ret_from_fork+0x4ae/0x5e0 root/klinux/arch/x86/kernel/process.c:152
+>> ret_from_fork_asm+0x1a/0x30 root/klinux/arch/x86/entry/entry_64.S:293
+>>
+>> INFO: task kworker/u80:9:69412 blocked for more than 144 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:kworker/u80:9 state:D stack:0 pid:69412 tgid:69412 ppid:2 flags:0x00004000
+>> Workqueue: events_unbound call_usermodehelper_exec_work
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> __alloc_pages_node_noprof root/klinux/./include/linux/gfp.h:244 [inline]
+>> alloc_pages_node_noprof root/klinux/./include/linux/gfp.h:271 [inline]
+>> alloc_thread_stack_node root/klinux/kernel/fork.c:367 [inline]
+>> dup_task_struct+0xa4/0x6c0 root/klinux/kernel/fork.c:1161
+>> copy_process+0x4eb/0x57d0 root/klinux/kernel/fork.c:2261
+>> kernel_clone+0xdd/0x910 root/klinux/kernel/fork.c:2849
+>> user_mode_thread+0xcb/0x110 root/klinux/kernel/fork.c:2927
+>> call_usermodehelper_exec_sync root/klinux/kernel/umh.c:133 [inline]
+>> call_usermodehelper_exec_work+0x69/0x170 root/klinux/kernel/umh.c:164
+>> process_one_work+0x90d/0x1aa0 root/klinux/kernel/workqueue.c:3235
+>> process_scheduled_works root/klinux/kernel/workqueue.c:3315 [inline]
+>> worker_thread+0x633/0xe80 root/klinux/kernel/workqueue.c:3396
+>> kthread+0x317/0x420 root/klinux/kernel/kthread.c:388
+>> ret_from_fork+0x4ae/0x5e0 root/klinux/arch/x86/kernel/process.c:152
+>> ret_from_fork_asm+0x1a/0x30 root/klinux/arch/x86/entry/entry_64.S:293
+>>
+>> INFO: task syz-executor.18:73039 blocked for more than 144 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:syz-executor.18 state:D stack:0 pid:73039 tgid:73039 ppid:1 flags:0x00004004
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> alloc_pages_mpol_noprof+0x1ee/0x530 root/klinux/mm/mempolicy.c:2270
+>> folio_alloc_mpol_noprof+0x3b/0xd0 root/klinux/mm/mempolicy.c:2288
+>> vma_alloc_folio_noprof+0xaf/0x140 root/klinux/mm/mempolicy.c:2316
+>> folio_prealloc root/klinux/mm/memory.c:1062 [inline]
+>> wp_page_copy+0x21a/0x11c0 root/klinux/mm/memory.c:3308
+>> do_wp_page+0x762/0x14e0 root/klinux/mm/memory.c:3700
+>> handle_pte_fault+0x573/0x730 root/klinux/mm/memory.c:5717
+>> __handle_mm_fault+0xae4/0x10d0 root/klinux/mm/memory.c:5844
+>> handle_mm_fault+0x376/0x650 root/klinux/mm/memory.c:6009
+>> do_user_addr_fault+0x2be/0xc40 root/klinux/arch/x86/mm/fault.c:1330
+>> handle_page_fault root/klinux/arch/x86/mm/fault.c:1471 [inline]
+>> exc_page_fault+0x5c/0xe0 root/klinux/arch/x86/mm/fault.c:1527
+>> asm_exc_page_fault+0x26/0x30 root/klinux/./arch/x86/include/asm/idtentry.h:608
+>> RIP: 0033:0x45d8e1
+>> RSP: 002b:00007ffd015d5e10 EFLAGS: 00010246
+>> RAX: 000000000000003b RBX: 0000000000000000 RCX: 000000000045d778
+>> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
+>> RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000701d980
+>> R10: 000000000701dc50 R11: 0000000000000246 R12: 000000000000003b
+>> R13: 0000000000000032 R14: 0000000000000000 R15: 0000000000000000
+>>
+>> INFO: task syz-executor.13:74790 blocked for more than 144 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:syz-executor.13 state:D stack:0 pid:74790 tgid:74790 ppid:1 flags:0x00000004
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> alloc_pages_mpol_noprof+0x1ee/0x530 root/klinux/mm/mempolicy.c:2270
+>> folio_alloc_mpol_noprof+0x3b/0xd0 root/klinux/mm/mempolicy.c:2288
+>> vma_alloc_folio_noprof+0xaf/0x140 root/klinux/mm/mempolicy.c:2316
+>> folio_prealloc root/klinux/mm/memory.c:1062 [inline]
+>> wp_page_copy+0x21a/0x11c0 root/klinux/mm/memory.c:3308
+>> do_wp_page+0x762/0x14e0 root/klinux/mm/memory.c:3700
+>> handle_pte_fault+0x573/0x730 root/klinux/mm/memory.c:5717
+>> __handle_mm_fault+0xae4/0x10d0 root/klinux/mm/memory.c:5844
+>> handle_mm_fault+0x376/0x650 root/klinux/mm/memory.c:6009
+>> do_user_addr_fault+0x2be/0xc40 root/klinux/arch/x86/mm/fault.c:1330
+>> handle_page_fault root/klinux/arch/x86/mm/fault.c:1471 [inline]
+>> exc_page_fault+0x5c/0xe0 root/klinux/arch/x86/mm/fault.c:1527
+>> asm_exc_page_fault+0x26/0x30 root/klinux/./arch/x86/include/asm/idtentry.h:608
+>> RIP: 0033:0x45d8e1
+>> RSP: 002b:00007ffe18ac7000 EFLAGS: 00010246
+>> RAX: 0000000000000038 RBX: 0000000000000000 RCX: 000000000045d778
+>> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
+>> RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000eb5f980
+>> R10: 000000000eb5fc50 R11: 0000000000000246 R12: 0000000000000038
+>> R13: 0000000000000032 R14: 0000000000000001 R15: 0000000000000000
+>>
+>> INFO: task syz-executor.5:78550 blocked for more than 144 seconds.
+>> Tainted: G S ------- ---- 6.6.89+ #931
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:syz-executor.5 state:D stack:0 pid:78550 tgid:78550 ppid:1 flags:0x00000004
+>> Call Trace:
+>>
+>> context_switch root/klinux/kernel/sched/core.c:5346 [inline]
+>> __schedule+0x7bc/0x1310 root/klinux/kernel/sched/core.c:6720
+>> __schedule_loop root/klinux/kernel/sched/core.c:6797 [inline]
+>> schedule+0xe2/0x290 root/klinux/kernel/sched/core.c:6812
+>> schedule_preempt_disabled+0x18/0x30 root/klinux/kernel/sched/core.c:6869
+>> __mutex_lock_common root/klinux/kernel/locking/mutex.c:679 [inline]
+>> __mutex_lock+0x914/0x13a0 root/klinux/kernel/locking/mutex.c:747
+>> class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> do_shrink_slab+0x3c9/0xf30 root/klinux/mm/shrinker.c:435
+>> shrink_slab+0x175/0x5e0 root/klinux/mm/shrinker.c:662
+>> shrink_node_memcgs+0x4d6/0x700 root/klinux/mm/vmscan.c:5900
+>> shrink_node+0x247/0x12c0 root/klinux/mm/vmscan.c:5933
+>> shrink_zones root/klinux/mm/vmscan.c:6175 [inline]
+>> do_try_to_free_pages+0x314/0x1580 root/klinux/mm/vmscan.c:6237
+>> try_to_free_pages+0x293/0x740 root/klinux/mm/vmscan.c:6472
+>> __perform_reclaim root/klinux/mm/page_alloc.c:3965 [inline]
+>> __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> __alloc_pages_slowpath.constprop.0+0x800/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> __alloc_pages_noprof+0x490/0x570 root/klinux/mm/page_alloc.c:4792
+>> alloc_pages_mpol_noprof+0x1ee/0x530 root/klinux/mm/mempolicy.c:2270
+>> folio_alloc_mpol_noprof+0x3b/0xd0 root/klinux/mm/mempolicy.c:2288
+>> vma_alloc_folio_noprof+0xaf/0x140 root/klinux/mm/mempolicy.c:2316
+>> folio_prealloc root/klinux/mm/memory.c:1062 [inline]
+>> wp_page_copy+0x21a/0x11c0 root/klinux/mm/memory.c:3308
+>> do_wp_page+0x762/0x14e0 root/klinux/mm/memory.c:3700
+>> handle_pte_fault+0x573/0x730 root/klinux/mm/memory.c:5717
+>> __handle_mm_fault+0xae4/0x10d0 root/klinux/mm/memory.c:5844
+>> handle_mm_fault+0x376/0x650 root/klinux/mm/memory.c:6009
+>> do_user_addr_fault+0x2be/0xc40 root/klinux/arch/x86/mm/fault.c:1330
+>> handle_page_fault root/klinux/arch/x86/mm/fault.c:1471 [inline]
+>> exc_page_fault+0x5c/0xe0 root/klinux/arch/x86/mm/fault.c:1527
+>> asm_exc_page_fault+0x26/0x30 root/klinux/./arch/x86/include/asm/idtentry.h:608
+>> RIP: 0033:0x45d8e1
+>> RSP: 002b:00007fff9b912230 EFLAGS: 00010246
+>> RAX: 0000000000000019 RBX: 0000000000000000 RCX: 000000000045d778
+>> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
+>> RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000cd3c980
+>> R10: 000000000cd3cc50 R11: 0000000000000246 R12: 0000000000000019
+>> R13: 0000000000000032 R14: 0000000000000001 R15: 0000000000000000
+>>
+>> Future hung task reports are suppressed, see sysctl kernel.hung_task_warnings
+>>
+>> Showing all locks held in the system:
+>> 2 locks held by kthreadd/2:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 4 locks held by kworker/u80:6/141:
+>> #0: ffff8881041a4d58 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x803/0x1aa0 root/klinux/kernel/workqueue.c:3210
+>> #1: ffff8881053cfd80 ((work_completion)(&sub_info->work)){+.+.}-{0:0}, at: process_one_work+0x859/0x1aa0 root/klinux/kernel/workqueue.c:3211
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 1 lock held by khungtaskd/155:
+>> #0: ffffffff8b33eb00 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire root/klinux/./include/linux/rcupdate.h:334 [inline]
+>> #0: ffffffff8b33eb00 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock root/klinux/./include/linux/rcupdate.h:786 [inline]
+>> #0: ffffffff8b33eb00 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x75/0x340 root/klinux/kernel/locking/lockdep.c:6721
+>> 2 locks held by bash/957:
+>> #0: ffff88800310d0a8 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x29/0x80 root/klinux/drivers/tty/tty_ldisc.c:243
+>> #1: ffffc900039852f8 (&ldata->atomic_read_lock){+.+.}-{3:3}, at: n_tty_read+0xd55/0x1230 root/klinux/drivers/tty/n_tty.c:2217
+>> 5 locks held by syz-executor.0/37820:
+>> #0: ffffffff8b511780 (dup_mmap_sem){++++}-{0:0}, at: dup_mmap+0xbe/0x1ef0 root/klinux/kernel/fork.c:668
+>> #1: ffff888106b396e8 (&mm->mmap_lock){++++}-{3:3}, at: mmap_write_lock_killable root/klinux/./include/linux/mmap_lock.h:124 [inline]
+>> #1: ffff888106b396e8 (&mm->mmap_lock){++++}-{3:3}, at: dup_mmap+0xdc/0x1ef0 root/klinux/kernel/fork.c:669
+>> #2: ffff88801ff62be8 (&mm->mmap_lock/1){+.+.}-{3:3}, at: mmap_write_lock_nested root/klinux/./include/linux/mmap_lock.h:115 [inline]
+>> #2: ffff88801ff62be8 (&mm->mmap_lock/1){+.+.}-{3:3}, at: dup_mmap+0x125/0x1ef0 root/klinux/kernel/fork.c:678
+>> #3: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #3: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #3: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #4: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #4: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 2 locks held by bash/41651:
+>> #0: ffff88801f8cb8a8 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x29/0x80 root/klinux/drivers/tty/tty_ldisc.c:243
+>> #1: ffffc900001fd2f8 (&ldata->atomic_read_lock){+.+.}-{3:3}, at: n_tty_read+0xd55/0x1230 root/klinux/drivers/tty/n_tty.c:2217
+>> 2 locks held by syz-executor.10/56553:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by kworker/12:13/56977:
+>> #0: ffff88810419cb58 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x803/0x1aa0 root/klinux/kernel/workqueue.c:3210
+>> #1: ffff88804264fd80 (drain_vmap_work){+.+.}-{0:0}, at: process_one_work+0x859/0x1aa0 root/klinux/kernel/workqueue.c:3211
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: drain_vmap_area_work+0x1c/0x40 root/klinux/mm/vmalloc.c:2348
+>> 2 locks held by kdamond.0/66163:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 4 locks held by kworker/u80:5/67724:
+>> #0: ffff8881041a4d58 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x803/0x1aa0 root/klinux/kernel/workqueue.c:3210
+>> #1: ffff88804664fd80 ((work_completion)(&sub_info->work)){+.+.}-{0:0}, at: process_one_work+0x859/0x1aa0 root/klinux/kernel/workqueue.c:3211
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 4 locks held by kworker/u80:9/69412:
+>> #0: ffff8881041a4d58 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x803/0x1aa0 root/klinux/kernel/workqueue.c:3210
+>> #1: ffff8880346afd80 ((work_completion)(&sub_info->work)){+.+.}-{0:0}, at: process_one_work+0x859/0x1aa0 root/klinux/kernel/workqueue.c:3211
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.18/73039:
+>> #0: ffff888048652940 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff888048652940 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.13/74790:
+>> #0: ffff88803e37eeb8 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff88803e37eeb8 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.5/78550:
+>> #0: ffff88801f4310e8 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff88801f4310e8 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.26/80991:
+>> #0: ffff88801b3c6068 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_lock root/klinux/./include/linux/mmap_lock.h:146 [inline]
+>> #0: ffff88801b3c6068 (&mm->mmap_lock){++++}-{3:3}, at: __mm_populate+0x220/0x360 root/klinux/mm/gup.c:2170
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 4 locks held by syz-executor.5/80992:
+>> #0: ffff888104871430 (sb_writers#2){.+.+}-{0:0}, at: get_signal+0x18d9/0x1a60 root/klinux/kernel/signal.c:2915
+>> #1: ffff888001a29818 (&sb->s_type->i_mutex_key){++++}-{3:3}, at: inode_lock root/klinux/./include/linux/fs.h:828 [inline]
+>> #1: ffff888001a29818 (&sb->s_type->i_mutex_key){++++}-{3:3}, at: generic_file_write_iter+0x91/0x2f0 root/klinux/mm/filemap.c:4181
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 2 locks held by syz-executor.22/81067:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 2 locks held by syz-executor.31/81012:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 2 locks held by syz-executor.31/81059:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.23/81024:
+>> #0: ffff88804a3aa080 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff88804a3aa080 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 2 locks held by syz-executor.23/81030:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.27/81031:
+>> #0: ffff88802008cb70 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff88802008cb70 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 2 locks held by syz-executor.30/81070:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 4 locks held by syz-executor.28/81036:
+>> #0: ffff888104871430 (sb_writers#2){.+.+}-{0:0}, at: filename_create+0xf9/0x4c0 root/klinux/fs/namei.c:3928
+>> #1: ffff88817b041270 (&sb->s_type->i_mutex_key/1){+.+.}-{3:3}, at: inode_lock_nested root/klinux/./include/linux/fs.h:863 [inline]
+>> #1: ffff88817b041270 (&sb->s_type->i_mutex_key/1){+.+.}-{3:3}, at: filename_create+0x1a1/0x4c0 root/klinux/fs/namei.c:3935
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.12/81086:
+>> #0: ffff88801f2a45f8 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff88801f2a45f8 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 4 locks held by syz-executor.22/81082:
+>> #0: ffff888104871430 (sb_writers#2){.+.+}-{0:0}, at: get_signal+0x18d9/0x1a60 root/klinux/kernel/signal.c:2915
+>> #1: ffff88805c122910 (&sb->s_type->i_mutex_key){++++}-{3:3}, at: inode_lock root/klinux/./include/linux/fs.h:828 [inline]
+>> #1: ffff88805c122910 (&sb->s_type->i_mutex_key){++++}-{3:3}, at: generic_file_write_iter+0x91/0x2f0 root/klinux/mm/filemap.c:4181
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #2: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #3: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.17/81084:
+>> #0: ffff888084e01430 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff888084e01430 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.21/81088:
+>> #0: ffff88801cde23c8 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff88801cde23c8 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.5/81089:
+>> #0: ffff888004d1abe8 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_trylock root/klinux/./include/linux/mmap_lock.h:165 [inline]
+>> #0: ffff888004d1abe8 (&mm->mmap_lock){++++}-{3:3}, at: get_mmap_lock_carefully root/klinux/mm/memory.c:6036 [inline]
+>> #0: ffff888004d1abe8 (&mm->mmap_lock){++++}-{3:3}, at: lock_mm_and_find_vma+0x35/0x5c0 root/klinux/mm/memory.c:6096
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.13/81090:
+>> #0: ffff888004d1f568 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_trylock root/klinux/./include/linux/mmap_lock.h:165 [inline]
+>> #0: ffff888004d1f568 (&mm->mmap_lock){++++}-{3:3}, at: get_mmap_lock_carefully root/klinux/mm/memory.c:6036 [inline]
+>> #0: ffff888004d1f568 (&mm->mmap_lock){++++}-{3:3}, at: lock_mm_and_find_vma+0x35/0x5c0 root/klinux/mm/memory.c:6096
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.18/81091:
+>> #0: ffff888004d1d5e8 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_trylock root/klinux/./include/linux/mmap_lock.h:165 [inline]
+>> #0: ffff888004d1d5e8 (&mm->mmap_lock){++++}-{3:3}, at: get_mmap_lock_carefully root/klinux/mm/memory.c:6036 [inline]
+>> #0: ffff888004d1d5e8 (&mm->mmap_lock){++++}-{3:3}, at: lock_mm_and_find_vma+0x35/0x5c0 root/klinux/mm/memory.c:6096
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 2 locks held by syz-executor.7/81096:
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #0: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #1: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>> 3 locks held by syz-executor.16/81095:
+>> #0: ffff88801de15e08 (&vma->vm_lock->lock){++++}-{3:3}, at: vma_start_read root/klinux/./include/linux/mm.h:694 [inline]
+>> #0: ffff88801de15e08 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x1c7/0x6f0 root/klinux/mm/memory.c:6165
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __perform_reclaim root/klinux/mm/page_alloc.c:3962 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_direct_reclaim root/klinux/mm/page_alloc.c:3987 [inline]
+>> #1: ffffffff8b56b4c0 (fs_reclaim){+.+.}-{0:0}, at: __alloc_pages_slowpath.constprop.0+0x74d/0x1fb0 root/klinux/mm/page_alloc.c:4394
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: class_mutex_constructor root/klinux/./include/linux/mutex.h:200 [inline]
+>> #2: ffffffff8b567390 (vmap_purge_lock){+.+.}-{3:3}, at: vmap_node_shrink_scan+0x1d/0x90 root/klinux/mm/vmalloc.c:5108
+>>
+>> =============================================
+>>
+>>
+>>> --
+>>> Uladzislau Rezki
+>>
+>> -- 
+>> Thanks,
+>> Ye Liu
+>>
+> Thank you!
 > 
-> Right.  I'm stuffing cheese into my ears and pretending that people
-> aren't calling get_user_pages() to do write accesses.  We should be
-> able to use this work to flush out the last remaining ones -- we
-> can put in various assertions that folios should still be dirty where
-> we currently have folio_mark_dirty() calls.
-
-Last time I checked quite a few places still did.  Including various
-network file system O_DIRECT implementations (some got fixed, and
-for NFS a series is outstanding) and some really odd looking networking
-code.
-
-I wish we could somehow force them to stop doing that, but I can't
-think of any. 
-
-> Yes.  I think the only alternative would be storing a checksum of the
-> contents of the folio and seeing if it changed since the last write.
-> As you say, this is userspace doing something incredibly odd (I really
-> don't think people make a habit of mmap()ing files shared writable and
-> then giving RDMA longterm write accesses to them.  Not on machines with
-> poor quality flash storage anyway).
+> I can trigger below:
 > 
-> Or we could say "these pages only get written back on requested fsync()
-> rather than periodically".
+> <snip>
+> Aug 25 13:56:52 pc638 kernel: Future hung task reports are suppressed, see sysctl kernel.hung_task_warnings
+> Aug 25 13:56:52 pc638 kernel:
+>                               Showing all locks held in the system:
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by khungtaskd/488:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3306840 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x47/0x19b
+> Aug 25 13:56:52 pc638 kernel: 3 locks held by kworker/52:1/694:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffff8ac4401a4140 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x57b/0x600
+> Aug 25 13:56:52 pc638 kernel:  #1: ffffce26435ffe30 (drain_vmap_work){+.+.}-{0:0}, at: process_one_work+0x1fc/0x600
+> Aug 25 13:56:52 pc638 kernel:  #2: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: drain_vmap_area_work+0x1b/0x40
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by in:imklog/3831:
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/2/5009:
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/4/5011:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: alloc_vmap_area+0x8a8/0xd20
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/5/5012:
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/8/5015:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: alloc_vmap_area+0x8a8/0xd20
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/30/5037:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: alloc_vmap_area+0x8a8/0xd20
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/31/5038:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: alloc_vmap_area+0x8a8/0xd20
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/38/5045:
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/39/5046:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: alloc_vmap_area+0x8a8/0xd20
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/41/5048:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: alloc_vmap_area+0x8a8/0xd20
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/49/5056:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: alloc_vmap_area+0x8a8/0xd20
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/51/5058:
+> Aug 25 13:56:52 pc638 kernel:  #0: ffffffffa3406300 (vmap_purge_lock){+.+.}-{4:4}, at: alloc_vmap_area+0x8a8/0xd20
+> Aug 25 13:56:52 pc638 kernel: 1 lock held by vmalloc_test/57/5064:
+> ...
+> <snip>
+> 
+> I think this is with your patch. But i can check also without.
+> One potential issue to inline vnode-drain - is a time. At least
+> we need to inject cond_resched() after each vnode flush +
+> 
+> /*
+>  * Reclaim vmap areas by purging fragmented blocks and purge_vmap_area_list.
+>  */
+> static void reclaim_and_purge_vmap_areas(void)
+> 
+> {
+> 	mutex_lock(&vmap_purge_lock);
+> 	purge_fragmented_blocks_allcpus();
+> 	__purge_vmap_area_lazy(ULONG_MAX, 0, true);
+> 	mutex_unlock(&vmap_purge_lock);
+> }
+> 
+> here use try-lock as well due to potentially increased flush time.
+> 
+> Any thoughts?
+> 
+> --
+> Uladzislau Rezki
 
-Take one step back.  For regular pins we should be able to just wait for
-them given that they are by definition short lived, where short lived
-is defined by typical I/O latency for a wide range of "typical".
-We'll need the right helpers from the MM for that, and make sure
-we have a good way to debug file system hangs caused by incorrect
-use of the pinning, but all that is a solvable problem.
-Splitting read vs write pincounts would be really helpful to reduce
-the overhead of that.
 
-The interesting case is FOLL_LONGTERM, as it can pin I/O for a much
-longer time.  And that also means IFF the user of FOLL_LONGTERM actually
-wants to be able to persist data on a shared mmap, it has to manually
-dirty folios one or more times during the FOLL_LONGTERM pin, because
-otherwise the file system would never know there is dirty data.
-The set_page_dirty call in ib_umem_odp_unmap_dma_pages is an example
-for that.
+IIUC we won't have to do inline purge if we switch both places to use mutex_trylock?
 
-So what we'll need is:
 
- - a way for the file system to know if a dma pin on a folio is for a
-   short-term writable pin vs everything else.
- - for the short term writable pin wait for it for data integrity syncs,
-   or otherwise just skip it.
- - for FOLL_LONGTERM users we need an interface to (re-dirty) folios
-   while the long term pin persists.  This also needs a way for the
-   file system to reserve space.  Either as a rolling / bank switched
-   reservation for the whole life time of the mapping (although for
-   large mappings this might use up a lot of space), or to do that
-   ahead of whatever triggers the dirtying.
-   And maybe a way for file systems (or vm ops) to reject long
-   term writable pins if they don't want to deal with all this.
 
