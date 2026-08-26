@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83030C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 06:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3DC3C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 06:31:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3895F6B008C; Wed, 26 Aug 2026 02:30:49 -0400 (EDT)
+	id E605D6B0092; Wed, 26 Aug 2026 02:31:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3123B6B0092; Wed, 26 Aug 2026 02:30:49 -0400 (EDT)
+	id E100F6B0095; Wed, 26 Aug 2026 02:31:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3BA6B0095; Wed, 26 Aug 2026 02:30:49 -0400 (EDT)
+	id CFF936B0096; Wed, 26 Aug 2026 02:31:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E64C06B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:30:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5661C1402A3
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:30:46 +0000 (UTC)
-X-FDA: 85142447292.04.006FD7E
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 28CC2A0006
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:30:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	spf=pass (imf25.hostedemail.com: domain of liudalin@kylinsec.com.cn designates 54.92.39.34 as permitted sender) smtp.mailfrom=liudalin@kylinsec.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id ACC8A6B0092
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:31:57 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2486CA3156
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:31:57 +0000 (UTC)
+X-FDA: 85142450274.02.09F1516
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 4EB8D14000C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:31:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of liudalin@kylinsec.com.cn designates 54.254.200.128 as permitted sender) smtp.mailfrom=liudalin@kylinsec.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787725844;
-	b=7IqGEzy77ePJW5kGxghhZismhTPWP9uAA+3S6p9hcRb3W0ws0mokrKcvTUKpSD7+2B1BDH
-	eXW4dTV+Bxnz/xL4VX0+DthtGX+zTw4Coflbs2CG+PpMxlvMoMhWlm39UKABd1ams8HkWs
-	ZF6a1cbs4U8GZ0PowB1FKHJc+Fzwtvc=
+	t=1787725915;
+	b=PlotZaNJhcyzRgK7IOHLJMXtmQlZzQiifHFAif8YAcy0gHBjdJFDFqLs4Vt9tHMIkr67l3
+	QvD5A1fKosUQV1TOdi8VJrbl2qGQC0zM0KQGHkWNSfOXhRM3ox5ZERG/tIyxc8zXfiPmin
+	jb0jw6qiioOt6fgJkINjb5IYsvHiRNk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
+	imf26.hostedemail.com;
 	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of liudalin@kylinsec.com.cn designates 54.92.39.34 as permitted sender) smtp.mailfrom=liudalin@kylinsec.com.cn;
+	spf=pass (imf26.hostedemail.com: domain of liudalin@kylinsec.com.cn designates 54.254.200.128 as permitted sender) smtp.mailfrom=liudalin@kylinsec.com.cn;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787725844;
+	s=arc-20220608; t=1787725915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references; bh=NaMcK1mHk++nTvXqZQgclcZOKcCf/XfU6jkUKr1W8fE=;
-	b=U45XrNHoPD4x/HdRzQAGIJ5zHPPLOsOF+87CRKbFDap0Nit+cKPANma7bAoVTLmXGaMgMx
-	+h28jAGa0f1wTDGlgsFXpX3wXWnj3R2qcFZcX2s7zj1EFS619nJll62w3SIA/qJUAa6NSf
-	lp8KhKqMwsKjYCamMwCPVTS8T2yRzwY=
-X-QQ-mid: zesmtpgz1t1787725824ta8c5bcf2
-X-QQ-Originating-IP: XoYHGViZHRkF8grjBFcf1wFtpnwvYS4ldql6RKskZoQ=
+	b=dleYpuE6AzsVDq0/bwQ3QbEnaysp/12CupCrZOwrAqw+GKaarKW8AYjhbLlkKkIUK8Yyt7
+	SlZ6BPx9ymLE6rDxaGdD+7UFiOhVXcNzlayeBDzKJkQG0TFXgt3ZFSKdIuC9j9Z/RIDNnl
+	fAfKCMp1eFbNJUcEzwUHk4YvVbSxly0=
+X-QQ-mid: esmtpgz16t1787725891ta63e8adb
+X-QQ-Originating-IP: kW0zayIzP3o/qoxTIBQCQN6S1pyzy6x6ZC7xM/dLCAc=
 Received: from localhost.localdomain ( [111.8.45.130])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 26 Aug 2026 14:30:20 +0800 (CST)
+	id ; Wed, 26 Aug 2026 14:31:28 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 4632055950645483182
+X-BIZMAIL-ID: 17325394170361992191
 EX-QQ-RecipientCnt: 11
 From: Liu Dalin <liudalin@kylinsec.com.cn>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -62,44 +62,45 @@ Cc: John Hubbard <jhubbard@nvidia.com>,
 	Peter Xu <peterx@redhat.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Liu Dalin <liudalin@kylinsec.com>,
-	Deng yingchao <dengyingchao@kylinsec.com.cn>,
-	Qin yungao <qinyungao@kylinsec.com.cn>,
+	Liu Dalin <liudalin@kylinsec.com.cn>,
+	Deng Yingchao <dengyingchao@kylinsec.com.cn>,
+	Qin Yungao <qinyungao@kylinsec.com.cn>,
 	Luo Qiu <luoqiu@kylinsec.com.cn>
 Subject: [PATCH] mm/gup: add NULL check for unlocked parameter in fixup_user_fault()
-Date: Wed, 26 Aug 2026 14:29:43 +0800
-Message-ID: <D1CF78FF9DD1C630+20260826062943.3255351-1-liudalin@kylinsec.com.cn>
+Date: Wed, 26 Aug 2026 14:31:24 +0800
+Message-ID: <6D25DBDC7BEC853D+20260826063124.3255387-1-liudalin@kylinsec.com.cn>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:kylinsec.com.cn:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Mp7prxL8yJP4k5gyK46EuxCuVA3TArhryMDeu5pxaFJPioVUyfm0a2Iy
-	jotp+CzwihW4MjVDSvbIRey5oLU7cqLP3nB+y3uY8Qhu6/LiJjhLaoZs7+7tQIvOgan5OGG
-	GJoR+J7AW9VGh0aakuJTrQQIatP2Mbt5Vp17GWU0mC1QNgWsEuSw0o1HySVapzom8Ca1xjX
-	DzCLbbxETh/ssCrsbGvX7arGhjksw2tg7G2DLaQ7kA/gNQOQovRhZ0tp4d/H4wqILeLs7lJ
-	L4D9IX7VlpkjxZDCHaRKXMPdpSLyzYBri1vmEVY/JLrvrr9s2WpLtq0ahvXIE1mq6cJuhyH
-	n/jH7HRVL2UTeBbyO1QJ5mKE5f9hasGw4X2glxvndBfqMjN6fKfLh5efqKqn4gzVWSCUWPn
-	3cWSePhVSGgavowXEacdWjHgJY4gn2UGGmO5GVyRf6YVr4vV9nKauV+gei+Mm5KyG2lRc/2
-	dUzwTV8sc3EQazdC5oZfu/4YTjyISRIvKupGV4uoT27DICZvUtPcCrv9/TckcRJYZH/pBKq
-	LOHTrlCsAqMVNmnbNhj/I2Wpbb9pamJJbVh4MbFI7CyhPvaZuciU0nSv6gdoYxWxBqjmjPY
-	6VmlaKpipHIV/oway4WsYxIcCq9XdOTW55ojUTRCU0f9/2ZUOsynFpAoc70Po7g44woNZPt
-	8ZPTofgemPToo90GgZsCTGi3QanmvBNTKWJD5BAAhCmQGmjfJAiQqF0UQcYOeGPZQBy3j6m
-	GtMifHB7xubPRGsgtNhgq+HRgz333H2XtjfwP6McIJoiLB1skmSlmpTgQxDQsAjeZguEjz3
-	FF95F81C00vokLqXsRamOysB51i9Ijg9SH2/y9DFfcqnx91Y9cUu9zFiuZkp1xcYLLdgF8E
-	c5oWEF5BtzrFnBcjXd5LfrFdGxXhCpIq7ICAAeVu1k0Ekzv/QgtEEpg1m/FdDYyU1ppa2Uj
-	NkTwRL2GP3qiwKPqAj9oC9M+TGJ6qMI6YJKgh4fJ/OsXD+n17pAiRQORI+chY1gcff9gZfE
-	Nv2EwNJOe2x+xzoPTtrixpto6NI/6pF3RtOuQpZ5PbMDUMncDRGZX4f+Rme4c=
+Feedback-ID: esmtpgz:kylinsec.com.cn:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: N/5uKQClqYtPM1OK2QllPf1Za3G9snMwPFA+3bm0Rm6LdNibDniZc1NV
+	5FR6xe5gs/wtetbp3/uf/MxVQTQteVKy/evXkvBs8Pew0rDbGT4q7HmWgDQwaNG1ZVi4b3P
+	wIZt1FP1OcpryZSli0gE2b4dh0wvknBPT34na/9ZXEgeJtaufPNZLV2FgDdE5h5T0t7lqTv
+	/6yd7CuWELMi+LWjxniu0+neCxpGvnJH/8/X4M4Lv+BaXNJOKoW4Zhn4jzYRI2CZPxFbXgR
+	dWNxr26RH+GzFXM6AtHOrRItgEPFd2wTJl+Qqun9qs2eAR2OYFuIeYgSPQbIEWKUf8Yz4Hr
+	vaNKc41P3XfayPxfrskuqFXz1v1lkDSTD3XWcOnXwV3q6vgaVF1I5gwZ+lD6WjBwfwaOJ66
+	M0+xEVs0ZqRXeSxZVegisiIkk7a84pPFfUEIBkh9/ifHj3NFWLKwNMjGmnntIxksCsNPs2x
+	Xk3Pt6P1oJ6thGOEIwO3pG8rn6M1X2OF8HpGFQNDcnIDY5eSNvTXlndI4poZ08Q8GHpj/DB
+	ZR/4e2PwSPry0T2fW5HnziyY1igPHVMLwsGQdf3x9E7Eqi+ggEbCwv8mz+Y27ldwdoYc8xg
+	MoYGLzVk09A4KYl7j/G4UJTaGtXKymYl1p7aiMc1CR0IaDqaDxwE6jFzY223IwXbpMm6AdJ
+	VD6WYvIgJh5YBwWtMnpwHBgIXpzNKwNJBGODiYyaiHukg0ghL8pM3PWQXvLZ3tl4aHNTDVw
+	0wqDoILF6DlSzGtmSMhhMVZKeteCOUenZkmxQB2xPeU5ZEHFlX5wskOJwaddjujvud2nTru
+	AWyiuq5jVQuUji05aTfgnHkjlTg1h0DcIERaQG3a5q4IoDFT04AlJs2z+GC1PCgKTUr0ykZ
+	8dc/3PyZkrALHKJDQuxQi9n/zzb9LNyARBAHCbcDUrX9tIpnm+k4FyPjMNGz4dZbecfeCqs
+	NfrZGBzx8ucXNMplsHhmmFU1uAuiLxg97KZdLqe+xJcYZHSs+qr0W6UDi9bUaGW4VnbA42d
+	9kHKoyUCRH+B/x+jzFbvJfiKZWE9iMZLAkROpqNaUGWVB80nBmq33vak8/guLsc49nAL8LO
+	2PQRSB23xWhb0CJpVFjW18JrPZczYLq8x+27fXmTUXr6z26YP3zHiA=
 X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 X-QQ-RECHKSPAM: 0
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 28CC2A0006
+X-Rspamd-Queue-Id: 4EB8D14000C
 X-Stat-Signature: igy6izqe819ow8897tosjmcdoy9ah53h
-X-HE-Tag: 1787725842-458121
-X-HE-Meta: U2FsdGVkX181wmFO1948SjxvEVvwVvqKhhhuG6V2xPD0Uwy8GGIB9aU/DtFPud+I+YQSDFKAJnYAQiX42CM2RTg9yUCP7ljARPXUwxSdKw/1dR9H3Nf7k0XB3FBptAC6FNO+2h+UKQpqtgRNIgXDMIfMintUHniYA4hgjlOJaPugcWEfjC4bGC7b7BetBeXvx+t2jYczVC7ogkMKC4S4MMMzAhcbOTCnadWgJe9p4kayePUGTcoMiMBDT2ix2JbJYciB0Voh1MvSSai1HX/QixeYdmHLIUkgygAiq05vAZyLp1f9YtJQSqjBwJUvwBGmNzJWOwAP8qMQq/DilOpkJDGP6f/d+xnc6mb4E3V+3mRU+hL2NcpUlFGXp4r/IIWM6s7Bmqyc+YOjGBdoun34tePDfgvWhid+ah3bg1aLXjjW1ev5H0zXk+RgEKssFzQpu88JB1z6e2Sl0gC3dioSqMAF0QbNJRFin4bjEejfnZjTzAPxrszcSn4qo1ZCEWJbbcfYkiJ9RlB4vHXn3rK5zqI/Y+BvfEhd7tKGa3ZPLYDUNbiLhhPFxDM7a2FTnjTvkZMuQ8o0cFfhqefXlAu6ugajqM5uEPrGTkcIajVxVjVbUUPSRH3RusVaDf94qp6m837RdyJB0gUHi/Zv89SZaUH1kkGDyhBuwfdXCA1bzNx+Z+VUFhfGVzEfTo0s8+BGmZTbrLRmZ2DNEVkG95Rg6EMgeI2T05DsT/u+B+tPNn9EyuizWw7vQ3V4zaNS3EysYS7Myphx2t199DTtf4m1ZDBOJ7Xpla+3ZNen9oNtU/O+obbzhngISZFMlmf8No2q1/0Toz588IXVAr8REY6V+7mODUYqttiv09qhPt0+NDREupjDNJjJRr3lqlUZyYQ+Irs3AV6qZNksJCas558mYFNHiKtOenN5BCioWmSMKjRoPLiRcLAU+DIAMkrOM+a4uYGErCkNMoiUSfsXn07
- a3qw+rbR
- qNH+c+/4+uO4JxCfPgUklAEkMpFKMOHnUj26XzVx3cFAJdEYTm3uxN1rRI8bz6g59MZE9WguFXf9l9FmBXX87H54arLDCKKesZCVUqcOaTMKyUq84XyLMWiLwRcHwHEeM8oGC2UXqJNmEz0U2ce1DemqciEDBpPk9U9Jm3ycopvsDWxAxO1wuX6Y7hPEBOycU8OgnJnVBYgcVTOkYE7gPaVX0DJFkFbLguG4o
+X-HE-Tag: 1787725913-924666
+X-HE-Meta: U2FsdGVkX1/DPEUMJex6Tp36MmxbnxaL+eudcM5KVBFPCdxSZNAPllvPHaII1EdlljDY8/F2kUxR4yzPLpK8cGLLz2G9lmnyrjokmMBSr16920klATu5bgbFGcaWPi+fTTK6mXjqbdIpiIIVa9u/EiqtB/lNWjw8peUS4fzen/kU0cH2hyVc3fW+exPTzOWJfVtMrThhEE6uWbCDvesUqyG4lZcpZ+89n6ZBXvMhrLkVXh9/lY4oeZu4YEfdchfwbphQ0km0dsWSzJVhEhwng1F10/YGPhuSavx1B4ueBZEm6L32oPM2WkyX5TgP0sc1xBihNxdVVAkbD/L6fFe6Fr+Oy1MwYfR7kES5gIP21LntEasS7fKqQ/y6+jyds60KqYAh3vkN86KZkENzcojM2+LEHBmBQPwKbXXQektH8zEiUdE4gA8ZZw1X1rKpNT/lnVxXDKA7PsiOPcKoJg5dlOPUaaxjrWBsLlh92D+7pibuCLU4nRpsSSg4cOo2oFCuRdUmVVlMPt0Frzip90x4FnkAiL1B2yVqh4v9GPR8M1XsQdx/fVLTUk2mVx6iSDHsHGOXS/EHBBxKEOjEeNo9fUaX4BONMOuk1ed3DAgs+CEolbtFjLn5VwSgtuQCaXBgzO/AAxdY6pTLuRpKfCgkKbbtNqOe1QHJSffxfA57l8CuCUlHZkebM98NYUMuud/kBnqW7IUKK53FVsRwajqBbCWrKPN/dNypjxqVDseN2Bci2qJPrNhw/ouYut6ME0XVxehqh9MQOvVWmpZfvHnRbV/74qHACFdkYAlcmgF4PfL9xxqgXr8zjfZ/w0+pyylLY6d17Ugw3RXdUGcLIUOhcNkvsHnWNiPo99Ro3DC+699pEjy+DEZB300QAiRqKMSmCHWZIyJnK1ua81yNcFqakYmDS+5hKe65gwCefZf1DXRcg3WsrjsyYATWcRt7arkvvLfGLygrM5mGOsNo6CN
+ ggBkf2Py
+ spalQAuZYGGSFUIpYBECwmqeQAN/bF79az3PQMWx6S3jw/hkFgD9EcSXLPf/WxZ7s57Wg8Z7qrjCNDAiMUtI7XF34MTajiDEzLPTeFRlREJZLQ9B41/kaHvEwMAbhA0pfT0qJQlWK0/tSgfxc5xf5YVsxpuiV/plOvmkd/tmMwcAMN1ChDgOwG4CpzVojQWzYuWrE/uIv+IEHLKByfguaY/H1yX5TcWlOABiEg0hjnZVcD7g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
