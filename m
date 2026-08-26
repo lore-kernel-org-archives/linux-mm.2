@@ -4,107 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9993C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 06:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83030C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 06:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 647226B0088; Wed, 26 Aug 2026 02:30:25 -0400 (EDT)
+	id 3895F6B008C; Wed, 26 Aug 2026 02:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F7456B008A; Wed, 26 Aug 2026 02:30:25 -0400 (EDT)
+	id 3123B6B0092; Wed, 26 Aug 2026 02:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E6506B008C; Wed, 26 Aug 2026 02:30:25 -0400 (EDT)
+	id 1B3BA6B0095; Wed, 26 Aug 2026 02:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 169576B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:30:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 736958028D
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:30:24 +0000 (UTC)
-X-FDA: 85142446368.26.57DE291
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B1019140009
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:30:21 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=icqxE10a;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id E64C06B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:30:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5661C1402A3
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:30:46 +0000 (UTC)
+X-FDA: 85142447292.04.006FD7E
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 28CC2A0006
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:30:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of liudalin@kylinsec.com.cn designates 54.92.39.34 as permitted sender) smtp.mailfrom=liudalin@kylinsec.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787725844;
+	b=7IqGEzy77ePJW5kGxghhZismhTPWP9uAA+3S6p9hcRb3W0ws0mokrKcvTUKpSD7+2B1BDH
+	eXW4dTV+Bxnz/xL4VX0+DthtGX+zTw4Coflbs2CG+PpMxlvMoMhWlm39UKABd1ams8HkWs
+	ZF6a1cbs4U8GZ0PowB1FKHJc+Fzwtvc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of liudalin@kylinsec.com.cn designates 54.92.39.34 as permitted sender) smtp.mailfrom=liudalin@kylinsec.com.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787725822;
+	s=arc-20220608; t=1787725844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=/fiNfBiBtmqcOL5Yv5meETGk9xv7LZf/XYLjgc2QACU=;
-	b=Wct2bl+xViIC5NaaucJzkIRReGP+JGx8iUxEFHCN5cgji9gv76iKhU8OdlIL9cqfThWgfP
-	j9SCwksCqL7h94C8kKaDR+cXOHkJevbZhnzIwpnqlHdaQS5BlbN5kfxzGd04aXffQ1f4EZ
-	2cxcAKDUzKwxiJ0d6DCGud0CuBBPmxU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=icqxE10a;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787725822;
-	b=AD8DEhv5EhWgRJEeEFQCES71AqZaHF8GNrfXqyM6xVczd6HUodNaJfl60jh2AlsKeHo3mt
-	PLgX+HMFsF8yAaWv3unjMP/l8YTqeud+oZQAe4dHx3vukUP6V1ZpFMaJ83lIp8AO3dS7p6
-	IsDSsrZ/xQ5jaoUhxI/1EVePcijyTt0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787725822; x=1819261822;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=rDKvz/peGRfXq5YQmSPRC3KJaw3+ZougxMrFg0o5odI=;
-  b=icqxE10a8PQVd5QFtmBrXQjuhOcTnwArPrVKshe5ciU8n+YniL5DjL9Y
-   qDHlvCYlKlWcoDJcJAd9g2iJaqsbaT26QlgmFWXwUSWgNSe9CpUdxEa6r
-   GhpF55tJBp+IXCp90353AtMrWJV4y1Zis6AxgXoSy+XZ6gIt72ItyNoWU
-   I1xRF8N3lRUGcb+YPO7PZkzikoaN7nyL50kBEhFKt+HCmokicPhiT6mgr
-   8I96cec5Wx/HHfktmLewffV9o8iC7OwZdtniIIZOUdkehTT49Dk/XqVCS
-   9d3mauQF7GMtfea4lGMZgRAbpdYEu2ASUVVcGBa3stJFT+eAakMATrsoK
-   w==;
-X-CSE-ConnectionGUID: xXz6U6zfSXGy++aYSCs5xg==
-X-CSE-MsgGUID: ttvqCZONS8KeFQF34sx9vg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="113737055"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="113737055"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 23:30:16 -0700
-X-CSE-ConnectionGUID: ZfRpfErhTaqv3OW7pFIz3Q==
-X-CSE-MsgGUID: PADR+xa1RxuJ/tY1ZWnwdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="268067141"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 23:30:12 -0700
-Date: Wed, 26 Aug 2026 14:30:05 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Prakash Gupta <prakash.gupta@oss.qualcomm.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Prakash Gupta <prakash.gupta@oss.qualcomm.com>, yi1.lai@intel.com
-Subject: Re: [PATCH] mm/memcg: fix NULL nodeinfo[] dereference on
- late-onlined nodes
-Message-ID: <202608261313.1d95c34d-lkp@intel.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=NaMcK1mHk++nTvXqZQgclcZOKcCf/XfU6jkUKr1W8fE=;
+	b=U45XrNHoPD4x/HdRzQAGIJ5zHPPLOsOF+87CRKbFDap0Nit+cKPANma7bAoVTLmXGaMgMx
+	+h28jAGa0f1wTDGlgsFXpX3wXWnj3R2qcFZcX2s7zj1EFS619nJll62w3SIA/qJUAa6NSf
+	lp8KhKqMwsKjYCamMwCPVTS8T2yRzwY=
+X-QQ-mid: zesmtpgz1t1787725824ta8c5bcf2
+X-QQ-Originating-IP: XoYHGViZHRkF8grjBFcf1wFtpnwvYS4ldql6RKskZoQ=
+Received: from localhost.localdomain ( [111.8.45.130])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 26 Aug 2026 14:30:20 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 4632055950645483182
+EX-QQ-RecipientCnt: 11
+From: Liu Dalin <liudalin@kylinsec.com.cn>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Liu Dalin <liudalin@kylinsec.com>,
+	Deng yingchao <dengyingchao@kylinsec.com.cn>,
+	Qin yungao <qinyungao@kylinsec.com.cn>,
+	Luo Qiu <luoqiu@kylinsec.com.cn>
+Subject: [PATCH] mm/gup: add NULL check for unlocked parameter in fixup_user_fault()
+Date: Wed, 26 Aug 2026 14:29:43 +0800
+Message-ID: <D1CF78FF9DD1C630+20260826062943.3255351-1-liudalin@kylinsec.com.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260810-memcg-nodeinfo-null-guard-v1-1-77a73204d63a@oss.qualcomm.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B1019140009
-X-Stat-Signature: h8n8cso1y66jak18wbe1qnsq7w9uxxjc
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:kylinsec.com.cn:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: Mp7prxL8yJP4k5gyK46EuxCuVA3TArhryMDeu5pxaFJPioVUyfm0a2Iy
+	jotp+CzwihW4MjVDSvbIRey5oLU7cqLP3nB+y3uY8Qhu6/LiJjhLaoZs7+7tQIvOgan5OGG
+	GJoR+J7AW9VGh0aakuJTrQQIatP2Mbt5Vp17GWU0mC1QNgWsEuSw0o1HySVapzom8Ca1xjX
+	DzCLbbxETh/ssCrsbGvX7arGhjksw2tg7G2DLaQ7kA/gNQOQovRhZ0tp4d/H4wqILeLs7lJ
+	L4D9IX7VlpkjxZDCHaRKXMPdpSLyzYBri1vmEVY/JLrvrr9s2WpLtq0ahvXIE1mq6cJuhyH
+	n/jH7HRVL2UTeBbyO1QJ5mKE5f9hasGw4X2glxvndBfqMjN6fKfLh5efqKqn4gzVWSCUWPn
+	3cWSePhVSGgavowXEacdWjHgJY4gn2UGGmO5GVyRf6YVr4vV9nKauV+gei+Mm5KyG2lRc/2
+	dUzwTV8sc3EQazdC5oZfu/4YTjyISRIvKupGV4uoT27DICZvUtPcCrv9/TckcRJYZH/pBKq
+	LOHTrlCsAqMVNmnbNhj/I2Wpbb9pamJJbVh4MbFI7CyhPvaZuciU0nSv6gdoYxWxBqjmjPY
+	6VmlaKpipHIV/oway4WsYxIcCq9XdOTW55ojUTRCU0f9/2ZUOsynFpAoc70Po7g44woNZPt
+	8ZPTofgemPToo90GgZsCTGi3QanmvBNTKWJD5BAAhCmQGmjfJAiQqF0UQcYOeGPZQBy3j6m
+	GtMifHB7xubPRGsgtNhgq+HRgz333H2XtjfwP6McIJoiLB1skmSlmpTgQxDQsAjeZguEjz3
+	FF95F81C00vokLqXsRamOysB51i9Ijg9SH2/y9DFfcqnx91Y9cUu9zFiuZkp1xcYLLdgF8E
+	c5oWEF5BtzrFnBcjXd5LfrFdGxXhCpIq7ICAAeVu1k0Ekzv/QgtEEpg1m/FdDYyU1ppa2Uj
+	NkTwRL2GP3qiwKPqAj9oC9M+TGJ6qMI6YJKgh4fJ/OsXD+n17pAiRQORI+chY1gcff9gZfE
+	Nv2EwNJOe2x+xzoPTtrixpto6NI/6pF3RtOuQpZ5PbMDUMncDRGZX4f+Rme4c=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 X-Rspam-User: 
-X-HE-Tag: 1787725821-361156
-X-HE-Meta: U2FsdGVkX18IAGWBiG+SGIWHL/mLjE+n0W5MlpdA8H1+a0H7hYr/hVFmdOD5RRFNp1jn+Q8IJFSvpv10WleARPv9zDYo8x0eSOSngwcCCll4HFuzzk24OmkjWvJV0yTmE0ZZX0VqNYmPP8sItImm7jXDWjxtEwg4DXy6dtwitcWllJyL2meHn8hHE+8FwDDOnvNzKfd/QWIMEwcY7NVPLsSkoJDcN4e4it55fTVXU4f7VLbafe4x0jj/jSDH4w6YWuRcgFKmDZFxTF1OzIPdNYPxvh+jpGXpiiejhi0Dj56C5ojpumbGfGTBzh4Et/Xzi5cJ5zL4i2GR8g2ACxkPpdkJ2hve7lTVFeAl5IYT2JeOLmQQ3kaYCmeYfeq5mgT2lZ2tkJfcrTrGgtfQRQXklVpHuqOhxun0I5FgJ2/Clw7M7E1JmCDk7KhZ1xhKNSrpX/h+OnKD1g+GGSpV68fvDSzAUcukLyp7eDQB0q+GnLlGTeYIzhRmteQNY18ZlB4YHm7Ul+iMNl+iZNbCnvmRsrQp986kpiwN1w7Nc0rT3FPyUFv1MErDVhfwFEVFr8bgLuNx/KR59h5721Tll8t9czVrrQ0lRwtPOiXVGdjOm668otzXTLeTiZ8ny1RK3vinogsz+gsiWXhLKCswX5s5qP2WRA8xwUkGuwn9XQaw3EnwCTvWhSuoIrt70jahcArEPBr3md3ZtPK3nlg4YPIKhCSqyKfc+oNy/sjFJjEfk15QtP5fS4FR8iamsozjwk1DlA7qD1hsppf56j+6f1uZw1KfgENNmRgiVecz4aZ6Pb+DWjdGoTpipGccVBu+BZx3t9ZDA+HIi0WORIs6aPySEk1PmM5ChTBOI7O7Oxp8PBvnf/4NxfeVweNGF0uo8YISSW61lUC9PTOkViohOLhOXqAoJvkYlZ3OHw0XLprIX1ks6ReJKaqT9Sx60j10YMjReguJuTvq98CpUOGZ4Zn
- MA5yCfVz
- GdCT1zVO8t1I/M2pc5QSWKfhCPEeFHx5iL6BCCwf66ytqnTekGZ0lmafMCqHJM55wFSRtnZ/q7ZxbpyWDbjfKhTB65em64s+l/a7/y4QVHVDudLIUfjAkgIYQDJnRrMA5QOBrJvsyjwfEKmV9JWshG6kTVsaeN54FbMjjaFmU4KbsKC7gAYo7byQo6TGM0gbGB0astuC+1rWxkwPGLEtx4Tqnbmr7t6LcGyqYQ69JPfiuJqONdZjDyvQtFLSClgQcoCVWoFx2U3B4+UzbzikobC4q4VtYRr7ukHgFPa/xngiJ90wgfswVSrlKiSeCRU1ylhipX2l8QyBlwybADWlhts0UJcXAqSQAkkhb
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 28CC2A0006
+X-Stat-Signature: igy6izqe819ow8897tosjmcdoy9ah53h
+X-HE-Tag: 1787725842-458121
+X-HE-Meta: U2FsdGVkX181wmFO1948SjxvEVvwVvqKhhhuG6V2xPD0Uwy8GGIB9aU/DtFPud+I+YQSDFKAJnYAQiX42CM2RTg9yUCP7ljARPXUwxSdKw/1dR9H3Nf7k0XB3FBptAC6FNO+2h+UKQpqtgRNIgXDMIfMintUHniYA4hgjlOJaPugcWEfjC4bGC7b7BetBeXvx+t2jYczVC7ogkMKC4S4MMMzAhcbOTCnadWgJe9p4kayePUGTcoMiMBDT2ix2JbJYciB0Voh1MvSSai1HX/QixeYdmHLIUkgygAiq05vAZyLp1f9YtJQSqjBwJUvwBGmNzJWOwAP8qMQq/DilOpkJDGP6f/d+xnc6mb4E3V+3mRU+hL2NcpUlFGXp4r/IIWM6s7Bmqyc+YOjGBdoun34tePDfgvWhid+ah3bg1aLXjjW1ev5H0zXk+RgEKssFzQpu88JB1z6e2Sl0gC3dioSqMAF0QbNJRFin4bjEejfnZjTzAPxrszcSn4qo1ZCEWJbbcfYkiJ9RlB4vHXn3rK5zqI/Y+BvfEhd7tKGa3ZPLYDUNbiLhhPFxDM7a2FTnjTvkZMuQ8o0cFfhqefXlAu6ugajqM5uEPrGTkcIajVxVjVbUUPSRH3RusVaDf94qp6m837RdyJB0gUHi/Zv89SZaUH1kkGDyhBuwfdXCA1bzNx+Z+VUFhfGVzEfTo0s8+BGmZTbrLRmZ2DNEVkG95Rg6EMgeI2T05DsT/u+B+tPNn9EyuizWw7vQ3V4zaNS3EysYS7Myphx2t199DTtf4m1ZDBOJ7Xpla+3ZNen9oNtU/O+obbzhngISZFMlmf8No2q1/0Toz588IXVAr8REY6V+7mODUYqttiv09qhPt0+NDREupjDNJjJRr3lqlUZyYQ+Irs3AV6qZNksJCas558mYFNHiKtOenN5BCioWmSMKjRoPLiRcLAU+DIAMkrOM+a4uYGErCkNMoiUSfsXn07
+ a3qw+rbR
+ qNH+c+/4+uO4JxCfPgUklAEkMpFKMOHnUj26XzVx3cFAJdEYTm3uxN1rRI8bz6g59MZE9WguFXf9l9FmBXX87H54arLDCKKesZCVUqcOaTMKyUq84XyLMWiLwRcHwHEeM8oGC2UXqJNmEz0U2ce1DemqciEDBpPk9U9Jm3ycopvsDWxAxO1wuX6Y7hPEBOycU8OgnJnVBYgcVTOkYE7gPaVX0DJFkFbLguG4o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,106 +107,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+While the current callers either pass a valid pointer or explicitly
+pass NULL (indicating they don't need the unlock notification), it is
+safer to add a defensive NULL check before dereferencing. This prevents
+a kernel crash if any caller passes NULL and handle_mm_fault() returns
+VM_FAULT_COMPLETED or VM_FAULT_RETRY.
 
-Hello,
+Fixes smatch warnings:
+- mm/gup.c:1597 fixup_user_fault() error: we previously assumed 'unlocked' could be null (see line 1573)
 
-kernel test robot noticed "Oops:general_protection_fault,probably_for_non-canonical_address#:#[##]SMP_KASAN" on:
+Fixes: 4bbd4c776a63 ("mm: move get_user_pages()-related code to separate file")
+Assisted-by: smatch:2.0 [static analysis]
+Signed-off-by: Liu Dalin <liudalin@kylinsec.com.cn>
+---
+ mm/gup.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-commit: d793df2588b727e161c6586cafda1b3146216b36 ("[PATCH] mm/memcg: fix NULL nodeinfo[] dereference on late-onlined nodes")
-url: https://github.com/intel-lab-lkp/linux/commits/Prakash-Gupta/mm-memcg-fix-NULL-nodeinfo-dereference-on-late-onlined-nodes/20260810-111630
-patch link: https://lore.kernel.org/all/20260810-memcg-nodeinfo-null-guard-v1-1-77a73204d63a@oss.qualcomm.com/
-patch subject: [PATCH] mm/memcg: fix NULL nodeinfo[] dereference on late-onlined nodes
-
-in testcase: boot
-
-config: x86_64-randconfig-r132-20260821
-compiler: clang-22
-test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 32G
-
-(please refer to attached dmesg/kmsg for entire log/backtrace)
-
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <yi1.lai@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202608261313.1d95c34d-lkp@intel.com
-
-
-[    4.964339][   T26] KASAN: probably user-memory-access in range [0x0000000000002040-0x0000000000002047]
-[    4.964822][    T1] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x1e3306b9ada, max_idle_ns: 440795224413 ns
-[    4.964364][   T26] CPU: 1 UID: 0 PID: 26 Comm: kworker/u10:0 Tainted: G                T   7.2.0-rc6-00001-gd793df2588b7 #1 PREEMPTLAZY  7c3d8f436a783d0b482149cc8be5fdb0e2064a33
-[    4.967167][   T26] Tainted: [T]=RANDSTRUCT
-[    4.967167][   T26] Workqueue: async async_run_entry_fn
-[    4.967167][   T26] RIP: 0010:mod_node_state+0x2d/0x180
-[    4.967167][   T26] Code: 41 56 41 55 41 54 53 89 cd 41 89 d4 41 89 f7 49 89 fe 48 8d 9f 40 20 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 85 18 13 00 4c 8b 2b 44 89 fb 41 83
-[    4.967167][   T26] RSP: 0000:ffffc900001c7610 EFLAGS: 00010002
-[    4.967167][   T26] RAX: 0000000000000408 RBX: 0000000000002040 RCX: dffffc0000000000
-[    4.967167][   T26] RDX: 0000000000000001 RSI: 0000000000000013 RDI: 0000000000000000
-[    4.967167][   T26] RBP: 0000000000000000 R08: ffffffffffe8ac20 R09: 0000000000000001
-[    4.967167][   T26] R10: 0000000000000000 R11: fffff52000038ecc R12: 0000000000000001
-[    4.967167][   T26] R13: dffffc0000000000 R14: 0000000000000000 R15: 0000000000000013
-[    4.967167][   T26] FS:  0000000000000000(0000) GS:ffff888799a99000(0000) knlGS:0000000000000000
-[    4.967167][   T26] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    4.967167][   T26] CR2: 0000000000000000 CR3: 00000000040c5000 CR4: 00000000000406b0
-[    4.967167][   T26] Call Trace:
-[    4.967167][   T26]  <TASK>
-[    4.967167][   T26]  mod_lruvec_state+0x47/0xc0
-[    4.967167][   T26]  ? lruvec_stat_mod_folio+0x22/0x300
-[    4.967167][   T26]  lruvec_stat_mod_folio+0x181/0x300
-[    4.967167][   T26]  __filemap_add_folio+0x758/0xb00
-[    4.967167][   T26]  ? workingset_activation+0x500/0x500
-[    4.967167][   T26]  filemap_add_folio+0x1ce/0x380
-[    4.967167][   T26]  __filemap_get_folio_mpol+0x3b5/0x940
-[    4.967167][   T26]  simple_write_begin+0x61/0x2c0
-[    4.967167][   T26]  page_symlink+0x1a8/0x300
-[    4.967167][   T26]  ramfs_symlink+0x8c/0x140
-[    4.967167][   T26]  vfs_symlink+0x12f/0x2c0
-[    4.967167][   T26]  filename_symlinkat+0xf4/0x280
-[    4.967167][   T26]  ? __asan_memcpy+0x40/0x80
-[    4.967167][   T26]  init_symlink+0x2e/0x80
-[    4.967167][   T26]  do_symlink+0xa5/0x180
-[    4.967167][   T26]  flush_buffer+0x6b/0x100
-[    4.967167][   T26]  ? unpack_to_rootfs+0x380/0x380
-[    4.967167][   T26]  __gunzip+0x8bd/0xdc0
-[    4.967167][   T26]  ? __gunzip+0xdc0/0xdc0
-[    4.967167][   T26]  ? decompress_method+0x1c0/0x1c0
-[    4.967167][   T26]  unpack_to_rootfs+0x21e/0x380
-[    4.967167][   T26]  ? flush_buffer+0x100/0x100
-[    4.967167][   T26]  ? xwrite+0x100/0x100
-[    4.967167][   T26]  do_populate_rootfs+0x21c/0x300
-[    4.967167][   T26]  async_run_entry_fn+0x95/0x3c0
-[    4.967167][   T26]  ? process_scheduled_works+0x7a6/0x1240
-[    4.967167][   T26]  process_scheduled_works+0x86b/0x1240
-[    4.967167][   T26]  worker_thread+0x749/0xbc0
-[    4.967167][   T26]  kthread+0x338/0x440
-[    4.967167][   T26]  ? alloc_worker+0x2c0/0x2c0
-[    4.967167][   T26]  ? __do_trace_sched_kthread_stop_ret+0x140/0x140
-[    4.967167][   T26]  ret_from_fork+0x291/0x5c0
-[    4.967167][   T26]  ? __do_trace_sched_kthread_stop_ret+0x140/0x140
-[    4.967167][   T26]  ret_from_fork_asm+0x11/0x20
-[    4.967167][   T26]  </TASK>
-[    4.967167][   T26] Modules linked in:
-[    4.967167][   T26] ---[ end trace 0000000000000000 ]---
-[    4.967167][   T26] RIP: 0010:mod_node_state+0x2d/0x180
-[    4.967167][   T26] Code: 41 56 41 55 41 54 53 89 cd 41 89 d4 41 89 f7 49 89 fe 48 8d 9f 40 20 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 85 18 13 00 4c 8b 2b 44 89 fb 41 83
-[    4.967167][   T26] RSP: 0000:ffffc900001c7610 EFLAGS: 00010002
-[    4.967167][   T26] RAX: 0000000000000408 RBX: 0000000000002040 RCX: dffffc0000000000
-[    4.967167][   T26] RDX: 0000000000000001 RSI: 0000000000000013 RDI: 0000000000000000
-[    4.967167][   T26] RBP: 0000000000000000 R08: ffffffffffe8ac20 R09: 0000000000000001
-[    4.967167][   T26] R10: 0000000000000000 R11: fffff52000038ecc R12: 0000000000000001
-[    4.967167][   T26] R13: dffffc0000000000 R14: 0000000000000000 R15: 0000000000000013
-[    4.967167][   T26] FS:  0000000000000000(0000) GS:ffff888799a99000(0000) knlGS:0000000000000000
-[    4.967167][   T26] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    4.967167][   T26] CR2: 0000000000000000 CR3: 00000000040c5000 CR4: 00000000000406b0
-[    4.967167][   T26] Kernel panic - not syncing: Fatal exception
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20260826/202608261313.1d95c34d-lkp@intel.com
-
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+diff --git a/mm/gup.c b/mm/gup.c
+index 0692119b7904..d12475a7f7cc 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1594,7 +1594,8 @@ int fixup_user_fault(struct mm_struct *mm,
+ 		 * could tell the callers so they do not need to unlock.
+ 		 */
+ 		mmap_read_lock(mm);
+-		*unlocked = true;
++		if (unlocked)
++			*unlocked = true;
+ 		return 0;
+ 	}
+ 
+@@ -1608,7 +1609,8 @@ int fixup_user_fault(struct mm_struct *mm,
+ 
+ 	if (ret & VM_FAULT_RETRY) {
+ 		mmap_read_lock(mm);
+-		*unlocked = true;
++		if (unlocked)
++			*unlocked = true;
+ 		fault_flags |= FAULT_FLAG_TRIED;
+ 		goto retry;
+ 	}
+-- 
+2.43.0
 
 
