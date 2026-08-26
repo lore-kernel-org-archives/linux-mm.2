@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12596C61DC7
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA71CC61DC7
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:25:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676746B00EC; Wed, 26 Aug 2026 05:25:31 -0400 (EDT)
+	id E8C3E6B00ED; Wed, 26 Aug 2026 05:25:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627046B00ED; Wed, 26 Aug 2026 05:25:31 -0400 (EDT)
+	id E3CD16B00EE; Wed, 26 Aug 2026 05:25:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53C616B00EE; Wed, 26 Aug 2026 05:25:31 -0400 (EDT)
+	id D2B8D6B00EF; Wed, 26 Aug 2026 05:25:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BE4B6B00EC
+	by kanga.kvack.org (Postfix) with ESMTP id B0B676B00ED
 	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:25:31 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2B2A802CB
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:25:30 +0000 (UTC)
-X-FDA: 85142887620.12.BDF1692
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7437280007
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:25:28 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="i/qQKHNz";
-	spf=pass (imf30.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 12826A2E94
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:25:31 +0000 (UTC)
+X-FDA: 85142887662.17.CDDD2CE
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf31.hostedemail.com (Postfix) with ESMTP id CCCC920002
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:25:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=WJsU5ZLP;
+	spf=pass (imf31.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787736328;
+	b=3i9W847zluHsP/pZzPpssN/dzi89J0eWe2TSfAnHYyQDtFhuba2SPIV8Ht9kikgYOhHL2J
+	CQChKdPMoZiBFYcgC6yaGD4B1VGkGYt57KHxMpu20pS6ZVmx1DPDB2cNJkU3Cdj1ZKtc0m
+	dRseUSt9CYQCKReXJD1dyc9T4wUECVI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=WJsU5ZLP;
+	spf=pass (imf31.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1787736328;
@@ -35,37 +45,27 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y759v80hfcLGexoE6U+P0qCW895e0rqrtykfndhs3p4=;
-	b=Nr7Ib8F12KMIsagFW92Qy6MMQgODEFf7pWJgDRtz7vnpWuXep0oifByb0UuTPo9j2Hy/RB
-	1SqIFsoKjw5Tu5M86E/I9yKDXyGq3oSt/LD0vGoKhl19INFPWz9UD9E5Y6jCamKfFOhvDk
-	XN9p4Vv/PvpsjqCuqYBa+tCg+icHGB0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="i/qQKHNz";
-	spf=pass (imf30.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787736328;
-	b=cKN2vhvFYKti/j7M5FMI6Dgz0vV8PpUSkpimZwBt8iAlKIl6FN0BF8H6n2dbZn758fQEe5
-	zp4INRkLjLjXfD5YYXyYXE2d5Z15xH7a+i7/ev3PhIq4ztyvBMaksjPcGLZm1+NOBuGB8D
-	8dRJCvsu/iFB2Tn/784oRY6+Knp5e3U=
+	bh=up4/oktyfAdON3km3wdZWwjp1/r+vQu8s3QiiQB06UU=;
+	b=mzAak0iA+Fp/KKp0Gv3WQjn2EMBZgKiuvs+PAnzoboaVu2EIVCtoFQhfiAwkLw8EDIsgZk
+	U8EZ1Lvd7CHljq9tRWO7WYFSsCw3NUtAodkXHMkCX4St7VmpA/B7uepCHwijagJpVPIf5N
+	xP/Z5T/yx+/wOrvtZnUG9wx64SPx7k8=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=y759v80hfcLGexoE6U+P0qCW895e0rqrtykfndhs3p4=;
-	b=i/qQKHNz8OxKmJLSE6ETOW3Vyzml5TlfhhQAVfoBCgLl3ppxbzz6ZfYvrUMLwW7wzTAHquxJ5
-	7xkkPqtSSJUuN3dgmG4MYGSJZEltvqtaf1bLmuJ2Nfz2lINRwFVWYySZIoIptnPTMwZvuSdXvB9
-	ZX7arRtCRna8ymHdQexhtqQ=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hVJrJ0mhvzLlXB;
-	Wed, 26 Aug 2026 17:14:40 +0800 (CST)
+	bh=up4/oktyfAdON3km3wdZWwjp1/r+vQu8s3QiiQB06UU=;
+	b=WJsU5ZLPqqnObamEl+eDb1OQLn8fzTm2lS+jqZvsjkBOcZoPNvOCq137VskBlGKfkXIRHLxz0
+	r3TIwLJgnYKX+hhXcyhYsMrcfZw4l3uKg5x5sTenzOpFogQlp8Dx4ywI3SARgUR1LDQ5r9Wjz1F
+	GJzxQD5oYk6LTh2w3OIGcw8=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hVJrC6g9Pz1prNF;
+	Wed, 26 Aug 2026 17:14:35 +0800 (CST)
 Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id B445D4058A;
-	Wed, 26 Aug 2026 17:25:25 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 6EC4740561;
+	Wed, 26 Aug 2026 17:25:23 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
  (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 26 Aug
- 2026 17:25:23 +0800
+ 2026 17:25:21 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
 	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <maddy@linux.ibm.com>,
@@ -88,9 +88,9 @@ To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
 	<kexec@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
 	<linux-mm@kvack.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v3 07/17] crash_dump: Fix potential double-free of keys_header
-Date: Wed, 26 Aug 2026 17:25:31 +0800
-Message-ID: <20260826092541.3905933-8-ruanjinjie@huawei.com>
+Subject: [PATCH v3 06/17] LoongArch: kexec_file: Fix elf_headers memory leak in retry loop
+Date: Wed, 26 Aug 2026 17:25:30 +0800
+Message-ID: <20260826092541.3905933-7-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260826092541.3905933-1-ruanjinjie@huawei.com>
 References: <20260826092541.3905933-1-ruanjinjie@huawei.com>
@@ -100,14 +100,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.90.53.73]
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  dggpemf500011.china.huawei.com (7.185.36.131)
-X-Stat-Signature: xfezq13i9sjixf9qrpe4ybgzuqyipi8t
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7437280007
 X-Rspam-User: 
-X-HE-Tag: 1787736328-394495
-X-HE-Meta: U2FsdGVkX19vdRIgEb/PLoV1ltzcK8q6n1/sZIGs0X+QTkTKBT9LE5urk13O259qFPYLMLIpjuYaljjfIBGT6z8E5w6G8vesp7oxJf6yyA8Kq2f3M4XnN+Xpa9b41rbVji2kF4/K/FUuLbpeuv6XQoZCWkCM5Y4FzPSxdw+dRQXXn/oh7NAfa5AneFnOJsLDLVVCea/6CCF+uDf9y8lKNPgXZHjJ4DdI6ufJgiumb2vXiA6r1yoNfvWZcah9jhgtlRfvfrse8AfZhgeA9c4okiMPEMCGkBuHpH/K77dvhHo45Y4e/QDIlPaqY0cHdSbgPwezu+XS936GAmXFTHbKITJX/DJOyEcSgSehc1OUg5MKWv5Dyy5l5bNs09kmeaSuah1l1JXnEbPzSatvAqlRgfm+9vpxUqzMkhPRuEHgwkR5MN3m+EFA5RjPHhbGwwaaYxBECQf0roDLNQVTtfAMvVXG3/+rrIxXiA0Lbe8l31Hy8Rc/iGqG9s7/ml5o0sjCoAILz1IAKHeRqgMqC0l8KyYCGuiMgaGCez4v9zLbIGc5X+7BCeeHeVIpsufWiQlRXEXRhz4y8DewygriGAZYVPjQ+wl+MQ9U0ALk4FbaX4ZICm7RBkajppEzLDfrTgHIs0T4AAlZEFkQL9nvpGg2gfL6s1/2KjhxvTLi59+CkMpa4dYEc0eR/2vS3Iy2vQBN8K5iqxEFqM+Ufwr8j2SGZigPyRmoaTE5/myc/iIu1XukGGQSQFeDcijM2j3JIZpVO/nlH5bz2g8k7tZlL5j1QqN96mGM+1QCxayFAchrA3Mk4aG7nEEnhO5QSF9KWlb61YaICvAZtW8AUthv4U1laQaQykNKuUO5ysHlizpfZvqNgsVk6ClQY6YWBd772VE8rn5l6ovdKxxGQyDYLw4hKiLdC4Isa8k5bllNcxd0obYtJqJjRV/iUofbRhMLfyrdQ1CzH3iIB5p2RGuAqQ8
- Dp1P0lgq
- U8EKFvlW8Ew6/8n4/kEv8vPuO0QBGp2mV86bJOGpk0tWfb2hwjF5QXPjNFnHNBK8I/ssW4QzFePN/axfOZ9/0DQ8947QAdn+8fQ/3nyJKzSuxyOdIIOJbCwqLQ6sgpwTe2sHGaj1/vmqRDmtAYLnOnTUU1QSIY+YBtDfasCvSVtzaCt5Jn3Z7ocWwKlR3fGjVcvHczEJaiyb7JhvPJwIoqno1tGDrzOnkECMzH+BlJnvy4sWIV6KdYvcQpkvl5a5KRkDiazeYdb9MWYUoDx7kS+dpvVBupOVL85H5kglOFCGb5COLd7XTVuPpDT2lb4icIr+VqGJbGNa6AqDkDIbc57N3d+wJTYq8RTz/v9orlkork2bNopswMBUfmE7lkI+1ZeNFC2MUtiOLuzzoqo4s15ErxGKSKvy8V3ijCCHhEPrk9CJcS/d4uvDhsVhccGkfsxho80p4NOZyhZufNkuAhO9zxXImXtrw+iNZRhve8z1xAAnGhZrJCGo0sNogD2Sr+li9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CCCC920002
+X-Stat-Signature: sbuznbuey1omajpxmxau785yrxt4d4iq
+X-HE-Tag: 1787736327-976151
+X-HE-Meta: U2FsdGVkX19wpCza18orEcTWajiN+7SF95E+gCiXWHOPBROkldffKlEPwDvDiDEzspQj2KZKSUa9C+6NIHqMQeLemlSn6U6YzpJhmy4UppVNKkI2fyuW2fZKeMW4knvj0iB6jWi3ywq+qLTS/DER5TitAb/C3Gm3bWjjdq5iRPNvvMvHgg6HlrJZkxRF+WEFcT5M3uKz0E8/sPjau00kDc7d7x1ssn7265Ph17eTapw3H9+xKcu1mqF0uTY3Eq15+eFyDD9STmPD7W5oivRVNSWrdG6ANipyw/ax1AY7/G6QU8Aalcis55JKAMce5Mkd2h3ziqbgKuMb2ivxNCnYWQHJriihwmGR8H8I5eF/O3jFwIGinA7b4qCMv5uHMFsBEAmrqUxQqPb8KxWMszf+WnUWida3FWsCkqRT84SKQu+K3nJ2vfkgJRvIPrFRYtwWiWa/5+12YQQ8tSN612FNbrUkEw7VK9WEOmdkUwkC6P4/vjc7iO2H9Nw4QtNvxpMWmF3CcPIjNYbGQrk70FuMlRu5YE3w3v+4pjNEkJoJqX65yRxLNi5D6M2PtDGAfQj5+IzAwjakxesxpi204+eABnzPO29abTxpOCS8axDe8FbhTtizSHUuGAaDVsXxcv5WPAljusFRYGdeLT0+CEcxREn4JdjyINwQLFEgCNu06k2boqh6qloOYw7v0LpksOuDXwJerTSHkx6Fh9gUweCb4beYNPBVrMsn49gUT81Da9RkNDUh3Ky4G65JmKGNNwu4N73zudi2mMgjRGSOILiR5oDSNGs19XtOJFakQt6o7gNPaH3kVFQa1y64boMCdWF6x43GQeZ3FmkgsmXzRygStcsSbiBNqEMHpRhQFZY2Z1U/uXFoSbT7v7zRNcpDepbCspoHys18HKw4FrIIQk9Bzf8ibzptQCj2RCL+gyRxZXM1KxPiCXo/1L7tsgLEKrv4Zqof6ugip+ECW5b8fvM
+ hHUJic+f
+ oTIOJs8S6/HAMYUb81pL/53zygWypNocyxLld5eJFIGeBV+7po1reACqmPk2e9Z1RpN15n0LJkkRULAVphs8PHCfMq3/xzR+pX0diSdqpsvJnrqxL/VooT3PB/7Uoe0g74mOyp/h9xt4kYuUJbfm+G+8N48yCeaVPpKS7b5BU8xjMZQQcn64Tdteh5cgDJzlBTDt6xiDh4FYZ6FWMvxvoK21i1FFu9uzTXVYt8qITx4qdoufIWAAT7TIlVdDPv+KZUrdZ+hAsKHM5I/+zSyf2p8rD/RzAz+UT7RnjPMd9c+o4eMDdZfIVL2vn5muU/08CxxzLQPOXkje9WcPe+nW3l3RjeJng0CAS+bPMhsTC7e1ZDHqLK7gwKm1icZFia0sWYDqrHsIiKvuqkDRMx53zUysVn8IArDPR2A9LczwumNDN3TqvW9R9umnIoPuAjPYx+wml
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,67 +115,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-`keys_header` was freed in `build_keys_header()` without being reset
-to NULL, and the error path in `crash_load_dm_crypt_keys()` freed it
-unconditionally even when reused, leading to double-free or
-use-after-free.
+If load_other_segments() fails after image->elf_headers is assigned,
+the memory lifecycle is safely managed by the global kimage object
+and will be freed in arch_kimage_file_post_load_cleanup().
 
-Add `free_keys_header()` to centralize freeing and NULL-setting.
-Use it in `build_keys_header()` and only free in the error path when
-the header was newly built (`!is_dm_key_reused`).
+However, during a retry loop in efi_kexec_load(), a subsequent iteration
+will allocate a new buffer and overwrite image->elf_headers. This
+permanently leaks the stale memory from the previous iteration before
+the global cleanup can track it.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: Dave Young <ruirui.yang@linux.dev>
+Fix this by explicitly freeing the stale `image->elf_headers` buffer
+before assigning the newly allocated headers.
+
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Youling Tang <tangyouling@kylinos.cn>
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Kees Cook <kees@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: e3a84be1ec2f ("arm64,ppc64le/kdump: pass dm-crypt keys to kdump kernel")
+Link: https://sashiko.dev/#/patchset/20260729031235.2840255-1-ruanjinjie%40huawei.com
+Fixes: 55d990f0084c ("LoongArch: Add EFI binary support for kexec_file")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- kernel/crash_dump_dm_crypt.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ arch/loongarch/kernel/machine_kexec_file.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/crash_dump_dm_crypt.c b/kernel/crash_dump_dm_crypt.c
-index c685497cd470..ed0960ff0987 100644
---- a/kernel/crash_dump_dm_crypt.c
-+++ b/kernel/crash_dump_dm_crypt.c
-@@ -363,15 +363,21 @@ static struct configfs_subsystem config_keys_subsys = {
- 	},
- };
- 
-+static void free_keys_header(void)
-+{
-+	if (keys_header) {
-+		kvfree(keys_header);
-+		keys_header = NULL;
-+	}
-+}
+diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
+index 62a5be102065..3beb6977ecc6 100644
+--- a/arch/loongarch/kernel/machine_kexec_file.c
++++ b/arch/loongarch/kernel/machine_kexec_file.c
+@@ -166,6 +166,10 @@ int load_other_segments(struct kimage *image,
+ 			vfree(headers);
+ 			goto out_err;
+ 		}
 +
- static int build_keys_header(void)
- {
- 	struct config_item *item = NULL;
- 	struct config_key *key;
- 	int i, r;
- 
--	if (keys_header != NULL)
--		kvfree(keys_header);
--
-+	free_keys_header();
- 	keys_header = kzalloc(get_keys_header_size(key_count), GFP_KERNEL);
- 	if (!keys_header)
- 		return -ENOMEM;
-@@ -441,7 +447,8 @@ int crash_load_dm_crypt_keys(struct kimage *image)
- 	r = kexec_add_buffer(&kbuf);
- 	if (r) {
- 		pr_err("Failed to call kexec_add_buffer, ret=%d\n", r);
--		kvfree((void *)kbuf.buffer);
-+		if (!is_dm_key_reused)
-+			free_keys_header();
- 		return r;
- 	}
- 	image->dm_crypt_keys_addr = kbuf.mem;
++		if (unlikely(image->elf_headers))
++			vfree(image->elf_headers);
++
+ 		image->elf_headers = headers;
+ 		image->elf_load_addr = kbuf.mem;
+ 		image->elf_headers_sz = headers_sz;
 -- 
 2.34.1
 
