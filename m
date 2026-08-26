@@ -4,126 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB1EC61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 01:08:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCFD7C61DB9
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 01:14:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F5E26B0088; Tue, 25 Aug 2026 21:07:59 -0400 (EDT)
+	id 6A9E16B008C; Tue, 25 Aug 2026 21:14:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A7AC6B008A; Tue, 25 Aug 2026 21:07:59 -0400 (EDT)
+	id 6336B6B0092; Tue, 25 Aug 2026 21:14:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED7F26B008C; Tue, 25 Aug 2026 21:07:58 -0400 (EDT)
+	id 4FD5F6B0095; Tue, 25 Aug 2026 21:14:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C97BE6B0088
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 21:07:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E03640147
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 01:07:58 +0000 (UTC)
-X-FDA: 85141633836.04.33D6571
-Received: from quail.birch.relay.mailchannels.net (quail.birch.relay.mailchannels.net [23.83.209.151])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A8B6280005
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 01:07:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=qck9ykgG;
-	dmarc=none;
-	spf=softfail (imf02.hostedemail.com: 23.83.209.151 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787706476;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eMsnr23HP9lPV0KenSxGVhzn+g2nKrwYjINjwE+8ptg=;
-	b=YA/MVc91VMGhmqV9VL7VX2C8H2r1uGitUcVbV4emSwgD6COC7JgA+FJKKAOUyaOfLbMI35
-	NbqCgii5V83bromVkwce7Nqzgp30fJRka/+2TEkhtdlQLAWqocYoM2jWQj8HVDk8pBv2dO
-	TSsJBoPTKVTlOwg+hY/682WvHY/PBec=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=qck9ykgG;
-	dmarc=none;
-	spf=softfail (imf02.hostedemail.com: 23.83.209.151 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
+	by kanga.kvack.org (Postfix) with ESMTP id 04A3C6B008C
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 21:14:55 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E0E831A0225
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 01:14:54 +0000 (UTC)
+X-FDA: 85141651308.28.61C5BEC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8570D80004
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 01:14:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hyzoSqry;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787706476;
-	b=1MeMkxI9Au/bhIn+7qeW9X4bsWhMOYF1dYmupQ92iImuALLvbJy6MXPcRgdFcnBD4iQudY
-	TFdm2jPjh/qJJqzeLQJ79vABO+p7X+VK619WUh0ROPENmuif4/T5vLehHgX0qBPUvAIv7G
-	bo3cXF/jqi7Tiqts+im7D36YsDX09Lo=
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 459984C0B62;
-	Wed, 26 Aug 2026 01:07:54 +0000 (UTC)
-Received: from pdx1-sub0-mail-a204.dreamhost.com (100-96-49-23.trex-nlb.outbound.svc.cluster.local [100.96.49.23])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 5A7254C0BBC;
-	Wed, 26 Aug 2026 01:07:53 +0000 (UTC)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Whispering-Illustrious: 4311d38559935212_1787706474061_3231139894
-X-MC-Loop-Signature: 1787706474061:2906846316
-X-MC-Ingress-Time: 1787706474060
-Received: from pdx1-sub0-mail-a204.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.49.23 (trex/8.0.2);
-	Wed, 26 Aug 2026 01:07:54 +0000
-Received: from offworld (unknown [76.167.199.67])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a204.dreamhost.com (Postfix) with ESMTPSA id 4hV62Z53fJz1V;
-	Tue, 25 Aug 2026 18:07:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1787706473;
-	bh=eMsnr23HP9lPV0KenSxGVhzn+g2nKrwYjINjwE+8ptg=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=qck9ykgGD0FDGfMzf8lMjKxEz2+IBhaxPzncYO2JYJfqf03CmHex1/UlCDMf3GXeu
-	 VBZ/D3+6NvU6kWUg4PUXEXnHXcMQpeEMv7muhjd1vcVORYpndgy/RedANS6aeWj1Hc
-	 f6rLBX+goLntJYBBIQzXf3HnBpXEJOQaxYeBYo6ekiNBFNBAoIisqODuQSYnzeRFg+
-	 mhM6EAjJlVen2M8PK8NxTfciUBwxLj2cYY8b3rUmn9mQfPjkBm3nQ10icYXGbTX07J
-	 60k8ivrsNekvlJSNVkIE9VYGeAwYthFwpzuSvo1KhoCHJa0vcB6dUkFNAI+3H6yElh
-	 LcL757Rqy4zxw==
-Date: Tue, 25 Aug 2026 18:07:48 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: Yunhui Cui <cuiyunhui@bytedance.com>
-Cc: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	alex@ghiti.fr, dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
-	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-	martin.lau@linux.dev, eddyz87@gmail.com, memxor@gmail.com,
-	song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
-	bjorn@kernel.org, pulehui@huawei.com, puranjay@kernel.org,
-	thuth@redhat.com, ajones@ventanamicro.com,
-	ben.dooks@codethink.co.uk, rkrcmar@ventanamicro.com,
-	samuel.holland@sifive.com, zong.li@sifive.com,
-	conor.dooley@microchip.com, tglx@kernel.org, debug@rivosinc.com,
-	seanwascoding@gmail.com, andybnac@gmail.com,
-	menglong8.dong@gmail.com, cyrilbur@tenstorrent.com,
-	wangruikang@iscas.ac.cn, atishp@rivosinc.com,
-	apatel@ventanamicro.com, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	bpf@vger.kernel.org, arnd@arndb.de, nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com, morbo@google.com,
-	justinstitt@google.com, qingfang.deng@siflower.com.cn,
-	linux-arch@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v8 2/3] riscv: introduce percpu.h into include/asm
-Message-ID: <20260826010748.zphu3wh2hlm4t4o2@offworld>
-References: <20260703122832.15984-1-cuiyunhui@bytedance.com>
- <20260703122832.15984-3-cuiyunhui@bytedance.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260703122832.15984-3-cuiyunhui@bytedance.com>
-User-Agent: NeoMutt/20220429
-X-Stat-Signature: 1bg4g5mtdntg3ghshr11h3k3rjwy4gjq
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A8B6280005
+	t=1787706893;
+	b=4Lb4I9k2BD2zEGSXMMIDo581zSJt/oY/WMXFrBGQPddFNeQrD8tHc/5IPShnRZZjOB97eg
+	iYPHfVZAXiDK1n4VWHsxaCjeBKda2eysKqk/4FfunKEltjquIyHQeWTVJHCeqNxh6UGNWl
+	7t29kf5C4zy0WDBSsVk224cOfh5UT9E=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hyzoSqry;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787706893;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=Loo5aXlqhmEYCzEqQyA8Hdx1Q47uKFDOd40l1mDCRhg=;
+	b=m0N716pzq/I834iQXm2tj81yBjea0np5fWy506GhjPoqmYU7vxMjN3qFGSuqRBrX9NYYyI
+	cB6JIYzTzrTzZooH1r9nfy63eUctEEU4OH/CcG6JtdRXrdSuqF/T9MI6kFv/WlGmyhIn1x
+	9JejzFzBraZBnd1naybYD0vmFzXYvVU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787706891; x=1819242891;
+  h=date:from:to:cc:subject:message-id;
+  bh=MN9m1g5Yz/k5WhNsRHT4dQtbYlDO4tuN8qaTTI6cHE0=;
+  b=hyzoSqry6Tvnl/HariHINB+zZklLngLeLV3Tt2LNSU6KGzoCOIyuFi+/
+   VUr2rA9YRlxGm9sCPEl+sM78S0uBXH+4w4rgNGQsFWDaKUwT8LnOL8cXH
+   g4DZXLc8hmNg2J0/CpDPt1pjmbOYitjkgfgVX++PZgodLc06ExWEua83E
+   Ck//e78yOFBkKM2eVx44oS1ukp+PdDaQKhKiXB6ohmb9ryw0TWkPRHjzv
+   izVBEm9FKZyjylTzZyyeTURg3C6etZ86UyScu6Cqkdj3mK8hcCKEn70o+
+   SK0GYI9ytv5W9D3EJEAGZETjTpe0XzzJxn5ucWsrO21+58s/wgS4cLvYz
+   w==;
+X-CSE-ConnectionGUID: NOSIiDpuTAm8dmO/YOHZLg==
+X-CSE-MsgGUID: BbaNM6w7Qme1M3wSTVyiIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="92002195"
+X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
+   d="scan'208";a="92002195"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 18:14:50 -0700
+X-CSE-ConnectionGUID: SAdetNXoTXyvgPnReeOsHg==
+X-CSE-MsgGUID: Sf/SUP8+Q/CJ/oeYgx/ioA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
+   d="scan'208";a="271224585"
+Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 25 Aug 2026 18:14:48 -0700
+Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wz2E0-000000006iV-2Odw;
+	Wed, 26 Aug 2026 01:14:44 +0000
+Date: Wed, 26 Aug 2026 09:14:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS
+ 1a46b1e97bde62afa7d925bb0dcd9f9748a1d7c3
+Message-ID: <202608260904.mMJZXd01-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1787706475-838194
-X-HE-Meta: U2FsdGVkX1/czlziQP5FdarBgflb2TCtTeuhjAgedtAibtBG++5Ui1z2N6kUFk3CNpgKx60TNcLkSZxP/gVKWpucop/A3+hv55N3PhPHsIcyt+p07tWz/RxUexCpTEinR3u/SeQ7qrwVwFvWSILFI3O92nGppmL8RI0TnivLyUK6eH8w2uR+mRjt56VRkMt7h0GkvI62GI193UcUkZ1GjB/GfYnjgeQ+7SqdXAg6k2g9OjTrZ6SkOGMbQwH1NMe1YXbHBJqM4PPjFVCaNey8+kY8v73iX/+T87OLnMFJ7UGo74rU3AcMzO7vG+I9E+RnFLtE4OV66bqeOFwIB9nGVAyGvrUPjYn5ra2SR5SRmQolnSCzsLg/ngWQ1kVEuQgyztUTASlM4Ol9Qdyc6FPHp8oz/j+O6LhdreC5SmcUjfBq6jgxez4hSKBDzHTfzo24e2aWk4l1oKs8Xn5Xvg9i96o1YU7w4JLN6VJwHDY1YSNGSPkGW3et/Iqg+aVEldTPyULjL6m3n9E3k+RXe+ndyfzYbUCiX+jbS6fF1UlztWXat3QOKTxrJ//fEg7kmZXIaT0k1MJtA+NgfdK5jcYR24EJvJAviDUCvQYX3qNsuEMsOA9VtKOKSnno0heI3G5QI0PbIsEnzvLVxEd/Z5Rp7gJ2YzP7WdK3BpxwPQeypGgcpTYmxHxwSoVcu2pkirVHWRQJqVDJKRgb9v+YT5NXGnwtwbBAbj8ogoLiRaMVrDbCFk0akiYI1CmJGvec98KCdlF1OYwrwSqUIm0HQTYnlmcJHLTTOzEOy5owchFTZzR/+AWUinMwF9IGD8U7rvEUA0AXqfUP8illyzdM4LKjQ0goMeYbA5HWOcQLXhq0Qmj/pJXne2Njyt/tMk7DyEezEkwLIzJ+JQ7XjxKZlDivjSfumO7TjojlAIVqPUJfOBjOd1jyw2YixC/ruVGSEHTlBvnZtX220nAWPX8wBD6
- je9SciPD
- ZQWroeI2iOANkhwytBlYtFLyPm4/SpU2+5O1BrfX1zjo9kkn9ii2EhS28viDVvGOCMdlqLGAh5TnyQGVgOmaIMlebXicNXrsLTpBFbs4etvpwBJSUSqGHnfrLNP0jgGGaZTMV4dMjfFnqwWDKxdkffF0CivtbHKLjqHQyum3Kn957uuoUdVN/RTnVs7YU5p6yrruHgqujEBKBX84W9UTT+stL6dpjwf1twgkASSKaykf9uC2PqRgBIJEY3++va3/vUw1AU5qBd6EOsZu1QBAJjSCYPhJ5FAvB9M8tl2nbZIlHb99NeUKMgyGQiXhbwnT00puOoq269v9ywG+Y+FMR2c/veRdQmPSc0xSmwzh+C46hJbfWIvN0WWCVEJEapqpIJYevQOgGa/hnOH5huZqHPbKZSTPYkfrs9Bst3n3wAfPYaToc67Z9VAlS0sU66chtNaKazcvZOow2SoLKKauVFq4UxA8XrbWrxgIwQMgsLntr6AY=
+X-Stat-Signature: zgodi7n1wbbx575ercnmc9e73z1bitdd
+X-Rspamd-Queue-Id: 8570D80004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787706891-890405
+X-HE-Meta: U2FsdGVkX1/Ed3AOmKOuh6sKIjVXWlojtV6DXyVXGp4PgKfJVefb+TJaOybsy78mZ9GyqxC/mYyAOggP5jwQ+NagPy3f47Ue1kdYhscBYXmmuTgpCsmCxokrqNahNsr5D5nc+81XcWF7wfeqz3MzHAPwXP/lC/7iccNs+2MtTCiVucXFntpA1RS/egehsOKrnzx7YaepOQB076kmTWAn1367aY+cZGCd0+sveHoh6SYxREWgLDx6AX0AKA1sVctX4KQpKbfY9Pom96RIyWpr4z8mh+AoYyqqJ9qTqn2zg6Ugvp/R4QuZUA4jWWCB4aAG75fAhtzc5/pGua3nOBR1l1mywp8HnOBZoRp4EVyvBHEaJHKNqBRyyoi2tSnjX5S8pGIKTI+avl+ghR0kF7n1y+9uTCkn/0qq2XM5fZR4OACKPcKIimL72li0uUdpWlXSRvr3gzCqsuY4Pu1U6T42+Xj6D/h3B7ob3bvppO/ZgzcqDHcmacyy6v67bICcnJ51YxIVS+PAAzOf9x56wWVNUPoA7+VlzqHFMngdmSRa1rlZMEcLrtCBsGBerEKjg47+shZZ4UMTsFbvP6zR2tt4hqFJf6Yxago4OQg9AZiNRnmda6M1hd8tfL9M9wz36Tb0Mm1odFZXAZLeZ9UGVkbEh3SdlxyJ09wDT4D0poqSoUchPuRmR93VpzQp9acMTkKJD3ctaJMxZZtbuvVepZT/PNhuuia79HZHGY0ladO8ddscwNyjUD5eBGGq1O6G2A4X0pSsHgsE5IGvBn+HD7Z4IAPCjzYXyBY2rE2lUfXEAEI56iRb7s0e+dtnSYyux0719m7FR7Qud0s/Kmhd4DiZUQ95nPd49ObTFmgCd89PuTFjgf7po+wTF3oBO/Qp7SwEmK8UnoUtadZxpcCNXAoPdd+67EqtjodApKwsEwibyC3E5k/oyjhSutuay37V6rRS2VloQ/jBx32LKtkK1fI
+ 8Z/5yMJc
+ ghxdJH+NsiBR2nMmxnm5L7JLl8CvjUQh5hCBEhIRlZ0R9aVvQteWWRA7Ae20ZT4Azqv9HscWsMYOlG3THPkAOmclYZCKz48loXvz8zDdFRA10b3AHyf9904Y4nvs/WgPFQSZeq3xMu4NZO5fMYXUOU9PcPRGs4NTL8HLpm3pbm53IORcD5VjzcAGNXPf/gFDDNcHGYNCI9xMnkOw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,148 +102,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 03 Jul 2026, Yunhui Cui wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 1a46b1e97bde62afa7d925bb0dcd9f9748a1d7c3  mm/swap, PM: hibernate: atomically replace hibernation pin
 
->Add RISC-V specific this_cpu helpers so common percpu operations can use
->short architecture sequences instead of the generic implementation.
->Native-width operations use AMOs, while 8/16-bit operations use Zabha when
->available and a local 32-bit LR/SC fallback otherwise.
+elapsed time: 854m
 
-The subject and changelog could use some improvement. How about:
+configs tested: 108
+configs skipped: 1
 
-riscv: implement this_cpu operations
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-riscv has no asm/percpu.h, so every this_cpu_*() read-modify-write
-takes the generic fallback, which disables local irqs.
+tested configs:
+alpha                            allnoconfig    gcc-16.1.0
+alpha                           allyesconfig    gcc-16.1.0
+alpha                              defconfig    gcc-16.1.0
+arc                             allmodconfig    gcc-16.1.0
+arc                             allyesconfig    gcc-16.1.0
+arc                  randconfig-001-20260825    gcc-8.5.0
+arc                  randconfig-002-20260825    gcc-8.5.0
+arm                  randconfig-001-20260825    clang-20
+arm                  randconfig-002-20260825    gcc-8.5.0
+arm                  randconfig-003-20260825    clang-24
+arm                  randconfig-004-20260825    gcc-13.4.0
+arm64                         randconfig-001    gcc-14.3.0
+arm64                randconfig-001-20260825    gcc-13.4.0
+arm64                randconfig-002-20260825    clang-24
+arm64                randconfig-003-20260825    clang-24
+arm64                randconfig-004-20260825    gcc-8.5.0
+csky                            allmodconfig    gcc-16.1.0
+csky                 randconfig-001-20260825    gcc-11.5.0
+csky                 randconfig-002-20260825    gcc-9.5.0
+hexagon              randconfig-001-20260825    clang-17
+hexagon              randconfig-002-20260825    clang-24
+i386                            allmodconfig    gcc-14
+i386       buildonly-randconfig-001-20260825    clang-22
+i386       buildonly-randconfig-002-20260825    gcc-14
+i386       buildonly-randconfig-003-20260825    gcc-12
+i386       buildonly-randconfig-004-20260825    clang-22
+i386       buildonly-randconfig-005-20260825    gcc-14
+i386       buildonly-randconfig-006-20260825    gcc-14
+i386                 randconfig-001-20260825    clang-22
+i386                 randconfig-001-20260826    gcc-14
+i386                 randconfig-002-20260825    gcc-14
+i386                 randconfig-002-20260826    clang-22
+i386                 randconfig-003-20260825    clang-22
+i386                 randconfig-003-20260826    clang-22
+i386                 randconfig-004-20260826    clang-22
+i386                 randconfig-005-20260825    gcc-14
+i386                 randconfig-005-20260826    gcc-14
+i386                 randconfig-006-20260825    gcc-14
+i386                 randconfig-006-20260826    clang-22
+i386                 randconfig-007-20260826    gcc-14
+i386                 randconfig-011-20260825    gcc-14
+i386                 randconfig-012-20260825    clang-22
+i386                 randconfig-013-20260825    clang-22
+i386                 randconfig-014-20260825    clang-22
+i386                 randconfig-015-20260825    clang-22
+i386                 randconfig-016-20260825    gcc-13
+i386                 randconfig-017-20260825    clang-22
+loongarch                          defconfig    clang-24
+loongarch            randconfig-001-20260825    gcc-16.1.0
+loongarch            randconfig-002-20260825    gcc-16.1.0
+nios2                           allmodconfig    gcc-11.5.0
+nios2                            allnoconfig    gcc-11.5.0
+nios2                randconfig-001-20260825    gcc-9.5.0
+nios2                randconfig-002-20260825    gcc-8.5.0
+parisc                          allmodconfig    gcc-16.1.0
+parisc                          allyesconfig    gcc-16.1.0
+parisc                             defconfig    gcc-16.1.0
+parisc               randconfig-001-20260825    gcc-12.5.0
+parisc               randconfig-002-20260825    gcc-14.3.0
+powerpc                     chrp32_defconfig    clang-24
+powerpc              randconfig-001-20260825    clang-24
+powerpc              randconfig-002-20260825    gcc-8.5.0
+powerpc64            randconfig-001-20260825    clang-24
+powerpc64            randconfig-002-20260825    clang-24
+riscv                randconfig-001-20260825    gcc-13.4.0
+riscv                randconfig-002-20260825    gcc-15.2.0
+s390                 randconfig-001-20260825    clang-24
+s390                 randconfig-002-20260825    clang-24
+sh                                 defconfig    gcc-16.1.0
+sh                   randconfig-001-20260825    gcc-15.2.0
+sh                   randconfig-002-20260825    gcc-9.5.0
+sparc                randconfig-001-20260825    gcc-8.5.0
+sparc                randconfig-002-20260825    gcc-12.5.0
+sparc64              randconfig-001-20260825    gcc-10.5.0
+sparc64              randconfig-002-20260825    clang-24
+um                   randconfig-001-20260825    gcc-14
+um                   randconfig-002-20260825    gcc-12
+x86_64              buildonly-randconfig-001    gcc-12
+x86_64     buildonly-randconfig-001-20260825    gcc-12
+x86_64     buildonly-randconfig-002-20260825    gcc-14
+x86_64     buildonly-randconfig-003-20260825    clang-22
+x86_64     buildonly-randconfig-004-20260825    gcc-14
+x86_64     buildonly-randconfig-005-20260825    clang-22
+x86_64     buildonly-randconfig-006-20260825    clang-22
+x86_64                                 kexec    clang-22
+x86_64                        randconfig-001    gcc-14
+x86_64               randconfig-001-20260825    clang-22
+x86_64               randconfig-002-20260825    clang-22
+x86_64               randconfig-003-20260825    clang-22
+x86_64               randconfig-004-20260825    clang-22
+x86_64               randconfig-005-20260825    clang-22
+x86_64               randconfig-006-20260825    gcc-13
+x86_64               randconfig-011-20260825    gcc-14
+x86_64               randconfig-012-20260825    gcc-14
+x86_64               randconfig-013-20260825    clang-22
+x86_64               randconfig-014-20260825    gcc-12
+x86_64               randconfig-015-20260825    gcc-14
+x86_64               randconfig-016-20260825    gcc-14
+x86_64                        randconfig-071    gcc-14
+x86_64               randconfig-071-20260825    clang-22
+x86_64               randconfig-072-20260825    clang-22
+x86_64               randconfig-073-20260825    clang-22
+x86_64               randconfig-074-20260825    gcc-14
+x86_64               randconfig-075-20260825    clang-22
+x86_64               randconfig-076-20260825    gcc-14
+x86_64                          rhel-9.4-bpf    gcc-14
+xtensa               randconfig-001-20260825    gcc-14.3.0
+xtensa               randconfig-002-20260825    gcc-12.5.0
 
-A single AMO is atomic with respect to interrupts on the local hart,
-so this can be replaced by one relaxed AMO under preemption disabled.
-Native-width operations use AMOs, while 8/16-bit operations use Zabha when
-available, or a local LR/SC sequence otherwise.
-
-Some comments below, but I ran this on my sifive p550, feel free to add my:
-
-Tested-by: Davidlohr Bueso <dave@stgolabs.net>
-
->
->Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
->---
-> arch/riscv/include/asm/percpu.h | 296 ++++++++++++++++++++++++++++++++
-> 1 file changed, 296 insertions(+)
-> create mode 100644 arch/riscv/include/asm/percpu.h
->
->diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/percpu.h
->new file mode 100644
->index 0000000000000..76b1b8c1fb953
->--- /dev/null
->+++ b/arch/riscv/include/asm/percpu.h
->@@ -0,0 +1,296 @@
->+/* SPDX-License-Identifier: GPL-2.0-or-later */
->+
->+#ifndef __ASM_PERCPU_H
->+#define __ASM_PERCPU_H
->+
->+#include <linux/bits.h>
->+#include <linux/preempt.h>
->+
->+#include <asm/alternative-macros.h>
->+#include <asm/cmpxchg.h>
->+#include <asm/cpufeature-macros.h>
->+#include <asm/hwcap.h>
->+
->+#define PERCPU_RW_OPS(sz)						\
->+static inline unsigned long __percpu_read_##sz(void *ptr)		\
->+{									\
->+	return READ_ONCE(*(u##sz *)ptr);				\
->+}									\
->+									\
->+static inline void __percpu_write_##sz(void *ptr, unsigned long val)	\
->+{									\
->+	WRITE_ONCE(*(u##sz *)ptr, (u##sz)val);				\
->+}
->+
->+PERCPU_RW_OPS(8)
->+PERCPU_RW_OPS(16)
->+PERCPU_RW_OPS(32)
->+
->+#ifdef CONFIG_64BIT
->+PERCPU_RW_OPS(64)
->+#endif
->+
->+#define __PERCPU_AMO_OP_CASE(sfx, name, sz, amo_insn)			\
->+static inline void							\
->+__percpu_##name##_amo_case_##sz(void *ptr, unsigned long val)		\
->+{									\
->+	asm volatile (							\
->+		"amo" #amo_insn #sfx " zero, %[val], %[ptr]"		\
-
-So afaict that rd=zero could steer the AMO away from the hart, no? From the
-Zaamo chapter, it notes that complex implementations "might also implement
-AMOs at memory controllers, and can optimize away fetching the original value
-when the destination is x0". Similar for the others (PERCPU_8_16_OP).
-
-Maybe use a tmp register instead and force the old value from L1 ("near"):
-
-	u##sz tmp;
-	asm volatile (
-		"amo" #amo_insn #sfx " %[tmp], %[val], %[ptr]"
-		: [ptr] "+A" (*(u##sz *)ptr), [tmp] "=r" (tmp)
-		: [val] "r" ((u##sz)(val)));
-
-
-... which arm64 now does for its pcpu ops:
-
-	/*
-	 * Use value-returning atomics for CPU-local ops as they are
-	 * more likely to execute "near" to the CPU (e.g. in L1$).
-	 *
-	 * https://lore.kernel.org/r/e7d539ed-ced0-4b96-8ecd-048a5b803b85@paulmck-laptop
-	 */
-
->+		: [ptr] "+A" (*(u##sz *)ptr)				\
->+		: [val] "r" ((u##sz)(val))				\
->+		: "memory");						\
-
-Should not need this clobber either - these don't imply barriers (but you also get
-them with the preemption disable/enable).
-
->+}
->+
-
-...
-
->+#define this_cpu_cmpxchg_1(pcp, o, n)	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
-
-This triggers that cmpxchg variable shadowing issue you mentioned in patch 1 with
-that __cpu_fallback_try_cmpxchg also using '__old'.
-
->+#define this_cpu_cmpxchg_2(pcp, o, n)	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
->+#define this_cpu_cmpxchg_4(pcp, o, n)	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
->+
->+#ifdef CONFIG_64BIT
->+#define this_cpu_cmpxchg_8(pcp, o, n)	_pcp_protect_return(cmpxchg_relaxed, pcp, o, n)
->+
->+#define this_cpu_cmpxchg64(pcp, o, n)	this_cpu_cmpxchg_8(pcp, o, n)
->+#endif
->+
->+#ifdef system_has_cmpxchg128
->+#define this_cpu_cmpxchg128(pcp, o, n)					\
->+({									\
->+	u128 ret__;							\
->+	typeof(pcp) *ptr__;						\
->+									\
->+	preempt_disable_notrace();					\
->+	ptr__ = raw_cpu_ptr(&(pcp));					\
->+	if (system_has_cmpxchg128())					\
->+		ret__ = cmpxchg128_local(ptr__, (o), (n));		\
->+	else								\
->+		ret__ = this_cpu_generic_cmpxchg(pcp, (o), (n));	\
->+	preempt_enable_notrace();					\
->+	ret__;								\
->+})
-
-With those above this_cpu_cmpxchg() you could now enable HAVE_CMPXCHG_LOCAL.
-
-Thanks,
-Davidlohr
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
