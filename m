@@ -4,108 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 511A0C61DC2
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:53:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 693EBC61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:53:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 531B36B0095; Wed, 26 Aug 2026 03:53:00 -0400 (EDT)
+	id 708A36B008A; Wed, 26 Aug 2026 03:53:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E30E6B0096; Wed, 26 Aug 2026 03:53:00 -0400 (EDT)
+	id 6B9306B0098; Wed, 26 Aug 2026 03:53:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F8C06B0098; Wed, 26 Aug 2026 03:53:00 -0400 (EDT)
+	id 5A8036B0099; Wed, 26 Aug 2026 03:53:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E2FF6B0095
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:53:00 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B123F1A02D4
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:52:59 +0000 (UTC)
-X-FDA: 85142654478.15.100CA53
-Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4837280005
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:52:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=EC5u6CFv;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com;
-	spf=pass (imf02.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787730777;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EAD96B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:53:29 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5AB11202C5
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:53:28 +0000 (UTC)
+X-FDA: 85142655696.21.69F0B74
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C5D39C0007
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:53:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Czto7XXA;
+	spf=pass (imf10.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787730806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=1ljfxh0QQvke3/JuhIoWXsbYDuhyNNb2x/9KR07BP2M=;
-	b=UJ7y8NFge8bC4q/cI1bhP5hgDN2EjvbFwAkhx1DN12wfN+wZHTx/Jqqx/HuqE4JwZdKEP2
-	YfobRZD0olM0C1QGYsDDsnfmxoZfhgIry93UHBveP+mUbhe7QG5jP6DKqcWdq/F/xU6NQK
-	8HtQxwuAAzRdHiDC3nxv+vijkIgCIkE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787730777;
-	b=rsD/XjjGNIpHG8KxTB+U/4+R7U64okEDZvf5U0oeN2LXb6vaGgGxRwRCyIpnd0BUZbiMXY
-	ffDqQ7cwMg/sMdgIXq7J2fWaLqPwt+9J65JUIS9hMy+qHvx26o97CXl8aBfTtHVzqj8o72
-	RStqAMHcBhwiTEjq6hDjQ0bBjYqsEI8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=EC5u6CFv;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com;
-	spf=pass (imf02.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTPS id 67Q7piCL006362
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 26 Aug 2026 15:51:44 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4hVGzP6wZjz2K1r9x;
-	Wed, 26 Aug 2026 15:50:41 +0800 (CST)
-Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
- BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.48; Wed, 26 Aug 2026 15:51:41 +0800
-From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand
-	<david@kernel.org>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie
-	<yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Johannes Weiner
-	<hannes@cmpxchg.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Qi Zheng
-	<zhengqi.arch@bytedance.com>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        Lorenzo
- Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        Zhaoyang Huang
-	<huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [PATCH] mm: workingset: judge cross-memcg refaults by generation age
-Date: Wed, 26 Aug 2026 15:51:33 +0800
-Message-ID: <20260826075133.751049-1-zhaoyang.huang@unisoc.com>
-X-Mailer: git-send-email 2.50.1
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GS6w62IL/zxzq4/zoss8k2p0TRrsAsNyMrcb0qeyi48=;
+	b=XS+fEXRKszGHWwRGp9Ua2wCBHfM67g4ypqzZuyzwftL1doA6InKkrWmlWz5/6PO3P0jEGL
+	Fr2b+S+GkFEDKHI0DVHKPqocYEttq8GJWFjsJeMTVvKz3KrEXgln2IEcTa7aS9nH9EO/Nk
+	GcPpsiEgDI9Si88S5DBGvNJ6vQbKOdM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787730806;
+	b=jVhaGxT+nI0uysdGm93AGYZdjaFKwaXQ5+rEjPW17qJLQY9nkUDUO9trNfHFsvRYTHAEK6
+	Cmjgwyy2D5Mb8aL2hGilKKRB9czLy35N8yCPwGR3cos2KstZDXKmSoDU4i5aviMb1cqKLY
+	YBn1RWyEGgg7ETgZp4OWE0BEEgflK/E=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Czto7XXA;
+	spf=pass (imf10.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-482e7093e75so2319f8f.1
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 00:53:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787730805; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gkPaMkZ+u+qAvIFVPAFK+m8YutjcVc8BnHGUdzR6SOJyUsp5WB3+DmSItIKst+icMz
+         +pn9GSwA0lqMGr0t8mHkdD2ECmvIp/oFko6+gYDpyLAiBSgwhJwWEluOCujhFDX0VBtJ
+         hpcwohTkNdOWE0JGj5TiPGDB5P5rGueuCMAloaacodjuIREQp8v9nCuXOLsfZM1wT/5J
+         OLRHZ54jScABD3mLYkscQOR8uCutjYe5B2Sz5zWwz76KBjbV7CClBdl4nZtVm6pp6VJI
+         B3CN9xl5F6lQ+/p01M+Xl8LS10RkjTQSUGPES8XgOXgwqESyYfdhQ8S7CH5MrMwGJXns
+         8/pQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GS6w62IL/zxzq4/zoss8k2p0TRrsAsNyMrcb0qeyi48=;
+        fh=90a1f2NlLKIfCabW1mddagHmuRpXwAKcjMH/VUpfaw0=;
+        b=Ymc2rRyTtgeTCLpxNMhf+qJp8316y+0TJuwJtqxj8Ac5BtovxJxZNqO/MPGdAfQk2U
+         uGhmAcSOD+Se7Vj6trYhLqFvxPFLqzTW31sgiuDQJOwWYXi5AAbifpbwkCXrxdMpiH1F
+         SI60ZXwnZqGrp+6ZFMkM8wGRyj7qePchf/ZyxfvBruVK08uStBsTxDOZ0COixIoMZHqC
+         968TWE5t62CUUZ9n2WyqgHQst3hAVg/leDqi0WIBcnefl4R+FXPzfh/UR6qtOLR/r/yh
+         +YHMwA5Wzl+nu2gSwRIN31xvEzM1dRuVusR6Ri+DsWIvyjpQ1MFdoYM+s0AVeNACUoP3
+         ev3w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787730805; x=1788335605; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GS6w62IL/zxzq4/zoss8k2p0TRrsAsNyMrcb0qeyi48=;
+        b=Czto7XXAmA6fwQHSk1lzPnluVUUetqiHQ/MgXDSJUGDJk3irH3liWPmNkp3+o2iSw1
+         iSy1sAXsMDDqOCzZvLB3MudZEBh8UB78GjarxxogIm/A8GpNsLxrv03lQnwMsgB7+0ei
+         m+c7fOAxbXHaNCF7DYgRrlPn7gp+oJNRJBhCkkXi/8jtuof4CYQJ9gkn3siaLadya1C7
+         sklaDYDuUU0jdQNkKjIsnsrIeiRHuxwXAB6ZzBgC3VzK1sUZFEAZtQ2SQn/+QeYErW4h
+         /cCzwIyiYiTMtG1Aj9XQkZAxwTAGNgIZfqDURRhRho2OMtFg8gbMXPSaFRYIISfyRSoz
+         IvRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787730805; x=1788335605;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GS6w62IL/zxzq4/zoss8k2p0TRrsAsNyMrcb0qeyi48=;
+        b=OFX0tVfzQf6oHbWUnmlEJ/kZQ1bVikCC87XsxlktxaJUAdLyrn/VT8xSDScskQYUul
+         nrqsXWJGuZ1vmjmstA4uS4fhy6ayYOjk+tMmLMsEIJ8j207bnqwLJBT3zXq9VnAhwtJ+
+         Od7FlS5Rgz/6H+aqBO30ZA+2j58ss1VzOxDQMHxyp7Ts0PjkNa6oh9slPF1xW9yvJQr8
+         YZyiFgCmkWcFxWh7PRLiLwjTNyxojvfXUrLXnKQZ89QXODRCryNeywiQV6gBoFl2QMGm
+         kQaKmEPhb9A2ossSjRmRnPCfe0uYnyK3ge6LaUCyVmbLHR9XUoW1rEI7GL4yz99b2F/Z
+         NuXw==
+X-Forwarded-Encrypted: i=1; AHgh+RrzQtwi6upFTSJ8Fk+LEmaJJgUfPnNInQMv2/wmYTWOOT7rmMDeHqB+9KXS8BRJwDOOe4xNeEM3BA==@kvack.org
+X-Gm-Message-State: AFuF++mY0gTSdBcCYrsdj6XoMgaJFMUaWH+QkpXZXaMd1rL4c20dmenS
+	vfKMKgGnaD7NfGExqCROEId5KNazA0qJZOlrVO40a5BOI+ddUwrsAvPiYZpjBLXqBM0QbZ559ua
+	Uu0E3wBxLesS+cFCmfdMITxTluiASxGM=
+X-Gm-Gg: AR+sD10EZrXeiQG9qaow1xb/wr291/IZ3Ws6dh79GB+O2HupIFgraL0KL5F6mKotYlm
+	PiMNHENZMgMx4Kw+fYiYAgJ1b8FdOt3EGBEWUoBN67F1OI86PNGzNRGsfBB2SujUz4iw54LDL4z
+	Ibwrd/yf1WDvItpASPn4CnpTsTGPZy2M5jx7IrEzZAVSjgz4d2Te62XRMDwpONipbMcDunWnTz2
+	Dv/TuFlC08nQP6AxyYm2IOD6R/vlSwHH8aDv/GLTpP8SU4zbnNYcPN0OASVBuHlu/D8AgRgbHNh
+	eZg+7j+ZIZRs7wIkhNraeaITxGBVqw69L7UamddL9yGwKdRqq10GeQA2JHsSRJgeGlyT5TNiYmM
+	VsLwpaGtp8Gy557ayrxIe8KF2xfLLyA==
+X-Received: by 2002:a05:6000:2f89:b0:482:db2d:4530 with SMTP id
+ ffacd0b85a97d-482e2679df3mr2200734f8f.1.1787730804949; Wed, 26 Aug 2026
+ 00:53:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.73.40]
-X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
- BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 67Q7piCL006362
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
-	s=default; t=1787730717;
-	bh=1ljfxh0QQvke3/JuhIoWXsbYDuhyNNb2x/9KR07BP2M=;
-	h=From:To:Subject:Date;
-	b=EC5u6CFvKVqzykWYyhm1uLick9XrvOidGA+taumg/amu1lxTKY4075bAY/oFlXMxR
-	 xd8vEU/rA2vhK3/iolI7WDGlw6f+wanBP2RqtDqookzwFm+IL0CjevzmRpReQlItLZ
-	 cRaYr7fDWnbJAXbcKi5GxzToUpEVPq4p87mBkW6QNF8ugI5M718SPf07F+oveUqrnF
-	 +r1caHAJjRbi0lbRU9bBpCbDa2iKgvjk6jxjyeq6QZLMep8EIGz/BeYlSYW5YrIm9e
-	 r1CXqiPkZf+P1nNiySx7PGMSo9Otue/7td6UFVInF4Ip7LjIw2x8Fq10jz0FEshMSc
-	 p06Emn4bgyqsQ==
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4837280005
-X-Stat-Signature: mgsipysqdk4jzoknyur8uodbgf9p73g9
+References: <20260730090647.2401252-1-xueyuan.chen21@gmail.com>
+ <20260730090647.2401252-3-xueyuan.chen21@gmail.com> <c81ff923-800c-4ef4-b6e4-ec9f5eb1671f@kernel.org>
+ <ao3GXvT2ltf89_rG@willie-the-truck> <86823e2b-f739-4ebe-b92f-a35b9dcfa0c7@kernel.org>
+In-Reply-To: <86823e2b-f739-4ebe-b92f-a35b9dcfa0c7@kernel.org>
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Date: Wed, 26 Aug 2026 15:53:12 +0800
+X-Gm-Features: AcwNN1VjJ2lKh5_YdVKV0IGoF8qN-k3btcVN2OMCYjKb6W9mIPF2WiO3SwjTsXc
+Message-ID: <CA+qSx6yPD7bz1s8B3QHxFhaVzsgSV9H_iKfskSQXjbu6kuG3tQ@mail.gmail.com>
+Subject: Re: [PATCH v6 2/3] arm64/mm: add set_direct_map_ro_noflush()
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Will Deacon <will@kernel.org>, akpm@linux-foundation.org, ljs@kernel.org, 
+	usama.arif@linux.dev, catalin.marinas@arm.com, 
+	linux-arm-kernel@lists.infradead.org, tglx@kernel.org, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rppt@kernel.org, ryan.roberts@arm.com, ziy@nvidia.com, baohua@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Lance Yang <lance.yang@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1787730773-679499
-X-HE-Meta: U2FsdGVkX18PVnVCsieWIfLHU4N7YjB+F5VVX7iBVoX1sqS661oP6fv/rFQ3yHOrr5Uyzn9CNNvBIUEEkG2VwL/Tzg7l5H3TI2KwBFx9TfzELZ951Xel7oxDFMuVsskQGh5LLpdiotWi3rJf4bHNdMCC65hSDNdD6p49QyOyb/2G4TnnrYBCQuUw70jZI3EMrp6z/diZaPLGe8cJJjpNGcfeC0MwYmn5BIgLxl8hOHwn3skp9DJY90hD8LCNXtH0kspHpdUplSimJMemzYFiltrkl5ZqfS99jKGq9/WDN4nANL42SiVyhkMyRUz0VZCnDk5I5hzxNbyXmcLVbbP0LtynXZAORuMnoW/J+bejNTLPM4i1i2Gs/bJIrdbMN+zN8DrH5uTqHikGsi5Jt9sfH4FKdKjgEri7+MFoOTPkeEMscMBj4uinzF4wDuB4M0TKt+jKeWPsSf2i3gK4qWesqe613MpEobAFSXP6PviSLd5fHehxPTNwQ7PH7FWVdxNL5xiEHRHgcPqy1ErRpk0izlVX+gjUdUzF+ycTrbamcP3eqy77+qxFeYwLt2qjBvrdhwEsw7/et7DObgAbUCnsCFJGk/RynJBcMiS/ke90nvwbmVB2oItEra9jFA6MYU5oQlMdpri22HazKD8VH1DQ5kcRLYRGCrm41Sv7TnA2ufYfNIS5HURK63qcWqCbrvE4l+lxJSvs5wOGEM+u1t+Vxm/I4ftpi29OmgMGyOmflh2jNKC8Shag6J2JsyqwHWWrVgvjGDu0k60QOhNrg6K+UUAqFccCU2oX6cPdFRgZj/S++AYj+2FkCzPGdyDkpWY8F2J2fZnxusTveTYeFfPZBgi+Y5X4j7gKOFC2UOi5ugP/vBcdPq5supUqLj8FGxA4cNoVNLDHahv9AHsqmXSl99ICKmMAmPzMSEzPL4Oaelv8WoAbt2UEp0sKtK7jObskR0qkoTF2MiY5iICfJAv
- GjZC48ry
- W62pzhyG4nwE2hWUsA8hYH/Wg0fHSwADY2yJjoKO1LYcmS4pYwUuMeT8VB4zldvlwajRTnulQsHqVXMS8B3ARx4lGOIy5+4xyQpP9BtPj2oJRoSuhAxi1e7crEq6knmIjbLYWzh8kt8sYVThzRGkJDE0AmHSHcPtt26pzyWFnPhT9ah1ivVVJ4EG35ejzyW0hsBz8XZN9ArxkiowY8iqXrrjZ8juwp8bToy6S8v4QnjhjJreaP2jJbs4DBrmx1hKPEUbavHFdGTYLM0jNq3oHXPGYCQxnvnpX02YrImIgq+iUL8u55kjrOOr5KiHp9fW/Ggf+yrfw6NxDtDdM3xGloop4D6A90WAholU3PaiLx5oYr0ZupsrziQxrXzThmVU9kUKzo7ZAR2R3+uI=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C5D39C0007
+X-Stat-Signature: so9hmgj7p8kzd83sfbcau54coorjzof6
+X-HE-Tag: 1787730806-657489
+X-HE-Meta: U2FsdGVkX1+1KHFwFXgMTz6K+hafyDPz5fUKhPQQaa56+tE3jvhchGogzufdndz9lgP8vJh3VKti8dYsYUiNefh4jkk4Cs5A/w7G5Ci7v/1z/XKL7N/0fcbXf7DK/bHQ4mg7kJhV70K2tStdl5xG2aD3409NaogyD/hiry9J6fr05YzU55kqkKssQ5rUihLcQLEpnYFd+p7E1Z1UyJKg3udTcqc+c7THqYTx7dnJCWpNepDmbHmXlylRjnSZqgdUoss268rxlZeEpxAUGpq4gdowThH3f7Q+EcixTyVzye4KpuadJlohW7teV+hAQL/URDhKz+PHv5re++TmMWHDyYi09Bi4GF5fRLQLE53KrPBpIe/lYc0dqlfgjDDNYiNe02VHxvYh+SD5e0t8xn10avfgrzdNWsBSJGSmnVjmRmIDuiAE8N7Hpx7KTcVZ2NEZXbLMKvXgENwIWl9G9rUTN3QoZAdhy+FVidplj4V0pbkdr1xA80OPLZvEe4jSbBhSQhDRZGjLUsZjwqHjpicrUIixQJmqvmjLECMo4DAEOWN3O+18Len2+uAvF3aJmwGTNrJ0X1AqW+7oCLhMDkFEqzorMTBzNeCTchTXOMhb3CZ2G5rjzseseeibdlZe+f+tmQADJA1FkM8VMcw10v2FqyeyKw0F0Vb3fBNc8v/F4zB4b1wHbsYDPwnxADEL5MxcfBs1YmdAWykOwiK/qAgePTjAicn0ndVxeHVKqptH190nLKLosbvtVq3QmZzXdp3FYGDHnFEYyz4g6DI3RvxJ/frwSVyLYIEOvzgcL7RKXwMAxSJyeG0F2jKqL9NwipB7e9tswkkex/HkGJs+MMV86bGrKDUgg58JUpQ8h9DaSKKPVSua2NWJOFmfbTSd9wdsVFvE6D1SIA4vn8z/OCoTje2IBkUrF0AHQeqZqnpAutihTOhvC0uMl+Kjqnoyu0N6+H2OdwezG9Hcx/UOBIk
+ 6/SxJ5h9
+ mjC5wR/dbfsMGneUQ3KcJiTxGORWPdSX/oSq9vs4UjOV7hdxtWNtRsU0JFUg6G5fjK367yNILyNoX7VuHyjRVs78LFqF3ZUIXcDF4zP7yWPKGE2Bt5i9AzjRITRrk4zDIwKgKl03wkf8FpFNhbz9sbiKSdFwcjDNZj82ceBRu4i4sTQJ0vTzDAj4QhB7chfQ6TySHX0aSTRBTHyZU7CpSnN8B29vV//mNCgHL5li9mEejFeJhFJ8kDxH5Jbj2DHjCTc1QhHBE5tdF5jBWQiWBnr2vGswpgsxTk1M6q/otEIvcP+uf5KCrQG3BHaVA4PCXo6Yb1dM92XTJyAedNECHXnFC5JQ+ZKIZJezdmoQ7GM6yuQG0B/trkeAyL6pvmkw5deNaJVK4XifHZDX9y8zvfYHrKUDP3K6T9Kz1bWxeDQIfoORO7SQh9OEaaXeGNiwEKFO74G5lYyje9DM/XHzU1KJPv81EpMH0tIWIWy/DcqY4bkojckFX5+yIwkxsfce/3VUiCpff2BfPt+k0B5npkByrUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,171 +147,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+On Wed, Aug 26, 2026 at 12:46=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 8/25/26 18:44, Will Deacon wrote:
+> > On Tue, Aug 25, 2026 at 05:52:20PM +0200, David Hildenbrand (Arm) wrote=
+:
+> >> On 7/30/26 11:06, Xueyuan Chen wrote:
+> >>> Implement set_direct_map_ro_noflush() for arm64 with update_range_pro=
+t() on
+> >>> the linear map, setting PTE_RDONLY and clearing PTE_WRITE. Keep the
+> >>> existing can_set_direct_map() guard and leave TLB invalidation to the
+> >>> caller.
+> >>>
+> >>> Co-developed-by: Lance Yang <lance.yang@linux.dev>
+> >>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> >>> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> >>> ---
+> >>>  arch/arm64/include/asm/set_memory.h |  2 ++
+> >>>  arch/arm64/mm/pageattr.c            | 10 ++++++++++
+> >>>  2 files changed, 12 insertions(+)
+> >>>
+> >>> diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include=
+/asm/set_memory.h
+> >>> index 90f61b17275e..7083260303c3 100644
+> >>> --- a/arch/arm64/include/asm/set_memory.h
+> >>> +++ b/arch/arm64/include/asm/set_memory.h
+> >>> @@ -14,6 +14,8 @@ int set_memory_valid(unsigned long addr, int numpag=
+es, int enable);
+> >>>  int set_direct_map_invalid_noflush(struct page *page);
+> >>>  int set_direct_map_default_noflush(struct page *page);
+> >>>  int set_direct_map_valid_noflush(struct page *page, unsigned nr, boo=
+l valid);
+> >>> +int set_direct_map_ro_noflush(const void *addr, unsigned long nr_pag=
+es);
+> >>> +#define set_direct_map_ro_noflush set_direct_map_ro_noflush
+> >>>  bool kernel_page_present(struct page *page);
+> >>>
+> >>>  int set_memory_encrypted(unsigned long addr, int numpages);
+> >>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+> >>> index ce035e1b4eaf..c51236b61651 100644
+> >>> --- a/arch/arm64/mm/pageattr.c
+> >>> +++ b/arch/arm64/mm/pageattr.c
+> >>> @@ -365,6 +365,16 @@ int set_direct_map_valid_noflush(struct page *pa=
+ge, unsigned nr, bool valid)
+> >>>     return set_memory_valid(addr, nr, valid);
+> >>>  }
+> >>>
+> >>> +int set_direct_map_ro_noflush(const void *addr, unsigned long nr_pag=
+es)
+> >>> +{
+> >>> +   if (!can_set_direct_map())
+> >>> +           return 0;
+> >>> +
+> >>> +   return update_range_prot((unsigned long)addr, PAGE_SIZE * nr_page=
+s,
+> >>> +                            __pgprot(PTE_RDONLY),
+> >>> +                            __pgprot(PTE_WRITE));
+> >>> +}
+> >>> +
+> >>>  #ifdef CONFIG_DEBUG_PAGEALLOC
+> >>>  /*
+> >>>   * This is - apart from the return value - doing the same
+> >>
+> >> We'll need an ACK from arm64 maintaines. To me this looks good.
+> >
+> > I generally dislike deferring critical things like TLB invalidation to
+> > the caller, so it would be good to see an example of a caller that real=
+ly
+> > needs that. The caller in patch 1 unconditionally  calls
+> > flush_tlb_kernel_range() immediately after calling
+> > set_direct_map_ro_noflush().
+> >
+> > In fact, that means we have a pointless invalidation if
+> > !can_set_direct_map(). See exhibit A :)
+>
+> Ack. I recall that the patch set originally didn't do any flushes, but we=
+ really
+> have to flush even though we are early during boot.
 
-Unexpected anon folio scan rate is observed in a per-pid topology
-memcgv2's hierarchy even with swappiness=150, which is believed as
-the concequences of belowing rule which discarded all feedback for
-the destination cgroup: no WORKINGSET_REFAULT accounting, no
-activation hint, and no tier or workingset restoration. Shared
-mappings faulted back into another memcg could not signal recent
-usefulness to MGLRU in that cgroup, weakening thrashing detection
-and protection for cross-cgroup file cache and folios that moved
-between memcgs.
+Hi David,
 
-	if (lruvec != folio_lruvec(folio))
-		goto unlock;
+Right, the original assumption was that the TLB might not hold a
+writable mapping for these pages at all. But the folio is allocated
+with __GFP_ZERO, so the allocation itself zeroes the 2 MiB through
+the writable direct map and leaves writable TLB entries behind.
+That's why skipping the flush is not safe even this early during
+boot. (Usama Arif pointed this out.)
 
-The failure mode is structural: min_seq and max_seq are per-lruvec
-generation counters with independent sequences, so their numeric
-gap is meaningless across lruvecs.
-
-Store a truncated eviction timestamp (jiffies) in the shadow token
-next to min_seq, reserving at least 16 bits for min_seq so the
-same-lruvec sequence test does not wrap at the shorter LRU_GEN_WIDTH
-interval. Same-lruvec refaults keep the existing sequence-based
-recency check.
-
-For cross-lruvec refaults, compare elapsed time since eviction with
-the age of the middle generation in the destination lruvec's
-MAX_NR_GENS window. Refaults inside that window are treated as
-recent and workingset feedback is attributed to the destination
-lruvec.
-
-This restores refault-driven reclaim hints for shared cache without
-comparing unrelated generation numbers, while leaving the common
-same-lruvec path unchanged.
-
-With this commit, we can observe the anon scan rate raises under same
-enviroment.
-
-Co-authored-by: Cursor <cursoragent@cursor.com>
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
- mm/workingset.c | 65 ++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 59 insertions(+), 6 deletions(-)
-
-diff --git a/mm/workingset.c b/mm/workingset.c
-index 07e6836d0502..e55e5a75acb9 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -199,6 +199,28 @@
-  */
- static unsigned int bucket_order[ANON_AND_FILE] __read_mostly;
- 
-+#ifdef CONFIG_LRU_GEN
-+/*
-+ * LRU_GEN shadow token layout within the eviction field (low to high):
-+ *   LRU_REFS_WIDTH bits: refs
-+ *   EVICT_SEQ_WIDTH bits: min_seq
-+ *   EVICT_TS_WIDTH bits: eviction time in jiffies
-+ *
-+ * Size the layout for the tighter anon mask so the token fits both file and
-+ * anon shadows. Keep at least 16 bits for min_seq so the same-lruvec recency
-+ * check does not wrap at the much shorter LRU_GEN_WIDTH interval.
-+ */
-+#define EVICTION_BITS		(BITS_PER_LONG - EVICTION_SHIFT_ANON)
-+#define EVICT_PAYLOAD_BITS	(EVICTION_BITS - LRU_REFS_WIDTH)
-+#define EVICT_TS_WIDTH		(EVICT_PAYLOAD_BITS > 40 ? 24 : \
-+				 EVICT_PAYLOAD_BITS > 16 ? \
-+				 EVICT_PAYLOAD_BITS - 16 : 0)
-+#define EVICT_SEQ_WIDTH		(EVICT_PAYLOAD_BITS - EVICT_TS_WIDTH)
-+#define EVICT_TS_PGOFF		(LRU_REFS_WIDTH + EVICT_SEQ_WIDTH)
-+#define EVICT_SEQ_MASK		((1UL << EVICT_SEQ_WIDTH) - 1)
-+#define EVICT_TS_MASK		((1UL << EVICT_TS_WIDTH) - 1)
-+#endif
-+
- static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction,
- 			 bool workingset, bool file)
- {
-@@ -250,13 +272,19 @@ static void *lru_gen_eviction(struct folio *folio)
- 
- 	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH >
- 		     BITS_PER_LONG - max(EVICTION_SHIFT, EVICTION_SHIFT_ANON));
-+	BUILD_BUG_ON(EVICT_TS_WIDTH <= 0);
-+	BUILD_BUG_ON(EVICT_SEQ_WIDTH < 16);
-+	BUILD_BUG_ON(LRU_REFS_WIDTH + EVICT_SEQ_WIDTH +
-+		     EVICT_TS_WIDTH != EVICTION_BITS);
- 
- 	rcu_read_lock();
- 	memcg = folio_memcg(folio);
- 	lruvec = mem_cgroup_lruvec(memcg, pgdat);
- 	lrugen = &lruvec->lrugen;
- 	min_seq = READ_ONCE(lrugen->min_seq[type]);
--	token = (min_seq << LRU_REFS_WIDTH) | max(refs - 1, 0);
-+	token = ((min_seq & EVICT_SEQ_MASK) << LRU_REFS_WIDTH) |
-+		max(refs - 1, 0);
-+	token |= (jiffies & EVICT_TS_MASK) << EVICT_TS_PGOFF;
- 
- 	hist = lru_hist_from_seq(min_seq);
- 	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
-@@ -275,18 +303,21 @@ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
- {
- 	int memcg_id;
- 	unsigned long max_seq;
-+	unsigned long token_seq;
- 	struct mem_cgroup *memcg;
- 	struct pglist_data *pgdat;
- 
-+	(void)file;
-+
- 	unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
- 
- 	memcg = mem_cgroup_from_private_id(memcg_id);
- 	*lruvec = mem_cgroup_lruvec(memcg, pgdat);
- 
--	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq);
--	max_seq &= (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_REFS_WIDTH;
-+	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq) & EVICT_SEQ_MASK;
-+	token_seq = (*token >> LRU_REFS_WIDTH) & EVICT_SEQ_MASK;
- 
--	return abs_diff(max_seq, *token >> LRU_REFS_WIDTH) < MAX_NR_GENS;
-+	return abs_diff(max_seq, token_seq) < MAX_NR_GENS;
- }
- 
- static void lru_gen_refault(struct folio *folio, void *shadow)
-@@ -295,7 +326,10 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 	int hist, tier, refs;
- 	bool workingset;
- 	unsigned long token;
-+	unsigned long evict_ts, refault_distance;
-+	unsigned long max_seq, middle_seq, birth, window_age;
- 	struct lruvec *lruvec;
-+	struct lruvec *dst_lruvec;
- 	struct lru_gen_folio *lrugen;
- 	int type = folio_is_file_lru(folio);
- 	int delta = folio_nr_pages(folio);
-@@ -303,8 +337,27 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
- 	rcu_read_lock();
- 
- 	recent = lru_gen_test_recent(shadow, &lruvec, &token, &workingset, type);
--	if (lruvec != folio_lruvec(folio))
--		goto unlock;
-+	dst_lruvec = folio_lruvec(folio);
-+
-+	if (lruvec != dst_lruvec) {
-+		/*
-+		 * min_seq values from different lruvecs are not comparable.
-+		 * Judge a cross-memcg refault by whether it happened within
-+		 * the age of the middle generation in the destination
-+		 * lruvec's MAX_NR_GENS window.
-+		 */
-+		lruvec = dst_lruvec;
-+		lrugen = &lruvec->lrugen;
-+		max_seq = READ_ONCE(lrugen->max_seq);
-+		middle_seq = max_seq - MAX_NR_GENS / 2;
-+		birth = READ_ONCE(lrugen->timestamps[lru_gen_from_seq(middle_seq)]);
-+		window_age = jiffies - birth;
-+
-+		evict_ts = (token >> EVICT_TS_PGOFF) & EVICT_TS_MASK;
-+		refault_distance = ((jiffies & EVICT_TS_MASK) - evict_ts) &
-+				   EVICT_TS_MASK;
-+		recent = refault_distance <= window_age;
-+	}
- 
- 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + type, delta);
- 
--- 
-2.50.1
-
+Thanks,
+Xueyuan
+>
+> So agreed, the interface should just flush internally.
+>
+> --
+> Cheers,
+>
+> David
 
