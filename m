@@ -4,174 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88703C61DBE
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 22:02:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B77C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 22:17:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 835ED6B008A; Wed, 26 Aug 2026 18:02:46 -0400 (EDT)
+	id CE5216B0088; Wed, 26 Aug 2026 18:17:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E6C96B0096; Wed, 26 Aug 2026 18:02:46 -0400 (EDT)
+	id C95936B008A; Wed, 26 Aug 2026 18:17:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68A366B0098; Wed, 26 Aug 2026 18:02:46 -0400 (EDT)
+	id B84F66B008C; Wed, 26 Aug 2026 18:17:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F90F6B008A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 18:02:46 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5BB4CC0262
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:02:45 +0000 (UTC)
-X-FDA: 85144795890.27.AB1EB9A
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012066.outbound.protection.outlook.com [52.101.43.66])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 792DD1A000A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:02:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=P1LGlMEy;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 89C7A6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 18:17:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6491C01C0
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:17:32 +0000 (UTC)
+X-FDA: 85144833144.23.FE66712
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012063.outbound.protection.outlook.com [40.107.209.63])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B1EDE80004
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:17:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="ltjjZ+v/";
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.66 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf30.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.209.63 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787781762;
+	s=arc-20220608; t=1787782650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VwAvnB1W2isvSDRP8aE6X1X2isY9R7l0nl7t6WxuF94=;
-	b=ZCdjf9zCTxJVmLQIgJfyuT+dhBXDN4yz0MqwmMVWaxAevuROWzt9BrEVFN+ii8Z63WEsDV
-	W42DXlYaj8XmBe8u22TaX/c+Thlfz+/WtfWtkkKtd/WICVWzOFp6dxLj3BTH8/dtc+NG4y
-	DuXimI2kIFneq8h9Vm7WhTeugtYUmPc=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=P1LGlMEy;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.66 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	bh=tCXjL6wviLhhXmLFX/1ji0v98He7HXMnq3WlETaV1LE=;
+	b=SH8SFoynoY4MkbAT8j9XDPaPAxnC5qXDhOr2k1L4PcQD2IbgiNzQjwsiY+gN/VfnL68Wqv
+	l+0iSx3mYrb/gDPjDh3UIus83iI1QzXKKEDrEQwRBwcp+6nm1zwDS9+YhpzTgFbUN2Tsko
+	8ufqZibcoRERRexQtNYLiZba9KFJNPE=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787781762;
-	b=lL2C6QvQvQjcQXpy8Wbvnyjlxjd+B0jIB7sq3zZAcUA6E63EIPvZWHs5eB5YCGtKlNPNgw
-	2NtSSyTwQDQbQc++dvzeHha6zfibP7cuvJyLZJVBZ8qPH+/RTuDL/Vf3ld78Y7/hHXN/0U
-	vl0ZNH5O6Ylzlpon8L+mZ1emaVTtCmQ=
+	t=1787782650;
+	b=LW5FBCeB3JdXC17+Oo5ZHhEE/ThJ+RXAAOfErrnrQcjt73iSWNi2tIkrzlIglWcoQEQqt6
+	W8Ry3DvS3P6OYRSuAPDBUYQUA0OKJNcf8hUY4dHlHk0MZgveTNmf+wtPYcsf0BOlVV42O/
+	ssEWryZ/v5hlmMGPTt50Gg/edaT/Mgc=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="ltjjZ+v/";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf30.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.209.63 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n3eENLuAw9vZ3YaW62DX0UBiaxpzNMaHAbZMG2yRoTUAz8BcLnwX6DoamRDssBBySBJVnx/rfYXlMDJUdN60uAPcSsN8Mu1ikSw5gSVAib55ry828rR164kEpFl42kp8ZFRD21g0qbIIErSKrhcGQl5vfgsoNxZWvS3z7Vyg6w0HctTrNr+diZgRXqWOBfTwWPB7nZVOn8oCWw0k5bQoKdKb7gZmvU6JsZNOvaWGSkgh2Qf/q9mjPoAkLuNQPjyQ1p+ElxpzYpVQP1p3K/NgSW0SVDxGmqTRamcdXOkC4n1pBQmNfC0xRg+IfgmLa7Zlpc60USDiFafvcM17T9F9LA==
+ b=PwSHp7bohqzFyowJKX+2b9FKUPm5KlwYHHxbollJobMhaPrceWaBwqd19KTzwwXlg9yd9osq/YRLtjvBuK/bKShDVb0fCzdhZQd7BLpIIirUZhDCCYFE+mol68eQWpu1zIJW/WF0aNpGoUPM8vS/kMc6avZwjOsDzPOk1O7dhEjuRgugr3QN/leRUuUMJk/ul3nCPi4dmUefv1LyHpfMTO2AYwV8Svg4Cm6KAd+7U8rNJ57gqUFM5Kl1KzHzaUrkRu1GY6r7KKPfYongKC1NaevpXi5LhWVvDZfVmktG8rXNHE0D9A/Eo4NQJ9no9qnX+bcVyIoNsCyhPW+kmp52Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VwAvnB1W2isvSDRP8aE6X1X2isY9R7l0nl7t6WxuF94=;
- b=eVQu7DrOJk8fSuyO83Ae76wNtzl/lTk2wUYDPjqwmUCIoUT6u/b/YmnbsXBdk4blmNt+IAWUj9oyarvKy/n4mf834xGMjY4j7z32A/VCcCrM9PFQe3zxbXvDVI/XWmQUQbYDh3Erj2tnYO+EAKAlx5dCVnzH2fkxMKIKusxNVGce1m8fuCAvlkco9NnoqO6GiGs4RiUhwwiVsh2HxrimPtaGwEm2epjAPEou6a7Y+8tKT3HxLleQZPiJI0rB1e2uMmMIPvkGliQVu8PKPoePUQ0K+yBwgTL/EDOHR3zFyFcU9HjymISQlNidWOMdI3NdIY8voZjnjxYaHnREqHdU2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=tCXjL6wviLhhXmLFX/1ji0v98He7HXMnq3WlETaV1LE=;
+ b=afWGQwZvH4sfDqfirZNx+PRHM23JVlWJTRp2vPTUMKpFOfWcP8alWGGC+rB3Fr5OiOuV19iWGmTOq5OBUcY/RMldRHOolv11DjSh4VFn7/G2x1whv2Iqi0qKkc/wgIjWG71/bKy87Zz2T9wAF2xlQHCjfM1K0Cfc8uWoIaHnd7TN20dXaEXSBsEe9lrnIHbepB5RtuoTVyrb1JLQ29C+CDotheRTYQjduZ92aMdFK6Cv87abT7yc8fTo97EaK/kDr7td1b+8ElJC5saOe3N62J8UygfrpR/nQM+nTQg5I9UvcPMBRUZ0ySBa6Sv47+7B+S5lUNQmjFFR/tS1F2Xkog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 149.199.90.133) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VwAvnB1W2isvSDRP8aE6X1X2isY9R7l0nl7t6WxuF94=;
- b=P1LGlMEyPYnkp5LTr9S6yFrSTIPAIRaMAfECXhCPVgAvnFS8ZDBg5uNiGFiM5wXCOOj0FtQasQAeVV0ROTDXpNRaS+IEAuwUHIHdc6bG/eeWi0bLURzkvsieQsMkGeCzLapO9qhSUqoHG+zl9yW69Ilb7/1jIYPxt3KF83HEDhRb8TiSK5JUMPedWWqS3aJRFq64cun8W8zM7LxRExq5lOGnZ1SjrdJTwPQjgQtAto9Rn2NcfcwnZldGNBY+wJ8dkBgCGzCCt0qXbmZyeUK8doG+OCgL8bjwTYTTJh49bp3DIZu/S/kAvvXlVNdr8nwOzzk2SviAIq5QdQamEMlPpA==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SN7PR12MB7881.namprd12.prod.outlook.com (2603:10b6:806:34a::9) with
+ bh=tCXjL6wviLhhXmLFX/1ji0v98He7HXMnq3WlETaV1LE=;
+ b=ltjjZ+v/Df/OYSwqGQI9u0jB4rRu8gzSnkqlKVycOu68aYrv/Sy8JtYHdx+vfOR9MN7Iwo74iET36q/TQF0Cb3vGai9GwgRsai5vMTa23AR9f8ZASxoEHcsgygZYZST1YasGwYvt4/KjRzOR0aobw7iVKeomynaNdy/x4E/EPUU=
+Received: from CH5P221CA0018.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:1f2::13)
+ by CH1PPFF5B95D789.namprd12.prod.outlook.com (2603:10b6:61f:fc00::62a) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
- 2026 22:02:35 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
- 22:02:35 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 26 Aug 2026 18:02:31 -0400
-Message-Id: <DKZ7QMMZPL21.20QCG4B32HCYJ@nvidia.com>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH] mm/slab: reject unsupported kmalloc sizes
-Cc: "Harry Yoo" <harry@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Hao Li" <hao.li@linux.dev>, "Christoph
- Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, "Alan Stern"
- <stern@rowland.harvard.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
- <stable@vger.kernel.org>
-To: "David Laight" <david.laight.linux@gmail.com>, "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>
-X-Mailer: aerc 0.22.0
-References: <20260817-limit_kmalloc_size-v1-1-5bef487701cc@nvidia.com>
- <82f138f5-11d4-4839-94a3-c226fd982715@kernel.org>
- <20260826143644.5b3de07a@pumpkin>
-In-Reply-To: <20260826143644.5b3de07a@pumpkin>
-X-ClientProxiedBy: CY5PR15CA0142.namprd15.prod.outlook.com
- (2603:10b6:930:67::8) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 26 Aug
+ 2026 22:17:19 +0000
+Received: from CH2PEPF00000146.namprd02.prod.outlook.com
+ (2603:10b6:610:1f2:cafe::2d) by CH5P221CA0018.outlook.office365.com
+ (2603:10b6:610:1f2::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Wed,
+ 26 Aug 2026 22:17:19 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
+ 149.199.90.133) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=amd.com;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ amd.com discourages use of 149.199.90.133 as permitted sender)
+Received: from satlexmb07.amd.com (149.199.90.133) by
+ CH2PEPF00000146.mail.protection.outlook.com (10.167.244.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Wed, 26 Aug 2026 22:17:19 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 26 Aug
+ 2026 17:17:16 -0500
+Date: Wed, 26 Aug 2026 17:17:01 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
+	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
+	<jthoughton@google.com>, <oupton@kernel.org>, <pankaj.gupta@amd.com>,
+	<qperret@google.com>, <rick.p.edgecombe@intel.com>, <rientjes@google.com>,
+	<shivankg@amd.com>, <steven.price@arm.com>, <willy@infradead.org>,
+	<wyihan@google.com>, <yan.y.zhao@intel.com>, <forkloop@google.com>,
+	<pratyush@kernel.org>, <suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>,
+	<liam@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
+ Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+	<peterx@redhat.com>, <tarunsahu@google.com>, Fuad Tabba
+	<fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+Message-ID: <mtbqvvvpwbzybgy6z47lwui6ag53kyubub3hkczui7u72zxesl@lnwsglrgwl5p>
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+ <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
+ <ao9CKMXAX-hScRSa@google.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ao9CKMXAX-hScRSa@google.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SN7PR12MB7881:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87213d27-b360-4ede-fa00-08df03bdbc10
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000146:EE_|CH1PPFF5B95D789:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8a271f5a-c65c-4069-01b6-08df03bfcb27
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|4143699003|11063799006|56012099006|10067099003|6133799003|22082099003|18002099003;
+	BCL:0;ARA:13230040|7416014|376014|36860700016|23010399003|1800799024|82310400026|10067099003|56012099006|4143699003|6133799003|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	rCirTUjrsDLiRUHqnms1Uz4XylXv5JXlaOZcqbmz6E1nx4VbW6S10iiSppFiLkR+dI1PQSmk1+A8z5osXQ3Zc/Hi2nrBKiqPHM233jbInL6sWnzVu5sbf5Ok2U6p91tIFaJ7ogAsJWgP8qA//NanqO4mxkFdNrGezCZ1ptCzmivGgbiTAyZ+aL7+8YWEvAn2YqdRViDi1t1xOu+P2fiEkii8zn1sRN9pX92L/RQO3dU3+2bG3JItDWahJJjVB7KnM5KmMvlBxcVVilJcSRCuRxr1bg77f0gTZJRMLtBiR+6Xm81QBSGd47eiB268TxOQQLLuz6jxdh+PmHG1C6yBm2mkONtEJBpD7klO14RQwFmvq+NxW9lI+xfIIlBzKB1Yrh0PeuJdC9znXZa/LjrAS6fwF+BT5fj4ygYECuS3DsSCIEp7kzbw+7fmLtWXAQJCp89ZBCieHSQE4YRgTWgnPh1Q/l2AsJ+CCG1SZPtvrYWhLsoSNmtX5f2fcHPsk+2M9x7bB0cmvLoRKU/VMC3RDnAjAHH/3meLpUjctOydD5cJ7cf9AW1He6NVZAME62G58J3SF2vchYWoJiwFnBSj4ZyPg5RsApvEwmiOzEqPU+64TvL+kVQP+i77tZ57FlLgX465aF37xVwGd9V7KBorcoCYhBNWQ24XjtHKboQiqpE=
+	GvbEPnHGbk3m6zx2TFicCQAzZX3vfIV25qhgZIyfzbnmOsVOQ8IWGUsUlVOyBcGmS25efMLqYWgEly7Sp3MyRDlqBlYSehrXvkjyyzDCWeQV3hhO3H3ngOIJkjGqiGOGjS4e3qATv8s0KmDsfFywnm4sCOZZAV5VM9Fk8Tjh6AIudoWI5DjNXIld0DJZWy+JAAPqoVZZGJXjQHKmw+mbM+5EWyVgbLVyyC/Rc+PyaBpVXbBnp4k11s2mGWrZKvs+Kx9JvvfMYYLiUjV13K+nlErfNYSiwj8wrMrUGB0IhGsmfWaWqiSlb0kT44K31KhJHkkD1R6MZNj7rrQU+BftV1ZOC//CJ9rw8PxC0nT5NO9tzw4Fd6bda9I9I1B2TlgbmPE8af5P0QodRTAuwA0mvmEDHY35PTCVBscklO1DOMuJFjY2Qb0kUJcIhWJ4rDU2KohfnslbA5ecLOkRLFg21jWCV8WdEQNqTvgstIni4gXOUfH0QwTTKBxDMQn1adWdppKFhDu/bG6YSRbKE5oJPh/BASh46JZTAB4DeCwr1NjJ7dzDRXUK8oAexhoAag/wbm9kQuxNZRQ+JpEm/GsYMbQBDoOZ4eCStRkAkGamyc34BcoQYMmz7l2SYiavFgtBINikzgmRqqs4hUfnFgBIbxsC4HVrqvOrIkcDdiHK3q59qHnrLhKpDhDTVAt8WbXaTguBpIRMIEJk3lBoaz43zw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(4143699003)(11063799006)(56012099006)(10067099003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:149.199.90.133;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:unknown-90-133.xilinx.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(23010399003)(1800799024)(82310400026)(10067099003)(56012099006)(4143699003)(6133799003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K2VxUzNPY2Q1Z0p3Uk9pdm5ERC9OK0s2RDA1NzQ1Zm9HN0VVbnExL2RDcDhS?=
- =?utf-8?B?TjhwUnphdERXRDZqSG55eUZsdUZDU3psdnAwWDJ1bDhnUDVUb2tnTUhaeWhE?=
- =?utf-8?B?cjhWNTczdnpNdm9uMnphTGVEZ0szelkvY3hhcXNjNFNZc0ZuNkJvSTIwS2hq?=
- =?utf-8?B?enVUbnFxTFJzdlorWllxU1gxNXRXMmJaNmJlYzJTWG9PWmh1aUJBOXRnczNV?=
- =?utf-8?B?WTBITnFqcVFWSFBNYm1hRHg5RjZsVC9vZ3hTcnBqeWVQTnhUZTBZNjVFQnJn?=
- =?utf-8?B?MEJ6S2pTbmJkdk5JSktCYlZERTRyazVBMTgxWDhBcWpjNWpmU1lCVGhrdjFL?=
- =?utf-8?B?anIwN2o0L3lrRWgvaU9odk5EK2w2Vk9lWjY3WFZ0U3c0SEtNZkNkT0hZNXk2?=
- =?utf-8?B?dVFLeTNESHhzc1JvNWlST0ZPMW9Ba092RUkyL3RVVGxNKzNrK2hOMzVxbFZu?=
- =?utf-8?B?d2MyNjArNk56QTJYRFlKbm9MeUhVVENlTlg5N3E5VDFkZjNLZG5tb1Y0SHFJ?=
- =?utf-8?B?YTdQdzJMVUlQeE5DemhZVnFHdVlsbjA3ajFoSm1NSDVibEEyWnV3Wjhlalc2?=
- =?utf-8?B?ZlZwQmIrK25SemVNS2JQalRLNW4xVHpMSk5FZVJsVk5zZUdMTmRvSERHRHBk?=
- =?utf-8?B?Z1pWL0hxaDdFUXVVZUZwSmJZblVLU2dGVjZweDg5QUxQM282THNKL2RpSkJV?=
- =?utf-8?B?UlUvQ3QzN0JaS1pSTzBnZ0pyc3d0aFUwS3lub2FGeDQwQ0J1Vlc1Q2FFVFJ6?=
- =?utf-8?B?YWg5VFJ0QjZNTk93ZmtwdlIxOVNUTFl4OHhrYVdWc1NjaTc2WlozYVhDUTJw?=
- =?utf-8?B?VVNMVHZkN3JmbmtzbCtSM1ppbFBrSmRMczJGZU1Kb09PbkdPRHh6RTFxOXA1?=
- =?utf-8?B?YXRoWDBGRENCNGpoU3ErVVpoRk5wOHVPK1NWNVVBZWZxb0h3M2hBcDBSQlM1?=
- =?utf-8?B?dmJFWEdrc1dpT0RTTUZPVnJ6c1dXaHFsQit5M09UMlB3Ymk0dW9nWU1hc29P?=
- =?utf-8?B?N0FyYWFJNGlTUkVZazNsU2p6SDQ5NFNuUkNtVXpJaUNNTzJDMGluWHYzUlVu?=
- =?utf-8?B?Um5YU29CdFlDenN1bWd4TXdHeElQRld2eFpqWFMyOTh5RW8wcE82elJzMGw5?=
- =?utf-8?B?bHVldGxZcER3Mzc3RmVXU0hkTTVMQndhK3o5VEdVaEN6S3VRcGNsUFlaRlpX?=
- =?utf-8?B?NXAzV0FyeDFvMGpIcG9Rd2VyUlV1QkJCdVZ0enZ1SEpZSzhRVVBoZEhYWExh?=
- =?utf-8?B?SGtRbyszRFZvV1Q1bEZkTjl4bXJLZHZsY1RINitpd3VhQVYvUHBxdm1MR1p4?=
- =?utf-8?B?TFc0YWhjUlBpVGZmemtPOXpCalRTOTNsYXpRMGJhYVpUbk9ValRtSXFxcnVl?=
- =?utf-8?B?Y2t3LytxcGdYcW9vSnh1VDUvbEVuUWV5Z2NSZGZNeXdoRDNXSDB4Sk9iQWVs?=
- =?utf-8?B?LzdDSHlVVnNhTlFFcWMvcmFwbTN2V0dmZVV2dGZJWnhSc0lWRGE0UXYydnhF?=
- =?utf-8?B?bXVBem9IWTYySnY2Y083bU1OelB4b1ZmNjJPbDRVdmhyZzc4VUdmaHJJUUFD?=
- =?utf-8?B?ZVNvRU5Zdk50TzBPNWk1V2ZWVFl6RHQzY3pQWENXL0FSMEl1elpVOVFmSTJn?=
- =?utf-8?B?MHRQajFxM3FiUFdiWitJRFdTTmJrT3JJUGdaZWk0bXM3UjI1V3N0MGI0bHkw?=
- =?utf-8?B?YmtIeGE3RkVlLzFKQ3ZmaDZ3SDBSN3dvbFBwRnRhdjBhY29yNm1CeDVFUW1w?=
- =?utf-8?B?OEcvZjIxa1RFZjZOK28yRDVCVVVwY1YrQlVmYXhMaHhrYUMzbFhvbGNwWm91?=
- =?utf-8?B?MXdwdDNtcDZZYXFZalkvMXpKRkpCWjNiVGpxMFFuZWhDT0RCMnJiVk4wM0pQ?=
- =?utf-8?B?WGpnZ1ZKd2R2M2hSSjRjUnVZaVpCME5SckNZN1lqWG9OVFhMOXRxb2tSczkx?=
- =?utf-8?B?UXZIRFNDTUpxUmNTaHlVZ3lmclVpaS9oT09DalFteTlzVFlZVmt0aDZZcEor?=
- =?utf-8?B?YmZnNXdQVkVzU0lWSEh4MWNQdmlSUkxvNHlSRExlVnU4SW93dXNrOUVTVnBv?=
- =?utf-8?B?cUJyZWVNci9aSlRVYXhIL04rTmROaTlqdHN4RGUvUnprelNPYTJvUml6b2pO?=
- =?utf-8?B?a1plVjdSVVB5VFFsaVQzc1pFNzdxSmNsSVlGUW0yZ3YyaUhUZzBORUJQc2xU?=
- =?utf-8?B?VnB4N3FqUWRDMnlnYVM1WCsrRCtmZWNobzg0aGdJdFM4MitYZG94UnVsMXA1?=
- =?utf-8?B?U1o1SUtyMy8wNDRIZG9kTi9RNjFKSDFjeElsaGFrMWpZcFc1d01YSDVodlVR?=
- =?utf-8?Q?fn9+c7vBESz+fyXDFe?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87213d27-b360-4ede-fa00-08df03bdbc10
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:02:35.0184
+	ttyRbOGGvgsMKUmgLArQ39vmk40u9L4bEiphl+3pJZKnFJv0yxOC3phiq/hHz4QlKiUrE4aYSILGSL6aDhpL6kK2S4z5gfAxcO5FyXMFrX1Pyz7KrofbV0AATVOIK0J9DosP6PIbTBhi0s4C3zRRgriMMbPv5jsZBCXfVBbtyrsoPMSYZ9obua0x3mmAQ2jTFx/Io8igr7jmnJ5lA/d2VBPcbTg6LjZXI6pKTOC4vttRb8RF7dudIrb2h/HQeod2tsD88zLNjYRRep+Ay67FcN3JFtjjUm9XUUeMCNTt7GbTAyM3QBXKcmdCiyv0QprCYzasLKV+m2u4bGQYiCeYM/0gAh3oyAmcLrrCSyeDTnU8n0pNgfTbOmLnpJjiJb3rW5yPQ5SbBgp9dFGXe6cqbV30+hd2HjgkZys54APmsuKkQzwnMVBiLD6UJwVBlvAp
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 22:17:19.0694
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gnOtxdnyRwQFvjvsIDyQ1ZDKXVplK9Zy57yNePVo50Aj/TRTd6mESL+87kQNCIm7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7881
-X-Stat-Signature: unmqcw88quygyzgfntjcjxd8oko3why8
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 792DD1A000A
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a271f5a-c65c-4069-01b6-08df03bfcb27
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[149.199.90.133];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000146.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFF5B95D789
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B1EDE80004
+X-Stat-Signature: p33my1gw16r3a7rxcufwfk3iduceobhn
 X-Rspam-User: 
-X-HE-Tag: 1787781762-318561
-X-HE-Meta: U2FsdGVkX18eFThb4jLtrds2yh2gkblMbgMfDFPF2rJQB8X1aNJphXpdpy12cq+FbxaCD4xnRQQr4l1hm27MKnjWVZomJUevSO7P2c0aYLXAlHNsrj/mrUm8q5BBYZixhOgrXfftxi233xB+2aMCnujlJ4vbGi0Z7vEOHuErNi0mZfG4RGnJxy1q3egCgadWUYiWGQ3ePZ3K+Bwk3NVS4PDf7KBvvAxG1+/+GpJRCXNTY/wzvGnm6AASlFKbmiVv+XMjrZ5pJ8rkovdqUwo50jOu9jU3YgX4lFR7cX/r8GA1HTVKXiI5CcRzDEB2Q/9r4l1AMoKyF0UaxO/9t1htHJYLCK/MCopafVK9CI0jjBerPMrQVWNFxr8ZGJNBEqRDxvHtmkNkaKAdo7moN8U7cgoDFD4uEXKT3Y9eKVI7Zb2f/IRVDcfponsKrG6MJxlKEa4+8zXdP6Hp9VvylGi305rWSEJVFWMMKofDbcQLaKKU4IHuf01ujT5swchM+no6HTwIx96vrr6JB9hcfsaasYH4PaAvnXJIfBZJLCS4ykGUgepqWUvKZkBZtaAGnMtIrc5CF4vwQh3c3veb4tJA8UCvb3ctH1kE6kHgX9JfuXzgfiCpSNgl/qhg3SMLvNqvmhA43O6/qYPt2tPFIK4O934xMaNuIEl0QcMGkNtAda+urdtZrMs4JjbPPJdmWt9y170P/Qr9+4H56oxT0iiajSudf4usQ/njIW3JIUDbw+SiDv28FHx/vMleHS61q1CotMI3di+ndgmyMAD2zKMMsF0nkEgu+160/tXg2u/DXIymlARa2aiDYYTy1akmuAGmgK1wWjAQAaAufQG47kKpeebN1swrPx8g/IoNhtupmnNTcDNf4EElwgmGdYW2KSxhfseKBF62ivjh1zNkeuxCBCvugBBZlcUV1vI9wGKX3jDpKpvGUvYqY9SDKcbNlQICpe00voej4WNdd7e7GSg
- uDwAmRYg
- 1i2FRYjKFafR4oXEa1fE177KrPrBxTyj8yszqo1Yq+rlyhgytyLxTXQgNHFCaD9S+xVbrSChASj7GufMCokliUTpYmbJKCt4SvNYBlbgbMOrloqYZaLhnCiqdxafOmkIany/orfXNcuv5nKRp3IVZilDRHXPOWfVARTCMT/NsYk16ZzklcVqhtam0h1KZwQMGS4whb17bjvmO/63WdAMQCzlbUAM3VKdMf/5kYU5z8/ugYO4zoRKKi466Vty04FbL014MBIb37nRzNVvr997t2MA9mIxcx0OyG3j1NCG1DKtOelLLV3lXKwJAjN5IgnwYSUfcKcCjfyCxtMixBQXmNa29UlCfe8EayJJOaA3Q4YaqiUqKZ/8OhoTwSKnoBSzyEd7aJLgLFSLJr6FyqLdzOOrRCMbsXs/aQHgxsz/75J+WpcuTlKwGutb64PlcgYwKPLFlgcmacfcwBB0bIcRiEK/sdX7ZDuK3ph4rccAIPZRq1s0xLnWeCvgWrcyfz/yrzpYMkGr9x8CoFpP7nBqVlnygW+g6vflBnAWaOV2c3b+4fkCTME6Oa0oXDGA7wOsPd0PxJHlo6q4HSgPu18VTDRhcdCiYZ43DmCSld86OjFxiz2H1mA7Jf7AWpBuucE3e2PXFa4lGvaFQm0eNxkXnfscze3NxjhvK0ifs
+X-HE-Tag: 1787782649-815405
+X-HE-Meta: U2FsdGVkX1+SzJ9P0B2guYxBVG1CnO7hdKKeYhiAB+Bz8UeAqa/nN7F9A1cl+x3rrjNh2mnS4LC+bPs7Bna/OO2uVrMW632gO2FpqVgOCHMeXSURoq7hYXg3eYi3SsPitCMKHHKhb3ixBXnxQ4iZgVIS4Cf4xVJWghNbd3/9PmALGhTqOksS+iSkpvGWTtYBwyhlBjiBU5Yes2JMeBcPWIvDKQ5a0tk5APXY0XG02atZR9Y30CQ80Vi3WRYRFWvmfEGHop0Kim/fl3vJ9rYohmTTNg27mEmmCvBJW+99lfJBhz2yuXejZsYBd8FNysbQHF/8Au0xGyTV2l5JKRKHOizS1dbtfEFWGGQ/ww8FtjOhbW0E7DZbJpDWLDMZfV0kdj2eGlSv+jzdSvQaP1hd+PMJ/PDHovDbmmWkjhHYHv3E6J0StIww/ueUcWKNGIbnA1I/An/hlxO1tNEp0qX5YAC6YbUEuDx8Pm2XYbN61s5lh33peq0n8nr5HHoRFoGgAQuz2fUscYCBq+RlzLOY497tdKHf3s+AE7E24WZ5tQnzw2dRaz0nHM5RXDDrWfo/jm8+diUpBIVwmHwXYG76cLN+XIk9zlQ36uUx8Pp+AXibSlnIRCm7lqAXipAVlIMwnzhg76umFj+K2EMvC2ihwQnvR2cElVx6aa1mrmS+9TbQLl1xxEhbKSOOg86T7Jn7zdHDU7J45vKHgHKr3OJ6Hh6lMbhqBYnkMcLEqvmPwc0N+LTStportVwWRYdl+Ht+HqSJ8wCAiQGKBfuqIn9RdVCxzg8Kzly0ObIexQe8FZhx0unbFV5Yb0NxAK2fnKGUKDhfsgC6v0jYsbSOrM4MGdHxWcDwpjqmt6K9LJTnZgTa4lO9OVmFngNL7oAmMDlk8UzRjZD1xzDV6dBAppzYOJgp3mjc7phMXJ0VPuZfMlr1FAoP9KCgDV8+hD33LICitQFA62Gh+SnPZziy3Du
+ dJ6+t4pI
+ 0nW5HaF4OiRIpFiyuM/ad+F45VlRiMMgo5Vze4HiTX38o6Ieoz8tFrGgQPck5lbI4hug+iMcxKiPnfOB/XYlQJwsxt0tBFjg+KGYPUseQEmOEVtBX3UZ0eCBXwkLkLao3mWGT0LEBvTddFtpzhqn/9fpJclq4qc4tWloULjDeCMlAUGmC98miKTd4D9QWqmuMhJAYw57oxGrQec6hks5gQ27FVwiNHB4hU7AgZ2CK3xxkZ2pIWZ1Rf5CuvyG+uRW3bGf5Iypbep4CrJChXDN0uZz/lrVxagHC0ZST6/TryM18zAbOkloPQ7Nsg+G25Z1X0M41RAHOOd6i2lc6uUmZBPK73RlhQKYwU6Cozvssm9kQdZusfxAfKw0nJHblH9hWAPCkWwb/nRd8xbzG5jVR1PC9er1XUy4DtyOrC67yd9+AKf0JYFQ5ot/z7qmT65KyZ/kY1Zgc8tqNYJWjh/MVMmWGKng3YzFjzzd1VLkdu++peGIsBOCjZxB2DirqPyIqihn0R5ByjvhOkdo8bp/of88BFQXqGDNoSSnscqvNpbtzQo9YrDnuFOvEhUh9T7uvoVMvezhOFuENTSycTVVvY7/yEcVW1GRkczrlJc3z2oi9acrRGeN0C6IcMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,135 +175,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 26, 2026 at 9:36 AM EDT, David Laight wrote:
-> On Wed, 26 Aug 2026 11:28:12 +0200
-> "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
->
->> On 8/17/26 22:40, Zi Yan wrote:
->> > kmalloc is used to allocate physically contiguous memory for kernel
->> > allocations. For requests larger than KMALLOC_MAX_CACHE_SIZE, kmalloc =
-uses
->> > the page allocator and can only support up to KMALLOC_MAX_SIZE. For re=
-quest
->> > sizes bigger than KMALLOC_MAX_SIZE, the page allocator can emit a WARN
->> > because kmalloc allocates an order greater than MAX_PAGE_ORDER. System=
-s
->> > with panic_on_warn=3D1 crash because of this WARN. Fix it by rejecting=
- any
->> > kmalloc size bigger than KMALLOC_MAX_SIZE.
->> >=20
->> > Fixes: aadb4bc4a1f9 ("SLUB: direct pass through of page size or higher=
- kmalloc requests")
->> > Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
->> > Closes: https://lore.kernel.org/all/6a820ebc.9ebadd4d.20b15e.001b.GAE@=
-google.com/
->> > Tested-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
->> > Signed-off-by: Zi Yan <ziy@nvidia.com>
->> > Cc: stable@vger.kernel.org
->> > ---
->> > It fixes a page allocator warning (order > MAX_PAGE_ORDER) when gadget=
-fs
->> > requests excessively large memory from kmalloc. Instead of adding
->> > __GFP_NOWARN to suppress the warning, as was done for usbfs[1], change
->> > kmalloc to return NULL without a warning for this specific issue.
->> >=20
->> > [1] commit 4f2629ea67e72 ("USB: usbfs: Don't WARN about excessively la=
-rge memory allocations") =20
->>=20
->> So I checked and for kvmalloc() we have in __kvmalloc_node_noprof()
->>=20
->>         /* Don't even allow crazy sizes */
->>         if (unlikely(size > INT_MAX)) {
->>                 WARN_ON_ONCE(!(flags & __GFP_NOWARN));
->>                 return NULL;
->>         }
->>=20
->> This comes from Linus in commit 7661809d493b4. I'd do the same thing her=
-e
->> then. Thus there would be a useful warning for e.g. development mistakes
->> resulting in the size to be unexpectedly high.
+On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
+> On Wed, Aug 26, 2026, Ackerley Tng wrote:
+> > Omit support for calling the arch hook to make private, since SNP, the only
+> > implementer of the arch make-private hook today, would actually prefer
+> > making private only just before faulting memory into the NPTs.
+> > 
+> > Calling the make-private arch hook would require iterating both bindings
+> > and the filemap to find the intersection of bindings and allocated
+> > folios.
+> 
+> Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
+> whether or not the RMP is currently reachable is irrelevant, no?
+> 
+> Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
+> superfluous, but that's already possible, e.g. if an NPT mappings is removed for
+> whatever reason.
+> 
+> > On top of that, SNP would need to figure out whether to actually
+> > make private based on whether the memory is about to be faulted, or
+> > whether it is a conversion.
+> 
+> This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
+> if the page is already assigned in the RMP.
+> 
+> I don't care terribly about how SNP handles this, but I do want accurate reasoning
+> and justification so that if/when we revisit any of this in the future, we can make
+> informed decisions.  Because unless I'm missing something, this is an optimization
+> choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
+> not clear to me how we decided the lazy approach would provide better performance.
 
-You mean kmalloc should also have this check?
+I'm not sure it was discussed in this context, but there was some past
+discussion around preallocation (i.e. "should we call make-private arch
+hooks at allocation time to allow for faster boot for prealloc guests"
+and then that ran into the TDX side of things where that would
+necessarily entail pre-mapping into the sEPT as well, so
+KVM_PRE_FAULT_MEMORY ended up being the interface we adopted for this
+purpose.
 
->>=20
->> Callers passing size that comes from userspace or similar untrusted sour=
-ce
->> can either pass __GFP_NOWARN or sanitize the size to what they expect to=
- be
->> sane (which is context dependent and I assume actually way lower than
->> kmalloc limits in practice). Note that passing even sizes within but clo=
-se
->> to/at the limit, trusting blindly some external source, can succeed the
->> allocations but effectively DoS the system with heavy reclaim/compaction=
-. So
->> caller sanitization should still be preferred IMHO.
->
-> Indeed, and sanitising the values early on saves all the size_add() and
-> size_mult() operations (that are just saturating maths) but still let
-> through the 'DoS the system' sizes.
+Since then, KVM_PRE_FAULT_MEMORY was added on the QEMU side and gets
+called after all conversions for both SNP/TDX, and even without
+preallocation it's a decent performance boost to SNP. If we were to
+switch to pre-calling the make-private arch hook then the
+KVM_PRE_FAULT_MEMORY call because partly redundant and in practice we'd
+probably see a small performance loss.
 
-Yes, I am all for santizing inputs.
+So there's real performance differences here but it's sort of been
+addressed through a solution that offers additional performance
+benefits on top so there's no longer as much to be gained here I think.
 
-> Mostly the actual maximum size is actually small. I suspect limits like
-> 64k, 1M or 16M would be appropriate.
+But I guess that's a moot point...
 
-I agree that the limit you suggested is better. One thing to consider is
-that Mike is converting all __get_free_pages() to kmalloc[1], so the
-limit might end up to be 2^MAX_PAGE_ORDER, matching the page allocator
-limit.
+> 
+> > Calling the make-shared arch hook and not the make-private arch hook does
+> > leak SNP-specific details into guest_memfd (as in, why only make-shared
+> > during conversions but not make-private?), but the additional complexity is
+> > not worth taking on until guest_memfd has a user actually requiring an arch
+> > make-private call.
+> 
+> ...
+> 
+> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
+> > +{
+> > +	struct folio_batch fbatch;
+> > +	pgoff_t next = start;
+> > +	int i;
+> > +
+> > +	folio_batch_init(&fbatch);
+> > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
+> > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> > +			struct folio *folio = fbatch.folios[i];
+> > +			pgoff_t start_index, end_index;
+> > +			kvm_pfn_t start_pfn;
+> > +			kvm_pfn_t nr_pages;
+> > +
+> > +			start_index = max(start, folio->index);
+> > +			end_index = min(end, folio_next_index(folio));
+> > +			/*
+> > +			 * end_index is either in folio or points to
+> > +			 * the first page of the next folio. Hence,
+> > +			 * all pages in range [start_index, end_index)
+> > +			 * are contiguous.
+> > +			 */
+> > +			start_pfn = folio_file_pfn(folio, start_index);
+> > +			nr_pages = end_index - start_index;
+> > +
+> > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> > +		}
+> > +
+> > +		folio_batch_release(&fbatch);
+> > +		cond_resched();
+> > +	}
+> > +}
+> > +#else
+> > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> > +#endif
+> > +
+> >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >  				     size_t nr_pages, uint64_t attrs,
+> >  				     pgoff_t *err_index)
+> > @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> >  
+> >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> > +
+> > +	if (!to_private && kvm_arch_has_gmem_convert())
+> > +		kvm_gmem_make_shared(inode, start, end);
+> > +
+> >  	mas_store_prealloc(&mas, xa_mk_value(attrs));
+> > +
+> >  	kvm_gmem_invalidate_end(inode, start, end);
+> 
+> The real reason I responded...
+> 
+> Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
+> strictly necessary in this path.  The PFN isn't changing, just the attributes, and
+> that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
+> fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
+> AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
+> continue to access the shared data (assuming we stick with lazy conversions), but
+> that should be fine?  E.g. it's not really any different than implicit conversions.
 
-[1] https://lore.kernel.org/all/aip7Y3UHmXsdX8OH@kernel.org/
+I think this should work in theory...
 
->
-> David
->
->> Some of the recent
->> arguments from Linus [1] would apply to this too, I think.
->>=20
->> [1]
->> https://lore.kernel.org/all/CAHk-=3DwiSmgwwLKCqJwGS-dVHnSLU8W+7q1UQq-G9=
-=3DTBGGZbuhQ@mail.gmail.com/
->>=20
->> > ---
->> >  mm/slub.c | 7 ++++++-
->> >  1 file changed, 6 insertions(+), 1 deletion(-)
->> >=20
->> > diff --git a/mm/slub.c b/mm/slub.c
->> > index 0337e60db5ace..a3071f4ef1945 100644
->> > --- a/mm/slub.c
->> > +++ b/mm/slub.c
->> > @@ -5263,7 +5263,12 @@ static void *___kmalloc_large_node(size_t size,=
- gfp_t flags, int node)
->> >  {
->> >  	struct page *page;
->> >  	void *ptr =3D NULL;
->> > -	unsigned int order =3D get_order(size);
->> > +	unsigned int order;
->> > +
->> > +	if (size > KMALLOC_MAX_SIZE)
->> > +		return NULL;
->> > +
->> > +	order =3D get_order(size);
->> > =20
->> >  	if (unlikely(flags & GFP_SLAB_BUG_MASK))
->> >  		flags =3D kmalloc_fix_flags(flags);
->> >=20
->> > ---
->> > base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
->> > change-id: 20260817-limit_kmalloc_size-3a4a2c73beac
->> >=20
->> > Best regards,
->> > -- =20
->> > Yan, Zi
->> >  =20
->>=20
->>=20
+zapping NPTs means the vCPUs will keep retrying until they get the page first
+vCPU that faulted is trying to grab from gmem. If we don't zap, then they will
+instead be racing with the first vCPU, and if they lose they will be
+generating implicit page faults that trigger conversions back to shared,
+and most likely the first vCPU will re-trigger an implicit shared->private
+conversion when it does PVALIDATE. Worst case, the guest fails PVALIDATE
+due to racing with itself.
 
+It's a bit chaotic, but it shouldn't break anything other than the guest, and
+it's only something we'd generally expect for buggy/malicious guests anyway.
 
+However...
 
+> 
+> In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
+> I can think of is that it could delay reconstituion of a hugepage, especially if
+> we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
+> hugepage promotion).
+> 
+> diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
+> index 62f751952ad8..61f3e270ab61 100644
+> --- arch/x86/kvm/mmu/mmu.c
+> +++ arch/x86/kvm/mmu/mmu.c
+> @@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
+>  
+>  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+>  {
+> +       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+>         bool flush = false;
+>  
+>         /*
+> @@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+>         lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
+>                             lockdep_is_held(&kvm->slots_lock));
+>  
+> +       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
+> +           ((range->attr_filter & shared_private) != shared_private))
+> +               return false;
+> +
 
---=20
-Best Regards,
-Yan, Zi
+This path would also trigger for hole-punching, where we would want to
+zap the NPT entries. So we might need to adjust the logic for more than
+just shared vs. private to account for that.
 
+-Mike
+
+>         if (kvm_memslots_have_rmaps(kvm))
+>                 flush = __kvm_rmap_zap_gfn_range(kvm, range->slot,
+>                                                  range->start, range->end,
 
