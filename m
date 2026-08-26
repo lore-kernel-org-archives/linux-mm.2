@@ -4,137 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3F4DC61DC2
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 08:27:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8F84C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 08:32:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D877B6B0099; Wed, 26 Aug 2026 04:27:19 -0400 (EDT)
+	id D6AB06B0088; Wed, 26 Aug 2026 04:32:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D38996B009B; Wed, 26 Aug 2026 04:27:19 -0400 (EDT)
+	id D41E36B008A; Wed, 26 Aug 2026 04:32:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C273A6B009D; Wed, 26 Aug 2026 04:27:19 -0400 (EDT)
+	id C31436B008C; Wed, 26 Aug 2026 04:32:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D0436B0099
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:27:19 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1843D1A02EF
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:27:19 +0000 (UTC)
-X-FDA: 85142740998.13.FC250B7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 624BE100007
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:27:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyN+e6X4;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CDB76B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:32:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 694CDC02DC
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:32:05 +0000 (UTC)
+X-FDA: 85142753010.29.B2C3247
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 52D7240008
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:32:03 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=g5eT1ZUV;
+	spf=pass (imf12.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787733123;
+	b=fT3/JeInLQwbOSqwkd/eRk4YPtPnaLzzjn0SATkqMl3rHq9MSSbSoAXEvFJYHOWSLGqu9f
+	7luWuPOUBrk6YM6ITUudxYeOzqzPpTv2vyZfYqNUDAPo3oD07I5b/Tydne1UnHcXZKJZ6N
+	OIqFRqjT+nugdbf3t7AKkn6cPRcY2RM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787732837;
+	s=arc-20220608; t=1787733123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L4VXwukOvzmoVUjOHFr+/WSXxAsaSNTt7jYsFS0Y3YQ=;
-	b=SIc90T4iSMXUqOiO9FIzgrkNWNwUjxO60nN/1pnkQRvvLspSQ+InBFFU+0pCtBHjZIoP1c
-	wnLhGcWoQHPFmjKApvz8LiIBFtJS+yhjqcp6bAHWpszMJvTc0Vp17cgGNyysDz7X3skEay
-	MdjI9sRbOI3uQoyi4N1ZBbWLhfhmJI8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787732837;
-	b=bga/TpDDSmDShEGfvgXc49caXEdE2qvyLhvb0hIocPMTE9RPIo1aB1A+GaHXv7x6O8HBTp
-	UAzNb+8QCS3ZIFwAAGbGLkl/bpj1S45asE6zL0X5yp+E/JvsjzfK19NKKSO0cSfAKcMmJZ
-	YAgsAy4ZqwwYneQlwmnazs7Lr9GKWMo=
+	bh=lzjUsX+lsqtEVzRmerNtLUbOSo9ZLAd59UCmepoNtOk=;
+	b=l+9fam8ETAIWGO9UU2n/txVhEI2YR+XS76Id7BP/sJ56erTz2PCf5HFkkj0L9e/wIltNGd
+	Iw+7xbLWwJCWy5aUXy3m2mWjaCcNcw4EVO1pgyCStGKJJuX4ToDubJu0je9WAUMFoDjrRd
+	lnnu2xdPIBPSyvN+i2JCt/6acdrdBkw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eyN+e6X4;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DC27C6020E;
-	Wed, 26 Aug 2026 08:27:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9283A1F00A3A;
-	Wed, 26 Aug 2026 08:27:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787732836;
-	bh=L4VXwukOvzmoVUjOHFr+/WSXxAsaSNTt7jYsFS0Y3YQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eyN+e6X4tm2Lp7KCNpBGiVXo1xBpSrkAzJ4DEe+2iUAPt86j9ZkhDC0cfxFTHhgay
-	 no/k/Auzl7iLDhRJZKqv0wn3dOmIl7Ejo+to1t0zhjJ3ONQ4lHECKlAZfVXEAz2mu/
-	 0bLuuVxW1ot9fyc5u17BSJ2JE0y1ENfGc8RTtzQAY4Ppdt+eREuIQLIvNGmrs2ouYb
-	 BLrBzaiTXBddrLxNOhVvHb4TuHmEO8Gz78AFrBvUi4OQ0yj5T8cefv4FyQOobCggGJ
-	 eLWHOkTn8BuoFxluLX88uMOI6MhYXVuBE0YzfR+4WcPbMryCmQjzIRmspHlcn8Mf29
-	 XdM2g4d1PTR1w==
-Message-ID: <63a72a5c-6e24-4513-a83c-d8f63df3a600@kernel.org>
-Date: Wed, 26 Aug 2026 10:27:12 +0200
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=g5eT1ZUV;
+	spf=pass (imf12.hostedemail.com: domain of petr.pavlu@suse.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=petr.pavlu@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c15cd3fd760so74693766b.2
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 01:32:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1787733122; x=1788337922; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lzjUsX+lsqtEVzRmerNtLUbOSo9ZLAd59UCmepoNtOk=;
+        b=g5eT1ZUVZU9PGKNpjmT+5ci8xVPxWwW8OGdza8Af07lCxnnyYx8mPcvAQ9jIQSdsy+
+         BCcbx0kMLbyxEV8wMaZiNWT5Wj/ZIS23KxgjstYPBgyDncipomczjKVCG6PsfLWpgbdl
+         31odYyBLWPS+Y7ZIiyunwqc6i8sSRhkmO6gWyNST1iN9QrZ1xEXbBdv427Oe3zU6dPLp
+         EUYBgJtmEtqOBwJAazsYgg91qWQdA/sAd0kXd9j26KfDk68fdRQ5pVAqvRW9iDuZScOx
+         eryqQDU0DfP98YqNIwklKEFIVZI5CMc1F+jyxCXwG9sXwN9rMJI//H5YpC6P/UJbdLqx
+         vvjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787733122; x=1788337922;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lzjUsX+lsqtEVzRmerNtLUbOSo9ZLAd59UCmepoNtOk=;
+        b=nK6O6wkEq/PBC32qpn4FVrs7UVvXhJQkUHW3NnRJpfjHn19iz3dq+9L0HN9c5DGTC/
+         6ZOFSex0PEB9qEn1LJZVKIfoOFcwr6jLoYAQDwbWoQ+ZoObZeKrJOz5bs/tnbZYHb5HN
+         boFvuEDKdmwQNZc4DhbmLVaiTwIx+0Yyg433tAab+Rzh7F8wQdGQKiQnCMLST6jUXWib
+         SRRSXIsjkvsISrdG7PPKYmQ/YVKLuH0WW5dTIkGIVdSueFleh7k7/xJM1FL3U34o0Job
+         OTdpJ/FBBLR3Tux69j3v35ejwkSl59dRgtSvrRJS0P8xR69m8yHeU3dE+6LXD6ypxfCx
+         9/xg==
+X-Forwarded-Encrypted: i=1; AHgh+RpAMQ/+MbkemEZKUl/xg3sS0RSlzZHpuQp1/7/8FGXOX+d8uI9N5L80hBKq5zqqr5GPLfX2hJvMmA==@kvack.org
+X-Gm-Message-State: AFuF++kCWlC/6Emi7hhuofQCbnSZwcz5P9Bc1cokXGpQVd2vnpZKnnNy
+	6y6OqusDVhxyM1xBr5HT4JnPmUeiVK4DLyAqwqtWOfh5r31UepxJADOPGNOcI5k2xiA=
+X-Gm-Gg: AR+sD11+gikgdtx66f9MrEOrYjQTiGahHl0fUPECxkpW+zYH/gAbp9DozsDgkAuwjix
+	w+IwB06+SjUTjTnCHfq8J6wQZAj3PVjf0xE8a86G7GxfO4MJsBBaEdtLWJ2myWhrComQ7Rn7blj
+	RzEwj8X6psdNq616mbvR8bbQh6Gic5gXEGo9inUQhSnHsFNzJUBERxtNkMEWkDAnvnCeeWJlPGn
+	3ZcKaDb8TTlg0W6kB3PryfNahnYRSz5Eoj/EJCxCohSCJ8wFzKiN9NmNTF4wKbQVPqL0K2ebM2g
+	d/Q2BpHFIlldwrm53LcWgj5OLToKm8qUPnQeWnaKOjg0FMFhm6Ct7Fu71EmSq6k3RplmgRNqv+S
+	0BxHGIZn5Wp50dkNUG9Zm+GHhEfkF59C4o/MtW2irpxf6xHFf4xlNqhm5k3nQrTFM6pJ+ZcPBqP
+	7fz8cbe+6gxKGYltxp5y0qzifyxVyM4Fwto0NZFBYX/DeCNXuIYd4deivW7mcvWHCIxwkP9KEaf
+	VtoKX2Sus+clBRq4IumuexS9lNMzZZ3Pls=
+X-Received: by 2002:a17:907:1c99:b0:c20:fed2:898b with SMTP id a640c23a62f3a-c250c38520emr594114066b.23.1787733121625;
+        Wed, 26 Aug 2026 01:32:01 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:fc6c:f9a2:4a0a:6354? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5deb030bcsm4393433a12.31.2026.08.26.01.32.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Aug 2026 01:32:01 -0700 (PDT)
+Message-ID: <499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com>
+Date: Wed, 26 Aug 2026 10:32:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 0/8] batch lookups in follow_page_mask()
-To: Christoph Hellwig <hch@infradead.org>, Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- linux-mm@kvack.org
-References: <20260811025157.1632867-1-riel@surriel.com>
- <ao1JwEAeNcP9OyKR@infradead.org>
- <a10c74df79e1db6a9a2448220fe4c4fd6a0e5bdb.camel@surriel.com>
- <ao5t8lxaCWQvph-l@infradead.org> <ao6XSh1YRiqPA3rA@infradead.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v5 2/2] alloc_tag: fix undetected compressed tag overflow
+ when profiling is disabled
+To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260812054105.102637-1-hao.ge@linux.dev>
+ <20260812054105.102637-3-hao.ge@linux.dev>
+ <CAJuCfpFvdNFdsKdK2CdF2fNp8gbNgFpoeAiaqp70mpbNGCvk3g@mail.gmail.com>
+ <143a37b5-93a2-4038-8be9-29e13263e743@suse.com>
+ <CAJuCfpF1pWqhc+P9zPg8FT_CcdQxRuEpJ2DtYja1BeMXhW7-8Q@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ao6XSh1YRiqPA3rA@infradead.org>
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <CAJuCfpF1pWqhc+P9zPg8FT_CcdQxRuEpJ2DtYja1BeMXhW7-8Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 624BE100007
-X-Stat-Signature: qzt7ojxnffaxziuit4eowekekxjk1t5d
-X-HE-Tag: 1787732837-552116
-X-HE-Meta: U2FsdGVkX19EjBqvtqk3upQtRzD1eozO3bwN+NdBAahp+FY9ZicvLAKW58yAh0WQjDGcmFwbWxErDSMKe3J/++k9Ae9NMCxwgJiMgtMTJeC771jt9WzIZ6cTA1Fhh82P6lzNwDV+UvM9Py0WUNebcuCSdHSZnjuYgyKDrgQy6W8s/XcnxzqI4sqRBf5/8snJGfOI/KTRnVz4wX00PdbfAAtsb+ij6l1jRbEOIsTOm9LZPkOBWa5IkFBNDjA7xBbaKSiJ1llS6KOXBXFtix+T1KQhDS/XOyYZ3w5bUEL1Z7o7Xg4nHzK1yPiWnxk/BtPXh8/xrFqRFgasSXgknjTONbsM+5fImD1jMpVsevogi31EarEQndFyicWnOuuXbKs0GOT9nPUPdAg3d9iBziXvnQ7KbY6jrD7pZfSvmg20qvjL9UjW5kujft7TEGncSmeR1GWKm9lpSHYzNAPHsWFXyT6r8ntFelR7YlDe3HGqNzrIRgTzOHedRcuLPkHA+VqBBbWcVjs5YtcOynIXudJsbyZrlvZCBLgvtrSYtdQgfNEixmjzCuTpkWTClknCUV/ZksbdyrB1opD/2NwOl5/ftjtbk0+knnv1UVxyixMDSNa02ZJOGeadf1qxltvOAsuLIqB2E0rM5Pz33JDA4fi5Ptp0UyFnmmDnEVyTZGttII+NB75LMu2Id3tTpZzSQDJKFtW3yyOsULMf7fMJBTo6ekmSdz77xH5wQvoD+t8vbPkgfYGU1Mo1tNrY0v8kTlYdgtE+zYHC3r5wtiUqBdw2zv1gCdC7QFDiLHIBd4MN69lW7yf+yaC2BJSK0AcbIr9b2w+RXJ6trru56ExGTr2ZEHzcMmm03l/KagGZZSkYIyZ3HdDzFkQcIz+M9owDPoCUWlrZ3768fzZcuGDM8ky8AasGHlFtvRAAFKjTkWETCKkHWjJ0xTqEBaDXyPHYiFpbmbzrbPLBUtTk3TTLaqJ
- bGDUatbA
- ZlVl+iY3NyqVZ+1ORDIZ9dkQL6mK6u20jPKWO5gN/wvi49M/+RTxjaIDomNG+WGTPdLelEbw8hVChZ2IwllhLvBWbCuYo3d3sLzzoYSiu12x+ZK8+AsnvyTgtpYLnbb4tuP6tah2TO7KQrK9qt/mcs0aTiFCLhMVLXoC7QTg6lxTRxlcqNNlw9uQFO2xlp/a5a2auYqyDUt2CBwR0IaEAsiX40ANtbMpUc+mTSqk8Sbg2V4LLpjkKk+3VbRViMZGfPyOUSDR72gsCKaFsMmd5qhBIsWnyTV9x3nKPrZb9qEG3oNjwO4dv8gh/xA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 52D7240008
+X-Stat-Signature: ef1iy4ufgtzthekyn8hksmy34ahasoik
+X-HE-Tag: 1787733123-323321
+X-HE-Meta: U2FsdGVkX18g8B/zrzYbclN0FVw6YrJw3/5Y9sOgayS8mo6RSkD3VfIesOoIjig5waK/mLVD6E7aQ4y0+LlY7yVBwAyWUGq/RHv9b9bVOMUkTBG0Ph4K2qUkfUm85x8qvAioXUXlOzTqjzA1ccz0yz6Hp5qhhCCe9G+dFjUmqnRrrtYtcI7wfbuQxOlusBjHMPwnxdznUyDSfiDOCfuRcTOGyXks3rg+EGPCi0XHAcZYCF/g1e20c8JX/YyciKTCmT+KJWGx2GzL3FSzMpjT2gPSfw//1I9NZm5ojzBp/SNM2X1+Ony3zUXwJaKJRgvOuFS14isolaow+FdQiNs2DBjqTyMwY5ZuLg2756rvzNgKQg+zH4xU9rC7lYM/4zQhiMGqwwM3xcMvYOafLW8UTm5r53xogAPb3QsoSfhiUPWdYj/tho9h27cWcqdtvRTIOt1TnojGPbP3G4f58eT7DhthUrpk/cEj57YHFTmYS27eQdxj6ECCoMYPMCey9Ti0jxdSiIIbkW3o4jetTiCOBR60A5XRAOBB2hMDM3Ah7Oruaxstz0INXh6s+eoNNTmbtiLWABGJLP/tgbZEacuaNeggqqz1h47dU6QMT5kuyDwMlXGfFppkFvJ/g7no6AueMPTR5LFws85C19G0ozHVf9juzCFXRmjhrWMitPj3OV2IQC93zLx2xHt07JK9vKInxxwUWn5P9S7vPmDCCELm59ktCJx3Kq4URb9hdh3dN4DiNUv72VmD4Ma1CMmXKrRIeDJ61qU8wKiTmMXt0d5bQZlDgXfe3KbkNwx9oxQ4olCYPOpBKCVnnDK6aGMldHLfF+srTMH8ZexguT5diVlfp2DhOj+V2bU7YSwjcjVQll36niLtorysYb/mLneogaNjkfZcPJP7HhDUUBTryBt2RNCP73cFLIxSZ4nNIRSk+bIX3LGEWk0Z0WnwIHZpBTRts+WOtkHeUAGgIi5GOJ2
+ /ZoEWnIJ
+ UD+DfoK3QNTKckP14I9pQXNRHPuRtQFoWx7VYkBQKIeo9hmdN85+lhu8L2WK9PaT748spUqAeQSw59bKoV8IhQRYopxkuXV01sXt3+YpmSuYyzL6dTrawXTlLDDBdGDD4F0+G6xh/Tz8YHSBq6tVHAxppQVK9zNylz8ovKUVC1V9ifg1D26qOjKetE78byHrhjwrPcJ8Jx2oZ+MtNsc0N5MugHI9uZtt/sxWMsFcB4mIlrtP+mIZIZCZvLGjj+tHqWvTj2tk0gBkT9tVth4ixkEK01El36o2CbLMOtrxxoADt2eFi5UQMnVgXpEQwSBLkZjDkxWojnnBIRYopRs+bkBraMRRyMdDvxs0q7DFMGbYkqKOdmn/XqFJZs2qNE9uF94loVHw3fvcQwBpWgeCmjg5r9rWCQ1htCBrGkgZOS6uMFgGuvokXZrpEUD72NDfg36Y79hn5aQ/UZUM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,32 +131,343 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/26/26 09:35, Christoph Hellwig wrote:
-> On Tue, Aug 25, 2026 at 09:39:14PM -0700, Christoph Hellwig wrote:
->> The other callers of iov_iter_extract_bvecs matter more, but this is
->> the main user.
+On 8/16/26 5:16 PM, Suren Baghdasaryan wrote:
+> On Sat, Aug 15, 2026 at 3:45 AM Petr Pavlu <petr.pavlu@suse.com> wrote:
+>> On 8/12/26 7:41 AM, Hao Ge wrote:
+>>> In reserve_module_tags(), the tag overflow check is gated on
+>>> mem_alloc_profiling_enabled():
+>>>
+>>>     if (mem_alloc_profiling_enabled() && !tags_addressable())
+>>>
+>>> If profiling is toggled off at runtime and a module is loaded whose
+>>> tags exceed the compressed-mode limit, shutdown_mem_profiling() is
+>>> skipped. vm_module_tags_populate() still maps memory for the tags and
+>>> the module loads successfully, but the total tag count now exceeds what
+>>> NR_UNUSED_PAGEFLAG_BITS can address.
+>>>
+>>> Once profiling is re-enabled, ref_to_idx() computes each tag's index
+>>> as its position in the alloc_tag array. update_page_tag_ref() masks
+>>> it to alloc_tag_ref_mask before storing in page->flags. Indices
+>>> beyond the mask are truncated and idx_to_ref() resolves them to wrong
+>>> tags.
+>>>
+>>> This silently corrupts /proc/allocinfo: allocated pages get attributed
+>>> to the wrong call sites, so the statistics it reports are wrong.
+>>>
+>>> mem_alloc_profiling_enabled() and mem_profiling_compressed are
+>>> independent. Once compressed mode is established at boot, it stays
+>>> active regardless of runtime toggles of mem_profiling.
+>>>
+>>> Remove the mem_alloc_profiling_enabled() guard. On overflow, shut down
+>>> profiling, release the reservation, and return -EAGAIN so that
+>>> layout_and_allocate() retries with profiling disabled: codetag sections
+>>> are then placed as regular module data and the module loads without
+>>> profiling rather than being rejected entirely.
 >>
->> And iov_iter_extract_bvecs right now is very inefficient when used
->> on larger folios, as each call to iov_iter_extract_bvecs and thus
->> iov_iter_extract_pages and iov_iter_extract_user_pages can only
->> fill in up to 256 pages.  On x86 that is a single PMD mapped
->> folio.  Passing down the bio_vec array means that for PMD-mapped
->> ranges we reduce the calls into pin_user_pages_fast by a factor
->> of 256.
+>> When the described overflow occurs, why should codetag sections be
+>> placed as regular module data? Will the codetag support use them in any
+>> way, or do they simply waste space? Is the issue that alloc_hooks()
+>> creates relocations pointing into .codetag.alloc_tags?
 > 
-> Also in addition to reducing the calls to pin_user_pages_fast, it also
-> removes a fair amount of work to recalculate the bio_len in the
-> get_contig_folio_len loop in iov_iter_extract_bvecs, which has shown up
-> in profiles (although only marginally so).
+> Correct, alloc_hooks() will have references into .codetag.alloc_tags.
+> With mem_profiling_support=false they should technically never be used
+> but I don't think it's a good idea to skip .codetag.alloc_tags section
+> allocation and to leave dangling pointers. Also the case described
+> here is an outlier, so optimizing it would not yield much benefit.
+> 
+[...]
+>> I'm not sure this is the best approach. It's complex logic for what
+>> appears to be an edge case related to a debugging facility. It will have
+>> the usual problem of error paths not getting enough testing and breaking
+>> subtly over time.
+>>
+>> An alternative could be to reset SHF_ALLOC on the codetag section to
+>> remove it from further processing and have relocations that point to
+>> this section resolve to something else. It seems that alloc_hooks_tag()
+>> could tolerate this, since it only needs to reference the associated
+>> alloc_tag when mem_alloc_profiling_enabled() is true and that gets
+>> disabled by reserve_module_tags() on the overflow.
+> 
+> Hmm, yeah if we redirect the references into .codetag.alloc_tags, that
+> would be much better.
+> 
+>>
+>> It is also not an ideal approach, but I feel it could be less intrusive
+>> to the module loader. I can put together a prototype if needed.
+> 
+> If your approach does not cause module loading to fail when we disable
+> profiling, then that sounds like a good idea. If it's not too much
+> trouble, could you please send an RFC?
 
-We could think of a mechanism that fills a given structure in a better way, and
-I think we recently discussed returning folio ranges, and might to that through
-something like phyr (or however that is called :) ).
+The alternative approach I mentioned unfortunately doesn't work well,
+since redirecting all relocations against .codetag.alloc_tag to
+a different destination is nontrivial. It would require introducing
+something like frob_relocation() that is called from each
+architecture-specific apply_relocate()/apply_relocate_add() after the
+addend has been decoded.
 
-But that's really not something is would mix into this work here.
+Another option I realized is to change the order in which module
+sections are allocated. Rather than interleaving the allocation of
+codetag and regular sections, the module loader could first try to
+allocate codetag sections and then allocate regular sections. If
+allocation of a codetag section fails, it can naturally fall back to
+being treated as a regular section. This avoids retrying the allocation
+process, which I would prefer to avoid.
+
+A prototype is below.
 
 -- 
-Cheers,
+Thanks,
+Petr
 
-David
+
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 96cc98568eea..0c6f32ddcbf2 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -325,6 +325,8 @@ enum mod_mem_type {
+ 	MOD_INIT_RODATA,
+ 
+ 	MOD_MEM_NUM_TYPES,
++
++	MOD_STANDALONE = -2,
+ 	MOD_INVALID = -1,
+ };
+ 
+diff --git a/kernel/module/internal.h b/kernel/module/internal.h
+index 061161cc79d9..217bb540e361 100644
+--- a/kernel/module/internal.h
++++ b/kernel/module/internal.h
+@@ -29,6 +29,10 @@
+ #define SH_ENTSIZE_TYPE_MASK	((1UL << SH_ENTSIZE_TYPE_BITS) - 1)
+ #define SH_ENTSIZE_OFFSET_MASK	((1UL << (BITS_PER_LONG - SH_ENTSIZE_TYPE_BITS)) - 1)
+ 
++#define SH_ENTSIZE_STANDALONE					\
++	(((unsigned long)MOD_STANDALONE & SH_ENTSIZE_TYPE_MASK)	\
++	 << SH_ENTSIZE_TYPE_SHIFT)
++
+ /* Maximum number of characters written by module_flags() */
+ #define MODULE_FLAGS_BUF_SIZE (TAINT_FLAGS_COUNT + 4)
+ 
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index d0e1e0bd2ad0..a86ae8774cd0 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1624,7 +1624,7 @@ static int apply_relocations(struct module *mod, const struct load_info *info)
+ 		 * ELF template and subsequently copy it to the per-CPU destinations.
+ 		 */
+ 		if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC) &&
+-		    (!infosec || infosec != info->index.pcpu))
++		    info->sechdrs[infosec].sh_entsize != SH_ENTSIZE_STANDALONE)
+ 			continue;
+ 
+ 		if (info->sechdrs[i].sh_flags & SHF_RELA_LIVEPATCH)
+@@ -1722,20 +1722,6 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+ 			if (WARN_ON_ONCE(type == MOD_INVALID))
+ 				continue;
+ 
+-			/*
+-			 * Do not allocate codetag memory as we load it into
+-			 * preallocated contiguous memory.
+-			 */
+-			if (codetag_needs_module_section(mod, sname, s->sh_size)) {
+-				/*
+-				 * s->sh_entsize won't be used but populate the
+-				 * type field to avoid confusion.
+-				 */
+-				s->sh_entsize = ((unsigned long)(type) & SH_ENTSIZE_TYPE_MASK)
+-						<< SH_ENTSIZE_TYPE_SHIFT;
+-				continue;
+-			}
+-
+ 			s->sh_entsize = module_get_offset_and_type(mod, type, s, i);
+ 			pr_debug("\t%s\n", sname);
+ 		}
+@@ -1745,16 +1731,10 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+ /*
+  * Lay out the SHF_ALLOC sections in a way not dissimilar to how ld
+  * might -- code, read-only data, read-write data, small data.  Tally
+- * sizes, and place the offsets into sh_entsize fields: high bit means it
+- * belongs in init.
++ * sizes, and place the offsets into sh_entsize fields.
+  */
+ static void layout_sections(struct module *mod, struct load_info *info)
+ {
+-	unsigned int i;
+-
+-	for (i = 0; i < info->hdr->e_shnum; i++)
+-		info->sechdrs[i].sh_entsize = ~0UL;
+-
+ 	pr_debug("Core section allocation order for %s:\n", mod->name);
+ 	__layout_sections(mod, info, false);
+ 
+@@ -2800,7 +2780,6 @@ static int move_module(struct module *mod, struct load_info *info)
+ {
+ 	int i, ret;
+ 	enum mod_mem_type t = MOD_MEM_NUM_TYPES;
+-	bool codetag_section_found = false;
+ 
+ 	for_each_mod_mem_type(type) {
+ 		if (!mod->mem[type].size) {
+@@ -2818,36 +2797,14 @@ static int move_module(struct module *mod, struct load_info *info)
+ 	/* Transfer each section which specifies SHF_ALLOC */
+ 	pr_debug("Final section addresses for %s:\n", mod->name);
+ 	for (i = 0; i < info->hdr->e_shnum; i++) {
+-		void *dest;
+ 		Elf_Shdr *shdr = &info->sechdrs[i];
+-		const char *sname;
++		void *dest;
+ 
+ 		if (!(shdr->sh_flags & SHF_ALLOC))
+ 			continue;
+ 
+-		sname = info->secstrings + shdr->sh_name;
+-		/*
+-		 * Load codetag sections separately as they might still be used
+-		 * after module unload.
+-		 */
+-		if (codetag_needs_module_section(mod, sname, shdr->sh_size)) {
+-			dest = codetag_alloc_module_section(mod, sname, shdr->sh_size,
+-					arch_mod_section_prepend(mod, i), shdr->sh_addralign);
+-			if (WARN_ON(!dest)) {
+-				ret = -EINVAL;
+-				goto out_err;
+-			}
+-			if (IS_ERR(dest)) {
+-				ret = PTR_ERR(dest);
+-				goto out_err;
+-			}
+-			codetag_section_found = true;
+-		} else {
+-			enum mod_mem_type type = shdr->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
+-			unsigned long offset = shdr->sh_entsize & SH_ENTSIZE_OFFSET_MASK;
+-
+-			dest = mod->mem[type].base + offset;
+-		}
++		dest = mod->mem[shdr->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT].base +
++		       (shdr->sh_entsize & SH_ENTSIZE_OFFSET_MASK);
+ 
+ 		if (shdr->sh_type != SHT_NOBITS) {
+ 			/*
+@@ -2879,8 +2836,6 @@ static int move_module(struct module *mod, struct load_info *info)
+ 	module_memory_restore_rox(mod);
+ 	while (t--)
+ 		module_memory_free(mod, t);
+-	if (codetag_section_found)
+-		codetag_free_module_sections(mod);
+ 
+ 	return ret;
+ }
+@@ -2951,9 +2906,47 @@ static bool blacklisted(const char *module_name)
+ }
+ core_param(module_blacklist, module_blacklist, charp, 0400);
+ 
++/*
++ * Allocate codetag sections separately. They are loaded into preallocated
++ * contiguous memory because they may still be used after the module is
++ * unloaded.
++ *
++ * If the separate allocation overflows and fails, allocate the section normally
++ * so that the module can still be loaded.
++ */
++static void allocate_codetag_sections(struct load_info *info)
++{
++	for (unsigned int i = 1; i < info->hdr->e_shnum; i++) {
++		Elf_Shdr *shdr = &info->sechdrs[i];
++		const char *sname = info->secstrings + shdr->sh_name;
++		void *dest;
++
++		if (!(shdr->sh_flags & SHF_ALLOC) ||
++		    !codetag_needs_module_section(info->mod, sname,
++						  shdr->sh_size))
++			continue;
++
++		dest = codetag_alloc_module_section(
++			info->mod, sname, shdr->sh_size,
++			arch_mod_section_prepend(info->mod, i),
++			shdr->sh_addralign);
++		if (WARN_ON(!dest) || IS_ERR(dest)) {
++			/* Allocate the section as a regular section. */
++			continue;
++		}
++
++		if (shdr->sh_type != SHT_NOBITS)
++			memcpy(dest, (void *)shdr->sh_addr, shdr->sh_size);
++		shdr->sh_addr = (unsigned long)dest;
++		shdr->sh_flags &= ~(unsigned long)SHF_ALLOC;
++		shdr->sh_entsize = SH_ENTSIZE_STANDALONE;
++	}
++}
++
+ static struct module *layout_and_allocate(struct load_info *info, int flags)
+ {
+ 	struct module *mod;
++	unsigned int i;
+ 	int err;
+ 
+ 	/* Allow arches to frob section contents and sizes.  */
+@@ -2967,9 +2960,6 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
+ 	if (err < 0)
+ 		return ERR_PTR(err);
+ 
+-	/* We will do a special allocation for per-cpu sections later. */
+-	info->sechdrs[info->index.pcpu].sh_flags &= ~(unsigned long)SHF_ALLOC;
+-
+ 	/*
+ 	 * Mark relevant sections as SHF_RO_AFTER_INIT so layout_sections() can
+ 	 * put them in the right place.
+@@ -2977,18 +2967,27 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
+ 	 */
+ 	module_mark_ro_after_init(info->hdr, info->sechdrs, info->secstrings);
+ 
+-	/*
+-	 * Determine total sizes, and put offsets in sh_entsize.  For now
+-	 * this is done generically; there doesn't appear to be any
+-	 * special cases for the architectures.
+-	 */
++	/* Repurpose sh_entsize to track where each section is allocated. */
++	for (i = 0; i < info->hdr->e_shnum; i++)
++		info->sechdrs[i].sh_entsize = ~0UL;
++
++	/* We will do a special allocation for per-cpu sections later. */
++	info->sechdrs[info->index.pcpu].sh_flags &= ~(unsigned long)SHF_ALLOC;
++	info->sechdrs[info->index.pcpu].sh_entsize = SH_ENTSIZE_STANDALONE;
++
++	/* Allow codetag sections to be allocated separately first. */
++	allocate_codetag_sections(info);
++
++	/* Determine total sizes and put offsets in sh_entsize. */
+ 	layout_sections(info->mod, info);
+ 	layout_symtab(info->mod, info);
+ 
+ 	/* Allocate and move to the final place */
+ 	err = move_module(info->mod, info);
+-	if (err)
++	if (err) {
++		codetag_free_module_sections(mod);
+ 		return ERR_PTR(err);
++	}
+ 
+ 	/* Module has been copied to its final place now: return it. */
+ 	mod = (void *)info->sechdrs[info->index.mod].sh_addr;
+diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+index 2070e682fe10..112a014d4b89 100644
+--- a/mm/alloc_tag.c
++++ b/mm/alloc_tag.c
+@@ -950,10 +950,12 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+ 		int grow_res;
+ 
+ 		module_tags.size = offset + size;
+-		if (mem_alloc_profiling_enabled() && !tags_addressable()) {
++		if (!tags_addressable()) {
+ 			shutdown_mem_profiling(true);
+-			pr_warn("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
+-				mod->name, NR_UNUSED_PAGEFLAG_BITS);
++			pr_warn_once("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
++				     mod->name, NR_UNUSED_PAGEFLAG_BITS);
++			release_module_tags(mod, false);
++			return ERR_PTR(-EAGAIN);
+ 		}
+ 
+ 		grow_res = vm_module_tags_populate();
 
