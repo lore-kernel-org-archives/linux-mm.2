@@ -4,94 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD30FC5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:07:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A8EC5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:14:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 615366B0088; Wed, 26 Aug 2026 09:07:11 -0400 (EDT)
+	id 400DC6B008A; Wed, 26 Aug 2026 09:14:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5ECFB6B0092; Wed, 26 Aug 2026 09:07:11 -0400 (EDT)
+	id 3B0E16B008C; Wed, 26 Aug 2026 09:14:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 529896B0095; Wed, 26 Aug 2026 09:07:11 -0400 (EDT)
+	id 2A3226B0095; Wed, 26 Aug 2026 09:14:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FCFF6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:07:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1C1C403B6
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:07:10 +0000 (UTC)
-X-FDA: 85143446220.06.304C90B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 061954000F
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:07:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NxEG+kxn;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787749629;
-	b=vjMkh9mqVtZ/q8HO9wSXjNuLxE2fgDXTu3aEw0fn5AVf8mPv/FyJaHgNyeLymLvdLzNGfH
-	goE5Z1NHX8l19Uj7eYbcDncaNzefLRx3GfG4ZV2K/iKQWQ1qL8BVaDn934htmXU5kJe+Hk
-	W+rv11ZY6Qj0m95J8JwilEGUwx/ZHmY=
+	by kanga.kvack.org (Postfix) with ESMTP id 02ADA6B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:14:51 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9104F40387
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:14:51 +0000 (UTC)
+X-FDA: 85143465582.20.A35D735
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 52F29180006
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:14:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=Us1hEVv1;
+	spf=pass (imf16.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787749629;
+	s=arc-20220608; t=1787750088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N0uNhOoF0fsO+S9VbNFdNjCWH58LGVPdM6KbXTCpaA4=;
-	b=SqDNkIuQWuwF7hwxSE9qDbG3Y3uM3B5hWOHbIH128sXb99htACCROv9NwxOsnuydiLhXtB
-	m45ffFeWuMXlv26RvXqugRjC/g+wes0qhngvv3cuNV8Yi+wE0b29lvqi0nT7b0SLFaCxol
-	1IYttHxo1cmbwjDTcCBcIn3EMoY7hzI=
+	bh=VY+6n/5elVC8hwBjWkQixPjDDn3ia+6z+6/gZrGy1ZY=;
+	b=XNnPrx7xYZwRQq/5KP/pAx67HVn6BRKp0gf+U9ljNAvG8H1SVkSGdwnCrijD1/Ob9vqULW
+	hVPw4Htplnyw1mP/0mH9QWqC5nr3d/Ufc8+IB6QwbpPEEU2Yi5fh3Dvum3s/FMKISPEC1q
+	l1kmv+HKO0jiQI+5wHRASkApnQG7ND8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787750088;
+	b=cdDS3PjiUkaKdqGXtbQBw26f/tffLRuLs9EO27IA2fUcjCP+4l4dGpQFx/a+k5/vkSVVvO
+	XgPA98EE96IyIm5RAZZNfFCf9LAMeZk6VrgWiAVdi2/LNNbkRSgUfjvWC2cjDXfkVhx0tl
+	nml2iF1ZcjUTmwvCumxH27g7o1VQzok=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NxEG+kxn;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 87C074182C;
-	Wed, 26 Aug 2026 13:07:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857CE1F000E9;
-	Wed, 26 Aug 2026 13:07:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787749627;
-	bh=N0uNhOoF0fsO+S9VbNFdNjCWH58LGVPdM6KbXTCpaA4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NxEG+kxnT6FOnlnSVrSWAVpAwTa7C5QXPrvPYzfYGHPS9FRNdKlXul8HG8zGK8elf
-	 0mygCqOfR9eM3G+dQWdg/bMGnFWpcK2y8v4Yclu6jZMtaLboZWmhcv42qxKucUSKFP
-	 klimZ00U2FyUxGwskveMz1JD1boi8Z7yoZ0o18WqhCyQyYbxFq6O8mJq/8BuUCK+rw
-	 X28C16uva8QqUxBsalSioByWTAnep1PC9q0C9uJ+8+5S50+0X8O1fmOurQORIC978i
-	 4NYcPfTIvqas2AY0e9QaKcmIFCW7ZeLQTXg6L2jmmIVYWqK/pIVylvBOqv8wMV0jF+
-	 9vSuVy515ZNHg==
-Date: Wed, 26 Aug 2026 14:06:59 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/3] proc: query LSMs for introspective mem access (if
- PROC_MEM_FORCE_ALWAYS)
-Message-ID: <ao7kzYoGRrhkaoB4@gremlin>
-References: <20260825-selinux-pokemem-v2-0-b46bc64916d8@google.com>
- <20260825-selinux-pokemem-v2-2-b46bc64916d8@google.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=Us1hEVv1;
+	spf=pass (imf16.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260826131445euoutp02197bcec1c4f1522f5d444b8d6dcb48b4~PXTsHh9X10325503255euoutp02i
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:14:45 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260826131445euoutp02197bcec1c4f1522f5d444b8d6dcb48b4~PXTsHh9X10325503255euoutp02i
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1787750085;
+	bh=VY+6n/5elVC8hwBjWkQixPjDDn3ia+6z+6/gZrGy1ZY=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=Us1hEVv1IxQW93jEvGhJaHi0QWVIacTPIxxmLsnAcuIhl3lp2FwlVqDO6wWYqT6eB
+	 2CdasTRwngIpbOvEDQZ5d9TlbCar5iqR9M0vq7qyK0FJp/z+Mv8yY/YYGn7/s9xTPa
+	 eoiWzJwrrvmg2QKtV4J9BXLKQj6+bHINGLao+Hcw=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260826131445eucas1p1dfa5844c01c4705731fdd2f4772e4fc8~PXTr_zaZu2811628116eucas1p1K;
+	Wed, 26 Aug 2026 13:14:45 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260826131444eusmtip1c8b1026d97f4887a1c808cabbdcb3df7~PXTrbvWoQ1345413454eusmtip1i;
+	Wed, 26 Aug 2026 13:14:44 +0000 (GMT)
+Message-ID: <72074a49-2963-4f96-b939-79bf95a829cb@samsung.com>
+Date: Wed, 26 Aug 2026 15:14:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260825-selinux-pokemem-v2-2-b46bc64916d8@google.com>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v2 1/5] of: reserved_mem: skip init for regions whose
+ early reservation failed
+To: Wandun Chen <chenwandun1@gmail.com>, robh@kernel.org,
+	saravanak@kernel.org, rppt@kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260818092420.2859026-2-chenwandun1@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260826131445eucas1p1dfa5844c01c4705731fdd2f4772e4fc8
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260818092438eucas1p20115e5d33908e32ef4433cb246da8098
+X-EPHeader: CA
+X-CMS-RootMailID: 20260818092438eucas1p20115e5d33908e32ef4433cb246da8098
+References: <20260818092420.2859026-1-chenwandun1@gmail.com>
+	<CGME20260818092438eucas1p20115e5d33908e32ef4433cb246da8098@eucas1p2.samsung.com>
+	<20260818092420.2859026-2-chenwandun1@gmail.com>
+X-Stat-Signature: woyiciadsqu3ci5wywoj99bo3xyh9sny
+X-Rspamd-Queue-Id: 52F29180006
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 061954000F
-X-Stat-Signature: bmigmsg5egho3jjx77fkog8875na6ocw
-X-HE-Tag: 1787749628-990819
-X-HE-Meta: U2FsdGVkX18Q3BCMcV4BxoRjF9pQFn+qrGwnAMTZhac2trnlp1HCoi4ERPRxTs5pWYTCdJT9D2fLIEbsV8mV9QLqXMfwdFRNAFt+1X7G5jRsa7puZP7ErhgGanr3iFW1WbwA1ye3blMzeJzsT4zL74CGBsWH6f3Qz+gjLDz2G5j7jWETyYVtsaaocCnYSddJQghazgB5eyNoDqVVAm9CVU+1wmwd2POwqW2e7oZkrkRaNpuQkw6BJ0qqpgJ+6l4lhxaxNKyzwKWdAv3Ivp4j7xyGnHMXhFl+C8thEVq1YjORfeoeAimgPxFUXF6krPROoA7xaycuIGJYquGdDC5I+Tzh67P/DIi51anoy6X2lldO/6YGFDV2XjAg7+tH7vxM+pfVcqH3QAeEGIZ4G7PGkhj0JMnx9Nqyhulkm5Czxx4OLyxfhYubU8aQAgQNi0Q4UKNHRNw/X8OUSVJaowGFcx+Ov8kkPnOL95pO3Fzl8L3Q6kphzzseUaVff4cneATYOLmSLFeR8naJ9LXrmeFpSG3Q9BYVF6U1EctGRIJthMCmBAso7kCrtfNWgB2tehNU5hLrcC95G0oEEAne43ADXmv5ZfK06Ui14qcU0AL/GfFibnUPo/FILJlHHnrnBvvs5i5CDRGCYxXjwy2eHoIoUnMfBdMIO2FEz9pl/TiCnFWGtcZ2TXVwmtukJy/1eL1yO0bvfPsp+kGmlp1ivKLxcUYY/HahDwqdB4Ii3PYck9NThZQdpaiZ9JP18Tjzyvci6X6gxg5KDFfmIERQk2GKojPTRcWfqYYnraD26m+a4R9sRUmRcwASPL26jhK1rJPey2hS2LZal9+BDgK/ZnkWm08qxBasGgQguhQDWYI3QuqmyZXLKBXv51XKQdGNp2qpZfeELVdrtPS8QJrn2iuiojwFWJ/yK/tRBv4+Q3U2Yu42+sFemcD9GuHaP6Z4cXFO+rC9HrnouvoDq6l/FjD
- D1EQR37y
- hSCV35C+klksG3wMmaB0c/81++1+h4aGE2n+u+6NYOcYp6nt9LVAiIy/KGDrs271Mbp3lvsxR3TpJKuW95G1st6ANCrPmldWW733kLQ9iLzz3LhqHIGM8TDRauTTmJ5LxJUVmGRl8wSmUXaYFG2/DjeOu1D2lVWlP6v/t/O2oUE9DFHOl883G01qER++kMWeJALX8PkFQldecKoeaw4YFTgS3kiJ2V6g7VkC8vwvo+A93QsLPaKMpKjqIODVWHUQeI4svNwHhX7b9GK7PCS4SeaNrrks9XQVrY3QUKNW5QPi5uoZH0QZs226ZoV5jtJ5mdc7F3Ryt5ADvxSsDIzxhk0Sg+SILEJJ4rpTj2ik0ypbz5VSBYBfSRyZgLtu2KqsBvePabgYt6w2sbJEICUN46h0Eko9l4W57sa6o0+Aey0oMstc=
+X-HE-Tag: 1787750087-737831
+X-HE-Meta: U2FsdGVkX18DObV4rLHoQjvKFOo2fie8XIUg6L2pl/W94uemzTYZjHUSar9IGZt+h0p/FTKf57IA0wAMe5zQ3RF7zxlTDMj1lC/XpJtc2OCxmZDG8LEQe0bAajAUz+IpArpz8D9EwLTALn+l3beXIWeIpzDCXDY+7av/hCSRrqcm+5k5oseBWgyRy512sUVvwchhLYCzlP0an/jJ34YCkAgTx21JIXFsqwcCxYZuNVydT35POR46VpIcv6vmx5eR/CLYWqh7ep2vxYBPSd3gbkIIqWUWXoEjTD2W/gGNokkn+a5YuNyCLWIDzLb+e2rtVv+J+THb4UeURRyXQIptaqbFdUR0vSNNLTY0CmVHizae9wOAF2yVlzxsAYbu67t1gYgPigfDYWsBvR1bLrsOXZQD6rBXw8iO/z8+g4xVZSJOMSYiDMnyC1+Y4ZgZRFmHPcU78/102R4NBEl5SnQ1uYyqAH8W4oJAVWAjy41EH4CuQHYMzMwLS8O1I3DllJw+8TNrXfG79aVLWVYipZ/jhR35ZtKb6A4wUIZ/meWEyt4gOb3qoe2esvAAV6XExouR9iRHsbIzg/KEPRBBXmQLxjCzjtaMbzSaqZylwmAzvrPv4rQoSaphplmsAwwfc3djtqe6BypMsrZPvPQklbMZli7BhwRICFG2t/Y/V2uVINEZV/RDyNDZCqZ9u8bVez2at3XfyU14vWr+1HaG0Nu9hQb5gqULAENhx/L/ClRA7EezRf/A3di0CDUM9LmBTQ2R1ogwhcoZzN4teJLy38o2qy5th5SPYF2F+YDImTNskwrhXqCelgAV2B5SKWJZU4sJXp9n8mTJWjJgqe1RibspR7IiOtpUSzs7ZAYLM+E0AlnQQMwt+GgXavcQc7Yyuhom1YLQd91HSY8BCwkZTHHyIBlzT4tHPattA1FcxYxnbq7r09Zk7HEaJuK6V3TfwutrsrLqkQtamqe1bwQnHnq
+ hYj4ZIer
+ knGRHsIq0fHjtrbxCcSYa4EtFxM/vk6Sd/Z/gbkG+vdIDfnwSFCHEGLNMKj2q2LkYqi6DzMEf+tj2eisP6kZ8jhKwg0614kiRQ91kZlTSTev0bKFwtYRWkRwxtPp1UGKtDJixJVzF9mGFIoOhEnDx7kAx1AYMKPx/+KMan2vI/OxHbFTjcVOVZ68wXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,151 +106,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 08:39:18PM +0200, Jann Horn wrote:
-> If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
-> good opportunity to block a process from overwriting read-only code in its
-> own address space through FOLL_FORCE writes via /proc/self/mem.
-> The security_ptrace_access_check() LSM hook is bypassed when a process
-> opens /proc/self/mem because this is considered "introspection".
+On 18.08.2026 11:24, Wandun Chen wrote:
+> From: Wandun Chen <chenwandun@lixiang.com>
 >
-> This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
-> that a process cannot create executable anonymous pages.
+> __reserved_mem_reserve_reg() discards the error from
+> early_init_dt_reserve_memory() and returns 0 unconditionally, so the
+> caller counts the node in total_reserved_mem_cnt and the late scan
+> initializes it without checking whether the early reservation actually
+> succeeded. A region whose reservation failed is then handed to a
+> device assuming the memory is protected.
 >
-> PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
-> accesses are only possible when the LSM allows ptrace() attachment; but it
-> is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
-> environments running lots of third-party code, such as Android.
+> Propagate the error so failed reservations are no longer counted, and
+> record the failed nodes so fdt_scan_reserved_mem_late() can skip them.
 >
-> So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
-> such "introspective" accesses.
+> Recording the failed nodes explicitly is necessary because
+> fdt_scan_reserved_mem_late() rescans the DT independently. It cannot
+> tell from memblock whether early reservation succeeded.
 >
-> Signed-off-by: Jann Horn <jannh@google.com>
+> The failed-node array is bounded by MAX_RESERVED_REGIONS, the number
+> of static regions is not bounded by it, so on overflow the extra nodes
+> fall back to being initialized, which is the current behavior.
 
-Thanks for the name change! :)
+I'm not very keen on such partial solution. Indeed we have no place to
 
-Nothing stands out so:
+store the result of the early init call, but we can check if the given
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+region has been earlier marked in memblock as reserved or no-map in
 
+fdt_scan_reserved_mem_late(). If those attributes don't match the
+
+region can be simply skipped then.
+
+
+> Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
+> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
 > ---
->  fs/proc/base.c                |  9 +++++++++
->  include/linux/lsm_hook_defs.h |  1 +
->  include/linux/security.h      |  6 ++++++
->  security/security.c           | 20 ++++++++++++++++++++
->  4 files changed, 36 insertions(+)
+>  drivers/of/of_reserved_mem.c | 65 ++++++++++++++++++++++++++++++------
+>  1 file changed, 54 insertions(+), 11 deletions(-)
 >
-> diff --git a/fs/proc/base.c b/fs/proc/base.c
-> index bec6197329dc..dc6fdcb47b79 100644
-> --- a/fs/proc/base.c
-> +++ b/fs/proc/base.c
-> @@ -851,6 +851,11 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
->  /* private_data for proc_mem_operations */
->  struct mem_private {
->  	struct mm_struct *mm;
-> +	/*
-> +	 * Was the ptrace access check on open bypassed because the opener used
-> +	 * the same MM (introspection)?
-> +	 */
-> +	bool opened_by_owner;
->  };
->
->  static int mem_open(struct inode *inode, struct file *file)
-> @@ -864,12 +869,14 @@ static int mem_open(struct inode *inode, struct file *file)
->  	priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
->  	if (IS_ERR_OR_NULL(priv->mm))
->  		return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> +	priv->opened_by_owner = priv->mm == current->mm;
->  	file->private_data = no_free_ptr(priv);
+> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+> index 8c9d6395d6a3..c6e73d710ee1 100644
+> --- a/drivers/of/of_reserved_mem.c
+> +++ b/drivers/of/of_reserved_mem.c
+> @@ -32,6 +32,30 @@ static struct reserved_mem *reserved_mem __refdata = reserved_mem_array;
+>  static int total_reserved_mem_cnt = MAX_RESERVED_REGIONS;
+>  static int reserved_mem_count;
+>  
+> +static int reserve_failed_nodes[MAX_RESERVED_REGIONS] __initdata;
+> +static int reserve_failed_nodes_cnt __initdata;
+> +
+> +static bool __init reserved_mem_node_reserve_failed(int node)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < reserve_failed_nodes_cnt; i++)
+> +		if (reserve_failed_nodes[i] == node)
+> +			return true;
+> +	return false;
+> +}
+> +
+> +static bool __init record_reserve_failed_node(int node, const char *uname)
+> +{
+> +	if (reserve_failed_nodes_cnt == MAX_RESERVED_REGIONS) {
+> +		pr_err("too many failed regions, '%s' reservation failed\n", uname);
+> +		return false;
+> +	}
+> +
+> +	reserve_failed_nodes[reserve_failed_nodes_cnt++] = node;
+> +	return true;
+> +}
+> +
+>  static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+>  	phys_addr_t align, phys_addr_t start, phys_addr_t end, bool nomap,
+>  	phys_addr_t *res_base)
+> @@ -141,7 +165,8 @@ static int __init early_init_dt_reserve_memory(phys_addr_t base,
+>   * first entry in 'reg' property
+>   */
+>  static int __init __reserved_mem_reserve_reg(unsigned long node,
+> -					     const char *uname)
+> +					     const char *uname,
+> +					     bool *should_record_failed_node)
+>  {
+>  	phys_addr_t base, size;
+>  	int len, err;
+> @@ -149,6 +174,8 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
+>  	bool nomap;
+>  	u64 b, s;
+>  
+> +	*should_record_failed_node = false;
+> +
+>  	prop = of_flat_dt_get_addr_size_prop(node, "reg", &len);
+>  	if (!prop || !len)
+>  		return -ENOENT;
+> @@ -167,14 +194,20 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
+>  	base = b;
+>  	size = s;
+>  
+> -	if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
+> -		fdt_fixup_reserved_mem_node(node, base, size);
+> -		pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
+> -			 uname, &base, (unsigned long)(size / SZ_1M));
+> -	} else {
+> +	if (!size)
+> +		return -EINVAL;
+> +
+> +	err = early_init_dt_reserve_memory(base, size, nomap);
+> +	if (err) {
+> +		*should_record_failed_node = true;
+>  		pr_err("Reserved memory: failed to reserve memory for node '%s': base %pa, size %lu MiB\n",
+>  		       uname, &base, (unsigned long)(size / SZ_1M));
+> +		return err;
+>  	}
+> +
+> +	fdt_fixup_reserved_mem_node(node, base, size);
+> +	pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
+> +		 uname, &base, (unsigned long)(size / SZ_1M));
 >  	return 0;
 >  }
->
->  static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
->  {
-> +	struct mem_private *priv = file->private_data;
->  	struct task_struct *task;
->  	bool ptrace_active = false;
->
-> @@ -886,6 +893,8 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
->  		}
->  		return ptrace_active;
->  	default:
-> +		if (priv->opened_by_owner)
-> +			return security_mem_foll_force_opened_by_owner(file->f_cred) == 0;
->  		return true;
+>  
+> @@ -306,10 +339,14 @@ void __init fdt_scan_reserved_mem_late(void)
+>  		base = b;
+>  		size = s;
+>  
+> -		if (size) {
+> -			uname = fdt_get_name(fdt, child, NULL);
+> -			fdt_init_reserved_mem_node(child, uname, base, size);
+> -		}
+> +		if (!size)
+> +			continue;
+> +
+> +		if (reserved_mem_node_reserve_failed(child))
+> +			continue;
+> +
+> +		uname = fdt_get_name(fdt, child, NULL);
+> +		fdt_init_reserved_mem_node(child, uname, base, size);
 >  	}
->  }
-> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-> index 65c9609ec207..50e3f0abc676 100644
-> --- a/include/linux/lsm_hook_defs.h
-> +++ b/include/linux/lsm_hook_defs.h
-> @@ -36,6 +36,7 @@ LSM_HOOK(int, 0, binder_transfer_file, const struct cred *from,
->  LSM_HOOK(int, 0, ptrace_access_check, struct task_struct *child,
->  	 unsigned int mode)
->  LSM_HOOK(int, 0, ptrace_traceme, struct task_struct *parent)
-> +LSM_HOOK(int, 0, mem_foll_force_opened_by_owner, const struct cred *subject)
->  LSM_HOOK(int, 0, capget, const struct task_struct *target, kernel_cap_t *effective,
->  	 kernel_cap_t *inheritable, kernel_cap_t *permitted)
->  LSM_HOOK(int, 0, capset, struct cred *new, const struct cred *old,
-> diff --git a/include/linux/security.h b/include/linux/security.h
-> index 153e9043058f..74eb876054b0 100644
-> --- a/include/linux/security.h
-> +++ b/include/linux/security.h
-> @@ -338,6 +338,7 @@ int security_binder_transfer_file(const struct cred *from,
->  				  const struct cred *to, const struct file *file);
->  int security_ptrace_access_check(struct task_struct *child, unsigned int mode);
->  int security_ptrace_traceme(struct task_struct *parent);
-> +int security_mem_foll_force_opened_by_owner(const struct cred *subject);
->  int security_capget(const struct task_struct *target,
->  		    kernel_cap_t *effective,
->  		    kernel_cap_t *inheritable,
-> @@ -676,6 +677,11 @@ static inline int security_ptrace_traceme(struct task_struct *parent)
->  	return cap_ptrace_traceme(parent);
->  }
->
-> +static inline int security_mem_foll_force_opened_by_owner(const struct cred *subject)
-> +{
-> +	return 0;
-> +}
-> +
->  static inline int security_capget(const struct task_struct *target,
->  				   kernel_cap_t *effective,
->  				   kernel_cap_t *inheritable,
-> diff --git a/security/security.c b/security/security.c
-> index 71aea8fdf014..fff26ff65e07 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -595,6 +595,26 @@ int security_ptrace_traceme(struct task_struct *parent)
->  	return call_int_hook(ptrace_traceme, parent);
->  }
->
-> +/**
-> + * security_mem_foll_force_opened_by_owner() - Check if introspective FOLL_FORCE is allowed
-> + * @subject: credentials of the process accessing its own memory
-> + *
-> + * Check if FOLL_FORCE is allowed for accessing process memory through
-> + * /proc/$pid/mem in the case where the opener's MM was the same as the target
-> + * MM, meaning the security_ptrace_access_check() hook was bypassed on open().
-> + * (current->mm does not matter for this; for example, if write() is called on
-> + * an FD that was received from another process which obtained it with
-> + * open("/proc/self/mem"), this hook still runs.)
-> + *
-> + * This is only used when the system is configured with PROC_MEM_FORCE_ALWAYS.
-> + *
-> + * Return: Returns 0 if permission is granted.
-> + */
-> +int security_mem_foll_force_opened_by_owner(const struct cred *subject)
-> +{
-> +	return call_int_hook(mem_foll_force_opened_by_owner, subject);
-> +}
-> +
->  /**
->   * security_capget() - Get the capability sets for a process
->   * @target: target process
->
-> --
-> 2.55.0.860.g4b6b3295ed-goog
->
+>  
+>  	/* check for overlapping reserved regions */
+> @@ -349,6 +386,7 @@ int __init fdt_scan_reserved_mem(void)
+>  
+>  	fdt_for_each_subnode(child, fdt, node) {
+>  		const char *uname;
+> +		bool should_record_failed_node;
+>  		int err;
+>  
+>  		if (!of_fdt_device_is_available(fdt, child))
+> @@ -356,9 +394,14 @@ int __init fdt_scan_reserved_mem(void)
+>  
+>  		uname = fdt_get_name(fdt, child, NULL);
+>  
+> -		err = __reserved_mem_reserve_reg(child, uname);
+> +		err = __reserved_mem_reserve_reg(child, uname,
+> +						 &should_record_failed_node);
+>  		if (!err)
+>  			count++;
+> +		else if (should_record_failed_node &&
+> +			 !record_reserve_failed_node(child, uname))
+> +			/* Keep a slot for the untracked node's late initialization. */
+> +			count++;
+>  
+>  		/*
+>  		 * Save the nodes for the dynamically-placed regions
 
---
-Cheers, Lorenzo
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
