@@ -4,98 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7BD9C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 08:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FB64C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 08:36:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB23A6B008C; Wed, 26 Aug 2026 04:35:48 -0400 (EDT)
+	id 4980D6B008A; Wed, 26 Aug 2026 04:35:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A62B06B0092; Wed, 26 Aug 2026 04:35:48 -0400 (EDT)
+	id 46FDF6B0092; Wed, 26 Aug 2026 04:35:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 978386B0096; Wed, 26 Aug 2026 04:35:48 -0400 (EDT)
+	id 3867E6B0096; Wed, 26 Aug 2026 04:35:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BCF56B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:35:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E0EBF1402D5
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:35:47 +0000 (UTC)
-X-FDA: 85142762334.06.5933D2F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 508BC1C0006
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:35:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UIMIbuVi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1992F6B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:35:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78A9A1202DF
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:35:57 +0000 (UTC)
+X-FDA: 85142762754.16.8606A26
+Received: from mta1.migadu.com (out-67.mta1.migadu.com [95.215.58.67])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7C8584000A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:35:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qkROGacs;
+	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.67 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787733346;
+	s=arc-20220608; t=1787733355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=77HcB1kud9ZQLGTOBXm8D/IPatt20bqt7WcnuYLsxnw=;
-	b=o0Dh/X1E3jeFvCdax6P/IiWwVDQc7eNFQavAhgJckPUMi/NrHXouSN7yLGWuQqk5uAmYQj
-	iSJTkv3IrG1g95MgLdIM0W7Okm5UGOjODQ5zzuMK4QYATnVl5FbSy2ssFaWg1vsWg3qovq
-	V5VXW86i5KyVVxmVtYAsNd5Jna/9rKA=
+	bh=ctCDnFeGuwrBYSy8Y7fSEhbpQlgXRyhkoTx4fdSuPYU=;
+	b=kBEhIjhWJeOGiSnGUkIG5UpJ9BCsRkP0xYnuk0DsLiw/f1aeh0Zo33+XSj+LQjo2Xxwkbi
+	ch+VwwrfWCB3WmAhpMLCnH6naufwO8V9bLlCgRXFS//0vIvQ1DG64TCFAQl4NvyNeWQgtK
+	WQMtBvuQT1hngV6XSjeT28wrNTQjHLs=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UIMIbuVi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qkROGacs;
+	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.67 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787733346;
-	b=6vpUj8ccvGme6KReMmdbDAIcO/rQhVMQau/IFkZMSzD0wSJfzALNlw3W7MkBRw3V6WuDZk
-	Y7O1tSkhT/kSVCedVjkaLlk0WixOurkHYJZTPZKVsLKwjSKc1y5sx69fB/IvEX/Wz3K5mr
-	qnDoYZKJRH38eh+dSluMNXzd6uNwtiA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5761760A5C;
-	Wed, 26 Aug 2026 08:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9274F1F000E9;
-	Wed, 26 Aug 2026 08:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787733345;
-	bh=77HcB1kud9ZQLGTOBXm8D/IPatt20bqt7WcnuYLsxnw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UIMIbuVicIoSiAAGWpoipJ+A4fWtYWgCwo1Ax/57fBrKhMb/kTfwyKH/nvzE+dDm5
-	 22svvHl7hnd7BnokCEJrA4QsJjQ1TfoN9LY/lTmC07NROJeFbQelbqXkmjJIDLb/fK
-	 YB6hcym6o463vUIu2Dbri4qeJ6KVfRlrIhbpfGcZ6hcJa1CkNKPBJD4OCmzvWMWVtv
-	 my1sGLHZNNK2a6shTrF3tQG4FL1vqOQ89D4WgyOMxXrjYJnSD/xEf00C2VLLIhqVGX
-	 CUS0xhzW6shZ1SWWyGjz2TjtSLChnhTAOhwu5NuYXMJxTdOzpM5cMVlS5f5WDwyvdD
-	 oL0YKWmxACJ3w==
-Date: Wed, 26 Aug 2026 09:35:38 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org, 
-	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, usama.arif@linux.dev, zokeefe@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH v3 1/3] mm: khugepaged: fix swap entry value to
- folio_pfn()
-Message-ID: <ao6jVbVHLUmuY2UA@gremlin>
-References: <20260824092935.73892-1-vernon2gm@gmail.com>
- <20260824092935.73892-2-vernon2gm@gmail.com>
- <edd7ed8d-0f2c-4de3-89e5-f2b23c2dd1e5@kernel.org>
- <6a9c2369-5589-4f2a-bcfe-c6e3b46a1ccd@gmail.com>
- <c8e3bb54-e4f1-45d3-8059-3ee1910a920a@kernel.org>
- <ao6c6Oe_KV0O1LJn@gremlin>
- <b6fbf952-c619-4fc7-8a8e-62a0ae64ff0d@kernel.org>
- <ao6fSHW_nX8YC9QK@gremlin>
- <42695df0-3962-4126-9afb-9a1905d096a0@kernel.org>
- <49aa013f-f613-42be-bc58-35956ef189de@kernel.org>
+	t=1787733355;
+	b=IQaNNTlDPx/J1VvCKe9/ip01DmEMx+aFw1NLkhffdUnOp9pGaXo8TFWPHAQMMeEUhXuG13
+	7IwwWZsKAwG8ZeeAm++QYfb8P3N7bE2/4QihiFSlmc2KYOFH1muR2Epu6AqwX/gLxbc8KJ
+	pB3yoLbD6Y0io36qT9qKXhYxfr8F2v8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=CsLGx21OxmzsS6r/w1wM+4tvAX2yiYA/4i9KpoVmiXA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787733354; v=1; x=1788338154;
+ b=qkROGacsSvEIqkbEgFoB9rYMjvH9BMMO5io0VQuU8TU8QCtynZkbQ4O6lKXHaydkes50vqgz
+ A6nn+46dpAGKcgzL2pJk1iAQP/I9rLsL4RsAWfjaXsz4FTRFAfjnKHyBZE8g/AV9WE0a9KtR1na
+ aTR+GmNajCUc9NP3tRUTUwYg=
+X-Envelope-To: linux-mm@kvack.org
+Received: from fedora (117.129.78.49)
+	by smtp.migadu.com with ESMTPS id 7113056e3fa926fe;
+	Wed, 26 Aug 2026 08:35:53 +0000
+X-Mizu-Trace-ID: 7113056e3fa926fe
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 26 Aug 2026 16:35:43 +0800
+From: Hao Li <hao.li@linux.dev>
+To: Longlong Xia <xialonglong2025@163.com>
+Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, paulmck@kernel.org, 
+	rcu@vger.kernel.org, xialonglong@kylinos.cn
+Subject: Re: [PATCH v2] mm/slab_common: fix shrink budget underflow in
+ kfree_rcu_shrink_scan
+Message-ID: <ao6lD5kJMotCFBDU@fedora>
+References: <20260826075653.3304251-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <49aa013f-f613-42be-bc58-35956ef189de@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 508BC1C0006
-X-Stat-Signature: aas7tcgs3j7ptuau144ieikjqbbt7zgr
+In-Reply-To: <20260826075653.3304251-1-xialonglong2025@163.com>
+X-Stat-Signature: jeqqg45dj7unkut4xru7ztw5z1xn19ic
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7C8584000A
 X-Rspam-User: 
-X-HE-Tag: 1787733346-336092
-X-HE-Meta: U2FsdGVkX19SmL6er0z63p+o1Nz1ZwYIRXJfTI4jKUuTscZscZpx0o+rZaSVMtdckXMqWl9cMnZOOccDg+LEHmOYHeBzIpgsVZiNufBCQu73KrwyEi0yv8SJpfaUB9bmY+GQ/5DUxMkTXjgwJ3beuFsf9bJhSE2Cz/PM4S6ah+vg8TjLojmHs49pO1NA8pRD3vz+zwXgre2yQGEQ/i6BoXeH2o8w3YLrAu+YOncBcadNmyUWGAQcS8tq8qtgUwokrL1e8Czo8RbuO0R3lgvuTQfNMXBGnN79A7J06iJWcPUkIQVa4Gx6wAht3cHsXs2Oqt44o9nSv4jwZlAAMJ7+y8OlWO+tGzIz1QG6GkrGsZydg//vnZ0Se1DfTejyQsv+5pdWpf4szThF3aBW5PEqqzC0Sefy8vckmLSB3OzNaD9kCGClv4Z6O4UM2BGQ79bAhGE4hMymiw92jBo7QP5yeuVl6pT4PIoM7ByWa+WItxzgRMOhEWPYMP2z0j1uSDTBzWLlk2nOwI2UDLDKIRxyVwRYSUByshX0HFiwSuEKHwNLlkWY+uuMaHRsMW4h+GXHYMt4csPf/3YMs6HyAwumyArsQ/UHGj0YpU41ispPiZ+m0rsKBpQF4KwPe88E5J3CaN1K9hfU7P6w74k2zXVv7JlYp+UX/gJ+hOCEBhOW4ifdoaBFToRY46pi3IVrI5m65sdWzLqdHerKeVEnvbM1BXGBR9NkuehfxdmSELawyMbyEjeHGAL3Rlz4mPSBTtJfvtZsPiRM014RKA+NH6ZFnguYjVfaRbocwzbCJZNPDlsXp+di+yNkoJOIAbrmsXrcengoOKREmOVTkC+u5N76+RIbn1TTC+pkpwbQDaUXO6L1cAxVAvDkSPs7SOP9HbveObukoL0ROLodsOWvykHWb9YuoYq8K3O0SwEwMBT1NU6KpIv81ujX3TaCy8jB9OA6hQ2gCrAubBy4ZzVeX6g
- KQMNM1rR
- Zk5vNVZBbB2AwhIahVjD+OOEb13GMXfJRxehOJ4X0zy/YFHS7z5j7JRtqTLIdbT767GMUwLdnXUiCd44/DkdszeG5hSKNVBZICS2lVtqruCbij0l2BJXcihRDEbXS1RJJUrX/kSXTd3EoQlf1Nw6RgJ8yd9pAp+BVGvCLUYLVYS0G2LEXZyVkjjPxCJ6r0ToYK8rj1rKwL+WNT3r+tiHzwzZhLjrAlyncVsHGwEsRXob7CmjaWSEbwlGLfpRjLu6fCrDYP1XSOm+Xiw1mQFC0hRD5cQ65fI4+LqgUJCxC7o2AmeU=
+X-HE-Tag: 1787733355-334644
+X-HE-Meta: U2FsdGVkX1+7epGkiD+k8l5Q/vEuE2SXgnkNOeQ6S1wHvsuLnhS9DR7veaHSGxQbbjF8+sfsymgiyo+OUV68DJJKDF1xX8cc314j4DO/KdCTFKIJPahAiCLkQU5LfA2OGCWXro08/7BnFOok0nuFRuDuQufWEP20DDfP6gG64mDKYMUkpkR1zgLBgcJAgUeo5HyA47dqdKMBupq/o5+9JHnSvB3yeqGvfeCHqmQTRwVJbwJOHzUVJXjaNjPNdMzUSK6UQ/QTbWzknWmMXoYVsU0KmozHQ5qn+2hFCe/SuUkAnS1A1b08tNVnrVHm5RNFp6s70RK8bM45kTYlkgE8bbG4zkM+QR10RvGybOILodZc3NHMeZHXHyW40e2H6ieCra1FB133JBZvqkU0HxEUtkDk4KpOCB/+iBqNzmSyavrwKeHH6GBF/popn7muvEQaN+x4ppKIBYzidf32KBbEl71RI3F/aQL7pIZigfczm3ySNZppmmk1hswAZATeV96UuzGDv8LcKo9H4R0tvxY6+gmYOhTMuXZ+8+okRmN3uHh0PZE1kH20nz/sC5hPiA3ChRk/Jo9o4VyQ6f4dJ2YjtX9gAYBCiFWaMSv0r8qU8Lxo0waJO5PlHXLc6Y/hZdo4+FX3PtPC5Fu7VVu7QJRm0uHSqmbox8Lp386aNaqqvdlxaAIi/O/POPJgSRl4jDKX9H18HUPFb3sWoNf8tt1+L5UeZQyHGz1k30U9asrXl1cyRa+xbixDbKscLaaWP7XAmvep3RLxjreyVmYHkXOpU3XkYs5wR5zKsKp4kOfOlUptTYBNoJhyqvA+4SyFfN3jF37yf7w0xFwrCXmtXNEBmUrsTx7r3MMGxqZ9KsnSnBK4AT9f4PdT4F9IaI9SnVyN4OhFiCHxjaIqf6D3X2+Q+bfK3nT4zAjlUUJl9aVUcw9NgteAcfJKPrYwZE8LWEdUP6EFDHNInbJGWHpDdEP
+ 7ml14DEo
+ V0eTXNFIv7hTzSQyoClyU5w9h+VqltpXZNb7u7HWS6o9YmnDSUKZ/jkz5cMJ9/VuJQQklLtRc0YfedK78dgRwxAgOBdoOCx02NYYP6cbH+BQqB4d7znINpJvJ95eVS3xjil0vxi52NWhbnv8MwAqPqLuvjRn/OvL2S05rCRb4o4Ui7NME8c358ACu8WG5+nhIQWdkC/1U9E7SMnQGZqBWolq3sB1/hWEBidHeXqxkqoj1lB8Lg7lubH1+g7/3V7dbK6Q00ubd4W8/q1Q5LSFZors+GkhXsEc1Xy4Fn60MOCmUvPavRufGWkH1fjf7oNB9uggdmhyeNU9epomCMEX2x0YZz66DpiAzhFtEgW/YOv3G7uA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,110 +92,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 10:24:56AM +0200, David Hildenbrand (Arm) wrote:
-> On 8/26/26 10:16, David Hildenbrand (Arm) wrote:
-> > On 8/26/26 10:11, Lorenzo Stoakes (ARM) wrote:
-> >> On Wed, Aug 26, 2026 at 10:08:58AM +0200, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> Elaborate.
-> >>
-> >> It's overly long, I read it and am confused as to what is 'problematic' or not,
-> >> it reads weirdly in English and pfn_xxx is the usual convention for naming of
-> >> pfn's anyway.
-> >
-> > Excuse me, what? Are you now just making up arguments?
-> To clarify, we have various users of "xxx_pfn" in the tree and I fail to see how
-> "this is a problematic pfn" -> "problematic_pfn" is odd and why
-> "pfn_problematic" would be any clearer.
->
-> I do agree with the "problematic" aspect. "failed" might indeed be nicer.
+On Wed, Aug 26, 2026 at 03:56:53PM +0800, Longlong Xia wrote:
+> From: Longlong Xia <xialonglong@kylinos.cn>
+> 
+> The kfree_rcu shrinker decremented sc->nr_to_scan (unsigned long)
+> and then tested the result with <= 0. When a single CPU's object
+> count exceeds the remaining budget, the subtraction wraps to a large
+> positive value and the <= 0 comparison, which is equivalent to == 0
+> for an unsigned type, never fires again. The scan loop then iterates
+> through every possible CPU instead of honouring the reclaim budget.
+> 
+> Accumulate into freed and stop once freed >= nr_to_scan. The shrinker
+> core treats nr_to_scan as input-only, so dropping the decrement is
+> safe; freed becomes unsigned long to match the return type.
+> 
+> Suggested-by: Hao Li <hao.li@linux.dev>
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+> ---
+> Changes in v2:
+> - Rework per suggestion from Hao Li: accumulate into freed directly,
+>   compare freed >= nr_to_scan instead of decrementing nr_to_scan, and
+>   drop the per-CPU count local; promote freed to unsigned long.
+> 
+> Link: https://lore.kernel.org/all/20260824091838.1692153-1-xialonglong2025@163.com/
+> ---
+>  mm/slab_common.c | 13 +++++--------
+>  1 file changed, 5 insertions(+), 8 deletions(-)
+> 
 
-Right yeah. Mostly the push back is on the word being a bit confusing. Fair
-enough on the pfn thing, failed_pfn is actually the nicest name suggested so far
-:)
+Looks good to me. Thanks.
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
-I still think:
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 657fd75776ea..e227c2ef2a4e 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -2162,20 +2162,17 @@ kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
+>  static unsigned long
+>  kfree_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+>  {
+> -	int cpu, freed = 0;
+> +	int cpu;
+> +	unsigned long freed = 0;
+>  
+>  	for_each_possible_cpu(cpu) {
+> -		int count;
+>  		struct kfree_rcu_cpu *krcp = per_cpu_ptr(&krc, cpu);
+>  
+> -		count = krc_count(krcp);
+> -		count += drain_page_cache(krcp);
+> +		freed += krc_count(krcp);
+> +		freed += drain_page_cache(krcp);
+>  		kfree_rcu_monitor(&krcp->monitor_work.work);
+>  
+> -		sc->nr_to_scan -= count;
+> -		freed += count;
+> -
+> -		if (sc->nr_to_scan <= 0)
+> +		if (freed >= sc->nr_to_scan)
+>  			break;
+>  	}
+>  
+> -- 
+> 2.43.0
+> 
 
-       	if (result == SCAN_SUCCEED) {
-               	...
-               	trace_mm_khugepaged_scan_file(mm, -1, file, present, swap, result);
-       	} else {
-               	trace_mm_khugepaged_scan_file(mm, failed_pfn, file, present,
-					      swap, result);
-       	}
-
-Is a little neater as then it's only on the failure path that we trace the
-failed pfn, and otherwise we explicitly -1.
-
-But it's not exactly a show stopper this :)
-
-Very rough edit of your patch - if you're happy then let's go with this, if not
-then edit it + post so Vernon has a clear direction. I'm not feeling super
-strongly on this so don't want to block anything:
-
-----8<----
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 75639298efc27..371ee0b16d10c 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2683,6 +2683,7 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-       	int present, swap;
-       	int node = NUMA_NO_NODE;
-       	enum scan_result result = SCAN_SUCCEED;
-+       unsigned long failed_pfn = -1;
-
-       	present = 0;
-       	swap = 0;
-@@ -2714,6 +2715,7 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-               	}
-
-               	if (is_pmd_order(folio_order(folio))) {
-+                       failed_pfn = folio_pfn(folio);
-                       	result = SCAN_PTE_MAPPED_HUGEPAGE;
-                       	/*
-                         * PMD-sized THP implies that we can only try
-@@ -2725,6 +2727,7 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-
-               	node = folio_nid(folio);
-               	if (collapse_scan_abort(node, cc)) {
-+                       failed_pfn = folio_pfn(folio);
-                       	result = SCAN_SCAN_ABORT;
-                       	folio_put(folio);
-                       	break;
-@@ -2732,12 +2735,14 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-               	cc->node_load[node]++;
-
-               	if (!folio_test_lru(folio)) {
-+                       failed_pfn = folio_pfn(folio);
-                       	result = SCAN_PAGE_LRU;
-                       	folio_put(folio);
-                       	break;
-               	}
-
-                if (folio_expected_ref_count(folio) + 1 != folio_ref_count(folio)) {
-+                       failed_pfn = folio_pfn(folio);
-                        result = SCAN_PAGE_COUNT;
-                        folio_put(folio);
-                        break;
-@@ -2773,7 +2778,7 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-               	}
--      	}
--       trace_mm_khugepaged_scan_file(mm, folio, file, present, swap, result);
-+       	trace_mm_khugepaged_scan_file(mm, -1, file, present, swap,
-+				SCAN_SUCCEED);
-+	} else {
-+	       trace_mm_khugepaged_scan_file(mm, failed_pfn, file, present,
-+				swap, result);
-+	}
-+
-        return result;
- }
-
---
-Cheers, Lorenzo
+-- 
+Thanks,
+Hao
 
