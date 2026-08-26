@@ -4,127 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAED7C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 15:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5D30C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 15:23:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F069D6B008C; Wed, 26 Aug 2026 11:22:20 -0400 (EDT)
+	id 0D9A46B0092; Wed, 26 Aug 2026 11:23:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDE266B0092; Wed, 26 Aug 2026 11:22:20 -0400 (EDT)
+	id 0B08B6B0095; Wed, 26 Aug 2026 11:23:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA6C56B0095; Wed, 26 Aug 2026 11:22:20 -0400 (EDT)
+	id EBA046B0096; Wed, 26 Aug 2026 11:23:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B262D6B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 11:22:20 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BDBE014016C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:22:19 +0000 (UTC)
-X-FDA: 85143786798.10.1A6CCF6
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4EDD740008
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:22:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b="GGt8II/F";
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf12.hostedemail.com: domain of "prvs=6698cfb698=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=6698cfb698=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1787757737;
-	b=mLhTj0aswvOg5+e/EVaERGTmbrsDWeQKZUz3xpbhUGVD+rSI+NsmGtIq+B35UzgMRoKOLw
-	LA1y1Z1BtYBMtWX8EFvg3HIynyzvAvbG7GB2BG42ZOmG6kPowVdq9rH8E81UF4fRUbsFma
-	QbWmytm3YMYD+bSTqmO8lRFrskRc/iU=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b="GGt8II/F";
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	spf=pass (imf12.hostedemail.com: domain of "prvs=6698cfb698=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=6698cfb698=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BB8106B0092
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 11:23:30 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27F2312013F
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:23:30 +0000 (UTC)
+X-FDA: 85143789780.23.4AF6804
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 431521A0005
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:23:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=YYpzw2rO;
+	spf=pass (imf19.hostedemail.com: domain of "prvs=6698cfb698=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=6698cfb698=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787757737;
+	s=arc-20220608; t=1787757807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9+LTR6BXv6tEKpHsIOyT7jkiT7z0eYW8jTeQ94/tcik=;
-	b=q+YvmRwkB0/+H6u7EgM0T/PiKhAprv4idc6TfKJZGTu7uDlZM64+SjkmvD7Oj/hhznx+BN
-	Ir0IWX9iRULRvOhHOlB9QUq4F0rTv9z84D5Uq3TpsfxRVwiXLKT0UeKPHN1V2E0umqHsUb
-	ulH54CavzSuLiZa7tA+KQo/e8v5xx4A=
-Received: from pps.filterd (m0528004.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67QEsWk92080482
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:22:16 -0700
+	bh=Qa9WiTOBruKSejQpy5vX1+ZNmguPqrLfKFdD+WBNetM=;
+	b=3WGE/3lqhGxCRhWUPMcQWB+QqVDrHBl0FdCeptz0PoSUZN4fMWMBcy83QpcxfiBoo7b5E0
+	ZdWEzIYCHUzAE8tYLG9YjdfQGKDZ7YDe2l7QUodtnh/e8PFU3LCyClTCetoHgJyGI1Z2tE
+	fA970FEWOSXEVCKVg6qlaU54+cclVig=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1787757807;
+	b=nAy0lkxUllHEOkycb4jMU/aTCcc9sjb1TThCpJloXbqG0VvB7A3REO+zdOdQzXvDj8WxS0
+	2mx5NIxBA1B6we0INZ89k8O6BwZQ6e2nsTVZhJuu+ngKxwLDdXU3H6ib0eUoNgyfnTel06
+	QRngcvEX+27CgXroeNG3blar5oSRWTw=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=YYpzw2rO;
+	spf=pass (imf19.hostedemail.com: domain of "prvs=6698cfb698=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=6698cfb698=alexghiti@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
+Received: from pps.filterd (m0528007.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67QEseMG2359921
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:23:26 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=9+LTR6BXv6tEKpHsIOyT7jkiT7z0eYW8jTeQ9
-	4/tcik=; b=GGt8II/F5RNbHBYjWqojIIItYvtQEMLEYrsug/kfFhGNKrKzj82Uq
-	KDNSXFMi57MLGeqsRz9Ca7l4+Bu7iPaghOzlfjesZMhfR2PkaoDDJlSiiJ6ClX65
-	FkPv/KCJrS8kW2M43oGMUf2LV+KzHtZm6xTXtFuSK4D4I7LnqXUOkyclyhVOQR4B
-	h8ELEvghrTTSwIWcRT2Pdv4eaAS2NQUUTKLlNsvdUlPTykd+U8GfjfcieYDRM47W
-	PB1G4kVzSV7ArBAF7KE63YDlanTzyxKTpwC9/NUSlNLy1CmLmOZoHdLGQ6CnLAbe
-	rRVo2YyFKKeXNdC6UPfZCpDohjuG9y3aQ==
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4g9ce9rkq2-1
+	pps82601-s2048-2026-q3; bh=Qa9WiTOBruKSejQpy5vX1+ZNmguPqrLfKFdD+
+	WBNetM=; b=YYpzw2rOOakYVYLUp67awx37TtLpzPdFrSOicHSNC3dIpyTaXwZE4
+	LslP67ckd1n7U5R6jh3AhimynEppefe85DwoCP1PRAxwjB+jxgW/S+TqVvkQrg/h
+	bJ4Lp28IjEwAwNO9qx0tJ6FB3iMYmJSYpUCuO2FG8mmGlfu/MMydR+ZP9oU4BoeA
+	//R6qTLgmETzuML9ReuyTMSQimOP36i1pP47by9cLJVOVk2nimhYkSRaRA+bnZV9
+	Y3asbPnDgOTqqszhqwx9eeX2akesOooedK4qXaO1NwUcqkzrL0EFCC51nZBWnKas
+	qk3YuTx70el93O7qzmwLYG3ycwM+SuXwg==
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4g9ce9rhst-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:22:16 -0700 (PDT)
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c20262b5e10so112020666b.1
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:22:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787757735; cv=none;
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:23:26 -0700 (PDT)
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6a5d57a8d51so1222541a12.1
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:23:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787757804; cv=none;
         d=google.com; s=arc-20260327;
-        b=o4P+WoJ3kGpfJ04meUQSKivnraQmKmZUfElHOK3Oj1xxFZUR0z/MI4Ar628r+z+sRD
-         F/QMNwEhBXPlJdvymJcIAOUV1mvWxHyQRf0MgDeWh9IaOSOvr9dhpfJ2fVjsvIr7JA8z
-         S+StNxVZTaIbpd2yvO2LKYpy+/JKN2F5eULSpUDHi+KHL/2rlNAEuWLccHaDBoHn4mM3
-         YeyvC3d12hjjjx+IA6PYfGsuEDh52DAViX72nwbEqc2dQyMzOiSMPC+A4qzEmF2IEFlM
-         152Qt75GpfXrWQ2fRAC0iOzpxSfpRGzB/8DHFUbss8Wxhe3Z36yvYUveMUIb49p05V4R
-         fINg==
+        b=OXNWFDPluXGebgj74gXrIBGwUZfw1+z0EEjbJTEdVcEt5IpX/Nc+rScBCs+6zabuxU
+         SCP2BIA0uXTeX+tOahYRqialNuVLUsQ/UqW0NfueoWr8oXLWFDHSMZMuAW7IwRmeRF/Q
+         t32+pE96zJIFo6gCdDObwSQNR3pJ/Lkz2kMM2Psis3r/UF7fsQkJMLmtgaNV/J4yTuHv
+         XmE+TTxhwlqgV/VLqJRMpPxtA+puZQ7gf+TFp+IiBT4C7iDpwBgmos3D9Ln/pTC+jOJP
+         b6UqlK6FZNbxljVIhmA0SlAiRrwIq6gKxsaetZOh3ZYtBFBSP8+SXKDNJTRLkQNCQTkC
+         ofAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version;
-        bh=lzzYRpHE4OUY/HCDzx2PwKyUvmKQFWNuBcWQsYBO99Y=;
-        fh=VR8tTVhIwcVSG/II+oT1sNp/ba/H1zZuYB6A7Mvj/Rk=;
-        b=XISO4VFWgF6eWePhqknEdFhnWShNxC0vH7Mo3FHVC8FzPeYj17zJOBGiE4Y0Qq6IaS
-         pANyMAgOTMFZLwJyY6MhIZm+mnLS5956+2rGO5vQDRuNKtyPK7fp9TBLyw99TueXoF7B
-         h0MZz75XCqFOmKf9VHsYjcAtU5fI31Ig/sXuNhIJm+XP6ElinuYldCyy2zz5QwOgVIBd
-         kzawiFxcfD7GIRqwUHShhwSnj/kNmuFvheweEAGFHvtIKASSOlS15NSx17EUTnJF6df1
-         x/5pwSem5KEeXu/U9xq/rqHMJHu+78KcLhGp884e5dRfi7X1GjeKXlgQKXoXKLq0eMcH
-         xQjg==;
+        bh=WMiMFv8KParNnf2Hm2vAw/N6YmijsTbpNE74wr8F5vM=;
+        fh=s0SuMGJmZsQ3rJ4ZcAAhh8VMl9aolj8DUecxZ1CNSPU=;
+        b=WkWWJKqoeShXRgOM5cQj71prH2bmyQbFiR0zRPK4ddehq1A2Mp7yhNRB2EyrR4guHo
+         EAv1jGln/2D7tzc4ibn6i2XNwGiP4zDTalFNPw6JLXq7cMWbon3T1EYK6tkdHHFeDx9r
+         ITmjJkgMmHbE2os35iYjn2A1lPQJCOVZdOGqZv9wWzRRAOsLbbJs9vphrqJnsmlPERha
+         zLvYfL7jITORBBX4Wb/hLr8nlxa03I8B8OibQF2z5hInHxyof4QNTmfMw4XeUuUDWxeB
+         CSzTzt3pNjBFVDcUtpP8S9ph0XtiJbNbXPe62lOevXbtuj1SlT4hgK0E7L6JcA/yMFuG
+         Ol3A==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787757735; x=1788362535;
+        d=1e100.net; s=20251104; t=1787757804; x=1788362604;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lzzYRpHE4OUY/HCDzx2PwKyUvmKQFWNuBcWQsYBO99Y=;
-        b=JoGIyQTQL9USlwsxsLe1xHDw+kg2c62RTj0UbTMPggzTzOGstYlfF1tBt7JMsXOjbQ
-         kBhsFtsNRQ4nCqNe5UXcJrkBcfsCRCygGshLufHEkWresFaHM56sxdU/9ob9VXHOJINZ
-         V7Fmub8NSziCh9q5ajjBvqHCHd8Q9UX6Qjy/BaYIjcigJoviwOlGIs9tIN5NrCl2zrnd
-         ATdVAeKGCrzulvixmStw0c0RrHPTwx5Eif30KYvHlEGtcn2tMMYuOj94Uoz2cWTXfIVn
-         LR1TCyOxqwaFzRJSailJIk5HBkUMw/HdPcHjptsrdSVaLIf8bk0vF9lcMxMDQRs7f50u
-         YslA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2Uo49CVVsYJgoS/0WsJBu++7UuoA32l6CvrK89Ymnhcl73NaK43lOMI+4a4C8qQXWmHVnXUhIRw==@kvack.org
-X-Gm-Message-State: AFuF++l2VSOyrjpukI0nSsPEQFJGwCivhZFq1Dt1dXNixaotGgxx7WuP
-	GHOCr4QAjLXcH3KbVIU+f3WtJZgdOW1zd55+FynPaM0Z2Dsm+W8JGHK7XCrICLVg4ZrFHmGoQId
-	xVohcazaNJnHfYqzGi6C5dFyluPYS6UCaMyDexcOsSOK7ZMiFLTrm3f/hkK3suyMgX06nu2RPuN
-	REdCaxQT3+5rYw5VVJo+grMqHpcQ==
-X-Gm-Gg: AR+sD13XM/EuxeRLxLGNnx8lsLOA+5JYstDSxdaV1QVrHVbyDLDON48N7lKYt3aXyAd
-	aJQG4pdX9kgHvxl/ZWvVK7n0Yyk8Yq1Tc5gVDYdY86rL7TWeZBcFD7U2uxxBb3skOMFCChEd74k
-	KBXNZbdNPFQlESVoM1Bg8MgVxVUrqHqhWaLjmhqmSgLnr1MuSyLrxB4rcHhmfkSvR1k2CZPG4y
-X-Received: by 2002:a17:907:9341:b0:c20:56e8:5457 with SMTP id a640c23a62f3a-c250baffcd8mr856850066b.6.1787757734948;
-        Wed, 26 Aug 2026 08:22:14 -0700 (PDT)
-X-Received: by 2002:a17:907:9341:b0:c20:56e8:5457 with SMTP id
- a640c23a62f3a-c250baffcd8mr856840666b.6.1787757734389; Wed, 26 Aug 2026
- 08:22:14 -0700 (PDT)
+        bh=WMiMFv8KParNnf2Hm2vAw/N6YmijsTbpNE74wr8F5vM=;
+        b=dzwYzFF7VsqyRvq3PgRPOSK5qYYSgoZoimsJSWdLnYmD7UxcES9DjZdSxGLYmWXSV9
+         bwg/TswMhvr0hnFY4IbWnd2DKEg5P+GWT3avIcv+GZGgkgPQhs5eUGunZR1ncatfkwYG
+         6DDd0qFOwnptdyMjE0UfCU1l8BT6fM619uPkHfId86uNtvd9iQ4vexuQeNU8U6W6h5WR
+         HwSVxNAu72cNn3peyxCDI+pU/+ht15J9+QpCxmAQfIQtCe31c4trGdp9QUeuxAAvg7qF
+         rDLBR4FpsP1ebQqXuHdfFuZAQATnkXrynwkuORN08Xj+tcr9jkmh+x7lcWqe64bv58XT
+         4FNA==
+X-Forwarded-Encrypted: i=1; AHgh+RrwVcKXpLibZcaG2Ucd+54c4iDitZtKG5chZd1l0ekXHa1Hb/MhmI1f/o1drNT0rPRq8j0VGp+Upw==@kvack.org
+X-Gm-Message-State: AFuF++k2Ea+wLIHQE456er1J4izvnY//qln3LGR8Vj0wxZwQI5sB1Aue
+	s/H20bd3pZdivCNiZmDDHKe1dSnwE0cCBHxs/I8xhblvoF2+I+5fdcHyVIvB7hAyHwe0zzxs0xz
+	9JDTsw+LPmpAXIMV6MNzSkBjaor3pu+ctun/gk2gHj27O4R95E/v4AxwS6GpWlT5H3ylEcHeV4+
+	DUNyQSWtspRyqa1HBn0sGQyd8MLQ==
+X-Gm-Gg: AR+sD13QXPYSk55dAtYcoR6ip/e5GZsysYJSA+BRSFk4VsNPRQC63cdeyr0+FX9StzU
+	rFCLolYvgF+AT6HG1s7fLidmyDkJwA3SLEClrkH+l0+5Zy9c4VWiQ5MHSw6swTdENBCMW5/nOpb
+	8cx7VjuiPEVyJv6MjihauAkndYzzQIcjLlRBXjwBIh+8VdT1/+HLO4NRlJ3XotpZloZvSomKe2
+X-Received: by 2002:a05:6402:13c5:b0:6a0:a644:355e with SMTP id 4fb4d7f45d1cf-6a5df5b7c3amr9749044a12.2.1787757804510;
+        Wed, 26 Aug 2026 08:23:24 -0700 (PDT)
+X-Received: by 2002:a05:6402:13c5:b0:6a0:a644:355e with SMTP id
+ 4fb4d7f45d1cf-6a5df5b7c3amr9748970a12.2.1787757804021; Wed, 26 Aug 2026
+ 08:23:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260825172604.3243589-3-alex@ghiti.fr> <20260826133130.806177-1-usama.arif@linux.dev>
-In-Reply-To: <20260826133130.806177-1-usama.arif@linux.dev>
+References: <20260825172604.3243589-2-alex@ghiti.fr> <20260826132159.433469-1-usama.arif@linux.dev>
+In-Reply-To: <20260826132159.433469-1-usama.arif@linux.dev>
 From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Wed, 26 Aug 2026 17:22:02 +0200
-X-Gm-Features: AcwNN1VOI_k5zWxrGWx3SOcmXeyQASiKVcWoJt9T6GS6mTNv-MvRHMSAit0jpnA
-Message-ID: <CAEmasaWvKWR_2asHtFdLYao7OboBmyXpbWVahUFWZJMRwGfkMQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] mm/swap: refault on swap-in, not in the swap cache allocator
+Date: Wed, 26 Aug 2026 17:23:12 +0200
+X-Gm-Features: AcwNN1Wo8nO1dMvXKnL495mi39rOONd4666rDugRTP83VRf3os1hkdgJ9zdQ6ao
+Message-ID: <CAEmasaUKFZKFjf+bQA3_=V0vE2wCvwF4duy9sTaS_oEgF_f11w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mm/swap: move LRU insertion out of the swap cache allocator
 To: Usama Arif <usama.arif@linux.dev>
 Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
         Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
@@ -147,35 +147,35 @@ Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
         linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: 7KTlLVsU5Aba3CfSrG1KKktO2WP8tIKN
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI2MDEyOCBTYWx0ZWRfX2oNVcnZ/mHqt
- OCtRpLeF58VILy7T63nQAcE+/OqA+299cWBMnCMOxlSuk3k+DDYE/7D3uqWPIpIKF0DFV8zlkGU
- NGb4vpztE6UgotV/X1fzy7wR9DvDi9w=
-X-Authority-Analysis: v=2.4 cv=aepRWxot c=1 sm=1 tr=0 ts=6a8f04a8 cx=c_pps
- a=jJvPsHQLKLf2UdvVr97r4g==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=GbPsI2Ihf5RTnMjR_gZv:22
- a=pGLkceISAAAA:8 a=e7hYlneb_oNGxzrjXg4A:9 a=QEXdDO2ut3YA:10
- a=q7aydO1c4wibL4nb3gNS:22
-X-Proofpoint-ORIG-GUID: 7KTlLVsU5Aba3CfSrG1KKktO2WP8tIKN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI2MDEyOCBTYWx0ZWRfX0ZIxo7rXlmAf
- 2kHuJdx2YNMeIRiajNHHOsuBLLpx7ZMxyyM6LoZEcaYEuvAbt5Zb4W9U+CjkwlEKs03gscvyfKe
- 99BSpnLcTOQ0LKIdcumdWUK6VodRbjVCihAv8EX4qE2hyAqoxuweL2lohf5+x+b5ual78Yne5ds
- syt/QaZhO63/8tkrlK5/9sU9dLgP6ZPXYsDE56d59Mb9veSZcJHcs/s/FBBBecL5Lksj3KNNiZf
- yRFJK1u4ygfJvLUUGLiMy01geCzoguvQP0Z1P0XLEnb1Sn1zkmOyNZZ0QdJMmOybwcflpXn9IKm
- MbfR7hCZlmkK3f0JMbnIZhy0lt9HE6PhZ7CkYnkYnJ0BvnWGa90DIEY+Rwq9uHw4nb6vXTIVhbj
- TpuvkVbF2bXMEaVQ19AS/ybVIza+WaXh/8q0k14ErwcDUWT8dvscBci5YbrsWdGD3W0Z95yBLe7
- OEdEdAJ0JuV+kmnSn0A==
+X-Proofpoint-GUID: y82lUjV-UWy4fNhLdYHoUL9Z1uJiAYwJ
+X-Proofpoint-ORIG-GUID: y82lUjV-UWy4fNhLdYHoUL9Z1uJiAYwJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI2MDEyOCBTYWx0ZWRfXxtbk97mhP4xZ
+ YjeAsETJaxQuab9ZMov/Uwa+jgHz6GMI33tH3aNAHigDq3rFy+8egNOrkTWzPUPOpb3SFZFe+rr
+ WTTr0kqJhmAWMyZVDn1h8H+xOfabsSVZfiE1NCPGxwyff6/MarzXclM+N9lmV2AdwJhvdZh20nA
+ i0us4Ym2xSHAPYhSz5qYWsekZOPpuFiI3H8UB7Pzg2aaMiKd+pzMXkUKXN8mYyuikKt6LqILXPO
+ OAiiI2AzkMPbf0uS4vPEuopd37Jjm9w6sVgC3eNOis5rXm7+Gfupy0Hpy4flQdvmiYusUxwPq8P
+ fUrsp8MpgMRFEiL8jbj1zeiY0xUzKfHv7kfEaMl0M1GojnXS5gCdqNRB3RFlxXsBoD41uYLbh1e
+ 9f/qWxpfEVsCrkQOuFNlqttV/QDH5jq/EpQIkmiC4AG+k9CA35WWS2UwqNdp0JfVgJ02lzf6nbD
+ PxQnri/mlpeEIZM/Wtg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI2MDEyOCBTYWx0ZWRfX4BHTLs/S7PQ5
+ QvHU2tVzl+JR5NCkqdpcnukL1SjsUJiJ/lE811MSr1WqG4hJID/vLNdjyDRTT6vB3kKi5pdYghf
+ QHjIwf061OWCEy0cKB+lvdDWUKJP9FY=
+X-Authority-Analysis: v=2.4 cv=eK4jSnp1 c=1 sm=1 tr=0 ts=6a8f04ee cx=c_pps
+ a=CYpx6mtW7qE8U/l5VCnCPQ==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=4h92JMTCafKA-fb_NiOh:22
+ a=GvQkQWPkAAAA:8 a=ewRncaucmhy4OkKyPHwA:9 a=QEXdDO2ut3YA:10
+ a=22KAYETGZJnyhCxlFjxL:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-26_04,2026-08-26_02,2025-10-01_01
 X-Rspam-User: 
-X-Stat-Signature: ai3usswptkn4siunx9r4m49uoqhygiqm
-X-Rspamd-Queue-Id: 4EDD740008
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787757737-313061
-X-HE-Meta: U2FsdGVkX19QBjPpVEDQH9C+H3OHJuzwd3xuaGlgwSHG/4/xaNRKK14kA5NkXgzeBNU7gm85mi6xKgx8Xnw/MSqPPv586p/3DoYXEcYXkPnG35CCvL2oz0VggFppZRWqwYWqSDXIPcWbBtXFr9N2QcAxKNl7Lo2DFNBCXlRuDkm1A0f39b5/Dyl5HQnrstuHnr4JraN8lE8K9BYRU3vVo5QjFXnfEs+TyFSBXzmXnE4NRf4Bbe9ZrPZpeG5fesLjvGCj2ND12U4Q1/+ZcXZUiMv3olVFiiLG+6OYBpwCunCLxR6d3KSPSwJnLG+dZkX/ccDllxjZzvvIuOL4AXzkzmPuI/eNc54p1sKqSf5yVF7XxBNjoZ0nWmgBOhqJG7av+OxZdmPet9N9IbxesIHjdYCs/LyAe0iszD96xa1LgBO6Rnt7ghXsunFoB5OqtQGmNDo85axXZN8tZWuTBY1N4+oCBkssmLG37NfVhwJvH2oViZRrb3Qn4Neha2qrm8eavlrz5KNZOd1GeLrXMHTeJKr6ihvm7G+6kVKh4oy3XdudJMFNWwl7zqKp1ARbe5nhf99tN1aBhaN1BsNSKUnTuL3WAva4KQjWTncqgB0wXNCaWm9azFy0lGkxKG3oreGxHK6erVpdklu9H5p6ASmSbP9qJIMkuXsURL3XlkhTzNaOwNfx7FvNWrq3ywl4UwRrhEMpFdia5Hiq2HY0qr4T754Oc7aYkpAaPHI4honWQD8wy+q+Rz4Xjt9LCiNfgint1Is9P+bwmD4CQ3NETjTvxf+qFn6nmFqqjbvgI/3YTtLDBj1owr6Tsp/rRVHB4s4V4rFc0sTRAkQJszpfwlFL56rqkrql4RixwOZEk1tw6CyQjq6Kc6Vybis0bYrGtngKieukbTCjQ/qUoKyxPo0GtEcvoX2yoFBQjpPmQOwzXcvvtcaAVwOx/Pqf50zt21cZFOmbF0ROV60GGuEkodq
- irnfUzxl
- ZgQrtkHtGnVBFi6kjxm2o2FgUPLKlYLzAYUni4+xmLrf6XtDAB61/a6mAspx8IgQPYPvCj0/+luMHxVexop7Ryo3BakahsS/Apr/PyhFzWtCxWXmSP5cUCSM6t1T7UU4aHJ1yLy5ztn4hB+D9+7Pu8ahIwy5Z8W0Kcm9eymfbPuk3HD3tYcHMbIiyHt8hvTU4trr7YoNVijiRUSPJCiaN64cSX331VA3a7MxzE8hkBESHpqTQhyHHVnmuNBrzF1d8V78dUG3nG8RMlVpHyMB8VPtabMrpTNJIwQWrXZoMp8HUF2VQDNkeoQ5MoihBKY8HDnPU/9IM9fvIZ77gkhqy8BXnZIPzniDgXg4ZVNAnHjABmZ43ZiHQWbhwG9wQbaBRxt3gbxL5BIYlSCVXGKLmE6278U1g+43Yna2GYCdLoeqHkn+eR3j2S38J648En4P58Wos7N0VeVEejp2zsTE7RgonhizKOxH78rhYFnnEJBt3ByaH4p9Aal2AqVjl0+MTARfB
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 431521A0005
+X-Stat-Signature: h5qrfjg8wu4fq79tjzspd36gi9fk47ju
+X-HE-Tag: 1787757807-17455
+X-HE-Meta: U2FsdGVkX18+lYRag42w3KmmW8QWUCV62Qf9fFhu9Hr8Lj0E2MN58CxMyRbaIIDdx53tVQtpTJLG45RMaE1hOuLNKuBGccTibI7i2+67pPFbJjSQWTngGliRYg59zHqJ1HiYrMFsyFPsCw/i39bNfUMJVK7Dxd4C7/+E0A9T2ZampipQc2ASX0AYWa1H3vq2tSxMccv2q/UEz+4tki92DIYJCPUO07Bk87eQl3MZtHcSk8IZdD+V/+cHAQCeaEFSmLdAVrCVo89QKKokVX0oaT1+BQbz3vu/rCajuVLbpXtB2TAzQ9DBB89y5p6VfVI++UFUbYmj+BrJEbk8QZlgS+wjtzN2CIdJUC59oEZf72Lc4aqjeZVldaEt+tw4iR00Ms1+FPuEtgRPFSkv2s6asBeSvjKsAJcE0N5xK1kKxoF0x62z6baInSyFX7/opHl0fkm1di2wQ8t92ETXccmb40PeIIUfkUB1Jw7ZOpgGiZxTN9y2XqGP0tsv/FgmOkxG/kXSy9yqytHA5BfTO6/qE0pUFCPOPTIpe/S3izikoGCJmnF/iNbGujJoUERv9Q1FQ1wJTHTCBoAuVymXUSoesD1dbrujXrT0bfstHF3mXqAIWcx1uEOePi9xcYDC8QigWbIZLBkK/QDlPBZkxJHhQQ5AU1hRNVOTke4Pq1zjhg31atdXuAHBNnAb231sSSdtRJ6svjn7OcsRkrGfe4WCgmzDC4u1+9rzZ8VVJkg+JCz6lA/kpcYxg4CJgBYQJbRvqtdm5sU21ONfRbwRLshIvYuvfB4OtES7OpXSKvEbpbLxrbpEXa4dhG/LWouTf2Q+tjrGO/Hdbte1hmL4sO5vvimeyLSmYWwdeCqAore8i2r+M9VRjPaTdhtv+SoFxpdR+SxjFXRIScSR+Bc1/rW9wkpGhRhVOQFKc0YJAFrMbw5tjiVwhSSPiDZo7RjfzjISWc6Z/uBIg1p6EBkPCp4
+ j+r0Khuc
+ BVz19uX5LJ/4i1rkYCPkwhzJgN8/4sHqfiuiuiI0D8YOKXlhHJ0esOjMjsa6e0qZuG7xieZsHljvX93VTaENQwSWZLvnpQMqju/1PrYXf1WdbP1iByBuFMMN4XQSwGEYxZ8XShjFRP0kwfp8c3ta2n4UOY3JrNWxm9OQysZZKDEpu+BhAfy7NexZgHnuK7G0YWjL0Ea/1tsNvfwM0AczqJKYV7RH6PykaxDFd4q4bL2+rUDMFFJbH4hQedSi9HADgSKs0l2AvYDOB010o0pXHEISFb6V7VnVPOkgKWphiPd+NQwxrBwdwKyIb/CotPUiErNYASjZVSz9bWIf/MUCwxNYyKO6iSN7FwLjSoF9xRmi7Q1W5SZSn+dyfH6L8e3n3dvs94KsjOvrF6S2+AyYgRZbukZLzI1aDkRxvHmvoawPM2YfxxiPaZt1HztxBtjvyGpNNtkICiTh3FHDucSM4PPCSJAAhiCCqIHUNvEmCytVXmJDW4xGMeaRs8uKNpXZMQjW9mmSWKyhVaC7YNdEEtvyGd0VZ6t21eBRI/YpyU2PWn9eWipZYQSkFoZQHkHkM+dNiwRHR6PAG2DQd03iYj/+E623Mzj+EqJwOFwUrf79Am7TqKcp49GkWNg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,139 +183,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Usama,
+Hi,
 
-On Wed, Aug 26, 2026 at 3:31=E2=80=AFPM Usama Arif <usama.arif@linux.dev> w=
+On Wed, Aug 26, 2026 at 3:22=E2=80=AFPM Usama Arif <usama.arif@linux.dev> w=
 rote:
 >
 > >
-> On Tue, 25 Aug 2026 19:24:52 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
+> On Tue, 25 Aug 2026 19:24:51 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
 >
-> > The swap cache allocator evaluates the refault of every folio it
-> > allocates.  zswap writeback also allocates through it: the shrinker puts
-> > a buffer folio in the swap cache to write the compressed data out, and
-> > that allocation is then counted as an anon refault (and, if the eviction
-> > looks recent, as an activation) even though nothing faulted the page
-> > back in.  On a workload that writes back continuously this inflates
-> > workingset_refault_anon and workingset_activate_anon substantially.
+> > This is a preparatory patch.
 > >
-> > Move the refault evaluation out of the allocator and into the two
-> > swap-in callers, which read the slot's shadow before the allocation
-> > overwrites it.  zswap writeback keeps allocating the buffer, but no
-> > longer reports a refault for it.
+> > __swap_cache_alloc_folio() adds the new folio to the LRU itself, which
+> > leaves its callers no way to act on the folio before it becomes visible
+> > to reclaim.  Two users need exactly that:
 > >
-> > The refault is evaluated before folio_add_lru(), as it was before this
-> > patch, so workingset_refault() still sets PG_workingset/PG_active while
-> > the folio is off the LRU: folio_add_lru() consumes both when it picks
-> > the LRU list, and under MGLRU when it picks the generation.
+> >  - the next patch moves the refault evaluation out of the swap cache
+> >    folio allocation, and it has to happen before folio_add_lru(): that
+> >    consumes PG_active to file the folio on the inactive or the active
+> >    list, and under MGLRU it also reads PG_workingset to pick the
+> >    generation.  Setting either flag afterwards does not move the folio;
 > >
-> > Fixes: aae466b0052e ("mm/swap: implement workingset detection for anony=
-mous LRU")
-> > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> >  - the upcoming zswap writeback dropbehind implementation needs the
+> >    buffer folio to stay off the LRU entirely, as the per-CPU LRU batch
+> >    would hold a reference on it and keep remove_mapping() from freeing
+> >    it once writeback completes.
+> >
+>
+> I think the kernel convention is to not say "next patch" and "upcoming.."
+>
+> Especially as this patch is in 2 series, so you don't know where it will =
+land.
+
+I have to admit that I don't know how to deal with this shared
+patch...I'll drop the references as you suggest and we'll see!
+
+>
+> > Defer the LRU insertion to the callers of __swap_cache_alloc_folio():
+> > each of them adds the folio right after the allocation, so there is no
+> > functional change intended.
+> >
+> > Suggested-by: Kairui Song <kasong@tencent.com>
 > > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> > ---
-> >  mm/swap_state.c | 20 ++++++++++++++++++--
-> >  1 file changed, 18 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/swap_state.c b/mm/swap_state.c
-> > index bf8ff2d2dbf1..8046fea015c9 100644
-> > --- a/mm/swap_state.c
-> > +++ b/mm/swap_state.c
-> > @@ -483,8 +483,6 @@ static struct folio *__swap_cache_alloc(struct swap=
-_cluster_info *ci,
-> >
-> >       /* memsw uncharges swap when folio is added to swap cache */
-> >       memcg1_swapin(folio);
-> > -     if (shadow)
-> > -             workingset_refault(folio, shadow);
-> >
-> >       node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
-> >       lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
-> > @@ -646,17 +644,26 @@ static struct folio *swap_cache_read_folio(struct=
- swap_io_ctx *ctx,
-> >               pgoff_t ilx, bool readahead)
-> >  {
-> >       struct folio *folio;
-> > +     void *shadow =3D NULL;
-> >
-> >       do {
-> >               folio =3D swap_cache_get_folio(entry);
-> >               if (folio)
-> >                       return folio;
-> > +             /*
-> > +              * Capture the slot's shadow before the allocation overwr=
-ites it,
-> > +              * so a fresh swap-in can be evaluated as a refault below.
-> > +              */
-> > +             shadow =3D swap_cache_get_shadow(entry);
-> >               folio =3D __swap_cache_alloc_folio(entry, gfp, BIT(0), NU=
-LL, mpol, ilx);
 >
-> Can this refault against a shadow from a different cache generation?
-> Another swap-in can replace this value, reclaim its folio, and install
-> a newer shadow while this caller is allocating.  This caller can then
-> win the locked insertion but still use the older snapshot.
-
-I agree, you're right, I missed that. Thanks.
-
 >
-> What I think should be done here is have an optional shadow output to
-> __swap_cache_alloc_folio() and return the value captured by the successful
-> __swap_cache_add_check() under ci->lock and se that output in the swap-in
-> path?
+> The code change itself looks good to me, so once the commit message is fi=
+xed:
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+>
 
-That seems right, I'll give it a try and report back.
-
-Thanks,
+Thanks for that.
 
 Alex
-
-
->
-> >       } while (PTR_ERR(folio) =3D=3D -EEXIST);
-> >
-> >       if (IS_ERR_OR_NULL(folio))
-> >               return NULL;
-> >
-> > +     if (shadow)
-> > +             workingset_refault(folio, shadow);
-> > +
-> >       folio_add_lru(folio);
-> >       swap_read_folio(ctx, folio);
-> >       if (readahead) {
-> > @@ -688,17 +695,26 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_=
-t gfp, unsigned long orders,
-> >  {
-> >       struct swap_io_ctx ctx =3D {};
-> >       struct folio *folio;
-> > +     void *shadow =3D NULL;
-> >
-> >       do {
-> >               folio =3D swap_cache_get_folio(entry);
-> >               if (folio)
-> >                       return folio;
-> > +             /*
-> > +              * Capture the slot's shadow before the allocation overwr=
-ites it,
-> > +              * so a fresh swap-in can be evaluated as a refault below.
-> > +              */
-> > +             shadow =3D swap_cache_get_shadow(entry);
-> >               folio =3D __swap_cache_alloc_folio(entry, gfp, orders, vm=
-f, mpol, ilx);
-> >       } while (PTR_ERR(folio) =3D=3D -EEXIST);
-> >
-> >       if (IS_ERR(folio))
-> >               return folio;
-> >
-> > +     if (shadow)
-> > +             workingset_refault(folio, shadow);
-> > +
-> >       folio_add_lru(folio);
-> >       swap_read_folio(&ctx, folio);
-> >       swap_read_submit(&ctx);
-> > --
-> > 2.53.0-Meta
-> >
-> >
->
 
