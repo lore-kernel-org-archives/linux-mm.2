@@ -4,99 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C121C61DBE
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 20:31:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DAADC61DBE
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 20:32:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6026A6B0088; Wed, 26 Aug 2026 16:31:16 -0400 (EDT)
+	id 05F766B008A; Wed, 26 Aug 2026 16:32:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B3B66B008A; Wed, 26 Aug 2026 16:31:16 -0400 (EDT)
+	id 0374B6B008C; Wed, 26 Aug 2026 16:32:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C8D16B008C; Wed, 26 Aug 2026 16:31:16 -0400 (EDT)
+	id E8FA36B0092; Wed, 26 Aug 2026 16:32:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 259536B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:31:16 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AC07A1A0240
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:31:15 +0000 (UTC)
-X-FDA: 85144565310.04.0AB0E63
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AB68AA0009
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:31:12 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B93246B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:32:04 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2371D140232
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:32:04 +0000 (UTC)
+X-FDA: 85144567368.15.D52E870
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A7E25A0002
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:32:01 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=c4kFMpO0;
-	spf=none (imf25.hostedemail.com: domain of BATV+595d0ee0c1a2dd37ff28+8403+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+595d0ee0c1a2dd37ff28+8403+infradead.org+dwmw2@desiato.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787776274;
-	b=FSCsRkbaxUUaXt9xsI8bJuNKaDyVavDOHY3IpSKIBIqWL5lV2GYbIt349cphu9iH4Cwj0t
-	uSudKSyXz3v1V9LqbVWpXpn6AkrDZEfKeZxUNzcWpZI6LZeu1NL6a7PxbRSymzq7G01lpp
-	irH85OeVGY1rUl2mX2t1lAYVl+FOIsQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=c4kFMpO0;
-	spf=none (imf25.hostedemail.com: domain of BATV+595d0ee0c1a2dd37ff28+8403+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+595d0ee0c1a2dd37ff28+8403+infradead.org+dwmw2@desiato.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CUekZBGu;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787776274;
+	s=arc-20220608; t=1787776322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LBG22HuFcKqOwRZzaBQg3Yl2Pqe1f3bp1oSCi5Wuvuo=;
-	b=rf48WYJqzk/697Joxua9k0zGyeeG+V5nkycLvcaqt9W5XZ08E72Rem86sTuiYextciVbvk
-	8Wh2c/J4jtVKAD9q6d8AW7lEPFT4xBksXf2s+DoUIAW62ZpDrOKpXPVLMWtMM6KCzXdfAv
-	AF75ujU3ceMneo8FmnDyl4KqZaZTEjw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=LBG22HuFcKqOwRZzaBQg3Yl2Pqe1f3bp1oSCi5Wuvuo=; b=c4kFMpO07XdDA3nuabyURhNL4n
-	CnmGgGISYBozl+T3Kc+Aluw1/eCEKfqDm8swAtP7ANgxu1NAp4QXcOc8B4lW7TMBnhRzjRxO7+FOD
-	r1vGc/uaTNnV3dbvhifA/sugDLwVPT/z20JeLIYUqrYd0gxSV3eHTG84xAomqL1fAtMy9dCTBOmVi
-	gYTjOHZxv+8SSoqlQUEtZeB3xTijoDODX3O4DY7b2Fp0Lp6u3ynD3EcrEbO5G5h+kKckJsuSYyBAH
-	xzU7uYvIdhz2sbe5+vetodF/3taBUINZCp2zYUrO2GqB/3iU/1s6wpcYeZa5A/H99KsNg63d4GeaP
-	ue5Ye/Ew==;
-Received: from [167.98.59.108] (helo=ehlo.thunderbird.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wzKGi-000000070A8-33Z7;
-	Wed, 26 Aug 2026 20:30:50 +0000
-Date: Wed, 26 Aug 2026 21:30:43 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: paulmck@kernel.org, "Paul E. McKenney" <paulmck@kernel.org>
-CC: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Clark Williams <clrkwllms@kernel.org>,
- Simona Vetter <simona.vetter@ffwll.ch>, Jerome Glisse <jglisse@redhat.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, kvm@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_mm/mmu=5Fnotifier=3A_Remove_non=5Fb?=
- =?US-ASCII?Q?lock=5Fstart/end=28=29_from_notifier_invocation?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
-References: <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop> <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org> <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop> <ao3z7Rtw2FROkVpy@google.com> <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop> <20260826073233.T-KtFXmj@linutronix.de> <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org> <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop> <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop> <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org> <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
-Message-ID: <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
+	bh=YpcUluZmeNlEB/De7gKA8OsQpvEQvUU+qqs19ZSEzKo=;
+	b=cuRnb24dAJv80a/ws2fgk0ftVp28PD5fjZhyh74ybqmhrvyYWWzbavnLp2zTZg7Z1sS3iu
+	ecvOzZOj73gw5uaeJsJJNml0BMOz+3UXEDw3vKT8BBDrOzjK6ivw19r9mMKXauoqrBtZdR
+	5k+ySwUTkweJu/ldavqCJqEE7ezDhYo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787776322;
+	b=RIfxUfUcCV4DZMasv3gfKF2jtDPmFbvyNkssNXYFTdi/rFcppJBqlIwqRQFgFazciBa9Jb
+	rO6i25xXGyxjM9xXZvQ4kefz+W19ofUT6z28y53R1JqdCiG/8G5N5HGgoXX4RM6Si5fI1i
+	xcQQWVTTuuuRio1LD90huHfR4HKDpw8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CUekZBGu;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of echanude@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=echanude@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787776321;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YpcUluZmeNlEB/De7gKA8OsQpvEQvUU+qqs19ZSEzKo=;
+	b=CUekZBGugW/xzLIHzYTByU9w7pos8//2S9YOMCPtpV5EPqCSwipe7CY7wREc8Q+4mHJaLq
+	mCpM21zxooUFxIeI5CEuVo74PLP/6ZHK/6ZRKMhm3mXkZcabTac87pMaALS64lbrrJfcBn
+	YI7hY/2BeAZejVseQKDZ2gPOvlOkNlQ=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-Lky_XlrOMdm_uUipvsG1ug-1; Wed, 26 Aug 2026 16:31:59 -0400
+X-MC-Unique: Lky_XlrOMdm_uUipvsG1ug-1
+X-Mimecast-MFC-AGG-ID: Lky_XlrOMdm_uUipvsG1ug_1787776319
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-90a602a4e6fso29316956d6.1
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:31:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787776319; x=1788381119;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YpcUluZmeNlEB/De7gKA8OsQpvEQvUU+qqs19ZSEzKo=;
+        b=IrwFwXp52Ncvg74rKI2dBOQIIm2qezBE2e9NdAtvoMJ4MaSZLb1u+c1HdtM4N1/hZd
+         IzsJeOL1C8QQfmW8ZfY8G5ODsocUXL5R4WXKpIyCjDpNX2EHpHHq3y9RvW/StapfmqUX
+         JhkUnM2weAfUX4dlxPWs6XqV1Rd/Knn1px92RyCMeR9L2uwfQWYPPYvAlWl7wRN7IdwN
+         f6a2fwHYhjvio9nlJRUGDvLFrd5drGBdzTBcWcRv1q7XLygOXdzNZ+bELwZ4anxvjZcr
+         qu2qvYHxMjUexlEo/S2uAwpU9qTfG8knrSUqxR7jY7rxr1dm1whwZ5MVD7vO4lGLi8ET
+         hWog==
+X-Forwarded-Encrypted: i=1; AHgh+RpIbnTpSHPG3mZA1OWAXKArdYhouuk5AL8iRpIKC7OjD2ZZ63DgXLWc5mGuekDMnAkV1Yjt4GYgwQ==@kvack.org
+X-Gm-Message-State: AFuF++kE3wXHI1hz0NV1Uh7e0hdBAHByihLM/mc+WYOfc8kB1+VqVH+K
+	fG9ad0nKfVMkz/dYfGl/osDVa7vJQvRbqGc3So49HEfQxLaSsZo2T6/JXrrlS0h86GdpN32/QR1
+	s8CREnvKCN9wGNMlZjp1rckf2BSxlYTlnmVqfd18//M6sc9cieKSA52bcrvLnuKQ=
+X-Gm-Gg: AR+sD13NnUqgBkaM4A0N88wIfmX+G2zEGObvFQT5Z2KSiINyBfUfX9Hn5LSymAczzdy
+	o5CL32oqQvKqlGMyr/70LivgVKQfzyTCqQrZoI3GCh9x/V9Vrxg2XD/a63I1P1kg0uQI1ovuGhO
+	GTpEo7deB22Xd9+IqvVb76W7ocsF2YTh0w/lq5ka54HzqJLNpO0jEe5wWnPWW/lgh5mRRfn/wej
+	o+oYV5wEZ93wmRgWj7WNNg0gu94pBhMKcElQkD5lciKGm3WL/3kmepRJQpNRa8wGNS6wjLiLgBM
+	aMXpC0Z+Exoaa/T1sk2L4YiDUVL6Fr50cMAjp2nytJO1miMwMg31TV3AJ2syMJS6I6N74pddAqg
+	4EVjDd23MWDN1uTDrE7XCKM+13oSjLcHcx6Sxsc4cDdSi
+X-Received: by 2002:a05:6214:1cc8:b0:908:a729:73bf with SMTP id 6a1803df08f44-90cc792fe20mr112761606d6.22.1787776319082;
+        Wed, 26 Aug 2026 13:31:59 -0700 (PDT)
+X-Received: by 2002:a05:6214:1cc8:b0:908:a729:73bf with SMTP id 6a1803df08f44-90cc792fe20mr112760516d6.22.1787776318384;
+        Wed, 26 Aug 2026 13:31:58 -0700 (PDT)
+Received: from localhost (pool-100-17-17-231.bstnma.fios.verizon.net. [100.17.17.231])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90cc63bcec2sm36143716d6.5.2026.08.26.13.31.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 13:31:57 -0700 (PDT)
+Date: Wed, 26 Aug 2026 16:31:56 -0400
+From: Eric Chanudet <echanude@redhat.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Maxime Ripard <mripard@redhat.com>, Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+Message-ID: <ao8uZ0cNyqaAJuPB@echanude-thinkpadx1carbongen13.rmtusma.csb>
+References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
+ <aowHqqaqK7TeexQH@tiehlicka>
+ <ao2gA_m3BCBu2esy@echanude-thinkpadx1carbongen13.rmtusma.csb>
+ <ao2t6HP-Zt5KDg30@tiehlicka>
+ <ao3UKM5SbxBmxuR0@echanude-thinkpadx1carbongen13.rmtusma.csb>
+ <ao3quaSze8YjPjxZ@tiehlicka>
+ <ao3tFg4JLNlbylTR@echanude-thinkpadx1carbongen13.rmtusma.csb>
+ <ao6eC2SUIGVz3Qct@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AB68AA0009
-X-Stat-Signature: r5oshttmnmj5r3rwdpnussoiyshb34zf
+In-Reply-To: <ao6eC2SUIGVz3Qct@tiehlicka>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: lBFTrUBhJ2HKjBBv2CMQsdY0oyfBaECs705W54IcuJQ_1787776319
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A7E25A0002
+X-Stat-Signature: bh7ccy8pgmc5kbzop3ky1epai5z3zoq1
 X-Rspam-User: 
-X-HE-Tag: 1787776272-203820
-X-HE-Meta: U2FsdGVkX1+Rk2D9JLda5//c59b5QtCYMkGq099ONJy9NmIKYSaGYPMQkZh6PxtcGJsoG3SEwtYDWubOvaKyxmske6AQaZppT2TBhEuu5PwnTBT5brSzNbnKVd2C8WHhrWvrXmwFjzU8g960UHSiGVosl9RRxyKzMQfA5OTy4VyX+lrOneZq4vAJ9ZPsBzDfC0Q/8/osaNpfgg8lWeHnFoh+J9+AJcWVT+GYav6kCyRb0xL4ET3w/sCBDxM+yzuz6wr0YkTtMhyl6OE/q4ciMP9+FgX9U4QWs5zErZ6V97QjUH3fJVmdZLRXMeN1h56ZiPA5EiD6Y1cpSB55IUc2QgHjxj2Uk2mjc0oJZrJ6Hb+ph1tw755yqiO8B4Lpcq8FavWoVeKbVXbBN4r7gpI3IkD5CrDGphpExSQ9WdP1A/PSFKshCE5hHdviSJKnpHmqnhn8nk1RMITDduT9tmKmf++Xf2kV2Kc/OmuDmJuqQYHGnRzRUBD3Q+N7KzHkUMJo1hP/G6FCUF42ZaEuuf4g+mk6SZm5+9qoyCYV076vPhsrhjZayJ+RxVPR2HozpGpBz1/q10VfbEDCRVmdEEdT2vrdoPschsSF4t5FN05rwoP22t3A1ZboBwisZTZYQ/tg/HWhzBOWpaPYlzZG4rMmMusb7AzMuz9H4JwGINf4vs41ffQlq9R7yYYyreiQFtdwpA2aBwFhInxSyoEEdoSqROz9dtNnVmYiDlPYjHS3ZYsdaYNGppE3CeCeuWP4uMHyrd91l18BS2pgskiRDTs3VJyQMlFap1Bv5UoZagLo6gDRkzt77Qyfu3vfwW/zcJEmKa/H556y0XQ1Aw5ELA3v70QGGrEYkBcCC6jT2XlHwNXkZn1MdSbdnWvpdMmSZrOvXiRl6acj+pCKyClKaTdsTe6XFbjZzChZYfslRBEir8NtqbWhQUTxOpAOU4pSVxd9WyzUaYOi+Q8x00b1zu+
- 75QaeiA6
- FY5L62bNOBylO4qQ/ejlUbf/Q/CU/O2yU3nsVALA6yk4kcLhyDCiI2t4LrL1g4TRB85BWo4S6XNeofDDSvkSevbjl869tcXl+bPWG4koWM23y2YnHqa7+xyj55xYOBIG2oT0uBYXzwhwr7VX8N4oDzagWF54ftPW11VYT2vY+E0LXe+FxsmLK2mo54LjlLLLdNl4cXZwIv5TIUeDQNDVkDcYgv3SZQc8/vEI3dpklFvU8OXBLeaVsTc7J6Lm25VR2J36PTO4RniC9eJeI8Qfq3p5NpsE91BUfFPILgpozVhrRdoOELCUcO9VhbzrDZj41xiAUw7sdRoq03RIj6QUI4tRio/rjRLvUNGgc4x+H1GbCmG3usdva8lSqms/GCMG2v9G6eOsJEP3sPaqLAmyMUij3VmWWLIQHCY7I9PP/BvNMaELaPC5IpmpeTsI4qXpHOBAS7ZgaSzNaSAHMtHDCGhEVKbqlUCHCX9UiM4fJkIPIp2qJmSbauIcmNiKkriQPmJJz6uvwMr3N3NNOHZD+gk/A+s6XJr97vYZjsLakEJdVb/yyQx5q0bV9kG3y7WBbxdgLtqMglnJxiSDLjR9kmYRGS0yGw246y9KjJSHNpWVk+xLwMPZ4esfb+65vkHlg6SwPVpR68I0lEpCKnbUuWxP1aNM6Ap95WHVABlAmq5n/Sco=
+X-HE-Tag: 1787776321-934500
+X-HE-Meta: U2FsdGVkX1/cPWeQzxPLwtA+5MoQ+eXPxUz8xOXnzUvBVyBtaxsSUIfvS5AUbfvbXL09hb+vJGKPtYFxG+X+dcql3MIyTxHI0OS5UT0BH/xu8uhyAtC358u6ms0bz4QFSNvQxIeNY9KMhYNFOp8GkF2P/2s2jw0YnG+glUsEdcr6iswVshtCS5qFCaG4c5njvB7PGw7on+T70xqpJPlFnystD23bKIVzchXQoYhA++I1qkYAaqdC3Aq1y1kFcxwa1+qM9Dr+YdgFBcHbICvBC1ixn98ZQnT8muw+YkQaBb1/fdVu8Wh6an6lFUclnuKG0dgZ+ad3fH0vsMyGTPwIz8WjfsX92FzUT6XUJORBSh+ooNvBCLTEwnd056OO5HLwDVRXzFf3HD+i2oAXA3B/+QgCyGKK9E9+tK8HoQApT4nw2DLNWMSo0hBmmIvtVNqNrCiGOj2/6nj/ptoIbA9GFNwEUeF3K9YUItzTRfuoVoYWiEwdRZDlpzun0lpNzDRQyW7jJdcn9trNN8ouX7ahPGy9EeSjR+d19+zyHEjOu+T3JmjqOhU2yAPR+JZEgbyxcBh/q8/QmekV/SU5Y9/KgAPSxWG2Sf6ziv+9+oPvdcTmkaUAtxoZFnlcql4qNUPA3wKGAIW6KYwLh4D6X9WCvUBPnB9PWg9epe26eomJaatbjijj5tAp/8vXNAVksYraTfz/Bqqp9OoKG+w9Fb4i8g0jXkBfjTEf6i2IO0+b5CqBWWhSuXK9O7H3AwaUeGJXK5UfSM9FSfU5Sy5kpr9kBzVoov0yPGE7ZfL3aTBvJtlM+d08y3WwDTGmCa4f97eRi/9eEs1enVI4J+a1jMutwmW9YLmpd7wxIGAfOxFDkuWA5nv8i4ZEm+IoK37cjoL4JfZ/J+CTd1/CmmfvD4cx1WTn9c16/QeQBKuZq39sPe1/WIoizAXRhBB9/3NQNQlC5s33QgLXEs4Vu7Frd4D
+ oe5ZwiIj
+ puZvq8N/mrqA7ChWgUlyTnsW4nJ5O36IIwAlSkSW0+ZoWKHG2uvlI2GtLIAh6P58QMbK1OHfpcm2YbYbTL1Rw2Bw1nZjp6TDbKzli7vvMLjtpfJp8trPJUMN0lFDZXj/YYGesMh9is0l+vTs8dSru+ArTWNlwDwWqdoZ6KqvrYX7WLKIER+SY7rOuOaoRC/9ESv6eQrhhHPYkhAzZs1dnfukF9ZX6zbpODqswUKH2girjX9FwTNoFtHtAv/xMs8+Kmk1bk/oLohzAAurLDBULgMn84v271ZMpC94sanrNCUECVQI/S1Qu9Pd9ItEDDjMhL9WXj0pAYHLYCYrYhA4Y1CwwBgmjGCRyvY4N2NzWUHH6UVDGPMpMgy0vmlNvFegcIeX4zApGydrq2J4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,72 +143,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26 August 2026 20:59:31 BST, "Paul E=2E McKenney" <paulmck@kernel=2Eorg>=
- wrote:
->On Wed, Aug 26, 2026 at 07:01:24PM +0100, David Woodhouse wrote:
->> On 26 August 2026 17:28:27 BST, "Paul E=2E McKenney" <paulmck@kernel=2E=
-org> wrote:
->> >On Wed, Aug 26, 2026 at 08:05:06AM -0700, Paul E=2E McKenney wrote:
->> >> On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
->> >> > On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote=
-:
->> >> > > On 2026-08-25 13:51:14 [-0700], Paul E=2E McKenney wrote:
->> >> > > > Very good, preemption disabling it is!=C2=A0 It is quite possi=
-ble that the
->> >> > > > PREEMPT_RT guys will need something else, but one thing at a t=
-ime=2E
->> >> > >=20
->> >> > > This reminds me of classic RCU ;) It might work in this use case=
- but I
->> >> > > am afraid that other users might come along where it actually hu=
-rts=2E
->> >> > > With PREEMPT LAZY the preemption within the read-section should
->> >> > > hopefully be the exception=2E
->> >> >=20
->> >> > Given the way that PREEMPT_RT treats other locks like spinlocks an=
-d
->> >> > rwlocks =E2=80=94 turning them into sleeping locks =E2=80=94 I sus=
-pect it makes most
->> >> > sense, and is consistent, to also turn rcu_read_lock_atomic() and
->> >> > synchronize_rcu_atomic() into plain rcu_read_lock() and
->> >> > try_synchronize_srcu()+synchronize_scru_expedited()=2E
->> >>=20
->> >> That makes a lot of sense to me=2E
->> >
->> >Another option is to instead fall back to non-atomic SRCU=2E
->>=20
->> That's exactly what I thought I was suggesting; I think I left an 's' o=
-ut though :)
->
->Heh!!!
->
->About 20 years ago, I was shocked to learn of a valid use case involving
->sleeping RCU readers, which resulted in SRCU=2E  And now it is time
->to be shocked at non-sleeping sleeping RCU readers, and especially a
->non-sleeping grace-period wait=2E  ;-)
->
->Anyway, easy enough:
->
->#ifdef CONFIG_PREEMPT_RT
->DEFINE_SRCU(whatever);
->#define my_srcu_read_lock() srcu_read_lock(&whatever);
->#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
->#define my_synchronize_srcu() synchronize_srcu(&whatever);
->#else
->DEFINE_SRCU_ATOMIC(whatever);
->#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
->#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx)=
-);
->#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
->#endif
+On Wed, Aug 26, 2026 at 10:04:27AM +0200, Michal Hocko wrote:
+> On Tue 25-08-26 16:58:51, Eric Chanudet wrote:
+> > On Tue, Aug 25, 2026 at 09:19:21PM +0200, Michal Hocko wrote:
+> > > On Tue 25-08-26 14:33:48, Eric Chanudet wrote:
+> > > > On Tue, Aug 25, 2026 at 04:59:52PM +0200, Michal Hocko wrote:
+> > > > [...]
+> > > > The administrator opts in by mounting cgroupfs with
+> > > > memory_cma_accounting. At which point the cma allocator will charge CMA
+> > > > allocations against memcg and manages a per area counter depending on
+> > > > what area the allocation was made into.
+> > > 
+> > > So each CMA area will have its own counter and limits?
+> > 
+> > Yes, in order to enforce a limit per CMA area this series add a page
+> > counter for each area. Areas are fixed and discovered early so the
+> > counters are added to struct mem_cgroup and initialized when the cgroup
+> > is created.
+> > 
+> > An admin would then use the cgroupfs entries to assign an area limit to
+> > a given cgroup, something like the following, using the reserved area
+> > for example:
+> >   mount -o remount,memory_cma_accounting /sys/fs/cgroup
+> >   echo +memory > /sys/fs/cgroup/cgroup.subtree_control
+> >   mkdir /sys/fs/cgroup/mycg
+> >   echo 16M > /sys/fs/cgroup/mycg/memory.cma.reserved.max
+> >   echo 64M > /sys/fs/cgroup/mycg/memory.max
+> 
+> OK, thanks for the clarification. This confirms my initial suspicion but
+> it is better to have it clearly articulated. I can see several problems
+> with this approach. First and formost I do not think dealing with all
+> cmas this way is manageable. This can become a mess very quickly if we
+> have one limit per cma and too coarse if there is a single one. I also
+> have my doubts about space allocation control through a simple limit for
+> something that is effectively a reserved physical space.
+> 
+> I might be proven wrong but unless cma serves objects of a uniform
+> size then this will simply not work in practice. Hitting ENOSPC without
+> hitting limits and thus impractical for shared space management.
 
-We could do that for the KVM GPC locking, but more consistent would be to =
-change *all* users of the 'atomic' lock under PREEMPT_RT to silently get th=
-e sleeping version instead, like PREEMPT_RT does with spinlocks and rwlocks=
-=2E
+Isn't that an inherent limit with CMA as it is? If the area gets
+fragmented, some buffers may no longer be allocated since there is no
+remaining hole big enough to accommodate them? I do hear that putting
+arbitrary limits would make this worse, which might breach the threshold
+at which it becomes a problem.
 
-So it's srcu_read_lock_atomic() itself (et al) which would get that if/els=
-e treatment=2E
+> 
+> [...]
+> 
+> > > > It looked consistent to use memcg since movable pages from regular
+> > > > allocations may end up in available CMA regions until a CMA allocation
+> > > > needs the space and has them moved. So in an extreme case, hogging the
+> > > > CMA space of a large enough area could trigger system memory pressure.
+> > > 
+> > > I really do not understand what you mean here. 
+> > 
+> > Non-CMA allocations can end up in CMA physical regions when necessary
+> > (ALLOC_CMA flag).
+> 
+> Correct. But those are a subject of migration so any such placement
+> should not be blocking real CMA allocations.
+> 
+> > Since both CMA allocations and other system
+> > allocations are represented the same way, with differences only in
+> > properties, and they can live in the same regions, it sounds reasonable
+> > to account for both under the same counter.
+> 
+> From the memcg POV we do account physically consumed memory. So yes,
+> it makes no difference where the memory comes from. We only care about
+> the overall capacity you can constrain or protect. Generally speaking it
+> makes sense to charge heavy memory consumers directly triggerable from
+> the userspace.
+> 
+> That is all memcg can provide you with. Specific requirements for
+> specific types of memory is a different story. We currently cannot
+> control per-numa node for example. There is an ongoing work to make
+> memcg memory tier aware. 
+> 
+> > > > > > memcg looked like a good fit to achieve this, albeit
+> > > > > > handling the areas, so a cgroup has a quota in a given CMA
+> > > > > > resource.
+> > > > > 
+> > > > > Please expand more on why do you think this fits into the memcg model.
+> > > > > AFAIU we are talking about a unreclaimable memory and reservations of
+> > > > > CMA areas.
+> > > > 
+> > > > Since memcg already accounts for some unreclaimable memory (kmem,
+> > > > hugetlb),
+> > > 
+> > > hugetlb pages have their own controller
+> > > 
+> > > > or induces failure if no reclamation is possible, I did not
+> > > > see CMA allocations being unreclaimable to be a blocker to track what is
+> > > > otherwise system memory.
+> > > 
+> > > yes, we can have unreclaimable memory charged to memcg, that is not a
+> > > real problem. We have all sorts of memory consumers that need to be
+> > > capped charged to the memcg. If dmabufs are another ones then fine, just
+> > > charge allocated pages from the cma area. It is the "make all cma users
+> > > memcg aware and have per cma limits" that I am really struggling with.
+> > 
+> > CMA is system memory independently from its usage though, and in cases
+> > with shared CMA areas multiple users can allocate from them. Yet the
+> > kernel cannot enforce usage limits.
+> 
+> Correct. Those are effectively a shared memory pools without any
+> control. I do not think memcg is a good method to enfore any usage
+> limits for that though for reasons mentioned above. Memcg is effective
+> at capping the overall memory consumption of a workload. Not really
+> great when it comes to a specific memory pool control.
 
+Understood, that makes sense, and with the reclaim scenario mentioned
+earlier, it doesn't fit.
+
+> > > You cannot really assume usecase, requirements, lifetime etc. for an
+> > > arbitrary cma area. I do not think this is a viable way forward. Focus
+> > > on your real usecase, which seems to be dmabufs.
+> > 
+> > While dmabufs are indeed my main use case, they are quite generic and
+> > may not always have system memory backing them (device memory). Working
+> > at the CMA allocator alleviated these disparities.
+> > 
+> > > Explain what do you want to achieve and then we can think whether memcg
+> > > is the right model for that usecase
+> > 
+> > Hopefully I expressed this in a better way by now. In short, enforce
+> > usage limits for concurrent CMA users using shared CMA resources.
+> 
+> Thanks. Yes this is more clear now. And it resembles hugetlb situation
+> more than memcg. You simply need a memory pool specific access and usage
+> control. Dispersing that to a global memcg limit seems rather coarse and 
+> I would say impractical. So it really calls for a per pool control with
+> an understanding of how the specific pool really works.
+
+Thank you for the feedback. It looks like this won't work. It also
+excludes the attempt through double charging dmem[1] as it would have
+similar issues trying to use memcg.
+
+From your last sentence, would this rather call for a different
+controller entirely that would handle CMA semantics? Referencing the
+other thread[2] it would also make the charging separate from the
+allocator, but simplify making it opt-in at the user's implementation,
+e.g, the dmabuf heap would call some cma_cgroup_try_charge() and
+cma_cgroup_uncharge() around cma_alloc()/cma_release().
+
+[1] https://lore.kernel.org/all/20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com/
+[2] https://lore.kernel.org/all/7e4e9662-d876-4493-a0b3-e31640937dd1@kernel.org/
+
+> -- 
+> Michal Hocko
+> SUSE Labs
+> 
+
+-- 
+Eric Chanudet
 
 
