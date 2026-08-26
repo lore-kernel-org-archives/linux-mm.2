@@ -4,100 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 021A7C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 06:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C075C61DC2
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 06:53:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B8656B0088; Wed, 26 Aug 2026 02:42:49 -0400 (EDT)
+	id 3D9FD6B0088; Wed, 26 Aug 2026 02:53:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96A2C6B008A; Wed, 26 Aug 2026 02:42:49 -0400 (EDT)
+	id 38A566B008A; Wed, 26 Aug 2026 02:53:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87F546B008C; Wed, 26 Aug 2026 02:42:49 -0400 (EDT)
+	id 252C56B008C; Wed, 26 Aug 2026 02:53:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 65B946B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:42:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4EC8F80299
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:42:48 +0000 (UTC)
-X-FDA: 85142477616.09.3D769D7
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7006B180003
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:42:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=DHRKPQP4;
-	spf=pass (imf16.hostedemail.com: domain of 2028566723@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=2028566723@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787726566;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E8E516B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:53:48 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 80D1F1A02A2
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:53:48 +0000 (UTC)
+X-FDA: 85142505336.21.FD3C7E2
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8814FA0005
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:53:46 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tAhKVKdt;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ackerleytng@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787727226;
+	b=R2Z9YaSo/9r94XakVfLdsKtOxoLvgNpgBuEWON6g28MO+Dq7tnqRjKGfBUVPMTAApd0/tQ
+	ZC12zBTDf7NfszKT/38odwGhhZL1jkVBUofaSLrZxtzwgEzXTfk/nVEqyxG5+pY8lZLMSN
+	pL/hy+2cDWD6PSFmHKBzMx8yKgiLOIE=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tAhKVKdt;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf15.hostedemail.com: domain of ackerleytng@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787727226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YUpYaXsq4mZSk10zKNzRlgByEYwJ8plN45XXrDI+0IM=;
-	b=hiCECGiwhsK92Jz0qxG59s+mF8O2Zl7Jen2HJJLKwIJxb0j39KWz5YvtDhWfyLHAGGBNn2
-	+6bgk3zXcSmtFQqmRYQ0FwRPFIZ5KvRpZUWAd/RilKL1KjLUwH6QCWd6BnfU9OEh1sXD2e
-	qE/SIUe8LPpsjmRNU5V5Qx+qE8OEejI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787726566;
-	b=MRLlNU8rn9HIqV6yoziKheURAX2Lx8YogWGRmXfW5lplYu/qVBod2ti7sO3treSx5maBgj
-	WW804zrmK6bjDmu6jP3y8fuYQ6btl831Yn5SYF6C/Ubwi+K1+TuzKCV/ABpKemUMz21nRO
-	K7W6hJvz41a3qA/3tfafYqgEeKbJ7cc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=DHRKPQP4;
-	spf=pass (imf16.hostedemail.com: domain of 2028566723@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=2028566723@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1787726559; bh=YUpYaXsq4mZSk10zKNzRlgByEYwJ8plN45XXrDI+0IM=;
-	h=From:To:Cc:Subject:Date;
-	b=DHRKPQP4h9iIy7Foz44tzZCZDBF3rNx2fzBgmo4xmHrxVgegHSEEHmPNRVMRtKa+/
-	 01Djao1np9BwikzUYzn1I4N5v8hvEs9T/QpvBo8Z3ASKuYGmQg3NOWesTp3NW8DL7X
-	 x9oQmOAA/owL0OP8uXufUNhQvzjhiXVU15E5JZFc=
-Received: from omarchy.tailf00a51.ts.net ([2001:da8:d800:b00c:4e1d:96ff:fef0:ed21])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id A9D8585A; Wed, 26 Aug 2026 14:42:29 +0800
-X-QQ-mid: xmsmtpt1787726549t1igdanys
-Message-ID: <tencent_E313247AB9048C22740CE2A4C1A9FB04070A@qq.com>
-X-QQ-XMAILINFO: M1rD3f8svNzn45BTT3DW3UQls7PinerMEppsENTGy5OKbg8FQPM5cGJR7saNjy
-	 HWIMBcrI7sb6yYYKzwf+sqzjSTitEPCBaMITHBDiU2xdhdHa9UiIgxCUkqH4dPqUC/GbKVWyjObr
-	 oFVt0B8Fz664FWe8GhNkT44RKzvga2jTRixr+E+hWeeY5qCpoCyKbm4usJjCB45V8b6Wbtvq79Pl
-	 GVDFW6VrMBv8cJ66Si+EUNiRnzVEvSFPlbalWGGrdoD3y5ERt5AcwAyd+iWyPzQt8OtywMkE8T+0
-	 tRmkAgN1ZmJqm+X2Tv9832y9TYN5sMA/5WGLVKrIM1EcI/Kb3Kr23at1Xx+GDVw5982pmQc0mSim
-	 Njrl8Q3L5Eo+S6yNcVm32mAU4wFY3Ow3M6cDEKoLWhPrhu/EhT17Ge2zMIaGaQtEsQMkSA8BEqrE
-	 Y0gRxu5Hda/6Yx0Gq6Id+BwmfGJN2Tfa8Q0ZEXLWYrXpsMrsg0fu3Na4a1rQPBn20powol0WfvBt
-	 JSf5dscQiDVcNI/TQCBTQTMkAapKhM/dYXhsul354d+GopEojv9p6Vi3wdJYqemXGfrsZ6AVLZ0r
-	 e4CAHBu81klD8609VLR+D4SqmANQ3jtrW2mrkTdr4ZpAaR47ibAZi3xRg+APZCdjAicFe58ogq2r
-	 DMltMS/24wxHlVh3v9K/EiAsT0BBc5qS1SrzLH3fJlMFIfvR8lnR132NJwvBLAJepDhoujzA/tBx
-	 Qk+jIA9nM+iLnrXR0cIUs0YO3H8de3zEMtfWxeBt8vGh+V+NLYYjoMeDAyXzAQesxxaghOTgtBW8
-	 Aa+UrzrdvX9NMd3UKsqRlT0D6YsDgYS3N6eCTfz/QV/Uw5ETuAP1r7nPyVAD6peTHkJorblSwqMf
-	 qt7TVGPpfquFwtNrMPxLOn1GlcbuT5Kp1En3r+ygasyc40kZIloASN67tf7R73o98iTdzSTgh8Xn
-	 WWfjKGWKDmv6X/aWpzBOmG66fcLK1akXN3aahLEI6MsC7dkV3GoF/ojKD0BEHH5evp6EC348bSCH
-	 4tE+iTxO61lC7Z/SaAAKGwQO3jP1byWuoYwJvBaXrr5eKVeDuM
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-From: =?UTF-8?q?=E5=88=98=E6=80=9D=E5=AE=87?= <2028566723@qq.com>
-To: kees@kernel.org,
-	shuah@kernel.org
-Cc: mic@digikod.net,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	2028566723@qq.com
-Subject: [PATCH] selftests/exec: Fix check-exec-tests.sh with O=
-Date: Wed, 26 Aug 2026 14:42:28 +0800
-X-OQ-MSGID: <20260826064228.67490-1-2028566723@qq.com>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gunoR0/5m2ShIW1cBAYYWni95R3wXjfnlI5bo7Tk+30=;
+	b=iFBiceIdqerx0y8Nq24LMEkc+H/uv3FpemtezRV2p4R0T2xYDiMQSb7jMYl4NpPJOTS4tA
+	p/gI0BEvZZbiEljZ9XCnqHyaN5Lltbr/7ITd0eNMr9O1ErAtmBfIv5V7NhrGyzouZZHH2n
+	oZXKmm82iThbTNkMq3TkcieQT3i9WUQ=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-52b3934af3fso6987061cf.1
+        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 23:53:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787727226; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EPIQp4msoYmHc9wNQvLjr0bqYOLsLvdcvD4u93rB7gQdzZr4/8ui4EGpxrPGRVswO1
+         HqSMI7YVx732lyxIhVx/0SqtErdSad5FuRsWC4gLfRT5SrlcIxnJ7NgbjTsrlBeiA136
+         bYXjh49sSwEpRJXQG/NvGPZ9EQ+w6WoJj9lY5VTECX0xgHLwgg5VBh+OJKjP7USg5UgS
+         env7+ShbfKBN1Xr9zmzEatTCPoaT7SgAFSRnDHynXIFptU+Wsw8aTjH/PYlTAmvqnmnz
+         ifbsEu84zvYMDioNb6mSSzm9HQP9/nXk6plR9d9JF2/IYmg3KDw3Gmxpc0TMeLZFzdVK
+         GxPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=gunoR0/5m2ShIW1cBAYYWni95R3wXjfnlI5bo7Tk+30=;
+        fh=RIp4yOD3iqqqoNQsCEv2nqxu5YxdoFRz/NirMbh8y0o=;
+        b=VsMTtemYostZU0jbk3bhh37Bb6RMlBrJxaUFn5t9ZVkjpIRZA66Q4/vgr3RcNUcHWv
+         KHkiCPWC44zf/kgO3SvM3tOJvNbbrWyIdJQbCgBoVmsVQdANRzW/5FrGafObwpQ+uvnb
+         +DZMDZ8BnYre7CjbOJyHhGZOOGzyDZnklN1anb2gCXqxxI/v/BuEscV1YHJ0z3GtqDF2
+         hfn+uJT2Vmy9/St+OZGS737fQk8qKt1DWKgKMueL4pqXfGNE+ssqR0MY/jFYRCMSHyjL
+         Upz4exOr+yFQxsy6kjF/TYdpkqxDduw6Y/LkTN1Sv5e8WY5SVa84XC7/jpb8py0vPjOA
+         Dctw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787727226; x=1788332026; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gunoR0/5m2ShIW1cBAYYWni95R3wXjfnlI5bo7Tk+30=;
+        b=tAhKVKdtCJY04ODqvj9vEzv+6axJmV2XT9GhxnMSxFuLL3ZojHPetNNCXVe2K/m4+8
+         WQy5fx4pWcQEUSj6wna8+xHoo84BwH1k94s5SSHHJPvVL1s6H2S5aIIAcgpJF8mMabgC
+         2iYFyPPJoTsA4Jj4bOj4bt7VcD5K79Ymm4Bi3r4tYBj+epSqjkXi08vwA4zc/lXzr8sP
+         Cb4ko54XHSnapk7jgftjiAUibbnSRHUyIiaKmJA41QDJeyDjIAawk6eGgdrPZc00h1g9
+         z2fyZOrfXHb/mschvp//BdcsmtDl7p/eN1l+1V4ydFbYMTBcHOy/fKmcM1CO2kcsDxaT
+         OlaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787727226; x=1788332026;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gunoR0/5m2ShIW1cBAYYWni95R3wXjfnlI5bo7Tk+30=;
+        b=Ov23hiELEAmJ4bN96I/usW8F4Z6e4BlCwWIDmQt3ItixIVGJUvSW5aXKZc6R/S1rVC
+         rX251PNbqNRfkY3WHcO8O6JGSWk/sehcPsiei5KGaM2kVIWAFGZg2MBwExbDo7VxnjDw
+         Jgm912j+xTmQjoYOo4jCd/nKUWXU6DZjlAY1eoV8yiBFW7lWvX/6FZro5yyUYzU0veHP
+         AjaFburEFigqSIp/WmbYsogKf1IEFHgmms0nu4ejQ/JtRQCTuqNlXGn23R4x+j67e3wR
+         bSYQ+bcbvsoQbVOxVI+Mvl7tV4d2w9JpjvT0j+UD+iYy7pUeChuRfSMymctV/WLImTxo
+         oAzA==
+X-Forwarded-Encrypted: i=1; AHgh+RqNstH2c6kQwUa/zNrf9inIt/5Lygph+M+9qbL9vzAZI4ts/NlKlNzqaY2/X9We+PRQqZ+I1HoXuA==@kvack.org
+X-Gm-Message-State: AFuF++nKaZ1X7/oFp6/YBCbu650GlIqjKWbEXbX+qYJXuUE+sLQ7nBLZ
+	uf0CUgo4PPmLE9ytX68ZGMCSo9L239xt19wvJHEb+m2jJy44C+eCjH3YzwqOWfW40Vwr8/lQId5
+	P9vzi6IPnaLIlxEzh1JvomJ3IunhXy7MlGsF9x5Tx
+X-Gm-Gg: AR+sD13hi89FgM8R8eqKY//QXIOyNY/VdNs89Fe62vthh2ulqS6PwJl4VK+uDeC9egV
+	zSlrJf5a1Xj4XQOyb23PKLJJfgzkGdEVIhttv2U8J8A6u8CyUeKWv68UFdOADi0it9qYfQM9l+L
+	h+iK9bkBSzQDNnbjkupnGCzWkmN/nY3TwsDDWhe9xRTRoJrMr7t3ehREU/f/JiNQGnSSeAXFvs8
+	kc+/cz05fAWGWcbr2BG7nCfHan4vY2sOQ7CUpMNVMOZXtJdSFkTXTB7s+qYJ+LpPd4CNIN5N/Wf
+	BSuSRkNjjnrSnwBlSeRLP7Y2yyvQTht+pV8DIcckku9uMxxSFVY6DSHPvYR0YeGpGqv+3rknAXY
+	/dkp68zldfMgZR2zI9G/U7YsKN8On6Q==
+X-Received: by 2002:a05:622a:1b86:b0:51c:fc4:a144 with SMTP id
+ d75a77b69052e-52e4228ddf0mr40451941cf.4.1787727224807; Tue, 25 Aug 2026
+ 23:53:44 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 25 Aug 2026 23:53:43 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 25 Aug 2026 23:53:43 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ao4Gmn5tSZMhl_nX@google.com>
+References: <20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>
+ <20260807-gmem-inplace-conversion-v10-7-2fc18ee6d3ba@google.com>
+ <a410cca6-0776-44af-8353-9b7375e2fd4e@intel.com> <CAEvNRgGvxMus6pp=xuDYOumH3Ge4oi0=YKjTaFykFHwXuzRDwg@mail.gmail.com>
+ <54d1bd0e-c27a-4033-ab97-02cd9579a620@intel.com> <CAEvNRgFhjbgC9Ng1qviPx4oE=qihUwiBcsYOgJG3yOU-nLG1hQ@mail.gmail.com>
+ <ao4Gmn5tSZMhl_nX@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rdeea51qxhjdpreoxx8d5p1bd8mj77ct
-X-Rspamd-Queue-Id: 7006B180003
-X-Rspamd-Server: rspam02
+Date: Tue, 25 Aug 2026 23:53:43 -0700
+X-Gm-Features: AcwNN1W7XYwPjQi0IwDu9VBVz85rJlKXjtpX9LauU0RxJJUn8oPq1JlhbiQWidY
+Message-ID: <CAEvNRgEHZZLXyhQ5HiHcTbCk65Y2Lb-fYu0fZ+LRMm1_eWgeSg@mail.gmail.com>
+Subject: Re: [PATCH v10 07/41] KVM: guest_memfd: Stub in ability to enable
+ in-place shared<=>private conversion
+To: Sean Christopherson <seanjc@google.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1787726564-154030
-X-HE-Meta: U2FsdGVkX1+z6n71owYfTHeOB4KkjwobBMJjEHZAUzI2hgWeJfApm29/RsGAbRsKpTd7XlaIrqEJ+T2mbp66Zdhal4pwo0nrEH/nqNb6QKWDno/IikfT1q/LTvN8ELxq+j5TIqdC17qZvW1zeVzr0EXEtGuuzzRWcWsY7/0WCs5Auv9yEoNdE/Fn9YhhjuA5MvtL3jilGUiq3s6pxwXMZRNaqaImeFyi2qnuaYAnPod9uYIR2SDPkRU0fDRtC5m8i6heZwg0vAxrMhai6p1Xdv5m6WC4uVUdAZmBNa5SBaMri23c5U5aptj9a7gQjwPZGXRui2bDsuuaRQbGZ5A2VcQ+A0NwsPkPnJcuHWLhPkNjdOl+3UcGLUOkaoAgY/VEm80TtwWNBSOEyc7/QGcpzU8lmqONPwfBLexMXBxmCD7/6aadmWQrN+IBaARQU9JwhZe099oDcBf5zHBfDpGOtsYqjpWRwBNHvDReXHpH6cdh8FsKap5VL3WQt715TFOQMX32x6+hyV1f4ge/Z7P4DE2nkx9H7XM3m9J6166SqCLhRozSJvR61M2vR4EVN+OdhXrA5AHdX18iPVk34Tg4eaz/LneoznrKoNqlSTDFIdQewOP3f8rRJUIrLwNlpJsKyzkbBdOXvPWskrJChkv2IK9bng4kU+D6ojPSkv0Nsui24rOb+hCqKs5UYjB46DkW3apKI6ceKSjAeaqdxm1jpZVxi6SRlDK5pDlFYETUNoC0wyWLkOGIe/ZNXOiTSNMODDA4oyUwAmQ2JG7TZ1xM3cSLqkgwFZ58MzBOFQmV6UAiGgvRN2cviclHsw7AAql6xvF4yJEy2E1GkskOnMIZE5AJvUoGodwS/spZXozjrPWpujoNQTgPybibnKH/fmyVrRdWba38yCDeyFe7cvqYSVeCO6rKEteczJdnzF4YjTDgTSf1ThNqwnQloia84MpAeyxOpSgSfUTHv856to5
- 6VHzK1oA
- skpqiaN8QGoR/jZEYuFrjAjioSziSyulw+ShGXcb4e6UxyXpt23/A1NGznrFk2DHYnCMmIj5/V+VpFkMltR3Zc+0yoFEBRIHkV7bhh3Ma8GTLGv8XEvVusZ9jP04F0XkXQv7TiyKaqR9bbBDKJ4o7dtPnUVG6LbcEd3GAiBS43mqFCTWLoueqrdJhMJ8xFh6JSYvTJ5zDNd4v+0YCfGVPpFl/NtJ6nFk6IJDmepd9IyhFN4Y4gAt/EjGDkpt9eL4x6NLz3wgnRfKZz8ncAcW5GpBRPG2hosnLcRmRyW2PJouSP93vG44QiQh95w==
+X-Stat-Signature: oy5wcgyncnw15aff8jnshzonk561r4st
+X-Rspamd-Queue-Id: 8814FA0005
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787727226-822222
+X-HE-Meta: U2FsdGVkX1/u+io5tKle3EDlPN3rJY3oL0rNU2FtzDsgiSBTIduSX3gEJbClUUQ7kmgPZwK1MIUKlTc/6FWhlG92e/R/4WpbGpcDGaVnqgnpDZ0+0W6r9h6acMm0TIZrEWB9HbYW1diI9whOv5OsoeiLCzILdZu6MHl80z+rvLL3THAsM15kmhVbldkRgvYD7IH5kPx0q+ID/1Hss+DnhyDoNYsFZAPHRbN8+80JUetC7JFv+ke50pEaG0kBukys0jCH4oNR52xA9Xs1njozkrP93LwnWg8Q2Ifto8+bLN8fWjf4fTecI1GQhEDtvXEdKxrFGzBEwdgFaobjFJMG6V6sHErTa8R4OhEFFrqpjgFmVdukolH3oFoGnjzZFydmjrFYUHBVZYoecPhj4/we8b2bZhXh+d1Eo+udB7XNVuNdnTnHFj8HNN0w4HNq+yrRQnUK8vGy/bxeLB6EcRt/DAeWwJLixdLhXBken7A0tpsd4iZmqtG5Y35B/L+6NFvP69TJwnzIBw4vJ+V2qPsmLcbvFb4pyV/+YGOS1L0hlcmPLf1b7sRVAQsuo07Z4Ij58PCqVu8vUGGK1n/3omouwv1lCPEqs01CXnH8D1EA1fZncp1AMTmlXPIFQ3Njku3hPnbhsGqgs7O+k/t3BdEuGyIxwsuztIybwbAPvTDsynV2St6Twur8LOaGa7zwqOzJSUEjUYTTHw2fwCslrN2UG6jjwtT015JjFejgE2ZfJBGslt6DBv3omF8tsuA7MgEU5m6vSvfZDRo0uTqEUZb1PeDaYmK4t9LS2c9sxlnxCXqGvD8NPQ1PqQrXiYtU56XSE3b9xRySqUvZQ7rXn94tcr/Vm3mh2Uc/7hLdolJL25Z9/ljTXau8MgokxGQ69M3MtazwxnSseiHdM54i6t/bnMFuVq001pxeLki72GYDzTb4K09hC0hZTthglWqpHrXf/PeZdG1AkbS4R+GYmSM
+ NWdW5XsY
+ OFxjlFP3tMbCoGbjJUaTpPc0QPC7KNTmKqpTcYefDYUTN9nbvjkk9wqNtUx8Z0y9JTlhSdIv1IhoqvjDgSWAUcpZnRgxN0ODM3uSLq1vnfEPyPGjjPdYnV9mBC8of+GQ46g//+IcG65K74La+USRlaWcclVCWGh0lfHRP0g+VeQWh4azwfG6wjxACPjw08G584tsxCYAVfvGu/mFRtdSvGJwStU56CgyWvU9yaNQGzLlKsmkh63rGn/mDpjWpjgyFrk1FRoVwXqaEfRmm99S0jh/11qIxF9IGxsBtU8+jlI8NNIvOT2tOts5AVrYteVPjDuPg/u9gIIzZuKN83v/UeYobixCL/Rhk1Jx7rDnwweVcyScwC9TbpKAnKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,35 +171,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When running the exec selftests out-of-tree with O=,
-check-exec-tests.sh is copied to the output directory without its
-ktap_helpers.sh dependency. The script therefore fails to source the
-helper and exits before emitting TAP output.
+Sean Christopherson <seanjc@google.com> writes:
 
-Add ktap_helpers.sh to TEST_INCLUDES so lib.mk copies it to the
-out-of-tree layout.
+>
+> [...snip...]
+>
+>> >
+>> > I'm looking at the doc of KVM_SET_USER_MEMORY_REGION2, which reads
+>> >
+>> > # When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
+>> > # userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
+>> > # state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
+>> > # is '0' for all gfns.  Userspace can control whether memory is shared/private by
+>> > # toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
+>>
+>> I'm not sure how this snippet from the documentation connects with what
+>> you'd like changed.
+>
+> It's flat out wrong once in-place conversion lands, because it assumes PRIVATE
+> is tracked per-VM.  Something like this?
+>
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 4eb7e75a7473..c9769e5e7329 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6383,9 +6383,12 @@ on-demand.
+>
+>  When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
+>  userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
+> -state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
+> -is '0' for all gfns.  Userspace can control whether memory is shared/private by
+> +state.  If in-place conversion is disabled, i.e. PRIVATE is tracked per-VM,
+> +then at VM creation time, all memory is shared, i.e. the PRIVATE attribute is
+> +'0' for all gfns.  Userspace can control whether memory is shared/private by
+>  toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
+> +If in-place conversion is enabled, then the starting PRIVATE vs. SHARED state
+> +of a gfn is determined by the relevant guest_memfd instance.
+>
+>  S390:
+>  ^^^^^
 
-Fixes: 2a69962be4a7 ("samples/check-exec: Add an enlighten "inc" interpreter and 28 tests")
-Signed-off-by: 刘思宇 <2028566723@qq.com>
----
- tools/testing/selftests/exec/Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
-index b640af8f02b5..d16ad3d32770 100644
---- a/tools/testing/selftests/exec/Makefile
-+++ b/tools/testing/selftests/exec/Makefile
-@@ -16,6 +16,7 @@ TEST_GEN_PROGS_EXTENDED := false inc set-exec script-exec.inc script-noexec.inc
- TEST_GEN_FILES := execveat.symlink execveat.denatured script subdir
- # Makefile is a run-time dependency, since it's accessed by the execveat test
- TEST_FILES := Makefile
-+TEST_INCLUDES := ../kselftest/ktap_helpers.sh
- 
- TEST_GEN_PROGS += recursion-depth
- TEST_GEN_PROGS += null-argv
-
-base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
--- 
-2.55.0
-
+Will apply this, thanks!
 
