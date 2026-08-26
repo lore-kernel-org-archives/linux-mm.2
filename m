@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91CC1C61DC2
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:19:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0E14C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:19:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09E346B00B4; Wed, 26 Aug 2026 05:18:51 -0400 (EDT)
+	id C365A6B00B5; Wed, 26 Aug 2026 05:18:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0016E6B00B5; Wed, 26 Aug 2026 05:18:50 -0400 (EDT)
+	id BE7F16B00B6; Wed, 26 Aug 2026 05:18:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE29D6B00B6; Wed, 26 Aug 2026 05:18:50 -0400 (EDT)
+	id A88876B00B7; Wed, 26 Aug 2026 05:18:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF5966B00B4
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:18:50 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21C784031A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:18:50 +0000 (UTC)
-X-FDA: 85142870820.10.52D9103
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5B955140009
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:18:48 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NAu8Z5R2;
-	spf=pass (imf23.hostedemail.com: domain of 3dq-OagsKCGsJLTNaUNhcWPPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--ackerleytng.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3dq-OagsKCGsJLTNaUNhcWPPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--ackerleytng.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 788976B00B5
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:18:52 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C40BBC02E6
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:18:51 +0000 (UTC)
+X-FDA: 85142870862.25.D454A5A
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 055964000A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:18:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oHlNpW3L;
+	spf=pass (imf27.hostedemail.com: domain of 3eK-OagsKCG0LNVPcWPjeYRRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--ackerleytng.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3eK-OagsKCG0LNVPcWPjeYRRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787735930;
+	b=d0YTEnMluPvxHZKaNihkRo1J0jTwNXqA/DZtHu47caKGk9jQ0bbzdGD/0hOVKI5zw448ec
+	3g8mub69da7lCWYSlsjdyNWiBqeaB/IkOBg8DhM6hCgE5oDD8FZq/tbe4Qe21CCM5niQY2
+	lTx7s3ybKe8kwZCOdbJ089sW6H+4hRw=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oHlNpW3L;
+	spf=pass (imf27.hostedemail.com: domain of 3eK-OagsKCG0LNVPcWPjeYRRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--ackerleytng.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3eK-OagsKCG0LNVPcWPjeYRRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--ackerleytng.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787735928;
+	s=arc-20220608; t=1787735930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P2MYy9xCCsRh/a0/MTuFJqGfvDDDTtCK5nvSZnRDqWg=;
-	b=piPo+VeBaUXNpHTc7iOiLVG9LLuBgqw6+qUEOCRrYPrZsePZ97fCayL9xqqZ5jSACGnxdM
-	AJEjvP+5RUtDH3zi1rr8q4zppOSvBGkYp220TNBfQW/K5lJVR+freIW4o1CuKG/NQtfECj
-	Ep4HAn5AFjdEDOYBnV1MiRlmSAPinB8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787735928;
-	b=wKtuXcyPU4d+HXe0kmiKJ6CcniCIxDPJ/oWh8vWq/hwqfTNPqXh3ZgvjX9PqBAnJ2voPkX
-	qBCjZo1ZUuJg0GHjfOwQ/9NXYNcVfcRIF7TdsbJpl443dLg1keOA5ZcB4i/4kChYUCBjcM
-	CGydXiLFkiiJ4ktS9DwUzATVM6bSg4k=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NAu8Z5R2;
-	spf=pass (imf23.hostedemail.com: domain of 3dq-OagsKCGsJLTNaUNhcWPPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--ackerleytng.bounces.google.com designates 209.85.214.200 as permitted sender) smtp.mailfrom=3dq-OagsKCGsJLTNaUNhcWPPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d6fb956002so11299785ad.1
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:18:48 -0700 (PDT)
+	bh=9xbSTldz0mlkeejSRDvsTzV54cN/f7YMnwUkGWsjOYg=;
+	b=n+kgDexAZ6ng2U8CijqbI80OFa2jOOFgui0HoWTFILVhh4ZX7p/zAi1oQAqv/e46Wt4C9H
+	+Qi2QrmvYBLhKwckDycxINuedV0CzudLeVTiho0y4f0noOsu/7x2qOF1lpeVEdbTeBzfgx
+	NPEgR1yf1C5jamqZalIzTFGg48fErX8=
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb11535e6a1so980356a12.0
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:18:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735927; x=1788340727; darn=kvack.org;
+        d=google.com; s=20251104; t=1787735929; x=1788340729; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=P2MYy9xCCsRh/a0/MTuFJqGfvDDDTtCK5nvSZnRDqWg=;
-        b=NAu8Z5R26/Bk3YFgnvEjpWmtaBFRRqREyEN/ry5BDBwqZZGbsRMMBjmdBx+EramfZO
-         Bvgpmv4M1LoFn7ffnKZy/Jl0ti9Po/Xx7Eck/hLB+myo4MMGtsZKHCNdFOG0cce5zGOe
-         FA4bFZ72UcPg0zPWXCEmjr0bafn8hQBb5D5VDPzytbflCqLwMZ/KmWXFVyENN6f9TCfD
-         5bBF1WJYphYZM4LYWBedmOVx0ktKGcP9CEQKilO+S4DKZOj/bUu9L5jemlan48+a4nuB
-         bnEejGD6di++QsXqlqmUybflpd8oiX4DNX30oM1/Y4cTayEwl9c6pY383AfDMoJWgRxS
-         yJ0g==
+        bh=9xbSTldz0mlkeejSRDvsTzV54cN/f7YMnwUkGWsjOYg=;
+        b=oHlNpW3LAhmVeZ6yEADgqKOE9WCSOTZraccVg3N8v7ji4DNuj+anl9skaei87Piwmg
+         ct0EqzQVVAa/P1TivvSJ3J2y7y+5BmkzAa3UaG3uoGr18AiQmPdlNiKrsKulHbN614jh
+         JCkl6ac4+WDZtGJeyMqiT43Tmjwz55vRMsGufaGkQK7n4knTbB9aT6i+EBGryggEPBej
+         Jfyl7uQplxajGRx3BJaoM1bA8/wNuQ6zoL2BgNvMuPGRKUMl/ou9F2+lLwria5wl+BEb
+         hA9C0k5V/Us2sMCkZbmPaM3wCHBLmBdJU2bQoQ8ZEoV1WauUEdaXhd3OPchBC1bsHBUt
+         uogw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735927; x=1788340727;
+        d=1e100.net; s=20251104; t=1787735929; x=1788340729;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=P2MYy9xCCsRh/a0/MTuFJqGfvDDDTtCK5nvSZnRDqWg=;
-        b=RNwUhTWQPh9TcSGNf1iKLhmTa25lDQT4hR/AYtux78o3bjA+y/4D0iSP+K20c1cLwQ
-         1lZzhe+lajfbhPZUqj63IDelol0/KhTpaJpzYk8IEOf2NJov3559/sSHMmQhQap2N6MZ
-         oDA53wU//nNLxKvrTH0uY2wCVOjN4ItAbpA12rSt0v+T92RPKgVe3QFPzxvAYarItnmQ
-         vjA3VaY7dviS2pqalUkdQVsXu9R2ArXeDDx489JNRr2kN/Jr7PW0w5Hka80qXl+jPIfj
-         ly7tijLkapFTR3f0mINUGneerSTeTDb3Y8rbKVD1Xaa7JOZO2GZ2R80TyP7LIIYa2EMn
-         Hrqw==
-X-Forwarded-Encrypted: i=1; AHgh+RrurpMiBiMrXjq54R1PwiZyWdqhYULfffCYLDjfvTt++R25DiXySVcTWI23acPiPqFJW3ZlRtgIJQ==@kvack.org
-X-Gm-Message-State: AFuF++lgaKslLnNwDVYmEjqgrL7KyupIaW1ymvI+8I7BBuAquGEreBk4
-	c5tqpmvvuHi5RQIAtSQqr7n/wnNeMAQWczyRGwPpu0L7qp1s6c3a7y8u+nlOvmbfQJV3eUw/FaJ
-	7GPxcxlNmy77D7ReRXOhAL0zJOw==
-X-Received: from plio3.prod.google.com ([2002:a17:903:46c3:b0:2d6:3009:ccc2])
+        bh=9xbSTldz0mlkeejSRDvsTzV54cN/f7YMnwUkGWsjOYg=;
+        b=OzVmGs5eqn1nFfKShg7g36OLsDkViM4DBk7nLi5lAWR48UCCkTM5QFFWhrDiyENYT/
+         ZcCMG5Tli92luIRUXFhbjzKLGONfaUl98HFDSkTl2HPcEeV0YunFBMWO+R/Fki5SY5ec
+         XQwfJAhH2+Rw1Tbe0UzSbbDVQcYS+1zHQyyZSG6hj6zs9y4ugT4/as1rD06h45nxKCnn
+         tFHuoRURsBKbaNmLyF51ia8zY2UVaAsZhKngK2GUuGUemJOEgGz3sB/TcrA0E6DxH22r
+         lvPAvq6G6rBqNaHhdFoLbAG4oQnsR+Yl/3Zy1ZzrH6ZgBqVDbJoEX24awAssZSiHSN8Q
+         ZRiA==
+X-Forwarded-Encrypted: i=1; AHgh+RqkiKxvgobgjAfwwtBNRwH59N0SmUVH64tTsw0q0+2MW+wKJMzx2aJ3N30ASzajwXV4w/w3GB7y4g==@kvack.org
+X-Gm-Message-State: AFuF++lsm5dKvE4UZ+VIPrgJ8wtEJJhxlXgD4t0Wus0UUoFwYMsoF7Pp
+	xxKdgwQAPWRqohbeB1MBs+9k15jP0p3i0yh26hrAK9JpI7CSVlyHAzx7t706SC+lSsqQkkymmFZ
+	7sKOaAlr2rfJPW7Qg4DwBhpIF6w==
+X-Received: from plco20.prod.google.com ([2002:a17:902:e294:b0:2c9:b703:3bfb])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2283:b0:2d6:7409:7145 with SMTP id d9443c01a7336-2d707a2edd0mr90965095ad.1.1787735926573;
- Wed, 26 Aug 2026 02:18:46 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:21 +0000
+ 2002:a17:903:2c03:b0:2d6:ee6b:1b08 with SMTP id d9443c01a7336-2d707a2f363mr88247725ad.3.1787735928419;
+ Wed, 26 Aug 2026 02:18:48 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:22 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=7437;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=1693;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=erBMg+vYNKFmnIk1EALqLuAs5vQ8G8lIJWnAQEPGhMk=; b=rvsxDqasKEC9y24pJL6GBixd0VO6ms1BpDtgqU2vfiPjwfeBV4W2WWC2J5Xrl4izaS+xS4TWP
- bS2O2g3q2UYCaaj4SuKQQVw+wKicDiRXtr4U+uVmHBd3z9x3HPMjVOo
+ bh=xxgZV80P6tEBI0TS9iatKBLUXrCS72RFfbwoyow/L9Y=; b=I0SLEj0chvLQHB7QukPCMKxNVTQmEiLmipqoJJ+EGN6XfzLrsg82kHlLQjvE5ty/DdT4FbHrE
+ xe7LXVIZZMOCZA0s06FUNYPGMQazgE0t9Oi6aKm/qrHRQUgS8sydK6J
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-23-0a15d8a799aa@google.com>
-Subject: [PATCH v11 23/46] KVM: Let userspace disable per-VM mem attributes,
- enable per-gmem attributes
+Message-ID: <20260826-gmem-inplace-conversion-v11-24-0a15d8a799aa@google.com>
+Subject: [PATCH v11 24/46] KVM: guest_memfd: Enable INIT_SHARED on guest_memfd
+ for x86 Coco VMs
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -126,14 +126,14 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
 	Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: um46697ippt3srmd7xkc79cdh16x8ukf
-X-Rspamd-Queue-Id: 5B955140009
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787735928-259321
-X-HE-Meta: U2FsdGVkX18QEwsnKFEFEVoEap0z+Icbx58cg7NAwDZN3V6ZC3mCeiZN9GinbgEB9OCw/uXktOdoVKqMkA2ro246S32nms4e3myWz5ozdApRDdfte79Qu0eNmEWfueYtVNVNY9kz0bn1xNVy2G5CqiM+gMYZ8W/do64IsFx5BUV8UNtF/6MteIRjWi/feVPTCcIcj4sU0BuMfDdkCzsD/f14EVdRP8z8NyDl/EiL6TnoejSUZpvFh6V9UAHA0MfkGYYRTK3XVOEa1XMkVb+a+csMARHFVDrvBCl6NHH5tnFThBzRzXyRLKDjNxDij6WE5fkP3QGRrXHrHxZn6f+EhAfJ06joghOMGh7vB9jje9LjcGPQMxq0X7lCsc/HnwJbbo+XDs5Sdgu7WxvsWB+/YTyBEtlzigixIVQX8QkDPsBloTUlrHr1GZ9cKVme//3DsxtlRlvIj47jYE0J4HNqvD2bpX1PM3RBH5WZuH8ejlR1xUJZONSeyJiPz3HcpDsFVNpw6FJ6452AaoaB7YlC/b8KhH75HuSAARAJ2kj5iLwopt96hhv5goDfZYjR0hyTq7F79IrSz+/dFs17qai8uKVVegN0ib42Mn1T2StdPmS3qiqnjpioidkHkGhK4lrn847PAs3kXEdOPG88zV9pfllSLEtuYlK4ZIUvguGIfizueOosL6OjblNo3k3vVI/kq1AmZWKyRdtbD10U691g0l4cjpegJNvzWEI/8FIg4fJb8U1T/vUmLv1GFVUzcWzz1hgzosuOjkzHq9tA74wuh84YcqSyjDVh0xqoOpWVlw3VEDn1fgHvDeiPSJ2fC37yK4R+t2LhVbtfKU4hazfTncONPpeSeQuiVviXgWkuDhcdWhpkDWhRVU18hw0LxuZppbBTfg4GCdkw08o+MFbncQIHdwYB6EERlfxA7T5RcXtf+hBfUSxcy6y7/hJ/YSKj/s0kswKQIHOCTXa4B7n
- xDgb2Azg
- A48SO4AwDenB5dGZuEeiuf5HDUcKRIX0+7jOl0jE9vVCz8q/jREBjrz27XzIF195WmPaLU3p4jzZn6jsw3MeVr8LTGCE71yZdRAwXA4HYqB1wL17zNrK9WPuZCfYG8b59eGhsHjoVKQEALrBi8I590D4A8xe44phxdv/gnPNUAR9gCQdoc7rk6PeMPd05ecW2aAqi6Eypn0br8SUZbCxWILpm4c5gCbxeLDX75kt1PSwJywkbExvl4q2tuQBVL7SPolzZ/b1U53jd8M6txYw4l0SMKrgJJX3JUaf1yxNXvGSng9S7EW9shW4MJISz0Podm1qvGQKgsrVaHxByqHH0uhfLGf9xgF+8BTwYnTmzkgdTGTzPIoPM+9eINMu6ZQ24QGjYdTgulyolpW8eK6AunLnOlPGOK7AQYFR43alIYd46XF2B4luaJzjFocXWT7Tv55Gg7Ceyf3lrzzxrQFEuqkMdEMIlIMKcc+dOhOIldqHLKYMOg8Q2YVow0lRy5fDdBnBpXFd2scykQNr8/c9RfyMkkrW4J2UV1TbEiWWOCDqvIUdjyP54V0RAe01uWanSb2KimsP1xwEBqGePSFh2G7ZMnUlU5F4PrTIe/mSBtCUnuEybtGk/nAcMtHxhyGA8luB6QTUJgFkmaEoebSU7Mw8l7VYa+lM49m6+
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 055964000A
+X-Stat-Signature: 1jezcstir7n138ziqjmt8jbq531du7gm
+X-HE-Tag: 1787735929-967132
+X-HE-Meta: U2FsdGVkX1+Lh4VFxW5OHgvKSSQgJoIhJwArKw6TvcZsy4nnvRhGEXrWs2dQ9gU4K5kVb0m6PTk/2gKTUKC5M0gmUqDiWCKGN9q5SxdeA1v70vgrTro4cTOVI0AYkfUEiNudXvrj4y0X85018GhxnQgthLYzteOqYCIkvQYiQEv1KInd4MoItcG0RlIM1i8ZJDgBTDN5yCkiiMWlm/0e2BGzl65jHnuvKkoAch2+HCMH9gqZrJFmyneOsvODg2Mc1IVLSOVBnCH25lLBZSNIFW7oWNnw5gHVboICPBQIXWXjeOFNQh9dIBOlFVzpABRrs07cAckUQwtGr4lcC/Tj2CkHylIBQuoXWhRsgsXUwjvI5PiAxCNAIWxN+Wp28to9slMw78g7qw8pEVtSLqTM6oi9lOUJtkkmil64eUKq/VwI9vVuxlILgnodBraW0Um+8aodxjsWZ/FtomMnPxMVEIKjagSNI+NUpZdM9hbWv0Plu+BxE5bSIISfuoo1/Z7YKbK9AlYISvSRwcUZEPEUW0BCqSR8Ss6PKjLDkJ7mSCqpjGZMMgr8/M8c7suznGbtybOy0BmOKYQu4ei9MQ85sZc3xaCufMd9Nrz5Osp0sgzLTuQW93F+b776ZrrbeWXKz285DAS+0c4YHZOkBID3GXjzRjksCTNjoYKhYBsqz2CAvtUrIMBshT5TMdf3J5NjsMwE7SKf8nsmSdYNKS6Cgxw9pONKd4mFHjLM2pXjOhKimUHIMw7stq+lOMi9yDjVAm9YZTYPZeDlfj4pLhbiEE1Z6Uyy/p8D+FdwOXGsY1vMHSVNRhU91RXzrp9yXW51phmzVc96O51Vwy833SEuZ3m1wJvMBMCT9XtnezcHqs70+gALNyAmuNuKKQgFGzlL5OGkX2rTksn5RB//FvnKypxHWphOP9mzvWipE/VZOPYXubgGs1+xeR5JKtNwH8sCoD6xB6FAfNrJUUjJYxK
+ n75ddyU/
+ wcnowwevmUJ7quPC7dw7oEQXMwODR/Mo1Xo6Xf+0Bi9lIERjkxlmSznEBbPyaHkeCW2Orc7WpTjpbp0ZwsvC5ArI9ySkM5pHWT74lMgZEUdAnty9Y32C5M3j74Frp6DC9DD9aPRHmhteMJIWfie4WqNy5zS9A55jK6JyjvuGYuqnbpVwzBJbVJczhCWJb7kzkb6OnDy521bO2ChZ9+8wPchESiXC0ZHsoU8n4sl0jHYaYwgt3yCLA2rZrV6hKBZADwDsxEl6nfbRiKtT5fU5lqz4xAV+OnnpiWTXfw1ryxfIE++1gZEIQCYpequinptRViw2jIq02R3JNiY9dkR5IOm+z4cCI+MuseUINwAcVFBenzsZjgW18GYDW3XZ0gmrZ/F6B0OnBDg4cnwuxgQR20OVxLNqWOjFRo1P2zBn/IIBdsHTS/D7vIpfa0XRc6btPEwToNEKaHOd6XBI6fddPvc9AH6/f1v3ng753fW06W9SLvMgIi4FoS0pg/38AHrVInOSaCuv1w10RpD+S5XkMyX29QjBJ45llDJmz6YVpoH7hD+dcr30R18XGjSqwzioRR73H+dm0Dn3NtN/VBP2t5WrEVtOndQKfAphJelHqD7Ep33EIorldCzLAkiafRbZtXFJ96ocWarqBXTymrQXg/ZeCtK+zcV6CHYIjBC5A6bKOdnAIWStWAC5GxitLBRjUnQhZWP27HBuoqfKtMeadzHkPZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,170 +143,48 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sean Christopherson <seanjc@google.com>
 
-Allow the user to disable KVM_VM_MEMORY_ATTRIBUTES even when KVM supports
-PRIVATE and SHARED attributes, and expose gmem_in_place_conversion as a
-module parameter when per-VM attributes are supported.  I.e. let userspace
-enable in-place PRIVATE<=>SHARED conversion of guest_memfd pages.
-
-Provide both a Kconfig option and a (conditional) module param so that
-deployments that use a custom kernel can fully disable per-VM tracking,
-while not forcing distros to ship two separate kernels in order to provide
-backwards compatibility for downstream users.
-
-Don't allow running VMs with mixed tracking for a given instance of KVM,
-i.e. disallow toggling the module param after KVM is loaded, as the extra
-complexity needed to handle per-VM behavior far outweighs any potential
-benefit.  E.g. neither TDX nor SNP supports live migration, so in effect
-the requirement is that existing deployments that want to support both the
-old and the new models would need to tell their VMM which flavor of
-tracking to use.
+Now that guest_memfd supports tracking private vs. shared within gmem
+itself, allow userspace to specify INIT_SHARED on a guest_memfd instance
+for x86 Confidential Computing (CoCo) VMs, so long as in-place conversion
+is enabled, i.e. when it's actually possible for a guest_memfd instance to
+contain shared memory.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
-[Define module_param only if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled]
-Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Tested-by: Shivank Garg <shivankg@amd.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 25 +++++++++++++++++++++++++
- Documentation/virt/kvm/api.rst                  |  7 +++++--
- arch/x86/include/asm/kvm_host.h                 |  4 +++-
- arch/x86/kvm/Kconfig                            | 14 ++++++++++----
- virt/kvm/kvm_main.c                             |  5 ++++-
- 5 files changed, 47 insertions(+), 8 deletions(-)
+ arch/x86/kvm/x86.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 1069806616b94..0ac44e1bccd28 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3114,6 +3114,31 @@ Kernel parameters
- 	kvm.enable_vmware_backdoor=[KVM] Support VMware backdoor PV interface.
- 				   Default is false (don't support).
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 147b3e529cd26..45ef4156274ec 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10637,14 +10637,15 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
+ }
  
-+	kvm.gmem_in_place_conversion=
-+			[KVM] Controls whether KVM enables in-place conversion
-+			support for guest_memfd and tracks the private/shared
-+			state of memory per guest_memfd instead of per VM.
-+
-+			If enabled, KVM enables the KVM_SET_MEMORY_ATTRIBUTES2
-+			ioctl on guest_memfd file descriptors and disables the
-+			legacy VM-scoped KVM_SET_MEMORY_ATTRIBUTES ioctl for
-+			private memory state tracking. Only the
-+			KVM_MEMORY_ATTRIBUTE_PRIVATE attribute moves to
-+			per-guest_memfd tracking; other attributes remain
-+			per-VM.
-+
-+			This parameter toggles KVM's in-place conversion
-+			capability support. Whether a VMM uses separate backends
-+			or out-of-place memory management is determined by
-+			userspace VMM design.
-+
-+			Note, this parameter is only available when
-+			CONFIG_KVM_VM_MEMORY_ATTRIBUTES=y. When
-+			CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not set, in-place
-+			conversion is unconditionally enabled.
-+
-+			Default is Y (on).
-+
- 	kvm.nx_huge_pages=
- 			[KVM] Controls the software workaround for the
- 			X86_BUG_ITLB_MULTIHIT bug.
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index f88d65b78c504..d976f8ec2e2dc 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6383,9 +6383,12 @@ on-demand.
+ #ifdef CONFIG_KVM_GUEST_MEMFD
+-/*
+- * KVM doesn't yet support initializing guest_memfd memory as shared for VMs
+- * with private memory (the private vs. shared tracking needs to be moved into
+- * guest_memfd).
+- */
+ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
+ {
+-	return !kvm_arch_has_private_mem(kvm);
++	/*
++	 * INIT_SHARED is supported if in-place conversion is enabled, or if
++	 * the VM doesn't support private memory.  If the VM has private memory
++	 * and in-place conversion is disabled, then guest_memfd can _only_ be
++	 * used for private memory.
++	 */
++	return gmem_in_place_conversion || !kvm_arch_has_private_mem(kvm);
+ }
  
- When mapping a gfn into the guest, KVM selects shared vs. private, i.e consumes
- userspace_addr vs. guest_memfd, based on the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE
--state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
--is '0' for all gfns.  Userspace can control whether memory is shared/private by
-+state.  If in-place conversion is disabled, i.e. PRIVATE is tracked per-VM,
-+then at VM creation time, all memory is shared, i.e. the PRIVATE attribute is
-+'0' for all gfns.  Userspace can control whether memory is shared/private by
- toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
-+If in-place conversion is enabled, then the starting PRIVATE vs. SHARED state
-+of a gfn is determined by the relevant guest_memfd instance.
- 
- S390:
- ^^^^^
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 83e26ce45fb79..e840418427a1d 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1851,7 +1851,9 @@ enum kvm_intr_type {
- 	((vcpu) && (vcpu)->arch.handling_intr_from_guest && \
- 	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
- 
--#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
-+    defined(CONFIG_KVM_INTEL_TDX) ||		\
-+    defined(CONFIG_KVM_AMD_SEV)
- #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
- #endif
  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index abb108886733a..2c3c22aeafa54 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -81,13 +81,21 @@ config KVM_WERROR
- 	  If in doubt, say "N".
- 
- config KVM_VM_MEMORY_ATTRIBUTES
--	bool
-+	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-+	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-+	help
-+	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-+	  memory attributes.  Using per-VM attributes is deprecated in favor of
-+	  tracking PRIVATE state in guest_memfd.  Select this if you need to run
-+	  CoCo VMs using a VMM that doesn't support guest_memfd memory
-+	  attributes.
-+
-+	  If unsure, say N.
- 
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
- 	depends on EXPERT
- 	depends on KVM_X86 && X86_64
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	help
- 	  Enable support for KVM software-protected VMs.  Currently, software-
- 	  protected VMs are purely a development and testing vehicle for
-@@ -138,7 +146,6 @@ config KVM_INTEL_TDX
- 	bool "Intel Trust Domain Extensions (TDX) support"
- 	default y
- 	depends on INTEL_TDX_HOST
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
- 	help
- 	  Provides support for launching Intel Trust Domain Extensions (TDX)
-@@ -162,7 +169,6 @@ config KVM_AMD_SEV
- 	depends on KVM_AMD && X86_64
- 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
- 	select ARCH_HAS_CC_PLATFORM
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_CONVERT
- 	select HAVE_KVM_ARCH_GMEM_RECLAIM
- 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 05c518c9b8078..929fd3e1a01e6 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -103,7 +103,10 @@ static bool __ro_after_init allow_unsafe_mappings;
- module_param(allow_unsafe_mappings, bool, 0444);
- 
- #ifdef kvm_arch_has_private_mem
--bool __ro_after_init gmem_in_place_conversion = false;
-+bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
-+#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+module_param(gmem_in_place_conversion, bool, 0444);
-+#endif
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
- #endif
- 
 
 -- 
 2.55.0.887.g758fc8c411-goog
