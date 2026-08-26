@@ -4,98 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B235C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 15:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94643C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:06:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D00ED6B0092; Wed, 26 Aug 2026 11:56:10 -0400 (EDT)
+	id A081B6B008A; Wed, 26 Aug 2026 12:06:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8B546B0095; Wed, 26 Aug 2026 11:56:10 -0400 (EDT)
+	id 9B9936B008C; Wed, 26 Aug 2026 12:06:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC7A06B0096; Wed, 26 Aug 2026 11:56:10 -0400 (EDT)
+	id 8D0876B0092; Wed, 26 Aug 2026 12:06:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F0956B0092
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 11:56:10 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2AAB61C0693
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:56:10 +0000 (UTC)
-X-FDA: 85143872100.13.AE4E009
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6918F1C000D
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:56:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VylVp4aL;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787759768;
-	b=lI4aEpMzoEonJQ1N/HeuKlC6zm4eporusHpAd4i5cUOKJ18U3e+YS4cZKp9l3ej2GTjETW
-	F/kL2uf+0P/T7ctet3ulxmcwtCTAHHXDb7j8TDjb6BVacJYSxcLGy+lO5ZIdWZ4tK2cpAa
-	lARiw17/7ti4fpAxSoo3lIqyxH123b8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VylVp4aL;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 655686B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:06:50 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4635140189
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:06:49 +0000 (UTC)
+X-FDA: 85143898938.12.82C2E1C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 15E5710000C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:06:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6Ip0lEq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787759768;
+	s=arc-20220608; t=1787760408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NKxxVO9WHJPVfrvijFU6xCamxUW5/MUbTlElGx2vOjw=;
-	b=o1NnHR2SbFmpfKFAd3zhHZr+hBgqF3jdsHOQYmo5cifGpVov9aPqfovQpxM9St8kOL89oS
-	YTabmih/kfo1zwKVOJduONYg08lAyBGZPE7fwY4+MlRu+gCQCiohuMYTnr/fvJop+tVtsh
-	WCf6PZMpkWFvSsv0GgV8SYuOVlUwGxQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qzCRwQtZ9/wP7Z02N7Vz+vk0AFHWhteXZEZwfRjGIOA=;
+	b=zdFZ4VwmNg+91lgZx+T1a1FtOLRarJWpMpmY8As2f6oIcUUtNcaL9E1Z1QIDCYBKp+UDGr
+	gnoE/eDPxSuVzPy1cmdv3oJYBcPWORKT24s4nQ67wBjeRDevq93gyn5iVLlRVNnIiSICV/
+	jSqCT7I0MsAdhxqMf/+dkEahENLHpRQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6Ip0lEq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787760408;
+	b=IghjGeJxIgiaPnkasp5shnQpeqs7SUYxVpCuyaXiGomT9koDpTo8hMpm7ioHnMQzsmPKI7
+	OEVJl2tIFed8RXEQqTtoFUusCNYiogVgSyfOv5uGcsXQ8FW90sLPD07NMTFnOGIGg9Q8f1
+	KowcXubF0Qti76gikBvADdblELdvvFY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BB52343E78;
-	Wed, 26 Aug 2026 15:56:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A821F00A3D;
-	Wed, 26 Aug 2026 15:56:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CF24D6001D;
+	Wed, 26 Aug 2026 16:06:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8E01F000E9;
+	Wed, 26 Aug 2026 16:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787759767;
-	bh=NKxxVO9WHJPVfrvijFU6xCamxUW5/MUbTlElGx2vOjw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=VylVp4aLzoj6h2ekemVf7MQp3OCAp7cDjz3M/q4OACcXKDRYDvy3YTMSXZedvDHdk
-	 Vj8aZNPn407fWGqDPrwGM3nrGyZi6UHLYS6F4M9SVn5fU3VuUQARqvk3l7Tu98y8X2
-	 lWW4duh0K9e3dGo6vWEf/UN18MnESm/QDHE+CxpinZAh66x7MXKkah1PNv6fYLwyVX
-	 Y/ghYYGhs+h/T+iVQoa9kiPdH9Ed97Q/eXh7k0OYFBhNb6CExRCy1aZ+0KTIl9ayZy
-	 k69T7XjFVLHsN/vGElXQZgh6a6Rdh5nSSRkzAhimlSvxOG1sLMhdt/kJQ9bxxAZTuV
-	 YaVDmFik2x6zg==
+	s=k20260515; t=1787760406;
+	bh=qzCRwQtZ9/wP7Z02N7Vz+vk0AFHWhteXZEZwfRjGIOA=;
+	h=From:Subject:Date:To:Cc;
+	b=D6Ip0lEqBo7TaC0vEm+4INQXvt0ORtVzNxM0nL9cPiyvLdL7frUynU9l8nVrh5Hbi
+	 0DZOfCM9+5b/Vcu2UMnl6mVjQzxwSIy1lFeyN7ApPIueIAThUeKE2Q0S+xVYxRAjGE
+	 oJlaVUf6Xvy9L97Re2YL+83yOceM8rQLqjAwTsD6aK2RunFMDywrj1WllEmuoF2gkA
+	 tD5KYw8TK6MEIiuyAAx/X3AcTlG3KIUWTAC1VwROaBRfNJnwriTuOQzWUwVEOD8gGg
+	 um0nJVih40tK8jMVuZBOsdUj1qcuaS+l6xS72VeBbqm5Ae3ZkcqA4RZcJAfxeSrqXQ
+	 tcRvDlIEmmeGQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Wed, 26 Aug 2026 17:55:48 +0200
-Subject: [PATCH 3/3] binfmt_misc: document the field delimiter
+Subject: [PATCH 0/2] powerpc: remove spufs coredump support
+Date: Wed, 26 Aug 2026 18:06:39 +0200
+Message-Id: <20260826-work-spufs-coredump-v1-0-579e72a7ab66@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260826-work-binfmt_misc-delim-v1-3-43618adf8599@kernel.org>
-References: <20260826-work-binfmt_misc-delim-v1-0-43618adf8599@kernel.org>
-In-Reply-To: <20260826-work-binfmt_misc-delim-v1-0-43618adf8599@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- linux-doc@vger.kernel.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/zXMQQ7CIBCF4as0s3ZIIW0lXsW4ADq1aCyEETVpe
+ nehxuU/efOtwJQ8MZyaFRK9PPuwlJCHBtxsliuhH0uDatXQajXgO6Q7cswTowuJxvyI2JHsHEn
+ d9/oI5TMmmvxnV8+XX3O2N3LPStWFNUxok1ncXE8VFTsq/qioE9i2Ly3jLmaiAAAA
+X-Change-ID: 20260826-work-spufs-coredump-4e14ce185587
+To: linux-fsdevel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Kees Cook <kees@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-362b8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=894; i=brauner@kernel.org;
- h=from:subject:message-id; bh=PndQPAXcBeOaQi7lJUgei03fmhGSoQt6dZRbXT9rno4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT183RbnOWo0riQGX/MUCv02qU6Zu/ZgWYdP2tn9yraz
- l7hq3ymo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCKr0hn+Vz/gnMhrvWk933OR
- GRZCL/TE+6UyHM17XXJm6k86cLs5nuF/cHefEaPzp6/5U3OYF51m/JO+5rPMhDCOOjavLkm+8zu
- 5AA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1820; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=DLaQXXhE3GPjz/WkKul8E4zcEVrz25q2RRBTZmkJ/Y8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT18wvLGFte3TRnstVy/Q9fUwR+BztJKG36qChdzPRor
+ zMfA8/TjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIksvcXwT/lGGFtVRkNJQt3E
+ M5lHJdmWTOFgqDh38P1l67uyboI7DBgZzv7X/zd34swfVvwGk+PO7Pb+/mwHv+2R3R0Nzld2zLi
+ 3iQkA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 15E5710000C
+X-Stat-Signature: 79owcs5fgeru3rinaxt9ti3sp44uzgfh
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6918F1C000D
-X-Stat-Signature: soxt6ahwomy1kzfb3qm57c664s1pajb5
-X-HE-Tag: 1787759768-507800
-X-HE-Meta: U2FsdGVkX1/toUAM2BJwooPHsCWdI04GBVHodnxGk/JCxgfwwl2QfaVd9lMF6b8pGziW00xWokHcZlu4wsrYXNtwqUTri2KuIR5Nybm8eD5jdXCCqp3GCwAtXGTSnQGbsXEzpzIIe3MLL8uezf9Cg/jLEBtScpmHHpHKm2Y82LmgNFF19+OGzxJQ12zBQVzSBoUdF1posrUZR0HH4SJwsuJz82qmYQC7bhU3HZ4niq8M6RiMd7ibdF2DCb8cjlMOCR7egCod2ipXeAOPEPR/D1HKrewN0vV1ii6Fkk/5Cw9XjFsC8OOH7T0h2ppJsFDCxBsSjB2SmZRE4dCq4nIursiPXupEbq3HOPXFCC8E/TTiwatTWmCGaixFnCPWjTOFr9ZHVcHLJe6CYCWWbn4Z3p72bQPydC8zfddaxry3yk/2P5suUJ3peDkysYYZ+B26m2VnOnrJ1VCmoYt3c/ZL2btzEz95TsXjDpSJagGg4m/XLobZNnhCifnwJaweKm0nSORh0MzNfEYAZSyITeKNFbXh+A9a2RjzvkacdlFl6B0d7gMOuSVOLn9ZnlgwbmnjAHoooDSObU2t4I4wc1hJP4OX2LUFD0eheACjmdbENH9vd0aOoraC383HEu45okICNgFWgGo2MCZJV7KLRKlFoPfw+1or82yKiIKkjGxT+G70zx5CyNPEPv0PAAXQDF/jrq4gwPPUyqmzWooOBbW13leLb19AzKEvOLyx42mIAcnwkg8bh4DM4qYrEiPDuc/d/4hqE71ARUbi4DlhZHNCHyPHK25K6gdt73F13XQ5Wtr+qQYFoQWTXvV16+V+OlbGPw5XcgKI3d6x/xWpWRcJt3NXTaO+Qw/H86QV3uEDRRbjfnyDoy4RjNd9/bgJ3A83W6WHWIc0hvrG3ANyXg5tBQx+xrHiWnyI0+bYKjTqw34Z/yvcDVHhoUSxnNuu7BGRIyr4jQEOdZBUotP9YRt
- NnvRiNa7
- BjtCg2vlpCi9roQ9i2UH4FibyUGk1+f9SsJH2ENBnByAVQuAd3eNHMelt0xAjtPaZWufvcbiueFKgNzeZ3zmyFMQRKu+pffCvEDqdxc7yOgByjuQqeG4AxHb5apfHJN3+0i/Siw6ReaNFNQdzJOZwKlYfCB4yPSfwWtGwQsGKd+l59lkAbhxxel5EQfrI2c45hCbabdXcLo3Etnn7H1jO5igmfQRYRr/i0e0FuKLmuPwp5Qv9nZ0NkmAWnVw7/j4/WUjcXjHPyY6oSKQyvx9jDzQRJ/t/QuJGit/oOKcdJQkdDkisJ34Gz0G5aAFH9jp4vjoz9xRXlSIXSb1cP2TLFLcSNvZ24HRh0w5wYHzHEJvtegc=
+X-HE-Tag: 1787760407-431377
+X-HE-Meta: U2FsdGVkX1/4cKFHID2Tni4X5TfJIZ6fZ+UPLZR3LqSV5SKq7J53p+Qn3RoZlkI8fdCWFrWqyv2XiILVBK61bzq7+BQXKzIXFB/VtpwNkJf7C9lmvf8mwnV9GU/KodtDJ5INYcqJjurrZgt0Bv4jmyr0e/XNTXrRGeiFzI7cNaJMaUrj9q3a8KFcEj89JkRm6pBgdkB/hVuRFAmuMCiJAxsT8jyLbVwqrXM+LBddIVU2SaaKmQcjd38gHCUOZb+xILnxC1rOQ30xnhf31oAhdJffp7rXKCZ/ZMd9aXEFheqvroFzYLMr+If8KFQWPMy7rrPzr5WC7rxBy8SJCJs1TbTpzwz8ttFVAptM+ZR5AMwTRgfhhjiz3nk6APu8VYzQIIDwsSCj05+XvJDf2lwNXwYmD3VekMs0tEH5J/XAXjn2jAt0lx7ECaEyAa94B7fXe67KceEIi4fhdInZiZiWoxeom5rmq3aYskTpUjHuULaX5lIrBKb9/4BVuSS4uy/FtrzKVA+hCNhc+Vyw9wtVwnBAktv9UxDX0yNaRGV7XtVLMje6BPZoxOS+kYVPlbtqUebvfO4nVmycifzk/cGOdUj94F1waAXhnZX1HaE5HVfry+flAPjanUEG9eoUaAAcfN2nRRbBBAhnIVFUxhDrB99+fljjZQUCHENmau1gWnIRv1kaxzrLkuikxfMg1B0+64yuYDuN9+rqis+LzvJRGlXXVAJefyLdfY6p77tnOopDyw1Qx+MFwz8UpG+ylQclb3a7pixEgX1ym29qxC1gPsmvI9Nn3e7JlpOyo9xzj5PzcwSYiDi2RJ6l/PmQO+YkSPGf8phv/p+G1w05C429Y78frVkzBwwkGTCeeUTP9ueAlkdkQsp9X6vNts+ES2E9MbGT8KXz37uFpazRvw27o8GkdcUlASsU/NKqInpzs0ZKrdExl3vwMKE11SOGrjaGScCD0f+aQcEX2mHw690
+ c+rXVEl6
+ CAS7tet5RNShVJiWbW1KrVc9DAgiOfbS/CpixbgnWxKN8fEdEMAhDYcuEvSTuXvMB+1ofutZqrdrODkFbSFcmN9PL7poFIz59bdHaJ6K35wxRH26dpzCImyg0Oc94yV2lbRyWRYLH0ja8VtboVi83skDgsXqp8gMBqGL6TzRKpa7grGNMp6ineq3xQkDvt0iMhPbiDwfJYim55fRtaImI4KG0hkvzE7IcgetVmwMQhnczfDtC11o+EdEgWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,29 +106,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document the field delimiter.
+A task that dumps open spufs context adds a bunch of extra elf notes
+describing the SPU state. It is the only reason do_coredump() unshares
+the file descriptor table. We could make this conditional on spufs but
+eh.
+
+Nothing can consume those notes anymore. gdb dropped Cell Broadband
+Engine debugging in 9.1 and binutils removed it in 2.34. That's about 6
+years ago. So no program can actually read an SPU note out of a core
+file and probably never did in recent history.
+
+Note that the IBM Cell blades that shipped the Cell processor were
+removed in commit 05bf59fbeef3 ("powerpc/cell: Remove support for IBM
+Cell Blades"). The PlayStation 3 is the only platform left and nothing
+there produces or reads these notes.
+
+So remove it.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- Documentation/admin-guide/binfmt-misc.rst | 3 +++
- 1 file changed, 3 insertions(+)
+Christian Brauner (2):
+      powerpc: remove coredump support
+      coredump: stop unsharing the file descriptor table
 
-diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-index d26b63a27c25..9e84b877d06d 100644
---- a/Documentation/admin-guide/binfmt-misc.rst
-+++ b/Documentation/admin-guide/binfmt-misc.rst
-@@ -19,6 +19,9 @@ To actually register a new binary type, you have to set up a string looking like
- ``:name:type:offset:magic:mask:interpreter:flags`` (where you can choose the
- ``:`` upon your needs) and echo it to ``/proc/sys/fs/binfmt_misc/register``.
- 
-+The first character of the string is its field delimiter and can be any
-+ASCII punctuation character other than the backslash ``\``.
-+
- Here is what the fields mean:
- 
- - ``name``
-
--- 
-2.53.0
+ arch/powerpc/Kconfig                         |   1 -
+ arch/powerpc/include/asm/elf.h               |   6 -
+ arch/powerpc/include/asm/spu.h               |   3 -
+ arch/powerpc/platforms/cell/Kconfig          |   1 -
+ arch/powerpc/platforms/cell/spu_syscalls.c   |  20 ---
+ arch/powerpc/platforms/cell/spufs/Makefile   |   1 -
+ arch/powerpc/platforms/cell/spufs/coredump.c | 183 ---------------------------
+ arch/powerpc/platforms/cell/spufs/file.c     | 114 -----------------
+ arch/powerpc/platforms/cell/spufs/spufs.h    |  12 --
+ arch/powerpc/platforms/cell/spufs/syscalls.c |   4 -
+ fs/binfmt_elf.c                              |   4 +-
+ fs/coredump.c                                |   5 -
+ 12 files changed, 2 insertions(+), 352 deletions(-)
+---
+base-commit: 66498c75b4f8017f62d720d9b59675bdf3abce91
+change-id: 20260826-work-spufs-coredump-4e14ce185587
 
 
