@@ -4,101 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60D3BC5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:21:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7898C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:21:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B5576B009B; Wed, 26 Aug 2026 12:21:15 -0400 (EDT)
+	id DF3166B009E; Wed, 26 Aug 2026 12:21:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 565DB6B009D; Wed, 26 Aug 2026 12:21:15 -0400 (EDT)
+	id DA38B6B009F; Wed, 26 Aug 2026 12:21:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B8B26B009E; Wed, 26 Aug 2026 12:21:15 -0400 (EDT)
+	id BCEDC6B00A0; Wed, 26 Aug 2026 12:21:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 12C356B009B
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:21:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9670B14019B
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:21:09 +0000 (UTC)
-X-FDA: 85143935058.28.88D99D9
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A177E140011
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:21:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=SjZsZs02;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=l0s9+cLU;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787761267;
-	b=umoua53NhjShQl2ot1uoGAgHpc8NIinHRwyOANz+CGdmn9jaM7dipGYcX+4mNnCag3RFa/
-	3Pnpw0d8shVQIXoZR72HRe7a6uo29/rd/Td5AOQbcIF/+PujGOudT7g584kjg1/5HdKt8N
-	C2ySfKb7Fa14A8H4ZcQO0kNfKDRREyE=
+	by kanga.kvack.org (Postfix) with ESMTP id 841476B009E
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:21:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7837214019B
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:21:15 +0000 (UTC)
+X-FDA: 85143935310.06.34F0E32
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7DA42100011
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:21:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="h X5xXl7";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=e4I4TC4D;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787761267;
+	s=arc-20220608; t=1787761273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=j+6mmJQV8MKheyA1Tiyd0okJyHRYrBha/y7uF4qkZ9c=;
-	b=tBhtry/M5E/hV3UnZ9WzTVZf+eolxd8Aws0zCBCF/wKyeTplleb3lrlcXRWfxuh0hZbCDH
-	s1bVZbkblJoxkJC3CCBIYb8alme0oLu+94Msp6pZG/WVOTZ5VjM5G04G9Mm1wunSVbzuoh
-	ImitlQgDcxBqR6g+1k0EjFUBpHoETq8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HbFogDQUqiCSfuewrPmwAWRl8NqcTYitqpsCtwQzicU=;
+	b=76+ogQs/1A7N8zvjkcznMs2FUJBuxexM6VUzOFhM23FZLILZ8dIudKo3kePy6bxdYOogpG
+	LQeTqcwiVe6GLp4CqlspB65yXMVxoCvJq4EqXbuOO9qNoHWZDtDmyR8R5ktCP1JcBHmcp8
+	E8MootkQQkFLhZZV2Ef9+TlngRlafQ4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b=SjZsZs02;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=l0s9+cLU;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 1CD391400192;
-	Wed, 26 Aug 2026 12:21:07 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 26 Aug 2026 12:21:07 -0400
+	imf05.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="h X5xXl7";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=e4I4TC4D;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787761273;
+	b=B8wnEWSp5ZHjCAZkncXsBGsGMBZv6qPOD1+zQT/twQ+y6DvQnDc1VCgTqhD9biVM8WLgmZ
+	P2ISEWAxGS3Iw/jOa00ZKjTIrXociJlvRHGkd+IDCJ0lQT46z/jFH+pn6t4Y6mh6H/w/ax
+	yd7t6FlRqn9uB9LwV7GVasEQhtwnjIM=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 09DA3EC0038;
+	Wed, 26 Aug 2026 12:21:13 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 26 Aug 2026 12:21:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm2; t=1787761267; x=1787847667; bh=j+6mmJQV8M
-	KheyA1Tiyd0okJyHRYrBha/y7uF4qkZ9c=; b=SjZsZs02x4SYnkC+nDbn534D33
-	h2dkZGuJ95BntL97oM5ugPdFHFsUqFaznWFEvEpgyX0mqs1M3w/10rR6tJHaWFh+
-	Vws51Oy+LQWw15Iby2iut9kmO67G/Gcq8sVr1xFE8+ZT72O8QyhblsQKNgqEcVEg
-	eMX06UUw8rfnu6zIugOL0y7YfdRP8zaswhv1CkYr5gYvaFzEtRyHsYz4TbcFhmYk
-	8ubajzTKyNalBqGgktLzElsRz8+uEOl470dj4B8zQC2VCwhduM4lQjjMY+4a0dyr
-	JJEnpb0xtlndCHfyCMLLVa9elELGW0NidRamjsvHP1IJXd6xU4bfPzMmb3dg==
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1787761273; x=
+	1787847673; bh=HbFogDQUqiCSfuewrPmwAWRl8NqcTYitqpsCtwQzicU=; b=h
+	X5xXl7beBITHeeUvkfehphJkJjs7Eu+u9g3iPbV43qXhJ98ZN9gCFY8KSCXktfc4
+	YVl3E312cabApWB/k/A9YPY+1tcNBEoqqfrPcR7xl5CT5pp/JADjncWSXhV3WE1r
+	OlE8o8/+/dbsWyz8rLJXIe8c3qTH9qTVfg78J8re22Tp3bbTeAGhrY0ZNO0lMEmJ
+	G2Nd12jg64ooxJ3FTDIAHKJESPsuwvWjrdm45M+NBmpR7Q7sjooKWeYowPWp85hb
+	1/ZM1CfhNlYfOg8TkSJ0IAtEwudugAoxQb53rvJczdOHNeQjN02pIDF7w2Mz7K8w
+	2qX+eCL0UPAtjarrIs/Yw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787761267; x=1787847667; bh=j+6mmJQV8MKheyA1Tiyd0okJyHRYrBha/y7
-	uF4qkZ9c=; b=l0s9+cLUzVIbhslQjTuRObWJpMg15HTrZJawbXPDojdxqMNlzcr
-	ax+L0vuowgZ4r2FmXlvHa0x1dRs7pLFd2OUccNNq+QLTmFNkKFmgyw/CQPZsYIPp
-	Vu9+2fUoWYMFkQDgnwLhtelZ+hoZI73D2yzp4lRplKY7vmyeVJK3TResxoG92Cbq
-	Wy3zvbBwGFL8Zes5/B1deb0kWxkI6Ap5ofvaQZql9nwJCQKjSo8/Y1vycVnDX5HL
-	NSrY0TVPTZhVbSugpDpg9RVb7jzkGAtr/52ip+yejFC+7jk6tFWabwWLh8vlI31D
-	D/BJ3EyesPklm+PTE9233E7XOFYqso0CzXA==
-X-ME-Sender: <xms:cRKPagsdikrLixsX9PmTOgpasazeuD74ej2-kgOUFnw3qodJn6BhDQ>
-    <xme:cRKPapb-TmxX5Jeu26Y9BaOoHEtdEeNFBiRu1R87Ork7c56PYxiS0iOZICKhmqJIZ
-    XZEfu7ABTnsSQa5YWNg3rJzXO0woGmvIY6rHQyPR64Pum9mak2nW8Y>
-X-ME-Received: <xmr:cRKPah7Ghp8rq7jHQQtVjm0rrqTfLT_YVirWmHwtANsbLfQ-me6S-9Yb1FY>
-X-ME-Proxy-Cause: dmFkZTGdDRZOmCQhCp3v7Z4DXYRb7jaytuKsqhJJ+i6wDChkAgllaSm2c6/LznZNVrhuZZ
-    DxABY3gbSNrfSJQ8iT3kMENZkvvkLhwKvasQHxWKW9f7+6U1ciLUnxkkLGR4lJY8DToqve
-    nQAd1Pwzx8Q3e3f1jMOjm9izuZD0xrMia/Xd//1C/SzMgaFmQ/f+3xj8O9m7UCbMRfpA32
-    xNoFeOKVehYNB1PUY2RDqcnq5sTA8HESoP6+LU+rfu66zy4u4d2Hd25BimN9k8yq6Y0GRU
-    rv/CUjbCmRsFYNTmMC+EFy6SemdOsOo7KqMofNzNAak4gK8H0LY9U1zwKpdK3TtWR5bjh6
-    FYu9GHd6ArxlHNyQoAC74cn0vu3VIFRz3z20rCOItcieV46yI8HjaZFT41O11JikmLe8ng
-    4oz5/wlufrTbK5y93u6z3rDz25LahNobyrAqGaQqOc4NF9ylr/9DvbjkZtTqvitQj53x05
-    BRzvqpur/UoRoz8HCycKzZe6sc7qLeTvrSr4xo9ZcmPMxQ8iJGyFXT2lmyOpqR05bfTfoT
-    2dX5DqrGxStebT3pR3UpaYQRz1DH1cvAHDfEyfjTk/HEb1xf3/UXK0SelqRBRXg1/Z4kpc
-    HSb5goz9pruaO+Y7uLVmst4T8KhcRyaE0QIig/0AzcnPM7dq4/LL//AimCGw
-X-ME-Proxy: <xmx:cRKPapknr8xImVVLs50yC1EXoiKkQwWnhLPUZZAT4qNnJpSwqpF1uw>
-    <xmx:cRKPavEE87_RkDzvi5FuVnZmxWPLrgiC6RUNNLPH9JQTRPYGrJFs3g>
-    <xmx:cRKPalE8PjqPaWwV_SgoX0rguqDoydBLgY6BrDE120ABKNnE7gRpRg>
-    <xmx:cRKPav2T-9nr0J1k84bwih18GqsIgtkX-sdLTSDOjLDVPV680i2qwA>
-    <xmx:cxKPat2eOI4DsoEQm227vIA0N3MtKtLA5_n_0UjQp2jK9_pKIG4_eN5K>
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm3; t=1787761273; x=1787847673; bh=H
+	bFogDQUqiCSfuewrPmwAWRl8NqcTYitqpsCtwQzicU=; b=e4I4TC4Dg6vSUTOON
+	pIYNd3s5ogbZDyJ74DSfdMmNgsgwY6iIbcOvaIoQhFu/yueD+qa+WgjHvg8wlJJe
+	zfiT/1TMFNDt+qiYxx7PcTs7X3hdWALAqvdgGkqdgOBhRQX0jtZV0UtmBcX55+AT
+	g2+05U014BubHX4wCuM89F5o56EMLcE0BtuS4WU4l/xMy11fN5jkXR79aUTpLXuA
+	K0XAOKiuqWqN85OaP5FGvkscMXqhUDZf6X7zsQgqL+aJCac9Mze1Im7gW/VINhAP
+	cqL+BdqsTX5iBibZLLw/F/VGYxxeqbjceIlzPzfmE6oKWvwvJTWBBMS1ZXTSg7z1
+	406UQ==
+X-ME-Sender: <xms:eBKPahxzo5jPb1QBsfxOTLa4IxBkJau__lnZFaYR3ZInZi2ZOPMI0A>
+    <xme:eBKPatPpF4YBocktvvNX323GTsEFnRvQkpGW673-TPZTx15ZSP3OJ_m2wue4XcW4v
+    QWFTO6T_FcG3rQg2vH-MyUHq-8hKkzcqa8a6dS79Yk7wXFfsMckDw>
+X-ME-Received: <xmr:eBKPahe9p9_mSA3PIoQbVTOoq9THPYkoeksPNIg8taLWYOsCAXTe-NvinYc>
+X-ME-Proxy-Cause: dmFkZTEpX8HBQysEAMlAbdyKFX4BLzWtS7+Qo1RjxAJeMJnS381384CQaxM92QA8W5J6jo
+    7r0RHbsPcTs1IpTXqcOu2ofgimA8w2hMK3OeOMvPUWs2NDJNBlDL/23E29uU3eWq90a8Ny
+    uayj7GqONoh0NEQ91mQ/H+TE3rTPuVZ+wfrdHbeyaEyRe40ZIUYJyXTHqnubEDskXnqfPu
+    FIQsvLmT+4mxeisAsg0TmWv4Y7l9NdKef8tTMihpDmjKvNxij8lw310+ofBfGEkzSLqnuN
+    AyozbfZUQr702Kz+RkXguKuGQfBCnKcQhC5EFdpLjS6L6jWqh1sGvO+4Vl+gX27JPRP8CC
+    ZugFusXp6cdUu6aFxt4ihsFEeQsHpfMqFD2WIyBRpBjs6vrkwLZjumNr704QfNAegyDXmb
+    bgnCWGCyShfc6lI47NAlmD6PpdSizmJYpB5q0a47cWEcF3kilhPKSlsjtHoo9AJr3IDvFd
+    1sCkNxb2bff5/nwxJwcRaywBnBLxIAIZ81NuUz38JVQtnxO4LoZvAAok+FmHFucDeP8dIy
+    N6NNUe64csqK7I4cW7OnfmkW0SdkkRFZdnZAMaUGoxKcPHERVQ9iQyylfckgeVEPUG7KYi
+    wzTYPjg7q9hDjaxJEJ2uw1hx6/Lk+6DXyOhwd0C+szYvJz2/t8qGBrLU4rZw
+X-ME-Proxy: <xmx:eBKPap4FKFRGN3qCZV980bFsDhYj16t6A2r4kKXsa7IaQga_DDiGmA>
+    <xmx:eBKPahILfgj2l3sleaQGacwaTbq4c6kLY-tuYJz09OrexjK5hWskuQ>
+    <xmx:eBKPal5-XUmvaJQwU8uKzXJtA9BP-iXBBpsdwL_QPUvjP8bOci5Zhg>
+    <xmx:eBKPaoZhnonbcfHxPCCUrwJAfO6iJmfZC3v0qGJ0nLPEnUlf0zsoyw>
+    <xmx:eRKPapYYnbV28KYkcKas-4UpW908Qo0ubyXNK3SyH_AhtbsNtRzt1DLh>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Aug 2026 12:21:05 -0400 (EDT)
+ 26 Aug 2026 12:21:11 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -118,20 +120,22 @@ Cc: lance.yang@linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH 0/5] Fix deferred_split_isolate() and clean up __folio_freeze_and_split_unmapped()
-Date: Wed, 26 Aug 2026 17:20:56 +0100
-Message-ID: <20260826162101.1314941-1-kirill@shutemov.name>
+Subject: [PATCH 3/5] mm/huge_memory: reduce indent level in __folio_freeze_and_split_unmapped()
+Date: Wed, 26 Aug 2026 17:20:59 +0100
+Message-ID: <20260826162101.1314941-4-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260826162101.1314941-1-kirill@shutemov.name>
+References: <20260826162101.1314941-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A177E140011
-X-Stat-Signature: 7rghdtard77hbdw6dqjatebp31rdq1bf
-X-HE-Tag: 1787761267-31391
-X-HE-Meta: U2FsdGVkX1/EiwGkOeMelzDXPq4ubFarbEKkFKrY9zXqiE1DKcBctV0djqnGKxJMqW/RxRcEMfyUS2UfKztMT+17zN9Toau+UlbEJ+Es82ufO7Q3qABqyKaUJsOO3+hfN0EnP7NGltjGZhDfOdx9ZzEZStsseAlb72ns4MS7lf9lUbpuph9o+pGgz1Uj2Fy/ID5f3WOYiGoMz4HIe8vlf6WALBdbnGYxB0ecCRNA/qUAOBz1uFTCu4a5kUxHtGqjhBFq6XTHpv+DlFZT5PV8kSApsDoCwkWKZjAanqSzNLm0vRVoNYv0NEr9lqFfRZu1a5Nw6PNL4dTZlEg3zFtR0kaUHJw+blA5O3MtOybUYpCSyna5As8VoBJeG4DYnL8owRzYdetsaFgrNgD7yzOXyRHSS4qRrI8roFEUHzVY6Bm7/gTuWdeb+5P/Vtc7i8pKrJalUFbA04CaIW2mQutZQWGsS3C3BD7QyMjMomJFziccOKafYSl1sAvPjQMBHq/jH9Pqcs5K+lKIv7GR+WRhY4fNdxLjFN0ij8HQ+7jnfhby1oaVjufS17xX6PCj6/DHkhI/ABU77MY55UYZTga4uTu9i6wA6aLv3B8OyGCGI1eIJztqwzy6vHd6AAey/U+9nQPst8/dH1+TTmFHDAj2SD23qsZZLTkBXefRrVGDcU59qYh2ANx9kWuOUf4i0V4mcPvZnWRiFfeqFjUK7wAEMg6ur5SD0/LiLEGLEGB4fvGL49Pxu1h7n6pFakWBIG24CBiNW4eZ82MlXoMO6xCFd7oilHvut6cfPrIzj5BNBuzaaR/Quo6PyOhrfw821rV5PcsnPptC5ec/ix0RwKeMtozyzjoVwkfYdNHf87cg3QafZxvJhNszP4yLC0yWUrwtqQnXv/eVflpU19nHUCx8gw9K+hUBk2Fm1kjOvbU1C9s5T2mSfzQak/VJnYKkxbFSRPurDaEe8w2MxSzbfMA
- nqD/ZJY9
- HUCFHoVZrgYSma2YwrB33jgcm+Pxhvkj8X1pwKrvuvaUU0LH2schc6ca8emDGtxUS5rCooJmWS6dDOQUEztBngdiaERLej5b3kbvRvr5kPzUsUczDo0yTI6eELO2t5I1fFOh6vptlgydUq6CY5qNQwdIwQ1N1xi3GRvzBf1znj1AD9ox6vQf80v0XDqG4vk39xejtIIzG9q5MpubnzEfX4XhdZ55qHCT6MqabhfCsqoO57IyjDYDu//KrzrmL1433a3/ui/wJ8+8kN0JbiCzZTL4inDDZF/VDLYdGJZLLuFanUCi7bwfqLkrgXwxMex66XaUNvWPX3LIkL25AYpvDmg3gchE0jh2GJvxQsjVAqw9+6dIzSnTeycLy36nSpLt/ct/d0nOun+mmKUY62FcfbrxU2+4xqWb0Vh7nwmFrWmnkcERn73e07z25usP3jNL2C3KG7ux7bZiyUOqSGjkNApYNzadbyx3xEhopZb6Hrnypj17DRsmJT75fiA==
+X-Stat-Signature: f3jq8jf7cb94fjnwoo9fp17s7xjmtgh3
+X-Rspamd-Queue-Id: 7DA42100011
+X-HE-Tag: 1787761273-87482
+X-HE-Meta: U2FsdGVkX1/8E4VkNDCvgmoN9VJqgNCPY/PJdGG3B7L6ISivPGDjEwHbnIHv6vAOVIv6PArYoQ1eIHnShTzoeXgwX0eQgPe7Jc9dcOy+T/D0SF9uwODFY22wgWO8NuXw5jdgHjzZuKLN1LsnRZJlYvwVb/YmfKjmrxWxHjUEd7U04Ii+MhK4+DXxATtLMh752oVDxwnCoZkUApDKxp7WF/gydcWOo8NKY4cQXBO6VJAiHj/m54uEL5Vj/Dl3TBhaV+XkXPwVgBMzlN0k31gJoclKrqezKut/tmPkqlUkK4LChIEeErJ9UUTTdFyDqtE/y8kFh3ZrD1NZZbWmgJ+yu2TYXcXCaGVw5HrEnry/5xuFsqwbkWN6kaPqowWUb5voUExzI93IJLN30D31B0ZD9rvKaVNFhMUbK7tEVCjQhPhem8Z/0qs0BycRGR3TgblGag5GObki11NPmLaVv1LNzVAGtqaj7c8C0GZTgY+5ems7Csv5bxqFjhOBxJT+xYCvGQJT2snzwcw+7INsdPNWYrCPMxI4qZXRsgHdmG8IQinER0scKBb/t6bBPn+TAjMpf8tNQVWflHQhczz8JWl0o7YBZDPBcoed6eOVi6fT/YwZMMdD7DsswrZNZIArBY5SZ+nVrRcHtVQqHXt2uCmIqKDA/3VoE4CIPTgMr+/TbyGj45oj8yWZDIZ8h0z2U1SwOpuu5sb5F8+Tr/43928aiOLxf/saJ1BcLZyv+9crsbzn0aIjgSztwYzJln/KdsDa81bdW37d3+jn8mrcuxJmYcQezk/r/UGFniMDe59QocKFr1yV7qNHW3g9VqZc0FB8Zqn5etbWt3pxAg7t0QvhAB7fpr0Jw0mn7hT6cB1kmqsCnjAuIH9x9e39ybQvWbZAzvfXzhj3ULhkvW7FdetsW9OosJ1q+N+Ks8qr8IjukLvRaGcWMxXQSsC2ogVhA9/n9tGlVrSKm8KNRhkcCei
+ gqjwfg4T
+ QoPp6FEcJJAhykLrHIMoOavosWyLBWc3EYff9J2Ir+FTa4ZfUxKpdZMlEuRkaiywUjUcCBNT63Jzmo4dqr0Ugpmyq6JK/VedZ0TcmQUXvkAO3gf8nmup3TS/NFTbc8kHeqByFpDJhvSqFAGFQ8cBwcVZnlBLj642WmGd/v7J9daBnEzg/FX/mS52hBXHx0YpiJEOr48L+zdZbd0YEZ9taguvIFPqoohGBbcaLL77vbDd3u7gG20Qa/OlnD5c0b+zizk2Wu5X0yL2j1LislRUppmC16KwCXxXii923jaLIoGcjPmwFMMiAzY4AzXKKED4IbzidE6cIQrkHIJZBWR9myL0w9Y5sj/o4sNcpVRZTMg/VtOTkdvcOkaIPN2PTUYigxa81dB6+jt38MnijSpLH+YDTcHlKKg4/r1f94K8If5e6KGF1GxoXGAiejuBatBQfTzmz8xD9L+TGPKvoVW6U635npvj/o3G5IL4fHVJxylin5eHOZNJe6ACObQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,55 +145,268 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-deferred_split_isolate() probes each queued folio with folio_try_get().
-folio_try_get() failure is treated as a lost race with folio_put().
+Trivial cleanup: short-circuit the function if folio_ref_freeze() fails.
+It save an indent level for the whole function.
 
-It leads to wrong results when !folio_try_get() was not caused by
-folio_put(): for a frozen folio, PG_partially_mapped gets wrongfully
-cleared and the folio dropped from the queue.
+No functional change intended.
 
-It came up in the review of my collapse RFC series:
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ mm/huge_memory.c | 233 +++++++++++++++++++++++------------------------
+ 1 file changed, 115 insertions(+), 118 deletions(-)
 
-  https://lore.kernel.org/all/20260824131224.73344-1-lance.yang@linux.dev/
-
-The bug is inert in upstream code:
-
-  - __folio_split() works around it;
-  - __folio_migrate_mapping() freezes a folio it is about to replace;
-  - reclaim freezes only what try_to_unmap() already unmapped.
-
-No stable@ needed. But my collapse rework steps on it, so it is worth
-fixing.
-
-The first patch fixes deferred_split_isolate().
-
-The second patch removes the workaround for this deferred_split_isolate()
-behaviour from __folio_freeze_and_split_unmapped().
-
-The other three patches are trivial cleanups in
-__folio_freeze_and_split_unmapped() that I stumbled on while looking at
-it.
-
-Tested in a VM: split_huge_page_test, folio_split_race_test and cow pass.
-
-Also ran a test that leaves 16 partially mapped THPs on the deferred split
-queue and drives thp-deferred_split through debugfs, checking
-nr_anon_partially_mapped.
-
-Kiryl Shutsemau (Meta) (5):
-  mm/huge_memory: do not touch frozen folios in deferred_split_isolate()
-  mm/huge_memory: dequeue the deferred split after the split freeze
-  mm/huge_memory: reduce indent level in
-    __folio_freeze_and_split_unmapped()
-  mm/huge_memory: fold nested ifs in __folio_freeze_and_split_unmapped()
-  mm/huge_memory: turn the swapcache-with-mapping error case into an
-    assert
-
- mm/huge_memory.c | 260 ++++++++++++++++++++---------------------------
- 1 file changed, 109 insertions(+), 151 deletions(-)
-
-
-base-commit: 33f61b12d297562321533c048e034b1fb21c1cf3
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index c84e8cbc986d..36e90756e83b 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3930,132 +3930,129 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+ {
+ 	struct folio *end_folio = folio_next(folio);
+ 	struct folio *new_folio, *next;
++	struct swap_cluster_info *ci = NULL;
+ 	int old_order = folio_order(folio);
++	struct lruvec *lruvec;
+ 	int ret = 0;
+ 
+ 	VM_WARN_ON_ONCE(!mapping && end);
+ 
+-	if (folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1)) {
+-		struct swap_cluster_info *ci = NULL;
+-		struct lruvec *lruvec;
+-
+-		/* Take off the deferred split queue while frozen and memcg set */
+-		folio_unqueue_deferred_split(folio);
+-
+-		/*
+-		 * deferred_split_scan() takes the folio off the queue before it
+-		 * splits it, so the unqueue above finds an empty list and
+-		 * leaves PG_partially_mapped set.
+-		 * Clear it here: the flag does not survive the split.
+-		 */
+-		if (folio_test_partially_mapped(folio)) {
+-			folio_clear_partially_mapped(folio);
+-			mod_mthp_stat(old_order,
+-				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+-		}
+-
+-		if (mapping) {
+-			int nr = folio_nr_pages(folio);
+-
+-			if (folio_test_pmd_mappable(folio) &&
+-			    new_order < HPAGE_PMD_ORDER) {
+-				if (folio_test_swapbacked(folio)) {
+-					lruvec_stat_mod_folio(folio,
+-							NR_SHMEM_THPS, -nr);
+-				} else {
+-					lruvec_stat_mod_folio(folio,
+-							NR_FILE_THPS, -nr);
+-				}
+-			}
+-		}
+-
+-		if (folio_test_swapcache(folio)) {
+-			if (mapping) {
+-				VM_WARN_ON_ONCE_FOLIO(mapping, folio);
+-				return -EINVAL;
+-			}
+-
+-			ci = swap_cluster_get_and_lock(folio);
+-		}
+-
+-		/* lock lru list/PageCompound, ref frozen by page_ref_freeze */
+-		if (do_lru)
+-			lruvec = folio_lruvec_lock(folio);
+-
+-		ret = __split_unmapped_folio(folio, new_order, split_at, xas,
+-					     mapping, split_type);
+-
+-		/*
+-		 * Unfreeze after-split folios and put them back to the right
+-		 * list. @folio should be kept frozon until page cache
+-		 * entries are updated with all the other after-split folios
+-		 * to prevent others seeing stale page cache entries.
+-		 * As a result, new_folio starts from the next folio of
+-		 * @folio.
+-		 */
+-		for (new_folio = folio_next(folio); new_folio != end_folio;
+-		     new_folio = next) {
+-			unsigned long nr_pages = folio_nr_pages(new_folio);
+-
+-			next = folio_next(new_folio);
+-
+-			zone_device_private_split_cb(folio, new_folio);
+-
+-			folio_ref_unfreeze(new_folio,
+-					   folio_cache_ref_count(new_folio) + 1);
+-
+-			if (do_lru)
+-				lru_add_split_folio(folio, new_folio, lruvec, list);
+-
+-			/*
+-			 * Anonymous folio with swap cache.
+-			 * NOTE: shmem in swap cache is not supported yet.
+-			 */
+-			if (ci) {
+-				__swap_cache_replace_folio(ci, folio, new_folio);
+-				continue;
+-			}
+-
+-			/* Anonymous folio without swap cache */
+-			if (!mapping)
+-				continue;
+-
+-			/* Add the new folio to the page cache. */
+-			if (new_folio->index < end) {
+-				__xa_store(&mapping->i_pages, new_folio->index,
+-					   new_folio, 0);
+-				continue;
+-			}
+-
+-			VM_WARN_ON_ONCE(!nr_shmem_dropped);
+-			/* Drop folio beyond EOF: ->index >= end */
+-			if (shmem_mapping(mapping) && nr_shmem_dropped)
+-				*nr_shmem_dropped += nr_pages;
+-			else if (folio_test_clear_dirty(new_folio))
+-				folio_account_cleaned(
+-					new_folio, inode_to_wb(mapping->host));
+-			__filemap_remove_folio(new_folio, NULL);
+-			folio_put_refs(new_folio, nr_pages);
+-		}
+-
+-		zone_device_private_split_cb(folio, NULL);
+-		/*
+-		 * Unfreeze @folio only after all page cache entries, which
+-		 * used to point to it, have been updated with new folios.
+-		 * Otherwise, a parallel folio_try_get() can grab @folio
+-		 * and its caller can see stale page cache entries.
+-		 */
+-		folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
+-
+-		if (do_lru)
+-			lruvec_unlock(lruvec);
+-
+-		if (ci)
+-			swap_cluster_unlock(ci);
+-	} else {
++	if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1))
+ 		return -EAGAIN;
++
++	/* Take off the deferred split queue while frozen and memcg set */
++	folio_unqueue_deferred_split(folio);
++
++	/*
++	 * deferred_split_scan() takes the folio off the queue before it
++	 * splits it, so the unqueue above finds an empty list and
++	 * leaves PG_partially_mapped set.
++	 * Clear it here: the flag does not survive the split.
++	 */
++	if (folio_test_partially_mapped(folio)) {
++		folio_clear_partially_mapped(folio);
++		mod_mthp_stat(old_order,
++			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+ 	}
+ 
++	if (mapping) {
++		int nr = folio_nr_pages(folio);
++
++		if (folio_test_pmd_mappable(folio) &&
++		    new_order < HPAGE_PMD_ORDER) {
++			if (folio_test_swapbacked(folio)) {
++				lruvec_stat_mod_folio(folio,
++						      NR_SHMEM_THPS, -nr);
++			} else {
++				lruvec_stat_mod_folio(folio,
++						      NR_FILE_THPS, -nr);
++			}
++		}
++	}
++
++	if (folio_test_swapcache(folio)) {
++		if (mapping) {
++			VM_WARN_ON_ONCE_FOLIO(mapping, folio);
++			return -EINVAL;
++		}
++
++		ci = swap_cluster_get_and_lock(folio);
++	}
++
++	/* lock lru list/PageCompound, ref frozen by page_ref_freeze */
++	if (do_lru)
++		lruvec = folio_lruvec_lock(folio);
++
++	ret = __split_unmapped_folio(folio, new_order, split_at, xas,
++				     mapping, split_type);
++
++	/*
++	 * Unfreeze after-split folios and put them back to the right
++	 * list. @folio should be kept frozon until page cache
++	 * entries are updated with all the other after-split folios
++	 * to prevent others seeing stale page cache entries.
++	 * As a result, new_folio starts from the next folio of
++	 * @folio.
++	 */
++	for (new_folio = folio_next(folio); new_folio != end_folio;
++	     new_folio = next) {
++		unsigned long nr_pages = folio_nr_pages(new_folio);
++
++		next = folio_next(new_folio);
++
++		zone_device_private_split_cb(folio, new_folio);
++
++		folio_ref_unfreeze(new_folio,
++				   folio_cache_ref_count(new_folio) + 1);
++
++		if (do_lru)
++			lru_add_split_folio(folio, new_folio, lruvec, list);
++
++		/*
++		 * Anonymous folio with swap cache.
++		 * NOTE: shmem in swap cache is not supported yet.
++		 */
++		if (ci) {
++			__swap_cache_replace_folio(ci, folio, new_folio);
++			continue;
++		}
++
++		/* Anonymous folio without swap cache */
++		if (!mapping)
++			continue;
++
++		/* Add the new folio to the page cache. */
++		if (new_folio->index < end) {
++			__xa_store(&mapping->i_pages, new_folio->index,
++				   new_folio, 0);
++			continue;
++		}
++
++		VM_WARN_ON_ONCE(!nr_shmem_dropped);
++		/* Drop folio beyond EOF: ->index >= end */
++		if (shmem_mapping(mapping) && nr_shmem_dropped)
++			*nr_shmem_dropped += nr_pages;
++		else if (folio_test_clear_dirty(new_folio))
++			folio_account_cleaned(new_folio, inode_to_wb(mapping->host));
++		__filemap_remove_folio(new_folio, NULL);
++		folio_put_refs(new_folio, nr_pages);
++	}
++
++	zone_device_private_split_cb(folio, NULL);
++	/*
++	 * Unfreeze @folio only after all page cache entries, which
++	 * used to point to it, have been updated with new folios.
++	 * Otherwise, a parallel folio_try_get() can grab @folio
++	 * and its caller can see stale page cache entries.
++	 */
++	folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
++
++	if (do_lru)
++		lruvec_unlock(lruvec);
++
++	if (ci)
++		swap_cluster_unlock(ci);
++
+ 	return ret;
+ }
+ 
 -- 
 2.54.0
 
