@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF61CC61DBE
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 12:25:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1171C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 12:25:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C58856B0088; Wed, 26 Aug 2026 08:25:08 -0400 (EDT)
+	id EF0416B008C; Wed, 26 Aug 2026 08:25:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2FEF6B008C; Wed, 26 Aug 2026 08:25:08 -0400 (EDT)
+	id EA0B76B0095; Wed, 26 Aug 2026 08:25:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6D2E6B0095; Wed, 26 Aug 2026 08:25:08 -0400 (EDT)
+	id DB7126B0096; Wed, 26 Aug 2026 08:25:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9962C6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:25:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2AA3FA035F
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:25:08 +0000 (UTC)
-X-FDA: 85143340296.28.B82E8DE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE5F36B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:25:10 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 284211C1948
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:25:10 +0000 (UTC)
+X-FDA: 85143340380.05.6CC013B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1262214000A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:25:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=H1AKHO99;
-	spf=pass (imf26.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0C902A000C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:25:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uQ4oK8Tl;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787747106;
+	s=arc-20220608; t=1787747108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Fpvkr8ZzYlj8/ituNx2A0/BU6uKzCk/HiB6+v9ddThs=;
-	b=CFqktPEfWO//zP+RVHQLSGsvxefOgrjtwsi3Tdt9foONDCZU3E/LPWjcBY3hnADrFXcf4W
-	z4SVNoeStnsQGcKE9BkWjtJ9h++egWshiPHSapKyQkmkXZUQ+ton4IypJks5o4qg2FYmHe
-	JDOP59bDFi3M3eYwheYRxxPjHq1Mq0Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787747106;
-	b=APS37FVWo5qQg9Fohk1oSNnzrTjob5keu9KP57BpAG+k6rTnEEHBZ26sbNlgONaSmlpn9J
-	izvqmfBWM+/UhXdlND3srDHWqENTEbT2YWazxtVkNaD+PrSVuyUyIh7eBpMP+K9l+CZ3HY
-	lls/a4sjHolonw/sN9gYiH1OFfQHXvw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9qzcazUSCXnL57aSLfLl4TpnsdCTlkhFbBOFQKUBXMM=;
+	b=narV3ilS48ume4oGmliBpv8IePO7aO0rJ2UFsxE47X59JmyVvoAeHVRHTxiUBsLf/323Bt
+	9d8ZDXhfB5uskQtVfG+gZU/fbA6BtDiezE2YAdP/W1KlRUSSLJ5osCv2SUam95m23IbmoF
+	S4ocPHoPrJGlX0mTuExKkrYXJ/xkn0k=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=H1AKHO99;
-	spf=pass (imf26.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uQ4oK8Tl;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787747108;
+	b=vqstYi2Qkzx5U3Qjy265ep2V0Sh3322BMYHjuigIIu7BRuSw2u4PkCidra8RdkzNN3cg8p
+	IWrCguvrX8661tu/eU7JBOVtzDhZMHbq8tvzIwIr0kaiIui83rBQxDg5VVQMpoMrHQk4I6
+	9KG1ZPOYJO+ng1anfVAiZunJGasGoHU=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 103D41576;
-	Wed, 26 Aug 2026 05:25:00 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5151E1596;
+	Wed, 26 Aug 2026 05:25:03 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E21123F7D8;
-	Wed, 26 Aug 2026 05:25:00 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 313D83F7D8;
+	Wed, 26 Aug 2026 05:25:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787747103; bh=+m47CDGBLu+2KKry0pk847eP8rBPBT/djc8BljXHXXc=;
-	h=From:Subject:Date:To:Cc:From;
-	b=H1AKHO99jtLD2bOmZ5RyglZq5nbqOYTkUKkzgdFaYn3ohXgA64O7oLuBkluVJgWzj
-	 PgFhPKpCYsDvjAvDEuCpL8SwDam6INmNFDopQ3neQ2Kkagbh3BbmBUyP8nPj/qB8Tl
-	 39UAVvLzQxlmqUEgwD7Soi7bhHF3nFJQp5kJqic4=
+	t=1787747107; bh=GvQPZ0sVbuduLvQoOF9zM5jXfFX1CSDKvuBA3qmf1I8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=uQ4oK8TlYljFlraHfvdRd7Krim8N2tNZDk2qqEs+rKXm1fpcULodS+jTeipE4lc2N
+	 HMaynMo8ScJfqIL5txZ4T48K+OCtjAS3KEcQZGDAsXRBzmFRzGuKVxtYd+njkqSBBr
+	 gst23nZKEvCkrc5DdiopebD9VDTrtXgc5SVnidQA=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [PATCH v2 0/2] kselftest: mm: fix some failure of
- split_huge_page_test
-Date: Wed, 26 Aug 2026 13:24:38 +0100
-Message-Id: <20260826-fix_split-v2-0-71153c7f579a@arm.com>
+Date: Wed, 26 Aug 2026 13:24:39 +0100
+Subject: [PATCH v2 1/2] kselftest: mm: prevent random failure of huge page
+ split for khugepaged
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAbbjmoC/22MQQ6CMBBFr0JmbU0pVQsr72GIKeNUJhFKWtJoS
- O9uZe3y/f/yNogUmCJ01QaBEkf2cwF1qABHOz9J8KMwKKnO0igpHL/vcXnxKpzWbdMSaj0YKP4
- SqJx769YXHjmuPnz2dKp/679KqoUUdtCNxJPBC7qrDdMR/QR9zvkLzeH07aAAAAA=
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260826-fix_split-v2-1-71153c7f579a@arm.com>
+References: <20260826-fix_split-v2-0-71153c7f579a@arm.com>
+In-Reply-To: <20260826-fix_split-v2-0-71153c7f579a@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
@@ -84,27 +84,27 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1965; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=+m47CDGBLu+2KKry0pk847eP8rBPBT/djc8BljXHXXc=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqjtsbvrNCvj4po7sJrnN7TSfCTIQVoy1AQhX+2
- NKWHsYjt8uJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCao7bGwAKCRBt1cPRWsUx
- M+T4DADC0+md4koOHJPRiqUozSeGzQ4ENUdfN4dbVq+ldDlUffw8Fv/oYwph24FW/hJqA4qcCxt
- RTVIf9PqIjHGWEkD/hfzjT4PuS8oUL4FzlzeYN+9qhWxXOBbUZzO5LNzxpzHE9y/xkIYLzP3iNF
- YEY0KE2YnNBPGGEqbmzF50YKjdbb7/5Ai8ytW9zBQtBFX2M2tCWN1we1dIy09ZYjy6vHUo/Vw00
- cuSUalRsW8OY+toor32GvdjcSQX2Ki+8Ld3/Q+YG+uA9wyedY7SslfvjwhogNpYl4gfdEltJxE9
- /lBGLuoYWUXXAGR8dJe4ALH9h55Pyx8NqYwWamNDyhgCMGDy0d2dvsIf2I3vOX69zFho+RTK4Hr
- +jLWA1SFMp7/QeIwkRL9g7MzT9gpO+n7PtjywTbs9DY6GqdVaFXvb4DV+CIzOtuI/mYGjMOgAde
- W1vBkXWcBpvAGSF+DNwRXyU/+sQ/lezOqofApHi5IGNs7IV2bDi3vgBmHw7a0JOKqAg4k=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2698; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=GvQPZ0sVbuduLvQoOF9zM5jXfFX1CSDKvuBA3qmf1I8=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqjtsbim5lcCrKm1NTonGxRpo+/uWXYt6fnVqSW
+ 2zH3AZ2+mCJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCao7bGwAKCRBt1cPRWsUx
+ Mwl1C/9wWoLo2TBd76OtUebEOO9bmK1IDPaAImCIYUhdFcULi+QtYiaD5Dv95d2w/ur8IbUve0/
+ H1XJHff2OIt+Cggqmtqw128mL2F0wo+Ak2JZVW1KB0oc8lsbyMHXDswwrZb0lkBh+0IiT5Ne7YT
+ XyWGemLyMoggKrStCYhAzx8H4sr4VrxcNAccO8j6O0VFuSW3sgpMTBNRUhhfMUQYkmwiZPMdXO8
+ T5/MIBY4rMwZNSg6ouXnHnjQG3F6eFj70MDP7EWR3OijfONE9hx4JIcOGtxEka+E9mizpeb26JB
+ ehhQPMO0HbnfXVEWvsaRprxpwpckBw4s5L0mqQAqmNgcJLUIUsMEtBwToVd8lDBxN3szlymtN54
+ FKJ3ajlgig/fmTN3Mu/I0vBW8wfk37ly69RS90mhuL5kysqhLDErYPnXRWKTBuLBn0AGEIG0AhK
+ /S6GF2qbFCM5LXkiORwjKDIqJLKgTnL8xI4evcfrQX8SFj+13hXf6XWXjbOXX0qRKgRc8=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Stat-Signature: jmadw1naw8pmeygqgj3anidab933wkuh
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0C902A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1262214000A
-X-Stat-Signature: 6tknokrhozehukgyuydcozqtcddmgf5t
-X-HE-Tag: 1787747105-254939
-X-HE-Meta: U2FsdGVkX18W/Pm+oCx03En32XU/7CC8dqVL1U3Khw5RQhWLzX2hixVMryJ7ICEo/K4NWILd++r8m+PTA2L41GHCzM7UscWI9S9Y4Eaw2rljmzhFzvVY2oxVcL5s+5IROmNk/LdwbmYme7WyX6qaI5gDV8Zwbjk6dZxCD9PeBhoKBhr90/3H8aPe2HjGoEjPIxObSQKGR1oEyq5aG53h0bkU9KJDuM4TA+vawUoLmPsPmiUwNhjVg1J1stqS5+huSLmMlI2LNWOXOykvZH0cpHmPYT76ZZMCqDuo0CyG+xZoA5h9jKmn17yCy61RSPmGXUyfCBQnp88YL/d7jjvIA8bW0n4A2XwYjXmxcntLNSiMlV0CoNOrv711O1N4kc0AY5xkG1YtB/nZ2X8xYps+d9BnvI5L3CPtNSNW5yiThq235fmcJk6EqKKobiEieCQHE3kKlf74Os8L6Y5HZuV5to0gKRaYL37tEe7KiOQiLxfyYm0sMxmI6id+5wH8Hi2TFSq7NCAis+Fq057MznSAL+pYYsMx3OWhCPo1fWaOmFhd4cYfBg/EqxXUVQVw0G47hkNSOzfROw2px7yiuPgfIdzHzFbDmn6H2VxIzix1BtAt8JjHYwC+GSn6+Puvg9J8uyNBL3JZjrjdIxBS+zkMn9p99HXiLnvHwXhN77Udm8J7KJfFepuQfRf9JvTQJqKLoBLMwl/ZaLrwnzaQbN4be2A3BTRqvwJxSySuCTmkmBK90RPgMz3bZ5tNgWBjgeIVDyBpmK6YJyF2PwjcQtQvvZy7ryF1IYuppX8AU6r5BP2hCsP87TUuaL7drTtRCHoVxxzPxYQ+p3TN3ZLlME3S09bplmx1cUxHS2dnm3oYtWHqh0GZbCot6R8w32eZzIBgm6iNRSK/YmmL4BCmo4rIKI7QNPCizaxmyV6GZO55ShyIjch89J4K0EozJdAxpN0Pf7WkGrXQG0b3FRL/8sx
- SMgaf2Mu
- BcyrUmZIVeYN+z+DsHyZssnHEbEF6NuVZrOwsi0kROW21YSWQtKWBmc2W1k+L8ooBzP6XfTVPeg5DYZZrqUjVNiQyN/ee8FgLnWh9NbxymUWBSwaL1x+0ZslHFOYAoBWZHVEdZu9ASZ/jGUJRiRWA9hA5fNT/eD9k57ysOFZ5y/VzObnLcnZZIEuW5okphUK+XhCdkB43iAsvgoDCJlrEjeSRH3QFtfCPSHCPUYfJGUvtjba/pSEAdYY/dsXNJjSpVDdPu+B80YwzDIxSbQcWSTiifKe1V3AQUzJVBVqIoGrmzFIoDjfUpC9VvlX87n6IOJ5CnvWK081QslfPflyik6xGq+ZrKR3VPfp0
+X-HE-Tag: 1787747107-768003
+X-HE-Meta: U2FsdGVkX1/tnqvqrH1Muyoubzd+yRzf5KSFEy1OlaCXqZCXl/8XUeHHmFMHsvk4H8i3SujwP14PT4SpE9JeSDoYmmVcewTzOnwu6hwTcHA+rwEAw/KffZrZmOR69WN+GzjcwjrBdUp9cz20gbIpXB/FqIkxRFSHAj0g/icKjnjSdHgo+O5crkzGFhxnfs3gCq6hBOmVnQmDyqsME2EzonsvaOULrHcYscQbbJ3/rc7iykGKbvAYXX8G3jJ6NSOWWEWCowjkTHOS1RjawhGJunYqN8P7g/SEPwwt8WgLvO2XL2ecR8aRlsDdVLBrp3p8BuczSkIXhhs/X+ScEaUlZGteAthsd4EYqghz/ekf3Mw/Q0f3c6g4xaQsWpODIGn8ZVKH6inOqc1m02Az/8Dprou7BlRSe5yfes1H6/FZPSGa1ErQKb2s1GO2Oupl+gsUvO8/YHrHQNdZ8l8OLkalH3lWuqvOnT/KCIBjav5ltsF7Z5g8BRy7a7TONTFOWIlO4VCAnZ3m0xHx0tMUWBGdhYuct3pyPl4Giv0d/+831gicsBP4cp7oo58f6Ry1wRmVmgegzVGsd/G56f0xOOWPofyUfcxrbyuxYOiKKl8A/n0MTXg1Mp13qClU58JUzxJrL04VXCgsd8XvRZArWDJpPcEk+Invp4KfOAxBWXovloKUdjNsQ5GO/XIqs2m1Zt0dIng+Ck8qunP4CJaW3zHCpF+Ez55h29bC8ZZyDwlSxdtj1VEpP++o1unsnwr0xwr/20E/N1lnLlgy8LI5EVuK0Xy9UoNho2V9nTSqopHDrqGq+51ViR4n2o4e4lgX/GX2nMaSJCfHvLxehAPVSxde1lhEk78vCABaQHd9B3AV545c4lxbGMFlZTaXNOUtZrvpNWg9I656jOE6rVb+KDRfC1rYl+ACnNzrFu/rkwNZkC+yiv55gkYX6AAJWePPcMWOyBjrIVztfts6tANbyGo
+ tvxT+133
+ ASoOxBe0CQl8zcdyMIP/6F5Zqn7PuuoMv0lCWdBbInGl5CV8FUoKJj0hprYbiy7waVnKcoh1lLprqw02MLrc9xv+oUjYLS3OLRCp8LY59exfPoSnSEpkoFTuguOWqM/WaLRMLXisDMdk347XXxA4skIwY9w4/dGXE+eGM8wjOe36uGMO4SuUOghBOB+JiWTvzwZW6Be5eH8YzQ2y9wUJZmJ99cS+gNBzo4WLAEZrixaIXs5R7Ea6MAzFHMKWO3Yn5cHjhsyZySoicAJYUTiqGcGGBNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,52 +112,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-split_huge_page_test can fail for the following reasons:
+There're some random failure for split_huge_page_test when khugepaged
+collapses pages into pmd again which had split by the test.
 
-  1. During the test, khugepaged may collapse previously split pages again,
-     causing intermittent failures.
+Prevent the khugepaged's collapses for split page by setting the
+mapped pmd-huge-page with MADV_NOHUGEPAGE before split.
 
-  2. Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-     glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-     made by memalign(). The underlying VMA may start at a different address
-     from the aligned address returned by memalign(). Moreover, a subsequent
-     madvise(MADV_HUGEPAGE) call does not split the VMA because it already
-     has the same advice.
-
-     This causes the test to fail because the check_huge_xxx() helpers
-     incorrectly require the address returned by memalign() to match the
-     VMA start address reported in /proc/self/smaps.
-
-Address these issues by applying MADV_NOHUGEPAGE after faulting in the
-huge page, preventing khugepaged from collapsing it again, and by replacing
-the use of /proc/self/smaps in the check_huge_xxx() helpers with
-/proc/self/pagemap and /proc/kpageflags.
-
-This patch based on mm-unstable
-
+Reported-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
-Changes in v2:
-  - rebase to mm-unstable.
-  - add message in case of failure of madvise() with MADV_NOHUGEPAGE.
-  - fix wrong setup expected_huge in check_huge_shmem().
-  - Link to v1: https://lore.kernel.org/r/20260820-fix_split-v1-0-ab430c58c7cf@arm.com
+ tools/testing/selftests/mm/split_huge_page_test.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
----
-Yeoreum Yun (2):
-      kselftest: mm: prevent random failure of huge page split for khugepaged
-      kselftest: mm: replace usage of /proc/self/smaps for check_huge_xxx() helper
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 86a603692826..8f68bc94a5ca 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -180,6 +180,10 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
+ 	if (!rss_anon_before)
+ 		ksft_exit_fail_msg("No RssAnon is allocated before split\n");
+ 
++	/* Prevent khugepaged from collapsing the pages. */
++	if (madvise(one_page, len, MADV_NOHUGEPAGE))
++		ksft_print_msg("MADV_NOHUGEPAGE failed to prevent khugepaged from collapsing pages.\n");
++
+ 	/* split all THPs */
+ 	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+ 		      (uint64_t)one_page + len, 0);
+@@ -227,6 +231,10 @@ static void split_pmd_thp_to_order(int order)
+ 	if (!check_huge_anon(one_page, 4 * pmd_pagesize, 4, pmd_pagesize))
+ 		ksft_exit_fail_msg("No THP is allocated\n");
+ 
++	/* Prevent khugepaged from collapsing the pages. */
++	if (madvise(one_page, len, MADV_NOHUGEPAGE))
++		ksft_print_msg("MADV_NOHUGEPAGE failed to prevent khugepaged from collapsing pages.\n");
++
+ 	/* split all THPs */
+ 	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+ 		(uint64_t)one_page + len, order);
+@@ -313,6 +321,10 @@ static void split_pte_mapped_thp(void)
+ 		goto out;
+ 	}
+ 
++	/* Prevent khugepaged from collapsing the pages. */
++	if (madvise(thp_area, thp_area_size, MADV_NOHUGEPAGE))
++		ksft_print_msg("MADV_NOHUGEPAGE failed to prevent khugepaged from collapsing pages.\n");
++
+ 	/* Split all THPs through the remapped pages. */
+ 	write_debugfs(PID_FMT, getpid(), (uint64_t)page_area,
+ 		      (uint64_t)page_area + page_area_size, 0);
+@@ -542,6 +554,9 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
+ 		ksft_test_result_skip("Pagecache folio split skipped\n");
+ 		return -2;
+ 	}
++	/* Prevent khugepaged from collapsing the pages. */
++	if (madvise(*addr, fd_size, MADV_NOHUGEPAGE))
++		ksft_print_msg("MADV_NOHUGEPAGE failed to prevent khugepaged from collapsing pages.\n");
+ 	return 0;
+ err_out_close:
+ 	close(*fd);
 
- tools/testing/selftests/mm/split_huge_page_test.c |  15 +++
- tools/testing/selftests/mm/vm_util.c              | 130 +++++++++++++---------
- tools/testing/selftests/mm/vm_util.h              |   1 +
- 3 files changed, 92 insertions(+), 54 deletions(-)
----
-base-commit: 169393fff5d1ec2690934067eeb95544ff5ebdd7
-change-id: 20260820-fix_split-f44939ec44b8
-
-Best regards,
 -- 
-Sincerely,
-Yeoreum Yun
+2.43.0
 
 
