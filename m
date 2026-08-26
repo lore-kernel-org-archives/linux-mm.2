@@ -4,111 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBE4C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:22:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D0D2C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:28:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D37D06B008A; Wed, 26 Aug 2026 09:22:10 -0400 (EDT)
+	id 7EA3A6B0088; Wed, 26 Aug 2026 09:28:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE5D46B009B; Wed, 26 Aug 2026 09:22:10 -0400 (EDT)
+	id 79AFD6B008C; Wed, 26 Aug 2026 09:28:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFBFD6B009D; Wed, 26 Aug 2026 09:22:10 -0400 (EDT)
+	id 6B1886B0099; Wed, 26 Aug 2026 09:28:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9447B6B008A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:22:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 15188140379
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:22:10 +0000 (UTC)
-X-FDA: 85143484020.29.51745FF
-Received: from mta1.migadu.com (out-152.mta1.migadu.com [95.215.58.152])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BDDD7180006
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:22:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CVvqQQM1;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 470BA6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:28:51 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C93C11C1861
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:28:50 +0000 (UTC)
+X-FDA: 85143500820.26.36CDB02
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 24A1540007
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:28:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aJwqengn;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787750929;
+	b=ZwwNZZqOre3xsMdmvRxqAZvXHShz6qxBpxqrUdqL/fvwc1il+iabxiAqO+UL+u7EwCgP3q
+	CwSPMq6Dx7vJPdjkAFbhcCIzaz/UJhuWqtbIEh6udJVnLoAXSBl2PTRdYl0OTdYRvTHcsV
+	SbN7mU1ktiqL9XjCLjx9t+1JSMijVnM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787750528;
+	s=arc-20220608; t=1787750929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rZfJ1DEJgA9xHP174GM+zD+DDhRxQ3ktuVvCLdq3Www=;
-	b=oMhkf2dfukg1JTs42ezPu8UurHhF1U1tc51zHiEmkxNnveQbMrmI4i5cxPFaUwKmSDLAqf
-	GUIEch5B+HXso3HveneeZdNqCsPta3h2rx3EFKsgUvQsw4bx+hY+PqH6Z71x8sLsO+yZPJ
-	/7LMo4PsRnRnr61zCfFR83iKSxXB3jg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787750528;
-	b=GKc23nykcxyrQ4VbXg+mKsXSzOjfIKpMBCoUhkp/lF3Hp51uK6sYgEpegRPJjSuwlYcjJr
-	aLjdx1062TKU5aOd+iicDS795AGRoUGxyqog6ROOqKbZPcYi+nR4oqByfKfImkjV1NP+UA
-	B/reAr1UzBm9aGh6ML969J16dzb02eE=
+	bh=iQywvME1XBZPDMnvcuqkj5aII4MPfcDfKqPLaW2AAUY=;
+	b=XKTNB5eBVdBHyCfZ9eJvW9Y5/IEyGsRdIM8vWRuqV6wKjDBX4/43Rqs2EdpNnRiDkrl7YA
+	G8f0sesxa6x/rr/nZS+ro5Cex71IpF04PRwdfFFiwEgucKDYpNcR4fdyNsUyudFDj/onSS
+	WDrdLv/y3uXuW8DUJajduI5oQBhVq+w=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CVvqQQM1;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=MbqC4/3XY2Q8MsrJW7NGpu6sTdEBe8KkMt4dCMJF8g4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787750526; v=1; x=1788355326;
- b=CVvqQQM184Jm75RDtC4a1OO4/F7nTy91v4NJKILsAAfjDf7M+JdN0EoD4RkwoK4jJsR6HVbO
- gy/aYQ9o+uksKAvOLOQ8kBPluU7m7BtlvRg/I2cuMJFO6W5nvjlC5c6fE8wMd05ep0I+a8cZzW0
- mbjh4aiJtP0Ixz0Bcde12QLU=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2a03:2880:10ff:19::)
-	by mta10.migadu.com with ESMTPS id ee22d32ad11dbb84;
-	Wed, 26 Aug 2026 13:22:06 +0000
-X-Mizu-Trace-ID: ee22d32ad11dbb84
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm/swap: move LRU insertion out of the swap cache allocator
-Date: Wed, 26 Aug 2026 06:21:58 -0700
-Message-ID: <20260826132159.433469-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260825172604.3243589-2-alex@ghiti.fr>
-References: 
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aJwqengn;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 477D843462;
+	Wed, 26 Aug 2026 13:28:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6431F000E9;
+	Wed, 26 Aug 2026 13:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787750928;
+	bh=iQywvME1XBZPDMnvcuqkj5aII4MPfcDfKqPLaW2AAUY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aJwqengn3k3UHyYr5hk5RvhJ18sB/0kW3OMam2evX2+l3YM3LooL4w/KpI/pn1RGX
+	 gyDac3KFDpYUC+ecE74X4bfof2GSrfA6CoKJaZl4pA6Po4s1acfBGDIWAkwTr5tfKG
+	 9tGOatWmT/dLzGDVyKpcqEtM3snoZBJga9a3wkW0UxY3dajO9ivv38H0ZEoXYuaDxf
+	 /QisTFuQHiBhME7KXm7srtWNn9Lp+bNxobGkqp17F7QwvZnAUJKMVSwpy/vgyd1llL
+	 MOCEXf73PgzDm8hXdNyqQm6n6nV3yQk+owdAllZqFFUFEqU5fPvdxbMUDnpsm/srUt
+	 CIeeW6DwgIuPg==
+Date: Wed, 26 Aug 2026 14:28:42 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] MAINTAINERS: remove myself as THP co-maintainer
+Message-ID: <ao7pIIxxpqkJ7b4Y@gremlin>
+References: <ao7Nr_FALfP7cTY5@gremlin>
+ <20260826124316.80455-1-lance.yang@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260826124316.80455-1-lance.yang@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BDDD7180006
-X-Stat-Signature: 3rxtudxtf3xxz61h3hr3te8b7aa9ract
-X-HE-Tag: 1787750527-139599
-X-HE-Meta: U2FsdGVkX19r/JfnY7AwQ+JEWI6LZfKKSEnplUh+QY+BTWCsIwkbT25B0YGPmOz3dXIErEHgusebvDaoJk3XKyyxfOnToG/3zrgHJkMAGTGrJCY88EfZKg9B/KWghlfOs5iSdefZmmlIxSf4bsgB3hdiF637Y+wRL8rPM7hPDDsDK0Q05+B98QR789yKBGgt1Eh1dmge3R95Sq9vr14TUwKtUUraRq87Tpv3UL8KSrJetpf1l/9eyy277aMV5jM09DdMfyY/pGCGVfobx588xvpGM0cwVjf7reE7/qTna+wP4aiP2XdLb1Qp0gtDoLc426Tu7CEjPsIrDcPcOrxCVLhTmGy4TO47/HRSp7i2oYwPEbY6+K57MrVKGiuH7UbkI8ifOjC6BCQLBR8PoRizun6VTFooRuziXbQcFI7WBlRoq2zVhSrY1GvROVGtTri/Rf5zIFsQS0Kq+7DmQ0Cx3pKsobmWHFQlKhhjzR5nypBkKLR6hTx5+1U/hPgKp1tD6PgAXLjxKFutsCCR8uLIAYjjyCZEhqsqVs/CTzsxMyc5F9H56jwE8Vvgf4oX1O6G1eAFO051GTGjU47DRycIIpdosm4qtoYiFJ4ajGV/7sYmu2uZXpoXYmtUDPNxEq5oIwTBrpH0rfyecMo1B0zdfklkhNT3wO0CEnn4XjZWZaAmeemi9Z3MNWnoQt8WAs9wf3CffOsPsj2iRudqp1TVB4ISCAzpL0FZ1qpdkqeb4ZYlufTli8He60xi65wMNzXypBUcKcUJEnqwO6lY3i7zSEtfobBnsEPWEA6Q7XSCWSxB0KbRJi9SA74rStxmvIihQg1TV0UinXB+9Mc/SNThKbp0dJ0SPbPi8kfWej/prmai2BK+0HtmYvqHqz3GG83lenulLwMGgdpMb/vHnHkdxget2fPNhxzXMaLcwtEV+PM2dHxovPMQsJBKKvIBW9+DgdmBz6QydM0nH+4EzlX
- tqL9J7ir
- noYC305wedN7FtDxXnDIwqFQWkXQxE/0mxpNl/T90Qpkr7fJm70FyP+1ZnONmRHwUVDTvC4S6TQoSVpPmpqkyJyG5JsLkdjeHk7Cw6ESHz6LleLEk7bbxVTe0ZbD2QtPgz+XNeEV+3kPh+nL79k7PQ7ANt8BFj9KmzEcLjuCkcDUeJqhFUJ5X31EVH20cJHCYT84/eNxfcPMDfOhooWfg9GTbuwzkvv9rI2Raxr6z2BXrveR5csQ7ICsO3+s3ZHhwe3mm8YIfocWUuZus9pJ1msFjDhVsGMDd6tik5oQxClARr8U=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 24A1540007
+X-Stat-Signature: j8taim4rm6md7z45j16a3hwf3acszpug
+X-HE-Tag: 1787750928-681637
+X-HE-Meta: U2FsdGVkX19h95GqMlsMkANbswalBuBxvVOgSTyd6W6Q5zd4jH56tqZERatJqJNmzMdUpAzOpW1oDrsrObzRu5CJkL3Ys9/4+LRcEhWhlahhvc2SzHq76GLmNIhp1vlehrULXBS5NcQkG+qiQ8PoiXP4tvK78d/XXxZwtGQ7Y4tdWDqYxCDWBywIXkTrqwtJAleMe93fPDHIWvDumyXlzTwyVS/MJQobQ6qZWL9D4SW/BAnMhzDoVX1sr0pfYQ/yKc+/+8XIPlTpesLS99era+IXqZNF5zFBE/n6QoER65z4EVPQ0Mag+uHTwhQD3DTqYkAxx4iIg48dDWoZhJ8BI7RGUXkkZDJyuoNwY6jpqAfP9G6asrXd+SfWW9GyMKj4DfMHIGWkvG1MDYrnH5O5pmHNSnsm+Px/gcq/Qlz39eJPBEumpUci4KKw9hCSqcSh9BX8deO8AZ32OJKhcBVm5LQUN1xtfiYH2o/47kuwk/C7Qw6I6l802jE4SpU0naMQ/TgQPKcBs0+9LPHmHEsYUDrRXshfvnQ9sU6du7fByjMIX8RJi80y0Rjidbh9yD0bEThtY6JTSfd1pFxZkbWq3+Im+x+IISRSKq2C20saVUuSUS9evpVeP/pe9l6vl3UusW7m1YO5DtoshaM26xCg/4G2KveJoCuFVa6Irqs4pszMgerbcZey3jEkCKC5k9N6BHkQl7TaIC/nBrYf+3YA2Rrs5x0e6gEWYqq8AbRi8GmFGcSRBfu6WroeKYBFWDZDFoqTYpLarGHdmn8InpNw6zPBjTnBztuetVL9cZmKYPwRPbqozUPwl+Z55sgtH9w0L0eOwXxjcTFZBfZHeI++kkqdTc6JyR701n47iMwxHmDPFoqoHXOajf94NhNQlksKknoee2lwF8qpxny6AcH9pgb2askby2kIUcAvhYVPpwYoLC++JhRhO/S5XjvE9dURxoOqf1mMdPN/UKHq5+/
+ Mnzvdxgi
+ RZnTtuW5TbxjKh0xmV+Zrz3+aUL6q3Qwt6jWPRLmIUY8Q2uNo7E3R6q7AhAwONDsUAh5JOirwFSAJFhpJwxVIatM22EiaHlKHKVxcPy5Q/jXccEYKOqmc6uC+dZsgTIFwdJICAL6tTxcfhK1h1RgMQsDxqDrR4d49rpH/xUiju+qG7qpXDVMgk3VFqwJCSHCAKemNIxqVtyGwPA5F9KkAOCKV4ugmmkUISsqwvISCHS83h/r5EUYTkFCbHe0viIewJZ9FWLi4HcyKuMnFFVaek5MNdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,38 +95,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026 19:24:51 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
+On Wed, Aug 26, 2026 at 08:43:16PM +0800, Lance Yang wrote:
+>
+> On Wed, Aug 26, 2026 at 12:31:09PM +0100, Lorenzo Stoakes (ARM) wrote:
+> >Since it's 2026 :) I asked Claude to look at my time as THP co-maintainer:
+> >
+> >	~107,000 words of review across 948 emails (in 279 distinct
+> >	threads), counting only prose you actually wrote — quoted text,
+> >	signatures and attribution lines stripped. That's a full novel's
+> >	worth of review commentary.
+> >
+> >	Along the way you handed out 194 Reviewed-by and 15 Acked-by tags,
+> >	and your longest single review was 2,404 words (mTHP collapse
+> >	support, v12 — the khugepaged/mTHP collapse saga accounts for most
+> >	of your top-10 longest reviews).
+> >
+> >	Estimated review time: roughly 300–500 hours, centred around ~400
+> >	(i.e. ~7 hours/week for 14 months).
+> >
+> >	1,615 THP-related emails in the window: 948 reviews of others'
+> >	work, 278 replies on your own THP-touching series threads (~31k
+> >	more words responding to review), 382 patch emails, and a handful
+> >	of MAINTAINERS bits. Busiest months: March 2026 (131 review
+> >	emails), June 2026 (113), August 2026 (111); quietest was December
+> >	2025 (5).
+> >
+> >Think I can be happy with that!
+>
+> Aw, man ... I totally get needing to step back, but we can't let you
+> disappear from THP that easily :) You've put a crazy amount of time
+> into it, and your reviews and judgment have made a massive difference.
+> We'd miss you badly.
 
-> This is a preparatory patch.
-> 
-> __swap_cache_alloc_folio() adds the new folio to the LRU itself, which
-> leaves its callers no way to act on the folio before it becomes visible
-> to reclaim.  Two users need exactly that:
-> 
->  - the next patch moves the refault evaluation out of the swap cache
->    folio allocation, and it has to happen before folio_add_lru(): that
->    consumes PG_active to file the folio on the inactive or the active
->    list, and under MGLRU it also reads PG_workingset to pick the
->    generation.  Setting either flag afterwards does not move the folio;
-> 
->  - the upcoming zswap writeback dropbehind implementation needs the
->    buffer folio to stay off the LRU entirely, as the per-CPU LRU batch
->    would hold a reference on it and keep remove_mapping() from freeing
->    it once writeback completes.
-> 
+Thanks I appreciate that :)
 
-I think the kernel convention is to not say "next patch" and "upcoming.."
+>
+> Could we talk you into staying on as a reviewer for now? Zero pressure to
+> keep up with everything or carry the maintainer load. Just hang around,
+> jump in whenever you feel like it, and come straight back as a maintainer
+> whenever life gives you the room.
+>
+> Seriously, Lorenzo, THP still needs you. Please stick around!
 
-Especially as this patch is in 2 series, so you don't know where it will land.
+I'm not going anywhere in terms of upstream kernel - and as David suggested
+- I am happy to be pinged on threads where my input would be helpful :)
 
-> Defer the LRU insertion to the callers of __swap_cache_alloc_folio():
-> each of them adds the folio right after the allocation, so there is no
-> functional change intended.
-> 
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+But in general I'm dropping the R: for now as I feel it wouldn't be quite
+correct to keep it, as I can't really give much time at all to THP, and it
+wouldn't be fair for me to be listed but remain inactive.
 
+I may very well revisit this in the future, but for the time being I think
+this is the best way forwards.
 
-The code change itself looks good to me, so once the commit message is fixed:
-Acked-by: Usama Arif <usama.arif@linux.dev>
+Thanks again for the kind words, much appreciated! :)
+
+>
+> Thanks, Lance
+
+--
+Cheers, Lorenzo
 
