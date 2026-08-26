@@ -4,90 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3CDDC61DC2
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BBD0C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:38:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6AC56B0088; Wed, 26 Aug 2026 03:35:48 -0400 (EDT)
+	id 5DBC46B008C; Wed, 26 Aug 2026 03:38:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1A686B008A; Wed, 26 Aug 2026 03:35:48 -0400 (EDT)
+	id 58BD66B0092; Wed, 26 Aug 2026 03:38:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 930436B0092; Wed, 26 Aug 2026 03:35:48 -0400 (EDT)
+	id 47A3D6B0095; Wed, 26 Aug 2026 03:38:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BEBC6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:35:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DC7D802BA
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:35:47 +0000 (UTC)
-X-FDA: 85142611134.04.FF6D708
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0A92280002
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:35:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JddnPsIT;
-	spf=none (imf02.hostedemail.com: domain of BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F1046B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:38:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2EA9A1A0212
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:38:02 +0000 (UTC)
+X-FDA: 85142616804.01.9B913E5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7F3E040007
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:38:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nz0FH2Tj;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787729745;
-	b=Ot9qDLe5887ezBbmZ1qNY3Wgdb1hjPK7VSpTRMt7TUQzhVYHJ5EFWHC0f5BnlBrTNc1Syh
-	csKmc9h5ADEDpZoJzRCRoghZ3fvvB2Hp/Iy1ZPXrwrJqLz/tS5J7IqmEk3ORAgx52zNmeV
-	arAiC0hepaWaatRsy25lY5Z7LOkQYv0=
+	t=1787729880;
+	b=Y5xSdkp4jr1OdJ8mazWQQ3ZBYh/RVDBO6jm80/xanV5Aeg7kliUGV5lIJrrRFNXjr/Zyep
+	Y2xmANnqk1mnEgPQiUTuH6Hk9UCSpSvf9pbjdTTZ+Y40cs3vRJHLDwKma1g4OhDHItc8QO
+	07x5kaAfYNd2J+uRwHQ81StdIVMek6s=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nz0FH2Tj;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787729745;
+	s=arc-20220608; t=1787729880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IPRq7wCujCDeIBCoHVvXJ5nm+1AbLLNDAy2xmgNZTnE=;
-	b=my1Z5ukchfWSC9ND4o6cifCurh57MA5MnC8sPcbgi1WHmYQV7ERIXXaNW2ZwpieXqvdVVT
-	Tp88SWL5Kd9ymMf8PLNG3XWRqc/VSSFoRXR/9IETj9M/ekTlVRP5kdlyJX85/FUn7IPQ1e
-	uJq3adStVgd+5/ic8wXpm6rAmykR6sw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JddnPsIT;
-	spf=none (imf02.hostedemail.com: domain of BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=IPRq7wCujCDeIBCoHVvXJ5nm+1AbLLNDAy2xmgNZTnE=; b=JddnPsITM03lHqVUsASwTa78sr
-	sQPeEVy/iyIcUj1u7ZhEGjndPuTekg40dW/K9n9qyFIr3RolTqKuY3jsT6Lil3oMbp342RR39Lm9D
-	RgHNVyc+mpUwtjCfEvMCzuptbea7GBYjEjJkvXevoAG4TQOXoEBMlxKwUv4jI5taXErm7E3yeh2KH
-	snVNNaSIKmHvDBfdMbQZzVm3d0oT5Ya2/Kkz/VlXlbctWPQ/4o6Cp/v8TgOEWS8T6YJ/j78vXngZL
-	R2tJhN9imjgBHJM9eDH98xAVIT03D0VgWLJlP8J8gaLxjDbn/Bsut9jaEZd/ccckgL+EkgZTGf07r
-	c/B3L/PA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wz8Ac-000000021CP-31ag;
-	Wed, 26 Aug 2026 07:35:38 +0000
-Date: Wed, 26 Aug 2026 00:35:38 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: Christoph Hellwig <hch@infradead.org>, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 0/8] batch lookups in follow_page_mask()
-Message-ID: <ao6XSh1YRiqPA3rA@infradead.org>
-References: <20260811025157.1632867-1-riel@surriel.com>
- <ao1JwEAeNcP9OyKR@infradead.org>
- <a10c74df79e1db6a9a2448220fe4c4fd6a0e5bdb.camel@surriel.com>
- <ao5t8lxaCWQvph-l@infradead.org>
+	bh=P3fyVWIcLR4BT0Lr+lsWGbKZhjjFZeQzS30Wi0hDYmg=;
+	b=6kDxSAxiAqkaCxZr5sLZSOcK1ssnn+0v+nUJSiV5X3fm6MLuzhI2GSFA2DdkbXo0rFlMgd
+	3SKqLrR+GPH2qFAOD68iZEVRDbQ0NNMbbneJoTrcB2hnfYXVaAwzdkfjs1mk5cfAhpt+TD
+	6jyFlIghwnZnGVSgcI7LVFi6Go8p868=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 618F660A59;
+	Wed, 26 Aug 2026 07:37:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D8F1F000E9;
+	Wed, 26 Aug 2026 07:37:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787729879;
+	bh=P3fyVWIcLR4BT0Lr+lsWGbKZhjjFZeQzS30Wi0hDYmg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Nz0FH2Tjm9c6MLpQSfsHVQMDdL5N9wPANW0kFIc78cWdOdCmKv+0FuaIx4eKzU4E8
+	 JPW9gIeQrl+iFPx4I+iXl9P1IGMwjrVFS85Cdr+PxIld7SY1YmGUmt4OyofKBY5lxZ
+	 u97svBjmeQz5pW/QxGt7kJ0NNiKSk3p6JWaMfFaZs0JdjAMCtY2cQ7nEiIOJfGYE8H
+	 F/0lQrSVnaUwoJxPb36M8KuRxXChf+AJ+z2Ib8pqehmQP0UJzNAYTunK3/bjfAR+VA
+	 xqRrAV0jbD9LabU1G/l8WX47r+aXkYG4NFunV3pEKufhdxIiswCjDKajfVWiqebQx8
+	 CsFzLW73fNupw==
+Message-ID: <cfe22f1a-2ac9-48dc-a2c6-4369e45a852b@kernel.org>
+Date: Wed, 26 Aug 2026 09:37:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ao5t8lxaCWQvph-l@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: fix line buffer leak in mremap_test
+ is_range_mapped()
+To: Anshuman <anshumantewari123@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260826061300.14038-1-anshumantewari123@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260826061300.14038-1-anshumantewari123@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0A92280002
-X-Stat-Signature: u38o6uh7gqfn7pg49mf8mpjujrb9khaw
-X-HE-Tag: 1787729744-264437
-X-HE-Meta: U2FsdGVkX19dvEKLZiOpzq/9Y27ZSM3vjIFF8s3Q1Vq1X78t4hsBrfu3fF2DY03e1qJq/H8/EoT8VoAwTXidl5ClccIJaM+RXGq5HLPsDFIEaj8NWkm6t62hNuNKkZ9nVPi8E1Xq7VSsqQiM7F8A48QJ4Lpyz3Ye+n6oW1Be4dTDfHeS7fkkqshS7s2oZEKJLR8mCJQ0Q83GX8sWILUPwLtuerqSlbvY/S+cr422BM2+fKerWqSsrELiZCK8tSHRxiGMM8RE7zffbaJMuIMpl/lh6DiKeHBBuqbYfWmO0R1+Aw8AEe3Bs0E5s7X1zrgwAYz4WvjB/NUW0cjYkHcGnjF5gns1EHFMp3zLL/riSTmVKFP/tZ6t/yhM5fvPIrUj6Bopdxn6EiwzpP3EasWSOaXKPFa5sNwYtTMh5mRWkCArHzp/lv+lLTxPcxLbR5eSmY8wjtYngF2KIGEgbXZ681QCD+vqVwXCFH2RzOTRz38JAvKtr+ivHn1U5gqYOG1KRT74KM129XX+Z4IKEMgS0FeCsjSxHQCLeQ2kIXYTgvE0psl4fv+PJQAFz5ZblMhgdJH+qVTKp0FMXdylcB0rbH961874xHWwz8JW2kM9Uio0z9TPHOCuauO5ThbErmUUJ+E7ag9wAXXD53OLct0LyLbeSvCfxlBR4WIYPwBJKqtEvVG9dLY8on9hxO1Sw342TOd9CCBjgG+iYq43yY/9P7JF0lMJkO4lW0uiedi42H3807nrf9sOOS5R3ljp2yphzAYGgfrI/KmNcgfEl1m+QTl7e8WaqwOehxiri7IGrtNzE9EIiCvx8wIMVkJaJILTo2Cd6Zg4NIIxZZhzl7+btAm12U66slCmScwDuyfpMYF3tJnk8oVPD4re9nKZCfPE7R4kCXO+6SI84v+V0aJegJZGA548UllrsD3lTJ2PEPFUCiZOz6u2olNk9Ds4kpjkQRhjeRX/HkJjg8jj++I
- hN+CK1pV
- WSbfnQFk+ZwI8OZYesxW8pmQDOOnQ+GlsIli+UYbpq/26bbxp5UbzorKx6FN9+eXNzzAoMhj8hwmeflgCyvZznsyDuagHeknh71i+q6WQoTTe4SiKskGU+saIW3YEPAnNEa7PzoARLwlHzqDjb2ufqZrOzf25bt+wcJ9Vtprw5VVEWxACiUVuGRp+b9xkWOqfs0dAuoDbrYJYM+6gInr36SJNFdEGAt/exzQb6zLuyHOaWZVd8Q1oLGXC8YEPsfqMQlMWvdmm9NYE8RWNvDLXB81rugSEISZGRho7se7nZo0cUmZFvapdt0hOqL7uxrMuYlRx8DTWzW64pDZblXGIRs09kPJXGGzDDXQAHhbs3W46QlqDntQE94C1SQh5UP5ThyJ7B8VxOsHKKYD9f3CWmGYGM7gWc/AbNR6FOueBsvfsHPqVKPtsYKhCWeShbBvKLcc4zzdTn7pEQyHWgzi/UyHCrOBNa/ByK2F7FmIfMIXRhzFiSb6LLsVviPM+0snVGGWV8FMVk/121kjggUq7dDQKA/b8JChJHW2rAzVtjTemJ2chXmB6PBP2bBLZZi8iPJt2EUKXsYlOx64=
+X-Stat-Signature: iw9c9xwhg3ikhshptmcysgt4h4iowjt4
+X-Rspamd-Queue-Id: 7F3E040007
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787729880-603221
+X-HE-Meta: U2FsdGVkX1+kCPWvMQDsLocNAxHN4T0t+IMTmOwXtUE17HAh4yf7HQLvxrtU3Ru69nIQJyseRxnB2NIPAx/lxstVmCFKwZ4E9dbyupl2iGKglfr1NgpLskVyen+GxIYsYPI+iEVONXjs24igidwFNgWUsw8R7EAb0qVGFv5UtZ5nRfAfbVFuarouVJvwGTSU2dqeWJNUSM2bJLLApIars1jo+tdd3KoZlt2c8X3k9zni7pss545yEPlquO89/5M1PeZNkksCgXjvmQswlcwDfuFLnhHK/pUjX0QJiawAmUSqmiuTISO7/4gKUHqoZiR+GLSOon2n8/R2IQhx44vqukzWRcPByuvSkYKK4r9Eirinp8oFy/Qhj+GLECIII8fMdctNFMT8TNEWthOcxcWk0Y7QoUOm0Oi9HGDb46WE+bqkg8qPqw+Nv+utGi2DzzR6+ET0JgO8TbyjXWg3GvdqxFDwNkNCvjbnZFsvz+SWhohlAgmI578dpzyGrMw/G9JtWKkEU7ad700Fnn8O2Oz5NnXriJ1sGDDYVO3rSrp7mZNU1DCOu7A93Yi8+ZUotvlMUr6kUbCkT9tcSpVwr+WdgJ1oZ5hcWA52jub7Cc5ATapsg/A2bgBar2sclmVpwJQaAHNqBsBeKRazKVSD2v3vRD9G0/hqGn2hEDSUZh2EPTT8z7PMKxIXT1CUbJn9oL06Mcra6tAWJU0BZUkEC+b9VJkH4SCOneRSNfXiV5TnN0z7ysSM+6tQYyI9u+s4cJqFnvoydZVFjraA6gvdXlh7ftV2KFg/cwnnyReqcYX3dgJx/a6n7ITFPWznwIghkGHL7fle1WMA6bMTQjQk7GOm7PMxiS6anGHpWz3/QStIJUCr17p4Xm+EgIF8J7vAmydqeodagyf6nubULSLonNu7ekc7Rbb4LbiDbcwlmilTsbwgoNg1AWWqtRpbvxLqoo84udc+1QnsyiCM5dLxjOy
+ WBh44oGV
+ ELCWsl2kg0HWr5r4/4lJQEx3jW+bU9RIjgxqDeHXMmNPRb0yRoafrKYIXMCydEkI2kK5dvKky0nAT9A7AMWKkwo7js3OLWSNsAlQGhLCnxWp2/C36OMj4JaK0P/EuzzBJ/SgjvubVYoozekVFKKJt32cMncIj6Uo9cFobEoLO9YHFQjeC7WulUBsRn8fVI0+QdnhGUw4dkeB1SJIKMFPRr8+mB53423acwr7XYuUSmTM9Tlc+6/CwkE5LCV1VuQZ0+6lH0R9LucDzH2u4N/X5kmKtC11qtJ3dS7h3/jCk2MIby4FdKBkm7ekPqcvUymsny4nsKMtZRw1JDipl1U3VZ+D9PFyx3rgrnWsu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,20 +143,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 09:39:14PM -0700, Christoph Hellwig wrote:
-> The other callers of iov_iter_extract_bvecs matter more, but this is
-> the main user.
+On 8/26/26 08:13, Anshuman wrote:
+> is_range_mapped() uses getline() to read /proc/self/maps line by
+> line, but never frees the buffer it allocates. Every exit path
+> (parse failure, match found, or reaching EOF) returns without
+> calling free(line), leaking the buffer on each call. The function
+> is called multiple times in this test, so the leak accumulates
+> across calls.
 > 
-> And iov_iter_extract_bvecs right now is very inefficient when used
-> on larger folios, as each call to iov_iter_extract_bvecs and thus
-> iov_iter_extract_pages and iov_iter_extract_user_pages can only
-> fill in up to 256 pages.  On x86 that is a single PMD mapped
-> folio.  Passing down the bio_vec array means that for PMD-mapped
-> ranges we reduce the calls into pin_user_pages_fast by a factor
-> of 256.
+> Free line before returning.
+> 
+> Signed-off-by: Anshuman <anshumantewari123@gmail.com>
+> ---
 
-Also in addition to reducing the calls to pin_user_pages_fast, it also
-removes a fair amount of work to recalculate the bio_len in the
-get_contig_folio_len loop in iov_iter_extract_bvecs, which has shown up
-in profiles (although only marginally so).
+Looks good, I don't think Fixes is needed (even though called multiple times,
+the effective waste should not be relevant on any realistic system).
+
+Thanks!
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
