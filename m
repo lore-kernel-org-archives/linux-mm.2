@@ -4,143 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC9A0C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 14:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9AF1C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 15:05:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88DD06B008A; Wed, 26 Aug 2026 10:34:36 -0400 (EDT)
+	id 521D16B0088; Wed, 26 Aug 2026 11:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83E9B6B008C; Wed, 26 Aug 2026 10:34:36 -0400 (EDT)
+	id 4F9836B008A; Wed, 26 Aug 2026 11:05:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72DDD6B0092; Wed, 26 Aug 2026 10:34:36 -0400 (EDT)
+	id 40F8C6B008C; Wed, 26 Aug 2026 11:05:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E35B6B008A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 10:34:36 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A3B8F1A0104
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 14:34:35 +0000 (UTC)
-X-FDA: 85143666510.07.509748E
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 56988C0009
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 14:34:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qdrLHCsW;
-	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1D1D36B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 11:05:10 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9219B40164
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:05:09 +0000 (UTC)
+X-FDA: 85143743538.02.6C929BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B36FC2000C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:05:07 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h8bDSvms;
+	spf=pass (imf13.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787754873;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787756707;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NCQEfP03PfJyPuRoO/iAqztIvak9OZ7A+2JPlREf114=;
-	b=b3RwH7HI+IeQX2WriYNq0HocPW9YkKjgSAyZ43RMI0XOCYynGlgJSDK3ynINYfuusUrjCI
-	dg6g6v56CiXf7KdoENtgqNBvdzY0ZqCey6xQaG0SWJX4ZCFTI+pbCtKpdD2Zu1uYs3vYvx
-	fsbsklwOKitYO/0DjN7s1Alf0sAVOkQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787754873;
-	b=CwlVlkup5NnHpaDGWUN9VtYRdugkhGdwSgv+3J/CTwu2LFIjXtJaZ8e+SkDs1/BAAOGitM
-	5+/lYcLaRo5+keFxjXCOGpLeMRBecqYMBxLNslr2N8hC7BFlM6p84LY2nQI/BhyihpdXzH
-	rMjzll+7qLDpUnXdMqLbTYjXFoZztV0=
+	bh=P++naScNZowUvRJGvpwZuOXHFESG3Sw1NB7yivdb/jg=;
+	b=nH8iEHEAYTl78LosEcHco2ypB45kYnBjvDtqVSwZqbUJ8MtgzCfUysjK9+kZqMk/LowyTL
+	rSjt4FO7+W4Cc0ItHlDgnjDkbIeP5PsIR64uemPAxw2O5WowJtw30mZTNn3JnIWSDUaiHv
+	4SxS9n20aYpWBhbWTqUyMy2WCkfBON4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=qdrLHCsW;
-	spf=pass (imf22.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67QE1fbN4099742;
-	Wed, 26 Aug 2026 14:34:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=NCQEfP03PfJyPuRoO/iAqztIvak9OZ
-	7A+2JPlREf114=; b=qdrLHCsWghVqJz0MzEk+TWhTMkJWdrRSLHvBr7FH8g2UWe
-	sBMrrSN8sQrxtQggzYXgB474vU/8zOgEmpY/TArD6LsgeQkJeppj+pZ8QDu0CSXd
-	nb/mTWDM133xVaDzl0co89KVYOD8jMXTSpukHCSRRWeYa8EEXFk0jjOitBLKve5e
-	8pZ4kSKb+2FVmQ93HjQPBgWlpqkU41wpMHXWYR5oClPjgVZE6Ga/hhrpodq7NV8j
-	HUxDCtBEFD1mFR1YbLKy+XPjiYymBkvhby14b3l40QOw3hVi+L2q5kyFAPG6Azpm
-	qadoMH5dCvrReLDrS7u78rFT564Oy8gM22kOG7DQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g716hyc08-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Aug 2026 14:34:31 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67QEQHbp026273;
-	Wed, 26 Aug 2026 14:34:30 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7rsya6gd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Aug 2026 14:34:30 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67QEYQnm47382976
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Aug 2026 14:34:26 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C37422004B;
-	Wed, 26 Aug 2026 14:34:26 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C7F220040;
-	Wed, 26 Aug 2026 14:34:26 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.224.92.206])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 26 Aug 2026 14:34:26 +0000 (GMT)
-Date: Wed, 26 Aug 2026 16:34:25 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com
-Subject: Re: [PATCH v7 2/4] s390/mm: Batch PTE updates in lazy MMU mode
-Message-ID: <87a3147f-e993-4629-b0dd-a54aefbf20b1-agordeev@linux.ibm.com>
-References: <cover.1786956464.git.agordeev@linux.ibm.com>
- <d7fd78377a7278108ef501cf76571e80caef5968.1786956464.git.agordeev@linux.ibm.com>
- <20260824104048.11040Cdc-hca@linux.ibm.com>
- <73a0a916-b39f-4ebe-bffe-448928b13bef-agordeev@linux.ibm.com>
- <20260826130257.21444B1a-hca@linux.ibm.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h8bDSvms;
+	spf=pass (imf13.hostedemail.com: domain of "SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=KFgM=GT=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787756707;
+	b=kK0QiGErWSAzV774YgrQ73WHepb6bRDw9sJ3rUz1Ozt8+WG7h9yz2DzVjn7R+qkWRhTrMi
+	aBALL5dYVFlkMadvsx4cm7tlz8Y+IbRJ1AQFPnH0atyvG5zBKcqFQjjODDcJtO8w0EXhFo
+	RWOO6kcI55LEQe6rWXHcZi0sOxWn7Aw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CAEF2413C7;
+	Wed, 26 Aug 2026 15:05:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A481F000E9;
+	Wed, 26 Aug 2026 15:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787756706;
+	bh=P++naScNZowUvRJGvpwZuOXHFESG3Sw1NB7yivdb/jg=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=h8bDSvmsmumTK1wPZfvvnD6Mh7l4lkruuUlW4NmjgzaGmgJ59OW6MHEVHxbpSn93i
+	 nb7BjisVl9X6I5GXUN/85C7ho409ilqX7Mu8P+jxd6Id9mAkDC5Lb4q5ezn3SYXrAF
+	 /yl7HMA7m8r2fWSi22hFgiLA3eKzuUoVYKfc85y4HWs2pU3FEfr4QHQp6uWKoDLNOZ
+	 M7ICBWkKbd6Ypel4vrldLgXEuNM5iTJsfU8yg2YDh+RAVQDiRNAkhtEC8A2cwevHo6
+	 ZorGmhZu4xIbuEvFYl0z7cSprK8zR9wsNpFjMwVVrzjoldxui6KlMckMwAQbuoO1x7
+	 tAN2oODb3bjEg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 693BECE0484; Wed, 26 Aug 2026 08:05:06 -0700 (PDT)
+Date: Wed, 26 Aug 2026 08:05:06 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
+ <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
+ <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
+ <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
+ <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
+ <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
+ <ao3z7Rtw2FROkVpy@google.com>
+ <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
+ <20260826073233.T-KtFXmj@linutronix.de>
+ <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260826130257.21444B1a-hca@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI2MDEyMSBTYWx0ZWRfX9d0D4fznnW9a
- dTrhFYqWYFysmfgSZ1txZuW6iXZDoIJarDIoVq86gmVpjGrAbjDS0To3u+4gTkEAy/M1WshVaH6
- c39yTFfj+xq+++UAA5ZNRMYpXkO+cC8=
-X-Proofpoint-GUID: wYHuOR7MKgKkRlRWI8pHiU2wMZ88MTiq
-X-Proofpoint-ORIG-GUID: _aZxFR0LsBp_ue5V73CXJzLqrAptb0CQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI2MDEyMSBTYWx0ZWRfX1R4p72y7Hl9c
- Y7etrjktOF7GCy01TJgymVg7ANPeWwQ14gvKJKrseK6x43+BPLSzUIJ8x4wPRp2Eymw8ON1bTan
- BJ+WVecuVX2dJP5ug58w2lphe8lZuV3hbyb0PWQ8S/JVsY4abgYQe9js+XWVkaveUzDWKHKkgr8
- Wh05TXsvfJmupwo2m5/wlRRcVFe1p12841x3cUprI9uSNkr2x3u5a7RTXfW8ub8vZKgv2uWOtsJ
- dGriXF6B+escX/NB9g5hxr16BWjsKhOjhYb/VEzTtFxzo2el8lkm0nIlCL5H94ZVa4eOszCnar8
- v0su8oZTg7ZnYErwZFazo3oQe6O7PZ46JAsJU3lgYAtY5cnCtIRTP6kEtEjw8OJT1k0gDXck4//
- HCYAeABUS1h3Tno8Q8dH1n4fr2c0DRpJYYBd914aXlULa991qy7UdeXCeUMFWXKMQm7Jv0pTraX
- +IH7Nv2GgcNQbZPbbhg==
-X-Authority-Analysis: v=2.4 cv=H7brBeYi c=1 sm=1 tr=0 ts=6a8ef977 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=SZl-skA7I6m2z5b9x0oA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-26_04,2026-08-26_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608260121
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
+X-Stat-Signature: ychr1imdxbg6ho8z4rip7kk53jj5r9yn
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B36FC2000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 56988C0009
-X-Stat-Signature: 7mdrtgmuw43qawzmx6rwmbws81h5xbco
-X-HE-Tag: 1787754873-925363
-X-HE-Meta: U2FsdGVkX1+hz0n0tgoH8y6UGwzKTX+DcQdCmra7prdp7nn4eMo/pSekTUoaBhG2bbgi9dVgpERWBLn0HBf/jjmxuroF+TaRHgwR+Th9x0Jsoh8tWrkgMSx9u9VyQ+kGQTUQU6mY+FjwXLKNB8U2jLV4jFfdRkF27//smfGdtytDWS+GHUhryW8BXFGp74+soycGJwHfQUe7B5FvGegI4q29jfhZ5Li5YwA50xxIU6gL73ykrKWGm5W3JyeOyhLlhf1VcgOLU4ys6byISmY2GgZFf7zfxxfq2+YV0sO56hXmQq9DH2Ysbt86nqXsF41WS/8eKzpvezhtyJLl4Nc9xiq6+iamf8UueAeiGyBpgDb24j3EAEvldRCNHaz8HkV6SHUXdxNtC0PiFowaESfssXpwlTz0qx43sMGPIFJ2dVGvzYz2WYh5mO4UIsRb7RPdINCpfssuV3jd8OaKTgopDFIih2BjHmsriO1wSkcx/GcnRmKW5QGBaf9MKm+kG03RAqHdTQ9TjHRAR41w4vSqlyVh3x0ceUVuJQyxMsnHQ0JL7SFE7CQnF3+s/AalhH3VXjfUh4x7ibDOXs0FwKlID+D99tMpwaGkzB3r2gMZrsaiDWKkeMhhRkqkRkjGXB6IAxqA6azo1SbgXta149oc9YgEAysP6ZHMkF7P52CPRx+5OvoyhUFbZli4iEAwtiIW9GRqAb2/myAoFZgSNHz78wXJogGpRiWwBYdbwd4zYEZ4Q6DzfisNnYhZjDNdGahJoaAv1cIEUdVOaFY3sAO2w+0aTO9OQVcyVTuGDBo4m1faIDhGxWIwg5VyaH4W17FQV7zAGthGnG/dntvzZr9ztNZjMJ8l3lyVYR04iULKojBL9K0nTwM1OXENz/PPYSVML4JjhkHXNmc5IdKmygThn+NuwOUUB2/YWlxu6TgPFcT3YOA2HkXDXtD3pkctP6i35fD8WI4I8dENSRSlQen
- W9JsZ0+Y
- oI/yWETGKzYAotxQHpNI1PLd/+eQWhmchZig7ebJxwzJxnepzFK/HE16dePl5Jb1ehY7VvEK5yOCrAWFVjeitECf8ZyHoa9tujFpujMlQmKkhKW4v0rEuk+6CqZOAACQmJHLQ0ndshDRq3yf77vTYJnD/q1UqQWoR2xrYlJLxqrIf5Jm3LKnA7S5Z7wVidfSdnQi/msNMgyIuw9MgQ+Gkx7sgalTujs19lKaYVmQUpYyD8I21b5JarwY5ATLaX0Tz2TNVCwI4j7RvFLLFYqf9h/QNIVI58KjUcwNaOCmJjEFbXNTYSfDp4DLPeZ9rZcjNCWrl9mcHDk63a35WfAa/OYvlVYTxeDugsb3JEx7tmOPIIxj7hyZKoBS5hTtLYdxC0On9kx62loTw9rY=
+X-HE-Tag: 1787756707-730576
+X-HE-Meta: U2FsdGVkX183/mEZSiJVNr2BW7lRAa7zTIv0xqg32gbflwvs1cgG01sP1HbcR/aGxBiQHX96BHVcbM1rACP4xaBt67inLB3VJv5qDv/R8zDyqZlmzohURzSJJdsEAk1exiaZj5YD1hpttxI0XEHUzeJBNQFuEaPocYF3fKw2zbQpCKpBfPK56gi71MGieEM+wrch2KJnvcURcgd4V5qoCcB4gfPRLZBQTgzos0RYg4eYA9bUG8hJwlhvn7HdNQTIysoyZauiNnVtX8AQfmMuT0drbmmHFESXf4ahlnN3cye1oFnPvDlUNlHuaVe/gCjsh4LQo1EO/uWaK3gmyF5pvcd9JC6K/YDe2R9xrLWt5h504LAFMCO93UxcFvbrwzOR/nyGdmH0pQVZ7N0ybIfM8nvRKi4SSSxZ/wp1mZOuR5Isi9gVAG6P7HAFEIlIhykGhW4B+irwFR5wIB1jsO1RbnsfAVP+v85WLEgRrY6/6zNjuN3GX+kZiVM+zNGaZJsL2Afo4UxY+wyBEbV1Z4OAJZlX6bqPDZBuMQik1PDqdahoEsGWGFi1RWqT4WDOaeGwCm2I9A2DMmvj+7s9Irs3UF2SYh3euWu+AzFFt2Eooa3K9C2HGkI4WF6PsrJPf0bQjbRymgrs8s7idMxqyj5j+plTVSKBbpouH63ZrcPrWrDMjntbu7pjSEl/hxu0UvAJf7Ph9lWcM03F7nh/mGCJoKIqVscCuoBHmA3k5L4dUuvS3GtibFe1ai6XtD7LbDuxwBK9b0vsZs3OQ87QWRV4quBkxEIimtWjW+iLD+Z8qtw7ASIbodQlQbpgDWSKqzLXDEwWouXmu72W4RnafepWlkKwMVz5zoKgJnwWXcOnUYGfCElYJQoTtfXu6CkptEmv0LRhoyT7i6nn0hnjGA20d9Bfv05pC58kpcAYNB3dnEAe+MJJpydutCksEMsuqUE7L0EyX5abwGUEuRZ4dC0
+ fo77fPXS
+ u2RNETpFN75UFXC04MudphzTMbnfn1+WmFFNUNbcWdUqGm+K/rG3oWZ0yWjM5uLQv/XfsTq/Avunh6trhE0new2qPOOASUZhyuX6tMj1eEFhoVq9laO+ltbHYINj0siXX1SHPsRIqyslCtLs255nCH9+XKsCThVHv4LKnMfT7RKvaTSKpccWgWwCbpIUqzieuR0tgs00ggcB7BFVg+q3kfulPEyV7qpvrk7bctbxu89lupCmJ0UFshyiLUSY14f4I6SPevcvzGUklGGxC5ZU/klbwGxrmK+81mjV7Z1pfEiVF0kH8IvzZa/gKHoKm/H6IZjBrwJwiLATXt9EetEpQncLOgMC1YuqQbzHlGAoSKSmAl6aVkbeMovzUohFmwSQHOZ2e17dCeUFY+sZRFEMEK1rU+03AFcwqs2Gj2f0XCLTOKWBZXuRA0YIAl4ZGz3bQXLGNkINBXZm6Ro5TJpLTjbHlfa4M0He+w4rT7t2BwoIGS2iNNgsUvJ2xL4XI/TegnPW7kTZRzQ3BTYq30+loQ/OOawOkQxz/r2XnbNIkwa1tiRdThok0TJMho5OY0VfSO+gu+6s29PKFqgU0ramo8r5LIp9VEcdax013Iu10G+JTYKMUo/Eq7r91+J8Bd4YwHxQA2jVAELxrhbwzTwrYFV19EyzY0dNqLhp7nmUyW/cPxYQj0BdU92WMDdE+PyiwMaCaXTumF2h6kVJUsNLt9NmUm/AKWkn48oTpcVErr3vkhX4W+M+i165z7jw/X0ErFlUR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,88 +121,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 03:02:57PM +0200, Heiko Carstens wrote:
-> On Wed, Aug 26, 2026 at 02:00:35PM +0200, Alexander Gordeev wrote:
-> > On Mon, Aug 24, 2026 at 12:40:48PM +0200, Heiko Carstens wrote:
-> > > On Mon, Aug 17, 2026 at 01:33:00PM +0200, Alexander Gordeev wrote:
-> > > > diff --git a/arch/s390/include/asm/lowcore.h b/arch/s390/include/asm/lowcore.h
-> > > > index 3b3ecc647993..dba236664da9 100644
-> > > > --- a/arch/s390/include/asm/lowcore.h
-> > > > +++ b/arch/s390/include/asm/lowcore.h
-> > > > @@ -163,7 +163,7 @@ struct lowcore {
-> > > >  	__s32	preempt_count;			/* 0x03a8 */
-> > > >  	__u32	spinlock_lockval;		/* 0x03ac */
-> > > >  	__u32	spinlock_index;			/* 0x03b0 */
-> > > > -	__u8	pad_0x03b4[0x03b8-0x03b4];	/* 0x03b4 */
-> > > > +	__s32	lazy_mmu_count;			/* 0x03b4 */
-> > > 
-> > > Why is this signed? Can it get negative?
+On Wed, Aug 26, 2026 at 08:38:27AM +0100, David Woodhouse wrote:
+> On Wed, 2026-08-26 at 09:32 +0200, Sebastian Andrzej Siewior wrote:
+> > On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
+> > > Very good, preemption disabling it is!  It is quite possible that the
+> > > PREEMPT_RT guys will need something else, but one thing at a time.
 > > 
-> > For the same reason preempt_count is signed, I guess.
+> > This reminds me of classic RCU ;) It might work in this use case but I
+> > am afraid that other users might come along where it actually hurts.
+> > With PREEMPT LAZY the preemption within the read-section should
+> > hopefully be the exception.
 > 
-> Check again, preempt_count is now unsigned and 64 bit ;)
+> Given the way that PREEMPT_RT treats other locks like spinlocks and
+> rwlocks — turning them into sleeping locks — I suspect it makes most
+> sense, and is consistent, to also turn rcu_read_lock_atomic() and
+> synchronize_rcu_atomic() into plain rcu_read_lock() and
+> try_synchronize_srcu()+synchronize_scru_expedited().
 
-D'oh :)
+That makes a lot of sense to me.
 
-...
+For that to work, we will need a wrapper sort of like what we have for
+synchronize_rcu_tasks_trace(), but one that does SRCU for !PREEMPT_RT
+and vanilla RCU for PREEMPT_RT.
 
-> > > >  void __init arch_cpu_finalize_init(void)
-> > > >  {
-> > > > +	lazy_mmu_online_boot_cpu();
-> > > >  	sclp_init();
-> > > >  }
-> > > 
-> > > What makes this code so special that an explicit call from
-> > > arch_cpu_finalize_init() is required? This is really the last resort if
-> > > everything else fails. To me it looks like the code can be changed to use a
-> > > new static key, and add a generic early (pre-smp) initcall to allocate
-> > > memory for cpu 0, and if that succeeds enable the static key.
-> > 
-> > I had exactly similar variant, but failed to resolve a race when a secondary
-> > CPU callback was called before the CPU0's one. Probably, used a wrong event.
-> > Will look into it again.
-> 
-> early_initcall() should do the trick.
+Sebastian, thoughts?
 
-Yep, early_initcall() + CPUHP_BP_PREPARE_DYN seems to be flying ;)
-
-> > > > +	local_bh_disable();
-> > > > +
-> > > > +	lockdep_assert_preemption_disabled();
-> > > > +	range = this_cpu_read(ipte_range);
-> > > 
-> > > Why is it required to disable bottom halves? A comment would be helpful.
-> > > Or a hint in the commit message - this is not obvious.
-> > 
-> > When an interrupt arrives in the middle of enter|leave_ipte_range()
-> > the chain pcpu_addr_to_page() -> vmalloc_to_page() -> ptep_get()
-> > decides ptep_get() is called in lazy mode, while the per-cpu state
-> > not yet (de-)initialized (AKA inconsistent). That led to crashes:
-> 
-> So, I don't know what exactly lead to the crash, but I guess the
-> problem is an only partially initialized ipte_range struct, while the
-> lazy_mmu_count has been incremented already? Isn't it possible to
-
-Exactly.
-
-> solve that problem without disabling bottom halves by reordering
-> sequences in enter_ipte_range() and leave_ipte_range()?
-
-I guess you mean setting|unsetting the lazy mmu flag after|before the
-state is initialized? I will think about it, though I keep the door
-open for a possible lazy_mmu_mode_pause()|resume() implementation,
-which I am unable to predict how such rework would fit: lazy_mmu_count
-would have to stay non-zero in such a case.
-
-> Would be nice if we could avoid the not so obvious local_bh_disable()
-> and local_bh_enable() pairs.
-
-Calling ptep_get() from BH context was certainly unexpected, but the way
-local_bh_enable|disable() pairs are used is actually straightforward.
-This is a slow path anyway, so I would think the simplicity prevails in
-this case.
-
-But again, I will try to avoid that.
-
-Thanks!
+							Thanx, Paul
 
