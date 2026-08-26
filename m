@@ -4,81 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AA72C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 22:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C502FC5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 22:33:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 242A06B0088; Wed, 26 Aug 2026 18:23:37 -0400 (EDT)
+	id A1E1A6B0088; Wed, 26 Aug 2026 18:33:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2196E6B008A; Wed, 26 Aug 2026 18:23:37 -0400 (EDT)
+	id 9CF9E6B008A; Wed, 26 Aug 2026 18:33:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12F976B008C; Wed, 26 Aug 2026 18:23:37 -0400 (EDT)
+	id 8BD906B008C; Wed, 26 Aug 2026 18:33:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5A596B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 18:23:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C9E9A3660
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:23:33 +0000 (UTC)
-X-FDA: 85144848306.25.1B67DBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C4C1CA000C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:23:31 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OXlAEz91;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B46C6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 18:33:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D8F9A1A0286
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:33:47 +0000 (UTC)
+X-FDA: 85144874094.20.0858071
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3CB3D1A0008
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:33:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Zy/0oyLn";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of 3yGmPagYKCDUjVReaTXffXcV.TfdcZelo-ddbmRTb.fiX@flex--seanjc.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3yGmPagYKCDUjVReaTXffXcV.TfdcZelo-ddbmRTb.fiX@flex--seanjc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787783011;
+	s=arc-20220608; t=1787783626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=2dNveVa5cnpmFLz2lMfybEicw8i5n980mJjZtPRtB2c=;
-	b=NhOCugY1RYI/vz4WGx820f+fAWsjPf5ZJPDepKDQQbq2cXgWho8YGKRBv0ErsTDEH/e+Er
-	eEtscZ5Ld6yrlQPJwRDAieH5z+wbrDrTibF6aZo2d60trpeyDE4ukKE5CYyn1WaQzGSEJa
-	75jMOuVNK/KwIaKEk2KU+E7YlWuEXVU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IpUANZHm7Ku5ncYu7RPUYz8NQSkFG4aKOc/nSfGf9bs=;
+	b=MGhXQ4dlrG4XNdP3zzLaKxE2z9APAl8gR2qjo3U0Ks3pDUCjc1uCB6tJlMTYvxjk246SBY
+	whePDt1JcpPvGLNLCiEmelxmuWu2sKWkmk83awlhXDctfseg9BjU0+kbYlD2DbF1uS5zS2
+	6ByK4GIrArO3e6dGBINL9WSFoP7qOvw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OXlAEz91;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Zy/0oyLn";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of 3yGmPagYKCDUjVReaTXffXcV.TfdcZelo-ddbmRTb.fiX@flex--seanjc.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3yGmPagYKCDUjVReaTXffXcV.TfdcZelo-ddbmRTb.fiX@flex--seanjc.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787783011;
-	b=bOw115b22C/ZkbHt1NH+aMERiYIohdAIJSBMKJszJHD7lqBJLlXgxhfEvm4NXHzZ/Pxl95
-	BAH5IN+fEfJ7H+mr/rwdLYeh5t2nP4a502oXx4jtpinS6vHHPD/rRsb6SKBBiVM4KnWZSN
-	Jp5qNY/JjG/ymnXtLRuvlCpoPx2umqM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 30AD360A9E;
-	Wed, 26 Aug 2026 22:23:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD97B1F00ACA;
-	Wed, 26 Aug 2026 22:23:30 +0000 (UTC)
+	t=1787783626;
+	b=D6lloBAfI5sJxx0Ysmeccm1HHiuWhPZQr5E3nqrCg16Ix34t7ov5hn63lYaAThuZ8IKNFV
+	MeFGYo+MLOh07Oq6D0YyPwtUvgvCfv+fNbrdJwWv8WedkYcEGVkUKKhYz0YilzoTUdNoy+
+	1CrZkTFcpKTYUsHPHf8yWFtb+H7eUmc=
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c89704da8c7so149872a12.0
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:33:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787783010;
-	bh=2dNveVa5cnpmFLz2lMfybEicw8i5n980mJjZtPRtB2c=;
-	h=Date:From:To:Cc:Subject;
-	b=OXlAEz91lH122gqYlJfCvBqqdMEa1X2J9RF7DX8ofUSMFdWxx2giB9uRVMmM2p0dn
-	 7VtSBOV+KCXNY0hWaiqevu2LVVvauF+L4kTp6M2ft0Zm+jtRJFvNQbTG4csWn23Mnv
-	 gkTZwtBtb4OG3KZ/f8f/3y/g3ZIWfmRrMgUFldJ0=
-Date: Wed, 26 Aug 2026 15:23:30 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] additional MM updates for 7.3-rc1
-Message-Id: <20260826152330.9cdd482b43726942d6c149cb@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20251104; t=1787783625; x=1788388425; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IpUANZHm7Ku5ncYu7RPUYz8NQSkFG4aKOc/nSfGf9bs=;
+        b=Zy/0oyLn7p0QkzjflHH1WdkGqkFgqP5jIoDdvMAB/BICJrzxLZd8US0C6gZde16CR9
+         MNUpRpcOILkRGBEQwjZYs0BA0GNuxtXmnQ3juUmN9ZIvw4y1mkNDAaZgMaF5XFhIA7a4
+         7TdoxVQYws36Q1uwp2M0TPHEJBndpba8cPNme8C/0NQJoaBCF6h8/W2ZQSTLBGOvy8Nf
+         VV39aFXhWkAPihAt3lXrmCK/qVt3axG0YeZLC8GwzJ7K6H1HsxVMxgi61tx3BU4S/5p3
+         TGfwdyo6lOv7HP/XD40cIiZ3DEjNnj3GJSlaGx2Azse9RWbU0RF7ejIClqfts5LiE2ug
+         MEtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787783625; x=1788388425;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IpUANZHm7Ku5ncYu7RPUYz8NQSkFG4aKOc/nSfGf9bs=;
+        b=aurTjf8wmqFGOsZDEDP/6l4re9uREt3tYnFy13uC9UgE6HA8i247oiQbHEMX5td/iN
+         Rp1mKL3S1JqGL1EDk/9bgCym0jYFK95yDOA+G3TkZQ+NkFgSvLdfc4Pgys7KaxavzjrI
+         mKwWiD38aR6lg4Ge1PH0e6G7Yo3Wr7ZKy7lXg4dK+gRl725D56l57/WO/n6oDGtOa4sz
+         Cyzj2AvkR9zEemCFdLICqQPEz/lroK4hilaIfnhMs5C/DtSgKmMqH1sh23nKgeotlJK3
+         2zk9/97xaAVzGXYafNNPjL4K0dX1vOHG8vezgaefdqjXtUSrNzF/etCCVhQU0YVY8TxY
+         YKog==
+X-Forwarded-Encrypted: i=1; AHgh+RqZysmam2RUp+RU4iyzdVa68dKqbF6j59sooNhoQ768/3z684JNNHRC3uAY9aXwdevWUx8YAABSyw==@kvack.org
+X-Gm-Message-State: AFuF++kClDf5NE5xaXaBh57hsjgWuloSNH9FNeGEGh+V8qBH8e4rf46h
+	R04te6whibTqt1mPn4ugJD+118HTauqXR1ptkizElOTJCnk36LHoFfSdH4H63a+D7aYBIBgFVXj
+	aItWZiw==
+X-Received: from pgvi12.prod.google.com ([2002:a65:61ac:0:b0:cbe:e0a7:536b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c786:b0:3c3:b57b:627d
+ with SMTP id adf61e73a8af0-3cf84c5a493mr23198540637.12.1787783624481; Wed, 26
+ Aug 2026 15:33:44 -0700 (PDT)
+Date: Wed, 26 Aug 2026 15:33:43 -0700
+In-Reply-To: <mtbqvvvpwbzybgy6z47lwui6ag53kyubub3hkczui7u72zxesl@lnwsglrgwl5p>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C4C1CA000C
-X-Stat-Signature: k8mzeumj6rd5sruoih4e7ui4jkeirurr
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+ <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
+ <ao9CKMXAX-hScRSa@google.com> <mtbqvvvpwbzybgy6z47lwui6ag53kyubub3hkczui7u72zxesl@lnwsglrgwl5p>
+Message-ID: <ao9px1j7CLYXMiGP@google.com>
+Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: 5jqsjryjo3qtu1e5dkj9j4dqjth1csk4
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3CB3D1A0008
 X-Rspam-User: 
-X-HE-Tag: 1787783011-136487
-X-HE-Meta: U2FsdGVkX1+us3t4iaikM+2P1J8qU0pEcm8dS5fNzoFwtmyoZJ3RSvzeOP79qfcgcyGvyQNCjvgzQlocJrMZbNB10oOLeYuEo82TdrX8eg2QhDTKLDlcDjqqKUjMHbY6i5BCTXQgfUeKXJemFxO6tqg6Yuo+ryFmbH4pK3lOQHIZeshcjLIEI1KCKEKJnVV7WYkInS6mEQcBESD5iPwIx+NbafOsCkW4Qwogh6BwC1bPQ3GvUz23fPR74CkLsUUIfCjr5jR5FG+h9SQnCjdDKd8/jhrJzsQwY1Ru0PqV+4R/NrzEPYXQL75kLyFNrZiZTtwH99fHbav+hEGgyU2bOuV+Ya81qRhzq2vbkPDT9veIJbJT6QhZXR/2CosUmCm+OZbVabsRb3dTFsRx5vgUIZEh/Mr3pcTB9Qr1SReO8bo46nOHqcTDyaMDtxN6Chgow233q01RGQwhLEQYZOMaK1wb+CV/6bitJlj9U0/oPtToZBOlKKDWj8MC5Ry6NU1qyFFkEMiJLj8/sAiEWdzRJWFmoU8iyIHQrUkzkRpqfM4fyd7TqDdDb62BKWvjO86js1u2GHqcnww2o831kwp3EuZE1YiP4CW/hCjcm4+GEP7rTkB3KQihNZaoyBfbAuXF5VWsXwv3+YZnWGA+VPSVRjyH+OBNI04XeGNyqWXCHnLWzvMMkeV62s9I0awF2m2uusHGZPGyODuE5Id/Y7eedOWbedlDcFZSelnfSji/qFTXyA0PvwXIk4tNDm2ydjqp6VGEicbYSGIF/OOCL2/MSW7FjOrvTEPPQONxv2KcejlFAysMNbUjnyh8UuMYsQeoMSJQceOcMAaD2YbfkL90R8T3FT5LsaBMFmlSnxbroQW4dqfVsjytA8YAT5+zfsX3+e+imZBRz63Ko36EhUm/wtUnSWLywJqX2ATsdAQ22yDzHDbsg0zaazkO2x858N/xxyVon6UpmmQN80gggH/
- lJQydbea
- /gaLtO/3N7Re9D8IPx3SyH+YnnLzpFloA0Btl4AoAdByaTmb6c36fEV+rZJNKR2UmLQsh4Q+e37NxtJbSODKuRK/1JrmT0CmPl6TE72NPDoVDoExh5DFvf2mnxp2Jw416V/xi00NEEONRnubM2599OALuFkGscV2jN/B0RGByA1J9RLMgMNee+kSXZSDOYUx1ufD0E/esAKbAGvPeutJeCkpz879olsA59kS0DyM6TjsP4krQ3iFf9SHUCs+YnZ3HFyI4M9IdijuyrDOiHCTU3f6umY81ewgRy2ukFDC6v/vkZM8=
+X-HE-Tag: 1787783626-555170
+X-HE-Meta: U2FsdGVkX1/Z3f5tn8j4EqgYPeiHzaulm7kMYZvtKFiLQSwAuv8t115sRoJGnCuY2hyG2I13c275CdnC4ySTHC+CgAQ2uOuR36npK6eW4etN7A5ZquuyQXV9nVeu2Db7qzrVk7ixU25JeEomqFFBa4HERdKk77iiia5q51232hyYN1J06bnkRaXehim6WhJEvxXOzchnwjri/55s+E4i0Telfq+a8NqQ/79woiqWtKtyGKKjgbxDQgwyXWTqSntQl//puCj5Cay/FKCC0SwSaIYw8Rfci4NFKzhVgA3XpOmmRe1gQJZbv2ZjeA9HFycfs0F+RNBWz/EvfJwylIkl1tp69KfsJ4X+059XWPcR16R91pXPkd6nDh6yNhsACUMgUfXwVOqGLrHC8LliMdrTGfHaJVlPKutbZr3F1rb+dX+mRbS4Rz35z/jlgCI16VlFgvY7sefqNv/PQ9ECyVui+Ltd16SJwfeMDcAEg91Mn0zWGXcj9IMIHLuo+mVxY1bAtHDxL5m4df+PmRtXXSSkBXBJfVqcdGE8Jx1sHJIOOZkSurl9ie305O4Sruz/4YiL4m2bhjdHjH0H1AQs3UL/kYUAQiI/hQpEQnz227uR51rQGY2BHN6yiZ8oizPct0WUyfdDDVxNZtv1KE5YBCMEqnPJgjKmjuzXfiGKaRHDS6BKNm+AC9hqBNSJHOPrV3uZNEpCEiiEcSwWpj7EB+eUlSNpgxP9t6i3hEIsriZJngEzgZroBqr4PJ6s/D2fMuWFa4cLGvVFAMruUsuXtkz8RqMSU9Pg0F2xBSH/7PLNNbNjfZPhJEtsbkQX6GrBZyNJmGjHUK7y+EiPTe6DIbEMlyPHOs/s/dl0VS3RBGVy/TsfGeHu5lZ+w4i3fXp810oWNuIWGYh6zy2+UPQMDMlvKpWlI3jAUbQ9ki//q8YkY9dgiVF5n0R8w4LxrrYoz1xwXHcjHmU1ON5PYw8wvku
+ h5Z6FByL
+ 3pg5I1sPmjTghi+CkmlD3fY7IkO4teC6/NYp0Mtd//jzdaw2+2VE54bxnsaUonr6dhxUaTmt8vv1L+VGdElloA6aAnw9uingPrQt2TtFKlRaQcTQia62gcKutI7+ndPpY+8ltjvsfhjiGUR9gRfnEl4lIiPtVql6AYH89dVJ4+9SBp4LJNWgrUXB9EL7biOeuI6J7G9CdrvCiHci0h91WjILe0Hfw9Z0jR7bgBgAGTKlYJeo9mULm+cSsoP4rGgfOMpPvlKfdAzIVaNRFdLYsop6txZQ8/5Na/tnlGqsjVEZEXZMTs4GH5SkK8FpyYhXiAsv7R5yltlkuu/k/eHTjyqaQnqMKtU18gIGTyBG/c8rNZ0QNhIyLGimQ/jR6zgG1vx0sVcof5jNCfKdLY9zmVj5wfcfnoa2xzID0LPL+dGWP2TBqoyaGLE0n4l5OPnDh3rKX1ewY5J2CatF/WzCvyo7ncwvGEDs8qEsWlXRTVDno7RoNb+wNiBEyfk6yr8O/xJAdrn+4+d2o0j/02E4C/hWJg/gVD9JemeonVTkQyE6KodMa2G7jypxTRtzCOd/5Lg3p1Se4e5holk9yh+qsLx1OFssV7fI2rzPzJFzcMogZ8FD4dYCnMPkmjDtMg+cVdJ/iAIxzldkaTZZI88hPNYwy17Gv+ZaqkbaHJ/438XtXIgU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,689 +135,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-Linus, please merge this second and final batch of MM updates for the
-upcoming -rc cycle.
-
-I'm seeing no present or upcoming conflicts.
-
-Thanks.
-
-
-The following changes since commit 08745c62350126bc31b09548137be87e2866f628:
-
-  selftests/mm: thuge-gen: fix test_shmget() for PAGE_SIZE check (2026-08-15 21:12:24 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-stable-2026-08-26-15-22
-
-for you to fetch changes up to 0685630fdccb62dcb0e3f44525a40578da5f6dc8:
-
-  selftests/proc: make proc-maps-race work with READ_IMPLIES_EXEC (2026-08-24 18:43:33 -0700)
-
-----------------------------------------------------------------
-mm.git review status for linus..mm-stable
-
-Everything:
-
-Total patches:       171
-Reviews/patch:       1.83
-Reviewed rate:       82%
-
-Excluding selftests:
-
-Total patches:       149
-Reviews/patch:       1.77
-Reviewed rate:       80%
-
-Excluding selftests and maple_tree:
-
-Total patches:       129
-Reviews/patch:       1.99
-Reviewed rate:       89%
-
-Summary of patch series in this merge:
-
-- "mm/rmap: index MAP_PRIVATE file-backed folios by anonymous pgoff"
-  (Lorenzo Stoakes):
-
-  Index MAP_PRIVATE file-backed folios by their anonymous page offset to
-  resolve confusion around reverse mapping for zeroed and CoW'd
-  file-backed memory.
-
-  Use this new VMA anonymous page offset tracking to eliminate index
-  conflicts and lay the foundation for scalable CoW performance
-  improvements.
-
-- "promote mapped executable folios after first usage for MGLRU" (Baolin
-  Wang):
-
-  Make MGLRU's protection of mapped executable file folios more
-  reliable.  Follow the classical LRU's logic, promoting mapped executable
-  file folios after their first usage to give executable code a better
-  chance to stay in memory and improve workload performance.
-
-- "mm: vmscan: fix node reclaim ignoring swappiness parameter" (Ridong Chen):
-
-  Fix per-node proactive reclaim interface's ignoring the swappiness
-  parameter when CONFIG_MEMCG is disabled by consolidating sc_swappiness()
-  into a single function that checks proactive_swappiness regardless of
-  kernel configuration.
-
-- "mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance
-  cost" (Usama Arif):
-
-  Reduce lru_lock contention in the reclaim path by deriving
-  scan-balance costs from vmstat counters rather than lock-acquired
-  producer updates.
-
-  Read and decay these cost signals on the reclaim side under a
-  dedicated per-lruvec lock, reducing total LRU lock wait time by over 60%
-  without impacting scan throughput.
-
-- "zram: fix zram issues reported by sashiko" (Sergey Senozhatsky):
-
-  Fix two low-risk zram bugs which Sashiko spotted in drive-by review.
-
-- "Honor XA_FLAGS_ACCOUNT in xas_split_alloc() and charge to folio's
-  memcg" (Zi Yan):
-
-  Fix xas_split_alloc() by enabling target folio memcg charging during
-  splits and adding the missing __GFP_ACCOUNT flag for proper XArray node
-  memory accounting.
-
-- "selftests/mm: use pattern matching in .gitignore" (Pratyush Mallick):
-
-  Replace hardcoded binary names in selftests/mm/.gitignore with a
-  generic pattern-matching rule to automatically ignore generated test
-  files and avoid manual updates when adding new tests.
-
-- "mm/page_ext: remove pgdat_page_ext_init()" (Sang-Heon Jeon):
-
-  Make the incompatibility between FLATMEM and NUMA explicit in
-  mm/Kconfig and remove the unused pgdat_page_ext_init() function.
-
-- "zram: fix zstd error paths and add parameter validation" (Haoqin Huang):
-
-  Clean up zram compression backends by removing redundant error
-  cleanup, adding parameter and dictionary validation, auto-prefixing
-  algorithm error logs, and resetting parameters prior to
-  reinitialization.
-
-- "zram: fix stale scan bounds after reinitialization" (Longlong Xia):
-
-  Prevent out-of-bounds slot accesses during concurrent zram resets by
-  moving table scan bound calculations under dev_lock in writeback_store()
-  and read_block_state().
-
-- "add anon mTHP collapse test cases" (Baolin Wang):
-
-  Extend selftests helper functions to support arbitrary page orders and
-  add new test cases and options for mTHP collapse in khugepaged.
-
-- "selftests/mm: Handle unsupported and transient test conditions"
-  (Muhammad Usama Anjum):
-
-  Update MM selftests to report a SKIP status instead of a failure when
-  required kernel or filesystem features are unsupported, while adding
-  retry logic for transient page migration errors.
-
-- "mm/zswap: Fixes and improves the zswap shrink" (Hao Jia):
-
-  Fix the missing zswap global shrinker when CONFIG_MEMCG is disabled
-  and extend shrink_memcg() to support batch writeback for improved
-  writeback efficiency.
-
-- "alloc_tag: introduce IOCTL-based filtering for MAP" (Suren Baghdasaryan):
-
-  Introduce an IOCTL-based binary interface for memory allocation
-  profiling that enables kernel-side filtering before per-CPU counter
-  aggregation.
-
-  This eliminates the text-parsing overhead of /proc/allocinfo and
-  provides up to a 20x speedup by transferring only filtered allocation
-  data to userspace.
-
-- "better block swap batching and a different take on swap_ops v5"
-  (Christoph Hellwig):
-
-  Refactor block swap I/O to use swap_iocb for batching instead of
-  single-bio requests and rebase the swap_ops interface, achieving faster
-  swap throughput during kernel builds.
-
-- "mm: kmemleak: reduce transient false positives by confirming leaks"
-  (Catalin Marinas):
-
-  Reduce false-positive kmemleak reports by combining two kmemleak
-  enhancements that add a second confirmation scan and a configurable
-  minimum unreferenced scan count module parameter.
-
-- "mm: kmemleak: default min_unref_scans to 2 for verbose kernels"
-  (Breno Leitao):
-
-  Auto-scanning kernels can generate false-positive memory leak reports
-  on single scans, so this patch defaults min_unref_scans to 2 when
-  CONFIG_DEBUG_KMEMLEAK_VERBOSE is enabled to require a second confirming
-  scan.
-
-- "swap_ops updates" (Christoph Hellwig):
-
-  Batching I/O for synchronous swap devices causes performance
-  regressions and filesystem-based swap suffers from double-indirection
-  overhead.  This series resolves both issues by reintroducing per-folio
-  writes for synchronous swap and allowing filesystems to directly export
-  their own swap_ops.
-
-- "mm/khugepaged: several cleanups" (Nico Pache):
-
-  khugepaged accumulated redundant state-checking patterns and outdated
-  comments following mTHP integration.  Introduce dedicated helpers for
-  PTE validation and event counting while refreshing the internal
-  documentation.
-
-- "maple_tree: lock checking and clean ups" (Liam Howlett):
-
-  Syzbot reports incorrectly blame memory management exit paths for
-  locking bugs, maple tree erase operations risk allocation failures
-  without gfp flags and internal documentation lacks clarity.
-
-  Improve lock error detection, update docs, fix race and allocation
-  edge cases and optimize erase allocations using a fallback to GFP_KERNEL
-  | GFP_NOFAIL.
-
-----------------------------------------------------------------
-Abhishek Bapat (6):
-      alloc_tag: expose boot-time compression configuration
-      alloc_tag: add ioctl filters to /proc/allocinfo
-      alloc_tag: add size-based filtering to ioctl
-      alloc_tag: add accuracy based filtering to ioctl
-      kselftest: alloc_tag: add kselftest for ioctl interface
-      kselftest: alloc_tag: extend the allocinfo ioctl kselftest
-
-Alexander Gordeev (1):
-      mm: use proper PTE accessor in move_ptes()
-
-Andrew Morton (2):
-      Merge branch 'mm-hotfixes-stable' into mm-stable to pick up already-upstream changes to memcontrol.c, needed by "memcg: move mem_cgroup_swappiness and vm_swappiness to mm/swap.h".
-      mm/hmm.c:hmm_do_fault(): suppress sparse warning
-
-Anshuman (2):
-      selftests/mm: fix unchecked ftruncate return value in soft-dirty test
-      selftests/mm: check stat() return value in khugepaged get_finfo()
-
-Artem Lytkin (1):
-      mm/vmalloc: make vm_struct.nr_pages an unsigned long
-
-Arvind Yadav (1):
-      mm/migrate_device: clear stale mapping after freeing swapcache
-
-Audra Mitchell (1):
-      selftests/mm/vm_util.c: correct __pagemap_scan_get_categories return value
-
-Baolin Wang (7):
-      mm: vmscan: convert folio_referenced() to use vma_flags_t
-      mm: vmscan: add a helper to identify file-backed executable folios
-      mm: mglru: promote mapped executable folios after first usage
-      selftests: mm: extend the check_huge() to support mTHP check
-      selftests: mm: move gather_after_split_folio_orders() into vm_util.c file
-      selftests: mm: implement the mTHP-sized hugepage check helpers
-      selftests: mm: add mTHP collapse test cases
-
-Bart Van Assche (1):
-      mm: make VM_FAULT_RESULT_TRACE compatible with sparse
-
-Breno Leitao (8):
-      mm/kmemleak: report RCU-tasks quiescent states during the scan
-      mm: kmemleak: report leaks only after N consecutive unreferenced scans
-      mm: kmemleak: factor leak confirmation into a helper
-      selftests: mm: test kmemleak's N-consecutive-scan leak confirmation
-      mm: kmemleak: default min_unref_scans to 2 for verbose auto-scan
-      Documentation: kmemleak: document the conditional min_unref_scans default
-      selftests/mm: kmemleak: drop stale min_unref_scans default from comments
-      mm, swap: ratelimit bad swap entry reports
-
-Catalin Marinas (1):
-      mm: kmemleak: confirm suspected leaks with a second scan
-
-Christoph Hellwig (10):
-      shmem: provide a shmem_write_folio wrapper
-      mm/swap: introduce struct swap_io_ctx
-      mm/swap: also use struct swap_iocb for block I/O
-      mm/swap: remove count_swpout_vm_event
-      mm/swap: use swap_ops to register swap device's methods
-      mm/swap: remove SWP_FS_OPS
-      mm/vmstat: add NRSWP{IN,OUT} counters
-      mm/swap: revert to single-folio writes for synchronous swap devices
-      mm/swap: add a new swap_ops.h header to allow for pluggable swap ops
-      mm/swap: move swap_ops into file systems for file system-based swap
-
-Daniel Palmer (1):
-      tmpfs/ramfs: let memfd_create() work on nommu
-
-David Carlier (1):
-      zram: fix slot lock bit position on big-endian 64-bit
-
-David Hildenbrand (Arm) (4):
-      mm: standardize printing for pgtable entries
-      mm/gup: fix always draining LRU caches in collect_longterm_unpinnable_folios()
-      mm/gup: factor out LRU cache draining for folio into lru_cache_drain_for_folio()
-      mm/gup_test: keep longterm pin state per file
-
-Enlin Mu (1):
-      mm/vmscan: fix comment logic in balance_pgdat
-
-Eric Biggers (1):
-      mm/swap: reject swapon() on filesystem-level encrypted files
-
-Eric Kim (1):
-      mm/rmap: synchronize lock and unlock target in anon_vma_clone
-
-Ethan Nelson-Moore (2):
-      maple_tree: remove undocumented CONFIG_MAPLE_RCU_DISABLED macro
-      mm: fix CONFIG_STACK_GROWSUP typo in tools/testing/vma/include/dup.h
-
-Guillaume Morin (1):
-      hugetlb: only adjust reservation during unmapping if mapcount is 0
-
-Guopeng Zhang (1):
-      mm: memcg: stop reclaim when a limit update is superseded
-
-Hajime Tazaki (1):
-      mm: nommu: point to the write iterator upon split_vma
-
-Hao Jia (2):
-      mm/zswap: fix global shrinker when memory cgroup is disabled
-      mm/zswap: support batch writeback in shrink_memcg()
-
-Haoqin Huang (5):
-      zram: do not release zstd global params from error paths
-      zram: reject zero-size dictionary
-      zram: add pr_fmt to backend files
-      zram: validate parameters in each backend's setup_params
-      zram: reset per-priority params when changing algorithm before init
-
-Henry Elderman (1):
-      mm/execmem: fix fallback_end description in kernel-doc
-
-Hongfu Li (6):
-      ksm: update comments and docs to reference folio->mapping
-      selftests/mm: drop duplicate test_seal_mprotect_two_vma_with_gap() call
-      selftests/mm: fix read_file() return value check
-      mm/swap: fix swap_cluster_lock() !CONFIG_SWAP stub signature mismatch
-      mm/cma: remove stray newline from auto-generated CMA area name
-      selftests/mm: drop redundant open() in mprotect_tests()
-
-Hui Su (3):
-      kasan: fix cache shrink race with CPU hotplug
-      kasan: fix quarantine_size accounting during cache removal
-      mm/migrate_device: fix cache flush when replacing huge zero PMD
-
-Hui Zhu (1):
-      mm/mglru: fix young counter undercount for large folios
-
-Jann Horn (1):
-      mm/page-writeback: document folio_mark_dirty() locking more explicitly
-
-Jianlin Shi (1):
-      mm/page_alloc: only update lowmem_reserve_ratio on sysctl write
-
-Johannes Weiner (1):
-      mm: mempolicy: fix automatic numa balancing for shmem
-
-Kairui Song (1):
-      mm/mglru: fix and remove redundant unevictable folio handling
-
-Kaitao Cheng (2):
-      mm/kconfig: drop redundant memory hotplug dependencies
-      mm/kconfig: drop redundant dependency wrappers
-
-Karl Mehltretter (1):
-      selftests/proc: make proc-maps-race work with READ_IMPLIES_EXEC
-
-Kiryl Shutsemau (Meta) (1):
-      mm: include swap.h in swapops.h
-
-Liam R. Howlett (Oracle) (19):
-      maple_tree: add rcu locking check when LOCKDEP is enabled
-      locking/lockdep: add sequence counter to held_lock
-      maple_tree: add write lock checking with lockdep sequence numbers
-      maple_tree: documentation fix
-      maple_tree: drop dead code from mas_extend_spanning_null()
-      maple_tree: drop MAPLE_ALLOC_SLOTS
-      maple_tree: clarify comments on mas_nomem()
-      maple_tree: use prefetched value in mas_wr_store_type()
-      maple_tree: optimise mas_wr_node_store() when not in rcu mode
-      maple_tree: micro optimisation of mas_wr_store_type()
-      maple_tree: add bulk parent set helper
-      maple_tree: catch race in mas_alloc_cyclic()
-      maple_tree: document that erase may use GFP_KERNEL for allocations
-      maple_tree: avoid mas_erase() and mtree_erase() failures
-      maple_tree: document erase and allocations better
-      maple_tree: change two GFP flags in tests
-      maple_tree: fix argument name in header
-      maple_tree: avoid extra gap calculation
-      maple_tree: add helper mas_make_walkable()
-
-Longlong Xia (4):
-      mm/ksm: avoid missing ksmd wakeups in ksm_enter
-      zram: fix out-of-bounds access in writeback_store()
-      zram: fix out-of-bounds access in read_block_state()
-      zsmalloc: account for handle size in class lookup
-
-Lorenzo Stoakes (ARM) (18):
-      mm/vma: introduce VMA anon page offset field and add helpers
-      mm: provide vma_[flags_]is_cow_mapping() and remove is_cow_mapping()
-      mm: introduce linear_anon_page_index()
-      mm: abstract vma_address() and introduce vma_anon_address()
-      mm: update print_bad_page_map() to show anon index if appropriate
-      mm: introduce and use vma_filebacked_address()
-      mm/vma: fix self-merge check in copy_vma()
-      tools/testing/vma: add tests for copy_vma() self-merge
-      mm: propagate VMA anonymous page offset on map, remap, split + merge
-      mm/rmap: track whether the page VMA mapped pgoff is anonymous
-      mm: clean up vma_address_end()
-      mm/huge_memory: update remove_migration_pmd() to accept a folio
-      mm/migrate: calculate large folio page index using PFN
-      mm/rmap: use anon pgoff to track MAP_PRIVATE file-backed anon folios
-      tools/testing/vma: expand VMA merge tests to assert anon pgoff
-      tools/testing/selftests/mm: test anonymous page offset merge behaviour
-      mm: add some missing includes to mm-local headers
-      MAINTAINERS: add drivers/char/mem.c to mm misc, memory mapping sections
-
-Mark Sercombe (1):
-      maple_tree: fix comment typo
-
-Mike Rapoport (Microsoft) (1):
-      drivers/base, mm: move arch_numa.c to mm/
-
-Muchun Song (1):
-      mm/sparse: keep mem_section_usage_size() internal
-
-Muhammad Usama Anjum (4):
-      selftests/mm: skip COW tmpfile cases when fallocate() is unsupported
-      selftests/mm: skip guard hole-punch test if MADV_REMOVE is unsupported
-      selftests/mm: skip hard dirty page-cache test on NFS
-      selftests/mm: retry migration failures for the full runtime
-
-Nathan Chancellor (1):
-      arch_numa: avoid false positive fortify warning in setup_node_to_cpumask_map()
-
-Nico Pache (Red Hat) (6):
-      mm/khugepaged: refactor per-scan state clearing into collapse_control_init_scan()
-      mm/khugepaged: extract reference check into folio_pte_referenced() helper
-      mm/khugepaged: introduce a count_collapse_event() helper
-      mm/khugepaged: fix outdated comments
-      mm/khugepaged: unmap pte before releasing vma write lock
-      mm: Documentation: clarify where the mTHP stats live
-
-Pratyush Mallick (3):
-      mm/page_reporting: add page_reporting_delay_ms module parameter
-      selftests/mm: rename local_config.h to local_config.h_gen
-      selftests/mm: use pattern matching in .gitignore
-
-Qiang Liu (1):
-      lib/test_hmm: fix garbage pfn and wrong direction in devmem fault debug
-
-Ridong Chen (2):
-      memcg: move mem_cgroup_swappiness and vm_swappiness to mm/swap.h
-      mm: vmscan: fix node reclaim ignoring swappiness parameter
-
-Sang-Heon Jeon (3):
-      mm/sparse: correct init section annotations
-      mm/Kconfig: make FLATMEM depend on !NUMA
-      mm/page_ext: remove pgdat_page_ext_init()
-
-Sergey Senozhatsky (4):
-      zram: set default primary compressor in zram_destroy_comps()
-      zram: validate deflate params
-      Documentation: zram: correct algo parameters configuration documentation
-      zram: switch to unsigned long indexing
-
-Shakeel Butt (2):
-      memcg: bypass the reclaim and oom killer for dying tasks once oom_reaper is done
-      memcg: move LRU size accounting on reparenting instead of copying it
-
-Song Hu (2):
-      Docs/mm: fix outdated "radix tree" in page_migration
-      mm: memcg: release the css reference when a stock slot empties
-
-Sourav Panda (1):
-      mm/hugetlb_cma: support percentage-based hugetlb_cma reservation
-
-Suren Baghdasaryan (1):
-      alloc_tag: add ioctl to /proc/allocinfo
-
-Tejun Heo (1):
-      percpu: drop CONFIG_DEBUG_FORCE_WEAK_PER_CPU
-
-Uladzislau Rezki (Sony) (1):
-      mm/vmalloc: do not warn on -ENOMEM from va_alloc()
-
-Usama Arif (4):
-      mm/vmstat, mm/memcontrol: add _monotonic vmstat readers
-      mm/vmscan: add pgrotate_anon and pgrotate_file vmstat counters
-      mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance cost
-      mm/memcontrol: avoid false sharing between vmstats and events
-
-Warren Xiong (1):
-      selftests/mm: read memory information without popen
-
-Wilson Felipe Pereira (2):
-      mm: zswap: drop list_lru param from zswap_lru_add() and _del()
-      selftests/cgroup: test_zswap: skip test_no_kmem_bypass if debugfs is unavailable
-
-Xie Yuanbin (1):
-      mm/Kconfig: make MEMORY_FAILURE select MIGRATION
-
-Ye Liu (3):
-      mm: debug_page_alloc: fix type mismatch for debug_guardpage_minorder
-      mm/show_mem: fix format string inconsistencies and type mismatches
-      mm: debug_page_alloc: fix NULL buf in debug_guardpage_minorder_setup
-
-Yunzhao Li (1):
-      mm/zswap: use ratelimited stats flush in zswap_shrinker_count()
-
-Zhan Xusheng (1):
-      maple_tree: remove unused mas_is_root_limits()
-
-Zhiling Zou (1):
-      mm: shmem: reject page-aligned fallocate end overflow
-
-Zi Yan (2):
-      mm/huge_memory: use folio's memcg inside __folio_split()
-      xarray: honor XA_FLAGS_ACCOUNT in xas_split_alloc()
-
- .mailmap                                           |   6 +
- Documentation/admin-guide/blockdev/zram.rst        |  34 +-
- Documentation/admin-guide/kernel-parameters.txt    |  16 +-
- Documentation/admin-guide/mm/transhuge.rst         |   6 +-
- Documentation/core-api/maple_tree.rst              |  24 +-
- Documentation/dev-tools/kmemleak.rst               |  10 +
- Documentation/filesystems/fscrypt.rst              |   4 +
- Documentation/filesystems/locking.rst              |   8 +-
- Documentation/filesystems/vfs.rst                  |   8 +-
- Documentation/mm/allocation-profiling.rst          |  16 +
- Documentation/mm/ksm.rst                           |   4 +-
- Documentation/mm/page_migration.rst                |   6 +-
- Documentation/translations/zh_CN/mm/ksm.rst        |   4 +-
- Documentation/userspace-api/ioctl/ioctl-number.rst |   2 +
- MAINTAINERS                                        |  11 +-
- arch/arm64/include/asm/ptdump.h                    |   2 -
- arch/arm64/mm/mmu.c                                |  43 +-
- arch/arm64/mm/ptdump.c                             |  11 +-
- arch/microblaze/kernel/head.S                      |   2 +
- arch/s390/mm/gmap_helpers.c                        |   2 +-
- drivers/base/Kconfig                               |   7 -
- drivers/base/Makefile                              |   1 -
- drivers/block/zram/backend_842.c                   |  10 +
- drivers/block/zram/backend_deflate.c               |  25 +-
- drivers/block/zram/backend_lz4.c                   |  10 +-
- drivers/block/zram/backend_lz4hc.c                 |  16 +-
- drivers/block/zram/backend_lzo.c                   |  10 +
- drivers/block/zram/backend_lzorle.c                |  10 +
- drivers/block/zram/backend_zstd.c                  |  11 +-
- drivers/block/zram/zram_drv.c                      | 188 ++++---
- drivers/block/zram/zram_drv.h                      |  14 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_gem.c            |   4 +-
- drivers/gpu/drm/drm_gem_shmem_helper.c             |   2 +-
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c          |   2 +-
- drivers/gpu/drm/panthor/panthor_gem.c              |   2 +-
- drivers/gpu/drm/ttm/ttm_backup.c                   |   2 +-
- drivers/gpu/drm/ttm/ttm_bo_vm.c                    |   2 +-
- drivers/gpu/drm/xe/xe_device.c                     |   2 +-
- fs/nfs/direct.c                                    |  20 -
- fs/nfs/file.c                                      |  44 +-
- fs/proc/task_mmu.c                                 |   2 +-
- fs/ramfs/file-nommu.c                              |   3 +
- fs/smb/client/file.c                               |  65 ++-
- include/linux/codetag.h                            |   2 +
- include/linux/execmem.h                            |   2 +-
- include/linux/fs.h                                 |   1 -
- include/linux/lockdep.h                            |   3 +
- include/linux/lockdep_types.h                      |   3 +-
- include/linux/maple_tree.h                         |  16 +-
- include/linux/memcontrol.h                         |  21 +-
- include/linux/mm.h                                 | 132 ++++-
- include/linux/mm_types.h                           |  40 +-
- include/linux/mmap_lock.h                          |   1 +
- include/linux/mmzone.h                             |  16 +-
- include/linux/nfs_fs.h                             |   1 -
- include/linux/page_ext.h                           |   5 -
- include/linux/pagemap.h                            |  40 +-
- include/linux/percpu-defs.h                        |   7 +-
- include/linux/rmap.h                               |  11 +-
- include/linux/sched.h                              |   1 +
- include/linux/shmem_fs.h                           |   5 +-
- include/linux/swap.h                               |  30 +-
- include/linux/swap_ops.h                           |  44 ++
- include/linux/swapops.h                            |   7 +-
- include/linux/vm_event_item.h                      |   4 +
- include/linux/vmalloc.h                            |   2 +-
- include/linux/vmstat.h                             |  17 +-
- include/rv/da_monitor.h                            |   2 +-
- include/uapi/linux/alloc_tag.h                     |  99 ++++
- kernel/events/uprobes.c                            |   2 +-
- kernel/locking/lockdep.c                           |  58 +-
- lib/Kconfig.debug                                  |  15 -
- lib/codetag.c                                      |  18 +
- lib/maple_tree.c                                   | 401 +++++++++-----
- lib/test_hmm.c                                     |   5 +-
- lib/xarray.c                                       |   3 +
- mm/Kconfig                                         |  22 +-
- mm/Kconfig.debug                                   |   1 -
- mm/Makefile                                        |   1 +
- mm/alloc_tag.c                                     | 351 ++++++++++++-
- {drivers/base => mm}/arch_numa.c                   |  12 +
- mm/cma.c                                           |   2 +-
- mm/cma.h                                           |   1 +
- mm/damon/lru_sort.c                                |  13 +-
- mm/damon/ops-common.c                              |  13 +-
- mm/damon/paddr.c                                   |   2 +
- mm/damon/reclaim.c                                 |  11 +-
- mm/damon/vaddr.c                                   |   3 +-
- mm/debug_page_alloc.c                              |   8 +-
- mm/filemap.c                                       |   6 +
- mm/folio-compat.c                                  |   1 +
- mm/folio.c                                         | 124 ++---
- mm/gup.c                                           |  23 +-
- mm/gup_test.c                                      |  94 ++--
- mm/hmm.c                                           |   5 +-
- mm/huge_memory.c                                   | 239 +++++----
- mm/hugetlb.c                                       |  10 +-
- mm/hugetlb_cma.c                                   | 142 ++++-
- mm/hugetlb_cma.h                                   |   2 +
- mm/internal.h                                      |  77 ++-
- mm/interval_tree.c                                 |   4 +-
- mm/kasan/quarantine.c                              |  12 +-
- mm/khugepaged.c                                    | 130 ++---
- mm/kmemleak.c                                      | 105 +++-
- mm/ksm.c                                           |  16 +-
- mm/madvise.c                                       |  17 +-
- mm/memcontrol-v1.c                                 |   4 +-
- mm/memcontrol-v1.h                                 |   1 +
- mm/memcontrol.c                                    | 171 +++++-
- mm/memory-failure.c                                |   4 +-
- mm/memory.c                                        | 140 +++--
- mm/mempolicy.c                                     |  23 +-
- mm/migrate.c                                       |  21 +-
- mm/migrate_device.c                                |  15 +-
- mm/mm_init.c                                       |   1 -
- mm/mmzone.c                                        |   1 +
- mm/mremap.c                                        |   8 +-
- mm/nommu.c                                         |   4 +
- mm/page-writeback.c                                |   5 +
- mm/page_alloc.c                                    |  28 +-
- mm/page_ext.c                                      |   9 -
- mm/page_io.c                                       | 581 ++++++++++-----------
- mm/page_reporting.c                                |  28 +-
- mm/page_table_check.c                              |  20 +-
- mm/page_vma_mapped.c                               |   6 +-
- mm/pagewalk.c                                      |  42 +-
- mm/pgalloc-track.h                                 |   3 +
- mm/ptdump.c                                        |   7 +
- mm/rmap.c                                          |  43 +-
- mm/shmem.c                                         |  29 +-
- mm/show_mem.c                                      |  12 +-
- mm/shuffle.h                                       |   2 +
- mm/sparse.c                                        |  18 +-
- mm/sparse.h                                        |   6 +
- mm/swap.h                                          |  65 ++-
- mm/swap_state.c                                    |  54 +-
- mm/swapfile.c                                      |  33 +-
- mm/userfaultfd.c                                   |   4 +-
- mm/vma.c                                           | 113 ++--
- mm/vma.h                                           |  89 ++--
- mm/vma_exec.c                                      |   2 +-
- mm/vma_init.c                                      |   1 +
- mm/vmalloc.c                                       | 111 ++--
- mm/vmalloc.h                                       |   2 +
- mm/vmscan.c                                        | 232 +++++---
- mm/vmstat.c                                        |  19 +-
- mm/workingset.c                                    |   5 -
- mm/zsmalloc.c                                      |  11 +-
- mm/zswap.c                                         |  46 +-
- samples/damon/mtier.c                              |   3 +
- tools/testing/radix-tree/maple.c                   |   4 +-
- tools/testing/selftests/Makefile                   |   1 +
- tools/testing/selftests/alloc_tag/Makefile         |   8 +
- .../selftests/alloc_tag/allocinfo_ioctl_test.c     | 548 +++++++++++++++++++
- .../selftests/cgroup/lib/include/cgroup_util.h     |   1 +
- tools/testing/selftests/cgroup/test_zswap.c        |  13 +-
- tools/testing/selftests/mm/.gitignore              |  76 +--
- tools/testing/selftests/mm/Makefile                |   7 +-
- tools/testing/selftests/mm/check_config.sh         |   2 +-
- tools/testing/selftests/mm/compaction_test.c       |  38 +-
- tools/testing/selftests/mm/cow.c                   |  11 +-
- tools/testing/selftests/mm/folio_split_race_test.c |   2 +-
- tools/testing/selftests/mm/guard-regions.c         |  10 +-
- tools/testing/selftests/mm/gup_longterm.c          |   2 +-
- tools/testing/selftests/mm/khugepaged.c            | 204 ++++++--
- .../testing/selftests/mm/ksft_kmemleak_confirm.sh  | 130 +++++
- tools/testing/selftests/mm/memory-failure.c        |  14 +-
- tools/testing/selftests/mm/merge.c                 |  57 ++
- tools/testing/selftests/mm/migration.c             |  37 +-
- tools/testing/selftests/mm/mseal_test.c            |   3 +-
- tools/testing/selftests/mm/pagemap_ioctl.c         |   8 +-
- tools/testing/selftests/mm/prctl_thp_disable.c     |   2 +-
- tools/testing/selftests/mm/run_vmtests.sh          |   2 +
- tools/testing/selftests/mm/soft-dirty.c            |   5 +-
- tools/testing/selftests/mm/split_huge_page_test.c  | 139 +----
- tools/testing/selftests/mm/uffd-common.c           |   4 +-
- tools/testing/selftests/mm/vm_util.c               | 207 +++++++-
- tools/testing/selftests/mm/vm_util.h               |   8 +-
- tools/testing/selftests/proc/proc-maps-race.c      |   3 +-
- tools/testing/vma/include/dup.h                    |  64 ++-
- tools/testing/vma/shared.c                         |   3 +-
- tools/testing/vma/tests/merge.c                    |  49 +-
- tools/testing/vma/tests/vma.c                      |  50 +-
- tools/testing/vma/vma_internal.h                   |   1 +
- 184 files changed, 4907 insertions(+), 1960 deletions(-)
- create mode 100644 include/linux/swap_ops.h
- create mode 100644 include/uapi/linux/alloc_tag.h
- rename {drivers/base => mm}/arch_numa.c (95%)
- create mode 100644 tools/testing/selftests/alloc_tag/Makefile
- create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
- create mode 100755 tools/testing/selftests/mm/ksft_kmemleak_confirm.sh
+On Wed, Aug 26, 2026, Michael Roth wrote:
+> On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
+> > On Wed, Aug 26, 2026, Ackerley Tng wrote:
+> > > Omit support for calling the arch hook to make private, since SNP, the only
+> > > implementer of the arch make-private hook today, would actually prefer
+> > > making private only just before faulting memory into the NPTs.
+> > > 
+> > > Calling the make-private arch hook would require iterating both bindings
+> > > and the filemap to find the intersection of bindings and allocated
+> > > folios.
+> > 
+> > Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
+> > whether or not the RMP is currently reachable is irrelevant, no?
+> > 
+> > Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
+> > superfluous, but that's already possible, e.g. if an NPT mappings is removed for
+> > whatever reason.
+> > 
+> > > On top of that, SNP would need to figure out whether to actually
+> > > make private based on whether the memory is about to be faulted, or
+> > > whether it is a conversion.
+> > 
+> > This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
+> > if the page is already assigned in the RMP.
+> > 
+> > I don't care terribly about how SNP handles this, but I do want accurate reasoning
+> > and justification so that if/when we revisit any of this in the future, we can make
+> > informed decisions.  Because unless I'm missing something, this is an optimization
+> > choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
+> > not clear to me how we decided the lazy approach would provide better performance.
+> 
+> I'm not sure it was discussed in this context, but there was some past
+> discussion around preallocation (i.e. "should we call make-private arch
+> hooks at allocation time to allow for faster boot for prealloc guests"
+> and then that ran into the TDX side of things where that would
+> necessarily entail pre-mapping into the sEPT as well, so
+> KVM_PRE_FAULT_MEMORY ended up being the interface we adopted for this
+> purpose.
+> 
+> Since then, KVM_PRE_FAULT_MEMORY was added on the QEMU side and gets
+> called after all conversions for both SNP/TDX, and even without
+> preallocation it's a decent performance boost to SNP. If we were to
+> switch to pre-calling the make-private arch hook then the
+> KVM_PRE_FAULT_MEMORY call because partly redundant and in practice we'd
+> probably see a small performance loss.
+> 
+> So there's real performance differences here but it's sort of been
+> addressed through a solution that offers additional performance
+> benefits on top so there's no longer as much to be gained here I think.
+
+Or another way to look at it, eager conversion would allow QEMU to drop its
+workaround.
+
+To be clear, I'm a-ok with the code as-is, I just want to make sure we document
+exactly why we're choosing this implementation.
+
+> But I guess that's a moot point...
+> 
+> > 
+> > > Calling the make-shared arch hook and not the make-private arch hook does
+> > > leak SNP-specific details into guest_memfd (as in, why only make-shared
+> > > during conversions but not make-private?), but the additional complexity is
+> > > not worth taking on until guest_memfd has a user actually requiring an arch
+> > > make-private call.
+> > 
+> > ...
+> > 
+> > > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> > > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
+> > > +{
+> > > +	struct folio_batch fbatch;
+> > > +	pgoff_t next = start;
+> > > +	int i;
+> > > +
+> > > +	folio_batch_init(&fbatch);
+> > > +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
+> > > +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> > > +			struct folio *folio = fbatch.folios[i];
+> > > +			pgoff_t start_index, end_index;
+> > > +			kvm_pfn_t start_pfn;
+> > > +			kvm_pfn_t nr_pages;
+> > > +
+> > > +			start_index = max(start, folio->index);
+> > > +			end_index = min(end, folio_next_index(folio));
+> > > +			/*
+> > > +			 * end_index is either in folio or points to
+> > > +			 * the first page of the next folio. Hence,
+> > > +			 * all pages in range [start_index, end_index)
+> > > +			 * are contiguous.
+> > > +			 */
+> > > +			start_pfn = folio_file_pfn(folio, start_index);
+> > > +			nr_pages = end_index - start_index;
+> > > +
+> > > +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
+> > > +		}
+> > > +
+> > > +		folio_batch_release(&fbatch);
+> > > +		cond_resched();
+> > > +	}
+> > > +}
+> > > +#else
+> > > +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
+> > > +#endif
+> > > +
+> > >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> > >  				     size_t nr_pages, uint64_t attrs,
+> > >  				     pgoff_t *err_index)
+> > > @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> > >  
+> > >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> > >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> > > +
+> > > +	if (!to_private && kvm_arch_has_gmem_convert())
+> > > +		kvm_gmem_make_shared(inode, start, end);
+> > > +
+> > >  	mas_store_prealloc(&mas, xa_mk_value(attrs));
+> > > +
+> > >  	kvm_gmem_invalidate_end(inode, start, end);
+> > 
+> > The real reason I responded...
+> > 
+> > Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
+> > strictly necessary in this path.  The PFN isn't changing, just the attributes, and
+> > that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
+> > fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
+> > AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
+> > continue to access the shared data (assuming we stick with lazy conversions), but
+> > that should be fine?  E.g. it's not really any different than implicit conversions.
+> 
+> I think this should work in theory...
+> 
+> zapping NPTs means the vCPUs will keep retrying until they get the page first
+> vCPU that faulted is trying to grab from gmem. If we don't zap, then they will
+> instead be racing with the first vCPU, and if they lose they will be
+> generating implicit page faults that trigger conversions back to shared,
+
+Why would they trigger conversions back to shared?  Assuming the guest isn't
+being silly and accessing the memory with C-bit=0, the #NPF will be tagged ENC
+and KVM will treat it as a private access.
+
+	if (is_sev_snp_guest(vcpu) && (error_code & PFERR_GUEST_ENC_MASK))
+		error_code |= PFERR_PRIVATE_ACCESS;
+
+kvm_mmu_faultin_pfn() will see "fault->is_private == kvm_is_private_gfn()" as
+true, i.e. won't kick out to userspace.  Same for __kvm_mmu_faultin_pfn(), which
+will call into kvm_mmu_faultin_pfn_gmem() => kvm_gmem_get_pfn(), see that the
+gfn is private, and call kvm_arch_gmem_make_private() as needed.
+
+I don't see how #NPFs due to the RMP being SHARED would be handled differently
+than !PRESENT #NPFs.
+
+> and most likely the first vCPU will re-trigger an implicit shared->private
+> conversion when it does PVALIDATE. Worst case, the guest fails PVALIDATE
+> due to racing with itself.
+> 
+> It's a bit chaotic, but it shouldn't break anything other than the guest, and
+> it's only something we'd generally expect for buggy/malicious guests anyway.
+> 
+> However...
+> 
+> > 
+> > In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
+> > I can think of is that it could delay reconstituion of a hugepage, especially if
+> > we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
+> > hugepage promotion).
+> > 
+> > diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
+> > index 62f751952ad8..61f3e270ab61 100644
+> > --- arch/x86/kvm/mmu/mmu.c
+> > +++ arch/x86/kvm/mmu/mmu.c
+> > @@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
+> >  
+> >  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> >  {
+> > +       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+> >         bool flush = false;
+> >  
+> >         /*
+> > @@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> >         lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
+> >                             lockdep_is_held(&kvm->slots_lock));
+> >  
+> > +       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
+> > +           ((range->attr_filter & shared_private) != shared_private))
+> > +               return false;
+> > +
+> 
+> This path would also trigger for hole-punching, where we would want to
+> zap the NPT entries. So we might need to adjust the logic for more than
+> just shared vs. private to account for that.
+
+No, because PUNCH_HOLE uses kvm_gmem_get_all_gfns_filter(), which does:
+
+	if (gmem_in_place_conversion)
+		return KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+
+i.e. won't get short-circuited.  Though I agree with the implication that this
+is super fragile/subtle.
 
 
