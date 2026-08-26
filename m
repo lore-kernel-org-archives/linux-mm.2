@@ -4,131 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE872C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 17:55:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AADF6C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 17:57:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5E4A6B0088; Wed, 26 Aug 2026 13:54:59 -0400 (EDT)
+	id A149A6B008A; Wed, 26 Aug 2026 13:57:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A10456B008A; Wed, 26 Aug 2026 13:54:59 -0400 (EDT)
+	id 9C6826B008C; Wed, 26 Aug 2026 13:57:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FFB66B008C; Wed, 26 Aug 2026 13:54:59 -0400 (EDT)
+	id 8B83B6B0092; Wed, 26 Aug 2026 13:57:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CCB56B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:54:59 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5108A1C0869
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:54:58 +0000 (UTC)
-X-FDA: 85144171476.04.52408F4
-Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5211920006
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:54:56 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="a 6QD1hq";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=j8c5MrpY;
-	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6260A6B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:57:37 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 47278A2E1B
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:57:36 +0000 (UTC)
+X-FDA: 85144178112.12.ECB9A69
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 81FF3C000D
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:57:34 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NzrR4lfh;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of wyihan@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=wyihan@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787766896;
+	s=arc-20220608; t=1787767054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2bQByG0NGolsz8+a6PRUigbbsxEl5vWItJfVtq1Eax8=;
-	b=1HaWM2QV2dMmF3bCdZ0MGo1zLK1LHnws+h4PTixOEv8N7f160/FmsGiK9Tfl72L7K8Fcdi
-	b7GStgczEJtLKytPwmO8lwu8CWIKD9e9EuMsoby8xokzZUIVYO24Lro2M2t0uyL7ucf6z5
-	zr7F9ktgm77QP2mmE09gEHO4K2j66pI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787766896;
-	b=TzN+DTN/Ei6C0zyp97VKFI+Dei1aWJc+MUXa8h4kqsVuc6qx0sKOukCGNvlLrMnXX4SuM3
-	LoKlDcnt3UuXp+lTOl15XFq/3JxXG4+6b0kWPll0AnIqMaGoBiWlhx8/10eNZ6e5h/VbHe
-	cbZVCmHKHMWv0MirAhdEnzj1bLu7ckk=
+	bh=mOyt5LoY374Qkpz6cQhUC33i8CoGf2Yn2cDcltrm0Cc=;
+	b=yY07t8/rmtq/W5fciRfz/n0E9Tom0yHT6VGo8/JS2i9IGEAgKprg7yHjHSDKNVP/iFn44G
+	BJEzDCXuK8QuySxh5MKgg0t/3u0XDzaSiet0/DBW/7fMsDBc3Oi08LAAajoxNAwf2fAeTE
+	XBiN9n9T7zu451hqWh8pRzOMGwapRLk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="a 6QD1hq";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=j8c5MrpY;
-	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailflow.phl.internal (Postfix) with ESMTP id BB4CC13801D2;
-	Wed, 26 Aug 2026 13:54:55 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 26 Aug 2026 13:54:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787766895; x=
-	1787774095; bh=2bQByG0NGolsz8+a6PRUigbbsxEl5vWItJfVtq1Eax8=; b=a
-	6QD1hq/hDLGcIi5UhcC8fZVJV/gg+lWo8Em4IgTDR0QqN0IFXBZHnw62SBzTRGxV
-	+BCXpEVn54j4vZgW5s7oIDF/qun739IiHKx4mmfBJ7gjHzTA5sriBSbA7QavTHow
-	lbcG7uQI9Cf2yN5vJjccrhVCfAtCPKHexiQili8X8eqhJY/owteJfkS2Mgn9CkS7
-	PbjxDtnXu5SwWQhfOaFJxizWrGCXgoIuA+3o5aCZlcMiKq5cQHR8S5D2jJHt4TAb
-	Uir06Hh8cTG73q9hTyWrS+cEX+dOA7ZAP9mobgm0e0ygOuSloW9CGt86gIGx/8zx
-	SFbuNTPprs4o7y98T6UMQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787766895; x=1787774095; bh=2bQByG0NGolsz8+a6PRUigbbsxEl5vWItJf
-	Vtq1Eax8=; b=j8c5MrpYkaqkl0y05FNftCCFN2zIidZN/4k7tL3rELlkn0UeNv+
-	eU4synikzCN9gL6KHsMGmdJ0X2dP0L0Khyalpxw8bLLPhHRs7CzMYxiPzXJdbwxY
-	7LQ5LHCp6IamFhd1yYIz0nKrcMnGPSgCxbN41bqmWvNuFvwCdJtdUtK3mijnZQvU
-	SqpfmK7mlY2b4i4MIzPLsi/wmhpMir8sAkhn9qs4TOn1lrQOwx2/jfRgEUmRVnV7
-	GlXr3SZj6ejLjzCY31s2fgt0xdEcE38sBh0ybtc4iABad0Ss/u3WDSTzBHpx8j6H
-	T3Fyu2AoyqgsGRhfKoUmwCtLG8wBkOFHYVg==
-X-ME-Sender: <xms:biiPahpqMiPoDTkSxn218jcRh5GhsiXyaxrk3k2eVZxyp6g4JEGdMQ>
-    <xme:biiPakEB1cI24gXsaAJ_ZTvF-iR4MgqqPruof3AH0tMG6mjMFTF9efu54mSMqrTuG
-    Tox9m1P8Zz67ab5u2UoaGwT_78CHgDZ3Do6O2WGe0632DyC9oCJz5w>
-X-ME-Received: <xmr:biiPavqEIIZA3npLSdQJk2IUboUKAaoLN4_vlPIF-MBQxF5VcrfseZA_UEQ>
-X-ME-Proxy-Cause: dmFkZTE6xZzK4A32bGUNNPYnXM0UvfGGyn54u86/PwxKoHJcBoHd78FUBKy/v2DPmHJkl9
-    z6yymj3dgIgVeStR7UbyVaUs+utRXUnAqYgVFAhnt52kgJZEi5ZQgcbmim5s3+aY6iT7hg
-    RAzAXVXWBht8ryRB6o+Lm8WKU9830vEgS4QrvXQDSZi6bLXBuRR0KKNBpTFcUXCXrjZf+a
-    SYib5WegN0Asn3j7LrTnbRG94rtanX/000SZQL7VLgr9r2NQkvxXVuBgkwL92yEkOLWxvc
-    cWIu/MmaWbAfrHScydQFgzQcAAnuRtF1hgbqCpkqHznEpAuInIfxdkRyZO2Ae1fd3UQ/Jr
-    Cv1D/cLBTQpEj9o/s0GrlLzWhnIWSM58LvFdoPhPalweAxhzVh8BJ22krLoJCfutihSKJF
-    GtMyiEPEUikdd0udZaidPol5a9WPHZSgEABZEoxgnZX9ABVuBM1xrQsDc+Udjd/eM96Dx1
-    xDPv9RvuGgpBfytZrjPZsaDWtNM4mJWYM7yAM5ukQJTadCGdAjjhiniqu9hxesSC+5Jkrq
-    pa1niqNodDK4GOP566sFWLhT+/FKYr/w7WLX18J2IkmO9s0LzXZwUnm3+0tDws689cMwpu
-    X/HVN05EaQY31jI8yA/Yvt2PRIfY4cGz7MZ8GP+0Tbzp/R6d7/3oFRyWMjnA
-X-ME-Proxy: <xmx:biiPas5hdOI-hAWkJUBnpREq4LcAl_d0ZAJoDDQiBj_yPYtQTc5_IA>
-    <xmx:biiPagQl5NLN6RnDvd52CuARJrrjrPd2VvT5dWIZo2gqhL2pTkmJsw>
-    <xmx:biiPas6VoCR-shXK5WEbAb6YKiT_rfDZLbVwe_gPYXJbR0Q4ZTzpbA>
-    <xmx:biiPai3vXJc0NvPk6-ISHeblxTysiG54VfQheJefcZY4zfRdtcJkaA>
-    <xmx:byiPaoiTxPpmjY5QptMidWSgn1kC-CQECCM_aoaGoy_kZjwTPTydQRu0>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Aug 2026 13:54:53 -0400 (EDT)
-Date: Wed, 26 Aug 2026 18:54:52 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: hughd@google.com, akpm@linux-foundation.org, david@kernel.org, 
-	ljs@kernel.org, nico.pache@linux.dev, baolin.wang@linux.alibaba.com, 
-	baohua@kernel.org, dev.jain@arm.com, liam@infradead.org, mhocko@suse.com, 
-	rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, 
-	usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, 
-	agordeev@linux.ibm.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, jannh@google.com, willy@infradead.org, pfalcato@suse.de, 
-	rostedt@goodmis.org, mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 19/57] mm/collapse: install a PMD leaf as the
- terminal layer
-Message-ID: <ao8jHveJqHegERGF@thinkstation>
-References: <20260816224609.308019-20-kirill@shutemov.name>
- <20260825122354.98021-1-lance.yang@linux.dev>
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NzrR4lfh;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of wyihan@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=wyihan@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787767054;
+	b=4DQRSAoG8MeK9+BUBvM/JVaV7f4jXQ6UkLBlzV+WhywddfoDd63onxhFTTrBhRurs68NQu
+	7a4Kek5ugNBfq6uismMImRwSkpowqepGvdFMy7q1XsFo0avm4nEKfoFr33bMCmufS3qmTi
+	lqJKWj1LOzsBCf+srLVkId2d95cjuvU=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d3b440b97aso10675ad.1
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 10:57:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787767053; x=1788371853; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mOyt5LoY374Qkpz6cQhUC33i8CoGf2Yn2cDcltrm0Cc=;
+        b=NzrR4lfh1yXP+zzlu3qtsyxpvIwHn2hlozDH6zMLiB4sBKFKWjhys2LTCvCvh9Shy4
+         YYcXVUgDBJbbbY+Mprdqrv2vy5TUZfz/oI8/7OChl61sVCd1ojYRlu3k7+CNhuieVO1P
+         hdyd++twGw4q0QzCzvYaai/0NENlr/twNfuNmGCQ86nZhEiV4vAwOVRz5KoAjxiIPWVR
+         IQqruBtCr7/9SpnUUn5lRssq2aGZymG0eFRMPhovJxBpk76+EH/yrlmNvHYXVg8vlLMF
+         N1wsGZeCJX6H1zDYoEUR4vgFjyzEXI2/SX3FcCUOfJqVUct0SiC8UyhPda4LZeEL46Fw
+         WsZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787767053; x=1788371853;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mOyt5LoY374Qkpz6cQhUC33i8CoGf2Yn2cDcltrm0Cc=;
+        b=X88SkZM+Aado2kwGXHjah+Cg3oDMvUuWCmUhMa6dnerCD4vNRrbAf05GOz1ZycMJI0
+         HJVj0omuSJ6ZBkyB62kzQzE6XVICcSZG5kdmj5Uhwi7MMfRvnR/5HSNz8Q8KDSA+REf7
+         M9AeMz+qNz975DQuomLAdgdzuP94mopeRicOD3Sln5lFHsOxN/TjrVKpH0Tt4lO2gtYp
+         a4DnKf++yEfw1x1ZOH8TW3JZdqFdcQ3bRJnTOeyHJa6YhDUn08/lZva08UAKb4XugLbH
+         tuOK5rmYW+psasew9XwBMNCEK4BglRJGxE1OxFvt/vs14Rd9SHPkicjN7KxElo1G+A34
+         oaTQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoFjbsIzVPAlODeevgfMbxtuFqJHrTpeZY5bvy72V6lgklAgrPwURyCE9/utXQfr47Dj9/3z/PAlQ==@kvack.org
+X-Gm-Message-State: AFuF++mZBrnL9vOUME1gZ4M9KiHKDKxKRKC49jc5QoRbIPWkCfzt/RQb
+	VQJ/osmkTAZ6MwnN5ll2Vkn4zvXbnPQGEbpXghr25/lyj1sJl3btVUmvB5dtUxKFxQ==
+X-Gm-Gg: AR+sD133YlhFFLtAoztJD4Qgnq4/TdK0UWEv4gBOdL2/zn92bd8fN7SIQM75K63xaDj
+	ljdulFA3xXg+DMw4iVikJBbXRriQeTDzZs9bJMbJ/Imygozcu4HgcpA+I2KX5lKK09iPx/Qy1r8
+	Er992y6Eh1ZPIEL7TpdaayfuvdZ3qqit0PE6uc5qI65n7E8YB1v/qG3+0cWbkROzWm3vxHrCFk5
+	TO/EuM9673nm4k1Iowddb/J/U+NXn23BbhLj9KKTmTzK85T1gPqSHSGLx1UeQ5RCTnn2e/clmwq
+	TxmtPG+BCbVuG0mbESiXym43jeX5/4Mjc0TTKIUc9w4sKMHS+0NRM7x39DL1ui7aNdWHBulZbrD
+	IjLw6pLMcdUn39ymTB94+Ea45CS5MNMZL/lYs94KlSE/u/XFw8G1DL6aFz/sfC7Vfrf7kbh9ezh
+	kgWbm5lOm/jK8LZ1hcVJ+NfiY+1qD4eVjgUHmVHHW61JxYsa+xAcAdH71obQZ645tj/sqzOvxpX
+	osODhpEpn03dPq0TN1tLg==
+X-Received: by 2002:a17:902:d4c7:b0:2c9:b404:b55 with SMTP id d9443c01a7336-2d72a6912edmr556605ad.6.1787767052531;
+        Wed, 26 Aug 2026 10:57:32 -0700 (PDT)
+Received: from google.com (195.5.127.34.bc.googleusercontent.com. [34.127.5.195])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645d31e8csm9002581a91.9.2026.08.26.10.57.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 10:57:31 -0700 (PDT)
+Date: Wed, 26 Aug 2026 17:57:28 +0000
+From: Lisa Wang <wyihan@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Andi Kleen <andi@firstfloor.org>,
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+	Rik van Riel <riel@redhat.com>,
+	Yu Zhang <yu.c.zhang@linux.intel.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>, rientjes@google.com,
+	seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
+	michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
+	dave.hansen@linux.intel.com,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: Re: [PATCH v5 5/5] mm: selftests: Add shmem into memory failure test
+Message-ID: <ao8pCI3AaUssIO8S@google.com>
+References: <20260823-memory-failure-mf-delayed-fix-v5-0-d97a5703e45a@google.com>
+ <20260823-memory-failure-mf-delayed-fix-v5-5-d97a5703e45a@google.com>
+ <8a99f753-0713-4194-8eb5-90da0724e647@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260825122354.98021-1-lance.yang@linux.dev>
+In-Reply-To: <8a99f753-0713-4194-8eb5-90da0724e647@kernel.org>
+X-Stat-Signature: k6u48amqoi9kop9skouo618k6tdgaqn1
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 81FF3C000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5211920006
-X-Stat-Signature: k8wg9m5u93te4dgh9sjiaab6u68rc6fi
-X-HE-Tag: 1787766896-489664
-X-HE-Meta: U2FsdGVkX1+YBWuVpTtyx7Gi6lBkSwpL2KfXL9suaFljfficNvMQXpoobG6PmwcGTd8yE/YPnAk+l/U0HaQdqnliHvv43a2Th87L8lnb69kH6/41ixLE9la5sQWpgasgwz3KXvzqBukZ1KMSEBy3uiC0UtwuSdXqA2OKnOLA0hIyR1fb+Rp3ZhQ7+erccUfvedwqgLQlVnggtOgQFzdrEtnMhnYtTqOOBKAro3e8J25zdJbFd2k1pU1TYYmIInM29uUeCzcYOr9sT8Ljr79eqNpz+rBl7arDMeWQYPrrqtATTxbceCjj60rgTNdDpvUd9HU4sClVP2+B5vRykygajtTbAKxaxo4jd6KS/z393UaNqFuW7DSqNlAknUiznxWF4z6tLE7FW2LYfF2LUEt45qDEgDIcnqbd4hGSkHSc/UgjPGkxiNbWEIgIaXuVMukjfMGmP5yeLnhxeY+5NDSLSCbFruUnzZ7eederGfnMFh7wABop0pq9ZDjJRhwgec5pLJjD7l4yz+oeArctj56Dqp/LeC6Xvs5RykGyUo+PW2PleW82SxHnmRx6v1hrd9X2zM1iHPzUKbSxrj9zKZZ/9n0tti6ykWCVcnVzHtYH02Pu0DEQHU+0PIbmbJPEnL6Ux3aJfa3CMd83Gd4u+K0kAXFMR5Z3BLkVf6hgd7rxJX1aZwQxNjAz4Mb890ijX3GPii3V4Idi1E9iBwg8+Hyl5r3UscprypFqT5iwPDbt2k5V1rA539lABMqAwyi1EH4cE/nnG9X8Yc1UQAjeRVLw+oVszbryt90Yk1uNDVAQBkt845pjgb5R8/ffIWFhZ6R8+rzPNg8k5E25kwflchZg+2OFTzRAUkkFyV51ATE5A/k9uks0DFTCK+4PzF7EyELz6y9ph8osGfP1RSgcPcm0RIU0U1mkgcciPZij9FsEzS5ZxqVhgAwkC6bv6baI3UM8/2boPQ0jKrSMHbwEnRR
- 37MtNaeB
- xUV9ssb3N/pMFwXtkw5AYQtxEBsdJFBYKhsNodBqhLJs47rW6eJTtSEl+3dRxuHRsihUzgBZHeJpvaGoYClw5Siw2gOwmu/k0UCminFl2CnyfzaA857uL5PVoYd4T2TpIr2x5PVTL4YIQxTAZygC8Di41AL4o5r8fcofyEgr73iTC7pQnfnSahCO0zb8hniCR20BoxRgCJTOoy6cT2ICyQP8a3YTbfeP5aqAQ4OPvz0W6OX2daaD36lPOjhbkmRnZbm3z3JouVBwqtVBNDjpE+hw5UzjI3do4vdrp7/fzzVyadFtqWgT5YuK0tbsmwcMAzVPnWRcuFKvaBYsQ0EVAscbXJxDML1UX0xpqC+e/7aEfznwc+TY+AVAQqc70rsww11BWayiXeQRL/CiuPR058btmeg+h7GMBVOVmQDL7Hn2ug4V+kVRvGAyjYH3DAwbZH2AE
+X-HE-Tag: 1787767054-893108
+X-HE-Meta: U2FsdGVkX19LRcBqarRnFKUHKPzIRcE9vtlSTr0/6/mHlOqeD5Z/S27Ah+qbFpW2eser+qvZ/SjW90JAGMWVVDmaqpJa3x3Q7CHxHkw0j8xcPieFxvNV9Q20UnFh2UoEbeOmW7XGw7ajPXox7bznhsgRRPw/rDZnrCmwjeeviFDN3rVlqIgpsH/+C2FZL1/GKICk36VaDKqS1VD2mybErh7hVNYGZM7kUgNd+gVFMB7R0QTryMakrhnaffUt1ZOuCkU7FxMdSFCBkRXFC/SC87ZY0laaUXn2hXZcrMDG1bcvxRvO6M2O8Oz5prRlZZs3ldNy8KDvCdHG95LuO1ZcUG5avxBtgREwaublWTYquC5TrD9MF1M5/haQBBpelNMRxwdsrunL7qLRRPkAkfFJHw/Z9iXG41ojx5oGekDo3Az0o9ckl2pZmOHhV11uo8ElFuHacu+jFum5hTdKDBNSF8NjICMTUVvVldS0XO1lWI3+K3PViFNlWPNCixpdkxZpQPtxvBK6hJfOHuT2t99Ra6kzIkSTSBkqEv6pKLwYfdUKbJVTFIxkydrBYOO+Z9fplgPHFNqbLVIqZzl2RI8gJlUlXAZVaaBdqzxq5Hs+Zi+zBPhpmqOwLiUvxh1wssbNSivLMeT4rTaYxmW7taZsg2KDFeGTMvX+LHZjP7kmzqHim+OWPq+ODFIq3z6HWx7sqCzh0opRzQ+KUA67SagYLSAq1lyjTalO6pObqxVmK6MmE45yTiIbTAhVDT9HPW42J+xQr2DgCFFrnCE37m/5YLlTNXe78aeb00tIvdFYtGmjbFyJhsZt/dImVfZhbcahgthwR2ZNt5cxOhENQYR0JtJPpozsEJETyi7D1r64NvUNuBcH+v/J78KdhNsqjZC4oLVXONqKiWL/GoKhg/rS1PO6zz2Sss8gKKkRGKVWmrDaspHRqSZQe/vbT717GuBerZ4PcszBip4GAS1oYq+
+ /Em5fweb
+ a+GUVb29gtrtkw0FW3FM5yPbBG+YQzcHikL2jnbdZZQ3C50UOywauscXUutKdjU2B9zOjtN4YwHboHL6dxulpy5hGMTLHjGyw8dQ5XtB41oVoNfqsgb1dlXF6xRzKgVL/HFKWj1p7GLZCtybG95K7GV3bAj3ltoJD9WwBkrhng9/3GFqdqdN22Amv7NgzgSHWoQhOyxiGTiSXqloddoQxWhBL6byhV0h7jq9eoIOaJ9f5lktZ+SjkXCjdI4SivKuF/6M3A7INCgTUk0UXGhVutwNV4h9dtTIjD484Nrbd97SOJhaNlAT3zFUKUrecClzJRzPgyE6/AncF5OM8CPESf8ljnsllaTEFN+Q0UgxDk4i2Aq01b/WSk7po6CFp1MvJP9ygPxl2Ff22t2MJJx2x2mm8Txmhn1yU4sqjQ4WuopXqc0Vw4tSKMF1fqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,78 +141,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 08:23:54PM +0800, Lance Yang wrote:
-> >The detached one is not: GUP-fast and RCU pte walks that read the old PMD
-> >may still be inside it, and on broadcast-TLBI architectures the flush
-> >expels nobody.  Quiescing it would need an IPI, which has nowhere to go
-> >here -- outside the pmd lock it opens the pmd_none() window this design
-> >does not have, inside it is a broadcast under a spinlock.  So the
-> >detached table goes to pte_free_defer(), which holds the free until those
-> >walkers finish.  One transient table page per PMD collapse is the cost.
+On Mon, Aug 24, 2026 at 03:00:47PM +0200, David Hildenbrand (Arm) wrote:
+> > +++ b/tools/testing/selftests/mm/memory-failure.c
+> > @@ -20,6 +20,10 @@
+> >  
+> >  #include "vm_util.h"
+> >  
+> > +#ifndef fallthrough
+> > +# define fallthrough __attribute__((__fallthrough__))
+> > +#endif
 > 
-> Well, git history spells out why pmdp_get_lockless_sync() is needed here.
+> This doesn't belong into this test.
+> 
+> rseq/rseq.c selftest already uses it.
+> 
+> I think tools/testing/include/ already provides it.
+> 
+> Maybe
+> 
+> 	#include <linux/compiler.h>
+> 
+> does the trick?
 
-One more good catch, thanks!
+Hi David,
+Thank you for replying.
+Would it be better to change it to /* FALLTHROUGH */
+like the rest of the mm selftests?
 
-> Could we keep pmdp_get_lockless_sync() right after pmdp_collapse_flush(),
-> before map_anon_folio_pmd_nopf() (and while the locks are still held)?
+If we prefer to include <linux/compiler.h>, we can
+certainly do that, but we would also need to update
+the Makefile and fix a redefinition in pkey-helpers.h.
 
-Yes, I will put pmdp_get_lockless_sync() there.
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -37,7 +37,7 @@ endif
+ # LDLIBS.
+ MAKEFLAGS += --no-builtin-rules
 
-Here's what I got to my tree:
+-CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
++CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES) -I$(top_srcdir)/tools/include
+ CFLAGS += -Wunreachable-code
+ LDLIBS = -lrt -lpthread -lm
 
-      /*
-       * Nothing fallible sits past here.  No anon_vma_lock_write either: rmap
-       * walks on the sources are unreachable -- refcounts frozen, folio locks
-       * held from freeze to putback -- non-rmap pte walkers see migration
-       * entries, pmd-level observers see the old table or the leaf and never an
-       * intermediate, and fork, mremap and munmap take a write lock where the
-       * round holds a read lock.
-       *
-       * The flush inside pmdp_collapse_flush() is the round's second over this
-       * range: the freeze displaced every leaf here and flushed before dropping
-       * the ptl, and the verify above proved nothing has been mapped since.
-       * What it covers is the paging-structure caches -- a CPU may still hold
-       * the pmd-to-table link, for a table that is about to be freed -- which
-       * is why the helper shoots down a pte range rather than a pmd.
-       *
-       * If pmd_t is too wide to load in one access, a lockless walker reads
-       * it half at a time.  Such a walker holds interrupts off, so an
-       * interrupt between two present values is what keeps it from assembling
-       * halves of both; the flush above does not always send one.
-       * pmdp_get_lockless_sync() does, and is an empty inline wherever the
-       * entry loads atomically.
-       */
-      old_pmd = pmdp_collapse_flush(vma, cand->addr, pmd);
-      pmdp_get_lockless_sync();
-      old_table = pmd_pgtable(old_pmd);
+--- a/tools/testing/selftests/mm/pkey-helpers.h
++++ b/tools/testing/selftests/mm/pkey-helpers.h
+@@ -22,7 +22,7 @@
+ typedef __u8   u8;
+ typedef __u16  u16;
+ typedef __u32  u32;
+-typedef __u64  u64;
++// typedef __u64       u64;
 
-      /*
-       * The smp_wmb() in __folio_mark_uptodate() orders the copied data before
-       * the install below publishes it.
-       */
-      __folio_mark_uptodate(cand->new_folio);
 
-      /*
-       * Deposit a freshly allocated table, not the one just detached: a
-       * deposited table has to be quiescent, because whoever withdraws it frees
-       * it immediately (zap_huge_pmd()) with nothing to hold a lockless walker
-       * off first.  A table that has never been reachable is quiescent by
-       * construction, which is why collapse_alloc() secured one.
-       *
-       * The detached table is not quiescent.  GUP-fast and RCU pte walks that
-       * read the old PMD before pmdp_collapse_flush() may still be inside it,
-       * and on broadcast-TLBI arches that flush expels nobody.  Quiescing it
-       * would take an IPI in a pmd_none window, which this design does not
-       * have.  So the table goes to pte_free_defer(), which holds the free
-       * until those walkers finish, as retract_page_tables() does.  One
-       * transient table page per PMD collapse is what that costs.
-       */
-      pgtable_trans_huge_deposit(mm, pmd, cand->deposit);
-      map_anon_folio_pmd_nopf(cand->new_folio, pmd, vma, cand->addr);
-
-Any objections?
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Lisa
 
