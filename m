@@ -4,81 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01216C61DC2
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 08:14:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7238BC61DC2
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 08:17:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA9EC6B0098; Wed, 26 Aug 2026 04:14:52 -0400 (EDT)
+	id 8BA5F6B008A; Wed, 26 Aug 2026 04:17:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5AE26B0099; Wed, 26 Aug 2026 04:14:52 -0400 (EDT)
+	id 843E76B009F; Wed, 26 Aug 2026 04:17:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFBAF6B009F; Wed, 26 Aug 2026 04:14:52 -0400 (EDT)
+	id 733576B00A1; Wed, 26 Aug 2026 04:17:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A904A6B0098
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:14:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2E067C028C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:14:52 +0000 (UTC)
-X-FDA: 85142709624.01.817C838
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 42A706B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 04:17:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B2C8A1202D5
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:17:07 +0000 (UTC)
+X-FDA: 85142715294.03.2E7E504
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 66E8C80008
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:14:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gEYJJikc;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787732090;
-	b=egDEM6zE40toq4PzYtTDP4JkYqkaHeVc2AdW12+hz3MRKcLlIOOw2VFFoD6HN9DKzda6l5
-	aCxduXfYqeABnUZjVDM7KNSfFU4vvgvk2cKytRmZ884HXcCAEEahBsc3HaxrzPmHaZHGK2
-	dxnHQU/2Q3AUZLzjWHT20zhP0jck8F4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gEYJJikc;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id EF00C40006
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:17:05 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N4nY/QZb";
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787732090;
+	s=arc-20220608; t=1787732226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jc5AoHf2qjE/ikpZjUfB6MnpSBqN1XX0+Zdh1Ro7A4Q=;
-	b=70tCEb7HugD1Q0zl126NYtwA/IB5mcAEuFyqYOZF8GFRkCIXt/G1foFTDVlWPGN8IMUTaF
-	u4XY3C/eP2zGW7jPEOIUJQlnB0FA+x4yOSKGF064wPhc9AWbFqEutbX5wlJMTgwXWDK1HV
-	yk3xb3z7Dxqvqd/5Ub4VHMb3Fb3AWfQ=
+	bh=Qugp8jQqwl7nXNbFsBvIRYiMaOQwEcXlebRQocQb2Bs=;
+	b=OHNTmESnsJ/6UC++vZIrSj9ZOMwwotndQjX9GQSZ/2Tn6HzRr8yXBlxQrBqTrS49AqeiRw
+	c7giCh7cDYI6PffO0gVXPCHCSfZZxggR6IPAEip7ALWtPh2wvDJJ9BHTe39rDA+ZEr/x53
+	6FJFwAxvL/LuJZRW21qHK9RhcpHNUBk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787732226;
+	b=J+T16AUt9cJAOdxzNSWUSnjrKGQA0ipEPyiBR0pRTS/GN42hrkWgJ2hEiyapx4bKyFaX22
+	PXqd+WkFSlfgasXVC+8a4j/fL5Giv1AqaF+dRQ0WmRWvv2EVDMnT98MQq10aUe6yRrnkcP
+	7EuIC9lbo9ulErKfNGGjtPCh1Qt0hCU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N4nY/QZb";
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92C34407AD;
-	Wed, 26 Aug 2026 08:14:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93B41F000E9;
-	Wed, 26 Aug 2026 08:14:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 296C541E9C;
+	Wed, 26 Aug 2026 08:17:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2C01F000E9;
+	Wed, 26 Aug 2026 08:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787732089;
-	bh=jc5AoHf2qjE/ikpZjUfB6MnpSBqN1XX0+Zdh1Ro7A4Q=;
+	s=k20260515; t=1787732225;
+	bh=Qugp8jQqwl7nXNbFsBvIRYiMaOQwEcXlebRQocQb2Bs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gEYJJikc/toz6F8QKezBvlpwgGyWhfluynnS9RhLMjWauJkS61XhCi+K2Vksr8hAV
-	 irfSunCZqgGbBgSs3Lr4I9Vx4ardA9nx+pgb/fvWT8ke8hiyZMWU5p6RbSdkPdF/s5
-	 5r6PFfy+CNJkElRqe7mjpXcC3hsI4zVazezxxglECtveJO3aHcdabWELJOx2wdPg5t
-	 bDwSj9vqu0VLWeX3bi7PpWuHrZ05rviaJfkuLBMJNcM8H0M02WFb3aYsbSdSnz1ldz
-	 F0k63wUZilpSrU1WVU2TKTsPH5KZT66qQ/Mf0W8bRI/RRHU4dNuimyIj8M3m2pi7Zm
-	 B9Up3WLdg0eyw==
-Message-ID: <77412338-b54c-455b-84da-1f39db641c90@kernel.org>
-Date: Wed, 26 Aug 2026 10:14:43 +0200
+	b=N4nY/QZbRK/Uf12tn8KyxduT8NiRFILfiQnJgGqPvpZoswxqf6GFeXVFytpQ/Un0l
+	 Jlbxxiq8ReOSR+3LU5xRqFhIQaXh8q+N65OwgwGkN6SCP5hvHG4TFk8hz7qlywNEdT
+	 ZopzGSDk2QaQ3IC/OZAw7+Fd2/DJdDBuaRf+TReITsuGPxCvdCTZRK+6ThqJ7RG/PR
+	 PY2CMRgS2XuaeQ5Ku6vuWRVWa4VUPeu4zqPl2hqh8y1o/K77Us0cifns/VPbyAhF2u
+	 XSSglyKrYs/3AeuOW/kDOYt67koqSG6DCyHXf7X5VTOgwsd1S6sF9ou5KTtpVzJ45p
+	 h5gH1kE7Tw/ag==
+Message-ID: <42695df0-3962-4126-9afb-9a1905d096a0@kernel.org>
+Date: Wed, 26 Aug 2026 10:16:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] mm: khugepaged: fix folio is used after
- folio_put/unlock()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>
-Cc: akpm@linux-foundation.org, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- usama.arif@linux.dev, zokeefe@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org,
- Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v3 1/3] mm: khugepaged: fix swap entry value to
+ folio_pfn()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+ zokeefe@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ stable@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
 References: <20260824092935.73892-1-vernon2gm@gmail.com>
- <20260824092935.73892-4-vernon2gm@gmail.com> <ao6e9RxwQ-KC1Ikq@gremlin>
+ <20260824092935.73892-2-vernon2gm@gmail.com>
+ <edd7ed8d-0f2c-4de3-89e5-f2b23c2dd1e5@kernel.org>
+ <6a9c2369-5589-4f2a-bcfe-c6e3b46a1ccd@gmail.com>
+ <c8e3bb54-e4f1-45d3-8059-3ee1910a920a@kernel.org> <ao6c6Oe_KV0O1LJn@gremlin>
+ <b6fbf952-c619-4fc7-8a8e-62a0ae64ff0d@kernel.org> <ao6fSHW_nX8YC9QK@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ao6e9RxwQ-KC1Ikq@gremlin>
+In-Reply-To: <ao6fSHW_nX8YC9QK@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 66E8C80008
-X-Stat-Signature: yy6yxyn86c6f979st46xsqfkawnsqpgh
-X-HE-Tag: 1787732090-201340
-X-HE-Meta: U2FsdGVkX19PQ+NUoNBNpQWjTPCMXcLVDHNMVBibPLsOZFObfHoc1k8bmaa0YrRWqTNL2FnJD5zCFPWHz7e1+3tiAfmXcCUc8Baw7KAUa/Jow/mXn4A3XBZAyysLPzvfOM/9He/YVJbePTwaCs+HxhuvkhEECCr7zCaCzkV5TduYccNu8eWKWUz4e8XzRTip+GRMuNv5o+dIXzNvSWQW6pxdGg5N9Xuuz92g1mBrvoPAfGAhDzKq5fwA/wQrrJjrwz2hDLAYgp5QP1dd3txMuyWj+1fhDbF3vK6bPN6OkKV9A+Ts2cFbIg+Wb/y/VyCEv7o/dY+Tvvw5/XIA9fmui/wCEPwgejhoXgR3CGoTztSKX65giFtfj9mc7ann1Mh1NuU2P13KgTmSpULb9aRUs/CP+6DkffeQxfp0d5wZB9+5UN9BhTis51n3tQ2NwzCLNRBLGikXQ1qaMcffQHEqYlCc3T+tTQIvDG7c6qd/msVTeDEZvvjFnDnws/slUgLV88Wd/2h+eHfY5XJZxXMwhhvSCGgXfYO0XJFwhOnnhacxOosLczAab5Xu/9zP8Vy93teaIkHjs2Fa3sjhZcTLgd6kMsr9P6Zej26JXeedIRKtsltX/FaVryGadYJnzsTpJHxD1AKF90Xc7rfMbXJLPnRH2522S9Zq3zt+uIj94hrk0s8qOUKgL2TCSLaRTeTKn6ZLGwAj1cAtkMqd3tKEAiIbq4QzVQpjiEn5iMNCEOJ9QPzwF3EK5PJBK5o7zKjvYJAC45yWnlfebuoEIBd7fbJEajkoo0dbQuGZp0FWI2OpFfeHG8bhIsC63YD4htq6YkLoC0nF3HwdoxtCUMGyl7qg6e8MgePwXJVGVjMEga7gowijbDGdZr9i7kl8HJGWnAIjv0SOnMFp9LNjwITu0bhRwJAwBoHH67iPuanTx5bpZzLd/An74y8qlnxGMWNMQEb9mwf00Yz2iw9sZwl
- NSjBNsf6
- Etkmg0/v4pE+EV1YToG9gIBGPXmmPNThT2sAFyGY/392h4WzxG0pF3ERgoGRSdftyVIYamCwy2S1VkVPq23MSadE4SL5i+6QfO/+dc/rhZdXW8i+EhXrJAjPFgYegE34Pftsc2zwCFp8T+YbF5hWh4j/O95CZzQoGwHFJu6MxsK9UMIc888pkqMU6P/YUkHUlAeqOg5jXNcMAlgEtXd/vuG7x4bXJB2Pn7KrQ7heq9rhMlSNFi0jbUpDkKzSsA6dS52Dpqxp434WXCSzr2HRdkEdTLy4+Do5mkrgCO2S4COT7k7j2BcF1ymldqZPqUuhQGDRmUzYe6uCLKkU=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EF00C40006
+X-Stat-Signature: ymz8axr1fzfwen9tu65g7hap4f5f5bak
+X-HE-Tag: 1787732225-236323
+X-HE-Meta: U2FsdGVkX1+BNMbD5xmeTHg/RWo53NmzrZpdIrvVhF8UpOBOHMw0uQKh9IfraY/LpENtMd0ownlxpUMdJBD1zdpfJ2xUVAIk2ux6x9v4kXrjNqykuuMz8UkD1mV7nhRIYE3/puzArM8B10J0Ow7pebAgaxaC8c6L/Xzd8tZ/OSrAgqN4kJGZV5Sfz4VLtYzLOxdh5VWE1rtagsfvhVDbCJFVeEd3O3NsqMbLVFTG9wCX/9zjtZU0DMQX55+LvJosKCSdrSs0yUYWgS3hBRzSkAWrUy5rrdxzEMr3N3MYNxWNB5iJ3bRILrBvwl5UKV+oSTBdMjAF+biIMmsuTay+GPaVhVHzyRXsrajaONRM23fEomv+3zvg715rNO8kIVNpjr9VQpH+4nRry18b0CP5zq2DOkPpjKRjhoeqD3CgIqjpQ6mNixan17j80DUrl9iwB8E9QrveNfcIOBAuDYH5tq8XMFxHazwUiq3vDNSvNshN0A0o+9/MgaCn7v5AJ6tPgHGEbbOM5uPrqt+3dNq1uLuOnQmrzm3A35F4S0thZeQaDNr4mnxXsYjKGfX6PL6VGLGOB2BZHH9MddvRKhArXSpmRMcK/rtf1QISV8DH3uq40Q6Oz0nt5RRl3NE1ItWwpcF5FtB0CHCtRozUCX56CVpup24hWZCwn9lYDBAYeWo5aG7/B+8bCB9q2tgHRqrG6XsmWtfKcnsW9qQ1dvaRbprYAzed/7cLN2AalaDqE2UvsP0i5VD2zyyAZl9Z64ca4c+Kffmq8vbkXsDg10i/Zh6nJpUBCnA1xIX6/xHCgFElTWZYkNOE/L+2qtdHdZeMIrSGEgyko/NGILRTMraYzEkZXQtnDeBcjogWDSW3+QzKkH3/9de01t142Ej6s5Bz/au8RgzrCEzWSrUVf05m1Z30FZIEk+Xv6UrhHyO/ax0sd02hIoN7Na5TvzMV3kzr9ZNPdeSKEd+E/bjdSAC
+ xsgzw9og
+ h71a/rd72iMQTvJuyKxO7TBTom1DEu35sFN/ZYZ4ucqbBaRkQWiZcq6jvI/7UyZiBrUoFeCBUG4SdMbRMavd7aI6+CL89w9FUfczbkOg/FUDkMdwBlrvGKcUsz1hSzODX88EMVEa5Vbda7H5NsKd8j5eYYE3bF07IDTJywBcJ3NQOjjU053GVdtSta06qFiCmawrR2Mls/kwR2KJ87VuMsF0XED01IoYb948V7DXN4MJr2NZ9vtlTUYrAopWmmU6IpDySJFv5oeAFV6hlq2CGJhDq1TQGQaPfrZ24lCy7AteYWthX9xu7OPNDAcGyGXV+hDOS8XrHTc45vYc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,67 +146,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/26/26 10:09, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Aug 24, 2026 at 05:29:35PM +0800, Vernon Yang wrote:
->> From: Vernon Yang <yanglincheng@kylinos.cn>
+On 8/26/26 10:11, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Aug 26, 2026 at 10:08:58AM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/26/26 10:07, Lorenzo Stoakes (ARM) wrote:
+>>>
+>>> I find this name... problematic :)
 >>
->> On the rollback path, folio_put() has already dropped the last reference
->> of new_folio. On the success path, new_folio is already unlocked and can
->> be freed concurrently. The trace_mm_khugepaged_collapse_file() is left
->> with a dangling folio pointer.
->>
->> So using the folio_pfn() before dropping the reference, closing
->> use-after-free window.
->>
->> Fixes: 4c9473e87e75 ("mm/khugepaged: add tracepoint to collapse_file()")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
->> ---
->>  include/trace/events/huge_memory.h | 6 +++---
->>  mm/khugepaged.c                    | 5 ++++-
->>  2 files changed, 7 insertions(+), 4 deletions(-)
->>
->> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
->> index fa828967e1fb..5fb4d92cfd84 100644
->> --- a/include/trace/events/huge_memory.h
->> +++ b/include/trace/events/huge_memory.h
->> @@ -211,10 +211,10 @@ TRACE_EVENT(mm_khugepaged_scan_file,
->>  );
->>
->>  TRACE_EVENT(mm_khugepaged_collapse_file,
->> -	TP_PROTO(struct mm_struct *mm, struct folio *new_folio, pgoff_t index,
->> +	TP_PROTO(struct mm_struct *mm, unsigned long new_pfn, pgoff_t index,
->>  			unsigned long addr, bool is_shmem, struct file *file,
->>  			int nr, int result),
->> -	TP_ARGS(mm, new_folio, index, addr, is_shmem, file, nr, result),
->> +	TP_ARGS(mm, new_pfn, index, addr, is_shmem, file, nr, result),
->>  	TP_STRUCT__entry(
->>  		__field(struct mm_struct *, mm)
->>  		__field(unsigned long, hpfn)
->> @@ -228,7 +228,7 @@ TRACE_EVENT(mm_khugepaged_collapse_file,
->>
->>  	TP_fast_assign(
->>  		__entry->mm = mm;
->> -		__entry->hpfn = new_folio ? folio_pfn(new_folio) : -1;
->> +		__entry->hpfn = new_pfn;
->>  		__entry->index = index;
->>  		__entry->addr = addr;
->>  		__entry->is_shmem = is_shmem;
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 4e0fca5942dd..24347f1a94ae 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -2254,6 +2254,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->>  	struct address_space *mapping = file->f_mapping;
->>  	struct page *dst;
->>  	struct folio *folio, *tmp, *new_folio;
->> +	unsigned long new_pfn = -1;
+>> Elaborate.
 > 
-> Nitty but:
-> 
-> Could we use pfn_t? I don't love that we are inconsistent with that.
+> It's overly long, I read it and am confused as to what is 'problematic' or not,
+> it reads weirdly in English and pfn_xxx is the usual convention for naming of
+> pfn's anyway.
 
-Note that the monstrosity we called pfn_t no longer exits. :)
+Excuse me, what? Are you now just making up arguments?
+
+> 
+> I made a suggestion in the reply as to how to refactor this to avoid the need
+> for assigning the name like that anyway, if you branch the result ==
+> SCAN_SUCCEED then it's implied.
+
+How is something that doesn't state the purpose make it any clearer?
 
 -- 
 Cheers,
