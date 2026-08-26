@@ -4,92 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E20C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:12:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C550C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:23:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C13CD6B0088; Wed, 26 Aug 2026 03:12:48 -0400 (EDT)
+	id 0DEBE6B008A; Wed, 26 Aug 2026 03:23:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9E076B008A; Wed, 26 Aug 2026 03:12:48 -0400 (EDT)
+	id 08F3B6B008C; Wed, 26 Aug 2026 03:23:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A65E76B008C; Wed, 26 Aug 2026 03:12:48 -0400 (EDT)
+	id EEAC76B0092; Wed, 26 Aug 2026 03:23:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 83A4D6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:12:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CD3F1402C7
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:12:48 +0000 (UTC)
-X-FDA: 85142553216.06.7864C64
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DC19F80009
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:12:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=OwOvhmtz;
-	spf=pass (imf30.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	by kanga.kvack.org (Postfix) with ESMTP id B43926B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:23:45 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90FE6A312F
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:23:44 +0000 (UTC)
+X-FDA: 85142580768.25.57592A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BD5DA14000A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:23:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bk9h0TQk;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787728366;
-	b=ezT5PtQqNxt9/vRVJROZL6IOLj3QtYYMm3hfOXtb6sWOTLBlJ0akphCHrLJFwuwAztS8Xw
-	eJsmP0pgqqxRpD0pCdD2O51ZhuE0mqAmdEj9GbAgp5YNQqiAR8Fk+NH5a42XloDWwY5wGx
-	inLZ7mSQBUztMcQU6g+uqhugOPwL4QU=
+	t=1787729022;
+	b=oEY6Fuaplm1vjwf9G0ntyXCYC1u4dyxpbV6W7+RGChdB0qdCxDdpXbNp2oggmZVmuYGz4H
+	TUq6tcMTFzEmx3lbV4xjwGPFUUxj8s95U8Y79QJu9bqFzpiIxCVl2L/k4Hd4UrzqCJRxZp
+	9pddUfJrCiHMkob8bvSckuKRbK9/FFs=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bk9h0TQk;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787728366;
+	s=arc-20220608; t=1787729022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YMj/68VBwbCteYKyTb/CDtKHGIohm/Yd4Nbofe6Ek1M=;
-	b=34RkpDRwI6vNk2eHlW538sPG4D47a8zNVvEqifVDX1GjbsmDXPlC0UBX4omRRxOHhECTj8
-	9otK4qxruGygrXrLGlehHzIPi/4E39qiQdR6GWMSQbLpUIynXEJNZQrKokrhXSfEm99+qK
-	+vrPMoW1nRUqwg4Iu02suJbML1UO7PI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=OwOvhmtz;
-	spf=pass (imf30.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=YMj/68VBwbCteYKyTb/CDtKHGIohm/Yd4Nbofe6Ek1M=;
-	b=OwOvhmtzYLIzANJoLSpF536BKIWkOpx6ClJmpmafH+0+s+WE84MvEOm+sJaygN
-	6z8YR9j5WujJfoOrZrrKzM/1cL8enAUxu8g+zf90dYfYHJoN2KfoJiZ/1hJnIZ8a
-	Cq0saWHd2VOb0a4lEl3AyDRd3Ip1elMsOHHzVXg9Z2yks=
-Received: from [IPV6:2409:8d1e:e12:7fe:b7cb:e263:e9d9:f20f] (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDnl0jSkY5qucu3SA--.999S2;
-	Wed, 26 Aug 2026 15:12:20 +0800 (CST)
-Message-ID: <e5afbca9-77f0-4727-a825-440df45c89ca@163.com>
-Date: Wed, 26 Aug 2026 15:12:18 +0800
+	bh=eDY+D7XL9VuOmqDyV1cbNPo/RBpqAzB2FjfOhAjGhW8=;
+	b=Gfu2wH+8OgYRQfQZ+78iOs0INmUXpyBq/nQdg1FtsLLsicPuQ41U7aVPaH9WmHpCbsat7z
+	L5ZlI8VRCfado7qZ4DW2rP0s0AeJMNib+lgrJmihy1uppfx7xVBe4BAoYj4qQ30j472z6K
+	ingwv9jk2sy8QDryLIk9H9D3kRNiXjQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D4EAE43597;
+	Wed, 26 Aug 2026 07:23:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F671F000E9;
+	Wed, 26 Aug 2026 07:23:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787729021;
+	bh=eDY+D7XL9VuOmqDyV1cbNPo/RBpqAzB2FjfOhAjGhW8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bk9h0TQkoAsdrTAfvO7bJZAqgBEtCuTbokVkteESGBqJymGQQiW+EDuaRW/do3qr9
+	 K/bjqs93XO0Vt3LolPNeKkksBx21/D2yiDHbPORUOWE85JfnQYIzhSH1Rv7oaNRdqj
+	 xFYfrNZzdEssI1zf34ftP8+LhtM7MDlFvUsO6NW7mSgM+fQSbZfvdM2HUM7DJAIpMM
+	 N+hUg3SevjHZoIbLmNrvZukDUrKCQ+i8t8tkKb1vTGzJSX84HduHP3mzdapPFzTHmf
+	 +iFP0L8XS2gMb4plOera5hojjcBidjkuKhKFnMZjZ9u/bW5CCCCxwZyyzaFKji4wdi
+	 tQrDlCBYgNhvg==
+Message-ID: <24f8108d-e7e7-47d6-8994-f50625daa4f0@kernel.org>
+Date: Wed, 26 Aug 2026 09:23:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/slab_common: fix shrink budget underflow in
- kfree_rcu_shrink_scan
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org,
- cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, paulmck@kernel.org,
- rcu@vger.kernel.org, Longlong Xia <xialonglong@kylinos.cn>
-References: <20260824091838.1692153-1-xialonglong2025@163.com>
- <ao5UqBL4iPh8zlpG@fedora>
-From: Longlong Xia <xialonglong2025@163.com>
-In-Reply-To: <ao5UqBL4iPh8zlpG@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] mm/hugetlb: fix missing migratable flag on same-node
+ hugetlb migration
+To: mawupeng <mawupeng1@huawei.com>, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org, baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260707110254.3147686-1-mawupeng1@huawei.com>
+ <fa60a766-6cc2-4db6-a38c-9a8e33925eda@kernel.org>
+ <ce6be959-58df-4138-bb35-01a1785a91d3@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ce6be959-58df-4138-bb35-01a1785a91d3@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnl0jSkY5qucu3SA--.999S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww43ZryxArWfWw4xXw47urg_yoW8Aw1DpF
-	Wqka4Utr40qr429rn7Za18JryYq3ySkFWxGF9Y9FW3J3s09wn3tay7tr1q9rWYkr1kXa1F
-	9rnF93WUZa4qyFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5nYwUUUUU=
-X-Originating-IP: [2409:8d1e:e12:7fe:b7cb:e263:e9d9:f20f]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC3BTX0GqOkdS5VgAA3B
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BD5DA14000A
+X-Stat-Signature: 6ewjcg3twfafbwxtj6m1ao1hrb5nxf3o
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DC19F80009
-X-Stat-Signature: m5kkug3uso3n45rx9w8kztdzsebhgz6w
-X-HE-Tag: 1787728364-345738
-X-HE-Meta: U2FsdGVkX18/kdwlRpQf0vWQy66K3dlSXL4scT5o3zRSMxYDs0XXl46yMFJSB99AvY+mdVVg3zAphnrVX9NZSSSmoHs0L9VIBfTPPyKqi3FHkm2NXg01U/XXU77vaNXvAeLBkcMhr0C00R1qQ4jKPEI8DWRYFV8tkKE3eWVaaYqMLTjO1hhK3WEJ2SXX6k1+43H6RnFDKJcuiiRuQb5PCUNLZiCAH1wT/7NEhS4mmlYODkuM8eEekQBAS23exv/VA2baOwlxlB1nFFWXG2UgsseD0i/XaS3lIV60TzSJ1sNetKQuGoQZYPsQp7gK5TwkLoD9Xkb127dUT5LG1JR9ZtoN1euwHAHwQXUDwW/zyS14W0EAEUA1OcXEoq/MJHWz24+yGr2d8ujhOlxyn3VtD+/+GrJUWheOn+7qVCnjR09tPCoQBqOLNXdubzl/cmNKzFOG85ME7zOGxik8ESuH/DERALLx6+LOVymqCDcM37Ha0aO7HMH1aAXBSQ/LDdBIUu37wL6BsXH+Eew8OnFAuSPLBOOII3bzgeplLjBDyRvdsa7u8LU2CvhGvAViiB2Gclt3yBgJbuLcss6jpMMMcQNATp1OlPFPyEw1cTQwan7S0shbgY0vTxEXqOhmVZ+1jndoDQA9qE81+cNDR2TId5xzo4+59CRMWC9qgEC3eAfocCsbKUc7Cn9PS1UFd03+RLk1W47K6JzhrpWTs2LB6MBH2jPJVcFHgC2RNUq+aW7RC4lT8v5giOgC1G6B67XUIGBDD2R/3eW/qhCgTWPkJNlz+YMvMdkdUrEgXoG+gJcFHDqLusCqrVMwJVRUqP08JM/Z0M1JROKSNUWNpEFl4ptfvOE5gp9HsX5cOm7szV9C+N5oXvRd6V9L/yYkVDDp0Rpu/KFPV2YYTwspT3tXF6j1k7u7UPbwe1PEvTmAOD0IgSYEhajIveNoWWLuDXmWI3WAcOKmMYYzuAX7SlU
- per7Bzwl
- /vUrHwQoaskvPAhLavuyXbz8kIxqp2A3A68kq23en+N3G92l0E0sVCfQttckREHf0L0as5rj+7MkTDnTvDaHd9QKSkwXAd+5FpLnpAUfrQEk3ip6F7mtXduzfl0dxtkVACu4q8q0H1z1E6YWhUTDj9wZfX+LMHWoQz5PLWctjaBytzTHH3Yy/AOx/ooZ+kEGB8JCdcv3j9G5rn1c6AYrF0reOBk4A/lMi+ZIjZKMkNTl+XuVTuWq3bB9WYhFO2gdVz4iMs4etR0a6KXjZQJYZEM2xpzY6Eg9x3KJoX6/aR0ujLvr8bcUv/7ab7TsXEeuDR4/KmUCVqhKuOhXQLkITjUixjfm4mt7qDA47E1adI3nGfWrvdvPFYaNn2pUq4SC67JM1SuvUInxC0EJHpi/h6TEgcxkbME/OB2uo8D4EVq32dvV564sJID3nRoO9n5NFsCnQPqf+ZeumJ8GUT1Kmw1aA7Q==
+X-HE-Tag: 1787729022-580897
+X-HE-Meta: U2FsdGVkX1/8fAKjSzY4qOdZbCZv1L+GtsVKi3EBvDV2Gx9q265Nor2LTZg8Lq/gBzuXjNj5HXPq/iVBqePKzRnhVwPOez+pHjLX/UDlnMZD+xR4clYrz4IjHuahCYOJNISk7UOiWruS5vySIxM/M8Sn9pIh6gHWzMRIY1QIbjLrF8okTXeVzUJAjrui/lCEonuqVn1KcZWUUkUDeUPN0qGela81e3cGluDyL2UChM34NSGdTSyDZS4TbA46gUa1p1Da9eJ62yr9Rm4mhDPhv2xDrnYUKv0TDjNHLqnC0j9eBsZQsfL7KHVmncPznN1cVdwLPtACSEmWgTUj/q/DPtF1HwnUMNDRUjSZ/PeuZtfyjaFK2RPLh2R1HXbfdqCXZUpVBfSbphgVA9paTsYXb2Bb678ZOAwsUx0R0f9XEgCdzEtj7kvyPpU8udi0oGRrSjI8BnOgE7HmWCZFc0ug+SdPgjhQg9Jnox6S7h3/olYAiqhnEkLmVuaDJqv//1bnAfwT1NvvkxhvlTQbBtdndhv5JXPJmxezEy6xW/8vimTZxweIMIYgYt3D5e/CBlmFEplJzfH/1YqEWKI5Za1CxDPKJU7cMkfl5PUYhmAfY/UIJ4fQU5nF5i/UrpUNPDZGy4jDUGNM3CVMMMWITRXpVURjpiv1Tsne0TNTpqQCu3sWHeHjRxDB5eoOOXn2psEn5H8TJ/7Kg11oETTGvsD6whQVSTf0HqAS4embEeGo3du1Kvfv//Qo+9IncZJUfzLUNSAizzb86jpOInHQu/4ZL1Qo2HMMX15/nz7sDHtJy6j9AbZMUQyyfJC0C1VWnDNJcHUYPlioPT6BXpR1LSimez8YRwilU+iflBlTHHCvzTuR4X5XwoKs8h0fuByKbAZXE8Sfqvyn0mZ0w4pOWn45bBw4QTQ7bmJiDWqcIJqFo5lyfJqoly8WSrNbO/Rlj82NhUXtfx6zFpflKzuhpYg
+ 9x+6v9bd
+ QaFE+7cb/ESZ4eGKj/fX/XQDchM/PslFUY9XqCHl0v+VKUcQKmn9gd1/zrOpENgmcxXo78YZg3eEm51FUNshyfjdZYu0P3QVeSRvrsGwAEZ0FpM8DaMjAWasc7bsAkRds/Knv1yKv1JW6qiT7zn350KH2h/o5D2s/PEVzNPpsp154fb6FD6d0Pkds4oeV9N3Q3qN3DYxuaBjCwsnlc7DcMfG/fhNxm/GtohoMCxlErCfYEHBziZ7fPpd08K8UPNFBXhX2K7oEhCX3C2nMTIE2Zv+qZKu/CnmGYoSUNAJqw0Ucz19v5wXdo1fFA/949gEiGktLXU0Ul/2pSzY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,59 +140,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2026/8/26 10:56, Hao Li 写道:
-> On Mon, Aug 24, 2026 at 05:18:38PM +0800, Longlong Xia wrote:
->> From: Longlong Xia <xialonglong@kylinos.cn>
+On 8/26/26 03:46, mawupeng wrote:
+> 
+> 
+> On 周二 2026-8-25 18:27, David Hildenbrand (Arm) wrote:
+>> On 7/7/26 13:02, Wupeng Ma wrote:
+>>> Commit ba23f58de896 ("mm/migrate: don't call
+>>> folio_putback_active_hugetlb() on dst hugetlb folio") moved setting of
+>>> the migratable flag and active-list placement from
+>>> folio_putback_active_hugetlb(dst) into move_hugetlb_state(), so that
+>>> the freshly allocated destination folio is handled where allocation is
+>>> known to have succeeded.
+>>>
+>>> Unfortunately, the new code was appended after the existing
+>>> temporary-folio block in move_hugetlb_state(), which contains an early
+>>> return added earlier by commit 5af1ab1d24e08 ("mm/hugetlb: optimize
+>>> the surplus state transfer code in move_hugetlb_state()"):
+>>>
+>>>   if (folio_test_hugetlb_temporary(new_folio)) {
+>>>       ...
+>>>       if (new_nid == old_nid)
+>>>           return;                       <-- skips the new code
+>>>       ...
+>>>   }
+>>>
+>>>   /* added by ba23f58 */
+>>>   folio_set_hugetlb_migratable(new_folio);
+>>>   list_move_tail(&new_folio->lru, ...&h->hugepage_activelist);
+>>>
+>>> When the destination folio is temporary (i.e. the hugetlb pool was
+>>> exhausted and the migration callback fell back to
+>>> alloc_migrate_hugetlb_folio()) and the migration does not cross a
+>>> node -- the common case, and always true on a single-NUMA system --
+>>> move_hugetlb_state() returns before setting the migratable flag or
+>>> adding the new folio to the active list. The destination folio is
+>>> then installed in the page table but cannot be isolated afterwards,
+>>> since folio_isolate_hugetlb() rejects folios without the migratable
+>>> flag; a subsequent soft-offline, hard-offline or memory-hotplug
+>>> offline of that folio fails with -EBUSY.
+>>>
+>>> This was reproduced on a single-NUMA arm64 VM: a second
+>>> MADV_SOFT_OFFLINE on an already-migrated hugetlb page returned EBUSY
+>>> and logged "hugepage isolation failed".
+>>>
+>>> Keep the surplus adjustment, which is the only part that depends on
+>>> the node crossing, guarded by `if (new_nid != old_nid)', while making
+>>> the migratable flag and active-list placement unconditional. This
+>>> preserves the cleanup intent of ba23f58 and closes the early-return
+>>> hole.
+>>>
+>>> Fixes: ba23f58de896 ("mm/migrate: don't call folio_putback_active_hugetlb() on dst hugetlb folio")
 >>
->> The kfree_rcu shrinker decremented sc->nr_to_scan (unsigned long)
->> and then tested the result with <= 0. When a single CPU's object
->> count exceeds the remaining budget, the subtraction wraps to a large
->> positive value and the <= 0 comparison, which is equivalent to == 0
->> for an unsigned type, never fires again. The scan loop then iterates
->> through every possible CPU instead of honouring the reclaim budget.
+>> Agreed, let's CC stable.
+> 
+> Thanks.
+> 
 >>
->> Reorder the logic to compare count against nr_to_scan before
->> subtracting, so the loop exits as soon as the budget is met.
+>>> Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+>>> ---
+>>>  mm/hugetlb.c | 14 +++++++-------
+>>>  1 file changed, 7 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index 571212b80835..cafadfdb63c0 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -7211,14 +7211,14 @@ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int re
+>>>  		 * There is no need to transfer the per-node surplus state
+>>>  		 * when we do not cross the node.
+>>>  		 */
+>>> -		if (new_nid == old_nid)
+>>> -			return;
+>>> -		spin_lock_irq(&hugetlb_lock);
+>>> -		if (h->surplus_huge_pages_node[old_nid]) {
+>>> -			h->surplus_huge_pages_node[old_nid]--;
+>>> -			h->surplus_huge_pages_node[new_nid]++;
+>>> +		if (new_nid != old_nid) {
+>>> +			spin_lock_irq(&hugetlb_lock);
+>>> +			if (h->surplus_huge_pages_node[old_nid]) {
+>>> +				h->surplus_huge_pages_node[old_nid]--;
+>>> +				h->surplus_huge_pages_node[new_nid]++;
+>>> +			}
+>>> +			spin_unlock_irq(&hugetlb_lock);
+>>>  		}
 >>
->> Assisted-by: Codex:gpt-5.6-sol
->> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
->> ---
->>   mm/slab_common.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
+>> The return was really rather hidden, thanks!
 >>
->> diff --git a/mm/slab_common.c b/mm/slab_common.c
->> index 657fd75776ea..95ddbab290d4 100644
->> --- a/mm/slab_common.c
->> +++ b/mm/slab_common.c
->> @@ -2172,11 +2172,11 @@ kfree_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
->>   		count += drain_page_cache(krcp);
->>   		kfree_rcu_monitor(&krcp->monitor_work.work);
->>   
->> -		sc->nr_to_scan -= count;
->>   		freed += count;
->>   
->> -		if (sc->nr_to_scan <= 0)
->> +		if (count >= sc->nr_to_scan)
->>   			break;
->> +		sc->nr_to_scan -= count;
-> thanks, this is indeed a problem.
-> I think we could make the code more better, for example:
->
-> 1. remove `count` variable
-> 2. add count to freed directly (also change type to unsigned)
-> 3. check `if (freed >= sc->nr_to_scan)` then break.
->
-> How does this sound to you?
-Thanks for the reply.
+>> Can't we instead just turn the "return;" into a "continue;" ?
+> 
+> There’s no loop in move_hugetlb_state(), so continue won’t work there. But I understand your intention. 
 
-Sounds good -- I'll adopt it for v2.
+I am clearly in need of some vacation (next week!!! :) ).
 
-v2 incoming, with Suggested-by from you.
+> To be honest, I’m not fully satisfied with the nested if either, but I haven’t found a cleaner way.
+> goto, or extracting the surplus move into a helper, feels like over-engineering.
 
+Nah, let's keep it like it is, thanks!
 
-Thanks，
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Longlong
+-- 
+Cheers,
 
+David
 
