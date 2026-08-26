@@ -4,144 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41112C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:17:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45A31C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 16:18:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 205816B0088; Wed, 26 Aug 2026 12:17:51 -0400 (EDT)
+	id 5D76B6B008C; Wed, 26 Aug 2026 12:18:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B62D6B008A; Wed, 26 Aug 2026 12:17:51 -0400 (EDT)
+	id 5AF596B0095; Wed, 26 Aug 2026 12:18:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A54F6B008C; Wed, 26 Aug 2026 12:17:51 -0400 (EDT)
+	id 4C6F36B0099; Wed, 26 Aug 2026 12:18:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D42716B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:17:50 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6685CA2B22
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:17:50 +0000 (UTC)
-X-FDA: 85143926700.06.54266FE
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 75E05C0007
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:17:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="LzC8/sq6";
-	spf=pass (imf28.hostedemail.com: domain of jannh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787761068;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E2AC6B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:18:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 24CD64010A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:18:36 +0000 (UTC)
+X-FDA: 85143928632.28.80793C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 90A5380012
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 16:18:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=liCtOcA7;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787761114;
+	b=Hv6Ih8Rf5wiL7S6Otl34C38aUJUFabOLA+5LY6z7c4NnM1xfQGLS87ep4xHqsAwJlcgc7q
+	4QwQUW+ur7uwGxOLa9Hi2/2hnswpDAGxObBlwLgDZrlhIBpehvs/dYp2AMhGgmXrevEMSk
+	Z0eDVclABn/4TqDbDDJrXrCLHvj3Tts=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=liCtOcA7;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787761114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wS8Isqy8j1V26xF5Dw7K3OrDRfOCKejghaID5rQbMsc=;
-	b=fO1eS+Rtfa8CyOvRq7KnIZwYJfjoeN3v6GDEVW8OKjXfB/+tN4FbrbpxkbfLSs0My44OsN
-	sbY+pVY4Q6RGCBg+c/HIyNsbMR23UtnnJjoU7L/zyHV/TZxoQnHySYdNteiektwx48/Uv9
-	cYcwDD/WX/Qyi+wXsjyoriPAxwjpdm8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787761068;
-	b=ltb5qWfUpmFozE+MnGLURZxb+PoqhCqUcWs2jsAJISVX+83qvvj7SYBKfdGxPldQxbGWLG
-	WvAU1W3H8JA8oUS/v0b4EK5LVNgQn3sk429PJ7qo9OaWBruYcAsCplMt+9K9os7smKssfH
-	UXt9oFub8teeNuD3LsUicY1PXF5sCmc=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="LzC8/sq6";
-	spf=pass (imf28.hostedemail.com: domain of jannh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d3b445a84fso125415ad.1
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:17:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787761067; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UzV1JEx1OrpVdpUXaZ0GkroX6zW7c4gEhNlKsPUXt5LRfjc/3/LshYQsrxrZpZOFgy
-         cZyCiomJNJKtBkWUe8IRIbiwWIsaOatWXYjaudCSnRaCJ2X8FE0aFOzl6CqNUMjdaBPr
-         uwFganPAYzuMHdZzzmckgoqnRH1Oc2lPJ1RiLksJykzz2jxmpl2LVGKx7Xrap9pEgvAw
-         ImkOAfE3Io+f5QfkcTbYZALKXMZjzXidAEK1ZNP7uwKiJ3BT8fkiRcMKjb0LAzz4JAo3
-         /yRsbcPILlA6w+N04YjZjy/aItbpanNQ3Wcssfv9V9LP7STFRywomQM88kOF91cTUbXP
-         R2dA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wS8Isqy8j1V26xF5Dw7K3OrDRfOCKejghaID5rQbMsc=;
-        fh=N6reYVPZuW6wBBizmJ+W1oe3GZZn8FCxfawMQz0ikKs=;
-        b=WbRy+T3SzIvSaOp423EyW7DCHvYPMgy9BRov1SMOpzEARQ5rTWtAiq2Z6PT/JFbdyG
-         m+AYtdnqqyMqwR2bbA4irwLXNKCWTS8xIJ87mDH7mSNl6+TjKG25dfdaO3RPO6IetI0L
-         r2dhOWUjDEVJOrCXrX6iQjSDEi6Tb/j3w2+6XPpSxGCPhNVSNJfeFtvZvW0Xur6tpM4X
-         Mr4+9QiLGyWD9+j0q15ybf45Ou+XGal2dVxlYrbfoldrEt+Y/2P/iXQX4YvpWBsMI8GV
-         bNdHvb2KO7pbVQLxJ1hxTZzxYy3AcUn8EjLad9prGYz8r8ja5iGksxxn8bEwm1jG+yRb
-         Bfew==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787761067; x=1788365867; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wS8Isqy8j1V26xF5Dw7K3OrDRfOCKejghaID5rQbMsc=;
-        b=LzC8/sq6CFFQueQvOerPOmFdYc1P+16OewCGqKwU4QaLHQquNlWoXAEvxNRGE0MwfY
-         s3gIBx53QQ0YA7ZzkFb0ipHTj2325f44t5e36Fgym2a/8Bzb5XCtn/qhK/wrlNEngmpt
-         LTLFqP+vIsTZlRxI+LCH8fyOCER3Ni8ANvoEyVdpD7QeI2doRXpZUsFqbKtPGEanmmY+
-         p3I4dnHDbHWPWJkdEIBNJAOIoUlfPrjCr6anR0tg3MaJlGUfwJqkCblIdKVml8linLqe
-         tME+FjOimCxg0XoI4pXwmeStvblWsd6Ze7a0SHeqQXxC4DYgXv9IWpKCVo4iC8UyDvxt
-         uuQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787761067; x=1788365867;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wS8Isqy8j1V26xF5Dw7K3OrDRfOCKejghaID5rQbMsc=;
-        b=XefOfHLt34Y2bYhIL8pNakOVrD+PfZz/NOqzIPSsITWEpTteljkO/Kb3bLtKlOBIEz
-         yPkJqkwnR7Axit49iK/u3fV32uOMGz6L9VkXTZBwMobQnzhqVKhXdBfIM61UfQwYRQMK
-         9acTMNmAORP8m5Y5OO2Hg89GtUI5DhHSmL9xOaRlSDxKX9C4qEJR6qO/MoqyYtL+uMnL
-         +Q0Z3wmzcpa4KM/Lw/kn4/WV8UP55bGG8MvE2NBIglpQXj0BsKODEpckOevN352/qneN
-         ojLoHWy2ZsJdHmU7X6DGREooPjPrwH6QccZzlu9SZfdhsQobnNEBajreCMudhD+QwR7u
-         DmSA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq0Pm2R5UdDmSNLKYqj2kt/BOjptuGsMCqXWiaLPcP4i3fOZjyVfu+/VcOtuLUj9w+ExYHyvLe6BQ==@kvack.org
-X-Gm-Message-State: AFuF++kEc0YjFyQmmvoc03g4k7Ui807GgRJzRCg+3IBQ0/w2JGOExN0I
-	o3oDi6RVZBxiJ3HhUTxEQujhpJCZr0niFta5ueRa3mzl32C9ztk42KrY/7S+O87RTpvSP+rj451
-	ALyjIgVnMQjANSZG+UJs86QCXz/91U4PhZ1CsERbE
-X-Gm-Gg: AR+sD12wFLDEsdlGjBkGt5XfJZ9sn9dkenb/W1w8SNDpQ6sXwEB6PKeHF8+PqZvhvHV
-	i7w4nmVBoGbkM+6Yygs/ZBYyGP8dv7vkp+w5aXP6ZNutjqpWM6zXyLgCqTJOHPENjJc9gbwQ9Hs
-	WvqnbkVsIYmVGOp+xnyp0NtFk1Lg0/04VrJVdCPdSZwTi0SulgzTnIDRy1ptKSkCLYbWlx+ZKMe
-	SZQqNMfSyo//ViO+xoK8KKfq27VksUJeiD7PqpYOMERzCSLUFTohJKSCnzOQHIpAWgYqHCCyNOy
-	nJBV6Fp1TAxEK4x+w6V2rgb4zybgRdDZvRkRzc9HlqFjvFf0MaR7bEXco7gFohuS0C3w5LFfP9x
-	sVk8Ux/80xi/DDPc5ih1he9BCXZz2GA==
-X-Received: by 2002:a17:903:1a2f:b0:2d0:1aaf:daec with SMTP id
- d9443c01a7336-2d7105043bfmr5843385ad.9.1787761066499; Wed, 26 Aug 2026
- 09:17:46 -0700 (PDT)
+	bh=/KVGzZ6bCLrBPb8pvmrm7J/N+QzEWznI/LjnFx/3QBs=;
+	b=q5SWocpdC/7tELHXp+Fns3fU/5d8CiloeL4X29jkIgRHD3zrPItp5j6pfeI3V8yENdBahW
+	q0PcdmXqinccZ2A31e8Vp3d0RYI4uYw21aGjoJsnoSiayAft4eXjXk1xTM4VMNj5MHG50G
+	+dZN/gcypX/Qxwe+7t4B2Lv051WcYrM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 01252601E9;
+	Wed, 26 Aug 2026 16:18:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C448C1F00A3A;
+	Wed, 26 Aug 2026 16:18:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787761113;
+	bh=/KVGzZ6bCLrBPb8pvmrm7J/N+QzEWznI/LjnFx/3QBs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=liCtOcA7GvslOr4ZLCnpb/gbXm10r40SAE/IlDbpIizwyH71smht55fHnWjKYhN8e
+	 DVErh52p2FPnyNEh/p3RHjzKaykWRfWcfHF9YB7/z//SG6LtNiETuirVB3kIv3hIJG
+	 zvhn7k/ZRxCKpBy98geSWMsDDitu+68LhCFmrVGZBl8VTeFzBVFZWv5+qq0Qdm3FJR
+	 qqk5XMCDng15tEmU6xIwR3xKLhrEET/nizgl5g/q+NWZSjP0D4A9zYMtvqJQDVLn/f
+	 ZrnWnLzPmL/qqvrIfBYid4aQWbW+9M+DmPKOYQxRArALupgUkmG9x1W0OvQKd0IdZL
+	 gAjKjRWz8nZgg==
+Date: Wed, 26 Aug 2026 17:18:25 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Hagen Paul Pfeifer <hagen@jauu.net>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH v2] mm/secretmem: properly account locked pages
+Message-ID: <ao8RZlK6mBa-oNGh@gremlin>
+References: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
+ <17e9f7d6-d095-44ee-9997-8dc10646f3f8@kernel.org>
+ <ao13TmFVVpsv0zO4@gremlin>
 MIME-Version: 1.0
-References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
- <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com> <20260825-unweigerlich-biotechnologie-abnormal-accff844337f@brauner>
- <CAG48ez14F42BgHm5dKeP4g8D_6CNhnAfF7BXdcBwa4NdtFiaiw@mail.gmail.com>
- <20260826-juror-energetisch-hackordnung-83810c82adcf@brauner> <20260826-rotor-heterogen-wollust-2091c20f5e30@brauner>
-In-Reply-To: <20260826-rotor-heterogen-wollust-2091c20f5e30@brauner>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 26 Aug 2026 18:17:06 +0200
-X-Gm-Features: AcwNN1XyOejgP8xhG53At4w9H1ZIts9vwM506J2nZcs81pxFYrfApeUAbMczaOg
-Message-ID: <CAG48ez1s-=GB62T6k5NFjkgsLYJN_eYhDwT2U9UXeTTCZBV_UQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
-To: Christian Brauner <brauner@kernel.org>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Ondrej Mosnacek <omosnace@redhat.com>, 
-	selinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ao13TmFVVpsv0zO4@gremlin>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 75E05C0007
-X-Stat-Signature: d7dhh5nfkmmg5szbjndi9uurwrus3t6c
-X-HE-Tag: 1787761068-199968
-X-HE-Meta: U2FsdGVkX1/Hrcho2mwnlK33L+OcWDhvlyApcAvbMOoElCWqWUcmFb4kXsPwnGZL/vJ+x1dJJrKs4fRE2mKkXwbhejecARBpdEvNqZHai2taazjJmD41Z6Thc9e3FUgo79Dg7qCrR5cQ12snQjfBUpUvKDGiPw3bWsSLwrsqntDfEtoaae8IJPSFCzOEETt4ZQdtSMeDXEqQriAXoI+FLS0UsLEGdk+4EmwByThqIs5ze/1uXAq7zrrK0yE1qSI5VftBJakt6/L+j5vLIVBBiJdbhq0LBv3f8ZXOxc1DOzSShiGkIzQ8qjpGSF9xUofbQAm2qBzdt482qjJtKIBx09PeQMZ+2ESyTr5ydJNLDHaSuiZpaI/nkzCFlqLA4JBlPpPhqnKFeFfMJqmYG/8LNtLnYKuugA7DRaJGtM6OG5nKIzHGcHy1w02eOT9lkVSSH7DQifcTi1CXWNPCxs8j666Ed+3oewJYmGVQd9wnklsaKa51j1O2wA++koGvXk/mCkH0Zryx1pUw0SG2oJEJuThaM6HV6699nzeBpcxiqa/QbZXuFLNgyZhbCTejorwV2gjgCQG3NRFiNbQCv0ccoX4703AMpDWeWoI3QS3bjck8gSNqianocRjrwocNiut/sCHNdFQN7KCMyDK9+Gnx7su64ZQ52GToe9gbZWXWsLXzvMCwfZS8IZrXPiNz1UFtiscrsomE7nbkx1nqxIHzvY9Q0Fmz9QXpyDFY23tcEMrIi4o9/k9n+OVKT1Xuhy4vbTQvYVa/iVPF9xXqLCub23mNYxBB4YSUzS2sOOBvxxGyMvLfutwQRjBuKPdpbTd0aqlSvamFfGULmf1Bp6abfWHjM3stH/wf2tdzWaV3BxKFI4OLJ4tNPEsyqRhG3AAhUVow0p0Op8+3sqS6Zv5mO+cPIGGgXEMcozc3bga6Bh4aHIUdlJtbwHoQnRc0RDo5Wo8hXMuyphp3kHgByyE
- snP0HD6s
- vJmMT47/NcunJfBeCLaENyXQtSjilBgBgJvuj3j+8M6JjP8DVoZjuLtr9sehd2hbllBl+yc3tqtWxtfFdrrDHa48Mqz5DWUODTcU9/IiBdJsQOnq/InwKCKV0AjYuv4abnUkBySW+xhfPSiyiPK3Q4ZVC5C0fRfx+hf9PPnFjsTB2Ssjw92CCtoIQZ0VJjvT1Rauk/cdwqiM5XNWALv2sEfOUlp0B+19e52HjqXIKGqzsHhn//D2lmt8Rvm7KVs+RE5msSDbx1NQqyAmLgQSmCokUcOuCdZMTPrUlE9MZCc2pYwDuxeFad7Y/4p7xQuUOpzO5q6J+ZwId1iYRxKTJIf1SqZ7Is/jc7IPeMAT/O6MqfCq4BfQ5lrDfOifWOBwcipOs
+X-Stat-Signature: kjhhwbut7cwshmu3c5b8dtmeosmic3zp
+X-Rspamd-Queue-Id: 90A5380012
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787761114-334904
+X-HE-Meta: U2FsdGVkX1/knkYuh9VS0yYaiMGHkAyHCEICFtBc7VsyAzxBJw3NQB/pmeIVNODDfwYonXm7W7IXYSwYKPOYKzZkzj/uE2rtxOTKsIa/RnkvQ2eKlvEfTlirH0Fs9N5gdkpfMHSU+Xa5A3K1rVxU4nXLH5SHLSKJ4AmpozjsfXrmhIpS7rxms9gvmXmQK3Qf/yLR3p5yWBcNYLeAYFwyqHp9cANAi1M8G+tiXmmWSNie+2kGkZeB/Jlex+r9dFavZIccacO2rVxhlLfGp9mvIr1bFzAAfV4ij1UXVXwDbNspVDp8CZWw3leEeQbwWHuRXF+Tserz9L0mfc/Xj0zwsJRlwqUvuy2ZaLo0bW26cWYQvGf6bMQB7ZDaS3vs8/2YJqSUI7k5CwrJQY0+CXuUuqXUh+9qKF7RBBWku0ZwuifUy4NDMOW6tpgqpK/HtkurtVt9o+SzV9xXTT8CXfaRvF9G6six2q1mK9mYQ+TB0Sma9X6wnr0LErOInxjEPFb9Wts4DYtxBQq8JvuhXj++4KrKpZ2QtbuAc7ynbp/5mqRHgGoeG0m3BklqAAcOcnAebl5tDYs4E22AYgZJzR9HAXCnRW3SdndWenTpbpmldFOPvS+oFJit1mi/J8ZdnarjPNhPqTG/Na4FDY8xVL4DOnD8Ju/3Qu4nkLDAfwlxUYp70ZppJstD6wIoAsHaez6TsrxkC+C8TaU3rEHmhX4GP5A9HMPYj5rxm7b4Nrh10XCMhXibkQkMwxAimlqfVtZeFN3Nr2/uqoeUfIdaupqeWqZh7oWj+WdtdIyDDmkICR82UGwe9tU7OpJA9zOPKT44FEbjU0CgVxBYqPh2u0/9nF7U33qLylr75fuPYMcM2cBj6UMP786aRtS4/8hdjiu9x1AzByWsHJ3P4EFyYIOVgnJzxkR1jZydjYgY14FCf5UlHlm3qILfXvjcPucUM+8FmlYSf5BX2jwyVicq3oo
+ gFAafgfL
+ zZeSe9oJrxu15xfoAFnVzgWNs1mx+PNH2NCoQDtsR3W3wzgy+NXoyxEop9EDWN7hjS/0RYXI1hRkOdciT1Q1mW1MAW4agZC5ZS35BFDX5eQW2AMhhvSxMcSpYCBDlAHH2SH9LAGqncFlRuvC7KHvqM743NExFANC9F7ijzgCqYx8/AMgS8K4bnGQbGBvU6fEGYQC2Qh5u7cyqVwb/zFWEkTpuiLbgwIpKxbUiGF5Bzssa/n52ZpaYC5bX17R2MXCAKTA6oVlIMcnDl5mXrE1+ohluDyIJCerdivdxXOfKxyMH37iJ/5SmZNyKDqtyVi0e3n3daL9jT9qdwt940idlErFo52g6GBEw14Mi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,25 +100,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 3:01=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> On Wed, Aug 26, 2026 at 12:29:14PM +0200, Christian Brauner wrote:
-> > It seems odd to just call a hook when it's introspection denied.
-> > And if that's the case why not also have a general hook in
-> > ptrace_may_access() itself in the introspection branch?
-> >
-> > I would actually have use-cases for this btw.
+On Tue, Aug 25, 2026 at 12:18:20PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > Can we split off the selftest changes? This stable patch is already pretty big.
 >
-> To be clear: I have no quarrels with this going in as is. I'm just
-> interested in how policy decision such as this can be made more
-> meaningful in general. If you have thoughts around this you want to
-> share, please do.
+> Yeah I can do! I seem to recall people wanting tests backported too hence
+> the change.
+>
+> >
+> > I'd assume the changes to the selftests are not required just to get if fixed,
+> > because the changes should not be breaking existing user space (and cosnequently
+> > existing selftests).
+>
+> Yup confirmed locally that the changes don't break the tests.
 
-A distinction that might be useful in my opinion would be to
-distinguish between read access to memory/registers (like for
-collecting information after a crash) and write access to process
-state like memory/registers (which would only be needed for actual
-debugging or fault injection). However, ptrace() makes it hard to draw
-such a clean distinction because resuming a stopped task can inject
-signals with arbitrary signal numbers...
+Correction - somehow I was working with an incorrect version of the test
+file or kernel locally, but the tests do fail with this patch, that's
+because it only seems to be asserting the mlock_future_ok() check which the
+patch removes.
+
+I think the easiest resolution is just to remove the test for the purposes
+of the backports and reintroduce the improved test as a separate patch,
+will do this.
+
+--
+Cheers, Lorenzo
 
