@@ -4,126 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 483F6C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 12:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73921C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 12:04:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 071416B008C; Wed, 26 Aug 2026 08:04:39 -0400 (EDT)
+	id 701B76B0095; Wed, 26 Aug 2026 08:04:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 022956B0092; Wed, 26 Aug 2026 08:04:38 -0400 (EDT)
+	id 6D9446B0096; Wed, 26 Aug 2026 08:04:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E79F76B0095; Wed, 26 Aug 2026 08:04:38 -0400 (EDT)
+	id 5EF7F6B0098; Wed, 26 Aug 2026 08:04:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C4D186B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:04:38 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B6B5A036A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:04:38 +0000 (UTC)
-X-FDA: 85143288636.10.037CA8E
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3FE9D40010
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:04:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="N Ic52T8";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=AHOiTX7k;
-	spf=pass (imf04.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E86F86B0095
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:04:46 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5FB5D80358
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:04:46 +0000 (UTC)
+X-FDA: 85143288972.13.4E1649E
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 95C7E100002
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:04:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PyAz2+CV;
+	spf=pass (imf14.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787745876;
+	s=arc-20220608; t=1787745884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mzGx8XU/Zb9y0rwHGsJjP5RQ/DyXPYcvJQsbfsNfH1M=;
-	b=rp/UBb/Lb9YpTBuhETCc8EJTVhKet3z+rsHbd0U0Sn78lgmeV4mey1Ov+soNx0gOApyIjN
-	wn1XtqsS31DI2TW4n4UloN7s2TSLTiBoM/nCMDkiL9UNEqO7t88WpACjcYuRWcL5lVtkZc
-	DTYAAgD0iIsvqv/RZGTV7LRi99/az8k=
+	bh=UhikRt0HmqGxXvzztoXS5tGgSGD7w/+eDypjfVVuNCU=;
+	b=kOrlK+1n+0JqPyfRHSjWV2yWyHnC3cl0Bd5hQMFHjHdLBVesa9FYZSiI6BixxDHePIQtM9
+	Zrd+Or2EjWH7ueZf19n9npd1QW5Qn7rCgN1tvld8/GZEkE7JuWoTMNeQQRgBI5Pjfei/Gw
+	EIfKOwgOSwUV6DuSY/vallCWO0vOXdw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787745876;
-	b=AaI2M9PC9w7GV4QcUp+yA5hK4DQY6r/8RkAOptprbrJ4cFhl8m7w20M+lrxFDsjG0Vay5q
-	fW+6nFqAHeHRLwajcVpzlqBBcmO3G0WE4J3JBd1QRIk0l/rzEbky0UVmCq1otZzK6qHVxJ
-	m2GehC/G5ROTcw4NyGbrYbr+p+k0aYg=
+	t=1787745884;
+	b=XMdyXEuIHLDebWjyXE9tJIyx7owVJ//Zr6pHwV6Xg1gtNR9H8vl8O2qsC2CVKUDtEM+ueG
+	8/Cq3xdxhQR0DitKabujDRxflqpjjwUdPTurMPAYd4T3m+qYvZzN8zgZ7y5Cn4a1PLcX6q
+	m4Cih+fDUmJzD9/SqjZPPcG5vm91nsQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="N Ic52T8";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=AHOiTX7k;
-	spf=pass (imf04.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 955C41400098;
-	Wed, 26 Aug 2026 08:04:35 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 26 Aug 2026 08:04:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787745875; x=
-	1787832275; bh=mzGx8XU/Zb9y0rwHGsJjP5RQ/DyXPYcvJQsbfsNfH1M=; b=N
-	Ic52T8rogd3+LQVpiihprD6MenoQoiweO8cqR3/VnhyZWn7r0SK2oWcdICwtykYF
-	DAdDPlM69S0G8HtFhuDX1HB8Mkna/TOzhWjPMd6HOgPEUzlyw2D55fiTxYCmFVLU
-	Fk5tWW3zmPUs2bDedm7t379cNttcDdbzHOhJ/m6l837YTr86D6iGxIDR+G5iL04W
-	FPGoUsdpksGXRvPpHEOwenlzpwYf5UAOXJF4muigKxIjXWZxLCJ6C53NUhrW/Xyf
-	TiZwinL+IhuqOWBkBkrbpzZIfdEFy/hUCevkmE/8rglb6OYoLmdXfRpPbxw5FATe
-	COdZWpA1yGsssjjA+xr5Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787745875; x=1787832275; bh=mzGx8XU/Zb9y0rwHGsJjP5RQ/DyXPYcvJQs
-	bfsNfH1M=; b=AHOiTX7kMU/wFMBDUqaI8KP2GM94iHw+g04gwlVJOe3+jeoORIu
-	wGrGRnlrgRynS3PmC8hXkcCr/rmvbVDSCx9fDOdKO7ExjwBY5nQzArcZnANuoEJM
-	rVQOK1vdfNMkDkZExkGYdP5A9vUmJgqXuxtDiJ4UCSy8Dj0LXKFo+t1j/dTQqpM9
-	zNe40Jkp905syGPOa6ksBSOiYaz/1r44OVpB4tN31T7z30IpCrwo5fgxqw+tA0Pt
-	1EaeME0Q1Y3OHnXqfJwmMba4XJEPZoUsxQcseicTg5gt/WZTkSwsm3Z28WLTt6ew
-	E+3Ae4ylyuArxRDa/yOXOH5cvNjY+3CSCQg==
-X-ME-Sender: <xms:UtaOanwP03jS72WpEvYdhU2M3sKm-sSCnxFqcjpaeSUxWkY3q0aUww>
-    <xme:UtaOamxXDpg_UumB4fBNI_LwNtr-cVh87fET9eREpABl8Ucl4TCXCaDGwaWRjrlmD
-    voUQ4Lkz_syCh-WvJOLkPa-h-iPJBVoDlucPI8pd0Kl6K7HIzdfgw>
-X-ME-Received: <xmr:UtaOanZX2mm_WoofYNscAlXdghVaph84EE-bk-bWiB5Y2KVccoayDUOaeDo>
-X-ME-Proxy-Cause: dmFkZTGaDSKkUm0bE0bL6Wmom+eIuygXvU7ds0QHNuYpR+VGQom2lcF81zbRwOMA441d+a
-    bPc+WnC0WBrnJXdQuimTvciOyud0siMW76OxtZX+qXX9JO3xt6/5f6fGvGgViO4DxyfX2u
-    fpEA97amC3rjxqu/OIxVog+CMQCrVVKr87A1vtcsckuxeMgX5ZqqTGnJjAWJ2oX78mXQS8
-    xjhtBR+/Ugka/oGNIOOHQS7xSTwzT5cqlFZ7v3L8sc+wkxvAoRx+hIwny73kKuUJRQJYHX
-    Y1dBtAV6m6y5My1C/MM1YOPMIIky1gj/kvxDosbOnxH3DeahI3ul7TfEWxkA2Ar+zvL7Mm
-    YOkrkka6KnkJ/w1LEHBczaAsba8N0dgoJgAMJFIROSoE2wwRE9zvqKgtW4evRu+IrWOQ8z
-    e8Z5C0ISGUfrBqpcAg9uV7HbDVbzg75AlFuT9jt181LYLGJW6AP887CfXFM41+VYFSP+Qc
-    6e4wPgkuuJOFRB2eHbLsV186ZxMeBR5ZZERxrl4rzIjxrrEIba1mhI5Z1FXhPjkr282Ow7
-    IH+qlgQFXTif+WMUTPEK9mLf6W4XaZ1Mq6d/V2U7VpIuemhz5UFfzFyUwvCJTBgH8jSPgA
-    h2rzdr5vVAjzkSCHa5tc5ZpLYdozYI+Tw8mtV3ITQqi3VyeT4fSh17VLguLQ
-X-ME-Proxy: <xmx:UtaOavlKBIF1WV7dv1vFn85dYew-SgsuiQoO37-JOWyCYerkvTTa6g>
-    <xmx:UtaOakGDadNpDplLRDbygMzuwTC9pxr4hj0v857G17F9iLLY_7OXsg>
-    <xmx:UtaOauib6GqVPwntMrTG06J5XVelPgvu2N14XkwckbyZ1vVmg8IYWg>
-    <xmx:UtaOaum7t0-x2fRceqmuFFT1iHa8zItESPcGc4mR-7UpFFzo1FkyyA>
-    <xmx:U9aOaudvRDi7kkRgvUEIOweAKYfwydJNeWkNxYq98GLp8rGTXdYsH14I>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Aug 2026 08:04:33 -0400 (EDT)
-Date: Wed, 26 Aug 2026 13:04:32 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] MAINTAINERS: remove myself as THP co-maintainer
-Message-ID: <ao7S-wjzcMIgM3s-@thinkstation>
-References: <20260826-drop-thp-maintainership-v1-1-3d102748fa17@kernel.org>
+	imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PyAz2+CV;
+	spf=pass (imf14.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=UhikRt0HmqGxXvzztoXS5tGgSGD7w/+eDypjfVVuNCU=; b=PyAz2+CVX/MmA487mIUvti4/+X
+	zDA4hLm7x0EkEu+dr1+T5Wmam3SKWWaSJ6cTvAT+FxzIu4ZOkaD43tFqMrOluM35SU2O2LtAY2H+P
+	eQDeMxTeRUy8ho8AOqlrIqBGd7nqC2Ilt7ycp0cnQ1mwW1f2h/eWZW9jq1Z8r78nqpKIRaLe0a55i
+	M1LZoG23NsekZL0h7bjuMdqOQkR75FohUp3dMvV4TQqqEtD71+E+Y3LGSn9XJtLMvB//VeNe1aCzR
+	jpdggdqeZRaM5zi9RAYDm2AtgeOfg+NbiFSMWfmD7w3gxspgQGpdH4czTejkcb+4JnJuI7dvWhcYw
+	L9AmG01w==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wzCMw-00FCWi-2F;
+	Wed, 26 Aug 2026 12:04:39 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 26 Aug 2026 05:03:52 -0700
+Subject: [PATCH v3 1/5] mm/memory-failure: efi: add the
+ LINUX_EFI_POISONED_MEMORY configuration table
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826-drop-thp-maintainership-v1-1-3d102748fa17@kernel.org>
-X-Stat-Signature: yfsnry8a7bxycdi9rtw1pszrqqr7shyw
-X-Rspamd-Queue-Id: 3FE9D40010
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260826-hwpoison-kho-v3-1-6f79c4b605bc@debian.org>
+References: <20260826-hwpoison-kho-v3-0-6f79c4b605bc@debian.org>
+In-Reply-To: <20260826-hwpoison-kho-v3-0-6f79c4b605bc@debian.org>
+To: Ard Biesheuvel <ardb@kernel.org>, 
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+ Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, kas@kernel.org, 
+ kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4813; i=leitao@debian.org;
+ h=from:subject:message-id; bh=XZUS/f25dq0I8Z+98iNLJoB6vzCCwIuyygNx7FuPAYw=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqjtZKIy44p0OfgXtXkaiRAIy9xVaHpssqtdzOS
+ lq7xv41s1CJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCao7WSgAKCRA1o5Of/Hh3
+ bdVZD/47lVPd3xCInezUT9l7ojDgBYE3rG7/KqPxMTr7D26pl7QUZ5iRnmOa/oYXIODPtbMJNxP
+ 0AOlMnnBfrspZC6BaebOZMKGhL1fi9VwJ2VpShahrPm29UJG8CZ55YheG5Fq+tE+Uw5zrJHTYrM
+ V0tpxo0LtP7Za7l/hFvgHJUmhoiHvKsEEKF61iaHuEFetuOAC/RiZjGLsl5r0Vuv6h9gq44dUZd
+ NtIAbECTx05b6eMDlBbtTIVK1FStG0H4bL/M034ORA4zxC5SfGRXNFQA4EF2+MwyMHRa365bXkj
+ +uOlUVIuo8nPwuQTiGryGPHzOvTQ9htIgEQQFM2DOFmg/K7tRU1YEiWoqjsz4nfoyU6stgzdUHm
+ SnNP9vOsHfFaqQIhwKMRFIxEt3d2JvofMLuVvc84GN1hsb/tQF07t+LbNWphFk5sbdaxj1MOSlI
+ hbYy7v6qRb6Ejz7wtOD7svHS1s4vzL0jyILVtLVnT9aKK3rosg5OEtQ0joYBsrU04gFa34UvMfh
+ 6VVD6JPtjMXH27vAEkmUlr83z31KG6+R5t+i99B4a4l7iyM+eVE9/C8MhKpiHUaYO8oxb+ZEGi1
+ HWK2fRFU+2rQYnKQk8NmEvH1olCgdyY6LQeE8sG4DR1FWgTA18lMnr/0nROVTN1/EsddqeXn5Uh
+ V2JggMOfw5h3XlA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 X-Rspam-User: 
-X-HE-Tag: 1787745876-273195
-X-HE-Meta: U2FsdGVkX1//2e9OIrDEldQwI/oueWpsszGPM9SsstTtir28hvRNBdXb7DgdDMFtsGecMQho4wUxkGhwNCjHWVKSA1wERaPqBf7l/RJs9l3AGP5+RsBk7R5wP3L9y1wfy/dWrFnxWfrWOmc4WP+qT/s8jW2IjpiwZEV0jKbw3cQz0kx9QTA35YSWxIAdPjttw+Y0pJdNUJjUPFqhMdhZL808L9Hn/tBHaC8Yhx6WFuXTmzRVht19NNl2neYRloYhCnmPiMIkehiEXIYKGMuox1689lF1+m6YaIDB3gzpnLxUi2HHy/utB6PdnyOXU8OAM4zo7zlG7ro/GOSHEdppLvAuRpYZAoJZd1MArU6lgGXVqYRUJsQvUNAxg7Ekn5msNon4PctiST35kcdNJEJAY7EirUDNqn+z1gQtKNUQkSVFiTYQwafTW/mLVaTDPVqf6B9Jm0yV7zHTKbNETVNx8sKYtbNgPmfXzzpwKXAuBsd8v4L+D57vN6SZQoR6zItVJ82xYJkZ9cjfnLVroRuh3ps9SZNb4audzZAsE9K2pzzKONuYANcepEzDiN1k+rl+bj1Zw7U/kazGzmtK5d8H+fZFA7NCO8ZkMvVq5Nl95Q9kwIxZpCzXdj6QxLP+FgjsGsFUsEjgpFsIIYRLis8/RVz7/IUf4DPpqrjAcD/kA2Hf1zCtnRfF+naZS/HZ3QM2rXGz50AuKdrcoQd3Lhk0bClp/+mmDcwAcBUZGxJgzGRt9/H0hz2KGWvTK1RTW9bW4HoYW5LR0pOMCIzmHVq+pX2XPSfZF35CJRJPZMGGzkrbMmREu4ktS2habYUrQU244+Kt1xARW3+2TLAr+4YLjal6e6WyKO47IVMghIYQLG5tSMRCzjdMJJiiP23UJNkO5jE4DPeDg0ajTDr1IqBDKXetAgIvrGjfdEmmty6Mthff2R3TquvSPdxzXwlB7eV6KaLEd4tSuTBwhOX6pk8
- 7dFeo8Np
- CDGNh7smkgzt9hZow3gCXvi+K8EHgrW/eRfFiHf/QJDMT+EZYnprTLBpUNz6ZL9MtRX+rvwACdWHB8lP0ZaU1ZWBU4TI9rD3Y/sP2kZAXQRjw9R9H0a6NPUDTj7PyaR+q+M6x7JSLMa4u/iz7SmmIkOp5UIVOFO59JHmVi5U0zJo9CBsqz+V1cAGi1LPFi6Fa6wJK5wfld/3V3SPZK4DvmCvSZpLR2AyjQEh+WlOHLYUgYtHYL3Xr8N+tJmp2LGaZu4go9fgDBQXr1RSIiwxmcHkVmB6SEJc6LdhH75tqO1K1H5XzRtewJImPNxR+qJcGwZMKHWDsv5wisbmwlxEdEd/TbEhYjkByi0JBdD81O/VQa1lhbP1S9YX7cTGWUuXkLR7LqOsuq8FXy+i8D+nOO3m1Zv1V8s2FHfvfce2qh+h2PFzrPnG/IOiecpUURCg3Tgur
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 95C7E100002
+X-Stat-Signature: nzqpydr3kqpfx9wd35a5nw9hsixa3sej
+X-HE-Tag: 1787745884-634931
+X-HE-Meta: U2FsdGVkX1/xp5uphx405TN10PmGRtHMpyXO7tl7xsfypmDtZS77+17h+SFfcvQ2Qx7yYEm5to9lB+AA/uE4dBq0uXq+AZqxpWaToaiyUGNyamEdP05JycvEBzFLUmGzNycd0DkpCO8K7gYxuOtiiFOj3HuWgLT8fBbZeEF7y1qWSKL+EeDCr1jf+hZ1b2Oog+YwGSXeZq/90wkNc8oBPndsyxb85LQ0kdGyPHNUCv/8o/19zBQdGU5VKWb0gs2wCSQkWskO46j52Xc2u7lK6k4RBkU57unTCz42LCN6A1XzZIkFiWol8cuq9kKRtnfe3+jz5FdEGfOjxzk/ErnmNgpze5s+zGIvatZEnr63LJM6Tr4D2N3jK0Xsxb3FvZYcmFbLl7DY0GabvpPv1ykxjym+OQ26bjw7oO6vgGWQBRa5m/hQQ6ugVEkx3y7Mls/T0azw5BDJ0GkB8iK/z0spkBSvCgykJKFwrQbD2HWYVVxEuyYSrBmCM0IlVPxTlYNUoyOSv/2fwtPlUK8q/CjCNL7MiooFO3kK+mpL6YJ9xklXN6v0kGctM+cMyeIob2AjOGAkVGOe5N3Q9m5xB34LnNv251lfeT+ZKwnAgVkVqy/croThjRKRFWrjK7pGkcBcJ8g0RFw3s7K4Z8m8KU2QROhFWfFb18eggD61WVEB2DLx1/23IctpWfuscYrEhU7A7nDI/TQwD6mcz3IpQgb14V1HIZCHco55W/hV25e6FcEvjvRFupy2jo8r396RQk3YKb6Ki/dX/pXUXEeFgX1JcLXfew8naWvoA7FirqARBun+mNnyZCNJNAkCuR4a8fLSZehEHEbVNT7Emv8GENSNsI8SDgDNpeMimMom0FUZSEUgptvLtAmcLoKb2IQgVJ9XJKOHnwB4qFGNJswqk/E6H32DxncOjTG8u3RRTyQSJ20LnjF5DYbegGMLHULHLcMq75NSkQFZGC4Z1eXCq4t
+ ohtZWK4N
+ LHP9maWy/sBbt2zOZTMnp4f9TgUdmuG2i5kcPpw5iukzDuyp/44+T45KbWgayS/hM/CA+3SoEagR0U/NKa1ykGAvVMOzxC9L8SQz+vxj6H2w2YhRzdjOkmV/GZsOmdP1rjLOzy/o0Xm7WBTdTNGJEzzxVXEhte/d2wKDIlez8GFb5Zyr1iV3B5Fee2d8bBAbcBS5c+N5JGhkpzwog/KE4jhSkLChnbTvuTfUHNBzEUXqHd8F++aH3kMsgm0LG78TvIVV1qLVFZxQ8LIYy40JjFt643ytk2N/XrYGfd6VJPl5RjXlgUWk666giPQpGPkrnvqDn1AEiu1Bl9+G7oHXDArM7xVpmYfmJwNige8xlcSPWL6VyqWqtTDxenrC6DP4yndGlKgDDKpKVV7K3RIBfIvv0/DSff7Mhdz3DA3WIdwoyJbgHXFwn+KC/nQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,20 +120,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 10:56:39AM +0100, Lorenzo Stoakes (ARM) wrote:
-> Unfortunately my workload is such that I simply no longer have the time to
-> give THP the focus that it deserves.
+Hardware-poisoned page frames are tracked only in the running kernel's
+data structures, so a kexec loses them and the next kernel doesn't have
+this information, thus, tripping into them again.
 
-Ouch.
+Add an EFI configuration table to carry that information across kexec.
 
-I guess my 57-patch series did help the situation :/ Sorry about that.
+It is a bitmap with one bit per EFI_POISON_UNIT_SIZE (2MiB) of physical
+memory, modeled on the LINUX_EFI_UNACCEPTED_MEMORY table, and it rides
+the EFI system table to every kernel in the chain.
 
-It would be only fair if I share review load for THP. I will try to be
-more active on review.
+The Kconfig symbol has no prompt. There is nothing for a user to decide,
+so it is on wherever it can be, and it only costs 64K per TiB of RAM on
+a kernel that already has the EFI stub and MEMORY_FAILURE. It is
+restricted to 64BIT because the unit arithmetic would need div_u64() on
+32-bit, and there is no 32-bit EFI configuration with MEMORY_FAILURE to
+test that on.
 
-David, I can send patch if you are interested in my R:. I know thing or
-two about THP and can be useful there.
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/firmware/efi/Kconfig |  8 ++++++++
+ drivers/firmware/efi/efi.c   |  6 ++++++
+ include/linux/efi.h          | 13 +++++++++++++
+ 3 files changed, 27 insertions(+)
+
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 29e0729299f5b..aafcd41bc0063 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -263,6 +263,14 @@ config EFI_COCO_SECRET
+ 	  virt/coco/efi_secret module to access the secrets, which in turn
+ 	  allows userspace programs to access the injected secrets.
+ 
++config EFI_POISONED_MEMORY
++	def_bool y
++	depends on EFI_STUB && MEMORY_FAILURE && 64BIT
++	help
++	  Record page frames that are hardware-poisoned while this kernel runs
++	  into an EFI configuration table, and honor that table early on the
++	  next kernel so a kexec does not hand known-bad RAM back out.
++
+ config OVMF_DEBUG_LOG
+ 	bool "Expose OVMF firmware debug log via sysfs"
+ 	depends on EFI
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 0327a39d31fa5..111e60479211a 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -55,6 +55,9 @@ struct efi __read_mostly efi = {
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	.unaccepted		= EFI_INVALID_TABLE_ADDR,
+ #endif
++#ifdef CONFIG_EFI_POISONED_MEMORY
++	.poisoned_memory	= EFI_INVALID_TABLE_ADDR,
++#endif
+ };
+ EXPORT_SYMBOL(efi);
+ 
+@@ -646,6 +649,9 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	{LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID,	&efi.unaccepted,	"Unaccepted"	},
+ #endif
++#ifdef CONFIG_EFI_POISONED_MEMORY
++	{LINUX_EFI_POISONED_MEMORY_TABLE_GUID,	&efi.poisoned_memory,	"POISON"	},
++#endif
+ #ifdef CONFIG_EFI_GENERIC_STUB
+ 	{LINUX_EFI_PRIMARY_DISPLAY_TABLE_GUID,	&primary_display_table			},
+ #endif
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index b3c83516593d1..c7b4a37f760ec 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -23,6 +23,7 @@
+ #include <linux/pstore.h>
+ #include <linux/range.h>
+ #include <linux/reboot.h>
++#include <linux/sizes.h>
+ #include <linux/uuid.h>
+ 
+ #include <asm/page.h>
+@@ -422,6 +423,7 @@ void efi_native_runtime_setup(void);
+ #define LINUX_EFI_COCO_SECRET_AREA_GUID		EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+ #define LINUX_EFI_BOOT_MEMMAP_GUID		EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
+ #define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID	EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
++#define LINUX_EFI_POISONED_MEMORY_TABLE_GUID	EFI_GUID(0xaf828a15, 0x0ef4, 0x439a,  0xb8, 0x6a, 0xd6, 0xd6, 0x9e, 0xaf, 0xba, 0xfa)
+ 
+ #define RISCV_EFI_BOOT_PROTOCOL_GUID		EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+ 
+@@ -650,6 +652,7 @@ extern struct efi {
+ 	unsigned long			mokvar_table;		/* MOK variable config table */
+ 	unsigned long			coco_secret;		/* Confidential computing secret table */
+ 	unsigned long			unaccepted;		/* Unaccepted memory table */
++	unsigned long			poisoned_memory;	/* Hardware-poisoned memory table */
+ 
+ 	efi_get_time_t			*get_time;
+ 	efi_set_time_t			*set_time;
+@@ -1271,6 +1274,16 @@ struct linux_efi_memreserve {
+ #define EFI_MEMRESERVE_COUNT(size) (((size) - sizeof(struct linux_efi_memreserve)) \
+ 	/ sizeof_field(struct linux_efi_memreserve, entry[0]))
+ 
++/* Bit N covers unit N of physical address space, counting from address 0. */
++struct linux_efi_poisoned_memory {
++	u32		version;
++	u32		unit_size;	/* bytes of phys space per bitmap bit */
++	u64		size;		/* bitmap size in bytes */
++	unsigned long	bitmap[];
++};
++
++#define EFI_POISON_UNIT_SIZE	SZ_2M
++
+ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
+ 
+ /*
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.53.0-Meta
+
 
