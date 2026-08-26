@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0354C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 883D9C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:19:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6F2A6B00B0; Wed, 26 Aug 2026 05:18:45 -0400 (EDT)
+	id 94FF66B00B1; Wed, 26 Aug 2026 05:18:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D46B46B00B1; Wed, 26 Aug 2026 05:18:45 -0400 (EDT)
+	id 9288E6B00B2; Wed, 26 Aug 2026 05:18:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5DBA6B00B2; Wed, 26 Aug 2026 05:18:45 -0400 (EDT)
+	id 7C8B46B00B3; Wed, 26 Aug 2026 05:18:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A42166B00B0
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:18:45 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F21D91402DD
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 588F76B00B1
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:18:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9ED58C02ED
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:18:46 +0000 (UTC)
+X-FDA: 85142870652.22.AA3F756
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C7E22100003
 	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:18:44 +0000 (UTC)
-X-FDA: 85142870568.08.A23232E
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2695340004
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:18:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kbI+GSoI;
-	spf=pass (imf12.hostedemail.com: domain of 3ca-OagsKCGYEGOIVPIcXRKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ackerleytng.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3ca-OagsKCGYEGOIVPIcXRKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YOIM3Dre;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3c6-OagsKCGgGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3c6-OagsKCGgGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787735923;
+	s=arc-20220608; t=1787735924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EKp8H31vpndC0T7+bBVQC7oQPgnms4md5owa5X2MPn8=;
-	b=CetY1F3nFu3p7eRjwrsPu+5e+IqTc1o5URr8dtQc3LX8ST8Zv6xBqQZnRWWiqt/mCFqh7k
-	AjbsvM6FOHR4UGkQy5NReY4rGpV325YwM5OI3md121dryDd8Q9Rm5CORPk/SILjmBiV2y+
-	4VQsE72MwoAz8SgLqOqaBnlw2n6Lg60=
+	bh=w/MrPAwScae7SNC5gQ+AgoWAoYfkyZe7/ZGB+P6/Few=;
+	b=GpBaLU/11lJ7uxChxbqiwtJSwh+gXfgr2BBBAmJDyiVCoDaTctse0hlCLvpa/8DaThyGK4
+	QPt0aSG3hoDY0m8F1O3hCUOo8POFWCZqWsHYSjNV+wLECRbjDd4FR7E51AvQ++aHmv3kLU
+	r6sLyqMiqWCt+p2ETYJgq4c5qwtEoEI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kbI+GSoI;
-	spf=pass (imf12.hostedemail.com: domain of 3ca-OagsKCGYEGOIVPIcXRKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ackerleytng.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3ca-OagsKCGYEGOIVPIcXRKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YOIM3Dre;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3c6-OagsKCGgGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3c6-OagsKCGgGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787735923;
-	b=8LoTn7C4h6vqABpCSS4KvYPUc5BS8mJq87Jv3xioA2n6yg11pqOamaduKwebjGXSKPJyA4
-	hf//f4FdDlOpfpahfyKXwNsnkN7zo3h0/+LxLauEqkdHIM//9mGrYO7m1JqWfAol3uUvK7
-	XYJv3MBSzdT4rSZrxJjZsTB4X6M5ES4=
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb92868263so591940a12.2
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:18:42 -0700 (PDT)
+	t=1787735924;
+	b=X8AzdQO277CH5DSgtAAzP9jmePIZENAq7fa5I7nuENiXeoor1026lzAM0qAPKmGPnsOiAR
+	VuSNT+MypYR0YTPvFUGv2lfMUV4WprKW0hdUoQ3Yj0lbevhDyTWqfKMCzuoTQfzldOO2LT
+	aAGHYQCWeKg1KFxb/7kkwT5o3x6L0Ho=
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cc73f47bdcso10162545ad.3
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:18:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787735922; x=1788340722; darn=kvack.org;
+        d=google.com; s=20251104; t=1787735924; x=1788340724; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EKp8H31vpndC0T7+bBVQC7oQPgnms4md5owa5X2MPn8=;
-        b=kbI+GSoIzyyJJa1VnH9H4M2B79/LMBcYEyvD3zE4QPqUsYha3WoyHnvODha9LuWt85
-         g/0CjdtPqC3F0ELJoXcs38b7IsOoo/giCqgv4g3MJmqyLIWticdgWBgFtl0pQ7jKZSC2
-         iiLa3m6S7MrvyeHAf4CJoFxxs9n2UsxHSIBiTqvrxD+fLtyDlycK+T2C3tZZDKMO63Qy
-         y4xwk1qgCu5zQxij2sh3ER6qIgko4X1gssMlFHHhuAsKc0Yz7dTRHyhGeojxXZvyMFMF
-         cosj0pKcCMrjm/Hxi6II/i0Jmyl6hWhFmJM48565fDvzKqg33E1rXsACf3muLgYOyG5N
-         zOxQ==
+        bh=w/MrPAwScae7SNC5gQ+AgoWAoYfkyZe7/ZGB+P6/Few=;
+        b=YOIM3DregrALFpDD3lizoWd9PXCfjXvClGrokEnzfuPpDy891LHP9+CSXV5UQWQMHo
+         Bs53OUakyLdDMTFQMkhoDRPkXud8mQBHcc5HRLtuTmGOnTF+iXmVecxlvZctJ3+pP8Cu
+         YJL/5PNW63P5tRvEtMkeDXT5LO4npppqcC6KRm/OCZnXAjsvL9ZLpBqWj7EuNkE6K+5g
+         WHEKJGaPO9XE25WS1IOlY4MGARpJ+4Uh9+JqwCxZzVJQSRlM7mgCMbbMttVd4NNrxiR+
+         gElZbl2QV7HBHjhLmxoDrHjkMoHtVntyPxRmERZ/5vTCkkO+E66/2t7clRlPc5v1mXHa
+         Wf4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787735922; x=1788340722;
+        d=1e100.net; s=20251104; t=1787735924; x=1788340724;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EKp8H31vpndC0T7+bBVQC7oQPgnms4md5owa5X2MPn8=;
-        b=GvxluQaYAvVPZ1ygl709GEHaOHhWmNB46hT/M1qlRWGySOQ21gneaDtSFTpa+SG7Lr
-         TwN1yk80jw1BPnqcVYRllkebP3cN+ffve27YWWvmmqIY4Eer0pazp3xD0pX4BzB8WfUb
-         3dVWSpz2bYeEjBf5dS7PfCk3j1k2eoXiNvo+wQWS3iUyQc4RK6dAThuKxtEvs3x0zLiY
-         QNFBDtYRBAbSsmQO1LFurw3PVGlOmTWaa3ltyg0XrXFgAJVh4/DOsM49CpptHiPBP0v8
-         +dmAUyW+ndGao0DeSRINFhdymtQH5OLh4l7T98Z7vhtHG5ycrNIGHoTrLvidSRjUd4xN
-         uq2g==
-X-Forwarded-Encrypted: i=1; AHgh+RpY9sD/ATm8rff0MVK8/Koh1HUrE4gHB0brRYIiqOCyjeR9R+ewd38X0NZ6KEPS0XD0EbAh2jdgXQ==@kvack.org
-X-Gm-Message-State: AFuF++k+CqrWa6F5rhZ+1wNYegAcnFN48NxaYTyBjzjIVg6YuTAH8tvI
-	ncJsSQVC1xJcxnue50h1TT1SSKU/PppWEboS7qTNi0mm2j1tTL8PhZiqJZwerYVxqX9tK0W5c/y
-	+2kdHYcu00VaAkv3s+od12pkMgg==
-X-Received: from pgbbo19.prod.google.com ([2002:a05:6a02:393:b0:cc1:4e93:a711])
+        bh=w/MrPAwScae7SNC5gQ+AgoWAoYfkyZe7/ZGB+P6/Few=;
+        b=H+B38MnRgVcvFNd6g+f6bLy+VX48t+kuMXCxQqJYSusYXU7U6z+C69iEkB6MrQBZaw
+         t9IxXZUD/GLy7LKZglbUkYJ44Xqq7nH8la6uv8V98LaUdYcjNjOvvI4YtYXx5TjNTkUN
+         HDmWPK73IT34gxV35ooev49uV6Q91xNwwMUKn52r0MkK+14OpA78cdE+20l7tieLttfo
+         89OuUkUBgRu3r4TG8PWarTee7nDN5sD01We6WBZlsnLDmKVjgliYG9FWDbmXAXlAl/pO
+         39PvSlSCcqJhJPfIHt21e8Cb6gB4M/FeGukPIw6YDILqJ6TeLU6QTF+Lw5NTf4tKTFXk
+         k1fw==
+X-Forwarded-Encrypted: i=1; AHgh+RoZgfvtV/0lwbm023jb2XvNKsWVTNZMU2urlmvtUlODWJtdfv+qKuWMXngcbzB351ZGYUQ2d1dAfg==@kvack.org
+X-Gm-Message-State: AFuF++keUatft0QNVFXZm0dJB6Obgvf/oBfaGg2LvZlGUGGl36kzKbWh
+	zIqYak8sIFTkfyOY6hiJuZV8PSrBTy5/A4OeqWI+jpDIIiRSdaIGx+m2fz5L9n7f85MmurEzpmK
+	LwQwRZGPsVEvoTl1SUvKENXc6/w==
+X-Received: from plgl2.prod.google.com ([2002:a17:902:f682:b0:2ce:fc90:1592])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:a03:b0:3c3:9c4e:de3a with SMTP id adf61e73a8af0-3cf82a348a3mr11724369637.6.1787735921564;
- Wed, 26 Aug 2026 02:18:41 -0700 (PDT)
-Date: Wed, 26 Aug 2026 09:18:18 +0000
+ 2002:a17:903:4b24:b0:2c9:9a2e:dab0 with SMTP id d9443c01a7336-2d707954e7amr92849785ad.3.1787735923219;
+ Wed, 26 Aug 2026 02:18:43 -0700 (PDT)
+Date: Wed, 26 Aug 2026 09:18:19 +0000
 In-Reply-To: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 Mime-Version: 1.0
 References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=5596;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787735885; l=3571;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=NFa90siDaW2AryA30Q8bJ5Qh7q7W2DqG2XaPe8+kXyo=; b=v0d5C4wkWWesFaHM60cN7REFurl8Oyg0VII9TPxllUT2UaIYDsS6Nac84jjl3ihI71jCYcDgl
- xbEFlslA2w6C5IahaWJaj2wX/VE9nKjbCz3wuE3sGID9S2vKNO9OT1k
+ bh=PO2MNunZb9HZwBl22ORYDFq+/h4PeNVf9wLGFZFf2Dk=; b=COR7GFzGLu/psgq6NvdCH71Xw562i7ft3V4TM/YczzmbWiVB3kTpG3bS8GYlAlyMnzKrTQKrs
+ 8XWKHarrzHICgz5dCrSpg3pNIwENjmrLkU/Y5GeRNUx1eSb93bTXP7P
 X-Mailer: b4 0.16.0
-Message-ID: <20260826-gmem-inplace-conversion-v11-20-0a15d8a799aa@google.com>
-Subject: [PATCH v11 20/46] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+Message-ID: <20260826-gmem-inplace-conversion-v11-21-0a15d8a799aa@google.com>
+Subject: [PATCH v11 21/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
 From: Ackerley Tng <ackerleytng@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -122,16 +122,17 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+	linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: 9irkm69euj4un6dnygrrqx4exyyyoc3z
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2695340004
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787735923-920926
-X-HE-Meta: U2FsdGVkX18yPthLOoqpnONuXzxNZdJjv7Db6z0dcMkpiPxMvyB10hjO4RoI2P41NlCaHReBo9zqHgiyrC1Qc07xx+9wK5ptl2UsQCk9SoxFiKy5hJiRvd6/ydWB1XtaQvKkMv6xObsLzQw3VA6eQPGt0BXhZxVSxOdLCXjpowak82zuKb5+40FhAmjPfqDyY5d5bLAGu7XSMVrIlAN5YoT6YbKyvLH1nDTh2DnVFjHo3hhjZtpjeKCubbQF97v0sksOTbD6CAIzV0m4oT/lvbGZuFQ6Bwv5jb5dcSRc+0wliI0NWA6O6oxgK+Toc+gU4nsL/lFX3cavq7pIzt+C7a5qcxlEY7j7Fe0mF9MjY0g4sy/K/nOV7VS3XRZZRxlkha7dmjHaTxmNeykZUF7nhLiBskfkf1gfH6mcy007Jgxut2K1r4anzWoq9pj6cITHkxMNxeJlY/KROLfmeMrWxzL6aKnlwHpSbaAshRcLOb44HyI3Y6AzTxwOxNutz7aYzOPuZgEcKhoUA6pfi50y+i7I28NVf2C6vtE8s6SuEXZCP3x0hg6iQhVhN+jAJCqu87lfaY95XzS/F3adzdc43EXDSjN066HfKAjwWVNdsuOF2dsJpuUYZ6GhphK61bmQvrFOHzJXRObwIU+suP5r2ZzcVk1ocLfwtjC/VIt1eXRI2bZOFroVLBnDSC5puR20ebMYyrJEJ9Q6qNmoSf9PzfRSu2vyAvb4+SrEGrzjqJw/MvqcL4KXhGLsDHXW50bghYfeI5V5CEen/CEQNf9iap/Ke2uQdk+/iff7oZPrRwBHKDX0lXGhIg5Jxe6ph5IsFZUCdTjaOqxDJxPR7UkhLfSNfP+zB3uiVHTg0o988bDK+ApyvPe5ZegQehaAWrGq7RBKg6ATM2+0N8MUZMWuZClzM/g6/4Bl4Zj/APyERlRjjlQIQWJNczpnJb3HnfHMXEjnL3DyDokWniusKEn
- suBNSbYP
- Wy8BIXlN76icKjUDqXtVKrH0N2rb+D3rrEEYxefzzo2MuukaGNW4IyaIXBAIv1ilGXtEaBc6l6Z85sTAOTDUFaC5ejIp1LR5N+w9ZYvq4Utj/2RVg+JAfZHX/IN075SOi67NWGmHqb09TZhTTzZFetIyVDPeNzSjB8fDgN8uSHXm6qVjfFjXssCiqp9TavLJdJlERJqymBzkunUKc02URpP7d0p6o13Tnb6120sPW5eTTPuWvozAOZAK5W+GUREcQE0TD5Fj53D6unFD+k33ErWJ2GbGAJGx4LFvsiMrZmg30xplExSXeUgRXYqPv5dGPmaHzXhNiB6Ip4bIsp//E8QFmCdUXWoPJq+TeAsMfddT5FyIV/FdPJg7MMmIS3+rw7yuHqCDUhKZq56oLLKHJX/6fJGBS35VdguvZfs/OU4LyVmegPJIg6NCmma1IdN/Do5OEIo3i/tb9TRluakANFKJPdMSurT8ekVZjXVtrukKrs/DDTZGmVf6/eqL5tgnvtT1hoIPuYPt3FQClXAmGfZ513ygviWs/jRKDvCF+vHM4y3rsKyM6cgdtkuTvOlaLuXFe1c8CfvbQqvZeai/mSsCbrmTJqMvoUwoLooWPOUvhWjmUxidRsXpXmKI0JDDpV/FPeJVYSpgJbtqIyJdUICGXytjrc+xjEeZWdob4UlXMRMuiq9r279NOLfpdyJgSjJGK
+X-Stat-Signature: gaoqqz8335ufm8je8pm4gtcfji75w1pn
+X-Rspamd-Queue-Id: C7E22100003
+X-HE-Tag: 1787735924-309352
+X-HE-Meta: U2FsdGVkX18hCGA7dl/mh7sQn7o/OQOVkDzcjDMzKzi/mC1VTEfxNiNAWlgWhLZrj5x52sxgz6REYbWZQPzIP1cqlDP1+CxGKo4vsJ7b25yFkZMzpxBW1XH5bipvQ4c2f7eE1YL2+OuBJiHse5Hacu+HW0rcicBP/Q3WgmftlKHOfq4lwNghN9Go6NumXo5tobSCiPqb4r6+cIidppNvsjTT/ENChMg6VqUCtgNMrjMuSnaMUg96fdfT6uTIzOlIKqb4wvQTB2Nlt+Ca0XaS+EF6u2K0WfZ90mxW8Vyqm9zSK/G8IpfwReoUS/82OvGBgizRXsMz1QTKQe3PWkSR1EDzvQAwyAj/uQIHUH9N8s7pAdb6ik/E5AUptRp1ZoIFQym+DivjVP8YogcqSs5TRYStLvWHO0GgIkGq2K/b/CG3X8JWrJC2Oa7znJxvMkgJUBjTbM8TpZZEHHptUyaEwwHw60WJkp/elLDeBMCM2SHJC9GHpz5OzotGfkL9ZP1O1EWit7DkCflC5jTlpYI/JdMmUZmm3wJ4Rnip1i2+bAYlhg/T64HHm+pRCmQ4mGmcLblbNvlaQiI9989Pd+tRmdmARFHwgYn0l9RxAYy3rb0Xn9aFX4UDMOGA44JeILRVXrlmpajeMvvq8OSWVLUocMLUMNtp49fK0I7a1nlZr+6km/zy1IHgnBx/AvH0FUnGiD5/M0boj8UantBoyzhfE6LqKJiHMTLbfYASAoLwU2fDblsgYW3ZTJ51Cnp8+DemHq6x8yx7hAWfQz6e8Xd3RuRHsqGHw1qsCfq0FWUWRu0gF9zf37ig0zj6sMd7pHX4bnqBHUvJigolkUAMjQaNMyYWQV3/gbT1aK5K5YXQ+cp7SV1WzFT2kha6FAAPzm2aWFKUPjfgFEI0lMYTV1SQtymefhfSamOPMR0vNBS9kQC0i88ObBuYKeezIAvguD5Eb1QvKcZYSply1VFqFR7
+ fSAdEFnJ
+ 8QpvaiIbULwVu6UQcPJGZJ7CKzAvSQzhr3AA40Zlm8MXqegJOEGlX+AjJ4M4lsG0mSmuTYHfwO7SCgd3NAnFIdW3A7nDGfiEW4Btoxx0RHLV3cxz/lArm6a0/wx/cBeFMKNw8eIiA735zYaO/rw0jKaFQQAQusD7IsO7Jnj9rvlqeUndRVWxj8ilJNv+CssU5U+A6+Tcch262C5/W8uO2vfuBVPAwzxhpWEGIpofHNR15PObGTHxLF24kf1STDronNi9OO1xSYfKdA7EyNjBagcEUKXTAOaRbP1EN4FtUGuaybbp5fLOEvzHbKpeQ67rkIEf5jLepDe1Qu1VGckvZ2r4aE1Iy2eBl9H7YHZk83uyV47QQdjElljrhlydmZkKelnZbKA7nGboD1FYazO0E4Pa/bZpEU/oZ/7kgPoiWHR/uG1Uxrrio6m4NRBbF+zijzOJSK6eAx5EIQfd7c9rtgnB9TwvfOpLrsc0do7Hv9hcvUcJXMcpLlNLqyCQQ63gv5zoVPruaGu3kf0vW6oXw0pLvBZhnH6vU65Y64Vlcg+XiK6Ay8xoo58/q3OP6JB3l8paAiOKuH3/uowjK3+p/2ypMfrmlTwfqmKnm+SmcuSconQGGlxNk9TXqIR0ZvOeZx8oq6YC0IcLIHGtk4lerGQO8bsuTwhd1aoziEowkQgk2hrWsCWWahkFMIcpU8wTyu/PK5DuZvleo7vmaXa2GmteOig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,119 +140,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Michael Roth <michael.roth@amd.com>
+Update tdx_gmem_post_populate() to handle cases where userspace requests
+"no source page". To handle "no source page", populate (perform
+TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
 
-Make the source page for populating an SNP guest_memfd instance optional
-if in-place conversion/population is enabled.  If KVM can convert the page
-in-place, then it's possible for guest memory to be initialized directly
-from userspace by mmap()'ing the guest_memfd and writing to it while the
-corresponding GPA ranges are in a 'shared' state, before converting them
-to the 'private' state expected by KVM_SEV_SNP_LAUNCH_UPDATE.
+Allow "no source page" only when gmem_in_place_conversion is enabled,
+because retroactively adding support for out-of-place conversion would mean
+requiring a userspace update for a feature that's being deprecated.
 
-Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
-for 'uaddr' to be set to NULL when in-place conversion is enabled, which
-SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
-copy in data from a separate memory location. Continue to enforce
-non-NULL when PRIVATE is tracked per-VM, not per-guest_memfd.
+Also, KVM supporting "no source page" without in-place conversion would
+effectively be an obscure zero-page optimization that relies on the page
+being zeroed when it is allocated by guest_memfd.
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-[Moved condition to snp_launch_update]
+Rejecting "no source page" without in-place conversion scenario is valuable
+for KVM developers since it helps newcomers understand what exactly is and
+isn't possible.
+
+Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Tested-by: Yan Zhao <yan.y.zhao@intel.com>
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- Documentation/virt/kvm/x86/amd-memory-encryption.rst | 14 ++++++++++----
- arch/x86/kvm/svm/sev.c                               | 11 ++++++-----
- virt/kvm/kvm_main.c                                  |  1 +
- 3 files changed, 17 insertions(+), 9 deletions(-)
+ Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
+ arch/x86/kvm/vmx/tdx.c                   | 8 +++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-index bd04a908a8dbd..5977fbe33b98c 100644
---- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-+++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-@@ -503,7 +503,8 @@ secrets.
+diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
+index 6a222e9d09541..d8d9409120e61 100644
+--- a/Documentation/virt/kvm/x86/intel-tdx.rst
++++ b/Documentation/virt/kvm/x86/intel-tdx.rst
+@@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
+ Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
+ provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
  
- It is required that the GPA ranges initialized by this command have had the
- KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
--for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
-+for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
-+this aspect.
- 
- Upon success, this command is not guaranteed to have processed the entire
- range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
-@@ -511,9 +512,14 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
- remaining range that has yet to be processed. The caller should continue
- calling this command until those fields indicate the entire range has been
- processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
--range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
--buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
--``uaddr`` will be ignored completely.
-+range plus 1, and ``uaddr`` (if specified) is the last byte of the
-+userspace-provided source buffer address plus 1.
++If guest_memfd in-place conversion is enabled, pass 0 for @source_addr
++to represent "no source page". A source page is required if in-place
++conversion is not enabled or not supported.
 +
-+In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
-+ignored completely. For all other page types, ``uaddr`` is optional if in-place
-+conversion is enabled (i.e. when the data had been written directly to
-+guest_memfd while the page was in the shared state) and is required if in-place
-+conversion is disabled.
+ Note, before calling this sub command, memory attribute of the range
+ [gpa, gpa + nr_pages] needs to be private.  Userspace can use
+ KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index b272c20586a74..7654a9f5fa128 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3189,7 +3189,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+ 		return -EIO;
  
- Parameters (in): struct  kvm_sev_snp_launch_update
+-	kvm_tdx->page_add_src = src_page;
++	kvm_tdx->page_add_src = src_page ?: pfn_to_page(pfn);
+ 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+ 	kvm_tdx->page_add_src = NULL;
  
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index dff684b88f153..63e8cfa9bf559 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2400,7 +2400,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	 */
- 	if (ret && !snp_page_reclaim(kvm, pfn) &&
- 	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
--	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
-+	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
- 		void *src_vaddr = kmap_local_page(src_page);
- 		void *dst_vaddr = kmap_local_pfn(pfn);
- 
-@@ -2433,8 +2433,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
+@@ -3235,7 +3235,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+ 	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
  		return -EFAULT;
  
--	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d\n", __func__,
--		 params.gfn_start, params.len, params.type, params.flags);
-+	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d src %llx\n", __func__,
-+		 params.gfn_start, params.len, params.type, params.flags, params.uaddr);
+-	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
++	if (!PAGE_ALIGNED(region.source_addr) ||
++	    (!gmem_in_place_conversion && !region.source_addr) ||
+ 	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
+ 	    region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
+ 	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
+@@ -3266,7 +3267,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+ 			break;
+ 		}
  
- 	if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
- 	    (params.type != KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
-@@ -2446,7 +2446,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+-		region.source_addr += PAGE_SIZE;
++		if (region.source_addr)
++			region.source_addr += PAGE_SIZE;
+ 		region.gpa += PAGE_SIZE;
+ 		region.nr_pages--;
  
- 	if (params.type == KVM_SEV_SNP_PAGE_TYPE_ZERO)
- 		src = NULL;
--	else if (!params.uaddr || !PAGE_ALIGNED(params.uaddr))
-+	else if ((!gmem_in_place_conversion && !params.uaddr) ||
-+		 !PAGE_ALIGNED(params.uaddr))
- 		return -EINVAL;
- 	else
- 		src = u64_to_user_ptr(params.uaddr);
-@@ -2493,7 +2494,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 
- 	params.gfn_start += count;
- 	params.len -= count * PAGE_SIZE;
--	if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
-+	if (src && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
- 		params.uaddr += count * PAGE_SIZE;
- 
- 	if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 1ea8198821917..05c518c9b8078 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -104,6 +104,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
- 
- #ifdef kvm_arch_has_private_mem
- bool __ro_after_init gmem_in_place_conversion = false;
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
- #endif
- 
- /*
 
 -- 
 2.55.0.887.g758fc8c411-goog
