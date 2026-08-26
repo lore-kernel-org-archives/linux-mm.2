@@ -4,120 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F19C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 06:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9993C61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 06:30:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 122D26B0088; Wed, 26 Aug 2026 02:15:38 -0400 (EDT)
+	id 647226B0088; Wed, 26 Aug 2026 02:30:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D4336B008A; Wed, 26 Aug 2026 02:15:38 -0400 (EDT)
+	id 5F7456B008A; Wed, 26 Aug 2026 02:30:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F04B76B008C; Wed, 26 Aug 2026 02:15:37 -0400 (EDT)
+	id 4E6506B008C; Wed, 26 Aug 2026 02:30:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CD2E46B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:15:37 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 35EB91A02B7
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:15:37 +0000 (UTC)
-X-FDA: 85142409114.28.488390E
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 74BE9100004
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:15:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D4tfYZum;
-	spf=pass (imf14.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 169576B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:30:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 736958028D
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:30:24 +0000 (UTC)
+X-FDA: 85142446368.26.57DE291
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B1019140009
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 06:30:21 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=icqxE10a;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787724935;
+	s=arc-20220608; t=1787725822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IFxcZ1IROsPv4rceYm+aT5Ud3Cuqd0ESuqG9hhc5tu4=;
-	b=Pk++M7UNCWcxdrMKn/L8zLERJ28iaHZd8/tTPzNkmb6QwTSFBhKfdhZICkVf+W/JdJlF3z
-	cA8c+72uMpvWRZlo1rdG5+nTsX/bYctDSiklVHibBWn+KGq+hcUzBUmsfZ3wPjM6L/Aw/y
-	6Kht4pL1TriCQBTOQcxrqqQVIRiQVYc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787724935;
-	b=sJXWPFDmkre1D/BeCKEQE4QfVcd9tgFh7k3WR3BBs30aoEDYJPSEEh7ir7ZRdHMstwCFxZ
-	nsGmjKw8DJ+B+FrzrLlhMTsimPTcOyExMjergmZLL7U8s8wOlHxHX5ZNduMIZZ7IX7ucEi
-	2kcqI/Oj492eF5QXx6jF0x/TzrKsUDk=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=/fiNfBiBtmqcOL5Yv5meETGk9xv7LZf/XYLjgc2QACU=;
+	b=Wct2bl+xViIC5NaaucJzkIRReGP+JGx8iUxEFHCN5cgji9gv76iKhU8OdlIL9cqfThWgfP
+	j9SCwksCqL7h94C8kKaDR+cXOHkJevbZhnzIwpnqlHdaQS5BlbN5kfxzGd04aXffQ1f4EZ
+	2cxcAKDUzKwxiJ0d6DCGud0CuBBPmxU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D4tfYZum;
-	spf=pass (imf14.hostedemail.com: domain of anshumantewari123@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=anshumantewari123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso922716a91.3
-        for <linux-mm@kvack.org>; Tue, 25 Aug 2026 23:15:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787724934; x=1788329734; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IFxcZ1IROsPv4rceYm+aT5Ud3Cuqd0ESuqG9hhc5tu4=;
-        b=D4tfYZumXHwWKBuWUuQww+UKm+go9L1FzjVgSpp1mkmtfFPAp1Wsr0Zy3AmXm/ph99
-         h1di4cmPX4k2PmEtrVS04aUJgiVO7nSwgwouQdiPsd9qVgt+bgqHezPT06dnU/7oYUHN
-         pNb4hs0POm9x7mA/pL2BcPcwIT95ZDIYD1waC44gK5EId2NFOx/0ZVk7Dpq4Zv+kRZjr
-         jqfVs/8cWY5a3kzXU62Ni3QeuTFKBLnIuKDijLh2CichZW6rAf5RNp7rT3OTmu6jDoVj
-         yD0AYZUUvPUJsw7pHb9YzjIcbpLhsWXVFTnhGiV1qeV7AnUW7xzVpu9HFpJR+qRLL8Tv
-         08yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787724934; x=1788329734;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IFxcZ1IROsPv4rceYm+aT5Ud3Cuqd0ESuqG9hhc5tu4=;
-        b=iNKS/SSNfOYy6splvA1+4wfLskF25pItMm0OK/+8jrkQvwBNU7IFbBGm1uVhIJJMBw
-         xtKTVTboNCF6bzFzoWKrF/2bLhoo65gGJA3zKSXa2wbIiPkdlwpVjDVPG/ruvdnJfVNF
-         V5MIx/hZfW32RXWwLLDzVM5VDzHzTXkYXcpv1N0bEhsJLSYCtNZFskf2g6rwelqMJhiO
-         ANlSC8V0TnMXl0Biv5YSQ1oocGYqxC40HJk4ej/K1dQQtHCV6KCIClqfC9C67ok+sZTd
-         rAukHO5sLxUW8KhH4DubTAIZZgKjXw7zTmLzqwUC9ZQYcuyVmgHExaOfi/hvkH99XYHf
-         yrNA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq5CQlK82wLEBSIHgcx8gSSAQiNCItFmL5lqkLDiXlOEp6G6smNuRHB+tDqz8YBCodbfDEGXkuE2A==@kvack.org
-X-Gm-Message-State: AFuF++npXIYnsGsL7vukX5v7tBzDhuZoo+xV/nAnIQM/ZZ+0fmrytQkH
-	8quA499xGoBS2sFv6MkFqVUXh9Xm4Ic+r2E33XBepkJukUYEXAbjaP1i
-X-Gm-Gg: AR+sD11PZE93LHRSKiPwJjiYPAKKIQARALID3PH+qqjzvABWwM8Mk/D4htqqrs9RLkr
-	4dXuDCbShsnOh4GmXD7oSTlSrQ/rAaxYrHkbG6EBmOz1YmzkTGJ4QhFadz6ZTTgWMoPMmOEjngY
-	3UaCCb0ySAHv3GbQifvTY66Fkx2JIFfFZXwh6YrV1GFIFfK+2UsQMiCzfT84l8EmyDvsJbimw2Y
-	hWdDRV/1xuOpTN9py1k6XsIuqdRCd10QIh67jgQWKbJN78792OEFbIjM9p33sOYoRDhTeNtiyem
-	OhDPyQ1dbI4z5S8Y8a53KcV8ScHXW8Whq3fvT+AzD43n9Wbml3zEfB0gOp1/ID7LAYA+4RZbi2z
-	YFzHASIlIoI6AMrkzcuhAa97jwaej5AgDpBI0ewj6R23L9NK5pMDlOt2sqt5b73wybkAfA3xUv5
-	dMMoBOmBy56TyBuRo1gwyGChIUbBWWnpz9MiaZKasXpXKFTCXs8RicoysoOQYs1iaW6HU1TqoUD
-	ZEkB7pytzfuV4fxmlUwynvn/+w=
-X-Received: by 2002:a17:90b:1e4f:b0:38d:ef48:b04 with SMTP id 98e67ed59e1d1-3966d5f8eaamr8803881a91.10.1787724934185;
-        Tue, 25 Aug 2026 23:15:34 -0700 (PDT)
-Received: from Anshuman ([103.161.223.14])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3283d885fb6sm5192046eec.14.2026.08.25.23.15.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 23:15:33 -0700 (PDT)
-From: Anshuman <anshumantewari123@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman <anshumantewari123@gmail.com>
-Subject: [PATCH] selftests/mm: fix line buffer leak in mremap_test is_range_mapped()
-Date: Wed, 26 Aug 2026 11:43:00 +0530
-Message-ID: <20260826061300.14038-1-anshumantewari123@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=icqxE10a;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of yi1.lai@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787725822;
+	b=AD8DEhv5EhWgRJEeEFQCES71AqZaHF8GNrfXqyM6xVczd6HUodNaJfl60jh2AlsKeHo3mt
+	PLgX+HMFsF8yAaWv3unjMP/l8YTqeud+oZQAe4dHx3vukUP6V1ZpFMaJ83lIp8AO3dS7p6
+	IsDSsrZ/xQ5jaoUhxI/1EVePcijyTt0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787725822; x=1819261822;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=rDKvz/peGRfXq5YQmSPRC3KJaw3+ZougxMrFg0o5odI=;
+  b=icqxE10a8PQVd5QFtmBrXQjuhOcTnwArPrVKshe5ciU8n+YniL5DjL9Y
+   qDHlvCYlKlWcoDJcJAd9g2iJaqsbaT26QlgmFWXwUSWgNSe9CpUdxEa6r
+   GhpF55tJBp+IXCp90353AtMrWJV4y1Zis6AxgXoSy+XZ6gIt72ItyNoWU
+   I1xRF8N3lRUGcb+YPO7PZkzikoaN7nyL50kBEhFKt+HCmokicPhiT6mgr
+   8I96cec5Wx/HHfktmLewffV9o8iC7OwZdtniIIZOUdkehTT49Dk/XqVCS
+   9d3mauQF7GMtfea4lGMZgRAbpdYEu2ASUVVcGBa3stJFT+eAakMATrsoK
+   w==;
+X-CSE-ConnectionGUID: xXz6U6zfSXGy++aYSCs5xg==
+X-CSE-MsgGUID: ttvqCZONS8KeFQF34sx9vg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="113737055"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="113737055"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 23:30:16 -0700
+X-CSE-ConnectionGUID: ZfRpfErhTaqv3OW7pFIz3Q==
+X-CSE-MsgGUID: PADR+xa1RxuJ/tY1ZWnwdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="268067141"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 23:30:12 -0700
+Date: Wed, 26 Aug 2026 14:30:05 +0800
+From: kernel test robot <yi1.lai@intel.com>
+To: Prakash Gupta <prakash.gupta@oss.qualcomm.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Prakash Gupta <prakash.gupta@oss.qualcomm.com>, yi1.lai@intel.com
+Subject: Re: [PATCH] mm/memcg: fix NULL nodeinfo[] dereference on
+ late-onlined nodes
+Message-ID: <202608261313.1d95c34d-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810-memcg-nodeinfo-null-guard-v1-1-77a73204d63a@oss.qualcomm.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B1019140009
+X-Stat-Signature: h8n8cso1y66jak18wbe1qnsq7w9uxxjc
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 74BE9100004
-X-Stat-Signature: gm3smfjg9oujnreux1m3z4dnyio8s5yw
-X-HE-Tag: 1787724935-832736
-X-HE-Meta: U2FsdGVkX19yJ+gXoSM8a9HtGP3sLhv9YGnRZQJt9EhjoGyNOwi1ShJcNFTtGMd1E/DFx3OimF6iEJQkEi5jeoa++WG4jRmfYYGsRDMqoMCAfCcUd88o9dza2d9i4notK1MSP4YOQcak/z2N1vrjx8Tw+poUSBP8Pok9AqQVJqi17p/SNwoDrzZNGfLXd5G9JVaCyAuvRt9ZNmjpKqrYUm+ifUg5K9W2mC0VwVtnydYRnU4GDErqGq2cAsg6HcMmyeqYZNZLx/qskbQ5Kp9ZbKI38aM1SfsygMd1N31MqnCGO9FcJnchr5bgG7cXYB5U6Y3x1ATsPFxf/QJN5j8H732/2K51c4NXRId4eMccj+hPm44B0a39xN7lEezy6mdCXaonu+JbPTTGWT6JpjnXPRWVx7hPk8gAZkJ7qE6mt11o7enKuOlKwYf29mZhzLilAbk6vR7cFEjLqhYFq5E5s72OFfV7ikT6vf9IsjRjZ7pPHhvF/eFXD8+a7I/m6gMZIDG0fBWBmkZPv+DBjlNc6SBZMaZHEEsucCbW/FFMh+hufG1xahZfHxTnsXhnHcu3STcd639v5iP/FnGviQg+ZWjd8yfKSYzK6gqYa2nJZA9JYOMeH750QWRF0E71CQKxvs9CMdKi1MiPrmOgfbFcHBet0zohS9YrkDki4/0rAIQ9IVIb7uJWKZ7saMCXq48tKFynz+gGLIG0OpIlQ4E6phrzgblb4tOqEqBlLIyZpoh9FULiRZgbZ3YLjowmzs9gTkP6tF+8FGHQ97td+hFuTTF/9Vi1yhKW4aCR+7qNggoIVKlDr1JuvolL4ln5FUZkHV2iuB7Sr84Z+8W/74AZ5AIEokuosoiJQpXfBwqpmzT2AMCS8L5otL1ujtmTRrlzUzPkJ7i7CmNK+AMam6f3xAgWmHnL5WAv/zZuSMOyTLSj8Zgbtd3OBPTJvwxRvbapdxVVwgsfumwVxEM52Oz
- /UReSfCB
- bWQYROWxcDbbLcTXXkEPrqMsIx7E2oEqmNzmqUS9M818lMTQVNWbYfCdUDy6gdfSohlXltFsv2isL5rvOFnJOcTGAM70uPQwbTqBl/Cze3jH3X+wwyZ5vBnTSGAfSLdvPQBcOOddAnT7U9FCu+PEUIfozKMz/z2zp8sVxlBZdGJJTQ686PyaKzy6XNZXxEUcp1CZzSR3pGOTmO9n3jZ4uEOd0mI4pCxlG+iSL7ODmsX1zlfVDcFVL7rP9el7j1UNNPe2ZI7PKGIihCEoRJFuk6efAt6TF/pfxQE5j62VzMGCG4Sm7mblZ6jLMH8TYkY0Gm8W9nuu6odGX+gPKW3w5zmxJpcFyBszYsXzpnGjZw9bfDzsMntQt8CavMhU06wnyMCQANE3/JXfFVd02PJVVLuOb3wktMbgaed0L4SEZf/PuH3xY8wheYDf/0CgHaAb6qPNlH0et0xH3aNRN3gHMOxZBrd5XmA2NDaMBx0I7+sUD6uM=
+X-HE-Tag: 1787725821-361156
+X-HE-Meta: U2FsdGVkX18IAGWBiG+SGIWHL/mLjE+n0W5MlpdA8H1+a0H7hYr/hVFmdOD5RRFNp1jn+Q8IJFSvpv10WleARPv9zDYo8x0eSOSngwcCCll4HFuzzk24OmkjWvJV0yTmE0ZZX0VqNYmPP8sItImm7jXDWjxtEwg4DXy6dtwitcWllJyL2meHn8hHE+8FwDDOnvNzKfd/QWIMEwcY7NVPLsSkoJDcN4e4it55fTVXU4f7VLbafe4x0jj/jSDH4w6YWuRcgFKmDZFxTF1OzIPdNYPxvh+jpGXpiiejhi0Dj56C5ojpumbGfGTBzh4Et/Xzi5cJ5zL4i2GR8g2ACxkPpdkJ2hve7lTVFeAl5IYT2JeOLmQQ3kaYCmeYfeq5mgT2lZ2tkJfcrTrGgtfQRQXklVpHuqOhxun0I5FgJ2/Clw7M7E1JmCDk7KhZ1xhKNSrpX/h+OnKD1g+GGSpV68fvDSzAUcukLyp7eDQB0q+GnLlGTeYIzhRmteQNY18ZlB4YHm7Ul+iMNl+iZNbCnvmRsrQp986kpiwN1w7Nc0rT3FPyUFv1MErDVhfwFEVFr8bgLuNx/KR59h5721Tll8t9czVrrQ0lRwtPOiXVGdjOm668otzXTLeTiZ8ny1RK3vinogsz+gsiWXhLKCswX5s5qP2WRA8xwUkGuwn9XQaw3EnwCTvWhSuoIrt70jahcArEPBr3md3ZtPK3nlg4YPIKhCSqyKfc+oNy/sjFJjEfk15QtP5fS4FR8iamsozjwk1DlA7qD1hsppf56j+6f1uZw1KfgENNmRgiVecz4aZ6Pb+DWjdGoTpipGccVBu+BZx3t9ZDA+HIi0WORIs6aPySEk1PmM5ChTBOI7O7Oxp8PBvnf/4NxfeVweNGF0uo8YISSW61lUC9PTOkViohOLhOXqAoJvkYlZ3OHw0XLprIX1ks6ReJKaqT9Sx60j10YMjReguJuTvq98CpUOGZ4Zn
+ MA5yCfVz
+ GdCT1zVO8t1I/M2pc5QSWKfhCPEeFHx5iL6BCCwf66ytqnTekGZ0lmafMCqHJM55wFSRtnZ/q7ZxbpyWDbjfKhTB65em64s+l/a7/y4QVHVDudLIUfjAkgIYQDJnRrMA5QOBrJvsyjwfEKmV9JWshG6kTVsaeN54FbMjjaFmU4KbsKC7gAYo7byQo6TGM0gbGB0astuC+1rWxkwPGLEtx4Tqnbmr7t6LcGyqYQ69JPfiuJqONdZjDyvQtFLSClgQcoCVWoFx2U3B4+UzbzikobC4q4VtYRr7ukHgFPa/xngiJ90wgfswVSrlKiSeCRU1ylhipX2l8QyBlwybADWlhts0UJcXAqSQAkkhb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,33 +112,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-is_range_mapped() uses getline() to read /proc/self/maps line by
-line, but never frees the buffer it allocates. Every exit path
-(parse failure, match found, or reaching EOF) returns without
-calling free(line), leaking the buffer on each call. The function
-is called multiple times in this test, so the leak accumulates
-across calls.
 
-Free line before returning.
+Hello,
 
-Signed-off-by: Anshuman <anshumantewari123@gmail.com>
----
- tools/testing/selftests/mm/mremap_test.c | 1 +
- 1 file changed, 1 insertion(+)
+kernel test robot noticed "Oops:general_protection_fault,probably_for_non-canonical_address#:#[##]SMP_KASAN" on:
 
-diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 131d9d6db..779ef2d5f 100644
---- a/tools/testing/selftests/mm/mremap_test.c
-+++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -156,6 +156,7 @@ static bool is_range_mapped(FILE *maps_fp, unsigned long start,
- 		}
- 	}
- 
-+	free(line);
- 	return success;
- }
- 
--- 
-2.55.0
+commit: d793df2588b727e161c6586cafda1b3146216b36 ("[PATCH] mm/memcg: fix NULL nodeinfo[] dereference on late-onlined nodes")
+url: https://github.com/intel-lab-lkp/linux/commits/Prakash-Gupta/mm-memcg-fix-NULL-nodeinfo-dereference-on-late-onlined-nodes/20260810-111630
+patch link: https://lore.kernel.org/all/20260810-memcg-nodeinfo-null-guard-v1-1-77a73204d63a@oss.qualcomm.com/
+patch subject: [PATCH] mm/memcg: fix NULL nodeinfo[] dereference on late-onlined nodes
+
+in testcase: boot
+
+config: x86_64-randconfig-r132-20260821
+compiler: clang-22
+test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 32G
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <yi1.lai@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202608261313.1d95c34d-lkp@intel.com
+
+
+[    4.964339][   T26] KASAN: probably user-memory-access in range [0x0000000000002040-0x0000000000002047]
+[    4.964822][    T1] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x1e3306b9ada, max_idle_ns: 440795224413 ns
+[    4.964364][   T26] CPU: 1 UID: 0 PID: 26 Comm: kworker/u10:0 Tainted: G                T   7.2.0-rc6-00001-gd793df2588b7 #1 PREEMPTLAZY  7c3d8f436a783d0b482149cc8be5fdb0e2064a33
+[    4.967167][   T26] Tainted: [T]=RANDSTRUCT
+[    4.967167][   T26] Workqueue: async async_run_entry_fn
+[    4.967167][   T26] RIP: 0010:mod_node_state+0x2d/0x180
+[    4.967167][   T26] Code: 41 56 41 55 41 54 53 89 cd 41 89 d4 41 89 f7 49 89 fe 48 8d 9f 40 20 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 85 18 13 00 4c 8b 2b 44 89 fb 41 83
+[    4.967167][   T26] RSP: 0000:ffffc900001c7610 EFLAGS: 00010002
+[    4.967167][   T26] RAX: 0000000000000408 RBX: 0000000000002040 RCX: dffffc0000000000
+[    4.967167][   T26] RDX: 0000000000000001 RSI: 0000000000000013 RDI: 0000000000000000
+[    4.967167][   T26] RBP: 0000000000000000 R08: ffffffffffe8ac20 R09: 0000000000000001
+[    4.967167][   T26] R10: 0000000000000000 R11: fffff52000038ecc R12: 0000000000000001
+[    4.967167][   T26] R13: dffffc0000000000 R14: 0000000000000000 R15: 0000000000000013
+[    4.967167][   T26] FS:  0000000000000000(0000) GS:ffff888799a99000(0000) knlGS:0000000000000000
+[    4.967167][   T26] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    4.967167][   T26] CR2: 0000000000000000 CR3: 00000000040c5000 CR4: 00000000000406b0
+[    4.967167][   T26] Call Trace:
+[    4.967167][   T26]  <TASK>
+[    4.967167][   T26]  mod_lruvec_state+0x47/0xc0
+[    4.967167][   T26]  ? lruvec_stat_mod_folio+0x22/0x300
+[    4.967167][   T26]  lruvec_stat_mod_folio+0x181/0x300
+[    4.967167][   T26]  __filemap_add_folio+0x758/0xb00
+[    4.967167][   T26]  ? workingset_activation+0x500/0x500
+[    4.967167][   T26]  filemap_add_folio+0x1ce/0x380
+[    4.967167][   T26]  __filemap_get_folio_mpol+0x3b5/0x940
+[    4.967167][   T26]  simple_write_begin+0x61/0x2c0
+[    4.967167][   T26]  page_symlink+0x1a8/0x300
+[    4.967167][   T26]  ramfs_symlink+0x8c/0x140
+[    4.967167][   T26]  vfs_symlink+0x12f/0x2c0
+[    4.967167][   T26]  filename_symlinkat+0xf4/0x280
+[    4.967167][   T26]  ? __asan_memcpy+0x40/0x80
+[    4.967167][   T26]  init_symlink+0x2e/0x80
+[    4.967167][   T26]  do_symlink+0xa5/0x180
+[    4.967167][   T26]  flush_buffer+0x6b/0x100
+[    4.967167][   T26]  ? unpack_to_rootfs+0x380/0x380
+[    4.967167][   T26]  __gunzip+0x8bd/0xdc0
+[    4.967167][   T26]  ? __gunzip+0xdc0/0xdc0
+[    4.967167][   T26]  ? decompress_method+0x1c0/0x1c0
+[    4.967167][   T26]  unpack_to_rootfs+0x21e/0x380
+[    4.967167][   T26]  ? flush_buffer+0x100/0x100
+[    4.967167][   T26]  ? xwrite+0x100/0x100
+[    4.967167][   T26]  do_populate_rootfs+0x21c/0x300
+[    4.967167][   T26]  async_run_entry_fn+0x95/0x3c0
+[    4.967167][   T26]  ? process_scheduled_works+0x7a6/0x1240
+[    4.967167][   T26]  process_scheduled_works+0x86b/0x1240
+[    4.967167][   T26]  worker_thread+0x749/0xbc0
+[    4.967167][   T26]  kthread+0x338/0x440
+[    4.967167][   T26]  ? alloc_worker+0x2c0/0x2c0
+[    4.967167][   T26]  ? __do_trace_sched_kthread_stop_ret+0x140/0x140
+[    4.967167][   T26]  ret_from_fork+0x291/0x5c0
+[    4.967167][   T26]  ? __do_trace_sched_kthread_stop_ret+0x140/0x140
+[    4.967167][   T26]  ret_from_fork_asm+0x11/0x20
+[    4.967167][   T26]  </TASK>
+[    4.967167][   T26] Modules linked in:
+[    4.967167][   T26] ---[ end trace 0000000000000000 ]---
+[    4.967167][   T26] RIP: 0010:mod_node_state+0x2d/0x180
+[    4.967167][   T26] Code: 41 56 41 55 41 54 53 89 cd 41 89 d4 41 89 f7 49 89 fe 48 8d 9f 40 20 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 85 18 13 00 4c 8b 2b 44 89 fb 41 83
+[    4.967167][   T26] RSP: 0000:ffffc900001c7610 EFLAGS: 00010002
+[    4.967167][   T26] RAX: 0000000000000408 RBX: 0000000000002040 RCX: dffffc0000000000
+[    4.967167][   T26] RDX: 0000000000000001 RSI: 0000000000000013 RDI: 0000000000000000
+[    4.967167][   T26] RBP: 0000000000000000 R08: ffffffffffe8ac20 R09: 0000000000000001
+[    4.967167][   T26] R10: 0000000000000000 R11: fffff52000038ecc R12: 0000000000000001
+[    4.967167][   T26] R13: dffffc0000000000 R14: 0000000000000000 R15: 0000000000000013
+[    4.967167][   T26] FS:  0000000000000000(0000) GS:ffff888799a99000(0000) knlGS:0000000000000000
+[    4.967167][   T26] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    4.967167][   T26] CR2: 0000000000000000 CR3: 00000000040c5000 CR4: 00000000000406b0
+[    4.967167][   T26] Kernel panic - not syncing: Fatal exception
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20260826/202608261313.1d95c34d-lkp@intel.com
+
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
 
