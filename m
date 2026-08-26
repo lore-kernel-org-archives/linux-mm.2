@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB1D4C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 12:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3AFAC5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 12:44:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACD476B0088; Wed, 26 Aug 2026 08:43:31 -0400 (EDT)
+	id 9966A6B008C; Wed, 26 Aug 2026 08:44:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA5496B008A; Wed, 26 Aug 2026 08:43:31 -0400 (EDT)
+	id 96D536B0092; Wed, 26 Aug 2026 08:44:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E2556B008C; Wed, 26 Aug 2026 08:43:31 -0400 (EDT)
+	id 8ABC06B0095; Wed, 26 Aug 2026 08:44:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E3806B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:43:31 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D4A11202DF
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:43:31 +0000 (UTC)
-X-FDA: 85143386622.24.F98270B
-Received: from mta1.migadu.com (out-14.mta1.migadu.com [95.215.58.14])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B21EC40012
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:43:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ovJcYHDq;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 670CA6B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:44:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9681D80368
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:44:31 +0000 (UTC)
+X-FDA: 85143389142.02.56ED44A
+Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7F2C11C0002
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:44:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Jlq+R6xr;
+	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787748209;
+	s=arc-20220608; t=1787748270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iOafpWk1uqTzp7/09OYOrzFz6lOilpk2D9E27kir2wM=;
-	b=PLmCCqDFFf0VH1ozliqvWOtuFDAVKK19VCPRK4qI5nDMYxvKRnq0GlMwG+CIzNfbM62tPg
-	IMoC63A4mxPLypclDaTxvrHOwkkpThGMaZKF5JRpHc0/nG2u9Mq+ULtGbQUKMcM9mjX9Ej
-	WgP3QAQGEiOqfe/XcdQm3CowMX6xgos=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ovJcYHDq;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6BrUxZKKQbWD3WGymsB3qG3VwwxALIFOCAC4NEHV0AY=;
+	b=e8A132VA+RPDrgWMHXwDsXof/1nee3aky9X0jjj8K8MjUYY6YloLfXLPPdnaVBjx/eRrd9
+	WzAVH4bV98Pp6gNJyxFu8ElymcR985O+wuJ5HOSf4gYIKibCxab3cb3YV14GnR3Y9ShKBk
+	bFtZxf5JJKVqIyLvA5AKAbquExWJpw0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787748209;
-	b=7rpq4i3sDZ71ROAYXAA1MHwVuftzIFawS5pFlu/Kj3shjF6BHvQXZ6v5UWwbDYmjPGAvUN
-	HfntZ7qJmnLzJZZ455ZB2hHbiJviNDVnKC285UGaefpepXsbiw+dK1gi/v8wwnJTYiugSG
-	FXeb/Iz7wpm/80aotXPhSBa0iK7ZFco=
+	t=1787748270;
+	b=D4J/AYRNfCnu9FRNVeNM9OaZvuxlOWi+Idg75Zw/KPLGvvRwF9+aeBjUKWSEmd8U/14rqW
+	c2uBLWGrk0iO9Yg/uiJ8tRPAJq56jf8ylFIIFbjZEMWlOeEfZ/k5rIAS1XwUEZcrMmXAHs
+	JNISbAI7l1X6CuEzN8fZtldk21Vlj0k=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Jlq+R6xr;
+	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dRZqnAdU/1gz1hPYT2CpYwf16xguN/jACTpU56xyZJU=;
+DKIM-Signature: a=rsa-sha256; bh=IzFZRj95FedhBG7vUWVbKK27BO98pC0xOrlDItWw6R4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787748207; v=1; x=1788353007;
- b=ovJcYHDq/FfYj0Sj1AhiiyajwpDFBztEaVQc5xIjID7nzj6T4GM3ZWPkO3f9phMIhsXwqSGi
- QQEm6rFhOm5+QmoB5/rl4QGs3ut8HcC1wTonEFLHwMGzzLZnsl8UY3fpb9Q14UKv7hU3jbCFQiG
- Y3x7lkcUy2kMpbl+efFeJda4=
+ t=1787748268; v=1; x=1788353068;
+ b=Jlq+R6xr0RmFc4fb0Z0uoWumjHnkqYl6PcH8XDuSBFvGqCk80HWl01bwTou/Qefq9SAh3FhN
+ lwwSa2tgiAHnuhf6BomiF3C6l1WhGCYCQ5wcIruG6k2bDWMA7s5xMVsnCxdHtt4XrHERFJQRhSl
+ Hno5drnYDTZ+6CZHeZDgyj3A=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (2602:fce1:44f:115e::)
-	by smtp.migadu.com with ESMTPS id a185f76d2de5e8a4;
-	Wed, 26 Aug 2026 12:43:27 +0000
-X-Mizu-Trace-ID: a185f76d2de5e8a4
+Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
+	by smtp.migadu.com with ESMTPS id 4a6433d0eb768628;
+	Wed, 26 Aug 2026 12:44:28 +0000
+X-Mizu-Trace-ID: 4a6433d0eb768628
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: ljs@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] MAINTAINERS: remove myself as THP co-maintainer
-Date: Wed, 26 Aug 2026 20:43:16 +0800
-Message-Id: <20260826124316.80455-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <ao7Nr_FALfP7cTY5@gremlin>
-References: <ao7Nr_FALfP7cTY5@gremlin>
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH] mm/vmscan: drop the combined limit gate in __node_reclaim()
+Date: Wed, 26 Aug 2026 20:44:09 +0800
+Message-Id: <20260826124409.35569-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1xg5jgg4o7qy75d9gsqkwu553obf5s6w
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B21EC40012
 X-Rspam-User: 
-X-HE-Tag: 1787748208-44158
-X-HE-Meta: U2FsdGVkX19YZQZOypTETRLeoESrFoMNsoJkLjjq2TXbO4OyfG4YVNeDUz538aOmpYkE3mX63VmB1nI/98AvhdF84pOkQRce0gIgms+lues+1FE8DeJObVWGMR6piignfhaakj4JHTb9EWn/CHR6noUuSeAojSN+dAXfvz5diWpUsL1C16sBBQYXHgUyxuCsJFvLG9c4/3CYU77bZLfQeUp6RSJlLDyb24JcLhKNMqLH/52Ry2SFAkuvcP5erq78STGPNbuvUTeRcPrBEnxkBBKIMC06Kunyp594awBBQVc4lk917KAMdjvj8kHcLHmV9IwbbafnPDrQKgWU+NNui/cgAmvthfKRd2mUh7aSwTwUfmyqC2OmTYBJ2XGupCO3Ob33UxFiXDHGZTpkLHSSi/MkTfu+z2+dQOSQRQ9C39d6tZKhbBoQQ3NKxCv3WIaQtZ+fQ4wT9L7AbltrxzcgxYYT8NJMYcDoKrbm3qKEhR0AWhz+bwVi4BpBALLhKL55y/Dvv8ZoMXytujp9UpPWSGprkvndRC3qnfbvq2ps6pBi4PVgPRucmQ/tc4UA3oWSy2S0DBdRqbd2O9GERfpSizOQKFAHMzSSi/xrJbTfOfFPhtF/QTqCbhYS1T+12EX/gCNkja/vj1zY10XT3+fzJ2upz4LpMH5Im9nhcPPysMBtykg2P7LtcxqNNxaQ4s5krfvwgcQWquzT1Hm5ZInpyyzGkIk5zekQ+JIhTzHr6q3Ugf7FpBb90hHmXH63AWFpqt0l6jlP7jXGNpmjcECfyyokVvvjrNW1wkLh7BYaRN5Y2YuP3v11P/JCSDObcQ+1iYNndAMFlkHFHjsx7RINHogCA363NW/udmIiDfjLoxNLydXDfkG4uldgfsrZynBsdv68pYWgml6jggxV7rQDY9yIp1eB0j9PtCRWE8XaU/Yjuxt+gnjCa7Hz4rAO9IOdC3HGuH7RMMK9/9fmDBw
- ClOfSjrw
- hoLqLAUzAl1lnUPH0M5KR9jSvgZIcC+4v+QmTVIHGQhVtuMYs3w2+7zSU5zuG2qvjoX2vL0M8YXRf6RmbkrUjr3+x840Nlhe9+X8KlKnUBCBvntugIL3a5of1taEVf2GHg7pR15F5oq0XhJkhnKtjvbzeE5i8BhZbSqTCUuzLol+V8v8t+nww6N/KEIZrZzTDyHBq43NVYDZlHqmaiXyH6hnzvQd+1aikXE0QkZI0XJlBOxQYOoHMPuVKBzZwi1/1Qk2JSvty73fsQJn/ZORKGXs2fM0HvPAx1Ogumh3qeF07wuKgJ95hV1yfTw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7F2C11C0002
+X-Stat-Signature: wnpu9nrfxgqn4fsmeo849waw9f4g15wz
+X-HE-Tag: 1787748269-226657
+X-HE-Meta: U2FsdGVkX1+fifRoikBwNgcfLALtJjHV44ASc5ktn2Kv7IK76RguDE3v7VWlVCm6bcnzbVbpKIJKCqqPWbVD22YBjB0xJ9eEmCE0DEOoASFPggJ3/vFs5t2wz2LWSDa9NtPi9swWq+oRzHV2YWt1LYBbZFhUBiVfQ8iEqm0fbDMh86iHG1SXrazVDUbh3CpxrU3aWBfGPeHrpNGuwxxbi6jZfIffFioAqI8RvbyyiHU8phAS9BEP7DO3RbuZVm1r5E4nUnqXTa3bjV5q5aKWrvVxV+1aXafXbd8tm/IFqSykQWWfZvzG9QsesNIoMODQqFvesp2Ej6EHQNWUNXMerZV8PUgZ/0PEsdTmuvDbnkeW7IwIRHn0fsB5BhJyCRI4JWosr6l5aV3VSHgBUhayZIJCTD9UplWKK0HX8RqJyg7aPpy7wuHIkfJw44xay0TIbzPYp0kHTeUEhE9D520xYZ02tiGv2Pr0xOTM2ue3oPqiR+cr5qCaq1NMT9yMxf2UVBRUiiYACDgLgBXMrN4FWco1Ne7JpeGWglV/a/Gh07jccrtt1qIEvOIjDoLhieKx/ApgzBNBft6mjDogwJOqrjP579aAnHyVxxHTwSFn24MzfJA3+5/vN/8XIN5sswVFAXGtMzphJ6ABdjM32UUCmoZfMiYxq4XHguAEE5PbsAtEHEsNgKS+mTECYfsD8TzeYcMD0i1SzbdexDdx7Bq5HjR3ydzxYXjXLva99UGwx/jYICFUJ27DXrRhhdj04iLSggQb8wQPg+/KGHwo/+GbGG3wpKmI82LOQ653WsPTLWAMwMKXPvmu1pK7MGtcv902ANI3kFhc35sBeXeOQY0aSTLYDLOA7CoUaK9MuxWo1mQnT2rwA3Q8LipXmE5gbBChJIlFNPVDc8JaiZuWeLLX8wwbT7o076l/HYIPK6Ayztcj74off3FSezjrUY+3jFi1E5EhbJ5WQJ0IZPKq82Y
+ EsG1zHGG
+ /ZDLEDqmoYm+AXDV2oGR5/JTcT2zpaBfc3BRJAmVywhc0ifQoqVcT+dLmEpmgSE7CdEyg8Kb74ymfyy0cItNSRlC9uDgjjeqKGs2LJPNTbJO0dNjAUq6w4qp5+8whYOrcWuUcKF7+lqFN5b2jRqmA4If8NBzY2ewpkMMEApFtfZ7D/sWcXFG/kpTpszfb1BXIsjktKINAah/iGR2XP1Qrt14Q5va5Kylg+MoEDwmkVX+eiz2AkN1n4Vzt4joi53glx5OwZu/v1lKlq56mTMV9esJK2x70J5uucykNDPDKBOlXtZ9S3Qk0Sow/2z4+MkNDrGtEwdeLF0YLJPQ+8c5NKsfeb8S+MDSjy5yxD5y19DQ1XT6MKviR4J8leaOkp5DTroSo46HKWxb+hTZJmh47PChre7ZZqDzLWqZ1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,43 +102,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Ridong Chen <chenridong@xiaomi.com>
 
-On Wed, Aug 26, 2026 at 12:31:09PM +0100, Lorenzo Stoakes (ARM) wrote:
->Since it's 2026 :) I asked Claude to look at my time as THP co-maintainer:
->
->	~107,000 words of review across 948 emails (in 279 distinct
->	threads), counting only prose you actually wrote — quoted text,
->	signatures and attribution lines stripped. That's a full novel's
->	worth of review commentary.
->
->	Along the way you handed out 194 Reviewed-by and 15 Acked-by tags,
->	and your longest single review was 2,404 words (mTHP collapse
->	support, v12 — the khugepaged/mTHP collapse saga accounts for most
->	of your top-10 longest reviews).
->
->	Estimated review time: roughly 300–500 hours, centred around ~400
->	(i.e. ~7 hours/week for 14 months).
->
->	1,615 THP-related emails in the window: 948 reviews of others'
->	work, 278 replies on your own THP-touching series threads (~31k
->	more words responding to review), 382 patch emails, and a handful
->	of MAINTAINERS bits. Busiest months: March 2026 (131 review
->	emails), June 2026 (113), August 2026 (111); quietest was December
->	2025 (5).
->
->Think I can be happy with that!
+__node_reclaim() is called from two paths: node_reclaim() and
+user_proactive_reclaim().
 
-Aw, man ... I totally get needing to step back, but we can't let you
-disappear from THP that easily :) You've put a crazy amount of time
-into it, and your reviews and judgment have made a massive difference.
-We'd miss you badly.
+node_reclaim() already bails out early unless node_pagecache_reclaimable()
+is over pgdat->min_unmapped_pages or the reclaimable slab is over
+pgdat->min_slab_pages.  The identical check inside __node_reclaim() that
+guards the shrink_node() loop is therefore redundant for this path.
 
-Could we talk you into staying on as a reviewer for now? Zero pressure to
-keep up with everything or carry the maintainer load. Just hang around,
-jump in whenever you feel like it, and come straight back as a maintainer
-whenever life gives you the room.
+user_proactive_reclaim() is proactive reclaim driven by userspace and
+should not be gated by the per-node min_unmapped_pages / min_slab_pages
+limits at all [1].  With the gate in place, a proactive request is silently
+turned into a no-op whenever the node happens to sit below both
+thresholds.
 
-Seriously, Lorenzo, THP still needs you. Please stick around!
+Drop the gate in __node_reclaim() and always run the shrink_node() loop.
+The node_reclaim() path is unchanged, since its caller has already applied
+the same test; the proactive path is no longer wrongly gated.
 
-Thanks, Lance
+[1] https://sashiko.dev/#/patchset/20260723045718.2052070-1-ridong.chen@linux.dev
+Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/vmscan.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index f11491ee9ed5..6dff207ad8c6 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7851,16 +7851,9 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
+ 	noreclaim_flag = memalloc_noreclaim_save();
+ 	set_task_reclaim_state(p, &sc->reclaim_state);
+ 
+-	if (node_pagecache_reclaimable(pgdat) > pgdat->min_unmapped_pages ||
+-	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) > pgdat->min_slab_pages) {
+-		/*
+-		 * Free memory by calling shrink node with increasing
+-		 * priorities until we have enough memory freed.
+-		 */
+-		do {
+-			shrink_node(pgdat, sc);
+-		} while (sc->nr_reclaimed < nr_pages && --sc->priority >= 0);
+-	}
++	do {
++		shrink_node(pgdat, sc);
++	} while (sc->nr_reclaimed < nr_pages && --sc->priority >= 0);
+ 
+ 	set_task_reclaim_state(p, NULL);
+ 	memalloc_noreclaim_restore(noreclaim_flag);
+-- 
+2.34.1
+
 
