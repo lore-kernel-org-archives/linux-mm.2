@@ -4,87 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21C85C61DB9
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 02:58:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3729C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 03:24:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 093F96B008C; Tue, 25 Aug 2026 22:58:36 -0400 (EDT)
+	id 819006B0088; Tue, 25 Aug 2026 23:24:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01D6A6B0092; Tue, 25 Aug 2026 22:58:35 -0400 (EDT)
+	id 7F04A6B008A; Tue, 25 Aug 2026 23:24:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4E7A6B0095; Tue, 25 Aug 2026 22:58:35 -0400 (EDT)
+	id 6DEFF6B008C; Tue, 25 Aug 2026 23:24:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C3D336B008C
-	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 22:58:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 47BA98022C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:58:35 +0000 (UTC)
-X-FDA: 85141912590.30.9EE5716
-Received: from mta0.migadu.com (out-49.mta0.migadu.com [91.218.175.49])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 681A4160002
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 02:58:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AB8vY8u2;
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.49 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AFC86B0088
+	for <linux-mm@kvack.org>; Tue, 25 Aug 2026 23:24:34 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC20FA0233
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:24:33 +0000 (UTC)
+X-FDA: 85141978026.10.7294419
+Received: from mta0.migadu.com (out-250.mta0.migadu.com [91.218.175.250])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 820B840003
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:24:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ARh8fbgu;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787713113;
-	b=Lfu4QO3lwLW4c+jR5p/ogCjuylHL+FD8FdlD03e+cNWzGdihJPz/oeZuNEkUQqY74UhB8i
-	HUC9WHC4EvFwof19zTA20kmmCaF1l8nFRCPzwlqq56oK27lzPo1NRQpixMPcb9nvx/k9O3
-	CVbc5cw/zFyoDv0eF/+xge7/RS+3X9Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787713113;
+	s=arc-20220608; t=1787714671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+M0NsYDBAb2fahCpyUMqDlmNvDUwUa4h1MgLRijo3Rs=;
-	b=lRVXagzuRPgmPpSxFgKFXZ7sQ1x/N9bkpFi7Qv43tlvbD2vU95UVyVYtpcw24ov14CXJDt
-	Fs/MZ7TXE4pTCN7KocXm2AIqVedebwt5KE3E1f/ImWBqbRduty1boYUe8QcXE9THTKP9UF
-	Xnur0zgkIY3ucRc/jPCMykqM3RsNRGQ=
+	bh=9ytlF+PA2dkAhDRIspuBkU+nb+TzX0lKIezhge+FdJM=;
+	b=JxGecZYfaSS2DR5FxCzWirVf2PjHSf1jwaM1Q12Fc5MNO0J6MCbyyQo/a6LL0OgCqRDnrb
+	FOjNUhYbwxGNL12mDPaLl9rCNG06w7M94Wj/aS7LGn7nR+JrHtF8pZ3HA7o4osSr4i7vbr
+	oguckiRLNb8sY6fboECTa3x7+2uQVoM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787714671;
+	b=DyFJR5L9BLKU6WdqHxynab6BN2eIZSwC3X33JUnsVuKQLwZ3rMJIdIRbNBJItGUe18ockJ
+	wU8uNPpVyoEpQ8+HujNdADPg3dgB17P4dd17I8TxMdg54VzrsXwKsUC8FIS/zrTj5kUuLo
+	Pdg6RRw91JEnrdxumrh30Pdk1qTcurU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AB8vY8u2;
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.49 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ARh8fbgu;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=fF9gyDjEs6+vYJh1yDRz0c7p09qLbkugpjcJbmk8Xxo=;
+DKIM-Signature: a=rsa-sha256; bh=ilcBa0x2PBxT31raRJ9YJHGQoebktmijIA8hcg3h/7I=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787713111; v=1; x=1788317911;
- b=AB8vY8u2Y1krS3d4WbUP0O2AxFkvf6xT0K55C17dENL5YVys3Dn3HMG/S787ABbjwImrXpNI
- ZHxZioRbBMl/0cauQCL4d5mH70IzF0dWczB2F5eOSa3w9RcVCAOfQCD4qgXOoOmPQuYY3PbE7ZB
- oMbGHs4OtQlwrDDaWPov7xw8=
+ t=1787714670; v=1; x=1788319470;
+ b=ARh8fbgukkjUJVZLhmXVQMkO36lyF+y+3XnA+NPY+lVoJvcY7/1NacqB2wd4dJSQSfREehLr
+ iD0wBlwv3Ir8bZBKXnTjJouCCl5ZkaZKgxzyVtnX2ulI9QIooM4smNTYVYHmkYSI8/cYo7fBpGn
+ JiCOortsoz2JzMijHGH2bKno=
 X-Envelope-To: linux-mm@kvack.org
-Received: from fedora (117.129.78.49)
-	by smtp.migadu.com with ESMTPS id 61c7a6b2cb34e485;
-	Wed, 26 Aug 2026 02:58:31 +0000
-X-Mizu-Trace-ID: 61c7a6b2cb34e485
+Received: from [10.254.116.35] (101.126.56.83)
+	by smtp.migadu.com with ESMTPS id da7f930ca1c05538;
+	Wed, 26 Aug 2026 03:24:30 +0000
+X-Mizu-Trace-ID: da7f930ca1c05538
 X-Migadu-Flow: FLOW_OUT
-Date: Wed, 26 Aug 2026 10:58:26 +0800
-From: Hao Li <hao.li@linux.dev>
-To: Longlong Xia <xialonglong2025@163.com>
-Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Longlong Xia <xialonglong@kylinos.cn>
-Subject: Re: [PATCH v2 1/1] mm/slab_common: reject zero object_size before
- calculate_alignment
-Message-ID: <ao5V_CkGfLiBz05R@fedora>
-References: <20260826015506.3178758-1-xialonglong2025@163.com>
+Message-ID: <976369f1-7806-4c0d-b2b1-f91c3ac84b8b@linux.dev>
+Date: Wed, 26 Aug 2026 11:24:20 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826015506.3178758-1-xialonglong2025@163.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/17] mm/hugetlb: switch HugeTLB to section-based
+ vmemmap optimization
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260825084608.47437-1-songmuchun@bytedance.com>
+ <20260825084608.47437-11-songmuchun@bytedance.com>
+ <83d8d1f2-6ca2-4c72-a494-23ce07bb4181@linux.dev>
+ <C06EECC2-9025-49D8-91ED-EC58685398C4@linux.dev>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <C06EECC2-9025-49D8-91ED-EC58685398C4@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 681A4160002
-X-Stat-Signature: p5zxc4jhmefsgwb3eio5wc6b48zf3nes
-X-HE-Tag: 1787713113-571924
-X-HE-Meta: U2FsdGVkX194oNqIj4+HABNO1E83DP5PDrLv1b75D5WotbUmvcad8B1zyI/jk7vNekxFjLj/t24VpeaiyTh+7FHDFLvUiMU4SHKq48ahmMYAsrxR3YwdxXH6KvyTsF6tdiTIWlME8npNwWwtmWXjnR/IysWDGVZnhKFYGPtCeFdkIEm8BQSlz4qYT50GeqmdwcbrsfeAcAULrrG7jKaTw5+FILpglCzG0RrStK6Oy0bm4p/960nBTvkBMfXiRvcUXE0xZiKp7cBwxn2I96H1RDpFqUei/cLo56AOBYip9T58oJntuY3S1PO9EL0x3LQVA+vomRV4UbgATPiqTEhhv3DSirk3rNqIY6nzBl5wiLfXcqE4B6pUjgJeVuTKDL5z+jvWPgVbciAA8XTcIbrOsdEwsJscMiFJJ1gGMJAVTmIaNB+Zk4Z98aeDasu47l6x77LIKKVHEixSwH/OHD3KuEZckcPjFrqR1vfSsl24fyu9RMKFOlZGnTUVS/yY9RrHMvqPMPvhg8NZFcTtAVlO9J9iIRruZQfd8oDrgAO3QcT82ZkWv+kkOJuIO0O9GJ/OtrOTYvaEdtBIKgsJYoO5agxqjNnkkvafAH/bS9nZpSkIr4lYIMtycVEw+JrGYeFpqmZC4mIIn5ko9mV6Vcw1GoUypXiemsaDaXFbiPi77CV+oOR2g0C6NcdPocaH12XunRT1L/Cas1MBXBDcPuYF7PiwbRRiSsq+GrY36KBll3QLer5bgETMjTs4SjAnEqL1EJWoA3qMTJ5TYLLH2L4i3Vqap1gQFk5h9XJjhpCVmbuX6U4ll4PypI1Cy+NPr8/6RAEsjtBR6C1fjg18eBvff2GBZpTT8YPCrqLRv6gUhxlKOwLi5iXCIhvz0ZN7+/HH1qn2OzUxmP0n9d8nEOWJDUCRxULXzU/+/6u4/s/+mNH+kVju5QroiVNZ0SUayN94a2S5UowsupLd+m2EQoo
- 2fDnlC1Q
- qkdJOwZc7mbFOqD7bXDIXVJIzQbD40vAZdSITj/qkNPvTrlM8tv4rVdBiQnlN9VThXctqLeG3DjzByYvygNYrGiRCoa6mBcWhDg60NBL2WoCCUjlnPGyM0XICRpe7lTRJXQIt4IPnoRhWb4cRHvXQbTKKw2QFV0uuGAR//DJnX9awQN6ziDXOGf4qwwVCTI06aDmObgKJ1kosEvM0tptoVXIm0aTRkN0ADq/lkVl8RY7/OWHQVZAH+Pt3IeuI6SYV5Y1s8lXxYJXF5anldLbFBM87RPGBkKtr/mSoFXYHc/9j+LMm0eLZRg9PlhwSd5BdzsUcFtJqLMZj+5iQenuHTepd7YbRT5ER3zQ5vedoGrBG+7s=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 820B840003
+X-Stat-Signature: g639h19f4m316kaqms3x4csrbgtyb58h
+X-HE-Tag: 1787714671-178864
+X-HE-Meta: U2FsdGVkX18SVTxDFUC1O694dHlySSLRrYvQB7q3Gc+i1tRO+P94J7ZLTCYib9P2BFzORHAFkXkLiP/8jV0FsvHqDbhxeuADU0Dsu945nJ6koP+IuGZHLP9dFbXRojw8kkUbHmSKIF3c5wn6mT70h/7PUiN8enUJ5igCOkH7dkGEIutqFli1wVCf75yAJNF5leU63+FuFFKddjXq1Lpzeh77EWVTm3/4dAv//AxpzLtA1V/Ymrs0mkTr/6SotgpIOKxKhssrbt35GAZVqfAGQPDN58vCYwe0uFbxKffyjelWbgHG9gE8u1uEZ78VavvSrAstoRoEav4k7I0wC+XngXCIz1c6ZIXW4HmUpn1Nb8/VlKqtM5LZQzcAG94zwEoOayWiRTBXwn4kVltXTFGEZ9WeJv7jnJZWvbJZwl/5nS/vxxfLS+EUXT7AA0pPROOynfHJaD5c3YC3erps89edEn1GwJCpnX3geZ3GUPxnoyd1SkfV0k5bwQTg3qOUkIsEcPr6aiE+Z4/cHzF1Af4OXkOkxes7KvJPHcACHJWGvLs11RjweYwxyUy2o/DvkU2wm/St1RIjw0Nmp53sWHirCyKPJ+EW9wTfGkDW62wcT9zqCX2uwfAWJqJ+m3MQXyZeqFiKRNY50ULjWlmVefEQEoJ+exoiRgc4iVVqyfjsJlNZpwWAyj7DBF7QNUaFpOn0bl+Pnopj7kcr212Et0tui8B7iyjX4Y8ZqPY0jMqy+jyylRyKBs84ZCoMCi4WpAbi+vq6fvVasFN5M+Ru6McZhcGgCpegSf7b/1d1DSgtl6568lVQBtali6wHHkWh80lqJheW7ydu5I8qWp1S5SZNe3V0hIXcWA4a/ZYZgSG4MNxrwiABnrRbUJTiGwJjicj5cSwrLfzo3RcuWRLNLM7NevHL8JyEsAe+u2sYKXR3p9s810VzXTD/R2Ul14ljsQM9D7//xtolL1qhXJW93+Z
+ C5OZMRpz
+ sIWfXjNytmKG/yS8EC8d+qY5TfCqrWtJtHvK3RaazmLN11xOCzb+aBzVND1x57xtCohbE6sYDx0bRh3a7966bm3W4ALOXMsWDAjpOVYjx8ElIc1kAw83Cu6YGJwstGOJWyQMy9hzZQUCmK2KSp/NhDYLaRb0zaVQpJCNtvYNY3Gln4DsJxTI/l+iS6BXXNWxJXfstaYhzYU7r4DVEEItHbLCw3dUZTPV2wfeFJp92fYXezPR0TLkDquJuo8TPoW36fxnfLUZWHOQFka8i705CCuomyEYtshv+bjdEal//uUONdAhNdVZro2Kv0vmoaKPsRZCJ6Y4J0QeJ5XSdQ8hLUzBjh8FdR5EIoZNSB+nPKEEDulbf/jcOZ9w8BNN6D2P1IZyvDlJB+B7fxjqFq02Yk31f6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,51 +102,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 09:55:06AM +0800, Longlong Xia wrote:
-> From: Longlong Xia <xialonglong@kylinos.cn>
-> 
-> calculate_alignment() with SLAB_HWCACHE_ALIGN halves ralign in a
-> while (size <= ralign / 2) loop. When size is 0, ralign eventually
-> reaches 0 and the condition stays true indefinitely, hanging the
-> kernel.
-> 
-> kmem_cache_sanity_check() rejected size > KMALLOC_MAX_SIZE but not
-> size == 0. Add !size to the check so a 0-size kmem_cache_create() is
-> caught on CONFIG_DEBUG_VM builds, where it can be diagnosed when it
-> surfaces.
-> 
-> Suggested-by: Hao Li <hao.li@linux.dev>
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
-> ---
-> Changes in v2:
-> - Drop the !object_size check in __kmem_cache_create_args() that v1
->   added to the always-compiled path, and keep the guard only in the
->   debug-only kmem_cache_sanity_check(), as suggested by Hao Li.
-> 
-> Link: https://lore.kernel.org/all/20260824092454.1693745-1-xialonglong2025@163.com/
-> ---
->  mm/slab_common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 95ddbab290d4..e205a99d85cf 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -102,7 +102,7 @@ static bool kmem_cache_is_duplicate_name(const char *name)
->  
->  static int kmem_cache_sanity_check(const char *name, unsigned int size)
->  {
-> -	if (!name || in_interrupt() || size > KMALLOC_MAX_SIZE) {
-> +	if (!name || in_interrupt() || !size || size > KMALLOC_MAX_SIZE) {
 
-Looks good to me. thanks.
-Reviewed-by: Hao Li <hao.li@linux.dev>
 
->  		pr_err("kmem_cache_create(%s) integrity check failed\n", name);
->  		return -EINVAL;
->  	}
-> -- 
-> 2.43.0
+On 8/26/26 10:38 AM, Muchun Song wrote:
 > 
+> 
+>> On Aug 25, 2026, at 21:12, Qi Zheng <qi.zheng@linux.dev> wrote:
+>>
+>>
+>>
+>> On 8/25/26 4:46 PM, Muchun Song wrote:
+>>> HugeTLB bootmem vmemmap optimization still carries its own early setup
+>>> path, including pre-populating optimized mappings before the generic
+>>> sparse-vmemmap code runs.
+>>> Now that the section-based vmemmap optimization can derive HugeTLB
+>>> vmemmap deduplication from section metadata, HugeTLB only needs to mark
+>>> the bootmem huge page range with the appropriate order. The generic
+>>> sparse-vmemmap population path can then allocate and map the shared tail
+>>> vmemmap pages without any HugeTLB-specific early population code.
+>>> Do that by setting the section order when a bootmem huge page is
+>>> allocated and dropping the dedicated pre-HVO helpers and related
+>>> special-casing.
+>>> This removes duplicate early setup logic and switches HugeTLB to the
+>>> section-based vmemmap optimization path.
+>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> ---
+>>> v3:
+>>> - Use the order-based helper for the bootmem vmemmap-optimized check
+>>> v2:
+>>> - Collect Acked-by from Mike Rapoport
+>>> ---
+>>>   include/linux/hugetlb.h |  1 -
+>>>   include/linux/mm.h      |  3 --
+>>>   mm/hugetlb.c            | 30 ++------------
+>>>   mm/hugetlb_vmemmap.c    | 90 +++--------------------------------------
+>>>   mm/hugetlb_vmemmap.h    | 14 +++----
+>>>   mm/sparse-vmemmap.c     | 31 --------------
+>>>   mm/sparse.h             | 27 +++++++++++++
+>>>   7 files changed, 42 insertions(+), 154 deletions(-)
+>>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>>> index 16c4c4caa126..fe28f98e1b22 100644
+>>> --- a/include/linux/hugetlb.h
+>>> +++ b/include/linux/hugetlb.h
+>>> @@ -171,7 +171,6 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
+>>>     extern int movable_gigantic_pages __read_mostly;
+>>>   extern int sysctl_hugetlb_shm_group __read_mostly;
+>>> -extern struct list_head huge_boot_pages[MAX_NUMNODES];
+>>>     void hugetlb_bootmem_struct_page_init(void);
+>>>   void hugetlb_bootmem_alloc(void);
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index dd09c438fa23..441bd39eab73 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -5159,9 +5159,6 @@ int vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+>>>           int node, struct vmem_altmap *altmap);
+>>>   int vmemmap_populate(unsigned long start, unsigned long end, int node,
+>>>    struct vmem_altmap *altmap);
+>>> -int vmemmap_populate_hvo(unsigned long start, unsigned long end,
+>>> -  unsigned int order, struct zone *zone,
+>>> -  unsigned long headsize);
+>>>   void vmemmap_wrprotect_hvo(unsigned long start, unsigned long end, int node,
+>>>      unsigned long headsize);
+>>>   void vmemmap_populate_print_last(void);
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index 04e6c4244cd6..fbb0c83bea79 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -52,6 +52,7 @@
+>>>   #include "hugetlb_cma.h"
+>>>   #include "hugetlb_internal.h"
+>>>   #include "mm_init.h"
+>>> +#include "sparse.h"
+>>>   #include <linux/page-isolation.h>
+>>>     int hugetlb_max_hstate __read_mostly;
+>>> @@ -59,7 +60,7 @@ unsigned int default_hstate_idx;
+>>>   struct hstate hstates[HUGE_MAX_HSTATE];
+>>>     __initdata nodemask_t hugetlb_bootmem_nodes;
+>>> -__initdata struct list_head huge_boot_pages[MAX_NUMNODES];
+>>> +static struct list_head huge_boot_pages[MAX_NUMNODES] __initdata;
+>>> /*
+>>>   * Due to ordering constraints across the init code for various
+>>> @@ -3139,6 +3140,7 @@ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
+>>>    	} else {
+>>>    		list_add_tail(&m->list, &huge_boot_pages[nid]);
+>>>    		m->flags |= HUGE_BOOTMEM_ZONES_VALID;
+>>> + 		hugetlb_vmemmap_optimize_bootmem_page(m);
+>>>    		/*
+>>>    		 * Only initialize the head struct page in memmap_init_reserved_pages,
+>>>    		 * rest of the struct pages will be initialized by the HugeTLB
+>>> @@ -3299,6 +3301,7 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
+>>>    	 * this folio.
+>>>    	 */
+>>>    	folio_set_hugetlb_vmemmap_optimized(folio);
+>>> + 	section_set_order_range(folio_pfn(folio), folio_nr_pages(folio), 0);
+>>
+>> So section->order is only used during initialization. Is it ever
+>> accessed later at runtime? If not, can we just skip zeroing it out?
+> 
+> You have keenly noticed a detail. This was actually done deliberately,
+> because in patch 14, HUGE_BOOTMEM_HVO was removed and replaced with
+> section->order. The ->order field may store a value that is less than
+> VMEMMAP_OPTIMIZATION_MIN_ORDER, so clearing it to 0 here is to prevent
+> potential issues with this memory region during the hotplug/hotremove
+> process in the future (in my future series).
+> 
+> However, is there also a way to avoid clearing it to 0? There is. We
+> could add an extra check in hugetlb_vmemmap_optimize_bootmem_page to
+> only call section_set_order_range when the current hstate->order is
+> greater than or equal to VMEMMAP_OPTIMIZATION_MIN_ORDER. I just feel
+> that this would add a bit more code. And then during the boot phase,
+> doing one extra zeroing-out doesn't introduce much overhead anyway.
+> Therefore, I chose the simpler implementation approach.
+
+Got it. Thanks for the detailed explanation!
+
+
+
 
