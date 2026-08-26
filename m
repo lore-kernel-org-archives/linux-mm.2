@@ -4,103 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E393CC61DBE
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 21:44:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3615C61DBE
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 21:46:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7B4D6B0098; Wed, 26 Aug 2026 17:44:01 -0400 (EDT)
+	id 9EABD6B009B; Wed, 26 Aug 2026 17:46:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2B826B0099; Wed, 26 Aug 2026 17:44:01 -0400 (EDT)
+	id 99B746B009D; Wed, 26 Aug 2026 17:46:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D41826B009B; Wed, 26 Aug 2026 17:44:01 -0400 (EDT)
+	id 889F36B009E; Wed, 26 Aug 2026 17:46:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B39D16B0098
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:44:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3E972140242
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:44:01 +0000 (UTC)
-X-FDA: 85144748682.25.010F15E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 591D54000D
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:43:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=or2rPFmW;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 66D2C6B009B
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:46:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDE7E4024F
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:45:59 +0000 (UTC)
+X-FDA: 85144753638.09.F78D42B
+Received: from mta0.migadu.com (out-151.mta0.migadu.com [91.218.175.151])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C0ED440003
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:45:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jtxGFWwL;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787780639;
-	b=mMMm2+IXuhAbXt7Xre7NGMwCmnjofymtz1g//UXSYFXgjDuHA047zcfOspyEk2XpM+YwOE
-	Ch5YZqlSUcYlwMpXDBj6s+LZpz3Px3rioJVMGe8dLYK/kbcnd3Hvzfeu/X/2M/2wyuaubU
-	hGUIRyaXQdxOw8yRYo7rW3UgnAy6A6E=
+	t=1787780758;
+	b=4fJDV/ZNGW999cpDhCzYq8VfU1VMlmyg0YPczbgJ+pgGYvgZmyqDPW4pGBcTqKI7GXerC5
+	2BcHtoX3W3ADy7Awg5AnlreZJlQKwUASsYavLCFzPNdteUHRJYENYW1H4BNK4R0wR5us50
+	krAbeOOUGPtlIlPQ8kafKJSWdK04kKI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787780639;
+	s=arc-20220608; t=1787780758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2roDRA2Ocj9k8psJYEvUg6GITDjk4l3VJCYd3f7li1k=;
-	b=sh8WxyKiyxavIcpVbw1ztOY7W08gD3bnRdeoHdQJHCw0xnknUNWfTytG5ewa7eDbPMxcqP
-	Y5lT9E7KJ7H5uK91989jkLNkVpW/VhNRfhUm9Tlfjt/n07OCdCdelkypejPRwOEy8HVOv0
-	onEeW1WPjSNlU+9YOM6RA5jVnMv3SP0=
+	bh=/Epo1wAqKkMzzBea6gWzXROU1bNa3mA9pf6TzsPxhLY=;
+	b=F2kC3IPmNgfNPKigzJlqg13ZST13VDlNXC71H46BwRNb19w3E+hEafoZXVfIYIip8KXJV6
+	mHhu2Q5EuikA4XLt5ps2WOfuB/2ukusWt2Yjf+jlkW6Xw9TgJ71nsIg7Vi8wD2f9MZ+0DO
+	+Fc0YP9jGLWVVmXb6cdMSsO5GbmfLhg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=or2rPFmW;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED67860A5C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:43:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B4F1F00ACA
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:43:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787780637;
-	bh=2roDRA2Ocj9k8psJYEvUg6GITDjk4l3VJCYd3f7li1k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=or2rPFmWUworOzOd0pxbnRMZfNe9k4jfeGb1aD3IjVSuKPlG1lHPQJItjRDwVeaYV
-	 VVhBTG8BYODz4KjJnOFsUMPxUnCWSTNbC1pgwiKJuYCGECGE6pna0jwrS5joo+BU6C
-	 VyZULLEtJhIy+rGIiq0vwkVW1NwH5AxRl842FRFmnGYIujs6nGBXZVqR93wFqggpEk
-	 3s1rB/+AwlxalZjrWeLwP7BDNs1UAq7eZo13FmMWJthdAZS0HhSDJrjAXVFwQKa+lg
-	 eKtq4Np76Efi8A+zdhDE4tDWjAITguCqLT8ukGi12ryYBhrPPid2hRAL8O3imGgLDK
-	 BEZnPim2KiXmQ==
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-938fd7c5379so2575185a.3
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 14:43:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpYi/9+9CBXI6d7pLc4OKJkOqG1GWsf/VHozY7bJiQ4ajX/GRsQBEtT7Ocpor1H5bn7FHFao/HG0Q==@kvack.org
-X-Gm-Message-State: AFuF++mUA77si6BCAudZt6u3FbXbcmwyd0EfQ2vnlldXMDG9tTEK+V2h
-	tXX0UqGQHEEvjNf2aYnu38lGX0iMMeU2DjYg3jHdpOLb1M9bzGGJA5zOvlB4deiDuAD+ywbP2m0
-	MVjLBGFN1bAFg4FeMjiHk+PQvnmW03to=
-X-Received: by 2002:a05:620a:46a0:b0:939:3c0:7520 with SMTP id
- af79cd13be357-93903c077a9mr41198885a.18.1787780636906; Wed, 26 Aug 2026
- 14:43:56 -0700 (PDT)
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jtxGFWwL;
+	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=im1e6ev29SXlYnnNiPx27R6n+npPS4nBwC4ipXAS5IE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787780756; v=1; x=1788385556;
+ b=jtxGFWwLlLdnV9VOVSCx7zF6ZU4EzNXUFWB9UzvLJEMI7oyKysVM4PvRdfhxq7yfnM9ClIuZ
+ +ak0djNo3e34We5TMtGsCsLi4QDPpwQ/HsyzFdKi5LxcIUrmYVHCjgn8VQqmiLvOV/3AuHz0D4a
+ m7mZ2bU244UtnKoK1wfjlIuo=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (2a03:2880:10ff:42::)
+	by smtp.migadu.com with ESMTPS id f36f976b6e63a41b;
+	Wed, 26 Aug 2026 21:45:56 +0000
+X-Mizu-Trace-ID: f36f976b6e63a41b
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 26 Aug 2026 14:45:54 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Tao Cui <cui.tao@linux.dev>
+Cc: tj@kernel.org, akpm@linux-foundation.org, mhocko@suse.com, 
+	mhocko@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH v2] docs: cgroup: document empty-write behavior of memory
+ limit knobs
+Message-ID: <ao9eZmOucnSWS9ID@linux.dev>
+References: <20260826021753.197871-1-cui.tao@linux.dev>
 MIME-Version: 1.0
-References: <20260821102538.22642-1-baohua@kernel.org> <20260821102538.22642-4-baohua@kernel.org>
- <ao6qTTtk2xkkeKob@fedora>
-In-Reply-To: <ao6qTTtk2xkkeKob@fedora>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 27 Aug 2026 05:43:45 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4ywk7mA1xfk=emtqby1UAwFsaH9PChmk2TuZoDKrMzuXw@mail.gmail.com>
-X-Gm-Features: AcwNN1U1hcI0Vzy6pZR5m6oVpQepLjO3IAPExcgcrEvv2QP6yu7Rc87cN4jKPoQ
-Message-ID: <CAGsJ_4ywk7mA1xfk=emtqby1UAwFsaH9PChmk2TuZoDKrMzuXw@mail.gmail.com>
-Subject: Re: [PATCH 3/6] mm/mglru: enhance cold/hot inversion handling in inc_min_seq()
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, chenridong@xiaomi.com, david@kernel.org, 
-	hannes@cmpxchg.org, kasong@tencent.com, lianux.mm@gmail.com, 
-	linux-kernel@vger.kernel.org, ljs@kernel.org, lyugaofei@xiaomi.com, 
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	stevensd@chromium.org, wangzicheng@honor.com, weixugc@google.com, 
-	yuanchu@google.com, zhangbo56@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826021753.197871-1-cui.tao@linux.dev>
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 591D54000D
-X-Stat-Signature: o3xydorfd34849scw5fpgg1u5rm9g4i7
-X-HE-Tag: 1787780639-591994
-X-HE-Meta: U2FsdGVkX18nfNhxVJPz0HPHqDnT2wtRJXD6zmInqecR1cYlTaJQFjzQ0Cmu6qtHjJKmyQQv6PW3DdtvzalcRn7l93SIey4N0//rfSWziU1w7Xy3F1fpsXr1vJuloozhnnTYcwp7zc5zSnQcfh6SiS1ACrvQncbzCstdfl+u3kkRSNssPRBnNl/EaXsED2lY32j1ns/+ZbH1wMeVAQSNrT4PwPRWCmavEvcwqT1JqZrK0Gf40u7hUZKIuOP7T90Vy5E7hjyob0L+V8+HPnJdIWEEm4+3Py3cIwUdg3s/WXlCXLOTQ8HHCxlh4dFxW/9RLjs2QNfvMAk0+pbkJslFdZdbBowsqcWPTaaFuIjWNj6T8JQwGFjDVqh3jKExb8Ts5/v4/lS7+0RrpBZX3fQgFzegZcIiYhQITZgAciXFgMP5c9BRvj1ZVdVsrY9S65Nscn/MziG4PW67u98k0wvFQ6f/AVHjYusCyQLvkNIskBtDIgd/C2Kj4EwPQVUpSiY+ZeSzPk7AJF2ZZLu8JhtAhvHYc8keLfo1JG92f0XTGRlBz7aGk4tNB6JLe3IX0SDT5UiPh4HB6WmO5WW0tnhqVAf7w/qJdkoLYTL79iUqpzPuX9r1+LMfc9jz0OhQdjILBjNVKKmCtvb+ftsqEB+0qpZ/aE74sKqvQTt/i46HdUbmVIF0XtgRPv01gJdW0n+07VNLCPby3gDz1gDeJiM59iRWzcr0KyVjn9D7nO4naDYmAL8jAMd1fohskKiG0iJ3CGckuTuk3LrCXZNcRJTvqp3+c1q9gz3vMfcKtUaCumQsIa/brddewfl8klfTpg+/AJFCZu4SmWk4sNGPKZDhbr2oG4028AmI3/5BZP7tg3o1Gfv+kqaQ9Z1YVdq3q9k4Yo/hbxuSfmLQfvO2mc1IfrEeSW6is/0QtUwUaPi+4sBr0a10qKTe6+m6Y5+n+MGaWEnC8ePBE/xQIFKcxYq
- qU8+HfR8
- nclnVSfkUG1m4D9B0mSkdvN5pGzFxgu16nibr8jufKSvNPEoRU15g946waMqg4wtliDsleJedZNttWRa5HBJ1t2zf+F+BjnpBQdtnzJYPMHMfZ+XPSjQPcu7Y41R4o9WeV2pFv1poE1JYYodw/xDLJsOqgVOoiNexm0t9HTxoc8FmP2D6u+7jJBAFxHtRSjQ7F9LMIaESTOR1v3c7/2Zrx4/+J1dg34USQoDy+ZCQCOaFVOmjJ3qy7wbO4iPb0+8V8NkUUzjR7Gpg2Kuv0o9ynivyKFrYf5CrT6CJ+MRhsBaWV3lrs//u9gvsmN+7mrRTHW9fUjZ0/z7piYQb/GtmCxvZ3JS4Qd//nEdrQ4Sy1xpDC3+Efc3JCYI7tw3Xnu56EB0M6TAUXYGQX+YO53IT/9Nc3Q==
+X-Rspamd-Queue-Id: C0ED440003
+X-Stat-Signature: x7ecuy9fr9ckjym9rpz3zaanh3sp565t
+X-HE-Tag: 1787780757-733529
+X-HE-Meta: U2FsdGVkX180VtB23uWt0d/HfoeZlIWmyarRLhX22fxjISdziy++xoRW0EjtLuy1dXYykvRN3WTfQ9yVknJKqnXMn0alrH7qpXkCpuf/bwoXcDu69Xxm7nmhIxhPVjRlTAr9IPthu8OjscgUdDONp8kY04wO2ZLeLHYQ2WB9Uw7WWbnLTd/IwR3IcfqBPHOxMb9PjQo0uf/4gCEQ/6i/nFHlWLsNwB4dwO5PuJRSA2Gd1pR8mxdXxTYe0Sm88tlluYAgf4/TksCGhiT9pscN/goDUYVdinCrmdJ1XpY33UDrYY1NqHL1zhybg+G0NE0gG75J+w7GN8qr44v4yY1J2NSA1Dfuy+LlZy9hcn36P0N2xK19171ALMW0z1Cyls4CYDiuODmir48fU7pSqM+dYuJrg/Z+t7a0VcZEQGiry1ZKTt4sGrckhp/CSWRiIf3uB/9bnTnzL5DurmBP0c+n0SfHt3H44TUSgs8VoIF0X0ITNLjTbzYLX2pcPTK4tKXbRFF8K/uqI14NNlpqum6cSmCPrLm1z0lPTawvUHYAOtamgxfBZ/E1NC7+9ua6WfBjsYQY/ZuzeqtQhXCWhzhR0fkZ7YNIWX1aWdRQ/fEmWJ+GERjtKSQ/c+iKpP2QOlDiEE6NwXtQCt5eZnPjMqYsSzVeGOIEGeWbGPfJBNBv8V8JQNsDbG78GQ/GIZ6f40RX1W+krrxiwKMU0n277CjoRWq8VURnkfJnbyKGVIApvCkvkymjnktpbSzCI60NQkBanML79UnXU/4Nprr3nteQ2SHOQvnxrlq+P4klt5RZzwfiSt2nGouL/HuIbFSrJoH+XSZMnCywxQlfIj/pI277iQRBs4i8Vrz50BbVRTGqaOR46ggBlxWBxuywY+ui9WyKo9+vuDpyHjAtvpS8QxIrv/9tSQdX78uQJrvN8Df/O5Fy5HMY2hDunXGNQ2I6MMigaTAnJYTZ5e03wbj+Hu5
+ G/Drrpvd
+ drfzuNkkP392vPmtFfuF/YXfNO1HwIAKxGn2R7gZsl7j0PgH2OhhGUPquQ5RO3W1qCNMncyMEkU3uUAe2f5Yr7v590w20lgEeoI0OjTMpy9ch2VmIumazga1dMjBhyFIdWYbWH+09qMfAB95Yvmqk0ZIHo4bWr9ov/MhSTbdZ9InDavvOg1qpN7on0kWmDqWnaKMTuVMY3oNkuQw+4dFUGN03mFhn5vWbMx4M1SPvxleV1MPJG0Kbglnh+/f3qBpoV6sJQmalMYSU8XS7IP5e3k0lHYcT0O2O4FQluEyh8D4jG4gh6V/a7LqKzCQ3L4f4k1g/2zKAYXJNUQIbJRrpXpL8Jg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,66 +92,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 4:56=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
-rote:
->
-> On 08/21/26 at 06:25pm, Barry Song (Xiaomi) wrote:
-> > During aging, a folio's generation may already have been updated by
-> > folio_update_gen(), even though it has not yet been moved to the
-> > corresponding generation list. Such folios are hotter than those
-> > already in that generation.
-> >
-> > It makes sense for inc_min_seq() to increment the generation of
-> > folios that were never promoted during aging and move them to the
-> > tail of the new oldest generation. However, folios that were already
-> > promoted should instead be moved to the head of their updated
-> > generation, just as sort_folio() does in scan_folios().
->
-> While sort_folio() move protected folio to the head of next gen too.
-> It only moves ineligible folios to the tail of next gen.
->
+On Wed, Aug 26, 2026 at 10:17:53AM +0800, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
+> 
+> A maintenance script on a cluster wrote an unset variable into
+> memory.max of a workload cgroup; the variable expanded to an empty
+> string, the write succeeded, and the workload in the cgroup was
+> OOM-killed.  Nothing pointed back at the write, so it took quite
+> some time to trace the OOM kills to that script.
+> 
+> The memory controller documentation does not say what an empty
+> write does; the cpuset controller documents its empty-value
+> semantics.  The actual behavior is that the empty string is
+> accepted as 0.  Reproduced on a k8s cluster (v1.29, cgroup v2,
+> two-container pod, 384M limit):
+> 
+>   # LIMIT=
+>   # echo "$LIMIT" > $CG/memory.max
+>   # echo $?
+>   0
+> 
+>   m6demo   0/2     OOMKilled   0
+> 
+>   Memory cgroup out of memory: Killed process 339529 (sleep) ... anon-rss:32kB
+> 
+> State it where the interface files are introduced, alongside the
+> existing notes on units and page rounding.
+> 
+> Link: https://lore.kernel.org/all/aoVUlFdZYLFn_gvJ@tiehlicka/
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 
-Hi Baoquan,
-
-Thanks for the review! I=E2=80=99m not quite sure I understand what you mea=
-n :-)
-Could you please clarify what you=E2=80=99re suggesting?
-
-I can explain the design in more detail.
-
-Yes. For both promoted and protected folios, `sort_folio()` moves them
-to the head of the corresponding generation.
-
-Here, `inc_min_seq()` is a bit different. We are overlapping `max_seq`
-and `min_seq`, so the `min_seq` generation should be moved to the
-second-oldest generation. Therefore, I think non-promoted folios should
-be placed at the tail.
-They are genuinely not promoted, so they shouldn't be at the head.
-
-For example, suppose we have the following folios:
-
-Second-oldest gen: f1, f2, f3, f4
-
-Oldest gen:        f5 (promoted), f6 (not promoted),
-f7 (promoted), f8 (not promoted)
-
-Without my patchset, the result is:
-
-Second-oldest:
-
-f1, f2, f3, f4, f8 (promoted), f7 (not promoted),
-f6 (not promoted), f5 (promoted)
-
-So you can see that both promoted and non-promoted folios are at the tail
-of the second-oldest generation?
-
-With my patchset, the result is:
-
-Second-oldest:
-
-f5 (promoted), f8 (promoted), f1, f2, f3, f4,
-f7 (not promoted), f6 (not promoted)
-
-Best Regards
-Barry
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
