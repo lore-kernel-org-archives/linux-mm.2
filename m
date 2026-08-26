@@ -4,110 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7537FC61DC2
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B3BFC5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 09:28:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCA386B00F8; Wed, 26 Aug 2026 05:25:54 -0400 (EDT)
+	id 6F0D76B009B; Wed, 26 Aug 2026 05:28:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA28F6B00F9; Wed, 26 Aug 2026 05:25:54 -0400 (EDT)
+	id 6C86B6B0101; Wed, 26 Aug 2026 05:28:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C43F76B00FA; Wed, 26 Aug 2026 05:25:54 -0400 (EDT)
+	id 5DE966B0102; Wed, 26 Aug 2026 05:28:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BA606B00F8
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:25:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 084AC1C0FA3
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:25:54 +0000 (UTC)
-X-FDA: 85142888628.27.7126DA3
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B32FDA000A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:25:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=1LNL5mVC;
-	spf=pass (imf15.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 334D96B009B
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 05:28:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA080A2E94
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:28:19 +0000 (UTC)
+X-FDA: 85142894718.02.1FC6E3E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1805D1C0004
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:28:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkFXSijR;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787736498;
+	b=RMlolmaISxlz6hayN7lVSV8ZC3ZkKOEkqT5vaMu8w1ljUS0Tp11ula3Pyictqf1/K7rsEw
+	Z+rXpg+uAH3fzPboT2xv3+wYNv2DVrCaSWLzRRlLALkbCJfvcHZCPl3KQ/FakGZ+TXXnhv
+	+a66VhNvOdPM6T0k2XOQDYx2PO2CPls=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RkFXSijR;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787736352;
+	s=arc-20220608; t=1787736498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fFAgomx6mCnvCLtDv+rkVQ5LTZ6jKJXYGpd9rmPNNE8=;
-	b=D887CGjp/hKEyD5vjAKyYI/eM78Qy7k6o2rcLZw0GKo2cN/HFND/Ww9pIVjCFuEufWAUin
-	CGEFGlAT/2+Lk65rCLIfQ+ootnzmUxmWZUnErYXb2/8sUvp39E1fpy42FWU7cgTFO3/6jb
-	uCnjzWPuUEl2xAMzNZh+7jp0Kn9d1A4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787736352;
-	b=MAVZ5aiaRETK/XFX992f+qDI+tsVoxefQzcBL02omYkamQTBUtqnRAqf9yExJtthNWZJKc
-	kyRXf1Rx4BXja8ubYNAwQ6e2LHERnjti111Q6nSLNNIXedxZnhEeUf0OEN7GJP2ov83dQU
-	7V1WKxeOS0oRkKxaO4FNDfU8YC1CxBs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=1LNL5mVC;
-	spf=pass (imf15.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=fFAgomx6mCnvCLtDv+rkVQ5LTZ6jKJXYGpd9rmPNNE8=;
-	b=1LNL5mVCelb85PN9fuNceaoD72o8fCN0n9slnJpLPRXvNMoCM0ey58jciL1xalSTzmOGIlIZt
-	QzwhzeumxoPtPnpkWa53lh7mcQOpffypdPA7T9QpcG02Et76WZVHm8Ut1q5RAjOtW3UhqZEIj3d
-	sRmKY9R7dvYnIIPD8CQYKTI=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hVJsH4bLtz12LF9;
-	Wed, 26 Aug 2026 17:15:31 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id B7F6640537;
-	Wed, 26 Aug 2026 17:25:48 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
- (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 26 Aug
- 2026 17:25:46 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
-	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <maddy@linux.ibm.com>,
-	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <chleroy@kernel.org>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <akpm@linux-foundation.org>,
-	<baoquan.he@linux.dev>, <rppt@kernel.org>, <pasha.tatashin@soleen.com>,
-	<pratyush@kernel.org>, <ruirui.yang@linux.dev>, <kees@kernel.org>,
-	<thuth@redhat.com>, <gshan@redhat.com>, <jic23@kernel.org>,
-	<james.morse@arm.com>, <ardb@kernel.org>, <leitao@debian.org>,
-	<yeoreum.yun@arm.com>, <sourabhjain@linux.ibm.com>, <coxu@redhat.com>,
-	<tangyouling@kylinos.cn>, <hbathini@linux.ibm.com>, <adityag@linux.ibm.com>,
-	<ionut.nechita@windriver.com>, <liaoyuanhong@vivo.com>, <seanjc@google.com>,
-	<fuqiang.wang@easystack.cn>, <makb@juniper.net>, <piliu@redhat.com>,
-	<ebiggers@kernel.org>, <jbouron@amazon.com>, <mclapinski@google.com>,
-	<me@linux.beauty>, <graf@amazon.com>, <bgwin@google.com>, <robh@kernel.org>,
-	<takahiro.akashi@linaro.org>, <palmer@rivosinc.com>, <x86@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
-	<kexec@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v3 17/17] arm64: crash: Add crash hotplug support
-Date: Wed, 26 Aug 2026 17:25:41 +0800
-Message-ID: <20260826092541.3905933-18-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260826092541.3905933-1-ruanjinjie@huawei.com>
-References: <20260826092541.3905933-1-ruanjinjie@huawei.com>
+	bh=VkPDzgtqpJZ+C+pFu3IpQfmXypArccQSfZj/VF6NMbQ=;
+	b=2yWEmQUwkmnyk5qyq2wqbcEt45LgDvYM9xulAs8t2kKS7bpRHM+X8/034yJ1LSyY3013MW
+	gNSM/4lw2ijoQRjJNkpC+T46yvm5VE2DsMbGgbgWhSHm8DU2XqwoWgITpzdk+zAJtMxOSu
+	gRTIqzO0LrTWuJEDBjUTuKBw16VDnX0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 621B1600C4;
+	Wed, 26 Aug 2026 09:28:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751711F01561;
+	Wed, 26 Aug 2026 09:28:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787736497;
+	bh=VkPDzgtqpJZ+C+pFu3IpQfmXypArccQSfZj/VF6NMbQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RkFXSijRbA6EM3ZrjDU8tSwuriXKTTOKjpopi5CErpNWTeCRYBX/qsSUpyn8Ggw/R
+	 kPodnkEfLkODpYExzkYsht60y+Ht4NVpAtwCjHkGW071tyXfWzKONDRORVx0+2QE2h
+	 zAUsNR84Y0VJkVKEYg+xwJ/PsQmf2mhC46R5H69eX6Rj0okfWJkL0JaWA24/a/ue6K
+	 8S/3idW0QkFMKJ3nRlZj8zfw3V9bg3e/B1zBxkMQNBUagKF5Fq7fD2KGSvyp8gNOXB
+	 7N8bQJJqeIvVJDE0sVvbKo0VkfJSliyfgJII+5KVQG+v9W2NAhWYpNB1mlsc33s3gV
+	 W90ZgP8IBSMLQ==
+Message-ID: <82f138f5-11d4-4839-94a3-c226fd982715@kernel.org>
+Date: Wed, 26 Aug 2026 11:28:12 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500011.china.huawei.com (7.185.36.131)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slab: reject unsupported kmalloc sizes
+To: Zi Yan <ziy@nvidia.com>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alan Stern <stern@rowland.harvard.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org,
+ syzbot+805630f1453e490427fa@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260817-limit_kmalloc_size-v1-1-5bef487701cc@nvidia.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260817-limit_kmalloc_size-v1-1-5bef487701cc@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B32FDA000A
-X-Stat-Signature: 75yui8h8mha7wguxzxn7n77i9qopm7um
-X-HE-Tag: 1787736351-815724
-X-HE-Meta: U2FsdGVkX1/1E1zjImHYRruzpZfyMsv1HwwKlIMeaOlcBr2fH1XH9TT1lIYygEu/T0A3Aw/VXD32mKX26u+VhPQrZJzF4A0UQrVHPJxyw0LXz6kJMs8is6sTbVo6+ttNjygGh+7xUWf3U70i3w8PkVtmvYBDNjwYwXzE56JeHwcuT4TZo+jvC8twUJKYbs0iNyn/erUYHmNl+mrCPOxOsRU/z6jLES+OCH9VjlZxH/SleXbbx/Zkv9cVt92jRpRWu6f3paHXJvTcNlavKPboW4/7FHsSpASHDEbVREe6zElPI18dnsXGF35fNjuQgpXOlChc+6y7QmK7AIw1G8O8s7Qwygbv71Itm7FXqM6OXBlcUmEdXFYqBM+3K/hjS9fBTEG/jj42n8YE4c7v0lIuFEv2SdMUYKJg7ucZulPLSu3/8+tOlLQLWSv6UEhmw9llLaL0b1TK5zZMsoW6rphuO8nxsw6+mo58bquSDuNoJIe5PPjOy/eJiTABfJHOqH16N0G4NN4h0odCDEab7MjylZaGn4Jlj2mr9lWHlTsl7yisb9Uwdo5oxsZKBGLDDaKFb7CvPbzRKzYOrY0FVmrOaHx8lJGBQYeRWr6PkMAZkNtuHixN7d5KfeVHTGk/oIt7d5EWdWpdCW9lXWRNFD2/DDnnb5iRkjsVf4AWFpIWMuCnmOBLf7a94sZ9hBKKpCMjA6gpfoTe0OcEMQJe96aphRL5ITnPtHqzkPAGO0uU2pIa+ISCXGSZpZkSdKUyhY5OvIuZEjFX55bPfU/AvwsYWIOYYPWPDiyrTK/46Rl/dKWDl6FDai0ZspeHhnokGuZ6L6c/FM0jOduIVxFAtb5ErOMhIzyAKalZr700pedsAFLc2cOdGxIlNDDyE2yZleURiDK18Ohn+5MYMiGjR6g7isqkmNDZFi6s3yuw9A6pwZYz+SM/oyjN1K/5T+ZHoRRq+di5kM5uJOik6H5d/Cy
- JqHX4e75
- k/jJ3s6W7lhukUsDyore4zFFgNMwssOcmuuT0Zflch3sh9KexfI7Cn80AN7zDEyyjK1+yaJbi38WmtqcoXIpPutllgOnYhtHmHyaxdm8fuPU+P1HrtB/exMLbZDX2nLjrZYDeuwDaMFqdQZxXAxulEZR1+fWUDzJu+pkg74YUpT31xbOwjNqiVFfhnaFfEzZWfTMaDcspe/O1cGLHkDmsXFExbNL1J+7G5nMeSVkUVxU6FIofX+lyt00t5zn06Ni8s8O0JhXrI14KM98jwDDhpEr6z+ICq81G/eOZ2HgCFxeMr1v8PhrbhxJMfTQ98wWea6Y3G/tnPoNfCI3RxYDaExiczJxGdhPj6YVNM0M0KI39mkmeO+9ntHlg7ZGxni7ErKe6TrvODVUPWnUf/LpLFHPJ3uDvJFUzFLmM64qyGtBk5OvZ7YzY+ZjW86XuKdPhVYa2Cs9OFBRLTPEaqVao6k4vLCNVBQshCf78Xt8rYUHgM1qEEDi3DJn69Q==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1805D1C0004
+X-Stat-Signature: ba1zhpqz9tidohncb61opcffwxka7kb1
+X-HE-Tag: 1787736497-435895
+X-HE-Meta: U2FsdGVkX1+HBM2kYFN2Im3vA6NSdSfbbbo2FqzqgKszp2kHOXtm0jEVVWc5u0n/+7uMuOBw9vaHHxeRDGupw5QKGfyOnYeN2MW/Ms9IilCyao/jW0wdpFzCTcZ7INApazS6Zk9yDCOhWyAKLH+Q+HJEhWqdQFqrknsaV4PGy9No0ppxbLyBikzDN+9h9+noun8CYqEmynZM2+KXuJYYEjNGgwVGbLEiPHHDisK9E0RZHvkxugL7gz/OzPYLzIPb3wcimXig2kTFXQf2/o6RJmTzoXYXRwUHE+k2TVXzXmrApeAVfDy+Hc8Mawxx6ZVMZ4pKf5+kpd5oSFm+E/lP8+c+Zi2I7gOPU4HIo9lBcniCLdriLGpxTYffqENlgqJumO1fb4XQVccns+y5VWQ5AivkhAtEKw27gFOQowTzOx2szIIBzW85EaBSxxOMPXqtYk8wWryzWvt/BPpJFGLs8H7sPub978jpnkSqPSVys9LFDOxFOHJVyND/lV3Hrf0E1yGglE/CbNYYKCaFxSybM4KHCgg9awmo/jjZ7HOXG3WyseThVON2e34hvGIgD+vn545BUAXLR0fQtBeIJlkg6rMcpXVivNs+Qt2gxp+NMexwhylnnuSyTFzLEEJBGKejPN+UX3MiUlX+8iUpeqtnVmWnqzj1+udY3+0wLvrTOjedrSR2lQ4xAjagLCl/PFbXTTpZyJSzfsgwhqbw0RaGIfafKjKMOgE7ey6D/uyHJ///ZXibJqD2l1CaGvTAyGM4/oh0O/1SkUBpWSUB5euI/CGTtgcGYJviO+eeNzFb1fhh3pcad2zFewKTO3RbUgL6PIy1ng15Ezt9GdlTQkIHLOxxOZhCkkCA1sDIJd/HUdscT0uvg5eEFmY/4TWbscp0F9iGziwOnf9mGA2nY7NI9v21p4to6+dVhLH+lV2MTgBZ983JcMYF4j4DIfuSg86qQjd6cN05lwoMA/aI+s8
+ oVUjWIuH
+ qM9CkBk2vaBrmarKQj88fFJUvGqYerCh+BrKmHrBi9p1u/+N4Lt/gIN3S6VJl/M7a+/GLtw6PUaH3YdekrnWg9jWktD1pmiK0ztSD+Nopm9pXPY5oeGTSIL6miRHfNNvSlsY4FdZEvRUDh2r+PY40jDTKemKFdpwNsmiDHUgkUCBu0zeCirMqT9UtmBSqZetajzQwPAFJOVwf1oYo0/uRE/rGEe9Sraka4tB8QcEflDAUXk5KaSTMJR8ajicQE0myO7G4qcg6bRo6+uV+p8/ibSEP87CZIPJ271NEXqaQmlCZ/XVU3Ei/5QPqb5Lc69mD85tnkzHb0Z6QYmgzo9RjF+xbKj5V4hEbPJ0mfKdY4bdSxlIIAt1U8Wmyd2W4AJHMLGvCDP9UjGvnE6YSDfPgorxwZjDjHIC3wv746Mk/yf28h1h4tYy1HDO4vwvZW5pSPOP+gXSzMBInB05i3JKNnuXqaQ6uryrigdpXTWJbs8oD4HIgDA/d0trVP6WwBoKoVpldlDU6FNDdNWl2gdA52sOT/5Jj5vsQ6Fqh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,350 +138,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CPU or memory hotplug events occur, the elfcorehdr in the kdump
-image becomes stale, potentially leading to incomplete crash dumps.
+On 8/17/26 22:40, Zi Yan wrote:
+> kmalloc is used to allocate physically contiguous memory for kernel
+> allocations. For requests larger than KMALLOC_MAX_CACHE_SIZE, kmalloc uses
+> the page allocator and can only support up to KMALLOC_MAX_SIZE. For request
+> sizes bigger than KMALLOC_MAX_SIZE, the page allocator can emit a WARN
+> because kmalloc allocates an order greater than MAX_PAGE_ORDER. Systems
+> with panic_on_warn=1 crash because of this WARN. Fix it by rejecting any
+> kmalloc size bigger than KMALLOC_MAX_SIZE.
+> 
+> Fixes: aadb4bc4a1f9 ("SLUB: direct pass through of page size or higher kmalloc requests")
+> Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6a820ebc.9ebadd4d.20b15e.001b.GAE@google.com/
+> Tested-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Cc: stable@vger.kernel.org
+> ---
+> It fixes a page allocator warning (order > MAX_PAGE_ORDER) when gadgetfs
+> requests excessively large memory from kmalloc. Instead of adding
+> __GFP_NOWARN to suppress the warning, as was done for usbfs[1], change
+> kmalloc to return NULL without a warning for this specific issue.
+> 
+> [1] commit 4f2629ea67e72 ("USB: usbfs: Don't WARN about excessively large memory allocations")
 
-Currently, userspace udev rules reload the entire kdump image upon such
-events, which is inefficient and leaves kdump inactive for a long time.
+So I checked and for kvmalloc() we have in __kvmalloc_node_noprof()
 
-Commit 247262756121 ("crash: add generic infrastructure for crash hotplug
-support") introduced a kernel mechanism to update only the elfcorehdr.
-This patch enables that support for arm64.
+        /* Don't even allow crazy sizes */
+        if (unlikely(size > INT_MAX)) {
+                WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+                return NULL;
+        }
 
-On arm64, only memory hotplug events require elfcorehdr updates:
-- Physical CPU hotplug is not supported.
+This comes from Linus in commit 7661809d493b4. I'd do the same thing here
+then. Thus there would be a useful warning for e.g. development mistakes
+resulting in the size to be unexpectedly high.
 
-- For ACPI based vCPU hotplug [1], the elfcorehdr is built using
-  for_each_possible_cpu(), so no update is needed.
+Callers passing size that comes from userspace or similar untrusted source
+can either pass __GFP_NOWARN or sanitize the size to what they expect to be
+sane (which is context dependent and I assume actually way lower than
+kmalloc limits in practice). Note that passing even sizes within but close
+to/at the limit, trusting blindly some external source, can succeed the
+allocations but effectively DoS the system with heavy reclaim/compaction. So
+caller sanitization should still be preferred IMHO. Some of the recent
+arguments from Linus [1] would apply to this too, I think.
 
-The patch:
-- Adds CONFIG_ARCH_SUPPORTS_CRASH_HOTPLUG (default y).
+[1]
+https://lore.kernel.org/all/CAHk-=wiSmgwwLKCqJwGS-dVHnSLU8W+7q1UQq-G9=TBGGZbuhQ@mail.gmail.com/
 
-- Implements following arch functions to handle memory hotplug:
-  1. arch_crash_hotplug_support()
-  2. arch_crash_get_elfcorehdr_size()
-  3. arch_crash_handle_hotplug_event()
-
-- Moves arch_get_system_nr_ranges() and arch_crash_populate_cmem()
-  from machine_kexec_file.c to crash.c for crash hotplug reuse.
-
-Follows the approach of x86 commit ea53ad9cf73b ("x86/crash: add x86 crash
-hotplug support") and powerpc commit b741092d5976 ("powerpc/crash: add
-crash CPU hotplug support").
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Thomas Huth <thuth@redhat.com>
-[1]: https://lore.kernel.org/all/20240529133446.28446-1-Jonathan.Cameron@huawei.com/
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- arch/arm64/Kconfig                     |   3 +
- arch/arm64/include/asm/kexec.h         |  11 ++
- arch/arm64/kernel/Makefile             |   2 +-
- arch/arm64/kernel/crash.c              | 165 +++++++++++++++++++++++++
- arch/arm64/kernel/machine_kexec_file.c |  36 +-----
- 5 files changed, 184 insertions(+), 33 deletions(-)
- create mode 100644 arch/arm64/kernel/crash.c
-
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index b5a51b0ef944..96de2660b1cb 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1720,6 +1720,9 @@ config ARCH_DEFAULT_CRASH_DUMP
- config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
- 	def_bool CRASH_RESERVE
- 
-+config ARCH_SUPPORTS_CRASH_HOTPLUG
-+	def_bool y
-+
- config TRANS_TABLE
- 	def_bool y
- 	depends on HIBERNATION || KEXEC_CORE
-diff --git a/arch/arm64/include/asm/kexec.h b/arch/arm64/include/asm/kexec.h
-index 892e5bebda95..f165c094b32e 100644
---- a/arch/arm64/include/asm/kexec.h
-+++ b/arch/arm64/include/asm/kexec.h
-@@ -130,6 +130,17 @@ extern int load_other_segments(struct kimage *image,
- 		char *cmdline);
- #endif
- 
-+#ifdef CONFIG_CRASH_HOTPLUG
-+void arch_crash_handle_hotplug_event(struct kimage *image, void *arg);
-+#define arch_crash_handle_hotplug_event arch_crash_handle_hotplug_event
-+
-+int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags);
-+#define arch_crash_hotplug_support arch_crash_hotplug_support
-+
-+unsigned int arch_crash_get_elfcorehdr_size(void);
-+#define crash_get_elfcorehdr_size arch_crash_get_elfcorehdr_size
-+#endif
-+
- #endif /* __ASSEMBLER__ */
- 
- #endif
-diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-index d2690c3ec528..9bbac452994c 100644
---- a/arch/arm64/kernel/Makefile
-+++ b/arch/arm64/kernel/Makefile
-@@ -64,7 +64,7 @@ obj-$(CONFIG_KEXEC_CORE)		+= machine_kexec.o relocate_kernel.o	\
- obj-$(CONFIG_KEXEC_FILE)		+= machine_kexec_file.o kexec_image.o
- obj-$(CONFIG_ARM64_RELOC_TEST)		+= arm64-reloc-test.o
- arm64-reloc-test-y := reloc_test_core.o reloc_test_syms.o
--obj-$(CONFIG_CRASH_DUMP)		+= crash_dump.o
-+obj-$(CONFIG_CRASH_DUMP)		+= crash_dump.o crash.o
- obj-$(CONFIG_VMCORE_INFO)		+= vmcore_info.o
- obj-$(CONFIG_ARM_SDE_INTERFACE)		+= sdei.o
- obj-$(CONFIG_ARM64_PTR_AUTH)		+= pointer_auth.o
-diff --git a/arch/arm64/kernel/crash.c b/arch/arm64/kernel/crash.c
-new file mode 100644
-index 000000000000..d97e9cea2fc9
---- /dev/null
-+++ b/arch/arm64/kernel/crash.c
-@@ -0,0 +1,165 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Architecture specific functions for kexec based crash dumps.
-+ */
-+
-+#define pr_fmt(fmt)	"crash hp: " fmt
-+
-+#include <linux/cacheflush.h>
-+#include <linux/elf.h>
-+#include <linux/kexec.h>
-+#include <linux/memblock.h>
-+#include <linux/memory.h>
-+#include <linux/vmalloc.h>
-+
-+#include <asm/kexec.h>
-+
-+#if defined(CONFIG_KEXEC_FILE) || defined(CONFIG_CRASH_HOTPLUG)
-+unsigned int arch_get_system_nr_ranges(void)
-+{
-+	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* for exclusion of crashkernel region */
-+	phys_addr_t start, end;
-+	u64 i;
-+
-+	for_each_mem_range(i, &start, &end)
-+		nr_ranges++;
-+
-+	return nr_ranges;
-+}
-+
-+int arch_crash_populate_cmem(struct crash_mem *cmem)
-+{
-+	phys_addr_t start, end;
-+	u64 i;
-+
-+	for_each_mem_range(i, &start, &end) {
-+		cmem->ranges[cmem->nr_ranges].start = start;
-+		cmem->ranges[cmem->nr_ranges].end = end - 1;
-+		cmem->nr_ranges++;
-+	}
-+
-+	return 0;
-+}
-+#endif
-+
-+#ifdef CONFIG_CRASH_HOTPLUG
-+int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags)
-+{
-+#ifdef CONFIG_KEXEC_FILE
-+	if (image->file_mode)
-+		return 1;
-+#endif
-+	/*
-+	 * For kexec_load syscall, crash hotplug support requires
-+	 * KEXEC_CRASH_HOTPLUG_SUPPORT flag to be passed by userspace.
-+	 */
-+	return kexec_flags & KEXEC_CRASH_HOTPLUG_SUPPORT;
-+}
-+
-+unsigned int arch_crash_get_elfcorehdr_size(void)
-+{
-+	unsigned long phdr_cnt;
-+
-+	/* A program header for possible CPUs, vmcoreinfo and kernel_map */
-+	phdr_cnt = 2 + num_possible_cpus() + CONFIG_CRASH_MAX_MEMORY_RANGES;
-+
-+	return elf64_phdr_size(phdr_cnt);
-+}
-+
-+/**
-+ * update_crash_elfcorehdr() - Recreate the elfcorehdr and replace it with old
-+ *			       elfcorehdr in the kexec segment array.
-+ * @image: the active struct kimage
-+ * @mn: struct memory_notify data handler
-+ */
-+static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *mn)
-+{
-+	void *elfbuf = NULL, *old_elfcorehdr;
-+	unsigned long mem, memsz, elfsz = 0;
-+	struct crash_mem *cmem = NULL;
-+	u64 start, end;
-+	int ret;
-+
-+	ret = crash_get_memory_ranges_nolock(&cmem);
-+	if (ret) {
-+		pr_err("Failed to get crash memory ranges.\n");
-+		goto out;
-+	}
-+
-+	/*
-+	 * The hot unplugged memory is part of crash memory ranges,
-+	 * remove it here.
-+	 */
-+	if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
-+		start = PFN_PHYS(mn->start_pfn);
-+		end = start + PFN_PHYS(mn->nr_pages) - 1;
-+
-+		ret = crash_exclude_mem_range(cmem, start, end);
-+		if (ret) {
-+			pr_err("Failed to remove hot-unplugged memory from crash memory ranges.\n");
-+			goto out;
-+		}
-+	}
-+
-+	/*
-+	 * Create the new elfcorehdr reflecting the changes to CPU and/or
-+	 * memory resources.
-+	 */
-+	ret = crash_prepare_elf64_headers(cmem, true, &elfbuf, &elfsz);
-+	if (ret) {
-+		pr_err("Failed to create new elfcorehdr");
-+		goto out;
-+	}
-+
-+	/*
-+	 * Obtain address and size of the elfcorehdr segment, and
-+	 * check it against the new elfcorehdr buffer.
-+	 */
-+	mem = image->segment[image->elfcorehdr_index].mem;
-+	memsz = image->segment[image->elfcorehdr_index].memsz;
-+	if (elfsz > memsz) {
-+		pr_err("update elfcorehdr elfsz %lu > memsz %lu",
-+			elfsz, memsz);
-+		goto out;
-+	}
-+
-+	/* Copy new elfcorehdr over the old elfcorehdr at destination. */
-+	old_elfcorehdr = phys_to_virt(mem);
-+
-+	/*
-+	 * Temporarily invalidate the crash image while the
-+	 * elfcorehdr is updated.
-+	 */
-+	xchg(&kexec_crash_image, NULL);
-+	memcpy(old_elfcorehdr, elfbuf, elfsz);
-+	dcache_clean_inval_poc((unsigned long)old_elfcorehdr,
-+			       (unsigned long)(old_elfcorehdr + elfsz));
-+	xchg(&kexec_crash_image, image);
-+	pr_debug("updated elfcorehdr\n");
-+
-+out:
-+	kvfree(cmem);
-+	vfree(elfbuf);
-+}
-+
-+/**
-+ * arch_crash_handle_hotplug_event() - Handle hotplug elfcorehdr changes
-+ * @image: a pointer to kexec_crash_image
-+ * @arg: struct memory_notify handler for memory hotplug case and
-+ *       NULL for CPU hotplug case.
-+ *
-+ * Update the kdump image based on the type of hotplug event:
-+ * - CPU add and remove: No action is needed.
-+ * - Memory add/remove: Update the elfcorehdr to reflect the current memory layout.
-+ *
-+ * Prepare the new elfcorehdr and replace the existing elfcorehdr.
-+ */
-+void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
-+{
-+	if (image->hp_action == KEXEC_CRASH_HP_ADD_CPU ||
-+	    image->hp_action == KEXEC_CRASH_HP_REMOVE_CPU)
-+		return;
-+
-+	update_crash_elfcorehdr(image, (struct memory_notify *)arg);
-+}
-+#endif /* CONFIG_CRASH_HOTPLUG */
-diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
-index 3d907f8ee594..acba49b04ae1 100644
---- a/arch/arm64/kernel/machine_kexec_file.c
-+++ b/arch/arm64/kernel/machine_kexec_file.c
-@@ -14,7 +14,6 @@
- #include <linux/kernel.h>
- #include <linux/kexec.h>
- #include <linux/libfdt.h>
--#include <linux/memblock.h>
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/slab.h>
-@@ -39,34 +38,6 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
- 	return kexec_image_post_load_cleanup_default(image);
- }
- 
--#ifdef CONFIG_CRASH_DUMP
--unsigned int arch_get_system_nr_ranges(void)
--{
--	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* for exclusion of crashkernel region */
--	phys_addr_t start, end;
--	u64 i;
--
--	for_each_mem_range(i, &start, &end)
--		nr_ranges++;
--
--	return nr_ranges;
--}
--
--int arch_crash_populate_cmem(struct crash_mem *cmem)
--{
--	phys_addr_t start, end;
--	u64 i;
--
--	for_each_mem_range(i, &start, &end) {
--		cmem->ranges[cmem->nr_ranges].start = start;
--		cmem->ranges[cmem->nr_ranges].end = end - 1;
--		cmem->nr_ranges++;
--	}
--
--	return 0;
--}
--#endif
--
- /*
-  * Tries to add the initrd and DTB to the image. If it is not possible to find
-  * valid locations, this function will undo changes to the image and return non
-@@ -89,8 +60,9 @@ int load_other_segments(struct kimage *image,
- 	kbuf.buf_min = kernel_load_addr + kernel_size;
- 
- #ifdef CONFIG_CRASH_DUMP
-+	unsigned long nr_ranges = 0;
- 	if (image->type == KEXEC_TYPE_CRASH) {
--		ret = crash_prepare_headers(true, &kbuf.buffer, &kbuf.bufsz, NULL);
-+		ret = crash_prepare_headers(true, &kbuf.buffer, &kbuf.bufsz, &nr_ranges);
- 		if (ret) {
- 			pr_err("Preparing elf core header failed\n");
- 			goto out_err;
-@@ -100,10 +72,10 @@ int load_other_segments(struct kimage *image,
- 			vfree(image->elf_headers);
- 
- 		image->elf_headers = kbuf.buffer;
--		image->elf_headers_sz = kbuf.bufsz;
- 
- 		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
--		kbuf.memsz = kbuf.bufsz;
-+		kbuf.memsz = kbuf.bufsz + crash_extra_elfcorehdr_size(nr_ranges);
-+		image->elf_headers_sz = kbuf.memsz;
- 		kbuf.buf_align = SZ_64K; /* largest supported page size */
- 		kbuf.buf_max = ULONG_MAX;
- 		kbuf.top_down = true;
--- 
-2.34.1
+> ---
+>  mm/slub.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 0337e60db5ace..a3071f4ef1945 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -5263,7 +5263,12 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
+>  {
+>  	struct page *page;
+>  	void *ptr = NULL;
+> -	unsigned int order = get_order(size);
+> +	unsigned int order;
+> +
+> +	if (size > KMALLOC_MAX_SIZE)
+> +		return NULL;
+> +
+> +	order = get_order(size);
+>  
+>  	if (unlikely(flags & GFP_SLAB_BUG_MASK))
+>  		flags = kmalloc_fix_flags(flags);
+> 
+> ---
+> base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+> change-id: 20260817-limit_kmalloc_size-3a4a2c73beac
+> 
+> Best regards,
+> --  
+> Yan, Zi
+> 
 
 
