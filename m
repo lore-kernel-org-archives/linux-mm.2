@@ -4,128 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 968C9C61DC4
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 19:44:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11B0DC5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 19:57:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50D916B0088; Wed, 26 Aug 2026 15:44:46 -0400 (EDT)
+	id CC82C6B0088; Wed, 26 Aug 2026 15:57:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BED66B008A; Wed, 26 Aug 2026 15:44:46 -0400 (EDT)
+	id CA0386B008A; Wed, 26 Aug 2026 15:57:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ADEB6B008C; Wed, 26 Aug 2026 15:44:46 -0400 (EDT)
+	id BB7AA6B008C; Wed, 26 Aug 2026 15:57:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 145C06B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:44:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EE13C1C0F35
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 19:44:44 +0000 (UTC)
-X-FDA: 85144448088.19.B65C083
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3F81DC000E
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 19:44:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VgYV5cZh;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3KUKPagYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3KUKPagYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9016B6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 15:57:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14240160210
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 19:57:23 +0000 (UTC)
+X-FDA: 85144479966.22.BCE3BE6
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E0E6212000D
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 19:57:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Abj4LMHA;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787773483;
+	s=arc-20220608; t=1787774241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kAAUyb+BT/S16pFGAm4l7OAoO0iSt3CMmhZez+eRZtg=;
-	b=lihcJyZw91UId0ERb823S2U/NGBYCsNIkfQQYEs9/uICiq3kHPZZlp9GbSYL68Azr3+YbW
-	bFGWczZFZsDf7DT2CWQI/APKNXOl40keYQSdUw/DKwKaDlAgCRGJFuwgw7gH9XoAv1HJuJ
-	wC0Z/u8G/plTRvrZSut/jwwRAiaX/ao=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VgYV5cZh;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 3KUKPagYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3KUKPagYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com
+	bh=hTsdPkFymOOtxTga6YWdOuMEYYIp5A5+bSL54jG3QCQ=;
+	b=wYKUzwmura7q+EhSy2WQUdbmOISibTxc/ZkAoKum+EPKL2V8RjISjOlDokmVMVZF1ytQMz
+	g5d2m3wADny0GbTovmkU/WiCKBnRA/0Hqk6264XmcZdKc810IQoApCVGUAwEtzFtRRn6xw
+	ZjcXabh94PokGPbhYQFHLSLFJafpF50=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787773483;
-	b=QmufbOzHanhjvSNBbvQjxK2vvqNbntRMM752Phynn+qyflR4aFazPSBnrf3YxxB6QUml+W
-	pXFxpjOqTwJaIO7fAv2nlqfnLwQ/EvCiKT0L0uWNTVk7aKWNKWPP/nGhmyAAaa1fLzR5X+
-	Tv6nGnmDpWBkdtWLb0GVjoBKCCbIxzE=
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cbb20f82a0eso970207a12.0
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:44:43 -0700 (PDT)
+	t=1787774241;
+	b=R+TChOBlEBLlUJ+W7JSBDK18WDU37F+fAWURCr059D4WhFqhyKYBpY5PbDBbb2DROZVKqH
+	59VWWILY+ktrebLl51384bphL0p7OciyQD4M8Y7L+iUZa4QXTlLzh4o8Th/gv8zPAzg2FG
+	Bmi3IiFbtP9g3+cfB5rB+AhN4F4zlt8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Abj4LMHA;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49b0eab380eso964155e9.0
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:57:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787773482; x=1788378282; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kAAUyb+BT/S16pFGAm4l7OAoO0iSt3CMmhZez+eRZtg=;
-        b=VgYV5cZh39ekT8Clt1zImsPD6fm6k47hG4tEhfSOqzRqJjOanczmPmpUssx53/3VSi
-         himQ4MH7PtP22drA2zhHBulKLTO4ZpHV0D5oUdefCNT2PTSj0fI/GXFmKKx5XdPAwNRB
-         GwQCjcIQIUB8qItASZZfM/y1tg+XkR/rcKFz63v6NPV6d7m9FvFJsgCHVyjJ7RqhbL4i
-         q6K6pqbAxJ/p6Fnuy5OUsSUVM0WHq+OkJy9b8zwwitCHnOyM4Hh/9ZLkROvmA8oMZGQX
-         R4CXZCrxFloofGBiHHuuF2ZMNzbNw6ZYrEtBwe6JM5/5NPX0YRKNu3DcpwT+NnR7jlgk
-         dG3w==
+        d=suse.com; s=google; t=1787774239; x=1788379039; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hTsdPkFymOOtxTga6YWdOuMEYYIp5A5+bSL54jG3QCQ=;
+        b=Abj4LMHAO/6q5d8ZACKVPqyCQsR+kyB7nQJad0GxRMxxT6lrGtFfY4G/pXY35AttvZ
+         rEHwnOzE8TXrqSFNJ/md4Vl6w3MATGYZ0nshJSTgpShhoqN8EbGgWVhSHq3QGKhbAFL9
+         G6IhAx8jAfNLHiBlfXly3BKC8SToTlPKmjZco2MjeDVCckRjH5gyOQgmTgU17icdK1yy
+         /ff3gG4AZ8Vxm5GY6gEYyrvNt+W7V+TKMENteoU6Dv/h8tP8WYjfSf4Da9JUhv1BGSsG
+         Ha4JDOc+Off87yMbjlW20H3M1ZehUwHY6V2EyiTdniLM/N44oTdMg3ksIKzC1IjFxmT0
+         3KEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787773482; x=1788378282;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kAAUyb+BT/S16pFGAm4l7OAoO0iSt3CMmhZez+eRZtg=;
-        b=VheGM1JjOIAVqtOw1EWOY1WwjQ5CxK5FJSXG+fn5DnSRrqticj/Z4OYij4EMYkN2CQ
-         +stVVn4b/ndcgIZeM5c+2s5nHlG8m83W8K3QJsWtP2yrSh3qqcrJXP7wzkZa5MfRSE7d
-         gXm92+RsXM/OJt5bk7uFAtlDCJnfW8qwDM7ddb7gI553dVPGUSyeNGI2ljhGxyiMAt4L
-         TOX1VcMjxis3IYpZUISRX0GNwIhQShvem9zPWUAlas00EMRTeYFM92FKKwDSW5tyDt3l
-         lXenklQ12MufQMwkOwcHIj4BsCkg+hdGvgX5J0WeqzrwHL6ybdfxE7vSFHkIM85BkNvK
-         mg6w==
-X-Forwarded-Encrypted: i=1; AHgh+RpvO2NQ+S5t6rjtYH2xkPZHKlcDO6eM/g+xxUnAiMD8Q7ginbgz8tQpAowrkyUw8+NN+y7motsT/w==@kvack.org
-X-Gm-Message-State: AFuF++lcnG0qcgbPeUbbiKn6UvAD46YvSLceaG+MqSnL1YVBE9tU+4/Q
-	g0T8uYJOVn36QUQAPycCLWNlS1Ls+l/3//WJsQt3C+LNcsIjJ8boHWQaDQzeNydDvNx166Y9XvT
-	pXFTG0Q==
-X-Received: from pgak6.prod.google.com ([2002:a05:6a02:6746:b0:cbe:9e80:c394])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3216:b0:3c0:b943:f984
- with SMTP id adf61e73a8af0-3cf76286193mr19120390637.3.1787773481481; Wed, 26
- Aug 2026 12:44:41 -0700 (PDT)
-Date: Wed, 26 Aug 2026 12:44:40 -0700
-In-Reply-To: <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
-Mime-Version: 1.0
-References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com> <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
-Message-ID: <ao9CKMXAX-hScRSa@google.com>
-Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
- callback for to-shared conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3F81DC000E
-X-Stat-Signature: z9kcep476aeg8m7rz6imp8h9tyjnid6n
+        d=1e100.net; s=20251104; t=1787774239; x=1788379039;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hTsdPkFymOOtxTga6YWdOuMEYYIp5A5+bSL54jG3QCQ=;
+        b=Z38oiA7IKgYiTB7ww4BuoLXIGtUqfMnK79ZzAtY4uNez/qr9esqOks5UV6vQrPy+Yk
+         zGYFR9xiCzgIkzCI89kgYHon5FGh9xc3E8s6Vud7krB50b6rdO1bQVdp4oywiHW/3uw/
+         c7FX6j71OEXVBNKu0dlxyzoSEGK/Afycbr4LDDKgSTzx4ovjMt7feXh8EGo0nLKtHivc
+         ybActI807R/++vDWirqn/8R7L8NjWQWAO1QXNp3ytStiKC67XVVYJVPbr7IAm3ASBemK
+         f06YHuKVPyhcSCMxDDba6ohTqkBJ0PMg36clMDLTLzVcghdCAAXCZpt9rEbifUxDd4F4
+         Dr2g==
+X-Forwarded-Encrypted: i=1; AHgh+Rrz4rozMl60iUhHZiRx2y32ZAY5rkhRZzl4jEAahaui6EX6rW3fgUWDSvK42zZyMQnNy1TlA1+wzg==@kvack.org
+X-Gm-Message-State: AFuF++mmME3S/3lB+9SQlt08cWR+hYlnyLBX5u1IKIhK1fmCar43fdys
+	N8t+GE7bZ2/mVAwgWTuKRojKKft9vD78Z2s31/bQ8tML7CW8NfPg7a0LzZR9NoMvd04=
+X-Gm-Gg: AR+sD12nhcb3bPXEkWl++N0P7cIhjfQ1v4pHRW+0W/UlM1FeLuPO3g/TT8EV7l1b6pq
+	MUQLiuMZkNhzwD3fr/yIlaLH8o55dUzpGhMEBu1DSUuhnIGyrDe9WJ9WyYZSR8dekQ+C2uF++1Q
+	wVnUQxciC+HCpvCbo+UQWnK1FqXX+HSu0wW9tZKpv7s6cd8JTMIEVO9gP6C6XqQ5BNutGOLvf7Y
+	4UmpuxHmKjQkLJJrLVY0obzzb9d1pzvX4CaJd/YgsgKneZYXh3Re/8inqWaTnncn8WXNFA8d+Ig
+	D1KmyAE2d5TyxiEbQ86pUNMDEcfcPXxpsgZX3RM+ixjmZjXRcbI3XAhq9Sm6d6ZShXAZdvUiGnm
+	ah1xadRc2wWaw2qY0EDxOdp3gsl39mNH8Zk+eFkttbazwM8hDLf0Zc0WFpr40SThQYEAvr0qdVb
+	fuUdMgmNV9Br4TQlx2kTOjjNWdzjtvzZjHSnmMkveQ/hQ5goRsNlvzO+Ce55zE7mddpC0qIRs=
+X-Received: by 2002:a05:600c:800f:b0:499:59fd:dbfc with SMTP id 5b1f17b1804b1-49b0dea9491mr13362775e9.1.1787774239286;
+        Wed, 26 Aug 2026 12:57:19 -0700 (PDT)
+Received: from localhost (109-81-80-32.rct.o2.cz. [109.81.80.32])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dcad9e38sm38430745e9.14.2026.08.26.12.57.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 12:57:18 -0700 (PDT)
+Date: Wed, 26 Aug 2026 21:57:17 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Tao Cui <cui.tao@linux.dev>
+Cc: tj@kernel.org, akpm@linux-foundation.org, shakeel.butt@linux.dev,
+	mkoutny@suse.com, hannes@cmpxchg.org, roman.gushchin@linux.dev,
+	muchun.song@linux.dev, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH v2] docs: cgroup: document empty-write behavior of memory
+ limit knobs
+Message-ID: <ao9FHZEaSbNMlU4b@tiehlicka>
+References: <20260826021753.197871-1-cui.tao@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826021753.197871-1-cui.tao@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1787773483-627350
-X-HE-Meta: U2FsdGVkX1+sahWfwlmt0EqBQepyvx6FOjkbLSHsu3jw8dtMrmg1BZ8rfp10gZ66p2JLa0NWoClQCjas6LpoEi342ZHRR+72Wzu+Ls77xeaPowxovuhF3/510FVhVar26CZ3o8MZwR/gQOELuUG/qrwbBJwCAPJBZOkR/CcFu1gDwaUjSxPHKBUD8N69PMLYnIpObBzMB1OQE0zGrd8MPVr44J22kbisSVTjMz+kH6ItH9a1kSrfKx81A81C+LllhU+bgR5IuPFrXLjnTCixELUJxA57gEv1ob0j+IXDoc7W+NG8H1g+9POjbbFxsqWGCylL2Hg6ZQbxP7jworM1SBfP0jbx1wYZmRjOSbZxu7FSLL5VgENvCN4DNd2sgK1mYuWf/nslE0NckfjmL2M9J8RCow/36KbjKgEkq5byIN+RFpW/Fr5o6m2MRZAUlM+It1tnfRbaXFFK4b9/2UK3OYwxIik+e2L6h7lL4+mPav/pPMxGvRvASMj+6Rtyx/DguZ2WOjfGatv3QijUiXhVM4TlIeVqjmezr3xzzwJfAS5WeB1YKItEHibA6lo8W3i4sMSgCIu3Kqsfy5gAxRlokUyeMy20CBSKQIsM/Du/UF2diYd9xmEnAFEEnRPCYdxI9aABzHVWCkFg2OXoIDAEAoVBCSogE8p0w9Sq3gH+cLmp0E+Ix3nN5HaYiQUBuiQlp4rECTGS1lMUENl8lttsKW4hqlouYUfug/qvzuSW+1JR8ASz0G+7ncKGVL3BVPV+3TroGeU8aCSNgFkGDVPbgVJnHEqaIeFJmajBci9U1ahi601hpchHR+N5tvddi3eA9Mr4iIV7Ww2rSPqTu3H/BklQJvmUSdh0eiUmsf0CYb1rtQwNaZx5ozKXy8Ss+Xlu/rMjsE8Bfs+cgQ5c7z1lnE2m1LFHoStE157oFRe0z4D579bDm50fG0mdLez5op1fe///7qX3bCi7fsnSRDd
- x9xwhim3
- 7OTOKdjmN0CQubJFarNzjGdEk3NJ+XZtIXm5lSgKbpeg161xYavFLoqWIqtiXSWuUEgGmgrQ8oXYvNrkNOoJp9dqi4P2pHOG6qlACcpCK2lXviyqOmqM+4DN4QOutMnWJj/9S3SbU7QeyEtcueHrISnjTGTDoEwoZjnwrqoaqBVTR8GmlurR6jXYxjbucx+N0hIHMZkpfW8SEiR6MBJqLVK22p5+Uu8FOBLXJnPs6p4mPKHz3vmap9T+RXX1IxXKjnxsPKdRzvbB6QS91buikjNawpT6aFEjYxLHmw/ZXHzgxK4gEuC7LJ1XJvhFH8kplrzKtRXVqDuJ3gCcOVcvQZ2qUo4HXhYh3my5bCtLvIHLS4VkfS0pnVQ76dkyfPfuvnoJaEIhhSM7WyOJEoUIkIJHPZwIL2qQAJjX72TDYAcovpLMTxrJMEfCaPq9GeySAXG/FNpKHWvKimlg89wA7LYmxJ1/cfK93zFGI+TADxPiNRrTm8gvgG+Zr+Dd+g2INGaudLI7OpWENu3RQV2Cu8u5omwA6L6a2S3o+ITJvXSilpZZec28teJBwkx7OCHepikFfa5h4jzJszZy6ELyqUmBC8VL5mWau9AjQGQQ30033qah1ZjmpE9dgAc/p28S9Dd5IUq0GVvsXAcPdFvmPYpWnu6EHbLI61IcuWV/oCmHO8JY=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E0E6212000D
+X-Stat-Signature: u9s1m61b3dgjno1hxsp7sxcg4z1gzkqz
+X-HE-Tag: 1787774240-724373
+X-HE-Meta: U2FsdGVkX1+IsoRCpbfFQ1g9mJvCusCPEsGWxacIxBdkKYg2KnUR+IAvUvBq9mICzLFMwJW+rDA29dMt/b0/+CZF1mZOuNPyZjMpt9iy1FWkCO7rv3f1nLEe8D4w0rzekxTlrNHuJpsjeAdni3aS4SflHFxjBqBIlGasbtBE4aXkasRaTo5/Y+CkOpn9RSf+Gy6+7C8CRC7YyNLIWtZLTQMBzLHneLqpuoCk0qS+WBOTvO54D45SzOgLoYrr61S+rWqMSnOClm8L/4eRY1s9MOOCkPvrAFJtHLy++yc7bRzWzEeX0drASQPPzfmq4P+OkvJkfDyugguZHee3DIRtmlHQ8aX36zkLl+L4a0RWBP1xB7FZJyRiGcEwG7ww2JHkuE5Hwi/aLF4y3Wqygcl7rkpHaDLJWMaRTwYyPmHUSNa+fYaA0c2Nvj0OYRDBCa8BEhFQE3Hq7Rt0Er0wu4wdaLl6XBhW0mkLpLe6tdIK8kPyKy5mEvzh9g9ff6NQE1fqTdPAAqgKuaW4Ff55pIIECu8RDYksDqvooQB5nBWb7SIG2mrfhsS2Iv91bdyRBJQG5OBxP68mSsGGuZQzqB7vWFi0X3poORzd/YAKRISW0ffZNqGuQcnIi6guv3BqCx3/tFeo+Rqn895jP/hxWz1QUXa7ls8Ufh3qYeMtcPIAMu8Foe7uwfuQAJdRXLp/ceympSNdmN6W8CU3ZdtBeEh4O/0/AI5GX0oi+rE+kRzTc90Kjx7H69kj4ksdTVNxnbqy9jlR96WGU3qjL8SWZJOmUPy0kHCqJu7JSGNWAAyXIET7t+9Eugr8cYDrqfUqdLo+2J8CuzltjsXg60DSvWTIbLZBeIuJhvxJtpMAUsEL5k3sDuitVgvfHUt5bfMX1kAZ+7Yi7P30mtcqfVh7eqJehzI/gBzTAOQ6DVdCwcjBBx20BAr96EOn9sPHg5Xx4liG3qq0mJFJDObEZCfYs5L
+ SK6C24DW
+ +y1UOFOXPoetFptbuLD87MJaf7LUts+iIR/uWy8Ox18rLZPl5LT6+vADlqgf6LaLfAxgkvxoGazZnTCVd89JzK+5eZFvPUMBacAE+lB6qh6Uv4bxubADK3MWQZHre9TxfnvdA1EAbGn5NMxZ+B5yPOSy8VKQTLNkx5V28B3pm1+8RHKWT1k4ykaHjWYGFSPYkRo4LuA14wzrDS+dOTxAwJP8HPKWedOzqPKwbIGtd0eu0vN4N1sjoVuJnyg7RWk5lS2yUmWt3KjKwIdgkRj0jhh+ZZxghNUGBV7P6Xi4lJr48zpJrx6fOurzRtMrSHeCigd3Z64b21yMgRcqTvj+/3PTiXjH99yPSg1UdkrIc7E3if0Bj8mBaHgrRefITVtDH4mZRk3yn5b2D/htbvUdrak4vTm466AGAsVfLZ4+x7VDGYVU0cswPk2wF0XIYhmos5z3d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,131 +121,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026, Ackerley Tng wrote:
-> Omit support for calling the arch hook to make private, since SNP, the only
-> implementer of the arch make-private hook today, would actually prefer
-> making private only just before faulting memory into the NPTs.
+On Wed 26-08-26 10:17:53, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
 > 
-> Calling the make-private arch hook would require iterating both bindings
-> and the filemap to find the intersection of bindings and allocated
-> folios.
+> A maintenance script on a cluster wrote an unset variable into
+> memory.max of a workload cgroup; the variable expanded to an empty
+> string, the write succeeded, and the workload in the cgroup was
+> OOM-killed.  Nothing pointed back at the write, so it took quite
+> some time to trace the OOM kills to that script.
+> 
+> The memory controller documentation does not say what an empty
+> write does; the cpuset controller documents its empty-value
+> semantics.  The actual behavior is that the empty string is
+> accepted as 0.  Reproduced on a k8s cluster (v1.29, cgroup v2,
+> two-container pod, 384M limit):
+> 
+>   # LIMIT=
+>   # echo "$LIMIT" > $CG/memory.max
+>   # echo $?
+>   0
+> 
+>   m6demo   0/2     OOMKilled   0
+> 
+>   Memory cgroup out of memory: Killed process 339529 (sleep) ... anon-rss:32kB
+> 
+> State it where the interface files are introduced, alongside the
+> existing notes on units and page rounding.
+> 
+> Link: https://lore.kernel.org/all/aoVUlFdZYLFn_gvJ@tiehlicka/
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 
-Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
-whether or not the RMP is currently reachable is irrelevant, no?
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 
-Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
-superfluous, but that's already possible, e.g. if an NPT mappings is removed for
-whatever reason.
-
-> On top of that, SNP would need to figure out whether to actually
-> make private based on whether the memory is about to be faulted, or
-> whether it is a conversion.
-
-This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
-if the page is already assigned in the RMP.
-
-I don't care terribly about how SNP handles this, but I do want accurate reasoning
-and justification so that if/when we revisit any of this in the future, we can make
-informed decisions.  Because unless I'm missing something, this is an optimization
-choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
-not clear to me how we decided the lazy approach would provide better performance.
-
-> Calling the make-shared arch hook and not the make-private arch hook does
-> leak SNP-specific details into guest_memfd (as in, why only make-shared
-> during conversions but not make-private?), but the additional complexity is
-> not worth taking on until guest_memfd has a user actually requiring an arch
-> make-private call.
-
-...
-
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
-> +{
-> +	struct folio_batch fbatch;
-> +	pgoff_t next = start;
-> +	int i;
-> +
-> +	folio_batch_init(&fbatch);
-> +	while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-> +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> +			struct folio *folio = fbatch.folios[i];
-> +			pgoff_t start_index, end_index;
-> +			kvm_pfn_t start_pfn;
-> +			kvm_pfn_t nr_pages;
-> +
-> +			start_index = max(start, folio->index);
-> +			end_index = min(end, folio_next_index(folio));
-> +			/*
-> +			 * end_index is either in folio or points to
-> +			 * the first page of the next folio. Hence,
-> +			 * all pages in range [start_index, end_index)
-> +			 * are contiguous.
-> +			 */
-> +			start_pfn = folio_file_pfn(folio, start_index);
-> +			nr_pages = end_index - start_index;
-> +
-> +			kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-> +		}
-> +
-> +		folio_batch_release(&fbatch);
-> +		cond_resched();
-> +	}
-> +}
-> +#else
-> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
-> +#endif
-> +
->  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->  				     size_t nr_pages, uint64_t attrs,
->  				     pgoff_t *err_index)
-> @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> 
+> ---
+> 
+> Changes since v1: document the empty-write behavior instead of
+> rejecting it, the outcome of the review discussion at the Link:
+> below.
+> 
+> ---
+>  Documentation/admin-guide/cgroup-v2.rst | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+> index 86a2a0099178..8d2603751c51 100644
+> --- a/Documentation/admin-guide/cgroup-v2.rst
+> +++ b/Documentation/admin-guide/cgroup-v2.rst
+> @@ -1321,6 +1321,10 @@ All memory amounts are in bytes.  If a value which is not aligned to
+>  PAGE_SIZE is written, the value may be rounded up to the closest
+>  PAGE_SIZE multiple when read back.
 >  
->  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
->  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> +For the limit files described below, an empty or all-whitespace
+> +write is accepted and sets the limit to 0.  To disable a limit,
+> +write "max"; to set it to zero explicitly, write "0".
 > +
-> +	if (!to_private && kvm_arch_has_gmem_convert())
-> +		kvm_gmem_make_shared(inode, start, end);
-> +
->  	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> +
->  	kvm_gmem_invalidate_end(inode, start, end);
+>    memory.current
+>  	A read-only single value file which exists on non-root
+>  	cgroups.
+> -- 
+> 2.43.0
 
-The real reason I responded...
-
-Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
-strictly necessary in this path.  The PFN isn't changing, just the attributes, and
-that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
-fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
-AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
-continue to access the shared data (assuming we stick with lazy conversions), but
-that should be fine?  E.g. it's not really any different than implicit conversions.
-
-In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
-I can think of is that it could delay reconstituion of a hugepage, especially if
-we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
-hugepage promotion).
-
-diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
-index 62f751952ad8..61f3e270ab61 100644
---- arch/x86/kvm/mmu/mmu.c
-+++ arch/x86/kvm/mmu/mmu.c
-@@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
- 
- bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
- {
-+       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
-        bool flush = false;
- 
-        /*
-@@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
-        lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
-                            lockdep_is_held(&kvm->slots_lock));
- 
-+       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
-+           ((range->attr_filter & shared_private) != shared_private))
-+               return false;
-+
-        if (kvm_memslots_have_rmaps(kvm))
-                flush = __kvm_rmap_zap_gfn_range(kvm, range->slot,
-                                                 range->start, range->end,
+-- 
+Michal Hocko
+SUSE Labs
 
