@@ -4,173 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9BF5C61DBE
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 21:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B8E4C5DF97
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 21:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00D5D6B0088; Wed, 26 Aug 2026 17:53:05 -0400 (EDT)
+	id 4F46E6B0092; Wed, 26 Aug 2026 17:56:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F26CA6B008A; Wed, 26 Aug 2026 17:53:04 -0400 (EDT)
+	id 4A5466B0095; Wed, 26 Aug 2026 17:56:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3CB26B008C; Wed, 26 Aug 2026 17:53:04 -0400 (EDT)
+	id 394E56B0096; Wed, 26 Aug 2026 17:56:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B9A366B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:53:04 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A9D616022C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:53:04 +0000 (UTC)
-X-FDA: 85144771488.19.95ABA59
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011046.outbound.protection.outlook.com [40.93.194.46])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 537A3180008
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:53:01 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=K9R8BdaV;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787781181;
-	b=IERVHWpOnHTorrVyvTp+MMgy12gCvNkXCcSf+EsAzMF8hUxIOOJU7FVh0MLh3umo0wdtST
-	rzCIP0LK/7Li9tHs2V2T7YwGHRoelc3CED8B+R8c1Ju5CraF+8j+QTmD0mi3hKvYu8mXM/
-	/c+G5r7vgUyh5RXWYnaAZr4tdD2XE9Q=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=K9R8BdaV;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787781181;
+	by kanga.kvack.org (Postfix) with ESMTP id 114C16B0092
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:56:15 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FC321C132C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:56:14 +0000 (UTC)
+X-FDA: 85144779468.12.A1D1052
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2C1B640003
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:56:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nh5AToR+;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787781372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4dL9TGz9RNXdnSlrzLw++iAOljeErhQDaXkFmcoUCkI=;
-	b=enYf3y/NAg/noHSqAr0o5YKB5CskIRkLC3EkwQTJ5IHyU9KYpxhkU31j9wo++OmmWwALMC
-	i/w3BsyY8mRWLimmjXBeCfuV//0XuPciFfIhbKBxgQHRKqW2FOpKTV+DU6xAhYtoa+PR5M
-	zixWOQuep8jbFDQ9ZAkG4UeAJDSilZE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PZn3K3yDUX6icViZfrQZtGsjBBQgfedp66FIe4xyQpDZ8sMacUhCCvfFq6fcgcwqyHTOmOHuCYEbAwqdK27eZoAxQuf2kuioGHTVGsarDUw8QVGY4IAf+pD3lfxd39UwWgitE+nFjrwLgRSE9nITWeE9Zy7OOV6IzHuGdUZaaV8V3THs+STo+qGkJDpVA71SuADz36Rw83pkHLLZQ9C6fRxZD8S8nlAF/fl/uwuYh2BWKmcnUKyLSl08qaTrrh19YyOPx9kT/VUAhLOMnJb84kKNMtQZ0z0KyfrzhLxryNRxXnj3LMBKMGM16/6YblWhzL1w9+1tI1yVsrH2KHcRxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4dL9TGz9RNXdnSlrzLw++iAOljeErhQDaXkFmcoUCkI=;
- b=NwHYrO70FkvV4D0NsOzwhjGHJmF+tBNnagYEs6Eo4wnbafSykSwNvFH4nBkPHWCfsplsxcjxiuUdaw/zMv6tjJrqeG5WHqt8qfuhNr889TRp+6Kl2z2scyEw62ODkFRQ9CVW1LuUFpFzzvB0GfjLxZhU5f/IXIzKfYjLzMBOft6VUXceSOLP10Bj/xfznDq0BqLexqnuOvupr84uozV8dOjeTqYpsK7VrZa7REvVWSDyYeWis+475KsYB5VY1z8eEtAUCmdQ6A0xX+iPFuK8rSwq7B/PBkNiZLz15xxU5ucLjBiDQPdhmzX0POauy6lghzCKXyXImYAH8NUE0NEIDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4dL9TGz9RNXdnSlrzLw++iAOljeErhQDaXkFmcoUCkI=;
- b=K9R8BdaVE3EIpxzjgJ3iE/T2EdLqPfNnOCGgglFsNUC+IyPQpEV3+kAJLUDuPlbkVOsmlYRbVYoXo2jlEJP9VjFokiC9kfx50MASlu2GfBwg1dcI4MdolBDLgo0jX2Uautn/ezt5znqCTs2jTcciwLBF3hwGIxWf2ESwIGsv98sM24ZphPHfMVXUFWJ1p1ZDant9Y/ZR8DvARmgfYyYVE5czLIIBLlBMYxWbjoXG5fymPxkrmjhleXK/yMKdVOhqtfMaXesKkp0Eb8dorQV/YqcigA5K+dvTCjLCzGw3ACfsjQlRmIEhCvQPA1WcUnr+r+QtBY5fORf3rKAGNalp3A==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS7PR12MB5911.namprd12.prod.outlook.com (2603:10b6:8:7c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 26 Aug
- 2026 21:52:55 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
- 21:52:55 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 26 Aug 2026 17:52:54 -0400
-Message-Id: <DKZ7J9HNUDR6.BP9KG5Q7HYMJ@nvidia.com>
-Subject: Re: [PATCH] mm/slab: reject unsupported kmalloc sizes
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Hao Li"
- <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David Rientjes"
- <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Alan
- Stern" <stern@rowland.harvard.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <syzbot+805630f1453e490427fa@syzkaller.appspotmail.com>,
- <stable@vger.kernel.org>
-To: "Harry Yoo" <harry@kernel.org>, "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.22.0
-References: <20260817-limit_kmalloc_size-v1-1-5bef487701cc@nvidia.com>
- <82f138f5-11d4-4839-94a3-c226fd982715@kernel.org>
- <ao9dPUpHxP5uOOcw@MacBook-Air.tail10959e.ts.net>
-In-Reply-To: <ao9dPUpHxP5uOOcw@MacBook-Air.tail10959e.ts.net>
-X-ClientProxiedBy: MN0PR05CA0021.namprd05.prod.outlook.com
- (2603:10b6:208:52c::16) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=KAkYXAYnfeM7EWZPb0UU2vxX96nlclIp0nAmWXUJyIA=;
+	b=zS6BetAs4mR1YD5tm864NZQ08tmDMfU5z1uj+rNXamdlAphSYUdsaJ6xruvME4Sytu5Xg9
+	GgwVW3/kW1lKV3Ik5xQSnE56K3swfCHRtgonSdJ61XCV+02cc3TyjOH9yhxjxKA+U+ZDmR
+	rtjA8GJNgdh6zU/SXQYS7gnLC0TFHCE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787781372;
+	b=apGPiQLErSi0cr0dA7S6s/jZvlZ6CQZUydkQ45gs1Mq0JHVx1yHUlAkdzI5VOF6YbylHkc
+	APv1/vwLaYF6znb52VyEbjLaJrUPrIi+EZ+4mB/5pulJqfpyFiKb+9kGEIJgjkV4Zs9KXm
+	gcyZq+UDnUTD2yEauxKou9MR6Z5ecR8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nh5AToR+;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F16E40A22
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:56:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244301F00AC4
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:56:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787781371;
+	bh=KAkYXAYnfeM7EWZPb0UU2vxX96nlclIp0nAmWXUJyIA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=nh5AToR+8+Hy4JwDQLkAQn8JX3nCyjf2TXZmf8hTWyRrvNiP4emkuq3ejwqhcSTdH
+	 DszsCD25k42ll/3FlOorkTiVJttraFnX9zOHO+jGxgbohoypS7CAw0DGKXWUdFlmpO
+	 80St1R6mG3vurizq/YaEuZnl218kTVqVfw1pPKxKb8oyrCWoojUxFT7hv6Xjbj8jAN
+	 QkWLZzjvn0oJSDjBkjHHTIiamGHHdcJLDb5Qj51AdhxG+8oYNbtnuTErj17fBUehNM
+	 lBXRlggcv/NNz7Xozb9hddNlKABSZqyDedCnu7O4A6hFVcd93XOnx/u+sqlrQkj5M6
+	 88/QGrEhrsi+g==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c1670dad7a8so250734966b.3
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 14:56:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqcMFFxyQvI+UroyAkA/ah2cGABzFSDizyKWTN2YhjC4XW8aMW3SkmvaOntdG/vZlLJopwmuaH01Q==@kvack.org
+X-Gm-Message-State: AFuF++mQvP7xTc1uvKrwT/SSzMlM9zKNJrPHjp8HSqD3gLHvyc8E8KLw
+	K/9ASLn8vhbAZ+gP9O6fyJR/SXQwRt3epm5xItrsdEoeRwdb4HncuFVhJpiFoATPZduSqGVgyHH
+	8s/igwBhpDiUa2zZspoqDDv1JkL0qLwI=
+X-Received: by 2002:a17:906:fd88:b0:c25:437:3dcf with SMTP id
+ a640c23a62f3a-c250c3c07fcmr1219596066b.21.1787781370065; Wed, 26 Aug 2026
+ 14:56:10 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS7PR12MB5911:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc1c2555-c5cf-41f1-dcda-08df03bc628c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|6133799003|10067099003|11063799006|4143699003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	5EqWLt4tLfvopH9+qJ9R7GLRBEm78NfDyGThcH0E5ZhiJA/mD2tvTJTrIBrVIl5w1R+QUBlCYhpa5StnC5POtzbp2QwS6NzzRc33jrc/Qg+/uP0fJW9zd3gRMpkjdW2KyKEQfaPTGtaxl1ONhxv3eglr/YPZom7zwLJ3OqoYoO4Eu2GPZEZD9PGQt6/hrn+H2Kg1jqttG6Ek82PfS2GBioEm68lY2CUnjq7hP+5+actzExXzQaBn4SxHNGZvrvB6kEPazzPHj/wZOP5o57QzNVemdfvvUW7Y3giibvsbjNzJi/T6ZdpahvTKtSLVTCp5OzqtOboU/UB+plgZyGFYfyHlIaF/L1vD0QkFOxa8C8F4sDJUbCpW/6Pw6Ikoa9f3phGUgpQqC3RN8UScfWhuTm+V5tfNQRIxkWN/TgsnEivdzU+sxM8zLNvcxannSe3x+c4/e8ClM32GQIXGUWRDInG0uALABunZtUbEQ6Qy03SjDqRXqglEl8Kacksvs1j6z2zoM5WIOA0IYyrm3NbjlwDZ5fJ595UpjIyJD0o4sgNuCjDt4llGgFtRQprXzipD31kDtVxLRwCeDYyjFL7FZQT4lyJtOb09oSjhTc+Wcyp0XI8lZXMY1BaDBC6WhF6tQaAVD8wW/43CmrWGn0+Fe6KnkG/zXG4gE+tV+k1UbeA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(6133799003)(10067099003)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dHMxM0UzQnNYRW9EVE5mSmdTd0FVY2YrWVdTZFBhbWFPQUYrUWtMS1dEOFg0?=
- =?utf-8?B?MnNGa0toOGJQRzBHZ2VZZGt5UFFMUUphUGc5eXlCNlJORGdseUphK1pwL3ha?=
- =?utf-8?B?dXh1MTZnZWpxUFoyTDkwRWZmUUpScmRsdVV4am03TXhIM3VXM1ZEck9tQlla?=
- =?utf-8?B?bzlRcUhZbXduSUwyZzlEaEJraFlWdklRelhnRmN4OUI5VjlBQXZzOFljTkZL?=
- =?utf-8?B?Nkh3emhRSWx3MXRFUG40M2Z3cm1uaVBYTGd1QWtYVTZtakxxdUwwOUhPZEF6?=
- =?utf-8?B?TWQwd0VJR1B5Z25TSFZmR3R4VHBZY3lWRjR2YlltZXFYTWFXRmFyVFQ0YXpj?=
- =?utf-8?B?czZDOE16QVlzUUNqdlNXQkpEUlQ4VXRlUk8vcExpL3dwVjU4b0pkSE9Gb3kx?=
- =?utf-8?B?ZUJKZmVValdlRHY1ZHNTS0IvaitwdkVHc0g1c3BOK2RzNEdBN3J4eEdKUld3?=
- =?utf-8?B?bVQ0WXVDZWJUNUZOeVBveWJLTDFnbVVEdlR2Uy9qK2dsdWNpTzRraUxTaDA2?=
- =?utf-8?B?ZTVLSlNGOUllYk1PSXI4NHR3enFWaitFaVdUV2lIOEhteFl6VmI5bVVpNFpI?=
- =?utf-8?B?MFJ5UUw2Q2Vaa3c5TnJIaktsMWN2VVdhVFZNV1RpKzZycHV3cmFBckNlNmRa?=
- =?utf-8?B?b3dKM1p1VmlWTDhWdE5IaHorcFlOUU1Cd0VwZTdxaCsrdHBWbjVIK041UHdL?=
- =?utf-8?B?MVRVanJKdjVuTnVlaHQ5cTBWZlV2TWpIbVZJUkYxdWV2VmtXaGUwdTdGSE1l?=
- =?utf-8?B?MVYxVTRaV1p2TjYxZmg0b0dzM2pNdldIb1o4WTJWTFBQZmhsMTVNWkZhWnZ6?=
- =?utf-8?B?WDlqdVBrWThXb1c3UmI0NFNsVmwyM09JVkNVOHBhNnR2dDR6T1g1d2FHbDhX?=
- =?utf-8?B?eDhXdll5bEhaQkZ6R3E4clJERWlkSkhUVHpvQUdUeklWYzQxZy9PS1lucnRW?=
- =?utf-8?B?OVVhb3Q3M3hZWEFpcWROb2tDQlIrek9QT1lPaHh0OEo3NjlNa3ZFb2pzakU0?=
- =?utf-8?B?dUdvUy9RcytPWHNTRjF1a2VvSVFOenlRMGlrNGpadk9kVURGS3dNSDFjUStW?=
- =?utf-8?B?dDdwSnhrNThjbE1jMWRONm5KcDJQZlhqdVZSUDFlRGhpb3c4YURuUng2OWZG?=
- =?utf-8?B?VWxjYWtNMWdlblJWR1V0bXZ5enJXdDlqcVNOZ0VxeC9TWWdUYjRwUHp2d000?=
- =?utf-8?B?ZFRtMUE1ODJ6cjIzRXdFZzA2M1ZFYUI0R1dtNFZuSzNkWTVmQzduZlVsalJl?=
- =?utf-8?B?b2N3Ym1lM08vMTh2citRTng4aGovaHljVFRnY3BHWklHRE0vM0F1VC93b2NL?=
- =?utf-8?B?cDArRlA3M1dMWWVSb1VuMlhIZVFtSWlaYndKaUhrdjQzamFuYzU0MVEzYWlG?=
- =?utf-8?B?Z3gyOHgwZlNCaGNCbXM0aXdnTytFeW5MS0hXVndvcWJpVDNEelB2N2RsaVNh?=
- =?utf-8?B?WDBQVlhkUWp6MzBvNmRsZUg2WVZzNjErc0lySnVDZ01qQjErTWZzVFFpZUR5?=
- =?utf-8?B?aElxaE9xeE1VK3Q5dDUzYTVJTTNsYnM1Q2Z5ZmlVREdUaGZUWlB5aVBkODdv?=
- =?utf-8?B?azMzOGttUjRZOVFnK2l2dDhUNVhBWVluY1haMmxPQ2dRRVRZcithZG5tVjV5?=
- =?utf-8?B?amtydngxQnpXbS9zbnBVdGhZeWhMNmJMVFphWGJueWcxQzNQUi93WkN0Q1ht?=
- =?utf-8?B?VUloQVg2Q3ZSUzVpKzIzTjBxYTcwaVV5Z2pvZUpjLzhNOVp4bmNZZ2ptM3E4?=
- =?utf-8?B?NFNJS3puMzFxd2tLUHl1MXVRMFN1R3ZkRmJxUDJBd3RhZ1I1T2RMYmJEL1g3?=
- =?utf-8?B?QTdmZ0srOTJyN1I3eW0rb3RVUG9CL1dIV3pvelJFRDNuUzZVNUlLVys5S1pJ?=
- =?utf-8?B?SWN2N3hkSy9qZm55RXYzaDlGU012Z0RjUjNXc2ZBQmxXY0NqdjRVc2t5akF1?=
- =?utf-8?B?ZDNGYTJWV1F6ZStPcHpiN3Y4NWtCSHRYUnFoNFY1c1JjUG03Z1l4SFMybWFj?=
- =?utf-8?B?dWQ2ZmFFS0Y2ME1sMGYxMzl0YUQrbUNMNjFpRXAyaTJZbk1QZlArSVZTdXl6?=
- =?utf-8?B?Z2p4ZnJBSUc0M0VtS1Q1QmFkaFRicDJkdURTelJwV2NPM2Y4S29DS1V5ckdq?=
- =?utf-8?B?ZEZUNmRtQ09KRC85ZFlFLzRBQmdJWHJNWG83c09QblMrWlhDZ01PSHhnMFpO?=
- =?utf-8?B?ckYvaGMxcXNXdHhETFpLSTdyTDJMV2lCaVRCc0Q4bGttOXpvL3NUdGxaVlNo?=
- =?utf-8?B?eGF6ZHQ4K3VTZW9KSjZOb3ZIOGZQeW00b2NiZlhReFgzSExQSE1zcHNSOENr?=
- =?utf-8?Q?hI+LKtgj2R37t+D0nt?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc1c2555-c5cf-41f1-dcda-08df03bc628c
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 21:52:55.4424
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 626j+LZxo+RESBI9g/e+5uq3rG9wOuJi3e5Lr76xMIjGL0LZMfzjXAtJ+vCmNpkO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5911
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 537A3180008
-X-Stat-Signature: bzfga73sfym5k7tq6knprofxtprfe7d3
+References: <20260817131843.45121-1-husong@kylinos.cn> <1787017182353556.21.seg@mailgw.kylinos.cn>
+ <0689d805-45c6-4bb2-8eb2-f065457c45bf@kylinos.cn> <CAO9r8zNxnVYpwrsuB1Ofcwf-Lks2e+DL1Ys9CXZ5jozBug_ybQ@mail.gmail.com>
+ <CAJnrk1bFq7J7K0=X67voeZVkAb0dmiLkqomuQ+VcXBLyP5hMVg@mail.gmail.com>
+ <aoiQPrudvYZ76ZSD@cmpxchg.org> <CAO9r8zM+w-wb44G+GXev+eHVEOty5GNcmRkui4PxgeF=Hqv_DQ@mail.gmail.com>
+ <CAJnrk1bOdTE+YQRQqzfKUkOGR67a28t3p1r1zeBNzwz9xHEYdw@mail.gmail.com>
+ <CAO9r8zNQzqwVeOoZr71juX3xV06LUTntBp+7bmGdwK_s6FoT6w@mail.gmail.com> <ao9YFgBQJEy-85iB@linux.dev>
+In-Reply-To: <ao9YFgBQJEy-85iB@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 26 Aug 2026 14:55:57 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zO6VWRGh3CbqyymSkEaw6gFd6AKYQgZE_rTQP7svWEMfw@mail.gmail.com>
+X-Gm-Features: AcwNN1XUi59_7wlRX-aPfKbk6cG14-Ur0Kp10Fes9lEailhZFHURR2vWvYp7IrI
+Message-ID: <CAO9r8zO6VWRGh3CbqyymSkEaw6gFd6AKYQgZE_rTQP7svWEMfw@mail.gmail.com>
+Subject: Re: [PATCH] mm: memcg: use ratelimited stats flush in obj_cgroup_may_zswap()
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Joanne Koong <joannelkoong@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Song Hu <husong@kylinos.cn>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
+	chengming.zhou@linux.dev, yunzhao@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1787781181-237192
-X-HE-Meta: U2FsdGVkX196pyQ33f5iRv7itrg4XM3F8Xxxt+UHZyl2nypw7Uo+KhqP7TByKt4WlpnYok2gFqc2qUg86WwfaAbw1EsGHrXww5Y6GT8/rrTYrpJwNpCjYzilEcN1lqA1u0YyCGlFEmlK8mqLHBxa1cSlhuyM8O8xE6nFiihRxZLR4byUdHYolKH+Og76gB4VNoQPLr0ZVi8PXyzRhVkvb52g2dLvBY0P1rSoLOz9Ly+9fIfsqujIt4FlcPn5cm/EGWHgjoA2AZ63CrqrcEPatGct8ialdhPjchBT4fHovcujEykIXEToEYhHgbiB06fCy3MbCsP7yLvJerXHTR8tzrJhZ+oKOVJ/o3A+jiaH2weUR20ZuOuoA/95EwX45h4lVqUZCdJ1hUNwyusGXA6I+jgNdn7rykUfSZTpj99JE7GG+rvn/TB8gO8FaaoaFs9SXwMWYnw/9Y5zcwUG8Q1jIAJcsNVihK8ISlHv0i6matoSMqHzpBCtsctJrZW/8HoL4BZsycYFZqUNK+1qPnVsOUsHncb6LnHZM8p03+SlrpLP/gvKl3eyaCpF0xp6rDzqQuHVLkQMZf/ZRsIfhWORcWIvTYN49TsUHGrcq22Ov80PKbZtw2+xiO0LFcoEZfmtqpchcv3OoCaue1HT46GU3g+s+0TWg0MJjV4BPz8mJw1Btxfct720xaZANLXTwcoM3COHZObwAQ+9OcxFwmuGk5F5BnVAALUDX0cLfIk5DOEHVRwUppTEbX3pRfhLMD3w831h9nXywkoDmRYwz4IK8LMTbpmnkuNZEyJVCD3I6VVCfj0XyiteFFTrfuWXH4n+zaceiH+BnIXGOO2Vz35wcTsKCphZEEyCnS4/pNFhNkAyIOvFEA5V15YM1R28eRNv0rxRWqBfqmNaQuoPTc6uXub8bhfPzpDotMpgq3Cod8D4hkP20gXg242tTj/+Nw8n9EdIIYtUl4Qnmz+zWz/
- edLLH3YX
- 8124bN3Ca0eBUOZJRj2CYFqWV+dJCqQdTtU7iy0wUqlaK7kKwYo7FbBSDq5gvRxE7ApFwHfqYN9yDMj1M0WNLgD725eyQGgmxUrXmECXVIFWc4ip5r2eYFEg5BE0GRR89ii356o44AjR7Ft4+MPzbTPDVTAtYUg4M70Nh0azso/n0Z/d/mJyCyZnnc4a585kgddPzzUN8jzLGRPtQpLNgrblq6OH14ENvkMtf1bVf/H7tjzFDBQi2MGGJyWUilBkeNCn9ep/WrDZTvHUgUpXk0g6GBrduQEVTYMvrvP9dKCO0mA/NvW9kOjtZGdNnf66vTSw33tG+Pq+1q9db2SYuayHyFMcx40gM9HzF46oosVGRrQW7nP8hANibrFlGEgrZ668Ipl+XrujU9wCYm3iW/w2z5v3+uIUT0AzlFNe/6aDhjzuQQYbRAnRn8ZnBohSnNy7foH7WD7ejaqX6ZfO49uy8eimlui/UUcIujaFb93W28UjOScQ/xproZpbXiZBDI0LbD2ZwuJW3am51P31sGomxCljE6RQS9CcCiNz0OjcGbtW0/eUpWuFAUzOrFPzNKtGhZpBF159amYsPZudiGSBLLFPOBP97VuWd2B6suKyKPhFGfzngTNMn0jTcyqMtFGAVyMGYMNT90zJT5F8LL3cBZw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2C1B640003
+X-Stat-Signature: sngzadeyjmh7uprnf4bbwcti864aoy89
+X-HE-Tag: 1787781372-589862
+X-HE-Meta: U2FsdGVkX1/u79mHxInCTFK2cupcgBFOWkq7wjd3Zv3laNrk3aiqnr90nIDNcoBltH41SiRN0GLRiwo+JXjlSfz6n8BfBfBOMrD92nLDE/Mpvp9xKnU18GQXzAucEbaavPqL7uQr8rHUHyKiS6omxp7MTDk4scMeqtGIpQ/lZfSrH8giOa4OUZ7DBfd46NHmPycG2SHuTZhlivrkgJo1HqpOVN6Zlj9CNI4XgyaqiDExZwwZXoOvnKu/428zg1R63I3SNkKNUdnAMvtD2AVBAIo+mSRH6LV/1EffdbxilZNkO3y1utDkueDxSAjmX4h/Xj09bbRJkhwOMqteHuDq+PB6szz7c4vJKOXTI316pB4YLovq7fDkGI4T4UEJj+20vi8Ox+mYv8gJ62nWGNflXQgEdh2vpmEW+50NYXfXtWhwOBpOk+ax4i9XQ1Gj0sYLGPtcR8TUiH/Pag/qCLoN1ttrWzNENSmpUCCz2iXjimq7p3LbComFxaYSSWoiYe6oSYTSgp7yU927m3EaZVhcmf/KarWMJxC8msm8HllpdxjMbh9PghJHZX/p9zl7H5BF/EagkD4zx4Iabjz7vvNqXcngnQgL+BuAkckC3f3LDhnlbfUQd/DHh8vK1Ddtyf611vFAgRDsNK40oy89JN3TeGPMaVYxCGHhUYDRW6RMk7Yzn4CCntg6HMCA1tzO+iS0yI7TdvS1bVRbiGBTXBB8VDB9PzZ/Ikn/9Y6jnIpgCSx16vyjmtsEBIWI1QFHyE3B8BoWc+ncm/hAWSPz0MljlMdQArh9ICvYssEE5TXdVQqJubibKEk6t2Bu9WcX/3f9yqpK5G0e4HU2HGSnY4l+u0RSHBWEqTJRAPYRhKBoJphoC9WCAKX/s8xuqB35DmQMVcpVsgjshg5OhToycBZDTGOzVk9RCXHvs4Gc4q+DokR6xy2ni5Z6Sec9z4agAEzTMEFdzLvB4MlJo5P1aRv
+ GxjvnXqw
+ SKn6hFQONOINO+DLaVyzz3ryRqxIbiy5nXU+MpkjBMQubBt/4OaPBlukdRMp1D3tg4D5YwTJBwMHv07HkK4tQa90Wgi8bNN1R0YOlfkbEcNeSQZiayBx1ch9gN4EsgBeopbPv2jeAmMK5s65f6pvAGmUQ+si36McqxvGhDmqwPyLaSP711/iNQdIg+fhfUy+VAZS9dveH/VxPmCqEhubaFHobW4HGFaeIef/Hq6LFAnIcI1NyHW3gABPZUXwqZYPo5yUf/9tfPIegbeNZctjtG8ZbTv20lgb2XO1oLxqMxhDuih8egWeClRXwBqIwTo+aqMboMvC/qRYCMkU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,86 +107,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 26, 2026 at 5:47 PM EDT, Harry Yoo wrote:
-> On Wed, Aug 26, 2026 at 11:28:12AM +0000, Vlastimil Babka (SUSE) wrote:
->> On 8/17/26 22:40, Zi Yan wrote:
->> > kmalloc is used to allocate physically contiguous memory for kernel
->> > allocations. For requests larger than KMALLOC_MAX_CACHE_SIZE, kmalloc =
-uses
->> > the page allocator and can only support up to KMALLOC_MAX_SIZE. For re=
-quest
->> > sizes bigger than KMALLOC_MAX_SIZE, the page allocator can emit a WARN
->> > because kmalloc allocates an order greater than MAX_PAGE_ORDER. System=
-s
->> > with panic_on_warn=3D1 crash because of this WARN. Fix it by rejecting=
- any
->> > kmalloc size bigger than KMALLOC_MAX_SIZE.
->> >=20
->> > Fixes: aadb4bc4a1f9 ("SLUB: direct pass through of page size or higher=
- kmalloc requests")
->> > Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
->> > Closes: https://lore.kernel.org/all/6a820ebc.9ebadd4d.20b15e.001b.GAE@=
-google.com/
->> > Tested-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
->> > Signed-off-by: Zi Yan <ziy@nvidia.com>
->> > Cc: stable@vger.kernel.org
->> > ---
->> > It fixes a page allocator warning (order > MAX_PAGE_ORDER) when gadget=
-fs
->> > requests excessively large memory from kmalloc. Instead of adding
->> > __GFP_NOWARN to suppress the warning, as was done for usbfs[1], change
->> > kmalloc to return NULL without a warning for this specific issue.
->> >=20
->> > [1] commit 4f2629ea67e72 ("USB: usbfs: Don't WARN about excessively la=
-rge memory allocations")
->>=20
->> So I checked and for kvmalloc() we have in __kvmalloc_node_noprof()
->>=20
->>         /* Don't even allow crazy sizes */
->>         if (unlikely(size > INT_MAX)) {
->>                 WARN_ON_ONCE(!(flags & __GFP_NOWARN));
->>                 return NULL;
->>         }
->>=20
->> This comes from Linus in commit 7661809d493b4. I'd do the same thing her=
-e
->> then.
+[..]
+> > > I now prefer (c) as well. I hadn't realized setting zswap.max is a
+> > > rare path until Johannes mentioned it, and with your mention of
+> > > zswap_load() sitting in the fault-critical path, I think the benchmark
+> > > results show a clear improvement for c) over d) at higher depths.
+> > >
+> > > I was uneasy about the cost of c)'s reads scaling linearly with the #
+> > > of cpus on a system (ie for_each_possible_cpu per level), but given
+> > > the uncommonness of the zswap.max path, I think that's the right thing
+> > > to trade away. Either way, it's a big improvement over the baseline a)
+> > > path that currently exists anyways.
+> > >
+> > > > with more concurrency/CPUs and should generalize better to other
+> > > > stats. But I am obviously biased :P
+> > >
+> > > I'm still investigating the writeback and vmscan cases. For writeback,
+> > > using (c) is more complicated since NR_FILE_DIRTY and NR_WRITEBACK are
+> > > node stats. I'm planning to spend time this week running benchmarks
+> > > for it.
+> > >
+> > > If for those cases, (c) is viable, then I'll send a patch that adds
+> > > (c) as general infrastructure. Otherwise, I'll send out (c) as a zswap
+> > > specific patch.
+> > >
+> > > Does this sound good to everyone? If there are any objections, please
+> > > let me know.
+> >
+> > If (c) is holding up for writeback and vmscan, I would question a more
+> > radical approach of tearing apart the rstat framework and using it
+> > across the board. That is obviously a heavier lift and more
+> > controversial,
 >
-> But the purpose of this patch is to avoid the warning in the page
-> allocator. Should we fix this in the caller (gadgetfs) then?=20
+> Yes controversial because we used to have similar mechanism which did not work
+> and we had to move to rstat. Check the commit 42a300353577 and fixes to it.
 
-It is fixed by: https://lore.kernel.org/all/20260820223719.A4A3C1F000E9@smt=
-p.kernel.org/
+IIUC, in that commit, the update side modifies one per-CPU per-cgroup
+counters, and when those counters exceed a threshold atomic updates
+are performed on all parents, which I think is the slow side. Then,
+the read side just reads the potentially stale atomic. That was
+problematic because:
+(1) The update side can end up performing atomic updates on all parents.
+(2) The read side can be inaccurate by up to MEMCG_CHARGE_BATCH *
+nr_cpus * nr_children
 
-Please disregard this patch, but we can keep the discussion going.
+What I am proposing in (c) is different:
 
+(1) The update side always updates per-CPU per-cgroup counters in all
+the parents. It never does atomic operations. The parent iteration is
+not cheap, but it is cheaper than atomics for sure and we already do
+parent iteration today in some cases in memcg_rstat_updated(). So the
+"slow" path should be the same as today.
+(2) The read side always iterates per-CPU counters in this cgroup, so
+it's always accurate. This might be more expensive on an rstat flush
+on average (e.g. if memcg_vmstats_needs_flush() skips the flush), but
+it is much more consistent and the tail latency is much better.
 
 >
->> Thus there would be a useful warning for e.g. development mistakes
->> resulting in the size to be unexpectedly high.
->>=20
->> Callers passing size that comes from userspace or similar untrusted sour=
-ce
->> can either pass __GFP_NOWARN or sanitize the size to what they expect to=
- be
->> sane (which is context dependent and I assume actually way lower than
->> kmalloc limits in practice). Note that passing even sizes within but clo=
-se
->> to/at the limit, trusting blindly some external source, can succeed the
->> allocations but effectively DoS the system with heavy reclaim/compaction=
-. So
->> caller sanitization should still be preferred IMHO. Some of the recent
->> arguments from Linus [1] would apply to this too, I think.
->>=20
->> [1]
->> https://lore.kernel.org/all/CAHk-=3DwiSmgwwLKCqJwGS-dVHnSLU8W+7q1UQq-G9=
-=3DTBGGZbuhQ@mail.gmail.com/
+> This worked for zswap stats because their update and consumption are not on
+> performance critical code paths i.e. these are on the way to compress or
+> decompress or in reclaim context.
 
+Well, decompression is in the fault path, that's performance critical
+to some extent (although not like other stats updated by networking).
+Anyway, I think the update path shouldn't regress much with the
+approach described in (c).
 
+>
+> > but if we can get away with it, I think it will
+> > simplify things greatly and honestly rstat has been causing a lot of
+> > trouble in the last few years.
+> >
+> > But this can be done incrementally too, we can start by separating out
+> > the problematic stats to use the new update/flushing scheme,
+>
+> This I think we do need but for specific stats. I think the stats which have
+> in-kernel consumers need this. However not all such stats might be fine with
+> slow update side like zswap. So, we need to evaluate thoroughly.
 
-
---=20
-Best Regards,
-Yan, Zi
-
+I think in the proposed approach (c) the main concern is actually read
+latency, not update latency. So if it works for in-kernel consumers it
+should definitely work for userspace consumers as well?
 
