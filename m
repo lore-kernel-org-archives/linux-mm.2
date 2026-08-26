@@ -4,133 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B334C61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:50:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 511A0C61DC2
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:53:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 491A76B0092; Wed, 26 Aug 2026 03:50:19 -0400 (EDT)
+	id 531B36B0095; Wed, 26 Aug 2026 03:53:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 441E06B0095; Wed, 26 Aug 2026 03:50:19 -0400 (EDT)
+	id 4E30E6B0096; Wed, 26 Aug 2026 03:53:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 358216B0096; Wed, 26 Aug 2026 03:50:19 -0400 (EDT)
+	id 3F8C06B0098; Wed, 26 Aug 2026 03:53:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CE546B0092
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:50:19 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 84EF01C1690
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:50:18 +0000 (UTC)
-X-FDA: 85142647716.03.34D7E01
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DEF0620005
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:50:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="2Z1Tf/yp";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=658bYWki;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1JuUKAco;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vA5oIE6L;
-	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787730616;
-	b=kOX5RfYmjBjJB5u1BbdhjUucwJ4ub3kBsoXAxbKZiXafR/geCMusp3nIB1yTivLofwx8HL
-	qG9O4ahwu6ElXcp4zNVlqpFmbJ0anojFAkW/j8ZzUqgvaa2gli1nc0xu7W7ri3/0Ge02ac
-	XuIoh4N1SoowynWyO/8Xl9ot4L4uwgU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="2Z1Tf/yp";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=658bYWki;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1JuUKAco;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vA5oIE6L;
-	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E2FF6B0095
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:53:00 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B123F1A02D4
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:52:59 +0000 (UTC)
+X-FDA: 85142654478.15.100CA53
+Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4837280005
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:52:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=unisoc.com header.s=default header.b=EC5u6CFv;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com;
+	spf=pass (imf02.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787730616;
+	s=arc-20220608; t=1787730777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V/kDgiqCJ24UzYKi/b0vTHiHEoPucZGyvIT9cCOxpb0=;
-	b=CTXiwUTWgBM02okpn46HmZCEJe7QfKXWhSQbst+vHHHEmD4bwX5dT3B2yf8gjkv84LoMvZ
-	twzQnuv2SPu/v+JetNqxkXqQVbGa0zeOW2A+D91DbrMfrCXNEReYQQCOifVUE8tcKTiP7Y
-	LztV77cie4PA8cfTzB1NurhQXCOg1gw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E8ADB87217;
-	Wed, 26 Aug 2026 07:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1787730610; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V/kDgiqCJ24UzYKi/b0vTHiHEoPucZGyvIT9cCOxpb0=;
-	b=2Z1Tf/ypjBvVk+yBoniYR6BcmnlXWvIf6tUvzYS1LY5lHf1JhccViu7h5BgvZjiNltUVr3
-	kVZDko2QEGnhBIRhDzJcJpdy47Nq1ot2zMLC5+HKo0abzmfnSiXYCYb2wS4daIZJwz6ku+
-	mXaAvocjnmEJfLIojQHOnYh4tlzafKs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1787730610;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V/kDgiqCJ24UzYKi/b0vTHiHEoPucZGyvIT9cCOxpb0=;
-	b=658bYWki4AUwyhAOT31qDuMyPna1QbJfz6FjGWQiHbcaSyiSXtc7eETidr9tnt+NHkWzNX
-	zMcpKPXEliEmCtDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1787730605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V/kDgiqCJ24UzYKi/b0vTHiHEoPucZGyvIT9cCOxpb0=;
-	b=1JuUKAcodENvSgJev1mTdBqYGVNqOhIPDnDRUFHDNNfI+UKF5Hbx66lEdWsfh1WYPiRDz5
-	NdPE4LAktNCQQPyuvR2Cmrbi0lThRccYF7sWAKSpyCYBW2xbtXUPAndVOZ3cFa9a9T+XQJ
-	5SCdZ6uIdEikprCWzSb1uJ1VjbVSklY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1787730605;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V/kDgiqCJ24UzYKi/b0vTHiHEoPucZGyvIT9cCOxpb0=;
-	b=vA5oIE6Lxvhb0G4M580CVZeOvk+ZaLTuwbG6zEdGNN79MxFpOzhk69zb4Q8Fq/lk5kzWsE
-	NOc2dZCq8DTfn2CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D787713699;
-	Wed, 26 Aug 2026 07:49:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id APOYNKOajmodDAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 26 Aug 2026 07:49:55 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 1DB57A13A3; Tue, 25 Aug 2026 17:50:17 +0200 (CEST)
-Date: Tue, 25 Aug 2026 17:50:17 +0200
-From: Jan Kara <jack@suse.cz>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Mike Marshall <hubcap@omnibond.com>, 
-	Martin Brandenburg <martin@omnibond.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-block@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, fuse-devel@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	devel@lists.orangefs.org, Pavel Begunkov <asml.silence@gmail.com>
-Subject: Re: [PATCH 0/7] Remove aops->launder_folio
-Message-ID: <cpxzyq5vdzuwters6mn3irrxvpvvkr6g7cjqbrsckivrupbua3@pzjpyvzqnke4>
-References: <20260820193343.3852967-1-willy@infradead.org>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1ljfxh0QQvke3/JuhIoWXsbYDuhyNNb2x/9KR07BP2M=;
+	b=UJ7y8NFge8bC4q/cI1bhP5hgDN2EjvbFwAkhx1DN12wfN+wZHTx/Jqqx/HuqE4JwZdKEP2
+	YfobRZD0olM0C1QGYsDDsnfmxoZfhgIry93UHBveP+mUbhe7QG5jP6DKqcWdq/F/xU6NQK
+	8HtQxwuAAzRdHiDC3nxv+vijkIgCIkE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787730777;
+	b=rsD/XjjGNIpHG8KxTB+U/4+R7U64okEDZvf5U0oeN2LXb6vaGgGxRwRCyIpnd0BUZbiMXY
+	ffDqQ7cwMg/sMdgIXq7J2fWaLqPwt+9J65JUIS9hMy+qHvx26o97CXl8aBfTtHVzqj8o72
+	RStqAMHcBhwiTEjq6hDjQ0bBjYqsEI8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=unisoc.com header.s=default header.b=EC5u6CFv;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com;
+	spf=pass (imf02.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com
+Received: from dlp.unisoc.com ([10.29.3.86])
+	by SHSQR01.spreadtrum.com with ESMTPS id 67Q7piCL006362
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Wed, 26 Aug 2026 15:51:44 +0800 (+08)
+	(envelope-from zhaoyang.huang@unisoc.com)
+Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
+	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4hVGzP6wZjz2K1r9x;
+	Wed, 26 Aug 2026 15:50:41 +0800 (CST)
+Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
+ BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.48; Wed, 26 Aug 2026 15:51:41 +0800
+From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand
+	<david@kernel.org>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie
+	<yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        Johannes Weiner
+	<hannes@cmpxchg.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Qi Zheng
+	<zhengqi.arch@bytedance.com>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        Lorenzo
+ Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        Zhaoyang Huang
+	<huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
+Subject: [PATCH] mm: workingset: judge cross-memcg refaults by generation age
+Date: Wed, 26 Aug 2026 15:51:33 +0800
+Message-ID: <20260826075133.751049-1-zhaoyang.huang@unisoc.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260820193343.3852967-1-willy@infradead.org>
-X-Rspamd-Action: no action
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.0.73.40]
+X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
+ BJMBX01.spreadtrum.com (10.0.64.7)
+X-MAIL:SHSQR01.spreadtrum.com 67Q7piCL006362
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
+	s=default; t=1787730717;
+	bh=1ljfxh0QQvke3/JuhIoWXsbYDuhyNNb2x/9KR07BP2M=;
+	h=From:To:Subject:Date;
+	b=EC5u6CFvKVqzykWYyhm1uLick9XrvOidGA+taumg/amu1lxTKY4075bAY/oFlXMxR
+	 xd8vEU/rA2vhK3/iolI7WDGlw6f+wanBP2RqtDqookzwFm+IL0CjevzmRpReQlItLZ
+	 cRaYr7fDWnbJAXbcKi5GxzToUpEVPq4p87mBkW6QNF8ugI5M718SPf07F+oveUqrnF
+	 +r1caHAJjRbi0lbRU9bBpCbDa2iKgvjk6jxjyeq6QZLMep8EIGz/BeYlSYW5YrIm9e
+	 r1CXqiPkZf+P1nNiySx7PGMSo9Otue/7td6UFVInF4Ip7LjIw2x8Fq10jz0FEshMSc
+	 p06Emn4bgyqsQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4837280005
+X-Stat-Signature: mgsipysqdk4jzoknyur8uodbgf9p73g9
 X-Rspam-User: 
-X-Stat-Signature: io64ezo1p7jcby7dqn4e5njjrhw78qn9
-X-Rspamd-Queue-Id: DEF0620005
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787730615-376562
-X-HE-Meta: U2FsdGVkX1+1h/mfuQd9WqJW+hP8iAECO7a38ua6JjMW11zgR5rY9KwXZztj+S5ylZbXTy1005Tq8k19yf3SrZp9wfIo+AeeITc1GPF4uGa87iK03Z2rYbUIqPOmJuASnnXQ85ZFWWfxSk9apsMzpQCqvcB0Yr+r64miN73mDnpITI1gcW8mOqMumfxPEScCd0P9FsfkTT6ewbNQwp1uWfsY5l00tKQfUTuA+wcbLqwm9YEglOjWcEPNqwhv36nF9io/yI90ZuS13By16H/tqQ/Hw56oYmvclIiTAu3uxtHTgct+9PVEe41JsNXtV1mBQa87WaoVhyrJs8wdD+Xhk04lvaEHYg0vrRYzahhQm4m1CNC3W4mlvHWXPg2AqUDSkXINN7cG7u6iFYe845FkOembWVdRePsJbxA4loLUGPIOmI3Ood622ekFaKRlqXoT0XBwFpRJ6XCdPDjgaO/3+xiWTa2UDzBGcJY81hNx8BLSIjxpyxxunVrV1m7IYi4gcpuiU245bL+m6VuvlQeZOtQeiJNygOr/SlFWf1um4ZLPifaT73PJoE4Ga9MsZ6VZhZfmjlbqOsgFaZnE+qUHBSuoVv8n7hkWLd5e1muTiMlNx6VznxpfZgkIhGADNsBn2aUl3S3Jca9wjky56755/iU/EJuGKYPo440lJFjlxYdthCKzcFp7Ue9H4zhaYP6Om7nXT9EAHV4msYVdycCS98ipzyIOCRA4gFc+9mrD0bEvgTXqKI9QSuuthYUvtdUi3RdK4iSu4Fp/TnwbGJiEWvkvsa6mk/4vGu1HgYQBHm704c52Vb1pN6AbHTtf0qscIkFTESxO6CRp2/MI9JksjX9JAvIu8rua84sB3cUlqzmap/OvL9DrEjuFkADv/UVZQElgJPCFuc7FAfBT9vUOo2nBgmaaWnQhjf+VhthhLvSmPoqgIhoArbSduvjvdEHzDhD74BugDQ3Ql8wUDUn
- PYbRfJ4j
- UETVT6cjygu1N2dZF9wI+ll4oMtIW9HfT1uPdm9e+6Z8zsx8o3ub2wMTQmWW7LD68RQLLCW+P1qajFRGtDWNpDPJ27utKqwZFdHh3VO16wQcfJqc65NQ5jlEQ0DulwbS99gQH9HEfRjeOP51fTsIjsKbRSEgy+ZbrHYel029ZzO5GtiE9vNVVuusRKpiTqbSMgMS4Bq/mirOxXrm4VNBN/hygyE8wEBiwEOy7LNgxn5sTETnTHAE4Ept0S3hwYWEz5bDlz3KscbGcu4/B3B7JxvoDTUE/jQI4+znh1ydlTgEg8jMfcwcnQ6kajXBGmmTtgg4aKUwVPNrDNRaK9hbTKGt3BvcGxxi2Bza8BgqPW/ijbATNSz1PRcRaikckHnaSaKBtudc2gLSIUHbyYeJmLjFYenGRUl4Dbs/9rg2Xj3otcCT7pvWFWuxjaXnyHCv91a4ggqNGyg6NlaObuhzlEnZHtQ==
+X-HE-Tag: 1787730773-679499
+X-HE-Meta: U2FsdGVkX18PVnVCsieWIfLHU4N7YjB+F5VVX7iBVoX1sqS661oP6fv/rFQ3yHOrr5Uyzn9CNNvBIUEEkG2VwL/Tzg7l5H3TI2KwBFx9TfzELZ951Xel7oxDFMuVsskQGh5LLpdiotWi3rJf4bHNdMCC65hSDNdD6p49QyOyb/2G4TnnrYBCQuUw70jZI3EMrp6z/diZaPLGe8cJJjpNGcfeC0MwYmn5BIgLxl8hOHwn3skp9DJY90hD8LCNXtH0kspHpdUplSimJMemzYFiltrkl5ZqfS99jKGq9/WDN4nANL42SiVyhkMyRUz0VZCnDk5I5hzxNbyXmcLVbbP0LtynXZAORuMnoW/J+bejNTLPM4i1i2Gs/bJIrdbMN+zN8DrH5uTqHikGsi5Jt9sfH4FKdKjgEri7+MFoOTPkeEMscMBj4uinzF4wDuB4M0TKt+jKeWPsSf2i3gK4qWesqe613MpEobAFSXP6PviSLd5fHehxPTNwQ7PH7FWVdxNL5xiEHRHgcPqy1ErRpk0izlVX+gjUdUzF+ycTrbamcP3eqy77+qxFeYwLt2qjBvrdhwEsw7/et7DObgAbUCnsCFJGk/RynJBcMiS/ke90nvwbmVB2oItEra9jFA6MYU5oQlMdpri22HazKD8VH1DQ5kcRLYRGCrm41Sv7TnA2ufYfNIS5HURK63qcWqCbrvE4l+lxJSvs5wOGEM+u1t+Vxm/I4ftpi29OmgMGyOmflh2jNKC8Shag6J2JsyqwHWWrVgvjGDu0k60QOhNrg6K+UUAqFccCU2oX6cPdFRgZj/S++AYj+2FkCzPGdyDkpWY8F2J2fZnxusTveTYeFfPZBgi+Y5X4j7gKOFC2UOi5ugP/vBcdPq5supUqLj8FGxA4cNoVNLDHahv9AHsqmXSl99ICKmMAmPzMSEzPL4Oaelv8WoAbt2UEp0sKtK7jObskR0qkoTF2MiY5iICfJAv
+ GjZC48ry
+ W62pzhyG4nwE2hWUsA8hYH/Wg0fHSwADY2yJjoKO1LYcmS4pYwUuMeT8VB4zldvlwajRTnulQsHqVXMS8B3ARx4lGOIy5+4xyQpP9BtPj2oJRoSuhAxi1e7crEq6knmIjbLYWzh8kt8sYVThzRGkJDE0AmHSHcPtt26pzyWFnPhT9ah1ivVVJ4EG35ejzyW0hsBz8XZN9ArxkiowY8iqXrrjZ8juwp8bToy6S8v4QnjhjJreaP2jJbs4DBrmx1hKPEUbavHFdGTYLM0jNq3oHXPGYCQxnvnpX02YrImIgq+iUL8u55kjrOOr5KiHp9fW/Ggf+yrfw6NxDtDdM3xGloop4D6A90WAholU3PaiLx5oYr0ZupsrziQxrXzThmVU9kUKzo7ZAR2R3+uI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,63 +113,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 20-08-26 20:33:33, Matthew Wilcox (Oracle) wrote:
-> There's really no reason to implement ->launder_folio.  Most filesystems
-> don't.  The only problem is that some filesystems rely on dirty folios
-> being written back this way, so we need to make sure that folios are
-> written back before invalidating them.  filemap_invalidate_pages()
-> works well for that, once we remove the 'nowait' parameter.
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-I like the idea (and was myself wondering from time to time whether
-launder_folio is actually needed) but what was putting me off was that when
-using folio_launder() you can clean a folio while keeping folio locked and
-so you can guarantee later eviction without someone messing with the folio
-between writeout & ->release_folio. Maybe nobody actually needs this, which
-would be great, but it would be great to hear more from the folks using
-launder_folio about their reasons...
+Unexpected anon folio scan rate is observed in a per-pid topology
+memcgv2's hierarchy even with swappiness=150, which is believed as
+the concequences of belowing rule which discarded all feedback for
+the destination cgroup: no WORKINGSET_REFAULT accounting, no
+activation hint, and no tier or workingset restoration. Shared
+mappings faulted back into another memcg could not signal recent
+usefulness to MGLRU in that cgroup, weakening thrashing detection
+and protection for cross-cgroup file cache and folios that moved
+between memcgs.
 
-								Honza
+	if (lruvec != folio_lruvec(folio))
+		goto unlock;
 
-> 
-> Matthew Wilcox (Oracle) (7):
->   filemap: Export filemap_invalidate_pages() to modules
->   fuse: Use filemap_invalidate_pages()
->   btrfs: Use filemap_invalidate_pages()
->   nfs: Use filemap_invalidate_pages()
->   orangefs: Use filemap_invalidate_pages()
->   orangefs: Remove launder_folio implementation
->   Remove folio_launder()
-> 
->  Documentation/filesystems/locking.rst |  8 -----
->  Documentation/filesystems/vfs.rst     |  6 ----
->  block/ioctl.c                         | 14 +++++---
->  fs/btrfs/direct-io.c                  |  2 +-
->  fs/btrfs/disk-io.c                    | 11 ++++---
->  fs/btrfs/free-space-cache.c           |  4 +--
->  fs/btrfs/inode.c                      | 12 ++-----
->  fs/btrfs/volumes.c                    |  4 +--
->  fs/fuse/dax.c                         | 15 ++-------
->  fs/fuse/dir.c                         | 12 ++++---
->  fs/fuse/file.c                        | 46 ++++-----------------------
->  fs/fuse/inode.c                       | 17 +++-------
->  fs/nfs/dir.c                          |  7 ++--
->  fs/nfs/direct.c                       |  5 ++-
->  fs/nfs/file.c                         | 24 --------------
->  fs/nfs/inode.c                        |  5 +--
->  fs/nfs/nfs42proc.c                    |  3 +-
->  fs/nfs/nfstrace.h                     |  1 -
->  fs/orangefs/file.c                    |  4 +--
->  fs/orangefs/inode.c                   |  1 -
->  include/linux/fs.h                    |  1 -
->  include/linux/pagemap.h               |  2 +-
->  mm/filemap.c                          | 42 ++++++++++++++++--------
->  mm/truncate.c                         | 15 ++-------
->  24 files changed, 87 insertions(+), 174 deletions(-)
-> 
-> -- 
-> 2.47.3
-> 
+The failure mode is structural: min_seq and max_seq are per-lruvec
+generation counters with independent sequences, so their numeric
+gap is meaningless across lruvecs.
+
+Store a truncated eviction timestamp (jiffies) in the shadow token
+next to min_seq, reserving at least 16 bits for min_seq so the
+same-lruvec sequence test does not wrap at the shorter LRU_GEN_WIDTH
+interval. Same-lruvec refaults keep the existing sequence-based
+recency check.
+
+For cross-lruvec refaults, compare elapsed time since eviction with
+the age of the middle generation in the destination lruvec's
+MAX_NR_GENS window. Refaults inside that window are treated as
+recent and workingset feedback is attributed to the destination
+lruvec.
+
+This restores refault-driven reclaim hints for shared cache without
+comparing unrelated generation numbers, while leaving the common
+same-lruvec path unchanged.
+
+With this commit, we can observe the anon scan rate raises under same
+enviroment.
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+---
+ mm/workingset.c | 65 ++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 59 insertions(+), 6 deletions(-)
+
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 07e6836d0502..e55e5a75acb9 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -199,6 +199,28 @@
+  */
+ static unsigned int bucket_order[ANON_AND_FILE] __read_mostly;
+ 
++#ifdef CONFIG_LRU_GEN
++/*
++ * LRU_GEN shadow token layout within the eviction field (low to high):
++ *   LRU_REFS_WIDTH bits: refs
++ *   EVICT_SEQ_WIDTH bits: min_seq
++ *   EVICT_TS_WIDTH bits: eviction time in jiffies
++ *
++ * Size the layout for the tighter anon mask so the token fits both file and
++ * anon shadows. Keep at least 16 bits for min_seq so the same-lruvec recency
++ * check does not wrap at the much shorter LRU_GEN_WIDTH interval.
++ */
++#define EVICTION_BITS		(BITS_PER_LONG - EVICTION_SHIFT_ANON)
++#define EVICT_PAYLOAD_BITS	(EVICTION_BITS - LRU_REFS_WIDTH)
++#define EVICT_TS_WIDTH		(EVICT_PAYLOAD_BITS > 40 ? 24 : \
++				 EVICT_PAYLOAD_BITS > 16 ? \
++				 EVICT_PAYLOAD_BITS - 16 : 0)
++#define EVICT_SEQ_WIDTH		(EVICT_PAYLOAD_BITS - EVICT_TS_WIDTH)
++#define EVICT_TS_PGOFF		(LRU_REFS_WIDTH + EVICT_SEQ_WIDTH)
++#define EVICT_SEQ_MASK		((1UL << EVICT_SEQ_WIDTH) - 1)
++#define EVICT_TS_MASK		((1UL << EVICT_TS_WIDTH) - 1)
++#endif
++
+ static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction,
+ 			 bool workingset, bool file)
+ {
+@@ -250,13 +272,19 @@ static void *lru_gen_eviction(struct folio *folio)
+ 
+ 	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH >
+ 		     BITS_PER_LONG - max(EVICTION_SHIFT, EVICTION_SHIFT_ANON));
++	BUILD_BUG_ON(EVICT_TS_WIDTH <= 0);
++	BUILD_BUG_ON(EVICT_SEQ_WIDTH < 16);
++	BUILD_BUG_ON(LRU_REFS_WIDTH + EVICT_SEQ_WIDTH +
++		     EVICT_TS_WIDTH != EVICTION_BITS);
+ 
+ 	rcu_read_lock();
+ 	memcg = folio_memcg(folio);
+ 	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+ 	lrugen = &lruvec->lrugen;
+ 	min_seq = READ_ONCE(lrugen->min_seq[type]);
+-	token = (min_seq << LRU_REFS_WIDTH) | max(refs - 1, 0);
++	token = ((min_seq & EVICT_SEQ_MASK) << LRU_REFS_WIDTH) |
++		max(refs - 1, 0);
++	token |= (jiffies & EVICT_TS_MASK) << EVICT_TS_PGOFF;
+ 
+ 	hist = lru_hist_from_seq(min_seq);
+ 	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
+@@ -275,18 +303,21 @@ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
+ {
+ 	int memcg_id;
+ 	unsigned long max_seq;
++	unsigned long token_seq;
+ 	struct mem_cgroup *memcg;
+ 	struct pglist_data *pgdat;
+ 
++	(void)file;
++
+ 	unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
+ 
+ 	memcg = mem_cgroup_from_private_id(memcg_id);
+ 	*lruvec = mem_cgroup_lruvec(memcg, pgdat);
+ 
+-	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq);
+-	max_seq &= (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_REFS_WIDTH;
++	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq) & EVICT_SEQ_MASK;
++	token_seq = (*token >> LRU_REFS_WIDTH) & EVICT_SEQ_MASK;
+ 
+-	return abs_diff(max_seq, *token >> LRU_REFS_WIDTH) < MAX_NR_GENS;
++	return abs_diff(max_seq, token_seq) < MAX_NR_GENS;
+ }
+ 
+ static void lru_gen_refault(struct folio *folio, void *shadow)
+@@ -295,7 +326,10 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+ 	int hist, tier, refs;
+ 	bool workingset;
+ 	unsigned long token;
++	unsigned long evict_ts, refault_distance;
++	unsigned long max_seq, middle_seq, birth, window_age;
+ 	struct lruvec *lruvec;
++	struct lruvec *dst_lruvec;
+ 	struct lru_gen_folio *lrugen;
+ 	int type = folio_is_file_lru(folio);
+ 	int delta = folio_nr_pages(folio);
+@@ -303,8 +337,27 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+ 	rcu_read_lock();
+ 
+ 	recent = lru_gen_test_recent(shadow, &lruvec, &token, &workingset, type);
+-	if (lruvec != folio_lruvec(folio))
+-		goto unlock;
++	dst_lruvec = folio_lruvec(folio);
++
++	if (lruvec != dst_lruvec) {
++		/*
++		 * min_seq values from different lruvecs are not comparable.
++		 * Judge a cross-memcg refault by whether it happened within
++		 * the age of the middle generation in the destination
++		 * lruvec's MAX_NR_GENS window.
++		 */
++		lruvec = dst_lruvec;
++		lrugen = &lruvec->lrugen;
++		max_seq = READ_ONCE(lrugen->max_seq);
++		middle_seq = max_seq - MAX_NR_GENS / 2;
++		birth = READ_ONCE(lrugen->timestamps[lru_gen_from_seq(middle_seq)]);
++		window_age = jiffies - birth;
++
++		evict_ts = (token >> EVICT_TS_PGOFF) & EVICT_TS_MASK;
++		refault_distance = ((jiffies & EVICT_TS_MASK) - evict_ts) &
++				   EVICT_TS_MASK;
++		recent = refault_distance <= window_age;
++	}
+ 
+ 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + type, delta);
+ 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.50.1
+
 
