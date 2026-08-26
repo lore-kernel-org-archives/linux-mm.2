@@ -4,120 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F35FC61DBD
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:32:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3CDDC61DC2
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:35:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EE3A6B008C; Wed, 26 Aug 2026 03:32:45 -0400 (EDT)
+	id A6AC56B0088; Wed, 26 Aug 2026 03:35:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C6916B0092; Wed, 26 Aug 2026 03:32:45 -0400 (EDT)
+	id A1A686B008A; Wed, 26 Aug 2026 03:35:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1F1D6B0095; Wed, 26 Aug 2026 03:32:44 -0400 (EDT)
+	id 930436B0092; Wed, 26 Aug 2026 03:35:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4166B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:32:44 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19CBFC02C2
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:32:44 +0000 (UTC)
-X-FDA: 85142603448.01.0C8CB4F
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5B96280002
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:32:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=VMQGacdc;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=z2MdUAMa;
-	spf=pass (imf30.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BEBC6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:35:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DC7D802BA
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:35:47 +0000 (UTC)
+X-FDA: 85142611134.04.FF6D708
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0A92280002
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:35:44 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JddnPsIT;
+	spf=none (imf02.hostedemail.com: domain of BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787729745;
+	b=Ot9qDLe5887ezBbmZ1qNY3Wgdb1hjPK7VSpTRMt7TUQzhVYHJ5EFWHC0f5BnlBrTNc1Syh
+	csKmc9h5ADEDpZoJzRCRoghZ3fvvB2Hp/Iy1ZPXrwrJqLz/tS5J7IqmEk3ORAgx52zNmeV
+	arAiC0hepaWaatRsy25lY5Z7LOkQYv0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787729562;
+	s=arc-20220608; t=1787729745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v0qYw6dI/lOMP/K9P716HVlCet1n8A6GD/0q9HLVzrs=;
-	b=JRPOidbQwcPQxu1Jw5egWDsuQcf1GGvWLC0yJOUPwdxJwTOG82UKsNnLaO2j5ztt4E+Xad
-	Sx37ulD6HsAyme+pY9AE5Ifn1JzQ5uuODIMThQQNAqEG1zBusA06gAGsdYcceh2EnA9xT9
-	xD0g8fckah8Py8KnQu0xLTpe4qux4g4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787729562;
-	b=O4rGrzKl8cXb+qrX1+bl8Kg75YHq2P37J+4jVbO38WYrdYkKGZJBviajxVkl90Rns19o8E
-	cLqd+lbVL7tMWMM9xfLPynWQXXtrh/X+SFEYPfLo2wKW+qi0XkIjeWTowoz+OYhKxbtLPf
-	J9yKn5Sp495VI7W7JI3UwFrX+R3exW8=
+	bh=IPRq7wCujCDeIBCoHVvXJ5nm+1AbLLNDAy2xmgNZTnE=;
+	b=my1Z5ukchfWSC9ND4o6cifCurh57MA5MnC8sPcbgi1WHmYQV7ERIXXaNW2ZwpieXqvdVVT
+	Tp88SWL5Kd9ymMf8PLNG3XWRqc/VSSFoRXR/9IETj9M/ekTlVRP5kdlyJX85/FUn7IPQ1e
+	uJq3adStVgd+5/ic8wXpm6rAmykR6sw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=VMQGacdc;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=z2MdUAMa;
-	spf=pass (imf30.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Wed, 26 Aug 2026 09:32:33 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1787729555;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v0qYw6dI/lOMP/K9P716HVlCet1n8A6GD/0q9HLVzrs=;
-	b=VMQGacdcvMuc2msrSxPg8sy3s578U8lucEvh/cZE4V/kuiAr7MmALRl2ClMviXBxGNm52k
-	DbiAwAFtpBiS4r3m3/8x0wfzKkcxmLnRbHqy2n/cBIG430HZhfYOX7I4F1BCgRQ1KPQKgl
-	1iUepfgOJ9GiAGAOEDW3L01Ncp2uMFz/i9BWDfUuLNvR1nhKtFS1iI25NZVTck5Dwj5q6q
-	8KosOZZD7dw+zVRg/8noxbbDhR8wEdzdU4bGFERhcMcIEAMuvENanuTyijfYqGjTNnsK9r
-	TzT8azEkht+nlDD3AQN2+zNGXHPocQGutv2HAv/yecSdl7SWLMdzlhhdv2f8QA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1787729555;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v0qYw6dI/lOMP/K9P716HVlCet1n8A6GD/0q9HLVzrs=;
-	b=z2MdUAMaarXzYXJUnZ9mDq2Oq8fo1ufaKMNgfCTuwIciKR+qIP2KDHfk5DiFU/9/pyr2Ng
-	e/k7E2VBHGxqtJBQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JddnPsIT;
+	spf=none (imf02.hostedemail.com: domain of BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+069b6cbc82efeb758f32+8403+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=IPRq7wCujCDeIBCoHVvXJ5nm+1AbLLNDAy2xmgNZTnE=; b=JddnPsITM03lHqVUsASwTa78sr
+	sQPeEVy/iyIcUj1u7ZhEGjndPuTekg40dW/K9n9qyFIr3RolTqKuY3jsT6Lil3oMbp342RR39Lm9D
+	RgHNVyc+mpUwtjCfEvMCzuptbea7GBYjEjJkvXevoAG4TQOXoEBMlxKwUv4jI5taXErm7E3yeh2KH
+	snVNNaSIKmHvDBfdMbQZzVm3d0oT5Ya2/Kkz/VlXlbctWPQ/4o6Cp/v8TgOEWS8T6YJ/j78vXngZL
+	R2tJhN9imjgBHJM9eDH98xAVIT03D0VgWLJlP8J8gaLxjDbn/Bsut9jaEZd/ccckgL+EkgZTGf07r
+	c/B3L/PA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wz8Ac-000000021CP-31ag;
+	Wed, 26 Aug 2026 07:35:38 +0000
+Date: Wed, 26 Aug 2026 00:35:38 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com, Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
- notifier invocation
-Message-ID: <20260826073233.T-KtFXmj@linutronix.de>
-References: <333c4cdb-8f34-4e3f-a47f-961f47e089a0@paulmck-laptop>
- <11dcf5a87125451897982f728c1f65a5151987e4.camel@infradead.org>
- <69567965-48fd-48c5-abb6-0699d7f5bd16@paulmck-laptop>
- <124af87fb49c267eeb26b8b4d952b9b1a5b3fb68.camel@infradead.org>
- <9427a8e0-3ba6-4f31-a35d-54429bd7e071@paulmck-laptop>
- <3d0463b6099d4fcde9a025a2f9e231d75303b61c.camel@infradead.org>
- <b0be19e9-b0ae-48de-bef6-d905ee007c8a@paulmck-laptop>
- <ao3z7Rtw2FROkVpy@google.com>
- <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v3 0/8] batch lookups in follow_page_mask()
+Message-ID: <ao6XSh1YRiqPA3rA@infradead.org>
+References: <20260811025157.1632867-1-riel@surriel.com>
+ <ao1JwEAeNcP9OyKR@infradead.org>
+ <a10c74df79e1db6a9a2448220fe4c4fd6a0e5bdb.camel@surriel.com>
+ <ao5t8lxaCWQvph-l@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
-X-Stat-Signature: 7abxi3gkcp1kok8q7na5su4bce1p6dgb
-X-Rspamd-Queue-Id: 5B96280002
-X-Rspamd-Server: rspam02
+In-Reply-To: <ao5t8lxaCWQvph-l@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-HE-Tag: 1787729562-3689
-X-HE-Meta: U2FsdGVkX19xYci2OHvYRPqBrofTz3sE17Ft2X5LlZw7c89qeyR52g2fXOqd4FugnCYmXcJHerd4lgfoXuNBystZbdRIZVJ4JxsshaTxuOQ6wuoJvqiPR5UiecBpQXZrQdJHRfKJ5aqD0426WATrJlVq/pZQirMzGxOLy13j0HfOmKjNzZSPb3A2QsYHsLvn+vd9w/Vv6g/SwyP5wIAj+UkGt3yIMxIpr0gUbMdPW5dPj6vI1El4sxp8uk6MQOWgHf+2F+63iBW/iC41ZOYAG8rNuNXxt9YQyt4CGdEcKb7HxatiGoDy0cWKRZhgDj02ah/+VOmDOLtYDqU5R21TDbOz6n64x7Q0RaCG4jOoXDW26HZPirJPIjXhiFuF6HJUhkkrvscdDCL0H7vO9T5Z+cJOSMEBCqWyC3xwEMStvbWouiAh7GQ/bpd2/lIO78i3+95loNxoIRtKq0d6Oct1EbW7DKfnjozO3S33kUgQY4MmkEyBopZt+kzfdViaOGw/jjTK6dWEQly7TIPUdq8jnB2/sTdUONLry+zRFOY0/z1lh24dsEkJ7bPa9RQQMZSgBsKQi2elM/v8nr0NgmGNj2L9v3mVmehieV35qcKgaEEV+hckBWVICplHQ6N+j79+vbyES/QapfSWDiuCXDFSR1unBMMhnZNZDaBYjY3RPaGDRX4OSjL+vIKfsCkJk0cPYu5mfyAKK6cm8zfaZuS3Y2/L2wIs4myer2+x6f5q5g9aHUUzGanihUKIr3V0WNCUn1zw8wUasj9eqWd1t1zZ99qUJPfUfXGmgcjBdfHXJymwYS6zklukZRewzK2tZKm/UWf3KI7FK9x9MamPpY+UcZyBUreoEnWQhTXVPDrCcl+HSGYoSHZMHOwD6pYlOJGs5HLboxAZnaYJQQGfXdJhQd297TO/e5Gb5U3eSRvft4Tlat5vQ1f6xgCFSYOKMqnCo4naFlGuAqf1bHs5Y4u
- CHToO/7W
- KZEDBsFjuFZArNopRCmfcD3YVOkQLDg1W/Fs0vFzB8bmzVm011Zx99pHYX3Fsfig6bZMr4NnRt9PaIZ4JZFXOloe3pN5QXMC5s0+/UzKYcPSjfuPhkdUv/f2B6iuT1tTyOmCb8g3QjFIkMViKeqmqpcJKpkMLw9CdB4sjOEHD+UmL+D4cMK4rU+0s6cSc1WW1kblYtFgeCUUrCj15KLdmWKBrrRXdtwu+3KJ0w7ln5MJw750CZeq8YcEhww==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0A92280002
+X-Stat-Signature: u38o6uh7gqfn7pg49mf8mpjujrb9khaw
+X-HE-Tag: 1787729744-264437
+X-HE-Meta: U2FsdGVkX19dvEKLZiOpzq/9Y27ZSM3vjIFF8s3Q1Vq1X78t4hsBrfu3fF2DY03e1qJq/H8/EoT8VoAwTXidl5ClccIJaM+RXGq5HLPsDFIEaj8NWkm6t62hNuNKkZ9nVPi8E1Xq7VSsqQiM7F8A48QJ4Lpyz3Ye+n6oW1Be4dTDfHeS7fkkqshS7s2oZEKJLR8mCJQ0Q83GX8sWILUPwLtuerqSlbvY/S+cr422BM2+fKerWqSsrELiZCK8tSHRxiGMM8RE7zffbaJMuIMpl/lh6DiKeHBBuqbYfWmO0R1+Aw8AEe3Bs0E5s7X1zrgwAYz4WvjB/NUW0cjYkHcGnjF5gns1EHFMp3zLL/riSTmVKFP/tZ6t/yhM5fvPIrUj6Bopdxn6EiwzpP3EasWSOaXKPFa5sNwYtTMh5mRWkCArHzp/lv+lLTxPcxLbR5eSmY8wjtYngF2KIGEgbXZ681QCD+vqVwXCFH2RzOTRz38JAvKtr+ivHn1U5gqYOG1KRT74KM129XX+Z4IKEMgS0FeCsjSxHQCLeQ2kIXYTgvE0psl4fv+PJQAFz5ZblMhgdJH+qVTKp0FMXdylcB0rbH961874xHWwz8JW2kM9Uio0z9TPHOCuauO5ThbErmUUJ+E7ag9wAXXD53OLct0LyLbeSvCfxlBR4WIYPwBJKqtEvVG9dLY8on9hxO1Sw342TOd9CCBjgG+iYq43yY/9P7JF0lMJkO4lW0uiedi42H3807nrf9sOOS5R3ljp2yphzAYGgfrI/KmNcgfEl1m+QTl7e8WaqwOehxiri7IGrtNzE9EIiCvx8wIMVkJaJILTo2Cd6Zg4NIIxZZhzl7+btAm12U66slCmScwDuyfpMYF3tJnk8oVPD4re9nKZCfPE7R4kCXO+6SI84v+V0aJegJZGA548UllrsD3lTJ2PEPFUCiZOz6u2olNk9Ds4kpjkQRhjeRX/HkJjg8jj++I
+ hN+CK1pV
+ WSbfnQFk+ZwI8OZYesxW8pmQDOOnQ+GlsIli+UYbpq/26bbxp5UbzorKx6FN9+eXNzzAoMhj8hwmeflgCyvZznsyDuagHeknh71i+q6WQoTTe4SiKskGU+saIW3YEPAnNEa7PzoARLwlHzqDjb2ufqZrOzf25bt+wcJ9Vtprw5VVEWxACiUVuGRp+b9xkWOqfs0dAuoDbrYJYM+6gInr36SJNFdEGAt/exzQb6zLuyHOaWZVd8Q1oLGXC8YEPsfqMQlMWvdmm9NYE8RWNvDLXB81rugSEISZGRho7se7nZo0cUmZFvapdt0hOqL7uxrMuYlRx8DTWzW64pDZblXGIRs09kPJXGGzDDXQAHhbs3W46QlqDntQE94C1SQh5UP5ThyJ7B8VxOsHKKYD9f3CWmGYGM7gWc/AbNR6FOueBsvfsHPqVKPtsYKhCWeShbBvKLcc4zzdTn7pEQyHWgzi/UyHCrOBNa/ByK2F7FmIfMIXRhzFiSb6LLsVviPM+0snVGGWV8FMVk/121kjggUq7dDQKA/b8JChJHW2rAzVtjTemJ2chXmB6PBP2bBLZZi8iPJt2EUKXsYlOx64=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,17 +95,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-08-25 13:51:14 [-0700], Paul E. McKenney wrote:
-> Very good, preemption disabling it is!  It is quite possible that the
-> PREEMPT_RT guys will need something else, but one thing at a time.
+On Tue, Aug 25, 2026 at 09:39:14PM -0700, Christoph Hellwig wrote:
+> The other callers of iov_iter_extract_bvecs matter more, but this is
+> the main user.
+> 
+> And iov_iter_extract_bvecs right now is very inefficient when used
+> on larger folios, as each call to iov_iter_extract_bvecs and thus
+> iov_iter_extract_pages and iov_iter_extract_user_pages can only
+> fill in up to 256 pages.  On x86 that is a single PMD mapped
+> folio.  Passing down the bio_vec array means that for PMD-mapped
+> ranges we reduce the calls into pin_user_pages_fast by a factor
+> of 256.
 
-This reminds me of classic RCU ;) It might work in this use case but I
-am afraid that other users might come along where it actually hurts.
-With PREEMPT LAZY the preemption within the read-section should
-hopefully be the exception.
-
-=E2=80=A6
-> 							Thanx, Paul
-
-Sebastian
+Also in addition to reducing the calls to pin_user_pages_fast, it also
+removes a fair amount of work to recalculate the bio_len in the
+get_contig_folio_len loop in iov_iter_extract_bvecs, which has shown up
+in profiles (although only marginally so).
 
