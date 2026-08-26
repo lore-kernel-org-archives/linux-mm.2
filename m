@@ -4,102 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B8E4C5DF97
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 21:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D18A8C61DBE
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 21:58:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F46E6B0092; Wed, 26 Aug 2026 17:56:15 -0400 (EDT)
+	id CE7DA6B0088; Wed, 26 Aug 2026 17:58:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A5466B0095; Wed, 26 Aug 2026 17:56:15 -0400 (EDT)
+	id C993E6B008C; Wed, 26 Aug 2026 17:58:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 394E56B0096; Wed, 26 Aug 2026 17:56:15 -0400 (EDT)
+	id B89E86B0096; Wed, 26 Aug 2026 17:58:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 114C16B0092
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:56:15 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 8F67F6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 17:58:15 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FC321C132C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:56:14 +0000 (UTC)
-X-FDA: 85144779468.12.A1D1052
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13F671C024C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:58:15 +0000 (UTC)
+X-FDA: 85144784550.12.A0C2E87
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2C1B640003
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:56:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nh5AToR+;
-	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id DB5434000A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:58:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TD8Z5bif;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787781372;
+	s=arc-20220608; t=1787781493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KAkYXAYnfeM7EWZPb0UU2vxX96nlclIp0nAmWXUJyIA=;
-	b=zS6BetAs4mR1YD5tm864NZQ08tmDMfU5z1uj+rNXamdlAphSYUdsaJ6xruvME4Sytu5Xg9
-	GgwVW3/kW1lKV3Ik5xQSnE56K3swfCHRtgonSdJ61XCV+02cc3TyjOH9yhxjxKA+U+ZDmR
-	rtjA8GJNgdh6zU/SXQYS7gnLC0TFHCE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787781372;
-	b=apGPiQLErSi0cr0dA7S6s/jZvlZ6CQZUydkQ45gs1Mq0JHVx1yHUlAkdzI5VOF6YbylHkc
-	APv1/vwLaYF6znb52VyEbjLaJrUPrIi+EZ+4mB/5pulJqfpyFiKb+9kGEIJgjkV4Zs9KXm
-	gcyZq+UDnUTD2yEauxKou9MR6Z5ecR8=
+	bh=W48obZE6+PHj9qZ1VUibazAltzOy+cKkoC0weBFuEaA=;
+	b=DZ371ddxva3peAfuOpCbAMKSzKEAG0c4E7Z6XxXDHPwGJat1MoLk1qWwSAgF/xW6dmqbcz
+	pMjUZ8JJ+HRrJJ3mYmCbpilLnRdDuw8QO0ZiwQ0fPqb7Uo4AH0b4T/1gnT4SsvLduGseJ3
+	NW1iSaapRrDA3CvgCsY7mqPn7I/G1mc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nh5AToR+;
-	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TD8Z5bif;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787781493;
+	b=aZOJcjQdmtstReJrwdbXFmWWrc4vzXAVpimGQjEP5lSJmeezq8pmAKLAksBlmyqWvT4nfF
+	oe6ECR6BeXgveS6lzd0JE445pp2Ui+20hoJ2w+XfpEhNpc9hMairLbbsseIgw9MTPbJIiB
+	06jn75CMaRdNJAmzrqG7YeL5BylY93k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4F16E40A22
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:56:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244301F00AC4
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:56:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1D8AC43ECD
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:58:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008AB1F00ADB
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787781371;
-	bh=KAkYXAYnfeM7EWZPb0UU2vxX96nlclIp0nAmWXUJyIA=;
+	s=k20260515; t=1787781492;
+	bh=W48obZE6+PHj9qZ1VUibazAltzOy+cKkoC0weBFuEaA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nh5AToR+8+Hy4JwDQLkAQn8JX3nCyjf2TXZmf8hTWyRrvNiP4emkuq3ejwqhcSTdH
-	 DszsCD25k42ll/3FlOorkTiVJttraFnX9zOHO+jGxgbohoypS7CAw0DGKXWUdFlmpO
-	 80St1R6mG3vurizq/YaEuZnl218kTVqVfw1pPKxKb8oyrCWoojUxFT7hv6Xjbj8jAN
-	 QkWLZzjvn0oJSDjBkjHHTIiamGHHdcJLDb5Qj51AdhxG+8oYNbtnuTErj17fBUehNM
-	 lBXRlggcv/NNz7Xozb9hddNlKABSZqyDedCnu7O4A6hFVcd93XOnx/u+sqlrQkj5M6
-	 88/QGrEhrsi+g==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c1670dad7a8so250734966b.3
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 14:56:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqcMFFxyQvI+UroyAkA/ah2cGABzFSDizyKWTN2YhjC4XW8aMW3SkmvaOntdG/vZlLJopwmuaH01Q==@kvack.org
-X-Gm-Message-State: AFuF++mQvP7xTc1uvKrwT/SSzMlM9zKNJrPHjp8HSqD3gLHvyc8E8KLw
-	K/9ASLn8vhbAZ+gP9O6fyJR/SXQwRt3epm5xItrsdEoeRwdb4HncuFVhJpiFoATPZduSqGVgyHH
-	8s/igwBhpDiUa2zZspoqDDv1JkL0qLwI=
-X-Received: by 2002:a17:906:fd88:b0:c25:437:3dcf with SMTP id
- a640c23a62f3a-c250c3c07fcmr1219596066b.21.1787781370065; Wed, 26 Aug 2026
- 14:56:10 -0700 (PDT)
+	b=TD8Z5bifPIXitj05rARbt7HWazn6f32cyF/TyWMKB/CBMV8rUWbzqZx/U44Ug3CEz
+	 TSlbq9yxOIO/UNHno7SSBsZ/OFLwhCeCkaaThYHbQMuMybpRbDzjQx5vezVVPIzpIx
+	 mw70vkNBMoAekWUkSLg18IIWVZ3pAstOKlF+LgGRMCvbEJmjnPTk4CbZGFZ0fdTvxM
+	 LpwuT9XxQsz3BXLj8XxrhxGxfPIIbnInyAEO3afuPpbcrRdOE9T0WgQq6VBWDKyDOp
+	 oc86pURq8/yobPY9awjaOUtKx40YC1xXFzdCOxPKFcnIThKGhbvBm/gLOU3j25MOU2
+	 tQ2LGZTbxP2xA==
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92edb12cdf2so99839885a.3
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 14:58:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrQAV1NNuZIGdCoCj5zSp9gUdtladnDIaQNoQY0jUOsY0t65ZOXDbeECL5d7Ul5/7TWB63MZH6alA==@kvack.org
+X-Gm-Message-State: AFuF++nB7B4dO1wavjsIeXaTXq+xvMv8cg6v8CxpNLMcgWf5kI37Ia7R
+	noobV/pLIbljvJC+trvsRVGRL0dlfBUbNi4R6nVTGO27wPi0nAER2UX8xd+/suWKkYbOgFNDBJb
+	b4orJ5RhMiXipNsVTB1E7/+Ba6WylCJ0=
+X-Received: by 2002:a05:620a:4553:b0:939:200:32be with SMTP id
+ af79cd13be357-93902004728mr135515285a.41.1787781491298; Wed, 26 Aug 2026
+ 14:58:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260817131843.45121-1-husong@kylinos.cn> <1787017182353556.21.seg@mailgw.kylinos.cn>
- <0689d805-45c6-4bb2-8eb2-f065457c45bf@kylinos.cn> <CAO9r8zNxnVYpwrsuB1Ofcwf-Lks2e+DL1Ys9CXZ5jozBug_ybQ@mail.gmail.com>
- <CAJnrk1bFq7J7K0=X67voeZVkAb0dmiLkqomuQ+VcXBLyP5hMVg@mail.gmail.com>
- <aoiQPrudvYZ76ZSD@cmpxchg.org> <CAO9r8zM+w-wb44G+GXev+eHVEOty5GNcmRkui4PxgeF=Hqv_DQ@mail.gmail.com>
- <CAJnrk1bOdTE+YQRQqzfKUkOGR67a28t3p1r1zeBNzwz9xHEYdw@mail.gmail.com>
- <CAO9r8zNQzqwVeOoZr71juX3xV06LUTntBp+7bmGdwK_s6FoT6w@mail.gmail.com> <ao9YFgBQJEy-85iB@linux.dev>
-In-Reply-To: <ao9YFgBQJEy-85iB@linux.dev>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 26 Aug 2026 14:55:57 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO6VWRGh3CbqyymSkEaw6gFd6AKYQgZE_rTQP7svWEMfw@mail.gmail.com>
-X-Gm-Features: AcwNN1XUi59_7wlRX-aPfKbk6cG14-Ur0Kp10Fes9lEailhZFHURR2vWvYp7IrI
-Message-ID: <CAO9r8zO6VWRGh3CbqyymSkEaw6gFd6AKYQgZE_rTQP7svWEMfw@mail.gmail.com>
-Subject: Re: [PATCH] mm: memcg: use ratelimited stats flush in obj_cgroup_may_zswap()
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Joanne Koong <joannelkoong@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Song Hu <husong@kylinos.cn>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, yunzhao@cloudflare.com
+References: <20260826075133.751049-1-zhaoyang.huang@unisoc.com>
+In-Reply-To: <20260826075133.751049-1-zhaoyang.huang@unisoc.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 27 Aug 2026 05:58:00 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x0Q3D9A_-aR9mdNLw53O9Os5SihhyaqFnSTtN-3v9Gow@mail.gmail.com>
+X-Gm-Features: AcwNN1V8L5hw_vaE7IeQCKYBKYaXTeVpzFEpk6tsaOy4dEE_rMgI20fIJoaVXd0
+Message-ID: <CAGsJ_4x0Q3D9A_-aR9mdNLw53O9Os5SihhyaqFnSTtN-3v9Gow@mail.gmail.com>
+Subject: Re: [PATCH] mm: workingset: judge cross-memcg refaults by generation age
+To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Zhaoyang Huang <huangzhaoyang@gmail.com>, 
+	steve.kang@unisoc.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: dirh4w9kgmqtjpcxnrj1xq1iiejbe3ob
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DB5434000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2C1B640003
-X-Stat-Signature: sngzadeyjmh7uprnf4bbwcti864aoy89
-X-HE-Tag: 1787781372-589862
-X-HE-Meta: U2FsdGVkX1/u79mHxInCTFK2cupcgBFOWkq7wjd3Zv3laNrk3aiqnr90nIDNcoBltH41SiRN0GLRiwo+JXjlSfz6n8BfBfBOMrD92nLDE/Mpvp9xKnU18GQXzAucEbaavPqL7uQr8rHUHyKiS6omxp7MTDk4scMeqtGIpQ/lZfSrH8giOa4OUZ7DBfd46NHmPycG2SHuTZhlivrkgJo1HqpOVN6Zlj9CNI4XgyaqiDExZwwZXoOvnKu/428zg1R63I3SNkKNUdnAMvtD2AVBAIo+mSRH6LV/1EffdbxilZNkO3y1utDkueDxSAjmX4h/Xj09bbRJkhwOMqteHuDq+PB6szz7c4vJKOXTI316pB4YLovq7fDkGI4T4UEJj+20vi8Ox+mYv8gJ62nWGNflXQgEdh2vpmEW+50NYXfXtWhwOBpOk+ax4i9XQ1Gj0sYLGPtcR8TUiH/Pag/qCLoN1ttrWzNENSmpUCCz2iXjimq7p3LbComFxaYSSWoiYe6oSYTSgp7yU927m3EaZVhcmf/KarWMJxC8msm8HllpdxjMbh9PghJHZX/p9zl7H5BF/EagkD4zx4Iabjz7vvNqXcngnQgL+BuAkckC3f3LDhnlbfUQd/DHh8vK1Ddtyf611vFAgRDsNK40oy89JN3TeGPMaVYxCGHhUYDRW6RMk7Yzn4CCntg6HMCA1tzO+iS0yI7TdvS1bVRbiGBTXBB8VDB9PzZ/Ikn/9Y6jnIpgCSx16vyjmtsEBIWI1QFHyE3B8BoWc+ncm/hAWSPz0MljlMdQArh9ICvYssEE5TXdVQqJubibKEk6t2Bu9WcX/3f9yqpK5G0e4HU2HGSnY4l+u0RSHBWEqTJRAPYRhKBoJphoC9WCAKX/s8xuqB35DmQMVcpVsgjshg5OhToycBZDTGOzVk9RCXHvs4Gc4q+DokR6xy2ni5Z6Sec9z4agAEzTMEFdzLvB4MlJo5P1aRv
- GxjvnXqw
- SKn6hFQONOINO+DLaVyzz3ryRqxIbiy5nXU+MpkjBMQubBt/4OaPBlukdRMp1D3tg4D5YwTJBwMHv07HkK4tQa90Wgi8bNN1R0YOlfkbEcNeSQZiayBx1ch9gN4EsgBeopbPv2jeAmMK5s65f6pvAGmUQ+si36McqxvGhDmqwPyLaSP711/iNQdIg+fhfUy+VAZS9dveH/VxPmCqEhubaFHobW4HGFaeIef/Hq6LFAnIcI1NyHW3gABPZUXwqZYPo5yUf/9tfPIegbeNZctjtG8ZbTv20lgb2XO1oLxqMxhDuih8egWeClRXwBqIwTo+aqMboMvC/qRYCMkU=
+X-HE-Tag: 1787781492-808976
+X-HE-Meta: U2FsdGVkX1/XheWgKm9WVFT3td3m6GDz6tZT897Dhhk9Y5fhgy1RxRtU0OgUeuzF5NAcaAE8m+gKQWreJ8GxAZaPNEXaaZiAZfhnB+uDuTyQ9L7uB8Fm+lPDswItA6rtY1i4K1ePygAVL/ZPKj39rAAI3REcWwnIFzx4gsbJwm/yCZ0FLosUDr6NfJbe4LqJWk5Ftu8YArmi0YAquh6vVFB/gkZWcigggaFk/tB3+BcjHgPIkU++F/Au3AWdFN1E32afhP3INNbw0VgnEjwKf+RpV8Kv09CqKlI+FqMjkJQ1TaqMIIQxAx6rZm4IeBmmBFTWQubHAC2nFO6YqdyMAKfemxGtNbM+J1U7z6B9Pm5Wa6rT2xUEER2p8ZNMyHf5t8ppt8WHduOdzQp/dvSusuP++dRdx/zeOlWNWB+YvshjHicGN/5+DWiUEh7Bf737gEsMGgp0luhlwCU8rB6CBBEJBxc8ro8wprCFABYFdEs98rGR3NjG31k14y/jnNGrU87Dy5BeF7DnVHS2/VXm+X32KwdZwBZwk/lTVHq5aCEdrksN+i5dZevXqW515p4QvgEl9tTvhKQuvzdMLq4aaEsSWojXBw2mZvVTpV7oszqnl1IWgZH7fbeRoRzPCzGOiwejHJS8ZCFQMBGHhmipsraW/yvVGTGjKrC+2Z/OBHa2OE2wPMBtePowwjmDD6884k7goj2pvu44cP4mZqC4jrRspL1Nuumkq5UAP9kAR0+iQr31Y6F2/mne4CgJqGXB1+ToLGCygs7MxOcXMEMuraQoAH+1kD/j8Nsayuuf3J0neqxi2WpV26JV/olyKL9Y1ZLaCseICGxMS6HtZGvsCj25IpdkD2E+0Hydlu9mC4WW+nEX8nsKAr8RTBir2v3qk+VYP8z7uUhmupMZOBaewfqSiLVN4+pN7BFX9Aia/kUwaz7yd2JXSKUZywjjhvJb68SUrSDLmW5ZurCl9+b
+ 53QRSVPt
+ 9avF74NcKYJr4XxvDD051kq2+l5sW9x/SyizYjygiPBDfX/PW3NZvhDCFO8EtMGk0POyHIoShYUGFWOq/HB4kdLtp5hhvp1GjyFZClQ5tUbGEQixMxbbz0GlzEj2SgBjX5l2i08UDi2JQ8s7hBdBqVV9Uml84DJONd+HLx7Olgb/U9RwYHeFOx7shEopx59pdN4YmHqtE4XRqfkalfyIzTnR4PnHYEqe07ESHReLYUL5R77J3oiOb6rzeOfAosEK+wRAMV+neJr+Fz6BQhlaxsI5d1+JwQ7BqG9KAHlLxP9QDpJvlwxg2EytN8N9Km2kgMaVy7e65v8aSmldoLhxB6FN685KBMQKNZpoI+w7iC/ac0uv0aXVEAFw0Fd2qPtFHbgpnT9MxymLRChXb7z6gr8WSrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,85 +107,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[..]
-> > > I now prefer (c) as well. I hadn't realized setting zswap.max is a
-> > > rare path until Johannes mentioned it, and with your mention of
-> > > zswap_load() sitting in the fault-critical path, I think the benchmark
-> > > results show a clear improvement for c) over d) at higher depths.
-> > >
-> > > I was uneasy about the cost of c)'s reads scaling linearly with the #
-> > > of cpus on a system (ie for_each_possible_cpu per level), but given
-> > > the uncommonness of the zswap.max path, I think that's the right thing
-> > > to trade away. Either way, it's a big improvement over the baseline a)
-> > > path that currently exists anyways.
-> > >
-> > > > with more concurrency/CPUs and should generalize better to other
-> > > > stats. But I am obviously biased :P
-> > >
-> > > I'm still investigating the writeback and vmscan cases. For writeback,
-> > > using (c) is more complicated since NR_FILE_DIRTY and NR_WRITEBACK are
-> > > node stats. I'm planning to spend time this week running benchmarks
-> > > for it.
-> > >
-> > > If for those cases, (c) is viable, then I'll send a patch that adds
-> > > (c) as general infrastructure. Otherwise, I'll send out (c) as a zswap
-> > > specific patch.
-> > >
-> > > Does this sound good to everyone? If there are any objections, please
-> > > let me know.
-> >
-> > If (c) is holding up for writeback and vmscan, I would question a more
-> > radical approach of tearing apart the rstat framework and using it
-> > across the board. That is obviously a heavier lift and more
-> > controversial,
+On Wed, Aug 26, 2026 at 3:52=E2=80=AFPM zhaoyang.huang
+<zhaoyang.huang@unisoc.com> wrote:
 >
-> Yes controversial because we used to have similar mechanism which did not work
-> and we had to move to rstat. Check the commit 42a300353577 and fixes to it.
-
-IIUC, in that commit, the update side modifies one per-CPU per-cgroup
-counters, and when those counters exceed a threshold atomic updates
-are performed on all parents, which I think is the slow side. Then,
-the read side just reads the potentially stale atomic. That was
-problematic because:
-(1) The update side can end up performing atomic updates on all parents.
-(2) The read side can be inaccurate by up to MEMCG_CHARGE_BATCH *
-nr_cpus * nr_children
-
-What I am proposing in (c) is different:
-
-(1) The update side always updates per-CPU per-cgroup counters in all
-the parents. It never does atomic operations. The parent iteration is
-not cheap, but it is cheaper than atomics for sure and we already do
-parent iteration today in some cases in memcg_rstat_updated(). So the
-"slow" path should be the same as today.
-(2) The read side always iterates per-CPU counters in this cgroup, so
-it's always accurate. This might be more expensive on an rstat flush
-on average (e.g. if memcg_vmstats_needs_flush() skips the flush), but
-it is much more consistent and the tail latency is much better.
-
+> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 >
-> This worked for zswap stats because their update and consumption are not on
-> performance critical code paths i.e. these are on the way to compress or
-> decompress or in reclaim context.
+> Unexpected anon folio scan rate is observed in a per-pid topology
+> memcgv2's hierarchy even with swappiness=3D150, which is believed as
+> the concequences of belowing rule which discarded all feedback for
+> the destination cgroup: no WORKINGSET_REFAULT accounting, no
+> activation hint, and no tier or workingset restoration. Shared
+> mappings faulted back into another memcg could not signal recent
+> usefulness to MGLRU in that cgroup, weakening thrashing detection
+> and protection for cross-cgroup file cache and folios that moved
+> between memcgs.
+>
+>         if (lruvec !=3D folio_lruvec(folio))
+>                 goto unlock;
+>
+> The failure mode is structural: min_seq and max_seq are per-lruvec
+> generation counters with independent sequences, so their numeric
+> gap is meaningless across lruvecs.
+>
+> Store a truncated eviction timestamp (jiffies) in the shadow token
+> next to min_seq, reserving at least 16 bits for min_seq so the
+> same-lruvec sequence test does not wrap at the shorter LRU_GEN_WIDTH
+> interval. Same-lruvec refaults keep the existing sequence-based
+> recency check.
+>
+> For cross-lruvec refaults, compare elapsed time since eviction with
+> the age of the middle generation in the destination lruvec's
+> MAX_NR_GENS window. Refaults inside that window are treated as
+> recent and workingset feedback is attributed to the destination
+> lruvec.
+>
+> This restores refault-driven reclaim hints for shared cache without
+> comparing unrelated generation numbers, while leaving the common
+> same-lruvec path unchanged.
+>
+> With this commit, we can observe the anon scan rate raises under same
+> enviroment.
 
-Well, decompression is in the fault path, that's performance critical
-to some extent (although not like other stats updated by networking).
-Anyway, I think the update path shouldn't regress much with the
-approach described in (c).
+Hi Zhaoyang,
+
+I feel really bad reading these AI-generated changelogs. Could we explain
+it in more human terms?
+
+* What is the current problem?
+* What is the performance impact?
+* What is our approach?
+* How does the approach improve performance?
+
+My gut feeling is that you are making workingset refault aware of
+cross-lruvec refaults. But I still don't really understand the actual
+performance impact or how to reproduce the problem you reported.
+
+What is the user scenario? What kinds of folios can end up on a
+different lruvec after being evicted?
+
+Yet you don't provide any performance data, such as anon/file refaults,
+sys/user time, or other relevant metrics.
 
 >
-> > but if we can get away with it, I think it will
-> > simplify things greatly and honestly rstat has been causing a lot of
-> > trouble in the last few years.
-> >
-> > But this can be done incrementally too, we can start by separating out
-> > the problematic stats to use the new update/flushing scheme,
->
-> This I think we do need but for specific stats. I think the stats which have
-> in-kernel consumers need this. However not all such stats might be fine with
-> slow update side like zswap. So, we need to evaluate thoroughly.
+> Co-authored-by: Cursor <cursoragent@cursor.com>
 
-I think in the proposed approach (c) the main concern is actually read
-latency, not update latency. So if it works for in-kernel consumers it
-should definitely work for userspace consumers as well?
+Do we really allow AI to be listed as a co-author?
+
+Best Regards
+Barry
 
