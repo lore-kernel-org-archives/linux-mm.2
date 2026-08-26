@@ -4,109 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70CF0C61DBE
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 12:55:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D95BC61DBD
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 13:01:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 650436B0092; Wed, 26 Aug 2026 08:55:51 -0400 (EDT)
+	id 5479F6B0088; Wed, 26 Aug 2026 09:01:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6001B6B0095; Wed, 26 Aug 2026 08:55:51 -0400 (EDT)
+	id 4F91D6B0096; Wed, 26 Aug 2026 09:01:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EEBB6B0096; Wed, 26 Aug 2026 08:55:51 -0400 (EDT)
+	id 40F6D6B0098; Wed, 26 Aug 2026 09:01:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BAE26B0092
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 08:55:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4B2E68037A
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:55:50 +0000 (UTC)
-X-FDA: 85143417660.23.D164B5E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4B9AA18000C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 12:55:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=K6U6ELrx;
-	spf=pass (imf24.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787748948;
-	b=wcAgKpAc1AFKIoSI8KpCjVqRrRKLsTGRLopOQStSniBl46TZdINDrT11U8L/yUsVFgQF9y
-	Arwwj0QPKgSKkeW0pgdDpr1q+GmyUHNe8v8rGK5Atin/s9orrxnRYHQ0tlYqh9OvtaJj8x
-	HnMLUR3FCAhdFjBhagUcSYlhhrqbXdI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=K6U6ELrx;
-	spf=pass (imf24.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 19B036B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 09:01:34 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E238E140381
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:01:32 +0000 (UTC)
+X-FDA: 85143432024.18.B9C93B6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1DF0F10001D
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 13:01:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Deau/1hd";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787748948;
+	s=arc-20220608; t=1787749290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VnrjRmkdDMOkUOanYpX8DXzjHMEr7A8cKpEvbJBdT7o=;
-	b=6VZfmsKJO9vfPob0zwDEsloIVnv/uclQdmrlw3n/ekF4aOd89dJfWpQN0c1N7UHLqxMMu1
-	/fhwO9KaWKaAxVzhvcFVhYzKDPDRgtbOO8Y7BZGx9om6Mbg+jCOoFNEIL9QvGV6PwfF77m
-	8QpPQoicsQn+7eV4OI/Dqo1mlinpktU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787748947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VnrjRmkdDMOkUOanYpX8DXzjHMEr7A8cKpEvbJBdT7o=;
-	b=K6U6ELrxWjc88P6yDKL0V7jN8dmzGX7l9Itrt+ywejG5E5GLG8hiqMgrarc3QEptZrvuSF
-	UWdSD9qNwaesOeMZR1MPWjslZieWwzxpRIj6/vwMp1YmDZLPnr5qf9m6kJDj0cAkN+2CkE
-	h2tuSLQlJ9JoQSTz4uQthJ26ISIuuv4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-508-OyLs-H8nPUi38HBJaBo-pg-1; Wed,
- 26 Aug 2026 08:55:40 -0400
-X-MC-Unique: OyLs-H8nPUi38HBJaBo-pg-1
-X-Mimecast-MFC-AGG-ID: OyLs-H8nPUi38HBJaBo-pg_1787748938
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 187341956088;
-	Wed, 26 Aug 2026 12:55:38 +0000 (UTC)
-Received: from fedora (unknown [10.44.48.90])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id CFE3940E;
-	Wed, 26 Aug 2026 12:55:32 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Wed, 26 Aug 2026 14:55:37 +0200 (CEST)
-Date: Wed, 26 Aug 2026 14:55:31 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Stultz <jstultz@google.com>, Ingo Molnar <mingo@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2] posix-cpu-timers: Dequeue per-thread timers before
- exchange_tids()
-Message-ID: <ao7iQ_wOLghOvTsq@redhat.com>
-References: <ao7Q8miiuLAPVnWv@v4bel>
+	bh=i7OqggJ1fEHcFpexMbhQr1tq9t2PX/2Yu/4dFGYaW10=;
+	b=iwzb1TCOpZ+W+98F/NPtuvXyxQE91lnuzM3fJJhPkdpl1L3EUMG5VgWbeTdtsR/n8R9kaC
+	RQA6M0MVXEaV5Dp+D1qGllV6/eafoQyaDWtn90+PGrl0j/THbyp3bfxzOVDck6KPEFCUoR
+	mT8Aym5x6L28nWuTSmz50mfsDXeEUe0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Deau/1hd";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787749290;
+	b=KaNScJwsbiIlje7cQ0JsMODE+BHtfVsqXYUdF89yWnrADC+5bOlDdI0Uh4adXjyw6NoPuj
+	sLrVhQ8jICtEtKcH3qKStFddWDdk9ITjRw9oXx5O7yFaR2mnX1XajdfjeXo8cT0y95u7aX
+	UrBvMvDOtvOyN+xX62AUJ4PsBmr7oKo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0C0E443B2D;
+	Wed, 26 Aug 2026 13:01:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85E11F000E9;
+	Wed, 26 Aug 2026 13:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787749288;
+	bh=i7OqggJ1fEHcFpexMbhQr1tq9t2PX/2Yu/4dFGYaW10=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Deau/1hdi71/TOvis/j3rQ6M5DSNtC+Kpb0/4DLYBDHfMXUUwrKHVpPabqpUJDPtS
+	 NHVrY//f44lEJXjWKB0PXAG5QIUAG0304rpz3nGYnEOfCNaiExxKEAURMcUHdvT5oy
+	 LzQpmPMtkJO/r+WlXV24XgkReQb9hpVH/HU1lDUrXhUHWecsnf+KBhcz85XyL5VftT
+	 tBV5WEiYNpA96+w3fsyTK+zu41Qw3lM5ogZkrVsBURYTeXNxv5QpUxim8yuOJkQt/u
+	 OYe8lRx9cHBWu+Blgo8xD745UPdnEgCfM25pZ4Gb+bEFmXWRU6OgD6LbAVRW+0nNft
+	 cwFTYvzm8dD+A==
+Date: Wed, 26 Aug 2026 15:01:21 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] proc: query LSMs for introspective mem access (if
+ PROC_MEM_FORCE_ALWAYS)
+Message-ID: <20260826-rotor-heterogen-wollust-2091c20f5e30@brauner>
+References: <20260818-selinux-pokemem-v1-0-90cd2357ee05@google.com>
+ <20260818-selinux-pokemem-v1-2-90cd2357ee05@google.com>
+ <20260825-unweigerlich-biotechnologie-abnormal-accff844337f@brauner>
+ <CAG48ez14F42BgHm5dKeP4g8D_6CNhnAfF7BXdcBwa4NdtFiaiw@mail.gmail.com>
+ <20260826-juror-energetisch-hackordnung-83810c82adcf@brauner>
 MIME-Version: 1.0
-In-Reply-To: <ao7Q8miiuLAPVnWv@v4bel>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: ywgcTHzOMWyz3srg2AkjyIodRSKykvs6pGI11Weiu_g_1787748938
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260826-juror-energetisch-hackordnung-83810c82adcf@brauner>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1DF0F10001D
+X-Stat-Signature: awrrq81gifnhegfm5autms76tfskon64
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4B9AA18000C
-X-Stat-Signature: tan3erbecxsebjy4yg7ukn1ygryx1go3
-X-HE-Tag: 1787748948-200845
-X-HE-Meta: U2FsdGVkX19vV/BvVS/DMOr+bu2ksjvuS4YW6pabjHhOCiq957GngQ+Ehs7gvSzVEyf1I6QHgPbnNM2AorTeNvZ7yeLGFJNHSah7sW8Phqkt32SuZ9A1wh2KtKqd/5+GlY4UM1faBRzP46jNhxe4jNCazDg2uQraPmGrhNCI/YW3025Gf5VC01JoPICGKlADydAupet0qGfQgoicLFFxTWzLWD/h4zQTH3FWytO7Mu0tA1AUY+vQQ2XRrHuJs1feDt5ILYA1UiRQvGYXR5ITaukjwehIOjk5vdXNbi7dsbgev/cP63b34eU2sgLvajogcsvdAje0BXTygN2aa9QwWuWp99hDJReBx4sXoo5SXSTgyeK/u7w9yyvILeWd9Vd9SIven16U3G+yBb8U/6pH5HsLJxYzjBDykwDKh9XHEK4jk/erh+DTCnTXSMXunotk8+k6GgNtFNLO3bQYDXx/aEAlRaKgyBTCKPW+38J4dJBjs2j4ihUBRWjIUcK3NqOivXg+U/YfTziNpHW9ps2rb+oT7pbC1VTE3knpiZU8o1yS0rdSCkR1iZ/VCn3HJNfC5tSHBH6vBvMZxXvlzTHeygTCzXEhQh4bLjQm3cpvdbbApdHZ6xNkqkvgjM/l7GUHE51aTGsMWLE1M/kLmWxeLVqALss7VJOEOKa5Bzva12nc231+lOEaEU3Xoku2i6/3R9VrbKPRnqlNrP6GvL3KWTilRVy1Y3nyKxuFqMhoTE2BgU3M54+fn/KIO20WEB4vm+LxZHkqdZQm17kQGqSslR32EBiJQW0zL3l/HMUSJM2cMA1d8LIqxCt0SZePjsEerk9Hg0ImxCPnzBHbhSQkVApeSSysY8XZT3qwq2Djpoq9qaKRQu0w19mPvJ1TM7YNbECKSGolmGy4CxKgNwGPXVgjWBzb3lPP1m6YkzkyC0ObMs1AzAwZiaBA/jhrKS2wJR5StszJcZsOpYQIBjt
- 9YETN/ej
- APFAIaVz6f2m0JIWQ9cYIwtr4n/3iRZtV7NKXpsHF0Z1mqROtBgPoE2017eKaxxkPf+n5sATO3NPMgWQDJzNJSERAuIcuJiBbmy1POzACDwrmEGNaQevWwl2l/etLLEXt0lE2bmNyS64vMQmAlI5SlDsAYKebXV3zW4bFYA5YSb+DHjG1lNXuvz6mdRr8UovUg3KlGDmGvVMyjMHSxMGNyhVuKXaPuk8dfQ62IV7VXLll180Zn3GHvWZwUsGRd31jUaPbwLmFMteAgZ5W4/40eCi8oA1F+4kh/vouPkmkfUXbFHBdb2jdTviWdu9Tg4TFLaRaFl40bZ/MKiSx7BWCr7UImwifLzG4vK8q9MK8jYPE18J87rQCXVJw6idKl57ZlRmvByjC/eo7rjpS2Eh3+MTemXSMrppybVPszLeKBnYaGDo=
+X-HE-Tag: 1787749289-359818
+X-HE-Meta: U2FsdGVkX1+eAziARsGmyVqOqFyMeIrekDIjbQ3AOSpPMkPDwzc0KyJIEhtsvV4AmBPoD9gagTUV+MJr0kMzDstT6rMQ2ngCZypyaPzyKw2ZxZgW9klWp9uWEFm7ayPWtFWYI3bL1DqirTlJTguxVoGiAp4TF0sJvpNtSEWoSEh5/A41K+x+QUD2vkdGcnVrSwwcrc87jUQ0tpvPlIq7zoAOEp4vTrWwJH+JfTqpOnVL7oiG3JBE33eA8Rr0OjUsau+tGC8lUc2LZTzktRJuBV/tQ45/Sy8vQN5lyhmnF0YzfTMgEYtuOJHOiJDOX/FH2RR5SkOUhYJogHB/LfUCjuwTTyE0zzKADTefty41FJfiO7daFWhTCkai0zlHMxSDm8Ki7HSKb+jY6TxhODNgcOWBIxOqIxCb75ozZEMup0Fg7r2+f13il5iY2pmwQk2WEqYkS/VsIOFLPzI3Gug2eC5xAHPmSaxu3tcYxo6Th7o5qd3xfM6FCa8nOefahod2pJegwzDKSyrKSAwjuyLDXmFyRERiRi4fkgc9VyibuT5QAof8bP7qsWMO1frzp8Yy8qmNtVFAHFyWFg17q9Wqp36agshTLKcpXe5+g7zWFqloxXZx8loVMzgsTT59H80A6JQ0u/fBjn4HBNA7lcKXeYEzaXC5xmidNI1DHKZci26YbRKjf2dm0VtXhCx7M/i1O8o/uuA2aDfvzYT8KUG9vZ+3zvTq3rd2BPzXdA6sUyrs4p6BwjPuUWPGyuaYBnbfDD75DhJ8iuBG02fuDufQYoIJkXPbFXQn5NB+W0/jA5Zcp/JPK/8CvI6V4aEoAybzLAuUBd34S/MXA75cIVHU3UdHX79rpWJg/WLSXC67O87x+4P6h4hgnVqng0V51eSzYf4eiFhIxhERZj1+YZB0F64MCiXHVn0zIh0+YpZ072avm4hnr1TKWkQDoayoKscwHDHQsFRaA4KJy9oPz+L
+ M8EPcsah
+ +oiYifk4tvLs6EJ6PuXlR8AW0NC6ClB6EjRCquOfTZDyI31bSy2wJrZaes2sU7y1GcbPdTPjUOmPFALZ6ZQXY04QYr+aCKlKbT1dADXw1R9UGEdZ7NljUgpNFoaY3I2iF9uMTSmRVxquwny0U78b0HW8rxRCn1zAm/0bL2nIpngJlt62UpK0gDyWWbkDwpFrl6ok/SZMYsj5yCswwQEdcfihGVStBJeNRl8BLktW8Oke3A3OSkO0m4VQit7j2UWNUL0DIKAuU3J7sjvQ+SSOv/RIp2tSS1teOMEc/JbIg5FfEBAe8+XxECNakfOXp37YvPqkN/hVRKy726g0re26C5gLL4LCIDyGzsjAkTQxu7hxFTc9mCJkS2WnU81/5YfyI4WiYggrknfTFj0cfH8PoS6CZS3vGoMGYhctF0uoKyLDd/oBFZlG4R2y/KqJyvxxSVcMFQ6/lj4RItSt7MNHIFDZ1H8Ct5QGQ4FS5YvrJlFEjxzhFM/7QbfzPCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,55 +103,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-OMG, my head spins ;) I'll try to read your explanation tomorrow.
-Right now I am all confused.
+On Wed, Aug 26, 2026 at 12:29:14PM +0200, Christian Brauner wrote:
+> On Tue, Aug 25, 2026 at 04:00:40PM +0200, Jann Horn wrote:
+> > On Tue, Aug 25, 2026 at 3:19 PM Christian Brauner <brauner@kernel.org> wrote:
+> > > On Tue, Aug 18, 2026 at 09:51:06PM +0200, Jann Horn wrote:
+> > > > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
+> > > > good opportunity to block a process from overwriting read-only code in its
+> > > > own address space through FOLL_FORCE writes via /proc/self/mem.
+> > > > The security_ptrace_access_check() LSM hook is bypassed when a process
+> > > > opens /proc/self/mem because this is considered "introspection".
+> > > >
+> > > > This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
+> > > > that a process cannot create executable anonymous pages.
+> > > >
+> > > > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
+> > > > accesses are only possible when the LSM allows ptrace() attachment; but it
+> > > > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
+> > > > environments running lots of third-party code, such as Android.
+> > > >
+> > > > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
+> > > > such "introspective" accesses.
+> > > >
+> > > > Signed-off-by: Jann Horn <jannh@google.com>
+> > > > ---
+> > > >  fs/proc/base.c                |  6 ++++++
+> > > >  include/linux/lsm_hook_defs.h |  1 +
+> > > >  include/linux/security.h      |  6 ++++++
+> > > >  security/security.c           | 15 +++++++++++++++
+> > > >  4 files changed, 28 insertions(+)
+> > > >
+> > > > diff --git a/fs/proc/base.c b/fs/proc/base.c
+> > > > index bec6197329dc..3dfaef49bb70 100644
+> > > > --- a/fs/proc/base.c
+> > > > +++ b/fs/proc/base.c
+> > > > @@ -851,6 +851,8 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
+> > > >  /* private_data for proc_mem_operations */
+> > > >  struct mem_private {
+> > > >       struct mm_struct *mm;
+> > > > +     /* Was the ptrace access check bypassed due to introspection? */
+> > > > +     bool introspection;
+> > > >  };
+> > > >
+> > > >  static int mem_open(struct inode *inode, struct file *file)
+> > > > @@ -864,12 +866,14 @@ static int mem_open(struct inode *inode, struct file *file)
+> > > >       priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
+> > > >       if (IS_ERR_OR_NULL(priv->mm))
+> > > >               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+> > > > +     priv->introspection = priv->mm == current->mm;
+> > > >       file->private_data = no_free_ptr(priv);
+> > > >       return 0;
+> > > >  }
+> > > >
+> > > >  static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
+> > > >  {
+> > > > +     struct mem_private *priv = file->private_data;
+> > > >       struct task_struct *task;
+> > > >       bool ptrace_active = false;
+> > > >
+> > > > @@ -886,6 +890,8 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
+> > > >               }
+> > > >               return ptrace_active;
+> > > >       default:
+> > > > +             if (priv->introspection)
+> > > > +                     return security_introspect_mem_foll_force(file->f_cred) == 0;
+> > >
+> > > Hm. Why not pass the reason to security_introspect_mem_foll_force() and
+> > > call it unconditionally? Similarly it could also be called for the
+> > > active ptracer case. Then you'd just need to pass a flag to the security
+> > > hook and the LSM can decide based on that.
+> > 
+> > A process which is attached as a ptracer can modify memory with (for
+> > example) PTRACE_POKETEXT and registers with (for example)
+> > PTRACE_SETREGS. LSMs that want to prevent such debugging operations
+> > are supposed to prevent ptrace attachment with the ptrace_access_check
+> > hook.
+> 
+> Yeah, but as I said elsewhere that is very very coarse and you can't
+> differentiate between the different operations performed on the other
+> task.
+> 
+> > I am just trying to plug the enforcement hole where ptrace-style
+> > modification of process state is possible without going through
+> > ptrace_access_check - which means just looking at these
+> > "introspection" cases.
+> 
+> It seems odd to just call a hook when it's introspection denied.
+> And if that's the case why not also have a general hook in
+> ptrace_may_access() itself in the introspection branch?
+> 
+> I would actually have use-cases for this btw.
 
-But let me ask some stupid questions right now, please help me to
-understand the problem.
-
-On 08/26, Hyunwoo Kim wrote:
->
-> begin_new_exec() calls posix_cpu_timers_exit(me) right after
-> exec_task_namespaces() and that removes the leftover node, so the state
-> normally stays invisible. But bprm->point_of_no_return is set before
-> de_thread(), so if unshare_files(), set_mm_exe_file(), exec_mmap() or
-> exec_task_namespaces() fails, the task dies before it gets there.
-
-Do I understand this correctly? If begin_new_exec() does call
-posix_cpu_timers_exit(me), then everything is fine.
-
-Yes? If yes
-
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1003,6 +1003,18 @@ static int de_thread(struct task_struct *tsk)
->  		 * the former thread group leader:
->  		 */
->
-> +#ifdef CONFIG_POSIX_TIMERS
-> +		/*
-> +		 * exchange_tids() hands this thread's PID to the old leader,
-> +		 * which is reaped right after. The PID lookup in
-> +		 * timer_lock_sighand() then fails while the per thread CPU
-> +		 * timers are still queued here, so dequeue them first.
-> +		 */
-> +		spin_lock(lock);
-> +		posix_cpu_timers_exit(tsk);
-> +		spin_unlock(lock);
-> +#endif
-
-... then why do we need to call posix_cpu_timers_exit(current) before
-exchange_tids() ?
-
-And what if another process attaches another cpu timer to the execing
-thread right after the code above?
-
-Can we move posix_cpu_timers_exit() or the whole CONFIG_POSIX_TIMERS
-sequence in begin_new_exec() up, right after de_thread() before the
-"if (retval)" check?
-
-Thank you,
-
-Oleg.
-
+To be clear: I have no quarrels with this going in as is. I'm just
+interested in how policy decision such as this can be made more
+meaningful in general. If you have thoughts around this you want to
+share, please do.
 
