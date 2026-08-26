@@ -4,139 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21D83C61DC2
-	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D88EC61DC2
+	for <linux-mm@archiver.kernel.org>; Wed, 26 Aug 2026 07:58:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3171A6B0088; Wed, 26 Aug 2026 03:57:15 -0400 (EDT)
+	id 207FF6B008C; Wed, 26 Aug 2026 03:58:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C8156B008C; Wed, 26 Aug 2026 03:57:15 -0400 (EDT)
+	id 1B9AF6B0092; Wed, 26 Aug 2026 03:58:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B7BA6B0092; Wed, 26 Aug 2026 03:57:15 -0400 (EDT)
+	id 080D36B0098; Wed, 26 Aug 2026 03:58:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E5F6A6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:57:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66DCEA0282
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:57:14 +0000 (UTC)
-X-FDA: 85142665188.07.BF38ADC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 95D2380002
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:57:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kn+BsycT;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787731032;
-	b=bEkw+APFIiqYXFHEwKUCFYMz+LaJP0qnsfml/rgwNiZqcJTPF80PYjaBl5FRq99ySoZvg3
-	Z6ok+KnoESS292jk08FoketsZYWTgbEeRuGvQHMfgJt0ROvlDPyTQmXlCvroJO4qBKFfz0
-	3iHjzM7PCGEEefK5ydASMdtsCblXjQE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kn+BsycT;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CFA8E6B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 03:58:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4FA18140286
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:58:01 +0000 (UTC)
+X-FDA: 85142667162.03.360F87A
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 992B920005
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 07:57:58 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=BXbNQZlj;
+	spf=pass (imf31.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787731032;
+	s=arc-20220608; t=1787731079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JoSpfgQVWPrL1xC+VY8JnkH+r+BJbUIhnLuY0YtzjCA=;
-	b=ZgFsV4tSDJW/w4SaJedQwqyJpkFPZpMknqOZkTbYAoEc/ScUcG7rKEskKciyi1BGbYGA13
-	KU7sYIHh2G3jxAfgr+PsLvpcEpBhHqbTHErqieX2FgQHhlMiKsPW3N1WGebZT9m/+zsM72
-	5DM8mQYs59yz599SHsTk8a0oZ1ZRxnQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C3A7E41483;
-	Wed, 26 Aug 2026 07:57:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEECF1F00A3A;
-	Wed, 26 Aug 2026 07:57:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787731031;
-	bh=JoSpfgQVWPrL1xC+VY8JnkH+r+BJbUIhnLuY0YtzjCA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kn+BsycT04gQ8Z7v7bg784woMyrj3i89HvLmRjTDXrcv9qjJqmPSbDnGUXZGCzLJ/
-	 ie+ALYgFBja7ljDjCXCtXqjGKwBfbhr8XyuW42PRidc7g/D4PI/5yKDesjbZ7RSGdI
-	 +7tAytW8JomdXUvRk1Al0ZRYjnre/arA5xMA6W3Z1w9mmHSnMIvOgAW1OhAgasnwGF
-	 o9Q6xGSEYUFB3Iv1Hr9ml/HGlawCYbvkrSqCs+vW8Fdh8I27a56Ahin2NnFUm4j2CA
-	 smzIOP7F8Kfry1m4/mH4sxuJgHxvnTgd5J5OFdxdUHE18sw971vI52NqMJFNukphKk
-	 51PMIoH44i1Ag==
-Message-ID: <c8e3bb54-e4f1-45d3-8059-3ee1910a920a@kernel.org>
-Date: Wed, 26 Aug 2026 09:57:05 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=RyPvxdGRgH5h0qjgqPGLBcGenj7IQqwTD2ysSpkPQlk=;
+	b=JUWKCpkoq3tcVWdn4XS6P4u8p0kby6vM6+2Hb2V51k2Xa4YBDBmIlZrgn9tkwpInFB+oEN
+	GxgPKpNQ5PCXYn8oCn+Me9iBsKpU855rrVO5wLoJK2PMILa/uF2ebGoOwrJnFCbjidezKp
+	K0OqgQRokN8+Hubl/z/hpT8eBsE0BD0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=BXbNQZlj;
+	spf=pass (imf31.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787731079;
+	b=xg08OflumIpV/+N9LBgduoHJXf0iNUub5WuCzlO6WMGk8mmlm55FWfB/LaWhWL9ODOPfjY
+	3y05WLV0QeVnfZsv87YSAXGwwdMHjcDHGlN9ODRHsZ4JRbJQ/VszQgj0HYsknn5Q8IFvcu
+	ypj0aJndFzchP0BibwHlRexo7OBzUV0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Ry
+	PvxdGRgH5h0qjgqPGLBcGenj7IQqwTD2ysSpkPQlk=; b=BXbNQZljB8Hq81dl3+
+	UBzBkBQnQX08q87b14sr5fY0xXz8yjx4VpKKl4gZiQm2K8kxvnc3Pp3hziGWoKoF
+	yUH/iOd1xKg8KTpPFMA5/kLvTmou9fhdI8aymZTgklG63QrNLLGA9aj5sEtKxRQ6
+	iBgmwP3wt3bx04XNW4IrhOw5s=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wCnK8hnnI5qiaqVRQ--.33731S2;
+	Wed, 26 Aug 2026 15:57:28 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	akpm@linux-foundation.org
+Cc: hao.li@linux.dev,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	paulmck@kernel.org,
+	rcu@vger.kernel.org,
+	xialonglong@kylinos.cn
+Subject: [PATCH v2] mm/slab_common: fix shrink budget underflow in kfree_rcu_shrink_scan
+Date: Wed, 26 Aug 2026 15:56:53 +0800
+Message-ID: <20260826075653.3304251-1-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] mm: khugepaged: fix swap entry value to
- folio_pfn()
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, usama.arif@linux.dev, zokeefe@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
- Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260824092935.73892-1-vernon2gm@gmail.com>
- <20260824092935.73892-2-vernon2gm@gmail.com>
- <edd7ed8d-0f2c-4de3-89e5-f2b23c2dd1e5@kernel.org>
- <6a9c2369-5589-4f2a-bcfe-c6e3b46a1ccd@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <6a9c2369-5589-4f2a-bcfe-c6e3b46a1ccd@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCnK8hnnI5qiaqVRQ--.33731S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tr18JF4rKr4xGF43tw47urg_yoW8Zw17pF
+	Wjk34UKr4xJrWkuwnrGa48XFWay39YyFWxKrZrCr43Kwn0q3WrJryIyr4j9rW5KryxXaya
+	vr9Ig3WUXFyjya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUIDcUUUUU=
+X-Originating-IP: [39.144.46.203]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+Al-eGqOnGlJDwAA3h
+X-Stat-Signature: fpaputzwdz8d99s48wt88uftnjhe1tgu
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 992B920005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 95D2380002
-X-Stat-Signature: 5ygs786s6qkif1ehhqju6aya9h18h4oc
-X-HE-Tag: 1787731032-862004
-X-HE-Meta: U2FsdGVkX1/nzB+KrHegPuOgPXFkUEfj9XlcF3n3/7ooPJpKrD0Jhkp2o2FJXktTXN39GtcE29O00ms5d5w1EZcg2Xf1weE9yJ/2XlrT27VYnxVlGjAca3Sia/teOkX0yfPKO1MCMrCerwCoUGsnu/9m3Xu3UwsKT4ByizGivrz6Nt/L/4fx52XVxoQVW94nViuzhIWmmpN0jGdIzNJ3pow82FjLHwaPg6S/pI55BqNK5mmWpUrynIH+QwqQp3UKLGqFzgQjGBneSo9DeDX0d0/yR+UqVmy9bwU+qHAu4HQxHT1X7HW8TBUipxqt5GcyyOolgv6Cr7l1psrcMx1e1UjwKXKUpI7V8ewYUP8UM4lJGvzqshFaw2vqxxfmgyOOo4KH2s84WlnlBM6JIWSyJXYEILMn8EDs0frP93uU6SwKKCgLgyAA/ZgFlElAxzEBfqwE/ORJxX4MHJf84R0fKcaFpKJKBV3TDlPdJ2A8qZKe4b3IAXVVJ+SN6K+5H1xVAPi8+QEqSGVJbQJyRM2bs8PuiJUP53cXJoxW3oJloLlX1ZnflHoskGeJJNq4yVXxj7UddzFPOSv+9fMBqPRmPQ4kYZkW1zMhOS272s5yOMDheTUY1mGrgbndVsSGHNeR7MYvhlWiF8uAnsyn+rIJkfuDmlS5Dh3QtFZlV/iX+aWB+tXqXRK4QVvDGgQ77r4BlW6Xn8HL+slPJThJuWE2l8LkccqMR4vrmrB0naMKL6wKYsYcBZTPlGfyau9mAti68vTUh2wp9IgL0bDDmIELGhk3qUgR+NhxNjGk52jAdTuFHcjHO6W48W42xGDWJMyXjcazuboYMM6zCPzSK48L7LZDyPR6SZ/232zLICq/IBVFijhcTi5DC6c33t7ioRbrvbNrAN8NNFv3rNZAAiieIVdnlgXVlf1Q+S1XPQNpGar54j4LpWCZN1S1UHtwTOkNVBk75bC7UV2orha3JHP
- AcB2xAtN
- OI0WLA+tdesr0zcaIwp2R147iNwHyZZxNIFYYGaAFcnRCwkB/PeMrFLvfq7NuzGXUeh/T+ycaUKjMHNVOTxW9i9ZkyewLUZER5IOVGHamDbQ4OF+tywGI6mwBqxuCGw0DdZG+AUkTlsPjLiJWGUIWt0dvWvFSTOs39Dw4VoM74ojUj+SiFVvB5zlirzmDr8AvJDyqSIr0smU0G9Pyndz0+qqmvIbxycPVlL4x24G50Wl2z84srp+2R5QWSPeTrIAfYWc6OyYQLSpkPGnBENM+UYnOyBovFogL/ktBPPIzk5iibgGjWcn1NIcP2R82aY473EXN58u3sZWKWM8=
+X-HE-Tag: 1787731078-404559
+X-HE-Meta: U2FsdGVkX1/hZHFlZkCthgjYueiHATObX+ZdDmCsU5oQekXs00z+CYD/Npkdt4PIFbO1g8eJrQfNI/Olc0FlKc9q5C1vHtk0+Z4mZKYPrKnQHkZmVtO1scOAmBznVfRTsE5yPJaq5u1WAt3dN5Z5nhjSHGhdr/F3jhptn74jzaYmjFwBVZnyNZf+pj70gBjcT0iezWNIC0eXVKEiTJ4vVQ1bhpi/BHaME3fJxi7r2eaKbaNyXQx0rpVuVPC0mme4kdb1Uu6X88hxRCWngsR/Jhmra4Aof2N1iejaxsnNpScPcVUK/YGF9pKFHuvD5xu+coI97+RcaDZe3Ca2zXMpn7ZAknkBij+xnz/4NgtyMjZMJ7nqHm4w7tAgSOxa7T5bph/KfyBP2Z9wvpf7cQTmdwpdRwV9VdxVjnPjd3eWJcOFFTzxKowGHVc4Fytreyq9OTvbco63cyvHi+utwXTp+/W7TlNW/8TaohinboWnGHfKO49GYKBOO4K2zst7EDBLcCxwH83HJ5f2TYG/XAvyfeRF8dl/VkWfjmmcj67X3PJ/GO4xpDHm27wC7CdmF69Smt60+wkT26blBiu+z8p6IkNEndQU/GX2X1gWCGG+K+y5Rmd5tN32UQDID6kPsOzdRFgpBFX9dHlmtd18z2Cp9RFdWtfK10+6xn05jHXqsYyreyh6Pgx98h2seHqiWLgRchvYDNcAsBi8G9oeQsJDMQehIBEAIoao8geiP5xIfEHmgU30lugmTpG/kWWiM9wMng89Jd4aTePwbJfgxnu+gElPRlpMCd5vqDMwSqkAxWr4NFzv5wDvWM3p1ng5/MqZl0BrTzedqBTA4BPt5we/ua7mqypJ/LIgUoc3T6UbPKRNRQGOWY3n0AtE/UrGDfbQ7MlGRoYA6tJIsdwZlPFOrNFqjiDmjA5lsachZhQTUgEis2Q2wiif9/rI0AvL+c16gymM71zPvTMDeES+afG
+ eP4l/rLz
+ uCwbroI1q3PkOTZFkYZHqX8cuk3mmWctHo/5Cj69DdwDFlmsArXcNh383N4CRdIqUVHqcK/MvjvwhEuMThUolxB+ZtMDqRIC0bS/TXf8b7Yg0GSdozB3v1jOi+GSpRptrA9WpWlDeoRY1NLEvZ2sdCWkduuVq19FTuOiHVo9DpMnKCtR3zxQJ8OIXBW5Kiq8FoBmHxveeSGDeAZ6Dbnf5xc6oTG0lm4UrEfYKB4pKFZRTObLD/+Fcf9PngfyyAAOVYwerchknWBWF7b1NuwtDcWZVt7giDot0XVP3k3uWGjOJjUy2nRAijRgIkaHw2aSldJoyQMvIdQj03sStecedY5eIOQ9ObSosxzmo3zhxphx5iO4z1tRuAUc0ikJu3ffbmHTgIhVQxuYaWIURf/oUt5ADzhbwyBYlKmc3BWDEGPTW4t6rwKziivsG+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,166 +98,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/26/26 04:44, Vernon Yang wrote:
-> On Mon, Aug 24, 2026 at 01:54:18PM +0200, David Hildenbrand (Arm) wrote:
->> On 8/24/26 11:29, Vernon Yang wrote:
->>> From: Vernon Yang <yanglincheng@kylinos.cn>
->>>
->>> When the swap entries found exceed max_ptes_swap, the loop is left via
->>> break with folio still holding the xarray value that encodes the swap
->>> entry, not valid folio pointer.
->>>
->>> That value is passed to trace_mm_khugepaged_scan_file(), which feeds it
->>> to folio_pfn(). On FLATMEM and SPARSEMEM_VMEMMAP, the page_to_pfn() is
->>> plain pointer arithmetic, so the trace event merely prints bogus
->>> scan_pfn. On classic SPARSEMEM, the page_to_pfn() reads page->flags,
->>> dereferencing the tiny encoded integer and oopsing khugepaged whenever
->>> the trace event is enabled.
->>>
->>> So when folio is the swap entry value, simply set pfn to -1, just like
->>> exhausted scan naturally.
->>>
->>> And the folio_put() has maybe dropped the last reference of folio. The
->>> trace_mm_khugepaged_scan_file() is left with a dangling folio pointer.
->>> so using the folio_pfn() before dropping the reference, closing
->>> use-after-free window.
->>>
->>> Fixes: d41fd2016ed0 ("mm/khugepaged: add tracepoint to hpage_collapse_scan_file()")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
->>> ---
->>>  include/trace/events/huge_memory.h | 6 +++---
->>>  mm/khugepaged.c                    | 5 ++++-
->>>  2 files changed, 7 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
->>> index 5a48c5406cce..7b526528f85b 100644
->>> --- a/include/trace/events/huge_memory.h
->>> +++ b/include/trace/events/huge_memory.h
->>> @@ -178,10 +178,10 @@ TRACE_EVENT(mm_collapse_huge_page_swapin,
->>>
->>>  TRACE_EVENT(mm_khugepaged_scan_file,
->>>
->>> -	TP_PROTO(struct mm_struct *mm, struct folio *folio, struct file *file,
->>> +	TP_PROTO(struct mm_struct *mm, unsigned long pfn, struct file *file,
->>>  		 int present, int swap, int result),
->>>
->>> -	TP_ARGS(mm, folio, file, present, swap, result),
->>> +	TP_ARGS(mm, pfn, file, present, swap, result),
->>>
->>>  	TP_STRUCT__entry(
->>>  		__field(struct mm_struct *, mm)
->>> @@ -194,7 +194,7 @@ TRACE_EVENT(mm_khugepaged_scan_file,
->>>
->>>  	TP_fast_assign(
->>>  		__entry->mm = mm;
->>> -		__entry->pfn = folio ? folio_pfn(folio) : -1;
->>> +		__entry->pfn = pfn;
->>>  		__assign_str(filename);
->>>  		__entry->present = present;
->>>  		__entry->swap = swap;
->>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>> index 79effd3f3da4..00337405c0e0 100644
->>> --- a/mm/khugepaged.c
->>> +++ b/mm/khugepaged.c
->>> @@ -2689,6 +2689,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
->>>  	int present, swap;
->>>  	int node = NUMA_NO_NODE;
->>>  	enum scan_result result = SCAN_SUCCEED;
->>> +	unsigned long pfn;
->>>
->>>  	present = 0;
->>>  	swap = 0;
->>> @@ -2719,6 +2720,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
->>>  			continue;
->>>  		}
->>>
->>> +		pfn = folio_pfn(folio);
->>>  		if (is_pmd_order(folio_order(folio))) {
->>>  			result = SCAN_PTE_MAPPED_HUGEPAGE;
->>>  			/*
->>> @@ -2779,7 +2781,8 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
->>>  		}
->>>  	}
->>>
->>> -	trace_mm_khugepaged_scan_file(mm, folio, file, present, swap, result);
->>> +	trace_mm_khugepaged_scan_file(mm, (!folio || xa_is_value(folio)) ? -1 : pfn,
->>> +				      file, present, swap, result);
->>>  	return result;
->>>  }
->>>
->>
->> Shouldn't we just reset PFN to -1 at the beginning of the loop (and set it
->> initially)?
-> 
-> When the `xas_for_each()` iteration to terminate and the folio operation
-> preceding is normal, but pfn will be incorrect.
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-The PFN is only relevant when a folio participated in the failure. Maybe the
-following would be cleanest?
+The kfree_rcu shrinker decremented sc->nr_to_scan (unsigned long)
+and then tested the result with <= 0. When a single CPU's object
+count exceeds the remaining budget, the subtraction wraps to a large
+positive value and the <= 0 comparison, which is equivalent to == 0
+for an unsigned type, never fires again. The scan loop then iterates
+through every possible CPU instead of honouring the reclaim budget.
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 75639298efc27..371ee0b16d10c 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2683,6 +2683,7 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-        int present, swap;
-        int node = NUMA_NO_NODE;
-        enum scan_result result = SCAN_SUCCEED;
-+       unsigned long problematic_pfn = -1;
+Accumulate into freed and stop once freed >= nr_to_scan. The shrinker
+core treats nr_to_scan as input-only, so dropping the decrement is
+safe; freed becomes unsigned long to match the return type.
 
-        present = 0;
-        swap = 0;
-@@ -2714,6 +2715,7 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-                }
+Suggested-by: Hao Li <hao.li@linux.dev>
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+---
+Changes in v2:
+- Rework per suggestion from Hao Li: accumulate into freed directly,
+  compare freed >= nr_to_scan instead of decrementing nr_to_scan, and
+  drop the per-CPU count local; promote freed to unsigned long.
 
-                if (is_pmd_order(folio_order(folio))) {
-+                       problematic_pfn = folio_pfn(folio);
-                        result = SCAN_PTE_MAPPED_HUGEPAGE;
-                        /*
-                         * PMD-sized THP implies that we can only try
-@@ -2725,6 +2727,7 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
+Link: https://lore.kernel.org/all/20260824091838.1692153-1-xialonglong2025@163.com/
+---
+ mm/slab_common.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-                node = folio_nid(folio);
-                if (collapse_scan_abort(node, cc)) {
-+                       problematic_pfn = folio_pfn(folio);
-                        result = SCAN_SCAN_ABORT;
-                        folio_put(folio);
-                        break;
-@@ -2732,12 +2735,14 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-                cc->node_load[node]++;
-
-                if (!folio_test_lru(folio)) {
-+                       problematic_pfn = folio_pfn(folio);
-                        result = SCAN_PAGE_LRU;
-                        folio_put(folio);
-                        break;
-                }
-
-                if (folio_expected_ref_count(folio) + 1 != folio_ref_count(folio)) {
-+                       problematic_pfn = folio_pfn(folio);
-                        result = SCAN_PAGE_COUNT;
-                        folio_put(folio);
-                        break;
-@@ -2773,7 +2778,7 @@ static enum scan_result collapse_scan_file(struct
-mm_struct *mm,
-                }
-        }
-
--       trace_mm_khugepaged_scan_file(mm, folio, file, present, swap, result);
-+       trace_mm_khugepaged_scan_file(mm, problematic_pfn, file, present, swap,
-result);
-        return result;
- }
-
-
-
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 657fd75776ea..e227c2ef2a4e 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -2162,20 +2162,17 @@ kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
+ static unsigned long
+ kfree_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
+ {
+-	int cpu, freed = 0;
++	int cpu;
++	unsigned long freed = 0;
+ 
+ 	for_each_possible_cpu(cpu) {
+-		int count;
+ 		struct kfree_rcu_cpu *krcp = per_cpu_ptr(&krc, cpu);
+ 
+-		count = krc_count(krcp);
+-		count += drain_page_cache(krcp);
++		freed += krc_count(krcp);
++		freed += drain_page_cache(krcp);
+ 		kfree_rcu_monitor(&krcp->monitor_work.work);
+ 
+-		sc->nr_to_scan -= count;
+-		freed += count;
+-
+-		if (sc->nr_to_scan <= 0)
++		if (freed >= sc->nr_to_scan)
+ 			break;
+ 	}
+ 
 -- 
-Cheers,
+2.43.0
 
-David
 
