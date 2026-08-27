@@ -4,95 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123E9C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BF75C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:24:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F053D6B0092; Thu, 27 Aug 2026 11:19:44 -0400 (EDT)
+	id A53296B008A; Thu, 27 Aug 2026 11:24:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDDE66B0096; Thu, 27 Aug 2026 11:19:44 -0400 (EDT)
+	id A045F6B0096; Thu, 27 Aug 2026 11:24:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCBA16B0098; Thu, 27 Aug 2026 11:19:44 -0400 (EDT)
+	id 8CB5B6B0098; Thu, 27 Aug 2026 11:24:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A36DD6B0092
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:19:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 19AFE1C0F43
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:19:44 +0000 (UTC)
-X-FDA: 85147409088.18.841CAA9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4A5C32000E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:19:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C3wTZdzR;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 45B226B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:24:03 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B5BB6C0484
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:24:02 +0000 (UTC)
+X-FDA: 85147419924.28.515F2D0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D32CA14000C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:24:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=glnJ0K3D;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787843982;
-	b=S+E94A2siUIKsuUK7UgT3Z0+ov3ZM0kNh4iiUYa66mhGrgiJKQZpYafSQg4zH5ENNk4sKc
-	PfWuJpkuXS/qYNZFr0/Cts5oUUfScdnXoCux5PL+XSHRHOq62JyH6umKZvVbjYqj+VKnU9
-	cgq5y1tmb162tjmRehUBcw+VyRuodYA=
+	t=1787844240;
+	b=aXaOEq93Bxhemb69bowG5kaoRSaRf0TV/Js1QQhxqJGON97baSplEsCV+A9Jy2K0sHuQEg
+	JgVTLXTlKUjIotXWI88E74KIJVdnem2cI60Io2z9J2BdGkUumNwMb6jl68KGQ8xwUAW67n
+	LplXz0lH/HKOjBDDijyDyayC0tQ7Lvc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C3wTZdzR;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=glnJ0K3D;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787843982;
+	s=arc-20220608; t=1787844240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kpl4B9+OKi4iovuoAuQYAu+N2lhQ/XvjeS+MGmKxktw=;
-	b=Sn96goe/CgKPlZcPNXolDBIzpDQ9Ywh7HsyFs3rwFzNBXf5cJfcZJ/A2pdm36Ist4bcWsV
-	QZgt1ENQ9P9y3CDlq6l3Nr2avjfwzMpjC2gvrjJ9YGXmFVW5I/SZA9YVKersDHHqQYTai5
-	77peGtzagvHBKVYnYjvDnOu+mCIm7NA=
+	bh=QV9O0kb5nHnYqHl1na5pYG1wtKPWpi2bl7NpiLwLaVA=;
+	b=qlo1y2+Rj0/r/eEjejttrkUqwyDYQsdb0T68lbZ6E8ZxirDJ1EkR7AojOhwDQHJ5nttiwu
+	zLr4GWtbsyKPMwssixNRimzm/ZktDTsEGbcWiYVl5T6opJfJhYFfT1TOq1UoNcQXMm0SxQ
+	LzFIHbsRqvlKSZzQb/nmzl0vlcz7guo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D3D16600D4;
-	Thu, 27 Aug 2026 15:19:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CB21F00A3A;
-	Thu, 27 Aug 2026 15:19:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A63640A43;
+	Thu, 27 Aug 2026 15:24:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17F91F000E9;
+	Thu, 27 Aug 2026 15:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787843981;
-	bh=Kpl4B9+OKi4iovuoAuQYAu+N2lhQ/XvjeS+MGmKxktw=;
+	s=k20260515; t=1787844239;
+	bh=QV9O0kb5nHnYqHl1na5pYG1wtKPWpi2bl7NpiLwLaVA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=C3wTZdzRxmMWOfZFhu4sHFl2KwuIaNTWsnyVFxt8thZ4/jAWUoeQ+2/AwPiUo/oN+
-	 2Jt74gZHPumiZDkrGgP9F3hzwL46/ZEv/KrwvhIjKjDNBeCMsuG358CyjEpkGHrsk0
-	 u6VnDUHfefScEj8hFBE+n5NW2tvgYoQeu/e4TTWPsVavCY6LAK3ZbTbS3CazGz/4mA
-	 JJ06xBycBBYNrTbiWDeW3u3OhcSDtbrYe37fcCNXg9dhdZvkpAmWhOOcNpHH9pc8bv
-	 lsBOOQ+PAr8rODj0LRy3Il9DAUP4CNY4HbshIqAsT7BPur1018eC0+UO+x82JgMI3t
-	 O0/DjDpPdeopw==
-Message-ID: <37f6af95-950e-4457-886e-6548d4719f0d@kernel.org>
-Date: Thu, 27 Aug 2026 17:19:30 +0200
+	b=glnJ0K3D/Jl9fJ+YhlA14ou55XsbF4GhVDB1Yl7QH0VQvegQU1X3LI77lIO+y1VTG
+	 ZAa2hOzkfLp11XeCjXvefQSY2jlcjurJnofU+++Bg4+xi6oLc84aagJQ+wX4qPoAJI
+	 YoZcExlpukUNNuKIsU6j4uhlUhwy4LRFQlDYiiV3odguGbPs10zmDbsJM1sY82V0uV
+	 DP570GSsjfqsYADXKCgmYYKiW2kj14NrFfnQESMbGcBzInx1yLuCrTsfYROgbPzTf8
+	 PNEwwKGmLtmyDPpxYQYw1DUcm290n4JiPiqquRTb8az3iwbLUjblzxmxXK5nVEmjbt
+	 iDIzNyWamSOZQ==
+Message-ID: <c3f16d64-ffe3-46aa-9596-b233f9294fcb@kernel.org>
+Date: Thu, 27 Aug 2026 17:23:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] userfaultfd: collapse VM_UFFD_{MISSING,WP,MINOR,RWP}
- into single VM_UFFD
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
- Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
- Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt
- <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-6-3086981b33cf@kernel.org>
- <ao16VxNvaYzlt2WG@gremlin> <ao_9R3CbjYFipFu7@kernel.org>
- <apAB9GSnHNyNoSc1@gremlin> <apAcweThjiD-iIBF@gremlin>
+Subject: Re: [PATCH 1/5] mm/huge_memory: do not touch frozen folios in
+ deferred_split_isolate()
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
+ ljs@kernel.org, hannes@cmpxchg.org, usama.arif@linux.dev
+Cc: lance.yang@linux.dev, ziy@nvidia.com, hughd@google.com,
+ baolin.wang@linux.alibaba.com, baohua@kernel.org, liam@infradead.org,
+ nico.pache@linux.dev, dev.jain@arm.com, ryan.roberts@arm.com,
+ balbirs@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20260826162101.1314941-1-kirill@shutemov.name>
+ <20260826162101.1314941-2-kirill@shutemov.name>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <apAcweThjiD-iIBF@gremlin>
+In-Reply-To: <20260826162101.1314941-2-kirill@shutemov.name>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D32CA14000C
+X-Stat-Signature: 1tzqou9sd1fwqub58jmwyos1drkk5atr
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4A5C32000E
-X-Stat-Signature: rxrpa5oiipw9e9infk891rtduooewhdk
-X-HE-Tag: 1787843982-859197
-X-HE-Meta: U2FsdGVkX1+X9PUvzU7k3QoaI4w5C1/md7I+9BKfO7xGRs7/MhUtAJ1tOI9WTANpHpRXrj5FNsLdEs7VHmSBuuzyzniENLL5jrRm0z14p9R42OokrA1sC8IicPqLMNMFMsFHFgddXGi8jgLkNbkS3YERIv6R5QYE3EyajP9d5Oz7kN4MGhQOllIPICXNQlP7obcVqibtF7kmhuyRQ3gdubkPbkZPlsY+afVrGUwmQQT1xqVy/67aUHcO5Vn/Y/JYwgTNar1Ea3E1e9uVe57jiys1sr+g+PrbN0riinkq/SMaGHxJeWhVYY4nR46kmJ9+cBbQOCzqbcsw2b5TSME8gX19UjZl2gzRPwGluVZZddD7V9R31c68TiXR3068EURkxzVaeK5M+vHYr9F8uE0i8UtAFIIjyuUuHxCithUhDyH2Vuz1eqRDIm52JOfL1+WImTvwjGjqKbrhWKxewVZPc2knYtNF2AdMRFgDu547rQ0WlKLxe0VpKP3cl9mlCrV5Xr8x+6IWV20S7UDzChsHLabR6QxagKZ2qVje23oAf8JbAaNic9cN/1hCg9eqOnJAJqwfhaARbVL6e+zBUG9V7tZgoL8wOJvWUfMwJ+VbA45XhydJXgOFUt6AiWB2BD667mtDn5JdFgHp9uRVn4Fdmkzy0sUSeO2egnDfMc1GlLMoH3eNUM9x8N252nSnjk4mgSPjksxrQPjEAuPrZd+2HYuer7o6Le3x9qQLSPSR4qUPSblcCtHeY0M+rsc4YkB9YrAQMz8VJUhGYaRJJsLxuNNdbqTjWlXkrnIBEMaJ2ipAg2xDR1gdDSt5dNDfVCDN5FVr6Acg841vsYLT82DBPiOsXYre38YdawK6vi+EJu0oxHKGboIrHu0xlj0qYfBXU97fEbdr569F6FQ3wDegSMhb7kkC4hYI17CntRZoSZh7tvsaIyTy1myIQBH6YSr2LRgafRXkt+QjiCIg2di
- VuSoTv/2
- yB6HTyQTrsr8UtCh0rM7nKb1KgY6ckPD1JInDW/Z0sFhDtXIqRiUp/oZucondkqaupMZsX12Vtvy9yV/xBBt7VbI+wk5EYvYs7jQZiwDwfem0xC/lOM2EDduR7WMxMURnTV29rKFUS6hZ8hK8rNq/a4o2ijsZ3S0EicP8V/mIJz1djUGWFGnxMQrtlfIjCxPHhZxYrsnVCdzthmCAmoU4FvzjCqmu3bLJAdUhT7+WhYF+EZsdPzjSUFjkM15bVjXIvnGbmq387/eOA2CT7VxOjfeUopvTqL+Gq9CZv1TI6QCOCb6WmdspypfHwA==
+X-HE-Tag: 1787844240-295892
+X-HE-Meta: U2FsdGVkX198cu9xkaVcF2/iB2YzvpAxxVnS/OOcC/4AiO3UYl9ncBNHp57+kYSCB4+2QlZXyQRlbET4EZjlVfrH0bx6hxV7BlKRDk7Nn/Z2lWrhtrt48ikvtssXz4we39NDvoUxy3C/RW6U74eGTZ9fWcE0Z74hlXjHMCEIOjqbp3JDOw3Sz5LNFYmc78o9Q8iyKjsF6j39HDj8HCODenXmZWAbGpVO0/EKJC4exXC87jDjsF2BFRZVq8VTGMPx7u4p6Yj2eV8ROIL/RmCROnqRJW/NEZpyM2X+VCmmi4ufTf6v8J1mvsic9V+HItW/M1UPSil40ZqG2jAOsZtjbOuPwu8BRKXB0f89ugVOXLFg8zocnMRfIi0+dE85y+89r6EKzwBXZWli1B1uH2WO05h3pU4Buh6/gLJdrNWEUP6/5dcKzptkuDH9reCsgSSU1EhbxO2uXmEWmqzFg1w5c6+Jv+DadQinYniaIeeGFVumbyUK4vyLaTH0jVL1dedJKsdtxm21FrYKBRvezwZmDK8SXL6tgPA8njwzMWpAnEgHZ5ONSZHhLg4M+3MyFLlzN06EUiuRzoaFQL3aLjgUh+vUPrmnZTcDlunzKBTHPP+hT5muZCdGKxSHbYp2HkVeWkwblkT89ll9R8jOdpMzsu3OxKVIUuCm6rY1n6etlG/MB6MQZl/oXchzb5WhKSu2GNfnwUZyWMIku6U+eg1C2aTDSgEJnlSwCgNrtruFzBS5TGIHhG51hACfih0EGczV//9q2X7AQ+vcEk6ocYAnh28irMCrfRzcUsnuw/XLBETxM0PzmIvo/kRQzaUF1oR01RJuXI/pqRylykCUAOiX3+NLumXb6FNZ9fre/onBfKiZJlEHRa3wmN2+cUIB3NZvoasS8bjyzvP0rXO4X+RVBIP3YmL45UrX371YmrEGzayAnGn2seAzlwFXNayLbq2dD1bk/1/4zMgtWr34aNC
+ dwoUGiJf
+ wzwfxBDeeuDv4mCDhXMr8cyCaFEP1hL5V19XhSHN0sg0lZYPiQixgw7R0l478rWMW97t4Jg2xBuuGZVNUz3Yi/WjmU8M4HWiJheE2IJKDfYhVsbA6Fo3sl0dUHKvyXjwfXDE5/TlLJTquD02gAYSKGQKfr3yKrDH5T6jLPI5PkfSaD+9VU2QFHEmrmmHjAigtHP8/2pQEuz9hJviMC6Zm5Obdf5QvNQnwfkRuWwxPNtIKiKCQp+2NohW7qTma3rQ0m1nYWH48VgyyjdeqSfqksFHSstBtAediPJKeFI/q4CIJ5ustqm3UIOr31Sv1tKx2KVkhl4Qy+kgo69Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,22 +143,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/27/26 13:18, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Aug 27, 2026 at 12:16:32PM +0100, Lorenzo Stoakes (ARM) wrote:
->> So actually you're increasing by a cacheline and increasing the VMA size by
->> 64 bytes, i.e. 1/3, which is unacceptable obviously.
->>
->> Maybe there's something that can be done with:
->>
->> 		/* forced alignments: 1 */
->>
->> Perhaps? But that looks potentially ugly.
->>
+On 8/26/26 18:20, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> I say elsewhere (or think I do) but to highlight - I think probably we could fix
-> this by putting the flags in the low bits of vm_uffd_state.ctx?
+> deferred_split_isolate() probes each queued folio with folio_try_get().
+> folio_try_get() failure is treated as a lost race with folio_put(): clear
+> PG_partially_mapped, correct MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, take
+> the folio off the queue.
+> 
+> The folio_put() race is the most common case for !folio_try_get(), but
+> it is not the only option. Another scenario is folio_ref_freeze().
+> 
+> A zero refcount in such cases does not mean the folio is going away.  It
+> means "don't touch me" and current deferred_split_isolate() doesn't
+> respect it. It can lead to unqueueing folios from the deferred list for
+> no reason:
 
-if that's possible that would be clearly preferable memory-wise.
+Yes.
+
+> 
+>     CPU 0                            CPU 1
+>     ---------------------------      ------------------------------
+>     freeze a mapped folio            deferred_split_scan()
+>       folio_ref_freeze()               folio_try_get() fails
+>                                        folio_clear_partially_mapped()
+>                                        NR_ANON_PARTIALLY_MAPPED--
+>                                        folio off the queue
+>     give up, put it back
+>       folio_ref_unfreeze()
+> 
+> The folio is still partially mapped, but it is no longer a split candidate.
+> Nothing queues it again until part of it is unmapped once more.
+> 
+> Skip the folio instead: whoever freezes the folio, owns it and owner is
+> responsible for its fate. It also covers the folio_put() case:
+> __folio_put() unqueues the folio via folio_unqueue_deferred_split().
+> 
+> Reported-by: Lance Yang <lance.yang@linux.dev>
+> Link: https://lore.kernel.org/all/20260824131224.73344-1-lance.yang@linux.dev/
+
+Fixes?
+
+> Assisted-by: Claude-Code:claude-opus-5
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  mm/huge_memory.c | 19 ++++---------------
+>  1 file changed, 4 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index ced400f72d43..6281ed993243 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4590,22 +4590,11 @@ static enum lru_status deferred_split_isolate(struct list_head *item,
+>  	struct folio *folio = container_of(item, struct folio, _deferred_list);
+>  	struct list_head *freeable = cb_arg;
+>  
+> -	if (folio_try_get(folio)) {
+> -		list_lru_isolate_move(lru, item, freeable);
+> -		return LRU_REMOVED;
+> -	}
+> +	/* Lost race to folio_put() or the folio is under folio_ref_freeze() */
+> +	if (!folio_try_get(folio))
+> +		return LRU_SKIP;
+>  
+> -	/*
+> -	 * We lost race with folio_put(). Read folio state before the
+> -	 * isolate: folio_unqueue_deferred_split() checks list_empty()
+> -	 * locklessly, so once removed the folio can be freed any time.
+> -	 */
+> -	if (folio_test_partially_mapped(folio)) {
+> -		folio_clear_partially_mapped(folio);
+> -		mod_mthp_stat(folio_order(folio),
+> -			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+> -	}
+> -	list_lru_isolate(lru, item);
+> +	list_lru_isolate_move(lru, item, freeable);
+>  	return LRU_REMOVED;
+>  }
+>  
+
+Who will clean up the stats that we used to clean up? That should be mentioned
+in the commit log, otherwise it looks like some piece of the puzzle is missing.
 
 -- 
 Cheers,
