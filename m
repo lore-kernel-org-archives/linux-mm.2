@@ -4,120 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6365AC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:29:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8424FC61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:33:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A6D16B008C; Thu, 27 Aug 2026 10:29:01 -0400 (EDT)
+	id 6E4556B0095; Thu, 27 Aug 2026 10:33:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3585A6B0092; Thu, 27 Aug 2026 10:29:01 -0400 (EDT)
+	id 66DCD6B0096; Thu, 27 Aug 2026 10:33:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 246BC6B0095; Thu, 27 Aug 2026 10:29:01 -0400 (EDT)
+	id 536A06B0098; Thu, 27 Aug 2026 10:33:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EEA796B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:29:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A312A0434
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:29:00 +0000 (UTC)
-X-FDA: 85147281240.09.E176AEA
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4E77140006
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:28:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=JnvOaekw;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf04.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1960E6B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:33:34 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B074A0430
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:33:33 +0000 (UTC)
+X-FDA: 85147292706.06.12D14E6
+Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9D79640009
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:33:31 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="P 6HOkD4";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=YMTw8S+r;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787840938;
+	s=arc-20220608; t=1787841211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PI7Nz8d3HH69nhtcQsyOVYUPwrNGYdNUTrVZkR05tbE=;
-	b=jGTIY9Tq1L50+mqk3rTe/GnYxyederYBT7FXh2bAmsiO+0OSoq2/HW3ZIo8YO/fauP8EVf
-	9p2NCcqJUDyY7KQXEi6RxBNNzacQMhqb+6iUL45FDgsqV54v9vTiEeSZmF1wSX0I95DQkF
-	1nJikpAgVFqlHnKlePzKqZrtdszeBzQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787840938;
-	b=2SoXwuYzAJUNj5q2fauu3aGjXKk2MmKMa23VG9oOXFTSswJ6d3irDkvt0CMNjw6VWyKLE6
-	hmffksmlziknE+bXOYLlZB6/NylF8Us9xbNutQHlFQfSbpianPADvVUMTSnk5BHa2C2+TZ
-	ih5u9Nk9C12W3s1jzwNKwwjseYuBgIk=
+	bh=Ln/cYU6R6kxXbvIePHIUyNjbzJC0uJlvXR+XQ3FbfZM=;
+	b=iiqAo0NOgJu64+pslf8y8nsqPK4BwSvyWzvUwWcS5QlaVY05xLCzcQt6LN3zBOanPbRNNx
+	oSxX41pOCvBSKx84Has+BtKaITZP9/bGDcZh6cOtA/OxWChOwu1D83zN69oAG6JOynRltx
+	MWC9L0tJ+yK9MRb8LDleD/neJUhIdiM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=JnvOaekw;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf04.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso21160805e9.3
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:28:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787840937; x=1788445737; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PI7Nz8d3HH69nhtcQsyOVYUPwrNGYdNUTrVZkR05tbE=;
-        b=JnvOaekwIukdvoeEHRMjqSSuGX/9xnohvsLa9WK8uk+9gkZ+HV2q/kbva5YC4is9ND
-         l/9on1Vtj1V7x79F2IH8TmM3avddywFRI1GjwSSLrnB/LIzQdOtpwdMTi+OMzFvaxNSa
-         v7h1sPO+XDpN4Vm90c0mlbiogfMvFN45tbGG9N43plxW5sxIuLhJBPCdn125EKOu1sEl
-         M9ORb+JDOo+QdV5wZWbGSvv6jnjarFjYw02QA9Dbykh6KWZpfYpbxFBPnUoEWSQOpUaC
-         8SqIq/3kpI0lemp9SQsixQRzyAtBlk+L8GHpJgOO/f0oHo36OO1sMO574X8psEryw1RM
-         sqaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787840937; x=1788445737;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=PI7Nz8d3HH69nhtcQsyOVYUPwrNGYdNUTrVZkR05tbE=;
-        b=idqsUoDvnrwwEwv/fVQzOwQKe2AIdd3sEDjj4CbnqWRVo7g4S9qoMvHfXgtQosHaeC
-         zwxgktKgoC600pcyqDxdihnsBb7ZYiN0cuCEM2vymeAsFuAZ557mWF36wup0odBI1VaZ
-         fs6vqc6Xl7fAL+eqvTcKshNYTVuFwBOsLjJihUpNY+IThkmrr6o0N9mthLuFarCPhUBy
-         kWMjhPNpYtiJbPmP9/V7x1vjgnRrLMBXjxLsXXnoiiBKKn2eE6/7P90VNRlh0I2ws1I+
-         F/LVYsnmmcEaFHxM0GWnFzgZ1TpsqKiUnIp/YMTSV1aVak4h5AkA4pOy0BbMXt7Q8/b7
-         X4jA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr+wYf6qbCeZUgWiYPnFSVckxZXv9mbgcMWyneIp2WU9xlJsti4WkyjPs+zZ/d24eRm7JQO/vDwjQ==@kvack.org
-X-Gm-Message-State: AFuF++lATit4UNnMapFidYj8SDnbNTAqeC4Z7BxktcpNQ/KHQLO9CSvU
-	y5vzL5q8CO1QUNitsRCG7FMkmZt157eYzM6UjTq5+pov0qE7AQHKHGV5EVg+WB7G+JE=
-X-Gm-Gg: AR+sD12h6K+fkcyoFFB1dtNge0EHdhdc/hwsN3x+HLh58p1hF3uB7oYDuGpaAj7AbsW
-	XP6Ch8ufXBc3bbdAEQqcwYd3Y6jdazYj50WWJVkjN8+wq/oIQVG/07MyLCd2vCkvOGT+fZBacyL
-	NFurZB4ijy/gl0SSoQw6ghdmV0DvJtajGelLwf4txSRaHkqGWXcJTixtHRCW8EW3OegTGrdoYx4
-	QmHpTGYIlHkQEKtWpmUYuR7DTDdyhCRwabrctOTUu5YfazxYtHlZ2OriT2s1EHmNnNSvB+Zrbqg
-	ZqfcGjldZyJCmFK9BljpWsqwkBnOktv6gKiy1LRX4MrCyLOwM3jrt82g5C8bOtrsHbk2QJxzWbu
-	UrEYWi7wQIm+J7OGlDl2xkqdE9csHDa682BvcO/wHI1kVcL5Ns8dVpWxn5yrG/uYeTRjfezLr0G
-	sgtcJ+w6nUdgs3bEHv4ekmQiL0AJGGwKnP7dE5IP1x7gDL3Z7gaBc=
-X-Received: by 2002:a05:600c:698c:b0:493:cefc:d113 with SMTP id 5b1f17b1804b1-499dc6f5dcdmr215984745e9.5.1787840936850;
-        Thu, 27 Aug 2026 07:28:56 -0700 (PDT)
-Received: from blackbook2 ([84.19.86.74])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b494228bfsm54431465e9.2.2026.08.27.07.28.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 07:28:23 -0700 (PDT)
-Date: Thu, 27 Aug 2026 16:28:02 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Wilson Felipe Pereira <wfelipe@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] selftests/cgroup: test_zswap: fix implicit
- unsigned promotion bug in test_no_kmem_bypass
-Message-ID: <apBJbOhQakQH4WyP@blackbook2>
-References: <20260827034807.2822234-1-wfelipe@google.com>
- <20260827034807.2822234-3-wfelipe@google.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="P 6HOkD4";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=YMTw8S+r;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787841211;
+	b=yyb3ieOMA2I9xpBTFWcJDsFuUQcdu+lsHbDwtrvNDhgtRBHJH7rrOBIB/+kXKfdJODkR3D
+	+bJymrsPKRcuFXGqcmBQr18SSVQUzapU4ibfzdDiAz9lX+cqIbtVzmqC9q4Kihy300g8Ld
+	cynBsSs+atPvMNxStwwKwzrc2O4NKNU=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.phl.internal (Postfix) with ESMTP id 1980013801E4;
+	Thu, 27 Aug 2026 10:33:31 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Thu, 27 Aug 2026 10:33:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1787841211; x=
+	1787848411; bh=Ln/cYU6R6kxXbvIePHIUyNjbzJC0uJlvXR+XQ3FbfZM=; b=P
+	6HOkD4c8lkSWtklz5AyfvXJ7Edo4Gcv5bsmBLyImsWdrC2VmfETzZcILTibLnWmy
+	HlaARwr76l8oyfS26SRdZKGrnWzbS+M/G8JrVSuW70Cof5qpLOzqgdR00Nv6RFs1
+	UEi4MW95w3ca7TjDsI/GEx4NfOv+peayyZvo3u6GFPlg+YYBas9n6phB0kpMpi6P
+	6S8QxD9dLtzVrZNH+4Q2tdlox1N62lvqRxGdvxlDttCmrSE58GBBeamlF5KEJ1Az
+	wnD17xvlWd0jdcUEhLgigUuKFMS/Y1MKNsPIcPxhKEp7pnwmN39KMLWgwCVfoVOA
+	F3LFGJy6+mgwxW8cP1KhA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787841211; x=1787848411; bh=Ln/cYU6R6kxXbvIePHIUyNjbzJC0uJlvXR+
+	XQ3FbfZM=; b=YMTw8S+rmSG6bfUflT6pvk6RtchcWGVsTZRRSZ6gAMxjESCi6Su
+	OsEnf+FjOmcEVxQNqFjQjXD/pfVw6PvcqErRysrKQVq60sWD/HsvUy9xoz+4xZJg
+	lKOqcalaM6JjVmsWtmUsguUjqYyhF0UNXnaizrGbzGBUH67L3OuJDELmfFu3FrBm
+	N30Bh5rTErFqH1AsNgQwP79M1Be594Izc6y5/hedmx8C5YS0jNpulTngEtRANiJe
+	0wA1dO0q2BBiq+T/RxUXDbDk4YzF9CnptmBbptvUdPvSEKYxnkLdLffyvx/u6NtF
+	+2Cle9q7IFThxrOfZ73qUFyBoX3+Ccp8oOA==
+X-ME-Sender: <xms:uUqQan-tRh7Sn03rjf_CjLxkT-RG_p7KLSPEucC8cD3WGPMvgV1W3w>
+    <xme:uUqQaiIKfclPhGQ-bLuvrZZa5Vsq_DEAAop-iyyfKm9Fk9uj2HgR_xfYF3BYLbkdQ
+    WteC2AhiflnnL2zqK-zL4WRvDNJJGCVVsOezMFH6KLjnH5oipoKVzQ4>
+X-ME-Received: <xmr:uUqQasJjHPT8sYTq0n6AWxvyhREg1ky7oka_PYD84_zSe5g7oS5y2ZgFVjY>
+X-ME-Proxy-Cause: dmFkZTFX95w7oz8NPPCgwgK0v6r1e5zrRtNU9uoQ4ywzPNzXkyMIhPlNvTdMRpJ6fx+94i
+    pKd/HphuAZxxtsecVEssSbcYsWdECuVzgdv+juA9XC39CNmblKiHnup7SDLLALy6H1/DUi
+    i1Kq1aWXsxz5+GTeyQyGUo6yk/OFIkBURo4AtdrDvo3/ipHRIMtgGcsHlBYLPs85UZUFKU
+    6TYq1b3nBvnEFDcz0iEdfGT7czFRsH3Nlaxj3LGfSPwhBvbGugH7ZwQ5DHHUjqp10QPyUM
+    DEWYjS4Qf253nIKsPMVTJ6hP/T+5YXScE5HAlIRkeNn3cxgHqdmMiboL9DU82Ogr8665Xr
+    SXmV6Z3nvNk2z5JetqWIzfumfx95EkIgnqbW2fBHHOCEHekg9VcbCkOqa0hLefx+J30/1/
+    gy2cWQQCLuYRryE68+Q1d/u+i0Y7m9h++zWwIqOZ9PWfKHI2uc+fVEF+lIPWFrmQG7VBAr
+    kb9/A+IgZgTnXy3hA0IjOctFKjxedTqdNTKuC8KcJbo2zaBe4opafU1f6cMP1P+Qj+7zes
+    Pzx8V9RQpw79SyWDQhyNd6jSL741YR5Pab7hLsWKBrit6KTb8PftYbsO3u9ZFcCUAHmhDO
+    tvpwQxoUBVD4QGdr3yny9hNBGxC6cIXcidpcqmcCzIAwaTZyOCEdmWyIB8BQ
+X-ME-Proxy: <xmx:uUqQanB6yVa8CLu5WEwlK6ceNNitDUh5iijmbU1Kqcrvg9dJaJcc5w>
+    <xmx:uUqQavnd7RjnmserXeSj4PB_tdM0UF4VuavgePUgg7jjAfz2nZjp-Q>
+    <xmx:uUqQajHu4qztDTWaH2b93kVb5izoZ5j4-SAMK2PsTJS85qenPXSHaA>
+    <xmx:uUqQaugj-gscMeflSzeLmVuWdnUJ1Q8N2ZVfNR66avD-h8Ea7xVVWw>
+    <xmx:u0qQagVxlUR8y64wWFdWdoKhe-OP47Pks4e4VZkbm3qwnzZX-8yAN8v->
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Aug 2026 10:33:28 -0400 (EDT)
+Date: Thu, 27 Aug 2026 15:33:27 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH v3 02/18] mm/huge_memory: fix rejection of swap cache
+ folios with a mapping
+Message-ID: <apBJ7PeX7c2dD9kk@thinkstation>
+References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-2-9b43f5163238@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260827034807.2822234-3-wfelipe@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4E77140006
-X-Stat-Signature: 6ozp7tjn6f6zwbjoyk1ppkx7cez5fn4a
+In-Reply-To: <20260821-swap-thp-cleanup-v3-2-9b43f5163238@tencent.com>
+X-Stat-Signature: r15erbxz4cphg56rqkus8rerch6dthf9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9D79640009
 X-Rspam-User: 
-X-HE-Tag: 1787840938-505754
-X-HE-Meta: U2FsdGVkX1+fe97waLDzPBtxob0y4PivqpEnkdvbop5mDHPau3GVkv3nYyUNR4f4dH9WbDiFJSg7uppKxEjVXvb1zJyyBj2d480gmtVA1TiDHdql7/hCe+kD8KfbK5Yp5OuWJSW6i8Y0TpSv5nRVc4PTuAr/+93F5oqC21gmW6zBPG0qngEFsyOmsDriwJyTIVllYzEm8kgoiSFXTmoM2JAhTGXB3F8rWAWPTQmUc3NsLH7caPQEwcXLi5E+bDmUU9uAdDNy+wbVYmQsS48E5ObjdteKg/PeZs/t5YrmUkFTMh9M4h4HtaCtLR8FMzrab4RtmOtGhT+r0RKBaW4LrdijuN6P9X33cfjmoh7RS3gt1e4WqhuwaHSjgn7zoznv81waqFtPoQWQ+Iv2USK5NWErWavj/XmUXlNY476A9alfkdaVGQ21EDKdoLESTfDkHgA0m/s6RHBMwY/n8BJTaRfejqw/QC0D1ZJJiXActl70Tgj1bgySNt+ITAAdB/RXYCmg4tIPBIUTGaKjkJ87rub5a1QZ/ldEKxmuUCytBb8B23K2f6eKcwIWaKHeFkcYI/Xx5m4noIkwLTgxDs6HeA1orUzaGln44xUQmA8+yNcUYVgVh6esbqALcqOlIx5tZbAL+gSFriPMSLK7J0YCuY01rKAHh5ZPVUKdlc1aG655y8/jd1umZn/xSun4uyR+MmR/E+6tG84c3jofueorPClmRql+EHKv0ugpXRxkdZLbJq82Mc1C5L81nEAbOsnHcb5QSrSdZYNaAEenANXCQ2q2krClyKUjcPUcuJIjHLeFSEILanFgrMqh+XOqDEqgcwf6KX+uHSUgtedaP3Ap6xEj6Zvs1REk+9PQRN471ZXoaXjCqFoI3WVgYfwTp8P+fm8ENacHi5Kh+nAyf8VufqN2rlKwpdTQWxbRb5P40hyr/sA7krG5bGWpbgQR/CZSCFU1t9zrIanuQpzGjd0
- i5yu68yv
- bHnkOTIGAV9eU2KiXZLDkxSalZxV0YXgM2Kr29D9nseCnOjZQJe8pGfmyPTQui6ieRlCIVNYJ0VLusvGkWGZaZSH9+9kD2+jYA1zgJu71XUl/UP3RbFIHYn180mdgh64hciV3vsBJDyNa02PQXL2ICYglIzRCSTbnLk3yhNmEgXciUSL+x2wQNgYgjG5QUXnhLQW8kAkVw7MLGIkSaTzBfs9UvxqyZVvwPx3z/yAOEBTdtaDiGSjHCSOlTQLiuUwlfWSjb8d0IXpX599u9HMv3diLToQAFUTsU9oO9aDsQndOay5BDHTawCC+sfSJZDfG0lwuqiuSZkGaWL84cmKZXhI/irTRumyzDRNx4moSNPMFnVAwUbi9d/wgRpf7XtsjF/vrDpygahwuPu2IGK8levKGe9J1lkoiHA5CVuZN2yVJR3960PgK/A6UuCOlfgtTI7XD3QnIdBukIbnnCMYBbN3rXmjUDQ3RliUsf/hquvRuXLc=
+X-HE-Tag: 1787841211-512637
+X-HE-Meta: U2FsdGVkX196GsX4BokV7Sa7AQT9iqwt7BvQbMCA9Wi5HD+TAPEP8UCvEN+mBeZdTYdGBuPgJ8/UAgOklyxDzd3leVYsxg99EON0rBUV4cP3y6JbtYtckZDCqBSn0q0Aa8s0aZfeprrR4ub3Mr6e3KdU3exMCESTo79Uq/mTwocMmlyAL/vTN/5zVwATJkw4JVGE5AZ1eIBlsA9+isQ3OjZuZDazqy9WaR8hcJv7y029/TGXuQBHLAXAkOcdWWWhRReuQvLqg2naGDJ8ekF0M2sRExixqUEoTHQDvT/s/kg7Ei8R2NvCKAMa4mjxNGoo4wb7VU36qIzQ9twWs9z9c2oTiw0U3TcyXJc29n9tDKSEhpswiw6w+s5hAdEVB9A22Rto/coTci5ASllvfsM2QkZRb9bIYOeuDz7WjZ6930xeviwiUQBtTk7rKWrgBJICj3D62HgbbiBuL9hlCckCXLG2Xh9t20+dqodUxcfplH8oswUGAD8n5NyIcLcuMoj6b7FpMt9onSk+gZ9+maoNkmMLbvtAvHQKVmIXb9j20L+5XxB6YxhMxXCKMGafd+Hi/WKQOk+mOoj+A0eTKV+defYkbFkVMBG4I5ntcMdHQNgnng3TlJMhuUiA52/6t7vNOtFdERfDBaXuIVFFN05+G3JfYChl2voqNhNvkgW8QICoo/ExOE/0t1LMGXs18lWheiwjjd1nzXykho5rKYKE3zX+1BhjEDNQyrwqRYjBCRyW+fLbjlKOaMMv2agbDQSYL+9x4IAuTBRs48IrsBeZrJM7lIQ6gBLkDUqvlDAQhQCPyty6Gs50nMYcqwKvMUk1U+mkPm+UR4Fq84YvvzTcGinyp+MXoS+hcBaEV87O1ndYslwo/r0991ZnbW7KEzd+GRejhE2LW77aN8yaJyYOv9Wz4duY7UVv+zgcq6WW+tbHQ2kiHIFneHihZCr1nKb5ER6bhubh3dYXsf6nhud
+ NJLrvEXK
+ eo6XGlpxRIdnLYiWvysNloS7bCqm1vH2SQ/hWZbxbHwphRwZ08FYt13iANx3mTVgpyqggqhAHRRY97fdI1hMfp3UC0pSoSqmgnut3eqXJmHjrSIQJ7wcYwGvzSBwZ8MkuaxLqoKM4pc3aLYUFOMxw5vonTJjCuqz126LE4qez2me6Ktj76iqNIU9FmwujrZwxSpR5dq/Sf/Kjta2w6q9q8a7zVaTJUChwXUIRViPvLghUSjS1qUlcpX46+gkeBR15HZAGCHBcIAJAoDyK6B19ddpHPs3gTDvdCui3mshUgquxmTIq54/4q2CR49x+GT36Gd1rZ8J/e4X+UB+bqCZH8yWNsb5SGKWc6ekb6DFE8R2XyShDThRrNxMC45DCQ0A2nySNHCWVotKLHgQASGbvejUE1raKJYFM6Ub/u+MbD7UzX3o8Zj5tCkLzY8eDvNm17+v1nc/mnmdVAZLBHmtpcCTRQ7MxIs/IsNBNMjWyYX0OSghbNrC/TNDJnPVoseuUqt1YP7IXyOeuu52pWKdVTii34ZQ6clmpM/KQPjq5NToTUL9FG9e0uJdQqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,29 +138,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 03:47:42AM +0000, Wilson Felipe Pereira <wfelipe@google.com> wrote:
-> In test_no_kmem_bypass(), delta (stored_pages * page_size - zswapped) is
-> checked against stored_pages * page_size / 4 to verify that the pages
-> pushed to zswap belong to the test memory cgroup.
+On Fri, Aug 21, 2026 at 02:55:15AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Due to slight stat update timing differences, delta can evaluate to a small
-> negative number (e.g. -5MB out of 1GB). Because delta is declared as a
-> signed int and stored_pages is an unsigned size_t, C's usual arithmetic
-> conversions implicitly promote a negative delta to a large unsigned 64-bit
-> integer, causing `delta < stored_pages * page_size / 4` to falsely evaluate
-> to 0 and fail the test.
-> 
-> Fix this by declaring zswapped and delta as signed longs and comparing
-> against a signed threshold, ensuring negative deltas correctly evaluate
-> to true.
-> 
-> Fixes: a549f9f31561a ("selftests: cgroup: add test_zswap with no kmem bypass test")
-> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
-> ---
->  tools/testing/selftests/cgroup/test_zswap.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+> A folio in the swap cache cannot be split if it has a mapping (shmem).
+> The split code does a defensive check for this in
+> __folio_freeze_and_split_unmapped, after the folio ref has been frozen
+> and the NR_SHMEM_THPS/NR_FILE_THPS counters have been decremented. It
+> rejects the split and returns -EINVAL without unfreezing the folio or
+> restoring the counters. That error path is buggy: if it is ever taken,
+> it leaves the folio frozen and stuck, skews the counters, and fires
+> the VM_WARN_ON_ONCE_FOLIO for a state that is actually legitimate.
 
-Thanks!
+If you are going to repost this, could you make "This error path is
+buggy" a new paragraph?
 
-Acked-by: Michal Koutný <mkoutny@suse.com>
+> 
+> Check for this case up front in folio_check_splittable and return
+> -EBUSY before any state is modified, so the split routine always backs
+> out cleanly.
+> 
+> Also fix a bracket style issue that checkpatch.pl keeps complaining
+> about.
+> 
+> Fixes: 00527733d0dc ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+> Fixes: 714b056c8321 ("mm/huge_memory: convert VM_BUG* to VM_WARN* in __folio_split")
+
+This is inert bug, right? I don't think we want the commit to be
+backported. I expect stable machinery to pick it up based on Fixes.
+
+Is there a way to express "not stable material" while keeping Fixes: in
+place?
+
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
