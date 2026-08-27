@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C473BC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:36:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 347A9C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:40:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B30196B0088; Thu, 27 Aug 2026 10:36:44 -0400 (EDT)
+	id 2AAF86B008A; Thu, 27 Aug 2026 10:39:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE1A36B008A; Thu, 27 Aug 2026 10:36:44 -0400 (EDT)
+	id 25BDD6B008C; Thu, 27 Aug 2026 10:39:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CF5C6B0096; Thu, 27 Aug 2026 10:36:44 -0400 (EDT)
+	id 14C926B0092; Thu, 27 Aug 2026 10:39:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 719AA6B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:36:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EF3241A0450
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:36:43 +0000 (UTC)
-X-FDA: 85147300686.12.322AE60
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D21B56B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:39:58 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45DF61C1D18
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:39:58 +0000 (UTC)
+X-FDA: 85147308876.28.4F81CCF
 Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1A86612000E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:36:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="e WQUpkd";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="fil9/Yl9";
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by imf19.hostedemail.com (Postfix) with ESMTP id 521DF1A000C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:39:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="G Ahk04v";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=KTS04DAs;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787841596;
+	b=CP+0pCH1+5u3s4VKofaZUT4/YlMa6mfw6w5vGHZHGOoayFQiDd0DirP2i2oXagIqRVa1Vf
+	dj2Ei06Rkxn/oyZ+zcUrTTKMl89jxctWYZdcIaRIbu+8P1gqaBcXby/OJy5xiZhyfHnIaL
+	/NCpjrujLuTL8I1ETFN6hc9/5MrPK6E=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="G Ahk04v";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=KTS04DAs;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787841402;
+	s=arc-20220608; t=1787841596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a8Hy4YJ+WnWdSGIVPU2j3CskGmM3nG/le/p7/8k1oIE=;
-	b=aUQZ9VYDbQGVEp9/VxkzXSSpmeWV9przZp/2LUq12AWkFiWBjw5UXUXMnTwQWn1mJ+nGB/
-	IG5k8VU5e91AJGEnmlTvYrGrZ4ZKQxxpeDjZFfCuzDiq+5V9ZDwAnYIZqqZU5XIndUvNr0
-	caXexTIn16fjI+cWc1RtycIjeUsN0Uo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="e WQUpkd";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="fil9/Yl9";
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787841402;
-	b=WNd0pQMhAIP9jBrbIfBc+huYi+VjDyT3XXYMydB6qlaRBeHcL9lNKKFVfoNEfBmhQC5K0/
-	v24vDD83CkLZ0xKNaM206JG2e1jBRiGIT/h9QkA3facvziHrJpXHAqDmbFG4lI3lt0oV5N
-	itZnHcnCIRBKnP9a1hFS0hpXbIjsWM0=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.phl.internal (Postfix) with ESMTP id 885C513801F4;
-	Thu, 27 Aug 2026 10:36:41 -0400 (EDT)
+	bh=PmXkOSNZs2elL5e5I6wwGuMLGDRA1m2bAQwoveOqBhw=;
+	b=s9w9d3hFl5iURHjQCrj/b7FqADMWEG8XnQIkME8hRcdh7Aom8Er7thPD1C/wcXY+9rmOBe
+	U5saTzD4aIw6nlGLOqkTtR0Kk/yXTS/zMcKv01ty5bLOwHywey7KgG6WHAcG4CJhsYNIb6
+	nEAZrz3GCtyERGv9lszenDtfpJss05c=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id C50DF13801F6;
+	Thu, 27 Aug 2026 10:39:55 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 27 Aug 2026 10:36:41 -0400
+  by phl-compute-02.internal (MEProxy); Thu, 27 Aug 2026 10:39:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787841401; x=
-	1787848601; bh=a8Hy4YJ+WnWdSGIVPU2j3CskGmM3nG/le/p7/8k1oIE=; b=e
-	WQUpkdyIoTuVlvw6CHssbWyzbhw9pDNgrIwJrvmq+WFzHyH4zwkTVXxsWcR9R3U+
-	gbdmwHSkzI7mMyogViyReou/BO4ZF6/gAC/kjbkZ7vXTBKDOYXryyceb1COPcLlf
-	xx8Ur4K1FsofFpIJSdF4w8u0BtjHcgsqOXEt/3RwTOs0t0mZ5tqDSReDr7elFMaC
-	JqrSGD8M/57bg5YcawRSTxD2o/KDVxrdvt5LobcgssAY6tRGFiY7a+4AgRCkifI8
-	c1WnCliiZRxuKwUTUhjhlebrDWMuvXi7uzp05c7ML9PbKajF/5eeNOwcL4J5qunJ
-	bOrCmAEgbUuXj89+BprYw==
+	:reply-to:subject:subject:to:to; s=fm2; t=1787841595; x=
+	1787848795; bh=PmXkOSNZs2elL5e5I6wwGuMLGDRA1m2bAQwoveOqBhw=; b=G
+	Ahk04v63CrJ+SpgTWN8iz9av2sjcR//zMT3jK/NDZHSOuDYMvCR0b2sepjLqvUzw
+	fnQth03UC04xWxJujqh8z3XVHFPZWhLwwUjx/T3FPIpDzRGJ+Z2pAItoVw4yksuv
+	wUXUhrQiRL4rDXCM45goaKPk1mBCa4J3TSqtZEz3pnpNdQv7rU7pnxkm8BsMj49A
+	xeou26pq2Rg15jPT87VZSYEZQAS0v62BxMAW4X3b30jgFWa1Ykc8IRcmIdjvvYA2
+	IotjCnvbPG2liHub0ZapYnzSXC/ap+KA44t3RsDDSXnX/CK9EbSaHkwOMaDoqiSM
+	3z3Sk1otLOttxz56rsp3A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787841401; x=1787848601; bh=a8Hy4YJ+WnWdSGIVPU2j3CskGmM3nG/le/p
-	7/8k1oIE=; b=fil9/Yl9fdf+BVXh60B0g3atpC4na1gwYVafsJrX0cKnUvO8Fj0
-	nCjJklqkxRKZoZUOApZyp0PNhQNreN8Xe2D5wg5+414E7JMgmC9RwedgAas0Lz9T
-	XoillEKsfW9ocm9S9k3mL6+CUk6oxJiJnsipWnRrjjGWKTgrJE2ICZFcFKuuc36L
-	aAOrh+U9rdzoWbe56YagPFT2EmVwZgpVrWKeQHsP/+m9KAPK11LCzNUlvX6sg2Mz
-	EACG08zEAr/ltC0dGKbTOWsyyXsKF7JHX1VHCOHF6Jx0QzzPDs6oATSvWtwb6D4o
-	7QKO9OtSaJe8mU1x0gZUpC+TJpmHvzvVYGQ==
-X-ME-Sender: <xms:eUuQajy_8lVw-mjT_dlN3l8bZOMMgkin4fbWaOQIWzGUTYclYVXePg>
-    <xme:eUuQatTb5wJB_RJwguPJg75tSCfP9Yw22qIXAPmpEFvvbJQksHJVOIaSqTPpealTk
-    ARu5sVJagqrN9bLPVAvl1z0wN8tbhgG9itNnZ1nxtCQP24t-9Tkt8Y>
-X-ME-Received: <xmr:eUuQahrG470Lq1b_gW4pxCFnuZHkOA-gA5Sh3cNH7SzueqPvAQMvmya5_Dg>
-X-ME-Proxy-Cause: dmFkZTErUJQUVhkPKiqkOcN97ogpHmISM08edx6pbjBW9kaOnTmBSwYErevqtyjNmHVNQV
-    WtEj5qaE7OZejpVw+11lQe24wQYQO3n7gcSMB3M9cwcJL9PQQQQXBQxAEY8QQX3zzlMAbV
-    F0/GTC5zuLYBZfpO/j6rOdBYyG3nLr7J/+jf0lEq6zlH2iRlrqYtafGTbURoJwq1sw/Vos
-    6zLQK10XMSRPvbzp8Jt8gDvkMRwouBZRqYWgq9VQsca2hGV7Qnr+tUSyUnEmP/I4+ANAW8
-    BOgTwjdf1cmX+koJoy+Igh8D791vQ8Jqr3NlRg0bLBswtvsdLSltp8+8c92wcGXhU4rEVc
-    20Ez4JwsEsEUT8x8nGCXkQ1si+p1hnQC5Y0Sc5NuIKPpP4Hf6wkFjfB/BSqM8MC78nhxZT
-    y2bpAWz1OaZBzF7j0zR115CfrBDoxOQoDs13rUWvqQOM4rCIEi6DJV0sY6mj0f5vv/B9Jd
-    bjT+05UTyk2/ZQWGS12RRm0u/jTw5y8GvDNDbOUUsVRaKNGcjFNvVqJbls4ldsShYyTAla
-    py0fIVqDhNkwUY7ngKcH6Vhoo0FV8NKRTFHPDDkfqeo6COO0L8+QBsxT/985Fju35HLAHB
-    C/q8Z4RE3CJfEgnoniMUqH7szN1ozhanQJHwaaXocpQMQfqn7QW/TdnjGXIw
-X-ME-Proxy: <xmx:eUuQalvR0stlA8xpKyuVvx3x11HtLQyX2zUnjNtaXoZtB33dRQDIww>
-    <xmx:eUuQauuaYOXfH1Pt6XD8buemfRfm-DN9UNo8L8ZRKs06rV65yjL6Kw>
-    <xmx:eUuQahrLI4reIbIKjYWAi1bXXnYWHNT_5e0L6hy1IQpNhwv7QfQFyQ>
-    <xmx:eUuQagG7HPQcvKxdT3zgAcoqlq6fEdkEE11p4nwiP8OiykQ6Yf9CuA>
-    <xmx:eUuQauKvGAmRsBuBFBfm68W8EiX8UNXNcsELKBFTf7q_oF1KhihCanBE>
+	1787841595; x=1787848795; bh=PmXkOSNZs2elL5e5I6wwGuMLGDRA1m2bAQw
+	oveOqBhw=; b=KTS04DAstGVOk7vSlS9GUDI1PsSHY82XPyiwoorQOX8HsMKNHpo
+	vj3jZd7MUyEW0MG1WDUppwArln6yOl/gaLcm7NBYLfrqn2WxS6WQcJZMGSYd+M9a
+	u1JrF0FAPUeKv8VD4f8KYhTLUgJEmNXKotJLDwEzYuH5TioyQSzZKtQuPSRS94yj
+	HlhkdZ+s72dCLGKpqdTVQThBXXTr5yFq8NV0Pb2NAHPxRQvZnstjdjiGND2zsDlZ
+	PnugVhMnx+2IrNVaR9oGrFMabbrFkPUkFUnQ9Zbc9KicbePdqxcXnb5UlA1qfVA9
+	EjW/0ru/hAN4BMQDPtCtzhrjl+vosu55xMw==
+X-ME-Sender: <xms:O0yQaiuLhgMleZvVqlXPLISzn6TnW0T671KLKhWz0VpNKGLCJhADrQ>
+    <xme:O0yQal70Zklq6RVKRcgyI_S-1asWjsxC5Y2rOvfJtApJSkEF24QpOSN4bwupN_bUH
+    fX4lxu3nfRNoY6F-I5CxolXF-YPeapRXmRV6KDwWXi1jiCZ_uzIh9E>
+X-ME-Received: <xmr:O0yQak4Hd4qqvzdHH2Q4kxNVFNSL_usMApD7EmZJgylWFs0gUfj8fJKK2fs>
+X-ME-Proxy-Cause: dmFkZTF53zJdy8C9ak+D2cJrj9KahptHyXqMO+7qTBjWqPFv4Pk/c/sJRfNdF85mEo/adX
+    gGLoIYNq0S7yi3kS/l8ebpfkIgIKK1SdvU42cGRonv8sruTt4LMkmMo9+g0mnFIvmDPg4k
+    eWP945j6fe3VbMi/dpWFcRHzNTbkUueKwitYhnihwltzPwSBy3IfkPr+C5Vx9/XgWQms98
+    F6kE6342UWsZ/hJLg3KLvXXUmv+6iUyFSx1vfUTqQIf1blpoqyvQlGHS+Qoha5LJ2FkDge
+    FWPMgiunYlU7+4rekz8ukbbSSaaEgh63pu4dRQ7Qt16Qf4dEoOvUCw26V6rhx4XnHAS+qS
+    59jDmXQlOUr3YRknaLDFKcN5BKb3Ro7SMh3XsfdyVLsXbp2f9SHY0vpmslJBgOeJIHPAj4
+    P11vo7kSiXcfUGg9dZqm2CnVZPD0QXNFeayfa50kny+dIx+4Dvaf2Iah5kW1NdAH8SkJvF
+    plxNdWIbDGt2myJbvrrIke5o514syaFtJLOHU+p5Sfp54ezDNyg3AEHwfgr4QomdE8K3vU
+    Z4bc5sKZmv7FdmMWfDt2GLdkiiZfFsB2KeSswgORo4sCkVlERr/NEVo/ZYOPB0WsnUucf2
+    q1uzR/4OncAzkvO+Mf/+IDWgOGI84TiVT1iznqMRBoJUhWBsGELiknuXR4FA
+X-ME-Proxy: <xmx:O0yQagzlYPdZQjm_uAXsaVpHvcN-cc0xZDlHkq3vv8BSdwagkO6WIA>
+    <xmx:O0yQamVq_hIP5Z2AH8z9NTmCskelEkMVBoSWJUkS9CbVgY3skQ_eeQ>
+    <xmx:O0yQai3Apx8aDt7R-XsmmXBS-OX0HJ17BxVzwL_KMl9zprRcbD3w7A>
+    <xmx:O0yQajT0v9pSthDabJj2fmW_p4iPn0Z2-qute18xQxbg-vjX_k_kIA>
+    <xmx:O0yQaoHkz18vF1ghtpUQJieRimNGA2ZSr1KLUY5g_RHiYwqn6ouAedMl>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Aug 2026 10:36:40 -0400 (EDT)
-Date: Thu, 27 Aug 2026 15:36:39 +0100
+ 27 Aug 2026 10:39:54 -0400 (EDT)
+Date: Thu, 27 Aug 2026 15:39:53 +0100
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
@@ -114,23 +114,23 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
 	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
 	Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v3 02/18] mm/huge_memory: fix rejection of swap cache
- folios with a mapping
-Message-ID: <apBK55hfvYtGDpiB@thinkstation>
+Subject: Re: [PATCH v3 03/18] mm/huge_memory: invert folio_ref_freeze() check
+ to reduce indentation
+Message-ID: <apBL1icEHMt7QcT_@thinkstation>
 References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-2-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-3-9b43f5163238@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260821-swap-thp-cleanup-v3-2-9b43f5163238@tencent.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1A86612000E
-X-Stat-Signature: bg8wdpxnmt5znxueiuboaw7m97huqy8x
+In-Reply-To: <20260821-swap-thp-cleanup-v3-3-9b43f5163238@tencent.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 521DF1A000C
+X-Stat-Signature: adhcmh8bh1a5chntekj1673rc31i3qxr
 X-Rspam-User: 
-X-HE-Tag: 1787841401-318239
-X-HE-Meta: U2FsdGVkX19VNytF20OMy9o8wPFJ/GYYV+jQuOyu6I7Ga8XUuD5gLLrDYm/J5/7QAlT26bu057GuXKlwENP9M8RhcP/1yfLJlnaiBLCI3G9bAJHS3LuFt18wN7qOx+YyBLNS6wMvquIDzzkV8Ym8o2OmwQlY8tT+DX2LrjBRywg/GM9+b4cXOxDDjpXvOFnr/9MmxknW9/JYPhFaAvx5t0HBfRCZKYpU2+qTIfxaijfjr7uyku4cTqPnZgVyQiZ+Tm1eAxR+qQIxQOfN03OTl7phBu9yPh2hhrGbI7J0zJqWzFeaZ9uBb9Q3ehe9wz6kn0Jn2otNw191hqjnbPDLcxvHTYJZH0rOrPEa6QQOTUr7BQmZonWrDO+QNO6qhAcMrgr8eJcFeZnpvFfRQOf9kJed+vVU9ubfbukMwvpn6dJjw4SmiTBgbbaY4KERVC0muxdY2kXMzAFR8JcU5XDXCDdNvEYzHysgcHlDAPJwpONC2vI5J5iY07baNdgVMhmu+pPXF6QZczw0owyuVZ1sFADWcLd7PBorelnQyB2tRv34RpZAfRi35Hik0uHOKt+6Vp0jZ/+FyD/WphPJOa5DIsFqGentNJJZgKs3MJnvk1Ekoo4yZYE1B7k5/2E4LqRpxHJgukvuBSXVyH1F5YQlDjgYbqb5DyDQboETDNTu1xJ2IidXNO5ImowqDRs+TcmF4tQcwFnI6sW5DZJAB3Jl3qESsSblPvpTcpCqfCX02UGvVtqkfpV+1/uC2qV0PWaMvicLnt6vcvclugKUAZcQKVdWXSwH7Rbr+yU2cBiu1aTVtkDrZQOS7be+OiNOkPbFVu7u+HHrQd5td9rt0a4nkuOXbOgSKhH57QNrjqdWWdDNOLTmCyG3x/RVpdiYDTZMIYL7uu2j9wO7xQeGU9DJXRBs/wSQ5OHnMKnVXvGLPTo5W5rYB3l5xWs7QwglzBIZKCqpdP5WAo+GVjm0L2F
- aRHAUZQ7
- EvQkGFsf96LNrt3gXJf9ueCPkexzEtiRwro21rIWD+2UtE9NWMgM9sC/oEGoll+jbBlnwa/QhlMwGhsfCSUFMAwK0N9QXiwyvFdC9GuJUMlUjDfJPEqFwYhit7l01JumLJQ2/f7pQQk695zZbUWjnZJaT0VU9V/VAKxW5k8Dd/x/exVECnacVVMDpw09XyVsbg7UeBeowwHZT/E521Rwi0TFg0N27J2c7RF2wRS7XxbhHj3zZg5/ZqMXZns08Lud5eAuBVZiKKVisaO5fnwNi4/f0yaAer0/KuAz8fpckPpkQDBCQ/emXQB51M3tkUWyK1mkoQ+lgRR9k8FBsSC8rOsaeisyFsIj8ro0RsX5L9bSCpsNEY9bDF/1NuY83OTvTzI46BgJynaSh087mpe0yvMdcFlH4wJgApgmrwmPQEMETwsbaF3QpnD6etOqXsAYouyZHCdMwEZpICkRybPWVct6PB+4rwSafT+ldhtg+CYEsAss=
+X-HE-Tag: 1787841596-728909
+X-HE-Meta: U2FsdGVkX1+IisFWn3N4sx2dM/mrHa/tY2bT5Bifk5+f75BsCfyVSykEf47vnyw6nquDklmWaCB06Sn/upk0CEXWFI0XQauHnel4XvOp6P9MDBPnAcPxB1eqjgqvyxnsvrr/7GcJzSzO6+yLTZW9CzDv38ZJFGI+6hiXd48H6qjlVwrWOeO13ue7CivS2HuPHDxdK1Lf8r5hOOgHcnBpKloExEzdM8HqlItmQ6kpjto7dG7MaZOGtC3R5u4RaRMcG1ZRJAfMGCwOPdG7iNUhRu+yz+Ai/FDlJ5sOUmBVX/DEd+EbSUyqi77K3+LrET1BtzX4TEXfw1LvLftKLuulkGtCt21Ll6TZgwjcS4PVYkDujRNpV0E7H7h/7OmdEPap88gEQqmJmjwL3gRw4y+/dQWerPAqTH92oHrqTmco8UT2/LHz53s+FEnIbYZzHoHlzvd9LaGRGIb9bq5LShDodx/PEipFm8hb4rM8TKZErErZcjrE5qdJSui2HNBqsppTD05u/sw4ISc0Uqa2Gvm9gHh4CPmz9tDqLpD8s7FS2fLVt5IdE9g0S53fDnS7adJgGwSDngIq6QWVHPizjByLNGczDh2+vEV3DG6AE69CNM5AKvkveVQ+BuU/lIjpjWVozpcDQ0pQm2r8OamtqCH7NkyCaeB8yzIHv+xaTmdW/Cw2bnG5E6SkbvtHSN4T4QWAW8DbuUEv1YdJah6Gx8/pM5LAvMjkTfhqMP/vJ7U1PKt1pfo28mC9pi8dBc8betNtxcXRkvHkZL8Cy4f8QZM3Nrq5fpjCOEwbHhMYY1JrjsQV37oa2jVfJIR67/xJrv/BBTggvhz60YbgBNvn8ax5PBZV1OBSifogVdVnxbj1OPU59YpYK9rqaIOfsqB4he3DwBHt9PG2Icbw8NBKA/60TDTVIH1ezeavWrR3HtZZ/p6lI7rCOtDr+Mse+VQqqYbwP2tjdPNPH8e/lbA4JlX
+ a5Us8Lmi
+ HgrHn2QDePUjxci0FggZQ4cMiTx3VJsLqsq9QVKvdrbgrkoVZoY9zrmxpbg7fV4enylcJ6mifAK1/mVxu6Db12kqYXkLQcQkzADjq5DCrqFHpr3u4K393L73vpjMRGDpaeuiS4v0cT8mS09+i5f99DULEJhDDmrvyi8vYqoDwbmQQ95eVWV6dDBOspo6xvskrs4GYMJDXjk6JGUMob3T1snOGaaDpoQ3Q7se/Bn4yOEsjNaBKSwmobNLeNvNmNsEc8KE7W2bQsa6kz3rhkVBJg7i+b41ffUA7wvvPvbJrXhYhMDyisd0F964WVOceFbP75VWXuxWvqLTG/j0FuepY7rRQtNeANPzImHD+ocGlv1uYL7oJiZe3FdtwITJCFPRFVrkHmAUNzDzClgj8CXv3blzEvyrNrs0GV9EBVAmDSIR37En2pnWdrVyhLDcXCV172YVNhMJBEXz5wHatcc3Xfpe6j9qb04/iW3Hj/o4BI9HsqyyUCw3MSI6/Pp885E+c0BVrs0gzQB5DMJ7Hzu5NMcpXWhI18thZh7nXVg/XRLPKNkCbQxFeKTWXMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,20 +138,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 02:55:15AM +0800, Kairui Song via B4 Relay wrote:
-> @@ -3886,11 +3889,11 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
->  	 * TODO: this will also currently refuse folios without a mapping in the
->  	 * swapcache (shmem or to-be-anon folios).
->  	 */
-> -	if (!folio->mapping && !folio_test_anon(folio))
-> +	if (!folio->mapping && !is_anon)
+On Fri, Aug 21, 2026 at 02:55:16AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Invert the folio_ref_freeze() success check in
+> __folio_freeze_and_split_unmapped() to return early on failure, which
+> removes one level of indentation from the entire success path.
+> 
+> This is a pure refactoring with no functional change.  It prepares the
+> function to be split into separate helpers for anonymous and
+> file-backed folios in a later patch.
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-Just noticed, !folio->mapping is always !is_anon as folio_test_anon() is
-encoded in folio->mapping.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
->  		return -EBUSY;
->  
->  	/* order-1 is not supported for anonymous THP. */
+Zi already pointed out that it interacts with my change:
+
+https://lore.kernel.org/all/20260826162101.1314941-3-kirill@shutemov.name
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
