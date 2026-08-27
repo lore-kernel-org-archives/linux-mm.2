@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 471FFC61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:03:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 329A9C5DF9D
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:03:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E0136B0088; Thu, 27 Aug 2026 04:03:33 -0400 (EDT)
+	id 5745D6B008A; Thu, 27 Aug 2026 04:03:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8AB6B008A; Thu, 27 Aug 2026 04:03:33 -0400 (EDT)
+	id 54B5B6B008C; Thu, 27 Aug 2026 04:03:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F10386B008C; Thu, 27 Aug 2026 04:03:32 -0400 (EDT)
+	id 4892C6B0092; Thu, 27 Aug 2026 04:03:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C5CE16B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:03:32 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 556F9120389
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:03:32 +0000 (UTC)
-X-FDA: 85146309864.28.C30A8E2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 29A7D6B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:03:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B4D2A034D
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:03:49 +0000 (UTC)
+X-FDA: 85146310578.04.5D8E0C6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id C2F852000F
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:03:30 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y59X1WvD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id F285E40007
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:03:47 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BrcCTXI+;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787817828;
+	b=awcevoESybBKbeLg+nLTMBT8rSsNAzXQYrkZbzQjvhNTCknWAFHvnsQL6Oklmhbj/bB1rp
+	BjB2b0Rf3ZAwK/VdGDmpm/yYhE+twXeFN6zSq0k2WXZjX7wP0RGNviRKXQiC6vxQEYoOYR
+	R0QfE+iFqDlTT/FfcgDW/S0efG9DaAs=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BrcCTXI+;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787817810;
+	s=arc-20220608; t=1787817828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qXL2oS6rqznvftTLrf8LZgLPX4TTr2sqHZu9rHP27d0=;
-	b=iQyI40RZFmujqMcGsGsm/jybDE6sGPptKM75Ykky9LrvvTA0VTkf/dx8nE4Lt45uZ7ELSY
-	XYOk36NnwaXQiiaH9cB3ZtIy+Bbsw+DQnSlGJNTa/5GogXEarDbopSQc6ppdR5FQmLo5qr
-	NrK/xdAKGhnZKdX8wQSimsZ4eZf2F+8=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y59X1WvD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787817810;
-	b=vFGtr7/DyUItu5wFmZWHVSYC71xmZULalxb0WYxNoW8gSOfXrAmhuB/xENuNRqgankMzgl
-	TdzfNT2SBPqrCWD4ySjVBXsvx/b9bYdP70RiqKVizrjH7vHo5xjrVeALMA/9t7c5p0a5mM
-	+aqOs1SxntMy5ZZ3vGk5/KSy3aIK1q4=
+	bh=cNLnyWjL8DesrYLjnmrDKChGfbafqlwaKvit0A9aYBs=;
+	b=zdoTjfDoBqQwcvqG2AqA6uTIe0sn6clVEkDmjSUv7+yotkY8a7rP58Y0riUPelYMBM1nt8
+	b2msCje9YD6FmLO91X9tz5jgU5yecl6nFfv3tvL3LeEVlrmVjmw5em8P7mCfe+g8lhrCBt
+	3ntxFrmUA5X9OwYKVh/W+LV6mDsqsEw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 74BB6600D0;
-	Thu, 27 Aug 2026 08:03:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E00A1F000E9;
-	Thu, 27 Aug 2026 08:03:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 933DE600D2;
+	Thu, 27 Aug 2026 08:03:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB5A1F00A3D;
+	Thu, 27 Aug 2026 08:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787817809;
-	bh=qXL2oS6rqznvftTLrf8LZgLPX4TTr2sqHZu9rHP27d0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y59X1WvDiWVncqZBMXRihTdnQutjHIyDcTlQlCc4zknTmgdM6vTOl25vP36YLvKL6
-	 YUBjX5anvmKQ7eJpIDQ14FxKSytIFMGy2w9mhR8fTUlkS+FtY0m7xKMA8HZW3CnJpV
-	 hoOHxOBxY2OBO5H1q7Ze17kvx7eHIwORLcqvkrQ6X3YBStdrAKOKK+1yDiD2O3DdsR
-	 S+f1RwI85rYYh7iyIerlzLMIn5UlEHAkHsCplAdn5GPKT1TndiL+0UMB2sw9Odk1xh
-	 08/tBci7eh73lRSVGlra5NkC8LbfBjzShg9qo+DNPBuQN2aTKbwNgnHt/MMSUZqWrF
-	 XDGwJ0FqV7FFQ==
-Date: Thu, 27 Aug 2026 10:03:23 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-fsdevel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Christophe Leroy <chleroy@kernel.org>, Kees Cook <kees@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, Geoff Levand <geoff@infradead.org>
-Subject: Re: [PATCH 0/2] powerpc: remove spufs coredump support
-Message-ID: <20260827-teilen-flaggen-extensiv-61ce38f22855@brauner>
-References: <20260826-work-spufs-coredump-v1-0-579e72a7ab66@kernel.org>
- <8ddf7d95-05b1-4758-9b5b-9360db77f904@app.fastmail.com>
+	s=k20260515; t=1787817827;
+	bh=cNLnyWjL8DesrYLjnmrDKChGfbafqlwaKvit0A9aYBs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BrcCTXI+b79Ps7jW4U9P8tYTSax/uesrCiFgIHl0hEXor8vyMSZyt72JUBlNLZY/z
+	 tD3QOsg1AWjDXs+xXwqaJNoHjhj24PXvr/DA9HqEWFkTjZEHA5eHsMKJNn8D351Guc
+	 OLG6IsqlWXAipfDO3+F9RYea9DR/O7AF3RRADIQtKnP7AsdhwA9Y7NkRjaZxppiFJB
+	 82qzxp4Zz9w3/oZcc9M7zte4so8a+FD2vpWxbPhCwOvAWPoCt/eqYX4LaOvxOpks7Y
+	 h4NCeRUVJz4zc534Fj9W/5hMbZcxBNI9bgMPMQsttAe7eAaGi3NC3+WaXqZCaeTbf1
+	 wFqZgMj8O7tvQ==
+Message-ID: <78561ffa-d075-4570-aaed-60744f11160f@kernel.org>
+Date: Thu, 27 Aug 2026 10:03:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8ddf7d95-05b1-4758-9b5b-9360db77f904@app.fastmail.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C2F852000F
-X-Stat-Signature: jwymzibg37y5wd8ycewj5396dn77r8eb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: remove out-dated document of __GFP_NOFAIL
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Baokun Li <libaokun1@huawei.com>
+References: <20260827030548.16631-1-richard.weiyang@gmail.com>
+ <cbc344a4-77b7-4282-9bdd-004822642ab5@kernel.org>
+ <20260827074921.mracnqv2m2cugasb@master>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260827074921.mracnqv2m2cugasb@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787817810-274431
-X-HE-Meta: U2FsdGVkX1+1ukfUShmP6kio+X1ZUaLrUSDs2msnM8Ye9N/uwk76sbKVwekLE+VgpyF5yubaMH32OiXNTFSbKAk2VCqh/ppHhdZuFQx+XQ2+4wIkfW9vzoEAv4J8lmHaYWOtN7w0oPiiUV8Bw1b6qjrzZjw/KFyIDysTA88RvwOU7XVJuyK/rhWiCStQA6eN8Z/7wF2sgx6ASHwu/KS4zA22Va7vIWzgBd5L4Qe+/ha8Lb89PvYowqKK70LJlzXra0v0Rj+Z1ELNOYVJIGGlkQ2vOjHNh1WJ/X+KVQwxv/wLrdcgj9xU9U6zE4uZKWRaTpdxk/85QNTZAojM8GUtQwwITeyJ/nRhPlONoEqdNmIOQjpteeTAttyhYJx7/HTedEw003egD5B1ZH53kL2REGOYQeEMlXrtAvUypfDDNh3aAwIV/Kt3mIEvAbA1FqOC4xjOa+7YrSybaLZKdX7RZhwSIVAnOMt70NiEOhC6E7nfhknbXSLJCXAFN57WJ0BRItL1oIYa4RPUHthvxS6V827cxrC4mL1w8AXEG/HvYdnwdS3uPiaDMN2nJr+RXa5KFFYYdiCMrIxvjX7K4l0h+pyJxsed4GaZ9RLrgqXc4r7Hluntl+2XDFqeoarZPjSiJwA+t8FjWorjgZq/57+KsI0HRg+kpbXV4QFT+NxAq1HASknH5wMMm8Qkk2Bd1VShqg6e0BKUFXalY1D1OFjAGmQhUwnF1wZ9q4oyoiylhlMItTsJKrHZNGc5I6UypTWNVw9Ih7cq41/xyA//rWWcwPRI7knKQRf9whq150LmwcngWcOWjjelBWpOV600KSEQnzVtJKnG+GnAj1FDuqcUlZB+t1yK2OryOmXDfSJYYbJ65X7cRdoJN4i0UjEgcdnihFzwEti9MQPmdMe8TjnETr2Mkn25i06SpaN9WqzXJEsgkeLjTj51y+H+U7GitUDnbJbgmnrjjwgopgyNSo7
- usqRxQzo
- lmvDQH7Hnl47XC41WnXBN3xlTqDjdL+/cuHOC2zzCs5Ov97pbL5R6uN+mbu0xflQNs6g7uUfbV9WMxAF4+LRxUjYKa82bbo3J9JZg1/gFqZbqqdSTUt0GmCPSQayx3NLbKxRRgDwj6JpnK08o4WHq9/vuk9zh9xc1rElfZatZVtVd8laoU5woeYlw6jedY00BJ6G77Rp4UblzXVUjoEBNIhOT2w/iY/E+TJNv4CGOeuhdPBbGTmOrVtQKRPaSTHyLZ8YOKkYJETjaP5MJT3+jR7Ef9lYJ61P3gN5vmEwzHv7R5QoXS/GIj5eMj5DL+STvKU70Z3n28AAjKLs=
+X-Stat-Signature: c35dc3sxpbchuiy6xg7a61cqxgjgndsg
+X-Rspamd-Queue-Id: F285E40007
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787817827-567975
+X-HE-Meta: U2FsdGVkX18xTn4PlVd4XXFmncZPFtoz2Vl0PGBAHejMXPYtW/3M2cjgc4iNSfzSpe6Iz5haQOlxZ6fCsM/Q4XnQiis5AvYu2A71uVyz6ay7h+WE4vGwV4ZmsUF7dEROVgOw+eTM/DFz4OHdtIFzoS5goVHjC7x8fIv/4MJ6DzMO7KcGmszNCJLKH64uTNMC0vNsAN2Nvwe2RO/t2Sn0lGAWGzjLaHCrTS/7NCgG4yrPN7eT8S0GFVP3YslppFEhh8XTwtFmdTD8PKr6X/scD2SvzwJO835M6pHQDIpreWp2sLfEVywAjNPddFB7FleG0zL8EcYFycBQEcBULI9QZwCvGUPz+WhenAOh+yrb5XYqZbGl1uUlPIdPEQ392ZrujlbkfqNWV4/A2bAe5k9ImxQgc7D4zJg1Pm/UyCJRsKpFm2lnr6Y2nuspXx2AJJ04QdkdjUXFkU7XYmo7zLFFCsXo6s5fvkSk4jqMEicW47ss7E1X6B7nPANtAsc9DOtYuRDCwD17+RtMAOWJ349/Rw0WKWxgqwsdCx0mHszhONe7MhW5c5SK8GseacR+LduKZ8we0+HteHc0/QXWXljHLU/3nGz8QPry2GmOWyj3xsPQLypErNSvuIo9XHP6u9zotGVkmUBlscN7fIGqE/qplehsv/H4hxMINiBfqSRvS60Ovb5X54WYymn3bUaR4+lgiMdo1numWAhBXN5p0k43YsQ5Ll0UZ3VCdObKHa0LOgqrRxMGVcSEa2neFyzYDxCz5YYM0vxOnFxwaBlIT2Pl2OUfTmyJlpsrPhJY1VO1HoH/K7xsPbSiNdHLlaFPOzHz5kA7M5O7Nk2WhOTnbBXiLVKKxLbX2aBn+xrTqj6EVPDTZSxF1L5SVJqVaGhXrwVJ3pFoOtQ2NDokIvUW5/ArykusHabszb+G2pS9ef1FZ2qq34SgMmqe6J5BfK9yNKJf7N/uCmjr9neFU4PoPsI
+ ABxXaKRX
+ LhpNvPMJs7wzWZxTn/snuPXNkotCkgHmSS2KpDO3wBEB+C3YKPcDmQEcbej6PvAphw1pDEuAd2VasvmK/p3qMzlGwakMNTlVX2H30xImkufH4c/qSIxSO1Svy0TneP5yACKHBfTxKM6IEyLAYneAw0jaYOUg1ygGqAYo4OPKZ0WJAm6wagg0OGyWlgD8xD+BbLOarSSVmcLfIjNu75hS460J/wV/hFAvkaehrZB1D4GShER8QnnN4Pna+uvaLerwOCpRkpXZ9C//0q+0u4Sir4YggAmY9M5u2RBpcD4H3F82GKRz4gBWG1tbOco/fApwLq8+fRR+HtUznFIJIhjjCoocLZp0z0OnZLTcfFL9Cxxv+AgRr6uCtBeu7AqkcVxlvxeJu9D8WpnMEm5mJwZ4gmhFvEDHQ/GL8rM7pZxMjfYUmuZOQ6VeP+PtMAlNvzd8YsRTCF7iRK7iAnBZ4sCuQPlICJwwlqaw0mXDIOjiCBf6dyNZy86T+YYv4AIla1o1PbeaO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,39 +98,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 08:47:42PM +0200, Arnd Bergmann wrote:
-> On Wed, Aug 26, 2026, at 18:06, Christian Brauner wrote:
-> > Note that the IBM Cell blades that shipped the Cell processor were
-> > removed in commit 05bf59fbeef3 ("powerpc/cell: Remove support for IBM
-> > Cell Blades"). The PlayStation 3 is the only platform left and nothing
-> > there produces or reads these notes.
+On 8/27/26 9:49 AM, Wei Yang wrote:
+> On Thu, Aug 27, 2026 at 09:35:26AM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 8/27/26 5:05 AM, Wei Yang wrote:
+>>> Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
+>>> with __GFP_NOFAIL") remove a warning on allocating large folio with
+>>> __GFP_NOFAIL, which is adjusted by commit 903edea6c53f ("mm: warn about
+>>> illegal __GFP_NOFAIL usage in a more appropriate location and manner").
+>>
+>> "which is adjusted by commit" sounds as 903edea6c53f came later than
+>> ee040cbd6e48, but it's the opposite. Maybe say "which was placed there"?
+>>
 > 
-> I don't see how you concluded the PS3 does not produce these
-> notes: as far as I can tell, spufs on PS3 should still be able to do
-> this if a process using an SPU crashes, and old gdb binaries should
-> still be able to read them.
+> Got it.
 > 
-> Whether anyone is still developing SPU programs on new kernels and
-> would benefit from the information in the dump I don't know.
-
-Sure, _old_ debuggers can do that. But new debuggers can't and have
-dropped any support for this 6 years as I pointed out in the cut off
-part. Similarly, gcc killed the SPU target 6 years ago in 10.1. So no
-modern toolchain can build this. And the last supported kernel I found
-is v6.12.
-
-I deliberately left spufs itself in but I would really like to get rid
-of the coredump special-sauce we need to have for this.
-
-> > So remove it.
-> >
-> > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+>>> While in that commit, it also documented this behavior which is
+>>> out-dated now.
+>>>
+>>> Adjust the document to align to current code, and adjust the comment
+>>> while at it.
+>>>
+>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>> Cc: Baokun Li <libaokun1@huawei.com>
+>>> ---
+>>>  include/linux/gfp_types.h | 2 --
+>>>  mm/page_alloc.c           | 2 +-
+>>>  2 files changed, 1 insertion(+), 3 deletions(-)
+>>>
+>>> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+>>> index 190191411009..24fde8eb73df 100644
+>>> --- a/include/linux/gfp_types.h
+>>> +++ b/include/linux/gfp_types.h
+>>> @@ -243,8 +243,6 @@ enum {
+>>>   * used only when there is no reasonable failure policy) but it is
+>>>   * definitely preferable to use the flag rather than opencode endless
+>>>   * loop around allocator.
+>>> - * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
+>>> - * not supported. Please consider using kvmalloc() instead.
+>>
+>> I'm not sure if we want to simply remove the lines, or rather say it's
+>> discouraged (instead of not supported) and still suggest kvmalloc() if
+>> possible.
+>>
 > 
-> With clarifications in the changelog:
+> Reasonable.
+> 
+> As mentioned in [1], kvmalloc() maybe not suitable for some cases, I would
+> suggest below change.
+> 
+>  * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
+>  * discouraged. Please consider using kvmalloc() instead if possible.
 
-Ok, I'll point out that old tools can still do this.
+Yeah that's great! Thanks.
 
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> Or, you prefer only s/supported/discouraged/ ?
+> 
+> [1]: https://lore.kernel.org/all/aQTHMI3t5mNXp0M1@casper.infradead.org
+> 
+>>>   */
+>>>  #define __GFP_IO	((__force gfp_t)___GFP_IO)
+>>>  #define __GFP_FS	((__force gfp_t)___GFP_FS)
+>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>> index ab385bc252cc..146f7e0a9462 100644
+>>> --- a/mm/page_alloc.c
+>>> +++ b/mm/page_alloc.c
+>>> @@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>>>  
+>>>  	if (unlikely(nofail)) {
+>>>  		/*
+>>> -		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+>>> +		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+>>>  		 * otherwise, we may result in lockup.
+>>>  		 */
+>>>  		WARN_ON_ONCE(!can_direct_reclaim);
+> 
 
-Thanks.
 
