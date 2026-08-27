@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A252DC61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11576C5DF9D
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:32:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 923A76B0098; Thu, 27 Aug 2026 04:28:15 -0400 (EDT)
+	id E83126B009B; Thu, 27 Aug 2026 04:32:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D5426B0099; Thu, 27 Aug 2026 04:28:15 -0400 (EDT)
+	id E0DD76B009D; Thu, 27 Aug 2026 04:32:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EB316B009B; Thu, 27 Aug 2026 04:28:15 -0400 (EDT)
+	id CD4F56B009E; Thu, 27 Aug 2026 04:32:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F1E86B0098
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:28:15 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7FCBA01F7
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:28:14 +0000 (UTC)
-X-FDA: 85146372108.19.E9BC50E
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1D402A0005
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:28:09 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PgzkalWw;
-	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F5C36B009B
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:32:24 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13DF51C1316
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:32:24 +0000 (UTC)
+X-FDA: 85146382608.29.FD01F55
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 695E5100004
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:32:22 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HSzghWaD;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787819293;
+	s=arc-20220608; t=1787819542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ZyKXiDcMnJRL/Jca9p3GNNTfZ89CGVivxP5tkkYlU4=;
-	b=NPIoSsUgqJ72uMSOCyIQqAc28of7LtkWnpPQQXHasacINNU4tSoVQvuvZ7yXZhQh2IWqTe
-	7g/d8qxTjZqELdbnkumazV494+Wq9sGtEP2zY0RkmnR/VhpU59BvNm1u86eQ/2/5VAeDiI
-	bCtSQQUZWB9CAn9tGebLXV5eRlGbYtM=
+	bh=ukRIzjVW3PJew+TIHS6IrkoYjfe4R4pVLgU+bG3uWL0=;
+	b=DptZjbGhIFBde3PdmvpIPVOlU4rV8F76cItZPlA01v9mUVb1wWyiSz2k+AWeGWpiKQsR5x
+	qW6PR09J3p0dBGpfsT0bQkxPrfpnapvvUnaoTZ9ukvgdZkU/tiGb1IvTBobu4p+rA4sa9Q
+	04rlS9wTZm2gQFlq0/rKpHszug0TAxA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787819293;
-	b=WuqIoQRKGTVVWjHzGIOxByB/gyx0rDTO6RgNQAt7YhUM4+jiS5V1fzOErXKZIpwF+xzvLJ
-	PP1bIRKt79+e6+5NdoAd3/oQG3JIRhvuQeNk8nJOSR+Z+15kuYMCZhvvlE5tWPeISwO9Fh
-	4fD0FjbnLxsy3//kg2RVPShpFbSmV3Q=
+	t=1787819542;
+	b=5ThS87hy7YD/DfrQKDFaTLgZPMC+fERTmOkjR3pVtjGj2svs442VqwbQ2ZCgNVqQei88Pq
+	bhY/wyEL9TlPE6vEdsifIndYmgxCbdFWbxXBc4UV0sXNkIHrt9KrFH+klRorUw1M4n0DQs
+	kp3xW1A/0DULVGC3Hpk546cVv+isdPw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PgzkalWw;
-	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1787819285; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=7ZyKXiDcMnJRL/Jca9p3GNNTfZ89CGVivxP5tkkYlU4=;
-	b=PgzkalWwZQeBO1KJOXcWmv3mKarhsMZgdBEoih7LZcF4TPs6BkQhuhkHCnkao1/Eo63u1plO4nsSS1dO49gfvIj3e7il0mJkWLMzxUmJfTBfpUbcb4hEb5zqndT2xaCU44MghwRWjAAVRUt1j3xv6xZkaVK2i7Bxzx4ZfKNFfW8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X9j9eTi_1787819282;
-Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9j9eTi_1787819282 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 27 Aug 2026 16:28:03 +0800
-Message-ID: <0107447a-7c1f-44f8-94fb-109b0f850677@linux.alibaba.com>
-Date: Thu, 27 Aug 2026 16:28:01 +0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HSzghWaD;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EE15F600D3;
+	Thu, 27 Aug 2026 08:32:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6181F000E9;
+	Thu, 27 Aug 2026 08:32:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787819541;
+	bh=ukRIzjVW3PJew+TIHS6IrkoYjfe4R4pVLgU+bG3uWL0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HSzghWaDE8ySlLE8IXAL3A7zR55UAstoOY8K5pk/GrZfGVcuGZRHCy8t5WuZTZDu2
+	 bzz5DUYMQrmdpgSQBxKADa7P59Ak/qukYQsjkJx2xN9G/HxlK1SgvITEy66G2nFS4E
+	 fV/PSNxw/mqa5me1sGrPDFc3pOdaskXANHHlr8ZWFvlwoUPSnkng8IY4szbMEusVrH
+	 XsAiDBBi9Ss4dxXAYIjX/s0YELdSLfp0V8FZOCyLTd7C6Taw/WqkXgqNbuYOPmDZRu
+	 HhOq1zGzjTqN4zLYtNMyJt5aYGQwGjB4AL7LVDvgoyGApjsHw4pLiCmsUsPuNo0e6a
+	 x/sU2NVOlFwXQ==
+Message-ID: <34fa1a4d-e5fb-4e27-a53b-b57b96be3f8c@kernel.org>
+Date: Thu, 27 Aug 2026 10:32:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] kselftest: mm: replace usage of /proc/self/smaps
- for check_huge_xxx() helper
-To: Yeoreum Yun <yeoreum.yun@arm.com>,
+Subject: Re: [PATCH] mm/mremap: reset unfaulted VMA page offset for
+ MREMAP_DONTUNMAP
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260826-fix_split-v2-0-71153c7f579a@arm.com>
- <20260826-fix_split-v2-2-71153c7f579a@arm.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260826-fix_split-v2-2-71153c7f579a@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tz6mtfmzs8mfhoqsragfri37g4tbywe1
-X-Rspamd-Queue-Id: 1D402A0005
-X-Rspamd-Server: rspam02
+ "Liam R. Howlett" <liam@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Li Xinhai <lixinhai.lxh@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzbot+f12658786a4153df5113@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787819289-930701
-X-HE-Meta: U2FsdGVkX1++0cfTxZ+PYXnjvH6G7mkpvTSVzOdmFeH3JqGgeUtHv5ldvpzjWRqxxKpj2WIM9Tk8RudNzaGdcrhlWgYZ4RNG67z30fIoUi9oToPXNF8fJTbSp/EZ910KIc7IrAAR6uv34x7eVFBEyyJMN4neSMwvrYItgBHf/Sj/0w1d8tJaYJbN65DL4lg7eRSONbAPPzWJGteU5BjNB3Sfc256rppDmZnCbgJ+S45dwwPhNHeO6PVQI4+qlpVgNAoZzd8WcA9ds7zA+mAdN7F8x0lJyPFOEFQ4cJbxc/p3TrEAwoQ/F6rFePEapDDJYovOp9QvNfUzKhxRwwW0ziKpIJH+yP6A5M6wsZhtm3Bcvyp5ENSnk2bc7ooTHJF9CgWWVz42WtlnrFELNaiy1T7r2we5maBvSbVJRVSAcqtRGFSSOJ3q/L5T2Ag+L5qKrgLURm1GjrTp0vjQrBqj0KxqD0M675WM7aDnayNBiX6aHw+6oY3tA0DgXqgA8HWlcuw1DJOnfXWb7gA0yDwPyZUO68dnWNXsYwciT3ifEtklpki9pcB1yQqEp8G8AYPoRgbaBpvBjWOoel8XzrGpTTif5CojDcz72BLFPw7f1zdFCLasOIpodEmGCB3XC5QDdcNIKxOznUEJLN6uQKhshy/Agb6zbKGlqplKNRfbrnZtJga0FT/+rRK35id4PVO566ox+CrXFG5v3tFTBlR97HZ9SHbkkn6/zDzHuNr+rrBVattk5K+eU9GBFiUH6jp8xICXNOCALzaQzW8B8waugAnZOYgWnxLoCqMCWtXjoh8+xuZGeyxfN6hUEHh+wRB5fZ31YmvEUA9F1flvqgcFZPS/3iNGkHwEOGxzjwEUhNytLyLzi8vmZ/4qdw53Sqg0vArwc7uOmpucDltdsIFU/zuQi77+stJ/q7qzPWHEJ4jPU7Z+UvFxqatZebLEQrVCB5L2De8uoP5jXWpdW6N
- StK0/icy
- HHUyJym81bW8Wh1bzn6NhVsIDsVFkrDdZHnAWd5P5vJ36EVdTM1XApaF7xJfaof5SywPaN76CDD+5ZrEHy23309+5CHTUFZMndPl5d1zyfwTeK2bsWVVBh66gg2Zc29GKOZhU4+HzRojTp/zRiPa4J+B+21SHkLbMCaj/Q+b5CeY7bAsU94VB1qFhH+nKU60I5mV+x39hTHoCP8BGhxDqm6Y9vKMLF3DAe54NO/WNG6jSlFg8OfKOZLazhSmb4INOdJQOQLrk/CNXUxxnJ5Ob/z4nPSh+gevzjh6EYRg3qCcEQBCcJbJ7F33G99wfJqu3IzF90ic5FUoEGGfUUejNfrUEHo9xVidJ0pi9nJ5B2DBSvRBValJx4iTb0421y5ewBqY+hgn0gs0q7dNe1NDatmwPCB6N9smHQdlitwJ4hn1a9+Q1wErdfq28iMn4+IrvIunld6MC+k7ubPttLbeFqaCWLA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 695E5100004
+X-Stat-Signature: can4u3oxtgxwojhxdng3jw8ib8ajd6yb
+X-HE-Tag: 1787819542-914711
+X-HE-Meta: U2FsdGVkX1/ALlDnXWimRSL0Mw5q88L8jcvSBZ8RIG5QpRP4Q/aoYxdaQIqs/QgNqsBeMyHQeIhgkF8fWxvkS/LYCyrkSYIMpXqcC8TFE//cPOohE6Al4PLYKEQgWtdcjGilYXqVFUtKOmSqGTLNdtP4D5lC71VOLMJ0BjW5DO4yWluajttmpH8Py6K3GNAv8UU/RviXg45WMEzRB+r77lJbPICbL2VLBKcTK0VhTlnA/avZe1Zo0YQA6b4i91g+MKyNvisNNfzlM0V8K5U4ottVtjF3+bRmGDhTS4UiGS59Le0prxAa10LCVn0fHrVuT2CcUWm5x9jOSN3sddee9Uzn6QJDqfxazkrmHckuU9ZMkJ+wIPOD7C8nNGA/7RbIPrE12TWGNaN+XBS/12OvJopgLQEDPcQZCilEo6Bl1NqfxCmZv8f8b8Du3uGOQ+VvjC5UkspYwWJgM3yJPjRpdh9Q3/p5r617D0PWMukZzb5UV2smuYhJ0UTmTC8A5yhOIw9EplYfwsxgvyJgUS6iVPTsOY3Ceu+FDbdZnbqXHbVjut+avJ3311MTLfsepDZ94V2YV97G77wQiIp+GrKkj95nUOaCtvi0eCX0N3z6p5PvqkVl8B4BbSZ0YenLb0Ln5M8p88fMXMPkKfqzQHlmHlP7ITiAqW94mJ4FdzjslSZSwMdXO9Nd6DmofZVDG9waj1C3iqXg6j4sHA29mPu553nGqwFpEDMRYSM7EH6dcysVRKqqWkyytTq7p0fgxKE50qFgqS2khk9DQTR+5N7hUalsBXES5N0R3UsJGfJGCkQZJkyhukI+ACnJZ3GQDMnig5er3h1sCjHU4b7LaH0A15O+l//J47EUnzMSgVKelOFyeaYzeG49+re3VO7WXUBvBXXZFb4xZ5m/Ip/ymJv6WN+4I/Q+mg5MACSZd6L5NOqVpJw1FFVWi61t+zc8pGV0sYHitjOcowczsZXAlPw
+ /8XfcxdE
+ bygXUiTIoSvbv44f/LfPZHIhO3k4vL5HnHMwheZwOlUmdyWniioWNHXetghKHIcutirsMS5cGAOwgYcw7l+MPepGfvBiBD0H72eef78PcbOBMTvvpXYS5gLM3hTar+fzkHHgZncRtc2poXCqOS0hKRwzuUSZZ9ADAbEPGkFTszUxSldj2zhPJtGVR6M9NKJEC1ZEbBdWYCdEruAbrY+bjWIiLXHV0bTVcqHcPiu7YiFgGOtXYSfCN6y4plQYQfLAM0tP68+ulzWB0eqS5v+uOGol0IrLoo7BbAZjn48IGsdNfAthWtCcm4i1DCmVFJg8/YWcf+SWVxTnGHQueQvn6UnEDReR3R05hR7sQQsB5m0tAv+FMc0NZkzIUv/ejWWDoMr+Dv9b8/4rV84S1mQa4B7Km0xcBo3OZ7ZvRGex2HMbF7dziFJkLoGt4amKEyKQ3SOuJoh2kiMSBSB51lnx884m/21q2C3pg766NNMgeTUWUxv2QWgbb8hcAZgngWIGlcaLq+cdPFX2H5At/rkyw/kKkKfu7mK4YseIR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,252 +97,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 8/25/26 9:55 AM, Lorenzo Stoakes (ARM) wrote:
+> Uniquely an mremap() invocation using the MREMAP_DONTUNMAP flag can reset
+> a faulted VMA into an unfaulted one.
+> 
+> It does so after the page tables have been moved to the copied VMA with
+> MREMAP_DONTUNMAP leaving the old VMA in place which is naturally unfaulted
+> as the page tables it had are no longer present.
+> 
+> However, in doing so, it violates the invariant that the anonymous page
+> offset of an unfaulted VMA is vma->vm_start >> PAGE_SHIFT.
+> 
+> This is because a VMA may have been faulted in, mremap()'d (causing a delta
+> between its page offset and vma->vm_start >> PAGE_SHIFT), and then
+> mremap()'d again with MREMAP_DONTUNMAP resulting in the unfaulting.
+> 
+> This condition is a violation of a fundamental assumption in mm, but now
+> also triggers an assert in assert_sane_pgoff() which explicitly checks for
+> this condition.
 
+Oof. So what's the worst thing that could happen before the assert was
+added? We'd use the "unfaulted" state to allow a merge, but the wrong
+pgoff could mess up the result of the merge somehow?
 
-On 8/26/26 8:24 PM, Yeoreum Yun wrote:
-> Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-> glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-> made by memalign().
+> Correct it by resetting the VMA's page offset at the point of completing
+> the MREMAP_DONTUNMAP operation.
 > 
-> The underlying VMA may start at a different address from the aligned
-> address returned by memalign(). Furthermore, a subsequent
-> madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
-> already set.
-> 
-> This causes split_huge_page_test to fail because the check_huge_xxx()
-> helpers incorrectly require the address returned by memalign() to
-> match the VMA start address reported in /proc/self/smaps.
-> 
-> Fix this by using /proc/self/pagemap and /proc/kpageflags instead of
-> /proc/self/smaps to detect huge pages.
-> 
-> Reported-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> Reported-by: syzbot+f12658786a4153df5113@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6a87853b.ae6ddae5.3da009.0023.GAE@google.com/
+> Fixes: 1583aa278f5f ("mm: mremap: unlink anon_vmas when mremap with MREMAP_DONTUNMAP success")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 > ---
->   tools/testing/selftests/mm/vm_util.c | 130 ++++++++++++++++++++---------------
->   tools/testing/selftests/mm/vm_util.h |   1 +
->   2 files changed, 77 insertions(+), 54 deletions(-)
+>  mm/mremap.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index 4821a3563036..1d0959b3b9e8 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -351,31 +351,13 @@ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
->   	return entry;
->   }
->   
-> -static bool __check_pmd_huge(void *addr, char *pattern, int nr_hpages,
-> -		  uint64_t hpage_size)
-> -{
-> -	char buffer[MAX_LINE_LENGTH];
-> -	uint64_t thp = -1;
-> -	char *entry;
-> -
-> -	entry = __get_smap_entry(addr, pattern, buffer, sizeof(buffer));
-> -	if (!entry)
-> -		goto err_out;
-> -
-> -	if (sscanf(entry, "%9" SCNu64 " kB", &thp) != 1)
-> -		ksft_exit_fail_msg("Reading smap error\n");
-> -
-> -err_out:
-> -	return thp == (nr_hpages * (hpage_size >> 10));
-> -}
-> -
-> -static bool check_large_folios(void *addr, size_t len, int nr_hpages,
-> -		uint64_t hpage_size)
-> +static bool check_large_folios(int pagemap_fd, int kpageflags_fd,
-> +			       void *addr, size_t len, int nr_hpages,
-> +			       uint64_t hpage_size)
->   {
->   	int order = 0, pagesize = getpagesize();
->   	unsigned int nr_pages = hpage_size / pagesize;
->   	int orders[MAX_NR_ORDERS], status;
-> -	int pagemap_fd, kpageflags_fd;
->   	bool ret = false;
->   
->   	if (!nr_pages)
-> @@ -386,15 +368,6 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
->   		ksft_exit_fail_msg("invalid order\n");
->   
->   	memset(orders, 0, sizeof(int) * MAX_NR_ORDERS);
-> -	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-> -	if (pagemap_fd == -1)
-> -		ksft_exit_fail_msg("read pagemap fail\n");
-> -
-> -	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-> -	if (kpageflags_fd == -1) {
-> -		close(pagemap_fd);
-> -		ksft_exit_fail_msg("read kpageflags fail\n");
-> -	}
->   
->   	status = gather_folio_orders(addr, len, pagemap_fd,
->   			kpageflags_fd, orders, MAX_NR_ORDERS);
-> @@ -405,48 +378,97 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
->   		ret = true;
->   
->   out:
-> -	close(pagemap_fd);
-> -	close(kpageflags_fd);
->   	return ret;
->   }
->   
-> -bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> +enum check_huge_type {
-> +	CHECK_HUGE_ANON,
-> +	CHECK_HUGE_FILE,
-> +	CHECK_HUGE_SHMEM,
-> +};
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index e8df5cdb0ac9..2b4b523a86b8 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1331,18 +1331,30 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+>  {
+>  	unsigned long start = vrm->addr;
+>  	unsigned long end = vrm->addr + vrm->old_len;
+> -	unsigned long old_start = vrm->vma->vm_start;
+> -	unsigned long old_end = vrm->vma->vm_end;
+> +	struct vm_area_struct *vma = vrm->vma;
+> +	unsigned long old_start = vma->vm_start;
+> +	unsigned long old_end = vma->vm_end;
+>  
+>  	/* We always clear VMA_LOCKED[ONFAULT]_BIT on the old VMA. */
+> -	vma_clear_flags_mask(vrm->vma, VMA_LOCKED_MASK);
+> +	vma_clear_flags_mask(vma, VMA_LOCKED_MASK);
+>  
+>  	/*
+>  	 * anon_vma links of the old vma is no longer needed after its page
+>  	 * table has been moved.
+>  	 */
+> -	if (new_vma != vrm->vma && start == old_start && end == old_end)
+> -		unlink_anon_vmas(vrm->vma);
+> +	if (new_vma != vma && start == old_start && end == old_end) {
+> +		const pgoff_t pgoff_unfaulted = vma->vm_start >> PAGE_SHIFT;
 > +
-> +static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
-> +			     uint64_t hpage_size, enum check_huge_type type)
-
-The original __check_pmd_huge() is only for PMD-sized large folios, but 
-now it not only checks PMD-sized large folios but also mTHP large 
-folios, which I find confusing. Please keep its original semantics, and 
-only check PMD-sized large folios.
-
->   {
-> -	uint64_t pmd_pagesize = read_pmd_pagesize();
-> +	int pagemap_fd, kpageflags_fd;
-> +	uint64_t pmd_pagesize, granule;
-> +	uint64_t categories, kpf;
-> +	unsigned long pfn;
-> +	bool check_large, huge_mapped;
-> +	char *start = addr;
-> +	char *end = start + len;
->   
-> +	pmd_pagesize = read_pmd_pagesize();
->   	if (!pmd_pagesize)
->   		ksft_exit_fail_msg("reading PMD pagesize failed\n");
->   
-> -	if (hpage_size == pmd_pagesize)
-> -		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
-> +	if (nr_hpages > 0) {
-> +		check_large = true;
-> +		granule = hpage_size;
-> +	} else {
-> +		check_large = false;
-> +		granule = psize();
+> +		unlink_anon_vmas(vma);
+> +		/*
+> +		 * The VMA is now unfaulted and it is an invariant that
+> +		 * unfaulted anonymous VMAs have page offset equal to
+> +		 * vma->vm_start >> PAGE_SHIFT.
+> +		 */
+> +		vma_set_anon_pgoff(vma, pgoff_unfaulted);
+> +		if (vma_is_anonymous(vma) && !vma->vm_file)
+> +			vma_set_pgoff(vma, pgoff_unfaulted);
 > +	}
-
-This is incorrect for the mTHP large folio check. I already hit a 
-selftest failure. Please test your patches before sending them out.
-
-[root@]./khugepaged -c 4 mthp_khugepaged:anon
-TAP version 13
-# Save THP and khugepaged settings... OK
-1..4
-# Allocate huge page on fault... OK
-# Split huge PMD on MADV_DONTNEED... OK
-ok 1 allocate on fault and split
-#
-# Run test: collapse_full (mthp_khugepaged:anon)
-# Collapse multiple fully populated PTE table.... OK
-ok 2 collapse_full
-#
-# Run test: collapse_empty (mthp_khugepaged:anon)
-# Do not collapse empty PTE table.... OK
-ok 3 collapse_empty
-#
-# Run test: collapse_single_mthp (mthp_khugepaged:anon)
-# Collapse PTE table with half PTE entries present.... Fail
-not ok 4 collapse_single_mthp
-# Totals: pass:3 fail:1 xfail:0 xpass:0 skip:0 error:0
-
-
-> -	return check_large_folios(addr, len, nr_hpages, hpage_size);
-> -}
-> +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-> +	if (pagemap_fd < 0)
-> +		ksft_exit_fail_msg("open pagemap fail\n");
->   
-> -bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> -{
-> -	uint64_t pmd_pagesize = read_pmd_pagesize();
-> +	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-> +	if (kpageflags_fd < 0) {
-> +		close(pagemap_fd);
-> +		ksft_exit_fail_msg("open kpageflags fail\n");
-> +	}
->   
-> -	if (!pmd_pagesize)
-> -		ksft_exit_fail_msg("reading PMD pagesize failed\n");
-> +	if (check_large && !check_large_folios(pagemap_fd, kpageflags_fd,
-> +					       addr, len, nr_hpages, hpage_size))
-> +		goto out;
->   
-> -	if (hpage_size == pmd_pagesize)
-> -		return __check_pmd_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
-> +	for (; start < end; start += granule) {
-> +		categories = pagemap_scan_get_categories(pagemap_fd, start);
-> +		pfn = pagemap_get_pfn(pagemap_fd, start);
-> +		if (pfn == -1UL) {
-> +			if (check_large)
-> +				goto out;
-> +			else
-> +				continue;
-> +		}
-> +		if (pageflags_get(pfn, kpageflags_fd, &kpf))
-> +			ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
-> +		huge_mapped = categories & PAGE_IS_HUGE;
-> +		if (check_large != huge_mapped) {
-> +			if (!check_large || granule == pmd_pagesize)
-> +				goto out;
-> +		}
-> +		if (kpf & KPF_COMPOUND_TAIL)
-> +			continue;
-> +		if (!!(categories & PAGE_IS_FILE) != (type != CHECK_HUGE_ANON))
-> +			goto out;
-> +		if (type == CHECK_HUGE_ANON)
-> +			continue;
-> +		if (!!(kpf & KPF_SWAPBACKED) != (type != CHECK_HUGE_FILE))
-> +			goto out;
-> +	}
->   
-> -	return check_large_folios(addr, len, nr_hpages, hpage_size);
-> +out:
-> +	close(pagemap_fd);
-> +	close(kpageflags_fd);
-> +	return start >= end;
->   }
->   
-> -bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> +bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
->   {
-> -	uint64_t pmd_pagesize = read_pmd_pagesize();
-> -
-> -	if (!pmd_pagesize)
-> -		ksft_exit_fail_msg("reading PMD pagesize failed\n");
-> +	return __check_pmd_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_ANON);
-> +}
->   
-> -	if (hpage_size == pmd_pagesize)
-> -		return __check_pmd_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
-> +bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> +{
-> +	return __check_pmd_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
-> +}
->   
-> -	return check_large_folios(addr, len, nr_hpages, hpage_size);
-> +bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> +{
-> +	return __check_pmd_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_SHMEM);
->   }
->   
->   int64_t allocate_transhuge(void *ptr, int pagemap_fd)
-> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-> index 9a49af88702e..f19bd17817e5 100644
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -18,6 +18,7 @@
->   #define PM_SWAP                       BIT_ULL(62)
->   #define PM_PRESENT                    BIT_ULL(63)
->   
-> +#define KPF_SWAPBACKED                BIT_ULL(14)
->   #define KPF_COMPOUND_HEAD             BIT_ULL(15)
->   #define KPF_COMPOUND_TAIL             BIT_ULL(16)
->   #define KPF_HWPOISON                  BIT_ULL(19)
+>  
+>  	/* Because we won't unmap we don't need to touch locked_vm. */
+>  }
 > 
+> ---
+> base-commit: efecab401cb15fd3bb9bc05990609acb6b267ff2
+> change-id: 20260824-fix-mremap-dontunmap-pgoff-a687134e995e
+> 
+> Best regards,
 
 
