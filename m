@@ -4,80 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D79C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:05:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 194ECC61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:06:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 403F76B0088; Thu, 27 Aug 2026 15:05:00 -0400 (EDT)
+	id 2A6846B008C; Thu, 27 Aug 2026 15:06:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B52B6B008A; Thu, 27 Aug 2026 15:05:00 -0400 (EDT)
+	id 256FA6B0095; Thu, 27 Aug 2026 15:06:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AB0C6B008C; Thu, 27 Aug 2026 15:05:00 -0400 (EDT)
+	id 0F7776B0096; Thu, 27 Aug 2026 15:06:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F04986B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:04:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B07AA0143
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:04:59 +0000 (UTC)
-X-FDA: 85147976718.16.E47C8DC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D49086B008C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:06:04 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A4F81A0177
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:06:04 +0000 (UTC)
+X-FDA: 85147979448.24.15C3473
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AD805180009
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:04:57 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlYnxvrh;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8FEE8100007
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:06:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dvycqUr8;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787857497;
-	b=i5yKrIB3sdK5+1PKWp6JRJCHTAYYc00edHPyofT3oRzaRb8UrsoEN+9dwd8uq9nXg8bjuN
-	vV4RezBFO1ad0KN755LylBDO1DbnWKKaH6HvRe6k5OvGy1atmJrSNA6HPALhsr8XnYgMgq
-	1VhluvK5T1sB0eVhFDPY4bsMOXHelIs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlYnxvrh;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1787857562;
+	b=URfxaPzI9rnfhfbeMp6Qjz2aT9P8QK8nq6DqJNjUmjYN2Yq9KAeqVGHN9wTi2sn4a5B5/h
+	SORZ7/D1NKrl1A6v0ZVlQYgGt51rjO0jHwKJ1OmoE6sQavH02aOHt9NvDGtGmCq7VptfoB
+	SP74c9DqJatDkJ6JnzCJlgdFTa622Dc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787857497;
+	s=arc-20220608; t=1787857562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l0/18a+jAXPQl28qEPQ6uj9wzdNRM90aKlsTE3XVMSs=;
-	b=ZnsH9w3U1QFeVzJY5qwzhXESJ1wNDSMNJWK5BRy19TyKZQYMqRgjjk7ckEa1mV5RZ7JPrY
-	StG8RlAIlfmxMsbzALbidUq6WjUVTGhEFQikCC6wZB/tC8dteb2LEwMNG6yoXTEtFJhp1v
-	fp76PVk1WBYw3S+l2fmO9U8XPGOheKo=
+	bh=qvAjMUQfB68JhL8RVuJBxxq+2zV5hpIDxgxtvNxSWwY=;
+	b=8R1CAmCorVCTnih4B9B+mhuCxMLLpuReqojc45I0tG5k6Pyxs06uaYnAmWjQkTBCjP+xM3
+	z5n6L2UbZt3DJPOagrXY9rAT3Ktm69tkq0uqCC4uAKVsfmqJPxeiRk+PlpTfbw6d/I4maO
+	pGGiHOroFRHU9uVCFOjMqzmtCk1zD8g=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dvycqUr8;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 409D3600D9;
-	Thu, 27 Aug 2026 19:04:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA021F000E9;
-	Thu, 27 Aug 2026 19:04:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D67AA600D9;
+	Thu, 27 Aug 2026 19:06:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B7D1F000E9;
+	Thu, 27 Aug 2026 19:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787857496;
-	bh=l0/18a+jAXPQl28qEPQ6uj9wzdNRM90aKlsTE3XVMSs=;
+	s=k20260515; t=1787857561;
+	bh=qvAjMUQfB68JhL8RVuJBxxq+2zV5hpIDxgxtvNxSWwY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IlYnxvrh2yDgFzTmXYpXAblj4oY6DF62sHqpe9c1DGkpNWRoTeFoataC7x+TPDk+D
-	 5ZpoJDkYw5xUrFJSK9rIzvGFROXkjqIK/sj1//S8MEoMhpvZ7egEv+DR0tAWav6VAh
-	 Tk+z/ORfHyrXgtbx8UFQeGO3ds9ogqUc8uPJQdJbp4XBJaSTIQ7p0zNQAMZrBtLR9I
-	 Ma7+fmGyJlg9zJigXjp+fagb/cUpv8EuVCgbkmt4n2wplDJVsZ5mtSuY9VOGlyPBCZ
-	 R9hijTRWxt0jrSJFewQ28XCNVr7u/CA1FwfhVLiDHcQJjxmpPqzycazMIaFgODYIha
-	 v71IFBB7rBzqg==
-Message-ID: <bbd45126-8d43-40eb-8a69-a7fb6d2378f1@kernel.org>
-Date: Thu, 27 Aug 2026 21:04:48 +0200
+	b=dvycqUr8nLdxAJSsmYmBehOuav+6pGYrnTBb9M8bBqCwslkLJLCEoCtZvOtKbaHIR
+	 ryAPQBlm7sHMrS7BJV1r443wYqfuBQhQlrxXWZxafTS2lLZ2vb0UrNjUA+jubDIjlZ
+	 HcUATpM7k2WspidyNx4/YWoWqzRZ0dCBNFd2QkyTQdyFLhVc4dYzfqh24xGdbN0O2z
+	 Q2empcC3PyH4s1m4N6AcGGrkOvt7V6okP4p56o07ybWLLbOOdOARJ32yxl5S9FeT+L
+	 UkSwaYcNxTcjCbw52ruUFCgufiEaZJDGK/EdJISib7XijKTUPhYbiJFn7IPyHQm0GM
+	 e38gChEbkc+Dg==
+Message-ID: <dbc740e2-660a-44be-8f62-61838603d838@kernel.org>
+Date: Thu, 27 Aug 2026 21:05:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/18] mm: arm64: Add kernel replication feature
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, artem.kuzin@huawei.com
-Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, vbabka@kernel.org,
- cl@gentwo.org, linux@armlinux.org.uk, will@kernel.org, mark.rutland@arm.com,
- liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, wangkefeng.wang@huawei.com,
- panov.nikita@huawei.com
-References: <20260827161158.3618409-1-panov.nikita@huawei.com>
- <apBqjq24aG_s2ZTM@gremlin>
+Subject: Re: [PATCH v3 04/18] mm/huge_memory: split the routine for splitting
+ anon and file folio
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Shivam Kalra <shivamkalra98@zohomail.in>
+References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-4-9b43f5163238@tencent.com>
+ <e156c931-69b4-48d6-84bf-c06df134c9da@kernel.org>
+ <CAMgjq7BzAkuibv+SyZQ+WzzbEL29dV-vPYyX2p43L0JDn3=wNg@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <apBqjq24aG_s2ZTM@gremlin>
+In-Reply-To: <CAMgjq7BzAkuibv+SyZQ+WzzbEL29dV-vPYyX2p43L0JDn3=wNg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AD805180009
-X-Stat-Signature: fzpnpe8pc6gm131znhf336ac74xpe9wn
-X-HE-Tag: 1787857497-466364
-X-HE-Meta: U2FsdGVkX18omJW328yVe4fGXum+FDzpsb9/fdAgnGzhQw/e3bhRwAcWANT1BkllRHAl7ONjeP/WgyjFO2BDrWCxp6dpv64q0HjUogHJ+A1o6RqmOvYTvQnDScDT7CyDAu98fF3UZBuCjClRC+qd8FeNsbnEOvujKFaXRNsUx/euiMIl2+tfis7aRg69hjT20r1xSlfLKi0iZuWHDVx+GFD91P3f4r+QB7FiRWcK+LOYMDhC60CcyohfcfLbpCLoa26kGhmvw5F7dBRlOtc7sR0PRQKlzIQbJ1/FRycIFmzYbdwu9enjs/ndi80/mRwsuPvVJQduzBmiUUEINd2Ui1daCtHzMzv7LPhytUq9Wb2pafse6sxvI7k4V/l78ei4U1dSrQlqasxHv6a0WtYMcN0bHxzuej/A9iKYcGFNv6TR5l68LH+054gBMF+WHg6eEUsPrcstiAf+MFEUuwUyT1FvtWHLR2KaMGNNIxNeC59OSArN2sdtEd/ezJyUPVbXjoRESlOBvg+kY+itsFy3Lf3+l2+WSkSUgqtUC6/fLFiSzJqaxB4L7THLLA9kw+V4obvBurXam6P7yF81SgfGjgQhJhBi/z/Uid4FRjJXNaz7mKmoTSSafU8yN4dMa2DsnIAtS9vG6kDrWCge3zwkeGSvMnA+6U9A+4J61h2XILKV9rlfMkcbdiMTz5OgL6PXBwYeqLDuWei+WM0wVIJb4Jd/kWlyA5ynUxCn4GgSG7oWI5h5g5DPsYZeXb57VKJ7JwUM6T6rFRayTZCpikLTHQwn/a/xf0nLYdZgnDMpystftsSXEKIUKIhhuZMkiKT0F8TMa5Fz8wSuupej5Cpd1/CF2BQ45iqHFvm2WpB9kQxgGnGOEje3CpmOGhiw9jDZYaaBNwNc7L1q1PR79Yh4H5A59ankUvKVgwfZhZ1gBBEIKzNHMdPMF+OGvG7FqXIzcJkVbDgR8fc38bIEiyJ
- TeYxNnZD
- DfI5+Q2w2Dn+GeAVqk4J/raZtbeY71VsOlEMjwrJ0+KQNutmGtGBwWA/34DXJhLVzfC4bKMVvQNSDl9rMBYUc3FzAwH/vAHJJfm1LB7ymMkwcZNYDLFRVGhkSrUPeXDZtGDdefv1VX3Ky7IVm+G/2b70AY7WdNj4kLg8GRChf5nWKYpVjHRqM6l9/YeCh7HQpOjPk+mK0egC2ej/NLcoL1btVV1Pb1QXeBtm4vK1rTz4uBgx4/kB7gyv3nZvnpsno+1uT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8FEE8100007
+X-Stat-Signature: e7khfgh763b3dj6sgqja7tagjqfzhgm1
+X-HE-Tag: 1787857562-354914
+X-HE-Meta: U2FsdGVkX1+eslz0cLkR7bz5oUuI3mFgbpGA8hBeOLuAkT8eZFtQDfZ9GTZhlqaMOz1h2n+XboplsoM4POD28W0OORSabPaONydYGbAfPfWPOMViOjQEWhArgjOgQH88cWyT+30xldGbl2nosUciU+O/fQO/8G0V8aodi+oWHsg9qRG9/NvWajVV6BZNK1c3MYzN+UXNC1kjrAqxyHtNmpkKUzoMGunDxkLBHjyOQBht1kOvSXTIszYgCZq+R1mRDny92U/4t3rEo8138+7mIlW9FflagHnQ4dckHWcRbVJ1Ql1ixZV860j5cC3fQM2Xq4CSV+Tc8TrFDfmuBLqFbipW2Hdh9oix+aAxkRjABa4AqD/39hx+p3nvTFSdl1tFLOyfPTcNI8aP6hXuB9j0n9x7/2G4U5sKIU1HoXL1gjJf5mUaDjQAbA8ZTMsweaoYLsrRJtsITvkNXAj0iq/wchkWN1AORWIA/UgXgvdLDH6QPjCC5dyBYU5RIIx5dt9/LPWWNc22jND5mh9B4Uez0CO03vsHIrL1J4rOUGAqenDs0f7R/1JF2/ZZmp/PGirnWRRyToIUOE31dwEFWooMJeaiNkYfRjalgbeMY1SkTV7rdWw0+vY/hlQ4YEi22P97LSJdmY74KXjAKe0oleiVWZlXzXp3kljB6DSA7IIg8VycHJbwK0gINS4MhfxeGUeVucFaQgArP+Xi2SBeM5gGmaZKQl3G4nP+EfGlGr2lh3iG8h49gU4Lp/UnQIA4uUPYVlrfbgaf0QEpsiZ12XzTSr1RAGFBVfp1nbBr6lKRyvW7IPzAHuVjLV4JWa08ILM8MHQoG2Jx8vfP3m65Qg5RXjptT0GyORo5GpiC28Jjl0vLsCnm0utzO9ywx9JRMqTI2W0VMM1JLfzPhySRy7Pn9CYyg9KW2K3ykNo46zI7cnrXZOR2o/obe8xdrczilPUsgyCYcvBq8AlfPo0IcQP
+ l41qNGu3
+ drxymdNE6c8F1YBgHvnZ4p7a0cG4Rm7dOMs326BTRjWhhp1ns2sJ1zdWAFALGQCacA7lELzZ6igqcrmQdcmVTUMSQOUNku3g8PmJm2Plmde03pSMXFVzF2tYs/TtLTcGJ3C459PVGkTubPe4SASip7/B6foo8zs9mR12A6UkRFOxMyHL5i0/MRqYZQx73m+xygKVyo3DqG3Lkfc4L3kANmQQtjrSkz9uNeAq1HGLvnyffNeHCOW+NyqpD6XOokTlRCxM09g7HQDlq4VKMssX2I7f7hQdfQrXUAjXbwncgmI3mJ5uVBy+cPQFFAdoYvqpPYg6r81zaXRs1gb0tii7x5c+OJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,37 +151,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[...]
-
-About to go on PTO, some random points :)
-
 > 
->> [12] - Optimize this_cpu_*() ops for non-x86 (ARM64 for this series)
+>>> +      * place. Keep the head @folio frozen until the end: sub entries
+>>> +      * in swap cache must be updated first, so a concurrent
+>>> +      * swap_cache_get_folio() cannot return the head folio for a sub
+>>> +      * entry (folio_try_get() will fail on the head @folio until unfreeze).
+>>> +      */
+>>> +     for (new_folio = folio_next(folio); new_folio != end_folio;
+>>> +          new_folio = next) {
+>>> +             next = folio_next(new_folio);
+>>> +             zone_device_private_split_cb(folio, new_folio);
+>>> +             folio_ref_unfreeze(new_folio,
+>>> +                                folio_cache_ref_count(new_folio) + 1);
+>>> +             if (do_lru)
+>>> +                     lru_add_split_folio(folio, new_folio, lruvec, list);
+>>> +             if (ci)
+>>> +                     __swap_cache_replace_folio(ci, folio, new_folio);
+>>> +     }
 >>
->> As of today, none of it was merged into mainline.
+>> This smells like duplicate code now. That should better be factored out?
+>>
 > 
-> I mean :) maybe take that as a hint? If a number of series trying to do X get
-> rejected by upstream, that is maybe suggestive of barking up the wrong tree?
+> There were some discussion on this in previous series, I tried to
+> implement a macro or helper, but it ended up being uglier. Right now
+> the duplication is just about 3 lines of for loop due to the split,
+> and the extra loop duplication existed before, so I think it's fine at
+> this point, maybe a helper later if this grows.
 
-I'd have expected an explanation at that point why previous approaches were not
-merged and how this patch set is sufficiently different that it is worth
-maintainer's time.
-
-> 
->> However, after thorough re-evaluation, we were not able to observe
->> performance improvement for the x86 platform, so we have decided to stop this
->> direction and switch on arm64.
-> 
-> I mean, why? You should provide details here, this is quite hand-wavey. You are
-> also proposing core mm changes for something that seems specific to unique
-> hardware as far as I can tell, which is a big ask.
-
-What I consider interesting is "after thorough re-evaluation, we were not able
-to observe performance improvement for the x86 platform".
-
-How confident are we that a thorough re-evaluation on arm64 will not similarly
-have the same outcome? IOW, what was the problematic part when doing the x86
-evaluation, and how was that avoided when evaluating the arm64 implementation?
+Actually I wanted to drop this comment after digging into the code, but forgot.
+So it's fine with me.
 
 -- 
 Cheers,
