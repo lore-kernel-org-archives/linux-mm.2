@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 329A9C5DF9D
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:03:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF14C61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:06:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5745D6B008A; Thu, 27 Aug 2026 04:03:50 -0400 (EDT)
+	id 774BA6B008C; Thu, 27 Aug 2026 04:06:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54B5B6B008C; Thu, 27 Aug 2026 04:03:50 -0400 (EDT)
+	id 725146B0092; Thu, 27 Aug 2026 04:06:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4892C6B0092; Thu, 27 Aug 2026 04:03:50 -0400 (EDT)
+	id 63A9B6B0095; Thu, 27 Aug 2026 04:06:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 29A7D6B008A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:03:50 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B4D2A034D
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:03:49 +0000 (UTC)
-X-FDA: 85146310578.04.5D8E0C6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F285E40007
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:03:47 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BrcCTXI+;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 46EF36B008C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:06:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B59154036E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:06:21 +0000 (UTC)
+X-FDA: 85146316962.02.C63BBEF
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf31.hostedemail.com (Postfix) with ESMTP id AF85D20005
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:06:16 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lXI6gs4g;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787817828;
-	b=awcevoESybBKbeLg+nLTMBT8rSsNAzXQYrkZbzQjvhNTCknWAFHvnsQL6Oklmhbj/bB1rp
-	BjB2b0Rf3ZAwK/VdGDmpm/yYhE+twXeFN6zSq0k2WXZjX7wP0RGNviRKXQiC6vxQEYoOYR
-	R0QfE+iFqDlTT/FfcgDW/S0efG9DaAs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BrcCTXI+;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1787817979;
+	b=8FYSiv5kTBIzgxucwtyC3/R6B5st8pWMrpEmb7PvY9qgGOrrsdUGQ9G0rkytTnpj2bM153
+	KY2ebzSUpAyC9pDa33WwBZLAOrGlPcJZ7jmD9MCuWokBjENC8MEXEMIuWeZdB8QpGm/Z7y
+	dxZZXpskVZtJqN/nQSLE0oU95CiOQ0g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787817828;
+	s=arc-20220608; t=1787817979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cNLnyWjL8DesrYLjnmrDKChGfbafqlwaKvit0A9aYBs=;
-	b=zdoTjfDoBqQwcvqG2AqA6uTIe0sn6clVEkDmjSUv7+yotkY8a7rP58Y0riUPelYMBM1nt8
-	b2msCje9YD6FmLO91X9tz5jgU5yecl6nFfv3tvL3LeEVlrmVjmw5em8P7mCfe+g8lhrCBt
-	3ntxFrmUA5X9OwYKVh/W+LV6mDsqsEw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 933DE600D2;
-	Thu, 27 Aug 2026 08:03:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB5A1F00A3D;
-	Thu, 27 Aug 2026 08:03:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787817827;
-	bh=cNLnyWjL8DesrYLjnmrDKChGfbafqlwaKvit0A9aYBs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BrcCTXI+b79Ps7jW4U9P8tYTSax/uesrCiFgIHl0hEXor8vyMSZyt72JUBlNLZY/z
-	 tD3QOsg1AWjDXs+xXwqaJNoHjhj24PXvr/DA9HqEWFkTjZEHA5eHsMKJNn8D351Guc
-	 OLG6IsqlWXAipfDO3+F9RYea9DR/O7AF3RRADIQtKnP7AsdhwA9Y7NkRjaZxppiFJB
-	 82qzxp4Zz9w3/oZcc9M7zte4so8a+FD2vpWxbPhCwOvAWPoCt/eqYX4LaOvxOpks7Y
-	 h4NCeRUVJz4zc534Fj9W/5hMbZcxBNI9bgMPMQsttAe7eAaGi3NC3+WaXqZCaeTbf1
-	 wFqZgMj8O7tvQ==
-Message-ID: <78561ffa-d075-4570-aaed-60744f11160f@kernel.org>
-Date: Thu, 27 Aug 2026 10:03:41 +0200
+	bh=vItm6oSJ85xwVAuuaGxmtPSRnxGXaOONFh+Bcy0mTMo=;
+	b=IZo7mh6d0a3bpkT5F1DPJ58T702cZZpjaNBw1z8U6IVKwSMYxHen9aa9R+2K8ricRb9PCq
+	gx1Y6GnOKb6crzOtpN20cA0IHFLPGLlSOnHdtnuhC3uEFpUGYGP3GXnW4d+OZ2crt9y/d+
+	9evLiL3kuHP+Kx4ND+6QXJdeDlFYRw4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lXI6gs4g;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787817974; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=vItm6oSJ85xwVAuuaGxmtPSRnxGXaOONFh+Bcy0mTMo=;
+	b=lXI6gs4gkSQVar4xsssdx2xwdfNaouskLY/1L9RTyT/XguRkdXVWhCf25GyYginoIY/DU8SncoiW886uWDECaP5GU9Uk32p9ZCovhRgI60AEm+3vjtcHoAfmLbEPUbWNRIE7K+4YYC4cB9dsVrHM5oxPHi2pXdFsdoRae8HDL8w=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X9izibF_1787817972;
+Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9izibF_1787817972 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 27 Aug 2026 16:06:13 +0800
+Message-ID: <1ec4ef97-47e4-48af-a8c8-4e50faf781f0@linux.alibaba.com>
+Date: Thu, 27 Aug 2026 16:06:12 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: remove out-dated document of __GFP_NOFAIL
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Baokun Li <libaokun1@huawei.com>
-References: <20260827030548.16631-1-richard.weiyang@gmail.com>
- <cbc344a4-77b7-4282-9bdd-004822642ab5@kernel.org>
- <20260827074921.mracnqv2m2cugasb@master>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260827074921.mracnqv2m2cugasb@master>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH mm-stable] mm/khugepaged: avoid unnecessary checking for
+ swap entries when collapsing a mTHP
+To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260825192433.3185880-1-pedrodemargomes@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260825192433.3185880-1-pedrodemargomes@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: c35dc3sxpbchuiy6xg7a61cqxgjgndsg
-X-Rspamd-Queue-Id: F285E40007
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787817827-567975
-X-HE-Meta: U2FsdGVkX18xTn4PlVd4XXFmncZPFtoz2Vl0PGBAHejMXPYtW/3M2cjgc4iNSfzSpe6Iz5haQOlxZ6fCsM/Q4XnQiis5AvYu2A71uVyz6ay7h+WE4vGwV4ZmsUF7dEROVgOw+eTM/DFz4OHdtIFzoS5goVHjC7x8fIv/4MJ6DzMO7KcGmszNCJLKH64uTNMC0vNsAN2Nvwe2RO/t2Sn0lGAWGzjLaHCrTS/7NCgG4yrPN7eT8S0GFVP3YslppFEhh8XTwtFmdTD8PKr6X/scD2SvzwJO835M6pHQDIpreWp2sLfEVywAjNPddFB7FleG0zL8EcYFycBQEcBULI9QZwCvGUPz+WhenAOh+yrb5XYqZbGl1uUlPIdPEQ392ZrujlbkfqNWV4/A2bAe5k9ImxQgc7D4zJg1Pm/UyCJRsKpFm2lnr6Y2nuspXx2AJJ04QdkdjUXFkU7XYmo7zLFFCsXo6s5fvkSk4jqMEicW47ss7E1X6B7nPANtAsc9DOtYuRDCwD17+RtMAOWJ349/Rw0WKWxgqwsdCx0mHszhONe7MhW5c5SK8GseacR+LduKZ8we0+HteHc0/QXWXljHLU/3nGz8QPry2GmOWyj3xsPQLypErNSvuIo9XHP6u9zotGVkmUBlscN7fIGqE/qplehsv/H4hxMINiBfqSRvS60Ovb5X54WYymn3bUaR4+lgiMdo1numWAhBXN5p0k43YsQ5Ll0UZ3VCdObKHa0LOgqrRxMGVcSEa2neFyzYDxCz5YYM0vxOnFxwaBlIT2Pl2OUfTmyJlpsrPhJY1VO1HoH/K7xsPbSiNdHLlaFPOzHz5kA7M5O7Nk2WhOTnbBXiLVKKxLbX2aBn+xrTqj6EVPDTZSxF1L5SVJqVaGhXrwVJ3pFoOtQ2NDokIvUW5/ArykusHabszb+G2pS9ef1FZ2qq34SgMmqe6J5BfK9yNKJf7N/uCmjr9neFU4PoPsI
- ABxXaKRX
- LhpNvPMJs7wzWZxTn/snuPXNkotCkgHmSS2KpDO3wBEB+C3YKPcDmQEcbej6PvAphw1pDEuAd2VasvmK/p3qMzlGwakMNTlVX2H30xImkufH4c/qSIxSO1Svy0TneP5yACKHBfTxKM6IEyLAYneAw0jaYOUg1ygGqAYo4OPKZ0WJAm6wagg0OGyWlgD8xD+BbLOarSSVmcLfIjNu75hS460J/wV/hFAvkaehrZB1D4GShER8QnnN4Pna+uvaLerwOCpRkpXZ9C//0q+0u4Sir4YggAmY9M5u2RBpcD4H3F82GKRz4gBWG1tbOco/fApwLq8+fRR+HtUznFIJIhjjCoocLZp0z0OnZLTcfFL9Cxxv+AgRr6uCtBeu7AqkcVxlvxeJu9D8WpnMEm5mJwZ4gmhFvEDHQ/GL8rM7pZxMjfYUmuZOQ6VeP+PtMAlNvzd8YsRTCF7iRK7iAnBZ4sCuQPlICJwwlqaw0mXDIOjiCBf6dyNZy86T+YYv4AIla1o1PbeaO
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AF85D20005
+X-Stat-Signature: 4ka8zpwyec9ban3gxrft61jfgiz1pwsa
+X-HE-Tag: 1787817976-239164
+X-HE-Meta: U2FsdGVkX18xhfCnvfirZQfQFXMIuXR69W5yV8CI2kaGbVnvTQhQ08oGlXxSLT4CymoLdqq5Pk32zLWSy6BtU4RtEakBL5AlcQmIMvv9kzimnUUlQcjB8iUAmDrpASUpNW1khd2sIkdCYdvnHXHK8YaIMSK3UyEuyLUpAITrk+Z8jbRHZ2Lm5wPsvbB1Tq1ISqnIqKltHa4GhKgMe9ktVV9HaaMBS0Lr78iFBJqWht8DBIrfIZApAzXFoiOT7zByB3bQHewKUw0hC5qqndSm2g+jX0yj8LxeLrXLUeQF1bz8lG9stJS5WwxodFHp5S/8Rppuu6OvQXMHUsTTP3vDR+b0ZvV/dLX2Q2/WtA6x36WarUgT4Iz/N4qfguX2akSvYY9nLEtmP3qYj8eppyGq4ZG/FDRPFMVjBsbJFpGtvliOaoBa3+a6q3Xyu34q6cpCzYMR8XYE347+Xtncdb200ldabGo3onLRgr20H4RZrnMLBInc6QAjSr5aOWesAtm7dZpcLmXyire6IhnEon0LIUBx6mmd8rntAOs7rCEQ4WK4WWSpAkWS4R10gwChRWVie97iTZnV7SKd5DyyLxJBdeW8q6E459D8lQKK4YViK6Lybw4AsDRadcyclvsE8yepZsZHFgq+oEDvaBhDws4TOuHqtSBwqDF78GstivV6jutgbxkT9mI6Xvivn4ixqABz1BWM69P67Gx1gjTWkcapEv00/daa2yx0r16mr9L3M1UBooJuYCXhN6rrquElePiEzPMgenYKRHvL/ZcZpdbD9LG9vde/iuoggzF7fvgMcf1FJoWJ+LsY5kVwOuWykidrjhrMOlFJC7tzPVg3BvNJbxLvkMldT0i5BpvWyLC7kUTxMnmJgBpEgXnRQIbA3evWkveDsF81wBUxUovWiZtdyY3iNNrLg6NtiG772wJBbQrXy+0aFPxcCGNyC0yl9ePXnDnGr78HBgPCjQi8xQq
+ Yn6n6ign
+ 47CcQfYUgtBYpQ+EhKh4ecDwugURV6pEpmqCrxS/P61WFIMhpcKIBWf9BgNOyqfcIFP83eNzCnwhZEmob0v3uGWZd88QnUbV5JAG0RRMMm42FERwAcumDnJvSl1yFcW9gRjXS5fPHZ+ypNrdJfe7iIGFwn7jEbRoIT7L5kQSFtHHp2O7vRCXrHKLznb4lZpz2Di7e5vCd3TD4k9a8TrFZmTTwMY4B91Bvv336XuUU/VinzRvT78kuyw3BuYr2xF2xXpxBkm8PzYEka/AeH6UYEsnTnv470Djy0ymr5/wtIkQ/14d+M4Iwt9rILOKC5b9G85fJIumBUZAUUlOi/HesBJhZ8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,79 +92,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/27/26 9:49 AM, Wei Yang wrote:
-> On Thu, Aug 27, 2026 at 09:35:26AM +0200, Vlastimil Babka (SUSE) wrote:
->> On 8/27/26 5:05 AM, Wei Yang wrote:
->>> Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
->>> with __GFP_NOFAIL") remove a warning on allocating large folio with
->>> __GFP_NOFAIL, which is adjusted by commit 903edea6c53f ("mm: warn about
->>> illegal __GFP_NOFAIL usage in a more appropriate location and manner").
->>
->> "which is adjusted by commit" sounds as 903edea6c53f came later than
->> ee040cbd6e48, but it's the opposite. Maybe say "which was placed there"?
->>
-> 
-> Got it.
-> 
->>> While in that commit, it also documented this behavior which is
->>> out-dated now.
->>>
->>> Adjust the document to align to current code, and adjust the comment
->>> while at it.
->>>
->>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>> Cc: Baokun Li <libaokun1@huawei.com>
->>> ---
->>>  include/linux/gfp_types.h | 2 --
->>>  mm/page_alloc.c           | 2 +-
->>>  2 files changed, 1 insertion(+), 3 deletions(-)
->>>
->>> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
->>> index 190191411009..24fde8eb73df 100644
->>> --- a/include/linux/gfp_types.h
->>> +++ b/include/linux/gfp_types.h
->>> @@ -243,8 +243,6 @@ enum {
->>>   * used only when there is no reasonable failure policy) but it is
->>>   * definitely preferable to use the flag rather than opencode endless
->>>   * loop around allocator.
->>> - * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
->>> - * not supported. Please consider using kvmalloc() instead.
->>
->> I'm not sure if we want to simply remove the lines, or rather say it's
->> discouraged (instead of not supported) and still suggest kvmalloc() if
->> possible.
->>
-> 
-> Reasonable.
-> 
-> As mentioned in [1], kvmalloc() maybe not suitable for some cases, I would
-> suggest below change.
-> 
->  * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
->  * discouraged. Please consider using kvmalloc() instead if possible.
 
-Yeah that's great! Thanks.
 
-> Or, you prefer only s/supported/discouraged/ ?
+On 8/26/26 3:24 AM, Pedro Demarchi Gomes wrote:
+> mthp_collapse() tries to swap in PTEs when collapsing a mTHP if there are any
+> swap PTEs in the PMD range, even if none of those swap PTEs are
+> actually part of the mTHP's range.
+
+Are you sure? I wonder how you tested your patch? Because we never 
+swapin PTEs for mTHP collapse, see the code in 
+__collapse_huge_page_swapin():
+
+/*
+  * TODO: Support swapin without leading to further mTHP
+  * collapses. Currently bringing in new pages via swapin may
+  * cause a future higher order collapse on a rescan of the same
+  * range.
+  */
+if (!is_pmd_order(order)) {
+	count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_SWAP);
+	pte_unmap(pte);
+	mmap_read_unlock(mm);
+	result = SCAN_EXCEED_SWAP_PTE;
+	goto out;
+}
+
 > 
-> [1]: https://lore.kernel.org/all/aQTHMI3t5mNXp0M1@casper.infradead.org
+> Track swap PTEs in cc->mthp_unmapped_ptes so that mthp_collapse() can
+> tell whether the mTHP's own range contains a swap PTE, and skip the
+> swapin check when it doesn't.
 > 
->>>   */
->>>  #define __GFP_IO	((__force gfp_t)___GFP_IO)
->>>  #define __GFP_FS	((__force gfp_t)___GFP_FS)
->>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>> index ab385bc252cc..146f7e0a9462 100644
->>> --- a/mm/page_alloc.c
->>> +++ b/mm/page_alloc.c
->>> @@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->>>  
->>>  	if (unlikely(nofail)) {
->>>  		/*
->>> -		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
->>> +		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
->>>  		 * otherwise, we may result in lockup.
->>>  		 */
->>>  		WARN_ON_ONCE(!can_direct_reclaim);
+> Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+> ---
+>   mm/khugepaged.c | 29 +++++++++++++++++++----------
+>   1 file changed, 19 insertions(+), 10 deletions(-)
 > 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 11ff98d55c76..38596172f7dc 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -117,6 +117,9 @@ struct collapse_control {
+>   
+>   	/* Each bit represents a single occupied (!none/zero) page. */
+>   	DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
+> +
+> +	/* Each bit represents a single not present and not none/zero pte. */
+> +	DECLARE_BITMAP(mthp_unmapped_ptes, MAX_PTRS_PER_PTE);
+>   };
+>   
+>   /**
+> @@ -634,6 +637,7 @@ static void collapse_control_init_scan(struct collapse_control *cc)
+>   	memset(cc->node_load, 0, sizeof(cc->node_load));
+>   	nodes_clear(cc->alloc_nmask);
+>   	bitmap_zero(cc->mthp_present_ptes, MAX_PTRS_PER_PTE);
+> +	bitmap_zero(cc->mthp_unmapped_ptes, MAX_PTRS_PER_PTE);
+>   }
+>   
+>   static void release_pte_folio(struct folio *folio)
+> @@ -1291,7 +1295,7 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
+>    * Note that the VMA must be rechecked after grabbing the mmap_lock again.
+>    */
+>   static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long start_addr,
+> -		int referenced, int unmapped, struct collapse_control *cc,
+> +		int referenced, bool swapin, struct collapse_control *cc,
+>   		unsigned int order)
+>   {
+>   	const unsigned long pmd_addr = start_addr & HPAGE_PMD_MASK;
+> @@ -1330,7 +1334,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+>   		goto out_nolock;
+>   	}
+>   
+> -	if (unmapped) {
+> +	if (swapin) {
+>   		/*
+>   		 * __collapse_huge_page_swapin() will return with mmap_lock
+>   		 * released when it fails. So we jump out_nolock directly in
+> @@ -1502,10 +1506,10 @@ static unsigned int max_order_from_offset(unsigned int offset)
+>    * mTHP.
+>    */
+>   static enum scan_result mthp_collapse(struct mm_struct *mm,
+> -		unsigned long address, int referenced, int unmapped,
+> +		unsigned long address, int referenced,
+>   		struct collapse_control *cc, unsigned long enabled_orders)
+>   {
+> -	unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
+> +	unsigned int nr_occupied_ptes, nr_unmapped_ptes, nr_ptes, max_ptes_none;
+>   	enum scan_result last_result = SCAN_FAIL;
+>   	int collapsed = 0;
+>   	bool alloc_failed = false;
+> @@ -1522,21 +1526,25 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+>   		max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
+>   		nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
+>   						      offset + nr_ptes);
+> +		nr_unmapped_ptes = bitmap_weight_from(cc->mthp_unmapped_ptes, offset,
+> +						      offset + nr_ptes);
+> +
+>   
+>   		/*
+> -		 * Swap PTEs accepted during the scan are counted in @unmapped,
+> -		 * not in the present-PTE bitmap. Account them for the PMD-order
+> -		 * candidate.
+> +		 * Swap PTEs accepted during the scan are counted in
+> +		 * nr_unmapped_ptes, not in the present-PTE bitmap. Account
+> +		 * them for the PMD-order candidate.
+>   		 */
+>   		if (is_pmd_order(order))
+> -			nr_occupied_ptes += unmapped;
+> +			nr_occupied_ptes += nr_unmapped_ptes;
+>   
+>   		if (nr_occupied_ptes >= nr_ptes - max_ptes_none) {
+>   			enum scan_result ret;
+> +			bool swapin = nr_unmapped_ptes > 0;
+>   
+>   			collapse_address = address + offset * PAGE_SIZE;
+>   			ret = collapse_huge_page(mm, collapse_address, referenced,
+> -						 unmapped, cc, order);
+> +						 swapin, cc, order);
+>   
+>   			switch (ret) {
+>   			/* Cases where we continue to next collapse candidate */
+> @@ -1667,6 +1675,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+>   			continue;
+>   		}
+>   		if (!pte_present(pteval)) {
+> +			__set_bit(i, cc->mthp_unmapped_ptes);
+>   			if (++unmapped > max_ptes_swap) {
+>   				result = SCAN_EXCEED_SWAP_PTE;
+>   				count_collapse_event(HPAGE_PMD_ORDER, THP_SCAN_EXCEED_SWAP_PTE,
+> @@ -1785,7 +1794,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+>   		/* collapse_huge_page() expects the lock to be dropped before calling */
+>   		mmap_read_unlock(mm);
+>   		result = mthp_collapse(mm, start_addr, referenced,
+> -				       unmapped, cc, enabled_orders);
+> +				       cc, enabled_orders);
+>   		/* mmap_lock was released above, set lock_dropped */
+>   		*lock_dropped = true;
+>   	}
 
 
