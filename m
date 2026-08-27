@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA21C61DC6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 12:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FE7DC61DC6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 12:34:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C959F6B009D; Thu, 27 Aug 2026 08:33:33 -0400 (EDT)
+	id 0FD3B6B009E; Thu, 27 Aug 2026 08:33:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C47A06B009E; Thu, 27 Aug 2026 08:33:33 -0400 (EDT)
+	id 0D54D6B009F; Thu, 27 Aug 2026 08:33:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B84566B009F; Thu, 27 Aug 2026 08:33:33 -0400 (EDT)
+	id F06636B00A0; Thu, 27 Aug 2026 08:33:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EF336B009D
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:33:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F6A31403F6
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:33 +0000 (UTC)
-X-FDA: 85146990306.06.6E6ED71
+	by kanga.kvack.org (Postfix) with ESMTP id C5C576B009E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:33:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 651F2A3B03
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:36 +0000 (UTC)
+X-FDA: 85146990432.05.5313F8F
 Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0162AC0004
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:30 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 639F7120007
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:34 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf22.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+	spf=pass (imf29.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787834011;
+	s=arc-20220608; t=1787834014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1Utb3Q7G8s+pTu7yvm21kkGDSVaEw3sY8+d32eCabIE=;
-	b=J8GX58c3G1OHz2T1ytGP0Gl0097dqn+o6d+Y43zkigqMutnqbd/5LiL1BGT/aWZSoBEezs
-	xSQXB6Qd2I+bGfCM8la/PTrFsplOhpBVAvwlSR8QBSKgGRSXo0rZQ86Cp92fFXDE7qdmpK
-	xUgvaY9j99rtnm88SvX7nNrR8csH+Ws=
+	bh=3KmBC4V0eyglbpWsC+66GLLxbXwhLdRisUMp2Z2fPRA=;
+	b=5qwr51ot+pLspyqvpCY5at19gH8QrN1DDdSuxh/KzPKvUn8fBqov4KlmdGeg0wgabdoz6t
+	7MbP1ilzFY+A1Kw/7rDKV0IAD4tkQ8GGGisjEQmfq/dCbguUxIDEcOuUrb4oyw7uqzDHV7
+	xo3mxm0YmaiWS0Q7jv1ASheKO9bK0lw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787834011;
-	b=h2Ooyw18dcOXnguuZ0d9FpHasmbDvLV0XJiX9sltckgZhebNoKASR6tmhwF1UIoLT/xeTB
-	PRwexVw9tqw/NIo0irMMg7eO8W1ERqO6Hh6daDifkMsOZuAtmGB15xXda82MZzP7pbwOZL
-	WFRRa2SnUNgaRwFHY2b2S10C9IUl4kY=
+	t=1787834014;
+	b=4p8mtak+LXhG42hmsjxNpuaIc/ywCnuev5mYDRsr5zAWmhKHiRRJh3th7uoIcm3sa8tPdy
+	hoN7PG1YkwPYAveQI0l5Hw3jOMO9B2eGN4Q77ilyXwu8rFoTZrTv4PGEBGP109bLXHRcrD
+	+ta6PQEfRcr9/wDu0Bujqqi1lx7FvGc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
+	imf29.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf22.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1CD0WTMzBJb6m;
+	spf=pass (imf29.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1CH0Wc3zBJb6p;
+	Thu, 27 Aug 2026 20:33:31 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1CD5j8MzBJb6l;
 	Thu, 27 Aug 2026 20:33:28 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1CB26nYzBJb6h;
-	Thu, 27 Aug 2026 20:33:26 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id DAF1978AD;
-	Thu, 27 Aug 2026 20:33:18 +0800 (CST)
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 9464936F1F84;
+	Thu, 27 Aug 2026 20:29:46 +0800 (CST)
 Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
  (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 27 Aug
- 2026 20:33:24 +0800
+ 2026 20:33:27 +0800
 From: Jianyong Wu <wujianyong@hygon.cn>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
@@ -76,9 +76,9 @@ CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
 	<linux-mm@kvack.org>, <wujianyong@hygon.cn>, <jianyong.wu@outlook.com>,
 	<zhongyuan@hygon.cn>, <huangsj@hygon.cn>, <wangfengyu@hygon.cn>,
 	<yingzhiwei@hygon.cn>, <justin.he@arm.com>
-Subject: [RFC PATCH v2 09/23] sched/cache: Account percpu sd task NUMA preference
-Date: Thu, 27 Aug 2026 20:28:02 +0800
-Message-ID: <20260827122816.756234-10-wujianyong@hygon.cn>
+Subject: [RFC PATCH v2 10/23] sched/topology: Add per-sd scratch for the load balance affinity score
+Date: Thu, 27 Aug 2026 20:28:03 +0800
+Message-ID: <20260827122816.756234-11-wujianyong@hygon.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260827122816.756234-1-wujianyong@hygon.cn>
 References: <20260827122816.756234-1-wujianyong@hygon.cn>
@@ -90,12 +90,12 @@ X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0162AC0004
-X-Stat-Signature: panhbeuxjbn9fzimtsyxzymmqj3c999u
-X-HE-Tag: 1787834010-104583
-X-HE-Meta: U2FsdGVkX1/t1aIO+zDBs2gUd8IURTa8jZu3/T0AkeeVPP5SWemTO3L+tBrFowT4QdYLZgEPM9y2Wd/gMz+P8CyGFRlTaotiKJX3LQ0bIEUcL55mczj63tpKEa7breNR+4RS9KSyc5o3Z0SFH/MjYhWIUtKHY9YxfE+tPRJQSw/KHW4ShvGKqGg2OGlDb0Dn0Ujv84UKxiKZCsro2i5OvYR1YUqyScjsQaxXxMKMJ/z+M2JnueQq0q6xT3csxCU8cIXeN9ztmW1lXm81oEd1DHU26FAn1ADL6YLmeIQDFG8GMmiGDBCDORfb5jqYb18RHdM9Lc3VcgPD+zh9e4uXHEQaf/iEvsgTmgn+XfRIO3eY25QSp4g3yTopEDSrf/LH/RvkviRbPV4++zbhwHguanPCMSCs5Jd9KKrDlbo0Q+r+C2gKm09XqhfN0FRV+SSbYmWaeTria4GcNmxbL+C1bE1POZvopZSsPOdNtWjsg6iCvJ1l65jMBfagC1C116e06mtq7muCdP68y73ipYO7g4OBAqhasgM3NGKdsNGTJkjnPliz6hpPJTldy4buJqg1KEtZE5QUl/+jvbbHiBABSI3zTle2mX5MqEPSDdVzYU1aWdDROkNLGNzV4+iP9dTHLl6YrgCEvZtPqdTFl7/UNwsmD0Ia+pmqvp2/VDGjnddwuGpUdI/B51fwbqA3I0jh3OVv37VIrJKXzmvQ6XVmc8GXiQulOeQNdjQf0Jb10s8La+BBA3wPPIjDAJ3j5WLIK5w4SC+u/dEV2oKDiFrWw7UC/E2VGvODVIpl5fT0ZeBT1eE8fLAmvny/YhSc1X4PlD0/3TkUCSJlAMd5M4PCZ+JITQkLNZubNhsCdMKA+zQlzaM9IjDDT5oAnLnyLrqPlzA+tbfyQ2vnr+UKbSiYa7QRthfNqbWsdPIB7K2f/Xi3OqdZXzjZ14Tq4ofw0xyC3wWNst/uuavztAhqyjo
- LNStmot7
- GF2QFfvZSS8ZaG4BeyM9ASSf6YBBteoUYd2Zh8AobZcMwee6kvtmv+zSaCNQqCeHhv+X0LK9uiRFdwJTlCUPwRbCDMc7vty5W0rgEdNxAMy9SFmULnj+f3g75U8VSJW1BsT71tTZKRBMohW/RLgFJFtzZXm+yNZ5+nqIN1aQwg0UgJalGHfIhLmlvwFBDZcLjxdBEiL6PfzU/vt1467L0zWgRZFBD/RZW2GDbFmKKyyjWEVY08PiQ9Bemhe0i8VVfc0HAaLVN1NUEVtCOz+1Gbs+8qvue1zgKME4s
+X-Rspamd-Queue-Id: 639F7120007
+X-Stat-Signature: wdhe4aakg5ofuiifsen5nskkhubb1wat
+X-HE-Tag: 1787834014-150658
+X-HE-Meta: U2FsdGVkX18dAw0ZqfFyW6srhA1xshoOyMsAqN5j40AXZQd7xruZdEfzmXEnvu1jA2KY0wi6ed10bgmkcUotIbNrBMG2q7bIE9xoYZRGASXGwEbkP+wH8maY89Rm9iSV5IZ5F+b2nk2Q//wkSm5f1Yf+N1U0OmnxpBm/iQSswVKVJmxoXB+9odpF2d3hHEhySlJWLINV/QiDAQS3857N9omyG/DUf5NPsWLTvIkv+QXV0QgtI5ujYnJGRSJsQrzuFWhIc537HQgQz8C+bcZI9IiMgIRDqFYkMNyuNs9obIBWpiYOYdtOZhwDsq92Iz+GCmPza2nIk7H5yzUvultLwO4d8RLspXSWoMUmOxa5nPc69WdDTb5JBzQIY3TGwLvFRokWnqWGeTAlviS28v4G6kqZCCexDZN4lBL7jGev6JXUIssgMav2Z7rtm7XQw5OWpNLVW2HbzAUuXRWrZhnl57jqXAGEVd9NLQAUCp/35UV7+Je3MnZ3FagvJyhfD7WfuCkBDA1vlSW3s5VNnhkMa0wz4g9qOUHEAwZGcYngRIupPYsoH7IE65ngMRZInWQ/F/xgZJtwdNuBSINKNYlh2kNWuHGnJuDu4ZSDosJ2IDYmnneYzo4ITs2yFSxhcbbTC6ETMuGhqG4+MglD+n/pgKDH9VznC6XN/1DJgcix503+34mZ7l37v4+4R5d102v1bV3IOZ5p+Xcu1G9Ywttf170Lm7LHMj3lo+zKoLoBvD8jyaWhxDRJBtAnuXQ3h6qsdUfeDCVFIjXyL+VreYUplP2cTRBqvf0Q53ZfL31vpZ22xtFGEPM4cqHmGC9VGkkKVFieaD9Yqju4C45xmMxD3Ls3zCGgbX/AIlqB6tCpnA3SkTMYN8653b6w1x2nPwjC41EJ5ymwyHq0r4ReVkjELBarj4Wl3hVoAnN9sOmYmrgF26g0ZTVz8S16L9mq2RjZHoKm2V6lPH6aaeaX829
+ GDFYFT0R
+ z7WntMXAgQ785tMPEwX1hcVERexzAYp7jK4Guo7hzrS7H35BAJq5YvEhBcnPeLLWjVRjmhMIk1hcHMWgF3F+mcnl/bKzmLr7Okcblixp7jKleB7Cwq/0DIGEpC7YqlRB53DmxI6BL/wbq7CJNnCeMEC7Z8KT4lrKhzMJxFYKfiJeCKkJEBS9IVR2sIRADYOLmKmwddYoBogKMjBzyARMqW96ovkP9ceDKn6sEKUEjh79pUaW/eAXzd3ELPxv3uIXl+H11ZnIMrJCJNwc57TQJULTffXPCliW5Uav2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,66 +103,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Account for per-NUMA task count preferences within per-CPU sched domains,
-mirroring the existing implementation of LLC task preference logic.
+The affinity score computed during load balancing needs two small arrays,
+one entry per LLC: the LLCs that sit closer to the balance destination than
+to the source, and the weight of each. Their size is only known once the
+sched domains have been built, which is why the load balancer currently has
+to allocate them on every call.
 
 Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
 ---
- kernel/sched/fair.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ include/linux/sched/topology.h |  6 ++++++
+ kernel/sched/topology.c        | 28 +++++++++++++++++++++++++++-
+ 2 files changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 30de09ebd9f6..dc7bbdb1ab98 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1529,8 +1529,13 @@ static void account_llc_enqueue(struct rq *rq, struct task_struct *p)
- 	p->pref_llc_queued = pref_llc_queued;
+diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
+index b31d2cf16592..569ff562dbdb 100644
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -122,6 +122,12 @@ struct sched_domain {
+ 	unsigned int *llc_counts __counted_by_ptr(llc_max);
+ 	unsigned long llc_bytes;
+ 	unsigned int *numa_counts;
++	/*
++	 * Scratch for the load balance affinity score, llc_max entries each.
++	 * Only the bottom sd owns them, like llc_counts above.
++	 */
++	int *affi_ids;
++	int *affi_weights;
+ #endif
  
- 	sd = rcu_dereference_all(rq->sd);
--	if (sd && (unsigned int)pref_llc < sd->llc_max)
-+	if (sd && (unsigned int)pref_llc < sd->llc_max) {
-+		int pref_numa = llc_to_node(pref_llc);
- 		sd->llc_counts[pref_llc]++;
-+		if (sd->numa_counts &&
-+		    (unsigned int)pref_numa < nr_node_ids)
-+			sd->numa_counts[pref_numa]++;
-+	}
+ #ifdef CONFIG_SCHEDSTATS
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 901e593e70d7..73d0c44dea92 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -644,6 +644,8 @@ static void destroy_sched_domain(struct sched_domain *sd)
+ 	/* only the bottom sd has llc_counts/numa_counts array */
+ 	kfree(sd->llc_counts);
+ 	kfree(sd->numa_counts);
++	kfree(sd->affi_ids);
++	kfree(sd->affi_weights);
+ #endif
+ 	kfree(sd);
  }
+@@ -855,11 +857,15 @@ cpu_attach_domain(struct sched_domain *sd, struct root_domain *rd, int cpu)
+ 			sd->llc_max = tmp->llc_max;
+ 			sd->llc_bytes = tmp->llc_bytes;
+ 			sd->numa_counts = tmp->numa_counts;
++			sd->affi_ids = tmp->affi_ids;
++			sd->affi_weights = tmp->affi_weights;
+ 			/* make sure destroy_sched_domain() does not free it */
+ 			tmp->llc_counts = NULL;
+ 			tmp->llc_max = 0;
+ 			tmp->llc_bytes = 0;
+ 			tmp->numa_counts = NULL;
++			tmp->affi_ids = NULL;
++			tmp->affi_weights = NULL;
+ #endif
+ 			/*
+ 			 * sched groups hold the flags of the child sched
+@@ -1438,6 +1444,7 @@ static bool alloc_sd_llc(const struct cpumask *cpu_map,
+ {
+ 	struct sched_domain *sd, *top_llc, *parent;
+ 	unsigned int *p_llc, *p_node;
++	int *p_ids, *p_w;
+ 	int i;
  
- static void account_llc_dequeue(struct rq *rq, struct task_struct *p)
-@@ -1567,8 +1572,14 @@ static void account_llc_dequeue(struct rq *rq, struct task_struct *p)
- 		 * This undercount is temporary and accurate accounting
- 		 * will resume once the rq has a chance to be idle.
- 		 */
--		if (sd->llc_counts[pref_llc])
-+		if (sd->llc_counts[pref_llc]) {
-+			int pref_numa = llc_to_node(pref_llc);
- 			sd->llc_counts[pref_llc]--;
-+			if (sd->numa_counts &&
-+			    (unsigned int)pref_numa < nr_node_ids &&
-+			    sd->numa_counts[pref_numa])
-+				sd->numa_counts[pref_numa]--;
+ 	for_each_cpu(i, cpu_map) {
+@@ -1451,8 +1458,22 @@ static bool alloc_sd_llc(const struct cpumask *cpu_map,
+ 		p_node = kcalloc_node(nr_node_ids, sizeof(unsigned int),
+ 				 GFP_KERNEL, cpu_to_node(i));
+ 
+-		if (!p_llc || !p_node)
++		/* Scratch for the affinity score, see cal_affinity_score(). */
++		p_ids = kcalloc_node(max_lid + 1, sizeof(int),
++				 GFP_KERNEL, cpu_to_node(i));
++		p_w = kcalloc_node(max_lid + 1, sizeof(int),
++				 GFP_KERNEL, cpu_to_node(i));
++
++		if (!p_llc || !p_node || !p_ids || !p_w) {
++			kfree(p_llc);
++			kfree(p_node);
++			kfree(p_ids);
++			kfree(p_w);
+ 			goto err;
 +		}
- 	}
- }
++
++		sd->affi_ids = p_ids;
++		sd->affi_weights = p_w;
  
-@@ -1727,11 +1738,12 @@ void account_mm_sched(struct rq *rq, struct task_struct *p, s64 delta_exec)
- 	mm_sched_llc = get_pref_llc(p, mm);
- 
- 	/* task not on rq accounted later in account_entity_enqueue() */
--	if (task_running_on_cpu(rq->cpu, p) &&
--	    READ_ONCE(p->preferred_llc) != mm_sched_llc) {
--		account_llc_dequeue(rq, p);
--		WRITE_ONCE(p->preferred_llc, mm_sched_llc);
--		account_llc_enqueue(rq, p);
-+	if (task_running_on_cpu(rq->cpu, p)) {
-+		if (READ_ONCE(p->preferred_llc) != mm_sched_llc) {
-+			account_llc_dequeue(rq, p);
-+			WRITE_ONCE(p->preferred_llc, mm_sched_llc);
-+			account_llc_enqueue(rq, p);
-+		}
+ 		top_llc = sd;
+ 		/*
+@@ -1498,10 +1519,15 @@ static bool alloc_sd_llc(const struct cpumask *cpu_map,
+ 		sd = *per_cpu_ptr(d->sd, i);
+ 		if (sd) {
+ 			kfree(sd->llc_counts);
++			kfree(sd->numa_counts);
++			kfree(sd->affi_ids);
++			kfree(sd->affi_weights);
+ 			sd->llc_counts = NULL;
+ 			sd->llc_max = 0;
+ 			sd->llc_bytes = 0;
+ 			sd->numa_counts = NULL;
++			sd->affi_ids = NULL;
++			sd->affi_weights = NULL;
+ 		}
  	}
- }
  
 -- 
 2.34.1
