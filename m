@@ -4,121 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EAE2C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 10:34:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 178B0C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 10:37:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CFF36B0088; Thu, 27 Aug 2026 06:34:44 -0400 (EDT)
+	id 0781F6B008C; Thu, 27 Aug 2026 06:37:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A7E36B008A; Thu, 27 Aug 2026 06:34:44 -0400 (EDT)
+	id 029216B0092; Thu, 27 Aug 2026 06:37:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BE0D6B008C; Thu, 27 Aug 2026 06:34:44 -0400 (EDT)
+	id E81316B0095; Thu, 27 Aug 2026 06:37:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 102886B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:34:44 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A071A16039E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:34:43 +0000 (UTC)
-X-FDA: 85146690846.16.EAFD6F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D183F20009
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:34:41 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N5mt9U7o;
-	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CDE856B008C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:37:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C743A039E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:37:01 +0000 (UTC)
+X-FDA: 85146696642.24.33559E1
+Received: from mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 43A0A180006
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:36:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Yhx70kXZ;
+	spf=pass (imf06.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787826881;
-	b=Y9QuO/gOxnFeRB1h0owldXNiPdaYufg/DZEi9VbLNUuW57YUFPDqHQ2fIYwehBUZMFs091
-	VW0BsllK3rgOUMSDhBsHDhv8NbNfW2V6w8p80XKwUxpCRCobOI4UHKVxdVl+AvA0GxGz76
-	ZVTGPP7JdKvZULC+ByAAZveAuWZWHjc=
+	t=1787827019;
+	b=xj2YtFE/O2VwR/o5ox74VQdlJfGfQeQZYnjrhgLXMxjpwZ82MJRr6ctTa5+Q/mChircVz8
+	hyVAHvcQVjQaEgHASm4HF0kcTLtaIDFQ3gOJ4qvqfr4aMW5F7V1viUOk5/3GUuTsgQGMNa
+	FGWzCtmZw1ybT4uvPm/eC1sJFBygzMQ=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N5mt9U7o;
-	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Yhx70kXZ;
+	spf=pass (imf06.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787826881;
+	s=arc-20220608; t=1787827019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=OYAS+bQ1Ywmr3MiJ8QFUm7cZDm2IkeiM6rs0uMt53Ig=;
-	b=1eWveQ1+tWEA+bIDFz2qbay6Dn1ghlWn+TmBtf+O5i8FYSeKAEK/Oti0pN9KJF6w9tHlIz
-	MTq7OSvRMhFJmItGlN/lJ78OaGBRrI3D1yIi/hI5q3fH+o0BU4AYcJ3XMefF0SvqhmWD6e
-	gWjLukvht28BYR2CFAVwQitnI1gnwJc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F5CD600D3;
-	Thu, 27 Aug 2026 10:34:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E791F00A3E;
-	Thu, 27 Aug 2026 10:34:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787826880;
-	bh=OYAS+bQ1Ywmr3MiJ8QFUm7cZDm2IkeiM6rs0uMt53Ig=;
-	h=From:To:Cc:Subject:Date;
-	b=N5mt9U7oBNIf3gTp1QHYaHzqY+0HOlbWSOw9ZOhiWdK9vjV3h7kGfC9NXRgE9wDVg
-	 7rVomqvNO3vY6doA6l2cIpM2P3IWAFTlkH1Op1HUNPJ1lsQBV846BNSqB3k0XIcpkz
-	 k3BAKGtKPMQxt3Rf3VJC0d2yNvC/iwNCJl0U89cqEjdiJvbnPAmP7Svj+v9nVfdd2Q
-	 snzqJi1muiKStt8qmvmfheMgsQSrm7MqVm/A8++XGLZw9hTZFduiZ67/IeuIC3PkYt
-	 Z8F6KLZ1EboMoOatQrQ/Y5Iu7KEfMFpVBieJMWEHYzFRdx/Ltqn6Op1I7p1W6dh1DC
-	 36N1WbDNvy+2Q==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 55CAB198003A;
-	Thu, 27 Aug 2026 06:34:37 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 27 Aug 2026 06:34:38 -0400
-X-ME-Sender: <xms:vBKQauYgckaa_NJ5jVYiRe1PaqONhxRew7IgffUC-Ivrm5gLAbKZ2Q>
-    <xme:vBKQamntroB964bsv0gNxCAMiWb4LOsgqxt6Y2KIXT_hN9WerBiWH-YKNZqT1b_5I
-    Sfb33RNYLzO3oUUE7cmpG2TrdQCQwTemMarSuYefs4Au_VM61XWHWI>
-X-ME-Received: <xmr:vBKQasXz_f17R147rvdNugqSSnuaHMPtH52mC6Xqr3sX8DQVV_Ror9B16-o>
-X-ME-Proxy-Cause: dmFkZTFjohsw3HXZQJsT0uj+pnPqzgvzWtT/qvsjRpTVFjAbOFOsPC98teyoDax/kgH1uu
-    ycNhjv8wURCYJu2mklv9mCkyAQJA3RfpsVxpwdty0HXrWUI9hvqL4m6Gv3tl9CRMQGX/iL
-    H8VxfT+mWrOk6gTEWo1sj36ev7XmzFTd5PYGuFAKtf6QKhsmJ7oWNWJcRgRiK8uLf//ih7
-    Znf4Ei8xFV7VHwL6tP77E6dWXd7FPli35rmKKPOQ8AxDU0/rH0ozBbP6VI+oH4OSR5iOd+
-    uogxH+Aar9zt+/JFys1gQFwECbMgdJ2Nc0jxBgySTM6Cn0nQqRio9hqEjps6ExcYTiX6tY
-    1la+osfKhfTyElqL7S204kOSyjKUXtDVdsSBbEmUqM3uhIHgNpIwwjMOxwAwO8rBE3Qk2O
-    5HqLaY64RkxbU3TeGq6bVU2ihKjuXiULxUokEVT8x6sUfgt1Bptkv2h9325A8dDQpqM2Lq
-    uAaqmyqlusv1z5Y4u9pEgAvW+NhtVcP8hn7q/xT15t9WSQvtK5ZH5WO4NoP7i52bjXPJFQ
-    sXVwyam06FqqludT487UGFGVak5+MwpFIPO5SbMdXoB4ph021fMGuWlBri9xOb1i543ZJw
-    OVsuULE2p5OKJqeiD/dnHsKVI8/pjvYkv9DPezfRSwAOTh7JRadmTllj23RA
-X-ME-Proxy: <xmx:vBKQagII3ns-bm82xsUrhhXEdzXUXaVa0DoFwGJ5Plq7eTzTaIRJTw>
-    <xmx:vBKQakvIDjkavzs7KMicrKCaDS1i4vSa-DQJ0W9UU1T9H_nmQUldgQ>
-    <xmx:vBKQat0pQ4PDLXHSMmO2xaggM9PBaF6naYgRZy_OxXODV7RED7ATWg>
-    <xmx:vBKQakPyrLvyR2jwfn16bH9PHA1Wvv6SuB4yUQg1_mOVxEo-N90OYg>
-    <xmx:vBKQalVtREHedzrHOwHppXL1t3ROqXmgCDNGUf0Igq64AjZRGHbYNd-e>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Aug 2026 06:34:36 -0400 (EDT)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
+	bh=jHGVD6qiChS6X6PURZaX6Pf/jaFbsxWD4ova1jwVOf8=;
+	b=rgTCD12eLollZH5Q8LQ2sucfzhOeGsWhb8C71elvuqHqEj1X6rZ3akt0G96lPVuLxs8TfZ
+	P64Pt/HvJk1Ft9wRbRGOADb08ZKgT2RrmMB9drKWTKVIhidGF28+vI9WaQIeJK/QqMtrFp
+	aHvOwrTA+UzREAi/1fWjRXNytEqZdOE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=eBC1hmrN/najiAXcokA+qH1/b3vDj9vs9vwMDANb+no=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787827017; v=1; x=1788431817;
+ b=Yhx70kXZKYKAQ5vO0KaAwPPEUUGrf3DtASy7UyRuwX50dLrkafn0tHR0sSOeBm7O2KsvfY3p
+ vV6mjy61F+drdbWMfNOxln7QZp6hhFRY4t56gPcc+moB31HVJMNql0NQQfyGha0NMD9LJWS6nJA
+ ggcEpT2iWzXgmnl6jTTQISJw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1d9f78061294dc88;
+	Thu, 27 Aug 2026 10:36:57 +0000
+X-Mizu-Trace-ID: 1d9f78061294dc88
+X-Migadu-Flow: FLOW_OUT
+From: "Hui Zhu" <hui.zhu@linux.dev>
+To: Roman Gushchin <roman.gushchin@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Shuah Khan <shuah@kernel.org>,
 	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] MAINTAINERS: add myself as a THP reviewer
-Date: Thu, 27 Aug 2026 11:34:35 +0100
-Message-ID: <20260827103435.1371882-1-kas@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	linux-kselftest@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next v5 0/2] bpf: BPF-driven proactive memcg reclaim
+Date: Thu, 27 Aug 2026 18:36:28 +0800
+Message-ID: <cover.1787826402.git.zhuhui@kylinos.cn>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D183F20009
-X-Stat-Signature: tgsb7ubhy9jixg39yydj78ygin33oqz1
-X-HE-Tag: 1787826881-561805
-X-HE-Meta: U2FsdGVkX1/SBufjAOdRiTckpsoKhmAIFTiW4KJayFZ3Pe5mj3lDuz3FrEEEUNKN9rAbCXCysbCtSHbn6bEu9j6JyozGyvZOk9nuCGJkRQDI9VRNWe8jhY5cp7O1L6Y8qGjKDLWGN+gfXJ9y4CdLPdPSdv6Z5+FGvcZOuGAt3nwM0RY7RwdtJy8WYWHR/cEb2K9f95mN/EQOucY1uG0EeuOa/4yc1IeTURwAnq00FJ+8U4Th6tmZVdGREB7JZnevLIA/gqJdeylLT1TtTPbWui9x7dbbQ9LolwsUHZNUMqFa6uIF/3QGNY9Ltoac12dp0uBu2Mn5DVqxA0sp2WVeyErf1GSxoIMYGp2JVw0peC6SW1Up52k4zxSr3CAl5tAAZ77iLIL6/Y5yFcBu4P++gI4TF0EE6lAdI5S2v5yJ80JpHL/F2d0sEV41VS/tB2S9wlaqP1sCZj3KxzeVurDnEDbHMF2HQ4y4N+q+3NKsADMs6Rx5j4r44+qmgx7XgCrzc4d1MM8VQka53p96JFoeboIzRuJB7VtGuUyP5jMhuscQk97LdvNs5dGgo9z8czAjOh+pN2wcNhWg1NHt1K0soIJmJ8Ze1Eo9IldCLw0FVZajskIQZiCmkUTi5N4BppXkTVk/rTcCeBxHNDS1O1HKDX4iJ+J1R7+9ezy8QnBqP+Jx8pn3tL9mxUyYUki2HJbh+SLrvhWZ4AnOGnRggbqtgwruuimMBQJ6EVC+Lfy6TTgJEt3dPwPr6hY8UOyK3wR1NArkiJFw6Sz7RxHicn0War0PIP/D6stcvS0L2rDcVsQ1wPAcGTGjPZtsdq08xBFiEobUsLyaHlhBNwrYC8+Ox2HRggh83mb54cCprt15U+W9/4miqje2GMJMVXw5hnrPawcXB4xRctnDY79wv2d7rAcuOIn2ziJ4J6qybgneYEw1SbzQC9aHaKSYgWlTcZnpmTqzHmBdcoYolyLzGpK
- BMjFdKYZ
- GNcy3Xhg041HTDtMq3Vv8UDJi27xi/M01mbHwwVxbDtUo2+GxzvTeQDcit2I1faW0OcK2dtnTO7VU+Wsk0yRjvGX6grWnzUQZ52iYK2rHYnK1RdNC3DajlFpZOZGOQjj/lgM64m73zKkra7ozZDBF35VE/DBji2dbmrMauLGlfICA5f+u8QqCNnM4oiusUpE4dYdVYqnpnItX6F7eLsGX9DaEuA8YUwspiwb7tMEw45qkd3AqTV43zs2888UkovHstGAwRMpgreox5vYo52AyH9g+HT/TfJ9dJItN05tmBs/HpZgLJDAkiDsvWj5CVG8M7Z8xGDijZZi8G0S8BIk9EWa9tt9/v8EFmyS4QPsWl30RgQcNXVqG28k/ZnPYr1ySX3f5SvhsDy/ui1frwh8fHTBEiJDqDwjJqw75qoNpQWXhNJE5T0xtK8wiYA==
+X-Stat-Signature: jxnbjcw4a3ufj6p9c1u6yh6w76xy5z4c
+X-Rspamd-Queue-Id: 43A0A180006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787827019-78126
+X-HE-Meta: U2FsdGVkX1/kcNteDLvqpfaaTI1oiALlH4mRUbRY6vrPCIIDBYv3Qt8p/Hy0GjJSGpE4oSTmLn3ieE8Uq7oPUOV1+S/lEijxtyjMeZP3Uyk9BHhQlXCDD3dazR9FsVMi13bD0XKk/pQTvkJInRR/mgGI0wmJAbbj5sr5QrDxX57CGZmoBSsYEVr1m9WTBXa5by3SXdqSQE5P7Vk2OG2IM2Rmiy53LxXF9fyqH1eoEqp+b19MlWAxwYkVPZnBIk/qk/ricl8boiZOy6uvNdTssQUYXoaxPfzeWwdXeTQ8zJ5vMtCjtdTYLQBj00zRMN6RPTrfIB+wkReMTwTtqHK/GPi/s+lhYCMQKAT+dsHwKGr+bmLqloSrunZn+jE1VwrPWd1kHeaduQtpbQFHBJgV067Pa/R4PkJXjU14UlSJcjMsQxAeRij2+8eU7XE/8X//hwVioHYOwPCY5ItaWXXnky1sEl0EkyV7Bt2nc2lHkC/uS+k9WviTd7e4dtKO876zjZo+6RdiQJDuaeZEBvSlnDaGfRcg49kcCawvjNOOP0y/VL40Zu7X9B15nad38CkIA6bmON1o1ghL6luSlyvQyk0Mu3M54toGgCrcTq4USqjG0kn2qEXkdmRJSthxcQjFDS8FrPKalI9upRDcBIt/6LUHBZrBTQAVZnsxSo43d1ipwKj0eom2SzgUQ+VJ7wB+wJMa2BKUHn8zbl8MjLw3t9rafTivSjWtyL3tmqiQG/dhyiQ6oqJF/WQD85RrSQt4EiL/EwxcKl31JJYUxXD40Qzf0rWJqb5L1nikblVHwlZwnAFkVi5+m0CvFCWaThaMnkOSbVppCaP+xV2lWpf0IYGR0II23KIVIp6tvp7xHHoHXv2dDxhGnO2qrinaxH+OnQm87lyZkq0abQf3UmQWWX5kNkOrbU9Irm8AuUMjA55TjNwZNTQ22fkZ/grpVj9Pj2MyxsQD3JaJF6NFnf/
+ CK+1l7HY
+ C+rHFYWchSaeZGZ21PRzVjZ9LfyvJLtLPQ1/2Krfs9HCHQ4jNEPeaLDu/Qdd8A03zddXvcpB96GM78D2LWYHdbKbkhBetEpF2VANRUNUjQx+FMxejvaUKQBmh+21tlofR++giBxFRTcBj+yhL+TUxrA3gEER4HYXymII1U1qIXwNGuLikR0lcNOuw6W0qUMJ+pqnK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,33 +106,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I have been working on transparent hugepages since 2012, starting with
-the huge zero page and file-backed THP.  A lot of the code that causes
-pain now traces back to me.  It is only fair if I share the review load
-for THP.
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Add myself to the reviewer list so get_maintainer.pl puts me on Cc: as
-well.  It is also my commitment to be more active in reviewing this
-code.
+BPF programs can observe memory pressure on a cgroup (e.g. refault
+stats via bpf_mem_cgroup_page_state()), but cannot act on it:
+triggering reclaim on a chosen cgroup requires writing to
+memory.reclaim, which BPF cannot do. This series adds
+bpf_proactive_reclaim(), a sleepable kfunc performing one proactive
+reclaim pass on a target memcg, so when and how hard to reclaim is
+BPF policy rather than hard-coded thresholds.
 
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+The use case we are looking at is protecting high-priority workloads:
+a BPF program monitors the state of a high-priority cgroup and, when
+it degrades (e.g. PSI rises or refaults increase, as in the
+selftest), asynchronously reclaims memory from low-priority cgroups
+via bpf_wq and bpf_proactive_reclaim(), giving the pressured cgroup
+more free pages.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1be7da9b6e2e..f5bb29ba41c5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17264,6 +17264,7 @@ R:	Dev Jain <dev.jain@arm.com>
- R:	Barry Song <baohua@kernel.org>
- R:	Lance Yang <lance.yang@linux.dev>
- R:	Usama Arif <usama.arif@linux.dev>
-+R:	Kiryl Shutsemau <kas@kernel.org>
- L:	linux-mm@kvack.org
- S:	Maintained
- W:	http://www.linux-mm.org
+Another use case: several vendor-maintained kernels carry private
+implementations that trigger asynchronous reclaim when a memcg enters
+a certain state. These exist for historical and partly psychological
+reasons, but the underlying demand is real. We expect BPF-driven
+proactive reclaim, combined with the BPF hooks for the memory
+controller currently under discussion and development, to serve these
+needs in mainline, reducing kernel fragmentation and improving kernel
+maintainability.
+
+Hui Zhu (2):
+  mm/bpf: Add bpf_proactive_reclaim kfunc
+  selftests/bpf: Add memcg async reclaim test
+
+ mm/bpf_memcontrol.c                           |  46 ++
+ .../bpf/prog_tests/memcg_async_reclaim.c      | 480 ++++++++++++++++++
+ .../selftests/bpf/progs/memcg_async_reclaim.c | 181 +++++++
+ 3 files changed, 707 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_async_reclaim.c
+
 -- 
-2.54.0
+2.53.0
 
 
