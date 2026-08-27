@@ -4,145 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D456EC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 17:49:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 708B8C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 17:50:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9C6F6B009E; Thu, 27 Aug 2026 13:49:10 -0400 (EDT)
+	id 795AA6B0096; Thu, 27 Aug 2026 13:50:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C74526B009F; Thu, 27 Aug 2026 13:49:10 -0400 (EDT)
+	id 76CA16B0098; Thu, 27 Aug 2026 13:50:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8CB96B00A0; Thu, 27 Aug 2026 13:49:10 -0400 (EDT)
+	id 6AAB96B009F; Thu, 27 Aug 2026 13:50:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 81F9D6B009E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:49:10 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFBBFC010A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:49:09 +0000 (UTC)
-X-FDA: 85147785618.02.16A9129
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1816E1C0003
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:49:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="UycZiJ/t";
-	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787852948;
-	b=G11q12OQTgYE21y/RdYtm6OREdTDVBwKaAumd837sakI4OGpLvdtezmAV2Q4Vw48FP+dpk
-	eO9qCR0f0MWsRX4ndPfenaqM6IrrVgdAUjF5pA2grhczGMeLZZaiZ9K29IV6wD0ywVvFem
-	RZYo+ljZ2gcPcagmNwLQc9z1FH3PDKE=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="UycZiJ/t";
-	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787852948;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 425266B0096
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:50:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B73A7A0156
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:50:06 +0000 (UTC)
+X-FDA: 85147788012.01.14BDD57
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 212D620008
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:50:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWi1wjzL;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787853005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yW6biE5fdFGdJHeb2R6IVd0GCVVjxtlUxzSI9ivUYnw=;
-	b=6g7xTOeawnkQSPUSSV2pLQW3PXMAqk/xQ8sBwvzHDHB+VOYcVaXmvKakmB32h4DumJQLI3
-	TR5e3rfhvWgxkQ4VNYWlDq1N5x9i0QQiLYklTZogO556yUsbkvt8Ct6V3hevSlKeirMBmV
-	Wq1syKEAxqOQrnX8xZOSQ3AEghAAL0c=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a41191c9a9so117802a12.3
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:49:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787852947; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nlF/zhf4rEHTjkgihotjRe5bmnS02tK14UrOL5SuftHeBIoexYvkY5asyWwXibB/TP
-         lWwbckIOkGnAVhLJaIF81h9FMzwlMQVnwiHKATu2rcMcXVdxvWwQE/uf1xPwktDGpYEP
-         owEWOhAFSZWmqs15oD5AKIabq5L40FH2n+IGAAecllrsVE0HSYVt+O0tFr8Xt/mgInbi
-         7zSJ+TMCZwFETZOJ3Q1iaubo/D3xK3d/xdHVLXNBiuOjvikqWTAvROPkkAvt/1Z1ARu8
-         CC6t/lnBlq0F8XrG70BVFL4PqEeMUJ53AbkJV7MsVdM96Qg5TgkjuuJzytxJLmKIKsyB
-         CgjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yW6biE5fdFGdJHeb2R6IVd0GCVVjxtlUxzSI9ivUYnw=;
-        fh=zSqwoe9TDW+vLpRbTLVJT0aySUskQcMP6Rymw9YBM/s=;
-        b=bBz2BXmHObZ2FOXhMH16TALIpQoTO7Qw6NUqQyalzZPGSxGs0qFx1tzxDfzY/lzhxe
-         31obIZUGKL6Jt5y30VGslJquqTSwNt6CCOsYwFOubiQnfBOSZ3LOcPTZuCVILWvisu+z
-         wfThr/ufgeiX0HTHd/CDlZSYRV92oHdBB1FcH7Lqbqn20e8ahrj/6Q1B54aql6IzrDYg
-         nyjDfk4NhSLIyQ7KQWax+7Fl004AYK0h+P+c6mmX22Tq4f5dHF0v6IsbWsGzdk3du8Br
-         IB2Mc7i3o+6jxmiBeCUYAm8FBxFwLV9sE2eMn7uXZPfk5IzpeJcJ9BJOewJsFNOPyIJa
-         X25A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787852947; x=1788457747; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yW6biE5fdFGdJHeb2R6IVd0GCVVjxtlUxzSI9ivUYnw=;
-        b=UycZiJ/tNxWjbZdmeQCLP2MZjNSRWi29OGRmn3mlia2zXjCdkcztF4eY03temMLFFo
-         btSiL6sRLajbIedlf9Uyj/BVsEFJv6g8NbquL8Aoqf8r40Y22rZfJg+P1BctPUFBqKdQ
-         wFWprRkgbbINIhJd2tsTS3imxChSvmND6nBH8rk9BiHi37RRBe8obHwgUt/z62t2ltgh
-         ihdOK2nD5PEjITHwNG14UvO9O6l/g1R5QlBrP3rpuaWUnEh7gzbhj3TBH7D4grOguW6x
-         DZDMdbKGjAkh2hwVc0aeQzai1b5+gCuAMM2BYfupqkg1a2TvKN17GDfKbD0QiJGwZpAW
-         wI9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787852947; x=1788457747;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yW6biE5fdFGdJHeb2R6IVd0GCVVjxtlUxzSI9ivUYnw=;
-        b=CAt3+j4HYAJMAEcwPS3HAEJVMDITP3Q73WYs8znf6AGZxjShgqW3Dhzugg7Bm/mMXy
-         wArpJeQara3JWc4DUqROZqgVOv9q7Cyg65SxnoPc1BtJjy8lomJcANJCxWmzO75svZFG
-         /nx2YXxak2VC0s9LJ81atPD1TTvLfJd68TdVZz5BNfuwJz/6zWp40bxE74A0wdIsTPVX
-         39SdH0bTK+UE24XvZndBByGJUqQ8IEmnKHulnYUV6yCs2SxkxVuYdhW9rOt9ZonQYlu6
-         8gzSYEaoVnrw5hrQVL80LXXoMS53vQYSMHfBNu7x9N5Q1R0p+4iXu9HwzHwJyhXRyhEo
-         usOQ==
-X-Gm-Message-State: AFuF++ngZbvtnnWKPcX8npGBAomRgzfzHUlgHOt+xHSIAjIbfRp4/Icc
-	ijtZjUCoazDQqPOHeI69HAKli3tdbDcpLWfMMaKjIne1OvSfhCopxTTyuWVsrNZuHE5K0uqdmdx
-	YtUcfBDlVavi8Y5UbFjKn5tIg70FgMg0=
-X-Gm-Gg: AR+sD11pG7fPVA0QuWK+jh9D3qtV0mNB1wKnOsfXDg3CeDAYCR1P0NKu+6fZ02uS4V4
-	7bq6DRAUbgN2ijXR+Yc5IR/IVNORLEdkwHBBxZ7g9v0GfjVj/YngvWjBpJSwi3u9pBHOrDZkn0i
-	N/4i+O2RPvfC5SejoDWEVon2pUnYDh3OsTa3zOR7Qk2riO+Gtu3/8Tdpjv1OfTxH4c4qq4HXLnk
-	pJy6xYcRNjPNfgpUjiEsh/Ucbyp5/qh4y2ZrlZYYmXLUO2EvxzcvI3stWGm2s/t/euDhs2FutQY
-	cVkyzK783w8Kfh8DsUQvAHeT2JlOd6ssw/X4+u2asjnlIOKT81XC5D3NEBGYO91kXAdcc545Mbg
-	ZtGLt/tzWirTv
-X-Received: by 2002:a05:6402:d0b:b0:6a6:4a5:bd37 with SMTP id
- 4fb4d7f45d1cf-6a60d33913dmr89806a12.8.1787852946307; Thu, 27 Aug 2026
- 10:49:06 -0700 (PDT)
+	bh=8auLYL/honounuAgEiIEfBufuI789JRuMjZqxnhKg2w=;
+	b=b11szctSOCyosmkGX86SZHKTUVa/lIdDEnWVX29QA97Rv5Tv91OYgR+YGxwKunwRfgkWrt
+	rOVdDXqDp4fowE1/yLC8jFJon6JhIbMPrq+6c/gUFtnoqAL0oRzB9V/OdhDkvCyIToYRi6
+	5UUtCf0t9sb7NcMzkTTzKQNI3wHkW2M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787853005;
+	b=FbZi4qr8/owE8+3+nXJU7Gc/hnjbeX0kQZqvR2whq5j7Drf1NkIotpCFmC1bZga9eXZ86u
+	NMwcdhLNAd9Hxuhag1wrMejRTf6cTuxPg8AkPdEkO5TU0Ko0KiFBqaNvJcF19ZCrhkJR1z
+	TyVzydOndVRVu8vgLub7qpal8lWrLD0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWi1wjzL;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 99912600D2;
+	Thu, 27 Aug 2026 17:50:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA401F000E9;
+	Thu, 27 Aug 2026 17:50:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787853004;
+	bh=8auLYL/honounuAgEiIEfBufuI789JRuMjZqxnhKg2w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GWi1wjzLnDJHypMmFBXTzvinWIOG/rwytTmd21trvbNDlgq6ZMPoslM9XYrKm4jyM
+	 o523GOy0ABpOUEHPMC4UnfkRQcDSLdZbUkXM+amrBnJjFATxum44qwtmbQxuu9uM1T
+	 FbllLtgmyfpFX14SmNU3IG8onJB7R/3qUVgCjvy3RmK+d3EF6nrAq2D97EWejFP4uy
+	 sfUS3v1/437XMe/2I87aIU7yooBfrF16DlTNJRO1abyX7iXyKsZfE2Co58mlwxTJgS
+	 LskJB1KlIqGBekVBhPfIa8mmWejOqAo+TgOGAUoAgTUb/HAR5gm+qkvBlzhi7C/n4A
+	 2Z3MPvZipQ8dQ==
+Date: Thu, 27 Aug 2026 18:49:59 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: syzbot <syzbot+5c417b73ac02e0e352c4@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, jannh@google.com, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, pfalcato@suse.de, 
+	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Subject: Re: [syzbot] [mm?] WARNING in __split_vma
+Message-ID: <apB4tHJmDWwpDdnh@gremlin>
+References: <6a8ff666.27659fcc.2ceef7.000f.GAE@google.com>
 MIME-Version: 1.0
-References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-16-9b43f5163238@tencent.com> <DKYI7U97KSE1.2S1M7CWBNBYFW@nvidia.com>
-In-Reply-To: <DKYI7U97KSE1.2S1M7CWBNBYFW@nvidia.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 28 Aug 2026 01:48:30 +0800
-X-Gm-Features: AcwNN1XhnSrcGWzKjxM9OlQz8QONVR283xx9Jx4nU8W4sLhXLThIBH32-pmHlLU
-Message-ID: <CAMgjq7CXqtbCH1cEJpNEta8KJbqDzd+ZQEd81dS9botZmCsQZg@mail.gmail.com>
-Subject: Re: [PATCH v3 16/18] mm/huge_memory: clarify supported split orders
- in comment
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Shivam Kalra <shivamkalra98@zohomail.in>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6a8ff666.27659fcc.2ceef7.000f.GAE@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1816E1C0003
-X-Stat-Signature: 4yfez7c8ssei91kba9afsu7txmuoqd8h
-X-HE-Tag: 1787852947-789768
-X-HE-Meta: U2FsdGVkX1+iMWuOUt0cctEdyD00RIP1E8MaZhGjw1Y/TnQ0celfQobQIsjD0xEA7sEE2jv1PHzKWweWPsOEpwBBWsyAvddWXIT+VL4rJixqvNFc2retNdYqz9W5ZF6zfzu32RFGsKcmq8eEgUhRP/Q1/YwPIQJBlxh79vRpyvIBEjStFHOmGmAEESUNpF7EhEaa42EJs3tihQhQDWHmlMTsXjVjtL9l4lQWVW9ce3s8bgF6kqws/VcKfT6CYIoTiIiYp76CGQ0i7XRzMOrbNZs7svl6b0bjTes8RmVkF1vkJ8ONyFcAeWjKsYcEj0o7sphXoIfYbmpuLMefg3SV87i+CPjzFZ25Erfkn5I8+LkBgVKQ0aLFSyeIoIFm5ZBiVjBuXWNPYXXedZ+qhNqzhENXt9NXkxLBLmht3rMiq33RaLm0z6zbeIK+0p3bPt+DZQlw1suyhJJe1OU0oFyICfQULFBCYKe+IpGjr/ey/UQL+PIxqZXcK4CQhFbSBlLab6dP12zbu+MxZNdHNm5yYFAbUFdQ8zqyZaIC4YoHxgmzzgs14uiSXw2GHxjAYYlQXeTUX1ImWqMPcvsQKXqLbrESK+l7zNd6so6K9R/xrX9/TBSxkTe/M4dgjxG12OMYihsrht0Y37RXYgGN/I8ODwdPgEWhh9xHE5YpXjC4PUHFia7qUag1xuMYtzpz8d6SNUvYdUf9kEVRU15W11kqhkMNdi4LLZjj9KESNuCEmWooD5tvXlFkxC0G/j9wT9pM/awnkPn8w7KGFnFo8OPp7i2mUjTQ7AzI+KnsxSyhAe1nvPamEdqLaFQCdZDtnebcvazOhEaGkA7KU3ITr7PqZXGtSAOVK0zZhYDRCUVYPn1KWALjm37VKOUhTwEk43HO5Qs2KbeaEauY1uujtqfzOUPKvFFoL5H4UXtGen5tCzVgKXB7l77V6pimH8WU5cRDm5GhqrexE7GyhTVq9A1
- plkkIOQz
- YBkyAGl+SVHKk7h6JhnLi3vhRITZhm5LBmUj2LCENIRPyxxlZ09p8LGi/G/ECyu8CCD2iFoX74dsbVZH2fyGplk+LaEHTmVEqa/UbRiwaamfOrLzC7LqRf5VIePBlPTMSgVBEIugQIJbBiw1ZVbX9eExJSkwigvGmZrLDtqrdZVYq++1Ic5lIQ0v1obhtcTfB/Mt6aJ734TTP0OB/oUPtQSzgRVDql8JVUVPe92okwpaZTAgfBokxalDgAncekYL0R+Jb9zIb2wNkgvjs1Iat8bMFtiWyNpJ2xJsBXdFA3PnGIHl06zvkDr3q/F+2zrTEDOAkczdDUGIPou+JCrWkz/V4Niss+SDOnWYu/7u0/mkZNIIttLLOwZF/OUdmBmy9w104qHHwydI15oTcVI48q3QKthDax0NC2Gf3FHXW+HXCREfM3nr4hFGmFBs/merHMXwXLHirGdRepgj1AbNIYaMj9cYr22rIDmlXFbETxBx9iOqy0SjGt+qYsg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 212D620008
+X-Stat-Signature: 879h514bmxpufisk7dzuyd4ctum8xhpe
+X-HE-Tag: 1787853004-927928
+X-HE-Meta: U2FsdGVkX1+/zhLL1thw741yHQbPGeFPKaSyQYZm6mPUXqkoI12PxGgJ0mt9E7W9vcvchzTgpLXQXVP5au4YNSFuvchIY9o29Xry9nGTur0xenCukqM5pTsJS4BQhxD2cALefGm7EMWCyz8irMh0tOiWMJrSMhGQk/Bd8Rf605BSrV2cv+8/pq4/4GbcfQeXBuYbA/s+DY1vX5syQw4vATEkHDxwJs4i71bpnHFfvActAZtpnKA4yvf0RBfF4PtndurQiv0yKSlwkBAiXntqH+YHefiURxdFiRqdwbVRZ7o/tAZcwys5chQZUvCXfc1uG2/g6JYMkm6ef8IgwWX2WciAShGuke+eRDfH+uYS25jICuV3IoOOLODBT6OFAvrZ87r32HcigTJyQCQDKbK9N3zDPIzNR6oEgHPyJd3AqVa10/v/bREoAZF0usujpC9xTnQyYjuaedK+q7vENbg8eu1iCqx6F1gvmjNyPwZ31R91kxeiNgRFXLyAGzCYumJw6QjkP9bvbuGkgfPrK6OAtyluMu8Tr6wMol0EBd7Me8zqi7BcEVVZXlaj087TMqhxClxFtEl8iYDsy5uI1y2DMPF8BW8NS0G5P0M9V2IReiyuDXW6Lmb2U9uIx511aZYlj83pvQmuxrPdS+0bikSGus5MF3vwRn/2A9lirbxeNkaVsZQPPlhyZftchlz0GeMbFFYKvMKKSKkOxQnz0iMK4s5JVmqO/Eh84ElXh0e7YnbHrGdIKwcMRzltYB2nyW8APIs3F6XARioflShOSGtUnSG8iIkJfUXxpuRJubjvqWK82Nf78FWXmECrGYh0s7lQA652gowaNcbuJegTsofPoaK4O5+l1S5bh2URvCYo3/dLu9/2G4XtGCyVJRH+g1o+S1ixo/FaKqZlVZ69fH/JnrelKBjCpZ7huehMk8KDgU3cfcuYHY6CV7JshqhGzYCFzMPVqsd+1F5QpURonZ7
+ HM7sRulL
+ OI0OtaBoByvF+FFC3xY+E3llNRSVxWB0S2/LvbZhHP+pJ2tifa/bgps+rhJODxH2yxLm94zZexalaf4Hw65oRtS/6/uEk98KGSJoFVn6psTdNiSpGkylxPw9VdjYl0ar3CY5IoQjJ8NG4qUhEYor7vcc7UaasFBKkzWKMmLiX0Xdz9I0Ag8akuMb1u4SQGA/PgWfwm9SRiiLTq3iOd3/pYF04AW/EjjnkmK6q31DUn4Qe8m5H+IS+hMtOQ5+fZkv2uncFWp72wmhtZuhnkheWSpXrRJEzCQChbiaxiWzlfqfEZM8ayluVsEwZEnUikll2etAZZK7vtRAZjfCMRhIB1s78Cf4eV9IIPLX1SW5yUfGPZIAh5arhZAOMUPsHhrATRp5KJQsx7Nl2psQAfuBx7hXfctcgZqngSdcCc0+JWKDgCiMldLB3C4BMZL3RLyc+Qj4MmD7BTcytx0vzi3ps8FRzy6wAnBHXN+n7xolfYjNqV1FkZlLr7x2pj6EiqTa+ugFrtGcCL+D0S/72EslZWsoSVS0EongYZbtXLTmF7IWDXUgVOreurOPAIaxvERePRJ584r8Z6+XWWbb5h9vqNpI3NKmLhytM4D+CYI3LEdU+hTzo6R1xCxBytfFytnn5Ilz9hawQxJ9zMVZgh4gmF77hfMpV9E9kScT6Hr1NErW1uGOAySVBQj0zyH3v2+0cMnNMOhOwR6XhyPqB3+PMQ02JZThpTvjO6eyVi5EUVomwfYNfMfTM2lavoXovtnedg8x8Rr2Nq34Zm5ckx2blluYZn2lGU16/f2HZi+/QHr8VqVKDp7aHvh6SqA/ruduX/CPfPeIV9AK3vUh9i7WTLRC3gG+gg2yo9BFcST984QJFPM2LC2ma7QqKWPe8QbaRsT+Muomlvw1UUXH2NbMUxMPU4Bt0/6bXEcOMnz4+HhHj0D4/vM9dKCSLpOyEm7SgrT0vWmb5fuDQ9faALhn2yqn1RTpS
+ OWUeWGrI
+ v3E2IwOyC2H2OFfshbZyt3dgFErtGM2x0KTRIE3zUv/VeswaAk4ayBs3zissM3Wh8Rf8AnwkTYTjz+4JXjXv1YrBoqRQ35YZoarMjNiFVM8mynwSFb/aC9EsjSIVEbDsBNoUGR4p2ovoDHr8AiDBhpS0ArFYEnSc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,78 +93,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 10:02=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
->
-> On Thu Aug 20, 2026 at 2:55 PM EDT, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > The doc comment for __split_huge_page_to_list_to_order() needs an
-> > update: only order 1 is rejected for anon and swapcache folios,
-> > matching the new_order =3D=3D 1 check in folio_check_splittable().
-> >
-> > Also realign the continuation line of the function signature while at
-> > it.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >  mm/huge_memory.c | 11 +++++------
-> >  1 file changed, 5 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 06f353f937d1..0a971ca48151 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -4400,11 +4400,10 @@ int folio_split_unmapped(struct folio *folio, u=
-nsigned int new_order)
-> >   *    GUP pins, will result in the folio not getting split; instead, t=
-he caller
-> >   *    will receive an -EAGAIN.
-> >   *
-> > - * 4) @new_order > 1, usually. Order-1 is not supported for anon or sw=
-apcache
-> > - *    folios: anon folios need subpage 2 for _deferred_list, which ord=
-er-1
-> > - *    folios lack, and a swapcache folio may become anon once faulted =
-in.
-> > - *    File-backed order-1 folios are supported, since they do not use
-> > - *    _deferred_list.
-> > + * 4) @new_order !=3D 1 for anon or swapcache. Anon folios need subpag=
-e 2 for
->
-> We use head page + tail pages instead of subpages, so the sentence could
-> be
->
-> Anon folios stores _deferred_list in second tail page, which order-1
-> folios lack, ...
+#syz dup: [syzbot] [mm?] WARNING in vma_set_pgoff
 
-Good to know, will update.
+On Thu, Aug 27, 2026 at 01:33:42AM -0700, syzbot wrote:
+> Hello,
 >
-> > + *    _deferred_list, which order-1 folios lack, and a swapcache folio=
- may
-> > + *    become anon once faulted in. File-backed order-1 folios are supp=
-orted,
-> > + *    since they do not use _deferred_list.
-> >   *
-> >   * After splitting, the caller's folio reference will be transferred t=
-o @page,
-> >   * resulting in a raised refcount of @page after this call. The other =
-pages may
-> > @@ -4432,7 +4431,7 @@ int folio_split_unmapped(struct folio *folio, uns=
-igned int new_order)
-> >   * with the folio. Splitting to order 0 is compatible with all folios.
-> >   */
-> >  int __split_huge_page_to_list_to_order(struct page *page, struct list_=
-head *list,
-> > -                                  unsigned int new_order)
-> > +                                    unsigned int new_order)
-> >  {
-> >       struct folio *folio =3D page_folio(page);
-> >
+> syzbot found the following issue on:
 >
-> Otherwise, LGTM.
+> HEAD commit:    818bebeb63dd drm/xe: Don't hand out the flat CCS storage a..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1645f979580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=ccca94d2c01b9e78
+> dashboard link: https://syzkaller.appspot.com/bug?extid=5c417b73ac02e0e352c4
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=104a0d49580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13f35979580000
 >
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-818bebeb.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/6e4100526b12/vmlinux-818bebeb.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/723c4783ee96/bzImage-818bebeb.xz
 >
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+5c417b73ac02e0e352c4@syzkaller.appspotmail.com
+>
+> ------------[ cut here ]------------
+> pgoff != vma->vm_start >> 12
+> WARNING: mm/vma.h:276 at assert_sane_pgoff mm/vma.h:276 [inline], CPU#2: syz.0.17/5920
+> WARNING: mm/vma.h:276 at vma_set_pgoff mm/vma.h:282 [inline], CPU#2: syz.0.17/5920
+> WARNING: mm/vma.h:276 at vma_add_pgoff mm/vma.h:289 [inline], CPU#2: syz.0.17/5920
+> WARNING: mm/vma.h:276 at __split_vma+0x1228/0x1800 mm/vma.c:578, CPU#2: syz.0.17/5920
+> Modules linked in:
+> CPU: 2 UID: 0 PID: 5920 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:assert_sane_pgoff mm/vma.h:276 [inline]
+> RIP: 0010:vma_set_pgoff mm/vma.h:282 [inline]
+> RIP: 0010:vma_add_pgoff mm/vma.h:289 [inline]
+> RIP: 0010:__split_vma+0x1228/0x1800 mm/vma.c:578
+> Code: 3c 02 00 0f 85 d3 05 00 00 4c 8b 2b 48 89 ef 49 c1 ed 0c 4c 89 ee e8 a7 3d 9e ff 4c 39 ed 0f 84 bf fd ff ff e8 b9 43 9e ff 90 <0f> 0b 90 e9 b1 fd ff ff e8 ab 43 9e ff 48 8b 54 24 38 48 b8 00 00
+> RSP: 0018:ffffc9000344f228 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: ffff88803e4b23c0 RCX: 0000000000000000
+> RDX: ffff888030d0a580 RSI: ffffffff826cbe17 RDI: ffff888030d0a580
+> RBP: 0000000200000003 R08: 0000000000000006 R09: 0000000200000003
+> R10: 0000000200000ffd R11: 0000000000000000 R12: ffff88803e4b2410
+> R13: 0000000200000ffd R14: ffffc9000344f5c8 R15: 0000000000000000
+> FS:  000055555d60b500(0000) GS:ffff8880d5da2000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007ff66f270000 CR3: 000000001345e000 CR4: 0000000000352ef0
+> Call Trace:
+>  <TASK>
+>  vms_gather_munmap_vmas+0x1d2/0x1720 mm/vma.c:1472
+>  __mmap_setup mm/vma.c:2496 [inline]
+>  __mmap_region+0x4a7/0x30b0 mm/vma.c:2818
+>  mmap_region+0x5a8/0x6d0 mm/vma.c:2921
+>  do_mmap+0x12c7/0x1c30 mm/mmap.c:573
+>  vm_mmap_pgoff+0x28d/0x470 mm/util.c:581
+>  ksys_mmap_pgoff+0x3cb/0x610 mm/mmap.c:619
+>  __do_sys_mmap arch/x86/kernel/sys_x86_64.c:89 [inline]
+>  __se_sys_mmap arch/x86/kernel/sys_x86_64.c:82 [inline]
+>  __x64_sys_mmap+0x125/0x190 arch/x86/kernel/sys_x86_64.c:82
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7ff66f39e0d9
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffec1164ee8 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
+> RAX: ffffffffffffffda RBX: 00007ff66f625fa0 RCX: 00007ff66f39e0d9
+> RDX: 0000000000000001 RSI: 0000000000003000 RDI: 0000200000ffd000
+> RBP: 00007ff66f435024 R08: 0000000000000004 R09: 0000010000000000
+> R10: 0000000000000011 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007ff66f625fac R14: 00007ff66f625fa0 R15: 00007ff66f625fa0
+>  </TASK>
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+>
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+>
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+>
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+>
+> If you want to undo deduplication, reply with:
+> #syz undup
 
-Thanks!
+--
+Cheers, Lorenzo
 
