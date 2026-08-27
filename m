@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3831EC61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:57:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA96C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:58:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EC386B0088; Thu, 27 Aug 2026 11:57:13 -0400 (EDT)
+	id 711C76B0095; Thu, 27 Aug 2026 11:58:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49C536B0092; Thu, 27 Aug 2026 11:57:13 -0400 (EDT)
+	id 6C48A6B0096; Thu, 27 Aug 2026 11:58:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38BD16B0095; Thu, 27 Aug 2026 11:57:13 -0400 (EDT)
+	id 5654C6B0098; Thu, 27 Aug 2026 11:58:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 067226B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:57:12 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8824D140484
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:57:12 +0000 (UTC)
-X-FDA: 85147503504.12.B764922
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A83B4C000C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:57:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E8gjo2Rw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 26F0D6B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:58:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9812D1A045B
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:58:31 +0000 (UTC)
+X-FDA: 85147506822.08.F733D49
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D2D5D20008
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:58:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IuvYdEUG;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787846230;
+	s=arc-20220608; t=1787846309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CJD57KfG/QZ66WPVhOedT8gTIsjcNXLXXwCqIXIG4qc=;
-	b=Soew2+4KlQwPswr1EggS2JREzIqWc759JPDpCJPykIHVA+RL3UavDRXJEfiFr9cv31tWlb
-	DPyNKMIiNe8aAfxMwBo8ApxMNbQdR3e7vEjY4GTjbXCQqxsrutZfgAxaX3mtsNYKcaBLu9
-	Eb61Tq4x+jjeQUw1cjhjZ+xJigMKCO4=
+	bh=j6F1CmlViOZAv7ScdpKDj4KMGRJno7AOUlTrCO7k1xM=;
+	b=Hg0EWBENNSfFDthrKFo1HU0Ys4PZbcQ4c3wYxLHszmm0WpIS1/gmPIxWKdA3f8P5XGN7aV
+	4Ta55sD5UZIT4rqqKeSQbjaojRECmU7d5jH4LDaMQ8UOniXmpy4ucGFBIE+QPZIE/O5MgC
+	dgEUTQ0qFpjHkeoVFyUspQ1jRlMLZpQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E8gjo2Rw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IuvYdEUG;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787846230;
-	b=tCft2GQ57jnpHzgJz7qimY3xrC2H9z8ayIG7lQxqxodYmdZdzC7E0XOonGRXkEYz8IIWpF
-	6bs0Rw4IuA1tsGwEGZ2uGesKipBKFyV/Ijb7x1GKXZ3+I3Mi1LDdtVTn9Ee836n81DEpPc
-	nkwa3RhoL4YSmWcAQ1iKkg1i/ExHatc=
+	t=1787846309;
+	b=jNjbRlHNgahx17rJCKKGiRlBLdcaJk4shadEgvEfHmTHx866gcT/tg0lfhIb+QoPNuorfk
+	JZVSgB8JbeZ/VX6XuzxF6BGBv0+L6EjwSzlYqVaCoS6qVD5z44kgHyaWPasZ7cdHRK2tbi
+	8fXiYU3W3qrYbJtIoNt5xusW18Krjjg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C287743CE6;
-	Thu, 27 Aug 2026 15:57:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFED1F000E9;
-	Thu, 27 Aug 2026 15:57:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 54F6C600D2;
+	Thu, 27 Aug 2026 15:58:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3416C1F000E9;
+	Thu, 27 Aug 2026 15:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787846229;
-	bh=CJD57KfG/QZ66WPVhOedT8gTIsjcNXLXXwCqIXIG4qc=;
+	s=k20260515; t=1787846309;
+	bh=j6F1CmlViOZAv7ScdpKDj4KMGRJno7AOUlTrCO7k1xM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=E8gjo2Rw096gGa06lttjTPVXYA/0357Xt78LUc6eDZqgcAwLSjD+wZOynLB3ozuU8
-	 E2kq+RN0t8fsnysnZKtrszpNH2HS8RcuvXvxJB9DzyDLamEgXP3yXSi43Rtrrfci2c
-	 xT3/aqIiGNAbd4eQtbTiPkXAGuKaBAQiC5Q/qJOeoPbzM7uKT4n3AQdfrg8LlmfOu8
-	 V9GM3Q1uXNOPRmMQ6aCroV5zR/jf331cB9E2ZawOIpMz1WLuRjYkwCu8IBoEE6yNSm
-	 r/tZV5Zxk51Aqce3ABeh4pnBXKa4x72EG2/hUECPwL+zIEeeOd0oJHh/fx6+pOSfH3
-	 pbM0eR7OCvoJw==
-Message-ID: <e6c2ee8a-4047-4e9c-85ea-62bcc04d0be9@kernel.org>
-Date: Thu, 27 Aug 2026 17:57:01 +0200
+	b=IuvYdEUGfFZHsjDqrO3R3icx/zIgT8pMZ/kZa56FxwIxStQoFO0r0hSM8mLtTLCyN
+	 pqcjwK8SZHPICdndkn/dK6o8R9vpsFIfZUAnDvCgJpHDWNZixYX0GeRYWhxRVn0zid
+	 iROWgn+A45NWlds4wpAF6a+T6snS0vCp+WgsaOPqutp1FhQtn4ngXacsbFhEV8yRUw
+	 mT4UAAoRbw+p0YJMOZDOdIMNVrGILItRwJcAEdjziG8XqKl8HmI1Ft95TH/9j36qLB
+	 a1ucmi/HX0RRUUma2nTGd+VPWyQdBmbjAvMrzbZnwFRrpsQrpNjKkFHB+TutE0S4jy
+	 fpOmavz6Zq98A==
+Message-ID: <8acccec9-acd7-48e4-a461-0a3e706466c8@kernel.org>
+Date: Thu, 27 Aug 2026 17:58:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/18] mm/swap: fix off-by-one in swap cache replace
- sanity check
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
+Subject: Re: [PATCH v3 02/18] mm/huge_memory: fix rejection of swap cache
+ folios with a mapping
+To: Kiryl Shutsemau <kirill@shutemov.name>, kasong@tencent.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
  Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
@@ -84,7 +84,8 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
  Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
 References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-1-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-2-9b43f5163238@tencent.com>
+ <apBJ7PeX7c2dD9kk@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260821-swap-thp-cleanup-v3-1-9b43f5163238@tencent.com>
+In-Reply-To: <apBJ7PeX7c2dD9kk@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A83B4C000C
-X-Stat-Signature: bqfry6jptafzq44d8srb1ztq5rxp5mzs
+X-Stat-Signature: x8ayzm4p5hia1dtyih88ydnrtkawp41d
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D2D5D20008
 X-Rspam-User: 
-X-HE-Tag: 1787846230-475433
-X-HE-Meta: U2FsdGVkX188Nn418MGcuF4mH4a6cvIVNqA4C6I8aBgglHji8+sWChaujGs9n5oNH5nCs1dVfFCWVHl44EMY3x8Ec7JNIJLOkTma8/Gx9XZouuLXgqCcm7rXCNwp0mLDyPM5k4macm37t6gClm0/05OX4e+EFnE7pstqpIC5F9kFYbdR7Lvz/TShlm/IPI/uGChq/IpvXLHvdj0hASDFXiuYDC1eifXgLVEyPPXUaRNB5qLHV7i2w+W8sUV3/entcQ3JOfb70kekP9mVVh+5FkmSz9aIXSQWf5RiE+dsIWpKAFZcRx8VZs2kJFF48HDWuRV8q84nHz0i9YxSlUK1UkCAs6CI6kz4vW8Y+4WkO9ws90KhTKpTJ/s5gpHTOLmHipD85kGnDIdUEgkckUhYDn2areJdu22BjIZUF6j9uqUlugCVHdGosh/Pm586Az6FyOSlS+0gKV+m1JMLMXi0OY6n3fpAn0f+llOW3mFAUOI3NreUV4nk4JwfkGRBv8TLoujLIHWpVJG3y+EXae0uZFQWpwgK7OTeYMgCw2mWe+5WC8S6As8v75bJyZys3z4iHC+pJZFaphzbpq6gyE0k7IYBMcp9MRRs+qFDNfLysycsU61dDD2G4szQ/JtY/i0o/mQVnPRz9zlBDlGdzt+VO38kXOL1Gv+3esqX63a4FlxMG5/V9Bp+J059rvAuWiy8L0WLfFxXGYOaZzf023b6ECxbGNwjmqp2cSjW38RVjOUzKIaSrPflUXCmfyKRt26OpnirAtZxpEIZjhtgeEHhrANdHNiCab4x+baFKHvPjpi7PeW+JvvWilRXV7NTK3CCcTpqXvYxFoOHHuqVUHmBjUO8Jxe+jYKE+jAryJLXQ3crWYROnU/04JFP2M6ICYt6uSZMEFAndVorPdoaJvjbwyO6MdjZo0fLDgcjJlw6WYgy8BiKmOm38zjFqeipxvn3TMTJkNpIS1QyRMLAsTM
- R+h8pS7S
- 3obnejCwkzs6bOcTctcX6o3so7C52V8XT5R7yIGu4YpIrUFPCZgHtuAmFdPV3jEM6cz2TZPFq3OrXokzzle0etQZh5+2oBuzNBkmTmxQTBMNZAkiPqR5QLufOf5a8nUAnUg6Odx0HafGpEWCsPfVUCrCAwiBO9kXQXGENQuYwNsaZXbk7/5rmQNBUdhCWJuCXEpb5eW7JmfhpHOqn3fNYzAJ5D0xf5BGmKI2Keqggdl6mbwG3MqjBFYmeDputXCAq2cIIsnmy0WeZNLd3elxiUVVUAJH2Z5lf1JD2XKBQg/SQOsuPy/EN3Mtabl0XW1PE2zG6fQH+GpMvv/0=
+X-HE-Tag: 1787846309-397462
+X-HE-Meta: U2FsdGVkX18brFE4e0CE2ly18gOI08GeqENHGmvjEtNNZGdh++pNJHSlabc//46ASBYiTBovsm+CtVrrEwgYsTNjlTb7H4mjLSBjzRjBHznfIDWKnoeuonkmKJVJ0qq+x6oXHFnO0M/J+nT0VxT6lMndvqnezpd/ewq1hOoGSqJM7/zoZRAJTXL8LRERwxhnXKJ6Ehqcn7ivtS0lpQHJYeVwRDJBuZOLw2qpksPHt+mus6h9p7owQ0uv86mnvgytaLpLq3akiY8crSZLsbgTdyfs9WN23sI+dMInFG0yo1P/rO30Q4OnisXlt/A06s0UZ5t8R39mtmbvu4Z3TM1Cu1J8AUmVGu0YIq9Kn8uoQ3M8asQB547Bjlu5ixibw3SxnMjlW3WOhXo1rr8JmUC3MIjYAzvlDifVN7/349JfMA0T0J/OJTS9RpUrgigpFpgiFVSSviCo7OYWy+lzIGW0o2yHDokFA5dpBTeLqIGC++SqI2iTQMMRY97KYnMqX6k/QRymv5nDRE2EZKt26IzdVdv36qutoGGy9OZNcXVmnN9qD59Ddmfucg3oGXZ7V+ZPq6l2jryeJfUqMsIC31Srk0Aek/7dGJWy9VDMll+uFB6Tawh+dm9c950fTQ/jwyTQ3kZKlL+OOqcrwjzVgInRt+j+EvfZE8LyVg0+WYQ8d7ObL6rB/6WSIAs7tYOrY2q8Q2TbZaj6DtroV87CTpGUTEJ1O2yNfqL85muUUWXWuhUtRSUrYdI1tlkfyr+SyIxpU40vjnedU3CgfzgOhJl+ZyeePMdZRgdnuob9K8fbodgDkzhAp8UnRcSU0SMNrjzAuATb2izj5yoqDdzAWQdZumokzvygyyfPhl0hMJv6WehS+Muls+UPhO4oVrwlI0W/vcwYwD8n090vh7rrqFY85gJSI5xdJBwGnWBzo2BKTEGgx56ffvuaoaV245KPhsufy+kNkg0I6M1IBpb8aLV
+ ngt505CT
+ KFz5av0SDZQ2l0QBkVXlWSI1WT0vx0TXcec98WB3F1bnI3Rff0H2cg2QZCFZMcgHS0bfrQ2vmDw32UrVLuDmQUckrvbCwNqVBrCtGHfI5dDEXuT3tLTfgjTES2O+XiTs72xlV4/3XU/M/m5jKRgcQ+jXQMCY0VVVqxp1F7ULLaG7aaWfBoJPRPmZDa4RIzmM+MXEZ9ARGTvp7wESc9Y4xfqfS9Rdgqg1xXkV10jq+zS1yfa8jCuD08JkNw/Nv+cO9Zphtp8y3QpiUST8/e6EuNw62uPNQ1aDomumckDhO+abvDqeqSu6HECTgMqY3Jm2qoUs1hs2gl6T9PYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,26 +150,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 8/27/26 16:33, Kiryl Shutsemau wrote:
+> On Fri, Aug 21, 2026 at 02:55:15AM +0800, Kairui Song via B4 Relay wrote:
+>> From: Kairui Song <kasong@tencent.com>
+>>
+>> A folio in the swap cache cannot be split if it has a mapping (shmem).
+>> The split code does a defensive check for this in
+>> __folio_freeze_and_split_unmapped, after the folio ref has been frozen
+>> and the NR_SHMEM_THPS/NR_FILE_THPS counters have been decremented. It
+>> rejects the split and returns -EINVAL without unfreezing the folio or
+>> restoring the counters. That error path is buggy: if it is ever taken,
+>> it leaves the folio frozen and stuck, skews the counters, and fires
+>> the VM_WARN_ON_ONCE_FOLIO for a state that is actually legitimate.
 > 
-> The DEBUG_VM sanity check in __swap_cache_replace_folio() iterates
-> the old folio's range with "while (ci_off++ < ci_end)", so the loop
-> body runs on the already-incremented offset: the first entry is
-> skipped and one entry past the range is read.  For a folio split
-> that entry belongs to the first after-split folio and was just
-> repointed by the replacement loop above, so the check would warn
-> spuriously whenever sub-folio orders differ from the head folio's,
-> as non-uniform swapcache splits now do.
+> If you are going to repost this, could you make "This error path is
+> buggy" a new paragraph?
 > 
-> Use the same do-while pattern as the replacement loop.
+>>
+>> Check for this case up front in folio_check_splittable and return
+>> -EBUSY before any state is modified, so the split routine always backs
+>> out cleanly.
+>>
+>> Also fix a bracket style issue that checkpatch.pl keeps complaining
+>> about.
+>>
+>> Fixes: 00527733d0dc ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+>> Fixes: 714b056c8321 ("mm/huge_memory: convert VM_BUG* to VM_WARN* in __folio_split")
 > 
-> Fixes: 8578e0c00dcf ("mm, swap: use the swap table for the swap cache and switch API")
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+> This is inert bug, right? I don't think we want the commit to be
+> backported. I expect stable machinery to pick it up based on Fixes.
+> 
+> Is there a way to express "not stable material" while keeping Fixes: in
+> place?
+In mm, stable never picks stuff up automatically.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+it's usually best to write in the patch description why the decision was made
+that it should or should not be, stable material.
 
 -- 
 Cheers,
