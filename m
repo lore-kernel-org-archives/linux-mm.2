@@ -4,86 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCBEAC61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BB92C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:59:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA0996B0092; Thu, 27 Aug 2026 12:58:03 -0400 (EDT)
+	id 3DA3A6B0095; Thu, 27 Aug 2026 12:59:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B517A6B0095; Thu, 27 Aug 2026 12:58:03 -0400 (EDT)
+	id 390FD6B0096; Thu, 27 Aug 2026 12:59:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B056B0096; Thu, 27 Aug 2026 12:58:03 -0400 (EDT)
+	id 2539B6B0098; Thu, 27 Aug 2026 12:59:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 76EEB6B0092
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:58:03 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 00B0A6B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:59:19 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BCD91A010E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:58:03 +0000 (UTC)
-X-FDA: 85147656846.26.C428797
-Received: from mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8C6601A0005
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:58:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ivqhg7pH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 84049A0D64
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:59:19 +0000 (UTC)
+X-FDA: 85147660038.26.B743B60
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 56ED5100003
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:59:17 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=He9Lep+I;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787849881;
+	s=arc-20220608; t=1787849957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PsgdxAZ6noNKq0rZ05Y3MNO3C15Zq2KoJCzUnq1N14k=;
-	b=s7BscR4s25LKxNWikPxeXt0RpAfdmj7PXEG/dInV80O60QP2Kp3RIQbFrhbkzUKHs7DINL
-	9xthyHzatxg39gs1EKYzSPLYdlVUtqcvItGEEr7aAUiI6P9uoIwdzIa/+hdJ7wG6APPggO
-	gIRypIbYzzJaexNP7kyZCPrEKUlY75M=
+	bh=5T+UVRvHTqXXOze9HatcC2azQ28k3mYQ8S0a+CsmrJc=;
+	b=KCd6SDwipvaIYOed0/YsESJY8sAkNF2mqFigYkuCCK8Rdg6ATlJU6PBp2nOk8dNbD8JGJc
+	Zu7gwP32u98IIMNG/oZJm5D//ncNl+Zxl6Y+DwKaQqV3fL9kOmqZKot9DYO0YkPD6Dw/ZF
+	olBuKDsOKpcV4HustwW5quKBKqDWlT4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ivqhg7pH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=He9Lep+I;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787849881;
-	b=CZMeTZkGWa3/LP1a7UzBxuvPkoerQ/AIvwvmGHEzM7Wrigmm757NlsUH/u6JIctAB/DRu0
-	fRDPUSgNSmQdup3gaZDiM8Ox9O9ejEVcfacoJLZWRrnAXi7G2GLT9q5HzpB0O6u5gxd0iZ
-	M3HlePy3H0xhfeVSKBNu95KR93/S91k=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/QFykKqY4DddYYy1JGcan4kcCBGwtGcv3+RRD0IyIGI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787849879; v=1; x=1788454679;
- b=Ivqhg7pHLNsyndpaARYlFqDnmbpn1BaiBSqdHDcYc9yhz/pIdu9VmkV5j55SLDNmXNtPJZaE
- 0Cl/Y9gc7tdKLsmud+OSnZkVge2QVvg3J0MR5gK6zz1fqKDFmtUFJimwlAa2EPUAXtYxmz3vToK
- vR7Mlb767U8AJY2CwUqm/o74=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1ee3e873e45b78e8;
-	Thu, 27 Aug 2026 16:57:59 +0000
-X-Mizu-Trace-ID: 1ee3e873e45b78e8
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 27 Aug 2026 09:57:53 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Rik van Riel <riel@surriel.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/memcg: fix UAF in drain_all_stock() async work during
- offline
-Message-ID: <apBsMXzLXltN9MTd@linux.dev>
-References: <20260827124211.3b94b103@fangorn>
+	t=1787849957;
+	b=FWaO1v2eyFrRQSKQcLK74ChGRD0xU/wf0yDp4qLF6n9Hfoo5cQI8bKu5tlS4c3ZHsX+iF9
+	eGNsT4ASE5pfsCqGaJFuGwxjpBwUabsiJu9M9n2EAQvlRODFfvSO3eAczS2BLGcYRR9Rk9
+	A3D0d82PMBSM2PLgo+nSE3z9C/C7370=
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-66d1447e2b1so36531d50.0
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:59:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1787849956; x=1788454756; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5T+UVRvHTqXXOze9HatcC2azQ28k3mYQ8S0a+CsmrJc=;
+        b=He9Lep+I/5UvCyzctI8C4EOFO9Rl3BQ3qL0mnrGlTIzEE3Xwx0OkYycnneVGB+MDSP
+         TKl68jgQJW4HKZtVG0G1xPMOKoMx0cVDXQ2U2UhOvfZQ2bhcuY7n6+ZzHbZS+RSJBh/g
+         7fHimBI7aUYyxcUVDYpTVvDU3NwFgBO9fvVvjjR63ZgaXixmzPS8jDXRUAgEAw7SeMPi
+         irF/m/jq/TGI94z8M0wPALmTt7pGGGAhBzDI6P2vECk/aTOZOXtg1akHvXBk5d38B2RX
+         f+LPbg6rG/ELc0QKVbBGbpGYkog6I4r2c401Lfqg/oWNo9F1ofDUpCj3lAlehmTjuMNZ
+         GpTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787849956; x=1788454756;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5T+UVRvHTqXXOze9HatcC2azQ28k3mYQ8S0a+CsmrJc=;
+        b=rFhxN5EMiXHFg9Chxd9/hAojhta0IYX2ezEDwLOpF1EEQIT7GyOEf1ZdAsZyf0UdAw
+         oRRYVvQgiH0/FQpWJERYgCfuEvC7JyARsPyN+/xmlmSKoDNmVfZkxktYx+8GskJLP0Z0
+         nn/y5rvHcgsJzHeyEyTHzlbi3eHOuaYj+TNmFwDkIkWMtmHoeFBR2j/6xCuvtjyWwOLG
+         opMrD5s3C9h+mr6Z5Z9RD/QFwiDkdk8wP87VOb14B+7wNlgq/QR17Z7i0D1Wga35+rT7
+         Rx/lyyvwb+bq32saq2oDONH3qjZcrGclSmilqShacWFMnYgWKXs6wBwSDMtHhGpazePW
+         ZZCw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+PAVDb6p4RS5vX27FvvY61rGfxNunnNKirNj7Vbc+OCFuHrO5pH2XBpvPg4JkiTyqf2HdNMDjJg==@kvack.org
+X-Gm-Message-State: AFuF++li4Yfhb6l1TqVWvGpiae/NaUqT2QwL+8L9eggKbyM14uHYflwj
+	5FX0UrwXvJpFYmreR0N9QUa8CPdpg3lAdZKmaJQZ9Gklz9GRdCUwVDrFbtsqMVp6zzM=
+X-Gm-Gg: AR+sD12WIUYQE/gb7H51IPe6g37ln0XIwX8RKWSO18vjOxjbond14sIByeE3OYBBN3N
+	N37f6pPkEnKb35X0EvTX1zmehOc40pgEsNu7ZYDMHjIRS20lqIpkvtJb01EwOa3hW/KRKXBqeQ0
+	u4ARln5e1BVCbX/Omdx3SDkild1KBMO8qW67BHz7zCYzjYZu9JeI496WO/mL/FxnhdIo0oNMDGO
+	rwadHtKRlqyZgfuAaaCFbyT9dpmmwMkpB8TsN9BIc1CRngVmRDNyd8iaB8Wiu30wBHrmir9u9PK
+	7dnnZzncjs/dMNDM8DJ+rrhMf+qZiqS0+PwniERcctmtDlYVTwJZr2qgG4WlXFhUaAt2DPi8fO6
+	v10/hu1gkdYW6/v/3IOmK6JQXl8HmBnzv2hFtXGC0qeAVW7WBOaN3TEb4XCs2UNHkMKbUhOhspL
+	P5O8uiQCsWDQMJ/GpFOBm/aoxeHCro8vPYmR+tUyK92nyyAaUEDuM94W6ydd3x7ZdoxkL9cFI=
+X-Received: by 2002:a05:690e:2509:b0:66d:28c1:4db6 with SMTP id 956f58d0204a3-66e4b914e01mr228373d50.23.1787849956251;
+        Thu, 27 Aug 2026 09:59:16 -0700 (PDT)
+Received: from localhost ([2605:8600:200:1a83:fe59:7385:2855:8588])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66d24787e65sm3299110d50.20.2026.08.27.09.59.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 09:59:15 -0700 (PDT)
+Date: Thu, 27 Aug 2026 12:59:14 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	usama.arif@linux.dev, lance.yang@linux.dev, ziy@nvidia.com,
+	hughd@google.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+	liam@infradead.org, nico.pache@linux.dev, dev.jain@arm.com,
+	ryan.roberts@arm.com, balbirs@nvidia.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: Re: [PATCH 2/5] mm/huge_memory: dequeue the deferred split after the
+ split freeze
+Message-ID: <20260827165914.GD3004@cmpxchg.org>
+References: <20260826162101.1314941-1-kirill@shutemov.name>
+ <20260826162101.1314941-3-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260827124211.3b94b103@fangorn>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8C6601A0005
-X-Stat-Signature: iee65te5h3z1u3cq4m78w4r148omb99c
+In-Reply-To: <20260826162101.1314941-3-kirill@shutemov.name>
+X-Stat-Signature: ab5q3aoeewidc41x4h7ud69sh9yubmmk
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 56ED5100003
 X-Rspam-User: 
-X-HE-Tag: 1787849880-298829
-X-HE-Meta: U2FsdGVkX19Mpsdr/RR102SnEsZ/3hT3BCSUw3PI6ZKVan0dl7/WeCrATfEPsEDaPURaPyYa3CE/MLYXNMbylR+L8o+LtiHUEs8MkGV/jOdvSv+J1hi5U+prGxR9wClsky9LuuVXXs9Ar2aLpweg+nfY65N+FKprgr7NxEd5tpRvlXerVw/+yEW4V3NwyLFMYKe6hk+ptuE0r0+k/MQcYawFN3qYf8P1OqVijEjc157JDr8v1tCmn9WoZu+8KWRNFUqmqHy/t1KjprC8xKZ5nMwVtzhMc+qvhdCUbv28b9lLTKnAx+X6SD/edKYTBrrJE32x75Q8d/vx4PcSePitZ7+zsggW269MdnRcjQsorLtKqt0zj3OTVrLsExQaoLqcBsV13P3+4EAURSWKZOwaxkbJw1CZlDL6Qqi0Fqhlz23Hpe9nqsibGNJYBDNuo7j4rOmTRAzLi6pCku7+wILB5RJSXiZ2jxShpl76Y1EYO+k+z4+THJ9VKXnNGyrDsWHQZeTQrAnTT8H4DZ8O1QrzLVtPLZ84HKF7hVVP+wxOfFuN3bAoawtUQeJLDy4czFw3PDET2PL2QIOxxEpzbfsFLPGoAOe+j3kDsr2Gysv7EkoC5TkyAVk16lJr4+073cP+ua+bz3bpDk2pfiO8C+2bxNv6tOZIZcfVblSQ2j/HUsVkYxTVMfr9BVMq6VAyoAvZRKRCUfBaAp04bIh48nCoGBC+ivJpjkjCsQhUx/Ilsvx+PRWAcFlC9nEE/Kd1YPFG5J/AGVVEHXLjQAH+eoQ26mI3Vu6mdXef4kpOy9nBxSlgB23uRzUpRMCS3sEAJzNWT6EI6MD6TbXNsKrv8HqBtvIEILs0CuVeordJqPfsHi3OwIJEptWuKMZncF2Q5xRrWA/ILZx+vQNvB2xr4mpAdKpTgojQIM2HzeQ31Zw+iXwYUcQO6JevdZYDkN7yramjjH8Q7A6eC4KjA4TZU6u
- SaIwlUhA
- 0DKMl3daiT63ugcU2fMlYmao2uX5Z1ndsBLn3uNT4T40SLbmpO0iMJFFfLahj95dIIOBTq0LcS2gqNp52wb3juhNQEkmE1UzgsPjxmcbq81a9DKOuN9Hi4RExEJ6qLR6jXcJwT78IaHh+dBaTfXE9GjDyZ0kgF5amq757T3Ran1KS5AqgCVuOTZQ+zzBEWjjqdaKyOk5yhvqvIOt50x7NRmZAb3xsfylQQ5AzL4QbHTCNgSOfNmImnuSAxsAGAYdY8xc/AObnjudGnxKHYlgtGgT9RaFh6hdqpgGT3Yz1I6Ep004WjVGpmZKWQaDkn2UVsRlJJytp2mvXGvGRoIu/vPZ6EnDGfs49p8HMyblOETY8dLlqydb96E12VqRvw3YWhbMbnObhYWcn4YleXAwWWgqKuQ==
+X-HE-Tag: 1787849957-906516
+X-HE-Meta: U2FsdGVkX192S+YV60A3Q9WUcgEFzDDSo9fga8uHjjVRy2YifxoxwIV1X4qZOEzQ5tn2WayOczXACroLaFlwsU4uxRV/BGsGErC6HVbZZAPwpNnmKb94ewN6wdWPLhriWJH/H6PShi3NkRRXzD71Z5hDk0hG/8anrK0bzT9wb9GfUXbSWpo+KOIDshNI+tlx4gCgt7viO5em54ROwu2p/wb7ZRM2zByODkmbdp9UQ+tvbNN1u44+pXs5g0l4dsKwFIvpRN3TwSIf4TFBvyUKZloALnRZpZEV8SiCyIBKMoyLSSf47Wwp5TlHYflhr4S6XhIK6dIoSEQOmQvKdhVzy6cgQljHoqL6KXdG1a7tba/oIqtEy//mw7buQa/i+iSF95gzoUH0P+fjvuFKNZyBabWzZn6YdZkQnSSbm8W5Gm2NoUD0oQlk6flMo1Ywyu8Q3B7Orlfc28k2geKztpfdkNp94MtrrfRotuzbUsEvC2fylko6DZM5MINKKtB3hJA6bFAJnnggbWbFIOaQFq2rPO2Rp8V0ceA5F6fYBcDOGpbFG5GsO0j7iknsxMWZpAPHcxznc8p9N01+3SDI41jbBb1OZ8ojpQ7jJiSqwYPSpwOE2nxwc8EPge3dqpyhyxxrJpedEG4H5eU/tO21CdUHnz/wE6IoR7C9rD6sGANi+w6u5qbBs6IP2QFlHYptMooQz3o6T58/TUhdRItY2pJaEUM5tgy2Hq8WZFC2Y2XH19qT52qWxHcPGgP8/pGvunl9bJhr+LJr/2dKgIu+wPbWOW93kWE3/AAQ/w9VBXUGm0Ph+BTxLsqLEq5id+hinQfpUJwoT0BgHhImeeEzGoKPfijShNaislumbHpl5k5Ush89allNqOqQNL6i6ddgqAM1n4uf3facjAZkva6IEuKX+0SZoAaw2gf2ijJZY/03LtD6OKMKnZ9yJsjIEUcQ2nqdw5e5cOh6VoFs3aEy6ig
+ bITInEKZ
+ dNNcc2/WtKPddk/NpYeDrRO+PCXlDQH9U43Eoq2CTRMYE5B2+D07KZEJqQFch7YkDC9FTeUGIOJ5CvERP/k/U7sBCPwQuG9tFF19YyJAE12LHKDKqvymgC3Ud6TnfBo0VnXEO2H3k/7rqMkwo4eM430oZf9NNJQiu9wNQ3qtnW4oRZXtwsy5RC07sYbGrf9eXvIdS86r+1pMho1jBIJA9DeMFiSViwgdMzE9266w2D7RhkWLjtm8YEeO4z49HXD0QWKUC4JCfYooFEt3Gi2yJL5mcGyODcK+65X+DTlgSxx1y7vDkikyMqYwlhfGBtqaPh89m9FBl/m5jH77cpj0Q4aRaCFyHa+FBs0EWA7zrvPOki+qIq9i299FMyImcDPVfBUxU5ivBg+zIIxv4iPTjaNhfbRPXObkr4jOlXZ5qUAOaPUUD79dn1+LGZAUOvBUIICpqXP1YNWM67ThTKO6jGhgrdB409N/MqVc77E2GKG0Kusrqf0/AH+ow454nllgAUjCRCJOgAtPwsj0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,133 +125,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 12:42:11PM -0400, Rik van Riel wrote:
-> drain_all_stock() queues drain work on remote CPUs via
-> schedule_drain_work() -> queue_work_on(memcg_wq) and returns
-> immediately without waiting. The worker, drain_local_memcg_stock()
-> / drain_local_obj_stock(), dereferences per-CPU stock caches with
-> READ_ONCE(stock->cached[i]) and does css_put() / obj_cgroup_put().
+On Wed, Aug 26, 2026 at 05:20:58PM +0100, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> mem_cgroup_css_offline() calls drain_all_stock(memcg) to
-> optimize reclamation latency, but never flushes memcg_wq. If
-> that races with cgroup removal, free can happen while workers
-> are still pending, causing UAF. The drain work could also have
-> been queued by somebody else before offline started (e.g. high
-> throttling), not just by the offline path itself.
+> __folio_freeze_and_split_unmapped() takes the deferred split list_lru lock
+> across the freeze. It is only there to stop deferred_split_scan() from
+> touching the folio under split.
 > 
-> Timeline illustrating the race:
+> With deferred_split_isolate() fixed, the workaround can be dropped.
 > 
->   CPU0 (rmdir + offline)                CPU1 (charge cache holder)
->   -------------------------             ----------------------------
->   cgroup_rmdir()
->     cgroup_destroy_locked()
->       kill_css_sync()
->       ...
+> Unqueue the folio after folio_ref_freeze(), the way
+> __folio_migrate_mapping() does: folio_unqueue_deferred_split() needs a
+> zero refcount and a memcg still set, and both hold there.
 > 
->                                       refill_stock(victim)
->                                         css_get(victim)
->                                         WRITE_ONCE(cached[i]=victim)
+> If the split is called from deferred_split_scan(), the unqueue is a
+> no-op -- the folio is already removed from the list. But
+> PG_partially_mapped is still set, so it has to be cleared here or
+> MTHP_STAT_NR_ANON_PARTIALLY_MAPPED never comes back down.
 > 
->   percpu_ref kill confirmed, css_killed_ref_fn() called
-> 
->   css_killed_work_fn() [offline_wq]
->     mem_cgroup_css_offline(victim)
->       drain_all_stock(victim)
->         is_memcg_drain_needed()
->           READ_ONCE(cached) -> victim
->         queue_work_on(CPU1, memcg_wq, work)
->         // no flush!
->       mem_cgroup_private_id_put()
->     css_put() -> refcnt may hit 0
+> Assisted-by: Claude-Code:claude-opus-5
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Why would refcnt hit 0? CPU1 stock has a reference.
+Infinitely better!
 
-> 
->   [RCU GP]
->   css_free_rwork_fn()
->     mem_cgroup_free(victim)
->     // victim struct freed
-> 
->                                         // worker delayed by scheduler/
->                                         // WQ concurrency
->                                         drain_local_memcg_stock()
->                                           old = READ_ONCE(cached[i])
->                                           // UAF: old == freed victim
->                                           memcg_uncharge(old)
->                                           css_put(&old->css)
-> 
-> Fix by having the offline path wait for the workqueue to be
-> done with the memcg, before freeing the memcg.
-> 
-> Found through a code audit with kres.
-> 
-> Fixes: 591edfb10a94 ("mm: drain memcg stocks on css offlining")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Hermes:muse-spark-1.2 kres
-> Signed-off-by: Rik van Riel <riel@surriel.com>
-> ---
->  mm/memcontrol.c | 29 +++++++++++++++++++++++++----
->  1 file changed, 25 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 6dc4888a90f3..c95a1f6ec799 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2273,12 +2273,18 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
->   * Drains all per-CPU charge caches for given root_memcg resp. subtree
->   * of the hierarchy under it.
->   */
-> -void drain_all_stock(struct mem_cgroup *root_memcg)
-> +static void __drain_all_stock(struct mem_cgroup *root_memcg, bool sync)
->  {
->  	int cpu, curcpu;
->  
-> -	/* If someone's already draining, avoid adding running more workers. */
-> -	if (!mutex_trylock(&percpu_charge_mutex))
-> +	/*
-> +	 *  If someone's already draining, avoid starting more workers.
-> +	 *  Synchronous callers need to guarantee all the last things
-> +	 *  are flushed, e.g. before a memcg is removed.
-> +	 */
-> +	if (sync)
-> +		mutex_lock(&percpu_charge_mutex);
-> +	else if (!mutex_trylock(&percpu_charge_mutex))
->  		return;
->  	/*
->  	 * Notify other cpus that system-wide "drain" is running
-> @@ -2316,6 +2322,21 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
->  	mutex_unlock(&percpu_charge_mutex);
->  }
->  
-> +void drain_all_stock(struct mem_cgroup *root_memcg)
-> +{
-> +	__drain_all_stock(root_memcg, false);
-> +}
-> +
-> +void drain_all_stock_sync(struct mem_cgroup *root_memcg)
-> +{
-> +	/*
-> +	 * Make sure the workqueue is done with this memcg
-> +	 * before freeing it.
-> +	 */
-> +	__drain_all_stock(root_memcg, true);
-> +	flush_workqueue(memcg_wq);
-> +}
-> +
->  static int memcg_hotplug_cpu_dead(unsigned int cpu)
->  {
->  	/* no need for the local lock */
-> @@ -4305,7 +4326,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
->  	wb_memcg_offline(memcg);
->  	lru_gen_offline_memcg(memcg);
->  
-> -	drain_all_stock(memcg);
-> +	drain_all_stock_sync(memcg);
->  
->  	mem_cgroup_private_id_put(memcg, 1);
->  }
-> -- 
-> 2.55.0
-> 
-> 
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
