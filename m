@@ -4,86 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8239C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 03:39:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3469FC5DF9D
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 03:48:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD6A36B008C; Wed, 26 Aug 2026 23:39:18 -0400 (EDT)
+	id 3BFF36B008C; Wed, 26 Aug 2026 23:48:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C86BB6B0092; Wed, 26 Aug 2026 23:39:18 -0400 (EDT)
+	id 371366B0092; Wed, 26 Aug 2026 23:48:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9C986B0095; Wed, 26 Aug 2026 23:39:18 -0400 (EDT)
+	id 289CA6B0095; Wed, 26 Aug 2026 23:48:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9960B6B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 23:39:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 16B4C802EF
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:39:18 +0000 (UTC)
-X-FDA: 85145643996.12.BEBAEC9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4BD84100003
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:39:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2Q2eBr4f;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787801956;
-	b=YbdarlXuJnVsuBnDrYHFN2XWpQEu6W7Xt1fKl+c4LA8Yi3ZyI4iV2fiVMjeAJYm2eXYXHi
-	pQs28s/kGTCpfHh+0jFL7LyzURmytUjjEfMw1wZUut3bjVnakBfssYFbp5FBm3fb4Ho6tT
-	5BArSxoqTLyBOsZ8BEvCFWa8xQd4z0Q=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2Q2eBr4f;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F40C66B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 23:48:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88AFBA02E9
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:48:20 +0000 (UTC)
+X-FDA: 85145666760.15.D41BC62
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E0F5B20008
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:48:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Zu6zrbU5;
+	spf=pass (imf13.hostedemail.com: domain of 3gbOPagcKCII2lkrovkmuumrk.iusrot03-ssq1giq.uxm@flex--wfelipe.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3gbOPagcKCII2lkrovkmuumrk.iusrot03-ssq1giq.uxm@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787801956;
+	s=arc-20220608; t=1787802498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AXsP2YwUZlHzTTtZN5E9nJJQjf2x64DhwUQoXN0R/+A=;
-	b=OUJDNIZtWkzLBznpoPZ7FCkTTFhEAYZWfe3pWlo6LhcQIsamURjWDn5KeIoLFQv7jGPe5a
-	Um0MoCef6oFYptnC9rCVp4IOxY8jd4GBg3ijL0+6gz+nMcHviHPmWFUuvv7VJF1JtSO5BR
-	55Iw4g0biXD1D09S3evRPVSnXyROOzE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9BF1600DC;
-	Thu, 27 Aug 2026 03:39:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317DA1F00A3A;
-	Thu, 27 Aug 2026 03:39:15 +0000 (UTC)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ASdk2IOeNuFGEIsjmCHgLUlwUNJIVTG3wsjeSpdDNkA=;
+	b=AX1o3o2S7NKxuDa/DzCccQOjjJhs2Rphl8UPt1m778Ul8u45PVVa2hmKw7cexjL9RO5Nkd
+	Qyd/i1b2NjgywtQE8rJlRKINDoIBXRHX3JmSAtJGdjfjSeA2xlHtRyAvD5AoduQGxI9eIO
+	t2ydpmBa77f1o4q3ak3OxuffCd5jmjc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787802498;
+	b=UNspl0shn/O3UdM1DnIs+AQ8UoUtHzCSwYwI2JiXB24S3HGeCSsoOLh2BhQFJCMovBVM9n
+	dGkMKKCFvmjkbe8ywz8d+w8+v6dFk8PBPF9MqXU2BUlP6mtbi8zlKlxDkzs1JDArhocAn/
+	/tdNj0h0bwBZ2Sy2+imAPblvIa5F+U8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Zu6zrbU5;
+	spf=pass (imf13.hostedemail.com: domain of 3gbOPagcKCII2lkrovkmuumrk.iusrot03-ssq1giq.uxm@flex--wfelipe.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3gbOPagcKCII2lkrovkmuumrk.iusrot03-ssq1giq.uxm@flex--wfelipe.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-ca8aee88725so2217887a12.3
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:48:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787801955;
-	bh=AXsP2YwUZlHzTTtZN5E9nJJQjf2x64DhwUQoXN0R/+A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=2Q2eBr4fQrLW0DYCTT7cshE8D6sM9epklZxbZJsNyxlYyEn2eF1Xx0ZkmoXf2yKvg
-	 lJR20JEiX0WjMQZwS0azL1NoaaX/icyB10J99MzOjxQmXDwUrQcnxSQEwQO/u3euhL
-	 7iZqmAkJAWcuuYDlyUrMX6C6TvsWSfTkRplTdEVM=
-Date: Wed, 26 Aug 2026 20:39:14 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
- <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/2] alloc_tag: fix a leak and a deadlock around
- shutdown_mem_profiling()
-Message-Id: <20260826203914.347c42aa00081ee9e0eb858a@linux-foundation.org>
-In-Reply-To: <20260817062726.106511-1-hao.ge@linux.dev>
-References: <20260817062726.106511-1-hao.ge@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20251104; t=1787802498; x=1788407298; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ASdk2IOeNuFGEIsjmCHgLUlwUNJIVTG3wsjeSpdDNkA=;
+        b=Zu6zrbU5fbCPMHmzfLAnsv/4DJu5abzKzMS6nOUXq7nQOM5LByOaKzpMZHuHYqia7M
+         E3wvnMvqRCeCPgwoSxDAyQvzvzdY/baOQ8umQk7a9Mm1/5zJXUzAlAxKfV9sUdqyO6tV
+         M0VMrfN7pKg1IGFXQyzh9qSQHxx8y2TleHQvDy+veyp/6jt8qPxIiWu5CaoOJi+WtzAy
+         WCjvMeY3SDThenTIRB0avYxT0/zpuukMQlA/tRHOPKw2OhTOLqpRaGS5xrcN8ByFzk7+
+         K+jyWkeKkW0xMdyaT/cMRdB4mRsWS9B2Y4K/PCW5rAo9zKAi00Bi/o9SdE/iLYoRMsyv
+         jqDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787802498; x=1788407298;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ASdk2IOeNuFGEIsjmCHgLUlwUNJIVTG3wsjeSpdDNkA=;
+        b=Dsr9B/z9s78VL5L7neUWaTmYTGAzKs/+9wdBC94e9KNSSSzbdgTMp4i7OmDCKTVJ9B
+         Xo4Q+TGNfC7GcPKSAsWsvx/87+t0oHOltzsaRz2OWGbay8xKT8HI4VdRmPepC4WLeQVC
+         GTxUbqCuvhHUMeGRfts5G4aqeN4QguTb/aCEwVr3GU0vpjMFGFJIOFsd/KdVfgjAkPUz
+         Ar7QQLWYOyoUdeIUxtXvVcsUCVqlk7i85MrQc0+GdVTLE728LBZCfqkZ8Wr/lu0eq7+J
+         pjFOAzRf11UCV56Sh1ymklAB9xxkuZtzATxFBF3OYJviBQCjSAp/n6RrgHQj2Z/wvOJu
+         dIyA==
+X-Gm-Message-State: AFuF++mZjhSjhH7FQ4tH7VqlJV9Ihpf4e/oiyyV7Ti8uELvOl5Hg5qMD
+	l3XjZ6idV/oGvdOJbuZznW1rDf20yGLK3dse2LxMHokHkLxPVbtQMV8kzsfF/mY/FFEZUjvZUwA
+	2WCzTVBYyRQ==
+X-Received: from plbkb13.prod.google.com ([2002:a17:903:338d:b0:2d3:768a:b66c])
+ (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2392:b0:2d0:cc92:f7a3
+ with SMTP id d9443c01a7336-2d707a53a0fmr241134785ad.2.1787802497345; Wed, 26
+ Aug 2026 20:48:17 -0700 (PDT)
+Date: Thu, 27 Aug 2026 03:47:40 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.55.0.887.g758fc8c411-goog
+Message-ID: <20260827034807.2822234-1-wfelipe@google.com>
+Subject: [PATCH v3 0/2] selftests/cgroup: fixes for test_zswap on single core VM
+From: Wilson Felipe Pereira <wfelipe@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Wilson Felipe Pereira <wfelipe@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4BD84100003
-X-Stat-Signature: td7wzq75m195t3cbox4wqzuuxcdacq3s
-X-HE-Tag: 1787801956-86956
-X-HE-Meta: U2FsdGVkX1/PqpHllgyvfoLOTTNJx0NsV4ZqnZ+IT0dGExDBce3wN2Htv/66hKnnlqXlffHk18XMd3jnooTmJpHR2RFR1NJZUCaRfhk+lgbWMGvrxwmcmkPN1aKTTvDCpAb/JnEEKIO78tiX4apW/2lvRli3ZhaS+KPtQEvgxJLne56XJR+kC6ZvvKC/B3B2r4A+KU4PT7jGPkhlZeTbDu8etzhjpnTG+uApMP4D3bFXeIWK7oRULE9vz30IHREFisViG7VZJCrJMc0+HzpYIrQyeCC4u/YZB39cegM4at4kYdEEpUhoS8Kg089k4wGtc4HL9wirhWjDAyLlkAHIpM7uK6FeKRYGB6WLLdM3QQL7NP3QRnsux8cwlaSYtiHrTy79gerB8aYesSjjY/p0RKLmKpTUt0Pm0naL/T6Kq+5nb7KaaGF9dZMiJ4EG2ce8nBnHriQI/oOmKQMY/UYdW67F1jJ1expzopwFHGqRv7B/6RunMvPtNlAfOo6efmPnERUpSySHbXJc5OT3CGPJLIprXhT2zEFAsnK5IZgL2BdMgtoGQFrMreQyE+3vbJeGhVMgpfQ28hDDiXYzyCeaEatrmDhahohrj6I24mcLenIEz6nyYsYGhTiBA4xG+1fO7XXydNSbPjn+b20t14RNwaSTeUmWCb1iOmwXWIAUAO3IU+4QtbP7YGs/ELma7qobycMAihS+o7B/ECLAQcfheW1OGJcdqngUzDyGhqw0GiXy0zfekl3PJT8qAeU1ok7SftNlw7lrg4gPPgWwx8tNTK6y/nTWhAY4OTetwl/4WpGl72vp6vaee3lUvDpOfoQMhekBQvB3DD0dBxR1gFCV1EHBDBwpyDBpdiXsXpaciZODjgEbxtcMlI61V8eMGRPwah2p8Bb3B95oIJ8o+470HSGd4I4Zyrxcv4u0WioH3aEe6HtsuwbM4pBo+oq9UJg8z8D6I0UHvyDQQeDpUB4
- etE6XNHJ
- RKXs3Xjw6Le6synR8M1LTLHZasQf7uvY+nt2TlLmnaj8RJYhUFm2/2dRfxSgn2SUc9+4bFFa1+eERxuphnJosM0Kwo54+dNxiaJo0HS4UPDEZ5UsItlzpOHoIylCkpUevJhy6nr70+raYqodb8lpaS23sO1S6alwotA83EavrGVe+rqP9EpZreOMZFm/LbJp/exOYzmXk35UAtbXPL5Bhj6AYtDXhjR11XCvig+EssFyaKi0TYaNCmOAjEBIUAS6XX4NE0RbpzqS6nZGIlflxW7o6soOnKTSC9ByhAly7+NtLQkDqJq0QLpVtfy48XJsTcLYSP4SlbIokYTHl7OmC+or2ISyue4vQzsF3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E0F5B20008
+X-Stat-Signature: u8s9jjbocscxbhr3zurm4apa5szsac1o
+X-HE-Tag: 1787802498-454967
+X-HE-Meta: U2FsdGVkX19aIDIVfbIW5zBKQC2PV0cwZoxECKbe6LXPQzzOgP9iajzRBTUpzxdKWjP+CVyW+CGyLGqcho/Fg//KJ19m6seePDA6oIbiKCW33B4qcU+UA59AoSE6rPdCQvlsiM2PtH8D3x1LkCGpprRTXYmHGomrob0ge4BTzItl6Cvqc34cgO+OQkkLY/htSPjtG+Ajsru+SOt/LWk8Kxo7ppEoTms3+xhiGS0TlAVS740CW4tzqT3ZaoyoGFImydeZVRgnwfB8bwbhVVQ6ZghWRz/onbXs8dN1YVvGt3a9LqVFE758oplz0x8dok4Jflu1N70zAZiFDU7frwz+fdqiwoI9vo+pJB05GPw9GogvPwIN6ifVhFe4Yqaavl6hQXRv+bdTLKaCXxuXJ8NDiZ0FHL9VpFk3xyNtcT0kWrlHRFwzpxSpZO3Xr5/FpFtPPsmBGN+rpqpC6dpP/7fae+Nb/otC8BzZn+iNJaxdVpMM9Vy8mSOzP2y56es/XMAxoVvzMl57V6ANyeFRs04aRVw4YR04Lis4dJioj4jf/Abcgz6HvnEi2Cf2ssVNIP5YjQGJkV8HBujuCR4B8qprjsCI2gemkE05KtMYTYLblMvyVCUCGRRxuGjAUMmY0N8TKSf+t1MH2sI7iMuSYQZ2RDLrdZy/Y/yN+jvVBOG/S0lLJYaEJDOhJuoE3lyw7tb5dhZv/kuDmYxHoTGzCjylHK8/YluT9KY9OCatk7wSnQhVr8E1KKuUwezv3wiITDxgyu5rjrkORfs6X/08FwVISJ6fsflSobEhSBcJUqRu9WJo2ByaNTd1VvGh+XbepLU0ZTVha/vH0dbyqTOHa9NHgMsYYwzYZagcgLw1Dv65/pt7HpL7X289ncND5J3KTeXA+nKhtUkP8Dk1Ryor3u78M9HXi2RdV97VHhGlBO9VspXAuk/gTqilol3e8bZC995cuXVAC4aKWDwyOnQILoY
+ d+wQd1N+
+ 8ROYeFKDgYm4gVZg8fgtu1l8CUfgRoRof3j6xPENmb7X7O3P39tW7D9IJDwYKd79F+oxwWgMe9bPi9W7fh6jUjP2vOxwwII/cdnaBgfUoVszq6pnLUpk71laEOWhiEZXcrq6j1tQzirJ3QC2lpA0gxCPaPlD2YmBFWFlYfhHdSjVMBi+n7LJK15lAx1hFelt5ttGMmXPYuzUEvmuzDSdxEFzO9NI7ZMJqQCcQm1r+UBBZrHvpDLBVKCLYucJc5suMyQ9R/KjOB5oawFKgi/KBSOvruI9hWPu4ugDarIbnJrlIj0MlFX81tcY4h/4Z1Q3T3Ug8/DswoMC7zGin1erBGr6Nnsmrgd6zswzkTMk9Ip37zp+Tcyjl6O9XCTgBmPsKNfbO8wSZwNY8/BurABZ8VsBxTYeerPuHsAac6Sy6JNUrKYyFw5cHAGth9lm8HpMCoISxlvOXwH67tcMs6jWuYUbobbSfOxiaUirsQg7hyu78Lrc/bJuBBIxe23XlekB3Z/1s+35TinzyD5KPlycm11VwY+xEuKPVvviZTFK9BF54eGPkLMrAkohsa5DUUNcTSDnCgS8LqbYDAMvnR46WFCblQfZi7NsBJPq9l0vcwb+NAPPrtHkoF1pdTxmdtakaP+Qo/8wAa9TD+PTJ9djthRFCeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,18 +111,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Aug 2026 14:27:24 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+This series fixes two test failures in test_zswap observed when running on
+a single-core VM (-smp 1) with 4GB of RAM.
 
-> Two fixes for issues reported by sashiko:
-> 
->   1. percpu counter leak on modules loaded after profiling is disabled.
->   2. AB-BA deadlock between module load and /proc/allocinfo readers.
-> 
+Patch 1 addresses a race condition in test_zswap_writeback() where
+waitpid() returns before the exiting child process is switched away by the
+kernel, causing an immediate write of "+memory" to cgroup.subtree_control
+to fail with -EBUSY. We fix this by waiting for cgroup.events to report
+"populated 0".
 
-Thanks.  AI review asked two questions.  One pertinent to your
-alterations and one pertinent to Suren ;)
+Patch 2 fixes an implicit unsigned conversion bug in test_no_kmem_bypass()
+where small negative timing differences between debugfs stored_pages and
+cgroup zswapped bytes caused the comparison to falsely fail due to
+unsigned promotion.
 
-	https://sashiko.dev/#/patchset/20260817062726.106511-1-hao.ge@linux.dev
+v2 -> v3:
+- Patch 1: Collect Acked-by from Michal Koutn=C3=BD.
+- Patch 2: Explicitly cast stored_pages to (long) in delta calculation and
+  inline the return comparison (Michal Koutn=C3=BD).
 
-I'll queue the patchset for 7.3-rc1, with a note-to-self.
+v1 -> v2:
+- Patch 1: Replace EBUSY retry loop with cg_read_strcmp_wait() waiting for
+  cgroup.events "populated 0" (Michal Koutn=C3=BD).
+- Patch 1: Clarify task lifecycle in commit description (Yosry Ahmed).
+- Patch 2: Remove abs() and declare delta/zswapped as signed longs with a
+  signed threshold comparison (Michal Koutn=C3=BD).
+- Patch 2: Add Fixes tag (Michal Koutn=C3=BD).
+
+v2: https://lore.kernel.org/all/20260824033533.2147900-1-wfelipe@google.com=
+/
+v1: https://lore.kernel.org/all/20260804042053.56940-1-wfelipe@google.com/
+
+Wilson Felipe Pereira (2):
+  selftests/cgroup: test_zswap: wait for cgroup to unpopulate in
+    test_zswap_writeback
+  selftests/cgroup: test_zswap: fix implicit unsigned promotion bug in
+    test_no_kmem_bypass
+
+ tools/testing/selftests/cgroup/test_zswap.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+--=20
+2.55.0.887.g758fc8c411-goog
+
 
