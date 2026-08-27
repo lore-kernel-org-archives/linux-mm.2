@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A346C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 17:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFD0FC61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 17:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F2B76B0088; Thu, 27 Aug 2026 13:29:50 -0400 (EDT)
+	id BE8D06B0088; Thu, 27 Aug 2026 13:35:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CAC36B008A; Thu, 27 Aug 2026 13:29:50 -0400 (EDT)
+	id B99416B008A; Thu, 27 Aug 2026 13:35:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 107016B008C; Thu, 27 Aug 2026 13:29:50 -0400 (EDT)
+	id A88096B008C; Thu, 27 Aug 2026 13:35:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E32A06B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:29:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7633E40136
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:29:49 +0000 (UTC)
-X-FDA: 85147736898.18.494261B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 895A86B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:35:47 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06EE5C0116
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:35:46 +0000 (UTC)
+X-FDA: 85147751934.21.E62B259
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BBC3D1C0005
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:29:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xt5BWeuV;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6682F40003
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:35:45 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bk4w13ik;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787851787;
+	s=arc-20220608; t=1787852145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4jzWefjFgm0stKBxYcV7Y1ItnNNRQhMMDOv7W8UlIyA=;
-	b=KGN369fmEhRttxACh23v68dxfu79Ptl8QN4fdwQl+Bwpbv1Iv1R5AP/z4zcnwzyKVKTR7L
-	jQa11n2KYKCKeI0CATWi6O2iXiucAOEgvRvJQ2dY5zm+xCcnPy/D+5E2A19DZVXTyPrjn1
-	kGWhEDUHLsLxXIcAuQMrnJCb5PsJLjI=
+	bh=z2o8MOsuV4Jtw0bdDdi6XdQxXMsv0/NeHM6TvE/6nwQ=;
+	b=XJ50ex5fdQjyUt1RmB4ZvLPYT+bMlsFI/5ubG4ipS+vtVpZDAaKssTeP/L7zOZnbSAuvKP
+	k8VEajfp0vfIdBVLUc8aUluD7Af+OQTz9cOal4zckQErmsp8QfaO7kmEnw3Lnjoluo6Lt9
+	Adagg4B1zox/qOZc/7buaQwkA82hmsw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787851787;
-	b=KKlPXgtkqvz2LlfyQTjuvujbLuh8SRBHX3x0hD1TS3aXBmMMsYzXvWcAIQwBABPWX9tJ9r
-	P1LeqX5J93iw7ITzN1cItohsx/88tU4pjX4Kc4u3vOdbqrhe0lUBiP1do2sVgfn55MZEq+
-	XYCv6LjXsOxEoFbVLmaKidsAEfQcCEU=
+	t=1787852145;
+	b=NZYQLMobpmpzJZdJylIUNsDK/ypia0IX2Vla5yB+kR7cmay8TVWp/y7hQu9r72qOWcPGeA
+	XF3uulHCr1cDZ0km18YQebCpDOCBRa3YY1jJQTpBcPUy20Apz7MW/10OAi2Ry8saE/BBS4
+	NJSzwnUpeq2TQz0m4+X/fp6kWa7PPRg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xt5BWeuV;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bk4w13ik;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6336B600D2;
-	Thu, 27 Aug 2026 17:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9EB11F000E9;
-	Thu, 27 Aug 2026 17:29:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787851786;
-	bh=4jzWefjFgm0stKBxYcV7Y1ItnNNRQhMMDOv7W8UlIyA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Xt5BWeuVVReseTy1oxgnCxUEi7ggfPYT+VOtJf/UEqDOhf6wSfzPpxwF+xIvXySS3
-	 sOVt40YSi/JbCXsMs9nVRDU5poclv68G1PR0Esij2fFgUwUendKGYammJoU8wYn4Hw
-	 ETiGa/jXEK3nMRtgf1/OLpsilzJzOfQS24OqZLSU=
-Date: Thu, 27 Aug 2026 10:29:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kazuki Hanai <hnkz.64@gmail.com>
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, =?ISO-8859-1?Q?Andr?=
- =?ISO-8859-1?Q?=E9?= Almeida <andrealmeid@igalia.com>, Christian Brauner
- <brauner@kernel.org>
-Subject: Re: [PATCH v2] tmpfs: fix unicode_map leaks in casefold option
- handling
-Message-Id: <20260827102945.998982ccac58119fbe35edd7@linux-foundation.org>
-In-Reply-To: <20260827152516.805622-1-hnkz.64@gmail.com>
-References: <20260827151426.796843-1-hnkz.64@gmail.com>
-	<20260827152516.805622-1-hnkz.64@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1z88igw6gkbt5qjiqid7quomrkr3nfzf
-X-Rspamd-Queue-Id: BBC3D1C0005
+	by tor.source.kernel.org (Postfix) with ESMTP id DD240600D2;
+	Thu, 27 Aug 2026 17:35:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661641F000E9;
+	Thu, 27 Aug 2026 17:35:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787852144;
+	bh=z2o8MOsuV4Jtw0bdDdi6XdQxXMsv0/NeHM6TvE/6nwQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Bk4w13ik+oNJLlCaJU9UGdlr8LAknop2T13tjJCfGFeSmTmtry78KGtazH+HM7Hvn
+	 ehSik91/x7Wz8aAfU1U25dGLgVoWUZANGcvIPueQ/Lg+0yxJ5iGM+XvBo2y6Ik0QKi
+	 UnIE970PZwh+KufLaJg2PQKyLB2exuSkuxVKu2PxsGCvOCYzVT3vE8pI3P8lVqHHCZ
+	 qomINzVPwcqJ2BbNmSP4VURAYLyV5H3yiHvikO/PFD0ueO9hsvB+S+5DokZp515fXb
+	 dRX0vmhxPlM7Bildubr0iDMLZyL6HvhTQOlp7rcNrak1ECxViWt/vUMgdfC/gh9suD
+	 3UjjQGD8NYj1w==
+Date: Thu, 27 Aug 2026 18:35:37 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: artem.kuzin@huawei.com
+Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, david@kernel.org, 
+	vbabka@kernel.org, cl@gentwo.org, linux@armlinux.org.uk, will@kernel.org, 
+	mark.rutland@arm.com, liam@infradead.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, wangkefeng.wang@huawei.com, panov.nikita@huawei.com
+Subject: Re: [RFC PATCH 02/18] arm64: align kernel text and rodata
+Message-ID: <apB1JCaNkGQMJQqq@gremlin>
+References: <20260827161158.3618409-1-panov.nikita@huawei.com>
+ <20260827161158.3618409-3-panov.nikita@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260827161158.3618409-3-panov.nikita@huawei.com>
+X-Stat-Signature: d5j6caaguryughwtwwojdtktjtaz55h3
+X-Rspamd-Queue-Id: 6682F40003
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787851787-53221
-X-HE-Meta: U2FsdGVkX182359BVodHIk7ZYq5zcLYEAY3Ox7P3W+ryaLb80nrUUqWDhX6mXApEQvZhk+VkywvAlgD3uWi5P20f7SyAjKJUnshWI7mDOq15YyU/ENuzuiqhwKjuiRJwPp94vluNy7MvtNObUoC3rFvT5ibk4OcjpgriyHVylceRvrDz5T+DE8HVx0EOtmPHlF5OD4R3CsXH92MWIXK/rptP0jpHN0KvpIsNjOfnW+qXTEgyKY+Vhzmcrgc4WVeJxffh7+MCXwJunitI4hytfad4CjWofBEVWxZWyCRaW/mwxnUJ0PrUxIF8dMlBr3cBZ7l8Q4BUngDKn/pPGDi5jtSmI8Q7/2BMdW3/PadetExKh2mGk87Uvt2Bwm5znesH2buGSG7JhiLYe3JHeGyBDbTmAnegGyQsvhsECpW/Uq3DlTORXkGd8Lzq7ga9GUpu6dSh8ZgtcNAhNXogcMUYp6NC1CdHFbKSguLrMyB7yUrL87a+ID4GFUrPRAWLh71f36kdVMqJDC5SXzEYGfPW7fN2jMCwzHCKTmnywg8cBHQm2mHg8GkqJxEHCIEOxDLKm4KcxMv16aixH3OUKh9aTdEJCZr5ZzJ7Vtwf5qmxys4CXVx7f8TNJYdpUsVs6YUPpVbnSUWfO5IWqDtSEnCp3Ha3CfUl7zgnd6aIhYqQQVv2vB5kGJIWkA1ltzxpbKFUFLMgzZz/k9RJGd1tMQDVMfNf5fF0xMShslHSotxqhYX+41BoHAhiRI11yoHqHt8NVwIaRfnRoE2zyED5G73yLhokR4QiKq2PKiHdxWqjrw0dfUXyxZZ7djIk7qqcKqUoaoGGUVunRZoo30iyGvap8PnuqwhR63FblUXma5QxGT32aiL/w30/FhRhNeAC1GYbvEHMYukGutWHoZCaMsWtMurBoCzYqNUUf502WAuBHFYk8rnuREYJsFk4sPxLtbDfpig4O5+yMm4A3nEHACB
- 0p9QG+MA
- gXTPCv+tKvmu8zbs5p2AvmJpl3uzzxhsxPrHVcvQBkBvJbD/ohNLzYcE/MIKQeZOAhSRjtOsmIw6XTBnyzAqOEERTuh5vlSy/tOrRy39tqjleagYq8SJJdHlbmrDTUpxVZa8Y0AFA07Ox7RxC+b7QIQFeTsfA6jRi4RQFkDarQXOiGFFzmuxS0y8ZTPpNrDbcmOYOKycgYMB6wnV9Z/X0dKdbOU85CItTbIMghsNFlEFbGY9HK6DrmT0JJltxnYSRqmLDhRqCPgNL8QyU2d8s9CJyNPNBsf4xTNRpo6A00+zHn8sRJson0hTL+qrhRxcrXqPikby+eGhHA0ITvvIrqDHaALT96/tYeE0AAgpbF1JiR8yzKt7r0YYzAqW0zmABlhoeBFK9yUbj54mX5pXGXISeYOes804YQ6bl
+X-HE-Tag: 1787852145-319627
+X-HE-Meta: U2FsdGVkX1+crwoFp3YuHy8Zypb8NTxoBp8kICxwWP5Olottwi32+D7iqE7FRxCnTV275V0z5TykXIDShptXCndjWqtpRtXKZmDI2PJ6PtPHZuBR2Z0Sgle3v8xThq2ThdpXNQ/ZXlfDsbOQ7UQd40quQ6yI877zIim2K/0GKZ9vMFdZHCMD7tPtDuujX3qkon6ZfQWU8gOQBlmwN1w+8X+JwJPIzziFZgYDx/S7IhbAjYB9zcZ71DJn7sblG1Eoxhhi4FvMr+gsQprz4KrAZfdGvq92CURU3i0tAn2MN0wjhPIIqkTCQJxP4PNW5OR9i4BDjUAye9WMQBH54tCFkWBFfa7ZYs0Zt5BqCdGb7Vea/5JCp1HhFmP+97VaoL+bjXRJoyzQQutS3hX5dg+CXaE3b9QPcN0bpxRjUsDBtlvjTF/wgODDe05SdbFaVNsTR9UQLRlps9b15sDfMxFXLESveJIsD1nEjH7HSHPIbi9Ye+TYdjZwAX3Wab1flZVg4XcrRBhgayO7xcvQKfYAEDJ0MaFkK2q8bQwf+KNV2+UVTwfldUMNx2nhXjgajChWHU7fbvYPgmOHVATrpxj5hxZHl0zJZ+Jf+ZXT2JVo53ot9EURj60Mc2dQASqmJX83WTsjGBCq2K6aNiVIl5kY7aTySyyBDp01V0Cpn0e64q2J1kJzugUouZubQRePG5MvB4T0jfQvjmDNEpTbfesOuKe7ja8bEWZ769QzTHyWhGE8jYb2puS4vgqDAzL5NTxMayF1d4n+DXmFTYtIPracmzOQ2ENxhdMJ7w3q6+feyrdKxMI9Nxg4Eoy+t4Heyl2TS64FI4/73FRz1BG0XbEEgysYhr4huoJDj+OC6ujfRxeFn5fF+vZV7RWnVKq704g61E9KbFFQBlXa3xRDRAzeW6f3C0hNfqH5sIZ5+po7xvuYkpHN8fg1INkFg74xTJllZZcgawhu9P0HAUvonWV
+ w1QmAlP/
+ iW7g5TFvtC/wWksUO5xc2c0Kw/VdSrMfh2IGSTqPBb6V5ew4wV10g4OdzPnHLg9xVJbOBluLHS2s1BvY2NDeDuEpHhn2fyVnHOU5bHcZ7aloacYaQXcBTcjFMWes0ZNjiHog+LIHQIuUpGsDrfcgkVapL9JavSBiX0VKGk3kojn02qp67tFcyTJc96I+idhJP9arkcIHkyIPVW5qtDn0sogeL/+/fBy5E/NOTQNRsrWU0MmO55QKu4WFBHl2HhfHPc05Whb5hfhea5yplLGs7eumzYUHJON58XlaPIV1OEYKhBIjXXzFQp98TbiUzTycMCxPodxSMFq5sNhFXb+QymkTO6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,63 +94,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Aug 2026 00:25:16 +0900 Kazuki Hanai <hnkz.64@gmail.com> wrote:
+On Fri, Aug 28, 2026 at 12:11:42AM +0800, Nikita Panov wrote:
+> Acked-by: Artem Kuzin <artem.kuzin@huawei.com>
+> Acked-by: Alexander Grubnikov <alexander.grubnikov@huawei.com>
+> Acked-by: Ilya Hanov <ilya.hanov@huawei-partners.com>
+> Acked-by: Denis Darvish <darvish.denis@huawei.com>
 
-> shmem_parse_opt_casefold() stores the unicode_map returned by
-> utf8_load() in ctx->encoding. The casefold parameter can be supplied
-> more than once for the same filesystem context, but replacing the
-> stored map does not release the previous reference.
-> 
-> The final reference is also leaked when an unmounted filesystem
-> context is freed.
-> 
-> Release the previous map before replacing it, clear ctx->encoding
-> after transferring ownership to the superblock, and release any
-> remaining reference from shmem_free_fc().
-> 
-> An unprivileged user can repeatedly set the casefold parameter on a
-> tmpfs filesystem context from a user namespace. This causes
-> unbounded kernel memory consumption and can result in a local denial
-> of service.
+One small note on procedure: it's not really the done thing to pre-Ack
+patches in series sent upstream like this :)
 
-Thanks.
-
-> Fixes: 58e55efd6c72 ("tmpfs: Add casefold lookup support")
-
-It's best to cc the people who were involved in the Fixes: patch.
-
-> Cc: stable@vger.kernel.org
->
-> ...
->
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -4508,6 +4508,7 @@ static int shmem_parse_opt_casefold(struct fs_context *fc, struct fs_parameter *
->  	pr_info("tmpfs: Using encoding : utf8-%u.%u.%u\n",
->  		unicode_major(version), unicode_minor(version), unicode_rev(version));
->  
-> +	utf8_unload(ctx->encoding);
->  	ctx->encoding = encoding;
->  
->  	return 0;
-> @@ -4976,6 +4977,7 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
->  
->  	if (ctx->encoding) {
->  		sb->s_encoding = ctx->encoding;
-> +		ctx->encoding = NULL;
->  		set_default_d_op(sb, &shmem_ci_dentry_ops);
->  		if (ctx->strict_encoding)
->  			sb->s_encoding_flags = SB_ENC_STRICT_MODE_FL;
-> @@ -5073,6 +5075,9 @@ static void shmem_free_fc(struct fs_context *fc)
->  	struct shmem_options *ctx = fc->fs_private;
->  
->  	if (ctx) {
-> +#if IS_ENABLED(CONFIG_UNICODE)
-> +		utf8_unload(ctx->encoding);
-> +#endif
->  		mpol_put(ctx->mpol);
->  		kfree(ctx);
->  	}
-> -- 
-> 2.53.0
+--
+Cheers, Lorenzo
 
