@@ -4,162 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ABD2C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 18:17:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD51DC61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 18:23:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 187C56B008C; Thu, 27 Aug 2026 14:17:05 -0400 (EDT)
+	id 516126B0088; Thu, 27 Aug 2026 14:23:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15F9F6B0092; Thu, 27 Aug 2026 14:17:05 -0400 (EDT)
+	id 49FE46B008A; Thu, 27 Aug 2026 14:23:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04EFD6B0098; Thu, 27 Aug 2026 14:17:05 -0400 (EDT)
+	id 31A146B0092; Thu, 27 Aug 2026 14:23:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEB5F6B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:17:04 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50D131A0129
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:17:04 +0000 (UTC)
-X-FDA: 85147855968.21.E286568
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 697151C0002
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:17:01 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E40D36B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:23:34 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6BC271C025A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:23:34 +0000 (UTC)
+X-FDA: 85147872348.02.909F485
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 506DC1C0009
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:23:32 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="k/zwWhNy";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=ss+YEE4b;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf20.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787854622;
+	s=arc-20220608; t=1787855012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HVDMTfuDVLx7uVqlggo3542f1w8eox++6zGai1PxixQ=;
-	b=vA+vsIUwBfLg9CJAmX+i7dNc2SX87EY9QEiuTHe6ErvxhdPdvwF4Jn2z3FFad9yNajjp03
-	by/ZvMyHPs06Wr3DtfpIwVYKTzEkcLLgb9U6ar0HbvfSW2pvkvfq5GliDtw5D00r3mydDz
-	dGvAd7QE5IhBsYu3heju5yp/yqqmG10=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lW5yUPVESWNp8FJ60ucl8RG8n/LJobsXvM0l0Jreta8=;
+	b=AUMJRMrTF0uUWXXCQfaMNbu/azVWb5NGibMG8vVKuNEtSS6aINEREZW3SyWrxKmBnz0nvU
+	1oUoaFrjyZwBep5Jn7Eyy92ZuxAuU0Y5rfVycMyL4CPFShm7+vfsjXSPcxOqBq3lWZtFlr
+	IWvX2KUkLseTnq/otBCxxzEnWxoLyJk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787854622;
-	b=yccU0SBZiR+iFvZ9mK/QSyRLjMPqNNs1iaF6Gjff+pG/P3BM0EYrDeYg4/6MHkT6U8PHEm
-	XzuwklZ4xllqzp4n6AdSmHSiRK+jZSnaNER1ZGVJwaNxnn5W58KGpYfRFA4sDzxlQv+4oa
-	4WIuvkQ7zkaTpZl1rE+vNcFchrLB1yU=
+	t=1787855012;
+	b=EyZ7VE8eY40EYbMSj0gj72WrNm/BrLPsPh3KK2XvL3SRLncUPI7Ynh1WC9Aj8+Tg0ZufPi
+	NXU31omAdu0J4qa417t+g4txOnbfuFpJv1JuvNiR12XiwZI3d65Kt39uAZzwxj3svt0Bsm
+	W9rhcsde+o9SPL4uIFvsMH8WXIcwJS4=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="k/zwWhNy";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf20.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787854622; x=1819390622;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=HVDMTfuDVLx7uVqlggo3542f1w8eox++6zGai1PxixQ=;
-  b=k/zwWhNygXoIha3o5vrTrC98YCrIgmMTXvbxmEO+otGOR4XnmH/xapq0
-   kGtNQ8FPvMmXrfLjAhsoCKX5JQ5ZhPv5ZciuATsJFck/IU7u8DBAhXUOb
-   Tp7YjTfzHKM907GX+oYdW3xfkGKxzSdTKROKi9GtML1xkRTGIahVTyCra
-   kKnf1qCB6VqV37eK/93kOWd3o7/ETJfGhgaBAOl3iLyDijC6DZ4jt99Ni
-   j7TSdnc4G6DVmyREOFlCDoKLDhw2crNoOLrT+9AkYFCG+wSdR3iWPEu7p
-   bZj0d+h9CfajWEhTaAblLeVSne6GcENkUXOjnD1EsTGcHsB4pxFEHEwnN
-   g==;
-X-CSE-ConnectionGUID: LXrg6GWOTUSpXZWblBjNcg==
-X-CSE-MsgGUID: DrJ9prskQKiCi2jO14N+uQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="88286792"
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
-   d="scan'208";a="88286792"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 11:17:00 -0700
-X-CSE-ConnectionGUID: eQPmF8lcSF+SYQxndLuFCw==
-X-CSE-MsgGUID: uN+GdqPBSAqKphEQRxC5EQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
-   d="scan'208";a="272164505"
-Received: from smithj1-mobl2.amr.corp.intel.com (HELO [10.125.109.108]) ([10.125.109.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 11:16:59 -0700
-Message-ID: <9ab4d7b8-6be9-4219-a410-ed26ae25c47e@intel.com>
-Date: Thu, 27 Aug 2026 11:17:01 -0700
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=ss+YEE4b;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf20.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:From:Reply-To;
+	bh=lW5yUPVESWNp8FJ60ucl8RG8n/LJobsXvM0l0Jreta8=; b=ss+YEE4b/aZyxI4zRVBqSur/8v
+	Fc85AUt8epJqduW4+yRAI2hbrSKRfL+YgA+hpmpTYZqKe4LY2lA60lulc4/I8/XwchM0EgOxcuOu+
+	kO09vhl3rg/Dyg3xzRfrsnZ+eU6HE5ZWP08df2XhtDekUWbiQoC/71/llCxH0K64Zp3oidfGsRxqQ
+	cPa9x3aRlEkQSEtb+pWKH6Z2S8WIPdEtL/a08HrMFp7cj/M6fZq2yN8JTpfeCsNl/7ItPOh8PBPea
+	mO2Y7aDq+4DeQTU4FjpaPnX51CfSaxcUTQjwxG0jtU4t6rTTYkBTUcK90srBFdeLweMm3Up721GTk
+	VDY+LmmA==;
+Received: from [187.57.78.212] (helo=[192.168.15.100])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wzekx-00AOUg-3S; Thu, 27 Aug 2026 20:23:19 +0200
+From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+Subject: [PATCH v5 0/6] sched: Add support for long task name
+Date: Thu, 27 Aug 2026 15:22:59 -0300
+Message-Id: <20260827-tonyk-long_name-v5-0-5fa843782a00@igalia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v9 13/25] mm: kpkeys: Introduce early page table
- allocator
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
- Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-13-743ad31b2c8f@arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260818-kpkeys-v9-13-743ad31b2c8f@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23P0U4DIRAF0F9peBYDA8suPvkfpjHADlu0BbNsN
+ zbN/rtQY6rBx5vcOTNzJRnngJk87a5kxjXkkGIJ3cOOuIOJE9IwlkyAgWIdV3RJ8fJOjylOr9G
+ ckFrthewMWiY5KVMfM/rweRNf9t85n+0buqUytXEIeUnz5bZy5bX3o/eNvnLKqHAwABqjOcJzm
+ MwxmEeXTqTyK/wCQLYAVECAV3YsFzrZAOIOKA4tIArQ60FbpXAwWjeAvAP9fy/IAnCPo3dDz0b
+ gf4Bt274AOov+54QBAAA=
+X-Change-ID: 20260516-tonyk-long_name-b9f345aeb041
+To: Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, willy@infradead.org, 
+ mathieu.desnoyers@efficios.com, David Laight <david.laight.linux@gmail.com>, 
+ Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org, 
+ Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, 
+ arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>
+Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org, 
+ linux-api@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+X-Mailer: b4 0.15.2
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 697151C0002
-X-Stat-Signature: xa1pdmtyhn1rei7pu4yynfhffdcmkat6
+X-Rspamd-Queue-Id: 506DC1C0009
+X-Stat-Signature: 6sfcywm6pbh1r1ami3dhmykkx3thfh7s
 X-Rspam-User: 
-X-HE-Tag: 1787854621-938419
-X-HE-Meta: U2FsdGVkX1/BC67REe+84BArnoX4MaJQBhIzbJmEGzJ83bGH7xiOIH31lk9Veq4szFYGmPE5YkzN3A5EO3elsq18iwIQmavhWG6h2vhpLUwlA6lualYBtmeJnfF1qycj/miyJSg0JZQLCFJpD1E95pHqgFh4FL/dV+iK/ja+Y7pt3mbo11iImLyFPNB/jIYMD2YA8rDfVUn5pfhHaW6NsGFuEE0dXDsdrTLwrSaqo5MhWeV6p7hx9aKiXP5A4j1XaABdD7DMYC0wK9DNR/FclQPi/fl1VtVENPkFtlPkZODBwSQjWB0p8n54KmOBSFlhoCVfaEz4xoGrkRFksy6u60CdjpwYRMN6bY11hC4RbueH9Bk3Ydmgnje1YtFBoFExhCvaJk+4aAVf5RdJUHFtLlqZLHWCTBqRrnw6f0ABOIBwCqqQB7UN2hW/C+rOrnvGJgRKzPQKeLQ/LwOhcw0ihRr8NiEDw+qbXfefQcYgy+TV38PQgKdZu1j7ZyGtEW3kqGgpRtMIPee/5oFexuZyFd5Bqo1UIWBAa/4SDdQsrtGpgD2dFdpBciEuQhVry64y67xCCpEtjh3f3soG+oK9HZtLxdni2cJn1TvnLWGWkHY8iO5ab8GRKWnF4NeWdtZ16g7zxmyPr4CIoxbAIZGe4c+fwiD5SL9cmashJdkeJKA/O3bfVqZ9srorZXKLdOjgRG9xFh9070WWaY4EbKn268dVRfK5U6GGB80p5NcwvFK5gcW3t3d+J/tbjSOZURG+D61o30BMhs2Dz682CKX/+TCzp+NcAT4YqMtl7kRagUnffb0KWZBVigC/qZZsqqH/2ufWdS2EvlUzx5b897b51hUrP1fg3LHGkV3FOICS5cLTB+fjQr2R+74WQLiAgtJP6yqz8Lvljy10UW7+6v7BJ9VuZrM9R32HxkHjWz4kwMa3se92tQng+2u/i2NYraYU3U9HNpj1HL2T5Rd5p2G
- JWmo19wf
- AseS8htks6A5jg2r67/rfz1QapKopkss+gKfo+fWdKrrv9rKPXoaejAD5avayUiU4PIOd2ZOi7VqmEE7HVvEQuBQ4b6GnLtkrl/SbLS1qPJLL8GkT0juAjNrtszkOUoSE+qcTQ1mvDH/feMPoemXpid1Bn8iVLU71Qypqmlq8YT23fVgR5djNP2GBIeSIUJCIBtLKmg/+F9t2pNC7dhJ/1TzvueINsl8NhwQC
+X-HE-Tag: 1787855012-834513
+X-HE-Meta: U2FsdGVkX18CCviwTlkqyErsY6zSLKz7WHeE9ABMfdhwy36vpBG8KhkfViRE2+riJ2JjUrs01g0aR+tyLGdBJFEmuv38gpOyIeDHRQ7e5jgvyWAIn0QyAwhr5i+Pg4hgrvzfryx4/ZmPGUUJ8HfFpA5eH8HmbKAayQGmzDTNjxA3i3ivBj1XOD11NRjrXaDKaixwa04Q/GC25skLUB0sP3AqCubnxTZRQfvB83ZQ50ewsIa8QM23KOj0xGL/C8k2clPvyM9Cp6FZD34pirXEnq4WL1tyY9nXAxg1O5oY8VmLBCeTxw9nrt6AYI/MUh62x4Vd4TkJ484AR4F33nyPCuZDwcFRrUWmAXOvPYZIXHKvJ2NG1H4+UqxlVSIFJYc8pTYn+/OIbBpkc0ry3EAhDC3O8tJbSewzzsCMwq1Cx58Uuo+y1ikrSBeVKRKCXXjqFsf8ygCav+LkKPAKe6SnLjLr33cHl1AUVcwehUHP2j0ERhHiH3W2xiyh67ucmD0ANQRWiecwOCCKC0wzDL0dChJj8xnhL9cXofWxFele0iz4mQCiZHMc18Q8Kq2hfxAfdiJuzOad2X1HUsHZJy8BKtNe3rkn14b9YuZifrE59y149vlhphGe3TnNIQH0g49r0kjwwfPK4QfpF+KKZe3AUPaMmXPFCNEVwTsb0ve8jJIqug4hr5F7knbkUCmvbpnZPVDBcECTA+k3W55OMD0PakGQ+X7WQFPTLaqUUKADChAdLt3GSsE3q9bwrIU5lGcbXmh9vU5l8dOJ3FqjC8dBQjOIdBDKPkdGasNO+eDfgZRvu7HyIRmDmFKF6Onq9gyb7I9tqoc8L33RXZDnMBEDS4o8XxKRCZkHSESitG9rIQIyhPZP5TMcNGHdgJGWvUW/CotDQHoI9UWXzC/ScIOHOUdnxcHSUYEWJy5o3LzjQwTxzAHHEwtbfPRthFNYZfP54maQb9EqgoVqIdv/mI1
+ Azg4xi9g
+ 3ul7rNwJNXw5eWyBZrs2EEoFkDkhygAw904W3+xMja4VUF6qXbFEyript88jc06XhddDsu77F0xqb4K0gHKcD6InPYY1P1bTJXwxfERijxfJ5DP9taMsv3AYjZHmEQYvlSHnBBpWi45/bUO1JB1ehclX96fOLQR38cxvw5UMIL5wyjbBqI9YbW4ETdiye0ByL3plpbA/a/DFJuJ6zBPIMHq53RM3H7dKVtce71mWRj6mxe1tBiBgU6eEHH9sIxmlZCsZ5EnhXX2QUUbEulKZ3A85JYHSbZ4j2NadI5pcGVTTs+yMZJ1DwxzUcTLH/WeH6+6ujAIiFuw2TxjItCBqPdDpSG9wbv5bhIQtMQKxigfRKMQCSWthz/yd0pUpon7IatNd/AsTl+nRwenI5QDjIPWdw3sid/UMADn7DhFCbx49HF8vI9KkRQLv8jMVzqMJ6pJX9848JMGUCMaNRIVGFXMUOAXIZ2c03F6LsgHVkAeF7F/QCKZRZKIrk5t+vdK0c9uHWBmxW9lcdRw8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,15 +103,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/26 07:08, Kevin Brodsky wrote:
-> This patch addresses the second category: PTPs allocated via memblock.
-> Such PTPs are notably used to create the linear map. Protecting them as
-> soon as they are allocated would require modifying the linear map while
-> it is being created, which seems at best difficult. Instead, a
-> simple allocator is introduced, obtaining pages from memblock and
-> keeping track of all allocated ranges to set their pkey once it is
-> safe to do so.
+* Use case
 
-What makes setting a pkey on the memory "unsafe"? Is there something
-preventing just making access permissive during boot?
+When debugging and tracing complex programs with hundreds of threads, 16 bytes
+long thread names are not enough anymore. cmd_line can show a lot of
+characters, but it's not affected by pthread_setname_np() or
+prctl(PR_SET_NAME), so let's give the same love kthreads got with commit
+6b59808bfe48 ("workqueue: Show the latest workqueue name in 
+/proc/PID/{comm,stat,status}"). This patchset creates a new
+PR_{SET,GET}_EXT_NAME that supports 64 bytes long names.
+
+It also introduces a new function copy_task_comm() that ensures that the string
+is always NUL-terminated despite of mismatching sizes of buffers. We can't just
+use strscpy() because it proved to give some overhead [0] in tracing.
+
+* Patchset
+
+Patch 1 and 2 do some prep work in order to avoid buffer overflows around
+the kernel, now that current->comm is bigger. It also make sure that if
+the destination buffer is smaller than TASK_COMM_EXT_LEN, it will
+be NUL-terminated.
+
+Patch 3 adds a KUnit for the new function copy_task_comm()
+
+Patch 4 sets current->comm length to TASK_COMM_EXT_LEN and take care of
+making sure that current userspace APIs gets only TASK_COMM_LEN.
+
+Patch 5 creates new prctl() to set and get all the TASK_COMM_EXT_LEN bytes.
+
+Patch 6 adapts the existing selftest for this new interface.
+
+* Testing
+
+selftests/prctl/set-process-name.c survives this patchset, and it was extended
+to the new interface. KUnit test was modified to support copy_task_comm().
+
+I ran the same benchmark as at [0], and no significant change was found.
+
+* Changes
+
+Since v4:
+- Remove copy_task_comm() calls for structs other than struct task_struct
+- copy_task_comm(): Add checks for len > TASK_COMM_LEN and len < 0
+- Link to v4: https://patch.msgid.link/20260717-tonyk-long_name-v4-0-1fedfc870d21@igalia.com
+
+Since v3:
+ - Simplify Get rid of get_task_comm() commit
+ - Simplify copy_task_comm(): just do a memcpy + NUL char at the end
+ - Link to v3: https://patch.msgid.link/20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com
+
+Since v2:
+ - Add a custom function copy_task_comm() that uses memcpy when possible and
+ fallback to strscpy(). It always ensures that the string in NUL-terminated
+ - Add KUnit test for the new function
+ - Link to v2: https://patch.msgid.link/20260524-tonyk-long_name-v2-0-332f6bd041c4@igalia.com
+
+Since v1:
+ - Replace new strtostr() with strscpy()
+ - Don't replace memcpy in tools/
+ - Link to v1: https://patch.msgid.link/20260517-tonyk-long_name-v1-0-3c282eaa91e2@igalia.com
+
+[0] https://lore.kernel.org/lkml/20260526190625.3f4aca0a@gandalf.local.home/
+
+---
+André Almeida (6):
+      treewide: Get rid of get_task_comm()
+      treewide: Replace memcpy(..., current->comm) with copy_task_comm()
+      lib/string_kunit: Add test for copy_task_comm()
+      sched: Extend task command name with TASK_COMM_EXT_LEN
+      prctl: Add support for long user thread names
+      selftests: prctl: Add test for long thread names
+
+ drivers/connector/cn_proc.c                        |  2 +-
+ drivers/dma-buf/sw_sync.c                          |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c   |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c            |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c    |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c             |  4 +--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c       |  2 +-
+ drivers/gpu/drm/lima/lima_ctx.c                    |  2 +-
+ drivers/gpu/drm/panfrost/panfrost_gem.c            |  2 +-
+ drivers/gpu/drm/panthor/panthor_gem.c              |  2 +-
+ drivers/gpu/drm/panthor/panthor_sched.c            |  2 +-
+ drivers/gpu/drm/virtio/virtgpu_ioctl.c             |  2 +-
+ drivers/hwtracing/stm/core.c                       |  2 +-
+ drivers/tty/tty_audit.c                            |  2 +-
+ fs/binfmt_elf.c                                    |  2 +-
+ fs/binfmt_elf_fdpic.c                              |  2 +-
+ fs/proc/array.c                                    |  2 +-
+ include/linux/coredump.h                           |  2 +-
+ include/linux/sched.h                              | 33 +++++++++----------
+ include/linux/tracepoint.h                         |  4 +--
+ include/trace/events/block.h                       | 10 +++---
+ include/trace/events/coredump.h                    |  2 +-
+ include/trace/events/f2fs.h                        |  4 +--
+ include/trace/events/oom.h                         |  2 +-
+ include/trace/events/osnoise.h                     |  2 +-
+ include/trace/events/sched.h                       | 10 +++---
+ include/trace/events/signal.h                      |  2 +-
+ include/trace/events/task.h                        |  4 +--
+ include/uapi/linux/prctl.h                         |  3 ++
+ kernel/audit.c                                     |  6 ++--
+ kernel/auditsc.c                                   |  6 ++--
+ kernel/printk/printk.c                             |  2 +-
+ kernel/sys.c                                       | 23 ++++++++++---
+ lib/tests/string_kunit.c                           | 38 ++++++++++++++++++++++
+ net/bluetooth/hci_sock.c                           |  2 +-
+ net/netfilter/nf_tables_api.c                      |  4 ++-
+ security/integrity/integrity_audit.c               |  3 +-
+ security/ipe/audit.c                               |  3 +-
+ security/landlock/domain.c                         |  2 +-
+ security/lsm_audit.c                               |  7 ++--
+ tools/testing/selftests/prctl/set-process-name.c   | 37 +++++++++++++++++++++
+ 42 files changed, 173 insertions(+), 76 deletions(-)
+---
+base-commit: 73e3f0710014fe6d4ed98cfc02292f6121db7558
+change-id: 20260516-tonyk-long_name-b9f345aeb041
+
+Best regards,
+--  
+André Almeida <andrealmeid@igalia.com>
+
 
