@@ -4,105 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36F95C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C5F0C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 20:23:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B4766B0088; Thu, 27 Aug 2026 15:56:17 -0400 (EDT)
+	id 025036B0088; Thu, 27 Aug 2026 16:23:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28B706B008A; Thu, 27 Aug 2026 15:56:17 -0400 (EDT)
+	id F19006B008A; Thu, 27 Aug 2026 16:23:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A5686B008C; Thu, 27 Aug 2026 15:56:17 -0400 (EDT)
+	id E078F6B008C; Thu, 27 Aug 2026 16:23:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DB5C46B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:56:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7335B4018A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:56:16 +0000 (UTC)
-X-FDA: 85148105952.02.C906019
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B304B100007
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:56:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CqvpX0jc;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787860574;
-	b=7ktFA21/s7Ju2KS45OO7HYSwIEm8CU0Cy7AQhdiwjXoPzjiHrB6B3mqnng98olm55kuvpK
-	GCvhOfxE5VVw4rgXuI7vEAjsIzqU1xLDl2BT8qsk3iXVkNdEp1oUbL8f6v2Siv9b9Igrpm
-	wjsdrgSrll+HQj7wHp61PpLCfiBB2uc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CqvpX0jc;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id BBB486B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:23:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 487C14018F
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:23:09 +0000 (UTC)
+X-FDA: 85148173698.15.8BCDA6D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2A03A4000B
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:23:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XGxWQLRB;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787860574;
+	s=arc-20220608; t=1787862186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=yXmT+LEQ61WRjbUCLimpBHndS1SBsTfjBnnvx00VCQw=;
-	b=Duoh1EdS0GU5YcBbb5sZh6qW9Gmt/2vAAjWPxPAmjq4gePRi4cJ2+rlqRccyYpU+IW+4JJ
-	MTIDZhiwiszOQ3u3MOkRIYQJxTnWgh0xQHAg1EBCRz391GwuxQtMsf0fHUeBDomEPo3cXl
-	cwTaNroYCyDDqtWK8sSFvqE97yqHrfo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LjanLRpIWvJ0YaQezIW8S6gqVSS4etNpFvTBJ8O4/5w=;
+	b=YIAZe+A1NwDPWWXV7MWNsYsfdDuJPv5XY0rg5nxT6wX7vSFkET5Eia2tisy+9MAazuLoTb
+	7aREKcvcgGo2y12MetUBgHVTQUXusn0YCJBd0teo8+BYrgCGmxWDpAzKf+aIvjhKiDEiQ8
+	wE1gh3Me05rNK8mJ/oQouyjum2TvTp0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XGxWQLRB;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787862186;
+	b=U+Mk4hyMP8Clej2quqMXFkKGVdArqmaDwvsMax5YzvQ7lpECNk1OgHGJTnyYRkIRJUTGkG
+	7dzZBd1xqzRc/+4vIU4dm5SYbFkRdQcKsR+SXDqyqUI7l3JIVFsazN49C3wQ/in57aGREx
+	TFw7eldL5UJWBpCgffMbierr8hn9zq0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 307B4601F5;
-	Thu, 27 Aug 2026 19:56:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085971F000E9;
-	Thu, 27 Aug 2026 19:56:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DC8054118A;
+	Thu, 27 Aug 2026 20:23:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C30F1F000E9;
+	Thu, 27 Aug 2026 20:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787860573;
-	bh=yXmT+LEQ61WRjbUCLimpBHndS1SBsTfjBnnvx00VCQw=;
-	h=From:Date:Subject:To:Cc;
-	b=CqvpX0jc2vi3EeZtwyvsdALHmWqfFBu9TPA54ePXXCKBye6bDmz608MGBIBKYgAea
-	 De8XOGagcpUghO118Jj9V2yMEVxL8+IQ5ZNqxci8Nziv1q4a41XWqFgph53l6G1N7k
-	 fMJKr0xl78xlHmyChj/90LdR1VE6rY64PV9OpdDOFl6AJTPKVuNf7aIQaO6vtFXOaM
-	 thIj631uIBq4fE3s9yfK/y4uEylczFepyStGQZKY5ldBIW1rqYC+Rb8cl/GQjYodf7
-	 0CZTMe3mJskgA6MAxIbO5GlqZs4lMIjkoZV3lQs1jpszzFm05Q83jtbDzYMqpXlG8+
-	 ST1sDQ74gWVrA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 27 Aug 2026 20:55:57 +0100
-Subject: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
- mappings
+	s=k20260515; t=1787862184;
+	bh=LjanLRpIWvJ0YaQezIW8S6gqVSS4etNpFvTBJ8O4/5w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XGxWQLRBPbFyXyxR+HgbW8owHBHKpnIOupar9wq1mXEQWUONYBBEG8foUMl0e8A6s
+	 CIafrK93qKMBzvox5vqHxJtUSsQ/ROrT3Ja80Pk8N3+Z1tQnt3Rh3jZjNFEN+kF5A8
+	 4sLklsJl2vPKDji7w33lAWc9Dm/vXNDVOQVAp6pcmo64sfKOpGLXdsiIC4dNzFui6k
+	 bf8JEZFsGRL8mw8p8q/DhfioTXdyW9k+k9Pyi125DK8pMwx4Q+dOn7XpyFSTOgwJR2
+	 h/fgTa1dyAnJLPatj+i7d/FwKX1P6mtsfDbZHjGtAXPBxxuzx2Bfj5T3NM8vamYGWj
+	 w0PUO8NLzPt7g==
+Message-ID: <79aaca61-4e4d-4f1c-9492-41b00bf6ff04@kernel.org>
+Date: Thu, 27 Aug 2026 22:22:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSQqAMAxA0atI1ga04oBXERdVEw2UVlIcQLy7x
- eVb/P9AJBWK0GcPKJ0SJfiEMs9g3qxfCWVJBlOYpuhMi9ux0s4erXPhspMjDLqQRmSuTMVdzXP
- dQsp3JZb7Xw/j+36QQrp/agAAAA==
-X-Change-ID: 20260827-hugepfn-allowable-orders-ff323f85fc57
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Peter Xu <peterx@redhat.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Cedric Le Goater <clg@redhat.com>, Saravanan D <saravanand@crusoe.ai>, 
- stable@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5776; i=ljs@kernel.org;
- h=from:subject:message-id; bh=h4rmM/F/oNz34A4BdZhkckrXP4Zm0dW0AF2/rRuAMLo=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLImTAuz/G8TaGmjtc9Fcv2ptndfEyxcpJdNqlnWvOqg4
- E6Lq63rO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCR8+WMDK9q7bq0zwk+mLRt
- Scm07w4XfIN0g6Lru75HX1r/bFFhby0jw65tKb5bfFQO3lnZZvpMdyfz532iBSL+WdrhHqc2T3q
- awA8A
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 15/18] mm/huge_memory: lift order-0 restriction for
+ swapcache split
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Shivam Kalra <shivamkalra98@zohomail.in>
+References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-15-9b43f5163238@tencent.com>
+ <ba386e23-1b05-4897-98b0-ced78df6dc25@kernel.org>
+ <CAMgjq7Dg5pf_MR=C_KqixYmyfXyD3UpKoR_6aO=aBpZsY4yJEA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAMgjq7Dg5pf_MR=C_KqixYmyfXyD3UpKoR_6aO=aBpZsY4yJEA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: stw87ssqo94wbmrh1e546rjw4efq8w7n
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2A03A4000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B304B100007
-X-Stat-Signature: 1umc3oy53jd9ri3zm6fcegcin4kd6uj9
-X-HE-Tag: 1787860574-959263
-X-HE-Meta: U2FsdGVkX196chwmnLUl8HkVIvezV1CS/SFSC6S/OXqwOgMSDuxoBq1+tK7coIHrutV4zb/vB1E58oXpdZac4sYdTLRW0B5F7HfDPPSaVxR6svQpBDeSg2LoXXi3PGYHeYxAsFFPUTNS5hzSnxGEcc577IW2R51Q9GkRMTknRYMbTcSPfOKORr3LWKHgo0l14/+tiOvjYXWEY7NMpjFyZfP0l/6qz82m+94zIBJlVcqo4y/fcRkDMNUSt6NepW4E5k7fDWxt7QrCLt30Z7o+w/cfwfur771LxOsfhAqtbSX6yr+dT1pclkh1nZd47lanJE1VUVdKxtoOrz7yikw9aaGjbVeUpiYMrECbRK3MTSVNoN1t/WK31UI0RtdtSTA5e7WoiH21J+ToIJ/geeCCreR77EndVoZF0ikbwKplgpcWKHLGqVUJSE6Vpti+nmoPj+YnZnQa9Xm368YUpyKqL8u3ufUZwqSVOsXf9lsgPJvX6v1ftfxRRTMySz+PYGKOb7jA9L3MU78EhRqrbkvAPaVCmjDUn9a669nB7/CiS6OiRxWOCFWEX8TLk491eVZE1iUqI1BVlcnXnEbFRJaXLeYjfWyBDPHDMT8jWZtKbSajmn+QHLEHZ0dhjY/asRiU6Uz10uP20l18T4Tbt8gjiqeAFpUK9wFIJT8IusvCzmWdR3FDg42sw87maCiRIvWj6M5TthX7DdLU5qMDxNphN/1wqbIeCY/dW6bOEDFwzQw8w17EEhjJWTEblqz+R5wo+vIoR8PwOidCYf5SDgxcf11wKoYDjiZrIb2YQStJAiST1TYU3VUdKI5gzP5Ab92KeaDkgQn0Bpg5/qVArfCDXWZ7A7B3qrwBnPfz5ocQ0igMGuYXdMHs+uekJgYbVY6ff9ymaZMcBjzgsbKUedohx/y35IUnEopvqNt4koRVc6TdupXXj7K03qIgY64j4g+lFwa5XyeUkvJU3OmIFAX
- 7YsSTUTj
- 6S/StDcyl5OS4CN23rESbgHc7h2/gN/VZr7SWPx88fNuS1eKw8KuOGGp48lQmGMU7DZiXOpNpONTBrpgzAIsrAhCqyYbrOrp15/0f4VjZnXk+u8FJjsHkduHcJDsPSUv6bZQLPg5khh0YuTQbU5UV5xNllLkBzV3THB2RdDgS9YH6wtVztk5EbIk5ECAQYF2xBZtLf94eFRWVXtIsWcKS1UfNT8QbNreMyinQDIXpEHe3XJNBoaXjkkMvzSjb2sN3KZX22NZlWO4f6hzsVrUgA+NcB7sM97r8OChE9KYL6zOEXco0k3b5Rs+TBDsbIgp4B5iO
+X-HE-Tag: 1787862186-316030
+X-HE-Meta: U2FsdGVkX19Cygk1Rim32NV2KnsZxPbcIG5GptUJReWgvB/KrLdgScDlStKGZo1qvbRxPhUv3ZolRlZ8FDrQvUzovyA/dSYBpeFi5e/w/c2MqUEAxrlyHVgWVG33cztnBsyAUvggCC3IdkIkqFCi/USG2ktoco/3vXiPJroD9uq2UKEuRLs6gAqmOlwr9qpVv1+V0rtLbIjewkmUVfgLkACaauV5WF2v4hjJBLVd5oueHeKQzPxfzodwDZQj36nVlZ4NQxUn0NMw2+OpJH9H0+UUyF5kKLTgU/6xl1wVNupW/P2A1r9tQ1k/lPy1iVCSDhfCSQFB3MZ9xoXSvQulGmeFixHZDWtxL8mNuh+iMorqVWiPJJZjOzVldTtrvVi7Lv4pMplZa8yet3YoR4TVeyrPwjHZ+gMgYaosmSoyATDj3t5BRZmTyYb7ji/hGuXlfIifBFs0L4k0W1bFqtxfNk0TSuaWoCPKY6psWC206xBP49PZChjtaAWZB5QUyRCOUghK+kLwVZbao7MK6p7GmLJk8WEfwcyJFHDNwh9hlC8t21fBdhjEDIwZ65ooeGh48N1TCX2vwntFbzg9JW/4nWJdZ4NVZ6kwzKVeCOu1RrEgnRVMNrWOo+RvfCxG7Gn35jC8Q3WLDESmTemSuPZ251RM1oJyZObJR7CBej7MjiNW8N2SHRXw17FxJCWl65e0UaiczTKL4vzfFsUWJJHP2ycLonL53ny793qnA8y/QfuOnDpIF+ZP8FFDnQVBZdQy6NExFGDEZWB0lb+eUN3e5ey3WsJvYFACMjI2grz4enueiM2PFnBkXYMauQ7D05LgT5qZtH/Yzsz78wiMhPP456qJzW1RlgUgQBiEsxp3Q7nbzk120bzR3ijX7HA710UQvY5TKcecYnkTbJlfQ4NWa2RXYXny6rhNsN18rXIRNoOitDFlc/CUDxM7yWBaWabnTj+myLINtF3NrpRg/Bp
+ 3UXN4dJx
+ 8HUbcKHZUIKwhj92fq3Cr1lCddTI5CL2Yz4Cldhrq9aI+bq6PRA4Wnjq1vojKXOekWVWAPcxK5BImRLnDPp5iBQ6JyPtXnpkfgROOUOq+L3p1X+2mYLrCm744iXsyE25oA171mL5ozN+pbpN0yI8RRgePO0PXTBccKyuOy39JvPDNpM7njcFtxGNjyhqAmCjafGkrw/3T6i+ew5plOxm3o55TyvPsFQE1zC2xfO9KGAw53B6nYRRo21w/aVyS9mdQc1hg6/bGbacN7nRYkeW7vsrldYfEvq+rMi+4ljFj+QTdCrzaxNqM89UV3v8hgJTFv4vdipuqUcq3h1+Z/VVmnnSoE5sgoDiKmTl3/5JZ7QI3eZzb7RSMV1LGfNgH6R9KxhEMkt+3P40vRGzsXOgG8/Bkzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,172 +151,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The sysfs THP tuneables at /sys/kernel/mm/transparent_huge_pages/ rather
-confusingly only control the behaviour of THP in some instances.
+On 8/27/26 19:48, Kairui Song wrote:
+> On Fri, Aug 28, 2026 at 12:51 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> The restriction that swapcache folios can only be uniformly split to
+>>> order 0 dates back to when the swap cache was managed via address_space
+>>> mapping (swap_address_space).  The old split loop only created order-0
+>>> sub-folios with a fixed stride, so non-uniform split and non-zero order
+>>> were rightfully blocked.
+>>>
+>>> After the swap cache switched to swap table under a cluster lock,
+>>> __swap_cache_replace_folio already gained the ability to replace any
+>>> number of entries for any sub-folio size in one cluster, and the old
+>>> swap_address_space locking and limit was removed. The restriction
+>>> became obsolete but persisted through multiple refactorings.
+>>>
+>>> Drop it now: swapcache folios can be split to any supported order with
+>>> either uniform or non-uniform split, except order-1 which is not
+>>> supported for anon folios. Mappingless swap cache folios could be either
+>>> anon or shmem, so for now we just simply forbid order-1 for all swapcache.
+>>>
+>>> Acked-by: Zi Yan <ziy@nvidia.com>
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> ---
+>>
+>> In contrast to the other cleanup patches, this patch changes behavior.
+>>
+>> I would suggest to send all cleanups first, and send this out separately, such
+>> that it gets proper attention and doesn't get buried in a sequence of
+>> harmlessly-looking cleanups :)
+> 
+> No problem, send this later then :)
 
-They are not applicable to MADV_COLLAPSE operations, nor to DAX mappings.
+On second thought, the
 
-Long-term, THP is predicated upon compaction being able to obtain large
-folios to populate THP ranges.
+"mm/huge_memory: allow splitting mappingless swap cache folios"
 
-However, vm_normal_folio() returns NULL for PFN map mappings, thus their
-reference count is maintained by the driver, not core mm.
+is already such a change. And I guess only having both these behavior-changing
+things separated from the cleanups might be harder, right?
 
-As a consequence, the folios are not subject to reclaim nor compaction, so
-are not truly part of the THP mechanism at all.
-
-However, since commit 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-introduced the ability to establish huge PFN maps, they have been subject
-to THP tuneables.
-
-This is incorrect - if a huge PFN map is available (defined by
-vma->vm_ops->huge_fault being non-NULL for a VMA_PFNMAP_BIT VMA), then it
-should be mapped huge upon fault-in.
-
-Correct this by explicitly checking for this while ensuring that smaps
-continues to accurately report THPeligible statistics.
-
-While here, abstract the entire file-backed THP check in
-vma_can_map_huge_file(), with sensible separation of logic into helper
-functions.
-
-Note that drm_gem_shmem_mmap() and panthor_gem_mmap() establish huge PFN
-maps of shmem folios, however they are marked unevictable in
-drm_gem_get_pages(), and in any case would fail the reference check in
-__remove_mapping() even if they weren't.
-
-Failing to map huge PFN maps has resulted in significant real-world
-performance degradation, see links for details.
-
-Reported-by: Cedric Le Goater <clg@redhat.com>
-Closes: https://lore.kernel.org/linux-mm/20260805055544.1568534-1-clg@redhat.com/
-Reported-by: Saravanan D <saravanand@crusoe.ai>
-Closes: https://lore.kernel.org/linux-mm/20260821070520.25759-1-saravanand@crusoe.ai/
-Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- mm/huge_memory.c | 86 +++++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 64 insertions(+), 22 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index afbb5974bd22..4bf7b670586d 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -92,7 +92,7 @@ unsigned long huge_anon_orders_madvise __read_mostly;
- unsigned long huge_anon_orders_inherit __read_mostly;
- static bool anon_orders_configured __initdata;
- 
--static inline bool file_thp_enabled(struct vm_area_struct *vma)
-+static inline bool file_thp_enabled(const struct vm_area_struct *vma)
- {
- 	struct inode *inode;
- 
-@@ -118,6 +118,67 @@ static bool vma_is_special_huge(const struct vm_area_struct *vma)
- 	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
- }
- 
-+static bool vma_bypass_thp_tuneables_file(const struct vm_area_struct *vma,
-+		enum tva_type type)
-+{
-+	const bool has_huge_fault = vma->vm_ops->huge_fault;
-+
-+	/* MADV_COLLAPSE ignores tuneables. */
-+	if (type == TVA_FORCED_COLLAPSE)
-+		return true;
-+	/* Huge PFN mappings are uncompactable so the policy doesn't apply. */
-+	if (vma_test(vma, VMA_PFNMAP_BIT) && has_huge_fault)
-+		return true;
-+	return false;
-+}
-+
-+static bool vma_thp_tuneables_allow_file(vm_flags_t vm_flags)
-+{
-+	/* THP=always? */
-+	if (hugepage_global_always())
-+		return true;
-+	/* THP=madvise and marked MADV_HUGEPAGE? */
-+	if (hugepage_global_enabled() && (vm_flags & VM_HUGEPAGE))
-+		return true;
-+	return false;
-+}
-+
-+static bool vma_check_thp_tuneables_file(const struct vm_area_struct *vma,
-+		vm_flags_t vm_flags, enum tva_type type)
-+{
-+	return vma_bypass_thp_tuneables_file(vma, type) ||
-+		vma_thp_tuneables_allow_file(vm_flags);
-+}
-+
-+static bool vma_can_map_huge_file(const struct vm_area_struct *vma,
-+		vm_flags_t vm_flags, enum tva_type type)
-+{
-+	const bool has_huge_fault = vma->vm_ops->huge_fault;
-+
-+	/*
-+	 * Enforce THP collapse requirements as necessary. Anonymous vmas
-+	 * were already handled in thp_vma_allowable_orders().
-+	 */
-+	if (!vma_check_thp_tuneables_file(vma, vm_flags, type))
-+		return false;
-+
-+	switch (type) {
-+	case TVA_PAGEFAULT:
-+		/*
-+		 * Trust that ->huge_fault() handlers know what they are doing
-+		 * in fault path.
-+		 */
-+		return has_huge_fault;
-+	case TVA_SMAPS:
-+		if (has_huge_fault)
-+			return true;
-+		fallthrough;
-+	default:
-+		/* Only regular file is valid in collapse path. */
-+		return file_thp_enabled(vma);
-+	}
-+}
-+
- unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 					 vm_flags_t vm_flags,
- 					 enum tva_type type,
-@@ -190,27 +251,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 						   vma, vma_start_pgoff(vma), 0,
- 						   forced_collapse);
- 
--	if (!vma_is_anonymous(vma)) {
--		/*
--		 * Enforce THP collapse requirements as necessary. Anonymous vmas
--		 * were already handled in thp_vma_allowable_orders().
--		 */
--		if (!forced_collapse &&
--		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
--						    !hugepage_global_always())))
--			return 0;
--
--		/*
--		 * Trust that ->huge_fault() handlers know what they are doing
--		 * in fault path.
--		 */
--		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
--			return orders;
--		/* Only regular file is valid in collapse path */
--		if (((!in_pf || smaps)) && file_thp_enabled(vma))
--			return orders;
--		return 0;
--	}
-+	if (!vma_is_anonymous(vma))
-+		return vma_can_map_huge_file(vma, vm_flags, type) ? orders : 0;
- 
- 	if (vma_is_temporary_stack(vma))
- 		return 0;
-
----
-base-commit: 234e77148199ae43b83a0a03a3f481e03460a286
-change-id: 20260827-hugepfn-allowable-orders-ff323f85fc57
-
-Best regards,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Cheers,
 
+David
 
