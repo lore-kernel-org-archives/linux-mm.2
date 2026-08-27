@@ -4,96 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B76A8C61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:19:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 625BBC61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:20:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE41C6B0098; Thu, 27 Aug 2026 05:19:15 -0400 (EDT)
+	id 84EB76B0088; Thu, 27 Aug 2026 05:20:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABBF86B0099; Thu, 27 Aug 2026 05:19:15 -0400 (EDT)
+	id 825FD6B0092; Thu, 27 Aug 2026 05:20:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9840A6B009B; Thu, 27 Aug 2026 05:19:15 -0400 (EDT)
+	id 73C766B0099; Thu, 27 Aug 2026 05:20:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 736A86B0098
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:19:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC39240385
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:19:14 +0000 (UTC)
-X-FDA: 85146500628.28.B6ACB32
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E7E74140012
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:19:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bS7SQdIu;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FAE36B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:20:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D457EA0175
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:20:43 +0000 (UTC)
+X-FDA: 85146504366.18.DBE6B45
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 28A4940004
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:20:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AewH8qVo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787822353;
+	s=arc-20220608; t=1787822442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LixIDSU3TdZaT9dJGoqjplgLV7aXH03HF3B7mcClcig=;
-	b=cr659rvnRlqsu9t2bJcmG5bghAphzQtS6m0qv2cHirvSnURGJDBehzDiaP9QXAXZyQ1LtB
-	f6piTn4Ac5T3wb7BIOuw2/Fvn5bNXbJOccmwB7chYzTHXbt+37ugSAZDvgYsRvU1uUiIAD
-	QSf3SSEFe6Hzr1X298yPDQ5vmkC9ckM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787822353;
-	b=SU3KvuMh37HZYXrAguZJKN4Bq5QpgKjh6INN0iX8q5hGapFY53OB6V4nFYwEk1GMmi2y0p
-	iYW+Ale8YYVcTck++qfIZer555oIuTH5eyjC20C5QFJL3FHVxe3PRhPFoi/TyQ2dA3/10I
-	43yhsKe+7Jqq0yLuUzYzTaI4i7BcT9g=
+	bh=MQ5yrSer67OLzLd9lz4RUmRIM3BfwQlVemrGrqjo/J0=;
+	b=hFuhexi8GqCb8ZBG7tTocFnmBemNTqVMgT+Ayc9ZCAbH9uWmL5VKGKMDefCkomZzar9wnj
+	HBKsP/6Rv37I8kyxSoMcTyOf164WeVwMPQ7SLWTNHXnag5w1CZ8nnBol6PslmB08Hj35K/
+	VcPACm+BlZv14GPNJa9f8gXNZDXXPZE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bS7SQdIu;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AewH8qVo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787822442;
+	b=8oUfg3siSJ9hALoilRyvk3Q95+9tqwU0W/P73wMbHYU+3BkY+OIrRW6l6I70Fhg/QzLYpN
+	ExQjdTpfT+QKGSvvysthuRM+GpzU1rs2NLqvYIZR/KUe9OGjpAxyrg1FNdJDMFD9wtVZQO
+	c6jDzjjCrgyjD3QXULGeTbwKRklEGxs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1D20140A0C;
-	Thu, 27 Aug 2026 09:19:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559941F000E9;
-	Thu, 27 Aug 2026 09:19:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 48A58600D3;
+	Thu, 27 Aug 2026 09:20:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2ED11F000E9;
+	Thu, 27 Aug 2026 09:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787822352;
-	bh=LixIDSU3TdZaT9dJGoqjplgLV7aXH03HF3B7mcClcig=;
+	s=k20260515; t=1787822441;
+	bh=MQ5yrSer67OLzLd9lz4RUmRIM3BfwQlVemrGrqjo/J0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bS7SQdIuYyCMsB7a9rjTxHKZatdkuSikajfF/3NBtzQYqfjLjUeDr9272DHcot0XA
-	 W7uu5XJ8joem5jK0LM2pMGVV2U9pFfsmTYUq/Zurfkm7vLcOExivNA7SqfKg0OadbZ
-	 cmxCW6KRH09DsS9o6GS9zVE2pyPEFhPwG3ZwAXNwJe+4WNhIKsjMhvLUTUHHASXRrX
-	 GtDv7Tn1kx3Ha1nn3H41pIqLPjr+eE0fBZeSeJ6TdGZSn19iB50n3DFLosXwKECNnb
-	 fEETV8/HwlZn+PTIOsAF+Q6pTt/OKDXUSEUlE7fEiGchsqitgVBm426TwMvR2f5Ahu
-	 GjjQpnnms7Yzg==
-Message-ID: <01aae5b4-ee10-4601-8ddd-c9428e11d651@kernel.org>
-Date: Thu, 27 Aug 2026 11:19:01 +0200
+	b=AewH8qVoW428CLvXuvn03nnnNNP+TgdWg5uRUNFsxqCL+qVKeAjZDW+Tmxv3tAVdc
+	 7UIVsQWQbyBgUKhK2nFQti2iPxw0BTpPo1vq8iLuV88Lgd4H/PB1EF6MYmiaihBni6
+	 G5F6gOD/c/IuPNuv7PXCBiTHbx44v1IRNf32u/Vb0ErvNQVonwYUp8zYU+tDAzZUdx
+	 wy/6HEE8/4+JjE3saEFPne1x2ZAx9PbQZVIk5BRuTTtwzFXfGeJJJXlXU5XunauPqm
+	 Sxc89Jf7AuhJN9ZCDiVpmwkcHiZr7L6Sjj+HRwJWxkrQ4nRUqxV3uAdsRHdH+ppbBk
+	 YaSl01yghZ8oQ==
+Message-ID: <1dc8f7d5-c923-410a-a262-dc21c9e65420@kernel.org>
+Date: Thu, 27 Aug 2026 11:20:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6] userfaultfd: decouple fault reason from VMA flags
-To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH alt 13/25] mm/fbatch: no lru_add_drain() to
+ collect_longterm_unpinnable_folios()
+To: Hugh Dickins <hughd@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Ackerley Tng <ackerleytng@google.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
  Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
- Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
- Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt
- <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
- <5bb86e34-6196-4b50-b553-be2ff7c1fa32@kernel.org>
- <ao_sCh5zP0IC9H2S@kernel.org>
- <e8aaddde-0a07-4197-9874-5ca0ea8af43f@kernel.org>
- <ao_-uZrrsVX9lzbz@kernel.org>
+ Binbin Wu <binbin.wu@linux.intel.com>, Christian Brauner
+ <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Christoph Lameter <cl@gentwo.org>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, JP Kobryn <jp.kobryn@linux.dev>,
+ Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Mel Gorman <mgorman@techsingularity.net>, Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Rik van Riel <riel@surriel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
+ <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>,
+ Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
+ <fbf3fa74-c646-8855-17e4-e8b35dfd9c14@google.com>
+ <333bb765-a36d-e07e-d3c4-5ea2f1cadfcb@google.com>
+ <5d42fbfa-1cc3-4161-8ba0-7318267576a1@kernel.org>
+ <e10bc806-f995-e48d-a24e-8872f0a71689@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,17 +147,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ao_-uZrrsVX9lzbz@kernel.org>
+In-Reply-To: <e10bc806-f995-e48d-a24e-8872f0a71689@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E7E74140012
-X-Stat-Signature: 9kcmhidqh3q8dfzaum8at7u9y6tknu66
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 28A4940004
+X-Stat-Signature: ge41eyafsz7maksj9i3jhs9tjmrb8boy
 X-Rspam-User: 
-X-HE-Tag: 1787822352-731775
-X-HE-Meta: U2FsdGVkX19KmMQqDlmupgh7GBzDN50arDtnOtTOs7enUscPxdlPLsC9GDPWKGfnEXPiv6LHl2NsOxNzxwXexvfJ0yqJNPWOn82zeMIkhLsznf+ejcyXTE9DvhYCNITodPypIa4go4nxOnH0gd9QSiXa8bF+GtX50XfKtG+rskiBpGFTsUiVXL+vECgPJrNvlBhpEQ6R6MJ2mpz9wHQV3ChVaCWnyHkowyqs66u6JBJS4GxvHZcvBj0M5WI24A6voEi2odb8ava41gAW1Kpi6O5T7H5wxpYmp6tivjULN55x0gRaEPrgIQO/InXyp38RIUSLGbWoi8V+jmW4fo7dh0TloeoL1tBH7I/dNil6eh2uMLhKbQ/hPXGOjYUv3mUU9fcF7XZWBeqxTASC+jIwkc1pHErz/xRtmG1oRKSSF0XTMugt92l9L7VbUR6yrj8X7JqOBhyeMGtQfljWCWRCsVgaVTX4dnzueyLrPTyEk6lPHfGjJeSmNmi/OTO0JBjcpwIaMeFwaNozeZLLXFNA3yTnWpusJSJH8rgqljXfCuRVh9Vt4gMFKka2bfveo9jLB0bdhFInAdVRZUB8qxGtu4c1MeTSB45Gb28f1vBt2kKjeyzkzMScYS/tfC2WbP22EunBnVojS+iPUH6TS+HaP9ZAKyPfkvU2HKsT8YmhHFtHeJZb3qVDU3csYuO4sskkDmmOE6eqSFPJ4jOUSGpduT3UqPf/T1QjstQWmFjJe+Gerx+InvfzLIEJlviFQJTJuPaw6MdDuuEi8RI+EJIb1dqaagS7p0d//Ob9YgKtVADaD2st/sS+CgWHkLkrOrRtnJiib2/qk9DV6rA96ocBUCX3N7s/0Nah+ohJ+t/vdA3OMNDqQkeVLaJMfFOdsQYTTCkVIdpcGY+5SmxLW6BrcQg5dzTrSEMIAK6L8LoD75jJrD1ujzpMe7w3xKdTJFKUXPdXZRvs24ZmXWxXGB9
- gHTVQaM/
- 38w7ACXZdt1C8Yp7TFn4GzMNrqiWhJlpEcCJENg8V7vSW7g/IHQPl839Cnvh4wGrVjppcA2wUfGRJuyc1pGvPW2gOuJQ8rTz0PmBCdGZ43psZ0w7oqDRYq9M9yEu8MEIXzFIfpYJVJEtBykfecSfQXPRAZ/3FJd4uNwHXQx3ReWQ5Dh9EdnpdLL+v9QvJzlqvvb6GFFTqhcNZnI8Kgu+JyHvQ7Qp5NkNIcBN5gWDOGS7mE6K0zsNN9uCQjq8D5nIzOVkC
+X-HE-Tag: 1787822442-440985
+X-HE-Meta: U2FsdGVkX195sCZf/3OjiojInAV6PgGJI9xgAMdsiwwTrrPB1cSvDfFR4M3APm6h0Yy53ETDWIm/6rBckAzR5F8+0V621HM2zyBgfrQsFLm/gBdpfpY2uVgB9p2ksvljZEok/PQmuIpwBIpbjcvt/xgssCqyhpTu/Kr8zyQOoUN6n8kUt1j84G0Y/lTAdvYEDFOyAL9ReO0KaYULIV/vikdQ3xviJHxgGXXDuwXvNFCqqtO45gOkgx6OvD3CGrd5RyVqpwLEwNwR9z/T9pl5uL/hIMaec7vGv5RWkdDrMqe5f6ITbi7tNMD3Wrn7TPcFOQTl1ff/Qo58qSB7jzdXwrfqCcmqRyDyesBaSP6m7gwPFbe69i9bzVIcFO9WG+8U9JdrXU/ck4tfbMJHNDAjOJHi3HmPYvh53XEw3T8mceTeqUMTg+d/isSXQP28wkRewTHNMEIEt2wcNy0WXzG3Cxb70M2s4Uymtw3UPBOsEHvaJxEc/Iw/dCyxzWUAQeVNYVLTLuiW6sGYlBZ8eTYX5AV3rREuN9WqGqtCc5L0ZKvYjy2qc0FHf3tG3RGYwxsSz3EFOhXBCopiy+HUdhmZ7K4Ep0nKmFbb68VpeRjxNmG8ahuQfN79ghbjJwEb+km2MLKXqUMnA/GgYIou/mm5/xE+mD9VR0xgrK7WPHVm5PeN/0tyqZCZl0FzGlHDHAbdzY9nU6m9qpr12aYeS+c/P9UuGbzoI//hhjLZ/oqnaTBVqv+HilYRb0lEoDSIWsbi83zUAytHHqBW4VQp/Xr4JiyfgqVqngSRE0up+jXt5WVNQiK8Hex5qJGY5Ae5w/beDIu2QeV0vUF6yTp/qgXxuDeueyfvy4pHLeSfEA9MMwvFnRzr5vQtXPe010PEAHjNGb5pyKFHzC29uUErEoLSFvRKfbfeIN6G8wAAY8qmjQxWnsQTrlOn31fS2wpVscXZye96xs5uWR0uf5tatpN
+ Xe4pscCC
+ 3xtdGCFtbH1Eda/ZVHW2jA5ZUM3u00ibzWcIhTJwDUkoi4YDH1EjZaJGgSlrz2NPzTZT4rytbtJZGR2TsuL9AS/nyPOUSEgTFrAXB5TZBYdqo9R+akxpCY/IL+eL9Qh4uKnFdICkwnxSz8crBAGWaqCmL9TGNC8917mTVimf/64XJYU2c6yYvzj4unAeYodc/lS6dd21pcDbxK1qoZ/gj9GTdKW4UnPhSexcOlL44PXAnfaKyPsUuv5xrOSBvL+llQ7KsDVL243pnB7tClg0X8Mr2Z4z7L9eoMWMdwz43+gqZ0USbe13sDrTX45p+fpzldq6TNmTPP22WUVaRcA3YmzjRSVcRrk9mVfQSs4j2ylj++XuS6sZ5igNpEDIsn31CekJ6wqyDcAfHmAdbFRtYLfjpbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,48 +165,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/27/26 11:09, Mike Rapoport wrote:
-> On Thu, Aug 27, 2026 at 10:10:24AM +0200, David Hildenbrand (Arm) wrote:
->> On 8/27/26 09:49, Mike Rapoport wrote:
+On 8/27/26 11:16, Hugh Dickins wrote:
+> On Mon, 24 Aug 2026, David Hildenbrand (Arm) wrote:
+>> On 8/24/26 16:55, Hugh Dickins wrote:
+>>> collect_longterm_unpinnable_folios() has no use for lru_add_drain() nor
+>>> lru_add_drain_all(), now that the per-cpu fbatch references are gone.
+>>> So remove the recently added lru_cache_drain_for_folio().
 >>>
->>> userfault_reason sounds better to me.
->>>
->>> It describes what kind of user fault we are handling and the 'fd' part has
->>> nothing to do with it. 
->>> We do use uffd as a short name for the subsystem, but still most if not all
->>> userfaultfd "external" APIs use userfault_ prefix.
->>>
->>> uf_ was an attempt to make it wee shorter :)
+>>> Signed-off-by: Hugh Dickins <hughd@google.com>
+>>> ---
+>>> Alternate version for use once David Hildenbrand's two commits
+>>> here have been pulled from mm.git into linux.git for 7.3-rc1.
 >>
->> Yeah, I got that; while uffd is a known acronym, the uf_ not so much (and also I
->> wouldn't suggest it to become a thing, lol :) )
->>
->> I've been wondering for a while whether it really should be called
->>
->> 	handle_userfault()
->>
->> And not instead
->>
->> 	handle_userfaultfd()
+>> For 7.4 we expect another user of the helper in KVM guest_memfd code (the
+>> primary reason why we introduce the helper), so depending on when this series is
+>> ready it will just remove that user as well, or we'll need some coordination
+>> between trees.
 > 
-> The 'fd' part here sounds really weird :)
->  
->> Or maybe even better
->>
->> 	handle_uffd_fault()
-> 
-> That's somehow tautological, but maybe using uffd_ as prefix would make it
-> a "subsystem namespace", so tautology won't be as blunt:
-> 
-> 	uffd_handle_fault()
->  
->> And then have
->>
->> 	uffd_fault_reason
-> 
-> Could work, yes. No strong feelings between this one and userfault_reason.
+> Yes, I could supply an alternate alternate version, providing an empty
+> stub for lru_cache_drain_for_folio(), so Ackerley's and my series can
+> proceed (or not) independently. Later. But at present your patch or
+> patches seem to be in both mm.git and Ackerley's series (17/46),
+> but not yet in Linus's tree.
 
-I lean towards just calling stuff uffd consistently might be cleanest.
+They are in mm-stable, so they should go upstream this week. Anyhow, that's all
+stuff that's easily resolved later.
 
 -- 
 Cheers,
