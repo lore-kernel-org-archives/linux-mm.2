@@ -4,96 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9519C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:11:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7035BC61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:11:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9E9D6B0099; Thu, 27 Aug 2026 15:11:06 -0400 (EDT)
+	id 793816B009B; Thu, 27 Aug 2026 15:11:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A75DB6B009B; Thu, 27 Aug 2026 15:11:06 -0400 (EDT)
+	id 7695A6B009D; Thu, 27 Aug 2026 15:11:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98BEF6B009D; Thu, 27 Aug 2026 15:11:06 -0400 (EDT)
+	id 67FB96B009E; Thu, 27 Aug 2026 15:11:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76F906B0099
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:11:06 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 4435E6B009B
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:11:21 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07CF7A2E79
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:11:06 +0000 (UTC)
-X-FDA: 85147992132.25.7517E98
-Received: from lobo.ruivo.org (lobo.ruivo.org [173.14.175.98])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0161914000A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:11:03 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ruivo.org header.s=mail header.b=gnaQUmfT;
-	dkim=pass header.d=ruivo.org header.s=mail header.b=LUkbk2eV;
-	spf=pass (imf23.hostedemail.com: domain of aris@ruivo.org designates 173.14.175.98 as permitted sender) smtp.mailfrom=aris@ruivo.org;
-	dmarc=pass (policy=reject) header.from=ruivo.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D16E8140195
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:11:20 +0000 (UTC)
+X-FDA: 85147992720.25.84CB38F
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 605914000A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:11:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gyBqQhQW;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787857864;
+	s=arc-20220608; t=1787857879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=elmByU+1ierFwo9YCiA5YorOkefa7BWeb/5m4YD73uE=;
-	b=b/zBIk70TUYelyp3NEQLA01izFiT7fuI8Q91INi4XiemQ+PKTmjsfzpHuPp3rrXk93uncX
-	myEpwitGM1T2ib6bAG/FkIOiQ9TybDg97lV3cuzVzZncVmwIt80I4ghreFJ0KJXzlgrjlm
-	xO48ptr8VQ3jHp2Qk5BvlRRQolqGztg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787857864;
-	b=HFtfNFwxVRjaGJF/WlP4AZIIKDYx29nCZTzcky7xXrAQJhBly+Zdwb/5sKi5AMwNvyEc1s
-	B6dxU9ldRIzG3yguKwLLQWXh6ao4vXuoLhlxCtqtCfmpZtKuudZdrfgDldONTPUdBSo8SW
-	SWQ2HVLnNPAAO60qlRBG2u/LEC1+NTU=
+	bh=91R3l1V/uOl03V126v1cFNRh0hJ1Q8Z9vQ2ulIXNDfU=;
+	b=YkiOevrhJXDBq3jdYq898TOtGTMnmCrCN0ehdmoW+nprbYIhSbKeY5psXFe3oAbvgwhDdx
+	YlF0tFRfiHTfHGTr6U5EwdtFQZdnWwgH1j0kgKUcEFm4GAhqJaeCBtX91ctzfQz/mJixnI
+	NRLEa8KUrgI0an451mCIJVV2Mrdt2y0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ruivo.org header.s=mail header.b=gnaQUmfT;
-	dkim=pass header.d=ruivo.org header.s=mail header.b=LUkbk2eV;
-	spf=pass (imf23.hostedemail.com: domain of aris@ruivo.org designates 173.14.175.98 as permitted sender) smtp.mailfrom=aris@ruivo.org;
-	dmarc=pass (policy=reject) header.from=ruivo.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruivo.org; s=mail;
-	t=1787857863; bh=6XzRGsssykdC7xrSnl8vFhrBjk3esfMCNdCea5J3lxk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gnaQUmfTdMHt8yPtAF9cPamAfg24p5w1chfcfyd44Pw7URTbq/GjNG9Wgltmucjvm
-	 1wW6Vdtyj4e98jsTtTFBPz+ikeKGbLX4sVgVt29dl0EKJ7+yaFjXN7WcNBR2yx5CNI
-	 lFD/u7EeAsBpu1pH6F+YOXpKpMtulE9IOW/FHbW8=
-Received: by lobo.ruivo.org (Postfix, from userid 1011)
-	id 1E518531ED; Thu, 27 Aug 2026 15:11:02 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruivo.org; s=mail;
-	t=1787857842; bh=6XzRGsssykdC7xrSnl8vFhrBjk3esfMCNdCea5J3lxk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LUkbk2eVqQlyNMLc39buVLL/19t1CEGVWjJKxtZCDFNtmyTME+GjJk/b5ncDn6IHZ
-	 iqE5oXnmlErcjQHsXaxOqK2xVvG0lIFs+32dstCe9BeRcUlJGcStpCFNLPtrTmSv5m
-	 7qnTc4p566JoAnAlCHpiqydIgNOc4QxMKku1FlkM=
-Received: from jake.ruivo.org (bob.qemu.ruivo [192.168.72.19])
-	by lobo.ruivo.org (Postfix) with ESMTPSA id 4E9F552609;
-	Thu, 27 Aug 2026 15:10:42 -0400 (EDT)
-Received: by jake.ruivo.org (Postfix, from userid 1000)
-	id 38F2715C6A88; Thu, 27 Aug 2026 15:10:42 -0400 (EDT)
-Date: Thu, 27 Aug 2026 15:10:42 -0400
-From: Aristeu Rozanski <aris@ruivo.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v2 0/2] mm: gup: cleanup gup_fast call chain
-Message-ID: <20260827191042.GN1736962@cathedrallabs.org>
-References: <20260805035847.936054733@ruivo.org>
- <dab040ff-e495-4e7f-9932-c60b8299b89f@kernel.org>
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gyBqQhQW;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787857879;
+	b=HCPHkg1jSetFIIsxGkX2Rl10xzRzSRt6RHBR1XvFTrd3CKEZnIy7XgjusnrCz1PeACi4wu
+	+Fh80Ew++RqxGHJv3GH1mmyEKHUvmnZfgwFLy5SeoaScq2rYTf3f/Cf5lfHobsLEsFQbzv
+	N2VXBTSCyqt7rw/etqoYF3yHrZA6t8s=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=91R3l1V/uOl03V126v1cFNRh0hJ1Q8Z9vQ2ulIXNDfU=; b=gyBqQhQWSUlpKmkDdVZfEWq4jC
+	6Hn05OsO+eGBDUz0AAmCUEB8dWDSJmRIrRRmJjlK6HFS+x9kWb9Lu9gWKzDjol1WfGMTi7t7NMIN0
+	VWiiU82QKosQg/iEoVdatEQU1vueasyXko0mWYU4KN2egNMRYMsj6pLR75wquzW36Ad9tlRcEAbeZ
+	HfI+ZL/4ygNnv+qG3c7nh5elZzcg+I+63ohE3j5fqgx39c2GRiCbrmcRZrXHx4aBN6AFfeFLxeLpn
+	9kNSe8uFVHwuGrBkfCU7MPZ6YyE27qsmSJf+8cf+peQXfCmqIg5VU63anBDtlkGHfABhRaSUqgTLe
+	1bQfMvzw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wzfVF-0000000DNOM-0LZD;
+	Thu, 27 Aug 2026 19:11:09 +0000
+Date: Thu, 27 Aug 2026 20:11:08 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: artem.kuzin@huawei.com
+Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, david@kernel.org,
+	ljs@kernel.org, vbabka@kernel.org, cl@gentwo.org,
+	linux@armlinux.org.uk, will@kernel.org, mark.rutland@arm.com,
+	liam@infradead.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, wangkefeng.wang@huawei.com,
+	panov.nikita@huawei.com
+Subject: Re: [RFC PATCH 00/18] mm: arm64: Add kernel replication feature
+Message-ID: <apCLzAaw6oRIqbSH@casper.infradead.org>
+References: <20260827161158.3618409-1-panov.nikita@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dab040ff-e495-4e7f-9932-c60b8299b89f@kernel.org>
-User-Agent: Mutt/2.4.0 (2026-06-19)
+In-Reply-To: <20260827161158.3618409-1-panov.nikita@huawei.com>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0161914000A
-X-Stat-Signature: r46mm5xfrdkpcf1zsp1ofujpuuswd7kz
-X-HE-Tag: 1787857863-514806
-X-HE-Meta: U2FsdGVkX1/r7owePUqbVqQwrIRy8UdowthhWnLqRgjIvroAdvOK1n+N0t88cb9aisO9/tngvp/szUg3ShMkKKHaKie26seTDmAttJ2H4/TeljmeSbIp7J+nf38ngUWVXcfvOlhkrsUk1sUhfMlBCW6XkuEDLhiL3m++Pu041VkJu4s6UQQqVyQsGzSuQcHxPFc72dDLF5hMW0RsgUk/+0dsC3VyZ9RI2XUZusXUqL89+a+/hnJGLICzaNHTDCIvNAHHaFeY2LteK02mWnhNVF6Lzm/yotQzOhcEJnW4SfWataIeJPWerrDIM7AXXRIuKNN2Zr2Nrr3Hf4BJPvr6rRaiEK5sn8qi3ttZ1CVkaDIWHL6uufi03V+RvTcHSiFXES+svjZJ5RgmdIlmn5MKrBblYUm4YLTYEG2/PDG2TG51hH4vcWRzBVrwLKvCWizbYxcgY7RHnbhUkvNxrxgJcw+izYBnKHtEmygtmrujbL27dDV1WX+zoSzoSjyI0tEO0z8eznLhlTkKbs6quPnht0blPK/3hLk0RH5fnHYzdA+/jSGZxPvtRMlZzkXoo3JzqrFU/Av188M8XODfAFC+WI268wg5XSge+YKZ72tYWicygErP+XcN+eBs+EJNMJsfbRvL8QAajJ2nBaRTWSoiLld4eU9C8YUQn9D4bBYKtdNaB1mto3QvsYGHv8PM2v0zuDc99vWGyOZ4ioKr291NFOqj9nxD5f1qKmZeOE0BFCUoo0OkF9jKjXwxqBW0gw3xlX0ZCvDSOVjF42LghU87u3gLOcIm1hqjdb3lW1RU+qPGO2RTjDrabZSvRq4HUQeMUqWytcbMkV9SN//pPoJNIJIu9RzBnW0A1fe/i5rr+wEyY7aBpQVkjI5zGu9utB1lc28BWGjaazkc7JMEbOZqOenyH3UCF1fSINu+VxSwSg9HXSw+l7D5nCsmDKPPDnfy6XTDFIzC2nijrvFAL8A
- xQgXYXz2
- XLqTbAVDqHIPMJeBN490OytJOTUF2L8tQwSS8Q/6Ix2j5oom3iCHPOIOms3yHWN271YRrqkJZINplWWoAEqd42/8r/FEUgJ+R8ffhmpMXgQzUVQrpslnaV/OfGR2aECO1MbA6Q6ebrWXRe3iqIL4lAtwHFGqnNmceYpo4X1/Tn5zmvX/MBebNYNvhL7LmR5ifvPs75Pxuwtrp17PeVdO+RaC807RIJ2nY7lPENARlYNw8Ur8=
+X-Stat-Signature: 8xejmbytwp9t5dsne436yuoai3435ucf
+X-Rspamd-Queue-Id: 605914000A
+X-HE-Tag: 1787857878-429407
+X-HE-Meta: U2FsdGVkX1/2Vuk3kS1rufRgVpbDcSAMgUwCUXYH/pQr817JW/Kz9Ed3wFGxn2hx8MbT6VcLCD2+pyLsf6I2EqNcXcMPjucHbtVifB2ZJoNY4e0tbd84HViAjVUn89CFBkfeeebDFesP0o+rHH/7u98+Cwd0wqWJlKohZCI9slJeCUBX2ZaDlyRfZsEwf3TKM1SZDHlgDsg+c4nWFhAQznaXkdXQCVcXmil7LKRDQG92UPaLnlyoXD4IQrkNkUtVQdTTh6OpbVOzBeMlrdtg2NTPVNwhHMcDlUho6PSfJ/3NAjCu7GENsC7QV67+NHHzHvOxI3JOw9GIk+FKke6NnseZmQ8a7ht91gTGOJFha+2mi4cq7JRkpAtOfHbRBld12ZhWJzaR+FrMnvqxOGAyK6St6EaVw0GxaT/JJcUN3f1OkVcCP7qGjxKrHxTDZXmbA1sgBt3cOR4HNICSlprAG5rGi4YOkR9zUW75iMmYDGD2fQfbrEvh+t+N/t0kREDuDCx3m31ptW4izhZU3YWivG0122ShKmWIR7MP8ctZO9FiPNRimAbrfvfvSIdJk7A1IiNzxwUVLIRWXHMo68AKyYITxDqxHdJs82eJCAS335duhivkQhmhqNKKLbHJYPhqtwVbTwZbmtXXjgTU0D4mJeTiz8zYMEaWkTJ9Juz+0RRF1AswN9xYA76rXFCmdszSB2DhzxAlQqAVB3lXGpJ7uFnrfmPdUQQZomMzkC/R7PN+FuvY5pK/eXfW12OT2+tU/+tCq6lDbwzw4gt3lndvPaPOGizacU0MzpUZ/5k/lsxE8fOMpLcmtQewA8NbdgZUkh/uOipIj0xxtTsRa7QnrCDaFl6E6L6hMMEGrh+9qBVyojtmNrUwfR8twsze189GPuyfIznLZWpLPP8ZMIWRvke+6sd0Vr4NI6lKQkUvoxF7Vq/UXhjJqetDUsw+q22aIbuYMP7iCRYh7UCbdsh
+ yABay1EY
+ dpRTlW1q9bhZICRlAFQyBA5UsJ6f1oFF3TIzmjqyOrhx0nVSvXxNY3M+NFj1S0msUBjWNFxGwKfIoBY5TX3DEwluYjSybt6je+JV4T2BynZMGWy+2HLjPUx48jVzcSTk5mNojOhRmgYTHcGmINBj70clJAtSajoGB/72ZV0UsMZmKQowhGCoqwBDn8qtCCEqEn3xYGtNYbD+9XGgsHKNM+uIxO0S+JpQ8S7SDlXHyogWVYpmOQO2hrNlOsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,45 +93,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 12:01:17PM +0200, David Hildenbrand (Arm) wrote:
-> CI flagged that some test cases fail:
-> 
-> https://github.com/linux-mm/linux-mm/actions/runs/33031249149/job/98384037627?pr=3620
-> 
-> ==========================================
-> ✗ memory failure test failed:
-> # not ok 1 memory_failure.madv_hard.anon
-> # not ok 2 memory_failure.madv_hard.clean_pagecache
-> # not ok 3 memory_failure.madv_hard.dirty_pagecache
-> # not ok 4 memory_failure.madv_soft.anon
-> # not ok 5 memory_failure.madv_soft.clean_pagecache
-> # not ok 6 memory_failure.madv_soft.dirty_pagecache
-> 
-> and I can reproduce locally.
-> 
-> They do use get_user_pages_fast(), so it checks out.
-> 
-> The following fixes most issues for me (there is still one failure on my machine
-> but it reproduces even without your patches, so might be specific to my machine):
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 9b68242b6b602..a4036c02e2137 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -3010,7 +3010,7 @@ static unsigned long gup_fast_pmd_range(pud_t *pudp, pud_t
-> pud,
->                 unsigned long addr, unsigned long end,
->                 unsigned int flags, struct page **pages)
->  {
-> -       unsigned long next, nr_pages, chunk_nr_pages;
-> +       unsigned long next, nr_pages = 0, chunk_nr_pages;
->         pmd_t *pmdp;
-> 
->         pmdp = pmd_offset_lockless(pudp, pud, addr);
+On Fri, Aug 28, 2026 at 12:11:40AM +0800, Nikita Panov wrote:
+> There were several prior submissions with some sort of replication
+> for NUMA systems, including one from our side for the x86_64 platform.
+> In the last couple years, several research articles related to solving
+> locality issues on NUMA machines through replication emerged as well.
 
-oof. You want me to post a v3, followup, or you fixed it already?
+You're lumping a lot of different NUMA replication things together in
+your list.  That doesn't give me confidence you know what you're doing.
 
--- 
-Aristeu
-
+I *think* what you're doing here is kernel text replication.  Other
+architectures (mips, arm) have managed to do this without core MM
+changes.  Why can't you?
 
