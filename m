@@ -4,104 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E6DCC61DBE
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 01:24:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63FC8C61DBD
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 01:37:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D3A86B0088; Wed, 26 Aug 2026 21:24:27 -0400 (EDT)
+	id B9A6E6B0088; Wed, 26 Aug 2026 21:37:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ABD46B008C; Wed, 26 Aug 2026 21:24:27 -0400 (EDT)
+	id B4AFE6B008A; Wed, 26 Aug 2026 21:37:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F046E6B0095; Wed, 26 Aug 2026 21:24:26 -0400 (EDT)
+	id A156A6B008C; Wed, 26 Aug 2026 21:37:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C99286B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:24:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 688B06B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 21:37:30 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F45214020A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 01:24:26 +0000 (UTC)
-X-FDA: 85145304132.02.CE15B0F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 490C51C0003
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 01:24:24 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNzUrhEs;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787793864;
-	b=ZgXR6BEyLLKrrP5woJbvHiOqPNGK5vpOiXqgLQ/zZBdls0aG8H4GKLrcxEA85Mkaz9mQ2v
-	vE7CR0cwnxpvjse9r/9w4W4Duz47Sa1LpZC/Vt1s5E2aS2pxga5yj/DRTnjmTg++kbiIoP
-	jNyZ0InS3e5z1tYGk0lvpp+CHshbUwY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hNzUrhEs;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D0AD11A028F
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 01:37:29 +0000 (UTC)
+X-FDA: 85145337018.02.35D1A93
+Received: from mta0.migadu.com (out-8.mta0.migadu.com [91.218.175.8])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1D26A40003
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 01:37:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=utTf4NcU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.8 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787793864;
+	s=arc-20220608; t=1787794648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PQaF2XYCw0UqjA7wFgy6Ma0exqCO9jPfwIWCMzyga1E=;
-	b=1xHbZku1zTBBMxQGC4s/Qqijos+0NmQ+iJWAsBekSJA4sufXvUd34YmyrSU1k/pM7oZBz4
-	qE3DE7fx911KTF+vTpz0kX+fM70aJ0xEuO8ys1gnisIDxzLqlTIvHcvkX2lXMw2H62oFEJ
-	yyAgN0cK6snZPQfeTqyMaGtyAm6S3uk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BCC743ECB
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 01:24:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4272A1F00A3F
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 01:24:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787793863;
-	bh=PQaF2XYCw0UqjA7wFgy6Ma0exqCO9jPfwIWCMzyga1E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hNzUrhEshXc26SmGiGBHoB439gJYfw9HCnrwOSDQlFVDUMjwa4I+PLxuhBt+9iSF+
-	 Dv1Kk19HGzwkwbSDu1bG0vbrk/At5f1VsiqDa1knU5ewaPyN8BiBoz0SeUSMzur4yP
-	 63K1dwnahsY8v5dHhYlCdmcKGjV3GYFW36zUHAWJygq/lztFerRcauPelQ5i24j9hY
-	 8zJTbm0tTb5rLf+oCNVlMLYseNOCm4pA9sMUrb/CmYRIEs4tZxT9vZ1SMO/FheF6GQ
-	 tNl/1djzxxU8ncUshFmOQ9mOGKvuaQYmvtOqq4wjF8xdiXB55KaZhEuzvvt3r/VpMK
-	 /a9zuwSl6ZKUw==
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c8e2e39easo17473051cf.0
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 18:24:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqUa17Qtb7TTF89xoxBi2KloUHFhzQQIQKdk79l+bljNJZrK7BGLiJpsw7OMHU2gvjHPRZaj8E4fQ==@kvack.org
-X-Gm-Message-State: AFuF++nGwrJMvI+FuxHBx+m8wYwOgRucIolmkTTzbe8AEH2lSrHQEWUY
-	xM/xYAjrud/DST6pf/2rNVuRrIPAB5rrm/s0fmURvxWP5WabEfeKoK1FATjymYB51sMkNLtrTxE
-	SAZz+K9uvn2lgjGKZdiFxRHmzaW/SAEE=
-X-Received: by 2002:a05:622a:5144:b0:52d:6096:b398 with SMTP id
- d75a77b69052e-52e423193c5mr121277711cf.10.1787793862520; Wed, 26 Aug 2026
- 18:24:22 -0700 (PDT)
+	bh=GlDvim1+dClTWqdDoHDqk8VSGXbD9cR+OAlw3D+B3/U=;
+	b=B/hmjbPwAvRZ2M599d0cHQ1dbbyOlOVMYyqF17gGib9u59WgGZCi/vIPylmhOVgyAAHJ+w
+	dbEEWS2fSb1Yr0iz7VxBxJ2gAF23/C0O1hPb9h8go1B/gT320NN/7+XEhOq1FI+uWlj307
+	pd8npP0DKmwI5ONjFHVsVp4uYiytgb4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=utTf4NcU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.8 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787794648;
+	b=Tnr6XE5HeM1ymRX18Wvmodlza4LdHBNwoTjiPXF8rLXlrAWtnWgBSdU8fT+7+GQoWpcQXc
+	/NbVbgS5z8Q/nUVQbPWF9sEl5GAnrGfj+hKDXk/25KZLN4hhM7R7/khH7oa2WmN+X0aPKh
+	t64vwcuj9gN1SZwrIKhuLEImRtaLryg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=htyAKBUKag4BkmqelGoVlxjJ7s9eT/i2PDyfgKhi+pQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787794641; v=1; x=1788399441;
+ b=utTf4NcU4n4TAvT83CXkJlQuWI5F9l6oAwfGYXPaHINyrIH/Dv9j91QVa6tPrjNMJsgSzrVM
+ oA7331wY/Z/ZOOCr+e+LdDsf9BveJqQUKuokTVX3RQHi/SyJWXio1XQ0pHcLLcIea8PI53GlPw0
+ c6utCRWxj5NUf4p8C7tf2zmM=
+X-Envelope-To: linux-mm@kvack.org
+Received: from [10.63.107.123] (14.29.108.92)
+	by smtp.migadu.com with ESMTPS id 00f404dab48392af;
+	Thu, 27 Aug 2026 01:37:21 +0000
+X-Mizu-Trace-ID: 00f404dab48392af
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <49c19d73-beca-473f-96b9-23ff8ee9d445@linux.dev>
+Date: Thu, 27 Aug 2026 09:37:11 +0800
 MIME-Version: 1.0
-References: <20260821102538.22642-1-baohua@kernel.org> <20260821102538.22642-4-baohua@kernel.org>
- <ao6qTTtk2xkkeKob@fedora> <CAGsJ_4ywk7mA1xfk=emtqby1UAwFsaH9PChmk2TuZoDKrMzuXw@mail.gmail.com>
- <ao-I8rYv_G5j4wz4@MiWiFi-R3L-srv>
-In-Reply-To: <ao-I8rYv_G5j4wz4@MiWiFi-R3L-srv>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 27 Aug 2026 09:24:11 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zoXvyXG6-qAH+=nv6V92w_U_tk78YAPKMihRniqvTe8A@mail.gmail.com>
-X-Gm-Features: AcwNN1WjsBANY_EUTzkF7Ra3M4p0_sIYtGKnM5C4G_HdYSDH8YFZQRvcUca6J2M
-Message-ID: <CAGsJ_4zoXvyXG6-qAH+=nv6V92w_U_tk78YAPKMihRniqvTe8A@mail.gmail.com>
-Subject: Re: [PATCH 3/6] mm/mglru: enhance cold/hot inversion handling in inc_min_seq()
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, chenridong@xiaomi.com, david@kernel.org, 
-	hannes@cmpxchg.org, kasong@tencent.com, lianux.mm@gmail.com, 
-	linux-kernel@vger.kernel.org, ljs@kernel.org, lyugaofei@xiaomi.com, 
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	stevensd@chromium.org, wangzicheng@honor.com, weixugc@google.com, 
-	yuanchu@google.com, zhangbo56@xiaomi.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm/mglru: fix ineffective memory protection for
+ non-kswapd reclaim
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>, David Hildenbrand
+ <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Yu Zhao <yuzhao@google.com>,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>,
+ "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <linux-mm@kvack.org>, linux-kernel@vger.kernel.org,
+ Ridong Chen <chenridong@xiaomi.com>, stable@vger.kernel.org
+References: <20260826133054.88529-1-ridong.chen@linux.dev>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20260826133054.88529-1-ridong.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1ec8dpi6m7jxiytuzs9bt6ewfdks9p8z
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1D26A40003
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 490C51C0003
-X-Stat-Signature: wbikrnneabqe1qudw1nbmiamtq599eq4
-X-HE-Tag: 1787793864-290227
-X-HE-Meta: U2FsdGVkX18G1Ciy7LII5vm2zDVoX7UOxyaTL3mYgzwwe0ccDbgaXZQ6XljpURAxY1DHNqH1cfiTo61pGbbXld6fYHS+e1fpRBdw5ZX1/+SLXtdCtNLUqYANL3YujotPC57LVMnEDsO01BxkVz0wQ8C1+yEEZNbvKNQCqF1ad1M9ueoSnEZKcmGUC4kss3FZ6bXSlVoNytdGOY9izDTXZxRDVVdt0mCFfz7m7MPianLgTfg+tpfcD56ar4xJrBM78XVuOyHdjahwOVdI87HXKxDWv7wwFeBDXrvUZeT9TAz/mDo/w3ItbdYtcDjf8myDThUGBogiriKWhuDw8sgbht2ULpVXFw7F4zEwm3vj9uQqhloQtM+yLeALoZEE+csHLNUvJUUenHM/WlrPeWrW7PFQ4y0wXEX5dj/n8Xvmk1zuQSD1kwc5VG1YuJSc9r0r+aRSQvueEyKLL19wQ78xtdQLdZVDeYYf2LKP8XtyOO0hRO60+b/xPPQbxV+Xzb9CCeqwcDTWiTl2S+Un9ul9uIyDPymqzsveWHU4h90G96rnYkppCydpARjZ2TrAuKe8UY0KNAfHh1giZ2m5a2uc6gOISntSxxjAF98Fdkhrj0cSqLwgdv+a/0Ngrem/vwp3BUVCJiDftkGLmBpTYnRXZ9VVdPMMkZStMVDIDp01mDgF0C3B0sctEDwvA+lBFWCF3imD58kKaZmL9UOh8tkQK3iAhU6X1Nq59FiMsrUAJGvyVBU4XncdNuPW4zajLoZ4RAfNIa38lGszYD6ZgDTFnSyy4ClAZmoW5wrT9uNUNmpbw6aExDXIJq0Mv/g6xXx1m9kGLPOgDuGHrxfV8ckchDD/Tt0JcCM2ZIwKDOtCNSFyJvtYutdSbc8UH+jshYlByNsDNsMxXbEHjsUpov2XgXdTaX4pY2GsbfGaseFcO/fufWdPK5A/q8Dgtmq9BsBHNS+AUXTVFI3l3IrNE+B
- JiUrwhZG
- vALyAjPBOM4v/0XmlkyaLJ7fFX3ynneGpNijnAg9Fi4fe4UG205PJJ3R7RgZbA2VJpLK1Mr9XOGFJL1RssE1QYTrxhMLGpWafrlKRcUys5KRwYWG0AKitkgXid07LsFHOHH7E13fJIxU/Ye9BCFA8jfIAWt5m3IAtP/Jksy8tNbtjWewdG7jytwXO0Mr3Vy83P7JZMMhj8cPn2tmSp+N7cSnL6YpQhb+gXhweIDqwhn0+ut03qCuKg36sa3dobtwXwoLchckI0956kNRzdaK3zcmVHYGqMyVxgXY72+KEF/gDnAWzQHYjK6cfTz5UpwNIQ9Vz8FCM4WtFJLTcgam3Fawkliq9zJKQZl0HCQV/pxtrvxnlddvVKZ+bH1ON1AE6jroFP9HDe0zaFVUMJi3KJCkP7w==
+X-HE-Tag: 1787794645-900612
+X-HE-Meta: U2FsdGVkX1+h5VyFE5M7NBincQXcLQLhVC9W2i8YaOtc5hUE5kH3Blgm7Jj/nViON2NrV99WqhjvqG/gpIaHYe7hgJ/ha6GaOU1gv3+nnxD07blkg0L8tRdEpyhOeLgVx6621SmjGDARYBATGkxVXaOaa6wbgDM/2Tzx087rGf/UKxL+6G0AbehlY50ABuxtX4qaZauPkD6EO4h9yTbe/QxyJuA4DZGgmLAAZYgzAw9kx+hO/Rjz3inQp+R/bYc/kyQXbOohOhgvj5TuoDYaEXTi7Inqi6looUimgQQdH4/dq6xgFU7h69NyEYoR3vXrfMdWEO/m/W9AgHFWdNElTVxTPbPox5ngXwYlDCxdsr5xz13j4+bfPoxv66kEpvM27J5u7rhTmYeJpGwikIyvNddndh0ZY5T2+sM3hTNxCRUaSPLuJBjt+cK15idcUNDw4OpfzPQ2GPcT3MoeIehUJwP3YVI77btyPzvq3WGB+sfH93FIBetHtP8+k4qdnLF+UJboDymhvvCCgeMdz3jcqzbOVe3hh0qsJDyOVVDkibx195u8VTX8C8hzTXm9Dqis6hfBJ4RybvcTBRm1yz8mVO1cEiANOR+NiD8TQiKpOSlkvqWVsWp4QyTekDNzg/9KQe4ErJM73MoPt71wHeMtdabkZtuO+Ih0+t0f42R4nWiSxk58/PYMn2zHOWMDYxix4ZTrtz0st4VyRm40FWV2QhO66cIhBNtHweSdcFZLy6+XF41mSD6cakE/o5vUTgOxZGtlRXy21d2jRzU3LGaW3+91UwJqgx4PojFIUYUDS2HyRXCpvlRe5eZ5Rllmqc1Hf2FwXa5se8lIPoBYlMRzHXPeZ6cQ7cxsvmte3Skir0fDtCA3VRqens340iE51eqXi2do2kKJfhy3NPCeMAFPR8vTXkcq5tHh9k6v7J8PCPwD1j+mfPFK816YdevP2/j4drk+VssccHzfIRSdjk1
+ 4ek4s/ep
+ wQFWcU00fmMcnXND8VX9cAx5gdnMrsHD4g5DWKb3W8BxuHWOf0U4IQyiBq2d9IWMKBGkDRiV7TeaxGdPQ8IRDB1yshJROwhRGjQKwoB1Gmdh0UtG9fwRLE7OP+s5t+cutBkzDin2pFiUb06+Mq9Imk2hEpE4OtGzWQFKj69pigzfiRcLML7tx1xUJhjKYuAV8g5Awn8yRql5oTFqt6a5uH/gMS4fwLVL0W8sWzBMeMhCeaGJWTTOi8Pm5ToKkh7rxuhREwKqHyJ+9H2Q4AEklfjY2v9rtKXkD7TrEtNL9m9EEbBAWrpg6duRD9jq+SoPrAO3tdWhsvYs7KTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,51 +104,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 8:46=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
-rote:
->
-> On 08/27/26 at 05:43am, Barry Song wrote:
-> > On Wed, Aug 26, 2026 at 4:56=E2=80=AFPM Baoquan He <baoquan.he@linux.de=
-v> wrote:
-> > >
-> > > On 08/21/26 at 06:25pm, Barry Song (Xiaomi) wrote:
-> > > > During aging, a folio's generation may already have been updated by
-> > > > folio_update_gen(), even though it has not yet been moved to the
-> > > > corresponding generation list. Such folios are hotter than those
-> > > > already in that generation.
-> > > >
-> > > > It makes sense for inc_min_seq() to increment the generation of
-> > > > folios that were never promoted during aging and move them to the
-> > > > tail of the new oldest generation. However, folios that were alread=
-y
-> > > > promoted should instead be moved to the head of their updated
-> > > > generation, just as sort_folio() does in scan_folios().
-> > >
-> > > While sort_folio() move protected folio to the head of next gen too.
-> > > It only moves ineligible folios to the tail of next gen.
-> > >
-> >
-> > Hi Baoquan,
-> >
-> > Thanks for the review! I=E2=80=99m not quite sure I understand what you=
- mean :-)
-> > Could you please clarify what you=E2=80=99re suggesting?
->
-> Sorry for the confusion, Barry. I meant this is a good one, and
-> sort_folio() has the similar issue in which the protected folios are
-> moved to the head, wondering if that need be adjusted too. One consistent
-> rule for both is better.
 
-I think it might be fine for sort_folio() to move protected folios to the
-head, since those folios have either been accessed multiple times or have
-reached a tier higher than tier_idx. They are sort of hot in theory, right?
 
-if (tier > tier_idx || refs + workingset =3D=3D BIT(LRU_REFS_WIDTH) + 1)
+On 8/26/2026 9:30 PM, Ridong Chen wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
+> 
+> memory.min/low is silently bypassed for MGLRU during global proactive
+> reclaim (writing to the root memory.reclaim) and global direct reclaim.
+> It can be reproduced as follows:
+> 
+>    # echo 7 > /sys/kernel/mm/lru_gen/enabled
+>    # cd /sys/fs/cgroup
+>    # mkdir -p a/b
+>    # echo 100M > a/memory.min
+>    # echo +memory > a/cgroup.subtree_control
+>    # echo 100M > a/b/memory.min
+>    # echo $$ > a/b/cgroup.procs
+>    # dd if=/dev/zero of=/tmp/testfile bs=1M count=200
+>    # cat a/b/memory.current
+>    222650368
+>    # echo 500M > memory.reclaim
+>    -bash: echo: write error: Resource temporarily unavailable
+>    # cat a/b/memory.current
+>    6070272
+> 
+> memory.min is 100M, yet reclaim drops a/b down to 6M, breaking the
+> protection.  The traditional LRU path is not affected because
+> shrink_node() calls mem_cgroup_calculate_protection() for each memcg it
+> visits during a top-down tree walk.
+> 
+> Commit 30d77b7eef01 ("mm/mglru: fix ineffective protection calculation")
+> moved the protection computation into lru_gen_age_node(), which only
+> runs for kswapd.  Non-kswapd global reclaim reaches shrink_one() through
+> lru_gen_shrink_node() -> shrink_many() without any protection
+> computation, so emin/elow remain stale or zero.
+> 
+> Introduce mem_cgroup_protection_path() which computes emin/elow along
+> the root-to-target path only by iterating through the cgroup ancestors
+> array top-down.  This avoids the full tree traversal that would be
+> needed with mem_cgroup_calculate_protection(), limiting the cost to
+> O(depth) per memcg - typically 3-5 levels.
+> 
 
-But for inc_min_seq(), it is just catching up to make sure the newest
-generation doesn't overlap with the oldest generation. Those non-promoted
-folios themselves aren't hot , so I feel these are actually different?
+Hi all,
 
-Best Regards
-Barry
+This is an RFC patch.
+
+My initial attempt to address this issue involved traversing the entire memcg 
+tree, similar to what kswapd does. However, Sashiko raised concerns that this 
+could introduce performance regressions [1].
+
+To address that, this patch instead walks the cgroup ancestors array in a 
+top-down manner, as outlined above, and I'd like to gather feedback on this 
+approach.
+
+[1] https://lore.kernel.org/linux-mm/20260723130559.2343690-1-ridong.chen@linux.dev/
+
+> Call it from shrink_one() for the non-kswapd path so that each memcg
+> about to be shrunk has correct protection values.
+> 
+> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
+>   include/linux/memcontrol.h |  7 +++++++
+>   mm/memcontrol.c            | 42 ++++++++++++++++++++++++++++++++++++++
+>   mm/vmscan.c                |  8 +++++++-
+>   3 files changed, 56 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 7d1c0ce189a8..26be8277d64b 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -605,6 +605,8 @@ static inline void mem_cgroup_protection(struct mem_cgroup *root,
+>   
+>   void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+>   				     struct mem_cgroup *memcg);
+> +void mem_cgroup_protection_path(struct mem_cgroup *root,
+> +				struct mem_cgroup *memcg);
+>   
+>   static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
+>   					  struct mem_cgroup *memcg)
+> @@ -1133,6 +1135,11 @@ static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+>   {
+>   }
+>   
+> +static inline void mem_cgroup_protection_path(struct mem_cgroup *root,
+> +					      struct mem_cgroup *memcg)
+> +{
+> +}
+> +
+>   static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
+>   					  struct mem_cgroup *memcg)
+>   {
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1271d390b617..c739db33b917 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5198,6 +5198,48 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
+>   	page_counter_calculate_protection(&root->memory, &memcg->memory, recursive_protection);
+>   }
+>   
+> +/**
+> + * mem_cgroup_protection_path - compute protection along root->memcg path
+> + * @root: the top ancestor of the sub-tree being checked (NULL for root_mem_cgroup)
+> + * @memcg: the target memory cgroup
+> + *
+> + * Walk the ancestor path from @root down to @memcg and compute the effective
+> + * protection at each level.  This is safe for isolated queries because it
+> + * ensures parents are computed before children.
+> + */
+> +void mem_cgroup_protection_path(struct mem_cgroup *root,
+> +				struct mem_cgroup *memcg)
+> +{
+> +	bool recursive_protection =
+> +		cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_RECURSIVE_PROT;
+> +	struct cgroup *cg;
+> +	int root_level, i;
+> +
+> +	if (mem_cgroup_disabled())
+> +		return;
+> +
+> +	if (!root)
+> +		root = root_mem_cgroup;
+> +
+> +	if (memcg == root)
+> +		return;
+> +
+> +	root_level = root->css.cgroup->level;
+> +	cg = memcg->css.cgroup;
+> +
+> +	rcu_read_lock();
+> +	for (i = root_level + 1; i <= cg->level; i++) {
+> +		struct mem_cgroup *cur;
+> +
+> +		cur = mem_cgroup_from_css(cgroup_css(cg->ancestors[i],
+> +						    &memory_cgrp_subsys));
+> +		if (cur)
+> +			page_counter_calculate_protection(&root->memory,
+> +					&cur->memory, recursive_protection);
+> +	}
+> +	rcu_read_unlock();
+> +}
+> +
+>   static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
+>   			gfp_t gfp)
+>   {
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 6dff207ad8c6..e572d2742c8c 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5102,7 +5102,13 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+>   	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>   
+> -	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
+> +	/*
+> +	 * For kswapd, lru_gen_age_node() has already called
+> +	 * mem_cgroup_calculate_protection()
+> +	 */
+> +	if (!current_is_kswapd())
+> +		mem_cgroup_protection_path(NULL, memcg);
+> +
+>   	if (mem_cgroup_below_min(NULL, memcg))
+>   		return MEMCG_LRU_YOUNG;
+>   
+
+-- 
+Best regards
+Ridong
+
 
