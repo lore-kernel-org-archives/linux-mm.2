@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F36F0C61DC7
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:45:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49616C61DC7
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBD9F6B009B; Thu, 27 Aug 2026 05:45:34 -0400 (EDT)
+	id 4AC396B009E; Thu, 27 Aug 2026 05:45:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E95A46B009D; Thu, 27 Aug 2026 05:45:34 -0400 (EDT)
+	id 483856B009F; Thu, 27 Aug 2026 05:45:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD26B6B009E; Thu, 27 Aug 2026 05:45:34 -0400 (EDT)
+	id 34BD56B00A0; Thu, 27 Aug 2026 05:45:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A8B486B009B
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:45:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 027F71C1AFA
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:45:34 +0000 (UTC)
-X-FDA: 85146566988.03.1696440
-Received: from mta1.migadu.com (out-108.mta1.migadu.com [95.215.58.108])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1CEE3C000A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:45:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.108 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 069506B009E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:45:38 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8ABD41A037A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:45:38 +0000 (UTC)
+X-FDA: 85146567156.12.3506A80
+Received: from mta1.migadu.com (out-110.mta1.migadu.com [95.215.58.110])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8F6751C0006
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:45:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.110 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787823932;
+	s=arc-20220608; t=1787823936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	 content-type:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+ukIsy+fgBjJ9pyw3m6Wrt/p9UJVb6331RMPiSMDab8=;
-	b=Am3ujvKPHT+pWP3lLiqQlAxn2G0bjWhakIGTfKHWzdvT8JBXf/FtmWYcijLVkNgBi3lT88
-	4rAOLneOKQDO/m4ZHR5u1+pT+9K8dSQoUduOMNWgRsFBtQkUBs2ka4f9LzUbENvP9hCzfi
-	a1CMo8EM/+Kd8yQQN7nZJFfe9EOtQEk=
+	bh=nRuq8UwnwMWDvKGjwOPMN03nIdGBC3F5R2MZR4V6UDs=;
+	b=3IepGocnVcv37mf/RXaURF+E23pTEufue0VemwYhZVBHdQZsBfbD7f5LmalHVs382f9rA0
+	0l8jL6y/6+G9uejlcumuhrz0wu8Khv+PS5/zACwMDEsxl6ytGryRo4qz70BVs97nXyNW4a
+	1E+bsiFyqNJImFffq8y1lQXPYV2gUxk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787823932;
-	b=M+CmrrkQXReOAJK7NnkabMwIKUUXMMTBmH+Koe2RnCDgtD6V6f6dFuDRA76XOq2ROj4LYZ
-	h3jfdvOujmTKs0w3Ftvip9heuZBgwmuqOCHqDtAP3ilO/y7lzJ9uBNvYMIOFjf4f4IZI84
-	WBLRGLoNur4gBvhHJddzGTy15oQbfHQ=
+	t=1787823936;
+	b=6wSOsWlocesy+ZnvbxXwK8swCR3Uqy+d99nhpBQ5LgmIviFRVHi1NTCvCpGepvxMSc+C+X
+	Ku032P3NIOQNxz3Dm6JUHpUle3+oKiz8Fow90AP8l1ICbxV10fuq8JypqzvrjiqW5NeSNN
+	gfsQbbX34+dILUOxupiOWAoWDjd+O0E=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
+	imf20.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.108 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf20.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.110 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 54ef9dade49ec2a8;
-	Thu, 27 Aug 2026 09:45:30 +0000
-X-Mizu-Trace-ID: 54ef9dade49ec2a8
+Received: by mta12.migadu.com with ESMTPS id 18403291e118a5e7;
+	Thu, 27 Aug 2026 09:45:35 +0000
+X-Mizu-Trace-ID: 18403291e118a5e7
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -69,23 +69,24 @@ Cc: akpm@linux-foundation.org,
 	david@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 03/16] mm, swap: add CONFIG_XSWAP and xswap fields to swap_info_struct
-Date: Thu, 27 Aug 2026 17:44:53 +0800
-Message-ID: <20260827094509.1016740-4-hebaoquan@kylinos.cn>
+Subject: [PATCH 04/16] mm, swap: refactor free_swap_cluster_info to take swap_info_struct
+Date: Thu, 27 Aug 2026 17:44:54 +0800
+Message-ID: <20260827094509.1016740-5-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
 References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8F6751C0006
+X-Stat-Signature: 41yb6nik6334dgcrtsdx85sjwcyzpqtt
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1CEE3C000A
-X-Stat-Signature: o7myrf7b74cws3zqk9xpykq6iffow87i
-X-HE-Tag: 1787823931-485980
-X-HE-Meta: U2FsdGVkX19eyaoeOPygJ3HgvBsxTQjxplhS8WpfTnhioMpIenMG5FP0Jyz+ox+RC1pMoQ6LSkdfyosfA065ATILaGSO8AssM5/NA9LitGhVO1yc68dC1cJGdI93wnY7P1DzqbUCuTaz5mM6/UtFZ5eOxXNnnwz222Yqq1Pl2f+yeFH2Sv9Os+IB0u5vDh84ghhtZOxl31LQKUbFcIFqHIw6KdwWy9PsQp+ndElm6CBCM+CH0ToXD4Cif4XmesZOesjo7W4pg3Mx/i8ueP/+yGOaC2WZvS320l8v5dc+OpNNjIjqBZJkbqigZSVq1kU+c4rCq0l80POzqkEcaUjo6lXx++0P6F61x2vTs35O14tVLc2q7StO/FhrTCc/ZoU1v9yYTRALLgIZNm3Rj+YpxXkwvwK4pgeB1uU/18T2Xo/jjQZtHWgkxVlIM1qZogKHJt+p3o68NSm/u2CMF7wI/AXZd8cHd5ctmGFWcAvpO85cc4ml8Ex5XehK8DPwgMztOIy6Is4ed0cVQI4YKYiipLMHW6H7RCXclR9LxaZ54gJxz3cbsPHMrrDJESLAtd5ffkcKrV0YTl3xlhIgee8dfYG2eMTnbZTn5lqDxFUkJFi/eJnAOMpDvUyLxb8ETzWGmkM24nVBIH7xsmg/gCPqTUOjrvpAGP4UVWktP7NoQjY8oyzJmBv7TA5Bt0xAZ3a8OCqnPgQGezROb6YqejXksLKAW+peMc4o98zAinWnau4dItayts+0oXW9bDJ+ECmpKEv2loCfQchJhbwmlki5bCXTfyhKc3vlzRzlX3SD3fZWTLEGdd1yFu1gL7dRrFwuBJtffCTx5FJE6fKJuPujBWjhdok53twGP8JhTO8PZmsh5qa1GgP8VaPlEdZAJ4ut5lfFRn/8FqBADvTCBnDgg3QjiipxNJFP8cI5vFJc7rxm86yNob97kD2LAYF6FrQqRdDEPC+ytVG01NNeQ7s
- m5XTmXEO
- 3NOibM6Oa+9TMS/kbobUq11aPhgE65jXO6ayPXTWArqichM2lYsGyoG7Es0/3YcerJDkhlDYFL6FwXDmvYRBxUFyk1HPlXp/wJ9TWBclD9UESuUDv8vYfB5rCV/BEYozUaf+reoam7Cyo1o1EjxNpZwTPQkqJ081WWgCL5+5aDcYJU//DSsdI35/t5ctp6q8YkEo6LIRtBvH+Qy7RNw+7x0fKC2N3eyQm8aMio6czXAKAHrTEwRTglZMnjHPuZiUDq6SIOCLt4yPUBEc=
+X-HE-Tag: 1787823936-342082
+X-HE-Meta: U2FsdGVkX1/OpGdlZ+5h533/wWjbU65C930FQ20eMPUBufrDVt0TrCNc6U+iN9MyM+SnLJYziPI2n+zeQnM1EZttusqVvkVtHO0+qdt9qyBgY8cMXnGV5V6aI1CHuIln4DXvDVZqUlVqWDbxcbU8w0F892LUTfx5r5DTHJFOOXQ2cyreAUMCjZ6t/ePXgk+0E/XHW7Z8A6GbI27+8emUCwtEwafdU2rD3PXBmVDPS80l4R5H73BZSh49D/WYj9A0Fv4Kv4HwsjWRgHW2YBshw2HSGU0etYuWUhWCBSONaOWJFIUHwFTeLQ4fGdDWhhM/1nBRmvQb+4bS1bokZjfpBCI7jtnw+HdjEfIrdC+P8llmhS1ByXszs6UasHvKYz8/kiFVtvdX7OY0MdOlVSi5tONezt61Gu87/d5MBomF0kG0yksrcdYWghFN8n7bll6QaOWebCR0ps29LvwNdibv4Z2dz4P/QU/Zm/7FBoOH7cLM34alNgI+6p8gsUPmE8gpdz7QyAHgg3PiCuTEqbz0mh2WVxxnUjRT85wVh52+vAsFMpc8CRnLKMt5hqyhdjJ6AsaGLF7Jbb2bcyEWG/+yJ+YQ9zXLd4H8OplAN+dnI6ICWmX0GYZfDi4ymIaLoWGHiFAIKOoG/aCR44BlVobQXINtfSo+jIgaVEg6ha2i7iHqg6NpQsaFJsUpZZ0aM2qZiDbpKRk9boL8E1MOSvY7mgj/cYMI7qnu3BHNhd6zk/C9BZEEK2RrnKXwFvPu87HBc+IUi0oUlci/KLWgahXWyAJQc9DKYj++PYtH+EKcINJ24usC3ikXcZzwXNZfO5L9eQyqcNPAEhuj/hyetfAgBfveuQvHQEs+y8ryzKshcd7c/+Kb8N8kml9QRpO/Ow8BsDc/Vy7f6TmesjRNJgr/n48PR3lVFj9ls6FHXxXN7h5iNEayLKrxJPGaAZDPT3E4M2VKLNqsdXFwEk7f1f2
+ og0m9ofD
+ Xdx9/R9sbN3CDq5RQbwaYVJjBcbfeaWYHff3gIMe20PF4DujFLgE5uiwifwTAS+Ygu1mUQ2GSqmI8Fi/XH22K4ayVHE9/pvrfQiPnXCvwHQn5+5cm7GsCfNIsbg/Bho/zdIP5vw7mUeDvPrp0N1cpt1nANY/THtKXJxJfjbaNJBCxFhO8ha+oovTvpto6EaW05uZxswxOJyVgD3vpP4fS3m99dn8vgLgA8fIlnO+ncavcE5OcNFGo+UfwwtK9WpIPRaAErfChV63FnDnnkT7eVkfO7vWqTNnrZqDiat2b7RJyyiKSU6l0xLbDRZY11zYfiMKZzN++Fv+De93EOQeZCV7thQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +94,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add CONFIG_XSWAP Kconfig option (depends on SWAP && 64BIT) for
-extendable (virtual) swap device support.
+Change free_swap_cluster_info() to accept struct swap_info_struct*
+instead of (cluster_info, maxpages) directly. Extract cluster_info
+and maxpages from si inside the function.  Also clean up swapoff:
+remove the snapshot locals (maxpages/cluster_info) and move the
+p->max/p->cluster_info clearing after free_swap_cluster_info().
 
-Add three fields to struct swap_info_struct under CONFIG_XSWAP:
-- cluster_vm: the VM_SPARSE vm_struct backing the cluster_info array
-- nr_clusters: total number of clusters in the xswap address space
-- nr_clusters_mapped: number of clusters currently mapped (lazy grow)
-
-These fields enable lazy vmalloc-based dynamic cluster management.
+This is a preparatory refactoring, no functional change. The new
+signature will allow the xswap path (added in the next patch) to
+access si->flags and call xswap_unmap_clusters() from within
+free_swap_cluster_info().
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/swap.h | 5 +++++
- mm/Kconfig           | 9 +++++++++
- 2 files changed, 14 insertions(+)
+ mm/swapfile.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 787fe463dcbb..35d357a393c6 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -248,6 +248,11 @@ struct swap_info_struct {
- 	signed char	type;		/* strange name for an index */
- 	unsigned int	max;		/* size of this swap device */
- 	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
-+#ifdef CONFIG_XSWAP
-+	struct vm_struct	*cluster_vm;	/* VM_SPARSE area for xswap dynamic cluster_info */
-+	unsigned long		nr_clusters;	/* total cluster count for xswap */
-+	unsigned long		nr_clusters_mapped; /* currently mapped cluster count */
-+#endif
- 	struct list_head free_clusters; /* free clusters list */
- 	struct list_head full_clusters; /* full clusters list */
- 	struct list_head nonfull_clusters[SWAP_NR_ORDERS];
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 604c58199acb..26cf26a2c59f 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -122,6 +122,15 @@ config ZSWAP_COMPRESSOR_DEFAULT
-        default "zstd" if ZSWAP_COMPRESSOR_DEFAULT_ZSTD
-        default ""
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 5aa1ffb97df8..cd7e889f073d 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3054,14 +3054,17 @@ static void wait_for_allocation(struct swap_info_struct *si)
+ 	}
+ }
  
-+config XSWAP
-+	bool "Extendable (virtual) swap device"
-+	depends on SWAP && 64BIT
-+	help
-+	  Adds support for extendable swap devices (xswap) that decouple
-+	  PTE swap entries from physical backing storage. The cluster_info
-+	  array is backed by a sparse vmalloc area that grows and shrinks
-+	  on demand, avoiding static pre-allocation overhead.
+-static void free_swap_cluster_info(struct swap_cluster_info *cluster_info,
+-				   unsigned long maxpages)
++static void free_swap_cluster_info(struct swap_info_struct *si)
+ {
++	struct swap_cluster_info *cluster_info = si->cluster_info;
++	unsigned long maxpages = si->max;
+ 	struct swap_cluster_info *ci;
+-	int i, nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
++	int i, nr_clusters;
+ 
+ 	if (!cluster_info)
+ 		return;
 +
- config ZSMALLOC
- 	tristate
++	nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
+ 	for (i = 0; i < nr_clusters; i++) {
+ 		ci = cluster_info + i;
+ 		/* Cluster with bad marks count will have a remaining table */
+@@ -3100,11 +3103,9 @@ static void flush_percpu_swap_cluster(struct swap_info_struct *si)
+ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ {
+ 	struct swap_info_struct *p = NULL;
+-	struct swap_cluster_info *cluster_info;
+ 	struct file *swap_file, *victim;
+ 	struct address_space *mapping;
+ 	struct inode *inode;
+-	unsigned int maxpages;
+ 	int err, found = 0;
  
+ 	if (!capable(CAP_SYS_ADMIN))
+@@ -3196,10 +3197,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 
+ 	swap_file = p->swap_file;
+ 	p->swap_file = NULL;
+-	maxpages = p->max;
+-	cluster_info = p->cluster_info;
+-	p->max = 0;
+-	p->cluster_info = NULL;
+ 	spin_unlock(&p->lock);
+ 	spin_unlock(&swap_lock);
+ 	arch_swap_invalidate_area(p->type);
+@@ -3207,7 +3204,9 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	mutex_unlock(&swapon_mutex);
+ 	kfree(p->global_cluster);
+ 	p->global_cluster = NULL;
+-	free_swap_cluster_info(cluster_info, maxpages);
++	free_swap_cluster_info(p);
++	p->max = 0;
++	p->cluster_info = NULL;
+ 
+ 	inode = mapping->host;
+ 
+@@ -3574,6 +3573,8 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 	if (!cluster_info)
+ 		goto err;
+ 
++	si->cluster_info = cluster_info;
++
+ 	for (i = 0; i < nr_clusters; i++)
+ 		spin_lock_init(&cluster_info[i].lock);
+ 
+@@ -3637,7 +3638,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 	si->cluster_info = cluster_info;
+ 	return 0;
+ err:
+-	free_swap_cluster_info(cluster_info, maxpages);
++	free_swap_cluster_info(si);
+ 	return err;
+ }
+ 
+@@ -3856,7 +3857,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	si->global_cluster = NULL;
+ 	inode = NULL;
+ 	destroy_swap_extents(si, swap_file);
+-	free_swap_cluster_info(si->cluster_info, si->max);
++	free_swap_cluster_info(si);
+ 	si->cluster_info = NULL;
+ 	/*
+ 	 * Clear the SWP_USED flag after all resources are freed so
 -- 
 2.54.0
 
