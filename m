@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F099C61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 12:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1761C61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 12:33:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8289E6B008C; Thu, 27 Aug 2026 08:33:21 -0400 (EDT)
+	id A4BA16B0096; Thu, 27 Aug 2026 08:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B2DB6B0096; Thu, 27 Aug 2026 08:33:21 -0400 (EDT)
+	id A23B96B0098; Thu, 27 Aug 2026 08:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C9E56B0098; Thu, 27 Aug 2026 08:33:21 -0400 (EDT)
+	id 9608E6B009B; Thu, 27 Aug 2026 08:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3806F6B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:33:21 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B22D41C1CA1
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:20 +0000 (UTC)
-X-FDA: 85146989760.09.C6BD768
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 700D36B0096
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:33:24 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8C54A03EF
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:23 +0000 (UTC)
+X-FDA: 85146989886.13.1E042F2
 Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9E672C000B
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:18 +0000 (UTC)
+	by imf28.hostedemail.com (Postfix) with ESMTP id BA096C000B
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:21 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=hygon.cn;
 	spf=pass (imf28.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787833998;
+	s=arc-20220608; t=1787834002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JXhaw+nsJkMJQswNXrQt19a/v7qAw2k3Zz6rGfwM3Ts=;
-	b=p4x5WGbKOocT9piwpAxcRTrFi+ijUhH2Y4THRXsPHIO2ZkTZM40f8pvjqMqvuphvasHUyQ
-	/clE/IjSL0bP9C+s3+vauKeKTtk1MnW3CQquOSHPY3cfkNaJLikwwoOjOQADpcVhyuPp2o
-	0Jvil1MEP2c6WDaGG93CF7cWRvJrfBc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787833998;
-	b=UkLwRzBDRfVriFhjaN+NZnZtouRIZNcSHAXA9cortq0DmLCsc8SHv2dxcnRG0HSVvroLvr
-	PJTZ96UUpqVowANCRme4xckHmhGB/s5D/HXY3P1iSsW914m92g3s/7XtgkpHOkPdrnLCcK
-	5CBHrW82XVd098gtH2sezKv1dg1hqhI=
+	bh=VNBgXdZfjSKQGP1Qiq4W7a8s8BgIkEG8pSVDPwbpdpA=;
+	b=YDsRroxeS7U1edG0I8ZCd1Tu1aadbDJZape7XP3SRWz0nlKe3jbUb4gIbPKXokBabRG7x3
+	4WpsPHUYSaBt+asRbVqKmNTTx8DXqkhRYN7CxcC86nnZBnEBIWz/aPggNNZieS8Ebz4YhP
+	tI1K+tjvbLqpkqmFgSQ9+EfnVlTLjHk=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=hygon.cn;
 	spf=pass (imf28.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1C00WHczBJb6Y;
-	Thu, 27 Aug 2026 20:33:16 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1Bz3jV1zBJb6W;
-	Thu, 27 Aug 2026 20:33:15 +0800 (CST)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787834002;
+	b=Oh1oke813+4ySotMY74beCy3YSBvtomR7KFTqvr3EmB5EQT2dMdZtmv+ApaZN3N5sXMY2w
+	JXPK3eju7drpCxOYgBnkoVh5KacDXPo+fMI+IhXEVkVvl++9u+fhb0Sd5EqOGtIN6Rq8dy
+	++7u+5qi3If3wwA3zLoadX7j4rjtDog=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1C30WBGzBJb6d;
+	Thu, 27 Aug 2026 20:33:19 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1C20vCjzBJb5x;
+	Thu, 27 Aug 2026 20:33:18 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 1847978AD;
-	Thu, 27 Aug 2026 20:33:08 +0800 (CST)
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id E3EC036F1F84;
+	Thu, 27 Aug 2026 20:29:35 +0800 (CST)
 Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
  (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 27 Aug
- 2026 20:33:13 +0800
+ 2026 20:33:16 +0800
 From: Jianyong Wu <wujianyong@hygon.cn>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
@@ -76,9 +76,9 @@ CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
 	<linux-mm@kvack.org>, <wujianyong@hygon.cn>, <jianyong.wu@outlook.com>,
 	<zhongyuan@hygon.cn>, <huangsj@hygon.cn>, <wangfengyu@hygon.cn>,
 	<yingzhiwei@hygon.cn>, <justin.he@arm.com>
-Subject: [RFC PATCH v2 05/23] sched/topology: Introduce a macro to traverse LLC inside node
-Date: Thu, 27 Aug 2026 20:27:58 +0800
-Message-ID: <20260827122816.756234-6-wujianyong@hygon.cn>
+Subject: [RFC PATCH v2 06/23] sched/topology: Add sd_node for the NODE sched domain
+Date: Thu, 27 Aug 2026 20:27:59 +0800
+Message-ID: <20260827122816.756234-7-wujianyong@hygon.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260827122816.756234-1-wujianyong@hygon.cn>
 References: <20260827122816.756234-1-wujianyong@hygon.cn>
@@ -88,14 +88,14 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.20.52]
 X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
+X-Stat-Signature: uiywz9qot74a5kxw1refd1eetbzqjr6i
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BA096C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9E672C000B
-X-Stat-Signature: 9axm4346y4zdo1kwjfmgwym6kspw3wtw
-X-HE-Tag: 1787833998-76004
-X-HE-Meta: U2FsdGVkX181+akb4Y9rrKKSHEigw7cnMYB0rApcJazDlt8HvFKmUSQ/MyBrwjPgUJ0i0D21WiopGMswReDxZ2Bml2D2l8DV0AUDB7TSStjM/hxF/d/9cnPDJDlOmn8utgdFcXlDkXpFhmtaldRb52ep0hKDH4qBS1UgOB4MpguxNkPYaWz/yKGOyNeo2Ooklu8PmhfBZGdCfeK2KKLq2r7rmTA54RM1TCrUI8tXzugk6aFUAZGd8xuuyrIBZaMxELbvLL8VF6E8MfbD5jyiVIRjrsbOMiufjr3IpA9DCNf5k3pbs4L4pTgtsoFI7yU+Myoq/p8trKQUkLV43uQ7n2/1Cjs7rrbegx2NKuL1aFn+BhPUMfPDVrAaOOgn0xWpcoq2PfDdrwDGOkw4PJVbHHsOwP66zrKGKisenMrXxprQNeNv/HnOxW6t+ktr2K9wR1th1RSLKqXcj0kIWITIUOCFp1Dz3AkXRiCjtP3H4gxKGIwToN6T4ytaV8ZEC8IdgO5uAZsk4U6EjAE4Vun4ncecvuPCRhQSYH2uwOY5NPa1DPdBYd2EWh4ybgETOPGjhh7KZI1T/dUpQrvg43G5NDGhdAf/Uvnc0CMrcFCnmj99fwndLer9WPHTLg6Zlo6IkgernNWVyyNveLmw94mxvziM1qFfkTYWnq4rq4hlkOTAKInFv/wU9KmdvK+GPFwePj/eBI4Iwacps3Kva7ptjfJoVf2e5g7JfMkhKPn3TMi2YHuWjqIuU92KoFL6cu1AMqqO3a+gCRFRbCbwV1h28cyGxumO2vTAUws/Vdu3nhGzOUOGXTMj8SYvD/1B+SV1ysiP0wgh3d3JZcn7+SDaFLZ1/0odKNDsXgnp1PxD5WcaCVjHfairEmm+arIQtXWQlzzk2kEleH4HnNU2JtOsTnfYh+k5r2ldYQ8DvnxooccNNJozw2z17k10wI8br7AX+tfhSYhZoYVK98Y+ENb
- QrKgDbuw
- yt06P744oZuzUyES8UjoWWuiJYAWcfbR2tgJMLvo+1a0xW6U0SgQOaWfO9Q06oFfF+8dtTGrxuGoG7Kp/m+Vqk5EAPsT3QqCEG9aKlxD/+OeQTU2wDvdn/Mynkvu8am43DLZH8BUDyTy1rNW9eJWYZ7CMN5JFciT6zs50ZIXTmUYdHu992pj1vbVMr4+JXJ5KIY5DOHkP8Rzkzp/oBIXiWSw5yhsnw7GP3ltKgeUWo0HK8dkYBDwOkjT1kJsJ/M02MaxHK25tUZqpbIrkdnq02dnXfWlX3L57YGA/
+X-HE-Tag: 1787834001-627178
+X-HE-Meta: U2FsdGVkX18M9aLNpiXzxhDjRQH5qpWIU4VnsJIAYtJVWHYd6SVZ5jOXNYDAf+qenaMwHHisuApvO6Tm5wh7xaQAtkyfKpw/+eupyQ450ZP4VrXuuC4mYftVzLR+aTvhL6UWvFgW7yM4OYvOdVtZB+cE0Y0Z0uUJApF+xHuE2S3wLIJEoL8tA/J5zuQzuGCeehnnlZeiFyNezbJbnChgT+Q9paNIDGdNHF2cmfKxRRLDxKcVXVn/puHXbkFqXKZBNQcTixpp4AtSNjOcO3awBTTLptkAKvJw+uESTEnTkN0V/ELiQZ91sXxrZpOBpsj2Yg1iLNXdWfhEockaI86pvUSQ1PNEG/VnNIyrRzrkfPxairbQ8a9LLGAxcpLqO6wRuzGjt9ndDPx5TlnwE3z0YRT0Oj+XJTTSAY15/yJIjqbfWuWZILDnWLoYmq6ta1cjjCe6qlzfcjHdNrcNFJ+07M5HILH9y5Hv51Vpp/JxYZY5uviDMfXtCmDzItvHCup/Wv7+WFA8pf4KVX7P7vHN7AZmVLnFKgC1RmGZdYs5Rhds0/zsSriwUgHfJE6JCj8ib/6BWqWAyH18YGWs7H6458IACRzYp47vVJoLSLy8qr0bud8I0ibPWwHsy3fZyPXkYSHDCRIuZpTPfHA1xcbPdcqgI3dWxDaI3KVADSfT5nmqlqRd7uHIevCDJtb06TbsiM7lNwkTThziMoq/zhdbKSO4NNGf6sIZL/Y5m9F630CP0umEeMi7300VWfPfpS6BJ337r7zUMzsQ/STeIRKaTCTwy9SvNPkOkloYaFAoCXOaSgeE2Bskfkn/fJcmdJl/aS7lVZBAFFyH52HuEyJOQ1ojqvqKBGnSjDscMGnRN0w4rn974xLgqohgT023M7jPbi/jJfDDBmngY5cFlpbR8eqLNqJShtCou2Ykq0uIPHZTnmeSTJJBSVWjmYEbLsj/Kn1931MljWy0D8Ya1rR
+ awqtME9A
+ qREN9nA1gqUjBFjIjA3GcKGdGz94m1sjD9gSkX1lBMACwTje7Z1w2AmIU7RWRVmCMA0sMs0w9XFasX1VZp98FrESTuaulQ1+9QO9HhO60Y90b12e1sKKrrvKK30K+BKFj0X/lDfQg4O6rRZQHhai6/0zlrUHQFJYG69dat4tcHJx3gUGRC0exNi1f3YJnCXXFXtsmDig0nAjc256KQuQiuOqf+yxIc5fV73Mo0Xufcd/Y9xnlDRRayI/lNpQXOZ4viezAU9VKsuoMCmsSwN82cG67TbSyqElFlW7WrRTxGyOZ1KOarDrb9GpXMiFPouFxzpmPvjed0QNOm+QJ3Ti/fGKGdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,294 +103,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a macro to traverse LLC only inside a node. Give a node id, this
-macro can return the LLC cpumask in the order based on the LLC distance
-construct in the previous patch.
+There is no straightforward way to retrieve the NODE-level sched domain,
+which will be used in subsequent patches. To simplify this, add a per-CPU
+variable `sd_node` for convenience.
 
 Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
 ---
- kernel/sched/sched.h    |  14 +++
- kernel/sched/topology.c | 214 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 228 insertions(+)
+ kernel/sched/sched.h    |  1 +
+ kernel/sched/topology.c | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 88b71e0f5ef0..38453a78c885 100644
+index 38453a78c885..3d3f1d40a672 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -4124,6 +4124,20 @@ extern int sched_node_order_at(int cpu, int idx);
- 	     ((node) = sched_node_order_at((cpu), __sn_idx)) >= 0;	\
- 	     __sn_idx++)
- 
-+extern int llc_node_count(int node);
-+extern const struct cpumask *llc_node_span_by_dist(int node, int index, int *llc_out);
-+
-+/*
-+ * Walk each individual LLC belonging to NUMA node @node, nearest-first
-+ * by the same-node-only llc_intra_node_distance() ordering instead of
-+ * the plain ascending llc_id order of for_each_llc_in_node().
-+ */
-+#define for_each_llc_node_span(node, span)					\
-+	for (int __lns_idx = 0, __lns_nr = llc_node_count((node));		\
-+	     __lns_idx < __lns_nr &&						\
-+	     ((span) = llc_node_span_by_dist((node), __lns_idx, NULL)) != NULL; \
-+	     __lns_idx++)
-+
- #endif
- 
- void sched_domains_free_llc_id(int cpu);
+@@ -2197,6 +2197,7 @@ DECLARE_PER_CPU(int, sd_llc_id);
+ DECLARE_PER_CPU(int, sd_share_id);
+ DECLARE_PER_CPU(struct sched_domain_shared __rcu *, sd_llc_shared);
+ DECLARE_PER_CPU(struct sched_domain_shared __rcu *, sd_balance_shared);
++DECLARE_PER_CPU(struct sched_domain __rcu *, sd_node);
+ DECLARE_PER_CPU(struct sched_domain __rcu *, sd_numa);
+ DECLARE_PER_CPU(struct sched_domain __rcu *, sd_asym_packing);
+ DECLARE_PER_CPU(struct sched_domain __rcu *, sd_asym_cpucapacity);
 diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index a47ed44f7b1f..eaaca6c9a805 100644
+index eaaca6c9a805..46ae1f94e9f5 100644
 --- a/kernel/sched/topology.c
 +++ b/kernel/sched/topology.c
-@@ -6,6 +6,7 @@
- #include <linux/sched/isolation.h>
- #include <linux/sched/clock.h>
- #include <linux/bsearch.h>
-+#include <linux/sort.h>
- #include "sched.h"
+@@ -679,6 +679,7 @@ DEFINE_PER_CPU(int, sd_llc_id) = -1;
+ DEFINE_PER_CPU(int, sd_share_id);
+ DEFINE_PER_CPU(struct sched_domain_shared __rcu *, sd_llc_shared);
+ DEFINE_PER_CPU(struct sched_domain_shared __rcu *, sd_balance_shared);
++DEFINE_PER_CPU(struct sched_domain __rcu *, sd_node);
+ DEFINE_PER_CPU(struct sched_domain __rcu *, sd_numa);
+ DEFINE_PER_CPU(struct sched_domain __rcu *, sd_asym_packing);
+ DEFINE_PER_CPU(struct sched_domain __rcu *, sd_asym_cpucapacity);
+@@ -721,6 +722,19 @@ static struct llc_local_rank_topology __rcu *llc_local_rank_topo;
+ static void rebuild_llc_local_rank(int size);
+ #endif
  
- DEFINE_MUTEX(sched_domains_mutex);
-@@ -698,6 +699,7 @@ static int			*sched_numa_node_distance;
- #ifdef CONFIG_SCHED_CACHE
- static int __rcu *llc_to_node_map;
- static void rebuild_llc_node_map(int size);
-+static void rebuild_llc_aggr_windows(int size);
- static int __rcu *sched_cache_node_dist_matrix;
- static int sched_cache_node_dist_size;
- static void rebuild_node_distance_matrix(int size);
-@@ -969,6 +971,24 @@ int llc_intra_node_distance(int llc1, int llc2, int node)
- 	return (rank1 + rank2) % k + 1;
- }
- 
-+/*
-+ * Number of LLCs in @node, sourced from llc_local_rank_topo
-+ * (rebuild_llc_local_rank()).
-+ */
-+static int llc_local_rank_node_count(int node)
++/* Get sched domain by its name */
++static struct sched_domain *get_sched_domain_by_name(int cpu, char *name)
 +{
-+	struct llc_local_rank_topology *topo;
-+	int count;
++	struct sched_domain *sd = NULL;
 +
-+	rcu_read_lock();
-+	topo = rcu_dereference(llc_local_rank_topo);
-+	count = (topo && node >= 0 && node < topo->nr_node) ?
-+		topo->node_count[node] : 0;
-+	rcu_read_unlock();
++	for_each_domain(cpu, sd) {
++		if (!strcmp(sd->name, name))
++			break;
++	}
 +
-+	return count;
++	return sd;
 +}
 +
- static void rebuild_llc_node_map(int size)
+ static void update_top_cache_domain(int cpu)
  {
- 	int *new_map, *old_map;
-@@ -1434,6 +1454,7 @@ static bool alloc_sd_llc(const struct cpumask *cpu_map,
- 	rebuild_node_distance_matrix(nr_node_ids);
- 	rebuild_node_order(nr_node_ids);
- 	rebuild_llc_local_rank(max_lid + 1);
-+	rebuild_llc_aggr_windows(max_lid + 1);
- 	return true;
- err:
- 	for_each_cpu(i, cpu_map) {
-@@ -2585,6 +2606,199 @@ const struct cpumask *tl_mc_mask(struct sched_domain_topology_level *tl, int cpu
+ 	struct sched_domain_shared *sds = NULL;
+@@ -753,6 +767,9 @@ static void update_top_cache_domain(int cpu)
+ 	 */
+ 	per_cpu(sd_share_id, cpu) = id;
  
- #define llc_mask(cpu) arch_llc_mask(cpu)
++	sd = get_sched_domain_by_name(cpu, "NODE");
++	rcu_assign_pointer(per_cpu(sd_node, cpu), sd);
++
+ 	sd = lowest_flag_domain(cpu, SD_NUMA);
+ 	rcu_assign_pointer(per_cpu(sd_numa, cpu), sd);
  
-+#ifdef CONFIG_SCHED_CACHE
-+/*
-+ * For each node we remember where its slice of the flattened per-node
-+ * LLC-id list (node_llc[]) starts (used by the for_each_llc_in_node()
-+ * iterator; per-node LLC counts come from llc_local_rank_topo, see
-+ * llc_local_rank_node_count()). We also cache each LLC's own cpumask
-+ * (llc_span[]).
-+ */
-+struct llc_aggr_topology {
-+	int nr_llc;
-+	int nr_node;
-+	int *node_offset;		/* [nr_node]: node's slice start in node_llc[] */
-+	int *node_llc;			/* [nr_llc]: flattened per-node LLC ids, ascending */
-+	int *node_llc_by_dist;		/* [nr_llc]: same slices as node_llc[], sorted by
-+					 * llc_intra_node_distance() from each node's
-+					 * lowest-id LLC instead of by id
-+					 */
-+	struct cpumask **llc_span;	/* [nr_llc]: cpumask of each LLC */
-+};
-+
-+static struct llc_aggr_topology __rcu *llc_aggr_topo;
-+
-+static void free_llc_aggr_topology(struct llc_aggr_topology *topo)
-+{
-+	int i;
-+
-+	if (!topo)
-+		return;
-+
-+	if (topo->llc_span) {
-+		for (i = 0; i < topo->nr_llc; i++)
-+			kfree(topo->llc_span[i]);
-+		kfree(topo->llc_span);
-+	}
-+	kfree(topo->node_offset);
-+	kfree(topo->node_llc);
-+	kfree(topo->node_llc_by_dist);
-+	kfree(topo);
-+}
-+
-+static void rebuild_llc_aggr_windows(int size)
-+{
-+	struct llc_aggr_topology *topo, *old;
-+	int *seen;
-+	u8 *seen_llc;
-+	int cpu, llc, node, i;
-+
-+	if (size <= 0)
-+		return;
-+
-+	topo = kzalloc_obj(*topo);
-+	if (!topo)
-+		return;
-+
-+	topo->nr_llc  = size;
-+	topo->nr_node = nr_node_ids;
-+	topo->node_offset = kcalloc(nr_node_ids, sizeof(int), GFP_KERNEL);
-+	topo->node_llc    = kcalloc(size, sizeof(int), GFP_KERNEL);
-+	topo->node_llc_by_dist = kcalloc(size, sizeof(int), GFP_KERNEL);
-+	topo->llc_span    = kcalloc(size, sizeof(struct cpumask *), GFP_KERNEL);
-+	seen = kcalloc(nr_node_ids, sizeof(int), GFP_KERNEL);
-+	seen_llc = kcalloc(size, sizeof(*seen_llc), GFP_KERNEL);
-+	if (!topo->node_offset ||
-+	    !topo->node_llc || !topo->node_llc_by_dist ||
-+	    !topo->llc_span || !seen || !seen_llc) {
-+		kfree(seen);
-+		kfree(seen_llc);
-+		free_llc_aggr_topology(topo);
-+		return;
-+	}
-+
-+	/* Cache each LLC's cpumask. */
-+	for_each_possible_cpu(cpu) {
-+		llc = per_cpu(sd_llc_id, cpu);
-+		if (llc < 0 || llc >= size || seen_llc[llc])
-+			continue;
-+		seen_llc[llc] = 1;
-+
-+		topo->llc_span[llc] = kzalloc(cpumask_size(), GFP_KERNEL);
-+		if (!topo->llc_span[llc]) {
-+			kfree(seen);
-+			kfree(seen_llc);
-+			free_llc_aggr_topology(topo);
-+			return;
-+		}
-+		cpumask_copy(topo->llc_span[llc], llc_mask(cpu));
-+	}
-+
-+	for (i = 1; i < nr_node_ids; i++)
-+		topo->node_offset[i] = topo->node_offset[i - 1] +
-+					llc_local_rank_node_count(i - 1);
-+
-+	/* Fill node_llc[] (ascending llc_id per node). */
-+	memset(seen_llc, 0, size * sizeof(*seen_llc));
-+	for_each_possible_cpu(cpu) {
-+		llc = per_cpu(sd_llc_id, cpu);
-+		if (llc < 0 || llc >= size || seen_llc[llc])
-+			continue;
-+		seen_llc[llc] = 1;
-+
-+		node = llc_to_node(llc);
-+		if (node < 0 || node >= nr_node_ids)
-+			continue;
-+
-+		topo->node_llc[topo->node_offset[node] + seen[node]] = llc;
-+		seen[node]++;
-+	}
-+	kfree(seen);
-+	kfree(seen_llc);
-+
-+	/*
-+	 * fill node_llc_by_dist[], the same per-node slices as
-+	 * node_llc[] above but sorted ascending by
-+	 * llc_intra_node_distance() from that node's lowest-id LLC (the
-+	 * same one node_llc[]'s slice starts with) instead of by id. Used
-+	 * by for_each_llc_node_span() to walk a node's own LLCs
-+	 * nearest-first, unlike the plain id order of for_each_llc_in_node().
-+	 * llc_intra_node_distance() guarantees no two same-node LLCs tie
-+	 * from a fixed anchor's point of view, so this sort is unambiguous.
-+	 */
-+	for (node = 0; node < nr_node_ids; node++) {
-+		struct dist_key *cand;
-+		int base = topo->node_offset[node];
-+		int cnt = llc_local_rank_node_count(node);
-+		int anchor, k;
-+
-+		if (cnt == 0)
-+			continue;
-+
-+		anchor = topo->node_llc[base];
-+
-+		cand = kmalloc_array(cnt, sizeof(*cand), GFP_KERNEL);
-+		if (!cand) {
-+			free_llc_aggr_topology(topo);
-+			return;
-+		}
-+
-+		for (k = 0; k < cnt; k++) {
-+			int llc_id = topo->node_llc[base + k];
-+
-+			cand[k].id = llc_id;
-+			cand[k].dist = llc_intra_node_distance(anchor, llc_id, node);
-+		}
-+
-+		sort(cand, cnt, sizeof(*cand), dist_key_cmp, NULL);
-+
-+		for (k = 0; k < cnt; k++)
-+			topo->node_llc_by_dist[base + k] = cand[k].id;
-+		kfree(cand);
-+	}
-+
-+
-+	old = rcu_dereference_protected(llc_aggr_topo,
-+					lockdep_is_held(&sched_domains_mutex));
-+	rcu_assign_pointer(llc_aggr_topo, topo);
-+	synchronize_rcu();
-+	free_llc_aggr_topology(old);
-+}
-+
-+/* Return the number of LLCs belonging to NUMA node @node. */
-+int llc_node_count(int node)
-+{
-+	struct llc_aggr_topology *topo = rcu_dereference_all(llc_aggr_topo);
-+
-+	if (!topo || node < 0 || node >= topo->nr_node)
-+		return 0;
-+
-+	return llc_local_rank_node_count(node);
-+}
-+
-+/*
-+ * Return a pointer to the cached cpumask of the LLC at position @index
-+ * within NUMA node @node, ordered ascending by
-+ * llc_intra_node_distance() from that node's lowest-id LLC.
-+ */
-+const struct cpumask *llc_node_span_by_dist(int node, int index, int *llc_out)
-+{
-+	struct llc_aggr_topology *topo = rcu_dereference_all(llc_aggr_topo);
-+	int llc;
-+
-+	if (!topo || node < 0 || node >= topo->nr_node)
-+		return NULL;
-+	if (index < 0 || index >= llc_local_rank_node_count(node))
-+		return NULL;
-+
-+	llc = topo->node_llc_by_dist[topo->node_offset[node] + index];
-+	if (llc_out)
-+		*llc_out = llc;
-+
-+	return topo->llc_span[llc];
-+}
-+#endif /* CONFIG_SCHED_CACHE */
-+
- const struct cpumask *tl_pkg_mask(struct sched_domain_topology_level *tl, int cpu)
- {
- 	return cpu_node_mask(cpu);
 -- 
 2.34.1
 
