@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1838AC61DBD
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 02:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E54C61DBD
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 02:49:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE2336B008C; Wed, 26 Aug 2026 22:48:03 -0400 (EDT)
+	id 438516B0095; Wed, 26 Aug 2026 22:49:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB9036B0092; Wed, 26 Aug 2026 22:48:03 -0400 (EDT)
+	id 40DDB6B0096; Wed, 26 Aug 2026 22:49:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD0536B0095; Wed, 26 Aug 2026 22:48:03 -0400 (EDT)
+	id 34BF66B0098; Wed, 26 Aug 2026 22:49:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD7F96B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:48:03 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 572BDA3992
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:48:03 +0000 (UTC)
-X-FDA: 85145514846.27.4656BF5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7ACA7160002
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:48:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=15yFLZOn;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 121146B0095
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:49:23 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E7C9120303
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:49:22 +0000 (UTC)
+X-FDA: 85145518164.28.2C3B501
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 50E2280003
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:49:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hzilSf0A;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787798881;
+	s=arc-20220608; t=1787798961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o6ZWZ4mnze1+TrAWnC1NwqdFLlt5leWgM68OC2nnBwk=;
-	b=l1bPH7xTlVizENoIbDQhdyC1nxiM07tuLj31m1Hxl9EYTYbc57AVGfeBpScejA1d0VmowK
-	dyvlA7rM/aRyQAXIsgOEVr858lQzCnQqksGrPvWp1JpkH8hTcwwjz7+2ZF/tGoD/zREHUt
-	oSTtsJHrxAjSW/b5J/99FUUc+4T0sh8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787798881;
-	b=4vM0ymtgBASHC3KvpUrwiw652uoyWrAzxDye+ipYUFa2EDBKyOrVPMEpn6QbQjLknNe4aR
-	oZtCUVgcz7RFuP+WQC3kSnSArt+SLcg497/lPp82J6U66mk4BX/5L2Ga23FqJc87Pe9VEv
-	XQx7mQzYUHiXOQqfbwGeUxuI72Xlh7k=
+	bh=mtxyjDR/AkeJ1U6spdGadiXVy/JeYOrATb8gpHS2GT0=;
+	b=dgnI0Bw0rq3dTtOfvs5tO68L1Wo8DpkoUx6nT60JbKkATF/EkQlE8KtVlaiOEw1PH3WNNn
+	F7hZc10XVdsiCi6/zWZkE6ElTHeZSU98e+k5THM+9HS1fMQ4BpkLQHRH0Taem/k/wR8G7K
+	qFa3IDtaGpHcpS22cHe/4fA8qATsTvc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=15yFLZOn;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8ADE8436F2;
-	Thu, 27 Aug 2026 02:48:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4581F000E9;
-	Thu, 27 Aug 2026 02:47:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787798880;
-	bh=o6ZWZ4mnze1+TrAWnC1NwqdFLlt5leWgM68OC2nnBwk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=15yFLZOn+kXLxVcliUfnTug4xm+hRx2/BH3WZyMFH2Al0IreNPyG4PdoKEWzJdKT/
-	 g+5wT+tzanMat/qnV1LX/Y/JHiI7lukHDMZkP7ryzp9k6sSZMnw02ca/Sq8FQ0SgnS
-	 KmNPPVhUs7kA0irKvJPFD/u0n/o+9re3picuLWag=
-Date: Wed, 26 Aug 2026 19:47:59 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- steven.sistare@oracle.com, vivek.kasireddy@intel.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH] mm/hugetlb: fix resv_huge_pages double decrement in
- memfd error path
-Message-Id: <20260826194759.88487180eebf728c1df08f14@linux-foundation.org>
-In-Reply-To: <20260825021013.25672-1-hongfu.li@linux.dev>
-References: <20260825021013.25672-1-hongfu.li@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7ACA7160002
-X-Stat-Signature: 8ak9f7e5rpzrhjm34u3jmqfdrqpfr1is
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hzilSf0A;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787798961;
+	b=qPUhqif74hkTfP1aN4ZGxleDhbmHu1rjBUGwLmR43/vXyjkESw6KGn6xfz1Op+pQiMKPOB
+	M4+Jl97HkVvYoN9iKxY9jp+IQqYfBIf86Z8a03GkLvxLFyefURP+6YBaU4Cmbcwv5pVEPt
+	l4/HDMaNkIltUqBVDp2tx7a6y31CY9Q=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mtxyjDR/AkeJ1U6spdGadiXVy/JeYOrATb8gpHS2GT0=; b=hzilSf0AFvb2ZflmV2+sTecXFZ
+	c+ZiHEEu9zIe5Hl7/d3U4hFO0C2IUv96B+a0S8z0KpSHG1dEluzFwpJzxUXd0IkP4Cqg1MOsrsksE
+	ZCRIJJzwZ+ocO2aS1OOg9+m/t1TvcmIY5xGgYQ0lvGLlnGMs18TxvYWj5p6nhZdne59VSDSjCma8A
+	/F8Svk2oFlkIboL8M6JbZCyDHzIezjb/Rq9PO/81mpeDwn3X1SQ+NcyPozPj0WcUlsOSyj8T0/W0x
+	0mK2QmVZxJ3z2SkU8c85t1fE3jIzKOI8CI5YZ18ZdpAwqzSeWVyhM1dw5MmJXM0xV/wSL+o76iAOl
+	eqmCTZbQ==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wzQB1-00000003KHf-19Y2;
+	Thu, 27 Aug 2026 02:49:15 +0000
+Date: Wed, 26 Aug 2026 22:49:12 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, driver-core@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] drivers/base, mm: move arch_numa.c to mm/
+Message-ID: <xzndraf66344jbze5gfst2ugz5plr4cqsgv7hiw4w2vefqekn6@fkaqeczif5cb>
+References: <20260806-arch-numa-v1-1-968ec128121e@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260806-arch-numa-v1-1-968ec128121e@kernel.org>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787798881-919335
-X-HE-Meta: U2FsdGVkX1/+3PL4d+2Rtx+LdpCOlRxUBx55Uvs/aybhNmms00kSbVw60woDc6h8HWOwJ2JLK0v4zgUwKkIwsVT01CRIB1DvYdeUgS0HkxMJJNJVJvpw2ngeEvWLJXrlk04WS56y02eXz/06QsVo4nubIWtuukJjaREomVl9BXahao/k72CMIKe91rbx78sh02pM6sRcloUuZ7iw9jsGmky/HvUQ1Mgnoe7QABcMztLf3g4Q6Fo7ditiT1f/pL4zR/1uk7Y8C4nV6XytjdDV9UjpXJJDuZB3BBAUk0KWngXR/GHaXBU+bxLYdKIXW3TF7n9u4e8zHNAhq6wowM6uBKU9RQjfZbEv6LCYYvXDwu3gjEssxJacPfkIe+tgXuXl1eFiuqsVqiRyZYILizQuHvP1VbsUd9U65549QY+MjAeTH/s0+BCGguwKumJInYoSey/CDaczRKxKyu6OhiIMhX2kyqIE++IrIETXBNBKKq7emEYOHR+K/O8Bx78fMwQf2RmGlq9CObUw+rJGbqoa7EU2mAMdn1JHQbVvM12LqLtZAunzR8PbfVfUZCkbaIpVrQmMzOLcFlRn/tz+J72K/p277K4UA1W/WxiTr49cSys+TNKPuBrIKQd8fo6zX59TGL2zee3KO2RK3VVqFt2fY7fL2KrlBs7iMbhqxKYBW99yaKTtGeyf5cchayHBCzf9SI15anwhwJg3YBi0eQgZ9ObjYtTinipRKGouabRpXvsyEupsI/z3wu3BHVjlTtxBBGO0WRxxOtDp9X6pufle9WfBN8kMke/RKkzCasXXQ+IEqUUdYiRFRWJalVXvBJYbp2cc+WxIeqvu9nyYdoMIGVONlo9DEvzvogBKIxP5uOZkAXWLD/36TYOpJkzzZTSsG11LMesAlX66mVf7n55XSKSD6Fong/bwEHtkq1ut83w7mNABGcQ283af23tx0+LVlB2gTUryy4VtjL4cD3Z
- ZNOTMPSn
- TelJWOkEXjYyMIFScvjQ7NDjIMRNirar8NEBL3Omhdgk8pWYP4qV0aQngA6ownQrcRly79A7bDxQvIO9LLjdnleeP9EPHlyfRIg4R+nq4pDKSqtj2LDRK22fRDZShzqwsXf1pk/LiOckpaQGOW90KtmeABdNwTVJtvpAXSxdMLb0gO1fvoCpGlD6VG033bW+ZXbVZRQUIfQug5hOBCVD5klxSDqWk8W1ogLVswjA6VnQ2p07VGiMXkrvLWqu9tY7kpuj6y4PjUHHOR+t1gwuwrYjqUEOn2NUA7vh4ci3xS5C+ela0s1c8rGmkCRv2h92jX61hDz+U7XB5oIzofEDtt/UtmOK1Iq/8/pEl
+X-Stat-Signature: uusk13a41h65d36bharyjexxek7ywfyt
+X-Rspamd-Queue-Id: 50E2280003
+X-HE-Tag: 1787798960-63458
+X-HE-Meta: U2FsdGVkX187OWUq7HBDYUg4ZfohgjTEpl5YozTSrdujvRhDp7mCmgHfti2UyhuX75a6tJiEqM6qMXN/DOKWd3/CWbhzhg17/8F13WLE/Q06CPMCC48KMLLVh53EAcrlAkllJm4bwBR9Ph3hSu1mcVJI58An+NwyxD28MUC79bo1geRolaYdEqRvnN+o5EhKDXHh7bAteApa6SdbYw8+KJhj7LexJsNSqcTRn3ZL0uPyLmYFM5i4RszMWqvi/9LsIW3y6WrXrvpzH1kbNdEuZnD8V0pQl4U4jc1pfJN95oLWaKEzic+xx+19cBidJvCrsV+1YCAYTHiHeokPbMvnHMT6iQl0Wv9JNDIV07CZOQUWUHBLsp6mpSfcKxo/m6QbzngjpxxTlUN4kCY+W0Fo7v95A+/YkUZ7uB9kjtfn8RWNTZDuVJsn33kFZdIZmPN925C12Ds5Gf8n648NlNQH/Wj9rt9z0NVih//iL3JPQlw+yGU3EBiH72YlJ61iSh7yMB6USaT7zNwJFYMzfqWfsIyYi5S3w6rwkHvkLKLI/PNVrkC4sk//RMnPIZ4ItOZQ9Vt7ibUAeWj83fWRTSQ/BfQutpkWG42fjmPkhGVCbXVyXU1CN3yKrqCJkl0nPEjU16OUuDllK7LPL7MzQu055p+PGcJd9cpSd4nGyVNHi5b2sDx9rXpZFlucUNFX+444ZjaFbu7PzO9jFASmVbrhgHySoe1MN0jgNhiIBpSavjb2PXFiLA+/g9ctsr/X+oAr81I7DMB4D3YZUWtciOKHAYrHdhAf34T8OIxLolTgLb8I57scvHI9a6uuWCUXjEqbu6H+o5KoAAqYmIz3fMgqHVjeRC3V3xGJcCNDhTcBplyGl1tm5BhdcBNvtlhBcWnx/G1ysmtb+k787swc9lz/yDEuwNkmOflSA4n0+OAyVMztufiEF4SkYQyxZpNMQvtRRibB07IidRLTAMDBnyu
+ H6GZNNOM
+ E3fp4ZM61O8WRfPdQ8NeexHxa7VKe6W/NQUs9u2YnSvWv69m8UbIv136zfeM5Jy7NjjlmPlWF9gn5/QEzismbkg6xwdVMgtuxwJfw7MKV91yj+DjEe8gZV0yyPFgauvZnK5a6m98APpcQBd7oEUkCXZTgzzK4YjaVRhg1dDnXa82yruBWjpfTXlZMVB0tcWHT0oGihK2wFjFzIn11iAEg++eSmf3BCAetsEGf+K7y04aqByDP27uOCtnqUo56DDxCB8/8I04BOzoceKJIRbpQiZLIeVGLiMjeknaEMig+agaWQ91JZjBHrx5VvkVvsIeZWpMVMRq1oG4ep3JpB7gb4wWUlW1DrR3aOKXEjDnuuokM22G4A1kiv/tOhiIx4WMmJusKEg7PPUxDfyAyeG1oxYNrJkhSqH+x5gQy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,103 +97,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026 10:10:13 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
+On 26/08/06 09:58AM, Mike Rapoport (Microsoft) wrote:
+> arch_numa.c implements boot time discovery and initialization of NUMA
+> topology on architectures that select GENERIC_ARCH_NUMA (currently arm64
+> and riscv).
+> 
+> Since this is step in the initialization of the memory management
+> subsystem, it's logical to have arch_numa.c in mm/ alongside numa.c,
+> numa_memblks.c and numa_emulation.c.
+> 
+> Move arch_numa.c to mm/ and add its F: entry to "MEMBLOCK AND MEMORY
+> MANAGEMENT INITIALIZATION" in MAINTAINERS.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> From: Hongfu Li <lihongfu@kylinos.cn>
+Acked-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+
+> ---
+>  MAINTAINERS                      | 1 +
+>  drivers/base/Kconfig             | 7 -------
+>  drivers/base/Makefile            | 1 -
+>  mm/Kconfig                       | 7 +++++++
+>  mm/Makefile                      | 1 +
+>  {drivers/base => mm}/arch_numa.c | 0
+>  6 files changed, 9 insertions(+), 8 deletions(-)
 > 
-> alloc_hugetlb_folio_reserve() decrements h->resv_huge_pages when
-> dequeuing a folio, but unlike the use_global_reservation handling in
-> hugetlb_alloc_folio(), it does not set HPageRestoreReserve on the folio.
-> 
-> Its sole caller memfd_alloc_folio() pre-allocates a reservation via
-> hugetlb_reserve_pages() before allocating. When hugetlb_add_to_page_cache()
-> fails, folio_put() drops the folio without HPageRestoreReserve set, so
-> free_huge_folio() does not restore the reservation. The subsequent
-> hugetlb_unreserve_pages() on the err_unresv path decrements the counter
-> a second time, leaving resv_huge_pages off by one for every failed
-> allocation.
-> 
-> Set HPageRestoreReserve when consuming the reservation in
-> alloc_hugetlb_folio_reserve(). On the error path, free_huge_folio() then
-> restores the reservation before hugetlb_unreserve_pages() releases it.
-> The success path is unaffected, as hugetlb_add_to_page_cache() clears
-> the flag once the folio is added to the page cache.
->
-> ...
->
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -2178,8 +2178,10 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 5114e6db7307..465b64f8e93c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16880,6 +16880,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
+>  F:	Documentation/core-api/boot-time-mm.rst
+>  F:	include/linux/kho/abi/memblock.h
+>  F:	include/linux/memblock.h
+> +F:	mm/arch_numa.c
+>  F:	mm/bootmem_info.c
+>  F:	mm/memblock.c
+>  F:	mm/memtest.c
+> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+> index f7d385cbd3ba..1d93bfc34490 100644
+> --- a/drivers/base/Kconfig
+> +++ b/drivers/base/Kconfig
+> @@ -239,13 +239,6 @@ config GENERIC_ARCH_TOPOLOGY
+>  	  appropriate scaling, sysfs interface for reading capacity values at
+>  	  runtime.
 >  
->  	folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask, preferred_nid,
->  					       nmask);
-> -	if (folio)
-> +	if (folio) {
-> +		folio_set_hugetlb_restore_reserve(folio);
->  		h->resv_huge_pages--;
-> +	}
+> -config GENERIC_ARCH_NUMA
+> -	bool
+> -	select NUMA_MEMBLKS
+> -	help
+> -	  Enable support for generic NUMA implementation. Currently, RISC-V
+> -	  and ARM64 use it.
+> -
+>  config FW_DEVLINK_SYNC_STATE_TIMEOUT
+>  	bool "sync_state() behavior defaults to timeout instead of strict"
+>  	help
+> diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+> index 8074a10183dc..435710f643a5 100644
+> --- a/drivers/base/Makefile
+> +++ b/drivers/base/Makefile
+> @@ -25,7 +25,6 @@ obj-$(CONFIG_PINCTRL) += pinctrl.o
+>  obj-$(CONFIG_DEV_COREDUMP) += devcoredump.o
+>  obj-$(CONFIG_GENERIC_MSI_IRQ) += platform-msi.o
+>  obj-$(CONFIG_GENERIC_ARCH_TOPOLOGY) += arch_topology.o
+> -obj-$(CONFIG_GENERIC_ARCH_NUMA) += arch_numa.o
+>  obj-$(CONFIG_ACPI) += physical_location.o
 >  
->  	spin_unlock_irq(&hugetlb_lock);
->  	return folio;
-
-Thanks.  I pasted an AI-generated test case which might demonstrate
-this bug.  Requires fault-injection so I won't add cc:stable.
-
-
-Also, Sashiko might have found an accounting issue in the nearby code
-(Sashiko doesn't like hugetlb.c):
-
-	https://sashiko.dev/#/patchset/20260825021013.25672-1-hongfu.li@linux.dev
-
-
-
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/mman.h>
-#include <linux/memfd.h>
-
-/* Read resv_hugepages from sysfs */
-static long get_resv_hugepages(void) {
-    FILE *f = fopen("/sys/kernel/mm/hugepages/hugepages-2048kB/resv_hugepages", "r");
-    if (!f) return -1;
-    long val = -1;
-    fscanf(f, "%ld", &val);
-    fclose(f);
-    return val;
-}
-
-int main(void) {
-    long orig_resv = get_resv_hugepages();
-    printf("[1] Initial resv_hugepages: %ld\n", orig_resv);
-
-    /* Enable fail_function for hugetlb_add_to_page_cache via debugfs */
-    system("echo hugetlb_add_to_page_cache > /sys/kernel/debug/fail_function/inject");
-    system("echo 100 > /sys/kernel/debug/fail_function/probability");
-
-    /* Create memfd and attempt write to allocate hugetlb folio */
-    int fd = memfd_create("test_memfd", MFD_HUGETLB);
-    if (fd >= 0) {
-        /* Force allocation path which triggers memfd_alloc_folio() */
-        ftruncate(fd, 2 * 1024 * 1024);
-        write(fd, "a", 1); 
-        close(fd);
-    }
-
-    /* Disable error injection */
-    system("echo > /sys/kernel/debug/fail_function/inject");
-
-    long post_resv = get_resv_hugepages();
-    printf("[2] Post-failure resv_hugepages: %ld\n", post_resv);
-
-    if (post_resv < orig_resv) {
-        printf("[!] BUG DEMONSTRATED: resv_hugepages double-decremented by %ld!\n", 
-               orig_resv - post_resv);
-    }
-
-    return 0;
-}
+>  obj-y			+= test/
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 9e0ca4824905..410b8a0a92b9 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1469,6 +1469,13 @@ config NUMA_EMU
+>  	  into virtual nodes when booted with "numa=fake=N", where N is the
+>  	  number of nodes. This is only useful for debugging.
+>  
+> +config GENERIC_ARCH_NUMA
+> +	bool
+> +	select NUMA_MEMBLKS
+> +	help
+> +	  Enable support for generic NUMA implementation. Currently, RISC-V
+> +	  and ARM64 use it.
+> +
+>  config ARCH_HAS_USER_SHADOW_STACK
+>  	bool
+>  	help
+> diff --git a/mm/Makefile b/mm/Makefile
+> index eff9f9e7e061..fd29be716fa8 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -122,6 +122,7 @@ obj-$(CONFIG_CMA)	+= cma.o
+>  obj-$(CONFIG_NUMA) += numa.o
+>  obj-$(CONFIG_NUMA_MEMBLKS) += numa_memblks.o
+>  obj-$(CONFIG_NUMA_EMU) += numa_emulation.o
+> +obj-$(CONFIG_GENERIC_ARCH_NUMA) += arch_numa.o
+>  obj-$(CONFIG_BALLOON) += balloon.o
+>  obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
+>  obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
+> diff --git a/drivers/base/arch_numa.c b/mm/arch_numa.c
+> similarity index 100%
+> rename from drivers/base/arch_numa.c
+> rename to mm/arch_numa.c
+> 
+> ---
+> base-commit: 075b74841bd0065a3bda3440873c747938e69b68
+> change-id: 20260806-arch-numa-444bb4806114
+> 
+> --
+> Sincerely yours,
+> Mike.
+> 
 
