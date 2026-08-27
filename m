@@ -4,135 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95E27C61DC6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF11C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:15:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D0996B008C; Thu, 27 Aug 2026 11:14:49 -0400 (EDT)
+	id 49D806B0095; Thu, 27 Aug 2026 11:15:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 787C26B0092; Thu, 27 Aug 2026 11:14:49 -0400 (EDT)
+	id 44E946B0096; Thu, 27 Aug 2026 11:15:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66F106B0095; Thu, 27 Aug 2026 11:14:49 -0400 (EDT)
+	id 33CE96B0098; Thu, 27 Aug 2026 11:15:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D1716B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:14:49 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BEB33160455
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:14:48 +0000 (UTC)
-X-FDA: 85147396656.22.761A489
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CAB8620003
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:14:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m++v6WxA;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 001E46B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:15:40 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3E4B804A3
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:15:39 +0000 (UTC)
+X-FDA: 85147398798.26.386CB41
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+	by imf02.hostedemail.com (Postfix) with ESMTP id CDF3980003
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:15:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="V h8rLUY";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=elE2WPi0;
+	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787843686;
-	b=0H5i1wXB4aExAN0itQuqGoCOXLcYTvdFiT6YmEVOjNm6xoxJJ5ZcHbru8560KjIuKDJfUJ
-	AUaKoOsWoi16MuN8/nNDNUpu6ldHMcnI3Q3FQspLpiFvR7jujyv2B1bJMC3uRa6c1JxyE6
-	tSrrYcys3Cxe/nmYQ1ZsW8lDML/9sn0=
+	t=1787843737;
+	b=NA+8BE7Rc0euAvANiwioBSVz4goFOSdtFZ0McZzt+CkM0fbp1OK5BYJtitBUYI55PlkQdh
+	MChFn6CnKIQwD+NgQP4LnbfZoxLZvnjh5JdCieqBBFQMRpKH1k6M6VB2miqQZXRSPUhe2j
+	uuYJWnNDR/CEN4mnXBdfV/+TkB0/Yac=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m++v6WxA;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="V h8rLUY";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=elE2WPi0;
+	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787843686;
+	s=arc-20220608; t=1787843737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=grSlt1xNPyLL4tvyZuMrw1Jdk2v1EacQiuP4ozz0DGE=;
-	b=Mx1ca4by1MzHjDpUVMJfDdyMI0fPAZ4kYLd9IkTkxKX3IBOu0zizdzIz9uv9zD4WgJwwLr
-	Xrp/tBpn1egmUXQpMaw4esPy3bWaVpUYXviE9CKHNH+DH3FXeZlv5GhB6DFE3X/I3dpYDQ
-	ff5uiokRijZpQYsS3ZE/lZMumcEFBfE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5938403E8;
-	Thu, 27 Aug 2026 15:14:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DC11F000E9;
-	Thu, 27 Aug 2026 15:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787843685;
-	bh=grSlt1xNPyLL4tvyZuMrw1Jdk2v1EacQiuP4ozz0DGE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=m++v6WxA/LOvDEGGypW0SjlIhjyDpeNH4FgOUZVSECUZyEPqIrL3aJzZUCk5HQBio
-	 q8miAEer7XWaO7Icx7tSUxgUeD/qmK8XunegrmDOkiO+ywOSXdWOe9lDyvRPSKmw6h
-	 6Emxp+rcve0hP/PtpjlutVlCWVdF1hzvxtvnADYdP5Vp2ZXIjrchA2Quj0FNtNbI99
-	 rTTEPLM90QSiYOHtBmQbl3scHCARoDWaVwGw3V+xuoxvebbSAuA0L1/oeMYEdbNC4f
-	 MbrdOwinoGbZx29qqL1DGdRWrzHcN/Ev1D4fzE1mPC46Pg/2kAacNyKlZhXjJa4b4W
-	 nfCknChKM+o9g==
-Message-ID: <4ead5df7-f000-4087-83e4-13aae036e0b7@kernel.org>
-Date: Thu, 27 Aug 2026 17:14:40 +0200
+	bh=w7v3jZKyW5YM/dZvPHiNitrQbB/s0Wrf3eO5lZfLNvo=;
+	b=TnC8X/GFvG46nLGEU/9DNBxaBpwBEf3x4x9/1nLgK8IRRsPirQiDYg1be88YdZ5EWB14f9
+	yqFbJtF5GVT3LoOPj1P2r2BiNN+2aWhwCY8tgbYagqRZYXQ1m5btcNSsj8rF8ZdkvmfHgn
+	NjrOoZ2VhD/77dGLODXZAqmemIzmlT4=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.phl.internal (Postfix) with ESMTP id 32CEA1380023;
+	Thu, 27 Aug 2026 11:15:37 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 27 Aug 2026 11:15:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1787843737; x=
+	1787850937; bh=w7v3jZKyW5YM/dZvPHiNitrQbB/s0Wrf3eO5lZfLNvo=; b=V
+	h8rLUYAEp6IBdGqRDW3bR20Q8yA7ENN7eqrmvHy0PDCFf90onNqb9+wGJYTa3Cft
+	wskH2UNXDnn3ybOY4l86B301cTdxVJspQ6zQFuFErdpHz0oRbW2ouu65RAJ2LIeO
+	jumFfgyaZIRX3SrRcR5O1N40P1xcCzQzelzwaalbdFEJBS4Ppafs3RVwMjhfQweY
+	WIZ76jBo6ZuXnPmX/yNytavQ7yFVAy+e0gZiZ/hu5Q//VOWPKsxwq8ObkiadMO9x
+	rQH71Ga95PAQwrBhIvdT3CqKQrftcKV8kav2GYcS+egAlx5Ds9WFOeRY68RgbiS/
+	laZfB5eHrVKubPhvphQTA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787843737; x=1787850937; bh=w7v3jZKyW5YM/dZvPHiNitrQbB/s0Wrf3eO
+	5lZfLNvo=; b=elE2WPi0unuyaqdBwDmtf4TTMIehjErNAil5+mWE4WtYVeyiuLx
+	Q9KfgEX8yCLzNGhfpgBGHhSJsxjAyKKb0PLmZGK1N39Ju57niUOulvUrXF0lxkh+
+	uFZypeFwMiCT8bLoKJyEm0a/kojVzXz7lR9IrfENS0fLJBq3+4p+bypmf0V71zJR
+	6/snfMBIha9cFQkFoIePrjdotiIwPGUTgZppMkx6DEfo3pcK1DWycfc06lBTuIfQ
+	ZdQMInmIl8moFiKsbFu5J2U+bPOvn///EWpKiCEhXOxYQHzADLPKV3REpM7IS9cA
+	o9YW/iQqc2MHoGJO0UXSeKn7K0CiFDlzxGg==
+X-ME-Sender: <xms:l1SQamo3GtLojnOzVAUjlhsW__lSX8S37BnxT0hoAGRN0vwJkb3qqg>
+    <xme:l1SQajHlG1c7DmBjjUxS5NALq-jAmGXlF9QIWVthXmPKYd-mb_fbJ-Qiq5QIuqy-O
+    0V--SnEhx5QKWgQnzwyzH_tORm0bbHcmadz5LiT-yiwoEV4IEmBPZeV>
+X-ME-Received: <xmr:l1SQaiUjY-2MsoHSA-byma1BGA2z3fnXTF_Qst2Uq8y-0dudqKhFhJaDL_g>
+X-ME-Proxy-Cause: dmFkZTEK2w8SRbJqzGnH6ehcVK5N1qa5p52AX6WHPYzFNTZiHkb2XIoweUi+AenE+O52CY
+    jnx/t5shrleOg8Roeoj1Awr1mVPEkSbBBUa/blkcFR2EIeGEtMLr5YMn9gIebwPs615/jG
+    5MrlYenrv555VDhVYUXwZYPJstEhfJfeBlpC38ShgRGy3/C6X5Hx1oWf6v685LC9i8/Xub
+    KcacxxWxHv2lzAy+H4Ljqul6w7o45k9q99p0sX7icTcOkqRMR0CjAF91iJ7eOrNtOLRVbp
+    5V1FQHrNtyPXTEfWGz++lNNUongVLq06lmIl4uaGADJuKpJVtkfx1XLxdfx2hNYhnaanBo
+    rAFHBgKSVvn1SjfBcWx3CTavhB0j6bpN9SQo/qVVoSUHQN9v9gyT1/rXtqjYU/f4HLLCav
+    g83GQ5YcK1lY6rCqJSA7EOkzvjQsXy8DtMmHIP0guoihX0EID5N0XNxU4BWGLm3fKJloQo
+    Ko9zL2sSl+7XasTyo/rVRDPorv0ONc1jO9fKn0lfR03UlbViEo4krJNd8EgBHq62sMPEjY
+    Owk4itnnOOMod4qctfpyS8nD3DkjAIoi0mR2KVaMXXQb1x4dlwjitVILmOYXpvGikCh0aU
+    AnqWbyCjXHxv7uA73tPCSbi/N8o744pxlHzPZ8bpCJ8EKZji4XuwSKcsi8Lg
+X-ME-Proxy: <xmx:l1SQapfpH1PoP9-9NAVqdo8yRoSTEDpaqL2RRuKw5EeejUTp76eGaQ>
+    <xmx:l1SQapQ7jHsAy7l81qsh5lHFXyDFDC7Zp0UO6Iwey2gkRsZkGhsDkA>
+    <xmx:l1SQajALTqetQVYAVWOXM_2421xwPW2MyP_t2d5uSR6CzENCQk0ilA>
+    <xmx:l1SQanuWtsQ0DLKTXoOY7vGA0ScKlcnaamBJzsvEJE8MhPOfD-RB2g>
+    <xmx:mVSQamTGGg9Mv1BBnEqNNU8yxMe2u4A3mKUgG01VfG3wZz-04HyrAKO2>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Aug 2026 11:15:34 -0400 (EDT)
+Date: Thu, 27 Aug 2026 16:15:33 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH v3 06/18] mm/huge_memory: consolidate irq and locking for
+ folio split
+Message-ID: <apBUezypL2aITw-0@thinkstation>
+References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-6-9b43f5163238@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate_device: avoid out-of-bounds writes for
- compound folios
-To: Hui Su <sh_def@163.com>, akpm@linux-foundation.org, balbirs@nvidia.com
-Cc: ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260817120758.669807-3-sh_def@163.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260817120758.669807-3-sh_def@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CAB8620003
-X-Stat-Signature: tnjtqu711kuuktaanj6ma5zp8uezk6g7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260821-swap-thp-cleanup-v3-6-9b43f5163238@tencent.com>
 X-Rspam-User: 
-X-HE-Tag: 1787843686-834200
-X-HE-Meta: U2FsdGVkX18zTbXJ4kTVbYzcV+NDdo6xiprs6xZG04BEoEbZbmOOxamCfCs2yr/WwUguoGqF9KKo7RvjxVRe64HZiiag2cXfoefBeH5ST4/Yl5H+iKmVJiU8CLjd0+0p/odtgJo5na5VkoLX9koCyVtkZQxQme9yPRVDQp5X0RsmHeSIHQDuVi7CJJt+AwbnTrRWga7vh5cl+6X5jD/mQXpfuD1IGtcD2ILMa0enGlXpHwRQcAU4QuNr8k6GYVUw+o36ifHYq0iOZ1/i4iQ06eUhG/QKoXUuqbgxX0MyhZ33+SlLL1Px9DQ5gJkXBHcwruqlQY0/3eD3uUyTNsG75xFY4xLoP0sv188iD++lFZTambV/VS1MbdxCOhGwJ4fuEmO4Wj4qNmRLXRozvW60fwjNVucrl0bgX3ZrRWcGluhKFuWAqeOm/YpgdmtrPNmfho9p5IGNNbElvZr9GeDrnKEhhnjN2MW+BDn3SIndNbesozP25LgrPOPsdnKk6hLkE5tgvOKgcK/l019qSMoq7y6TQkHTVSNNrYgfzMK5Dd0S9/P/KV+jvt2oLCWDDWkxh2QMdllzoXKgrarA2EoXDB7BmgGyteSGX00NZDDsuR9vm85i8fRYs4GToK+hVeTvQZXw95OGIyximS9FaZlpNiXtIjPA3LRrt1GAdQIq2SUonTi2avBOxdD2tzOsVrWb9F5ok0vhAhGjc48STwoLEJ0vkFm922Qmeysn6FwK1Jc6tNJ0zwjGJ95UCrdGDr2QB35mKzyrHy9Otv7cflL+3+6/2yUrk+5fzbHg27J8LpnMkU9RRmeODp2V0okLYvQOnuyD5ViZPBrRKr13OS6vsnJSFPvwVHrdy4QsVIf73MuUpCG+yYEqzrxX2YY9a1IaTsisKcZ989lBIBSNcY3/oS5RoP8GaM8CnQ5NYs6Q94zU/hDY7iKqSrletzFp+lyji2SK0Esa+lqhSJAgy8A
- r9+Kk2sY
- Shtfil7kza3HbAQKHBrBFeWb4JwgVLhr9wEBJO4bWCzFhh2bKRW2i7HIlpWbik809X8ScEOxEdFlYJGjVg8NJS89RNsktHhZNwkIHDe4SmmTQ9a7lR2f+A5iaO2m+8Uui3zCBoje7DoV0crMqvpOqw19b0PAfE0Pec1xao2mcj8XqYdQFvYDDxeAhi5MfcelwL89A6RZzlzkyHPsvBeKVh4od4ZZWQUjU1ni8d99L1TlnhwTXJulg+LUBNZ0eiMfYOhbWsHqzuYwID2ACByP9gcU+Lr/qhfSL46V4O8PAxeTs2YkOsmK7dgJs3EmhwJ0DswYIXKeWBTALNDWOzOcOVbD7FUwGdzzvPVDiKZzoMwtezK6K1n/QCoNqG6ktmtDYa0G/j1NSc9WPNtPbOuGkIolzbCUADRHZ3uyNWMk4ZQCH1Snhxk9HuCqFI5zs+r2/xKidkghSm3U/2VQ=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CDF3980003
+X-Stat-Signature: 8t14ufxz55bxzoj3efkhyfb976k557fd
+X-HE-Tag: 1787843737-678768
+X-HE-Meta: U2FsdGVkX1/HupLWv3eNtyDPOise4TrxYRWfKfKrnxasuErY1FqCxxgTA3T9QaesAmj0CS7zhYW900cgliNUvr9j6xm2XM068MDYOq4m+FOp7POUjkZFbSI6sm//oyv6y020TtUGUC8kY1UdTiB16q1QrATmEdlu1Oj12OJiOAjHqfNQHf0eY/GBeL88uo14KmTLLE7YcFx4cTD3CFWl0MkAjYVKk6LAYSlIVeKjMrRDfde97/OuJN4kV2nl1VEn3+5h0dRAj5ihyuX7a3Uj9J2CC4UkTHH0SCsobTQ5dXq4sNbg1UPg6qA2HRqYwZvYQs8IT95Q8eoOKS4D+Az4t6NmOmj9D6p6nDSPgIZlAMiRXDS1J7xQRDqBtO5BpbEjJVSYmN/aTCYieHJDbJfPAxHCPo6c+w8GhQSKlslAqfyHeur5GWpp6pM/Die7k8CXnqAJCO/yqfchkOSBZbxxJFJoc/pnV1RGulB++CMX/dlzDd/T0BLXVkHHf/NKDe7YQ5guCCzqwAHLXEZR0aFCT69jkjseXTEWUPBs3RvTyVr+e4v9LLFmFvK/D3RCuk36TLAK4b06AkCt1nb2w3wUm58mIndBcMAk2qfuHRHfcdJwG+DVhOJQZyyiY1DNW2Y8xPzvSam93Fbt/YPuZ/tL3XQ0El7k+p/ak6n3VP7bKNfcxItOqKIJDWpyr0hD0/pRlF1uYmvSg4Z0XSuCY7grUWQ85AEudiKm5eq5NrMx7SAImM2GzZaznVOwnEgH4tIPLl1QG/2/qldpbCneiQ2nKwsBhSgASHhR7R2rMaeLEPaIcZUOFhVBMnEQEZG3SpOwBUm3pB7nvq+3luJjx6RNTrsO7DdNgvgfB0TkAyTLOsu/PFe6ev6cRRPmmoOKnwomHmVh5z9UOkSATdYJeZUyKHwRHnEuR/IACvY4DPBDzSE1kLbg0iFtOnTM6vjWOzUwXKCNCfQ84KKXic+OOTb
+ swARQwbv
+ JtImSjs324rjGFRM/GQy/P8DaIZPr+LtGNz9cg5jGbz12C9Q7XzVaxIAOfSJB8YNgJrVLHLh/U/l79T5OaGD/b+y81uK2WKIg+mqmBmm1RWdJtbwGO5/JW0SzfUYOOXuQn1KJjywBoDTPur6Mq4fBMoQMx3Or3xiWg3hTK6t8424jQJ/MX27kBEvd5CchvNY2IM25Ic51Q24TAGbgJ9VqKIQVEbNJgp1awepIdfAOJxd5gSgdsvpX1Cw3WCzqKWWUBWwAX9QFEo3wyoruOTmaxvTcVk7Q3oc0+TpH91+OlWnYJBKO1iOAgg5dBewX0Pt8tdEgxiZyEjTP6P1ps5gWGsaqxRfC2GOJUyHC85rPNoKw0sgPNeR/GZxoeolyo2WbI8xTT1I+tYOvJnrvs7zygBFWIGFREEMNOkJBBFMq76JgRYReszgPIOQKxXib7XB2ZLBtpVsIVLoV+Ea8lc1PitJ2BK0TC67mGon8mDrAYubpA+pVZ/GCV6cIbRFczGPmzRoy7BGBdpECmcBVE6IwKG1cAo/AFyeLG14QhAZlGCniyHDQy7qYe9JBbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,127 +138,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/17/26 14:08, Hui Su wrote:
-> migrate_device_range() and migrate_device_pfns() clear the entries
-> following a compound folio so that the PFN arrays retain their
-> page-granular representation.
+On Fri, Aug 21, 2026 at 02:55:19AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> If a compound folio extends beyond the end of the caller-provided range,
-> the loops clear all following folio entries without limiting them to the
-> number of slots remaining in the npages-sized array, causing an
-> out-of-bounds write.
+> Let each split helper handle its own locking instead of relying on
+> the caller, so both helpers manage their own irq and locking state.
+> This lets __folio_split() drop its local irq handling and fail label,
+> preparing for further cleanup.
 > 
-> Do not proceed with a compound folio if its page-granular representation
-> does not fit entirely in the remaining PFN array. If this happens, drop
-> any reference and lock acquired for the folio, clear the remaining
-> entries, and stop collecting.
+> The file path now uses xas_lock_irq() instead of local_irq_disable()
+> with xas_lock(). The two are equivalent on non-RT, and
+> TRANSPARENT_HUGEPAGE cannot be enabled on RT anyway. This conversion
+> also buys consistency: every other place in mm/ that freezes a folio
+> while it is still reachable through the page cache already takes the
+> lock this way. This was actually the last plain xas_lock() on
+> mapping->i_pages left in mm. If we are going to support RT, spinning
+> on frozen folio refs could be a problem, but it already exists in
+> many places and should be fixed generically.
 > 
-> Observed with a KASAN x86 QEMU kernel using the HMM
-> migrate_anon_huge_zero selftest. Closing /dev/hmm_dmirror0 after
-> migrating an anonymous huge page to device memory exercises:
+> The anon helper keeps a single local_irq_disable() as before, because
+> it has to cover several plain spinlocks at once.
 > 
->   dmirror_fops_release()
->     -> dmirror_device_evict_chunk()
->       -> migrate_device_range()
+> The dropped xas_reset() was a no-op as the xa_state is not walked
+> before the xas_load() under the lock.
 > 
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hui Su <sh_def@163.com>
-> ---
-> Changes in v2:
-> - Do not partially represent a compound folio when it does not fit in
->   the remaining PFN array.
-> - Drop any reference and lock acquired for that folio, clear the
->   remaining entries, and stop collecting, as suggested by Balbir Singh.
-> 
-> v1: https://lore.kernel.org/lkml/20260817074350.442493-2-sh_def@163.com/
-> 
->  mm/migrate_device.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 908d2d4ec43a..69b8d0660bab 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -1400,6 +1400,15 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
->  
->  		src_pfns[i] = migrate_device_pfn_lock(pfn);
->  		nr = folio_nr_pages(folio);
-> +		if (nr > npages - i) {
-> +			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
-> +				folio_unlock(folio);
-> +				folio_put(folio);
-> +			}
-> +			memset(&src_pfns[i], 0,
-> +			       (npages - i) * sizeof(*src_pfns));
-> +			break;
-> +		}
->  		if (nr > 1) {
->  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
->  			for (j = 1; j < nr; j++)
-> @@ -1434,6 +1443,15 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
->  
->  		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
->  		nr = folio_nr_pages(folio);
-> +		if (nr > npages - i) {
-> +			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
-> +				folio_unlock(folio);
-> +				folio_put(folio);
-> +			}
-> +			memset(&src_pfns[i], 0,
-> +			       (npages - i) * sizeof(*src_pfns));
-> +			break;
-> +		}
->  		if (nr > 1) {
->  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
->  			for (j = 1; j < nr; j++)
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-The code duplication here makes me angry. :) And using a memset on one branch but
-not on the other is weird.
-
-But is this the right fix or rather what
-
-	https://lore.kernel.org/r/20260805231041.3791771-3-matthew.brost@intel.com 
-
-tried? That fix would also need a cleanup but seems code-wise simpler. A cleanup could look like:
-
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 762c5cee8fecc..480bf59bc2425 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -1419,10 +1419,9 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
-        for (pfn = start, i = 0; i < npages; pfn++, i++) {
-                struct page *page = pfn_to_page(pfn);
-                struct folio *folio = page_folio(page);
--               unsigned int nr = 1;
-+               unsigned int nr = min(folio_nr_pages(folio), npages - i);
- 
-                src_pfns[i] = migrate_device_pfn_lock(pfn);
--               nr = folio_nr_pages(folio);
-                if (nr > 1) {
-                        src_pfns[i] |= MIGRATE_PFN_COMPOUND;
-                        for (j = 1; j < nr; j++)
-@@ -1453,10 +1452,9 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
-        for (i = 0; i < npages; i++) {
-                struct page *page = pfn_to_page(src_pfns[i]);
-                struct folio *folio = page_folio(page);
--               unsigned int nr = 1;
-+               unsigned int nr = min(folio_nr_pages(folio), npages - i);
- 
-                src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
--               nr = folio_nr_pages(folio);
-                if (nr > 1) {
-                        src_pfns[i] |= MIGRATE_PFN_COMPOUND;
-                        for (j = 1; j < nr; j++)
-
-
-And as a further cleanup, we'd better de-duplicate that code and possibly use a
-memset for clearing, getting rid of j entirely.
-
-
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
