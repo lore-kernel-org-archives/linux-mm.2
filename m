@@ -4,91 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCF27C61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:17:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 457DFC61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:20:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF1176B0088; Thu, 27 Aug 2026 04:17:15 -0400 (EDT)
+	id 434BB6B008A; Thu, 27 Aug 2026 04:20:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA20C6B008C; Thu, 27 Aug 2026 04:17:15 -0400 (EDT)
+	id 3E4C76B008C; Thu, 27 Aug 2026 04:20:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB83A6B009B; Thu, 27 Aug 2026 04:17:15 -0400 (EDT)
+	id 2D32C6B0092; Thu, 27 Aug 2026 04:20:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A632F6B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:17:15 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20DA11C1BC5
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:17:15 +0000 (UTC)
-X-FDA: 85146344430.17.B19349A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 60B7980003
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:17:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kb3+VZf0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 07EB16B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:20:30 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81D72C0372
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:20:29 +0000 (UTC)
+X-FDA: 85146352578.18.81FE45C
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BCD1F20003
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:20:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=xEMckJcc;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b="/xHz2Dwu";
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf13.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787818633;
+	s=arc-20220608; t=1787818827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IoV2JLyDthha8SRAUynv+MIxi6zER3ywHmEQ0B1FVZU=;
-	b=Kr7jjhYfdlKKNDqAx0uzF1wPsGjEHDVIaL2CDDMhcTPQ/pIXMgrS8y6y5XTbvo1luYh6BW
-	AnI6YPNR1ovWkSPTDgE4eZhAHkQQWfVVwkZ6bjNeLOwnuHCKaVg08DjnMLHBsZ5Rueh0Dk
-	lPUzAAeWAyZwehGTBckpcVZPSON0VKY=
+	bh=dHKgEcpAnFM7pEhWpO1E8wnd+7B5JBIywxZU+obwOD0=;
+	b=yV5AkOzv/tV37Ge752vkwL5XL/CdNJCaPCXiODp0jpIGiVdmIxZuTJPQ3Hx85cVaOuHMaR
+	Ln/a4zjMJ5K5ignr1llHiNj3JTC3OK52OWGAOCLK0iyRHfxsA4SKYwNe872KI/q7eSf1Sp
+	82ykle5Sar6x6fQ6lefn7o5FdFUoyHY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kb3+VZf0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=xEMckJcc;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b="/xHz2Dwu";
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf13.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787818633;
-	b=r0Bd1nsBzsId6FVMmD5w4gVPlN2kaqsBrDd9HaPllR5CRbolK7wJ3T0ckX74ZKjTYB6akP
-	/aaM4LjcYoi8iPuYmHts2aCa05DGWBZQ4v/n6Z0TAaKRHz6yFyzzuveVAjGhNcHBEWC3hg
-	itCCp8NbEowZFMKHoWQ7rqrGP+JpN+c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 958B741364;
-	Thu, 27 Aug 2026 08:17:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC0E1F000E9;
-	Thu, 27 Aug 2026 08:17:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787818632;
-	bh=IoV2JLyDthha8SRAUynv+MIxi6zER3ywHmEQ0B1FVZU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Kb3+VZf0uc9hFIhgW8al0piOdE/JqGk3Kq7nxZ23oY2lo8kbzImiw7RY3gKQyIGf3
-	 egGYVWXHOgMkrPimJ7z4RryeJxr4bUze9but/U8U/wUqhRY+4unAJQvzCq76Kj6ccI
-	 uTmYJ8ZuSp6Epwm425ch7SAH0A6cGcNQQOsRNVz3lYc9YZs2A9AFohonNK07ozVTSU
-	 W7VHt53CL/qm2315HgfsuzMC8jtrtR/WjkPBguh8Wk3GrcqRN3ww0VbKniXISd5wRE
-	 ENaQF9nrIOUZ+QO2fI2NsvHb4YveXmDwiTs0i9lbnAm0NSXByY8bwviHpGiztS6Y1Z
-	 SAG803NYX3JDA==
-Message-ID: <62ba2ed2-d030-49d8-8872-d714ca0df8f2@kernel.org>
-Date: Thu, 27 Aug 2026 10:17:08 +0200
+	t=1787818827;
+	b=oo85kR0WYIOPoOqdbMeEPzJ+ihTc7TnVT7nYqwjwdeBZR7y5ongc7nrBtCLDfGvFW01yCj
+	aKsJN85HD4CX3ISzH+cTN3tjy0ibxkjZghGX2TGKAOsIz2vM7tXI2N/ZogqANpp58SXroJ
+	xJMIwurGUofQIh2+F/0kq6WXF1as0sI=
+Date: Thu, 27 Aug 2026 10:20:19 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1787818821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dHKgEcpAnFM7pEhWpO1E8wnd+7B5JBIywxZU+obwOD0=;
+	b=xEMckJcctN+XyCF3tP1A7kB3Z9NMqkOr1WP3u9eNx0R1d6VPmDAbkfzv6Dz5L6rc4iPDAL
+	DeTMebaCG9CYd60ZBy6/6oyFrOocGDegnbcEVpSCtOOxRTmp89Tc7fP2j9Jfwx1X3iSEr3
+	vfg3fbcnrSr6VMLGvtRDr7LRYO7vMlHebLP9UMnFoEz3x5z3PqRFdQA/dGiGAceQ7kGREX
+	B3FthaoTCt/827MpvioWnToPzvvNkcrRmQeEzocpdKAI+bB3Zz4jCENu/fNmn4DSRgK5+s
+	gQKshKN67amzT1FdkuYnlf17RNxG4BlGjMnJafxaU6KZGBY2ee5SSXKE7rYqRQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1787818821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dHKgEcpAnFM7pEhWpO1E8wnd+7B5JBIywxZU+obwOD0=;
+	b=/xHz2DwueZDiGs6En/mm1IcQyzO3s2+iRZ1dFAnSt6ypCR7hibiWxWPyikRCsxBcAbJWib
+	mLu+1zK/ObCQ8jDw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Message-ID: <20260827082019.xrNuIfE2@linutronix.de>
+References: <ao3z7Rtw2FROkVpy@google.com>
+ <d4f8ff92-08ac-4253-b647-f9e95c66698d@paulmck-laptop>
+ <20260826073233.T-KtFXmj@linutronix.de>
+ <da5ee56b7d082abfbb20f71be99a6885247e9811.camel@infradead.org>
+ <dbbd6634-4da9-4ecc-9fb2-d7430e2743ca@paulmck-laptop>
+ <98e123c9-3dc4-45fb-815b-881b3346741c@paulmck-laptop>
+ <ACC45EB6-F881-4EE9-A9F8-D53A2B921FEE@infradead.org>
+ <e62a7362-7dd0-4615-8877-6ab675971ab2@paulmck-laptop>
+ <06F9A0F0-2177-4173-A201-56325A73F89B@infradead.org>
+ <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmstat: annotate data race for per-cpu pageset fields
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <20260827070546.1336383-1-hui.zhu@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260827070546.1336383-1-hui.zhu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: x5wpz3saahk1c1h14miwri71mzkfrgqy
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 60B7980003
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4415dbf2-10b0-4cb1-b045-13dbcd69c5d5@paulmck-laptop>
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787818633-395895
-X-HE-Meta: U2FsdGVkX18jUaxJv7Z6ELFHfF72oxs1aqRJE1/VWZzCPyeI14dpwFxuivHp7Mk3+AaO2KXITk7SML517Z51CYu5HBvAXh/2v9D/TDqhlZDnqYKSVzXLNg4Jt7lfGKXO0OfnzMUl0Y88a3cdWEt/o57ZRcaunSG6vICZEe0H/8GxXg3uLqvKRQXtOWvdvIhu2z8pWimRvgTKQ6JE4klb1NAw5GtrPFRNJLiwqvd4jvQ2Ko4YwvGj3ddhxiVVi2yog3nX956Hyje1BzkBEbKBXu4ucEarqgQNdfd6RVxRs1WZ4nFKHl7eHAe+yzLvpJy1c+7zOarcAWfyNeClDO1DqpvnJzWeiIBM5ZNnpVNgnpush34AymNhlBIkhz4liEc8ZW1lllOC+iJd2wGhR9t/4eU1SHvYM1EOFfeOb3iLSr7MfZt4/yr6YB6i0oSuBx0m5VPY+lwnccJ2/LoXrnxEniaDNxOf5lir5m+jgsMnwvMDc3vt1N80JAK/U9UdPT7fW/W29WvFHMq7t33sR9L/s2xlMFBxIY1+3xq7y5cY9SYw0dKiaM9gMX1RI3vppZU2uF9aBMZGUvTVovYpLaeC1ElKU2opgXmzKMNiDIsERjBslIIF4ZjcBRSUoZ1Y0G5BMSxUli/SbXOU52lpcK7N7tn+OGc1l5imxUFxlQmpY3w5QhEA2+nXgwbBIvf21Jkh0VZkLiW80dX1bzUsb0mDxPYowUouWCtJBuoP4asR2XuDUWYK3/7AYfFmJ38hNnOlYx+oOJZGyRfg0EcYJzd5mSzGMy+prKG/BecycYnLG78NwddsSiV01Oku0xfMsMLGf6r3AJ6gSbVH6Zt+WPkENagIXBwMyfkn+1Psb6eeLernccGD0rYEFmgpqcIycCysSQvhiLQttjYFTMEFPPEOEh5O1XrtIBxDD9iIzHh4XkQxm55jQwKuGsoxJd1j+L6HRtar3YQp3+5W65Wy0TI
- SIPGNI7R
- iWWY1uB3luDUd1YyJZJBMGJW4d8Ix1l937KXmt1Fo5ErL6Kr8KtCnHGPguj4hteBIoTWuiFM0Hl2bGQYqdgrdBWiWubHh9/Lh9LeRHKIo4nbr1mVvehDVAB5Ch3EEE5PlnDaXeq0nSBXZ2/RNbnM8hBvE+atUq/Pf3f4nhW+AP9aEdzyuZXTWH+A9YlzQiBgUPbWyxq1CZC3UEQDKdLmVq2oeR0EEAdpNALm8yTn5KfsRJevCmA2VJdhwwxuIeYtff64Aq/EHREZ6gxdCSQSGRqqcDpwhKlhcueiapT6GSApQ3LcX4JmG3rcmDd+8LncjGHJ00UpnV1CSZqw35gliDJ55mw==
+X-Stat-Signature: 3wgegn4331e9iy98tzabsnpfbgokcizo
+X-Rspamd-Queue-Id: BCD1F20003
+X-HE-Tag: 1787818827-302375
+X-HE-Meta: U2FsdGVkX1+Vp9qcb1RPDHM9NTEUPxvoaoA4rvPD1cPtcjWAEDyJYJ8OQjgUsfEao5Ngibj+HBFCndSGdRiPJ97bKaL77nTGHgk1gwinWoa40tohpj1DEZb8JkHinmLHLNYMVNR7B91bcG+v6pI7BIYmfkZ6IvYaXDIAHJUXltZcoWFx06GssoHTjtQDJzHX4y2c3BsbJWcAxtR9fdcZawHk0sQiv7rBn0DzxnkTEq16KaJJDghZfh8gWjWEDojDvIVL5olOSOG48yHmdibZJm9U/TK2bL6arRyDVhu4T04q/L+QNatP4ixLLNauDUkN0yjHngLZelb0821642MUQXqaq5NTpmAOOWOMgv6Ds/6w5iSO8GxrPsxUTJ6+XsR/Z4OIxhbiZNq09lLwk3exvgCNm9E3l6Flume2ydPfEXwdcjxgiXhyEibVOm8vvstxlou4tn+zjgiKDaFn0xHMS6HZicg074EDegZujUIlGHr0izcdH/pMWDmTkXQf/Z/YuQsCa9IF1Dzc8QwJx+X/8CoATchFJwrPRTI1sWrQyjtJFPqm4vb1VXlz2CEf7GhaP7DKcKYzY1zmwoTwWrQgtpArmq2GmPlHP7MK5ACGMxx1uRavpUPUL49sBJTEJDKgaW6IOOMMCaL8d6vowLSngeY8MOuyo6kFGivi5YNoypZwN92OdcJsm96r4T3/uIHml6cXFgmzOi9MSP4eHvK5i8xONHPmhCKs/FfFdH9mHipoJUKNR+vgRmbCUVcc/hgsFxi8JWbSzxK5cAYS2P72C/aHWUEbmqpUcfSF7VhViRkiXPxlXlI3+k06BEmOVCuf3dZ/o9A1q3uZTzDy5xIIDM9GVaKrJ5kEKIV9jKqtC8RIDiOxJP5I9V3ZvNfMLa06qCsbPr2VqdHnFxb5GmjYDf7fXa8X/pGRDvRjqA48Q6qmacNZfsyfH5Rhk0XpswN/qkpzQLh/r3350IX9Nr8
+ 7e6xM1/x
+ CUa3CAe0K7s3xzPh2oUFZcjRdVdBJvKg1c+Z2BaZMXcAKp24r0FFpkSuQUtMzzk9YYZU1S+4VPZJHLgXr/Z7Oq2EUXQzVcLNUcOKitwkXGCwb+KkiJkYMVH7nmFFupRRBNY7dBDdr+r/BAIBF65NWe5eYh7EwmqyXfDP8RlRnMFcTtUhcBXNJsRGatg25lbOc/SItnSJs8lqBMQwhIjmA3BO37StOdlIytNdmoniwhINtUzLfgBRFbFA5OQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,99 +122,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/27/26 9:05 AM, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
+On 2026-08-26 14:04:32 [-0700], Paul E. McKenney wrote:
+> > >Anyway, easy enough:
+> > >
+> > >#ifdef CONFIG_PREEMPT_RT
+> > >DEFINE_SRCU(whatever);
+> > >#define my_srcu_read_lock() srcu_read_lock(&whatever);
+> > >#define my_srcu_read_unlock(idx) srcu_read_unlock(&whatever, (idx));
+> > >#define my_synchronize_srcu() synchronize_srcu(&whatever);
+> > >#else
+> > >DEFINE_SRCU_ATOMIC(whatever);
+> > >#define my_srcu_read_lock() srcu_read_lock_atomic(&whatever);
+> > >#define my_srcu_read_unlock(idx) srcu_read_unlock_atomic(&whatever, (idx));
+> > >#define my_synchronize_srcu() synchronize_srcu_atomic(&whatever);
+> > >#endif
+> > 
+> > We could do that for the KVM GPC locking, but more consistent would be to change *all* users of the 'atomic' lock under PREEMPT_RT to silently get the sleeping version instead, like PREEMPT_RT does with spinlocks and rwlocks.
+> > 
+> > So it's srcu_read_lock_atomic() itself (et al) which would get that if/else treatment.
 > 
-> zoneinfo_show_print() reads pcp->count, pcp->high, pcp->batch,
-> pcp->high_min, pcp->high_max and the per-cpu stat_threshold while
-> holding only zone->lock, which does not synchronize these fields.
-> The writers are the page allocation and free fast paths under
-> pcp->lock, decay_pcp_high() which updates pcp->high without any
-> lock, pageset_update() which writes batch/high_min/high_max with
-> WRITE_ONCE(), and refresh_zone_stat_thresholds() which writes
-> stat_threshold locklessly.
+> OK, the traditional approach is that raw_synchronize_srcu_atomic() and
+> friends with the raw_ prefix are always atomic, and without the raw_
+> prefix it is atomic for !PREEMPT_RT and non-atomic otherwise.  You would
+> use the non-_raw primitives.
 > 
-> The race is benign: the values are only printed to /proc/zoneinfo,
-> they are naturally aligned integers, and pageset_update() already
-> documents that users of batch/high_min/high_max must cope with the
-> fields changing asynchronously.  Annotate the reads with data_race(),
-> following commit af1c31acc853 ("mm/vmstat: annotate data race for
-> zone->free_area[order].nr_free").
-> 
-> Found by KCSAN testing on an older kernel; the same race still
-> exists on mainline.  No functional change intended.
-> 
-> BUG: KCSAN: data-race in zoneinfo_show_print+0x355/0x520 root/klinux/mm/vmstat.c:1774
-> race at unknown origin, with read to 0xffff8e1835410808 of 4 bytes by task 22653 on cpu 12:
-> zoneinfo_show_print+0x355/0x520 root/klinux/mm/vmstat.c:1774
-> walk_zones_in_node root/klinux/mm/vmstat.c:1496 [inline]
-> zoneinfo_show+0x41/0x70 root/klinux/mm/vmstat.c:1806
-> seq_read_iter+0x30c/0x970 root/klinux/fs/seq_file.c:230
-> proc_reg_read_iter+0x10c/0x170 root/klinux/fs/proc/inode.c:305
-> copy_splice_read+0x2a1/0x4e0 root/klinux/fs/splice.c:365
-> do_splice_read root/klinux/fs/splice.c:985 [inline]
-> do_splice_read+0x139/0x1a0 root/klinux/fs/splice.c:959
-> splice_direct_to_actor+0x16b/0x540 root/klinux/fs/splice.c:1089
-> do_splice_direct_actor root/klinux/fs/splice.c:1207 [inline]
-> do_splice_direct+0x10a/0x180 root/klinux/fs/splice.c:1233
-> do_sendfile+0x6ea/0x7e0 root/klinux/fs/read_write.c:1363
-> __do_sys_sendfile64 root/klinux/fs/read_write.c:1424 [inline]
-> __se_sys_sendfile64 root/klinux/fs/read_write.c:1410 [inline]
-> __x64_sys_sendfile64+0x117/0x130 root/klinux/fs/read_write.c:1410
-> x64_sys_call+0x1cc7/0x1ee0 root/klinux/./arch/x86/include/generated/asm/syscalls_64.h:41
-> do_syscall_x64 root/klinux/arch/x86/entry/common.c:46 [inline]
-> do_syscall_64+0x75/0x2c0 root/klinux/arch/x86/entry/common.c:76
-> entry_SYSCALL_64_after_hwframe+0x76/0xe0
-> value changed: 0x000001b2 -> 0x000001b1
-> Reported by Kernel Concurrency Sanitizer on:
-> CPU: 12 PID: 22653 Comm: syz-executor.12 Not tainted 6.6.140+ #672
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> 
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> Easy enough to do.  But does it do the job, both from a PREEMPT_RT
+> perspective and a notifier perspective?
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+It does not lead to any lock violations so that is a plus.
 
-> ---
->  mm/vmstat.c | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
+> And notifiers (though a different type of them) were the first use case
+> for SRCU.  ;-)
 > 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index cb57714539fb..a3e809c57f29 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1837,6 +1837,11 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
->  		struct per_cpu_zonestat __maybe_unused *pzstats;
->  
->  		pcp = per_cpu_ptr(zone->per_cpu_pageset, i);
-> +		/*
-> +		 * Access to the per-cpu pageset fields is lockless as they
-> +		 * are used only for printing purposes. Use data_race to
-> +		 * avoid KCSAN warning.
-> +		 */
->  		seq_printf(m,
->  			   "\n    cpu: %i"
->  			   "\n              count:    %i"
-> @@ -1845,15 +1850,15 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
->  			   "\n              high_min: %i"
->  			   "\n              high_max: %i",
->  			   i,
-> -			   pcp->count,
-> -			   pcp->high,
-> -			   pcp->batch,
-> -			   pcp->high_min,
-> -			   pcp->high_max);
-> +			   data_race(pcp->count),
-> +			   data_race(pcp->high),
-> +			   data_race(pcp->batch),
-> +			   data_race(pcp->high_min),
-> +			   data_race(pcp->high_max));
->  #ifdef CONFIG_SMP
->  		pzstats = per_cpu_ptr(zone->per_cpu_zonestats, i);
->  		seq_printf(m, "\n  vm stats threshold: %d",
-> -				pzstats->stat_threshold);
-> +				data_race(pzstats->stat_threshold));
->  #endif
->  	}
->  	seq_printf(m,
+> 							Thanx, Paul
 
+Sebastian
 
