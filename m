@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 148FDC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 22:50:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE06C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 22:58:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F42176B0088; Thu, 27 Aug 2026 18:50:25 -0400 (EDT)
+	id A95D36B0088; Thu, 27 Aug 2026 18:58:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF31C6B008A; Thu, 27 Aug 2026 18:50:25 -0400 (EDT)
+	id A1F276B008A; Thu, 27 Aug 2026 18:58:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E08BF6B008C; Thu, 27 Aug 2026 18:50:25 -0400 (EDT)
+	id 90EE76B008C; Thu, 27 Aug 2026 18:58:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BF8146B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:50:25 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B9A0CC01DC
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:50:23 +0000 (UTC)
-X-FDA: 85148544726.11.4E3015D
+	by kanga.kvack.org (Postfix) with ESMTP id 718516B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:58:31 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0403AC020A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:58:30 +0000 (UTC)
+X-FDA: 85148565222.07.E8B2605
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0DD7980007
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:50:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YqeGqYYh;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5BCB840007
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:58:29 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uYjmXJ0o;
 	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787871022;
+	s=arc-20220608; t=1787871509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+hrqml8c1MbGVS6iqvEsIMrnzdqhBIjUR56tKZiSMOs=;
-	b=u4j+T7ls+MWdJmDpWTFlyv3qjUy6m277kfM4HlrqMPhSRYJqCvEG8CauhrO/jpTlNLS20d
-	kHZ9/5yubc3hPKlh9+bSWK9D/bmEwMlmZl6H3yOx+liikHDYyCU/J3MsSPPumABKtJI4X8
-	x+mHxfmkmhw926mNOt2/9WQvyXNL//c=
+	bh=o+CbAiQiCIV+X/Q5GkUr3xptEh0VJF+8loj/KjFok3E=;
+	b=xdHJ0XnRA/Mixvs0zuqfqW7Zi/k8+ig0ihz+DtE+IO1fSyIlPeaxOL8dX70o4W406RJzF2
+	0J7F0pcWpuB479+23gpDQo5ycpDVHQ+HVNU2Knblb8d9xjeQCmDvsYYP/hy7YnIk7feLaT
+	GXrsCa3beQYeaG4kJI5Fg6R+ir2lbpo=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YqeGqYYh;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uYjmXJ0o;
 	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787871022;
-	b=N//6J/TkfotyLaOzMxWWFzlMNZO9NNoR1yQKf2fJvC7fPOeCn0BmVgsndgQwWbwOX6O91G
-	FsklDbE4rMGBUHh1jjg5vSf9DHgaxU/LxaalY0xY/kYLoFzOENI10nu8oD45w4lykHppRk
-	+XnoRdw5AdBfOg1+w59XchrWO1hXMy0=
+	t=1787871509;
+	b=qURU4h6/EGnmjFf/oj2WWs0815P39JC4jDAZ2oVkqDvFD/tbQX9k4exgskOWAx4doZuOqG
+	3jQb5+W25L5BWG+lzVD1Wp0pIBth+KBDdLcPWvH9PG+Vt/i6jBGMLe/cn6ZadFBx9GDjiJ
+	xUzW8QzgGUryChLxg5HMGbIlWM8jyvE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3CD96601F2;
-	Thu, 27 Aug 2026 22:50:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0801F000E9;
-	Thu, 27 Aug 2026 22:50:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BDA3D601F3;
+	Thu, 27 Aug 2026 22:58:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191751F000E9;
+	Thu, 27 Aug 2026 22:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787871020;
-	bh=+hrqml8c1MbGVS6iqvEsIMrnzdqhBIjUR56tKZiSMOs=;
+	d=linux-foundation.org; s=korg; t=1787871508;
+	bh=o+CbAiQiCIV+X/Q5GkUr3xptEh0VJF+8loj/KjFok3E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YqeGqYYhzoVgUUpvm6KZZd2OD/Z3uRoWsdGSckp6y1yuo07avs2dtVccmTgA3rAuN
-	 xLTD5R+6EJC33dMiEMn4dyGGtaDB66YqnWGpg7sTHXp6ji8UYr73RO7H2hsn4DHnFL
-	 5FpE2ib+D8JF9JtjbvfhRS9FJFFgyt7rYD+KzpgI=
-Date: Thu, 27 Aug 2026 15:50:20 -0700
+	b=uYjmXJ0o0nclaaJYRmGvcWh+PMXoFy/4V5w+QgCWh8eiWJb/86f00TXFVBhbrLHhB
+	 8lQosBwA0un/NICBloB17fuu/r+IR/E6r6IhUBF68l7qps2RaUPak5VGjmfyDXCX/Q
+	 bRnygD5L99ynxU0xzCPn1/M1i0SWw9TtVfU7HRFk=
+Date: Thu, 27 Aug 2026 15:58:27 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
- brauner@kernel.org, david@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v4 0/4] make unused huge shrinker memcg aware
-Message-Id: <20260827155020.530e28b0afa3b43fede9aa9c@linux-foundation.org>
-In-Reply-To: <cover.1786955972.git.zhengqi.arch@bytedance.com>
-References: <cover.1786955972.git.zhengqi.arch@bytedance.com>
+To: Wilson Felipe Pereira <wfelipe@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Tejun Heo <tj@kernel.org>, =?ISO-8859-1?Q?"Michal_Koutn=FD"?=
+ <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] selftests/cgroup: fixes for test_zswap on single
+ core VM
+Message-Id: <20260827155827.e40d5d88cee174437a16f432@linux-foundation.org>
+In-Reply-To: <20260827034807.2822234-1-wfelipe@google.com>
+References: <20260827034807.2822234-1-wfelipe@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0DD7980007
-X-Stat-Signature: 7nxip353uphwomayjpgyt337ngnscryk
+X-Stat-Signature: gda89ne98rtjkcsyiafmmbp1j11gesxz
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5BCB840007
 X-Rspam-User: 
-X-HE-Tag: 1787871021-433219
-X-HE-Meta: U2FsdGVkX1+MS2QbmTIYVyRg8NchFNEIaIAKHMEfKji0pZ8QkeC20Xy9Uhhkdb68WDCKl3lfmTocHgyCa283dcLwWtSE2kXFPSQECNDSO7Q9u29u4PfG3dc/B0I66NqwwHHG7v7v2h8TZq0UOmyUhTAqGZgXpi34IaZNZStQ8ck2x5nDChIRpXsf1K1VyscOIi9Jrm9ekaqxLaMG6YYNUVi7+XYG+fX+0m5ItUpDENznA57Z7a95Mp+SuznunLzhid8IbJ1KskA05ubbeE+8FfvND5+7ue54uYeTtvPSBImnPUgdBlN+/XWkAyMT88do+w8G2RseqWlZrf/wfnu5wwHwAf/v16HktDeGu3JcQJWUufSPuF354wCZrdG+VaZHeAHSEoNTIqFifOoxFkX6I7KIbnyN5rdO+JzzyviCF1Xf51ekZoUn2tWNHjAgUi3D4YiNEYr59ZJuB0MKb+dObZS8ksLjbZbf1FF1TXF83Z++7Y+j53mdKQ+TKZk6M159fn4ZGv/zwWW37hISde6rJBwE9aXGr4qhFL1vj2BmLJF8coysc5jhmNFxWYv26tWXW6q5TSukRwApioHcqm3G1NWhQoh/rNB+NcCNih0u+WyKkef4HYGmwsQAIsr5U85q7VtYLHpEVlDYvgbOO5cEr462IUcI/dDq2Hi6vdL1ZFikDnn1mmLaUOG1p+EQ6lGGpjX2n4OwEKkMTyXjij+FAoWRVNOHhGgZBdwFKXpgMAKoHDrSW8arVJRswpR+q1euKx9Bf+7ickiKg7iiuMf2J9fwCakw24wKax3OmrR1LoaHfyF1r9A52eD2UfYIudZYF0GnhUUobNqd9lu/pvD9bFjYE9f6IZrAOgekdTmGxflcw2Y3+29nWFYU3qC2rGSLNtza048BtSYMnjrKbAWAnjdnr8POmEPLxGNyu1wfqIhDA/atQh4OtMzbwVyD/R1ScoUDtCQ/pXxXz9F5sen
- Y9KeJ0cz
- MMXW8MdVrjZUJo7ktmoKqK4TVOmeT3vss0MEwz/p1WBAoMWMytdR3psLnqV5J+fPXxeJ/7EMU6JmcgL5NT/YgrJEemMgC7xR6+rKisyhPLZ4QZvwKsO8aoaabsd22W2o9Kx0b90Yk4aHMQeksnjyumd/bdOOdZZqs0M2IVf+50J1ShODVvfp/x2FqfdvehNZPZkrX2UNeyUFVTJIVZt15TYT5E9rq7jffTLKn0I3xV0nZ9K7qv4hXZJ7YuNrn3ZEDcLy8X+LCylFIDbcYdD5SXxo/Odcw7YsOv3OwHfnwQsN/jHz1MkmgwN6M1ovOqj4ydD6A9fcitW/uX+o=
+X-HE-Tag: 1787871509-110355
+X-HE-Meta: U2FsdGVkX199NO4o31MjXfQ5eoVrvlBgFpSkUe73OTV31XoCI7Ku5oFlCJ1JW3GBS8TkHLMMr4xT5tyN6urmsL8TUFm+V6oJI59pa1/kKhSo/NMsIWTtYobw8btR/e8oUAz/f/rnULYupi+gpkJT+WMP9X9ciQsNUeBPJ/8EiiXjxvDTensDpNQ689n+aCycEBeTuI9Xh/An6Z0eYYwcJUN3TWIXguXvZmJxrBWn6YWdhXmDrAwBpVRXBs4MN9O5GEhQqS1ZSVtAH06pXAG67b3Fb8eANmBJLzcQUeNMYXvu3ezVQL2ZVi9s5Owf7H6ByeRIi+bw1bNUM+o6Qelwra5MhgB++majBUB6ywVmLmTR74/8lo7oR/+vFqYP5Rgkwr+Wak1OxG+COqZAPKEIxIpnY49VG45Obxw5Fb0PHb2eTKHAwhYjL0xYm/bvzHq4GkKRaV9RUaEOd63xWiifYTiTkg6MDod7edPFyaf3GaS35/6YPCaf1Guuz9ZkXjU/GhIRmYxOUyQXp3ltp9HrgRMNfmSpn+drJf4xgPiZow1yCmtlO0fMcVJLgeW8fWhOM7g0mkVGorh9/Yy708CHDRoSlfV0EQn7jzw6jjnwGi0RvG5VAAfiEXUAVX7P7dHsECB58N/rJ8+RpqU0mjd1XMTvsCOFw8y1Te+IEWi5J7WzOO4jRFLpEaeka0H6g+KlwMe+yHzwhwfqPWvrb6U+c+u5B6ws/jtzvfDGbScu8dYh/HZK2vCpKhxA/WoFRXLeqxjPy5fIsgqLs71T8e9iQ0Klho652jJ7JA0GSAYWWceAgji/yMX4rPErJ3FVRBHtbobM5OC63B4cu4MW/ezMb6ilYQjzs/8jvHS9ivt5nZRMzeoRPX9W24pqxeB+PgA/QZxFeR4l3l9OwPc2lyDiON/TGB3vz/W4quGigTg46z9NXHR+RE2nPI2Riu0s9xIvy1Vw+syKlgT260AoNGL
+ YUTau2AE
+ AtklCreS85uNZEmKNy2S0zKdoYha5JdWON2ZtMubu1uzgG0LFNWMQ5Ghh1EJW/pBNTXo757F7yyBsiblgyxwlK0U8E9NzDQJriQQcpElse0S8TlP3CFRF2XVo5y4t/c4laeyLYKq9UglunlvaLSYzUzPezGLDw5DrO1RwhHoqVsi/d2XY3NWf2wudqmxWne2m60Q8407+nFACErFBKwH31QgOcve1O9+crYTeIFl1ktcDlkeHFVndIN8sBsyWlC3z72v1y2zQGSz3ndbW+iEb5ihJrr3ORo1S/jPILN89eqORzyEJt0WUuyB75+jsQEwnbZsVpRhtk49ZZnmOfSe64/J11J/CFTVYOJBKOqXEqGzj2TYdtvX+Jp9IE2sBKEUhTK74
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,71 +94,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 17 Aug 2026 17:03:24 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+On Thu, 27 Aug 2026 03:47:40 +0000 Wilson Felipe Pereira <wfelipe@google.com> wrote:
 
-> Changes in v4:
-> Changes in v3:
-> Changes in v2:
-
-Thanks for the diligent versioning info.  fyi, it is conventional to
-maintain this below the --- separator.  It's not really the most
-important part of the [0/N]!
-
+> This series fixes two test failures in test_zswap observed when running on
+> a single-core VM (-smp 1) with 4GB of RAM.
 > 
-> The shmem unused huge shrinker maintains a per-superblock list of inodes
-> whose tail huge folio extends beyond i_size.  Because this list is not
-> memcg aware, reclaim triggered by memcg A can scan inodes across the
-> entire superblock and split huge folios charged to unrelated memcg B,
-> causing unexpected impact on it.
+> Patch 1 addresses a race condition in test_zswap_writeback() where
+> waitpid() returns before the exiting child process is switched away by the
+> kernel, causing an immediate write of "+memory" to cgroup.subtree_control
+> to fail with -EBUSY. We fix this by waiting for cgroup.events to report
+> "populated 0".
 > 
-> In the worst case, memcg A has no reclaimable shmem at all, making the
-> reclaim entirely useless and incurring unnecessary latency.  We observed
-> this in production, where page lock contention during split caused
-> multi-hundred-millisecond stalls:
+> Patch 2 fixes an implicit unsigned conversion bug in test_no_kmem_bypass()
+> where small negative timing differences between debugfs stored_pages and
+> cgroup zswapped bytes caused the comparison to falsely fail due to
+> unsigned promotion.
 
-Ugh.  That's the most important part!
+Thanks.  Sashiko thinks there remain some
+signedness/truncation/overflow issues in there:
 
->   tid 11340 comm scanner locked a page for 182264 us! kstack:
->           unlock_page+1
->           split_huge_page_to_list+3135
->           shmem_unused_huge_shrink+767
->           super_cache_scan+329
->           do_shrink_slab+291
->           shrink_slab+533
->           shrink_node+400
->           do_try_to_free_pages+206
->           try_to_free_mem_cgroup_pages+262
->           try_charge_memcg+591
->           mem_cgroup_charge+136
->           __handle_mm_fault+2431
->           handle_mm_fault+194
->           do_user_addr_fault+462
->           __do_page_fault+176
->           do_page_fault+48
->           page_fault+62
-> 
-> Usama's recent patch [1] prevents the shmem unused shrinker from being
-> invoked during memcg-level reclaim altogether, but this is overly
-> conservative: we can do better by reclaiming only the shmem charged to
-> the reclaiming memcg.
-> 
-> This series converts the shrinker list to a memcg-aware list_lru, so
-> that non-root memcg reclaim walks only candidates charged to the
-> reclaiming memcg.  Global reclaim, root memcg reclaim and shmem quota
-> reclaim retain their existing global semantics.
-> 
-> To avoid pinning a dying memcg through a long-lived CSS reference, each
-> inode stores an obj_cgroup reference instead of a mem_cgroup reference.
-> The list_lru add/delete paths resolve the current memcg from the objcg
-> under RCU, staying consistent with list_lru's own memcg migration on
-> offline.
-
-Sashiko said a few things and they look disturbing-if-true:
-
-	https://sashiko.dev/#/patchset/cover.1786955972.git.zhengqi.arch@bytedance.com
-
-(Apologies if this has already been considered - we don't have ways of
-tracking all this (yet, I hope) apart from personal memory and personal
-memorys are quite fried at present)
+	https://sashiko.dev/#/patchset/20260827034807.2822234-1-wfelipe@google.com
 
 
