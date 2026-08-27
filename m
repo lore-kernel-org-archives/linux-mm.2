@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09315C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 23:47:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A86CC61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 23:47:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFDEA6B0095; Thu, 27 Aug 2026 19:47:14 -0400 (EDT)
+	id 6AB4F6B0099; Thu, 27 Aug 2026 19:47:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAF856B0096; Thu, 27 Aug 2026 19:47:14 -0400 (EDT)
+	id 65BAC6B009B; Thu, 27 Aug 2026 19:47:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9E376B0099; Thu, 27 Aug 2026 19:47:14 -0400 (EDT)
+	id 598CE6B009D; Thu, 27 Aug 2026 19:47:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9621B6B0095
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:47:14 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BE6A1A0220
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:47:14 +0000 (UTC)
-X-FDA: 85148687988.18.F5514A7
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 39B136B0099
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:47:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFACCC022A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:47:17 +0000 (UTC)
+X-FDA: 85148688114.11.32F9372
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 79FA4100004
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:47:12 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mpg8qKJI;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3F4AC180006
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:47:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=INwDxHpo;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787874436;
+	b=rJUw4QD8RgnqQ19RoOPLNmQEb6mnI2cCCi7TTSPWLw/LxN4J6c10su8QlYpF+aYFkLr/2x
+	C0KVcfoXYDRUF5OZiyhxmbfh/fVlqv+TBgunWW5fjuUrXFFZwXog9AqDgbx7xZjnwdUibZ
+	0vWY4cCiIendOJ8CrhXe49t3hXoki2c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787874432;
+	s=arc-20220608; t=1787874436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=jwqj3UUlL63ppxWOJ9ELWriy7estMngu/j/CKSXTY/0=;
-	b=VHw4VI90HQiK46elxk6kg/3a4GlmAmzCCLP/4i5KNwchfkzeoJPzdAMg4A3QxjvlO+92fA
-	+qMWjAc8jJ3ERNLDIEe3q90yBuMkSwcMycg/pWAeiaYGUmEheUejjXRVDU/CwX/8nMcCq6
-	hX77UOAqINVAy+XMb+RgIyyPv7U7sgk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787874432;
-	b=bJZZzhfnVjZpbM2UZ25HG15KnShZDSe3ClWidYRjWHzR21uLHbz4cr4iongJls/WKWY1tL
-	egWs1xtOf2tifKzZscnqQ2FF7hSADIRN7HKdLHaOmLK5CcwAkKBEV/xMMonHDk+DW+3FWL
-	+NW/+pFkpGJzD8CVP+t5mpLcC6pxdiM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ENEA/CG+RwJeijNigZCVNh2GWKHCE7Bxn/GSW/9uiZQ=;
+	b=2dzgfjIGXIGFZy+g9eD8y3lk/SLO7uckyO5uBNp66jIQvHIi9spZNn6s4cVvog8m9eEbPQ
+	mBqilxP2gV065b0vkc2I1u1fuczH9ZiKlXWI0W060WpcXqqlLigwTUod2wP82HNiCAUZQo
+	EuzsSiVMLZGdLBy1IRj25i163C4YZN0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mpg8qKJI;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=INwDxHpo;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59E4E406AE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 82D9641830;
+	Thu, 27 Aug 2026 23:47:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6021F00A3A;
 	Thu, 27 Aug 2026 23:47:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928A81F000E9;
-	Thu, 27 Aug 2026 23:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787874431;
-	bh=jwqj3UUlL63ppxWOJ9ELWriy7estMngu/j/CKSXTY/0=;
-	h=From:To:Cc:Subject:Date;
-	b=mpg8qKJISgIJh9ZXhfamcY0wiNT3vF+JPbP+6cP4gQa+NI2+V7OJQBCm3FuCufveZ
-	 CGRaSW2fKUFDOUIthAZDSPwjU+ydyvjYdabRXSVAaG+x0wsaDn/UvDccW5mJ6uDgD1
-	 FXcAIP0hkiuoKFowgjJ7fECteCDnKoONEWjxYSs6QqHqMdfWcIFkpHJNMV8PnIr85I
-	 IsuKKpkyL9FTl7qH/pXTxHMPWHrtqS81xXB5h9mOXStH7xP3RWfP5PTeFuRh8ywqo0
-	 FsOh9eQY5WQioqL3TUxGFaPCeIttuKVrdnlO6tvWOD1Jhk97QL0iJEYNDbeqM59YHR
-	 4zxpHfsaO+QJg==
+	s=k20260515; t=1787874435;
+	bh=ENEA/CG+RwJeijNigZCVNh2GWKHCE7Bxn/GSW/9uiZQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=INwDxHpoZfJUz25nZdJH2zfsSzwfFzAyCq2FqmEWlBP/GIKCFg/m2jHIsLx3VwVxS
+	 xh/43XUdKqF5D4nTevs3HGd144LxVkFnODKo4C95dPRhqb4SpHum2Y3vEJbEsw1NAp
+	 V77++kFgREKKbbAmEs+92hhZhKGorzALq19VoZmMIkIVt/JihqdY5X30FXuDwllrFN
+	 Nth4Umk8k030Ui9vMATIdgnPOCR1RUN+snvhn/XI/JLehg/Fb2/eLr/G4g72q6viLE
+	 4faxZXpglvH1nlx5TQlL951jrYNTDKOgBVmextsDHvp/YuLtcUOc4BjXaOWHBPM5dk
+	 DWuu0pYhXa/kg==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	lianux.mm@gmail.com
@@ -85,22 +85,24 @@ Cc: axelrasmussen@google.com,
 	weixugc@google.com,
 	yuanchu@google.com,
 	zhangbo56@xiaomi.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH v2 0/7] mm/mglru: speed up inc_min_seq() and fix cold/hot inversions
-Date: Fri, 28 Aug 2026 07:46:57 +0800
-Message-Id: <20260827234704.63163-1-baohua@kernel.org>
+	"Barry Song (Xiaomi)" <baohua@kernel.org>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [PATCH v2 1/7] mm/mglru: separate folio generation update from LRU accounting
+Date: Fri, 28 Aug 2026 07:46:58 +0800
+Message-Id: <20260827234704.63163-2-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260827234704.63163-1-baohua@kernel.org>
+References: <20260827234704.63163-1-baohua@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3janyecy3decxgnixuqu83m3mahmxrtq
-X-Rspamd-Queue-Id: 79FA4100004
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787874432-432884
-X-HE-Meta: U2FsdGVkX19eFBA21tUV4EJfjJ1uhDohvTvSI0EHzUCzy4zlkibyGoXUkp4H4u3CIsIFfp7trnzsn6KF9GzRDLJtHBIjRTn/ZxiCS9Uj3k+2l49QRSTDeLyG4gb5bPLYcIfGNwoQkEfq31sCydhU6HjFf2hP/lAcxBW6V6iipMtuJsaQpmgy8UIa49IXBuXxL3x0bhJuEyNMh01TcfSwiirJjefZOuC9cIsvRLqQ4VfYc/84MlVEw0ihRNDnkYAEM2wne8Azt7rsPeVDhvsj92EgwYxl3WWDervwix9GR+HRvEx2t85E0+CZcNG6MlL7ocwbTuCB4Ym0EzilDgyanFAx9bUHSenpMj6V9utDGXaxLrDmPnMxJ+cWTgcyKZV28H4qW71okXh4XNpXeGB4B8TnHZUgNhWsf5qJvaisL8wSFt7d2mQpJoBHHxk0ZnY0lr/1azTTWb1wHA3iLT8PRXXS/XYF2eMqD5KKkZDIpJWOw8S2WXlmlDLCCBApmH59JYkRY//qTS5qHMXpDA5XyOmGosMng7krZ1mt9bS8FDvKAWNV1HuLLQSU9G0gag+Lx8Ja2heuUCzR52KUGUh/j+1h2upx7lR8YwYUMujoCfKk1XpWRe7DVmtqBs51jMV02UcI0O8vrOplzBzWYRxfHmd15OgXaNJCBM+dvm/f9JcKAUnHvNddGyjWWnBpnxUHMBbYnjZy2+Xl6Qcc21hSXmn+7mxveGFcA3ta8Fq+Ooy9CgzCOQA8Bzy04JPzd3zczSb21lPHir49c48XvoxOEJWaJRFZVeVpAEiLolVwJeaMYasE3IJr+NoStaUhgXOd7D6qgp2F3n+q7Ag2EUfrgmZARdofX5VF82HF4AJsxuHcY+ABXLP1BdyJ+c0CJ3B9YYr+kRo13/Zyc0YtXKddN4MUELE6970hOl1DGS41ZZblP4pI3P7Q+n2XbyjXwUVe+ay5TO1e5xQqKwhBn5z
- bjRpqEBy
- +gehQtQbQTRyLrp4ynF2S/24RwEr1Y8fGpMZ5i5my9vI4dpjRGvXED1FTOXOoxpoeHZYyzdJowGhS8fRONCAhlBBcCULYHPLsS3fx7PrtLxVS9DLCp9FRX6B2YfAGjBPH9MIMnn6VJ+LeZ885qq1Np4Wnr9d69JwGSt6FVTIPYhD5zhdrOIU+4UjjXV+L56CN6Ul1D+8ep97mfSc+3jM7Umv5oF2bmcl3BBhe28JYtq19KJ79ND/fBhHWVf+D869Vb6h7H3Fq65dNGtr12ZGe/W/KasIyQ4al2GibAuSqGqJEQ0028KIeeUkL96fb/dtTVAveVO7cwv3HOuhR5LG/w5enKq1JOnnS7A42du7FNsZsZk1puThQ5rW0TrjFC/uQP71EO6bRYbGqv1YI6oyI4umwZ0/K6fCl80kd
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3F4AC180006
+X-Stat-Signature: b7cwsujba3yaknye6tsa8d887npsdcwf
+X-HE-Tag: 1787874436-195869
+X-HE-Meta: U2FsdGVkX1/61qn9jj1olV54SrtBhLmprdihghL0HtmaRVI0tTI8X6AlKP+uvijZAVPphHnOR42K/0a8aWAlJHUrKsoB6hwJ0GwoKgjDYwEQOSmChPxIv57jxwA23xn0Fd/PJ3J9SmcMWjXeO8ZwAvdomD2pZjrsDjmqbr4xaIxJWxM7/dEqGwDZ0L5oIJj7C0+azJd81BR7Zo6bt4pSGj/Tru1KSbekoVZUBJC7LbtJbNECWGp0LY+YKXfrhU/vV0APjRsVay+yrMNA8g4ctVyOrT4tswS2Aizw0goOgOGyqnWykCBkwmDJpctAkhZJ2wte6Nn+p7L4IvsUVy5bn3GuE62Z0TMzKMAAng9uNAkmGotZhmNZuNCSwP1NNynzBP5Hs7e8zd00jkCSGAT/VovgeXZdfkJC1cI7qh2DhkLRS/LpiSRBqBYro8CmauGN1bZl7xhBug828Rz7qc51A+eX5qokLcYvIp097dnYV7p5zy42k+p3HNNBcpdb/iJI9ey8eqkefi0cH1LXmK81Azrwx2QkN4Vpx9HSEmfBGuY6YorpZ4qaLEiMNY8OybMj97BC6asq8vpymmXSau2J7bKSNuWOreJaFykDIzJaiz/oBH++LbwfYb1WmE6S/mpElMQU85H3tbO6lzh2AkjD3UFR9bmvnEZS2v6UWdZm8dh7v7293qFdtCgpvSrKnC/h5jxW6mJrlWrgjFgrck2b9h/x1asDDzpDBUsf4ktwT/jgSVMHmwEsnKndeTmgToZHowUHXau85cpkDBGwysZ6ub1t2/IydK0vic5rQnA+jLpr3mzAdg3/BjcR4dZk1rkrddEBFaszou6OUw4hOoxYtHTYAUsMazSng/qhMLOAQJveGRR6faBG7wN89jYkl6S3jsLMgurLAwU9qjEYt7vUNwsiqJ1PtxelGrU+KorM78UqBH1PWtUxSuxDnwnfHqIGZ58ntA0MwuvuW/gPzAu
+ l//20VS2
+ 81CZ0p+Uj++yUIBWE4gqEuBwMv1lYIjB5s0LFiR8pSssNjef0Fh0v+LkQS2PZ7wCk0OD13pkv61qYTCSyAhVQWnVd7OS8ekiJ1qq5N5dUXVVTRTIIEueqzI9H05xsuIbBnFjP7N+V9jzoiTuoijaGf2N/41OEW44fMRnMcoTAyBYHA+rEW5F+lk58gzgMRE6KNqFeIxjJ54Uluu05YEiT6mAz4eZrLZp5QtXpxnxxnYziQY/tCRgokSv2UGzLGc5PJnfjP5T3mxtjOG+VEGRXrJ7yK/50hRf4iHxynmpPAoUEIjH/w1tPc5F+eNJhwz1CDg6FIMw4X4eaFns=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,279 +110,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an aging speedup series split out from the MGLRU swappiness
-series [1], with the inc_min_seq changes separated to make them
-easier to review.
+folio_inc_gen() currently updates both the folio's generation and the
+LRU size accounting. This makes it difficult to batch the LRU size updates
+when moving multiple folios.
 
-Currently, inc_min_seq performance is crucial to both the swappiness
-fix and proactive aging. There are two problems with it:
+Extract the generation update into __folio_inc_gen(), which only updates
+the folio's generation and reports whether the generation was actually
+increased. Keep folio_inc_gen() as the wrapper that performs the LRU size
+accounting when needed.
 
-1. It processes each folio one by one, while many operations can be
-batched or skipped. For example, a batch of folios can be moved together
-from the oldest generation to the second-oldest generation, and the
-associated counting can also be done in batches.
+This separates the per-folio generation update from LRU accounting and
+allows the latter to be batched by subsequent changes.
 
-2. It may cause potential cold/hot inversion by placing promoted folios
-(which have been scanned and found to have young PTEs) behind
-non-promoted folios. A similar inversion can also occur among
-non-promoted folios, as tail folios from the oldest generation are
-placed before head folios when moving them to the second-oldest
-generation.
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+---
+ mm/vmscan.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-This series tries to batch operations as much as possible and fix the
-potential cold/hot inversion by keeping promoted folios ahead of
-non-promoted folios, while also preserving the order of non-promoted
-folios when moving them from the oldest generation to the second-oldest
-generation.
-
-Minor issue: inc_min_seq() also counts protected folios
-improperly, as promoted folios should be skipped, as in
-sort_folio().
-
-We need a stable workload with a stable number of folios to measure
-aging and evaluate the speedup in inc_min_seq(). So I asked ChatGPT
-to generate the microbenchmark below. It ages an LRU vec containing
-512 MB of memory 100 times:
-
- #define _GNU_SOURCE
- 
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <stdint.h>
- #include <unistd.h>
- #include <fcntl.h>
- #include <errno.h>
- #include <time.h>
- #include <sys/mman.h>
- 
- #define SIZE		(512UL * 1024 * 1024)
- #define LRU_GEN		"/sys/kernel/debug/lru_gen"
- #define TARGET_CGROUP	"/system.slice/agetest.scope"
- #define START_GEN	3
- #define END_GEN	103
- 
- static long long nsec_diff(const struct timespec *start,
- 			   const struct timespec *end)
- {
- 	return (end->tv_sec - start->tv_sec) * 1000000000LL +
- 	       (end->tv_nsec - start->tv_nsec);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index fdd13299a04a..8f187d296b8e 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3296,20 +3296,21 @@ static int folio_update_gen(struct folio *folio, int gen, const vma_flags_t *vma
  }
  
- static int find_memcg_id(void)
+ /* protect pages accessed multiple times through file descriptors */
+-static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
++static int __folio_inc_gen(struct folio *folio, int old_gen, bool *increased)
  {
- 	FILE *fp;
- 	char line[4096];
- 	int memcg_id;
+-	int type = folio_is_file_lru(folio);
+-	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+-	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
+ 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
++	int new_gen;
  
- 	fp = fopen(LRU_GEN, "r");
- 	if (!fp) {
- 		perror("fopen lru_gen");
- 		return -1;
- 	}
+ 	VM_WARN_ON_ONCE_FOLIO(!(old_flags & LRU_GEN_MASK), folio);
  
- 	while (fgets(line, sizeof(line), fp)) {
- 		char *p;
+ 	do {
+ 		new_gen = ((old_flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+ 		/* folio_update_gen() has promoted this page? */
+-		if (new_gen >= 0 && new_gen != old_gen)
++		if (new_gen >= 0 && new_gen != old_gen) {
++			if (increased)
++				*increased = false;
+ 			return new_gen;
++		}
  
- 		if (strncmp(line, "memcg ", 6))
- 			continue;
+ 		new_gen = (old_gen + 1) % MAX_NR_GENS;
  
- 		p = line + 6;
+@@ -3317,8 +3318,21 @@ static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
+ 		new_flags |= (new_gen + 1UL) << LRU_GEN_PGOFF;
+ 	} while (!try_cmpxchg(&folio->flags.f, &old_flags, new_flags));
  
- 		if (sscanf(p, "%d", &memcg_id) != 1)
- 			continue;
+-	lru_gen_update_size(lruvec, folio, old_gen, new_gen);
++	if (increased)
++		*increased = true;
++	return new_gen;
++}
++
++static int folio_inc_gen(struct lruvec *lruvec, struct folio *folio)
++{
++	int type = folio_is_file_lru(folio);
++	struct lru_gen_folio *lrugen = &lruvec->lrugen;
++	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
++	bool gen_increased;
  
- 		/*
- 		 * The memcg path follows the numeric ID.
- 		 */
- 		p = strchr(p, ' ');
- 		if (!p)
- 			continue;
- 
- 		if (strstr(p, TARGET_CGROUP)) {
- 			fclose(fp);
- 			return memcg_id;
- 		}
- 	}
- 
- 	fclose(fp);
- 
- 	fprintf(stderr, "Cannot find %s\n", TARGET_CGROUP);
- 	return -1;
++	new_gen = __folio_inc_gen(folio, old_gen, &gen_increased);
++	if (gen_increased)
++		lru_gen_update_size(lruvec, folio, old_gen, new_gen);
+ 	return new_gen;
  }
  
- int main(void)
- {
- 	void *addr;
- 	int memcg_id;
- 	int fd;
- 	long long total_ns = 0;
- 
- 	/*
- 	 * mmap 512 MB and touch every page.
- 	 */
- 	addr = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
- 		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
- 	if (addr == MAP_FAILED) {
- 		perror("mmap");
- 		return 1;
- 	}
- 
- 	memset(addr, 0x55, SIZE);
- 
- 	printf("mmap: %p, size: %lu MB\n",
- 	       addr, SIZE / 1024 / 1024);
- 
- 	/*
- 	 * Find the memcg ID automatically.
- 	 */
- 	memcg_id = find_memcg_id();
- 	if (memcg_id < 0)
- 		return 1;
- 
- 	printf("memcg: %d (%s)\n", memcg_id, TARGET_CGROUP);
- 	printf("aging generation %d -> %d\n",
- 	       START_GEN, END_GEN);
- 
- 	fd = open(LRU_GEN, O_WRONLY);
- 	if (fd < 0) {
- 		perror("open lru_gen");
- 		return 1;
- 	}
- 
- 	for (int gen = START_GEN; gen <= END_GEN; gen++) {
- 		char buf[128];
- 		int len;
- 		struct timespec start, end;
- 		long long ns;
- 
- 		len = snprintf(buf, sizeof(buf),
- 			       "+ %d 0 %d\n", memcg_id, gen);
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 
- 		if (write(fd, buf, len) != len) {
- 			perror("write lru_gen");
- 			close(fd);
- 			return 1;
- 		}
- 
- 		clock_gettime(CLOCK_MONOTONIC, &end);
- 
- 		ns = nsec_diff(&start, &end);
- 		total_ns += ns;
- 
- 		printf("gen %3d: %8.3f ms\n",
- 		       gen, ns / 1000000.0);
- 		fflush(stdout);
- 	}
- 
- 	close(fd);
- 
- 	printf("\nTotal:   %.3f ms\n",
- 	       total_ns / 1000000.0);
- 	printf("Average: %.3f ms\n",
- 	       total_ns / (double)(END_GEN - START_GEN + 1) /
- 	       1000000.0);
- 
- 	while (1)
- 		sleep(1);
- 
- 	return 0;
- }
-
-Run the above microbenchmark with:
-systemd-run --scope --unit=agetest -p MemoryMax=1024M ./agetest
-
-I’m seeing a significant speedup in inc_min_seq() on my x86 PC:
-
-W/o patch:
-
-Running scope as unit: agetest.scope
-mmap: 0x72c1b5a00000, size: 512 MB
-memcg: 12673 (/system.slice/agetest.scope)
-aging generation 3 -> 103
-gen   3:    7.433 ms
-gen   4:    0.949 ms
-gen   5:    2.535 ms
-gen   6:    5.043 ms
-gen   7:    5.041 ms
-gen   8:    5.027 ms
-...
-gen 100:    5.035 ms
-gen 101:    5.011 ms
-gen 102:    5.029 ms
-gen 103:    5.056 ms
-
-Total:   503.946 ms
-Average: 4.990 ms
-
-W/ patch:
-
-Running scope as unit: agetest.scope
-mmap: 0x775ec5200000, size: 512 MB
-memcg: 12717 (/system.slice/agetest.scope)
-aging generation 3 -> 103
-gen   3:    7.558 ms
-gen   4:    0.916 ms
-gen   5:    2.277 ms
-gen   6:    2.328 ms
-…
-gen 100:    2.303 ms
-gen 101:    2.297 ms
-gen 102:    2.305 ms
-gen 103:    2.312 ms
-
-Total:   236.635 ms
-Average: 2.343 ms
-
-The average aging time drops from 4.990 ms to 2.343 ms!
-
-Thanks, Xueyuan, for testing this on ARM[2]. It actually shows an even
-larger improvement.
-Xueyuan tested this series on his arm64 machine (24 cores, 4K base pages)
-and reproduced the improvement:
-
-THP=never (PTE):
-  baseline: 7.644 ms
-  patched:  2.964 ms (-61.2%)
-
-THP=always (PMD):
-  baseline: 0.0373 ms
-  patched:  0.0292 ms (-21.8%)
-
-[1] https://lore.kernel.org/linux-mm/20260812121658.69965-1-baohua@kernel.org/
-[2] https://lore.kernel.org/linux-mm/20260827035416.3012015-1-xueyuan.chen21@gmail.com/
-
--v2:
-  * Collect tags from Kairui, Baoquan, and Xueyuan, thanks!
-  * Split `__folio_inc_gen()` into a separate patch and add
-    `VM_WARN_ON` checks for the generation and active state, per
-    Baoquan and Kairui, thanks!
-  * Make `delta` a `long` instead of `unsigned long`, per Lian Wang,
-    thanks!
-  * Fix checkpatch issues by converting macros to `static inline`
-    functions, per Kairui, thanks!
-  * Drop the batched protected update since it doesn't show a
-    significant performance improvement, following Baoquan's comments.
-
--v1:
-  https://lore.kernel.org/linux-mm/20260821102538.22642-1-baohua@kernel.org/
-
-Barry Song (Xiaomi) (7):
-  mm/mglru: separate folio generation update from LRU accounting
-  mm/mglru: batch update lrugen->nr_pages in inc_min_seq()
-  mm/mglru: enhance cold/hot inversion handling in inc_min_seq()
-  mm/mglru: exclude folios promoted by aging from protected in
-    inc_min_seq()
-  mm/mglru: make LRU folio prefetch helper an inline function
-  mm/mglru: move folios from oldest gen to second-oldest gen from head
-    to tail
-  mm/mglru: batch move folios to the second-oldest gen's LRU
-
- mm/vmscan.c | 129 ++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 100 insertions(+), 29 deletions(-)
-
 -- 
 2.34.1
 
