@@ -4,111 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 052B1C61DC7
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:09:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E35B9C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:11:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE1EC6B008A; Thu, 27 Aug 2026 05:09:30 -0400 (EDT)
+	id 137AF6B0088; Thu, 27 Aug 2026 05:11:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B932D6B0092; Thu, 27 Aug 2026 05:09:30 -0400 (EDT)
+	id 10EED6B0092; Thu, 27 Aug 2026 05:11:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA8ED6B009B; Thu, 27 Aug 2026 05:09:30 -0400 (EDT)
+	id 024F66B0095; Thu, 27 Aug 2026 05:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FEC16B008A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:09:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C2580160356
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:09:29 +0000 (UTC)
-X-FDA: 85146476058.05.055DBAD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 38B34140006
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:09:28 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZFiuJ2aK;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787821768;
-	b=K0Ap+9VUwXwxhA2IrKo0cpbC+lYrkkBUxnLVjITDbdMFV8QtQwhlco4mSaui2LqqBRbl6o
-	bAabu2RipmpQXxdJKrHIABDUmZ7Upq4CsA0Mnas2hFDe1FfpsQ8LvuJqBAS5REWYtoLkCg
-	FzlP5vpRoLUxRsTi0GUXodwqwh6PQtg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZFiuJ2aK;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D6FC06B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:11:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F9F0C036F
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:11:02 +0000 (UTC)
+X-FDA: 85146479964.21.0EC3EA5
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6DAE5C0008
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:11:00 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="T+SJS/i2";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787821768;
+	s=arc-20220608; t=1787821860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RpGiMBMHM5Gzcxil2Rgh4TexxSKnGvufNkrztx+joGU=;
-	b=bjn3DabEp+45BCDzqmwVFm/fXFd8zlXe6goqeu/9MnwFPjpky/RNIBKAbeRtNWcBkaao8H
-	Lk24q13B96kww+cm2KjGcHH8rrGf8kI6cjEEo0K8CGwrKLkoc4ROfdGsNGSTErZwx4hL/I
-	UsLA00AwvQKQwRKTnIMxFxTOBqExHMU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A1192600D0;
-	Thu, 27 Aug 2026 09:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F71A1F000E9;
-	Thu, 27 Aug 2026 09:09:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787821767;
-	bh=RpGiMBMHM5Gzcxil2Rgh4TexxSKnGvufNkrztx+joGU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZFiuJ2aKTkIPolcpnhdNN4ZOC0buG+VC/7mPcURAZVx/F9rT2gBbpwQJJXMWr4Nlm
-	 1dgzM4NJthTfp3ZG7NLeYjCPkvVydK8hJGR/4IK8wGTlJzncBIIYNfAQLG/51lIvXC
-	 WMPvsWYMUx4LbdLfjkLSrm0Mg7lcmXd/3bno4cSpOVcUV3xFXnsrjcBpI/S3A/Pk5T
-	 DEI6NaSXhOUwM2JtYiy92dwxr9GQ0NxWs4OWexmA6ILGV6dkBoG25PiEh1voDngCNg
-	 vcrw2JJZ9sFm7WbCEXq2CW/pdL8ShXEkZpNx2fo17ugyLZqOTIj21OCni6H+Xf2fb/
-	 h1pUsqwaSmLFw==
-Date: Thu, 27 Aug 2026 12:09:13 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>, Lance Yang <lance.yang@linux.dev>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nico Pache <nico.pache@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/6] userfaultfd: decouple fault reason from VMA flags
-Message-ID: <ao_-uZrrsVX9lzbz@kernel.org>
-References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
- <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
- <5bb86e34-6196-4b50-b553-be2ff7c1fa32@kernel.org>
- <ao_sCh5zP0IC9H2S@kernel.org>
- <e8aaddde-0a07-4197-9874-5ca0ea8af43f@kernel.org>
+	bh=tu2ly/KH2dLnBZR31VNk1zmOFGKKWjw22JUwhd3exbg=;
+	b=Ag3Xbf58cijgjX1KBgjv9NTaFP8v4mUosiML39nxY1ctBbvYf8nTsqri7Ovoqn8bgfdsZt
+	p1l3s03f8NARwMXY8YBK3K/3pJa9yUqubr0IYfJIfmqJX6I4/yj8sFFM2gWsmWJ4wbCVXM
+	tM0MrOjLF3VsvrA+z+JhPxlq7EH+SE8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787821860;
+	b=SssCltWUgIWhhJx6cDcaTJ+gLPxxT1d30RE1O0IIH0hE9WB6E6up7BAAevlDp4r8LDGuxT
+	SADNIWaC9g8uIyg/2Q0NR1fVHuKj/Md88hnnmgBroCYd9uMiOOlJ1XlEBzhi+gadE7sH6U
+	s0mT/n2Hhygdy+W0kfPZyvsFDEfuZLY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="T+SJS/i2";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-85590c5aeabso163241b3a.3
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:11:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787821859; x=1788426659; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tu2ly/KH2dLnBZR31VNk1zmOFGKKWjw22JUwhd3exbg=;
+        b=T+SJS/i23YQv+TU4K/gYOr8aicqqxz2bQctLjhYvr6yGyOQu4JJN77HOWKuf5VZmfK
+         XG7JDvyvEXZefsuRcHaVJbYh9afn9pYA70DB/5i3sgmzOSYbe8rqaq4Etrn10OIQ9dQv
+         Wp4CRZ3M0hxQSuVaSflSxTqjd34fi2SGt12YiOPr0zd2KKHfRBnpUVXba4JiD0nV0OCY
+         s1smh94fsHiadeUPbhNJwmXOmD6eyC5fB2uzibwMXj5cOCPQ9cqgkF4ZTu6I3b29ooAF
+         +PGOO7/xh7fY1cFy2d20OazZoJHuMjWpAk1e1DK8W05bqoExL3d2VIqXjK+9dUQY/ZsK
+         8lOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787821859; x=1788426659;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tu2ly/KH2dLnBZR31VNk1zmOFGKKWjw22JUwhd3exbg=;
+        b=iqadbuTPsqDzkUN5kPir0ylpW2eStXIXhKSmK43VNg+UqmVMUODRcpjB2GU3LqSZie
+         ijtzCeb868canslFboaYB3SPeBNpOO8l4w791/W8MBbrRC9S0+anXoBlpa7OfHC+5vUE
+         z13o77of3VrG+NJBt0cNzoxZ6P/c40y1tmsp15VLdMooj+UujhqQpnCP9eqyT5JSM8gq
+         BLoqlcecTuByDLOxDMVGY4YWW1gkAXEwP/KKQ1bYYv8PjQTppTFCokjqNqwqYb5Iov78
+         0NzM8O4je2NFLejybc9ZMo4yOk2a7C1Z3UXMbTKhZ11QgcHW0wWxPjsc3HVo0olQpm0K
+         S1iQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqQNEhmEoFwQ8kvTDDYIULDYuoo2S2n/7bZGsAf3YG3b9rQYuaUAr8s/hV36khyLNeyV621/f++Kg==@kvack.org
+X-Gm-Message-State: AFuF++lAFQ1/QiObRHyBD7IcAR+ZtaMtbZibsNmRMNlkzBHtARytSBuj
+	qw7X4dOi6xcjn8+PDPB1uEyq4m7TCA2/bfDpV+uXFIIsgIdgRZbURjJD
+X-Gm-Gg: AR+sD10VOuLVkXRcPbG0KVuGW2wRe6CWBnpFZq/rOK6KHvwzf5zYSPovjGpT5YOhX24
+	d/PHYzi4o7GbDNwSDhq12Nx707eQTPxL9aYNvIlN6/ZHoZzA0+qamtnBPSYm8psYP7OIDEcA1ia
+	/J2Di94+h3iRWrkJDN1SbZsjV4mGVay5Lyke0+aKxDuAGKNZ8yHKkwUDM4YYABFg8MWxh/o9jXC
+	36pTcbF4OBWIIezK/gAnT6HZkY0PZImY7RnJbYCEwtsaT3yzSXAnGtFIu+FdsJIzypRJX5u8xMu
+	KobK0IlC3nw61RIBd2igzu2fWEO3bBjAvly6o3+cDJcMzgDl0xGiwpJfH1IPffSzO7HNN8MW+sM
+	DojF++s8Jip92+DUP23F8pFCfgXTeL1YeSlFYaQWyIHo9IsqMx4ay1M+74CYmf9RZybXsn7vVwN
+	22sE4WZTq3WFkXCpg9LxcqJJCTY6ACDFJMJAgmBDaUmo2PQtyaakkUmemvkWe3Zted/ucE5yoeS
+	z1Hd2/dH7EsOk/aH75AlSIyCaiTfTf0phA=
+X-Received: by 2002:a05:6a00:2914:b0:84e:f90e:492f with SMTP id d2e1a72fcca58-853729a9f0fmr26681240b3a.7.1787821859257;
+        Thu, 27 Aug 2026 02:10:59 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8535a7c2570sm1860103b3a.17.2026.08.27.02.10.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 02:10:58 -0700 (PDT)
+Date: Thu, 27 Aug 2026 17:10:54 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] mm, swap: Fix potential NULL dereference when
+ trying a sleep table allocation
+Message-ID: <ao_ybL9yRO_pHphW@KASONG-MC4>
+References: <20260820115505.20027-1-shikemeng@huaweicloud.com>
+ <20260820115505.20027-2-shikemeng@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e8aaddde-0a07-4197-9874-5ca0ea8af43f@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 38B34140006
-X-Stat-Signature: jiex5s6xcxtkuyf3f5fosd7cdfue31s8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260820115505.20027-2-shikemeng@huaweicloud.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6DAE5C0008
+X-Stat-Signature: xb9gqr4u4cgc4z7rbx9tcaufargoxrn9
 X-Rspam-User: 
-X-HE-Tag: 1787821768-183599
-X-HE-Meta: U2FsdGVkX19mEYiKD8Tv1kt/3u5yoHZXzq6HQALYR5BWd2rwQ49dShGpQHLqvYUvY4vD4gCMUMvo6OSJhHWh8Pklt0m/IYaD3tfqkelo7CE78qNAQflbRu2N6SI1PzvWzJHog4gXDpLbNKgokskdif0g4FOyrb4GFGGK4U+eAl7QGWLdToRt46Qcpd3oa7rfCx8aE6JuNER1Zw5Br5Khpp5GXhwfiNcEsfNhDXtzoES/76/h443kRH+2YEI8JT7DWZ6RiuwI/AU1Re0f/eOPex9k5LxPccorYDrvTP9SfRJ1wMlM7rlcrlRHczHCVi6W9HT2HQ5yZ/9TPTRtF5tbhw1OZQMq03wxHeto4VFjnpLcwrp5JifXAx9/SQn64Yll1R25FhjQUj6qw5zrFoEc+vcAtJKKboxx9X/zWbhqQEhUKClvwLQ2/3uk0jHokXxFnIzA56curzcK/bHpp60p1bsr8KMm8uxfh9eGMmb5BHDTaEMLT/wupbHCrGdR8rYeKh2UtkwUTLSodjhnSNvoRX0jjltBqG20wub4T5myUwTvVoFwxBN7saBcPpPsIcCzZpLj73oGouDow3rPCZ39YVBV261rRkhp3t9Mm4YS4suz8IK/XTFbkGAVReYYeouJyOAdc5h0WUf7ev4xZkfd/FQH5YvVC8p3DZyIsMpdkN5WekMa5TanTYkILx9Ws6wsyRDqBAEo+qYIHOIqTZqz0gVKmQGgH2NyIVhtoaXeDZzU18w4bcNtKr7i0StAG/EeBEIoFcbraYkT6yKZ+gbJMxQ8n6spl2G+Ijs0Sb0a4c0AJ3kyHtwnvxRk72UVaJ5f+us6A9K1sMgzaR8nVaq3NGDKl78hSpFer9iTygptu92FgxAmAPYIgqmel0J5l11jMCOvfR5pvV4zWkLf1q60LYT28JUc0tysePp6t5K8pK3WlbR2V6YOAUOnt6af9B8NB2JaXFNkTKc5LZnEMQ1
- tpqb1W58
- Pw8Lppo4nC8/sQw0O5W86AXFCyDC5/Da1eSIB27RDYKWxeEOHFus4e5teyDWB50me+55ayzf1Kh3Fmce10NDkvSuUzWFYabnwmfOASlzEv+nXijFUAJkT7qY29LRkeV8JTyNK9DUVb7XXF0WGUrS2YwwbxcbgF3XosH+NnN5odDj+nEqeC/G05DURg/D5kwm2UjkQuuL1Zk0DofcfEJbjB1Xxrdu0WINyyVMNGiseZyjQ67qY/pEWM1Udxy7U2YOhbriZf67QF4t30gHPhsjjT2ubkg==
+X-HE-Tag: 1787821860-497068
+X-HE-Meta: U2FsdGVkX18oW5m3cmZCPsKMtXtLdVRco1XpiF5VOAsNJueRXidLrhqFiAixtVQGWe3R0EfEm5n0jZswHgzjfVSXQX6pfp3CU0qDMvYfWKgt/x7r9d6zRv5e708dIEvD5T+5owh+PNAqy7y5roIjOj8Jx0w11ABEsFJ3htFuJzoYyzgAvu1nY1Cypb698wKGDvqXRhmAIvRGHUmW/6jY+dAPyGH0EVRyImN7oocB7iiIiRcA2OU4SZa21JGgjHQZTdZJlFWBzTCpCoJkiMjzDlo7WqNxp//LyEZAMqj/a/edAmIsNuji8e1fz0Qq4Ax6Ewqz4t+EKJOMt9tw7Uwf/ZEaYYdOK4CURMWPJUCHI33FMeVo1COGCAQFCW29c5OyI6kHQZbAe9hVu34mhg/M4bTcYQnjiB4p0Sx0Mmn/O52bbCVCFx8w00dRP2++f/N0WRzTjXq+G1ZV2vZ175aR4opoaT29hosVyKxatp+2oLmvYRn94xEVzM6E9ezE9qyB5qUram5exbguw805zodt28AElqAVCr3Lw/iPJY3CeHme78Cygm7DPP8F4CU1OJO7lBVWCS/KJ+Vfjy9+S0MvRrKNFIMCPOILTjR9KlkK3H4hBvAl5XTR1WlVFS+ggpLqs0yAB0/RpGKNsuta+0GhNYOpWSwsyW3A47Pph8+AdYYcPNg1jFJfOWRRhkGgOFlrrii5EhSfgrPINxjAhSdvSvRwBsQTuAa+KHQ8Sbg4FkRj6uODPwSgJliNL+R3LKixuMgoX1KaSekLzeoAxNr0KHGGRZnjO6oM2/1VBmm3VKkd4pv167N9d2+4ubZ4gpERwAVeOrsCIMBshpBIyAYSrxj6NFOmFp3jf3vjU42czEfrP1TWkAR3tp6URhvsAbQj/CnMKX728BRHLrWSjN3fVM1RDdPVFpt8kd+K91IUNAyQTsTys7GLFmx9dbORl1l2DcWOHaPUFn97HG6FG/y
+ 1agRf3U8
+ j+wNEbhEJDcHZp/BISQffENAx88wF5NFS3kTbSBnrDvcgt9czTShLe0GR7bl4LN4SX0n3RilixyJ2/M8B6OwjmGImslMwbirmAQL0m4NVuc6us/SVZTK345NIcxytSjpmMfYJVM1knUl5rVv5ndLrmQSUFqPpb1l1pxVZbLmrtbZrc20G26XPDFUFYlBibpDg4CVmDwKitf08meg0GhGFMLBx1dp6UBMRFNZD+0lf96w++n+yc7h9BXCkTjvRKrPTvUW3Y+jDeP68mndQMAP4di65ZAvGf3C2sYGfHY6tbWlhKve1EV8V9+Y7XDYDx3uhEprTdwpMrRcDorIOkKp0KBf1FVqJHGHPoWF1S1x5T2hVonDC8rLSo8Vx4u4gIgM52MHlLRptr3taR32x0T1L8Ywujknt3QaHvti11eiTcdnQ6vRnOUFN6R7ne8IuJP8mC0lbud3iSgDPb+aXwU35+cSyohYN6a+6FqkHi73UfDDfspgJmR9Fjq0QqWaEDI9w+DLiIwwfa0oMc07evu0JwiVfExFF5uD0uuyo4MdmILEDsPi/m8EWrpftjK/RdXBMRd3t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,92 +124,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 10:10:24AM +0200, David Hildenbrand (Arm) wrote:
-> On 8/27/26 09:49, Mike Rapoport wrote:
-> > On Mon, Aug 24, 2026 at 04:46:14PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 8/23/26 14:17, Mike Rapoport (Microsoft) wrote:
-> >>> Introduce enum uffd_reason to define reasons for user faults rather than
-> >>> overload VM_UFFD_* VMA flags for that.
-> >>>
-> >>> Using a dedicated enum makes the code clearer and decoupling the fault
-> >>> reason from VMA flags clears the way for moving the uffd mode bits out
-> >>> of VMA namespace.
-> >>>
-> >>> No functional change.
-> >>>
-> >>> Assisted-by: copilot:claude-opus-4.6
-> >>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> >>> ---
-> >>>  include/linux/userfaultfd_k.h    | 16 ++++++++++++++--
-> >>>  include/uapi/linux/userfaultfd.h |  6 +++---
-> >>>  mm/huge_memory.c                 |  6 +++---
-> >>>  mm/hugetlb.c                     | 10 +++++-----
-> >>>  mm/memory.c                      | 10 +++++-----
-> >>>  mm/shmem.c                       |  4 ++--
-> >>>  mm/userfaultfd.c                 | 30 +++++++++++++++---------------
-> >>>  7 files changed, 47 insertions(+), 35 deletions(-)
-> >>>
-> >>> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> >>> index 45355bdb4ec7..f401623f315d 100644
-> >>> --- a/include/linux/userfaultfd_k.h
-> >>> +++ b/include/linux/userfaultfd_k.h
-> >>> @@ -9,6 +9,18 @@
-> >>>  #ifndef _LINUX_USERFAULTFD_K_H
-> >>>  #define _LINUX_USERFAULTFD_K_H
-> >>>  
-> >>> +#include <linux/bits.h>
-> >>> +
-> >>> +/* Fault reason #PF handler passes to handle_userfault() */
-> >>> +enum uf_reason {
-> >>
-> >> Can we just call this "userfault_reason" or "uffd_reason" ? Maybe the latter is
-> >> actually what we want?
-> > 
-> > userfault_reason sounds better to me.
-> > 
-> > It describes what kind of user fault we are handling and the 'fd' part has
-> > nothing to do with it. 
-> > We do use uffd as a short name for the subsystem, but still most if not all
-> > userfaultfd "external" APIs use userfault_ prefix.
-> > 
-> > uf_ was an attempt to make it wee shorter :)
+On Thu, Aug 20, 2026 at 07:55:02PM +0800, Kemeng Shi wrote:
+> The root cause of this issue is because multi-tables are updated in non
+> atomic context. To be more specific, the issue could be triggerred as
+> following:
 > 
-> Yeah, I got that; while uffd is a known acronym, the uf_ not so much (and also I
-> wouldn't suggest it to become a thing, lol :) )
+> swap_alloc_fast         swap_cluster_populate()
+>                          /* Try a sleep allocation */
+>                          spin_unlock(&ci->lock);
+>                          swap_cluster_alloc_table()
+>                           rcu_assign_pointer(ci->table, table);
 > 
-> I've been wondering for a while whether it really should be called
+>  ci = swap_cluster_lock(si, offset)
+>  cluster_is_usable(ci, order）
+>   if (!cluster_table_is_alloced(ci)) // ok
+>  alloc_swap_scan_cluster()
+>   cluster_scan_range()
+>    __swap_table_get()
 > 
-> 	handle_userfault()
+>                           /* free table when more table allocation fails */
+>                           ci->memcg_table = kzalloc_obj(*ci->memcg_table,
+>                                                         gfp);
+>                           if (!ci->memcg_table)
+>                            swap_cluster_free_table()
+>                             rcu_assign_pointer(ci->table, NULL);
 > 
-> And not instead
+>     table = rcu_dereference_check(ci->table, lockdep_is_held(&ci->lock));
+>      atomic_long_read(&table[off]); // NULL dereference
 > 
-> 	handle_userfaultfd()
+> Fix the issue by making tables visible at end of swap_cluster_populate().
 
-The 'fd' part here sounds really weird :)
- 
-> Or maybe even better
-> 
-> 	handle_uffd_fault()
+I think you mean "end of swap_cluster_alloc_table".
 
-That's somehow tautological, but maybe using uffd_ as prefix would make it
-a "subsystem namespace", so tautology won't be as blunt:
-
-	uffd_handle_fault()
- 
-> And then have
 > 
-> 	uffd_fault_reason
+> Fixes: 2fe7a6f5024b8 ("mm/memcg, swap: store cgroup id in cluster table directly")
 
-Could work, yes. No strong feelings between this one and userfault_reason.
- 
-> ... but just a thought.
-> 
-> -- 
-> Cheers,
-> 
-> David
+Hmm, wrong commit id again, should be
 
--- 
-Sincerely yours,
-Mike.
+Fixes: b197d41462c2 ("mm/memcg, swap: store cgroup id in cluster table directly")
+
+> Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+> ---
+>  mm/swapfile.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 615d90867111..4561c864f806 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -466,8 +466,6 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
+>  	if (!table)
+>  		return -ENOMEM;
+>  
+> -	rcu_assign_pointer(ci->table, table);
+> -
+>  #ifdef CONFIG_MEMCG
+>  	if (!mem_cgroup_disabled()) {
+>  		VM_WARN_ON_ONCE(ci->memcg_table);
+> @@ -487,6 +485,12 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
+>  		return -ENOMEM;
+>  	}
+>  #endif
+> +
+> +	/*
+> +	 * Make tables visible to cluster_is_usable() after everything is
+> +	 * ready.
+> +	 */
+> +	rcu_assign_pointer(ci->table, table);
+
+Hmm, but for the error paths above, they will leak the new allocated table?
 
