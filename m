@@ -4,124 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EDF9C61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 13:13:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EE96C61DC6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 13:28:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4515F6B0092; Thu, 27 Aug 2026 09:13:10 -0400 (EDT)
+	id DE32D6B0088; Thu, 27 Aug 2026 09:28:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 402166B0096; Thu, 27 Aug 2026 09:13:10 -0400 (EDT)
+	id D6D646B008A; Thu, 27 Aug 2026 09:28:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CAE56B0099; Thu, 27 Aug 2026 09:13:10 -0400 (EDT)
+	id C0EA16B008C; Thu, 27 Aug 2026 09:28:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F315E6B0092
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:13:09 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 83E961A0400
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:13:09 +0000 (UTC)
-X-FDA: 85147090098.16.DAA7546
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C48584000D
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:13:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q3RH+HA3;
-	spf=pass (imf27.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A0DD6B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:28:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D764FC02D1
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:28:32 +0000 (UTC)
+X-FDA: 85147128864.07.A876448
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 97532100009
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:28:30 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ctBtGvrP;
+	dkim=pass header.d=redhat.com header.s=google header.b="VbGt/iuO";
+	spf=pass (imf05.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787836387;
+	s=arc-20220608; t=1787837310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YyQH4Zg7pq+6kxETlvUNM4xdruhUnmakMDW16/OuM/o=;
-	b=BY293fuEM57Pj4hn3se0OYdGUCO1J0EUnp8nVh2EVSaUblh0EGwmMDZuxl27FTcRP0Fq06
-	k9nGuagVVB5EomN6oMolWWa1wfjpxS8frJpF65n9iA2ddvrkEM2h0JYg5PN8ZKNKhRnKqU
-	p7xr8DZ7AlZEWkdoezHo9Uw60rWUfP4=
+	bh=faP9ygWQlSRIrFbk7BiUYjG/H8pEcJDzSB8VBBaM9e4=;
+	b=Gb1oYL4Ue2rkww+8oQUOmjn6mYahwiqc7q1ujheBMf7FZO7C/VYlOBdt6Cd7ObPR8POj/8
+	HQiwZx0SMWnMT72f+mK1BNhA93nOBXwOBtjNnqK8BOYskXRb/Gf4uox4WaXPlTB1i6h1Wi
+	I24+EF/0VeJ7ePyk0wz38Z3/PFBSyVg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787836387;
-	b=B6DniSBmZEiphzZdwT1Ab+b8kRJH2IslkLA3YGmcDb9fIt67mx+PKAX0sJTBpwSDYfAeqi
-	IzzRRLnsbuj8bB18VPIY43ywpjuezv1vAUnF8gFU1paSEviAf371t05AZZoDGFk9AveXy3
-	jnEexlTeEKlA57+dJBo6k18aQ/gLLEI=
+	t=1787837310;
+	b=O8F4icv9ZeSLH01kEa4L8CIlpatuNwPnxVfeMiEtO1D0/MbfwjqimGkZbbMqyTlbJA5w3z
+	nZQVP7+1/9xxX4hK+wtMNXdTPJBzj2SAIU8vfukSmrX2AXDFz7S9YKlKd+67rRTmaBMBw8
+	YTTN8k/84+ib73aJ2d2dzwydoYIl0jY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q3RH+HA3;
-	spf=pass (imf27.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=imv4bel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso1031768b3a.1
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:13:07 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ctBtGvrP;
+	dkim=pass header.d=redhat.com header.s=google header.b="VbGt/iuO";
+	spf=pass (imf05.hostedemail.com: domain of mripard@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mripard@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787837310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=faP9ygWQlSRIrFbk7BiUYjG/H8pEcJDzSB8VBBaM9e4=;
+	b=ctBtGvrPbZ/jeJ21B/EHJIhAXRTUz1+aNup75tZHHVnJGoTcFPAY5aUFDtYPLtEcEOm9aZ
+	tEu6RmRz4XR33At2/fW/A1LXY8iajHIXnG7dKxSAhwQFta7DSKi0YQ6gbGtwCsU1whxu7x
+	vhkJXw3zLTtwtDsiNYlLP028hRMqA+s=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-546-yMYN9yRsMsGzobSnnl2_Fg-1; Thu, 27 Aug 2026 09:28:28 -0400
+X-MC-Unique: yMYN9yRsMsGzobSnnl2_Fg-1
+X-Mimecast-MFC-AGG-ID: yMYN9yRsMsGzobSnnl2_Fg_1787837307
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f4bff865cso1052101f8f.0
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:28:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787836387; x=1788441187; darn=kvack.org;
+        d=redhat.com; s=google; t=1787837307; x=1788442107; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=YyQH4Zg7pq+6kxETlvUNM4xdruhUnmakMDW16/OuM/o=;
-        b=Q3RH+HA3KV11f5GFVnhtwCjhAQiTaRpOXQKjTd4ppz3Zzn9zFAN2DJXmVeyD8xwAl5
-         7svV372bSGg3hE/tNqHZpJJ/aujmDpouh4LfiXrLJENaX5q+Q4cjLBg/bK+HLWL4h8+M
-         CXXmtfyNuqDy13O5709Zyut68DKTAKeuRA4sFqoeFz760PQnKCwGkFGwJcafPPW5Q0lX
-         TRM28FZ5mKuwUOUKCmDL3oDA2AgY5dhnLRY7LVUlGUaQwMEEu7466pxkOUNwT5sKNx7W
-         nO4wgx1rMW4cAyoqPNmlGjumxFUmJVt7vOyDhucicfLP6fe22PiglwBUAVAEw2Ttx6FQ
-         /rSg==
+        bh=faP9ygWQlSRIrFbk7BiUYjG/H8pEcJDzSB8VBBaM9e4=;
+        b=VbGt/iuOsZMgtk3SCcGBGb66zBBqN3Gu8d8wHX7SVNgslkQeISM0wOR6dDm7Y1Rm5S
+         kgV9lDM7F5/jVTwtcbe+ZNtvflomLHbmgje8R8ZO/U1k5S6JzCGbC2RzRywyYNohKuVH
+         qG5ah6/kFNWnk5euEpBrRbhfFHXYXGgzfWDYAXDIScst02sq6jiJWpo8O8Z7IoEhpBvY
+         KpAWsb8xJYz2BdWEX+5awC1VuiozcT2cyNb6J3Hdjvsytj2HyzDGmsddhqxu4wpwZ6Z7
+         1C4QRvlH6YXtGsAZ3tbG6EGEKOuObxAni7i+pzAJTWs7heTtunYrnOoOc5stm27OVRh0
+         T3Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787836387; x=1788441187;
+        d=1e100.net; s=20251104; t=1787837307; x=1788442107;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YyQH4Zg7pq+6kxETlvUNM4xdruhUnmakMDW16/OuM/o=;
-        b=E9YB9jTx47c1riu+6YuebZH9BnCl4eQivAvSv+waFURUE4HcpSFzCEUM26bARAeO4K
-         DyyNPVq+PZiEnp5qaLd1H2Th/rFjBr4Qr18egvcsZ7UNg4WhtjVjbkMNHpfjVFluC8Lb
-         FrF3vYVLYquXZawGWAYP4VkVtRAOSAobO62mE48tVZUKj5rc87WSZwKVUm32+OvCv1cP
-         5WN7QOGxupJmYiJwhlJvvqtAxtSq0r47d90nTbWTLuTJGDiEKiaskTVmjmT0ArekAsWE
-         PDpJ4dE0vCxrT3cuv5Ix+dpfgi8IUVTJ+86p0ajHXlpWOtgrLce0EhSqQegO36Z0P83y
-         tEPQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrfFpIDtBhQI5LikAS+A/r6fo+hhJ5DVdQ6zIgJevhn3U3JKCZ0uDdGNN0Qx1KG8jbEV9AoP/rPGA==@kvack.org
-X-Gm-Message-State: AFuF++ngh6uxDIOgPIt1+ZK5Z6j5IIjVW5k2HK9mJkb5mJGty3mTLZga
-	3oSjbD68BsQcIynjerd7JpNTdsPvIe9cSbYgItL9IY6hTXf98UBGgXre
-X-Gm-Gg: AR+sD12uFze9uR+DQDf0as/rw6rbzqrgd+kZUvvK8votGwY2505DWZ5GeRd8mkwkDTo
-	tDY4Vu8mkC8P2jBhPLFY42rnn/b+96lHE0TwBMAljryoKTORK//C9M4r/dMzk03s1aR2SZU5lqy
-	iQxRW42K8h5qc3rB8cJCt9GiNN40z0Xzs4G6f3wFE2u1h8hpnpwJqUbrATELesH/5lL+oqe3CAo
-	6zAy062hBLo6gtRR8SC/GkvgoWcKw5NqCrOKdD+0lTukwqaag5eI/GcDkJbk7njP3QfHPQbGrBT
-	OEStV/YXK0vGGYtnxbXYOAGDRoza1qqosd913Rne2WuDUoLczK9fTooEfCMHmcTG+sA++fmKDbz
-	5/+xemfkJESIgKkct1G4EYLdaUKd62b3KDhxxbwhVTj1Ps0iGrinZelSKf3J+++nczOj+DinFY2
-	sltCs74mZAhmRpa51+U95e8/kdi+0BIVwgRKUNMt+Z2oFupCjJVvQUUMWedpaaN/ZRmHmlyOKnK
-	a9WQo+L
-X-Received: by 2002:a05:6a00:27a5:b0:84a:65e8:137e with SMTP id d2e1a72fcca58-854c8f0d4admr7999711b3a.17.1787836386527;
-        Thu, 27 Aug 2026 06:13:06 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8535acbbb6bsm2096885b3a.24.2026.08.27.06.13.02
+        bh=faP9ygWQlSRIrFbk7BiUYjG/H8pEcJDzSB8VBBaM9e4=;
+        b=E8XixgWK5ry7gHVlIg/6Z4qb6DOx+FSloEqXeY60bggkMNrfEqe+m4CRRHnMrqIxnz
+         T6Y93psHGq5svE9UNLpvao+VwxMCoID8p4/Wq3ClP3UzSY9e7CswLpQqAvpL+T4q+WkS
+         ySHdky1z1mqlNmfAzNiQ7tdT+I/fsPEhBUF8Cv6oYu/TJ7JXfdeRrAh0xm8ZHGjlzeuX
+         oBa5bMdZMgJrzabTsMismNhQlT8rJosdghMhsCM0GeGgfUSLkZdVGqTIkLhkhImizmbo
+         tCUG20U2J6qZvZODDUlIUkLneONlA059Jzs1x0TB/Dhm0q2/qwB2jjODrQrx+bEKDf1/
+         qZFQ==
+X-Forwarded-Encrypted: i=1; AHgh+Roxe1Ljuek/4TiWzz0lDb8kO0cnG1rqFnL16qio4e0xe9TlTI65mz2qbGMYV1qAnGo8rMc4uwwxpA==@kvack.org
+X-Gm-Message-State: AFuF++kC2XSi5t1ixgd8gw1WFSb8/YAJmhzXKYyu6SW6D48G2SQSpGAO
+	KvrGqXyr44f/f92ZsyG6NQXXUbVDzXEB+94Wp8pvilaLu2xrBFyZ1iHf8+9nRyAt+myrxDtQkmZ
+	2X3/Y8lGYPz9n+F469khRqZrfZtPQ5IQKKsIJRDHHgaS/jbBWZvoS
+X-Gm-Gg: AR+sD12QrmBgrUK1sY6zc3aYqdT3wCEDACPXvbXnwQ5ZIqu9oeYH6PqsepaG3qHGqvt
+	gmdlGqTnqDDe6nuF4U+cpir0WtuNwGdyUYdrg0ClPKVBjkAwp5TIdST5WW6oD6HPCz9xXa9r1yp
+	Ntudjp9deRktzU3ZtsnRyVIq5cPfgXxA1psxsRVQJcRqoH9z6b/8ShxnL6clKAZIjQS+KhJh/I5
+	6/0qZakUzSMPg8F3kN4N7cL3Rzsj9Z3DrCr7hfBRkGQaWl6ORf+Hyt+RGi+ubGRmxcZItOJNoGV
+	klApGAGsyesCi5nwAyAx1tbXF5v8bJJHHUMZaG+xdX0sySoQrChZGBBYHMG2uR13rLEwv4/ptg=
+	=
+X-Received: by 2002:a05:6000:29ce:b0:47f:8ac0:282 with SMTP id ffacd0b85a97d-482e26c3ff0mr15609405f8f.17.1787837306967;
+        Thu, 27 Aug 2026 06:28:26 -0700 (PDT)
+X-Received: by 2002:a05:6000:29ce:b0:47f:8ac0:282 with SMTP id ffacd0b85a97d-482e26c3ff0mr15609319f8f.17.1787837306492;
+        Thu, 27 Aug 2026 06:28:26 -0700 (PDT)
+Received: from localhost ([2a01:e0a:a99:9822:ca7f:54ff:fe01:374c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e279eb1csm9177838f8f.4.2026.08.27.06.28.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 06:13:05 -0700 (PDT)
-Date: Thu, 27 Aug 2026 22:13:01 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Stultz <jstultz@google.com>, Ingo Molnar <mingo@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, imv4bel@gmail.com
-Subject: Re: [PATCH v2] posix-cpu-timers: Dequeue per-thread timers before
- exchange_tids()
-Message-ID: <apA33QXNSwDBxeXK@v4bel>
-References: <ao7Q8miiuLAPVnWv@v4bel>
- <ao7iQ_wOLghOvTsq@redhat.com>
+        Thu, 27 Aug 2026 06:28:25 -0700 (PDT)
+Date: Thu, 27 Aug 2026 15:28:23 +0200
+From: Maxime Ripard <mripard@redhat.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Eric Chanudet <echanude@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+Message-ID: <20260826-brave-nyala-of-elevation-d23aea@houat>
+References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
+ <aowHqqaqK7TeexQH@tiehlicka>
+ <ao2gA_m3BCBu2esy@echanude-thinkpadx1carbongen13.rmtusma.csb>
+ <ao2t6HP-Zt5KDg30@tiehlicka>
+ <ao3UKM5SbxBmxuR0@echanude-thinkpadx1carbongen13.rmtusma.csb>
+ <ao3quaSze8YjPjxZ@tiehlicka>
+ <ao3tFg4JLNlbylTR@echanude-thinkpadx1carbongen13.rmtusma.csb>
+ <ao6eC2SUIGVz3Qct@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="yiahqkhps5b233tk"
 Content-Disposition: inline
-In-Reply-To: <ao7iQ_wOLghOvTsq@redhat.com>
+In-Reply-To: <ao6eC2SUIGVz3Qct@tiehlicka>
+X-Stat-Signature: ujtojqcoa4ooc9syofcfopqnz3kutx3i
+X-Rspamd-Queue-Id: 97532100009
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C48584000D
-X-Stat-Signature: rm97gzyx8pfjzjxgo6d519r6598yb4ab
-X-HE-Tag: 1787836387-617791
-X-HE-Meta: U2FsdGVkX1/TCL/+CRN4iqd34ln30IR8R9HeBj/YVmWmZogxCq3qaBs9NHt6Mnv3is76OCx4UtujyrYdXxPcM4sjw58/VdmxaIqDEt/+KjMEvnCCnVrDNfk80lWRiG3WYf/xqmlu1gdFqikJcGD2sskk1hT5MeSwKV3dZw7nXzAA9i25I1Nd95RnUMlRtijcLUJRWZQMI80G2CMlhKMyTk11C/CJmD2yK0WWIM9vnVifcgb6+1+QiFYt33lusyjiKMwiLzKv/2OH2VeHuiDtvMvMH2EFVSQsRdNfma6c5xHsFbI48z0sDu5u9Eki2c0MIswIDNAVZGR/zkUWndIZy1ipPItoZ2pGIoySgAF6pP7bVc43fR+I9/UcylPTyEyU10gSqEO3Jps2NzFrYdDlNA+kqHpwOfC/ibdWUKFu1M3mE52I0uSCmSgYGzKMZWmlQf9bI+bVHKjA2Z4qDcIOjFXOM39WSZb+oxPsxFnlHsYtFmuFSYSD1uUyQvBeZ+337XdUBlgLW8pKkauCSywuER+vKJeYvd8rKUtsIifoSofbk+uqumTowENeC86gOL+QrIheFpdCOZQ9UVfdUwr1+OmK40cZ+QOhgkd9DZwo8E5Xm3fIOYapx4c1hhtnPsOCmEPqIOku4sDCOcGpPYz1l/1SVUCNHHixAlfWbzStFLutPpRWJYa94SMr0Lu/zriXBHKwd8vxi67TQyNrsem18fuQu/mNSm1cn5cnA4a8FrNHAO29WyFRtrR+wuUZ5XeLcrc3oS989kogMebOkhJSirbghQHdVCrmwOeznDoun2wNYj5XGoMQjE/p8yOPyAP/yTdeqR466/DPhRD+kPbTmIs0R3bYuhQtLWiUoa0LrKAR0GmEO+XJ7/GErqDDvASmNAcQZDO/XDGrCvmJbfhXMwfYBnA2GSoO+HAjE7TGuDSpiiLJIc/nP344YXUQsPl0OQWKbuAR/RaHvIeH51P
- Xlyt0t/I
- UeyAY5H2PjzkBUqNPLHMS4LDer6k0PPxbEiKOFwSsUbmFOHZsR7qM5t5JCJnMkwiOlJAw7C4hgpCW+9OlwFTatUBd4K0QVh5YEb8yy9kQvWi9GQZ2cDp3+0xnL5PsYnUsZxX/n3zr6+koQeXXqNRBSI+RXpWPIXwSkUwgZCe5qKvRBNLNfQiuAgAoOqy66lUZ1gtRFwHmS98XJi/pvLBolaPbHNaET4qh/sdqSTaMXdah6/GK8l9cOPUthlYGk2nUQUDbenuCh8cc2R2hLrYBavXUxcXB5Y9f6Q98GGtABfv9k8xxcJTyLGjHDHNHQBqKOphPUoPvK/DEBer5JbbOuIVH4+e0zq+JOkqkSZxWfgu/Kgo+Uk8/P0+rT8dum4iYlCJeiCC8ZH0PGS+noCbW8197ERoWd0FUya7n6WVOtphNSpcUfVlUGcDk57qNUt7Mx5KyoODBB05X8l+y8A+Xq16XZu+w63QpIHRl64NsbzmCvYCKg87YPYoT139uHHX6VpkU
+X-HE-Tag: 1787837310-517414
+X-HE-Meta: U2FsdGVkX18e8PXuynQB3jBVFuumajf9TFbv26C9xD/LQom0DVHIysYG4UBM2qfV5V7O3UBYF9YVz9ci4KdnKkUzZ/sICgiQH671Z/6UdjUBGmoRtRx0dpbEMZbEwm68VMHTgAJ838Jqg9TYhtA/tB61SZT7sNNcVBSi/oSxioLIFRcKq+SJjte93bxjCPxh1PsYEZdSHQ3i76iExTLnl/UiDrpJ49O7Tz8TJAG4p8LPwgwMm6R5dyJoMx08akKqBYQIvk2iQEBCaKEFFXa3DJ9N4OoRBDKaOPLcibyJOjxuqqh8I5WpnVhk/LxIiuq9fb12sqe4cBxqoxeT4V/Y0sXzBkUkBiWWTaeMIVp2rZseY3+AnfRY/QfoGMI+QzRqf6EOmTpzP8SkPDWqOgkBn4nFKAaCjhX5yiq+n0C7T/8+IutbHw415UIup1WWlf2viVo9m6ydXlDVGotLV3dYmh4pBWF4BOdHuYVIrzidbllW8YNN9B9m4+7j9WL2heKxBV0AOEoqeYae2U3Tzr1MZCX9nW2hmvV86qXCjiZqvLsitzhQRmpkQtPKm7uXkIk5Q9IhtBEJnJxTmJpdtZADvikxsvZOBYcmvvIp07W4F4jAmUrTMqPVYEez0W1xTnt3JzPVOYgG3wm4NT/eVFOX6atq3Hub7B0jnZNqM2MCJDfwA/uqFwr1R0gDgnvixMHpd/4y/HSLzjqSZU6kfK+3X6aRGKDRmIQQgjNesSlLIH3hHNm+aVOSlrbLRpRkIdzClMyGhMvZEPeuK237DsVzqLCkJuDqky6eySLwsLjvnRxva5U/zB/+uMO0/bOHorZvrD/phEL4hqtaX0F1asc2n+NZ2pHJ71ZNiVYPIZgmzcXFqlBYHST/ddTou+PJu+t1SuqTWfRWIESSdWHfPa39IbqlrRQ3ryR0bE8xj+/KUdUJyFwjUhqgConySjMpbyyhxPeqzGEkeqrVGgE0JnL
+ FQYNl0FQ
+ FaEhhhSiQF2N85atYHjkstbuLBuRg0mVtPOd0USkiWF9M9xM04As9/6xqZxoYmfjYq3TUNjLQ3LP0fkyNIbpH9VtIPp1ZNb4rjBMhjSlmDvFzhDWQOXTv4Qkti7kjyrLm0iNdpobX3YQ0yFRMzZ/Ij1FwqA4eagaC+7P84A2qM+1FoFhAR5S5NiCMaVu4ztkyNJ+wtWbE1e63i0fYO1Et6MEsjq2wrgXvMKmnTnKWrqllknXduVlnINlaIdRWKiCtaMqxQ4WG72uWPypnD0g9Za/UaB0iUoFQF3j4bl8ku204XZME0Z1AxasXAh50EfKJo6Ew+xuB4set93ts+Mdf90oQ5NvWbAPqIuP4RhnsHEoXHiO3vWsAkJ+jK6wGLL4xeCpQCPNcvpU+da+mYop62CG3QiZKI7iPwR7RDpuqpzn884UNGcUUyvmpVxs1prbJzmF4BZ5vs35NC20m2bPpzywZ/07x0xWamjkHUwvAqbMtXb/5ZYnVTNl8GB3rmMzi8NCecfA83VBR7LQvDpsO4j44hr4pRz/l7QFhmP7UN8B1IM4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,77 +155,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 26, 2026 at 02:55:31PM +0200, Oleg Nesterov wrote:
-> OMG, my head spins ;) I'll try to read your explanation tomorrow.
-> Right now I am all confused.
-> 
-> But let me ask some stupid questions right now, please help me to
-> understand the problem.
-> 
-> On 08/26, Hyunwoo Kim wrote:
-> >
-> > begin_new_exec() calls posix_cpu_timers_exit(me) right after
-> > exec_task_namespaces() and that removes the leftover node, so the state
-> > normally stays invisible. But bprm->point_of_no_return is set before
-> > de_thread(), so if unshare_files(), set_mm_exe_file(), exec_mmap() or
-> > exec_task_namespaces() fails, the task dies before it gets there.
-> 
-> Do I understand this correctly? If begin_new_exec() does call
-> posix_cpu_timers_exit(me), then everything is fine.
 
-Yes. A failure after it, e.g. unshare_sighand(), is harmless.
+--yiahqkhps5b233tk
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
+ area counters
+MIME-Version: 1.0
 
-> 
-> Yes? If yes
-> 
-> > --- a/fs/exec.c
-> > +++ b/fs/exec.c
-> > @@ -1003,6 +1003,18 @@ static int de_thread(struct task_struct *tsk)
-> >  		 * the former thread group leader:
-> >  		 */
-> >
-> > +#ifdef CONFIG_POSIX_TIMERS
-> > +		/*
-> > +		 * exchange_tids() hands this thread's PID to the old leader,
-> > +		 * which is reaped right after. The PID lookup in
-> > +		 * timer_lock_sighand() then fails while the per thread CPU
-> > +		 * timers are still queued here, so dequeue them first.
-> > +		 */
-> > +		spin_lock(lock);
-> > +		posix_cpu_timers_exit(tsk);
-> > +		spin_unlock(lock);
-> > +#endif
-> 
-> ... then why do we need to call posix_cpu_timers_exit(current) before
-> exchange_tids() ?
+On Wed, Aug 26, 2026 at 10:04:27AM +0200, Michal Hocko wrote:
+> > > You cannot really assume usecase, requirements, lifetime etc. for an
+> > > arbitrary cma area. I do not think this is a viable way forward. Focus
+> > > on your real usecase, which seems to be dmabufs.
+> >=20
+> > While dmabufs are indeed my main use case, they are quite generic and
+> > may not always have system memory backing them (device memory). Working
+> > at the CMA allocator alleviated these disparities.
+> >=20
+> > > Explain what do you want to achieve and then we can think whether mem=
+cg
+> > > is the right model for that usecase
+> >=20
+> > Hopefully I expressed this in a better way by now. In short, enforce
+> > usage limits for concurrent CMA users using shared CMA resources.
+>=20
+> Thanks. Yes this is more clear now. And it resembles hugetlb situation
+> more than memcg. You simply need a memory pool specific access and usage
+> control. Dispersing that to a global memcg limit seems rather coarse and=
+=20
+> I would say impractical. So it really calls for a per pool control with
+> an understanding of how the specific pool really works.
 
-Strictly we don't. posix_cpu_timers_exit() walks tsk->posix_cputimers
-directly and never does the PID lookup, so it only has to happen before
-exit_itimers()
+I'm not entirely sure what you meant there, but I think we also need to
+have it account in a "global" limit somewhere. Which CMA pool is backing
+a CMA device allocation is pretty unpredictable and unstable across
+boots, so if userspace wants to put meaningful limits somewhat
+generically, we'll need some kind of catchall limit.
 
-I put it before exchange_tids() so that the state timer_lock_sighand()
-warns about never exists in the first place.
+Maxime
 
-> 
-> And what if another process attaches another cpu timer to the execing
-> thread right after the code above?
+--yiahqkhps5b233tk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Not for a per-thread timer, pid_for_clock() requires same_thread_group()
-and there is no other thread left at that point.
+-----BEGIN PGP SIGNATURE-----
 
-A process wide timer has no such check, but it goes to
-signal->posix_cputimers and the TGID lookup stays valid, so it isn't
-affected.
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCapA7cgAKCRAnX84Zoj2+
+di1+AYCIo8KLWPYOzEwBgbqOdUgA/zgdVT/joCROq5h9TbzGRbFQcxXH7KRg+7fJ
+IKAwfJkBf0pN5A/Vo2FO2QoLXkGlaXcWUBJakY9boX9YnDyDdS+4c88lV2EjJudO
+EXr1S+1vDw==
+=t0iU
+-----END PGP SIGNATURE-----
 
-> 
-> Can we move posix_cpu_timers_exit() or the whole CONFIG_POSIX_TIMERS
-> sequence in begin_new_exec() up, right after de_thread() before the
-> "if (retval)" check?
+--yiahqkhps5b233tk--
 
-posix_cpu_timers_exit(me) there is enough. I haven't tested moving the 
-whole block.
-
-
-Best regards,
-Hyunwoo Kim
 
