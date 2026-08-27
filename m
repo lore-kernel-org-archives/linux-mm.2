@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8424FC61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:33:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C473BC61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E4556B0095; Thu, 27 Aug 2026 10:33:34 -0400 (EDT)
+	id B30196B0088; Thu, 27 Aug 2026 10:36:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66DCD6B0096; Thu, 27 Aug 2026 10:33:34 -0400 (EDT)
+	id AE1A36B008A; Thu, 27 Aug 2026 10:36:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 536A06B0098; Thu, 27 Aug 2026 10:33:34 -0400 (EDT)
+	id 9CF5C6B0096; Thu, 27 Aug 2026 10:36:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1960E6B0095
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:33:34 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B074A0430
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:33:33 +0000 (UTC)
-X-FDA: 85147292706.06.12D14E6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 719AA6B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:36:44 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EF3241A0450
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:36:43 +0000 (UTC)
+X-FDA: 85147300686.12.322AE60
 Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9D79640009
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:33:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="P 6HOkD4";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=YMTw8S+r;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1A86612000E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:36:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="e WQUpkd";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="fil9/Yl9";
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787841211;
+	s=arc-20220608; t=1787841402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ln/cYU6R6kxXbvIePHIUyNjbzJC0uJlvXR+XQ3FbfZM=;
-	b=iiqAo0NOgJu64+pslf8y8nsqPK4BwSvyWzvUwWcS5QlaVY05xLCzcQt6LN3zBOanPbRNNx
-	oSxX41pOCvBSKx84Has+BtKaITZP9/bGDcZh6cOtA/OxWChOwu1D83zN69oAG6JOynRltx
-	MWC9L0tJ+yK9MRb8LDleD/neJUhIdiM=
+	bh=a8Hy4YJ+WnWdSGIVPU2j3CskGmM3nG/le/p7/8k1oIE=;
+	b=aUQZ9VYDbQGVEp9/VxkzXSSpmeWV9przZp/2LUq12AWkFiWBjw5UXUXMnTwQWn1mJ+nGB/
+	IG5k8VU5e91AJGEnmlTvYrGrZ4ZKQxxpeDjZFfCuzDiq+5V9ZDwAnYIZqqZU5XIndUvNr0
+	caXexTIn16fjI+cWc1RtycIjeUsN0Uo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="P 6HOkD4";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=YMTw8S+r;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf29.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="e WQUpkd";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="fil9/Yl9";
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787841211;
-	b=yyb3ieOMA2I9xpBTFWcJDsFuUQcdu+lsHbDwtrvNDhgtRBHJH7rrOBIB/+kXKfdJODkR3D
-	+bJymrsPKRcuFXGqcmBQr18SSVQUzapU4ibfzdDiAz9lX+cqIbtVzmqC9q4Kihy300g8Ld
-	cynBsSs+atPvMNxStwwKwzrc2O4NKNU=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.phl.internal (Postfix) with ESMTP id 1980013801E4;
-	Thu, 27 Aug 2026 10:33:31 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 27 Aug 2026 10:33:31 -0400
+	t=1787841402;
+	b=WNd0pQMhAIP9jBrbIfBc+huYi+VjDyT3XXYMydB6qlaRBeHcL9lNKKFVfoNEfBmhQC5K0/
+	v24vDD83CkLZ0xKNaM206JG2e1jBRiGIT/h9QkA3facvziHrJpXHAqDmbFG4lI3lt0oV5N
+	itZnHcnCIRBKnP9a1hFS0hpXbIjsWM0=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 885C513801F4;
+	Thu, 27 Aug 2026 10:36:41 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 27 Aug 2026 10:36:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787841211; x=
-	1787848411; bh=Ln/cYU6R6kxXbvIePHIUyNjbzJC0uJlvXR+XQ3FbfZM=; b=P
-	6HOkD4c8lkSWtklz5AyfvXJ7Edo4Gcv5bsmBLyImsWdrC2VmfETzZcILTibLnWmy
-	HlaARwr76l8oyfS26SRdZKGrnWzbS+M/G8JrVSuW70Cof5qpLOzqgdR00Nv6RFs1
-	UEi4MW95w3ca7TjDsI/GEx4NfOv+peayyZvo3u6GFPlg+YYBas9n6phB0kpMpi6P
-	6S8QxD9dLtzVrZNH+4Q2tdlox1N62lvqRxGdvxlDttCmrSE58GBBeamlF5KEJ1Az
-	wnD17xvlWd0jdcUEhLgigUuKFMS/Y1MKNsPIcPxhKEp7pnwmN39KMLWgwCVfoVOA
-	F3LFGJy6+mgwxW8cP1KhA==
+	:reply-to:subject:subject:to:to; s=fm2; t=1787841401; x=
+	1787848601; bh=a8Hy4YJ+WnWdSGIVPU2j3CskGmM3nG/le/p7/8k1oIE=; b=e
+	WQUpkdyIoTuVlvw6CHssbWyzbhw9pDNgrIwJrvmq+WFzHyH4zwkTVXxsWcR9R3U+
+	gbdmwHSkzI7mMyogViyReou/BO4ZF6/gAC/kjbkZ7vXTBKDOYXryyceb1COPcLlf
+	xx8Ur4K1FsofFpIJSdF4w8u0BtjHcgsqOXEt/3RwTOs0t0mZ5tqDSReDr7elFMaC
+	JqrSGD8M/57bg5YcawRSTxD2o/KDVxrdvt5LobcgssAY6tRGFiY7a+4AgRCkifI8
+	c1WnCliiZRxuKwUTUhjhlebrDWMuvXi7uzp05c7ML9PbKajF/5eeNOwcL4J5qunJ
+	bOrCmAEgbUuXj89+BprYw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787841211; x=1787848411; bh=Ln/cYU6R6kxXbvIePHIUyNjbzJC0uJlvXR+
-	XQ3FbfZM=; b=YMTw8S+rmSG6bfUflT6pvk6RtchcWGVsTZRRSZ6gAMxjESCi6Su
-	OsEnf+FjOmcEVxQNqFjQjXD/pfVw6PvcqErRysrKQVq60sWD/HsvUy9xoz+4xZJg
-	lKOqcalaM6JjVmsWtmUsguUjqYyhF0UNXnaizrGbzGBUH67L3OuJDELmfFu3FrBm
-	N30Bh5rTErFqH1AsNgQwP79M1Be594Izc6y5/hedmx8C5YS0jNpulTngEtRANiJe
-	0wA1dO0q2BBiq+T/RxUXDbDk4YzF9CnptmBbptvUdPvSEKYxnkLdLffyvx/u6NtF
-	+2Cle9q7IFThxrOfZ73qUFyBoX3+Ccp8oOA==
-X-ME-Sender: <xms:uUqQan-tRh7Sn03rjf_CjLxkT-RG_p7KLSPEucC8cD3WGPMvgV1W3w>
-    <xme:uUqQaiIKfclPhGQ-bLuvrZZa5Vsq_DEAAop-iyyfKm9Fk9uj2HgR_xfYF3BYLbkdQ
-    WteC2AhiflnnL2zqK-zL4WRvDNJJGCVVsOezMFH6KLjnH5oipoKVzQ4>
-X-ME-Received: <xmr:uUqQasJjHPT8sYTq0n6AWxvyhREg1ky7oka_PYD84_zSe5g7oS5y2ZgFVjY>
-X-ME-Proxy-Cause: dmFkZTFX95w7oz8NPPCgwgK0v6r1e5zrRtNU9uoQ4ywzPNzXkyMIhPlNvTdMRpJ6fx+94i
-    pKd/HphuAZxxtsecVEssSbcYsWdECuVzgdv+juA9XC39CNmblKiHnup7SDLLALy6H1/DUi
-    i1Kq1aWXsxz5+GTeyQyGUo6yk/OFIkBURo4AtdrDvo3/ipHRIMtgGcsHlBYLPs85UZUFKU
-    6TYq1b3nBvnEFDcz0iEdfGT7czFRsH3Nlaxj3LGfSPwhBvbGugH7ZwQ5DHHUjqp10QPyUM
-    DEWYjS4Qf253nIKsPMVTJ6hP/T+5YXScE5HAlIRkeNn3cxgHqdmMiboL9DU82Ogr8665Xr
-    SXmV6Z3nvNk2z5JetqWIzfumfx95EkIgnqbW2fBHHOCEHekg9VcbCkOqa0hLefx+J30/1/
-    gy2cWQQCLuYRryE68+Q1d/u+i0Y7m9h++zWwIqOZ9PWfKHI2uc+fVEF+lIPWFrmQG7VBAr
-    kb9/A+IgZgTnXy3hA0IjOctFKjxedTqdNTKuC8KcJbo2zaBe4opafU1f6cMP1P+Qj+7zes
-    Pzx8V9RQpw79SyWDQhyNd6jSL741YR5Pab7hLsWKBrit6KTb8PftYbsO3u9ZFcCUAHmhDO
-    tvpwQxoUBVD4QGdr3yny9hNBGxC6cIXcidpcqmcCzIAwaTZyOCEdmWyIB8BQ
-X-ME-Proxy: <xmx:uUqQanB6yVa8CLu5WEwlK6ceNNitDUh5iijmbU1Kqcrvg9dJaJcc5w>
-    <xmx:uUqQavnd7RjnmserXeSj4PB_tdM0UF4VuavgePUgg7jjAfz2nZjp-Q>
-    <xmx:uUqQajHu4qztDTWaH2b93kVb5izoZ5j4-SAMK2PsTJS85qenPXSHaA>
-    <xmx:uUqQaugj-gscMeflSzeLmVuWdnUJ1Q8N2ZVfNR66avD-h8Ea7xVVWw>
-    <xmx:u0qQagVxlUR8y64wWFdWdoKhe-OP47Pks4e4VZkbm3qwnzZX-8yAN8v->
+	1787841401; x=1787848601; bh=a8Hy4YJ+WnWdSGIVPU2j3CskGmM3nG/le/p
+	7/8k1oIE=; b=fil9/Yl9fdf+BVXh60B0g3atpC4na1gwYVafsJrX0cKnUvO8Fj0
+	nCjJklqkxRKZoZUOApZyp0PNhQNreN8Xe2D5wg5+414E7JMgmC9RwedgAas0Lz9T
+	XoillEKsfW9ocm9S9k3mL6+CUk6oxJiJnsipWnRrjjGWKTgrJE2ICZFcFKuuc36L
+	aAOrh+U9rdzoWbe56YagPFT2EmVwZgpVrWKeQHsP/+m9KAPK11LCzNUlvX6sg2Mz
+	EACG08zEAr/ltC0dGKbTOWsyyXsKF7JHX1VHCOHF6Jx0QzzPDs6oATSvWtwb6D4o
+	7QKO9OtSaJe8mU1x0gZUpC+TJpmHvzvVYGQ==
+X-ME-Sender: <xms:eUuQajy_8lVw-mjT_dlN3l8bZOMMgkin4fbWaOQIWzGUTYclYVXePg>
+    <xme:eUuQatTb5wJB_RJwguPJg75tSCfP9Yw22qIXAPmpEFvvbJQksHJVOIaSqTPpealTk
+    ARu5sVJagqrN9bLPVAvl1z0wN8tbhgG9itNnZ1nxtCQP24t-9Tkt8Y>
+X-ME-Received: <xmr:eUuQahrG470Lq1b_gW4pxCFnuZHkOA-gA5Sh3cNH7SzueqPvAQMvmya5_Dg>
+X-ME-Proxy-Cause: dmFkZTErUJQUVhkPKiqkOcN97ogpHmISM08edx6pbjBW9kaOnTmBSwYErevqtyjNmHVNQV
+    WtEj5qaE7OZejpVw+11lQe24wQYQO3n7gcSMB3M9cwcJL9PQQQQXBQxAEY8QQX3zzlMAbV
+    F0/GTC5zuLYBZfpO/j6rOdBYyG3nLr7J/+jf0lEq6zlH2iRlrqYtafGTbURoJwq1sw/Vos
+    6zLQK10XMSRPvbzp8Jt8gDvkMRwouBZRqYWgq9VQsca2hGV7Qnr+tUSyUnEmP/I4+ANAW8
+    BOgTwjdf1cmX+koJoy+Igh8D791vQ8Jqr3NlRg0bLBswtvsdLSltp8+8c92wcGXhU4rEVc
+    20Ez4JwsEsEUT8x8nGCXkQ1si+p1hnQC5Y0Sc5NuIKPpP4Hf6wkFjfB/BSqM8MC78nhxZT
+    y2bpAWz1OaZBzF7j0zR115CfrBDoxOQoDs13rUWvqQOM4rCIEi6DJV0sY6mj0f5vv/B9Jd
+    bjT+05UTyk2/ZQWGS12RRm0u/jTw5y8GvDNDbOUUsVRaKNGcjFNvVqJbls4ldsShYyTAla
+    py0fIVqDhNkwUY7ngKcH6Vhoo0FV8NKRTFHPDDkfqeo6COO0L8+QBsxT/985Fju35HLAHB
+    C/q8Z4RE3CJfEgnoniMUqH7szN1ozhanQJHwaaXocpQMQfqn7QW/TdnjGXIw
+X-ME-Proxy: <xmx:eUuQalvR0stlA8xpKyuVvx3x11HtLQyX2zUnjNtaXoZtB33dRQDIww>
+    <xmx:eUuQauuaYOXfH1Pt6XD8buemfRfm-DN9UNo8L8ZRKs06rV65yjL6Kw>
+    <xmx:eUuQahrLI4reIbIKjYWAi1bXXnYWHNT_5e0L6hy1IQpNhwv7QfQFyQ>
+    <xmx:eUuQagG7HPQcvKxdT3zgAcoqlq6fEdkEE11p4nwiP8OiykQ6Yf9CuA>
+    <xmx:eUuQauKvGAmRsBuBFBfm68W8EiX8UNXNcsELKBFTf7q_oF1KhihCanBE>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Aug 2026 10:33:28 -0400 (EDT)
-Date: Thu, 27 Aug 2026 15:33:27 +0100
+ 27 Aug 2026 10:36:40 -0400 (EDT)
+Date: Thu, 27 Aug 2026 15:36:39 +0100
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
@@ -116,21 +116,21 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
 Subject: Re: [PATCH v3 02/18] mm/huge_memory: fix rejection of swap cache
  folios with a mapping
-Message-ID: <apBJ7PeX7c2dD9kk@thinkstation>
+Message-ID: <apBK55hfvYtGDpiB@thinkstation>
 References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
  <20260821-swap-thp-cleanup-v3-2-9b43f5163238@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260821-swap-thp-cleanup-v3-2-9b43f5163238@tencent.com>
-X-Stat-Signature: r15erbxz4cphg56rqkus8rerch6dthf9
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9D79640009
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1A86612000E
+X-Stat-Signature: bg8wdpxnmt5znxueiuboaw7m97huqy8x
 X-Rspam-User: 
-X-HE-Tag: 1787841211-512637
-X-HE-Meta: U2FsdGVkX196GsX4BokV7Sa7AQT9iqwt7BvQbMCA9Wi5HD+TAPEP8UCvEN+mBeZdTYdGBuPgJ8/UAgOklyxDzd3leVYsxg99EON0rBUV4cP3y6JbtYtckZDCqBSn0q0Aa8s0aZfeprrR4ub3Mr6e3KdU3exMCESTo79Uq/mTwocMmlyAL/vTN/5zVwATJkw4JVGE5AZ1eIBlsA9+isQ3OjZuZDazqy9WaR8hcJv7y029/TGXuQBHLAXAkOcdWWWhRReuQvLqg2naGDJ8ekF0M2sRExixqUEoTHQDvT/s/kg7Ei8R2NvCKAMa4mjxNGoo4wb7VU36qIzQ9twWs9z9c2oTiw0U3TcyXJc29n9tDKSEhpswiw6w+s5hAdEVB9A22Rto/coTci5ASllvfsM2QkZRb9bIYOeuDz7WjZ6930xeviwiUQBtTk7rKWrgBJICj3D62HgbbiBuL9hlCckCXLG2Xh9t20+dqodUxcfplH8oswUGAD8n5NyIcLcuMoj6b7FpMt9onSk+gZ9+maoNkmMLbvtAvHQKVmIXb9j20L+5XxB6YxhMxXCKMGafd+Hi/WKQOk+mOoj+A0eTKV+defYkbFkVMBG4I5ntcMdHQNgnng3TlJMhuUiA52/6t7vNOtFdERfDBaXuIVFFN05+G3JfYChl2voqNhNvkgW8QICoo/ExOE/0t1LMGXs18lWheiwjjd1nzXykho5rKYKE3zX+1BhjEDNQyrwqRYjBCRyW+fLbjlKOaMMv2agbDQSYL+9x4IAuTBRs48IrsBeZrJM7lIQ6gBLkDUqvlDAQhQCPyty6Gs50nMYcqwKvMUk1U+mkPm+UR4Fq84YvvzTcGinyp+MXoS+hcBaEV87O1ndYslwo/r0991ZnbW7KEzd+GRejhE2LW77aN8yaJyYOv9Wz4duY7UVv+zgcq6WW+tbHQ2kiHIFneHihZCr1nKb5ER6bhubh3dYXsf6nhud
- NJLrvEXK
- eo6XGlpxRIdnLYiWvysNloS7bCqm1vH2SQ/hWZbxbHwphRwZ08FYt13iANx3mTVgpyqggqhAHRRY97fdI1hMfp3UC0pSoSqmgnut3eqXJmHjrSIQJ7wcYwGvzSBwZ8MkuaxLqoKM4pc3aLYUFOMxw5vonTJjCuqz126LE4qez2me6Ktj76iqNIU9FmwujrZwxSpR5dq/Sf/Kjta2w6q9q8a7zVaTJUChwXUIRViPvLghUSjS1qUlcpX46+gkeBR15HZAGCHBcIAJAoDyK6B19ddpHPs3gTDvdCui3mshUgquxmTIq54/4q2CR49x+GT36Gd1rZ8J/e4X+UB+bqCZH8yWNsb5SGKWc6ekb6DFE8R2XyShDThRrNxMC45DCQ0A2nySNHCWVotKLHgQASGbvejUE1raKJYFM6Ub/u+MbD7UzX3o8Zj5tCkLzY8eDvNm17+v1nc/mnmdVAZLBHmtpcCTRQ7MxIs/IsNBNMjWyYX0OSghbNrC/TNDJnPVoseuUqt1YP7IXyOeuu52pWKdVTii34ZQ6clmpM/KQPjq5NToTUL9FG9e0uJdQqg==
+X-HE-Tag: 1787841401-318239
+X-HE-Meta: U2FsdGVkX19VNytF20OMy9o8wPFJ/GYYV+jQuOyu6I7Ga8XUuD5gLLrDYm/J5/7QAlT26bu057GuXKlwENP9M8RhcP/1yfLJlnaiBLCI3G9bAJHS3LuFt18wN7qOx+YyBLNS6wMvquIDzzkV8Ym8o2OmwQlY8tT+DX2LrjBRywg/GM9+b4cXOxDDjpXvOFnr/9MmxknW9/JYPhFaAvx5t0HBfRCZKYpU2+qTIfxaijfjr7uyku4cTqPnZgVyQiZ+Tm1eAxR+qQIxQOfN03OTl7phBu9yPh2hhrGbI7J0zJqWzFeaZ9uBb9Q3ehe9wz6kn0Jn2otNw191hqjnbPDLcxvHTYJZH0rOrPEa6QQOTUr7BQmZonWrDO+QNO6qhAcMrgr8eJcFeZnpvFfRQOf9kJed+vVU9ubfbukMwvpn6dJjw4SmiTBgbbaY4KERVC0muxdY2kXMzAFR8JcU5XDXCDdNvEYzHysgcHlDAPJwpONC2vI5J5iY07baNdgVMhmu+pPXF6QZczw0owyuVZ1sFADWcLd7PBorelnQyB2tRv34RpZAfRi35Hik0uHOKt+6Vp0jZ/+FyD/WphPJOa5DIsFqGentNJJZgKs3MJnvk1Ekoo4yZYE1B7k5/2E4LqRpxHJgukvuBSXVyH1F5YQlDjgYbqb5DyDQboETDNTu1xJ2IidXNO5ImowqDRs+TcmF4tQcwFnI6sW5DZJAB3Jl3qESsSblPvpTcpCqfCX02UGvVtqkfpV+1/uC2qV0PWaMvicLnt6vcvclugKUAZcQKVdWXSwH7Rbr+yU2cBiu1aTVtkDrZQOS7be+OiNOkPbFVu7u+HHrQd5td9rt0a4nkuOXbOgSKhH57QNrjqdWWdDNOLTmCyG3x/RVpdiYDTZMIYL7uu2j9wO7xQeGU9DJXRBs/wSQ5OHnMKnVXvGLPTo5W5rYB3l5xWs7QwglzBIZKCqpdP5WAo+GVjm0L2F
+ aRHAUZQ7
+ EvQkGFsf96LNrt3gXJf9ueCPkexzEtiRwro21rIWD+2UtE9NWMgM9sC/oEGoll+jbBlnwa/QhlMwGhsfCSUFMAwK0N9QXiwyvFdC9GuJUMlUjDfJPEqFwYhit7l01JumLJQ2/f7pQQk695zZbUWjnZJaT0VU9V/VAKxW5k8Dd/x/exVECnacVVMDpw09XyVsbg7UeBeowwHZT/E521Rwi0TFg0N27J2c7RF2wRS7XxbhHj3zZg5/ZqMXZns08Lud5eAuBVZiKKVisaO5fnwNi4/f0yaAer0/KuAz8fpckPpkQDBCQ/emXQB51M3tkUWyK1mkoQ+lgRR9k8FBsSC8rOsaeisyFsIj8ro0RsX5L9bSCpsNEY9bDF/1NuY83OTvTzI46BgJynaSh087mpe0yvMdcFlH4wJgApgmrwmPQEMETwsbaF3QpnD6etOqXsAYouyZHCdMwEZpICkRybPWVct6PB+4rwSafT+ldhtg+CYEsAss=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,41 +139,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, Aug 21, 2026 at 02:55:15AM +0800, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> A folio in the swap cache cannot be split if it has a mapping (shmem).
-> The split code does a defensive check for this in
-> __folio_freeze_and_split_unmapped, after the folio ref has been frozen
-> and the NR_SHMEM_THPS/NR_FILE_THPS counters have been decremented. It
-> rejects the split and returns -EINVAL without unfreezing the folio or
-> restoring the counters. That error path is buggy: if it is ever taken,
-> it leaves the folio frozen and stuck, skews the counters, and fires
-> the VM_WARN_ON_ONCE_FOLIO for a state that is actually legitimate.
+> @@ -3886,11 +3889,11 @@ int folio_check_splittable(struct folio *folio, unsigned int new_order,
+>  	 * TODO: this will also currently refuse folios without a mapping in the
+>  	 * swapcache (shmem or to-be-anon folios).
+>  	 */
+> -	if (!folio->mapping && !folio_test_anon(folio))
+> +	if (!folio->mapping && !is_anon)
 
-If you are going to repost this, could you make "This error path is
-buggy" a new paragraph?
+Just noticed, !folio->mapping is always !is_anon as folio_test_anon() is
+encoded in folio->mapping.
 
-> 
-> Check for this case up front in folio_check_splittable and return
-> -EBUSY before any state is modified, so the split routine always backs
-> out cleanly.
-> 
-> Also fix a bracket style issue that checkpatch.pl keeps complaining
-> about.
-> 
-> Fixes: 00527733d0dc ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
-> Fixes: 714b056c8321 ("mm/huge_memory: convert VM_BUG* to VM_WARN* in __folio_split")
-
-This is inert bug, right? I don't think we want the commit to be
-backported. I expect stable machinery to pick it up based on Fixes.
-
-Is there a way to express "not stable material" while keeping Fixes: in
-place?
-
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>  		return -EBUSY;
+>  
+>  	/* order-1 is not supported for anonymous THP. */
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
