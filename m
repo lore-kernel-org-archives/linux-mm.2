@@ -4,121 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB58DC61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:09:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE6BAC61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:10:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1F786B0088; Thu, 27 Aug 2026 04:09:17 -0400 (EDT)
+	id E5A9E6B008A; Thu, 27 Aug 2026 04:10:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD0496B008A; Thu, 27 Aug 2026 04:09:17 -0400 (EDT)
+	id E0BA76B0096; Thu, 27 Aug 2026 04:10:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEBEE6B0096; Thu, 27 Aug 2026 04:09:17 -0400 (EDT)
+	id CABC86B0098; Thu, 27 Aug 2026 04:10:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B4376B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:09:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 95BDB6B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:10:38 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2AD64A2E1C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:09:17 +0000 (UTC)
-X-FDA: 85146324354.08.EAD3D47
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3E414100008
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:09:15 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="b/Jw30FJ";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2E6061C1BC0
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:10:38 +0000 (UTC)
+X-FDA: 85146327756.08.FF08248
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5B96D180007
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:10:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AODPS2N8;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787818155;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787818236;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sL2OyFqHiwHA+nDxyBcNBcYoIZso16H9hpW7CuWjgtQ=;
-	b=te9Hg4a8JtR+8GLv5fRqOMsp2Sz/EKQCmMA5+N5VIdx+L1IW6Tfq+eYAtXWZGcjESQXnu8
-	bIaP2stT9NSL/Qt+ZRcVM2R8dl3x1v3B29kK1+S62x0c9z5iC9fPuOm4Mm7+pLeJj7iyR1
-	vi1BCYXTv+Yc3o5Vtko6LVDmOxcn3dw=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="b/Jw30FJ";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	bh=HwBoRCj9MIATU2Qil8eVnmnQigb4zkTVmy3cTirRlBk=;
+	b=s9QB1ZOfTihDcNzSElYlAHJPFK7dJaO6X8gpwHfyL6eJMUC3eHla+hN238Iid6RoFT2Sod
+	iMgJpzsZrP/+5XQuRSx27q4ej4dOlIoVZWH+cWDKCBgWFVxvf0VHb8hG5jWY8sLDwsMfXl
+	p1nzzIDC52AinopO5d/arTgkZibqay8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787818155;
-	b=EPhrVT1eryUiOJ2L5Nlo+xqgaug9Aq/wvs1WcG5dSSuTMzkT7dEEuvzMD03SmSM1sL+tdJ
-	Mlzdu44JD7cSwKF0ZlQ2Yz12/ZgO98ugjbajFCo8jLyvaiSuPO1RV3g91ZA5RV3ELN2AFU
-	1hSK2YhlAETkykwFC5dHcWS0LMuq2oc=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c1677c91969so210023266b.1
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 01:09:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787818154; x=1788422954; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sL2OyFqHiwHA+nDxyBcNBcYoIZso16H9hpW7CuWjgtQ=;
-        b=b/Jw30FJ/Gck5mpkFYJP+p2GpDiENsQGmNZ2WjLH30lOklQVlXarzLyLSdmahAJECL
-         R2vtOGyQ+sMxx6ApA7/4IcnImFsxB8PwFpTamtjg7MLmSlByRuKZnwwVcJ7VcYKootEU
-         +73bc/EboGV1x3cM09GEWsoeZlEGOMX5lKn+TS49Pp6vbvGYqm9e7wnWzISILECwj8fC
-         ulA6oSM8PcwQjb70v3UYW6Utj5yLIRL6JjmErA3bW3y3GPaWOB/EZ1kiKfAyAqLh1oF6
-         zxi1kwZqABgLFD5ngsXPL94Bb8QSY5AcWR1BfaMf6zOoRXE1v2aFQusdau3VuXXUkGEg
-         z5tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787818154; x=1788422954;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=sL2OyFqHiwHA+nDxyBcNBcYoIZso16H9hpW7CuWjgtQ=;
-        b=FFh0QwkhowsGd3/dItyun+icFCHwdAxm9XNepkvgsDQ9jYOqSfoLT7QGYvhQywIPaV
-         SufmaITbDQdVZk50R9Re35DBGH4F8YShSpCX6RpwIUU/Bk8ev6hUI//CbK035YfoJIi3
-         feLBEqt2lFNeibI50XvYpumcfplzpMS0xcgfdFZUdfLsh1UUqmvTUTOqAETrrs+mjFbV
-         LrsBWTNTax41iLy6XyzsktPuobueaOlj7aZ2wRrtkBKrSxzOZqpjv+fXaLW+z32JDS/b
-         IE2BE5o+u4ooR78lXdy+WLzGtIx3li0oV9JdY0oNrD962BumVGv6vePKSdiY47v2BGNX
-         8x+g==
-X-Forwarded-Encrypted: i=1; AHgh+RovlrYaoWtThXfksRzAz1TK/lj0mV33RQxAMslM9ZaMSzyQbTqGc8nwzqiYYBZFNyf9H5uEc1iy0w==@kvack.org
-X-Gm-Message-State: AFuF++k+eySGwH2drv/LU4cgGJZJKjLro9P70xwk2DdFGa8dUSXQQyQR
-	DjAu30rkCuATVoLzu8TTxt9RZHWWaw8zR3lRCiXt8LnKSaDm2E0w0S/P
-X-Gm-Gg: AR+sD130LO5acoKZ2QEEzceemMhZn0DMM/h8wmuDN/MiLQdQtVhmRG0TZpwkxPifFgi
-	+eSqZFJECyMOZrRSSibulr1xz27RPttU/ih9uaCcrlIwU5GJEeXIxjljOtmDFukSBNJU3u1rv+K
-	HehiO0U5xp4gRp1/Ih0vrVCG5svPMRspp5GbnW6cf5/dcSVSQSQ456BAMV1BjvCw3isuyk2xZ7U
-	AajnatWsBTPYSaD8yywybaid7HATl1UAe40BA8MjKKeOZPheTQB0LX7g7zJjsqvWJYOHiV/+17E
-	TsSjJeJqgpP513eN9u7vbG+gocJpjWGlG5G3ijmGeE0makvqOJVb4x87Hh+HDVsZ7rk4HnkuGIB
-	gz4FSDq5BIdmIOvOipH3SV8yNqehaeb8WC9gMzBCTJCyetdp5jgxzfArfBVxJnDM8AfervKozBi
-	VLvbhdMHcI4YV7ObVGG84S59CZZO/XScykX3TCTpzcW5cuQw16vXeLfIgH8bo=
-X-Received: by 2002:a17:907:1b0a:b0:c20:f529:2d6a with SMTP id a640c23a62f3a-c250c37f351mr1488301066b.22.1787818153321;
-        Thu, 27 Aug 2026 01:09:13 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a5d68desm1033042766b.10.2026.08.27.01.09.12
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 27 Aug 2026 01:09:12 -0700 (PDT)
-Date: Thu, 27 Aug 2026 08:09:12 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, liam@infradead.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: remove out-dated document of __GFP_NOFAIL
-Message-ID: <20260827080912.3qh75gqhzkoe6ghb@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260827030548.16631-1-richard.weiyang@gmail.com>
- <cbc344a4-77b7-4282-9bdd-004822642ab5@kernel.org>
- <20260827074921.mracnqv2m2cugasb@master>
- <78561ffa-d075-4570-aaed-60744f11160f@kernel.org>
+	t=1787818236;
+	b=loCz9Ei4pmmXaqhE2RSTXIDw3eliVSDT5I/JHyCalOIxFfluieKveh67F3Qtc8VFOZKVhj
+	oJ9JO7C98vwoHR1XoKH0RGd6jf+QuX0+fbCI5ZnYz/tJDl00eQnUZkbnligJHgKsbSeQfW
+	40h2qA//qSXGOVspXqbXlzlyqBmXyUk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AODPS2N8;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7A1AD405FD;
+	Thu, 27 Aug 2026 08:10:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850CF1F000E9;
+	Thu, 27 Aug 2026 08:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787818235;
+	bh=HwBoRCj9MIATU2Qil8eVnmnQigb4zkTVmy3cTirRlBk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AODPS2N8Z6i40bV0jaUFc2PuvLy4MqHjmeqaz4bIOilDBIarfveD10jTbTdIkd2iQ
+	 td7570nLQ0oCM7k5JCPCOMM4nYs/HUuVSnY7FjRcD5phtnS6eXpkJG2rTe671lm6RI
+	 coQQZWHQV6DQ22IS7lhT2hTwxa/SQsVzogDIvAvHM7e3TGvPmCV+jy0j/bRVCrn4DB
+	 +D6NjQcrY1HKk31ONHwzhCcVH1OmkqlNutD4cj45ua7LpeiJ+9OVN2VrbkoMMue4Cd
+	 iSMdxUiqVZvku+Su9hCtOaGBeZVtoEdxYentNKnACiFe+45NXWKaMtpYXCZkSQeNgf
+	 GxMfYHTbrqzCw==
+Message-ID: <e8aaddde-0a07-4197-9874-5ca0ea8af43f@kernel.org>
+Date: Thu, 27 Aug 2026 10:10:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78561ffa-d075-4570-aaed-60744f11160f@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3E414100008
-X-Stat-Signature: maqx3qiychtiarn4y1dc1xk6hjkupz6g
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] userfaultfd: decouple fault reason from VMA flags
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
+ Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
+ <5bb86e34-6196-4b50-b553-be2ff7c1fa32@kernel.org>
+ <ao_sCh5zP0IC9H2S@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ao_sCh5zP0IC9H2S@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: o7z9ed6gqxppdt9dspgcs6wntm68ws6a
+X-Rspamd-Queue-Id: 5B96D180007
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787818155-501491
-X-HE-Meta: U2FsdGVkX1/YaRL4DownSNNF3kMsOBHMCEgkwx1rXpi32cEiQQZAVO4hfwlbn7vZP8vPjvExOqgCcFJXRiPtpl+mV+IBOloRNQzT/ZyIusRQMJR04/1Yg4g/3IY5FVchLnu/ZjU3DmosJ8+kx2WSUqeOM5zSNF+oiFhb9HXMxDxm7SF7G9fqBIEwUKG/ol4z/QWqAMkTCHAhucSbzaglsdT3yMWb+t1eS7YPdNMVZBgqPaF1zYqciXRIPg8MdwE3c4ILI/0jWpfe4ORDFxEzV5YJ38G2o3/ru1wf0zV6A/G+NJDUyOizQf2KnEVMVFSMyJRDzRk58cqbXwrzFLHtvf6rToyl7NcWkGpFbfiH8esJYUtCbR/2gsr+ykTPvDi6yqcPCWDx+WF84Ysf8aLsfouT+OsIDKPkXQwRE5U2cgAfAlH+JZhQmF46l1IUN9mCsj/GqU0BYW1HHBoVaF9aDm9K8zHymxBQ/K3FH9paADifsCjs1MTbZSu5CCkdgy7+hZ2Emi4P3HvwCVhgWrIvuYwt/uL0KIdPzW30RUSVusHRJ+g5fQpnRjLHUy+S9NSzipPpgg5631LG/zCC6ANU7oDHY+vEeYo2tfXSIX9y7st8/27SI9nCc6faMXZEd1g6//VZ9jPS+6G2g+L88ymHJyDQIWXCiG5Np19VgXk2bLW3OSHCP6U3IQt36mbZlk+g0KsUsMK0vR5e3hQ8oN9G5F4NIPsP9nkz8Nd/kLQI5NXYP+bNYBMaUhhzeL9Pjvx+Qz9t2H4Hm//ggVsI33+xuehPej+16JTPmpSET/AJd3dlaDq9jg3Cpa7HKcN/CF5Hw9EP2iX9Kz3oqtIWUVMS62yGM5r01DW3OG7Ktho9oWT9uMw52isUqQwnG7b6DW2aHCmqQ7ozPTakgGQircEyyEAn2gCPEKSYj7niMfPN4z0wp4kvm6aHHX379PyRS9LKJRaNmDFXL0MnqyqX0nk
- LKQxFypO
- LMBAexQIfL6oC9Fop4rOShaK3OnOQwecW5UWxbUfWac6zUSmiz3e6DHvCUiRvSx1fkhgr6FprLu+Efz0uCwO1Vaf5UjKfZh+dVKoJ4L0BoqLAFkHt3aR2hQbN8igNHKGfHhgTYGefoci7zLp9DnqWAQ0OaFhphWKSttSOImjulL6/hiS9H0SmHd6yZgN67ANnbEA3fE3FuQU1mV26NerGJ9+H7bQRGbmwUticRg8vdpNQrwg6hun5vh21uzrcaSOdhjeGcSh3c8rlpRb3EKo1+/FYmhqT/m6H0qJzmAJIUHi1ITIdOU7cpvgtIiTz/5KzKmAtKQYS4aW1If4rgAMPLymLO5Gl3Xb6e1uGPuoGJzifFK4RKTVPcWAIoQmHgKywRCGj6oN3+ojvYvEonbJlSouz7K33lhZ74UHQdPNteq8b4gJ7jcfOEpVOwsFUvGZnXu++YR9MD8lyJmvLL38wvuXKJ9ffJjHW6G6axaMnZ+94k0yGP1g3oeN9hwprpk800FIZ3UdL8uDt2L3DdrCG6psxqfcpURb+BaIn6mwYx54QqxWjSvRfIXVroK6KAwcO7Tb+hWUKYyQ6iRhaGn57UNAUA0P8eUj11i5QqsItpRGAr4AGssdRp+Lb/6h3kumVpKAw+2Mb3iYrrrnTiLRxRmq+D7po1BlLLgBgACqtQwrZICFFp2nW+w1jfPkA9VYFlSmdAf9dpNkshA/Qu4FDfIGH2gzOS52UErZzBDhULZj5YR9+g9MwPATfb6nrkTEVNx3eXagpNZXyzZZJ08hdzwXq3nz+k7sLrMedEs9KN58EhgN5xLsICHDDZo7dnom8vHtbUrgMOplsYZqiAU0l+lh4LwoYBmsGYpmSfP7frIiND3s=
+X-HE-Tag: 1787818236-567903
+X-HE-Meta: U2FsdGVkX18omhuGwwIa1+/kRcpv6qy1eah3wmAsGu9qtw31UPuCPeB6raex47u+71tQAJYVZHJC7cTcZDmaNtTEnwvfOo7Zr+/Cav9yOS1K29YVWvOmsgG1j2B/RuOkcuvgwfKtnVnQK2bcje5/160IwC+qfaH5/ORw3AJe03itlDAHiIGjUvwkq7ZCyHQ3LmkmGI7V6tOGVg04fao/ieU848YR2E6ayZNyoL9ucdMUoTZxxf92KjR89yDwJ0xp5UcCB0tzKRSmGbhZ37L2nDYGZEk8U68uH0F6Qk375t3WY/tXw+J+HbCT31Pg5gNgwW3fsuHvxWMX68MRJdG+gCT+RtN9jcmwMuQ2/gtj3hrsPxl8CognOjAJj60IDOwZcou2lqONnzl7RasHU9PX/d4g3GLF313XILyC140ACelH7UgF1BVyxM6euUpxeS45YPN8eC9zR+8KqwO5PWAR3I1PFnmo7d4Kl1h6LSGmSnh7MWWn+aDTN0RmIi6B+mFGrs6gIZiBKT24X1KXcVsT72qY30PAY4GQSYcScSUbIsjJjvZ3o44HJILo6tuyRxjGIlzzhwexsugfY9wPE1CDHpQDEDWsDOr6Me2PLOF0OCh4Y7pCeyzu6LrZoARzS1j4sNfeuGdWWG2Dz9ZHVny7N+M+/YKKEPa0G7B7ALtReqUMVcO/djJQGytmRpUQy6zocCjqcyt36Kef6zVk0DPT3LxWZqYIYD1bLcLu9EF2YML/D7ZHkqDHsLNO2bUZPUr3CBjn1LJ8nRF+FDhTqYgDX520LAtdOV5IbXp0FPYTq4n0IlsNktOLhFtNEeMXOKVjLx3izosutokC3JK8fswdgev5ECGQLvY/N9KwKueD0oSFMbe+723np3LEcNPwbpbxFUMak4TnChkBtUp4Mc6gWYbdXEPgNvbTjiZvwXeQOTBQkh0Q54HDhthcvg4iv1szFDCryKG1A2TI6XL+e2Q
+ TkkSwPkw
+ 5MNoa9SmEqUnETktckURIv2SEPHH5/kyeTmDsldny2QYYzV7uZbYZ2CkbIn8SB0bS+s8SBxkvtJ2Ok0WKAabBAzCKqYLDx3YMhFJRcOZhj9XIDTHHW+1EYD+JPB299UmGKECtdjgnD1KZEuwanFdK1isetq/AfO6sOvIKSMTRgzCPijvRqWoG9UMB45cHNj/h6p0T3xiucSWIpyBIKFqReC8D7WM5/FCwRZpfIf2ecn9gksNQgAB/6i8ArOOaFt0CgpeMxmWzjHmlzj1dKju8aM/q19AvuP36rR+C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,86 +156,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 10:03:41AM +0200, Vlastimil Babka (SUSE) wrote:
->On 8/27/26 9:49 AM, Wei Yang wrote:
->> On Thu, Aug 27, 2026 at 09:35:26AM +0200, Vlastimil Babka (SUSE) wrote:
->>> On 8/27/26 5:05 AM, Wei Yang wrote:
->>>> Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
->>>> with __GFP_NOFAIL") remove a warning on allocating large folio with
->>>> __GFP_NOFAIL, which is adjusted by commit 903edea6c53f ("mm: warn about
->>>> illegal __GFP_NOFAIL usage in a more appropriate location and manner").
+On 8/27/26 09:49, Mike Rapoport wrote:
+> On Mon, Aug 24, 2026 at 04:46:14PM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/23/26 14:17, Mike Rapoport (Microsoft) wrote:
+>>> Introduce enum uffd_reason to define reasons for user faults rather than
+>>> overload VM_UFFD_* VMA flags for that.
 >>>
->>> "which is adjusted by commit" sounds as 903edea6c53f came later than
->>> ee040cbd6e48, but it's the opposite. Maybe say "which was placed there"?
+>>> Using a dedicated enum makes the code clearer and decoupling the fault
+>>> reason from VMA flags clears the way for moving the uffd mode bits out
+>>> of VMA namespace.
 >>>
->> 
->> Got it.
->> 
->>>> While in that commit, it also documented this behavior which is
->>>> out-dated now.
->>>>
->>>> Adjust the document to align to current code, and adjust the comment
->>>> while at it.
->>>>
->>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>> Cc: Baokun Li <libaokun1@huawei.com>
->>>> ---
->>>>  include/linux/gfp_types.h | 2 --
->>>>  mm/page_alloc.c           | 2 +-
->>>>  2 files changed, 1 insertion(+), 3 deletions(-)
->>>>
->>>> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
->>>> index 190191411009..24fde8eb73df 100644
->>>> --- a/include/linux/gfp_types.h
->>>> +++ b/include/linux/gfp_types.h
->>>> @@ -243,8 +243,6 @@ enum {
->>>>   * used only when there is no reasonable failure policy) but it is
->>>>   * definitely preferable to use the flag rather than opencode endless
->>>>   * loop around allocator.
->>>> - * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
->>>> - * not supported. Please consider using kvmalloc() instead.
+>>> No functional change.
 >>>
->>> I'm not sure if we want to simply remove the lines, or rather say it's
->>> discouraged (instead of not supported) and still suggest kvmalloc() if
->>> possible.
+>>> Assisted-by: copilot:claude-opus-4.6
+>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> ---
+>>>  include/linux/userfaultfd_k.h    | 16 ++++++++++++++--
+>>>  include/uapi/linux/userfaultfd.h |  6 +++---
+>>>  mm/huge_memory.c                 |  6 +++---
+>>>  mm/hugetlb.c                     | 10 +++++-----
+>>>  mm/memory.c                      | 10 +++++-----
+>>>  mm/shmem.c                       |  4 ++--
+>>>  mm/userfaultfd.c                 | 30 +++++++++++++++---------------
+>>>  7 files changed, 47 insertions(+), 35 deletions(-)
 >>>
->> 
->> Reasonable.
->> 
->> As mentioned in [1], kvmalloc() maybe not suitable for some cases, I would
->> suggest below change.
->> 
->>  * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
->>  * discouraged. Please consider using kvmalloc() instead if possible.
->
->Yeah that's great! Thanks.
->
+>>> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+>>> index 45355bdb4ec7..f401623f315d 100644
+>>> --- a/include/linux/userfaultfd_k.h
+>>> +++ b/include/linux/userfaultfd_k.h
+>>> @@ -9,6 +9,18 @@
+>>>  #ifndef _LINUX_USERFAULTFD_K_H
+>>>  #define _LINUX_USERFAULTFD_K_H
+>>>  
+>>> +#include <linux/bits.h>
+>>> +
+>>> +/* Fault reason #PF handler passes to handle_userfault() */
+>>> +enum uf_reason {
+>>
+>> Can we just call this "userfault_reason" or "uffd_reason" ? Maybe the latter is
+>> actually what we want?
+> 
+> userfault_reason sounds better to me.
+> 
+> It describes what kind of user fault we are handling and the 'fd' part has
+> nothing to do with it. 
+> We do use uffd as a short name for the subsystem, but still most if not all
+> userfaultfd "external" APIs use userfault_ prefix.
+> 
+> uf_ was an attempt to make it wee shorter :)
 
-Thanks, I will wait a while for other comment before sending v2.
+Yeah, I got that; while uffd is a known acronym, the uf_ not so much (and also I
+wouldn't suggest it to become a thing, lol :) )
 
->> Or, you prefer only s/supported/discouraged/ ?
->> 
->> [1]: https://lore.kernel.org/all/aQTHMI3t5mNXp0M1@casper.infradead.org
->> 
->>>>   */
->>>>  #define __GFP_IO	((__force gfp_t)___GFP_IO)
->>>>  #define __GFP_FS	((__force gfp_t)___GFP_FS)
->>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>> index ab385bc252cc..146f7e0a9462 100644
->>>> --- a/mm/page_alloc.c
->>>> +++ b/mm/page_alloc.c
->>>> @@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->>>>  
->>>>  	if (unlikely(nofail)) {
->>>>  		/*
->>>> -		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
->>>> +		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
->>>>  		 * otherwise, we may result in lockup.
->>>>  		 */
->>>>  		WARN_ON_ONCE(!can_direct_reclaim);
->> 
+I've been wondering for a while whether it really should be called
+
+	handle_userfault()
+
+And not instead
+
+	handle_userfaultfd()
+
+Or maybe even better
+
+	handle_uffd_fault()
+
+And then have
+
+	uffd_fault_reason
+
+... but just a thought.
 
 -- 
-Wei Yang
-Help you, Help me
+Cheers,
+
+David
 
