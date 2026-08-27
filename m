@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E54C61DBD
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 02:49:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44409C61DBD
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 02:55:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 438516B0095; Wed, 26 Aug 2026 22:49:23 -0400 (EDT)
+	id 3F3BA6B0088; Wed, 26 Aug 2026 22:55:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40DDB6B0096; Wed, 26 Aug 2026 22:49:23 -0400 (EDT)
+	id 37E456B008A; Wed, 26 Aug 2026 22:55:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34BF66B0098; Wed, 26 Aug 2026 22:49:23 -0400 (EDT)
+	id 248DB6B0096; Wed, 26 Aug 2026 22:55:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 121146B0095
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:49:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E7C9120303
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:49:22 +0000 (UTC)
-X-FDA: 85145518164.28.2C3B501
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 50E2280003
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:49:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hzilSf0A;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F3EF06B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:55:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6096FA3A7C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:55:22 +0000 (UTC)
+X-FDA: 85145533284.17.6F716E2
+Received: from mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D5968C0008
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:55:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="YHxc8c/K";
+	spf=pass (imf28.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787798961;
+	s=arc-20220608; t=1787799320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mtxyjDR/AkeJ1U6spdGadiXVy/JeYOrATb8gpHS2GT0=;
-	b=dgnI0Bw0rq3dTtOfvs5tO68L1Wo8DpkoUx6nT60JbKkATF/EkQlE8KtVlaiOEw1PH3WNNn
-	F7hZc10XVdsiCi6/zWZkE6ElTHeZSU98e+k5THM+9HS1fMQ4BpkLQHRH0Taem/k/wR8G7K
-	qFa3IDtaGpHcpS22cHe/4fA8qATsTvc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hzilSf0A;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hkac0dnaKQb5wpd+29BsnpiuGqW6sgLTt78LF3j61K4=;
+	b=5KiqyKMGizBwmHcIOs8fh0Ms+psp1oofQVNVLHBeJxVPN/TIXvOwx2oTDFWXxVFdUfWUzu
+	BtXJnhGjCIbux/AdBp4D6WjbZ5XJLT8AiPmjcEfYwtH1W/qDh2+KcEPwGPRbXef7rQbG2o
+	g33gd63DS7Rf19iKgVCW8pdUt2HCTDc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787798961;
-	b=qPUhqif74hkTfP1aN4ZGxleDhbmHu1rjBUGwLmR43/vXyjkESw6KGn6xfz1Op+pQiMKPOB
-	M4+Jl97HkVvYoN9iKxY9jp+IQqYfBIf86Z8a03GkLvxLFyefURP+6YBaU4Cmbcwv5pVEPt
-	l4/HDMaNkIltUqBVDp2tx7a6y31CY9Q=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=mtxyjDR/AkeJ1U6spdGadiXVy/JeYOrATb8gpHS2GT0=; b=hzilSf0AFvb2ZflmV2+sTecXFZ
-	c+ZiHEEu9zIe5Hl7/d3U4hFO0C2IUv96B+a0S8z0KpSHG1dEluzFwpJzxUXd0IkP4Cqg1MOsrsksE
-	ZCRIJJzwZ+ocO2aS1OOg9+m/t1TvcmIY5xGgYQ0lvGLlnGMs18TxvYWj5p6nhZdne59VSDSjCma8A
-	/F8Svk2oFlkIboL8M6JbZCyDHzIezjb/Rq9PO/81mpeDwn3X1SQ+NcyPozPj0WcUlsOSyj8T0/W0x
-	0mK2QmVZxJ3z2SkU8c85t1fE3jIzKOI8CI5YZ18ZdpAwqzSeWVyhM1dw5MmJXM0xV/wSL+o76iAOl
-	eqmCTZbQ==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzQB1-00000003KHf-19Y2;
-	Thu, 27 Aug 2026 02:49:15 +0000
-Date: Wed, 26 Aug 2026 22:49:12 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich <dakr@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, driver-core@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH] drivers/base, mm: move arch_numa.c to mm/
-Message-ID: <xzndraf66344jbze5gfst2ugz5plr4cqsgv7hiw4w2vefqekn6@fkaqeczif5cb>
-References: <20260806-arch-numa-v1-1-968ec128121e@kernel.org>
+	t=1787799320;
+	b=oH28IOTgKL1AKRb3GhiHuWVss12DyVO3xbVfkiePfSawkRbOGbboAr86ByIQqr3fozSgn6
+	0lsBUi0Hck3BIItSMdo8beW5AUhzdcW4ynT+kxBPqzzfSZQ39PIJS4pSO+MSIJRYmXJqt/
+	2PBZvTpZo/zI4evUJRdRn/WICWTqjYY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="YHxc8c/K";
+	spf=pass (imf28.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=+WYQTsDYVTtYJtW2ln0YBQa4L8nYSewLmll/nAIQFt8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787799315; v=1; x=1788404115;
+ b=YHxc8c/K1aRBnoUqGWDsmc0GsN66KPh1fJB3gEkKaJiSA6YzwfSggrevRL/IDTJ2igKJIDdc
+ nX+GlABx1SURQMeC/j5Yh5jT3ydmLI3yWUzGFPj6+r+fM7pvipNQlqr8thzgT4PPvwB+VaS+H2v
+ 2t4SXudkYr8WGovOZ5Srvm9c=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost.localdomain (147.136.157.3)
+	by smtp.migadu.com with ESMTPS id 1c0d3bd05cbfb2fd;
+	Thu, 27 Aug 2026 02:55:15 +0000
+X-Mizu-Trace-ID: 1c0d3bd05cbfb2fd
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: linux-mm@kvack.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	stable@vger.kernel.org,
+	syzbot+ced4d9a8cadb5ef3adae@syzkaller.appspotmail.com,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jan Kara <jack@suse.cz>,
+	Tejun Heo <tj@kernel.org>,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/memcontrol: fix data-race on reading jiffies_64
+Date: Thu, 27 Aug 2026 10:54:56 +0800
+Message-ID: <20260827025457.116191-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260806-arch-numa-v1-1-968ec128121e@kernel.org>
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: wgqwkt3bhm5h3uogmjkbepgndsnbkjf1
+X-Rspamd-Queue-Id: D5968C0008
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: uusk13a41h65d36bharyjexxek7ywfyt
-X-Rspamd-Queue-Id: 50E2280003
-X-HE-Tag: 1787798960-63458
-X-HE-Meta: U2FsdGVkX187OWUq7HBDYUg4ZfohgjTEpl5YozTSrdujvRhDp7mCmgHfti2UyhuX75a6tJiEqM6qMXN/DOKWd3/CWbhzhg17/8F13WLE/Q06CPMCC48KMLLVh53EAcrlAkllJm4bwBR9Ph3hSu1mcVJI58An+NwyxD28MUC79bo1geRolaYdEqRvnN+o5EhKDXHh7bAteApa6SdbYw8+KJhj7LexJsNSqcTRn3ZL0uPyLmYFM5i4RszMWqvi/9LsIW3y6WrXrvpzH1kbNdEuZnD8V0pQl4U4jc1pfJN95oLWaKEzic+xx+19cBidJvCrsV+1YCAYTHiHeokPbMvnHMT6iQl0Wv9JNDIV07CZOQUWUHBLsp6mpSfcKxo/m6QbzngjpxxTlUN4kCY+W0Fo7v95A+/YkUZ7uB9kjtfn8RWNTZDuVJsn33kFZdIZmPN925C12Ds5Gf8n648NlNQH/Wj9rt9z0NVih//iL3JPQlw+yGU3EBiH72YlJ61iSh7yMB6USaT7zNwJFYMzfqWfsIyYi5S3w6rwkHvkLKLI/PNVrkC4sk//RMnPIZ4ItOZQ9Vt7ibUAeWj83fWRTSQ/BfQutpkWG42fjmPkhGVCbXVyXU1CN3yKrqCJkl0nPEjU16OUuDllK7LPL7MzQu055p+PGcJd9cpSd4nGyVNHi5b2sDx9rXpZFlucUNFX+444ZjaFbu7PzO9jFASmVbrhgHySoe1MN0jgNhiIBpSavjb2PXFiLA+/g9ctsr/X+oAr81I7DMB4D3YZUWtciOKHAYrHdhAf34T8OIxLolTgLb8I57scvHI9a6uuWCUXjEqbu6H+o5KoAAqYmIz3fMgqHVjeRC3V3xGJcCNDhTcBplyGl1tm5BhdcBNvtlhBcWnx/G1ysmtb+k787swc9lz/yDEuwNkmOflSA4n0+OAyVMztufiEF4SkYQyxZpNMQvtRRibB07IidRLTAMDBnyu
- H6GZNNOM
- E3fp4ZM61O8WRfPdQ8NeexHxa7VKe6W/NQUs9u2YnSvWv69m8UbIv136zfeM5Jy7NjjlmPlWF9gn5/QEzismbkg6xwdVMgtuxwJfw7MKV91yj+DjEe8gZV0yyPFgauvZnK5a6m98APpcQBd7oEUkCXZTgzzK4YjaVRhg1dDnXa82yruBWjpfTXlZMVB0tcWHT0oGihK2wFjFzIn11iAEg++eSmf3BCAetsEGf+K7y04aqByDP27uOCtnqUo56DDxCB8/8I04BOzoceKJIRbpQiZLIeVGLiMjeknaEMig+agaWQ91JZjBHrx5VvkVvsIeZWpMVMRq1oG4ep3JpB7gb4wWUlW1DrR3aOKXEjDnuuokM22G4A1kiv/tOhiIx4WMmJusKEg7PPUxDfyAyeG1oxYNrJkhSqH+x5gQy
+X-HE-Tag: 1787799318-435089
+X-HE-Meta: U2FsdGVkX19UnrA/J5zO2Anv3l1jbmQZhTs3JGa1HhD0mHl2T/Uzn4t/AmwGk/nXq7R86d29mN09adtKqoqFItc/+VE5f4asdM1Y16bPsbwEIZKxyua0ppteQJSgew7AwxiPmDFvzyDybznfbjSB0WKmyTklccW7/wU3IOFtyKQeVMhuzvvOkzLaLD3boF1/suXHpQkaVkjwcb7S2AfVkx75w5BhZQCer57h6IVWrhanZtR4iG2S3De68Lofj1n45DC+LBNj+LdAC03Kswz8+TGzDKjCWqkPaQTN3gPcEm74G6D3fbU+L8kGH37yj2eDZM0IoYSbxSnQODdmqrQUkxweUyg/Ro2disQKzwndYFfI5cKJXf1l8qPWF2sWuXnUfEO/qJBcB8N1uupGz72PkbYb8CgGQqHwF/s9A39+BtK7tNVETMvKLpW+YHvTBqzyBMxRjM/knaTXroQeqAOAtZ9LS8I2foKmc9cuL8s135AhxNAWqks2lfNliy/8yE67fMLaQPudqf3BotMCyQ0Vi1jrs3yQ4tp3GihymOP3EdmpCgC4k9i5ujlHAcFGuBSgzziu/7mPV5jWrGEc7d5rjX0gl/0nXF+5ahkEwsZY9rw/HZmJ7EIgz3mlLDsjmY//hLtsDTPNG7xj7ltUlzKGNFiKTPO+EQfvKhzWYOyEr+uLtBICeuNDFEU3NY3/9qUiYCOG8B4y98o3cF7v1T+UoTbAJW4npCcxiPqApDU+MG9sEfWErxKvDaDeSyGvdOpzErWhW70h0pm8iB7gvhIltrXhgwn4IZfLvj86H0NKku0DB3JFSBB+erus6GpK9Y18j8HOiWdM/IuzSWqmOumMzoiamvYWiNX45aY1NxKc739oTg4RQd2xCffiR5J+g73tlQGeBWcGiFuyjP3DT/hkPT6uLDEtQL/n8CKpAMe+Y76tQ6ILB1/+4go/nVdO3lbJcB1nxjVg6Miv/1cOngz
+ 7S1nrAWX
+ +r2LsexvJpszuz6B6R/auzcu/uEmjxBrtU9WzvpaP18039ct1gQDOo8MsHu7HEVu13I0tsFp5bMdH8bBxSYn2hk99p1ni91CagNmn6w+a/0dHmJ7y7Tg7/X60aVEQxGWr9Z3MgiCXQdhU6dveSFI8Y7Mj3OXlP396xRfWZFb6p/lVj50GIeST9PSpHVP0RdRTzz6t106KtiayNcaFOn8StSQpz+8bdVp38WZZzyLBRLdIt7Xltpy3CV1fKBtE8oMouriA+jk49aJMQTWIQNZBv5b3F9dR+nUxU11LAbJvszJz+9JDtspxqxfYYp7evSQVZuX/IXFwXZKN0s3gpWcQYJpX39xULbtUCph4qQA4hW61lBBH+y8pZCFUXItfD04hTklqsfvubdpO/6alRztmXiLNuITJ1BSn36GblcO0uNf7j3twOcFw7OMyz767U0qjG/eHPWsY8b7mryQGleHN+U6/dlCEgjQrN0/GkpIk/aj/WRc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,114 +101,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/08/06 09:58AM, Mike Rapoport (Microsoft) wrote:
-> arch_numa.c implements boot time discovery and initialization of NUMA
-> topology on architectures that select GENERIC_ARCH_NUMA (currently arm64
-> and riscv).
-> 
-> Since this is step in the initialization of the memory management
-> subsystem, it's logical to have arch_numa.c in mm/ alongside numa.c,
-> numa_memblks.c and numa_emulation.c.
-> 
-> Move arch_numa.c to mm/ and add its F: entry to "MEMBLOCK AND MEMORY
-> MANAGEMENT INITIALIZATION" in MAINTAINERS.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+KCSAN reported a data-race between tick_do_update_jiffies64() updating
+jiffies_64 and mem_cgroup_flush_stats_ratelimited() reading it directly.
 
-Acked-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+Unlike jiffies, jiffies_64 is not volatile, so raw reads are plain
+accesses and can even be torn on 32-bit. Use get_jiffies_64() instead,
+and fix the same pattern in mem_cgroup_flush_foreign().
 
-> ---
->  MAINTAINERS                      | 1 +
->  drivers/base/Kconfig             | 7 -------
->  drivers/base/Makefile            | 1 -
->  mm/Kconfig                       | 7 +++++++
->  mm/Makefile                      | 1 +
->  {drivers/base => mm}/arch_numa.c | 0
->  6 files changed, 9 insertions(+), 8 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5114e6db7307..465b64f8e93c 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16880,6 +16880,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
->  F:	Documentation/core-api/boot-time-mm.rst
->  F:	include/linux/kho/abi/memblock.h
->  F:	include/linux/memblock.h
-> +F:	mm/arch_numa.c
->  F:	mm/bootmem_info.c
->  F:	mm/memblock.c
->  F:	mm/memtest.c
-> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
-> index f7d385cbd3ba..1d93bfc34490 100644
-> --- a/drivers/base/Kconfig
-> +++ b/drivers/base/Kconfig
-> @@ -239,13 +239,6 @@ config GENERIC_ARCH_TOPOLOGY
->  	  appropriate scaling, sysfs interface for reading capacity values at
->  	  runtime.
->  
-> -config GENERIC_ARCH_NUMA
-> -	bool
-> -	select NUMA_MEMBLKS
-> -	help
-> -	  Enable support for generic NUMA implementation. Currently, RISC-V
-> -	  and ARM64 use it.
-> -
->  config FW_DEVLINK_SYNC_STATE_TIMEOUT
->  	bool "sync_state() behavior defaults to timeout instead of strict"
->  	help
-> diff --git a/drivers/base/Makefile b/drivers/base/Makefile
-> index 8074a10183dc..435710f643a5 100644
-> --- a/drivers/base/Makefile
-> +++ b/drivers/base/Makefile
-> @@ -25,7 +25,6 @@ obj-$(CONFIG_PINCTRL) += pinctrl.o
->  obj-$(CONFIG_DEV_COREDUMP) += devcoredump.o
->  obj-$(CONFIG_GENERIC_MSI_IRQ) += platform-msi.o
->  obj-$(CONFIG_GENERIC_ARCH_TOPOLOGY) += arch_topology.o
-> -obj-$(CONFIG_GENERIC_ARCH_NUMA) += arch_numa.o
->  obj-$(CONFIG_ACPI) += physical_location.o
->  
->  obj-y			+= test/
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 9e0ca4824905..410b8a0a92b9 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1469,6 +1469,13 @@ config NUMA_EMU
->  	  into virtual nodes when booted with "numa=fake=N", where N is the
->  	  number of nodes. This is only useful for debugging.
->  
-> +config GENERIC_ARCH_NUMA
-> +	bool
-> +	select NUMA_MEMBLKS
-> +	help
-> +	  Enable support for generic NUMA implementation. Currently, RISC-V
-> +	  and ARM64 use it.
-> +
->  config ARCH_HAS_USER_SHADOW_STACK
->  	bool
->  	help
-> diff --git a/mm/Makefile b/mm/Makefile
-> index eff9f9e7e061..fd29be716fa8 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -122,6 +122,7 @@ obj-$(CONFIG_CMA)	+= cma.o
->  obj-$(CONFIG_NUMA) += numa.o
->  obj-$(CONFIG_NUMA_MEMBLKS) += numa_memblks.o
->  obj-$(CONFIG_NUMA_EMU) += numa_emulation.o
-> +obj-$(CONFIG_GENERIC_ARCH_NUMA) += arch_numa.o
->  obj-$(CONFIG_BALLOON) += balloon.o
->  obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
->  obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
-> diff --git a/drivers/base/arch_numa.c b/mm/arch_numa.c
-> similarity index 100%
-> rename from drivers/base/arch_numa.c
-> rename to mm/arch_numa.c
-> 
-> ---
-> base-commit: 075b74841bd0065a3bda3440873c747938e69b68
-> change-id: 20260806-arch-numa-444bb4806114
-> 
-> --
-> Sincerely yours,
-> Mike.
-> 
+Cc: <stable@vger.kernel.org>
+Fixes: 508bed884767 ("mm: memcg: change flush_next_time to flush_last_time")
+Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty flushing")
+Reported-by: syzbot+ced4d9a8cadb5ef3adae@syzkaller.appspotmail.com
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+feel free to drop Fixes tag.
+---
+ mm/memcontrol.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 11b85f4b6828..5a3fe057debc 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -757,7 +757,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
+ 		return;
+ 
+ 	if (mem_cgroup_is_root(memcg))
+-		WRITE_ONCE(flush_last_time, jiffies_64);
++		WRITE_ONCE(flush_last_time, get_jiffies_64());
+ 
+ 	css_rstat_flush(&memcg->css);
+ }
+@@ -785,7 +785,7 @@ void mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+ void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg)
+ {
+ 	/* Only flush if the periodic flusher is one full cycle late */
+-	if (time_after64(jiffies_64, READ_ONCE(flush_last_time) + 2*FLUSH_TIME))
++	if (time_after64(get_jiffies_64(), READ_ONCE(flush_last_time) + 2 * FLUSH_TIME))
+ 		mem_cgroup_flush_stats(memcg);
+ }
+ 
+@@ -3945,7 +3945,7 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(wb->memcg_css);
+ 	unsigned long intv = msecs_to_jiffies(dirty_expire_interval * 10);
+-	u64 now = jiffies_64;
++	u64 now = get_jiffies_64();
+ 	int i;
+ 
+ 	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+-- 
+2.43.0
+
 
