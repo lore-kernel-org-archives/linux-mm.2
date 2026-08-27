@@ -4,104 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F25C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 21:47:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7A72C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 22:35:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 139746B0088; Thu, 27 Aug 2026 17:47:08 -0400 (EDT)
+	id 9CF726B0088; Thu, 27 Aug 2026 18:35:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E9B16B008A; Thu, 27 Aug 2026 17:47:08 -0400 (EDT)
+	id 959876B008A; Thu, 27 Aug 2026 18:35:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 000176B008C; Thu, 27 Aug 2026 17:47:07 -0400 (EDT)
+	id 848266B008C; Thu, 27 Aug 2026 18:35:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D01336B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:47:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 54CCF1401D3
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 21:47:07 +0000 (UTC)
-X-FDA: 85148385294.10.713E58F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CBF4220002
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 21:47:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OOnm5D+N;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D5A36B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:35:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CF8AC1C0D9D
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:35:31 +0000 (UTC)
+X-FDA: 85148507262.28.4E9F6B2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0849640002
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:35:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=p4dP3qdI;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787870130;
+	b=xtbjKk58JMiV1A6sbh9YDh5GlQiMgsQzwrJR/JQqGxpzB8MtvRiqFxabg+d1AfYpdc8egt
+	E1R89sOPl6sdtLgN9ggcyHL3vk7gdUIsLycvGVD+WCzvezQtoeiXWU+9VpOQq0+LjbOTl1
+	1m8Vl+st+gaDm519WsZfu7Fyv1XuXIA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=p4dP3qdI;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787867225;
+	s=arc-20220608; t=1787870130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=tviM4X2nvvvLqMpeuQF9l7koJaDMsc88vWcy1La/8as=;
-	b=MiYJ7h8tcbJlEW0pBVjMqtykTC0HBXM1RtA1g60QelCLEP+lLpAsQevJLjlHNvT3DOO/3G
-	HNFgDgTWsna6T+8UTHMeASPY/aA3wsybLwSYu3JfZXcRrHT5kY75u3yPyk+Zf43oV1OPCr
-	+8+wS9mexLvgod/Tcc+ogZ4F5L3yVng=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OOnm5D+N;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787867225;
-	b=zc+fTHQ6QFoOCqHJ2cxZCslA4odV+twmgdIkHXvDYzKUCThauXpE85fjuQLrEHBXONJA+0
-	Xz/hoICFkF9y3hdYUXyuFKvD38XgmsnjtyvEJodjm9xmJF3id5QxXHr6wSn2mH8DbTDPSp
-	JPz9X7eHi2Yw4HQ7+6jCnw7SUpjR460=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NEGL3tkX29E+ZP0McEKVxJynzb895syCk3QM92mlNxU=;
+	b=7OhIfx3SDjFzA6qE3VH4C15/T5p2yCpMJyivP/CDZkSVk3MS6XP5JIfxrQtngODR1jYudP
+	/LsgGZ+B2UEworvZQs9MsGpA24yYTMRHbyFiBmUmnXSIqnIQkfXmbpHz42Gv8ANPgFNEnF
+	/a+AEPXVUDzej/j5oTIr8jcTyDhre90=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73D58601EF;
-	Thu, 27 Aug 2026 21:47:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5EB1F000E9;
-	Thu, 27 Aug 2026 21:47:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787867224;
-	bh=tviM4X2nvvvLqMpeuQF9l7koJaDMsc88vWcy1La/8as=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=OOnm5D+NhalAr8wIMcxMKb6VaxdR7MfXZrVr6waUND5kQ2IBfnaKblstAaUWXsZHe
-	 yJ58QN3mCNgHX47Xtk9I7+p8DaT5sTD+VexFUJkz29OKusmhRsdT9Y6VngaWiB8PbT
-	 VpiDPdcqlswFHeb5OZtylVmAX7ZxuZ0XmxtgOBj5/zvvfW8SnDc8MfF2A76BSFlQle
-	 7Z1/avFAPLYTtPBdj3MZUI7cVEn+IB1SGbyKfXlTbzHSrtPHSPgNLm2y8ENTkPGjnu
-	 HGpV8OOhAKSF7sqEjYJ48iGCXGgk7gTdlk80vG0Yi5u6Ioi8YHNuzvyVkKeq9Z3Avi
-	 OoCVbShyvHzKg==
-Date: Thu, 27 Aug 2026 16:47:02 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 02/12] PCI: liveupdate: Track outgoing preserved PCI
- devices
-Message-ID: <20260827214702.GA1636952@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728221007.2098560-3-dmatlack@google.com>
-X-Stat-Signature: sfjyafu8t58is67fiuhkrej3abkzqkgi
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CBF4220002
+	by sea.source.kernel.org (Postfix) with ESMTP id 6565942E0C;
+	Thu, 27 Aug 2026 22:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FF31F00A3A;
+	Thu, 27 Aug 2026 22:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787870128;
+	bh=NEGL3tkX29E+ZP0McEKVxJynzb895syCk3QM92mlNxU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=p4dP3qdIJCrBvW5kDTppeje6GliGUYcIFnG6Ywq7nlm4o84rRjlq0fUSIiO00MEyw
+	 Sgi4r3ip95lL83gw1QmavrvRPLe5Et7gphzelVusOJVIcoKPDynxEl9O1d+Fu6cpKB
+	 JZQ3QcFGoBjUtUGoyH++kybBReMBE1EdE7BskmfY=
+Date: Thu, 27 Aug 2026 15:35:27 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+Subject: Re: [PATCH] mm/memcg: fix UAF in drain_all_stock() async work
+ during offline
+Message-Id: <20260827153527.e0e968a22717f558a22fb893@linux-foundation.org>
+In-Reply-To: <20260827124211.3b94b103@fangorn>
+References: <20260827124211.3b94b103@fangorn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787867225-556826
-X-HE-Meta: U2FsdGVkX1+IWMniSknItZMz1ji1QybK/bhM3VCo2066yc5tTzQbNflIj4FwloEB24MgpEDYjWSYUIg911klVSU0Zmzqh7PTfvksOmL2X8JLzK4mGQfPsjbnH4E6A4L74Ab8xrmHMiQ5S0e7CnV99olOzlStcNJs2dnILD3eNqgIEqJGAVecTLQMlLCBUWFMxHXaPSmtQ9VtucO9ZyDUdLeeVfMCsSZY1pfJyKse6dKDtKEppZFpnkQCeYKE2KtTeMPwM6QplCXMbBb1JEZvPExvQ+ay2mr7QU8N9bGb11CGwRjl2AvRo64h0wYCf/lx/I7Z9bMy93DT7a11HHjykC4hjMWkXXnN/jInBOwhENUfO2JKr4oO1BR2ipWIJMC39eBwDKG41ZVY2lWJiY5W0hUBLypYwRd1R3H1ovglnTQAZ7nAtXDL6xM2zrgCuMtagBNvH+idJqkXGkaIpV7YkGae7JmALJJja7Bv8fWZo4pGTCB0IQ5Hl7BNAvRDhvhk3Y4b2puYPNiyQ3FbOFKu5EVD0dUlScINcDPhGX0OrAENJctMfkGq8+d3MLruxcz34rvxm2tkfcBxAMKQOc2On6OWx5FNMX1qTSypwkITX7PiB7i8hk0fMgeHDBmF3MrcvxAHMuSP5FCrxuWYfwn+2jUZFNnq/l7TGT4pCMaPQVEK6qHmyp7hHi4u57wGG4aR1avcrTG/2Npz2OncKevLqX1UtcYV0G8MxFgwIT7Mw8/HWZ1Etx45QnCnB/U9oszHdZA9ooOSP8FwBYKdGNVb9givvwjUQSm/1inITXYTjYRiM1zTbZsloGSALuAJUudmW/RgcXLw+q6IYunnuh5F8MQKDxxsq/5KXFInGTLWcZYrPinRpeiZE6KkIJE8B8O0BAEmLeRn887ssDspbiJniDqutuwm9UK4YNBzkmWouEgt9jw9n/ZPMvOMRqJZCNh68Hm0mxCADYxdRo0Gjxa
- MMNbLIH7
- S4xfIsstJtiby2rWn9xYQpEb5dPCVmWp1N7cqYUmkaJYga9zNk7rLOOqjTfYiQ5hcfR7f9ddt4ZBK6fAxmDPr7GY3xaGhz5ZCYMpIKFcMUfbqxwaZgQe1g8TjCW1V/ejR+gm8akhl1p633Nm/UO2FUxbpy2UZAFR4Wqjf+9CG1X+i2JiPMRFqciUWj2kagl7uE+QexunGOGo22NiOYGS8RBJsAdUwP7eZjC7U/2Z7VUX01tlM25dHywhHe5dQqnCQ5K0bg9hEWWXInElnQM77fNURokb7KMR2QsvOgg0Zx1n8nlZNIQigAmFwvNwYYsR+OIsaeEpU/2sjJ5iEQ6gWjJDCZg==
+X-Stat-Signature: t5inhzngao6j5n5rqd6bonx3dx717f3h
+X-Rspamd-Queue-Id: 0849640002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787870129-984476
+X-HE-Meta: U2FsdGVkX1+1cJu9ukAhxzTSOjNaVtVPf561aPN4LLg7E9FxYvL+iwU/kkph/WDS2H0kSIt7GYxyuj9o8doEulXmhb47OiTRQiut3Keaf71U/ag48ilV004Hjw+B32UpLcIs9JY7r+T45djUfOk5IeF/0GDZetd/jJyQf+22CP4ZPNC93MhPhDEV5yZKVHFfsD7dR1UrfjhHVnOJEK9GzUPf+P+2ZZmHfdmWlGKcRdZ79TXg0pO4GtR662Jmd98+cvCG1J246AQDDmz2Rfi3BaOcKGU3W32rINQi3S9CZqS+hdov0lTG8EEpbOFwL/N2aFMAbRpcr+VKRR4vQNMROipc0v+FViPOtAhCn8W6EcredP7Hpm1IosCimrVPUgjsCG10aTfvbU0fxqGfh18ScEesVBvNTaO4MIuA7l5ug1xButFkT+X3ALXCZpvSpHLHi22+SG7wuE+GaeJfmX2KnEWMMeohG8589e5PCWYS8/0rpinBKjKj+zV7978N4zrqePOu8TLXIT2S94XCDA0z0EGq3L14y5JXLiY1Upx4WdI0MYDUMgN2edhaJ5RToWvUbkzvFo4UFNtgauw/lK9Lvawc77VLmn1W58LxSXx+jI70wJwP68fMmjTeSXHWHvGCol+DiVia05T/C6b1AJ/R1x3KGJ0jH4BcK/XSN2h9eJSl/wh7Uj7GOeKmi6x208KYmfU5iztCu0AtjfAx9f1hMngC8k5iXGUy4WTz/+yjk03GbzXN8HuIKWcyXjX3pd6YGgyBGSSLJF1Y8GkgcWCieBPSG6a21kV62qqoRcCV9Kd9exql3V7DE61JUqBb7rBGNpYVV/sF7rt0T7sg2d0PokpyNOo6x6saOk17Q4nGWyEM+P8vpwg5NK9UHUU1L0md5j5Ua1evw7lH7gRxS7dhFzc9OzJDTK2ZcQw32ez3hEg8WT3NpUIdFe0xqmgzH1d73N2d/z2lXqjbZx55lAn
+ TiDMd3Z0
+ X9sNKV9hBQJ84ajLfwxQz6O2XnIyFiWvQXBGobyw6vKPUgOSmHbNnv+TouKI9kZK1vZZ2etZh0Ys0su/rTVeWzfn2N9cRaRvLK+4a3L1nidNkd99kRxEXFylczrVO+2QUZd0JhlYtjtLaIuQoqfyX5fgyn7dxAleRbbhmcgLuIbXaKbjMKrgioCxQIa7gSKedxhTIs8rdiUT8zxpIULCLYvuONhusIku+nco/x6xTqMWZBsUqaNdePp1JFP/upFySLnJoxBFULKoSRAFlg6FiAgXig1lEbP4pJQv0xGkmWMmyiwrd9v8mFF23PSAmpjJyZlVOc4Oz+/6FSCz0s0oU3LUO7UOJfwu4uZzUbG5F2oh1oU28cbwI5VdZj7IhNvYZS0sWYqd6lwsLpUNhg3bWT5h7aGDQzkOZNHT2oT9NuMSnJut367LWEQeOvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,28 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 10:09:56PM +0000, David Matlack wrote:
-> Add APIs to allow drivers to notify the PCI core of which devices are
-> being preserved across a Live Update for the next kernel, i.e.
-> "outgoing" devices.
-> 
-> Drivers must notify the PCI core when devices are preserved so that the
-> PCI core can update its FLB data (struct pci_ser) and track the list of
-> outgoing devices. pci_liveupdate_preserve() notifies the PCI core that a
-> device must be preserved across Live Update. pci_liveupdate_unpreserve()
-> reverses this (cancels the preservation of the device).
-> 
-> This tracking ensures the PCI core is fully aware of which devices may
-> need special handling during shutdown and kexec, and so the list of
-> preserved devices can be handed off to the next kernel.
-> 
-> For now, the API only supports preserving non-VF devices on a root bus
-> (not behind an PCI-to-PCI bridges).
+On Thu, 27 Aug 2026 12:42:11 -0400 Rik van Riel <riel@surriel.com> wrote:
 
-s/an//
+> drain_all_stock() queues drain work on remote CPUs via
+> schedule_drain_work() -> queue_work_on(memcg_wq) and returns
+> immediately without waiting. The worker, drain_local_memcg_stock()
+> / drain_local_obj_stock(), dereferences per-CPU stock caches with
+> READ_ONCE(stock->cached[i]) and does css_put() / obj_cgroup_put().
+> 
+> mem_cgroup_css_offline() calls drain_all_stock(memcg) to
+> optimize reclamation latency, but never flushes memcg_wq. If
+> that races with cgroup removal, free can happen while workers
+> are still pending, causing UAF. The drain work could also have
+> been queued by somebody else before offline started (e.g. high
+> throttling), not just by the offline path itself.
+> 
+> Timeline illustrating the race:
+> 
+> ...
+>
+> Fix by having the offline path wait for the workqueue to be
+> done with the memcg, before freeing the memcg.
+> 
+> Found through a code audit with kres.
+> 
+> Fixes: 591edfb10a94 ("mm: drain memcg stocks on css offlining")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Hermes:muse-spark-1.2 kres
 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
+Sashiko might have found another thing in there:
+	
+	https://sashiko.dev/#/patchset/20260827124211.3b94b103@fangorn
+
+
 
