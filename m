@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F101C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 18:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C84C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 18:23:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE3476B0098; Thu, 27 Aug 2026 14:23:47 -0400 (EDT)
+	id 69D976B0099; Thu, 27 Aug 2026 14:23:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A942E6B0099; Thu, 27 Aug 2026 14:23:47 -0400 (EDT)
+	id 626FF6B009B; Thu, 27 Aug 2026 14:23:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95B0F6B009B; Thu, 27 Aug 2026 14:23:47 -0400 (EDT)
+	id 4EF166B009D; Thu, 27 Aug 2026 14:23:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ECD46B0098
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:23:47 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 05C8940161
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:23:47 +0000 (UTC)
-X-FDA: 85147872894.17.2BD335C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 236366B0099
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:23:52 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B04B9A0185
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:23:51 +0000 (UTC)
+X-FDA: 85147873062.09.AD1413C
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4DEE81C000B
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:23:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=at6oDwZd;
-	spf=pass (imf18.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 026F840010
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:23:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=rQUtyokI;
+	spf=pass (imf27.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
 	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787855025;
-	b=oWgH7mxjLcp87w6sjNc4a6sQuZz9kw5xecGPbv76P2AgBfTa3m434DcujSt/2gY9e6JNMs
-	YixSxbvNrqGwe1EBVnjQRU7n/dAJ3UsDQLJQO/9yxjF9eePscpQyWcP2Z18Dlslp/0Jtdd
-	8GkgWX9r1kAYAxE/CBgDjaeK+BlfsSU=
+	t=1787855030;
+	b=KiXksmx5sqEn/AHMgEDl+9jZ4BF6ftO4nMHKyCLjZ5P1SAsy9HZicUrf2u34CnPzPRlLXZ
+	4TNB1R76zOzmEnpwxsfnBtThoHw/+DI4zRc9bbmO7AVxHKoazKMmgwWOIn54aEfjSCSin2
+	4jY6NyVobnvE9dmumCmsGlFV9XRsFMY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=at6oDwZd;
-	spf=pass (imf18.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=rQUtyokI;
+	spf=pass (imf27.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
 	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787855025;
+	s=arc-20220608; t=1787855030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WwqeHqUYJu3OSjLPCkapAyi6pywTO4QN+uPji9ROHhg=;
-	b=zLrKTh2zSzsVBHngp3KH/0TBpePOVTUQLUlL5/iIveNcPF1tePNUh4mkPH5N0Kri1EEfts
-	4WzGX+8Jixkz2+/RTsD3bSYS8RKvicDfBIILXAh3TWW0lfildst4QLEqHikp/mSbfM+hNe
-	bZlLffBAP4R1d9yFgoYu+y1m3V7Z5iA=
+	bh=HO/5xE4JJZ1CCxn8HlprPB8vAIdq2WQK98oz1e8eTqk=;
+	b=8c1QeT+L2JscNOkGwoGVb5Nz8da6xklnio/UUdifvsPZ6H1gBMy0ydTi9SPMaN+pGRosnk
+	uD2imVGdwYpXpSTpU5vMqLF+t/GjjilnV0mRnbtVA3CxBrVgifh63gBxqwdsfNo007FIqE
+	3c1XUdUhvrWkMCvMCCABLudphwPg4dE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
 	MIME-Version:Subject:Date:From:From:Reply-To;
-	bh=WwqeHqUYJu3OSjLPCkapAyi6pywTO4QN+uPji9ROHhg=; b=at6oDwZdvMMfjaicvNK76Q+xeE
-	5U31g6f4iMZLc/xEfMra+AG/eAoO8VVskEbrelaDGXGFsvr6p1x4T6ewcd2h+d05Y0nNHfJdopLku
-	LtEk/ct2SKoBaxfYmvErgjv8aSBefcEv+yRU5X7uOc2atI2vDDheZPeK9j9l4LjmR5jslxrnazEyT
-	e2Nuc1XoR4bM259i1pQ+Q5/G3gwg6w/WnpIgXjlCZ6zgN1q2SIA0z+znxMTh2L+5QP4BYCEMzxcd9
-	NKhwruIamvJzboSZVAkdaZB9NFFuBs0avXqiPxLXjZ8dz/2Hkh1xzGgPmmVI0+McgdS9bB4HzGc1G
-	0cqOnV/A==;
+	bh=HO/5xE4JJZ1CCxn8HlprPB8vAIdq2WQK98oz1e8eTqk=; b=rQUtyokI1+jdIsJPy83y+Fg5Yl
+	Ykdlki6QcbiItfEuyFBe3MFOrNjpg8SmMHtqy4n3rHT/GB4Uf7zlPQQR9G8V2QeLoyzLECF2IpJJ5
+	TAaVZHOwz/Qd4UaT2u8Aeu6HxDfwc75H7UoQvHAhGlYsrdRPSIW1puQRu4jtrPBRwMT08rrdVUJ6D
+	TUA5o5K55J2OqHiH/yl37NoHMarjazIsWehaEVEWW1UOC7aRIAZqA2M+V0ErctgEAGXtGq1JpIvSd
+	84AxqBF9/cOrr/+t4sTQyffhDB9N/s4TH+T72yXmv+Oe2hTrJfPfe9BDjLxGEuMamETTdAPBgdPhU
+	aukUHCsw==;
 Received: from [187.57.78.212] (helo=[192.168.15.100])
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wzelH-00AOUg-Aq; Thu, 27 Aug 2026 20:23:39 +0200
+	id 1wzelM-00AOUg-Bn; Thu, 27 Aug 2026 20:23:44 +0200
 From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Date: Thu, 27 Aug 2026 15:23:03 -0300
-Subject: [PATCH v5 4/6] sched: Extend task command name with
- TASK_COMM_EXT_LEN
+Date: Thu, 27 Aug 2026 15:23:04 -0300
+Subject: [PATCH v5 5/6] prctl: Add support for long user thread names
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260827-tonyk-long_name-v5-4-5fa843782a00@igalia.com>
+Message-Id: <20260827-tonyk-long_name-v5-5-5fa843782a00@igalia.com>
 References: <20260827-tonyk-long_name-v5-0-5fa843782a00@igalia.com>
 In-Reply-To: <20260827-tonyk-long_name-v5-0-5fa843782a00@igalia.com>
 To: Peter Zijlstra <peterz@infradead.org>, 
@@ -87,13 +86,13 @@ Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
  =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
 X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Stat-Signature: m36apq3bxpfsra43f6qdgirxcef7snp5
-X-Rspamd-Queue-Id: 4DEE81C000B
+X-Stat-Signature: 9ksb3iz1ictsnw6zj57zfwhr7qi59hy4
+X-Rspamd-Queue-Id: 026F840010
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1787855025-622351
-X-HE-Meta: U2FsdGVkX1/cm+NKdyx+K1N7P+3MSV0U9kxX8VR2J70SVaA1fWopFy7z0Z6fQazhxWjTdwCwU/1UvmYdjNYmH4tJYDIP+YDnJ4dDLsDgc/8gMisK+qGkiTv6OUv3BdOa9DrFyTNeYTE95MnG9umInjgFaPHnNS7uRDGx2MLpcdFh/EoQJGWxhENF7GmYyijkxjZSvnkzGY7kfFDbnicltHZLcfv2XIopD/hLscJP2p8SxnJxMl6C8cHRLJ0URcUWPnDPUc8oJYRSe17IvihfdqyvNyRS/23AB8Uevi1l3B2Jk+WEcBPGKaVjA4h6HP7Fx885zY4X2m8hB26JMc9f01KyHiM9d9/4KCnvZKmnvEuyvbbRGl9PMYXbNME4ElERCDmLvYzssOPXhEb0KirdQ1TYcSeIA61mkJagUigLemQtP5wCXVCzFofMUlmYjIA8SoA1V9s6h31G2wGX+v3elpDdqPemS3tALmxP5ODjdziL9OtA11QpHsXooI9GAP7XnNk0e5jqeSZ3ojiJd18z9SNM2TPZUzHofrvk/Khb2AbXwsk9xjE+3CYYVj42PYfXm4z5gSt2Px/ZwxzmXO68S8o3HTX4zdOthExn03BvoZmg9jRhmHJ3Sk1yxbYjizrL+otuxfdHe981S907Wt7MKODXj9vfkcQOXZFa/NMKbxUT9ss0iN2DR0m8mG11BA8hAajGBxXv2n8+nd4NoLCZDbdRLTpyrQZ4dKJ0APGuY3lOo5W4sTAQ6bEqk+v/i5a5JW1T4O6dV5korFtQt/bDKWy/xx/oO3xekxGSOl9Lvw6ndF7zfqrovSnhBoaMSRguc08AQu1kafjkxVO+WbTpNTWL5s3a4SEWPL2u10jVm0yCJBZiEsig2IF28/MsDtqEAEMOEGwNe3+xPVBCqG1a/9xS31y5J/a6Q9kiTRz1kNRUSpWjM1HfN3coIBdkCbsrMD/PsEY7E+fQyIh/tcH
- /NTmJd3D
- FkmwByHj5Wl2XKligb6L1cSG3UfflEy3Mu+Df3nQ2dOsyL0D6fFNkmnR6y70oCBzvZnlONQenCB4Tpph1rkERejkNZsZ0q0NngzZzo1rtUD7S7erA+j7vIdqPzi+/iSSul3q//y6TUZ4/+XRTzbV2tWCqIDv1NVymvG6YJkKIQqUw0P9PebIXHNO5UsLvaQ2Z+mvWXR14NVbuqPCBe3H2CKMQI3ZOMOdo3zMe5szmVq5z5OCIfzd+uSG9QJbOwl6qubXEZ3RQHhQ+0eNjlvEHSTgXDQNX4TR+PPhn6QeZVERY6NgHCnQK+edPhUUQwUCep6OY1HCO9/gzG0qpv7RJ2ossHBdDraYbFMeUJhdkKcbFT+no+bBa007WC6+ndZoDVYrUhOPiD6YqjWkpv2kNpSlsi5QWxGhm7uuM/991cLNChSj5lLNjqgIrHg6cydgQ5c7NEf77Tmfj7kQ=
+X-HE-Tag: 1787855029-116375
+X-HE-Meta: U2FsdGVkX19sNzOW1JauT9cbc4BcPs1N2JFAewkNHE/l4BmXVCL0ow2WREzx9mm4JxHlyPDCeUEBuzvz9lY03AXNMfdY7/gX26jrKed0EKc/bEGGhPtlFwHD46b/sewSvL8QBkLwXeFVBiiLZ/fbleXvRjk56H1zi95DsLX6Vy/50rpzfoLZuCYUBnhndw/PXmcdO/UX1pi3CSR8pySlYnaWAt1CPCN1vslklYVbRlgAUCI14XeBrtf1MitV9d4DI33cytTxe0lBC71YP55TjjtakkIx/rtfsJo9PaZfefgLZ3q094Hx+O1+xtRYtED6tiVnvPVyMSG0/zi2xGF0N6VIOxpbKpMwlusRvyVg1DKPq6bqh4HM763MXliBO5iNuI1O9aUGoQFbRjmtz/azl0z0VHtff9bYAzkF7c1qxHHK+hdFzZ8qKD197eeMnP+iKgjReYcayRVBhyjfQqk5InDVJOs4Z5aFBFSpYCpMY5VgKcleCdqtvGQgFkrOYESvUNbR+U4FIXUgk8gTgcJKeUtd5PywWzV0aA5iO67qsCAHYQbfql+dAqTzSZVgMNp7mtMKNQkjnnKP8AYeYWyBVRKnFlXsbBeiJrR5e/RFY3qQGjK+rJVlLAkYMs6GkLGAAp63YBWhO+1h9eFOy1za71vtFLfcL8j/pe3Q5b6LtD2d+5mGIPygffBf/JIj23B3NBCUoFsgRNb1Goc6lsOvV1yC6xfzmOsepNOWjFwIsm+5xeeAwswD5P/bbLqkiZSUwHDWWfL9+GwHm0CsVIhPZsqqesLX9osMxTkHRGYC/69YcnAreOB7uiN3ZQvrzEr6RN1h+DMOobbCTt5BBUZGw1IaA6Q7UT2s2sTjpaESA8yiUq7tMd67K/Y3l0/6aHhdpW24MCVRCDOeq8DKAfoW+UXnHItOaEfgeCRcUd3BslrYYZn6wTLqmdw7XsNlgHgBbRo+EJ7eHogDCrhDUo/
+ qZNnoNX5
+ pfkQIxacm54mgMSaamjVZQV+S6AB957eVcG76h9U0LBm6QFWYacEnQOpMzvEeReBucMhoXMHOMS8dCQujskq54Zp7Vio0uG9ZV+idKXhjgldaepDdDeLJKptY2z8W8R+V69z4uWHVeCDYX2g+Ta9zAjKgJB33ippka/23s4llgJrd8LtJ7OGkjR+iGW1wbXfXxFwXNc2IvorHSTgrQhNFYBaIj2rSJ6TRrl01Ziq1moH3RHjgjwMF8u5q8rp7gcP/Iqqsd7k55hq1V3dNVU4pLXqAm6ZxjxvL7VVgpyjXuQjTmE6ughRFLudWBUzh+r07KzwdBrI/KcxrdnGfj4XEcXZljn+kc5r0PcrTeioOcBG/HpBxhNDboRMRdd1Srrcsj8X0PxzIUFxfD4ENkBlI9eq0tU2agMkW77Us
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,101 +100,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Command name has been restrict to only 16 bytes, which is too limiting,
-specially when debugging and tracing complex software with thousands of
-threads and the need to differentiate them.
-
-Just as it was done with kthreads in commit 6b59808bfe48 ("workqueue:
-Show the latest workqueue name in /proc/PID/{comm,stat,status}"), support
-long names for userspace threads as well.
-
-To avoid buffer overflows, cap all existing userspace APIs to
-TASK_COMM_LEN, and leave the full extended name for a new interface.
+Add support for getting and setting long user thread names with
+PR_{SET,GET}_EXT_NAME.
 
 Signed-off-by: André Almeida <andrealmeid@igalia.com>
 ---
- fs/proc/array.c       |  2 +-
- include/linux/sched.h |  5 +++--
- kernel/sys.c          | 10 +++++-----
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ include/linux/sched.h      |  2 +-
+ include/uapi/linux/prctl.h |  3 +++
+ kernel/sys.c               | 15 ++++++++++++++-
+ 3 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/fs/proc/array.c b/fs/proc/array.c
-index 8ebb7cf1a7b0..0d70b21c803c 100644
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -110,7 +110,7 @@ void proc_task_name(struct seq_file *m, struct task_struct *p, bool escape)
- 	else if (p->flags & PF_KTHREAD)
- 		get_kthread_comm(tcomm, sizeof(tcomm), p);
- 	else
--		strscpy_pad(tcomm, p->comm);
-+		strscpy_pad(tcomm, p->comm, TASK_COMM_LEN);
- 
- 	if (escape)
- 		seq_escape_str(m, tcomm, ESCAPE_SPACE | ESCAPE_SPECIAL, "\n\\");
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 8d2355e41619..c41d61e9babf 100644
+index c41d61e9babf..4f2cd802f172 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -323,6 +323,7 @@ struct user_event_mm;
-  */
- enum {
- 	TASK_COMM_LEN = 16,
-+	TASK_COMM_EXT_LEN = 64,
- };
+@@ -2032,7 +2032,7 @@ extern void kick_process(struct task_struct *tsk);
  
- extern void sched_tick(void);
-@@ -1187,7 +1188,7 @@ struct task_struct {
- 	 * - set it with set_task_comm() to ensure it is always
- 	 *   NUL-terminated and zero-padded
- 	 */
--	char				comm[TASK_COMM_LEN];
-+	char				comm[TASK_COMM_EXT_LEN];
+ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec);
+ #define set_task_comm(tsk, from) ({			\
+-	BUILD_BUG_ON(sizeof(from) != TASK_COMM_LEN);	\
++	BUILD_BUG_ON(sizeof(from) < TASK_COMM_LEN);	\
+ 	__set_task_comm(tsk, from, false);		\
+ })
  
- 	struct nameidata		*nameidata;
+diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
+index b6ec6f693719..a07f8edadd65 100644
+--- a/include/uapi/linux/prctl.h
++++ b/include/uapi/linux/prctl.h
+@@ -56,6 +56,9 @@
+ #define PR_SET_NAME    15		/* Set process name */
+ #define PR_GET_NAME    16		/* Get process name */
  
-@@ -2041,7 +2042,7 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
- static __always_inline void copy_task_comm(char *dst, struct task_struct *tsk, size_t len)
- {
- 	const char *_src = tsk->comm;
--	size_t _len = min(len, TASK_COMM_LEN);
-+	size_t _len = min(len, TASK_COMM_EXT_LEN);
- 
- 	if (!_len)
- 		return;
++#define PR_SET_EXT_NAME    17		/* Set extended process name */
++#define PR_GET_EXT_NAME    18		/* Get extended process name */
++
+ /* Get/set process endian */
+ #define PR_GET_ENDIAN	19
+ #define PR_SET_ENDIAN	20
 diff --git a/kernel/sys.c b/kernel/sys.c
-index 97df708c11a0..5ebd3c1dfddf 100644
+index 5ebd3c1dfddf..4caf6ef836f1 100644
 --- a/kernel/sys.c
 +++ b/kernel/sys.c
 @@ -2535,7 +2535,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
  		unsigned long, arg4, unsigned long, arg5)
  {
  	struct task_struct *me = current;
--	unsigned char comm[sizeof(me->comm)];
-+	unsigned char comm[TASK_COMM_LEN];
+-	unsigned char comm[TASK_COMM_LEN];
++	unsigned char comm[TASK_COMM_EXT_LEN];
  	long error;
  
  	error = security_task_prctl(option, arg2, arg3, arg4, arg5);
-@@ -2601,16 +2601,16 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 			error = -EINVAL;
- 		break;
- 	case PR_SET_NAME:
--		comm[sizeof(me->comm) - 1] = 0;
-+		comm[TASK_COMM_LEN - 1] = 0;
- 		if (strncpy_from_user(comm, (char __user *)arg2,
--				      sizeof(me->comm) - 1) < 0)
-+				      TASK_COMM_LEN - 1) < 0)
- 			return -EFAULT;
- 		set_task_comm(me, comm);
- 		proc_comm_connector(me);
- 		break;
- 	case PR_GET_NAME:
--		strscpy_pad(comm, me->comm);
--		if (copy_to_user((char __user *)arg2, comm, sizeof(comm)))
-+		strscpy_pad(comm, me->comm, TASK_COMM_LEN);
-+		if (copy_to_user((char __user *)arg2, comm, TASK_COMM_LEN))
+@@ -2613,6 +2613,19 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 		if (copy_to_user((char __user *)arg2, comm, TASK_COMM_LEN))
  			return -EFAULT;
  		break;
++	case PR_SET_EXT_NAME:
++		comm[TASK_COMM_EXT_LEN - 1] = 0;
++		if (strncpy_from_user(comm, (char __user *)arg2,
++				      TASK_COMM_EXT_LEN - 1) < 0)
++			return -EFAULT;
++		set_task_comm(me, comm);
++		proc_comm_connector(me);
++		break;
++	case PR_GET_EXT_NAME:
++		strscpy_pad(comm, me->comm, TASK_COMM_EXT_LEN);
++		if (copy_to_user((char __user *)arg2, comm, TASK_COMM_EXT_LEN))
++			return -EFAULT;
++		break;
  	case PR_GET_ENDIAN:
+ 		error = GET_ENDIAN(me, arg2);
+ 		break;
 
 -- 
 2.55.0
