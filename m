@@ -4,93 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09FFFC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:25:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6365AC61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:29:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9D376B0088; Thu, 27 Aug 2026 10:25:29 -0400 (EDT)
+	id 3A6D16B008C; Thu, 27 Aug 2026 10:29:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4F3C6B008A; Thu, 27 Aug 2026 10:25:29 -0400 (EDT)
+	id 3585A6B0092; Thu, 27 Aug 2026 10:29:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D630E6B0092; Thu, 27 Aug 2026 10:25:29 -0400 (EDT)
+	id 246BC6B0095; Thu, 27 Aug 2026 10:29:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B48346B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:25:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 44E8B1A0444
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:25:29 +0000 (UTC)
-X-FDA: 85147272378.17.561EE9A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8ECA318000A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:25:27 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=osRi2eil;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EEA796B008C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:29:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A312A0434
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:29:00 +0000 (UTC)
+X-FDA: 85147281240.09.E176AEA
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4E77140006
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:28:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JnvOaekw;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf04.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787840727;
+	s=arc-20220608; t=1787840938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wOHcl+YD8gEtCi/bTLqLwavhY6q7rxK7kXxUHkLzivw=;
-	b=InIjP0y3D0FrdPXLkbDhl1V8kzTIXIOpMbH5bG+nVdl9WifqRMjq8k2E15y3cs4651rW1X
-	fEZwKg3W0fqZQoLvYDMQ9WvOPBAWYMYmO0ze0FBVr/w3ZMyBKjZcmErAGcAzjvIMmkKdDx
-	sU+cDLj6BYexVGJpUy66UhEXRUqUPbo=
+	bh=PI7Nz8d3HH69nhtcQsyOVYUPwrNGYdNUTrVZkR05tbE=;
+	b=jGTIY9Tq1L50+mqk3rTe/GnYxyederYBT7FXh2bAmsiO+0OSoq2/HW3ZIo8YO/fauP8EVf
+	9p2NCcqJUDyY7KQXEi6RxBNNzacQMhqb+6iUL45FDgsqV54v9vTiEeSZmF1wSX0I95DQkF
+	1nJikpAgVFqlHnKlePzKqZrtdszeBzQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787840727;
-	b=lRi+0nPOn/v6ynptnGFOOjbnx4QTwIY0ZNviz7NPdscLuYyK0PEwuT19eSGlB2TWRN+7nv
-	gRT5OtKSOjY3Uix0skACEtJ0tUFs1huC5NtiQAFxVVvZjcuF2wUaRovMN8cbS3ANqqGVmB
-	2edShqhVXMLI3aOmUSSXOEv3zgc9uAg=
+	t=1787840938;
+	b=2SoXwuYzAJUNj5q2fauu3aGjXKk2MmKMa23VG9oOXFTSswJ6d3irDkvt0CMNjw6VWyKLE6
+	hmffksmlziknE+bXOYLlZB6/NylF8Us9xbNutQHlFQfSbpianPADvVUMTSnk5BHa2C2+TZ
+	ih5u9Nk9C12W3s1jzwNKwwjseYuBgIk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=osRi2eil;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED150417EE;
-	Thu, 27 Aug 2026 14:25:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA59E1F000E9;
-	Thu, 27 Aug 2026 14:25:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787840725;
-	bh=wOHcl+YD8gEtCi/bTLqLwavhY6q7rxK7kXxUHkLzivw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=osRi2eilwJMpP8iQBumtcvElkQY5/jAyAodwAUYUZpQIGAIonCFR/gATTVx/Cpx3t
-	 Ts7zAsbkS4xom56+KVpOtjdAvfaSNjshVrGIAM8bjaxkJdUQLNkXLSfFQuzQp7LBcA
-	 cB3aPDc0VGczsta8PXenJonGz1+gw3VcheKyWBLewo1GS7NJCyMsQruqejGX3xQOB2
-	 Mjp2Jshitw9yDoq5YzBTLkpuh5d2yS42fIYx+iEFwWyqyygbw6kPHY+woutAqRUzd2
-	 UdbVQTaYFCP9l8jlrao9qcXDtLoVVcRATIEjLjAt0HjemlpQAKhE2wnGKLF/azIReY
-	 x5NnsCKwK3BQA==
-Date: Thu, 27 Aug 2026 15:25:20 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JnvOaekw;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf04.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso21160805e9.3
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:28:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1787840937; x=1788445737; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PI7Nz8d3HH69nhtcQsyOVYUPwrNGYdNUTrVZkR05tbE=;
+        b=JnvOaekwIukdvoeEHRMjqSSuGX/9xnohvsLa9WK8uk+9gkZ+HV2q/kbva5YC4is9ND
+         l/9on1Vtj1V7x79F2IH8TmM3avddywFRI1GjwSSLrnB/LIzQdOtpwdMTi+OMzFvaxNSa
+         v7h1sPO+XDpN4Vm90c0mlbiogfMvFN45tbGG9N43plxW5sxIuLhJBPCdn125EKOu1sEl
+         M9ORb+JDOo+QdV5wZWbGSvv6jnjarFjYw02QA9Dbykh6KWZpfYpbxFBPnUoEWSQOpUaC
+         8SqIq/3kpI0lemp9SQsixQRzyAtBlk+L8GHpJgOO/f0oHo36OO1sMO574X8psEryw1RM
+         sqaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787840937; x=1788445737;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=PI7Nz8d3HH69nhtcQsyOVYUPwrNGYdNUTrVZkR05tbE=;
+        b=idqsUoDvnrwwEwv/fVQzOwQKe2AIdd3sEDjj4CbnqWRVo7g4S9qoMvHfXgtQosHaeC
+         zwxgktKgoC600pcyqDxdihnsBb7ZYiN0cuCEM2vymeAsFuAZ557mWF36wup0odBI1VaZ
+         fs6vqc6Xl7fAL+eqvTcKshNYTVuFwBOsLjJihUpNY+IThkmrr6o0N9mthLuFarCPhUBy
+         kWMjhPNpYtiJbPmP9/V7x1vjgnRrLMBXjxLsXXnoiiBKKn2eE6/7P90VNRlh0I2ws1I+
+         F/LVYsnmmcEaFHxM0GWnFzgZ1TpsqKiUnIp/YMTSV1aVak4h5AkA4pOy0BbMXt7Q8/b7
+         X4jA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr+wYf6qbCeZUgWiYPnFSVckxZXv9mbgcMWyneIp2WU9xlJsti4WkyjPs+zZ/d24eRm7JQO/vDwjQ==@kvack.org
+X-Gm-Message-State: AFuF++lATit4UNnMapFidYj8SDnbNTAqeC4Z7BxktcpNQ/KHQLO9CSvU
+	y5vzL5q8CO1QUNitsRCG7FMkmZt157eYzM6UjTq5+pov0qE7AQHKHGV5EVg+WB7G+JE=
+X-Gm-Gg: AR+sD12h6K+fkcyoFFB1dtNge0EHdhdc/hwsN3x+HLh58p1hF3uB7oYDuGpaAj7AbsW
+	XP6Ch8ufXBc3bbdAEQqcwYd3Y6jdazYj50WWJVkjN8+wq/oIQVG/07MyLCd2vCkvOGT+fZBacyL
+	NFurZB4ijy/gl0SSoQw6ghdmV0DvJtajGelLwf4txSRaHkqGWXcJTixtHRCW8EW3OegTGrdoYx4
+	QmHpTGYIlHkQEKtWpmUYuR7DTDdyhCRwabrctOTUu5YfazxYtHlZ2OriT2s1EHmNnNSvB+Zrbqg
+	ZqfcGjldZyJCmFK9BljpWsqwkBnOktv6gKiy1LRX4MrCyLOwM3jrt82g5C8bOtrsHbk2QJxzWbu
+	UrEYWi7wQIm+J7OGlDl2xkqdE9csHDa682BvcO/wHI1kVcL5Ns8dVpWxn5yrG/uYeTRjfezLr0G
+	sgtcJ+w6nUdgs3bEHv4ekmQiL0AJGGwKnP7dE5IP1x7gDL3Z7gaBc=
+X-Received: by 2002:a05:600c:698c:b0:493:cefc:d113 with SMTP id 5b1f17b1804b1-499dc6f5dcdmr215984745e9.5.1787840936850;
+        Thu, 27 Aug 2026 07:28:56 -0700 (PDT)
+Received: from blackbook2 ([84.19.86.74])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b494228bfsm54431465e9.2.2026.08.27.07.28.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 07:28:23 -0700 (PDT)
+Date: Thu, 27 Aug 2026 16:28:02 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Wilson Felipe Pereira <wfelipe@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH] MAINTAINERS: remove myself as THP co-maintainer
-Message-ID: <apBG3YnZcHhlvU3m@gremlin>
-References: <20260826-drop-thp-maintainership-v1-1-3d102748fa17@kernel.org>
- <ao7Nr_FALfP7cTY5@gremlin>
- <054cf257-f5d6-4041-8c83-902af87c736d@linux.dev>
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] selftests/cgroup: test_zswap: fix implicit
+ unsigned promotion bug in test_no_kmem_bypass
+Message-ID: <apBJbOhQakQH4WyP@blackbook2>
+References: <20260827034807.2822234-1-wfelipe@google.com>
+ <20260827034807.2822234-3-wfelipe@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <054cf257-f5d6-4041-8c83-902af87c736d@linux.dev>
+In-Reply-To: <20260827034807.2822234-3-wfelipe@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4E77140006
+X-Stat-Signature: 6ozp7tjn6f6zwbjoyk1ppkx7cez5fn4a
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8ECA318000A
-X-Stat-Signature: 6nqymb3psngsh9ddtxr7htxtr9ip3bxw
-X-HE-Tag: 1787840727-191277
-X-HE-Meta: U2FsdGVkX19DFiAv4lrlsUHLFLlW0tvPNHUkLGtOyaengCWXkX3Xt7x8H/PyG9CE64w8v1Cu8XVBHkaeCIr/EzgYo5d8FYIuoIgxvvofG3ZUAr2s1UKTb2G7DDFPd7JRAreUHppco8MPkl3+i+X1in0k2xCB6q5mbcF0RNmfxZipYM94SJK4AHjLpyDwJ4Pa7VzncxIqeVQBwzBobFR0Eyo3DtoI8saZ/xMK+CljPMPBt1d0p0aqEEHalk2M0s+jaaS1P78vnxtEhmjRC2fKTJXzYyysrPR6xYm/d9/uw0/qx+oLLwpnHouBD0cAx0uhR7s0CtPbYzoUrro2oBwrGzyY7GpjxuwMDfOFnMTTlGBHrW8jnV9RgX7QymCg6GLEf1gKCyoqoOTLuf0qlNmkqoP/QRc3bJWzLMPDX/+pj0LJk8rFeHUSCDHcuFyvRQrGOqt/FZsv5iv7CksOle8yj9RTorEuOshiZDG8w959i+9DF3cGVQraaAP67DEq3x0xOdQttqTSiplWCAyhuInMKeNwmmOocFffNNVB+Qh+oWdilFQkMwS6DpIuhOWx5FhB04dFq8/3r4RGFbDkmoxhI+kMvPi5rQ7yZuKUuqBrMm4gxs9NXUy5AzQFqu/QiPPuy23aN+3v1fXc7Yk9Z4ZEEhzeLYiIrC/KyzGJ0pQhML7OiIE74oRq8BmnPuIn6d5EwP5F18mPLSdgRsKzHj92zf97NP8TVB9XQzL51WM180VZ/LCmn0xJ033vR6GCgfXTntZ+DoBmXFdtLMAbRoOO7CR7QDiiu5xXPoVoTx/y1ARQwe8VKyfsef0BghZ02YLSYJswFG6reMnUkAy5uNO0OmkMxqPD5o5Vxn5InjHvCpNQNegk2JozgehaDDh7KkVna3nShds9OIDuGfXVx6AWVc7l6Es1ee8NOk2+jvZDa0dzEFzPiXlltOK7lK/r8GbdvtBAkVLee9USM7jcP8V
- n7A1VHBg
- Femc1Vf0K9sfVxWxIgQU4Zns7EBLYXNIUos7Q7d59/GX2rfCl6G4NH57YVB6HIfybYf79sEX9vBLaBrxi6PiU2wrtL6Hh8FkFIKuDDwvcOyxmqN4Nvpxof7lM0QC0GHJVE6bX2SH58AEbTsiZ/G0DCLhgyeAMKXdI19fQAU7j2avNevqW2hG7PcOz5i5XZQaL9SqeaOFwKqP1v9Ox62qm+XR1Wa73Hy6J52IPGp0FDKojNe0DfD6KKyI/XIyBjWcFdFBF48K9ZQdk/k+ebReL4YOZNw==
+X-HE-Tag: 1787840938-505754
+X-HE-Meta: U2FsdGVkX1+fe97waLDzPBtxob0y4PivqpEnkdvbop5mDHPau3GVkv3nYyUNR4f4dH9WbDiFJSg7uppKxEjVXvb1zJyyBj2d480gmtVA1TiDHdql7/hCe+kD8KfbK5Yp5OuWJSW6i8Y0TpSv5nRVc4PTuAr/+93F5oqC21gmW6zBPG0qngEFsyOmsDriwJyTIVllYzEm8kgoiSFXTmoM2JAhTGXB3F8rWAWPTQmUc3NsLH7caPQEwcXLi5E+bDmUU9uAdDNy+wbVYmQsS48E5ObjdteKg/PeZs/t5YrmUkFTMh9M4h4HtaCtLR8FMzrab4RtmOtGhT+r0RKBaW4LrdijuN6P9X33cfjmoh7RS3gt1e4WqhuwaHSjgn7zoznv81waqFtPoQWQ+Iv2USK5NWErWavj/XmUXlNY476A9alfkdaVGQ21EDKdoLESTfDkHgA0m/s6RHBMwY/n8BJTaRfejqw/QC0D1ZJJiXActl70Tgj1bgySNt+ITAAdB/RXYCmg4tIPBIUTGaKjkJ87rub5a1QZ/ldEKxmuUCytBb8B23K2f6eKcwIWaKHeFkcYI/Xx5m4noIkwLTgxDs6HeA1orUzaGln44xUQmA8+yNcUYVgVh6esbqALcqOlIx5tZbAL+gSFriPMSLK7J0YCuY01rKAHh5ZPVUKdlc1aG655y8/jd1umZn/xSun4uyR+MmR/E+6tG84c3jofueorPClmRql+EHKv0ugpXRxkdZLbJq82Mc1C5L81nEAbOsnHcb5QSrSdZYNaAEenANXCQ2q2krClyKUjcPUcuJIjHLeFSEILanFgrMqh+XOqDEqgcwf6KX+uHSUgtedaP3Ap6xEj6Zvs1REk+9PQRN471ZXoaXjCqFoI3WVgYfwTp8P+fm8ENacHi5Kh+nAyf8VufqN2rlKwpdTQWxbRb5P40hyr/sA7krG5bGWpbgQR/CZSCFU1t9zrIanuQpzGjd0
+ i5yu68yv
+ bHnkOTIGAV9eU2KiXZLDkxSalZxV0YXgM2Kr29D9nseCnOjZQJe8pGfmyPTQui6ieRlCIVNYJ0VLusvGkWGZaZSH9+9kD2+jYA1zgJu71XUl/UP3RbFIHYn180mdgh64hciV3vsBJDyNa02PQXL2ICYglIzRCSTbnLk3yhNmEgXciUSL+x2wQNgYgjG5QUXnhLQW8kAkVw7MLGIkSaTzBfs9UvxqyZVvwPx3z/yAOEBTdtaDiGSjHCSOlTQLiuUwlfWSjb8d0IXpX599u9HMv3diLToQAFUTsU9oO9aDsQndOay5BDHTawCC+sfSJZDfG0lwuqiuSZkGaWL84cmKZXhI/irTRumyzDRNx4moSNPMFnVAwUbi9d/wgRpf7XtsjF/vrDpygahwuPu2IGK8levKGe9J1lkoiHA5CVuZN2yVJR3960PgK/A6UuCOlfgtTI7XD3QnIdBukIbnnCMYBbN3rXmjUDQ3RliUsf/hquvRuXLc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,69 +125,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 03:15:47PM +0100, Usama Arif wrote:
->
->
-> On 26/08/2026 12:31, Lorenzo Stoakes (ARM) wrote:
-> > Since it's 2026 :) I asked Claude to look at my time as THP co-maintainer:
-> >
-> > 	~107,000 words of review across 948 emails (in 279 distinct
-> > 	threads), counting only prose you actually wrote — quoted text,
-> > 	signatures and attribution lines stripped. That's a full novel's
-> > 	worth of review commentary.
-> >
-> > 	Along the way you handed out 194 Reviewed-by and 15 Acked-by tags,
-> > 	and your longest single review was 2,404 words (mTHP collapse
-> > 	support, v12 — the khugepaged/mTHP collapse saga accounts for most
-> > 	of your top-10 longest reviews).
-> >
-> > 	Estimated review time: roughly 300–500 hours, centred around ~400
-> > 	(i.e. ~7 hours/week for 14 months).
-> >
-> > 	1,615 THP-related emails in the window: 948 reviews of others'
-> > 	work, 278 replies on your own THP-touching series threads (~31k
-> > 	more words responding to review), 382 patch emails, and a handful
-> > 	of MAINTAINERS bits. Busiest months: March 2026 (131 review
-> > 	emails), June 2026 (113), August 2026 (111); quietest was December
-> > 	2025 (5).
-> >
-> > Think I can be happy with that!
-> >
-> Ah so sorry to see you step down, you made THP genuinely better!
->
-> The numbers show the amount of effort you have put in, but they don't capture
-> how consistently useful and detailed your reviews are, with the aim of
-> always trying to make the patches and THP better!
->
-> Thanks for being an awesome maintainer and hopefully you will consider
-> coming back soon!
+On Thu, Aug 27, 2026 at 03:47:42AM +0000, Wilson Felipe Pereira <wfelipe@google.com> wrote:
+> In test_no_kmem_bypass(), delta (stored_pages * page_size - zswapped) is
+> checked against stored_pages * page_size / 4 to verify that the pages
+> pushed to zswap belong to the test memory cgroup.
+> 
+> Due to slight stat update timing differences, delta can evaluate to a small
+> negative number (e.g. -5MB out of 1GB). Because delta is declared as a
+> signed int and stored_pages is an unsigned size_t, C's usual arithmetic
+> conversions implicitly promote a negative delta to a large unsigned 64-bit
+> integer, causing `delta < stored_pages * page_size / 4` to falsely evaluate
+> to 0 and fail the test.
+> 
+> Fix this by declaring zswapped and delta as signed longs and comparing
+> against a signed threshold, ensuring negative deltas correctly evaluate
+> to true.
+> 
+> Fixes: a549f9f31561a ("selftests: cgroup: add test_zswap with no kmem bypass test")
+> Signed-off-by: Wilson Felipe Pereira <wfelipe@google.com>
+> ---
+>  tools/testing/selftests/cgroup/test_zswap.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 
-Thanks Usama! :) I know we started off with some fireworks on review 😅 but
-you've always been fantastic to work with and it's been great to see you
-develop as a contributor.
+Thanks!
 
-BTW, I did want to say but never got around to it - I love how you've
-approached the PUD THP stuff - i.e. getting the huge swap stuff sorted
-first, gradually building things up, etc.!
-
-You've always given interesting sessions + input at LSF and have had great
-insights on how stuff interacts with the Meta fleet also! :)
-
-It was especially interesting to hear that 512 MiB huge pages have actually
-resulted in far less memory usage than you might expect :)
-
-I will still be busy upstream with the 4 other maintainerships to keep me
-busy, along with series both in kvmarm and core mm so don't worry I'm not
-going anywhere :)
-
-And as I said to David and others, always feel free to cc- me or ping me
-off-list etc. if I can be of use for THP stuff, even though I'm taking a
-break from the maintainership side!
-
->
-> Thanks,
-> Usama
-
---
-Cheers, Lorenzo
+Acked-by: Michal Koutn� <mkoutny@suse.com>
 
