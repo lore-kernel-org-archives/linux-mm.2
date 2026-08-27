@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 613B8C61DC7
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:47:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09CC1C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:48:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54B226B00B2; Thu, 27 Aug 2026 05:46:59 -0400 (EDT)
+	id 0B98B6B008A; Thu, 27 Aug 2026 05:48:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 522256B00B3; Thu, 27 Aug 2026 05:46:59 -0400 (EDT)
+	id 0919F6B008C; Thu, 27 Aug 2026 05:48:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4382D6B00B4; Thu, 27 Aug 2026 05:46:59 -0400 (EDT)
+	id EEA046B00B4; Thu, 27 Aug 2026 05:48:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 24D0C6B00B2
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:46:59 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A4069A035C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:46:58 +0000 (UTC)
-X-FDA: 85146570516.09.1AAEB30
-Received: from mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C0F3A80006
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:46:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787824017;
-	b=JyLKeOqlDnyUfpyrrLwiZ60kf7IH7kAxq6eHPSInbOPB8lsnBW8ghaGdBgDmCxwopuEztU
-	GxJOeZFyzzb5TA4p0y4wBlGo4/JVoD6HrUOQnMvfb5bYlVOV02Hz/uGSR/4Q2IpFzgObTP
-	3qDmsuQzu610GNq5F3+72e5LyTU/6Gs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE6AD6B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:48:40 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5161E1403A3
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:48:40 +0000 (UTC)
+X-FDA: 85146574800.24.9FDD9BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CF9A840009
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:48:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C+FsKYtf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787824017;
+	s=arc-20220608; t=1787824118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mPa0kRGbKwae+hODultCrLUVhSuhnf3mKHB5P2hSoL0=;
-	b=iWUT9X3S0zEsHesPRhJUeBftSTTHISrgWxbpcidVtCq6wQ/iWndiuQ10/a5UfSHg5O7jHM
-	4wcKIFyKs5QmUmQW96vAcpL6/+DyiH7ikyU9HoOQCmpkIIvbVk6MPjepeUFz5ila/ausnB
-	1qHBUqztzMYwBIMRLUAPfsoK+g73bmc=
-X-Envelope-To: linux-mm@kvack.org
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id dc4479b2fc1e8339;
-	Thu, 27 Aug 2026 09:46:55 +0000
-X-Mizu-Trace-ID: dc4479b2fc1e8339
-X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <hebaoquan@kylinos.cn>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev,
-	baoquan.he@linux.dev,
-	david@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 16/16] mm, swap: allow setting xswap device priority at creation
-Date: Thu, 27 Aug 2026 17:45:06 +0800
-Message-ID: <20260827094509.1016740-17-hebaoquan@kylinos.cn>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
-References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nok1TFu4g+w3tBHe+ny2+kk60gpMbaISESgPnxbz4EQ=;
+	b=m1aPus8X4TzjHfkMDXgQKrCfkLbqrWcGhv3caP8cmAChmeWjBoUTZ6AdPFAigu0B7HNyca
+	n8ot9z12CiBWO1sbeC9XRlYzlRTjlD4NCcfxW7xWFzarBcBYpWwd8xvB/tq08dgalYhnnR
+	tO0QtwcPbzKPuiUgeekHBnC81hU2Wis=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787824118;
+	b=4NsgrlA1lIaP8YOspvJGY42B2MVJ4hEi6mOq0qZqPjSopMKypdDTXcHDrX7Wbz4x/JTELw
+	CHJ3mnxs0J0OhvJrD0t+WEj51I18J+eeiaUwqAJPY11fd6x/XIa6bmC3+2Lm/lu/a5bgSL
+	xZr/Wj2W8E2v/O/DOCPDMpQqIRv+GQI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C+FsKYtf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C4EA600DB;
+	Thu, 27 Aug 2026 09:48:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3E11F000E9;
+	Thu, 27 Aug 2026 09:48:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787824118;
+	bh=nok1TFu4g+w3tBHe+ny2+kk60gpMbaISESgPnxbz4EQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=C+FsKYtfWGQh6HjlOLXX1WiSa6SZ5jW7ybtMWLlgLblbAQI+OIQY7C7KGjGcyj1mq
+	 eSrbidPdmQGLlSSpiBTzapjkU7JaMMsMerlyM2B2XP/Qd4Dsm+Aoe02v5rslSjrKQy
+	 dDbnQ1QNNRyvmX+UlmZHUreo7wK+oiUuZr74sMd7x2xldKZa+iRVWv32DuBPor4Z3v
+	 HfwjSp2etPvE1ksE2Sw55jj8OHR8ChVF4YpzHo4ilJg9JkYZu16OPEZVo6N2dhNCJZ
+	 9+YAJWiqqp2l6NZRVSI9htRrYZUM8neD6txMjI526UzxSeEpc1e1T2zTQtLVRw0WJB
+	 r8Q8HUY33NqKw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Tamir Duberstein <tamird@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry
+ Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, Daniel Gomez
+ <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 03/11] rust: xarray: add `XArrayState`
+In-Reply-To: <66630DA9-0546-4211-BF30-C99123B76E5B@collabora.com>
+References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
+ <20260604-xarray-entry-send-v4-3-965f6028790e@kernel.org>
+ <66630DA9-0546-4211-BF30-C99123B76E5B@collabora.com>
+Date: Thu, 27 Aug 2026 11:48:27 +0200
+Message-ID: <87pkz328t0.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CF9A840009
+X-Stat-Signature: jfqt351ajgkzbuqhta8w85cn64k14ujd
 X-Rspam-User: 
-X-Stat-Signature: w53ioq8zp8p6jimexjmcimzazjiqq7c3
-X-Rspamd-Queue-Id: C0F3A80006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787824016-799792
-X-HE-Meta: U2FsdGVkX1+bnSj1m6PdNO5wtm4WPlumNJmS0VC44JfoYRrKhpaZNIjqPi9U+NWf5qTrbfXoDulZX2tNVMVewzHY8+Z9gKGv91zpZU69uSMOU7806xCEsYyfVii9E7LGrPFQOF0Ry+QXoL/o73XOu4l+qNHXEO2zkLVk+7yvohqUGgfOqNcacwHxzIBDt9M7IJccOIjR0ozF7vKFD+yfMnAQ4GLMWUFuIg2W67mZvlpAvRGHPE/9zLNqZZAsXSURPSoBbzMuhn8Tz6gm9G5C+PklkNDUcGxkBSTnyGXu14h48ahl5sEwTup1Olox4ESNwBSm1/BkxV7DdAfVlfYPoILnXY5Gg3nKskjPacXtOzaW+wHQsrHmyxHzr62QuvqsnOY/lSg4+VMSaE2lAA4dttHL4MOvz3s5z7fgun0nGobajKWBVIE3+XzwsXJlg/20tK1/5CFcHySWMbu5PGbDHXGoJ6P74Pm/hGd4jZnrZx9hFOaF14qKHYkIU/ZGLGdO/rWRomqrb9pIvvAElsSwMQPPilw4NycV9He/EbmUWMXbO9XZIbysXi/K8G7mMXfTdBZXrF/LtKuWpfBUm22ik7pD5zebLUGnUmRKvNh3uehcUxfMmFM5CG2cxlEx5tYy08JLkuF7v1y9h5hvX+UeeiQTry0q3hXq+Dgs0iOgq3/XkFjHEv41sf3GfdacVeKe0sDcKca7ta6kYKFxhbLw4oUaNjj65psiMdKUIi+ckC+QLs285/V9X5yD6gJ2M0bxhqIC6OZqhw/ho6xmahPSYUwds/G9TW5jqvbloAmS7MFDY9Zq69WV/OmN9iJy+CEiQAzIQDKqe/yotEoGDFbXKqIn3tTELhqHb/ZoPxzHgGoqz5+egWTApE5TkCkKwWvOoXTzISA+njS1jNXHfq080OVgfrIDsA7sYGGimHj1lXSaoXqZNCuZEAHNJYWdkip9t7E1fwY15aqOlR2kA6J
- lwtxZDD3
- t7coyL0xDJcbT8aHdw+c6EJ6LVoP58LKbUWV9z5o2I3824d6l9G3lXJHC4v3GJdnUUYrHEzaHokdIDQRLmAv3a2+OQZYizZzkKiWr+1W2q8jz7wE0l0b+amIWuXkGXf6NDbiB88vB1Zy5QX397i/BVcrgvooeA+9Y4sTFnk2gpBrpAnhafjLbi60WHZ71qQhAPVl90R8pAnbahiMgEpAKWZvnZEE8SvMtdh0o
+X-HE-Tag: 1787824118-857546
+X-HE-Meta: U2FsdGVkX19tfLAR0aYcRLMaeTVJEN2MjQVsCzBpZ2tVAObJnqtfZacaU4Rv3vT+hV+75lNANlR8+MRbVzZr0aRYyL4J33yCOvwKD2uPpjy4sOPRScA3uE7llp+T6tgluOEo/DJouP+kgn7lQvAR9+AIyNx6dSwlQLFW2uqFDmruJd4pQYvP6sS/jm80KkD2jeBje4gl4WT9K9z0drB/4UHfo0WmqRI6qnkvLFXEgzSmIOmvu8eiSya1iuZZ5nZXeh5H4k36dQShR0wHXtKYLvd6JfZLqzcUpBlQYSFkusBIirLCw4Wap1S/8wWRAVdO3cF/TpoX/y3ckH7vADRWlassSPo793CkEuZ2tU3atCTiAUfAPSGrBX7z86MxOwCnaRHJXG/BWUAioSKOVsLWlfMgaptGp5joAlm/VEeaF4RaiFZS02fxoZVUOnNyp842/IRpgmT4bLjyzr8+tK0ngBuYTLpJrZeHQCymdAT+1QtzTy8bXW1ijxfwUWgoTCZNiaVu+lNjC56iBi3buQsgfTc+Emfariokd/n7m6Y8KXhY1KIR3pu+CP0XdKFfU19+vEfBrgBpLEkNhPaaGCu8zxELDum8qDX3kZqYeOUWqrG1xqzlDkTu0kjpjthzW7zc2KGMu88j5kUEhiJwT+Hz3XolNansPewpLtED+ODrEpDyc2DKzqeY/3iSG/PAMNdGLyDdOhWJrwltwvMJmFHip4t7DmTA7YHQjX7/X7Tbt2wt29zUeJYB3OY2iRbXndmLJQh5PAmwSRruQYz8FAUKNPWsU8EEeKdJneD0fjoODEWwghbewdKI0VMNZpNPvEs91QqO7S/VvJhfgZ/xPMosvCeBYSlzuQYwAfQAo4D4xn8n+vSxO4LN9/Va9kvv4MribgWytgByfZ/7hhedJTaO8vP09nm76EmAfsdZ1vWys+/9UAwdl8H3ymDJtuG3zLM0F3RE7p4gFELyYVjpZjv
+ uWirg7Pn
+ In736MlUESZPbYEZmlIRtRHsx0v7v/d9hxEDOJyMCUzHdLLlvr3egGCA0pSEZxl7qE0+ZGnd2x7kpich4kxO0AFiS964+R9JejS4N5ma3hf8ZPVBpPWDS1SeRO5iLs+sMQP8Sp3MCq8JC3OYaeZeQZABeLSMjXTmP4W42MnBCpXF5kTHoZiH4xMO5KfJ07SexqitDRgMJ1dZkdyCddkE5rWX2mN/1f8EMNAJQ1WkTwRxeubwSe20aOA/nPogSlsDK0XyQQHKpP3ajfUzHkiYkQrGmHbu+NJgKNqC5N1or00NWTOOBmz82TdkP9FpKbNdwjQ0L81urFoT5pqT/GECkracUvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,126 +102,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let the create interface (/sys/kernel/mm/xswap/create) accept an
-optional priority:
+Daniel Almeida <daniel.almeida@collabora.com> writes:
 
-  echo "<percent> [<prio>]" > /sys/kernel/mm/xswap/create
+> Hi Andreas,
+>
+> My main worry here is cursor invalidation, i.e.: what happens if someone
+> mutates the tree while we have live instances of XArrayState handed out via
+> patch 7? For example, what if someone writes "self.state.guard.remove(...)"
+> inside the kernel crate itself while some user code has an OccupiedEntry?
 
-A missing prio means DEF_SWAP_PRIO; and permitted values are
-DEF_SWAP_PRIO or 0..SWAP_FLAG_PRIO_MASK, being consistent with the
-swapon(2) ABI. Like a regular swap device, prio is set once at creation
-and is not chnageable whne the device is active; use xswap_destroy
-then create to cange it.
+The type system handles this. Obtaining `Entry` requires a mutable
+reference whose lifetime is extended to the `Entry`. So while entry is
+alive, it is not possible to construct `XArrayState`.
 
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
----
- mm/swapfile.c | 33 +++++++++++++++++++++------------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+For the operations directly on `Guard` that require shared ownership,
+multiple `XArrayState` instances may exist at the same time. But as
+these are only used for reads and can never modify the tree,
+invalidation can not occur.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index ae0c549cc9aa..258b52bce438 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -52,6 +52,8 @@
- #include "swap.h"
- #include <linux/debugfs.h>
- 
-+#define DEF_SWAP_PRIO  -1
-+
- static DEFINE_SPINLOCK(swap_lock);
- 
- #ifdef CONFIG_XSWAP
-@@ -159,9 +161,11 @@ static void xswap_debugfs_del(struct swap_info_struct *si)
- }
- 
- #ifdef CONFIG_SYSFS
--static int xswap_create(int percent);
-+static int xswap_create(int percent, int prio);
- static int xswap_destroy(int type);
- /* /sys/kernel/mm/xswap/: create.
-+ * Write "<percent> [<prio>]" to add a zswap-backed swap device; a missing
-+ * priority means DEF_SWAP_PRIO.
-  * Per-device runtime size is tuned via debugfs type<N>_cluster_limit.
-  */
- 
-@@ -169,21 +173,25 @@ static ssize_t xswap_create_store(struct kobject *kobj,
- 				  struct kobj_attribute *attr,
- 				  const char *buf, size_t count)
- {
--	unsigned long percent;
--	int err;
-+	long percent;
-+	int prio = DEF_SWAP_PRIO;
-+	int nr, err;
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
- 
--	err = kstrtoul(buf, 0, &percent);
--	if (err)
--		return err;
-+	/* "<percent> [<prio>]"; a missing prio means DEF_SWAP_PRIO.
-+	 * %li keeps kstrtoul(buf, 0)'s base-0 behavior for percent.
-+	 */
-+	nr = sscanf(buf, "%li %d", &percent, &prio);
-+	if (nr < 1)
-+		return -EINVAL;
- 
- 	/* 0 means "use the default percent" */
- 	if (percent == 0)
- 		percent = XSWAP_DEFAULT_CLUSTER_PERCENT;
- 
--	err = xswap_create(percent);
-+	err = xswap_create(percent, prio);
- 	if (err < 0)
- 		return err;
- 
-@@ -275,7 +283,6 @@ atomic_t nr_real_swapfiles;
- EXPORT_SYMBOL_GPL(nr_swap_pages);
- /* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
- long total_swap_pages;
--#define DEF_SWAP_PRIO  -1
- unsigned long swapfile_maximum_size;
- #ifdef CONFIG_MIGRATION
- bool swap_migration_ad_supported;
-@@ -4340,7 +4347,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
- /* Create a file-less xswap device. si->max = full RAM; @percent sets the
-  * runtime nr_clusters ceiling.
-  */
--static int xswap_create(int percent)
-+static int xswap_create(int percent, int prio)
- {
- 	struct swap_info_struct *si;
- 	unsigned long ram, maxpages, init_clusters;
-@@ -4348,6 +4355,8 @@ static int xswap_create(int percent)
- 
- 	if (percent < 1 || percent > 100)
- 		return -EINVAL;
-+	if (prio != DEF_SWAP_PRIO && (prio < 0 || prio > SWAP_FLAG_PRIO_MASK))
-+		return -EINVAL;
- 
- 	/* xswap has no backing store, it relies on zswap. */
- 	if (!zswap_is_enabled())
-@@ -4391,15 +4400,15 @@ static int xswap_create(int percent)
- 		goto bad_swap;
- 
- 	mutex_lock(&swapon_mutex);
--	si->prio = DEF_SWAP_PRIO;
-+	si->prio = prio;
- 	si->list.prio = -si->prio;
- 	si->avail_list.prio = -si->prio;
- 	/* si->swap_file stays NULL: this is a file-less device */
- 	enable_swap_info(si);
- 	mutex_unlock(&swapon_mutex);
- 
--	pr_info("xswap: adding extendable swap type %d (%d%% of %lu pages = %u pages, max %lu)\n",
--		si->type, percent, ram, si->pages, maxpages);
-+	pr_info("xswap: adding extendable swap type %d (prio %d, %d%% of %lu pages = %u pages, max %lu)\n",
-+		si->type, prio, percent, ram, si->pages, maxpages);
- 	atomic_inc(&proc_poll_event);
- 	wake_up_interruptible(&proc_poll_wait);
- 
--- 
-2.54.0
+>
+> I think this could be solved by hiding XArrayState in its own module and
+> exposing only a small set of checked helpers while its fields remain private so
+> that we carefully vet against the situation above.
+
+I did not consider safe code within the xarray module modifying the
+fields of the state object. Do we really need to handle that?
+
+> Additionally we have to ensure that, in order to get the guard, one must
+> destroy the XArrayState, for the same reason. This is currently the case with
+> into_guard() IIUC, but I think it's worth to spell it out in the
+> invariant section.
+
+Since users outside of the module cannot construct `Guard` safely, I
+don't think this is an issue?
+
+But, something is not right. I did not consider the safety of
+`XArrayState::new`, because it is a private method. But it should be
+unsafe as it is, because it allows insert operations with only a shared
+reference to the guard.
+
+I think if I just gate he modifying operations (only
+`XArrayState::insert` for now) on `R` being a mutable reference to the
+guard, we should be fine?
+
+
+Best regards,
+Andreas Hindborg
+
 
 
