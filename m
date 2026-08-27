@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1FA5C61DC7
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:46:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56DF3C61DCB
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:46:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08E526B00A9; Thu, 27 Aug 2026 05:46:25 -0400 (EDT)
+	id 5E68B6B00AB; Thu, 27 Aug 2026 05:46:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03F9F6B00AA; Thu, 27 Aug 2026 05:46:24 -0400 (EDT)
+	id 5BDF16B00AC; Thu, 27 Aug 2026 05:46:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBF626B00AB; Thu, 27 Aug 2026 05:46:24 -0400 (EDT)
+	id 4FAD26B00AD; Thu, 27 Aug 2026 05:46:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D07126B00A9
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:46:24 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4CE0112038E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:46:24 +0000 (UTC)
-X-FDA: 85146569088.28.9237A6F
-Received: from mta1.migadu.com (out-156.mta1.migadu.com [95.215.58.156])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1A2AE160002
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:46:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.156 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 18DBE6B00AB
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:46:32 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79243C037F
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:46:31 +0000 (UTC)
+X-FDA: 85146569382.12.3EAEFBD
+Received: from mta1.migadu.com (out-162.mta1.migadu.com [95.215.58.162])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 79D2A14000F
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:46:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.162 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787823982;
+	s=arc-20220608; t=1787823989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-type:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CLLpO28ObAS4iRuR19iGUfqzNV6PkiQagyZ9nEevnZ8=;
-	b=0CRBRW4n0+GlCesx360Z0VQrKDp8jes+xSM8Jqz/hvIGAjbKXLaUb+i7r6NmsK8MU1LWhS
-	kJ+0sbMPmneuz6U+a6fSL8o7Ag2pcVuTfhGa/guTAUWAmT4HNEK+iDiunpMKLUw4sfQhX3
-	EN3P2FqLQHiTEiQ3TijI4dhN/hP68NY=
+	bh=nP+s6MHWnHtGC6GQUaPlSXfnePs77XbWBS/kc7Yj6zw=;
+	b=F55crm1hkNk+fzJIKTqKLD0EN2PN5DrLVLIgIqSSoQ2N9z7/rCvRuDA7uYtpMq1s3ma0ni
+	hfnyTXERtphPj83x3PI970yjSYSnM/uQxQDaqh7SjT2xBTIgujRizbH56Ly4yv0B196k38
+	rKjFf7HP9ausdmWyGAf3u+c9IrCpsPc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787823982;
-	b=8np58D/LciXoJX8yjtp0Hh4XNpU2xdYMJsgVGRVRpJI5khlRb3Bl3iq/umb/NkiuNe2s4B
-	ExExXyWZSZy4iKQz1d1Fvjn/Pr/B8VevwhxKPuWfVrJmYEqrMumTDjBolcEot8z1iqiiNT
-	2T7TnhpMh+loTHPP4L3o+VL59i3CsNo=
+	t=1787823989;
+	b=ePn5iESgdq4CMtxo03Yd6TE8E8be1AOKglgObqufINdilXE0ipTSM2rqtCH5YNrC0td1i2
+	QUD49HTeS+mcMlocSgWfm7BD9BYSi/KGleoH9oDxcokCdplDhkGkQgxke8wgaPId6jRGY+
+	Iaz9lhFq93LMmCWjYqrJnJjbsdQ8AkY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
+	imf26.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.156 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.162 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id e19cfcc88f543739;
-	Thu, 27 Aug 2026 09:46:19 +0000
-X-Mizu-Trace-ID: e19cfcc88f543739
+Received: by mta11.migadu.com with ESMTPS id c2b175c1ae2981f2;
+	Thu, 27 Aug 2026 09:46:28 +0000
+X-Mizu-Trace-ID: c2b175c1ae2981f2
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -69,24 +69,23 @@ Cc: akpm@linux-foundation.org,
 	david@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH 11/16] mm, swap: add adjustable runtime ceiling (nr_clusters) for xswap
-Date: Thu, 27 Aug 2026 17:45:01 +0800
-Message-ID: <20260827094509.1016740-12-hebaoquan@kylinos.cn>
+Subject: [PATCH 12/16] mm, swap: add debugfs knob for xswap per-device cluster limit
+Date: Thu, 27 Aug 2026 17:45:02 +0800
+Message-ID: <20260827094509.1016740-13-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
 References: <20260827094509.1016740-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1A2AE160002
-X-Stat-Signature: rqgik4ywfc5u1su4i6pgmxdcnw4hf8hm
-X-HE-Tag: 1787823981-920767
-X-HE-Meta: U2FsdGVkX1/yHGvhwqq+djaeKXxrMIPWN0Uqj6rWshcUWI9tZ/htmqUgBpIDZL44MrL8lJU0bi+HETF6nXQMAYkTxS2ohxPqf+vKKNNT/iPaHopuGvlCWPlM185PI59lCf+ekzVYu9NF1TwdJW5HazlLvvWTTEsTP3odL3LQmy9cU4VQ5DxeT7TFJJY0ko+VkkxFBeFjKxitsL8+2TufPEvu6pOZEOM6bDZZytAlIwxKqMp0XLxhOv4egyF7MzpBMKS14k5NRLbwE3Kdfae1IOrNP4zOpHcBD6eKsuhFmTs4JXlys7U1BNz0Ot74XXkNf9seI/HUl6cfOD6nUb4WqHOcPLfbJxmgGMNzUOd2VRQDmVIikSFIRXQJSN/R4R//b9t+gzS74To/3uHBGeoBpgEwjA8D9ieblFEUYLNs3mVmcDH14Z6GFelpgO8cntNzSk2oGmB41BHK2KmBKyE2ROLKDG03kXpcKbLM5h3t3I5L58fZd4Lh4vcTWRRr4EXFhUcettXLidWq2saYWAJHJ0NFsf9/dai/BdB6rFzkHWrLULIaIGA7QqM+bH2pyO3kX7XuOeodn6QQBFZHjf4cx3x5ouaPgc5lmCaq5qfRI9tHsE0AnGaoPTAk59Td7gjBr7RtLPYWojfyVnV2eyPCRqWTQyRDGRJGtDS+QrxExzplv5lrFmYGBHGJwDU/8aSZcNeg3ckaC+zt+rgWWln4EhyduqDW7WZq2R1w+IPaL+/LuMmfgpZj10hpa6wJR/Gf7R4eBCA1/ULcSb/PvwWceZteU0H0Fanjn+PnE4kl3mxZKdjS6F7txzffsf7zg2e1RNJoZZS/nQD1j1XlhW6LXrXiYsiHDoAKpry+S5M2Pa+peoNmEaiblJ/UGfyGzlrTT5NaUaj2F+QN747HoLzlmIEOJKFjGmQC8OtEEijPyvs416M98TsXiLPF+CW5OPHjRSlhr+j0m8IM4JGeE7s
- CZx7fF4a
- r3SQAXzrJAIC6rXV3AHQH9ez1xLGrlYIzx8RSYAhhNV5achkUCAui6eXmbHIrtdI0JzWH8cCZ4cE6x9xGrILKOj1kP5CQPUeuZGskFAqrcu62UjBNngiWRA1Y/AIjnC5VdlsWzHdpaqOp1yuDyCMrjVgbVH7/uJwP2fCatINJ0eCrUTpWsUQLE/ZAoIX7bBgTf3sqrw4r88Ub5sxeUpf2+QS8Qn0oCZDidbF8Zy+U9EX3vQl2oVTeQF17DNoAZlBBiiiLxipwkM3twlQIUATOhELlmX1dAI6sdmQRxlGBH79a3f3myd/vJSPx/ejpzFJ8XPVqZISfNuDolOvaMANzPYjRqc7hAyDU4fT42+ppsoC1zDts8SfSK2zGlA==
+X-Rspamd-Queue-Id: 79D2A14000F
+X-Stat-Signature: qrj3bd4w5iuqh15ghjgh1pup5su1wg5b
+X-HE-Tag: 1787823989-148295
+X-HE-Meta: U2FsdGVkX1+qX7POq3g2dzNMBP4Wuay3PpVs58cXCWzJo1Ldm3yzJxsAahi+ulXTKnImn7o5/pGABItLVCzqv1hhWNI4HrBe0Y7f0ACl41yKmUwK5Nay/jrb56mT/odCXG00wMFpMdbqO9zjwTTI7Amc1orweriMMnrse9Q2UIGnIwlHaCRaUtHRWeW6GNTojwhWw/4H8u+hTGzZ0zrt1QCaIdS6mo2aLz1wn14Kj012vvcBADtXSC4I0sU77XZlRQEgknM+U+KkH/hgORlOGXR1RPQC+C8oxXqJlW0j3MFkukm4Ii46zpvO0SJuujI2+JJjSDrM2V6pMTRgx6mHHObWUfgyOTf/MbekYmlNQEXnKFBOV16Yqk12fB7CWRI2XmPbffVSOms2e1yRdzr3NaDvR3NgCVCBG1jxTdU/xjWzsiT50Bm0jl6qeor9yt6Y0dut6PycHx2WCtaLsq/FQERXoAdpKHPSjgImLZ4E5HzdEv7SP06M8LugX4uHF5uilkGXIMUFayCWjib0i0RT+kjBgV8pOoduw+hG1GbLD7eIIwWf+m25E7qp+9Tle7EyIz6umRB+sjTysJIlb7EuvHAvS9i5Xq5hHljbuCU+75H5witCeVZmLCTkdSk7JbqI3S3IEOhsj67H7Fh6Fcy323412jelx/iJkNY/iQAjIVHwuubxPsIQOUl+VlDbowjxxP60BD8WIEf8ZvfaNDhxvTG/T5uVqRe9GdFlwzLAQyp4ri/LDtvA2TInhIXYIgPC1yhX6NHZe+Idh7MLc+qGMHr9qkfhH1EaBla0ruxt4SF/z6zftf+FYraUWomZawFkRPOTMttjwBbLdQmnvcn4MYNEUf+sCfXZHRmjVMn9YJyGRqmAC8X9Nl2K+kW3O5aazE+1B28ShEBVLjonZfSCQqcgeWZheed0Btu1nE78RWsJqS4v4QoppuMpBTJAZPAzJyybtO7bKI6hfYN2WpQ
+ y3cmKqGu
+ 1pMQKwzkUtelCKE/6+2Jhb4hSbKb8OcnXvuv4YPGA0cFwcZ/+sAtqx6lmWHxBsQej+WueYVIaZ4od2O5wy6O3NI1TArXXM5YvKvdN/NxTdpimeZPYMsJMx3PtVdqhuLyhpNTQB3mBF7FwR94Pi7AKdjMB33YhvuhPPK+9N4teSVezvKK3g7JEm14JIYEBWnfCxjEQ9W4VYejRHu/aSAit4y9Wm1h3zfKhicTDiOJWgUEw0nf9ZA2BY3zpHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,133 +93,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Split the xswap cluster limit into two fields:
-- nr_clusters_max: immutable hard limit set at device creation
-- nr_clusters: current growth ceiling, adjustable at runtime (<= nr_clusters_max)
+Add a per-device debugfs file for runtime adjustment of xswap cluster
+limit:
+  /sys/kernel/debug/xswap/type<N>_cluster_limit
 
-The grow path already uses nr_clusters as the ceiling. Shrink now also
-respects it: when nr_clusters drops below nr_clusters_mapped, shrinking
-fires on free until the mapped count reaches the ceiling.  When
-nr_clusters == nr_clusters_max (default), shrink is effectively
-disabled - all growth and no shrink.
+Reading shows the current ceiling (in clusters); writing sets it
+(clamped to [0, nr_clusters_max]). Setting below nr_clusters_mapped
+triggers an immediate shrink check via xswap_try_shrink().
 
-At creation, nr_clusters starts at nr_clusters_max (full size).
+The debugfs entry is created on device creation and removed on
+destruction.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/swap.h |  3 ++-
- mm/swapfile.c        | 29 +++++++++++++++++++++--------
- 2 files changed, 23 insertions(+), 9 deletions(-)
+ include/linux/swap.h |  1 +
+ mm/swapfile.c        | 92 ++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 90 insertions(+), 3 deletions(-)
 
 diff --git a/include/linux/swap.h b/include/linux/swap.h
-index fea0005b9f51..c55af4a95ef7 100644
+index c55af4a95ef7..5e50486103b9 100644
 --- a/include/linux/swap.h
 +++ b/include/linux/swap.h
-@@ -250,7 +250,8 @@ struct swap_info_struct {
- 	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
- #ifdef CONFIG_XSWAP
- 	struct vm_struct	*cluster_vm;	/* VM_SPARSE area for xswap dynamic cluster_info */
--	unsigned long		nr_clusters;	/* total cluster count for xswap */
-+	unsigned long		nr_clusters_max;/* upper limit from swap header */
-+	unsigned long		nr_clusters;	/* current growth ceiling (≤ nr_clusters_max) */
+@@ -254,6 +254,7 @@ struct swap_info_struct {
+ 	unsigned long		nr_clusters;	/* current growth ceiling (≤ nr_clusters_max) */
  	unsigned long		nr_clusters_mapped; /* currently mapped cluster count */
  	unsigned long		nr_free_tail;	/* contiguous free clusters at tail */
++	struct dentry		*debugfs_entry;	/* debugfs: type<N>_max_clusters */
  	struct mutex		xswap_lock;	/* serialize map/unmap operations */
+ #endif
+ 	struct list_head free_clusters; /* free clusters list */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 5235c6d07ab2..b2c3bb21f082 100644
+index b2c3bb21f082..6916a8b3f63b 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -3235,6 +3235,7 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
- 			xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
- 		free_vm_area(si->cluster_vm);
- 		si->cluster_vm = NULL;
-+		si->nr_clusters_max = 0;
- 		si->nr_clusters = 0;
- 		si->nr_clusters_mapped = 0;
- 		return;
-@@ -4005,16 +4006,27 @@ static void xswap_trim_free_tail(struct swap_info_struct *si, unsigned long idx)
+@@ -50,6 +50,9 @@
+ #include "swap_table.h"
+ #include "internal.h"
+ #include "swap.h"
++#include <linux/debugfs.h>
++
++static DEFINE_SPINLOCK(swap_lock);
+ 
+ #ifdef CONFIG_XSWAP
+ /*
+@@ -66,6 +69,8 @@
+ 	max_t(unsigned long, PAGE_SIZE / sizeof(struct swap_cluster_info), 16)
+ #define XSWAP_DEFAULT_CLUSTER_PERCENT 30
+ 
++static struct dentry *xswap_debugfs_root;
++
+ static int xswap_map_clusters(struct swap_info_struct *si,
+ 			      unsigned long start_idx, unsigned long nr);
+ static void xswap_unmap_clusters(struct swap_info_struct *si,
+@@ -76,6 +81,83 @@ static void xswap_update_free_tail(struct swap_info_struct *si,
+ 				    unsigned long freed_idx);
+ static void xswap_try_shrink(struct swap_info_struct *si);
+ 
++/*
++ * debugfs read/write for per-device max cluster count.
++ */
++static ssize_t xswap_max_clusters_read(struct file *file, char __user *buf,
++				       size_t count, loff_t *ppos)
++{
++	struct swap_info_struct *si = file->private_data;
++	char tmp[32];
++	int len;
++
++	len = snprintf(tmp, sizeof(tmp), "%lu\n", READ_ONCE(si->nr_clusters));
++	return simple_read_from_buffer(buf, count, ppos, tmp, len);
++}
++
++static ssize_t xswap_max_clusters_write(struct file *file,
++					const char __user *buf,
++					size_t count, loff_t *ppos)
++{
++	struct swap_info_struct *si = file->private_data;
++	unsigned long val, new_pages;
++	int err;
++
++	err = kstrtoul_from_user(buf, count, 0, &val);
++	if (err)
++		return err;
++
++	if (val > si->nr_clusters_max)
++		val = si->nr_clusters_max;
++
++	spin_lock(&si->lock);
++	si->nr_clusters = val;
++	spin_unlock(&si->lock);
++
++	new_pages = min_t(unsigned long, val * SWAPFILE_CLUSTER, si->max);
++	if (new_pages)
++		new_pages--;
++	if (new_pages != si->pages) {
++		long delta = (long)new_pages - (long)si->pages;
++
++		spin_lock(&swap_lock);
++		si->pages = new_pages;
++		atomic_long_add(delta, &nr_swap_pages);
++		total_swap_pages += delta;
++		spin_unlock(&swap_lock);
++	}
++
++	/* Lowering the ceiling may free tail clusters. */
++	xswap_try_shrink(si);
++
++	return count;
++}
++
++static const struct file_operations xswap_debugfs_fops = {
++	.read = xswap_max_clusters_read,
++	.write = xswap_max_clusters_write,
++	.open = simple_open,
++	.llseek = default_llseek,
++};
++
++static void xswap_debugfs_add(struct swap_info_struct *si)
++{
++	char name[32];
++
++	if (!xswap_debugfs_root)
++		return;
++
++	snprintf(name, sizeof(name), "type%d_cluster_limit", si->type);
++	si->debugfs_entry = debugfs_create_file(name, 0644, xswap_debugfs_root,
++						si, &xswap_debugfs_fops);
++}
++
++static void xswap_debugfs_del(struct swap_info_struct *si)
++{
++	debugfs_remove(si->debugfs_entry);
++	si->debugfs_entry = NULL;
++}
++
+ #ifdef CONFIG_SYSFS
+ static int xswap_create(int percent);
+ /* /sys/kernel/mm/xswap/: create.
+@@ -156,7 +238,6 @@ static void move_cluster(struct swap_info_struct *si,
+  *
+  * Also protects swap_active_head total_swap_pages, and the SWP_WRITEOK flag.
   */
- static void xswap_try_shrink(struct swap_info_struct *si)
- {
--	unsigned long start_idx, nr_unmap, i;
-+	unsigned long nr_mapped, nr_ceiling, nr_tail, nr_unmap;
-+	unsigned long start_idx, i;
- 	struct swap_cluster_info *ci;
+-static DEFINE_SPINLOCK(swap_lock);
+ static unsigned int nr_swapfiles;
+ atomic_long_t nr_swap_pages;
+ atomic_t nr_real_swapfiles;
+@@ -3230,6 +3311,7 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
  
- 	if (!(si->flags & SWP_XSWAP))
- 		return;
--	if (si->nr_free_tail < XSWAP_GROW_CLUSTERS)
-+
-+	nr_mapped = READ_ONCE(si->nr_clusters_mapped);
-+	nr_ceiling = READ_ONCE(si->nr_clusters);
-+	nr_tail = READ_ONCE(si->nr_free_tail);
-+
-+	if (nr_mapped <= nr_ceiling)
-+		return;
-+	if (nr_tail < XSWAP_GROW_CLUSTERS)
- 		return;
+ #ifdef CONFIG_XSWAP
+ 	if (si->flags & SWP_XSWAP) {
++		xswap_debugfs_del(si);
+ 		/* Unmap all mapped clusters and free the VM_SPARSE area */
+ 		if (si->nr_clusters_mapped > 0)
+ 			xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
+@@ -4118,6 +4200,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
  
--	nr_unmap = round_down(si->nr_free_tail, XSWAP_GROW_CLUSTERS);
--	start_idx = si->nr_clusters_mapped - nr_unmap;
-+	nr_unmap = min(round_down(nr_tail, XSWAP_GROW_CLUSTERS),
-+		       nr_mapped - nr_ceiling);
-+	if (nr_unmap < XSWAP_GROW_CLUSTERS)
-+		return;
-+	start_idx = nr_mapped - nr_unmap;
- 
- 	/*
- 	 * Verify the tail clusters are still free before unmapping.  Count the
-@@ -4023,7 +4035,7 @@ static void xswap_try_shrink(struct swap_info_struct *si)
- 	 * leave a partial run off the free list if it proved too short to unmap.
- 	 */
- 	spin_lock(&si->lock);
--	for (i = start_idx; i < si->nr_clusters_mapped; i++) {
-+	for (i = start_idx; i < nr_mapped; i++) {
- 		ci = &si->cluster_info[i];
- 		if (ci->flags != CLUSTER_FLAG_FREE)
- 			break;
-@@ -4042,7 +4054,7 @@ static void xswap_try_shrink(struct swap_info_struct *si)
- 	spin_unlock(&si->lock);
- 
- 	xswap_unmap_clusters(si, start_idx, nr_unmap);
--	si->nr_free_tail -= nr_unmap;
-+	WRITE_ONCE(si->nr_free_tail, nr_tail - nr_unmap);
- }
- #endif /* CONFIG_XSWAP */
- 
-@@ -4066,6 +4078,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
- 
- 		cluster_info = vm->addr;
- 		si->cluster_vm = vm;
-+		si->nr_clusters_max = nr_clusters;
- 		si->nr_clusters = nr_clusters;
- 		si->cluster_info = cluster_info;
- 
-@@ -4103,6 +4116,8 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
- 			}
- 		}
- 
-+		/* All mapped clusters except cluster 0 are free at the tail */
-+		si->nr_free_tail = si->nr_clusters_mapped - 1;
+ 		/* All mapped clusters except cluster 0 are free at the tail */
+ 		si->nr_free_tail = si->nr_clusters_mapped - 1;
++		xswap_debugfs_add(si);
  		return 0;
  
  err_unmap:
-@@ -4595,7 +4610,6 @@ void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
- static int __init swapfile_init(void)
- {
- 	swapfile_maximum_size = arch_max_swapfile_size();
--
- 	/*
- 	 * Once a cluster is freed, it's swap table content is read
- 	 * only, and all swap cache readers (swap_cache_*) verifies
-@@ -4605,7 +4619,6 @@ static int __init swapfile_init(void)
- 		swap_table_cachep = kmem_cache_create("swap_table",
- 				    sizeof(struct swap_table),
- 				    0, SLAB_PANIC | SLAB_TYPESAFE_BY_RCU, NULL);
--
- #ifdef CONFIG_MIGRATION
- 	if (swapfile_maximum_size >= (1UL << SWP_MIG_TOTAL_BITS))
+@@ -4245,8 +4328,8 @@ static int xswap_create(int percent)
+ 	/* VM_SPARSE covers full RAM; runtime nr_clusters starts at percent. */
+ 	init_clusters = div_u64((u64)maxpages * percent, 100 * SWAPFILE_CLUSTER);
+ 	init_clusters = max_t(unsigned long, init_clusters, XSWAP_GROW_CLUSTERS);
+-	if (init_clusters > si->nr_clusters)
+-		init_clusters = si->nr_clusters;
++	if (init_clusters > si->nr_clusters_max)
++		init_clusters = si->nr_clusters_max;
+ 	si->nr_clusters = init_clusters;
+ 	si->pages = min_t(unsigned long, init_clusters * SWAPFILE_CLUSTER, si->max) - 1;
+ 
+@@ -4624,6 +4707,9 @@ static int __init swapfile_init(void)
  		swap_migration_ad_supported = true;
+ #endif	/* CONFIG_MIGRATION */
+ 
++#ifdef CONFIG_XSWAP
++	xswap_debugfs_root = debugfs_create_dir("xswap", NULL);
++#endif
+ 	xswap_sysfs_init();
+ 
+ 	return 0;
 -- 
 2.54.0
 
