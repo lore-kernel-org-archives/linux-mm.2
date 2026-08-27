@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E16ECC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 13:44:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAFC9C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 13:44:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDDDC6B0095; Thu, 27 Aug 2026 09:44:40 -0400 (EDT)
+	id 4151F6B0096; Thu, 27 Aug 2026 09:44:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB4C16B0096; Thu, 27 Aug 2026 09:44:40 -0400 (EDT)
+	id 3ED0C6B0098; Thu, 27 Aug 2026 09:44:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B89C6B0098; Thu, 27 Aug 2026 09:44:40 -0400 (EDT)
+	id 329A36B0099; Thu, 27 Aug 2026 09:44:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7943C6B0095
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:44:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 033CDA0438
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:44:39 +0000 (UTC)
-X-FDA: 85147169520.28.01F1097
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5291410000C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 107686B0096
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:44:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2C573C0430
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:44:40 +0000 (UTC)
+X-FDA: 85147169520.11.D19A86D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8BE85A0004
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:44:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c2ZK4nv7;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787838278;
-	b=tsrFl2czobj6EYSYRu23efTlv8e+7EfxjoDCW/6Jly/c+IZHfVcd78cVVvw0w903fp5NMw
-	SxrEC8xlugt5UitNFIe0km+5Sdcs3AR+s4+lnQvewfxMplQwANJQtGcvQPvrgvjn+oKJ2w
-	YZ4WLk2xM0aaxpJmncC3rd0CC0J60O0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c2ZK4nv7;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BUFLAjiq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1787838278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MNodYGFJor5NpRAwFjGvSAle8qKkp2eKVQXo5mh31SE=;
-	b=XObICxs/kvPSMcX4jJc9OkwRQQ9qdd5Q5hR+6FKaBP5uNQ0yS/cgBBiTow0xFlgkAZJa6y
-	dWxiWgSZiOjNEcQ3XBiUShKIe9U7to+GM2KeD6t8iNGACl4/CRMLnZARbB0xhtZqH+c9cU
-	Fn1AJWlWE3iJ3PZnB449ZCGpZ0f7D0U=
+	bh=9nWd2JiHbGpFxdKtIgR1/mA2jBP+r1D6KF4ucSMyulY=;
+	b=sJHnR2S6H9RE/uByHkQUOlEqjTPnWnwECh+bmpXADul7bYzDEtwOs123T/bna+phflfPGf
+	nN+XTSX/Stl30U2bViaVzUTJqzDyIWIZkuRzL3wK405/IZ/yCHR64+PNgV/JdAlqOANg04
+	ynIb8ToAqHX1puUPlKRKQsbJVzFCgcM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BUFLAjiq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787838278;
+	b=IMtSpoyTIfFb3muh4LDUJF/LDPy6EoMYVqTnbuBvQwxofAJz4jM/ueh41Y9VTTBEYsH+tS
+	389UMJBL2Vmep+7LN99Xw60k5/z6UcjtnjEKzNlx9lFYLjjBMYFpOGbJsQ9NlqhBUkyEDP
+	OjBdXO/PYEydfoYai8xA+6biLede52M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98F9243A06;
-	Thu, 27 Aug 2026 13:44:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3591F000E9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A696600D2;
+	Thu, 27 Aug 2026 13:44:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30561F00A3F;
 	Thu, 27 Aug 2026 13:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1787838277;
-	bh=MNodYGFJor5NpRAwFjGvSAle8qKkp2eKVQXo5mh31SE=;
+	bh=9nWd2JiHbGpFxdKtIgR1/mA2jBP+r1D6KF4ucSMyulY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c2ZK4nv7SvHz1jwrCjfNf5ADTUUHq0mPFWo2aZbBBW+4Dhu+dIMawjlNlqEftD2uQ
-	 RsT8M3xY0rSCT7nNWhkucLnCmoedxp/We4n3ZzMOBUv2X2wymWeofbCEflds4A3Wre
-	 EcaKVi1uGra13UlcTUhe3P736azkwdAVRYFG0waKkwhg7AY+Be/8O1+7EAwcUzAcSe
-	 m2F7AX8vBQXq3WdJo4m45h79C2ChapBJWjFeHmvsGQOALoeHQ+VOevIz0wVYMYj4FO
-	 n2nfLplU0q5l+5YE1InCjx4VjIk1+fbZvqI6X6qXJNF1I9c7c1hx/7uvW7771R2FVN
-	 +JZY2zMmyDrlQ==
+	b=BUFLAjiqHJqs/KvRm8Y+02p8G9HG/HkY+T2ptguC+9wUOH88glOR13lJQ6rZISAAX
+	 lm3zIA4U63MfGBv4Pfi2VtjrLpaPai2PlBokszEmUKOOmJgbwERCXMptu4a72rKfGd
+	 7ZTAZDKkV70zKT+2f7CkRwa9eGYpT/AOeSA5yqq4Eu1X/9OcDx9E22Ruv1LRJOqhaP
+	 EZ5n6GMzcEiWX8Clf1FsxQz/KmQsfFzMPovlSKjN/YFqraZ/MIszhm59tj0V6m5BFu
+	 PULYTwAcBDBzKc9iM1Si+qx44h5MNPDwOe1S26QLeMyS3hzAjSwzyqxYCvw9CwyRqX
+	 9ZY1pFc/+sYVw==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 2/3] mm/damon/core: copy nid for eligible_mem_bp damos quota goal commit
-Date: Thu, 27 Aug 2026 06:44:27 -0700
-Message-ID: <20260827134429.123023-3-sj@kernel.org>
+Subject: [RFC PATCH v1.1 3/3] mm/damon/sysfs: set next refresh jiffies per sysfs context
+Date: Thu, 27 Aug 2026 06:44:28 -0700
+Message-ID: <20260827134429.123023-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260827134429.123023-1-sj@kernel.org>
 References: <20260827134429.123023-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5291410000C
-X-Stat-Signature: r1yns4uz3kkms4pp1bash7zm1er1nxde
+X-Stat-Signature: 4ntokm5ezp4b4tm64bp5pgebi5bpa7og
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8BE85A0004
 X-Rspam-User: 
-X-HE-Tag: 1787838278-462153
-X-HE-Meta: U2FsdGVkX18U/srxZOot9OIPEvCYfOrd3aWVk4KDQMLJ8NZCj6v3Bwsz7pfBFYWUWg5NemnTMCjUk979N76BCfTq4L6QNPKWWlOzsPe+Gj19y83ijX3HgxF2HI7NqorekuoJ91oJDqSnd7oTRmZScdDOXdwvTgv2d3y8vmE/bqhtJz0DmnRfUg/IG6nDwxt3jsrOXCz6JhxZWKxS5UETxg2wTvpaiHcfPYytiz6ZKPF8+pMWb9KVhK6pm4wEYoUeGG3sRv4jX2aHZdDpGE1xvW7QhUYFjhPZZaIF6P1IyoxOnmSRbX7/480U9h+EB1D4U4PjRP76Tf9aJ7uX6XmdDrisUFSFIGJm0WUwMrAcJsVVfUONtU3Fb2HCgGf5fIDcObzHAXJz2BH4z+oEPcv269Sk/1WZ+p9lUY2KP7LjUAqcT+Qsh3VYTqJjiit9dJQbYfxlza0KgtJf3fLT48o18culQLz+0yVZ43i4Qq6vtLZyrLoqkd7nvSFofr/lixQdTJwAf3plpIxeZ7+SzJcJq/tGitAXaqdzrNBZ2xzOJRaz5kfCAgoVoJVU72E/U6eM0xxhosXqMWfEhD5H80T+kyoK+xguV0QcQFjMAefpUmClhQ/LIOyA7breZoHKTOx/ndL19a4YvisTEMNs/MlQtr/AHQ/LBEhrlP5XhGw4vVTp7/1xJD4nHEitSLhDR46GtqOm8culKhzMJt5DgZd/bUHCgM9JXr94q6bkDxqT6HhMwCAg6cZs9eDFkJ+BiGzEJStyqnMGKOQSk/RbZ9obXQmIyKFWe7+ar607yHnIYwyaHogOApRaazGJgT8/XJsEyjVMX3GP9s1Vhcqs7q5VZAe00tw+f4JqHr75hQfNjdkN84JeOVg5BeUnFbM+OgSk624RY7zAOB17e4KII9HKv/imDqXIOfIlp/DUauEj48hGKnHmTOHGdDhOcTUlrjlYsKItcAc0lrpJgH1SHjp
- 7ZxwcRx4
- EwUbnagXe4LPN+B9ctdT0GHLwhCABXViTopr3QpqStpza+TsPV2dQq6imHS37HuqfnaoaDleagZarNZ8MHNSLe3Rv4hsDWl+N5bsP4+wtFnLypdFX7Dpb9Gztooq2Gsfx2TWGwzebj5pTDbN5pqB+CK9khMFcD+i2UjoRJizY/fuuQMpFGLbMnY/o1WU1dA4+7UZcsH0Rknd6/wtOz/0ukRBWyXBVwVlCwmPU2MomgtMZtfirt31vQwXMHkLJmMfCGMb5XAq+CIiXVnEy6TxfV/ghu4ULKXNLJyYtLa/zrWlJ/zQqA+nka0m4775Gw0UlD3Yo1+Yfq6Km0yFYxfD+5Ije1OM97qUljyBxMeJkLkS4UGpEG4wLIlxWaNMEF4IuOkZ1e001djowd2u/dw/Jrh9qTkEFrLaK6dhe
+X-HE-Tag: 1787838278-332610
+X-HE-Meta: U2FsdGVkX1/TZJx9oQ/sFFjxd3gF95SoU9RgVGGG7A/WMksnizOZ9nNEc8+q8rodF1ugZOE5QmO0/GTGCxmxbZQvDnaLd7JmPQObmPCJHsgLItYF8ZYEuXfkeUbvbCFKhzXFvALcJtymXt/yL6RRezvt5nJzlTV0F7HiLeW1jTsIdf1Lu5X/p+ROMnrZ9dw3cZ36rjIHCjtkWnOPZxezfEpFicIeAwWr8nS0GD23KcIM/KFdFgEPzvBZjdmG8k+9o00pUHDWywgTr5I8huaOPNjRe4txdYic2qmZySZqUHN2dfTXXXWIMzq2EuPC4GSSOY7gfqEVySQc7niG6qz1OUCOv4MjvxEmet2QmWQsG8DHpN3un64thyP3dA8qC36CK276AnKbiGZHML4J87+nFr1/EPDpo/jCS3UF6Yyc1b1fhMphfBCN/HyT3kK4xpvAXaP5bTY4Fpu33jgN7wsIOGNj00Sr7E0/cuzlFNSjaOUDxmjfXbOuK+YftLWqu3Eb/ctn2PxYXqzAwrlObDgizirO4i2HxRXogLiUBvOepE0gr5+LXS3i7QrgWkPGIk4Ble88AMoQTU+8I3bGL60KnzvpVPNEtIg81is5ADPT+3cf8nd/xA4f//T/2jmGe2t5cqu4A0YPXX8xkEgLFDxfG221jqnlknd2XcbOzxnR2zdioOi2NVL7kMqfplH6m1IjgGG3Nt3zPD0s8MB+6M0GYT/dtU8iEkeZXgJ7Guo5+k+Z0qC0h/VlmWp6cyZWSxD46P9gOcLTjya1yIhQFOufob+An1upuD0bsUhNBw+ukH03rrs2KY4He86VwT++zM8VV9qVH1qMiTmNFE2knZPGjTIc1SoDW7/UxSuSNdOz5KG6Dofhvyq1DZVk5lpmtbWh/ATq3Dh779SaVjckjfLXW11Ea560wyx8sMtj0R+4l7NvnWD7ZQTxtSp0F/2oW86TdZSdnmHdXbBGyFMfrYN
+ VVfmAz+Y
+ 4SOBw4W2GzvX+rxdS6xzvV8gpEexWQ+EqTBnjNgAw3155WMNjgysXIE6hkSEPig90gY76u3w8wt9/0KnUI1KHpmtAeZemaB8cmwRCPe+o6zjMTLcVR7Z29Sd9Gwll73XCneHGKp9tXZNU85MJGGn7Z9oJnIKv6gP3tdW8z33LhQb/QtxClq/Zaa/yvnqU9hTQdSYYZgWK+d976khTLBjqzMJYfcDm6cUZz1SydAPJLyF1k5E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,43 +95,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_commit_quota_goal_union() is not updating the ->nid union field
-when the goal metric is DAMOS_QUITA_NODE_ELIGIBLE_MEM_BP.  Hence, if a
-DAMOS quota goal of the type is online committed in a way that it will
-reuse other quota goal's memory space, the new goal will work with a
-garbage nid value.  As a result, the DAMOS scheme can show unexpected
-aggressiveness.  Do the update.
+When 'refresh_ms' is set, DAMON sysfs interface periodically updates
+auto-tuned parameters and DAMOS stats.  The timestamp for the next
+refresh is initialized when a DAMON context starts, and updated in its
+damon_call() callback function.  That is, each DAMON context updates it.
+However, the timestamp is a global variable that is shared with all the
+contexts.  When there are multiple DAMON contexts having different
+refresh_ms, the update frequency will be changed, depending on the order
+of the contexts.  When there are multiple kdamonds, it will be even more
+chaotic.  Fix the problem by having the timestamp per each context.
 
-The user impact is not catastrophic.  No leak or crash happens.  Doing
-the quota goal online commit that can reproduce the issue is expected to
-be not common.  This issue was not found by real users but the AI
-review.  That said, the issue can reliably be reproduced.
+The user impact is not very critical.  It does not leak, corrupt or
+crash.  The update will not be faster or slower than the lowest and
+largest refresh_ms values of the contexts, respectively.  The user can
+also manually ask the updates on demand using kdamond state commands.
+That said, clearly this is a bug and can easily be reproduced.
 
-This issue was discovered [1] by Sashiko.
-
-[1] https://lore.kkernel.org/20260827045035.94611-1-sj@kernel.org
-
-Fixes: 9138e27a3bc3 ("mm/damon: add node_eligible_mem_bp goal metric")
-Cc: <stable@vger.kernel.org> # 7.2.x
+Fixes: 9fd7bb5083d1 ("mm/damon/sysfs: change next_update_jiffies to a global variable")
+Cc: <stable@vger.kernel.org> # 6.18.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/damon/sysfs.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index e5b6b1c6bb7b2..11b20a4a726f9 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1136,6 +1136,9 @@ static void damos_commit_quota_goal_union(
- 		dst->nid = src->nid;
- 		dst->memcg_id = src->memcg_id;
- 		break;
-+	case DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:
-+		dst->nid = src->nid;
-+		break;
- 	default:
- 		break;
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index e3858ffab4b22..f05b256c90ee7 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1789,6 +1789,7 @@ struct damon_sysfs_kdamond {
+ 	struct damon_sysfs_contexts *contexts;
+ 	struct damon_ctx *damon_ctx;
+ 	unsigned int refresh_ms;
++	unsigned long next_refresh_jiffies;
+ };
+ 
+ static struct damon_sysfs_kdamond *damon_sysfs_kdamond_alloc(void)
+@@ -2215,17 +2216,15 @@ static struct damon_ctx *damon_sysfs_build_ctx(
+ 	return ctx;
+ }
+ 
+-static unsigned long damon_sysfs_next_update_jiffies;
+-
+ static int damon_sysfs_repeat_call_fn(void *data)
+ {
+ 	struct damon_sysfs_kdamond *sysfs_kdamond = data;
+ 
+ 	if (!sysfs_kdamond->refresh_ms)
+ 		return 0;
+-	if (time_before(jiffies, damon_sysfs_next_update_jiffies))
++	if (time_before(jiffies, sysfs_kdamond->next_refresh_jiffies))
+ 		return 0;
+-	damon_sysfs_next_update_jiffies = jiffies +
++	sysfs_kdamond->next_refresh_jiffies = jiffies +
+ 		msecs_to_jiffies(sysfs_kdamond->refresh_ms);
+ 
+ 	if (!mutex_trylock(&damon_sysfs_lock))
+@@ -2273,8 +2272,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
  	}
+ 	kdamond->damon_ctx = ctx;
+ 
+-	damon_sysfs_next_update_jiffies =
+-		jiffies + msecs_to_jiffies(kdamond->refresh_ms);
++	kdamond->next_refresh_jiffies = jiffies +
++		msecs_to_jiffies(kdamond->refresh_ms);
+ 
+ 	repeat_call_control->fn = damon_sysfs_repeat_call_fn;
+ 	repeat_call_control->data = kdamond;
 -- 
 2.47.3
 
