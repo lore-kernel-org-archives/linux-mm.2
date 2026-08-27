@@ -4,98 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C812AC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:26:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE644C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:26:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 323DC6B00A7; Thu, 27 Aug 2026 12:24:47 -0400 (EDT)
+	id 5E29C6B00AC; Thu, 27 Aug 2026 12:24:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 288616B00AD; Thu, 27 Aug 2026 12:24:47 -0400 (EDT)
+	id 5B9C96B00AD; Thu, 27 Aug 2026 12:24:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E46136B00A7; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id 4CF4D6B00AF; Thu, 27 Aug 2026 12:24:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B1FD6B00AD
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E448A80113
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F63F6B00AC
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:24:48 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F4E112010B
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:47 +0000 (UTC)
+X-FDA: 85147573014.18.603EE50
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 75953120004
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:45 +0000 (UTC)
-X-FDA: 85147572930.29.B0AD75B
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 149B9120006
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:43 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=2TvuhQxU;
-	spf=pass (imf29.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Jjs2JmgE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JJTDJBOO;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=yFaQVxBL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=S2VO7JQZ;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787847885;
+	b=QdDogE+0XRMKWFwSzQdw2w6H6Ve8bPePeEChaSkWT57oHmv6HlIbo//lWgWsnn8iPONhSr
+	WFwkBZ1XorVbouXY4skDdEv9YFJP3VhUHFHoH3vXrrG9Zt4zfl1PEnbXTciqmjSLYJ/1lr
+	4opfgVWfzgBub3S4Pnp1KmA1jbpVBLk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787847884;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787847885;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5euHgUF21bp60qTQigBwKjH4x6Qvg0qe8ONZJ9cd938=;
-	b=Rl2aqNUETKrPKnr/2bK58f3gwi+cXs2vqhzJyJqDpI+LactWUlj47wxve15OhN5tlGNLNB
-	grp2FLFduOO5RaN8ycvhzBcDDLlvokbSijKJzEgSon42jJlyzljer+n5PKqLA+Gvmm6RMQ
-	6Z6bLL1Wy20lwMiyCAWDciVkRLjkbAo=
+	bh=Rh27INqa2xwHCVt1R3WeNRy936qHTTbLRu7Tqal0mbE=;
+	b=nZXem/XyFpbri6Xa+Ih0jydwBfT2EeMnf5hG2f4JzgjhfhEdBoJrWACp7y6TRR7ADrciM1
+	ZVBRIH1AzdAjLtst2IGTerN80fS+k99NkWhyQzuI9bVuDnWjjvHNMHoH0Bf8vgUwTNDk5S
+	FDTTh4ZPO+fEilzCuGeWl33jX6/0s0Y=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=2TvuhQxU;
-	spf=pass (imf29.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787847884;
-	b=xsAb33t8oCuVzn6v6WMVcA2Zro4ubaMs7M4GyI0bq5PEjWT4ZVIztS9QyMyj0jZ6Kb8ExO
-	qWLJtsbkXkx9DaNOYnGBI7tSjm/BfWvdr9AhprLa+0+1uwMn/KR0/BOmyAEVHIVlf7Jae5
-	No9qUPzB/kFJXFTR0jFWV36kZ98Z7SU=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5euHgUF21bp60qTQigBwKjH4x6Qvg0qe8ONZJ9cd938=;
-	b=2TvuhQxUFr+fy+TYSZfwfzt2uKWRPMUlYGvkIcqkpSYVM6SYMIi2cNT3oGpFWAEDEkYLVmcp3
-	27DLLJT6/TOlAQbpxu6X1KM8Trmh2Y7QCzb+ecElRL9a3atlGgKwmDr08QkmlRpPCcLbQ5ati4P
-	s1CxhEaZ6wolohHl03XhMkk=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hW6KG1l3lzHnH3h;
-	Fri, 28 Aug 2026 00:24:02 +0800 (CST)
-Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4117C40570;
-	Fri, 28 Aug 2026 00:24:38 +0800 (CST)
-Received: from mscphis00949.huawei.com (10.123.66.11) by
- mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 27 Aug 2026 19:24:37 +0300
-From: Nikita Panov <panov.nikita@huawei.com>
-To: <catalin.marinas@arm.com>, <akpm@linux-foundation.org>,
-	<david@kernel.org>, <ljs@kernel.org>, <vbabka@kernel.org>, <cl@gentwo.org>,
-	<linux@armlinux.org.uk>, <will@kernel.org>, <mark.rutland@arm.com>,
-	<liam@infradead.org>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <wangkefeng.wang@huawei.com>,
-	<artem.kuzin@huawei.com>, <panov.nikita@huawei.com>
-Subject: [RFC PATCH 16/18] arm64: add kernel modules text and rodata replication support
-Date: Fri, 28 Aug 2026 00:11:56 +0800
-Message-ID: <20260827161158.3618409-17-panov.nikita@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260827161158.3618409-1-panov.nikita@huawei.com>
-References: <20260827161158.3618409-1-panov.nikita@huawei.com>
-Reply-To: <artem.kuzin@huawei.com>
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Jjs2JmgE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JJTDJBOO;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=yFaQVxBL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=S2VO7JQZ;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A95FA21AE5;
+	Thu, 27 Aug 2026 16:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787847880; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rh27INqa2xwHCVt1R3WeNRy936qHTTbLRu7Tqal0mbE=;
+	b=Jjs2JmgELdBqtRjnwhRR6RMvjwxOm/Vt65Pn5YAbv99l2Nj82l8/HeArhnN/26Z4LfGyFM
+	mVsmGhIXyPGSthGj8x0rX2ZdQFvHz/04j4iEZh8/UmwVGFDorRygh3rokc2bmqLvcvmm/m
+	ge+r8ucvjnnNRxPp3ymjwITQu3EMBV0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787847880;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rh27INqa2xwHCVt1R3WeNRy936qHTTbLRu7Tqal0mbE=;
+	b=JJTDJBOODznNlzy6S0DqMKn785KlM+XSkWVXNOTIYz0+jcHbx9u3THcjyR8ugbDS53/sij
+	0c3FMlkEEynGMmCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787847875; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rh27INqa2xwHCVt1R3WeNRy936qHTTbLRu7Tqal0mbE=;
+	b=yFaQVxBLr71zP7TNiWSMcxQOFvM25RmWNY1xHAVBOrhU0H2myTWD7SUU2KubbXHluD+rW5
+	hHLNxvm+gxgRHgmQeilzJHSo9vNWczzOghJ2MziqaIZNNPcTpM+PXJI7YM5RsITllwqlWz
+	vJosx5qnoDwubwgYbFp28Wjygpzb/uQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787847875;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rh27INqa2xwHCVt1R3WeNRy936qHTTbLRu7Tqal0mbE=;
+	b=S2VO7JQZ18yiOQ84l+2K2r51yFliJwBv48LleFHEqlTJqyVGP98XPto50X2s6Nq3B0W2PC
+	A+QHZyDDmHhaU5Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A72A13354;
+	Thu, 27 Aug 2026 16:24:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pqjgOsFkkGoEHwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 27 Aug 2026 16:24:33 +0000
+Date: Thu, 27 Aug 2026 17:24:32 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/2] mm/slub: reduce list_lock contention with slab
+ parking
+Message-ID: <apBioBxd4VkmaGhA@pedro-suse>
+References: <20260824122004.3652-1-hao.li@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.66.11]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500004.china.huawei.com (7.188.26.250)
-X-Stat-Signature: kpzo56nrakwkq8pnpgm8ep1xz1i4etgj
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 149B9120006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824122004.3652-1-hao.li@linux.dev>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1787847883-465554
-X-HE-Meta: U2FsdGVkX1/IwZhPJQMuy53pZJpHepz0rtZm2qy+/JY0t7SX+vNatcMTL1gWhGb3cpeokCdHW2eHBBOVRhGn/5lPcLc2bi04+OmcvOTwoe86Nr6kcjSrMSpn2Df+EBbif2HSj9orOb2yDcvGMvP0MHoHiphWVnRlw7WZT179SfvvezF21rcORvrQeuqgNrR6lR16TveJjxR1yC/ruL+YL+tfSc5Kciv5xvrhSbC5yYX1m3QLKWi7IzyYkdTRNrfrLtza8sgrJRgKDGmUfCSrMO/b2aPUNXrhnm+mlMhZmv800XkOCVLSveHnIUWAxx8PSDQIasCQroE2/vnHiuvIp+JHoIGpk+ivsNWj1ekrDjMpF9djLkK+q/FIz4VE6tKE36gC/lCzgsRhSclEXAXaquKZZjXWnWujFzfK2paff5MVirHyM+oViJ7wkwGuVgDd1+RXQW5mEQIkPZaEpzCooiekv4cGdY56RpStLq+dzWA1Afv+EQwjzbrI3Z9pWDVNzCjTddp7GeJ8lMQf1ub6YN0rv5XTQMIQ584+mpygb9W8c9A7x+bTxmZZp7J/fzblJeG6kJCwEI5LEGYfblLfGgHE6cHbOQdTXoD2d4zOe6hWn+Sn4J4R3OXJL5Mc8YooOrOGDHpmj6DnI/ajRm/3gqdeZ3rp0LjAs1Z7OEmlatOoqPRvBOwhP+iC5i0PpeyCSj9Y9rfMXu736SELXCw+0Te0C0xlgyT7xkGyV7RECoCiz18AHzWHBsGVcjGJJDTVETOS0JBX8sC68AiDFAF5Z/16iFPcgo2yC81YcdaKhwfShP3MCExUwNU7kS6H/tLZG4GUfrJta4/jZE8EMIfcHomDUtMYJOOCKjo0iRt7SBcVGJDjc9frEC2U042BO4lRTX5Ipy2zeP24QG8SUGmUkl0Q/nC9KTWEtMj8Av36lVJIKLMrMsvkci4YSZgz/FBDrVlTQvH1qm/IkQt65Yc
- f/g2mHGK
- i+gbUri63yYl4ghMevWAzrNu7R98rxTyQSIb9gOq6zz16zJ3ORjCyH3LTTidALNbNtpzRgo397HC7nPLAvrAFkhPejPRZpTdoU823vrkN+28b9Fdgi69Wl2S/I1NUhf86WVioYqkveRbu5ESf6UQLZrreZl9Q9V7trBTZ20XF6EcDWNaY6Qm6xHJ7tuc0JJ39BAD44hFRxplUUQ2Wo8SrXwBB+K1s60D5rHUchO+ZnCQMtSB7e0psnIvZDl+eoBbb+ZuoZr+mIO40+HwVZ+0Owi8xO1dsN+RbRvFXFStrN3oNRzUM930pxPpsuNNLoGVHstBSuXCJDh0rZTVvMLqvmSIYTKUao2RaAEgQZEpyqN8SsPFDAQDBK1FLeA2UyeF5s9l6XBfU4135/DUxZofM3AFItPK1V1XHUnoSzuMjKKXLqgm3lS5vS+sYNu2JXHFDxkVOm6vzfu0NgX/oOK8zUnb9gT6EOdSZUJDc+2QpH92FtjKvTACfqoAEXw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 75953120004
+X-Stat-Signature: ao89j5b64zafeywm5cxwyn5wdpjda3ed
+X-HE-Tag: 1787847885-218702
+X-HE-Meta: U2FsdGVkX19dLqsu53ZXxpxU56CS9W15pjG6owJkWg3uWjbLfxzB57O3OrVLHCN0ReEfEOhJkVYunHV6Yx2t41wQ6XuziTgN+EHAuCAIyFnqdyl3YNa83rIEAhZ69C+xX5VerSCNtj/heDAVWsIy9pgsH70XLDni/ut3cDoQ0hIZAIUa3ihEdEb2PVTT1BSjcBY/xPpE8npyJMEmg7BMZa/5P+9495bUK6MQOK/Eoh2x2tWF6smQengcEH/LlNNxrdYy8px0qZs5A1e3NAVhIMtaU4B66KYC8MmqsNPSZ2DR2xoIl40xqhCusItkDoT4ACiUxAvzOWFr4ugBt+1rE2ekjxTxb3vzc2yjRgOrR593cdwzrxL3lDmaeatvDXo0LIY8AvT8lYOc5QgsmPwI9AGjI88miAl65wIR808nYjtCOIk8Myx83Y7rLU72wHbpL04oRH0VAQYPhvHGcXIpJWvdfJXLY442VKfPBq0GMUNKtILAqBb1r8qG7o48cLGg7nK0Ant0JNnLY+UEVA4aXymgC0g/BoEBsYfqZlfacTs6ULyuRR4vvoD/a0kvk3KJ3fI8HAtRR5iyakXPNn2vqcDiBK5t97ujZLDl3A319VMIttJ2EuCXQJRRM2XGP3pAM+EeLCfWxFG7awNyYH4VQHSlKrJ+TV5ldWT/HafcHoUUk1lkt0RyWqfrwSax8Cd5iyxtkcFo5gOOeqXU852wyCYov5cNc0Sab47ydYEggnIgw9fHUH03E5KA+7ywWMWM8XdRCD/IeZbd2y7+ZtKp8V8umx5z8D02Nvrh49Guoq6GDN+dOeO880rUimaJ30fi2MD7kvZLe9K5EJiHURVufWdFWzR20Mw/1ZV8ZhvlN25sXCvEJEgVtzuZAPFbEr0PBmezHqJjhvGml9e6JVVZjtAdkr7iism2V+94/3PE0f0xlgBAomyY+XWezSq6DLRhTEpaXJHHc3zod1pENF/
+ CgcrnHfS
+ 7laIr4qu9Vqt6vQ9WbcSUrHGBp110+sKEmdTfkQMBcr/PflN3JEke7tO0li6sTQ2QAjw8YRdgS+pcYIJt4VvJJGnNuOfFGk+vAgTzMju5sfB9Ul2Alf9wLLLU5DZl4ow5zXY1tDnuMAKQWfgEcq2EFXbtB97jnBN5LKEn8nB/ntkk5M6cwOGOBVa+HDu1jCuv0Fj7lxykryZzqg/vH8XX5Y+ui6VJHOE6yTn1JJE4qwgPaTBS9UYG/PMmcRZPO7gNq877yJkWBQxk+s1qm5B85GYEtt+4fbYGoe3rhiFeScZ0vfBtFjrdachleg8AHURyzEsK+BX0SWx24BhLB2TGDKpmDhl+dEopE0fW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,45 +132,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Acked-by: Artem Kuzin <artem.kuzin@huawei.com>
-Acked-by: Alexander Grubnikov <alexander.grubnikov@huawei.com>
-Acked-by: Ilya Hanov <ilya.hanov@huawei-partners.com>
-Acked-by: Denis Darvish <darvish.denis@huawei.com>
-Signed-off-by: Nikita Panov <panov.nikita@huawei.com>
----
- arch/arm64/kernel/module.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+On Mon, Aug 24, 2026 at 08:19:50PM +0800, Hao Li wrote:
+> This patch series might sound a bit wild, but the initial numbers don't
+> look too bad so far. I would really appreciate any feedback and
+> discussion :)
 
-diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
-index 24adb581af0e..61f605f74d86 100644
---- a/arch/arm64/kernel/module.c
-+++ b/arch/arm64/kernel/module.c
-@@ -18,6 +18,7 @@
- #include <linux/moduleloader.h>
- #include <linux/random.h>
- #include <linux/scs.h>
-+#include <linux/vmalloc.h>
- 
- #include <asm/alternative.h>
- #include <asm/insn.h>
-@@ -25,6 +26,16 @@
- #include <asm/sections.h>
- #include <asm/text-patching.h>
- 
-+#ifdef CONFIG_KERNEL_REPLICATION
-+void module_replicate(void *ptr)
-+{
-+	gfp_t gfp_mask = GFP_KERNEL;
-+
-+	__vmalloc_node_replicate_range(ptr, gfp_mask,
-+			PAGE_KERNEL, 0);
-+}
-+#endif /*CONFIG_KERNEL_REPLICATION*/
-+
- enum aarch64_reloc_op {
- 	RELOC_OP_NONE,
- 	RELOC_OP_ABS,
+The numbers look great, I have to say ;)
+
+> 
+> On a will-it-scale mmap1 run with 192 processes, list_lock is the top
+> contention point: __slab_free() and __refill_objects_node() together
+> spend 44% of cycles in native_queued_spin_lock_slowpath. The free
+> slowpath takes the lock mainly to add slabs that became non-full to the
+> partial list.
+
+Doesn't this mean you're hitting the slow path way too many times? I think
+that's the actual issue, no?
+
+> 
+> By adding extra instrumentation to __slab_free(), I collect the following
+> data for the maple_node cache (in counts):
+> 
+>   partial->partial    843017414
+>   full->partial       550719384
+>   partial->empty      17459564
+>   full->empty         2
+> 
+> We can see that full -> partial transitions account for a significant
+> proportion, and optimizing them can help reduce lock contention to some
+> extent.
+> 
+> This series introduces the parking mechanism to address this issue.
+> When the trylock fails during a full -> partial/empty transition,
+> __slab_free() parks the slab on a per-node llist instead of waiting. The
+> paths that consume the partial list (sheaf refill, alloc slowpath,
+> shrink, cache destruction) unpark the slabs after taking the lock, and a
+> delayed work covers the case where none of them runs.
+> 
+> Patch 1 cleans up the case handling in __slab_free(), no functional
+> change. Patch 2 introduces the parking mechanism.
+
+This looks like fundamentally the wrong fix, when we want to find out why
+1) you're hitting the alloc slowpath so hard
+2) you're hitting the free slowpath so hard
+
+and ideally find some way to tune it properly. Maybe if sheaf size is scaled
+up/down in some way (by default at least), according to amount of RAM or amount of
+CPUs.
+
 -- 
-2.34.1
-
+Pedro
 
