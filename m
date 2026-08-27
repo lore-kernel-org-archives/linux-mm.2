@@ -4,96 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F17FAC61DBE
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 00:31:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC20C5DF97
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 00:44:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7EFB6B008C; Wed, 26 Aug 2026 20:31:17 -0400 (EDT)
+	id B87526B0088; Wed, 26 Aug 2026 20:44:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C30526B0092; Wed, 26 Aug 2026 20:31:17 -0400 (EDT)
+	id B38C66B008A; Wed, 26 Aug 2026 20:44:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B462B6B0095; Wed, 26 Aug 2026 20:31:17 -0400 (EDT)
+	id A4FE86B008C; Wed, 26 Aug 2026 20:44:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 914AD6B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:31:17 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1CFEE4026A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:31:17 +0000 (UTC)
-X-FDA: 85145170194.06.04A3713
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8CC45100004
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:31:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oYHO0fSr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7862F6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:44:49 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E4B678026A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:44:48 +0000 (UTC)
+X-FDA: 85145204256.19.28FF839
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4A82240004
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:44:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ioYAphxG;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787790675;
+	s=arc-20220608; t=1787791487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mqB1m/96VTfRYII2vqeYFGWVPKUc3lqcw0NbwfK9VNA=;
-	b=e8McM7BRHurxa2dInNnColtGx0yejbV0NwpRH2IgfNvuNBd8o8gkdoDeIp9R/5v1OD/cPo
-	QMIJklxxhAuPGjyfJh6NqPJ9PuyJIGwAKyMmxwVQF4wON2j6GqTfB1vuF2pdgsUXjkd5C1
-	DWVckYS4y0uaRkCkacHZrKJx0HtcHSI=
+	bh=cT+bFHA2IGIehxSdYCsujzJSXJKR74Lanqfi3RW9l04=;
+	b=x550AWPDXvAt7FcCctchUdhd9QjrF2A4f7CeuHyHtQisPHwNnJDk0hnBRsWvQVavR0pPpt
+	v6y4RnSpBlUjJoN24ZRtxShJ8HrX4COFeufxMGatfxHLK3p4dRg+iheLTuGftmQUJQsNoh
+	HjNjfu1s7V77ug8MhAtK1IvVEpQRN4w=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oYHO0fSr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ioYAphxG;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787790675;
-	b=xhMkqSbkzHPlY8PLN7P4qhrqWlAd11qSiwVWlqdm7wLFMJ5UfJKo89iHNTXcf2oOrqmV5D
-	WxMlxVKZ/0lgul5giHslL7jyfH5qb9QBUMZzXUB85Jn2xF4/kN0tsNVE7tuIVzPBhNqX4D
-	JKcqWSdCmbwQnbJ/KHzI43YfMozEMlM=
+	t=1787791487;
+	b=YFD1gF59Nks9bl7c5Qo7/AVPBPKvvuoB6Q4mFGwwRWrVoFWvxw8kgZCmJOuHOEle0Xxe9j
+	9sdnsnWZdXGsBv5UXFU3IKznxrOPx6epznSomnQFW6WU7wTdzTdy6htdmoeivtrYbXFVGH
+	vAzwpi8bk7ZjleG/RgtmaMlpj1veXj8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD6796020E;
-	Thu, 27 Aug 2026 00:31:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DFED1F000E9;
-	Thu, 27 Aug 2026 00:31:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 197D343CF9;
+	Thu, 27 Aug 2026 00:44:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E151F000E9;
+	Thu, 27 Aug 2026 00:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787790674;
-	bh=mqB1m/96VTfRYII2vqeYFGWVPKUc3lqcw0NbwfK9VNA=;
+	s=k20260515; t=1787791486;
+	bh=cT+bFHA2IGIehxSdYCsujzJSXJKR74Lanqfi3RW9l04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oYHO0fSr8SyrOOkaP9GXUjf398GK+3yEI1OysuNO/GlArC7PeB6xLUseKHLBIH7Ql
-	 fzUPFspXTr4IsF/XOkVZN7oKJ5vFLppAF301EF5IQx19cEutRw3lL5auxxuT0ObBmi
-	 ax76vgMszl0TbJi+m/9f+g/kd+IMC+nc/dunpgVCA+6oJrNSK7JL5rJlVdNVVP6jiT
-	 DxmDm5TicLGgKq4myhCbWkb3CqS0Xvs7ITPOiN2LQD41gyWfGhWc7n66sehBo5/OwU
-	 N5cNPImDpWlqGYHIcm5h9wG5meIPnjtAucXhJeBjBoG0TfMjrxlr2mnJcKmpU5a/ve
-	 0XglS0R/I7YGw==
+	b=ioYAphxGg/RgkfSz2okyrbrrruZuqy2+lG/2q/sJh7qBoSoxCPgmI6/CSl5Lc+nfF
+	 M+/5yJ2jXXxg8s8B5oU+JUcUwgF+j2SM0hbiDuD3OIfYoiVtWJZH0skzXXA2f4SXZa
+	 bzn+qGvtdXYxgHgSpd9NEuLpUV43VGLyUmeL/RVSDrYo4csgg2uWdP3xx8uHHhlnjy
+	 zDhWvmfh9VzG1nhiGDfe66ciTyUQcb+BpnxY8gsLLtYeIqf9TqTV9WO8isFann0RBB
+	 8H7YMIXUY0APO5bNz8EEzJjH+BxPaX764jMCP4JWeZqcN/rbhdqxFpLR5YH/5Lql/l
+	 qiUcYXeFbeMyg==
 From: SJ Park <sj@kernel.org>
-To: Anshuman <anshumantewari123@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: fix line buffer leak in mremap_test is_range_mapped()
-Date: Wed, 26 Aug 2026 17:31:06 -0700
-Message-ID: <20260827003106.82479-1-sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon: fix damos quota walk-position tracking
+Date: Wed, 26 Aug 2026 17:44:38 -0700
+Message-ID: <20260827004438.82746-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260826061300.14038-1-anshumantewari123@gmail.com>
+In-Reply-To: <20260826140508.74447-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ct6xcxgo9tt58eax1zw45ytuq354df1a
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8CC45100004
+X-Stat-Signature: kj4p9e11jh8jaddn18x9zkt9z7ouqjwz
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4A82240004
 X-Rspam-User: 
-X-HE-Tag: 1787790675-500694
-X-HE-Meta: U2FsdGVkX1/DDN/0y1CrczKPy19Wmi5R6vJXNDxAQM+bkh+ld+s+pPaCCldQGWv7+YSY+7vhy5l+cm70lO80L3/9HI1dok3/4iUYbKxX+gSS4EeWyWIWlWIfkbV+379RrqMbZjlxv4KKP0n9jkOQktVCQ4knm3wLNvdjI2Eq36NwJ9eh1Nw2Cw80XtcmDHbApXamIQ5H/8Xx6eSoegWezDPe517qWKQyGVQ9zR0TvuI970reiywq5pe4eJE5be3IxyjyY8uXsGwfMIeQdw69pP1MVbj4esJaRavsg82c/WBNV9urjiAPN+KnAQn8k+kp9cIAc/nW6/58I0kjR+GFawOPEzzX1Ein6chCGIudBmj7UVVcAQhOH42VlX+yGBGO0aXkRQ4iuaTfBP+ccZaWjMRuiquzKXeqnKxWZaRZxc0wlg6IEAQTfRIvI2r/Ly04YEGI/V3lqtouyAmvP2KcAY2dpsZ1Akj/UbEFV9UpBO5rRumGBCPa1RJR8h6fcrCGHxtry69xgoMUYnhud/GxAq/O4JVznfvOow/4QPgdmCzbilGoDn90zxloQgOM/xngH9PTquWSKOyuKxsXeV/9z17bZpO75tg8kHp+9S+4MRmGakfEt1gJE/dza168FGs3f3vgFts6WdDGW73pNjtBXL9Ywyqy8WJ6TN/SXmWP5v/JCRqD/3XcHERP35O/UFO9+/HDRJx4xBje/enl+NisV/k9vewuEQ2qaDTAEQmEEQIkr2V37vqkVuaUVM9f1ojMOCcMo3MwOfjPzgA7/U7g7lgYv6jrnY+HRVXdJICoO4A2CYsnf5OOmrAgiJCqWnhStlv8KgUbcl6qjeQ9yXckFOCIuZvsx7lByn9kXmaIXYtlMOGqN10levSzFSlfnLPVkF0hZh4Z3u31HnqRlTLzXncs9jxsmIsnK5ccqhn2ETUJx6I0d5Wi0tyADIlLdG930h72CELtUQy9KBunycI
- faZQot++
- 2XDByF80EYZl0NrQmw26OoC5SZS9xefoHWKDFTz/FARu1PdEm7BfXdaa6mX4FKEB5r1GuBqa0Min7eOwpQ2sX80Qso9WsQj+6aY/fEZmp/AB9cwIRsYjViBQJtRVYtMcflCr8NkJahegBbx76x5c1D2Hn+Ye3tS1RO7kiHMLqTfBCVeC1OnicsBN459Qy1u5pqb9ZEd/5jftH+He6Amb9DfcO6Qe0+/nZA6Kp0cp2Rb1nTxT9BIeoyYkBcJucM9gyVJwJpL9scERLcoMGijQqaBMaChCHhc6t+SDb1nPl0YhJchCauokJveF9Hw==
+X-HE-Tag: 1787791487-798548
+X-HE-Meta: U2FsdGVkX1+4R3LSHVxCa9FN9kZVq/D2/iPyG3cGIVDfUJfeFVPZ1lvCE05uLXNQGH/4yjA+QqJ1WDJmSj5MGgpHbGSEfWp0iiFrDEGxEKtC309ztEDSmY/rxUVgHJnaa149mOLSswsoSbq398aDxw14wnHe1J8PKV7l0zIvNpcep6FTtRPhtePV+qGomsch1pPwvapSU6ryTDwzv0q95VugvvnaI69tci7fzTO878Fqh08l9WqJS/QcRUHDL/rYlnEQvcLIauyUju3Bgsa+iFUvZBARV6Gpi5sa9v33VpcUCqwY8wsr/6WEg0EUiHe6X/wAbAWfdJ5zbnYxRX3unyXPkj4JSmpJiBw+KwcMA1+O/9Kb3kcJY1szdZdEWQISsoUQ/u0ufTLH5G5TFzfQ79Ujk8RpULeDX0QJF0c2rJQENRe3oKzRarh2CefZbXx1IExW2VmnRjudI0bIXa5C3Vol2oT6IjLhcMIzjBdohrnQE3vYcRFR6Omx9c2rP9Q5hva47Qctlohuurnluw4fN428Nr+TgSJyPCbPXaEjaUhozA1QNylHUmkH8JqVmMM1Qbnb7OS3VGSyTNt7Zizt+7AsUb96meFzeWYK6eYM1lQ2y4+aWt/TdCBZHGs3EstCnhpWCjeAHyOVL0YKt1oo/q2WfM9zZMzTQ10TzoGDhknOZSEr8hUfX2hqmzeoRLhFxEWucD0yuSoJIlpkfJeajR5UmnlzMh3kV5r/McuPo3wyiwFR5AENtM1HQFJjx46rAgQIlgMZfFiOFZp8vo2S98eDacGu6fGHfkXWMX/5tCMUwnAGdnx7Z7fnXNpI2LwO5QCrzJDP9+V5sHWyU/9DKUdQrsS3MaDGyH+dX4eIMIVDz8kGTEO5Fd8ClITGUo76G2ewZobn0FIGggFVow5X2k7nZGxHW8w8dmz3oIiDLq14RBcAXYVb1eveIUUSBha6pq19BP6SoBpFHW7eazv
+ Un8kRxAF
+ fJrqd5IUG7FaHXka2lS3B8aGXLumDVjPbaOtRlKHvXAUBHq6/KGuMK/T+ksySZJ+KTYZ0j+KaEX4y8nE5pa69lOQlFJwtOZOalQ8z1jOvvaltU4LsTUBV4kQvEE9tPc1E8MklRk2cW1FRh7zbA7Qpm+MAVHoMI4sZXJCppTw0z1pBuixlWgJ8Zu8YwjuwweNQucNC+Ez8GaW+f0Bj18maeFM+r4w/uZ5VSvipdXYsORhhx8CDBTsKMgldWU52lu/wdT38
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,27 +93,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 26 Aug 2026 11:43:00 +0530 Anshuman <anshumantewari123@gmail.com> wrote:
+On Wed, 26 Aug 2026 07:05:08 -0700 SJ Park <sj@kernel.org> wrote:
 
-> is_range_mapped() uses getline() to read /proc/self/maps line by
-> line, but never frees the buffer it allocates. Every exit path
-> (parse failure, match found, or reaching EOF) returns without
-> calling free(line), leaking the buffer on each call. The function
-> is called multiple times in this test, so the leak accumulates
-> across calls.
+> On Wed, 26 Aug 2026 18:24:13 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 > 
-> Free line before returning.
+> > On Tue, 25 Aug 2026 06:54:57 -0700 SJ Park <sj@kernel.org> wrote:
+> > 
+> > > On Tue, 25 Aug 2026 20:46:16 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > > 
+> > > > DAMOS uses charge_target_from/charge_addr_from to remember how far a
+> > > > quota-limited walk has progressed.  The current implementation has two
+> > > > problems:
+> > > > 
+> > > > 1. Once set, the cursor unconditionally skips and resets at the last
+> > > >    region of the tracked target, so the last region can be skipped even
+> > > >    when it has not been processed.
+> > > 
+> > > I don't fully understand this.  Could you please clarify more?  Maybe adding a
+> > > realistic example scenario would be helpful.
+> > > 
+> > 
+> > Problem: Unconditional skip of the last region
+> > 
+> > In the current damos_skip_charged_region(), there is this logic:
+> > 
+> >     if (r == damon_last_region(t)) {
+> >         quota->charge_target_from = NULL;
+> >         quota->charge_addr_from = 0;
+> >         return true; /* Skip */
+> >     }
+> > 
+> > Scenario:
+> > 1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+> > 
+> > 2. Quota is configured to process only 50 bytes per window.
+> > 
+> > 3. Window 1: Processes R1 (0-50).  Quota is full.  Cursor is saved at
+> >    (Target, 50).
+> > 
+> > 4. Window 2: Skips R1 (0-50).  Processes R1 (50-100).  Quota is full.
+> >    Cursor is saved at (Target, 100), which is exactly the start of R2.
+> > 
+> > 5. Window 3: The loop reaches R2.  Because R2 is damon_last_region(t),
+> >    the old code unconditionally returns true, skipping R2 entirely and
+> >    resetting the cursor.
+> > 
+> > Result: R2 is permanently skipped even though it has never been
+> > processed.
+> 
+> Ok, makes sense.  The user impact should be not that big, though.
+> 
+> > 
+> > To fix this, the patch advances the cursor every time a region is
+> > walked, regardless of whether it is applied or filtered out.  This
+> > allows DAMON to accurately track whether the last region has already
+> > been visited, eliminating the need for the unconditional reset.
+> 
+> Sounds like a big change compared to the problem.  Why we cannot modify the
+> last region case?  Have you also considered other possible simpler approaches?
 
-Makes sense to me.
+For example,
+
+'''
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2686,14 +2686,15 @@ static bool damos_skip_charged_region(struct damon_target *t,
+        if (quota->charge_target_from) {
+                if (t != quota->charge_target_from)
+                        return true;
+-               if (r == damon_last_region(t)) {
+-                       quota->charge_target_from = NULL;
+-                       quota->charge_addr_from = 0;
+-                       return true;
+-               }
+                if (quota->charge_addr_from &&
+-                               r->ar.end <= quota->charge_addr_from)
++                               r->ar.end <= quota->charge_addr_from) {
++                       if (r->ar.end == quota->charge_addr_from ||
++                                       r == damon_last_region(t)) {
++                               quota->charge_target_from = NULL;
++                               quota->charge_addr_from = 0;
++                       }
+                        return true;
++               }
+
+                if (quota->charge_addr_from && r->ar.start <
+                                quota->charge_addr_from) {
+'''
 
 > 
-> Signed-off-by: Anshuman <anshumantewari123@gmail.com>
-
-Reviewed-by: SJ Park <sj@kernel.org>
+> > 
+> > > > 
+> > > > 2. The cursor only advances when the quota becomes full.  Regions that
+> > > >    are filtered out do not move the cursor, and the scheme can remain
+> > > >    stuck on the same regions.
+> > > 
+> > > I don't fully understand this, either.  Could you pleae clarify more?
+> > > 
+> > 
+> > Problem 2 is a false positive.  As long as the quota is not full, DAMON
+> > will continue iterating to find applicable regions.  I mistakenly
+> > assumed in the commit message that encountering filtered-out or invalid
+> > regions would cause the cursor to stall.
+> 
+> Thank you for clarifying.  Please try to reduce this kind of false positives
+> from the next time.
+> 
+> > 
+> > This patch ensures that every target is traversed sequentially and
+> > deterministically, even when the quota is set very low.  I omitted this
+> > benefit in the initial problem description.  If you think it is okay, I
+> > will add it in the next revision.
+> 
+> What's the problem and benefit?  I still don't get it.  More clarification
+> would be nice.
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 
 
 Thanks,
 SJ
-
-[...]
 
