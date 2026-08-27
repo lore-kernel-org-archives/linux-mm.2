@@ -4,118 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DF10C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 23:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91991C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 23:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D22D6B0092; Thu, 27 Aug 2026 19:31:26 -0400 (EDT)
+	id 5A41C6B0095; Thu, 27 Aug 2026 19:31:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A9D36B0095; Thu, 27 Aug 2026 19:31:26 -0400 (EDT)
+	id 57B4D6B0096; Thu, 27 Aug 2026 19:31:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0986C6B0096; Thu, 27 Aug 2026 19:31:26 -0400 (EDT)
+	id 490326B0098; Thu, 27 Aug 2026 19:31:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D493C6B0092
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:31:25 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 495A940217
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:31:25 +0000 (UTC)
-X-FDA: 85148648130.01.C7191BF
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 992681C0005
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:31:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ES5yXGYy;
-	spf=pass (imf18.hostedemail.com: domain of 3ysiQaggKCPktufwfotehpphmf.dpnmjovy-nnlwbdl.psh@flex--stevensd.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3ysiQaggKCPktufwfotehpphmf.dpnmjovy-nnlwbdl.psh@flex--stevensd.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 25B3D6B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:31:27 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 875FA8021E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:31:26 +0000 (UTC)
+X-FDA: 85148648172.21.DFE4BBB
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BABCF4000F
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:31:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=dama-to.20251104.gappssmtp.com header.s=20251104 header.b=Rcvc3aPn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787873483;
+	s=arc-20220608; t=1787873484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XRF3HmEVCSbkNryj4HHFEle4K2g8xeVsDlkdo6/RfiQ=;
-	b=yEWsNQ3B3ytHO/GTUyJQIAV0m6oNbqvbE5KWSeuSJwhRAtqTgq/1PDXh0GCdHpVyy4fkFG
-	d7gxIEgHdZwNAnLKS9yPb0PqyLuyhbqzqSFJ7Mv7GjSLCjjBu7Gh4dCbCgsWE963+dcrIS
-	X9v0KxEsPYLyd3757QaKdGcMOn/x0Mg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787873483;
-	b=XV1HBiLiBE3f2TxfT2RgEMILn6kUlGRHGXGb6r66tIs8Auox+lqB8IsfLbaoFAoI7wt5D2
-	CwS+SNtIUAR+prYUKmO7nhJg3CRVHDV4v/ZwGQOVqhANK45gGY7SphPCTgpwtgg/kWziZw
-	tvooISU1VVSwrgpLaw2WssXwZqieYCA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dyiy2y/avbYOe0BnQSrLgYOVHtwCGX72+qfVpLstJvk=;
+	b=N6cG8oTK10WKfZRtR4NUvUVUG6bBFOobetqgCKNiRPRRd9mhBhD6SfZPYfISqJD8r7TqNs
+	PLXWRURfe4nB8OoYxdieGS2CuGdwhoVJ1QeVeje0KI4Uw+Ds3EIDQOgM04qNTh05AwCTAd
+	ei75lJ5sK2bNdSJnmrQ/afFaKWqm7Ss=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ES5yXGYy;
-	spf=pass (imf18.hostedemail.com: domain of 3ysiQaggKCPktufwfotehpphmf.dpnmjovy-nnlwbdl.psh@flex--stevensd.bounces.google.com designates 209.85.215.197 as permitted sender) smtp.mailfrom=3ysiQaggKCPktufwfotehpphmf.dpnmjovy-nnlwbdl.psh@flex--stevensd.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-ca8aee88725so604561a12.3
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:31:23 -0700 (PDT)
+	imf17.hostedemail.com;
+	dkim=pass header.d=dama-to.20251104.gappssmtp.com header.s=20251104 header.b=Rcvc3aPn;
+	dmarc=none;
+	spf=none (imf17.hostedemail.com: domain of joe@dama.to has no SPF policy when checking 209.85.216.47) smtp.mailfrom=joe@dama.to
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787873484;
+	b=NzarKfAhXt5RJIFGyububvC84q3ldMfOx2j7wOXAiny858DkCWsY3NB8pJRR9NJS9e21mn
+	Yx4ToF1n+ax0FjER/rgbT1CxIU/rNLXQ3qR0HaXj8hLArhzuBfDvrOs6TUzSwCT/iIzaf/
+	Z5/QPrJiU/5bDiDnpQFKiruGOutuVqY=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3965d3d9ab8so227774a91.3
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787873482; x=1788478282; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XRF3HmEVCSbkNryj4HHFEle4K2g8xeVsDlkdo6/RfiQ=;
-        b=ES5yXGYyC1ctCKfFBB3a3g0dZ1cON6T42A7FFithfeTbxdl3St7Z0pPjD1EFkN96Z1
-         XXkuF0bp1xaK97JOVbVBlTBcaGnOLW09VUaPX58KyONJLqwnMJD/yE3Vb65z9NaRLT86
-         ptVrJpNyC8kpym0BFH01t7tQc6xcAESq1GGMWbIJTVbFw5Dt5pYUg8MNEWtF4LWxhuSe
-         LBppAi0yIFdBy2PqY910WmhmGJ8dOxeK/sBnZlIcpgjqlk8cO8xaSbCs4Cds2dhGOW/N
-         ERRSFCMLcOt0jI5QneksLdcrNE770PyEj2ekPz7GsR0lm4EOW+mNjSBMQeF22pzUIhxV
-         Ohfw==
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1787873483; x=1788478283; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dyiy2y/avbYOe0BnQSrLgYOVHtwCGX72+qfVpLstJvk=;
+        b=Rcvc3aPnO415AfeHPLKPcZs2PiJN69hdqDn5ZUa7YTQYPWuBqYhNFjug1/7+RiIKai
+         uoUql8bFWLyqN1CG8XHDushbSakNbx0PGUu91bXshlLf9sQxP7z7mRdbLMU9MO/MZtkO
+         mTEg2rJYcgVaDP4nRV5skCnmdHQjqiY3phTR1QO3gGGSDaKyhx7l0zmdFGrJNQQHC5vr
+         PvmbxeaLjs0y1mLKKR65K56DHYULdt95/UvseMO9u3eac5gno4TqZIdgbFJfNOLpaIs4
+         m0rBbaYT3Ya9jTn/S2TiXGA8NG9wlkBkBZ+a4Qatt/G4MrBCaBJBavPqGj+xglkNx4Qx
+         Yz2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787873482; x=1788478282;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787873483; x=1788478283;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XRF3HmEVCSbkNryj4HHFEle4K2g8xeVsDlkdo6/RfiQ=;
-        b=PrNax3ICdpBGAY2Xw+IWSkS5RMS8219siWU4QgNnhALMQaccXLTYp8rE7BPZTjQ+tM
-         abJ1NJJQ9Do28kvEy/1QpCd62xCDtdGz0fij3idKKNhjOn5izCra/6YiYl0oLGul5cBr
-         QI0BPI/l7KvC3DD4Fy95no951AdqeMrneEZGiUB+v5fZtTjn4kX4KlR1m+SYEzvJkx1A
-         Esnl4U4QHca0fFcdeeZ87Weo0FcuSIX4xNyJIrAzhEMRlbatVZOUN6wDvziVaB+a56C/
-         vdBeCwG0lUZhajc+fdOyvb4Ol6JbOgE0qxYCANWMHBoa4qof2LCZwDBkP64bxoOYZVLl
-         hr9Q==
-X-Forwarded-Encrypted: i=1; AHgh+RowoN2ND0SBKf04kz0zMx3gLR3+U+V/0DFVCo4ISl58BLHtyGJ2x4R47jrouSWotTRfOVzZI308Fg==@kvack.org
-X-Gm-Message-State: AFuF++kxWXJsQdgzlYDViVgzHsGmXU2pbmpIhQP3GUoaWGehtNXjkAuO
-	X0rw4eq2HHSszyN5n3OqXgYWuh62XjFvdXRYCZa8jaE9Y7AiHj3ioZrQTxorytm28DzxsgTwS7T
-	wn7Z9guiSMuQ40A==
-X-Received: from dyblf13.prod.google.com ([2002:a05:7301:a0d:b0:315:bf25:ce14])
- (user=stevensd job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:94c9:b0:3d1:be60:2816 with SMTP id adf61e73a8af0-3d268cf776bmr3404563637.10.1787873482070;
- Thu, 27 Aug 2026 16:31:22 -0700 (PDT)
-Date: Thu, 27 Aug 2026 16:29:41 -0700
-In-Reply-To: <20260827232948.2520558-1-stevensd@google.com>
-Mime-Version: 1.0
-References: <20260827232948.2520558-1-stevensd@google.com>
-X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
-Message-ID: <20260827232948.2520558-4-stevensd@google.com>
-Subject: [RFC 03/10] fork: refactor vmap stack alloc/free into helpers
-From: David Stevens <stevensd@google.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, suleiman@google.com
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, 
-	David Stevens <stevensd@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: gf7ncihnyatc9b6ouep1u8tgep74n4pj
-X-Rspamd-Queue-Id: 992681C0005
-X-Rspamd-Server: rspam02
+        bh=dyiy2y/avbYOe0BnQSrLgYOVHtwCGX72+qfVpLstJvk=;
+        b=R0yOVloJS+GfqcnK3paXnUD1bH8McIT9paqs9QKs4xwZEmLW5oME+WyRJEcOB9OSq0
+         hE/XUYRhYN1TSZWdez1RkHJaxuSBg8snGmOid6sssGwJ/WcQ4FgH6NzfAOvKkp6RjsMY
+         8QIR7Raf0ic6JLdDhcbVVVkR00ElXmeS/c3wFAuujIYaDWMHjTzPVrAIKUY4HmhAR8ws
+         UgW28HFqUzdop7UhKLVX+BJIceTOyiZUFCMwjK9kU4UNge0M0lMWZ9qCYUcu36HnsZgB
+         Av9pJxrJ9pzKcpKKHUZEFi62DiJloNDENaSPANfF15C30FtJl4Kyp2rap/rQu+2LUbxa
+         yQAw==
+X-Forwarded-Encrypted: i=1; AHgh+RrncBMzxXs3OqVpzkOJMBqutOyx1kdWre9X45QKnba4lh57gkAnRzCMXUhGp/ZjSnQrl4nCvKA0FQ==@kvack.org
+X-Gm-Message-State: AFuF++k6BWZFIq41K/aF2lIfX3m/N3XOsvIOkWsQaQ8c4001gpeovxTb
+	6u7xRTHjavs1Lzbekiil6pi4IM0jaeXRz22UgMLIpwZ/lGWenOMZGjIaFVGdzwClVGo=
+X-Gm-Gg: AR+sD11IpSOLqUlUaU8rGrQya3bnWpakxvWjSn2StWH3XOGuwn6kMl7gGL5NjmRN/UX
+	a5KDr3Fv8/b6+FT+0K4ZTED/x2IKJoVfOU0kGv39yzjpmIVkFKQPESZQ8Na8JGxZ2v9qudVvgpB
+	KZkYIF9rjCQRxDjH6s50wIVrdAEeioAvYGfdWmgd6alm+B3/8NKw8vzS6H7JrSkQhevmeWL3yX6
+	eUXYWxGPBHZGQaGHp8xtkaZXq4kZ3Dos1QpW0h09dkR98XQEGJxgLX5x1l0tL4jaateJKY5MA0j
+	R5+fgLF9Y2Oq2UigxTyDra58k7em+0LycBSEXeI8EiqW0UkLxlgkbbCHSAolDwwKX9bxpONRM8u
+	GMY9lL0BSOzMf4c73LrotvQ0ZCEn9jy5GvgMXnF586eywOH0/fWdSCB6lPs3ajiWpfgoxegg1Iv
+	4w+bh2cq0f0E5phRH6fbpV7a4A9FVMGMhlW/MTZvxuAw==
+X-Received: by 2002:a17:90b:1c0a:b0:396:54ba:8932 with SMTP id 98e67ed59e1d1-396d104e722mr3685624a91.16.1787873481701;
+        Thu, 27 Aug 2026 16:31:21 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4a::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b1ab4e12sm4501710a91.16.2026.08.27.16.31.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 16:31:21 -0700 (PDT)
+From: Joe Damato <joe@dama.to>
+To: linux-kernel@vger.kernel.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Joe Damato <joe@dama.to>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org
+Subject: [PATCH] mm: memcontrol: raise MEMCG_MAX for charges that fail without reclaiming
+Date: Thu, 27 Aug 2026 16:31:18 -0700
+Message-ID: <20260827233119.411152-1-joe@dama.to>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787873483-661587
-X-HE-Meta: U2FsdGVkX19u+14Pd+ye8zng7WW4i6YV7/L1RAPW7BOssaHr6Y3ySyCj0Ymw+w4zLpba+d/9E4iFJfwWmjMbIseAL7nfSkmBnU6NaepqbkWhdaymFmFtud/BTo82oZWjuMbFNH5bbHJJtEn8TPn57GmIFeUw4VQ+Vt1hmN7xGXDpHLCINPOo875Pmv9SDTPtWmVxbQ6IX9UzgZz88M0RvmUmvP/fp0KvSOwiy1JbNaAKruy1plaewu1mAk9SZfE4Pi5DR0dexRzDYaSd5UsZTigZji2g/ISbBYzucpBA2L/QQ0Cfj9BOWaHdto1GuMIp5qGjn3h2SgKBwoKbHosIJu+KH3vW0/yXfhKYJmoXcVCChA2qQ6ZFJLpLyyjqx376vaM4QmVsg99O1U07rZcaNLwDHiRTD+kbTpo2xWTIkTiUYINdJoWrYj2yIO+bHR5+xmJUO33b1QtwEXy/MaZ1MwiWYreb481xiZ1zIpgosXT2SjKPAtep0U85kxpBFQ//naxHCxoQABoM7/lOCforsvTapMPonzR+Pb89vnuY/UH1dV4dutw/px1+krZj8397DZBgFknQD1zM4BvBlpdjCMbB4jzuviFkcKrpeGImywSUCE7croRKYBGmxqlCV/Icm2j+Hd4BzQFkYo3Lci218HQkvnffLi0f3RuOy9V55bVOBGdR97Y2eprVH0WG4LLEEmTkKj8XCyLWRnNODW04tpagMoCGB0jW0jvobdhCe3/n1wfyyeqP3Xitm3KB+5EUlcJXmfHOV8gW/nMJ3NkBGyW58Vi0wfijEthWcklzG8Mmo8nhLmZyt9UmMKvVNzP1PbxwQAT/1dM9zoOQew3zTFr43d6jr7Kuvs1UzjGwXfYid5uDwe5T3aZfvoLpmup1KJHVA2HNQY+QyaamHJXqwrzwC9Dmz6+lEbJVPic05ZaRfLvu/8ICRobWRxxCXbLkD1uKwqw0dgCpRJf/24C
- nzNIAXWJ
- QqRz8ydxC8jLe5ruQkk5C/LGbLXcTIgpuqj+ufczkl5O7N3u6N65b4Z5iIdshDFBepakcJ5YLe+egV1Bsc3YpiEAsOCiadV17YWJwocMJULoiFh4ENJVGXZCMxE08Kjs2JlH3AiqtL7epLwlywHYv3qT9HeNr2KuFUUpGt0W5tA6lo8OeB/eVKlvWtk4WmbiZhZanH4GxFMsC1OiM8852PKtBoB/XowmV/GhByjSBSO1gWGcx6n+6qFK/5C6Yjy4U7lPx24x45mFqkOUlikiYwflTd4tePkAaLjIaa3tYBslO6HF+4e5mm3BtYm2Ubiwhi4nUKqXO8kVnC59lcfCy+esNgYx1WoqfsmL9amUzikIfXIEUmX5PR9lcbwQKzQvDNzbU50imS6N3iSgDLG/1Oh+6gwhmb9T/tt9lipnoWH3ByTd64W/Gch9zRFdk6UW47n7X/ccCjBERnry0lm4zJGrt7+15DTlHSSg7tfdn/TNw0YhnyJLPLHIVXRL6wv5rEALS5FKqXeK5U62dcOZv3CRDAMpSNQ6j8ie+o7DdxqW90IIX0VOfP7ICJrOxIRdFR9uewZsqAPfEiuZt0Y0+7lXCYBHE/ryY/NUH
+X-Stat-Signature: e7wfnwnya6xjpf57nh6ht49rupkjko54
+X-Rspamd-Queue-Id: BABCF4000F
+X-HE-Tag: 1787873484-277287
+X-HE-Meta: U2FsdGVkX1+OTroAumE/Tqh/A5d7VsrFA51cFyMjbUm8S5xrW2NRFcvco+HOybwweqo45MPV7JL3dtRX3wvZjvwpCWiQq4weQW7i1GINfbcrnBWE968U6+Mdi34MyrapMS/SX/Hl+fDyX/JrbqTAXoP1/oClJgkjeJC2FRV5oU+HsEZLm3QGiJ+BPxFgaWp85SOxr1MMsSCW3n4nYVGo5t5tk4XpRhZMmlA5DrCmpBG+lWPdIDc5TDZOEaEg37Ol+Q4iEcQ/tChTEeVA3XjvwrrSmn4cffH6Io97ajy/ykos5JpoGR3lUfsasCOSBT94R2/Vzpeykbnu5qLBW+Kzq+NohNoFOyPsdXLYhFos02elywSNjS4HuaiMK6GZCK2eEkvqktclUAgWNgar4QWyUXzUAxX1m0j7FeOGGD66D3v7/hTn7UKhGaDZ6e8EE0QqYt2oToDauWkcPgbNyGai1ucHUE7as/W+Qd6UhAilgHy7F/fSVPMdtAOQcSok3f8LOQUp1euMZB5DjyDSyj7LjHdPJhKM1WsPt4bUOta/mNyLcU7utmttm6KR9Mgtwj+5vFZII7ht4GWdd5apkAVZ4oiIDqoPTf/V7/i0RJJckpWAVmWgGImHqM9OUp+GvnK+gwytgYldtz314kjyoMLhm6jgcvkibuZuN1bzMQt7M7Su1bBEQFjf833uTd1Iluev4fuPEnD8MPEoV5pMZRLtfgn14IuTl79zRRg0+gTx9NsZRKw+E42ii5Roau3HGsOOAJwkKbxJaUYRs7NhCLXGXTs+0ZZRjaFdrd1uXRvbMlmKnXHEjgaO5SkGMoZJDmU3sewWjUE2QEErPU+fTt298bI7jB44t9d/kTLogJiyqgnHXbkDan24H984GpjeSi1fxGLIA6SyiZjEaMD5Al68qedbN2Nz4sUY7+9+TOsPGCdu94LU4n80DGJya2Vm/xa+t8JqE2GDoc0iw05nPFV
+ eYdkRu/1
+ 21CIn0MotR3b1aFqotvcXYauQLqqrnvgzkHncRoxAuf7om7gWUzLhBNre1s3ozxWyRX3QsInq76VSDNSmGYabKaAttMx9j6gjMBJDRSjOxQU38SGcuNhpMNPOUxHr2ZLwr34aJgSBTPXQfboX2rdOEnilWIljZgobHn67snLIF44GQ6kRzE/kAEDyc4s0JXfKuyJz94GDiR4b9G9HH9powjIBVFj3unPcG/1m2LA3n7u+QGNaRVkpa5qD6s+XT5wzDQ4DOYv3vcHax9jcQMgVODt12VDNx/nq//+IawXJxSGHWWqky7RgwMw4b40nNQKYJbuBp6d4tvJjNGwoXmWL8aHZKA8nJNjxK0SpYWSQEzIVHLBrPNemwK51MCR4sJJhkc0Xg/RKoENOiQ6UWPwC0bKBJJE9+7TUdnKGStrgL8M6ePiz9CgBovMUAwPQDo2n3QOH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,107 +120,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Prepare for alternate implementations of some functions for reclaimable
-stacks by creating helpers for allocating and freeing vmap stacks. Also
-reorder some functions to consolidate the functions that will have
-alternate implementations.
+Charges that exceed memory.max and return through the nomem label can
+raise no event and simply return -ENOMEM.
 
-Signed-off-by: David Stevens <stevensd@google.com>
+A non-blocking charge can hit the limit, get rejected, but is not
+visible in memory.events.
+
+This was noticed in a production setting where bpf_mem_alloc() attempted
+to refill its per-cpu freelists, which triggered a non-blocking charge
+while at the limit.
+
+Move the event so that it is raised as soon as the charge is known not
+to fit.
+
+Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Joe Damato <joe@dama.to>
 ---
- kernel/fork.c | 41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+ mm/memcontrol.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index f0e2e131a9a5..10bd76f6dd20 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -207,11 +207,6 @@ static DEFINE_PER_CPU(struct vm_struct *, cached_stacks[NR_CACHED_STACKS]);
-  */
- #define GFP_VMAP_STACK (GFP_KERNEL | __GFP_ZERO | __GFP_SKIP_KASAN)
- 
--struct vm_stack {
--	struct rcu_head rcu;
--	struct vm_struct *stack_vm_area;
--};
--
- static struct vm_struct *alloc_thread_stack_node_from_cache(struct task_struct *tsk, int node)
- {
- 	struct vm_struct *vm_area;
-@@ -272,6 +267,26 @@ static bool try_release_thread_stack_to_cache(struct vm_struct *vm_area)
- 	return false;
- }
- 
-+static void free_vmap_stack(struct vm_struct *vm_area)
-+{
-+	vfree(vm_area->addr);
-+}
-+
-+static struct vm_struct *alloc_vmap_stack(int node)
-+{
-+	void *stack = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN,
-+				     GFP_VMAP_STACK,
-+				     node, __builtin_return_address(0));
-+	if (!stack)
-+		return NULL;
-+	return find_vm_area(stack);
-+}
-+
-+struct vm_stack {
-+	struct rcu_head rcu;
-+	struct vm_struct *stack_vm_area;
-+};
-+
- static void thread_stack_free_rcu(struct rcu_head *rh)
- {
- 	struct vm_stack *vm_stack = container_of(rh, struct vm_stack, rcu);
-@@ -280,7 +295,7 @@ static void thread_stack_free_rcu(struct rcu_head *rh)
- 	if (try_release_thread_stack_to_cache(vm_stack->stack_vm_area))
- 		return;
- 
--	vfree(vm_area->addr);
-+	free_vmap_stack(vm_area);
- }
- 
- static void thread_stack_delayed_free(struct task_struct *tsk)
-@@ -302,7 +317,7 @@ static int free_vm_stack_cache(unsigned int cpu)
- 		if (!vm_area)
- 			continue;
- 
--		vfree(vm_area->addr);
-+		free_vmap_stack(vm_area);
- 		cached_vm_stack_areas[i] = NULL;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 1271d390b617..3904fe9a7b2e 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2683,6 +2683,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 		goto retry;
  	}
  
-@@ -338,7 +353,7 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
- 	vm_area = alloc_thread_stack_node_from_cache(tsk, node);
- 	if (vm_area) {
- 		if (memcg_charge_kernel_stack(vm_area)) {
--			vfree(vm_area->addr);
-+			free_vmap_stack(vm_area);
- 			return -ENOMEM;
- 		}
- 
-@@ -356,15 +371,13 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
- 		return 0;
- 	}
- 
--	stack = __vmalloc_node(THREAD_SIZE, THREAD_ALIGN,
--				     GFP_VMAP_STACK,
--				     node, __builtin_return_address(0));
--	if (!stack)
-+	vm_area = alloc_vmap_stack(node);
-+	if (!vm_area)
- 		return -ENOMEM;
-+	stack = vm_area->addr;
- 
--	vm_area = find_vm_area(stack);
- 	if (memcg_charge_kernel_stack(vm_area)) {
--		vfree(stack);
-+		free_vmap_stack(vm_area);
- 		return -ENOMEM;
- 	}
++	if (!raised_max_event) {
++		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
++		raised_max_event = true;
++	}
++
  	/*
+ 	 * Prevent unbounded recursion when reclaim operations need to
+ 	 * allocate memory. This might exceed the limits temporarily,
+@@ -2711,9 +2716,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
+ 		goto nomem;
+ 
+-	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+-	raised_max_event = true;
+-
+ 	psi_memstall_enter(&pflags);
+ 	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
+ 						    gfp_mask, reclaim_options, NULL);
+@@ -2773,13 +2775,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH)))
+ 		return -ENOMEM;
+ force:
+-	/*
+-	 * If the allocation has to be enforced, don't forget to raise
+-	 * a MEMCG_MAX event.
+-	 */
+-	if (!raised_max_event)
+-		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
+-
+ 	/*
+ 	 * The allocation either can't fail or will lead to more memory
+ 	 * being freed very soon.  Allow memory usage go over the limit
+
+base-commit: 3d83758432b5e6ed9507500a57efb0f3af41ee7d
 -- 
-2.55.0.897.gb25b4bd76c-goog
+2.53.0-Meta
 
 
