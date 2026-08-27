@@ -4,133 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECF72C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B9F7C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:14:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6B376B009D; Thu, 27 Aug 2026 11:06:45 -0400 (EDT)
+	id 908626B008A; Thu, 27 Aug 2026 11:14:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B41596B009E; Thu, 27 Aug 2026 11:06:45 -0400 (EDT)
+	id 8B8D76B008C; Thu, 27 Aug 2026 11:14:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A57B66B009F; Thu, 27 Aug 2026 11:06:45 -0400 (EDT)
+	id 7A8736B0092; Thu, 27 Aug 2026 11:14:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71DAE6B009D
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:06:45 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED0C4A3B65
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:06:44 +0000 (UTC)
-X-FDA: 85147376328.01.2BE60E3
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F24CB120010
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:06:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="e wJL9hJ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=gCDpB0no;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by kanga.kvack.org (Postfix) with ESMTP id 5448B6B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:14:46 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC94A14045D
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:14:45 +0000 (UTC)
+X-FDA: 85147396530.25.9E341D3
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2CE0C20009
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:14:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=tI1zIdel;
+	spf=pass (imf13.hostedemail.com: domain of hnkz.64@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=hnkz.64@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787843684;
+	b=ormn/bYCtpM5TIkKi8ksWb6r41fi1oc0+u6M7leqTkIunKVTQCY8g58KILeZlU5HFum1fF
+	UtmWupanSf0HLKouJbvA3uNFZeH5IcLRV1ivExeidvcxPgszvJyGHHeOz9WsTpuyPvldJr
+	X1iJDIgm+WeAZVpsndbP2zrIKUIY++Q=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=tI1zIdel;
+	spf=pass (imf13.hostedemail.com: domain of hnkz.64@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=hnkz.64@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787843203;
+	s=arc-20220608; t=1787843684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vyVgXPC7XqGZWzz9wNdixBWf9MizjLo93ogBCNARLD0=;
-	b=L3Ii1Ke8NtV/6VU+6lozQqXbYvnjoPYYi9RYr8io6zX/mdAdl+rFJUyi9I39gKY9nM5GW+
-	xoSCoPeZs56SHWFhIkdEeEq3yB0Y/IPsFmro+6CRkajQRZzKmg9oqZkfHfpbU9likM9mUZ
-	WZAhz5jvrqYJ5ej+Yf5Favxn6QTPWOY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="e wJL9hJ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=gCDpB0no;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787843203;
-	b=MxUg0asEu8CzJvNSJmstGHgCIP+/dDW93q22YE0+OE3mex0Hl900yi6Q5Q2laDRz4jBThN
-	QMbT4p/K1kLMveyWoG+ZDsCwkEx3CdJX+QrjhfcQ/49ktcKlQtLG3celi2gdb2V49BOAhD
-	K+fKrcdkXyevkE/Uj9e87GbT+MchgxU=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 6FDF713800BE;
-	Thu, 27 Aug 2026 11:06:42 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 27 Aug 2026 11:06:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787843202; x=
-	1787850402; bh=vyVgXPC7XqGZWzz9wNdixBWf9MizjLo93ogBCNARLD0=; b=e
-	wJL9hJL68P74mIyj/2wIZ2DkbFhNV08+Ks+6er8Z5FEqevPdPnxAxWV2nG++1qrM
-	2xKnV3NiO0bIOSri5WfvXMdm0yne/7P1bsRd2NvTdAaCLvKZHjwlT3dUnKqxqhfu
-	mKwgvn4zPF+oAP7hMAjU2e4IzKFz4FGDt1E8NaDGM9wdQyEk9iRoya9+WsgMMtDY
-	WRakX9Dfn6tmKyPlBVXxnZA6zfO0nrQvENabIdpcrvNvvcetNnBMs6+fFIyTesMk
-	cVblarbQ2ffUmCJyNFDS5pA7EJs45OMjzM4kol6uingknOqVU/JcPG2zW+PcdA98
-	ceOs7C2JCFLd/Z7cxjSRw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787843202; x=1787850402; bh=vyVgXPC7XqGZWzz9wNdixBWf9MizjLo93og
-	BCNARLD0=; b=gCDpB0noOCKmpvQ0tgbD9uUfpK/rd1Yk3BVSabI2nqhKZdArI4+
-	IOncXscrh1DmFVKfWtiwNYvVoeMIRzxsZMG9sHjjiuGcAabTkVnW4v26Hc+GAjBJ
-	GRFvCnF4I9+EMEzwL4XdUhyg+YgVaEP7WmA22EbZdEGGBIoTKAuz5DRmizbJruCz
-	635a9K9EhZLaGq6Ou8JVxvNk1KSOGE++5lKdgVO8bzoYdO3FL/qLHkxRiHthBntV
-	sHXNuVqKeXq1D76rsPJuAxydKcOVkVEnZverKIrK6oyzklxEaXgDxq7tPXK/yUhG
-	/vkTD1PZ1a0cFnXIQzq8imS3thSeyfSQzMw==
-X-ME-Sender: <xms:gVKQavMtxw8k3KjWdBbXWHRyLBVD3k50KTjpDv2UR5QbyJN_SszZZA>
-    <xme:gVKQaobzixOI7pXDdmyzxNY3n-cOV7UaBgYtqyxz4jgAYrmTmIJ_1rCtv7Dkipg2X
-    paHhjUCunThCAfMlH-4Ww4IrsS2yjHx7FT--XqFqjl8-OQlI_HZxlo>
-X-ME-Received: <xmr:gVKQalabVcIrMl-2XNx6Z4y0acPO7pbxJG1jHCiUOTe1Z3rFL_oSPep6FPE>
-X-ME-Proxy-Cause: dmFkZTF7rqhqgfgNccL2sR2hyItVdmKcKUadzZgok63Pcy2lXH7+X0fqLqVk/pB6WyGIcu
-    9MKe0/eXeV6rQomO1IDumtZ+ROQyHaLQNO7F7ESHBVIiKgzH7eB36INx8ifcAzbkCcSdkB
-    YXe8izaqA9Tu9pLIGfNoVjSfZ7NYAM16xvUNys0rpUr7BNMNv5LWriUueN07q9PkXbN1PY
-    z/jN03V+4Y7LxsDv9S1aleZ98TWWU6Q/jICVYj5QwMPZibdeIs8AJwzmOI4UTadWt4XDoN
-    Hjrf9ky6tKoR3muqanBE99vi72fMYN6yuXLmY2h11OWHxrAczFjbbAcpGNkWE6y4rw3vrJ
-    0O5w6kI6akqRYcAZbkqFXHJydzE09h14qyHoB7jYHLvPHE69ubfyHCqxyGD2960LEPm6CK
-    YtGRCjPD47qD80CBT5p12LcwsskywfRwkX5q0SD8lsIBBFy+r27ubi747GPv6VeeKgdLkt
-    rzKFECsqKX3K4ZzpJ5kTpOPIJhVj9laABHGVdmPIRHo77elfFGr53m8w6/qdOrYpMjERI7
-    2EOrckafIsqTmJ6+pQ8GGTT7+4w33pYjSChh7RO2PCVH3aY9wsQ3dKgBMggRK8ipVry7lE
-    eVOb7fh6V5TxGyP7iGYYVTUrCn8aiQN0CKYyg05yT/6hlbcfbLQG72JsgWRw
-X-ME-Proxy: <xmx:gVKQanQchSGT3stTABorYgGNj7W6EUWDfqxL8AGWp65CpbGpDTPs_A>
-    <xmx:gVKQaq1xEdIuxeXo3rYRCF4Lgfv-e24WDVrkKpjhiBI4PFoIigYLhw>
-    <xmx:gVKQatWJrLl0-g20grYx8-G2znDUaPUjXvsTg_3U2aenTIStxCyLwA>
-    <xmx:gVKQarzA1lJ_hn3De-IGB-6SlAl9WsBzMGgFh9hUjDsXgzsAn0e8uQ>
-    <xmx:glKQailPGULPrI2iArVtdv2LLjyCLa7JAkpNMxDpl_vIDIbxvVp08R0g>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Aug 2026 11:06:40 -0400 (EDT)
-Date: Thu, 27 Aug 2026 16:06:40 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v3 05/18] mm/huge_memory: rename __split_unmapped_folio()
- to __split_frozen_folio()
-Message-ID: <apBQqJZ89MHZi2RJ@thinkstation>
-References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-5-9b43f5163238@tencent.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HOj72xyYrh/M1wL/Vv/7ESh6wi5lka6M7SFQ9Hx1r3E=;
+	b=lnDpbYoj68Ku2RGc8DK5LYrIDolUPoua7MAS4c3Sbi+5bTfsNwGAE6xnWNtpOKuWS+pDa5
+	J3m1RrUcJz5gDxZllt548FIrjpCvKpUG/b9h7kXoBWnY0xkqPb6Kjmau89DnYxWfJJcuoH
+	J6iNcQPwuxCBefXPBIzNUK8kPXJELXs=
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cc1e1ff659bso13245a12.0
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:14:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787843683; x=1788448483; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HOj72xyYrh/M1wL/Vv/7ESh6wi5lka6M7SFQ9Hx1r3E=;
+        b=tI1zIdelhPnK6v5hWc9oFaVDpUZWesOZk+e6Oq0N+7TZs1DkzkbJ89RVMqGAXv7TAC
+         4gdDJaMKbOtDsC/U3+oncOI1HNd6rfhuFkI64FWWr+LA1d0mawRNnQPb9/FSWmWZXy6E
+         PcOCPrRenEHGy19MgE2cfgMJWRfU5V1N4+tEcP2JEPwlc8h/9S+FEZvjWpjSFoVAj7/b
+         VqukCvUs7PpSoKMoAnMGrdxSrmlzjucFnnrvgx7PGE98tH85sdnYuMqlUz9wKWdGguIx
+         OoboMNJ9c4QpzP6RSDBdlBA7kY4CWD9pATLF7hargek2dD0YZjubCO5x3Eh+Q4tVxiBY
+         Ppdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787843683; x=1788448483;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HOj72xyYrh/M1wL/Vv/7ESh6wi5lka6M7SFQ9Hx1r3E=;
+        b=WX3Dj+c5rSsYKcNNxtQGPaLloe8m9vCeLlXsoRqasgGiHfddKOkv89S+Sww5uvUpfg
+         l8ku4AwBlER9T2j5ZRP5smFIMMfGQb1PZINCgE5uHuEzPz0lZIDIIGrza/qnVyoni+q1
+         zIMGs9NU86wLM5ZpOnV4X1T76W4XW7BPx7HHCxsAzan8Pat/2QcwCPej9CSPpXLRuiV1
+         rU0SP5sVAqgAfIvqUUW6jG1w8phGw/dOV9Pnf7EW3gzFtMAq76HgafnksKvvZ/UTjKO7
+         3xyhI4zKDqFctVlU5uxHfpRWSE+PEsa7YiYArHwAnuU0haT59Ht3I8Ib+lHvjxEvtiTq
+         dr3w==
+X-Forwarded-Encrypted: i=1; AHgh+RpJ155yEcsYS9KR56ek/QVOdEgbZ4DIqrTkhN3huQgiI9NaEFmvv7rn7+81NgH6sRS1sl0fMm74/w==@kvack.org
+X-Gm-Message-State: AFuF++lbVFRkWmy/zbqfOYotg/cF1Hf33SVLFzba/9xl/ZepEgIvxvyx
+	9Q3h19yRomy/kzpWYuyjwGp1ZrnLz74IfWVT1+K09wYyDz8YpUQCSiB9
+X-Gm-Gg: AR+sD12U1Ib+geONsyD3kvW2vcR/RT2ltaolqXiVpM5xp6uWne039EnRVXfUh4Yow8I
+	jlE0+QDs8/VTtwsaOvcK3qBWEudSVc6Jd5M6b92d64+6aO8wRFjW2lUsiqQCtdIsM2EU6+G082D
+	MzgzedIBNP+VyB+Rk16tSfeaIJxbs0Q+9FOR7XopJABL48MTlwUF/LuEAQJQz9n52qGZAlMI/ud
+	gCon3DLOE79nRlsJqyTW/O+B/ZAv5zmEX7QIcP4GTH9CSZZ8YHz4P3CAfVhRhjCF7HPtXe/8mgr
+	yAd3Z+4V4ITR2RKNz5Vp63xEvHGe2igWVPXZx6/L3JtqpjGBmkSazHkH/FE6v7nsLqBLIhAyap8
+	+b243QyRoQX0GiF/33ziVzZR+yJU7x2hy3uiNj0Qb0leNbTEXeEESOi4PJmSrFsfg7zPCWERM9Q
+	Kw6o5Ut5DUbv+YD+5QAlCAgQt2hbAFwzXCerm98ETuDTDE3taHiufWVE6+6w9yCjf0f4SU30NAl
+	q9jG7eQ38iZ03m9GyXjE0cx8mv1D0PCRW8h1vqBRYs=
+X-Received: by 2002:a17:90b:380b:b0:38d:ddc2:7ccb with SMTP id 98e67ed59e1d1-3966d13a242mr30232908a91.1.1787843682593;
+        Thu, 27 Aug 2026 08:14:42 -0700 (PDT)
+Received: from hnkz-ubuntu-vm1.mshome.net (flh4-125-195-69-140.tky.mesh.ad.jp. [125.195.69.140])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b186803asm3118453a91.11.2026.08.27.08.14.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 08:14:42 -0700 (PDT)
+From: Kazuki Hanai <hnkz.64@gmail.com>
+To: hughd@google.com
+Cc: baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Kazuki Hanai <hnkz.64@gmail.com>
+Subject: [PATCH] tmpfs: fix unicode_map leaks in casefold option handling
+Date: Fri, 28 Aug 2026 00:14:26 +0900
+Message-ID: <20260827151426.796843-1-hnkz.64@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821-swap-thp-cleanup-v3-5-9b43f5163238@tencent.com>
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 6bu5w96k45fqeadxw4ti5mpscaobnkpj
-X-Rspamd-Queue-Id: F24CB120010
-X-HE-Tag: 1787843202-551701
-X-HE-Meta: U2FsdGVkX18SMT/2y8r9+KphEg2+7iluXNXogV4gMZdj7yXpmNqAqQLVtIXKGKroaKFjI24vj/RQUj8EtEBtd52gyyhxU3rgrTf+1ngna42eLFyA3M4UKD2Q8lJV3+qmEddkLYkSWTYm2Dw7rSSyWqEkLw66ChrVxViR7kR4jk3RNro1rKeeypK6a3FB6E84UJBhICiTrPjuKxswK3IQ48Ke7fg1LgGHXdBu14ONblrSnj0cLj2O5lPTK68eXrS+N21wpP+XsZSI8Pugg5ZEpnwfTr8sQJfDJILOooLIuLQbf8PvJfj6BjSWrfot+xfpivBXEKRq34gVCA5B46AzrVv8nvpgq2opC5p5I67n3+/SAdp6iulvPwZASVHqvRxzfQLYVyOPDdbBm5REeYGFhlSK2txfw2+gYAmypdXP/kotTSlMV88VqBeNVtIfwaV55Oy7frHgiD4wbojDx1dxFFQF2CxiFTKNJMYUOy++jUiedb6/8D/DohDg2e6S9nF54OoDNsP7uHPEM6eCfRSCqF/o820O71/c/hkTcehosCP3yvA/kC87RRYdRn/LLe2oUTLJhyqYL+Lt3sZDfhEEpNbVPRE8ENUbiAYNChGdfMbs+Zr7r5dlAP3O4Juwhn0hXUKe33wn2Wo2TbADV5yTIJDTjLA2yB5Fq8tXzkBjCFhWUw4mJQOxpf09BkFpc2VHFJ4ONv+kNScdWOqJoRdcMCAnPCe0zOb6gUKR3kM5gjGsEdclHTgtgmtdwtMf7CBtPODhCyOWQrTmJMYIFw8N4Gi7vQx21d7Egd1oT3Q4YAAVeSlmOosVhk1xg5ZLfDR5tVMRukrPENa5ptd7gXyqTIyuhTZ9upajPd2G55CTftDan1qGIkNwGIKr6DYVHmLbXZElS2n1P4K79v00LgRLgunrZJgI/YhlFG4xe19eZOigZIxFGsLIyeY0z9+LFiYDIXNWZBaMk46nCtjVq/z
- Jdao6m0C
- xkUzIVhsqpBIOmFy6aazphwaqdTccHx07zU/JpyKrUPHnO7eMux4onE4sqjxhU8AC2qIZXmr+mwMJwBafkA+6J6J/BSpF2PtG4XzVaZ5tftBQsEXFM3Wwi4KfrPPPLI3xfEYGLQ5n7rtWCXrDlFHEPPWDCVnhWbe0snYkscDJFp0uoaSkok381MjcqtRzIXttZ+t9Z9eNazyz3ueP3HuZNZD75BYTMR3TQuhIokCRGbT8Ytstw8fAQAoBOJ+qp7SnMwdEokrjU4bLStWQL2HxZAx7sPGpClt/qGGIybWLZ5RrJNJZdxZ54udNF6gYuyDnKVWW+RUvQHZ+DmEY9rl/tqqf9iI42zqzYRc240v61sRezoDQKO2E3BWlZCOeuXtKuTXRLOfFoK9675lab5dg/d0Ia5iAB280qZ1SufKS6nznHIJQlGrmBFmSo4nOQ+mx/NPyJoWUV6CW9mHPw7GAw4xG2wHYs/G/CW19Q3dJrPRZgHUUXdgpaKm1JL1izHVKB5fj2cAZ39rPkmfPoRxSKcf9vhoezivaYNGjYIG7LqlKaXrSvikpodgTJA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2CE0C20009
+X-Stat-Signature: 7xuunfnieypbmtgmcn79huio9peqzboi
+X-HE-Tag: 1787843683-975857
+X-HE-Meta: U2FsdGVkX1846IKF/k5SerQzyCnsVTOzBYJdeXuC1jSpCzzr4Kys2stwyh+n4dfmt3bNFC7jBEZvkV20sfWeng3BydwRE9nXFQVx0Trauh2sNaWkyMZy7wYskZMmdjSOjFT58cKnEJcS5NLy4nRZ1wPzlJuH5MoniGMKqqJB9477PeKYHaissUy4PJMqQFiB1PqiWpKxUZFX8n1YxDu03349jv0IRcaBROUIjOz9Up9/G0pKo7tHcbVR/Q05tHBd/aIbyJs9yE6Qh9xsEcQyE4RkNLuYEGhDnrLLsZ5t/VjLn8CEDSJBbhei9Gt3RkmA1xtIva4YoVvFmMZbB/OWWUV+eJAh/zz0XGYxbhZmj8apdlPz1vh8qpDLxbugCRB3CSZK3VwBOrwnGmRl9V0nPr6GialBTCmV3JPUg47k/ae+hFaNr1juAL6gvS7ChgUujAEszpXYf9pZEwxP/uOAFaLH6gulNLYnJXT97t0vNfeWYHdrKTF7glzgXxa38416c7JZemji8jmE2WTtxBefXl7vILBNVQ68ql+B7BkHBajQO+KVMDHDSODigGrdUW0UHjeCJtGtDb6RnqExnboNWQWorV+uiD/EMm57jLJ7gTHHJtxEArCYKZC46cGbMgw/ZR2NNTSaTLVld8RLi1oT/TFojR86VjDxZ040pXmbKSazIfNU8AnTwBZqqujEyNjZaqOCLSH597IWh6mtdKLaYqUQszGgIORJ1mAif62aFR92UZckqB01dogkXJVm2STA/bdA15pthfo3kUn2N8tks/Uo4V8h8WpEfu9R2de6d6++4hO6MDtXYp31fkW4iXglTQfSvVXI2O8D7MV//6o/RY/7wdJSwc/JLCJ8yYAp1IO+e67r3LrcO8apl3sM6ndcIX0dUYmEHZoOk9nnHmcO8EwYKV/XXrWScOa3RIw10iTwbxwkO0mio8+NNvaUWA59K/Xxyc7U+tgddLiGy5p
+ AOJSkjmd
+ caVnNUaiwealjYe4Bq29wa96h+yG8XNDBpTwxM+W5H9mvxDo/9Mhwyg4pySvH45X92J1kwmKdyQu8zbZairC67wREAjIEF+l3BQBQ/xjQqWvuuvqxq8wwPwfcS8Xuo47Dfxfh62H+KdTa6ULLAMVUeFyDfAI+EGo3T4jep0EbfAqfOcHQ6M4nIghGvIFJzDYn6yxfMJgI/Hb+NEZWb6nZstYwzqORGL9C30iXbpR9Ln0+rSxav5EafpAM7xFMrGyIYjpntB0hMM3KuLf3F9Tuj79RqmvgvWWniUoT27HpN9fuc84hnB1qtxcP7ygNhYqa797+yY1wzh1AuYgcbQgOIBqtolbJpR0LupSM6Vg4pQMSkZAGkkMoIWsqUNH4N8vndHuOG92bD3h23iXrMVVuY4uCS24Wciu7qsgxR8gp61b1CMVjF36/2zumVd/2RuKcWoa5zhGpNL4K6Jb7XgbkGSHht1c869TyrZ/v+r41GK+sPMNBeNI3JXAY78hm6iJAzJqdo1uPeYlJyeg6Oj+gallCLpBdZmO7w8MxI0pVtIcWbmD9lMxT5FSHIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,50 +119,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 21, 2026 at 02:55:18AM +0800, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> The helper splits a folio whose refcount is frozen: the frozen refcount
-> is the state it relies on, while unmapping is arranged by the caller
-> beforehand. The old name caused confusion and people may try to call the
-> helper on non-frozen folios.
-> 
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+shmem_parse_opt_casefold() stores the unicode_map returned by
+utf8_load() in ctx->encoding. The casefold parameter can be supplied
+more than once for the same filesystem context, but replacing the
+stored map does not release the previous reference.
 
-This patch is fine:
+The final reference is also leaked when an unmounted filesystem
+context is freed.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Release the previous map before replacing it, clear ctx->encoding
+after transferring ownership to the superblock, and release any
+remaining reference from shmem_free_fc().
 
-> @@ -3989,8 +3989,8 @@ static int __folio_freeze_split_unmapped_anon(struct folio *folio, unsigned int
->  	if (do_lru)
->  		lruvec = folio_lruvec_lock(folio);
->  
-> -	ret = __split_unmapped_folio(folio, new_order, split_at, NULL,
-> -				     NULL, split_type);
-> +	ret = __split_frozen_folio(folio, new_order, split_at, NULL,
-> +				   NULL, split_type);
->  
->  	/*
->  	 * Unfreeze the post-split folios and put them back to the right
-> @@ -4053,8 +4053,8 @@ static int __folio_freeze_split_unmapped_file(struct folio *folio, unsigned int
->  	if (do_lru)
->  		lruvec = folio_lruvec_lock(folio);
->  
-> -	ret = __split_unmapped_folio(folio, new_order, split_at, xas,
-> -				     mapping, split_type);
-> +	ret = __split_frozen_folio(folio, new_order, split_at, xas,
-> +				   mapping, split_type);
->  
->  	/*
->  	 * Unfreeze after-split folios and put them back to the right
+An unprivileged user can repeatedly set the casefold parameter on a
+tmpfs filesystem context from a user namespace. This causes
+unbounded kernel memory consumption and can result in a local denial
+of service.
 
-But now you have *unmapped_anon/file() call *frozen_folio().
+Fixes: 58e55efd6c72 ("tmpfs: Add casefold lookup support")
+Cc: stable@vger.kernel.org
 
-Given that you introduced *unmapped_anon/file() in the previous patch,
-why not give them the right names from the start?
+Signed-off-by: Kazuki Hanai <hnkz.64@gmail.com>
+---
+ mm/shmem.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 89a1495e55f7..62440caf2df5 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -4508,6 +4508,7 @@ static int shmem_parse_opt_casefold(struct fs_context *fc, struct fs_parameter *
+ 	pr_info("tmpfs: Using encoding : utf8-%u.%u.%u\n",
+ 		unicode_major(version), unicode_minor(version), unicode_rev(version));
+ 
++	utf8_unload(ctx->encoding);
+ 	ctx->encoding = encoding;
+ 
+ 	return 0;
+@@ -4976,6 +4977,7 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	if (ctx->encoding) {
+ 		sb->s_encoding = ctx->encoding;
++		ctx->encoding = NULL;
+ 		set_default_d_op(sb, &shmem_ci_dentry_ops);
+ 		if (ctx->strict_encoding)
+ 			sb->s_encoding_flags = SB_ENC_STRICT_MODE_FL;
+@@ -5073,6 +5075,9 @@ static void shmem_free_fc(struct fs_context *fc)
+ 	struct shmem_options *ctx = fc->fs_private;
+ 
+ 	if (ctx) {
++#if IS_ENABLED(CONFIG_UNICODE)
++		utf8_unload(ctx->encoding);
++#endif
+ 		mpol_put(ctx->mpol);
+ 		kfree(ctx);
+ 	}
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.53.0
+
 
