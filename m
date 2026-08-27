@@ -4,115 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91991C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 23:31:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 851ADC61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 23:31:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A41C6B0095; Thu, 27 Aug 2026 19:31:27 -0400 (EDT)
+	id 9E9096B0096; Thu, 27 Aug 2026 19:31:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57B4D6B0096; Thu, 27 Aug 2026 19:31:27 -0400 (EDT)
+	id 9C0546B0098; Thu, 27 Aug 2026 19:31:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 490326B0098; Thu, 27 Aug 2026 19:31:27 -0400 (EDT)
+	id 888CB6B0099; Thu, 27 Aug 2026 19:31:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 25B3D6B0095
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:31:27 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 875FA8021E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:31:26 +0000 (UTC)
-X-FDA: 85148648172.21.DFE4BBB
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BABCF4000F
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:31:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=dama-to.20251104.gappssmtp.com header.s=20251104 header.b=Rcvc3aPn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6068B6B0096
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:31:28 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C4D9C022A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:31:27 +0000 (UTC)
+X-FDA: 85148648214.11.7ABA891
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9C21180006
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:31:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PVbfmSlW;
+	spf=pass (imf02.hostedemail.com: domain of 3zMiQaggKCPsvwhyhqvgjrrjoh.frpolqx0-ppnydfn.ruj@flex--stevensd.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3zMiQaggKCPsvwhyhqvgjrrjoh.frpolqx0-ppnydfn.ruj@flex--stevensd.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787873484;
+	s=arc-20220608; t=1787873485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dyiy2y/avbYOe0BnQSrLgYOVHtwCGX72+qfVpLstJvk=;
-	b=N6cG8oTK10WKfZRtR4NUvUVUG6bBFOobetqgCKNiRPRRd9mhBhD6SfZPYfISqJD8r7TqNs
-	PLXWRURfe4nB8OoYxdieGS2CuGdwhoVJ1QeVeje0KI4Uw+Ds3EIDQOgM04qNTh05AwCTAd
-	ei75lJ5sK2bNdSJnmrQ/afFaKWqm7Ss=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=dama-to.20251104.gappssmtp.com header.s=20251104 header.b=Rcvc3aPn;
-	dmarc=none;
-	spf=none (imf17.hostedemail.com: domain of joe@dama.to has no SPF policy when checking 209.85.216.47) smtp.mailfrom=joe@dama.to
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LOrBCjVl+Gsil1QM8OKlKDVjeh9PhasgM5tVDAHOOrA=;
+	b=MXng+EMt3t3uu93KKMia03f5gdfwyYlJE9Xsmwz8vTcrLtVpcPgaUPvkKsUZA9XXKUVj7U
+	JVImHVOC57uufRILOTPGldhzkncFwo5Tj4WeDK6iUG9i8NRwrkrZHThHHeKq/c+g0//soL
+	+BBnjdsCdk+euet4RaHADKW7RR5BRrA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787873484;
-	b=NzarKfAhXt5RJIFGyububvC84q3ldMfOx2j7wOXAiny858DkCWsY3NB8pJRR9NJS9e21mn
-	Yx4ToF1n+ax0FjER/rgbT1CxIU/rNLXQ3qR0HaXj8hLArhzuBfDvrOs6TUzSwCT/iIzaf/
-	Z5/QPrJiU/5bDiDnpQFKiruGOutuVqY=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3965d3d9ab8so227774a91.3
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:31:24 -0700 (PDT)
+	t=1787873485;
+	b=ccSdu54PqxB8kkEGZPPj5Splt0r3/Ag8bZCz/EYUkagsHSi5F1Wm7+kC2gpVV9+JagoAUm
+	nafu1l3ADPPNdNlify8yR+rLXcBin3ypIE8yCtdn54RvoBkSAkZDRrhbAEEOZD8zRF/ieP
+	AjWtw5dI2A+7l3Q7UAh8nyhT69Y+ahA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PVbfmSlW;
+	spf=pass (imf02.hostedemail.com: domain of 3zMiQaggKCPsvwhyhqvgjrrjoh.frpolqx0-ppnydfn.ruj@flex--stevensd.bounces.google.com designates 209.85.216.70 as permitted sender) smtp.mailfrom=3zMiQaggKCPsvwhyhqvgjrrjoh.frpolqx0-ppnydfn.ruj@flex--stevensd.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39512608fb1so1060086a91.1
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:31:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1787873483; x=1788478283; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dyiy2y/avbYOe0BnQSrLgYOVHtwCGX72+qfVpLstJvk=;
-        b=Rcvc3aPnO415AfeHPLKPcZs2PiJN69hdqDn5ZUa7YTQYPWuBqYhNFjug1/7+RiIKai
-         uoUql8bFWLyqN1CG8XHDushbSakNbx0PGUu91bXshlLf9sQxP7z7mRdbLMU9MO/MZtkO
-         mTEg2rJYcgVaDP4nRV5skCnmdHQjqiY3phTR1QO3gGGSDaKyhx7l0zmdFGrJNQQHC5vr
-         PvmbxeaLjs0y1mLKKR65K56DHYULdt95/UvseMO9u3eac5gno4TqZIdgbFJfNOLpaIs4
-         m0rBbaYT3Ya9jTn/S2TiXGA8NG9wlkBkBZ+a4Qatt/G4MrBCaBJBavPqGj+xglkNx4Qx
-         Yz2Q==
+        d=google.com; s=20251104; t=1787873484; x=1788478284; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LOrBCjVl+Gsil1QM8OKlKDVjeh9PhasgM5tVDAHOOrA=;
+        b=PVbfmSlWJ19axGuQ8Qfl1USxulFAVwojN7hE8R9J95UnZcuzlrKC51vBLMcFRiCIt6
+         lJtHCz/vfzbA0zlwPTAR3QKhB98w0lMGCclnw/ae63gE7pq8/079C2Hkn/prUJAg7cT1
+         yWjtXcQMrs8/I23Ry843LHnWP1BMhl+5ThReme7eA7ZxSC1EdjYRCKS+jXKKP1MeCXWw
+         f2rejtzI0f8OtlYTMRcUv2APEoYj7ftcJThNSELPYU+eJGbhhq8WBUXhVe3LSe99EeUT
+         x8FhCD3MOkZkFSTtLt54WWBNBVY7qy5x+boKQtQ0SqvQelJMSuRLD6iVNonpKGvme+9B
+         1DoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787873483; x=1788478283;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787873484; x=1788478284;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dyiy2y/avbYOe0BnQSrLgYOVHtwCGX72+qfVpLstJvk=;
-        b=R0yOVloJS+GfqcnK3paXnUD1bH8McIT9paqs9QKs4xwZEmLW5oME+WyRJEcOB9OSq0
-         hE/XUYRhYN1TSZWdez1RkHJaxuSBg8snGmOid6sssGwJ/WcQ4FgH6NzfAOvKkp6RjsMY
-         8QIR7Raf0ic6JLdDhcbVVVkR00ElXmeS/c3wFAuujIYaDWMHjTzPVrAIKUY4HmhAR8ws
-         UgW28HFqUzdop7UhKLVX+BJIceTOyiZUFCMwjK9kU4UNge0M0lMWZ9qCYUcu36HnsZgB
-         Av9pJxrJ9pzKcpKKHUZEFi62DiJloNDENaSPANfF15C30FtJl4Kyp2rap/rQu+2LUbxa
-         yQAw==
-X-Forwarded-Encrypted: i=1; AHgh+RrncBMzxXs3OqVpzkOJMBqutOyx1kdWre9X45QKnba4lh57gkAnRzCMXUhGp/ZjSnQrl4nCvKA0FQ==@kvack.org
-X-Gm-Message-State: AFuF++k6BWZFIq41K/aF2lIfX3m/N3XOsvIOkWsQaQ8c4001gpeovxTb
-	6u7xRTHjavs1Lzbekiil6pi4IM0jaeXRz22UgMLIpwZ/lGWenOMZGjIaFVGdzwClVGo=
-X-Gm-Gg: AR+sD11IpSOLqUlUaU8rGrQya3bnWpakxvWjSn2StWH3XOGuwn6kMl7gGL5NjmRN/UX
-	a5KDr3Fv8/b6+FT+0K4ZTED/x2IKJoVfOU0kGv39yzjpmIVkFKQPESZQ8Na8JGxZ2v9qudVvgpB
-	KZkYIF9rjCQRxDjH6s50wIVrdAEeioAvYGfdWmgd6alm+B3/8NKw8vzS6H7JrSkQhevmeWL3yX6
-	eUXYWxGPBHZGQaGHp8xtkaZXq4kZ3Dos1QpW0h09dkR98XQEGJxgLX5x1l0tL4jaateJKY5MA0j
-	R5+fgLF9Y2Oq2UigxTyDra58k7em+0LycBSEXeI8EiqW0UkLxlgkbbCHSAolDwwKX9bxpONRM8u
-	GMY9lL0BSOzMf4c73LrotvQ0ZCEn9jy5GvgMXnF586eywOH0/fWdSCB6lPs3ajiWpfgoxegg1Iv
-	4w+bh2cq0f0E5phRH6fbpV7a4A9FVMGMhlW/MTZvxuAw==
-X-Received: by 2002:a17:90b:1c0a:b0:396:54ba:8932 with SMTP id 98e67ed59e1d1-396d104e722mr3685624a91.16.1787873481701;
-        Thu, 27 Aug 2026 16:31:21 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:4a::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b1ab4e12sm4501710a91.16.2026.08.27.16.31.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 16:31:21 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: linux-kernel@vger.kernel.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Joe Damato <joe@dama.to>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org
-Subject: [PATCH] mm: memcontrol: raise MEMCG_MAX for charges that fail without reclaiming
-Date: Thu, 27 Aug 2026 16:31:18 -0700
-Message-ID: <20260827233119.411152-1-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+        bh=LOrBCjVl+Gsil1QM8OKlKDVjeh9PhasgM5tVDAHOOrA=;
+        b=ewYBZxmsCsVhlHSd59KFdCvvhJiaHQvO65kec4tjirbWhg2QOnQ4Eiox55rSg30B1D
+         1HIHsP+fr5xXgXsoy+dACN8JzJ/M2No3rbPuNIePWSPIjeXv3a1vn0s4ONrrFLQ/JW7q
+         IC1CMXBt0Z7tF4b9AZq4wpHApntd18ZUSLqOrF7hc/Yr+rrH3kRYNBO6Wvg3dnYc0DUC
+         ubpSuMjb/oNX6HJN1g1wuzMWkk/79meEKC8huub8pu8Je+HbXjQAQLDPmLTqrKc3s7p0
+         JJ1dTmyZcxgOZQ4K0KZB9yA3zrdmAPQVdFNehkwlMRrAPm5TQiA6YaL6o5YKb6KPLQQX
+         jSRQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqlkoSKjIJE1VpQuY9PZDUccqvTCcJU7jX/um7uPJ18HlfQDG+PDH8eUlgeqpIkfjcClbJBED7CRg==@kvack.org
+X-Gm-Message-State: AFuF++m1cPqyYjIKIfwV8n6uAsuWDYVy8hZCikJbe+4U7SuRyyn/5C4l
+	roEwEV9DQawfweULKsHvKZpsOYy638y0VA9alVvpztELvifWIF0+zqo58l9/XZaW0yJpVFm8GAk
+	hyTPgl9sib4psHQ==
+X-Received: from dlbqi2.prod.google.com ([2002:a05:7022:ebc2:b0:13f:bdf3:f58])
+ (user=stevensd job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:4cc2:b0:396:d27b:89b9 with SMTP id 98e67ed59e1d1-396d27bb20emr3178120a91.10.1787873484126;
+ Thu, 27 Aug 2026 16:31:24 -0700 (PDT)
+Date: Thu, 27 Aug 2026 16:29:42 -0700
+In-Reply-To: <20260827232948.2520558-1-stevensd@google.com>
+Mime-Version: 1.0
+References: <20260827232948.2520558-1-stevensd@google.com>
+X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
+Message-ID: <20260827232948.2520558-5-stevensd@google.com>
+Subject: [RFC 04/10] mm: vmalloc: support creating aligned vm areas
+From: David Stevens <stevensd@google.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, suleiman@google.com
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, 
+	David Stevens <stevensd@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: e7wfnwnya6xjpf57nh6ht49rupkjko54
-X-Rspamd-Queue-Id: BABCF4000F
-X-HE-Tag: 1787873484-277287
-X-HE-Meta: U2FsdGVkX1+OTroAumE/Tqh/A5d7VsrFA51cFyMjbUm8S5xrW2NRFcvco+HOybwweqo45MPV7JL3dtRX3wvZjvwpCWiQq4weQW7i1GINfbcrnBWE968U6+Mdi34MyrapMS/SX/Hl+fDyX/JrbqTAXoP1/oClJgkjeJC2FRV5oU+HsEZLm3QGiJ+BPxFgaWp85SOxr1MMsSCW3n4nYVGo5t5tk4XpRhZMmlA5DrCmpBG+lWPdIDc5TDZOEaEg37Ol+Q4iEcQ/tChTEeVA3XjvwrrSmn4cffH6Io97ajy/ykos5JpoGR3lUfsasCOSBT94R2/Vzpeykbnu5qLBW+Kzq+NohNoFOyPsdXLYhFos02elywSNjS4HuaiMK6GZCK2eEkvqktclUAgWNgar4QWyUXzUAxX1m0j7FeOGGD66D3v7/hTn7UKhGaDZ6e8EE0QqYt2oToDauWkcPgbNyGai1ucHUE7as/W+Qd6UhAilgHy7F/fSVPMdtAOQcSok3f8LOQUp1euMZB5DjyDSyj7LjHdPJhKM1WsPt4bUOta/mNyLcU7utmttm6KR9Mgtwj+5vFZII7ht4GWdd5apkAVZ4oiIDqoPTf/V7/i0RJJckpWAVmWgGImHqM9OUp+GvnK+gwytgYldtz314kjyoMLhm6jgcvkibuZuN1bzMQt7M7Su1bBEQFjf833uTd1Iluev4fuPEnD8MPEoV5pMZRLtfgn14IuTl79zRRg0+gTx9NsZRKw+E42ii5Roau3HGsOOAJwkKbxJaUYRs7NhCLXGXTs+0ZZRjaFdrd1uXRvbMlmKnXHEjgaO5SkGMoZJDmU3sewWjUE2QEErPU+fTt298bI7jB44t9d/kTLogJiyqgnHXbkDan24H984GpjeSi1fxGLIA6SyiZjEaMD5Al68qedbN2Nz4sUY7+9+TOsPGCdu94LU4n80DGJya2Vm/xa+t8JqE2GDoc0iw05nPFV
- eYdkRu/1
- 21CIn0MotR3b1aFqotvcXYauQLqqrnvgzkHncRoxAuf7om7gWUzLhBNre1s3ozxWyRX3QsInq76VSDNSmGYabKaAttMx9j6gjMBJDRSjOxQU38SGcuNhpMNPOUxHr2ZLwr34aJgSBTPXQfboX2rdOEnilWIljZgobHn67snLIF44GQ6kRzE/kAEDyc4s0JXfKuyJz94GDiR4b9G9HH9powjIBVFj3unPcG/1m2LA3n7u+QGNaRVkpa5qD6s+XT5wzDQ4DOYv3vcHax9jcQMgVODt12VDNx/nq//+IawXJxSGHWWqky7RgwMw4b40nNQKYJbuBp6d4tvJjNGwoXmWL8aHZKA8nJNjxK0SpYWSQEzIVHLBrPNemwK51MCR4sJJhkc0Xg/RKoENOiQ6UWPwC0bKBJJE9+7TUdnKGStrgL8M6ePiz9CgBovMUAwPQDo2n3QOH
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9C21180006
+X-Stat-Signature: dz7co63u74qw6z879w69x46hcgs77c1s
+X-HE-Tag: 1787873485-396720
+X-HE-Meta: U2FsdGVkX19dOjl4bkApCZTTLJ6GB+rFt/989mF3gS6uVTQMefWbEQ+Q1ipb9ZvijkP79TL51Oln2KeJyzXM2HA6gWy3n1ralKQBWJTxSUlrIJSXaiXGL/C3QlkAeNujpf+uxD4xEXH8rQTKlGZV/vyY2hDnGOCDLwasaP/OtyGB6fY109HO3x+2hsPJQaHSVRt8vzHhP6Jyia9KQnyClei7PeFzMM7tiHuW8dEJ8tKs5nU2EJvZYI6tNNjI5yjEQhbx4TL18zaukI0oqEb2ndauQlbf/zamx7FLkcFGpMWD9JvtiTinNLRzYUgxxdUZW2nm0OIT9zoo6EHjpOhxLsh7pa6vezaMGyJHA5T73rNklBjKGTi2akuShI+OfE/l74lTPBmUv1sjgW8qBE5tDt5e3w5e0zg1vbS3Qfp7kZ5aaQAQcEy2cWv4x6ElMIo06Jm0/UWoN0Q6YcX8fm4LIT7wtwwlCr+dGsMISl4UJeQTE5IIpd8I90BzZXXItTxrfnw5fltUaNCoPByqX63lVmo40D1UMZ5+dnxSf0VnOO/33Dx9mFAvhUQkqDY2OcalOvbsI7I/+XIodB1vRHQdA9ZFQqV6eK+Q3QYPXrqv4ErMo/ocPV/7iOEtQuahXnafc5G0Xs7mzpbB1L6uH70aArZR696djrK1HTGiO3FBo2AR9SjAKTb3W5a0vJvx0cMDOsW4mwKsKwxH7ZYArhkcniXG+wXLzPJEy5QKovPto6O1ha937NjcjoGCMFIrYB1yQiIhq5gsQbPprv1hOU9AmSKQFXzWYEfV49abkr5JZa6QrXCqKpnp0FWE4309Zy0s5LrYaIizgTD9y4bp+JDiJ3bJWpsDsNQFDOUr93KqpLwtFCAlRRESW0ZME6bDXl3CdSA44BYKZgg1/USkiRtdUia40kqNsXiN9EeTX0rKJN6rTMrNj7yjfbJDsr2UFhYQhaCZG1h8SH2xXhdvm3f
+ uR3Yql9x
+ 3Uvw/EC9UCToh+dvvom5dIzlEA/Kw6Ct9dImJFCuo+C4b8cDuVJzr8UvurDouSZjmRlhCq2WgQSZJb1eNI6i8dPiWI3eRJ4ElcpH1gjXaO3JayDrJTQzcEMeoMZ4/KFUTE0zLH2/3pF0ZqTFj24LtN0IUz7OK1wjWNg0Kfdzb+rwpOmpJXWecFzZzg7+GSsuDFpg+cKdDKt/36taI3AHGzRiyemt7+wNYqNo6hbbYDbREHyrKB2s7XDpk/g8WExQerJVn0erUcWzYP2GN0fTJUIj2WqkjNcJsZjfF7sMlkI2aXIa+Z6oZ/pY/CvmaYSEuV+UJNQH26rzg8JzmLLkHz4rKIFZ079FMEwpCKjeUp5gjAYYLEDoJI4Mym5cBT4z16ioVyqTZVQ0cxO41Bf9XtluHWzzcq0uKMQcXlsJXxeEYgfgWhBMBzlvpPGrh9BPa7zlXA6oGrVnwdlsw8tiigyx52X9/l+Z1/5ITld7EdvMgT1zbDIwCXZlncXLRMzof8FLVMNhhIOUFVjRaC3e26VMursoZEyUp6uCyPOY8ar9vfVXxrFFWN9/XJ7tKOfaDtDsBQxYe76tjHHoDu8bAR7HDa44tn07tyGx4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,68 +123,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Charges that exceed memory.max and return through the nomem label can
-raise no event and simply return -ENOMEM.
+Expose a get_vm_area_node() function that supports passing an alignment
+when allocating a vm area.
 
-A non-blocking charge can hit the limit, get rejected, but is not
-visible in memory.events.
-
-This was noticed in a production setting where bpf_mem_alloc() attempted
-to refill its per-cpu freelists, which triggered a non-blocking charge
-while at the limit.
-
-Move the event so that it is raised as soon as the charge is known not
-to fit.
-
-Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Joe Damato <joe@dama.to>
+Signed-off-by: David Stevens <stevensd@google.com>
 ---
- mm/memcontrol.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ include/linux/vmalloc.h |  2 ++
+ mm/vmalloc.c            | 24 +++++++++++++++++++++++-
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1271d390b617..3904fe9a7b2e 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2683,6 +2683,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 		goto retry;
- 	}
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index d87dc7f77f4e..5ed9c5b25026 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -246,6 +246,8 @@ static inline size_t get_vm_area_size(const struct vm_struct *area)
+ extern struct vm_struct *get_vm_area(unsigned long size, unsigned long flags);
+ extern struct vm_struct *get_vm_area_caller(unsigned long size,
+ 					unsigned long flags, const void *caller);
++extern struct vm_struct *get_vm_area_node(unsigned long size, unsigned long align,
++					  unsigned long flags, int node);
+ extern struct vm_struct *__get_vm_area_caller(unsigned long size,
+ 					unsigned long flags,
+ 					unsigned long start, unsigned long end,
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index d39897300f29..059cd0748514 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3280,7 +3280,7 @@ struct vm_struct *__get_vm_area_caller(unsigned long size, unsigned long flags,
+  * @flags:	 %VM_IOREMAP for I/O mappings or VM_ALLOC
+  *
+  * Search an area of @size in the kernel virtual mapping area,
+- * and reserved it for out purposes.  Returns the area descriptor
++ * and reserved it for our purposes.  Returns the area descriptor
+  * on success or %NULL on failure.
+  *
+  * Return: the area descriptor on success or %NULL on failure.
+@@ -3301,6 +3301,28 @@ struct vm_struct *get_vm_area_caller(unsigned long size, unsigned long flags,
+ 				  NUMA_NO_NODE, GFP_KERNEL, caller);
+ }
  
-+	if (!raised_max_event) {
-+		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-+		raised_max_event = true;
-+	}
++/**
++ * get_vm_area_node - reserve a contiguous kernel virtual area
++ * @size:	 size of the area
++ * @align:	 alignment of the area
++ * @flags:	 %VM_IOREMAP for I/O mappings or VM_ALLOC
++ * @node:	 node from which to allocate data structures
++ *
++ * Search an area of @size in the kernel virtual mapping area,
++ * and reserve it for our purposes.  Returns the area descriptor
++ * on success or %NULL on failure.
++ *
++ * Return: the area descriptor on success or %NULL on failure.
++ */
++struct vm_struct *get_vm_area_node(unsigned long size, unsigned long align,
++				   unsigned long flags, int node)
++{
++	return __get_vm_area_node(size, align, PAGE_SHIFT, flags,
++				  VMALLOC_START, VMALLOC_END,
++				  node, GFP_KERNEL,
++				  __builtin_return_address(0));
++}
 +
- 	/*
- 	 * Prevent unbounded recursion when reclaim operations need to
- 	 * allocate memory. This might exceed the limits temporarily,
-@@ -2711,9 +2716,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
- 		goto nomem;
- 
--	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
--	raised_max_event = true;
--
- 	psi_memstall_enter(&pflags);
- 	nr_reclaimed = try_to_free_mem_cgroup_pages(mem_over_limit, nr_pages,
- 						    gfp_mask, reclaim_options, NULL);
-@@ -2773,13 +2775,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH)))
- 		return -ENOMEM;
- force:
--	/*
--	 * If the allocation has to be enforced, don't forget to raise
--	 * a MEMCG_MAX event.
--	 */
--	if (!raised_max_event)
--		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
--
- 	/*
- 	 * The allocation either can't fail or will lead to more memory
- 	 * being freed very soon.  Allow memory usage go over the limit
-
-base-commit: 3d83758432b5e6ed9507500a57efb0f3af41ee7d
+ /**
+  * find_vm_area - find a continuous kernel virtual area
+  * @addr:	  base address
 -- 
-2.53.0-Meta
+2.55.0.897.gb25b4bd76c-goog
 
 
