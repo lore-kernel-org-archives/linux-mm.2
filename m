@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D97FDC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B70CCC61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:25:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8AF06B00A6; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id CE8226B00A2; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B388B6B00A2; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id C71356B00AA; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82B7C6B00AF; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id A273F6B00AC; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EF546B00A2
+	by kanga.kvack.org (Postfix) with ESMTP id 560336B00AA
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0D24A10E4
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D9C8AA01E2
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:45 +0000 (UTC)
-X-FDA: 85147572930.13.9606763
+X-FDA: 85147572930.26.D2A8DF2
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B297F100002
+	by imf28.hostedemail.com (Postfix) with ESMTP id EB958C0009
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:43 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=s4BuyPR4;
-	spf=pass (imf14.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787847883;
-	b=E9kRSbe/pktaXC04Wn0/IE2YLjvs77FdVMynQTqTgo1IYNu0BITXdphpB9vtMKRHEk1xlh
-	MIeCotxPLzilMQb7daSOrClQUMkd3qjSCo29qfubO/n5+4z5qk+BarHmOsAxOCHRvdpHyO
-	tuwja1zUJpn/jmRBkXZeq6DHv/NaZ1E=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=s4BuyPR4;
-	spf=pass (imf14.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xLmUHxdt;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787847883;
+	s=arc-20220608; t=1787847884;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mJEDJhtFMNSnLhy3o2OpHLDFK+OrNY4mUlH1+uIwElw=;
-	b=sHKt4tJbzzMTurMbHThvdbS6EqukPqk9gC4aQy7J+ublPO8DZFtTe1IC7+0lgl4R/e6e0Y
-	oDey9KIApZu15ZkWjX7RWuNSThaDNkJdAlZiEWk/wfOErH8qm7SYvxCpw2rBwXk4+MR+Hh
-	IoGMrSMoYNkTdr6UjA8jXzMiRISLYVw=
+	bh=xAGNWJtbQb3AJ1HJQX61n/LHCCEcBpCaICJCBWpxqGI=;
+	b=aicPv+4NtBjCbUsK0IWookg/gQmTAWjcF1TBvpnrW+7giGHExnwVXlwzfwQpQtbIiUki+y
+	4Sy19uAbbJudj4QrGZPOQPimL1s4QTb19O3xYh7bBLfcjEuJq83ivotBsQCfGYlTq2atQJ
+	RZ6u7jXQZgWyCugkWu5bnkMrNKgKHFw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xLmUHxdt;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787847884;
+	b=MaGHpR4uAYIvpRTA1LHCPO6z29ZDSmrGQVgEHF/mknjO8iqjP1JYjgHD3/12pJN+Rv81Vm
+	u8qxQJHzjtSseatb29izwJQlVvdLg7SZjNWn34JrYQh3KUpPFLhl1JdYyCDv/C35PAvdm4
+	Ry7J6GIb3Tw2p1uNRT4yDPbzIufwcKg=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=mJEDJhtFMNSnLhy3o2OpHLDFK+OrNY4mUlH1+uIwElw=;
-	b=s4BuyPR4z6gvxyyhsQPmUQLxP8SwiElyHOlbrC1Eo4Rgkt/YbyWTj7n33YgGtw0nWyN69mN76
-	NsVuPhOXAWVkrROAXHp01c/lc4cxcZuHQq/5FRCUYaAjOnDpMs3T63Y5vAGwjSZpB6mzq+tZFFj
-	YQyUpUQJBZabrg0CIZAOjmw=
+	bh=xAGNWJtbQb3AJ1HJQX61n/LHCCEcBpCaICJCBWpxqGI=;
+	b=xLmUHxdtznvn14bKKb3Ae8Py9BGbsGZqW/mdynm2ysF18alkLLyUC/mTjbs9FM+IA4EMsY9Eg
+	zCsPR8FkLdAC+gJ2+MTxLuwMlQQc1uJIXoR8zHE4WD/zGUWFsZXsiVf3Rr2lo/hmf4hDucR9LZt
+	dUOIyHkNGI1TeXQ0Xw9IW6M=
 Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hW6KX5cWQzJ46Yq;
-	Fri, 28 Aug 2026 00:24:16 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hW6KF4jbczHnH3h;
+	Fri, 28 Aug 2026 00:24:01 +0800 (CST)
 Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id 55E1340572;
-	Fri, 28 Aug 2026 00:24:38 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A74DA40572;
+	Fri, 28 Aug 2026 00:24:37 +0800 (CST)
 Received: from mscphis00949.huawei.com (10.123.66.11) by
  mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -75,9 +75,9 @@ To: <catalin.marinas@arm.com>, <akpm@linux-foundation.org>,
 CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <wangkefeng.wang@huawei.com>,
 	<artem.kuzin@huawei.com>, <panov.nikita@huawei.com>
-Subject: [RFC PATCH 17/18] mm: init kernel modules with replication support
-Date: Fri, 28 Aug 2026 00:11:57 +0800
-Message-ID: <20260827161158.3618409-18-panov.nikita@huawei.com>
+Subject: [RFC PATCH 13/18] arm64: make kernel text patching aware about replicas
+Date: Fri, 28 Aug 2026 00:11:53 +0800
+Message-ID: <20260827161158.3618409-14-panov.nikita@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260827161158.3618409-1-panov.nikita@huawei.com>
 References: <20260827161158.3618409-1-panov.nikita@huawei.com>
@@ -88,14 +88,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.123.66.11]
 X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
  mscpeml500004.china.huawei.com (7.188.26.250)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EB958C0009
+X-Stat-Signature: g9rq67dadtq6trmri1kh1jgaq63mcjg7
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B297F100002
-X-Stat-Signature: z6x5c9inhdx77adw1j65ij84x18x41s1
-X-HE-Tag: 1787847883-585929
-X-HE-Meta: U2FsdGVkX18W7wufh4TLMr92WDmvUJoRQoQHASJ1/078e5+FZL1+qs0LGDqJaV3G/BDlGQMozQi19Sf4aaQri3rkU+KWYo9OjCh9ugjXjq86RUZ85XVdgIBegla6/GCLMKsEAWrgKSQA89lsI0yd8xOfmBwm10kZaStLXziJ2LI1Y3xT4oxG8Q3hTqCYIdMOmjeTFY4E1OJoQ3de/yCzLMDqz3W4CK0xaGcrkjYddC9VyNCP0WUhfQ3gE3w/8oezsJzGSfhHPhlVO/Dl+hP1Kl49xPrwJkb69/A9+mqmoI6QS3kyr/oVTnDAwQwUDM8ZnhLKo+lRCuulejS+zHtJllMroDUuAfNNg7g/WM3ZtetT3D+bSGG+KwFKgcJ/qkvs7Cvmd9anhy5jNXlgSIjt3BR5pIAiu+ZaIaDjcyH8aMx7mXe1NfM4sn4SE2mUFRo6DT1nDYFJDoZFo/IYm8U8IAEsZjz0a+CBwQPSVou6znhvnSmzg07u9fjqK5TaroZwuncoewNhMGOFmNASIEuZOll5QAQyzmk3LlIHC/+mIEeY2uP29ZT+YtqtTPaFUcxREPYb3wdCLhlJAB5SM1GgGX8MrA/zBIwxSk1/dd/YtVHC1t7Hn+CLP/yHj6IjdgIOOnn4M16QIzVB7i2FrzgSW19+rSywdQGNZhsPuykx1nMymXHkHpb/ZwXyYLGCLSMido98eNmjr0FvEU/+nlb7YMqcJhQB7ibowLpClThgvo2P7UWkLNhh6aOXg/gJUO75f/S+d6THKokM25swtKtMbsKbtjbZaJcNjDgXJhbkRpa7/8CTsndBh5s3RCUblSd8yz+GSdFjKjztCPDIldmfZN2EKKyI2b1G6CXhdXteQAOCtsA0XnCzr/oThXRdJLMlt43Tpv6xvfHWFKbwGuIgSypEFog4+v0YtSTp+yVZrlG/CqYj9Fdhst3GtX9ZMpO9NhQJDdkF0nPAmK+mxFM
- fgnWwEh7
- bjTwtCUAbUNe5j5pJxxnqYH4ZI6AgISIVCeTvQfPlwWNQahY8jOWXUJs0xQf2Wf+FcwPKC/ztOr7DdK8h0pGUFuaOjsWVrYTCxlBMjNB3HjyJ76FIIu1JlbpfsKCH+YSR9JZTK/NcWYW0JgXAjMsBpMDc/pQ/gIPKKg/BW/kSDhAbA62j7qAyliGsSjVhPh8KUv/aIctRn9k3R1yoaG1gan48MGygBBZ1B4JqR9h+h1TK4xSSr7rn/76Nhjo8uQBtqyZhVeL78AQ0YDyCqAxNOnVJOXDBiFWBHfqmoKdNyeSrkjzWdDSI98GhUTJt7PcC87NyE/a1eYglO6UCRr/30jOqURX+idQIRVsbUaSMgnbqdj+TsrXu36LInXpnpPU6CXBxOvc9G3ab7R/EApZSHJMySRBwQtlHdn1gJu2rz26p7ECVL1pJt2a3bAB33ofWy+AhW9uulzymJQC+jovGA9S8aKJzcFPPH3eBFTrITodY2zdnmg+PQl0HYw==
+X-HE-Tag: 1787847883-441823
+X-HE-Meta: U2FsdGVkX1+vTAqHTS2722KT1sxuESk9jmkjA8OsfwC2NADzz2pqdT2IZu6m0mqO//gUb9SizWC2adXU+Lv0cgCF+SqIyjXy76d9jkigd4lK3TICH9vLkril/he2/A1vZ/YGXb5WmGsCaaOEPpb41IQzWQB4WI2UuSn+eJe81ZjolXFsVIOwp6vqhPQWLqq6NfnX6W7Id/6D73Yg052fsPuKXbXpBxNN9XIkHJbTWk47sXptMjmfMeZDlEfrkEr0/Hcvw+IYd5dVJgiGSXwn1l9qrLrTzt+XUlLVnzEXdkLgCSEdXyDG2LvoOhRRpyJyE6bYTfSrq2Lj+jqOh1ilUAXelP/WgRY6S1+XEA8fTrNUtN7xFqxUfp0yS+qfkM8SK4NivlR940fO1aLwudZKC65MUXE0zrQ7eCsDQO5n2BHY+atxg07G1CgJm7kh2rxlyjjl//mn2fENSQxU2mScUhunrqg7zoGMoOoTaDCJ2z0tm3GEEjsifdMKA0vVcddq4BVWw9ZDWgsoqrC1RdW60c1oeV+qpDqG+gXMVmmq6xzaGl7039/9KFt0yRw+yw5FrSXOmU9Jeub75om63Uji93lN117YyP6s5pCm10NaSIeCZEsn9JAujnnul9gtz3B/g4P+ORVkujzcRVQA8C9U/QFA2b1n6Z69/tfp2QpdfcOiotc5OrTMun76xLWvu6mdb/iIB+XOhN5Y/ZQGo1PJAi/EJDn/6JifZmvl2BI0XbfgHjg1Ap1P2Z5HTP9MhJSWgl7PpshfHlSh6c+QWVkA11Trf4maVnqMgBpL2Nwy3+5S5cPZGLuICxMUN5G+djliSDqBBqJtUNTDcKcp+gi+8itixwH0RsEYXaNgUzGmhxs/j243nyQ/30jiMnqhNVD8Oqk0h6A3sgmULDGsUJlU9tzvrxm24gHq/YyWRnwnU9yIAjC2OmPcCjXmPM/+2a2BZ3b615qVrPZ/8C+HNes
+ +QHyjULM
+ ZUMf0D3NqV71SKim7iAMvBE3J9GvlJWuIFGn3fetVQ/WrQqJUvt2RQ2FvfmkguQzmm28miPodsyQnWnib7m4SV/CkWMk90YqiquNjrP5tOhX+etKMMyMQ4G9RSxR+IsSAj/W5ZBdbakSF6bOzwCHxlpNvurJFWmwixVlGGPlkryZx6sdxBCxfpFXvH1O+P+gHlC7nHM/c3HBbY0zthd36vvMVl0SYP+5vTx5Fbue2eME9dxxBYYfWESknTFunh8TQOHf8AVpMfnhpnn74/O9BDhNamZFTdYdaMmwxZt3O8yl7vH5C/gKWMGNX0RHmWMTsF3LpAJZIU6Dwb3Wj6xSFZ2M6BxlRM28CAAYeNWawA4sryNrCjAzUW+T0wx4N++5w8+5lePeBudj09SdoyAr4qkqK4T/Mv5MCE0XW5cQiKJyknlciq7bHhnzBBF0s18ydsoklO63clBwRhAxJA6exT77v0kFvvzqFSt8rmqmZ+1T0t8JR5tvqaR+FqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,206 +109,226 @@ Acked-by: Ilya Hanov <ilya.hanov@huawei-partners.com>
 Acked-by: Denis Darvish <darvish.denis@huawei.com>
 Signed-off-by: Nikita Panov <panov.nikita@huawei.com>
 ---
- include/linux/moduleloader.h |  4 ++++
- kernel/module/main.c         | 17 ++++++++++++++++
- kernel/module/strict_rwx.c   | 12 +++++------
- mm/execmem.c                 | 39 +++++++++++++++++++++++++++++++-----
- 4 files changed, 61 insertions(+), 11 deletions(-)
+ arch/arm64/kernel/alternative.c | 33 +++++++++++-
+ arch/arm64/kernel/patching.c    | 96 +++++++++++++++++++++++++++++++++
+ 2 files changed, 128 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
-index e395461d59e5..1d100dfc8251 100644
---- a/include/linux/moduleloader.h
-+++ b/include/linux/moduleloader.h
-@@ -25,6 +25,10 @@ int module_frob_arch_sections(Elf_Ehdr *hdr,
- /* Additional bytes needed by arch in front of individual sections */
- unsigned int arch_mod_section_prepend(struct module *mod, unsigned int section);
+diff --git a/arch/arm64/kernel/alternative.c b/arch/arm64/kernel/alternative.c
+index f5ec7e7c1d3f..e85644d64bbd 100644
+--- a/arch/arm64/kernel/alternative.c
++++ b/arch/arm64/kernel/alternative.c
+@@ -10,6 +10,7 @@
  
-+#ifdef CONFIG_KERNEL_REPLICATION
-+void module_replicate(void *ptr);
-+#endif /* CONFIG_KERNEL_REPLICATION */
-+
- /* Determines if the section name is an init section (that is only used during
-  * module loading).
-  */
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index d0e1e0bd2ad0..d5c8f041be48 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -60,6 +60,7 @@
- #include <linux/codetag.h>
- #include <linux/debugfs.h>
- #include <linux/execmem.h>
+ #include <linux/init.h>
+ #include <linux/cpu.h>
 +#include <linux/numa_kernel_replication.h>
- #include <uapi/linux/module.h>
- #include "internal.h"
- 
-@@ -1338,6 +1339,18 @@ void __weak module_arch_freeing_init(struct module *mod)
- {
+ #include <linux/elf.h>
+ #include <asm/cacheflush.h>
+ #include <asm/alternative.h>
+@@ -139,6 +140,36 @@ static noinstr void clean_dcache_range_nopatch(u64 start, u64 end)
+ 	} while (cur += d_size, cur < end);
  }
  
 +#ifdef CONFIG_KERNEL_REPLICATION
-+static int sections_to_replicate[] = {MOD_TEXT, MOD_RODATA};
-+
-+static void module_replicate_sections(struct module *mod)
++static void __write_alternatives(struct alt_instr *alt,
++					 alternative_cb_t alt_cb,
++					 __le32 *origptr, __le32 *updptr,
++					 int nr_inst)
 +{
-+	int i;
++	if (is_text_replicated() && is_kernel_text((unsigned long)origptr)) {
++		int nid;
 +
-+	for (i = 0; i < ARRAY_SIZE(sections_to_replicate); i++)
-+		module_replicate(mod->mem[sections_to_replicate[i]].base);
-+}
-+#endif /* CONFIG_KERNEL_REPLICATION */
++		for_each_memory_node(nid) {
++			__le32 *ptr = numa_get_replica(origptr, nid);
 +
- static int module_memory_alloc(struct module *mod, enum mod_mem_type type)
- {
- 	unsigned int size = PAGE_ALIGN(mod->mem[type].size);
-@@ -3330,6 +3343,10 @@ static int complete_formation(struct module *mod, struct load_info *info)
- 	module_bug_finalize(info->hdr, info->sechdrs, mod);
- 	module_cfi_finalize(info->hdr, info->sechdrs, mod);
- 
-+#ifdef CONFIG_KERNEL_REPLICATION
-+	module_replicate_sections(mod);
-+#endif
-+
- 	err = module_enable_rodata_ro(mod);
- 	if (err)
- 		goto out_strict_rwx;
-diff --git a/kernel/module/strict_rwx.c b/kernel/module/strict_rwx.c
-index 8fd438529fbc..07ad1af69eaa 100644
---- a/kernel/module/strict_rwx.c
-+++ b/kernel/module/strict_rwx.c
-@@ -39,9 +39,9 @@ int module_enable_text_rox(const struct module *mod)
- 		if (mem->is_rox)
- 			ret = execmem_restore_rox(mem->base, mem->size);
- 		else if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
--			ret = module_set_memory(mod, type, set_memory_rox);
-+			ret = module_set_memory(mod, type, numa_set_memory_rox);
- 		else
--			ret = module_set_memory(mod, type, set_memory_x);
-+			ret = module_set_memory(mod, type, numa_set_memory_x);
- 		if (ret)
- 			return ret;
- 	}
-@@ -55,10 +55,10 @@ int module_enable_rodata_ro(const struct module *mod)
- 	if (!IS_ENABLED(CONFIG_STRICT_MODULE_RWX) || !rodata_enabled)
- 		return 0;
- 
--	ret = module_set_memory(mod, MOD_RODATA, set_memory_ro);
-+	ret = module_set_memory(mod, MOD_RODATA, numa_set_memory_ro);
- 	if (ret)
- 		return ret;
--	ret = module_set_memory(mod, MOD_INIT_RODATA, set_memory_ro);
-+	ret = module_set_memory(mod, MOD_INIT_RODATA, numa_set_memory_ro);
- 	if (ret)
- 		return ret;
- 
-@@ -70,7 +70,7 @@ int module_enable_rodata_ro_after_init(const struct module *mod)
- 	if (!IS_ENABLED(CONFIG_STRICT_MODULE_RWX) || !rodata_enabled)
- 		return 0;
- 
--	return module_set_memory(mod, MOD_RO_AFTER_INIT, set_memory_ro);
-+	return module_set_memory(mod, MOD_RO_AFTER_INIT, numa_set_memory_ro);
- }
- 
- int module_enable_data_nx(const struct module *mod)
-@@ -79,7 +79,7 @@ int module_enable_data_nx(const struct module *mod)
- 		return 0;
- 
- 	for_class_mod_mem_type(type, data) {
--		int ret = module_set_memory(mod, type, set_memory_nx);
-+		int ret = module_set_memory(mod, type, numa_set_memory_nx);
- 
- 		if (ret)
- 			return ret;
-diff --git a/mm/execmem.c b/mm/execmem.c
-index 74a178a87e75..ea4b15c8a788 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -16,6 +16,7 @@
- #include <linux/set_memory.h>
- #include <linux/moduleloader.h>
- #include <linux/text-patching.h>
-+#include <linux/numa_kernel_replication.h>
- 
- #include <asm/tlbflush.h>
- 
-@@ -26,8 +27,9 @@ static struct execmem_info *execmem_info __ro_after_init;
- static struct execmem_info default_execmem_info __ro_after_init;
- 
- #ifdef CONFIG_MMU
--static void *execmem_vmalloc(struct execmem_range *range, size_t size,
--			     pgprot_t pgprot, unsigned long vm_flags)
-+
-+static void *execmem_vmalloc_node(struct execmem_range *range, size_t size,
-+			     pgprot_t pgprot, unsigned long vm_flags, int node)
- {
- 	bool kasan = range->flags & EXECMEM_KASAN_SHADOW;
- 	gfp_t gfp_flags = GFP_KERNEL | __GFP_NOWARN;
-@@ -40,13 +42,13 @@ static void *execmem_vmalloc(struct execmem_range *range, size_t size,
- 		vm_flags |= VM_DEFER_KMEMLEAK;
- 
- 	p = __vmalloc_node_range(size, align, start, end, gfp_flags,
--				 pgprot, vm_flags, NUMA_NO_NODE,
-+				 pgprot, vm_flags, node,
- 				 __builtin_return_address(0));
- 	if (!p && range->fallback_start) {
- 		start = range->fallback_start;
- 		end = range->fallback_end;
- 		p = __vmalloc_node_range(size, align, start, end, gfp_flags,
--					 pgprot, vm_flags, NUMA_NO_NODE,
-+					 pgprot, vm_flags, node,
- 					 __builtin_return_address(0));
- 	}
- 
-@@ -63,6 +65,26 @@ static void *execmem_vmalloc(struct execmem_range *range, size_t size,
- 	return p;
- }
- 
-+#ifdef CONFIG_KERNEL_REPLICATION
-+static void *execmem_vmalloc_type(struct execmem_range *range, size_t size,
-+			     pgprot_t pgprot, unsigned long vm_flags, enum execmem_type type)
-+{
-+	if (is_text_replicated() && (type == EXECMEM_MODULE_TEXT || type == EXECMEM_MODULE_DATA))
-+		/* Need to specify some numa node id for correct allocation and further replication */
-+		return execmem_vmalloc_node(range, size, pgprot,
-+					vm_flags | VM_NUMA_SHARED, numa_node_id());
-+	else
-+		return execmem_vmalloc_node(range, size, pgprot,
-+					vm_flags, NUMA_NO_NODE);
++			alt_cb(alt, origptr, ptr, nr_inst);
++			clean_dcache_range_nopatch((u64)ptr,
++						   (u64)(ptr + nr_inst));
++		}
++	} else {
++		alt_cb(alt, origptr, updptr, nr_inst);
++	}
 +}
 +#else
-+static void *execmem_vmalloc_type(struct execmem_range *range, size_t size,
-+			     pgprot_t pgprot, unsigned long vm_flags, enum execmem_type type)
++static void __write_alternatives(struct alt_instr *alt,
++					 alternative_cb_t alt_cb,
++					 __le32 *origptr, __le32 *updptr,
++					 int nr_inst)
 +{
-+	return execmem_vmalloc_node(range, size, pgprot, vm_flags, NUMA_NO_NODE);
++	alt_cb(alt, origptr, updptr, nr_inst);
 +}
-+#endif
++#endif /* CONFIG_KERNEL_REPLICATION */
 +
- struct vm_struct *execmem_vmap(size_t size)
+ static int __apply_alternatives(const struct alt_region *region,
+ 				bool is_module,
+ 				unsigned long *cpucap_mask)
+@@ -174,7 +205,7 @@ static int __apply_alternatives(const struct alt_region *region,
+ 			alt_cb = patch_alternative;
+ 		}
+ 
+-		alt_cb(alt, origptr, updptr, nr_inst);
++		__write_alternatives(alt, alt_cb, origptr, updptr, nr_inst);
+ 
+ 		if (!is_module) {
+ 			clean_dcache_range_nopatch((u64)origptr,
+diff --git a/arch/arm64/kernel/patching.c b/arch/arm64/kernel/patching.c
+index 09f019c6547a..8bac14198459 100644
+--- a/arch/arm64/kernel/patching.c
++++ b/arch/arm64/kernel/patching.c
+@@ -5,6 +5,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/stop_machine.h>
+ #include <linux/uaccess.h>
++#include <linux/numa_kernel_replication.h>
+ 
+ #include <asm/cacheflush.h>
+ #include <asm/fixmap.h>
+@@ -15,6 +16,7 @@
+ 
+ static DEFINE_RAW_SPINLOCK(patch_lock);
+ 
++#ifndef CONFIG_KERNEL_REPLICATION
+ static bool is_exit_text(unsigned long addr)
  {
- 	struct execmem_range *range = &execmem_info->ranges[EXECMEM_MODULE_DATA];
-@@ -87,6 +109,13 @@ static void *execmem_vmalloc(struct execmem_range *range, size_t size,
- #endif /* CONFIG_MMU */
+ 	/* discarded with init text/data */
+@@ -42,6 +44,17 @@ static void __kprobes *patch_map(void *addr, int fixmap)
  
- #ifdef CONFIG_ARCH_HAS_EXECMEM_ROX
-+
-+static void *execmem_vmalloc(struct execmem_range *range, size_t size,
-+			     pgprot_t pgprot, unsigned long vm_flags)
-+{
-+	return execmem_vmalloc_node(range, size, pgprot, vm_flags, NUMA_NO_NODE);
-+}
-+
- struct execmem_cache {
- 	struct mutex mutex;
- 	struct maple_tree busy_areas;
-@@ -475,7 +504,7 @@ void *execmem_alloc(enum execmem_type type, size_t size)
- 	if (use_cache)
- 		p = execmem_cache_alloc(range, size);
- 	else
--		p = execmem_vmalloc(range, size, pgprot, vm_flags);
-+		p = execmem_vmalloc_type(range, size, pgprot, vm_flags, type);
- 
- 	return kasan_reset_tag(p);
+ 	return (void *)set_fixmap_offset(fixmap, phys);
  }
++#else
++static void __kprobes *patch_map(void *addr, int fixmap, int nid)
++{
++	struct page *page;
++
++	page = walk_to_page_node(nid, addr);
++	BUG_ON(!page);
++
++	return (void *)set_fixmap_offset(fixmap, page_to_phys(page) + offset_in_page(addr));
++}
++#endif /* CONFIG_KERNEL_REPLICATION */
+ 
+ static void __kprobes patch_unmap(int fixmap)
+ {
+@@ -63,6 +76,28 @@ int __kprobes aarch64_insn_read(void *addr, u32 *insnp)
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_KERNEL_REPLICATION
++static int __kprobes __aarch64_insn_write(void *addr, __le32 insn)
++{
++	int nid;
++	void *waddr = addr;
++	unsigned long flags = 0;
++	int ret;
++
++	raw_spin_lock_irqsave(&patch_lock, flags);
++	for_each_memory_node(nid) {
++		waddr = patch_map(addr, FIX_TEXT_POKE0, nid);
++		ret = copy_to_kernel_nofault(waddr, &insn, AARCH64_INSN_SIZE);
++		patch_unmap(FIX_TEXT_POKE0);
++
++		if (ret || !is_text_replicated())
++			break;
++	}
++	raw_spin_unlock_irqrestore(&patch_lock, flags);
++
++	return ret;
++}
++#else
+ static int __kprobes __aarch64_insn_write(void *addr, __le32 insn)
+ {
+ 	void *waddr = addr;
+@@ -79,12 +114,37 @@ static int __kprobes __aarch64_insn_write(void *addr, __le32 insn)
+ 
+ 	return ret;
+ }
++#endif /* CONFIG_KERNEL_REPLICATION */
+ 
+ int __kprobes aarch64_insn_write(void *addr, u32 insn)
+ {
+ 	return __aarch64_insn_write(addr, cpu_to_le32(insn));
+ }
+ 
++#ifdef CONFIG_KERNEL_REPLICATION
++noinstr int aarch64_insn_write_literal_u64(void *addr, u64 val)
++{
++	int nid;
++	u64 *waddr;
++	unsigned long flags;
++	int ret;
++
++	raw_spin_lock_irqsave(&patch_lock, flags);
++	for_each_memory_node(nid) {
++		waddr = patch_map(addr, FIX_TEXT_POKE0, nid);
++
++		ret = copy_to_kernel_nofault(waddr, &val, sizeof(val));
++
++		patch_unmap(FIX_TEXT_POKE0);
++
++		if (ret || !is_text_replicated())
++			break;
++	}
++	raw_spin_unlock_irqrestore(&patch_lock, flags);
++
++	return ret;
++}
++#else
+ noinstr int aarch64_insn_write_literal_u64(void *addr, u64 val)
+ {
+ 	u64 *waddr;
+@@ -101,9 +161,44 @@ noinstr int aarch64_insn_write_literal_u64(void *addr, u64 val)
+ 
+ 	return ret;
+ }
++#endif /* CONFIG_KERNEL_REPLICATION */
+ 
+ typedef void text_poke_f(void *dst, void *src, size_t patched, size_t len);
+ 
++#ifdef CONFIG_KERNEL_REPLICATION
++static void *__text_poke(text_poke_f func, void *addr, void *src, size_t len)
++{
++	unsigned long flags;
++	size_t patched = 0;
++	size_t size;
++	void *waddr;
++	void *ptr;
++
++	raw_spin_lock_irqsave(&patch_lock, flags);
++
++	while (patched < len) {
++		int nid;
++
++		ptr = addr + patched;
++		size = min(PAGE_SIZE - offset_in_page(ptr), len - patched);
++
++		for_each_memory_node(nid) {
++			waddr = patch_map(ptr, FIX_TEXT_POKE0, nid);
++			func(waddr, src, patched, size);
++			patch_unmap(FIX_TEXT_POKE0);
++
++			if (!is_text_replicated())
++				break;
++		}
++		patched += size;
++	}
++	raw_spin_unlock_irqrestore(&patch_lock, flags);
++
++	flush_icache_range((uintptr_t)addr, (uintptr_t)addr + len);
++
++	return addr;
++}
++#else
+ static void *__text_poke(text_poke_f func, void *addr, void *src, size_t len)
+ {
+ 	unsigned long flags;
+@@ -130,6 +225,7 @@ static void *__text_poke(text_poke_f func, void *addr, void *src, size_t len)
+ 
+ 	return addr;
+ }
++#endif
+ 
+ static void text_poke_memcpy(void *dst, void *src, size_t patched, size_t len)
+ {
 -- 
 2.34.1
 
