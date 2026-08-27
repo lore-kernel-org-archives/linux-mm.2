@@ -4,96 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F2D0C61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 07:47:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A445AC61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 07:49:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 813F26B0095; Thu, 27 Aug 2026 03:47:17 -0400 (EDT)
+	id B248D6B0088; Thu, 27 Aug 2026 03:49:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EB896B0096; Thu, 27 Aug 2026 03:47:17 -0400 (EDT)
+	id AD56E6B008A; Thu, 27 Aug 2026 03:49:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7287D6B0098; Thu, 27 Aug 2026 03:47:17 -0400 (EDT)
+	id 99E4B6B008C; Thu, 27 Aug 2026 03:49:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4618A6B0095
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:47:17 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A16F41A0345
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:47:16 +0000 (UTC)
-X-FDA: 85146268872.15.CCA163E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D780FC0008
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:47:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jXJQAfnV;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787816835;
-	b=C1iKfOdg+gV2dsToKNaZd0PRLOswwCAC7qfRGirHL7+WjnYgwnCAkp4nO4b0Pnj60Q1M5I
-	RHuJ3ukF7KDTYxXgJAz88xLXV36lIF7+CfsS66L/8AdrcbZ8/wjbnxccF5e3GP4ZpYm+1i
-	9KvkIiANvnK4NjrcGjS1alksEQy1xfU=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F9066B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:49:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0344BA3537
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:49:25 +0000 (UTC)
+X-FDA: 85146274332.02.659092C
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2310E100002
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:49:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=stX6ZJsE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787816835;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1787816964;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HAx27bjYWIezR+l7iw/n59Tjpp+JZqYjQalST4GROaY=;
-	b=Xf7v9dST7HNR6SH2PHjltc5SVbMvNQVUxP++RNC1C0sJ7eLje/79wpVUMtcIM6zIKgKJLq
-	h1yUYFHMgG0LkyJnbTt6EUVxi56ysZUkeu/43SflVUMFeoV7FX3kq9H6uWvz/dGzdz65Mb
-	rCgbkLi+KB7ii/mzkek/0TheHHCrjt8=
+	bh=i3S/MWtWQxmPsA3rkRg784EMwbcHhjCKBevLh/6T/ZE=;
+	b=ZsbKGtcBl2tdknqqHB+3wMlnw3Bcx/id5VF9b6rC1Y6NJpFMgQnxo56GAlttA7vtZmaiur
+	h+ZZhxFEK6NCKZWFMkqWA/iXgQuTHZIXpCMK+buP5k/Jfziogzhdw6IKUEXfzIrqmAFZuP
+	6mefg9Qm0JHBYf9hOE5xuYy7RtjCgS0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jXJQAfnV;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1FBDE434DE;
-	Thu, 27 Aug 2026 07:47:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4451F00A3A;
-	Thu, 27 Aug 2026 07:47:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787816834;
-	bh=HAx27bjYWIezR+l7iw/n59Tjpp+JZqYjQalST4GROaY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jXJQAfnVvTVWEWNE4VPcqMrW72bz1eQ9s0q/9pxGB/zaGdI3wBRdVVIhDL5nvhCmY
-	 lC3j0jOHD+sfzJqcAIE01FVPTZ5zMFBDKqvdCxB4RdEUGSVHfsxj9pAUyDem3DiiDc
-	 Cs/0u+1y1bxBZ0NGH32qI+TEeFnu2EmwnR4ii55QrS9wtra/TlmA1P96dBkZ2ounLw
-	 KWrarGBk+zvC9/3bFuYSbxLGuHNb/v8r0LAC3s1+v8nHQmhrn8SW4gcaOnq9pU2cJ/
-	 y0Lk4h7yDpuPuQXAVg9pKeTOuPqRAwSr8o0SOA8bMx6ZPREh+zz8paYvSEhJSAIbRr
-	 KJlwyQO2cFMPQ==
-Message-ID: <c4684212-f44a-4aff-a02d-f3f26095ebc1@kernel.org>
-Date: Thu, 27 Aug 2026 09:47:08 +0200
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=stX6ZJsE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787816964;
+	b=zxkirurSisNBHcP/N4j3G6/Hs1rwsX/SI4GayAfhsbBmLEgZLUCxDz/mRHKZkSdUy06J84
+	8YEWw0HzK2kF/sEjhiRsRB164+h1Zr2CpOLdMocOtVuSE2RNdTOtSRmV2L7Ayih+Jt3Vai
+	zIGzXdSpfFN8pCRV8hcn3honTaOzPlk=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c20ce3c118aso151825666b.0
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:49:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787816963; x=1788421763; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=i3S/MWtWQxmPsA3rkRg784EMwbcHhjCKBevLh/6T/ZE=;
+        b=stX6ZJsEDWE3pMCdEWXlfqcD1lMqFB9Jqnvsq3Vr4EMBTsr9hv2vDdjtfcbP7CcM2A
+         6QMSPDSZO90KV4sTrLEFaT7dgvwGUgfj9FCqOl5CC8mRiYwXbsyiYS6N0pJvmfpUNhNl
+         5tT7Ba5oTTtgaA4WVVu/7fRCj44oO4WWcJ+sjbf+WoKoYgcCC4RYMLKJ8sYpjO28lCJX
+         A1sl5wkKUpFXPjzvMgTJ/k3GeB+JJIsnMDxj029kAzwLeWoYhSVjuw4ZUsRYv54KcPKL
+         fAe5E+q76G4iKBxP0++TGh0UM8ekabpfnx0WRPLzLUkdFBjt7wNkbwpUHOkgkoeUQvWc
+         Ck5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787816963; x=1788421763;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=i3S/MWtWQxmPsA3rkRg784EMwbcHhjCKBevLh/6T/ZE=;
+        b=IxpPV0Ywi1zYuhJEXxA0GAFf23cJS202XVzh1U9ML7dBb/yj6UIrsJHqd4/qeWqlI1
+         RKY7SuAqhFP0+1A/2QS8Ja1G1XpRg3rTOtA+kN+62xakmlGs8mtZXw/y/fdmGpt2qmuZ
+         5jE6TpWzqKR2fbk4YiWP3iZ+A7x0xpYpmYWUPasYQt5XZF80Z5h3GtuvyMUWWkJGXNGs
+         Ux59anQxB0pSx7RBW+Uyr+C0Jcpv2AUg+ymvzDYtCcdrW3v6IMEqilHpeSbsnn0xLiHx
+         oR4FLORTra7ehHuJJdAexx1ui/BIpTBAzdn/sDNiIF68YnhZ10yR2zhkDZFz+JGu/c6S
+         21Ew==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3PRcpCd8L2HgFf4efWn/KjexEou7IR+xYjixjfbWfhaS6qOcjrU03BZhOWNdIIoU1JLDs9hnL8Q==@kvack.org
+X-Gm-Message-State: AFuF++mx16Nb1JRBLc48OB4xnyhtK9jJW2tTWkTihNjaac2YHoVrvYA0
+	iszyLcK2xxkhk2hzFAc1latLgjzkmkWn/hd820nCR1JB42WF55jeBmyL
+X-Gm-Gg: AR+sD10BktmDYr7gxPDJxZz+xRBe0POBIg5o60GEr5tc4zuhRF1xyUiPuTzNKhSj8ii
+	X99zxYkigX8vA5SnFGGhpLFpoAcfw2dYsNBkX1a6VZATE7+jEEcSNiHkFcC+Srtxqus366HTbw8
+	7W5XlyM5tMat6Iu77QZ0YZuFRHxiKrp767nngkmPAohCgimw81ueUBdF1CVA49+B+/KieNfdJpA
+	T/svugiT1+aCv3OtvnpqhzQn0VeyVSH6YQS3HHgEQ5Wjtnbc9WlfWEh7p3Bvzndd4en9Cc781b1
+	9x0/qwdMjLCKg70HdCv56SMtfdKCINZshsXIUDjNdTl372LcqdajNHG2zfOF6RB0lluBCA+CzXX
+	jZHU02FGqzD6KSQzdjRWSqa21vQCJ7JD3woDxA0gVx7b12MHL4dD7JpipT8lPPk6ujyaxKdLHG5
+	Z7huGSKwAUN+93kd64bNojdZDkTxRStITycj9q7Bg2la2sQOaEpNum7ca4LYw=
+X-Received: by 2002:a17:907:9447:b0:c1c:4c72:e6df with SMTP id a640c23a62f3a-c2535b81008mr338811666b.0.1787816962340;
+        Thu, 27 Aug 2026 00:49:22 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a9ef996sm824805966b.62.2026.08.27.00.49.21
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 27 Aug 2026 00:49:21 -0700 (PDT)
+Date: Thu, 27 Aug 2026 07:49:21 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, ljs@kernel.org, liam@infradead.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Baokun Li <libaokun1@huawei.com>
+Subject: Re: [PATCH] mm: remove out-dated document of __GFP_NOFAIL
+Message-ID: <20260827074921.mracnqv2m2cugasb@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260827030548.16631-1-richard.weiyang@gmail.com>
+ <cbc344a4-77b7-4282-9bdd-004822642ab5@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: reject unsupported kmalloc sizes
-To: Zi Yan <ziy@nvidia.com>, Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alan Stern <stern@rowland.harvard.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- syzbot+805630f1453e490427fa@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260817-limit_kmalloc_size-v1-1-5bef487701cc@nvidia.com>
- <82f138f5-11d4-4839-94a3-c226fd982715@kernel.org>
- <ao9dPUpHxP5uOOcw@MacBook-Air.tail10959e.ts.net>
- <DKZ7J9HNUDR6.BP9KG5Q7HYMJ@nvidia.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DKZ7J9HNUDR6.BP9KG5Q7HYMJ@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cbc344a4-77b7-4282-9bdd-004822642ab5@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2310E100002
+X-Stat-Signature: dxczmabpfz7w1fwcy1kymqtjbt15h4ho
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D780FC0008
-X-Stat-Signature: ixmfqgnxhsredowcnhuwhuz31a3smkoj
-X-HE-Tag: 1787816834-486877
-X-HE-Meta: U2FsdGVkX19yMvwMNHutfW0AB2PHQwofYUrtf4baNfMAvB/wdmP3WeaOwwdzJnp/DpenM7bUlCwkcLqv05DkpFvjCEDqWdphmN+Ov9cIlacn1EftdOFUTSlTQrnew5A+1vlVYGQwBLyVX8bRnm0MIa4WB2CCcFPT0uH1vRTLkNja9xiraOxhLEMuk/deMJNdLd7Je8MBA/AXDXDlPduhUsxlzGYPRmzLY9J9KItiRnZMK3isvLhj5J+eETXOtV2oiGACW9D95/yUaIJ/OyquZmeuJyr9SrdYcJxKLGKXEpBWZH9S7H0HFR9D6OORwwaup2dWO7fZ4R/fRmPM1Jds1AnOHHMleCLv3tbscUrrD0GxoJ5g2VX9pwtDn1sd+OJsmpsOR9Cy6sLyPYjtR1eOq1bdgn3z+K/cADANKQhEC4FSE+qF8H/Cjqy4ImEmeOk8JY5j39WSksXDiW/hjLqSQNTEuOmEIhTPU0Zj1Iz5DA9ivPi9KHh6TecANYIwgDmUeLshzDKJHiaU28GeNkl6Msch7OI7c/3FaPbCBYguNJULj+b9NXNfXYYEsYCMEZBtiBu+Wc7gO/0knYGLsGP1SFlJpbku1+9X0kfOBF0aOwiKjRLXTHRmPMsMi6B/ArleyXGVkwBpCbyZmq77AnBCpF1G3L+Z6GTSY7sNSmUGdTqvlwWHkuYCil4P3s7mMMRZRRNCmb7sdoKSST66JDANnlN+lhruDsIMqI9LAuq8JrkpVhLI6sHb4Bh4sczbDOA2RRc/gX6nh57owprTXmU6Ic1a8TW0itcaZ0gOLdN4ND3KIjSOMRgpsVKtPfia0BLxvbq2NiFJqYE4FqI0NnN2rRP8OcTy7T2vurTz3KKKJjHCriH4pESG7xprkRxsEAfpno58hdagUrxfOebQZeKtAtZm7ZcpjTKS0Vw0rDSK/0iWuiadKWb1/u9EcQtpkBUK2qZISJY6iZescE4Fnf7
- QdnV0u83
- qpKJ8as0eoikg4kRCpth9NrqsmoZRwOHlP50WZK8zLTRBgcw8hV9HkvXlURWL/IJj2B5Yhfjr6us6EQp8+gHiVXPenL1Punhuqt/ye+MuZhPG3IUFCN2W5o3fU0QjuwHCd/+0BtTJZ5LGJ532uvIdrGMSb4Yd9vpKvB16IYbsx1r/QA2C5h9ZoFG+teDO3l2bfoQN5MX0ZyWmZ30ODTaWquL58TqDYEuP/6qFt1nQWQxIbzBZZzsiKdEg0VmlkeD/U5IhGKYzaBsXtONObzES+2jFhdqZnELLdOuT/I1Gufep/dPi8A+b+d/9Kc09biHjVfZ2OtFIHWSIo8Vv48OPn54UstHIrqbkfcowWwCgcS2l0CPaLGQMv5SLqhMDpxaik9/c+6ZylNhdzoDTcmmlPiH6nnuX9GKDtFQGV3nqVmwDqN8UopbaK/vfNSUpW86quiivz0HvI7RhTuQH4BCUrjtEk4elz4mM7FwrRtdXujZS53G/zpgh8rY/jDmw3sCeMwVJtIvyyXIS9ExkM/QKQHyaJdpW7vyNxTSf
+X-HE-Tag: 1787816964-867116
+X-HE-Meta: U2FsdGVkX1/CRX8MEqmFqiZLlJ+6aUPb20PZ7bj7zzzPrdMyfYCdHIO97tBVVhXo5oQ1KCXXq+IEfED8vjpvYrzqesn2QM/2/ststxgAkejzpSxCLh5iYtIATX0y7KUU9GCRCMN+2f8OhhIYXlTDGFUIcO//Aj2DRV7xH8E51lRtv6XPTVo/tAiFNPeLBHCCwWwlKGIvFdVt1xrhppvXFknMJl2n2A+VALxAPVxNYF2Hs6J+UdkgC60NEpqRalbET1AvwYuuj5gxTbre5qYzWuFD7F3QscFonYNQ9HwjKbacOWURJ91IOO/JX3EFK4mto55txW7N6MMW6a4ZVlK2svKRSkIjbAPKniTOz/W4aw9VQnoG6bAcvezy25KpZV/ziEbdfCUSQxQ8C4AkKJ0/DCPBqydv8rJBixE9raMFGsfRFqI7QFizjymTvN+lJzrmG0eRGC4rTm/hiyJQ+qtHUZ7FkxjyBWvWgXGOA6+UJPNreWD2Y2w1TjSGSKM/IFhTKWip04/VyQxSPi3XFOIldxgbY7DKtwVaIoiuTV9E2N4DOrOaIopBMY2QZhdSyl7RfeR4zQOFP/EwlwWTKA0Z4dOVfp3qzRwSx4h2dp5eV1pIUow56qsj++Aw6KPUxSCf05cXeHwxsUY/qGETGQ2O9CgPCVba5TUhtVQ6L2KlhNyF3DwDAYjKvGjxFjN848i0yzWDJ6AZWfGiYvEmua4MicGPCSSbSbq3afZt8tV6HfiH64bTe8LamyKOgXkkjYiTkB5fK414INwzFtGiqyAuhkfesF26KQJAKrkIXwn6sJ7nExbOogsl9amx8SSccC2ZtIim47wBKQgBB0Qu0hi7YRFoORuNrg3HpM7aremyQcuTMCPSXjGQMIRGNqmwJqkNDtTJoNEll83xwmzKMD3RWEZYYWTaQBlQZ3ZKnRPMIHnXcZVv/0A3vGMDHOo3/Oj5C71vW7ibyQ438JRVisB
+ 7gUbmW59
+ 9DnQK9YZORW3Zs2VOIcpI2PQpRlC8eynHe6/Hn5Zb7FFKyWH5jNBC+L5+nstCgs3IrYvUkcVe+T1ksSvuH/DDjAJmTLOiFOOYmqMqqE/fsz02fOitnk5Vh7p7y5ZOaKrGJej+8AegNy1eKecC6dMyX7kG/qgXlLGfvUO5Grst2HFc7F4v3fV3aBrmBhwKNxV7C68fqT5gh+smhH+A4sHZMD3KGttkbeNRQS9VqMlfY+CtECzwAZPwCrA5AXZlQ8xA1N3ter9shdhTGShZ9074cR5CyLhauP3/u43S33t7p/QX3sWF6/ghJavLQ9Ff1AmOR36U4rEpD09HMWXHuWZOuF7r5blPqSw3nWaD5RQRB+pTiyRdQYhZHzpaWh7EEF3W3LlB0MflghPdABzG0vadvFPRTyWKkylUXrXwOpMdqHD/gVrkxifdmACzdl/qFgjNNCVQpo23Zgv3uFZSZY9SA/uNo2txYM1dr2fR2Sk4+zXynND1KLwELuaEZGxl/8dNxTHyZY0elUfGrBiVNcfUceVEM0BfQXs8HSgCDTaJbmcR9i7KInrZF+UI2wzGPdbBK6oSE3nxgk/RQeOpAO8HtBqkipWNt/hiC03160Co3RdzczakvHoRCSiGElPNBufY9e+CQ0h0IDavT4tY/dcCulOdsCCtB1MM+GJtIB6nmZOAWY5gR9OYVeoLpxi8WQ7bGMfnvQC59M15T9BV6KF3ZsQ0B1SQ+XU5AsysaEXEMSNdkcnOadVkPdaVxLlEgBIrwtYrKdE/pkcv6pznk5j6UlfGeynYDESZjCwnAG6eym0f55qaCpILZMOQqkp9GNY3ornw/+a6EFgvtEJNR3yIH9hNlTqa1VNH/ACo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,73 +125,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/26/26 11:52 PM, Zi Yan wrote:
-> On Wed Aug 26, 2026 at 5:47 PM EDT, Harry Yoo wrote:
->> On Wed, Aug 26, 2026 at 11:28:12AM +0000, Vlastimil Babka (SUSE) wrote:
->>> On 8/17/26 22:40, Zi Yan wrote:
->>>> kmalloc is used to allocate physically contiguous memory for kernel
->>>> allocations. For requests larger than KMALLOC_MAX_CACHE_SIZE, kmalloc uses
->>>> the page allocator and can only support up to KMALLOC_MAX_SIZE. For request
->>>> sizes bigger than KMALLOC_MAX_SIZE, the page allocator can emit a WARN
->>>> because kmalloc allocates an order greater than MAX_PAGE_ORDER. Systems
->>>> with panic_on_warn=1 crash because of this WARN. Fix it by rejecting any
->>>> kmalloc size bigger than KMALLOC_MAX_SIZE.
->>>>
->>>> Fixes: aadb4bc4a1f9 ("SLUB: direct pass through of page size or higher kmalloc requests")
->>>> Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
->>>> Closes: https://lore.kernel.org/all/6a820ebc.9ebadd4d.20b15e.001b.GAE@google.com/
->>>> Tested-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
->>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>>> Cc: stable@vger.kernel.org
->>>> ---
->>>> It fixes a page allocator warning (order > MAX_PAGE_ORDER) when gadgetfs
->>>> requests excessively large memory from kmalloc. Instead of adding
->>>> __GFP_NOWARN to suppress the warning, as was done for usbfs[1], change
->>>> kmalloc to return NULL without a warning for this specific issue.
->>>>
->>>> [1] commit 4f2629ea67e72 ("USB: usbfs: Don't WARN about excessively large memory allocations")
->>>
->>> So I checked and for kvmalloc() we have in __kvmalloc_node_noprof()
->>>
->>>         /* Don't even allow crazy sizes */
->>>         if (unlikely(size > INT_MAX)) {
->>>                 WARN_ON_ONCE(!(flags & __GFP_NOWARN));
->>>                 return NULL;
->>>         }
->>>
->>> This comes from Linus in commit 7661809d493b4. I'd do the same thing here
->>> then.
->>
->> But the purpose of this patch is to avoid the warning in the page
->> allocator. Should we fix this in the caller (gadgetfs) then? 
-> 
-> It is fixed by: https://lore.kernel.org/all/20260820223719.A4A3C1F000E9@smtp.kernel.org/
-> 
-> Please disregard this patch, but we can keep the discussion going.
+On Thu, Aug 27, 2026 at 09:35:26AM +0200, Vlastimil Babka (SUSE) wrote:
+>On 8/27/26 5:05 AM, Wei Yang wrote:
+>> Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
+>> with __GFP_NOFAIL") remove a warning on allocating large folio with
+>> __GFP_NOFAIL, which is adjusted by commit 903edea6c53f ("mm: warn about
+>> illegal __GFP_NOFAIL usage in a more appropriate location and manner").
+>
+>"which is adjusted by commit" sounds as 903edea6c53f came later than
+>ee040cbd6e48, but it's the opposite. Maybe say "which was placed there"?
+>
 
-I still think this patch has some value if done as proposed above. Yes
-in practice it will just replace the page allocator's warning with a
-different warning, but IMHO it's "nicer" if kmalloc() sanitizes its own
-requests to the page allocator, using the KMALLOC_MAX_SIZE value.
+Got it.
 
->>
->>> Thus there would be a useful warning for e.g. development mistakes
->>> resulting in the size to be unexpectedly high.
->>>
->>> Callers passing size that comes from userspace or similar untrusted source
->>> can either pass __GFP_NOWARN or sanitize the size to what they expect to be
->>> sane (which is context dependent and I assume actually way lower than
->>> kmalloc limits in practice). Note that passing even sizes within but close
->>> to/at the limit, trusting blindly some external source, can succeed the
->>> allocations but effectively DoS the system with heavy reclaim/compaction. So
->>> caller sanitization should still be preferred IMHO. Some of the recent
->>> arguments from Linus [1] would apply to this too, I think.
->>>
->>> [1]
->>> https://lore.kernel.org/all/CAHk-=wiSmgwwLKCqJwGS-dVHnSLU8W+7q1UQq-G9=TBGGZbuhQ@mail.gmail.com/
-> 
-> 
-> 
-> 
+>> While in that commit, it also documented this behavior which is
+>> out-dated now.
+>> 
+>> Adjust the document to align to current code, and adjust the comment
+>> while at it.
+>> 
+>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> Cc: Baokun Li <libaokun1@huawei.com>
+>> ---
+>>  include/linux/gfp_types.h | 2 --
+>>  mm/page_alloc.c           | 2 +-
+>>  2 files changed, 1 insertion(+), 3 deletions(-)
+>> 
+>> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+>> index 190191411009..24fde8eb73df 100644
+>> --- a/include/linux/gfp_types.h
+>> +++ b/include/linux/gfp_types.h
+>> @@ -243,8 +243,6 @@ enum {
+>>   * used only when there is no reasonable failure policy) but it is
+>>   * definitely preferable to use the flag rather than opencode endless
+>>   * loop around allocator.
+>> - * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
+>> - * not supported. Please consider using kvmalloc() instead.
+>
+>I'm not sure if we want to simply remove the lines, or rather say it's
+>discouraged (instead of not supported) and still suggest kvmalloc() if
+>possible.
+>
 
+Reasonable.
+
+As mentioned in [1], kvmalloc() maybe not suitable for some cases, I would
+suggest below change.
+
+ * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
+ * discouraged. Please consider using kvmalloc() instead if possible.
+
+Or, you prefer only s/supported/discouraged/ ?
+
+[1]: https://lore.kernel.org/all/aQTHMI3t5mNXp0M1@casper.infradead.org
+
+>>   */
+>>  #define __GFP_IO	((__force gfp_t)___GFP_IO)
+>>  #define __GFP_FS	((__force gfp_t)___GFP_FS)
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index ab385bc252cc..146f7e0a9462 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>>  
+>>  	if (unlikely(nofail)) {
+>>  		/*
+>> -		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+>> +		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+>>  		 * otherwise, we may result in lockup.
+>>  		 */
+>>  		WARN_ON_ONCE(!can_direct_reclaim);
+
+-- 
+Wei Yang
+Help you, Help me
 
