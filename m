@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1030C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3831EC61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 15:57:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFC9F6B008A; Thu, 27 Aug 2026 11:56:23 -0400 (EDT)
+	id 4EC386B0088; Thu, 27 Aug 2026 11:57:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E871E6B008C; Thu, 27 Aug 2026 11:56:23 -0400 (EDT)
+	id 49C536B0092; Thu, 27 Aug 2026 11:57:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D28006B0092; Thu, 27 Aug 2026 11:56:23 -0400 (EDT)
+	id 38BD16B0095; Thu, 27 Aug 2026 11:57:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 986C36B008A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:56:23 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1AAD1804A5
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:56:23 +0000 (UTC)
-X-FDA: 85147501446.27.FDD94F1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6049940003
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:56:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RnBLMIbo;
+	by kanga.kvack.org (Postfix) with ESMTP id 067226B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:57:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8824D140484
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:57:12 +0000 (UTC)
+X-FDA: 85147503504.12.B764922
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A83B4C000C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:57:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E8gjo2Rw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787846181;
+	s=arc-20220608; t=1787846230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CFZM7kipCqrjfRTX1FI+8Lmju/ujloZNsIaYeTnQJuk=;
-	b=el2bmTgepxVI8kykMHqNLflZGbY6D4Qg613Yc+0KB74sEA8V3JCA0gtXSMj/NcdZWErimm
-	Os/HJYRZnCw8xFlMVnjV1S06+qdkBs4w10I/CuBsN+Njj3Abmvf01pbVu6BV6/7dePR7Sc
-	/7yLDMhm7RMb+ShP6/tZlRe0GvSQH5E=
+	bh=CJD57KfG/QZ66WPVhOedT8gTIsjcNXLXXwCqIXIG4qc=;
+	b=Soew2+4KlQwPswr1EggS2JREzIqWc759JPDpCJPykIHVA+RL3UavDRXJEfiFr9cv31tWlb
+	DPyNKMIiNe8aAfxMwBo8ApxMNbQdR3e7vEjY4GTjbXCQqxsrutZfgAxaX3mtsNYKcaBLu9
+	Eb61Tq4x+jjeQUw1cjhjZ+xJigMKCO4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RnBLMIbo;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E8gjo2Rw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787846181;
-	b=7rkoU8ONlLDJNXYO1RZl1qsMyHXxq4xqGUuEOk38VA4zZyRZ+E3J/nbmAvu8d6yENcgHw9
-	4nZMBQ7vRiWxbnMC7kDXEGXE/6TyY2+1UpCb7CLO0BjYt0TD17H7F95dziYo2mJfSc0NHa
-	gGCyKkzKEABcQusn7aCXideJdEtkwEg=
+	t=1787846230;
+	b=tCft2GQ57jnpHzgJz7qimY3xrC2H9z8ayIG7lQxqxodYmdZdzC7E0XOonGRXkEYz8IIWpF
+	6bs0Rw4IuA1tsGwEGZ2uGesKipBKFyV/Ijb7x1GKXZ3+I3Mi1LDdtVTn9Ee836n81DEpPc
+	nkwa3RhoL4YSmWcAQ1iKkg1i/ExHatc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E951A600D2;
-	Thu, 27 Aug 2026 15:56:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C921F00A3A;
-	Thu, 27 Aug 2026 15:56:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C287743CE6;
+	Thu, 27 Aug 2026 15:57:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFED1F000E9;
+	Thu, 27 Aug 2026 15:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787846180;
-	bh=CFZM7kipCqrjfRTX1FI+8Lmju/ujloZNsIaYeTnQJuk=;
+	s=k20260515; t=1787846229;
+	bh=CJD57KfG/QZ66WPVhOedT8gTIsjcNXLXXwCqIXIG4qc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RnBLMIboNmK700droCbUYEK/N7su/5Jky1PqrEzotOBgEhcEDvs/aF6DyjsyZqUL8
-	 GPmZCWEbSz+eL9ZubOaprfSPNPTu0UMBEIzCeizzPhq1NFgRP+FGe6lXVciYY0RdHJ
-	 dIweo1AO72T2rBqQEZhXFyw7MuhadOnzas4g4US/2Wl4Jmg94z1cup8pHAOrz3bmGr
-	 Py6ifCIyvB5+fc4Ea3FtX4+OA0RXwrJ3ytAV/L2q//D0NTfFK+qP0GojGxAM0Me3iS
-	 g2Xm2gRl75KQqAYhVgHB5KTjh25bOzS+J+imxOEVGjleGsHSp1T53nvcCwNc+VxkGo
-	 NBJAMZmPPAr2g==
-Message-ID: <81085d1e-90b1-429e-9521-a0c7176c6d0d@kernel.org>
-Date: Thu, 27 Aug 2026 17:56:14 +0200
+	b=E8gjo2Rw096gGa06lttjTPVXYA/0357Xt78LUc6eDZqgcAwLSjD+wZOynLB3ozuU8
+	 E2kq+RN0t8fsnysnZKtrszpNH2HS8RcuvXvxJB9DzyDLamEgXP3yXSi43Rtrrfci2c
+	 xT3/aqIiGNAbd4eQtbTiPkXAGuKaBAQiC5Q/qJOeoPbzM7uKT4n3AQdfrg8LlmfOu8
+	 V9GM3Q1uXNOPRmMQ6aCroV5zR/jf331cB9E2ZawOIpMz1WLuRjYkwCu8IBoEE6yNSm
+	 r/tZV5Zxk51Aqce3ABeh4pnBXKa4x72EG2/hUECPwL+zIEeeOd0oJHh/fx6+pOSfH3
+	 pbM0eR7OCvoJw==
+Message-ID: <e6c2ee8a-4047-4e9c-85ea-62bcc04d0be9@kernel.org>
+Date: Thu, 27 Aug 2026 17:57:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] mm/huge_memory: do not touch frozen folios in
- deferred_split_isolate()
-To: Zi Yan <ziy@nvidia.com>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org,
- ljs@kernel.org, hannes@cmpxchg.org, usama.arif@linux.dev,
- lance.yang@linux.dev, hughd@google.com, baolin.wang@linux.alibaba.com,
- baohua@kernel.org, liam@infradead.org, nico.pache@linux.dev,
- dev.jain@arm.com, ryan.roberts@arm.com, balbirs@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-References: <20260826162101.1314941-1-kirill@shutemov.name>
- <20260826162101.1314941-2-kirill@shutemov.name>
- <c3f16d64-ffe3-46aa-9596-b233f9294fcb@kernel.org>
- <50FDE99F-3E71-47B8-BD88-05AD771C4BDF@nvidia.com>
+Subject: Re: [PATCH v3 01/18] mm/swap: fix off-by-one in swap cache replace
+ sanity check
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
+References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-1-9b43f5163238@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <50FDE99F-3E71-47B8-BD88-05AD771C4BDF@nvidia.com>
+In-Reply-To: <20260821-swap-thp-cleanup-v3-1-9b43f5163238@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A83B4C000C
+X-Stat-Signature: bqfry6jptafzq44d8srb1ztq5rxp5mzs
 X-Rspam-User: 
-X-Stat-Signature: qt8aum8csh359gyzyw6hddoj8zrbo4un
-X-Rspamd-Queue-Id: 6049940003
-X-HE-Tag: 1787846181-21416
-X-HE-Meta: U2FsdGVkX1/Y0RmA+sG/Q04UQBPCUzTzU5qCE3T5p2AeqLuQHqxC1tuzfvgs/zkQsNFb3H259UNrhjx+8frfJ6DsfaqYLrJbkDvUwxP2u9lMpVHNKJJcTQ41zbR9tQkfFghE+Xi9jblzoDMeuCdthuTeIZiVforCFdHduC0a/+3tQaaaK0BbAerbzBr3FF0f60rXZ/1iyBstHjNv6lm7Gt7JDleOC8l8UJzBU5xGVcAEmJgIhPN5GNyX7bw5un1o0lXFXIJw5XbKo/Rjw3MvhdtpTjQl4S5jvA29lv9UQmLG76lhD+S85gz6otyUjI40wTN7V9CFd508uQeCGKsTB94ILRWV2AGeUsyFuKgLWklZrWRCZz2nDre7MmedFFr+fNVF3ALUkTUEfGJaX7KDXp+KnqXZXOej/qjhsJBjbzJ9lo70OpAlqhogEUT9NuRXsQDpUelrtCHfk/KzH78X9F+oCl/FMHv8QrexYjDh//jEz5A/47KYI7o9+qazHG3tgB4iSwZGHkaw2asUX1Vzpre+YNuPsEpzGv+SklPinteISONFeWIwhdgRT/sFvj3UGJOy3soeYE/BYBE+RNa/dG89wuX9GYzsaGPmoskKauuIWVXrOYs9Pj6Y6v7KYNFRPTD0BY/CynnS/cHCcv5BcU1uxQsDI6R/kk427zzgLmBOcmf21nBslRxSwCdafofWCo+hevMSm8U1BI0iQ0BXg5NWmHeDiZiQsYuU1OZO1E9dOFJdOPgARmWAYzsiok2H9e65ncn6f8fM6naD22P9REj4l1AfeF3WZZlf4mIIISZUvRamZi8g/EcydYQfEvvgq663/FKhivPtfRCvuoeR13/NTy27BzDjpzpYOUm6OdYdOdnS4SwqDdBQAcZKvkRJtRAV/4U1MB5q6RQmosrTD7FXIZKxbyFYpK9PoFMQCIoNsGRMRZaBq+5AiJOrHBXiJUzJqSr4RsxwKmpIfib
- h3siv2mp
- wHtXY0GcRwB5fxDNOZzl+hQhMZZuT78kEy7LI6HenJNEoi+CiWnsaXw+orlPnYsxlhSHVoynllyoXaxY7DCadGMZwMw/UV7d1cyNcgXED6ZYGh43ZuTDiKvqovT36Et3Li/nHLQe810xrzL1RL0mtyu627ebsIJkk2ekqvCoUIYFUC8PLxnfKVS1bHWE5TMNCyjflNzKuq6TinDzfT8T+4/55vjfTO0AR9Ndw3PVm4i0N6FH0R84imevQOrn6EQtYj2e82j3MIm7KveMFireT0/wt2zPdcCeW0bFzJg9PRagXFdFolxxUugMp5x1w5ZEMhHSHtXcCpWSAAEk=
+X-HE-Tag: 1787846230-475433
+X-HE-Meta: U2FsdGVkX188Nn418MGcuF4mH4a6cvIVNqA4C6I8aBgglHji8+sWChaujGs9n5oNH5nCs1dVfFCWVHl44EMY3x8Ec7JNIJLOkTma8/Gx9XZouuLXgqCcm7rXCNwp0mLDyPM5k4macm37t6gClm0/05OX4e+EFnE7pstqpIC5F9kFYbdR7Lvz/TShlm/IPI/uGChq/IpvXLHvdj0hASDFXiuYDC1eifXgLVEyPPXUaRNB5qLHV7i2w+W8sUV3/entcQ3JOfb70kekP9mVVh+5FkmSz9aIXSQWf5RiE+dsIWpKAFZcRx8VZs2kJFF48HDWuRV8q84nHz0i9YxSlUK1UkCAs6CI6kz4vW8Y+4WkO9ws90KhTKpTJ/s5gpHTOLmHipD85kGnDIdUEgkckUhYDn2areJdu22BjIZUF6j9uqUlugCVHdGosh/Pm586Az6FyOSlS+0gKV+m1JMLMXi0OY6n3fpAn0f+llOW3mFAUOI3NreUV4nk4JwfkGRBv8TLoujLIHWpVJG3y+EXae0uZFQWpwgK7OTeYMgCw2mWe+5WC8S6As8v75bJyZys3z4iHC+pJZFaphzbpq6gyE0k7IYBMcp9MRRs+qFDNfLysycsU61dDD2G4szQ/JtY/i0o/mQVnPRz9zlBDlGdzt+VO38kXOL1Gv+3esqX63a4FlxMG5/V9Bp+J059rvAuWiy8L0WLfFxXGYOaZzf023b6ECxbGNwjmqp2cSjW38RVjOUzKIaSrPflUXCmfyKRt26OpnirAtZxpEIZjhtgeEHhrANdHNiCab4x+baFKHvPjpi7PeW+JvvWilRXV7NTK3CCcTpqXvYxFoOHHuqVUHmBjUO8Jxe+jYKE+jAryJLXQ3crWYROnU/04JFP2M6ICYt6uSZMEFAndVorPdoaJvjbwyO6MdjZo0fLDgcjJlw6WYgy8BiKmOm38zjFqeipxvn3TMTJkNpIS1QyRMLAsTM
+ R+h8pS7S
+ 3obnejCwkzs6bOcTctcX6o3so7C52V8XT5R7yIGu4YpIrUFPCZgHtuAmFdPV3jEM6cz2TZPFq3OrXokzzle0etQZh5+2oBuzNBkmTmxQTBMNZAkiPqR5QLufOf5a8nUAnUg6Odx0HafGpEWCsPfVUCrCAwiBO9kXQXGENQuYwNsaZXbk7/5rmQNBUdhCWJuCXEpb5eW7JmfhpHOqn3fNYzAJ5D0xf5BGmKI2Keqggdl6mbwG3MqjBFYmeDputXCAq2cIIsnmy0WeZNLd3elxiUVVUAJH2Z5lf1JD2XKBQg/SQOsuPy/EN3Mtabl0XW1PE2zG6fQH+GpMvv/0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,100 +149,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/27/26 17:38, Zi Yan wrote:
-> On 27 Aug 2026, at 11:23, David Hildenbrand (Arm) wrote:
+On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
->> On 8/26/26 18:20, Kiryl Shutsemau wrote:
->>> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->>>
->>> deferred_split_isolate() probes each queued folio with folio_try_get().
->>> folio_try_get() failure is treated as a lost race with folio_put(): clear
->>> PG_partially_mapped, correct MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, take
->>> the folio off the queue.
->>>
->>> The folio_put() race is the most common case for !folio_try_get(), but
->>> it is not the only option. Another scenario is folio_ref_freeze().
->>>
->>> A zero refcount in such cases does not mean the folio is going away.  It
->>> means "don't touch me" and current deferred_split_isolate() doesn't
->>> respect it. It can lead to unqueueing folios from the deferred list for
->>> no reason:
->>
->> Yes.
->>
->>>
->>>     CPU 0                            CPU 1
->>>     ---------------------------      ------------------------------
->>>     freeze a mapped folio            deferred_split_scan()
->>>       folio_ref_freeze()               folio_try_get() fails
->>>                                        folio_clear_partially_mapped()
->>>                                        NR_ANON_PARTIALLY_MAPPED--
->>>                                        folio off the queue
->>>     give up, put it back
->>>       folio_ref_unfreeze()
->>>
->>> The folio is still partially mapped, but it is no longer a split candidate.
->>> Nothing queues it again until part of it is unmapped once more.
->>>
->>> Skip the folio instead: whoever freezes the folio, owns it and owner is
->>> responsible for its fate. It also covers the folio_put() case:
->>> __folio_put() unqueues the folio via folio_unqueue_deferred_split().
->>>
->>> Reported-by: Lance Yang <lance.yang@linux.dev>
->>> Link: https://lore.kernel.org/all/20260824131224.73344-1-lance.yang@linux.dev/
->>
->> Fixes?
->>
->>> Assisted-by: Claude-Code:claude-opus-5
->>> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->>> ---
->>>  mm/huge_memory.c | 19 ++++---------------
->>>  1 file changed, 4 insertions(+), 15 deletions(-)
->>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index ced400f72d43..6281ed993243 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -4590,22 +4590,11 @@ static enum lru_status deferred_split_isolate(struct list_head *item,
->>>  	struct folio *folio = container_of(item, struct folio, _deferred_list);
->>>  	struct list_head *freeable = cb_arg;
->>>
->>> -	if (folio_try_get(folio)) {
->>> -		list_lru_isolate_move(lru, item, freeable);
->>> -		return LRU_REMOVED;
->>> -	}
->>> +	/* Lost race to folio_put() or the folio is under folio_ref_freeze() */
->>> +	if (!folio_try_get(folio))
->>> +		return LRU_SKIP;
->>>
->>> -	/*
->>> -	 * We lost race with folio_put(). Read folio state before the
->>> -	 * isolate: folio_unqueue_deferred_split() checks list_empty()
->>> -	 * locklessly, so once removed the folio can be freed any time.
->>> -	 */
->>> -	if (folio_test_partially_mapped(folio)) {
->>> -		folio_clear_partially_mapped(folio);
->>> -		mod_mthp_stat(folio_order(folio),
->>> -			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
->>> -	}
->>> -	list_lru_isolate(lru, item);
->>> +	list_lru_isolate_move(lru, item, freeable);
->>>  	return LRU_REMOVED;
->>>  }
->>>
->>
->> Who will clean up the stats that we used to clean up? That should be mentioned
->> in the commit log, otherwise it looks like some piece of the puzzle is missing.
+> The DEBUG_VM sanity check in __swap_cache_replace_folio() iterates
+> the old folio's range with "while (ci_off++ < ci_end)", so the loop
+> body runs on the already-incremented offset: the first entry is
+> skipped and one entry past the range is read.  For a folio split
+> that entry belongs to the first after-split folio and was just
+> repointed by the replacement loop above, so the check would warn
+> spuriously whenever sub-folio orders differ from the head folio's,
+> as non-uniform swapcache splits now do.
 > 
-> It is kinda implied in the last paragraph in the commit log (copied below),
-> but I agree that stating it explicitly is better.
+> Use the same do-while pattern as the replacement loop.
 > 
-> |> Skip the folio instead: whoever freezes the folio, owns it and owner is
-> |> responsible for its fate. It also covers the folio_put() case:
-> |> __folio_put() unqueues the folio via folio_unqueue_deferred_split().
+> Fixes: 8578e0c00dcf ("mm, swap: use the swap table for the swap cache and switch API")
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
 
-yes, I read that but was not convinced by it that all existing freezing code
-would handle it correctly. So spelling that out more clearly would be best.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
