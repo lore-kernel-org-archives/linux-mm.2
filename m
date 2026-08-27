@@ -4,140 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83FA3C61DC6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 12:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3C61C61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 12:04:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 558FF6B008A; Thu, 27 Aug 2026 08:02:35 -0400 (EDT)
+	id EAA526B0095; Thu, 27 Aug 2026 08:04:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 509B16B0092; Thu, 27 Aug 2026 08:02:35 -0400 (EDT)
+	id E33866B0096; Thu, 27 Aug 2026 08:04:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F8836B0095; Thu, 27 Aug 2026 08:02:35 -0400 (EDT)
+	id CFC6A6B0098; Thu, 27 Aug 2026 08:04:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D8846B008A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:02:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BDDC120427
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:02:34 +0000 (UTC)
-X-FDA: 85146912228.17.0E8547B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8D299C000B
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:02:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bb3BqZBk;
-	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A48156B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:04:19 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3A0AB1403FB
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:04:19 +0000 (UTC)
+X-FDA: 85146916638.09.58990A6
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 11A65140014
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:04:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="Dza4D/BD";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787832152;
+	s=arc-20220608; t=1787832257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2XsxeEPR3/Rk7rjBdJvlKvo98WGdtvIZTN2N8+2tZQM=;
-	b=LykJFcNL3JwppxLNkj9Assh6LseMtcGOc9z4DKBqYw1Oy1CsRVV4yPDl/D3+FC0+Vt9jF8
-	ooIjouJbnrCRQfZ7KLUsUCO+jZhiEu4nojj10hK0aTqGSJFZRFeH2igWJ93LBvT6VVmufQ
-	iE1CK69Hm5ZCYSgmMwMKAws/6W5pzNc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787832152;
-	b=0ZgDOEJF9bsKT/hWYCO+5v0yQQw8EnCP9fLfFzrG7/FT+yeGf0cDWVIWQQIL7BD6C9GkZ+
-	K4sj0m05bbdOpma/Vft8AAR3Moo7gk8DyoWMKwPR5vW+jmt3GYPh2qeVNCknYsZEu1254y
-	q0wZWOgwf+DozBl72iwZqu6OXObAbzw=
+	bh=GP97XYSOxAd4mwkEh8pXHynZ3Zgb6dcRm0VHZ16u2ys=;
+	b=hdVEW6alCUzaLAYvGStgxQzK79CMGzI0UFQbW/qKaHmvz0keIdr9OYWeo6boeZpEdFPAM3
+	i82VWly+vQwE7L6fju45+U9/b4PsIPIn9m6LQvCaSfwbOZjB852FAyu3vqJGIdQGbFmxGt
+	YUDYHGq2lok8FVT7e+/rsL04S3wcszI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bb3BqZBk;
-	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0CA0D435E5;
-	Thu, 27 Aug 2026 12:02:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F33F1F00A3A;
-	Thu, 27 Aug 2026 12:02:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787832150;
-	bh=2XsxeEPR3/Rk7rjBdJvlKvo98WGdtvIZTN2N8+2tZQM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Bb3BqZBkCy12z/XYEtwhaP4jdrDxearjy1VX5lOWm3vJo60wfk987M2UrfvVy920O
-	 iw3Olx8b6JTkkj8q8ioUhGJWt5ep9HybbQExO3t7OgMDtF0sn5YLA4HE++v+JGatPj
-	 aCIrx6SRt+vZDaxlKypBpBTTTFnjLmZOVH9bKNl7Ya8QhChxdoPxFCoswIxxAk1jMC
-	 oVr6q6lg3qjxecFQOg58k2XwDKPV4d85t3eq/b41tiGIMsPYwSajuDpSgooKQsDpUo
-	 gbzWJSSYGaSOTe458yLIzoEl8Xqh12uH3tZSLcXAS1fb4ih4D46Y2ab4o9wQ0IDVK0
-	 cgUmJJrgg2L1Q==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 04F11198006A;
-	Thu, 27 Aug 2026 08:02:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 27 Aug 2026 08:02:27 -0400
-X-ME-Sender: <xms:SyeQaoKo4tb8bnlH35Szx0wbWy1NZzrTNp7vZHlBAy7-Fq4uFp-eiA>
-    <xme:SyeQarFtcvavQQbVlnXTqwtmjArg-w4o6Ar6lS5E8jAZUR7yVzO1kMBJNzgQYLg2F
-    dVhC-lD7rF7m35p74_UP39j9dC5zeKcCs-ESRSXIPDxDgRCgZMm4KQ>
-X-ME-Received: <xmr:SyeQasEhQH8TtHVEGB_dbkCL2SlmpH8VDjVoQNmre6hRRmzmxEEpLkqdwsU>
-X-ME-Proxy-Cause: dmFkZTEirA8p/Fg2Vt0IQ3sbf8tygsd6g4HGOD50ZYQXuEOzvK3DDnN+iPIFENoOnOzS8y
-    jl4cteOEz9eDzItp1psFvzkCM8nSgtIDdtXPBJUOsZUni9pif7kyC1W52Cbg5Y5o4uXe65
-    VqjwEt9ummVrtTdk+rpysdpOiyf5vZ9yetWZQoeBBoc+hPU4GIoq6romIJ6qEM6rH+0v7t
-    OBnCBYkMaKf1tYtVOe0M2Ct7auJ71LhpDbgT1P/lz9P3MFwvlMkwlj2+xrVs8UmZMr74kE
-    RP/8923JcU3qWpmArRahVMHSYtCWOWanNLthEMna1K6MswnvpxEy649NmN9nHdrRrGzBbW
-    W/k1jezLaTAJc73o/EXawFGSUYoJR4c+TXIzR7h20OG7HDRGWp0bK9L+wkAlAJYhtry1YW
-    sJ6WIBHNqylTjDtXfscT6bsb+fxgd+t/Ew3ALSICZinX2t+XlOJp4HolZ4C7IdMTv4hHWH
-    +t8SZPqTgfyzBoelXA+4SfIjRWtn9U2ZpWT4mGQvrNivXc7daUyWHp3sDOkyxYDXoQcmbq
-    yV4DrKa+59naxi6Pj7cBVsnTFEGxK7FsGKZcsuXdDqAdLJIuVE6szwyIGDdiPnskEaEVih
-    QWuXHPSyTDwaLSAQhXmFzfXcK8Uhx2Pk992kJhYYzXVdDq7ovWBWIfhGRHxg
-X-ME-Proxy: <xmx:SyeQas6x_CJAKC10gEebMtWvee83j2n4rr6KZqH9u-QrgV25nhpENA>
-    <xmx:SyeQaobfSR2oXdZfYfuMbYFgWhmZIlwMBfH9GtmIZCEj6lSEoQBxbQ>
-    <xmx:SyeQaoswysIcl7AWGL07Q0fQFEhknHXPx5s0slrJlXtovuG8C79AOg>
-    <xmx:SyeQai2eUUcBLktxZoPLt_q8cP0i2UUXT3PadRIqdG8xhqrvOK51Fw>
-    <xmx:SyeQaioTmw4oBvOWObMpNP3HJglgHG0vOGhDDJbax1PZhaE0uqr0wCVD>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Aug 2026 08:02:17 -0400 (EDT)
-Date: Thu, 27 Aug 2026 13:02:16 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- 	Ackerley Tng <ackerleytng@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- 	Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, 	Binbin Wu <binbin.wu@linux.intel.com>,
- Christian Brauner <brauner@kernel.org>, 	Christoph Hellwig <hch@lst.de>,
- Christoph Lameter <cl@gentwo.org>,
- 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
- David Hildenbrand <david@kernel.org>, 	JP Kobryn <jp.kobryn@linux.dev>,
- Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>,
- 	Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>,
- 	Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>,
- 	Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>,
- 	Matthew Wilcox <willy@infradead.org>,
- Mel Gorman <mgorman@techsingularity.net>,
- 	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>,
- Minchan Kim <minchan@kernel.org>, 	Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- 	Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
- Rik van Riel <riel@surriel.com>,
- 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- 	Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- 	Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>,
- Zach O'Keefe <zokeefe@google.com>, 	Zi Yan <ziy@nvidia.com>,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 07/25] mm/fbatch: LRU_NEXT_ACTIVATE bit to optimize
- folio_activate()
-Message-ID: <apAllneItXmyjRPo@thinkstation>
-References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com>
- <16b39f43-d91e-7b23-900e-90cec13837ff@google.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="Dza4D/BD";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787832257;
+	b=ZtvP2G9iu85uNdrXdfRlJa5sclNYlpA9IgssixcPU3YN4212XxI5UxCVYtmKxHkz4cGbtX
+	Jxlq3inV1hzfreooxTQGmFyyQva3u5jUEcDTU4HABtaX27p9dBcxr+ulmBbOgGekdSI+fo
+	aLUwgCG9YHGOla+W/cmq+cdE8ptPPSw=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49557167508so6601915e9.1
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:04:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1787832256; x=1788437056; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GP97XYSOxAd4mwkEh8pXHynZ3Zgb6dcRm0VHZ16u2ys=;
+        b=Dza4D/BD31ShmYEYryc355EXKFKGlNZrO5A18Cz9BrX+meb0WzQPs44ZYLhKxxqXiy
+         M6eA/192dREc7iB+5pbN2kN6htf8vObS5itqQ8rtJH6cEApO3pg7cYJTVpNwxU4b2A+F
+         TQLWpaOTyYjvmboVX/hokmoSq2+RnZsh/B+4GhMndxPC64AJygHeNwc47mvnpgBG2SoW
+         yIXypSTMJpm1P/cXsJsaeYJ55z+TuewfRSUG2oBi36OdQD0igfzny0+U9C2DtowrrJlO
+         Ez8wql/BGFVJpZXjLZVyiQhC0f2nmbWkypEdH8PujxfUjTh3CnzRMyJfwu5uTegXa6le
+         o8gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787832256; x=1788437056;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GP97XYSOxAd4mwkEh8pXHynZ3Zgb6dcRm0VHZ16u2ys=;
+        b=oGnzLnR9L+sKDb2v2q/eCPa5K85f/ZtH4B+d2hiI585B8oTW5b43mSI0dRA81LNcjY
+         26Ovdfw2fPKgGTVdo2Y867m59SjBa1kph6ozEjYMBw79kePASE9xJazFQcij1eYCfmWZ
+         fx2sdkx8cy/ACA1g/5Wyx3KwlbymyeREgjSKz4b+lyEl4tCPcTyzvxt/eZiL7Qz/GI16
+         X0w1J9EwsKlLHDKmpUsnIcgYwTj8/5o/XoEW59YPl+X4XNwMuQz58DSP+Qvu+iGabVgp
+         eFytKBTQXkCbRQvJ57HB0TC5KC0X+NU6/MQ8FwCKZTotzrT+B+2zg7JRq+f6lO6rG4Fr
+         rJDQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ronsef7cph+MdrBbwjGo/Kq8AkP13KiNf8jtx9C92ZuqNFNJkL14ksQjh6oOeAhaBZ8TwWVoYIoEw==@kvack.org
+X-Gm-Message-State: AFuF++nIYdZUWXFjEXN90/TeqqPAoEOZrulIF/5f9/Xdpl4XzrmI2f9o
+	dgwFqKSvZn3SJultLn+m0kQkp6Kk+D/viQ5eWoaV4MgZEqFTqcZVc1H/AknCOcvOdtkdB9KKkQ+
+	1b9I1q4E=
+X-Gm-Gg: AR+sD10ZvNKnPdDXFLSsKPdn9TaL6jIEfmvuPq3nDZfexn56ircPvVm1XYIm3zuBqHm
+	9wChGqAIfe5iPzZxSjSFxkjLNXsXqPGi8VGVlP9ZJDNbcpdCL+OcyFmTWLDsa/htRAHWkSie4or
+	FqzDiOAQhYz5aVMNMFLnNkWw1yzxsrO30dX8JfyPDbxQWDQuiecN1pk4wztbTKBChrpnU84M/af
+	PtlE0dsjcfp9+xAk9Bfb1Os549smFBUF2cNaVZst2tOCmFIMIItMoExqO51Dybl1EdUWvDUA4Oh
+	V7lBJGDfYzz3rmvN692Yi1+Kw/O3e/G9VekmqL6zRlplR5y9/yS6E1fBEJarHZHFSCohhKMwAfU
+	ieS1C5ITSCPwb+0SDLSIKK1KMcvXgKhQQBmZmreMSxb9oWW0kAlDy2Ac22HSL9L7n9tKsnyH/Rl
+	AdGnaTMiPBejsSb4866xRW+4pvk5oRE2EZdZCcSvrl5x8Arlnr/MKaH4qWMo2/afU1Gk2CtWG5g
+	V7CLvpSHPAz
+X-Received: by 2002:a05:600c:3513:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-499dc82c0d7mr166799585e9.12.1787832255539;
+        Thu, 27 Aug 2026 05:04:15 -0700 (PDT)
+Received: from localhost (109-81-32-216.rct.o2.cz. [109.81.32.216])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e28dc134sm8549762f8f.20.2026.08.27.05.04.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 05:04:15 -0700 (PDT)
+Date: Thu, 27 Aug 2026 14:04:13 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Hao Li <hao.li@linux.dev>
+Cc: hannes@cmpxchg.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, akpm@linux-foundation.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: memcontrol: treat disabled memcg as kmem accounting
+ disabled
+Message-ID: <apAnveXHmeQlKJnU@tiehlicka>
+References: <20260827091813.22327-1-hao.li@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <16b39f43-d91e-7b23-900e-90cec13837ff@google.com>
+In-Reply-To: <20260827091813.22327-1-hao.li@linux.dev>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 11A65140014
+X-Stat-Signature: out378b78zs3h54mz4kk894ardhde4ct
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8D299C000B
-X-Stat-Signature: cdsbwnbiahpmf6kfpkgmr81pfnimx1ng
-X-HE-Tag: 1787832152-352442
-X-HE-Meta: U2FsdGVkX1+TvaZeErlc0Rp/ZcRy/EJK1iOlbPQ4MZxOHXKbcQhdYVVvZDXu3Tije7HlATAeRDT9UUCU76igJm5fi0YYFoCNjkHF8J5yQCTWS3+dF8mqYnrXdxCPxZ/pX/N8oEyB5hjD4NIUGQjcC6FpekjK6pKFPU71KljHBppSWk9CT5X1KNnRC+tRY53qu3flYpfdFiodAbGk8kO/JqQIT3QUXZ0/mclQ2HulJw2zyjWFevpUhmaNDWQ8NhR7rolp/aeLJL+lqsrwSfNpxmcLJbvIPHj/zMNCcxkxHnS7syeln1nf79KbCLv+HHGqRx+1Yn06vjMgvWdDhrTcMpJ5L8bx7+5BUl85ywYQ4gkQnDJg3zC2wIPtV0aqyiq2IULosXQMFkdfelorateH9fVG7FKqEVXCjiYE/kwj6c43i3jKCbTHTan93wbcBFds0ka0ACqdc37Vv+XTJXkR92NIGuuaQYlCiqF5IIYC3CdHbd8tm1uxrhqU2LhAYiKDgmLktrCaQKW9HYlBmWvXOLaKZjuDYn6w5L/WeShl8n+msUVlOccOPBvdEyr4te5lMJCvIVhHw55OSYHPSsbR+/5ZcgaCthO260xwfQ0KuO/v9D+EO4vHxYYmxlN3cBN6QvHrXNA0WYPwFTfHrdS6ulRBc3yx9Ghcap6YO/9s/C5fBoxzPOnoXE1X04RbyWHibTmgqWgEr7rTh8hjrIz8nXygzEbfHAiuudM8Mix8muitc6XGEqAnjef8is0GEaZWIbnZkDlqqJepDMu5ViBTJ9+O6hIpSjofz4iqCHp3rFtAIMco0EOgxOag3gOwMPicbOLcb1QAJRyVwlvroWrbZoD2j+5IsxtyEr0ZYcGjXaxEuSk1sZOJdY2YsIXiWpM4btR3p3uUAosHUNzgQuoRzGrP++S98auyZIJrVs87DevCw9FpsBDw7t+BNGUzxknGp+FnYdVuIO7Tn0CZHsC
- op4FZrLY
- dhP+gTCsTIywj05TvjYUnbc8rIkSaNdOsN/3F52oqUGRFsSMCxZY4TSKnQNITjqvTgjHtxbOKQQ/P/s/omgUDpujj9QQNKTFxkvfyZNqM4UoiSqt+J55ypzmZc1cuOVbMp6szfxkbrJ4OE2p0AO2Pn+644VbeOTjUoFPW/iYCqLZm0WWKLWrRZyy4c1eOZfzjZ/2YJG1MJPoPCEsKAGgPE7wyy2gNdrr2mD9o72tsq5fhnK8MozZTE5ujFFjVEcPtH/Vshaz810L7O24MU/aGniozO8oiTfhcVP8qCoErx4xIDmI30zPX+TP2wqgVFK1nQrRxirnJyU/B8M4oZ0eRZWyammoMUjAwphtxZ/Edeh3szvJKmoaXcLhkoFM9BI9wQo2P6BntnQGUr6W/oNQhuyOR2Q==
+X-HE-Tag: 1787832256-268956
+X-HE-Meta: U2FsdGVkX1/U8mXLZij3khSoByolKxGUBdb2MrwikVGe6qOCOpwNQM3MIxE8+CFfDfzeTL4iJyaftUco8oq2TSbQQNTBfJ/7uV5i2vYKqI426KLaoLKLCCNB8pyA3Fd7Vlc6PCk0RtvPFlMYTkOtGbN/VG0scqNJomH7JnmRyMWiqeZkK+yggI+KMu+MH44mt5aHrjTt1lJwzm30h3z60rH68qzw3f+oOjb0wlxAlOurbIWCoSutOmqCyTa6oqfAMtAzlVzNwLPkGieDb3ltdiByT4K3jmDG6D56N0/DojtWFgfxdVd8aYWo9Hqq8SKfsQs7osGCinPlIpOqki059ysPoUiEC961BywMpJD9+2jCdGKuzfRUq8yumJSABUA1ogqXTY0yrSwaKQwGMuzH3OajYX5s/99sdIJaBkDIwXWut57rfJDjRyhgO1qdsLF9bT2PcGIs+L1PhzzUj9FLbPU/ITs5rph7nfETQLV/E0mEUz10aRdy1OEbdBlHotks7w/CaDJSvVi+OJPMPks+HXDccnZxQsoLDw3O0nr3X5lS3nu+P9HrsLsdGgrKm7EoqzETkPZbBefyyfUvHsRh5MmMkGvxmnyCn8kJkbOl/MMhdbXNrT3NalfFwWVJe4EwUAU509KAxaDendgRY0ypI5jXQf1HfzSs5rEmBBmRS0xjrlnDBGb3ezDkBKKyKKmNS7cXT20HWyeVmrEHKSrp84Bn+E2wHGy1atooGiHeW9rq7HbvhgOowbTemHegQBAuj+t52h+JgJU5ND8irPbkpuJs8ElB0G/Z6zmtbX0pLBRASDWiGKWqOskmn+ASClVRlfB4BFabwJnDPmAhkCs4KdRjocZycPMTxLS1ezsVulI4IVYWY41Nzp8rtt5kjQFJQUlKisMe6ngrYALfGZ0wB71tuNSNLwUMJubprXwMB7uE4v1scaRwqO8gb6h6pFTIV72ZRoNK2kd1UOfI8Nn
+ /QH6jqDZ
+ v3DmGjZn0aRWJyIg6ZV/CClBCCmAPkcpt2txlAAUQZvZheXf9FgO3MyoWT53X+YuM53dC/ZgK/zPOHdLVPqe7leU5h+gnQE8s5jjXZ0WrKT+oHf5aFr8SCod/D/w0pDsD8XXujzn3ZijSe61dqz98vlMqqd3xtljYJph2+Lc07VvDBuIj5nuMxi2dHkTBRvqqjbLkHE8JEmmyQMPtN23U7ul65pdW12QaQQDu3hOyrqH4p2/7qhf28ZyNAUVWxtdqnQ3iUJ6oo1nsiQndrR6cXgW/gnnVyOX92jyWKP9STSWx3eoWzYQT3Ya+nrR4FNiNU7MdO66gu+L0lAvYlcggA4vL5s99mB7MnQzW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,25 +123,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 07:09:34AM -0700, Hugh Dickins wrote:
-> @@ -355,6 +356,8 @@ bool lru_add_del_folio(struct folio *folio)
->  	/* BUG_ON(folio_test_lru(folio)); */
->  	if (!(folio->lru_next & BIT(LRU_NEXT_BATCHED)))
->  		return false;
-> +	if (folio->lru_next & BIT(LRU_NEXT_ACTIVATE))
-> +		folio_set_active(folio);
->  	folio->lru.next = LIST_POISON1;
->  	/* BUG_ON(folio->lru_next & BIT(LRU_NEXT_BATCHED)); */
->  	return true;
+On Thu 27-08-26 17:17:50, Hao Li wrote:
+> mem_cgroup_kmem_disabled() currently only checks whether the
+> "cgroup.memory=nokmem" option is specified. However, kmem accounting is
+> also unavailable when memcg itself is disabled.
+> 
+> Check both conditions to ensure the function accurately reflects the
+> kmem accounting state.
 
-folio_activate()'s try_cmpxchg() can land in between two lru_next reads.
-Logically, it is safe but I suspect KCSAN would not be happy about it.
+It would be really great if you could describe how we could end up with
+the inconsistent memcg enabled but kmem enabled and what kind of effect
+does this have.
 
-Maybe READ_ONCE() here?
+AFAICS the inconsistency is possible and it would lead some wastage but
+no functional problems but the changelog should be more descriptive.
 
-Other note, page_pool (pp_magic) seems to be using bit 2, but I don't
-think there's a real conflict.
+> Signed-off-by: Hao Li <hao.li@linux.dev>
+> ---
+>  mm/memcontrol.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1ebceade4021..b28f6165c354 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -132,7 +132,7 @@ static DEFINE_SPINLOCK(objcg_lock);
+>  
+>  bool mem_cgroup_kmem_disabled(void)
+>  {
+> -	return cgroup_memory_nokmem;
+> +	return cgroup_memory_nokmem || mem_cgroup_disabled();
+>  }
+>  
+>  static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages);
+> -- 
+> 2.54.0
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Michal Hocko
+SUSE Labs
 
