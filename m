@@ -4,101 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDF2AC61DBE
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 03:05:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D54B8C61DBD
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 03:06:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A726C6B0088; Wed, 26 Aug 2026 23:05:45 -0400 (EDT)
+	id D30A06B008A; Wed, 26 Aug 2026 23:06:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A22226B008A; Wed, 26 Aug 2026 23:05:45 -0400 (EDT)
+	id CE3896B008C; Wed, 26 Aug 2026 23:06:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 937F36B008C; Wed, 26 Aug 2026 23:05:45 -0400 (EDT)
+	id BD3BC6B0092; Wed, 26 Aug 2026 23:06:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 75E9F6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 23:05:45 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F26A9402D1
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:05:44 +0000 (UTC)
-X-FDA: 85145559408.17.79AFAEE
-Received: from mta0.migadu.com (out-166.mta0.migadu.com [91.218.175.166])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8A1E4100002
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:05:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="qV0/WMtn";
-	spf=pass (imf14.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787799943;
-	b=yqqZi5Mpc+KE9DcjO2QoeeGmM0eWTQsr0YS/+qq0q7EX0A4wAEVg+1MqG34rDap2EMyZ9+
-	wzU+nwxwxmvIrcq2KPQyYw58AU2xblCqCwbVNQP0G05qNpvZFKo3pNrcaMwMKDxLyTwnOL
-	g920zbsqpDQgdQpZv/QS2vacIKfOyWc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="qV0/WMtn";
-	spf=pass (imf14.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8699D6B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 23:06:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0059D12030D
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:05:59 +0000 (UTC)
+X-FDA: 85145560038.16.EF03244
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4FD731C0006
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:05:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SjfTFPZA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787799943;
+	s=arc-20220608; t=1787799958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ROMIK9xZAs9dm4hrTGInvQ2PHfsRSQUx3wPQZNEM3tw=;
-	b=TxR3dJWZ6kLfyKqAW+VvyqwYn2pdShH97FXwpSVMYqIk13D6ihkio5Y3buqFtHN48/9TrA
-	Clhn8iZIqM/aOFCyIG194K6/mHLkfLtR9p2b1p6VeC7JowO5qEtKmNwfZkQoGOmmdjaua6
-	sjQ+w2IdVrLuLO86cHbInVnYCavgOg8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/kXkE6EgK7Xu/D9nmz3lVFVzvuwgd7TR0qfSXqA3DEM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787799938; v=1; x=1788404738;
- b=qV0/WMtnICRvc5EaONbUC6kNQX6pBCkoDLOwK+1vlDyWhmafPfMKMfkn8ggeZXkcWqPgkNcK
- Aga478H33DveslE8LnpfxoA6mxGaWAMxPeSUEMkLgdIi9Fvh2KboSg/bfRk+VoXb7YIJXJtiLsH
- t+vLGsRk9u6sNXQI3YHLHv5Q=
-X-Envelope-To: linux-mm@kvack.org
-Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
-	by smtp.migadu.com with ESMTPS id e84e612d5d5de145;
-	Thu, 27 Aug 2026 03:05:35 +0000
-X-Mizu-Trace-ID: e84e612d5d5de145
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org,
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=+ABL0lVs2T4omHeNrhqinBnCW8Qg/CEyqGSbYpdEGHI=;
+	b=YPqHWSJGoMKl6EVDUHx1KjK1Hi7NzZGbOpAnRPVJCezzaJeVlRczo0k4lhyQt93j557+p1
+	A1dZYaltAz8lVAY1mgH9Kg6hZT5cNNLOmVmJCLwzEpWb/QOWmPqfnKPDtSF0LdF6lx88wG
+	tNV6b5n4q/Y27FPrBpMvIrngwEalCd0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787799958;
+	b=fkOVmdrSRUi50jo9JJ2PRRlb8veSwWH5Z9Huo/JF5q/TysQLYdAgLN9B5WmdH0qUdp1bm6
+	/AsLr614JTgMRAEX7tPVk9dBrZwHzL3TtqH6VQVMDcpuMc4q9u99VaejzVF+RP421F4kpg
+	3k2+MTPol/JwOj/Z+qnVlhRZtlCeHZ0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SjfTFPZA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2530cabcf4so156518966b.0
+        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:05:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787799957; x=1788404757; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+ABL0lVs2T4omHeNrhqinBnCW8Qg/CEyqGSbYpdEGHI=;
+        b=SjfTFPZAoT/0/pvwY1ZmjvR/s3O+cvaRyVSr/fd2j/g880puHg1RnSnGjhsgxtPLEg
+         XEAQW9pBzaj8HgTk2yv39rQeEoHXr9YQMpSVLuKksORrzVOdbTIWwF72MaVipUqZ7qnH
+         bfXBP7zpsWfKmgEeBgyjoE4wr/ei+KZDzha9sCMNyG6l8eiphKIOeSy9toqHyYnDC+Yu
+         SHrS5SPYrJ6DnS+a60rqm3qb1/q2VNbHaS+WIlKVXj2LM7kQSHoxfsaKEVjdfyPf8X7f
+         cfvLTZm/KjpvbHswbH24cyR8zLWFwKPCBPQZw0bGajWNl0ymLAtYLE5yOzmOYjolaq3F
+         hQHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787799957; x=1788404757;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+ABL0lVs2T4omHeNrhqinBnCW8Qg/CEyqGSbYpdEGHI=;
+        b=cfcFv9rp1m4RD6ogrDepjtIeC4Kxxk5qS/eY6vXS7FrOBLMDoNaqvdf2iPMsWdb6hz
+         5QOs2d4I5B14TefQXgQm7P2Ihls8K+XI3mWXoY7/1Wc3Q1u1W9e8UoMN/XBFqOXyhN+p
+         xRxy+F2SMNh8ZnSORBzOfw25Rj//Drhaiycf06ieq7MGMeXij0WKu05wKpmZppZpx1Lw
+         B7It+jUxoOvrxPwwXJty+lSQQJzXWPjpVo3KcCy8CIfUiNwljrdPf+X0IqTL47InJ45I
+         MR48vxzIXcVlRnJGsOD8D50me3YdtFScluHFw03W4rNLlseEQyKUfHLxlzS3wye9oDC2
+         DfBA==
+X-Gm-Message-State: AFuF++lCqIrDSHjdwxohJ0+fio4Nxrp8e8tyk4cu+YIWac3wp1WAlaSP
+	N4Bs7KkejTbpgQlyhtCC+vHvgjPndV1ZY4NS/xjS/rQSar5V0Vlwo7Km
+X-Gm-Gg: AR+sD11bDLQGz80BLxaFBsmiRMqD7UapHOugH1/e6RDU6rguEC81jWIRBrj2TvSsiE/
+	J/YTcuaeBqNRXIME7LIT+HMUWybYtrqkrzXm/enNIeaOtu1KyGgi5zy+t2qQWjgzBqtXbiIxxrE
+	BdAZmJfTpwbrDtCyRp6JId+Uk0D7LczcBjyg0MkqSxZQO0/AFudmuY3YbUUTAvrLAMo6wNVaXWU
+	Mr3VGT2cAI/IBp3pJ/V0RRE/YS1ErcluyGFNZDTsU1DOzh31Tm/BWg0aWx7y/a0qniKNVCtbu/H
+	C4LS/Z5tZg8EbbGU6g8vtavQFjC1dkAYzcKQvvgkfHnYWPpkXKMgUt9lMGpKHuLC9GuiAvqZ8IW
+	FO/pngp+vGdYgTJoX9MtHHgun6uOPWxkUWsfmaheNEyL7DQ/vrE4+XzK6KM0wDozpALnIOGSlXf
+	dvWwsFixLTIUmsz/R3NJGboJooWtRrWYuEezJrvrnKsFISyDaZfKXCGBZ74Hgj
+X-Received: by 2002:a17:907:944e:b0:c24:f8e0:f092 with SMTP id a640c23a62f3a-c250bac7f88mr1102590766b.1.1787799956563;
+        Wed, 26 Aug 2026 20:05:56 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a9ef92csm690682266b.63.2026.08.26.20.05.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 26 Aug 2026 20:05:55 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH] memcg: sink mem_cgroup_uncharge_folios() into free_unref_folios()
-Date: Thu, 27 Aug 2026 11:05:16 +0800
-Message-Id: <20260827030516.462926-1-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	Wei Yang <richard.weiyang@gmail.com>,
+	Baokun Li <libaokun1@huawei.com>
+Subject: [PATCH] mm: remove out-dated document of __GFP_NOFAIL
+Date: Thu, 27 Aug 2026 03:05:48 +0000
+Message-Id: <20260827030548.16631-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4FD731C0006
+X-Stat-Signature: eh7u1cm3bmm7msrqhd1btmauyggxwqxf
 X-Rspam-User: 
-X-Stat-Signature: ukpzmu87e1mj6x5sjm9pg8sye9rf81jm
-X-Rspamd-Queue-Id: 8A1E4100002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787799941-521236
-X-HE-Meta: U2FsdGVkX1/b3gMzzxVwbAvIhU7oHuJ+UkPQBzIoyFC8dmyaHRQ2BT4aI4s6wQDajWE1JyGZD2cuyjd+8zKZNFsEVYnaqwE72I5bbLCz7Jk5wU445BnWcKALL5ob6GEs1NtugVyP7JHb+zXFlF4KG53ksIMw9Npud/Mq9YufiYAou3bNkleke3RukMOj/b80IjZXNpftS/gKCAxUlDU5tM7nK8K4YHLHWdKG5Mg/O/C78rxcGgUV8RMT2fRottZnBaaBcvZDe1TRd62Ygwq9JzLN6ZylHN6PGFnG38+YE2466sRfzLoFY1lrpLJhZuDZmdCzE3Hz0F1eDPPeHU2VJKsXLzHEpxhPnPBBfutv5QVcEpWQuTuRQ2NX+EDvNGbZpR3NAmbX14Xn0frmpboMRMUOCAVVRnljA5muYo0gnG+pYe/JL1WnwBWKaExuZgEPwOVnIlppnj2wP1Otevu9bEhUzLmW6P4cljrQR0s/ceHqQjM1PxJ9tMC6IcN7PtN5T9MyTrDlcwUAHbseXhbVpe10ADNDwEiggM8FzEMsMU/DYDc0p/PCeNIT+lDDk50lrwUMhGlPMOSWoKgLDRO8xOmR/qwDRu+xn6D6l9/Qn2wwRZEhY+ofPoxf4VMNbPu81TV9kaH0kDRBUouGFMtFfS091n9RO17+G/UmSFnGdrMwA7ylufO/ex3Chkcb6I0wx/BqT1kSj40ndKdUjQfvTJtRNdfiabkoG35/mVnyWcBICn1b6pAuhxpO88IQ9ld/q6QhAb49qqrhKgcpfrtqIXETKwSDU6ObwH5bAMwGjLX45b5M4P0LbfPYH+MePO1afCNKH0vmOCuBJBgt6Ya6cEEMLBVBo/NiV7d1MU9bPahahYal5S4TyS/+/6azNFBqV1NE377MNX9RkWdEViENxoZ8BcsSTsPob4Fx4kem6wBu01cm1VQjkhbkSwknp5IqZvmZZoHU2RARM+hIyyK
- T7stwHBc
- OxFC80a/nNt/p7CwSy8c61ogYwnLxVLP9/vUFXUojho0S8li55eB3gfH51Q0a5faTAPev2QrFKEVfBtM9qy7KOZ3HHNgIv1oZJJrxF9BbCB9l4gB5nxsVC7+Q5hojLod7Y4WFpSP2XDrBo1Tl+T2xeFEsAwfBpPKvn/kPFWlYjQE3cja8PUsawGZ0jTqWQUaFKsp/58CmQuZ8ZG0TnjrzPUXDeczqYGgai6zjof/Wy8mu1bAYKGmwXRjQ0W7SErMNpEOqg0HX6UGBylxjz/0MKP9OSckvDrjV3EQJPNy7BCejJ+k=
+X-HE-Tag: 1787799958-803334
+X-HE-Meta: U2FsdGVkX18fYktM39Cul9L2tVcoYNOdWDek2Mrp+i0gjocCEZZYa2bfxPMCV1df+jaYKa1HE57r0fNeug4tuRrb3PNuq1891jDx/pXgNMPkd7/obWS2T5CMRPOaGwDuFQjVEHnUUzJuTACEAfkwSJSW//blW0fmPPj72VsWBuUeVXZaRTDfKNQxemBD1WSJiDdUn1ybaBu8rjf3Lbb3WKwyLlvANFRgTwsEZ+yKoN2CDXRSI2OsXwVSsMJdBo+gq1FMMOWM4TDOAN32wCC0Smh0FCnWwhDLBUWSfgQ+hhua0JyEJOJRgr7MzrgdBgS/kjqYYVmZzEeyahjMFUQFyl8BgJI/WHruq8rOBOs1XJDsORDE7/Q3e6LzdwgU8WzsVgYNqft2m5lnRpOLq43RbOkKxNFAENZiqMLtI+rkQUpVIUpsUI1Vws/QHf6PLB6G7Lem8tGV4FgYNjPnlCsSPvAPmyfsBx9QUOpTBm3g9dpjziwpVRbUGJZSgMSSGvEZWU1oxMdeo4NXxhe+DLOrZ/AJaLA4zeBvHgPfufftgDYtWTApBN6Xur74dMs24/NpQpT7o8JUKVa6C6G1Kb6VeK7EeYRDIvhlTTRcKZA/Gg8zqkO3h2pasHvs0AVgulqb6cT+UzFU3iSVqUMO6QexOuv0Rq9UWA9B979INHQMeL/bC1qkbNpNizA4M01sIKGU5v4FvpB9Gr2ZCQWg9af2NDFT2qfpLkXQzX8ijhZlc5mwGxicQLlnE1WphUIPSR9+t78Yxgla+YKj5KWb1HTIgY1Rd5XAF8YeGCyRwip7Jm0MA41wvAOmtYcVF7VUcB/FhJ5ACnMgzAvAxokz+XjlVpC9AhZG8NmZbwy6wEGvpb2+veYQ54NMYweLEFznHgEP/FCGeEdrFH31qYnAGGOpeqggzVZ5nGrZIV6YEZmH1N5v1ft5h42bKibwPCGp/doUCx6MdzKxg6F3EpMBpnG
+ YvNftIt6
+ 1wbbYzfhGJZad/nDPOzZbL9cgXke0PhmvB/NlPS8KgeWrYsH9htNymXx9CF4D7ROUU67BM8sHQEz3LMQinqLQsxP2JxyIotOYm9lp1Nu6hOhSkdovuDXdW5bMJ3k5ekqYYOnkEzq3OeclvwT8+eueCMAr6Ro/7U/3KK/99atGVdXlNBxM4Ed9nSIsHJEmaadz8yDwobRGPGIrrpW2WDbYUdCmQLgcpYVpD6+vz0l0ZqUEHPNeekDe2K4ZMhwL2WcVQ0zoaeoUpZMpca8dSj3E927rwn5tjVR8LGo+Err4mbxk9rpNzx7Aro3A5D3mS69Oc1jSOuGyU7vzHLTkfuS/efNoORm446xGVAbIFhvXYuEHFSbdGBvk1ubf+AJvl84o6QYrJnUywEJ6DYjUNP+JqFj8T1EOSLi9dxFn88OcJhRY7Cxq48c21iVudWgsoS3bccgKxqU0jRZiWx5FEC9dDTOMK1LmIYaM4FAXnRwjN893sXAZ/AwORQD2SIylXbt4eVKnIIbmZf7GwcTjhKcBnFv17bYRywVJw0J5ctWXKasb9MTB5wDX1RkE1mHkEFm+34KMnXEXGfw0dnLjg8PDTTxx8uDmMC8TgIms0/CEv3e3cI4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,101 +121,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+Commit ee040cbd6e48 ("mm/page_alloc: don't warn about large allocations
+with __GFP_NOFAIL") remove a warning on allocating large folio with
+__GFP_NOFAIL, which is adjusted by commit 903edea6c53f ("mm: warn about
+illegal __GFP_NOFAIL usage in a more appropriate location and manner").
 
-Every caller of free_unref_folios() invokes mem_cgroup_uncharge_folios()
-on the same batch immediately beforehand.  This pattern is duplicated
-across shrink_folio_list(), move_folios_to_lru(), folio_batch_move_lru()
-and folios_put_refs().
+While in that commit, it also documented this behavior which is
+out-dated now.
 
-Move the uncharge into free_unref_folios() itself so the batch is
-uncharged in one place before the folios are freed.  This removes the
-repeated boilerplate at every call site and makes it impossible to free
-a batch without uncharging it first.  No functional change intended.
+Adjust the document to align to current code, and adjust the comment
+while at it.
 
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Baokun Li <libaokun1@huawei.com>
 ---
- mm/folio.c      | 5 +----
- mm/page_alloc.c | 1 +
- mm/vmscan.c     | 7 +------
- 3 files changed, 3 insertions(+), 10 deletions(-)
+ include/linux/gfp_types.h | 2 --
+ mm/page_alloc.c           | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/mm/folio.c b/mm/folio.c
-index c02dcea9c03c..2edbba47be1e 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -199,10 +199,8 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
- 		lruvec_unlock_irqrestore(lruvec, flags);
- 
- 	/* Cleanup filtered dead folios. */
--	if (is_lru_add) {
--		mem_cgroup_uncharge_folios(&free_fbatch);
-+	if (is_lru_add)
- 		free_unref_folios(&free_fbatch);
--	}
- 
- 	folios_put(fbatch);
- }
-@@ -1030,7 +1028,6 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
- 	}
- 
- 	folios->nr = j;
--	mem_cgroup_uncharge_folios(folios);
- 	free_unref_folios(folios);
- }
- EXPORT_SYMBOL(folios_put_refs);
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 190191411009..24fde8eb73df 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -243,8 +243,6 @@ enum {
+  * used only when there is no reasonable failure policy) but it is
+  * definitely preferable to use the flag rather than opencode endless
+  * loop around allocator.
+- * Allocating pages from the buddy with __GFP_NOFAIL and order > 1 is
+- * not supported. Please consider using kvmalloc() instead.
+  */
+ #define __GFP_IO	((__force gfp_t)___GFP_IO)
+ #define __GFP_FS	((__force gfp_t)___GFP_FS)
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c48..fb1ecab0ee78 100644
+index ab385bc252cc..146f7e0a9462 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -3013,6 +3013,7 @@ void free_unref_folios(struct folio_batch *folios)
- 	struct zone *locked_zone = NULL;
- 	int i, j;
+@@ -4804,7 +4804,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
  
-+	mem_cgroup_uncharge_folios(folios);
- 	/* Prepare folios for freeing */
- 	for (i = 0, j = 0; i < folios->nr; i++) {
- 		struct folio *folio = folios->folios[i];
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index e572d2742c8c..113e2e49447b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1506,7 +1506,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 
- 		folio_unqueue_deferred_split(folio);
- 		if (folio_batch_add(&free_folios, folio) == 0) {
--			mem_cgroup_uncharge_folios(&free_folios);
- 			try_to_unmap_flush();
- 			free_unref_folios(&free_folios);
- 		}
-@@ -1575,7 +1574,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 
- 	pgactivate = stat->nr_activate[0] + stat->nr_activate[1];
- 
--	mem_cgroup_uncharge_folios(&free_folios);
- 	try_to_unmap_flush();
- 	free_unref_folios(&free_folios);
- 
-@@ -1902,7 +1900,6 @@ static unsigned int move_folios_to_lru(struct list_head *list)
- 			folio_unqueue_deferred_split(folio);
- 			if (folio_batch_add(&free_folios, folio) == 0) {
- 				lruvec_unlock_irq(lruvec);
--				mem_cgroup_uncharge_folios(&free_folios);
- 				free_unref_folios(&free_folios);
- 				lruvec = NULL;
- 			}
-@@ -1920,10 +1917,8 @@ static unsigned int move_folios_to_lru(struct list_head *list)
- 	if (lruvec)
- 		lruvec_unlock_irq(lruvec);
- 
--	if (free_folios.nr) {
--		mem_cgroup_uncharge_folios(&free_folios);
-+	if (free_folios.nr)
- 		free_unref_folios(&free_folios);
--	}
- 
- 	return nr_moved;
- }
+ 	if (unlikely(nofail)) {
+ 		/*
+-		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
++		 * We don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+ 		 * otherwise, we may result in lockup.
+ 		 */
+ 		WARN_ON_ONCE(!can_direct_reclaim);
 -- 
 2.34.1
 
