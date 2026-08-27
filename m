@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B520C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 17:05:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 026C7C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 17:07:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B21D6B0092; Thu, 27 Aug 2026 13:05:34 -0400 (EDT)
+	id 12C976B0099; Thu, 27 Aug 2026 13:07:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 064206B009B; Thu, 27 Aug 2026 13:05:34 -0400 (EDT)
+	id 103D76B009D; Thu, 27 Aug 2026 13:07:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6D7C6B009D; Thu, 27 Aug 2026 13:05:33 -0400 (EDT)
+	id 0191F6B00A0; Thu, 27 Aug 2026 13:07:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5DBB6B0092
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:05:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E404F40110
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:05:30 +0000 (UTC)
-X-FDA: 85147675620.23.3FA4999
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id EA70414001A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:05:28 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TACTRK+I;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787850329;
-	b=02Jqv4MJ9JgpRQgYg5yaERDDo4Wx2jiCULZeJj0EwkL+K8bFjwZ2HTI7H5Xyt8706ZHJ4W
-	SgNIl2CSRKv6AEktoPN8dLSKXo1blIB9CisPTjdGTNHxWq7m+7PX1UtIND11AbHIxgStJP
-	8UWXMTOVRiTgUYNtMerz7xmywdxRWl8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TACTRK+I;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C7B006B0099
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:07:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5BD6E8011B
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:07:48 +0000 (UTC)
+X-FDA: 85147681416.20.E0AECCE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8A4DC100005
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:07:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpG3+WHr;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787850329;
+	s=arc-20220608; t=1787850466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I1lufsy6Im7NFt6gh/akpxHBSyR/Rxm6eWceVNKlW2g=;
-	b=bmC2msxCLMDmcndndi8Qk4NLBbYUjvLTd/hdWMYcKxq9uDZRjP8QBIzbF+2+FGOHqrLLEx
-	dxxH9bLjD6FK6vNxXbWiQZtFIhGTHXFitxLxOxZSF75GH1J+SRhN6mwyd6KOyYSryRmTfW
-	rjzMxtV1oLr2FgTcXBirOdSp+esbP+E=
+	bh=7Z6o8710DzidIAipF/VZF9PscAZF/OQSOxpmYRB67qA=;
+	b=GgvOLsX958GfarKtQemVmNi1pG7x/XsxYFBo1LkbYBsmdG/r5Ii6Q1cgfRgkpe36FMkzTZ
+	y4205mIOzlruToWtZrHXmc6YLndPQL6K1+SiUnG9Q2iqKudvdclJTdKuW6nHl34rhSEz63
+	bZAIj7OV9eUe8mlwpuMk2nDif/0G3eE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787850466;
+	b=JgkzrmDfV93x00RasZsi5JuIphlyDkmzIquySboGTTkRdLzgvSI9P6I2eulkCo1VxBii1v
+	qEyu7OltZcYSYMnAH7VXjotTKE5Ec9zyvHpBHdgr/9u13cY8vxq61oy2WW9m6laj2hnz1H
+	Z/oh9eiC4OzM33CHCF+X8wnnFsoa5Uk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpG3+WHr;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D752842E18;
-	Thu, 27 Aug 2026 17:05:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D953C1F000E9;
-	Thu, 27 Aug 2026 17:05:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 038D1600D2;
+	Thu, 27 Aug 2026 17:07:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39FF1F000E9;
+	Thu, 27 Aug 2026 17:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787850327;
-	bh=I1lufsy6Im7NFt6gh/akpxHBSyR/Rxm6eWceVNKlW2g=;
+	s=k20260515; t=1787850465;
+	bh=7Z6o8710DzidIAipF/VZF9PscAZF/OQSOxpmYRB67qA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TACTRK+IOCMglSMFUPOyndXcTKYnKOgh5FybKkMq9h/FnqoOsf9eibohXzbUoE6kI
-	 U+Wk5sA6pKUcf/AmHtw8iWWcCDMPMSjPfikBDWpYsUEFq9xru871uaWIyNMdyfqLxL
-	 nku5/C9TzWJM+SzPhRFKwtMfhiOZcK1YDPftnwG6+LxoCw6qRPCkoGAFSuWVSteog3
-	 z+C0wenTac1qFktXGT5JHIBRsbhkgCl8tDM/UVsbmEKyMY+rCQOuzfkKdrQd4fPSsq
-	 8+0U27G5Mt66hdxlP/t/3pk/MWFCTkUOJNnPZ4QVW+qXaY6FpMnmvrVSkAtyFZE5EM
-	 61Sr2IH44g4ug==
-Message-ID: <6d855beb-1d24-4a6e-ae62-ac9e05e358e5@kernel.org>
-Date: Thu, 27 Aug 2026 19:05:21 +0200
+	b=cpG3+WHrJbTUk6ZbVbYSUULv/PzBHhY+6COJiJmNTPFJTKr6aJSWimMlfMvmMnu6P
+	 F2R3oOVDJnLy9vt9Awvh2AUDRruAD+t92f9ZLGW4VHZ6CqW2nhJWaF6xFgviPPCyPL
+	 dXup5fMDE1HeIDpgjezNcmCLC1xcdq6TbRAE2z86KNgiR4nreCif9Ij1sWdrEahZi/
+	 +pqoBwMQ/LZd9h5nchLgeUifDMhcUX9+pU95sGscOSJIgbxAL1ENTo+SB2NRNYu0Eo
+	 uxp2yaS9dj37FaBXFnWeRueqTu+WU2BB9iWVd1joBj52hSJu0chjoiQ/+LDuflsUgh
+	 fZfGfIEAvuwdA==
+Message-ID: <01865a13-2c18-464e-94eb-466613de7bb3@kernel.org>
+Date: Thu, 27 Aug 2026 19:07:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/mempolicy: use vm_normal_folio_pmd() in
- queue_folios_pmd()
+Subject: Re: [PATCH 2/2] mm/madvise: use vm_normal_folio_pmd() in cold/pageout
+ PMD range
 To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org,
@@ -79,7 +79,7 @@ Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  peterx@redhat.com, jgg@ziepe.ca, sashiko-bot <sashiko-bot@kernel.org>,
  stable@vger.kernel.org
 References: <20260821144947.167382-1-gourry@gourry.net>
- <20260821144947.167382-2-gourry@gourry.net>
+ <20260821144947.167382-3-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260821144947.167382-2-gourry@gourry.net>
+In-Reply-To: <20260821144947.167382-3-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: esz8geii8kiuzxf998mah571je9sebzw
+X-Rspamd-Queue-Id: 8A4DC100005
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Stat-Signature: 68u8kcmof51mm6uftnferw1zknakamet
-X-Rspamd-Queue-Id: EA70414001A
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787850328-823417
-X-HE-Meta: U2FsdGVkX1+grdByCZjfEltblDeT86EJoWUZp7LrfPiiRqvXTbdwpdrA0oyRKT+v28KDqT2RoG3opMfNSTEudksWR9AHANj+U1B8p+Fc93qnWfPuBgzr9IK7QScl8T9HVd7z/+iD6IYBiuHOxYlMkww2Hnhvmi3dQ2nGbfo+KuBkxK1omghbeeFUnUZcRh5a230WiZ/Uf/8doSIVuq6lpE5M11qTwqq0KWlu5T/PCPq+5JnAKIE1gpN9na4H2qZdX3ZQBFRaXCOXPXZ55yebYCGzeT6KmyCFM0QDP+UmN9FjXkS200zfrz7Nz8O+KC7QyiXyJVrdywGkp7cw2sslS3D8OXotia2+bCGWYQnV0FUOkIQ39WGSsXzUFpS07cYM/IlSkWNxa4S+bN/oOUQN4/WJNazY3a4dj1qHHL7I2DZmA2kKoWxYqplOLG52Mb7gnlNQXeVLX04riVHcsH0UdraAEeasWyqhHPV6NVoXjK6knpQ3bc/DRrvtjFau1Lt/zGlTFBok2doYlMq9BWl78oHzVxG8MfSjhpuLqClEGnh+7FNsKy1PZfL56QhQ0/SsjzYcPvJhUWR65uiGlrauDcPYTNs3yQ0GWpNrdyLNKiBCpDow9cx0j9H1sm/n4wNCO9NJU7LpX0Cfp2CMUwk1tVeVlbD4PFgD+PyOaIlpteJWwuOcRv0lUKIgPhny7CZljA9ukqrMRsdwEtaEuCdq5g1ZZegBa+XPA+PkEKfOgPbc52jgtrWohGvURCP1aeGAqSuUz8T9pUgSlqClHTtV/7sED8mIDzrLRNBdfWra/d/hhkSnuhaCceJoL+MIvWzO5HvXIqSmW+wV1S7L2SXJZUXwu1pKL824x5G5vH+bV9KTQEpL7eL/IDrhF8yH1isTXyOQoxTayphTUl5CxftaBMH5HSfg9JxA0eXB3ILPWGqrzThuXKXxVDW4spsp11jrGKEwg1nU6jyzXzm4yck
- dJl6Qukw
- fOE348GdBOrbHflwt8zX2vo/9chfWuT0sfX2ZYej1RkV53jVwrkS8I5MkoDYo0glmZaIF5mEVSz0zlr+i3Nqg5cDtMfzsTz5qeLM/jmHlvhC90ygcLGcRfjIAouXZsP9diHg8nFpv4yjkVoSSyrMKwn7zZl2dzSSZmVQnnPMVCuTCqzwRlffPKElE276L3oz7cUa/lclyr8Ccsvm0ptRzC5BdrLDeJaSmw9QVjmcPRx7jxiGb5mHQ0IecheVSAmKFGAR8NTGmMFmf2dUuWe/oRoOrRO+w/xHZ4APp0/xtRCmczmA2kXToA3W79VEtmfSDsJI3sW5vuK9zCn3Jxmzel3LBJ9Rm6MiI2tVkj/Q9f8dtv1P+fMzT0aTpg3cA6UIjWg6U5f7/kpAbuhCcjRVTcCIXE4BiE3T1JQVXvX316c29y+mzL3TehiJf42dya/SFCoQNCzQVbXiNweyM02w8r4xBzZ4fVFkhz9/vtz8JGBToahuxDuGbqIHzo881JtPeyCO1Lsmt6u2XaKk=
+X-HE-Tag: 1787850466-587576
+X-HE-Meta: U2FsdGVkX19ViHVkcO+7mNgBvs8f5IY7AioqiB/ZOe4VYSC4/nW+D9Q36PYY0tts3mrGvQF7ud1lA2vb+sNGFDAT73GWC4MIv0wgRG3uwr7Znjk119jYVdW+4n8dFY0UPOwOqfO7aWBuSLtYBjVETKoTwJ9j6hdWTc3vOx7wj8mO5U5TRFm0q26TiklMa4qcQTrpiHaouBuKWVsathWYVgfJjQBc8mhkFGyLMz2JGGLgbKZSp7Lu+LuCghx1+8kjqF39i8XDzJMfuINzcvxtc7dEKdMuGSlQgjKUUsnfOY/mtTjqTex96AztaFCrek3jeN9wNM/jIkgVpV6FUGSrm9aZH3hthsjsVTgxcV9MBI1g+FH0FEKmMizmBmbxiWXaj6FEPaxOOFfDGDOlhPtIPwca9erCeObvWUV2Qpe+CPLDWP6lcCNhQYZWq0LONkqgG5Il3NICeUrmc/GhBIsBAeUuQOPAfDqtnEAvWxgt3cToh0OrcG9jhvG2IWmmspzUByd9cBrCzA3NkjpPY2TWYGOO6b55JbwusnCNgOhtBJdXTbt+v5xvWPvTQnCYiGxxyh2dry8DnzfTGwvOmK1thzLdfw4YMp7xSx7GD/FrXXg6wtXnrrdKoUpSqMWdQVuiDR1gaz5TiSkZdtUhvOzIjs0yyCY4LrH/wn44Jn64MosteNP8ZH7gUVHDl74lrJVyaYNXL4yY/OH5qAMkwYJo1PF5uoMjK7oDN4LfidhJ/W1Vyhw+FxWxzb3vbDDcEaYFhw3Koi19en/1CKwet/Uq8A6wRgnuR4TgZ/RKwtcQkP6JINNCHmRtzK6pIrpSTUR3xegD0ye8pR+40RitxeUtCxz7hhn55NnsgVs5jnt92NAoqI1zX6TS45dreCEeUD3kqnt1z9L5kn3T7ZwwzKhjI1FIMsTRwj/oHjXxJelWSP6+0kFKuidpKi+N/fYq7+9dlFDkGqfJJx14sYgiVFF
+ erOyVKdP
+ SZhlqooQoMAK3u12v4dwmyR7OmZX0A3tBn+IzpPgqPfxRDfsFV1DueFYJRacvhpQ7BQwV5o3AS4rYKMFworqoxGKj6r2bublqtWTNO1YmrPcGMZjahGOcPuDq7BP8qZKUjyIrWwxRedoXACuPG+MTiYWUdh7lXnBjt/iYGsHBREKyXyhOw93Asm2ICcPBW9PqHEs26355U94jN/PazEu+KGpOnvmvQwvhttF15JxQGdn6GHGNElWMnQxt2gmkB8M2xK3xS9JczGirVtRJ+FvDJpm5XlY3q8gUk4H2WfgWQ9lAAgH91QLW48nbij2JXGq/ym7TKWcKEFJ0CRiCsJjDSXrehOZSHYFKZxIocYdD0GFtdy6oKedrmUiFZvCUrNTkx20zmZXhdLvYvV6btrXxsdamViCtNpyZG6+gwXlcD60oYbQDetOB/wjX3+Mk/4SNlJ6YgKJIPPw5BfjeTI2qe7Rux8fpR0wNQ74ITYlaJixehjYhIKt9GxG6EUFEBVF5Ei9lna5njzj/J6I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,97 +145,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 8/21/26 16:49, Gregory Price wrote:
-> mmap a VM_PFNMAP region whose ->huge_fault installs a PMD through
-> vmf_insert_pfn_pmd() - a vfio-pci MMIO BAR does this - then
+> mmap a VM_MIXEDMAP region whose ->huge_fault installs a PMD through
+> vmf_insert_pfn_pmd() - mshv_vtl_low does this, and needs CAP_SYS_ADMIN to
+> open - then
 > 
-> 	mbind(p, len, MPOL_BIND, &mask, maxnode, MPOL_MF_STRICT);
+> 	madvise(p, PMD_SIZE, MADV_PAGEOUT);
 > 
 > With a stand-in module for the driver:
 > 
->   BUG: unable to handle page fault for address: fffff96dc0000008
->   RIP: 0010:queue_folios_pte_range+0xaf/0x440
+>   BUG: unable to handle page fault for address: fffff587c0000008
+>   RIP: 0010:madvise_cold_or_pageout_pte_range+0x410/0x9b0
 >    walk_pgd_range+0x52b/0xaf0
 >    __walk_page_range+0x6a/0x1d0
->    walk_page_range_mm_unsafe+0x193/0x230
->    queue_pages_range+0x64/0xa0
->    do_mbind+0x25e/0x640
+>    walk_page_range_vma_unsafe+0x8e/0x120
+>    madvise_pageout+0xb2/0x180
+>    madvise_vma_behavior+0x46b/0xa90
+>    do_madvise+0x108/0x190
+>    __x64_sys_madvise+0x26/0x30
 > 
-> queue_folios_pmd(), inlined above, calls pmd_folio() on that PMD.  The pfn
-> is raw MMIO with no memmap entry, so the folio lands in unpopulated
-> vmemmap.  Neither guard stops the walk:
+> Nothing validates the pfn on the way in:
 > 
->   walk_page_test()         skips VM_PFNMAP, but queue_pages_walk_ops
->                            supplies ->test_walk, so it never runs
->   queue_pages_test_walk()  honours vma_migratable(), but only while
->                            MPOL_MF_STRICT is clear
+>   can_madv_lru_vma()     rejects VM_PFNMAP, but not VM_MIXEDMAP
+>   can_fault()            *pfn = vmf->pgoff & ~(mask >> PAGE_SHIFT);
+>   vmf_insert_pfn_pmd()   no pfn_valid() check
+>   pmd_folio()            pfn_to_page() -> unpopulated vmemmap
 > 
-> A VM_MIXEDMAP vma needs neither flag, being vma_migratable(), so plain
-> mbind(MPOL_MF_MOVE) reaches this too - and there the bad folio carries on
-> into migrate_folio_add() and folio_isolate_lru().  mshv_vtl_low is such a
-> mapping.
+> Even with a valid pfn the path is wrong.  The mapping carries no rmap, so
+> folio_maybe_mapped_shared() sees mapcount 0, and the walker goes on to
+> folio_deactivate(), or folio_isolate_lru() plus reclaim_pages(), against a
+> folio this mapping does not own.
 > 
-> Use vm_normal_folio_pmd() and skip on NULL, as the PTE loop in
-> queue_folios_pte_range() already does with vm_normal_folio().  The huge
-> zero PMD moves ahead of the lookup, since vm_normal_folio_pmd() returns
-> NULL for it and its ACTION_CONTINUE would be lost.
-> 
-> mbind(MPOL_MF_STRICT) over a PMD mapped VM_PFNMAP region now returns 0
-> rather than -EIO.  The PTE loop already returned 0 there.
+> Use vm_normal_folio_pmd() and skip on NULL, as the PTE half of this same
+> walker already does with vm_normal_folio().  The huge zero PMD is already
+> handled further up by is_huge_zero_pmd().
+
+The last part doesn't make sense, see below.
+
 > 
 > Fixes: 3c8e44c9b369 ("mm: mark special bits for huge pfn mappings when inject")
 > Reported-by: sashiko-bot <sashiko-bot@kernel.org>
 > Closes: https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry%40gourry.net
-> Cc: stable@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # v6.19+
 > Assisted-by: Claude:claude-opus-5
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
->  mm/mempolicy.c | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
+>  mm/madvise.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index f1aba551f9f1..85803c845965 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -650,7 +650,8 @@ static inline bool queue_folio_required(struct folio *folio,
->  	return node_isset(nid, *qp->nmask) == !(flags & MPOL_MF_INVERT);
->  }
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index ffd6a68320a8..ab362bc482a5 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -393,7 +393,9 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+>  			goto huge_unlock;
+>  		}
 >  
-> -static void queue_folios_pmd(pmd_t *pmd, struct mm_walk *walk)
-> +static void queue_folios_pmd(pmd_t *pmd, unsigned long addr,
-> +			     struct mm_walk *walk)
->  {
->  	struct folio *folio;
->  	struct queue_pages *qp = walk->private;
-> @@ -661,13 +662,15 @@ static void queue_folios_pmd(pmd_t *pmd, struct mm_walk *walk)
->  			qp->nr_failed++;
->  		return;
->  	}
-> -	folio = pmd_folio(pmdval);
-> -	if (folio_is_zone_device(folio))
-> -		return;
-> -	if (is_huge_zero_folio(folio)) {
-> +	if (is_huge_zero_pmd(pmdval)) {
->  		walk->action = ACTION_CONTINUE;
->  		return;
->  	}
-> +	folio = vm_normal_folio_pmd(walk->vma, addr, pmdval);
-> +	if (!folio)
-> +		return
-
-
-I think this is best written as:
-
-folio = vm_normal_folio_pmd(walk->vma, addr, pmdval);
-if (!folio) {
-	if (is_huge_zero_pmd(pmdval)) {
-		walk->action = ACTION_CONTINUE;
-		return;
-	}
-	return;
-}
-That way we minimize checks on the expected path.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> -		folio = pmd_folio(orig_pmd);
+> +		folio = vm_normal_folio_pmd(vma, addr, orig_pmd);
+> +		if (!folio)
+> +			goto huge_unlock;
+I think you can now drop the is_huge_zero_pmd() check, because
+!vm_normal_folio_pmd() includes the huge zero folio.
 
 -- 
 Cheers,
