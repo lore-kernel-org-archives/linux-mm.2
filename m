@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C82C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:45:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 927B9C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:45:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EEFB6B009D; Thu, 27 Aug 2026 12:45:30 -0400 (EDT)
+	id 8C9196B008A; Thu, 27 Aug 2026 12:45:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C74B6B00A5; Thu, 27 Aug 2026 12:45:30 -0400 (EDT)
+	id 8A1DE6B00A5; Thu, 27 Aug 2026 12:45:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DD116B00A6; Thu, 27 Aug 2026 12:45:30 -0400 (EDT)
+	id 7B7D76B00A6; Thu, 27 Aug 2026 12:45:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AD2E6B009D
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:45:30 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 508696B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:45:56 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D04BB160139
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:45:29 +0000 (UTC)
-X-FDA: 85147625178.18.B4219DA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1EC8AC000E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:45:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AdoA9Uqq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D854540121
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:45:55 +0000 (UTC)
+X-FDA: 85147626270.18.B952350
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0F3D6140005
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:45:53 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SBm/kPjP";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787849154;
+	b=ZBiGZtBeNpwyHC5u5O2FCZ2gE6+P+JabM1ExRauEMbaeSWItPsDCfKLSQgAZ5bEXIfNS9O
+	wm4UgEtL5xMCE7WAwp7Ojz8ehdLr4rcGRcv5NuD835zrCz1lYrjtBIIA/9q03zKbfQuO4q
+	+DWDRixFjsFA+SQLZCnoNn/JpR5oX/A=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SBm/kPjP";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787849128;
+	s=arc-20220608; t=1787849154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c1dZYAjFuoGFepZl/cbwoPeJTSw+Dg47rXi7QIqZjxg=;
-	b=sBGvv8/ezFFD5r6WxP4uIjFqUN8Vz4BKpZBtahnyB42z79Mu3BwRQpvPRAHmDkYEo+THVw
-	SEWWpZMXfIDoh6ieAxsHvxoJkcEVwTrFYd2bO776p7K4GBoVVye1SScE46OTriLSWZZQEQ
-	fqUaBJPYnxSmm8leN1lBzePnIEWL9EI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AdoA9Uqq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787849128;
-	b=sfxWheOyaSQEpOYdSU/bvzYb09Ms/aRqXQ5I2v/V+1mK9IyKjaX37EB3fU/W0dYWBUJu4b
-	m23f0dyDJpC8McjDus2KpSiQfMZoCGP30pU0WM4yiPvenJm/ODbc1GPlADtvk19otcfNr3
-	FoxDLZow8eq8Ql4U98fyJjir6fFIih8=
+	bh=OD2S90orDKINgGCaMDMzphHuo5Rary9C+PKf1sfV1BA=;
+	b=rf/c5jHjhzCbYaXtB0xdJOI2qEMQ8hao1IEAw+NY8qFfmxRVlUpWmZbtYgovy7zigjXLxJ
+	M4wP8p6L+2CPdtZgDu/1Eg9Hm16BXXUV79OVeONwuR2sQJljegScLz/IeUJlX/by7CLuLs
+	SA07AKvss5EbUT8LTgRYEMDn39mP5BU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 97DD2600D2;
-	Thu, 27 Aug 2026 16:45:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7E51F000E9;
-	Thu, 27 Aug 2026 16:45:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39F9241AA1;
+	Thu, 27 Aug 2026 16:45:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390341F000E9;
+	Thu, 27 Aug 2026 16:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787849127;
-	bh=c1dZYAjFuoGFepZl/cbwoPeJTSw+Dg47rXi7QIqZjxg=;
+	s=k20260515; t=1787849153;
+	bh=OD2S90orDKINgGCaMDMzphHuo5Rary9C+PKf1sfV1BA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AdoA9UqqEDpW+uKrLMUNbTXMFtPqnL/cE1hxXd1M+y6KHmBhziXUoT4oUVsnklGDX
-	 rSfgggMCO4k+O5yg4LpR2ln6+3c6VpyxHFr3OLZ6j2iQqJyM1182HeTBn7QIBeHq78
-	 M25npVCajc55jkhYwFHmin03/84Yy11ZKmnKNkjKMmpqhg9XTFtmcgrnGP5YaSQDDM
-	 VEzKdhk5SnnDbUqV9sOe15kOyjpCHyuiDnbMpHzH7RP9bM6DobSh9+vc/HH20qCJ0Z
-	 FgILrheHgqGxYxi2KEE7ii0JhBeNh/p8pYGo2YogJHnIz6oAfk1qkVbgbUngtiYyGm
-	 C7jz6DNfbapSA==
-Message-ID: <60908273-aeb8-41fe-b7d9-d35c80e950ca@kernel.org>
-Date: Thu, 27 Aug 2026 18:45:19 +0200
+	b=SBm/kPjP3uMP7DmN5FE6H+oE2PP3vCUUrBbtwIlk7QU8FFKBAnhjKgJXcnxGpyUxz
+	 UFJwaTSPmw9DqkMlgSDsnw0ALHp726khUfhHi6aTSHjxSJwmRVTI5zAZplxXg0hHRC
+	 sa9oJLAnO5r+UwTaNfcaZkP4ts7YMJnhQgQbS9bOmgRGeazsGVPNyfBEkqLxc63nyO
+	 zNxINmqD58NisoGVEI0OOELRWDro0kJjoNDn6yg+lRexMWShKlR0x7Bi2p1FzGQswv
+	 u3Gbk+CrnTjxvLqfXdijh/IK4kOBAob33mDX0lrU4O5I9tv9+AUUlD/fXqbvkE/kof
+	 4iCuAfnZmDvIw==
+Message-ID: <c2aaa7b6-0a1e-4401-907c-3be81b4764e3@kernel.org>
+Date: Thu, 27 Aug 2026 18:45:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/18] mm/huge_memory: add kerneldoc for the split
- helpers
+Subject: Re: [PATCH v3 13/18] mm/huge_memory: drop the unused do_lru argument
+ of the file split helper
 To: kasong@tencent.com, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
@@ -84,7 +84,7 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
  Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
 References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-12-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-13-9b43f5163238@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260821-swap-thp-cleanup-v3-12-9b43f5163238@tencent.com>
+In-Reply-To: <20260821-swap-thp-cleanup-v3-13-9b43f5163238@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1EC8AC000E
-X-Stat-Signature: ts96gw8nu85i4odp7mwm8mxep7w4zhs5
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0F3D6140005
+X-Stat-Signature: 7ay37ciwczcbyqycgqd3dsumx7knrdkb
 X-Rspam-User: 
-X-HE-Tag: 1787849127-780347
-X-HE-Meta: U2FsdGVkX1+jNKogOVU/8ZSNP/0uSNhRARxZHupXmG0H+k1kLUHLbdSeUSnUXO9nIwTAyOBRqfXnuPuS+sfN18Oipti1uummFiC30duD8Z6DCd4rY1TICOyRB3zKaTr+Qh8O0mHeSW7F3Y24ZorQ4pn2amHkllmvKck/YY+iJw18u066KuuA5peSnBHiLDg25cXBQ0ZfxKEoIWTpkB506zfuepTq0LXmRXbqKOb9IbLYtt9ZtZsD/nnkh9MGFWY+4RIfKmudptTTi68ShcWfkGoc8rmZtQZuWRHtODT9NpWdAMbuVTrMNjmUQ8RFs9TGYB5QqODeybOWXUDzoeq38jmcKy8OgTRU9tAudUYCvu8co0cT7rIOxirA3ol12S52Dnu8ZRIgr5o7LexfBibg1q5cKftrgWXX8tA4GJa5pwAwnOZOhnv6YMi0zOL3mWP7CrlGhRK48v8X4lM0SQLAkSjBcQBeP2oyolepvoq/+POQ5LG8M4P3JpN2XHwzrum5YRjHe6qN9DrruysKR0MYud+QZAhFzSgpqwzBNIvd19TMu3XoK88U5jvkiUHshkxFQ49MQvjbM3BE97L01zHxrIYxEtWb4wHL78qml1Emz0B/36WhQVdqw4Ql15e+VlR7vDolMXTAnw3iSsSEUrV5BpbgHO3bLQzTbcqTd2VwpZxy5lME3KcQqxYDy3ont5D+kTf6o/XI4Nn8RliFMOxaALW6WaEf26t5yJZHg1KpShGypqHzlRrfZHc/otc2DGYLLOMZWL7bBeYkbioCUE+tQCUlQmRTRrDPyvr4JUiUQs7kPplO74H0NhEWfbMBvc8f9uCxiOEOXXkuk+hYCNycIAUpU4J9vuG50+gAzHoxrGEt+eysejlCEZN6DIOlXoqHXS9t+xHSv2g73FKx8jNVFLyk1YD21EDVUsfm8ifmA4H+U7aPYRdbqaOgyH2v30hvXYkPuQogJsLhjO4dcYi
- L+FpwPt8
- pu4hfa6lA6FEBNpHqUznZxgilqqIGy1h8jhgaDGUTK8L+UkXWYBXpBYTb4Tr3gEj4Lkhjlw0xu8a8itMxzlbXxesHgBvVjYImTcXCox0pueWB4z9hPJUgSU3jP+2mm6gIszpgMXyqQOcSX2gUDxNiYhtEDH84uVq7cdAfjbSOV9ROlPpDxNoH4T6qtj9zJ4yy2bmOYnLYQYidiZ+kw3Lfjv2E3CR1RWsbmDKGW2GtM1VlZgdzD1p9q0C/5mRvlDHV83fI7sX55NPlXzg2fWjg6kKU9lkDNPVOgpuLZBnNf/abTPX/XvCcuNy1uaeCWfHmVw07X1rNm8O5FPA=
+X-HE-Tag: 1787849153-976372
+X-HE-Meta: U2FsdGVkX1/pYCcYx4eXwJmvcg3Yc6NWAdeC/w9xCGwMgz49rAkdFWQrog6PpMpIgCeZx/ML3NBeM2D0ur7B06ABgaytMZRFGoDlKLj52dy//mgk6/3flkNYHzOV8bGLAD4dRsdPjeGONLPNHfz8D4sFCUjQYZhtwCWRrdX8puRx6KaXEjccEbJV/InBmXDoELF0oU05iLc+UYbVevqAvrJQhIGO76uVHQ6wXUaXVmUuiS8IDNoypQcY05ABB3SlYjl6jWy8DIgyDF5PEkbjJpAMmm5+rm62BuWAHcx7C3FZepLbu7gIoeCIz8Z0R/rQRu6Fcf9J+n3B5Xbp5kcOUBWmaXEWTgiQ4nny85F8zeXhEs6l/wXBpxIqn5ow/vafW+P5IwuVZq7zqSRcvoXYSolW+PlLxUwLKoBZkyEF3EJlFFzFWwBwfkRrLKxh5hkLhnGZW6cxsi6od9+4v3ILR4I/6KEYCLOIQA2lfnrm4s9ACLET4P+WUiCePthGXE0pDGP6/lfY1CDUcG7pAHNDZLk72YOzI0rEJzifgnJxI3tjsrF+Mt2eDIDElXbL4uXfcx4ATGCzjg+79qyH/EaVe8HRZqpM8UldjGEtrYEH4PLhXy1eDjoS7fGTbSlOQFgmZj8qKTKBDQH+gkUVbDkjvUaclq2ltONGhOl3WLyMlfDb2PGeERO+lVsnIhIfZzzcCpub528wHe02fRbw+jBBrNGKJCV34NCIxI08wjuhLz4jHZvftPJIN74dahoXOEx+sLuIq1/K1ZTfnvQAr238QI/7JSvnVsUP7vXnUl9QDRFOGHBkD3RkL4fXnXnurRuzn2xqta+Mt5k3ebQmPu+K4XqYrhlGcbp/+64Zd3UfXu8LhJqN6nONo0+InWLIlc/KE34dSoSVynDs/a69EjXtYxHxhFERanC67yNLmlJspYrJotb3/2OWZNMY2IDL2N6PUnq2ygTlyRGZucc2Fo2
+ Tm9+dXwd
+ aPxLAVhLgUqtQXohZbNnacLxjf09JH+QxdQQAa88ak2KnFDFpUlCCCDm1qEoZTJ6gVjoWsnzgvtmkR5Ja74mDkWovpHleHSM9RB6veT3328TV7PSfIZllea01VY6sDc94XKxGsvq5CItih7m5KhevGF2JO4lvM1GbSYj+npzfz8dXP9StQxgUTly+Mn4+l/t+Gg/eDmJIuCGRRRkKj3ZsNRjqjzRJnyPX8vMle4DMClhpNWZiDL6nU3dhFZg+9H/cEzOnCtCv0uItsiKcFR19yVLJaLeY7BGcLuR/16kCYg6GVzbsalvVTvdaCf2D+tinmEvrml8RB26vhn6NXFn5hVXzGkF0iU7kO8Ml
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,18 +152,14 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> Document __folio_split_unmap_and_freeze() and
-> __folio_split_unmap_and_freeze_file(), and rename the file split
-> helper's definition to match its call site.
+> The only caller of __folio_split_unmap_and_freeze_file() always passes
+> do_lru as true, so the argument and the branches gated on it are dead
+> code.  Drop it.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
 
-We don't really write kerneldoc for internal helpers.
-
-If you need excessive documentation for internal helpers, it could be that the
-function semantics are not clear enough to be expressed by a descriptive
-function name + variable names.
-
-Sometimes taking a step back and questioning how the code could be reworked to
-be more self-documenting helps.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
