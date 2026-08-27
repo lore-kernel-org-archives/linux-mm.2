@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9209CC61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:25:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7ED5C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:25:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 718C36B00A5; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id A29F36B00AE; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 608996B00A7; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id 93CE56B00A3; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F6EB6B00A9; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id 6F2FA6B00A3; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 235256B00A3
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E0FD6B00A4
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AC9A41A0109
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BDEFE1C00A5
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:45 +0000 (UTC)
-X-FDA: 85147572930.26.3FD719C
+X-FDA: 85147572930.10.AEA9F65
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A79CA4000B
+	by imf30.hostedemail.com (Postfix) with ESMTP id E99BE80007
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=CFxplSWM;
-	spf=pass (imf12.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CccpWaUs;
+	spf=pass (imf30.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787847884;
+	b=SHBubvwaBr/rLb3Jv1sIyX1l/6Lokr8kYA+rcvSd+DcOuxq3t9934TSim4oi16cf+bB29U
+	RSy1gVE8xpvgWTpqU0frhwNKR3wgy+087bywDFvoQHyPUYPQtF9RF6lnPmxVpBjVWwDpFV
+	rDCxLJP6Za6JkE7SIyOqMku8M9oij3g=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CccpWaUs;
+	spf=pass (imf30.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787847883;
+	s=arc-20220608; t=1787847884;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MKq7Nh2gcYohgYrYR5axiDJ4p1s9We/3CeTSchjvn7A=;
-	b=4/wsGJY2MhD7GUgLty7TwOZkmDnRv1vV64yLS0jQCeZvAn7U530XWL2il11nyzflvNk8rk
-	nST1gq7AhHxDBIWfFK6EZezI1hViibamwRdfo41L6WwWSZ3c7j3zAS/ReP5f10wwS9iy4D
-	RdSKqGv4JwgXpxNMd9ImC9uE8Z7xZ4k=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=CFxplSWM;
-	spf=pass (imf12.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787847883;
-	b=Bh3Nr7otwyAHLIdk50+wNbM9y2qq3WDe2k4wKGLWN2XScGAXPXsEVlD7VHNE+W9teS9JsL
-	Rkbqjsw0GGc9H6UD+M2jLbTgb9bJxxpOfoTqk1WK9FPojTxIu2ixyE9WL8FGp/XWxl1JLu
-	9j4jjrIm2ZCMSp8wglQwxrqNb1YtoeY=
+	bh=fUa7pS4OHibv7k1aZNkFDzTCnQ9Tn89o+Rildjw0B6k=;
+	b=EZVMOVcTCldQdctT191n3ixPAPpOtHQ1aS3AzvyALO7T+gzJAr2MAesA+pxZGIqCRfzqL3
+	8QSOuezs9FcDwtWTv148TULISi5KgUz7Tj6++TqqoYvXxRGU0Pjcg4t1O5MPxf+i/TWyMF
+	Pwqc9MnaZrM5Dy4baz5sPqMp6Ic17g8=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=MKq7Nh2gcYohgYrYR5axiDJ4p1s9We/3CeTSchjvn7A=;
-	b=CFxplSWMhRpP8AAbiY91FEFGTrBwzp0iMlr33Qf/OYA54NMunuxvtLsKNFYazG/V7FN0tYbCW
-	qVnSK4U881PmSGi5eEBaNy7Ih6oUsQdS4opo6Pbu87KJhzl/SLUUsws+oXRpCITmnkyZjeHgHeG
-	yehCK3Lv097Ecr7CG8SvsTI=
+	bh=fUa7pS4OHibv7k1aZNkFDzTCnQ9Tn89o+Rildjw0B6k=;
+	b=CccpWaUsRgM2J3CMlge2JDc32pT8dih8KCHNscYv2r+jgWhSa/BbR/8RILkH8O5kbpzttbHXn
+	6tbp/SC/chqJ3BbIXL3K7I04ctuktFcHeXy6i4fEkUR+lXXsoWpfO3tQGirIX0pTiGi04wxJ/z+
+	pCpZ1bHP36L3Y9WHJC9YEtw=
 Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hW6KX0GPXzJ46Yq;
-	Fri, 28 Aug 2026 00:24:16 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hW6KF5v67zHnH3h;
+	Fri, 28 Aug 2026 00:24:01 +0800 (CST)
 Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id 92A1F40570;
+	by mail.maildlp.com (Postfix) with ESMTPS id D049140572;
 	Fri, 28 Aug 2026 00:24:37 +0800 (CST)
 Received: from mscphis00949.huawei.com (10.123.66.11) by
  mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
@@ -75,9 +75,9 @@ To: <catalin.marinas@arm.com>, <akpm@linux-foundation.org>,
 CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <wangkefeng.wang@huawei.com>,
 	<artem.kuzin@huawei.com>, <panov.nikita@huawei.com>
-Subject: [RFC PATCH 12/18] arm64: make power management aware about kernel replication
-Date: Fri, 28 Aug 2026 00:11:52 +0800
-Message-ID: <20260827161158.3618409-13-panov.nikita@huawei.com>
+Subject: [RFC PATCH 15/18] arm64: add support of NUMA replication for ptdump
+Date: Fri, 28 Aug 2026 00:11:55 +0800
+Message-ID: <20260827161158.3618409-16-panov.nikita@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260827161158.3618409-1-panov.nikita@huawei.com>
 References: <20260827161158.3618409-1-panov.nikita@huawei.com>
@@ -88,14 +88,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.123.66.11]
 X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
  mscpeml500004.china.huawei.com (7.188.26.250)
-X-Stat-Signature: h6mzpgq1b1hftwh9e93gre39ewzadbda
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A79CA4000B
 X-Rspam-User: 
-X-HE-Tag: 1787847883-297199
-X-HE-Meta: U2FsdGVkX1+MrWR0qbY0CuGEuInr4mdgzoY5niWIpjSPyTpCtC8Vr5/u5gjW9Vy+00DhLlqCqkK6dAJsbJZLkSKxLIx5ACj+cbLzRCl8gVQ/8uNFoK+Y4MNwt9fODHQU1aHmWw9qhDvwRRrb6CbFMUDRzdMHwCXw+w1K7D9hpzbeCctQ3ioAEbzbSOWf0fNp6wi5lc3P67WoW4rr/+cCsS12irb8wlVrBkdVi+Yjknoddd+Bc/XHP91QxlKNsFFUMLExxk3GkmPpv2GFZ6bZgpNdCbqaeQVoty7hR3tfNpJbf5b3HczGqMGWHB3qqXt0YNf8ie/aGpVURkKB6WALLJX5etsJtDqwjJD310chgKkxWQof89VosnqJpOfNLIRAbXO2MyPDy08kR1HZH5a/X6iOFb3lVQdG/1jjm5ai86LJJzb6m7Q4qH2pDvoEINKL2HmHQJYO5IE8w4qMXTVfdfNqfRK6PJhXGIpSAkyZHHQQbSi/0DfT6h5XqXyy4+aRG8+23kkYu1qJM9UWtoDcjgsXwh7wmIhcADe3M4dz/219aMxDb4VobhCbPY/i9lF+2AgV+EtV4EPoc4jSIJutZzfxEn3CBoCrZ5Z3qH1hgmATYSgRiO4REJTkyt3ZhKh2GDCN1FwWly2keuCrHsXAG9EXfJCuwQquDfNm2ZFv/k71XVw4pofe7cMsGf3L0ck1xwJuVY5SND71+GTTh+09ZEb2L3rbE520Dl8aJBR2OzzlXsU7Um5yympb+yv306vbZ1eB5qBDXNWfbHFf+jRbYogK2z9IjjD1lnU9x8wg7bUw1jfTy2LnlvrYv8NZ+sIPgpf+x8bHnzBQ+0gTz2Y4yVAjDBD6v7MPpz8dzvt/1uvmTzeqCrpgeqtgySvOlGx7t7Ku6HKhA0LvC9swVIxgt4rWFIHL9pqRWvt0qeCGGOqApdxos3oc73nI+alOLo3W4XddaMNd1ldlEMD8vjo
- rWUrbBrj
- 4cXZSyd+/5NjqEWwWg0OCQz5cFWHVTr/C8gFdzrWyTDGDou8qu0/U98ySBkYTj/oN6vAFzRpm+0T1Zj2YQcQS1ZWYgluwV1zQbHHCwtf3dEcBw5jGqGfoa79nCy0CY8uMXRRzK272tiSRh9iQdpkB0WnZ3OScxBM5xDibORFZ12BG+ZVCmkaKnAUfi/ZS6vvwfv4t9/WVNARC7Wkiw+SdH2CAvTlZSgTz5nUKRrzDT8qconY9iwINr0aqSg8j8L8t2XAgAqrBb/Wx+JIXiRudMD8YPjbGGX30HAWuu5neriO1RFBI/DKOAMYpQGTIVJ01jyjDEIWDyrzgz213V1uxfu5mjsr+A+ad2UhCRGdGOLSG8QO109iouCz/0YxEtlDXDB2SV0SEXCu6eCPcrkF+vYS3bsLE+pg9KFcoCitZALgeKsFGfHQKNNOQcuITA+hqMnmb0EWD7kCk0AHZDi7R4v1HAnH/AuTFqsWn7pc/xID4eShfmno0B+qJQw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E99BE80007
+X-Stat-Signature: n6o1jjzxm6o1epc1wj7k4ikaqmhi7znt
+X-HE-Tag: 1787847883-74830
+X-HE-Meta: U2FsdGVkX18fgy+dxFjOQHcveNixcJfKt1XjoCl7EXpEr6/KzFnH8v7eEzkXLMMiNtWMO1zwKZcLB3kyMT2OKcBXWYYu5SZ/nzW1hjQpswscmWl+YP8FT72l7no/qgFFJHRo8WmmvCf4nBICMLc+gPckQvXMgKD+s6hjsBJ/GsZnlpvrU92mISGiBQvv0m/eC1og4QeGc6Oj6t9xM4Kj9F5ZoZFbs5bNPHIVVyn7F0ce2mFd/IBbrY8I8bEb3vYV44rvpfHG5/ggMHaDZxtPPzY1smzd/9yMiv5FiHYfGhUBccfkzr+hemOqfQr+NdiINXxsmZE879jsLsedN6ip3XaIdSI3je359AlNPw6zIyDqhmna8b+5rFhuoPL0hnWyfbXJUkeyFASr8lx/LONKlPtyfY02r1VLueI5WygzJ2X+qcg1FJi70YrQgEBEnSyJSzM8a8g0Pzj33NBJw8AcU/hKG4rOX68tGrW/46B0bCV/w5kFZ0LIi92S7/TMy4uk5Yx4tY+rryAopjnyeKT3zRCoSu8Y3OVu33o10+F4EtVu+WzihIlbK9bQKVeJl7gbGNPqTXvn7mGEVRPQqbleIdKSt2WzAEJuxX8Nn9R5TAPvyWbg4Yts5cY7CnrX5GjwzrQjrYGSw9JPtW+WFy0Szs5EGiiAiwgKJkNHQuSvUfk4ceEohB3nNFI1wC3bFpUP9UXnZCHZY0eM8bhYkDsx1rQPDhmx7JZMPzX6JZ96dxQ9BRqwGpgPnHYAab84SBWQzJpTnan2GpsaWnySrzmFBdkbTNTtPjohJI6t3hEhtvO+IJx6qrEky1hmpt4AbVmS4OW+PKRShWYj52BlJthwnbHBViA/TMKuqUuZefG3jXb86vR8PBV0mvuWEIyZ3U8ccF9oyRrtUXXrYANXs3U0taEWMCucoBSbARCMqw70y8Xt5kMubl5tXxMzaCX8HrvhNRpQEJrVyUs+yLbSWDJ
+ pDvMzP60
+ EFsg0u8yd6AQzSa/h5HUixzwp2Vrg4qClU5UBSihLJEoeBHmaBzX+WrCG5vsz3LtTBEEVlUTg+Ilr+6dw5mWIhBhNo2ObbWvj8k3a6TZ6gPTZq7XkKE0oXLHExRLibc19ozbDN9AyuNMK/Y5LAbdL/MaP6JfcyEWjOCvUcqkAiiaLJ9Ar7iBjI/BcetsiCwxMuEEuVRMwurIKQNvlOHLFdNg2xklWYuYm3gB6mgPEfbHyHH1UO1op8X7xOllrurppkh4UUN89ryj9J8U8Z0h/1AoefCsngnrdSWLl6D/+sKFTjJ2ehLvVLar+IS4HF6ouqD5GUDjrXBABPIwkNYazSfAG22TfVvY7emXAgxKuvEC41eL6uGHJ76IbUvTxYbuwGdtpxf+bQm3t7uSp+8dC1ZKoRcKDVIq1a084JE3CdYO9i7fBGVIEmmO3KHfN6b40fMpWdJHl3MizAztk6KFqJaBNmw3JoWpzsVSaHPtdlXExEJIHgKAYZXvc2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,97 +109,65 @@ Acked-by: Ilya Hanov <ilya.hanov@huawei-partners.com>
 Acked-by: Denis Darvish <darvish.denis@huawei.com>
 Signed-off-by: Nikita Panov <panov.nikita@huawei.com>
 ---
- arch/arm64/include/asm/mmu_context.h | 4 ++++
- arch/arm64/kernel/hibernate.c        | 5 +++++
- arch/arm64/kernel/sleep.S            | 8 ++++++++
- mm/numa_kernel_replication.c         | 5 +++++
- 4 files changed, 22 insertions(+)
+ arch/arm64/mm/ptdump.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/mmu_context.h b/arch/arm64/include/asm/mmu_context.h
-index 803b68758152..f364281d3442 100644
---- a/arch/arm64/include/asm/mmu_context.h
-+++ b/arch/arm64/include/asm/mmu_context.h
-@@ -136,10 +136,14 @@ static inline void cpu_install_ttbr0(phys_addr_t ttbr0, unsigned long t0sz)
- 
- void __cpu_replace_ttbr1(pgd_t *pgdp, bool cnp);
- 
-+#ifndef CONFIG_KERNEL_REPLICATION
- static inline void cpu_enable_swapper_cnp(void)
- {
- 	__cpu_replace_ttbr1(lm_alias(swapper_pg_dir), true);
- }
-+#else
-+void cpu_enable_swapper_cnp(void);
-+#endif
- 
- static inline void cpu_replace_ttbr1(pgd_t *pgdp)
- {
-diff --git a/arch/arm64/kernel/hibernate.c b/arch/arm64/kernel/hibernate.c
-index 7bf117427777..e9f5ddf37c4a 100644
---- a/arch/arm64/kernel/hibernate.c
-+++ b/arch/arm64/kernel/hibernate.c
-@@ -16,6 +16,7 @@
+diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
+index 5a76c59b5ada..17c4de4b9b3e 100644
+--- a/arch/arm64/mm/ptdump.c
++++ b/arch/arm64/mm/ptdump.c
+@@ -18,6 +18,7 @@
+ #include <linux/ptdump.h>
  #include <linux/sched.h>
- #include <linux/suspend.h>
- #include <linux/utsname.h>
+ #include <linux/seq_file.h>
 +#include <linux/numa_kernel_replication.h>
  
- #include <asm/barrier.h>
- #include <asm/cacheflush.h>
-@@ -113,7 +114,11 @@ int arch_hibernation_header_save(void *addr, unsigned int max_size)
- 		return -EOVERFLOW;
+ #include <asm/fixmap.h>
+ #include <asm/kasan.h>
+@@ -328,7 +329,7 @@ static struct ptdump_info kernel_ptdump_info __ro_after_init = {
+ 	.mm		= &init_mm,
+ };
  
- 	arch_hdr_invariants(&hdr->invariants);
-+#ifdef CONFIG_KERNEL_REPLICATION
-+	hdr->ttbr1_el1		= virt_to_phys(this_node_pgd(&init_mm));
-+#else
- 	hdr->ttbr1_el1		= __pa_symbol(swapper_pg_dir);
-+#endif /* CONFIG_KERNEL_REPLICATION */
- 	hdr->reenter_kernel	= _cpu_resume;
- 
- 	/* We can't use __hyp_get_vectors() because kvm may still be loaded */
-diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
-index f093cdf71be1..8ad66ed70122 100644
---- a/arch/arm64/kernel/sleep.S
-+++ b/arch/arm64/kernel/sleep.S
-@@ -5,6 +5,10 @@
- #include <asm/assembler.h>
- #include <asm/smp.h>
- 
-+#ifdef CONFIG_KERNEL_REPLICATION
-+.extern numa_setup_pgd
-+#endif
-+
- 	.text
- /*
-  * Implementation of MPIDR_EL1 hash algorithm through shifting
-@@ -144,6 +148,10 @@ SYM_FUNC_START(_cpu_resume)
- 	bl	kasan_unpoison_task_stack_below
- #endif
- 
-+#ifdef CONFIG_KERNEL_REPLICATION
-+	bl 	numa_setup_pgd
-+#endif
-+
- 	ldp	x19, x20, [x29, #16]
- 	ldp	x21, x22, [x29, #32]
- 	ldp	x23, x24, [x29, #48]
-diff --git a/mm/numa_kernel_replication.c b/mm/numa_kernel_replication.c
-index 082aabc6b8bc..b1c5cd2a1fa1 100644
---- a/mm/numa_kernel_replication.c
-+++ b/mm/numa_kernel_replication.c
-@@ -67,6 +67,11 @@ static int node_to_memory_node[MAX_NUMNODES];
- static bool pgtables_extra;
- static DEFINE_SPINLOCK(debugfs_lock);
- 
-+void cpu_enable_swapper_cnp(void)
-+{
-+	__cpu_replace_ttbr1(this_node_pgd(&init_mm), true);
-+}
-+
- bool is_text_replicated(void)
+-bool ptdump_check_wx(void)
++static bool ptdump_check_wx_pgd(struct mm_struct *mm, pgd_t *pgd)
  {
- 	return text_replicated;
+ 	struct ptdump_pg_state st = {
+ 		.seq = NULL,
+@@ -353,7 +354,7 @@ bool ptdump_check_wx(void)
+ 		}
+ 	};
+ 
+-	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
++	ptdump_walk_pgd(&st.ptdump, mm, pgd);
+ 
+ 	if (st.wx_pages || st.uxn_pages) {
+ 		pr_warn("Checked W+X mappings: FAILED, %lu W+X pages found, %lu non-UXN pages found\n",
+@@ -367,6 +368,25 @@ bool ptdump_check_wx(void)
+ 	}
+ }
+ 
++
++#ifdef CONFIG_KERNEL_REPLICATION
++bool ptdump_check_wx(void)
++{
++	bool res = false;
++	int nid;
++
++	for_each_memory_node(nid)
++		res |= ptdump_check_wx_pgd(&init_mm, per_node_pgd(&init_mm, nid));
++
++	return res;
++}
++#else
++bool ptdump_check_wx(void)
++{
++	return ptdump_check_wx_pgd(&init_mm, init_mm->pgd);
++}
++#endif
++
+ static int __init ptdump_init(void)
+ {
+ 	u64 page_offset = _PAGE_OFFSET(vabits_actual);
 -- 
 2.34.1
 
