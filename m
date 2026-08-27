@@ -4,144 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBF07C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FB7BC61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:49:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC2776B008C; Thu, 27 Aug 2026 12:48:59 -0400 (EDT)
+	id 108E36B0092; Thu, 27 Aug 2026 12:49:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9A806B0092; Thu, 27 Aug 2026 12:48:59 -0400 (EDT)
+	id 0E0C06B0099; Thu, 27 Aug 2026 12:49:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB0E16B0099; Thu, 27 Aug 2026 12:48:59 -0400 (EDT)
+	id F15106B009F; Thu, 27 Aug 2026 12:49:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B3FF46B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:48:59 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5D9CF1C006A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:48:59 +0000 (UTC)
-X-FDA: 85147633998.14.97169AD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A3037180008
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:48:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BGOhIRPD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CCD7F6B0092
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:49:40 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6743014012C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:49:40 +0000 (UTC)
+X-FDA: 85147635720.21.7F34300
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9687840002
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:49:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kGlA7VxW;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787849378;
+	b=CxUXj3ejB3u23s4lfGbPsfangGbQYg+vs8DjPicwi3VugIqlacPyXijvcsSA5ClKGsr4qD
+	RnLQWETCVd2bgtvr2tFl9Y9eoEPAFHdb3XGq4h1X78fHl9kWie0bi2mzflLo2yVOiWoLGf
+	1xWt6m+XswiM1r0A6FBgDL4NNmC3qsY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kGlA7VxW;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787849337;
+	s=arc-20220608; t=1787849378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pEdTYejlPEl2VajplsOoGksC/mlaqQTAybKbn6EW/6Y=;
-	b=QUcTJIHkr5GVG73HiJZ8hFgmJjyKfra1f5HzENK47fGPf/rG/FKWQFqMJvzO3GBExHrjat
-	IV9MXwiXlWD4SfLB4JZjRh7vNk1YSHd6F1r11qaAZw/JUj+w8zyhaCvyqDf3t1j/h3AdbI
-	X2lDTe2QAte+pdMeInAmP988o95mCgE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787849337;
-	b=0fxw4i6UWU4hyiW9yjl5J96ECfZCBv7Gvkf0Sq1aR4X8yFs1vT+9TWYuygEhgL86QSBnN6
-	cw2KgO/lgX2iCt2PTVJLu+k2sJEcrOAkXo2HQYKddNy/2dOcKE14+wMPIEICHnuKPg1Kz4
-	M1S2XDvGN1vQDsAC9fb0g252VuiBY6I=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BGOhIRPD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=J5cG4iuM1d9Xpr0Ghu/Ar+nS5GiRx98CK/xxd+1xvUA=;
+	b=x8RkLvP487/0kwlJOAOr0LHLOJh28+NqpkE7mz4DDlAOIq+2h810iP8ZZm+pZii8IvmVLa
+	jH+spMph+aSMZpsv9DmBGah+SguJw2NrHjgyoQ2AGgyPLFg9rxcXITwDd1i3jGc5NdyfVe
+	32NCe480SyuxTuxHKj3UywzeDWF1o5w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 238A6600D2;
-	Thu, 27 Aug 2026 16:48:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE141F000E9;
-	Thu, 27 Aug 2026 16:48:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CE32D4011F;
+	Thu, 27 Aug 2026 16:49:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2378D1F000E9;
+	Thu, 27 Aug 2026 16:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787849336;
-	bh=pEdTYejlPEl2VajplsOoGksC/mlaqQTAybKbn6EW/6Y=;
+	s=k20260515; t=1787849377;
+	bh=J5cG4iuM1d9Xpr0Ghu/Ar+nS5GiRx98CK/xxd+1xvUA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BGOhIRPD2lf1vcwYVPVmxYhlzjEAFg6sWgvKxGNR7x66cvNqBT6pBHS5BN/gVjBzS
-	 UeiKtsAxb6wZsP0GRiPH1Ea9kh3oYc/Xz7PdkQ1VIXNk07rivC7R5DrnZY/p39YtVL
-	 W2uFfUJYDaaeEJEcbajXKOsvnHB9TatK3RqmP62JGCHmRaUVt6fyEj6tsNNyAD8rFy
-	 vloi9rt9W88WrJX72Uw0sNMFjVV4TFWL4a8pqY/wwNg8WHo5dh51aAMY54onazJ88O
-	 gHYnYUdLrvfC2Bajm8Vy5oaGkZ11L09CybemaeBljLG222937TTDIfyY6j1aJF2bfx
-	 cx/0RFZAJq6tg==
-Message-ID: <9adcaf53-3a40-4d97-9365-b9af97891894@kernel.org>
-Date: Thu, 27 Aug 2026 18:48:49 +0200
+	b=kGlA7VxWC4H4LrpdVhC9YYAuk4lfkA5dIfmFjIqZEw/WBSOnbU59U/UDlG3KwPCSA
+	 91i65tzQN9XBNvbBXurAaKaYXesWTyDaeQ4e73MZAK5G+DKufUOg4THZhWZ73Alq3m
+	 tbsdvs6Bd1CqbPjnHNRKgIBnjS6Y1dQDikz8Vk1Vo3PFbrOThoqf3Pum/+wRo460Yt
+	 Xf1QHoE3boTYnZG9s5GSlBiPYkk8xCbw7jfmYp1ltr/qg5dh5Uh5bPDhvk2bCgJKzd
+	 hjIIpnIMUmvxP1fOa2gH1XXK543sCa5MsU2DWLtKzKt7B1TVGz2leERxwjOqlWXA8i
+	 ODyD7h1p1IU3Q==
+Message-ID: <c9c11ca3-8f78-4086-8549-5e99a4d79feb@kernel.org>
+Date: Thu, 27 Aug 2026 18:49:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/18] mm/huge_memory: clean up after-split folio
- freeing in __folio_split
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
-References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-14-9b43f5163238@tencent.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH] mm/slab: reject unsupported kmalloc sizes
+To: Zi Yan <ziy@nvidia.com>, Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alan Stern <stern@rowland.harvard.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ syzbot+805630f1453e490427fa@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260817-limit_kmalloc_size-v1-1-5bef487701cc@nvidia.com>
+ <82f138f5-11d4-4839-94a3-c226fd982715@kernel.org>
+ <ao9dPUpHxP5uOOcw@MacBook-Air.tail10959e.ts.net>
+ <DKZ7J9HNUDR6.BP9KG5Q7HYMJ@nvidia.com>
+ <c4684212-f44a-4aff-a02d-f3f26095ebc1@kernel.org>
+ <DKZUH9SFMP6H.1ZMKA92IHQLG2@nvidia.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260821-swap-thp-cleanup-v3-14-9b43f5163238@tencent.com>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <DKZUH9SFMP6H.1ZMKA92IHQLG2@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A3037180008
-X-Stat-Signature: boxbt9an1di5po38arjihw7x5jbrj448
 X-Rspam-User: 
-X-HE-Tag: 1787849337-349531
-X-HE-Meta: U2FsdGVkX1/SUsDcNTaNQrCOwf7qhPbNXV3c0wD4FIp7OTVFKBubla4AAzaDm1tZGUzAr4BA216C5TrtwFwMaolXWN/L7C4uPKuDxhFIzJbIa3PLwZIQ9iCzbPDuleRC5IHuXkMd2nh4Xv+hZPAB+iP/6HgbTqwYh5vjmV7XIwcQkgsB1gqmzOiDma5jY1ubcqVJ5/6nwOlat5Zh2A1Xi7dvZaZHe9ls5jrjAlV/pLJpVon0YNCf0daUEMaaDDmBY1A35fShhXbqtskH9Y20JaXPt3PeJOqQ96TE9/7u0NiPZdPjLYqAMNBlVIPALO46IibAY2Key7fTVjjQ3KWa4BKF1M9Cwo/9uZgjuQUIczCaIQM8gi/mjPRb9tUNGlp2gLy+YGl4RtpopN1LMtYY3W15MoWVrCgrq4eUjIdiqsupIb/DW8z+N1nKZdDO+YUbZp+BQhxsVRAMx8J5pjxkeGMuFpGuUsJKcQJ6Z7G94ORazdtW21eez5s4HEdZSjDue2tphTj3dsv/c6iNiPMvRhTFHGNvijny6kXCmKCMxltbefL53bWjGugwE+EQJ2yI0lszxYmeAJJuOj0JC5VuP+13ERklZKV3vdGOknabO932hvYhNRZjL9ZEpPZWxX8BoSRQWOePP/YT9KS6qcp28gEWSbrzQ7dBS/BWeS2gkFxq0vZF7nxSwlGMi+sjmoZife+MQIydFcpPiM4eflDfqmgfVqES7TjDWRawETiXqOQbH/1E6MmsOyG1x3/OQ4Nxyk+GdbmBw5gPYAq23/Frq2YFZL948xwkd7nGg/rzWAnlmkGJOaBB8/ZqoSzo/nGZk9J862ltwZzi7OWVpAOrfMAEvt6l4mounRNeTQFS7qwQPnsGq6YodV7odnEVMFmz8RqGLcvokuw8ppvUtFSA8GKLC4I0DHB4DVgg679KEHBRsNwO72hKzG6/drOBRWzGhuAdwvM5kP9r4/ht5NF
- bam8Rnzb
- 4bdWF1Vv4QOJBQX9vIqSwcY1q0yjbEzU8xkXiWrTC8TjlYzELseA/p9G0I16WU1LfTpMiGQonv1TFqvExbLi5ahAByQ6Q6NyA18EsXfoDvypj61VJxNdSIgrwstBKIWYckVVwsrISi0xFSCHamsUgAM0wWDW7R0I28VnXjUPi+Wues8AM/ycE/DCEyBeJaiQI/vnED8LG+01ufBCCzRjmDbc/u4QaYymThZr+/vSCloUMVYafbcOiW3btqD+mPLg+owOnxs3UB6RHWnEqXtbIfcpkV8R4dibhIHJFcDUvphe8eeXE0JHSEh2NAzrWoH+iPuIazGMMIJtYWsAeDlpqPgAyS7Tb7vj263CS
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9687840002
+X-Stat-Signature: nrjstx8y15mzferrgd1rzab7xuca9nq9
+X-HE-Tag: 1787849378-411583
+X-HE-Meta: U2FsdGVkX19HkKe+vm+XWLoraV2JpDUCquauMccFqr8jllBd8f/io5ZlbdQXfbMrRidlwOTlxpPsZAnRCB+8QucbVqvnFKCR/IIDGmQcb8gTey+1NtQEOp1RQCTMoJli/aZFYhCOTCkCgyadOiUhlVBLCWIztZK1K0PgHbP4eTUTROixzT4hehb5kIeqlflFfdeqKdoRX86TntginyATwVJFtwB57/kDeN2NUCW5tbZ7hhe+XkyvtYC1i/YjsvxwpoWlKrofbckfFIlJi0Ow5FT4NvoLjuybyJ6xovdPfwDHsJoD7NPpsYQpcYOeETvKbtMAbHcW5JFwendNnyLBJj3nEb3nUnkcUTjN6b4EJoiTqNex0juwfbOadxIBg2w8z8Xv1lMYfxyfumDpRNtIYffOqulPE5bs6HNYteAnbsDFEBgFYaaphy81inl3VVzuGEtKwJqGgod7yI75hbNvIFRuuPXKnIV3IvR4yNZwkpFUtWGAV67aG+G4wGk+nL63HxJvYTNdnbtaTRlZXzzu4X9YfRJcBxHJBou1jORvZlXqH4i6JayC4eDF+9KL7oJ4yMVde6WYLe2nOPqnIy630BrMLVA3BtsY1fWuCyIlN2lZDRlC9YXA0rNc24eNR2zVGAD5PhQmC9LQA4h4gwpeLeGi4xvZJFyu6s1SGHgXa+BBXbz7W4V12/5Kxs+hIufcCLVMHwV0DGD3XK9sdmyNH2OG1zMeCJzqruW8pJP+JHwOa6baFBnc8joLiw9CRm8r+i4EjTsbPatDzLwrz3tGNg17IWOKx9Zk0iIcI+2BaU6pOrgxaoYGMYqVNe+eCh1EedoEqXOBDEru/jxJJz0mIBWewnYyV6euNx5egggNmvvuDDtHXyiYItAkoByiUpJEQoPHHG3VCA6jPxb+3MDm68yiN0jlDFhkIVPIy2KGQZZb01ndhuffqZ2Fq+rNoypDNFDVerOcDBCvTtb9nHu
+ LlBsVPqQ
+ wtORAAfRGc62E51BKtRwgWf/hFBwMsxvkIH5alAUvH6oCq8eMJyCwFQXFtzKTuFtG4GbEbxWXs7ccHeC21BTPKNcp31UnztzgYvFcaE9aOAkoqw00Zoog/uJBV7F7nVdj0ueStbSggAy3mBKRBJ0nX4g93C+FDLYq+pgC9FW62uUeD5JOoqtm9vFv3xKmelIt66LifoLdgGJPi9u0OKHbOjO3z7cIrSDIHm5XK2N8RfRQVtrGXYBdsKuCLP+csPzlSOrohopn4LeNp/pzXHOKDEZ9jCnQyNyIVz/8K8lWL5Ja9yzEWfXlENiI6xLCfJoapaMvndoqu1DTYbQX8qbEZrXoIFYwjelWEiOTRvlqQD7sPgm/kI8iTtEI+zxrJIZxwe1zyZFjObXc9oM2Glx5byY+3sORLN3wC+2/mgv7aQEElKIiVSI5+Vj5if4BgUlYtLxrhRthLETO/5v/Cv4QMcJv3jr3+bZstlwtPuA77LwnLfexhDrdBpAhvpQdmsrTdfvDInJmFJQxLn8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,52 +142,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 8/27/26 17:51, Zi Yan wrote:
+> On Thu Aug 27, 2026 at 3:47 AM EDT, Vlastimil Babka (SUSE) wrote:
+>> On 8/26/26 11:52 PM, Zi Yan wrote:
+>>> On Wed Aug 26, 2026 at 5:47 PM EDT, Harry Yoo wrote:
+>>>> On Wed, Aug 26, 2026 at 11:28:12AM +0000, Vlastimil Babka (SUSE) wrote:
+>>>>> On 8/17/26 22:40, Zi Yan wrote:
+>>>>>> kmalloc is used to allocate physically contiguous memory for kernel
+>>>>>> allocations. For requests larger than KMALLOC_MAX_CACHE_SIZE, kmalloc uses
+>>>>>> the page allocator and can only support up to KMALLOC_MAX_SIZE. For request
+>>>>>> sizes bigger than KMALLOC_MAX_SIZE, the page allocator can emit a WARN
+>>>>>> because kmalloc allocates an order greater than MAX_PAGE_ORDER. Systems
+>>>>>> with panic_on_warn=1 crash because of this WARN. Fix it by rejecting any
+>>>>>> kmalloc size bigger than KMALLOC_MAX_SIZE.
+>>>>>>
+>>>>>> Fixes: aadb4bc4a1f9 ("SLUB: direct pass through of page size or higher kmalloc requests")
+>>>>>> Reported-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+>>>>>> Closes: https://lore.kernel.org/all/6a820ebc.9ebadd4d.20b15e.001b.GAE@google.com/
+>>>>>> Tested-by: syzbot+805630f1453e490427fa@syzkaller.appspotmail.com
+>>>>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>>>>> Cc: stable@vger.kernel.org
+>>>>>> ---
+>>>>>> It fixes a page allocator warning (order > MAX_PAGE_ORDER) when gadgetfs
+>>>>>> requests excessively large memory from kmalloc. Instead of adding
+>>>>>> __GFP_NOWARN to suppress the warning, as was done for usbfs[1], change
+>>>>>> kmalloc to return NULL without a warning for this specific issue.
+>>>>>>
+>>>>>> [1] commit 4f2629ea67e72 ("USB: usbfs: Don't WARN about excessively large memory allocations")
+>>>>>
+>>>>> So I checked and for kvmalloc() we have in __kvmalloc_node_noprof()
+>>>>>
+>>>>>         /* Don't even allow crazy sizes */
+>>>>>         if (unlikely(size > INT_MAX)) {
+>>>>>                 WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+>>>>>                 return NULL;
+>>>>>         }
+>>>>>
+>>>>> This comes from Linus in commit 7661809d493b4. I'd do the same thing here
+>>>>> then.
+>>>>
+>>>> But the purpose of this patch is to avoid the warning in the page
+>>>> allocator. Should we fix this in the caller (gadgetfs) then? 
+>>> 
+>>> It is fixed by: https://lore.kernel.org/all/20260820223719.A4A3C1F000E9@smtp.kernel.org/
+>>> 
+>>> Please disregard this patch, but we can keep the discussion going.
+>>
+>> I still think this patch has some value if done as proposed above. Yes
+>> in practice it will just replace the page allocator's warning with a
+>> different warning, but IMHO it's "nicer" if kmalloc() sanitizes its own
 > 
-> Replace free_folio_and_swap_cache() with an explicit folio_free_swap()
-> and folio_put() in the after-split loop.  free_folio_and_swap_cache()
-> unlocks the folio, then free_swap_cache() must trylock it again and
-> re-check folio_mapped() before freeing the swap cache entries; if the
-> trylock loses a race, the entries are left behind even though the folio
-> reference is dropped.  The sub folios are still locked and unmapped
-> here, so just directly call folio_free_swap() directly under the lock,
-> unlock and drop the reference.  This makes the swap cache freeing
-> deterministic and the reference drop explicit.
+> And SLAB maintainers will be Cc'd. :)
+
+For some people it doesn't matter if it's SLAB or PAGE ALLOCATOR :D
+
+>> requests to the page allocator, using the KMALLOC_MAX_SIZE value.
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/huge_memory.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 84c6e4bbaa88..113a33cddace 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4337,14 +4337,16 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  		if (new_folio == page_folio(lock_at))
->  			continue;
+> Like this? Or the exact pattern as kvmalloc() is preferred?
+
+LGTM. Should return NULL even with __GFP_NOWARN or if the warning has fired
+and won't again, and AFAICS this does.
+
+The kvmalloc() pattern predates WARN_ON_ONCE_GFP addition, I think.
+
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 0337e60db5ace..b562f2a6fbbee 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -5263,7 +5263,12 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
+>  {
+>  	struct page *page;
+>  	void *ptr = NULL;
+> -	unsigned int order = get_order(size);
+> +	unsigned int order;
+> +
+> +	if (WARN_ON_ONCE_GFP(size > KMALLOC_MAX_SIZE, flags))
+> +		return NULL;
+> +
+> +	order = get_order(size);
 >  
-> -		folio_unlock(new_folio);
->  		/*
->  		 * Subpages whose mapping has been zapped may be freed
->  		 * earlier, but freeing them requires taking the
-> -		 * lru_lock, so we defer put_page() on tail pages until
-> +		 * lru_lock, so we defer folio_put() on tail pages until
->  		 * after the split completes.
->  		 */
-> -		free_folio_and_swap_cache(new_folio);
-> +		if (is_swapcache && !folio_mapped(new_folio))
-> +			folio_free_swap(new_folio);
+>  	if (unlikely(flags & GFP_SLAB_BUG_MASK))
+>  		flags = kmalloc_fix_flags(flags);
+> 
+> 
 
-But this is effectively duplicating code that belongs into swap code.
-
-Should we instead have a helper next to free_folio_and_swap_cache that consumes
-an already locked folio?
-
--- 
-Cheers,
-
-David
 
