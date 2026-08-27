@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42F1CC61DC6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 12:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A5FAC61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 12:54:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B0CF6B00A2; Thu, 27 Aug 2026 08:33:46 -0400 (EDT)
+	id 393776B0088; Thu, 27 Aug 2026 08:54:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 060B26B00A3; Thu, 27 Aug 2026 08:33:45 -0400 (EDT)
+	id 344AE6B008A; Thu, 27 Aug 2026 08:54:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE01E6B00A4; Thu, 27 Aug 2026 08:33:45 -0400 (EDT)
+	id 25B326B008C; Thu, 27 Aug 2026 08:54:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C1E6E6B00A2
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:33:45 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4419840408
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:45 +0000 (UTC)
-X-FDA: 85146990810.17.F5FF989
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 196D214000E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:33:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf26.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 025B56B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:54:12 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04048A0226
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:54:10 +0000 (UTC)
+X-FDA: 85147042302.04.54C8F48
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6687C40006
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:54:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oGMl4N5k;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787835249;
+	b=cxe9BT/noR1jKCBcu+WGNsB3PXQ8dtlgZ3Zrumvx1p5xRYkrTiaCV0RReIiF7D9wshaGnv
+	n0CMWSxIV+jJIsboEK7yBFyo3oFBzH3juZ6o6RLcqaSN0GbsQIeqVXKxZfdVdkoly5YHYu
+	Ktqnxsts0iJrb0IZi8336rhCWQ/3Lpo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oGMl4N5k;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787834023;
+	s=arc-20220608; t=1787835249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZXITsS6oLVwdm3fm5C2B6e6r+kwxrwhz0JiGWfN3jcI=;
-	b=0W5OtWzpq+3pIEPo4yo73sEaI0sYm7z3AAQsOyuYCfqrSKB3qWjyRLi9GvKYEDGERQuyUH
-	8ohXM8zrxQl7ljX6ljKfKlt2ARXUsAUWQwsqQrQWspnZG8fZBtHqygcb3bViOxIF/OetHq
-	o7j72ZQtf3MUJQOsQUKI3Qd8UbSIKM4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787834023;
-	b=rBYBg7+Q0nbBET8zwlJfoSAvDZ7gAcyr2d0u8UKptTo/b64dgXNhwLBZCjkKaKo0Dbu9HX
-	TJgYoePeTZv09OW3DqbzwXeCt6JAjRr+b4W/Wsv0jFZArMPGDkkaDAwTsRDB30Xr+BwVQs
-	GqS5e/FltmqALmBxGjk3yXY02fJ16X4=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf26.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1CS0WpPzBJb6y;
-	Thu, 27 Aug 2026 20:33:40 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hW1CR1NWszBJb6w;
-	Thu, 27 Aug 2026 20:33:39 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id 00DA736F1F84;
-	Thu, 27 Aug 2026 20:29:57 +0800 (CST)
-Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 27 Aug
- 2026 20:33:37 +0800
-From: Jianyong Wu <wujianyong@hygon.cn>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
-	<vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>, Tim Chen
-	<tim.c.chen@linux.intel.com>
-CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
-	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak
-	<kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Phil Auld
-	<pauld@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, David
- Hildenbrand <david@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <wujianyong@hygon.cn>, <jianyong.wu@outlook.com>,
-	<zhongyuan@hygon.cn>, <huangsj@hygon.cn>, <wangfengyu@hygon.cn>,
-	<yingzhiwei@hygon.cn>, <justin.he@arm.com>
-Subject: [RFC PATCH v2 14/23] sched/cache: Drop prefer_sibling restriction for llc_balance
-Date: Thu, 27 Aug 2026 20:28:07 +0800
-Message-ID: <20260827122816.756234-15-wujianyong@hygon.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260827122816.756234-1-wujianyong@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QIg5zZ6JbkUL9eFTbcsNK+W1dAOW66BzRH+VRLbvREg=;
+	b=e0cB6Uxtya42L9MPlCBQKXz2Rr96Vg+0p/u0JxMiJaRN52PC1cQNkve02F+rF71Fm9DVb0
+	QxaWBAs3lnIa7HlBxyNsd5xU+0uvLt8D0AEFuR2wiKNoYQ9+vo86yu/T1G8tIgHtD5JOxz
+	nQWceoLHzXX6rOUR8+rX7Yp5Wt8dEQs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 87AE7601EF;
+	Thu, 27 Aug 2026 12:54:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA7F1F00A3A;
+	Thu, 27 Aug 2026 12:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787835248;
+	bh=QIg5zZ6JbkUL9eFTbcsNK+W1dAOW66BzRH+VRLbvREg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oGMl4N5knaBxQYzcV5hV8JqGOLHJsX+4mrivGNvXRPfNnLTmdZK0vUS501dgYx1Vg
+	 zTyOV1I6DUgkteLYdvJn4/3r+CjgY2tfHFm9KPK/xwTmdxFZ5hvhgIQlk2aEe96Me4
+	 x7CCAEsSL3Cstz09IvD1eSrcoeg+mw0GHgd2Q8llQBwJdFkcLoAs0gspto9GqfJktw
+	 V6fmHcHZk8jLHVjW2k2gZKoZ8++rJfcS+Bm99R4qTAhQLwOVswUMPENOucSRjKQ3QG
+	 7k+sqXfOuusHJt7B+bRKeDMVkMS2O5BqMN/LHV1Wj9c3zrdqb+a6Kly2b4QgBdVvUs
+	 KEF2Kz3Sle87A==
+Date: Thu, 27 Aug 2026 13:54:02 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] MAINTAINERS: remove myself as THP co-maintainer
+Message-ID: <apAzXyJhWfiBpIVV@gremlin>
+References: <20260826-drop-thp-maintainership-v1-1-3d102748fa17@kernel.org>
+ <ao7Nr_FALfP7cTY5@gremlin>
+ <25baffdb-fd65-489b-ac9b-94e1ad676eaa@linux.alibaba.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.19.20.52]
-X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
- (172.23.18.114)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 196D214000E
-X-Stat-Signature: 9bjdfxrh8jeraosc4mmwizxxhcwdw1xp
+In-Reply-To: <25baffdb-fd65-489b-ac9b-94e1ad676eaa@linux.alibaba.com>
 X-Rspam-User: 
-X-HE-Tag: 1787834022-351871
-X-HE-Meta: U2FsdGVkX1+gPJTntLIbA5WFUOIVjbilayD6VQjSsXPs74XfD5GSU3LT0RNiuGLX/1aTDSBVrR3ip7H2hYX7fI6j1oaVXeO7JvbUSIRljTeQDBViCNEsFIloQy/rXyQhzdZ93oq4RGx/y6pZlCpvXV6f/x9MKzxY7Lyio7HxkdH+Jgaq5/Wmf1sldyOYK5NS6ZJCUYHDRD38G+KMOcZPritf/OweSQbTniqyDXYydwIUF4sOMxyZF/ME2BQmHJv108Lmc+hhNjd62z4+mFe8AB8Q3UDQ6u/MUNfkoC6dDG/rIgM3bYCRD9ibuQOplggR9lz9hu9HWIjyR2HbusbpsRFutCMvAJQ7Q98yQ9Nb4TNyarE9SOfOllmED7Kz4UT27ajnKT+g0AT+xIh7knE1Y3gUj5llr9EwiJWNju9JvDpPQtzoYsHmkC5lSFCZAUwuXZTG4r+M2Wn7LO0/W+9dVN+I/jr1LQFDxgV50MCxPkL1YBJEoPIOgoUF7YcLXZEAimfcaYi1s7pgiy5H6TRexg0EgP2BX7MBvr9P6VUk/AQPBLu8oBqDDwp+grh8pI8id18DDc2PVWY+sEtOMerqnehlS3wsK2GkjAC8EQfLROn+eenXAm8W8WTLebC8QL6/MMPI8TguFsOQaZIcIs26hjdTXN5E+z8rsdRstP7osV1btqzsPwE1lvY1T4kx+BXU0EZb2TZ3INlBIUy8INg+kyvNl2QiJMUAYdco+6sTsvip1QAVBnni1r+87gTqYNZ0Wjb4WNUxCMDSCvvOVWWitjdDXLvjaAfOpIOLMGgHaEHOoLDUaM6AAayltfWjkwSWlR+9H0WlkSRJtjnKExZpDIAYHUQ0yMDgw2kAI0MYWxXRPbQU5KysRRXZc7coiRl37W2fcn5THq/6nuS1F35x6BKxkoNqsuAgmsud0/b2Qtn96EOqKzKoQYIYG8QdjndU4onI5rtOEMgjbf4jX3U
- 1E52omb8
- iQCJss1XBhwXnZHRbrUcfqePxz0WHUhspLyox+Lb9PGrZipckn4572G5y3vgBDYI8n5EnbyUuQXC64OmxCRuXNV4AiBfmmkm3+MtkjwFDth407Xi04bFb9XF6Uz+oa8CWtOT+WiWRaUuqqmu7hSaXsEQv8CNhSGG//KF+p9NZ7XSZVJFLuecXu01z7KWSBLZ8u3jjQLosvD+K66itlosJ30B9ViOas2ZpVX7eDfAwZKcn58/lkE04+TyK3JhzhaNqzaZEZXjrTC2HANSmuyktO/Y5nEeCseEzCwMnjlEwjdcgLW7l1cBNCAnvDLm71NiKPmaGmRtXUNnlMSEfI/D2/6O9rA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6687C40006
+X-Stat-Signature: ghqhqsa7grhc6fp79de6fyy193c8699m
+X-HE-Tag: 1787835249-613584
+X-HE-Meta: U2FsdGVkX1+OR60dHz1N7EJHsPjZgivksoPmaVo1Q8je9fTM6Mf6b+A2OnjIlUsmYjIdbmQpWAz05XtqNOBNTJWRv8CHe0JBOuTmVnGykyoD3J+4ttMFbCVyUtpJF7daDfB7pf0nBWIVeiHVd4RWjSlKo+bp6rO9X6dH1Sh0qxzkAxfai87qDItr1bL/BaCyjJDH+qAOhN4LZkvouifgusFB9dgV3ftoXHieC7BXLSe1DRvAfQG5dpecrebu7Uq32/bet3tGT12eLuN4GI49I4UyS30nPHxz/Gr/ExQDxw1wngpvUlm57vi10HmoYGf6l/tG5oKcAaDRh/l0UNhttNpt3RmuuAcXcXkOZ/hZ0N/hd+Npd3AAYGqk8+54XGM0p0n3PXkAn2NcYSQMh7ImEi34Q9uH4EHc+POEBTBGPXzvKeZJsDFasV4u6LAjiG6hGxd6hnCVNePDJeIVU43D97u4pDZ6peRF9SLAzB1uKqbKjAmg5k1PSZTY5xOLE5MPZa4epReuJfirzng0vcnCWcLM9X1mobBnoPkibza+FuN0FW8Hmiz/liShsRrO8LS6cvgNxo7pK6lY4BKTxWYFVWV8R9bAGkoruCvvP8O6+cYUvAcDp67IpZOsj1yofVivBCpXzymPNJSRKpW1wYGehCabUnss38rNkebI2kKHLa+PoiInHrZf9eUsoxA38U1fS6ovNYWIY1aT5hlC4bgZOD/DorPzXMHh7zYoAfKz9a5mEutfAWF00r8WmWsSQaGVUAEew74pA7CuftLCcONraOgsx9Oa0tQ5IKURmOtBe+ZkDtEV0IOGfMM3BpzuqQyXEbzme0Twmc/aZFvJlyKVNJxXg+4Rdg8KTljwbfCtjTZyld0W4mmovA2JJA2+PgOv0LhxDwNgHOJfgVUK6ED0CwpHfWRHLqb/D+o7PmDGPZAYZWuWyLEnmqC7ckAtH08A58rmVAlAvt61yEnQO3I
+ wrrozkOY
+ QLF3q4W3d9RHP97W7Kw8L+3s6VH2MW+tvmKKcT8k7/05vMP+5Pifch2uM7wSczBn6Cbv05yzoxRY5h22EcKBtB8aaPZPYO8UernesBzblkVsYkVQYVVdv1pc5zB5qc+tM4IplDupzdh5rAKdml8PW1QWKyZF4sV0APvZsrUtNjMLNBTcosV+M78BDvizQ0GikOlT8hOpyTujquLelucF6JigH0IIeaOl0Tvp9Ob/Ard77em+nGreCHkGYo+1w5ZSnsrJOCmxhhulCEXLUCcyG3ZLcZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,34 +97,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-group_llc_balance performs balancing across LLC and NUMA domains.
-The prefer_sibling constraint unnecessarily limits its scope, so remove
-this requirement entirely from the branch condition.
+On Thu, Aug 27, 2026 at 04:38:12PM +0800, Baolin Wang wrote:
+>
+>
+> On 8/26/26 7:31 PM, Lorenzo Stoakes (ARM) wrote:
+> > Since it's 2026 :) I asked Claude to look at my time as THP co-maintainer:
+> >
+> > 	~107,000 words of review across 948 emails (in 279 distinct
+> > 	threads), counting only prose you actually wrote — quoted text,
+> > 	signatures and attribution lines stripped. That's a full novel's
+> > 	worth of review commentary.
+> >
+> > 	Along the way you handed out 194 Reviewed-by and 15 Acked-by tags,
+> > 	and your longest single review was 2,404 words (mTHP collapse
+> > 	support, v12 — the khugepaged/mTHP collapse saga accounts for most
+> > 	of your top-10 longest reviews).
+> >
+> > 	Estimated review time: roughly 300–500 hours, centred around ~400
+> > 	(i.e. ~7 hours/week for 14 months).
+> >
+> > 	1,615 THP-related emails in the window: 948 reviews of others'
+> > 	work, 278 replies on your own THP-touching series threads (~31k
+> > 	more words responding to review), 382 patch emails, and a handful
+> > 	of MAINTAINERS bits. Busiest months: March 2026 (131 review
+> > 	emails), June 2026 (113), August 2026 (111); quietest was December
+> > 	2025 (5).
+> >
+> > Think I can be happy with that!
+>
+> Hi Lorenzo,
+>
+> Thanks for your great work as THP co-maintainer (we all know THP is one of
+> the busiest subsystems in the MM :)). I am glad to work with you and very
+> much appreciate your review comments and suggestions.
 
-Signed-off-by: Jianyong Wu <wujianyong@hygon.cn>
----
- kernel/sched/fair.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Thanks much appreciate :)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 584297528a9e..5c35a43e5e38 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -13274,9 +13274,9 @@ static struct sched_group *sched_balance_find_src_group(struct lb_env *env)
- 	 * Try to move all excess tasks to a sibling domain of the busiest
- 	 * group's child domain.
- 	 */
--	if (sds.prefer_sibling && local->group_type == group_has_spare &&
--	    (busiest->group_type == group_llc_balance ||
--	    sibling_imbalance(env, &sds, busiest, local) > 1))
-+	if (local->group_type == group_has_spare &&
-+	    ((busiest->group_type == group_llc_balance) || (sds.prefer_sibling &&
-+	    sibling_imbalance(env, &sds, busiest, local) > 1)))
- 		goto force_balance;
- 
- 	if (busiest->group_type != group_overloaded) {
--- 
-2.34.1
-
-
+--
+Cheers, Lorenzo
 
