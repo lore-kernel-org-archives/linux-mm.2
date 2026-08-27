@@ -4,103 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D1F1C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 06:38:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E48CBC61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 07:06:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5956F6B0088; Thu, 27 Aug 2026 02:38:07 -0400 (EDT)
+	id 971AA6B0088; Thu, 27 Aug 2026 03:06:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 543E66B0092; Thu, 27 Aug 2026 02:38:07 -0400 (EDT)
+	id 922376B008A; Thu, 27 Aug 2026 03:06:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BB76B0095; Thu, 27 Aug 2026 02:38:07 -0400 (EDT)
+	id 837D16B008C; Thu, 27 Aug 2026 03:06:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 24DDF6B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:38:07 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AD3CF4033B
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:38:06 +0000 (UTC)
-X-FDA: 85146094572.11.B9F5C91
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DBAEF120007
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:38:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I8bLN7iL;
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 550766B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:06:03 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BCF3E14034E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:06:02 +0000 (UTC)
+X-FDA: 85146164964.03.7E4981E
+Received: from mta1.migadu.com (out-214.mta1.migadu.com [95.215.58.214])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BEB9040006
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:06:00 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DdVOXXs3;
+	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.214 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787812684;
-	b=L4OyekheTP83dqv6iyR82ATmEaF7tVHWfwbu6nzof0P4leokEFMhQBFZaU4PSUbr91mktS
-	e3rAso3uAIsO5gbV7whnuo/9+Zf3kFZGhH5ash6ALci9QpMAGE163GALjlzNAnGOWt9Zxv
-	7mdIZFcfb/nYac9RHo/d41D+ox8yMxM=
+	t=1787814361;
+	b=mYojRKKQ1azHu3+XP8Kc9Qab88nePPJTcInC5fJY1GQolItKkosOMiwgDafr5k99ttM2b1
+	JFGZzDnQxmYZnOFlpx4kVSfT9BiUp+8b4uPaGGMbLlZSg/B+UgZJ9avNrJSg0zSAYO/46R
+	8D2PyJLYba1ux/hGbAZfhzWgIO+D/cM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I8bLN7iL;
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DdVOXXs3;
+	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.214 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787812684;
+	s=arc-20220608; t=1787814361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PDX7fTqa9jO07UgQMS3Zh+rMDt02D74EyWmNn8TVu8M=;
-	b=8VEs8JTJJXnNS1qX77ing29j/pS86vHWPEQij/Vix0sYeDtCN4kH8ykes+aZz23asgGCNz
-	AZISp/gv3sfoi4qf/emHDgdIH/KWDUsRfMDAszNP5C4GpYjKP+U+s6axMsUUkRHS0B5/9V
-	3jj+k8yfZS8ZhZWtG6QeHzWRDb18wMw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F2564600D4
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98351F00ACA
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:38:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787812683;
-	bh=PDX7fTqa9jO07UgQMS3Zh+rMDt02D74EyWmNn8TVu8M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=I8bLN7iLSRN0WOuTkRUkCAI5TRDmMrsz2qJup/5/JWXmAt89NyrtQUfCiXp1IJAhe
-	 s9FhwEXuKn/UGvGWTgdi4Lt6omdwZNp/DMSN1UHhCRZ74Lv0+Z5zhdEzwzilSgntft
-	 L2ziaRsoVUY5Nkgire1zSYaH3amQ2OuvTeHqTOEFZ+st/wHSCfWDjRRd7y5JmdM9Sz
-	 /AZQxzPFta1hxvU36/Ha7b2+kPTaWHs2jBITYaxAgEBxb+ELbq+JgJ1MMSZM1S+pAc
-	 yZuL3tWOeJiSwvVeyK6yNbB542gtxGayK1owEhgRKE6k8lCMLxi2OZIQqAsn412vK7
-	 B2kqyRmAzPGQA==
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8ee43b3e5abso1701086d6.3
-        for <linux-mm@kvack.org>; Wed, 26 Aug 2026 23:38:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RovmZKwP7eXOWJsQtmSRYOdSt9BzOpWCX+DwcBPU2H+X2aFNG29BM67dLkXYV8LPYRJinguYtq3+g==@kvack.org
-X-Gm-Message-State: AFuF++nerTkIjFHjn/2wVLQdlnzUecIt7UIf0rWm1pENTh/RXofqh8Wn
-	MRbMScG5jdg+ygtODhA1suRLGpCJXfTrj1cSt3g3r3u6XPAR0pFA7kyZTC2hEsNjytU3Zx2ynCU
-	9jhvgCKazNXZtlc1MCzgHSxMk5JKnOH4=
-X-Received: by 2002:a05:6214:20a3:b0:8f0:3b2c:a9c8 with SMTP id
- 6a1803df08f44-90cc796a085mr128225816d6.12.1787812682974; Wed, 26 Aug 2026
- 23:38:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260825-remove_str_dup-v1-1-0ba2121a820c@kernel.org>
-In-Reply-To: <20260825-remove_str_dup-v1-1-0ba2121a820c@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 27 Aug 2026 14:37:51 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wfxttrKgwRBpprsES_vjzYsmLzkd7buCkYR8HoEJqCzg@mail.gmail.com>
-X-Gm-Features: AcwNN1Vn7Rb2kkRVf6ZzDIKB7z1HE49FN6Lv30_rkBq7LV_rDlQWRjcC3ksW1oQ
-Message-ID: <CAGsJ_4wfxttrKgwRBpprsES_vjzYsmLzkd7buCkYR8HoEJqCzg@mail.gmail.com>
-Subject: Re: [PATCH] selftests/mm: khugepaged: remove str_dup() usage
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7VPMrGbG1IwU1BtTdRMy8gG0saUFQ8/668SaTrEPJ9E=;
+	b=kVqNj9dVESRM+leWssWf1w/i8YD/abOTxkD9jk/Ti6N3GTXs0/UIm2e1bcb+E4ptsp8huM
+	If27G1dEkiqt6T2bbHFEwVdGfHm9G52QeV4YgUwS4c0m4LrvMgO8I2rs/WN1wM21FrzjrL
+	MoYl/92maqFk5w/L4GBswY5ZgSIdwUI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=mq6bgW9Y3BpplM0SeTP3IpFOd1r2MD18zWg1xWm28+A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787814358; v=1; x=1788419158;
+ b=DdVOXXs3RiMVQWXUcguJ5bITYl4aArdK8EBs+usbcaymas5JVjRrOp8ESm818qOBbf5cGymA
+ 2QQuZAB9hqMu89w/1DXU3wnqb42w9+prxeuABNmw6hrKWbf9srdoOryOrRmWhhQy+DMwrdIg2Hg
+ bdiFco3rF8Y9aChz3NrayHlw=
+X-Envelope-To: linux-mm@kvack.org
+Received: from teawater-KVM-Virtual-Machine (39.156.73.13)
+	by smtp.migadu.com with ESMTPS id d0f96db2f5e32cbb;
+	Thu, 27 Aug 2026 07:05:58 +0000
+X-Mizu-Trace-ID: d0f96db2f5e32cbb
+X-Migadu-Flow: FLOW_OUT
+From: "Hui Zhu" <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH] mm/vmstat: annotate data race for per-cpu pageset fields
+Date: Thu, 27 Aug 2026 15:05:46 +0800
+Message-ID: <20260827070546.1336383-1-hui.zhu@linux.dev>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: prsgfyfys3eba961n7gxmowa417ruz5m
-X-Rspamd-Queue-Id: DBAEF120007
+X-Stat-Signature: xs83zsre1rc4ckfembaamdxt7y9tpdrc
+X-Rspamd-Queue-Id: BEB9040006
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1787812684-516243
-X-HE-Meta: U2FsdGVkX1/QoenBPgLpehblAmb9TOzrkQzZN5ht0gOZrzQYbudj4BSvrp8EdArHfUfiK3lMfogDipaeVEDMN2WXdlYag3jcJ6od9YPbHIsKYahsI/lgb37l0PiZMHjgYKBf1HPSbvkgH15JEhQms5puSM0Kzd4eNlQwOIILoBWysC8WDnt9p1Pk+QEVU9hyPti8CMPvkpTcABjzoIS/CuIIYzy8rYBnxUwDEQVvc82n8/r1l6X8SnMlrR6YXOYmpT4/Fw8C4Dq0T2nz0kEzuYpgc5j+Clow1BH37NMk1sRawpdXdf13e7IKsccoNUu+Mkk6FPmod9S3LvIy6mI1V/6S/XZO9lZk8c2eIGSiWeKIn7B5YbuQUZSdjD9UBlWdn7463Ysn9CrMs9cQjWfWUzwgn+b7aruG/EMvQaiXfYURM5PrjBynTqk2VxdytXUtw8vcqrznCslMvu5LtEh84RkveKfqUNiND2TIb7MpllpaFtCgO/HNW2Z9Z4iReoSiJsfqeTRyE+jKsjnQ7efqTrmmj9JfnMlDQivxg+L4xMePzAAUS/0HABCIXxkhGg041IhIGicHKxr3um0T+E0INVRCpvYIc3pXdrvVvrFo/6R7kxImFAnl5BzGYoS7pOf66zNUpax9LI6tNLka3FTS5tK4C4jd7Ws3Ctdtu6cZ65TbIlidDvQTntNYjKvviU86GmjH+7pk76GGgNd59bqGSUnxyitBeD8Ackp2Plh82Uwfb1AetL2y+IUOlZwAvD7CweZqCZUbbMfnrFLHR8rB6ZujdJV5AFcrG7zDK39TEjoEt/+Ipizv4rKhHtdEuOA9ZNolHW1qza9vKznMRyOsy9tPxVvOAGxtuq5KdinUV7d+JZQ0Z+memZYBlHlvp4mjytnVeU0gnmNlhhCzt7Sp1ZyNkLfmyAAAU1S44jV2eFJLyBMOo1kp4lAoBNQfdXwHtRPWIRoJpj4ml2N7AqU
- GkztVKYB
- 9TxdQphOyopjSmIshVxraDguzNyi9EMz9ESXum7QohxVXXS+TZ+8osIXCbXV/M+MM5/vj3HYG8pMrrVwlEhJFjSHDGRkMQ+0wb1dBedyylI8WVsNaPOpXsLcYQz9SC+tpW/k0ywpIYa/edHsdu13021TpCqc5NQ4AJ0tKdRSK6CE9BXPWzLHlVJ1hx703+WiGY8cychZlVMZkKCSj9BwheaVDR88+hVCYxyXDl9c6ngDxhqbYorjmqLNboqnmAi1Mc6Buo3zFi7WNW+kkHHR8wn9PXRzYuwJlt3G6sWmsPRyqRYiRo/DNK7hgGzKAs0Y+ECFZa1NmHhafWlFU8mnzhCFx5mN6YXS8518RmA3FfI1ii6m+zNWepEg42w==
+X-HE-Tag: 1787814360-328946
+X-HE-Meta: U2FsdGVkX19YrSu1V9y4HVj73/4dmHW/FneYTigCDADKVBNHTzCaqKQoGuhUWu1D0ZORbJ6V8UkI/uqzXlhwdeA3NEdvaYK/eNF81pL4X4fh/6Sb+YT7OZ7uk6FixsVqH3g6XszZS27pkZbpeGSBRdRg5crm30uNYu/jMT7AdRz/zRuiUC0aMt1c4U0iMsN3vGG4sACDwKbLDjntfkD4Ft8BjsFZLZqmDRFiRjTma/zweg9FaDfECBQNwonoyPAkfTg+YDn9Wud6SY3uzvG9CxSywbFqUFj9lylbtc2XrcKoEXB6lPrHzt5bMupYnRGpAfib/C4ZNlQXK1teydz2CbHqckOUYWBDv7JM4uxnSWxPl4UBThW7mh7TI2V/Tkf53RmPXJdyOBWbGIq6L6fXlcRfGrtlOMXKIb44LrBJFgW6SNFzU7t6cCF6c+r7Fwp/8Jd87rDGUBRkDJr5BHofDxnpW5olJGDbaeiCo+QLG4JzlsGl6exQTl+YOw+HBC5E4cLuMlu+e1tUGOPlce2JYdFKr8BLkK0RWiEVBrGHhN3apVzqmxQXcH7exPg7Nq3grHkxWECdU7qxCvUhfkvGbweBg0VOuSxPWZUZQWhWaZNHovKe1wigvC2gMEr6lgSbhquA11yBFe55AuQjFxDie7V6eLLM1No3EfjwnbHtvro7OWSiOCtz5G2s+ojDXr+gfNhC2zToLlXQSTyXw+LbsPRdhbJbaDYhftXNTf2xd+vy1SO59WzmmfyXp40KbmDha9JyemY0Qf7UypSuHXD2xQI7BOvqhIkFQJyfjstQJgx66U9yc9KMIefZbBxge1mFFuTP0v8wRHcyCMuclfP3RgL/daNb2EtzGf4tAwuE7iU0CQTYEC2qBnGlNk/EECdAQQWdmJ/mnDfan0G0iqoAFvbMU5KS+28GDIlcooa4un07tjKowo1Q44yU+nyaAgH75+b2KuEuCZ6FfZnZcZQ
+ RT24gQd4
+ gx2B8mwSZ+qQQ0cOcfVY5qW147wCy2+kP64JfAmqC4UD3JRaNXDOmECh1ApG/PpXtrthmJuIvp2XpToGq9lL0jTg6IEW7Y62atJkzuSs2h2fLyijaO+fLt7ECLxjV/j24Dv4im/OOKmxWZxGYqb4BLEzrIlrm/grcZneutKmElf/GCwFy5RQ351okWVZ/CBCvvbpBglP0/lIf40Ud+CKl9j9TXn9CQLDXoNtIhERuN6H4+woPCNO9LtOJHSZypWwpt4fKQVk5g+7tjDUtJS91yTvxMdaOP4dI/Y5u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,23 +95,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 7:21=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> We don't check str_dup() return value and never free it. While both
-> things are irrelevant in practice, let's just clean it up by working on
-> argv[0] directly and avoiding the str_dup().
->
-> Nobody after us needs these parts of the argv[0] string anyway.
->
-> This patch is inspired by previous work from Anshuman Tewari [1].
->
-> Link: https://lore.kernel.org/r/20260821114416.12255-1-anshumantewari123@=
-gmail.com [1]
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-LGTM,
+zoneinfo_show_print() reads pcp->count, pcp->high, pcp->batch,
+pcp->high_min, pcp->high_max and the per-cpu stat_threshold while
+holding only zone->lock, which does not synchronize these fields.
+The writers are the page allocation and free fast paths under
+pcp->lock, decay_pcp_high() which updates pcp->high without any
+lock, pageset_update() which writes batch/high_min/high_max with
+WRITE_ONCE(), and refresh_zone_stat_thresholds() which writes
+stat_threshold locklessly.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+The race is benign: the values are only printed to /proc/zoneinfo,
+they are naturally aligned integers, and pageset_update() already
+documents that users of batch/high_min/high_max must cope with the
+fields changing asynchronously.  Annotate the reads with data_race(),
+following commit af1c31acc853 ("mm/vmstat: annotate data race for
+zone->free_area[order].nr_free").
+
+Found by KCSAN testing on an older kernel; the same race still
+exists on mainline.  No functional change intended.
+
+BUG: KCSAN: data-race in zoneinfo_show_print+0x355/0x520 root/klinux/mm/vmstat.c:1774
+race at unknown origin, with read to 0xffff8e1835410808 of 4 bytes by task 22653 on cpu 12:
+zoneinfo_show_print+0x355/0x520 root/klinux/mm/vmstat.c:1774
+walk_zones_in_node root/klinux/mm/vmstat.c:1496 [inline]
+zoneinfo_show+0x41/0x70 root/klinux/mm/vmstat.c:1806
+seq_read_iter+0x30c/0x970 root/klinux/fs/seq_file.c:230
+proc_reg_read_iter+0x10c/0x170 root/klinux/fs/proc/inode.c:305
+copy_splice_read+0x2a1/0x4e0 root/klinux/fs/splice.c:365
+do_splice_read root/klinux/fs/splice.c:985 [inline]
+do_splice_read+0x139/0x1a0 root/klinux/fs/splice.c:959
+splice_direct_to_actor+0x16b/0x540 root/klinux/fs/splice.c:1089
+do_splice_direct_actor root/klinux/fs/splice.c:1207 [inline]
+do_splice_direct+0x10a/0x180 root/klinux/fs/splice.c:1233
+do_sendfile+0x6ea/0x7e0 root/klinux/fs/read_write.c:1363
+__do_sys_sendfile64 root/klinux/fs/read_write.c:1424 [inline]
+__se_sys_sendfile64 root/klinux/fs/read_write.c:1410 [inline]
+__x64_sys_sendfile64+0x117/0x130 root/klinux/fs/read_write.c:1410
+x64_sys_call+0x1cc7/0x1ee0 root/klinux/./arch/x86/include/generated/asm/syscalls_64.h:41
+do_syscall_x64 root/klinux/arch/x86/entry/common.c:46 [inline]
+do_syscall_64+0x75/0x2c0 root/klinux/arch/x86/entry/common.c:76
+entry_SYSCALL_64_after_hwframe+0x76/0xe0
+value changed: 0x000001b2 -> 0x000001b1
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 12 PID: 22653 Comm: syz-executor.12 Not tainted 6.6.140+ #672
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ mm/vmstat.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index cb57714539fb..a3e809c57f29 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1837,6 +1837,11 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
+ 		struct per_cpu_zonestat __maybe_unused *pzstats;
+ 
+ 		pcp = per_cpu_ptr(zone->per_cpu_pageset, i);
++		/*
++		 * Access to the per-cpu pageset fields is lockless as they
++		 * are used only for printing purposes. Use data_race to
++		 * avoid KCSAN warning.
++		 */
+ 		seq_printf(m,
+ 			   "\n    cpu: %i"
+ 			   "\n              count:    %i"
+@@ -1845,15 +1850,15 @@ static void zoneinfo_show_print(struct seq_file *m, pg_data_t *pgdat,
+ 			   "\n              high_min: %i"
+ 			   "\n              high_max: %i",
+ 			   i,
+-			   pcp->count,
+-			   pcp->high,
+-			   pcp->batch,
+-			   pcp->high_min,
+-			   pcp->high_max);
++			   data_race(pcp->count),
++			   data_race(pcp->high),
++			   data_race(pcp->batch),
++			   data_race(pcp->high_min),
++			   data_race(pcp->high_max));
+ #ifdef CONFIG_SMP
+ 		pzstats = per_cpu_ptr(zone->per_cpu_zonestats, i);
+ 		seq_printf(m, "\n  vm stats threshold: %d",
+-				pzstats->stat_threshold);
++				data_race(pzstats->stat_threshold));
+ #endif
+ 	}
+ 	seq_printf(m,
+-- 
+2.53.0
+
 
