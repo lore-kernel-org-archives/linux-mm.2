@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44409C61DBD
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 02:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDF2AC61DBE
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 03:05:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F3BA6B0088; Wed, 26 Aug 2026 22:55:23 -0400 (EDT)
+	id A726C6B0088; Wed, 26 Aug 2026 23:05:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37E456B008A; Wed, 26 Aug 2026 22:55:23 -0400 (EDT)
+	id A22226B008A; Wed, 26 Aug 2026 23:05:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 248DB6B0096; Wed, 26 Aug 2026 22:55:23 -0400 (EDT)
+	id 937F36B008C; Wed, 26 Aug 2026 23:05:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F3EF06B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:55:22 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 75E9F6B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 23:05:45 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6096FA3A7C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:55:22 +0000 (UTC)
-X-FDA: 85145533284.17.6F716E2
-Received: from mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D5968C0008
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:55:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="YHxc8c/K";
-	spf=pass (imf28.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F26A9402D1
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:05:44 +0000 (UTC)
+X-FDA: 85145559408.17.79AFAEE
+Received: from mta0.migadu.com (out-166.mta0.migadu.com [91.218.175.166])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8A1E4100002
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:05:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="qV0/WMtn";
+	spf=pass (imf14.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787799943;
+	b=yqqZi5Mpc+KE9DcjO2QoeeGmM0eWTQsr0YS/+qq0q7EX0A4wAEVg+1MqG34rDap2EMyZ9+
+	wzU+nwxwxmvIrcq2KPQyYw58AU2xblCqCwbVNQP0G05qNpvZFKo3pNrcaMwMKDxLyTwnOL
+	g920zbsqpDQgdQpZv/QS2vacIKfOyWc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="qV0/WMtn";
+	spf=pass (imf14.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787799320;
+	s=arc-20220608; t=1787799943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=hkac0dnaKQb5wpd+29BsnpiuGqW6sgLTt78LF3j61K4=;
-	b=5KiqyKMGizBwmHcIOs8fh0Ms+psp1oofQVNVLHBeJxVPN/TIXvOwx2oTDFWXxVFdUfWUzu
-	BtXJnhGjCIbux/AdBp4D6WjbZ5XJLT8AiPmjcEfYwtH1W/qDh2+KcEPwGPRbXef7rQbG2o
-	g33gd63DS7Rf19iKgVCW8pdUt2HCTDc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787799320;
-	b=oH28IOTgKL1AKRb3GhiHuWVss12DyVO3xbVfkiePfSawkRbOGbboAr86ByIQqr3fozSgn6
-	0lsBUi0Hck3BIItSMdo8beW5AUhzdcW4ynT+kxBPqzzfSZQ39PIJS4pSO+MSIJRYmXJqt/
-	2PBZvTpZo/zI4evUJRdRn/WICWTqjYY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="YHxc8c/K";
-	spf=pass (imf28.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=ROMIK9xZAs9dm4hrTGInvQ2PHfsRSQUx3wPQZNEM3tw=;
+	b=TxR3dJWZ6kLfyKqAW+VvyqwYn2pdShH97FXwpSVMYqIk13D6ihkio5Y3buqFtHN48/9TrA
+	Clhn8iZIqM/aOFCyIG194K6/mHLkfLtR9p2b1p6VeC7JowO5qEtKmNwfZkQoGOmmdjaua6
+	sjQ+w2IdVrLuLO86cHbInVnYCavgOg8=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+WYQTsDYVTtYJtW2ln0YBQa4L8nYSewLmll/nAIQFt8=;
+DKIM-Signature: a=rsa-sha256; bh=/kXkE6EgK7Xu/D9nmz3lVFVzvuwgd7TR0qfSXqA3DEM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787799315; v=1; x=1788404115;
- b=YHxc8c/K1aRBnoUqGWDsmc0GsN66KPh1fJB3gEkKaJiSA6YzwfSggrevRL/IDTJ2igKJIDdc
- nX+GlABx1SURQMeC/j5Yh5jT3ydmLI3yWUzGFPj6+r+fM7pvipNQlqr8thzgT4PPvwB+VaS+H2v
- 2t4SXudkYr8WGovOZ5Srvm9c=
+ t=1787799938; v=1; x=1788404738;
+ b=qV0/WMtnICRvc5EaONbUC6kNQX6pBCkoDLOwK+1vlDyWhmafPfMKMfkn8ggeZXkcWqPgkNcK
+ Aga478H33DveslE8LnpfxoA6mxGaWAMxPeSUEMkLgdIi9Fvh2KboSg/bfRk+VoXb7YIJXJtiLsH
+ t+vLGsRk9u6sNXQI3YHLHv5Q=
 X-Envelope-To: linux-mm@kvack.org
-Received: from localhost.localdomain (147.136.157.3)
-	by smtp.migadu.com with ESMTPS id 1c0d3bd05cbfb2fd;
-	Thu, 27 Aug 2026 02:55:15 +0000
-X-Mizu-Trace-ID: 1c0d3bd05cbfb2fd
+Received: from mi-ThinkCentre-M760t.mioffice.cn (14.29.108.92)
+	by smtp.migadu.com with ESMTPS id e84e612d5d5de145;
+	Thu, 27 Aug 2026 03:05:35 +0000
+X-Mizu-Trace-ID: e84e612d5d5de145
 X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: linux-mm@kvack.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	stable@vger.kernel.org,
-	syzbot+ced4d9a8cadb5ef3adae@syzkaller.appspotmail.com,
+From: Ridong Chen <ridong.chen@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
 	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jan Kara <jack@suse.cz>,
-	Tejun Heo <tj@kernel.org>,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/memcontrol: fix data-race on reading jiffies_64
-Date: Thu, 27 Aug 2026 10:54:56 +0800
-Message-ID: <20260827025457.116191-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH] memcg: sink mem_cgroup_uncharge_folios() into free_unref_folios()
+Date: Thu, 27 Aug 2026 11:05:16 +0800
+Message-Id: <20260827030516.462926-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wgqwkt3bhm5h3uogmjkbepgndsnbkjf1
-X-Rspamd-Queue-Id: D5968C0008
-X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787799318-435089
-X-HE-Meta: U2FsdGVkX19UnrA/J5zO2Anv3l1jbmQZhTs3JGa1HhD0mHl2T/Uzn4t/AmwGk/nXq7R86d29mN09adtKqoqFItc/+VE5f4asdM1Y16bPsbwEIZKxyua0ppteQJSgew7AwxiPmDFvzyDybznfbjSB0WKmyTklccW7/wU3IOFtyKQeVMhuzvvOkzLaLD3boF1/suXHpQkaVkjwcb7S2AfVkx75w5BhZQCer57h6IVWrhanZtR4iG2S3De68Lofj1n45DC+LBNj+LdAC03Kswz8+TGzDKjCWqkPaQTN3gPcEm74G6D3fbU+L8kGH37yj2eDZM0IoYSbxSnQODdmqrQUkxweUyg/Ro2disQKzwndYFfI5cKJXf1l8qPWF2sWuXnUfEO/qJBcB8N1uupGz72PkbYb8CgGQqHwF/s9A39+BtK7tNVETMvKLpW+YHvTBqzyBMxRjM/knaTXroQeqAOAtZ9LS8I2foKmc9cuL8s135AhxNAWqks2lfNliy/8yE67fMLaQPudqf3BotMCyQ0Vi1jrs3yQ4tp3GihymOP3EdmpCgC4k9i5ujlHAcFGuBSgzziu/7mPV5jWrGEc7d5rjX0gl/0nXF+5ahkEwsZY9rw/HZmJ7EIgz3mlLDsjmY//hLtsDTPNG7xj7ltUlzKGNFiKTPO+EQfvKhzWYOyEr+uLtBICeuNDFEU3NY3/9qUiYCOG8B4y98o3cF7v1T+UoTbAJW4npCcxiPqApDU+MG9sEfWErxKvDaDeSyGvdOpzErWhW70h0pm8iB7gvhIltrXhgwn4IZfLvj86H0NKku0DB3JFSBB+erus6GpK9Y18j8HOiWdM/IuzSWqmOumMzoiamvYWiNX45aY1NxKc739oTg4RQd2xCffiR5J+g73tlQGeBWcGiFuyjP3DT/hkPT6uLDEtQL/n8CKpAMe+Y76tQ6ILB1/+4go/nVdO3lbJcB1nxjVg6Miv/1cOngz
- 7S1nrAWX
- +r2LsexvJpszuz6B6R/auzcu/uEmjxBrtU9WzvpaP18039ct1gQDOo8MsHu7HEVu13I0tsFp5bMdH8bBxSYn2hk99p1ni91CagNmn6w+a/0dHmJ7y7Tg7/X60aVEQxGWr9Z3MgiCXQdhU6dveSFI8Y7Mj3OXlP396xRfWZFb6p/lVj50GIeST9PSpHVP0RdRTzz6t106KtiayNcaFOn8StSQpz+8bdVp38WZZzyLBRLdIt7Xltpy3CV1fKBtE8oMouriA+jk49aJMQTWIQNZBv5b3F9dR+nUxU11LAbJvszJz+9JDtspxqxfYYp7evSQVZuX/IXFwXZKN0s3gpWcQYJpX39xULbtUCph4qQA4hW61lBBH+y8pZCFUXItfD04hTklqsfvubdpO/6alRztmXiLNuITJ1BSn36GblcO0uNf7j3twOcFw7OMyz767U0qjG/eHPWsY8b7mryQGleHN+U6/dlCEgjQrN0/GkpIk/aj/WRc=
+X-Stat-Signature: ukpzmu87e1mj6x5sjm9pg8sye9rf81jm
+X-Rspamd-Queue-Id: 8A1E4100002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787799941-521236
+X-HE-Meta: U2FsdGVkX1/b3gMzzxVwbAvIhU7oHuJ+UkPQBzIoyFC8dmyaHRQ2BT4aI4s6wQDajWE1JyGZD2cuyjd+8zKZNFsEVYnaqwE72I5bbLCz7Jk5wU445BnWcKALL5ob6GEs1NtugVyP7JHb+zXFlF4KG53ksIMw9Npud/Mq9YufiYAou3bNkleke3RukMOj/b80IjZXNpftS/gKCAxUlDU5tM7nK8K4YHLHWdKG5Mg/O/C78rxcGgUV8RMT2fRottZnBaaBcvZDe1TRd62Ygwq9JzLN6ZylHN6PGFnG38+YE2466sRfzLoFY1lrpLJhZuDZmdCzE3Hz0F1eDPPeHU2VJKsXLzHEpxhPnPBBfutv5QVcEpWQuTuRQ2NX+EDvNGbZpR3NAmbX14Xn0frmpboMRMUOCAVVRnljA5muYo0gnG+pYe/JL1WnwBWKaExuZgEPwOVnIlppnj2wP1Otevu9bEhUzLmW6P4cljrQR0s/ceHqQjM1PxJ9tMC6IcN7PtN5T9MyTrDlcwUAHbseXhbVpe10ADNDwEiggM8FzEMsMU/DYDc0p/PCeNIT+lDDk50lrwUMhGlPMOSWoKgLDRO8xOmR/qwDRu+xn6D6l9/Qn2wwRZEhY+ofPoxf4VMNbPu81TV9kaH0kDRBUouGFMtFfS091n9RO17+G/UmSFnGdrMwA7ylufO/ex3Chkcb6I0wx/BqT1kSj40ndKdUjQfvTJtRNdfiabkoG35/mVnyWcBICn1b6pAuhxpO88IQ9ld/q6QhAb49qqrhKgcpfrtqIXETKwSDU6ObwH5bAMwGjLX45b5M4P0LbfPYH+MePO1afCNKH0vmOCuBJBgt6Ya6cEEMLBVBo/NiV7d1MU9bPahahYal5S4TyS/+/6azNFBqV1NE377MNX9RkWdEViENxoZ8BcsSTsPob4Fx4kem6wBu01cm1VQjkhbkSwknp5IqZvmZZoHU2RARM+hIyyK
+ T7stwHBc
+ OxFC80a/nNt/p7CwSy8c61ogYwnLxVLP9/vUFXUojho0S8li55eB3gfH51Q0a5faTAPev2QrFKEVfBtM9qy7KOZ3HHNgIv1oZJJrxF9BbCB9l4gB5nxsVC7+Q5hojLod7Y4WFpSP2XDrBo1Tl+T2xeFEsAwfBpPKvn/kPFWlYjQE3cja8PUsawGZ0jTqWQUaFKsp/58CmQuZ8ZG0TnjrzPUXDeczqYGgai6zjof/Wy8mu1bAYKGmwXRjQ0W7SErMNpEOqg0HX6UGBylxjz/0MKP9OSckvDrjV3EQJPNy7BCejJ+k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,56 +106,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KCSAN reported a data-race between tick_do_update_jiffies64() updating
-jiffies_64 and mem_cgroup_flush_stats_ratelimited() reading it directly.
+From: Ridong Chen <chenridong@xiaomi.com>
 
-Unlike jiffies, jiffies_64 is not volatile, so raw reads are plain
-accesses and can even be torn on 32-bit. Use get_jiffies_64() instead,
-and fix the same pattern in mem_cgroup_flush_foreign().
+Every caller of free_unref_folios() invokes mem_cgroup_uncharge_folios()
+on the same batch immediately beforehand.  This pattern is duplicated
+across shrink_folio_list(), move_folios_to_lru(), folio_batch_move_lru()
+and folios_put_refs().
 
-Cc: <stable@vger.kernel.org>
-Fixes: 508bed884767 ("mm: memcg: change flush_next_time to flush_last_time")
-Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty flushing")
-Reported-by: syzbot+ced4d9a8cadb5ef3adae@syzkaller.appspotmail.com
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Move the uncharge into free_unref_folios() itself so the batch is
+uncharged in one place before the folios are freed.  This removes the
+repeated boilerplate at every call site and makes it impossible to free
+a batch without uncharging it first.  No functional change intended.
+
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
-feel free to drop Fixes tag.
----
- mm/memcontrol.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/folio.c      | 5 +----
+ mm/page_alloc.c | 1 +
+ mm/vmscan.c     | 7 +------
+ 3 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 11b85f4b6828..5a3fe057debc 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -757,7 +757,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
- 		return;
+diff --git a/mm/folio.c b/mm/folio.c
+index c02dcea9c03c..2edbba47be1e 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -199,10 +199,8 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
+ 		lruvec_unlock_irqrestore(lruvec, flags);
  
- 	if (mem_cgroup_is_root(memcg))
--		WRITE_ONCE(flush_last_time, jiffies_64);
-+		WRITE_ONCE(flush_last_time, get_jiffies_64());
+ 	/* Cleanup filtered dead folios. */
+-	if (is_lru_add) {
+-		mem_cgroup_uncharge_folios(&free_fbatch);
++	if (is_lru_add)
+ 		free_unref_folios(&free_fbatch);
+-	}
  
- 	css_rstat_flush(&memcg->css);
+ 	folios_put(fbatch);
  }
-@@ -785,7 +785,7 @@ void mem_cgroup_flush_stats(struct mem_cgroup *memcg)
- void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg)
- {
- 	/* Only flush if the periodic flusher is one full cycle late */
--	if (time_after64(jiffies_64, READ_ONCE(flush_last_time) + 2*FLUSH_TIME))
-+	if (time_after64(get_jiffies_64(), READ_ONCE(flush_last_time) + 2 * FLUSH_TIME))
- 		mem_cgroup_flush_stats(memcg);
+@@ -1030,7 +1028,6 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 	}
+ 
+ 	folios->nr = j;
+-	mem_cgroup_uncharge_folios(folios);
+ 	free_unref_folios(folios);
  }
+ EXPORT_SYMBOL(folios_put_refs);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c48..fb1ecab0ee78 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3013,6 +3013,7 @@ void free_unref_folios(struct folio_batch *folios)
+ 	struct zone *locked_zone = NULL;
+ 	int i, j;
  
-@@ -3945,7 +3945,7 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
- {
- 	struct mem_cgroup *memcg = mem_cgroup_from_css(wb->memcg_css);
- 	unsigned long intv = msecs_to_jiffies(dirty_expire_interval * 10);
--	u64 now = jiffies_64;
-+	u64 now = get_jiffies_64();
- 	int i;
++	mem_cgroup_uncharge_folios(folios);
+ 	/* Prepare folios for freeing */
+ 	for (i = 0, j = 0; i < folios->nr; i++) {
+ 		struct folio *folio = folios->folios[i];
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index e572d2742c8c..113e2e49447b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1506,7 +1506,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
  
- 	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+ 		folio_unqueue_deferred_split(folio);
+ 		if (folio_batch_add(&free_folios, folio) == 0) {
+-			mem_cgroup_uncharge_folios(&free_folios);
+ 			try_to_unmap_flush();
+ 			free_unref_folios(&free_folios);
+ 		}
+@@ -1575,7 +1574,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 
+ 	pgactivate = stat->nr_activate[0] + stat->nr_activate[1];
+ 
+-	mem_cgroup_uncharge_folios(&free_folios);
+ 	try_to_unmap_flush();
+ 	free_unref_folios(&free_folios);
+ 
+@@ -1902,7 +1900,6 @@ static unsigned int move_folios_to_lru(struct list_head *list)
+ 			folio_unqueue_deferred_split(folio);
+ 			if (folio_batch_add(&free_folios, folio) == 0) {
+ 				lruvec_unlock_irq(lruvec);
+-				mem_cgroup_uncharge_folios(&free_folios);
+ 				free_unref_folios(&free_folios);
+ 				lruvec = NULL;
+ 			}
+@@ -1920,10 +1917,8 @@ static unsigned int move_folios_to_lru(struct list_head *list)
+ 	if (lruvec)
+ 		lruvec_unlock_irq(lruvec);
+ 
+-	if (free_folios.nr) {
+-		mem_cgroup_uncharge_folios(&free_folios);
++	if (free_folios.nr)
+ 		free_unref_folios(&free_folios);
+-	}
+ 
+ 	return nr_moved;
+ }
 -- 
-2.43.0
+2.34.1
 
 
