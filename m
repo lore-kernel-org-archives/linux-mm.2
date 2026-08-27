@@ -4,143 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F24EC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 17:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02092C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 17:46:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBB366B0099; Thu, 27 Aug 2026 13:43:59 -0400 (EDT)
+	id C705A6B0088; Thu, 27 Aug 2026 13:46:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6B956B009B; Thu, 27 Aug 2026 13:43:59 -0400 (EDT)
+	id C217B6B008A; Thu, 27 Aug 2026 13:46:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5B336B009D; Thu, 27 Aug 2026 13:43:59 -0400 (EDT)
+	id B3A9A6B008C; Thu, 27 Aug 2026 13:46:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 684456B0099
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:43:59 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BDB48160114
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:43:58 +0000 (UTC)
-X-FDA: 85147772556.06.A57A77E
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D99691C0002
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:43:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OhsAcJDP;
-	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787852636;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A7716B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 13:46:47 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0826B120166
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:46:47 +0000 (UTC)
+X-FDA: 85147779654.14.B0637BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6243EC0005
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:46:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CP+igfjs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787852805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4i2SR7f2g7WojHVXlIh+MHMjOE6RNdaClrU3jFaCNYs=;
-	b=j0WU4oQ5U51qDOP7Iwh41oAATbpPcjDa8zlimgMq+4qmScN8vbYdLMpKXg7n3qdh1tMlOQ
-	5r1iBa92MLPHFOSD5pXE9L8ISeRsgedekEVFavY8Aqdl5vsOVwQbfc/ekctwaFQ6LpPwfK
-	QevG0IcJJj3mulNmKXcLQVbeT7l17p0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787852636;
-	b=qEGqtRzPqN8HXHWl276bR7Gs09UJyZyqiUo4/knfBGesQ3Xvt7wbrDWLkHABQsQKJpe9VQ
-	Eq4jrgwZuthWc+8kvXqGpeBvvJm37FwA59qOkb3ZDLP1/omhfxL5sefcuNiXlk5R3vlLIz
-	bg2CGVxsPriJkHk/ilpgPzIDOQzAmss=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OhsAcJDP;
-	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c1c26d7e951so24295766b.0
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:43:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787852635; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HMvAF6qNej42nXs530eQsEy0rUGCMXPLCjZM0udxxV4b+31fjAldI6aSpUtQnJq0va
-         YHF3Pd/xy/RW02+1vtGDRe3fmkKxMReZMXZq/KjSPRVmEBWBnHdQEO8vbVGmwwHXD9Zx
-         HaA7bzcKBxDZlw3g+yn4zM5TQ3mWGqtWemp/bJzxq2TePwC1rRb9F4J1ustEveAYRkAa
-         pQoTU+WJ/eyM2qTUvB07x0cMoRrgCyupGVJt8pwd4+K0zzFyKcmecBuZJZUFZ4IpnMcW
-         Vp4WqpT5AKg0X9fBLmSM6gczdTO6Uk/pZ+aznoX3pMZWeD/vG+Y3Sqg0bf6MMFDnxdQ5
-         5hWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4i2SR7f2g7WojHVXlIh+MHMjOE6RNdaClrU3jFaCNYs=;
-        fh=gW5ivs51vbjATpS7fTtCbsRWfHNWurt1lFXO5nnQLVM=;
-        b=Wvc1AlLBzZ78BOSBnZPzh+nJYTH3PfLrxzFmmFM2hZy53AwXsTt7F2suHp0TxPzrrn
-         0xU1dwQGOi9+0Lji7Sra2FLUe3x0Pp4JJjKNLaU2NOAtLIlZRpcDTCwm1joDNIIG12Jo
-         IHKwFhUfqstZwblZpbLSgwKTYTNLQrmXxfoG1swhQfIArcAT8Vg3kX+DdyX629djOb6M
-         v8TUG/NMiGwNn/IQLYvkRcC7IfA4NIiCQgcuLM3JQ1hFd4/eQyFdLzC4DVMaFrAH48A+
-         q/yySxQAU2jWUFCMUCwzL6vHxjj5kbE3fvYSU8lrWzWCGbagVUDV+1I57JC1b5m9Gh0z
-         bIuQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787852635; x=1788457435; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4i2SR7f2g7WojHVXlIh+MHMjOE6RNdaClrU3jFaCNYs=;
-        b=OhsAcJDPEV16OLcp9Gygk6oYlxpuwUyfQefTTg0I1uxbUc4Pr14sYG3jajOIg0W+LN
-         0RD/Vtc7THnsZjHnucwrcMNMrot+63QCefBdpDXFHAdKW2PBviZD4Mg/GOIIrO+Xekr0
-         jBv7vDS5ThzQ8jfjQ+lVqk0IgDXE3UOzRrnCsewghaZxQTwYrS2I3cQmeg4pSQK2J37x
-         1cZk5tO8tPsPGNawiKfgKEtpAINoatWm5Hp2Z2q4c9Al7zexQE0GxeQ3LYzBJ1W54U1c
-         w5SENZZaWwwfDKWeSE/RyvLNBgavxgsYNVMqDMxKh1VnJJna14s68sDXe0m3uSu6LJE6
-         o/pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787852635; x=1788457435;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4i2SR7f2g7WojHVXlIh+MHMjOE6RNdaClrU3jFaCNYs=;
-        b=XdNleHJmuRgYiiTiCj9Hnbo9mdjHFykG0EezBxjt5oLlAupibz/99ceus68yIzjECM
-         9wHAhjeCZYmPYBFeM16qo8yy5rzJ9SsUkIuc/AY11/yop/iOYcgzqVZy2QIx+SU+wAzO
-         +WZXBABfZi/j34BoUE1dwou/KIav3e5yBFZourG0SMhOcidzjLJz+TXSKznsL7pSzkQz
-         BSjbpR5Xnx5l/xbZNVDtHQ4bPU/0kEugApqeracg1sJ4n/skHL6FXvntY81qyNTW3WK4
-         QbpUNj6FhslZClYXX2LBVoO6K0+LqBRm4BMxOngm24ZBrRQ4OFoMlbSpAJlvO02+KWHs
-         6xqw==
-X-Gm-Message-State: AFuF++lzHgvB8zrBbTnmVFmThXKcnYPve4l4Hix6cBOVBJtZMeYceAZt
-	C3Eu9jraeDY9g7GFxn4PsuqpeO8zcOoBxkiG6mlPbNEAZrYSPwkFQTujD+Ipy9145wNiJhw+yFg
-	/hUQaoAh3cb2kI8ixOqDLqyOxPRVhThg=
-X-Gm-Gg: AR+sD11TXjEU52SWK4cCoDjjoKMkpQ5N+0NsEFHFTkz2CCR8UXkl9QZr+d1r0OXTMmE
-	otF1avJufQDANAbYQlg9nKaCtTdiIFOI6wvtPFIvMDNEBuEoqapOqTwmbkqz7BWdxxtJRKBMaVc
-	LVzwJf4OULUzfEpC7n2DcVGzQaRS4zpEaCZt8GSp6TgR+QsXZWyVcDN5ue5lYFUSp85Rh8HBfpE
-	m2OuQRXY87zu2SbuCoVVn2wS7savjB+7Vqf+xoUvqUomjgEDPL45iRFmM+/ixFnkb79PyRDcPYV
-	xZEGLwyi0lGInCBWsz5DqvO7C2vtW0RjL2joDLv9jP9p79uy++KdEARzC8b9Czn85UlLRng6I0N
-	f
-X-Received: by 2002:a17:907:d0a:b0:c25:32b0:e56c with SMTP id
- a640c23a62f3a-c2556bc8abfmr42528766b.4.1787852635390; Thu, 27 Aug 2026
- 10:43:55 -0700 (PDT)
+	bh=kiHY7Snf377oa7VYd1mbKOFtc64xcuOE4VHGz2nzZeM=;
+	b=Zdy32wciMarURDH44WieFBaviGWNl4cnzSEsBiJEyM0M4wF2e+YbRDwRJPVEYjCWVrIfh4
+	YPw32dJxmuQ9abJ6puNMvxvrl9ATXGqdB0AsusrFYYUgtWq4zjuoCSMRBIKwySmtPR+mZC
+	i9fAcln8lTCFBubcWsKy2q6fz6sm5Uc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787852805;
+	b=qoZKbWXyTBc2O5DZ4x9J5+AwlqOFToJChdEIwmTx5C72Ts6tw3gL1ik9Fnd/h86oIG4AZD
+	2iXyNQYEqW2r+IsDLcsLXPxlCKBVOSKquiz0F/Sbm/qeH72dvU2mDbE2JJQoofuYpWBJ1x
+	rYtm+I0fVAWU/emGPTV7rZ+dYSylL/4=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CP+igfjs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CCED9600D2;
+	Thu, 27 Aug 2026 17:46:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06371F000E9;
+	Thu, 27 Aug 2026 17:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787852804;
+	bh=kiHY7Snf377oa7VYd1mbKOFtc64xcuOE4VHGz2nzZeM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CP+igfjszNlZbIUl7rnHGKc5raqEHjwLHnJe417BWX3yWF9HaM6DN85AdSyFdpafR
+	 Vs4wm/WpPGSXKAbNEA/53AhUN6oEC7hN4jHHCkhXbAMRBor1W42XhpsHhsVCbuN3sq
+	 pVqH7VlFQru3zOkJ+Ppn3rsCpseAJ9UL5iXp0XKdaag17hYjN16BifGsha9HFLe5yi
+	 BZgX0MQ4oBHg+iEv49WYDHIpSXDfDsIAYSmVkrrbaIS/k4FGHHw2vz/m2uDgtQS4P7
+	 H99s1MB3vgV9u2lVYfJL53d4tk59HUNmhpJDyasvRkRSVFKdr5TL1fJCmbDtuBesoW
+	 G4dI2uPeb2enQ==
+Date: Thu, 27 Aug 2026 18:46:37 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 3/3] selinux: require PROCESS__PTRACE for FOLL_FORCE
+ introspection
+Message-ID: <apB32VUayqL37wyf@gremlin>
+References: <20260825-selinux-pokemem-v2-0-b46bc64916d8@google.com>
+ <20260825-selinux-pokemem-v2-3-b46bc64916d8@google.com>
 MIME-Version: 1.0
-References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-12-9b43f5163238@tencent.com> <60908273-aeb8-41fe-b7d9-d35c80e950ca@kernel.org>
-In-Reply-To: <60908273-aeb8-41fe-b7d9-d35c80e950ca@kernel.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 28 Aug 2026 01:43:18 +0800
-X-Gm-Features: AcwNN1Xii1DElQxgbinEAbRld_DdPsEeFSRZ1LYyW8zHIqr8BqfOJ4o6uENGKYY
-Message-ID: <CAMgjq7BaJzPggVSt-F+7Xch+EkC3Lci249TOw9=Tes5+7nEZ7Q@mail.gmail.com>
-Subject: Re: [PATCH v3 12/18] mm/huge_memory: add kerneldoc for the split helpers
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Shivam Kalra <shivamkalra98@zohomail.in>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ji8ugcxdjnkybg6cc69w58zcsj5yejpu
-X-Rspamd-Queue-Id: D99691C0002
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825-selinux-pokemem-v2-3-b46bc64916d8@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6243EC0005
+X-Stat-Signature: foufbx891wfkp13h3yi318es4toiw4ix
 X-Rspam-User: 
-X-HE-Tag: 1787852636-420435
-X-HE-Meta: U2FsdGVkX1+hM73LymaijyFEUWEH1YYl9KJqUR5wVZnWeARU+5W4TV5W71hICphrU89uL2XOndbyqqFNlFHclhMlQ4RimxnnKuSrOc9lJ9NLPC8Q45KoDDPOSmeRaJiqkJJ8ubx/6u8EjmCExa8uvd0h3LYnJwnUEHC01ISj9Y7L/j+ZuURyCP9NYikhUUhE7FmegAbzeV25TNvsb9slK56RPUk2YSQ0aF8WFV3ZS2SD2geUIhm+kJsdHwOL7I1gj705Klmy+uK/xgFRQLzVi7NZvZ8rHOnghpocorezT1aR4pqCaGXW/2fwmcHrY4y5RzkrEbBkr0uagFiraQWHul5fISFFPLKE5YIQlQKHV3QOXfDpm8d3f5nXCgLEuJVBWnQ3mPWhmOFe3Z2J1To5cGfTrQ25U4dsEWy9oGQg5iZMNFMUDe9WMPuyKtQtL4FOMl5V2EPOM0/RHCXcyHwHy2ds7MJRpgXk197Q8Ws60cc3hKxeHoQul8UtDzVln+xsskBmqcW+s45MhrbO/1Nkl845ox3lAwWZ43JXll48LFWejg2qnK0IM3f6m/I0T9E0Bpf8CMhp5+Ye/NCsc1ztBR0E0UoNJMpKUj5IpTgWqGY6Xf+TdBsPDecAqDRzGx0OJvgE6KD/qDDee+CpQVYXpnkDvOKRLK1Erlra6/7sEUG+/2M3tLd/bYpJjUlm86CAJd45eKyWyKR78dfqnaupGHNCQW2HUnHh2xxeQgqqpStVF4uAFiLPEkiS/Dde7q2cAONbJFhzVsyM/KOMbjNvbd5iDPW88FRRkW2cG0WyR9dE72hiUiU+RxNDbPF85g/QoZG7av99cArb9aNVvMN8lAlDYmi09ri1oSqdM0LV31OFcxPj5LiMjW64CvVTWRbGsgzM0LuN+/B2tLZNhyjpidEpm8Kou50+am624FHEhKumYPMJKv30GJcHFhdWU0DQU2g+5OERonTUazPrA7M
- e/L1OU2Y
- raTtynoHZJPF06QX/0w7fmltqfcYjH5YPtFoLasK4QLEffkhHh6qbEKddLm9OAcUrbhEEf24Aj37VJ5cRoosoQ7qwhMatF//hW/wDz5Sd6Cj/P3aYPywUmeA01sRFznuiR6kwL/wxSRtQzCnCojKYeSuLlfr7OZ0pFh9zju72cZu/36qqRVOx1ni2LH6f8sKYK5gldJiidCnjwFj+G8lMvKYufJApWDJQFSvsPqDN/22PAs3fV7xwy18C9UOLYvpvlvzpUYglP0F139JGVetOcPOOG6fmTwtaJZAUgkVH/dNtdS3tYkVwpoe5D7BoIvqUPlTZmIV8lkSa0SqzF2I9NIlCkg5dZs4w0JPgWuN8SD70mnSN9f0SveWufkDjcs6WMg/Fb7ftYpNRSrZupDNHlrsF8NpTKfmDr0LW6VIbfP0H2gZos7AsIHzuO680xF+3/+iZNEcEq9FvLs+c0zsvD5GshhchO3OLrqet+/g0wPTL1sGkeeUhULtTKw==
+X-HE-Tag: 1787852805-632209
+X-HE-Meta: U2FsdGVkX188E3BPTOC9qSzMwX0rXAhOaj7EFE+xSsCs57SnXjLZxpmVouTGSBoAleQ50bHz0JfqbfdGfQGzLOvp2UNNFoRbn2wluMMuniXghMxK4noHXh8Kk7e0ivs4wtHOu4TUZDwcJk2kKHXiiwblonxjV9GNF2PLaRWWAWTRk+jtHk9rnxDLN9URIYa4LXHPKLftJuon1qQEOXXO5TmvjtDWBcFgGnWryYiC6rqhPajbNdqKkPTCqbKqaX24LuGhyqJDiB0NuwQvNVn0dyuYjKkfcjIsXhyNFENrpsDiesAwLWCt2t+CLOQ5uEcQi7F8NKOdd1Zqv1Ggoj17sT9/xlYdgjq6GblPB5U3lkEdY+lh5umSP+oKdVLMtonJ9URoillZKokoVVr/cNgGwqdp8Jdcsp2W6Bf2j3OatMBh+F02PQ8RFFYF2eBDpf+AOcQ0Elhdqd/sZ6GlSPqCIjl9rsjzgezp1WZjAIz6muRz1mLJh1Gqk4VmduUktWSuWux5RHp3x9a5tuwpuAoTC7rjpB64JI/2lXDDb4DEYwIufAMNQhaYM/7/zye6wJDfemlw2HXHwgbMqzMaNp/Bl57xeGx82C4tJ5Y+J6AcR37LEUHBiKZZCynQx29Z2HmiwzbUXfqkRIYXrq4mwDNp5Pdm4q2uhIenGtL/d6RgBudXn0QmOiYTfbOHyxlQ2hwXD5U6oBIQ++aYG1v1kRtqvKbe6YlYb+hlViTwgmFc2q4RDuvK/8op2pfNGyuxgI8w8lDptQYdtSngVyNxHgwpy5PnUEfpgbRqOGl0CMaSy4s94ZsDmwG68Z2DHVMsHMorfkyeV7aE2Z/hg/88gvOLtwvs7gVaLIpys/dvgu4bo2cwo7YahGL3FeDZ3kSwmMHqkA6S7agTMrk5AmwA9bw4ZrvHXDQPxQeq3e6nHmB12rM2roW9bQca2YI6G8bpOzzqMX/qjgSaHIb9+vtbPxV
+ F13emzxn
+ gz3bb9AyNv6qQESzWEhtM8uUNKq3bAyWLP6Uo3H+0hNBQoqFXi6rO+//iQA0X4wHeodv4Bdx48beX5mbNWYQXai9J0Iw7iVf5Yo85QQlr8Uc9TD6nJAenmZfIJM5/f6UFkHesbWW5/yTFz2SgPt7Nbraqa/wz25NBAe9ANDv5VOnph/ymSOUZhCIZr75TsKLuY1zmFUCSoJCyfR5cNaKf2ttU1HOaPvQN27fbWIWFQY11AeFFk2EHItnpO/lvTIKZcryApYj+WY59FSv/fuBDJ7f6gLsuaAK3P/kK2YWM8jxjGx6n2Aw0j/7VNIHDtSAiJGUZ9xKagh51txENfSy4wH+H+0zaRF4pPoy+mS4OBKCzJZCtIS/m3K51QryOPzfZdp41z1lHXJZ56n86bJ8GnG3/2dU1YVq9mRvYoLlVdmCS/e4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,26 +99,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 12:45=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
+On Tue, Aug 25, 2026 at 08:39:19PM +0200, Jann Horn wrote:
+> On systems configured with PROC_MEM_FORCE_ALWAYS, ensure that a process can
+> only create anonymous executable memory via /proc/self/mem if it has
+> PROCESS__PTRACE (like when using /proc/$pid/mem of another process).
 >
-> On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Document __folio_split_unmap_and_freeze() and
-> > __folio_split_unmap_and_freeze_file(), and rename the file split
-> > helper's definition to match its call site.
+> This closes a hole in code integrity enforcement that Project Zero has used
+> in a remote Android exploit chain:
+> It was possible to use a memory corruption bug in a service without
+> EXECMEM/EXECMOD/PTRACE permission to overwrite executable code via
+> /proc/self/mem, which made it possible to load and run shellcode containing
+> a kernel exploit.
 >
-> We don't really write kerneldoc for internal helpers.
->
-> If you need excessive documentation for internal helpers, it could be tha=
-t the
-> function semantics are not clear enough to be expressed by a descriptive
-> function name + variable names.
->
-> Sometimes taking a step back and questioning how the code could be rework=
-ed to
-> be more self-documenting helps.
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-Sure, I don't mind dropping these; they were added during mid-review.
+Not really my area but in general looks reasonable so:
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  security/selinux/hooks.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+>
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 18dd28b2bb13..2c2c60e9e0fe 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -2157,6 +2157,27 @@ static int selinux_ptrace_traceme(struct task_struct *parent)
+>  			    SECCLASS_PROCESS, PROCESS__PTRACE, NULL);
+>  }
+>
+> +/*
+> + * Decide whether it should be possible to read non-readable VMAs and write
+> + * non-writable VMAs via /proc/self/mem.
+> + * This only applies to systems configured with PROC_MEM_FORCE_ALWAYS, and only
+> + * triggers on accesses that are not visible to selinux_ptrace_access_check()
+> + * because of the introspection exceptions in may_access_mm() and
+> + * __ptrace_may_access().
+> + *
+> + * This allows a process to overwrite read-only code in its own address space.
+> + *
+> + * Creating an audit record on denial doesn't make sense here, since we can't
+> + * tell whether FOLL_FORCE matters for the accessed VMAs.
+> + */
+> +static int selinux_mem_foll_force_opened_by_owner(const struct cred *subject)
+> +{
+> +	struct av_decision avd;
+> +	u32 sid = cred_sid(subject);
+> +
+> +	return avc_has_perm_noaudit(sid, sid, SECCLASS_PROCESS, PROCESS__PTRACE, 0, &avd);
+> +}
+> +
+>  static int selinux_capget(const struct task_struct *target, kernel_cap_t *effective,
+>  			  kernel_cap_t *inheritable, kernel_cap_t *permitted)
+>  {
+> @@ -7558,6 +7579,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+>
+>  	LSM_HOOK_INIT(ptrace_access_check, selinux_ptrace_access_check),
+>  	LSM_HOOK_INIT(ptrace_traceme, selinux_ptrace_traceme),
+> +	LSM_HOOK_INIT(mem_foll_force_opened_by_owner, selinux_mem_foll_force_opened_by_owner),
+>  	LSM_HOOK_INIT(capget, selinux_capget),
+>  	LSM_HOOK_INIT(capset, selinux_capset),
+>  	LSM_HOOK_INIT(capable, selinux_capable),
+>
+> --
+> 2.55.0.860.g4b6b3295ed-goog
+>
+
+--
+Cheers, Lorenzo
 
