@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF14C61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E83CC61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 08:06:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 774BA6B008C; Thu, 27 Aug 2026 04:06:22 -0400 (EDT)
+	id 57A156B0092; Thu, 27 Aug 2026 04:06:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 725146B0092; Thu, 27 Aug 2026 04:06:22 -0400 (EDT)
+	id 551526B0095; Thu, 27 Aug 2026 04:06:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63A9B6B0095; Thu, 27 Aug 2026 04:06:22 -0400 (EDT)
+	id 48F6B6B0096; Thu, 27 Aug 2026 04:06:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46EF36B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:06:22 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B59154036E
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:06:21 +0000 (UTC)
-X-FDA: 85146316962.02.C63BBEF
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf31.hostedemail.com (Postfix) with ESMTP id AF85D20005
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:06:16 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lXI6gs4g;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787817979;
-	b=8FYSiv5kTBIzgxucwtyC3/R6B5st8pWMrpEmb7PvY9qgGOrrsdUGQ9G0rkytTnpj2bM153
-	KY2ebzSUpAyC9pDa33WwBZLAOrGlPcJZ7jmD9MCuWokBjENC8MEXEMIuWeZdB8QpGm/Z7y
-	dxZZXpskVZtJqN/nQSLE0oU95CiOQ0g=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 30B6E6B0092
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:06:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B58BE120382
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:06:50 +0000 (UTC)
+X-FDA: 85146318180.18.7E5B84E
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 61A991A0007
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 08:06:47 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=YSfrzoIv;
+	spf=pass (imf19.hostedemail.com: domain of yuehaibing@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=yuehaibing@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787817979;
+	s=arc-20220608; t=1787818009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vItm6oSJ85xwVAuuaGxmtPSRnxGXaOONFh+Bcy0mTMo=;
-	b=IZo7mh6d0a3bpkT5F1DPJ58T702cZZpjaNBw1z8U6IVKwSMYxHen9aa9R+2K8ricRb9PCq
-	gx1Y6GnOKb6crzOtpN20cA0IHFLPGLlSOnHdtnuhC3uEFpUGYGP3GXnW4d+OZ2crt9y/d+
-	9evLiL3kuHP+Kx4ND+6QXJdeDlFYRw4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=iqJEGxzt/5Md+xChD1VBbpbC9+3Knut6ftXuGJ5kJuw=;
+	b=UKDcXZcuSl5/ji+aqIPR54lVT0MP/lt96hPS5icq0BA8qZHrpZfH7uPjPzeqE7aqCAGGrZ
+	VsylzhiqCqKsFYU8o3PohrYBQYF1v3NU/h74W7k5yw1eHUX57a+pm89OtluN11nm8F9kOh
+	HP7lCVsh0bBJQolmiN5TxUbcbvc8o5o=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787818009;
+	b=EEG+x3UlXP5XskbFk23v5UcDV2kFR10Tpxf6msFFRU5kAV2uG2qvgVaEwJKv+ClrsBjJ9O
+	6HKfQUjqrtbMJF1EbKgL1baczUJwye7SxLzWogXq3CocZ9j11dk0fXkhzEugAXDrNnlNmb
+	vrJv1RRzZlYI5pTuY6SLn96cCqohbYw=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lXI6gs4g;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1787817974; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=vItm6oSJ85xwVAuuaGxmtPSRnxGXaOONFh+Bcy0mTMo=;
-	b=lXI6gs4gkSQVar4xsssdx2xwdfNaouskLY/1L9RTyT/XguRkdXVWhCf25GyYginoIY/DU8SncoiW886uWDECaP5GU9Uk32p9ZCovhRgI60AEm+3vjtcHoAfmLbEPUbWNRIE7K+4YYC4cB9dsVrHM5oxPHi2pXdFsdoRae8HDL8w=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X9izibF_1787817972;
-Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X9izibF_1787817972 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 27 Aug 2026 16:06:13 +0800
-Message-ID: <1ec4ef97-47e4-48af-a8c8-4e50faf781f0@linux.alibaba.com>
-Date: Thu, 27 Aug 2026 16:06:12 +0800
+	imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=YSfrzoIv;
+	spf=pass (imf19.hostedemail.com: domain of yuehaibing@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=yuehaibing@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=iqJEGxzt/5Md+xChD1VBbpbC9+3Knut6ftXuGJ5kJuw=;
+	b=YSfrzoIvlCPYebNJfeCnPgUuoNU29ch67w2ddM8IcF2HJXxbPV3FpyKWY1JOFtoEklHPMem6F
+	onBgmKK1OzuZuC+MmyRSYmHSC9fM9H+iJ8xvfJ/s9lI0hWwSlwDbEWtB0zucyvIAEAP1FmDT8fx
+	f90JjgwrAs1WnGgPQFYXdD0=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4hVv2z2mw3z1K9Ws;
+	Thu, 27 Aug 2026 15:55:55 +0800 (CST)
+Received: from kwepemk100014.china.huawei.com (unknown [7.202.194.62])
+	by mail.maildlp.com (Postfix) with ESMTPS id BBF99402AB;
+	Thu, 27 Aug 2026 16:06:41 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by kwepemk100014.china.huawei.com
+ (7.202.194.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 27 Aug
+ 2026 16:06:41 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <akpm@linux-foundation.org>, <chrisl@kernel.org>, <kasong@tencent.com>,
+	<shikemeng@huaweicloud.com>, <nphamcs@gmail.com>, <baoquan.he@linux.dev>,
+	<baohua@kernel.org>, <youngjun.park@lge.com>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH -next] mm/swap: Remove unused declaration swapcache_clear()
+Date: Thu, 27 Aug 2026 16:27:22 +0800
+Message-ID: <20260827082722.1809702-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-stable] mm/khugepaged: avoid unnecessary checking for
- swap entries when collapsing a mTHP
-To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260825192433.3185880-1-pedrodemargomes@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260825192433.3185880-1-pedrodemargomes@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.128]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk100014.china.huawei.com (7.202.194.62)
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AF85D20005
-X-Stat-Signature: 4ka8zpwyec9ban3gxrft61jfgiz1pwsa
-X-HE-Tag: 1787817976-239164
-X-HE-Meta: U2FsdGVkX18xhfCnvfirZQfQFXMIuXR69W5yV8CI2kaGbVnvTQhQ08oGlXxSLT4CymoLdqq5Pk32zLWSy6BtU4RtEakBL5AlcQmIMvv9kzimnUUlQcjB8iUAmDrpASUpNW1khd2sIkdCYdvnHXHK8YaIMSK3UyEuyLUpAITrk+Z8jbRHZ2Lm5wPsvbB1Tq1ISqnIqKltHa4GhKgMe9ktVV9HaaMBS0Lr78iFBJqWht8DBIrfIZApAzXFoiOT7zByB3bQHewKUw0hC5qqndSm2g+jX0yj8LxeLrXLUeQF1bz8lG9stJS5WwxodFHp5S/8Rppuu6OvQXMHUsTTP3vDR+b0ZvV/dLX2Q2/WtA6x36WarUgT4Iz/N4qfguX2akSvYY9nLEtmP3qYj8eppyGq4ZG/FDRPFMVjBsbJFpGtvliOaoBa3+a6q3Xyu34q6cpCzYMR8XYE347+Xtncdb200ldabGo3onLRgr20H4RZrnMLBInc6QAjSr5aOWesAtm7dZpcLmXyire6IhnEon0LIUBx6mmd8rntAOs7rCEQ4WK4WWSpAkWS4R10gwChRWVie97iTZnV7SKd5DyyLxJBdeW8q6E459D8lQKK4YViK6Lybw4AsDRadcyclvsE8yepZsZHFgq+oEDvaBhDws4TOuHqtSBwqDF78GstivV6jutgbxkT9mI6Xvivn4ixqABz1BWM69P67Gx1gjTWkcapEv00/daa2yx0r16mr9L3M1UBooJuYCXhN6rrquElePiEzPMgenYKRHvL/ZcZpdbD9LG9vde/iuoggzF7fvgMcf1FJoWJ+LsY5kVwOuWykidrjhrMOlFJC7tzPVg3BvNJbxLvkMldT0i5BpvWyLC7kUTxMnmJgBpEgXnRQIbA3evWkveDsF81wBUxUovWiZtdyY3iNNrLg6NtiG772wJBbQrXy+0aFPxcCGNyC0yl9ePXnDnGr78HBgPCjQi8xQq
- Yn6n6ign
- 47CcQfYUgtBYpQ+EhKh4ecDwugURV6pEpmqCrxS/P61WFIMhpcKIBWf9BgNOyqfcIFP83eNzCnwhZEmob0v3uGWZd88QnUbV5JAG0RRMMm42FERwAcumDnJvSl1yFcW9gRjXS5fPHZ+ypNrdJfe7iIGFwn7jEbRoIT7L5kQSFtHHp2O7vRCXrHKLznb4lZpz2Di7e5vCd3TD4k9a8TrFZmTTwMY4B91Bvv336XuUU/VinzRvT78kuyw3BuYr2xF2xXpxBkm8PzYEka/AeH6UYEsnTnv470Djy0ymr5/wtIkQ/14d+M4Iwt9rILOKC5b9G85fJIumBUZAUUlOi/HesBJhZ8A==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 61A991A0007
+X-Stat-Signature: ouoangojn4quiix9mndgkax7wson1raz
+X-HE-Tag: 1787818007-582680
+X-HE-Meta: U2FsdGVkX19qqvaWJ7KI78BMopAF1HkpVYZt55ZW8DrOLU7ZZCS9dZ+1SP06AxVOIgQAVKLtkOBOdNC0B6+zwcfqmnOeAxQ6ld7aYN/RAP35wsawuzov/hxL3ieiDID+uVf+4k6gklqV+g+iWSF4PX2o7i+JqQfkWeTPpzC1KT6DLOYQwV7B6ay8a6ohLdn3zoXAyWgfoLmmtB9G23ZJfTAwlWr4sqNjUvadlDm9PsQ7NfwLCQyVzavzY1bfhQKP3w2Fnh1yL0rEletgyNug6bgZwtFhtW8YuvdDVLc39XN3+cHXRgx9j9Hlv94wFU+D6bKvy1gQbIIy5ZlBBnCOD0yXPF7m4x1eorLVvHvlFdKrxYI4Y63GfCxs8ke3vn4M872/nxyYVab2oIrIhzuInuTgYVjiuC79htdoJl9x7ybL45dURkEuox9b4V1qrU2h/3r5gdIO2PIHEEnyEYU9k0rtByN6ZTrRRPfYk/1NAe7jwpUkQgp3tEQ8aejaykTzgJ5osKKfU7KQnLk0kG0Or26j5f5QawuxoqMRyaMVv/N+V+6RwUCYWWixxjfArHP+ARs2jmSCan5D0o+0iYXOVuRDuNnCaJaKB5nfo4hefnD8jBiYRp5td+mIjX2/G/kKs40rS9tmJ6GFXPWdrx92mwpF/KR2jbVZR2GgeOO3+M+GcVeigAFQ6JuwG0gsBVRL8lWIhwvk9dRMNCyjIHpEPeaf/fKzzTNHp21uIT/sSynf3YGBob4ebOo1EwmWnYdtwgwpWPGMg9auOkW8Udx3pPfMDKx6H3zZ76KdjCoAuscBfYTRuyuPr5gaX59NCNiWf0UvszZwLnd92yDUHpifKr8++3T8SZMf1JGXff6STBJt2a32bO0hPmylgxFTbJMTsmi+cYWoXA9mpgttkOlhUSLx5bOIZ+Wi8y0BPMsoUgu1H9fL+BUq1Rv1uwG4jkjKuvkIJ/YWJQUDjuDigAn
+ W7aOzKBh
+ Cg3vbz/KSvqMIja2K4Y5+ckc7i1ssuCr7iPAdJEK8/ZJT+vt4Yh9ji2cvvuNVBDNksEdIAU0VHOs0ZaSt2VzjitwNm2d/UzrfavJuYjZaer56x/LDni1ONUJPtvqhmCnZ8PzPUhuolVOAZ1r2/egrvW4UebGt91d/AoHeEc4twu37aITvnYE7BXnHS6e+PXyHcji83OFKLWVWm96phOQkioYCa1xWgq0qe0XnD5c5ZhpKU9H7W4BfccUvXBcEbLYXC67AeIyEqTDUhLIpzSlhpgvaosmqq32Qh/QPRpOCmpxqTxsS98o5iF00P7w6G83+2T6wY3+HGfM/tutGnZa4EAVDCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,141 +96,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Commit c246d236b18b ("mm/shmem: never bypass the swap cache for
+SWP_SYNCHRONOUS_IO") removed the implementations but leave this.
 
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ mm/swap.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-On 8/26/26 3:24 AM, Pedro Demarchi Gomes wrote:
-> mthp_collapse() tries to swap in PTEs when collapsing a mTHP if there are any
-> swap PTEs in the PMD range, even if none of those swap PTEs are
-> actually part of the mTHP's range.
-
-Are you sure? I wonder how you tested your patch? Because we never 
-swapin PTEs for mTHP collapse, see the code in 
-__collapse_huge_page_swapin():
-
-/*
-  * TODO: Support swapin without leading to further mTHP
-  * collapses. Currently bringing in new pages via swapin may
-  * cause a future higher order collapse on a rescan of the same
-  * range.
-  */
-if (!is_pmd_order(order)) {
-	count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_SWAP);
-	pte_unmap(pte);
-	mmap_read_unlock(mm);
-	result = SCAN_EXCEED_SWAP_PTE;
-	goto out;
-}
-
-> 
-> Track swap PTEs in cc->mthp_unmapped_ptes so that mthp_collapse() can
-> tell whether the mTHP's own range contains a swap PTE, and skip the
-> swapin check when it doesn't.
-> 
-> Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-> ---
->   mm/khugepaged.c | 29 +++++++++++++++++++----------
->   1 file changed, 19 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 11ff98d55c76..38596172f7dc 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -117,6 +117,9 @@ struct collapse_control {
->   
->   	/* Each bit represents a single occupied (!none/zero) page. */
->   	DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
-> +
-> +	/* Each bit represents a single not present and not none/zero pte. */
-> +	DECLARE_BITMAP(mthp_unmapped_ptes, MAX_PTRS_PER_PTE);
->   };
->   
->   /**
-> @@ -634,6 +637,7 @@ static void collapse_control_init_scan(struct collapse_control *cc)
->   	memset(cc->node_load, 0, sizeof(cc->node_load));
->   	nodes_clear(cc->alloc_nmask);
->   	bitmap_zero(cc->mthp_present_ptes, MAX_PTRS_PER_PTE);
-> +	bitmap_zero(cc->mthp_unmapped_ptes, MAX_PTRS_PER_PTE);
->   }
->   
->   static void release_pte_folio(struct folio *folio)
-> @@ -1291,7 +1295,7 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
->    * Note that the VMA must be rechecked after grabbing the mmap_lock again.
->    */
->   static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long start_addr,
-> -		int referenced, int unmapped, struct collapse_control *cc,
-> +		int referenced, bool swapin, struct collapse_control *cc,
->   		unsigned int order)
->   {
->   	const unsigned long pmd_addr = start_addr & HPAGE_PMD_MASK;
-> @@ -1330,7 +1334,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
->   		goto out_nolock;
->   	}
->   
-> -	if (unmapped) {
-> +	if (swapin) {
->   		/*
->   		 * __collapse_huge_page_swapin() will return with mmap_lock
->   		 * released when it fails. So we jump out_nolock directly in
-> @@ -1502,10 +1506,10 @@ static unsigned int max_order_from_offset(unsigned int offset)
->    * mTHP.
->    */
->   static enum scan_result mthp_collapse(struct mm_struct *mm,
-> -		unsigned long address, int referenced, int unmapped,
-> +		unsigned long address, int referenced,
->   		struct collapse_control *cc, unsigned long enabled_orders)
->   {
-> -	unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
-> +	unsigned int nr_occupied_ptes, nr_unmapped_ptes, nr_ptes, max_ptes_none;
->   	enum scan_result last_result = SCAN_FAIL;
->   	int collapsed = 0;
->   	bool alloc_failed = false;
-> @@ -1522,21 +1526,25 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
->   		max_ptes_none = collapse_max_ptes_none(cc, NULL, order);
->   		nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
->   						      offset + nr_ptes);
-> +		nr_unmapped_ptes = bitmap_weight_from(cc->mthp_unmapped_ptes, offset,
-> +						      offset + nr_ptes);
-> +
->   
->   		/*
-> -		 * Swap PTEs accepted during the scan are counted in @unmapped,
-> -		 * not in the present-PTE bitmap. Account them for the PMD-order
-> -		 * candidate.
-> +		 * Swap PTEs accepted during the scan are counted in
-> +		 * nr_unmapped_ptes, not in the present-PTE bitmap. Account
-> +		 * them for the PMD-order candidate.
->   		 */
->   		if (is_pmd_order(order))
-> -			nr_occupied_ptes += unmapped;
-> +			nr_occupied_ptes += nr_unmapped_ptes;
->   
->   		if (nr_occupied_ptes >= nr_ptes - max_ptes_none) {
->   			enum scan_result ret;
-> +			bool swapin = nr_unmapped_ptes > 0;
->   
->   			collapse_address = address + offset * PAGE_SIZE;
->   			ret = collapse_huge_page(mm, collapse_address, referenced,
-> -						 unmapped, cc, order);
-> +						 swapin, cc, order);
->   
->   			switch (ret) {
->   			/* Cases where we continue to next collapse candidate */
-> @@ -1667,6 +1675,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->   			continue;
->   		}
->   		if (!pte_present(pteval)) {
-> +			__set_bit(i, cc->mthp_unmapped_ptes);
->   			if (++unmapped > max_ptes_swap) {
->   				result = SCAN_EXCEED_SWAP_PTE;
->   				count_collapse_event(HPAGE_PMD_ORDER, THP_SCAN_EXCEED_SWAP_PTE,
-> @@ -1785,7 +1794,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->   		/* collapse_huge_page() expects the lock to be dropped before calling */
->   		mmap_read_unlock(mm);
->   		result = mthp_collapse(mm, start_addr, referenced,
-> -				       unmapped, cc, enabled_orders);
-> +				       cc, enabled_orders);
->   		/* mmap_lock was released above, set lock_dropped */
->   		*lock_dropped = true;
->   	}
+diff --git a/mm/swap.h b/mm/swap.h
+index d077e5893a42..29060a305443 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -344,7 +344,6 @@ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+ 				struct folio *old, struct folio *new);
+ 
+ void show_swap_cache_info(void);
+-void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry, int nr);
+ struct folio *read_swap_cache_async(struct swap_io_ctx *ctx, swp_entry_t entry,
+ 		gfp_t gfp_mask, struct vm_area_struct *vma, unsigned long addr);
+ struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t flag,
+-- 
+2.34.1
 
 
