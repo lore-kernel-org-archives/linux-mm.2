@@ -4,103 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEFFFC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:54:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCBEAC61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:58:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBC786B00A1; Thu, 27 Aug 2026 12:54:31 -0400 (EDT)
+	id BA0996B0092; Thu, 27 Aug 2026 12:58:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D938C6B00A2; Thu, 27 Aug 2026 12:54:31 -0400 (EDT)
+	id B517A6B0095; Thu, 27 Aug 2026 12:58:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C82736B00A3; Thu, 27 Aug 2026 12:54:31 -0400 (EDT)
+	id A1B056B0096; Thu, 27 Aug 2026 12:58:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 879F76B00A1
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:54:31 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BB2CA012F
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:54:25 +0000 (UTC)
-X-FDA: 85147647690.22.0C84AA5
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 19290A0004
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:54:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=UX67LVpI;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 76EEB6B0092
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:58:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BCD91A010E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:58:03 +0000 (UTC)
+X-FDA: 85147656846.26.C428797
+Received: from mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8C6601A0005
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:58:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ivqhg7pH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787849663;
+	s=arc-20220608; t=1787849881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dgjsL4yC/krIZcP7poptKQYekk7WalstdypIaXRUH7I=;
-	b=BXsuXgSOLI/apl5D80Mc8XI/1+3TsYXpw2afQOk0v6QkEnKD8ogdgUUUmqnHYnoHf7rcHt
-	3xxhH5IxNfvpV6VwUukzb9vGmkNCJNWuVCg66N7HIHx45N7JfbUCnLq/UKgtA28DjhQR8L
-	VaSs8i8YEQIsfhseOXEzzuiL3CbzXwk=
+	bh=PsgdxAZ6noNKq0rZ05Y3MNO3C15Zq2KoJCzUnq1N14k=;
+	b=s7BscR4s25LKxNWikPxeXt0RpAfdmj7PXEG/dInV80O60QP2Kp3RIQbFrhbkzUKHs7DINL
+	9xthyHzatxg39gs1EKYzSPLYdlVUtqcvItGEEr7aAUiI6P9uoIwdzIa/+hdJ7wG6APPggO
+	gIRypIbYzzJaexNP7kyZCPrEKUlY75M=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=UX67LVpI;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ivqhg7pH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787849663;
-	b=xBSUEQufRXWP5HchOB4skml4RkNxYW4UHIQrggAHmUkVKokYX50abyRMT7rKa4MRshe2ta
-	oAsI1ht3/Us5MLj1psBjcye+0/oaQMIBEXVUoD6vZPHu1/S8c7sezlnOXzZLXeGs3SOSFH
-	Q4onRnpkJzJmyOOCbu7dILMMMCWJ65E=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E4101684;
-	Thu, 27 Aug 2026 09:54:18 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 52C673F66F;
-	Thu, 27 Aug 2026 09:54:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787849661; bh=DsQYUAYoIvLMCKyVTnqr6NjN9Agug39s0/XRUD7hItE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UX67LVpIuzwerPNysXQnLqBw90ixXmKYbCFxiUuGX/hfrZq2IAIOISwVTVuXd9dss
-	 kwjV3IXRQt4zZwiH3S2acuMWWKumHHbsY0jZeGKg2VPzvn95QQ+Lc/1mtRECL0U6JG
-	 aTldn2pMdR0kTROUwIK8E5oHcH+LMUpisyeAgeTY=
-Date: Thu, 27 Aug 2026 17:54:17 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] kselftest: mm: replace usage of /proc/self/smaps
- for check_huge_xxx() helper
-Message-ID: <apBruUeQoCgP_Mhh@e129823.arm.com>
-References: <20260826-fix_split-v2-0-71153c7f579a@arm.com>
- <20260826-fix_split-v2-2-71153c7f579a@arm.com>
- <0107447a-7c1f-44f8-94fb-109b0f850677@linux.alibaba.com>
- <apAVAvfxZSeEvf50@e129823.arm.com>
- <DKZTG6MI4EI2.35PCXKS36M1DY@nvidia.com>
+	t=1787849881;
+	b=CZMeTZkGWa3/LP1a7UzBxuvPkoerQ/AIvwvmGHEzM7Wrigmm757NlsUH/u6JIctAB/DRu0
+	fRDPUSgNSmQdup3gaZDiM8Ox9O9ejEVcfacoJLZWRrnAXi7G2GLT9q5HzpB0O6u5gxd0iZ
+	M3HlePy3H0xhfeVSKBNu95KR93/S91k=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/QFykKqY4DddYYy1JGcan4kcCBGwtGcv3+RRD0IyIGI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787849879; v=1; x=1788454679;
+ b=Ivqhg7pHLNsyndpaARYlFqDnmbpn1BaiBSqdHDcYc9yhz/pIdu9VmkV5j55SLDNmXNtPJZaE
+ 0Cl/Y9gc7tdKLsmud+OSnZkVge2QVvg3J0MR5gK6zz1fqKDFmtUFJimwlAa2EPUAXtYxmz3vToK
+ vR7Mlb767U8AJY2CwUqm/o74=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1ee3e873e45b78e8;
+	Thu, 27 Aug 2026 16:57:59 +0000
+X-Mizu-Trace-ID: 1ee3e873e45b78e8
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 27 Aug 2026 09:57:53 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Rik van Riel <riel@surriel.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm/memcg: fix UAF in drain_all_stock() async work during
+ offline
+Message-ID: <apBsMXzLXltN9MTd@linux.dev>
+References: <20260827124211.3b94b103@fangorn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DKZTG6MI4EI2.35PCXKS36M1DY@nvidia.com>
-X-Stat-Signature: fjrxbfpe1menzooue1cw1sbotfp65qb3
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 19290A0004
+In-Reply-To: <20260827124211.3b94b103@fangorn>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8C6601A0005
+X-Stat-Signature: iee65te5h3z1u3cq4m78w4r148omb99c
 X-Rspam-User: 
-X-HE-Tag: 1787849662-495932
-X-HE-Meta: U2FsdGVkX18iRRNmUwWVzo1nAFDjUtVISJHrlzAf6u7n4b7EM39UdI6nzEXq51Z7wf04pr1e3M369qPXp75MYHBVBisa67AQ9Cz5Be6nqJ+JjDwTdtr0n5eVOOh0t1yYDD9nUvTaL8qslETr9HaAJ3rivdYfMdrqjkLx6qu4K2Srs/YCjQnk/0RUT5M7tCFrjhN9gW4PFO5EFpcLFmeuCEjcYQ6ybbnPGoB4Q5BXadYl6DI/cwZ0B+sY4bTEyxBEoBaeJ6uqQSwZFBYUxK+NUDWMGPjXgz4aCXcLGLFFrZpSMazoWamgu6OJgtI4iHSi8qb0UJhzss+p6CgRMmrql4JrACwHgaTuf3tr/WQai0zvFCawGHgAJbPUy9nBAgqBOsd2VFg2UXNFynp8SZOThhMA88VryzeYcwFFZ3iPkNXbNDuXGmct6DOzSkeLybFwyEQSgBXth9wSomkZEipqTQLPMYTtdG80vkTe9gYfzWa1yBYW+RDf5fR5ious43ZNr0i7W4v7jVN8sOeLwd11m8mpfX+uvQmwunKwLl+PTRhUv1tl8AoxCqfkXcF02lVPWYFlZAmfI+h5pIYnm8DUKW2T85OD7VixvLxnMQ7CKKPtgCvzxnlufc/5PBjx7Dwp3sHB33mAMaXKWoXj6tCSF6JRYI4zEMvbzMh2/ehm//x7CBfIyWSM2MIFdYCoeqSvl4NSMNeqp6aWIG45m5uuRRrHSB6+mqIVlBMac8M3S8khRQMgO3f6RKRIPuAeWdovAA1ji76Su0JOuO+JY9noZ/LtmO1JWyAt2w3f7wrxnu0D7oKTnUxBEymrWVdIdO1+kLmyxbfY45smaUFac1xT2hzyig4yCTxNcZKxPXXgDbXMNYCEgK3bcLoLYWJInLAmdW50Isp+rnLfV/W37CZjLqApIptECJ3qVtFUfZoAR0AwbZ4p91EJu5ye8fdKYIi7FlkabYLgGZnhWE1U2rv
- OD6+fFJT
- fQfH7p3uTvXEIANk5e/JGNn2ztF7ZiFUrVjNDEpcTaf4p29PCZpdJMiqiz3MCc2ewIWVzf4H3Eh4ts+SpJ5GbeAe6pCSskc61HvCG40TAmRL1Fzk2eHJl3dx2hm/3GcXjikNOQcvBKfU9dLu+kwQ35B7UffysDgLkCrasuOTg1xKWCUjdZUd5mXviJjVM/bAYUlNAaGVdMnhw5TcMF/rQIHcuxgqnnxzuExFSXljvehhKJCV2b4lpbc1DCL5DBoG7Tpp61ytpEuNVcUYtz3QOSq2VGEyxKMSv56RC2N9SgQl+23ZpOfRqO4NjplYLDxGfpByfpbKKqk5xbPTWpCx1yw0zS/A1ic2G1+KHEtZp1/0RQHESe722SQVKmn1t65RuTXhm4sLgVKVfYBQ=
+X-HE-Tag: 1787849880-298829
+X-HE-Meta: U2FsdGVkX19Mpsdr/RR102SnEsZ/3hT3BCSUw3PI6ZKVan0dl7/WeCrATfEPsEDaPURaPyYa3CE/MLYXNMbylR+L8o+LtiHUEs8MkGV/jOdvSv+J1hi5U+prGxR9wClsky9LuuVXXs9Ar2aLpweg+nfY65N+FKprgr7NxEd5tpRvlXerVw/+yEW4V3NwyLFMYKe6hk+ptuE0r0+k/MQcYawFN3qYf8P1OqVijEjc157JDr8v1tCmn9WoZu+8KWRNFUqmqHy/t1KjprC8xKZ5nMwVtzhMc+qvhdCUbv28b9lLTKnAx+X6SD/edKYTBrrJE32x75Q8d/vx4PcSePitZ7+zsggW269MdnRcjQsorLtKqt0zj3OTVrLsExQaoLqcBsV13P3+4EAURSWKZOwaxkbJw1CZlDL6Qqi0Fqhlz23Hpe9nqsibGNJYBDNuo7j4rOmTRAzLi6pCku7+wILB5RJSXiZ2jxShpl76Y1EYO+k+z4+THJ9VKXnNGyrDsWHQZeTQrAnTT8H4DZ8O1QrzLVtPLZ84HKF7hVVP+wxOfFuN3bAoawtUQeJLDy4czFw3PDET2PL2QIOxxEpzbfsFLPGoAOe+j3kDsr2Gysv7EkoC5TkyAVk16lJr4+073cP+ua+bz3bpDk2pfiO8C+2bxNv6tOZIZcfVblSQ2j/HUsVkYxTVMfr9BVMq6VAyoAvZRKRCUfBaAp04bIh48nCoGBC+ivJpjkjCsQhUx/Ilsvx+PRWAcFlC9nEE/Kd1YPFG5J/AGVVEHXLjQAH+eoQ26mI3Vu6mdXef4kpOy9nBxSlgB23uRzUpRMCS3sEAJzNWT6EI6MD6TbXNsKrv8HqBtvIEILs0CuVeordJqPfsHi3OwIJEptWuKMZncF2Q5xRrWA/ILZx+vQNvB2xr4mpAdKpTgojQIM2HzeQ31Zw+iXwYUcQO6JevdZYDkN7yramjjH8Q7A6eC4KjA4TZU6u
+ SaIwlUhA
+ 0DKMl3daiT63ugcU2fMlYmao2uX5Z1ndsBLn3uNT4T40SLbmpO0iMJFFfLahj95dIIOBTq0LcS2gqNp52wb3juhNQEkmE1UzgsPjxmcbq81a9DKOuN9Hi4RExEJ6qLR6jXcJwT78IaHh+dBaTfXE9GjDyZ0kgF5amq757T3Ran1KS5AqgCVuOTZQ+zzBEWjjqdaKyOk5yhvqvIOt50x7NRmZAb3xsfylQQ5AzL4QbHTCNgSOfNmImnuSAxsAGAYdY8xc/AObnjudGnxKHYlgtGgT9RaFh6hdqpgGT3Yz1I6Ep004WjVGpmZKWQaDkn2UVsRlJJytp2mvXGvGRoIu/vPZ6EnDGfs49p8HMyblOETY8dLlqydb96E12VqRvw3YWhbMbnObhYWcn4YleXAwWWgqKuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,378 +91,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 11:03:17AM -0400, Zi Yan wrote:
-> On Thu Aug 27, 2026 at 6:44 AM EDT, Yeoreum Yun wrote:
-> > Hi Baolin,
-> >
-> >> 
-> >> 
-> >> On 8/26/26 8:24 PM, Yeoreum Yun wrote:
-> >> > Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-> >> > glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-> >> > made by memalign().
-> >> > 
-> >> > The underlying VMA may start at a different address from the aligned
-> >> > address returned by memalign(). Furthermore, a subsequent
-> >> > madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
-> >> > already set.
-> >> > 
-> >> > This causes split_huge_page_test to fail because the check_huge_xxx()
-> >> > helpers incorrectly require the address returned by memalign() to
-> >> > match the VMA start address reported in /proc/self/smaps.
-> >> > 
-> >> > Fix this by using /proc/self/pagemap and /proc/kpageflags instead of
-> >> > /proc/self/smaps to detect huge pages.
-> >> > 
-> >> > Reported-by: David Hildenbrand (Arm) <david@kernel.org>
-> >> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> >> > ---
-> >> >   tools/testing/selftests/mm/vm_util.c | 130 ++++++++++++++++++++---------------
-> >> >   tools/testing/selftests/mm/vm_util.h |   1 +
-> >> >   2 files changed, 77 insertions(+), 54 deletions(-)
-> >> > 
-> >> > diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> >> > index 4821a3563036..1d0959b3b9e8 100644
-> >> > --- a/tools/testing/selftests/mm/vm_util.c
-> >> > +++ b/tools/testing/selftests/mm/vm_util.c
-> >> > @@ -351,31 +351,13 @@ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
-> >> >   	return entry;
-> >> >   }
-> >> > -static bool __check_pmd_huge(void *addr, char *pattern, int nr_hpages,
-> >> > -		  uint64_t hpage_size)
-> >> > -{
-> >> > -	char buffer[MAX_LINE_LENGTH];
-> >> > -	uint64_t thp = -1;
-> >> > -	char *entry;
-> >> > -
-> >> > -	entry = __get_smap_entry(addr, pattern, buffer, sizeof(buffer));
-> >> > -	if (!entry)
-> >> > -		goto err_out;
-> >> > -
-> >> > -	if (sscanf(entry, "%9" SCNu64 " kB", &thp) != 1)
-> >> > -		ksft_exit_fail_msg("Reading smap error\n");
-> >> > -
-> >> > -err_out:
-> >> > -	return thp == (nr_hpages * (hpage_size >> 10));
-> >> > -}
-> >> > -
-> >> > -static bool check_large_folios(void *addr, size_t len, int nr_hpages,
-> >> > -		uint64_t hpage_size)
-> >> > +static bool check_large_folios(int pagemap_fd, int kpageflags_fd,
-> >> > +			       void *addr, size_t len, int nr_hpages,
-> >> > +			       uint64_t hpage_size)
-> >> >   {
-> >> >   	int order = 0, pagesize = getpagesize();
-> >> >   	unsigned int nr_pages = hpage_size / pagesize;
-> >> >   	int orders[MAX_NR_ORDERS], status;
-> >> > -	int pagemap_fd, kpageflags_fd;
-> >> >   	bool ret = false;
-> >> >   	if (!nr_pages)
-> >> > @@ -386,15 +368,6 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
-> >> >   		ksft_exit_fail_msg("invalid order\n");
-> >> >   	memset(orders, 0, sizeof(int) * MAX_NR_ORDERS);
-> >> > -	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-> >> > -	if (pagemap_fd == -1)
-> >> > -		ksft_exit_fail_msg("read pagemap fail\n");
-> >> > -
-> >> > -	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-> >> > -	if (kpageflags_fd == -1) {
-> >> > -		close(pagemap_fd);
-> >> > -		ksft_exit_fail_msg("read kpageflags fail\n");
-> >> > -	}
-> >> >   	status = gather_folio_orders(addr, len, pagemap_fd,
-> >> >   			kpageflags_fd, orders, MAX_NR_ORDERS);
-> >> > @@ -405,48 +378,97 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
-> >> >   		ret = true;
-> >> >   out:
-> >> > -	close(pagemap_fd);
-> >> > -	close(kpageflags_fd);
-> >> >   	return ret;
-> >> >   }
-> >> > -bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> >> > +enum check_huge_type {
-> >> > +	CHECK_HUGE_ANON,
-> >> > +	CHECK_HUGE_FILE,
-> >> > +	CHECK_HUGE_SHMEM,
-> >> > +};
-> >> > +
-> >> > +static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
-> >> > +			     uint64_t hpage_size, enum check_huge_type type)
-> >> 
-> >> The original __check_pmd_huge() is only for PMD-sized large folios, but now
-> >> it not only checks PMD-sized large folios but also mTHP large folios, which
-> >> I find confusing. Please keep its original semantics, and only check
-> >> PMD-sized large folios.
-> >
-> > But, It seems to valuable to check other page-flags than checking
-> > the large-folio only.
-> >
-> >> 
-> >> >   {
-> >> > -	uint64_t pmd_pagesize = read_pmd_pagesize();
-> >> > +	int pagemap_fd, kpageflags_fd;
-> >> > +	uint64_t pmd_pagesize, granule;
-> >> > +	uint64_t categories, kpf;
-> >> > +	unsigned long pfn;
-> >> > +	bool check_large, huge_mapped;
-> >> > +	char *start = addr;
-> >> > +	char *end = start + len;
-> >> > +	pmd_pagesize = read_pmd_pagesize();
-> >> >   	if (!pmd_pagesize)
-> >> >   		ksft_exit_fail_msg("reading PMD pagesize failed\n");
-> >> > -	if (hpage_size == pmd_pagesize)
-> >> > -		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
-> >> > +	if (nr_hpages > 0) {
-> >> > +		check_large = true;
-> >> > +		granule = hpage_size;
-> >> > +	} else {
-> >> > +		check_large = false;
-> >> > +		granule = psize();
-> >> > +	}
-> >> 
-> >> This is incorrect for the mTHP large folio check. I already hit a selftest
-> >> failure. Please test your patches before sending them out.
-> >
-> > Since for a split case, large folio can be as-is but only remove
-> > the PMD mapping only, skipping the large_folio checking seems valid
-> > when nr_hpage is 0.
+On Thu, Aug 27, 2026 at 12:42:11PM -0400, Rik van Riel wrote:
+> drain_all_stock() queues drain work on remote CPUs via
+> schedule_drain_work() -> queue_work_on(memcg_wq) and returns
+> immediately without waiting. The worker, drain_local_memcg_stock()
+> / drain_local_obj_stock(), dereferences per-CPU stock caches with
+> READ_ONCE(stock->cached[i]) and does css_put() / obj_cgroup_put().
 > 
-> What split care are you referring to? split_huge_page_test() always
-> splits the folio.
+> mem_cgroup_css_offline() calls drain_all_stock(memcg) to
+> optimize reclamation latency, but never flushes memcg_wq. If
+> that races with cgroup removal, free can happen while workers
+> are still pending, causing UAF. The drain work could also have
+> been queued by somebody else before offline started (e.g. high
+> throttling), not just by the offline path itself.
+> 
+> Timeline illustrating the race:
+> 
+>   CPU0 (rmdir + offline)                CPU1 (charge cache holder)
+>   -------------------------             ----------------------------
+>   cgroup_rmdir()
+>     cgroup_destroy_locked()
+>       kill_css_sync()
+>       ...
+> 
+>                                       refill_stock(victim)
+>                                         css_get(victim)
+>                                         WRITE_ONCE(cached[i]=victim)
+> 
+>   percpu_ref kill confirmed, css_killed_ref_fn() called
+> 
+>   css_killed_work_fn() [offline_wq]
+>     mem_cgroup_css_offline(victim)
+>       drain_all_stock(victim)
+>         is_memcg_drain_needed()
+>           READ_ONCE(cached) -> victim
+>         queue_work_on(CPU1, memcg_wq, work)
+>         // no flush!
+>       mem_cgroup_private_id_put()
+>     css_put() -> refcnt may hit 0
 
-Not for split_huge_page_test case but for khugepage testcase like
-collapse_full_of_compound() test.
+Why would refcnt hit 0? CPU1 stock has a reference.
 
 > 
-> >
-> > And the failure of test seems because of unmapped area after
-> > changinng the collapse-order. Therefore, it seems to fine with below
-> > patch:
-> >
-> > ---------------&<----------------------
-> >
-> > diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> > index 1d0959b3b9e8..f174a76d2310 100644
-> > --- a/tools/testing/selftests/mm/vm_util.c
-> > +++ b/tools/testing/selftests/mm/vm_util.c
-> > @@ -387,14 +387,14 @@ enum check_huge_type {
-> >         CHECK_HUGE_SHMEM,
-> >  };
-> >
-> > -static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
-> > -                            uint64_t hpage_size, enum check_huge_type type)
-> > +static bool __check_huge(void *addr, size_t len, int nr_hpages,
-> > +                        uint64_t hpage_size, enum check_huge_type type)
-> >  {
-> >         int pagemap_fd, kpageflags_fd;
-> >         uint64_t pmd_pagesize, granule;
-> >         uint64_t categories, kpf;
-> >         unsigned long pfn;
-> > -       bool check_large, huge_mapped;
-> > +       bool check_large, check_huge_mapped, allow_nomap;
-> >         char *start = addr;
-> >         char *end = start + len;
-> >
-> > @@ -405,11 +405,20 @@ static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
-> >         if (nr_hpages > 0) {
-> >                 check_large = true;
-> >                 granule = hpage_size;
-> > +               if (granule == pmd_pagesize)
-> > +                       check_huge_mapped = true;
-> > +               else
-> > +                       check_huge_mapped = false;
-> >         } else {
-> >                 check_large = false;
-> >                 granule = psize();
-> >         }
+>   [RCU GP]
+>   css_free_rwork_fn()
+>     mem_cgroup_free(victim)
+>     // victim struct freed
 > 
-> The else is for nr_hpages == 0? But it looks like we allow negative
-> nr_hpages. Maybe add a bool expect_huge = nr_hpages > 0 to make it
-> explicit.
-
-Fair enough. I'll change.
-
+>                                         // worker delayed by scheduler/
+>                                         // WQ concurrency
+>                                         drain_local_memcg_stock()
+>                                           old = READ_ONCE(cached[i])
+>                                           // UAF: old == freed victim
+>                                           memcg_uncharge(old)
+>                                           css_put(&old->css)
 > 
-> granule is an optimization for PAGE_IS_HUGE scanning? When we expect a
-> PMD mapping, we just scan at pmd_pagesize granularity, otherwise we
-> check every single page?
+> Fix by having the offline path wait for the workqueue to be
+> done with the memcg, before freeing the memcg.
 > 
-> At the high level, the function looks good to me, the rules are:
+> Found through a code audit with kres.
 > 
-> 1. if hpage_size == pmd_pagesize, we need to check PAGE_IS_HUGE and
-> check_large_folio() can be skipped, since we only care about mappings.
-> This checks for PMD mappings.
+> Fixes: 591edfb10a94 ("mm: drain memcg stocks on css offlining")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Hermes:muse-spark-1.2 kres
+> Signed-off-by: Rik van Riel <riel@surriel.com>
+> ---
+>  mm/memcontrol.c | 29 +++++++++++++++++++++++++----
+>  1 file changed, 25 insertions(+), 4 deletions(-)
 > 
-> 2. in other cases, check_large_folios() is always needed. This is for
-> mTHP checks.
-
-Exactly, but for some testcase where use this function, doesn't
-trigger split of large _folio but only check the HUGE MAP is removed
-(nr_hpage == 0), it skips the chekc_large_folio(). 
-
-> 
-> I think the ifs at the beginning is confusing. Can we do something like
-> below to get rid of the ifs? I also moved KPF_* checks in a separate
-> function. Feel free to make changes if you find any issue there.
-> 
-> static bool check_huge_type(uint64_t categories, uint64_t kpageflags,
-> 			    enum check_huge_type type)
-> {
-> 	bool file = categories & PAGE_IS_FILE;
-> 	bool swapbacked = kpageflags & KPF_SWAPBACKED;
-> 
-> 	switch (type) {
-> 	case CHECK_HUGE_ANON:
-> 		return !file;
-> 	case CHECK_HUGE_FILE:
-> 		return file && !swapbacked;
-> 	case CHECK_HUGE_SHMEM:
-> 		return file && swapbacked;
-> 	}
-> 
-> 	return false;
-> }
-> 
-> static bool __check_huge(void *addr, size_t len, int nr_hpages,
-> 			 uint64_t hpage_size, enum check_huge_type type)
-> {
-> 	int pagemap_fd, kpageflags_fd;
-> 	int nr_pmd_mappings = 0;
-> 	uint64_t pmd_pagesize, scan_mapping_size;
-> 	uint64_t categories, kpf;
-> 	unsigned long pfn;
-> 	bool check_pmd_mapping;
-> 	bool allow_nonpresent;
-> 	bool ret = false;
-> 	char *start = addr;
-> 	char *end = start + len;
-> 
-> 	pmd_pagesize = read_pmd_pagesize();
-> 	if (!pmd_pagesize)
-> 		ksft_exit_fail_msg("reading PMD pagesize failed\n");
-> 
-> 	check_pmd_mapping = hpage_size == pmd_pagesize;
-> 	scan_mapping_size = nr_hpages > 0 ? hpage_size : psize();
-> 	/* Some mTHP tests check a partially populated PMD-sized range. */
-> 	allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
-> 
-> 	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-> 	if (pagemap_fd < 0)
-> 		ksft_exit_fail_msg("open pagemap fail\n");
-> 
-> 	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-> 	if (kpageflags_fd < 0) {
-> 		close(pagemap_fd);
-> 		ksft_exit_fail_msg("open kpageflags fail\n");
-> 	}
-> 
-> 	/* PTE-mapped large folios cannot be identified by PAGE_IS_HUGE. */
-> 	if (!check_pmd_mapping &&
-> 	    !check_large_folios(pagemap_fd, kpageflags_fd, addr, len,
-> 				 nr_hpages, hpage_size))
-> 		goto out;
-> 
-> 	for (; start < end; start += scan_mapping_size) {
-> 		categories = pagemap_scan_get_categories(pagemap_fd, start);
-> 		pfn = pagemap_get_pfn(pagemap_fd, start);
-> 		if (pfn == -1UL) {
-> 			if (!allow_nonpresent)
-> 				goto out;
-> 			continue;
-> 		}
-> 		if (pageflags_get(pfn, kpageflags_fd, &kpf))
-> 			ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
-> 		if (check_pmd_mapping && (categories & PAGE_IS_HUGE))
-> 			nr_pmd_mappings++;
-> 		if (kpf & KPF_COMPOUND_TAIL)
-> 			continue;
-> 		if (!check_huge_type(categories, kpf, type))
-> 			goto out;
-> 	}
-> 	if (check_pmd_mapping && nr_pmd_mappings != nr_hpages)
-> 		goto out;
-
-Again, because of collapse_full_of_compound() testcase,
-it would be failed for this. so, it would better to skip
-check_large_folioes() when nr_hpages is 0.
-
-> 	ret = true;
-> 
-> out:
-> 	close(pagemap_fd);
-> 	close(kpageflags_fd);
-> 	return ret;
-> }
-> 
-> >
-> > +       if (nr_hpages * hpage_size < len)
-> > +               allow_nomap = true;
-> > +       else
-> > +               allow_nomap = false;
-> > +
-> >         pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-> >         if (pagemap_fd < 0)
-> >                 ksft_exit_fail_msg("open pagemap fail\n");
-> > @@ -428,18 +437,15 @@ static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
-> >                 categories = pagemap_scan_get_categories(pagemap_fd, start);
-> >                 pfn = pagemap_get_pfn(pagemap_fd, start);
-> >                 if (pfn == -1UL) {
-> > -                       if (check_large)
-> > +                       if (!allow_nomap)
-> >                                 goto out;
-> >                         else
-> >                                 continue;
-> >                 }
-> >                 if (pageflags_get(pfn, kpageflags_fd, &kpf))
-> >                         ksft_exit_fail_msg("read kpageflags: %s\n", strerror(errno));
-> > -               huge_mapped = categories & PAGE_IS_HUGE;
-> > -               if (check_large != huge_mapped) {
-> > -                       if (!check_large || granule == pmd_pagesize)
-> > +               if (check_huge_mapped != !!(categories & PAGE_IS_HUGE))
-> >                                 goto out;
-> > -               }
-> >                 if (kpf & KPF_COMPOUND_TAIL)
-> >                         continue;
-> >                 if (!!(categories & PAGE_IS_FILE) != (type != CHECK_HUGE_ANON))
-> 
-> 
-> 
-> 
-> 
-> > @@ -458,17 +464,17 @@ static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
-> >
-> >  bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> >  {
-> > -       return __check_pmd_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_ANON);
-> > +       return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_ANON);
-> >  }
-> >
-> >  bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> >  {
-> > -       return __check_pmd_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
-> > +       return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
-> >  }
-> >
-> >  bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> >  {
-> > -       return __check_pmd_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_SHMEM);
-> > +       return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_SHMEM);
-> >  }
-> >
-> >
-> > If it's good for you, I'll repost again.
-> >
-> > Thanks!
-> 
-> 
-> 
-> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 6dc4888a90f3..c95a1f6ec799 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2273,12 +2273,18 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
+>   * Drains all per-CPU charge caches for given root_memcg resp. subtree
+>   * of the hierarchy under it.
+>   */
+> -void drain_all_stock(struct mem_cgroup *root_memcg)
+> +static void __drain_all_stock(struct mem_cgroup *root_memcg, bool sync)
+>  {
+>  	int cpu, curcpu;
+>  
+> -	/* If someone's already draining, avoid adding running more workers. */
+> -	if (!mutex_trylock(&percpu_charge_mutex))
+> +	/*
+> +	 *  If someone's already draining, avoid starting more workers.
+> +	 *  Synchronous callers need to guarantee all the last things
+> +	 *  are flushed, e.g. before a memcg is removed.
+> +	 */
+> +	if (sync)
+> +		mutex_lock(&percpu_charge_mutex);
+> +	else if (!mutex_trylock(&percpu_charge_mutex))
+>  		return;
+>  	/*
+>  	 * Notify other cpus that system-wide "drain" is running
+> @@ -2316,6 +2322,21 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+>  	mutex_unlock(&percpu_charge_mutex);
+>  }
+>  
+> +void drain_all_stock(struct mem_cgroup *root_memcg)
+> +{
+> +	__drain_all_stock(root_memcg, false);
+> +}
+> +
+> +void drain_all_stock_sync(struct mem_cgroup *root_memcg)
+> +{
+> +	/*
+> +	 * Make sure the workqueue is done with this memcg
+> +	 * before freeing it.
+> +	 */
+> +	__drain_all_stock(root_memcg, true);
+> +	flush_workqueue(memcg_wq);
+> +}
+> +
+>  static int memcg_hotplug_cpu_dead(unsigned int cpu)
+>  {
+>  	/* no need for the local lock */
+> @@ -4305,7 +4326,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+>  	wb_memcg_offline(memcg);
+>  	lru_gen_offline_memcg(memcg);
+>  
+> -	drain_all_stock(memcg);
+> +	drain_all_stock_sync(memcg);
+>  
+>  	mem_cgroup_private_id_put(memcg, 1);
+>  }
 > -- 
-> Best Regards,
-> Yan, Zi
+> 2.55.0
 > 
-
--- 
-Sincerely,
-Yeoreum Yun
+> 
 
