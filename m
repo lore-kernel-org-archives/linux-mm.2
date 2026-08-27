@@ -4,145 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E10C61DC6
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 11:40:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20449C61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 11:40:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 557D86B0096; Thu, 27 Aug 2026 07:40:12 -0400 (EDT)
+	id 3F94A6B0099; Thu, 27 Aug 2026 07:40:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 508BC6B0098; Thu, 27 Aug 2026 07:40:12 -0400 (EDT)
+	id 3D1396B009B; Thu, 27 Aug 2026 07:40:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F75A6B0099; Thu, 27 Aug 2026 07:40:12 -0400 (EDT)
+	id 2BF5A6B009D; Thu, 27 Aug 2026 07:40:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E3426B0096
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:40:12 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91069C03C3
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:40:11 +0000 (UTC)
-X-FDA: 85146855822.28.7E3A6BC
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 31C9540008
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:40:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=W7mcRDur;
-	spf=pass (imf17.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 110D66B0099
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:40:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7853FC03D8
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:40:19 +0000 (UTC)
+X-FDA: 85146856158.23.1BE5F4C
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A62FF40003
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:40:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KcuAK99l;
+	spf=pass (imf01.hostedemail.com: domain of sef1548@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787830817;
+	b=qG4yl9ZGuI019yvu17LvvibAcgHlX7ngGIMPosNOBhymN7yHEelpkNWMYLIBXs77GZAOiC
+	mOwUQR5F6Ch8DIyXA8yNDYsxz69KS0kkr1YYQCXN00omSDZ9u+Kmio0/klHNCo1w8rlEQL
+	DUIuY/AYCWA6a0xqv2mpALDrJfS2r1A=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KcuAK99l;
+	spf=pass (imf01.hostedemail.com: domain of sef1548@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787830809;
+	s=arc-20220608; t=1787830817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hft1u0fMlCKnLKkYrKeD/za/SEhliPK6FjjWQWyvfYM=;
-	b=7m+WpbabpiX2VrxBp6yHb2rzYh3XNH+u3MzYColgkZRH9lT/rFGDMkad8dQjsYBw6MXAag
-	sOCA2AhXoAkCwJmvAk87f0u98QaNGuwVawlD4JTJY2soCLnArB1+NtwyoflO4saxFxCUt2
-	Y8JS+QpKY2ZlV4zCGo7liR8DiqTv+1k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787830809;
-	b=q/vdCZ5tcqAujM9a9LzQ1CAoG2K12lHTucZmGbJ1wJOiprskylbFNSGsYR93plcAEewIMV
-	pUFGbVj7qy6k1lJrQRfANBatooYIYEYyH/pP+uob3Kvi1bAKLXdNVeIo11t3us0mEdG/KW
-	Oa0KORqcLXTFyTbGXlKJPzlfBjbGdjA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=W7mcRDur;
-	spf=pass (imf17.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67R9WGC0732911;
-	Thu, 27 Aug 2026 11:40:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=hft1u0fMlCKnLKkYrKeD/za/SEhliP
-	K6FjjWQWyvfYM=; b=W7mcRDurVpXKXB55mZGGe9La6bZgDc9lYciMeMiu2rbJXm
-	KPA+TA4sg4WXgIFJ71KTTpEWnQ1vkTBvu7DxAGc/NxJWwl3UHVyevDeJsiqrlxV7
-	2EamppUEs5WVo67b7Re2cKaD++JZxLOjnh7QhqmymLWUvFzu7rbuYbNmu4m/dQ1c
-	im/2FBF1UciQ/pd54cUcX1/lkCsEfAZ7YM5rMO6mkvf9XM3HEezrv2JOAICbeBZ8
-	YmOfA9PvilyNzksC06Xe294rBuYHY8yA75nmNVp6XJRl/HJsb+/jsi5DCvVIwn3R
-	ZZAhRMtm914O0AhSqn+k+Dp62TyD1rub3a9H+fdQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73er4yt7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Aug 2026 11:40:06 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67RBQIuc017201;
-	Thu, 27 Aug 2026 11:40:05 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7p3qg0yv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Aug 2026 11:40:05 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67RBe1jT53739786
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 27 Aug 2026 11:40:01 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D24620040;
-	Thu, 27 Aug 2026 11:40:01 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED8FB2004E;
-	Thu, 27 Aug 2026 11:40:00 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.20.232])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 27 Aug 2026 11:40:00 +0000 (GMT)
-Date: Thu, 27 Aug 2026 13:39:59 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com
-Subject: Re: [PATCH v7 2/4] s390/mm: Batch PTE updates in lazy MMU mode
-Message-ID: <b0d59b27-8d15-499a-aced-e5b247ed40c1-agordeev@linux.ibm.com>
-References: <cover.1786956464.git.agordeev@linux.ibm.com>
- <d7fd78377a7278108ef501cf76571e80caef5968.1786956464.git.agordeev@linux.ibm.com>
- <20260824104048.11040Cdc-hca@linux.ibm.com>
- <73a0a916-b39f-4ebe-bffe-448928b13bef-agordeev@linux.ibm.com>
- <20260826130257.21444B1a-hca@linux.ibm.com>
- <87a3147f-e993-4629-b0dd-a54aefbf20b1-agordeev@linux.ibm.com>
- <20260827081156.3869103Abc-hca@linux.ibm.com>
+	bh=t1JOPQJp+51uCszh+hJ8mwVKxXA1ndqmwYZcjdWNa5s=;
+	b=xbA7PmDxSX6s0zp+qkeW2kJSGMjGlnssMjo4i2wUjD4xDnzqGI6uaYbIRep0dSpxhW1JVu
+	NEXlKkYC4+i8N12YP2KkIAwzrvG0WSOqBjGsRiLtx610khY97Ql9z/hOzn5QrMLv7CwyPM
+	016/V3+8+SbQfmK2BQlbNS2gGadTi7U=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-396b3d0df94so465815a91.1
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 04:40:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787830816; x=1788435616; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=t1JOPQJp+51uCszh+hJ8mwVKxXA1ndqmwYZcjdWNa5s=;
+        b=KcuAK99lo/iS4VR4QqvmZ1U1NHWTqn3jP/m+2phcAJ6QXlf44CUIPQ68N3Hf6pI7O+
+         cBwyxuA0RcCYUG+BQa5eWa3ZNLeloA0VV6vxg+Jka6KTKl14WMuCwC7rBRC8Pia9z9JU
+         vBTmSFHVSpiHEgiAk3Cz0OVZSwyjytF7xq0N+5SHCQUQT3kVR2R3Q5YB19WIKlfkBkO2
+         DLfS/NQyPM8ug1B93GQpIT3nUSn74o/rUD0U/D0Oo460/wRcqlYgbvVaWH5sgeIefCl9
+         xXIfkU8v4W4JJhx+W2SzVTtCuo0JWnPfGLGxrQ2zaMrs35qT5eB0qJnjntROsG8PqKig
+         uD1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787830816; x=1788435616;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t1JOPQJp+51uCszh+hJ8mwVKxXA1ndqmwYZcjdWNa5s=;
+        b=JpA9H5x6rOxFKtmplrc4Gh1UxUbqlA/YCeLd/RHvV66JiEhzXuXmf1q94TwthQbP9g
+         HO5xKjpLDFZlwf3pIksldTaAt3lmP8tz7AXKiH5hlrLnhrmjInn0l+sb7muPhNbWJx1E
+         kMxpA4Eeoit8dSR0oeQ3FsUe3adnI0dr1fGsDNnYXQADzOuq3ExqBv0Ta6XmrhVjuszh
+         GRViJRQPL7t7DOXuhldxUJoonKKihNxJpICKVE2UlMNDTpLoPJnVHC+TCRUeQ44on+sx
+         yQ/ZNDrNS+Wr38uExx4+y6OP+dgvOnmCZ6zd8UhR+i4LF+acjJTxAXV+Pu/a7MycERlM
+         B9WQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrnwM1X6AInq52j+W5QwURIIm44T6dSFpbRDK4FepC4GOcvC+G6h8lmOtfO4Hapf5q7cX+3ZYMyjg==@kvack.org
+X-Gm-Message-State: AFuF++n/LtPMWR9vw/wgqCqH/xnKvKxLZ4XSDHi7rWzgEVpR0KJtHiBR
+	5uk4yuokLZy7IDPDY8a3xN9fdM9OoGOTxzAWFySisaQuFOSMEcj7xxzXWkXu07xQ
+X-Gm-Gg: AR+sD13BWqJ8dPdPsKqcL4B7YuwybAzRJyqkqD+kBqNwr+4fTu4f1bczx1DHmjP0y4u
+	Q5nnxUZAsju8wzvRfid7O2BJ8wDpEUJy/sAWOL+b43dbt6KfCIynLeW8VlGQBY5pqcqkTpKsebl
+	M477SBt7LVecXeXkUB17RC8CNmoI7BpRYCQK/5SkAtgLr94+owJwW7uytYEqmUvDUqKYoteG5Kz
+	CRlDABVA/7OfqE+YwqdIUkNh/80Q7ZJe1Ir2wKAlKAcEcqOSSP7X+EjQ28HnCJMAXGq8/E395xR
+	618qc7qxgjKNrXyEwMpxnUrZVXZat9QeeHVf8E/F4Fe7PpSWTq3j+Bfa+LXMsyqCTD2Us0MzDee
+	KXdnWChpiPfAiH8qh5FsMZ2pHw+EtvsR/X4cosRS/ebVbUFYhinAi0tuEpeZ2nloswoch6+dfTw
+	MwUgmxDPSHtnhUFlPWCwcnQjgg2ATG8xOkIH7aCI1kHVXbhpAu3FI9DHM6oKoKB1LGrNwi/CztF
+	+zSO2BOQz3ImkS2CFKfMdJlhsX5lLiThEaIrG6t6G9sTMqTHiBsulQU8j9ZW/5weJJnhp9yV/Qv
+	EOieObany0E=
+X-Received: by 2002:a17:90b:54cb:b0:37d:f206:a2ac with SMTP id 98e67ed59e1d1-3966d5b7c62mr30914853a91.7.1787830816480;
+        Thu, 27 Aug 2026 04:40:16 -0700 (PDT)
+Received: from nickhuang (2001-b400-e2da-56f3-9c0c-c5a1-7839-5c55.emome-ip6.hinet.net. [2001:b400:e2da:56f3:9c0c:c5a1:7839:5c55])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b0d3d7fbsm2475627a91.3.2026.08.27.04.40.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 04:40:15 -0700 (PDT)
+Date: Thu, 27 Aug 2026 11:40:11 +0000
+From: Nick Huang <sef1548@gmail.com>
+To: Yue Haibing <yuehaibing@huawei.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+	baohua@kernel.org, youngjun.park@lge.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] mm/swap: Remove unused declaration
+ swapcache_clear()
+Message-ID: <apAiG61Phh7ANjzT@nickhuang>
+References: <20260827082722.1809702-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260827081156.3869103Abc-hca@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: g852VGYQV57aImlgpSXSr7lgSbZAjYga
-X-Proofpoint-ORIG-GUID: PCitcdLPSed0qO_DEQY_0xyJ0WeyIiyY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI3MDA5NiBTYWx0ZWRfX4RPE8U9cgIV/
- uZuXvUy2N/OSt5fdeft120XXFoPOeSxq5mpMTDWgjf0B8YgADiHIcbjHZ4d3enc+6hgg2ZdaA22
- /oxqlpOQDunoOSzqq1pwfpw/wYgCvgnG30Y8fyVZ0hHqtzqMQ3AKtMZwInH5/PieUY5qeZxeZUi
- GjTBjWqHhjVpB+ljhHKEUPQtGqbVJd1Wv8jw8DhkbvsAgOwlo0u6HHGKoNqrpqwxZD9cPA99mrH
- GcldPPcYeKBJMvQVs15E0ibrP9zQUIep9K6BcwPD/YCFfpoGQDL7vS1q0+T++Cbi/+4EFZwky9y
- 6JOc7E2ISFoErUjxCYV4F0dNlMVcd24A8TEEry9Hw73Q66ANksoAKbvtGQGDvAMlWXQnX9Sa2Wl
- pLEcUaFZkxAWsGDH8cKyUFEY87SB+fzA9qsupKVgNKEuExEhjzdDRcaN48i/3SGLMS+o2tmatmg
- QlQFIb0RGCnJ1ONr38w==
-X-Authority-Analysis: v=2.4 cv=QsRuG1yd c=1 sm=1 tr=0 ts=6a902216 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=uroAWBtYYZKLiyjPLxIA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI3MDA5NiBTYWx0ZWRfX1bqF5R//rcDX
- 7ajB85l0g5erJqSt1ReSbQbS39Zs89KlZJ/9gb+NpHGL7zgLBfqHpWSzJpaXn9HXvBWElJEBFuX
- DgVmsGff+ZojOtGlo8JcEbBsJvhNQ5s=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-27_04,2026-08-26_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- spamscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608270096
+In-Reply-To: <20260827082722.1809702-1-yuehaibing@huawei.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 31C9540008
-X-Stat-Signature: cshcwrw8z6tgq9rae6gdhz7ny1gwgjbw
-X-HE-Tag: 1787830808-653001
-X-HE-Meta: U2FsdGVkX1+0JNAornIkqiSD8M1WEotGNdT13BOqQQwZsbN8uHA9xDhA3amXDwZ/vovsnlA2A4i2hMLAvRh0bBsWgKzQKPUktylz+DhDOwcufgX39+qdWeQlkx7Imi3r31sD0Lnd2Xplfd0KdTQ6UOQBoXXUNmhoEhryS4vwN1+XNXL5NIQuwoUhtdi+OleG1KQa68GOytoD45ZmY5KnsBFU09GMrOuPWhhD2JWOBrPHhe4m+wlgBeI8MIROavZxhkmQtrtgwV1dnD0brsj8uP+IvVjZUYlOq/yh7hIQY5s+6pq5Me/x3y8dzeSCzWKuAysRv+Bcw6FpqPnDL240RY3b6DmvK467+hM/Ey3ue1ratdmvZl8w1jTDIO6hop6SQne9K8wk3dhqvkbgpcvE5o48VNV9Q6Ywn8jDnpS0rk/nmcgo0P76OKijEMTwHpA9XvuE2woDGF8mwYQewaEoF90+HVCcDmzw/2eonpeFcmItUhvEsPMO0KU9lFtGJ0Wd/98BBSXa2aS9ehue9Gb7ldX4GxLrjPjTtHDCNO3mCb4dm4FQexGtwQDZFgH+/eL2EZ4nIspP9wrXwGfl1NAmLqMVNnBBqCX1xbczUSzcvbdLGFyIs420ACGIUmTKZl/Ewk7EYHJnUhWFDpAvghsEbAdgeyHSDEO6HOist7WdtwapaDKYnxYGB1dp8/r1Nfvz4Yyo+eTWKL4QVTw1X/UHjozFrVjhgQtTsQV4yl+63NJxqHisbyTEg2pHZWVQ/56NsHiJ0J4ppr/VA/NDU+2j8Ta9BgIY1x288V8mwWQzO6wiWpuE+QGm7wTw2HRgRfOVuSb5RONkUcHfRqPmYClQ93wvATaJlzZWDoxfuegS3HXGqs3M45DHrKKePgB0+pKj8IUg3rRhLHaj3NYWggJ53/JOReNjr64nxKwm/ED2pXPhFgjn+7ssUfA6E1LKbkovtbzzHvleVXLwVSKQe6V
- 5YpxgVOF
- M2CfgwSIBxdShVYqwITwyYOljZSqlLJqxocFJlzDff7XaIpyoxuCvqmkL2r0s+BikuN9jomhfO6IicLV7RrAViF1AGFMvKD9Uz4Z0MDAIGFtDNWEyl47934rqzbluy6nW5ViuyaSW1D32G2ljpF2DmTkSzhJLbdk5fy+RTv4Im+GsA+BeIrOJLZZGtAnTnL15GCh+0UTAw2H0Ff5fM/V1+4IpIBPtCX0u3zrhs+9Bysaff+h0+5k4IFgTztRgl0Ojh+pAC3eryP9LEJlKQ9F9K2MQmuW/EZjrrBQYH/U1R7MKuj5nlujXkRrQZlGmr9t2nU6NcJtPtkqJs53Pd1X4KoQommGR2aIP/QIF46V/Z0PG12FIcCvtW7obw3qwuhzV2neA
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A62FF40003
+X-Stat-Signature: ky9fcmmrr1yk9rsbnxx8xj1egtkgxsey
+X-HE-Tag: 1787830817-958134
+X-HE-Meta: U2FsdGVkX18SZ009qy6C5TaopW/qM5COyM/oQnbb4m96m5qCdGg02sNSuUgHTFIete3kjZ5WYVwD0N6MqozklYmNkb6fVW04DGVgWMvV4ruATQxOeUwpRRlH8BLRDUncSrXi+7oEFPqMMQssT++Xn+CC3acKV7uIhVD4Mt3ougt3owAS7C5BNfmYTZsIE/ZljHJx4uft9Yn1kdQdEoHBPgDBYAECypPx4uAOCgjGBwtZR4gLRf/mmPFwZGBJ2CilTPlwggd6ZH3ZUNyjSTdzb4mkr/zHmgRGvSWFgZgBWiovS/AUEGMODwBnghUvpSu+Ed0yAdbhh/KuLA/ORR2fvCCzuH+Km5gmASL4IGsLHPIiLOSAjgTxRnoEf6XfafJwjH23kS3fFl6kD6mMej91mK+3Jx6+fBbg+NhRTk1+p1JULgjDQyoqegKDxaeQz+xsXV3YiTXpwSRgT6gs6z+4Vd7sjAqSJHX4mp0689Mjx/CBmq8PCHH5EZ8I6xug1MaHz5XDpnG6g+P1flNeHht2DWQr6XT2Z5XRsVysZjBhvD3/7RF3SWlno28a8YCFeI83eMkGQxIr1v5ObyvY7Zgl4hh54AjEK0glqb34iPLjFI6MMNuUXxHsgOynUeqVn20kjiSuTs3oKxr4BmNxCbispbFE4n93uOy2uoKAkWLDVImCNm8CZrxaMFmY0iyRHhRYv2nyPKZ8Xcj0e33TU8VhWWyFXO0nWLbof15ODqPOSCDCyHX5QxO0E/MTjQf9BLJBwUV7Ic8gGpI+agTmL6Nx5bGL8H9manhs+iYkP/7un+X2qbBQIK6/4Q5ZeiGTQKyTAQ8iHRFfNiwgJetOPAcvzo3ym5l3CMSIsuxDsxUtwjyZb/Xsyzo8VAk4PveAVkLWqD3ao1Z6lcIWTrSz9mbjjznRReb4Rx+eKbYm1DNd4U8KU69VSwUG6nEzQ1KE5sAMcWm1dTgQ8WgaS9d6VtD
+ L0RCeJME
+ ZLzDFtOrzXisSJEJFWk6EPJfY11tv2BM+YleSVBjS1Ecagbk1ePQfpJ+J1g9eMrXf+QBAROFxn3CCPVdAJtbNS5Hhabj15bMBpknHrHJ7qVp+q6FAdHYyJ2RYoWRuTd/CuxbkMb91KnhO9QHvXKcytyFKyfyAh7zAVbqQeaik7sE5+Qw+OJI/xBWk0Jtpu3bWVLiZRQRLhGxsFybq4LjHIYYujivXEhNreqkZmLdZTB6K2yHEKuVfsDppGiTdiNP3EhnJ/n2JFDEF3JTCZUwGjHNzp16+4iip5NtfhEU/1bZwBlqvnDBEMOeUR/rGQhJkTYZrchzCuFTWxQrC9QhrqGOaoXpYw2lXpOt5cCT+HI9BSzgLELcl5a0wJgCMlgwN9SyHCP6PpYrlz0MNnYOW6lV+C01UTuPAArifhIw4jnbf5qUKMk6ejTaLPg4syvVn6y7Imx0eoYcI88hX8cdamRJxgHC+osrOT7kN9siwv/teuQ/6XVw2hw+7rfGIh2H0fauSWi8A5MpY/VVM3U6D0uzzVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,41 +123,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 10:11:56AM +0200, Heiko Carstens wrote:
-> On Wed, Aug 26, 2026 at 04:34:25PM +0200, Alexander Gordeev wrote:
-> > On Wed, Aug 26, 2026 at 03:02:57PM +0200, Heiko Carstens wrote:
-> > > Would be nice if we could avoid the not so obvious local_bh_disable()
-> > > and local_bh_enable() pairs.
-> > 
-> > Calling ptep_get() from BH context was certainly unexpected, but the way
-> > local_bh_enable|disable() pairs are used is actually straightforward.
-> > This is a slow path anyway, so I would think the simplicity prevails in
-> > this case.
-> > 
-> > But again, I will try to avoid that.
+On Thu, Aug 27, 2026 at 04:27:22PM +0800, Yue Haibing wrote:
+> Commit c246d236b18b ("mm/shmem: never bypass the swap cache for
+> SWP_SYNCHRONOUS_IO") removed the implementations but leave this.
 > 
-> I do agree that ptep_get() being called from BH context is not what I
-> would have expected too. But then again, nothing prevents people from
-> doing that from irq context too, no matter if that is sane or not.
+> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+> ---
+>  mm/swap.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/mm/swap.h b/mm/swap.h
+> index d077e5893a42..29060a305443 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -344,7 +344,6 @@ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+>  				struct folio *old, struct folio *new);
+>  
+>  void show_swap_cache_info(void);
+> -void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry, int nr);
+>  struct folio *read_swap_cache_async(struct swap_io_ctx *ctx, swp_entry_t entry,
+>  		gfp_t gfp_mask, struct vm_area_struct *vma, unsigned long addr);
+>  struct folio *swap_cluster_readahead(swp_entry_t entry, gfp_t flag,
+> -- 
+> 2.34.1
+>
+I checked the current tree and only the declaration remains:
 
-I am currently looking if any interrupt handler does such a crazy thing.
-If not, I hope it would be possible to nail this requirement with the
-maintainers and e.g. add VM_BUG_ON(in_hardirq()) to ptep_get()/set_pte()
-implementations.
+$ git grep -n 'swapcache_clear'
+mm/swap.h:317:void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry, int nr);
 
-But even with BHs we have an interesting situation: calling ptep_get()
-from a BH while in the lazy MMU mode is actually a read hazard. IOW what
-I hit looks to me as a bug in generic code, and one that looks very
-difficult to fix. So staying with local_bh_enable|disable() would be
-still a good tradeoff.
-
-> Imho the "final" version should either be implemented that it can go
-> without disabling bottom halves, or, if that is not worth the effort,
-> even disable interrupts, just to avoid other surprises.
-
-Yes, that would be the last resort.
-
-> Plus a comment why it is needed, please.
-
-Sure.
+Acked-by: Nick Huang <sef1548@gmail.com>
 
