@@ -4,134 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89A87C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:08:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 064E7C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:09:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C3FA6B0095; Thu, 27 Aug 2026 15:08:10 -0400 (EDT)
+	id E6E7B6B0098; Thu, 27 Aug 2026 15:09:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 875556B0096; Thu, 27 Aug 2026 15:08:10 -0400 (EDT)
+	id E460D6B0099; Thu, 27 Aug 2026 15:09:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 763DC6B0098; Thu, 27 Aug 2026 15:08:10 -0400 (EDT)
+	id D5BBE6B009B; Thu, 27 Aug 2026 15:09:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F6C26B0095
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:08:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2B78A0180
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:08:09 +0000 (UTC)
-X-FDA: 85147984698.14.5BCB08B
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 18D1940008
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:08:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=N3iWbz4S;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3FouQagYKCMk7tp2yrv33v0t.r310x29C-11zAprz.36v@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3FouQagYKCMk7tp2yrv33v0t.r310x29C-11zAprz.36v@flex--seanjc.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E15B6B0098
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:09:50 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33CDD140173
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:09:50 +0000 (UTC)
+X-FDA: 85147988940.22.8CFCB3B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 610E340013
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:09:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kCK46U9G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787857688;
+	s=arc-20220608; t=1787857788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JWGZwnfyNQRYCnM1UqJIynPGxtHIQDoEVfaq/bKW7II=;
-	b=19FneKh4Z5oFrCp6SoxCUlYNpkRTAJxUMQ9BZr9Nm0gA9X/cY2XLTz+KS/TaAWWlpl4jxe
-	+FwU9BMel6UBzkm4IW1GRuu0DRVNB++IFF0BNEtcCmXayM9ZszhvW9cc/0MdKZyiQ09yu+
-	NjwKnvlorxToLw3aIxBF0KoR/9odkU4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787857688;
-	b=JfaxPj28Yty2tho7BiuUYlBqml2abh+/uL2+llVyDVk5iiAw4nO2Ba3c89BY6ev6po3yi6
-	bTWJC83J8lczUOxR6XDdH/FeDdGRR2Xbfu6Y8uwAfatAkGQrYHORr3q9w4UVfK5iMCI02+
-	m9xL+jFPmQW3MdAzuWk5D9d99bmq7OQ=
+	bh=nmdUPSYR2AcdjAucovMZ8EmnRUeNl7d20UAIuOxbQ8k=;
+	b=1W2Sdwl3mGXwTtfhd4g33dc6zkblYTS1lOKi1oGw5XKq9hmGFRUniGirAqQ7JsG2yYSkNy
+	ADXHsPF3sun6/ZuAjMHAOqPtvqNCEDMkCGBUXoWUA4YqeQ3Dgk4udbKgTn20SoBn+XoNzj
+	ggx1Dv/BC1+b6L6gq0B9X9l9maYe8Yw=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=N3iWbz4S;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3FouQagYKCMk7tp2yrv33v0t.r310x29C-11zAprz.36v@flex--seanjc.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3FouQagYKCMk7tp2yrv33v0t.r310x29C-11zAprz.36v@flex--seanjc.bounces.google.com
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfa55c9430so1777685ad.0
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:08:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787857687; x=1788462487; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JWGZwnfyNQRYCnM1UqJIynPGxtHIQDoEVfaq/bKW7II=;
-        b=N3iWbz4SEQ1urgxCqL1wlFVP+DyGbWM2fKd0pVlRo3rOVKLC+nzOWTnXyPYU6pHZFo
-         +KB8LioGlY4uNzhg/gVQwA9ev0qFS8ROFbAW6JE9/uFNXDbuxT5hloa0sLLvoeePi1i5
-         CSifmWxYJ6NwIhjuXEePz/dTuafvgwBLGkTv+FVtYdyvbeHGDMzi1r/y/U19CEjsrTXS
-         /GN6N6+uh2IQA6o+yDLO7odjyE3pc+KTzg3jyetikIMLJEaEgc6ifN2bQwgUgBzHFaWf
-         Al1K/AUR7g45l55e8ld0gmczBDzDMKwZ1+ASE00JyKcsBbvLGkyaeIO7kG0QE6w0EuZ4
-         m0vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787857687; x=1788462487;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JWGZwnfyNQRYCnM1UqJIynPGxtHIQDoEVfaq/bKW7II=;
-        b=UDFLAYSBQEoJAtXtZbaF7w+e4mMO0sDo1cpCa4YSkdAkvyVeryLOH9nSoIE7tqbyLj
-         A2nsP8KVKLCGPsk2NlFWkcChDJR1K4GvZiY7VM7k1lHlzk1k9OudNoSSrqH1iZTAVheb
-         mBuJzDeAt2ggIHp04b5DOZyrI7lj5C3d5n9ukqS1duo95/xCZCUBAWS1bg9s5/FW7+jZ
-         j7Wx/zS9sOfkL31oA+nj8FZArIpYHhehkwYhOds2I5OmAvjL50wXOloXBjJhLrR4Gabn
-         ftz70oI45n/RBBc0T1qJwOv4/E4ip5thCXJNhbPUApaqxQszAX3foWFjGuvqQmqDW4W4
-         40Nw==
-X-Forwarded-Encrypted: i=1; AHgh+RqkNj4CdENY7X04+wmrhI7BukSaTERdYYz0TRuKnYevgUc9i/OVHU6+pGI30jI4Li4nBtccZmfTUQ==@kvack.org
-X-Gm-Message-State: AFuF++nLH0UGY5VJkcM45XFjbyheSfys/s39KHxo535UvvJVji8osY1R
-	eHNiNI697LypkS7Q/9Kh2k2vEFZB0ku/tlCer2dDjmSXAC1b8p/1cSts5eSiVBLAEIKBapyqjbS
-	2C+k0yg==
-X-Received: from plblq15.prod.google.com ([2002:a17:903:144f:b0:2d6:e58f:8e81])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:15cf:b0:2d7:1aeb:739
- with SMTP id d9443c01a7336-2d74e1295c2mr19606415ad.13.1787857686248; Thu, 27
- Aug 2026 12:08:06 -0700 (PDT)
-Date: Thu, 27 Aug 2026 12:08:05 -0700
-In-Reply-To: <a151b52d-0afb-4b32-a871-4da67210f416@intel.com>
-Mime-Version: 1.0
-References: <cbf5f7ca-a960-4fb8-a760-2d2794eb6864@arm.com> <CAEvNRgGOyQHnF_b8dk8E0d7_=CcwXtYUdU3ko7Qbep+_O7UC0Q@mail.gmail.com>
- <aoZZMQ3Uc8yQWPNA@google.com> <7eba513d-cdae-4832-abac-038dcdd88517@intel.com>
- <meww2a2uf3yeevsfpicyrlg3hch2x4bsdqv2lsv3vfjxg4qzes@co5eogmhkxrk>
- <ao3lOu8-wpGTs2wd@google.com> <ba8d0441-b52f-4357-b2e7-1e352aa385a2@intel.com>
- <CAEvNRgFXJbV78ktsg=b4srFp1OFjtQWQGuNPjr_MmWD-wOvjgw@mail.gmail.com>
- <ao7vwx3nMqCjCHZU@google.com> <a151b52d-0afb-4b32-a871-4da67210f416@intel.com>
-Message-ID: <apCLFSbj8sq2biJp@google.com>
-Subject: Re: [PATCH v10 09/41] KVM: guest_memfd: Filter both shared and
- private when invalidating
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, Michael Roth <michael.roth@amd.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 18D1940008
-X-Stat-Signature: q9xdgo5qem4i65twezitp5idmwd9d4tj
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kCK46U9G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787857788;
+	b=ZWo+1AcahffSyEf02B2JDGged9tY/x3nNQf0XMKZdlGFkTzpqJrBdDavKlllehAJcSOD2s
+	48J4ghMK4iaZat+3k4MVqzrkv8J5BszhxZ9gGo92zhsob/gQHUh3z6cv4+OU7X8EDC6U/g
+	psWoDgnuu08eockLWIKJR8H1Ug6cmFY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D5DED601EF;
+	Thu, 27 Aug 2026 19:09:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3BC1F000E9;
+	Thu, 27 Aug 2026 19:09:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787857787;
+	bh=nmdUPSYR2AcdjAucovMZ8EmnRUeNl7d20UAIuOxbQ8k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kCK46U9GJsjgih26JbOgTFvf19ZRvaA3OjLF6t1W7k727EvqR/ZqCyJb9kG92Obs+
+	 yDXNJI2yu9tJoCRDRbEb2Scw3GqbPELEJLWdX88Gg01vfACI7Gw20B0U4e8ImItvWb
+	 B17FTjV/umV1s3xyAx0tDgRzVczL9U0ae3QU3YXv2/IZMyrLuchaYoAvWwJE264GTV
+	 FO9NJqDy8VpRHnBg1UkTx6F3BiEvCBqOPupJOioFmVH0QKrV8t7MpywAbXTnw2GXGn
+	 36+paRYqrDvnw5Mxh3EmxpotdMXOq+lVqNuBSSlCoq1x0VWjAdtqCLgRQAiFgPWIyo
+	 N78N0439LuNPQ==
+Message-ID: <ee4e771a-b8ef-4ffe-9b79-301c22033d5d@kernel.org>
+Date: Thu, 27 Aug 2026 21:09:39 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/18] mm/huge_memory: move unmap and remap into the
+ split helpers
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ Shivam Kalra <shivamkalra98@zohomail.in>
+References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-8-9b43f5163238@tencent.com>
+ <a7f16d6b-217e-400e-812a-528493d45134@kernel.org>
+ <CAMgjq7Ay3T6BRJ2E1kGD7BNq=4bMMOpw_EKOskM-9im_fjq-MQ@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAMgjq7Ay3T6BRJ2E1kGD7BNq=4bMMOpw_EKOskM-9im_fjq-MQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 610E340013
+X-Stat-Signature: 5b1o9n8jzo8dnd7bqopudfouutf8iw86
 X-Rspam-User: 
-X-HE-Tag: 1787857687-136461
-X-HE-Meta: U2FsdGVkX1+Wk1RgQ6bdViQ47QOjvcJFFBNDabOa9vs/e+WsJ2W+Cpjq5hPePykbMb9W6qBxAxLoMda71wbQ8SvpozBsFCM1vDOk9rw5A6cDQZ2oj6o5gtjE199+XwJxWLqzhSxJaNAwJ+RSpk3L9JLWRM7nQGHiOPi7URgb4/ITbl4ivit3NIxfwnk5kwc1KsUkGdG4ztHriXBgawGDEjDdklOnkH2vFpXhIIOxDBYxXqbyLvC4zw+weZLnmA7VNWkAACSP84Di3OiAq8lIOsMJAVGaweRQY9hHxFlZcSJEuk2AeEOHBlqeNx4nlThfAHnTvkdcerdXx/smKWNt/MlQgOQQN1vzmHqErqGHanOR5aEJEzmh+fupTh5JfPijeXR2k0el51dZgS6iVLrPHgbKOGv+2FUGrueDzqGNHDn0OsE15nUC2M8nDDuytb8HKRjdZ6NmRHWaxo5NLwgabiacGAPF45j3/NOhbmvAdyoa88wZBwa7Hd+UZwFoMm/Z/IxDyb+s2wU4hPmXwswMoZrWoiA9k0xydtNBTM2LpcoCntzf2VGdCa8LJF08gKezil37uUyYANE0CLyXj/njtkntPWCGfOa6cPN7kChPOeg+r1m+N8oM2+ZiQH663izC3Ziy08spBfdlSdQx6fPmcgNjeo0zw+MZRkjZtQPWIFkshNjDfVRT3wwe1CC76H/UbfGhCq2i9nQI2+CHxTAopUQoh2I8JYhAMEswuyEF+MrRluvoLKW0auZPNyTpLJUT3V4tXsW+zRyxCwNsbd9Yert8bwuJ0sJYEZYJZwnBNVv0mkskbcJU3FK07ZPJt5GNH4+ssIAT6urpBlIHogDXswxK+SGPLfTtg96nf5OgsFROEfxj8IE4Lwyq/TMRhadMX0q+orW6sp+sQiWvn4+LzjWFOAspdYnHwCj9ePRq1UIffakVsztoQvxg/kBPjanJrNmjw3xBGlLxZX9U+ek
- 9sYTCkk5
- c5y0EXKMkfpOm2uDHgVrWZm6SK/3hHmcqi6ZiwxFc3LZWsMUxNo9awyJPMaMUvKcSIb8OvGg1SMD9iqM3BdsfpU5ryWda/b0ReCUaO5U4QwXV1Cq9Jc3to06tO17XwxzzUJXyhj4dWnafoO4MTIyQ2nfRZ9rtF7rnAibewwNnBvcH5pZUq//jrK5z3CvlCDv9k+BzJrpSpVIe1/87Fzu6LkH1Kl/q2fT8PmVgH2CW9ybbTzUSzE9j3UT/Jen86R5LDMZb2xDoae63CJBJFeWrDLW7WVPP+DCkQL89Gte3eqDEc0EPx0ACIKGS7yFlUsNrTZgOg/wwG51h8pjcrFajO5TXpQwnikxSS3SRFFfPPU+TpKhYXlDHzRlo+dlnzY0VMD+NxqKSVVtthP2WBVNrPKE/f9U6LdiauFXgSip0hqQhm6oE3+IXEBja7/UgKf5tME7g746xonpghxgmpY89oLLhgy4UJo27BHO49L2hX44mxC5L73s+lOzx+nVPpdJRJPVKHunXOEF36FXyMzsXXQ0gTI6Fj3RoiCeeJNhGgKcFCdEwsRoh2cq1GtQqrg2SYzyum28g6a00Iki4dgxKiQEE/yYgPkyVZfFWwqoWJRcTA9ZS2pFHWub2DQEP/myLVVcpwcqwu2w0PKhejjzTpT7pgqAR8HHLgx5WDkXwI4QITaQ+f+EGt5H63Q==
+X-HE-Tag: 1787857788-611803
+X-HE-Meta: U2FsdGVkX18KoEuAwQe1ikAsz2CbDbaDvz2gIAFtbPQcQuRrvPbenHg8/IKQ8av0e4XCIHSkxqOh99H0NJ9JniOH+n0LOAvtvsDFLaa5ZZveel6cYlfoKPTDmw8bKBSLxnd8L9wIdLet/8G0CEvDKsvD5YM0irW+gBbS+UwL59QP8FN7J6FaXztG2LhXOpAk2j9rkREIpn+J+pbhZKCH2R50soao4OKsC0bAA2VgIsnQBj29lhgUP6Hem0wqcvs3rr+fcIekynMeu9HEK0+f+Flo40dKuEymHEzHlbC9aMM7y0/vAmGH7bf8DAgeEmfiVrnulX3C9LaTNA5Teb+kMlhrypOzFluchJNagdteBVtGaO97rF0YqkSKsk7B5cuu3U9jThmFQMLV4ogFSRCuDvOFG5n61EyqYNZI2gSPdjS7Uma5MjVjx0WbjzwwB0hXxAy1z5DzWOwokbKxQfmcM6/zQR6vhM1z6EdtBNAM0210uV2+HNSObj8o5ddNd1LC/op3sAI6NWEIaWkm0akaNvgchaYSX59i2A3bxL875Vf3bIUCn9EJkL9be1OB4HRONnXRi0tbY/ykoQRREaDiomnLV4DXpP8al5nD+rafrXhKcx54fkVW8fB0+JXSKkdyXfRgQ1hyShzwl4eiDKOBTrtfjUUV9LllnTf8JWqAe0oKT6RZCJXDzX0FLmO+CYB/JWtSCHNPhJK3gyu22kevDhksjzVJWUWdr8DwIveeFBLHVQiTVL7WM1w+shlDZkauyEtUmMB0mHTjLIxgY03l6fq7G505dNqPdJxBgnc+PYCemaxzP+bHjt0BCVDLCALHuPkjrA6ye5LtbInyH3yVoSUCcXEs2ltZkKAK4Z8dt1RCM0bNl0XrgfJoKHEsgeeYXp/IocPxvxeoHkhqK6hrbeSKZ4pJCaAI3a6RSWyxM6RAqu9U5TqYS5dgilS+mOMYLTu92TJcS4AYpO6dYMG
+ GoFIVpiJ
+ xBxG85eHxhPXCfu46rHrlDBxchbRXUeiGnEGuuMzUGhRLOLaMdxp7a3cy8sb1C2bW6EaPGHs3SPPO9Hx9Xc0Gf54Et3/ONSC+7RrrujSNKvqaM5H5W0+wbYVK2E6fcLY0px+5F/JZWcbyFV3ifINh3TaqlXLqI9Yo0lOCVp0qhdfNDKrP0GBA+3BzNsagbL/CbfxT1iGxVqyJYH3MP+KQg7nFXrhW3oEXfVynC6qZTraStLcY05iFtHpZi20WEh080gZPpNjYIMzPiJkblgUtmKMctN732lbFyk8o4hUcsnD311qmy/N83JF2mEAoaStOv7xB1Y9t7HgW+8l6tlf5OuUztaAcBRcTYGARLhaHaheXgz+iGVGxAyLzUtpt7A5nyqEhbeiAN44YUU+oKg7AIO1jNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,64 +151,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026, Xiaoyao Li wrote:
-> On 8/26/2026 9:53 PM, Sean Christopherson wrote:
-> <snip>
-> > > Is this just a case of user error? That with gmem_in_place_conversion,
-> > > userspace should not use userspace_addr from something other than the
-> > > gmem for the same memslot?
-> > 
-> > Yes.  It's not just invalidations that will go sideways,
+On 8/27/26 19:35, Kairui Song wrote:
+> On Fri, Aug 28, 2026 at 12:32 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> To prepare for further cleanup, move the unmap/remap handling from
+>>> __folio_split() into the split helpers.  Only anon folios need to
+>>> be remapped, so remap_page() is now only called for anon splits and
+>>> the anon check in remap_page() is redundant and can be removed.
+>>
+>> I can understand why we would want to move the remap_page().
+>>
+>> But why the unmap_folio()?
+>>
+>>>
+>>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> ---
+>>>  mm/huge_memory.c | 58 ++++++++++++++++++++++++++++++--------------------------
+>>>  1 file changed, 31 insertions(+), 27 deletions(-)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 01c8cf428595..af9c2edd1fba 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -3589,9 +3589,6 @@ static void remap_page(struct folio *folio, unsigned long nr, int flags)
+>>>  {
+>>>       int i = 0;
+>>>
+>>> -     /* If unmap_folio() uses try_to_migrate() on file, remove this check */
+>>> -     if (!folio_test_anon(folio))
+>>> -             return;
+>>>       for (;;) {
+>>>               remove_migration_ptes(folio, folio, TTU_RMAP_LOCKED | flags);
+>>>               i += folio_nr_pages(folio);
+>>
+>> I think we should rename that function now to unmap_folio, but likely better
+>> unmap_anon_folio().
+>>
+>>> @@ -3933,19 +3930,23 @@ static unsigned int folio_cache_ref_count(const struct folio *folio)
+>>>       return folio_nr_pages(folio);
+>>>  }
+>>>
+>>> -static int __folio_freeze_split_unmapped_anon(struct folio *folio, unsigned int new_order,
+>>> -                                           struct page *split_at, bool do_lru,
+>>> -                                           struct list_head *list, enum split_type split_type)
+>>> +static int __folio_split_unmap_and_freeze_anon(struct folio *folio, unsigned int new_order,
+>>> +                                            struct page *split_at, bool do_lru, bool unmap,
+>>> +                                            struct list_head *list, enum split_type split_type)
+>>>  {
+>>>       struct folio *end_folio = folio_next(folio);
+>>>       struct swap_cluster_info *ci = NULL;
+>>>       struct folio *new_folio, *next;
+>>>       int old_order = folio_order(folio);
+>>> +     enum ttu_flags ttu_flags = 0;
+>>>       struct list_lru_one *lru;
+>>>       struct lruvec *lruvec;
+>>>       bool dequeue_deferred;
+>>>       int ret = 0;
+>>>
+>>> +     if (unmap)
+>>> +             unmap_folio(folio);
+>>
+>> I really hate that "bool unmap" parameter.
+>>
+>> folio_split_unmapped() has this VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
+>>
+>> So you can really just do
+>>
+>> if (folio_mapped())
+>>         unmap_folio(folio);
+>>
+>> Or have an early exit and hide it in unmap_folio().
 > 
-> > KVM accesses to guest
-> > memory won't hit the same physical page as actual guest accesses.
+> The only special case here is device private memory, from folio_split_unmapped.
 > 
-> Side topic.
+> Maybe I can just keep the unmap_folfio where it is, but
+> __folio_split_unmap_and_freeze_anon need to know if the folio need to
+> be remapped.
 > 
-> If KVM enforces KVM_MEMSLOT_GMEM_ONLY when gmem_in_place_conversion is true
-> like below proposal, should we update KVM's guest memory accessors to access
-> gmem directly?
+> Will a "bool remap" parameter look good?
 
-No, because routing KVM accesses through uaccess means we just have to ensure
-PRIVATE memory isn't mapped into userspace, which we already have to do anyways.
+I'd avoid that and rather have something like the following in the function.
 
-Now, that doesn't preclude future work from optimizing certain flows to avoid
-GUP, or to harden KVM in other ways.  But as a first step, bypassing uaccess is
-actively dangerous.
+if (folio_mapped()) {
+	folio_unmapped = true;
+	unmap_folio(folio);
+}
 
-> If still use the existing code of accessing userspace_addr of the memslot, I
-> think KVM needs to document clearly that when
-> KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES is enumerated, if configuring the
-> guest_memfd for a memslot, the userspace_addr passed in needs to be the
-> mmaped address of the guest_memfd.
+...
 
-Ya.
+if (folio_unmapped)
+	remap_anon_folio(folio)
 
-> > Huh.  But that isn't strictly guaranteed, because userspace could bind to a
-> > memslot that isn't configured with GUEST_MEMFD_FLAG_MMAP, in which case SHARED
-> > faults will go through the VMA, not kvm_mmu_faultin_pfn_gmem().  It's a bit early
-> > in the morning, but off the top of my head, I can't think of any reason we need
-> > to support such a setup.  If userspace really, really wants to use a separate
-> > mapping, they could DELETE+CREATE an equivalent memslot without the guest_memfd
-> > file descriptor.
-> > 
-> > So I think we should do this?
-> > 
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 9c2d52bdf25e..86f53e53a136 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -1013,7 +1013,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >   	 */
-> >   	WRITE_ONCE(slot->gmem.file, file);
-> >   	slot->gmem.pgoff = start;
-> > -	if (kvm_gmem_supports_mmap(inode))
-> > +	if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
-> >   		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
-> 
-> I like this idea. It makes gmem_in_place_conversion a step closer to what
-> its name implies, though in-place conversion is not truly 100%
-> guaranteed[*].
-> 
-> [*] https://lore.kernel.org/all/akUbz_kJvYulaboo@google.com
+
+...
+
+-- 
+Cheers,
+
+David
 
