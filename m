@@ -4,76 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 135E8C61DC7
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 10:01:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A07A5C61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 10:26:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCE016B0088; Thu, 27 Aug 2026 06:01:24 -0400 (EDT)
+	id 5BB976B0088; Thu, 27 Aug 2026 06:26:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7F306B008A; Thu, 27 Aug 2026 06:01:24 -0400 (EDT)
+	id 56CA66B008A; Thu, 27 Aug 2026 06:26:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6D856B008C; Thu, 27 Aug 2026 06:01:24 -0400 (EDT)
+	id 45C536B008C; Thu, 27 Aug 2026 06:26:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 754E06B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:01:24 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DEB241203B4
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:01:23 +0000 (UTC)
-X-FDA: 85146606846.27.0B587E0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 119046B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:26:11 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F78E1403AA
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:26:10 +0000 (UTC)
+X-FDA: 85146669300.30.7D60BC8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 20E0480007
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:01:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qj2sBYWZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id BEFF514000A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:26:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UUgQcPHw;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787826368;
+	b=SdOP0HtrmF5KcEWJ8m6Ho+8PnqDvO57VbLt/b7kKfq9DgYO02bjMDG9sVVtnSuJ1F4iLt7
+	BdVNDKVd0nXX2n8pPySBn0tV6wvqZwrkkcBl4fPOwRyB6M8uE7ry9THJyX7RhGy9e8PlJY
+	FMCBKeM9XHX00sRBavJphVR/MoMhzfs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UUgQcPHw;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787824882;
+	s=arc-20220608; t=1787826368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ha8pGPo/Vk1a8vy0u/+G+CsODbW5FM8bJVA0ZN+VeE0=;
-	b=0ri+PC12vHLtnpZhrfgYO9fLZi9dn+afU9s0bcef+lSWsHyQ5HyLPlW5owRA8BTe9zG9+R
-	3ZbVF1+rqbi+vId3O5aRH86tTlYvftn2SUx2jh+gNji4X5UKhXkcopbpSpiwcLnlA9csO5
-	yPY6LRwIU93JmRBRoA2nRnbryroRxHw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787824882;
-	b=RlNCQdmJVPwX7pD61+7wzDQiP3DKd8olE7JP3if+iEdgwpSrc4MLmEdUzJsoxjaj+VQHrO
-	1qsVK234/yGNaqRgT8erFT6oKM38W2AtNG8/2JBQ6TT1WqcstwmyqfLaKEcjjM0aerVefT
-	RJ/38x9z8vjZpy9+SsBxQmpw2mQ8jjI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qj2sBYWZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=8Yqh3iS16BKHB91PJME2pWLwTOseAJGffrM+2MMe64M=;
+	b=FRu5iMgR57ijEJ6IDjEE5PpTLd4KyQoZT2mIkq/A8c4RGqH4x6zc1sfoGyQ/I7oiG9RxDF
+	wDuHGhFmSUyJhFEjYde+gGvGJozGYB+jedeDwL+4JaCKDilYDwE86P3To5JeZsKqR/6Tet
+	AuYnxLXcYQnxZGj4PPev+wl+kBM1zLg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4DF8840D68;
-	Thu, 27 Aug 2026 10:01:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E891F000E9;
-	Thu, 27 Aug 2026 10:01:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D7E8742B0F;
+	Thu, 27 Aug 2026 10:26:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4121F00A3A;
+	Thu, 27 Aug 2026 10:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787824881;
-	bh=ha8pGPo/Vk1a8vy0u/+G+CsODbW5FM8bJVA0ZN+VeE0=;
+	s=k20260515; t=1787826367;
+	bh=8Yqh3iS16BKHB91PJME2pWLwTOseAJGffrM+2MMe64M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qj2sBYWZwiva+P1NlipMS8mTF7EK090UuLZW8z0ydcveYrZ4KMzL/xnyZzQUMG+TQ
-	 dOJ9EO6Dunqza2gGuu+qlSdzN5dAm5a+ZYZI+R2d6+Rx0Uj/El0sAP2C81VvG3JP5Y
-	 HyfbO4A1I7j5gOTWAJtN444EBw2IDM1ruWsw/5gWgcgicG/+x8r2JIRGcbZ8GT+k4A
-	 TVXd+UhWnYCZPlatanxxo3FJrj/LJY6NX4uGNGXE2G8YWwpbCukoVu0BUDcgLyGyGo
-	 bZ+Se7WY+qrdGDODkAHoKuKDLuuGuqNYZ4KeeDT+lOtVEogDAkjOPWWdzM9p04xzyW
-	 qkVd4xTFA9niQ==
-Message-ID: <dab040ff-e495-4e7f-9932-c60b8299b89f@kernel.org>
-Date: Thu, 27 Aug 2026 12:01:17 +0200
+	b=UUgQcPHwUg95r09B5/yuhUxugChiVBP/REvP3e2FwOCMwPPg7bVM78uuwd+AhzxM/
+	 L7FU/02FEUhA01lPm/UIFZHGZaayYg5vp6eYDd/vCivN5UzPDgX2cV+ktPdOM20p9n
+	 GPj2mD7oIqnO/7Mfxvz0YpP1XY4xuHhr3a/dooijeMOwExEboM9MXGN1GFe/uTqokX
+	 wCm0SRbf//ozJ0xPQ7oKz5/kjHCDSMTjDe4ilvRR+WzVvcLFvrDWtYGA0H57WHamOM
+	 JKq7vWe5Gkv9eiqjdUCsF3+7JMUq9oFPgNSyjVXbwowbobEL2pKxS96LimTxpKdeYs
+	 fbpHonZJcUw1w==
+Message-ID: <8823867c-9d3c-4a01-a213-75f6ae0755b4@kernel.org>
+Date: Thu, 27 Aug 2026 12:26:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] mm: gup: cleanup gup_fast call chain
-To: Aristeu Rozanski <aris@ruivo.org>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>
-References: <20260805035847.936054733@ruivo.org>
+Subject: Re: [PATCH v3] mm/secretmem: properly account locked pages
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hagen Paul Pfeifer <hagen@jauu.net>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260826-secretmem-accounting-v3-1-94cb04399510@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260805035847.936054733@ruivo.org>
+In-Reply-To: <20260826-secretmem-accounting-v3-1-94cb04399510@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 20E0480007
-X-Stat-Signature: 7coc3joii4hf5kfgnc56pp5rour4tn8n
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787824881-22537
-X-HE-Meta: U2FsdGVkX1+pEuaxJi2pJ2FxAQ2KI4SidroVkBfCmQ/UFJww5NQGsORZAkkA9zQJ6ujI9u8n9pd6L+LC/JPgTjUZMUM54cMRSv7qgpnqMiSOTD7+u2fHGEBGIqZS2EcUtZONynyYtRQPV3oj7ERObR8vW+2J/6F8VwGzcRWm9ctisgqdcHxWk1wlpib+cImy3tlog6478duIHA80lbZwXdy+4CAyOokEGImnU+xkA7NC0XnKOwGQn3OSvIssXvrMOUsMGtTnz+yGuwdAdkeda+pLHNAoUTJYKr9w3EGniNxOv220tFzIINsHthR8SrJ1Hp3im/OChU+wI1SdbLldEwULUQ8a+tWlxjV3aSGejRf4h7RRwpqVoLA1FS3k7yTyweMMBa+B3gRaiWQiHm+ztANjc9oaiXiiXwLzoHsKAozpk+JfU1M4/N0NrmQohLk5QIK5kwzwqUggRMJXcXeQ/IRkrpgY4HnMLamzjzIQ6/4LXBEYrrHezmmD17Rb32A+t2ZENouquqwAQEw72PlvqRTs7C4LVsvLAeLxKJQ5H2IG4utmRX7lWpvE1HEUEu1m/9MScp51kqIz87aN4alV52Q1Jg+juFgHLYkxiqN/I8W1wjfuwz6O+84fr32Y3jOXSJZ7i8mv6kN3X0zIPcSrU4HyC0q2CmyGchIbqPyfE1/xX56CS4shYuV0NK7IwbJZxdrGUfUu+mSvb+lEIjcZyO0/CGsVaXePOIjoLrW0r38QZi3wzp3s2s7sBK0iyI6TfOyx6JYsWCBuazngti1IaCTO89WY4LiCdJ0UP8qIl+v2erW727TtzINU9ep28MFoWMxV2VizGbNm06kBTeYDDufhQKnIWFNJTRBp21oxWHvFRt2Ted676/zrzwZ64i6JMnX+fo1weYpP+qV+72becFRn3temTki7oAtGXr5mPuX6o7tVETwk277F68ST1AYNq6LHib7XWc1QXzPIKdI
- FvWZ90N6
- Z9UdKyatVjtOcLzrvo5Y2c7BD9bbMGeWhd60g47KaO+LBE2DgJnFgPvMUoFLWJ15GAYa66IzGFyNAQ9YixvjwkTh/oND8jyBNkqNpLBnOWku+aR4PIuoryninN8ubcz3ZW7I/nLcy5owBb7AXa+SYTC2T2MgPMZv/cH6xbyl0i5NdBMAQGWYbJmFxOSxHN12+uccbj3sZf737JXeebjs06NuB205Fjb40vipAvIYR5j6WZ+zFk4WW8h3C/7gwpP48qEMLhdNEj56OTgbVwaLfwKsvg2Cf9GLKgVGNFL5CsaI8YWWNXeQwK3DpOaFETcSrYXDWM+LB312ebt08fJQop45PbsIdX7XMPRq58nP/Rm1pQne7ZJVK7a/2nkWrglFb2hhmsG7CZfvAUCjDmZcW+EWaOjOVSTEg+yb7JvuY5vvSCIaJAgfgy8eXXenFdmL3VQJww0RPFOQDMTDg1snP1SXJP7TvR/RZTm3zeXVxUv4IkKmej8sqJt9S674jBJr8RZ5v1ZpXYw8rew/Xx7iqQ19FCjSj4VAumvszX65PCGYSAE+HgNvEbGnopmDgcE5yWgwmOoUf3kH+Sti5/KWfXuUkW/qHK2K+JRQy
+X-Stat-Signature: g98usz4hgigro3iyq4odbaf88iij4ncf
+X-Rspamd-Queue-Id: BEFF514000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787826368-428608
+X-HE-Meta: U2FsdGVkX1/U7P+ufwo/neyY+HI0wsSn5rJgZsPSWfqHjwVkLoz7Rm32SE/cwRBOUHzgrSJTFzfcrD12PAvaS7qbaAo9VI44+LJZF9YkYnTh5Z+XnpU/6zeM3uxtzvXeNIoI6bt8N/Kzi3DzSzhEbgRu5ti9kuUk5JHzMg/cF0A+vQ3RrSdWavBQT5M/0rDZ00THMF5JRY50aahWgTfBxD/mQ8NiEsQVyBKv3P36keZ69NvIjrG48L7wfOldkXNrzl57s3VpzaUZNWxatGk+te2vDUwxDukcJ1n3Kp+9W+E6rWelACR2BVYXrCpMBQSgXJ5H/aOtrzGbsNoWwoOBUyRaanHnSjKWSrxcS771MvEFtK2T16lncfgdJnEGItIjTu0FcdAMbt7do9DDtVQZKk10w0FYeRGVT2eo7fBOIYK2wO+PjuGvzXc+DRaQTbb2UT/1iRLUCG0qItJnQ3gMyeffHrJ3/ks2XDyk+XdWz5BvbFfPcAXf6CPWhVGmWWOfV76pMLABTBrMkt6lNBru2b/Ph2zkq6xbIY2sNkKj+Fuy9wRMGHm19Q7UYYopwrHjHKlEqUqseBr9DEtUdznxlKmEBcD30V4yUzzk7FNEKGKWN5gi+bXzwu8nfHaHw7MI+8BgGDdIJbTgCOG/H41Tj14mf+re1nfjQE2F6G0gfGkzIuR9ltTxjMXjOHKe7n3WmwgyfxbkevX6eMQOOjQ/lxpukE7Vu24hIBMB//FETDlUHWNnoWzJkiyfskpol+F94jYyKgnVY/XZnrmIFhjnVuVm3GbPE5D3wpvHKvMGhk3kBME+VBWvihfzflV5XK/nIzrTTr22crHMXTHHwnX+Qci5xqhfRnAG3/02htOmyNEuB7krZxaHq2i8v52gALOEdsKXgRmkCTqNrNfZ0ifnr/VCZFCOAb+YwSz8wHtWos0OjJP7C9Z/Fk47CX3fk5N2gnOMXPPCvM12HMnxD2N
+ z3G7e64i
+ bmJ3bX2aSQYCkM/rAvUF31Naqbr7BYNKQ/8dMtbOs3zGxwzlnvI5KiOogXoQuBHz489L00Vmqt32+vFm1wk26NzdfhFVg2tDajRSwo2dzhCHT+zr/ylFX19N4ay+YzZWGp9W3b48Kq/XMoC+caxvLfav1NWMMNZXwTEMM+gIhNJULD3GSPe7Lr8noFZwQAeIV66mZkolxV78F8ew8jnhn/6wCR/Zu2ScJ4BWuFteqa1VhH+fqCS3M9grAuMGsPPmflYPcA1vqf/vFbxmxmUs+RjcTnG7EUdbhxt3h0ku1lIlPuCcSI3gjgNwzMf5l2julVVmJ5P/xO5BfEI2LZ3dJhjBOLof5ZKc9O3MF61cmQH1G01yO3jFiZgXC789ujQcJzWV6yI39ylMb6V6iQu7B/KDRFVfQG23/tVkW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,59 +148,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/5/26 05:58, Aristeu Rozanski wrote:
-> These two patches implement the refactor in gup_fast call chain David
-> Hildenbrand mentioned in
+On 8/26/26 18:30, Lorenzo Stoakes (ARM) wrote:
+> secretmem accounts folios by treating memory as if it were mlock()'d and
+> thus limited by the RLIMIT_MEMLOCK limit.
 > 
-> 	https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
+> However the folios are unevictable and remain so until the inode is
+> evicted, eliminating usual mlock() semantics - mapping folios then
+> unmapping them does not clear their unevictable state, since it depends on
+> AS_UNEVICTABLE, not PG_mlocked.
 > 
-> v2: removed unneeded initializations on the second patch as pointed by David
+> A user can therefore easily work around the RLIMIT_MEMLOCK limit - simply
+> map then unmap and VmLck no longer counts the secretmem range. Worse,
+> folios are not accounted in the process's RSS, meaning the OOM killer won't
+> know to kill the process.
 > 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Link: https://lore.kernel.org/all/85e760cf-b994-40db-8d13-221feee55c60@redhat.com/T/#u
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Aristeu Rozanski <aris@ruivo.org>
+> Repeatedly mapping/unmapping (or forking) can then result in the
+> consumption of all available system memory with unevictable folios and
+> cause system instability.
 > 
+> A secretmem fd can be passed between processes and over fork so a
+> per-process limit simply does not make sense, so follow the precedent set
+> by io_uring, perf, skbuff, iommufd and xdp by tracking the number of locked
+> pages in user_struct->locked_vm.
+> 
+> Since the scope tracked is actually inode lifetime, the RLIMIT_MEMLOCK
+> applies per-user not per-process, so it doesn't make sense to bypass for
+> users with CAP_IPC_LOCK, therefore remove this bypass.
+> 
+> There is simply no reason to carry on marking the mapping as mlock()'d
+> since it's misleading and the lifecycle is now correctly handled, so remove
+> this too.
+> 
+> Note that secretmem does not support any form of truncation (including hole
+> punching) and the folios are unreclaimable, so the folios need only be
+> accounted on fault and unaccounted on inode destruction.
+> 
+> __secretmem_account_pages() is more or less a duplicate of the code that
+> io_uring etc. use, but since this is a bug fix that needs backporting,
+> defer any de-duplication efforts to a follow-up.
+> 
+> test_mlock_limit() asserts mlock_future_ok() on mmap(), however this has
+> been removed, so remove the test altogether for the fix. A new test will be
+> sent separately for upstream.
+> 
+> Reported-by: Daehyeon Ko <4ncienth@gmail.com>
+> Closes: https://lore.kernel.org/linux-mm/20260813225328.2010303-1-4ncienth@gmail.com/
+> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
 
-CI flagged that some test cases fail:
-
-https://github.com/linux-mm/linux-mm/actions/runs/33031249149/job/98384037627?pr=3620
-
-==========================================
-✗ memory failure test failed:
-# not ok 1 memory_failure.madv_hard.anon
-# not ok 2 memory_failure.madv_hard.clean_pagecache
-# not ok 3 memory_failure.madv_hard.dirty_pagecache
-# not ok 4 memory_failure.madv_soft.anon
-# not ok 5 memory_failure.madv_soft.clean_pagecache
-# not ok 6 memory_failure.madv_soft.dirty_pagecache
-
-and I can reproduce locally.
-
-They do use get_user_pages_fast(), so it checks out.
-
-The following fixes most issues for me (there is still one failure on my machine
-but it reproduces even without your patches, so might be specific to my machine):
-
-diff --git a/mm/gup.c b/mm/gup.c
-index 9b68242b6b602..a4036c02e2137 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -3010,7 +3010,7 @@ static unsigned long gup_fast_pmd_range(pud_t *pudp, pud_t
-pud,
-                unsigned long addr, unsigned long end,
-                unsigned int flags, struct page **pages)
- {
--       unsigned long next, nr_pages, chunk_nr_pages;
-+       unsigned long next, nr_pages = 0, chunk_nr_pages;
-        pmd_t *pmdp;
-
-        pmdp = pmd_offset_lockless(pudp, pud, addr);
-
+LGTM thanks
 
 -- 
 Cheers,
