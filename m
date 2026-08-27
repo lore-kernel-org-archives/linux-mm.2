@@ -4,127 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 395B0C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:07:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E3B8C61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:13:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 886176B0095; Thu, 27 Aug 2026 10:07:16 -0400 (EDT)
+	id 7A82E6B0088; Thu, 27 Aug 2026 10:13:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8376C6B0098; Thu, 27 Aug 2026 10:07:16 -0400 (EDT)
+	id 758C86B008A; Thu, 27 Aug 2026 10:13:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74CD36B0099; Thu, 27 Aug 2026 10:07:16 -0400 (EDT)
+	id 648226B008C; Thu, 27 Aug 2026 10:13:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 52CF16B0095
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:07:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF67C1A042F
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:07:15 +0000 (UTC)
-X-FDA: 85147226430.30.CEB76EA
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D503D1C0017
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:07:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="k +WVhfA";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Up7ccU1j;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 30AE16B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:13:18 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1615A3C77
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:13:17 +0000 (UTC)
+X-FDA: 85147241634.13.881CB8A
+Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B033040002
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:13:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="d s09ofY";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=dxAIGk0P;
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787839995;
+	b=6ztFRuaPdLkQV7LaWYxbHEI5HO9ATBlIFXTrytVBjRMHLimhmp0uomzW6UFoNobezT4SEc
+	REI+D0iRgy/7jq6fPS6x/h5hsURPu+hQDHwshQ9wZGjsC7jzAZFtBgJHDeK3Yo5tBHwgUU
+	Mfae4OFJcEDyuwXBWSMfk91qaVLVUk4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="d s09ofY";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=dxAIGk0P;
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787839634;
+	s=arc-20220608; t=1787839995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3Dh2o/3HyrcxPByYeYJukS7fILq/peuiJJwPWAvDzQ=;
-	b=We46pGkte5lS9ePpJtRgcuKqoLZUHQoxf5W2uH3qaPaB8g77Qh9fGetf96jVsU+9HPlfxu
-	DTfhJud5BVxQT8R/t5CcuNbjMj4F+regPARI8Y9JkmFH4H+PpN8OfaLC8Do3WvoZlOJnHp
-	WP4ojLea4mvPRCEZP0yl+wz6oMr6p3o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787839634;
-	b=yjmWOWYi3IkdwnqY+wNDgKFYcI43fCzb/mB+WHKDtapoZKilLjeNVAYj8YZjPdnex3+ARU
-	Zprnv7EFt708PQ9M5ooX5qCni3FvmpX2mCJdSntghUe5uZSl7vkIi/TY7FtemAZ2r06EXy
-	wtW/qwk2HXWJ6k040gXMsToES7E4fU8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="k +WVhfA";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Up7ccU1j;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 4BBD71400151;
-	Thu, 27 Aug 2026 10:07:13 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 27 Aug 2026 10:07:13 -0400
+	bh=a+ad3PWrXwgTs5V91pQ1swMOoVBYuDGaQPrZTnXXjJY=;
+	b=b78JsqooMjri8CVFLSRkYiITqwtq/MAhWkZx5+NKAIv8cOovcuzrIcD7HC9eCNEGbKTmMx
+	+qUu9IPA6vvu6tSyBnMd+1uqjB5Xofh0zt+WSQD5X2I3ODTdPKAYAuPr9vEl4KaKHNrAsk
+	fBSCtPlplGy5KQnlKVViHOgpp7/mX88=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.phl.internal (Postfix) with ESMTP id 37EE213801E7;
+	Thu, 27 Aug 2026 10:13:15 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 27 Aug 2026 10:13:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1787839633; x=
-	1787926033; bh=G3Dh2o/3HyrcxPByYeYJukS7fILq/peuiJJwPWAvDzQ=; b=k
-	+WVhfAHo2YaBEPZMooT2RGIZUpcB1FWU2F9wSfnw7MRC4jTgs9qn5VDe3OuNJ4Dj
-	fS+Vw3YdZoxuLFk52Y2G6cfXQLTE366IVCjrzlVOHaG/lVjLoSfuli0aOR1tJk3l
-	LAETQmeP7bYOaLiymSWtFk5WXteVzqd1xzpeN/0/xPX9qXZeA8+ZPF62EzSD6gmm
-	lmJwxEYdzGlld6QDJIAEkHK6mRgf82xRKs0b8dcT7NCwO7nXswXhF+Qqax7z3qSV
-	OUH/0G4G5eLFi+9P16Uy/pc4YC+Ouu++VUflnxV+N20DysZ3Z8mV4h7uq43vVsXo
-	DY0v7xf2nPyUCwGeT7t7A==
+	:reply-to:subject:subject:to:to; s=fm2; t=1787839995; x=
+	1787847195; bh=a+ad3PWrXwgTs5V91pQ1swMOoVBYuDGaQPrZTnXXjJY=; b=d
+	s09ofY7ELOFH7RFgsvJ+emVZ/K8ZKNZ4+19jt40VhFb9thzys/ihqVT53zykCsDL
+	BU/CTT+WD8gbFggtD4N1Z/gYmSILTA0nYnczsZ2GrDkBiYGJZhmi1zK3NR7uOFVr
+	ZXM/wWj4eH+ZnGJBdN4wu9bCb/Ig5xgZtVgMeh4N+B/UoCwxWELzmQBxLuh9QkaS
+	i+tIh4Q4jYNPMEcTPhzfPCbb+XWek7rt+TNBiGoLexkyuAi7NPcNIEFht8ftHs6o
+	zLazJuIm0f6z2eOueSppO/vfCbtLd59GRgrjm5ZDX69oaAM61MYIzTbXJWu66Es2
+	FxM5JuZSSzZFeX61oDuCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787839633; x=1787926033; bh=G3Dh2o/3HyrcxPByYeYJukS7fILq/peuiJJ
-	wPWAvDzQ=; b=Up7ccU1jT9GuRd+iGBKZ2+hUH3YHU35EP+BAtvBZntcL/xyTz5U
-	0X91OB2BiFiKMBYUJ68X+hjHM57ntLqW/q6SOUQDm09+jW+udxYbStk2lCBw6BWx
-	jh4FwpP+/MJD1t03tNVghVH8jv0U2Io4EmC6+TDB3JddVstzg4ttxIJCugPCe7Is
-	nF2cDNVjTA8egC0OTfk025BpiDauey1IPPD5Hpt1/k1Y3Mvl+l2iw8/tyJ3Xwr2I
-	fFI+5cTQewhfL7zyVhVhh6IDeZTWemLiupaxCNGZbYifKu+v8qVNb/uepQvuLitm
-	wJcKqMJsdpLoSmSUwu9dLyir9bC5ZgDfbsQ==
-X-ME-Sender: <xms:j0SQatZREgDKupZ6e-QiI8qPyZLTUVn_MDtJgaFlhpoJIl3XFGAnrg>
-    <xme:j0SQamxCDWZU1nm8SrPjh4NyrxoTGnwttWx7zWxCf78hFXYd0uuBZBg_lJeuyxjqi
-    AVTlWy0HlJ-4Necs0EK1HVqz4YPIMTFXgS7MZ1S-gNCEi1FPQ2Rqkk>
-X-ME-Received: <xmr:j0SQapNRdTp99qK8rpvfxeAGVLUpaSzaTS9wcqrAChpex0QGgmaYbTofE0U>
-X-ME-Proxy-Cause: dmFkZTFGSW/RJfX5fFLiJJB5xonRRzVd46tFbFtZOtPw0QpDPCnI5vfoNCDg0AQK4EaV3w
-    6GfGtBxca2h0U4zuEcIoGCk3U2UUI8Udn3EpP4OXFa0hB8BMDqQeZ5idZ8pZFAKqjG0QoU
-    BLTJOcH1ViutYOCUhUny/Ca+Ry8gP9QT6/7XhX9q1pHvOPGGPgZrn3alTue2quOKF3x9B7
-    pjjpFerKzliWyeFmKmU4r3eZG4uGomhOD4g59ZDLXyD0L39QPG+2lXkCPhTmgGacfqwlqt
-    8HieHcppXor1VEzneMl15UHX1u1FF/m7aO0tg+KPti97apdJLSZiHwRXR6hXJNYJKLYOaB
-    8FSwVCXbuYkDkY2CnkT5ho8Oxp9reXyVTpZxzLLbsO+VZ8GWwbZdIrYqC0166pJ1iDRt8u
-    VmeXqVVsbq8gWBxinQOq0Jif6pgnFtK17BhAuCwvNDvjIXlJ1fMtMbWnzEhRV7Zq1PG8S4
-    RLiAN9YDw0797axKORICyddaeWUM2/UhOyjf+OnB4kP1VspcwtbxQkmidGyWiJ4pKnaqZ2
-    0QU6XeZmFZ0IC/PD072C8qNfv+zE35hV4Mg1TVHH3pXU9LnnXnKXBgdxAHQrkbcvi1+Ses
-    wxvZV310nAUqJvdsiINUF9t/VOZXtsWebKqTRdJbaTQqVEHM+LYvaAI7k7wg
-X-ME-Proxy: <xmx:j0SQaux4goRFOqWJjSufhN5OUvxxmwz1NJL8WuxvRF1V0zC1bTZy-g>
-    <xmx:j0SQarCNNAcIciXtLnLi06MrZG3QWyAHE93vWm0bvddUksdCQT3bog>
-    <xmx:j0SQapOjsbQBzNitLv8HTOlQEQQTIS6B2PVJADRC7xz-W4yKJppDeg>
-    <xmx:j0SQasZNuxNbWpoOubRdWp8xFFZF-e0tH8c4ysDKcG3QQd4rt01sTw>
-    <xmx:kUSQarhEO7Zqa5q-8mUjV6gui5X0-wd3vjcxXTeOSmwKaiS6FSmIFGy->
+	1787839995; x=1787847195; bh=a+ad3PWrXwgTs5V91pQ1swMOoVBYuDGaQPr
+	ZTnXXjJY=; b=dxAIGk0P0dHb8eQw+3a/USTt2FMJUs9Q32QnFiFe5CwjR4+XMq2
+	RbmQUNENpHzo6wnzk9Zkx/k6AlxEKCHCOwlM+VXKhQWXYeBVcSSpOP0yExNM/2kV
+	Al52kMEOx3afn6l1P8D9KrEzxD1VYPHHvLhaS7HA8x/awIijyC5JKWLxTmA1jh82
+	JN4gx0RR2wYsScEYDKqTktsdoa/z9bVdXxJtyOAgfnrlTIAP2/ZNIR/YQ8xo7nHH
+	vkalDXl4BLVvhjsSL+WwXZ9ovDUGsiZqxprylyZnm3YvPBeuEAA26VLP0RyAM4La
+	aQOI9v047lx78LTxHRr/GFDfcOCCQCsuXfQ==
+X-ME-Sender: <xms:-UWQagu2AJDZRbZ9-eQuu4sa7U66wg7jz1LfQ80-Kz0pEGzxilQYsw>
+    <xme:-UWQavfra08ahe8CNDRwGZBZC0A7jsn8z8PTKts8Cv3x5xAY126zStkbDj4M3M9lk
+    965MY6TiqwlPA-F2dGm3px7G1-DUnNOtXW3aG1KZ6MdBw4gghcL5hBi>
+X-ME-Received: <xmr:-UWQagEX4jKyN3omyOG79EXEVPZc7LGzkFH98japSGv0G1xgNvIGqJXFSQM>
+X-ME-Proxy-Cause: dmFkZTF5zwx6+vi1CF17Vvppug3FxN3o2hxSLt1bKKQt8LhiFApBJj51ijsaN2etDF3CDd
+    jqq4P8ChL6OV5M81X6rGtEQ9HTYKgxocCr8ggIyBphA45QUrYa1nXXmbgDGuOTRWkx9Xau
+    SFmtpywzmW0SYl5OeCOC/4Tdnt0GRfSbJkzrb7eQH2kHukPsFyTbcQ8v+oXGpdakNYvUKI
+    9MARg7kD2h5P6L7fS2+NE6AoNGx3NuLZFIWxLV7F8ZfrFis+014diWNTTJu0aAeY7JNZaO
+    WUkxfXJAa3o7ME6TrOvHV2hSdgYqeD4MdhHPLdiqonry5W1XSlRC4Ij1WbSW7qYH9Rdqe/
+    6L0doc8mwOZYaqctOvFuYBOOY7U0AXBV6NWpi4rJKINiqzbe9xUaPOG8EFoQl8ZPa7hyzJ
+    DAkI01TSGQlVZNxTuZLhOxIEgKDLmeajtPS8ayOOyrIpPkAlB/HDVqnJwKr27tzY4QDTME
+    SEKW9gLt0Hz1nipQej1ZkfIZaXaXh7Ux/MvHrAf8cQ/FI1UgOcW/pCHmPKcbISFHROPo2e
+    6rmR+9wXMqn6BdRsDneHCGxSsNGhgoGJOan045RacdmOwSEa7KHC17RR280qx5T3owUq/l
+    HAbYT0q5Il0ICsWu7mhVBzrvwxivyNXjn1sSuVHmoLwK9Gj0fK3o76DGf6fQ
+X-ME-Proxy: <xmx:-UWQarbNvv8yjLkZjvIlLbSuqEQxQspE7i9TRInWVNMGTH7ExKguFw>
+    <xmx:-UWQaqrPeJPUPtepQDuRNPDf9TbubfzMmDu4-YhZVT6Gj4UlzKxPaw>
+    <xmx:-UWQam3a6avKB9D368k3MNYgR3FVZs7A6k_pEoHBBP_1CfecO6gElg>
+    <xmx:-UWQaljTuWGMKzF5yXGkQP3rqGh7_Ku4DjVg1Wn_v2K6nh-SQbkqGA>
+    <xmx:-0WQapakKIu6QhZD5MNiSIJYREhbFyemwoFhzcIgNCVF-jikbi8l6FHt>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Aug 2026 10:07:10 -0400 (EDT)
-Date: Thu, 27 Aug 2026 15:07:10 +0100
+ 27 Aug 2026 10:13:12 -0400 (EDT)
+Date: Thu, 27 Aug 2026 15:13:11 +0100
 From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: david@kernel.org, baolin.wang@linux.alibaba.com, 
-	pedrodemargomes@gmail.com, akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com, 
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-stable] mm/khugepaged: avoid unnecessary checking for
- swap entries when collapsing a mTHP
-Message-ID: <apBB01VBbmV28gWP@thinkstation>
-References: <d02405a5-1d0d-49d5-9056-1a34ccdeef10@kernel.org>
- <20260827121151.7837-1-lance.yang@linux.dev>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH v3 01/18] mm/swap: fix off-by-one in swap cache replace
+ sanity check
+Message-ID: <apBFoq08OWOOM3yP@thinkstation>
+References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-1-9b43f5163238@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260827121151.7837-1-lance.yang@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D503D1C0017
-X-Stat-Signature: aabhswrmsawiyij1pcwmo65m53xbcaue
+In-Reply-To: <20260821-swap-thp-cleanup-v3-1-9b43f5163238@tencent.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B033040002
+X-Stat-Signature: ppptapny9d5wkqp94i1r3c5ao4ird8tx
 X-Rspam-User: 
-X-HE-Tag: 1787839633-232392
-X-HE-Meta: U2FsdGVkX19U123VWGDPIN5drcVVB9ACIQjcPI6I2LmiHWAdP8/7a3+U8WXDURjUAV/LBX10nORP8shXJ8YROeA9Qp7rUdqR/oZcMw/EsSe5r4KFwKL/MY66VbpbIcEHp/s5baERo7qGCUnnhaIc3cd6MIQ6sMqe6jUduRATzbYlzKSIz95gqYx5kCKq7d15sBbxLzNsX3fu9kcf2Pgdbq9+eVyQaqjkDyALVJoeiJ5B/bBV7njSfDGuT4xYCjVAi0uMjxZLOk2jUiEeUPjCdCmqmZpEgEAeM20kBVDXVmKO6AGdXy1y9BLGQ7/GKa7HFh840CEYeIXDr0z7ii/ka2kVWYUmS42Aby/C15fevB6orwEsTWv5N8lxzUub70dR+/rGEankE+OvipSbSOwQIV56bT5YyCJLgB7+THQiEvIE9inqBLHhnzxOfVJ6fP2grDLptg1IjwaBB3IWN+dUUFeQT4vj7bZpVZpgBg32l9b/gIonwyfll5n7vcBA5akk0sXJheHwmPASvGzHOmNvwYux8TPRgwoEmh7eNR668+I50gs7EAzIojdRhOklTa1k9TN5dEg/IciaU1BPHlPymb13PMRwIAAmLF9AncClidnj8cdDXWnlnfoszIaIHkEtXBax8SyhhIyHhc0WATX/3v8ufVUQH1xJrsW76roLfyWoN7itoOVm/TMrD1I8CMhAcj/1e3gXggJpeOcdQDK7DefyB4ditonLt63Y/LefA/3cwEWdIlhGeRgAg8v/6xeIHwkh+9gFHpVsNoTjLZUWYW9YuS+3r/PlxIMGnRWHEM/NJiCq6GJ3qO11bR6tv0DlnJG+5av3fShTIRM3xTwivmNYRFg71362VNK/QNsbC+LFWFok18+/xtfdr0vzzN4lCXBgjEQTfkn3k+NrxDIcqGvwLMez/1NEb+ssYyyYwB9n7p1fP+uqChqU5SGZOZbI5UixBBpes826VqgSC2f
- MFb0Ixiz
- GwXSsSqz1XLgagpk33uVpP8BzcxhXb1jDCEVzsWc1NFVVHV87+j1U2ecd8Wf1oGUVjmxxDj3jouRYv/xFSzgyXaqPPsm04E+ZE6jRaBj5fAMkTA66ur/YgceLHtROs9UCzMTXUK40cXhCZBlaIJ6mm13m5OCx/zWjYO4TRyZeg26jKxH/xlT90JEpC2Kef6NbQ+iKBsNxzzGRISrH5472gpxud/99dMG7Cbs2otYcX87Tx9BDzPxgrfxnBogys8gbxTh39p4bxj/RqoF5ojSXCTBvNX++GeIxBJTGFgNhT6cjfJuvT7T/fS+E857twE7FL6HXhhdxWC9xnJfkjVaQsMfOLMqDYumAbZIOGuzAGcC1w3mdo/dB4CBEz8wQvHcefRx2EfMkt9uMFRpAtL1v65mQjyj+ZCj/+wXZWwB68zvO46MoSIMtv6q8EXtRDsG1rdiZ
+X-HE-Tag: 1787839995-93277
+X-HE-Meta: U2FsdGVkX1+uT3fOyKN/lmkYbJajmk3vGCLwvCmueY2mSz18KTJoZfpBkLVqgBsOzUYzGdgM9bHzDxJBLBgpyIldxjnuXVRgBogxjX7jE6bVL/4M8mLosGX7CNF7NddVOQrX1Ap4QhP6rOdaR2U93q6vRCZSQR94UNURUF5sJZwD2cYymKGwR0OnsbVhprD1TWZsDKHuUgEx5cJEWRxNNU8xVo8cOAE72WNT02cAZcD5++etn7eQmA45lHGSNsEyPTin/1t+Kdg05jHIdXgtkA7PKnL8n6HUbd8TyP7yzDFKNGxRzVfCH+kZ7fvLMpn5cGldpPOgHkCivsCNXOjyNtT4SYPjLHTjARt3HCJ5z33E6jivcTc+NHycJDsUJSzRkH52Irg1SVByDFGHOdaMap1szWValEUClktKur91+A9waR6PC0lgIfP+D6eI7WObC0WeaMGTZNlJqBuq82dQBFvK3jDeaBHZnTuAZCOLzkFum/9dsXd7bvJexirm4jV8zzKBCpqTvFtCwqCTYWE2TA3h0LK8z2OSWHfbKbK1LYFZ7F7ur03iWv9U3Zthy1/VfJmnwShwcfLZfJU2U+orw50T4UHZm09PZKdM2VCXq9uPm8fb9HJGReT6DLJQ5mzx4tl+bcEY67fa31zJQme58jwOfzKoIGwcouFsW++v2BC0L6k3k8Bv9iSSoHmjEX9pAulNCqlBgLeI+spf9FcC59ovU/BKw3TjBwb4n/bPceMPGLnHMJ91FMKYow5hG5O8DELX7Ge0IeIENVIUMnA36pHTv/scuLkwFDflJtcmFIAW84U6BM2zfp3L2oV2kgzGE6PIdKQA0uiV9j3OM6iBS1zgE/v2czyzzc+IwhjEqoaFq9Kol1B1LYlYn3eSoyBzBw62Y47b7mf/XNStX3QoZB2G+KnqYqFdCOZVTnVNPcevX635ffOlrd1tJiu6VrjAw8Ui3diwp/1PmWFXgLZ
+ +tn4BDKF
+ t/7IT868Xcht3CcjBHwFDHFi4MxFH4+RxS9QfCkELsnnYcAJmpWpKN2zfqv27vUnUcusoY00etC1gQNfvzQpTgWl7yqE6iVVx3z0M2wbHxZU9ZI0jqo0NPmB8pRsBIRzBVyUAfn+vprOR6bmdPIsQQnXaUFXhcbcj5sAL36q8tqwwJ2hVI6ddZyh1u1sAt+Ec2Ydv5SItHYqUFgYbqAKotst3OLNXkcNqztIwST90DJmZcKUbWfpGfcWAg4ZZ3brrI8HqtoiC65Lk1ZjlJRs4vVjRst9JgLlB297qF3axM3Mh3WbaS0lSOt3TQHVBTuyzFZzrBaW0CPqiRszgur0mi7qYqRfCVRolJCIQtXhjtBR1CE0T04wYubGEPVrg3hRbXvjzc+05PxnM1yAjOEEHFvGMkssfyv3qpeOqB/xJrB8Z4VStt+94/RqYoRbDvNwR20/d8jpn3Q4AUz7O3kEtiRZxCW/BWVKCEQS9G4aezbQ9DKf/Ky4EhL3d6hoEXFzFG6VGzJbPVkjbAiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,23 +138,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 08:11:51PM +0800, Lance Yang wrote:
-> For the candidate above, the loop only reads its PTEs and returns
-> SCAN_SUCCEED. Pedro's bitmap lets mthp_collapse() determine that upfront
-> and skip the walk.
+On Fri, Aug 21, 2026 at 02:55:14AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Emm ... as I asked before[1], any numbers showing how much the extra scan
-> costs?
+> The DEBUG_VM sanity check in __swap_cache_replace_folio() iterates
+> the old folio's range with "while (ci_off++ < ci_end)", so the loop
+> body runs on the already-incremented offset: the first entry is
+> skipped and one entry past the range is read.  For a folio split
+> that entry belongs to the first after-split folio and was just
+> repointed by the replacement loop above, so the check would warn
+> spuriously whenever sub-folio orders differ from the head folio's,
+> as non-uniform swapcache splits now do.
+> 
+> Use the same do-while pattern as the replacement loop.
+> 
+> Fixes: 8578e0c00dcf ("mm, swap: use the swap table for the swap cache and switch API")
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-With the win being only some scan cost, I don't think it is going to be
-measurable.
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-It can open a path to future work. For example, we could find fully
-populated mTHP windows in a PMD that is not eligible for collapse
-because unmapped > max_ptes_swap. Right now we just give up on the whole
-PMD in such cases.
+> ---
+>  mm/swap_state.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index b76eb3d876fd..59a577f685b5 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -389,8 +389,9 @@ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+>  	    folio_order(old) != folio_order(new)) {
+>  		ci_off = swp_cluster_offset(old->swap);
+>  		ci_end = ci_off + folio_nr_pages(old);
+> -		while (ci_off++ < ci_end)
+> +		do {
+>  			WARN_ON_ONCE(swp_tb_to_folio(__swap_table_get(ci, ci_off)) != old);
+> +		} while (++ci_off < ci_end);
 
-But there are more wins to gain there. Just saying :P
+I don't particularly like increment mixed with condition, but it seems
+to be consistent with other swap code...
+
+>  	}
+>  }
+>  
+> 
+> -- 
+> 2.55.0
+> 
+> 
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
