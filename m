@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B70CCC61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:25:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E43C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:25:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE8226B00A2; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id E49596B00A9; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C71356B00AA; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id DF4966B00AC; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A273F6B00AC; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
+	id B124D6B00A7; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 560336B00AA
+	by kanga.kvack.org (Postfix) with ESMTP id 560576B00AB
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:24:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D9C8AA01E2
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B84FE80119
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:45 +0000 (UTC)
-X-FDA: 85147572930.26.D2A8DF2
+X-FDA: 85147572930.05.B893036
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EB958C0009
+	by imf10.hostedemail.com (Postfix) with ESMTP id A9E7CC0010
 	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:24:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xLmUHxdt;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf28.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=F63kYZZR;
+	spf=pass (imf10.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787847884;
+	s=arc-20220608; t=1787847883;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xAGNWJtbQb3AJ1HJQX61n/LHCCEcBpCaICJCBWpxqGI=;
-	b=aicPv+4NtBjCbUsK0IWookg/gQmTAWjcF1TBvpnrW+7giGHExnwVXlwzfwQpQtbIiUki+y
-	4Sy19uAbbJudj4QrGZPOQPimL1s4QTb19O3xYh7bBLfcjEuJq83ivotBsQCfGYlTq2atQJ
-	RZ6u7jXQZgWyCugkWu5bnkMrNKgKHFw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xLmUHxdt;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf28.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com
+	bh=gzG5ol8Yr6RKYwTAU+BAIanpIkNMA3tETIj6mvgS0RQ=;
+	b=qTncD4up+JwFzO1eGclovOp4vG1pLI7fy56ypxDVmJRiB0fIqep32U5JFn81uqKK1S00E2
+	TeV+WNtlYCgOnVmfPk/fJFcK0Woyg2MYcdyycuqat7nhaG/4UmBLvKJLXqALa+MNZVfkPq
+	60T76npGva0fT4vsJ+fmhV/PyEVJ55s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787847884;
-	b=MaGHpR4uAYIvpRTA1LHCPO6z29ZDSmrGQVgEHF/mknjO8iqjP1JYjgHD3/12pJN+Rv81Vm
-	u8qxQJHzjtSseatb29izwJQlVvdLg7SZjNWn34JrYQh3KUpPFLhl1JdYyCDv/C35PAvdm4
-	Ry7J6GIb3Tw2p1uNRT4yDPbzIufwcKg=
+	t=1787847883;
+	b=bXXhHAmbMlCiKuRZOK3qrVK7iOikQ/kBfoDfDkqW1LByDh+Pi84Xrx0Z8dy6dBgRwMNom7
+	TPwApYx0vMtcpbcDbaX/+M8y8a0aE+7ylJvm/h9SUbxIT/yP/J/8LCATG59mCiAqbAL6sG
+	eAbF5JbMfDke0VZxa+86NGPOBWsBrJM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=F63kYZZR;
+	spf=pass (imf10.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=xAGNWJtbQb3AJ1HJQX61n/LHCCEcBpCaICJCBWpxqGI=;
-	b=xLmUHxdtznvn14bKKb3Ae8Py9BGbsGZqW/mdynm2ysF18alkLLyUC/mTjbs9FM+IA4EMsY9Eg
-	zCsPR8FkLdAC+gJ2+MTxLuwMlQQc1uJIXoR8zHE4WD/zGUWFsZXsiVf3Rr2lo/hmf4hDucR9LZt
-	dUOIyHkNGI1TeXQ0Xw9IW6M=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hW6KF4jbczHnH3h;
-	Fri, 28 Aug 2026 00:24:01 +0800 (CST)
+	bh=gzG5ol8Yr6RKYwTAU+BAIanpIkNMA3tETIj6mvgS0RQ=;
+	b=F63kYZZRaWckjPUhtZOR2u+9xVDb4ayB+XJ7djeLCD8+HZj9Ituii5PFkTq09FW8YQWa/kROT
+	427t61dwdHdiaK2yyzTeCLrtvj4uBWR5I3vJ1UmSPJ72M17crIgWvQ4lDFSBleLV0vCWWAvY/PI
+	IwFkSVRGhZ2SPjPU+HD5Af8=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hW6KW4D2GzJ46Yq;
+	Fri, 28 Aug 2026 00:24:15 +0800 (CST)
 Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id A74DA40572;
+	by mail.maildlp.com (Postfix) with ESMTPS id 25DEC4058D;
 	Fri, 28 Aug 2026 00:24:37 +0800 (CST)
 Received: from mscphis00949.huawei.com (10.123.66.11) by
  mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 27 Aug 2026 19:24:37 +0300
+ 15.2.2562.45; Thu, 27 Aug 2026 19:24:36 +0300
 From: Nikita Panov <panov.nikita@huawei.com>
 To: <catalin.marinas@arm.com>, <akpm@linux-foundation.org>,
 	<david@kernel.org>, <ljs@kernel.org>, <vbabka@kernel.org>, <cl@gentwo.org>,
@@ -75,9 +75,9 @@ To: <catalin.marinas@arm.com>, <akpm@linux-foundation.org>,
 CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <wangkefeng.wang@huawei.com>,
 	<artem.kuzin@huawei.com>, <panov.nikita@huawei.com>
-Subject: [RFC PATCH 13/18] arm64: make kernel text patching aware about replicas
-Date: Fri, 28 Aug 2026 00:11:53 +0800
-Message-ID: <20260827161158.3618409-14-panov.nikita@huawei.com>
+Subject: [RFC PATCH 10/18] arm64: enable per-NUMA node kernel text and rodata replication
+Date: Fri, 28 Aug 2026 00:11:50 +0800
+Message-ID: <20260827161158.3618409-11-panov.nikita@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260827161158.3618409-1-panov.nikita@huawei.com>
 References: <20260827161158.3618409-1-panov.nikita@huawei.com>
@@ -88,14 +88,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.123.66.11]
 X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
  mscpeml500004.china.huawei.com (7.188.26.250)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EB958C0009
-X-Stat-Signature: g9rq67dadtq6trmri1kh1jgaq63mcjg7
 X-Rspam-User: 
-X-HE-Tag: 1787847883-441823
-X-HE-Meta: U2FsdGVkX1+vTAqHTS2722KT1sxuESk9jmkjA8OsfwC2NADzz2pqdT2IZu6m0mqO//gUb9SizWC2adXU+Lv0cgCF+SqIyjXy76d9jkigd4lK3TICH9vLkril/he2/A1vZ/YGXb5WmGsCaaOEPpb41IQzWQB4WI2UuSn+eJe81ZjolXFsVIOwp6vqhPQWLqq6NfnX6W7Id/6D73Yg052fsPuKXbXpBxNN9XIkHJbTWk47sXptMjmfMeZDlEfrkEr0/Hcvw+IYd5dVJgiGSXwn1l9qrLrTzt+XUlLVnzEXdkLgCSEdXyDG2LvoOhRRpyJyE6bYTfSrq2Lj+jqOh1ilUAXelP/WgRY6S1+XEA8fTrNUtN7xFqxUfp0yS+qfkM8SK4NivlR940fO1aLwudZKC65MUXE0zrQ7eCsDQO5n2BHY+atxg07G1CgJm7kh2rxlyjjl//mn2fENSQxU2mScUhunrqg7zoGMoOoTaDCJ2z0tm3GEEjsifdMKA0vVcddq4BVWw9ZDWgsoqrC1RdW60c1oeV+qpDqG+gXMVmmq6xzaGl7039/9KFt0yRw+yw5FrSXOmU9Jeub75om63Uji93lN117YyP6s5pCm10NaSIeCZEsn9JAujnnul9gtz3B/g4P+ORVkujzcRVQA8C9U/QFA2b1n6Z69/tfp2QpdfcOiotc5OrTMun76xLWvu6mdb/iIB+XOhN5Y/ZQGo1PJAi/EJDn/6JifZmvl2BI0XbfgHjg1Ap1P2Z5HTP9MhJSWgl7PpshfHlSh6c+QWVkA11Trf4maVnqMgBpL2Nwy3+5S5cPZGLuICxMUN5G+djliSDqBBqJtUNTDcKcp+gi+8itixwH0RsEYXaNgUzGmhxs/j243nyQ/30jiMnqhNVD8Oqk0h6A3sgmULDGsUJlU9tzvrxm24gHq/YyWRnwnU9yIAjC2OmPcCjXmPM/+2a2BZ3b615qVrPZ/8C+HNes
- +QHyjULM
- ZUMf0D3NqV71SKim7iAMvBE3J9GvlJWuIFGn3fetVQ/WrQqJUvt2RQ2FvfmkguQzmm28miPodsyQnWnib7m4SV/CkWMk90YqiquNjrP5tOhX+etKMMyMQ4G9RSxR+IsSAj/W5ZBdbakSF6bOzwCHxlpNvurJFWmwixVlGGPlkryZx6sdxBCxfpFXvH1O+P+gHlC7nHM/c3HBbY0zthd36vvMVl0SYP+5vTx5Fbue2eME9dxxBYYfWESknTFunh8TQOHf8AVpMfnhpnn74/O9BDhNamZFTdYdaMmwxZt3O8yl7vH5C/gKWMGNX0RHmWMTsF3LpAJZIU6Dwb3Wj6xSFZ2M6BxlRM28CAAYeNWawA4sryNrCjAzUW+T0wx4N++5w8+5lePeBudj09SdoyAr4qkqK4T/Mv5MCE0XW5cQiKJyknlciq7bHhnzBBF0s18ydsoklO63clBwRhAxJA6exT77v0kFvvzqFSt8rmqmZ+1T0t8JR5tvqaR+FqA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A9E7CC0010
+X-Stat-Signature: o1b7cqcii1quf7c6fnshe334pwiuwgz7
+X-HE-Tag: 1787847883-383841
+X-HE-Meta: U2FsdGVkX1/mkR2h0t8xPv32ut95sw+3n+ROt4XZcswOmL11YQTsbKicC7HHr8A+tjzbwXed/a7Hr31eh+nYHAMGniJUb5nN1ZnLJEpeggymoK4ArMLxUll830633t6LV9UQ+Z9sTeTP+7LlKI0A0JJCtA0nl+pLhspYwfTNh7eXSLVuYPPelPJDMQmQJOXrDMCgR6jpiAIQY+/tMx/npcYkFqrRoGMsHYCv65QGxD6e60z/LfMTFRbT1jQfIu4GOaSP6WdZP5yNk/ou2DMVKC3ce3PXXEbkNP8r0jKdy9PRZJskQH9zFthKJ6r0mDM/XDZSqt7nertWzPNf99dvGX8+KqDh90ZNg7/Y4eplvJ4fpT/PE7tE025Cs5RLe7965pIvG4qE6xBJ1DnvudFSmE10dmY5DelmFrQQrKQA88MjYCtPpxoOfJ6SU9YkT0JzONbTxkZJVzRz6qr6xfPKSEJUS3Y+4UaeYXVREsvcTYZ8GqXdSi6iPoalQOBWuKkGLPy134SUf3EX7kuzn+uA576qXcKN1uHkz3wj9BW81SYB3/UJNXZDJTRTOOem5qdzg0DUTuH18usgsApaySg6HmE69GDuSDplmCWwxeYXd+BSmSWaGPtYqLfRy1n+gHbeJ+CY13NBMGOl4Sd6MS97I8hQhAR0x9VcVFr3KsdSx8j0ZE6TssJQKAQ2yeylBI0hPF68C3XrObuRgOlMWQ7/oRn80PY3SPH7H3fXjnYlJXkN2M+fRa1IiHlgt0Ky3TcYOuWPxmm/eDmLTp/4+AMVOTPFEXZAbE5uJ6e2LoaLSc5GylTSwWrh5Dh9xK3kAIaDve/5c+Djjp7j70prI69JMlmibJYw0gOcUNrmH0HsozYA8cN3te8xC1AfIW345gVpHB+RlKH5NyhaJu8+jq7Q8llN///WHBsXV9Gzi6iNJY4/ahyPcYry8pHZdJIWsEzHx3YS09a2No7gTDnVzkq
+ lWyhQZ5k
+ 9ujE6Zj2j8JSbYiALlHOkCIl6MxTZCCg4qqPDhpdJJyMJGsHLRI9TjQlWMAeqJtdSPcZu3Ns/oZBh4GjFz0GpM2QmxAkE0PfINm8kB7ovjplPEjaOytFEgbmkGe9J5KXCWVrLxxU2sOnBq8bSEjEOF5Rlg6R8FCpmoc0Y6XkFBNMaFmPHXbwt50OP3AszW+1abTSghOBP7JhUwuBadHXfvMQA4eDwx0oIV/pZERyd+USARAu5nbacwt8Siel9z7oxk0vVagK2eRs+mNjIjXCcoxBPBB4LrkskJTwVzzM9LDYwhTTXh70exVeZTnk+m1bZfbbBuIswGwo0xoCUg0+miKiANxtlyZ+t1HPoeCpRLrBr/9Pe9aBzNYD+OIShvK3vEycv3Jf9IF9nVoc4cU6BexYBPc3fu0OuyiVztXvX2qe4huwyrMt67cWdcm1N2fA7GWG/u9x5pQnA+srvrCGoBpK0BQvYhA5k7r0qp2yzWBNdneO4HM842DcyeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,232 +103,240 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+During boot memory for replicas is allocated,
+local translation tables are created,
+original text and rodata are copied to replicas,
+and replicas are mapped to local tables.
+On startup of the secondary CPUs, after minimal initialization,
+the local pgtable is loaded to ttbr1.
+
 Acked-by: Artem Kuzin <artem.kuzin@huawei.com>
 Acked-by: Alexander Grubnikov <alexander.grubnikov@huawei.com>
 Acked-by: Ilya Hanov <ilya.hanov@huawei-partners.com>
 Acked-by: Denis Darvish <darvish.denis@huawei.com>
 Signed-off-by: Nikita Panov <panov.nikita@huawei.com>
 ---
- arch/arm64/kernel/alternative.c | 33 +++++++++++-
- arch/arm64/kernel/patching.c    | 96 +++++++++++++++++++++++++++++++++
- 2 files changed, 128 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable.h |  4 +++
+ arch/arm64/kernel/smp.c          |  8 ++++++
+ arch/arm64/mm/context.c          |  1 +
+ arch/arm64/mm/init.c             | 49 ++++++++++++++++++++++++++++++++
+ arch/arm64/mm/kasan_init.c       |  2 ++
+ arch/arm64/mm/mmu.c              | 38 ++++++++++++++++++++++++-
+ 6 files changed, 101 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/alternative.c b/arch/arm64/kernel/alternative.c
-index f5ec7e7c1d3f..e85644d64bbd 100644
---- a/arch/arm64/kernel/alternative.c
-+++ b/arch/arm64/kernel/alternative.c
-@@ -10,6 +10,7 @@
- 
- #include <linux/init.h>
- #include <linux/cpu.h>
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 6000905a2e86..f11d77829890 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -20,7 +20,11 @@
+  * VMALLOC_START: beginning of the kernel vmalloc space
+  * VMALLOC_END: extends to the available space below vmemmap
+  */
++#ifdef CONFIG_KERNEL_REPLICATION
++#define VMALLOC_START		((MODULES_END & PGDIR_MASK) + PGDIR_SIZE)
++#else /* !CONFIG_KERNEL_REPLICATION */
+ #define VMALLOC_START		(MODULES_END)
++#endif /* CONFIG_KERNEL_REPLICATION */
+ #if VA_BITS == VA_BITS_MIN
+ #define VMALLOC_END		(VMEMMAP_START - SZ_8M)
+ #else
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index a61dc3016a11..4832a89ba992 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -36,6 +36,7 @@
+ #include <linux/kprobes.h>
+ #include <linux/kvm_host.h>
+ #include <linux/nmi.h>
 +#include <linux/numa_kernel_replication.h>
- #include <linux/elf.h>
- #include <asm/cacheflush.h>
+ 
  #include <asm/alternative.h>
-@@ -139,6 +140,36 @@ static noinstr void clean_dcache_range_nopatch(u64 start, u64 end)
- 	} while (cur += d_size, cur < end);
+ #include <asm/atomic.h>
+@@ -208,6 +209,13 @@ asmlinkage notrace void secondary_start_kernel(void)
+ 	mmgrab(mm);
+ 	current->active_mm = mm;
+ 
++	/*
++	 * Setup per-NUMA node page table if kernel
++	 * replication is enabled. Option supported
++	 * only for 64-bit mode.
++	 */
++	numa_setup_pgd();
++
+ 	/*
+ 	 * TTBR0 is only used for the identity mapping at this stage. Make it
+ 	 * point to zero page to avoid speculatively fetching new entries.
+diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
+index 0f4a28b87469..3afdae62784e 100644
+--- a/arch/arm64/mm/context.c
++++ b/arch/arm64/mm/context.c
+@@ -11,6 +11,7 @@
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/mm.h>
++#include <linux/numa_kernel_replication.h>
+ 
+ #include <asm/cpufeature.h>
+ #include <asm/mmu_context.h>
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index fbf215ecc7d0..3c2394b20c03 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -331,6 +331,47 @@ void __init bootmem_init(void)
+ 	memblock_dump_all();
  }
  
 +#ifdef CONFIG_KERNEL_REPLICATION
-+static void __write_alternatives(struct alt_instr *alt,
-+					 alternative_cb_t alt_cb,
-+					 __le32 *origptr, __le32 *updptr,
-+					 int nr_inst)
++/*
++ * It is necessary to preallocate vmalloc pages in advance,
++ * otherwise the replicated page-tables can be incomplete.
++ */
++void __init preallocate_vmalloc_pages(void)
 +{
-+	if (is_text_replicated() && is_kernel_text((unsigned long)origptr)) {
-+		int nid;
++	unsigned long addr;
 +
-+		for_each_memory_node(nid) {
-+			__le32 *ptr = numa_get_replica(origptr, nid);
++	for (addr = MODULES_VADDR; addr <= VMALLOC_END && addr != 0UL;
++			addr = ALIGN(addr + 1, PGDIR_SIZE)) {
++		pgd_t *pgd = pgd_offset_k(addr);
++		p4d_t *p4d;
++		pud_t *pud;
++		pmd_t *pmd;
++		int pte;
 +
-+			alt_cb(alt, origptr, ptr, nr_inst);
-+			clean_dcache_range_nopatch((u64)ptr,
-+						   (u64)(ptr + nr_inst));
-+		}
-+	} else {
-+		alt_cb(alt, origptr, updptr, nr_inst);
++		p4d = p4d_alloc(&init_mm, pgd, addr);
++		/*
++		 * No need to check p4d here due to
++		 * only 4-stage page table is possible
++		 */
++		pud = pud_alloc(&init_mm, p4d, addr);
++		if (!pud)
++			panic("Failed to pre-allocate pud pages for vmalloc area\n");
++		if (!mm_pud_folded(&init_mm))
++			continue;
++
++		pmd = pmd_alloc(&init_mm, pud, addr);
++		if (!pmd)
++			panic("Failed to pre-allocate pmd pages for vmalloc area\n");
++		if (!mm_pmd_folded(&init_mm))
++			continue;
++
++		pte = pte_alloc(&init_mm, pmd);
++		if (pte)
++			panic("Failed to pre-allocate pte pages for vmalloc area\n");
 +	}
-+}
-+#else
-+static void __write_alternatives(struct alt_instr *alt,
-+					 alternative_cb_t alt_cb,
-+					 __le32 *origptr, __le32 *updptr,
-+					 int nr_inst)
-+{
-+	alt_cb(alt, origptr, updptr, nr_inst);
 +}
 +#endif /* CONFIG_KERNEL_REPLICATION */
 +
- static int __apply_alternatives(const struct alt_region *region,
- 				bool is_module,
- 				unsigned long *cpucap_mask)
-@@ -174,7 +205,7 @@ static int __apply_alternatives(const struct alt_region *region,
- 			alt_cb = patch_alternative;
- 		}
+ void __init arch_setup_zero_pages(void)
+ {
+ 	__zero_page = phys_to_page(__pa_symbol(empty_zero_page));
+@@ -401,7 +442,15 @@ void free_initmem(void)
+ 	 * prevents the region from being reused for kernel modules, which
+ 	 * is not supported by kallsyms.
+ 	 */
++#ifdef CONFIG_KERNEL_REPLICATION
++	/*
++	 * In case of replicated kernel the per-NUMA node vmalloc
++	 * memory should be released.
++	 */
++	vunmap_range_replicas((u64)__init_begin, (u64)__init_end);
++#else
+ 	vunmap_range((u64)__init_begin, (u64)__init_end);
++#endif /* CONFIG_KERNEL_REPLICATION */
+ }
  
--		alt_cb(alt, origptr, updptr, nr_inst);
-+		__write_alternatives(alt, alt_cb, origptr, updptr, nr_inst);
- 
- 		if (!is_module) {
- 			clean_dcache_range_nopatch((u64)origptr,
-diff --git a/arch/arm64/kernel/patching.c b/arch/arm64/kernel/patching.c
-index 09f019c6547a..8bac14198459 100644
---- a/arch/arm64/kernel/patching.c
-+++ b/arch/arm64/kernel/patching.c
-@@ -5,6 +5,7 @@
- #include <linux/spinlock.h>
- #include <linux/stop_machine.h>
- #include <linux/uaccess.h>
-+#include <linux/numa_kernel_replication.h>
- 
- #include <asm/cacheflush.h>
- #include <asm/fixmap.h>
-@@ -15,6 +16,7 @@
- 
- static DEFINE_RAW_SPINLOCK(patch_lock);
+ void dump_mem_limit(void)
+diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+index 45fbdce684c8..37eb408830f0 100644
+--- a/arch/arm64/mm/kasan_init.c
++++ b/arch/arm64/mm/kasan_init.c
+@@ -345,7 +345,9 @@ static void __init kasan_init_shadow(void)
+ 	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)PAGE_END),
+ 				   (void *)mod_shadow_start);
  
 +#ifndef CONFIG_KERNEL_REPLICATION
- static bool is_exit_text(unsigned long addr)
- {
- 	/* discarded with init text/data */
-@@ -42,6 +44,17 @@ static void __kprobes *patch_map(void *addr, int fixmap)
- 
- 	return (void *)set_fixmap_offset(fixmap, phys);
- }
-+#else
-+static void __kprobes *patch_map(void *addr, int fixmap, int nid)
-+{
-+	struct page *page;
-+
-+	page = walk_to_page_node(nid, addr);
-+	BUG_ON(!page);
-+
-+	return (void *)set_fixmap_offset(fixmap, page_to_phys(page) + offset_in_page(addr));
-+}
-+#endif /* CONFIG_KERNEL_REPLICATION */
- 
- static void __kprobes patch_unmap(int fixmap)
- {
-@@ -63,6 +76,28 @@ int __kprobes aarch64_insn_read(void *addr, u32 *insnp)
- 	return ret;
- }
- 
-+#ifdef CONFIG_KERNEL_REPLICATION
-+static int __kprobes __aarch64_insn_write(void *addr, __le32 insn)
-+{
-+	int nid;
-+	void *waddr = addr;
-+	unsigned long flags = 0;
-+	int ret;
-+
-+	raw_spin_lock_irqsave(&patch_lock, flags);
-+	for_each_memory_node(nid) {
-+		waddr = patch_map(addr, FIX_TEXT_POKE0, nid);
-+		ret = copy_to_kernel_nofault(waddr, &insn, AARCH64_INSN_SIZE);
-+		patch_unmap(FIX_TEXT_POKE0);
-+
-+		if (ret || !is_text_replicated())
-+			break;
-+	}
-+	raw_spin_unlock_irqrestore(&patch_lock, flags);
-+
-+	return ret;
-+}
-+#else
- static int __kprobes __aarch64_insn_write(void *addr, __le32 insn)
- {
- 	void *waddr = addr;
-@@ -79,12 +114,37 @@ static int __kprobes __aarch64_insn_write(void *addr, __le32 insn)
- 
- 	return ret;
- }
-+#endif /* CONFIG_KERNEL_REPLICATION */
- 
- int __kprobes aarch64_insn_write(void *addr, u32 insn)
- {
- 	return __aarch64_insn_write(addr, cpu_to_le32(insn));
- }
- 
-+#ifdef CONFIG_KERNEL_REPLICATION
-+noinstr int aarch64_insn_write_literal_u64(void *addr, u64 val)
-+{
-+	int nid;
-+	u64 *waddr;
-+	unsigned long flags;
-+	int ret;
-+
-+	raw_spin_lock_irqsave(&patch_lock, flags);
-+	for_each_memory_node(nid) {
-+		waddr = patch_map(addr, FIX_TEXT_POKE0, nid);
-+
-+		ret = copy_to_kernel_nofault(waddr, &val, sizeof(val));
-+
-+		patch_unmap(FIX_TEXT_POKE0);
-+
-+		if (ret || !is_text_replicated())
-+			break;
-+	}
-+	raw_spin_unlock_irqrestore(&patch_lock, flags);
-+
-+	return ret;
-+}
-+#else
- noinstr int aarch64_insn_write_literal_u64(void *addr, u64 val)
- {
- 	u64 *waddr;
-@@ -101,9 +161,44 @@ noinstr int aarch64_insn_write_literal_u64(void *addr, u64 val)
- 
- 	return ret;
- }
-+#endif /* CONFIG_KERNEL_REPLICATION */
- 
- typedef void text_poke_f(void *dst, void *src, size_t patched, size_t len);
- 
-+#ifdef CONFIG_KERNEL_REPLICATION
-+static void *__text_poke(text_poke_f func, void *addr, void *src, size_t len)
-+{
-+	unsigned long flags;
-+	size_t patched = 0;
-+	size_t size;
-+	void *waddr;
-+	void *ptr;
-+
-+	raw_spin_lock_irqsave(&patch_lock, flags);
-+
-+	while (patched < len) {
-+		int nid;
-+
-+		ptr = addr + patched;
-+		size = min(PAGE_SIZE - offset_in_page(ptr), len - patched);
-+
-+		for_each_memory_node(nid) {
-+			waddr = patch_map(ptr, FIX_TEXT_POKE0, nid);
-+			func(waddr, src, patched, size);
-+			patch_unmap(FIX_TEXT_POKE0);
-+
-+			if (!is_text_replicated())
-+				break;
-+		}
-+		patched += size;
-+	}
-+	raw_spin_unlock_irqrestore(&patch_lock, flags);
-+
-+	flush_icache_range((uintptr_t)addr, (uintptr_t)addr + len);
-+
-+	return addr;
-+}
-+#else
- static void *__text_poke(text_poke_f func, void *addr, void *src, size_t len)
- {
- 	unsigned long flags;
-@@ -130,6 +225,7 @@ static void *__text_poke(text_poke_f func, void *addr, void *src, size_t len)
- 
- 	return addr;
- }
+ 	BUILD_BUG_ON(VMALLOC_START != MODULES_END);
 +#endif
+ 	kasan_populate_early_shadow((void *)vmalloc_shadow_end,
+ 				    (void *)KASAN_SHADOW_END);
  
- static void text_poke_memcpy(void *dst, void *src, size_t patched, size_t len)
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 79d90226fd5d..fa12461c0d8e 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -30,6 +30,7 @@
+ #include <linux/mm_inline.h>
+ #include <linux/pagewalk.h>
+ #include <linux/stop_machine.h>
++#include <linux/numa_kernel_replication.h>
+ 
+ #include <asm/barrier.h>
+ #include <asm/cputype.h>
+@@ -1039,6 +1040,22 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+ 				 pgd_pgtable_alloc_special_mm, flags);
+ }
+ 
++static void populate_mappings_prot(phys_addr_t phys, unsigned long virt,
++				   phys_addr_t size, pgprot_t prot)
++{
++#ifdef CONFIG_KERNEL_REPLICATION
++	int nid;
++
++	for_each_memory_node(nid) {
++		early_create_pgd_mapping(per_node_pgd(&init_mm, nid),
++			page_to_phys(walk_to_page_node(nid, (void *)virt)),
++			virt, size, prot, NULL, 0);
++	}
++#else
++	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
++#endif /* CONFIG_KERNEL_REPLICATION */
++}
++
+ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ 				phys_addr_t size, pgprot_t prot)
  {
+@@ -1048,7 +1065,7 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ 		return;
+ 	}
+ 
+-	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
++	populate_mappings_prot(phys, virt, size, prot);
+ 
+ 	/* flush the TLBs after updating live kernel mappings */
+ 	flush_tlb_kernel_range(virt, virt + size);
+@@ -1390,6 +1407,21 @@ static pgprot_t __init kernel_exec_prot(void)
+ 	return rodata_enabled ? PAGE_KERNEL_ROX : PAGE_KERNEL_EXEC;
+ }
+ 
++#ifdef CONFIG_KERNEL_REPLICATION
++static void __init populate_trampoline_mappings(void)
++{
++	int nid;
++
++	/* Copy trampoline mappings in replicated tables */
++	for_each_memory_node(nid) {
++		memcpy(per_node_pgd(&init_mm, nid) - (PAGE_SIZE * 2 / sizeof(pgd_t)),
++				tramp_pg_dir, PGD_SIZE);
++	}
++	/* Be sure that replicated page table can be observed properly */
++	dsb(ishst);
++}
++#endif /* CONFIG_KERNEL_REPLICATION */
++
+ static int __init map_entry_trampoline(void)
+ {
+ 	int i;
+@@ -1418,6 +1450,10 @@ static int __init map_entry_trampoline(void)
+ 		__set_fixmap(FIX_ENTRY_TRAMP_TEXT1 - i,
+ 			     pa_start + i * PAGE_SIZE, PAGE_KERNEL_RO);
+ 
++#ifdef CONFIG_KERNEL_REPLICATION
++	populate_trampoline_mappings();
++#endif /* CONFIG_KERNEL_REPLICATION */
++
+ 	return 0;
+ }
+ core_initcall(map_entry_trampoline);
 -- 
 2.34.1
 
