@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEA13C61DBD
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 03:32:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E524C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 03:38:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96CE96B008C; Wed, 26 Aug 2026 23:32:23 -0400 (EDT)
+	id 88F206B0088; Wed, 26 Aug 2026 23:38:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91DA96B0092; Wed, 26 Aug 2026 23:32:23 -0400 (EDT)
+	id 8187C6B008A; Wed, 26 Aug 2026 23:38:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80D3B6B0095; Wed, 26 Aug 2026 23:32:23 -0400 (EDT)
+	id 706966B0092; Wed, 26 Aug 2026 23:38:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E7CA6B008C
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 23:32:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B673F1A018A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:32:22 +0000 (UTC)
-X-FDA: 85145626524.10.C513401
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 46B906B0088
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 23:38:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D92C51402E5
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:38:14 +0000 (UTC)
+X-FDA: 85145641308.24.133F7D2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E8F45C0002
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:32:20 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VSM0sYi8;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787801541;
-	b=J/jf6r/kEhpRwHlBi2QvTxxoBw0mSfdZbulw7B1mDxO+o6l9v7NDwTSQ+dvg9KNlNxY9lL
-	piaFwVE3StdW8gxpy8pHt3PDCjPo5hR9kBiCjdwWnR0whiyrkop5k3j/RN+LQxpEO7PKBR
-	GK2wCXWBDmIkrgBjTeR8yieRGFJ58/Q=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VSM0sYi8;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4A72D80003
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 03:38:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KLijvmtT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787801541;
+	s=arc-20220608; t=1787801893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jWOHS8TyoHKRTLSUkAPNBR3Q6pJ9KdiACWk7PEG8wK8=;
-	b=xNaCdTtFY1m2PQS9KvD0WkNqqnt1fKMxqWpRvxw35j+2PQ3oVX9I+zGsDGhsswiWgcEDSj
-	SG18UkkOO1kh80tb2RvHwd3F7D7YNsCs6oVEgwPVQSxBY0C+WJ/wsjFcmr31e79GPWhxhG
-	2NAD8kWKE0id4HK48kP26KYemP7e5gk=
+	bh=qktSdDuw+LvPQ8hF169l4fiZgm7L5YFz3tdhT11hID0=;
+	b=oc6xjiYOX+JB/7ezMxUSmskaVvGi6T51+nx70g3hUZ1jznDfSz/oIV2LWdDf5d4MCm28BE
+	/NmttKuIyEJvT1ISV5ddw2QxmxkSqpVaK2DB5A1c6vBZDZt6v7gfX4g+gJMpLVmFioDflz
+	UFfyWneIW9kn3knRq3aLhKEX7sdXVTo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KLijvmtT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787801893;
+	b=FQ2QE3lUWcPvqf8BxWp6aOnHvSKFegA5dEXL4vDZz2+7WAafjif6sxjKMguTOPHSQoNGc+
+	pAuSZOCRmNvjiGRwiox/2wSmP129K68rZyrTRgMlqCPYIN3+A/o3LzZl8ii9ir0c3CE0ya
+	lkmc7jo5DgCJYfjNELhzzEyA2apm0vY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC0FE41AE2;
-	Thu, 27 Aug 2026 03:32:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BB41F000E9;
-	Thu, 27 Aug 2026 03:32:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787801539;
-	bh=jWOHS8TyoHKRTLSUkAPNBR3Q6pJ9KdiACWk7PEG8wK8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=VSM0sYi89j9wTZPXhMBkh+2yj/ZPg8EGm/LmhBtuDnlDDN+l5MhYPn5/hqK8QXJOq
-	 MJZxD8aTPUDmGjsAlCbWggyZuD/gx6KKbsl3thtlrqCvynOVDhToKdZsCVpsQzxfbs
-	 4adVCLvL5h0lyuEf9gg0mGy0aaUIzNV9NXvfInNM=
-Date: Wed, 26 Aug 2026 20:32:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, Hugh Dickins <hughd@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/ksm: mark migration stores with WRITE_ONCE()
-Message-Id: <20260826203218.a8690c6bdeb7504ee7fd9ad5@linux-foundation.org>
-In-Reply-To: <20260824112433.191301-1-nicoyip.dev@gmail.com>
-References: <20260824112433.191301-1-nicoyip.dev@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 77C7641954;
+	Thu, 27 Aug 2026 03:38:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C0C1F000E9;
+	Thu, 27 Aug 2026 03:38:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787801892;
+	bh=qktSdDuw+LvPQ8hF169l4fiZgm7L5YFz3tdhT11hID0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KLijvmtT4ozmnssDASNKKsX3XX1TGW48Lwt5kfA58YlXdV3+dCXmMJwhafGn53ZJ0
+	 aPWVLvqndAuLVjEO+VEjByrS+Z5gIfgfo6h9GHqHicV0PBDhuRH6qGoUhLjmBfQYnV
+	 /FfEsqMQdYF7wWcaGveByfi52Urf/mGKKaPTnQHK5MYWl3o9N62CCOBEd/eXd/aDLQ
+	 D27ks91tVY58VBPF2gc3RsMpxBUHyfO8LbcZ5g7u2cL9n3n8s7yWXzOvRA0Y324Xx7
+	 lgPAOlwzf2DJM+nkN6bA/jhQbbm9xMM/U/VDAWFvRTFwzROwQ5s6HKlqmrrhrVjq6f
+	 Dh8CUancv59Fw==
+From: SJ Park <sj@kernel.org>
+To: zhaozhengzhuo@uniontech.com
+Cc: SJ Park <sj@kernel.org>,
+	shuah@kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/damon: prevent remaining cross-object state pollution
+Date: Wed, 26 Aug 2026 20:38:04 -0700
+Message-ID: <20260827033804.89392-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <38E4AAAAEDFCC283+20260827021515.1316838-1-zhaozhengzhuo@uniontech.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pd6jtn6ji1ms6ste5a9d86rsnc6idskd
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4A72D80003
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E8F45C0002
-X-Stat-Signature: eezq3pioyaxhipxgyiaxxgbnsgcia7n1
-X-HE-Tag: 1787801540-25096
-X-HE-Meta: U2FsdGVkX18TkyCq9nQX0tc8Jdv1D4iJtl6L/FFf/DR7DRkukPuJMmMwEjoVnPWxJfOgrMfVqt1MlWizTDJSaOGptzg9xLK4AOFEn/X4E3Uu83sGHUU74s1tbPrIARw3mmNL4fsiG1c8JBiF9Fcja09Ye8udWrJ0D7VSQSE8EbNpncY11bSSrBA6nzPUHr5++vHqJR0CT5LxhTajLC/Zxpepv4qAHAmJ9hOJa99KUwhWVlS4tfURODiTM3MsI90SvU7/5rNfJp6zO1lQsCZPmQZl9zK0IGGvZzTCiBeR1u1qu7vOeXDNpOXOA2Ncwt9HvylHtkh33h/B7r7dNbx/rhe7EE1f9inAsqkpZ1cGzyhAD7fuS5ZuLjkLfDBgiWpGL07rN6oYgbX3neofp6WceKQ9NJlw7wU5+J2HuAs1DvqmGtnd+nY3IfyzEARRhaL4ywTiHObgO4R3jqRKdHZhwBqJlhGBGPBeRKWbPIMDUKxAEr/68gUjSceOguPJ43TILBljeqVhkmMtwahdr0sgA19npkjATs9IsN1VrNXAe9JvzdfsqM2Ar5Wdt7t25Z1gMg6OqoOlVvAaTjSHELowvHLzOH6x6KfcgJ9Vw1+fdnNRB4VTUE6Smm6rqaQvxvu8OSaIMSBDAALnONX6jJecxbT51ufeWLEZzYkcKJQ1k8AZ7ZhsyqrK+W6lWzaa/N4t6hedKjHVW2iL4gEihITJZb0leJN6PzetbzQj+Hh3xG1V9IYEqKPycmMXnFtqQ+D8AcTZMBt1QZLVim2MhF6iSWygCtfcfPVnBOfVJorUXGQb0Zr88gVVBfP1oA3wudMVleOdv68PrXP+4mVPIHxPjBkEai/qnEg3wt2jgvwJv2xBew57kfg8KkCy+HYrFQDtm39snI+hvsQ4AIfN1rvlKiWSE6G8igH8VltOyA0JDhEterHLbxQYcJPK6PSu4ovN1dm1XajyO+MlgXHswu8
- TPm2YwF+
- lzxO1Og9ZybA+wAXxah/ph63p2J2tOUu3L4Nj0Ncv7VXLQ2TaOXZqEJFXrp6vsr2A2i66WFgMCLH9RHJ8RaG0eFvF9hs6Ajx9uoJjZHHt1cQC5/ihxcL6De92VLCTSuuhM0VnSCkrsqrxSVydHYNRJa/lnv+A0hMRf4Wn86y6lT202KM4KsVOl//BMEIaxtNnfjXn1iBnLcXcqSSdYZdGY22fnnSBAM66Kq98PnhpM84WTzUWWr6Jg+JVUkQw2h13Oe8JrcdD+aXjlx7gOVHdLEhF7O+ML5ZCsv8O8KSfBXN7MN5exQHOZofI81ODNpfR8cDSsTnp9kzbomzuJISRmlybMNvKfvQ/1mS8r4ZnKOTIAAFx72lPRuzbILU3zvn0k7KDtk1Nhm0jw1jJQ9zmSraDV9BLnHdODo0eZPzFAQoGmYjkpufsFe0s5x04P853KjdrvcoCy1vrVD8=
+X-HE-Tag: 1787801893-233656
+X-HE-Meta: U2FsdGVkX19y9U3yfIPjHR7QZu+bmfjyhsxGvv3isS8skNwc7niqnmGG5sCsWObk21bWtUAFhqt+x4i1Y1NNDyaEpbbdRyYRLPKCa+a+1+J+3qpGH137CcNZaNRsyZlQbg83zxblVfniXhbREPL3oljvF3a40B7g6Gc+dVEguu6QRlAg8y2DNFCghLM4I3r5gw4S25wEgKDHufYRwW3iFeMY/DsN4K8BeYEjsrnDgoZZeCmZ/FsLJ/R+QirSUp7uuIidYBB/a07TMAph+1OYiwXFoVzUYGmEIkCV7t/bXyvN5zETfw5OnCSckm4uvtw48zKtVcaMUeeQN8aLHECVmq81B5RqWfgt8UY0YlMou+cgpQz/xA/mzhssb9ALRAy/BXdPxlClsHZdKXF3Q1MfyiEjDVSZf76ZazGcsnliFnj4yOsy08/iw/jAA7eOHFwTqQIpG2bdfiq6VzxA4eD4ckKgpPlNGzp/MSV/0j5jyZSu6KFdXr6Dd8vh/Fou54qj/F8aSwv354uhrZ9N3bbY/XRaWA1uJ8k3MJ51fTWJurDBCwxy9D25m/X2i3Sx1X58Yt9adhC2nMTyhYcysjnvvvE/I4ibw9dupQRPOB8wGtOKmYLiqb3YD5FW1nf73mHuuCQ75zKPVUPs8U2big/RNdz0zkVcLQ6/Lyq/lX8Cq1+Ng7Dlvcn9HOKfp7XJEY/uGxCpaHfGAjU8zvrADRYOd1T0ZiNs/c7dZHTSCNVS72eaWIxvySk1KXKNkkHqDNav0nE/PUTqklajxANvcJpx2IZ5tH+Iq932r33eWOlrQKDa6mSSvWj+tXtPrrJTmkUHW6aww7lfSLuOVli3o5nnPe7RW9bSKch+GwdvQrAV5NHGIg/LWu6p6NOd6+PMoIwK+HJR2g8Cm0lYdN/4LkE5vPWtj//T+RIRkrvF0GMdXR1mmGeZW8+JW7QSXnY3DR4hOZz+C5M5YnzhTF+CXXC
+ y3rkPuwu
+ J7PHNOkcBquSF7IhUESj6eDTesF8HMMQVDiGxQnphCr9XexEcDUgLVthiA4uWwob3lE6hlSfWd3r3IDEmFqPAyqULblu8iiXWw9XhFje41ZJY94eSJNF/4ld43SY3pg26OZLF9yS9OqLYml3R34E4rUq0yTbk2EHQE6kYHV1nzP8Bbk+wghRodtG+GUUcjvSr/3IyZFXxVMJyN2GTvtdOo3Rf8R6qgDL/qKpGd/QBTlE+7IlXCxcYt8r9Bp1AJ1rWOj7GqRm1Wo/Bg2ckGJIBYRFKsO472cLBBFMLGzAZBl5NUzr5c2RAv/55VQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,38 +94,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 24 Aug 2026 19:24:33 +0800 Chengfeng Ye <nicoyip.dev@gmail.com> wrote:
+Hello zhaozhengzhuo,
 
-> ksm_get_folio() deliberately samples stable_node->kpfn and
-> folio->mapping without taking the folio lock because the KSM folio may be
-> migrated concurrently.  folio_migrate_ksm() updates the same state using
-> plain assignments.
+On Thu, 27 Aug 2026 10:14:52 +0800 zhaozhengzhuo@uniontech.com wrote:
+
+> From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
 > 
-> The reader can load the old kpfn, then the migrator can store the new kpfn,
-> execute smp_wmb(), and clear the old folio's mapping before the reader
-> checks that mapping.  Thus the initial kpfn load can overlap its update and
-> the subsequent mapping load can overlap the clear, with no common lock.
-> This leaves marked READ_ONCE() accesses racing with plain stores.
+> _damon_sysfs.py defines constructors with mutable default arguments,
+> including DamosAccessPattern(), DamosQuota(), DamosWatermarks(),
+> DamosDests(), IntervalsGoal(), and empty lists.
 > 
-> The kernel reported:
+> Default arguments are evaluated once at function definition time.
+> Damos() instances created without explicit arguments therefore share
+> the same DamosQuota(), and the other default-constructed sub-objects
+> and lists are shared in the same way.  The sub-objects keep
+> back-pointers to their owner scheme, so constructing the second Damos()
+> rebinds the shared quota's scheme pointer to the second object.  An
+> item appended to one object's default contexts or filters list is also
+> visible from other default-constructed objects.
 > 
->   BUG: KCSAN: data-race in folio_migrate_ksm / ksm_get_folio
->
-> ...
->
-> Use WRITE_ONCE() for both stores to pair them with the existing lockless
-> reads.  This preserves the existing smp_wmb()/smp_rmb() migration protocol
-> and control flow while preventing compiler transformations of the shared
-> accesses.
+> The shared state can corrupt test configurations.  DamosQuota.sysfs_dir()
+> derives the sysfs directory from its scheme pointer, so operating on
+> the first scheme's default quota may write to the second scheme's
+> directory.  The wrong values often match the defaults, so tests still
+> pass, but the behavior depends on object creation order.
+
+I agree all the points.  This should be fixed.  That said, these are only
+possible future issues.  No existing test is broken, right?
+
 > 
+> Commit 8319dadcbd81 ("selftests/damon: prevent cross-context state
+> pollution in DamonCtx") fixed the same pattern in DamonCtx only.  Fix
+> the remaining constructors by defaulting to None and creating fresh
+> objects or lists inside each constructor.  Explicit arguments keep
+> their previous behavior.
 
-As usual, AI review looked at the surrounding code and went
-nuts.  Please check?
+Thank you for fixing this, looks good to me!
 
-	https://sashiko.dev/#/patchset/20260824112433.191301-1-nicoyip.dev@gmail.com
+> 
+> Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
 
-I don't think any of these are truly pertinent to your fix (which I shall
-apply), but maybe while you're in there and all fired up ;)
+Reviewed-by: SJ Park <sj@kernel.org>
 
-Thanks!
+This patch is applied to damon/next [1] tree.  If this patch is not added to
+mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
+to pick this.  So, no action from your side is needed for now.  If it seems I
+also forgot doing that or you cannot wait for my action, please feel free to
+directly ask that to Andrew.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
