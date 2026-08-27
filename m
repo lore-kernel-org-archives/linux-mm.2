@@ -4,116 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D52C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 18:08:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1830C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 18:08:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E48F36B008A; Thu, 27 Aug 2026 14:08:16 -0400 (EDT)
+	id 60CB56B0095; Thu, 27 Aug 2026 14:08:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E20836B0092; Thu, 27 Aug 2026 14:08:16 -0400 (EDT)
+	id 5BCD36B0096; Thu, 27 Aug 2026 14:08:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0EDC6B0095; Thu, 27 Aug 2026 14:08:16 -0400 (EDT)
+	id 4D5C46B0098; Thu, 27 Aug 2026 14:08:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 880916B008A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:08:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E9AC21C02DA
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:08:15 +0000 (UTC)
-X-FDA: 85147833750.23.D2DC3F8
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2A07D80005
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:08:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mb4mBA7T;
-	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 15D346B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:08:56 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A5F580141
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:08:56 +0000 (UTC)
+X-FDA: 85147835472.03.3DA7B12
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BE5FE14000F
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:08:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cXyX6QAc;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787854134;
+	b=2VgoAztt/rfPTJUgcsP1k+kzvij9o6HsY51lCybVTvm9AeMpqFy+OJ8wrcLMd0XSRlzsa7
+	4mAjHhoTZ7bwAIXzjFLodaYmKwCa/1IRAfkLGNNbwyQj1KkADzPQfPSppmeD4ZadAa0xdm
+	1wep1GYSOzgIIdd+BSdIf30EVoNMP4c=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cXyX6QAc;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787854094;
+	s=arc-20220608; t=1787854134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=plMv1alWLSmRUs996GTzyKVxl/InS+Hvvr87SnLX3mc=;
-	b=ll1An05XagZhi/9RfKyjlKUfEQTWc+F/vo5ObmmQORNeCdyKNxA0V2TyyV6gUzF906mej4
-	n9PiAtiSZEKnfoEckJCm2RUfWWcNGyMurHI1HcGHrgdo8iWJz2ZvUndfPH4WUffykkRo/D
-	9s64nlWIW88S25KrW24+ScG6sUuvQJQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787854094;
-	b=IZYpgTEzad03dllQ19/DfB/uFiR1y5moIFwlxwWCDcWvqBFyLukYyn/F7LnHPLRlxj7rq1
-	VSP19qEX4gmR2GofNTmh+4kv3v94hruINZF2cbp02URiYhiwm1dWuFHMggbEYpxcyjflDV
-	T6UUYU5qsmajfTxtFtOcE/UFdawyZEE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mb4mBA7T;
-	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38759bcd877so379036a91.2
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:08:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787854093; x=1788458893; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=plMv1alWLSmRUs996GTzyKVxl/InS+Hvvr87SnLX3mc=;
-        b=mb4mBA7TluTyUYR4W67LVeBR64c6JWq0MdMH0JWQl35iCydIwhvb9j6MbBk5r/TRpd
-         qRNLzAxBvYDPdxtCMiIUyuRdwdblM+0lG07/X3n3B+dW3vRoqtiYdujYQVpbQtWwUpO4
-         nrNS1pmIo6+jzs4yUhFjWWBfyNbXPCltbinzNVv3WRkJDClNoC4rIG+e097p2XahHX+k
-         u6mbpJQC1VqujnDKyFFA6/gXK/Nb7ZicVPVAG7Y0Zmffm0CdVaM1aa5ldCm6ZXucYstA
-         t4o16t5T0HIhu6UdxTEEHrS0XHd7iidnDnv49Dk6PmPhTz3BQi2fJVhellbh4G7Cm4nd
-         fogw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787854093; x=1788458893;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=plMv1alWLSmRUs996GTzyKVxl/InS+Hvvr87SnLX3mc=;
-        b=ON/db4N6pyEBMW5q2BcbONeZPRfIGjfkzNsT7qmJqRe9d+XEWc+xfYC4/bkudKcN3y
-         mOTwYBJrQKut0/din4llifu+5RrWfDRn2UY56Zov58DNAKou0Ac/kyQBrsmXwTpEtawr
-         qm/B0EKQe6xWshkIzp37yH1wYpFVSkNNP8CIGHfRIyhb2HqSpXD+fbYIj4LcsN0MrMml
-         WlKbYS8tO0hZhgGdJkdit85Hi8XAoeroW/pNkyaTZcgk61D6Dglv0owrRYVWA0koy7Yu
-         RgtxpQK3nMr9WqL0nVWv7nKDVxlUVnPsjklE5XJR4QIvCl+eHOcprcl98yCmt1OFgtL1
-         qqIw==
-X-Forwarded-Encrypted: i=1; AHgh+RpTovUBL4jQzgbQx9RiSM4WFB4sbVzzHo78PsogiqfimP/dvqFB5snzp8nuosflhlQnmDSr4BvRaQ==@kvack.org
-X-Gm-Message-State: AFuF++kKpV+GizyZpCAjn/57x3VEbIuSRBTGasCQUALH2Q29cT29SWyc
-	84c90/HLClN9C/Mr4i/k8WQPeizoBAAA2AOKU+h1c1mmk0SuekfMUcHZ
-X-Gm-Gg: AR+sD11gTa8npecPZE4p/On6NrMtaQwhSLS8MmWNaedDykE79K/Q6a8hwlVMVihraXV
-	e27225F76mZ1THg7aJxcghMq6BRMWX/z+bmXm7Q4+see26IeYVl+qe3NisHLWfwvfi37wMrRIUS
-	t2Iw+1brU85oHxGOtnz5I03qtAJuPTxNAKSdrnN+ynGfPudT1oau3uyPf6dJwstT2EY7ay82fm/
-	pi7gt2htxIS9jB+o99KPooyGdpHVipU0zZV1xqlTQmf4XNSDG7RtZUBvJKcbCxfMgkmuKGrYfQb
-	qXsA45osrmv0B/ClMZHSEQv+M2HLynB31l+7FocXHm+KQJqmpxTcDhZEUFyKbi2PXFDu8T4x4jN
-	7w6ZSwYbOL7uykiajuuaiarjrWa2EHqTWr6RdaDzpPlYJ4vMhzOurOx5g0BDgZHJO/65qfDGy+S
-	WhpDehdscb7X7olmEJVliACJJBBt0YB/dwz6IzgNKWlnACQI6unlQmL7PTM8k5cDXaI4MEbqIrN
-	EONcQMsjJchCI03WVs=
-X-Received: by 2002:a17:90b:440d:b0:38f:bbc:6a0f with SMTP id 98e67ed59e1d1-396d0e5f35fmr1346864a91.1.1787854092659;
-        Thu, 27 Aug 2026 11:08:12 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:88cd:27c4:5897:46d2:587d:19e7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b0d80008sm3682194a91.6.2026.08.27.11.08.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 11:08:11 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon: fix damos quota walk-position tracking
-Date: Fri, 28 Aug 2026 02:08:22 +0800
-Message-ID: <20260827180822.4037-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260827004438.82746-1-sj@kernel.org>
-References: <20260827004438.82746-1-sj@kernel.org>
+	bh=oSl5wDfcIkAZ8O8qomImZnYhRdtX0c0/b/+iSOoYbbQ=;
+	b=bkpIcRdSOxTLToaRqmEbcfDFzwlb2hYvCrwLCh0c0+7zYMtb+JG7nlFtEnus8Rjtu7Su5f
+	oBIt96nLXfU5MqLorDq46DlpioiK8AKeG6/OrXLAfeyygcE9KXHoLLKZElVKAGfeQlwpj/
+	PdJhmT38f7K6tdftJZmUgJkSq21qO/M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A86AC40C40;
+	Thu, 27 Aug 2026 18:08:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EAB1F000E9;
+	Thu, 27 Aug 2026 18:08:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787854133;
+	bh=oSl5wDfcIkAZ8O8qomImZnYhRdtX0c0/b/+iSOoYbbQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cXyX6QAc2K4hCCa6m0zAE3YE+kol844hbwpydqer4TYoxKiPxU9IgtmzJzyCj+b6Q
+	 HbZTJJirRawJp6wgO+QFl2O14dCAoQuGY8J5x15vAraWVlo5V1zIEToDQoMvHfTqfF
+	 d+bO0MJLxRa/Ek6qVt6J+6z1fa+c06GVGlL+9vE99Bvi+eDwvRd6kwxT0POwAhGNAf
+	 ED3biHX6G4Js7XuAL7Expnqsn3eqs9QIJhSf8DYmnz+lVOHdCOgsAa4x/xyB4UcIZe
+	 KRQJJPfq+mQnHzMuh0PBCy45zrAFbWhn1Wr0kD+add/DyPLajZyBIyobOu/Vpw368x
+	 gHi8Emr0IpY/Q==
+Message-ID: <1dc8739e-4eb6-4a71-9534-e03a15afd620@kernel.org>
+Date: Thu, 27 Aug 2026 20:08:44 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: npekc3md4jqq3gk71prztr8sshyqohmk
-X-Rspamd-Queue-Id: 2A07D80005
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v9 13/25] mm: kpkeys: Introduce early page table
+ allocator
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+ Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, Linus Walleij <linusw@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
+ <20260818-kpkeys-v9-13-743ad31b2c8f@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260818-kpkeys-v9-13-743ad31b2c8f@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787854094-550471
-X-HE-Meta: U2FsdGVkX1+M6pNVryv4lSjdGYpq/EZxiW8VJJ53GHRw+xydKVo64DFdtKD3IYpnEkmwCtOgRNsMleK5HIv4qUeeIHjU+KjqWw1kn0HWl+ANKDJ0CipnWn7LWfZCHX8LKcuLw63bJh0uDSoGdlgY89NpRqQRNyrKCfnmhY15Fr3LqWdT9s86NVAbyNeH6aU/oG//WhNNIOa79lbTUXIvzGAaFfZvLz9CfZX9sY8j7SRKn9SQd2oIYu9YoYS20ClktHuv4xMhPGvZ0vi6zkM6fy06hYtNv+x+Pq4pXt3V3UogY4IStQbrcRrVp68rZdhvs/qiYBhGRIaYlECpM1LlmUdUoQpi622oFKdBcODB//gAjH9DSuLv3EYQlyXWbjwn8fFkLw6efrBw8QO3/tDH19mwIrsR58vImX0FsJpzj2b2P6hhIpeVhpuRhY2U0ykbyCSHUi47ZlWVv7KlA3biJf9qACrp6ocYvdC7Q+6AlOOo5c04h6yb3APpcDVMgqfCQgCqFUgms2eWgAlIh7BTtQTtxmwGf7TOyIlS4ICjIwOPcBBgMnu/Y9usNuE3t9vawo0+eiuL8RtzLpyYF4mhQEM3yNQmlNwL1bDDHjv+4p0GzPMtbL1naFQ5nUKYFM2+mELFMn7a5sWE9yBIruWfJjnzMLG0DzbLsUvjuAk57zrZHUzI5gWk4yGqZi4+bHBaYpjCSLlxEW7GYxIZAytvQdGJtIW6v/NXmKMkmWQiFxuRgQ43XUWXEYt3aZwXd67dnuY883lS7UzTG1Wuwfjg69Px4pH0DKHw/xD45K6q8uypt4rIhae+eEMKB5WG4aIUKl14wsnL+OphhhezapGYiRQuJgpnSa/IFGyC8fnmVLZmA7meQwmUvt7YOAQnMSd+2Pi18oGCRCO4C8Cj48UgJFON13jPotUAN27RW4RhSAU+zB5ak8w67kmF1EA5Nrmt9Mh3JXmENpSNV8lelYE
- WCc5YACO
- n7F5tP8gSsOovPtMWGvCAb+puWw3THFV/OCB2MQIzEzWeWw5N+Ob4tqpzx2aB+qGNzxc8wk4vIqx26WiD83M8C+4Ru4DfBFGHE0IuX/UwQ1+b0eaHRUUEpmYjShwFn7H/hJ9tGG62JuDuecCuIWCLsY3CVmvzmGFF0QyPL7xq6qsmHDOI6CNKDkxG3mZGRr7sVVCmD7E3C3HMYSH1Pom4eS1aocxoDGhg3tXuAvVorkXxWe5M0eUu2WrVCLaUjMsdwhaqVeXxuNiaGXwfAkfmLzLi7JGPiSVuW6cbBDA8MgoQZ6L9xjpAgfmM9WHxENaTEqBEOoXuF8SixWZhsJMYSFXBG66wjAJEEF4yvMS/dtgzVo5vQsJSrZfZ+aVFjYcjtVjmVBFSfM+EyZyvCIT+gIIT96isRBgPw9jr6PVJN5e0AszCP7LmFb3S+BRxPxnRIBHu
+X-Stat-Signature: w87h3wzd53f8kdtab3fnyk4df5zeggo5
+X-Rspamd-Queue-Id: BE5FE14000F
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787854134-755012
+X-HE-Meta: U2FsdGVkX19w6EcJcJqtfwQ8C3jqybcl/3NQ9ZR00DZ9RjNC+20fhm023m3LMQ1Z4tYqtd8xYb3gKotT+gI+Smd/y9VS2zP6n8UCxi5VG9/dp3xWUXlcdYKojPND6uDMPOW7WnQXRqkVSoQhnFcMryMQu3E3IQRW3g4CQSLRRhfQcgKfF5HWmsvOKc4jwWTUI5SeHhFh2wUHYGB5b7s4VuH8wQc/ntHWJkgsu7vaYMXHWIjQ+aFOyr+YTdkeusMz/xzqO7Xi52OB8r83CSZyg8ivVDaqMudNDm3q17kzCzo2nJJVVTiNqz88qwalvP3lxoeY8sTFV0+i8D/VUHXOBSC9jDKta7llsZsagNavQ7oiTel9Rt1jfeR5pX46TWdhqmcPg3e8z1ImW57s9ycLua7WGC5yztMzXPLKFabLYGTgqIS/LQiPPvYwG6X6WxHX3FGfxyVS2GAnybyqr05/Hz9YYNCe+XTTcpVbUrBJRRuq1OrlmkcrYZPrH8UMLTy3KiJTBggwlyx1BmqeAVgZlw3ptexIvPmm9m9tGk7wGPPkpMiSLUQPXpsJFAGOkOsxoHeg50hkxhUtjnyx5qgD/4Df3fyDid2QzDZgNtj42YincH8UYGZTq5tWIsckJGnT/pzDOU4h1RfoIqkTXTYim0K7jbupnI0SZmXe0uNIMSZ2oQI2oPMevYeC6+U1pDVhziUPIDNrXcZMis/+P/92YYY91rm7VwJgkLqL2PGUxMpR1JS8XnfRfobxg0SfeYobIaqgwXQ5oj8tA4Ii55KsoOii0zrUkSjHF3h9Sa8EX8o0vJrW+jGKBBK01PkUaVfWcBUOPMqqESkGrto9WRdhP05BBHVk86doWyV0AI/YNdFX+We7sMZLK6I3/kZcT8Ow5cuMIzAoan3ByVM9vXrAartI9LSCQsmAPrjMXqPwRIVlid8Ux5ImK2fnxtu4LusgIpZet2N7VbO1PDrSi2x
+ QLJo3v4H
+ soH2TvgA7DMpqzLW3ZDYzHY9R28Nv4ici0toW79SMH8Slv/jSb5XpYq1fw03sQw6xexwzeQjT/qyx0b8UIrj5TFekerWAXNa80oI1G+Qaz+pvGe2yDIlb4NrjtrDR/mwSmnfbusmMU4r2GFnqkrLlqNgHNCvT0XzHuKsxu5AwmICgaZPOLs5qRssfu6NrdOU62dcxMGYhs8OjgpyWKtHpz4rpBvCsVU8WKQAHrF/Qcf72aFldEZvUrMHcdA7sJ9hEBLEp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,188 +156,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 26 Aug 2026 17:44:38 -0700 SJ Park <sj@kernel.org> wrote:
-
-> On Wed, 26 Aug 2026 07:05:08 -0700 SJ Park <sj@kernel.org> wrote:
+On 8/18/26 16:08, Kevin Brodsky wrote:
+> The kpkeys_hardened_pgtables feature aims to protect all page table
+> pages (PTPs) by mapping them with a privileged pkey. This is primarily
+> handled by kpkeys_pgtable_alloc(), called from pagetable_alloc().
+> However, this does not cover PTPs allocated early, before the
+> buddy allocator is available. These PTPs are allocated by architecture
+> code, either 1. from static pools or 2. using the memblock allocator,
+> and should also be protected.
 > 
-> > On Wed, 26 Aug 2026 18:24:13 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > On Tue, 25 Aug 2026 06:54:57 -0700 SJ Park <sj@kernel.org> wrote:
-> > > 
-> > > > On Tue, 25 Aug 2026 20:46:16 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > > 
-> > > > > DAMOS uses charge_target_from/charge_addr_from to remember how far a
-> > > > > quota-limited walk has progressed.  The current implementation has two
-> > > > > problems:
-> > > > > 
-> > > > > 1. Once set, the cursor unconditionally skips and resets at the last
-> > > > >    region of the tracked target, so the last region can be skipped even
-> > > > >    when it has not been processed.
-> > > > 
-> > > > I don't fully understand this.  Could you please clarify more?  Maybe adding a
-> > > > realistic example scenario would be helpful.
-> > > > 
-> > > 
-> > > Problem: Unconditional skip of the last region
-> > > 
-> > > In the current damos_skip_charged_region(), there is this logic:
-> > > 
-> > >     if (r == damon_last_region(t)) {
-> > >         quota->charge_target_from = NULL;
-> > >         quota->charge_addr_from = 0;
-> > >         return true; /* Skip */
-> > >     }
-> > > 
-> > > Scenario:
-> > > 1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
-> > > 
-> > > 2. Quota is configured to process only 50 bytes per window.
-> > > 
-> > > 3. Window 1: Processes R1 (0-50).  Quota is full.  Cursor is saved at
-> > >    (Target, 50).
-> > > 
-> > > 4. Window 2: Skips R1 (0-50).  Processes R1 (50-100).  Quota is full.
-> > >    Cursor is saved at (Target, 100), which is exactly the start of R2.
-> > > 
-> > > 5. Window 3: The loop reaches R2.  Because R2 is damon_last_region(t),
-> > >    the old code unconditionally returns true, skipping R2 entirely and
-> > >    resetting the cursor.
-> > > 
-> > > Result: R2 is permanently skipped even though it has never been
-> > > processed.
-> > 
-> > Ok, makes sense.  The user impact should be not that big, though.
-> > 
-> > > 
-> > > To fix this, the patch advances the cursor every time a region is
-> > > walked, regardless of whether it is applied or filtered out.  This
-> > > allows DAMON to accurately track whether the last region has already
-> > > been visited, eliminating the need for the unconditional reset.
-> > 
-> > Sounds like a big change compared to the problem.  Why we cannot modify the
-> > last region case?  Have you also considered other possible simpler approaches?
-> 
-> For example,
-> 
-> '''
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2686,14 +2686,15 @@ static bool damos_skip_charged_region(struct damon_target *t,
->         if (quota->charge_target_from) {
->                 if (t != quota->charge_target_from)
->                         return true;
-> -               if (r == damon_last_region(t)) {
-> -                       quota->charge_target_from = NULL;
-> -                       quota->charge_addr_from = 0;
-> -                       return true;
-> -               }
->                 if (quota->charge_addr_from &&
-> -                               r->ar.end <= quota->charge_addr_from)
-> +                               r->ar.end <= quota->charge_addr_from) {
-> +                       if (r->ar.end == quota->charge_addr_from ||
-> +                                       r == damon_last_region(t)) {
-> +                               quota->charge_target_from = NULL;
-> +                               quota->charge_addr_from = 0;
-> +                       }
->                         return true;
-> +               }
-> 
->                 if (quota->charge_addr_from && r->ar.start <
->                                 quota->charge_addr_from) {
-> '''
-> 
+> This patch addresses the second category: PTPs allocated via memblock.
+> Such PTPs are notably used to create the linear map. Protecting them as
+> soon as they are allocated would require modifying the linear map while
+> it is being created, which seems at best difficult. Instead, a
+> simple allocator is introduced, obtaining pages from memblock and
+> keeping track of all allocated ranges to set their pkey once it is
+> safe to do so. PTPs allocated at that stage are not freed, so there
+> is no need to manage a free list.
 
-Thank you for the example!
+I'm think of ways to avoid remembering these ranges. I guess we get called that
+early that we don't even have a ptdesc where we could just link the pages.
 
-While your approach works, I am curious, why should the cursor be reset
-every time the function returns false (does not skip)?
+If only page tables would be linked in some datastructure where we could find
+them all ... ;)
 
-In my opinion, a cleaner and more deterministic approach is to reset the
-cursor only after the target has been fully iterated through.  This
-separates "skip" logic from the "state reset" logic, making the flow
-easier to reason about.
+... why can't we just scan the page table hierarchy to find all page tables that
+need protection?
 
-Here is my proposed minimal change:
+-- 
+Cheers,
 
-'''
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2347,11 +2347,6 @@ static bool damos_skip_charged_region(struct damon_target *t,
-        if (quota->charge_target_from) {
-                if (t != quota->charge_target_from)
-                        return true;
--               if (r == damon_last_region(t)) {
--                       quota->charge_target_from = NULL;
--                       quota->charge_addr_from = 0;
--                       return true;
--               }
-                if (quota->charge_addr_from &&
-                                r->ar.end <= quota->charge_addr_from)
-                        return true;
-@@ -2368,8 +2363,6 @@ static bool damos_skip_charged_region(struct damon_target *t,
-                        damon_split_region_at(t, r, sz_to_skip);
-                        return true;
-                }
--               quota->charge_target_from = NULL;
--               quota->charge_addr_from = 0;
-        }
-        return false;
- }
-@@ -2658,18 +2651,26 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
-                if (damos_quota_is_full(quota, c->min_region_sz))
-                        continue;
- 
--               if (damos_skip_charged_region(t, r, s, c->min_region_sz))
--                       continue;
--
-                if (s->max_nr_snapshots &&
-                                s->max_nr_snapshots <= s->stat.nr_snapshots)
-                        continue;
- 
-+               if (damos_skip_charged_region(t, r, s, c->min_region_sz)) {
-+                       if (damon_is_last_region(r, t)) {
-+                               quota->charge_target_from = NULL;
-+                               quota->charge_addr_from = 0;
-+                       }
-+                       continue;
-+               }
-+
-                if (damos_valid_target(c, r, s))
-                        damos_apply_scheme(c, t, r, s);
- 
--               if (damon_is_last_region(r, t))
-+               if (damon_is_last_region(r, t)) {
-                        s->stat.nr_snapshots++;
-+                       quota->charge_target_from = NULL;
-+                       quota->charge_addr_from = 0;
-+               }
-        }
- }
-'''
-
-> > > This patch ensures that every target is traversed sequentially and
-> > > deterministically, even when the quota is set very low.  I omitted this
-> > > benefit in the initial problem description.  If you think it is okay, I
-> > > will add it in the next revision.
-> > 
-> > What's the problem and benefit?  I still don't get it.  More clarification
-> > would be nice.
-
-My original idea was to ensure that every target would be checked
-sequentially, which seemed like a fairer approach.  However, upon
-further reflection, I realize this might not offer tangible benefits and
-could introduce unnecessary complexity.
-
-Since the DAMOS Quota min_score mechanism already ensures that regions
-truly needing action are prioritized, the current behavior (eventually
-resetting at the last region and moving on) is functionally sufficient
-for typical workloads.  Therefore, I do not see a strong justification
-for this change at this stage.
-
-Thank you for pointing this out and pushing me to clarify.  In the next
-revision, I will drop this changes and focus on the minimal fix for
-Problem 1.
-
-Best regards,
-Rui Yan
+David
 
