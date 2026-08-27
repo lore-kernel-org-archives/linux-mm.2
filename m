@@ -4,82 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40EEAC61DCB
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 18:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D52C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 18:08:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D9496B008A; Thu, 27 Aug 2026 14:00:57 -0400 (EDT)
+	id E48F36B008A; Thu, 27 Aug 2026 14:08:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 389F56B008C; Thu, 27 Aug 2026 14:00:57 -0400 (EDT)
+	id E20836B0092; Thu, 27 Aug 2026 14:08:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29FB46B0092; Thu, 27 Aug 2026 14:00:57 -0400 (EDT)
+	id D0EDC6B0095; Thu, 27 Aug 2026 14:08:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E3DD46B008A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:00:56 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 880916B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:08:16 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72657160178
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:00:56 +0000 (UTC)
-X-FDA: 85147815312.23.A44CBBE
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7523F40010
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:00:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=e0K5g7Zg;
-	spf=pass (imf01.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E9AC21C02DA
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:08:15 +0000 (UTC)
+X-FDA: 85147833750.23.D2DC3F8
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2A07D80005
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:08:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mb4mBA7T;
+	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787853655;
+	s=arc-20220608; t=1787854094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Aw92pmZXy3D8SuXNYA66dam0lMScetM5A73jIG3j7k8=;
-	b=ar5EW0euuyn57GismorI7B/1KpdWD5QU3AxP/z4UDiBblWbjZN6LrVCVpPXuSEL2IwON1f
-	2MA9wIh+1/r6hlhB89pVST3pWlNWqvqNNbASsTMxmCODgVxksPjvMcBnTkLcva1xTT2CAi
-	ipFhT2pET0I7opm4T1Tp41p6EHdatxQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=plMv1alWLSmRUs996GTzyKVxl/InS+Hvvr87SnLX3mc=;
+	b=ll1An05XagZhi/9RfKyjlKUfEQTWc+F/vo5ObmmQORNeCdyKNxA0V2TyyV6gUzF906mej4
+	n9PiAtiSZEKnfoEckJCm2RUfWWcNGyMurHI1HcGHrgdo8iWJz2ZvUndfPH4WUffykkRo/D
+	9s64nlWIW88S25KrW24+ScG6sUuvQJQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787853655;
-	b=w9LknO3Cnz1wXE2t//sEl2xORzsjxrxmWNkYx0EQrJ092Aa8MNwjhQeFnf4YaWuuo9RKib
-	9mATh+w/jgQz5XX9Dl1BakntwtpztGQYNIdk1fcV+VQuzJZkq9AU7NwtZkQvqlPnQ1+o4D
-	Hvyt+Fob73XjzryGWY3UiiIMsabSXIk=
+	t=1787854094;
+	b=IZYpgTEzad03dllQ19/DfB/uFiR1y5moIFwlxwWCDcWvqBFyLukYyn/F7LnHPLRlxj7rq1
+	VSP19qEX4gmR2GofNTmh+4kv3v94hruINZF2cbp02URiYhiwm1dWuFHMggbEYpxcyjflDV
+	T6UUYU5qsmajfTxtFtOcE/UFdawyZEE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=e0K5g7Zg;
-	spf=pass (imf01.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
-Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp4-g21.free.fr (Postfix) with ESMTPS id A3F6619F72F;
-	Thu, 27 Aug 2026 20:00:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
-	; s=20170427; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Aw92pmZXy3D8SuXNYA66dam0lMScetM5A73jIG3j7k8=; b=e0K5g7Zg9xIlKGenzY3OYnLotX
-	ztD2Ofi0vtn83Tbc7eJTDG1+ZxJ8zKCy7+wZ6OHbhVBhQvw4TMuaYWHG9etQJvtLXbIfnk2A/JI09
-	J0/jfflOrmTEk86Zcrpf6pmdMKU0/j608mUjYYWUEvEdXfVuDk1jveK7IPf158ZcMs5c=;
-Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
-	(envelope-from <guillaume@morinfr.org>)
-	id 1wzePB-00000000olk-45Wi;
-	Thu, 27 Aug 2026 20:00:50 +0200
-Date: Thu, 27 Aug 2026 20:00:49 +0200
-From: Guillaume Morin <guillaume@morinfr.org>
-To: linux-mm@kvack.org
-Cc: leitao@debian.org, rppt@kernel.org
-Subject: [PATCH] selftests/mm: hugetlb_madv_vs_map: add underflow test
-Message-ID: <apB7UWfLAzCvSCss@bender.morinfr.org>
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mb4mBA7T;
+	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38759bcd877so379036a91.2
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:08:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787854093; x=1788458893; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=plMv1alWLSmRUs996GTzyKVxl/InS+Hvvr87SnLX3mc=;
+        b=mb4mBA7TluTyUYR4W67LVeBR64c6JWq0MdMH0JWQl35iCydIwhvb9j6MbBk5r/TRpd
+         qRNLzAxBvYDPdxtCMiIUyuRdwdblM+0lG07/X3n3B+dW3vRoqtiYdujYQVpbQtWwUpO4
+         nrNS1pmIo6+jzs4yUhFjWWBfyNbXPCltbinzNVv3WRkJDClNoC4rIG+e097p2XahHX+k
+         u6mbpJQC1VqujnDKyFFA6/gXK/Nb7ZicVPVAG7Y0Zmffm0CdVaM1aa5ldCm6ZXucYstA
+         t4o16t5T0HIhu6UdxTEEHrS0XHd7iidnDnv49Dk6PmPhTz3BQi2fJVhellbh4G7Cm4nd
+         fogw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787854093; x=1788458893;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=plMv1alWLSmRUs996GTzyKVxl/InS+Hvvr87SnLX3mc=;
+        b=ON/db4N6pyEBMW5q2BcbONeZPRfIGjfkzNsT7qmJqRe9d+XEWc+xfYC4/bkudKcN3y
+         mOTwYBJrQKut0/din4llifu+5RrWfDRn2UY56Zov58DNAKou0Ac/kyQBrsmXwTpEtawr
+         qm/B0EKQe6xWshkIzp37yH1wYpFVSkNNP8CIGHfRIyhb2HqSpXD+fbYIj4LcsN0MrMml
+         WlKbYS8tO0hZhgGdJkdit85Hi8XAoeroW/pNkyaTZcgk61D6Dglv0owrRYVWA0koy7Yu
+         RgtxpQK3nMr9WqL0nVWv7nKDVxlUVnPsjklE5XJR4QIvCl+eHOcprcl98yCmt1OFgtL1
+         qqIw==
+X-Forwarded-Encrypted: i=1; AHgh+RpTovUBL4jQzgbQx9RiSM4WFB4sbVzzHo78PsogiqfimP/dvqFB5snzp8nuosflhlQnmDSr4BvRaQ==@kvack.org
+X-Gm-Message-State: AFuF++kKpV+GizyZpCAjn/57x3VEbIuSRBTGasCQUALH2Q29cT29SWyc
+	84c90/HLClN9C/Mr4i/k8WQPeizoBAAA2AOKU+h1c1mmk0SuekfMUcHZ
+X-Gm-Gg: AR+sD11gTa8npecPZE4p/On6NrMtaQwhSLS8MmWNaedDykE79K/Q6a8hwlVMVihraXV
+	e27225F76mZ1THg7aJxcghMq6BRMWX/z+bmXm7Q4+see26IeYVl+qe3NisHLWfwvfi37wMrRIUS
+	t2Iw+1brU85oHxGOtnz5I03qtAJuPTxNAKSdrnN+ynGfPudT1oau3uyPf6dJwstT2EY7ay82fm/
+	pi7gt2htxIS9jB+o99KPooyGdpHVipU0zZV1xqlTQmf4XNSDG7RtZUBvJKcbCxfMgkmuKGrYfQb
+	qXsA45osrmv0B/ClMZHSEQv+M2HLynB31l+7FocXHm+KQJqmpxTcDhZEUFyKbi2PXFDu8T4x4jN
+	7w6ZSwYbOL7uykiajuuaiarjrWa2EHqTWr6RdaDzpPlYJ4vMhzOurOx5g0BDgZHJO/65qfDGy+S
+	WhpDehdscb7X7olmEJVliACJJBBt0YB/dwz6IzgNKWlnACQI6unlQmL7PTM8k5cDXaI4MEbqIrN
+	EONcQMsjJchCI03WVs=
+X-Received: by 2002:a17:90b:440d:b0:38f:bbc:6a0f with SMTP id 98e67ed59e1d1-396d0e5f35fmr1346864a91.1.1787854092659;
+        Thu, 27 Aug 2026 11:08:12 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:88cd:27c4:5897:46d2:587d:19e7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b0d80008sm3682194a91.6.2026.08.27.11.08.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 11:08:11 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon: fix damos quota walk-position tracking
+Date: Fri, 28 Aug 2026 02:08:22 +0800
+Message-ID: <20260827180822.4037-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260827004438.82746-1-sj@kernel.org>
+References: <20260827004438.82746-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: npekc3md4jqq3gk71prztr8sshyqohmk
+X-Rspamd-Queue-Id: 2A07D80005
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7523F40010
-X-Stat-Signature: 45mrkyw871ttspx11ogu5aupzmwdrc84
-X-HE-Tag: 1787853654-276836
-X-HE-Meta: U2FsdGVkX18ygVM8YFDwJbtMkhzbDWHTdNcVOG+UG56bE6HrPq76++84R6FWWb0yFfZm98/rTkZO6xiGeJ8rMSOAvIBQUtcrogmQSyPu4KRxww+//h+8u/OcEXxH7BBCUqdRPnVQaeC2yv1BCZmt9JR6sDaiCVt5ZC61PPtbIfcLw2rLht6oMzvF0XYZpf4pgHE7E12nKCtKHabQm2KofrMtpy8OlB00xuhpLqIgebiUDcbaJ/KLe3+DKMfYgWxq1jABTukCeMBGO59UqgIxsoOLy1QjgRQwuRngH/mycBxLpzA3zF0XjPJbBCv/EFkiBOSY4PIbJZy1MUW+SZhGyMkKvT5pO0aAssM4F9dRZk8AObuxn0tzNwUuaOi+V4B1pRYXN9Ia9g0WG6GF/E+pkl/0v2g4gUOfk8dhQWhnlK5CrMozSahlh9U7dvVJiMWPNhPndV/eYZGrzjv7SxgnR+exM4cGJ/9dHl4S2EII4jb+bdDZP/5pKoLb0qYTuY434QZXN11Q2TAXu3EThIG7Vi4IeKSby1XeD+7X25g1l4Gw3VuN5JNlwLbpAp2RiAHoiBPl5+XpkSicheq8zaCNzDTQvJQdZhYj07rOZiCTZHlPS4DPqlk5uGPYezsQ34IBcfuaBLy9SSCuQwbu1IINbCcZ6NdIfebnC1wZRglia0Vjn0XetIFd8SirqAFO+IEStNqbbOWvj5LdeY9jTpAAgBPowPesCVrFx2e6wYafYv3RfenGlnhZ2GfcQ6cQySTnS/2fFTVAmgdNHI9t9CnA+BelkPxCXAG6mMaWBuL8WeI7EljF7o0oueb9jVdRXaFsOLoG/BT90hm+bk3/hcwwNaCMB+9efeNSguCgi3c1lh61JFL5jLEZiKocoKqfaFy1zaPaKmoAQPxgoaWeaMgshvxsjS69Ti6q3u4stPCt59KC5AlkCY3fdfQ1/CNorb5GBxNek5lNklo1lFDZ2Wd
- FHbt4E4d
- ZH0djah+ao6rFQrqPfB+PdAW9DMB4LvmtztoHufhnb6+9UI7MnA2aL862omYrlgJ/IohMHEkvEY44pMri1mWRXLS7qQbFiYowLwszsVV852Pl2MDbUHfbEFsnJVBN8erO/MMN9Fm1UB+S9feASY8EILn1hGND+5CNWtXUn0NXV3oIWj4fGHoKcMTd9YdFS6uKZwgpfsz2bKArHi5tac0EofeaCrppeQjoDFBvexH7xKUMB5zFuZzKCXVnTrYwjJMFKSEkmzgKcu2MgkeiDbz/IbRRqjXyZdXflokTVlH3rBE9Gqvft/o8VL0+/elpYrXXtSKx9nktbIsaiZqWh6icuFUP+hGWBzmHLhkVDh80pJsPuYXCDzw9KGE9xKM+u89SD+9Gif6BETt7p7hTJJcTT5ya9LiCwiRC0a0s
+X-HE-Tag: 1787854094-550471
+X-HE-Meta: U2FsdGVkX1+M6pNVryv4lSjdGYpq/EZxiW8VJJ53GHRw+xydKVo64DFdtKD3IYpnEkmwCtOgRNsMleK5HIv4qUeeIHjU+KjqWw1kn0HWl+ANKDJ0CipnWn7LWfZCHX8LKcuLw63bJh0uDSoGdlgY89NpRqQRNyrKCfnmhY15Fr3LqWdT9s86NVAbyNeH6aU/oG//WhNNIOa79lbTUXIvzGAaFfZvLz9CfZX9sY8j7SRKn9SQd2oIYu9YoYS20ClktHuv4xMhPGvZ0vi6zkM6fy06hYtNv+x+Pq4pXt3V3UogY4IStQbrcRrVp68rZdhvs/qiYBhGRIaYlECpM1LlmUdUoQpi622oFKdBcODB//gAjH9DSuLv3EYQlyXWbjwn8fFkLw6efrBw8QO3/tDH19mwIrsR58vImX0FsJpzj2b2P6hhIpeVhpuRhY2U0ykbyCSHUi47ZlWVv7KlA3biJf9qACrp6ocYvdC7Q+6AlOOo5c04h6yb3APpcDVMgqfCQgCqFUgms2eWgAlIh7BTtQTtxmwGf7TOyIlS4ICjIwOPcBBgMnu/Y9usNuE3t9vawo0+eiuL8RtzLpyYF4mhQEM3yNQmlNwL1bDDHjv+4p0GzPMtbL1naFQ5nUKYFM2+mELFMn7a5sWE9yBIruWfJjnzMLG0DzbLsUvjuAk57zrZHUzI5gWk4yGqZi4+bHBaYpjCSLlxEW7GYxIZAytvQdGJtIW6v/NXmKMkmWQiFxuRgQ43XUWXEYt3aZwXd67dnuY883lS7UzTG1Wuwfjg69Px4pH0DKHw/xD45K6q8uypt4rIhae+eEMKB5WG4aIUKl14wsnL+OphhhezapGYiRQuJgpnSa/IFGyC8fnmVLZmA7meQwmUvt7YOAQnMSd+2Pi18oGCRCO4C8Cj48UgJFON13jPotUAN27RW4RhSAU+zB5ak8w67kmF1EA5Nrmt9Mh3JXmENpSNV8lelYE
+ WCc5YACO
+ n7F5tP8gSsOovPtMWGvCAb+puWw3THFV/OCB2MQIzEzWeWw5N+Ob4tqpzx2aB+qGNzxc8wk4vIqx26WiD83M8C+4Ru4DfBFGHE0IuX/UwQ1+b0eaHRUUEpmYjShwFn7H/hJ9tGG62JuDuecCuIWCLsY3CVmvzmGFF0QyPL7xq6qsmHDOI6CNKDkxG3mZGRr7sVVCmD7E3C3HMYSH1Pom4eS1aocxoDGhg3tXuAvVorkXxWe5M0eUu2WrVCLaUjMsdwhaqVeXxuNiaGXwfAkfmLzLi7JGPiSVuW6cbBDA8MgoQZ6L9xjpAgfmM9WHxENaTEqBEOoXuF8SixWZhsJMYSFXBG66wjAJEEF4yvMS/dtgzVo5vQsJSrZfZ+aVFjYcjtVjmVBFSfM+EyZyvCIT+gIIT96isRBgPw9jr6PVJN5e0AszCP7LmFb3S+BRxPxnRIBHu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,170 +121,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a test that checks for underflows when a parent unmaps the page
-first. Also check that when the child exits the reserve count is
-correct.
+On Wed, 26 Aug 2026 17:44:38 -0700 SJ Park <sj@kernel.org> wrote:
 
-Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
-Signed-off-by: Guillaume Morin <guillaume@morinfr.org
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Mike Rapoport <rppt@kernel.org>
----
- .../testing/selftests/mm/hugepage_settings.c  |  9 ++
- .../testing/selftests/mm/hugepage_settings.h  |  1 +
- .../selftests/mm/hugetlb_madv_vs_map.c        | 84 ++++++++++++++++++-
- 3 files changed, 93 insertions(+), 1 deletion(-)
+> On Wed, 26 Aug 2026 07:05:08 -0700 SJ Park <sj@kernel.org> wrote:
+> 
+> > On Wed, 26 Aug 2026 18:24:13 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > 
+> > > On Tue, 25 Aug 2026 06:54:57 -0700 SJ Park <sj@kernel.org> wrote:
+> > > 
+> > > > On Tue, 25 Aug 2026 20:46:16 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> > > > 
+> > > > > DAMOS uses charge_target_from/charge_addr_from to remember how far a
+> > > > > quota-limited walk has progressed.  The current implementation has two
+> > > > > problems:
+> > > > > 
+> > > > > 1. Once set, the cursor unconditionally skips and resets at the last
+> > > > >    region of the tracked target, so the last region can be skipped even
+> > > > >    when it has not been processed.
+> > > > 
+> > > > I don't fully understand this.  Could you please clarify more?  Maybe adding a
+> > > > realistic example scenario would be helpful.
+> > > > 
+> > > 
+> > > Problem: Unconditional skip of the last region
+> > > 
+> > > In the current damos_skip_charged_region(), there is this logic:
+> > > 
+> > >     if (r == damon_last_region(t)) {
+> > >         quota->charge_target_from = NULL;
+> > >         quota->charge_addr_from = 0;
+> > >         return true; /* Skip */
+> > >     }
+> > > 
+> > > Scenario:
+> > > 1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+> > > 
+> > > 2. Quota is configured to process only 50 bytes per window.
+> > > 
+> > > 3. Window 1: Processes R1 (0-50).  Quota is full.  Cursor is saved at
+> > >    (Target, 50).
+> > > 
+> > > 4. Window 2: Skips R1 (0-50).  Processes R1 (50-100).  Quota is full.
+> > >    Cursor is saved at (Target, 100), which is exactly the start of R2.
+> > > 
+> > > 5. Window 3: The loop reaches R2.  Because R2 is damon_last_region(t),
+> > >    the old code unconditionally returns true, skipping R2 entirely and
+> > >    resetting the cursor.
+> > > 
+> > > Result: R2 is permanently skipped even though it has never been
+> > > processed.
+> > 
+> > Ok, makes sense.  The user impact should be not that big, though.
+> > 
+> > > 
+> > > To fix this, the patch advances the cursor every time a region is
+> > > walked, regardless of whether it is applied or filtered out.  This
+> > > allows DAMON to accurately track whether the last region has already
+> > > been visited, eliminating the need for the unconditional reset.
+> > 
+> > Sounds like a big change compared to the problem.  Why we cannot modify the
+> > last region case?  Have you also considered other possible simpler approaches?
+> 
+> For example,
+> 
+> '''
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2686,14 +2686,15 @@ static bool damos_skip_charged_region(struct damon_target *t,
+>         if (quota->charge_target_from) {
+>                 if (t != quota->charge_target_from)
+>                         return true;
+> -               if (r == damon_last_region(t)) {
+> -                       quota->charge_target_from = NULL;
+> -                       quota->charge_addr_from = 0;
+> -                       return true;
+> -               }
+>                 if (quota->charge_addr_from &&
+> -                               r->ar.end <= quota->charge_addr_from)
+> +                               r->ar.end <= quota->charge_addr_from) {
+> +                       if (r->ar.end == quota->charge_addr_from ||
+> +                                       r == damon_last_region(t)) {
+> +                               quota->charge_target_from = NULL;
+> +                               quota->charge_addr_from = 0;
+> +                       }
+>                         return true;
+> +               }
+> 
+>                 if (quota->charge_addr_from && r->ar.start <
+>                                 quota->charge_addr_from) {
+> '''
+> 
 
-diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-index d7917dce3aba..584054736ce9 100644
---- a/tools/testing/selftests/mm/hugepage_settings.c
-+++ b/tools/testing/selftests/mm/hugepage_settings.c
-@@ -449,6 +449,15 @@ unsigned long hugetlb_free_pages(unsigned long size)
- 	return read_num(path);
+Thank you for the example!
+
+While your approach works, I am curious, why should the cursor be reset
+every time the function returns false (does not skip)?
+
+In my opinion, a cleaner and more deterministic approach is to reset the
+cursor only after the target has been fully iterated through.  This
+separates "skip" logic from the "state reset" logic, making the flow
+easier to reason about.
+
+Here is my proposed minimal change:
+
+'''
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2347,11 +2347,6 @@ static bool damos_skip_charged_region(struct damon_target *t,
+        if (quota->charge_target_from) {
+                if (t != quota->charge_target_from)
+                        return true;
+-               if (r == damon_last_region(t)) {
+-                       quota->charge_target_from = NULL;
+-                       quota->charge_addr_from = 0;
+-                       return true;
+-               }
+                if (quota->charge_addr_from &&
+                                r->ar.end <= quota->charge_addr_from)
+                        return true;
+@@ -2368,8 +2363,6 @@ static bool damos_skip_charged_region(struct damon_target *t,
+                        damon_split_region_at(t, r, sz_to_skip);
+                        return true;
+                }
+-               quota->charge_target_from = NULL;
+-               quota->charge_addr_from = 0;
+        }
+        return false;
  }
+@@ -2658,18 +2651,26 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+                if (damos_quota_is_full(quota, c->min_region_sz))
+                        continue;
  
-+unsigned long hugetlb_nr_resv_pages(unsigned long size)
-+{
-+	char path[PATH_MAX];
-+
-+	hugetlb_sysfs_path(path, sizeof(path), size, "resv_hugepages");
-+
-+	return read_num(path);
-+}
-+
- static bool __hugetlb_setup(unsigned long size, unsigned long nr)
- {
- 	unsigned long free = hugetlb_free_pages(size);
-diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
-index 726c73c43c05..548e9d288d1d 100644
---- a/tools/testing/selftests/mm/hugepage_settings.h
-+++ b/tools/testing/selftests/mm/hugepage_settings.h
-@@ -98,6 +98,7 @@ unsigned long default_huge_page_size(void);
- unsigned long hugetlb_nr_pages(unsigned long size);
- void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
- unsigned long hugetlb_free_pages(unsigned long size);
-+unsigned long hugetlb_nr_resv_pages(unsigned long size);
+-               if (damos_skip_charged_region(t, r, s, c->min_region_sz))
+-                       continue;
+-
+                if (s->max_nr_snapshots &&
+                                s->max_nr_snapshots <= s->stat.nr_snapshots)
+                        continue;
  
- static inline void hugetlb_save_settings(void)
- {
-diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-index f94549efcc6f..6aa42f064279 100644
---- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-+++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-@@ -15,13 +15,20 @@
-  *
-  *  Touching the first page after thread3's allocation will raise a SIGBUS
-  *
-+ *  We setup a 2nd test where we create a child process, then unmap the page in
-+ *  the parent while the child waits and verify that there is no underflow
-+ *  of the reserved count.
-+ *
-  *  Author: Breno Leitao <leitao@debian.org>
-  */
-+#include <limits.h>
- #include <pthread.h>
-+#include <signal.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <sys/mman.h>
- #include <sys/types.h>
-+#include <sys/wait.h>
- #include <unistd.h>
++               if (damos_skip_charged_region(t, r, s, c->min_region_sz)) {
++                       if (damon_is_last_region(r, t)) {
++                               quota->charge_target_from = NULL;
++                               quota->charge_addr_from = 0;
++                       }
++                       continue;
++               }
++
+                if (damos_valid_target(c, r, s))
+                        damos_apply_scheme(c, t, r, s);
  
- #include "vm_util.h"
-@@ -86,7 +93,7 @@ int main(void)
- 	int max = 10;
- 
- 	ksft_print_header();
--	ksft_set_plan(1);
-+	ksft_set_plan(3);
- 
- 	if (!hugetlb_setup_default_exact(1))
- 		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
-@@ -120,5 +127,80 @@ int main(void)
- 	}
- 
- 	ksft_test_result_pass("No unexpected huge page allocations\n");
-+	huge_ptr = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-+			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
-+
-+	if ((unsigned long)huge_ptr == -1)
-+		ksft_exit_fail_msg("Failed to allocate huge page\n");
-+
-+	{
-+		pid_t pid;
-+		int pipe_fds[2];
-+		unsigned long nr_reserved = 0;
-+
-+		nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+		if (nr_reserved != 1)
-+			ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 1\n",
-+					   nr_reserved);
-+
-+		/* Force the fault to ensure the reservation is consumed */
-+		*huge_ptr = 0;
-+		nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+		if (nr_reserved != 0)
-+			ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 0\n",
-+					   nr_reserved);
-+
-+		if (pipe(pipe_fds) != 0)
-+			ksft_exit_fail_msg("pipe failed");
-+
-+		pid = fork();
-+		if (pid < 0)
-+			ksft_exit_fail_msg("fork failed");
-+
-+		if (pid == 0) {
-+			/* Child: Simply wait for the parent */
-+			char b;
-+
-+			close(pipe_fds[1]);
-+			if (read(pipe_fds[0], &b, 1) < 0)
-+				ksft_exit_fail_msg("child read failed");
-+			return 0;
-+		}
-+
-+		/* Parent */
-+		close(pipe_fds[0]);
-+
-+		/* First unmap, this will close the vma */
-+		if (munmap(huge_ptr, mmap_size) != 0) {
-+			kill(pid, SIGKILL);
-+			ksft_exit_fail_msg("munmap failed");
-+		}
-+
-+		nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+		if (nr_reserved == ULONG_MAX) {
-+			ksft_test_result_fail("After the munmap, HugePages_Rsvd underflowed!\n");
-+		} else if (nr_reserved == 0) {
-+			ksft_test_result_pass("Underflow not present!\n");
-+		} else {
-+			ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after munmap, should be 0 or -1.  Repeat the test\n",
-+					   nr_reserved);
-+		}
-+		/* Make the child exit, this should restore HugePages_Rsvd to 0 */
-+		if (write(pipe_fds[1], &nr_reserved, 1) < 0) {
-+			kill(pid, SIGKILL);
-+			ksft_exit_fail_msg("write failed");
-+		}
-+		close(pipe_fds[1]);
-+		if (waitpid(pid, NULL, 0) <= 0)
-+			ksft_exit_fail_msg("write failed");
-+
-+		nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+		if (nr_reserved == 0) {
-+			ksft_test_result_pass("After the child dies, HugePages_Rsvd is properly set to 0\n");
-+		} else {
-+			ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after the child termination munmap, should be 0 or -1.  Repeat the test\n",
-+					   nr_reserved);
-+		}
-+	}
- 	ksft_finished();
+-               if (damon_is_last_region(r, t))
++               if (damon_is_last_region(r, t)) {
+                        s->stat.nr_snapshots++;
++                       quota->charge_target_from = NULL;
++                       quota->charge_addr_from = 0;
++               }
+        }
  }
--- 
-2.39.1
+'''
 
--- 
-Guillaume Morin <guillaume@morinfr.org>
+> > > This patch ensures that every target is traversed sequentially and
+> > > deterministically, even when the quota is set very low.  I omitted this
+> > > benefit in the initial problem description.  If you think it is okay, I
+> > > will add it in the next revision.
+> > 
+> > What's the problem and benefit?  I still don't get it.  More clarification
+> > would be nice.
+
+My original idea was to ensure that every target would be checked
+sequentially, which seemed like a fairer approach.  However, upon
+further reflection, I realize this might not offer tangible benefits and
+could introduce unnecessary complexity.
+
+Since the DAMOS Quota min_score mechanism already ensures that regions
+truly needing action are prioritized, the current behavior (eventually
+resetting at the last region and moving on) is functionally sufficient
+for typical workloads.  Therefore, I do not see a strong justification
+for this change at this stage.
+
+Thank you for pointing this out and pushing me to clarify.  In the next
+revision, I will drop this changes and focus on the minimal fix for
+Problem 1.
+
+Best regards,
+Rui Yan
 
