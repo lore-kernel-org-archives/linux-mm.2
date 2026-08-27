@@ -4,169 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D2E6C61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 11:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C38D2C61DC6
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 11:29:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 390366B0088; Thu, 27 Aug 2026 07:25:22 -0400 (EDT)
+	id CC0486B008A; Thu, 27 Aug 2026 07:29:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 367AD6B0095; Thu, 27 Aug 2026 07:25:22 -0400 (EDT)
+	id C715F6B009B; Thu, 27 Aug 2026 07:29:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 258186B009B; Thu, 27 Aug 2026 07:25:22 -0400 (EDT)
+	id B5F666B009D; Thu, 27 Aug 2026 07:29:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F27866B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:25:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 841691C1C65
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:25:21 +0000 (UTC)
-X-FDA: 85146818442.30.E686CE2
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012059.outbound.protection.outlook.com [40.93.195.59])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9C9F9140011
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:25:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eBpI1k07;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787829918;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DD736B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:29:50 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F9FCC03CB
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:29:50 +0000 (UTC)
+X-FDA: 85146829740.15.83F1BAE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 883A240002
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 11:29:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="afD/2Br+";
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787830188;
+	b=fusZj/lBaHseD/xEnE2dw2T/SEZ/pyefgvbydotClLPyWvLLoy7y0bCCiAT1nWG+xodq+b
+	AWpDMTf30jCb1R7Om8ir5xzEHsTqF62Eg1uMfaR6QilaSZqkCMqIcUyavMwGZfwA/w1OIW
+	8NameqEcm+01gY/gRqZu/LQvH+TqD+A=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787830188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IV0OkedGNdhCeqUQv8A0r0nLdaibU+MZlXYqIEIKLE4=;
-	b=GVOdbp1K9oj3kcN1e2XNdPzXdrKACgXMIZx94BrdcOO0J6PIWvl+7pbKzP1L82tPHFAjmi
-	VcwtfyDz/9SUfX93ZmrJ2FDCi/lpqZ0yLGkHL4co+KGD5ejmNYbP6Efbn1bqHj/PP9tlhX
-	/6X0t4dIyFUF8R6dK9oyOIBnUB5/9Qc=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787829918;
-	b=W8A7BFeQRL4kPE6K59nISmZE76bF1Iz+yVRoA7DW6dpk7l1+W2Tatq3Jpd/yT3JooMgVkz
-	0XXcfRbnG838t6n0DGCa7rlUX5/yqmx6BeMyGDULz+uODA02guse+spi8dm4mkA9orzdGw
-	q7cA10OTJEorfyGRo4MVaewnfrJh9MA=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eBpI1k07;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qu3tKbac2mF9V7ISqK9dX2R/dw/qvV+vsIVztrXljQhH+MG/3hoaTZM+dXn9Flw7dslvEKab628C7atA7SKz0Ez5Eiq8E/5bzFSJIRzxoh3ZjVqacvx2IMDiDp1aF4qT1g/r77sWItsFxV/09CU5uLwHc4nlztkHEEqVSyPtbfCs44MzIcbDZ5ZGfWJKwtBpSHDTcC/BXMpEWCPgcWRnbIu2UYaJyBFF93Wpl2+tLag4agGfwOdBQ362cx1s6XWsbJGZhFOGO41/JAbSmC8QKCfxzVikjAe+Jnvlk4W6g1V4ev100mJyQR1qoVtdtzghIiPMQiGaIl31KJyCoT6pAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IV0OkedGNdhCeqUQv8A0r0nLdaibU+MZlXYqIEIKLE4=;
- b=qWPzAQp8GXcGledkRXOJexFB/+647SfDIdK7SuUqeB3VbSgH/m4AdRsYM85kP3n8Yz7VTr03En/7+jK8MyN4iTwnYcXi2ZJ4q1I9KCO20I+5E3abCh4M3y0IS7TyMOqMA8lTUvOIVZSN/6cwrPg60GgC7PRZlgnQS0oJeTzgfSQaoRj3CZvL//S0LCOCRDXO5Uyhv/f7oOpFRfpgAn958MYgiPvd5ER8Ma+OzOW12PWkwUON807Tbl1YJiL0ip9v94F82dfY4+Xp+xwAj58gMqzd7xX4ZUrn65zzo//8Ff5lxS7Sf2NpoviTM6DtNqZfuQm1c7k3xRrAjvxPbDleaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IV0OkedGNdhCeqUQv8A0r0nLdaibU+MZlXYqIEIKLE4=;
- b=eBpI1k07ffy+akAAbyqdQOWgkDC2pcS/L5jHEjNjH8r9oz/Yb0P0XeEi6y3u+PSW2qYU52ENqkbLX3r++CqmZCBu72zwTvmX6tV/vlJBe9M+3na2BGmsgdLC9YyaWkEcP7zTr081QqzFP/uPe59MnyFljBBW6edmXwg/OsDBRv54CDynSG0nn8tLD3RG3DAPhyWjIHFvXMJkOOzTWaregCRW63w+jX6YCOdNrQnRcthU2IdKU/hSbVlkb7s2iyXJP9wN1Lme3csaU18QoO2sSLDcM7GMcGT4BN6kse/qdt/+lwDhy5VQ+3MMPCrLjCmBPVKMpqgtjXh8RUURqPFrnw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SN7PR12MB7370.namprd12.prod.outlook.com (2603:10b6:806:299::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Thu, 27 Aug
- 2026 11:25:13 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 11:25:13 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 27 Aug 2026 07:25:11 -0400
-Message-Id: <DKZOT75FS17S.V9DYDW4V5B6V@nvidia.com>
-Subject: Re: [PATCH] MAINTAINERS: add myself as a THP reviewer
-Cc: "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
- <liam@infradead.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts"
- <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song"
- <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama Arif"
- <usama.arif@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.22.0
-References: <20260827103435.1371882-1-kas@kernel.org>
-In-Reply-To: <20260827103435.1371882-1-kas@kernel.org>
-X-ClientProxiedBy: YQBPR0101CA0325.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:6c::23) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=1y2tOmwASyfw2PTeAqcz8xYEBJBZ7KYSO7CTUxpPkJM=;
+	b=YCpfcfjnYgjdUx+I8sjcyMiVpMlIX7u0iMsgbIKz4OErWRz1GmsblKesCMpp0GAt8rnOUe
+	c/7DyAgUroA+fCC/G64Uz7Hibn4e3ucMi5guQa+ZfufdT6FeLL3tApK7Mzqo/G7g78xG/b
+	oJJoXpm2uZ0Dgnxi7JPSGD7/7w+YzDw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="afD/2Br+";
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 00349600D2;
+	Thu, 27 Aug 2026 11:29:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD83B1F000E9;
+	Thu, 27 Aug 2026 11:29:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787830187;
+	bh=1y2tOmwASyfw2PTeAqcz8xYEBJBZ7KYSO7CTUxpPkJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=afD/2Br+WbOEN1fBUqTISQXUJgjaTyXQwMzBCHt6fJoEXnAMCJ5VWRlhUqoz70ncF
+	 DAyj6dWtyugehMEFf1ytgne/oSPJPBHDNWb6d2euBJuOTwMateF0NHli29Njxzrbw7
+	 MuFZeGJ54N+xw1LgijsanJHl0gYmyd7gB1MMev4mVKno2ERXqzZPtSVGuORtB+OJBH
+	 WIUMfdOy5vwFS3las9n14WI8uRXveRnroSJcLP8LKxX3UMtYsZJEZ13YW0y7SQi4WA
+	 u+4aSUzHiQECKXGOwvKWLUOq/zq+3cclu8v+RgbPGFX5iG+NdhIuWtC/9Nep12LEcs
+	 0mEXPVFLEjU4A==
+Date: Thu, 27 Aug 2026 12:29:38 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>, 
+	Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, 
+	Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/6] userfaultfd: decouple fault reason from VMA flags
+Message-ID: <apAdUOa2OfxSmSEP@gremlin>
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
+ <aoxm4jUrmL1eQlCJ@gremlin>
+ <ao1waln1lklfk8th@kernel.org>
+ <ao2Qk87AKnMKuNvg@gremlin>
+ <ao_qWEcoaIcm1WhE@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SN7PR12MB7370:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71739448-1adb-4a56-6cd0-08df042ddcc6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|7416014|56012099006|11063799006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	vN08gAcPNIFlyfnNMfZLMhCjPRpNrAMS7rp32g8InyQKGlRn6WrCk4Apf/30ZERWSASx4tVy/3AZe0B06ZhhwPDqQGo89Rk/D1c51+w5tYnWip0lXYAFQMMwpA/JHsBOipCG05U5feagzUT3+rOmUv3fELhcyqKOrc9zeI8LMsnnmqVleZLUh+ysFeVUmr9cAWRawvyvkHGchQKhmPXK/sDTE22WqBEeqrxeJaIDU8I9byo7+jjHJc0X2tBI8K9M8cINIeBuAlpOtnnIth3MLL2CMtoEPBUMmWGzb7tmttsXDGnvW6lR2QaSLpvm/rognoZTwEXXs5rgFNhsVrhakgm2wp+W1FXrEZKFcfMG3/OC9wKERgZpn1pIrYOhLeVMrBrScvp3kHiBKdGfuu0u0KLQzJ3NThvfDlwEg5J3TN2WeVBvtA0tONpVQYhU0qgwbkIN4fzzg4PxlQznR64ANb1qacp5EhMOmjXsBDVpB7OUpwsEwY+Pohs8X75NwjJb5OldQ34k3RuzjzWPw5cBovU2gb7MBsaLanMvBoMxSp2FuW07ywsKeR9xHtTHOKJchoSHK5wkiLscuxblstjVaeipFshORIQdY6S177+msuaOlpW/XRNszwS5Q2MF/hRQYx1k7Kv9uDgk+t8GsSgHgi2oc5P841385er7Q7OnVp0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(7416014)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WEs3eU1COVdUdjlOY1RXV2t3ZFAwcHNkRUZQVjV6K0Z6WVNJbTE1SlhoV0d2?=
- =?utf-8?B?b3d4T3IzbzN2MWNFM3RDalJKODRpaHRwZjhzUTNHR3hFZytodnlkOGJ2aGNX?=
- =?utf-8?B?Q2JpSjFESzRHOTZabm8zMkhSVzNJVXl0ZW4rSU44UU1JNE9OU2Mwb0xnZkt2?=
- =?utf-8?B?dHhGMndMeWEzNXJPTDhRclV1R0RZbkJrNUVEdzcwWGZySDl1VmNINzRvTjBr?=
- =?utf-8?B?TjVRTWxkSHFiTW0zQldXL0R4Vi9xek1CaGRQN0VjRnRvQ2lWenBWRGJNbVFw?=
- =?utf-8?B?d2dVYS85OEgwQ2xwZytxM1JSckx3Z1NUbFVEZzdUeGhPeWxDMURYNm12T2RG?=
- =?utf-8?B?VmFUQzF1MWpLK3NLOVdKbk04aTBxQVd5Q3Q3aHFWV0srTjBoTm5WYlhZYSsx?=
- =?utf-8?B?YkthbUZSdEtLTlZRSlhRajhDZXh1amFydFhLV3l0SjM1OUs0MXdUOGJCOHRx?=
- =?utf-8?B?QnVuYmZDOE1ZdWdkMGYzODZ2MVlZZzNDTmRveTZ0d0xKTTV0VGtqdkJ5Zld5?=
- =?utf-8?B?NDNFZlI0bHBlZXhLZlBEdlZ0bFlOZFlpdzFrWTErNkQwMC80RlZNZ0NUOUU1?=
- =?utf-8?B?WUdPS1FmWVNibTFiRVZWSFpwWmIyTmx5WmJVVWZ1VlRzZGR1Ymh4NkI4bWlK?=
- =?utf-8?B?Njh1bXAzbUw0L21HVGpEbElabkt5MFBCa3c5Y1VCQlRpeFM2OWdzTU41Y09t?=
- =?utf-8?B?RXNKSDlKZlJ0Y0E1MHJuMGRPZHpEVUo2ZkRabjYrTG1GeExqSEIzWm52YVBp?=
- =?utf-8?B?MGtNei9WK1hRZFlvODZnMTdVNVJMNzhlOHhpVzNlbi9LRFIzR29iV0ZpeEUz?=
- =?utf-8?B?cmJDY3RqanBIY09pZVArbUZyNWU3NEUyRmVzclMyaEtpVzBmWmV2dm83WUFS?=
- =?utf-8?B?bm1lQnJtMjN6dVBwWk9xa09KeExCQWl6NCtZTk56d0M0UWZnNUVHOHNHaHNS?=
- =?utf-8?B?dWFYWG5nckRhbTFMWVpEL3FNc1QzK0RVRTdzc2E1UWFlby85Q1pFWU5uYU1a?=
- =?utf-8?B?SjFLQzBFd3MxcjRDWlVORXI1c1hHMXYzMkVTUGIxd01mdHN0cVRTRHlEV2Ni?=
- =?utf-8?B?emdwaDU0bDdRak05UHZuRVhJUktUREgvckxtOE0zUUpNWTNSZkZHT3JHekpj?=
- =?utf-8?B?eGlXamVEUWNCUjZWOTVJLzFaT0JEcFpBVGhURTZMbWNkTWFwMWdFWXBxSWZN?=
- =?utf-8?B?VzZ5Q0tERUFuN1dodW83WGYyRGNmNGVWSWNTUHpVOXEyR00vYjRucnhIckpO?=
- =?utf-8?B?Ky84QzQxOXUySjNSYU14L1NvSWJoUG1zWUU1bVZVWC9SWFpjWXVtME0rKzFL?=
- =?utf-8?B?SlNqakMyUmdZeFZQRWNaS1ExbG9VT0ZKYWVZaUhYNmh2NzBHbWxaSnI2ZlVY?=
- =?utf-8?B?U1hTRmxPbmFpbkNDSHBiQ1AwQjZkRG9nYlFURVl4RWZFbWQxQ1g3MmRNeTVi?=
- =?utf-8?B?c1A1eGxidy9Kc0dhcm0xZzFMa1FVZEszYmczVVZYUm5qeDdMTDF1Z0xSU3Bs?=
- =?utf-8?B?RUhsWGY3eG5WSGdKMThxb2tvdGJaZlZITFZGZ3NYQUIzR2RjZ0tRUitzWTZF?=
- =?utf-8?B?d3h5eSsyZFJsaFZhTXh4cFVHZ3JiVGpwU3BNQ3FGd3dWMExSdVA0TWh5ZEI1?=
- =?utf-8?B?N1FTUmgxdStQU0s4bFhmTU9mT05VNldOZ3dqS3cxQlhWajYrdjJHL1ZReFVQ?=
- =?utf-8?B?eGswS3F0RDQxSDZTaURuQjlLOGthRnM3UnhHNEJMYmg5WkhvbGlqR2R0dGlv?=
- =?utf-8?B?V0U5QWh4N3ZQcEtVM04ycXZuenE5TDVSU3JqUFlVTi84VGxNWXlNWjJFQjQw?=
- =?utf-8?B?UUtreHpFdDh5TnN1SHk2TGRBS0lqMFdsL3pFN3ZOYkpTaXpzSzNPUVQwck85?=
- =?utf-8?B?TnVLRFBhWEJjK25Hdk4wR2F0V1NlSUY2T0wrbUVPK1UzOFl0bEliUVRxamty?=
- =?utf-8?B?TnQ3RVlyQXZOWEYrWEhCcVRyM3VQM0Y0ZnVrbFVRQjU0WVNoaE5vRHBXQWwx?=
- =?utf-8?B?Y0JOVHluNjVrVVNQbWpjN05ZWXpaREhxSVFKU29sR3p1MHcreDVxa0NFUU1t?=
- =?utf-8?B?L2xsWjFuV0ZJOEwvL1ZIRDhmOHAwNXlKVVJ2Wk9OTi9IY05MS3FoT0x3WENq?=
- =?utf-8?B?ZXo3aC9HdGdneGlVT1g3OE1KcnRUQWt1YlAzNUp6eXdqbU1aOUY3UXJ4WjRo?=
- =?utf-8?B?Vy9zZUpGMjRkUWFCazUveHlFNHR1M2NodFVvbGQxcFpmZDJjd2tXeVB0aUdC?=
- =?utf-8?B?NnREcVhJTUF6aHVrUitpSnpiem9JNTNqTEdWS2ZFMWxwWXFpeFlUN1Boeis3?=
- =?utf-8?Q?CB4peH2Cxl4jW+tKE1?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71739448-1adb-4a56-6cd0-08df042ddcc6
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 11:25:13.4893
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fijL0SFVvCeAtZFtZG3UaL6KekWZRVuWXRZ/XcfhIPAdMgway3002e9yzsp0J+jA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7370
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9C9F9140011
-X-Stat-Signature: aeaarsqgqspswoij8mbxbx3hua9y83s1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ao_qWEcoaIcm1WhE@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1787829918-466634
-X-HE-Meta: U2FsdGVkX19Y43Xtu1mtHLsDEqH9GxkFgrWAcRts780k8sBj/6Fufohn8XIWoUFbFotiyMjZY/3bTm6tuHdWVwkFvraIWUP+donLnjqN5umrbBaz5M4li+bNljqj0Nmn3c/StdBQefUVHIcD6cI7yphnlZHQuzMK86a9u9HmzNYi6hUl2Ame3hXJRMT6hYvtCMQ6cOFXuQXLKuWO6EaVjkJyXb608tIWTpyIosh1+UV1bpZdNfWzALLmtQ/EPdam5nLCC/Xk8+lEuVF2m4yzY4JQZPsSLt43zwJKZjxt7x68muYiBz9QRWr8aLhOjFYzPWz4j2ZVGEkQmiT28F82Ja2AHXMCRh4EniAP6leIUMsnv99Z9Zau8MTlOXOgpQAPTR90gKmYpURYPs9MnSbpCw93JK5kXuF4gb3Zg7TTVCGQRjAglAD4IUORx9FFcrl34ERLm3cE7CVsioz4lAEhWuvPddxiVXdRduQFlJk6BM/se7Vc1gl7jmoJapxJKkcLop7sANyiV0eCZGEmNGJEq1BWj5YrzClRkZ/L0gTDv0ii73j8ziYoIwrsXwF7sLwYskT7/kQ9qiA7ECK1SHVPtHvvjQCJuN2AC5WrA/WDomu3WOtHXc25NrWfg4ypyXCvFg4yfqUxvS2yQy0lScE2mzdGwgegc7d7/asE7vtNzAsQ9q4jdDbxeAJ6Tkuuvj+E3Zu/nteVZ9H3yAvbAl5IF/XTKDydtM1cAMuuDySEVVFIY6W6H4Ybj104quULyDgCOLdcpN+lGaA/43DzSgXtUBc0QYSDIZzr64LjYTyPd8CaGevGeH2KrucLnSbd1cRbalRtbIVkN/V0iy/5rC/uAcwRYLkN7DpO15dqZIPgg2qapRx2sv4Tedra/nkIyfxGgG4crSz9io9wMIqd/sUHtOvzw41eiEb9MlhFreAUyvDMx33falbp06w0Lkwtk0NU1nhMz5ifRI2BxbAfL5s
- 89QGbMpL
- 75qYV6uyJ+xlNMVSrhrMSf8F9L/KmS7NAitzDlM8Kabj5Bvth/EsdG7kq4TBOGQP+IOPuGWrmUM0Sr9K+LkxU98ZyAtczqJ61ZderZV8D3m+9ghSYcHnMqQnV3b/qsebsN2yR7DKuffe4EWpNmdYBHSAm27qSUpg6VB2usuXalpnI54/I6wzL2aFiqrENLSrCghcm/S15btimqqOaQ1zrk9mEppJaD2uOKZd4twZWg9PDOczkfBVylfX0jGi5A0y+aOceJBs/x4cf0iNm1PpNQkXKwW36YYbpq2oYY3Hj99kF55MyBjGL3ckvq1vrrMZUg4Cx/zOGYv489akKkrFbDQgI9/BfsHSjykYSMW/1lLPk8hcYVbgchGr2FRFgnGfMFndX5R++T2jzrlnK+Zw9wcxD5WNmp21SMAcB1uEij92IjMKkLAulvbfr+63NqX//KGSEMK6kWZk9IQLKjgWJZAVkcjAt0LHs0eQ5uFy09ksVRJytxrMRkynOae+jBDCKevJqhhpf2rt+wIP6WOzS8/DbbswITO5hOXgXdfpZ21e6oFuYJAfPL49UA/JruBpaIa9M5FqErCYIxBuXbDW8qkqzBTY5VDRVVpsO
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 883A240002
+X-Stat-Signature: 1inq948q3p7f5swk57m156bbjtsg7sas
+X-HE-Tag: 1787830188-736012
+X-HE-Meta: U2FsdGVkX18n4WY71rjVjvFiZu26EObgUr0QBKrnIVXl3eA7CtbZIwUTiUKXhAO+lZLH9hU8Ipc6ip9BDcb3cltSX0n9N+e3x0O1ChPcTAaRH+WKBQnD6LrJbYOyW5YGA47M8P1ZbCKhyfzqbx+FjaLUwk4whnM1vnDmOJ3n1qfllV+pO4wL7zOb11/U2H4Tn0grZ+TdxutHr44AgJHJOQdKSawfJY6JuqDzYXUaiugsMOne9FcTmYTLCRiK1O6knFUC2GCzICpJO6TFRUg74Vi6XCry3sZAu8G5RIujRk2NQK8XDlLapSf60M7KZ8iigB2puvjOwHWvQNe/w/Zzti5oTlGap5lVpEE2caSfPEo1PaFda63LXUFQcvrLo2ypOs1Spy9MKPOf1z3RfHeeomrcAA+XIQLldVCCq1cQNX1LiZy0lFEoe55CtlM0rwRHTHIV9NJilv8w3sze4F55nOU4g6ni+k0Iw/ksnU/q1ctqB3dHA3LbORyY4FWJQ0V2Oa9suUYDV//RFijTS1/Wwi4Mdkq9BLf/wAN9dj/RzBqguvlp3EKlt6IW0UEx2FlGetCXXpwcplCdTVKJMBHh7zmboQCPoTra1x/X9jxnfPx1RLEjNWzTMpTng5WS+EpNiC7Pm4fOAC5FVDbeeKXYXsaoVceXxPZ3HFRF6twC7EbB9uHtHMTu+D7eqztNzvpfNNEGD8ojJMINtlUKBF368lveVyboWN0qzAPvWYep4xntPaDhdKbLgYtbSptk8y+mT8+sT7fjCElZsytijLPs22xGBbYWQAc3bpGHKldBJWn5FYuqmosxG2iWFFQ7FzQ6sMFyDg2U0ETi3QnNFLql8HN6WFEQQj9o/szXDtIxs7SkEbepsWXd2RXNNOk19rRpDozsnWQaWhBrsajYabkRbr7t86/pyvoWeqT1cbmamt4+Ol8pKmD1fug+kcnIJzr9spjElYZDpizWdDhYlxo
+ YQfnFTF0
+ RhA+u1rNzPRw3NmnY6ywprfDNekK9+4gXF1OwLGm2lODGKObuhdA6B840+1pg8BJrPxP6iWqbPjDJiwIJXfVlAwtK5hQZLLTEUdV04rQ/akf/G+bmBHwZUB9ffhXhJYGw4HKHEwqy7gk56i3dda0Vx1RGrpWKuS17yc0slUjrySqOPyWCZzuZzvaYlU2b3YuB3lKpg2yT9/pk1xH+36cOUko21VZZbhLdqvlaY2dnuq3QOYsGnHACovQ6eY0zfQXoE++/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,41 +109,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 27, 2026 at 6:34 AM EDT, Kiryl Shutsemau (Meta) wrote:
-> I have been working on transparent hugepages since 2012, starting with
-> the huge zero page and file-backed THP.  A lot of the code that causes
-> pain now traces back to me.  It is only fair if I share the review load
-> for THP.
+On Thu, Aug 27, 2026 at 10:42:16AM +0300, Mike Rapoport wrote:
+> On Tue, Aug 25, 2026 at 02:00:10PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > I mean you then introduce the same flags again seemingly with different
+> > names as #define's in the next patch... having several sets of flags with
+> > subtly different names seems unwise.
 >
-> Add myself to the reviewer list so get_maintainer.pl puts me on Cc: as
-> well.  It is also my commitment to be more active in reviewing this
-> code.
+> The names are important, the values are not.
 >
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
+> There are two cases that currently use the same VMA_UFFD_* flags:
+> * the way VMA is registered with uffd, i.e. the 'mode' part
+> * the type of the user fault that the generic #PF handler passes to
+>   handle_userfault()
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 1be7da9b6e2e..f5bb29ba41c5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17264,6 +17264,7 @@ R:	Dev Jain <dev.jain@arm.com>
->  R:	Barry Song <baohua@kernel.org>
->  R:	Lance Yang <lance.yang@linux.dev>
->  R:	Usama Arif <usama.arif@linux.dev>
-> +R:	Kiryl Shutsemau <kas@kernel.org>
->  L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
+> They are related, a fault in a VMA that was registered as MISSING will
+> never pass MINOR to handle_userfault(), but I think it'll be actually
+> clearer to separate them semantically, so that when you read a call site of
+> handle_userfault() it is clear what type of the fault it is and when you
+> parse userfaultfd code you see what modes user wanted for a VMA.
 
-Great!
+OK, thanks for that explanation.
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+I think summing that up in a comment and definitely the commit message would be
+useful.
 
+Also potentially gathering all this kind of state and putting it in mm.h or
+mm_types.h would be nice too.
 
---=20
-Best Regards,
-Yan, Zi
+I say this elsewhere but I do think userfaultfd_k.h is a bit of a confused
+mess and we shouldn't make things more confusing by wanting to keep state
+explicitly there.
 
+>
+> > > > Anything that is parameterised by enum uffd_reason that combines flags will
+> > > > break any switch statement in there and yada yada.
+> > > >
+> > > > I wonder if better just as #define's + unsigned long or something?
+> > > >
+> > > > Or you could do (and this leads to nicer stuff later):
+> > > >
+> > > > 	enum uffd_reason {
+> > > > 	     USERFAULT_MISSING_BIT = 0,
+> > > > 	     USERFAULT_MINOR_BIT = 1,
+> > > > 	     USERFAULT_RWP_BIT = 2,
+> > > > 	     USERFAULT_WP_BIT = 3,
+> > > > 	};
+> > > >
+> > > > 	#define USERFAULT_MISSING BIT(USERFAULT_MISSING_BIT)
+> > > > etc.
+> > >
+> > > Looks over-engineered to me tbh, if we drop an enum, I'd just
+> > >
+> > > #define FLAG (1 << SHIFT)
+> > >
+> > > and call it a day.
+> > >
+> > > Also see below about aligning with uABI flags.
+> >
+> > See review on 6/6, I'm confused actually why we have several sets of these
+> > flags...
+>
+> I can see that ;-)
+
+Right, I do think in general if experienced(-ish ;) kernel maintainers find
+things confusing, this is _usually_ a signal that things could be made more
+clear in the series.
+
+Of course not excluding the possibility that I am simply not bright enough
+to figure it out :)
+
+>
+> > But in general it seems like these flags (in one form or another) are being
+> > repeatedly referenced, so it's not really over-engineering I don't think to
+> > abstract some of that.
+>
+> Again, the bit numbers do not matter, they are the same because it's easy
+> to count from 0. I can make one of those count backwards if it helps :)
+
+I think you're missing the point, but I go into detail with examples in 6/6
+that hopefully clarifies things.
+
+The enum/bit number/keeping equality stuff was just me thinking out loud,
+the point here is about abstraction and keeping things clear.
+
+I mean, and give me some rope, by your argument, why have
+vma_is_anonymous()? Just check for !vma->vm_ops everywhere right?
+
+Well I'd argue that it is _far_ clearer, self-documents, abstracts the
+_means_ by which a VMA is anonymous (no vm_ops) from the semantics of 'is
+this VMA anonymous'.
+
+Equally so here.
+
+I actually think it'd not be unreasonable, given how few flags there are to
+have e.g.:
+
+	vma_handles_uffd_missing()
+	vma_handles_uffd_minor()
+	vma_handles_uffd_wp()
+	vma_handles_uffd_rwp()
+
+Or something like this?
+
+And, as I say in 6/6, you are checking vma_test(vma, VMA_UFFD_BIT) each
+time (or perhaps context != NULL? Not sure if equivalent) now you can
+abstract that and remove duplication.
+
+And _then_ the weird 'WP but not uffd' case can be self-documented and
+called out like:
+
+	vma_was_uffd_wp()
+
+Or whatever naming would make sense.
+
+Hopefully that clarifies my point.
+
+>
+> > Maybe can be in wrappers that make it nicer. But really the issue is the
+> > duplication in modes/reasons/flags...
+> >
+> > >
+> > > > > @@ -168,9 +168,9 @@ struct uffd_msg {
+> > > > >
+> > > > >  /* flags for UFFD_EVENT_PAGEFAULT */
+> > > > >  #define UFFD_PAGEFAULT_FLAG_WRITE	(1<<0)	/* If this was a write fault */
+> > > > > -#define UFFD_PAGEFAULT_FLAG_WP		(1<<1)	/* If reason is VM_UFFD_WP */
+> > > > > -#define UFFD_PAGEFAULT_FLAG_MINOR	(1<<2)	/* If reason is VM_UFFD_MINOR */
+> > > > > -#define UFFD_PAGEFAULT_FLAG_RWP		(1<<3)	/* If reason is VM_UFFD_RWP */
+> > > > > +#define UFFD_PAGEFAULT_FLAG_WP		(1<<1)	/* If reason is uffd-wp */
+> > > > > +#define UFFD_PAGEFAULT_FLAG_MINOR	(1<<2)	/* If reason is uffd-minor */
+> > > > > +#define UFFD_PAGEFAULT_FLAG_RWP		(1<<3)	/* If reason is uffd-rwp */
+> > > >
+> > > > Is it worth retaining the same bit indexes as the reasons?
+> > > >
+> > > > Reasons:
+> > > >
+> > > > 	Bit number
+> > > > MINOR	0
+> > > > RWP	1
+> > > > WP	2
+> > > >
+> > > > Page fault flags:
+> > > >
+> > > > 	Bit number
+> > > > MINOR	2
+> > > > RWP	3
+> > > > WP	1
+> > >
+> > > If we go this way, than it must be
+> > >
+> > > #define USERFAULT_MINOR UFFD_PAGEFAULT_FLAG_MINOR
+> > >
+> > > so we won't need to keep them in sync explicitly.
+> > >
+> > > With a caveat of USERFAULT_MISSING that is expressed as "no flags in
+> > > uffd_msg" :)
+> >
+> > Ugh.
+>
+> Yeah, and the PAGEFAULT_FLAG numbers are set in stone because it's uABI.
+
+Ack.
+
+>
+> > > >
+> > > > With matching flags and unsigned long you could do
+> > > >
+> > > > 	msg.arg.pagefault.flags |= reason;
+> > > >
+> > > > I think?
+> > >
+> > > Almost:
+> > >
+> > > 	msg.arg.pagefault.flags |= (reason & ~USERFAULT_MISSING);
+> > >
+> > > And define USERFAULT_MISSING as (1 << 0) with a comment why it's fine.
+> > >
+> > > I don't feel strongly about it, but my preference is to define reason flags
+> > > independently of UFFD_PAGEFAULT_FLAGs and keep the ifs here.
+> >
+> > And also modes... Again I think fixing that mess somehow is the better way forward.
+>
+> Can you elaborate?
+
+I'm talking about the 'mode' naming, which I think we have reached
+agreement upon in 6/6.
+
+>
+> > > > > @@ -2793,14 +2793,14 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+> > > > >  	 * If VMA has UFFD WP faults enabled and WP fault, wait for userspace to
+> > > > >  	 * resolve the fault.
+> > > > >  	 */
+> > > > > -	if (!pte_write(ptent) && (reason & VM_UFFD_WP))
+> > > > > +	if (!pte_write(ptent) && (reason & USERFAULT_WP))
+> > > >
+> > > > I wonder if you could actually
+> > > >
+> > > > You do this quite a lot and they read a bit horribly with the && and & on the
+> > > > same sight-line. With the changes to the enum proposed above you could do:
+> > > >
+> > > > 	if (!pte_write(ptent) && test_bit(reason, USERFAULT_WP_BIT))
+> > >
+> > > I find && and & perfectly readable and adding _BIT defines looks really
+> > > excessive to me.
+> >
+> > Discussed in sub-thread. We'll agree to disagree I suppose.
+>
+> Yes, we will :)
+
+See elsewhere.
+
+>
+> > > > > @@ -2835,7 +2835,7 @@ static inline unsigned int userfaultfd_get_blocking_state(unsigned int flags)
+> > > > >   * fatal_signal_pending()s, and the mmap_lock must be released before
+> > > > >   * returning it.
+> > > > >   */
+> > > > > -vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
+> > > > > +vm_fault_t handle_userfault(struct vm_fault *vmf, enum uf_reason reason)
+> > > >
+> > > > Hmm what was the 'reason' here before? The flags? Maybe more reason (no pun
+> > > > intended) to keep the values the same?
+> > >
+> > > The 'reason' before was a VM_UFFD_SOMETHING, we really can't keep the
+> > > values the same, but we surely can keep it unsigned long.
+> >
+> > I notice the 'mode' which is not the same as the 'reason' is an unsigned
+> > int in 6/6...
+>
+> Didn't you suggest to make 'reason' an unsigned int as well?
+
+unsigned long :) but I think unsigned int is fine.
+
+>
+> 'mode' in 6/6 is an unsigned int because if it were an enum it'd require
+> #include <linux/userfaultfd_k.h> in mm_types.h, see the commit message
+> there.
+
+Or we could just move flags out of that horrible header :)
+
+I hate how C headers can force us into difficult decisions that make life
+harder...
+
+>
+> > --
+> > Cheers, Lorenzo
+> >
+>
+> --
+> Sincerely yours,
+> Mike.
+
+--
+Cheers, Lorenzo
 
