@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC20C5DF97
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 00:44:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3D53C5DF97
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 00:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B87526B0088; Wed, 26 Aug 2026 20:44:49 -0400 (EDT)
+	id C75B06B008C; Wed, 26 Aug 2026 20:46:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B38C66B008A; Wed, 26 Aug 2026 20:44:49 -0400 (EDT)
+	id BFEF06B0092; Wed, 26 Aug 2026 20:46:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4FE86B008C; Wed, 26 Aug 2026 20:44:49 -0400 (EDT)
+	id AA0956B0095; Wed, 26 Aug 2026 20:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7862F6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:44:49 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 8AC726B008C
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 20:46:51 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E4B678026A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:44:48 +0000 (UTC)
-X-FDA: 85145204256.19.28FF839
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4A82240004
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:44:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ioYAphxG;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 21FD980273
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:46:51 +0000 (UTC)
+X-FDA: 85145209422.19.F34427B
+Received: from mta0.migadu.com (out-248.mta0.migadu.com [91.218.175.248])
+	by imf13.hostedemail.com (Postfix) with ESMTP id AA4D020002
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 00:46:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UtfBXtF+;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787791487;
+	s=arc-20220608; t=1787791609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cT+bFHA2IGIehxSdYCsujzJSXJKR74Lanqfi3RW9l04=;
-	b=x550AWPDXvAt7FcCctchUdhd9QjrF2A4f7CeuHyHtQisPHwNnJDk0hnBRsWvQVavR0pPpt
-	v6y4RnSpBlUjJoN24ZRtxShJ8HrX4COFeufxMGatfxHLK3p4dRg+iheLTuGftmQUJQsNoh
-	HjNjfu1s7V77ug8MhAtK1IvVEpQRN4w=
+	bh=jP3kOAvE7hRjDCGYvFMzJvM1PhI7iWnLQlK+z2nBuXE=;
+	b=BkOMYcsSMIuWvb4KbC8FTGqEvrCfQHovOafPNlGvkrH496vxR87+ggqv+a4UVNdCY9N/Fp
+	oJZXq+SkJzUl+rKy6WQEIioFwUsIti6ZmJNhD8UB4frcNgLFHqwEo+mHkOu4CRcJQzNM7G
+	bJCtLTzbHF3hLYR5vCc8fyBW6TJkTkY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ioYAphxG;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UtfBXtF+;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787791487;
-	b=YFD1gF59Nks9bl7c5Qo7/AVPBPKvvuoB6Q4mFGwwRWrVoFWvxw8kgZCmJOuHOEle0Xxe9j
-	9sdnsnWZdXGsBv5UXFU3IKznxrOPx6epznSomnQFW6WU7wTdzTdy6htdmoeivtrYbXFVGH
-	vAzwpi8bk7ZjleG/RgtmaMlpj1veXj8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 197D343CF9;
-	Thu, 27 Aug 2026 00:44:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E151F000E9;
-	Thu, 27 Aug 2026 00:44:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787791486;
-	bh=cT+bFHA2IGIehxSdYCsujzJSXJKR74Lanqfi3RW9l04=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ioYAphxGg/RgkfSz2okyrbrrruZuqy2+lG/2q/sJh7qBoSoxCPgmI6/CSl5Lc+nfF
-	 M+/5yJ2jXXxg8s8B5oU+JUcUwgF+j2SM0hbiDuD3OIfYoiVtWJZH0skzXXA2f4SXZa
-	 bzn+qGvtdXYxgHgSpd9NEuLpUV43VGLyUmeL/RVSDrYo4csgg2uWdP3xx8uHHhlnjy
-	 zDhWvmfh9VzG1nhiGDfe66ciTyUQcb+BpnxY8gsLLtYeIqf9TqTV9WO8isFann0RBB
-	 8H7YMIXUY0APO5bNz8EEzJjH+BxPaX764jMCP4JWeZqcN/rbhdqxFpLR5YH/5Lql/l
-	 qiUcYXeFbeMyg==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon: fix damos quota walk-position tracking
-Date: Wed, 26 Aug 2026 17:44:38 -0700
-Message-ID: <20260827004438.82746-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260826140508.74447-1-sj@kernel.org>
-References: 
+	t=1787791609;
+	b=SxgvnHhU1NSpylarcplnsEAwXggo3GWMh6e6n7WbrMmQ1zjxSZqNGxUxhBesAKPh+WY+9M
+	nOYdHYwcPCUVccZoso976/SEpDQjj7OjX1eRUvtW4Feuy2a9XnNxNzQojhpaVSlosfWR6X
+	/fJyeYMdI3UDa3z9SwrITauovb4HNdw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4zf7+mPWPGCfOdkH9jTVWkCuXpWtEtW+l62A+47KE0E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787791606; v=1; x=1788396406;
+ b=UtfBXtF+ICdzer1z1jeDjTM4ZX7wu+76i3X9lyWtYNcRZTnZeI3T41NviQXsaTmCgEZy/nym
+ aAeZRzHqLkwtGn4apkv1htI3w0oEmXZjbhgl+IVIMTC4DfuFpqsl2SMnDLqpftarPPEtI8PHUq/
+ vR/OkHwBZ4bAss6RTF2rreq4=
+X-Envelope-To: linux-mm@kvack.org
+Received: from localhost (3.112.29.171)
+	by mta11.migadu.com with ESMTPS id 49c01e81593a4588;
+	Thu, 27 Aug 2026 00:46:46 +0000
+X-Mizu-Trace-ID: 49c01e81593a4588
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 27 Aug 2026 08:46:42 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com,
+	baolin.wang@linux.alibaba.com, chenridong@xiaomi.com,
+	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
+	lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
+	lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, stevensd@chromium.org,
+	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com,
+	zhangbo56@xiaomi.com
+Subject: Re: [PATCH 3/6] mm/mglru: enhance cold/hot inversion handling in
+ inc_min_seq()
+Message-ID: <ao-I8rYv_G5j4wz4@MiWiFi-R3L-srv>
+References: <20260821102538.22642-1-baohua@kernel.org>
+ <20260821102538.22642-4-baohua@kernel.org>
+ <ao6qTTtk2xkkeKob@fedora>
+ <CAGsJ_4ywk7mA1xfk=emtqby1UAwFsaH9PChmk2TuZoDKrMzuXw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kj4p9e11jh8jaddn18x9zkt9z7ouqjwz
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4A82240004
+In-Reply-To: <CAGsJ_4ywk7mA1xfk=emtqby1UAwFsaH9PChmk2TuZoDKrMzuXw@mail.gmail.com>
+X-Stat-Signature: ibgg9fromnpa6c4sh1nxbqu763pzd3pi
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AA4D020002
 X-Rspam-User: 
-X-HE-Tag: 1787791487-798548
-X-HE-Meta: U2FsdGVkX1+4R3LSHVxCa9FN9kZVq/D2/iPyG3cGIVDfUJfeFVPZ1lvCE05uLXNQGH/4yjA+QqJ1WDJmSj5MGgpHbGSEfWp0iiFrDEGxEKtC309ztEDSmY/rxUVgHJnaa149mOLSswsoSbq398aDxw14wnHe1J8PKV7l0zIvNpcep6FTtRPhtePV+qGomsch1pPwvapSU6ryTDwzv0q95VugvvnaI69tci7fzTO878Fqh08l9WqJS/QcRUHDL/rYlnEQvcLIauyUju3Bgsa+iFUvZBARV6Gpi5sa9v33VpcUCqwY8wsr/6WEg0EUiHe6X/wAbAWfdJ5zbnYxRX3unyXPkj4JSmpJiBw+KwcMA1+O/9Kb3kcJY1szdZdEWQISsoUQ/u0ufTLH5G5TFzfQ79Ujk8RpULeDX0QJF0c2rJQENRe3oKzRarh2CefZbXx1IExW2VmnRjudI0bIXa5C3Vol2oT6IjLhcMIzjBdohrnQE3vYcRFR6Omx9c2rP9Q5hva47Qctlohuurnluw4fN428Nr+TgSJyPCbPXaEjaUhozA1QNylHUmkH8JqVmMM1Qbnb7OS3VGSyTNt7Zizt+7AsUb96meFzeWYK6eYM1lQ2y4+aWt/TdCBZHGs3EstCnhpWCjeAHyOVL0YKt1oo/q2WfM9zZMzTQ10TzoGDhknOZSEr8hUfX2hqmzeoRLhFxEWucD0yuSoJIlpkfJeajR5UmnlzMh3kV5r/McuPo3wyiwFR5AENtM1HQFJjx46rAgQIlgMZfFiOFZp8vo2S98eDacGu6fGHfkXWMX/5tCMUwnAGdnx7Z7fnXNpI2LwO5QCrzJDP9+V5sHWyU/9DKUdQrsS3MaDGyH+dX4eIMIVDz8kGTEO5Fd8ClITGUo76G2ewZobn0FIGggFVow5X2k7nZGxHW8w8dmz3oIiDLq14RBcAXYVb1eveIUUSBha6pq19BP6SoBpFHW7eazv
- Un8kRxAF
- fJrqd5IUG7FaHXka2lS3B8aGXLumDVjPbaOtRlKHvXAUBHq6/KGuMK/T+ksySZJ+KTYZ0j+KaEX4y8nE5pa69lOQlFJwtOZOalQ8z1jOvvaltU4LsTUBV4kQvEE9tPc1E8MklRk2cW1FRh7zbA7Qpm+MAVHoMI4sZXJCppTw0z1pBuixlWgJ8Zu8YwjuwweNQucNC+Ez8GaW+f0Bj18maeFM+r4w/uZ5VSvipdXYsORhhx8CDBTsKMgldWU52lu/wdT38
+X-HE-Tag: 1787791608-14249
+X-HE-Meta: U2FsdGVkX18zlKJNA5t9veexOIjKQm59cykcVw8LpmCf5Ssxxr0LQ/jPSZMGncSh20cGHYgmalME6yskDlrXRUtJCwVC5LY3p+uI2ak3XSoAh+THysWfnVAHK2F0Uq2/tp2a35deWo4YDWIFwxAUxvYpPeRaOEOa14R3RtJaVbB5odFmcTkQ9NdfYUEluxJhH+Y7QvOiQgXUfiUv3gKZsPLdp45FwQjsY4QwOTu2DkeRvzRWoex9IY5Q4x/Qg6QwQzuFNZlcyJ6wKPnSW6x6BI7KImyyRi1j31ySHiBj6h2RxPY8v1SSdytdRSFU2vmY/F3LXo0nKrNW1zPg8RXrwWvzdbM6UI9fqRRMsOE65ddH9cbT2pSfwcE5yzpnICth08zdKpYe+t3DLAcSRm8/oPGfDqKqWtAFh6hB28d+EifruWEOkVGLpGjK7JL/ZRSz+ik3naLP3M5Ie8YJpTmfFGD6FPgP1Aty4jMMAxvkK090S82hyHaT/+zeD+m983VVDGbf8moD29YNuzURXQshp69vdDrSBHrff921fuPQVhBUH25HSUTUI/YRy14La5Oyrhibbx5eGlaac1kn/dHxNXmfW/8WS/fkRrzNIchn/ngWoTvsf07wX70yQmknitM5CKUJeBkVMrNSDHzp0SVy1ktkEbcyRbc3liYG/EPAgi/XQsLksP/ZzPkksYspM/NLAV1jT0zYmrbWrbkWKZ+2t91W1qYi19GWDuZfm0jp0owiXwFxooIzmlh0ky6r9d4pRjK6btn7quUgUN16ZdNTa+KSSV/FaJA/oWjk9eBn3imBCtp/UBUGN1HI/zxwR3E4nzko8ubqQohbWKJ3vTEBPUcmt76678jphkY88vBzoFpq0lNHsesEL4TsQVqab069ydhLjfnH+tDAvGRM0lKJQ7r/9kDCn2kCgUXo1dpSVOBXAREcevyzFkwkgEAFX5AqaXGOJjdySLELCAWbCuY
+ ARV27L3r
+ tlqOErAMU3vPNdFWL6QbeWOhdAt3vU577ETyA2Uj384kDm4OUNI+EnMQIC78y3OVDO4HuKdFiLFdsRhVNKKIc+uVB+aSLyTltmoHX9QGP1Rk/HP09y1lx6tosCd4yAwUvXKAPFaOESe6DycMOgiIAWixuwkcPGBYbNRquS7Tna11uxe9FA6xjVvGwJvKufOjyAuRAtEo99c+qg2uL0d2c8bH2hlIZvzGmCNlBF9W5i8y6vpsUe6mHXSH+/TRRdZC57fLRe6cABIRQ6gBKqMpUoy9J71h3r4PAFJs1WweIj1H2cDFCWQK6r9TLE9iTgdmhKsAhdkp0RuZSRn9bDIEDr5z8iqC5PTxdpTcD/rDAFa4AtNsHeOdtAP6n3oLr1FBaErkmnLcavR9Jaihqw8tePTZ95HxZo0K0h1cirtHl84Ky3mhMDuLqGzSakshNMehZ+jVXaGdULw0EXFIDUlBB9/bXoUEcv1lbl845NLTA8Y9UlmMTy9Q1dtfqDAbtb0TH2wtafBIQhwpfnNaMB38gfTGNpIJm2IFqvXsCAzK0PsouOCGiEvkQ1I7uJNkV8IRjfNoGHU+Q6+myPRd8csxebbShlzK3jUfrJxg1E6uRtjqa62B/o6VG20dsSx/kBKcs1OG7kM0cjibwiQMxMCDc0G5IFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,128 +101,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 26 Aug 2026 07:05:08 -0700 SJ Park <sj@kernel.org> wrote:
-
-> On Wed, 26 Aug 2026 18:24:13 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On 08/27/26 at 05:43am, Barry Song wrote:
+> On Wed, Aug 26, 2026 at 4:56 PM Baoquan He <baoquan.he@linux.dev> wrote:
+> >
+> > On 08/21/26 at 06:25pm, Barry Song (Xiaomi) wrote:
+> > > During aging, a folio's generation may already have been updated by
+> > > folio_update_gen(), even though it has not yet been moved to the
+> > > corresponding generation list. Such folios are hotter than those
+> > > already in that generation.
+> > >
+> > > It makes sense for inc_min_seq() to increment the generation of
+> > > folios that were never promoted during aging and move them to the
+> > > tail of the new oldest generation. However, folios that were already
+> > > promoted should instead be moved to the head of their updated
+> > > generation, just as sort_folio() does in scan_folios().
+> >
+> > While sort_folio() move protected folio to the head of next gen too.
+> > It only moves ineligible folios to the tail of next gen.
+> >
 > 
-> > On Tue, 25 Aug 2026 06:54:57 -0700 SJ Park <sj@kernel.org> wrote:
-> > 
-> > > On Tue, 25 Aug 2026 20:46:16 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > 
-> > > > DAMOS uses charge_target_from/charge_addr_from to remember how far a
-> > > > quota-limited walk has progressed.  The current implementation has two
-> > > > problems:
-> > > > 
-> > > > 1. Once set, the cursor unconditionally skips and resets at the last
-> > > >    region of the tracked target, so the last region can be skipped even
-> > > >    when it has not been processed.
-> > > 
-> > > I don't fully understand this.  Could you please clarify more?  Maybe adding a
-> > > realistic example scenario would be helpful.
-> > > 
-> > 
-> > Problem: Unconditional skip of the last region
-> > 
-> > In the current damos_skip_charged_region(), there is this logic:
-> > 
-> >     if (r == damon_last_region(t)) {
-> >         quota->charge_target_from = NULL;
-> >         quota->charge_addr_from = 0;
-> >         return true; /* Skip */
-> >     }
-> > 
-> > Scenario:
-> > 1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
-> > 
-> > 2. Quota is configured to process only 50 bytes per window.
-> > 
-> > 3. Window 1: Processes R1 (0-50).  Quota is full.  Cursor is saved at
-> >    (Target, 50).
-> > 
-> > 4. Window 2: Skips R1 (0-50).  Processes R1 (50-100).  Quota is full.
-> >    Cursor is saved at (Target, 100), which is exactly the start of R2.
-> > 
-> > 5. Window 3: The loop reaches R2.  Because R2 is damon_last_region(t),
-> >    the old code unconditionally returns true, skipping R2 entirely and
-> >    resetting the cursor.
-> > 
-> > Result: R2 is permanently skipped even though it has never been
-> > processed.
+> Hi Baoquan,
 > 
-> Ok, makes sense.  The user impact should be not that big, though.
-> 
-> > 
-> > To fix this, the patch advances the cursor every time a region is
-> > walked, regardless of whether it is applied or filtered out.  This
-> > allows DAMON to accurately track whether the last region has already
-> > been visited, eliminating the need for the unconditional reset.
-> 
-> Sounds like a big change compared to the problem.  Why we cannot modify the
-> last region case?  Have you also considered other possible simpler approaches?
+> Thanks for the review! I’m not quite sure I understand what you mean :-)
+> Could you please clarify what you’re suggesting?
 
-For example,
-
-'''
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2686,14 +2686,15 @@ static bool damos_skip_charged_region(struct damon_target *t,
-        if (quota->charge_target_from) {
-                if (t != quota->charge_target_from)
-                        return true;
--               if (r == damon_last_region(t)) {
--                       quota->charge_target_from = NULL;
--                       quota->charge_addr_from = 0;
--                       return true;
--               }
-                if (quota->charge_addr_from &&
--                               r->ar.end <= quota->charge_addr_from)
-+                               r->ar.end <= quota->charge_addr_from) {
-+                       if (r->ar.end == quota->charge_addr_from ||
-+                                       r == damon_last_region(t)) {
-+                               quota->charge_target_from = NULL;
-+                               quota->charge_addr_from = 0;
-+                       }
-                        return true;
-+               }
-
-                if (quota->charge_addr_from && r->ar.start <
-                                quota->charge_addr_from) {
-'''
+Sorry for the confusion, Barry. I meant this is a good one, and
+sort_folio() has the similar issue in which the protected folios are
+moved to the head, wondering if that need be adjusted too. One consistent
+rule for both is better.
 
 > 
-> > 
-> > > > 
-> > > > 2. The cursor only advances when the quota becomes full.  Regions that
-> > > >    are filtered out do not move the cursor, and the scheme can remain
-> > > >    stuck on the same regions.
-> > > 
-> > > I don't fully understand this, either.  Could you pleae clarify more?
-> > > 
-> > 
-> > Problem 2 is a false positive.  As long as the quota is not full, DAMON
-> > will continue iterating to find applicable regions.  I mistakenly
-> > assumed in the commit message that encountering filtered-out or invalid
-> > regions would cause the cursor to stall.
+> I can explain the design in more detail.
 > 
-> Thank you for clarifying.  Please try to reduce this kind of false positives
-> from the next time.
+> Yes. For both promoted and protected folios, `sort_folio()` moves them
+> to the head of the corresponding generation.
 > 
-> > 
-> > This patch ensures that every target is traversed sequentially and
-> > deterministically, even when the quota is set very low.  I omitted this
-> > benefit in the initial problem description.  If you think it is okay, I
-> > will add it in the next revision.
+> Here, `inc_min_seq()` is a bit different. We are overlapping `max_seq`
+> and `min_seq`, so the `min_seq` generation should be moved to the
+> second-oldest generation. Therefore, I think non-promoted folios should
+> be placed at the tail.
+> They are genuinely not promoted, so they shouldn't be at the head.
 > 
-> What's the problem and benefit?  I still don't get it.  More clarification
-> would be nice.
+> For example, suppose we have the following folios:
 > 
+> Second-oldest gen: f1, f2, f3, f4
 > 
-> Thanks,
-> SJ
+> Oldest gen:        f5 (promoted), f6 (not promoted),
+> f7 (promoted), f8 (not promoted)
 > 
-> [...]
-
-
-Thanks,
-SJ
+> Without my patchset, the result is:
+> 
+> Second-oldest:
+> 
+> f1, f2, f3, f4, f8 (promoted), f7 (not promoted),
+> f6 (not promoted), f5 (promoted)
+> 
+> So you can see that both promoted and non-promoted folios are at the tail
+> of the second-oldest generation?
+> 
+> With my patchset, the result is:
+> 
+> Second-oldest:
+> 
+> f5 (promoted), f8 (promoted), f1, f2, f3, f4,
+> f7 (not promoted), f6 (not promoted)
+> 
+> Best Regards
+> Barry
 
