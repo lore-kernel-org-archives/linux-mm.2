@@ -4,98 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B846DC61DBE
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 02:14:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E4CC61DBD
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 02:16:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 096426B0088; Wed, 26 Aug 2026 22:14:28 -0400 (EDT)
+	id CD0CA6B008A; Wed, 26 Aug 2026 22:16:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0203F6B008A; Wed, 26 Aug 2026 22:14:27 -0400 (EDT)
+	id C80AF6B008C; Wed, 26 Aug 2026 22:16:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2ABA6B008C; Wed, 26 Aug 2026 22:14:27 -0400 (EDT)
+	id B6ECD6B0092; Wed, 26 Aug 2026 22:16:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA30C6B0088
-	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:14:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 87AD3802B1
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:14:26 +0000 (UTC)
-X-FDA: 85145430132.15.867DE7B
-Received: from mta1.migadu.com (out-209.mta1.migadu.com [95.215.58.209])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4705E14000A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:14:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ux3DPNy8;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.209 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 90BC96B008A
+	for <linux-mm@kvack.org>; Wed, 26 Aug 2026 22:16:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 64266802B2
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:16:42 +0000 (UTC)
+X-FDA: 85145435844.20.3E23A01
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 42632100004
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 02:16:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="kwUrPv/6";
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf05.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 18.194.254.142 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787796864;
+	s=arc-20220608; t=1787797000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eBBLnK03Ce3Gb3dPdF5TUs0inLWwDIQwPuAG98VZHgw=;
-	b=8KACR7jkVwBl9jrXZ8T9V9RGwnScADzlvHrVHkWmkv6dcd6wjPtQRTQ+NdeJrjXVkUXojb
-	oQWgAIhOqaq0esf1XyS58tdLcPrfRGA4A7RqNDBZmg7k0wiKgq/hciQI1zJ9e+RDK5/a1E
-	VuQ6iTY6oRdP341hTdkMt+173iIAntA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787796864;
-	b=Q/HJbeijTWDCY2QSj58a9ON+UgbWo2EkqAIXtB8+KHkz/uM0BCw9fBO/37nV41zD2NxztI
-	k8sdqxAbL/8BgNbcPD4OeKSmNlpXin94IeNegXQY5EliYhVWOsrNEMSS2y9j5IyozVnBp7
-	TMDRtk3ODvPNMSTu8ppCGovSPniOv+A=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dY0Ane/g6w6slG4WVya3Y1rgTK4uIbhwmWsfZq4NOqM=;
+	b=45W5VptMxp4SAH2zTA59TsABp6fZax+PdlbMX26jsF80JvvZwu6hQCx8mP29Q6OiDdMxAy
+	05IwitmK2P8A4KIwLp46MdG0Q3bTeClmjQzL1HmUtrJ43cfdmpv/+8IgidNPhcFUijDu3a
+	qhqJD1Kq3FlsIdKecPG6KOXLg73qVt4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ux3DPNy8;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.209 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=JccDt/Ebs3T8dFYp1/kM4G7Y7+hnSC4GBpVNEFEMEH0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787796862; v=1; x=1788401662;
- b=Ux3DPNy8Qw3IkAf2CWTzhiYTIhuyNXY5esueywUhua2T7g2nrhJ8q3XWhvnLD2A5K+g+QzPK
- jbx5A7MRH+zoHZTShJdcVAI3OuK4+gDFtSHhzPtSViJ+PGGf3Uy4gemy/PmTrNQhA5cB3x5aENR
- DQu74H2/lB1iZAmJPRJOL11I=
-X-Envelope-To: linux-mm@kvack.org
-Received: from localhost (223.70.159.239)
-	by mta10.migadu.com with ESMTPS id a5c59b9767382a5f;
-	Thu, 27 Aug 2026 02:14:22 +0000
-X-Mizu-Trace-ID: a5c59b9767382a5f
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 27 Aug 2026 10:14:19 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com,
-	baolin.wang@linux.alibaba.com, chenridong@xiaomi.com,
-	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com,
-	lianux.mm@gmail.com, linux-kernel@vger.kernel.org, ljs@kernel.org,
-	lyugaofei@xiaomi.com, mhocko@kernel.org, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, stevensd@chromium.org,
-	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com,
-	zhangbo56@xiaomi.com
-Subject: Re: [PATCH 3/6] mm/mglru: enhance cold/hot inversion handling in
- inc_min_seq()
-Message-ID: <ao-dewgE9XAfP0rU@MiWiFi-R3L-srv>
-References: <20260821102538.22642-1-baohua@kernel.org>
- <20260821102538.22642-4-baohua@kernel.org>
- <ao6qTTtk2xkkeKob@fedora>
- <CAGsJ_4ywk7mA1xfk=emtqby1UAwFsaH9PChmk2TuZoDKrMzuXw@mail.gmail.com>
- <ao-I8rYv_G5j4wz4@MiWiFi-R3L-srv>
- <CAGsJ_4zoXvyXG6-qAH+=nv6V92w_U_tk78YAPKMihRniqvTe8A@mail.gmail.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="kwUrPv/6";
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf05.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 18.194.254.142 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787797000;
+	b=SPIqXbMZaBpEJip25AlOHD5vkgf61logyc6QLDX9N9UncRPAEV0dqivRzP/d1+kRqcdC3F
+	VnKfgZ2O7TERpowWikvf2dqIWr038Zj4YvHsMN4A3dJUfQgep19cG996zk08T7fwv/mCcd
+	a+IXVl2Zt/3hb2fNuWcDBLf2iioqR1U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1787796950;
+	bh=dY0Ane/g6w6slG4WVya3Y1rgTK4uIbhwmWsfZq4NOqM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=kwUrPv/6dRCuB5xGFEV/4IejvozKU13Y5s4J95ScEC2GfBUewQfXO5w2gAy8Em5to
+	 qL8wcqdc25w3jSah/HXKQIJuKPpu6uC4pPs+XlLq3UevXGp0HHoKA+8dlHsm2FzGD8
+	 LHHTEWSgxfNbvSq0zHerGhQOb0MdHSOO/x5h8nC4=
+X-QQ-mid: esmtpgz10t1787796930ta39a6dc6
+X-QQ-Originating-IP: Vr/DIm68OfOsFIB+dMR1e+jE5N+2Xsb6EvYj4ckGA8I=
+Received: from zzz-PC ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 27 Aug 2026 10:15:21 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9858402169651406958
+EX-QQ-RecipientCnt: 7
+From: zhaozhengzhuo@uniontech.com
+To: sj@kernel.org,
+	shuah@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+Subject: [PATCH] selftests/damon: prevent remaining cross-object state pollution
+Date: Thu, 27 Aug 2026 10:14:52 +0800
+Message-ID: <38E4AAAAEDFCC283+20260827021515.1316838-1-zhaozhengzhuo@uniontech.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4zoXvyXG6-qAH+=nv6V92w_U_tk78YAPKMihRniqvTe8A@mail.gmail.com>
-X-Stat-Signature: ftyb3uq7yzz7xmdqbwwe5d7dyjyee4zx
-X-Rspamd-Queue-Id: 4705E14000A
-X-Rspamd-Server: rspam02
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: MGeqoSbHfHK69bPxTAzoCJdhw2kwrmioHHsWR2DTvlVmG1nTExeaCLmY
+	yzvlV+n+exkh3TYHz2ABo5dBBN4WQLdVLhEnu1Z/3KY43UCV242r2NDTQ1qqxIgDTUUeZWQ
+	Bpt2v4CgEssYMcGLPMX8hm/m2PgRaZgIp9ERA0dLwN50XptZLf98pxJrL8teIvls/2vlDNc
+	3qJGeqksIFJlQjb0Qyixhx8ZgI97KuJGS3uTE3BPryw7lORyxvpchEfzpg46voK1PVUrIvc
+	cy/k6OdsYFFF5nOZzdAFpDmQgZV0IRTB4lzc5zisWHtJvSI1e9Rm9HF9GhbFa3SnHBIJcCf
+	vcN3cIaBzdvLAWI5V3kWocBHzcy3SQvI4IUMQhNTyTUzrtCW6bVHwuUEXHij0C24GdGgW9F
+	I4G9CarW9m4jSK2CrM2Y0XfMJkYBo7+BiyiAJ02a6hRC4rdVWsfmQAZGkZSPUEmGtmOzbCY
+	KqkEvhGnfn4kehkwuDY6eT749wO2y4wwkdKfO30sGXNEZG1W0Xa1Wx/ecAhkykcHJ1dKqj4
+	1Gb83J8AiGtpHhEeYg1fI+STmR7CsOE32KidDWuOag1Sfj+rJ70UtUQEV70jHXRdV2gO0yI
+	wFEU6gMBcU0g+UCFt8ocoOQoN3e4D5/YeK+aCD6btwIICqIf5fG3LEUYOd/ofH0R35epA78
+	TX+dezv1L+P0T4aykeUrGEcobQqJJkD+yux7LeUduvjrpJTHly9dUfgLvEpVbQDgfg3W4+f
+	ZLAxyj1vkD6c7lMpt5akJc7DN7ngtbnPPTgxjBs+KjxHxwSYdwP+H9Chl9iHUvAlWLHNWeM
+	Hzp777pdeRNr7Lz8jo6g6e0ttOIK7eNZpDGrlvMmCONmhkrJDopamsWcFozg2Sw87U7X4T9
+	8l8Zn5wVacspNlod9pbswn4kZrVhbR5TZfEWjiXXy0i/k2hI4gOyg+uKvbG2cHSJ8+GIRdT
+	3jsPkDMd8FG6r/YTkJDfnjTcUGCiSsy90o+fGzldJvFUDKxIn606/xyD3EkWTx4nHcSo9/v
+	1PC1GQ9rXFN/ZCRyXx7H7L/xYr/SUNHKuHz6iDs8jbx/DKSqJO01sN4/zFw4M=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
+X-Stat-Signature: p9nj9aus1xcuoykwkowaa579sft83y6b
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 42632100004
 X-Rspam-User: 
-X-HE-Tag: 1787796864-380245
-X-HE-Meta: U2FsdGVkX19efUYeAIKu5NLpnrfEdMm2L6/9N3/6RAvnCvFwPmEF7DdhC7gmXhG+ag8P3MKagStvYUtf+/Vj7bPkl/TdyUOLAajwh8sdQHs28sVAOlN92hNdy9Zld2ytJ+kreTT3rK0Zo0gViR2DHGxXOUthRSoejXGiIEE1l17RMPxwUaQhUTxigQOS/N4YKtNYP7PhyPgO1brpwAlrkFkqPXDuqIaMcU8Mj6G7hLBNoPiDJQYjCKexAKP28XKRaDPM2K3R94JkjweWHA9TOf7wTsTwnIIW+hcb1gjx2H3VOtJviUXd7ix/WaYUfbC2e/1oBdAnGfzwvi/+axyXkoqOXb6T5ymZnIIPy4KlJTWosqaRrlgj1ysXEwQ/6ICGBIB8yDA/6OExK21yL9HOIYbkRImrkfMPlbGxmjlsXVYDvOGQFppD5ya4Zaa+gLcHd4FyVMsfSY4oBtzc9jytLcH/JJ6Rly7doAkf+6uA4SHlTYxxqeMPfNhmiBUdIvdfYnxYYkF0lzBE6zADrcmgdECUcHTspOpcNgCQ+2jeujKYjACPQiJlWgm2eSBdwVgeoYnkhN1uaz9upiZeKEpDYDfKo+7u4c46b27KWBU58TzOv/IZiV3Xf1nQOoUIXE9mH5znqOlQh80GreZiasSISxPJg8Z7HuGgAJA7jHNJO+A6PbdPNWzKapOZGpv9wCMtfKyHp0vD42AChGRrVoVzFmf336JpnnBpUS9ZAIcfXAY/LiEW1f0cHAzi6Il1dTMj7m6M2qzlwOGz5DD2iLyqCYNcm1bRQEIk/KyeKu8DRxLpUiS0o/N+6GbtEBVL6xzhrQ3x3dHrnohaddE8ZC81vbInMcJggoQ3Rn/af8bO5039fQDJDYw0vOdAbftJQSjA8qnNmjf3HIhRUOrM8mMANXFyZPAlOldKbTTG31+mCdJ1ED4z6bgAnrTH64agmYDKEWn6nduslpDbaPmDj7u
- UjPM4rTD
- uDEdRfCQH6njiCslz5IvaMfhqb5xoIfosJxfSKZHf3UDY8TumjpilGSbC1iV37osXQNhqmdYtPRVqA76rnasfCGB9YTSLssJPTzTeY2B5uR9zEX1rnugfM2ixQCL9PPxK1q9X2lbuJrNyWnCN+nD3of5XLlHqnIF3CnHbuNq6U0+GnExqqZhdPhui3v9GTi19Xq6ZtlWlaYhL/C9pAJUpAGpjJeYAKu/vi/oy+83kVAlW6G+7wz46lICsBaaq/hPJvsqZrL9WVdASSqpaUIFRXWjNAOk1MMmKDO8/sz9HdzeTxi6CBmeNVsuVfhHba0Pg+wbptp4luLoAlub+Y5xX02/G047jX87/PZKCM9G9eKjLANYgnWotpeoll953biOSKwcJH+6icGD7xOJFXXmy+vwvp4sJx3kqR7yZZ7kQ2Bfdh+TM4t95Dze6yP7PkWzOmQgWAmo2+xr2k2leZTa4PULM2MJNbSNuBT70f/qQ4XrJddmSzuUg2aXUaL7zldJexdtb
+X-HE-Tag: 1787796998-933842
+X-HE-Meta: U2FsdGVkX1+0yrL9l54Su6pcfxWAXpbA8HF1831qtOyXdYlTfe0cwFCWXYWqAjdgJa6A03Q1ArSEgFJnQ4BDdoQshg3sErtqb0VPSbAliDmRf2XMUPWkl91RmCmczS4YrxvWfWt81oWFcHcNONW89Vr8q4ojK04Cno4qWFoQ13zLBA5fM/l94tqngAuusmObmn8EJKF+g7r53v6d6GwAtHd0eUvW20fXNNlu2kC/ikxKRabXpLaDn1V9hWT46AFyD2p5sNghhmc7IippSLPFbkPm98psorKuUj2k12ZxSLkChE8ErTe4YqKgdSYN4BYGAdBZhPYM0yUxnFEEy00u/UPjmANSIvTNT/k9Q3l6SmRvVrKy1rftJv47LCxxeA9MhFz1gGY9jfQttw2f1RJpY5fC+l50cdvO4Dw1CJ6tMs4d7M3nPetN/pvgCOl0vFYTlVSiYpLnvH9Z919qQG1F0BI/qssgoPcnyjoSb4q3Bs1dvcpVnFQjbyGmv3L01LJCa4w2a41/o+8EKt4wsAQ2WZZLVKfOLFQpaB9oUgxTIxbkSZqVWbOw4lTJRiLrxggJmyT59FbMidRgCwUT+3WQqZdBDX+N7pVIh1CdlIWdcSAt15s6Qp6dg2yHzEIYKNIJzbQz8K5bvIFWGnCEEMr5tOP55P1XgetzzEUd57Fg9cVWNYiH3vE9Dtkh3V7OCM53bEkS3XlBJdpucGEEERzedyy+txIRhI/SrQ60weU7oIYcRn0relXXeGPm/BgpWcoPOE12XxlhJL8su1Cfi47wDlJS9loSMgYdI1Ygc2ZICv/ssPmUUWl3lQZ7n0DJrI5At9mrCcMBE6/J7Mss/nvZoWblegF7Y/HnB37nxW/i3ifcjQqfhpokOceXo+MeMX3dnKfmD2U+hR98ryJUAgBM1zEgL44YTuQVtOJGCQwrN7tKwPH2+6Trr54fiA2jdVgF3kOyliX9b154fn+GyTH
+ QezoyI8P
+ XaW7ifLxYjv9j77SrG0S2hQdhn+0oPV6H9F+7eBf6s9aRpoIUBOP8X9BuDwMbZls2Ek2s4Y+ybQYQ6RB85AFLTIRW0KxjP1nDZYVIGJvWQtbLNOuIA99yLUPBvzELF146maKXb+9vj75WMsfG39bssbvmFeCmIuvp+yXD2wVKB4GnM6Jgtfx5dQn3XZ5QP8OJlHhYd93V3K23m+rAPnQHz29QByt8Qnim+wczf4bTGj5kQviv3wxtVNfGXdx8gkGKIWwoZsxzgzDwhf1JqyN8TBcRYDECI+ranIG/sCHCX2eVLbbHuPpCVawOxNfU95KMFtMtZBJOpN94Tj2zF11kKLqU/srKScrCVIBW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,62 +113,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/27/26 at 09:24am, Barry Song wrote:
-> On Thu, Aug 27, 2026 at 8:46 AM Baoquan He <baoquan.he@linux.dev> wrote:
-> >
-> > On 08/27/26 at 05:43am, Barry Song wrote:
-> > > On Wed, Aug 26, 2026 at 4:56 PM Baoquan He <baoquan.he@linux.dev> wrote:
-> > > >
-> > > > On 08/21/26 at 06:25pm, Barry Song (Xiaomi) wrote:
-> > > > > During aging, a folio's generation may already have been updated by
-> > > > > folio_update_gen(), even though it has not yet been moved to the
-> > > > > corresponding generation list. Such folios are hotter than those
-> > > > > already in that generation.
-> > > > >
-> > > > > It makes sense for inc_min_seq() to increment the generation of
-> > > > > folios that were never promoted during aging and move them to the
-> > > > > tail of the new oldest generation. However, folios that were already
-> > > > > promoted should instead be moved to the head of their updated
-> > > > > generation, just as sort_folio() does in scan_folios().
-> > > >
-> > > > While sort_folio() move protected folio to the head of next gen too.
-> > > > It only moves ineligible folios to the tail of next gen.
-> > > >
-> > >
-> > > Hi Baoquan,
-> > >
-> > > Thanks for the review! I’m not quite sure I understand what you mean :-)
-> > > Could you please clarify what you’re suggesting?
-> >
-> > Sorry for the confusion, Barry. I meant this is a good one, and
-> > sort_folio() has the similar issue in which the protected folios are
-> > moved to the head, wondering if that need be adjusted too. One consistent
-> > rule for both is better.
-> 
-> I think it might be fine for sort_folio() to move protected folios to the
-> head, since those folios have either been accessed multiple times or have
-> reached a tier higher than tier_idx. They are sort of hot in theory, right?
-> 
-> if (tier > tier_idx || refs + workingset == BIT(LRU_REFS_WIDTH) + 1)
-> 
-> But for inc_min_seq(), it is just catching up to make sure the newest
-> generation doesn't overlap with the oldest generation. Those non-promoted
-> folios themselves aren't hot , so I feel these are actually different?
+From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
 
-I got your point, sort_folio() considers the hottness, inc_min_seq()
-doesn't. I agree with you now. Thanks for the explanation.
+_damon_sysfs.py defines constructors with mutable default arguments,
+including DamosAccessPattern(), DamosQuota(), DamosWatermarks(),
+DamosDests(), IntervalsGoal(), and empty lists.
 
-BUT no matter what it is, protected folios, lazily promoted folios,
-and no matter where it is, put in head of next gen or tail of next gen,
-their refs are cleared by folio_inc_gen(). Then in sort_folio(), they
-are all tier 0 of the oldest gen and must be reclaimed.
+Default arguments are evaluated once at function definition time.
+Damos() instances created without explicit arguments therefore share
+the same DamosQuota(), and the other default-constructed sub-objects
+and lists are shared in the same way.  The sub-objects keep
+back-pointers to their owner scheme, so constructing the second Damos()
+rebinds the shared quota's scheme pointer to the second object.  An
+item appended to one object's default contexts or filters list is also
+visible from other default-constructed objects.
 
-So here, I think differentiating them and moving them into head or tail
-doesn't make sense, the thing is whether if we need do something to
-retain refs of folios when gen_increased. At least, for lazily promoted
-folios, it should not be put in the tail of next gen and refs cleared.
-What do you think?
+The shared state can corrupt test configurations.  DamosQuota.sysfs_dir()
+derives the sysfs directory from its scheme pointer, so operating on
+the first scheme's default quota may write to the second scheme's
+directory.  The wrong values often match the defaults, so tests still
+pass, but the behavior depends on object creation order.
 
-Thanks
-Baoquan
+Commit 8319dadcbd81 ("selftests/damon: prevent cross-context state
+pollution in DamonCtx") fixed the same pattern in DamonCtx only.  Fix
+the remaining constructors by defaulting to None and creating fresh
+objects or lists inside each constructor.  Explicit arguments keep
+their previous behavior.
+
+Signed-off-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+---
+ tools/testing/selftests/damon/_damon_sysfs.py | 38 ++++++++++++++-----
+ 1 file changed, 28 insertions(+), 10 deletions(-)
+
+diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
+index e6a2265d721e..f604b7d6530b 100644
+--- a/tools/testing/selftests/damon/_damon_sysfs.py
++++ b/tools/testing/selftests/damon/_damon_sysfs.py
+@@ -321,8 +321,10 @@ class DamosFilters:
+     filters = None
+     scheme = None   # owner scheme
+ 
+-    def __init__(self, name, filters=[]):
++    def __init__(self, name, filters=None):
+         self.name = name
++        if filters is None:
++            filters = []
+         self.filters = filters
+         for idx, filter_ in enumerate(self.filters):
+             filter_.idx = idx
+@@ -368,7 +370,9 @@ class DamosDests:
+     dests = None
+     scheme = None   # owner scheme
+ 
+-    def __init__(self, dests=[]):
++    def __init__(self, dests=None):
++        if dests is None:
++            dests = []
+         self.dests = dests
+         for idx, dest in enumerate(self.dests):
+             dest.idx = idx
+@@ -426,15 +430,21 @@ class Damos:
+     stats = None
+     tried_regions = None
+ 
+-    def __init__(self, action='stat', access_pattern=DamosAccessPattern(),
+-                 quota=DamosQuota(), watermarks=DamosWatermarks(),
+-                 core_filters=[], ops_filters=[], filters=[], target_nid=0,
+-                 dests=DamosDests(), apply_interval_us=0):
++    def __init__(self, action='stat', access_pattern=None, quota=None,
++                 watermarks=None, core_filters=None, ops_filters=None,
++                 filters=None, target_nid=0, dests=None,
++                 apply_interval_us=0):
+         self.action = action
++        if access_pattern is None:
++            access_pattern = DamosAccessPattern()
+         self.access_pattern = access_pattern
+         self.access_pattern.scheme = self
++        if quota is None:
++            quota = DamosQuota()
+         self.quota = quota
+         self.quota.scheme = self
++        if watermarks is None:
++            watermarks = DamosWatermarks()
+         self.watermarks = watermarks
+         self.watermarks.scheme = self
+ 
+@@ -448,6 +458,8 @@ class Damos:
+         self.filters.scheme = self
+ 
+         self.target_nid = target_nid
++        if dests is None:
++            dests = DamosDests()
+         self.dests = dests
+         self.dests.scheme = self
+ 
+@@ -568,10 +580,12 @@ class DamonAttrs:
+     context = None
+ 
+     def __init__(self, sample_us=5000, aggr_us=100000,
+-                 intervals_goal=IntervalsGoal(), update_us=1000000,
+-            min_nr_regions=10, max_nr_regions=1000):
++                 intervals_goal=None, update_us=1000000, min_nr_regions=10,
++                 max_nr_regions=1000):
+         self.sample_us = sample_us
+         self.aggr_us = aggr_us
++        if intervals_goal is None:
++            intervals_goal = IntervalsGoal()
+         self.intervals_goal = intervals_goal
+         self.intervals_goal.attrs = self
+         self.update_us = update_us
+@@ -703,7 +717,9 @@ class Kdamond:
+     idx = None      # index of this kdamond between siblings
+     kdamonds = None # parent
+ 
+-    def __init__(self, contexts=[], refresh_ms=None):
++    def __init__(self, contexts=None, refresh_ms=None):
++        if contexts is None:
++            contexts = []
+         self.contexts = contexts
+         self.refresh_ms = refresh_ms
+         for idx, context in enumerate(self.contexts):
+@@ -853,7 +869,9 @@ class Kdamond:
+ class Kdamonds:
+     kdamonds = []
+ 
+-    def __init__(self, kdamonds=[]):
++    def __init__(self, kdamonds=None):
++        if kdamonds is None:
++            kdamonds = []
+         self.kdamonds = kdamonds
+         for idx, kdamond in enumerate(self.kdamonds):
+             kdamond.idx = idx
+-- 
+2.50.1
+
 
