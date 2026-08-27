@@ -4,73 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E256CC61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE855C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 19:33:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5CD36B0088; Thu, 27 Aug 2026 15:29:52 -0400 (EDT)
+	id BD84E6B008A; Thu, 27 Aug 2026 15:33:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0DA76B008A; Thu, 27 Aug 2026 15:29:52 -0400 (EDT)
+	id B89066B008C; Thu, 27 Aug 2026 15:33:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D5796B008C; Thu, 27 Aug 2026 15:29:52 -0400 (EDT)
+	id A775C6B0092; Thu, 27 Aug 2026 15:33:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 741D76B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:29:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F28C81A0195
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:29:51 +0000 (UTC)
-X-FDA: 85148039382.09.9B4FF62
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4B477A000F
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:29:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WvEhuVPb;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787858990;
-	b=KnlCjjWrx74V5TW9dVgAMY+2n1PPiG3yYMfzPNSvzNyAsZaxmxEA43ewpqcmThUSqKqpLz
-	/kBf/jsglijY7u5+rjbuhxwQSoTpJQqipoH3Lj3jsYTtj/NqFR28TEVGl42gAgoo+TBh89
-	2PkPCe4oZr7GUnrbGyi104dOxfZoo2I=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WvEhuVPb;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 790606B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 15:33:15 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F1C6FC0193
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:33:14 +0000 (UTC)
+X-FDA: 85148047908.26.132293A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2CC49C0009
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 19:33:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6dTwqdt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787858990;
+	s=arc-20220608; t=1787859193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SsiFIJKUIbdhwtZuL/ceZshbRCnEhEyMon6IFiRCczM=;
-	b=LRbcOhgF+CXPAtYLH70Aw4GaphPVTegQZ2OayrPHm7ZiuClu/7dDaddloGAn7cCJJvJB1H
-	4I5lYdj0jJi/bR8yCr7BSnUqxL/TA9M33Te4fHPOneDVZJuEZ/VnVet/X97f0ZJ3eQQm9/
-	7x6NOWqgF2fROfYR1ggVIpGG058zDvE=
+	bh=QBxAGEwWU0H0ff3LVsxf4cSkIdLbDrdQ68KoXtPl+VA=;
+	b=Nd4q78YT79kKUrXOr24kyJVOsVw2wy7ust2atKK3vV6FdPEKfQYW0Rp5UGl8u3stoqhh8U
+	8m1NuvGl+HEGIWGbhwzyyNH7MiucK6xH5TFfzwy1C2zzw/Ue8w5KvM07KDElzBd1mG9xo5
+	5lQdmfkeZgIzx/VOMPKzWW2LsxpoaII=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e6dTwqdt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787859193;
+	b=M57swil3KOM/x4UDnFUXE273qu5yMOEE9CQneHCAOT/75abV7GrkTdDiKccyLAAJIbMzJJ
+	wE5gJk8/jLVeTEW8VztOtRrrKnSwt2JNa/xDHNeOA8eht4zDqNzAxsftRHtR8pshoHNMp9
+	iylKQ9tSD7NsSJvmfpfthFg9J44OQbU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D1874601F1;
-	Thu, 27 Aug 2026 19:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFD31F000E9;
-	Thu, 27 Aug 2026 19:29:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 51EA74162A;
+	Thu, 27 Aug 2026 19:33:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D121F000E9;
+	Thu, 27 Aug 2026 19:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787858989;
-	bh=SsiFIJKUIbdhwtZuL/ceZshbRCnEhEyMon6IFiRCczM=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=WvEhuVPbYOWgdlyaBZ9UD2AVXpxef2t6+BbSSWUhI9X72zZ9GuQggNN3ccz9pDrWJ
-	 mKJU57vPPqDur8rCuEJQM9XOng3Cp3ri7rAe5a4yFrRnY/RjU6RbngBr35teMTHMty
-	 NEKMrGcXL65sN6vJ+M8LY2yG0kIgm9D1lT/RkeSnfPjFZqh16csDoqeXLYCs5R/JtX
-	 5/B26kJkNtw2SaMOmwySBeWDjxtT2LcBF8L0V9OtGKNtMym1I9aUz3s/wzoHTPGVIQ
-	 jeFoYblVcFYtDOYdRFRny5l8kSJ/BLN9oSjvCpW0LM5zDpzv7CdUpnVdhcDm8wMiOZ
-	 7bWqaMPg/fwmw==
-Message-ID: <7c86ab45-38e1-4e02-94e3-d0925c28b25e@kernel.org>
-Date: Thu, 27 Aug 2026 21:29:42 +0200
+	s=k20260515; t=1787859192;
+	bh=QBxAGEwWU0H0ff3LVsxf4cSkIdLbDrdQ68KoXtPl+VA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=e6dTwqdtGf+SyEahxsEzGjp57PZcdWa3GU4Uz7Xd9yCRQN1Fe+cZ/zUpgCul2Y23+
+	 XyP93+n5L/BowvMUDI4/vMQcmXOGe3/ZNjAdYWOUypx7JmXVXv03QPBCDE0TeHFiwg
+	 mEdGzDn7K+cMXBMlrEeHVlgSd40tjkliSIE/D9BQu++seWSRY87lxADLmVDA2q4t5B
+	 kjvIpNKxjCF2vccxPmLA7xkOrXmP+fqhL0/UfY/Dp8sAks+c5k4Beel/zy8oKUU7Ry
+	 NQv+sgbN/DtcRwcQNEL6kNLSiilORjRruaRv8o259RHSF4XMFhXrq8Ix4O2VOBQAIk
+	 9gO8ShXQxXjLw==
+Message-ID: <08115f0c-e2a4-4c65-a56d-29c751ee9360@kernel.org>
+Date: Thu, 27 Aug 2026 21:33:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/18] mm/huge_memory: allow splitting mappingless swap
- cache folios
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v3 14/18] mm/huge_memory: clean up after-split folio
+ freeing in __folio_split
 To: Kairui Song <ryncsn@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -85,10 +84,10 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
  Shivam Kalra <shivamkalra98@zohomail.in>
 References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-11-9b43f5163238@tencent.com>
- <5ee65970-abb9-47ea-b548-5430b382cf7c@kernel.org>
- <CAMgjq7CgxBEuX0rtUdx=g5RFijONOfDuUM=A2FBqy1R2N2n-2Q@mail.gmail.com>
- <77e3dae7-8e59-432e-9cfa-68f71d3e9587@kernel.org>
+ <20260821-swap-thp-cleanup-v3-14-9b43f5163238@tencent.com>
+ <9adcaf53-3a40-4d97-9365-b9af97891894@kernel.org>
+ <CAMgjq7BShyGaT0rvZqbHP7r6_A7BJwnJLsVyo9cvj1ZVt2e=cg@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -134,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <77e3dae7-8e59-432e-9cfa-68f71d3e9587@kernel.org>
+In-Reply-To: <CAMgjq7BShyGaT0rvZqbHP7r6_A7BJwnJLsVyo9cvj1ZVt2e=cg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4B477A000F
-X-Stat-Signature: wegt4o1a8h6p3gbg59nw6uu1fixzzh8w
+X-Stat-Signature: uha9fpncj4ouuh6h7ymwrnw4stripfpk
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2CC49C0009
 X-Rspam-User: 
-X-HE-Tag: 1787858990-873690
-X-HE-Meta: U2FsdGVkX1/wyeniYJ6nT65uLVssmkqdGbsEm2+MqZWaI2/6RoAMokIbFFDoDBMPNoswSNbA/JX/WCx+ax5mvWUw0XAKwLYomhMJmmyIQsARG7a+gT2iJf89esKd6OYtjxuvvbHzZQOHogUYvwmSXxTnFgMoyZBXpswZIFB4oYmogiZlf9uQkFvXc7mE/e0RjmmL5ck8htjyrb8TPLUVqeKiy0o0kCDksrUmIBbfIk7CPS/Bqu1RG4M9SLanqjIyfT2d2QlkBnD359uOjiA/Xd6TrGMCQfoq+wOHZwknKiId022Ilj3ImbzbyvyQSBvnmO7PuRuEx03Ks7TNnfCAFMnbDTLjU9a3udDzyh9yxgHfweHjkRcZhmTBF3qmAXt3uFtr3cGe8bpM7r2iKqMXeDvVBh0w502tU+RQHOTmxY0GJsGpQDy2N/opbIzjVrXgZQVSB0UGL3dC05K0Xpiu7MYHbn5RCb/o4oFRbferD9rPhBuab0BrA36A5KA+ixeEsClg6aTRI99uf7WMW45RDKERzVrm0pBfA7UZa1pZi5Qb/QkU7XgZsKe0nybEW1bVl8IOO2Q2Hkz8Z1D78MSJxa4pF92lANf4TV74XL5Rvsdu7rTbT9+NRV6bBH8shLLkRx5VRKg3t2aqAigJFgUwMt+Qg89BoVBkvRK5RiY2sxWO5cP5JVDMpfbJg3EOPVZaAQFBrcGd5LINDE3qFMHiMHOljG/l+xyTqM815/fOiOM9KXNyuwF+nf3iWAKr+9vI+jvx2uvZyIU0rytcID/gmh3JjpTRK9D+uyhFAKulZakclLzJ0xiz9iySxvApohGmga/wzcdlBKEDnwlWxzCoWojKlQSLkC0mnESxTU3DMkwLUdrEfTRXPVm6aOPHf7IbHJncV30Wp+EwBu15F5hdW5kg/y0q3Ub1v5Z3ZnJhpEk4r3GCEJFKU+v8G7cVj6wGtZx8RsZUXRCDXCsg5pZ
- +QFftsTl
- 4zpDlxF2tvmIjylSriTK4Kps6qy75VoalDDHca4JVUIldMtn9uUrwnH6wGiX/Ly4++Eq796EzfAQvIo1DcoN9MEYGW2XaXbZDgDKz/L6okT1iqiMe7Y0OaNORB0Oi3Pj6TtOWrsWNq3pTGjBtrQQQa4jYeccOUPY53j1VAhS51F+2qtMucH3eQL94tmiomizEWg2jHG6aUM+5EgGVJ4bTIAJiSNmxs0HcImdGZbbIBtRoog8bOKoSB+J8w77FTUXTfOX0Zn1tPlLYZVKCcdiw4DcnrOCOks0gVGOmxCBlfNXJ8cnwEqr2nmrKo2rZkBS6Sj47lDOMd6XSSIYx3oi+U+w6hjOUT9dYOSlk
+X-HE-Tag: 1787859193-718074
+X-HE-Meta: U2FsdGVkX19GspxjoOWaCG1Qqc+Omd7ZnMWANcfttGRhDqgaYdcIu7cUNeke9RvhNI8ZDBN6+sYtkp6NDgyMogHDEy52Bx+ycaU3OAoxxAtH55hgn0H4QYliqMJkf02W0rcWPUgvP5KGY8hpJDRn6IcUqXLX5HAIGqwNli4uIYzFqPKeMGtfwdlfxT31DYhSwfVZ8KfkHhvnstCu71LwUXpx7sjPyn8hg2CaVtyRPQ0616O+QDlIiL5uAc9a3+pVPNWRmv4hIADotP1iM33F3FSa/c1MvY7Sgt8qgnyhHrrrvqKlCyQb9c6NqOfc0yFBM1EyoufixhD4ScTM2PL2fS9QWvsCO2CtsNsW5W7K2nrM4qwDZirPoDSTo8/0oU1xiZXOD4STVHwZefaM4Mgmi3j0WhcuKrIIBeKmhwHzgKS/WXx/3//C+0ugcqyaaGonrvoTi/Q2Agw8vnIXS6lbZui5rBHJ7vAJ9QdhXW6ThkyLWt7jHblhpeSwqg55pLtiWTeMde6ISRZ3swI3AF+JLODnAY0WV05HoiTkUny2d7UCIqzX2IVcoC6oMnNMnfBjpDCmQZJp4P0ATjtYXOaCRQvDmjWCFSfV0D7wCIbFm5eo6Ov18d4sovoCZEZXNecyy38AHuNuy3tIQ7ZPR/kTfMqWuVINp4kdnWHf0UcYK1YQuaL3NyfIzzaZPTxjxK/7SXtyvEHHjacdBzgt0Bp9lyQSh6Qy/33tbgK6/Q4aLMXnTC5Ry1lFTFxEX60X0qkt9nDymutS4UbVGiWQ5wqJCiQ0UIpcGljmY6nte23hV+zjBLcz7zAhdvsMdD0xeKmVTcaiBZWC9o1wQcmaUfxD/hDmoOL+R6WbjtMLGCAuvTDMzXGR2zt/j929E2bxVYSOKhl3PVWpBCrDQYYZH3wOyQZ9zKtYbBfhoeJ5F0WBtDjljqXFiGdixF42pznIiAIZ7Nhl+vVktPHJFnEbJmB
+ zrV5euk0
+ 4NdLB2Li9JPi0gHwJtRBM2jYUsU7r/web6Ld9asXzpoJZYREr43F8SwE7Vq/ooa0ntXCGNIhEVkbW5U8JCDJC5LoxzlCc5uw19ufRPlgYSxBPZbLUja5zGMdOJgHdZo45R+B6IG9l6xQVIlvILSGNYzitYW/RRvCSe+nEtX3CIAwf9OB4nUvJavMQla8w1OfY0/s4657On7rRtVOLVesgMyHI4AKIPG3a1A+JOclRH4cKdn10qol/xkRUsRI3ktYVdkntKCV1oo3B04ZUeL6btzWm46s7YiytNukTRdF3QB6Nx3AjYxdDH+mvdxJLK+AQl+8X/Dv40UzBPC22wtMAp6opQO5QHe88qCwzKoUi9q0mX9sBMwWegVk7LsmJr0XUL8qjCLwy+5x19z8MJFlEmZcm1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,66 +151,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/27/26 21:16, David Hildenbrand (Arm) wrote:
-> On 8/27/26 19:41, Kairui Song wrote:
->> On Fri, Aug 28, 2026 at 12:41 AM David Hildenbrand (Arm)
->> <david@kernel.org> wrote:
->>>
->>> These two boolean parameters are really a pain. There must be a better way.
->>>
->>> Also, I don't like that __folio_split_unmap_and_freeze() sounds generic again.
->>>
->>> There must be a better way for that as well. We had a clean split and now we
->>> mangle it again.
->>>
->>>
->>> ... but I am just before my PTO and out of puff, so others can brainstorm on how
->>> to do this cleaner :)
+On 8/27/26 19:47, Kairui Song wrote:
+> On Fri, Aug 28, 2026 at 12:48 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
 >>
->> What if we just keep the __folio_split_unmap_and_freeze_anon name? And
->> have that "bool remap" mentioned in previous reply? Clean swap cache
+>> On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> Replace free_folio_and_swap_cache() with an explicit folio_free_swap()
+>>> and folio_put() in the after-split loop.  free_folio_and_swap_cache()
+>>> unlocks the folio, then free_swap_cache() must trylock it again and
+>>> re-check folio_mapped() before freeing the swap cache entries; if the
+>>> trylock loses a race, the entries are left behind even though the folio
+>>> reference is dropped.  The sub folios are still locked and unmapped
+>>> here, so just directly call folio_free_swap() directly under the lock,
+>>> unlock and drop the reference.  This makes the swap cache freeing
+>>> deterministic and the reference drop explicit.
+>>>
+>>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> ---
+>>>  mm/huge_memory.c | 10 ++++++----
+>>>  1 file changed, 6 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 84c6e4bbaa88..113a33cddace 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -4337,14 +4337,16 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>>>               if (new_folio == page_folio(lock_at))
+>>>                       continue;
+>>>
+>>> -             folio_unlock(new_folio);
+>>>               /*
+>>>                * Subpages whose mapping has been zapped may be freed
+>>>                * earlier, but freeing them requires taking the
+>>> -              * lru_lock, so we defer put_page() on tail pages until
+>>> +              * lru_lock, so we defer folio_put() on tail pages until
+>>>                * after the split completes.
+>>>                */
+>>> -             free_folio_and_swap_cache(new_folio);
+>>> +             if (is_swapcache && !folio_mapped(new_folio))
+>>> +                     folio_free_swap(new_folio);
+>>
+>> But this is effectively duplicating code that belongs into swap code.
+>>
+>> Should we instead have a helper next to free_folio_and_swap_cache that consumes
+>> an already locked folio?
 > 
-> I think you can just rely on folio_mapped() internally. swapcache-only is never
-> mapped. And anon folios you can just detect internally as well, right?
-> 
->> could be considered "anon compatible" as they might become anon
-> 
-> Dirty but better than what you have right now. As you say, there really is no
-> difference.
-> 
-> But for example the mapping/remapping is superfluous. So you could also consider
-> a _swapcache that reuses some common bits from the _anon helper.
-> 
+> I think the only duplication here is the is_swapcache and folio_mapped
+> check? folio_free_swap is a common swap helper. And putting the
+> folio_unlock and folio_put in the swap side looks odd to me, since the
+> folio is locked here and refs get here through the function's
+> convention. Pairing these unlock and put closer to the convention
+> doesn't seem too bad IMO.
 
-Okay, I took another look at the resulting __folio_split() and I think if you
-pack the "Unlock all after-split folios" into a separate helper function, and
-call this helper from inside the _anon / _file etc, you can just end up with
-very nice function names:
+I was more concerned about the folio_mapped() check. Because the code now has to
+guess under which circumstances it makes sense to call folio_free_swap(), which
+is precisely what free_folio_and_swap_cache() avoided.
 
-	ret = folio_check_splittable(folio, new_order, split_type);
-	...
+And we already do have other code doing that, like KSM's replace_page(), and it
+feels like that should all be cleaned up.
 
-	if (is_anon)
-		ret = __folio_split_anon(...);
-	else if (is_swapcache)
-		ret = __folio_split_swapcache(...)
-	else
-		ret = __folio_split_file(...)
-
-out:
-	if (is_pmd_order(old_order))
-		...
-	return ret;
-
-IOW, the common bits don't have to be called by __folio_split(), but can be
-called by the other helpers.
-
-
-I guess it would be ok to have something like
-
-__folio_split_anon_or_swapcache(...);
-
-(the function name length is acceptable)
+But no strong objection to your current code. It just looks a bit suboptimal
+that we have no helper that wraps the swapcache and folio_mapped() check.
 
 -- 
 Cheers,
