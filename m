@@ -4,80 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21513C61DC2
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 10:53:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99799C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 10:55:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6DB26B008A; Thu, 27 Aug 2026 06:53:57 -0400 (EDT)
+	id B6FA66B0088; Thu, 27 Aug 2026 06:55:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1ECE6B008C; Thu, 27 Aug 2026 06:53:57 -0400 (EDT)
+	id B1FF66B0092; Thu, 27 Aug 2026 06:55:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A35AB6B0092; Thu, 27 Aug 2026 06:53:57 -0400 (EDT)
+	id A37976B0095; Thu, 27 Aug 2026 06:55:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 84F6B6B008A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:53:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D9441C0CBE
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:53:57 +0000 (UTC)
-X-FDA: 85146739314.15.FE3454F
+	by kanga.kvack.org (Postfix) with ESMTP id 7DF046B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 06:55:24 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8CFDB1603A0
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:55:23 +0000 (UTC)
+X-FDA: 85146742926.23.4A2529F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 64139100003
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:53:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dq2ilIQl;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id CDE90180005
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:55:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WmI6KeFW;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787828035;
-	b=bVmZ34jw2vQjgfkU4bEjf/24qOulNxg37jflmHa44/TxZIp2UTO6emzTV3ls9k/4issv2R
-	cORhV/MNHoxxqfMyzkfXgLq4+CX5aF1cyu/NAwNXYEcKqCFqwfODr/m3nI31pzTJMkIQOV
-	T/k0dYz5mCWHWwpV3C41Oelmn6NoRPQ=
+	t=1787828121;
+	b=KxFLtHvlOoBm1T45mWchRiS+ew4VrhBZBpVQQ/f6Q361oug6/3b6tSNXI5qmODFNjgyQ4C
+	ltgEf5KuBXnV/GEVKsmkRGVFUPd77BWaIMN1Sr0VuabSf5ASCz03doc26AmG+wFITxOecS
+	vtzQhGNTnTrbWnl08VWVPsCwHVhaoRo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dq2ilIQl;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WmI6KeFW;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787828035;
+	s=arc-20220608; t=1787828121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9vQG6xXxfOtXuXsofA+kkyyannhlls6a3LQ3r9TEV5E=;
-	b=A4YzEh2UoH4garu+XzPzzqSO4ZnI1CPicCQ1WJK7zf6VgaacgwVl/oxHcxxhwRe4QcGcSX
-	BOsRqenMIOnXIVvXdoOGp6MWs5wINkpHmc0xqJDqoIk1fvNW6BH1YY9M9gquLtq5LNm62H
-	PHnI2Xzucz8KBDPTEWlKt7EdxiNITG8=
+	bh=lOIjdq4+U/tO0XOht7hcXH5DuMTGbl0cEZdAzU3LGMU=;
+	b=BqyXC4jxLKrRectgO8cUkPWsTrCjt7GKzvPL7RrusLaxbMtyh7uNygnIAGS2NvufHU2jOj
+	4Yi9y9z0CpDl/ABbZgyLR9o4SEz29qLYBjESCEfuSmAAJ6RKGam9epuHj0Fyqo355GeFOu
+	a4gxK98xitAcN1QvSIIxY++GSHHbUWE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 858F2600D0;
-	Thu, 27 Aug 2026 10:53:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F361F000E9;
-	Thu, 27 Aug 2026 10:53:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CDD5600D3;
+	Thu, 27 Aug 2026 10:55:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092E51F00A3A;
+	Thu, 27 Aug 2026 10:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787828034;
-	bh=9vQG6xXxfOtXuXsofA+kkyyannhlls6a3LQ3r9TEV5E=;
+	s=k20260515; t=1787828121;
+	bh=lOIjdq4+U/tO0XOht7hcXH5DuMTGbl0cEZdAzU3LGMU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Dq2ilIQl9pLfI4ZKlrAVpdIx97PgF67u1GnoyEECTpvO3pup2fvbV1LWjYlItdFFW
-	 wjkfrvcXgBJoY6PHApAXBcnmdTAfk9XHjmXBYdhmYH6wmjDJX50EITBE0PwK1/C3oI
-	 EEmsAHrl5P2nwLn8tUnyt9a0zjUoTFNOKN80dgzwFvMhHOK4Y5dzFjdjmid9E2FPNy
-	 nDui3Q/5SWc9NFmGLZeWAvNBbX42IMBFrsN0cM9RWC3wT7yTzILXjEDcLBzAeEtCb9
-	 pajS6TRs+zYGuskxAeKy/fJvgFHYYLimEmdHlDZW5uom8d1lu+3lCChQM1FvqcTS8X
-	 tkOSInoj3tN5w==
-Message-ID: <132e7e08-2387-475c-b700-eacaf47f170c@kernel.org>
-Date: Thu, 27 Aug 2026 12:53:48 +0200
+	b=WmI6KeFWRxalh2Qorm88ibg25D6VNeXU0rh2PyMvcYJugkGlQw3ypPTW+eM5X/X+a
+	 lKpvk4dJ/VQ4mNUOtwd6rab2qzqWg35yVHrZUjgYzPcAGlqHNnx7GbDlNkohro+tjK
+	 tAy73M/Ht07J/zQDivOswr7iUtQqX0SLJsbdkBtu8sRcBax1Y8y7i6mysu7ZAjzQ7O
+	 td4rdEWYPjvtgs/KBqLTdLy80b87OnYKH7iLsibHXZ9EqIQljx2BjvbYjJsjXPMGFo
+	 ELVYp3nicxjDCmV75c/XhNiCkiw4oLgAKpZpPn9eNHJhWKnfNFL7E9NE83svKucEM5
+	 z7rE+fxWMDJpQ==
+Message-ID: <ce7d74db-989c-4618-afd0-016943f0a58f@kernel.org>
+Date: Thu, 27 Aug 2026 12:55:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add myself as a THP reviewer
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260827103435.1371882-1-kas@kernel.org>
+Subject: Re: [PATCH v3 3/6] mm/migrate: copy all referenced state via
+ folio_migrate_lru_refs
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Barry Song
+ <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ridong Chen <ridong.chen@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Yu Zhao <yuzhao@google.com>, Zi Yan <ziy@nvidia.com>,
+ Qi Zheng <qi.zheng@linux.dev>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kairui Song <ryncsn@gmail.com>
+References: <20260826-mglru-flags-cleanup-v3-0-d9f1c75549c8@tencent.com>
+ <20260826-mglru-flags-cleanup-v3-3-d9f1c75549c8@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260827103435.1371882-1-kas@kernel.org>
+In-Reply-To: <20260826-mglru-flags-cleanup-v3-3-d9f1c75549c8@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 64139100003
-X-Stat-Signature: etsz64saxden7itmkah3d3koxxeytfd6
 X-Rspam-User: 
-X-HE-Tag: 1787828035-562022
-X-HE-Meta: U2FsdGVkX184x7m8EhirIy6YdSlpVBUHWLL86NriBgZmfUX4aRqY+59NXxLOOsJdOmsXo7mAJRkgoIh5R/IjjCHOuy1+/x1isVkwZu/R1yOgmWSh2rzqJAhLveCcd1+TSENg6WeYVv3RgpLjgiCtmEJlewtQ4wJUvFOJn9LmgKO32gGlig1GNCAV2SA+4n9vHsG/m84yMsZ0N9xMnBKCoEtNa7j2Uhn1VSEN1rnEkmqqzDpvyNhs3pWW/mF3lTPFDMKHgY8eUPmbxn2VRjq0wfUXStBa6rJIQKpONddR/FVd2theV8KRfuWf8S2kZQVnuEEBWS8vc+LzeMFqqpQJWId599bzrDNkAEaGw2uGVKMey/Ky1l63B3nIh+AQX2wlrFMlZg/kih/SNK5ktgusnpddvEQPw3/oGCEv5euuaeWP7D9U7JjidqSV8sw89iCjX2jb0Cwi4gYSpjFfXXCH+vZzhe0afUk3etpB6DBnx8BMXyvQQpKznB4gDNkkavvkhgWX1PwTv+n0YMbjGi2wd/ErdnWVrGViC6DrEbDEWA5LnSm8CZP0MbuNrrmf/73wHAEGb3tn52Ry2rZVeHUPx1baa5ilGVGxjoHngs8wF7bA4B6ahmT0hmob638RJ+OQdLxk1hgHogzqEU+tvHDHJyn39/UNx8OqcthatLy97SL/N0Hqo5LhW+Qsr7bROz6tVj5NWUgGg/vz13i7GovO9M5pvpwb+Pkcw8hpHv2P6NYncrmErPFAlvxy11+B+Dv+mJRqYwl+650W5EbiHHHa28m0twk+UiEaWLyeS4tFF++I+Zb8ZTYIDC3mKTSB4XKDlIAbOcfsl1uDZKo0op3lMztU4qDx+j/ac+0a937dCl7Tw2iFGwss63lEk//PBI8A4QUYWR5lm3V+IYyjciiqfYV8pdS5R+AoLYVXzCS3atsWLAmn2PrRRHrCH1CvkxEm0hX2tzGU2UqwrugKRt8
- q7cDudlq
- qPjqREsc5jHvcwKmTpTzEbhvrdkbOqcpI1HRLs38xI37ftLSRLXsDcs9TnPXovm+xN0lQSQQxQmZa1dTOV4zSc6KUWIbrsUDPTMTd4gSJtdvev+ctGdnGfQD5LgW0yBm1P2M0kqBqsYwwalIsuPEqx4bsGeCQ0e034shP6Y8pWEJ8EOJdd2xFp2zmk1tEwSLu3T43MVFzzGXt20wGiOVzrqvIi7gZseYOJRxdl8db1SmhrrIGSPdx6/CH2EELl8rfY3Tv75suD1rL5KTFu0CYLxBixd7JlSImcXH41LPCLgb1obXS5Qhb3CpLb+x5Dzf3pY4jlo8SeBv3UDcy3yCc01zvfwHWm5l4Pwwh9J2f0Jl2tPaZ4lO2P7SInCfxUzdSuLr2AiKifZiv50eqfcYq5uNAEYtNMgRO+Y/31c6UhhAyBbyP2NK6nUdm+CGiRYZL40TupjoPCm7ACOc=
+X-Stat-Signature: mfdetn1mawqtwkos4pgyifto85hhbsfz
+X-Rspamd-Queue-Id: CDE90180005
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787828121-867991
+X-HE-Meta: U2FsdGVkX18g5cv75W1cTvHvH9KiGPadeCC/hYiz/+GY36A8gVMmUMZJ8M3691GY6h2ZNu+L1IdbWVxBw/MV4xZCdKYfBed89asVzBdPhz3g7dC++h5qPo3dNtVr6LPhAXsGhVbrAyLDondvzdcC8QdaV4h4hj7gF7ju3vrxMY/4c7iaqpDTEDdrfQl3yn3Vwin8vooddWMdPAbCixiDT59A4DD91RtXx9hLC9gAKBXfrXLBMns0q9tJ1FqglZDcMFR/0eFs7JR5udKzkcje3odwJUnE8n1A2OzbUUWkpIxj+5U3vTzjQoDU7K2US2xULY5Ro2x7usyxDfKw5mljgavk/M5D38r/s23YvBwizQQU7rUStG4fRF20UuWcDsq2KJ2EdbTycx/AXTcYbq+FCpXTwHTMaXfeHm3eJv0jQRTCHONnX1iwzLNpYvM2Ym1wmpIA41ATfW5RQiVgLTfxYg31vQWyLk03CWKJjki+4V9VL3GmR8OjB9W2Kz2xHS5qIi5xuYmuVvgFew5QtrXVIyTtBXPeImHRUB3o8eIn+EdcOPWIZdAUrzV5twI5Nh9f0tE1Bx1NoK4EouNmBWk6tlrMMdwj34HvR0YXld8gvFEKm7LWcWx0mnbT9LmW98SBdGcXYp9tppEZL+PaEvD3x39b63lzF5AxTpEHStv1iRPySK5YepqrwT83ZIY0i2I5f3FIR+8BuV4vN29ZodSHEH4cEpYYpSwDDkWwwgLbXRAodEkNoF09FfmrVZZBTVs3HGyptqY8IBO/ZXWjoCpB33h6xeC5q0aeEa/d49+v3iy6eJDoxW2JHC2MhZw/140tnpC1bf4iHLUQdyIarH/e4i1nxznWngdRl2HgWtgVwPIqnuQIpWHhEx+Yin6/MfpboJWU/4k1jAHXtKgsPijjqjMnZ7sOkEm8FtOlEM0B8fRkiUui0vik9kga9yX+io5MMWh+R4ObXIrVFwUyikT
+ K0jTby64
+ KCSD5epHp8erV0PNl44fCqqyTIiHo6IXpFwvwi+sTZMirOLqGHU/vOFL7VER4UyKZm5no7I4JWv0wNpfpJbtuCCKbf1V6mNaELLjNsBsHD5n1bHSB9ufCqfmWBTQCnxr2/vpWg2ALkBUmZIIG6GhJu95xrGO6kG7iwi+jDdU8YWBtXC5GLf3EMxngJe+ufc3+HT08CrwWxx1tJcw1gFZqY4eO1OKbK/TYoDgdxSBPfnMVMmE7AdDb6SdR0ujdFVs6ZFe2ANXOlNvSUWvbIPC1RGQpuHqF8keX9PFBuHTFarpH26y44sIWrjdKwuYUwe57oAqUltlsTmc4bWn9TtLBiRfAAFJ9tKiHCjTo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,35 +150,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/27/26 12:34, Kiryl Shutsemau (Meta) wrote:
-> I have been working on transparent hugepages since 2012, starting with
-> the huge zero page and file-backed THP.  A lot of the code that causes
-> pain now traces back to me.  It is only fair if I share the review load
-> for THP.
+On 8/25/26 19:53, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Add myself to the reviewer list so get_maintainer.pl puts me on Cc: as
-> well.  It is also my commitment to be more active in reviewing this
-> code.
+> folio_migrate_flags() copies PG_referenced separately from the MGLRU
+> refs counter, which folio_migrate_refs() transfers. Yet under MGLRU,
+> PG_referenced and the refs counter bits together describe the
+> referenced status of a folio.
 > 
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Consolidate the two: rename folio_migrate_refs() to
+> folio_migrate_lru_refs() and let it copy the complete referenced
+> status, i.e., the MGLRU refs count including PG_referenced, or just
+> PG_referenced for the active/inactive LRU. Drop the open-coded
+> PG_referenced copy so the referenced status is transferred in one
+> place. No behavior change is intended: under the active/inactive LRU
+> the extra bits are unused, so operating on them is a noop.
+> 
+> Transfer the reference state first, before the destination folio is
+> marked uptodate, so a concurrent lockless reader cannot have its
+> reference update overwritten by the copy.
+> 
+> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 1be7da9b6e2e..f5bb29ba41c5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17264,6 +17264,7 @@ R:	Dev Jain <dev.jain@arm.com>
->  R:	Barry Song <baohua@kernel.org>
->  R:	Lance Yang <lance.yang@linux.dev>
->  R:	Usama Arif <usama.arif@linux.dev>
-> +R:	Kiryl Shutsemau <kas@kernel.org>
->  L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
-
-Thanks!
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
