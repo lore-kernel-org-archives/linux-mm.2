@@ -4,88 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83161C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B76A8C61DC2
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 09:19:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84A9D6B0096; Thu, 27 Aug 2026 05:18:40 -0400 (EDT)
+	id AE41C6B0098; Thu, 27 Aug 2026 05:19:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FC0B6B0098; Thu, 27 Aug 2026 05:18:40 -0400 (EDT)
+	id ABBF86B0099; Thu, 27 Aug 2026 05:19:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 710E86B0099; Thu, 27 Aug 2026 05:18:40 -0400 (EDT)
+	id 9840A6B009B; Thu, 27 Aug 2026 05:19:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EE6C6B0096
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:18:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A966CA0372
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:18:39 +0000 (UTC)
-X-FDA: 85146499158.08.DA8C729
-Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A8F28C0004
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:18:37 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gW6CCbBi;
-	spf=pass (imf10.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 736A86B0098
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 05:19:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC39240385
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:19:14 +0000 (UTC)
+X-FDA: 85146500628.28.B6ACB32
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E7E74140012
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 09:19:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bS7SQdIu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787822318;
+	s=arc-20220608; t=1787822353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=gQfH1ZAn9qvc0kD2895Ijzw9Re20623cupWQo/8nrxU=;
-	b=gmd7r69XKCmQrN0BSx/Q+Hien8p5S6VhhNHQwXvnAZjHRJG9ezAtDOBZK5NVA4mdY6JxF9
-	Mpi7d3MGmZWywU8BaAMItxM+WuMSFE+0FGkufXPD/gc0yTmHqRSoWTqDg/it44GFTlsVkr
-	IvF4QQVULnbqRMhj1tBtqR0+xFO+aso=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LixIDSU3TdZaT9dJGoqjplgLV7aXH03HF3B7mcClcig=;
+	b=cr659rvnRlqsu9t2bJcmG5bghAphzQtS6m0qv2cHirvSnURGJDBehzDiaP9QXAXZyQ1LtB
+	f6piTn4Ac5T3wb7BIOuw2/Fvn5bNXbJOccmwB7chYzTHXbt+37ugSAZDvgYsRvU1uUiIAD
+	QSf3SSEFe6Hzr1X298yPDQ5vmkC9ckM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787822318;
-	b=YqdxCLbd/SLIIokQSscCJeFKdzvg67qpAYFaMRItIB/BZDcYnh5Ka1EhGXG2I5jvaq9vL9
-	wLPJzSL0lQWbPn3uygIt1RG0OmLYh8IJxJBVtmGQOB+7Z6SmUN2985Q6f8UQ/huZmXeUnn
-	jlIznAHOH9ZAaAxUIV7Spif2nkEPnsk=
+	t=1787822353;
+	b=SU3KvuMh37HZYXrAguZJKN4Bq5QpgKjh6INN0iX8q5hGapFY53OB6V4nFYwEk1GMmi2y0p
+	iYW+Ale8YYVcTck++qfIZer555oIuTH5eyjC20C5QFJL3FHVxe3PRhPFoi/TyQ2dA3/10I
+	43yhsKe+7Jqq0yLuUzYzTaI4i7BcT9g=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gW6CCbBi;
-	spf=pass (imf10.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.192 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=geZOW1WODXXVi+0e58r8VoYK2l317YOTRPYNa/62Gi0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787822316; v=1; x=1788427116;
- b=gW6CCbBiyjVh9Qp4y0feZ2bOqcX6iQ3ILUlfboAWZ4qdUvgXTiPMTdpjB6YoxFF+qC4Ub/dF
- CaB4u3ztZlDRmDTWuoXdboKUBmWmtAbSGD544cIx8y0v3R6Qzp5hLeFoMjgxM/Y7bEh3ewABewJ
- lU6RRiTJw9oicYbKjBM0crUo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 75b3eba5054843c9;
-	Thu, 27 Aug 2026 09:18:36 +0000
-X-Mizu-Trace-ID: 75b3eba5054843c9
-X-Migadu-Flow: FLOW_OUT
-From: Hao Li <hao.li@linux.dev>
-To: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev
-Cc: muchun.song@linux.dev,
-	akpm@linux-foundation.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>
-Subject: [PATCH] mm: memcontrol: treat disabled memcg as kmem accounting disabled
-Date: Thu, 27 Aug 2026 17:17:50 +0800
-Message-ID: <20260827091813.22327-1-hao.li@linux.dev>
-X-Mailer: git-send-email 2.54.0
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bS7SQdIu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1D20140A0C;
+	Thu, 27 Aug 2026 09:19:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559941F000E9;
+	Thu, 27 Aug 2026 09:19:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787822352;
+	bh=LixIDSU3TdZaT9dJGoqjplgLV7aXH03HF3B7mcClcig=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bS7SQdIuYyCMsB7a9rjTxHKZatdkuSikajfF/3NBtzQYqfjLjUeDr9272DHcot0XA
+	 W7uu5XJ8joem5jK0LM2pMGVV2U9pFfsmTYUq/Zurfkm7vLcOExivNA7SqfKg0OadbZ
+	 cmxCW6KRH09DsS9o6GS9zVE2pyPEFhPwG3ZwAXNwJe+4WNhIKsjMhvLUTUHHASXRrX
+	 GtDv7Tn1kx3Ha1nn3H41pIqLPjr+eE0fBZeSeJ6TdGZSn19iB50n3DFLosXwKECNnb
+	 fEETV8/HwlZn+PTIOsAF+Q6pTt/OKDXUSEUlE7fEiGchsqitgVBm426TwMvR2f5Ahu
+	 GjjQpnnms7Yzg==
+Message-ID: <01aae5b4-ee10-4601-8ddd-c9428e11d651@kernel.org>
+Date: Thu, 27 Aug 2026 11:19:01 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6u9x7im8sj7fdm6xr7p7gpod9ehksibn
-X-Rspamd-Queue-Id: A8F28C0004
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] userfaultfd: decouple fault reason from VMA flags
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
+ Jann Horn <jannh@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+ Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nico Pache <nico.pache@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
+References: <20260823-uffd-vm-flags-v1-v1-0-3086981b33cf@kernel.org>
+ <20260823-uffd-vm-flags-v1-v1-5-3086981b33cf@kernel.org>
+ <5bb86e34-6196-4b50-b553-be2ff7c1fa32@kernel.org>
+ <ao_sCh5zP0IC9H2S@kernel.org>
+ <e8aaddde-0a07-4197-9874-5ca0ea8af43f@kernel.org>
+ <ao_-uZrrsVX9lzbz@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ao_-uZrrsVX9lzbz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E7E74140012
+X-Stat-Signature: 9kcmhidqh3q8dfzaum8at7u9y6tknu66
 X-Rspam-User: 
-X-HE-Tag: 1787822317-40037
-X-HE-Meta: U2FsdGVkX18D8jHiMcfRIpHLbZCiSfqjCoCb8db49o3sgQ5JmvA9nOP6zJZmTo4gLDTXmJiQE3lFr6iqWGRyJJELxutTAJoqkV7wo452kvDPpfqZksNKF2SSOYrx3fv7+BCsGWgDNLV32T+187dBm3tSK+rv+25mnlASemPb5LB1qXcLQHkMgr+uQVdbbGnYYNku1mM4Dp6rIepk1v4gZYRZKqgrrLe+ic42AmN1tFbuMOdghbnE9OVWQtOlD3c8PchgycxnEvaYxOtOrXycNG+ND/TOFYS02prtPzHb1uak73O3RZA2mQFjo9dfbLdesnMfsovGR2u9WUdViUs5dTEAt52pYcuqANe2BsKKnFHiybpmOZ6ou48bKKRt4yHyl0lUoxlvlIJHES8LIuU9Y6K3pn4cZogzUkmktmxVmz2JY+GZ2Le/ar8vah2wRwIvZ7ZY9UhYiPz3RgoxXTvWqLQXDYPxDy5Ur1mS+pI3zHHrrpL7Ia2tJzh6HSXot2tk1VHAVo908zZULMqyMzxhlxum3W/P7qFo0WlX5GxKM7JziPeqH0tpBYPzRFm8IzKGa91JhQVj9574kivQgimQlSQFRChGb/4v90ZxSTPeXQsNIWRWmgb5cTrUHxoaxc7ZUOVbCbL0BFuvh+IvVBr3A3nR8eiQbFrwzp3xLaUeKNaIVeqS/N82HUgRVTWyLD60rCGQYMqEMWyR/GvEyNLw7BL0H3wDanzxLyBmBuLOHD9Sz8HQ5As/f3rmUV76eUsSrUaPp721cNxSFB1TffBitFEcsf/cnpGoG+IEfFyoB/MsMEe5bcJM7Z9+VPeSa6/YCSlJKnu3RkPo8xP21aR6cd6mY2EBnRO4UdvmcezRnxy/e1i5mlGwsLkMh1D1ksDCG9ncEayNvgq1o1/dgxKax6KHS5Qes2ayIJno5VZTNNdcNPBXwvRgK/YmVezAQObfTCwnPHH6lRQqzBeiv3o
- LQ5Jxs2j
- nd164/7pyOyi1+ZZm5LaBCG0FUws/VStEMncKkVTjvhNp4GcRdOmPVKIUOEK93OfmmVM7soWqkXrXk4xrQiauncTP1zLYL2lSQR4OXCv/dT+DK3IT7J5Vyf3bc2XM0dzlFQ9gBegjJ9tIGItdybBRAnKd5ivRN09bwtmNsFOpHgKJQApLJaD0q57mUfgvdA8snknkOZpf/ZC6l2v+Eo5rX4dTlmek4kFI64Tj
+X-HE-Tag: 1787822352-731775
+X-HE-Meta: U2FsdGVkX19KmMQqDlmupgh7GBzDN50arDtnOtTOs7enUscPxdlPLsC9GDPWKGfnEXPiv6LHl2NsOxNzxwXexvfJ0yqJNPWOn82zeMIkhLsznf+ejcyXTE9DvhYCNITodPypIa4go4nxOnH0gd9QSiXa8bF+GtX50XfKtG+rskiBpGFTsUiVXL+vECgPJrNvlBhpEQ6R6MJ2mpz9wHQV3ChVaCWnyHkowyqs66u6JBJS4GxvHZcvBj0M5WI24A6voEi2odb8ava41gAW1Kpi6O5T7H5wxpYmp6tivjULN55x0gRaEPrgIQO/InXyp38RIUSLGbWoi8V+jmW4fo7dh0TloeoL1tBH7I/dNil6eh2uMLhKbQ/hPXGOjYUv3mUU9fcF7XZWBeqxTASC+jIwkc1pHErz/xRtmG1oRKSSF0XTMugt92l9L7VbUR6yrj8X7JqOBhyeMGtQfljWCWRCsVgaVTX4dnzueyLrPTyEk6lPHfGjJeSmNmi/OTO0JBjcpwIaMeFwaNozeZLLXFNA3yTnWpusJSJH8rgqljXfCuRVh9Vt4gMFKka2bfveo9jLB0bdhFInAdVRZUB8qxGtu4c1MeTSB45Gb28f1vBt2kKjeyzkzMScYS/tfC2WbP22EunBnVojS+iPUH6TS+HaP9ZAKyPfkvU2HKsT8YmhHFtHeJZb3qVDU3csYuO4sskkDmmOE6eqSFPJ4jOUSGpduT3UqPf/T1QjstQWmFjJe+Gerx+InvfzLIEJlviFQJTJuPaw6MdDuuEi8RI+EJIb1dqaagS7p0d//Ob9YgKtVADaD2st/sS+CgWHkLkrOrRtnJiib2/qk9DV6rA96ocBUCX3N7s/0Nah+ohJ+t/vdA3OMNDqQkeVLaJMfFOdsQYTTCkVIdpcGY+5SmxLW6BrcQg5dzTrSEMIAK6L8LoD75jJrD1ujzpMe7w3xKdTJFKUXPdXZRvs24ZmXWxXGB9
+ gHTVQaM/
+ 38w7ACXZdt1C8Yp7TFn4GzMNrqiWhJlpEcCJENg8V7vSW7g/IHQPl839Cnvh4wGrVjppcA2wUfGRJuyc1pGvPW2gOuJQ8rTz0PmBCdGZ43psZ0w7oqDRYq9M9yEu8MEIXzFIfpYJVJEtBykfecSfQXPRAZ/3FJd4uNwHXQx3ReWQ5Dh9EdnpdLL+v9QvJzlqvvb6GFFTqhcNZnI8Kgu+JyHvQ7Qp5NkNIcBN5gWDOGS7mE6K0zsNN9uCQjq8D5nIzOVkC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,32 +158,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mem_cgroup_kmem_disabled() currently only checks whether the
-"cgroup.memory=nokmem" option is specified. However, kmem accounting is
-also unavailable when memcg itself is disabled.
+On 8/27/26 11:09, Mike Rapoport wrote:
+> On Thu, Aug 27, 2026 at 10:10:24AM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/27/26 09:49, Mike Rapoport wrote:
+>>>
+>>> userfault_reason sounds better to me.
+>>>
+>>> It describes what kind of user fault we are handling and the 'fd' part has
+>>> nothing to do with it. 
+>>> We do use uffd as a short name for the subsystem, but still most if not all
+>>> userfaultfd "external" APIs use userfault_ prefix.
+>>>
+>>> uf_ was an attempt to make it wee shorter :)
+>>
+>> Yeah, I got that; while uffd is a known acronym, the uf_ not so much (and also I
+>> wouldn't suggest it to become a thing, lol :) )
+>>
+>> I've been wondering for a while whether it really should be called
+>>
+>> 	handle_userfault()
+>>
+>> And not instead
+>>
+>> 	handle_userfaultfd()
+> 
+> The 'fd' part here sounds really weird :)
+>  
+>> Or maybe even better
+>>
+>> 	handle_uffd_fault()
+> 
+> That's somehow tautological, but maybe using uffd_ as prefix would make it
+> a "subsystem namespace", so tautology won't be as blunt:
+> 
+> 	uffd_handle_fault()
+>  
+>> And then have
+>>
+>> 	uffd_fault_reason
+> 
+> Could work, yes. No strong feelings between this one and userfault_reason.
 
-Check both conditions to ensure the function accurately reflects the
-kmem accounting state.
+I lean towards just calling stuff uffd consistently might be cleanest.
 
-Signed-off-by: Hao Li <hao.li@linux.dev>
----
- mm/memcontrol.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1ebceade4021..b28f6165c354 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -132,7 +132,7 @@ static DEFINE_SPINLOCK(objcg_lock);
- 
- bool mem_cgroup_kmem_disabled(void)
- {
--	return cgroup_memory_nokmem;
-+	return cgroup_memory_nokmem || mem_cgroup_disabled();
- }
- 
- static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages);
 -- 
-2.54.0
+Cheers,
 
+David
 
