@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12DD2C61DB9
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94066C61DB9
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 16:54:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06FE86B0095; Thu, 27 Aug 2026 12:51:23 -0400 (EDT)
+	id 557D46B009E; Thu, 27 Aug 2026 12:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 049076B0096; Thu, 27 Aug 2026 12:51:23 -0400 (EDT)
+	id 52F436B009F; Thu, 27 Aug 2026 12:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E78606B0099; Thu, 27 Aug 2026 12:51:22 -0400 (EDT)
+	id 446A46B00A1; Thu, 27 Aug 2026 12:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF3916B0095
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:51:22 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 313FD40133
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:51:22 +0000 (UTC)
-X-FDA: 85147640004.03.67AC160
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C05586B009E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 12:54:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E43381C0042
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:54:19 +0000 (UTC)
+X-FDA: 85147647438.09.44A7F41
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9A00D140004
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:51:19 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ogM8dAnL;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3751614000E
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 16:54:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1mbqkIR;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787849479;
-	b=5vffo0GVMRLeV/B77boj+T7YIG21DAs3hGWUgpn65lkAwLpuh0qbzXZJ0zs+2Bo8Zx1KbJ
-	Eg+b6l6L95Rd0g0lj45R49JtV/Lebv59bxhieRoY9Ix0CSreEBe65lHG2Lu2vWL/n0c+My
-	1PO+sbkpDTGUCLyOCGXBdDWT34wxA9k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787849479;
+	s=arc-20220608; t=1787849658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gRYkuSjpv9ZkS7Rdz5bnIJBpsVr/K+M+nPKcq7+TMlo=;
-	b=7KkcquzPkNXp/3T4IN8RbNSx057Qx1FpqlEn+XzZnSmF5qu01ff3vj4zG/XdSx7S3bUGa0
-	N1irHV8TpUUrByQ4wL1ZbmmmYfyG2m8cj6WzZs7D11clhc/qrKLRUzQhLZB1y5mJ+HN2UE
-	ZRyclc4VrtE1p1plrEDS+AX4yAyE47g=
+	bh=/0EijgfI0VhQhjrOTV+mfho0EuTlFA7vhzH58UT/Nl4=;
+	b=FsB/rvz3m/xn0KqBFgi3pMuTExBX5awBlFIJfRhgA++LRNT1lPwbh4HIJIOBtCsPKi/IMc
+	CbJt0dtudWVvdj5JgpsNtXWBlw6pcZ5FvH8hJGLi30HW4EqJVGDdQp8tU8cUrIqn6erdKF
+	2p3pgqtYyLmbSW60IgeM9I6EWu24B2M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787849658;
+	b=YHOuMoiKH59rnFJ/zh4Xl8uTmv0EI4+goy3fkZzN5jA9HGZMhiP/G6JUA/FMVChvisRhHC
+	jnz5mn76NiH5gZwceuEn73CuZCWFF31/10IKAbps/hiwm7gejWwoDd4SrvvJcL4jRxWAWX
+	6Vcs/4IkeZuA4yjIBVRdej42oYaUxaU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ogM8dAnL;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1mbqkIR;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 27BFA600D2;
-	Thu, 27 Aug 2026 16:51:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39521F000E9;
-	Thu, 27 Aug 2026 16:51:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B6C7E600D4;
+	Thu, 27 Aug 2026 16:54:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557821F000E9;
+	Thu, 27 Aug 2026 16:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787849478;
-	bh=gRYkuSjpv9ZkS7Rdz5bnIJBpsVr/K+M+nPKcq7+TMlo=;
+	s=k20260515; t=1787849657;
+	bh=/0EijgfI0VhQhjrOTV+mfho0EuTlFA7vhzH58UT/Nl4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ogM8dAnLix+zEJplAVPe+BUWbbUsVuHdlJ1wreZI9mgtlGLZsT9KW6vmUi39jfdou
-	 RwqOOSZN4BllKCzHlZbHovfVyvLh52WoppH0BnghcC5JYn9zsrA1iUuMc6WthnMDyp
-	 lU/IKCtv6Ij6Jqi3uI+uphNXAF9uFFAGuxNWFYbfoZvCRDkHj4G71CSvUb7fnLDW5L
-	 jpBIBEykwv/QRG45KMe5WKbOIes4FjJfUKmOtGaHiS3XS8/7f8QPswDybCJ+LpCLD/
-	 GtSTry87rPDLJxhEXG6vYrV44cG/AmvW6RhT4EtM7w0L1bg2dZYNZCbxd3uVK5+sIH
-	 ndhA98qxlcmTA==
-Message-ID: <ba386e23-1b05-4897-98b0-ced78df6dc25@kernel.org>
-Date: Thu, 27 Aug 2026 18:51:10 +0200
+	b=Q1mbqkIRp/j8VBTOJgQerAlZU8RI7OgMeuHkcQerXu9CaZBcqP7GmXXu/I7HJd4UV
+	 nvesbXLzUiwZJILNPf+do8UBEBx2LlzwBCFJV4eUzdKAYa6h5uSoIJ84Zkl7QawPdb
+	 Kb57R5YJkfKxgl8s56xglIX1+EAU882cbnWtS827eSn5DSGlkG9lEqkYhhD9v3zSq5
+	 2+oobrJHgm0lDln30e2YrGv5zDLds5wuUgPLaGHKREyWeNjoSp2hDzL3LqPskXtk87
+	 6BlFyemKV7gEye1DEnBcLG5K4Wy24J50jRxArPG3d3ew4VqgxEQT/pzACBPe6X8kKD
+	 BxcsE9VUob95w==
+Message-ID: <f495537b-90a1-4d22-9281-d1074af2ac1d@kernel.org>
+Date: Thu, 27 Aug 2026 18:54:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 15/18] mm/huge_memory: lift order-0 restriction for
- swapcache split
+Subject: Re: [PATCH v3 16/18] mm/huge_memory: clarify supported split orders
+ in comment
 To: kasong@tencent.com, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
@@ -84,7 +84,7 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
  Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
 References: <20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com>
- <20260821-swap-thp-cleanup-v3-15-9b43f5163238@tencent.com>
+ <20260821-swap-thp-cleanup-v3-16-9b43f5163238@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260821-swap-thp-cleanup-v3-15-9b43f5163238@tencent.com>
+In-Reply-To: <20260821-swap-thp-cleanup-v3-16-9b43f5163238@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9A00D140004
-X-Stat-Signature: ib99xfrcquju9cru148wqmj39anb6k7b
-X-HE-Tag: 1787849479-94574
-X-HE-Meta: U2FsdGVkX1+x7fYg5ljpAyBHyPCQrLVLvgjWDLsDNZJrO+kMDGyv1kkj6mDhPKfpXydfamjwyDpEQj6OjWgZCOdp1jSqjl+ixJL+uGUp+fuq/X3IDYKMnc/EGiD4LN32KL7TIHEzEiSr9Fdoph4SqvEFhUcxOe8+MRmpyx+lhKa7Pn9qV3xwXPzgxA9S0geumVNEUUNu0aUveKNrF9L0ffnjDvZrvKKCHxdE93tVUp85vK0ymF7oU5siPg29M/12C/1I9Jm9hyDRCbVZe+aTQ37PHw7q4NJlS1diZZhG4xnDry0rT8htZ861GeoYJpThpFlabMFxUavNeeQhVvCIxaQDzyCLvt4+YCQTxALgDgC42oh1aaIvDwBzW68/YqWCLaOGEAhEcFP82+e7MTZToVsUEZ2fUeO69rsIMtNa3fzAlvC+w14MrX6SzmbDJr7IdBdEL6jKFBarUQ9rpy//DZoqZnv5YK6l0snHoukNuTjR/L93zjm3YDMeARJkgFH7rxG240bKmMgRpNAJggklUjKIVm0y0GrQ98zEcpfLoDtFrwgTcpXXyuzDmipKzEZd3pPfILGd2D8p+79i61kDi6qspCISpGD7NX2MomrR4Eml3mEOQWSvvTTrS2rwu9aalbkLllNmQ0Av+Ebdfd/EiSM+WPYXJ8EZsYZ67EAJR4eLbhbkWi1E2eG+IlAY4ahlKpnUTagIRfd1ysDu1+FLovsJdv6lM6rLrzLsjo1/GrAeBZbU3+MGh/TvKzM/9m6dGSbz3+8gtd1nFwB8lx+r9qUmlXl1oy9PG6cxpFofzQo0boSWSMb6aLl3DjMzlg65RUi7Oux0jWMTA2tlyBxVybwvmZrcNEWmc69aeVrucPKypONU9l2HMMKQIxeksbhwerBzM56/0XBjDp9YS1DjaeCuhhoiOo2ylED2ZwFfye2evJeJXTBAcoNZ/uTikERCcXqMdrJp/JrDuIOd+YP
- o8tnRdMv
- ieYBLTaGwg/21rxRceV5PtwD+/SxPgjCT2/iK710R1WlE8WxjHwGx/pT3yRyjYr2EU62sCclIgYIU5fPHuDIlh1uFBxONrAIeV4OscI6ATLYiYx5qXHNE8vnoZK3YSJCbpI6JXQj5SJYqcmtEUH6XIqwddQS76kdTfdGTN/9kxoj+UrbtOr7CNfNWVoWBmTzOGNUI1jD2Y9/o/jN9EF37hBiyU3CvQbnFsfRai7oYsLbbu1VgNVCUFXIuiPIcuBYZ2gtYwdPqs9N6+WBx/kC1VHmJX/Bxd2uXL9SIMUmB3uYu7NTIZwGGS3arALyBOqswZZEwBqJ0mBfYoi27TffL4VBEn1iyV8F28p7T
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3751614000E
+X-Stat-Signature: k9auzw646wrtt4kwfqhqfjwdh9tcgent
+X-HE-Tag: 1787849658-456708
+X-HE-Meta: U2FsdGVkX1/y0rEqx8PHs38QcUBcCKXdtJtos68qUi2hOOltc2Jq3o5lwU3tiyegZsBdAKee8qxILqcp5Yr6SXIbKzAbmUnm983/M49pvxvzMyUlZekUx4Ihd5Up6cZ69LdCgnP9NoXhdFtvA/IfB4qDmZdivjssp505+I1a5Nr3dnZnvxY9TTeDDkl8fBFcnHSOLyagnZwiaqdgGQ807KkIRijF8/Y5L+mrEmKbpsMtWTPksYdcVcqfQb6yI0jzoIILgwYbZF+WndSIw0hhp7anPdRXDLgttxNuyBy8UGxGxpRLjuCTblrF+pkkS5C8rtjRpYiFJC+2Zlu0fbWUMdbZSo2i7Z3ybeoodbvp1UJOKLxsjhQEq4PPz4Oop+OtFEVN2dEfcU2JkuqEZXRQAEK7yF2K8YvKEWDWkNAUYcJ1yiejPGRclECBMJCIa4+U2zHr9fY69slO4VgW9BPDxIs8qnRt6lp9jfp4LaIXtHMQ9mgw7IEQrMahxKIT4qoCp1EEGCXNBV/WC3z5LTXnvMBTksArAtImfS/CgCAond13cwEmIFdIIgH711PmLE9jysYK4F38jsR29zVFWUdru7s62UwYGhBtdihaECdb7V4wIIjoGVBGZIzfKyLmGBujfG3SvmVg8LMBZ9+rVnEP7b4IUk0xYsd6xf/tLvAtoAx4dIKvdOfmHtoOLyqH+cUpAYftUFwBpIMET65Irlu4UU3rXl2EzqldB0r6Hiyhnwi3rFnazb59MBatYXwOzcUnidrFR1f2PeRvyWBNdqPVeGPV/94aqIC6IP072A6lnY8w01F68IqvVfasC4oZOjCr/YLLAI/dGBEy2jDZvIHA36r5Loy1m5k0lxk+IO4A9PxaBaBMmPFP0zS9JLtVkAWBKPCsAKn3q8+NPDt2UG3v0UKFLL9A+3hDnKHa+if9As0uEBLFq9R/IAxRgTcdDsTRr9jskToThcygmFXxjGc
+ WNEnigzp
+ JRr43EogPLEp0W+GB9r47fWNrxuUsw8ur6wtB246ve2YuQQFhlnxXTEshXhzLgqJI0vduiNaiCfFiLunnBM1LSAQR7A9ybhToqBHsmw0bt/LXmO61Ws/WgQ3h5oSJ3X2ow+wSlV2dqUMWJHyT0cuaBizitsBf1NQT+O4qCMkswjYXva7zLYTfSlFer4rhBiM0bImNM1AMgPKQswKEv2T6v+WwUwG59zFQxO+x07B6ZrRvfpbk3Qz/WEkmdvQkVFk+vkEzfzNJdAXqDVCY7tBDV8zzG2WrKfxAUza+yxjpCvTmB9d5YAeu2EpwDi3RzPsGyG0O9zafJA7ye+c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,32 +152,52 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 8/20/26 20:55, Kairui Song via B4 Relay wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> The restriction that swapcache folios can only be uniformly split to
-> order 0 dates back to when the swap cache was managed via address_space
-> mapping (swap_address_space).  The old split loop only created order-0
-> sub-folios with a fixed stride, so non-uniform split and non-zero order
-> were rightfully blocked.
+> The doc comment for __split_huge_page_to_list_to_order() needs an
+> update: only order 1 is rejected for anon and swapcache folios,
+> matching the new_order == 1 check in folio_check_splittable().
+
+I'm confused, why is that not updated in patch #15, which also updates that comment?
+
+If there is some preexisting inconsistency, the comment should be fixed before
+patch #15.
+
 > 
-> After the swap cache switched to swap table under a cluster lock,
-> __swap_cache_replace_folio already gained the ability to replace any
-> number of entries for any sub-folio size in one cluster, and the old
-> swap_address_space locking and limit was removed. The restriction
-> became obsolete but persisted through multiple refactorings.
+> Also realign the continuation line of the function signature while at
+> it.
 > 
-> Drop it now: swapcache folios can be split to any supported order with
-> either uniform or non-uniform split, except order-1 which is not
-> supported for anon folios. Mappingless swap cache folios could be either
-> anon or shmem, so for now we just simply forbid order-1 for all swapcache.
-> 
-> Acked-by: Zi Yan <ziy@nvidia.com>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
+>  mm/huge_memory.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 06f353f937d1..0a971ca48151 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4400,11 +4400,10 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+>   *    GUP pins, will result in the folio not getting split; instead, the caller
+>   *    will receive an -EAGAIN.
+>   *
+> - * 4) @new_order > 1, usually. Order-1 is not supported for anon or swapcache
+> - *    folios: anon folios need subpage 2 for _deferred_list, which order-1
+> - *    folios lack, and a swapcache folio may become anon once faulted in.
+> - *    File-backed order-1 folios are supported, since they do not use
+> - *    _deferred_list.
+> + * 4) @new_order != 1 for anon or swapcache. Anon folios need subpage 2 for
+> + *    _deferred_list, which order-1 folios lack, and a swapcache folio may
+> + *    become anon once faulted in. File-backed order-1 folios are supported,
+> + *    since they do not use _deferred_list.
+>   *
+>   * After splitting, the caller's folio reference will be transferred to @page,
+>   * resulting in a raised refcount of @page after this call. The other pages may
+> @@ -4432,7 +4431,7 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+>   * with the folio. Splitting to order 0 is compatible with all folios.
+>   */
+>  int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+> -				     unsigned int new_order)
+> +				       unsigned int new_order)
 
-In contrast to the other cleanup patches, this patch changes behavior.
-
-I would suggest to send all cleanups first, and send this out separately, such
-that it gets proper attention and doesn't get buried in a sequence of
-harmlessly-looking cleanups :)
+These functions should all be concerted to double-tab as we you them.
 
 -- 
 Cheers,
