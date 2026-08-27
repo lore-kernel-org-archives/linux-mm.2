@@ -4,139 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2362C61DC4
-	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 395B0C61DC4
+	for <linux-mm@archiver.kernel.org>; Thu, 27 Aug 2026 14:07:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE8836B008C; Thu, 27 Aug 2026 10:03:18 -0400 (EDT)
+	id 886176B0095; Thu, 27 Aug 2026 10:07:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E98EC6B0092; Thu, 27 Aug 2026 10:03:18 -0400 (EDT)
+	id 8376C6B0098; Thu, 27 Aug 2026 10:07:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5FE76B0098; Thu, 27 Aug 2026 10:03:18 -0400 (EDT)
+	id 74CD36B0099; Thu, 27 Aug 2026 10:07:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B08516B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:03:18 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F2DD80464
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:03:18 +0000 (UTC)
-X-FDA: 85147216476.10.38D6324
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 40CA720014
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:03:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=F9LqKLOM;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 52CF16B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 10:07:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF67C1A042F
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:07:15 +0000 (UTC)
+X-FDA: 85147226430.30.CEB76EA
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D503D1C0017
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 14:07:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="k +WVhfA";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Up7ccU1j;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787839396;
+	s=arc-20220608; t=1787839634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ALN+Th3VygsiiqX2bmJC+etz4YolkrPm7RtMfzNo3Zc=;
-	b=8gAZmzW8RG8lKYxsfUdRTSXAS0gjN0Y9tOKWOGuK2j+HrfX48H1m/iTlzJp3xMw+Dq9HTK
-	rLDO2aLOf2HV1S9cC6wKGNLCkiJjCtS/IXO1oGbC6sYqnfiLDdD8jRIhDKDajul9+pojbG
-	L24pTI63fdKPGY3nMfalY30HzXVtrV0=
+	bh=G3Dh2o/3HyrcxPByYeYJukS7fILq/peuiJJwPWAvDzQ=;
+	b=We46pGkte5lS9ePpJtRgcuKqoLZUHQoxf5W2uH3qaPaB8g77Qh9fGetf96jVsU+9HPlfxu
+	DTfhJud5BVxQT8R/t5CcuNbjMj4F+regPARI8Y9JkmFH4H+PpN8OfaLC8Do3WvoZlOJnHp
+	WP4ojLea4mvPRCEZP0yl+wz6oMr6p3o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787839396;
-	b=Bkns4g3+D4v9Ueo3ygSthVEAxxYuYaQfkYo8/DjDkpkhadCTb7xVkjN86kqqThvdbEcIAF
-	bZe49DcV7lX9Mbz4z5EJIkwmlcxbNzpoP4E0sEtpM4TAoSYtrZuM7SisnxwKcbbtgQbVEA
-	JdVVM07MJcLJysni+POTvCsIV4SgGQ4=
+	t=1787839634;
+	b=yjmWOWYi3IkdwnqY+wNDgKFYcI43fCzb/mB+WHKDtapoZKilLjeNVAYj8YZjPdnex3+ARU
+	Zprnv7EFt708PQ9M5ooX5qCni3FvmpX2mCJdSntghUe5uZSl7vkIi/TY7FtemAZ2r06EXy
+	wtW/qwk2HXWJ6k040gXMsToES7E4fU8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=F9LqKLOM;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47fd4531020so1275324f8f.3
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 07:03:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787839395; x=1788444195; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ALN+Th3VygsiiqX2bmJC+etz4YolkrPm7RtMfzNo3Zc=;
-        b=F9LqKLOMZvjN8wl1qALT4Q8IlwD/VbcHz4sFtLwpg1pHwjZzwd77RNV7VCJHuGFkdV
-         yhmhGqvlKiwQPArNNADXXjVJHBAdNTxaSPKBa9fIf7kqJvNk/Z63thXhRIi+SQNy0Yiw
-         O0RRWlABWG2wxrQq3tKu7j1Xgiu7lACxZq485doZKqy/0IrZbn4aHS+bo+mHdZgkJUlB
-         Qx5gIAunc9ksapNyikLhwHVUQIIxohi0qK2o6AUBSXdGdUAi0/XVUtD7DldppDYmBvkS
-         wr0iGzIuaHNbwTkT0wBQNKWU9/jF5hkryAW4VqHUi+2VdcgatAs/oBQOOZccVq1y7n2l
-         vbBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787839395; x=1788444195;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ALN+Th3VygsiiqX2bmJC+etz4YolkrPm7RtMfzNo3Zc=;
-        b=Gm9Yynm1V6KvGu09Ti+hTunuD7AxCAr2grUBhQNAxsBREaMpDk6rZBJicTGJRInoKS
-         OR/2PV4t31EvZ9jHHnOy2Gye6Jj0pxgPgqHe62JuPexggzaKh4SHZOzJzfODmHxIHsan
-         SNJ10iufIOqTc/O6X/3K7wvVA8Byy623ndmcxV4F7tdAOpMDemjxZ1Jt+vgJlWnk9A3F
-         Fv/VudJSYYzPWFU0pcO61v8mJF/5MkMSNR4gmLoe2lR5bwxjjj2zerXgu4ZxDDhJK7GG
-         xeQkDOO18u3eCfJgnS6NyXTO9RCNlp5LwVUdl55hh2dNjnWZczpGT9Mzge+7+XSM1lKS
-         8zkg==
-X-Forwarded-Encrypted: i=1; AHgh+RqYwNFR0uRKptYLJ8wVX/LqBwd8fIysT9BfP1bPSf2uUgGLmqnDL3Kv0yiyFdcCG9+14n41fVUNRQ==@kvack.org
-X-Gm-Message-State: AFuF++m2rCutfKI8908ivUK11KQXhdDMQlFzK03a5gzHiAjWMi8vgO+H
-	uLunBVfkQUH+wB/aEZQv2PSQOSRjLJEKqDceuJLAdvjiU/vXjb3LGSwlEfFYtBH/cKU=
-X-Gm-Gg: AR+sD114wbS0TQ8rS7K4KadMqNA8mrYIOtLv77YvKEtU47auZxMlxLjyw+feOKvTgg/
-	F6O9cvtsgOQIiDRKHWA/zNvG3YrmoSdYuhPn7jh7exqer9YvU4cshYQHkWQ11VeiIoDZLAM1f9n
-	oHCGhUM4WM/DBk2LKa/AMbaCattjCCiTEAvA66i6FR7ayZNV2T3lr3JCytO9Sk8iF/vJmN4hTYG
-	/WA1DEpi3OxhYM9tvwnFgvb5lXwIZCdLEyGMvp6V5B6SMr5VENox63g9LvAGn+9XXJBK95V4fO8
-	aYweV7NB2u12pr+DjRkoLU4zRXlgdlTCmxLpX5MiVurhcKFkuQhP4RJAZBfju8tGUrKktCbaeKI
-	7ooK75lYzSz9qv4yoFYxCe57CumBXNBWfp1jHGUkOp1DYyqlkK/zM7ytaCNIqQ3GLSqbaMQ7Ffg
-	r1cR27lkRlnTzZ2fSQ0UqRuHFs5g+SkQ8iJDs5xzwtLRvBFskjaQm8tY/dcsdtTeZ/oIbw5naV3
-	Q==
-X-Received: by 2002:a05:600c:4e55:b0:499:484a:81d0 with SMTP id 5b1f17b1804b1-499dc723fadmr189406965e9.9.1787839394561;
-        Thu, 27 Aug 2026 07:03:14 -0700 (PDT)
-Received: from localhost (109-81-32-216.rct.o2.cz. [109.81.32.216])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e28dbe1dsm9947082f8f.22.2026.08.27.07.03.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 07:03:13 -0700 (PDT)
-Date: Thu, 27 Aug 2026 16:03:12 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Eric Chanudet <echanude@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Maxime Ripard <mripard@redhat.com>,
-	Albert Esteve <aesteve@redhat.com>
-Subject: Re: [PATCH 00/11] mm/cma: charge cma allocation to memcg using per
- area counters
-Message-ID: <apBDoJEq_4UuJAaP@tiehlicka>
-References: <20260821-cma-memcg-regions-v1-0-d21b165b8440@redhat.com>
- <aowHqqaqK7TeexQH@tiehlicka>
- <ao2gA_m3BCBu2esy@echanude-thinkpadx1carbongen13.rmtusma.csb>
- <ao2t6HP-Zt5KDg30@tiehlicka>
- <ao3UKM5SbxBmxuR0@echanude-thinkpadx1carbongen13.rmtusma.csb>
- <ao3quaSze8YjPjxZ@tiehlicka>
- <ao3tFg4JLNlbylTR@echanude-thinkpadx1carbongen13.rmtusma.csb>
- <ao6eC2SUIGVz3Qct@tiehlicka>
- <ao8uZ0cNyqaAJuPB@echanude-thinkpadx1carbongen13.rmtusma.csb>
+	imf21.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="k +WVhfA";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Up7ccU1j;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.152 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 4BBD71400151;
+	Thu, 27 Aug 2026 10:07:13 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 27 Aug 2026 10:07:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1787839633; x=
+	1787926033; bh=G3Dh2o/3HyrcxPByYeYJukS7fILq/peuiJJwPWAvDzQ=; b=k
+	+WVhfAHo2YaBEPZMooT2RGIZUpcB1FWU2F9wSfnw7MRC4jTgs9qn5VDe3OuNJ4Dj
+	fS+Vw3YdZoxuLFk52Y2G6cfXQLTE366IVCjrzlVOHaG/lVjLoSfuli0aOR1tJk3l
+	LAETQmeP7bYOaLiymSWtFk5WXteVzqd1xzpeN/0/xPX9qXZeA8+ZPF62EzSD6gmm
+	lmJwxEYdzGlld6QDJIAEkHK6mRgf82xRKs0b8dcT7NCwO7nXswXhF+Qqax7z3qSV
+	OUH/0G4G5eLFi+9P16Uy/pc4YC+Ouu++VUflnxV+N20DysZ3Z8mV4h7uq43vVsXo
+	DY0v7xf2nPyUCwGeT7t7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787839633; x=1787926033; bh=G3Dh2o/3HyrcxPByYeYJukS7fILq/peuiJJ
+	wPWAvDzQ=; b=Up7ccU1jT9GuRd+iGBKZ2+hUH3YHU35EP+BAtvBZntcL/xyTz5U
+	0X91OB2BiFiKMBYUJ68X+hjHM57ntLqW/q6SOUQDm09+jW+udxYbStk2lCBw6BWx
+	jh4FwpP+/MJD1t03tNVghVH8jv0U2Io4EmC6+TDB3JddVstzg4ttxIJCugPCe7Is
+	nF2cDNVjTA8egC0OTfk025BpiDauey1IPPD5Hpt1/k1Y3Mvl+l2iw8/tyJ3Xwr2I
+	fFI+5cTQewhfL7zyVhVhh6IDeZTWemLiupaxCNGZbYifKu+v8qVNb/uepQvuLitm
+	wJcKqMJsdpLoSmSUwu9dLyir9bC5ZgDfbsQ==
+X-ME-Sender: <xms:j0SQatZREgDKupZ6e-QiI8qPyZLTUVn_MDtJgaFlhpoJIl3XFGAnrg>
+    <xme:j0SQamxCDWZU1nm8SrPjh4NyrxoTGnwttWx7zWxCf78hFXYd0uuBZBg_lJeuyxjqi
+    AVTlWy0HlJ-4Necs0EK1HVqz4YPIMTFXgS7MZ1S-gNCEi1FPQ2Rqkk>
+X-ME-Received: <xmr:j0SQapNRdTp99qK8rpvfxeAGVLUpaSzaTS9wcqrAChpex0QGgmaYbTofE0U>
+X-ME-Proxy-Cause: dmFkZTFGSW/RJfX5fFLiJJB5xonRRzVd46tFbFtZOtPw0QpDPCnI5vfoNCDg0AQK4EaV3w
+    6GfGtBxca2h0U4zuEcIoGCk3U2UUI8Udn3EpP4OXFa0hB8BMDqQeZ5idZ8pZFAKqjG0QoU
+    BLTJOcH1ViutYOCUhUny/Ca+Ry8gP9QT6/7XhX9q1pHvOPGGPgZrn3alTue2quOKF3x9B7
+    pjjpFerKzliWyeFmKmU4r3eZG4uGomhOD4g59ZDLXyD0L39QPG+2lXkCPhTmgGacfqwlqt
+    8HieHcppXor1VEzneMl15UHX1u1FF/m7aO0tg+KPti97apdJLSZiHwRXR6hXJNYJKLYOaB
+    8FSwVCXbuYkDkY2CnkT5ho8Oxp9reXyVTpZxzLLbsO+VZ8GWwbZdIrYqC0166pJ1iDRt8u
+    VmeXqVVsbq8gWBxinQOq0Jif6pgnFtK17BhAuCwvNDvjIXlJ1fMtMbWnzEhRV7Zq1PG8S4
+    RLiAN9YDw0797axKORICyddaeWUM2/UhOyjf+OnB4kP1VspcwtbxQkmidGyWiJ4pKnaqZ2
+    0QU6XeZmFZ0IC/PD072C8qNfv+zE35hV4Mg1TVHH3pXU9LnnXnKXBgdxAHQrkbcvi1+Ses
+    wxvZV310nAUqJvdsiINUF9t/VOZXtsWebKqTRdJbaTQqVEHM+LYvaAI7k7wg
+X-ME-Proxy: <xmx:j0SQaux4goRFOqWJjSufhN5OUvxxmwz1NJL8WuxvRF1V0zC1bTZy-g>
+    <xmx:j0SQarCNNAcIciXtLnLi06MrZG3QWyAHE93vWm0bvddUksdCQT3bog>
+    <xmx:j0SQapOjsbQBzNitLv8HTOlQEQQTIS6B2PVJADRC7xz-W4yKJppDeg>
+    <xmx:j0SQasZNuxNbWpoOubRdWp8xFFZF-e0tH8c4ysDKcG3QQd4rt01sTw>
+    <xmx:kUSQarhEO7Zqa5q-8mUjV6gui5X0-wd3vjcxXTeOSmwKaiS6FSmIFGy->
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Aug 2026 10:07:10 -0400 (EDT)
+Date: Thu, 27 Aug 2026 15:07:10 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: david@kernel.org, baolin.wang@linux.alibaba.com, 
+	pedrodemargomes@gmail.com, akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com, 
+	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-stable] mm/khugepaged: avoid unnecessary checking for
+ swap entries when collapsing a mTHP
+Message-ID: <apBB01VBbmV28gWP@thinkstation>
+References: <d02405a5-1d0d-49d5-9056-1a34ccdeef10@kernel.org>
+ <20260827121151.7837-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ao8uZ0cNyqaAJuPB@echanude-thinkpadx1carbongen13.rmtusma.csb>
+In-Reply-To: <20260827121151.7837-1-lance.yang@linux.dev>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 40CA720014
-X-Stat-Signature: ptuqsqbbitotyios3dgoci4kjtdyfpbs
+X-Rspamd-Queue-Id: D503D1C0017
+X-Stat-Signature: aabhswrmsawiyij1pcwmo65m53xbcaue
 X-Rspam-User: 
-X-HE-Tag: 1787839396-716399
-X-HE-Meta: U2FsdGVkX18CxfHtwVEvDSRWlLkRsIQbJ7Nf8UMqaLp0+QRdyebNhayvKPf+gH8RbT5OyMGG5xUaz3O8TdeVHvN7kiXIRYcUkZsURPe+bt9kuW50r/8jx0hwMHstZr9ynbSgj8sUF5WTEMYcJwcza3ezDMnyaHNzX0sxOf9nZ+cJF60MSlZKE2HDcl10UNvjXErFm6EIO+DP9yFt0uwvFULrVhB9lDsxsKgiR4vH/WfqdMbSZsZ0+UqL3285bwxV6imQpll4xXMnWxgy1ogTbc11tcBeIawY69Dm0pplD2z22Y4x7B0Lw8hApDdHct63w2cOhbp4lgt9SB3Ybwo/nUeCD+EMPGqyLTOX5RLoXSfE61pz6FwGN+qLwjDSMlLEZPOnfUqwVlkWKm/Q97cKh2oejzO2iRMsb5oKDFc2YDwXqbah9tW8JW/FXRqOsu1kKNO1wBIe8tFn0oI953qPYY1RDQbMIdgapLTiUeJYsZXCOHZ3GqQcJLQOFQGeYkbMlbb0/+JuQLD6+M4NpM/PpfFS8AosFOJ3pcWOf/LkIpD4WFRkxRpXjzB1L75j7la/x++rnydJpb1XOKQkf9FZyJoD+JXITcSq0wt10iuW8pvsfbGtYUzOJzqUJLrBswrLh3P0dbnrEfmRgYhlwxu9hMKtyd2pJ1/cWWgfwi2cubgwk/WU1vJIl99adHjjgqCkpPDY2dpi71mCZU1+QrxEanY/TZmQuOqo9k1EgK5wRSTiV2LtheEARwFdQCnZpQu751kRJFNMikqGS26mY53RHoyTsdd/EZ46b1uhD7ftO2luT9nbqQtFSmCRVAUW7BiIP6txJ//rezgqyrrcwpLRYfPl0nGbhSirtzNJHbAcxb9GOxGH0lAlKcl1BQHWKG1DagdbD9xpZ5U1FrYAR8t8RVx76ZXSrZPxBpHoypNS/7iZGoABDZAVasBgQ98nBUVeHf/8DP6B83nTh4Pv/bM
- mgmz0/5L
- YfyQhSnTnvCBRUnf5kWMT/Assw5N1Dvj4AEbBlDDPPV+S0TwI8HHrHm0KnDv/KRDVW3lqJ7qcoUKeAuwMOWt+4DgZxQhheD8KcUQKeXpzbU+QD+3IaghC8I6unKLe0XfYoaHgg3tt9Dcc26HtB43NRtDZNGwDuj3wkU1RWEetQy5oKGwVzi0lQWKhKSiv283gM0UMp+gobMWjtzbgT+55w2jnROCNMu7zUqaQQML/wU4POBFuTbaXPmdv2LJy/ZXkh7Je+e33xc5xs31juYMXPvFBa+Zu3muaGX/M04ZCMNC0IFbGVxghLr5mMDkwphrAD1SzcESZSiWy5MPwrPD/c6ebTvY39CrE35131u/CVtBAmCdkVCSZuvVyOT67HBBjkSmQX/gG/cGhQ480mV0QRPNHiQ==
+X-HE-Tag: 1787839633-232392
+X-HE-Meta: U2FsdGVkX19U123VWGDPIN5drcVVB9ACIQjcPI6I2LmiHWAdP8/7a3+U8WXDURjUAV/LBX10nORP8shXJ8YROeA9Qp7rUdqR/oZcMw/EsSe5r4KFwKL/MY66VbpbIcEHp/s5baERo7qGCUnnhaIc3cd6MIQ6sMqe6jUduRATzbYlzKSIz95gqYx5kCKq7d15sBbxLzNsX3fu9kcf2Pgdbq9+eVyQaqjkDyALVJoeiJ5B/bBV7njSfDGuT4xYCjVAi0uMjxZLOk2jUiEeUPjCdCmqmZpEgEAeM20kBVDXVmKO6AGdXy1y9BLGQ7/GKa7HFh840CEYeIXDr0z7ii/ka2kVWYUmS42Aby/C15fevB6orwEsTWv5N8lxzUub70dR+/rGEankE+OvipSbSOwQIV56bT5YyCJLgB7+THQiEvIE9inqBLHhnzxOfVJ6fP2grDLptg1IjwaBB3IWN+dUUFeQT4vj7bZpVZpgBg32l9b/gIonwyfll5n7vcBA5akk0sXJheHwmPASvGzHOmNvwYux8TPRgwoEmh7eNR668+I50gs7EAzIojdRhOklTa1k9TN5dEg/IciaU1BPHlPymb13PMRwIAAmLF9AncClidnj8cdDXWnlnfoszIaIHkEtXBax8SyhhIyHhc0WATX/3v8ufVUQH1xJrsW76roLfyWoN7itoOVm/TMrD1I8CMhAcj/1e3gXggJpeOcdQDK7DefyB4ditonLt63Y/LefA/3cwEWdIlhGeRgAg8v/6xeIHwkh+9gFHpVsNoTjLZUWYW9YuS+3r/PlxIMGnRWHEM/NJiCq6GJ3qO11bR6tv0DlnJG+5av3fShTIRM3xTwivmNYRFg71362VNK/QNsbC+LFWFok18+/xtfdr0vzzN4lCXBgjEQTfkn3k+NrxDIcqGvwLMez/1NEb+ssYyyYwB9n7p1fP+uqChqU5SGZOZbI5UixBBpes826VqgSC2f
+ MFb0Ixiz
+ GwXSsSqz1XLgagpk33uVpP8BzcxhXb1jDCEVzsWc1NFVVHV87+j1U2ecd8Wf1oGUVjmxxDj3jouRYv/xFSzgyXaqPPsm04E+ZE6jRaBj5fAMkTA66ur/YgceLHtROs9UCzMTXUK40cXhCZBlaIJ6mm13m5OCx/zWjYO4TRyZeg26jKxH/xlT90JEpC2Kef6NbQ+iKBsNxzzGRISrH5472gpxud/99dMG7Cbs2otYcX87Tx9BDzPxgrfxnBogys8gbxTh39p4bxj/RqoF5ojSXCTBvNX++GeIxBJTGFgNhT6cjfJuvT7T/fS+E857twE7FL6HXhhdxWC9xnJfkjVaQsMfOLMqDYumAbZIOGuzAGcC1w3mdo/dB4CBEz8wQvHcefRx2EfMkt9uMFRpAtL1v65mQjyj+ZCj/+wXZWwB68zvO46MoSIMtv6q8EXtRDsG1rdiZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,97 +132,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 26-08-26 16:31:56, Eric Chanudet wrote:
-> On Wed, Aug 26, 2026 at 10:04:27AM +0200, Michal Hocko wrote:
-> > On Tue 25-08-26 16:58:51, Eric Chanudet wrote:
-> > > On Tue, Aug 25, 2026 at 09:19:21PM +0200, Michal Hocko wrote:
-> > > > On Tue 25-08-26 14:33:48, Eric Chanudet wrote:
-> > > > > On Tue, Aug 25, 2026 at 04:59:52PM +0200, Michal Hocko wrote:
-> > > > > [...]
-> > > > > The administrator opts in by mounting cgroupfs with
-> > > > > memory_cma_accounting. At which point the cma allocator will charge CMA
-> > > > > allocations against memcg and manages a per area counter depending on
-> > > > > what area the allocation was made into.
-> > > > 
-> > > > So each CMA area will have its own counter and limits?
-> > > 
-> > > Yes, in order to enforce a limit per CMA area this series add a page
-> > > counter for each area. Areas are fixed and discovered early so the
-> > > counters are added to struct mem_cgroup and initialized when the cgroup
-> > > is created.
-> > > 
-> > > An admin would then use the cgroupfs entries to assign an area limit to
-> > > a given cgroup, something like the following, using the reserved area
-> > > for example:
-> > >   mount -o remount,memory_cma_accounting /sys/fs/cgroup
-> > >   echo +memory > /sys/fs/cgroup/cgroup.subtree_control
-> > >   mkdir /sys/fs/cgroup/mycg
-> > >   echo 16M > /sys/fs/cgroup/mycg/memory.cma.reserved.max
-> > >   echo 64M > /sys/fs/cgroup/mycg/memory.max
-> > 
-> > OK, thanks for the clarification. This confirms my initial suspicion but
-> > it is better to have it clearly articulated. I can see several problems
-> > with this approach. First and formost I do not think dealing with all
-> > cmas this way is manageable. This can become a mess very quickly if we
-> > have one limit per cma and too coarse if there is a single one. I also
-> > have my doubts about space allocation control through a simple limit for
-> > something that is effectively a reserved physical space.
-> > 
-> > I might be proven wrong but unless cma serves objects of a uniform
-> > size then this will simply not work in practice. Hitting ENOSPC without
-> > hitting limits and thus impractical for shared space management.
+On Thu, Aug 27, 2026 at 08:11:51PM +0800, Lance Yang wrote:
+> For the candidate above, the loop only reads its PTEs and returns
+> SCAN_SUCCEED. Pedro's bitmap lets mthp_collapse() determine that upfront
+> and skip the walk.
 > 
-> Isn't that an inherent limit with CMA as it is? If the area gets
-> fragmented, some buffers may no longer be allocated since there is no
-> remaining hole big enough to accommodate them? I do hear that putting
-> arbitrary limits would make this worse, which might breach the threshold
-> at which it becomes a problem.
+> Emm ... as I asked before[1], any numbers showing how much the extra scan
+> costs?
 
-I wanted to say that a limit for something that is basically a
-reservation problem for shared pool is an ineffective solution.
-Exactly for reasons you are mentioning. You might set limits for parties
-sharing the same pool but that will not ensure they will be able to use
-their promised portion - that makes low,min limits effectively
-impossible. And hard/high limits are only to stop runaways.
+With the win being only some scan cost, I don't think it is going to be
+measurable.
 
-[...]
+It can open a path to future work. For example, we could find fully
+populated mTHP windows in a PMD that is not eligible for collapse
+because unmapped > max_ptes_swap. Right now we just give up on the whole
+PMD in such cases.
 
-> > Thanks. Yes this is more clear now. And it resembles hugetlb situation
-> > more than memcg. You simply need a memory pool specific access and usage
-> > control. Dispersing that to a global memcg limit seems rather coarse and 
-> > I would say impractical. So it really calls for a per pool control with
-> > an understanding of how the specific pool really works.
-> 
-> Thank you for the feedback. It looks like this won't work. It also
-> excludes the attempt through double charging dmem[1] as it would have
-> similar issues trying to use memcg.
-> 
-> >From your last sentence, would this rather call for a different
-> controller entirely that would handle CMA semantics?
-
-I would recommend focusing on specific CMA users rather than trying to
-define a sane semantic for all potential CMA users because that might be
-a lot of different things.
-Then I would suggest focusing on the ultimate goal. Do you really want
-to provide any sort of guarantees (a reservation system) for a shared
-pool or merely cap maximum usage.
-Last but not least think about whether the whole sharing of a
-constrained memory area between uncooperative parties really makes sense
-in the first place. Especially when the pool serves objects of different
-sizes and fragmentation becomes a real problem.
-
-> [1] https://lore.kernel.org/all/20260519-cgroup-dmem-memcg-double-charge-v2-0-db4d1407062b@redhat.com/
-> [2] https://lore.kernel.org/all/7e4e9662-d876-4493-a0b3-e31640937dd1@kernel.org/
-> 
-> > -- 
-> > Michal Hocko
-> > SUSE Labs
-> > 
-> 
-> -- 
-> Eric Chanudet
+But there are more wins to gain there. Just saying :P
 
 -- 
-Michal Hocko
-SUSE Labs
+  Kiryl Shutsemau / Kirill A. Shutemov
 
