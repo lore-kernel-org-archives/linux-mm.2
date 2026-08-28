@@ -4,138 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8350AC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 08:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9DC8C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 08:11:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A8506B0088; Fri, 28 Aug 2026 04:04:56 -0400 (EDT)
+	id 88CAD6B008C; Fri, 28 Aug 2026 04:11:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 809E36B008A; Fri, 28 Aug 2026 04:04:56 -0400 (EDT)
+	id 83DA36B0092; Fri, 28 Aug 2026 04:11:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AAF56B008C; Fri, 28 Aug 2026 04:04:56 -0400 (EDT)
+	id 72CC26B0095; Fri, 28 Aug 2026 04:11:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 409236B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:04:56 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D9CE0A02AA
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:04:55 +0000 (UTC)
-X-FDA: 85149942150.17.F21E12D
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0C15D14000C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:04:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VJd5Geqm;
-	spf=pass (imf23.hostedemail.com: domain of hughd@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787904294;
-	b=1TZG/a+QRyKNgYyCjycRr+DSx81dGp8WbblAKVi+1BWHH9pYJaEUluEy3nOjzeWG5uFchj
-	y9Zw6iSsVXQftZbmwB+kBuzvD90DfwcmqQFgIHmjajNfmUPwUk4vpQvODjg2BuAR6TGQKC
-	8N/cx6lvK05ISOv8b6k79gpG+CiHJwk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VJd5Geqm;
-	spf=pass (imf23.hostedemail.com: domain of hughd@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A2906B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:11:48 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E3AEA3B1A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:11:46 +0000 (UTC)
+X-FDA: 85149959412.27.E192A9C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 31CB31A0006
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:11:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=az7+7cic;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787904294;
+	s=arc-20220608; t=1787904704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cziOTKmVhxUE52ibRD2kF7eNQJ4Wv/wGrdlgF7Hd+bw=;
-	b=SKXRX3d7CCzBANfoM9UB6pKOV5+ZL/MKO8zgUfr2JNhJuxUH9uNmcSgQQKwHc4UVOY6oD/
-	kEJ8ZFCKKjVqNe5yrNcU1EFEbypLZqXO8nlmWMWxymQ2YvTjhMQttQZln6DZ8ZJMGdfYOx
-	txg0fALiam6rTfQjKsxG3AzdFpSMIqE=
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7dbcb505578so8215277b3.3
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:04:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787904293; x=1788509093; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cziOTKmVhxUE52ibRD2kF7eNQJ4Wv/wGrdlgF7Hd+bw=;
-        b=VJd5Geqmz/Uz9I7xPSJ+zoZEsLf1gLUBL6sSPWAPBmk+tXQNSDz+OgQ1fxbM35JvjE
-         jw45DTZ4wlN3zgVdgK/3GaJapuxVxEJ3h1+2lMJpmqDJDjXvkNtCWRk9Rwz/vOkfqQDU
-         S7CT8PXODkX/1p03u3jMm8VbS8qis2v1+Eo1w0v76mLFfL7vbFXr//A2Oj34D7N65n2C
-         wjvAkicMtyOCbNogg0DvlteTv4Y8t+XRxL8X6NKXBhJLevY/gib3iRUjC9WE+wXMqmCt
-         bI54TMJ+b9V3wBeZOLVKlv3JYNGGOTLFryvgTPaCFBjjMOHiY+1U0VxM46Y0ACxUlrew
-         FjyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787904293; x=1788509093;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cziOTKmVhxUE52ibRD2kF7eNQJ4Wv/wGrdlgF7Hd+bw=;
-        b=OBlGB8RQ1ei67lCsASkJ85x9CEf/c4kPnIueOHX7ekATp0UoMlD25hZX4Pyp5Y4D5j
-         KVH9N9cmLrKVhWqWSgarx+1GVxVMHFSLQ6w7DFtFekVCAeFMeqLN9vKfq/DI0wBBWKgn
-         Xsz2E+f4/Y/w5zzIsvf7znxa+wVwKjq1WVLJs1oTXaqYcYwIoP9eOEf0Sq6m+pYILbPX
-         SxST7V20I29z68nR/0CTOt3V/cupj5bt/S9jHmoiTCn/6EqB0QaEWKrlNnxsjhCSBcG7
-         bD+W1uFpXNdUZb5WJf9Guo4NDutHsnZham+UD1NEQ0wmtoJL8RwJTF1Xn2oBP4yCYRzy
-         yJ4A==
-X-Forwarded-Encrypted: i=1; AHgh+RoziNt4LbTRpUE1NiR17HRHfZIS9xTbInKORBGHSfX/zR7w27hTmNWTmrS8VRQUk46wCT8UvJg8TQ==@kvack.org
-X-Gm-Message-State: AFuF++mTru4bwPE2csxQCg/KBZcaN7D/1qSFQmm0gV5eh3cJw80EX7KM
-	8KiSTQ2/5B9Uudi1smAhKRJBN0nDrY8G2DtZ6o+f7Wg95AIQNX070jh8rCpkGrtLKg==
-X-Gm-Gg: AR+sD11B8LF2OtEEe9VfdkNoaXKmHIBpN1AwNPmsIyWEVyrtz99xpN0grN1rYJK81QN
-	Tb2Sn3CEYVfas886Hgs6nzTJeAGSOWbOF3H4pCGvebh1VwolKCd54yzMiuBUtmdnh3l8EQQl2RN
-	T+W9lQ7HvX/m+9N3FcvUIx+Avk/GmJ6WwBhgGgeqSZRH6k76jQ2GrHezDUr13kXaEXteQDWgL16
-	qYBrCOcLt5q6+9EzaLVp3fXiltQxTO0S0Q1QFdkLbzxcDVXDjdUuVPtHHa+uddAcLf/IsQSuIZl
-	8Bi151skRGKskhOIMr80gM4Mh4xGb65WpfblnunwJmvQCsC9dRdl2IZ126Sv3NJvcLVnich0bp+
-	EQhx48/zp9Cz5eAXZ/yxMNq0W+HoPzxX85hxy0ofPqYl6TnFBqvAj0Q8D6NzdCaw72QQ7V77Ik1
-	5Khsjtz84ZVuMAUrVOoXs4q+lSNOg/z5iReYEKrgHNnl9yQwbuvDIpIK2acC5I/Ht4yCmPLYDHi
-	k6mUdgi3YyESOyotKAofOQkOj0v+xWK/obhbCMgJpUaMH5x
-X-Received: by 2002:a05:690c:4f89:b0:80d:15a3:7b1c with SMTP id 00721157ae682-85d68a8ebdamr19896027b3.4.1787904292453;
-        Fri, 28 Aug 2026 01:04:52 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e5e181d7asm3395277b3.4.2026.08.28.01.04.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 01:04:51 -0700 (PDT)
-Date: Fri, 28 Aug 2026 01:04:34 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>, 
-    Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 04/25] mm/fbatch: lru bit set, no extra ref, while folio
- on per-cpu fbatch
-In-Reply-To: <apAaWsWPV9QEeVwn@thinkstation>
-Message-ID: <3b8d9cc4-d6f9-6bd6-f774-34cfca9c48c9@google.com>
-References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com> <e0887417-85a7-453e-e733-561dc11db08f@google.com> <apAaWsWPV9QEeVwn@thinkstation>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cx4I+B3aP0EXT3W0wW0Nz/MLE1TW2YgmJCB8jCOdmTE=;
+	b=7CtyoiHLvZQTmU6khnYMrzRg0kJAUA8bgu1s8v7DlRYL9I4VJ+DTv+6BCOEvHyze5epLkw
+	RFitI6G2kCLe8JGVAi4sP0ddjMAYgisebgfJ/qli8lvCmjBgBxwJAueDmHbyLSRugEaSuv
+	qEF1U6ZAkIHHohIvmh2YGg+YahPRvdw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=az7+7cic;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787904704;
+	b=6/wsK5KdTW0Ill3akiA3xIzMp91wGrld9hZJ4blXmn3Dhc9vS35tNiPB/CVYIM3JsJPCrS
+	Lt/x2dnbzRYnHHjkWhpaklTUzoaD2PLQxzeVB3z3LTyCUUfW85CSg3AdrWmg6qUSQDl++7
+	gcG5And6wzwQHsz/Ez4xuuGDyvZwosI=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6668D1516;
+	Fri, 28 Aug 2026 01:11:39 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B40483F85F;
+	Fri, 28 Aug 2026 01:11:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1787904703; bh=USOUzZRz3c0fHctBAtbTyU36BIoeCR2Irm1oymvy1Z0=;
+	h=From:Subject:Date:To:Cc:From;
+	b=az7+7cicnKBQ4YE1gf1xYFVll6DUXUj/0LcNUrPlF+q2kN6lMjqfpwg21E5G1r/PE
+	 Hk5FiygbfHcuyOPoOC2iqNfuaTeb2TJNTuRMsulLWoly8CUjUjJwbzN2p1m9+vlPO6
+	 c6pNfGHqj04ZUWmk4r6hrzs10nJwXVOzZY/Tng7M=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v3 0/2] kselftest: mm: fix some failure of
+ split_huge_page_test
+Date: Fri, 28 Aug 2026 09:11:32 +0100
+Message-Id: <20260828-fix_split-v3-0-374022586a4b@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0C15D14000C
-X-Stat-Signature: 7gmicwbkd1jm3rqroe9kkktgygxmw3b3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIALRCkWoC/22MQQ6CMBBFr0JmbU1pqxZW3sMQU8apTCKUtIRoS
+ O9uZe3y/f/yNkgUmRK01QaRVk4cpgL6UAEObnqS4EdhUFKdpVVSeH7f0/ziRXhjGt0QGtNbKP4
+ cqZx769YVHjgtIX729Fr/1n+VtRZSuN5oiSeLF/RXF8cjhhG6nPMXt8m10qAAAAA=
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+ Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2222; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=USOUzZRz3c0fHctBAtbTyU36BIoeCR2Irm1oymvy1Z0=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqkUK7FZ6xrgwXi+C79j9XWUXPL157DEfNDeyvK
+ NH3vM1BzjWJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCapFCuwAKCRBt1cPRWsUx
+ M8p4C/9JENjCUm3iTLSylTH5Q2XPNcCbR8DJj9nKskBTusG5Hj6XCUUnfr//3gO/7CasIBssnuu
+ B5ReHNHtaHq/lbokLssbDICO5An0Q53c0pJkWddWHavvXdESeXDlqJUeVal3P19As4xwZ6zvPej
+ iaIGGwh4QB5YrDenpijUtphEjykFlkYzIFuAMb+JtrgiWhTPAFDIG3x76EAuZrn+AdutCKtujHS
+ xKxrfLCQk74x5IsRkOf/BQLbUa61rJmpNsN7odwpztE8dyrY1CUB0y+/XVcaAhu9iB+3ax9iX8g
+ 1QEJ3PN/v6fXsBRQVzMR/Z8ED9czEPNzsn9nmDHMn781/Kwf/MOp2OLbsU/IGQaPTSmjZaYDCiU
+ OvOnZOEtGwYuN9cKB3tz5pCVh+2r7qm+f0Z7Z46BOeD4mxVYeYrfeaH2MIqjTQK0FOY7KbWZWiA
+ 2J5KY1SnR/DxPXOj3QvgCtoVO9TVWeIZb9nzhOg1Wl0Zt0ESeEMW1MwQsMRmr5BmoNa4k=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Stat-Signature: 8rhuszzhmi933s7ei3obubjwax4e4q4q
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 31CB31A0006
 X-Rspam-User: 
-X-HE-Tag: 1787904293-482536
-X-HE-Meta: U2FsdGVkX1/Pxo+js7FM/ok9AyuqyDr+64+4JHHr1sFn5eTdQGTUGPMQmJCx+wHG9IRyIuSGetnWQIaAp1jq4ZyUs7C79UH26URzwWwlhX3p4hB1w+oRihJ6rFzAVOSOVKXfksKw8+yYxUlGRbrNfhNeJ/Q5Ls0XmUqhDL7mXxpEhMQJXp3yPzcPo972Kusy6aZCk79le1AfVYrZlETqhZF1oGJc6Q0gPRtw43bsp6JGactKJyKvAbzWe64jQBAtqdKuP6MEfcrKe7sJ1WSfQ9JYf342ppbI8f57XulTmWLYHd4Z5oIEFMoVemb3bUZRhM808qizM/VE+P336HcO8kHr9FonaddRPzpaGnIiMHWsxIjDH7FQyd57nYXWz3oYeTy5l0sdJl5b7FhdBymHriNr1XUgHg/NxJIpAV1nOyTTcqU3FcdJTsTIEFdJu5niiBWgzXpJH0xkwbjo6dMrBltQnIpZkZUq+Lzja5j6p2e1QkddZx4WYxrPWUi9qmuzUx2SMmvLR598+ngXWBcfP3sdDKeTzF+D/kztPWVMDJ+OURh8czIrdgUvfTY8dfN7rYAAtLKSbE4nenVSnrYAqV0VfrIChnfpRx0t4Z3M3FxCwE05uacUPGqh3hEGqgV6z5Mgt3l4hQkoYHyfdhijhfTGf9huTfWNaDf4X217T30QYujr2Q5LvPU8neEjE+uoC8+0CXZpox6a1YylTXHn5oZ5VJllUKuj3VfpPYQYeWKJOjE+zsLVi8xAFL+Z8bxdpSqKutUftUiOwDqQKtFSjPvpBmGM+PDRXhnapZKbs1ZU54HzoANBV3+tFUSMvQtjL7sOM7kovSlcJ8laHEWlpeUEwGtbG8DnePa/lDHMJteVqGPKtCk9EyOlO9q00rrHXXbxRz0C1GYKv0+C9qR5f4M73QC8pg4m2XVpDwfRk4ApVEJgvOidAZbqJqC5mFc8ZNPgyecnez2vZ/Rahmx
- WkJfiPXL
- 9MJ3/obpFsPCxbCQGsx2PSo9sA06hoCzlg/2BE+ayk6GmHsEbbw2c8vCyJLusbsuY/Q4zkPI9BnouPflxJ55bEo4+8o4BIFlHqsnIU1ys+GeJz6+WPFL8nNRutXq0WL3GugzuVIKVtnuIrVByXFYVG1i32tO57zjfX/K2PUhjYqnXsWZfG65A/DkpA6WXxaImeXsuDFlCql6vvnpm0Fjay7NhSIUNZ5TWr8w0nDFBZmlUkW5ZCQafQ+m5LRYP5y0lQe8vISSCG7nTfRauBS+3i+/PSIrYOWvQdqDbvu38vIJhHBTyDE6OnicxFFwB2AzooCyHWToN5Y6yddwUhYXoEWIlfd14LdFwCQz2S58Lb8f5op+sckXid/s+sHxa4PYBP8k3+FLYGD1pEaZVqc5due7eXHbTsfQN2jRs+nU1tn4W4nhZYgE45WFsqg==
+X-HE-Tag: 1787904704-598613
+X-HE-Meta: U2FsdGVkX1+A90CBRpshLYqKfE1uiG1qyCkWIQinhVc5dH63Wk4chFK3yKPZHByWk5JqbjRoYkidGQOSzQ1RlasHk4IVRgLbc71YLm6ujACUtfynJwpkOTWNhWOtjnp/hydolUG2gvDj5KyxYlepOivVCASMIb+J+Rlmui9TsFu2BHHVJBL1tZERjRmhLNgpYeBftgFtPHLlDlQKJctncXVGYshWCN805XiVqFwpx/I6EwNNRm3w4kvJK7gA1IH9pCCCFKK6XFE1AiBhLX8qP8u0yWdVjffpnEFXj8i9OvD7b6+MqpWaaDjudlDNdJpftiIR45dd0ujF+XucZwjnPG7xlqqKiCO2Kw0NKoWbKfz0qyTIxnNISHzVl/i972zQBRmsWzbVMX6uwCCqkFqXUYW4hCNXLxPF3f+OLr1Mw4WT6eLJjC9/MsxR7gtkkaidhLGfTOPa54VqA6PeWEZwTpYhPxnz5NBEAw/lVYVofLcBkorWyq9mrGUqwNzDC79BwXwV5I89ij4bdTqf914w3a9A2plW2MypHfPodNjlorQ+zCGflHwGzXfFITi29cKoTyGf8O0m9mbjofKOa4/dPpSIkTZX/1i55ALB4MBvJZ2ezMmySWnVl1JyuYEL5r0TW5fBfcAyZaF1wB13h147nX1640XX2B3sqTofK0ATwpWNZ9Ts3sMP9wFITHJ/5V5A5xkE5YS1JWwg+yu4jn2XaLfAPzQ+ZZSMaMbCAJ0vSFJV2hePgL5KrjQPT9ksqLDpOl4MGvbNfo+jyEl/twTs5DXw2hLSOiNBD69hGK0+cSyhaabfL70drK/EHr083t3vCSR1p74Soe2TJcjXg341Y8FJO8WhY9Wro+2JDE8bXHHbaTwa3NgBm+AcuGQCbtXUfHlq+hqi6UpA9mn4kUkyXHjJrPK2aLGgcRJY2WH+IjCYLJxLD5UCQ4P7s40GUaOuG6tzNjCB776hE1pIUb7
+ 9zSdedRH
+ v4T3C6azTt+h1Fv5fRkgmY4FfX7M9cYEEjZ2OP5F+o0ooeprPiC1ZZyJoHaBZWhSVTw7/zbZvlv6FLF3pffofwwJ3S1RPUd1PfeaNYlJAlDgTVL7XfxsZ4PvWF7WvAvBSJOg1rAx6PFVOrAX3RINcOGe5uSIAAHeS3nJMEE0/QbS57Aqhbf4NhVDpiyhbaMHILFUIILG6+q3qCqlPrvc9xroIeosy0Y+C1gEBUYOJ5DVdmn6NHN+KPYrkvIU9QNqebtx2lcqw1WtmL685xZXXVo1Pp7UdelbHvgUjUi9OARneZH1VV05rANZ4OtNaztYxOje8A08fVYNXQrJ6sbnDlduQ3fXIe/3vspZ9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,60 +112,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 27 Aug 2026, Kiryl Shutsemau wrote:
-> On Mon, Aug 24, 2026 at 07:01:20AM -0700, Hugh Dickins wrote:
-> > Treat folios on a per-cpu fbatch as if they were already on the lruvec:
-> > with PG_lru set, without holding an extra reference. This will enable
-> > the removal of most lru_add_drain() and lru_add_drain_all() calls soon.
-> > 
-> > Recognize such a folio by 0x02 set in the folio->lru.next pointer by
-> > folio_add_lru().
-> 
-> Hm. pfmemalloc (__GFP_MEMALLOC) thingy already claims the bit. Is it
-> safe because such memory is never on LRU?
-> 
-> Are pfmemalloc and PG_lru mutually exclusive?
-> 
-> Do we want to be explicit about this? Like, folio/page_is_pfmemalloc()
-> shouldn't return true for PG_lru folios/pages or something.
+split_huge_page_test can fail for the following reasons:
 
-Gosh, thanks so much for pointing that out: I was completely ignorant
-of the the pfmemalloc use, and a bit (bit 1!) shocked to learn of it
-(why wouldn't they just reuse a pageflag, I wonder? but doesn't matter).
+  1. During the test, khugepaged may collapse previously split pages again,
+     causing intermittent failures.
 
-Anyway, as you've rightly guessed, it's not a problem at all: these
-mm/folio.c and mm/mlock.c per-cpu fbatches are entirely for folios;
-and if any pfmemalloced page ever get used for a folio (dunno) and
-put on an fbatch for LRU, then of course its use of lru.next is
-immediately overwritten (first by what this patch writes in lru_next,
-then later by the lru.next pointer for whatever LRU it goes on to -
-just as before this patch).
+  2. Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+     glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+     made by memalign(). The underlying VMA may start at a different address
+     from the aligned address returned by memalign(). Moreover, a subsequent
+     madvise(MADV_HUGEPAGE) call does not split the VMA because it already
+     has the same advice.
 
-If you were to tell me that some subsystem uses PG_lru for some
-other purpose, then I would have to get more worried; but we can
-be fairly sure that's not so, since mm/compaction.c for one relies
-on konwing it's free to  play with PG_lru folios.
+     This causes the test to fail because the check_huge_xxx() helpers
+     incorrectly require the address returned by memalign() to match the
+     VMA start address reported in /proc/self/smaps.
 
-Whether a folio is ever allocated with __GFP_MEMALLOC, I'm not
-certain (haven't looked), but there is no need to exclude that:
-it simply would not retain that page_is_pfmemalloc() info across
-folio_add_lru().
+Address these issues by applying MADV_NOHUGEPAGE after faulting in the
+huge page, preventing khugepaged from collapsing it again, and by replacing
+the use of /proc/self/smaps in the check_huge_xxx() helpers with
+/proc/self/pagemap and /proc/kpageflags.
 
-Does stable_page_flags() present page_is_pfmemalloc() as a KPF
-flag?  No, it does not, so no problem there either.
+This patch based on mm-unstable
 
-This certainly deserves a comment somewhere, but not a problem.
+---
+Changes in v3:
+  - change  message in case of failure of madvise() with MADV_NOHUGEPAGE.
+  - fix collapse_single_mthp (mthp_khugepaged:anon) test case failure.
+  - Link to v2: https://lore.kernel.org/all/20260826-fix_split-v2-0-71153c7f579a@arm.com/
 
-Thanks!
-Hugh
+Changes in v2:
+  - rebase to mm-unstable.
+  - add message in case of failure of madvise() with MADV_NOHUGEPAGE.
+  - fix wrong setup expected_huge in check_huge_shmem().
+  - Link to v1: https://lore.kernel.org/r/20260820-fix_split-v1-0-ab430c58c7cf@arm.com
 
-p.s. Only in replying do I come to realize that I don't actually
-need that bit myself now (we could just put one magic value there).
-It comes from all along when I believed it important to be able to
-distinguish expected from unexpected entries, then suddenly realized
-that actually they want identical treatment, so no need to distinguish.
-The lru_add entry pointer is still kept in lru_next, but only to help
-in debug. But I would like to go on this way, using the bit, for now:
-partly because I'm wary of well-intentioned last-minute changes,
-partly because I'm not certain a reason to distinguish won't emerge.
+---
+Yeoreum Yun (2):
+      kselftest: mm: prevent random failure of huge page split for khugepaged
+      kselftest: mm: replace usage of /proc/self/smaps for check_huge_xxx() helper
+
+ tools/testing/selftests/mm/split_huge_page_test.c |  15 +++
+ tools/testing/selftests/mm/vm_util.c              | 145 ++++++++++++++--------
+ tools/testing/selftests/mm/vm_util.h              |   1 +
+ 3 files changed, 107 insertions(+), 54 deletions(-)
+---
+base-commit: 234e77148199ae43b83a0a03a3f481e03460a286
+change-id: 20260820-fix_split-f44939ec44b8
+
+Best regards,
+-- 
+Sincerely,
+Yeoreum Yun
+
 
