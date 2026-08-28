@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 554C9C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 11:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B31E2C61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 12:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6387E6B008C; Fri, 28 Aug 2026 07:54:30 -0400 (EDT)
+	id 904BC6B0088; Fri, 28 Aug 2026 08:01:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 610086B0092; Fri, 28 Aug 2026 07:54:30 -0400 (EDT)
+	id 8B4F46B008A; Fri, 28 Aug 2026 08:01:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 528746B0095; Fri, 28 Aug 2026 07:54:30 -0400 (EDT)
+	id 7A3AD6B008C; Fri, 28 Aug 2026 08:01:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E9406B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:54:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6464C0344
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:54:28 +0000 (UTC)
-X-FDA: 85150520616.28.443E866
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5296E6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:01:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D60CD80325
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:01:37 +0000 (UTC)
+X-FDA: 85150538634.30.83BCD86
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3D67840004
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:54:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=g5q3o2RC;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf04.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4FA9E20013
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:01:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="L5TmUoS/";
+	spf=pass (imf13.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787918067;
+	s=arc-20220608; t=1787918496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/lOeYdMQM0yEpqRm+8VJ/e9jItYU1+vsePznvGbz10E=;
-	b=8Y/januCZTSmG+OMcV8epg2dyl7uCFZfxLgFV3MFGp/CqougbyF50m13p0OIbRnLFJ4ZWc
-	4mw+ZH7G1xrblgK77h4ncfvpZTPSXJwL7H8I0Kp/srTkntEqXPfWiXjLhNxNtOrx99zaQo
-	0c+TsgEpSjQfrEXiCdkIUtbQmTSnot8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=g5q3o2RC;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf04.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+	bh=R9wXHToe1gmitoaVCqOPNDibrRSsPosBSME08usIeV8=;
+	b=WTHFeFKo6tP3Z49JtbZvKX92EKPfv9x+dZC+x1MxRmigNeTIY0KzA7gMkMixj3fvxoH/0V
+	3WKM6CMqJnU1ER2ydFMdwZfx7v6x2BjOY4QaN4L8iFZBeyxNtW3FbmZArZxh22SQ46md9C
+	pUlE6FNBfhxOBkoE2qXA9kK0VJNjZmY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787918067;
-	b=W9rGrNXaG/qcRZ30xpml0YytyIpZT+sbQ7Mlm1ujQTWU60EffSTT/WteAujDnJlNDktCxh
-	6v375TpZ8DiUlapPsMWnNJkcXbhNRnPb7vteuiYrEBQxaT9FOqy0Ddnnj1Wgw1R0pQ110M
-	rLqSvW8uQZAViDRCNzNhgYs/TmCJmpc=
+	t=1787918496;
+	b=YplAgFu82oSdzLyVe1DJAKQ4iXW0+18eiXIHWo3eGQzzfy15s/jm/RxQ3ATxb+IsI8HR6x
+	Ogaby65sMKbIZG44/RbrkNkZ5y1wZYqAwehNlRsDJFtAwAzKqBfXWBDqBe0tR0a0cwoaet
+	iBg/E+oTgPcJ1q/N8LY9isflcGrt/f4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="L5TmUoS/";
+	spf=pass (imf13.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/lOeYdMQM0yEpqRm+8VJ/e9jItYU1+vsePznvGbz10E=; b=g5q3o2RCbyi+Yqbp+LTKaPTquE
-	7gXYHP3tdr0knxX02PNNzCPOBFWn57YdhfVMe2wVBn0jGTz5C70WZiFqi6q+gGpJPkpRmT276v/iI
-	Nx0JCxTzmg7piqalBDEI5CPqK/IwzqOegpNF6bmFCbfFSyS7FPEGTGn4XOICrl7KJogrp6jKLKtiQ
-	BFLUSYdoBlhM6+BShUVl6Sc7u4HOo0ZtjEDUm1F2Mv+GRSw0GDtY23DSYzC52ibhjXBiKIkIMO7OJ
-	m942aboClPHVMssGPyAA7ZQN5VBksW6w6zHJtn0ckV3dbahbmennTJsAMre8Tcbx+K52/+vDwChBY
-	c6XrVZ4w==;
+	bh=R9wXHToe1gmitoaVCqOPNDibrRSsPosBSME08usIeV8=; b=L5TmUoS/h6NcQt7ksRhkKNOjmU
+	1mNZG8RevUyyo9OJGFPhIYDs4SNBWCw1yeMvtwBYu45/aGh++P23bSfG4TALzpHf1wZYEOgtjJKu3
+	FnuSMmszW1YDYwAM7yMMkYMwQwbu0tIaaTQyt30PKrGtqn+k/2O64P/xn9KhfygUBVqPXI3gK1cuI
+	UGvVEVIM+uHmQxG6FgRN57xNt7z4qG6VT2+cGzugYZXmthX9aGYBnTbjGD4JDoaWSsd1tvJ9klC/u
+	U5orgAvm9MO/sumxlfI7Mjrku7EtjdWOZc4Jn1Poa1RuzKk7ltmTfO4q8F9/76umByaXI7rn9DEbu
+	WjOeNx6w==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzv9w-0000000EdPK-1I3d;
-	Fri, 28 Aug 2026 11:54:12 +0000
+	id 1wzvGk-0000000Ee7g-2dXG;
+	Fri, 28 Aug 2026 12:01:14 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 4D3CF30030F; Fri, 28 Aug 2026 13:54:10 +0200 (CEST)
-Date: Fri, 28 Aug 2026 13:54:10 +0200
+	id B423930116A; Fri, 28 Aug 2026 14:01:13 +0200 (CEST)
+Date: Fri, 28 Aug 2026 14:01:13 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: David Stevens <stevensd@google.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>,
@@ -96,21 +96,21 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
 Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
-Message-ID: <20260828115410.GL687043@noisy.programming.kicks-ass.net>
+Message-ID: <20260828120113.GM687043@noisy.programming.kicks-ass.net>
 References: <20260827232948.2520558-1-stevensd@google.com>
  <20260827232948.2520558-7-stevensd@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260827232948.2520558-7-stevensd@google.com>
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 74c8tdhkpbu7j4ndhh9d4xa34x9onb6d
-X-Rspamd-Queue-Id: 3D67840004
-X-HE-Tag: 1787918066-10099
-X-HE-Meta: U2FsdGVkX19p7uGyttl63CVHKBkRYHJZFtGQHIOyA/h9ZhUMx4vp9tFpNPk4gPpeHsGMXy6lGCjZ9GeTIjt68+ceeIIfXqnvon8wI2rdgDcz3T5a8E2eIgfldjFv7aM0nNtSGG5nXMjD9gJswMgWV3DOYjSXhFHhBoHynEnNig6EeJDRuqwUNsVh8+TV+O9vkInoQeVuV0ANH0NwJSyEWQiEgzpjMeS9iPNSgQGzjYGdGhjHsPjFhrDEB6FV3zdAPRWY1ZxjR0/BXXffHLCvMYdI9Ex10v007gb8iu+aUqecakDCQYCy2yv7SYQ60lBNUFEmkJcuBUelk9avreYUi1Yg0OkdrhJiuWMzB0b+gNQtoXjEVk4WY0y5fbbz+MRHZJlVAq9Uak00Neb3itldGXy/IG8vv8xPZEFOZxJOLmv/07C6pj01btW4Iqrx9y5PzcKLCSW5GuFZXuOAzb6cGDk5dy0KQrVTY5YmTL8+58wrHB5Poi0iDZT/T2U5XJiMxiFGzx/+2bV9PaZ8UoZ3kRBiQC7Pyvu5+0vt7MW2/68sF0e+d4iuZ/8N6n6MaE7z1Na08cc9yJVZnqeKrRFmg8q2neamNQURgPc+iR6QfyTSpIwxMVY4GM9/AWBPcciru07EQnAHcjQ1it1U+arB0zMsle+HStznqjzN4W+Kq22l5JkL48tX6fGTpPVaXJUcJMMjbLyhvRqKm/r1lO41AS/Hyf2zRZU6RhI2l9VnPDxJ1NmWwzFOfyiY9Jb3zioZXdzCKQfwIvqCyiTt+Nd0WaQbYJAV6IUPdUGxskakbuW4GjfZeZ7m0LmSHh2x4V/SRsO+loVN0keHy4Bp4K13D6QnkctDjI/tT+c29dTdIo8Ij4iadLSvluHFbOi3whDMn5ODHKPy8/yG4o3BEW9H2KYLFJ4528y0PFjcPrJUPXbTMMQm78iLrvs/MYGohoe39yMJBzoXv00cT02zh2w
- Ah5R+yjj
- OS/hcekxaKWZc8/SG8WsJIVcsnVR8TfYFdqW2Pdk3TSG6URGUmuG62+jmgpLNMaRAEOjU1PRzIObOnzZO6lefzc03myiiNUxS/JFrr1klMXOKCoy7gKflijhnm2TNecKLJ+R4tZUNP8+vgvrd0grKTaK13HjKWSyNDW/WxK1lPBfC2U4BCwvF6/Nwzi52DzIyEd62vI2uW0bYoHlELFF/Ao1WyTO4ZHLLld2TeBLEOkHtF2c=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4FA9E20013
+X-Stat-Signature: u9s1nwux1o5x454rkhbbe73kagoyusfk
+X-HE-Tag: 1787918495-25598
+X-HE-Meta: U2FsdGVkX1+oOEuDnJkDwrc4Xb1P/OQLiVH8YUnxA8hzSTGil1zvndWUCquM9REtZX39HhFgUmMVNyznnHYPegeJQ1T0fdtGyF5P+t8r1AmnBVwWzBNJnSaXHE4WwSaAdMRVxxYFxYhbd7OpYFFI8CNOxtq0+Xy+Lq7ydrfCV+zO7+DOGajmDxwOTY5MKXhfBP8qriTAJapCJSqdB0RZ0g4TvhEJMKXN3AqDqOLjR/pfPyyhgCxflUnPcwlFuO04CNeJIoHhIsER6B++ynYyWe9HM0szaqwsPhrEb4Ek20onZfukLyjx4dafLxejC0P2ikz8zEidPgOZ8thSnSr/ndt/SBaeR+z22TFQ0xZD/VgmqVoXCz/5vI8iSgK1+TDbv5qVxqSfiQOiXlPxgyNLsHImsSloKMWlWFI471GWz+dBmVeHpwVRojcMZh5hbsMH72hc2y/BPwdNWjXL+kQhPCXuODxN7U1Js0HDsjgz/wjWzKw9gKk8RntQCTuXyKfGJgm24Gk7v5zZ25o/Fr+0iuEqzqw3nSrcAxTrZ/lG+gDsdIoI24AowcZ3vyk5mS8w3j+4+2P6MmjlizURwn+awR6D9J0ilQ8JJ2Kytijtce6F0pEXwMZvelZ9UaPEXSUBe2B1DmzZZd4uctmm9VC8a7gXj7Bn69w/PLGIVk6dKAM3cvp9dvJ76vkxVmd1eX31UvgMIEehiWRT/eimUQgpyhUfbuZNfRjgEoCSqN87w4sExG9rvaO1BgIB98XkMijeEaCCZGwtG3ftGCF2Gt+5awbCpYNbWay9M02CQi68s9NRQeFPOolc/4mFoAjyM+loZ7GQ9ZoSwwR+8EAWp5hPxP9nb4GXO3m/6tuVCE+YuQ+wPkhie6MivRkNC7bbl+A/u7jJ+WJGcIiIWF4wshJ7PdW8rv6zcFape2BdoMfL73hbIScI/ElEPKcble9Fsaj61Z1/LiDfQ8kleb5JkFF
+ SJgmjqGK
+ SyXx9iJdV8UOiM030ysKM5LR6LOaUQ/BnB4lc8lcxpTFDZeJTmULDgl4dNOzRhByYMoPhhaj7coNzTeTnrChCL/MJ8xCH4iCHWLIRdzxZ2MTn/IEb+/gAOYxE8p2/KZ373cGtaTE99CxrqZ1Jij/koC+w/QnA42peD6s3XE/spnBT3Agfd1xdIfN77tTdi/lj+Rqq3ArnnN8xss4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,8 +119,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Thu, Aug 27, 2026 at 04:29:44PM -0700, David Stevens wrote:
-> A new TASK_STACK_RECLAIM state is introduced for tasks that are
-> blocked waiting for the stacks to be repopulated.
+> @@ -4295,8 +4296,6 @@ int try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
+>  		if (!ttwu_state_match(p, state, &success))
+>  			break;
+>  
+> -		trace_sched_waking(p);
+> -
+>  		/*
+>  		 * Ensure we load p->on_rq _after_ p->state, otherwise it would
+>  		 * be possible to, falsely, observe p->on_rq == 0 and get stuck
+> @@ -4320,8 +4319,18 @@ int try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
+>  		 * A similar smp_rmb() lives in __task_needs_rq_lock().
+>  		 */
+>  		smp_rmb();
+> -		if (READ_ONCE(p->on_rq) && ttwu_runnable(p, wake_flags))
+> +		if (READ_ONCE(p->on_rq) && ttwu_runnable(p, wake_flags)) {
+> +			trace_sched_waking(p);
+> +			break;
+> +		}
+> +
+> +		if (!ensure_stack_is_present(p, &need_deferred_repopulate)) {
+> +			WRITE_ONCE(p->__state, TASK_STACK_RECLAIM);
+> +			do_deferred_repopulate_wake = need_deferred_repopulate;
+>  			break;
+> +		}
+> +
+> +		trace_sched_waking(p);
+>  
+>  		/*
+>  		 * Ensure we load p->on_cpu _after_ p->on_rq, otherwise it would be
 
-Not yet read the full patch, but *why*.
+Don't move that tracepoint. That's simply lying about how long it takes
+to wake up the task.
 
