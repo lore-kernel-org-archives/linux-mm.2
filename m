@@ -4,124 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076D3C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 19:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACCDC61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 19:53:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E44776B0092; Fri, 28 Aug 2026 15:31:22 -0400 (EDT)
+	id 4CFE86B0088; Fri, 28 Aug 2026 15:53:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF4DE6B0095; Fri, 28 Aug 2026 15:31:22 -0400 (EDT)
+	id 480C36B008A; Fri, 28 Aug 2026 15:53:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBBF26B0096; Fri, 28 Aug 2026 15:31:22 -0400 (EDT)
+	id 36F466B008C; Fri, 28 Aug 2026 15:53:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A4EF06B0092
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:31:22 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38A66A0557
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:31:22 +0000 (UTC)
-X-FDA: 85151672004.01.37A3CF1
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6EF0A1C0004
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:31:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=opQ3xhgi;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B1E36B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:53:25 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 909561404AA
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:53:24 +0000 (UTC)
+X-FDA: 85151727528.09.9431323
+Received: from mta1.migadu.com (out-215.mta1.migadu.com [95.215.58.215])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 64AAD4000A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:53:22 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eVza7e58;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787945480;
-	b=8ZT/FjzdRj4dsjMTxwiKjU6trBiriODa9DxGEFQk079vm0KIPtGYuZ34arxoWBfWoKukXF
-	q6Q2B2z/kDvdJ3uXpzame/FNxhbqZFai9SJ6+R+WVS0ZGXi9P2djp1SdVT0JIecpQtX/Nc
-	QZoiY0cxVv9xe5jcvcbe/k+NpMBMGso=
+	t=1787946802;
+	b=YmoxXgM1jwqLlz8PRLruQIU1y1kO1ArvbOmVS7L4dV85nwsq8lKBKoIySk1ES9/T0LVqG8
+	a74UH8NFIJ98hNOfyXhXn+50jaVNn/71LsWyvjmX8u69kisssvfZihZZFYvFPaDtqukaTE
+	H8Iwam+Mwd4BlFILHxJN1wrz21JFzHQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=opQ3xhgi;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eVza7e58;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.215 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787945480;
+	s=arc-20220608; t=1787946802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=nMnYqxHda9Omu8fyzZqn9y6ZJM5HBD/zXzNZf075neA=;
-	b=49GnWcHs51p9MuGmNrf4zXLeaLrQk22+qVPVFZ8HI6j6VJBV7XQvRK/luQMBVa4FfDxxq3
-	iaitWesFOSU23mYG8v51f3vqTFNx3+/zgOjQS9JsIoeDiDhpFLE699DQvi9Niy+OMinvqo
-	N8D0iva0BQj9NpHNm0RSdZcDq1938f0=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-52e1f9da948so10023331cf.2
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 12:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1787945479; x=1788550279; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nMnYqxHda9Omu8fyzZqn9y6ZJM5HBD/zXzNZf075neA=;
-        b=opQ3xhgioRDqdHpXGSG457j2Xsrihbmm9gsJxjyB+HVR147MTslMbcXiNm72rNlhd4
-         qnJcT4YsX8J8iOzyNMnXTmoH13R0ePABv1UPj8ZbDJ/+ekvMc7HPeNkx1hL3CUgMTnWL
-         hBcd4pM0rEBpn/ZvLLkhcwTRzh/BxXcnpDv0mS4AKzxLSBC+Yw7vfe7KNhRa1d+qV+1a
-         9iNjqSy7Ys46U0EkwbESojA0bInANen8QWeditpdL4OVPPIDR2t41kHdMXWbD2Awy1zs
-         q0puTw6rgz7sQIrhNA40op/C1+8etDqtaexyH31jNABzrTIK5jhX3Rz9lO3BZ2ow6NFM
-         Wl8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787945479; x=1788550279;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nMnYqxHda9Omu8fyzZqn9y6ZJM5HBD/zXzNZf075neA=;
-        b=W+8Nl5yzPqIFLrLmOYUpkhVHHU8zRp/9datJVSj6tIjjTTnfAaSxaEDqtol+0OAUCr
-         9sxNgYR8yxF8mBfylzl/uNm1ufDVKd3P7oYTyzCwp3uWdRgpi/dhkTXO0n8YSq/Mm8IK
-         Tql/a4CshQRpRp3vaJ4tOEpkdxBikiFTi/nEkLAZ8w09cJvlDyTKUjm3pPn2eU+HraBo
-         9wmWYeVPR/S4DmOUPn5P0dhy4R017zWvf8RUIFWcVXFo1vWJJLvAtkPjCKUa+NsdIsb6
-         CglVCdawwmqXK7R6LTcf4BUxgQCt+78DeGass28a5nH3bF+k7ce0gqCPd2xcpcDfUKzB
-         omMA==
-X-Gm-Message-State: AFuF++mxw91to2g+ubud26R0zBGsU44gCke6j9KS/cFe166ULWoRb64d
-	nou1k+z6P0rPR/VjlP9v6SYTklVJMlkVDKfczxj01LhNm2Ky2M5mKbmGQ6IC3LIRUjr8qM+oWGg
-	yJyW1+CE=
-X-Gm-Gg: AR+sD11ugNzq/iGZNUmT3XQdVLA7AFZLLskksMZEN4miNXhKRmaP1H73rQMwzgqSSiT
-	U/zDI7bdK6fGiAVZfO8Jp5qWuf6we6pPazbXJqTaVzGcoP+ydUn9XUnm62Q7NMpHuIj0xTU76YD
-	G4qbQtexAHQw12HXoSv0mWKC0/oCHxu90adj2UEuGplRD8zImXl4K5OGEagKAB0NV4JEFT9Qa4i
-	1MFYbV0Uu3n+bgCY9pqHzcHk8XClfEVapkRMdu3FcF60x7i41dvKaCBuvDWEfYhQ36S5bDEAEB7
-	5spJp9yR9Ce92XwdJ9Jx5BzrUq8+DXTvXgFKa2HoOnfB0ENPclmD2Tshh35BrimREvuL0HfFIM4
-	gjM+jeVWUzNtjpNVasj/hxm+NNBMA14LCPGUx3UsZOYQ59pfJUampC9KJSkmmzJSAqUnyyge0zj
-	ifaEnM+GdWKm4U/KLov7nmnocLbD25CpQEkEDyx+bQUvCtDrmE9G/O8p0U04lGMunvIix5Qwnc+
-	EpIQVD6sWvk900sbInxFudInkpj7NHy2rTEvPLcmaUhq6rS3A==
-X-Received: by 2002:a05:622a:394:b0:52d:8854:3e61 with SMTP id d75a77b69052e-52fb94b8f4fmr119108521cf.22.1787945479239;
-        Fri, 28 Aug 2026 12:31:19 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52fbe5824f3sm19048831cf.10.2026.08.28.12.31.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 12:31:18 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	urezki@gmail.com,
-	chenwandun@huawei.com,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/mempolicy: take a cpuset cookie for the interleave node count
-Date: Fri, 28 Aug 2026 15:31:11 -0400
-Message-ID: <20260828193111.1023497-1-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=o7JXcpUPgY0/5OhAI7zQu5AlxZy8ieSPOaVx8bbadOg=;
+	b=hGBo/STJOYeLHi56kbjMwO/lnSv6cOoxZ2deXWSICmAHv2NwLrT7NqHq9zcwTwEkZWFVDR
+	XdGg2BSMapofDFEfg/llApq0lVQjcxgKJrDcLC8tZBmWFxuGdPDTwJZsdGdSdzL3kko2BL
+	Txn9/WGup9zgYWqpYiPM7Igz0w89IWE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2DsvoO8trPann3gGlgHfEvV8zzD6F/Yb3aERd3YdNwY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787946801; v=1; x=1788551601;
+ b=eVza7e58vsCYz6nTeSUGSC0tDD2EiRtk3eLY2ekL7Hmt60HFR7XCaVkd7DBKy64F3qBKqrhF
+ dgwRDueTFjDD/CPdw3Vxnbrb4ImP202YwGftcCsRsTjUvIlprG4ccoxR6ft8WapGQatdUPeNZEK
+ ImClpGQJEKqZgkyjMvRUrqbY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id da07200143d5a7cf;
+	Fri, 28 Aug 2026 19:53:20 +0000
+X-Mizu-Trace-ID: da07200143d5a7cf
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 28 Aug 2026 12:53:19 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, 
+	JP Kobryn <inwardvessel@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH bpf-next v5 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
+Message-ID: <apHk86Y8araBlXcq@linux.dev>
+References: <cover.1787826402.git.zhuhui@kylinos.cn>
+ <5dfdc7800469eac4e9a240f2422ba65d4ef4c4ba.1787826402.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5dfdc7800469eac4e9a240f2422ba65d4ef4c4ba.1787826402.git.zhuhui@kylinos.cn>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6EF0A1C0004
-X-Stat-Signature: jiy991m3fetq3ogcw5xwsi68b41mqn5w
+X-Rspamd-Queue-Id: 64AAD4000A
+X-Stat-Signature: 3gyk3efyy6zqj56wr6gzkjkn6ys1st7h
 X-Rspam-User: 
-X-HE-Tag: 1787945480-886045
-X-HE-Meta: U2FsdGVkX192KZcYljEOkmvCXfqCGm21n9SmDyWdcWxbPvqszhwtEynD3YR45IzojRufxLj+yXwKT8sUhUPB3RjFrFgMm5ZA2skIQ4bLDVNhyLa4ehe2igco5VelBA0ITLNRTxNrNmjF4oIcl98YukhNntEAYGqPqZxaDPfqK2+BgabPn/wyGPpoOWCr/+rGt8fv2HinbqjCun4u3PULkDB16DWhWmBXG/huw+JaQpC/IYDa9wpxEvcOVTN+D0tRvo5/YJCj11r14ozd99AoN2NJXp0sCieVTxd6ZMraf4f0HYDLVBNWzemP2R/0gqcQssAECb258FtyrJ2kR1c0YSz9CUtMGR5tblsmpS8330OHkcdAJ1E3YGHwDlgKsCmdMDXXdgXsSqnUqrozLwaumpLP5PpJc6CTBjSsLiqIU2g2OgkExzFbkcS7cuVKgmJ4v97E3gcb2jHjuKlshT4N8ZN2+2VE+/caA8Cg3sIS6KT6juA213ObDemcxqYxp6QmKeRkS4CdLYUe+9WihRPRhl34tOmiWEs/rsOCfEbfE1wY0t+WQutez9bIHLBRH8lzAnspoemzKABK9gp4ypeiOgmBEGIN8ERyX8o1RgCtgJE94Bl4g1+NiflAz1ks/6gKstDJvNbTgHMJ1yMZnit4dpiHwpUtlYF+XwzSiBw+vtDk6T2EhjTWYtzlcNhKIGOMrZfPyQhI1z57ZvkteLRUsRSfU8zSK9JD9x1zioIoCu39rkYmXHiqSHWta3LbLghn7Bfz+0DQBq9xvB9a60VVeaHUpwNx4ugNQvEOP2HHSJNeARF9NKSajoHK8CjWlD/z+T8A7sCB1Ekne//NWS/fEmTAc03pSqrcJug6m3l9TrZ3i1x6nsvGTuRs7OdOGjHwdXDYjl+OYJdOKPcCdPui0m+bnjbcuMmqJRL8ZZaLRiK63xk2uo50INhdvFKKOt5/fy8X1n7qjrm3beUxz1N
- 9gr3L48i
- wrz1H5bh66fVdtOp3SrbWgs61y+D0iQ0ljZUCJBK5Hf41zbmhAWeHtV2A9T1k8go6GsVW7IM/t3cLqwSANFTYWQ9jAqL9eDG5zqbM3MShfexV17RHTJuNJDMEdO1g93LcRe1tIh1SuPAwDO8roS1/L3RvCyXTU8ylA2UIqnrdTGWZ9iJIbWiBfnwgW3k7MrSUmEi2CSi8iphzuzknJ4cBYiDWmeb7ND4Nf9GWdqsgpS/qpODqEVoDdNzAF/BYiqVxA1LddgPMlqr+mKo6yTmk7Qm3qUt6eS2YMA9QkALNxfLXkuV51M5ws7oxw94cR6iBQRE9FKJEgis+WXDX27ccO86J+yCdWj3LSRUv1/pwNKS8nMwLw7a+ts8CKLJxYtnpLAopHqdvE30BBq9ztXypKbERFZ6chYmkdGJ5oMKTa66fnCI=
+X-HE-Tag: 1787946802-800693
+X-HE-Meta: U2FsdGVkX18V0SkUeoam1XqTDVi8KH/pM+brKLKXFqfNwZeD661IRmn3lRG7FXSfXkeq1Cx1gfp6hlrCee19DbAyJ6t19AXlNX6A2WyEukX4dilGFOZnV0rK+1T34lciXDJwzVVlIBnKT0jIMa9WXZYZT8Ib2yuVU+fdXN4NBtPZa/URt+kZApFVWhNbkcKUWKuMu8gA/alUwqOAdBPj9Nok/Om+ZPa3niGxmmMBWP0TupqaEj4kdSBKfllmDAuwPphxbnbGLRLXvsXGD5EbNN/CF8LYyuPmECqjFCApH4/c6XZUwaBJUsdFujBCQXh35LuRxIo03y12STkkcvGjM5Oe70yKJij/bd95GncD5MiBzT2lB/xEXgLEH1nX4sonA+xPXRYD7yX/VhbK+Mm7N4kFdprzrsNsew9Vz2/osWrx2bujAQoj4SFKCdWjXb1LQcdoHkaBw8Tiyo0OoZB4VE/yKFgX8IQ4AUoq95dKhnGbpTqIe3QrcxKpU2tPmhl064wjweCfRhsVKFYbderHjVoNCaXHs/WvHAf6d30qo6u4jFHoOTDrcJzkz+pBIoaS2yYQq6qEM+aSXMIKEQd4PJvAjxscT0+ntOEQ/AlZQ23UFxsb/5Az9ROUE28u/gPYQIjnUETEBfc093wzbgZvKxYoOpmbJ+Ie8wX3jDylqSDjHMlIKZxkrmJ5d/w777QUsSA+46VXuhpx1MNCLKeSnn1FUlXL+ld3ldWU0Fv3ZJXs24QyxyvDb+kw52clZKqC5Y1wz/nyqwopzkS6djFFwKFYFH20TWqQUVLbA8E5EKEPAQTzQO2NTkrnAWB/fOIWjECXnUOZZIT1Wd+uO2AnpGd10iDe7q48iEX7mSamBS/ucopadWO/fgdSgdnBlschDXC70b4BoFC4U5+MvVl7ebT8mtQgocynrBppRSww9vr+L8SkHM+DwFhzcs4t4nhxgghJnmzuh9VKwobITTd
+ vfZYHiAO
+ QCMH83LIg3+sUyfD3IB/ByS6ZOyKo4jxBMsa1jvnQkcKk8lT4lNmfhWJ3nQZUY7+4kO3uOlbCZ9U+TvleiJH5dAdH+q35VjR4+OK/boHNOaNSS6fPpHuffX8p38xa6Af9iaQwjHf77jOl/NDwRhB+OXH9/0h//31AdYjrIRgu5y4JbPVqbo+PX7e1aRR+662MYkE0W0miPmxqnZYuLonU59dC6tp1hg7HCAwASf6enwzFjtETEwdVFuxtL0nxgKqFCH6N3Mf/ZRDywuDLsRnmakjhAVpmNe5/m7lkCKjx+HlTkR2nVwPFAC+hY9VC3Cgy5Pin
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,82 +97,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_pages_bulk_interleave() counts pol->nodes without a cpuset cookie:
+On Thu, Aug 27, 2026 at 06:36:29PM +0800, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> Add bpf_proactive_reclaim(), a sleepable kfunc which performs one
+> proactive reclaim pass on a given memory cgroup, similar to a write
+> to memory.reclaim but without retrying until the target is reached.
+> 
+> The kfunc refuses to reclaim if the calling task is already in a
+> reclaim context, as a nested reclaim would corrupt the outer reclaim
+> state.
+> 
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+>  mm/bpf_memcontrol.c | 46 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+> 
+> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> index 716df49d7647..297ff7f05042 100644
+> --- a/mm/bpf_memcontrol.c
+> +++ b/mm/bpf_memcontrol.c
+> @@ -6,6 +6,7 @@
+>   */
+>  
+>  #include <linux/memcontrol.h>
+> +#include <linux/swap.h>
+>  #include <linux/bpf.h>
+>  
+>  __bpf_kfunc_start_defs();
+> @@ -159,6 +160,49 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+>  	mem_cgroup_flush_stats(memcg);
+>  }
+>  
+> +/*
+> + * Reclaim must not recurse: try_to_free_mem_cgroup_pages() overwrites
+> + * current->reclaim_state, so a nested call would corrupt the outer
+> + * reclaim state. Reclaim windows are marked with PF_MEMALLOC;
+> + * reclaim_state is also checked because it is installed slightly
+> + * before PF_MEMALLOC.
+> + */
+> +static bool bpf_in_reclaim_context(void)
+> +{
+> +	return (current->flags & PF_MEMALLOC) || current->reclaim_state;
+> +}
+> +
+> +/**
+> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
+> + *                         cgroup
+> + * @memcg: the target memory cgroup to reclaim from
+> + * @size:  the amount of memory to reclaim, in bytes
+> + *
+> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
+> + * memory.reclaim, but without retrying until @size is reached.
+> + * Must not be called with a filesystem lock held: the reclaim path
+> + * may deadlock on it via filesystem shrinkers.
+> + *
+> + * Return: The amount of memory reclaimed, in bytes, or 0 if @size is
+> + * smaller than a page or the task is already in a reclaim context.
+> + */
+> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memcg,
+> +						unsigned long size)
+> +{
+> +	unsigned long nr_reclaimed;
+> +
+> +	if (size < PAGE_SIZE || unlikely(bpf_in_reclaim_context()))
+> +		return 0;
 
-	nodes = nodes_weight(pol->nodes);
-	nr_pages_per_node = nr_pages / nodes;
+I have been thinking about this more and more and after looking at the reasoning
+behind your check current->reclaim_state and also Sashiko's comment on NOIO/NOFS
+contexts, I am more convinced that this kfunc can not be a simple sleepable
+function. We need more than that. We need clean process context as well similar
+to the userspace poking memory.reclaim. Something like kthread or workqueue.
 
-nodemask_t spans several words once MAX_NUMNODES exceeds BITS_PER_LONG, so
-a concurrent cpuset rebind can tear that read and yield an empty mask even
-though neither version of it was empty.  The call then allocates nothing
-and returns 0.
+Kumar & Andrii, is there a way to restrict a kfunc to only be called from
+special BPF threads/workqueues? Is there some similar concept in BPF world?
 
-Some compilers will hoist the loop entry test above the division,
-because nr_pages_per_node is dead when the loop does not run.
 
-	682e:	call	...		<- nodes_weight()
-	6838:	test	%eax,%eax
-	683a:	jle	692d		<- nodes <= 0 skips the loop
-	684a:	div	%rcx
 
-So in most deployments, this div/0 is unreachable - but nothing in the
-source guarantees that, it's just not easily exercised.
-
-Take the cookie around the count and bail if the mask really is empty.
-Only the count needs it, interleave_nodes() takes the cookie itself so
-so a torn read there is already retried.
-
-A rebind landing mid-loop can still leave the count disagreeing with the
-mask, so the loop may revisit a node or skip one - but a rebind where
-nodes change causes migration, so a handful of misplaced pages isn't
-catastrophic in any sense.
-
-Measured on a 72 node VM (NODES_SHIFT=10) with a cgroup v2 cpuset flipping
-cpuset.mems between a word 0 and a word 1 node set, and the two word read
-artificially widened: 330 zero counts in 130414 calls without the cookie,
-and 401 retries with it.
-
-Reported-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Link: https://lore.kernel.org/all/20250907160829.91628-1-chelsyratnawat2001@gmail.com/
-Fixes: c00b6b961099 ("mm/vmalloc: introduce alloc_pages_bulk_array_mempolicy to accelerate memory allocation")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- mm/mempolicy.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 79053ece02cd..060a0eb26917 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2592,6 +2592,7 @@ static unsigned long alloc_pages_bulk_interleave(gfp_t gfp,
- 		struct mempolicy *pol, unsigned long nr_pages,
- 		struct page **page_array)
- {
-+	unsigned int cpuset_mems_cookie;
- 	int nodes;
- 	unsigned long nr_pages_per_node;
- 	int delta;
-@@ -2599,7 +2600,16 @@ static unsigned long alloc_pages_bulk_interleave(gfp_t gfp,
- 	unsigned long nr_allocated;
- 	unsigned long total_allocated = 0;
- 
--	nodes = nodes_weight(pol->nodes);
-+	/* count the nodes, retry if a rebind happened during the read */
-+	do {
-+		cpuset_mems_cookie = read_mems_allowed_begin();
-+		nodes = nodes_weight(pol->nodes);
-+	} while (read_mems_allowed_retry(cpuset_mems_cookie));
-+
-+	/* if the nodemask has become invalid, we cannot do anything */
-+	if (!nodes)
-+		return 0;
-+
- 	nr_pages_per_node = nr_pages / nodes;
- 	delta = nr_pages - nodes * nr_pages_per_node;
- 
--- 
-2.55.0
-
+> +
+> +	nr_reclaimed = try_to_free_mem_cgroup_pages(memcg, size / PAGE_SIZE,
+> +						    GFP_KERNEL,
+> +						    MEMCG_RECLAIM_MAY_SWAP |
+> +						    MEMCG_RECLAIM_PROACTIVE,
+> +						    NULL);
+> +
+> +	return nr_reclaimed * PAGE_SIZE;
+> +}
+> +
+>  __bpf_kfunc_end_defs();
+>  
+>  BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
+> @@ -172,6 +216,8 @@ BTF_ID_FLAGS(func, bpf_mem_cgroup_usage)
+>  BTF_ID_FLAGS(func, bpf_mem_cgroup_page_state)
+>  BTF_ID_FLAGS(func, bpf_mem_cgroup_flush_stats, KF_SLEEPABLE)
+>  
+> +BTF_ID_FLAGS(func, bpf_proactive_reclaim, KF_SLEEPABLE)
+> +
+>  BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
+>  
+>  static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
+> -- 
+> 2.53.0
+> 
 
