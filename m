@@ -4,109 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 755DAC61DCB
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 22:02:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90A69C61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 22:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3ECDC6B0088; Fri, 28 Aug 2026 18:02:50 -0400 (EDT)
+	id 2D7B26B0088; Fri, 28 Aug 2026 18:20:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39DF56B008A; Fri, 28 Aug 2026 18:02:50 -0400 (EDT)
+	id 288BD6B008A; Fri, 28 Aug 2026 18:20:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28DD26B008C; Fri, 28 Aug 2026 18:02:50 -0400 (EDT)
+	id 177B36B008C; Fri, 28 Aug 2026 18:20:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 00C256B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:02:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6FA6D1A0594
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:02:49 +0000 (UTC)
-X-FDA: 85152053658.23.0C1CB2F
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A7B1C80007
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:02:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a9sej2fw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DBF9D6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:20:21 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75F80A4033
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:20:21 +0000 (UTC)
+X-FDA: 85152097842.20.2543F2F
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9B05E40003
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 22:20:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iqvlyjhc;
+	spf=pass (imf11.hostedemail.com: domain of hughd@google.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787955619;
+	b=aebMlquWbO8ZTOxAedqj4fralwpRxKrohhHFWcfE9FdVgVNfOa7zYJyNRwLPIDZMCCMNne
+	mPM3ZhpVU6HKGCky/5kgst18xQPP6vyvay5DknyaTkhoDaQLDfoXeOV6AHDelcj0UgbU4e
+	E3vltrS+941PVeW+RXFVSJ4y1xVChvI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787954567;
+	s=arc-20220608; t=1787955619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wA8fy7HWE3V3WB6sMl8dDfF3ITuMIwqNn0Xomqm4doc=;
-	b=23MlJzr0iuNlBdpu8i+pKWD7158PxbXyfR7+dMSzQExe3qoYUX78pY/Wl0DRFbyTxLU3fJ
-	fNmcTErZZ9A2bVK9nBA0J9kjOWHkNq+2tz+mAqqxuE7cqcbaJjGTGW7xPOkbLcPb7QS2fJ
-	JePvhWOV7Fg/Qj8s5aDYlmjC8PjHehc=
+	bh=b4S/8Koo0tWCwmsJIfU4dprBEqIORdY9GwO+Ne2fREg=;
+	b=QoXfsj1msoY0VXbV5/WHghSwYBVguEsvxSJq0+5zdD4cfBfqrRXP2huezWdFNhWetPDU3J
+	vMb8VHcnmdBKwan9Du9/agxR5SqENXGKYZbCrTkTpC2I60NiW1q6Yj5OqBMT38IFMii1NX
+	uyK7rky6cW5O2S1sFWrDGrx35jK84a8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a9sej2fw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=hughd@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787954567;
-	b=OYVHmd1ymFx+mt5ryhrAyB/UQIoBsxExNOGpjmMeZlgE1kPNJKSTRrVgQYu8Rcpc4FwoJU
-	x5z4aHbm596aGwjVp72Gc7N6JQ9HJmm05Oxed2NqZsKBaIwca6xY1e4mRna45FeYAdl+P0
-	NObjVDvznl21TKkobkf5P+W9ClA5bik=
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-836cbcd0a48so24385047b3.1
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:02:47 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iqvlyjhc;
+	spf=pass (imf11.hostedemail.com: domain of hughd@google.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-66ceaade3f1so1472007d50.1
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:20:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787954567; x=1788559367; darn=kvack.org;
+        d=google.com; s=20251104; t=1787955619; x=1788560419; darn=kvack.org;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wA8fy7HWE3V3WB6sMl8dDfF3ITuMIwqNn0Xomqm4doc=;
-        b=a9sej2fwhnv1xQNODNa+etHmSOMhhtRXOkBRAfA5ummXEe6og5MrqRcyUxsmXdn8N4
-         QC40v1O9DVtp6oUMXrXfYkBC25EmtX3gbHWLsDsbnN2CkSjI7tWHO+r2EkltwOlqT6XT
-         3ZIYTIeS4PFIDZxTAQjtvTW9O7vDqTXPsnp9s9ccn5W1UM7uX9KczKYHl2KloeXHjz8/
-         0hY6qIAAeOMTUmrmJ+A++lZ/7fWjAdA7j73qHNpnpSnQXfOH/qUUppG+JQrWeFfK0dFC
-         quwMjZfkmHyQB+s5IY9wk7812HQzRXeVRoaywHRAiKOnNVfRUHFXZWRLh1As+uTmVgFk
-         MOWw==
+        bh=b4S/8Koo0tWCwmsJIfU4dprBEqIORdY9GwO+Ne2fREg=;
+        b=iqvlyjhctr1ODCjxFMOWQtnH3Bvo6G2creWOF9+TKjRnOk1eE25GJb8UHxxX1P+x/A
+         P6dfWRDVpOip4iCofsqCL/GauKaEgqWx/xxY8D/dX6IHPS5P1cE39sjR44FoVUWcmawu
+         n/9fzkqbK6k+yP0JnCrodqiacty6QYBd9W73oMacUTp0uMhlxDym8X6E9B2b4cPWWuOp
+         Exc0mt3btlhelE7geDGFuQY2bnKHdJD2rsS2QaXbY6Oks97LEoxntj88e3GRlPB4MNGh
+         RllHIt2Y96OPD7zsvejeWERdAddctxbaCjsqMOmBwdV7WTrKTvJn416mTLSW5NFWB16C
+         2ovQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787954567; x=1788559367;
+        d=1e100.net; s=20251104; t=1787955619; x=1788560419;
         h=content-type:mime-version:references:message-id:in-reply-to:subject
          :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wA8fy7HWE3V3WB6sMl8dDfF3ITuMIwqNn0Xomqm4doc=;
-        b=mPzWhzlaT6kgBmI/z398I3XYrJ+P/LNjSTok72BE41otHJP454yu1q9k3/Wb+KMrLe
-         IqcBFlPPuM5ONR8qlUmgJewQGAQNSFdJNY16f7XYe727RnSjFyhXs8Iu7WARUPvtaJei
-         Z29G8dpm5hFIRVG2ITypliKaJ50Qi5o76XHmYYRZVC4hmgrYkCpdaBc7+dBnkKcxr0qy
-         Lnv8AXcsAKNRkTre5RUSegzAM5GhpbNbjsjZ2FQEyfIDTepNjtqGn0RAXp9omq4ag8Kj
-         wHPkGpJJ4CA6+fo/5eL0G8fcrZorJYysLcqeVaYsVY4Vb4t5GhM3yapuUsalgbyEs/ol
-         +d0Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxdgSQk3mZS6rGQyGj+kqWV5IRfVIJggdKcAPJVj4YDgzjm45NP65g+s8J5yhwb7EyqXj73GUIHRw==@kvack.org
-X-Gm-Message-State: AFuF++mbOnyUz/hIc8tHp99qtG9MbOmuCo6CFYyVik1rvbswQGxkYtxr
-	FpilW+UAAnv2VZp1ng2EsQ+66GKBk8Ey6+Bhiar/S6O3SCDSOTnJjoEMLWEE/Wmk3w==
-X-Gm-Gg: AYBFou2uOCjLenq71oZ+tFmcNdqbXJ7N5JPd8r4IcoGNVOYBzIMd9+kvvXq48IVxlnX
-	Suh/GaOwmPSsS8TUM686xDgPJNmdWv7Z+shkDOn0h3w0HpDdLmsXGGxtZiQBPp2C1KDTp5W8FWc
-	bNMuI27EB/FG7QTguaNGJdafbbCmflVQE6OEYSnCyjvsjhGDZWiG9zqqlwu2rntqjbKlItLDdho
-	6NkyWXW9+0zSlDGjVZHkzNwibfEa3SMdSeHYUSo6UsEhjV9DRTjgNZgb7mTfrP4N8KxDrIRB8k8
-	4t04Pv1F4ECiCuQ/WfV+jOAZ2AS14zpQ4Xgm5pC9+Br7LAUGycSD09+mOZ2Pi87d3MyQbstk0ob
-	YLNG0ovq89Ery+FAo6cQJnbIhGrbm4+YMOBi3j2dv984pPyDWMR+CERwksQ05GuRSSV+MHDufTS
-	3YzJkXJ1gmMYQnfWbtUb2+It3e7RAZRiTkTt+ys1nBBD2iwRv+WoI+1e8uCFK0eFnw9NpoRAuFm
-	wA5n9NPLxMeBC7Xw/+mSxjYkVSa/sxtCSADgx2dKWlOxWPO
-X-Received: by 2002:a05:690c:692:b0:84c:6169:49f4 with SMTP id 00721157ae682-85d6a3d835emr43441127b3.19.1787954565878;
-        Fri, 28 Aug 2026 15:02:45 -0700 (PDT)
+        bh=b4S/8Koo0tWCwmsJIfU4dprBEqIORdY9GwO+Ne2fREg=;
+        b=C3zZuBZedhPfaqTwn76WF7dIO5etN2tXoF6XUOmbLi6TARoPNRbPUA7DSgywqoryG1
+         uNrosEzk5SVK2Dzk5Xp3mIoy//1Z9jrZOVIdzzeaY5E/QIJBj6GpOtlbeVdDtKRAlK/0
+         tRqSQEnnnL8vE9XYL4qVV3L7Vh/Xn6a7AQ69ab3EKFyqWE8yQl7ND20PqDbIsfbmXOv4
+         kxXjEkczz+dgHdXfJ5eariuhUhMW+166g8Ayie7zPMczUn2npOWst28PZF+N8DgkPcqU
+         9ppjVTimC/Yfx4VilV4B3nOCSsfRRzpNjmnnTD38f9tbHUlur+8aU9fz8KD4vTRq8ucO
+         6S1w==
+X-Forwarded-Encrypted: i=1; AKwUvBxrf++Pgtrupd+TLiu5jFiVZSe31Ggkgs7YSZ70bvdfUUvTNiSEZFd6wLrnYu00itSi/tgKoQ23hw==@kvack.org
+X-Gm-Message-State: AFuF++lW7zGHVvfRP2nh8fQ9dpQ+syzO5Dm9LIudwMSstvfl8G6n94Sh
+	Lts1za2rqg9EEAc6HPjwTd7mW28DHYc+A6s2TJCAo864VaPqCWiLmOLl9WY4wAMMmQ==
+X-Gm-Gg: AYBFou24Z+LjcWLypOe4b08+yrBdPWoyr+FBxrfiMb+88B5H/n6sU1n8Au+3ewWn5Ip
+	+UDCxk+5eAkKjzXrKa+6FN+Zt4HpAHIHJDbUofz7JIOFDomTywKipmNf4SgvR4k1awSvBJMnp6M
+	y9DXQXsT+fle9E/wq53lDW+PUgY5XKFY/gUp391KaeQcbqAWmGPia1ojFkEW+BF3RT4g8jtGHoK
+	xZUYGLQzCQ2Z4sUcEcC4Ib+rZl6MX5qiWA/I91OoZ7RnW3WfwzcBj3d4SUJ1FnL7gJy429p8fEd
+	SfiRCjqDq7mFpl/1wNBf029tdmAm+f+ds1PAHbqPWN23vvi4hmIa7JYwaNl4k2p270FV3Oyj4w/
+	Hx4kcyWQrDn+tPfMLJ7p1fDPVBAS/Kk/c1OckjLw8Ag1C4PGm4/rcJjSZUoWHsQ+Ps6OpCa2dud
+	NnDa3mjH9jaqfggSCBn5C8305CZPwSTOdfoJ2ptFTknikWLOsJoQKyRHD5c89xkfPK5bIffe1Mm
+	/7IuKT4AjdmdwMHduDcu2+8qW1ntlscOoeLNPHk7UXNL851k7SZTNGEruE=
+X-Received: by 2002:a53:e884:0:b0:66d:2e51:5690 with SMTP id 956f58d0204a3-66e4c6242d9mr2552474d50.11.1787955617852;
+        Fri, 28 Aug 2026 15:20:17 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e66abaf31sm12814067b3.35.2026.08.28.15.02.41
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66e4ed2c78esm1613351d50.19.2026.08.28.15.20.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 15:02:45 -0700 (PDT)
-Date: Fri, 28 Aug 2026 15:02:01 -0700 (PDT)
+        Fri, 28 Aug 2026 15:20:16 -0700 (PDT)
+Date: Fri, 28 Aug 2026 15:20:11 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+To: Matthew Wilcox <willy@infradead.org>
+cc: Hugh Dickins <hughd@google.com>, Kiryl Shutsemau <kas@kernel.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
     Ackerley Tng <ackerleytng@google.com>, 
     Alexander Viro <viro@zeniv.linux.org.uk>, 
     Baolin Wang <baolin.wang@linux.alibaba.com>, 
     Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
     Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, David Hildenbrand <david@kernel.org>, 
-    JP Kobryn <jp.kobryn@linux.dev>, Jan Kara <jack@suse.cz>, 
-    Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, 
-    Kairui Song <ryncsn@gmail.com>, Kiryl Shutsemau <kas@kernel.org>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
     Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>, 
     Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
     Mel Gorman <mgorman@techsingularity.net>, 
     Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
     Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
@@ -120,22 +121,21 @@ cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>,
     Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
     linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 20/25] s390/fbatch: no lru_add_drain_all() in
- s390_wiggle_split_folio()
-In-Reply-To: <20260828170217.324c3445@p-imbrenda>
-Message-ID: <ef4081a0-908d-bdad-4e6a-91c4c8b20130@google.com>
-References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com> <7bf68e7b-f88c-6ca9-39ab-e9fedab0c8be@google.com> <20260826155722.0198d3ce@p-imbrenda> <2319f670-fe0b-f032-c0dc-486cbec0f3e1@google.com> <20260827145502.2fb4505b@p-imbrenda>
- <cdbaa4ff-d2b3-34bf-dd41-01fdc65edebe@google.com> <20260828170217.324c3445@p-imbrenda>
+Subject: Re: [PATCH 04/25] mm/fbatch: lru bit set, no extra ref, while folio
+ on per-cpu fbatch
+In-Reply-To: <apGd6T84Zs1RgTVg@casper.infradead.org>
+Message-ID: <d8834642-140a-0bc6-0b3b-abcfbb8ada6f@google.com>
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com> <e0887417-85a7-453e-e733-561dc11db08f@google.com> <apAaWsWPV9QEeVwn@thinkstation> <3b8d9cc4-d6f9-6bd6-f774-34cfca9c48c9@google.com> <apGd6T84Zs1RgTVg@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 891q8hkyjg34szn8ui6knngyt7y79x87
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A7B1C80007
 X-Rspam-User: 
-X-HE-Tag: 1787954567-993739
-X-HE-Meta: U2FsdGVkX1/ck4xOJvse4TJ/oRFzY0A4VcyDmk/v6OwRWqzz/WObpK51j53laLmK8hCl9N1kvo+rX0YrcyMWUAxuTOpy/sG14w6yx3siQAP0faECt4sWnHzoKI6amaPrmU8uqGefo9L2mx+94fg3ZmdyKvAQBVUDZ4QsKcs/fq/jiQyeFBkHPEeIb/wAJLN6s2WFFz/3oKkkBkIH/Xi4nYLiarxK1yBY4kq+SuuqzZKQwRH4sgxD/ygMN/FxLHu8tg375m1LQca3wJtscFzvIDBRTCAbB2x25evPGRqr5ZScwbMBOfk/AqD4NqEnfuED2aSytxSefJjXRfLrS5m7zV0NaR7+4bal1InoarSPb1QDamA57IftgwsOqczpZJfk4d6VozcOnptTCi5AUPvcW50UbstB1wEHZRuXOX3V9a12IJaP6qodLsYDmzjvv1q1WZvv1tSjgwCb0ukswBREL6Qfk/zF83pffjDQJW6QPiBhahMLUBhyrrQYS329I8AYHntqbUJuHifgFt+C12LAzIDo5Gu62bNBIArNWR7n2UEhNYmzXGf5PCnQXX6wEAcVqGApwOL+4e4ZG7zy+OalZ5s3BAL68HXOtd3mMVV9+ecudjZykI2HkhAYO4VAvj49Hx0+72+DrSO0n0ooRCHEWCXRv9aT4YzXDPRvkmqY+bvdkSPcHqf5pgygBp/MhFFGEsdycn1jVyb1526abJ7QYVc4z2jZ58jCEY2HL0mQ3Hl6TGIGndBodn/qf7/P45d+fwK7ztN79/kLlLm9E4LSNoKjFDVPsA4Lf3Uesn8wkdeVZDbEFVE0QqcmBLUwCV9ylgNwAlygOXKlACBYZn8n1eGUImD6jc6l2KTpkOUGzOrIFQXxo6WjuCTT5P0DXWKDQpY88m/WLMbbyxuCz1uWI6n+oxjv4OPNu+FvTFLxP2XSvpc25tHIso5zIZ99tbKICl2FHE2ZQ2Xz6Aafjvq
- 1PtCdz6t
- Cj4wHxS4rbqImlj00WUZC1bjA4AaAAYkfrvMjIm5zLqpvG3gB4hxX1jvJxF4A+3deXRwjIVqbLRya263MNe5eHcs0tBTVH/rMwVO4w6M2bPMUVDYYOGiv7KFodsS3gfwrJKfBDQBbhuQxYef8rUz/MOwTL5FrYmb/Zms8/rd/xu3GjWECNqmSvMVYbI3UulQ2mP538j0VAmQ7j5LyOgZwLGTB8XIdxKv7dkDEXsZAQXn0oN1OXofQnepznXkJ1cf9CYdP2k7xOEvXtTm8j+AfrDWfuI1qcyiFvAFyF0E1i2XtNx0PJ05jcXJm+cSe06fHpQc9/dBVcftv5WKZaDOEw4D9JuX0xkLfB1Pzf7DagP50G/cIXu2FxQ+gmtmYarFI4kCp0WgmYIGnr+bn/P5v5iTKSGH+ozIOui7J2UrhH+4568T8qZ61QHTmq0DsZkHYZJ/2oDyHBIM7CJyEDskUMrTVz4BHhcX7qoXUM1KJf8jQapo=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9B05E40003
+X-Stat-Signature: sejg9ijccghjg5g9ohs5gpnb4a9aumfs
+X-HE-Tag: 1787955619-245165
+X-HE-Meta: U2FsdGVkX1+fqZ5EzXKq3FwEn+vPCmfIxEsxW3XBhaVVeG5HtTRXEXY5Ic9t9iH2M7radO47YaRIK802ELkqTKns/6N4bFqYOR7/OP3OW2K4UJXkWoosP8COL6szaEBdhUm9Pu9kqtR105XeCzRok+7NabGyRxvvUYU/u6Pjz5PnhdgXJcDvEvmWQ8CT1CGWZrSa8fwFF+UVgDKIosxkBBKjfM3pSPMakkOsPdvZC+QC0POkdLSSSuTM/eb3B9eoI6OpY/euukqxUPzjSKgxNzZ5ZftEjE+wRexOwzsT/NV54X6XoN05pnH9o/mccl+HhtYJJNjtMqnpVY2foAqYd+QPD1zWe0yO4zmaKa7zj9zAU0ElLXNieDM6jetlXauL1uyHDdu/xcCYw8PS2wvlVM4BkQrvoZ+06grqF+TR4zUePAPoU4PsO8OcwdkI3WYHj32HpEKRc70ffi/xhzdKPHz9GEf/pSJH3B6ChayHbvVbnKYNgo8fbOygHioWYPeGJDoaOvBqPj6rdslkSsFwMQz2sHO8Sp/Enr54IIZgJgDkj6QlfIa8I1cXFurJb2FC8LyKQlwVMEkUrEZGudgGWMwpt6uXaLtwACcgOIe67hwAaoX4mnQjryeCKo6k89Zpqg/FY38zEr26G8gAz/AQJGRKbBpfEfg4dDt1jZmBJq4g/nzvUaZIZ/yjlVI2fzy099ne2b6exQlXsgw2QBNw29cR7JpfT8XHn1A35tkH5OiBGuyDEUmWmOh5jnVAA7dGQORS0dHs1kJ2sudTdjZughN4xTorfRd+POLjWF6BpBTeuO6Vb5eWhHoZKMSRWYHzMdXSFni3sg+j2pFe/wijK110DXoybu3Ac1mncV0PcbRMJj8X9XlwS4ZuJOfauHmwzSED7VqNhKaeC4C9svVAHFKqSUnBi5Fp4hmarvOecZJ5e6NciF06Ur03A265Zm9dyiGp0k+9/x2tGP2gikF
+ v5P9m73y
+ ONgor4qdjA8NDUKAeQpknRfzKDhNSXjHFn/pGZpqPwWJxPUDWlj7bEfRO3nSRxBPM0LUIyMUbKeHmh06T9RfEXAfeKVJu3ZKk6vULql/X3nDAf0nUnPEHPghHUkRe42DcPNyZ8TqOi56eVlU16A0CuMC+Cayv5G3y7KF6ie/+Ib1WllZHO9F/mMp1nB0TQzsysGTjEEijY5VxHIOSqV1V/6p0xERCiJm977ETjR3i+t47mWMSNQsP3BHj0vA1sqMacV4n46uMXk7/z3GRxwztfO2zl1L+HGKVwZtQ53S1+9KNlsQt1nOGdXLpnt9qh+pu9RLv+zeo+ELKqgxuw+teMjeI9yGEuyKWaQ4nPZLFoR6mALqYRK4SI5ejSYaH/5ok5Twq0v+0XIjGUPn0UXmQPXY5PCRnW7M8YKS0uK9Fii2GLTM7FkM92r8dyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,35 +143,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Aug 2026, Claudio Imbrenda wrote:
-...
+On Fri, 28 Aug 2026, Matthew Wilcox wrote:
+> On Fri, Aug 28, 2026 at 01:04:34AM -0700, Hugh Dickins wrote:
+> > On Thu, 27 Aug 2026, Kiryl Shutsemau wrote:
+> > > On Mon, Aug 24, 2026 at 07:01:20AM -0700, Hugh Dickins wrote:
+> > > > Treat folios on a per-cpu fbatch as if they were already on the lruvec:
+> > > > with PG_lru set, without holding an extra reference. This will enable
+> > > > the removal of most lru_add_drain() and lru_add_drain_all() calls soon.
+> > > > 
+> > > > Recognize such a folio by 0x02 set in the folio->lru.next pointer by
+> > > > folio_add_lru().
+> > > 
+> > > Hm. pfmemalloc (__GFP_MEMALLOC) thingy already claims the bit. Is it
+> > > safe because such memory is never on LRU?
+> > > 
+> > > Are pfmemalloc and PG_lru mutually exclusive?
+> > > 
+> > > Do we want to be explicit about this? Like, folio/page_is_pfmemalloc()
+> > > shouldn't return true for PG_lru folios/pages or something.
+> > 
+> > Gosh, thanks so much for pointing that out: I was completely ignorant
+> > of the the pfmemalloc use, and a bit (bit 1!) shocked to learn of it
+> > (why wouldn't they just reuse a pageflag, I wonder? but doesn't matter).
 > 
-> so if I understand correctly, with this series the LRU caches
-> will never hold extra references (as in refcount) on pages anymore,
-> therefore calling lru_add_drain_all() will never decrease the refcount
-> on any of the pages that are in any of the LRU caches
+> The idea is that it is used temporarily to communicate from the
+> page allocator to the caller "This only succeeded because of
+> PF_MEMALLOC".  Making it a page flag would require all callers be
+> aware of it -- most simply do not care.  PF_MEMALLOC was set on
+> their behalf and there is nothing they can usefully do with this
+> information.
+> 
+> So we want to communicate it in a way that allows the unaware caller to
+> discard the information, and I chose bit 1 of page->lru.next.  We
+> used to use page->index == -1UL (which was also naturally overwritten by
+> the unaware caller), but we needed to have it be part of PP_SIGNATURE
+> and that needed to be not part of page->index ...
+> 
+> Commit dc8cf7550a70 if you want to read more about it.
 
-You understand correctly.
+Thanks for explaining, I had looked at some of the other commits
+implicated, but not that one.
 
-Though just before hitting send, I remembered one further detail.
-
-lru_add_drain_all() also invalidates the buffer_head cache on each CPU:
-entirely unrelated to mm's fbatches and LRUs, if I understand correctly
-it's a genuine LRU cache of blockdev buffer_heads very useful to some
-filessystems (e.g. for quick superblock access), which prevent the pages
-(folios?) they are attached to from being freed while attached.
-
-My understanding is very poor. but from glancing at the folio-oriented
-kvm_s390_pv_make_secure(), I'll guess that you have no need for that
-aspect of lru_add_drain_all(). But if you think that you do, then
-we can replace your lru_add_drain_all() by an invalidate_bh_lrus()
-(like 22/25 does to drop_caches).
+So, it's a special snowflake which can melt away before it interferes
+with anyone not interested (which a page flag would not): yes, that
+makes some sense.
 
 > 
-> in that case the lru drain can indeed go
+> We do use a page flag in slab; we check the pfmalloc bit and move it
+> into a page flag (SL_pfmemalloc).  But we don't use it for folios.
+> 
+> While there is a folio_is_pfmemalloc(), I think that was a mistake
+> and it should now be deleted.  It hasn't been used since slab was
+> converted away from folios last November.
+> 
+> > Anyway, as you've rightly guessed, it's not a problem at all: these
+> > mm/folio.c and mm/mlock.c per-cpu fbatches are entirely for folios;
+> > and if any pfmemalloced page ever get used for a folio (dunno) and
+> > put on an fbatch for LRU, then of course its use of lru.next is
+> > immediately overwritten (first by what this patch writes in lru_next,
+> > then later by the lru.next pointer for whatever LRU it goes on to -
+> > just as before this patch).
+> > 
+> > If you were to tell me that some subsystem uses PG_lru for some
+> > other purpose, then I would have to get more worried; but we can
+> > be fairly sure that's not so, since mm/compaction.c for one relies
+> > on konwing it's free to  play with PG_lru folios.
+> > 
+> > Whether a folio is ever allocated with __GFP_MEMALLOC, I'm not
+> > certain (haven't looked), but there is no need to exclude that:
+> > it simply would not retain that page_is_pfmemalloc() info across
+> > folio_add_lru().
+> 
+> That's the correct thinking.
+> 
+> How about this patch?
 
-Thanks for confirming - but please reconfirm in the light of those
-buffer_heads.
+Oh, when I said "This certainly deserves a comment somewhere",
+I meant an acknowledgement somewhere in my series, not a complaint
+that it had not been already commented.
 
+Once Kiryl pointed me, I found the comment in page_is_pfmemalloc()
+good enough: the problem is not the wording of the comment, but
+knowing where and when to look for such a comment. We have many
+header files, and understandably no registry of low bits in pointers.
+Wherever you put a good comment, I'd have missed it.
+
+So, I was okay with the original, but your longer explanation below
+looks fine, and the removal of folio_is_pfmemalloc() good, but best of
+all is the comment line (nit: wants a full stop) you add in mm_types.h.
+
+Thanks,
 Hugh
+
+> 
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index dd09c438fa23..fcefffb52d3e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3122,36 +3122,25 @@ static inline void *folio_address(const struct folio *folio)
+>  	return page_address(&folio->page);
+>  }
+>  
+> -/*
+> - * Return true only if the page has been allocated with
+> - * ALLOC_NO_WATERMARKS and the low watermark was not
+> - * met implying that the system is under some pressure.
+> +/**
+> + * page_is_pfmemalloc - Page allocation should have failed
+> + * @page: The just-allocated page
+> + *
+> + * Usually the page allocator keeps some memory in reserve.  If
+> + * __GFP_MEMALLOC is used, the page allocator can dip into those
+> + * reserves.  The caller can find out if the allocation came from
+> + * the reservers by calling this function.
+> + *
+> + * If the caller does not care, it can simply use the page as
+> + * normal.  The field that the information is stored in is usually
+> + * overwritten by most uses of a page.  Nobody should call this for
+> + * a page they did not allocate as it can easily have false positives.
+>   */
+>  static inline bool page_is_pfmemalloc(const struct page *page)
+>  {
+> -	/*
+> -	 * lru.next has bit 1 set if the page is allocated from the
+> -	 * pfmemalloc reserves.  Callers may simply overwrite it if
+> -	 * they do not need to preserve that information.
+> -	 */
+>  	return (uintptr_t)page->lru.next & BIT(1);
+>  }
+>  
+> -/*
+> - * Return true only if the folio has been allocated with
+> - * ALLOC_NO_WATERMARKS and the low watermark was not
+> - * met implying that the system is under some pressure.
+> - */
+> -static inline bool folio_is_pfmemalloc(const struct folio *folio)
+> -{
+> -	/*
+> -	 * lru.next has bit 1 set if the page is allocated from the
+> -	 * pfmemalloc reserves.  Callers may simply overwrite it if
+> -	 * they do not need to preserve that information.
+> -	 */
+> -	return (uintptr_t)folio->lru.next & BIT(1);
+> -}
+> -
+>  /*
+>   * Only to be called by the page allocator on a freshly allocated
+>   * page.
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 09cb1e18bc16..9bcfc4213b91 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -85,6 +85,7 @@ struct page {
+>  	 * WARNING: bit 0 of the first word is used for PageTail(). That
+>  	 * means the other users of this union MUST NOT use the bit to
+>  	 * avoid collision and false-positive PageTail().
+> +	 * Bit 1 of the first word is used by page_is_pfmemalloc()
+>  	 */
+>  	union {
+>  		struct {	/* Page cache and anonymous pages */
 
