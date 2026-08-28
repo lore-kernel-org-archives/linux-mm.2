@@ -4,207 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D40AC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 04:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61646C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 04:20:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21B0E6B008A; Fri, 28 Aug 2026 00:18:53 -0400 (EDT)
+	id 466B96B009B; Fri, 28 Aug 2026 00:20:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CC356B008C; Fri, 28 Aug 2026 00:18:53 -0400 (EDT)
+	id 4176E6B009D; Fri, 28 Aug 2026 00:20:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06D2A6B009B; Fri, 28 Aug 2026 00:18:52 -0400 (EDT)
+	id 2DFE26B009E; Fri, 28 Aug 2026 00:20:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C5C496B008A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:18:52 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3740CA0380
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:18:52 +0000 (UTC)
-X-FDA: 85149372504.08.A471039
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 545D620002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:18:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="CVM2ga/Y";
-	spf=pass (imf03.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0646D6B009B
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:20:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8726216033E
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:20:01 +0000 (UTC)
+X-FDA: 85149375402.06.4DB98E4
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 94B3A1C0002
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:19:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NTYsN8Fz;
+	spf=pass (imf20.hostedemail.com: domain of ackerleytng@google.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787890799;
+	b=XWc0xoCZ28R9HtC3PGpkZEtJsih4yHMSbMiKKdlk7xZpnkAbVsJ04RtSFXfAS2P26wT4YZ
+	XdtZLWcJdGOCl2OTqEzpMOxgFQkDGmnvHyniwT278yjHVi0BKRCrRa9OgtepwTjOfXGYE+
+	iIN63Iaq0yWAyoaJ0Qg7VhPdnmM3/PQ=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787890728;
+	s=arc-20220608; t=1787890799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=twnD7z2efGavywFEnQp6NqJcchyCbA0XLbh1RVf0axQ=;
-	b=7epNnIAbhbh8W/lEPxj6WpT8v+YcymJ8zesCF/HA/YvVePHVDR7butRU96KzlNUZa9KelN
-	b4gi/AsAFtr/L1cTHRcRfN7NH1E3+5IKsRL+zFmf0cx72xwQEBCwp3ZnJvg8EmYNsh0Sr8
-	qvNoeMNUh361kNlYTFsHw5Be8MyULsA=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1787890728;
-	b=ahCfC4Hvj/EM6gBpk+0DzXZ/vAyfG+/Foj7xa67AvTkBn1uhtqyvKcAZ29CQPztd0i1+9X
-	QYWhqjnIXlvlJ4ZxW/DpRCBrqugm+wj9/wgCqFQpSCcaDhBNdRQUsueOlT5cCWeZgLAoh/
-	k90PZm8ngw3+NNcJsyuuzso8wH0uzsk=
+	bh=QCDy9v0wvCJe6b4tDkyj5x2hkmiUIAeHKOf5Q690ANY=;
+	b=KonarNXoKrdNeAewQ6WjbajLssQ2zJs2Vxa/QEbeqiXpfw/ktpvaSerqdhhvOA1mmpvpht
+	Gw4v1nGGMzOtrcztTTeoqyAYWORYQMZeadM6a658vFJ844zQpjO8dRx9J+Xp35FSOXUtXD
+	sKb2EtYEXJ4p9Y1VIta1jvyNrk9sAGQ=
 ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="CVM2ga/Y";
-	spf=pass (imf03.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787890728; x=1819426728;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=Qk0Pi4eIHu1ZNAuf0bzI0ycwWUKoPHAvkM7mBtkYjcQ=;
-  b=CVM2ga/YjIIexeG4va/XbNUvpbTWcvQ71lVzWPtDggy+Le3iL4SC5yFU
-   LbfvgsgIymmtmWcIr52Lv9rrTlTDcu0R9oPcv6o173RpxvJmIa2aOzEaP
-   9hp+Ju5BwNUFUGZ0maXI5p+9AD6lBddZQg2Ek2/PQwYjH7EttRyAbHmD0
-   fHgKm7uv9osNTCYjlGhcwAEPOQBTZMduSRHPbx1osKoUSl551R6OtbiHd
-   7jM4C/N79gJeGoMl4fbsvEavOdMHWxqJDLORNlEUfqHrZH+N6FKxSBQzX
-   NFsNB/YDbKN01JuVtSzAsMHOyxjZn0t0kf2uQdITspyaB7IwmGLkkubjr
-   g==;
-X-CSE-ConnectionGUID: vrAZZtOWRYShc8BmAmtCvg==
-X-CSE-MsgGUID: 8D6jJgyKT3WsHQwWT1CoaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="99747746"
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
-   d="scan'208";a="99747746"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 21:18:47 -0700
-X-CSE-ConnectionGUID: 1U2KDw+ZTVWpJy+dQahZkg==
-X-CSE-MsgGUID: Hp+DVQaISze6auu3pTzJKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
-   d="scan'208";a="267460495"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 21:18:47 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 27 Aug 2026 21:18:46 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Thu, 27 Aug 2026 21:18:46 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.60) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 27 Aug 2026 21:18:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pmkRIJqdIdbw7mDhEblhKDvDL0NyKrrIcI6dVw1FuDoKSAeUoWOQoNOTIYC0C5xRXcYQkLKtWpU/Lx+1Pdrh3CZ7+FCw7ojlVFDPNxPp5pTPzuxpM2UloOqBdpuqaD+OYg1pyzOTcL7oCLVtjj/bjuF2Si3dsnx9hJ7CA6AFdHjtPbCJvNdQdG1R5Fkow5Pcb1mkzzrBjph/w1GqyoXCLsRZcpTEON+ECfP9JbYXBMX+76eA03L3zfcGTl7KWKLALNauV7CFiZzzaPqV6OqmZb6nnncPJ0s3etn5W9SEZCPgyR3jc6I8jNdUBzABSR5B6lKQ7ZvAgPN9o5cPATD8Xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0ob2tGK8UfYbjr841u0559or5imoa4GQcI+O/LsAdC0=;
- b=gOVjXFjz918ZpGpcXQym08XNjdsmp5CmP1MT9SwSGykpHHZMdIHuNKzMBIWay+ljs9oy3ZnRIG8AxON7WzlNaU4QWBPcdCYS0uhYjAeDnmfQ0B7bhAf73Eypt02LAnuhUtOsbipco0h1uoVHZXSX+tIQbUAsT0cJn6n52tNh88YDY8kwoBlXS7rnIJUlKu5i+jwDRBkSgvim/5QeiNYzX+8zIQk7SjqPZioiYLh7MAo8L+NcFKXLOZlTuQlx80fmeJzURju6IxNzu8nNelksc3mFhoadf7e4q13aryWu7fj6ka1hukqPTVeIQBoeJ0pjEdhtQY7NAFclPVOeEuKxSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by DS7PR11MB8781.namprd11.prod.outlook.com (2603:10b6:8:256::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Fri, 28 Aug
- 2026 04:18:41 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
- 04:18:41 +0000
-Date: Thu, 27 Aug 2026 21:18:37 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-CC: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Sashiko
-	<sashiko-bot@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, "Dev
- Jain" <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
-	<lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Joshua Hahn
-	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
-	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
-	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, "Balbir
- Singh" <balbirs@nvidia.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Thomas =?iso-8859-1?Q?Hellstr=F6m?=
-	<thomas.hellstrom@linux.intel.com>, Francois Dugast
-	<francois.dugast@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v3 2/6] mm/migrate_device: Do not write past the end of
- the src_pfns array
-Message-ID: <apEMHVQwZc5ONwvM@gsse-cloud1.jf.intel.com>
-References: <20260805231041.3791771-1-matthew.brost@intel.com>
- <20260805231041.3791771-3-matthew.brost@intel.com>
- <4312740f-2aa2-41f1-8442-d4a80682753d@kernel.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4312740f-2aa2-41f1-8442-d4a80682753d@kernel.org>
-X-ClientProxiedBy: SJ0PR03CA0197.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::22) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NTYsN8Fz;
+	spf=pass (imf20.hostedemail.com: domain of ackerleytng@google.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-90cbff85fa9so2543436d6.2
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 21:19:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787890799; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JSDEHVJ54VCOsW2LjefwA8tYAEg3DQYnbJrCDW7XpOdWbcpQBznL3XI/i8N5I6Tz0H
+         Bn9a9YFCMEiZYodVY3gNeMwkx9q+8b72icsFbs9rmZ2T2vp9l7K3liWXqruyuGV3K3ko
+         PQTbELVuMJthgkUwQ2orKdROcQoNy9w9ErVQbzU2PFkF0EJ2zBsm/CtIRWPcSn6pP7Af
+         3VQYJyFHSNwB2CdGLA+h0sqPoHYuXzB1IocyX2RMdxA/gPNIpP4Wzb/FK2MNCc+j1gMk
+         BTpdaqlW4QETLFL63CKlBdnBKV7nxfBbdCi0v7cnKLX1H8Qy3pHxAQMSRB8GbnyzSgPD
+         jrSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=QCDy9v0wvCJe6b4tDkyj5x2hkmiUIAeHKOf5Q690ANY=;
+        fh=4ycKK34rfICDBOHgo+BR1Kdzi0BwMrcT0Gk74ZkOTwY=;
+        b=MNiYwBoL8fXsiZ6sLuptNEmF1rD/fOW5/Zz/A0i77xJp27I98w08A/7C/ZEr2hDPxN
+         PA4wbfl3e2AC/RpTXLf363+u5FDz+VAART8rWyuzZrX8Q5ST4QQqynxryYKzTZk2ZawL
+         zXBrjntq9XDAoAy7jI/cbGd+UJvtY1riX2+XGZLRoIZ3atElEVQATjTjQguP7SAb19py
+         3Ij5ymmNLXd249l3cvGIdK0eQ/FgaWbgP0IQYakp9uvzCWEmQuErjFn3yC9xRG3kegHs
+         UKM4WKR+CPv5ZFKzRV8zXb7joFTwGj0ek0vyLnl5QM+tBxL+l4NNa2mT89Ft+gK0XjaW
+         chCw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787890799; x=1788495599; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QCDy9v0wvCJe6b4tDkyj5x2hkmiUIAeHKOf5Q690ANY=;
+        b=NTYsN8FzmH1kt3CHRGgeeenKgz0PhzeLCCS8frTVv1qY29Wzsz9CapE0mzqIanTIoe
+         yzTyRScOt8mFwiJ3GznasjgbgNaLooYNO8E7lCac/JjYqNniR9RkYkENKxJqPdOecVOb
+         A4P7/raDsduTwMZU6v70mdIxKwKFFpJCvE72Wj7gqm6RCW4/ch7+bzl+8zXq4a+ocAUk
+         rbK/XnEV45QLYiZ7SrB1lNFhilR7RK3atwXZOqC39AX4S2rCdcuz+QN+qHzqFcGI5mtB
+         D6/oRQETTiiYFzm05EIxt1HU/YiITomX1h725S3wgMi8UwWo09Mcc8Gx2XlrFWF/KTeT
+         1FZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787890799; x=1788495599;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QCDy9v0wvCJe6b4tDkyj5x2hkmiUIAeHKOf5Q690ANY=;
+        b=bkIENb8fuOouo71SJUGjNn37W4uyW8RRgWhckKpsE++QEw7FSUzmgv2qeOfdzJRO9l
+         atBZdAdkSjCZL+Lu4LzsBgsQCIjeAi/oR4or7rt7ZzHFvOiarUJzP3a0y0fed+wf0iPS
+         +Iar21pcIBcgl+Ki3mDF2wg78dSvYvm8shwAXZynXD/ysGfGdbPmjFIFIzg+LB5ORKso
+         mTzeQlXEKAUr8U2dv7BWSgijBu4IAuV+9ahrshRJa2mo2s+UQoS7TKFNHMit2gGoHrI4
+         4GNIf0r/dTIUc9iORSPiuT0srmOkBKgA3y5KDyi+srbngmSjGiq0TGRsgsoPykXv3emk
+         bDJw==
+X-Forwarded-Encrypted: i=1; AHgh+RoSoYrcuK39aYe1HBYdWp15IUfCxncl0OHq2wY3KymJJwiQ4kNnobbgjAFo1/93O5flssvSf/deJg==@kvack.org
+X-Gm-Message-State: AFuF++kRYUpJeimCcAO9IzMzv8l4+Ew9X8iL6paRrrj7oE2D1vvW7m7+
+	l9nFAZZe7jcrM6iNpgI4WKS1rxLZjPWmyLjDWQ0wGtBQRpa7SXPm8VUWHQk3JoYjT44HMWFVvVR
+	42Y3i8u0EwWatCcHbi2+SofERMEkuA5veRLdlKNOQ
+X-Gm-Gg: AR+sD12bK2aLC6zgLb0NuQfwAEpHkRmhEABBHs++yHlWul//z3/kR+edQYAQ7A73E6u
+	RGRQn3huN4iFV/kuqD7PJ9k4R/yNatBBwoQlpbm8gUyi0R+cw5ea5kigZZQFdD5eX8MVTzYkK/5
+	NCKTT1x9mNTV5JXZ1wqBNd3Q1piHOlKmqscCjfRQSH2XpNHECtmRckFoFFzvwZmg/GVtf1zbHtE
+	YQ/l4+sYpqxUSCtlCLHHS7Ybdu4eHL2Y5oISinRjN92CmiqliZg4LsRoIb7W3B625V9q5U+FB5I
+	FMIzdPXj/2X6ncyemlozxClFu8HweevNlODHwx50Zw8q2akuW+GGJ/dh19/fSlmfnGdTGqZ5aST
+	pyqvrSe7QgHruSYplq1Q3gQyE3HfmoHEW8myi/YB+eA==
+X-Received: by 2002:a05:6214:212b:b0:90c:4e5e:754b with SMTP id
+ 6a1803df08f44-90ce0f45ea4mr46165856d6.28.1787890797765; Thu, 27 Aug 2026
+ 21:19:57 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 27 Aug 2026 21:19:56 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 27 Aug 2026 21:19:56 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ao9CKMXAX-hScRSa@google.com>
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+ <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com> <ao9CKMXAX-hScRSa@google.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DS7PR11MB8781:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b096eb0-11b0-4eb0-1a7b-08df04bb70ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|18002099003|56012099006|22082099003|11063799006|10067099003|4143699003;
-X-Microsoft-Antispam-Message-Info: RWVo92UCM6gN5OkQWQl3wF9mMWPVwCW4WugIgxXrXqzzaSo2ovgvdpZBdz3yovR0H1Wj9VBkphU5VaPqIg2ejivyAi1ou3csB5t9OpHfxNqqlVrKKkzmOy5zFIVJKxGd9DS25GcYNyC7+1MgNJhq/oPOrzfy8nnqP8b6OQqdcQ9zJgBUbtiIwUXJbUL5ZN2/7PL4fsCr8r6DuZNrrL+PVxDCIXFDC1wtOYlPK5F3iYJSdOt/HC6HligZg4W1ddUfdRhgzmhZUZMzDIYZzFNMgkN4swdM0N1jb0dN5oWQuewtemA7XXvOwulw5CPPkN+pHLV/sqBuj5MhuJ3L0uQyWVvZky5KWvhiMyEbf/o6K2cSggaPUcUsIRUCkli9Iv6TGvuR1vaN0302dNv5KSVyUT9r9pVetsC432d5YItirUS1/0RGCYNJhmj+DxDI3YmISIYj23njUnQvTCsElcUhNhMFc9/PA9H9r5yGjIZq3MjGx304R34AWChZc77LI5zC1rPeAFjeKpwK6Pumwvb/5xvYXmcCJnYWFsWnG7Rp/+LqFjs0fGvFazy1LHgmfIc4px9SmPImZ4FD1UJB+Azrdn9cDEbcaNYca09BTCxZKN4EZqcETFFjgIK4ImjyP4X5
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(18002099003)(56012099006)(22082099003)(11063799006)(10067099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?EIygY2CMAWqaLUQdz6Zid2MWm4i+U9Tqoem8rd12cHxmajcUjBAd9GLkBr?=
- =?iso-8859-1?Q?QRP0YFYtLqCJFvgJIpmyWZvqe12ixum0HUNTaX0Pl+VFDoTxBGD5dPPzco?=
- =?iso-8859-1?Q?AlW4QpKrwsR/mEQtB2Y5wKAYX4DPBYKBlvarTPBNrmFeLYsAZmXzoc+iTk?=
- =?iso-8859-1?Q?x+l4hk5YPFOEaBUIfd5DffSMR/tLqjVMt83LMPknpCTM97BM8s5lKQubC0?=
- =?iso-8859-1?Q?2AAOzZaRBNPXxQF/236QGDoiGpvpFDuof7e1nPdTEQoegU0zMcwN0pKmJk?=
- =?iso-8859-1?Q?IF3a8x8uBSIlRe1E96QojH/bte1VWjm0TFCcqehFCNEbyBFZ6n9YFhoyq+?=
- =?iso-8859-1?Q?SMVIml8+gqFMVRQUnB36fHnvs+9gVlqXc0c7I3G1Pgf9gr91/YZTrSm3j0?=
- =?iso-8859-1?Q?61KCPOCVdVyGofX41fDztTsk2+IKn1EP5UcEqm8JBJrhEv8gmnBfxfLPhi?=
- =?iso-8859-1?Q?SBFIatqdL6ozwB4ce2GG+g9aGnKraUQZ6i4tcFxj6TJv3ticY8bG729Zqe?=
- =?iso-8859-1?Q?0CZce/GOcIH1XPaHDLtEgzFmqgfyUYDC48+8DYpg86YBulxr1ba5mnOM11?=
- =?iso-8859-1?Q?ICdonGm7EdtRPX54dwb2c8VzhumxvaNYPqEk4VaufhdHrTSVWRAPGFuwkZ?=
- =?iso-8859-1?Q?xrB+Tbnprc50jmgGTrH8335UBgv9c78gMfpsZc+2l/ZUMEfbCGDM5C2UZA?=
- =?iso-8859-1?Q?PjmZDnoJaRRW5jVs7rsaCCvNRmkgX68b0us7WEKoh280roM6VUpevHFupy?=
- =?iso-8859-1?Q?6IwuH/M7kXqA8x+JqLuBxInUPz3jB6oP0003Vaxx2IYeENx1FdoYAgOgXB?=
- =?iso-8859-1?Q?h/0Xfi04dRWc4r4QdK2+E86AmPIc/SNHuaDlC/YEaxCdkUpizjzxkcuoZg?=
- =?iso-8859-1?Q?ITuYN5cSI++JHq8PN3WZ/XMHVpFtdan48cHyTyxXzAoF/YzuCLy+WR/6i/?=
- =?iso-8859-1?Q?fSN0c13Kk/EmC1bh+w4u8DkzjzDUFZTX5+tvtpYwKbgh9CFyusllE5MsUQ?=
- =?iso-8859-1?Q?YFy0v8iAwGpCzw0AdMYHiwlKDM1YmZG2Y6A6S3ReLuTYcD7W8guU5HirN/?=
- =?iso-8859-1?Q?wi5xWRPGeIqXeUkYO2v/ynHb+I2caLjB9iAVWq0wTJBRhKRCHkMbnm97/p?=
- =?iso-8859-1?Q?JnlHnJVvSZR3Pmm9s/WH/wzeMCOjXMU29slbKeulpn3IOXK7Sk5T5BdwlX?=
- =?iso-8859-1?Q?wJZruWnVtESLNbaCh+LalbcuGK7J4jAl0tagTnhZCUyMNtj2oe5DCfzYc8?=
- =?iso-8859-1?Q?egdAV8Zdo5Uf6j1RyQ6RG38Z+cAY9IOIjId/OnvEmH8YWcxgWFzmH2cXZo?=
- =?iso-8859-1?Q?qLizCrjyRMvFFp4IPBB8hahI4Q4dxmS9Rzrpi9HhebUPpFknqEL4wmiZse?=
- =?iso-8859-1?Q?rtPkZT9xt0AXNFWgOIpcbfFNUMqrB0AX44QwFF+1UkdrRv+CT0oAVlLPON?=
- =?iso-8859-1?Q?inkmgsDo+qweVrLERyFNQ8FS8sH38iSugdU1V0kLVvET0XTmjX7nzs/n/j?=
- =?iso-8859-1?Q?oEr7UDwRF24oHGqiUC9l3W4qrW7GLNh8HUqgrqSfw7lYgs8WkQ1+k9kU/f?=
- =?iso-8859-1?Q?nBTOtlVrZftN9f0Q7HipNgvkVSjyg8W7UD30wpeywdKNtOodzY4eC/pfWj?=
- =?iso-8859-1?Q?+cU3O31ae05dKA2VYN6l1JvCWb10Q7qQt9mLzHkdVpFF98ChuBp4hqdRse?=
- =?iso-8859-1?Q?HMaNmstF4apXBFwS+pDYaEQF7qUD8sOJs7OqsAmi1/Cl+8XxVN/ERBMsJi?=
- =?iso-8859-1?Q?CDazBsFu1gkoK2hweextKcjYilVuOmsafsMr+e992ISvtm2PRfQzuDiaDq?=
- =?iso-8859-1?Q?PRg5oyFvzK9MVgWscXiwxWB49ozQCXc=3D?=
-X-Exchange-RoutingPolicyChecked: MPfuFKj0EU21NRwvzeo6cJFCHFj3+JGby5WZoR7xPXXa7VMRLwX/mAzcuIxUtxeL724SgwguXPVDy/SNNfwKP6ICf0hSPgV0qCvgH7TKjIbNcrFhqLMAEM08OXI4YOE9V+K5oSY1oZtrcLUAGz/ESzlbcf9hdd7PRe51NH3ru/dtK8ouic1q7yfkTK02Q1KPoBa9ry0T6PT4co5FImRMIFqeYX7mhmYeDn99ND2hXa3n1UFyOSJB2I2C9WnkwJB8ENS9TXMVmEIRDq42+iKzagasrRe6aMudvUA0gGLo2WuTeZmVsEDKrjJFGWNGlde6MA7dB9y+dzxn92yCV8lv/g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b096eb0-11b0-4eb0-1a7b-08df04bb70ec
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 04:18:41.2119
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iSHtYCn/xl2zXrNKqNVhqiX6mLzOeiamBrvQBHKNLcLWGNWemthVdPHxzuL9jckcLe9UJw3nYpa/vNAwzTKnng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB8781
-X-OriginatorOrg: intel.com
-X-Stat-Signature: u6ngd7u7k6yoy11suxf9piwg5odryb7c
-X-Rspamd-Queue-Id: 545D620002
-X-Rspamd-Server: rspam02
+Date: Thu, 27 Aug 2026 21:19:56 -0700
+X-Gm-Features: AcwNN1UAGJ-fGOM9zD_UvTf06ZrP54h7-np3dJjD_6mMPjXqsGS1LGYTBF7LEzg
+Message-ID: <CAEvNRgG7n6F=dW9V_QqQPDDgLiZ7x08uLDanJgSzerNtN8sqBQ@mail.gmail.com>
+Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+To: Sean Christopherson <seanjc@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1787890728-254983
-X-HE-Meta: U2FsdGVkX189frDyY5fWr1eYs/kPw9rkiQ9y+ppfrd7TKVutUvTGL5R2v+4xsAjRsV8gz7I8Np/BsxoVsTahd51t4Fla+PEvT6SOgYrA3BLg84TTea4hzcHFTk/m4d2UzHGTM7Q7XoJ53QCpB9IF3jz7BUmZa4ZgHyZzQGE55YmxntLgdhss/5mQH+Yvctd8tHgo6IVW4bL8UxuYL/8IUJoUjpxdmYkMVOu0Ykt8kUUS4EBq4GBCUdlPjPVCiPCTNCqI4LwknZ5JNwSl7uvouaOHn3QKYJCNd+MP/aN8hBD/ZyuKrX8Z2fKj/fkd0WINfDN+LXYILJ+kgTINvAThV+CgAppkVapXkykwEcp28O5jdsahyx5huoL2yzQmac4PBAql70v+kTPNs0AaWIjWIFxdKyrBUQcXRbXlQ6VZOdJFikG+7VPyVI0eoc+RPFQGLk5A2tivCBRJu1s5J6hYNsQGNfZR4fnhjAgYRPkzZ0jQHYx6zsnh8L1BWcTHBSDIXEB74ansRrnSgU1BBvuL0VDGr/FLoTAQ44NH0kKaBwhUz4xEyK+1Hx80Wao6X91jJzQNuibZDmo2o+OdbENyUrrDp4IcvTkov2qylRfoJhcOVc9uGC3aQNkNRl1YdUvUn3+CvhISl97bvGx9lUxWzV1pO3asQoeWl1cELTgDxxoHNdzvEgFR2Dgmzy1G2nvUa+vA+2HneiUZOEyEuVR6FhD0YjBTnRA2rg3HahYC74a+ds1WuPdCm8vpZe5E2jx1DuwZoH6jdd1AaRniFoY4iLw3bEPl/MuRbB/7PzoptSuq4xkaouWwoPzAekoF19fVDBHmP9Q8UZm+JuDYicxNcoDoC0PcWw3a5tjHMsbHn2xz5q9iMLYZaw9vbwXRQzncc1gf0zoPFHeKrHwcp4Qeqqwdezz1b2ut+O0i8gafHpM9mcT3j199cpnZbmMq/9SlAhO10Qk+kDCT6OH2BQH
- L53u+vZH
- XdY5sfYZ5WVgUe6QA4WYIR7QiiV4d5u0+Yndv6r14BpntjxiUJwXffVsJY1DRbHY9qnKae2CW1qXVHgp0ZwLpY9Izg0RnDnk5deH4EgCdQxuZ0rixrsZ4wtCftRgLm0Wtg6QbqQELMQY8uuIY2hNsNr9IIJrs2g7FqBOwValsYWT5SWwypHD0mmM3r03PXYXCjhUXievsTVvlfbGQJMy2sI/SvVriWedEYo0E4EaNkphWcV/KnkNbYpIBn52o7uNZdwoR+Cmco2K2RhVQcBT8ZYnff9irULQFcL/8ZgPXV3zp5Cl153GiYTEGQJWkYmcl8Q9nmjFzf35m33z9NtpHDofHgIv8yg7/kYcXagauZNsdf7VqnEL6HnanbP3S8zNytYqZ0bWil8Cq+VxpIntdf8xqJcBt0VrHQXnz8tHrHaZcN+zH2WvsbYcKYL/jTt0z0dnoqy0h8VwzxuAKE9rnuqWgaNrArtY3FKH7fiuu2zP74kJB8CBy7zPjmI3Vu9Fc7TUe8vU4aZQbMLdn8xQZh20DyGGrtJvkiojCONqJhBLI0rTONK+ZH3opEVEb4RZUnXsOJ+ipV2aR5sU8XK9OAWrLDL2A8kFLtN4svM6LWTh/XCHAMaJeg3YWTYKS/ojGzTgRaBDn5nRfJZ1WIItoVGSgpt2IFM9f8gcDEZLPBsVeQSYWFdsoaRPx+HEfLLd1VsmTCDX43h9XDUkGI7vLrBTv7n7LUS+U/vF2fG4SYtHDID5zox9nP3QpFBCukMIHF4zpejiky2TqyMuscGOpZwxSZaVVyZyXn/n8EJfWIBjBCqHhzcr3xzIygIDojBgHokW//sssqhKtqo5cBXd6wM8pG4xoYmilP8cVulNhO5mcaY2WMKbPk8RZjaBN6sJLkqgVCxHuBXN6Qjpi7f6kpBeyhSDjaS0FC/LE5xHs7s5Bi7JJBAKGDQSCOgL5ATka5K0WxF1DXTjynYYi+z/rrgBNK5kk
- +9F2p3eP
- +j7IFHfvcp/5rnpDJheUVssecJ/wXZdIZmf+51VQeDmAC0HhjdUbt98DrHDCeF0lE6ASxYdRHCCmlamepJrkTUgJsRiRA7xC5KDkdtBzTMRbFSovOMCfCGObkrVo2Q94aT0TPJZWbzWr7B6pLeBEtdcSPhZaPaHkGfKoEzgFRZoyrGoJj9JpBSQE8qZrCXDQbblR6jII794kf+/LnWqFeO79DxO408FwlnBNkZQdlnc=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 94B3A1C0002
+X-Stat-Signature: p8mdnhjjkmfufwcatfdcnpbaniqk6skp
+X-HE-Tag: 1787890799-190552
+X-HE-Meta: U2FsdGVkX1+9aa77mV4oyOngosytYRd4KidaO12DiXjOOT8VXe64Xjy3Hfvm8rIIM8ZGWidKvID9vlH3nFysNAKyaT1aGbCiWuYbVKLJ7VsrcG/gs+wm+5sdRiEs/dlwoEFJef1PhoLgkyAz9sZKZc9M8nBc3OInqVNeMgB/DbdrHOPz1GErVZuIzmFAkgMigyS4R6Ils426FKhR2kITwWv86updkLI+xg0KttaHWjRWYj4+OwNWNESj4P845RTttiNo5x8ol3R/+UG6pClNS1Qr4pQ8nD4VjtouN0OAHylM+kjNEe+/zy3ujvWgKaCTmLhAhfywn3L8Tlt1fAs92qc0f9A/htVwgd2htCewUHjDHySGpDRGIl38wVak5gOvBZ5cabUCgXUC7Ixw6yjLYNorCxsTKHfRYBznry7uvFN4txuvESJRs0uPUKfeuGYb5UzdcaKWbpjNtAFo6+bzLNKNsuL0+88bUtaJR/UhWrShUuZoB3z0OD2K5CWFe4IEOAzkoY0khLwD7SRD3JmN3hwSR4amMjzK7G5ummECTj/7neQM5IRg6FMzYuBNY1V7zkqoS7dLCfLNC0sWs9mc3fELgjPavWIYqWp5R1m4CVQ/JlOJ4gidR9BK2lHzM84V2Rb3Lu+c5wHC0Jq5FDC9QNFB8DT+jLyi+VAYqlTO8LxuoWgP6Mye05HNFk8Fkoc9yDW4zoCWGAQw+FSFIXsWYrbchUXGN2P2x2LCLZYmuLvZ6HIVrlDmOE/BSTyG5F4KrGuHBvGES9gheNxTg1Wx0CmE83+xl58oX/rtmS7ibPCS+FGg0FXVFgNRJj64prMKHtHN6BfnZGl+nkmLc3mbmcO87kJ1pdaMlZkiyyTh9fqkUJYVJi2cbf2mbdXrdNdkqF0F8AijqJAW6XPaWwjcJgwViCoHyURgF5dOtLI+nXJJsUIgHyxJqBhh2D8JW1vrrkY3zj9+CrdGST0BJCw
+ lcPpGaQ2
+ I5XsUGOHDpmAL8U9QIHvBI52QT8pTKeeXZyiHRpvfEzR76FSjjymnyquQufZi5r+GCoFHfg9EvKon3ZoT2gdZYUTFN1/qMRsii2/lMsNu/Mr+7HRjg/fZ3lyS04IRT3Mq0/GBwnmu1XwNqP6MFxvJyu9gSv8Ns4wIpc0liaiyT5OvGU5A7NiMgBiYYU2R/QAxP3K5BowW12LNmZqxd9rGeLpv6XCt2JDkFwFtZq0qbGUg1oO91v+YIScRdLyyaAU5NMu1YLjb9iPzPZlz4bowF3b9nF9Gs7ZVI1i+pzo3dBjHRbP3GEffcqLB5s2utYW+obeD9Dt2ExDfbAk1GYNBM39Or9g4RxLSSPje/VL+aZJuD9/qrqgEAHgDkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -212,105 +167,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 05:05:09PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/6/26 01:10, Matthew Brost wrote:
-> > migrate_device_range() and migrate_device_pfns() zero the tail entries
-> > of a large folio without checking them against @npages:
-> > 
-> > 	for (j = 1; j < nr; j++)
-> > 		src_pfns[i+j] = 0;
-> > 
-> > @nr comes from the folio, not from the array, so a folio that extends
-> > past the end of the range being migrated writes beyond src_pfns[].
-> > Callers size that array for @npages entries, so this corrupts whatever
-> > follows it.
-> > 
-> > Bound the loop by @npages. The subsequent "i += j - 1" still terminates
-> > the outer loop correctly: on a bounded exit j is @npages - i, leaving i
-> > at @npages after the increment.
-> > 
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: Zi Yan <ziy@nvidia.com>
-> > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Cc: Liam R. Howlett <liam@infradead.org>
-> > Cc: Nico Pache <nico.pache@linux.dev>
-> > Cc: Ryan Roberts <ryan.roberts@arm.com>
-> > Cc: Dev Jain <dev.jain@arm.com>
-> > Cc: Barry Song <baohua@kernel.org>
-> > Cc: Lance Yang <lance.yang@linux.dev>
-> > Cc: Usama Arif <usama.arif@linux.dev>
-> > Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > Cc: Rakie Kim <rakie.kim@sk.com>
-> > Cc: Byungchul Park <byungchul@sk.com>
-> > Cc: Gregory Price <gourry@gourry.net>
-> > Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> > Cc: Alistair Popple <apopple@nvidia.com>
-> > Cc: Balbir Singh <balbirs@nvidia.com>
-> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > Cc: Maxime Ripard <mripard@kernel.org>
-> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > Cc: David Airlie <airlied@gmail.com>
-> > Cc: Simona Vetter <simona@ffwll.ch>
-> > Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> > Cc: Francois Dugast <francois.dugast@intel.com>
-> > Cc: dri-devel@lists.freedesktop.org
-> > Cc: linux-mm@kvack.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: stable@vger.kernel.org
-> > Assisted-by: GitHub_Copilot:claude-opus-5
-> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> > ---
-> >  mm/migrate_device.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> > index 162d29b2807a..ae9027421b80 100644
-> > --- a/mm/migrate_device.c
-> > +++ b/mm/migrate_device.c
-> > @@ -1415,7 +1415,7 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
-> >  		nr = folio_nr_pages(folio);
-> >  		if (nr > 1) {
-> >  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
-> > -			for (j = 1; j < nr; j++)
-> > +			for (j = 1; j < nr && (i + j) < npages; j++)
-> >  				src_pfns[i+j] = 0;
-> >  			i += j - 1;
-> >  			pfn += j - 1;
-> > @@ -1449,7 +1449,7 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
-> >  		nr = folio_nr_pages(folio);
-> >  		if (nr > 1) {
-> >  			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
-> > -			for (j = 1; j < nr; j++)
-> > +			for (j = 1; j < nr && (i + j) < npages; j++)
-> >  				src_pfns[i+j] = 0;
-> >  			i += j - 1;
-> >  		}
-> 
-> What's the status of this? I assume this is fixed by
-> 
+Sean Christopherson <seanjc@google.com> writes:
 
-I don't think Andrew has pulled either of core MM patches in this
-series, so we can discuss a bit more. 
+> On Wed, Aug 26, 2026, Ackerley Tng wrote:
+>> Omit support for calling the arch hook to make private, since SNP, the only
+>> implementer of the arch make-private hook today, would actually prefer
+>> making private only just before faulting memory into the NPTs.
+>>
+>> Calling the make-private arch hook would require iterating both bindings
+>> and the filemap to find the intersection of bindings and allocated
+>> folios.
+>
+> Why would KVM need to iterate over the bindings?  Only the RMP needs to be updated,
+> whether or not the RMP is currently reachable is irrelevant, no?
+>
+> Subsequent calls to kvm_arch_gmem_make_private() from kvm_gmem_get_pfn() would be
+> superfluous, but that's already possible, e.g. if an NPT mappings is removed for
+> whatever reason.
+>
 
-> 	https://lore.kernel.org/20260817120758.669807-3-sh_def@163.com
+make_private takes a gfn and pfn, so __kvm_gmem_set_attributes() would
+need to iterate bindings to get gfns and filemap to find folios to get
+pfns.
 
-I think this version plus your suggestion is probably better here - we
-likely shouldn't hand back compound pfns which don't overflow the
-requested number of pages. Let' continue the discussion there I guess.
+>> On top of that, SNP would need to figure out whether to actually
+>> make private based on whether the memory is about to be faulted, or
+>> whether it is a conversion.
+>
+> This is a non-issue, no?  As above, sev_gmem_make_private() already bails early
+> if the page is already assigned in the RMP.
+>
 
-Matt
+I'll remove this, you're right.
 
-> 
-> instead?
-> 
-> What is the right direction?
-> 
-> -- 
-> Cheers,
-> 
-> David
+> I don't care terribly about how SNP handles this, but I do want accurate reasoning
+> and justification so that if/when we revisit any of this in the future, we can make
+> informed decisions.  Because unless I'm missing something, this is an optimization
+> choice (eager vs. lazy to-private conversions), not a complexity tradeoff, and it's
+> not clear to me how we decided the lazy approach would provide better performance.
+>
+
+How's this, to replace the entire commit message? I hope it captures
+points from this discussion:
+
+  When memory in guest_memfd is converted from private to shared, the
+  platform-specific state associated with the guest-private pages must
+  be invalidated or cleaned up.
+
+  Iterate over the folios in the affected range and call the
+  kvm_arch_gmem_make_shared() hook for each PFN range. This allows
+  architectures to update hardware metadata or encryption states to
+  transition pages to the shared state, instead of leaving hardware
+  state as private while guest_memfd tracks it as shared. Transitioning
+  hardware state ensures that guest_memfd upholds the guarantee that
+  userspace only maps shared memory.
+
+  Invoke this helper after indicating to KVM's mmu code that an
+  invalidation is in progress to stop in-flight page faults from
+  succeeding. Calling the invalidation helper also calls the arch
+  invalidate hook. For SNP, this kicks any vCPU with a registered VMSA
+  within the range being converted out of the guest. This ensures that
+  make_shared never fails due to the VMSA page being in-use and is
+  important because if make_shared fails, the RMP table would track the
+  page as private while guest_memfd is unaware and tracks the page as
+  shared.
+
+  Omit support for calling the arch hook to make private during
+  to-private conversions. Making private lazily at fault time aligns
+  with how it works on other platforms like TDX.
+
+  Furthermore, making pages shared only requires PFNs, which are
+  obtained by iterating folios in the filemap. In contrast, making pages
+  private in the RMP also requires the GFN, which would require
+  iterating bindings to get GFNs and the filemap to get PFNs from
+  allocated folios. Deferring the transition to fault time avoids this
+  additional complexity.
+
+>> Calling the make-shared arch hook and not the make-private arch hook does
+>> leak SNP-specific details into guest_memfd (as in, why only make-shared
+>> during conversions but not make-private?), but the additional complexity is
+>> not worth taking on until guest_memfd has a user actually requiring an arch
+>> make-private call.
+>
+> [...snip...]
+>
 
