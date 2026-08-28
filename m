@@ -4,103 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CC46C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 11:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8512CC61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 11:20:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B75F6B0092; Fri, 28 Aug 2026 07:10:03 -0400 (EDT)
+	id 7822A6B0088; Fri, 28 Aug 2026 07:20:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967856B0095; Fri, 28 Aug 2026 07:10:03 -0400 (EDT)
+	id 732636B0092; Fri, 28 Aug 2026 07:20:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A57C6B0096; Fri, 28 Aug 2026 07:10:03 -0400 (EDT)
+	id 6229E6B0095; Fri, 28 Aug 2026 07:20:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6037D6B0092
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:10:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E8014802C2
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:10:02 +0000 (UTC)
-X-FDA: 85150408644.01.575C5B9
-Received: from mta0.migadu.com (out-115.mta0.migadu.com [91.218.175.115])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D7A492000A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:10:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s3AqYBR7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.115 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4003F6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:20:58 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60EB9160308
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:20:57 +0000 (UTC)
+X-FDA: 85150436154.25.370E33A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 86C081C0007
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:20:55 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oxZKMQwU;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787916055;
+	b=gUqAV0KefKEaC3iHHz4fg4J0JWA47Zkk6oHSsfUyt9Xz6ZIqhz+ANrX7SdFJ+Stbm8+fjj
+	EpFvYcSLyhgxht7XEDT420qlMzEtPOIDireSSuMExsexBm87N6UxK32lPGMotUMKEeFwQ3
+	VdupQysQdAMQ0xUnfi45BC1ITGwSRuo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oxZKMQwU;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787915401;
+	s=arc-20220608; t=1787916055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y5rY6Y8AhYSF++znfL6lSmWcX+XcB9nyGU/oCS5UvPk=;
-	b=qOMe7oNrvFaMXWg9sJxeA6rap0PB69ILW//lbhz2v2fl0iBXd4kY+AA3x4pXYYe3xxUZHX
-	u3QT9Os8t1889lr9KKM+pmfrxrlfoEikjCC+vP14h10q1SDoBsdlDjL93xi8r2RiFgN7E5
-	SjUr5GzHIBnYIrOpDOO9FITAn9Z6pYg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s3AqYBR7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.115 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787915401;
-	b=SqHponSPRX5XaZbkU3OanAsRtFYA4CTG/D9irMi74v4bfDpDfNGI8W7421sDV4d1awKys3
-	Yb/m1qKQC5wCuJG7xdhlBXF4Ea8Odwn90hPjwjnEfqX47YziVLT7k7hydpweHeNjUyDAhw
-	OoCAOvogvq4Ces3keMRMF6mTMqAj0Rs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=eE7AKtJ5rHDjCHFP0sbjzrcKFX6z6p2ntCRRXg0JHB8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787915399; v=1; x=1788520199;
- b=s3AqYBR7xq9lQCJZeMNj5AAuqsD0kfS4MXgdsvZddFFOpu51QVN5ntOKtjk9abTPFIikO1Q1
- 1wABoFLL6nAwe13oy0Dis2s3dVLZA9RL65FsMa+Dg7M8/WBIk7iao6ZVo6prAeBvwQB8AhgTbOy
- 1gG5UEZmbR/djDug+B6vMruM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 103cb01acecf7077;
-	Fri, 28 Aug 2026 11:09:59 +0000
-X-Mizu-Trace-ID: 103cb01acecf7077
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Chris Down <chris@chrisdown.name>,
-	Tejun Heo <tj@kernel.org>,
-	Yu Zhao <yuzhao@google.com>,
-	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] mm/mglru: fix ineffective memory protection for non-kswapd reclaim
-Date: Fri, 28 Aug 2026 19:09:19 +0800
-Message-Id: <20260828110919.1324028-3-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260828110919.1324028-1-ridong.chen@linux.dev>
-References: <20260828110919.1324028-1-ridong.chen@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/pc6re8PSjo9zjwKnd2Zf7CA9PyDezj2GQ4G0IaICR4=;
+	b=WqbB/6pSunoUHcg/Hb7XKyW/5/GMtR9ScYAzJ1QIgdDxvFFs8CRMTa619g3sIA//uC9u/u
+	0OlOWDae6i+Xc6BL/6ssDBUH/2oBpYCLs2OCSH6+5Cj+Y3yfnolXUkKSARqQ5VryYfMSWy
+	zvg052GpyhMwPOJJvuhPF+dOVsE/e0Y=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 53D56410A4;
+	Fri, 28 Aug 2026 11:20:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2AC1F000E9;
+	Fri, 28 Aug 2026 11:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787916054;
+	bh=/pc6re8PSjo9zjwKnd2Zf7CA9PyDezj2GQ4G0IaICR4=;
+	h=From:Date:Subject:To:Cc;
+	b=oxZKMQwUK484geEAy0aRc/4rxzyuz1n99jKBDpSjxzvpmmMVllFFQjHFwzBiCd5di
+	 U4oS4gipBZEoqN5loE3X2wthQFOvzlrWGoySsd60wzig4xcNhTfAHNqIjqkhBHWgOK
+	 8w4mW9sQOkR5v9D01d4HOqHpXl48fDwt+tsbh9lepHIwFpCYXcukQQdnWyP1zMqAG/
+	 z6iIiY7sSOWCz+ruPEkNhFwqs4k0t8HNQcIqAfqtdvj268U7XZSspPoZ0U2GCoSdQn
+	 qR4YLb5oVjOIxgPTQ/6qho0o13PXwNuNnJuV3+ud5ty5xXtThV8BS2CG4mTa3apBZc
+	 EG/zhX/VXGG+g==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Fri, 28 Aug 2026 12:20:37 +0100
+Subject: [PATCH] mm/mremap: account mm->locked_vm correctly for
+ MREMAP_DONTUNMAP
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D7A492000A
-X-Stat-Signature: cm9mww8dywiscfigaeafuofuiwnn46en
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260828-mremap-fix-locked-vm-v1-1-c80be7505d1e@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvxJ7biElwvpKdDBbaylLFCQQ/550H
+ JiZDJECU4SpyRAoceTnriDaBsyh752Qt8ogOzl0Sip0gZz2aPnF6zEnbZgcrmochbWmF0pATX2
+ gKvzbeSnlA71oK+RmAAAA
+X-Change-ID: 20260828-mremap-fix-locked-vm-b8991ffc4181
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ sashiko-bot <sashiko-bot@kernel.org>, Kunwu Chan <kunwu.chan@gmail.com>, 
+ stable@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2839; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=MPZihmBDJp3NmShFBO9v65wDHg8y158TzBgEEqykUB0=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIm5gucmiU3z/fgPv3a9oQrPHM/dDz+ftbxgGd5rvlkx
+ sC0ZxpcHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZhIvjEjw6VjDzZvPmMzYbex
+ LpPXD67JCp9a18z9VN7Rpfegbeq2Q1MZ/qfwvDAKmOvmuuultKL0rpN3379PTTwY/Vv5cdOKsFY
+ jMR4A
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-HE-Tag: 1787915400-76247
-X-HE-Meta: U2FsdGVkX1/cYbsPHiF2dnWmyHEQUSTrlIEEJFzZfFvOMtpXCt6Dck/My/xIGxKM+Dlj+J6FFDiAPnc8XMwYHLm8BLEO+BNEN2e49A5RRDtzDMolhCQueshVM6ZEpjuxmZFgSekpU4ZQe09wnvvfO8kTdjPDSp3ANi9Irc0TITJeFclA4iVcTSNgoHM5vh6efWz2a9i6gEzrH7kbF7z2jOQ/N58fukRMFrKGMHmVu/WpaLE27u9Q7ZRxv+33/GqLNwBSvx1hF/jI2xf63Wz4Bzda7c5P4W/K6b2InD0hFApTuPrMVvZnNNTSru/sVaNguSjJVFJojxPdOGUXzU9nuUJpCa3BdWGGJlqjYXU7QWx0dcFQ86MLgQrudLc8Ml6A9KWH1yWx033sIJKVg0LbdrwQsNvqxiKmTIeEs/Qmtfct3lh8yhsGDk5GnwK6v6Bpa39Aw/axEtuepR7K5BnLm1rs0cWZESI3MXUVd+sqjYj+BuDYA1DKT6PNK9N1tGv9paUfACGHJJkQodbJ5zHmLssxTMaAySYkVXMy34S6tVoBxFWJV9tlKroM2hoDrKZRUz22uukyZXCGVvuMvW4CRSTgkDOoPRhzcnbCQZDPhKwazzxp9mD2f47PCszyStisDvOwogfzKgyIB4Kw8uw/r2RaNCNEvaktbiRwHp06ZCXU8O9iaw9RS9mUfJbsIE+TMXZCDOZR0Ej/otlsFgmfF4IFLEsQJW4xTekdv+kwDEkZ9HWfTUIQrlY+rPajI6Z+g5RBqohBmnW2U8GMPSC5/AddktxFPA/FmSYPRDCjex2JhfONVIJwl2qyKEIv/E+oOANFBnuyNUXTjHk7jyS5vJicpCjlvLpsO5F45lFipdpCizdfxMwNUjbdx0nMpe0Haso/h663elGILjtr8QeP+NcXzvBnYKHeOGTEp/ne4ywLZEIBrczxAP+xVLfpiwu5Jd4HJ8S6/ZrogWp+dkt
- sFFdBqRF
- BngtNSy/HX7DbhWt1RryLRDCGqi6lRN12Abl0eryRBa82ULXCOxuLbzl3xnIGLPv00j1DutiH9ivzwHZRhJXibcW77x1OGzeB43cQcZ0i212bNXP/6AYj7OYmweD4PEYwCgc9IF374RVvS25McEVC2In9oEphCSTOUzIij/KVPlUXIWkkmu/FaVoBTMH8cWc/UAwWU5DE8E5ALk0h8OFGuo3996ba3CX+fTVp3Swxt+hNjlSoznde1lQaefgcuNvVuxLj1Amkq9oUurHBxqtC37/rV1xfI0TerwXvBdZoBv4oZwdIceM/5H52piz8+5fv725dQmCq/i/rL/hJXvVpZedRAvwUT2Y4adv0wqdP7fZpI9xjYOf1zYn5T16D0FaFQDhwXSrRHjijw3POw6b5xxDIOwbvLhdQ8xc3d8c+X8Gr9GGaMN5T5uiHL5OuOAag0G571pfA+5s0IPTY+iRQoUe+sCgNW3O7nwUaeAODewu+DEkxu1jCLx3YX4Es6d0K60t7fXngBYO3Xp/c3Oy6Ef9+f34K/Z0cw3h0lZVwvStVgK+tA5e0m9QBWiVtDKbqmM8NNOZSbjBykLxCIQAv0BKANKMqQphltJ9kcvgbiew/0VkOBOqHvIhCUiDfQmZ+UothZHBOCESbStppvW0j4bp41jzg/8uBt8vzikZkx8zQ4b1TaIWDQgv2iZeIGZSjzXhUDfxKmqO5DXUbjK08Ih6Cche32RYqqd9xiqjk4vyRWIwabWrANnftsGOnXZ6v4HQlTE7ooIKW6bHXmB/7/sC4woGswSenY9iK99Zv6G3qpKqurIJ5L/i5Bw==
+X-Stat-Signature: d8fm9kxkbhypku637xu7npj53qrtossu
+X-Rspamd-Queue-Id: 86C081C0007
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787916055-323831
+X-HE-Meta: U2FsdGVkX1/uJNPMge1Vm49WFC1O0v8H07oRIPgAhf5fC9bD+Tf83OGKSNxHjpaI7qdRn4VZlP1EzfJs2KlM7Y1IpfYSCq0FovS8z7ghCwg7W1amO9yyt+TXh7bUuwGTBtEpJkM5wmS1hRnZA/3xYR30bxFinbGWX/1jMn5/LMQUZuk7nQl0kiTGgW/5oWJJNvcTQIsBnioHHLt4CA0PfIB+ubYKUpf6m40oRBplj7gicKN4xj7ZvpYN0RalzMvqVn7w4xifoYJLIbrY5tz8ZyJfX746JUgTpwVhhHc+MulSd1fTH5yHe+uJS5FpviSjFcVgG9Adv8d1AT9U045+rvcVdIV9RN5S0HMJp9jbBVRVoRK0i6f0AkGpjy7Xs3KqBY1GEk/BO5zyZ5dLBb1rebzmO46R5H3hUBz8e8fDVJvlYM9Xfv2XRr+6DTXzSIhcqZOn00OvDvSwcYLXhTwfk2SH5NXItnjcCOxgPyN/WI8IXhOLdQT5/bPpGyqJAgo9oKVLIMDPh2/mqpr+Bn7vp852L3YSUAY9GObJuHQeQCLMcrnlw/vR3YyC4Uz5MmTHGhUqcZFf9EeIkd79Qc1pCoCLzsWkKfjUkYbhetUIOeoZnSPBVu8eGeTerov0drWrS7mht4E91N+1c3SaAV3wYs2QqnzO2cNub1hajV14v6avLcboQ2mA0lqHqL/a6MBeZb7qUWaLNgNhC8UgaGewsJcI1TayQBuo+eUytwD1/ToCrPdukxHYMvTdQ3mQ8/PJC7/9yILvBhUkbF0lBZ7xqHR4+qHZy/y1wC1xtE1IHHIZThchum9yhZWqlLj6YEQj8tYI/Vgpl0KWQYvJHhmfDDNfmp0ZTnZOx4kHo766nXTTwsY2b+GOWQgKnG7urEoH9F41o9cIJUrQHySz1EuYUD93SacWN8bME+q87TKyWZb/Ozy8Dq56Cu4gcG4R5l9qiCIo5aFiMgAvaxivijX
+ c9r8omOs
+ jNqM/9diAYcJSI6qMbhOeF0zasLDNGvsRXwCB+E+hVSH1OAKfEmki0a/RhzD3RkVCbHGyNkUpV0SNRH9khpG+oqHzMuRE7zXzcvPQgaOITeJbV9UEwJZH9WaDLl7oMpO/nFDGUoows97jUu0q/ALMKRjNdyOueGybVmiJjwDNR4nlzqM3sl0lDi6V0lUa7YiQBy1gYdkbTdZbRxfyg7N26Ml3XNHFlui1TIqjHITnkYTUqo2km0UWgHYZ54Y+7OtHqlUcSfLVzumbmDdS+rYhIG+sXcFzCCX5qRYYbf+a31AoFgmT+ILzC8SnjQlQ4dM+10VxKLJN1nDQAStjr6cNchMMQxj3zvKvBFpIwJuKsSxIq4za/2n2EBCkjP0rqXiY7CRiUQgaKNpVT3xEcvLnU1rNwQck6tDNCrtyTJLamM6lUUs0StK5VroQ0pMT8BcBbHNz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,162 +105,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+When a VMA is mremap()'d with MREMAP_DONTUNMAP set, that results in the VMA
+being copied, but the source VMA not being unmapped.
 
-memory.min/low is silently bypassed for MGLRU during global proactive
-reclaim (writing to the root memory.reclaim) and global direct reclaim.
-It can be reproduced as follows:
+If the VMA is mlock()'d this is a legal operation, though the source VMA
+has its VMA_LOCKED_BIT cleared.
 
-  # echo 7 > /sys/kernel/mm/lru_gen/enabled
-  # cd /sys/fs/cgroup
-  # mkdir -p a/b
-  # echo 100M > a/memory.min
-  # echo +memory > a/cgroup.subtree_control
-  # echo 100M > a/b/memory.min
-  # echo $$ > a/b/cgroup.procs
-  # dd if=/dev/zero of=/tmp/testfile bs=1M count=200
-  # cat a/b/memory.current
-  222650368
-  # echo 500M > memory.reclaim
-  -bash: echo: write error: Resource temporarily unavailable
-  # cat a/b/memory.current
-  6070272
+However this is done in dontunmap_complete(), after mm->locked_vm was
+incremented via vrm_stat_account(), resulting in double-counting.
 
-memory.min is 100M, yet reclaim drops a/b down to 6M, breaking the
-protection. The traditional LRU path is not affected because
-shrink_node() calls mem_cgroup_calculate_protection() for each memcg it
-visits during a top-down tree walk.
+Worse, this is not even corrected when source VMA is unmapped, due to
+the VMA_LOCKED_BIT flag having been cleared.
 
-Commit 30d77b7eef01 ("mm/mglru: fix ineffective protection calculation")
-moved the protection computation into lru_gen_age_node(), which only
-runs for kswapd. Non-kswapd global reclaim reaches shrink_one() through
-lru_gen_shrink_node() -> shrink_many() without any protection
-computation, so emin/elow remain stale or zero.
+This all works fine in the usual mremap() case (without MREMAP_DONTUNMAP),
+as the source VMA is unmapped with VMA_LOCKED_BIT intact, at which time
+mm->locked_vm is decremented accordingly.
 
-Introduce mem_cgroup_protection_path() which computes emin/elow along
-the root-to-target path only by iterating through the cgroup ancestors
-array top-down. This avoids the full tree traversal that would be
-needed with mem_cgroup_calculate_protection(), limiting the cost to
-O(depth) per memcg - typically 3-5 levels.
+Resolve the issue by invoking vrm_stat_account() only after
+dontunmap_complete() has run.
 
-Call it from shrink_one() for the non-kswapd path so that each memcg
-about to be shrunk has correct protection values.
+Note that MREMAP_DONTUNMAP requires old_len == new_len, so no need to
+account for a delta in size in this case.
 
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+The bug was introduced by commit b714ccb02a76 ("mm/mremap: complete
+refactor of move_vma()") which incorrectly reordered the accounting and the
+clearing of the VMA_LOCKED_BIT flag.
+
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org
+Reported-by: Kunwu Chan <kunwu.chan@gmail.com>
+Closes: https://lore.kernel.org/all/20260828094823.594279-1-kunwu.chan@linux.dev/
+Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/memcontrol.h | 11 ++++++++++
- mm/memcontrol.c            | 45 ++++++++++++++++++++++++++++++++++++++
- mm/vmscan.c                |  8 ++++++-
- 3 files changed, 63 insertions(+), 1 deletion(-)
+ mm/mremap.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 7d1c0ce189a8..8066b798a759 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -605,6 +605,10 @@ static inline void mem_cgroup_protection(struct mem_cgroup *root,
- 
- void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- 				     struct mem_cgroup *memcg);
-+#ifdef CONFIG_LRU_GEN
-+void mem_cgroup_protection_path(struct mem_cgroup *root,
-+				struct mem_cgroup *memcg);
-+#endif
- 
- static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
- 					  struct mem_cgroup *memcg)
-@@ -1133,6 +1137,13 @@ static inline void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- {
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 2b4b523a86b8..7c368440fafe 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1355,12 +1355,11 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ 		if (vma_is_anonymous(vma) && !vma->vm_file)
+ 			vma_set_pgoff(vma, pgoff_unfaulted);
+ 	}
+-
+-	/* Because we won't unmap we don't need to touch locked_vm. */
  }
  
-+#ifdef CONFIG_LRU_GEN
-+static inline void mem_cgroup_protection_path(struct mem_cgroup *root,
-+					      struct mem_cgroup *memcg)
-+{
-+}
-+#endif
-+
- static inline bool mem_cgroup_unprotected(struct mem_cgroup *target,
- 					  struct mem_cgroup *memcg)
+ static unsigned long move_vma(struct vma_remap_struct *vrm)
  {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1271d390b617..095050d4296a 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5198,6 +5198,51 @@ void mem_cgroup_calculate_protection(struct mem_cgroup *root,
- 	page_counter_calculate_protection(&root->memory, &memcg->memory, recursive_protection);
- }
++	const bool is_dontunmap = vrm->flags & MREMAP_DONTUNMAP;
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *new_vma;
+ 	unsigned long hiwater_vm;
+@@ -1401,10 +1400,10 @@ static unsigned long move_vma(struct vma_remap_struct *vrm)
+ 	 */
+ 	hiwater_vm = mm->hiwater_vm;
  
-+#ifdef CONFIG_LRU_GEN
-+/**
-+ * mem_cgroup_protection_path - compute protection along root->memcg path
-+ * @root: the top ancestor of the sub-tree being checked (NULL for root_mem_cgroup)
-+ * @memcg: the target memory cgroup
-+ *
-+ * Walk the ancestor path from @root down to @memcg and compute the effective
-+ * protection at each level.  This is safe for isolated queries because it
-+ * ensures parents are computed before children.
-+ */
-+void mem_cgroup_protection_path(struct mem_cgroup *root,
-+				struct mem_cgroup *memcg)
-+{
-+	bool recursive_protection =
-+		cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_RECURSIVE_PROT;
-+	struct cgroup *cg;
-+	int root_level, i;
-+
-+	if (mem_cgroup_disabled())
-+		return;
-+
-+	if (!root)
-+		root = root_mem_cgroup;
-+
-+	if (memcg == root)
-+		return;
-+
-+	root_level = root->css.cgroup->level;
-+	cg = memcg->css.cgroup;
-+
-+	rcu_read_lock();
-+	for (i = root_level + 1; i <= cg->level; i++) {
-+		struct mem_cgroup *cur;
-+
-+		cur = mem_cgroup_from_css(cgroup_css(cg->ancestors[i],
-+						     &memory_cgrp_subsys));
-+		if (cur)
-+			page_counter_calculate_protection(&root->memory,
-+							  &cur->memory,
-+							  recursive_protection);
-+	}
-+	rcu_read_unlock();
-+}
-+#endif /* CONFIG_LRU_GEN */
-+
- static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
- 			gfp_t gfp)
- {
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f11491ee9ed5..e0ba68ede745 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5102,7 +5102,13 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+-	vrm_stat_account(vrm, vrm->new_len);
+-	if (unlikely(!err && (vrm->flags & MREMAP_DONTUNMAP)))
++	if (unlikely(is_dontunmap && !err))
+ 		dontunmap_complete(vrm, new_vma);
+-	else
++	vrm_stat_account(vrm, vrm->new_len);
++	if (!is_dontunmap || err)
+ 		unmap_source_vma(vrm);
  
--	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
-+	/*
-+	 * For kswapd, lru_gen_age_node() has already called
-+	 * mem_cgroup_calculate_protection()
-+	 */
-+	if (!current_is_kswapd())
-+		mem_cgroup_protection_path(NULL, memcg);
-+
- 	if (mem_cgroup_below_min(NULL, memcg))
- 		return MEMCG_LRU_YOUNG;
- 
+ 	mm->hiwater_vm = hiwater_vm;
+
+---
+base-commit: aeddb4d52acfcc5ce5e988acd48f2906fe966ca3
+change-id: 20260828-mremap-fix-locked-vm-b8991ffc4181
+
+Best regards,
 -- 
-2.34.1
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 
