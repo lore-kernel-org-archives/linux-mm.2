@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7118C61DC4
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 00:14:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3972C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 00:22:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFF376B0088; Thu, 27 Aug 2026 20:14:02 -0400 (EDT)
+	id A732E6B0088; Thu, 27 Aug 2026 20:22:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAF566B008A; Thu, 27 Aug 2026 20:14:02 -0400 (EDT)
+	id 9FD756B008A; Thu, 27 Aug 2026 20:22:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EC476B008C; Thu, 27 Aug 2026 20:14:02 -0400 (EDT)
+	id 8C5246B008C; Thu, 27 Aug 2026 20:22:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 842F36B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:14:02 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 836A040227
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:14:00 +0000 (UTC)
-X-FDA: 85148755440.23.AB006D6
-Received: from mta0.migadu.com (out-75.mta0.migadu.com [91.218.175.75])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4EB09120006
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:13:58 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HcJr3mDH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.75 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 643286B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:22:22 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DDA55C0233
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:22:21 +0000 (UTC)
+X-FDA: 85148776482.25.96E41C7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3DA3614000C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:22:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Esu5YeSZ;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787876540;
+	b=JBc1g4UyuYeQocwgHiPi8jpUUSWuUNrj5RIzjYI8m52o7cnRsYpeAbKe3VqQoUXoYckRKW
+	bgvYL+fgtVGsWgBifxql6ilOGY82fgBCiSfsOWHIrLJKPYqeROOBfVO5YWyWutpbyV9dkU
+	vGenzXYvwSl3akJcJCR0DmuRkHKZqSU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Esu5YeSZ;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787876038;
+	s=arc-20220608; t=1787876540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0xzq1GAEDfPVS/kFOgeTTbebNqf0DKrh7jnqFMWym6A=;
-	b=vZJ1LczFoQx6ffHrm65QkLUf0jTFCRmj0Y403GT/GikRC300whCYrQTe8LQbGMv4yqE36u
-	5ZD0komHZyLbaAZ5KkAckr3a5QecsHbcVqZUPfIB2srcentBsoAb20ss5jE0WF3ZXTHt72
-	mqFdiDTSB8tMC2kHwzMIbMx5sA+kGXI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787876038;
-	b=JMPVgEXRi9BYSyUmCEukLeXlzvvjbjvBveocUtTW0a19QZrc35j3gUpMZmJRr0oR10ornt
-	vGuC/QvViy3ooBvC8RSxjTRGlEoX8uLjxKiKzINMVcz6tlcPv7A3OWX3vwRaEHDklpxTN2
-	d451ZFQxvIyqW+bWeSj/Aubl3X2Ww7A=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HcJr3mDH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.75 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=fsmsExbs5nEKnsojLuf0l39j1UTtxo6K5C9nm891QB8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787876036; v=1; x=1788480836;
- b=HcJr3mDHQNMfTpxf9qN2PWYt5rVNj8obn2InI3h2sePCM6es2pHJZIo26KaepRyKEbi2brwN
- LWr8VMFNDAOe3ztNYc3y9ohNc+PK9qhcPm9ckx3uYbvt+8uesqhtc4fymxNNiUMsSPvJh5sLJJY
- t9fQVIAt6JLUeM3xAgm/UN/g=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a46212a26a1c49f4;
-	Fri, 28 Aug 2026 00:13:46 +0000
-X-Mizu-Trace-ID: a46212a26a1c49f4
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 27 Aug 2026 17:13:44 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Joe Damato <joe@dama.to>
-Cc: linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org
-Subject: Re: [PATCH] mm: memcontrol: raise MEMCG_MAX for charges that fail
- without reclaiming
-Message-ID: <apDPJzlJ4gS9YUDX@linux.dev>
-References: <20260827233119.411152-1-joe@dama.to>
+	bh=uuq5TYRcr4zdL+6SIrH3ElNXfBDv1DRk+u7g+8PVaIk=;
+	b=RwUYRZnULaNuYBdb8TEjY1DgCMQmP+1FFLJG1qAj8CFsDW94ram3KFLDpvRFe1PFCHsyoI
+	aGCmIcFRoKpBFNkHFqSDzHUoBtBWjTJp1L4caf5TwkeFbo1cEhnNgBn9Wlzr/PX1XDp5yv
+	bLLHdjaY8ct934Za0g5NGxuGTXxP6ZA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 834F4601F5;
+	Fri, 28 Aug 2026 00:22:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B511F000E9;
+	Fri, 28 Aug 2026 00:22:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787876539;
+	bh=uuq5TYRcr4zdL+6SIrH3ElNXfBDv1DRk+u7g+8PVaIk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Esu5YeSZSNMWD9tBCB8DahS8k8M9uqUSF5bWl3RuhQKyrW/PTxWvALeZxk/QiIJA7
+	 dZcm28dZW0IuSJKS3UniMrmUvEkrZtD06Fz+uw6dnV0Wb9OOssMzvRLwi3ehtI4PL+
+	 KSEe+MxE40XZnFyBcb3dlPQvBv35/2kTqJUUy4imkkpf/UGnkkPlNvZ3DrK4AjtWjl
+	 Nmg7vjm4DOG5somXIcNo2QbAYYbQX3a1ZdYHOPBiBBpH6H6CjJcTbKmGH95CKe0CwC
+	 ZMHnKr/ONgrLy1woPLtV/lCmbnF2jTy11iDBMHDOHrO5ioIGtdNXiGrh7vResI7Rag
+	 LdmKd3XSZI6HA==
+From: SJ Park <sj@kernel.org>
+To: Nathan Gao <zcgao@amazon.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	baolin.wang@linux.alibaba.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/damon: use a page-aligned sampling address
+Date: Thu, 27 Aug 2026 17:22:11 -0700
+Message-ID: <20260828002211.61987-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260827193821.46115-1-zcgao@amazon.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827233119.411152-1-joe@dama.to>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4EB09120006
-X-Stat-Signature: 4fq59oijgmw7moib9e64n3is1jri4agp
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1787876038-903994
-X-HE-Meta: U2FsdGVkX1/FeGeMxDtTF3A+ohz0IKcSA/YtyZ/SZnCBET8+WHzjAk0GOAE/9Du9qgtZ4rbaFBoffdCdR2VbpBY/uhRorNlIQ5t0sbVWiNv8+Y3SGqo+AbgSY8Ag4xG7cRMUALUeEk1BMVmO6ZhoQc2ia0wbE0U0OQwiewVa8Sad2lmzwZWF48zh/qB5bs67JhMcMV4Jc6q0wj+ubWV2oo52SXvWBhD8ymemNovwE2dDQEhAiF4HeirYm5BsCb2hfl2M9e36jyBHmD4FG81FCzmIZdjKI7/JjWGREjNriKGR8qDreHs+bwlVGKPVR/kxRAx5IEAOENQowhJ42N1Enc3tkIWzcOxTGnV9QwkWXhN03rw4NdXiHWNqJr/QCqhy/xJP2uTFlXQdHr4hGmmcJp6qiYZ1OYa0Yv/uo4m4/Y5536x8LZWWuOGWBZvtglSMPunclK7HQekQQw1RBYcaJyKr82OSJ6qLDguP7fumbtoLxA5VhuHJKfq+vylTPUg8XJRlka6P+vyiMQPEXzTWbAxAisMGcIt2MYxWHRtt/brJ+CbMRXREnDiGY7jg6J6nfL9fX+CvyyBqg+XwD4pROmVbS9ELnhrbjVmnmh/nu1vPybIUwA5k2hcSYaxTYNpBaB6ileRy0A9dl/AMOqCESWTcylLeofqyrQSfrH05HktZmFhIYw5XmduLnfhvOZDnNp8l8FlA+lrfWkVHxRiDl2SuhP4DYOvzd/btqwUdev/nh9sokf95ldIrwhMvkYQ9S2KJ2KmSGKnIiIqv7Ah3CYl6aQ1IpG3XynmNMZrPHRdKBkp7WKZn+NFv2Vmr72jtPVF0lQY9JBJOXae+ENYTvX5NhEggUze4z8xscFkblo+U8fzDc888MU7I79P5sGrH8pOQWy4WxAChYmaCjpJKuvrodFYXROnW/iwBFySXCGEXXYNvhkIux6jq6QP7bzOxiQl2/5pXeusgkEDPTPM
- 0A9Z0THD
- qiEFuOS0xe+qxMSX/Zn7nCZSUuGNQmuBFbu9CIMbWF49L9NNN0rPBNZi8JXYh+WXjk88A4O5GLVYUk1WIJ+ZlRv6qWWFvxvKqKZJ4vJpDtYkzw0TE0s8Tc6fqDIgslucQBrdL75a6EUfb9fV4WtjeaSfluVsLz/ACDf2/gl3jRzDmq1NNw4L+X1pmWZtaAMgy0eDevy7pPK8HLXuHlhxPLKxsOGd/C2/NR5lLmkAnTxGeyTsX4otPBhNJghPL36LFlXVgkEPiAWLK2S5zcwBkWLaUAqzXaVHfERi/3vja1kiENrZHXUbfYVcET+IhlgE4Dqmj
+X-Stat-Signature: p6uixh3st3bnk6qe578ginapo9nrug77
+X-Rspamd-Queue-Id: 3DA3614000C
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787876540-287752
+X-HE-Meta: U2FsdGVkX1+xcvFxHrXnKiFTzf8nggUE21XHfyH2UVonp2uSTpjwCLIsoiYTt4FQIk501uP9I/SA1IXZ6ZpL6XaNrBPVJHg8X3iX/fGmX8Vmb7PZ7dpdJ1a0wp1OTExrh/2Y9Yy7Slo08+aqy51IlKMRpDv586+wHLuNuxiF/ByK4BMKiihfZivjRoIMXZWLZQe9WbgGGkyW6/ETVxnOjZ0/cLl23RlcjS6vMI1S/H9eUoaA+u+niqYMo6RVCt+B2XXwu2qtXbVO+jVV/yv7gZdpRZHH5RcQ7IMHpIdYxZV0Bg8d4SCoeuoI2LV6+bPV9iudcZefVdOtMjOTr1dRTTFHJlb+J9hwVW4n7QKux0U4U25Xt1Jt722vLGSsx13HCQcHvoCQMSiKvGqyjHQoY3LnoJi56agqVqJNcu/35rFtA2xHe8XOU4dxWWSg/CbWiJP2eFklYYDN+wLdM5LYdpNeybcHOP7vkkJ8VGsSTmDSMZzIc7Mmekl7VvqeXs2B4QElSUE0G2BkNyR8w+2yCiRAUK0IuIcnUEG50farXwvrbh3pIHSKarGCrj/IHNTnWw/DdC1RPD3MAZR/7dmbgG4S40XJ3XgK+hQ5L14e4/kop2kCBI0q7M6wNeRo0pQsFvCVnShCArCwsbxmhhXsdxO6xx38ChLg17lhUKfRxMiRrB0DN/GGrTLUAPznm0WhS54F4A0V+NW+lS//mR5zzhqMgaD9Pd5W2BhWtTDrwH8UpM7bg2vnRZ85014ywZEMWEV2A6ziiP4K9dzhSzADJoiWnR2iz/xZQ1O9PJVAatOg6SH2DyUfboS5gXnBcBdEVck2aKW0feotIgWSpP/U2/Cx1+Pv/3QoqQ7vd4yMXojSqpkP2eKsASgkrhc9o6pZxwxUn3e8CKy66P1SwzQRA1IwqP14gpPwxaj3f5acvDWMVTfqsn8rBqkIuLJwUQuLwI1AQPfGROHU5p9ylPk
+ 0eq8PaiS
+ QydkKWHVIU5WS/701D6ivtoRzHEjsXoG/JqnejOYs4K6E+lYz9jSHdJlEg9xXxHsJ1ryeG+J8JWYUgOkYHPh1nkTtP9zIOJojPrZWxh8et+hkQ0iVhM0dbjpEy1vL4BrTx5HVCs948cPLcWDzhr4nrl6BwIYzJb5KfnTZSubzqa3PW8rq8B/cHtCFP9iC10qKHBRwIfYBbIXxpC0RnCXIHofDfzFHfhlMfC5qHoACdyrEcvnf7hhhZvTcRJ84F8coLZG+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,122 +95,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 04:31:18PM -0700, Joe Damato wrote:
-> Charges that exceed memory.max and return through the nomem label can
-> raise no event and simply return -ENOMEM.
+Hello Nathan,
+
+On Thu, 27 Aug 2026 12:38:21 -0700 Nathan Gao <zcgao@amazon.com> wrote:
+
+> __damon_va_prepare_access_check() picks a random byte address within the
+> region and stores it in r->sampling_addr. There are two users of
+> r->sampling_addr in vaddr.c that pass it into a page table walk, and
+> both use it as the address of a page.
 > 
-> A non-blocking charge can hit the limit, get rejected, but is not
-> visible in memory.events.
+>   damon_va_mkold(mm, r->sampling_addr)
+>     damon_va_walk_page_range(mm, addr, addr + 1)
+>       damon_mkold_pmd_entry()
+>         damon_ptep_mkold(pte, vma, addr)
+>           ptep_test_and_clear_young(vma, addr, pte)
+>           mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE)
 > 
-> This was noticed in a production setting where bpf_mem_alloc() attempted
-> to refill its per-cpu freelists, which triggered a non-blocking charge
-> while at the limit.
+>   damon_va_young(mm, r->sampling_addr, &folio_sz)
+>     damon_va_walk_page_range(mm, addr, addr + 1)
+>       damon_young_pmd_entry()
+>         ptep_get(pte)
+>         mmu_notifier_test_young(walk->mm, addr)
 > 
-> Move the event so that it is raised as soon as the charge is known not
-> to fit.
+> test_and_clear_young_ptes(), which backs ptep_test_and_clear_young() on
+> arm64, documents @addr as "Address the first page is mapped at".
 > 
-> Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Joe Damato <joe@dama.to>
+> For arm64, before commit 6f0e1142173a ("arm64: mm: support batch
+> clearing of the young flag for large folios"),
+
+The @addr documentation is also introduced by this commit.  This commit is
+authored at 2026-02-09.
+
+> the contpte helper walked
+> exactly CONT_PTES entries from the aligned-down page table pointer and
+> used @addr only to pass down to each entry, so an unaligned value was
+> harmless:
+> 
+>         ptep = contpte_align_down(ptep);
+>         addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+>         for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+
+So, there was no issue before the commit.
+
+> 
+> Now the range to walk is derived from @addr instead: end = addr +
+> nr * PAGE_SIZE, rounded up to CONT_PTE_SIZE. For a sample in the last
+> page of a contpte block, the sub-page offset puts end just past the
+> block boundary, so the round-up lands a whole block further and the
+> walk clears PTE_AF in CONT_PTES entries beyond the sampled block. Seen
+> on an arm64 guest running the DAMON selftests as random slab and page
+> table corruption.
+
+Thank you for sharing the finding with us!
+
+> 
+> Align the sampled address down to a page boundary. It is the address of
+> the page to sample, so this matches its intended meaning and fixes both
+> users in vaddr.c.
+
+This indeed sounds like can fix the issue to me.  However, was it a clear rule
+that we should pass only contepte-aligned addrss to
+ptep_test_and_clear_young()?  And is DAMON the only ptep_test_and_clear_young()
+caller that is mistakenly passing the unaligned address?
+
+If not, it might make sense to make contpte_test_and_clear_young_ptes() support
+unaligned adress again in my opinion.  May I ask your opinion, Baolin?
+
+> 
+> Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
+
+I think 6f0e1142173a ("arm64: mm: support batch clearing of the young flag for
+large folios") would be mroe correct 'Fixes:', if there was no issue before the
+commit.
+
+> Cc: s6f0e1142173a ("arm64: mm: support batch
+> clearing of the young flag for large folios"),table@vger.kernel.org
+> Signed-off-by: Nathan Gao <zcgao@amazon.com>
 > ---
->  mm/memcontrol.c | 15 +++++----------
->  1 file changed, 5 insertions(+), 10 deletions(-)
+>  mm/damon/vaddr.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 1271d390b617..3904fe9a7b2e 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2683,6 +2683,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  		goto retry;
->  	}
+> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> index 2c1c1952c008d..e26e426a56af2 100644
+> --- a/mm/damon/vaddr.c
+> +++ b/mm/damon/vaddr.c
+> @@ -360,7 +360,8 @@ static void __damon_va_prepare_access_check(struct mm_struct *mm,
+>  					struct damon_region *r,
+>  					struct damon_ctx *ctx)
+>  {
+> -	r->sampling_addr = damon_rand(ctx, r->ar.start, r->ar.end);
+> +	r->sampling_addr = PAGE_ALIGN_DOWN(damon_rand(ctx, r->ar.start,
+> +						      r->ar.end));
+
+If we need to have the fix in DAMON, this kind of change would be needed.
+
+However, what happens if the address is backed by large folios?
+
+Before the commit 6f0e1142173a, also, it was aligning to CONT_PTE_SIZE.  Should
+we do same?
+
+Also, I think we should pass aligned address to only the functions that
+require alignement.  Making the alignment to the sampling address in general
+sounds too much to me.  Particularly, we are working on supporting new page
+access check primitives other than PTE Accessed bit, like AMd IBS.  In the
+case, we might support <PAGE_SIZE granularity monitoring.  Aligning sampling
+address in general will make it more complicated.
+
 >  
-> +	if (!raised_max_event) {
-> +		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-> +		raised_max_event = true;
-> +	}
-> +
->  	/*
->  	 * Prevent unbounded recursion when reclaim operations need to
->  	 * allocate memory. This might exceed the limits temporarily,
-> @@ -2711,9 +2716,6 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  	    mm_flags_test(MMF_OOM_SKIP, current->signal->oom_mm))
->  		goto nomem;
->  
-> -	__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-> -	raised_max_event = true;
-
-I just noticed that this will change the current behavior where we keep
-increasing MAX counter while charge request loops through reclaim and retry.
-Though we have not documented that behavior, so not sure if it is worth
-preserving. It does help identify cases where a request keep looping in the
-charge/reclaim/retry path.
-
-Let's see what others say. Keeping the behavior should not be that hard if we
-decide to keep it. Something like below (untested):
+>  	damon_va_mkold(mm, r->sampling_addr);
+>  }
+> -- 
+> 2.50.1
 
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1271d390b617..6bfa4ad30b24 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2656,10 +2656,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	bool raised_max_event = false;
- 	unsigned long pflags;
- 	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
-+	int ret = 0;
- 
- retry:
- 	if (consume_stock(memcg, nr_pages))
--		return 0;
-+		return ret;
- 
- 	if (!allow_spinning)
- 		/* Avoid the refill and flush of the older stock */
-@@ -2770,16 +2771,11 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	 * put the burden of reclaim on regular allocation requests
- 	 * and let these go through as privileged allocations.
- 	 */
--	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH)))
--		return -ENOMEM;
-+	if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH))) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
- force:
--	/*
--	 * If the allocation has to be enforced, don't forget to raise
--	 * a MEMCG_MAX event.
--	 */
--	if (!raised_max_event)
--		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
--
- 	/*
- 	 * The allocation either can't fail or will lead to more memory
- 	 * being freed very soon.  Allow memory usage go over the limit
-@@ -2789,7 +2785,15 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	if (do_memsw_account())
- 		page_counter_charge(&memcg->memsw, nr_pages);
- 
--	return 0;
-+out:
-+	/*
-+	 * Don't forget to raise a MEMCG_MAX event for forced or rejected requests.
-+	 */
-+	if (!raised_max_event)
-+		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
-+
-+	return ret;
- 
- done_restock:
- 	if (batch > nr_pages)
-@@ -2848,7 +2852,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	    !(current->flags & PF_MEMALLOC) &&
- 	    gfpflags_allow_blocking(gfp_mask))
- 		__mem_cgroup_handle_over_high(gfp_mask);
--	return 0;
-+	return ret;
- }
- 
- static inline int try_charge(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 
-
+Thanks,
+SJ
 
