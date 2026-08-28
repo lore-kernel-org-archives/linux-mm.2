@@ -4,108 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC4CEC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 10:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 666D2C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 10:26:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEE546B0088; Fri, 28 Aug 2026 06:25:58 -0400 (EDT)
+	id 39D806B008A; Fri, 28 Aug 2026 06:26:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC7136B008A; Fri, 28 Aug 2026 06:25:58 -0400 (EDT)
+	id 375956B008C; Fri, 28 Aug 2026 06:26:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A02D46B008C; Fri, 28 Aug 2026 06:25:58 -0400 (EDT)
+	id 28B0F6B0092; Fri, 28 Aug 2026 06:26:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 80EA36B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:25:58 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B16D1C1AC0
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:25:58 +0000 (UTC)
-X-FDA: 85150297596.09.7FA9426
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1D0C940003
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:25:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mvaIq11x;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E618A6B008A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:26:49 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E876802B1
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:26:49 +0000 (UTC)
+X-FDA: 85150299738.25.7714274
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1F5B580004
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:26:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=efizeq25;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf30.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.92.39.34 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787912756;
+	s=arc-20220608; t=1787912807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q6VGjoXbQ2cLJcxsPY6sgHuhsBN/VrRinMPTYaSAwow=;
-	b=cC8JP2HKbtiwEJ0X5m0XdAequUh8bLJKwy2lGMmWrDWKl5jdG/YAuRuR9ogKXYzwLz5k5Q
-	Rx/tFIIeLCnjIq0ZrJlTONUWXaUAaeNgMdEfHs3pSykwFdgHwXfw1nDCENxJkSOf80gaSi
-	Buk4JXnL3B2Gu5Y5ilVVaIMczWOFd2A=
+	bh=TUv1RmQ2miGU/9mk3aHLymUw+hTO6Btwj2zASn4n3FU=;
+	b=6k8z2ZWaveCKcURHDpl6KUCsBH89G+ib/I0NCk34SGQvJl0uaABDi+sMZJlzM/fLP8Ba6P
+	1HVmezsdV5t4l/hknwoAy3QUvRkOTAlSOD0vmdti35iRWY7YPOpodR9rwJME/FI9Sua2Nj
+	yIDJvgQm71/fFd0Agr4Ui69Kc3qH8zo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mvaIq11x;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=efizeq25;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf30.hostedemail.com: domain of zhaozhengzhuo@uniontech.com designates 54.92.39.34 as permitted sender) smtp.mailfrom=zhaozhengzhuo@uniontech.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787912756;
-	b=2lDGw8IswCA/LMKuMUA8XQzXor6Jf6crSi2iCmtwz8zEQ1z136bUQoVOwRzJvzX6NlgKiA
-	BOvpcReOxj2LBHw3sEdWiJf5Hz0swZmao1PB7SrO02DZfENUxhAiA2JYVYAy4D6HpyKwg7
-	47Tzxa9wsJ+lRNn9CoqCM0zrSUvPla4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787912755; x=1819448755;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=y2hbqMERCbiubt7BDkFMXl1dBTo5MssDHay4qoq9wxA=;
-  b=mvaIq11x+Tzfn8ou43KXzk6E0tAw1gYelewT5qq8XFq5eNA1hx0HKcf1
-   xPsP/8dlttbaRh/egmZtlKPDcPVPhLMtCSpuPLeMlho7j2ujRc2cEr8aY
-   AjG7UMavGEN4brkjPR9QkNBzKnQvQeu8jnKgPQfA2MV6ISc7QxrQNIc7V
-   tHTiNApwjIreT+OzIueX30SorgCBv1cEvSlSUYucBOFiQ0prkIlaEkT/m
-   vsv2hovQjltgmpji0y1fISFRtdp5NCzxNWwsMESICtjDfM2jxOc8Hj/pr
-   GZdJn9cb1pdHn8twbuKabY2JCL9cOShhLS7h02wcrwHNp8CpAwP4j1kTZ
-   Q==;
-X-CSE-ConnectionGUID: grwg9X5RQt6MYwLlVsV6kg==
-X-CSE-MsgGUID: BYnahvzVQZuiBP3+8SX33g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="99580839"
-X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
-   d="scan'208";a="99580839"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2026 03:25:54 -0700
-X-CSE-ConnectionGUID: 6SUyTDvTToGtt1YkFVWwbw==
-X-CSE-MsgGUID: xaSfKNblR3SZYeLPnQSyQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
-   d="scan'208";a="273380978"
-Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 28 Aug 2026 03:25:51 -0700
-Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wztmO-00000000Ar3-0FNM;
-	Fri, 28 Aug 2026 10:25:48 +0000
-Date: Fri, 28 Aug 2026 18:25:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Rik van Riel <riel@surriel.com>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: oe-kbuild-all@lists.linux.dev, Michal Hocko <mhocko@kernel.org>,
+	t=1787912807;
+	b=GxonBbrowFH9/du7wpsXxzb9TQ5J79c4KMfOaUhLfRFtRTkueG0zH2HhFO+86Lrgmu2Rax
+	yd+Ecc6ffGo5PfuXHRNgnXzKx7pMvbtc/V1uDFI3Tt39tgArBQKNsP9wRYdODvoX70tN0Q
+	sDkrzq8QZSfBMaKCY9Vk/cOfsZpJZyQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1787912787;
+	bh=TUv1RmQ2miGU/9mk3aHLymUw+hTO6Btwj2zASn4n3FU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=efizeq25vrYKGHLZdcIsmoFj5XUQmuQe8oC+800UdEO0fucC2APEhNYDJkDcvymVJ
+	 h4RRBQADGzkrOu373s2lhjrm22RUSmrh4RTOHSsvmsFgiEIrBZKPhuNyf8yK2pLnEJ
+	 FCHwtoRhLJnNGjHRakEeNqp3jgB7NS9g6OmfuQjg=
+X-QQ-mid: esmtpsz10t1787912769t0a67fde2
+X-QQ-Originating-IP: Czl82io0r6bpdd1Si+MKx9FHyKA59c9FLNXUn3Mf4Gg=
+Received: from zzz-PC ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 28 Aug 2026 18:25:59 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 4164784022623513556
+EX-QQ-RecipientCnt: 44
+From: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+To: Kairui Song <kasong@tencent.com>
+Cc: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kairui Song <ryncsn@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Nico Pache <nico.pache@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/memcg: fix UAF in drain_all_stock() async work during
- offline
-Message-ID: <202608281724.4MTLH1h2-lkp@intel.com>
-References: <20260827124211.3b94b103@fangorn>
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Hugh Dickins <hughd@google.com>,
+	SeongJae Park <sj@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Vernon Yang <vernon2gm@gmail.com>,
+	Zicheng Wang <wangzicheng@honor.com>,
+	Chen Ridong <chenridong@xiaomi.com>,
+	Tal Zussman <tz2294@columbia.edu>,
+	cgroups@vger.kernel.org
+Subject: Re: [PATCH RFC 00/15] mm/mglru: frequency guided promotion (MGLRU-FG) and flag cleanup
+Date: Fri, 28 Aug 2026 18:23:44 +0800
+Message-ID: <92DCEFFD13221261+20260828102344.1537874-1-zhaozhengzhuo@uniontech.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
+References: <20260804-mglru-fg-v1-0-4d8dad39dad6@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827124211.3b94b103@fangorn>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1D0C940003
-X-Stat-Signature: rfdqfac9jb39bg5bybdfa1i3db1fw68d
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5b-2
+X-QQ-XMAILINFO: Ni+h0Fe0GhU9OrMislfLw6gRcSwB/GBHjwS0w9gIdZt4RHeTVwtxYZaP
+	n6H6gGK5MpL3SdVUBw9cnN0TTdR6o/AqcnpY0zhobKRfmUrbqi+MvKbFpc3VJlMbTYusBRo
+	zoRChF95GtmQAyckeIa5WlhpaoJdq+4YS+QqOxZu4vy9aSMbGAjI6UmOHcB/2BOO4KzpUR7
+	RlwjsOngSch4b6+qEWF/R5SWx0J1UvPVPxjuw2blfvSr0E0jIuJ350clLm+Au2SxJ/dVSHA
+	B+lZ2n1H9iB5IBYpQ4k+gXQ5ss6WKxFzQm5dAtkSW2yNd8mKkRUhjr0godgE6HIHVME/myK
+	ziwJ0dw8IKL9fjqj8lZDoQEEKS4/NM1/POvD1Sx023cDlhbhv9qEC9jA51b31rYkjPVBSK8
+	pQXfjwVNLM/RxWZXf2bttH2BY9YZn3bU9IzJE3fEu8lkH7DAgAApiaNhQMUMLomVpdy3HsD
+	W12mfDRCgk/dBj6RSSkzGzZzRqsKE5fAHV1NRNNU9/XWB6KhIUDNeDluZEbvy8818bHHUnw
+	TylKUegNGyeEyjrpoO1WV3GCeOju4Qi3Dtf54r3yJYpjRChH0d9Go6Ki/0yF3M97VMf9Qax
+	W9SUVHmRGQv/Kncwoj5X/RopjKNGNnfVm1+gDpK2twc72YqYQq9HxuDnlSWeUURND8ITKZd
+	H1OI0QCJgYrNa+cBQP/zY6WT76GhJeTDfxa1NROz3lCyMU28JquQ4HrIoOpoS670pNrfclL
+	p94OXDuyO9HAwgVQK65m6HNnXBQqihC93TJVzQEFHqguUQlgy6tenBwkaCf27rHEa1n63/x
+	dfZUl0+E6nlGQHQTFeL6VbilpgJZGiTN855MKEPCXivqk4JhKL+juovYbxuJkrwdJR3LbxS
+	psTob6JevAf7j4OAcm7rC2acwBs4XkIxQcQXMKzK3Dyr4gly8EWC6hNXAKlVThy/3fwoBjC
+	673buNWMLEOZ9O/c1KEeEPqiym1jXImu7XN6VEWvoNDkjK1/v1RAUCtdD1sJAu7CtZ5oJ0/
+	MrhnAF69O/XvqOabEpWK25CnLojtm5eFOX1543mV+5GooWwlXIPqo8PwNH1gzTVwu5z3wOr
+	HIXTeIJ8C7IS8l6ySHuHXTHP5X+qD/Gn1Z4D6WndiExNbOrV56BaaE=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
+X-Stat-Signature: 155kdmau4t98ccgmyt74asmnzy8sudq6
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1F5B580004
 X-Rspam-User: 
-X-HE-Tag: 1787912754-341845
-X-HE-Meta: U2FsdGVkX1/eDA7ZlyI9BFR41A7lSHAkO4S04OuVdPh6iLHtVkWIW6cWry9nt4bnPAhIkaNwKGS1X1hxjDseg1uYvfRaEyEBDEYaLQdbXA/g7Xd5Th4qaOc7ia252HcwxVDsw+emAGtCAYW/ypM04Dm6qf9rcKHUjt3bcZM7yCTo/K75Yndq4ZXuC3peB+4ittm8lZ3OGaTuApIPScF9sfTFGPbaCC3S4cqQAhBc15f8sLG956CziGYNJGwUyUkLJdvP7mPr2TzzvXNKlbIlJl56UcYeSJOsGuFsFT35EZT2bIrD+wbYBKkYIsaTiW57NY1lkuHUgsqiNfu4J89t4mp6gQKf4WH8RZp0s8S2jYhmaQq3uRmh6zkpefnc941xA8hNOegvBvfoOJVRdo/ny/inU+rKbN6MqG905+gLaiyy/uHF8kSjX5/eIJQ9WZAg/g9LUzmqwHkr16b7lF+7slXeDR0zLP9lbTcw59X/RGUtpC/JrDAeL9G4gpSkhPqqSn4pW4At2fazkNw4eEwYCNh8fDewuoYAgJ43B9d57qnAbpmlhLmI2X0zfINZVuIcJiYhZ4iLItWANDpma0WMYXwzBlaTaI8EfZwWpP/yrFRvc+t/tR27o/J3s+Gjv8gebS3cu6uEmMZgNIFInDt3YDXV6X8N4utl5/b7hdTDV9R4v39lnK4HxsgdMjfIpfbQzRZ7bzAeStKM1KlmrMPVfUTs5tsCCMs38S4ZR7n9txj63+gBA/LGgiq0N1m1/UEWhNTaHulPPdEkPc4wI1dkIM/OLpo/4MkSXIvnWLrPjq1uDknACPQRRvX9EF8DfLPWWcMQYCu6+lWzUgwOICbA7ysB8mrsP/S1f3F5hw1YtD4l62sQaQiXBkv32Az+i8nZRFQzwNES9FE439+ZUwdZx5kEw9rCFuswZKVsr7C9mAm9i2LEFkOB63wXmGR+fux7CKOai/yU6hDfCwgR5Es
- qd+cPpCt
- JHUiMAnKXJAyFZ0rX/JP1hjGZKFNXuUjSTqLalTPjtOhjEN95f67S2YAu5OkPw2jBw4pP1BSe0WHZGMUkpITjnfNDp5St+Om1jwWgIpwyCE1OKeY+RHPInT68ufF44f//9gvmo5l5B3NJ1j7hGF/A9nkx+T18vB/E8+FJ0jvpVveFMxbyTyHKYthwCdDzQ8MGQg5YsekU5hlmijCVSgOITBCmEfM6VRBYCWbJ86VqbFuNRN+HZBD56l6xBYsDpYXPtDESquh45XjxQcQdyTTMtNL/YSPDQK+u0cVPrLhmB0LgvYq4cX40RjzPj6J1bPruGrOsuIQvWJ9tgxJ3nKuQ1a2EzLwFNwT1K1GWvA/huTQOgtPEEfMTC5Wa3g==
+X-HE-Tag: 1787912805-521303
+X-HE-Meta: U2FsdGVkX19UVgV/13oFsUBLX6eEKGp+2mMWsqTw2BcYctML3dtfqZ+/kfiiG5LpsdYKmbFp0W3yxSQOQOYqZMzUKBtusc4XIMr+kw9dygOWSjzbNfw+YzruYkVGzzPlHwjjfe//lWh7/YvMyBy5Zar5nlzF4Yb9U9rx8nrDRvry/2W30dVNFStM+zwg4WjwlUsqUoVwnmQatfBERr2wgo0SBdWfqsY9ksB7TAcCvet+3rBBCLWpgKTf39AflwyQEjJ4Tfo3Wg5BNvmeuEW789lNukIpVBDWtVzNg+nGoUlUnc6xpf3hnJXuEqueddOtcf2SpOflZ1fiFrZzL0s79k+zwVWm5+dbP/i72d5bNt9eFjeaYjIUgv7FiYd/CRH+3ySgeiUQ8AGqvyPzzBeNBm1GzAcW71MOBKpmxOK9pV/a5/9pu0lQHrp8xlknw1TdflYa0WqfPnTDRHS7CcSofPUdx18qlzrvor7koUYm+lCND5f+c+YwADPSKercfLO5jDUhI0Cj+wjqYZkpbLwZv7b/FkBMVUfYa8BCSkIPIjjdYXww31lEI25vUOvnmDIZ0zVnrUb/DM3f5FeV65uiNejviOx7fTID3FwYLv/C8aKaD2eCdhwMRjDDIqk6dq1wsHkz0hdRCV2/M8xuJPhhHcxOs0gIclznk9JN3XoItghwFvfTe4DiGl6K6bNenz+P7cT32reSiu2LlptIzzOsawuJfgTu5pPmlNBjH23cC5s9fcudjPFv65G/EgK5PNkLA7kjajlhQbI4q8dvH6ritMNKhexwOKZqyFdcdKSOF/Xd7EJCesZaMPsJ4t3fkZJchejgk0dzLUcBZq4GTgQJ5sjpuiKjg8eHc0TEzw9Or7S7JI23ZN/juTdHGnXquUdk4453/3z5Cn1JZcYnUAEmYLTnPK4E0uZEg5sheXlbbYbEmbyGBzdmgj8qXpxozZeZdRyZ0M1Qh82VfI/AvDb
+ oF7QYiC7
+ v6ZSdqnzdLS66o3JvEZZsCE7/OJx/eEVxWOvBG16gXsv3tHuu3m2+QxcjP6GbZYlTJ+J5Pnmy5AnB9CsGGXum9w4yrbrraR9LWhlAc/GH8SsmsWgaUwkf6AeAQ3Z5hIFF0nIVwthOZciXuZL0WxP+PuKr2VgIYMy++A6Un6g/C4ohMYYXlJVCNqIeqTfW/psf/i3c1d+HltDCb+T8oyvbTCxXwGgcAhqoNJl4opn9P31g53Vw1/ygzaSVhG6OZJxiDalFFsR+DH59miVGct+AO0XzFVLSplCgBIEZaKh+Mn16M/WdnuLgKTP9GboZYrAnQq9DA1Ep9ntoJnwb5GbuN5Zw62mRlFDGY/RR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,47 +153,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Rik,
+Hi Kairui,
 
-kernel test robot noticed the following build warnings:
+Thanks for the MGLRU-FG series - it is a very interesting and
+well-written piece of work. I ported it locally and ran a subset of the
+benchmarks from your cover letter on our test VM. The results are
+positive and consistent with yours, so I wanted to share them as early
+feedback. I would be happy to test the next posted revision directly
+and provide a formal Tested-by tag then.
 
-[auto build test WARNING on akpm-mm/mm-everything]
+Test environment
+----------------
+- Host:    96 physical cores / 192 threads
+- Storage: VM images on a 4 TB Netac SATA SSD (no NVMe); VM disks
+           are virtio-backed image files on that SSD
+- VM:      96 vCPUs, 128 GiB RAM (KVM)
+- Baseline: mm-new @ a032d41a86cb
+- MGLRU-FG squashed into local commit 9fc6ff682d08
+- NOTE: the port additionally contains a local guard in
+  folio_inc_lru_refs() for non-LRU folios, so this is not an exact
+  bit-for-bit test of the posted series.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Rik-van-Riel/mm-memcg-fix-UAF-in-drain_all_stock-async-work-during-offline/20260827-124211
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260827124211.3b94b103%40fangorn
-patch subject: [PATCH] mm/memcg: fix UAF in drain_all_stock() async work during offline
-config: nios2-randconfig-r121-20260828 (https://download.01.org/0day-ci/archive/20260828/202608281724.4MTLH1h2-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 8.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260828/202608281724.4MTLH1h2-lkp@intel.com/reproduce)
+1. fio, Zipf 0.9 buffered 4 KiB random reads (all IO through the
+   page cache), 40 GiB total files, 16 jobs, 16 GiB memcg,
+   45 s ramp + 600 s run:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608281724.4MTLH1h2-lkp@intel.com/
+                        run 1       run 2       run 3       median
+   CLRU                 797.64      796.74      800.21      797.64 MB/s
+   MGLRU before         766.88      273.75(*)   769.81      766.88 MB/s
+   MGLRU-FG             838.16      840.26      367.92(*)   838.16 MB/s
 
-sparse warnings: (new ones prefixed by >>)
->> mm/memcontrol.c:2380:6: sparse: sparse: symbol 'drain_all_stock_sync' was not declared. Should it be static?
-   mm/memcontrol.c:4678:52: sparse: sparse: incompatible types in comparison expression (different address spaces):
-   mm/memcontrol.c:4678:52: sparse:    struct task_struct [noderef] __rcu *
-   mm/memcontrol.c:4678:52: sparse:    struct task_struct *
+   Median improvement over MGLRU before: +9.30% (cover letter: 11.1%).
+   The two marked runs entered an unexplained low-throughput state;
+   CLRU stayed at 797-800 MB/s, and a reboot restored MGLRU-before to
+   769.81 MB/s, so I kept the outliers visible rather than dropping
+   them. I am investigating whether this is related to MGLRU
+   history/state across hot switches.
 
-vim +/drain_all_stock_sync +2380 mm/memcontrol.c
+2. MongoDB 4.0.23 / YCSB 0.17.0 workload B
+   20 M records, 6 M operations, 48 threads, 16 GiB memcg, 8 GiB
+   WiredTiger cache:
 
-  2379	
-> 2380	void drain_all_stock_sync(struct mem_cgroup *root_memcg)
-  2381	{
-  2382		/*
-  2383		 * Make sure the workqueue is done with this memcg
-  2384		 * before freeing it.
-  2385		 */
-  2386		__drain_all_stock(root_memcg, true);
-  2387		flush_workqueue(memcg_wq);
-  2388	}
-  2389	
+                        run 1       run 2       run 3       median
+   CLRU                 18695.72    18673.44    18438.05    18673.44 ops/s
+   MGLRU before         17517.69    16196.08    18180.28    17517.69 ops/s
+   MGLRU-FG             19871.70    19721.86    19321.00    19721.86 ops/s
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+   MGLRU-FG improved median throughput by +12.58% (cover letter:
+   10.3%). Median read latency / p95 / p99 improved by 11.35% /
+   12.30% / 26.06%, respectively.
+   Caveat: the master DB was loaded with w=0 and stopped too soon, so
+   each run had about 22.7k READ NOT_FOUND results (~0.4% of reads).
+   Every variant was cloned from the same XFS reflink master, so I
+   think the relative result is still valid, but I will redo it with a
+   fully settled master.
+
+3. SQLite hot lookup + cold grep stream (sqlite-grep test, 90,000 cold
+   files, 300 MiB memcg); median of run-medians for the hot lookup:
+
+   MGLRU before:         277.18 ms
+   MGLRU-FG:              13.74 ms   (-95.0%)
+
+   Eight of ten MGLRU-FG samples were about 13-14 ms, whereas most
+   MGLRU-before samples were 249-322 ms. Grep time itself changed by
+   only about +1%. Compared with MGLRU before, MGLRU-FG also reduced
+   file refaults by about 21%, direct scans by about 17.5%, and pgpgin
+   by about 15.1%. This was the clearest reproduction of the intended
+   protection against a one-shot cold stream evicting hot data.
+
+General observations
+--------------------
+- No memcg OOM kills, and no kernel BUG / Oops / Call Trace / panic in
+  dmesg across all completed runs.
+- Confirmed that folio_inc_lru_refs() is exercised at high frequency
+  under the fio workload.
+- make -j48 / 3 GiB memcg / disk-swap (CLRU side only) completed in
+  2h18m59.9s with 20.9M file refaults and 48.1M anon refaults, no OOM
+  kill. This VM builds about 13.4k objects and many modules, so its
+  absolute time is not comparable with the machine in the cover letter.
+  The before/after MGLRU sides are still running; I can send the
+  same-machine comparison separately.
+
+One thing I want to flag: my local port adds a guard in
+folio_inc_lru_refs() for non-LRU folios. I noticed that syzbot
+reported a WARNING in folio_inc_lru_refs() on this series
+("!memcg && !mem_cgroup_disabled()" in the exit_mmap path). I am not
+sure whether the two are related, but if it helps, I can check whether
+my guard's trigger path matches that report.
+
+Because this was a local port plus an additional guard, I am reporting
+these results without a Tested-by tag for now. I would be happy to test
+the next posted revision directly and provide a formal Tested-by then.
+
+Thanks and best regards,
+zhaozhengzhuo
+zhaozhengzhuo@uniontech.com
 
