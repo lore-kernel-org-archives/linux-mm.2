@@ -4,98 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48B4EC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 15:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9600CC61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 15:10:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAF2E6B008C; Fri, 28 Aug 2026 11:10:21 -0400 (EDT)
+	id 44F416B0092; Fri, 28 Aug 2026 11:10:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5FB56B0092; Fri, 28 Aug 2026 11:10:21 -0400 (EDT)
+	id 400D46B0095; Fri, 28 Aug 2026 11:10:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D29896B0095; Fri, 28 Aug 2026 11:10:21 -0400 (EDT)
+	id 2C7C76B0096; Fri, 28 Aug 2026 11:10:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A85EC6B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:10:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2281C1A03D4
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:10:21 +0000 (UTC)
-X-FDA: 85151014242.01.F485967
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 77A10100002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:10:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=R1hTVSbR;
-	spf=pass (imf14.hostedemail.com: domain of artem.kuzin@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=artem.kuzin@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787929818;
-	b=8QzgUFImzCVFT3sX7lBXCuwlAU36xM/qBKHPuHByIIg9Jj0d9yGUn3HFBulAffIDJu3Y1l
-	gNV/36/cw5hmumituLmF4FNP2mFkoCpjr1Qn4wFoaMDyduMrucbAra8Xa2PvKuVEKVcPnt
-	ttI+trHnXjKMojGhlLbxxZf0b+bYIHM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=R1hTVSbR;
-	spf=pass (imf14.hostedemail.com: domain of artem.kuzin@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=artem.kuzin@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F22A36B0092
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 11:10:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62270A3C28
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:10:30 +0000 (UTC)
+X-FDA: 85151014620.03.89C14F2
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BAAC9C0006
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:10:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="k1yC3/1T";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=4BPKwfdr;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf28.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787929818;
+	s=arc-20220608; t=1787929828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/4HXdOnEjO2UWQf+m+lpPrXMXF/LAxWYvhtSnXIOjTE=;
-	b=Syt2qWm9+p94KlGhXPp+zj1IHOcfdWwHDtxqaj2wMcx09TTaxN9+yNIYbZIws4bopYzkwj
-	uKRKhSLJUOAnN1gOBcx1OubkCqre2j90aHXWtwBiCX6Q6+8RQ/JLTnGjIg9eeeVirPHsKY
-	yUMkzaNCb4vudNZ5vEE4FtEOBkQT8P4=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=/4HXdOnEjO2UWQf+m+lpPrXMXF/LAxWYvhtSnXIOjTE=;
-	b=R1hTVSbROxgMjucOhjQ77G4yaqYa014J8x5xfqFvl2dIoIb+mAvQcLkYukrhRy25n57jqSc/w
-	uzhDI07JTYJWgTsrxh+FxBZYK03D6HkkR4bKKKj3UcHXLSpPkOSDePNFcmRkmOSnhLYk7Qd7CYk
-	yv4xR7jpwTYeCorKcyJGeUY=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hWhd20y5rzJ46Zq;
-	Fri, 28 Aug 2026 23:09:42 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 410F440570;
-	Fri, 28 Aug 2026 23:10:05 +0800 (CST)
-Received: from mscphis00060.huawei.com (10.123.65.147) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 28 Aug 2026 18:10:04 +0300
-From: Artem Kuzin <artem.kuzin@huawei.com>
-To: <david@kernel.org>
-CC: <akpm@linux-foundation.org>, <artem.kuzin@huawei.com>,
-	<catalin.marinas@arm.com>, <cl@gentwo.org>, <liam@infradead.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux@armlinux.org.uk>, <ljs@kernel.org>,
-	<mark.rutland@arm.com>, <mhocko@suse.com>, <panov.nikita@huawei.com>,
-	<rppt@kernel.org>, <surenb@google.com>, <vbabka@kernel.org>,
-	<wangkefeng.wang@huawei.com>, <will@kernel.org>,
-	<xiongyining1480@phytium.com.cn>, <wangyuquan1236@phytium.com.cn>
-Subject: Re: [RFC PATCH 00/18] mm: arm64: Add kernel replication feature
-Date: Fri, 28 Aug 2026 23:05:06 +0800
-Message-ID: <20260828150506.1016096-1-artem.kuzin@huawei.com>
-X-Mailer: git-send-email 2.34.1-openssl
-In-Reply-To: <bbd45126-8d43-40eb-8a69-a7fb6d2378f1@kernel.org>
-References: <bbd45126-8d43-40eb-8a69-a7fb6d2378f1@kernel.org>
+	bh=txJxc7ggr3poI2FLO7VfIUDXdgIFyMuKHMC/a4AMXzQ=;
+	b=pRWc97Ow6bXfvPza51Qxulmwp8SdQI9YbCdJBClGTG7dyzwfkvkp2iNFCMtvyo6gBvRQGZ
+	7qRa5uBmC3HzHcnm0J5WTXI8FIYYx5jg5NBYiRmYAUCXrvzB93G1NzIvA7nUM4S0EsvHyR
+	+zeI+Uf4Wa28O21rQRYoMAv6lRrD0KA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="k1yC3/1T";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=4BPKwfdr;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf28.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787929828;
+	b=CXUlCVD4C+2QSy8sCx2NngZ78mVI49zx8zl9w/VYzg/s5htuEn+N+K5njDgpL9o7VLjvEw
+	0w1nydmtnwNwNXurfU62O1qQQr/7LiS1ZuC+PyS2yag9gCFpZwLFUwNNBqRyFBjEhFNHmb
+	t0XvhOLjKEH/qR1LENx+0GHpK/sdTXw=
+Date: Fri, 28 Aug 2026 17:10:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1787929820;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=txJxc7ggr3poI2FLO7VfIUDXdgIFyMuKHMC/a4AMXzQ=;
+	b=k1yC3/1TSLVucW+G2hOymttYJNyxemcF0Wij24KbbvzrWJWTl2dTj6e6PoI5S0HrfHyPXp
+	oI4RGa6W3u5aoEJG/2uXG7Yr1esVzqcii9kIAcVvca2UlTbIgjnuyFklJJzrTKZXRqX+fu
+	ejgAg7ZLLzBYuFgz7MtDzaMLtFU/HLtc0BAfv8hKr3HpJsrtlz2g3lJ/Sqlfh3LdKWrn1S
+	GTsJ4NmbyXAzkDLkFbgBjQNfoTov42PXv67fjZOSlBNDbwHx3Uq0FYD8NUjYTI3ReNlsL6
+	lO/wJgykH2TvEmnn79Xfqs7ZjEmbXcCqXW/IiJFI0ER3lTMAlcw/3g0ZxDwYLg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1787929820;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=txJxc7ggr3poI2FLO7VfIUDXdgIFyMuKHMC/a4AMXzQ=;
+	b=4BPKwfdrdUNYh8LjOXHLTIAFqeXqMCtM1JBZhaIPoExx/1SClqrf3LjHhwWJfGMIRfuC0h
+	PrxrqZaP9E/FVKAQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: David Stevens <stevensd@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
+Message-ID: <20260828151018.HnR9xV1N@linutronix.de>
+References: <20260827232948.2520558-1-stevensd@google.com>
+ <20260827232948.2520558-7-stevensd@google.com>
+ <20260828133620._x2XfJR_@linutronix.de>
+ <20260828135947.GU776954@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.147]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 77A10100002
-X-Stat-Signature: tydg1nesj1nkt67jb5576cswty411u5p
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260828135947.GU776954@noisy.programming.kicks-ass.net>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BAAC9C0006
+X-Stat-Signature: eh6m6hpmhc5r45xqw1jqm4fagpee9mke
 X-Rspam-User: 
-X-HE-Tag: 1787929817-92349
-X-HE-Meta: U2FsdGVkX1+am8mCRaFDK6ehVNua9FZKdJhCzl5NCMgyfJ16KX+DPjPqzawq0K+LDNnA3Dexj75xayR6sU0RiYy5Ug3Pp0EXssHsA/vaSNeOb0+TSw87TG/3YJmaQreWCmLPqSiaqZpVeu/39DMHhYSKggyAcXs4tvnDRYscmblHRXKNOtbY/XjzEPGPeQ9jEQ2ln/MAVpV8XjdUHy0C79b4KHBoNIqnZhBJl+UzOhYPZzdcXb/2IK0W1SSKgMcYOImjvrOl0jR5lwrmcDV/r9KHvFNU4a3kaXp6qlkPGjGFSMIX+X/HGByN41gX0tUwtLSXuwZrAwSUczWG/tkLrvogCL1mLIIDZFLd83Mu6Ua4yMgKXY4GklgFfesJhn0IMs5x3BmhGMFwWexSsj9rKTJUU4RXeeGoVrPoNbb8qT42zmK6q+2DkXswgis1IoaKJwr9+2wj3g7ikadUcOF1OiBrxPJepvoTeGeWfu6MOMItFkrnqyek5VLm9uMAMjNyY38s9XjbGw8tuEKtLy8vjNRR262Qs7f1mjLtpfFcFm3BiHofWWHokhKk83tgoXO2MttMXAZnxzGSNDdTzBLgYX7+/I89YjV9i2CdGohHaLXbKrrCpwB8VFW4H3y3mqiyz5ViNicf5J4GhyxVCjaTDWI+Fx+UznPlsaeKiM4YT3P7Gdc4pAa8ZQh+KMLR6DDNVq0XQgL0n0wN2Y3Ysb3sbiOA5eK21aK8KhLDlPwsYtAYKgnyXXKmy051xX13KctX2ey1+MDshV0MFpCMd2epwhiMbzPBbffDGuNUWiJ1UzkkfG5Awx5kMncz8jdctqjXhbNotm8k+8gOqnTSoQrT3+XF9M581I8Mz2vSJslks31F8tr05RmPUwgrQIAe2BsjNfonpws9N8UtWApeX6q4zyuKVwig/yYQ5hKrQcNzorBXFr+InXHpCRNfm1Oz8zOCFaetTXCZ+J0uhraT+cD
- bVAeITO+
- nizOvPsWnX4bQXuxAzjPjFoVgjRjPAOHsrooDL6o4rknK+D5GV0OUtxOuIHQgqNsOM0ecilnqEcl32jUkscsJzkAfKkuPcc0nDnhxWKBsS7zoeyDQU2J9k8pJLXNB4vSayDGXLxQK8gd7/psKOQehxU86kY8CFWcnPLovyhRC+kv3oWXeVuuGprv9RVAjWzgO175bV3eSEfozEhm2+P5RgOpW2vfhfwhY1IoseNPZBrMv6Bn3i1dNLT9YcTwXJiz+QjSibRPBatO91KoW1NR+FH/cwKuBgywOXCMsNHgrI/W+n72g9MrMTVuWbn6lH9z9yL2kGYIRig0StuoSs0vPNiAB0wBr82XFz6aS1gDaIBzLLtqjQgSkjWR1wc7BVhnfAVi76sJO3SC5XMkL6yf4LwMsJsE1kbYuWk0/g9dWTyWSMn5xQ6l05IhzeWJcXZ4Cqb6/
+X-HE-Tag: 1787929827-188817
+X-HE-Meta: U2FsdGVkX1+6tyNSvKz/qIvRQnrE+VJPodqsfYcXVrOHBrQQfFQ8O4vktykKXvjbgqlySU4JFRHcSZplR24w52s+du7CVdVI1A4TqZuYSRHkJWIlyJ4GGHyuSMYdTy/d87UraLFDXpodaUTcquyETHDr8kTyDV4BbgLOhK5iFWiUN4govoPU4D7JPt0JgdjNCb0FF2XZV1Cu1LuIno25kZlIsHF6y+n7u2ShVj9a4YBDY68n5b/lF0XRxanEkEDCovYeFHMpVyQ4Cu8NFGq2+JLdbdw+sY0xGANMS6nf6kX/nC2Q90pV5skfWQjZip/PbTMXZJAYtzpYUP57EnyWQQpw1HSpMKu/AanQ4LVADYbf8kbClIAUrw1r6PnSyszyl57jjis3wI+cnt5Vu4joV+pvPk99jFqSA1eixFTQtr9KWv/OoCO51lRbU2o77esCWpbXJ1yqcA4TONUry2gfY1HiyX/CVyyURo7/C1+mQ3sK+NeZ1BRNxh46D0lE+rYs1FZ/GZV8JJ5BgA+iycgN2UMSisq8/OSHKaXq94zuIBze7mMnaBg5/RdBCYgfZovp1zUutHAl4/sqLwXzbPTYmnWJSwOXnjrqbcLSpjPJ68axZK/XuJ7zFTm/gtk9UN5QB3J7ie7vCs0ss9ljUaXV1zu4uGky5Z6+DTyg/PLM5PuqEKmDPoCeOloSla/IwWIFZgcMxdmRnaxzic3CoiRAYihN8NySv92XbDR2nsXH612ZByfwQh5k4s0hnf4QjubdjJgGxGDD8eqvKGFP7Llq4Vkp6/Rg5nyAgxPz11OzpsyHjAhyJTqrbbXmmgVdF/WXuNYcR2peO7rx424CSHLu+hltGohFwZdSpAuZmcPVAYjTTfqnGony5UDzuE5KIc0VUmwoAyxWAOcR6JMv4u08iFwBBbpX/g3F3aXyVmP4UyU7foU/UAJbNMu/09IxFoP3kIQL4snLZ4quzcjymCA
+ 6HWVKjbo
+ 933Z7nvROp0415rTHcwtI7RQNPRF1kwE/ceye7eh2tb/Pasu8sV7Mx1Fbmyd+LXLBzEAjmJLKyQUb/Y/+9xAuKwlYIhvDKlBHWTD5rhdMvHB8fGrzxFAzxEkobmVUHcfPIXalb+Ku3b42n0IWR2LlRazhqP9CT+DE1okHrdCZeKERKCf28g8VGuPj9OGj07wWjzHn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,59 +129,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!
+On 2026-08-28 15:59:47 [+0200], Peter Zijlstra wrote:
+> > > +
+> > > +	  The wakeup latency of tasks with reclaimed stacks may increase,
+> > > +	  especially while the system is under memory pressure.
+> >=20
+> > It says *may* increase and on RT it _definitely_ will increase since
+> > there is a kworker involved not to mention the memory allocation itself.
+> > Anyway. This either needs to stay away from PREEMPT_RT or find a way to
+> > exclude at the very least mlock()ed tasks.
+> > Did lockdep see this?
+>=20
+> It should have. They're taking spinlock inside raw_spinlock and lockdep
+> should very much warn about that by default.
 
-On 8/27/2026 10:04 PM, David Hildenbrand (Arm) wrote:
-> [...]
-> 
-> About to go on PTO, some random points :)
-> 
->>
->>> [12] - Optimize this_cpu_*() ops for non-x86 (ARM64 for this series)
->>>
->>> As of today, none of it was merged into mainline.
->>
->> I mean :) maybe take that as a hint? If a number of series trying to do X get
->> rejected by upstream, that is maybe suggestive of barking up the wrong tree?
-> 
-> I'd have expected an explanation at that point why previous approaches were not
-> merged and how this patch set is sufficiently different that it is worth
-> maintainer's time.
-> 
->>
->>> However, after thorough re-evaluation, we were not able to observe
->>> performance improvement for the x86 platform, so we have decided to stop this
->>> direction and switch on arm64.
->>
->> I mean, why? You should provide details here, this is quite hand-wavey. You are
->> also proposing core mm changes for something that seems specific to unique
->> hardware as far as I can tell, which is a big ask.
-> 
-> What I consider interesting is "after thorough re-evaluation, we were not able
-> to observe performance improvement for the x86 platform".
-> 
-> How confident are we that a thorough re-evaluation on arm64 will not similarly
-> have the same outcome? IOW, what was the problematic part when doing the x86
-> evaluation, and how was that avoided when evaluating the arm64 implementation?
->
-In the x86 kernel replication patchset, performance evaluation was done on a
-relatively old platform. Garg Shivank <shivankg-AT-amd.com> evaluated it on
-AMD EPYC 7713 64-Core processor (dual socket, 2 NUMA nodes, 64 CPUs on each node),
-and the results were completely different - no performance benefits. At that time,
-I was unable to reproduce and clarify the issue because I didn't have such machine.
+Yes. My point was that this was hidden from lockdep.
 
-Also, as Nikita mentioned, kernel replication on x86 machines introduces additional
-overhead related to PGD management and user space updates propagation.
+> > If I understood the whole exercise correct then you have a kernel stack
+> > of two pages and in best case you can unmap and release the second page
+> > while the task is napping.
+>=20
+> THREAD_SIZE_ORDER	2
+> THREAD_SIZE		(PAGE_SIZE << THREAD_SIZE_ORDER)
+>=20
+> that makes for 4 pages.
 
-As for ARM, I remember that the guys from Phytium published relatively good
-performance evaluation results. [1]
+Oh. I wasn't aware that we have 16kib stacks these days. But looking
+at it we have it now for over 10 years=E2=80=A6 Judging from 6538b8ea886e4
+("x86_64: expand kernel stack to 16K") it might be temporary and things
+are better now? Arm64 has a different story according to 845ad05ec31e0
+("arm64: Change kernel stack size to 16K"). Risc-V also mentions "for
+now" in 0cac21b02ba5f ("riscv: use 16KB kernel stack on 64-bit").
 
-Yes, both patchsets (x86 and ARM) are far from ready for upstream state,
-and there has been very little feedback on them. It was not completely clear if it
-is worth continuing with the kernel replication idea.
+I just booted my XFS kvm box and did things and 8KiB works so far.
 
-[1] https://lwn.net/ml/linux-doc/ZbjOZ1YOQUBxftrR@shell.armlinux.org.uk/
+> > What might be a tad simpler is to memset(,0,) the remaining part of the
+> > stack. Since the stack is vmap-ed it should be swapped out on its own
+> > without additional tricks. That memset() would help zram to compress
+> > better so it uses less memory. ta-da.
+>=20
+> That would still be a 12k memset with IRQs-disabled and rq->lock held.
 
-Cheers, Artem
+Right, because the stack grew a bit. Probably still cheaper compared to
+the other things done here ;)
 
+> > What also should be simpler (and I am not saying just to move you away
+> > from the scheduler) is to have a shrinker which iterates over all tasks
+> > which are marked for reclaim and then similar to swap just unmap both
+> > stack pages and release the second page which is not used.
+> > Upon wake up the task should create a page_fault which would be used to
+> > allocate the second stack page and map the whole stack again.
+>=20
+> Right, so you can FREEZE the task, unmap its stack and then thaw it or
+> something. But there should be a definite opt-out on all this, because
+> taking faults on your stack will be horrible.
+
+Definitely. Not something for the currently visible app.
+
+> Not to mention you'll suffer wakeup latencies while frozen.
+
+Right but you would use it under memory pressure and steal the stack
+=66rom the most idle tasks rather from everyone.=20
+
+> This all really sounds like what should be addressed is this insane
+> number of tasks rather than trying to cope with the consequences of
+> that.
+
+Sebastian
 
