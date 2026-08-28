@@ -4,89 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A20D2C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75AAEC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:50:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B08296B008C; Thu, 27 Aug 2026 23:47:36 -0400 (EDT)
+	id 4A7326B0095; Thu, 27 Aug 2026 23:50:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8CC6B0092; Thu, 27 Aug 2026 23:47:36 -0400 (EDT)
+	id 456D76B0096; Thu, 27 Aug 2026 23:50:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A76C6B0095; Thu, 27 Aug 2026 23:47:36 -0400 (EDT)
+	id 346EC6B0098; Thu, 27 Aug 2026 23:50:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 80AA56B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:47:36 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0549120352
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:47:35 +0000 (UTC)
-X-FDA: 85149293670.17.27BFC02
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4BB46140008
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:47:34 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PD5yoXvb;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F042C6B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:50:56 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 708E0C0375
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:50:56 +0000 (UTC)
+X-FDA: 85149302112.09.7CD3DEA
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 95C0540002
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:50:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q2Q4D6Zy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787888854;
+	s=arc-20220608; t=1787889054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m710DFyKBAhfKCuWsHObfkPb2khG82TsQpFvBA/k2JA=;
-	b=RV15aw3cK/ckcZ5fubZLJXfkixiCFWa/e9ITuqpjNe6ZRbnh1HS7aex7BC5n6TOQWUSTqC
-	ZGb9uFXpcdTXMvdglonQJXPeP7sdJKQWCgZIjYywhUDiKpVJD69wmtT8nUBekTsqAc/OrN
-	pcv2H7jPFz2OWOZuwrBvRHtTk9FMipw=
+	bh=x4Wo3AFVWJoN6NjZ+CjXyOXScjwk81QQP/wB9zVSLpE=;
+	b=bO53nMEevBsxrbmjJEVQuYd8GWLFid5De+vozxPXa7tMOXxcANMBNUz6vwtmVipKaSFJTW
+	nurB5kmZn3eWOqW2hzAhJHeK8UwWWC/KGWFk+KxxdZdiiFHdh4VFu9EX3B09tnZhcYV8wL
+	T/DYUBYTlJQdB0da0FGxQWaxG9LfgMY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PD5yoXvb;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q2Q4D6Zy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787888854;
-	b=jpfjwi1+HZg1uFnl9kXeNhlfvr+KqZ7ty8Dnncd3IlEIJyYUg1ZeskmXGNxm6/rWIKO5kp
-	cvZzkJKOPcwfuDlqvTXQW+t4G07qTPNaqvagyCJ6VZ4AuWCkZyQnolYprvQUWWTQ6UguuG
-	jBgKpD5qzzo8Mskc5M+x0IJ0eVN0HOo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 91A6C601FD;
-	Fri, 28 Aug 2026 03:47:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20581F000E9;
-	Fri, 28 Aug 2026 03:47:32 +0000 (UTC)
+	t=1787889054;
+	b=ET/ydcdIS6GGzpMMAXPs2y0Tza9i/Ala6qnlAbK7XS6FHnO2oL/CdupCvJVaw7rBmPMY9z
+	It+AQdeCbrHWPDSjP2sNQm62A+6jiEyNh9JIVW74g27m5196w/lynQCXKhOlj7KBZBrU8i
+	IKn1127r/i28V/Db9qR9Y6N8ygt+54Y=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cbedd5aece4so1386978a12.0
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787888853;
-	bh=m710DFyKBAhfKCuWsHObfkPb2khG82TsQpFvBA/k2JA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PD5yoXvbnJPvy0egNb788P1/kZ5UVxXwv0AbKXVrjtZaLfmWuL7VQjHYesVvQA1dF
-	 ISgqaI1omZ3HE1QMqlThC+6VdlF/i3PeqHGSA8Tsf2OcOCy3BFsJaG3kUmIeOqF0RX
-	 2ZgscW9XwkXja21nwKKs7zPEnpfp0BGDNuaGJ7x8=
-Date: Thu, 27 Aug 2026 20:47:32 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Xi <xiqi2@huawei.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <sunnanyong@huawei.com>, <wangkefeng.wang@huawei.com>
-Subject: Re: [PATCH v3 2/2] mm/page_isolation: guard compound_order()
- against racing
-Message-Id: <20260827204732.367c52ad420acb0b87bf29ed@linux-foundation.org>
-In-Reply-To: <20260825120549.966271-3-xiqi2@huawei.com>
-References: <20260825120549.966271-1-xiqi2@huawei.com>
-	<20260825120549.966271-3-xiqi2@huawei.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        d=gmail.com; s=20251104; t=1787889053; x=1788493853; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=x4Wo3AFVWJoN6NjZ+CjXyOXScjwk81QQP/wB9zVSLpE=;
+        b=Q2Q4D6ZycMZXQC2T8IumRYfXijTOUGsyGzoFmE/K6YdLgcvHT8OeorwPpzGvwOudOJ
+         wYLSIEh5JZ2YNFkpONVQER44wdlPrzYrPAOJqzHOdVc6H/0tAq2xcXlVizN+r3DfQk2Q
+         368ee/wg+tka5x2R1Wh4nSft7s7MoG0xyrPQSm9SXnw3i4M+tUqxdtbyPnSXridaEXcQ
+         xnsQqpnaMMQDX5S7+ypkhSRC8OByve+cIXUeQo073hPjIMmXTB2xuCCLCxcvHrFqB++p
+         IXD/SYL0hBMjsxeCf8InylU5MneXP4yvCH68Y2mM0choXIt8Al10y75oUXxKDQWpTA6z
+         mSCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787889053; x=1788493853;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x4Wo3AFVWJoN6NjZ+CjXyOXScjwk81QQP/wB9zVSLpE=;
+        b=SFA8EdeuKNpaKeNZN/3zZaMdkwNqZ2/ji3qwSCH+9o5kdS6uPEYV4IH73dl5Z8/1Wa
+         lEWwktGteGLYJTb0MxvQ7MkTuhOPKePEDy6rtb8WZ9A9HbN06Qpx/vX+lfjrLY0gB2iG
+         dgOKPIyAsY8tH+PR6lT/ktwBUaWQTfAEBiKuKl/+WB0YEMOSyF29h7vOMHCH678S5as1
+         sMiePTMnHEo6lOffDeit8XUkmKiBjhExIlH6g+qJ3YrfHRVzBoD4HpD338vnmcmUAuMp
+         pGASdPGwBOX1mcrgTUr6ThledADf/jTTYr4QzoJubWYQENXk3PIk3nRVfh/et/MbwUAz
+         gTDQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoGMl4bE1XeoHIk5lk5AxKtNiiPgchbb5rMLkuhhPicdprkdc7LNRjFehBzzllMbZQf4oTh9ix+7A==@kvack.org
+X-Gm-Message-State: AFuF++mW3qXyH84pbfNtAczZMSLlLOiieYEiSWqee6o6NWBAydq5NMCB
+	mh+lbYRktMQjcpIANSdliB+lA6vALIz0JyqwGx4j+XvW6qs/wSQgNxBF
+X-Gm-Gg: AR+sD13I0BwiikejISFcjwuhGhj/2Q9lJa/Ljmo2RCkf977wkbT7qibKohQ1zKZWUxh
+	ZMePnwqWcTtEdYE6fEhtsl3z+9Joe/8ywwQiagxFhPqjjwfJXgKuDaaQHzAGfO3tAM+0P8nyV5z
+	V7leD9UEHo+Ti6QRkG4w5qRiKjfz7X/Dkd0qb9s8J16pHZN6QUEy1oUqCOdr1s9/zZdXJ5luDTp
+	7hI+VnSCHFgYVtVK34OvqfReGB9TNIXA49rM7jiJeEYsONDt+BiffBnXQ9zuxvZQ+22o2A28N5i
+	Efa0Y6ZKLYM+AGdMnveXqyfQ3VnylvCNJ3914mIwixm+NdToSnV3TwjrT9L/nAY/87ZC6nFb8BD
+	PkkVRQvH3UkmwJzTPBG2wwZcNHWfMzW47aCsf22g7IdrHZqeZXKeQnT1LH31YMpgvS4D/UUI6Un
+	YAjh1vEtr3BkWZ2wPa0RambrABv1qH8+ZEa6xvhT2a+b0mE50XQBtrxWKNfeF1INBBFw==
+X-Received: by 2002:a17:90b:5484:b0:36b:de66:92c3 with SMTP id 98e67ed59e1d1-3969bc0223emr15330087a91.10.1787889053319;
+        Thu, 27 Aug 2026 20:50:53 -0700 (PDT)
+Received: from [127.0.0.2] ([73.222.46.22])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0e0e67dsm1659184c88.15.2026.08.27.20.50.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 20:50:52 -0700 (PDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 0/3] binfmt_misc: only let punctuation delimit a
+ register string
+From: Farid Zakaria <farid.m.zakaria@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Farid Zakaria <farid.m.zakaria@gmail.com>
+In-Reply-To: <20260826-work-binfmt_misc-delim-v1-0-43618adf8599@kernel.org>
+References: <20260826-work-binfmt_misc-delim-v1-0-43618adf8599@kernel.org>
+Date: Thu, 27 Aug 2026 20:50:28 -0700
+Message-Id: <178788902858.3236768.15019506644956689303.b4-review@b4>
+X-Mailer: b4 0.15.2
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 18357atpkr8cmdbaxzky6stjr484udg5
-X-Rspamd-Queue-Id: 4BB46140008
-X-HE-Tag: 1787888854-744235
-X-HE-Meta: U2FsdGVkX1+j6SiOJ3hG/kAsGnQFlLs1X3el2GUXLdL1/1t8SvdyRw2ytCsEttmMaOJI/VROhdrNwtdRGp72E75mvMAk4wwH0FmuewKMMKJPwG7drUTyV8uBq/cOK31VeIy172taYnjWGHTB5mPnOkiUXVQxGIEfkPGm/pm3QUCBwKKU7R97fVNbePXO9AA1GJtp2oTCysqZqW4SqK6mv5QBLZClhH4XHmkwHnguTFjCgO5pyGAYrYa4QLH8iSEQB+W5IbgP78ryFYiF3WSrKBv7EdzP56rKRUxa8vK0FZ+/UoOhtuCsyVqDjhF0UWR/YwL+hjR+ySANF6Mj3ldjyPw+XQadXQ21m8gEZORSx4Vv3MfgGdhbLcliRscvWXzSvmwdtlvZZ99/WOpapg0ByPMNqgs+ezRZ9x5upcEtuJciU4fPZgHm/vZW3PNr2cciz3sxHvend63Uxak9UdLv+6/3p8/1HTBxwTw+noZBJxcApDeMFhVCSCrH5rLIfo9nyV8CuancXv3cY9VLm3nM/7kzyqWUxg/DOuVNdI/2GLZ0xkGKziyXpPLs9CN7KZyY1+Y2RM7ANsQvXIzx+kjr1caTZDigX6XkXQ5I8WzBCSPeAmDAzJ4RVF7ANLSRMN7yy7lZnJQQ+GLQA1iHaI8yy4szjyRWHW+6MI+O7kvDUwb4zB3icuzkSiHSzj5sQ+w+uX1rmH/rdHHd9bf5dlTnvEyFRBolXuO1gHyWFPFQMGH5/wq5G6GSg7A9mgv+sEe92p5tGlyqxbCNBIxqe9Ur2THmDUHS4j4C/412z+NPuK23INDlHmU+fa5YEPv5+Q6ELq6Qfk0UxP21TyMr5QEjwytJc7BxAMA1lFwRo/DKSnEsTsp8oKFkEY4STIWJX4VktV882mBIUXAeEL/YwRlW9Qr8BRCrLOss3B/R1jySm1e1KcA9lyai9VN1YNwMossKEJ54osQz/bF314StGwa
- cnajWYyq
- hjLnHWUhIzkSMtK8ewPYFJtA3mzeWhu463MwNYmzNN7+jm2wta/h1q9h/XXcJugGo9WcgGWngPe2rStpLeO6CMLMkys8clJvPKxY0B/9MpGTdv08TnzKSPJmUXwqw8e8h/Zx8TESrDGK31kE/Um/sphB4gjfsq68aIwMbXxabucegMHMMlXThme+X/rQzfQ7IOOiySkBjHRiKb9rQZ0EciYvnFmTHA8wqwQJLdpa/C33FJJexfggBW+evXrJ5lXRSjStU6eGldggAQCWrPmPODJwyaf4tXsis6qjJvTOCqzlO9lUit0/qvA2vGidYObdbYkpGtzNuzWt9Pplm2XM/1J3d0DgpqYkXI/rEw+syeQ8+JASkOZgK2IoP7ikGvE43ykCt
+X-Stat-Signature: cf998psbrjt7z5smhtghtnahksqwfjxo
+X-Rspamd-Queue-Id: 95C0540002
+X-HE-Tag: 1787889054-817554
+X-HE-Meta: U2FsdGVkX1/GFFyXRFM0iWkhd1KNMESRu8s6trqRpyKGFwgLHpwc3lCqXsLmQt/RIiIFJIu+9Ogu0kuQZ2Ev3P+NZ/9g+aLuihwCVFGBX+DbPzm6HvbfFlbczPwBem/KKM03TjEYBvDpPVJ/eJPfiZSFMLVvNIP/A3URYpHzDioDd1IlRInBr8jX6g0RpQFVl/6RrQOt9XmlHkpf79qdHemTYVhG9bzH2pAE+CqYXKZgBEUlJqUa7dFJvIaNVN86NKBES1c3xg0axHko/sG9vaE3fOGdTQNy3E6HmliXY5DG81Ptr3u+qisduBgAE1JVUcof5GffxpLmAbESl7x8tFBqDaO2yrJws0H1ZieWqxBSEfdZxF+k74dpHxCq2buX74qXVyGbTfa0vkHF77um0npNRzHbA7Wt9yxvQxcgO9oVUFXBKiMLkIWdGujdqq5S5drcd/GSS5bKirKxrX6CjT+aNzDTi9wRB4bZiT+2McVkFGwfEvESQ6b9bC2jal4e+B2XpvOVa3laGLB5bsFsKyeQdakscDIVrmtvS4FG4HhC8rVqvsUOTYqLRF1LIJd7M26j65udq4SVTCOGx6plAVHFMTruBNHsZOv1iZWbIt4uMEMYzFnAnh2WkuPOmusB/+AEWYwgt+FdJGFEp4w6Iz9jXEjtZ5J1WC7qrE6JuosOYE1zNBLoBKoDiKCixRgS0TGvHK55CWrjfkXK5x9qgi4JituqW/TbzXpc1ExZlFTojaORe0dVnYDsDY0KJZW053UkRx3owuCqpLwBiAGP73fgxIe0u/umQgPBJJBjFusOX0UT6l4/JX9EYogWkdsm9uTJhel3sdMoQMSbidM5kP0acQbFoPKsb7KkHQvLNHStSBWQu6oOa6ox+UpzajWvKYth1vjIzhE9bHFvJ1y8PIWCf8cYkP4UMgV/KqK1XWPgDCo1MSyEJIl3rAoyAOBiGSvyFuAN2/7JrIvEJVh
+ yP7fE1+z
+ GyA4Z2GQmLE8s9DgFpvJ05MWdtf/7n2fFNYLPScDG2QkKMQG2z3RUanYxovtMCSJKebpRycDVYkFnB97lOSRid7hTEJErzjT3syGP0N33MF17NetQpWbCHznglE56O/mn5DYvroT2gkNj6WngzkH65Zy07WMCkDXd3VwRUoy4PRuqY6PBSHKEo8xtb+eCsjvHpM/GpWSwgFdzar2BCd8M4D4sHjiCR2XtCVAUpWZgxp5dnz7pEc56b/UBfqhUobhitIDM6DuiPnAB0l4NfpZI/ve+O84NkpxfAjEs3QjGZvg5TpGF4WQg6jHeUXRqHjWItwJ/+K9f5QiaD2+peeyL84xYpDKiLd8rzscto0WkWnstrbfbS3ciqETFmHOTlkwfh/ThLw0WW2tk+XUxc0pRn4Lb5V5kymNmgE6ugc6c6T5A2O3r13dl7RMct7hqxinLt8E5mbBfRbbLDQxNfhs7evf6PItVNXfmv1ecUk9y4yAG5ClA5wJ64jCYz2PgSL2X8LwPCefPhL9LblP4/af+2WCAF2mPoRw5JX4dmgtlP6kw+5Co6NFXcrh7Vw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,60 +123,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026 20:05:49 +0800 Qi Xi <xiqi2@huawei.com> wrote:
+On Wed, 26 Aug 2026 17:55:45 +0200, Christian Brauner <brauner@kernel.org> wrote:
+> [...]
+>  tools/testing/selftests/exec/Makefile            |   4 +
+>  tools/testing/selftests/exec/binfmt_misc_delim.c | 127 +++++++++++++++++++++++
+>  4 files changed, 143 insertions(+), 3 deletions(-)
+> ---
+> base-commit: 66498c75b4f8017f62d720d9b59675bdf3abce91
+> change-id: 20260810-work-binfmt_misc-delim-83f62cbcfe23
 
-> The PageCompound branch reads compound_head() without holding a reference.
-> A racing split or free can cause compound_head() to return a stale pointer,
-> and compound_nr() reads the order from that stale head, leading to
-> out-of-range shifts and making the skip distance meaningless.
-> 
-> Read the order explicitly with compound_order() and validate it is within
-> MAX_FOLIO_ORDER before shifting. Also verify the derived head_pfn against
-> the legitimate pfn: the head must not be past pfn, must be aligned to
-> nr_pages, and pfn must fall within the compound page. Bail out with
-> -EBUSY if any check fails.
-> 
-> ...
->
-> --- a/mm/page_isolation.c
-> +++ b/mm/page_isolation.c
-> @@ -418,10 +418,28 @@ static int isolate_single_pageblock(unsigned long boundary_pfn,
->  		if (PageCompound(page)) {
->  			struct page *head = compound_head(page);
->  			unsigned long head_pfn = page_to_pfn(head);
-> -			unsigned long nr_pages = compound_nr(head);
-> +			unsigned int order = compound_order(head);
-> +			unsigned long nr_pages;
-> +
-> +			/* compound_order() is racy. Cap it at MAX_FOLIO_ORDER. */
-> +			if (order > MAX_FOLIO_ORDER)
-> +				goto failed;
-> +
-> +			nr_pages = 1UL << order;
-> +
-> +			/*
-> +			 * compound_head() is also racy, so the derived head_pfn
-> +			 * needs additional checks to make sure it is valid.
-> +			 * Otherwise, just fail the check. pfn comes from
-> +			 * __first_valid_page() as a legitimate PFN, so use it to
-> +			 * check head_pfn.
-> +			 */
-> +			if (head_pfn > pfn || !IS_ALIGNED(head_pfn, nr_pages) ||
-> +			    pfn - head_pfn >= nr_pages)
-> +				goto failed;
->  
->  			if (head_pfn + nr_pages <= boundary_pfn ||
-> -			    PageHuge(page)) {
-> +			    PageHuge(head)) {
+Makes sense.
+I think it's still pretty accepting when you consider all the
+punctuation characeters even allowed :)
 
-Sashiko suggests that this PageHuge() test suffers the same issue?
-
-	https://sashiko.dev/#/patchset/20260825120549.966271-1-xiqi2@huawei.com
-
->  				pfn = head_pfn + nr_pages;
->  				continue;
->  			}
-> -- 
-> 2.33.0
-> 
+-- 
+Farid Zakaria <farid.m.zakaria@gmail.com>
 
