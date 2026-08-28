@@ -4,123 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6260C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 08:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E27C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 08:41:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACA836B0088; Fri, 28 Aug 2026 04:26:09 -0400 (EDT)
+	id 0FC836B0088; Fri, 28 Aug 2026 04:41:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2D536B008A; Fri, 28 Aug 2026 04:26:09 -0400 (EDT)
+	id 0AD496B008A; Fri, 28 Aug 2026 04:41:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F5FD6B008C; Fri, 28 Aug 2026 04:26:09 -0400 (EDT)
+	id EB7416B008C; Fri, 28 Aug 2026 04:41:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 63EE36B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:26:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D905780283
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:26:08 +0000 (UTC)
-X-FDA: 85149995616.07.ECB9B83
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 06FAE140007
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:26:06 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nH6hH2Zf;
-	spf=pass (imf23.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787905567;
-	b=4YlfUeefe0sVqgkexWU2xFCDU8mIqG/A6Q+VVuYIrnI2t9nN5PT7pF1zAKz8G2PWm73zLC
-	HIUXYa8HtVGwql56Ozpmot7d8ZWKmMJSVQguIPachELRCrii3TJNhgRwDBdZB4juK1uS2P
-	AC5CdRFhc12/3hz69ohCrN2BBQldIVA=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C084E6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:41:13 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08246160298
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:41:13 +0000 (UTC)
+X-FDA: 85150033626.03.45E6D56
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4CF9440002
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:41:11 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HyaHVJN7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of hughd@google.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787905567;
+	s=arc-20220608; t=1787906471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=57gbJ6PuWdyL+kyJ8Dp9UoiQ0ikR2cC7cGndc/5JOIA=;
-	b=UozRu66KH92VvkloJyDD0xM7cqtz4lIdfkeYwNvWyAqnXGNf0JRuizUBNKwMRmviRuO+H/
-	3aoEOikC0cwzKTkzceLu7UM9E6JHfb4lb1U1du+WjiKtows1SShkeyxV9/5IPhdAXZ7fGO
-	0y0nLnPoeOaJejIIo3ee2Q+xXC7eVsw=
+	bh=hF7W6IgkqW3BA6qKiN2sGuxt00zyQz6GHtb2s+mggXw=;
+	b=a4Y7dZcYFtkspCkKEctWlhZWC/etVcmPquZoEBBsusDvPLGkPVHbXvCJ6tBNRcBnXFBAQY
+	s6wAL6drjNiWcvTH+WBCzHux59Ox7JO9yFWqKvVBsWLhiqHs3lTjwj6CG98y3U1P/pbD3r
+	j3K9+HtaNjUdWiQ8SGnVuxzo7cRL17k=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nH6hH2Zf;
-	spf=pass (imf23.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84830c774a0so1007081b3a.1
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:26:06 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HyaHVJN7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of hughd@google.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=hughd@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787906471;
+	b=DSxtg7p2+EWJUXDbBZj6c04b5zZ6xpSgKbNVaEJwM9jSdHp/LVunmXBGzLvqupTCyfH+//
+	XlXCSvdMWhxExVdT0YWFRTbkYqHqJaE/7LyolWMjxL9EzbVzM35oJIEteZ9NH+S3sb4BPr
+	kv49ZYEUcRGAnpeibV07gyg79j6Rm4I=
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-854f9c32c76so32516387b3.0
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:41:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787905566; x=1788510366; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=57gbJ6PuWdyL+kyJ8Dp9UoiQ0ikR2cC7cGndc/5JOIA=;
-        b=nH6hH2ZfLqcIErcm9uCT3EFOGTjGn8d1ZLw+WlzPQChe4VYb6axdZi6noJFx4zyNCJ
-         oc75Caw/Scdo1aG4JHJNnVi9Cfn8RTYoP6FSDBJ2qFbc5PlM/GG1hSuYuegKlkjmY9e3
-         TKO+lbPxqK0EXgEuWVWDeEqZSUWd/Z76CVF16ydCKreYJh1yprkZ12dmv/tLg4Qlw1C1
-         T7OLYa43k8RQb7f7vuoKJoFbvatGznB8yoS34xkP7bLNqQWDUmSyO/H39y+dlv+Y91kQ
-         Xxq5bAH2+S2xVO+I2rr49bZ4JY/AQ9WC0NSJra77UDcnY/+2e2iEKEOgRtdot8whvsjn
-         9aQA==
+        d=google.com; s=20251104; t=1787906470; x=1788511270; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hF7W6IgkqW3BA6qKiN2sGuxt00zyQz6GHtb2s+mggXw=;
+        b=HyaHVJN7DP/7buIsAhoiuGjYBpJbs/md5pP4XrdHTya0TbcEEVXCzGfFOcrNnI1Pqc
+         pkOdIwZ89M3NU80b0oXgUQqSswsaKk6HWm6CvajA/4HClL4ez9VE4MwS6WXlDMbwdloz
+         TbsC05yIwhNpLRarYmCo1yJ0A3ljTEaCgGqmrkfBThsXHKW9cNzodrJ9OtMhIrQs/Zj4
+         Ut6SpOafsMS2d2Gb4MLdWLIa66x0KM809oQiC4hfxTrwhVSd5Wq8mpuMIgplcsbeofXE
+         l1EXkAT2hm0/1XgKOah7LLtzOVeLOd4N8jJtrPY4hQRiMPHSg+aIWHp2mWfmnmo58mne
+         Kf5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787905566; x=1788510366;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=57gbJ6PuWdyL+kyJ8Dp9UoiQ0ikR2cC7cGndc/5JOIA=;
-        b=Sav2ilNhkqtWWsPnrVHKU/V7+SeT2CcLPq/Kx5eCsMrBBFXw0WeUw+GmSeHyAuqqW5
-         SxUwNBFIkJ0IpNQiCs72QYvzEqsjbRVPP9e0Ma2onvnI/T5/E2qBgEesY8tTSSLIRBdH
-         yIMklHkb+R5hPdt9GjmJEkyd4FBQZaYCR1wH9LaUm+prdq5M4wDz7aMJ61QvS/YsZyPj
-         6eQerOE4haNEEzRwDB53LE0Anw+4SxYNaQ9Cf4rLYxQ4xM1EfrKQcYiPAkXg4pw88IWh
-         xu0DzGXnv9hnzHFG9MPRtSu3Dp98IUm181gP8wuzQyU0sHZ8Yr+//mZh5te3CYYqwpZv
-         e+DA==
-X-Forwarded-Encrypted: i=1; AHgh+RoShMeP/I2rx6O0p2trBtlkXlmDMtGowf35ojxjO9eq/7Dyj1UaJmR7Y+mkn49GwEr28W44/I9A0w==@kvack.org
-X-Gm-Message-State: AFuF++k0JrSId6j8wLJLkaLmMoDtCfQYExMqPOJfLLyUvA+ZfQEvsz1a
-	wXNzBy90kouD/uDvoifU1JHjEP+PFNkyfCo5IVsKrOwpp1gLrh53Ekkh
-X-Gm-Gg: AR+sD121xyyvduJKHqKTVIrAh3dODLZAZGNzj04gnORuC7UHpkKZVSPrCnCDaj3fX3E
-	9S3NE4hVX0AbeVnnYrdQ24fSYPX2+oFtOVkPOmB3GtsaNuJlfKnQ+bPWGW9sOsRXtfrVIFi6ox2
-	yYELMcX1QXBdxqr5yex2gQ3N0CjPA7OwYGmx4YuyUmSTkpYAIGbR8lL4SCFK3RxjvsFc/q6oY92
-	R3zyB1kHky1kKU+O1a9z07QA90b6geg3fXHAWrjRvGRw6FXoWmel/qbk+YaDekI/sQ/nooKqHh0
-	g/+OI9Mocc16Rr7htdVlLvqvmPg6xXMSN4a/jij4+vCCoEgC0ObYqZfSLqLZDJiaf0dXD45xpAT
-	EvTUbM019IGK6ZVx3tbQlNdstuUxtJNwKFa5C5IGCn5oWEm8YCUuna9jiKb8cnDLO5fwlHb2Fa2
-	2oH5HzRYKUp8HjxXIgBRY6Fc4huYxfmiLgex6rZBRdP9imkJWk/tJb2dbsny1glIaVBVThNjSBC
-	EPgjztTdWZ48a83UQ==
-X-Received: by 2002:a05:6a21:496:b0:3d1:c0e2:936b with SMTP id adf61e73a8af0-3d26765e5f3mr12417876637.7.1787905565243;
-        Fri, 28 Aug 2026 01:26:05 -0700 (PDT)
-Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f36dc602sm310894a12.24.2026.08.28.01.26.00
+        d=1e100.net; s=20251104; t=1787906470; x=1788511270;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hF7W6IgkqW3BA6qKiN2sGuxt00zyQz6GHtb2s+mggXw=;
+        b=O8nhyKqbVmboo0gu6WeKji5qfHxIE1B1IH8eD9LhgGFhCs+AOzgniIXHqnY9tSC1Fu
+         uZg+UoPHyQCtKzhQuTdOdrWmVYuIUakdcCc58rz0zK7wTpl2BlYDX7C5z/jg16PwhCib
+         6m99d1UrrqHbHBKaoUtSnrUcl0olOBPsr83YSH8wVpti7yJtU5WgDWV1KZE8jjOKWC5k
+         FcEl/yhQutALUA3huknM+dAI7IUiUfNXAFkNAzqTVcF52QeSbTxepQEu9MdxVdEtLO7c
+         tvvE832x4+yJBkuxh8FTYSoTlf7FDNxP4hOngeOPuXlV3iJxGr8BHacKY1+Kp8cvnl8A
+         Ty/Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqSmEKVQ6qKDGfBZFgdOlsCnizm/tr5VlGsLhKyN04y8+hZccobL6I3dcCKMtITMS3aiNqNtTd7vg==@kvack.org
+X-Gm-Message-State: AFuF++ncsflBvFfE+DBrNoxeQLazbF2nSL1Y20FfS9vZFU6MigChO+JH
+	Ke/4l5FGY/PXl9E4LTQFTO0PuCdesu8bCTUui4dnt/5WF+7lE/KCFNxwr5HelAZGVg==
+X-Gm-Gg: AR+sD13DIoI6XykdHPr+jq7/LahbAi//I4Yh2CPnMgSBeWj7VacGNC+imuu/yojw2CC
+	JN1yhKMxqTYk10IRUAJFjLxNioItBq1HF5Extmit7AcS6S+asbfD1OsryEZRb7EmxjnBgC37OVK
+	yJS1aPM+cr5STvzdK4tXv9cn9UrchYHLfn+KOqXThU6wTQ3+kzs/W9Rw3LK6M4BUWxjsaNCTck1
+	MYA7bWJrmhJDTUrO1r/ky3gk4S5kJ252KeyWJikzJlwhPdfXTDzeK0Tq0hQkeSOGKTNerD/Xvnu
+	poO4oDUvHIvVIKYsjQ5ycgpKbdULyk/uVU2JGgZZ94zhPZULkr6/X2+XHx5S5cY8Lbn6knRVgG1
+	D3ezTuI8bmeyzS508k47rXt0snnPYXd8OmJHFHoEXPQghMEYLnfSBNDxsjaZjDEC89QbkQq4QMM
+	D8qB09ekfTx+6+UMX6scoj05il+06v07VfF3JrVK4aJKY05XrVNSo5MtqodqrNlYsVgEHiAKyge
+	tJKHK8JSAm/wX39xdmZXqv33ruVrOotOGV2ScK5dizzVG4k
+X-Received: by 2002:a05:690e:4181:b0:667:8644:fb5c with SMTP id 956f58d0204a3-66e1185c3a5mr4866839d50.16.1787906469125;
+        Fri, 28 Aug 2026 01:41:09 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66e4ed15430sm508418d50.15.2026.08.28.01.41.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 01:26:04 -0700 (PDT)
-From: Kunwu Chan <kunwu.chan@gmail.com>
-X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kunwu Chan <kunwu.chan@linux.dev>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Li Xinhai <lixinhai.lxh@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+f12658786a4153df5113@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/mremap: reset unfaulted VMA page offset for MREMAP_DONTUNMAP
-Date: Fri, 28 Aug 2026 16:25:39 +0800
-Message-ID: <20260828082540.584610-1-kunwu.chan@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260826192642.980c3aba921bf20cef425591@linux-foundation.org>
-References: 
+        Fri, 28 Aug 2026 01:41:08 -0700 (PDT)
+Date: Fri, 28 Aug 2026 01:40:51 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Kiryl Shutsemau <kas@kernel.org>
+cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+    Ackerley Tng <ackerleytng@google.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Christoph Lameter <cl@gentwo.org>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
+    Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>, 
+    Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Mel Gorman <mgorman@techsingularity.net>, 
+    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
+    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Suren Baghdasaryan <surenb@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
+    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 07/25] mm/fbatch: LRU_NEXT_ACTIVATE bit to optimize
+ folio_activate()
+In-Reply-To: <apAllneItXmyjRPo@thinkstation>
+Message-ID: <7b30ca86-dca6-83b7-a632-180e35ed2a0c@google.com>
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com> <16b39f43-d91e-7b23-900e-90cec13837ff@google.com> <apAllneItXmyjRPo@thinkstation>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: a73jee4sn91t3455jhzn5dqf7wqju4mw
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4CF9440002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 06FAE140007
-X-Stat-Signature: zzz638c93xdunha5z6gamys8p4xi3yt8
-X-HE-Tag: 1787905566-210573
-X-HE-Meta: U2FsdGVkX19fWj//bu7KJ6gUAuoChA0AnBXN4pIkxta22htnNx27rjWzlyVvSVn6QrSBPd6CwvAPFcE77X7skx+YvRAn+MGC5MoqJlaVrxQ5H/fVF1VMvjOtvi+wb7LS/EtMXnU3i4phb4qkQblD0FDt4OX2X/e02b49XRK45yTtbKKqrmHNmYBpQ31nRQdzN6xFBBpxuXnKd71mj16tvUn2Vrap/4TBznfVOMISwS4YH1zwlMpxQ9u4aDrKnbhocUVRsGHjz89vb9bOBs4bI5wSeSiQHbD/KwQbsut3uF2Gy7VkT+KSqppUtoM23rdRmVgrhDc9h8UU8nPjOMcvbqr72la3aHXJaNdkKvtVMQv5OZC7WRijovESiKZXMa1mvEcaQwEUaJyKu+W5AEry56Lnd57UjjEcG18HCJlUVuTa2fXXo/2KbzYJKN6FhaVglDvH2jVfpmic/7/OFCOg3qsKG31XIGWzriJ2E6y7V01liTSfyGzz2HohV9mGdtmPl8WchuUw3qGEP7D5Le9OO1HHB/cxN63/sOFWsQ8qgfG7fNDsc56i08eWmEDItrC5bXoqVcmZrEbvyZS/VhnO2dZyiAe1FqtgFauhAifx5ivq9ACs2GTPMOaAlpRV/T11Z70GH0Ycw2Mxi+rE/6ex7hpFXUIbbngzoECu8Xw7deLbURrVDSQDdt4AOtvB+8MIfgTBaCKgWq+7HheL2uywGQWgiX7k6lA0tTA+hUWfiNl5abpz6lQitGxtSYMSbagSDNq1liHHV0NdNoPjOJwnk1a2zkGJ93JFDKjp6Ept1L2uwSuNl129CfKHQJCng/2+0zWMtOuN+SAJDCc0F3vsdP9RPPUbWhEV2reG6vhaPcSyHvbY6/2b2BzJz1v4BGfC55IWyi8oPUt7X9BfVYfpQosGzMStpFxRH6NYJg197ZfflizgPcu29r69cGrGcMK5BJhLs2cWiBxbMyumi/M
- sToa/SOC
- +cVcBtOZjl42KoF4U9Urx3MN8P9+IAAQf3C7pH/HTNB/0gaEaRrmZmlveYsrABNBeGNKEaE+bW5HcOwMcVs43eq6o19kQ0AuwU7WrcdCPYzJdtMdFG5oR24juPod7AmZJ8150cZFn8xUrn12+C9d826fDljCXVrUwuG9Nrf7BERZ3aT7ucLB3xl3NcO1CzmQDkhe9oMKlHSE8n+x9czlEJ6hS/WUR9bVAInvA0TUsa8ZnKrVI4euIr11O4Snb9O7++H5q6kXLfryv6VWB9wlFDMObx1tnQ7YCPN6TGp8g6sQ3B0pKQSqiu2yeIGdD0hg6hylTPouPSUHoOMD0e2ykyxJV6CSIj8J0NV64E3A7gpKC9sQ+pFYq/f2TBSuV47vcqebEfyYr88QkjXOLi5uxHHAOaMYJfY2T0EMf72LQsl8Q7Ses5Hx3t19dBkFC7BFQLqMOgLjLhQT3RgJLSIZX/D6w4dmIh/g1XqSz/xNFe5hQapKX3AD9lusWVFoeT9Nxn149/UACw3WR4jzAo1xJ4ikLcuJ0y8Pb+BD6JCq9jQxiaW+MWNrcRD8T8QabqwsepiyyV6Y8mKjnpuSbwlagsGPbwQ/7AGrRLQ8p/vUqTczSSUXbIrEOoShIXcD/mNPHcLFrLNj2oQUKRkTpCO9A6hrbtU8BLABci0nSVqLT3blLOuo=
+X-HE-Tag: 1787906471-718574
+X-HE-Meta: U2FsdGVkX1+D3UXT3jUTkM2tOLcOXq2io0LfM8AutB48QoMZJVwlkjdH/r8ARYwG1mU8IGTH8CqYZg5pQDCUjc6M9bbpVl92u/lcQ2wmPRVRFvsBqCbWX8+t+kiK/A8A75Vd06m5h8CQRSnVwT5a6gqQ4FrUpLBNBcRnpPntMd2V4KWwPd8k5/A+hfnYvdUfWPnO4N6ZP/Q3WwSQce7QLnehJuTt7EP+SRVnZ0mV4IzTSvWgWhbmZYcsNuHQxVTUf6AcJjmsHyedhNH1e50tHv7YweSIpwUdVkX/Bm8QQr1b1GV06ioc/U8XM6eLqQSgg1a/Ex7i7gXkXoYbH60I+K+ToMpMtYFGzxBq0GAs6L2WvetZ53heMPfNR6yZjn3r9CKvsshG/ErMjjUYwpTPv9MHdHgLoa61IVg/QYVri3z57MhwOdnRglmcAQ4ll4Q1ZmjNFNIkpyU7JoXoQ84vjjjk8eCEjo0heafFUF/JsC11dj4jxT+AKziFg6ypKo6cSoedrOjZbcNGjRJiZN7s/grPF+dj3Gb3L9gEA1zveuuDO6A5cIQyEBhgj9CCN1YtkiCjbuzUqe9z9FU00hFMstrSMNdceYvtJ2ENze1jKvtEUttTOYG+OPAa5itM0lrI0w7qqpOG2tu7/CDgrv+XX6YwC4/pt5ycRAPyr5SNAE0xK+Zmyv+uvbXvOdttSktDpblVSsRcFEzn7yZ7K+IpzqiQ/J1p7kqDqOR/SOgOzKAW1sAGl/9OFD1ULuR1O5AFR0ERsO6uZRPh67KQpBfEFLZtiNlFRt0hst4TSinxrUzJp9nr5EllFkmnuos8ppLy4Uz2zlO7zUTr/SxsVYJ/G/AIval0XKRgqgnEPJnFG1lbRt5Fde9EpAw6wT8lY1qX3cpcZ1eBMiTmg4jyGVF32KHx8UXSwx+PajJQsqlsueQ2EU3A28CuAJqwoTYHGTq9WIPes7t4L++bhZBDQwU
+ 5lyxevJ+
+ ilqLmiWpsjyom/92UAo8lxpu2nweypt66hjYkMRCwxnpREO3w1FKN0f6UcbFx+/5uK6lGsG//Tq7LyXKYLOPJNXF8ooxvOM9jMpEVsm7R++z+o8BENnNAjQ2qAE0hywk3g3mXNHtHqqvVZzN8bzVv2jMCorormUolWngOv2lfHwYedGxZQ6NtXMtyUmTlT1UW5S/kd1GkBK+40TKPHvPVqmxNxhjOknYmCpp+xmRssuHQj6mvG0zqYaQv9fGJEYv8NqT6qShDs6L2Uw3FWIFDF/3ZTufb7gjd2RHaA3YOLP657cCokWUIi1CK7dDYHvAV4o0MEO7a2O53lPHXyvTVQ5dvjAsLIkdLYRn/AfG7wTmvd8NW9XfaE41hEBkF/FkeapFkQGv0d0tUTh91gOQSnpjwbhJU9uBTRTjagQnpT9svkeJbhCpbc1w1CQkrhuNFESSvmfzpYz4ifr5AKdFKpkrJJueEO0RJymz1Jdy7TsvO6TY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,171 +143,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 26 Aug 2026 19:26:42 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-
-> On Tue, 25 Aug 2026 08:55:26 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On Thu, 27 Aug 2026, Kiryl Shutsemau wrote:
+> On Mon, Aug 24, 2026 at 07:09:34AM -0700, Hugh Dickins wrote:
+> > @@ -355,6 +356,8 @@ bool lru_add_del_folio(struct folio *folio)
+> >  	/* BUG_ON(folio_test_lru(folio)); */
+> >  	if (!(folio->lru_next & BIT(LRU_NEXT_BATCHED)))
+> >  		return false;
+> > +	if (folio->lru_next & BIT(LRU_NEXT_ACTIVATE))
+> > +		folio_set_active(folio);
+> >  	folio->lru.next = LIST_POISON1;
+> >  	/* BUG_ON(folio->lru_next & BIT(LRU_NEXT_BATCHED)); */
+> >  	return true;
 > 
-> > Uniquely an mremap() invocation using the MREMAP_DONTUNMAP flag can reset
-> > a faulted VMA into an unfaulted one.
-> > 
-> > It does so after the page tables have been moved to the copied VMA with
-> > MREMAP_DONTUNMAP leaving the old VMA in place which is naturally unfaulted
-> > as the page tables it had are no longer present.
-> > 
-> > However, in doing so, it violates the invariant that the anonymous page
-> > offset of an unfaulted VMA is vma->vm_start >> PAGE_SHIFT.
-> > 
-> > This is because a VMA may have been faulted in, mremap()'d (causing a delta
-> > between its page offset and vma->vm_start >> PAGE_SHIFT), and then
-> > mremap()'d again with MREMAP_DONTUNMAP resulting in the unfaulting.
-> > 
-> > This condition is a violation of a fundamental assumption in mm, but now
-> > also triggers an assert in assert_sane_pgoff() which explicitly checks for
-> > this condition.
-> > 
-> > Correct it by resetting the VMA's page offset at the point of completing
-> > the MREMAP_DONTUNMAP operation.
+> folio_activate()'s try_cmpxchg() can land in between two lru_next reads.
+> Logically, it is safe but I suspect KCSAN would not be happy about it.
 > 
-> Thanks.  I'll park this in mm-new until mm.git is all merged up
-> (simplifying my life..)
-> 
-> 
-> Unrelatedly, Sashiko thinks we're messing up locked_vm accounting with
-> MREMAP_DONTUNMAP on a locked VMA.
-> 	https://sashiko.dev/#/patchset/20260825-fix-mremap-dontunmap-pgoff-v1-1-39a40b2c98b3@kernel.org
-> 
-> 
+> Maybe READ_ONCE() here?
 
-Hi Andrew,
+I expect you're right, and I or someone should add that in due course.
 
-> I had Sashiko write code to demonstrate this but am too lazy to test it
-> on a current kernel.  If someone could oblige?
-> 
+But I'm not in a hurry to do so: I did run KCSAN while testing before
+posting, and amongst 770 KCSAN reports did see a few which looked
+likely to come from these changes - yes, something in lru_activate(),
+which would be the WRITE_ONCE() end of the READ_ONCE() you suggest.
 
-I tested Sashiko's reproducer on mm-new (7.2.0-rc5) and confirmed the
-locked_vm accounting issue. There is a minor typo in the reproducer:
-VMLck should be VmLck to match /proc/self/status.
+I decided it was more urgent to get on with posting the series,
+than take another pass working out where perhaps to add those:
+needs a different mindset.
 
-On the mm-new baseline, I get:
-[1] Initial VmLck:      0 kB
-[2] Post-mlock VmLck:   40 kB (+40 kB)
-[3] Post-mremap VmLck:  80 kB (+80 kB from initial)
-[4] Post-munmap source: 80 kB
-[5] Final VmLck:        40 kB
+I'll grouchily get around to agreeing to add them: but I think
+they hurt readability, and I'm surprised that KCSAN doe not object
+to almost every line I've ever written - that's what we do throughout
+the kernel, make racy unlocked choices to minimize overhead.
 
---- Result ---
-BUG DEMONSTRATED: Leaked 40 kB in mm->locked_vm counter.
-
-With Lorenzo's pgoff fix applied on top, the results are
-unchanged, so the locked_vm issue is independent of that fix.
-
-The issue is that vrm_stat_account() increments mm->locked_vm while
-the source VMA is still VM_LOCKED. With MREMAP_DONTUNMAP, the source
-VMA is left in place and dontunmap_complete() clears
-VMA_LOCKED_MASK, so the later munmap of the source VMA cannot undo
-that increment.
-
-I have prepared a separate fix which undoes this accounting in
-dontunmap_complete() before clearing VMA_LOCKED_MASK.
-
-I will send the fix separately after completing the testing.
-
-Thanks,
-KunWu
+Do you have a head for smp_mb__ barriers? I'm more anxious that
+I might be missing one or two of those.
 
 > 
-> #define _GNU_SOURCE
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <string.h>
-> #include <unistd.h>
-> #include <sys/mman.h>
-> #include <fcntl.h>
-> 
-> /* Read VMLck (in kB) from /proc/self/status */
-> static long get_vmlck_kb(void) {
->     FILE *f = fopen("/proc/self/status", "r");
->     if (!f) {
->         perror("fopen /proc/self/status");
->         return -1;
->     }
-> 
->     char line[256];
->     long vmlck = -1;
->     while (fgets(line, sizeof(line), f)) {
->         if (strncmp(line, "VMLck:", 6) == 0) {
->             sscanf(line + 6, "%ld", &vmlck);
->             break;
->         }
->     }
->     fclose(f);
->     return vmlck;
-> }
-> 
-> int main(void) {
->     size_t size = 4096 * 10; // 40 kB
->     long initial_vmlck, post_mlock, post_mremap, post_munmap;
-> 
->     initial_vmlck = get_vmlck_kb();
->     printf("[1] Initial VMLck:      %ld kB\n", initial_vmlck);
-> 
->     /* 1. Allocate initial VMA */
->     void *addr = mmap(NULL, size, PROT_READ | PROT_WRITE,
->                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->     if (addr == MAP_FAILED) {
->         perror("mmap initial");
->         return 1;
->     }
-> 
->     /* 2. Lock the VMA (increments mm->locked_vm) */
->     if (mlock(addr, size) != 0) {
->         perror("mlock");
->         return 1;
->     }
->     post_mlock = get_vmlck_kb();
->     printf("[2] Post-mlock VMLck:   %ld kB (+%ld kB)\n", 
->            post_mlock, post_mlock - initial_vmlck);
-> 
->     /* 3. mremap with MREMAP_DONTUNMAP 
->      * move_vma() increments mm->locked_vm for the destination VMA,
->      * while dontunmap_complete() clears VMA_LOCKED_MASK on source VMA
->      * without decrementing mm->locked_vm.
->      */
->     void *new_addr = mremap(addr, size, size, 
->                             MREMAP_MAYMOVE | MREMAP_DONTUNMAP, NULL);
->     if (new_addr == MAP_FAILED) {
->         perror("mremap MREMAP_DONTUNMAP");
->         return 1;
->     }
->     post_mremap = get_vmlck_kb();
->     printf("[3] Post-mremap VMLck:  %ld kB (+%ld kB from initial)\n", 
->            post_mremap, post_mremap - initial_vmlck);
-> 
->     /* 4. Unmap source VMA 
->      * Since VMA_LOCKED_BIT was cleared on source VMA, 
->      * munmap fails to decrement mm->locked_vm for this region.
->      */
->     munmap(addr, size);
->     post_munmap = get_vmlck_kb();
->     printf("[4] Post-munmap source: %ld kB\n", post_munmap);
-> 
->     /* 5. Clean up destination VMA */
->     munmap(new_addr, size);
->     long final_vmlck = get_vmlck_kb();
->     printf("[5] Final VMLck:        %ld kB\n", final_vmlck);
-> 
->     /* Evaluation */
->     printf("\n--- Result ---\n");
->     if (final_vmlck > initial_vmlck) {
->         printf("BUG DEMONSTRATED: Leaked %ld kB in mm->locked_vm counter.\n",
->                final_vmlck - initial_vmlck);
->     } else {
->         printf("NO LEAK: mm->locked_vm returned to initial state.\n");
->     }
-> 
->     return 0;
-> }
-> 
-> 
+> Other note, page_pool (pp_magic) seems to be using bit 2, but I don't
+> think there's a real conflict.
 
+Yes, again not a problem, as with bit 1.
+
+Hugh
 
