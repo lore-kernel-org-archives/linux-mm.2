@@ -4,142 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403FEC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 21:04:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1B78C61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 21:07:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1364E6B0088; Fri, 28 Aug 2026 17:04:31 -0400 (EDT)
+	id CD4BA6B008C; Fri, 28 Aug 2026 17:07:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E7F16B008A; Fri, 28 Aug 2026 17:04:31 -0400 (EDT)
+	id C5F0B6B0092; Fri, 28 Aug 2026 17:07:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F19F96B008C; Fri, 28 Aug 2026 17:04:30 -0400 (EDT)
+	id B262D6B0095; Fri, 28 Aug 2026 17:07:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C49CA6B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:04:30 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4ABEAA3C8D
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:04:30 +0000 (UTC)
-X-FDA: 85151906700.24.8C0073A
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4E9DC180009
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:04:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=egnvUQik;
-	spf=pass (imf24.hostedemail.com: domain of paul@paul-moore.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787951068;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 811156B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:07:13 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F5B412058E
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:07:13 +0000 (UTC)
+X-FDA: 85151913546.09.5FE3243
+Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 346F614000C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:07:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=avVIugsp;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of memxor@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=memxor@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787951231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6rKm+GtqXHGkU+e3cRid3cEbHk6M59ahcc5GavJOWZg=;
-	b=gjV1gA1WKwcpvbe4A3Y+2bn3K25/rwAAMp8zBFuUIv0Nzk0C05rJasnD2woW6PayZx8gJ+
-	U4iuuo7JCS4pO1/BPk3Ml9ECszy4aTf8p+gltdczT+HdSbCkoFCyTBOMytszWTx6t40sfh
-	OG+7XaI2yZ+CpD82fj2navsU7rFWtQc=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787951068;
-	b=rzByPp68jz+dU3M319RTcZ1aeyPGgd6FqO+P5K+yV8BIFSUJ60mwkCxW9IpccP8ritxgxs
-	DJlniagK9TKVrqoyy64+W29/4tNXj1kOyPu3TqCh4OWqwKh1brnEJ/5rdp+JjCe4M0Wyfv
-	HfYxCYy1NiYHnULtmRFAve2f7SC2KAs=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=egnvUQik;
-	spf=pass (imf24.hostedemail.com: domain of paul@paul-moore.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8557c3f270eso996049b3a.3
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:04:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787951067; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CgOjxxFCw5iu0cAANvJxHJlgGvE40uG61St3sEQGeWe5FlrTXXRymKKLPcXQHvA+Pz
-         R4HNW3S2Ld5r+PbIMUIKSC/PaYJUzpQfeFqYq11rxrtv5l7wKC4YwpsFU0nPPVfj9IYO
-         t3nQ6+i2tockxHk+TXTzRU26VfbpRgt1nfIWB3T2Olh5BjwqpQ75MbFEbFL1OoP9sWuI
-         ZQA0oN3Mq+Dr5w2QeZDuxYNvOmwAnIOqPXjmI3zTU59QkBkZWlP5ZDi8BvObis8DokGn
-         aivCi+bHddiakVY+jSWbbG/ZQlki28FOpGKqAM+ZXQ6NLMPxzg0MxoSfjrWgNQBHprho
-         ifig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6rKm+GtqXHGkU+e3cRid3cEbHk6M59ahcc5GavJOWZg=;
-        fh=TBJGOg9tExiLPTM3tLrArFfeORF53e7Q61JnS/oVlAw=;
-        b=RJJsRiCm32nj4wUnp9QzkcTZxvcVQ1SIR8e8E2W1kX8gvwbZpK1BKxTN3VvZofFUy9
-         rWGPgTpb72XRZRnOeLb1p9BUt2gAKZ2ZT+P+Gz+sgh0Gfm8Gr1fGraH72Hj7ll8wOFli
-         HRP2u+VerrZnHB27aRTKnw1gYAaANYgCASxclYTHJhLuWPTLMPBbrV53lHIEHmFGT42v
-         asGoEWBsBVshvryF856rpj9DOJyMuB98KRdAM6vBvE4bxi+kbcA1pZ/1lADoOIIkGBqr
-         nyn+lt8t7ieHmgWYOGBKnEOQpLNSfWEnDnofCEap6/rXS9Y9zibOphxkuRID1osqJ6NF
-         q7jg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=s+xApWHFlcAD9ScbsbJspW/eUqW4O4eLPOKcYbniiu8=;
+	b=QpPC2eFzHJjz27wShC8HiSulsUwXQIyV0dqxmxSrVl0XlgAdQbdOelKhHXlg8hAlcLt0aO
+	Mh29i/L9Rve04W6jGxgG8nzAKyyfOkFuxdNX1F6taxTt/x8d1Rxkfn3CHgIp4hSl5MHs9M
+	XaLHGd62Bratz69DYNrbsmXfy2RUckw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=avVIugsp;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of memxor@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=memxor@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787951231;
+	b=tK5xjCcS9P4nrw71xmVdDRZejd+v1xqH5sv2kdPyNzJQ6jjE+O34MmwvnJ3CsNw9aGAjoV
+	TuMFt9sLXi05Th2heTrhCox0wXwwSWNn8FyryYTv8+TOXS3PaskYw8INj8A5snBGmIpZBZ
+	gygLXr+73/CNDYHHLmv613poxadt7JA=
+Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-49b90b66fd1so3961845e9.0
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:07:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1787951067; x=1788555867; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6rKm+GtqXHGkU+e3cRid3cEbHk6M59ahcc5GavJOWZg=;
-        b=egnvUQik+aqYoxdfmerRU/Pb9wa3IM7lYvgcA9yrjc9d/+bVXd97vRRX+5MVgOxw/J
-         M0Nk4E3Rv8t+NkfG26jmR7Y44lwvd8nXyeeK7TTjbv1a3K5CNhyLDb8a1HrsBy69J4ey
-         BVHzntLCC7say2HueCAJmybmimCYKvFEbbYdfAntbckY3+QjvroAESB2VrJo6ZfIDHUO
-         24W9ShfLZMal4T6iBWDq3FzoHZYOVJ+0nccqTQvfapB4JmJKtqTZnL1S1SH7xOsCT1jb
-         NU31VqrqDx/mqZp4ZDi0xRv4v/QNfUpAxbEVGmfvNsN+EJtpg8eA02FeeTkjoanRB+9D
-         d3+Q==
+        d=gmail.com; s=20251104; t=1787951230; x=1788556030; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=s+xApWHFlcAD9ScbsbJspW/eUqW4O4eLPOKcYbniiu8=;
+        b=avVIugspncTw5iM8dl4op0FnuFs7JHttzCA/qqghej8+wkdniLlTsnCZ5D253pM0Eq
+         bvQrZK2+Pj0VmkVlUahl17fRhnyFLdZFCUBuvoICSsGYdv5ZMUn/DoPY98CTB+e8oG7q
+         xPEssHT7pxahDlylxxm1SFJmk6TAuXPHa5IqPP5JU3o3FHJtIb6/LId2MgzEfVsK3//U
+         K5nvASZFVVIQ+6NGzWqLpxoXvoW4NnKP1BBoydax+1JJbreWlYL9CFPHpF8lG551Ltdm
+         VaxRSriQcVdt55gGIPiYGYCE61dAMLYA6RUlIp/1XoXDUmDWQ+7XqE+tsPVmKVqM2gC7
+         yslA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787951067; x=1788555867;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787951230; x=1788556030;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6rKm+GtqXHGkU+e3cRid3cEbHk6M59ahcc5GavJOWZg=;
-        b=aNFUJPBDDnMC0vUiUJxzcm2QMK4PrkuMHHIf/5MnbCh6ICyfLHE8K2t4dWcdYlp2o2
-         8N0S+1FrKehIyq1o9mfEtPWVHFfMWi4+8W3iLqwOvE+1zKV3Y0Gv/KEd/eAveW7jnhhu
-         b0cU8LvNc9WK1yjOj+gTT7YzZ9Q0e7K+BGiuQ2HXSZVU5h50t/dl0/2oNGQ2nnTxoWbv
-         IgL/7lq8WdpsTgYdJP/wLmAgxf5Fix4m2d9TtIwgSDQGtueHeX8VPe46fk6+opkphokL
-         KvxmNrRPm/ngLjigy8EPa2x2NMJ5bMEDvbBYukxzoJlLzBRznBRsCrjiSQYpeu5yOZDh
-         x2FA==
-X-Forwarded-Encrypted: i=1; AHgh+RrcCGHdhaPEMGMiYs5b4mO7h165dIbA98nOlF+1BOFxP9Hk/7Ak5rt+iITi9ft2IxfE4s0uMEtX7w==@kvack.org
-X-Gm-Message-State: AFuF++mgSM12iWVFYglKDY/q4HDj3DRIICoSGF0+XWIcO12QKTZ2NTGG
-	B1kUGg/mYCHoKErHDTvqpj7YsBYyFo8ANbdD3xOmjtiQy7cS2MEKGkoKU+jxvtzl7ql29aLwdKj
-	ZRKBoxYQh92FZpscM/v8diuIWvs6a32zckMNUaYtb
-X-Gm-Gg: AR+sD137596aXjHf4Cll8KstCqbCu83NM/Z2CvoUbimXoOaDFKAsY0gqsQJf2CP7/9O
-	HJesFX+7WwGKAZ5apLd2xC1fV+bD782tgbIOyyhgIfgG2JE2Lj/67FXQ1FSThXGcHTst4L5cqL4
-	GwhBCLRS3opa9c6dsM/LGsj1VpggiNlp7y4O8r6d37AEli6hx5QR55dGwXrUG4Sh3xCYLtBYmE3
-	ksxbBYJgvH8oei7SS5w4tgxlEFR33tfwYPbgR+cQ9yDr9F/ED0w3hisiDAz9lwVmaeHQVAVG+EP
-	Rp5mtZf2ZO9n38DukkZX4PkHfksd825LLtrobM9qYj2dgQTE9JXtUgQ=
-X-Received: by 2002:a05:6a00:2d82:b0:857:73e2:9106 with SMTP id
- d2e1a72fcca58-85773e29373mr3141018b3a.22.1787951066990; Fri, 28 Aug 2026
- 14:04:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260825-selinux-pokemem-v2-2-b46bc64916d8@google.com>
- <82929c994076d95f99560ecc67f6cfce@paul-moore.com> <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
-In-Reply-To: <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 28 Aug 2026 17:04:13 -0400
-X-Gm-Features: AcwNN1XqU7CwGOxUd2wqJF7qUgFOnskAPT9XF2uIm2MO9atgOnmbTyVZNzUagTE
-Message-ID: <CAHC9VhTmRsi7mLJM0Vak=aTj+NBO6piH-9YwVX5Kwh6yGPNsHg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
-To: Jann Horn <jannh@google.com>
-Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Jeff Xu <jeffxu@google.com>, 
-	=?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+        bh=s+xApWHFlcAD9ScbsbJspW/eUqW4O4eLPOKcYbniiu8=;
+        b=Z2PEqAWt+iI1bjIKL4R549WNocZUABigIQUiLF7EWw2Jf8SBUvrZh5568WjVwvf6mS
+         mwiL0QjA1WCmyyp9VRfSrS01RhZ0tuXaXy8/avpwd5c8rUPpxBllPwLZhJ7NRxZHLoqy
+         lMfZzM8V03SyLC5sxKEIu22m0bDtw6TxS4ptablHVbbMlR5nSyyq0E9bNnsB6EAMCvGO
+         tJaWkcWBt9aePnc7STk8U5+be1MRaWd6r5cWxGyDRyeC7Rlqk5jPHRKUaVN3onXSI7iq
+         10imwr+UK+NkC6KOyBTEbfKtxVSxRG7YEWIDihCEhefZNtZZVEZcCRFTcKPEIZ+8OSar
+         mOGA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq6sRzhy8IXlswVepDRIxjLE1IrKzWDPt8J/zLwDqN67olSD8+PvM0uJCNOYAcoyEHxG2JHA1hImg==@kvack.org
+X-Gm-Message-State: AFuF++n22cWVFGa0cgpM8+wVQ2Xyd5r1aygpyeCLvgSGY1xN9m2770aM
+	Lc8kjqHzOg4oPraobot4CCA3kuohTdKZaNE14s+t6/vBxG87FqFTtRcO
+X-Gm-Gg: AR+sD120a2hlc5aSNvHTqZ9t+on+psqIV2bnSvysnPhnTUA1PArz2FrQDaVDZecyyro
+	YDwFimtMRpt/yJG30+QMH/S8K8gjAVxMG7NscKthW8mLc+s/T4hXkJkQW5+n9dudKSJ0V1LVaqu
+	OgqShEf/pJ6pXnWwVK7fz7ZdI23iTBHsfUhs86JI1PUtebAnGFi1Oc0Os63rNuxLIwe3J6c8WhO
+	G8guDfQyOPAMXCNgeFMkcDfvYz1hCjeCCWAXHqUSy3IpNSTjDu60bOpWdGWV62rMG3XdStE2hJW
+	0YJT33R6uBriuz8RJvRppl7SkyT9cNGAjxWGZbtLWEB9TWO1eu+DCoMZotTni8Z43weW0AArub6
+	eaosQ8ddbUB/dVe1dcgZCQFJaVA4VWncXOBlpgpMPpKCmlZpeL6CpTFQeD0aRWj17XQcsXzL/es
+	EMJIp0eke92GTRTEv7LaAvfbM/NXpKSNm3jR+NaMOwfCXPDzTDKD+NxzE3dQ3bd9EBpttajLrpe
+	NZn5CceyxfOsplWNOD8mcuK/WFy0B+75RDgm2OJjxg9JZc3AFDQSSgOud58WOKXZM7p409Cy3fT
+	b8wumbpSLYX9p+2d0ZxfxxTYFTqX4+WER41ECQ==
+X-Received: by 2002:a05:600c:4585:b0:499:b402:6c0 with SMTP id 5b1f17b1804b1-49b91c265d7mr138746125e9.3.1787951229566;
+        Fri, 28 Aug 2026 14:07:09 -0700 (PDT)
+Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b94dc0f57sm91854115e9.2.2026.08.28.14.07.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Aug 2026 14:07:09 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: aausaz776ihxfobuxyybxuhtjfnc4ucr
-X-Rspamd-Queue-Id: 4E9DC180009
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 28 Aug 2026 23:07:08 +0200
+Message-Id: <DL0VTAZE10HC.3R4HIC6S0U3P1@gmail.com>
+From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
+To: "Shakeel Butt" <shakeel.butt@linux.dev>, "Hui Zhu" <hui.zhu@linux.dev>
+Cc: "Roman Gushchin" <roman.gushchin@linux.dev>, "JP Kobryn"
+ <inwardvessel@gmail.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Alexei
+ Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
+ "Emil Tsalapatis" <emil@etsalapatis.com>, "Shuah Khan" <shuah@kernel.org>,
+ "Barry Song" <baohua@kernel.org>, "Geliang Tang" <geliang@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>, "Hui Zhu"
+ <zhuhui@kylinos.cn>
+Subject: Re: [PATCH bpf-next v5 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
+X-Mailer: aerc 0.21.0
+References: <cover.1787826402.git.zhuhui@kylinos.cn>
+ <5dfdc7800469eac4e9a240f2422ba65d4ef4c4ba.1787826402.git.zhuhui@kylinos.cn>
+ <apHk86Y8araBlXcq@linux.dev>
+In-Reply-To: <apHk86Y8araBlXcq@linux.dev>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 346F614000C
+X-Stat-Signature: reu8abaziohjqzxpq117xezpduksz7r8
 X-Rspam-User: 
-X-HE-Tag: 1787951068-174841
-X-HE-Meta: U2FsdGVkX18k3A1gBoyMr/Ib6W2uUG/bbP0G7yYuzp/Vett+3BvadQJc6TjDj/OKC1IxKkuYLtij9r5vITiGHMO7gGCVdn76mvxfm/4DsLOkH0J11W5vmISPyRRyDRz7YojBv9VzNkadAQZq8WQ39eq4dbIWSgcpFtbKahluUB/BF3WXY1OQn6evBah7ZXHKmDyT8T7OmcryIEwP8uH4CfzCMn6b0QG874YR5uw26AmTY8ir7f1lXMLeW5fy3vtPGDMulT6QWniv4HVQ0mcygrBVgS2NZ0YfU5SWWUY5stzuVJdKhaHhhYayvyn6ESBRulWV5nN4UnVr4FYqoFCnDbH0OIUY5W2lKmcFPqX8W8WQkXJxHa21gV+amaQL9djT73PiLSZmMHjVBXQyu2emHXelfAKaFXgKSXNzAR/NLepZG6tHTwdAL/DKRt6ngd3HYuqxiYSL6/k3VmG0vyf+uP5vzjTl0EBdYHwA7iJswk6MAteDuUYMwYXK3p9F1Jtt/Nkdcm+6BDHrcqIA0zPW5KmWpNIUdoUn6716SInpzSz3Nn8qAs7fNYEkNr3GCoZLKkP05yu3AbOhGaj5zBfFs54lQEkulLFQIG8v4eqzuAtIItfEuCbq0hVcKKLiQjoxMskeNCE0z2ZpqpF5kz4ZifyDTATKzhJUfpJBu+w9/x0bXN7FO43zZO3OSGa+ks/0TMzvc+N/t+Vc2EEyc9PBlVO0GI4ldxKFYGz1qMnaX1U5dGXdHqovx63aDQWbUewBYiDvvTWua/RGMrApnvFfMD4G9zkZIIo9oJHAOMy5KGNxYgX/K4fYlbchbKMdSkb/ZEED/odU6ihUxQBh1BaLmO8b8B/u8VlTaVL8y4FeX3tgmyUO7sDtm97mJp4vcPqZx4lVZguizB1DSvx5LwbPWq3NpurYIXsoTOBXBCIbM1PmKvwCXCgdlG3CapujdN3fNMC+Ue6w/T5O5Y1WaxX
- ZaoVYf88
- GpBu2sK+9J5I7iWCj72MFnG0wzh5sHG2ucOg8BDGzhwtpS931IKA1h+1aTNuofOKOxK+0RAjftyzlAqO2A/IpTB2NoslJEwXBgTXP/Ly6Vwz9zuoIUOHoSpWrcONs8fiqi9uItoXFcpA/cJonUXLwwYX9rxaf8KG55sPud0vhwjwtOPlshQTwd57wtovp19UTW9+baJFBXla3gUmQe/ASvERcWwOVB7QR+PWRfVg5cIbC7yLZdOxsAkhJrOsYuSnbW59MnAUoyDg+w9HBcLlgPbVG3YMSGEzRFKJeA2RzHtYZmDvx0uVR0aKgMtQilp7nwuyK/LMot7OD/GS4IKCp7svkbcAHRODSPWBZEGtOVeFmviMRlf0kTnKd6NrlLQpZ9IVey3xzvVfzz358JlonJaOcBvG+NptftLIvBeHy9gkhI7AzyhkVj4YdwY/Q2aP2Hqv1pjW1U1GoeoKEGTVWIfblo5fHYcJKVRxl
+X-HE-Tag: 1787951231-205278
+X-HE-Meta: U2FsdGVkX18QK7nKczwBrMY8+idTR+M3VJ1GQGOUGfk/gJ5F0h3NHf8Ke9vpMpP2ABPZ0/DVYNKp8GqTLr9G6q6vLSHGcsywsU13eTkkMaRWWK+wX4MK8ZpdMmufYB8IjJaBN4h8Qb/PRYor8LRWoQD4c6VE6xdZPDjcLJ98GTBm84xyI+7KXjeR8ijHrvaJcZ69cmmjXAEi1OYvQTBt5i6iAIFYFDLiWswcRM6AD11+6cDClvtbI+Vn4hUAQ+lH6xlNLkJ139X6e+RvPAqCPzA7eShO48MVgxd2VUK0uTIGrRysmubluBimwneG/EnQT0ggTy5mWCaKnJkRjI46XdfVHdmDya3KFDY9pz4yXYy+tM0GJ5iaxM19WxuNDwkY3fgOCdCbKmXe/6ESXffQlCFG+UoM5DyrjGxuGYv8gUxd19Ar5AcluDg6jZ2eKF/nTyYkmJZwp0s3AohmYJOO++rTwzSaFUVsbtNnUhglLWGuYeu8bYgJePPjNF86eVQRTl/OcxkI3uTdxq33Dd9kvKATgqPQL7FxVxaEuSVnCkMatEhvP+v3zpNNSpnybZMDnAfSfLSQ/Dyu7E+tJc4DuYkG68gCZRK79tWkd2I87Cq9UZsE4R0pFChe7KMgfitGUuJEf1t2QtdlcefAqaW7weSG9oiui+3wD216oSgGEETFcSW5A/bioGTAti4S82vrH/vqogFmdSRsS5r8eM36+D43fqcvPp67LXGPhFo1OKYw6GcCFXVCESWYDPZrfSePEqQTj0KfeYS2Ipz0wDmjVIR6sfqcFgZW+p1oeSDSHthpybGCC5mCGWSE0kWsatgsEThrkb1M80PuUsAzRZRJw0yeTJJDnoyLzmTDLIr5sBEYu9jxET6cCQ7Ib9aHnu/szgwhTywDXBcIqqHToC8TQjRm2y3JG2KKOYKgY6Rnk6tj147QtPbravYBDymChCB0Rb4Nt85AQNmYJ3spOk0
+ +ny3Ztnb
+ l2ujuy0AwTCIBmJYrryOCKiwip3NmHYhl2xXYRi/dEH/ChD7dU/zqpaFbCGQmTEk7/8vGlSshFubkRMnqsid/o5isJDZedLOgPBU+/D9G+IKaPRB12Pqhgbiwmyca/JFp83VX1f3u3UN1prSEwy5Ffum5ANWhqEDcqDr/WklIlyILqtuw9QpCezElkWY4pElTxIzAd6hJNvz9vTHty8CRMIK+nwR3Lf3AZ1wV1zO7LlfDwoMa8wohnwv/evCmz1AzdTlWrn8GKklzZj0ZexUn5aghaa19bEQqngFiINX/eLhdxG61KmpkgD+DGlrgbCr5OL3VEDrSzvVRNb365jf2HhDpywCuRgZkRYPBuc9V6NtozqHeoBmkPeNP85MoZl4ErUnnIG7vBX6csNekR6f62pUmq2h6wv6BTrnOA2XnBrckvCpm0JmlHuOMbX5dNh0/Pm6sDbRVAqr19qxFjxg7Z1BXxAUlongsOoVUlJO0IzGb9eRGtQjqx6nfsDHDKKlxAOpZNTLQ04tzZiE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,159 +134,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 9:04=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
-> On Fri, Aug 28, 2026 at 3:10=E2=80=AFAM Paul Moore <paul@paul-moore.com> =
-wrote:
-> > On Aug 25, 2026 Jann Horn <jannh@google.com> wrote:
-> > > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently h=
-ave no
-> > > good opportunity to block a process from overwriting read-only code i=
-n its
-> > > own address space through FOLL_FORCE writes via /proc/self/mem.
-> > > The security_ptrace_access_check() LSM hook is bypassed when a proces=
-s
-> > > opens /proc/self/mem because this is considered "introspection".
-> > >
-> > > This causes a hole in SELinux EXECMEM enforcement, which tries to ens=
-ure
-> > > that a process cannot create executable anonymous pages.
-> > >
-> > > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
-> > > accesses are only possible when the LSM allows ptrace() attachment; b=
-ut it
-> > > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
-> > > environments running lots of third-party code, such as Android.
-> > >
-> > > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically =
-for
-> > > such "introspective" accesses.
-> > >
-> > > Signed-off-by: Jann Horn <jannh@google.com>
-> > > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> > > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > > ---
-> > >  fs/proc/base.c                |  9 +++++++++
-> > >  include/linux/lsm_hook_defs.h |  1 +
-> > >  include/linux/security.h      |  6 ++++++
-> > >  security/security.c           | 20 ++++++++++++++++++++
-> > >  4 files changed, 36 insertions(+)
-> > >
-> > > diff --git a/fs/proc/base.c b/fs/proc/base.c
-> > > index bec6197329dc..dc6fdcb47b79 100644
-> > > --- a/fs/proc/base.c
-> > > +++ b/fs/proc/base.c
-> > > @@ -851,6 +851,11 @@ static int __mem_open(struct inode *inode, struc=
-t file *file, unsigned int mode)
-> > >  /* private_data for proc_mem_operations */
-> > >  struct mem_private {
-> > >       struct mm_struct *mm;
-> > > +     /*
-> > > +      * Was the ptrace access check on open bypassed because the ope=
-ner used
-> > > +      * the same MM (introspection)?
-> > > +      */
-> > > +     bool opened_by_owner;
-> > >  };
-> > >
-> > >  static int mem_open(struct inode *inode, struct file *file)
-> > > @@ -864,12 +869,14 @@ static int mem_open(struct inode *inode, struct=
- file *file)
-> > >       priv->mm =3D proc_mem_open(inode, PTRACE_MODE_ATTACH);
-> > >       if (IS_ERR_OR_NULL(priv->mm))
-> > >               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> > > +     priv->opened_by_owner =3D priv->mm =3D=3D current->mm;
-> > >       file->private_data =3D no_free_ptr(priv);
-> > >       return 0;
-> > >  }
-> > >
-> > >  static bool proc_mem_foll_force(struct file *file, struct mm_struct =
-*mm)
-> > >  {
-> > > +     struct mem_private *priv =3D file->private_data;
-> > >       struct task_struct *task;
-> > >       bool ptrace_active =3D false;
-> > >
-> > > @@ -886,6 +893,8 @@ static bool proc_mem_foll_force(struct file *file=
-, struct mm_struct *mm)
-> > >               }
-> > >               return ptrace_active;
-> > >       default:
-> > > +             if (priv->opened_by_owner)
-> > > +                     return security_mem_foll_force_opened_by_owner(=
-file->f_cred) =3D=3D 0;
-> > >               return true;
-> > >       }
-> > >  }
-> >
-> > First things first, we've got to shorten that hook name :)  What do you
-> > think of security_proc_mem_foll_force()?
+On Fri Aug 28, 2026 at 9:53 PM CEST, Shakeel Butt wrote:
+> On Thu, Aug 27, 2026 at 06:36:29PM +0800, Hui Zhu wrote:
+>> From: Hui Zhu <zhuhui@kylinos.cn>
+>>
+>> Add bpf_proactive_reclaim(), a sleepable kfunc which performs one
+>> proactive reclaim pass on a given memory cgroup, similar to a write
+>> to memory.reclaim but without retrying until the target is reached.
+>>
+>> The kfunc refuses to reclaim if the calling task is already in a
+>> reclaim context, as a nested reclaim would corrupt the outer reclaim
+>> state.
+>>
+>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+>> ---
+>>  mm/bpf_memcontrol.c | 46 +++++++++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 46 insertions(+)
+>>
+>> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+>> index 716df49d7647..297ff7f05042 100644
+>> --- a/mm/bpf_memcontrol.c
+>> +++ b/mm/bpf_memcontrol.c
+>> @@ -6,6 +6,7 @@
+>>   */
+>>
+>>  #include <linux/memcontrol.h>
+>> +#include <linux/swap.h>
+>>  #include <linux/bpf.h>
+>>
+>>  __bpf_kfunc_start_defs();
+>> @@ -159,6 +160,49 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct =
+mem_cgroup *memcg)
+>>  	mem_cgroup_flush_stats(memcg);
+>>  }
+>>
+>> +/*
+>> + * Reclaim must not recurse: try_to_free_mem_cgroup_pages() overwrites
+>> + * current->reclaim_state, so a nested call would corrupt the outer
+>> + * reclaim state. Reclaim windows are marked with PF_MEMALLOC;
+>> + * reclaim_state is also checked because it is installed slightly
+>> + * before PF_MEMALLOC.
+>> + */
+>> +static bool bpf_in_reclaim_context(void)
+>> +{
+>> +	return (current->flags & PF_MEMALLOC) || current->reclaim_state;
+>> +}
+>> +
+>> +/**
+>> + * bpf_proactive_reclaim - proactively reclaim memory from a memory
+>> + *                         cgroup
+>> + * @memcg: the target memory cgroup to reclaim from
+>> + * @size:  the amount of memory to reclaim, in bytes
+>> + *
+>> + * Trigger one proactive reclaim pass on @memcg, similar to a write to
+>> + * memory.reclaim, but without retrying until @size is reached.
+>> + * Must not be called with a filesystem lock held: the reclaim path
+>> + * may deadlock on it via filesystem shrinkers.
+>> + *
+>> + * Return: The amount of memory reclaimed, in bytes, or 0 if @size is
+>> + * smaller than a page or the task is already in a reclaim context.
+>> + */
+>> +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memc=
+g,
+>> +						unsigned long size)
+>> +{
+>> +	unsigned long nr_reclaimed;
+>> +
+>> +	if (size < PAGE_SIZE || unlikely(bpf_in_reclaim_context()))
+>> +		return 0;
 >
-> If we move the "opened_by_owner" part into a flag then I guess that
-> works... will do.
+> I have been thinking about this more and more and after looking at the re=
+asoning
+> behind your check current->reclaim_state and also Sashiko's comment on NO=
+IO/NOFS
+> contexts, I am more convinced that this kfunc can not be a simple sleepab=
+le
+> function. We need more than that. We need clean process context as well s=
+imilar
+> to the userspace poking memory.reclaim. Something like kthread or workque=
+ue.
 >
-> > Beyond that, we really try to avoid making LSM hook calls conditional. =
- It
-> > can limit what an LSM can enforce, it tends to be a bit more fragile, a=
-nd
-> > it adds some unnecessary work in the case where CONFIG_SECURITY is
-> > disabled.  I would suggest passing 'opened_by_owner' flag as a second
-> > parameter to the LSM hook and calling the hook unconditionally in the
-> > default switch case as a replacement for the 'return true;' statement. =
- I
-> > understand it may seem a bit odd, but we try to make the LSM interface =
-as
-> > generic as possible with respect to different models and this is one wa=
-y
+> Kumar & Andrii, is there a way to restrict a kfunc to only be called from
+> special BPF threads/workqueues? Is there some similar concept in BPF worl=
+d?
 >
-> I guess I can do that, but then the question becomes, what other modes
-> of using the LSM hook that don't currently exist in the kernel should
-> I be supporting with this? I can make this a parameter, but any LSM
-> policy that actually uses the parameter in a different way would
-> probably be buggy/inconsistent, unless other new LSM hooks are added.
 
-Possibly.  People do all sorts of things with the LSM hooks, not all
-of them relate to access control.
+Yeah, I think the concern is valid. E.g. inode_rmdir() is sleepable but wil=
+l be
+problematic here, I think. My first instinct was if bpf_in_reclaim_context(=
+) +
+nofs/noio save-restore might provide enough protection to let it be callabl=
+e
+from generic sleepable contexts, but I guess that will disable invocation o=
+f
+filesystem shrinkers unconditionally.
 
-> If your intent is to make the hook work for any /proc/$pid/mem access,
-> including when the caller is ptrace-attached, then I guess I have to
-> move around the security hook call in proc_mem_foll_force() a little
-> bit. I guess I'll do that in v3, though I really don't like trying to
-> come up with a reasonable in-kernel API contract for a scenario that
-> currently has zero users.
+So my suggestion would be to fix the context to BPF_PROG_TYPE_SYSCALL. Ther=
+e, we
+should be able to init and schedule timers which poll specific state and ar=
+ms wq
+execution etc. It then remains invocable from sleepable async contexts (wq,
+task_work) or the syscall program, all of which should be ok. Once BPF kthr=
+ead
+lands we can let it be callable from those threads as well, but that is for
+later.
 
-As I said, I don't really have a specific model/intent in mind other
-than avoiding a conditional LSM hook call.
-
-> > we do that.  It also ensures we don't have to process the 'opened_by_ow=
-ner'
-> > check in that case where the LSM is disabled.
->
-> (I don't think that's an improvement - we have to do the comparison
-> either way, but in the current version, we then use it to
-> conditionally branch to a security hook, while the v3 patch will
-> instead unconditionally call into the security hook.)
-
-If we move the opened_by_owner check into the LSMs, in the
-!CONFIG_SECURITY case we avoid the check entirely.  We try to do that
-when we can to minimize impact of the LSM when it is disabled at build
-time.
-
-> > > +static inline int security_mem_foll_force_opened_by_owner(const stru=
-ct cred *subject)
-> > > +{
-> > > +     return 0;
-> > > +}
-> >
-> > With proc_mem_foll_force() currently returning true/1 in this case,
-> > shouldn't the LSM hook return true/1 when disabled?
->
-> No, I have proc_mem_foll_force() doing:
-> "return security_mem_foll_force_opened_by_owner(file->f_cred) =3D=3D 0;"
-
-Ah, forgive me, my mind stopped reading once it hit the closing
-parenthesis!  That's not a common pattern for calling LSM hooks so my
-brain wasn't expecting that :)
-
---=20
-paul-moore.com
+> [...]
 
