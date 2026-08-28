@@ -4,173 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF154C61DC4
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 02:52:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B43BEC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:07:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4C8A6B008C; Thu, 27 Aug 2026 22:52:37 -0400 (EDT)
+	id 9A9976B0088; Thu, 27 Aug 2026 23:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFD1C6B0092; Thu, 27 Aug 2026 22:52:37 -0400 (EDT)
+	id 95AB26B008A; Thu, 27 Aug 2026 23:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC4C66B0095; Thu, 27 Aug 2026 22:52:37 -0400 (EDT)
+	id 86FF26B008C; Thu, 27 Aug 2026 23:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 791D36B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:52:37 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E51B1402D0
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:52:35 +0000 (UTC)
-X-FDA: 85149155070.05.61DA119
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011018.outbound.protection.outlook.com [52.101.57.18])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 966FBA0004
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:52:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=POIDojJo;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.57.18 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787885552;
+	by kanga.kvack.org (Postfix) with ESMTP id 66EAF6B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:07:21 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DFF241402D0
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:07:20 +0000 (UTC)
+X-FDA: 85149192240.06.902A397
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 186E2100002
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:07:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ogwjESZ5;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787886439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sp5WHoG3uEJPtKIiU5mnKIoCXY922c0kgk6eaU5h6yI=;
-	b=1lA2RBGcg4ri98s4oL8S2DDCC44a7HYs2cJ1Qqwfkn+kN/pxR8tLw0Mk1DTX9zoCPlu8OI
-	Rt5it1cUYTfl1U9Badu4zKEeYATYG6R/ONcIBcAemgGUf6xJuOBNS/gCwD5eKj+R//Zg8Q
-	qJkYgW6pdNAXpUy5AC9FVEzW2cqyZ6k=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=POIDojJo;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.57.18 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787885552;
-	b=wagq0GaGv+v/PMmhttqRpSdC8PmIHPic6QC0iRebGVNmbX/dXo5WeGpLPMvQ5gywDA058Q
-	kBzMPInqsa2ZrUrTfn7e3f6ST9pdXwim6eRaOqtA2VE1RslqdlhlrM1jT27T088fuXTJQW
-	M06fqErFseuls9FfmtqvjpNxf6ijqDo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Iw/JwfEzd33v+9/LR+JGNujLyc/VT/5ZdhBxP8cQGuWLlnwTjtReW3AKZREv6PSjkGofxy6i+uT0HiDhW7bUplxV4bWOcxtFM8cg41ICFNlKlw7UB6JrsxhGhT39vlmsFvDlkZ7fgmMVRKoS+ZpP4R8JHK+AeUTIW1IC6DEVAU07A8o1eYSjOVT01JCfL5A+MuNi2T5PmYZXyczbcLAvYCCoh5+5NFrtW14veVXB8WyNLMBYbW8v8H6JmwL65aGeXz2wFvHel0vcUyGcQgMZaAFH2XFjCa9hsMekdyj2NVNGrvN8iJRv6D/y6CX9Rir5iv+t+MTNLnJkhObM/5KSsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sp5WHoG3uEJPtKIiU5mnKIoCXY922c0kgk6eaU5h6yI=;
- b=IFS2ZEABan4w/LWjnJ4T1O3OsIgLyZck2NVNMqvuwaUghgYPZ549Lmy947wK/wjUv/dDNkGHHyMIgRNurflvjnIZjTDBx8h+w/i2U+Ihv4yQ5IinEnsUb7nGn6r0W9PxJ6qLLDzvOjXzAacE012d2iigbG89c0ZbuLFajkjFfdMX1iqRo4Fr4R8eB0q4ZT8S+xVkkf2Sd4ndq4aaF5w98AP0r6oH4ltIUazuCfCoNnSLIbdw7a2n1aUNOdIv7ilRVMLee1ODdZO2supTbkrTCkhxNE8Vur+Q3A7qX+IsGnSko5N/r0QVlKq2NwYlpBqLrTNzPbChgNQ+NDj0GqmFFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sp5WHoG3uEJPtKIiU5mnKIoCXY922c0kgk6eaU5h6yI=;
- b=POIDojJohRRrP8ScQ5zyDNoO1d5n1seMRSE8TvXAkE5lu5VQMbWm8fFTplj6kKd1uKaI65Xc6QUSdbpwjxmUUfsXxPrnXw3bfog9oHDyZ7BB9FU98xScAUwoxtaopZeTeWiZ3yBRjMYVW7bUxfuDuF6gfdEvGPi6Zjm1/ioQSEGcO3inuLlNc0iGZpus7XWO4aHGNfWrozDhwv1b5y0sgBceuWdxVlRIlYUTSyth0siA6AIS++5n1q+FezCr1FzXNwdr8/zXM9QdXObONYtEmW7eTYiqn1RNhXwp6hpZe/oCuzRv0lUWKddHbpdqHsN1SNmYfu5ao1XzSouF30icvw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by IA1PR12MB6235.namprd12.prod.outlook.com (2603:10b6:208:3e5::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Fri, 28 Aug
- 2026 02:52:27 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
- 02:52:27 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 27 Aug 2026 22:52:24 -0400
-Message-Id: <DL08J4JGJ4UK.2G92WO0NK8XU3@nvidia.com>
-Subject: Re: [PATCH] mm/huge_memory: bypass THP tuneables for huge pfnmap
- mappings
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Cedric Le Goater"
- <clg@redhat.com>, "Saravanan D" <saravanand@crusoe.ai>,
- <stable@vger.kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <liam@infradead.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts"
- <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song"
- <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama Arif"
- <usama.arif@linux.dev>, "Peter Xu" <peterx@redhat.com>, "Jason Gunthorpe"
- <jgg@ziepe.ca>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.22.0
-References: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
-In-Reply-To: <20260827-hugepfn-allowable-orders-v1-1-94819c8807c8@kernel.org>
-X-ClientProxiedBy: DS7PR07CA0022.namprd07.prod.outlook.com
- (2603:10b6:5:3af::24) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA1PR12MB6235:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56ce76a8-950d-425b-d7a9-08df04af6531
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|921020|6133799003|10067099003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	kGRu2hNMCL68oN5nH3SGhf5ixzNEo2Wl6XHZRVB/E3mMVWoU0vDtp5/6IL2KkS2XvSYnJb1Xiia64OPYsvOQgVRRgkg/RkqfX6t54pEuVlMZu+uNj3HeFgxsYkPu3bOX0R/NoAgI+Uh5h0fptgr7au+KMqdwjyGZhdQOPwEt0jPm3okLBjhRfLtCII4vEjQf7aHjaupAI6rnyItUdNqAlrmXJ7vDkHBjLMuoaWoEHCcJiFCZ6EFoa6rs+uoK7IXBXz0WoIkJ5hOxwtj4Jkyr8k7wp6izu95bAID+3nKlt2lZ+E8HjZYQVFDeOhLg2HBA4EKncT30p339f6av0Gwi2krlBaokq0Q1J7H4oSCHC5oQ8vdCdyN7HnPTGGrAmd+brNLnKTpqPhhlrkKqOvzZ8XW7IM7oyZgsCP0ODVxSRIAzE32U5MVUktbt15yxJHZYYmRTPMUFqwnQCN3OqT+w6oIZuBkSquo8353cw1KbhHZ4uWK8CrVGrDijyIY3E52O6YvwlMot/VlVbjceE4zElVByq4+WO9EdHTnGeI9qJ1vApLxCXIxagJlWlhx+Jm1LoB6WCb74Ez35w+zpKMPh/7okgkgZjfc2M0ALtuWoe2JWTBZh79QCbLyQy9i+IywEjri+tGa5C3ONza/hdiClEg8d91pnnjop+9Y2KtVyAMlBK0IjPTngMpxZNv7iIrTr2gB1KQptNKhMqchLKhJxjw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(921020)(6133799003)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MEhucnhGeTV6aEZDcGNLT2tQbmNEWGhrZjhxdDFCUWNtYWZiSHFOTTdheXFq?=
- =?utf-8?B?U0ZoRHFncXg3WmhYcTFtTnFWN3BKZGhFRDhxbHc5dENoZC9NTzB6bXpIaWFr?=
- =?utf-8?B?ek16aXRWZFpLbytXMytQd0dJazhOZWU1TGRhcGU2ejNTLzErbnplU3FyK2xj?=
- =?utf-8?B?MUpVWkhJenBzT3EyNzV2MGlsNzRrVXlVdmcrcmluUytEdERZYlhsZWQ0Vldw?=
- =?utf-8?B?LzR1TmVFVFVteW94MHcyS1JNK3p5QUhsc09hOHFKRy9vbTBkckxCeCt5VkIr?=
- =?utf-8?B?VWdsanREaGJmSDVobWFWOFMwaUdVK0c0WnlranRLS2VCSVlLMVNJSnBYdG0z?=
- =?utf-8?B?VTZJeGFmcmgweHZaUGM0QXNPR1pXNG1DMkp0UFN3UnlqVTJjYTdOTTAxdDZO?=
- =?utf-8?B?aGVZaVVYTVB2L0FaTXB4eGZ1Ty93ZWV4djZsUU13Ti9nS2lOczFsN1Arb1dD?=
- =?utf-8?B?bEpDUHExTEF4RGdEbXAyZFNvQk9QMHpuM2pobXhNVlV6TDNpVzlBbUVjNFVH?=
- =?utf-8?B?ZzFmKzVjUlN2K0k4dXJ3VFMyVWdEZ1NxWEFiRThaT0NUOW9aSDdLcUQ1Vm5v?=
- =?utf-8?B?WXF1OGJlSU1hVEF2QmJNWVg5SEUxRTlPSER6VS9SeTV3RG52YWVvdHFuRXZa?=
- =?utf-8?B?dmZFZGtWZTZUV0hhVWluQmM3U01pdU1DUE9OUjZkL3g4by80VDF5Q1NQaUw2?=
- =?utf-8?B?NTcrYm1SclpGMDZTcU4yVFllamJQMTJNUlpWTEJJNXJvMVR0NnJPWk5aL1V1?=
- =?utf-8?B?bmlWWjZOOEVNVkgxdXpuR1c0cmFpYzJtbzZZVS9TVnpyVmlZbisyWGwzU212?=
- =?utf-8?B?NHJpaHdVekU5TERUaVZaS2FEcmpsSUNwajBzS2wzeG1zWDEydXJPYldUbjNO?=
- =?utf-8?B?M1Z5NDA1L0J0ZUVjTEtpemNsL0xhTm56elZYWlFJL3dFdnR1eUh2ZmF1bkFs?=
- =?utf-8?B?UldaS2dqUktpQlNVZGJ0MFQ2RXRmSitvUnduQktVN1VpSm41c1BKUlhaYVNm?=
- =?utf-8?B?MHdkamtuNDRLL1BMTlBMV0JKWDhSMUhaM3RjUm5NUXVsODZWYVR5UHp0cXp4?=
- =?utf-8?B?QWxETDY4N0dNbXVieG1kOVYzNkdhbGNYN3U0bjVJS0ZLaHJJY2libm0zU2Z3?=
- =?utf-8?B?aEtBYTFGVzZtbFl3N0dGQy9pdFFETjZSaHoxOEFUNW5mazZxYWlPeVZPbHBT?=
- =?utf-8?B?bGhwbFhSOEpva1hSTjZsM2JvdkVJTmZTcVhKQlpqZ3VIbzd0MFl3bHFEU0lS?=
- =?utf-8?B?WG5MM3pXTEkxV1lLWk9SQVFhanBYR3hNU2JHeXFTdUlOMHBiRElVL3ZTS0Jt?=
- =?utf-8?B?aDZIVmZYMlBBOTd2OG5Ed0cxZ2FHdGQvNmpwYmV5cmlhbFZKNWVIZ012Nncy?=
- =?utf-8?B?MXZ0ZFNjcE9lak5WNURrd1hWd3UyK0x6TzFBclFPQklTT3FnRkFIL3dpR000?=
- =?utf-8?B?WmRPNndlemFjWTgrQzd2VzNpbFF6aVpydnhRMU5BMDEvdkFZc2pheTR0SzFm?=
- =?utf-8?B?NVF3TzgzV0F6Q2lwVnlvMHJCYlM1c0kzcEFaU1ZYWlBoc1pIQ2lGSE9qeVJY?=
- =?utf-8?B?YTBxOVU0cDZacUJCTFdkV244andqOXgvdEtFMm11Vi9FN1JrUVRLZVpFQ3NL?=
- =?utf-8?B?bTlFNk5EZ0RFYjBRVk9oOEh4SG9FUzVYSGRjY1NIVWptUWs5MEFBNjkzK2wy?=
- =?utf-8?B?a0NnZWk3RGlTQy83NWE5YUhmYVlxZ2YxSURvcURsM1ZsRnJIUStNZGpBdEZF?=
- =?utf-8?B?aWhIZ2wrK2cxSmZCR2tBNmQ0dzNLR3Z2NCtrUXlPTGpYaDlZeDlrOE1WT0hR?=
- =?utf-8?B?amplZi9lMTRYczlidVhMZHRJc2Z0Y3drYVh0RjVOdTAyVGtRa3ZpczQ1bEor?=
- =?utf-8?B?MXoyYnNvakg0OU81UURLWWU5aERZVHBDWENkYUZkKzBUamtMSTE4NkZqMDFs?=
- =?utf-8?B?dVB3cGFqcU51RzIxdFlSSXRKNzBIZkxUOTZkWFgrVHVNTDZvZFZzS2J4UVFu?=
- =?utf-8?B?R2w2UlVGaGlncDVlZWxRTGpnWlNIbjdZNkVyZGNTQ1hjaGM1WE83ampDS1c4?=
- =?utf-8?B?ZTI2TnN6MG5mMkxybWtlSU80Y3dHWkdtVk52Z3hyUUd2L0xtckgvcDBSWVRs?=
- =?utf-8?B?QXhqOWdRTzhEcUJYaUZubWllQTdQSjhWQngydXdXTVAvY2FiSTdzUnltRHdw?=
- =?utf-8?B?YThVdmpvcE1rVVRNcHFsK1lLZEtnYWRkOXl5ZE11Vk9tODlpSEhoUDNQSm56?=
- =?utf-8?B?STFUT2lYaFJIUDlUTE5LNDg3U2hyRW0rcHhzbXorRjk3ZEp4bmVPbm8vT2xL?=
- =?utf-8?Q?JGoW54QCX7Y+T+DGz0?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56ce76a8-950d-425b-d7a9-08df04af6531
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 02:52:27.4472
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /GNP1OTYh5B4fpjdXqVz9FOiLRTNtfLwk39NIwk88CPZ6RUTrvp92Krbj3ZmcK9R
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6235
-X-Stat-Signature: q8i8zjeqnit56kihdic9a9th8ihgnh5u
+	bh=Gt76UcTPmzHLWuOwKDbCamUsSovytLsnrvRwSJBIAoo=;
+	b=o/UNl6H4JjcbqxWpT6wpIsG5Lj5LyyJMpmO+zsqMLBzTTA0I+P5xPWqooOEFv+RC+pjLCy
+	Bz5yj/Whai2Vm4u90Cbeklmn+Ks/W/c+m8ovdBKlJENDc4XnOGJRb24UE7d4EmTPbNcp3d
+	x/vCY9b8rIuaSgoUpuADIwTwuw6LPcU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ogwjESZ5;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787886439;
+	b=DYFJhb8onuFOPy3KUlF9zSkcaIwJbHp/UE2OrFk/FA+w8/No6X6MtYV+XWQLkboYt7AyvR
+	TcTgd8PROVRyYeCVcRz13UA1mhyhvkA0v548us0tuspL//AbBBGMM2MJCg1WXRJCj0Ny/z
+	B25yph6+rEs2uIyqN2FnQNAMYCkXN6I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 217594347E;
+	Fri, 28 Aug 2026 03:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8ADF1F000E9;
+	Fri, 28 Aug 2026 03:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1787886438;
+	bh=Gt76UcTPmzHLWuOwKDbCamUsSovytLsnrvRwSJBIAoo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ogwjESZ5/FbCSjjrCLy5uiofj6a3BXR3/ZKpajdm5ZCo9aB8+asfXzXiazHR/vJcs
+	 ggzMBp1ivVxgK7aGvpICf/s7db/rIy8wvidccRF4T05SSed7qjdRnmJlI+KxOyFki7
+	 2kC+NR2EW8bFE+6fZhpAnLQZXcj8BYnklmn+9FVA=
+Date: Thu, 27 Aug 2026 20:07:16 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: chrisl@kernel.org, kasong@tencent.com, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ yosry@kernel.org, david@kernel.org, muchun.song@linux.dev,
+ shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org,
+ youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, riel@surriel.com, gourry@gourry.net,
+ haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com,
+ baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com,
+ skhan@linuxfoundation.org, kunwu.chan@linux.dev, kernel-team@meta.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH v4 00/11] Virtual Swap Space (Swap Table Edition)
+Message-Id: <20260827200716.97881447f243c4afd275144e@linux-foundation.org>
+In-Reply-To: <20260825153238.2695446-1-nphamcs@gmail.com>
+References: <20260825153238.2695446-1-nphamcs@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nyauy6m4yjjsyzza3tgy4y9gue9a9qbm
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 966FBA0004
+X-Rspamd-Queue-Id: 186E2100002
 X-Rspam-User: 
-X-HE-Tag: 1787885552-747184
-X-HE-Meta: U2FsdGVkX1/DvPIKzVrAvjV82LdYa7mTpJ2e2BiFyqxohrjKAmVno6K9QMM5daf+vq9MDe79Xq+4O8171v+8yR0hJNjhpBI671AzWVe2ZremEIiI2BDYvknbFf66Kwc6C1adLvtF+3RnA8lcY3UaGW/BDZnMhZEkH/BfUZPe9PElA9Q/qHVpKWsilfq8NytmSSHxK3nKOIjfMWUK0WmTN1VxnhM2fyjdpdm5YwJISbFBUnRcDdEV3cB4OsX4IUNEprerSj9a68xSU2uQkhx5BCktlWrsMLcoJwwrREOB/KCV+51+iZEdkCP4yqF2X+Fgi1nx8+s6FlBc2CnFdmW4TeNZY5ZEd2vJJYJCrHGoqk+CrQuWd10kU5P7qBLgYQXTVBOvGZ69Vd0ZcABafOPvNNUZgUFPW/GwayvHUQg1BJMg83nO13ZPLp4hH0ZlLpiMa9Ju9KlEdwrZF9wELTDEPTCVxFdXZcP+T0tCHu3z7o4cHQqwj+RHm+z1kWKLffx5rzF7iIBCcZ5UwhMIvt0OmWPjYTczYf6YNVr2BshoztskCTDi/Jlx7c2R4F5dFT6Zaw4hkyAedEZDyZdbN31WR7K2W1g2Eg4SXxSkfRnm0lSTwYOFs79+zT659I1oqedteeEpcFBl1g8Uxj8qUiV9/4XHWHX/YfqgBgEX/C7HDO0TM4sojsfum/Ma6Vz37AZ5klBfs413J110lDe3NWDZ6ugELqFHqzl6TJgK0pV6MBFnGpTP3X+VcY1EvhjD7tPF1dotTeGIQ7k+EAfUkZwAfe0hpOMPnuFhfx6+Wh/+AfIb0t/mDTnUl9+Tyvtlf47EksjE9ZraO0Aed8BWlkgo5GWdqLciZvnG2T7kuTCRT5Qjqqn0QvsZ6rzU+GSecrVOPLc5PkYNyK9MM+MNukwLBA47RXDdcBS06ZnMQP208pGPIxwRvBVpLlKlKQt+c3/SXbRpwAVKRjnxEm7fPpe
- tP8DAiWC
- cKL69i9NhlMjgUigWmNOQlv4jDt2AowgJQVeyd2DjmESYQ41qDSBiB2ohE6L1vNisP9UMyyvNFKSpayQhwjMz+NmjRqO1pTY1tdav333buk47saaY1feRuplMt2BT40uKMQSyn4MqjvFH8YlkgJeLBJmbiXpxgHjmzjpFNmEQtxcUQUiQK/X2X2wc4GwSzo7OflSeoyeDVIcWgfK8u5f5VIb6+HUSzM72JG4i7hRNYRNOAy2rMYSHhSBcYM3MMSs98c94IMYWtDFYGx+93tS3zp7vrsA6yhTO0J78S4mizP85u/sY+kEjimOuMEIK2mHwRdu9wt5TWVN/qejb/rHGlCg7Np2m7vfPfZ1otIwHlOCyc1d3jCCMNonGhglr7UsjlUQP+Lioxmc+ZCjngJmOy8Ci6t6UtW+xJk/UWIpBwfHkFuv1kiMo/G3Hr5yAiaWhBSBCtZAuwJofh+fhtHD8Xswk8pl4mSqEjeU/Oc6BiumAfKiEJYkyzguP5w==
+X-HE-Tag: 1787886438-788237
+X-HE-Meta: U2FsdGVkX198jvOrBatyN+lychrefw5XZoFuZGBBBDuBAkZ3+CMAd9bXt6eaDV/c6gPhaAm/172c5uPKMrj04eBqU7CVhZ6murqprnHGHvJfxas169w+F76di8khiToCfXe+N3goVR03XXnCamdGCpn8CiThJkrzr8uaZQriCXBuam517KGoqCEI46Ua3g2Q2Sk4Vr4gH8DP6+OEHuaqdEdfY9c1ypVuzqvnDNz9KCpmh70znIgpfnVx93cw32yg6xlO8D0zZCF3tIEQMcX+tqh50hIuvW8FfoP4jdXnH1qH7q4eAH2y7dGElS1PMbcSEjCYty/c6CqEv42PCEa1vgPaChJ8sVdYtaFLYLiL9uA3EIP+nKWBeKlKT9eQq1dKa0w8y2mQbsyRybJfBv+GLE8x1m1gGIB0yFbFxh5Q3xAuDSUoeb5tlMOdxsHqw+8KKgzbPiOyGSEkWsV7QiqXcYRKDr3sRAf9GTLuuIXyuWPihRSnG7Gh6Y9/Vl4vDhbCfGo7VW9yTWXV68Ao6oC8VanlnQbqdPSut8H78hFDHIziO/jQgGzVTtT6hdvWoGUGdbsawiCrAXI42wjTU9WF3yKkMj6UOwABCqvd5zFRBwQvQ8hRj8MTgwNiSk1xwE6MbP2Rk8uuTQD4+jNxVsA3xCXYvwNb1tTzUUS55G3CKciJ4i+4BZnb7UewZYgV3hxOdyL/6OEW/VANuSj4g91jD7lgYEpsBnVq98QrIYA1lRvXQGVD6F0MgGMDRwTzisvxldWS0cw7BlUDidU7i5pYA3M3bLkjb0aWsrxYNitMgNzFAfmH8mbnePhKjYeBGqja4nBSwwlGPyzHL1GNPDdX8rLrIF73KYBUdVRdoGwIjU7abqgSzfEa0JpA+yI5b+5kXHtM1jgP/zBIGpwZ+1diVs42pFWdaaAke3/mb1jMtvfTBXPXshrrzmk9IyIqijOyrboYup7JDUmHFNlMb4i
+ YxdaRkAo
+ XERGmoiGB0PHzd3s+CsDI+FDsYRnH+oCpIhXo++x4porD493CuNte0o6fEW5kQvhXmi3yQCnwhI9IwVtLpBgQswisgplzVQjlsQPh2RB0H//5un9j+tLWaQwZswGQwZzMMc5IcXwsSH/455RG2MSNLybyEJe5weHSdhnhF17B9Z4AAHGArWvAfHMhyrLhpM7NbQhWka7bNWZv5THh7Oeb14P9OBk2VHH9K0jyJpzTjghcmdiRHFg5IOjN7IFJCZM0uOizi5z3a+zZWeioNr4HJCq23CkXqR2nGKISqbiwWmHd5Z1Fg8hs37EnKVb7GkUVjwdjPQDBb+fbyEpHmQIJBOYAuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,201 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 27, 2026 at 3:55 PM EDT, Lorenzo Stoakes (ARM) wrote:
-> The sysfs THP tuneables at /sys/kernel/mm/transparent_huge_pages/ rather
-> confusingly only control the behaviour of THP in some instances.
->
-> They are not applicable to MADV_COLLAPSE operations, nor to DAX mappings.
->
-> Long-term, THP is predicated upon compaction being able to obtain large
-> folios to populate THP ranges.
->
-> However, vm_normal_folio() returns NULL for PFN map mappings, thus their
-> reference count is maintained by the driver, not core mm.
->
-> As a consequence, the folios are not subject to reclaim nor compaction, s=
-o
-> are not truly part of the THP mechanism at all.
->
-> However, since commit 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-> introduced the ability to establish huge PFN maps, they have been subject
-> to THP tuneables.
->
-> This is incorrect - if a huge PFN map is available (defined by
-> vma->vm_ops->huge_fault being non-NULL for a VMA_PFNMAP_BIT VMA), then it
-> should be mapped huge upon fault-in.
->
-> Correct this by explicitly checking for this while ensuring that smaps
-> continues to accurately report THPeligible statistics.
->
-> While here, abstract the entire file-backed THP check in
-> vma_can_map_huge_file(), with sensible separation of logic into helper
-> functions.
->
-> Note that drm_gem_shmem_mmap() and panthor_gem_mmap() establish huge PFN
-> maps of shmem folios, however they are marked unevictable in
-> drm_gem_get_pages(), and in any case would fail the reference check in
-> __remove_mapping() even if they weren't.
->
-> Failing to map huge PFN maps has resulted in significant real-world
-> performance degradation, see links for details.
->
-> Reported-by: Cedric Le Goater <clg@redhat.com>
-> Closes: https://lore.kernel.org/linux-mm/20260805055544.1568534-1-clg@red=
-hat.com/
-> Reported-by: Saravanan D <saravanand@crusoe.ai>
-> Closes: https://lore.kernel.org/linux-mm/20260821070520.25759-1-saravanan=
-d@crusoe.ai/
-> Fixes: 5dd40721f147 ("mm: allow THP orders for PFNMAPs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/huge_memory.c | 86 +++++++++++++++++++++++++++++++++++++++++---------=
-------
->  1 file changed, 64 insertions(+), 22 deletions(-)
+On Tue, 25 Aug 2026 08:32:26 -0700 Nhat Pham <nphamcs@gmail.com> wrote:
 
-I checked the code logic and find everything matches except the intended
-pfnmap check for the fix.
+> Currently, when an anon page is swapped out, a slot in a backing swap
+> device is allocated and stored in the page table entries that refer to
+> the original page. This slot is also used as the "key" to find the
+> swapped out content, as well as the index to swap data structures, such
+> as the swap cache, or the swap cgroup mapping. Tying a swap entry to its
+> backing slot in this way is performant and efficient when swap is purely
+> just disk space, and swapoff is rare.
+> 
+> However, the advent of many swap optimizations has exposed major
+> drawbacks of this design. The first problem is that we occupy a physical
+> slot in the swap space, even for pages that are NEVER expected to hit
+> the disk: pages compressed and stored in the zswap pool, zero-filled
+> pages, or pages rejected by both of these optimizations when zswap
+> writeback is disabled. This is arguably the central shortcoming of
+> zswap:
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Thanks.
 
-Some nits on the function names below, but feel free to ignore.
+I asked Gemini for a tl;dr and was told
 
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index afbb5974bd22..4bf7b670586d 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -92,7 +92,7 @@ unsigned long huge_anon_orders_madvise __read_mostly;
->  unsigned long huge_anon_orders_inherit __read_mostly;
->  static bool anon_orders_configured __initdata;
-> =20
-> -static inline bool file_thp_enabled(struct vm_area_struct *vma)
-> +static inline bool file_thp_enabled(const struct vm_area_struct *vma)
->  {
->  	struct inode *inode;
-> =20
-> @@ -118,6 +118,67 @@ static bool vma_is_special_huge(const struct vm_area=
-_struct *vma)
->  	return vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT);
->  }
-> =20
-> +static bool vma_bypass_thp_tuneables_file(const struct vm_area_struct *v=
-ma,
-> +		enum tva_type type)
-> +{
-> +	const bool has_huge_fault =3D vma->vm_ops->huge_fault;
-> +
-> +	/* MADV_COLLAPSE ignores tuneables. */
-> +	if (type =3D=3D TVA_FORCED_COLLAPSE)
-> +		return true;
-> +	/* Huge PFN mappings are uncompactable so the policy doesn't apply. */
-> +	if (vma_test(vma, VMA_PFNMAP_BIT) && has_huge_fault)
-> +		return true;
-> +	return false;
-> +}
-> +
-> +static bool vma_thp_tuneables_allow_file(vm_flags_t vm_flags)
-> +{
-> +	/* THP=3Dalways? */
-> +	if (hugepage_global_always())
-> +		return true;
-> +	/* THP=3Dmadvise and marked MADV_HUGEPAGE? */
-> +	if (hugepage_global_enabled() && (vm_flags & VM_HUGEPAGE))
-> +		return true;
-> +	return false;
-> +}
-> +
-> +static bool vma_check_thp_tuneables_file(const struct vm_area_struct *vm=
-a,
-> +		vm_flags_t vm_flags, enum tva_type type)
-> +{
-> +	return vma_bypass_thp_tuneables_file(vma, type) ||
-> +		vma_thp_tuneables_allow_file(vm_flags);
+: Introduce Virtual Swap Space (vswap) to decouple swap entry management
+: from physical disk slots by using dynamically allocated virtual
+: clusters that back swap entries on demand via zswap, zero-filled pages,
+: or physical disk.  Eliminate wasted storage space, remove the need for
+: static swapfile provisioning, and enable in-memory swap features on
+: diskless systems without degrading performance.
 
-Naming is hard, but
-1. is vma_allow_thp_tuneables_file() better? Then all three helpers are
-vma + a verb + thp_tuneables_file().
+I'll take no action at this time - let's see what the other swap
+developers make of this.
 
-2. is vma_file_ a better prefix than putting file at the end?
+Sashiko was talkative, as usual:
+	https://sashiko.dev/#/patchset/20260825153238.2695446-1-nphamcs@gmail.com
 
-
-Another idea is to put all checks in one function and just add some comment=
-s
-on bypassing ones and allowed ones.
-
-> +}
-> +
-> +static bool vma_can_map_huge_file(const struct vm_area_struct *vma,
-> +		vm_flags_t vm_flags, enum tva_type type)
-> +{
-> +	const bool has_huge_fault =3D vma->vm_ops->huge_fault;
-> +
-> +	/*
-> +	 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> +	 * were already handled in thp_vma_allowable_orders().
-> +	 */
-> +	if (!vma_check_thp_tuneables_file(vma, vm_flags, type))
-> +		return false;
-> +
-> +	switch (type) {
-> +	case TVA_PAGEFAULT:
-> +		/*
-> +		 * Trust that ->huge_fault() handlers know what they are doing
-> +		 * in fault path.
-> +		 */
-> +		return has_huge_fault;
-> +	case TVA_SMAPS:
-> +		if (has_huge_fault)
-> +			return true;
-> +		fallthrough;
-> +	default:
-> +		/* Only regular file is valid in collapse path. */
-> +		return file_thp_enabled(vma);
-> +	}
-> +}
-> +
->  unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->  					 vm_flags_t vm_flags,
->  					 enum tva_type type,
-> @@ -190,27 +251,8 @@ unsigned long __thp_vma_allowable_orders(struct vm_a=
-rea_struct *vma,
->  						   vma, vma_start_pgoff(vma), 0,
->  						   forced_collapse);
-> =20
-> -	if (!vma_is_anonymous(vma)) {
-> -		/*
-> -		 * Enforce THP collapse requirements as necessary. Anonymous vmas
-> -		 * were already handled in thp_vma_allowable_orders().
-> -		 */
-> -		if (!forced_collapse &&
-> -		    (!hugepage_global_enabled() || (!(vm_flags & VM_HUGEPAGE) &&
-> -						    !hugepage_global_always())))
-> -			return 0;
-> -
-> -		/*
-> -		 * Trust that ->huge_fault() handlers know what they are doing
-> -		 * in fault path.
-> -		 */
-> -		if (((in_pf || smaps)) && vma->vm_ops->huge_fault)
-> -			return orders;
-> -		/* Only regular file is valid in collapse path */
-> -		if (((!in_pf || smaps)) && file_thp_enabled(vma))
-> -			return orders;
-> -		return 0;
-> -	}
-> +	if (!vma_is_anonymous(vma))
-> +		return vma_can_map_huge_file(vma, vm_flags, type) ? orders : 0;
-> =20
->  	if (vma_is_temporary_stack(vma))
->  		return 0;
->
-
-The rest looks great to me. Thanks.
-
-
---=20
-Best Regards,
-Yan, Zi
+There are a few pre-existing things in among this, They look legit to
+me, from a quick read.  SWAP_USAGE_OFFLIST_BIT should use
+BITS_PER_TYPE(atomic_long_t)?
 
 
