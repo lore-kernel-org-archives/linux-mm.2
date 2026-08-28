@@ -4,143 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F11B4C61DD7
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 21:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED6CC61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 21:18:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDBA06B0092; Fri, 28 Aug 2026 17:10:58 -0400 (EDT)
+	id C4C106B0088; Fri, 28 Aug 2026 17:18:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8C546B0095; Fri, 28 Aug 2026 17:10:58 -0400 (EDT)
+	id BFDD06B008A; Fri, 28 Aug 2026 17:18:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7B9B6B0096; Fri, 28 Aug 2026 17:10:58 -0400 (EDT)
+	id AEC7A6B008C; Fri, 28 Aug 2026 17:18:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8505B6B0092
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:10:58 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DACC0140561
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:10:57 +0000 (UTC)
-X-FDA: 85151922954.11.C317B2E
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 19C06180004
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:10:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=H6q3qA6z;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 767D16B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:18:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AEB6A12058E
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:18:07 +0000 (UTC)
+X-FDA: 85151941014.28.D80BD9A
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	by imf09.hostedemail.com (Postfix) with ESMTP id ABBFA14000A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:18:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=umJtOws6;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of paul@paul-moore.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=paul@paul-moore.com
+	spf=pass (imf09.hostedemail.com: domain of stevensd@google.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=stevensd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787951885;
+	b=d7vT68lrvZ79fjY5e2QKWLkGVy3WpCfDVWrvqbOLjex0rDh8Wk7H6NHNj/Xq6neQDfCQWQ
+	qr2nDi0kdasSbULy4ARyi+O7FcLDJc8ffcqOh+ltu9TkuyN1VC3oB9GEiwamuSzmMClMAR
+	mvjRUP/0g+rD5FGV1LmNm4phhtY7Mws=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=umJtOws6;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of stevensd@google.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=stevensd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787951455;
+	s=arc-20220608; t=1787951885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tScSPJONssrRk2WXz6/33ewRDUw0skQt8yglR8/KZoI=;
-	b=SXtnqGEguYr19DPrzYGgGhMqmzfH3mXB3IRKfZmnMcGRFe2k+uoP8sF95Tg5mxkTssFrT6
-	N5Q2xjXELS5CvdxIN37ykLwH8CxGjjgEBISoIcrhQuo7Kbnetn86w1su6DXG5SamAQ1aVq
-	7gU+Q5hmJ1JjiyxAGmEzvbs4GS5KL38=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=H6q3qA6z;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf16.hostedemail.com: domain of paul@paul-moore.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=paul@paul-moore.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787951455;
-	b=D8/lOpwyFkkUa8gEC0+cOzmoBwWjrUCPwMlM3WHLlDV8QOMR+jpbwEGnnPgmc/vyAFQ8Nc
-	Hjdk8eCVVPTNTcvinjLxjI89PiP/4R5PpMHkTmPtzNzeqoPlR8aNeEncbwOh88sxiM9DIb
-	3ppATqSNn22fL2S24tkXeoqOZ4zJeYw=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2d58efc7356so16353365ad.1
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:10:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787951454; cv=none;
+	bh=Ox47LSGNLn4iYQakTpAdrm+z1IZQvt0QyHLEVX+5st8=;
+	b=SAr8okkMvLpAV6n/pakABuimNQalb7ajnGJoTSKCJ5d2/FuUv/kaClI/oXmwVuWVpTHHgN
+	Sc4IrSB/qb0pYKXLDIWHc57tBj/50kHwj3cOtlLcDS4asHaU6E1uVAw/O4GGv13vt9R5Yx
+	xdJJBKG9j3YRj4zCvRz6BgA3jYoacNs=
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so586e87.1
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:18:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787951884; cv=none;
         d=google.com; s=arc-20260327;
-        b=AgqNb6+lxit520e90D+mmUtTLpPcFC4v2Dt0CZfrR/uQv2H9L1kO94frAQ5ae6sOPw
-         +ZbLu06ZnL/A3WF6EC6Z2h8nw4uMqYZCzZ9fPAxil6T14J6T5e6FwBpYFTw01QhzyvgV
-         ouF4rNgS9TBd6vjvAIiPjm2DRXTJHUF8+GBQ8qTunxz4OFTnABVsflHXqYosSZv/rtXz
-         yR3+h2/WcFTGsrwFFhmA1M8NIofjgunh4W045GPk1MVrCvnXQHMaCe4hInqEQhgJKBDt
-         YmF6DNFIMuIvKJSmhZ5mo2Fck22d6Cf9oMzYG+KiK2k4zsfL4AtEz+4TJb+30p9uUxEO
-         d5yA==
+        b=oUM/MvNJYr2djmo5XhHCg+482OYfB3ovdt1TMtXnGvIl8HqnwHx/321x5tQ9fekPZ4
+         Af1H7PYi8xFPX3a5D/F4Xr1vFlVRV4zaZ83g1fA3weSiLSh+9p3QQyDb2n+qvlQkiNwF
+         in7dH0g5saK+/PL2C1cQeR3fppO+hVqfZG+DuqqU51hZ58ImEjuzHn757qDzVUYLwJXc
+         3yXwMvSH6/D7TPXKeEJZ/TZlNK3FllLYbyh2Sp3rTD/4JHQyW9YcDz+zeFQLlscSxbkT
+         AXUmVb+KU5/67Yc232UlQr8JxSDjbGeKVrPfykQBTb+HVF21MslBUj9UCloC6Y1ig19O
+         K1KQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=tScSPJONssrRk2WXz6/33ewRDUw0skQt8yglR8/KZoI=;
-        fh=yj2+i+ha5ptq6FbXCGu5L8Ul2S445sBip/YTAefRaH0=;
-        b=Cvw08JmTtUgKvHOKnJCQLBB9kUfNGDQ8T8BGZjDSFE7Vh60R/y8B6wEqsXukvQiodm
-         /SOHUJc8pKvPJAMdjHSKJxMowjmKajyYja3oxcNHc9rXACh7zHe7ZwPtiMBaWxddqBPX
-         CKl33R8o6j9DyiN08bOlope0JgsvCvhMXEBnlXUySQPk6LW1D3GHkvw9zt0hCqzlWICm
-         8JwTNjwGhN1TslMk+oWRQ/KHRTDczYiCh9iN9IX1Ik4hIw4q3W+mCspmRlRTKptX3uHK
-         BN+IG/ItMVahliZK1mhg/XqenGxvaO/zSThKDfw6LV1eqst47Vh3m6O5epmiUl71EovW
-         szCQ==;
+        bh=Ox47LSGNLn4iYQakTpAdrm+z1IZQvt0QyHLEVX+5st8=;
+        fh=URv6Jm4OymUrbg0Diea9Y4/a/WAW7vZNdyJ15uj60Ss=;
+        b=W6RWsoMd1CXxo20uD1zFlXJWPUuhncke9yUcq+vzf776HrH0HM56r60gXBIsNwtQfe
+         w9+qTG3fg7OEQyCJxcKPky9Z/9iv8EoMT5Z0gfi/n9M4e4GeyVgwuH9zUCuQkh98SNXP
+         Rrbwi+3wab3bj+0VlwcbEEsuB02gL96wT9VbdmgtpjmTcFESbbDP2xTa7Rky4884xK/8
+         u8ngb1cIYSHHibsO3aqFuTpo29BUbaBXBZLEBwejPJ8kYxTppe4YNB/uba/0WRDX6KUW
+         a5iiOFt35axoNFrEEk8Y+j69CwKCLaT/ylw91PqxOfkmEOydZ9DRJVIE14Td7/4fK1Dn
+         CmLQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1787951454; x=1788556254; darn=kvack.org;
+        d=google.com; s=20251104; t=1787951884; x=1788556684; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=tScSPJONssrRk2WXz6/33ewRDUw0skQt8yglR8/KZoI=;
-        b=H6q3qA6zo1mQ9PVgzLk8J/ynnUMiqWwz0mQChkfsVgwxTNppOyTCtDGpAj0gSTrvqt
-         3XJV6gPpY5fUSLnJPlys6+4EIp62LAwUT9vPqmeX0asMFhKSrgfW6tPVUgqjK5tGwTG3
-         5q8L4Sh3qZIbQIQCvlm4KfU0j89/TUV227wdwkD9/QWelQ60PCRZzD5KDfktVbGb67nq
-         pM6zwytAzt/9WDejPneJHpYRlDvdfBWYctQ117HGIKrwcwQ0miyxvV1CNvQfinouZSuY
-         S2tD2Eb2+t4NtzQ5nWQFL0SMyCkrw0VI57y/vd0dV1TDEE4qq0UWoD6pQzLPD74F/OKU
-         JEjQ==
+        bh=Ox47LSGNLn4iYQakTpAdrm+z1IZQvt0QyHLEVX+5st8=;
+        b=umJtOws6OmxFfCh0O9Jo6IZ/9GpmPcptf8uAh/RISOonmXVWE6xFZXFN6Ui/7PcUnz
+         mGD1XE1xaZkrkF2+kExctC5X4/mlOStXViDxxE3SW0PMDJd9IqGtyXVl61SRxe5ifLMT
+         cMMcwAlloV47YV1XgHrP4k77/sOvedxgBLk/KGgA72XDpd/8xWwlJdK0Si9DPnNAaL8S
+         e6TOjbU7exxv4+BVp9M1DuOayEDoPGWtEzrl5kBWesfJYuYspwzu6+6k+TfANCxNyw74
+         MOUKUxhf2DhOBoPaHMFnreIZvthYSsvZpoTVdacGQBdtmK8kK3oTzxns4K4eCX3zyf55
+         iMrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787951454; x=1788556254;
+        d=1e100.net; s=20251104; t=1787951884; x=1788556684;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tScSPJONssrRk2WXz6/33ewRDUw0skQt8yglR8/KZoI=;
-        b=DajmCR8mOt8ceTjq4mY4MpkyFtIr0mAiq5XoxlpU/v+Xo23F7XkOhcIWdtunDs+wmr
-         1qBjVgzI0BI+4YoZuJFunkPIORhxJumldnGDaw+GlHucuYDYJJd9I0jd3YNGWrEs3H8b
-         Xuzf3ZycUjCdRF7C31WTTOcOmexWfTNRiFhSgnniF44O0YP15RAE0s7walPssVIHt7WE
-         QsmkSpj8BbC5as7Ibc5DG5M4gqBiNfVei9TteSXblJjJRhgNbWuUUVWUtSGiKoVmQWJZ
-         j2R4wklwuhEBTOvImVFR+lCdrvPCzsGmbtCYbBqvLElaZBeaVa4lACC8n40Y8SiO8N+b
-         e8+g==
-X-Forwarded-Encrypted: i=1; AKwUvBx2q3zWmr9+fqGAEbomFf+KH2J7PJw5VH2XxqZ0PKcpfs7AsUZQrK8YKAG7vpyFoczaARAVnlwdHQ==@kvack.org
-X-Gm-Message-State: AFuF++l236/DcCSbAvNvG1z3QLbaYH12XNnoVhFvwf7K2qZTV5Welzf3
-	64S5p9lqtdJONJd2jeeatJlXtrK61Puee8UJ/xE1RNyEY3NybKGsmYUJrqfnSCbk+kQkb+FjW5m
-	KA6TZMsHEgy6axXNA1Z84SrphAhrq12/YgGSgZ63n
-X-Gm-Gg: AYBFou3BzvXGgX6yVBtDQ8Z0XxrGRPnEZBGHZKvLBuCyZf/WQgfzJcTH178bktDrgtK
-	cf3vY/HXszWEeOUjt6hNCUqWzQjW0UVBiwUDW4r15RiLpVasZHGrT8g9PaQgYOAoyUy3ZZyghK0
-	fVfiT3+MTa6QuYMwC3d0Tc8ePqpqWeUNPFnze2//A2/D20ks5FKvMssal37bI1vR1lW3ginMbuE
-	K6BYKigyFTzjxdfRuCFIZYOL5f0TY8c+b65zyL4BlzoIldvw9f5h/JlUZhZt6XhQPSsHXbPKoZT
-	y37PwYmiWPPZ+PqBIV+JdvWe8OxfSUGewr+tlzxuGgsWm0JQfx+M5BY=
-X-Received: by 2002:a17:903:b83:b0:2d8:d4d0:792e with SMTP id
- d9443c01a7336-2d8d4d079b2mr38565945ad.18.1787951453839; Fri, 28 Aug 2026
- 14:10:53 -0700 (PDT)
+        bh=Ox47LSGNLn4iYQakTpAdrm+z1IZQvt0QyHLEVX+5st8=;
+        b=rRFul0zQ7v61sD23VCQpT2YBLC4+9neIRxQEG1rbWJJJBwx2gKXRK4VRTehlD37f+1
+         3qGHScaco162IMkvXP9zp56dE9fMMZ3MOV9PYHT0PwA51h9jlRuimrylXJtRoQjmdo0/
+         /dSp8UAWpc9MiWfAygRhvSvUYRFdPFMW/OjYA1JzzxS97R+4vPMXr0V26dx887tHen5R
+         udHT5ZgXoxaNUbW5kyJ9lbbfpjCPHu9vwhrHEsMPb4iTulF+YLfG/rEJEGt54MsmhNmx
+         tR31GAiV/f2T2ibnOvY4Q6E7d8M0Vjn8R5OjYfFIrB8uUU0NAKJUq0NT43m2wEwyFTgP
+         R5tw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2F8UGPCmPTrBWbsJGz3Xte2CKWSzXwWQ5f+KumEhsq6Dse0BCWZrXlAsrEMy5+zEfmH2Ba1SpQQ==@kvack.org
+X-Gm-Message-State: AFuF++kw1Go0n4FL3Ulq+a7KkTE4TbjRDojk+ZLzSwDEpbrQ/jsEVr7H
+	rAGeLTkArGLSMJkyeY7lOFVVAr2bcwDjTI2UMp7YXisYK7FaUBAgAG+jLc4Q3jYu6fS4Ybul+fg
+	yLje5tSlonI/1g/EdgK2gO0cxdUcTs8Af8RiunXej
+X-Gm-Gg: AR+sD10vv/gzFVWO9/JCoUlI8hAWXADyCMRX3Brw3UfZB/6dTUHMt1rZX8sNn/T0F0y
+	o4fWLKbPigA0Xasptfcy5fG0a/H5GjjTCAevuYLOjZ3kmVcL9grVqxAFAESSFSe/J1sQP5UG8M8
+	Czh5kBRbxbLO3I00ba5fY/PCt0DOZ/gjTu2wjWT9+o+W33JEyjELqkPpNXUTps5+k2u/krtdQBf
+	NlsQLFAaK2siqyXVx6gF29Iykss6pBHi1iYYn32teP2aOxF/PgJc8QbYui3YxHttv/VOqIwReVA
+	0iBFskSsdC3Yf/Dovs7OQo2LZIbNjSuBRvpZi6HMD4c4adhzQuYKMzfNCOw1nuqn51SPOdaU20N
+	B
+X-Received: by 2002:a05:6512:1594:b0:5b2:a967:c0c9 with SMTP id
+ 2adb3069b0e04-5b5ef2283a7mr31129e87.7.1787951883225; Fri, 28 Aug 2026
+ 14:18:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260825-selinux-pokemem-v2-2-b46bc64916d8@google.com>
- <82929c994076d95f99560ecc67f6cfce@paul-moore.com> <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
- <CAG48ez2jgJHewZYK1SVccJmBa=bjoMW80SPNcbgW2XCtZaWhjg@mail.gmail.com>
-In-Reply-To: <CAG48ez2jgJHewZYK1SVccJmBa=bjoMW80SPNcbgW2XCtZaWhjg@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 28 Aug 2026 17:10:42 -0400
-X-Gm-Features: AcwNN1WNKsySMz2VwH2iqet3Ed_WMqL6Q3m5wfbte2R22sYcRFQ3wDSSX0w0dFo
-Message-ID: <CAHC9VhSHMmJn4bkRUodAnrVGTb57qZx3tL26g91jD_ocQCNLeQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
-To: Jann Horn <jannh@google.com>
-Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Jeff Xu <jeffxu@google.com>, 
-	=?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+References: <20260827232948.2520558-1-stevensd@google.com> <20260827232948.2520558-7-stevensd@google.com>
+ <20260828133620._x2XfJR_@linutronix.de>
+In-Reply-To: <20260828133620._x2XfJR_@linutronix.de>
+From: David Stevens <stevensd@google.com>
+Date: Fri, 28 Aug 2026 14:17:49 -0700
+X-Gm-Features: AcwNN1XPwhnUNeipFck3Fo-JT824naG0Joeg5blGOWBTdqacwVpK3ww48maahZk
+Message-ID: <CAOiLmNHK5Hw55omycg_EAHzi=g1iqJn1NTap1Mt98im3xTXcvA@mail.gmail.com>
+Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Clark Williams <clrkwllms@kernel.org>, suleiman@google.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 19C06180004
-X-Stat-Signature: 9qpp7titfx3m8jw79z7hfod8eeqrsi69
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: ABBFA14000A
+X-Stat-Signature: 11hnztksd98arm783jhnpzoao31dq16c
 X-Rspam-User: 
-X-HE-Tag: 1787951454-335942
-X-HE-Meta: U2FsdGVkX18A9gCJDc8+mkYc2chpDW+vUznYtugMHLYs+QARLVdXlLUlYTelYXnuMEFcitJ/ImjiIt8Te3o4HDKkiO40eRyJtERhOPIZ9/M3mEUTgGAX7fLaQv7S4WIV9HfnCXVQGTolXIPkcWnO+ozkNJXINhRSdvsfCdzvuBcLO9ddYzPiOAEXyDaV/eCvF+Ch7N2gI+gqgO+MlntBuQkyfKUwqPpizxmmpGCbJj/K8ahwYxzBuuFq4UbrZk+AQgP+01m08jaO8nzuDAGCjB6Ps+Je0RMkPDbSLQlVpFCg4MIXnuHA6SDsCyinU4Rb1O4dS9lOoJNrRxb2D5GLuDW/ScvhfOqQL3OesPzyUhtPb/gxwCwnRMQBN7pZRLWISxJ9lpG/2Ygrk2TEsQSyCqELjpWzBkhsj06E9iW+n8LYs6+xTckPpDRgE7fIxnzQmfhyvBH9y9nFV+euKu7qZINY3NVL5i+uCwM9xEX6KjDBqlT4Jh+lQFO8OIqnfrF1cNsgvS+G2jeikUinz0SMY51YrscbqcwiBr+EuK5VklNWltWTDS2nnNDQc7WkHG+lRN9GR5S2Wq3zIWCGjyEyP2OZsRlvl8ViIFdo7FgVa+uEf4GNc/U0rSOZjo1WoZCPM6uS41+FyjI6/0eAliqPLPRY7gq9TdpwKFnfYoS5E+FjHJnXY/8slQHluooLsq4+Ou/hgNBsngXLz9Q4LzdYhx2xNsQTEXQAtwEkErx8l6rBiVjfTkNPKVQlEc8z5BzyRZc4Ajz/gNeYJWyM2OsBhWrPw0a54kIgZm/PVjInpy7awLG9QeML8mtXKlQ+2H/MrKTUMZXzBY0gDDH627kWemx7i8gCyzP/N/RLoCwqyjWL3M3NCwdJWQwWhjAkDq97vYF/RRvoMNNom/CvElX2UMC3y3wPDrc2Rc1fm6s3xqZRN23/JbdfEZGESWWfCclKW29YAxIF7uf25Ez4P5I
- ay8itJQR
- 4tEaiU9lee+fqmyrw0YhD9cmNVlxPH2ovkW0iH3C9OXvb175TQdkAptL0gUnWlARfcUg9fE5QKBU0j/6rVklqjKRfuyZ6fNm/Kb3T2J/CozQuEK8UAhzFOcXbjBnYbnsxNQg4RMK7rdwuz4++N+CCpGGSy7Dh0o/t9OCR0mz/rtdJ4YeWYK4DH6Ms4II71xjSHKsG8Xt2sscES4BFN6x18zePkC4jE7djelg42UUW17HcAk9PGHuXVDjBbUstqptz3kBtXp8g+VkkacjC/C7ilg/UynINvXLL6FXKrCP5ZIsR+3KG18mmnCqiyqKcB9OJHtUfYGgE9pgBnR1WGlli8+9Yj6njRLjZVf4tnxRwSPhg779c5PuHAEkNNFvSctxMPOQey0J+8tKW9EJqmJgGh6yVGIekeXtijXbms3Q0mVKrWm9iHq4kRIYT1vWyNPBtHqqufADu7Z/4aoc=
+X-HE-Tag: 1787951885-930236
+X-HE-Meta: U2FsdGVkX18FmeM/XHisNG14kJ1Tngapwu3hOC9qJfVL1zZ0a3Lo42WULc58/xDeWldpOgWeJB+FJ01nIXlss+3uhv7b3vEK04hutLv4BMOD2O3a/+DN/tHut+3nsstn80oclcL/cbHQiYbmvre+qDyOCsWT4oN0QUiDE8KnbBitf0gJaLriVvjebjyh1TcE4FyrhnSQqpAXEmuY/OxvQ4vDELRchHirkSaKuT0ZvUmwCpZy/zftIy6ZcdIwoRqlHEuLLtZBHeJWPADSyQggMdkXSPLuINWISKJiZsuaky5YRXTibLoGTXH2BBcoBUkEMt4YCaQsRJbK8nYn0m3lKJEUwiKcXHBZOH9Vw53eeNem+avJoaPyRhEtUB6QufQckuWSV6MmYl7m6/aDAjaRwvUM69zqsPGTP6lj3xBttu6Ta67TSr+VUmHvK7zC/0iz5v3jDXLlChQZU2tFw8CHRq+casK9mhsEpOrbSbjr9AZkdDNOBsEYq29/elhtRPJBBJqluA3vCOGlinv0c3PhN4NboW7C7rS1Ziq2zUeM9fYHBCqyGB9fcNjgOhhdSaTPF6x8gpQnmy6VwV1zfTJSZFpACRsDKpbERz0xqV5zHbdg9TPjNMO91Es3cON8nESp3KXkKPEUMSxKT7eIVYNdMkIq1dkOSVhI7J6gfCxB0uFoGsSu2EQlzarZLNmxrR1AJX0lL0azeg8BY7vF5AagbApUb48A70oJHOYy3+OI9N4PTnEsv3cxkBKA6BglPUUIkhiNXYrtPAj+ECSz0oIAXIP8Ada5U2x5+RKLjL2woSGu9k1DvCDq5gzaf7MnoGD4xuQVtanQdy2wNAfFNCdgJOKf0OdxUZ/3jsR+D2hNMuEDeW5RjI97s15X2DrQODUnNhyPIo49Yoc9E8wlrJKyX4qJt4JSByD+kCCZfOYLKGY2gLXOg8voVVibPsNjAppKFld5bFFGhBV+c1wB0GA
+ eGe2S6Xh
+ 99eeOjwgum5Oh8KgexF8ny0QFP0JTpTjTZPs6n6lVlZgbEcITe6q8CRB6J9WuI6KR1z3P8vMKp/s51zYPT3ZfTfgwvoiMTFOgDDQYbRY/hho7agfsWFvw5pK7Ri4nR0UiNHr2PMEIZgASKtqwpw2MG3i+qJqzFrVYJzkTsf1RNld+H7Q0OcUVD38aErdPCJnwxeELBBMO5rJf2x0S/N8gWpPthSBoRZEsQQ2moR4NuZdKdFZV7aTPp453sl4R6gv04Y9tnF2LDiK0PS+0h/dfQw21pn3IRo/4WCIc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,65 +155,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 9:21=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
-> On Fri, Aug 28, 2026 at 3:03=E2=80=AFPM Jann Horn <jannh@google.com> wrot=
-e:
-> > On Fri, Aug 28, 2026 at 3:10=E2=80=AFAM Paul Moore <paul@paul-moore.com=
-> wrote:
-> > > Beyond that, we really try to avoid making LSM hook calls conditional=
-.  It
-> > > can limit what an LSM can enforce, it tends to be a bit more fragile,=
- and
-> > > it adds some unnecessary work in the case where CONFIG_SECURITY is
-> > > disabled.  I would suggest passing 'opened_by_owner' flag as a second
-> > > parameter to the LSM hook and calling the hook unconditionally in the
-> > > default switch case as a replacement for the 'return true;' statement=
-.  I
-> > > understand it may seem a bit odd, but we try to make the LSM interfac=
-e as
-> > > generic as possible with respect to different models and this is one =
-way
+On Fri, Aug 28, 2026 at 6:36=E2=80=AFAM Sebastian Andrzej Siewior
+<bigeasy@linutronix.de> wrote:
+>
+> On 2026-08-27 16:29:44 [-0700], David Stevens wrote:
+> > diff --git a/arch/Kconfig b/arch/Kconfig
+> > index fa7507ac8e13..adb4a5957996 100644
+> > --- a/arch/Kconfig
+> > +++ b/arch/Kconfig
+> > @@ -1534,6 +1534,24 @@ config VMAP_STACK
+> >         backing virtual mappings with real shadow memory, and KASAN_VMA=
+LLOC
+> >         must be enabled.
 > >
-> > I guess I can do that, but then the question becomes, what other modes
-> > of using the LSM hook that don't currently exist in the kernel should
-> > I be supporting with this? I can make this a parameter, but any LSM
-> > policy that actually uses the parameter in a different way would
-> > probably be buggy/inconsistent, unless other new LSM hooks are added.
-> >
-> > If your intent is to make the hook work for any /proc/$pid/mem access,
-> > including when the caller is ptrace-attached, then I guess I have to
-> > move around the security hook call in proc_mem_foll_force() a little
-> > bit. I guess I'll do that in v3, though I really don't like trying to
-> > come up with a reasonable in-kernel API contract for a scenario that
-> > currently has zero users.
+> > +config HAVE_ARCH_RECLAIMABLE_STACK
+> > +     def_bool n
+> > +
+> > +config RECLAIMABLE_STACK
+> > +     default !PREEMPT_RT && !PROC_KCORE
 >
-> I started thinking about how to implement this, and an annoying aspect
-> about this is:
+> This shouldn't default like this for RT. It either is useable or it is
+> not.
 >
-> Currently, I only have to look at the credentials of the opener of the
-> file - that is both the subject and object of the access. But if I
-> want to provide a hook that works for any /proc/$pid/mem access, and
-> want the hook to know what the object of the access is, and do it
-> race-free, then I would need to grab the creds of the target task in
-> mm_access(), bubble them up into proc_mem_open() and mem_open() (which
-> will require touching all the callers of mm_access() and
-> proc_mem_open()), store them into mem_private there, then let
-> proc_mem_foll_force() extract the creds from there. All that would be
-> unused code.
+> > +     bool "Allow stacks of some blocked threads to be reclaimed"
+> > +     depends on VMAP_STACK && !STACK_GROWSUP
+> > +     depends on HAVE_ARCH_RECLAIMABLE_STACK
+> > +     depends on !DEBUG_STACK_USAGE
+> > +     depends on !KASAN_VMALLOC # TODO: add support for this
+> > +     depends on !DEBUG_KMEMLEAK # TODO: add support for this
+> > +     help
+> > +       Enable this to allow the unused portion of kernel stacks of mos=
+t
+> > +       blocked tasks to be reclaimed.
+> > +
+> > +       The wakeup latency of tasks with reclaimed stacks may increase,
+> > +       especially while the system is under memory pressure.
 >
-> Do you think I should just not provide credentials for the target, and
-> document "if opened_by_owner is true, the subject credentials are also
-> the object credentials; if opened_by_owner is false, you don't get to
-> know what the object is"?
+> It says *may* increase and on RT it _definitely_ will increase since
+> there is a kworker involved not to mention the memory allocation itself.
 
-From my perspective there are good reasons for not making the LSM hook
-conditional (see previous emails), but I will happily admit that we
-don't have any (?) good reasons for attempting to generalize this hook
-beyond what it is at this point in time.  I would suggest documenting
-the limitations when opened_by_owner is false and leave it at that; if
-someone wants to implement something that requires more
-hooks/parameters we can always revisit this.
+You're correct that this phrasing is wrong. A more accurate way to say
+it might be: "Under memory pressure, tasks that are not scheduled for
+extended periods may have their stacks reclaimed. Such tasks will
+experience increased wakeup latency."
 
---=20
-paul-moore.com
+> Anyway. This either needs to stay away from PREEMPT_RT or find a way to
+> exclude at the very least mlock()ed tasks.
+
+Disabling kernel stack reclaim for mlockall() tasks definitely makes sense.
+
+> Did lockdep see this?
+
+What are you referring to by "this"? I did stress testing with lockdep
+enabled and didn't see any errors, although I will admit the bulk of
+that stress testing was !PREEMPT_RT.
+
+> If I understood the whole exercise correct then you have a kernel stack
+> of two pages and in best case you can unmap and release the second page
+> while the task is napping.
+>
+> What might be a tad simpler is to memset(,0,) the remaining part of the
+> stack. Since the stack is vmap-ed it should be swapped out on its own
+> without additional tricks. That memset() would help zram to compress
+> better so it uses less memory. ta-da.
+>
+> What also should be simpler (and I am not saying just to move you away
+> from the scheduler) is to have a shrinker which iterates over all tasks
+> which are marked for reclaim and then similar to swap just unmap both
+> stack pages and release the second page which is not used.
+> Upon wake up the task should create a page_fault which would be used to
+> allocate the second stack page and map the whole stack again.
+>
+> This sounds simpler.
+
+There is no swap for kernel memory, only user memory. I did contribute
+to some previous work that aimed to only only prepopulate one page of
+each kernel stack and then to dynamically fault in further pages as
+needed [1], but handling that architecturally and guaranteeing that
+memory is available when needed is difficult. Full-on swap to zram
+within the kernel would complicate pre-allocating pages for kernel
+stack faults further, since you could start getting inter-thread
+kernel stack faults due to blocked tasks putting pointers to their
+stacks into waitqueues and similar structures.
+
+[1] https://lore.kernel.org/linux-mm/20260424191456.2679717-1-stevensd@goog=
+le.com/#r
 
