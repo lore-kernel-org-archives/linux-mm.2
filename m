@@ -4,102 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85114C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 05:34:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3A20C61DCD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 05:37:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C8DE6B00A0; Fri, 28 Aug 2026 01:34:20 -0400 (EDT)
+	id 809166B008A; Fri, 28 Aug 2026 01:37:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67A6B6B00A1; Fri, 28 Aug 2026 01:34:20 -0400 (EDT)
+	id 7926C6B008C; Fri, 28 Aug 2026 01:37:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58FF06B00A2; Fri, 28 Aug 2026 01:34:20 -0400 (EDT)
+	id 6330A6B0092; Fri, 28 Aug 2026 01:37:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DD396B00A0
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:34:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96003C0396
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:34:19 +0000 (UTC)
-X-FDA: 85149562638.02.E124BC8
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0BF64100002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:34:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="f+sF+z/J";
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787895257;
-	b=iG3hgjUkoyHrpE6T3+oGwwx06cBqseYVnJi3oh9Bhd+1W+cN9XkjH2MWuHHTAUnaAPl71L
-	brS71GykMVO9hLrcabexmZMd26qXIfRmErdhtWFFWE3iWKqLpe5VMTJzcZqMd4/YjkHA2z
-	eOGrmsVy0LgH4A/lVO/ZLOhSXTYyThI=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 387AB6B008A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:37:31 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 629D71A0391
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:37:30 +0000 (UTC)
+X-FDA: 85149570660.18.A67BF9A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A10F2180006
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:37:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQ3yEnvm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787895257;
+	s=arc-20220608; t=1787895448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fNxA61xg/sFWixfr/AGYMYFeaFjndZ7uXYyULbKtlao=;
-	b=qZ2y3vIwBkQeOonSv5oKJIVEUiSygjHc7r32QQsd0vYOs/1t+MY8U2LuCruj8FQJ/NIBVP
-	dcgCQHiqeRYuGlPg/arAQZ3GQO4k7d7/qERI57r6q0742zh+qY87ArHSFooUgMNID2G/dU
-	AbOTd1JTjD8ZixDZ0JIysM30HqNEjKg=
+	bh=H/VifZxkJSk1k+3aE/imUllFCc9JvxhQtddtCwuwgbg=;
+	b=58m9r5sPdCr44kzFF8Gos6Fa6z+EjkavVTn+hpEdh899xGoJXH2Kj0CBUooK7pGP5rYtVj
+	WH+hr6HENv/HHKgL4WY1wGAXU6B8/3sVLwcu8UeGsjtB/E2/jXVzy95DaNYI+gwIMy+CoX
+	N8+YGoQpcHudejMmP/BlznmgQAeUWcA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="f+sF+z/J";
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787895257; x=1819431257;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L12kByngmxm0+XcLwhdT9GBJpdEOxar0JOOmR9A9qck=;
-  b=f+sF+z/J6Lbu0TjniittfTdTkUiOPRc7V8CsunZGYJtLgrW2+UJLrTj9
-   bPXfjY/ceXVq21q49u7ocGkznr8gPHVeWknyNzVuc5x+HDGbhiOlT0pS0
-   KFaK9aFBBpFqLPQ+TRaWAS45sv4596qCXzkChtC0xoUA+jr2dH0BwS8gC
-   bnRHtc4LTkOSq6gmr/9QTyYRk86o/PyB5MPsH3R5SaqbFO7kDVakGFEka
-   i0P1DvhzOuU7Azobo61Sx5sJQSwX2BQWqGbcMPdRp15Pjd5mVN4wxdRJW
-   6qh3K1euNvOMZe5p4InmEc0b5YEgP86pnAj/VI4GttrUaC4WEO8xaLS8m
-   A==;
-X-CSE-ConnectionGUID: WLxyI9k1Q3e1y3+KaaH9pQ==
-X-CSE-MsgGUID: pISc6vXiRPCqjt0o9zfeew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="88525466"
-X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
-   d="scan'208";a="88525466"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 22:34:16 -0700
-X-CSE-ConnectionGUID: 2JOw/X5sR7qW4b71mX5Ntg==
-X-CSE-MsgGUID: mIi6lFz/Rs6jYJK3+8P47g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
-   d="scan'208";a="270025508"
-Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 27 Aug 2026 22:34:14 -0700
-Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wzpEB-00000000AST-1pk6;
-	Fri, 28 Aug 2026 05:34:11 +0000
-Date: Fri, 28 Aug 2026 13:33:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zenghui Yu <zenghui.yu@linux.dev>, damon@lists.linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, sj@kernel.org, akpm@linux-foundation.org,
-	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-Subject: Re: [PATCH] mm/damon/core: remove declaration of kdamond_fn()
-Message-ID: <202608281351.Hv386MvO-lkp@intel.com>
-References: <20260827163953.83520-1-zenghui.yu@linux.dev>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQ3yEnvm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787895448;
+	b=7CKdYQgjnDq7VwOcV3p+d6ffGEP4TQQvc7eRz9SmUzryQA+p7D7qkJLuqJIEsqj6mY42ZQ
+	iZFFzjAzMvKWyScf3NVCaLACrALsto/zcMBlRvWjDyfG3QSxe4zVp/MnmdBf1AjYF1Xw/6
+	T8ShgRq+SnAUl2zbQW97KhzhTyoP4yQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6774B602A8
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:37:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4591F00ACF
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787895447;
+	bh=H/VifZxkJSk1k+3aE/imUllFCc9JvxhQtddtCwuwgbg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RQ3yEnvmddp8nb+1nMK2sB0pqv1JFKKfCfibJ5P+kia6a6V3i6Zgtx/PwPnLBbs1q
+	 EgMQasl/9ouFhJgteF2mA1DQhRvaZvFK12CA3B7oIrjcZa64LTOMpfLd7tEIgYBGTe
+	 9FAeEy4xpwYLO9iLaxpT9lsv/ztMDT4eorH/z6xC5eve0LX50Kr2/1YFcvUK+8dy+E
+	 cfdrFvF/zdsm6XfCdDFoUZaS8TDTWlHQ8kRGTYf9LrAbXyyHKHB1EIqiWKgzo1soiA
+	 TuxKTrT3ImCZ2Ggwqzq90JZhbRw83LB/VqV5uD+OJd4RdZ6LyHPzstNbzy6LriHMKl
+	 xZX/ja4pehXJw==
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-90ce3971a86so1710946d6.0
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:37:27 -0700 (PDT)
+X-Gm-Message-State: AFuF++nv6BjT8LQ5H7PJWQ24CvZeLgcZiXptLCcOSm9o3PxnfEH7wjzR
+	IVCuLY6HOc52Jzyr33xV+XVLJSBLn+Dg9x/k0svYcXHxqxqSTRBw65wHya7K4B7V4e3Mt3Nuhqf
+	V9XXGqbytuLNCYxTN8WQZ+1hJYrhG85M=
+X-Received: by 2002:a05:6214:5b0f:b0:90c:5947:7e60 with SMTP id
+ 6a1803df08f44-90ce0c3d7bemr67500216d6.4.1787895446368; Thu, 27 Aug 2026
+ 22:37:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260827163953.83520-1-zenghui.yu@linux.dev>
+References: <20260824073806.629593-1-hebaoquan@kylinos.cn> <20260824073806.629593-2-hebaoquan@kylinos.cn>
+In-Reply-To: <20260824073806.629593-2-hebaoquan@kylinos.cn>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 28 Aug 2026 13:37:15 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y-aAhfYEEroOD0=hromLZA63CYw6OegN9tgYBswD20cA@mail.gmail.com>
+X-Gm-Features: AcwNN1VuYRowG3GmuIFFw_UGh3tRxLgNLrdlpD6S5c_QZxAVgl9KzWVuJNQ_sHc
+Message-ID: <CAGsJ_4y-aAhfYEEroOD0=hromLZA63CYw6OegN9tgYBswD20cA@mail.gmail.com>
+Subject: Re: [PATCH 1/9] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+To: Baoquan He <hebaoquan@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org, 
+	rostedt@goodmis.org, mhiramat@kernel.org, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, baolin.wang@linux.alibaba.com, 
+	hannes@cmpxchg.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A10F2180006
+X-Stat-Signature: bpxbgxk39oy8m54ggj1qzqdjyuw5izwj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0BF64100002
-X-Stat-Signature: xzk883t17cdd4awjsk3djpfixknifko9
-X-HE-Tag: 1787895256-892472
-X-HE-Meta: U2FsdGVkX1/MueMAipJgBEKCYaoRPzeB0T5ZTzek7cWcXm2muC1d6qXUUEiOFSG3oV2huuXvOXLlm7Sv3AvF00dvQRb1Uiruaz1+WG3h+rQFFmINGeVLU3CCsqQEY42g/hpsST4VU148Rssb9cZt0ESNfMAdgwDK2A4YW7EejaQ9+s5jWPregnv3dJUsAe5Jx0psSwnqMRvffXtZV85U2DT/9l0EUR0eCWESmLRAg/Gnktox0Jc3p0o1z69ATWSWcn5zF+Kh3X+dE8nzfp3TwPuf/9PUtGrRjlvGfglQQxACiXwRRniGJkNOx7p3ogbo+q0ASAw7w3GccG0u01Wb2wnXzZLkpczjsPiz3ScUL5Kuix/5iMNDuEzLS1HYFkNOPKGagHLJmdUfWZ7kFGgKxwEq4hepiKscAHXCeUdCovueVTN0wH1j7dkTioA1IawEylLDQd5+fxAJuFV9BrLeAlncMjSigf3Xyc0qoWceji8eR6rwdmpi16vgCS0r/JxrYbVQP56Ub66JpNpXzKxSMuvy+RLo7ri3ZEGmbDjrviGUXK6jPgK/GQiXObOVSP6pyMwBSvkbVqFf1Fx1YNNOoYcML3lhC5NR/N+eJ19rf1ECFz0sw0GwwWk71rNwKmf34pjg7R2uaBcP8di69Xa5JP82gyFUBNCgaRQnBoaGKtuhZK4Mm7CoCBScKa3iTfxqz0ZKGF5UFhewlXkpSGVEV91ea/BfzNJ5+86GN8sV2XBw4uW0eEidrnTL9Y+Vv5kLO/9J2Xv/D6stPAZln5wZzpSgb3gN+bB6P1TCUAJ47I2XwkGLUF7XBhMfZ7/3emfQAjHEOEB4hzXvrwTbFyInzAqkW0g4DCDHc6olB9EVQmxtXJDaz6NftY/XBP/uj4JLg5lHogA3Qclrbg/zvSx5olSxC1tzmw5GCZ0oG1BeArje8YYtMM2ACKOoXrWrqToCQwIf0RBItNt8A4djs2A
- /totBn33
- t2kC3FwD1qM0eM2r7KEtsmZLI/q9PGLaa0s41qQSE0y/r9CMN+AMi1yaX6Zmen3rFq6vHONnyJPo7f3vWyd/beMJt4wURkGW+HXhqfzt7QGspiz3GHHwOLY+zhW92bd7QYXmMFmd2hco3nziGtp2ln8hO89oOQN6Z7YLXoE6GFQYG1w81ra8usvsAimq3rhrCuA0m61+r+JIiX+TuM9Gvh1e3AzRcvq1TPjeC1cTu1eqNhVCAEzYiw6Ui/OMtD0SlqIlr/1sjW+AgTJnbhzzkNOnZkHM1l5+S4R4hC4/WEk9hOy8CJd1md2Az9184kMC/8oyCtCXs1/DLENDhRssZRRHEKkZEcU08b2Fvo395bhzemvsZqK6lhi8GiA==
+X-HE-Tag: 1787895448-918631
+X-HE-Meta: U2FsdGVkX1/sKBK7FqnvJRRZAMZyUwpt9Qz3umSPYOqmTmGgbpLVLGN3MRNIISPLpbUt8OwntPlMZkyt1+qtHFV+9bpoALZ1wIIpx1OUT327VDh7L4KzywrnpxIgEcHxNngxeBvpY0u9sHpGQ+eI/N/pkidzvLGAjm17gcUZ0+U0ToCRlyH3BNn0M4MXVDMo7+nqHAHXHcwoOGXnJas73T4/4PWHmEJVH+6c9brYgKtsCuyGQukDaTHIIZGA1t1z3HYCtv03gPyz4a6n62Heng6OmwcZtFSwid2fMBW1+olOyqiD2Oudd+OdcZQJjX+5T44iwuaUv7xOnDbN7bt1xMg7FMIaSrwxqIekcD8NvSHJ+rZoZwP2bA8fS0kkZ/qV1lN1zEKe9uuwgVC03h/giSMSyC5F5vCqV9BoijUf49NMT8BUmSR2k4k61yf2JIOmSSvePmGZtdp1RPNDaqAis3F232BHdQmE4Qx5Rz7y22hq0OivxxSmhX+05ROoImQIL/u1wKF1fbwajM5c0hrAnxkfqAFidWHLah1x5I/bdXtiNcWO6tH8mpUQqsaEFDZ15t8nBKhemfo2ZkUIk+7I7xfcaBg5o8TWKc/n+ie3V+HeTBIGTz9yOVTqMixWvIkXHvzBh9bfAtlrhOOgIOCyw1PWbCEE05Wpw5EuS4bu19gSUp2vM3sCmA2R17SwLD49+XOWLJKoZhvA2d2LMJWN2kHrbo+MbmDjPLTNKEBpXUquVB52oQxNahCSNpnwV4sYh5PEIqz257A+i4cEnZ1T5uV5F4Wgom13ct1vB2GGMY8m/7R5mCCFCjExFy0QRoQdHFHpgjLoIgBW8OZl1Low3JGzhtM/lqF49nEA2//QMC/garYN9hd5ovteuvmHdmUUAGDsyBT9TZQDefywLAG5aah3CrDfDLiGLHWB6HqJT4gxyLbuHgTM93N7HGSCPATeKwGlvzcm2MzNWhhfSwI
+ y8RiU7yk
+ EzQCjY8joaDTcHjoqTFD66mn9Fdp+/qldpNpL8AqB5xV0Ky2fxgSCSsSb3aS378xSS+NT0LlgPduFdtfYcnNQcx5+6/vfPQj9/SOxMcqivMh/p6SMmDCwPXv05yfbo+6W5dvMoURo/cB8He/Auf2qks2NVkCjtB+qYmBE2uiiK8C3PGHQZUtaGLYXZQBjcYSpnw5nCAXLiJO26bDmlQyx/IXgRcBJFAlzhzQ/hG/s2TuRWWtzkuy3bfiMSBUY7rVR0iwB56ZrjtKcKEmoW71FC3e3+sh178+MfOkpBOybPT7uccxD+52WcovFjOrptwCx9DKlQMH1b4HTblQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,92 +104,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zenghui,
+On Mon, Aug 24, 2026 at 3:38=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn> w=
+rote:
+>
+> Add per-walk counters to measure empty aging walks which traverse
+> an mm's page tables but find no folio for the current lruvec (node+memcg)=
+.
+> These are common on multi-NUMA node systems because lru_gen_use_mm() mark=
+s
+> an mm for all nodes at every context switch.
+>
+> New counters (accumulated in mm_state->stats[]):
+>
+>   MM_LEAF_ELIGIBLE    - folios belonging to this lruvec
+>   MM_WALK_TOTAL       - page-table walks completed
+>   MM_WALK_EMPTY       - walks that found no eligible folio
+>   MM_LEAF_TOTAL_EMPTY - leaf entries scanned by empty walks
 
-kernel test robot noticed the following build errors:
+Hi Baoquan,
 
-[auto build test ERROR on akpm-mm/mm-everything]
+I'm having a hard time understanding what MM_LEAF_ELIGIBLE means.
+In particular, I'm not sure why "eligible" refers to folios here.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zenghui-Yu/mm-damon-core-remove-declaration-of-kdamond_fn/20260828-003953
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260827163953.83520-1-zenghui.yu%40linux.dev
-patch subject: [PATCH] mm/damon/core: remove declaration of kdamond_fn()
-config: xtensa-randconfig-r073-20260828 (https://download.01.org/0day-ci/archive/20260828/202608281351.Hv386MvO-lkp@intel.com/config)
-compiler: xtensa-linux-gcc (GCC) 16.1.0
-smatch: v0.5.0-9187-g5189e3fb
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260828/202608281351.Hv386MvO-lkp@intel.com/reproduce)
+I'm also finding MM_LEAF_TOTAL_EMPTY quite difficult to understand
+without looking at the implementation.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608281351.Hv386MvO-lkp@intel.com/
+Could we come up with clearer and more descriptive names for these
+counters?  might be?
 
-All error/warnings (new ones prefixed by >>):
+MM_LEAF_ASSOCIATED,          /* folios associated with this lruvec */
+MM_WALK_TOTAL,               /* completed page-table walks */
+MM_WALK_WITHOUT_ASSOCIATED,  /* walks with no associated folio */
+MM_LEAF_WITHOUT_ASSOCIATED,  /* leaf entries in such walks */
 
-   In file included from include/linux/psi_types.h:5,
-                    from include/linux/cgroup-defs.h:24,
-                    from include/linux/cgroup.h:29,
-                    from include/linux/memcontrol.h:13,
-                    from include/linux/damon.h:10,
-                    from mm/damon/core.c:8:
-   mm/damon/core.c: In function '__damon_start':
->> mm/damon/core.c:1941:44: error: 'kdamond_fn' undeclared (first use in this function)
-    1941 |                 ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
-         |                                            ^~~~~~~~~~
-   include/linux/kthread.h:46:32: note: in definition of macro 'kthread_create'
-      46 |         kthread_create_on_node(threadfn, data, NUMA_NO_NODE, namefmt, ##arg)
-         |                                ^~~~~~~~
-   mm/damon/core.c:1941:32: note: in expansion of macro 'kthread_run'
-    1941 |                 ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
-         |                                ^~~~~~~~~~~
-   mm/damon/core.c:1941:44: note: each undeclared identifier is reported only once for each function it appears in
-   include/linux/kthread.h:46:32: note: in definition of macro 'kthread_create'
-      46 |         kthread_create_on_node(threadfn, data, NUMA_NO_NODE, namefmt, ##arg)
-         |                                ^~~~~~~~
-   mm/damon/core.c:1941:32: note: in expansion of macro 'kthread_run'
-    1941 |                 ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
-         |                                ^~~~~~~~~~~
-   mm/damon/core.c: At top level:
->> mm/damon/core.c:3750:12: warning: 'kdamond_fn' defined but not used [-Wunused-function]
-    3750 | static int kdamond_fn(void *data)
-         |            ^~~~~~~~~~
+>
+> A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, and th=
+e
+> debugfs lru_gen output ("TYFALWEE") exposes the new counters.
+>
+> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+> ---
+>  include/linux/mmzone.h        |  4 ++++
+>  include/trace/events/vmscan.h | 28 ++++++++++++++++++++++++++++
+>  mm/vmscan.c                   | 30 ++++++++++++++++++++++++++----
+>  3 files changed, 58 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 94f9c3ff5416..229d27fbfb54 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -595,6 +595,10 @@ enum {
+>         MM_LEAF_YOUNG,          /* young leaf entries */
+>         MM_NONLEAF_FOUND,       /* non-leaf entries found in Bloom filter=
+s */
+>         MM_NONLEAF_ADDED,       /* non-leaf entries added to Bloom filter=
+s */
+> +       MM_LEAF_ELIGIBLE,       /* folios belonging to this lruvec (node+=
+memcg) */
+> +       MM_WALK_TOTAL,          /* page-table walks completed */
+> +       MM_WALK_EMPTY,          /* walks that found no eligible folio */
+> +       MM_LEAF_TOTAL_EMPTY,    /* leaf entries scanned by empty walks */
+>         NR_MM_STATS
+>  };
+>
 
-
-vim +/kdamond_fn +1941 mm/damon/core.c
-
-b1029f29eb1d5fb SJ Park        2026-02-28  1924  
-2224d8485492e49 SeongJae Park  2021-09-07  1925  /*
-2224d8485492e49 SeongJae Park  2021-09-07  1926   * __damon_start() - Starts monitoring with given context.
-2224d8485492e49 SeongJae Park  2021-09-07  1927   * @ctx:	monitoring context
-2224d8485492e49 SeongJae Park  2021-09-07  1928   *
-2224d8485492e49 SeongJae Park  2021-09-07  1929   * This function should be called while damon_lock is hold.
-2224d8485492e49 SeongJae Park  2021-09-07  1930   *
-2224d8485492e49 SeongJae Park  2021-09-07  1931   * Return: 0 on success, negative error code otherwise.
-2224d8485492e49 SeongJae Park  2021-09-07  1932   */
-2224d8485492e49 SeongJae Park  2021-09-07  1933  static int __damon_start(struct damon_ctx *ctx)
-2224d8485492e49 SeongJae Park  2021-09-07  1934  {
-2224d8485492e49 SeongJae Park  2021-09-07  1935  	int err = -EBUSY;
-2224d8485492e49 SeongJae Park  2021-09-07  1936  
-2224d8485492e49 SeongJae Park  2021-09-07  1937  	mutex_lock(&ctx->kdamond_lock);
-2224d8485492e49 SeongJae Park  2021-09-07  1938  	if (!ctx->kdamond) {
-2224d8485492e49 SeongJae Park  2021-09-07  1939  		err = 0;
-6376a824595607e SJ Park        2023-12-08  1940  		reinit_completion(&ctx->kdamond_started);
-2224d8485492e49 SeongJae Park  2021-09-07 @1941  		ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
-2224d8485492e49 SeongJae Park  2021-09-07  1942  				nr_running_ctxs);
-2224d8485492e49 SeongJae Park  2021-09-07  1943  		if (IS_ERR(ctx->kdamond)) {
-2224d8485492e49 SeongJae Park  2021-09-07  1944  			err = PTR_ERR(ctx->kdamond);
-7ec1992b891e59d Colin Ian King 2021-11-05  1945  			ctx->kdamond = NULL;
-6376a824595607e SJ Park        2023-12-08  1946  		} else {
-6376a824595607e SJ Park        2023-12-08  1947  			wait_for_completion(&ctx->kdamond_started);
-2224d8485492e49 SeongJae Park  2021-09-07  1948  		}
-2224d8485492e49 SeongJae Park  2021-09-07  1949  	}
-2224d8485492e49 SeongJae Park  2021-09-07  1950  	mutex_unlock(&ctx->kdamond_lock);
-2224d8485492e49 SeongJae Park  2021-09-07  1951  
-2224d8485492e49 SeongJae Park  2021-09-07  1952  	return err;
-2224d8485492e49 SeongJae Park  2021-09-07  1953  }
-2224d8485492e49 SeongJae Park  2021-09-07  1954  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best Regards
+Barry
 
