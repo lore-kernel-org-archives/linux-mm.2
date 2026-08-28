@@ -4,119 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BFA4C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:51:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2458AC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:51:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F4406B0096; Thu, 27 Aug 2026 23:50:58 -0400 (EDT)
+	id 1E78E6B0098; Thu, 27 Aug 2026 23:50:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A2966B0098; Thu, 27 Aug 2026 23:50:58 -0400 (EDT)
+	id 1BF0D6B0099; Thu, 27 Aug 2026 23:50:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31F356B0099; Thu, 27 Aug 2026 23:50:58 -0400 (EDT)
+	id F2CA66B009B; Thu, 27 Aug 2026 23:50:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AD616B0096
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:50:57 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 57D4F1A0254
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:50:57 +0000 (UTC)
-X-FDA: 85149302154.25.3B9E3B8
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 79591160002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:50:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=k9X+Xl8M;
-	spf=pass (imf08.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D07646B0098
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:50:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42ED11C1C14
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:50:58 +0000 (UTC)
+X-FDA: 85149302196.16.59DA16F
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 66F951C0003
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:50:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X09ksLYJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787889055;
+	s=arc-20220608; t=1787889056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3KcPIBnQ86fi9vMxouOV7SSnCq2u1kcpTpfhzejq3Hs=;
-	b=0Uf5Bm3Z+eMTojf9BAuR9OCwrPm0YMxwLvMwlWxkwSI4StYuz8zFaYLhAJdeEyGenYsMTI
-	ud9FYl434YRGBIDrFAI25c4jVU3wzfawbmr9RdRQ3UoXly3Z78o02xdLM8U5SGpRGNufGP
-	FFo/RoM1525fGKDyNwXGNC8AmWC/lRE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787889055;
-	b=ApszZB2e94Hd3Y9Y8MQZwX+MCDu4cuDTR0iUIfpght+QkCo2Jyv87NL29elOAfwKjT0VfJ
-	LrmpMGRc1Sc7ONFAgcmxlCkMv+Jpfk6ZFw80EH/Mj769UxYfuzVD8bNImLUk8EzYqGGDME
-	DzyFRR19ztmiQCIL7GliBvcUzFowNwM=
+	bh=2wKk+vB+goqKaLt0KMnxh7usyJz614ylfhLbmhKrkpw=;
+	b=ydb1jCKO2FRRyk8QMU5BLJIkoiR2YHnURsdOilhI8QKRAsYlr3QEM+GP1FqAJc4M0RTIYq
+	sdEBNW/wuN+Z9W3xbdSXnrzJP43ZB5Cu9OUyKKC1NmlCoaqBZBtPxXPdojFcyyd0svshTP
+	+YHieW0BJnytpMWQUn4rqNVOVZQPY3Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=k9X+Xl8M;
-	spf=pass (imf08.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-39266382df6so723412a91.3
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:50:55 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X09ksLYJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787889056;
+	b=mVlW5Gsjk1rjZ1N4j4yE+rO20od6J3S2UYq9XKtBAB1yeW8d8Ve3TxHA96YfWpU5sDCn2L
+	1ETEGphBGqb+5DtAi/QB7JIK1TixVHoyMt+tKbh47CKmlCfblqvNwu87C7T3+aWXW4YYEY
+	YM5dC5jFbDtGp33BOP1vsh93pGDU4h4=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38759bcd877so512510a91.2
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:50:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787889054; x=1788493854; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1787889055; x=1788493855; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=3KcPIBnQ86fi9vMxouOV7SSnCq2u1kcpTpfhzejq3Hs=;
-        b=k9X+Xl8MbQIwxXcdqal5taRJgkhl+wT/A4J6/yA/wJg3SsM4h+mTxQ+tHeVZY8sXqi
-         QCxZLdDlEWLQG2OwblRcvCQwwxsm47R2D1Rs+Qx+/qHlKG+G6aEkZoSRoektf5lqmgXE
-         JqpyBCTyytMHS9EHuIHNxYhZCoIR3EIrKrW2s8RFqD8LDDZQHbCQuFZftr1Vr5Xjg3BD
-         0t/Vqpm5U+LL0b67tc1JWtasc8lKxnbkUywrzQ3cQPm7+BL2MK7VsjbTckSM4okmtxZP
-         ESrDFGznLlckYeY03JzQ7oTlYqj0KQdriToefhQIsC464/G1NZDbVfYoZIDMzQFQqIwF
-         pVDw==
+        bh=2wKk+vB+goqKaLt0KMnxh7usyJz614ylfhLbmhKrkpw=;
+        b=X09ksLYJFb+mCAPbxwk6yvBA7u2sw0/OTpAKPD0d40i5MqfChEDZSLHKeAuZTva1Lo
+         p1q+sxiXfpOzMyHulwIqWnWdoNO5HN+RKMayZ2b0bbLcN0mUxvRhr0xtShhHtVWfKqjV
+         xzwR1f/L24VKQ8LhyRQHseT2RU4k9a/22HBMkcFmmsvrqMLv/Q+CG5ewO2GF6DNxIYRL
+         3ttpERidu9xRDUF6yqs/A+D98JAB7FhyHTxl498Mj3Gt7FqxmEps8vQzWCfqAsiDXwcL
+         1mdwX1zkD2dE0kyPihdyNKP1BNAdWQ3nMznJ2XvmwhUCG+wlTjIHVXxChwEOHYce1HNR
+         rhpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787889054; x=1788493854;
+        d=1e100.net; s=20251104; t=1787889055; x=1788493855;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3KcPIBnQ86fi9vMxouOV7SSnCq2u1kcpTpfhzejq3Hs=;
-        b=J15yrlx6OLs4JQ2lA9zTY13UUURyjbbzXqcOO2FZow40I5dz39bogcEKbSrUI3tmNQ
-         egQc87ueyXlRnzld77pLcIK2QZCjaR+KpBXwoiXcQsL6T0MuYC0wOqBOWsJ6y4H6YFsE
-         NA2e6GIXU8LcNXY6uae4m/Vjl4UW5meRR0imUX7FLH3UgZZV65R0QkV9nkqGL2iwzyOS
-         ICX5+4ioC13YM+JJk3OnVK5EKffsX6ZaT5vIRdLToeA+jSKBAQK/2Ai+2welGn0J2XWt
-         vxHvwQX17Hv5WYVR+iNPBuE/oKXrV7xOtQ3oM1FSvkiFh1JRUg0ATdGfOHLlQrNio/jt
-         LK1A==
-X-Forwarded-Encrypted: i=1; AHgh+RrMkQmv0yAfBP5zjZPSqEwi+gzJ0hPQ/7e3bTwK8trIvmjLSdut4pwtQKEKbBRQv3yPwNsEEPheiQ==@kvack.org
-X-Gm-Message-State: AFuF++md2fdYkoFFDDADwXhXBofJIS1KpKGt5Ewrw8uboFPo44WN89Li
-	FfW8/Yt8t4Uy5D1LGGkUrOXpOyBlqHmFl0/CA4i2V4k6jGlGQoN7q7TC
-X-Gm-Gg: AR+sD13My/0dFGR5uzMN7YmZ5qAj/MqDmG3ssQh+9xqXFxsFs6PIi30L6KGRGBQDYFx
-	gtJiwLG0bnbRJVbi2uCGZDkiIqKlSTt5uFNWP2ESS1u23sjJEDQJaAM4m6TK+ZGy2S/4d6NXT8D
-	w6wSFQPJXTqsUuyHvoYZzdDsUat1TxwNoXA5ryNd4Th9lAGftpAomD9FYnU8zMlI60R4FeRN/Us
-	RvEKVq9xPcsxlTT2ll20D1R23I+V1iytla5L2tFVk4bJoHychi9Zwetrj60mmjVkrv7B9TFVwrC
-	HrZ0SUqWosE/8Xk1QvVY4vGLcMppmhTlPLZyExTqiru0yNXImUiKBnRXjlXWfzphpIveL2RKb9y
-	qWvRMv31Q1zTIobVbwkoTDCQ/7GvbFSXinTcUS6NqxfFepeurYfw3TdNwAVJ0q2lQK3zx6g0yet
-	1tslGYWEtDaSSvcdzBWKXMRpzeTPoGe3rQLnPMgiEUX+2gqh8auDLbi7F4rnSK7pQHTw==
-X-Received: by 2002:a17:90b:2d82:b0:393:194d:5366 with SMTP id 98e67ed59e1d1-396d0f6f8bfmr8174751a91.10.1787889054288;
-        Thu, 27 Aug 2026 20:50:54 -0700 (PDT)
+        bh=2wKk+vB+goqKaLt0KMnxh7usyJz614ylfhLbmhKrkpw=;
+        b=KMweTurTJpnMxytE/PuVVoc7oNEBhZ8zqD1u1NvPcNOzdoD24BfjZixESjSOYcnL89
+         ZzvDZ2v16XnZovblbadsAAAzRU0st3QElBjiNvXSR+VxSH/lfaDB7cV2GH11JOHVSKaI
+         82XGCf7D7dRawTEIr8vtiQEKMYDUVo5TgtQsone1Oxcj3PCR3+F6Grg6g5I7Qr+sxgJY
+         3AmdXJnNGGUvf4S9CBoq8h3Dj2Ou5O2Osw8eBjgfQzQUg0UKb5uTbiUSvK3SugBbDEN0
+         JCQ553OcvZvkWLBTFqLi0RfJZMObYuwI97P6p52JOql0jmU+yBGZZ8dL38dhVeu5mD1/
+         +4dw==
+X-Forwarded-Encrypted: i=1; AHgh+RqUzrz/bExpKx66a5EcTzVG+QGKh/cvol0wDKq5bInwxthiLPu/Dm7tITksUOrVtaBkQQbgTFwV3A==@kvack.org
+X-Gm-Message-State: AFuF++l4an0xa+rqnCZ+wx/FqX2xCOle0IVtN0qivTEhbtq8q8IfLdGi
+	NlwqFj5xizfNk52W9yk9PtRicjpFBPrxc0JYa+kvio63zD73b+LQF1f3
+X-Gm-Gg: AR+sD11ioAGgd9Jl+RY7L6oAiLMJaPrbfEJTyaNvllh2ybwoSG49WXmASsmZVuKxXuC
+	inf6tlusW3hO5PIrKq/zX3XqJ8MPpezNL+iFtOudQ0QnNT6sG6n9KIxAXTypCPEwZxy8f2ikbnT
+	F5koy9CbJwp31egqEzoLG2AHPQYIu3Cnvk9dpvLdsL+mV25mHWpv9/aMHFMvV44voaDhtWbaxhT
+	BavRWm3oijX0FEVPYAHJNr0lffWSR2lMK9GRyq2fnQQ9hhyo3+8eMu65Om7E653eQKjHq4QECjN
+	CxpCcRw7eyOiVh2pkwAPoHxvgtdLoAsTMdT2XBbN48vMR+Ec3yKq2J0Ln8T9aGWIp7nnU/sz5PB
+	odAwtUZxt992uQBjAayWiZXolxkpcdLRkZBM4tcHXr/DJNvhDzTQp9dmQaul22NiQ4QyuRRUKbB
+	EoBZVYtHgrHKOwWu6mrC/lgoosSHAA2BEfT/iCnJ3vHjgNc1U7T6hur9ar3y4aJV0RxQ==
+X-Received: by 2002:a17:90b:5284:b0:396:4dfb:5890 with SMTP id 98e67ed59e1d1-396d0e5bbc0mr8463160a91.2.1787889055213;
+        Thu, 27 Aug 2026 20:50:55 -0700 (PDT)
 Received: from [127.0.0.2] ([73.222.46.22])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0e0e67dsm1659184c88.15.2026.08.27.20.50.53
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0e0e67dsm1659184c88.15.2026.08.27.20.50.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 20:50:53 -0700 (PDT)
+        Thu, 27 Aug 2026 20:50:54 -0700 (PDT)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/3] binfmt_misc: only let punctuation delimit a
- register string
+Subject: Re: [PATCH 3/3] binfmt_misc: document the field delimiter
 From: Farid Zakaria <farid.m.zakaria@gmail.com>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
  Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
  linux-doc@vger.kernel.org, Farid Zakaria <farid.m.zakaria@gmail.com>
-In-Reply-To: <20260826-work-binfmt_misc-delim-v1-1-43618adf8599@kernel.org>
+In-Reply-To: <20260826-work-binfmt_misc-delim-v1-3-43618adf8599@kernel.org>
 References: <20260826-work-binfmt_misc-delim-v1-0-43618adf8599@kernel.org>
- <20260826-work-binfmt_misc-delim-v1-1-43618adf8599@kernel.org>
+ <20260826-work-binfmt_misc-delim-v1-3-43618adf8599@kernel.org>
 Date: Thu, 27 Aug 2026 20:50:28 -0700
-Message-Id: <178788902860.3236768.6730484936359324341.b4-review@b4>
+Message-Id: <178788902862.3236768.2911438482058639296.b4-review@b4>
 X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 79591160002
-X-Stat-Signature: brg1fandqqf69p7cdnxwpopsp7t54cx8
-X-HE-Tag: 1787889055-492705
-X-HE-Meta: U2FsdGVkX19ILfUcN8f/pNr8gJ0RCYug9iJRhOJFK3QFmaCPwpso1cDeXU5bNm9Q3rYQXmjAgJBtWH59TkD60XqAP5S/auDqFmkwERQMWOhdfbGPlA5eyp27w8zmQRWadUZCUKsRVQSXAVy7HiPixMx1Bi0JlIfhpwckvebuDippj+jXZy7hy6jxLWcXq59+qSLAcbi7honjSFmruJ9D6KQ3aCpamXaDokqCx8r0HFY1TFK/MblDUsubt9XVNMighMdWvfmKiuPRfoPmV2K+lfkUuSXRjVYXO4TU2i+NazNulrBox7OrRZZy3zc8i3+M4U8Yjvq/jgD9cYfslwV+Aq+A5mwiqD9gYQ5VhwzXAd1v4N71Mvsjw4PYBZqLDQwJCdkaUsJ8PTAVtuOW5YUn6j502Pez8YGizf45Dj8y8VCayXX0XOVi4gl8OM31F1Hyfs8ri28C5HAY1uSVOgPzCbLfYsAPCz9uQ+iEahw65JZBYQGLl52YC/wB6nubrHhuBTdkcdriAMa7S7qqfwSmWikQqyS25BDlUtB4y8PPTF2qwC8EK45g/7Gyh+fYkTPCviGkAmzPpi04jJ4FxyjgjD0wctgKfeiSNb1mPSogFxwtTBBOt6w7wl9QURzlOQDTv8W5fi55JL6BsDnEBv7qLT0zKS3II+2xB5hKD6ffHnCIHKBB+QrUp/VqXQOuljnrce4oeufLCDjMyTL9v7kLWE7mWZ+R/kAdtIom4a0X7iF96ywF3SUoSIIYTrdQwKuKDo7B8dA2M6W+LpizBFPfVJNfaH0vM/yvVR3LQ3Tbni9Vq6TvMaNCUeL7y/wxy4iwKI1lSRprd4o03b2pJWTbrX7HaJdlfaETYPi+5pTkrmrzdhr2S5HUlXT3f/1cST+lR56R9SjPm59c7ebadeNdAPiuKCvq60TzPz48EG6sbQDFALuBGxT1+PiIodyHfOx5Yw6etKkn1tUYrNn/RyV
- B0Ne1hZ9
- hMo6WzdsUNWOw9GUz6xqqL+qOBHpYXlWHbRtvXs9i3S4md5JV1bxt6e434Frb3fLvzdBUUPGn00IgpXyYD9TS29OxICVszdZ0SclgL8XXLZdsF3gdU507vGRAFbWV2zhIe8ibxi3hpHMtbR3cHP4rUmcSmIQF5cJAjf0YQ+Kssj6Lgcx/dkcBuKmXw03DEshsvTA3V1UxsU6+9821huFL3PgmaoUB1ueCFYMQcNOuIi+u2iYOUI90S8hXHhjYPozL1CEUF3A6VOUJ6kZNAcVG47I/KI1x6TC7NwjLTE206YDeTRkuZX8K3YU6luy3zqvBaDDa/LYxmnW6p0LcojocjnmeC26PQOisz2+ROFOz6IYbCMQ/U/QIWDv1INWQhM+H5nh9PjneysfZHpV39kMHY5zSubn1vIey2wkWNfi0MK3Dq72CP9Rtu+IPy2AIjWLXE0rWSYWcs4on7x+MQ4adCL/PhCddRgZ7ep2f4S+ti7Hqh8IcwSLZRWtSEgghrxYBqjC1kxgWWbj+X4gaqPJRbUVvVff2oWN+oUQVI275x0CZZRiTONtEefmVmw==
+X-Stat-Signature: ieq1wbjqf6eaeyitqmjsgqp4tmdwx79k
+X-Rspamd-Queue-Id: 66F951C0003
+X-HE-Tag: 1787889056-845977
+X-HE-Meta: U2FsdGVkX1/IU6V04ve5jOv7fQUDE2eXGX94UR341OJy/HsyK2+u8nX9pZBUyEAxq0M54N/KCNBZCsgp3+pEKV5II76LPQlU5MW/yOx/ZqWTI/82tsXyS5NhSS55vsF1X6UNOj7qjW8FTUH5Pmg3j9wZD1g3si5wSB7ZnE5ShAvatAtNSp/X7kBASdxxfsdcBy8sjL86xfZZo4pO8SZj620h4YjoIw7IMjpne65wP/WLbJd/bvvGtRIc5IgU5AFDYjkeE0i8JPDMiWC8c+VKzRRPn5Hrd4f7Bd5fDXUA6L072YbffnN5Jlsd90duAOhk36PPFPNYBSZ8fE8N6Kvh/qszOmI7cBVVvwHJdPAVh+tODdT/a+kklnrMLV7wzAOyVJMqt9ONNdJ/fAKmaOVz9Z0SWPfUaYz7v05WQMBczjlsNmDoZEf/Zdywf8xIUOlLMOGMqQy1lVjf/N6fmCqEwsVL6qt67MNjdlTo56NAIZGepDEpUcIVyFzFd0aIvjstW2V3HivSjeLhq1r21MiiJBfsy5bj51O6a1eeA2cxa6Hc4gEn0Bzcrg8eEruCXZEetbqo0lnhaGv5BTWAf2fMsdlTw/+RNVaO+cT509WVd4Sz6hxYjfGewvKDvZdOMFBPbV085rhyfNAIhSkxSJeXX7tNlRTxewRjDkC6Pvzd+GqzbDkK0T2HheZhq3bQE7QXCeuupXBneOIWNUaVRl2i+Fvb+g84bXhB7E+kGzMpCGkRuTGPuEplXQfsqWadwBDSqTiQbQs/QIVNICzVwpDKXHHTRb3vsoPG4AHNdtikcn3t9Nkh4J3vtDWs+LGdd/vVHFlXx/i7/GS5MXqaZ0kO/MT+T4KBX3D0qJ5SKzuVPeWMLZ1io2LqTh8B4NuzcIRlDRCEIq+EM/WuanTgNqSiA3MoUhuu5I9e/AQZ9BtDAd8GV8iVFFOPXJKHG3r1f3WRkUojpY1rrfrgjscB3KM
+ zTTBVUsY
+ QtPG4NRlsngHnLFW4HnN9N9pErsi/v2OYnP13XtEYaywja+K3O+wusYn43owuQaFdTmSMwz0UCWYlDTY1gMo+4Mk0Y1FkQS302BoCoHkJL5+YwXxOR7VXi0BJWLs5R8Zcsy2RgNlXC5S+WPGJrr7FyObTeRDLJIYZ5dE0zVcHfGCXz6ww8iTG/7ovBRDaVEQ8y5RAIgTJLfY1dfq40+NRWZX9qQNFC7yKok5JvDhkKAogaHOxE2HS2EAPhqMmKuHxtb42KM6pQAbBHwQ5kFXV3xOJzDCpT2ApoDIo/IMLetExQcP7BJYk9+PFv74p16bD+1cyY9MWD1rrCWcfE1/Ii57LGo/bDqrfLGF76HdX3OkHlMbnhNyCnpRBLjRtHw5uj32n+4M3VQP9GD9ii+1GQ0SdN8+lb4SnJHZ8YpM9lCN0tEVj9bBtgEqMssaPm5bRNuCb8NJy8d2/F4y9Sb/2+znjzwPk6jj07JOCERD+740SzaIM7dAHY6vaALcWD5itIfgkCHQFI9WNpzvwsHo8C7otqeQHX341nVZvfQUphzqiVo2j7ZLFWr8hQawfPXwsirmi8eUX7HxJzWLscfQrffW6LA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,28 +123,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 26 Aug 2026 17:55:46 +0200, Christian Brauner <brauner@kernel.org> wrote:
-> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index ddfd3aa57ac8..809c91d21b39 100644
-> --- a/fs/binfmt_misc.c
-> +++ b/fs/binfmt_misc.c
-> @@ -100,6 +100,13 @@ static const struct binfmt_misc_flag *misc_flag_by_char(const char c)
->  	return NULL;
->  }
->  
-> +static bool misc_valid_delim(const char c)
-> +{
-> +	if (!isascii(c) || !ispunct(c))
-> +		return false;
-> +	return c != '\\';
-> +}
-> +
-
-Is there a ready you did not make it a single && ?
-Feels a bit weird to check the negative;
-
-i.e. return isascii(c) && ispunct(c) && c != '\\';
-(DeMorgan's law)
+On Wed, 26 Aug 2026 17:55:48 +0200, Christian Brauner <brauner@kernel.org> wrote:
+> Document the field delimiter.
 
 Reviewed-by: Farid Zakaria <farid.m.zakaria@gmail.com>
 
