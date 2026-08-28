@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2FC4C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 06:43:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0752C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 07:03:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 105E26B0095; Fri, 28 Aug 2026 02:43:10 -0400 (EDT)
+	id 831B06B0088; Fri, 28 Aug 2026 03:03:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B6556B0096; Fri, 28 Aug 2026 02:43:10 -0400 (EDT)
+	id 7BBA76B008A; Fri, 28 Aug 2026 03:03:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE79C6B0098; Fri, 28 Aug 2026 02:43:09 -0400 (EDT)
+	id 683546B008C; Fri, 28 Aug 2026 03:03:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CEADC6B0095
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:43:09 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F27712028A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:43:09 +0000 (UTC)
-X-FDA: 85149736098.04.41CB06C
-Received: from mta1.migadu.com (out-226.mta1.migadu.com [95.215.58.226])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 40A26A0003
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:43:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iCGNMliT;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.226 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787899387;
-	b=TS6fMVyyacxIGNH43Xci2dOm6cRRN5FkLF/XL/SJBCwtL4ARBmd/XoxzhQtgekYXhrstKF
-	/WSDErcaK195+nkZ7aS850d4zW6DfPprQc8iUsm4fcqjXqkdvGzqkgqXpdLbGG8h4Ks5Tf
-	JUq5kP4Huwt7EtiyyL3uGjFpd7sTsQY=
+	by kanga.kvack.org (Postfix) with ESMTP id 421C56B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:03:48 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE6DE1202AB
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:03:47 +0000 (UTC)
+X-FDA: 85149788094.29.C5C37F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 00259140010
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:03:45 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ki8OfKvM;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787899387;
+	s=arc-20220608; t=1787900626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZNtfx6agBLlrPlpxeCsTNHpQcr39KmjAna38UvE7dEs=;
-	b=l3J22+eP7aTtI+p9bzPoVLADVAjv4u5wq2gEzlkgAXh3E7MJdQSpdPYUOf5voAeKP8TJZP
-	e/O0Vq99QQ2fTO69br4pCCYcrB0a5yJbuOjmqT2b4Gr17uKP1oE4cNhjBtOlD8BHEQsBZ1
-	3PgtG/psT/c0rym80bBhTGXl7f2AFPc=
+	bh=p//1NQk8zitXXmAblFVKjcBJtvf/rTZ2sm2+PaGQkb0=;
+	b=M+dYE1ef6euAXdn2/En62/irIl7fCCwXDBlA/bDpvTC+a1Bwp8ol3ZXtp3DFupAZODPu0c
+	ePprz8DGaVjPR89pDEgku3KCRc8HzR1SbxcLnpJNkcee+lv2rmnBXkarY2GDdgryVSvWSS
+	BvTqnusAeZPN6QeOirNVltax69gtEIs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787900626;
+	b=P8nT3kbGPwACUu8jNJKQsOw5QqWwBI38/IAcQt9JRknOTH+t5JwCzLMnSEVbDMLuwaH0m2
+	CYmIxWAqkyxaHZXiJYkMg0ULup1fABPbDq3b2lVGKNfOy8h5gKeJ20N+78DGMQZSje0M60
+	u+pa5gJ+AuZs9K6YP77eau/sEEiy/40=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iCGNMliT;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.226 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=g/7QNbYwvj/vNshzviunkxO3++t5btxOR6mdxsQA7QE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787899386; v=1; x=1788504186;
- b=iCGNMliTQO+EGzy1Qjr2EwriuAOmRsWF2onNxff6y3CAVXwGZbkI/vS1LRfTACvaZtXIixIT
- 9ma+xAroIntzA0iI+clBj+0hf5NLYccQ1B6e0pbMLXGbknWky1dzyuf4mbWjy2qigh7naEyECJH
- L31sQXtLOQbyfAH1Ukq9ZdH4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 687cbe4f83213111;
-	Fri, 28 Aug 2026 06:42:55 +0000
-X-Mizu-Trace-ID: 687cbe4f83213111
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v2 2/2] mm/hugetlb: warn instead of silently bailing
- gigantic pages without runtime support
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260823044118.1097121-3-xialonglong2025@163.com>
-Date: Fri, 28 Aug 2026 14:42:37 +0800
-Cc: osalvador@suse.de,
- akpm@linux-foundation.org,
- david@kernel.org,
- mike.kravetz@oracle.com,
- mhocko@suse.com,
- linmiaohe@huawei.com,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- xialonglong@kylinos.cn
-Content-Transfer-Encoding: 7bit
-Message-Id: <2EC70FCF-D812-4FD2-9172-F2520FE931B2@linux.dev>
-References: <20260823044118.1097121-1-xialonglong2025@163.com>
- <20260823044118.1097121-3-xialonglong2025@163.com>
-To: Longlong Xia <xialonglong2025@163.com>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ki8OfKvM;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D73760232;
+	Fri, 28 Aug 2026 07:03:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D921F000E9;
+	Fri, 28 Aug 2026 07:03:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787900625;
+	bh=p//1NQk8zitXXmAblFVKjcBJtvf/rTZ2sm2+PaGQkb0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ki8OfKvM3u9p9ZN630u3+Dhrf8x/975NSVli+DdfUHiM9kKWSTkNfSvNRDEwby9g/
+	 7DFg/MvZMoR7jtGIC4+Ky0GxCCQImi9csbVg31qHRNRdToXv/PxzJBxOEBZMY0T6WY
+	 WJ2SmHWmojZEE/lJ2odmNAWum1A3Z0W8wd6uCG6BH+W/x4eo5EkGIhJR1uiwDQ6HO8
+	 j0GnumKf69ozYWwDDLW6DI9hMl0Nr1GoVZ1YOKRzK8hMv03LUsNKm6aLjKT/sHCtcT
+	 SGHbS7zgDNduqDtZFm7MNiDeVcwpHZUSXWC14dPY9rL0FwDNbyvm4a/ImGccDgBpLz
+	 KDbvKMuhX6R8A==
+Date: Fri, 28 Aug 2026 08:03:38 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] mm/page_owner: Add PID/TGID/COMM and cgroup filtering
+Message-ID: <apEx0wT_hWs1Q5Wp@gremlin>
+References: <20260828031339.1270699-1-zhen.ni@easystack.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260828031339.1270699-1-zhen.ni@easystack.cn>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 40A26A0003
-X-Stat-Signature: ws177o79hxt3s6hw3fwgcjo6qwz3rydt
-X-HE-Tag: 1787899387-589535
-X-HE-Meta: U2FsdGVkX1/LKHWSAi5iPDtDkJVs6s/uIREkw0AeRoKquWbqc3EWL7UcnR5rHI+pShPoMy0+saZb6uHk6MqjXoScdorrIoTo9ivYsuRo+Djy8aDOL41PqfNDwnJZm7WBVsBSFwT1PRqMCeeiRqEzxQ5UFZBLgm+sFKKs2vEDxGpM/8w9aPgD3P1uUu9ttSp9gVNmg5cI9tUGEWQET5StvrttJI9jZ1ijLSf6mooEBLPtu0LgwHn4I9d2a1QPPy45+c3CGbOV1MgqjoDHyGAav6MN/a/kqfKp5YIcgKLpwlVKs783nwRic3Oj8/yQTEddBfl0Bvfi2rq9LXzHqD2/ahEAfe4h1mKaE6uV/I/hMazfnRmyU0nUNlgGYs+T++E6l4wNkOAVxnALLtgnUjhya4HQPyYU+DSrYYAFfNYFiP+FWG9iYYOnAFwZetPhtp4VBUDKIEJTGmJtetQkknCH2x1XZKWP7j8B1LONm3JYK6TacKDmKcGVN9Qoa9MuSclY1YY1GnjpwTGL9T7Lherz+mR5wZwJ3Lx7/Zv/Jrzw5CeGrxDpsv2UuePK/UKXX+0yM8THWS41ZVqy8gFGTLiL9o7R92FYvGkTUyYC/NMmjU5XvAcA34LdAeeYnwjE7Jo4McFAMvXXBq79Fa/Exy678yIq+xbUQmOzINIKOOKwHk8IrVCLT3c7/ItE3s6V+X2XgieSlBXJMZg5SfZUviFcGKETGdvrZzza+QXoG8uCSq0VFCmJGpwDeSjlqRNYbzaogukBzzjH37xopoRq0Qx3GkPjHztgeNHJfAex/O+n3/IKfDeoKTveIy0ImHfsOyYPd+PUl++8uxCE1og5TA7X3vTlebgFYWha5E/PxBGpc1hujFkHufFVwLFVr59bJ3UT3L55PVp/gytByrhH2M29BNOqoYRVn/I4sutaXpl3PWQSNvcrHeTvIDRT0IZJ3yvr5aa2oie1yAfwvC/r0fF
- shzU574d
- XcsgMc6g7hMbQ4zsSH4ILjgGrnEiARz1aXXMZqpdZ2dSQOavEtOjH1y/b2RfbxzAvQpvoZO6Bi0VBerwsGVIfCNKwtCvmU5rnsgi0W05WBpXz1br56vpp+W5oCi0+cxhBtPbJMvlTx/qQwUOWnGKNA0J5ONl0TSe663k3UV+1IEdIAE1I7rS31q+ToAFMEhSxSuKAFNOzqFogAwxkTZWcjnqhUo2c9WxJmRMAAPGpmU4KBnJ8ikDc8Umyvb/Dp24DngT+p4lDO7pYnrBGSkqotKtKvcDzlhwvVnv3Z6UcWdKPLrfURW3Ky/AL0j1dBzQdMABa
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 00259140010
+X-Stat-Signature: 1g41gwfye8yq44kr7a9rwodpzub8fy59
+X-HE-Tag: 1787900625-396909
+X-HE-Meta: U2FsdGVkX1+7f0FcoaBRy0vgyBorlIO1JUEv+fRmg2SfmROwpT+FzoUptmxM0Pm5zTdt9PoJ4AAMIKiT9P6qjuBmM23yOXJvPUOzdcloLsPCP7zsITiLhMjUFDp5pzjVH4thhRpTI1MTo+6odbdyvQ2A/oBNwfDA2P2Ro9UnVS1PDXP/Szuv8aYHOanrjHoMhJoDJezVwbz4qRnKa+kIJVI25lE3oao2Z2Pr2gLDXzRip1Mp87Gwa4NWJ9EReoLXUJLHUGcdAE9+bgKGiHdyoWz5STTFAMDzk3zDicZUNA+Yw8vcwCqmmp9LW428tgnga/sF1VUwfcebxgYb33cq3ndvtxps/O6FlrKolOPrhmTNMZ4AVjp8r4PVQ8w/JGwHDNbcBlK0Dj6eX69H3RhabTqDRLvVNliPbYrGYi1MljF24w2SwWF4H3LScLD+q9fEwgYqUMCBPFM1U2mM5M25xp0/pqdvpQ+AcBKgIV5QZfA1/1dDM7nlNth3SKnObvSgsQI03PVdhYFVm1xL7iRUd4sva+yvsB25caouBew/AJrXU3HI2vuvQ23pYPsQGpVFcWL6X31WB/7oPEm3z3JfgdKYLVbLhUNo/NtLOdLqzIpeg/ONMwg/FFqxxDPpWrg4jToGUOqysQ+X+Imwap6kV++eygJoh9/lkjkX/Tl33vgtQGF50nuLjzZ/nZVgdMSgyO9TziEJXteReDS9+sb/kZZh5TGQ2k/KHb2qfoWPKhr3caA8I3IWvo/bFX9ugGRy7IuzHrEWUgnc6vfROL9PeRQIevhlH3H1tk9XqrH/Wp/7xllXZV9MSnf74p5LutDniGJR5zIVPQ/UJGy+jXbV1R500KsQdTXE7knIY3b1EyDH6lx/wGLBDf+l0ETqSt+VWM5PxmJ6DOLpNuDYFb4jUwI9ILSn2rB+lEy6+fMZ0hTRaFIbKIVj/Zs851BIuBXsAWkEkHAFXi4QlXJcYh1
+ MnHQODN4
+ w6nA3G+B3o4MIh41Py6Hj5YX3Y0gc9r5I5RCzsIN8yzAjKbIpWYjcKVSJXuKncMPAMnbuswB9LDtJX0OgSajW+dKKCgGA/g6p5TfgoamyETeYCBJdUWCYM67wmUqz44ZHyiYh9Qe1i8l4X5+xncj5zstWB/6H5GCDr6UHRYek7uBWGSCHwoj+mPYTNw0u/9LlVkj+c5wzkwZ4kaw4Qp4+qngP5Yb9RMlMhu3qjMwVOgvGPzwy6+KOH1YaP8h0NuGLnnj7nmREvks7tJCWgA9LsbzeV+f7a60PQPbXlIcN9fqEcWYXUVaJyWlp7/dAOd60ErAG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,23 +97,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Aug 28, 2026 at 11:13:31AM +0800, Zhen Ni wrote:
+> This patch series adds process and memory cgroup filtering support to
+> page_owner. Following the previous series that introduced print_mode and
+> NUMA node filters:
+>   https://lore.kernel.org/linux-mm/20260707115411.1714314-1-zhen.ni@easys=
+tack.cn/
+>
+> This series adds filtering capabilities to page_owner, allowing users to
+> filter output by specific processes and memory cgroups. Users can now
+> filter page_owner output by PID, TGID, COMM (with wildcard support), and
+> memory cgroup path. This makes page_owner debugging more focused and
+> efficient for tracking memory allocations in specific contexts.
 
+The majority of this cover letter feels like it should have been
+documentation put somewhere :)
 
-> On Aug 23, 2026, at 12:40, Longlong Xia <xialonglong2025@163.com> wrote:
-> 
-> From: Longlong Xia <xialonglong@kylinos.cn>
-> 
-> remove_hugetlb_folio() and __update_and_free_hugetlb_folio() silently
-> return for gigantic hstates that lack runtime freeing support. All
-> callers should already filter such hstates upstream, so turn the
-> silent bail into a VM_WARN_ON_ONCE to catch caller regressions
-> instead of masking them.
-> 
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+I mean I like to be verbose, but this is slightly excessive :P
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+Remember that mm places cover letters in the first commit in merged
+series...
 
-Thanks.
+Andrew - could we not do that here, or at least heavily truncate it?
 
+[...]
+
+>    Test: Cgroup path exceeding PATH_MAX
+>    Generated path length: 4101
+>    ./page_owner_filter -g '<very long path>'
+>    Error: Cgroup path '/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+a': not found or no memory controller
+
+Also let's maybe refrain from >4000 char 'aaa...[rgh]'s, I think people get
+the picture without needing all the chars :)
+
+--
+Cheers, Lorenzo
 
