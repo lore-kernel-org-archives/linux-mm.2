@@ -4,128 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92CDBC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 13:46:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DC90C61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 13:46:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 704FB6B0095; Fri, 28 Aug 2026 09:46:09 -0400 (EDT)
+	id 0C4CD6B0096; Fri, 28 Aug 2026 09:46:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B6AA6B0096; Fri, 28 Aug 2026 09:46:09 -0400 (EDT)
+	id 076146B0098; Fri, 28 Aug 2026 09:46:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A5226B0098; Fri, 28 Aug 2026 09:46:09 -0400 (EDT)
+	id ECDA36B0099; Fri, 28 Aug 2026 09:46:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FA586B0095
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:46:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3946803A4
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:46:08 +0000 (UTC)
-X-FDA: 85150802016.23.0ECE646
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BC10CC000A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:46:06 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjUjFPGg;
-	spf=pass (imf10.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787924766;
-	b=NpjVLFT58A3ZndCohB/0uVYeDrN4Ijdj9ICvbGsQz/uz+K6IaakXIUiwkjJdeXvZSfEQeT
-	KrRsUVAZGFobMl7vk2Zoah8Ui62Ww25uWVgpT87oRPz/Ga7foPOXBMlMFBfL/r7zL1JxVS
-	vTMmwEcKLNpXO31++uMOA+/06XadnfU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjUjFPGg;
-	spf=pass (imf10.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CA54D6B0096
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:46:41 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 518C11203CA
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:46:41 +0000 (UTC)
+X-FDA: 85150803402.07.9B1C3E4
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B3C57180008
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:46:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="PyJeei b";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787924766;
+	s=arc-20220608; t=1787924799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZkAIK4sJSZ+M6U7rXtAMjWYbvL4XnlFujZHGVX//GSY=;
-	b=XI99+Bioh54FHOsJPQIm8AxrxfAlveuJn96o7xwmF2IZ0r/QMF+Sf14emRWlY8DOCzfSSR
-	2H8ROpXa9EHRGIol/AE3uCVvuuDY+oRZnX8N8LCw7mhIQwABhY0X3ZqLMgUg2Gs+uuHYQb
-	FRyAaDIYYO1icEm2mY/D/etxjcVO80k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA4F341455;
-	Fri, 28 Aug 2026 13:46:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61C81F000E9;
-	Fri, 28 Aug 2026 13:46:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787924765;
-	bh=ZkAIK4sJSZ+M6U7rXtAMjWYbvL4XnlFujZHGVX//GSY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=NjUjFPGg1szvr3eb78v2BpGQv+wgHid47nEyNFCF4UtD4VOdqNOt8xN/TmW/lz7pC
-	 Hfb3M4OLv9NBqnBI+kJP2HzzaQSfvx4FzS4UkOu2qMkys/Jzo+q0CYKmZHRdS8Cfoj
-	 JqFpNq+Z2uR2W0ItcWD+dCY9h2kI2Pmtons2mtYREqzuyo7tePoAoomC+yQ+/8dMxh
-	 MYP2TMHM1ohEBtisAJojUoUmBbyoKBQAGOZ2Dgt2MclbRwi7ECg1HEnTtD0fhWK0ol
-	 OchJFRcQw7oZASNd4EtzB9ztlpmIdHTFtHoNS9+K5QGBPzOzEazxuoD3I83FcQ3XIJ
-	 x6jZWn3Eo7bEQ==
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 5F2B21980072;
-	Fri, 28 Aug 2026 09:46:03 -0400 (EDT)
-Received: from ams-imap-11 ([10.64.2.31])
-  by ams-compute-02.internal (MEProxy); Fri, 28 Aug 2026 09:46:03 -0400
-X-ME-Sender: <xms:F5GRaqE2NkgyW7Ns-LsvSLTTDYKdh01qS6ZTDLQ4fw9t-N0Ddrtc0Q>
-    <xme:F5GRamK8JEod1kC8v70PUAKg83EM3BJ4mNsF9zenJckTWXg_DbGiqaZsOaLiTcf1f
-    Un5nzICP58n5e2w4IxsrJ6DR2ew4HXCRnU0kgMGarbUP730m9edsSHf>
-X-ME-Proxy-Cause: dmFkZTERWf76UbFSBm7gP10dcMTeqKkA8/cAL0sZG2rtqNj9Cm8XygX+z/UkBm5JSSVYUy
-    tiYsLDls4/Z8P0ArKeB4JwxyT1aUPV/lD2jc7QsFKIVQHQani//0H1PZEuJk/TiRbXXB2d
-    2quRJqkXk73Cy9UXGvcExqZtTKUBQHobcpzJhpw2JFide00btCWCAKJxj+FFD/0LYuztV0
-    RDQfQ9I5GuMU2Gp/6HPTrAQR0FUWuP5nz+ODfL0oI1jx4s+jzNT/OxnaNHzIWAbOUDVPAP
-    w5fd1Gn9Re9N8rvjRkwEA2WKBs4KNvy7cNDKTIaIdI60cHjToYvMPt6lZJQt9iOoIsFcNt
-    RgMeFGqQHwKXp/37eumLweC5yrLclcKzJJT5cNY+IHV1VdIyqIG3ZtBU5HWRsmj47nFXXO
-    E35L8lICEmkjQ8uKpI/zFxfHP7ZNKUlS9+8zbra8ZkiUUpsAFf0YCS46pUJJrUCDgx6aMI
-    V3tmtGKfMb0aauZJvHtfGU1pRrhYIJs+OLLCQ73AXWjoo3DemVX15rIZX+nlbfZxakHWuF
-    qQOXvsSwhEkofy7Mi18iqc/ZOGzI2iapsjruAeX/BsRit5HFPQYWWAYVRwICynS23+3qDa
-    lSE1BUqfAQ+/hmaZUT/n/B29/elggaG5nEArlIRIROmCs2ooVKdFgmt50K7A
-X-ME-Proxy: <xmx:G5GRaidmDIofxjDrnckkltqpU-EBp3Rle_aBNo2F6P7BC62Z4iDwZQ>
-    <xmx:G5GRagLQLLdIZbdkb7L2guevnkadNbHtrAwSNHFCWgxQJ7GeNQ4xXQ>
-    <xmx:G5GRasCciwc4APHUJloqDeNMxyVffl53TzupnMualIviek0VAjp3Uw>
-    <xmx:G5GRaphOIhi5fNP21BBwmTKuIl5vQHIh-O74BW-RnFIO-oBnHepfnQ>
-    <xmx:G5GRamNZICx_vr-e_gFs2Augf5avMnxddCHXulCSvH7Iw1aF3MgajzWL>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 89751F80080; Fri, 28 Aug 2026 09:45:59 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=nQrVV3KHaCazWFUYZXrNswbqv+h44byMvxeCDxp4JpA=;
+	b=GraC1qdyG5Vl2q8wGtDqL/SbBoxpAppoDuS10sxmecsby0MbTmzJklG8c80umxDpeMcrQ6
+	XS+1AD4YWlRzQUHVJb07TfNgjyEFSxiGYqZgi9hDYqpzeSiJlVA9TqDrWQK8BLYWWtC9N6
+	6X+tx1lQPjTtk3BenaYtrSnoJrTc2G8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787924799;
+	b=Xx9Cm5EmLgYL1XdINi2aKYryi+xHLjKz7mGQwXpYSoFigtUh95vK7vZxLZUx8qxClReTHW
+	8wuhy6gM0Re7hp+MUBKt7i0f0qkPZ18/LxpkDwety3h+VNEWd0hZZ61ZHazWCClqyP+uTL
+	nFS/NKjvUWZbCJ1/J5IPh0QoDnb/tb0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="PyJeei b";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=nQrVV3KHaCazWFUYZXrNswbqv+h44byMvxeCDxp4JpA=; b=PyJeei
+	blAy2nprQ6IN8qEa87zXIN0nK2Eqq/oKUaRUx7D+RBs1PVvPN8RkO/vUg1nLLg4+dPfd16y1HaGCe
+	DiF6PV40n3/aUHMOAQ/JqMVITDOmpJhICcf5PUZM/VjfOGGRuVCVXhLSIdXJPUxo7bUFqhoLyWapS
+	vf75N5xdIiD8z/90t2OSpIhP8N72KmNW3qZk6hPqc1gaud4iG1SMaBaMUIICnaJoE6qqYBWQOVI2p
+	neyOefzQUwgsSvGvkt9rREwPIIC4v6U4p6ZFLTFa3EU6ZnBkv+kCVWYDrLcTgAxyTQgeZOJgeTmEs
+	0rcighijt0+LV3H1ZhBOXd9IwGTA==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708] (helo=fangorn.surriel.com)
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1wzwuY-00000008zmT-0pBE;
+	Fri, 28 Aug 2026 13:46:26 +0000
+From: Rik van Riel <riel@surriel.com>
+To: linux-kernel@vger.kernel.org
+Cc: Rik van Riel <riel@surriel.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/memcontrol: extract stock drain predicates into helpers
+Date: Fri, 28 Aug 2026 09:46:20 -0400
+Message-ID: <881654a39036c55ef90c9ec864d4ea9cab0a2821.1787890328.git.riel@surriel.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <cover.1787890328.git.riel@surriel.com>
+References: <cover.1787890328.git.riel@surriel.com>
 MIME-Version: 1.0
-Date: Fri, 28 Aug 2026 15:45:39 +0200
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Petr Pavlu" <petr.pavlu@suse.com>, "Ard Biesheuvel" <ardb+git@google.com>
-Cc: "Catalin Marinas" <catalin.marinas@arm.com>,
- "Will Deacon" <will@kernel.org>, "Steven Rostedt" <rostedt@goodmis.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>,
- "Daniel Gomez" <da.gomez@kernel.org>,
- "Sami Tolvanen" <samitolvanen@google.com>,
- "Aaron Tomlin" <atomlin@atomlin.com>,
- =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- "Ryan Roberts" <ryan.roberts@arm.com>,
- "Kevin Brodsky" <kevin.brodsky@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-modules@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Message-Id: <cee89666-9de0-4012-b665-69da3846c5ef@app.fastmail.com>
-In-Reply-To: <524b5817-c097-47cb-b301-4a9c0f1d2947@suse.com>
-References: <20260822135323.795946-11-ardb+git@google.com>
- <524b5817-c097-47cb-b301-4a9c0f1d2947@suse.com>
-Subject: Re: [RFC PATCH 0/9] arm64: Allocate .text and .init.text together
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BC10CC000A
-X-Stat-Signature: 6gonyjohg6nkbn7xye4nq5i5dy1sirbc
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B3C57180008
+X-Stat-Signature: amxgga7jfmp6qi9z1pn8kha6a8d95ckr
 X-Rspam-User: 
-X-HE-Tag: 1787924766-99706
-X-HE-Meta: U2FsdGVkX1/bYgLWR5kAr2BgohVGV58JYA/qBjCk/UTpQjdDDJaQ0mMymj8kd0yyuWFFsnf7JC2s5OhLCFoYHmOVeLPbni9aFFdubFEHlcahPO+txWa5nAwKssJIJKE0iYO60I1lHAcMsE0gZdRmTYo5MLep4CYa4qkeHYMl9BghC8/mBkb/sby6rdhWNNXif1DnSg9jgekJrz6yxfp/R8kIki2I7ntdyIbHVZgagbDmMLImGjHCx+fN3ERPrThWDbkDjVmVvUcacuGspcwqrGQoM7aI28UYRRC8MT+13oCoZEleV3AaJ0eyxCCfdAye96PohhaWAF8G7IAxllzRIhPBfIL68wJk5hz8YwkVfTPHUWc4jW6EAD9tY1aqrMm4DmAd+iuR+t4BmydBA8IlWndYu8v5iDpF2ALG1NQTzg908Mg6oosUHnnnBg2sAmaEtqvS8ryA9zdorRFQQvxk5W5gmIRKuupkT2TrHjgts838n+QIv47s0m8m76MiQNcmQdmvLMEc/9xyoRj5FSWsNKfFGSPtBheo3Q75dqXa4RnDMS3EVh62qOd3sFh0HHptpmBAz7/cGqFSdo3fzcxmI2D1VAeO7NgSnRwm4phRolHW3u13KVSUnoaa3E403o897XHCzv0x9G71sCdoHKjuyvFVx8LdnIqpPYXlSJFa84/CUcl8Q2itM+EtAZyFI2P4vnOEzPr7/8N1jn4uG9xocBLCwq//K2nMYh9LV8Fmb7mNWHIL0VQeUb4efbqSNfluam3t+24WlzKvfgdDsCkS11nctAJgOpbGbBYyXMCjnLPF1aZui6FAoagTvlqKXBinURO14GbiF7U9NmWMf1pWk/6ZajzCtYxmraWZGRRcqWTmw8Lmi3CHQtmbE3LE4KmGe1eUJiT96zpow/LP5ESKGRv+y2GXw4XPfY1bHw/HU7mrGOXfmG8PPxdlvrtZmNVK5XqV54k2NqdRLYQpUkP
- DrAdNNwz
- yA8jCksYv9Mz2uH+B1+++k0goGdFp9DjHJY17iG0vSgYcV9ZTTkOMieVwoxV7M5Y3ezMpED5IiCypVkjdQwwgY9nSyjsKSlTGovoityec9ictZ2BXzd5aXJ5eZ27hjrO5XiFjopZbBcxgSM7RmQT/o7GQO23b/3ZE+ZWqdx3qtsCq4jMJpjDYWleurS8DMdiiFNeVqDil1hHIgJU2WlLVpF/OSFRr0obI6Wk0SxsJ1ZAD2oY8bCeB/djnb2GyAf/4XSvM/Y/0m7URvePohTQalmKwwuhlPLdaxkZ0fk+EQmcdKbG3mRcynyaVBAr4vwhm8wui0n6iaT9FDJI=
+X-HE-Tag: 1787924799-802747
+X-HE-Meta: U2FsdGVkX18DA0Qa7Sf6T553YxqHwrSpYMYjfJ7kR9EkobRqFZDKtJ2OqkXucKghM9keZmNmogELeGh4pgUCO2F4Anm5IAgZz/QT/Vd7+MCoJc3QYpSQMTiDSytLxTrxqDJRfI5/TGBmTs7jT9q5yP1S+Hs/VniOYbIgSbbTZCGpPQxShPL+PKN5dW4XneCw/6NXwB6CmcugxAKbmrrUIEZORiZw+fzwf6nBaON2a5vT7z5p00b1DBThj0FWsosnQh4iJISYN2qsfCdQ6a3zKOoGhg+8TTr9AlbXmIzs4Ok2cEQRDm4azlt9IdAGnFFNwyIwpGTWfeIFioAP2ul12uJhbtx+EfLD17VxaphFzvcqqDZMkOpNLxzI0LItOPqhAEyL/SSc0poVXoUw3PQ3dtWjUyEww2O/lDUOsWvGYxuatXrUVS62diMS49nTz4U+j/PEMcUTCRp9Xzy4nKSqvle9qXkuWWO6BvduKuz7r0FjDjDtLEIE0DOObU1aBoYZMWsxFNeDl/m3DGZrkdsk/37rEDCKgJWKp0oJ+H9j49VSzxJIU50PAGXo7kFIa2ssmeJCe/PI3ATH8r0Zj12o7s3e2JhxdXESkb3qwkGGIFN2OTV8eBR5OCSu18xIzkcJPJvntGpsPVk7JwrCacM+n8qPe7FCIKOOOTBva9dN0jk/dURm/jZCKa1MS6JPe6n4lCD6+UCj9NPcGSBa+SpXwt5iTFhsyt1wMz4yDiO+IyXl8hCwhlVKHQe+fNG3FjjHwifbCJEeJvTUXsEq6kxrwTRYM7r2/+fn9eqdFbPhKmMxxvdYoqWxkiT5fS4sytUcGt9dBwKIYF+yAiZ7Ul09QTf5fzrTPiFZWJi/kw6svvGkPQaz0wyErXWFa2HISk1rMbL1xROY7fste5Yp8Wv4rE3En021myuUTR5HpsB9nah95WdP6NwvTbVC/NJMD4QOZmXl4MLrtbDXwdcQQ81
+ c3WXM5VV
+ HWdYBZP3ux844nPoz29s74ME4lQOqoW7W3kt71cGlrL88tWntr0VSWNYyV59NaT2bHBh6+KgMPDhMhWTcajHzETo81mCfIdiLRapnDjIr+fcAjcZg+ekHk0Y1o0gdXjrtZdhOOElAjR6R65vvo0ChD2VAbiJ/Fdxj0BMi1ILY3jLs92drEnKBF6RDLzl5+tQE58mJANh9zGHU1AxA9f0kNiDupOGC4v1dkfe5U41nV2GO0nk6vlXzwYtFU9Z+TCa9fNO33pmdAVlTKPJ3F7xD7H+zi+aoqgJFARu6Fk4ZDcEJ4gPxMSJABAovc7LHmP9/7f1ieLdl66SpV+HsVT9qJYIWSnksAJtbd5RU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,49 +100,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Wrap the FLUSHING check plus is_memcg_drain_needed() /
+obj_stock_flush_required() and the test_and_set into
+memcg_stock_should_drain() and obj_stock_should_drain().
 
+No functional change.
 
-On Fri, 28 Aug 2026, at 15:07, Petr Pavlu wrote:
-> On 8/22/26 3:53 PM, Ard Biesheuvel wrote:
->> From: Ard Biesheuvel <ardb@kernel.org>
->> 
->> The arm64 module loader has to deal with a couple of corner cases that
->> may occur when .init.text is placed out of direct branch range of .text:
->> 
->> - ordinary direct branches from .init.text into .text may require the
->>   use of a PLT entry (i.e., a trampoline aka veneer), which means not
->>   only that additional PLT entries need to be allocated for
->>   cross-section calls, but also that .init.text needs its own PLT
->>   reservation, as the one in .text will be out of range as well;
->> 
->> - dynamic patching of the ftrace handler into .init.text code needs its
->>   own dedicated trampoline as the one in .text may be too far away.
->> 
->> - recent compilers may omit BTI veneers for static functions that never
->>   have their address taken, and so additional veneers will need to be
->>   added to .text in case cross-section direct branches from .init.text 
->>   require a PLT entry (and therefore a landing pad at the target end).
->> 
->> This is unfortunate, because it is actually somewhat unusual for .text
->> and .init.text to be so far away from each other: only when allocating
->> either of them (but not both) exhausts the 'near' (PLT-less) module
->> region, the other will be allocated from the spillover region, which is
->> not in direct branching range, and therefore requires PLT entries for
->> cross-section calls.
->> 
->> This series addresses this wart by allocating both of them as a single
->> chunk, and freeing the .init.text part along with the other init
->> sections at the appropriate time. This ensures that the two regions will
->> never require veneers for cross-section calls, allowing the arm64 module
->> loader to be simplified.
->
-> It looks like this should also be useful for ppc64, which currently
-> merges .init.text and .text because keeping them separate would require
-> stubs between the two, and consequently .init.text is never released in
-> modules on this architecture.
->
+Cc: stable@vger.kernel.org
+Assisted-by: Hermes:muse-spark-1.2
+Signed-off-by: Rik van Riel <riel@surriel.com>
 
-Thanks for the data point - are those stubs needed when there is some
-distance between the placements of .text and .init.text?
-
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 1271d390b617..a660ea0f820b 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2306,6 +2306,30 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+ 	return flush;
+ }
+ 
++static bool memcg_stock_should_drain(struct memcg_stock_pcp *stock,
++				       struct mem_cgroup *root_memcg)
++{
++	if (test_bit(FLUSHING_CACHED_CHARGE, &stock->flags))
++		return false;
++	if (!is_memcg_drain_needed(stock, root_memcg))
++		return false;
++	if (test_and_set_bit(FLUSHING_CACHED_CHARGE, &stock->flags))
++		return false;
++	return true;
++}
++
++static bool obj_stock_should_drain(struct obj_stock_pcp *stock,
++				  struct mem_cgroup *root_memcg)
++{
++	if (test_bit(FLUSHING_CACHED_CHARGE, &stock->flags))
++		return false;
++	if (!obj_stock_flush_required(stock, root_memcg))
++		return false;
++	if (test_and_set_bit(FLUSHING_CACHED_CHARGE, &stock->flags))
++		return false;
++	return true;
++}
++
+ static void schedule_drain_work(int cpu, struct work_struct *work)
+ {
+ 	/*
+@@ -2342,20 +2366,14 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 		struct memcg_stock_pcp *memcg_st = &per_cpu(memcg_stock, cpu);
+ 		struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
+ 
+-		if (!test_bit(FLUSHING_CACHED_CHARGE, &memcg_st->flags) &&
+-		    is_memcg_drain_needed(memcg_st, root_memcg) &&
+-		    !test_and_set_bit(FLUSHING_CACHED_CHARGE,
+-				      &memcg_st->flags)) {
++		if (memcg_stock_should_drain(memcg_st, root_memcg)) {
+ 			if (cpu == curcpu)
+ 				drain_local_memcg_stock(&memcg_st->work);
+ 			else
+ 				schedule_drain_work(cpu, &memcg_st->work);
+ 		}
+ 
+-		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
+-		    obj_stock_flush_required(obj_st, root_memcg) &&
+-		    !test_and_set_bit(FLUSHING_CACHED_CHARGE,
+-				      &obj_st->flags)) {
++		if (obj_stock_should_drain(obj_st, root_memcg)) {
+ 			if (cpu == curcpu)
+ 				drain_local_obj_stock(&obj_st->work);
+ 			else
 
