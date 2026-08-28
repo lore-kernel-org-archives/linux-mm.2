@@ -4,115 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85F6DC61DC4
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 01:10:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 769B3C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 01:38:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54E136B008A; Thu, 27 Aug 2026 21:10:52 -0400 (EDT)
+	id EF6B36B0088; Thu, 27 Aug 2026 21:38:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 524AD6B008C; Thu, 27 Aug 2026 21:10:52 -0400 (EDT)
+	id EA7396B008A; Thu, 27 Aug 2026 21:38:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C5EC6B0092; Thu, 27 Aug 2026 21:10:52 -0400 (EDT)
+	id D96336B008C; Thu, 27 Aug 2026 21:38:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D90E6B008A
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 21:10:52 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 827B11A0236
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:10:51 +0000 (UTC)
-X-FDA: 85148898702.14.E577212
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9E72D40002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:10:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=c3aNnNkj;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	spf=pass (imf12.hostedemail.com: domain of paul@paul-moore.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=paul@paul-moore.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A3D1F6B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 21:38:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38A25C021D
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:38:34 +0000 (UTC)
+X-FDA: 85148968548.30.9E189F5
+Received: from mta1.migadu.com (out-119.mta1.migadu.com [95.215.58.119])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D456F40002
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:38:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Cl05IFeJ;
+	spf=pass (imf17.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.119 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787881112;
+	b=m8jf3o7AMlf6MHriG2NknHSR07TVlSaURjE+E8apKyRtWKnBZJlaGa7lfPnd45IUeDHlR7
+	H1bWnuN4uhDxZOIy6OgzOBF6Ih7JnH3uqejS8tGrCVoC9J3Rl+w3slJoclZVVDUBO71Rkj
+	Cyv7JXNaGa8QAw5BwFT4QZmHQkU0VYg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Cl05IFeJ;
+	spf=pass (imf17.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.119 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787879449;
+	s=arc-20220608; t=1787881112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DqRGrR0heNmSPrtTW9+v9FKZZ7RwzxehXvY0MCzvxnw=;
-	b=wk3uGjQaVihZqxNbfUK3dSoGdBX5GBwrX7ieg2QsjlTw4z7B0giq4A/MAeJMQ5WeYXeqqX
-	vPsvKXbzSF2QzLZBVyudP+oESbcvh5RhUKp4aznUDra3pVx1bnKJsLP4k60XEJ/Sp/qzYG
-	8S9fFwgXUB1+d0XphEEncJcpBrCeRZk=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=c3aNnNkj;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	spf=pass (imf12.hostedemail.com: domain of paul@paul-moore.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=paul@paul-moore.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787879449;
-	b=6hO7GB103w/Fb515RcV2lUXHov/R4yj9Qjjwdag0vB0yxH0CcEig90mhZldT3iwXs9FGxl
-	Ds8CTnST4stQ2Pw02cmpLUbob0890I/B0rI0QbJco+A3GR/9dXh5FBsVSXXOWyGrauSrjP
-	0LJgHdprWA4m9Hnk/H7TUBjdwSYr9ks=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-930c0f9c1b1so20984185a.1
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 18:10:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1787879449; x=1788484249; darn=kvack.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :content-type:mime-version:message-id:date:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DqRGrR0heNmSPrtTW9+v9FKZZ7RwzxehXvY0MCzvxnw=;
-        b=c3aNnNkjPSYl6kZ0JuCrf4KMeU7zYrqk08Sjj6ijWyqk70CYGacFvcqD2Bm/LQO9Rg
-         zSWqrC+80zUrDBMqt1ZCXUfI1DAg5ami8Z/gHJSXpbHwX0IaPic4yRBZKOhnnOXwDuQA
-         BbL8bLq+o+wvBgGlJzciRj5kUq4Jbufv49KIvpsDco0MPox/Qg8mZLca4pt9tk8+sxZp
-         PSq4R8A4ddTbUYuC4OUwttTY+m4G1XD2NCq53UCiAWstCnyvs1wQHxFo0jUzgppS3Ujw
-         wiS2FVLNzfY1sv4vPhSLcACq6xspeavQDj+QY9yDYS9b/t5f8gZvp5jpxvJF57LXe+Y4
-         gxmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787879449; x=1788484249;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :content-type:mime-version:message-id:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DqRGrR0heNmSPrtTW9+v9FKZZ7RwzxehXvY0MCzvxnw=;
-        b=YYqcEBQ5XoFTSp4w9NrzR12Tkj9nj9qGHlyvWT7lZzD+wNCtY4JVkb+VmDAZ5FDk+i
-         3ASln9anjJLA9UZC7jpZvcz9phLp2FyZgMTaHjsHUXKirfSB1PgtIfaGyxjv/cryQi3Q
-         7d9b7agVDUuMDQNqh6WQWvVVQIB1lVZut9iSZNlcSErK1zaiTDeoJRqB3MfqML/pUHds
-         9i0OkwUW+gZaonCf9s/ktnNjkaA+1eHhUDuGK9inDbBj+Qo734y8NWZxIvXFmuH5hfUi
-         SKgwmOL4amb80FZ7VYKVUOdtn5z10G7ZxU2ym1uW/hJXsRZII6MIoWD4HEnj0wdnc1kz
-         OQ1w==
-X-Forwarded-Encrypted: i=1; AHgh+RocLwF5+N5c2kgpCNwCK7Lj4q8jVIQ3HIMStk5PIMHBcNtJLQRLQUvUyG35YhkYiZxH6PKlYms/MQ==@kvack.org
-X-Gm-Message-State: AFuF++msFVXVT00MsNbvYa2e5MwAAhzYigxMemou08nXZB+/b0Bpv/nW
-	cF3TPXV8trwVj3VW6fwun9ivuPf4sWso9NVsLgFDoJNgyyjhUcpz6B0+31hB/nXVHw==
-X-Gm-Gg: AR+sD13Rogm8Nrg5Z5YvppXiN43hQ3HuS1vc7gB/SyqP8KtJB6+YU3iqv/oscHbTiIo
-	Aq59tlpuTYItZEzznNuDvriBrziCzziIFvugeaCy8hgmVELErx80xCgKBNrn5XhByI0EOLEzCfC
-	sOThgKTD2qLf749eTetGO4L5zr5HefwenZKi8d1xlPggmfMTbAbN32vD9x5TaD7ukPRLnFf1Jeq
-	ZNHnj7iWbLLUF4dJz8tZnLo+7arvALwhB9TSGMdpwkWtYHB37DtjfkX3TxJUPsDxkxU9yjSL6BS
-	/166BWF3I+9qukD4MwqWz2ZkAiX4Sh9JQyIoR5+QkkHkwkCe6VzI9d+RRA0fn8BUzezcyX1mnNG
-	XpPry8yvY0rBlTL5vGry+k+cG5WtC7RDzZp7PMw1nQtTO6I9nz44XcWnxNWL+K6Kvuq2hOiQuSq
-	Krmp9E+hdABD66kWo7NqoEfKwPKrFlyeWQ/CviF3wp6a8jzoVMyWDTGymlrie2SCcR1fh6cuJOZ
-	OINiljxE7iJEdQ41yBBiFe2nVIE1Z9ORwX/DykR5Lce
-X-Received: by 2002:a05:620a:290a:b0:934:9524:2e89 with SMTP id af79cd13be357-93913809957mr300256985a.13.1787879448634;
-        Thu, 27 Aug 2026 18:10:48 -0700 (PDT)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9391725670dsm34787285a.19.2026.08.27.18.10.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 18:10:47 -0700 (PDT)
-Date: Thu, 27 Aug 2026 21:10:46 -0400
-Message-ID: <de5f1c2fb1ccbb92beda6906e23ac457@paul-moore.com>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=UTF-8 
-Content-Transfer-Encoding: 8bit 
-X-Mailer: pstg-pwork:20260827_1122/pstg-lib:20260827_1501/pstg-pwork:20260827_1122
-From: Paul Moore <paul@paul-moore.com>
-To: Jann Horn <jannh@google.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, Jeff Xu <jeffxu@google.com>, =?utf-8?q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v2 3/3] selinux: require PROCESS__PTRACE for FOLL_FORCE  introspection
-References: <20260825-selinux-pokemem-v2-3-b46bc64916d8@google.com>
-In-Reply-To: <20260825-selinux-pokemem-v2-3-b46bc64916d8@google.com>
-X-Stat-Signature: 6tfrexe8ruo8by4hh7e8jab57snk7t11
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9E72D40002
+	bh=/II78MybNn0Q2bXep7+K+AAC6pLLViUdYwPp0UzN8qk=;
+	b=bfSXfCbG3UeLJrySB644a1vbX4/UG9TegN5rz0X5umDJukKLZjsRTxbEyojqJd6mS8O7Vu
+	UQPHCSKPjVvCh/QithNegNS67YE7WBA4J4ByR/bpdueGD597TVxaMfHvTE1rUbqGVpBiLm
+	ka3kp04fm6s0CO22Tocp9cIHHivNtCM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=9B9bzIQfMl/vcQvlvHw+4YRKHMkOiXpCte8Fe955u2M=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787881110; v=1; x=1788485910;
+ b=Cl05IFeJmDJfllfn92IfQfCz20g+3kjSIPYD+bZCDsfW9DZXly5vrqDHFgHFj5l9EyTQxUwh
+ pmciQrPN6H5iE8QApCciABx2UAZU43rGr9DC0PirjcrwsWu6gtotR5nYqshXM94Vxgri/kwuLlH
+ CDSkzo5rXqOPhh+3PLmQdUeo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7972bdfdbca739a7;
+	Fri, 28 Aug 2026 01:38:30 +0000
+X-Mizu-Trace-ID: 7972bdfdbca739a7
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ee79e463-b1fe-4b5e-9bac-bcbaae334829@linux.dev>
+Date: Fri, 28 Aug 2026 09:38:23 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: hongfu.li@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
+ david@kernel.org, steven.sistare@oracle.com, vivek.kasireddy@intel.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>
+Subject: Re: [PATCH] mm/hugetlb: fix resv_huge_pages double decrement in memfd
+ error path
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <20260825021013.25672-1-hongfu.li@linux.dev>
+ <20260826194759.88487180eebf728c1df08f14@linux-foundation.org>
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <20260826194759.88487180eebf728c1df08f14@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1787879449-505353
-X-HE-Meta: U2FsdGVkX1/iS+vxlE20VX6Jj4Dr8A1DGGg1XpVYB91S5Nssnm0lq/GpuGISXfwz3XppAVoCIUYNhc+GcYpWELzot/dGCAIUPN8g1VULfXq9i4cKxJQYbrdT9ruY2SQJDs2gJvHqFDvpOCLwDNdZ1UzGes3N1r4elhLjPaPxNhV9ftYxGIuyDRZJ4I8JusfqRtH+aqznLwoXzQRtrAKgzGwP4xZLIHp3DP9tHgsdj5WwnQWXEmq7mISOm+FVRicbTAJbG0RTM1bUOcqi+obON0OehHof1Ww+7+6TexWcKxW/9E6CdOrR4YYYSRgMz50LdRQa6dydasE77avcgDvKtG00G5dYuobpBcfyGV43J/hS9PArBp4N3+od4gDK9ygHsVHq1ClfqGQxe9w20omucILdttJzbkjHWKkjh/MJy1Dnjp2hA2N5rg/z/go+ob4GvpaTLxmRBAelnefHZ09inSHR3TcyuaP8OZZPwMo4eUQS8hukUx+KfaN1fdOTyzFNEsTBaJx4TtIgKeNPKORufsEWaxBzpuMzRn59ILUtghK4OOWKxYPViz74DZxHhOr/h+Wkaq179fBIsy8PR+LPtgkdKdrmnCylVVH7OA4OfSX/O7gUdOKGbfoSmXIzi20kU5HMzfZlVN6nwilY9aOB0kJz5R7qa2wW5ua61cjyHoss6Hiz8Y+iotNhXq5XfRHxNsIa6Cu7wn9RqiG5JElgNJ0uZugdA8pGgDLc4mdT6jhE4wp2STSGBHvHIxyckvUdXhXzlgpCVhsmKTAs6lrCE+8+2vL1axKpuO7J1CDsbolziQE5EaQmuyW2DbaFjMHrWHSdqQs2qkl7QpKRveg9ykOSsI0xW9Ldm9vY7qH0e9PGyOdCbNe668r9jVVdATwJhpp1gdh7CjcXaR/2Z1Kpx0TPHpnEwfzSdPq0/kM4IEGZaA1H3FtWdTxv/HCbRs41f01XjcsDI9OWbeAIvTz
- yU3rRErp
- 2SMFYNvY5BufXsrmILIKOUsiK2pxzxHyceci51/eoGtG8an6PPbw9/0IpA/fJFJrfb6Zjlwk8mCmSa1X+2L+9IchAwaaPc0fduRpVGGikxWra+W2h70WSUVWfKco8Xo7XS9SYMqmQJSbrQLVbRcjNVsLQJ7gtShnqQXVt0MXbqSxdrlcj9aBaYHjbRihbTDg0OesI53nnAjHrL0Y+qBe5VCNp1wGE//tZ0lXkeZoehJ+LUgE9cGroyyqzz3RboWktMPBgVpwDkvjTGuTI9dtwRfi+nKulnxVwH+c7EWVqPnyJVS5lzdKXpuui16l9iFBJBZnsEyjbnYua+CWEXoMzJgvAlboPFCE6ndP1ZQM/xZZ+VmFBB5eF7JCYbDHoXudgTTiq4lmpX1stArk0u3P3CHJiNcDyBNlU0/RgMMtx35mhbS8R8UoTwhwNemOXCiwHFcw0aY/aCkpFUqovYLtmRIwEFy3T6gpnHEKFcr3J3p6I115PbguURd7UC19Pd7TE8DC7a4v22digwbYjhC+1qKObwxgaQmPTRaZc4v6h1fR3PgCiMsxQVzf6661Fkm4tvSfL/0H1exgXmzklq2A+it7ibjBC9WIeqIvWlsMyMCzi7i4=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D456F40002
+X-Stat-Signature: 3yzfhrzjxnhzie4t3fbfe1koiobeok8a
+X-HE-Tag: 1787881111-482858
+X-HE-Meta: U2FsdGVkX1/AeKq4lPeZdZX6nsaJ6hium2QIbll4tA8kP9/HO3FHOygTgO3gNLzgBNVhdc7PJE+Iee2+Hpw/Al+VreYvCm6SI+2MmBs8A287HGeldHpkXIy36Ll0iqzDGOEOAN5DPw3QHiX7SUYs1yr8enYI6cX5I2Sf0nLAazrEVv80S4f8e9Sg0V3GF3oW3UHQWa5XzaOs/WAeFaGtdpjDKBiVl+/oXgDkNHEbyhkW6nUN6JKXOlDMv4yEVbsYkzlrUjErT/no6DXcTgGoyvXMm+9pIFYnElfW92y4KvKu4IBNqFhS0pbrbSbk6+i/Tp2DjxVBgIuDtL+YFfn7J2eM2l7V3TJUv5sX82JmNuXJjcmxq/4VhGUTb+mn4rMnjWR2nxUc/gSLHvw2lnGACRy+eJ/4WNvO8PxHjiI5m72Pi/PULhN9Hd5o9kz6AMtPqpEqxI8D5lO9sD/2crKr7wPuGf/0dIvf2+vOBDA/IZqjMcvS00FKsNdRqRRvlzQVfoFBpWAAkULBclXuLTw6Y1EaFUhI/jbKfUpnkIfswtM6yHl3UHyGT46ljSs4AinIMLtSYDndMZOcr9ZWpBMUfUrPbys6suADY2IypDCV3SSc2k9+qWu+CLaOjI8gHk6NvovHcaDPzJJtqWJ9tGyatMM6d1XMsEB627QVjRTSD6Ynw1bbByhABZTNI/fve2PulMXeY7MZ5PlJFdD/FhLr50SPSCssiZKAReAz0OA0/prbfxsFIaG76sa0Awv1H8w/mEsUQvny/G589933oaL6i0rCvBeXQ+fQRtGBjQjU5HgsLplqL337rbhKkSRTnFi6HHF/5FEtisYuglV2UjfJukTJf1VQAEjBJSO788cJF5ui5JVs4fJ328t+Hk0RgshGm75GeXhR3Et6JRJt3/zodr0xPX2dRZ4JzqSahQSTfvY7MrPVQ/GnYP7TC2sWXMzONlAGH4uyv28wWImNvNp
+ DQNp2vUf
+ DTamIdfKPFplBBPPtZ8I3e9g9IcHQrbEjKJTDx+pYov8yOmUFxfMzR4IMY3IzfwFNS97XhrW5cot9lOqPIzjt1+emZ0ZUCfpgWcWmYTiVipwzVQ8puUV65y2EgzXyvoMJGiVrPxdPtA0bYViWtQl0nd0gLBrhKVHxyYw/Wr11xbObU/uMZhZxWakYq+7ouNuGcSpEr4doqWHzzf1noy3+UyL6l9Ycyic987/7cS0yUWGLJn94m1e7ZpIDO8w3wvl+t159Ej+StoQokel9tX1VsAHrp01X7GRCDyYbGV5eOoJGTztJ9sglwsFTG705/BsMR6R3/SYbaLUlaqZOH4JapdsX02sAn37BfguhUoKE51JEknhcHiGAFphfruEUV6gs5P9qu434vwdfPaEV1xliY5/AVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,59 +94,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Aug 25, 2026 Jann Horn <jannh@google.com> wrote:
-> 
-> On systems configured with PROC_MEM_FORCE_ALWAYS, ensure that a process can
-> only create anonymous executable memory via /proc/self/mem if it has
-> PROCESS__PTRACE (like when using /proc/$pid/mem of another process).
-> 
-> This closes a hole in code integrity enforcement that Project Zero has used
-> in a remote Android exploit chain:
-> It was possible to use a memory corruption bug in a service without
-> EXECMEM/EXECMOD/PTRACE permission to overwrite executable code via
-> /proc/self/mem, which made it possible to load and run shellcode containing
-> a kernel exploit.
-> 
-> Signed-off-by: Jann Horn <jannh@google.com>
-> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  security/selinux/hooks.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 18dd28b2bb13..2c2c60e9e0fe 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -2157,6 +2157,27 @@ static int selinux_ptrace_traceme(struct task_struct *parent)
->  			    SECCLASS_PROCESS, PROCESS__PTRACE, NULL);
->  }
->  
-> +/*
-> + * Decide whether it should be possible to read non-readable VMAs and write
-> + * non-writable VMAs via /proc/self/mem.
-> + * This only applies to systems configured with PROC_MEM_FORCE_ALWAYS, and only
-> + * triggers on accesses that are not visible to selinux_ptrace_access_check()
-> + * because of the introspection exceptions in may_access_mm() and
-> + * __ptrace_may_access().
-> + *
-> + * This allows a process to overwrite read-only code in its own address space.
-> + *
-> + * Creating an audit record on denial doesn't make sense here, since we can't
-> + * tell whether FOLL_FORCE matters for the accessed VMAs.
-> + */
-> +static int selinux_mem_foll_force_opened_by_owner(const struct cred *subject)
-> +{
-> +	struct av_decision avd;
-> +	u32 sid = cred_sid(subject);
-> +
-> +	return avc_has_perm_noaudit(sid, sid, SECCLASS_PROCESS, PROCESS__PTRACE, 0, &avd);
-> +}
 
-I realize not all of the SELinux hook callbacks use proper kdoc comments,
-but I'm trying to fix that.  If you could make this a kdoc function header
-comment I would appreciate it.
+On 8/27/26 10:47 AM, Andrew Morton wrote:
+> On Tue, 25 Aug 2026 10:10:13 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
+>
+>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>
+>> alloc_hugetlb_folio_reserve() decrements h->resv_huge_pages when
+>> dequeuing a folio, but unlike the use_global_reservation handling in
+>> hugetlb_alloc_folio(), it does not set HPageRestoreReserve on the folio.
+>>
+>> Its sole caller memfd_alloc_folio() pre-allocates a reservation via
+>> hugetlb_reserve_pages() before allocating. When hugetlb_add_to_page_cache()
+>> fails, folio_put() drops the folio without HPageRestoreReserve set, so
+>> free_huge_folio() does not restore the reservation. The subsequent
+>> hugetlb_unreserve_pages() on the err_unresv path decrements the counter
+>> a second time, leaving resv_huge_pages off by one for every failed
+>> allocation.
+>>
+>> Set HPageRestoreReserve when consuming the reservation in
+>> alloc_hugetlb_folio_reserve(). On the error path, free_huge_folio() then
+>> restores the reservation before hugetlb_unreserve_pages() releases it.
+>> The success path is unaffected, as hugetlb_add_to_page_cache() clears
+>> the flag once the folio is added to the page cache.
+>>
+>> ...
+>>
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -2178,8 +2178,10 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+>>   
+>>   	folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask, preferred_nid,
+>>   					       nmask);
+>> -	if (folio)
+>> +	if (folio) {
+>> +		folio_set_hugetlb_restore_reserve(folio);
+>>   		h->resv_huge_pages--;
+>> +	}
+>>   
+>>   	spin_unlock_irq(&hugetlb_lock);
+>>   	return folio;
+> Thanks.  I pasted an AI-generated test case which might demonstrate
+> this bug.  Requires fault-injection so I won't add cc:stable.
 
---
-paul-moore.com
+Thanks for sharing the test case.
+
+I have run your provided test program and successfully triggered
+the double‑decrement bug of resv_hugepages with fault‑injection.
+Testing confirms that my patch fixes this bug.
+
+> Also, Sashiko might have found an accounting issue in the nearby code
+> (Sashiko doesn't like hugetlb.c):
+>
+> 	https://sashiko.dev/#/patchset/20260825021013.25672-1-hongfu.li@linux.dev
+
+I have taken a close look at the nearby accounting issue reported
+by Sashiko in hugetlb.c. It appears to be a real issue, and I intend
+to submit a separate patch for review to fix this.
+
+> #define _GNU_SOURCE
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <unistd.h>
+> #include <fcntl.h>
+> #include <sys/mman.h>
+> #include <linux/memfd.h>
+>
+> /* Read resv_hugepages from sysfs */
+> static long get_resv_hugepages(void) {
+>      FILE *f = fopen("/sys/kernel/mm/hugepages/hugepages-2048kB/resv_hugepages", "r");
+>      if (!f) return -1;
+>      long val = -1;
+>      fscanf(f, "%ld", &val);
+>      fclose(f);
+>      return val;
+> }
+>
+> int main(void) {
+>      long orig_resv = get_resv_hugepages();
+>      printf("[1] Initial resv_hugepages: %ld\n", orig_resv);
+>
+>      /* Enable fail_function for hugetlb_add_to_page_cache via debugfs */
+>      system("echo hugetlb_add_to_page_cache > /sys/kernel/debug/fail_function/inject");
+>      system("echo 100 > /sys/kernel/debug/fail_function/probability");
+>
+>      /* Create memfd and attempt write to allocate hugetlb folio */
+>      int fd = memfd_create("test_memfd", MFD_HUGETLB);
+>      if (fd >= 0) {
+>          /* Force allocation path which triggers memfd_alloc_folio() */
+>          ftruncate(fd, 2 * 1024 * 1024);
+>          write(fd, "a", 1);
+>          close(fd);
+>      }
+>
+>      /* Disable error injection */
+>      system("echo > /sys/kernel/debug/fail_function/inject");
+>
+>      long post_resv = get_resv_hugepages();
+>      printf("[2] Post-failure resv_hugepages: %ld\n", post_resv);
+>
+>      if (post_resv < orig_resv) {
+>          printf("[!] BUG DEMONSTRATED: resv_hugepages double-decremented by %ld!\n",
+>                 orig_resv - post_resv);
+>      }
+>
+>      return 0;
+> }
+
+-- 
+Best regards,
+Hongfu
+
 
