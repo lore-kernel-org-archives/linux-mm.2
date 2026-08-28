@@ -4,117 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90D5EC61DC4
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 02:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B422DC61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 02:49:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 746316B008C; Thu, 27 Aug 2026 22:34:04 -0400 (EDT)
+	id 8273C6B0088; Thu, 27 Aug 2026 22:49:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F7016B0092; Thu, 27 Aug 2026 22:34:04 -0400 (EDT)
+	id 7B1026B008A; Thu, 27 Aug 2026 22:49:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E5A56B0095; Thu, 27 Aug 2026 22:34:04 -0400 (EDT)
+	id 678F06B008C; Thu, 27 Aug 2026 22:49:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 305A66B008C
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:34:04 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B1C02A031F
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:34:03 +0000 (UTC)
-X-FDA: 85149108366.02.E54A779
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0A0F1A0003
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:34:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="Ddrw2M L";
-	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F2BE6B0088
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:49:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ACB44C032F
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:49:04 +0000 (UTC)
+X-FDA: 85149146208.07.6E5EE31
+Received: from mta0.migadu.com (out-43.mta0.migadu.com [91.218.175.43])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 07077180006
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:49:00 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bsk8cZSN;
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.43 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787884442;
+	s=arc-20220608; t=1787885342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wMZiDMq/rz4mdl1/IN58xfKmIEDgogb4Bj2q2MwzcQ=;
-	b=d1ItX/c35Vhcp8r5I6j+mzGR5ElVGCWS2w3b116tx9jF+bKzN5Bp49SGAe04ot+e+dJGZx
-	g9ZKypZrocwpY/hCuYjE9qxPEaF7qXmDUCmWVGCc5k/oK9q/DHgtJu5KoT5K0O31zebHU7
-	qmMsXQiUzQB98yjNYLzUqbUbPn5Ypu4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787884442;
-	b=ipaif8h8TD5IGvM8dQ0hatXSpxCOGna0FV2Z7PVY/o0ngYZlRsQE+GeOuoKlz7rxCdw+W3
-	IZKdkKJVooUmWpxWGYJy0K1jrhsGuqOrpb9cuFC1t2CK+ZdhTc3xBQhDzFA2kKbbMGCLN6
-	Ptu33DD8mfUVksi60GIHZCe1dx1nN4g=
+	bh=LCaiQm3GfEUb+Rf9iXHvuD0prLOa1qTRq71pKQUh+rc=;
+	b=kb2NOBaIWXrpIHoBJtKBgbUBF0KqDZzcCj/3rsaaB0SSJPEKyYeKU6kkg6T38SQ8nFalET
+	1Fue9/U9hZvzYtk5VY8tSct7r0vev78s1hKh9N8UqFSkJqUeEUGtxxoNyipAaWAljwe7Uo
+	W/YGTM03rnK44jCd68AC+H6lYYy3MN0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="Ddrw2M L";
-	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=9wMZiDMq/rz4mdl1/IN58xfKmIEDgogb4Bj2q2MwzcQ=; b=Ddrw2M
-	Lk3YEBmmpXUcWQSW5Nc9gjbQV7ES9xzuPcUYu6b/UtYEC5Y6iuragnZgtRNY56RFy9I9Q61f6Mwev
-	G7ginCZ2fDYuGiK4JnCbyvSax0NXYDaSIxMtvuGjPfTtz2m64iiNU82eS8IuDFr6RqC/yGotc+j3S
-	/WkjHHnbnazFkWMRNtIA3on4eNt8C693Axu31t0IXcPVE0UJv1Z8lpNRmOhftmLD5Rrm3BN74GTVb
-	LzxgGARBpWAuKtD6R5hunO9KGa5LohV2AB1W+i/iAkmyE6d4+BuklBc4SZ3Vr3zbcXkRVXTLK5zs2
-	A0/iNxSFPSPr4hpbAWSklLkK25Ig==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1wzmPa-00000008mz0-13sP;
-	Fri, 28 Aug 2026 02:33:46 +0000
-Message-ID: <a614ab59e1b454d21011fbbc04347b6b6c49a95f.camel@surriel.com>
-Subject: Re: [PATCH] mm/memcg: fix UAF in drain_all_stock() async work
- during offline
-From: Rik van Riel <riel@surriel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song	 <muchun.song@linux.dev>,
- cgroups@vger.kernel.org, linux-mm@kvack.org, 	linux-kernel@vger.kernel.org,
- kernel-team@meta.com
-Date: Thu, 27 Aug 2026 22:33:45 -0400
-In-Reply-To: <20260827153527.e0e968a22717f558a22fb893@linux-foundation.org>
-References: <20260827124211.3b94b103@fangorn>
-	 <20260827153527.e0e968a22717f558a22fb893@linux-foundation.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bsk8cZSN;
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.43 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787885342;
+	b=2IvJtPSoqTK+28ZtnK61DdO55rpjPBJEUbYvqmyBKkErWqf/zjARSwbELeX68NVR1bbA1V
+	7Qhcm3TWExM0h2wr463xug/+9v8Q70vKhW6hNg5htlLtKRdqO/Z4viIhLwzwFYBu8QKHpd
+	J9Vqz3nnF08XbWwuok4OqMMZ8ZOYpQU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=p2ffFFqlot4uRmrajtMu/cdM/mLnbrmiDMtUqVJBXEw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787885338; v=1; x=1788490138;
+ b=Bsk8cZSNpVFBveAcBC8zIlR+ckUC8AJmvAYxhynoXjWNDAEyvRpJ+VGmt99TOB5ePkl5ac71
+ /uZi2pZpEL1D/HLEYZXPQHb50qPJXYCeZ8sUBnbJMsaTZmAQkEMp/7q76Co6BWwCFoVC5+q7K40
+ b8DQgDyjdHw3RDePSrGQ8Zf4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 646f3d9741400a38;
+	Fri, 28 Aug 2026 02:48:48 +0000
+X-Mizu-Trace-ID: 646f3d9741400a38
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <51f48626-c38b-4cd6-a826-92d107ae35bb@linux.dev>
+Date: Fri, 28 Aug 2026 10:48:38 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/4] make unused huge shrinker memcg aware
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
+ brauner@kernel.org, david@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1786955972.git.zhengqi.arch@bytedance.com>
+ <20260827155020.530e28b0afa3b43fede9aa9c@linux-foundation.org>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260827155020.530e28b0afa3b43fede9aa9c@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: oibeoodaxotwcydymmxs4sc199tt3c3d
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 07077180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0A0F1A0003
-X-Stat-Signature: qcewyi3hbhrt5o7ixtybcra83odhkqds
-X-HE-Tag: 1787884441-850250
-X-HE-Meta: U2FsdGVkX18qCGO4yb3cg38HCUAqJpuFNMS/31TtZeUxybxaePd/y+zSrs0BS5Tmgao8PVzew4HFXWJj5XyVN7OqR4Lts79gP14Cd5gU9Ko9R1emtVuDyEKCRWbDEPKhLuAGwjouNf9d0MpPBpchLOnqu3EhMQZR9Qvh1KspbBKNzINK2TcwwOoyXYI/MY4JtTXo8p3Z1/F9ZVEkzu9PtRmIrsvOmcvO8fgHg5ROwtebaJe776Cx1AvC+QDScU/0de+9GS8W3GTfUsle9mWYN2+vSktv+REFZMBmAL8j1IDsZ7XGjgVbMP/+z8ZTm84dxqeIeVcNvHan63I/MfGld7V1t/2+kqBFBBFZBhoAquSeQX3Y/LiJYmfsb6wXvTPCF0EuLjnu2pfG+sN6aoFa9ng+QWGqkXgXpPfOeRZkyK3A5jzqm8AM/o6w+6A1yRKx9weM2VHQpz1DrlQWOgBqhY1wj8BB/sQyG9mi6oYxOVF3cRKlBNcQIiXHPMP3myV9Fc0MS57eOq51ab0F+ZArdLOF5DOFN2tyophbzuRL8T9hzgc4eo+YSahpznkEZaEHiQJoQx4oremBVIjTdwL9i+bKGo5iPJ98QXTEqLwXau9fZ09V6s2713XJuW7MTako8jTCSEX6dtRys2ySDOb8m08EQXqpLacfE7/Uck6yKWZdmrgY7hB5XBqHJKtSoiRfWoP6LN+JXbqzuCyNby2YYcg+BXroEIeviFAXIOPyWvb+qnzDsV40gwvQ1QRaopoQLdTk0jQd11XFxsPghOa6c4hG32GiLZejnFDbI+pwAfNFo4TMl/GriX/PpsUET8T9QLuQOZE2FEeHrxknsrFQlEnFzQX7C48Qi9PAc5kaEFkCrO6IORG9SU7M+0a9//UufqcZFJYIKeyjLKrFvob1pUzfvhL/5gCMGl5MO9K8ArWqF4GNQ/VfFRyE0g5cQykgcQMs68Hpmv8YR9+9ebZ
- IRo/jau4
- BuvCFtbRr6/FK66CXsFg36tjbtB3Gu0ZS+vz62cna5wJSO6EFT74CVrADxy06spaBYNpYH8BNpFszRvlFFmVl2lFB9gKoNrousVhEUFVDnxAPbtOiAV83TL+pw1gkViBmE1u/UUui2i8Fa2QP/0pIL7/16Ww/5rsaqWV1UqBbo1QEkoJIJuClJV3yewkeZkdCY/GQAh7TWJH/jTpvswJX0QzTGnUNag+5Yzl6gSwVXUJ3Hq6Wn65GkEx5g/KQurYCpVvxMe01eI0Ff5UGAuR8bvwy6zYaME7q+YIUGOhc7Xs6YJd9UwFGGnsmTfIHUca8b4fOgfLDr0+l3UpDSlwhGNbczu8kqNuwMeJQshHNG2DnyFVpWdjkzH9knZLZc4kpJDlB9KYkiqb+KPaBTQLXgq5iSHrUFQveh3AW
+X-HE-Tag: 1787885340-358453
+X-HE-Meta: U2FsdGVkX18giL73MRj7/vT1wHjEwzILy9lOlsxAfdiDIjaNSGJ/3fXzqxxc47k+jmImmYtDlqjLBGWE4Jm6UecOgQ9ttjKHkzlqgdUi3m2aYVKklyudKcVYtrXVQp0LJj4kF9gOowiD9blrAB6eLllcpT9iNPUGk2GPCz84yjknv6AbyshYMAnsnHRATM7/LZuwEqgXelGjdBOHanEoz1T5vR0xvg8p38m5bgrJjvo6XV6+7V0HLUOzfM+yJfR1Pu0Q9EgIVZMP4t5vlODMp9L36d4efjO/q+p9D/tsxqVx9JcR9s6MZXLQP8id5cw+bHox8X1npfTAXZTb6fcGgHc+WRN3Z0WbgsElsqMpKqvSZCFY6COv6SIz0YlgOVBMvPy0rXdi6CiwXXm+Ck2yzxYZlWvai94pf6fz3sCxBTcRJkDujvA23nvG2d/nrX3MXajVTg/fxv+9C87NQclXi3Y5rH5JDoMDehtvgoQuSVE3ur5riC0oilWti4iyyPtkJqjB/MjFYUALF5ATg7+ky4ROczT1awXiNtvd+F3ycinEQAhbzU/4t4A1x+Lo8Qca2gHHP7PPwnZVdG9NqN9UwvVNayaW2mnS5s4LhwvI9kOBRZ0w19nseSFE60CJtQ1qVhgK26Ju0MLKzdvjTBq6iVe8axOzocrL8cbUx+Ovk4PWJ31qE1Qh70u1MoqgkgNp552le69jaIQQjtlrs2fA8sj+bZoTZXOpPWZ8CXOynDALczjqdRVCBffD6Myd8BtLHEPZh8CYlFZ8k/C0iKsqSKqM16WplKp95flhLCVJq9U9WSH1N1ba51az4VP5z5pa//Xaebg3J7vtFHhcf1bE4ShAEqvbAvPPxNcOyHIOMWel4hdTaPlZILS/SQqBGLF2t57zM4Izl2sH6q8MwCoWMDD5F8Wb52xKFdD6z7y6L18Bp3h/j9ElthmzqiLeD7hIytVJtORqAZg7HX9Ph2f
+ +Yq6qJsa
+ +Z1B3dbyHnmUgNsCcFRxd841ZUtM98ZHNm9y86sDWgB8I6hecqENlzXzGul4TYdBvkHtFigLpWtF3hAbJ0b02ZhmlfDTNWQsVJ08SJuLxYdZGSlBwx942tTNV3LclUq8f/03lwWQrflGxccTmgq+OOMrywkfFXOBN+cvl/2nPaidI469jTO84BDN4xnHOCAFX51TmXrzcSl5OAhYd3JBOJldorrmt/h+yF3Zu3TYaxwwMfPt7RSX8wq35tjIOsFjTA/guQLvd5+Mzq5QdGw7rkShzf7Y33wGsABux567eXPgnZMAL98CDvLjA8cOD59LQ8nF6Boe2Uy3blXTD+pgZyGgLxHNzsmkODc62pR/B8CzQ+Y4HfRP61UWGJQok0tpgCYCD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,17 +92,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-08-27 at 15:35 -0700, Andrew Morton wrote:
->=20
-> Sashiko might have found another thing in there:
-> =09
-> =09
-> https://sashiko.dev/#/patchset/20260827124211.3b94b103@fangorn
+Hi Andrew,
 
-Coming up with a fix for that now, and some
-adjustments to the kernel-style rules about
-refactoring code to make it easier to read.
+On 8/28/26 6:50 AM, Andrew Morton wrote:
+> On Mon, 17 Aug 2026 17:03:24 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+> 
+>> Changes in v4:
+>> Changes in v3:
+>> Changes in v2:
+> 
+> Thanks for the diligent versioning info.  fyi, it is conventional to
+> maintain this below the --- separator.  It's not really the most
+> important part of the [0/N]!
 
---=20
-All Rights Reversed.
+Got it.
+
+> 
+>>
+>> The shmem unused huge shrinker maintains a per-superblock list of inodes
+>> whose tail huge folio extends beyond i_size.  Because this list is not
+>> memcg aware, reclaim triggered by memcg A can scan inodes across the
+>> entire superblock and split huge folios charged to unrelated memcg B,
+>> causing unexpected impact on it.
+>>
+>> In the worst case, memcg A has no reclaimable shmem at all, making the
+>> reclaim entirely useless and incurring unnecessary latency.  We observed
+>> this in production, where page lock contention during split caused
+>> multi-hundred-millisecond stalls:
+> 
+> Ugh.  That's the most important part!
+> 
+>>    tid 11340 comm scanner locked a page for 182264 us! kstack:
+>>            unlock_page+1
+>>            split_huge_page_to_list+3135
+>>            shmem_unused_huge_shrink+767
+>>            super_cache_scan+329
+>>            do_shrink_slab+291
+>>            shrink_slab+533
+>>            shrink_node+400
+>>            do_try_to_free_pages+206
+>>            try_to_free_mem_cgroup_pages+262
+>>            try_charge_memcg+591
+>>            mem_cgroup_charge+136
+>>            __handle_mm_fault+2431
+>>            handle_mm_fault+194
+>>            do_user_addr_fault+462
+>>            __do_page_fault+176
+>>            do_page_fault+48
+>>            page_fault+62
+>>
+>> Usama's recent patch [1] prevents the shmem unused shrinker from being
+>> invoked during memcg-level reclaim altogether, but this is overly
+>> conservative: we can do better by reclaiming only the shmem charged to
+>> the reclaiming memcg.
+>>
+>> This series converts the shrinker list to a memcg-aware list_lru, so
+>> that non-root memcg reclaim walks only candidates charged to the
+>> reclaiming memcg.  Global reclaim, root memcg reclaim and shmem quota
+>> reclaim retain their existing global semantics.
+>>
+>> To avoid pinning a dying memcg through a long-lived CSS reference, each
+>> inode stores an obj_cgroup reference instead of a mem_cgroup reference.
+>> The list_lru add/delete paths resolve the current memcg from the objcg
+>> under RCU, staying consistent with list_lru's own memcg migration on
+>> offline.
+> 
+> Sashiko said a few things and they look disturbing-if-true:
+> 
+> 	https://sashiko.dev/#/patchset/cover.1786955972.git.zhengqi.arch@bytedance.com
+> 
+> (Apologies if this has already been considered - we don't have ways of
+> tracking all this (yet, I hope) apart from personal memory and personal
+> memorys are quite fried at present)
+
+As both Usama and I have pointed out [1][2], [PATCH v4 1/4] is the part
+that got dropped during the merge. The complete patch [3] was actually
+reviewed a while ago.
+
+[1].https://lore.kernel.org/all/20260810101954.822260-1-usama.arif@linux.dev/
+[2]. 
+https://lore.kernel.org/all/9c7efd5f-f8d3-4926-acb4-34c326ffb1c3@linux.dev/
+[3]. 
+https://lore.kernel.org/all/20260715103516.2410175-1-usama.arif@linux.dev/
+
+Thanks,
+Qi
+
+> 
+
 
