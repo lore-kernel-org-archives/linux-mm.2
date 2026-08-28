@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C8AFC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 07:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03639C61DCD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 07:43:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E4276B0088; Fri, 28 Aug 2026 03:26:43 -0400 (EDT)
+	id EE6286B0088; Fri, 28 Aug 2026 03:43:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 994B06B008A; Fri, 28 Aug 2026 03:26:43 -0400 (EDT)
+	id E971B6B008A; Fri, 28 Aug 2026 03:43:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 883D16B008C; Fri, 28 Aug 2026 03:26:43 -0400 (EDT)
+	id DAD726B008C; Fri, 28 Aug 2026 03:43:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E42A6B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:26:43 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4422A028F
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:26:42 +0000 (UTC)
-X-FDA: 85149845844.12.6483E99
-Received: from mta0.migadu.com (out-44.mta0.migadu.com [91.218.175.44])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BD8E040006
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:26:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wpp1C6qz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.44 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B831E6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:43:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CCC840272
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:43:04 +0000 (UTC)
+X-FDA: 85149887088.23.97821AD
+Received: from mta0.migadu.com (out-65.mta0.migadu.com [91.218.175.65])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 05929140005
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 07:43:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kmtXq9rq;
+	spf=pass (imf23.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.65 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787902001;
+	s=arc-20220608; t=1787902982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kWXsBd101uoPLtQpn1+4mOXqmsinyUBG23B6Dw7eP1E=;
-	b=UR+AsLuY5T2govjJ2w3wRiZlmcFcoKtzZ1T4Tl33HtO6s+lkcMR+f5Bik7Ec2boM+ybpSs
-	lY8+7npf32Yfdu+ZsrRgDUSwDrAPCtnG6BhLhffnYIIQSxcOFW1s5n003orhvcuDhAz9Yh
-	fUo0+H9cWHzC4ChifDEhegNOyX/0aX0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wpp1C6qz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.44 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	bh=CEgQo3eOgny9l2o03/iYJGapWWoFEc2N9vA7ux6jHA8=;
+	b=jiJwjXqbcLw+g3+At9cZI1TYd5a8dFjgjt2/AnJjJfrZ5LDES4tlXA/cC7Sn0oMlbvbSUG
+	qIhNFmiFj6B707sPTdDj5gBnyWAkz0BXP7MfH++fel3qyBYbkh3kxV+geWXQUvvB4PDm2j
+	/u9v2XCdjhG5hJSaDvBGKSRVaG71Wtc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787902001;
-	b=V6aIpYtsdMCAcRB/LJ0pWXyy0uocumGFWWWthDT+R+N19oyMxpzDF3FYntl5MFR2QRNI82
-	FvN4n6T6aj97CVg7dQTFDBYopcWIhrp2YqJdI5prjgPWF37edn1EV4rQh/55gb6b6/WGKh
-	lgDyOYJJDnP2r5+FQGOI4lPdG0L4MhQ=
+	t=1787902982;
+	b=MjoR4PW1GyD3tgH7dKgL1zUEN276421JmpFg4A/keOOh9+CNQ3d9NgGzJTfZOVKI3o6+JR
+	BdRyISf2l41GZmoDGfLsFgAjzCBU5Px4caEyrOtaaNaLdQEN/ttw+/U/i/5sGujMNtdg4R
+	PQyQlG5OvdShJib43oZqmpBXvjPxX4A=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kmtXq9rq;
+	spf=pass (imf23.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.65 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kckWbcCWwzGpC3oweqdN/h/vS4FFlKvUVHQRTYQfcLo=;
+DKIM-Signature: a=rsa-sha256; bh=2sUnP7K6UjR7ZhmvbxXJVYjsxzXd9zkgTE8q/CgsGKo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787901999; v=1; x=1788506799;
- b=Wpp1C6qz7pdxz0C4jTsx5XB7EhoBkRBwV/4BGmpq+GEAfCNy5sYYgq1GbEzCmcHJCiZg1czu
- GFmUrdQd+EEC4lJffA2datSr7tOYG4ntPtjR/tASuuxwY9/s835pJOCRLc3vV0w6hU0tE0ca+/G
- sZ5fuD5Texyaki0w6MD8ZzrI=
+ t=1787902980; v=1; x=1788507780;
+ b=kmtXq9rqTX8f7CdlBzuDLF9fkr549DvBNKCDOC9CjO10E886liY26KtrfRQx+i2zSNIL1Cl8
+ q5nCf8o5/5FhxlJkJavyD0J7n/NcBhVNzJvlAO6sKluflPxEMhAQZDW/gsGKjMp+ZDn+7mJ/hIp
+ 6xQH4v0QwXk4+QcYyzE6//jw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id dfa73102092ea13f;
-	Fri, 28 Aug 2026 07:26:39 +0000
-X-Mizu-Trace-ID: dfa73102092ea13f
+Received: by mta12.migadu.com with ESMTPS id 69c5c08b3e19d467;
+	Fri, 28 Aug 2026 07:43:00 +0000
+X-Mizu-Trace-ID: 69c5c08b3e19d467
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 28 Aug 2026 15:26:35 +0800
+Date: Fri, 28 Aug 2026 15:42:56 +0800
 From: Baoquan He <baoquan.he@linux.dev>
 To: Barry Song <baohua@kernel.org>
 Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
@@ -71,24 +71,24 @@ Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
 	shakeel.butt@linux.dev, axelrasmussen@google.com,
 	yuanchu@google.com, weixugc@google.com,
 	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org
-Subject: Re: [PATCH 2/9] mm/mglru: suppress cross-node empty page table walks
-Message-ID: <apE4K3PnupiUG63g@fedora>
+Subject: Re: [PATCH 0/9] mm/mglru: suppress empty page table walks during
+ aging
+Message-ID: <apE8AAk-nVwa4tvs@fedora>
 References: <20260824073806.629593-1-hebaoquan@kylinos.cn>
- <20260824073806.629593-3-hebaoquan@kylinos.cn>
- <CAGsJ_4yC+2-Hx8wXop9bXPsAk7ZH=p=ZS1QmfyePKYK-VKhRXA@mail.gmail.com>
+ <CAGsJ_4yDgCt6C7tS5YR8Je0OEPoYFgXNbG-T5KLmF+EdBHA9=w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4yC+2-Hx8wXop9bXPsAk7ZH=p=ZS1QmfyePKYK-VKhRXA@mail.gmail.com>
-X-Stat-Signature: 1fnigg66dtmrmc8o1xrhz8nzn51p4yar
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BD8E040006
+In-Reply-To: <CAGsJ_4yDgCt6C7tS5YR8Je0OEPoYFgXNbG-T5KLmF+EdBHA9=w@mail.gmail.com>
+X-Stat-Signature: t7asnbbsh7ocsw9ci9d56mipsscjq394
+X-Rspamd-Queue-Id: 05929140005
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787902000-349600
-X-HE-Meta: U2FsdGVkX1+l1Z+IQl7VlTJF6DE9wI99eFU9v8oyqsvvNSn/CLZ6R/hIpu2fnXY9jny8ne12O4jpssTvENDoSnmYkvGW5pqvPz0DX1ysomjV3QkqQLj4uffUPj8pLmrnAcRo6qaeKImREC4Y/ZWvU3a919FsM1/QPR2xVyCZYweE34I8J29i90DyiDR9ADCuQyNHyjdaVwdncFVTdZuvcyOc9ld23xbsxBvs+o3fwGu6VHMG+xAg8CXxlC4qIm3ajq3B4a6pBsepXMWd7Mxcib1SwhWYsY9Aab7ExK98nSbaPKKcn/bvfqxIaTlZpJqj6rM4z7P6//qzDoi9EZjZNQBTPTjDnSc6ZjRp8ZYlwb4HDp3KoT12FptBYA67GReu8rRA8AY6g4rsM0Vgc5v+7rfICNQrLDK0pQlp/E2DGTD7AfbjqBXAIo2NcWF8tdmdRXWKb+X2QauASKNeQKKVjq8oeZeMKd8PkjgIHUu7KZwp9evLfeEsUDlkqmV0kEw3UQmMXNa+BHcKPAXMvaQLex1Eny10va6NeUCw6FiHkf1u+0DFsZHdFM+dBuv2+6sLXwzYGVPCa7IbwSj47kDHpQ7leZz3EvoOZGeQt9/squms0DZKX0z13fMPCig9xqicYSS2jYARexK4ISF9iGxAUuKJYDJWcoYP5jUd9zkrViNByCPHa345H4BOBxRI/rFCd4QQUNIiTyvByA3vK/AeaC1s8NqdIm0JZHmJvWXfQ0z+dW+X/54CQdg96TpEVUsJ2UB4+bn9ErJ2Rg/GdLFBn4bcPhwrz0vW4kBzFa0rJNcKueCH4bf2oVe3njeN0eQH0irOGsNNesUFF6lhWM5bE3sStqW9uYVuS7GPXuXDOd6AOSke4yA+ei6xcliN8bBvKmpzGnglAmP7+itD9CWtIF382r741n76+QYPrRFM8gq9g+HESZqr8CYJm6VlYX2oHv79xklqLWzE0wh/19H
- yd3eUScL
- ee6niRZuSGHZQcI+5adTs3m4V6qetpZSx7pPgmvFRVidiDcs1KdWiox8xUtYdZxdE/oKnzCx8VM4B86//jZNHLMyxmcFIeuZXXxmU2zEQsY8SY+f3nf0oVtYSMxo8377GCSnhkDX2Q6NICeIP7Zk1W7o/6dFUCktRTRiIaKDEit/R4m7BbYM36Oa9awmAjzaVPPA9xHfungnKI8INhNm/7yOtM2++PN7MnUHUAdoWizO5wo2kc32ne7+jzTCvc7lwnSwR2pvf8oZroG2TKxiTrAVlRvdOtpMSSyhAmpsD2RXwosc=
+X-HE-Tag: 1787902981-773590
+X-HE-Meta: U2FsdGVkX1/WPbB5lKyGNWrncd3U6KgIlx/gwovigNPzzL+YRNOEZ8+N+7X+U5ekXJa2wvsw6HwOfPWKNYRBsJKIPHAHpCH2M4i8mlN/s9xQhFRTU6zwhcCVtjV0H80IyZPN7QKfdlqRtw2DnCVdwDREaT9NiNRyfPEf+lBJgkA/vLkMe4+3tBshlI6MFFiH7DQN8gpt2g+AD2sBbjT8CFh3Pb15lyqI3SZxNW8qmlhl6lyUYpDo/fbMS/MWJHiYq+uy6v3p7kxORnaM96mib+80qD/bdCPCDoS7etQ8SJr+aOrqLmxFy1GEdxRRTR++em3q0FH6uQjwWJXhXJbL/IgQa8h0GihHFD+mmVejexAX4hcMi8/IckrEYoGQeJ0KMlmrvA5rowEA+n91aOLdeQMOz3qnK00VW3P6lhd9rvXF9dOYTtKf+pbBamGDRzIcw/gNCa4JVsv7c7WWcP614Gmal5abI+oGUnV3kfum3ghjOsK2IXZqBcfEapJRupM9CURVtDAr6d/q7spJ3L2TPVlfie9QCo88OGH3712au6gTmUbe7sgu6AKn0fnaT8U4Qntg6MblDTiFi7oCSwOpE1hK8gJbD7fnvEkxjJ+FDiFOM1Mw8tcoVU8gZGvRBn9w/vDtQc92JrwiHNIdOuxVwdL8pMMkJjXmK/d+xk5TYCUOzKbcy/h6iXeFkICfmPSIuJ9shVPmiy4srZkDYoyGpLxJsMVys3t1oYjcQuBP+nQkKa4xb+bpUZDunwdomzp1hyfQ6Dz3PfUv6/buQsC+0XagNFUdb8WUxbgAVg04uVaLXe0vJFod49Zk7do8D98hfcmizoEpde6V5z4Y2n2gnwVNlU5EibU5XYA/iVCXj+RuPWufjcUK0Sh72pUM/hqQ3K0YFHCAjzqgDzxoDEBeete/ZOxTz4xXFelm1ty3/hq7WCDUeGqTWmb19G5YCM+7nGdXv4GAhdpSnWxpSzY
+ GcvcsLmr
+ T5X3DCdqHoSHqBmNF4J+6Ja/kWRxA0HBKKzgPDtD119kxYqE5hhWAVannqrJ36+e8/S4OIKDiCIJq2ereB8EJHqQKWaLiq+ZYYMIDJrTqd7QYnTZSZWIaYq+NAV8A9lz6lOsr0RD+uWjZ8a19bG2WS8zYLJgaxcAlOrgseCJcifpSgQF4xTa2y36dq9iwOnoVhwVggENtNl7Z+ARA1Tw5OwaE1qW5tWTVwtkgGGtr/ucl+QzptH/2zVq5lt7/fQ3TumwvMdH8zJMZBE5aWRTHEGluruAVIqcq9mEtZeAUb5URgMA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,130 +96,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08/28/26 at 02:35pm, Barry Song wrote:
+On 08/28/26 at 02:11pm, Barry Song wrote:
 > On Mon, Aug 24, 2026 at 3:38 PM Baoquan He <hebaoquan@kylinos.cn> wrote:
 > >
-> > In the current MGLRU, lru_gen_use_mm() will mark one process's mm used
-> > on all nodes at each context switch. So each nodes's aging walks into
-> > each mm's page tables. For an mm with memory on one or only a subset of
-> > nodes, the other nodes' walks find no pages for one lruvec. While these
-> > empty walks are pure waste.
-> >
-> > Track per-mm, per-node empty-walk marks: bit N on mm->lru_gen.empty_map is
-> > set when node N's walk of the mm found no page for this lruvec, and
-> > get_next_mm() will skip the mm on node N between re-scan passes. The re-scan
-> > is driven by each node's own pass count (mm_state->seq), so every
-> > mglru_empty_skip_gens-th (default 4) pass re-walks all empty-marked mms to
-> > close migration/NUMA-balancing windows; keeping it on the node's own clock
-> > avoids a shared "oldest marking" sequence latching at the slowest node.
-> >
-> > A walk is "empty" when it traversed the page tables and found no folio for
-> > this lruvec.
-> >
-> > A page that appears on the node during the skip (fault or migration) is not
-> > aged until the re-scan; a later patch invalidates the skip on those
-> > paths. mm_struct grows by 8 bytes per process.
+> > In the current MGLRU, lru_gen_use_mm() will mark an mm for all nodes at
+> > each context switch, so on each node aging will walk into each mm's page
+> > table independently. On a multi-NUMA node system, one process launched
+> > on one or a subset of nodes, its mm is walked by all other nodes's aging
+> > while finds on pages for their lruvec. This is pure waste (100% walks
 > 
-> Hi Baoquan,
-> 
-> As mentioned in my reply to the cover letter, I wonder if this could
-> be achieved by the PUD filter instead.
-> 
-> For example, if we find no associated folios in a PUD, could we simply
-> filter out the entire PUD?
-> 
-> BTW, is this related to memory policies such as `MPOL_BIND`? If so,
-> could we inspect the mempolicy to avoid these empty walks in the first
-> place?
-> 
-> I'm not quite sure what the best solution is. My gut feeling is that
-> `empty_map` adds quite a bit of complexity, so I'd like to explore
-> whether there are alternative ways to avoid the extra code and the
-> additional space in `mm_struct` before going with this approach.
-> 
-> So far, I'm not really against `empty_map`; I'm just trying to get a
-> better understanding of it and explore whether there are simpler
-> alternatives.
-> 
-> I mean, I really like your PUD filter, but I'm not quite as fond of
-> the `empty_map` approach. :-)
+> I assume you mean “finds no pages” rather than “find on pages.”
 
-Thanks a lot for your careful reviewing, Barry, really appreciated.
+You are right, typo, thanks.
 
-I totally understand your preference. When I found the defect of
-mm->lru_gen.bitmap, I was also very hesitant about the final solution.
-empty_map is the specific solution, PUD filter is a generic one
-while benefit mm->lru_gen.bitmap too. I agree with you that PUD filter
-is good enough to resolve the defect of mm->lru_gen.bitmap, and benefit
-even non-NUMA systems. Maybe in future when huge system RAM, e.g several
-TeraBytes of memory becomre normal, we can come back to consider adding
-the empty_map solution.
+> 
+> > are empty on those other nodes)
+> >
+> > This patch series suppresses these empty page table walks with two
+> > complementary mechanisms at different levels:
+> >
+> >   - empty_map (cross-node specifc). At mm granularity, one process's mm
+> >     whose walk found no pages for one node's lruvec is skipped on that
+> >     node between re-scan passes.
+> >
+> >   - PUD-level Bloom filter (general). One level up from the existing PMD
+> >     filters, it skips any 1GB PUD that had no young entries last
+> >     generation - namely whose 512 PMDs all failed PMD test. Cross-node
+> >     empty walks can prove its effect the best, but it also suppresses
+> >     purely code PUD inside local mms. So it reduces unnecessary walking
+> >     in any workload with cold areas.
+> 
+> I assume you mean “purely cold PUD” rather than “purely code PUD”.
 
-That said, I will drop the empty_map related code changes and post v2.
+Right, thanks.
 
 > 
 > >
-> > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> > ---
-> >  include/linux/mm_types.h |  3 +++
-> >  include/linux/mmzone.h   |  2 ++
-> >  mm/vmscan.c              | 52 ++++++++++++++++++++++++++++++++++------
-> >  3 files changed, 50 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index 6d815f6440c9..3738e8877b73 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -1410,6 +1410,8 @@ struct mm_struct {
-> >                          * page table walkers cleared the corresponding bits.
-> >                          */
-> >                         unsigned long bitmap;
-> > +                       /* bit N: node N's last walk found no folio; skip until re-scan */
-> > +                       unsigned long empty_map;
-> >  #ifdef CONFIG_MEMCG
-> >                         /* points to the memcg of "owner" above */
-> >                         struct mem_cgroup *memcg;
-> > @@ -1503,6 +1505,7 @@ static inline void lru_gen_init_mm(struct mm_struct *mm)
-> >  {
-> >         INIT_LIST_HEAD(&mm->lru_gen.list);
-> >         mm->lru_gen.bitmap = 0;
-> > +       mm->lru_gen.empty_map = 0;
-> >  #ifdef CONFIG_MEMCG
-> >         mm->lru_gen.memcg = NULL;
-> >  #endif
-> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > index 229d27fbfb54..30213a880db0 100644
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -633,6 +633,8 @@ struct lru_gen_mm_walk {
-> >         int batched;
-> >         int swappiness;
-> >         bool force_scan;
-> > +       /* this aging pass is an empty-walk re-scan pass (every K-th) */
-> > +       bool rescan_pass;
-> >  };
-> >
-> >  /*
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 92cb83a78971..e8ba49683b28 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -2710,6 +2710,14 @@ static bool should_clear_pmd_young(void)
-> >         return arch_has_hw_nonleaf_pmd_young() && get_cap(LRU_GEN_NONLEAF_YOUNG);
-> >  }
-> >
-> > +/*
-> > + * Cross-node empty walk suppression. lru_gen_use_mm() marks an mm used on all
-> > + * nodes, so aging on a node where the mm has no memory wastes a full page table
-> > + * walk. Skip such an mm for up to MGLRU_EMPTY_SKIP_GENS generations after an
-> > + * empty walk, then force-rescan to close migration/mlock/NUMA-balancing windows.
-> > + */
-> > +#define MGLRU_EMPTY_SKIP_GENS 4
+> > The two complement each other: empty_map reduces the *number* of
+> > cross-node walks, the PUD-level filter reduces the *cost* of the walks
+> > that remain.
 > 
-> Is this related to `MAX_NR_GENS`? Does that mean that, over a full
-> aging cycle, we have a `1 / MAX_NR_GENS` chance of doing a rescan?
+> I wonder if the PUD-level filter alone would achieve your goal without
+> requiring the more complex `empty_map` code.
 > 
-> Best Regards
-> Barry
-> 
+> PUD is already a fairly large granularity, so even if we still do some
+> redundant work, I wonder if the overhead would be small enough to make
+> `empty_map` unnecessary?
+
+As replied to you in patch 2 thread, will take PUD filter alone in v2
+as you suggested, thanks.
+
 
