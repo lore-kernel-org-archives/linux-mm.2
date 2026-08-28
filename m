@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8626C61DC4
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 02:07:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F013FC61DC4
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 02:08:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE36F6B0088; Thu, 27 Aug 2026 22:07:30 -0400 (EDT)
+	id 0D6BF6B0095; Thu, 27 Aug 2026 22:08:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C92CF6B008A; Thu, 27 Aug 2026 22:07:30 -0400 (EDT)
+	id 0875D6B0096; Thu, 27 Aug 2026 22:08:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5B756B0095; Thu, 27 Aug 2026 22:07:30 -0400 (EDT)
+	id EB8026B0098; Thu, 27 Aug 2026 22:08:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5C56B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:07:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04D37C021A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:07:29 +0000 (UTC)
-X-FDA: 85149041460.12.EFA0B0A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6FE9C20006
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:07:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxgkTuvP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C43DF6B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 22:08:16 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5921C140260
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:08:16 +0000 (UTC)
+X-FDA: 85149043392.10.74546A1
+Received: from mta0.migadu.com (out-80.mta0.migadu.com [91.218.175.80])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4E248C0004
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:08:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dmXdmk4L;
+	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.80 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787882848;
+	s=arc-20220608; t=1787882894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7eyYXRUwO3CYA0w+PphgO5XkPG/514TRxReSf2GU674=;
-	b=yUkah3ti7EA7cI5xrVomqPXBeE+cSNqGY0K8E3CwW8OTaoAyhq1FjAAdHqKbuVXa8KYOxw
-	ZZqb7WksStxl0+vn48tLu2dBz36zGklHyjKuFZC42V+ZNwERnhv2cqlss/bUCVi4s5whOA
-	xuaNkyJEknIdTQn9Piah6Y3G4sGNkyc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YxgkTuvP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=6or5Gwh9aj9an1QAcL2M34QOTkkE0gjcHqObHAtvn+4=;
+	b=fQvnwl1lpLeW9sjWgiqnJECPlmTdcbxmFXna8R5XaaL6A1qZ7XGXzy5tGYjFZHPuYEWbfz
+	C7b6bIc0PIsJ9RWQ7Z66uT70SJteoYm6PTunRNYrVWUC25KYNIa9Qef/CeDd9LyIZVpvqi
+	0yDepjDZgZiPmi3pTv2dclcZStjXT9E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787882848;
-	b=5wJh8kEbpb1M4fguubwu/9em5bb6orgVRLSyL1KQTIBOKgZQfNT7bnYJ4AngmenhGoYGBw
-	lh+AUe7m6YGfGX02x3KpjaMnP1yRwbKCx5f2GFdbutcOuWGtXKlpJamX/BbGWbrrbzc6Xh
-	NHJ3UgYJ1mMZhNqpXLW6djlSZUyEsrY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62A5C413FB;
-	Fri, 28 Aug 2026 02:07:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A281F00A3D;
-	Fri, 28 Aug 2026 02:07:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787882847;
-	bh=7eyYXRUwO3CYA0w+PphgO5XkPG/514TRxReSf2GU674=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YxgkTuvPt7lazpqwaf3eUN8Wz+t0otbNoh8iafDfWBHfu0iqQvkiDuk7/qpkAaNAX
-	 1aCwuNiWwEK3O7H4bEFhjYtcD8sdC+wza9qm4wQrAND6nFnIjiXxeocM1QbipKalyx
-	 w+Cyp19FlUyjqhUNeD21/LDrzuLC+Fjj8kr6yQzJsYbpc+UQ3LkQNGFcrw3iJT3AXI
-	 kXYNTt5key244OiUYLdYLkrV8YpMj8jX//FNEtFQQMBSLIzvGR0WO7oEvq3HRTTLCH
-	 hI7No3V+g0SGg70rnOTGIobyqlSuF0D5UNMs+qU9xqHfoS5X+1V4/wZ9CRFpx5f3SI
-	 p6vLNa12W5m7w==
-From: SJ Park <sj@kernel.org>
-To: Yue Haibing <yuehaibing@huawei.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next] mm/swap: Remove unused declaration swapcache_clear()
-Date: Thu, 27 Aug 2026 19:07:19 -0700
-Message-ID: <20260828020720.122079-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260827082722.1809702-1-yuehaibing@huawei.com>
-References: 
+	t=1787882894;
+	b=RFdR/EgiQZmCPQUKI7VW5pLsoO9E0NOaeQczIv795DrFI3pcW6Hw5QcIgN8h8LkjlZOyxU
+	jM9jWN66DQI7LXaZsKJN94IMSXNjP0fQ5xmEHzAxZVDwgeD+Q7lNHWokUugJVverM5b8p1
+	1xlHNVU/uGdKRC6VnRVkqcn+L6ijcq8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dmXdmk4L;
+	spf=pass (imf10.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.80 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=V2olgPrVx/bw1wkdwsCXU0ioQk+pJBVYyH0u4HOW5i0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787882892; v=1; x=1788487692;
+ b=dmXdmk4LBYyRxHay76NehZ2JHDork9SIP8Or9QNvabzkh9qcKhQ8vC4ziTx/iPCdeTpScx6d
+ FroKWBejJxYcmzo6gNWQf6lPk0Ss02OnAVtbGd0OAKi5Dh3MD42jXbSVKJvyTFj6gUHiapxTYcV
+ j4coaTR6FE8cQUmKMiUPjjjc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ce77929620145a86;
+	Fri, 28 Aug 2026 02:08:02 +0000
+X-Mizu-Trace-ID: ce77929620145a86
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ac0d1ef0-1cbd-40d1-9f0f-c12d890be3ec@linux.dev>
+Date: Fri, 28 Aug 2026 10:07:52 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6FE9C20006
-X-Stat-Signature: a8gdb5jsa1sd7poknj4papci97k5676j
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] memcg: sink mem_cgroup_uncharge_folios() into
+ free_unref_folios()
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260827030516.462926-1-ridong.chen@linux.dev>
+ <20260827145209.GA3004@cmpxchg.org>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20260827145209.GA3004@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1787882848-41827
-X-HE-Meta: U2FsdGVkX18UQINh0HMv2MF4jC0k5YfZ5RZoLkgz65izXfhbK+8TnJe0cR2LZbig52bfIF0ltVeFN04RLWj77nLTPkqPyGmkKPbq7qZj++/iFgWE05lIafhya5gbbLRMxKAdO3G8OaOnLe1hk6SFy61hYCHF1ORd9V1fYCgK3YzEFk5zLSKvJHzmEAPgNAbbUXmlNJ8jxFGER2NvLnS0kEFrp1K2Ww7anOrUYwRWkz8Y61ROWDtTxPWN3DZp7B5atGQPvVSFXOIc9XpPm1urEhgioxeubPWs9I9W4xnghoGECq5lT994cIxVfjTBUENWPIxw84A5DEhg4i+HmuCWgvZH8lEs6MW2rhghn3BHYte8jMzS/tECDOYi/6DoYSJmIkJaQqerzky193D1MxXHrALNdsQmVsol63L0mnkb1SYiXiMOoN9WctI86iVeLq4GLrYwwwVxI0//xHkeY5up8neOYMkKvUxoU9Fpl/ikDmLMYZu5QdcL9ldh2moaIE/vC5R/XBtKIwPrxAAP1z6DTEG3xPZR0SDlcVZ5GU9hefnfa3xxFLGhRKv+yATtYzL/O2/PqHQHajwIluarXZ503mNfu+M1cnxJXSLz87mJIOOCSzPsp5KqN/G5l7fDKzLzo9proGvdts/3VWoTgSyQxT0Au5YeAIfQaxhjAm4mEQZlPCdJSLNZVdBeZLFSzCMH8eC/S3bog2qDq3eL4dojOJiqddbnWpgiEPMrCohmNblBizWujN+9HV3gG/qISSU7eFCatoMDEQE9PMRaZbUq9omzp+H3Mq0rZjPy5+xNrPNwpDeaeShH2/vLiZdDqLaYd+8Z84EmfkDbot1tayWGQcWfGDFkxl/KGiKvXmrkuDtvtzPgMLLVHkzILAz1YAGkTzGoBaCk74KFwmPXYxsc87sqmyc/B3dxP2//xSl4HfSa90GHGv64etEZRNsfISXbyGEoq2Yd89TWx9a2fRU
- J93L6R//
- thutT1obM9DA1MMq2Qahlls3qBQg2gJCQ6LaJnayHOq08QyvzyYmQbHMpvBrmMCLaBvYLzcNaUbTIiOgU8OmeT7sY5bq6ENn0MWIbsOE/SWgQGsKMJGIKCq57IZ5jSn4AYVV+w0hTJ1mQJ1G/dvnNSRYsU0OijfhdmkZqh9X+itOg8TJD0V7ocaLpPCifVpdbyWlgDIUxdKG5u6TD4t8Xpbsai/0T0QykuXMyQuiFDx+MRaPUBUM1qfrSZKVza48fc2VYa2G9N3USpan0ln31GUIbevOmUcHQb2t2f8ESDhDHX0Y/8akD0Vv3nA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4E248C0004
+X-Stat-Signature: k6jms71ib16gaa6ckffsusofrckjpxtd
+X-HE-Tag: 1787882894-284801
+X-HE-Meta: U2FsdGVkX18l4C/Ws3NtoWWUdcFdgAG3XfoJ6tVcplqbWkyUswRLwE4683HT2n8pIGlLi4FzSDxjwsdmWUn1c7ILN/9+MrmiPKIoiOAluwx7lMVMahXOaAEFCnBuLF9t/jU6Awx+AJwEhc5SuO+XctdmZ8IJkAg+P0wQwtMlxSmf+7V5a/YTx9mPN5bqmvpAoM2GuaSbKbjtg2LvRdTVbDifGshGQHiRSzjmvSfqwK1zMs+5ncDrSNjkF3cyc6b318yiDSOWUsrfeTJY+kIUqx5aL/3UWDxO5fwjcY3bRY1FhNNGJR7jWpROxrbJrcaUEHtvP0hg1hXGR2jFhUdzABi4rLSp14TU4J4SK4Z3u6eIBs/SXpHjao+08LBYVjC4reUfjN6TFFksNg9CTh2toFXNvGmRwDnzis5Uk15KR2qKx6GdnesAaqjs4FcYDR2eQ8LVAh5FoHGbXESdSSl3SZAUQLyPxa4dNECvw5RVJ9O7Yr111XK+4StldanJN0cNJFddwLJr67lLJ+4bUwH8elnhUbnt4pCD4/f4jMAjhBaBgnX0ZEz4vOguJZZYb2tXmOtqIFcczHbAyaOAk4JeqrHOWZ+AFqUWAC2BNzklhKJLl6pgcoG7wxOlUnd010tudeoSnDRJ5nRElSEelGAG3Q6CO5WBn1sb3TL/m5OHGboE6lcMimvLcHRPftH/XhHKSBj8Ax6wzi8oWf8NDOZWpXPI9h5JrtaRvGjPepfdFhGGIybvTYi8QQE4TbspusaPuUCMWh7j7fzcVpINuoYgk3c1sOG77FcZNw5YoEhvus9OYlaB7uoUTMfwdrrPgshw7EYseMD27SxiEPmP0I3nX2EkStxNA2UVP91PYhGhM9mA7fx7JowsnBqEWm4OZFLlgF9sfwopV2oj3swRn7rv4jf1Ey/XBP6Ah74vbmG7hMXB/VglQZrbJN1gTNDvaBzsNlHQ+UYABpn/T5irVQS
+ YVOHs/VB
+ WYmgqry8Cwm6WzpfC4e2IfXr+Quluop6yjGDE1yYPKZKQQYUWkIEG0UEcn+at/lMWOFD/6WZflx23oDreQl1CnXqjP5W7gKwI5TLV1ewGl7o5dBystCxW46zt+GcpRmrnyRVc8JVuHp+JYxW8ZynVa1wetSHjiisCBOyJfIjvro++htBgJqZpxiMJgGjW/n7D5mIr+iAFEUgHazbuUtWb5YuchEL15Xpi7wfHyx6rPLqABAXPqxny4OmMMqwxxbtb1evJxacH+8PJSiEq9t1sHW07yAqKuWE/cLwoQY60TQlkN7TaPYCRrQg7aZB1NrzMvC1bitahHPLmLPzpfPQajHO+QSP1MSGcwvGv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,21 +101,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 27 Aug 2026 16:27:22 +0800 Yue Haibing <yuehaibing@huawei.com> wrote:
 
-> Commit c246d236b18b ("mm/shmem: never bypass the swap cache for
-> SWP_SYNCHRONOUS_IO") removed the implementations but leave this.
 
-Nice catch.
-
+On 8/27/2026 10:52 PM, Johannes Weiner wrote:
+> On Thu, Aug 27, 2026 at 11:05:16AM +0800, Ridong Chen wrote:
+>> From: Ridong Chen <chenridong@xiaomi.com>
+>>
+>> Every caller of free_unref_folios() invokes mem_cgroup_uncharge_folios()
+>> on the same batch immediately beforehand.  This pattern is duplicated
+>> across shrink_folio_list(), move_folios_to_lru(), folio_batch_move_lru()
+>> and folios_put_refs().
+>>
+>> Move the uncharge into free_unref_folios() itself so the batch is
+>> uncharged in one place before the folios are freed.  This removes the
+>> repeated boilerplate at every call site and makes it impossible to free
+>> a batch without uncharging it first.  No functional change intended.
 > 
-> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+> Hm, IMO this is confusing. You're making uncharging an included
+> service in a subset of the page allocator freeing API. Batch freeing
+> uncharges, but single page freeing does not.
+> 
+> I don't think saving 7 lines is worth that API caveat.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+Thanks Johannes.
 
+I thought this could improve cohesion, since we have to uncharge the batch when 
+freeing unreferenced folios. However, I didn't consider the symmetry with single 
+folio freeing.
 
-Thanks,
-SJ
+I'll just drop the patch if it's causing confusion.
 
-[...]
+-- 
+Best regards
+Ridong
+
 
