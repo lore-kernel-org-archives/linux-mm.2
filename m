@@ -4,98 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F24C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 10:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72331C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 10:16:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A42A6B0088; Fri, 28 Aug 2026 06:04:47 -0400 (EDT)
+	id 278CE6B008C; Fri, 28 Aug 2026 06:16:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854B76B008A; Fri, 28 Aug 2026 06:04:47 -0400 (EDT)
+	id 229A76B0092; Fri, 28 Aug 2026 06:16:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76A3D6B008C; Fri, 28 Aug 2026 06:04:47 -0400 (EDT)
+	id 140F26B0095; Fri, 28 Aug 2026 06:16:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 562F66B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:04:47 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D71C91602B1
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:04:46 +0000 (UTC)
-X-FDA: 85150244172.23.778F5D6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CE08512000B
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:04:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=P0pj3wCI;
-	spf=pass (imf29.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787911485;
-	b=sv+LikijWTe6EC7HPO0X3L6NN4eUo4hjQutJHfNkDKcoXEuQgX1kuupPNtYPVVLvFr9+En
-	ZzXcfegkAUaOsqdvv/sj99YZ0SPdGAc76jXTfoiVXReTJEsxdkI6iIVGVHMx7BX63xeg8r
-	WhdmaFQbCXTBxdwpaIxvsOzrnbX7gQo=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E16ED6B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:16:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 61659802BD
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:16:40 +0000 (UTC)
+X-FDA: 85150274160.18.5D2E860
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 927F580002
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 10:16:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8RMXenG;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787911485;
+	s=arc-20220608; t=1787912198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ADD9H5fA9nQxDvVSY1LX4mvih/xdKK7OWLStw/7wa/E=;
-	b=H+z4wl/2ydDAOnEBoqgCQUdUn4OO2yr71EetZQ9GDQxAKGKWPTsXcdPsNRzzRh9fWdt9C9
-	+uQmTcg9UemToYk3VRkX4X/RXwt9pse0T4RziFJ/2WdOSgirZ/HiE6qSsOuxKtMnLsKoll
-	2i9BGP0fnvluaMOQrv2WtZFSWbc0mAI=
+	bh=IDNDGA/QN1kZCKHpcgE6g/Ng+sRR0OCsnBMk8IBkH5M=;
+	b=St09pLOFUxwU2d6HNm9bV32BtyB2eboo6xhPBoRI9GzB5V3qo2O50j0ZPsLNZ5ryPwKG6I
+	GaM5EyJn4oFlIs1IJBF+YR5vZTJ8V3f5gzKrJ4Jt0dWU88sK2Tbj73sfax4Q28hC0CERBL
+	Gk6o2LXqsjOywiDnAb4KXQMQLIe+xPw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=P0pj3wCI;
-	spf=pass (imf29.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB8101595;
-	Fri, 28 Aug 2026 03:04:39 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 296B53F85F;
-	Fri, 28 Aug 2026 03:04:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1787911483; bh=aumBSDnENz5VHBnc+jg6Re4gRmKjWjReCkyLV/sOPr8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P0pj3wCIhsi+UzojrdVHcOu1eEF6Lj5JFlSy0yBfViLLp6P5WyERT4jzhkYA9pKXT
-	 ZcGJhuKYlxe3MX+Zafvy1SCiglBGhK+rnuLve3kU3HVmbki9TqcimksfNEDV3Mzk8Y
-	 L/Cwgjc5sHUtFnJUvtxp624zelSBigJfXmV/yBs4=
-Date: Fri, 28 Aug 2026 11:04:38 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] kselftest: mm: prevent random failure of huge
- page split for khugepaged
-Message-ID: <apFdNhauXl3z7nu4@e129823.arm.com>
-References: <20260828-fix_split-v3-0-374022586a4b@arm.com>
- <20260828-fix_split-v3-1-374022586a4b@arm.com>
- <apFWAppcVKt4xhIT@gremlin>
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8RMXenG;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787912198;
+	b=CxNyybyaaLnQJQOtczm93Egc4/rai85x6GiKbl9zckUF/BQixzSkaH5dSffxEZQPzRyr5Q
+	1LDtZT54lgPUPNKDdfAWtd1Ly8KmLyRgnWzasBUVL6OTiIHUiDJppWWKmGuJ2IytJeq9lS
+	7g6QNzwP2Qh9cFyLfQLDlxW30Ha9gig=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B40EA402E6;
+	Fri, 28 Aug 2026 10:16:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8DB1F00A3A;
+	Fri, 28 Aug 2026 10:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787912197;
+	bh=IDNDGA/QN1kZCKHpcgE6g/Ng+sRR0OCsnBMk8IBkH5M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j8RMXenGB2gQNPG3vT/Qlw2fo1sD9YsGDD10XoJp1SaLD1SSldoNOenju912vj/Lv
+	 y1HyOofWWmaPRUzhIwpzPSOq7Oe/qrwot5ZPEX5WCRroefzcv4ohqeg7Nv2Rs9JyfU
+	 YDYC16GL+YNCD8HSkdg3C+/++c1liSLjowwnRbRpYVW5tMx3XC5MckHsmr8vk70QjZ
+	 arXPoXFuRacQoEUnQ8zVh8N77xIpCM+PUNcC/nny5be4zJlytCRVimDK/o6ylN80wm
+	 OX+0Wn0lRplLq4PO229v6TpN3ae9ocpUg+FXi3YmMLWcGAu9IolQVHgR4bh7Rondf/
+	 alBQie2IXPt4Q==
+Date: Fri, 28 Aug 2026 11:16:32 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kunwu Chan <kunwu.chan@gmail.com>
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
+	jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/mremap: fix locked_vm accounting for MREMAP_DONTUNMAP
+Message-ID: <apFa2eTBzBP0RPeb@gremlin>
+References: <20260828094823.594279-1-kunwu.chan@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apFWAppcVKt4xhIT@gremlin>
+In-Reply-To: <20260828094823.594279-1-kunwu.chan@linux.dev>
+X-Stat-Signature: qukiunciwoer45jzxaax9ku5xthpwwsw
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 927F580002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CE08512000B
-X-Stat-Signature: x74ztdx9u1dck77ic6ba7mxb486owmf1
-X-HE-Tag: 1787911484-734585
-X-HE-Meta: U2FsdGVkX18vLi905IuhTvYEwXcRVenkwYp3Yk/vxNhmFtNmQ+nZDpCv5LdxYLNk48WuhP8W/G4un5i55Bci1iBgIjHZM+AewK7v9/SeheeKfbKTl+92cWChzXO9NO5WeysCMZMUckQgn9HAjVETp4ZA83ubZx8+82pANvYhNuV00GQ8Ti2yn5MCbhLINH2+VedX2RrjP61JLhdl9b+3R53b667eJ0mZS2MP9svAmJ8cUUH3gzN6br8QcakgVzqFUGJZKPHvm7qt4oI86Ej1NDNXrfPsoI+0KMRKeVXaHgc7djlOfjrAul1I4TgWzcu7IHQEjSslLbGotXCBVf6BOUGcg9jZ3qrtcNeKFEwbWkN96dV7RD6WcKGPWVcARLNGIQtoV6Q/zQTBvXLcADwMmbEZ+EE6WvYjPgKp+MWtoqj6EP9Y6qJpd/IymN5EYZfGgYKJ4FfZRvx0wA+NxxrTTOjxyTkmXbsqHsETgJnbZUVQIt6oSIXrB34shzuSz+Z2cE7VpLG74vyLff91tIxy/e311K0Tkslx+EY+gDt6M5yDZ5W49Ph+Gg17mkIvL+jLeXwtfRuTzlVFczmuUYKYkIYjYX2ghUbp96APIqum3KH260+uZ/MvtzD+E5FIX5TXTogs/uDTGxA23K83JuAlytczpMcqy8HIMiywN41dUiIQQeIx3iZQ55LjFdfg3Q4OTvtRfXCJvV62Yu7cWJK/MftCbFMcOIJ/+eZQdr4u/StM1boSPB2zUQZ74eKwyNtferSoR7QOvZi2C7HES0uQcneuqyG2l0QokKwOmvCPg2+sL4VHCGpx0Ecj/xH1OvWWcj4dyFx6DGX+FbmkcbnMKosfYyDmpckB1PhZGBCwKj03J/Vj7YwR2Rx4ggzZoqScuBpYTzhtZ9R+vzbE00PBycLIF9IPDQTyB1mb4nt9rT0Wpi/R1fBlJZEGIuTYe+QhVG0bDlqrauP5HjTA47l
- 3/Svvdyk
- AbX1Zss97fbJSak3KU2yKMbvfSedSVtvP08vE6K92WOAGf9OADz1N4iI2npgr/FXiSVRSozh7O94KbnBSmWb/y3n5xSZaTOJpzaN6TW8qdkNdwsdbDLtZZH+gdGKToGWbbUQIJQJTiWIN9VNVjOhbR+arnf3+2KDI+BwetiMBNvGX2uSNEEhJZ8F00nHswnJz21aIchs9o9qH7YlUI4LM/4HyDcEEqJYSYDrF0ANJPwcyAys=
+X-HE-Tag: 1787912198-541335
+X-HE-Meta: U2FsdGVkX1+wXYxIv6Lxg1bBPVgtwYm7uPS8ri8fN0Pp1+5J0UaXNDNsM40Nm3fZMxQ++CUDH012OXMNFdKGgCEQ8wzaWfB2LmGsjCfuD2MF/Flnhbnque2CT7WVY+yKNqRSF434A5/tQFencWlWiW3X3QPDXFufxlfEdF8H2zWlSIuFmHgVReqgM21VS9+LiP2GK/CGklm/2dldMe6woTLnjatGzxEx7mQaKk95bbfxtSLR1L9lEPQC4pfNeb1zzpWnQk3YBHTukVp0/ZqwZtF67qft3h8ueAvAS6ujjj4SiRUBV2wJji7MWqhmPbTdKrcpmPRUSQ1aaNi7sOpWGdrJPOdlWtBUb/xEGARdkDGwhD6bNNyyKOVhCuA6MJrHwDw5Wa0K5QM6BJEKwJYmVk5CFI2NKq9OYCcKWqtdcpvGkuzw3d0nXCLZ6c1FDztzvXnukG4ae8sggfrq2tZtC88EeUmGUieJmYh9kmT4drWKFJm1KJdWBtI5qOqGPx3oocHi7dhSJ/AiVurw5y3mjEo1+1XN3mc03uzj5Yy9PRv/hRuigXkXTGYS7aEUafoTczOnCeISplimTomvkaFsu43+3zQ3k5u1PpzbY6xj5E5/wJhTc7+OOMmuDh77OauBtq85J7fqGlpBV0hfu2YqLgMHRHYgxb/P6b1gK+kMg/LggumzmHks6haOSK1iD4jlwWXFqaCt4iXTHqAJJKDqyLQ+dAbFIbZDYOlm5oXV1e7U2XRCkxi60PPai1/3AxpZfy1QH5MYB10Z8RMCk6GA6f8L/smXzglxE09DLjVBWYE3KlyHitHGgsxYogyimmE6WF9MwiivpeKVrVG/PedBUCu32iJesSxzPJ/cH3mBEv9KDPCdlbh4CYAfirbnzxrI2NhfTh7jS8D301VGD14HveaCsEjYAUEARS2I/9vs2/TarJChU9Ubp4iR7SlWe9WZLJZkmwrraU/JjP2SIom
+ HQcyuasE
+ 7GqYmF/7n/uWRE1XCrRK8/Vhmxn79tVZWT82SvkXWcyZhjrSnRr3T0q3lt5M5PF1IcDYrI/+DH7HGTNUxs/0sQ5ubO7tWanWI50lWBF3MDvR8xYeuqjD2vkVzQixqPb8LT91Slcg79uHQ23a3+QowLFbuiVafnRJt8ULUe6S0SbGCI15pJDS5Vz67UAs2Si1jb2dMoI2yVCTIY2oPAeL+dLkD/Pt7Gt5M7+3JLwimmKXXw6ze+TuvpL/Zld9Nq+uR5SVlgnUe+aYUrpdCIZt/9lFTrUV1Rf/Tj7H+BTOY/KZJs9WMduryo5z7FuK/8WMQnZoZRXe/I7h5Fp+bVJ1hUbzmF2IMcrCDammdtpsXdJ9t62tRd/5CGavv+eruXb4u1+R7OzsCykhZW34mZ5nR+NJmtQr4jGkcRapCDyp2vbTmf/Lg/6NNgYhhyQhPBnKrUSZ8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,78 +91,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
-> >  	if (!rss_anon_before)
-> >  		ksft_exit_fail_msg("No RssAnon is allocated before split\n");
-> >
-> > +	/* Prevent khugepaged from collapsing the pages. */
-> > +	if (madvise(one_page, len, MADV_NOHUGEPAGE))
-> > +		ksft_print_msg("madvise(MADV_NOHUGEPAGE) failed\n");
-> 
-> This should probably terminate the test no? There's no reason to expect this to
-> fail and it's better to fail then to risk a flake :)
+On Fri, Aug 28, 2026 at 05:48:22PM +0800, Kunwu Chan wrote:
+> From: Kunwu Chan <kunwu.chan@gmail.com>
+>
+> When mremap() is called with MREMAP_DONTUNMAP on a locked VMA,
+> vrm_stat_account() increments mm->locked_vm for the new VMA while the
+> source VMA is still marked VM_LOCKED.
+>
+> For a normal mremap(), the source VMA is subsequently unmapped and the
+> munmap path decrements mm->locked_vm, balancing this accounting.
+>
+> With MREMAP_DONTUNMAP, the source VMA is left in place and
+> dontunmap_complete() clears VMA_LOCKED_MASK.  When the source VMA is
+> subsequently unmapped, VMA_LOCKED_BIT is already clear, so the munmap
+> path does not undo the increment from vrm_stat_account().  This leaves
+> mm->locked_vm over-accounted.
+>
+> Undo the locked_vm increment in dontunmap_complete() before clearing
+> VMA_LOCKED_MASK.  MREMAP_DONTUNMAP requires old_len == new_len, and
+> only VMA_LOCKED_BIT is checked to match the accounting performed by
+> vrm_stat_account().
 
-Okay. I thought it was rare, it seemed enough with just message.
-I'll change with your suggesttion.
+Hmm I don't love this approach.
 
-> 
-> > +
-> >  	/* split all THPs */
-> >  	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
-> >  		      (uint64_t)one_page + len, 0);
-> > @@ -227,6 +231,10 @@ static void split_pmd_thp_to_order(int order)
-> >  	if (!check_huge_anon(one_page, 4 * pmd_pagesize, 4, pmd_pagesize))
-> >  		ksft_exit_fail_msg("No THP is allocated\n");
-> >
-> > +	/* Prevent khugepaged from collapsing the pages. */
-> > +	if (madvise(one_page, len, MADV_NOHUGEPAGE))
-> > +		ksft_print_msg("madvise(MADV_NOHUGEPAGE) failed\n");
-> > +
-> 
-> Same comment as above, also since this is a repeated pattern, I think it's worth
-> abstracting it like:
-> 
-> 	static void madv_nohuge(char *ptr, size_t len)
-> 	{
-> 		if (!madvise(ptr, len, MADV_NOHUGEPAGE))
-> 			return;
-> 
-> 		ksft_exit_fail_msg("MADV_NOHUGEPAGE failed, err=%d\n", errno);
-> 	}
+>
+> Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
 
-Acked.
+Are you certain that my rework patch was what introduced it?
 
-> 
-> >  	/* split all THPs */
-> >  	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
-> >  		(uint64_t)one_page + len, order);
-> > @@ -313,6 +321,10 @@ static void split_pte_mapped_thp(void)
-> >  		goto out;
-> >  	}
-> >
-> > +	/* Prevent khugepaged from collapsing the pages. */
-> > +	if (madvise(thp_area, thp_area_size, MADV_NOHUGEPAGE))
-> > +		ksft_print_msg("madvise(MADV_NOHUGEPAGE) failed\n");
-> > +
-> >  	/* Split all THPs through the remapped pages. */
-> >  	write_debugfs(PID_FMT, getpid(), (uint64_t)page_area,
-> >  		      (uint64_t)page_area + page_area_size, 0);
-> > @@ -542,6 +554,9 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
-> >  		ksft_test_result_skip("Pagecache folio split skipped\n");
-> >  		return -2;
-> >  	}
-> > +	/* Prevent khugepaged from collapsing the pages. */
-> > +	if (madvise(*addr, fd_size, MADV_NOHUGEPAGE))
-> > +		ksft_print_msg("madvise(MADV_NOHUGEPAGE) failed\n");
-> 
-> Obviously same comments re: this and above
-> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
 
-Thanks!
+In general while the patch doesn't seem super AI-y I do see a sudden upswing in
+patches from you in 2026 so I do have to ask whether LLMs were used? If so
+please follow https://docs.kernel.org/process/coding-assistants.html
 
-[...]
+(I hate having to say these things but hey, it's 2026, so.)
 
--- 
-Sincerely,
-Yeoreum Yun
+I'm kind of inclined to do a fix myself a different way here.
+
+Given it's going to be a backported patch and you're relatively new to mm, I
+feel like this is the safer route, sorry about that.
+
+Happy to add a Reported-by/Closes for this however.
+
+> ---
+>  mm/mremap.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index e8df5cdb0ac..37ea5ee1986 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1334,6 +1334,14 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+>  	unsigned long old_start = vrm->vma->vm_start;
+>  	unsigned long old_end = vrm->vma->vm_end;
+>
+> +	/*
+> +	 * vrm_stat_account() accounted the new VMA while the source VMA
+> +	 * was still locked.  Since DONTUNMAP leaves the source VMA in
+> +	 * place after clearing VMA_LOCKED_MASK, undo that accounting here.
+> +	 */
+> +	if (vma_test(vrm->vma, VMA_LOCKED_BIT))
+> +		vrm->vma->vm_mm->locked_vm -= vrm->old_len >> PAGE_SHIFT;
+> +
+
+I don't love this as an approach in general.
+
+As above, I think I will address this slightly differently.
+
+>  	/* We always clear VMA_LOCKED[ONFAULT]_BIT on the old VMA. */
+>  	vma_clear_flags_mask(vrm->vma, VMA_LOCKED_MASK);
+>
+> @@ -1343,8 +1351,6 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+>  	 */
+>  	if (new_vma != vrm->vma && start == old_start && end == old_end)
+>  		unlink_anon_vmas(vrm->vma);
+> -
+> -	/* Because we won't unmap we don't need to touch locked_vm. */
+>  }
+>
+>  static unsigned long move_vma(struct vma_remap_struct *vrm)
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
