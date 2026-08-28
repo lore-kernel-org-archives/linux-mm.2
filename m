@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79107C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:39:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A20D2C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:47:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D69E6B0088; Thu, 27 Aug 2026 23:39:38 -0400 (EDT)
+	id B08296B008C; Thu, 27 Aug 2026 23:47:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 887446B008A; Thu, 27 Aug 2026 23:39:38 -0400 (EDT)
+	id AB8CC6B0092; Thu, 27 Aug 2026 23:47:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79CD36B008C; Thu, 27 Aug 2026 23:39:38 -0400 (EDT)
+	id 9A76C6B0095; Thu, 27 Aug 2026 23:47:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B3716B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:39:38 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E9B2A1C0FBB
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:39:37 +0000 (UTC)
-X-FDA: 85149273594.26.1E8BA6C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4222E40005
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:39:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PvQw82+O;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 80AA56B008C
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:47:36 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0549120352
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:47:35 +0000 (UTC)
+X-FDA: 85149293670.17.27BFC02
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4BB46140008
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:47:34 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PD5yoXvb;
 	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787888376;
+	s=arc-20220608; t=1787888854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LokbKn+HPvryjA38Tje4FFTFV5zrorBT2XYFitZE/Jk=;
-	b=46QoOcPiT73vhlO2cnEakVDrXUd358Ikb2T25XjCivlBebtU7gTiqWJ33krrx0/+XHqDHh
-	k4KO1liV3SoRcD7X3LBfoXWG2/WUWbYe+Nu88cOa7z1Omv6o78JqJwyPSVldaoOnalqSGt
-	PP7dX7dfGRRGSy68//V3MDB9d3IRPNc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787888376;
-	b=eDylfyenR27dzx/S8JlCfpfRCZsWPwfXo5xz/v/l47LhywzCYWR5CWkRP+eCDA1L86GUUN
-	2QTRxHUKPV9aZMzCn0raNwvYhjIeIdIxiK7kwktCxFxky+OKLX2G++LRohk/KHOKG+y+NP
-	oGEGqh/GRmuqRIpEzT+UZGm5LCzOiG4=
+	bh=m710DFyKBAhfKCuWsHObfkPb2khG82TsQpFvBA/k2JA=;
+	b=RV15aw3cK/ckcZ5fubZLJXfkixiCFWa/e9ITuqpjNe6ZRbnh1HS7aex7BC5n6TOQWUSTqC
+	ZGb9uFXpcdTXMvdglonQJXPeP7sdJKQWCgZIjYywhUDiKpVJD69wmtT8nUBekTsqAc/OrN
+	pcv2H7jPFz2OWOZuwrBvRHtTk9FMipw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PvQw82+O;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PD5yoXvb;
 	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787888854;
+	b=jpfjwi1+HZg1uFnl9kXeNhlfvr+KqZ7ty8Dnncd3IlEIJyYUg1ZeskmXGNxm6/rWIKO5kp
+	cvZzkJKOPcwfuDlqvTXQW+t4G07qTPNaqvagyCJ6VZ4AuWCkZyQnolYprvQUWWTQ6UguuG
+	jBgKpD5qzzo8Mskc5M+x0IJ0eVN0HOo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59DE540C46;
-	Fri, 28 Aug 2026 03:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD901F000E9;
-	Fri, 28 Aug 2026 03:39:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 91A6C601FD;
+	Fri, 28 Aug 2026 03:47:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20581F000E9;
+	Fri, 28 Aug 2026 03:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787888375;
-	bh=LokbKn+HPvryjA38Tje4FFTFV5zrorBT2XYFitZE/Jk=;
+	d=linux-foundation.org; s=korg; t=1787888853;
+	bh=m710DFyKBAhfKCuWsHObfkPb2khG82TsQpFvBA/k2JA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PvQw82+OL+CQYCze51/kOr471rHrEYlao1jBGs9P09QYEYYL20rD/AM2KkeJJmfvo
-	 ghRSLOWa2ApRvfS+QhQonCbcLhZ9AdNXMt48kmocdjpIrCK7GHR679p8dG/I7kZfFD
-	 AjJSOuq+UHQrxi435/F8FogFf6sxK+vSMno3lyHs=
-Date: Thu, 27 Aug 2026 20:39:34 -0700
+	b=PD5yoXvbnJPvy0egNb788P1/kZ5UVxXwv0AbKXVrjtZaLfmWuL7VQjHYesVvQA1dF
+	 ISgqaI1omZ3HE1QMqlThC+6VdlF/i3PeqHGSA8Tsf2OcOCy3BFsJaG3kUmIeOqF0RX
+	 2ZgscW9XwkXja21nwKKs7zPEnpfp0BGDNuaGJ7x8=
+Date: Thu, 27 Aug 2026 20:47:32 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev
- Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
- <shuah@kernel.org>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: khugepaged: remove str_dup() usage
-Message-Id: <20260827203934.329206587a04c9849e64c649@linux-foundation.org>
-In-Reply-To: <20260825-remove_str_dup-v1-1-0ba2121a820c@kernel.org>
-References: <20260825-remove_str_dup-v1-1-0ba2121a820c@kernel.org>
+To: Qi Xi <xiqi2@huawei.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <sunnanyong@huawei.com>, <wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH v3 2/2] mm/page_isolation: guard compound_order()
+ against racing
+Message-Id: <20260827204732.367c52ad420acb0b87bf29ed@linux-foundation.org>
+In-Reply-To: <20260825120549.966271-3-xiqi2@huawei.com>
+References: <20260825120549.966271-1-xiqi2@huawei.com>
+	<20260825120549.966271-3-xiqi2@huawei.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4222E40005
-X-Stat-Signature: azirxtuqpgy74s1i6znjyg1e9s6c15kb
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787888376-168359
-X-HE-Meta: U2FsdGVkX1+8GAqHsEdXEdhp1ACviasAKEdCzbes9a9YrtjNZaaWOQ9P9szbJF8c1+1lZH0uNvdMVswd+tCdY1CptH96FoR+zIBz8x39MJ8rA25zNXzqU1IttHeuLqkFhGeC2PftmGTeE5BwIu0YIBvV2v9s/7ZV74BxlphpLDseareLIaQK7QZB8P0qIX7pjr/UiT7GDv/11v34RDJY4VASHrGU2ErnSS+Uay0Ai06vHAX0tatxP2RFRE4rwucFa9K0Djxr3Lv6cWp2/QA6jLrdwqMWIuqzGGL6n/UBHaw9j6ybf6eRTTwX2G7a3knnTrQ6ew7DPoNWCYVRkw4xs62AOvdynReoDELwJapCsOkS/6cOIUNPj6/U1OnVX1A2WVbtEV9Vx2p+qrs6RBWGxKNo5Qm0LSjk38tW8gYEiTSW3QXI6BXSedsplyshD/4s5rR9165dlPhWu7ykHE9al5K+x+vGenb9IGE3qNtf1N12aa5c0TpZOSe+4TckmRbIneIliD5nVz+heVPaDelJLsZQJ5rluoWHhp3oV1ZveqyLgIBW9pFxXxVoy5wDpzl+++N1I6IjOh1SDUf9hGHL+O0MIlM1jMD24DTiWDcT36vp5NHAU6/5uyi9Xk/S4MrQ1TjT5Y0gAXvtH/PJE4vyadlWnRj85NvpI+z//2x3NAO2hD+JdbuchiYnSQO5OABnMt2GA3zr82oDovTf6TNdAtgeCWghTb0JIw8WH/ggcdtzq6+DzDJEkJNzMaxp3k8lMDxOgzNT9sO360NXhPuvqp8pj7hhZPuAeCNTboXHy3zGZ9HMl5Ubg58SMnP1f/ukLRZMD1HJXKwSsd0d9rEvGMVkvzSMVQz9Nf+WSvodqy2CFor2Jth2k5tnHHnxjkXXAxYKTK3SyhnPEXQPmq3kqNQbsGKWN3dNjmnO0RhY/ZCTlBZmnKUEVplAghIfvm3VwlulwWQqNkyjE2Jwils
- 6KRpFatM
- 6vgJSEcqOgz6978Dp/0ABxzWtWyCOtn1asBXVch/iIJPINzG4Smz/iqGf/OBXvsqwifJw9SpPJQA6X9lqY3v7U4HPIXXc4bGoTDAqLOHCbQ+FSgwevTLejFMydxorDk3BmcOOSGL9Rx2NiCOEAGlZvsxp41ZYsOT04Z1RK+oDLnwQ5fZnvC4M8/DcMAOoakMipkfwNJD0/KEz3UDzRi4N0r8I0aDE/DY8WLOHu05j7PV9xVxR7NPP1YdpRh+XwET1TdSDNMBBCdPqb/7QX+Lu1pY0kxxfhGWHi6ZF0GTdFSZPH/aaxUqzXdtWmkOPCsNrQ5IpG7irXXxlsf4cGQw+NG41UsMsuIQl8AmZncC2dl3i4O15MMLIyhUSpGFaoYPWWZ0J
+X-Stat-Signature: 18357atpkr8cmdbaxzky6stjr484udg5
+X-Rspamd-Queue-Id: 4BB46140008
+X-HE-Tag: 1787888854-744235
+X-HE-Meta: U2FsdGVkX1+j6SiOJ3hG/kAsGnQFlLs1X3el2GUXLdL1/1t8SvdyRw2ytCsEttmMaOJI/VROhdrNwtdRGp72E75mvMAk4wwH0FmuewKMMKJPwG7drUTyV8uBq/cOK31VeIy172taYnjWGHTB5mPnOkiUXVQxGIEfkPGm/pm3QUCBwKKU7R97fVNbePXO9AA1GJtp2oTCysqZqW4SqK6mv5QBLZClhH4XHmkwHnguTFjCgO5pyGAYrYa4QLH8iSEQB+W5IbgP78ryFYiF3WSrKBv7EdzP56rKRUxa8vK0FZ+/UoOhtuCsyVqDjhF0UWR/YwL+hjR+ySANF6Mj3ldjyPw+XQadXQ21m8gEZORSx4Vv3MfgGdhbLcliRscvWXzSvmwdtlvZZ99/WOpapg0ByPMNqgs+ezRZ9x5upcEtuJciU4fPZgHm/vZW3PNr2cciz3sxHvend63Uxak9UdLv+6/3p8/1HTBxwTw+noZBJxcApDeMFhVCSCrH5rLIfo9nyV8CuancXv3cY9VLm3nM/7kzyqWUxg/DOuVNdI/2GLZ0xkGKziyXpPLs9CN7KZyY1+Y2RM7ANsQvXIzx+kjr1caTZDigX6XkXQ5I8WzBCSPeAmDAzJ4RVF7ANLSRMN7yy7lZnJQQ+GLQA1iHaI8yy4szjyRWHW+6MI+O7kvDUwb4zB3icuzkSiHSzj5sQ+w+uX1rmH/rdHHd9bf5dlTnvEyFRBolXuO1gHyWFPFQMGH5/wq5G6GSg7A9mgv+sEe92p5tGlyqxbCNBIxqe9Ur2THmDUHS4j4C/412z+NPuK23INDlHmU+fa5YEPv5+Q6ELq6Qfk0UxP21TyMr5QEjwytJc7BxAMA1lFwRo/DKSnEsTsp8oKFkEY4STIWJX4VktV882mBIUXAeEL/YwRlW9Qr8BRCrLOss3B/R1jySm1e1KcA9lyai9VN1YNwMossKEJ54osQz/bF314StGwa
+ cnajWYyq
+ hjLnHWUhIzkSMtK8ewPYFJtA3mzeWhu463MwNYmzNN7+jm2wta/h1q9h/XXcJugGo9WcgGWngPe2rStpLeO6CMLMkys8clJvPKxY0B/9MpGTdv08TnzKSPJmUXwqw8e8h/Zx8TESrDGK31kE/Um/sphB4gjfsq68aIwMbXxabucegMHMMlXThme+X/rQzfQ7IOOiySkBjHRiKb9rQZ0EciYvnFmTHA8wqwQJLdpa/C33FJJexfggBW+evXrJ5lXRSjStU6eGldggAQCWrPmPODJwyaf4tXsis6qjJvTOCqzlO9lUit0/qvA2vGidYObdbYkpGtzNuzWt9Pplm2XM/1J3d0DgpqYkXI/rEw+syeQ8+JASkOZgK2IoP7ikGvE43ykCt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,22 +94,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026 13:20:59 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Tue, 25 Aug 2026 20:05:49 +0800 Qi Xi <xiqi2@huawei.com> wrote:
 
-> We don't check str_dup() return value and never free it. While both
-> things are irrelevant in practice, let's just clean it up by working on
-> argv[0] directly and avoiding the str_dup().
+> The PageCompound branch reads compound_head() without holding a reference.
+> A racing split or free can cause compound_head() to return a stale pointer,
+> and compound_nr() reads the order from that stale head, leading to
+> out-of-range shifts and making the skip distance meaningless.
 > 
-> Nobody after us needs these parts of the argv[0] string anyway.
+> Read the order explicitly with compound_order() and validate it is within
+> MAX_FOLIO_ORDER before shifting. Also verify the derived head_pfn against
+> the legitimate pfn: the head must not be past pfn, must be aligned to
+> nr_pages, and pfn must fall within the compound page. Bail out with
+> -EBUSY if any check fails.
 > 
-> This patch is inspired by previous work from Anshuman Tewari [1].
+> ...
+>
+> --- a/mm/page_isolation.c
+> +++ b/mm/page_isolation.c
+> @@ -418,10 +418,28 @@ static int isolate_single_pageblock(unsigned long boundary_pfn,
+>  		if (PageCompound(page)) {
+>  			struct page *head = compound_head(page);
+>  			unsigned long head_pfn = page_to_pfn(head);
+> -			unsigned long nr_pages = compound_nr(head);
+> +			unsigned int order = compound_order(head);
+> +			unsigned long nr_pages;
+> +
+> +			/* compound_order() is racy. Cap it at MAX_FOLIO_ORDER. */
+> +			if (order > MAX_FOLIO_ORDER)
+> +				goto failed;
+> +
+> +			nr_pages = 1UL << order;
+> +
+> +			/*
+> +			 * compound_head() is also racy, so the derived head_pfn
+> +			 * needs additional checks to make sure it is valid.
+> +			 * Otherwise, just fail the check. pfn comes from
+> +			 * __first_valid_page() as a legitimate PFN, so use it to
+> +			 * check head_pfn.
+> +			 */
+> +			if (head_pfn > pfn || !IS_ALIGNED(head_pfn, nr_pages) ||
+> +			    pfn - head_pfn >= nr_pages)
+> +				goto failed;
+>  
+>  			if (head_pfn + nr_pages <= boundary_pfn ||
+> -			    PageHuge(page)) {
+> +			    PageHuge(head)) {
 
-This might be the most-reviewed patch I've every seen.
+Sashiko suggests that this PageHuge() test suffers the same issue?
 
->  1 file changed, 1 insertion(+), 1 deletion(-)
+	https://sashiko.dev/#/patchset/20260825120549.966271-1-xiqi2@huawei.com
 
-Oh.
-
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-
+>  				pfn = head_pfn + nr_pages;
+>  				continue;
+>  			}
+> -- 
+> 2.33.0
+> 
 
