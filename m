@@ -4,97 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43630C61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 13:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0050C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 13:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4350E6B008A; Fri, 28 Aug 2026 09:15:39 -0400 (EDT)
+	id 178676B0092; Fri, 28 Aug 2026 09:17:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E54F6B0095; Fri, 28 Aug 2026 09:15:39 -0400 (EDT)
+	id 12ACD6B0095; Fri, 28 Aug 2026 09:17:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FB616B0096; Fri, 28 Aug 2026 09:15:39 -0400 (EDT)
+	id 040296B0096; Fri, 28 Aug 2026 09:17:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 07F596B008A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:15:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F99E140394
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:15:38 +0000 (UTC)
-X-FDA: 85150725156.11.DCACEEA
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CA14140003
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:15:35 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=5ot1gR7U;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf04.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CE1D26B0092
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:17:25 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 612D4A039C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:17:25 +0000 (UTC)
+X-FDA: 85150729650.09.155BD3A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 755374000C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:17:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UyvuhnKP;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787923043;
+	b=5vwtZ7RCVS+DU+4+eNSjlbnrqPWZbgp/Tnp1AgF29rLn6Jh5qtRNmT/Bsoss1DMolR1k29
+	aCvznuX+OWaP4ftWhMK9Ph4ubJ7kteP1y4Jn7/tG7UyzcapAWOWTKpZaKBgqdyFumkE4bz
+	f3xi8RpVusLjfCl3We+wA6B4pp1nzLk=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UyvuhnKP;
+	spf=pass (imf11.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787922936;
+	s=arc-20220608; t=1787923043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aOKzH9R7+xHaU6WtcnY691Gb/8RWKAMf5Z48aJbOcPA=;
-	b=5cacTiL4A04fAnnLczKBQOrE4nj0RQjPMwyiUeDtAz5Jhtg5eTBqrpiv/qPV5MajhCowSq
-	BtPxrJYwiR9YZ+vKGhBgbJz4CUfg2Zvn648B1Q4nUJrLfPX0yeuuuIGZJ3MBjFSLHCeC8r
-	C937G8yai+cPlZZtNe3tEfcY8Dlq6bc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=5ot1gR7U;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf04.hostedemail.com: domain of panov.nikita@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=panov.nikita@huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787922936;
-	b=AzkeJ/mZ445E3rgQ0aDRwiT7pHlg7foYVirSytjvIRdt9H4T9XzIjgHSrdHPkT51LtWiJa
-	f3AjrWoUij/JQHTP9wq/Yj86798Gga1qufVvX09vMJlzP3KY4+KL1o09k8VZOmtXLzz5bk
-	S/yd7EJTvOqm4vO6KsTiAvdkB4cDTl8=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=aOKzH9R7+xHaU6WtcnY691Gb/8RWKAMf5Z48aJbOcPA=;
-	b=5ot1gR7UBRvytIrHIJTJwcwlyNH6oEGq1klmsi+NnNVLj5VVie7tg24vijgQhzGMG6zeuAd/J
-	rr32aOw0eedgDFXQRFrozF/Ky+bCH/U/njmG8q3KTU3sMBIMaUqLvNiytcPLp4fXjWbDV3CSn/y
-	yUfjcYf+wJBW4kOS0ghWqWs=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hWf4t2fhyzJ46cl;
-	Fri, 28 Aug 2026 21:15:10 +0800 (CST)
-Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5A80340570;
-	Fri, 28 Aug 2026 21:15:33 +0800 (CST)
-Received: from mscphis00949.huawei.com (10.123.66.11) by
- mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 28 Aug 2026 16:15:32 +0300
-From: Nikita Panov <panov.nikita@huawei.com>
-To: <ljs@kernel.org>
-CC: <akpm@linux-foundation.org>, <artem.kuzin@huawei.com>,
-	<catalin.marinas@arm.com>, <cl@gentwo.org>, <david@kernel.org>,
-	<liam@infradead.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux@armlinux.org.uk>, <mark.rutland@arm.com>, <mhocko@suse.com>,
-	<panov.nikita@huawei.com>, <rppt@kernel.org>, <surenb@google.com>,
-	<vbabka@kernel.org>, <wangkefeng.wang@huawei.com>, <will@kernel.org>
-Subject: Re: [RFC PATCH 00/18] mm: arm64: Add kernel replication feature
-Date: Fri, 28 Aug 2026 21:03:01 +0800
-Message-ID: <20260828130301.135023-1-panov.nikita@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <apBqjq24aG_s2ZTM@gremlin>
-References: <apBqjq24aG_s2ZTM@gremlin>
+	bh=LXWsySxCAhI2eKubAnh1Qok8EJGkZG2y63EPSSYhj5I=;
+	b=jSPZKJS7luweRjpU2I1B4OovAXG4aVWYVO2bR7LWNOgJn8RyyVSopOZbbnTLQFVjajk8K1
+	dwpMI5LAOoDsv3O/Zij0Xl2tHdraI0eYdN9YhUyk1DRGbWnxOekzICPztD2AY0bjRt6Z/X
+	0lnlUM/lEadX3JZ5S4DofyLwHVm9CR4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 97E5160208
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:17:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBA31F01559
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:17:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787923042;
+	bh=LXWsySxCAhI2eKubAnh1Qok8EJGkZG2y63EPSSYhj5I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=UyvuhnKPSnuQrqsbE0ARAQuwBiMkIN3fyqBNebM7kEVUZIU+wqErq/AqQZfMk8SzO
+	 m4MqzXjL80cjVyZgIrb2uo3znrd3Mg6bYTMnTr2vzEvoA+6cJeBS6qL6ZJ03i8u7zc
+	 g6H5KCKAlmiqdPt8gsGB/01eFfOHrbctWP6cB+0YZzV7uYwD9lMBTJMm/nI2ui2B1X
+	 F+sUj8UzR+Hv+Th48BEHmpe+NccUbhoinPDmu3EMYkqmGHKkTZfDPPfzUf9nWYsZOm
+	 PrummRw8x6PeVhNHqxEvZsOUS8R0NDAVMziEKWNneSuSjpNV0dM0sTRGYhMMtLAugh
+	 kEl9ZyrXNW3iQ==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c250f28f1cdso141550266b.0
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:17:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqV/Xuh3HOj6OhFAgoYbUPa0i6WgL+dw2xjwWuOqClm2AyxMiiYYM/VWe25G3RNBBzhdoJqT7C6fA==@kvack.org
+X-Gm-Message-State: AFuF++k3H9NaF72Z8JZnQeTAglnZ1BSUsVW0+xIYj03v7UQQ3e4tPEHI
+	a6nOgfGTA+Wmezqf9v6gv4xWGZhXtD/REJEMj47+EHKY/oAujGkkvHPypxNR9Ot9rpm3knLjGW+
+	HbFa42yVEhm4zfce88mJrazZ7yqhEJKo=
+X-Received: by 2002:a17:907:9813:b0:c24:e1e9:69c with SMTP id
+ a640c23a62f3a-c255667b63dmr416435066b.0.1787923040778; Fri, 28 Aug 2026
+ 06:17:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.66.11]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500004.china.huawei.com (7.188.26.250)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CA14140003
-X-Stat-Signature: fksu6zptdtptner4zc1yajen1hj4bfbk
+References: <CAJnrk1bk66ZhRAS7mojSnD5RBfFS+0ChAPymE3ObRWr0C_udWg@mail.gmail.com>
+ <CAO9r8zPpe6fWOSXtRUjFB8WNMroeBqvLT+2QtAU4E27AtLUXMQ@mail.gmail.com>
+ <CAJnrk1YifN22mA5PFRVrh3m_ygxax6x4_8nraG2hPqCzyzBj7A@mail.gmail.com>
+ <anpsLy_pCanocgS1@google.com> <CAJnrk1b5asARJ_g176DsoNCvf+iFqzPbOtVveeuPxTPZDmnuKw@mail.gmail.com>
+ <CAO9r8zOeh1fFsY5CG1C8CDCJH25eiioY-otRv6Krn1=S21PeaA@mail.gmail.com> <CAJnrk1YO5E6ETxn9RmM-LWRQSRxwF9iEakAPz6veMPjaKMAEOQ@mail.gmail.com>
+In-Reply-To: <CAJnrk1YO5E6ETxn9RmM-LWRQSRxwF9iEakAPz6veMPjaKMAEOQ@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 28 Aug 2026 06:17:09 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPErbULcVTzk8GGS8w=6d-Qn10rLSkSOEzrO++Vhx7+Dw@mail.gmail.com>
+X-Gm-Features: AcwNN1VqPOz4jQ794_KmrH9eGNa1-pCCTewSGBGtIJmecacOEyoNdreux6MHngs
+Message-ID: <CAO9r8zPErbULcVTzk8GGS8w=6d-Qn10rLSkSOEzrO++Vhx7+Dw@mail.gmail.com>
+Subject: Re: memcg stats flushing (WAS "Re: [PATCH] fuse: disable default bdi strictlimiting")
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, kernel-team@meta.com, 
+	fuse-devel <fuse-devel@lists.linux.dev>, Jingbo Xu <jefflexu@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	linux-mm <linux-mm@kvack.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1787922935-527551
-X-HE-Meta: U2FsdGVkX18rMrPW8XxkOvlsvoWRnaHdYXIn7cx9N7qvMBivF2jRCjSVmQ+sAByJTCJSk8hhIbyG35upDH4dIwV2cXotYi/uo7f6NAPw28D8p4j16x4ctkoANUYi3xkoELWsKyQijXDUj7Eid6r9IEU97EHhqrr3/uwz6Z5Vleu8sseaEnsHblGgr44NiPOSpJIRwRsAsBtK2+BMx89HfG8KuiPu52EGmbiyENNBm03/zYh9RASdJ86msCnIkIbQs+yMt/MyYnmaqLTyfHL8jGxph1ZeNF30YE0xQswUnpO9vaTWgnvgunuUlJg/0m+40OlwKMS34VIQ+Cp+2+6inHqChwcFZoI0mIglmyk7o7gy8PA3ov+LbhD9gzi+O7JKZgBUDHipfy8yimIwqBgipoaml7hydMenDXbLe6zULes1/zfcV1kavqq44h2q/OcyXuDfZQbDz0tWjsK7yeTO6xaSamivwq6MWzX8/1SHNE3gqsfZ4gyVF/0/Qp1YufMVmVZVopChWznJpODAx7lh9eiS6JIw+A3B+GLJKyFJxoJA3y3EZBMzhCfKlpVUT+mdkKquLE5uxEoqXy9HPqaf2hD31h1JmGORAvHFV8UBFZu2LKCHsprzDhsl2emH/E4v99YBv8ry/fSjXdKA9ViF4mXUFnVS93xFk6pERm4T2ZQQu6FqCVQ9UrwyfeR0Gy3fyvoSbsOGpdrMxp8SQSYSiLH5rmTCrosxFjvrOG9K0nAU750fyKxWlaXwZaESgyRca1ScA7Sf2C6Ng+5MXwthMypcHG2/4kljd1gdCfIXlyNP81VqfBik4RO3HWvSl7fp0b6SwGAbrovA+ovdfsnHrshVV30DNE8cnvBXVnYJx+YHMpzcDu0h/zd/I1PhuFX8oaPSicKMbZTaR0xmMABUDubsmAyPA5BxMSJEICvRp15EF4l1JTTwJSo/NAY2DtN974Ynb3Icp4Q0C153LEc
- B6h41aVT
- vvhmv5t22zw7CuSVndZ2+IcQNcrNgqZl2rFuiwubRxr+/GaotysMQHjFmMo8RcXdvBSBoK4BzvYmy6g/eq0k3HEK4xDMbuq+I1m0va3ny5sfGOBUrXdMwNnmSXveWC+Qm2lJuUFmjAXCSGCDk0/Robo49Q4fCj57qCbHlMPj5cHQ85r4+vD15qflQ3i03GpFUxU/DgSedXRbp4HuHfzQym0bUobs4Pr3MggO7HKJbhF0EM8VsmsadixIY+EHM6pJHEL6vQXqS98aIF7E=
+X-Stat-Signature: pkga8b3n83kc8mxx7bdjd9dx8zct47b3
+X-Rspamd-Queue-Id: 755374000C
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787923043-229136
+X-HE-Meta: U2FsdGVkX18KdiW1dcTYB1Bclk8H2C/IKfWY3tFeTfbGzVFbuGt5t2qpNMn5RCZnE84H3R/1tee2W74IsslHahXIjwXtga/hJDDJv7OYxkDXOaeJHY6nUE+8pWdQM9dXT1hfvlKXXdHzoCFsKvRDd/DCRC5CWXP+5HrOUqBvarRuW4+FQpth6/SNeTK5z9H6yQK/R15TFUGpmDMDiSHPBfz3FtzyilRMp9WNR1Lk+oVFCFMQFUX05BstkQX7lnOdvj04x9Ez8xR5F6ob+KQWNi2JGeknqPeOf+7Djm2klSChLpT7b4a/KWcT8hW80F9sNCG1SmZSl6ROEJyduKE1Uov8yog7tWv9sLkyEmb+6wfxtX+lPkAtyiBa1ysjrYtVnnqvBygz1Kl1g8JgwNzguV/8po3D23laqQ8K4BD79ZlBO8Yx7OsbJg16CrDfETJTgY+7IfIzHdIPbuoY+Suw9m5tbAdD5znwtslsStSZH6povY+tN1v1K7uPHDq+BmwL5FU/QAR5Sm63mxJnyXYcXOuBnWknuRGZuiWNBtYEOWxl66hw5NHi5OqvbdzQsabsQc7LVnUuZnsabAEHdrWk02Di35vfz40UHdcoKm5ai6F5DAP7iy8VU0eAci2Oq9p2JmVcVGDsC2Sc9/InGjX1PpmgZAFb5Xs0GHMGHBa7I2iRY+48Bpfjo9n1sMmunzRLpg4ZTLzYFK/IzmgsHe2nT2MTc4LyicftamhjS6/H6LcpkNc8SLBlYUJX4Mf7J7KzD7lG0W8nL3fRKKGZEqzD9FUIi03T282ziAU93L5gAEye6pbS+nSx4Nny0bwVH+zvFs2xJAWHzurHPybbj3xFreGu8YVT1MiH8dWnhF6D2m6hGYj1Xol70j3YwQjC6AieMM7D1ZZKyLVBaJkMaS5ZPV4tJCE6Aq3X35IOy7jj6ASJNpc7+P1kRMwC5kx049BePyC72+N4M/lg4Pm3dLW
+ lfG9X7ZP
+ 3xJAOvgTDfsjJcI5kMM8N266lxN1PnuYCWGr65WoBgN+XNB+/za/c9xeXnUEMNdZ6q6RfX9R06ldVMGsF5MMwkVcC2wtSM7Ny47KDjl4TrKdHxsdBnoeCopCFav4L+DUsQioDRuZOFQxcLXkDsm6GplU0/G6if28NtJ0HB/YD7T0RjGbjqIYzsF/8Qldh7bDc9VSQaE3OBgB6RLnVhZygtePe7P6ETC525EpU2pb70LQE1BuFS5UdWj+iZ3LnDxMKc1iMFKAVSjsOyX1KVypddbhL0aRDQ/wFaeXXTWcAI/blNJIk7vKl5+rqew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,244 +109,265 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, thanks a lot for your comments.
+> > > These are the results I'm seeing from the benchmarks. I'm comparing
+> > > non-ratelimited rstat vs (a) vs (b). I'm comparing non-ratelimited
+> > > rstat instead of ratelimited rstat, because ratelimited rstat relies
+> > > on the 2s flusher and doesn't incur any additional flushing when
+> > > called.
+> > >
+> > > ~On the update side~
+> > > ns per update (measured by having a kthread pinned to each CPU and all
+> > > threads updating the same cgroup for a 200ms window, run on 80 CPUs,
+> > > computed as total CPU time / # updates)
+> > > depth      rstat      (a)         (b)
+> > >     1        22.34       32.49      60.10
+> > >     8        22.46       47.12      140.72
+> > >     16      22.49       70.96      206.39
+> > >     32      22.51       139.16    305.40
+> >
+> > There goes my dream if an rstat-free world :')
+> >
+> > I am very surprised though that you care about hierarchies this deep.
+> > I don't think we have anything close to even 8 at Google, and in all
+> > my previous testing I usually test up to 4 or 5 levels. I suspect at
+>
+> At Meta, we often see depths 8 to 16.
 
-On 8/27/2026 8:25 PM, Lorenzo Stoakes (ARM) wrote:
-> Hi,
->
-> On Fri, Aug 28, 2026 at 12:11:40AM +0800, Nikita Panov wrote:
->>
->> As of today, none of it was merged into mainline.
->
-> I mean :) maybe take that as a hint? If a number of series trying to do X get
-> rejected by upstream, that is maybe suggestive of barking up the wrong tree?
->
+Interesting :)
 
-Patch sets related to NUMA text replication were not explicitly rejected before
-(I might be missing something here). The main goal of this resubmissions - gather
-feedback, whether *something* related to replicated kernel text, rodata
-and translation tables should be even added to core mm. And should be more time
-invested into this concept, or better leave it.
+> > that level the difference might be acceptable. But aren't other
+> > operations also really expensive at that depth? I imagine the charging
+> > path is really slow if it has to do atomic updates for 32 parents. Is
+>
+> I agree. This aligns with what I saw when running the page counter
+> approach for zwap on depth 32. For the writeback path though, the
+> dirtying / writeback folio lifecycle is just stat updates. There's a
+> charge, but that happens only once, when the folio enters the page
+> cache.
 
->> However, after thorough re-evaluation, we were not able to observe
->> performance improvement for the x86 platform, so we have decided to stop this
->> direction and switch on arm64.
->
-> I mean, why? You should provide details here, this is quite hand-wavey.
+FWIW, when I added the per-memcg thresholding for flush (i.e.
+stats_updates), there were some regressions in some microbenchmarks on
+the update side due to the parent iteration in deep hierarchies.
+However, we decided the regressions were acceptable because they were
+of low significance compared to the extra of charging/uncharging in
+those deep hierarchies. As you said, charges are not 1:1 to stat
+updates, but it was considered a general indicator of acceptable
+performance for the workload at that depth. That is all obviously very
+hand wavy :)
 
-For testing on x86 architecture, we had only an old machine,
-with 2 NUMA nodes, Intel(R) Xeon(R) CPU E5-2690, 192G per node,
-24 physical cores total. Interconnect on this machine is better,
-than on Arm servers that are available to us, in both latency and bandwidth.
-In addition, the x86 patch set introduces overhead to the user space,
-since the pgd table is shared between user and kernel space, any
-modification of user pgd entry should be immediately propagated
-(handle_mm_fault() or free_pgd_range()).
-That is the main reasoning why we focused on arm64.
+> > the update path really a problem given everything else?
+> >
+> > Given the constant cost of rstat updates, it also seems like
+> > memcg_vmstats_needs_flush() is mostly evaluating to true and skipping
+> > the parent walk. I wonder how much this remains true in practice, I
+> > think Shakeel mentioned that it does help in production.
+>
+> I think for the writeback path, this is probably often encountered in
+> practice, since the threshold is 64 * nr_cpus and any sustained write
+> would cross that quickly. It would matter most with order-0 folios
+> since there's 4 updates incurred per folio independent of folio size.
 
-> You are
-> also proposing core mm changes for something that seems specific to unique
-> hardware as far as I can tell, which is a big ask.
+Makes sense.
 
-This technique is applicable for all NUMA platforms on aarch64 architecture.
+> > > (a) and (b) perform worse on higher memcg depths, whereas rstat is
+> > > unaffected by depth level, which makes sense given that (a) and (b)
+> > > can't break early if the flushable threshold has already been
+> > > exceeded.
+> > >
+> > > ~On the flush side~
+> > > ns per flush call (measured at leaf of memcg chain, ie best scenario
+> > > for rstat, # CPUs on the system is 80)
+> > >   rstat                      10165.60 ns   (min 9924)
+> > >     (a)                       734.10 ns
+> > >     (b)                        4.79 ns
+> > >
+> > > (a) is around 14x cheaper than an rstat flush, which I think is
+> > > because the rstat flush goes through every stat, even ones that are
+> > > not directly relevant.
+> >
+> > I think that's only part of the story. rstat iterates all children
+> > cgroups as well. I think reading multiple contiguous stats may
+> > actually be really cheap since they are likely in the same cacheline.
+>
+> In that benchmark, the flush cost was measured at the leaf of the
+> memcg chain, so I don't think there were any children to iterate here.
+> Maybe some of it is attributed to the rstat locking? I'm not too sure.
+>
+> >
+> > >
+> > > Using some napkin math, I think the breakeven point for (a) is around:
+> > >                       updates per read
+> > > depth 1             ~900
+> > > depth 8             ~380
+> > > depth 32           ~80
+> > >
+> > > eg for depth 1:  (10165.60 - 734.10) / (32.49 -  22.34)
+> > >
+> > > This is assuming one read per flush, which is what (a) and (b) would
+> > > necessarily have to pay, whereas rstat only needs to flush when the #
+> > > of stats updates exceeds the MEMCG_CHARGE_BATCH * nr_cpus threshold,
+> > > so the updates per read numbers above are in reality lower.
+> > >
+> > > Running a fio write job and using tracepoints to count # of stat
+> > > updates, # of reads of those stats, and how many of those reads flush,
+> > > I'm seeing:
+> > >                      updates/s              reads/s
+> > > flushes/s         updates per read
+> > > bs=1M            643                           119                 45
+> > >                        5
+> > > bs=4k            156,415                     123                 58
+> > >                      1267
+> > >
+> > > For larger folio sizes, (a) is cheaper for writeback (since there are
+> > > 4 update events *per folio* in the dirtying/writeback lifecycle) but
+> > > for smaller folio sizes (eg order 0 folios), (a) is worse, as a lot
+> > > more updates are incurred, and the performance is worse the deeper the
+> > > memcg is nested.
+> >
+> > Hmm interesting analysis, but I actually think a more interesting one
+> > is the effect of the update latency in respective update paths. For
+> > example, in the zswap_store() case you analyzed earlier, it ends up
+> > being in the noise. I would check what the hottest update paths are
+> > (probably networking?) and check what the update paths are, to check
+> > if they are really sensitive to the increased update cost. It could be
+> > the case that at least stats that are used by in-kernel flushers do
+> > not really care about the extra update cost.
+>
+> Extrapolating a bit from the synthetic benchmarks, at depth 8, I think
+> the extra overhead incurred on an update comes out to roughly around
+> 25ns, and at depth 16, around 48ns. I haven't looked at the networking
+> path, but the lru path (__update_lru_size()) looks concerning, as it
+> would have that extra overhead while holding the lru lock, which "is
+> already a heavy contention point on memory-heavy workloads" [1]. As I
+> understand it, reclaim, compaction, and the page cache path all
+> serialize on that lock.
 
->> 3. Any modifications of kernel PGD level. These modifications
->>     should be synchronized across all replicated tables.
->>     Right now, for example, memory hotplug/hotunplug
->>     lacks this support, vmemmap and kasan regions for
->>     added memory might not be observed correctly. This could be fixed
->>     by patching all places in the kernel where swapper_pg_dir
->>     is modified, or by "lazy" propagation on kernel faults in the pgd-level.
->>     Propagation approach will not help in the case of pgd_clear()
->>     on swapper_pg_dir though.
->
-> Yeah OK this suggests to me you've got the locking and synchronisation all wrong
-> and it's worrying :)
->
-> In general I really oppose anything that adds additional kernel page tables or
-> complicates kernel page table handling.
->
-> We already have singificant complexity and bugs/races emerging from people doing
-> odd things with kernel page tables on assumption that it's 'safe'.
->
-> You'll need very compelling evidence to justify anything that touches such
-> sensitive stuff.
->
-> The code is also fiddling with PGD assignment in a way that could interact badly
-> with how these PGDs are synchronised. These things are very subtle, and even if
-> it's limited to one arch the core mm code is not.
->
-
-Agree, interactions with PGD should be fixed.
-
->>
->> Overall, this patch set in an early PoC stage and require some improvements.
->>
->> Overhead:
->>
->> Memory overhead for the kernel itself is about 30MB per NUMA node
->>    on our deployment. For kernel modules - depends on their sizes, but text
->>    and ro-data are not that big.
->> CPU overhead - replication performed on the boot stage. After boot
->>    only "rare" operations are slowed down -
->>    module loading, text patching, kernel table pgd-level modifications.
->
-> Hmm. I wonder if they're as rare as you think though? It all depends also on how
-> slowed down they are, how that manifests, etc.
->
-
-The rarity of these operations heavily depends on the workload. If someone
-is loading/unloading some kernel module or actively tracing something
-through kprobes (inserts new and removes old), or enables/disables
-ftrace events, these operations are quite often. I am not sure that this is
-a valid scenario for an enterprise server. Tracing itself might be running,
-but I am not sure about constant reconfiguration.
-Exact overhead should be measured, I agree.
-
->>
->> Microbenchmark:
->> Kernel module with a huge text section (~50MB) filled with CPU-bound
->> instructions. For each NUMA node thread is spawned, each thread in a loop
->> executes isntructions. Total execution time of each thread is measured.
->> The insmod call bound to node 0 through numactl (less time is better).
->
-> So wait, you bound it to node 0, then rely on kernel text replication to improve
-> performance due to a bad hint?
->
-> That seems like you could fix the issue by binding correctly? :)
->
->>
->> node                 0        1        2        3
->> Before time, s     5.567    7.598   13.294   18.905
->> After  time, s     5.469    6.960    6.777    5.531
->>
->> Diff               ~0%      -8.5%    -49%     -70%
->> In this benchmark, interconnect was not used by any other actors,
->> so microbenchmark numbers might be significantly improved.
->
-> This benchmark seems entirely synthetic and it seems odd to me, prima facie, to
-> implement a feature to correct for incorrect NUMA binding?
->
-> Maybe I'm missing something though.
->
-
-You are right, this microbenchmark is absolutely synthetic and was implemented
-to verify that replication is working and to test its *maximum*
-potential for the kernel text.
-Kernel image with its text and rodata loaded
-entirely on a single NUMA node, its memory physically continuous,
-there is no way to control this.
-For kernel modules, mempolicy could be used, but still, text and rodata
-will be either bound to a specific NUMA node, or interleaved between them.
-
->>
->> Customer's evaluation:
->> We were provided with the following feedback on this patch set
->> directly from our customers. Unfortunately, we do not have details
->> regarding how these measurements were done other than it was
->> a production setup.
->> Evaulation was performed on Kunpeng 920 and 920B platforms:
->> CEPH distributed storage +5%
->> StarRocksDB              +5%
->
-> This isn't hugely encouraging.
->
-
-I agree, numbers are not great, but it does not *affect* execution of
-applications. MM for user space was not modified at all, I think, that
-database application will not set kprobes or load kernel modules (at least
-perform this other than on its startup). Any introduced overhead should not
-affect normal enterprise applications. Memory overhead is also insignificant,
-for servers with hundreds of GB.
+Yeah it could be a problem, but I think we won't know for sure until
+we run a reclaim-heavy workload (e.g. build the kernel in a constraint
+cgroup) and check for actual regressions. I am often surprised by what
+actually shows up (or doesn't) in higher-level workloads.
 
 >
-> Annnd :) this:
+> If we were to move all the callers off rstat, I think this also would
+> unfortunately make the walk more expensive. As I understand it, each
+> stat would be a per-cpu counter which would be added to the
+> memcg_vmstats_percpu struct, and that would have to spill onto
+> multiple cachelines. Or maybe I'm missing something here and there
+> would be a better way to do it.
+
+Yeah. I count 54 stats, with 8 bytes per counter that's ~7 cachelines
+(on x86_64). I can see that being really expensive, but I can also see
+it disappear into the noise if the stats updated together live in
+close cachelines and the CPU prefetches surrounding cachelines.
+
+> > > I also ran some experiments with Jan's suggestion of scaling the flush
+> > > threshold to the memcg's limit rather than to the number of cpus. It
+> > > helps the overshoot we saw and slightly outperforms doing a plain
+> > > non-ratelimited flush (100% of dirty limit vs 101% on a 1G memcg, 103%
+> > > vs 107% on a 256M memcg) but led to ~2.4x more flushes.
+> > >
+> > > The initial reason we switched to the ratelimited version of the flush
+> > > was because flushing was expensive, but I'm not sure if flushing is as
+> > > expensive as it used to be. Testing the non-ratelimited version, the
+> > > flushes account for about 0.9% of the system CPU the write path
+> > > already spends, and I didn't see any throughput difference between the
+> > > two (249-252 MB/s either way), on a 32G memcg. With the
+> > > non-ratelimited version, it's also not a flush per read - it's still
+> > > "ratelimited" by number of updates that have elapsed since the last
+> > > flush (only flushing if stats_updates >= MEMCG_CHARGE_BATCH * nr_cpus)
+> > > which means concurrent writers writing back at the same time will
+> > > "share" flushes rather than triggering their own.
+> >
+> > Yup, this is exactly what I mean. This is a good analysis for the cost
+> > of the flush: how much it matters end-to-end. Even though the full
+> > flush is 14x more expensive according to your numbers, it seems like
+> > it ultimately doesn't affect performance much. I would do the same for
+> > the update paths, see if the extra cost really matters. WDYT?
 >
-> 	if (rwsem_is_locked(&mm->mmap_lock))
-> 		locked = true;
-> 	else
-> 		mmap_read_lock(mm);
+> imo ideally it would be great to minimize any overhead we can where if
+> we don't need the precision for a certain stat, then it would be
+> preferable to not incur any extra overhead for it on updates if the
+> overhead saved on reads doesn't justify it. In the grand scheme of
+> things though, I think in most cases, the extra overhead/latency isn't
+> really discernible except at high depths and except for the lock
+> contention issue mentioned above.
+
+Right. I am just trying to avoid the complexity of having two update
+schemes if we can help it. If we can move everything to a new "better"
+scheme, that would be great. But it might be the case that we have to
+have a different scheme just for stats where the current update/read
+tradeoff doesn't make sense.
+
+> I don't really have an issue with rstat for cases like writeback where
+> we're not doing a lot of reads compared to updates,
+
+I don't remember why ratelimiting was added, but I suspect for cases
+with large trees, high number of CPUs, and/or high cgroup lock
+contention -- the cost of a normal flush could get really high. Back
+in the day when we used to always flush the entire tree (before
+per-memcg thresholding), we ran into hard lockups for flushes taking
+>10s with irqs off (we had atomic flushing back then).
+
+>  but I think we do
+> need to get rid of the rstat rate-limiting, as it seems so arbitrary
+> to rely on two seconds for stats being updated. Bounding it by time
+> and not stats_updates feels wrong. Even in the cases where precision
+> doesn't matter, it seems better to give those callers a higher stats
+> updates threshold depending on how much error they can tolerate, than
+> to rely on a blanket 2 seconds.
+
+100% agreed. I never liked the ratelimited flush tbh. I think we
+practically end up just not flushing in most cases (but I never really
+checked), so it's just a way to feel good about skipping a flush :P
+
+> > > In light of the above, imo it seems to make the most sense to just do
+> > > the plain non-ratelimited flush for mem_cgroup_wb_stats() and make the
+> > > flushing magnitude bound again, wh ich also aligns with what the
+> > > global non-memcg domain does. The question is whether the extra flush
+> > > cost is acceptable, but the numbers above make me think it is.
+> >
+> > If we can eat the cost of the flush here that's great, but I think we
+> > can't say the same for the vmscan and zswap paths (at least)? :/
 >
-> is just utterly, utterly broken.
->
-> rwsem_is_locked() can be raced at any time, you don't own the lock so it can
-> just be unlocked underneath you.
->
+> I haven't tried out the vmscan repro or run any benchmarks on that
+> path, but the logic in vmscan seems weird to me, as it will always
+> conclude that there were no refaults whenever reclaim scans faster
+> than the refaults counter advances (which I think would be most of the
+> time under memory pressure). I'm thinking maybe we could do something
+> similar to what Usama did in [1] where we fold the refault delta into
+> a per-lruvec accumulator and let it decay. I'm planning to look more
+> into this and will follow up then.
 
-Completely agree, this should be fixed. In general, tables dump mechanism should be
-removed, it was added for debug and verification
+Looking forward to it.
 
-> Then there's stuff like this:
->
-> 		/* TODO: remove last condition and do something better
-> 		 * In the case of a folded P4D level, pgd_none and pgd_huge
-> 		 * always return 0, so we might start to replicate empty entries.
-> 		 * We obviously want to avoid this, so the last check is performed here.
-> 		 */
-> 		if (pgd_none(*orig_pgd) || pgd_val(*orig_pgd) == 0)
-> 			goto skip;
->
-> This whole block seems confused, and it's nitty but you're using completely
-> incorrect comment style for the linux kernel which again doesn't fill me with
-> confidence that you've really thought things through or understand mm code
-> correctly.
->
-> Your replicate_memory() function seems to not synchronise _at all_, but you do
-> for some reason synchronise on dumping memory, bizarely.
+> For the zswap path, it's still a bit unclear to me whether exactness
+> is necessary or whether the 64 * nr_cpus error tolerance is
+> acceptable. If that error tolerance is acceptable, I think it makes
+> sense to use the non-ratelimited version of rstat with no forced
+> flushing, given that reads are supposed to be rare since rarely
+> anybody (from what I understand) in practice sets zswap.max. Quick
+> benchmarks at depth=4 with zswap.max set at every level, 20 workers on
+> 80 cpus:  rstat forced = ~7,600 stores/s, rstat unforced = ~300k
+> stores/s, and hierarchical per-cpu counters = ~440k stores/s. The
+> hierarchical per-cpu counters outperforms rstat unforced on the stores
+> given that it removes the flush, but we already see massive
+> improvements from using rstat unforced over rstat forced.
 
-Comment style should be fixed.
-For the kernel text, this function is called
-prior to secondary CPU startup in start_kernel().
-For the kernel rodata, this function is called in kernel_init(),
-right after mark_readonly().
-From my understanding, in both these cases additional synchronization
-is not required.
-Please point if I am missing something.
+I would like to avoid the ratelimited flush for the limit checking for
+the same reasons discussed above. I think we were all under the
+assumption that the limit is rarely set in practice (other than 0 or
+max), until we saw [*].
+
+[*]https://lore.kernel.org/linux-mm/20260817131843.45121-1-husong@kylinos.cn/.
 
 >
-> You write a ton of duplicative page table code that doesn't seem to handle huge
-> pages at all, again doesn't seem to be performing any locking correctly at all,
-> and yeah the list goes on.
+> Thanks,
+> Joanne
 >
-
-Code that replicates translation tables supports huge pages for the PMD level.
-PUD-level hugepages are not supported yet, but for the kernel text and rodata
-PUD hugepages are not used for the mapping (at least on Aarch64 and x86).
-4K page size - kernel is mapped using PMD hugepages, 2MB each.
-64K page size - normal pages with CONT_PTE_BIT.
-This code is also executed prior to the secondary CPU boot.
-I agree that implementation is very far from ideal, and there are a lot ways
-to improve it, for example, the table's replication mechanism
-should be implemented through walk_kernel_page_table_range().
-
-> In general the code looks like an alpha experimental thing and a million miles
-> away from anything even vaguely upstreamable.
-
-Agree.
-
-> So overall it seems to me that perhaps better NUMA policy decisions could
-> solve your problems.
+> [1] https://lore.kernel.org/linux-mm/20260727162550.2032-4-usama.arif@linux.dev/
 >
-
-As I mentioned, policies might help only for the kernel modules, but not for
-kernel text and rodata itself.
-Perhaps some mechinsm similiar to NUMA balancer can be implemented
-for the kernel text and rodata mappings, but I think it will be even more
-complex and intrusive. Plus, in that case, memory will not be physically
-continuous anymore which will definitely affect TLB performance,
-in case of huge_pmd split.
-
-> But yeah, what's presented in this series doesn't seem like a worthwhile
-> road to travel down to me.
->
-> --
-> Cheers, Lorenzo
-
-Ok, thanks for clarifying your position.
-
-
-Thanks again for taking time to review.
-
-BR
-Nikita Panov
+> >
+> > >
+> > > Thanks,
+> > > Joanne
 
