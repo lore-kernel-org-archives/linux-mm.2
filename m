@@ -4,172 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04164C61DCB
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 20:59:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403FEC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 21:04:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D13906B0088; Fri, 28 Aug 2026 16:59:06 -0400 (EDT)
+	id 1364E6B0088; Fri, 28 Aug 2026 17:04:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC4766B008A; Fri, 28 Aug 2026 16:59:06 -0400 (EDT)
+	id 0E7F16B008A; Fri, 28 Aug 2026 17:04:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8C2D6B008C; Fri, 28 Aug 2026 16:59:06 -0400 (EDT)
+	id F19F96B008C; Fri, 28 Aug 2026 17:04:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8613B6B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:59:06 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F304C40594
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 20:59:05 +0000 (UTC)
-X-FDA: 85151893050.18.1B133FA
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11023078.outbound.protection.outlook.com [40.93.201.78])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CB00E180006
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 20:59:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=Auyae366;
-	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.93.201.78 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C49CA6B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 17:04:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4ABEAA3C8D
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:04:30 +0000 (UTC)
+X-FDA: 85151906700.24.8C0073A
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4E9DC180009
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 21:04:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=egnvUQik;
+	spf=pass (imf24.hostedemail.com: domain of paul@paul-moore.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787950743;
+	s=arc-20220608; t=1787951068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WW2b3IJFH3R5O+YyVv5U6CsFkBHtaNIK3J3+4SAj95M=;
-	b=6ZUU+jyhpGAeNcGayUwrKeDf5d3zcmCDONKWraLtL2SGSrPdWvabSP8ah2d490amCfs0OX
-	2GSSQJmbYb51NkbshwPZZ+UoSrAvuXjVVCqGA5Ojdq9ZlAXNFdDMUZEMxQ8R87Pu2ndmyG
-	Aoeup0TRTVh6pY89QIlMYwoiOX+c87I=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=Auyae366;
-	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.93.201.78 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com
+	bh=6rKm+GtqXHGkU+e3cRid3cEbHk6M59ahcc5GavJOWZg=;
+	b=gjV1gA1WKwcpvbe4A3Y+2bn3K25/rwAAMp8zBFuUIv0Nzk0C05rJasnD2woW6PayZx8gJ+
+	U4iuuo7JCS4pO1/BPk3Ml9ECszy4aTf8p+gltdczT+HdSbCkoFCyTBOMytszWTx6t40sfh
+	OG+7XaI2yZ+CpD82fj2navsU7rFWtQc=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787950743;
-	b=h/CqaBb3LR4nbVZ5Pp3bwHmrglt7GJ7ZoyhHLIXMiTWymtyO5kSpLJK2ol1eLrdGB7WTo3
-	ZOZcsEIJM1Eae/RhZsv6eHfNduSiq2chH6FhcATIEj1y2zRcX9Ykzw3NHTKI+Oso1kwmop
-	8iwukRyqw+/08G7vOFYGPb207RmO+pw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s75x7y9CYuaM9/nGDdUBQ6qz/jdjubZvqP3XYOOZjRDkvz/btW+GwdJa89J8v060M64444DbNdzc8C57pgTC3W1CW+aUuGjO8iwvRZl1AvLwGit6H3UBnmcc+DziYzFgGKIYq4oN8OqmvnZ9XbJ6foWS/3hrE+lOB/V1Obhpib49maluEBHn9yjqjDVT+gkUFhTTvmshOnvi/Pg2jshRGJD6Bsqd6EHlLiFCcqbws/KfVnj8+IWu/4FPu7E7O0L8GdzB0/R5aJ5mn15GucxJL4pRka6GrkHRP+32t/Vq96RtVg2LoI+8xrhd7FMB0hwzlSqpWYhy6qyFRW4BDfBmaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WW2b3IJFH3R5O+YyVv5U6CsFkBHtaNIK3J3+4SAj95M=;
- b=eD+yw08qYIp0AZ3G2TUQZplaFIXxMPsGd4KEn0031TRTVRTDstnvpqAoaUHFA/9nivE8TS8XKyet1A/rn930Yg8U7Pw26ILIrRbQWRwkcDMbljcDw6jcgA/pet4SYtvWMMllmaTWsG2ct2/01YrS/FIqeT/EyI8N/Jr9lWhXibBnpeEo8lA6O0juj70nOv7RskZQdOmZEDClswK7joHjTototOE9FWkOpuwi8rSj40tHOpR26IXXmAN66o1byECkjAHhyf2w5OkDqztMDBbuaALadXhLGog66NwVD2osi9rX0aZU2ctoVXMzAxM4oFR27ZnufgH9v991T5mkdF0vEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
+	t=1787951068;
+	b=rzByPp68jz+dU3M319RTcZ1aeyPGgd6FqO+P5K+yV8BIFSUJ60mwkCxW9IpccP8ritxgxs
+	DJlniagK9TKVrqoyy64+W29/4tNXj1kOyPu3TqCh4OWqwKh1brnEJ/5rdp+JjCe4M0Wyfv
+	HfYxCYy1NiYHnULtmRFAve2f7SC2KAs=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=egnvUQik;
+	spf=pass (imf24.hostedemail.com: domain of paul@paul-moore.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8557c3f270eso996049b3a.3
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:04:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787951067; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CgOjxxFCw5iu0cAANvJxHJlgGvE40uG61St3sEQGeWe5FlrTXXRymKKLPcXQHvA+Pz
+         R4HNW3S2Ld5r+PbIMUIKSC/PaYJUzpQfeFqYq11rxrtv5l7wKC4YwpsFU0nPPVfj9IYO
+         t3nQ6+i2tockxHk+TXTzRU26VfbpRgt1nfIWB3T2Olh5BjwqpQ75MbFEbFL1OoP9sWuI
+         ZQA0oN3Mq+Dr5w2QeZDuxYNvOmwAnIOqPXjmI3zTU59QkBkZWlP5ZDi8BvObis8DokGn
+         aivCi+bHddiakVY+jSWbbG/ZQlki28FOpGKqAM+ZXQ6NLMPxzg0MxoSfjrWgNQBHprho
+         ifig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6rKm+GtqXHGkU+e3cRid3cEbHk6M59ahcc5GavJOWZg=;
+        fh=TBJGOg9tExiLPTM3tLrArFfeORF53e7Q61JnS/oVlAw=;
+        b=RJJsRiCm32nj4wUnp9QzkcTZxvcVQ1SIR8e8E2W1kX8gvwbZpK1BKxTN3VvZofFUy9
+         rWGPgTpb72XRZRnOeLb1p9BUt2gAKZ2ZT+P+Gz+sgh0Gfm8Gr1fGraH72Hj7ll8wOFli
+         HRP2u+VerrZnHB27aRTKnw1gYAaANYgCASxclYTHJhLuWPTLMPBbrV53lHIEHmFGT42v
+         asGoEWBsBVshvryF856rpj9DOJyMuB98KRdAM6vBvE4bxi+kbcA1pZ/1lADoOIIkGBqr
+         nyn+lt8t7ieHmgWYOGBKnEOQpLNSfWEnDnofCEap6/rXS9Y9zibOphxkuRID1osqJ6NF
+         q7jg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WW2b3IJFH3R5O+YyVv5U6CsFkBHtaNIK3J3+4SAj95M=;
- b=Auyae3668u/x4/puHoVkeHWLI5szYcul5PYlCDiFJWpa7DVmPrBh8+RcYzYVN0IyJnmjDaTdYAJyLpib6nr6cTshcb30Nt0XwJOfltYUPYQZF1YSqBDPIFB1CYdRckkMXeYEYl9onyYqu/pKo2xVVJAUzHulD10sNyM7DGAYaTU=
-Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
- DM8PR01MB6999.prod.exchangelabs.com (2603:10b6:8:18::18) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.11; Fri, 28 Aug 2026 20:58:56 +0000
-Received: from CH0PR01MB6873.prod.exchangelabs.com
- ([fe80::46eb:64a3:667c:c1a0]) by CH0PR01MB6873.prod.exchangelabs.com
- ([fe80::46eb:64a3:667c:c1a0%7]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
- 20:58:55 +0000
-Message-ID: <6c8d880a-0517-4669-80be-8a134f4bf7cb@os.amperecomputing.com>
-Date: Fri, 28 Aug 2026 13:58:52 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/18] mm: arm64: Add kernel replication feature
-To: artem.kuzin@huawei.com, catalin.marinas@arm.com,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- vbabka@kernel.org, cl@gentwo.org, linux@armlinux.org.uk, will@kernel.org,
- mark.rutland@arm.com, liam@infradead.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, wangkefeng.wang@huawei.com,
- panov.nikita@huawei.com
-References: <20260827161158.3618409-1-panov.nikita@huawei.com>
-Content-Language: en-US
-From: Yang Shi <yang@os.amperecomputing.com>
-In-Reply-To: <20260827161158.3618409-1-panov.nikita@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0040.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59e::16) To CH0PR01MB6873.prod.exchangelabs.com
- (2603:10b6:610:112::22)
+        d=paul-moore.com; s=google; t=1787951067; x=1788555867; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6rKm+GtqXHGkU+e3cRid3cEbHk6M59ahcc5GavJOWZg=;
+        b=egnvUQik+aqYoxdfmerRU/Pb9wa3IM7lYvgcA9yrjc9d/+bVXd97vRRX+5MVgOxw/J
+         M0Nk4E3Rv8t+NkfG26jmR7Y44lwvd8nXyeeK7TTjbv1a3K5CNhyLDb8a1HrsBy69J4ey
+         BVHzntLCC7say2HueCAJmybmimCYKvFEbbYdfAntbckY3+QjvroAESB2VrJo6ZfIDHUO
+         24W9ShfLZMal4T6iBWDq3FzoHZYOVJ+0nccqTQvfapB4JmJKtqTZnL1S1SH7xOsCT1jb
+         NU31VqrqDx/mqZp4ZDi0xRv4v/QNfUpAxbEVGmfvNsN+EJtpg8eA02FeeTkjoanRB+9D
+         d3+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787951067; x=1788555867;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6rKm+GtqXHGkU+e3cRid3cEbHk6M59ahcc5GavJOWZg=;
+        b=aNFUJPBDDnMC0vUiUJxzcm2QMK4PrkuMHHIf/5MnbCh6ICyfLHE8K2t4dWcdYlp2o2
+         8N0S+1FrKehIyq1o9mfEtPWVHFfMWi4+8W3iLqwOvE+1zKV3Y0Gv/KEd/eAveW7jnhhu
+         b0cU8LvNc9WK1yjOj+gTT7YzZ9Q0e7K+BGiuQ2HXSZVU5h50t/dl0/2oNGQ2nnTxoWbv
+         IgL/7lq8WdpsTgYdJP/wLmAgxf5Fix4m2d9TtIwgSDQGtueHeX8VPe46fk6+opkphokL
+         KvxmNrRPm/ngLjigy8EPa2x2NMJ5bMEDvbBYukxzoJlLzBRznBRsCrjiSQYpeu5yOZDh
+         x2FA==
+X-Forwarded-Encrypted: i=1; AHgh+RrcCGHdhaPEMGMiYs5b4mO7h165dIbA98nOlF+1BOFxP9Hk/7Ak5rt+iITi9ft2IxfE4s0uMEtX7w==@kvack.org
+X-Gm-Message-State: AFuF++mgSM12iWVFYglKDY/q4HDj3DRIICoSGF0+XWIcO12QKTZ2NTGG
+	B1kUGg/mYCHoKErHDTvqpj7YsBYyFo8ANbdD3xOmjtiQy7cS2MEKGkoKU+jxvtzl7ql29aLwdKj
+	ZRKBoxYQh92FZpscM/v8diuIWvs6a32zckMNUaYtb
+X-Gm-Gg: AR+sD137596aXjHf4Cll8KstCqbCu83NM/Z2CvoUbimXoOaDFKAsY0gqsQJf2CP7/9O
+	HJesFX+7WwGKAZ5apLd2xC1fV+bD782tgbIOyyhgIfgG2JE2Lj/67FXQ1FSThXGcHTst4L5cqL4
+	GwhBCLRS3opa9c6dsM/LGsj1VpggiNlp7y4O8r6d37AEli6hx5QR55dGwXrUG4Sh3xCYLtBYmE3
+	ksxbBYJgvH8oei7SS5w4tgxlEFR33tfwYPbgR+cQ9yDr9F/ED0w3hisiDAz9lwVmaeHQVAVG+EP
+	Rp5mtZf2ZO9n38DukkZX4PkHfksd825LLtrobM9qYj2dgQTE9JXtUgQ=
+X-Received: by 2002:a05:6a00:2d82:b0:857:73e2:9106 with SMTP id
+ d2e1a72fcca58-85773e29373mr3141018b3a.22.1787951066990; Fri, 28 Aug 2026
+ 14:04:26 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|DM8PR01MB6999:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd39a912-c37b-452c-aa1b-08df05472c65
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|6133799003|22082099003|18002099003|55112099003|3023799007|11063799006|56012099006|5023799004|10067099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	mOyE77vJe3PnqPPArWXcSi6WaoWTXYMjQpWVxqOvukyTwR7jNYzqKr8IR3cM2XWEtMGkZGkdq7CdNrxbLD3/v0rv9R0eRqE6c3NDAuPhkAunopeaU1h8FRR5gXVe90siqBdFIdz1tBn3ZKdM8yDX7wZY20id+v+VPvK553DquOP2uPIWidpQsrHcTrhhhSChQ1dQRU4jZB4n9ikmp8xVJfRzPR33OAWjRfsRiwsi5UnOvKJ/2Fw3XGnet3LoCAfG0YiSfumlUJHbHNstgCHmeMBYYOUsR5vT7Y2+U4+hOHxjokYnVm7EfUmBO2JkdNDIlQkFBktEVk2QrWNQQ3QhkspxhK5FU0JjQ/rrVUSIhYK+YqSKzy+WzP2ug3uO4AVLPsA6tvZ8juntjT+5SyKDkL9lJpQ6npvSMmwFxw8XIv3wnJ2czLPMxJmj4Rt/VDERNAn/M7SZyrxf/KhBaPLxlwfCjYyz0tXs18fnH9H2K5hIeCKt1qJOYMs+obKZMj0wS0Wq099GMm8pbVaatmyn9d6V3GqWvEgAenQT/sgXdEBFH5BrUgLU8FueRjb4C6oATWBnjRpMCb4zKk65pEwB7bL3jaIQz6sjJFU/VAfwNCBlQQ/PLkzBt09HZ1GQ8nVa/RpSI4tzDqLqSayREbaKXg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(6133799003)(22082099003)(18002099003)(55112099003)(3023799007)(11063799006)(56012099006)(5023799004)(10067099003)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UWF5aXdhMUM4NzQ0cldyVHpWY1J6NHQ5UU1WY0JISFM0TEVzZnRJcXFlbnd5?=
- =?utf-8?B?eWpINXlRL092azhKUGduVW5WbXdtYjlUY1NaR21zK0tGM01pUHRQQnFsTGZQ?=
- =?utf-8?B?RDBhZHc4UGk4NElFSnhZbTJUS2Rub21wSEszSjhNbkV4K3hPcTlVNzFidTFE?=
- =?utf-8?B?T1hpcmpLRUNuVGhiNGhQbVlmd1BueEs0T0hlOFhHY1I2UlBoYkU0L0JuVm5E?=
- =?utf-8?B?dmVCcWxYUzZYZzlnOEE5SjUySmNTc3dTemVrQkxyYXM5MEdoNVVVdW1IRlU1?=
- =?utf-8?B?N08wKzJGd0x6QU45RmEzT0tCWTY4V3RaZU5wZ1JYVHBDRkVFZWx4K0NpSVlQ?=
- =?utf-8?B?NDR6djY3anZITGJCWmNTeit1M0liajNjVjFyY1p6cnVGZXFlWFpOUGhGZ3JY?=
- =?utf-8?B?VFNFVjAweTJoaE8vTXd0QkszOFR0MS9zS3pBYUtSK3prc2d5bDV2bHJCSVpi?=
- =?utf-8?B?T0hvT0lpOThoeG0zWHY1NEE1U3cycUZ4NUQ4S1JhY21TZS9rSjVzUHQxRnZK?=
- =?utf-8?B?ZEliRmZFVzhRRng0ai9QdVRoeWJGNHl5TDFLalRpTlBNMW16bURTR0tIY1Z5?=
- =?utf-8?B?cXVKcUJCdVg0aGZ3NjZMNXM0SUFXYnRPUXk4NmxmQ2RGOHlWTUpYU2xidGc4?=
- =?utf-8?B?Ykthcy91d2hYZFFyKzJKazl5K0VLMllTTk5BOFhzdzV1MldKWE9hUDRoUFJl?=
- =?utf-8?B?VFRTV3BzbkZJeVJZRVA0NmtrTFFySlU2MEJmV0QwK1ZNYjREbzhSQW5VL29v?=
- =?utf-8?B?a2V2MkkwdXJ4a1RHTncwMWcrdmNLNE5STDdma3hjR3hUYTIwelRyTTNBRm1u?=
- =?utf-8?B?R3puOWhnMHpPRGNCSmVrdGhLcGc3NTVQSE5RdzBuMVNHcVo2em81OFZ2b2N1?=
- =?utf-8?B?aGIrcDFCaHBhN0dWbWRCZU03cmUwYnlrZEk2dVZYc1NtcjhsUTE5TGVLMlVX?=
- =?utf-8?B?cHRJVm12d29IZ1B0anFOTlZxQ3AxWHgrM3Nwdkg1T2FEMW5iSHRld0daZWRX?=
- =?utf-8?B?ZERGelJMRCtNcmkvQllEcWIrZEszQXl1cEsyZXRZZDJhVkk1NWdCVnJaRXV2?=
- =?utf-8?B?V241TjZwQ2xYMHRQZzVQZ1hob0Fuc1ZlNEN5Z241M0p4WGZpaDl4VFJucG80?=
- =?utf-8?B?OXA2WkR3azV1MG4xdHIvZld3WGUrRVVoTXRRbUxSQnFGODQ5WkFEVG9IaThr?=
- =?utf-8?B?S0k0bTI2K1ZEcTQvVWJ1VTIxQjhPUlBpS3E0c2NPSHBXYzAxYTl2RWRBLzRn?=
- =?utf-8?B?bjkwMUtMLzhDUnNCZ1JvNktlN0x5VXdkWXhKZUg0ZUk0U3hpNXdHZThCTUZC?=
- =?utf-8?B?aVozNE1vdnEvSUZ1dWZZemc1VVZPQ1VzVlErRXl3NUhuamc3UHZ6SEZrSVR0?=
- =?utf-8?B?dFcvUGhJL2JjR3FRQlZ0bVk4ODE3eitsUW9sTkx1QUpiWXBCN3RPOFFSckNk?=
- =?utf-8?B?WWVRV0tZNW5NU2hlTGg0NmQwUjNGM05RRnQrUUhka0JsSDF3elYxaUlXelZp?=
- =?utf-8?B?dVpwV1JBT1dJMnRFZGFxcjRCdnFlbzEwQTFBTVFKVUpJa3hxWDhqeXJqRUNr?=
- =?utf-8?B?TVFjbkR0WGFMYnlNUUpoa01lMFZDaktLMjBOVE1ObkszRTZqKzJoZWRGT2dt?=
- =?utf-8?B?SzVqRVhPVUhWdWV5aG1WTGtJQlB4dnhsUFV3TWNNSWVEYndmaU12Umh5KzQr?=
- =?utf-8?B?ZEIxU2VOYUE5MU1pTWNhWnJsbG1PTUwxUUtxM01pOENPYUpwMnFwRmFYYjMy?=
- =?utf-8?B?ZXFBSllBTHdzVVFncENuaE1Zb2RiTVl4YzlIQXpOcVJOVEtPNm9IUWZTeW5M?=
- =?utf-8?B?cloveWU0UW9xV2F5cDVwbTBJVld6YVl1YTJaN3NoZjRKR00vSXRDZ25tU2Fl?=
- =?utf-8?B?YXZ3bElFTUI1M3ZqWUh2WS9qbENCODdFQVkrNTVNMkpmV3J6TVhCdVFKQlov?=
- =?utf-8?B?K0Eza3JueExtdGFlWjMrZS9mM1pxODdsVzJJbWFpTnY4dWx5QnlXbnNrQVVW?=
- =?utf-8?B?V0k3U2l2R2R6NkJHbjIySWFCa2FZeVpwczdjTzhYTmd1UDFhQzNnL3lnVEZH?=
- =?utf-8?B?Z3kwVDFxK3REMmZRa0N5TDhoVVBzUnVjVUxKdk1JU0dGSWFKbEh1WFpTWEFU?=
- =?utf-8?B?eHZONnE2M00wY3RuYWRJcFZ4cFNmZlN5d3lST2tPTEpKdDhqcmx4TG9TdnFG?=
- =?utf-8?B?YnF6Wm5tUjh4Y1BsUHpiaDFBSVEwcE9CaXlGRFhHMU5OZklRZG4zb3JCY3lk?=
- =?utf-8?B?U2dkZnpxeEI0MmY1OUhSZmtqWVhIWVpxTmNPcE1EZEQyd3pBQzNtSUZHSlRJ?=
- =?utf-8?B?MjRSZXBwM08vM2xNVGx2djZ4WS9aRFNVOGE2N3pBVHNSakUwQ2NJc1VTS01I?=
- =?utf-8?Q?l812XpGkVjXueJco=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd39a912-c37b-452c-aa1b-08df05472c65
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 20:58:55.7650
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VCfZS0LbDenOmrHUBvBnRVnFxau0iqLBSaV99a1zH0R+8gJynVpzMc3sduJ8l0Lizdhe9EdMuZW4x91/4peCS79CG0zARGpjv9mSgdodMyA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR01MB6999
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CB00E180006
-X-Stat-Signature: 4f6ya5c6r1da6ax4fezynjro4ysptwff
+References: <20260825-selinux-pokemem-v2-2-b46bc64916d8@google.com>
+ <82929c994076d95f99560ecc67f6cfce@paul-moore.com> <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
+In-Reply-To: <CAG48ez1rd3cFhmGn7mWkaVvGqYg+cDiGUhuhH6r51dUm-QBXUA@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Fri, 28 Aug 2026 17:04:13 -0400
+X-Gm-Features: AcwNN1XqU7CwGOxUd2wqJF7qUgFOnskAPT9XF2uIm2MO9atgOnmbTyVZNzUagTE
+Message-ID: <CAHC9VhTmRsi7mLJM0Vak=aTj+NBO6piH-9YwVX5Kwh6yGPNsHg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] proc: query LSMs for introspective mem access (if PROC_MEM_FORCE_ALWAYS)
+To: Jann Horn <jannh@google.com>
+Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Jeff Xu <jeffxu@google.com>, 
+	=?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: aausaz776ihxfobuxyybxuhtjfnc4ucr
+X-Rspamd-Queue-Id: 4E9DC180009
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787950742-829428
-X-HE-Meta: U2FsdGVkX18vSUIQh2XZsj8n+FaF35dxXihucgk+oarxv4u5sS6EtcC2mK6u50rP15kQ7is8UL5nS0t+N5gRrKXdZVchiNPCdjcIOj5musQBu9BYPArOJ9tYtCyhSZTB/2Q8ENwL/ADkcmBEhYJ9fUe1jHRlq5dYau3MLe+ISiCTvoAZ+BvTvm43qbXDTM5lUY/uer+R9uuG7DhuIYen+2s4aLJtgcnPoF7NAq5NIATOLP1JygtfzdzmJdziln1hVv7nkRfSps8L3HdPz8LhV1uJ5mVuRXcLHjswt87UNPeLoFMy6xOZWhLmoFcBS1v4Q6b+eMV04WnveY5KUQS9IsLvygzbQjyKgN1YJ2ADWO/x9E3PnlWQ/rQTFNDVxEl6NIbv9lJws2rIrpJxoGpD2CgZwCtT9G935yGa/Qn1b+LGZo/VgC8v5VVjeWKLN9w9q3pkcOns49t0IYdZZPqF9T2QiQbS0/GBRpW3n6B+Zm8mE6GTzXLFo5cgEstSjdAa4Nds3bb8CCWXpyA6vn8U/lOuSHkg8Ikdvk9+y3fTil6/x1gTTb+5dma3viZUcyWdfH7FdAyeGwSChzNuLJLvx7iwWi601l7sg6rZo2rmPZ8zB91UBoRFI8hc8/bLY04Rc5U3rik/k8Mu2XSpx0EJe9ObbJ7lCKMBaO2Ikq+9bxpLWihdLJJT2CzMbxmgQHFsXL0yubo1HZ+u9kBAzOWoihjhUoFmZParkVgnjhnUOKLZmS47kFQCAUyvCn8SvC/+5jt6U/fO3o7ioYpC/+HcrFpl+Upm6vapXH7mFH4ZmHAkoYbOxa0YRzAi5+CFNo+gqxFdOBGaNk2xl6ljBcXBNZj0QsoDcYGiNPvHj+MWngaKQfSOLEaxLz8ybolIJTOUObIii60hpQJHeFkaZuhkPd/DEKPFPdxZqqMOa+9S0NPFqeXChKBAyUGpQkirHUA9cTTpw+KRfC99C7caomZ
- 7CZaSB+F
- Xt+yxKSHUZ2rFFPZ/t5BQa1PfP02DJGASgn6H1OZxHucGepc9HQIDfLOp8EIvcRXjgldpD6cDpbv2sPcp3nntYPKJwdkGjOmeBs9B+hj5jFwEkvlJxarAuw2OEgxM9FVTsQux88Dr7PW+jTM8ETqFvX0uzVyzTy405450iZ2fSEcZ/ecLRrO0xFi3BF17zcznAuML+Wt/PYc3yuMNhwttSvyit9C91CCK7gQ2sd8MD42m9+zntzl3HRe+8uTJdeZLk7bFmTxPfMHeKV3kEr2FThAwUrYkV6X6TfWuejFGfGGOWrVo+IYpOYOjuJv3wlCp0kvFojJo+C3rc4RkHNdQ2pWsb5OOLhpMlCacOhVd5h3GX2mcnTIEBYEyd+KafYSZHeK0rihJUIijlGpw3vmx/aBLpeGKPik2pnen0J//gugMdTvmrD1SJtOzdUoQUvywzkJi79ZkwggNjit9LuBA9J1ItZgn94426tettkSOkz5+c3+CdR5TrWVtIvBnZgbFrClkF/TqpOqfp52HLH1WcvqrIPr6v06I6LwlfX0nv7wGtLb6t8XAq/AJeUy+0cQclBg5IxvdHTrxfFnJvRaY8ixej1hPphIc8wdqBSvg1c/2tkAEgI+z79FbfmnwdD0Q3hZsFFNCgYrgcndxsDXrsaCrejivqAfcWdB6aDc/9uPUlaAW71oZ5rI1VuIF7cujsZsGSaWR3N9hpkZLhbxkWiFFXFiehqdoS2r5gGFWf7ugQyTbmqJlxBBi7eKDKNF3Ggji50ukaxjWUZ8Jr+v4otraF1Ix5uDDxZAVNgUjppCZXMOAeG45rJnlOvMmv47YxLMTDrE1inSmUNw=
+X-HE-Tag: 1787951068-174841
+X-HE-Meta: U2FsdGVkX18k3A1gBoyMr/Ib6W2uUG/bbP0G7yYuzp/Vett+3BvadQJc6TjDj/OKC1IxKkuYLtij9r5vITiGHMO7gGCVdn76mvxfm/4DsLOkH0J11W5vmISPyRRyDRz7YojBv9VzNkadAQZq8WQ39eq4dbIWSgcpFtbKahluUB/BF3WXY1OQn6evBah7ZXHKmDyT8T7OmcryIEwP8uH4CfzCMn6b0QG874YR5uw26AmTY8ir7f1lXMLeW5fy3vtPGDMulT6QWniv4HVQ0mcygrBVgS2NZ0YfU5SWWUY5stzuVJdKhaHhhYayvyn6ESBRulWV5nN4UnVr4FYqoFCnDbH0OIUY5W2lKmcFPqX8W8WQkXJxHa21gV+amaQL9djT73PiLSZmMHjVBXQyu2emHXelfAKaFXgKSXNzAR/NLepZG6tHTwdAL/DKRt6ngd3HYuqxiYSL6/k3VmG0vyf+uP5vzjTl0EBdYHwA7iJswk6MAteDuUYMwYXK3p9F1Jtt/Nkdcm+6BDHrcqIA0zPW5KmWpNIUdoUn6716SInpzSz3Nn8qAs7fNYEkNr3GCoZLKkP05yu3AbOhGaj5zBfFs54lQEkulLFQIG8v4eqzuAtIItfEuCbq0hVcKKLiQjoxMskeNCE0z2ZpqpF5kz4ZifyDTATKzhJUfpJBu+w9/x0bXN7FO43zZO3OSGa+ks/0TMzvc+N/t+Vc2EEyc9PBlVO0GI4ldxKFYGz1qMnaX1U5dGXdHqovx63aDQWbUewBYiDvvTWua/RGMrApnvFfMD4G9zkZIIo9oJHAOMy5KGNxYgX/K4fYlbchbKMdSkb/ZEED/odU6ihUxQBh1BaLmO8b8B/u8VlTaVL8y4FeX3tgmyUO7sDtm97mJp4vcPqZx4lVZguizB1DSvx5LwbPWq3NpurYIXsoTOBXBCIbM1PmKvwCXCgdlG3CapujdN3fNMC+Ue6w/T5O5Y1WaxX
+ ZaoVYf88
+ GpBu2sK+9J5I7iWCj72MFnG0wzh5sHG2ucOg8BDGzhwtpS931IKA1h+1aTNuofOKOxK+0RAjftyzlAqO2A/IpTB2NoslJEwXBgTXP/Ly6Vwz9zuoIUOHoSpWrcONs8fiqi9uItoXFcpA/cJonUXLwwYX9rxaf8KG55sPud0vhwjwtOPlshQTwd57wtovp19UTW9+baJFBXla3gUmQe/ASvERcWwOVB7QR+PWRfVg5cIbC7yLZdOxsAkhJrOsYuSnbW59MnAUoyDg+w9HBcLlgPbVG3YMSGEzRFKJeA2RzHtYZmDvx0uVR0aKgMtQilp7nwuyK/LMot7OD/GS4IKCp7svkbcAHRODSPWBZEGtOVeFmviMRlf0kTnKd6NrlLQpZ9IVey3xzvVfzz358JlonJaOcBvG+NptftLIvBeHy9gkhI7AzyhkVj4YdwY/Q2aP2Hqv1pjW1U1GoeoKEGTVWIfblo5fHYcJKVRxl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,295 +147,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Aug 28, 2026 at 9:04=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
+> On Fri, Aug 28, 2026 at 3:10=E2=80=AFAM Paul Moore <paul@paul-moore.com> =
+wrote:
+> > On Aug 25, 2026 Jann Horn <jannh@google.com> wrote:
+> > > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently h=
+ave no
+> > > good opportunity to block a process from overwriting read-only code i=
+n its
+> > > own address space through FOLL_FORCE writes via /proc/self/mem.
+> > > The security_ptrace_access_check() LSM hook is bypassed when a proces=
+s
+> > > opens /proc/self/mem because this is considered "introspection".
+> > >
+> > > This causes a hole in SELinux EXECMEM enforcement, which tries to ens=
+ure
+> > > that a process cannot create executable anonymous pages.
+> > >
+> > > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
+> > > accesses are only possible when the LSM allows ptrace() attachment; b=
+ut it
+> > > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
+> > > environments running lots of third-party code, such as Android.
+> > >
+> > > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically =
+for
+> > > such "introspective" accesses.
+> > >
+> > > Signed-off-by: Jann Horn <jannh@google.com>
+> > > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > > ---
+> > >  fs/proc/base.c                |  9 +++++++++
+> > >  include/linux/lsm_hook_defs.h |  1 +
+> > >  include/linux/security.h      |  6 ++++++
+> > >  security/security.c           | 20 ++++++++++++++++++++
+> > >  4 files changed, 36 insertions(+)
+> > >
+> > > diff --git a/fs/proc/base.c b/fs/proc/base.c
+> > > index bec6197329dc..dc6fdcb47b79 100644
+> > > --- a/fs/proc/base.c
+> > > +++ b/fs/proc/base.c
+> > > @@ -851,6 +851,11 @@ static int __mem_open(struct inode *inode, struc=
+t file *file, unsigned int mode)
+> > >  /* private_data for proc_mem_operations */
+> > >  struct mem_private {
+> > >       struct mm_struct *mm;
+> > > +     /*
+> > > +      * Was the ptrace access check on open bypassed because the ope=
+ner used
+> > > +      * the same MM (introspection)?
+> > > +      */
+> > > +     bool opened_by_owner;
+> > >  };
+> > >
+> > >  static int mem_open(struct inode *inode, struct file *file)
+> > > @@ -864,12 +869,14 @@ static int mem_open(struct inode *inode, struct=
+ file *file)
+> > >       priv->mm =3D proc_mem_open(inode, PTRACE_MODE_ATTACH);
+> > >       if (IS_ERR_OR_NULL(priv->mm))
+> > >               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
+> > > +     priv->opened_by_owner =3D priv->mm =3D=3D current->mm;
+> > >       file->private_data =3D no_free_ptr(priv);
+> > >       return 0;
+> > >  }
+> > >
+> > >  static bool proc_mem_foll_force(struct file *file, struct mm_struct =
+*mm)
+> > >  {
+> > > +     struct mem_private *priv =3D file->private_data;
+> > >       struct task_struct *task;
+> > >       bool ptrace_active =3D false;
+> > >
+> > > @@ -886,6 +893,8 @@ static bool proc_mem_foll_force(struct file *file=
+, struct mm_struct *mm)
+> > >               }
+> > >               return ptrace_active;
+> > >       default:
+> > > +             if (priv->opened_by_owner)
+> > > +                     return security_mem_foll_force_opened_by_owner(=
+file->f_cred) =3D=3D 0;
+> > >               return true;
+> > >       }
+> > >  }
+> >
+> > First things first, we've got to shorten that hook name :)  What do you
+> > think of security_proc_mem_foll_force()?
+>
+> If we move the "opened_by_owner" part into a flag then I guess that
+> works... will do.
+>
+> > Beyond that, we really try to avoid making LSM hook calls conditional. =
+ It
+> > can limit what an LSM can enforce, it tends to be a bit more fragile, a=
+nd
+> > it adds some unnecessary work in the case where CONFIG_SECURITY is
+> > disabled.  I would suggest passing 'opened_by_owner' flag as a second
+> > parameter to the LSM hook and calling the hook unconditionally in the
+> > default switch case as a replacement for the 'return true;' statement. =
+ I
+> > understand it may seem a bit odd, but we try to make the LSM interface =
+as
+> > generic as possible with respect to different models and this is one wa=
+y
+>
+> I guess I can do that, but then the question becomes, what other modes
+> of using the LSM hook that don't currently exist in the kernel should
+> I be supporting with this? I can make this a parameter, but any LSM
+> policy that actually uses the parameter in a different way would
+> probably be buggy/inconsistent, unless other new LSM hooks are added.
 
+Possibly.  People do all sorts of things with the LSM hooks, not all
+of them relate to access control.
 
-On 8/27/26 9:11 AM, Nikita Panov wrote:
-> Current status:
->
-> There were several prior submissions with some sort of replication
-> for NUMA systems, including one from our side for the x86_64 platform.
-> In the last couple years, several research articles related to solving
-> locality issues on NUMA machines through replication emerged as well.
+> If your intent is to make the hook work for any /proc/$pid/mem access,
+> including when the caller is ptrace-attached, then I guess I have to
+> move around the security hook call in proc_mem_foll_force() a little
+> bit. I guess I'll do that in v3, though I really don't like trying to
+> come up with a reasonable in-kernel API contract for a scenario that
+> currently has zero users.
 
-Hi Nikita,
+As I said, I don't really have a specific model/intent in mind other
+than avoiding a conditional LSM hook call.
 
-Thank you for the effort. As Christopher said we are working on the same 
-feature. Please see the below inline comments.
+> > we do that.  It also ensures we don't have to process the 'opened_by_ow=
+ner'
+> > check in that case where the LSM is disabled.
+>
+> (I don't think that's an improvement - we have to do the comparison
+> either way, but in the current version, we then use it to
+> conditionally branch to a security hook, while the v3 patch will
+> instead unconditionally call into the security hook.)
 
->
-> [1]  - arm64 kernel text replication
-> [2]  - x86 NUMA-aware kernel replication
-> [3]  - x86 kernel text replication
-> [4]  - NUMA replication of user data
-> [5]  - Mitosis: Transparently Self-Replicating Page-Tables for Large-Memory Machines
-> [6]  - WASP: Workload-Aware Self-Replicating Page-Tables for NUMA Servers
-> [7]  - PaCaR: Improved Buffered I/O Locality on NUMA Systems with Page Cache Replication
-> [8]  - Memory page replication for Linux on X86 processors
-> [12] - Optimize this_cpu_*() ops for non-x86 (ARM64 for this series)
->
-> As of today, none of it was merged into mainline.
->
-> Patch set description:
->
-> This patchset implements initial support of the kernel
-> text and ro-data replication for arm64 platform.
-> Linux-next was used as a baseline.
-> (903c1cf6dff9 Add linux-next specific files for 20260821).
-> This patch set heavily relies on our previous submission [2],
-> their generic part is the same, these solutions might be merged into a single one.
-> However, after thorough re-evaluation, we were not able to observe
-> performance improvement for the x86 platform, so we have decided to stop this
-> direction and switch on arm64.
->
-> Current implementation supports the next functionality:
->
-> 1. Replicated kernel text and rodata per NUMA node
-> 2. Vmalloc is able to work with replicated areas, so
->     kernel modules text and rodata are also replicated during
->     modules loading stage.
-> 3. KPROBES, KGDB and all functionality that depends on
->     kernel text patching work without any limitation.
-> 4. KPTI, KASLR, and KASAN are supported.
-> 5. Only part of a translation table related to
->     replicated text and rodata is replicated
->     (up to 2 pgd entries if kaslr is enabled)
-> 6. 4K + 48bit and 64K + 48/52bit are supported and tested.
+If we move the opened_by_owner check into the LSMs, in the
+!CONFIG_SECURITY case we avoid the check entirely.  We try to do that
+when we can to minimize impact of the LSM when it is disabled at build
+time.
 
-I think 16K + 47 VA bits should work too. I guess it is because there 
-are just 2 top level entries with 16K + 48 VA bits. That requires some 
-extra effort to sync up kernel page tables.
+> > > +static inline int security_mem_foll_force_opened_by_owner(const stru=
+ct cred *subject)
+> > > +{
+> > > +     return 0;
+> > > +}
+> >
+> > With proc_mem_foll_force() currently returning true/1 in this case,
+> > shouldn't the LSM hook return true/1 when disabled?
+>
+> No, I have proc_mem_foll_force() doing:
+> "return security_mem_foll_force_opened_by_owner(file->f_cred) =3D=3D 0;"
 
-> 7. New cmdline option: "kernel_replication=on|off",
->     to configure on the boot stage
-> 8. For verification check dmesg output or /sys/kernel/debug/numa_replication/
->
-> In general, setting up a new pgd entry in kernel translation table
-> not often scenario, most of them are covered by current patch set.
->
-> TT overview:
->                     NODE 0                   NODE 1
->                     KERNEL                   KERNEL
->             ---------------------    ---------------------
->       PGD   |@| | |@|   | | | |*|    |@| | |@|   | | | |*|
->             ---------------------    ---------------------
->                                |                        |
->              -------------------      -------------------
->              |                        |
->             ---------------------    ---------------------
->       PUD   | | | | |   |@| |*|*|    | | | | |   |@| |*|*|
->             ---------------------    ---------------------
->                                |                        |
->              -------------------      -------------------
->              |                        |
->             ---------------------    ---------------------
->       PMD   |READ-ONLY|MUTABLE  |    |READ-ONLY|MUTABLE  |
->             ---------------------    ---------------------
->                    |       |                  |     |
->                    |       --------------------------
->                    |               |          |
->                  --------       -------      --------
->     PHYS         |      |       |     |      |      |
->      MEM         --------       -------      --------
->                  <------>                    <------>
->                   NODE 0        Shared        NODE 1
->                                 between
->                                 nodes
-> * - entries unique in each table
-> @ - same entries accross replicated tables
->
-> Since for kernel space and user space different tables are used,
-> user space tables are not replicated at all, so synchronization
-> is not required.
->
-> Known problems:
->
-> 1. Other combinations of base page size and va size (especially with 16K pages)
->     should be adapted and verified.
-> 2. Replicated translation tables for the vmalloc region are not local right now.
->     Allocation performed with default memory policy, so translation tables
->     for kernel modules will not be local. However,
->     replicated text and rodata of the modules are local.
->     In general, vmalloc patch should be cleaned up.
-> 3. Any modifications of kernel PGD level. These modifications
->     should be synchronized across all replicated tables.
->     Right now, for example, memory hotplug/hotunplug
->     lacks this support, vmemmap and kasan regions for
->     added memory might not be observed correctly. This could be fixed
->     by patching all places in the kernel where swapper_pg_dir
->     is modified, or by "lazy" propagation on kernel faults in the pgd-level.
->     Propagation approach will not help in the case of pgd_clear()
->     on swapper_pg_dir though.
+Ah, forgive me, my mind stopped reading once it hit the closing
+parenthesis!  That's not a common pattern for calling LSM hooks so my
+brain wasn't expecting that :)
 
-My percpu patchset (I saw you mentioned it above) already had these 
-problems solved. I have not looked into too much detail yet, but it 
-seems like you have replicate kernel page tables per node. My patchset 
-added percpu kernel page tables. It should be able to support kernel 
-text replication as well without too much extra effort. And it can 
-support multiple usecases, for example, this_cpu optimization 
-implemented in my series, kernel text replication and some potential 
-security features. Multiple usecases should be able to make it more 
-attractive and convincing. So as Christopher suggested it may be better 
-to combine the effort.
-
->
-> Overall, this patch set in an early PoC stage and require some improvements.
->
-> Overhead:
->
-> Memory overhead for the kernel itself is about 30MB per NUMA node
->    on our deployment. For kernel modules - depends on their sizes, but text
->    and ro-data are not that big.
-> CPU overhead - replication performed on the boot stage. After boot
->    only "rare" operations are slowed down -
->    module loading, text patching, kernel table pgd-level modifications.
->
-> Performance evaluation:
->
-> Our local testing was performed on
-> Kunpeng 920, 128 CPU, 4 nodes, 100Gb for each node.
->
-> Microbenchmark:
-> Kernel module with a huge text section (~50MB) filled with CPU-bound
-> instructions. For each NUMA node thread is spawned, each thread in a loop
-> executes isntructions. Total execution time of each thread is measured.
-> The insmod call bound to node 0 through numactl (less time is better).
->
-> node                 0        1        2        3
-> Before time, s     5.567    7.598   13.294   18.905
-> After  time, s     5.469    6.960    6.777    5.531
->
-> Diff               ~0%      -8.5%    -49%     -70%
-> In this benchmark, interconnect was not used by any other actors,
-> so microbenchmark numbers might be significantly improved.
->
-> Customer's evaluation:
-> We were provided with the following feedback on this patch set
-> directly from our customers. Unfortunately, we do not have details
-> regarding how these measurements were done other than it was
-> a production setup.
-> Evaulation was performed on Kunpeng 920 and 920B platforms:
-> CEPH distributed storage +5%
-> StarRocksDB              +5%
->
-> Couple more words about patch set and technology:
->
-> This patchset was merged into the innovative branch of
-> the openEuler distributive 1.5 year ago (openEuler-25.03)
-> and was actively tested in production environment [9], [10].
-> In addition, besides the kernel part, we have published
-> user space replication (for translation tables and rodata) as well,
-> but it is very complex and experimental
-> even compared to this patch set [11]. With replication in user
-> space, we were able to achieve the following numbers in
-> performance improvement:
-> MySQL + sysbench      1-6%
-> Spark TPC-H           4-20%
-> Phoronix test-suite   0-25%
-
-Thank you for sharing the performance data. Does the SUT with 4 nodes 
-have 4 real sockets? Nowadays the CPU design is moving to multiple 
-chiplets. Subnuma configuration may be more and more popular in the 
-future, so we thought kernel text replication can help performance for 
-more usecases other than multi sockets machines.
-
-Thanks,
-Yang
-
->
-> Discussion:
->
-> The main question we'd like to discuss is the following:
-> Should the kernel replication feature be merged into the Linux
-> somewhere in the future? In any form, not specifically this patch set,
-> but the core concept itself.
->
-> If the answer is yes, please share your thoughts on this patch set. What else
-> should be fixed (or reimplemented and redsigned completly) in this patch
-> for mainline in your opinion? We'd be glad to do it, and in that case
-> I'll send an updated version in the near future.
->
-> [1]  https://lwn.net/ml/linux-doc/ZHYCUVa8fzmB4XZV@shell.armlinux.org.uk/
-> [2]  https://lwn.net/ml/linux-mm/20231228131056.602411-1-artem.kuzin@huawei.com/
-> [3]  https://lwn.net/Articles/36602/
-> [4]  https://lwn.net/Articles/45082/
-> [5]  https://github.com/mitosis-project/mitosis-asplos20-artifact
-> [6]  https://dl.acm.org/doi/10.1145/3620665.3640369
-> [7]  https://dl.acm.org/doi/10.1145/3767295.3769359
-> [8]  https://github.com/Carrefour/linux-replication
-> [9]  https://mailweb.openeuler.org/archives/list/kernel@openeuler.org/message/C7M5E2K2UD7FV7XYPWPZREJBCOCBIVRN/
-> [10] https://www.openeuler.org/whitepaper/en/openEuler%2025.03%20Technical%20White%20Paper.pdf
-> [11] https://mailweb.openeuler.org/archives/list/kernel@openeuler.org/message/73MAUDM6WCGSSOKPZGPNZAYRNQGUR6DE/
-> [12] https://lore.kernel.org/linux-mm/20260715180455.515692-1-yang@os.amperecomputing.com/
->
-> Nikita Panov (18):
->    mm: arm64 add Kconfig option for kernel replication
->    arm64: align kernel text and rodata
->    mm: allow per-NUMA node local P4D/PUD/PMD/PTE allocation
->    arm64: add arch callbacks for kernel replication
->    mm: per-NUMA node replication core infrastructure
->    mm: add support of memory protection for NUMA replicas
->    arm64: add support of memory protection for NUMA replicas
->    mm: set memory permissions for BPF handlers replicas
->    mm: add replicas allocation support for vmalloc
->    arm64: enable per-NUMA node kernel text and rodata replication
->    mm: enable per-NUMA node kernel text and rodata replication
->    arm64: make power management aware about kernel replication
->    arm64: make kernel text patching aware about replicas
->    arm64: add correct alignment to kimage in efi code
->    arm64: add support of NUMA replication for ptdump
->    arm64: add kernel modules text and rodata replication support
->    mm: init kernel modules with replication support
->    mm: introduce kernel cmdline option "kernel_replication="
->
->   .../admin-guide/kernel-parameters.txt         |   7 +
->   arch/arm64/include/asm/efi.h                  |  18 +-
->   arch/arm64/include/asm/mmu_context.h          |   4 +
->   arch/arm64/include/asm/numa_replication.h     |  54 ++
->   arch/arm64/include/asm/pgtable.h              |   4 +
->   arch/arm64/kernel/alternative.c               |  33 +-
->   arch/arm64/kernel/hibernate.c                 |   5 +
->   arch/arm64/kernel/module.c                    |  11 +
->   arch/arm64/kernel/patching.c                  |  96 ++
->   arch/arm64/kernel/sleep.S                     |   8 +
->   arch/arm64/kernel/smp.c                       |   8 +
->   arch/arm64/kernel/vmlinux.lds.S               |  22 +
->   arch/arm64/mm/init.c                          |  49 ++
->   arch/arm64/mm/kasan_init.c                    |   2 +
->   arch/arm64/mm/mmu.c                           |  42 +-
->   arch/arm64/mm/pageattr.c                      |  72 +-
->   arch/arm64/mm/ptdump.c                        |  24 +-
->   arch/arm64/net/bpf_jit_comp.c                 |   4 +-
->   include/asm-generic/pgalloc.h                 |  90 ++
->   include/asm-generic/pgtable-nop4d.h           |   5 +
->   include/asm-generic/pgtable-nopmd.h           |   5 +
->   include/asm-generic/pgtable-nopud.h           |   5 +
->   include/asm-generic/set_memory.h              |  14 +
->   include/linux/mm.h                            |  92 +-
->   include/linux/mm_types.h                      |   3 +
->   include/linux/moduleloader.h                  |   4 +
->   include/linux/numa_kernel_replication.h       | 112 +++
->   include/linux/set_memory.h                    |  21 +
->   include/linux/vmalloc.h                       |  18 +
->   init/main.c                                   |  17 +
->   kernel/bpf/core.c                             |   4 +-
->   kernel/bpf/trampoline.c                       |   2 +-
->   kernel/module/main.c                          |  20 +
->   kernel/module/strict_rwx.c                    |  12 +-
->   mm/Kconfig                                    |  10 +
->   mm/Makefile                                   |   2 +
->   mm/execmem.c                                  |  39 +-
->   mm/memory.c                                   | 129 +++
->   mm/mm_init.c                                  |   3 +
->   mm/numa_kernel_replication.c                  | 821 ++++++++++++++++++
->   mm/vmalloc.c                                  | 454 ++++++++--
->   41 files changed, 2246 insertions(+), 99 deletions(-)
->   create mode 100644 arch/arm64/include/asm/numa_replication.h
->   create mode 100644 include/linux/numa_kernel_replication.h
->   create mode 100644 mm/numa_kernel_replication.c
->
-> --
-> 2.34.1
->
->
-
+--=20
+paul-moore.com
 
