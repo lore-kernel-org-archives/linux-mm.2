@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DD60C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 19:20:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89157C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 19:24:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CF7E6B0088; Fri, 28 Aug 2026 15:20:23 -0400 (EDT)
+	id 7D0526B008A; Fri, 28 Aug 2026 15:24:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 359536B008A; Fri, 28 Aug 2026 15:20:23 -0400 (EDT)
+	id 7A7C86B008C; Fri, 28 Aug 2026 15:24:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2481B6B008C; Fri, 28 Aug 2026 15:20:23 -0400 (EDT)
+	id 6E4D46B0092; Fri, 28 Aug 2026 15:24:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 037006B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:20:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 97D95160495
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:20:22 +0000 (UTC)
-X-FDA: 85151644284.20.90356EC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EDF06100007
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:20:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YccYuhnK;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787944821;
-	b=TePnZ+4lVTfdjL8advxjtQ7gJ5EEwxDNzYzly/R9k1kyAwbt976jBqhEjHrKXB5hWifcqm
-	alhMHY75KbIciuuZM7+xxGNDtsgB36+pS26IrWj9ix8UJehbSPjIFyNU5VWyrzpVzYlVgD
-	Gk2lK6J2j7d4unKSlsa+7kgX4C9ufGU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YccYuhnK;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 48E0A6B008A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 15:24:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C337CA01CE
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:24:57 +0000 (UTC)
+X-FDA: 85151655834.24.C97A0E7
+Received: from mta0.migadu.com (out-224.mta0.migadu.com [91.218.175.224])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BA39140011
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:24:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jQOflQML;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.224 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787944821;
+	s=arc-20220608; t=1787945096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DqswDGqiNUCPl5M5sQ08mk77pL/gqXDNGxwzzYiqye4=;
-	b=s3q9jqy0YbqD4Tfpp2KaXu5a0rMS1W2skJs0ntriHOOmYYnuo+QtAGv13zQcb938xExYFX
-	7PO1lfmHV68gUfoSnepH8pLzX02wtveRtGO6AiXUa96JhmQE7oHkV6/CYSnuD+0eGGcWKI
-	LowQw2QZB0kyi6ckTz7FFpf/nuJfBmw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F971601FE;
-	Fri, 28 Aug 2026 19:20:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C051F000E9;
-	Fri, 28 Aug 2026 19:20:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787944818;
-	bh=DqswDGqiNUCPl5M5sQ08mk77pL/gqXDNGxwzzYiqye4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YccYuhnKN/IJ9Yinyg5VnK5LmyQFBhGAl0u028g3vTYAYyZYUB4UOenvskRreRIs5
-	 XiXM3dXuSxkyV8+vlP63u25LymCgQPGRymqbdy+/G+qs0bx5B4Mt4rb+5TViOAGAH1
-	 TlnoYCDuZ4PVWFaDr5YyTnO+C3pgxUDjnipDZlLE=
-Date: Fri, 28 Aug 2026 12:20:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Muchun
- Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/memcontrol: fix stuck FLUSHING_CACHED_CHARGE bit
- on isolated cpus
-Message-Id: <20260828122018.1a3b3be204212837fcda8e50@linux-foundation.org>
-In-Reply-To: <20260828135036.7d44361f@fangorn>
-References: <20260828135036.7d44361f@fangorn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UJqifLmmFq4cxqSQosXu9tXcerQCm+U5Op/WyLQcj8Y=;
+	b=1BsbvA2UhdNhZWu6L7PUmx3+XsGn4YP6kmpMSSzzjDZtQk3cxaN19su2763g+bFA3fEtSp
+	Dt9WXEg8YC9BInx8ZgkjvfqVfuD43cUEL3LyUB7dJowr1ZWrDReMnl+GgRkjmPBT6PnnD2
+	v2/Elg10MZhcSn5Jp4iUaQig/QPxOZU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jQOflQML;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.224 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787945096;
+	b=pvQP4O/MX0IP1IAlFVmzCdi4q/jVnL7CKsFhfmcy3eB8YcnVQIo34ERD/iuyRgFbihbPy1
+	tqeV/eqPfnTDLKJrfVk5WDFu6mTfT7VkqNONGFAMhes62aG0/qr9UqUq8ZZ8ADg0yTBEG1
+	bxUJ7LhhMdRuMJILAtnwQGnLUQwOAlI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=TfHpnzMcF+zAkZEjIfKiZONKrvtQEIIuCJ+9jCgmo5E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787945094; v=1; x=1788549894;
+ b=jQOflQMLLSXvF4RhH9T39JLmhIlr+hXTlgvUTmQqK2S39rimNS1UowlQOljTXHZMzi/sPe7n
+ OIozzK5ugM07jT7eadhZMzgSJh08DgGksHzqOBMAnyKJkq+nZA+daUgC7WF0Q8NSHUlOyTcWQU2
+ WLTuBKQHFbNLZutGsTUBuOf0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 94f82fffaa8d6179;
+	Fri, 28 Aug 2026 19:24:44 +0000
+X-Mizu-Trace-ID: 94f82fffaa8d6179
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Rik van Riel <riel@surriel.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH] memcg: clear FLUSHING_CACHED_CHARGE on cpu offline
+Date: Fri, 28 Aug 2026 12:24:19 -0700
+Message-ID: <20260828192419.3057939-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BA39140011
+X-Stat-Signature: 5xkkcj7u9k5bpc4qscptd7mqdtqcdey4
 X-Rspam-User: 
-X-Stat-Signature: fxdd5khkyuzbn5djq34i4kpfqg6g37qr
-X-Rspamd-Queue-Id: EDF06100007
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787944820-641298
-X-HE-Meta: U2FsdGVkX1+Mx2sI44+qnxdAKzjxLXPzBUZEwb06y3A5FscRAdV2FocLMBuakoZDYcU8/pgnOywR1RwHxgG8Xc3WBus3EWjPfKCQ2G3W3WBNB26NZaQwPAZVSH8fhG0jHDn8AQkpU5G5rbMI1GsKdRIeQpL0RX2Io4bdgj2c0DSjHNEZRAEc30sSpEBFTqsNnE8wv3QwmnthXDhU5Hdhcin8etcsAh1x5yL8R9VZ+tYOz0vvz1kRt9CNXjGbCQ0Q6TZhfylWfO0FQlQIKg97EE5d/O7Qu/Hm+WdLiQxoPifgCt4qqSP0uan2UOXn3Wq316oPGyOQ2Is2ZGbTwwfPfK2gufuUmUqZdC2qpAJEb9GJlh5R98QmfyoKdMzxr49s4v3WYmqyYq6Q2Aev8gFDKgRA4hvDeHBC0xeczenUwFD4eKp40bu0df0EJdqqixSPlKyiSMAHyc9mQzvLRYLdvrHfrHRDD8mg5H90qxmLvCnL4xTiGrMMmU02LyPIU8srwH1eOxTT3gOUd4N2g0waD+lJiOtT3juSBIUnJp+WYVBNsyeoROWPIeXOblfucqT6xKKwjBba/lhHX0zTYHtFxo4lkyKUEJdxTCsYdl0mc35AeLcuUHIC8dBgVoaVFIxVoof0E7i6lAPZH2jQBXE7+fRUBs9KX8ol2P3fAQxaTiaZNZNPxaXu60rdd8fPr6kpDA0xcHZTI7TjbxBd5sIW5LVi9pSSyyhIFFAn5E4exUPQ+RPzPa+UUxcF25laG9r1M7buXoQs7M1zEQJy7bWu5+pky5DvDgirinQnBwgXca6eM9MvKFIN2Xpmuqz6y9doj22xrSomt1AL59y7QGE4PcsJtp8lVyTnW5Ns/M/nkUuOYFzR3rz1Un6AmPMjN+8kLsZC75Zwbox6BDHGqCqUD8/mR2w0KBBTX4dMG33k+NOYu9q3lnuenBrS8Cmw7Gnnf/IHNHYZRds3XGO0IkL
- /zTyJpjM
- X+5xdir7HTE3/8KSMh87a890/Yfsea8MkthPBfUjE432XyaJU3u9kOdET7ILFGOKS16PVsdDt/5Gix4LYSFQvPAaYnQhitwBZ2F7HJiSclb/C3GKQlGyvmBFVIig4qDzKiLh7VLEA9sVzeEvGBSqiqmfgrnLMDjFJd0nPmqe5vnYNJV2TRG2SevF7XsuNvL2ZAldJd/iMskzc+gJu1RRMpa0epNlrj1ED/axWvMNe5O6Kirhvg406mY2GiBrW5lomTDDYZgJtwL+8r72ZmS7fIRkqAaetFRpieeGrUn4091TGbcwe+suVi5s9tuk7u5OpnjRCJHpWOFp3kFaFWbl+Ux3zuEMLxMZ+9dQtfK4EWT2gDLYLn1AhkGuE/4IECCFKj7oHtpelEYpfy3TjopmLy5/7CN9DoZiDYxyy7UUm+qIjUkaqgXgMJenjaw==
+X-HE-Tag: 1787945095-834709
+X-HE-Meta: U2FsdGVkX18IbrnsowWLdICqs45zJ/EsZdDIujXY7Mg2vnBTn81D3JvpRdaEoHoFtJHmeJNNuUOqfaV0n2yhKyBt+VLOaKMhN/77dXoWJisyPZ7ncUD8ioV1AtBRXI7DRx3n3zH9G64RBBIEHnRK/PGKSBFnXiIfIrg9mk6eSpXuhJsM6mG4RSaHzhqAPhGloa4/yRr4gDS4hA7VP5U0iFcoAKoYrZAZzwm8aND35KzATntfuqK2v7rQC0RSbtxVtYR1kSGnRYqf71FTV3UmqSMk8LAYcus0rkbZ//w5WQPjttLMhd9Iikbv7phhLafUmgHkP52VLPfa6T2RNqUrbBl08eaoHAZSbeDGIMVdBP41pjj4T9vY8ovmPYvm/3CNjDhscHcrJH4pbrZn6VDUthQwFLeNsJ18q7bkc7XwydxqClseK+cD8r4euyIhg1mvLDtL9JXm9Xw/mu3TTzT8gEbN//edBt8eENHgJlA3Mjq9EZF8qK5s/J4yhuKD3jARG3nq8yneL2TG7sLDW01LbgogC/wYAQJrpncUZMuhO/hbaH/KDPdrbfJ6SKax6GPD6bnnb7beP9OPhLffV6UUhjGpxRy6gMyAJDSEX+OOPSUfM/5bp8IgdMolYVGagEyoqG0CDGMv/sENgZzDM2ytb+JtFbZ5xMCNtELZ4h0tiIXfIZVSQ0Pk/buDescNAIGaYmyjY2B46nX2YBQQvUPGFxBsB55Rccr4hc65p+Fo5CdqIHv1tL+oFgZK/tddzRwa2vt3mWctdHeVHArD1g5Po4xTu0E2aOkw7E6yuCVj18AgTo758Hc2XY4dVCJ4X94uDSD0blCsJPIRU5px2NZuL5teKOS2rqLIPZw7MdpHdHPpQxBMusvHBUOBRPfs/Twb9jzfvLwqzvoU1glY1p68ZABNW7vUWYkn32VkU7aMwsa7hYxoMMSs6vI6AqnGMR0ZPKTrxLg+sGPmRB8A5Nf
+ jW5cn2O8
+ 7wasrdR1FUVLJoRiUXm9fRzQZKve1ACj3LV7SKzafF7Zm+5NbsJ9oD4RXp9neiL9mSjVm4Y2v9vhOafp/+kd6Qx97bBEKQW0APc7cnu+VkDr2/0MDW79yOT/fnye0HpiuRFiAFskn0fM6Wz4DClsa+VkYUunxj1hvBWdrxQbQm0pqMd3pR+uTa1IAUcJicOFMq18DeVMZW5oJnoJN34dwUxHFnrgJ61fx02H9vF8LH1ZpvqwVveX3FC/k3TgP87z8IHKpg0iwFsNkpFeXAAV7ZY+B2gt7fVPkMHv2YVNG0yCmuQGqwtqQ2Hk7Btt5n3HO21iZi6/KhZGWsZUkbrsKVDXziPr3XAOk/FYQuX2+n46PKCg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,33 +94,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Aug 2026 13:50:36 -0400 Rik van Riel <riel@surriel.com> wrote:
+Sashiko [1] reported that memcg_hotplug_cpu_dead() drains the stocks
+of the CPU which went away but leaves FLUSHING_CACHED_CHARGE alone.
 
-> When drain_all_stock() sets FLUSHING_CACHED_CHARGE before checking
-> isolation, schedule_drain_work() can drop the work in a separate RCU
-> critical section, and housekeeping_update()'s synchronize_rcu() can race
-> that second check, leaving the flag set.
-> 
-> drain_local_stock() only clears the bit for work that ran, so the flag
-> remains set and the stock is never drained again.
-> 
-> Have schedule_drain_work() return whether the work was queued, and clear
-> FLUSHING_CACHED_CHARGE in drain_all_stock() when the remote CPU is
-> isolated, so future drains can retry.
+The flag can be set at that point: drain_all_stock() may have claimed
+the stock and queued the drain work shortly before the CPU went down.
+workqueue_offline_cpu() unbinds the per-cpu workers, so such a pending
+work item is executed by an unbound worker on some other CPU, where
+drain_local_memcg_stock() operates on this_cpu_ptr() and thus drains
+and clears the flag of that other CPU instead.  Nothing clears the flag
+of the dead CPU, so drain_all_stock() would skip its stock forever once
+the CPU comes back online.
 
-Is there some Reported-by: or reproducer for this?
+Clear the flag of both stocks after draining them.
 
-Given the complexity of the reproducers which Gemini developed for me, I'm
-suspecting "nope".
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260828135036.7d44361f%40fangorn [1]
+---
+ mm/memcontrol.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-> Fixes: 6a792697a53a ("memcg: do not drain charge pcp caches on remote isolated cpus")
-> Cc: stable@vger.kernel.org
-
-Why is a backport being proposed?  How does that benefit those we
-serve?
-
-Sashiko suggests that we ain't done yet:
-	https://sashiko.dev/#/patchset/20260828135036.7d44361f@fangorn
-
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index e082aa68fa5c..872115c6b0f2 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2378,9 +2378,21 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 
+ static int memcg_hotplug_cpu_dead(unsigned int cpu)
+ {
++	struct memcg_stock_pcp *memcg_st = &per_cpu(memcg_stock, cpu);
++	struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
++
+ 	/* no need for the local lock */
+-	drain_obj_stock(&per_cpu(obj_stock, cpu));
+-	drain_stock_fully(&per_cpu(memcg_stock, cpu));
++	drain_obj_stock(obj_st);
++	drain_stock_fully(memcg_st);
++
++	/*
++	 * A drain work queued before the CPU went away is executed by an
++	 * unbound worker on some other CPU and clears that CPU's flag, so
++	 * clear the flags here to make these stocks drainable again once
++	 * the CPU comes back online.
++	 */
++	clear_bit(FLUSHING_CACHED_CHARGE, &memcg_st->flags);
++	clear_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags);
+ 
+ 	return 0;
+ }
+-- 
+2.53.0-Meta
 
 
