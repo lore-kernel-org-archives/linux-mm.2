@@ -4,150 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8BDDC61DCB
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 23:33:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFD4EC61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 23:36:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4746E6B0088; Fri, 28 Aug 2026 19:33:17 -0400 (EDT)
+	id E16DD6B008C; Fri, 28 Aug 2026 19:36:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FE686B008A; Fri, 28 Aug 2026 19:33:17 -0400 (EDT)
+	id DC80A6B0092; Fri, 28 Aug 2026 19:36:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 278666B008C; Fri, 28 Aug 2026 19:33:17 -0400 (EDT)
+	id C8FFD6B0095; Fri, 28 Aug 2026 19:36:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E1F876B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:33:16 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5FB69A4069
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:33:16 +0000 (UTC)
-X-FDA: 85152281592.13.9FF660C
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 72AC11C000A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:33:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FIUcjDPT;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of stevensd@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=stevensd@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787959994;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 90DF26B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:36:43 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E249E1205C3
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:36:42 +0000 (UTC)
+X-FDA: 85152290244.15.723A240
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 26611100004
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:36:41 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=h5NZbfIR;
+	spf=pass (imf05.hostedemail.com: domain of rientjes@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787960201;
+	b=tvtoLEVV08aqX0+bsWT8K7gxJDgQ5IxbU+mcc2Ugo6xxjfIEN5oUQMKA6eMp/q9/uQmupK
+	Zd88p5s/D4THT1SnHG6Z/gv3QUz61Gy8qKwar0eaixhaCbQnurPqn0wgOpblNp8P2hqfvM
+	b7ZCkZD8bwFtTKgOXv3jyqKsPvz6UFk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787960201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vPbHw3SXRt8c1h9FzmacGhPD5cdWkOAwAK9dhsy7doU=;
-	b=oGSmq9MNxVI8Gg2Aj4x0znKklz53MYNU5XwrwUbPTkd+kNUHlIAxFEKNHPmtIkXDuXri0y
-	Mnbpno7azQFudlfVUJJ8k5v6lDpDzaV3Ahkv9wR++90QPr2K6hLLhNKwF+JTDKIVFrbyup
-	cUtGoK/tEWzsGk5u3vrc+pPX+EDvJsg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1787959994;
-	b=7K56hSA0TG0FiJADhhz34+YSHLn9w0CKlZHx0OS3F97LOYVjn9quTj4oHYkw0yymDEL1D0
-	Zg2CvEaDc6PljcWKyc02xX36/UbgI002hul8U34WRAmmcCSO1FQ43xVaalfRbrPrByFRV4
-	v3MOxZW69YkvCXKaJV5BQ5hmUbxhziQ=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FIUcjDPT;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of stevensd@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=stevensd@google.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-499add6348fso8145e9.1
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:33:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787959993; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ckr3lyAC9P/Ttfr2UKUYMewRVn0Df/H8UlnuO4KLrEeIskNEX6n9EpOCCoyt8SzefV
-         zP053qLfJ30NYEhf9kHevIdcpx9dv23RcpdvrCRGpEZ0AfcroS/rwOZsTFzEyYt9kUDN
-         JGOo6JtQoQqWj34BtmoryGK2HU3n5NY9M/7WUjNqIgWWNkywUTiLhAegoA5AbP8tca+T
-         L+aRJloxfirQb28XfZiVAOvECdETLBczN/gR7gUlaLINDs9G/+Wo33dAVZ9o/6mNeME9
-         CQN/Xau7vsIe8B1mHGSD9i/j6S+bbzF88fWzatSwmv5nfQuA9maiSZhQ1+u/EA1GGo/c
-         5/DA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vPbHw3SXRt8c1h9FzmacGhPD5cdWkOAwAK9dhsy7doU=;
-        fh=G3qIYzB3iB1GxsNvTK2QLYG63fGg4sI1yAkS18OlWxw=;
-        b=VgnnPp7fTTmLeNzg4x8NHM3rqH+eNk7g/+LiGzUmy8vbjHith/sXyX0Mstyc0lMYOM
-         vovVk8GwosNnJKP6HrlNeiiZHhSZe9CO+QBszMAmTvLIIalpIbhlZLxSYSVnasqBJrTz
-         v7wW6OxUzaJ7cjTp8DlGouHfkaulzgiNaHX5YJ2/0HrNl11iO/PUuSAktcre/eSS840D
-         yH+txlYQJIeNLPAkNj+YLQxjyKdOKFbM9fVJXEPbFCzKxBNdYxjWgrspdDdEl8wzjdnK
-         HL3pZfiVYOB2tfdc8F1lI/ca6v/gaAiSDo5V06uLu8pKbjjTEdA/CqFWPrDR6uBMVYHh
-         1pbA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=vFxRXbHadEiDMSxjFvFaLGe1M/LzTu9WqCxKEuyRP8s=;
+	b=SkfHv3EXV25QDbHmxo9Yqvl0Zu5BZz+GJuI3jPg9WkcddSOTR7ROfE7thPmt/rYfVpvpsL
+	5on6Ns/fCLHhI6DEGbiYwwoSs0UYZDqTyXg2JhYolI71aGC3K6HGjmm9JHQdXlX+J5jCao
+	FRiSPA7D3jCCNau9SLWZB1oyJ9SChFs=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=h5NZbfIR;
+	spf=pass (imf05.hostedemail.com: domain of rientjes@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cede6375caso42885ad.0
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787959993; x=1788564793; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vPbHw3SXRt8c1h9FzmacGhPD5cdWkOAwAK9dhsy7doU=;
-        b=FIUcjDPTOeaCGwoyQ7ZPJQJ9ZOHO23Uio57kKv1ke8bn72XF0q+tp/d6bEhYE7rl2r
-         SZQQeNvGP2Q+zC1ZhjzhOVG2RwtVQF1VgNvlrvSTsaQOblr0LdnWGejZpsWlXAo6IKBv
-         5Y1W+wfyWrC14l9k3dAzX7SETC3y6ftj0Zdn3ZiQEwCuuA3XOgZoNpisX0FW0NW0HIev
-         Y+8H3aXqletNP1F/7iY/kXY0hphAUIb3OklEPGVjTVntEF7l99dN+WAk9Kje9qX/8bPR
-         BZDRUZT+6sksaCFoke1K5rlUg/IfYTQnz9P/SqJl4dx5ZglNpe5P3x3OCHO0DrqEo1Q7
-         VxMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787959993; x=1788564793;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787960200; x=1788565000; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vPbHw3SXRt8c1h9FzmacGhPD5cdWkOAwAK9dhsy7doU=;
-        b=YOVeOCkckI1amCen7qEmT4F0AVloHOyO71ugqhhjdH+JpZslKhXCjxUIl5CuZo54+G
-         OfZyiOHkXdkpzJlSI8kv4hyd2DixnOcpJPZI8CrUXuFVyk6LOYEjhjRo8RBNSIEQ40n5
-         1a5Oey8eNXoYY5nJyQOl/8oAivaY1KcxEz2Joq3NfumJDaxwsMdkpWX6GT35JBqvzOHm
-         2IJantoxk4w/Ao4lkG4Ugyqn2HLiK4H130bgBcAcQmWAOgC5Ea7eMIhBvnxDqUBYybbM
-         tvIgMkP0WTdp5xcRnj5FiMjKPVXI++UNyVmOfKC6qXxvkJt9RUqgajsa1YEN8Lw/SG85
-         U7Bw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8m3UNgqJJyPXvVQmxZRb0ebmqyUUCgW2C3c9zmu0IwnXDMFXUJyZqWZSo66RvN1EUwJyfIxjLQw==@kvack.org
-X-Gm-Message-State: AFuF++kV96dOD2WZ/jvpSCKIuUmgRqaj2/I0YU9y3AZHzrp3os8po22C
-	T3DTPUviUeuBPYCg0DXbe/wxzyEKmkx16kM158yaUmGq9oY5qzGSXMT7r3DFJBaeyueLff5hmr+
-	kQLP5LTeXfkAFjMpTahX1pA0DJvPbM2DnZFpHXunX
-X-Gm-Gg: AR+sD10UnnQxZr8yWBBLEj91COBzLqDCaso1XAqna9NEw2btGSDBkzREk+7BM1T/DwY
-	+vcTRu05cqKS2WVzekKYH2lv6y6XBEbu1sa2NSJySWK8cf4LIbyOiHqNAQgzMeL1e9gtulJszMC
-	CwO6mBtWlapOL8c0VJKl1nzFxy7V3JAWWxPU4qA7Kb8za9VjZAB7oAOZytZnl2xX/zZyo4s8JlV
-	W3wQiroLgbLTqni004GY17sND6wSqhOTBYwHeypvIXyKi6rW34iVTtqBI3sZSBUNjsD02w1GVjv
-	wHze9TB+P1aD+V7xTs3MgC+Lq2AHIaO99GK7cpiROceVDTiGGVYIYapadQqZ3hAf3J0hZIBSi5M
-	=
-X-Received: by 2002:a05:600c:3794:b0:499:cb15:4511 with SMTP id
- 5b1f17b1804b1-49ccbb61af8mr349255e9.8.1787959992396; Fri, 28 Aug 2026
- 16:33:12 -0700 (PDT)
+        bh=vFxRXbHadEiDMSxjFvFaLGe1M/LzTu9WqCxKEuyRP8s=;
+        b=h5NZbfIRK9Dwe1JV8WCPNi6m4yvRpCwGISgZ7ebmjXa4zpcHba64lw7vtASGNfkAfz
+         HQOvdw7p4BMbAgD2A7orel00bodJIu0HC50kiiueqt0utjBl/DhfwKAhyrRrvEcyQbwz
+         gqx+PzDvppyVO8AyhURQR8HqunavWAkPWXDWReLPKAswJFqhboz0M5sZEkSZjh+hU7Zy
+         jRTRmA4l4MVptVq9zz2GiZM7fSdBrn0HkypL8SBnsCU+D5gYNb/MoNF5GZTPJbC/hCaq
+         49UCgtrdCa33BBbwtb+TEh/m3kg/LtuARILrY92cdfokXlx+7zQIRx9FWfhxza97G4jo
+         WD5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787960200; x=1788565000;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vFxRXbHadEiDMSxjFvFaLGe1M/LzTu9WqCxKEuyRP8s=;
+        b=HskBdKOyMEH0rsMDjY6ObLgpQMuGvz/ebqnoVo8Cu3COHM9AgzAwrFQ0DjwwmBd3BV
+         Cep6D8HjPS+FO4Fh6zAiK+YRvOLcXs7TuwX/av53oIgsYMiAUzVhTj2V/vVO6FKrVTCD
+         Ak5nSoUBnJseH0lhvtrP5G8wDT4a93LAd8jtFa/ZzJ5OoAHyyVC+cVivpjY5sa1yX94g
+         KMHwVI9b1EYyJj40oivRH/WvdbeoYHWFNr84sYC36Tly5C1lq+tmVbY8BIkusMxP+OeW
+         thJ6np7cQF1OfWNXqtS/gUBMGAr81jzuAzrwX72SF8FuI/Xt954OZ5Z81lar18if1gVj
+         Vu7g==
+X-Forwarded-Encrypted: i=1; AKwUvBxfFbMxF2kxNdoioHf0stZGmO8Vpz6+m9liX0q5x7kK4f869u4No0GZd3phypVJYr7EhALje1OReg==@kvack.org
+X-Gm-Message-State: AFuF++lJna8NirWej67QPc97kwTcKem5Kz51BoEXVReBY5nOV9TA527J
+	6/WWrURXS7kW3aWdhbARGmssExg96E3vTVxVX94P2DaN5A8EXBYJkAXOJLCqnYkTLg==
+X-Gm-Gg: AYBFou0279XVl0hhOvcx9m0GMwtSTxsvwHtXtwwO1K/bWDmf9fKcV3+3bw3q3IUxqLu
+	7A6sWdiDOZA3PAhfNiIPA2RWkaYml5jkLueDUlMzcct5vJXRia66j++IsE9dDT+Z6Ydt77p+miu
+	nthfe2yqr8SPz4u0kGy0kmFCac9GnqshqBm0sgZakpzarV2j/vtt4JL4kvEGU4/WwhiDFsucFhl
+	BB5sju5w0AW7T59BzeG8ThPzgLgfDPdXdWc9xHhFfXZv8R1XBuRIpCpweiVH0U3hgJYbLpWK/v1
+	ADkQ3LCejOGS6iZF7tV87HJqlROaVOx0rPcJPa37vpAj37MEu4E+XbKFmZd6OjW8lEELbv8ZmyR
+	DqokFUVS1TjO8AcFqX1NSxoVuC55a5KwYqaho+uDtsLU/0i2gu3NfbNGTuIR2OwtSX9ovnWL/eD
+	yUvYit3J6qjc1P1y4oaYVvZtv5oyv2lUtNCBAc+5r0UUtEMKO3eI6TLFaO+Aq0zC8zfelmNMX1h
+	BDxLIPfc5QZLX/LEBLWemnkuOz4tWbZx2oN0uEUTssMDylmuwALvumqhHeLauplalwkNTrpAorX
+	TGsl1diuBJ3EApQ=
+X-Received: by 2002:a17:903:2c0f:b0:2d6:3c22:994e with SMTP id d9443c01a7336-2d8dfc511c6mr2515655ad.11.1787960197959;
+        Fri, 28 Aug 2026 16:36:37 -0700 (PDT)
+Received: from [2a00:79e0:2eb4:9:201d:c4fa:f5f8:451f] ([2a00:79e0:2eb4:9:201d:c4fa:f5f8:451f])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f3312676sm1072389a12.12.2026.08.28.16.36.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 16:36:37 -0700 (PDT)
+Date: Fri, 28 Aug 2026 16:36:36 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+    William Roche <william.roche@oracle.com>, Jiaqi Yan <jiaqiyan@google.com>, 
+    linmiaohe@huawei.com, ljs@kernel.org, ziy@nvidia.com, osalvador@kernel.org, 
+    harry.yoo@oracle.com, willy@infradead.org, osalvador@suse.de, 
+    jackmanb@google.com, hannes@cmpxchg.org, nao.horiguchi@gmail.com, 
+    tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com, 
+    akpm@linux-foundation.org, muchun.song@linux.dev, liam@infradead.org, 
+    duenwen@google.com, jthoughton@google.com, linux-mm@kvack.org, 
+    linux-kernel@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
+    surenb@google.com, mhocko@suse.com, boudewijn@delta-utec.com
+Subject: Linux MM Alignment Session on hwpoison (was: Re: [PATCH v6 0/5] Only
+ free healthy pages in high-order has_hwpoisoned folio)
+In-Reply-To: <8f787434-5326-4a8f-92d0-467e817a23b4@kernel.org>
+Message-ID: <8f023b9f-53d0-0eb8-6f75-65957761cf40@google.com>
+References: <20260705180714.3708947-1-jiaqiyan@google.com> <85cb7ea8-8116-4092-8310-69b61eb8602c@kernel.org> <ee6bcc74-0846-43f2-bcca-b1bedff74351@oracle.com> <1dea7b3c-7740-474d-b9d4-cd2baf47f181@kernel.org> <168ad406-f6b5-4623-adac-9f894e410e48@kernel.org>
+ <8f787434-5326-4a8f-92d0-467e817a23b4@kernel.org>
 MIME-Version: 1.0
-References: <20260827232948.2520558-1-stevensd@google.com> <20260827232948.2520558-7-stevensd@google.com>
- <20260828125706.GQ687043@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260828125706.GQ687043@noisy.programming.kicks-ass.net>
-From: David Stevens <stevensd@google.com>
-Date: Fri, 28 Aug 2026 16:33:00 -0700
-X-Gm-Features: AcwNN1X4mjRfDUQTmdB2Q8G8afN4YKn_2mHhFiMGwyOfarmpU5bToKMeymOANtE
-Message-ID: <CAOiLmNG8XUKzy7uyodfDyuSBKJa4LujqSRKhgmOiRUSFEAEjFQ@mail.gmail.com>
-Subject: Re: [RFC 06/10] Reclaim memory from blocked kernel stacks
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, suleiman@google.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 72AC11C000A
-X-Stat-Signature: giaqzftm4kzk4u5f1mqdhd3kbewbtccz
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1787959994-237001
-X-HE-Meta: U2FsdGVkX18GYJgpw2E40GMXyVOkACoGGci7Jx9W+YxLMWS0ujwe0m7LouTcYT28EfhUcjvUuZBkaAAxkjQbNfZAx0RZNI52PrWhhZrk54Wz1ldXJqWJayD59SDQHRMCOFzZRs+KM3WRPuAqq1V2vo9pH5Z3BRlyGbwWmgNmNVr84+ZssyhEIR9L9Dg+1O182rhRVVhLZTRpvd5kqegJtvjf0bLgFazq2GH1Ar6iefJtQLuesTGXmeBlTtcPCyHi5r1Hs0KvDVAC4PWld/TwOILbDG5m1dsP8RIrO+KTi/cNi0HM2vUWuuW9/Xw7/1QcK4IAhNiQd0khNCmAfqeAi1unAycyYiBHqawQLR8wHr/9m+xkgwLtcNlTfqiTz6aehRYvaremQcsSGJzWDK//ygIPtrHLVQiqFpqpzYHCjQJZlis0+iTamihVIl60xt3mnUQcLc25utiXVEjihADQ3l3MGn6tTlJ8BLMwbq17v1BrBDyeFwA+i4yVx3kx3ra5YGRaXA/gxVvnKuninyf2LMkOQDfarHZ2Si3LaZVodjDkt91gcjLbB8yt9raZUS3/tGZm+Bx/Hi43nOjkssFsRfmi1dvsfD6oh5+Vseq0zwZAqKS7Bmp95xdJV/Xo5MeflDEMVjZmmDnHJyuul6tTE9TwO88+1BufOrOhWeUGrYK9ZIq50Wj+DPP03c1EvKTxWhMJ/zQKpMIx/zcowg2xx0jZ06JsdmoJ1FJBeQaxVYFu1vNZoTZRbiCrZgNf9I2+1t2gxTQyozuzapDXO5fxmMutPVpByWe6/ZBFXTZuP02hEhBiZXv+GVh2g3fSVmFS7i4P7DGhy2blpDTxWzprwHkbEorTdsKtg4hhO1uxXINrxKf52A6QSbIhWGza6nMgNoiSxz03ojtyHLo2Nwiz9FXcbIWQwJoWkSppPpjtrlf+UfzprDQsn5c2gk441S0eShOVxjaXmX+ke7cR1JQ
- 60ykcR2u
- KXEZkpnokvRQFA/8okLsVQPbMfOFFu3HX/QYhCvWtAObD7u6OEDx8evyAzBxT+L4HOIJEwQfVt4bayBMj2Z62B7WACn2zdznA/FPeKX+Lydhkc04RmOQEl5WoHgheyRtjqvXV2EAW8QX8vHg9bhY+KMTB1D8LVfp9Zwy+AiB9oTcbaAGmLDRWgD9zVVn4eB1eL9zPHdMN25iwwprX3ZcRA+3tpT/bt2nZV1HtAi3s88L0bbHU57aaLFL++xl/McE2dvzfgOpAy0US0IgANR7ZTfHti0BB8yI6SDNrRNuka44DcEA=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 26611100004
+X-Stat-Signature: 651o7q5goqbq7i58cd3r9uscjp7yh4sp
+X-HE-Tag: 1787960201-636666
+X-HE-Meta: U2FsdGVkX181MiX7z6DxpsL6LaORPIkrudT5OCFkZ29QJk2SYRthtcvjUZqj+K+Bo6ekpZSwACXJVAe3Ro1NVEosqH/7zDz4+ogzNQXPRoZWo7bthsS/viDPFF6imHzTqyF+Jo9KOojglYaYOvgbOsa35ABP5KVNNxuVYlj7WIjDn9wv048M9mhFRHf5xlbuu2gmyDKDs4cXEWPXzfg36V6wJKviqQBLLvMwtlAdBj0OV0OSa45yUaNOkH4NZ3jY5LRZ/P7qkzgPQRPyCJoKiKuz6ZpSxp7fj3Wjcr5LmVl+8J9azrl9CS8tcL5HbgqbrAFjqYf76jmri/zfn1Qoa+tXEv8jqGB39/jNplYB9DRVZAWexizGp4OsUe+T8ctzMfqr82xEKVEjTimHM1BTMlvB5kYjALRj+oC0UkZdEd3i7bZeSPsfM/GNrASXxezbtC6EB4hOtKdoqpY7+T8mWTdEjlicjaPlHbeNfbkji/I6oLXUlsHzBJe8hMim89w1wGgPogcg+lozLaVgBVXbM1cOiJnuUV+Tftofw6YDm2XH5ROFRuEQlDAdbkSqU2D9NWH1E4bRltmiVP3PxE+iyEnQaEF4/AMEDqr2Isbf57bgScUcTLhUVO2Y/voXjiNLlWRRdPT2IAOI/ZkhyAI0pOYMJbZIseVBPba+j5KCvYQpyIe4WxL7Khtu0wOfyo/o2oN6/59T4rByD8Er6up+073YtBMEw+UCiIoIPjfI0NN4g9HVkCgD/mAMK1fhIdN6dzjg3VXo9FHNW+4Vh3+RWrP8Dyp03g+/eKN71EOGBomh+Jat8S9CQXT7NJ7EB7jUSvSwgNs0f3PJWEfD1UJ3GEQz4cNt3MQr8vbqXVsiPnJa/+R7eoK4lFL0NNFkJzbklpSLbV0lhRxtayUfvTBe7NlGAPm5dabB+J5Js4wgHZNaGqj/g3yxTiMPiRfjqMMTfhUf4M7vzTigkQdZCFq
+ /6qlQk6C
+ +J8GLr6XeRFaAFzFXWIPFtjxL3CKxBkARUEcFFYQdLVD6gzjkNyEt9CSrrk2IhcT6kGBiaHt3PRl6RTHwGaKtA4DoHol9CiDg6OdEZH5nQRvmUEtvjxJGjG+NDTKHSqefzqoOOdEXCUT+tpRmD4asPW4nPFyHiuMhEQ8zaLg5QyHg15pN4Jz1ZJwoCLnBsdIV6jbSmPP6Z4qqOsJPH/ZbKdJvWuYg6A7bDlFwKcpeeguEoSy7uBytAOJvScPCtKD9UxB1LfM1YNuRE9fdpSOjbqj+blr+QJq9ZIp06ogukW/XsqoUbn+TgXFpZNIH8NXecWNOcFe3BBAa5yPIlC8K+qS+AXRH+rYBhgx1fy4QqGFvXRkOM8nJlswPFiA09ZTCntm8x5E8CapHxJVJD5gaBYCzST3Pt/IB9LC5w2UsXS6kShPobiBhASHRgW6jCRs5AvrlV7tlZQK3QE0QjD9GppmiycFxVT1+cYtPrPsMwOciIpaJQlHJ/yvkGSfWdR2B/wsvgozqDnsyNN8fJ1vckLL3ntXkTqUoeuimTwsErerAeQAhWXtuMmU1jbOqk+BBcKfd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,72 +128,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 5:57=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Thu, Aug 27, 2026 at 04:29:44PM -0700, David Stevens wrote:
-> > +DEFINE_CLASS(allow_stack_reclaim, bool,
-> > +          ({
-> > +             if (!_T)
-> > +                     current->flags &=3D ~PF_RECLAIMABLE_STACK;
-> > +           }),
-> > +          ({
-> > +             bool was_set =3D current->flags & PF_RECLAIMABLE_STACK;
-> > +
-> > +             current->flags |=3D PF_RECLAIMABLE_STACK;
-> > +             was_set;
-> > +           }),
-> > +          void)
->
-> > +     allow_stack_reclaim(prev);
->
-> > +void __allow_stack_reclaim(struct task_struct *tsk)
-> > +{
-> > +     union stack_reclaim_state prev_state, target_state;
-> > +
-> > +     if (WARN_ON_ONCE(tsk->__state =3D=3D TASK_DEAD))
-> > +             return;
-> > +
-> > +     prev_state.val =3D READ_ONCE(tsk->stack_reclaim_state.val);
-> > +     do {
-> > +             target_state.val =3D prev_state.val;
-> > +
-> > +             if (prev_state.stack_state !=3D STACK_PREPARE_RECLAIM) {
-> > +                     WARN(prev_state.stack_state !=3D STACK_IN_USE,
-> > +                          "Reclaimable state %x for previously running=
- task", prev_state.val);
-> > +                     return;
-> > +             }
-> > +             target_state.stack_state =3D STACK_RECLAIMABLE;
-> > +     } while (!try_cmpxchg(&tsk->stack_reclaim_state.val, &prev_state.=
-val, target_state.val));
-> > +
-> > +     if (irq_work_queue(&tsk->stack_reclaim_work->irq_work)) {
-> > +             /*
-> > +              * Take a ref that gets released by do_reclaim_stack() so=
- we don't
-> > +              * have to worry about races with remove_from_stack_shrin=
-ker().
-> > +              */
-> > +             get_task_struct(tsk);
-> > +     }
-> > +}
->
-> > +static inline void allow_stack_reclaim(struct task_struct *tsk)
-> > +{
-> > +     if (unlikely(tsk->flags & PF_RECLAIMABLE_STACK))
-> > +             __allow_stack_reclaim(tsk);
-> > +}
->
-> So you have a guard with the same name as a function, but the function
-> only functions when inside the guard of the same name. WTF ?!
->
-> Anyway, it looks like you're sprinkling this guard around a few specific
-> block sites. Which seems to suggest your PF_ flag *should* have been a
-> TASK_ flag, no?
+Following up on this thread and the suggestion from Matthew (thank you!), 
+I think it would be useful to have a hwpoison requirements and roadmap 
+discussion on how its support is currently integrated into the core MM, 
+get an understanding of what the areas to improve are, and get a sense of 
+future work in this area that people are planning.
 
-A TASK_ flag is definitely better. I was thinking in terms of defining
-safe scopes, but that just complicates things for no real benefit.
+This particular patch series is addressing an area of interest to Google, 
+but it's also quite clear from the thread that there are multiple areas to 
+improve for hwpoison in the core MM and it wouldn't hurt to get more 
+insight into what dependencies users have on it.
 
--David
+I'd propose this for discussion in one of our upcoming Linux MM Alignment 
+Sessions: Wednesday, September 16 9-10am PDT (UTC-7).
+
+No specific agenda other than to gather core MM developers with hwpoison 
+developers and discuss:
+ - where validation should live, esp with regard to the page allocator, or
+   strict invariants in the page allocator
+   + implications for the fastpath
+ - handling for folios of arbitary orders
+ - handling partial folio poisoning and split failures
+ - race conditions between memory_failure() and concurrent
+   alloc/free/compaction
+ - soft offline for pages in the pcp lists
+
+We might even want to be bold and discuss a holistic design overhaul if 
+it's warranted.
+
+I'll invite those on this email thread and anybody else is welcome to 
+attend as well, the announcement email goes out two days ahead of time to 
+linux-mm@kvack.org.
+
+If the time just doesn't work for somebody who needs to attend, please 
+reach out to me separately and we can discuss other times.
+
+
+On Tue, 28 Jul 2026, Vlastimil Babka (SUSE) wrote:
+
+> On 7/27/26 16:20, David Hildenbrand (Arm) wrote:
+> > On 7/22/26 10:27, Vlastimil Babka (SUSE) wrote:
+> >> On 7/17/26 15:06, William Roche wrote:
+> >>> On 7/17/26 12:18, David Hildenbrand (Arm) wrote:
+> >>>>
+> >>>> I still don't like the complexity of this, in particular, as we have different
+> >>>> mechanisms in the page allocator already to try handling this,
+> >>>>
+> >>>> We also do have cases where we set the hwpoison bit, while a page is just about
+> >>>> to get allocated from the buddy. So before we take it off the buddy, we might
+> >>>> just hand out the page.
+> >>>>
+> >>>> check_new_pages() seems to check for PageHWPoison() and make us not hand out
+> >>>> such pages. It's guarded by "check_pages" but it seems to do exactly what we are
+> >>>> looking for, now?
+> >>>
+> >>>
+> >>> Just adding a comment about this aspect:
+> >>> The check_new_pages() mechanism used by the __rmqueue functions should
+> >>> filter these pages out, but this has been disabled by default in 2023
+> >>> with:
+> >>> [PATCH] mm, page_alloc: reduce page alloc/free sanity checks
+> >>> https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+> >>>
+> >>> So it would need to be enabled back, taking some of the performance hit.
+> >>> (and I personally think that it has to be done)
+> >> 
+> >> Would it truly fix the issue, or rather there would still be a race window
+> >> left where we check that there's no hwpoison flag in the re-enabled check,
+> >> and only then someone sets it?
+> > 
+> > Why are we checking PageHWPoison at all then in check_new_page()?
+> 
+> We check all kinds of unexpected state, when that's enable. PageHWPoison
+> could have been considered unexpected too, when the checks were made more
+> and more optional (first by Mel and then me).
+> 
+> But indeed it seems the PageHWPoison check is supposed to be load-bearing
+> (hi, Lorenzo!). It's intentionally handled before bad_page() (with a taint)
+> in check_new_page_bad(). Commits 2a7684a23e9c and f4c18e6f7b5b are also a hint.
+> 
+> > I think we created a mess.
+> 
+> Yes, the PageHWPoison handling was made part of debugging sanity check and
+> then not recognized properly as load-bearing later.
+> 
+> > The PageHWPoison check is not just a "nice to have" sanity check for kernel bugs.
+> > 
+> > So it should never have been optimized out that way before reworking the bigger
+> > picture.
+> 
+> Sorry!
+> 
+> >> 
+> >> Also, can the hardware actually detect a problem with a page that nobody
+> >> accesses? I guess if yes, it's only in some corner cases.
+> > 
+> > Yes, quite frequently I think.
+> > 
+> >> 
+> >> So I'm wary about penalizing the allocator paths again.
+> > 
+> > I get the feeling that we don't have a proper plan on how to handle HWPoisoned
+> > pages. We should take a step back and discuss how we actually want to handle
+> > them instead of optimizing here and there and creating more of a mess.
+> 
+> Fully agree on having a proper plan, because I got the feeling it's been a
+> whack-a-mole approach for years. If we then decide to put the check back
+> (and live with the residual race window), it should be handled completely
+> separately from check_new_page().
+> 
+> 
 
