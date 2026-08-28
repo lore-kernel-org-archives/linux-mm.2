@@ -4,113 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70AE7C61DC6
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 08:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1578C61DC6
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 08:57:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32E3A6B008C; Fri, 28 Aug 2026 04:47:36 -0400 (EDT)
+	id A92BA6B0088; Fri, 28 Aug 2026 04:57:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B8166B0092; Fri, 28 Aug 2026 04:47:36 -0400 (EDT)
+	id A436E6B008A; Fri, 28 Aug 2026 04:57:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17DCA6B0095; Fri, 28 Aug 2026 04:47:36 -0400 (EDT)
+	id 931F56B008C; Fri, 28 Aug 2026 04:57:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC1806B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:47:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 865F61402AC
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:47:35 +0000 (UTC)
-X-FDA: 85150049670.24.8269DEB
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D4EA840007
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:47:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kAdPJTSQ;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C5716B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 04:57:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D4E001C14D4
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:57:34 +0000 (UTC)
+X-FDA: 85150074828.22.371D624
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 24DA3120004
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 08:57:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qdaYRwSy;
+	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787907453;
+	b=uj7m3Rp0ZI8Bzc+PtykIxValCE/HwZtdrg39MIZk0PouMBNZOyOGjvB45OrFLcH01Q4XgB
+	TfeEXRLz6jU77RolPoxmtWH5H8vVkx4OLUD/VW0JU1UVr2IU5+UyAgSLdAWdX+3jQDkGjf
+	jOh2BLC/RIWskiqsyWGFeK6pG6xPg+g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787906853;
+	s=arc-20220608; t=1787907453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=RXLz3Xl6C6oGFGDAhFniglml06HtyDSEVADuwjc8Bss=;
-	b=q86owS6UhnfjFhtKtMTizFQ6/ZlyK9mirelOa/HVf+xp+/7hFekCfnSZ9IenpzUmt8n1aU
-	GjRC7bwA7gEKRbO47IsHMACKI9HljWIACFIf6LgjylIrGCHCfTZSo4BYkvR2469DfqlTLT
-	KOJUBcRTtxKyJVJHhdQhJUQpxO8A3GI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hRHnAqVdyLXqgRdMi4x9m/HrY0C+uMDxYAPAdjQk/dM=;
+	b=0DmL/E34BroqZ9UGRlswBQ5L9L9MxWR0n6e8d3l8T6CGVvGx9mPHoKbbSzGu5jSVu9ZXM/
+	yGiV5dYU5N5fcciDrN/XjCIT7aPKWjn2TvwtVtJrhl2qd4erQiE7YOWB6dhjJz3Rut/+Ev
+	NEN+EUXlgtM1NtD3HCUfCCVTZ2uxMeU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kAdPJTSQ;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787906853;
-	b=5N2VmZab/SX3Eb3rBr9tJ4xiV+XePVOsPUTXe95C09o7dAxvUcgwT6M1byiodmw9I/Wh1m
-	Ph5Xy7Oqc0wv5j4rKr13oK0EOi3X5U9MMh2ul8+269CRMilWCstuvSCcXoQhH0EAWdTMtJ
-	jFsjwVGsljfXAKaw7bnrvpdu9NZigAU=
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cbe6295f05bso1519288a12.1
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:47:33 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=qdaYRwSy;
+	spf=pass (imf29.hostedemail.com: domain of hughd@google.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-85aeb506b78so8575687b3.3
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 01:57:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787906852; x=1788511652; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RXLz3Xl6C6oGFGDAhFniglml06HtyDSEVADuwjc8Bss=;
-        b=kAdPJTSQGxNOX299yNOsHxMuCZFSPV8ZwTYli66znYElYjrgXQV4Oa2SI+cR7dg5j9
-         4isLcT+kO1e5vXuqfXUYQbEgz27DxHlICupN1JgFpZzeDxBlNbn+XKeRI9kA02FRUMX5
-         XcHETV36H2illee70acSmyvWwTtsmp5ipzaXwNYvLedf85P3sZThKSj5Wv5QPr2vXx93
-         KCy9+NSawo56ArCNlHQ6SNsGV+UaHpNFruoJb+5v7/dwYmQonwBfSDqghjr73OODlafI
-         Kdv20p+ad7eh0t9mvb3rcOHvQjLGg42QdvxQGYl84e9kUYkcy8Wv8aqlSxTA4vk5XMtn
-         vf6g==
+        d=google.com; s=20251104; t=1787907452; x=1788512252; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hRHnAqVdyLXqgRdMi4x9m/HrY0C+uMDxYAPAdjQk/dM=;
+        b=qdaYRwSy8/gN1Us2SyuXhNp3K0ZKXcemkwqeqPfbjdQMnCBBWBnRI6efwcvjCL1jjE
+         98kDEj/XtNvik9436iV1OFp19yo8BCw7cgzTdNnFri+ebPIDJ9WKqYd5tUW4SMsCb0pl
+         17Y6mWeaIgLnV9/LuX+9YwzzbMk1ZNBUO66uaMs0owZic2xmEYAh5gY3rDfdvZT0Iiau
+         PdI9xmvFsQue7gJuinq84zIu8A+jaJAxkwu05cWge6z5kYeYXS932itHqc9j1IGOLeN3
+         G8dq5EB2LfSqgyuANENECtxlfDYtckTJJPMy7f6eYKGt2+eT46+JPcRGd36LZF2c42KJ
+         ujYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787906852; x=1788511652;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787907452; x=1788512252;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RXLz3Xl6C6oGFGDAhFniglml06HtyDSEVADuwjc8Bss=;
-        b=NmOh2S5FzpIv6M9GkISAD9BjtVtQRwY9iMMYi7nBwcKBtlHF/jGU/aKgmVR+Nk3oZ8
-         Wal72SYtU7ybQLX4TJN/3wCDg8BCe/JAZ5J5lKPQaTKoYEPKlqyhlQxfqvH0pEk2rmpe
-         fAE7oGziUf/1qp7DhgdHIAurQjBqv8gpW/6B60VEAQZkjzytkrju0x1XiqUNG3CdJk2+
-         zst+aYUWpP8X9qiNWDKWonZnx8WlHyTHKJwfA1K5oGwuPmMGEvrahNQdxdxeKMI1RdSj
-         m3NdlDrtiGoA6HDSoL9SAEhBGb+oFrBW08uQprWywP0D+d7hOZw1SxtOAzrgQY5EFYmI
-         be/g==
-X-Forwarded-Encrypted: i=1; AHgh+RqjTWoLko0/YhMSuJnXwelxN/RmzFmnDnMOuh18fNRQC7YxjzKpemReFWmGWjWRwGbE5I7DNMI6jQ==@kvack.org
-X-Gm-Message-State: AFuF++lcwCSKmsiVPThlwCJN4TKOg3CohwwDOEr1PCAz10LLABezdK0h
-	0kA8SruIb7/v2bpzXUz4ZdkHy6/Tlf//Yc1KhQ40T6wWsQGF2Jsa7cu5
-X-Gm-Gg: AR+sD11zn3CrSVt591mvf0yRJYevDip7U+DUw2J+ioNtTGOmydSGIF9a8fHjQfpz5aa
-	sj9SyIBGV2sBCxuoR9mJUcq5shCQU3BKw0f8sWgR9FmsH2tah5UJH2/n9GZtcAUD84F2i8ohChp
-	6snQkoEBtm+Vs+xYETi05lMAIecbSAKkh34xMTJhyUAUqnmO6U8rf17rCga/+5hLkek7ObtkG0X
-	FBAV0fCUDhOwCqOvnCaIP8USfKZWVJ9vO7m8zssYls+lopviGXI+fxaBa7Ihy5/IZ3mpinGVm8O
-	RMk7TRw4+ZdXSA3QgQ+vfGPLvdkoIIOhz2Jd0+xqE0p+TemoxMO2rev66FkySLNODdzVtS3gQxC
-	6kvWmCNqFeOCTUl+X3+rGigxz9sDDJIZRzL35ouB+dVMwNFeCgYoGBTwdznsmplgqFr+CREEocM
-	sU7JRifjEuMgPGRakFJOIkuYZ0soLlhYePdM/6Kz7CG5XuHxbhAFOrfeR7UT+1fvgAJw==
-X-Received: by 2002:a17:90b:1a92:b0:384:927f:3db9 with SMTP id 98e67ed59e1d1-396d0d35e02mr5577342a91.1.1787906852389;
-        Fri, 28 Aug 2026 01:47:32 -0700 (PDT)
-Received: from celestia ([2402:1980:88cd:27c4:5897:46d2:587d:19e7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b1992e05sm6292591a91.15.2026.08.28.01.47.27
+        bh=hRHnAqVdyLXqgRdMi4x9m/HrY0C+uMDxYAPAdjQk/dM=;
+        b=EGmcrRJhie6v62elZm+S0mMgoX1XXwAKllqCaEqV4Xbz/ol+d8L6HTzYoVZALhVZt9
+         FPSU/rWi43KbddZNQeVZQ3iDpDf9Hce0DDr7KqrfMqaaB4s1HyO4kZ7LQDw5PepRbNC5
+         Jpz+Id6ZmrbBbrdyAtrmMh7jHx7QjsTcD3pZ2mDg/E2+2GZGVSnWhvNKCquVHe+BxeUj
+         WLRh1j4vI1b1oa57G16XoDjFnWlIIcYSoMtplR38SJqNF4KKDyK65LIzc1qW41ClJAJQ
+         ZuVO+N+Eix2V58eii4UC6uemKF1LuzlAlOZzd2rrtxSO0n4q8TTMwBYUFCXg1wKE4WgH
+         2CJA==
+X-Forwarded-Encrypted: i=1; AHgh+RqFtq+nn2X1zqtXt2GsrA1DHsy903DOeYQpaIt68yVhX0PhFwbtoj0sfHwz8bPOootB9dB5fd/74Q==@kvack.org
+X-Gm-Message-State: AFuF++nY6fNOdb9zpplsgnf6n6nv3+cZ53W02BRekEiGdDCp+LDwN7D1
+	gftLk+ONiaCcjrZedPDDuV++FGdL45Zsu6jif+Om1z6qVcbzkFCgffEXxntWSK2T9w==
+X-Gm-Gg: AR+sD13pSLC5nhI5r4m1mGdkrCBmQSDLVEPsshOXLpmgy7EBf9Cg++68NBnfpSfpVdH
+	AJjrJFxPaMmh+xSA6hKkfe5UKuynLJuJn/XGGwgf0hmQoDChTeU6r4A8r72hc41SU0eBWmmb0o7
+	RvQFFV1Ua5ZdURB1FTpRJARyyo0RgWyhcF/0n0jUenixQKGtQo8wY2OTs99jkyLhAZ0wvlfi7c4
+	WSCqZThVwCUekdu+f1kEohUtrTcWv4I8PkL/Gn1RUWs/HhGr413V/hBgVymEPNB9OAQ2uIlOqj9
+	CinY23PzfsOE+m9IBModYX0H0YI24yFwkmZZQS3YNerdo+Hx34SZJi2UNf4aexuU+2QZzF0lwU4
+	fGtqcf8kmNGyiXZ1MRcyS1tyIj1pj25xqpre8V60NCOS4XBDmSGrpELZe/HCs8iEp5cFjFasUst
+	gnZ4hSZf2mgYc/wgvJku6JITCydm/tEVdxlZWTD1gVWQfp8cibg56mjAv3IkTjpLrCktETDcFWf
+	BWnTT6bk4RhyQr+uAkd45M4GxqIyeVQiIPizWV5TctuI+07
+X-Received: by 2002:a53:cb90:0:b0:66c:c8f1:7623 with SMTP id 956f58d0204a3-66e4c6ce6bbmr1380164d50.27.1787907451455;
+        Fri, 28 Aug 2026 01:57:31 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e5ed1cd5bsm3672297b3.17.2026.08.28.01.57.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 01:47:31 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/damon: fix unconditionally skip last region
-Date: Fri, 28 Aug 2026 16:47:37 +0800
-Message-ID: <20260828084737.290024-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        Fri, 28 Aug 2026 01:57:30 -0700 (PDT)
+Date: Fri, 28 Aug 2026 01:57:25 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+    Ackerley Tng <ackerleytng@google.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Christoph Lameter <cl@gentwo.org>, David Hildenbrand <david@kernel.org>, 
+    JP Kobryn <jp.kobryn@linux.dev>, Jan Kara <jack@suse.cz>, 
+    Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, 
+    Kairui Song <ryncsn@gmail.com>, Kiryl Shutsemau <kas@kernel.org>, 
+    Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>, 
+    Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Mel Gorman <mgorman@techsingularity.net>, 
+    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
+    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
+    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Suren Baghdasaryan <surenb@google.com>, 
+    Vlastimil Babka <vbabka@kernel.org>, 
+    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
+    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 20/25] s390/fbatch: no lru_add_drain_all() in
+ s390_wiggle_split_folio()
+In-Reply-To: <20260827145502.2fb4505b@p-imbrenda>
+Message-ID: <cdbaa4ff-d2b3-34bf-dd41-01fdc65edebe@google.com>
+References: <14a16945-529b-8bc0-ab38-3ea97e54e223@google.com> <7bf68e7b-f88c-6ca9-39ab-e9fedab0c8be@google.com> <20260826155722.0198d3ce@p-imbrenda> <2319f670-fe0b-f032-c0dc-486cbec0f3e1@google.com> <20260827145502.2fb4505b@p-imbrenda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: utpp9ndac44hhj9d39bdgj974jm38rwg
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D4EA840007
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1787906853-194648
-X-HE-Meta: U2FsdGVkX1+8j6COc7RFQoHvsAMPOViolvvFKCVh5dus+1H1jajdMv0UvIcQzrEsafINtLW4DHSkDm1ducbSVo6klaZUCgxm4pl0yKpGrNaWtq6xwGZ8MHqlc5jj1/Vt+31udAWJxnDXrCHOYG5X7KzoZjaLNl+pU+HfKiwOkXqTKrUTV64TtoQ5tK39+mXNpUSnmKS4db98lI0DBjdQnn0230pdo1Cmjyx9cRfusviYZV13e05a8bt6YZgv1deOC6eTBTJ4CXK+6N0C3O9y2qSMi7ghyPw7uT2XzcwoI9Ufg6H58CStXGRa38T+/usCqVzcDtpm7AlgoV88q5DtnmgNN3gchc0UZSOZWrKztL/QDeQaXXkflUOtRn1dvaVebIUtS1ga2YWX2/aTjM1F5hg/b4th7nA3cyBNr8C5Vs2Vn0ULNrJTNfVlqJTOy4bvFyXwHceVdf4jRxIi/8sbM/mf9hrDNNjgChw2JuFh7KewXoDZRjKbWm0UZpBWx2Rm1N1aFDqpQKESmBrm6buWKvBJbEymDqYN/XBYOiidH8d9qygALguSsrIOoyZMHByD8MCeXzKh0/yLrzmNQCLHdaqBhZIOq3fN3lZg6NFRMcUmj1gIVm+eaH4g38YczRFEWOhMCUTr7/rxIqRJNKS0mGuJ73pWoIzeuNeWobrPf1R5PkU5bX1of1M5DJIqYDjCto6TV/+c7CnzvtYG8mvvG2I0Y10V6/Ko12y7jTutpsEAfE0+OelTD86qFHaC9EJ6WLGEN0jqyJgk9l5T8HGRx+291hays8/nlDaQ/1smLj0JJurFSVsEMIb8UmZeoSuj8uw+XQZMFPs6yU6+FZo8SR6aKE4WrD8SQXcKiLy4ySk7QrYot5a4lB5dU/g32EiMMAN0ujpiZ+HtcIbT8p4oFfeNwbwxL5Bm13Z6oeji6RitsOsGwP9+lfyfpqSe1WqdxCB52AMYx/ZzLMqbVzd
- DPOksFCM
- 2QStYwY5Kp9k6UY1s+WyPNlmxV0jhY2y+h5lwOi7vIDCtVbFW2Aey+czE0Omixop+ruRDf16q1iOTyAMWHgK8vbjXkGxit/TFXLCx0MWLw+EuH1NGMrwZmlLtX4ftAJTL9zyeOsSvJYxJCLh1PW+LivpALdjxBBXFZOL+RRZXJ01aeBwlONE050YTxrBU1dyqvW0WIROLWhOYc870XKfB1SdBkDqUNDKSjeIAOuChNGr/sWVIDf6triXMWtVVmcZxzYp4erh15Id5zvPy/OE2j766cUhZPHZd7VoO5McQYNHPKeUa/7pMvez20sMoejPQXfdxtvQAaUbgsXh+6PuZZ+iOsmsJdLrLfZW01xlNglBN/IVQ4+0+30wqdUaH7UgxIRLQIw0vgQw5fWdk6zXBkkfBqcNgxlqdVGl+z01GfNgKIKUiDbqE/EuV/JIfOwS3z4vugfO42mc2ib+JYCwHayP2NrzP1CF4WleYsYlXNFkWtYo=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 24DA3120004
+X-Stat-Signature: eu1a67xdyhshee97r76atzcnotg8kwmq
+X-HE-Tag: 1787907452-912054
+X-HE-Meta: U2FsdGVkX18+nRtbuuVuIQnmM21ZWrUf2CpYULpuB+x015HMcQzwJfvyim6Pm1oJMmzceOJUroLwli/R+OpDVdsqNax+Ycfg0/3o5zkQb8wds7fzPzFFWE0d35eyAKLfOZWdmqltQx8WJyQAsV++CNkznZTGSHjfs4pYVmmEIPPIPbgruFM/rsTn3jSq55al/fRdu8Coxlkfe9S9rfWdkpsWdMDFLAPTWIFUHz9ChPfzZ+DO7L9/cp2pAP0ZVEeV5daD+PnllvW5nrthvIL0mLCz2EmeiHPEMqZ5RvedpYV2H6NB0OIXXLOWx3/0GPFUlbM463oh2vf54gPVWYWxc/6MF0AU8wHT/h03Bce+0Hb4yXPVU8ADeTCjya8VKap4VLxWW/GsZvc7K2WHhFCyQQkIblOxLm4L+NVNLqwE9NryyOlN03mP19ED4pi4FYMIA7MJFdxZduM33m+mv+V5XbetQ8WD1ZCaveXIrlLO8xWTQuxonwu2LDGmr+Dy3zG1OWwG3nJT74KRprE/5ryMJp68Yiz8D+NAJvRPni2c35KkwFfnYzqpZotpynvqF8XCJG3HfJa+g11X+YemiA0LLfuGYHV0zosIFri/4L7TxCKMVFPLCYQFt1voMqji+eL9zAS8fhXLFtlLKL+Zxk1/7Dhs/ez449mKF+vPaGp4b75P49xo/OFc7DGWkpwig1ZsW2AkR9JM11DgqMH25x4KwRoeVYUSbI22FeVxqRnjVDCZVUc4QAm8We6WsVpb2+/XTHZXWcdnDOjBX5wMQ+bkBJy4Y3ljXIKv5YAD6VeQ8eMIvrHljPKpnp1x2DVaki8ZboiHYnCfsfNg41ii78NbN537dP6rRosA3fgLs0X/O9XapVoO4vvuyw2QLqxuYNPGwo/eNk7BYVtYs+F6GtkgWbBjYQR26EMKV4Ph/j8XuxJ2q7wG6SolHbVm6YcZzKPy97j75Tq+liTN+PfdGGw
+ r8iGv6tD
+ 1wjUGE3pmN6OaAHKw4m0uKbi+8h8dBmXy1mvAdEDCQZBnRD3ioxG/s4RfuGz15Jd2NjrCf/pxkwDwuycG71EeY3kF/e3QzE0OhVJwICLMDPrBxPSkXegPQwp8QKiHm1AX0mhgiA17rpwdSWzDtiwSdJbaat2UTvjGBXC5zo8FM4LC2x1yQL1ed7nD2nAXHEEIMMS52NPNv+N+u+CO3p7F5X+YqnSXTu8QSqInnKJDTOX+eGg73D5NSU4ppInCnbHCvVDh/YXmuG4zXqJ/j9SA8KOW8C8BYseUZzPduaFgcRuKywoY9yvMwTUZ5prGzFm5mF3cdAdfP6ppBmHLFg6QK5/TqYB8ts13hWqslo2SUizAyqPNJ2tnPwjwxt7dkg34WBjTgOlcAaRWAfrGk+y2xCjh1tZMvP8JJ9i5fb3x0iUVit+RpTGzKNokguTBR9ke0RMN412vjmkUjnk08h+f7GLSH889FnavLOQZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,70 +142,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Once quota set, the charge_{target,addr}_from unconditionally skips and
-resets at the last region of the tracked target, so the last region can
-be skipped even when it has not been processed.
+On Thu, 27 Aug 2026, Claudio Imbrenda wrote:
+> On Thu, 27 Aug 2026 01:49:12 -0700 (PDT)
+> Hugh Dickins <hughd@google.com> wrote:
+...
+> > 
+> > I most certanly don't know s390 or that code well enough to guarantee
+> > you that no stray references to mapped folios can remain there. What I
+> > can guarantee is that no references, of the kind which lru_add_drain_all()
+> > used to be needed to remove, can exist there: so there will no longer
+> > be any point in s390 (or others) calling it for that reason, to help
+> > split_folio() to succeed.
+> 
+> we are not using it to help split_folio() succeed (although that's a
+> pleasant side effect). We need it even for small pages, to guarantee
+> that no extra reference from LRU is present on the page.
 
-Example:
+Ah, thanks for explaining, that all makes more sense to me now.
+I remember from when working on memfd write sealing years ago, it too
+had to be able to account for every page reference before proceeding,
+and resorted to lru_add_drain() and lru_add_drain_all() to help -
+those now removed in 14/25 of this series.
 
-    1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
-    2. Quota is configured to process only 50 bytes per window.
-    3. Window 1: Processes R1 (0-50).  Quota is full.  Cursor is saved
-       at (Target, 50).
-    4. Window 2: Skips R1 (0-50).  Processes R1 (50-100).  Quota is
-       full. Cursor is saved at (Target, 100), which is exactly the
-       start of R2.
-    5. Window 3: The loop reaches R2.  Because R2 is
-       damon_last_region(t), the old code unconditionally returns true,
-       skipping R2 entirely and resetting the cursor.
+...
+> > If Barry's relaxation goes in before my drainage changes, then
+> > there is value in that s390 lru_add_drain_all() in the interim.
+> 
+> hmmm so, should it stay for now, then?
 
-    Result: R2 is permanently skipped even though it has never been
-    processed.
+The s390 lru_add_drain_all() should go whenever the rest of this
+series goes in. It's not essential for the callers to be removed
+immediately, no correctness requirement; but nicer if we can get
+rid of most of them. I'm hoping this patch can just go in along
+with the rest via the mm tree - and I'm sure you can trust David
+Hildenbrand to understand and protect s390's interests.
 
-Fix this by only skipping the last region after it has been applied.
+> 
+> also: I'm working on completely reworking how the transition from
+> non-secure to secure is handled, with the explicit goal of getting rid
+> of that kludge we are currently using. That will also get rid of the
+> lru drain. But it will take some time (I hope to have something by the
+> end of the year)
 
-Fixes: 50585192bc2e ("mm/damon/schemes: skip already charged targets and regions")
-Cc: <stable@vger.kernel.org> # v5.16.x
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
-
-Changes from RFC v1:
-- Minimal fix, only fixes the issue where the last-region is skipped.
-- Add an example to the commit message to demonstrate that this error
-  occurs very rarely.
-- RFC v1: https://lore.kernel.org/damon/20260825124616.5129-1-aethernet65535@gmail.com
-
----
- mm/damon/core.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 644daf5a1656..21dc6b086c42 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2347,14 +2347,15 @@ static bool damos_skip_charged_region(struct damon_target *t,
- 	if (quota->charge_target_from) {
- 		if (t != quota->charge_target_from)
- 			return true;
--		if (r == damon_last_region(t)) {
--			quota->charge_target_from = NULL;
--			quota->charge_addr_from = 0;
--			return true;
--		}
- 		if (quota->charge_addr_from &&
--				r->ar.end <= quota->charge_addr_from)
-+				r->ar.end <= quota->charge_addr_from) {
-+			if (r->ar.end == quota->charge_addr_from ||
-+					damon_is_last_region(r, t)) {
-+				quota->charge_target_from = NULL;
-+				quota->charge_addr_from = 0;
-+			}
- 			return true;
-+		}
- 
- 		if (quota->charge_addr_from && r->ar.start <
- 				quota->charge_addr_from) {
--- 
-2.55.0
-
+Good luck!
+Hugh
 
