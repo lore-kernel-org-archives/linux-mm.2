@@ -4,123 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFD4EC61DCB
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 23:36:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97E94C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 23:48:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E16DD6B008C; Fri, 28 Aug 2026 19:36:43 -0400 (EDT)
+	id 861196B0088; Fri, 28 Aug 2026 19:48:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC80A6B0092; Fri, 28 Aug 2026 19:36:43 -0400 (EDT)
+	id 812606B008A; Fri, 28 Aug 2026 19:48:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8FFD6B0095; Fri, 28 Aug 2026 19:36:43 -0400 (EDT)
+	id 6D9696B008C; Fri, 28 Aug 2026 19:48:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 90DF26B008C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:36:43 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E249E1205C3
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:36:42 +0000 (UTC)
-X-FDA: 85152290244.15.723A240
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 26611100004
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:36:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=h5NZbfIR;
-	spf=pass (imf05.hostedemail.com: domain of rientjes@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787960201;
-	b=tvtoLEVV08aqX0+bsWT8K7gxJDgQ5IxbU+mcc2Ugo6xxjfIEN5oUQMKA6eMp/q9/uQmupK
-	Zd88p5s/D4THT1SnHG6Z/gv3QUz61Gy8qKwar0eaixhaCbQnurPqn0wgOpblNp8P2hqfvM
-	b7ZCkZD8bwFtTKgOXv3jyqKsPvz6UFk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787960201;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 442F66B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 19:48:16 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF8F61C1F1C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:48:15 +0000 (UTC)
+X-FDA: 85152319350.02.AB4B6B7
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C2AB1180005
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 23:48:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cWuJWrVL;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1787960893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFxRXbHadEiDMSxjFvFaLGe1M/LzTu9WqCxKEuyRP8s=;
-	b=SkfHv3EXV25QDbHmxo9Yqvl0Zu5BZz+GJuI3jPg9WkcddSOTR7ROfE7thPmt/rYfVpvpsL
-	5on6Ns/fCLHhI6DEGbiYwwoSs0UYZDqTyXg2JhYolI71aGC3K6HGjmm9JHQdXlX+J5jCao
-	FRiSPA7D3jCCNau9SLWZB1oyJ9SChFs=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=h5NZbfIR;
-	spf=pass (imf05.hostedemail.com: domain of rientjes@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cede6375caso42885ad.0
-        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:36:40 -0700 (PDT)
+	bh=Yc+vOqjH7EkbGiYMYTHlmr955fm/fNcVpennfZlqFLU=;
+	b=h2nssF5vN59KpUm3+5rIDC8NC/ocn6f0lSA3jd0thtNAcxyqpSf9HK1hbqAgPXNqx0Oqmb
+	tqSRBXZkAN7hyWohm+n3Yu9mdV0NtGEZsK+Hynhy29/EvhrUl7RqgVT2ShU+Urkm9FLvEh
+	fbiDDJZnzpVmRX5fhgsBMIV5H2Duy2I=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1787960893;
+	b=y/uDViunX81NxVSbWvLsdMFnnsnB9fY/6HwSoyQc2tSf9BH1jQmefnGqVgfFH/p5exBI4M
+	2DaGufMU4ue+gfIMQtPD4zY+h0h/WT0Q9tMnc0+Jn8iadYLK3xzjssMcS2NvvMxKFs/GS4
+	GsNANJ/iks29/Z+7yt5uTlo+TjudBmM=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cWuJWrVL;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-52fac937235so52611cf.1
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 16:48:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787960893; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dLHf/ojDNQnHHknMayrUokOG9FRzbtqzojicB/0jNpQG+alzNdkjGQwaFczKZwr54x
+         mhekAVTEX14p1q+tCHXhUEJEYFS4jRMre3gP7dT5AcNkTGsABdpvSsCe/fG1fknIxYeg
+         l1KrAmO6L/H+/kSl1X1jw79b9dgcEQwAOWm8pLIk3vBRe6PPfCIlVVNa5efHwOerbHNH
+         Nidpt0VE3XddaJECmqgIDmDRDxIdbp0dWOSxp/P/eMm62cASErm0MRY/DEa+HyfuPnUH
+         waXF3kJVWnMZYTjgbBOyNgiFYLq/TGIaCL9qYaNPy2h1XClhWMP010AzuL9PnOTm0766
+         fYFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Yc+vOqjH7EkbGiYMYTHlmr955fm/fNcVpennfZlqFLU=;
+        fh=nzCs51IOsrxqPQa+R4dF8IiV1nz136t56u4gB7RSSFg=;
+        b=M2drz0i0mK+N+ECOu5xbIta5vdWJvc9b7l8at5F/eIc4GKMRG2VQWgSIBW8sSQi+Rk
+         GiT0FDxcJfWHrsndq/U4D0FqjiWsYnbNxonSP6bl4jPNUqiTlJPC3uL4VT97/8iocn+1
+         narNMHVSHbcWnCeoPPQu36/W6nyhP4EWB/3/pAXv1fgkvK16mqZsDMNhwF8rtcSraEzB
+         +5Gd1uAgRhAYxe1Ct4IzFWOcA5l8idPadYUh3AewCB5hfD++inc1llgP1HJ7ez/4AtBf
+         kkcO09h1Gv+yLvd5JJA1UfcTRS+1AashBgVHx8v4d4OcLD/2FgucHxWzlz+gWuE+5eRt
+         co1A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787960200; x=1788565000; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vFxRXbHadEiDMSxjFvFaLGe1M/LzTu9WqCxKEuyRP8s=;
-        b=h5NZbfIRK9Dwe1JV8WCPNi6m4yvRpCwGISgZ7ebmjXa4zpcHba64lw7vtASGNfkAfz
-         HQOvdw7p4BMbAgD2A7orel00bodJIu0HC50kiiueqt0utjBl/DhfwKAhyrRrvEcyQbwz
-         gqx+PzDvppyVO8AyhURQR8HqunavWAkPWXDWReLPKAswJFqhboz0M5sZEkSZjh+hU7Zy
-         jRTRmA4l4MVptVq9zz2GiZM7fSdBrn0HkypL8SBnsCU+D5gYNb/MoNF5GZTPJbC/hCaq
-         49UCgtrdCa33BBbwtb+TEh/m3kg/LtuARILrY92cdfokXlx+7zQIRx9FWfhxza97G4jo
-         WD5A==
+        d=google.com; s=20251104; t=1787960893; x=1788565693; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Yc+vOqjH7EkbGiYMYTHlmr955fm/fNcVpennfZlqFLU=;
+        b=cWuJWrVLQAsLqqVTIjct9+3IDXYu0Lrqs92D0MR/3VIUvCsZvZmwhJ/a/1HkrAk4m9
+         nyH/bsFTt0krx/SY5InBF1deIWQuJdL8BMftKjwdyVMC3IGZK4nea+DZ82/5s3OkAh6q
+         aTAaXVEEPs4wkI8FNb9NPF4WwFCOk4/SNKwrTN++MM4+l9Jiwbak0r15HWyRtrgSP5JU
+         ZL/cKxNYdCyAaW9dGO3pub/VfJYWy2cdtBAVZ5zFtlD6ElbsZk5CetLlzJrufzu1Mi2Q
+         jH2aaIQ2OWmv7rSVgVs2pFD91D5KIMM65LVwBIDgb3P1T7/e6hpNCIE4V02P0eDnwRZi
+         a0/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787960200; x=1788565000;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vFxRXbHadEiDMSxjFvFaLGe1M/LzTu9WqCxKEuyRP8s=;
-        b=HskBdKOyMEH0rsMDjY6ObLgpQMuGvz/ebqnoVo8Cu3COHM9AgzAwrFQ0DjwwmBd3BV
-         Cep6D8HjPS+FO4Fh6zAiK+YRvOLcXs7TuwX/av53oIgsYMiAUzVhTj2V/vVO6FKrVTCD
-         Ak5nSoUBnJseH0lhvtrP5G8wDT4a93LAd8jtFa/ZzJ5OoAHyyVC+cVivpjY5sa1yX94g
-         KMHwVI9b1EYyJj40oivRH/WvdbeoYHWFNr84sYC36Tly5C1lq+tmVbY8BIkusMxP+OeW
-         thJ6np7cQF1OfWNXqtS/gUBMGAr81jzuAzrwX72SF8FuI/Xt954OZ5Z81lar18if1gVj
-         Vu7g==
-X-Forwarded-Encrypted: i=1; AKwUvBxfFbMxF2kxNdoioHf0stZGmO8Vpz6+m9liX0q5x7kK4f869u4No0GZd3phypVJYr7EhALje1OReg==@kvack.org
-X-Gm-Message-State: AFuF++lJna8NirWej67QPc97kwTcKem5Kz51BoEXVReBY5nOV9TA527J
-	6/WWrURXS7kW3aWdhbARGmssExg96E3vTVxVX94P2DaN5A8EXBYJkAXOJLCqnYkTLg==
-X-Gm-Gg: AYBFou0279XVl0hhOvcx9m0GMwtSTxsvwHtXtwwO1K/bWDmf9fKcV3+3bw3q3IUxqLu
-	7A6sWdiDOZA3PAhfNiIPA2RWkaYml5jkLueDUlMzcct5vJXRia66j++IsE9dDT+Z6Ydt77p+miu
-	nthfe2yqr8SPz4u0kGy0kmFCac9GnqshqBm0sgZakpzarV2j/vtt4JL4kvEGU4/WwhiDFsucFhl
-	BB5sju5w0AW7T59BzeG8ThPzgLgfDPdXdWc9xHhFfXZv8R1XBuRIpCpweiVH0U3hgJYbLpWK/v1
-	ADkQ3LCejOGS6iZF7tV87HJqlROaVOx0rPcJPa37vpAj37MEu4E+XbKFmZd6OjW8lEELbv8ZmyR
-	DqokFUVS1TjO8AcFqX1NSxoVuC55a5KwYqaho+uDtsLU/0i2gu3NfbNGTuIR2OwtSX9ovnWL/eD
-	yUvYit3J6qjc1P1y4oaYVvZtv5oyv2lUtNCBAc+5r0UUtEMKO3eI6TLFaO+Aq0zC8zfelmNMX1h
-	BDxLIPfc5QZLX/LEBLWemnkuOz4tWbZx2oN0uEUTssMDylmuwALvumqhHeLauplalwkNTrpAorX
-	TGsl1diuBJ3EApQ=
-X-Received: by 2002:a17:903:2c0f:b0:2d6:3c22:994e with SMTP id d9443c01a7336-2d8dfc511c6mr2515655ad.11.1787960197959;
-        Fri, 28 Aug 2026 16:36:37 -0700 (PDT)
-Received: from [2a00:79e0:2eb4:9:201d:c4fa:f5f8:451f] ([2a00:79e0:2eb4:9:201d:c4fa:f5f8:451f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f3312676sm1072389a12.12.2026.08.28.16.36.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 16:36:37 -0700 (PDT)
-Date: Fri, 28 Aug 2026 16:36:36 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-    William Roche <william.roche@oracle.com>, Jiaqi Yan <jiaqiyan@google.com>, 
-    linmiaohe@huawei.com, ljs@kernel.org, ziy@nvidia.com, osalvador@kernel.org, 
-    harry.yoo@oracle.com, willy@infradead.org, osalvador@suse.de, 
-    jackmanb@google.com, hannes@cmpxchg.org, nao.horiguchi@gmail.com, 
-    tony.luck@intel.com, wangkefeng.wang@huawei.com, jane.chu@oracle.com, 
-    akpm@linux-foundation.org, muchun.song@linux.dev, liam@infradead.org, 
-    duenwen@google.com, jthoughton@google.com, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
-    surenb@google.com, mhocko@suse.com, boudewijn@delta-utec.com
-Subject: Linux MM Alignment Session on hwpoison (was: Re: [PATCH v6 0/5] Only
- free healthy pages in high-order has_hwpoisoned folio)
-In-Reply-To: <8f787434-5326-4a8f-92d0-467e817a23b4@kernel.org>
-Message-ID: <8f023b9f-53d0-0eb8-6f75-65957761cf40@google.com>
-References: <20260705180714.3708947-1-jiaqiyan@google.com> <85cb7ea8-8116-4092-8310-69b61eb8602c@kernel.org> <ee6bcc74-0846-43f2-bcca-b1bedff74351@oracle.com> <1dea7b3c-7740-474d-b9d4-cd2baf47f181@kernel.org> <168ad406-f6b5-4623-adac-9f894e410e48@kernel.org>
- <8f787434-5326-4a8f-92d0-467e817a23b4@kernel.org>
+        d=1e100.net; s=20251104; t=1787960893; x=1788565693;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Yc+vOqjH7EkbGiYMYTHlmr955fm/fNcVpennfZlqFLU=;
+        b=FE2+gQ0nDEJy2gTxVOzYiOCUzQZzqFKrcMCQcF1ginnSWSB4nkyyab9I1e9g3Ed+SH
+         OuqOH90LgM8uoGz/vRgLGw7vtVjJ6yZnWviBiotillqTspZhmLYpWgCnId+mI6LQpq2d
+         uwzISMEWmJyFmROd4h7kfrzoW5iuHCC70DZYMG9xsnZjOumecrMR4fIeTmwYfMaackCz
+         acf3FqLqNjj50KSV6aFacj1MWv6Ca5Nrxwdbdl4/wywja6eJCd/Qp78VBv6Rif94orLC
+         +ObA0pmlpgcP7BgYju+Z8ZIZEc+Gki987BfD65sqnBJEAeaIBKUaHjFjU0PbZYK7X+hE
+         9bMQ==
+X-Forwarded-Encrypted: i=1; AHgh+RokQaiPn4LW9WiJ9Z2MG9Z1mYnezEq9RAeo07IycRJf/yKFtIu0V8I4/7y1tPYyU8A/T6RzdW3qpQ==@kvack.org
+X-Gm-Message-State: AFuF++l1L3x5hGwuvmWJKEAt9wmz7Dl6JUY94hdURlguCW4pk3/7MrHR
+	i8Fts6oojiHmSaz/PtTQPoReKaQwwMS4iBwORMhggjeJ7D5luFIJUKQWHBMW7tpfADeH9dkv02U
+	QrEKA8RFZ0jwDlFjEd4oOwUJHD9N3247Xm/SVbIAQ
+X-Gm-Gg: AR+sD13T41wBypOVLwKoqgxoL1Qc+xA4R4VIhKQ4/hsZjFcMxg0B5wrgemBUam6/yH3
+	orciyrK2JQYNYc3laWOpkxZMmFs13pPS/ow7CLY7lBs4/KtdMmvBQwUCmwdtJQU8QnG10p+gesI
+	q8vpjnt5G9UGNjodP+Jc+ixCfhrNx8SqSos8bGSH4je+1iHXI5723R2QOpDDz1EQXELjOimP/tK
+	XjYNuHhAW8IcFio+nYtWg6q2QaZAfkdp4xmxz1U3ZrShVKfIL5ma6KiIKVBzuYZyRO0/SQvYZ91
+	5Q6mVKPjl0YWncBInIZY5KLF8bNpDRiya74tBoZXTo0=
+X-Received: by 2002:a05:622a:90b:b0:52b:806e:2633 with SMTP id
+ d75a77b69052e-52ff716a474mr6023051cf.1.1787960887478; Fri, 28 Aug 2026
+ 16:48:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20260811025157.1632867-1-riel@surriel.com> <20260811025157.1632867-5-riel@surriel.com>
+In-Reply-To: <20260811025157.1632867-5-riel@surriel.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 28 Aug 2026 16:47:56 -0700
+X-Gm-Features: AcwNN1XddQRvVoPMDPAL9MgcNlHgxAaz5oDRgEf6NIvOFt4vTdIHMC1as1eA0bg
+Message-ID: <CAJuCfpF47Mpi40=8yujBNruCDvY-Ezk0WFEacCqxcdRjmUqt4g@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 4/8] mm/gup: break out follow_one_pte() helper
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 26611100004
-X-Stat-Signature: 651o7q5goqbq7i58cd3r9uscjp7yh4sp
-X-HE-Tag: 1787960201-636666
-X-HE-Meta: U2FsdGVkX181MiX7z6DxpsL6LaORPIkrudT5OCFkZ29QJk2SYRthtcvjUZqj+K+Bo6ekpZSwACXJVAe3Ro1NVEosqH/7zDz4+ogzNQXPRoZWo7bthsS/viDPFF6imHzTqyF+Jo9KOojglYaYOvgbOsa35ABP5KVNNxuVYlj7WIjDn9wv048M9mhFRHf5xlbuu2gmyDKDs4cXEWPXzfg36V6wJKviqQBLLvMwtlAdBj0OV0OSa45yUaNOkH4NZ3jY5LRZ/P7qkzgPQRPyCJoKiKuz6ZpSxp7fj3Wjcr5LmVl+8J9azrl9CS8tcL5HbgqbrAFjqYf76jmri/zfn1Qoa+tXEv8jqGB39/jNplYB9DRVZAWexizGp4OsUe+T8ctzMfqr82xEKVEjTimHM1BTMlvB5kYjALRj+oC0UkZdEd3i7bZeSPsfM/GNrASXxezbtC6EB4hOtKdoqpY7+T8mWTdEjlicjaPlHbeNfbkji/I6oLXUlsHzBJe8hMim89w1wGgPogcg+lozLaVgBVXbM1cOiJnuUV+Tftofw6YDm2XH5ROFRuEQlDAdbkSqU2D9NWH1E4bRltmiVP3PxE+iyEnQaEF4/AMEDqr2Isbf57bgScUcTLhUVO2Y/voXjiNLlWRRdPT2IAOI/ZkhyAI0pOYMJbZIseVBPba+j5KCvYQpyIe4WxL7Khtu0wOfyo/o2oN6/59T4rByD8Er6up+073YtBMEw+UCiIoIPjfI0NN4g9HVkCgD/mAMK1fhIdN6dzjg3VXo9FHNW+4Vh3+RWrP8Dyp03g+/eKN71EOGBomh+Jat8S9CQXT7NJ7EB7jUSvSwgNs0f3PJWEfD1UJ3GEQz4cNt3MQr8vbqXVsiPnJa/+R7eoK4lFL0NNFkJzbklpSLbV0lhRxtayUfvTBe7NlGAPm5dabB+J5Js4wgHZNaGqj/g3yxTiMPiRfjqMMTfhUf4M7vzTigkQdZCFq
- /6qlQk6C
- +J8GLr6XeRFaAFzFXWIPFtjxL3CKxBkARUEcFFYQdLVD6gzjkNyEt9CSrrk2IhcT6kGBiaHt3PRl6RTHwGaKtA4DoHol9CiDg6OdEZH5nQRvmUEtvjxJGjG+NDTKHSqefzqoOOdEXCUT+tpRmD4asPW4nPFyHiuMhEQ8zaLg5QyHg15pN4Jz1ZJwoCLnBsdIV6jbSmPP6Z4qqOsJPH/ZbKdJvWuYg6A7bDlFwKcpeeguEoSy7uBytAOJvScPCtKD9UxB1LfM1YNuRE9fdpSOjbqj+blr+QJq9ZIp06ogukW/XsqoUbn+TgXFpZNIH8NXecWNOcFe3BBAa5yPIlC8K+qS+AXRH+rYBhgx1fy4QqGFvXRkOM8nJlswPFiA09ZTCntm8x5E8CapHxJVJD5gaBYCzST3Pt/IB9LC5w2UsXS6kShPobiBhASHRgW6jCRs5AvrlV7tlZQK3QE0QjD9GppmiycFxVT1+cYtPrPsMwOciIpaJQlHJ/yvkGSfWdR2B/wsvgozqDnsyNN8fJ1vckLL3ntXkTqUoeuimTwsErerAeQAhWXtuMmU1jbOqk+BBcKfd
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C2AB1180005
+X-Stat-Signature: kk7qieb3cxdjd31j6th1sjn9smfcexqe
+X-HE-Tag: 1787960893-538358
+X-HE-Meta: U2FsdGVkX1+Gsbtj0W4rbMOlIwtoAcTO7R12b9RCUv6Bce3/o4w6owuT6O7h0Vop/XsImuAQSyVCmfcTXSpE+t7xxnjkOJLEbIUo9YWmgKlLWq7Qr4ewBpzr79K4NO3Zb2kR1gSW1W+t+RJhfOnZOi2FINrtGc92iX3iaL9K96wEefjiqkGIL90D199HnBPhKZtyykduLg35WFZvGAEX5ImNVyyPycLWRoN4KElvepv6VdCPWwnipMG0G7eSxLz+rgU7XxH9jr0Mxx/TMNFLKO+jvK9JmviBviLEMhQz4meDQf39WiLt6rfcLWtiRKDbiwlcEDdZOSfC4r33udaMBSyhld888opI0OGE81jq+IpJdXow1YPweET2jAo3uyoB7q19RIiHkwAK0K8OD2ZrzFttgFDwLvF6GhLq+Ehy5uplZ00yiAYPJEx7TibTrDjC4a0wDpAZE7uaegk+dVakgUoxKgUO43yHsJ/Aug4lXhJhdzjuvptikDjCxcBxLuysEU/kA6eBKCEoCHx4t4u4ShG9UCtMnunQX/teBCmvSnwBrl3Tbq4VUuul+WyUbufjwX9PvnnIgccXiVIm9zxZuiecWzzyzJimCKj7ySPQO37Y+sv6nUj4Kg6fdBVL16GqJiuKbhMZhKJ2OZZ85jz9stgcW4wRsB91ovtfIxDh8mqu/LuuxiLJAxGzVeKB41y2IMSG3Hs6zBD2bfqsqLFofHy73qY5YFK1D/1O1/rOJ0XGJmG7aIbB9KtLQi+aBqnF6CdxFl+cScPJLJ6awnj3X81IYZMsSATRllU+HTglAcXmRZRgSPGeUmsqAvB4Lu15cZHh5wnaHMi8rsgpripVBUrKSXwLWrnAJCkS7ARRGMvOa8B5eUZgqNf3hWXoU5ogWyEdlQFF8Mqz9L+cBnz3sl7A4Ljeki5Pv0Dd7OvqCwdwZSxm0jkAaY9X8gCp/Xa45LYCYARHCqTD0xI2SvS
+ VBSkHd/O
+ whhCXfecA8zxzwLLuIMcFyzfyy83Uc0R09LW+21V8Irnuww0BpHaCjfX9eFG4yYFsfWcWEf0+hjdAYLOHFXOasVAoZFPX2fEOW2jpLhurFREZPwCeW9d4kU0PHNwHMYGBQep8JNs/kOjosul2E9fmJA9YhIVWdSnbxSnZkNNdFKbzFFJVS4gcNRtVH4NVLWrsauadxZqkZCzkbRbVXaBioSnED7qPjzk0y61Hf7K0k2LEevHHgTyvVv/VpYGsLl8R1J0H/NqFf05g9At5W/l79CGzfK1M0kNZ6mUIQPcrw9mgWCW1UcFZO9OKHJpHpVP3RHVovFdfV+Zeb7vu9I7vtWEg15tunacnTRPiw1lwp2AJbt0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,114 +141,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Following up on this thread and the suggestion from Matthew (thank you!), 
-I think it would be useful to have a hwpoison requirements and roadmap 
-discussion on how its support is currently integrated into the core MM, 
-get an understanding of what the areas to improve are, and get a sense of 
-future work in this area that people are planning.
+On Mon, Aug 10, 2026 at 8:07=E2=80=AFPM Rik van Riel <riel@surriel.com> wro=
+te:
+>
+> follow_page_pte() is 92 lines and does two separate things: work out
+> which page a PTE maps, if any, and commit to the page it found. The
+> first half reaches the second through five exit paths, two of which
+> unwind the PTE lock in different ways.
+>
+> Split the resolve half into follow_one_pte(), which returns the page it
+> resolved, NULL when the PTE cannot be followed, or the errno the caller
+> must report. follow_page_pte() is left with one unlock and one exit.
+>
+> no_page_table() can look up the page cache, so the case that needs it is
+> recorded and the call made after dropping the PTE lock, as before.
+>
+> No functional changes intended.
+>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Rik van Riel <riel@surriel.com>
+> ---
+>  mm/gup.c | 100 +++++++++++++++++++++++++++++++------------------------
+>  1 file changed, 56 insertions(+), 44 deletions(-)
+>
+> diff --git a/mm/gup.c b/mm/gup.c
+> index b755ceaac0f5..5af6a23285de 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -868,74 +868,86 @@ static long follow_page_pte_commit(struct vm_area_s=
+truct *vma,
+>         return 0;
+>  }
+>
+> -static long follow_page_pte(struct vm_area_struct *vma,
+> -               unsigned long address, pmd_t *pmd, unsigned int flags,
+> -               struct page **pages)
+> +/*
+> + * Resolve one present PTE to the page it maps. Returns no page and no e=
+rror
+> + * when the PTE cannot be followed but the caller may fault it in, and a
+> + * negative errno when the caller must report the failure.
+> + */
+> +static long follow_one_pte(struct vm_area_struct *vma, unsigned long add=
+ress,
+> +               pte_t *ptep, pte_t pte, unsigned int flags, struct page *=
+*pagep)
+>  {
+> -       struct mm_struct *mm =3D vma->vm_mm;
+> -       struct folio *folio;
+>         struct page *page;
+> -       spinlock_t *ptl;
+> -       pte_t *ptep, pte;
+> -       long ret;
+>
+> -       ptep =3D pte_offset_map_lock(mm, pmd, address, &ptl);
+> -       if (!ptep)
+> -               return no_page_table(vma, flags, address);
+> -       pte =3D ptep_get(ptep);
+> +       *pagep =3D NULL;
+> +
+>         if (!pte_present(pte))
+> -               goto no_page;
+> +               return 0;
+>         if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
+> -               goto no_page;
+> +               return 0;
+>
+>         page =3D vm_normal_page(vma, address, pte);
+>
+>         /*
+>          * We only care about anon pages in can_follow_write_pte().
+>          */
+> -       if ((flags & FOLL_WRITE) &&
+> -           !can_follow_write_pte(pte, page, vma, flags)) {
+> -               ret =3D 0;
+> -               goto out;
+> -       }
+> +       if ((flags & FOLL_WRITE) && !can_follow_write_pte(pte, page, vma,=
+ flags))
+> +               return 0;
 
-This particular patch series is addressing an area of interest to Google, 
-but it's also quite clear from the thread that there are multiple areas to 
-improve for hwpoison in the core MM and it wouldn't hurt to get more 
-insight into what dependencies users have on it.
-
-I'd propose this for discussion in one of our upcoming Linux MM Alignment 
-Sessions: Wednesday, September 16 9-10am PDT (UTC-7).
-
-No specific agenda other than to gather core MM developers with hwpoison 
-developers and discuss:
- - where validation should live, esp with regard to the page allocator, or
-   strict invariants in the page allocator
-   + implications for the fastpath
- - handling for folios of arbitary orders
- - handling partial folio poisoning and split failures
- - race conditions between memory_failure() and concurrent
-   alloc/free/compaction
- - soft offline for pages in the pcp lists
-
-We might even want to be bold and discuss a holistic design overhaul if 
-it's warranted.
-
-I'll invite those on this email thread and anybody else is welcome to 
-attend as well, the announcement email goes out two days ahead of time to 
-linux-mm@kvack.org.
-
-If the time just doesn't work for somebody who needs to attend, please 
-reach out to me separately and we can discuss other times.
+Before refactoring in the above case we would "goto out" and
+no_page_table() would not be called even if pte_none(pte). Now I think
+you will call it if pte_none(pte). I'm not sure if this does not
+matter but this seems like a functional change.
 
 
-On Tue, 28 Jul 2026, Vlastimil Babka (SUSE) wrote:
-
-> On 7/27/26 16:20, David Hildenbrand (Arm) wrote:
-> > On 7/22/26 10:27, Vlastimil Babka (SUSE) wrote:
-> >> On 7/17/26 15:06, William Roche wrote:
-> >>> On 7/17/26 12:18, David Hildenbrand (Arm) wrote:
-> >>>>
-> >>>> I still don't like the complexity of this, in particular, as we have different
-> >>>> mechanisms in the page allocator already to try handling this,
-> >>>>
-> >>>> We also do have cases where we set the hwpoison bit, while a page is just about
-> >>>> to get allocated from the buddy. So before we take it off the buddy, we might
-> >>>> just hand out the page.
-> >>>>
-> >>>> check_new_pages() seems to check for PageHWPoison() and make us not hand out
-> >>>> such pages. It's guarded by "check_pages" but it seems to do exactly what we are
-> >>>> looking for, now?
-> >>>
-> >>>
-> >>> Just adding a comment about this aspect:
-> >>> The check_new_pages() mechanism used by the __rmqueue functions should
-> >>> filter these pages out, but this has been disabled by default in 2023
-> >>> with:
-> >>> [PATCH] mm, page_alloc: reduce page alloc/free sanity checks
-> >>> https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
-> >>>
-> >>> So it would need to be enabled back, taking some of the performance hit.
-> >>> (and I personally think that it has to be done)
-> >> 
-> >> Would it truly fix the issue, or rather there would still be a race window
-> >> left where we check that there's no hwpoison flag in the re-enabled check,
-> >> and only then someone sets it?
-> > 
-> > Why are we checking PageHWPoison at all then in check_new_page()?
-> 
-> We check all kinds of unexpected state, when that's enable. PageHWPoison
-> could have been considered unexpected too, when the checks were made more
-> and more optional (first by Mel and then me).
-> 
-> But indeed it seems the PageHWPoison check is supposed to be load-bearing
-> (hi, Lorenzo!). It's intentionally handled before bad_page() (with a taint)
-> in check_new_page_bad(). Commits 2a7684a23e9c and f4c18e6f7b5b are also a hint.
-> 
-> > I think we created a mess.
-> 
-> Yes, the PageHWPoison handling was made part of debugging sanity check and
-> then not recognized properly as load-bearing later.
-> 
-> > The PageHWPoison check is not just a "nice to have" sanity check for kernel bugs.
-> > 
-> > So it should never have been optimized out that way before reworking the bigger
-> > picture.
-> 
-> Sorry!
-> 
-> >> 
-> >> Also, can the hardware actually detect a problem with a page that nobody
-> >> accesses? I guess if yes, it's only in some corner cases.
-> > 
-> > Yes, quite frequently I think.
-> > 
-> >> 
-> >> So I'm wary about penalizing the allocator paths again.
-> > 
-> > I get the feeling that we don't have a proper plan on how to handle HWPoisoned
-> > pages. We should take a step back and discuss how we actually want to handle
-> > them instead of optimizing here and there and creating more of a mess.
-> 
-> Fully agree on having a proper plan, because I got the feeling it's been a
-> whack-a-mole approach for years. If we then decide to put the check back
-> (and live with the residual race window), it should be handled completely
-> separately from check_new_page().
-> 
-> 
+>
+>         if (unlikely(!page)) {
+>                 if (flags & FOLL_DUMP) {
+>                         /* Avoid special (like zero) pages in core dumps =
+*/
+> -                       ret =3D -EFAULT;
+> -                       goto out;
+> -               }
+> -
+> -               if (is_zero_pfn(pte_pfn(pte))) {
+> -                       page =3D pte_page(pte);
+> -               } else {
+> -                       ret =3D follow_pfn_pte(vma, address, ptep, flags)=
+;
+> -                       goto out;
+> +                       return -EFAULT;
+>                 }
+> +               if (!is_zero_pfn(pte_pfn(pte)))
+> +                       return follow_pfn_pte(vma, address, ptep, flags);
+> +               page =3D pte_page(pte);
+>         }
+> -       folio =3D page_folio(page);
+>
+> -       if (!pte_write(pte) && gup_must_unshare(vma, flags, page)) {
+> -               ret =3D -EMLINK;
+> -               goto out;
+> -       }
+> +       if (!pte_write(pte) && gup_must_unshare(vma, flags, page))
+> +               return -EMLINK;
+>
+>         VM_WARN_ON_ONCE_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
+>                              !PageAnonExclusive(page), page);
+>
+> -       ret =3D follow_page_pte_commit(vma, address, folio, page, pte, fl=
+ags,
+> -                                    pages);
+> -       if (ret)
+> -               goto out;
+> -       ret =3D 1;
+> -out:
+> +       *pagep =3D page;
+> +       return 0;
+> +}
+> +
+> +static long follow_page_pte(struct vm_area_struct *vma,
+> +               unsigned long address, pmd_t *pmd, unsigned int flags,
+> +               struct page **pages)
+> +{
+> +       struct mm_struct *mm =3D vma->vm_mm;
+> +       bool need_no_page_table =3D false;
+> +       struct page *page;
+> +       spinlock_t *ptl;
+> +       pte_t *ptep, pte;
+> +       long ret;
+> +
+> +       ptep =3D pte_offset_map_lock(mm, pmd, address, &ptl);
+> +       if (!ptep)
+> +               return no_page_table(vma, flags, address);
+> +       pte =3D ptep_get(ptep);
+> +
+> +       ret =3D follow_one_pte(vma, address, ptep, pte, flags, &page);
+> +       if (!ret && page) {
+> +               ret =3D follow_page_pte_commit(vma, address, page_folio(p=
+age),
+> +                                            page, pte, flags, pages);
+> +               if (!ret)
+> +                       ret =3D 1;
+> +       } else if (!ret && pte_none(pte)) {
+> +               /*
+> +                * no_page_table() may look up the page cache, so it cann=
+ot run
+> +                * under the PTE lock.
+> +                */
+> +               need_no_page_table =3D true;
+> +       }
+> +
+>         pte_unmap_unlock(ptep, ptl);
+> +
+> +       if (need_no_page_table)
+> +               return no_page_table(vma, flags, address);
+>         return ret;
+> -no_page:
+> -       pte_unmap_unlock(ptep, ptl);
+> -       if (!pte_none(pte))
+> -               return 0;
+> -       return no_page_table(vma, flags, address);
+>  }
+>
+>  static long follow_pmd_mask(struct vm_area_struct *vma,
+> --
+> 2.55.0
+>
+>
 
