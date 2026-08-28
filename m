@@ -4,102 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB7E9C61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 09:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99511C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 09:48:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 093D76B0088; Fri, 28 Aug 2026 05:47:16 -0400 (EDT)
+	id 9E5316B0095; Fri, 28 Aug 2026 05:48:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 044936B008C; Fri, 28 Aug 2026 05:47:16 -0400 (EDT)
+	id 9BCCE6B0096; Fri, 28 Aug 2026 05:48:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E74E96B0095; Fri, 28 Aug 2026 05:47:15 -0400 (EDT)
+	id 8ABD16B0098; Fri, 28 Aug 2026 05:48:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C48396B0088
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:47:15 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5BDA780291
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:47:15 +0000 (UTC)
-X-FDA: 85150200030.05.73B8DEF
-Received: from mta1.migadu.com (out-12.mta1.migadu.com [95.215.58.12])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C3ED3180008
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:47:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BUAGsXYB;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.12 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787910433;
-	b=xuyjcHKW7ZvZt8WnLB9I++IfVDWhWjiV9q5hXkxEFfo1E0CVo4JWRt5kVRoRIk+DHn4FGR
-	O3HF3UBHMi0OQt+H+6lWo8K/OXzV+UVupPnMEGgsJyWZL4ccvV2MOYhBDP82fxh+RPWzqN
-	l/gFAAvg0AjAKFPXG1gMZ/ktP3ZZlKU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BUAGsXYB;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.12 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6361D6B0095
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 05:48:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D97DBC02A8
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:48:38 +0000 (UTC)
+X-FDA: 85150203516.21.2800FC0
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0AF5E10000C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:48:36 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hIecJAGv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787910433;
+	s=arc-20220608; t=1787910517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ji1vQELSXjqqKQmu2zBHTbv1huQhC/YrPJAeBSczz/M=;
-	b=paY+Z3pbXpiHkYZ01ARAW+xvzkrAtG+2J+dKKyYdqL8Lob31564lQf1s8vzaF7cpjTj1Df
-	Gqj1oxPEz0NsP9go+tjxVTVCbkUVpdvP8a2J9uVempcL/ms3bw6jzrfQ57fbr3FC9k833Z
-	1I59xETuQ6nGgZA8jzjsajqD2SU7omw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xyDcspAYGvgEUA23FnFj1KgLyE0byA+vZxYmYfg/wOw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787910428; v=1; x=1788515228;
- b=BUAGsXYBx+Rokivd7rlvfoNWfnV64jtTMEi7zJIHkW4AXYkB9XeqMwdSoaKgc4io9Y2KlrZW
- BXjvNHue82Lh5hcvVAXnNrdb4PtSpvURr95RH31RAVcdzIXQgcMPcAVT6k9c96dU0xecJY+quK6
- fSmRTc2YsbwmbErcVIouTIDE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e425fa70d8e74725;
-	Fri, 28 Aug 2026 09:47:08 +0000
-X-Mizu-Trace-ID: e425fa70d8e74725
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: jthoughton@google.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=glXaJJLLc7413zYTPQe8CxMRLtRUMADuZ7/9ajV0cjY=;
+	b=rXfl+5cv3pcj2ccoj/hcTedbcBb0t16wlAl0WTMRoRxM/ZXrDVliTGLo0+uBCH39VG+F75
+	o2kowoSCeonAel1SvnYUPF6dhCHXM4g+XRp/aDJDzhroG9vY4XC8B5pBwdI7cQhhdPAUrW
+	Pt84BHdINe0pbH/QxZMd81rsK8B8zBE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hIecJAGv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787910517;
+	b=pJiSP9M52d8KqqxHbJdPutWk2PGVHSppJnZZgHUx8AA+Q3DWsaaY4waSH5ZD7MeQiC0MtI
+	eDi85jg4uRcvtwZsJbVqklofC2228BfxDKsSG45ybEQwqxpzC0AcoYKvkfjsjGBa6IPQt8
+	eSIWXZZ2gD/HHGbuGUFmw5TBrNW6X0A=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d5335cf904so7573565ad.2
+        for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:48:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787910516; x=1788515316; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=glXaJJLLc7413zYTPQe8CxMRLtRUMADuZ7/9ajV0cjY=;
+        b=hIecJAGvbIpyugGFL+E/FVQn/oGGidRgQYR1x6al+duUlmVyVaKJoOTFtXVJzRke4X
+         bv21q9kRyOBJHMAPRhA+qrwIA/bNhYYjkYSSaO+sor//exTqD7zZI1Hmei5f+XEjbtHV
+         NDKokYaePpBV8hp6Y15FcHLSktCITZ5CM4XSlSTXXF05tjblQJkylCR+SwfaaqNl4oYz
+         vHzjf/e0NWlkIgktRGi5qsZL4z1pASZ0ZOM54NdE0DCwLe3JWCXgPZxthwbisHKrMoIi
+         tmirJ+6gMtsy1ZgjJ2zmdQIlD21kdm0nZ1RWkAJ9btTNBxh/wEs7mi6tbIzXYnF1gMYR
+         4h2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787910516; x=1788515316;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=glXaJJLLc7413zYTPQe8CxMRLtRUMADuZ7/9ajV0cjY=;
+        b=oU8jO2cXil8eexUzYxvJYYAfHCA1ZsKRfT5ncrmwE6QPCDDIF12l1t+lvVChxLFnPg
+         yY5tMNo4S2WU2GMAvn9CkLu9Rabi6Nb7l5vF2NvAFXrveGNml8hQpxt9m3rNzxhN+7AF
+         l/IaXubjmoTiElELOtzIRYhBCovUQtERWw2I+gKXhjkiSrwDSrCxLURNJjC2anu/Esqy
+         +PH24+dYp6495HVMnQzc8uPK1vwty3dcztx5VfgELn3J9zkh3U5eWPRuITnm50I2klAW
+         MTPX05bY9sWVaYs8je8Ci+wq4JGRDIhwVLP0JnyerDip2c9Fk3gBUc8tewQ2aFY4jsh0
+         qtDw==
+X-Gm-Message-State: AFuF++n63ptIcMvjKwyXB0wU74yjjYiRebJkJ2jTJu9qixUyEyyXleOB
+	z+KKWztEDo34BbVZjpW9mdy4Tn3O3Vp3ab0AzGeng4fnTGIDdeJ+ATex
+X-Gm-Gg: AR+sD13tx9ZX0I/UussihDrX8Asz3chCWt0n2e2KRS9bpSHAD3P4B5Q0iKvCwdXzHfn
+	VXMEBjmVIpHol03n8DuhkZSjKjMeZj0WwVxImyZxrsWuE0FMupVmIEfYURXRe572SgUVtYd9d47
+	76TqcuMgBeVg6TAur48YLZA+TLQu+TPrtbbcxUnX53A9RDVmy9nPwmiSVA6XRfdix7LCnqvcmOz
+	fpu3wD5VQvMamZl2zJg56ea4fQ0QOoN3mUVDHsbZOEOEGh+62gSlybWjyllRQJgwVZ/IJHsfmxq
+	Nx1gnk1ohMjEUpdJCOjAnqv6701xIGC1VyxC4bhCYj/pSkFnZDdkT9ruQpYzVIz3ndY7bm4i2p4
+	hdv6ChUhkyi8D6DnTc5BH9yBftS6Nch4/eKJwLozsxSYpYb19k44PODgefZxogNinlqmNstBKCS
+	A8NRLDpDhKn+QtyONsQj7z+CSpMg9cdQihOt6J0s6ApafbeDkthA0kCFytQUDSNC8i6ENLnkBHn
+	FcfBUE=
+X-Received: by 2002:a17:903:3a8b:b0:2c9:d88e:f996 with SMTP id d9443c01a7336-2d74dee96b5mr108548445ad.9.1787910515336;
+        Fri, 28 Aug 2026 02:48:35 -0700 (PDT)
+Received: from kernel.tail6741c6.ts.net ([116.128.244.169])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d759531f5csm3778075ad.28.2026.08.28.02.48.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 02:48:34 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+X-Google-Original-From: Kunwu Chan <kunwu.chan@linux.dev>
+To: akpm@linux-foundation.org,
 	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	shy828301@gmail.com,
-	zokeefe@google.com,
-	hughd@google.com,
-	kas@kernel.org,
-	linux-mm@kvack.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
+	Kunwu Chan <kunwu.chan@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: Don't collapse uffd-minor-registered VMAs
-Date: Fri, 28 Aug 2026 17:47:03 +0800
-Message-Id: <20260828094703.11081-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260828005004.2870750-1-jthoughton@google.com>
-References: <20260828005004.2870750-1-jthoughton@google.com>
+Subject: [PATCH] mm/mremap: fix locked_vm accounting for MREMAP_DONTUNMAP
+Date: Fri, 28 Aug 2026 17:48:22 +0800
+Message-ID: <20260828094823.594279-1-kunwu.chan@linux.dev>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0AF5E10000C
+X-Stat-Signature: dz18gocixope4mtmuu696edqn9xrj571
 X-Rspam-User: 
-X-Stat-Signature: gx3bozfyptuboum335eqtuwymjzabneg
-X-Rspamd-Queue-Id: C3ED3180008
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1787910431-689594
-X-HE-Meta: U2FsdGVkX19TBkjS32QJJHQc8CrmPMoUVMchZp6UI5n5A4OxHWjxGmyR1P8SBkcptZ6oRlrTonrJMNo7/VcvoheCX6V5IhR4E7CDkDhrOqX7Kz7DkciTfm3tpu4pH34svf/yuDaACObht+WjNJ1skqAqfiKT/Ac343EXhZjsDE2nSWLXq4VigmHAkmm2lTdERkwfbd9yiZNPmJLY2iumnMrfcRJu9K4qf5NQ/9/cPx5VBBzuMxLxCwWnRQrGlFSOq3a2lqzDwvD0wcwe8OT/0extd1kqoC7mQIC2TvC1MX71z8b/4wnKXEOjqW1YiIRPHUGiRbRB/xrmc9PXUyqcoREYbZXv8nLR4JZ1Q3IIpsCiKBaCLHgTzULPmB4Pst/WoVJ0Ro986mAM/apN8kH08I8r+l7d/jsxVo3zDQiHawpHLKRGizmKqo08Nr7SrZd+lxRTFH4F3axUAtjoMGSibuZcAUr5Qy+apQn+QT44mxOvnhzZjRwBsPFLlw9qH7L7eLn08B8a0eaeGqB9hUCYLuj6K3gNdRUOd/f59OctcCJbR4XhHMglkjZiCVYEZwl2OqW+ycpdnzllNYGq2lXSVbSvUl3r8kEycKvbRw9JMeY9I+oOvi3Hr4XkT+uFWXwP/D/zYw8KzUhfoCjlcVER7zFhKW/akTKUacpj1VJEd26UZAR8pOFwm/Az/1UEiAlwm15lnLLfyEjFFPK+/OLay9uCK7KIDyepcHsGmk/U5d2pWZVcNCDZwsRAuPVIVlV20cWj+MF5WsYg5w1+1gks7CEF5Phjcoj4TNcix69MioSjMslq0AQHAacXV45iyy/RYHUdCSl+3rg9XVWgCq6C2qT5EEIni7yFXYkVAEjkTQ8Qlbi7hIdwp16MY2uH/TVLsl7lAc1Yx6QCo6+UFhjbmUsNubQ4HuG/m+3n8HvpkpHlLlmDtDxINjlHAlkVWTy10uon39hE7J/8z/819Tx
- leA7cn1g
- yJC80mGkhd8XdLm+QL/wBivZr4EMayCYzS/I/aJ21bWzso2+ijyDmQJ1nNdoTR3Tmd3pduBSk7fpy8E8UZNKrmQYdIVobg/5wKAPHAxou77iPqSCPHVhCeExU3TxnETSPo8wjGNuwpBTfZ6aCGazb7kVBV69uC/CxtMNUGPNSVFFGYqUp+s5HbYRUQXUppUzNoXlpStYTYMZnze4yct+ulA7tHQKpuTN3eC892RH9hlN20fN7CFOLR+GtpZWw5gcHZW4HhpSBEphLcJZS1aFH4g3BAcqvaLv6PyfcCdHio1TY8FE5yzEVIuM1KA==
+X-HE-Tag: 1787910516-194525
+X-HE-Meta: U2FsdGVkX1+BK9YMbS3arvSNvWik40DmFDekDPEcBYYV7B0vC1KEqep12lwwbKgFXzMoIe5HQfpf6TDalyQBf5hQL21CZ/mK1RHxaIe0O7zei5yOBWXiE5XeHErK0k/XmPT19PMDsck8KfaffYEEJOOVpYjKGdOIZXsHftBnPLF9TS4mm6DD8ZosiVfu9wimJzwgM77+AkwF+jQC/YgwEenBWtGI8GhvE5E9O5uqLVGTprycpzOBpwCjyyxhM7v39UROUMyogeESVEgLT7Srx3ESyk0+gaTYLyKo0bYnMYrZ+wctd7qO8PLco8w6Ebgk+QRif0yplnlcal2vuF4P2iZ1YkWN0OOTzZrZhw30ZvacQTKyF/PHg9gAYTdDyKRPcEJe7APKKQyVEzJkiRiPVKTyPKJGtpm+hKgADtpi8aufEH648ErJ0/KSpaZZNEpKKuubbd9ODnj3MLpR7Si/8Wpk+HApu2rBGDmhyXfC1+JuBkvLmb2kpbUrmfs3nQGucSe9XtijcWnq1m77gYr7kE7QTlb8WvATAp9WXU89Nr3TSDXapPDc3BEtYahNOO+DtJR6z+KDm8SvwSEd8ioj1nUXIMaAOlWLOr/ZU4kH2KRGBdfJ8Qsu+do1vMfOzC7BKeG9jeG9Sco2tYEEPP+usQz5En/PRVoH/vz/tLLilFJsKzVLMNNS/dlWo8RPX5awvAIoB53R4c/RQpwvBBoQyMsab+XecFPBeG00caWnsP3yAAwv1fOyMnb8rRoYbZ1zGsYx12pCxwPxBnjlDWn9OuiGvYszOo4//B2XylwTM0/IqCgk3a8l9A88aCfmP4y9VuLbP1lrtbR1fcHfn7D5iKWAAw1c/DORUHbZ1rmF5aKAJwANmOhQKV/Sbp5EPRxwrXahXkp2L5j/6/yH/O6Is2DdIas4LMkbbqY6/dIRnaAEIjdIUSE1d7toBwBXHSu/gE2mLDAKQUlBx0O1/xM
+ QVP/x0ob
+ IINcNcDray4aAdBQKmsgWNhOlEgDE6sGGIbCWcNur+EVgi6o/D2+GnS/Rydg1O5+eHV46Z6deNapX8hB0RAMPwtTgWabjMw8rcpbBaWXd8UOi8mDr41a+RAYy+ib05Cn/WyRAJ7aolbftE2HoVc39Z3nslQKAosMzKbPAyakSyXjTS/fefsIceaMZ+0N/GBGMns6oU2G+3qBMpDwV4s5ngf4jln4JwidgjRkdqo67rr/Fg2MkzRzgGQdXn7EhRzijeaOutCINU+HcqfNQCoXpBytwPdYMQsXQy9sF072ngAvycuUDrlSWV6GRRi4eJImCU7q1MEEENiItd2TxzqD4Eb3tkWS53ccCLh+QG3eLcA68m82rdmG7/uUtd3jKRqJIvTV2jK2FVZJKhAjZOU7KoKRT7y2NevuQ0kVKir88AQ3fUwyDhPPLZMBZRW9ZpFrsOHdMlVgjxCMOLlaAKS3Q6gpYLDcQFJID4XSBD8WsmNSeEwAeRTjguTmcyrdxPUCZwsY7TWT91iMkTSo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,190 +122,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Kunwu Chan <kunwu.chan@gmail.com>
 
-On Fri, Aug 28, 2026 at 12:50:04AM +0000, James Houghton wrote:
->Userfaultfd minor faults provides userspace with the ability to manually
->install PTEs with UFFDIO_CONTINUE. Right now, khugepaged collapse can
->map holes in the VMA when a naturally-aligned THP is present without
->explicit action from userspace.
->
->This is a problem, as it bypasses userfaultfd minor faults that
->userspace is expecting to handle.
+When mremap() is called with MREMAP_DONTUNMAP on a locked VMA,
+vrm_stat_account() increments mm->locked_vm for the new VMA while the
+source VMA is still marked VM_LOCKED.
 
-One basic question first. Should MADV_COLLAPSE refuse to collapse a
-UFFD-minor-registered VMA, regardless of whether all PTEs are present?
+For a normal mremap(), the source VMA is subsequently unmapped and the
+munmap path decrements mm->locked_vm, balancing this accounting.
 
-I'd leave that to the maintainers :D
+With MREMAP_DONTUNMAP, the source VMA is left in place and
+dontunmap_complete() clears VMA_LOCKED_MASK.  When the source VMA is
+subsequently unmapped, VMA_LOCKED_BIT is already clear, so the munmap
+path does not undo the increment from vrm_stat_account().  This leaves
+mm->locked_vm over-accounted.
 
-Anyway, assuming the answer is yes, I wonder whether the new check is
-sufficient. See below.
+Undo the locked_vm increment in dontunmap_complete() before clearing
+VMA_LOCKED_MASK.  MREMAP_DONTUNMAP requires old_len == new_len, and
+only VMA_LOCKED_BIT is checked to match the accounting performed by
+vrm_stat_account().
 
->
->If userspace implements post-copy live migration using userfaultfd minor
->faults, this situation is currently possible:
->1. The VMA for guest memory is userfaultfd-minor-registered and nothing
->   is mapped in the page tables.
->2. A stale copy of a page is present in a naturally-aligned THP (from
->   pre-copy live migration).
->3. khugepaged collapses the mapping of the THP, installs a PMD.
->4. The VM now has access to the stale contents => VM is broken.
->5. After installing the correct contents, userspace attempts to map the
->   page with UFFDIO_CONTINUE; it gets EEXIST, indicating that something
->   unexpectedly mapped the page.
->
->The naturally-aligned THP case is the only case where this is a problem.
->khugepaged otherwise requires all PTEs to be present for
->userfaultfd-registered VMAs (i.e., max none PTEs is 0), which is
->correct. This check is essentially bypassed for naturally-aligned THPs.
->
->To deal with this issue, completely disallow collapsing in
->userfaultfd-minor-registered VMAs. This is slightly pessimistic; it
->would be nice to allow MADV_COLLAPSE to work if all PTEs are in fact
->present, but that seems more complex than it is worth.
->
->Fixes: 58ac9a8993a1 ("mm/khugepaged: attempt to map file/shmem-backed pte-mapped THPs by pmds")
->Cc: <stable@vger.kernel.org> # 6.1
->Signed-off-by: James Houghton <jthoughton@google.com>
->---
->This was caught with manual review while diagnosing a related issue
->that came up with in Google's live migration testing.
->
->I've uploaded a mostly-AI-generated reproducer here[1]. As long as
->/sys/kernel/mm/transparent_hugepage/shmem_enabled is not set to 'deny',
->the repro should work.
->
->[1] https://gist.github.com/48ca/d399bf534158e80241fb4937ef1ff664
->---
-> mm/khugepaged.c | 9 +++++++++
-> 1 file changed, 9 insertions(+)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index b237f6e7662a..66f956d3dd67 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -2804,6 +2804,15 @@ static enum scan_result collapse_single_pmd(unsigned long addr,
-> 		goto end;
-> 	}
-> 
->+	/*
->+	 * Userfaultfd-minor-registered VMAs should not be collapsed, as
->+	 * userspace is expecting to explicitly install PTEs.
->+	 */
->+	if (userfaultfd_minor(vma)) {
->+		result = SCAN_PTE_UFFD;
->+		goto end;
->+	}
+Fixes: b714ccb02a76 ("mm/mremap: complete refactor of move_vma()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
+---
+ mm/mremap.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Assume UFFDIO_REGISTER_MODE_MINOR completes after collapse_single_pmd()
-drops the mmap read lock and before it reacquires it.
-
-Doesn't this still leave a registration race, no?
-
-
-int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
-		     unsigned long end, bool *lock_dropped)
-{
-...
-	cc->is_khugepaged = false;
-...
-		result = collapse_single_pmd(addr, vma, &mmap_unlocked, cc);
-...
-}
-
-static enum scan_result collapse_single_pmd(unsigned long addr,
-		struct vm_area_struct *vma, bool *lock_dropped,
-		struct collapse_control *cc)
-{
-...
-	if (userfaultfd_minor(vma)) {
-		result = SCAN_PTE_UFFD;
-		goto end;
-	}
-...
-	mmap_read_unlock(mm);
-	*lock_dropped = true;
-...
-	if (result == SCAN_PTE_MAPPED_HUGEPAGE) {
-		mmap_read_lock(mm);
-		if (collapse_test_exit_or_disable(mm))
-			result = SCAN_ANY_PROCESS;
-		else
-			result = try_collapse_pte_mapped_thp(mm, addr,
-							     !cc->is_khugepaged);
-...
-		mmap_read_unlock(mm);
-	}
-...
-}
-
-static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
-		bool install_pmd)
-{
-...
-	struct vm_area_struct *vma = vma_lookup(mm, haddr);
-...
-	if (!vma || !vma->vm_file ||
-	    !range_in_vma(vma, haddr, haddr + HPAGE_PMD_SIZE))
-		return SCAN_VMA_CHECK;
-...
-	if (userfaultfd_protected(vma))
-		return SCAN_PTE_UFFD;
-...
-	result = find_pmd_or_thp_or_none(mm, haddr, &pmd);
-	switch (result) {
-	case SCAN_SUCCEED:
-		break;
-	case SCAN_NO_PTE_TABLE:
-...
-		goto maybe_install_pmd;
-	default:
-		goto drop_folio;
-	}
-...
-maybe_install_pmd:
-	/* step 5: install pmd entry */
-	result = install_pmd
-			? set_huge_pmd(vma, haddr, pmd, folio, &folio->page)
-			: SCAN_SUCCEED;
-...
-}
-
-
-static inline bool userfaultfd_minor(struct vm_area_struct *vma)
-{
-	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
-}
-
-static inline bool userfaultfd_protected(struct vm_area_struct *vma)
-{
-	return userfaultfd_wp(vma) || userfaultfd_rwp(vma);
-}
-
-Emm ... userfaultfd_protected() only covers WP and RWP. MADV_COLLAPSE
-passes install_pmd=true, so the SCAN_NO_PTE_TABLE case can still reach
-set_huge_pmd() after UFFDIO_REGISTER_MODE_MINOR has completed ...
-
-Maybe:
-
----8<---
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 33c41bc32af8..0eada7265d59 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1893,6 +1893,8 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+diff --git a/mm/mremap.c b/mm/mremap.c
+index e8df5cdb0ac..37ea5ee1986 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1334,6 +1334,14 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ 	unsigned long old_start = vrm->vma->vm_start;
+ 	unsigned long old_end = vrm->vma->vm_end;
+ 
++	/*
++	 * vrm_stat_account() accounted the new VMA while the source VMA
++	 * was still locked.  Since DONTUNMAP leaves the source VMA in
++	 * place after clearing VMA_LOCKED_MASK, undo that accounting here.
++	 */
++	if (vma_test(vrm->vma, VMA_LOCKED_BIT))
++		vrm->vma->vm_mm->locked_vm -= vrm->old_len >> PAGE_SHIFT;
++
+ 	/* We always clear VMA_LOCKED[ONFAULT]_BIT on the old VMA. */
+ 	vma_clear_flags_mask(vrm->vma, VMA_LOCKED_MASK);
+ 
+@@ -1343,8 +1351,6 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
  	 */
- 	if (userfaultfd_protected(vma))
- 		return SCAN_PTE_UFFD;
-+	if (userfaultfd_minor(vma))
-+		return SCAN_PTE_UFFD;
+ 	if (new_vma != vrm->vma && start == old_start && end == old_end)
+ 		unlink_anon_vmas(vrm->vma);
+-
+-	/* Because we won't unmap we don't need to touch locked_vm. */
+ }
+ 
+ static unsigned long move_vma(struct vma_remap_struct *vrm)
+-- 
+2.43.0
 
- 	folio = filemap_lock_folio(vma->vm_file->f_mapping,
- 			       linear_page_index(vma, haddr));
---
-
-With that, LGTM.
-
-Tested-by: Lance Yang <lance.yang@linux.dev>
-
-Cheers, Lance
 
