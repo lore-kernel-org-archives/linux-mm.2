@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD1FC61DCB
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 18:32:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FB63C61DCB
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 18:34:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61F96B008A; Fri, 28 Aug 2026 14:32:40 -0400 (EDT)
+	id 0BACD6B008C; Fri, 28 Aug 2026 14:34:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D13CF6B008C; Fri, 28 Aug 2026 14:32:40 -0400 (EDT)
+	id 06C416B0092; Fri, 28 Aug 2026 14:34:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C29FE6B0092; Fri, 28 Aug 2026 14:32:40 -0400 (EDT)
+	id EC4AC6B0095; Fri, 28 Aug 2026 14:34:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A41516B008A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:32:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34F03C04BE
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:32:40 +0000 (UTC)
-X-FDA: 85151524080.05.DC7DBB4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CEE326B008C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 14:34:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 658A38039C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:34:29 +0000 (UTC)
+X-FDA: 85151528658.07.839771E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 94E041C0002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:32:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lYr3tu3r;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id A288E100003
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 18:34:27 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRrIQfmm;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787941958;
-	b=QmNjo5KGpEj39QmrXAjKjy6HOUdTQGfWwe5PofcZRXUIQvb0h5JcmFXGhQ5okKLbH5zsQi
-	ze21alw0lJfbw2uoFE/7A8qFOzPyGruciOfsDLXEHZwdj1pi4VCKpEt7RtCSrOySyJ915Q
-	IJW+ckQOqLceCiGdjusBU1fhD2CscHg=
+	t=1787942067;
+	b=CgQrd9qvGWsckxvNQibGQdlCtUDoaYdMMYih1kqF1VTNm8l+QnWEn2bgF8h+/FXvO/Mf3y
+	w+FCz3pRVy5rlzTaX6D1wNe5eQuFoHkXdTqMJWRSDCyQaEWF5E5/K22lZ1/l+g8u79Hw13
+	eWGlLeenuAcYjHUz53MKP1/IvqeyeD8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lYr3tu3r;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRrIQfmm;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787941958;
+	s=arc-20220608; t=1787942067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ABzg8YpGTvxs6hey/VNDQl6c5Dr0N0qxeGAAzhfOySw=;
-	b=ZvZ4x68RP5/vGh3huTxXzoYAEYRMqJM2DNyRvCEZFcAPf18nF4Pf+Mpe37If9/zIHhxuTK
-	vylaBxmOgU5x2IIJNudCh7JI3C/mk6ZgbY9/3LSiAtCknwrFHA5bwlK6dJNkCBmhJAAnNC
-	HgygAy5SXK1oR50ZTH2CyZ5Q9Wc0dFw=
+	bh=86nATO2Tu0jZBpxgXv1REoJRi08xat/kpDwIpazzsWU=;
+	b=mJzzmn3oVmipBQLd9/5oDf5J3pepCDoX/GNkApQ0ppy7QNwrI5IQUHcXIdusiDVAbIH5It
+	TSDxrU/4k93xg8lGotKPQ8zYUvuAHSX6bT2xx7eXwIteeAI8bDd6WIFqFe0RQMGJ67im6t
+	Yzb8/o2VMPpDR3qcSukOkPVNTN0MbU0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B28364327E;
-	Fri, 28 Aug 2026 18:32:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6544E1F000E9;
-	Fri, 28 Aug 2026 18:32:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B9E8F41A92;
+	Fri, 28 Aug 2026 18:34:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285DA1F000E9;
+	Fri, 28 Aug 2026 18:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787941957;
-	bh=ABzg8YpGTvxs6hey/VNDQl6c5Dr0N0qxeGAAzhfOySw=;
+	s=k20260515; t=1787942066;
+	bh=86nATO2Tu0jZBpxgXv1REoJRi08xat/kpDwIpazzsWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lYr3tu3rftVInD8hI/OBLLJivWgGSF1DEvvwXVfBHSSC8j2F02/X2kdiP0xFg/XHt
-	 c5JevwGA8ABY8E0/zZ5YOWY6yoRT+rwbYTbyy7U6UN/rt3yKFclxv4vXz/t/MrR8FQ
-	 W/Rg3c7dV4jFD+h9fF9E/j7nYXLSl36m89FTTU0GIP/RH9nYwDoeXBAFJDydOPOMxW
-	 AOVqeSHShtUhFh+aZNrOAB3phRBKdm1cKjh20O/kT/S5O9aKym0QHDr6UC7QEhs8Ja
-	 Hm9mflD1+P8Gyj9dzOX/Q+3rP4PyJr/WGYRnHxHC+/o9gKWrVszCtX3ffTiZeTv/Jx
-	 mssMBwW2WyZIA==
+	b=lRrIQfmmFNi3qSzFzLyCewXV9zO6hUZ9/OOOVsBgv/mM6fuYWRhmreKto9IJrmla5
+	 72ggZXs9XywE0ibXRwVDhsDD6zZZN3w7VXfHYuUKH1AYexz52ME5S/RLiYxIWeldiP
+	 teUGn++zmZeGJjfqpoIXBtA5AOYgY9nPlsz5mzphQ66nMlYhNVZvnBX+vRlvtMRq1y
+	 len7ZKmo9YL1V8WsZJfdsinMXp1p3iN3UCZiWZ652pCkr92cpNkLkLpb22zSCpOeHr
+	 PIKQqXM67MeO05YnS3o9LU2yNJ1rEma5pJZihnu4rVke8dXXkCped0no/iKf5p9mKy
+	 hqUfhguEvf2/w==
 From: SJ Park <sj@kernel.org>
 To: Zenghui Yu <zenghui.yu@linux.dev>
 Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v3 22/37] mm/damon/sysfs: implement cpumask file under sample filter dir
-Date: Fri, 28 Aug 2026 11:32:30 -0700
-Message-ID: <20260828183230.70517-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v3 25/37] Docs/admin-guide/mm/damon/usage: document sample filters dir
+Date: Fri, 28 Aug 2026 11:34:17 -0700
+Message-ID: <20260828183419.70652-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <3cb41363-76e8-434b-add3-3cb4b83a6d9e@linux.dev>
+In-Reply-To: <88698ac7-3a60-45b7-908a-7f1521c021aa@linux.dev>
 References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 94E041C0002
-X-Stat-Signature: 7rcx6c1s1nsisian1eps83m6msziqcws
-X-HE-Tag: 1787941958-61042
-X-HE-Meta: U2FsdGVkX19QDdIY+u9i52UgXH0SYHKkYQBqYE+pwnpQ6q7KoHXEe2Kv9wYzt4gdefsA6MfMuKz8ircBj7n0WfzAJNDt9syiDS7B9YJnd/3oCNIjNU/IdwLm8r8R1t/+jumCO0XCROUxSckZT83R9H9mxTUXjbQf9cfNVTwg8/fR/VCr4dBa8KVB+NRp6QDZKNgaVGFs3kLOodYeHPkFJOMspyP2cAZ7S1OfB0M8QlRCoqC9Z6+fVrl/SxF8WjEkUa4cmQVaKqxQwRbJ9a9T21YY1tih0AHTfhPNadhu8bYvZ5h0hHlBj0BxMSpe0k8TKVvnvQxW0HRzp8itP6i8v4aiJUzGb0S6TgXZWZdf4i1MAd5WgkGopoumqbyOE5KvLyAElOL4G0t1Z8JCHN3n9x9PtVJIlRb4yONlG58Hfl4jLBaGDioLZk1cbE86eMVrsAbcc1i+pWc8TtUIxmvbgThxCtW7XmX4s4wFzmj0tUSCu5dO9ktCXEiPClGhSPy+P3zsqlrbs+DP7wC3cuiOYZFlZ4G3gHD0405cTkQaEFQg2zvXfrL9KmeMMT0Mp5sQDF1cdu00059Jg0ocjVYNFOpP5irQJhvinnNBR8Wo1UaKbg3ehr3KkSnlMVmDJXjz1Lf8sMMfuxY2V2+WneK4TskBsNY75Nh9hQJogBt0ax/2zNbu9Nea0ZUC6Kmv/JZUrMVRmJ7GkZ5XysL+bM2MIgY5Dvc5YKWCAqaN5z5VwYUZnSGZgPxBy26mBrS530c7dh0xwqPeREmgnM083rrHY+kyJSSb8SHEPIRmf8pAir2ZA4aoO2XcBKEfo++3hFUjNiA2krgzB5ZdRyCt3zcumE7t4ElBvQrW3h3+gTo5J2hAadKDQ71zSRObjmJv1wj9qZdS3GR+bvSQWxdcmrUlh77Jcsx4BHvEwP4i7Dig6gmwRDc5VOTHEtZRN+5YeKQ9dKOhiiRcpzM6iLmiJBt
- 1ah3Fk/O
- Mr98tkRlrZpHs+oF4zC9JBZ4Qy4Pk3HwiRus8iox47lv2PJJzzzhF1ICV7yW1D1ukpDwebqUAk2xKBoCn70sxQQ+2C38p4U+iddofq6LARCuLnJx2g3KE/a6selbkqOocQ7TR/LLoLh2Fa0YJp9RZSWL5E6A5s4TJHcDXoqkmywlzDmtfmboURxCZb73Jku8MUQY+uE191OJZsROmhJrdL57r7KNV3LCegl1XdPYJ1NLU2+k=
+X-Stat-Signature: d6u71ct56sgb5k5u37u94hixtnk8m4x7
+X-Rspamd-Queue-Id: A288E100003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1787942067-325941
+X-HE-Meta: U2FsdGVkX19PgKsZcIy1u1yvyKFq1mqwA3BamMvpopIsGSI7kVRoTJn2GqO5iPM0gfiXHFFpTZvVxNkE5znATFULGxYs9agsvqlNPrlPmIpxWzwxL39jIONuuSV7ctNq2+piF50y4ACHfZgaXtYq5iEuwc2rM861VJrAY+ri8a6/X3yUBq/7sVt/3m+AZeSgd950zDRqVnN5hiq2nzh7BmzdPDh+4JVbE/BkCEo9JEwLYTMFlui5aSOnOMlTJZ7Gvxb68AUjzE29EEtxTO2njXYipcmbqbuwGeSkWqvIchZGNGFyARHAxiB07qYQxHde+/iF93/OOPi5QDsAWecyjvh93PkjqCYxUR2+CIa04XKaGzVr9UHb3X/ekajTEykc0N5fLUBTQflNPUSmcURVoRyTitUo+0pufFpj8+PWAZ3h3mMSb2FeMFqdeijKpEiaN8MAOANEkP8ljb6bNUj7oLdTnPiXuX1AkRVGFHJpfWLERJQfhwqTlaZstYrVzEWpk0fmMgYDqUbXxjcDR1JbksCS5Dz92xuAkVxjDOzAybVkEW9PPRb9OecKeuWa4SmaHqeBxaubRTWAhm0RIkhl+9cbdjbPsdLfvSo+0ssBZvo6doa2ACDp1Nom0J33eX00kK83mD3ySWBDWLFdjf8ETBBjZsz4qszdLheDTZOTlE6jXYXYntd2ROFKu/0jH6iZECo9a9BaI8Se/+kidkcnU1ui+NAdeZbs+4Q7S8XVBLXNHrEcOX4YIxdnHeewvan52mQBkSYL4oC285zGl94Cx+Je8raThCAW+he/QMR8PnEMgQE98W29EPGWn3qoup1lFzHYQTUX7YXcXwh1iu7gXWqYAl8nb4ubeggkueH9NAcrW9HzielgTRaApJxZLroGue60m5b07cQ7M6fQFneQAwnHtl3YarpIz6HZ6eZwvXXt9qUYbs1o7YKER6ErMK7Uda1xDr1zx13itGp4r4K
+ eNRm3wrh
+ CyiKV+dij7BSE6xVUGkUI6oHrGEzp9PwVUm0UBL6pzmyUZ/4LhXTYlg/zrEdd07zcOOhTsjuImCe2gbC8u0JCYVgrk+9l+QVMbYZ1/h1h50O1DzYQpF93jol93I0lzaizD9a5YNQqDP1MFfDLJpNMLD0EkwuQ86la71W5w7T8Bmw3C6tFp4MEKVeCyMieT5DiIHhOoEmDW+SlMEl0tEMQiSSF4/jILBkoKHOAnQBzOEdAutnsnQWoUUjW/k0fzLybzIcE9oB5vrhVR+c1OW3uw9ssfBmxTTOL2UfeRi+cPIGGv4gjHnS04Dw7XFZ5z0vzbeGlVuSpYiD42aPcFnkixUHtdaI3XdDTpZsMUv6+iivoGZK1iscNWp/FFoc8AJeM06Qu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,49 +104,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 28 Aug 2026 11:59:47 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
+On Fri, 28 Aug 2026 12:13:20 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
 
 > On 12/8/25 2:29 PM, SeongJae Park wrote:
-> > The DAON sample filter directory has files for only common properties.
-> 
-> DAMON
-> 
-> > Add a file to further specify the CPUs to filter in or out.
+> > Update DAMON usage document for the added DAMON sysfs files for
+> > installing and setting the access sample results filtering.
 > > 
 > > Signed-off-by: SeongJae Park <sj@kernel.org>
 > > ---
-> >  mm/damon/sysfs.c | 41 +++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 41 insertions(+)
+> >  Documentation/admin-guide/mm/damon/usage.rst | 25 +++++++++++++++++++-
+> >  1 file changed, 24 insertions(+), 1 deletion(-)
 > > 
-> > diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-> > index 74594e6e461c..d6b0b6513fd1 100644
-> > --- a/mm/damon/sysfs.c
-> > +++ b/mm/damon/sysfs.c
-> > @@ -758,6 +758,7 @@ struct damon_sysfs_sample_filter {
-> >  	enum damon_sample_filter_type type;
-> >  	bool matching;
-> >  	bool allow;
-> > +	cpumask_t cpumask;
-> >  };
+> > diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+> > index 897a89950351..365a4548a5ba 100644
+> > --- a/Documentation/admin-guide/mm/damon/usage.rst
+> > +++ b/Documentation/admin-guide/mm/damon/usage.rst
+> > @@ -66,6 +66,8 @@ comma (",").
+> >      │ │ │ │ │ │ intervals/sample_us,aggr_us,update_us
+> >      │ │ │ │ │ │ │ intervals_goal/access_bp,aggrs,min_sample_us,max_sample_us
+> >      │ │ │ │ │ │ sample/primitives/page_table,page_faults
+> > +    │ │ │ │ │ │ sample/filters/nr_filters
+> > +    │ │ │ │ │ │ │ 0/type,matching,allow,cpumask
+> >      │ │ │ │ │ │ nr_regions/min,max
+> >      │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
+> >      │ │ │ │ │ │ :ref:`0 <sysfs_target>`/pid_target,obsolete_target
+> > @@ -233,7 +235,8 @@ writing to and rading from the files.
+> >  For more details about the intervals and monitoring regions range, please refer
+> >  to the Design document (:doc:`/mm/damon/design`).
 > >  
-> >  static struct damon_sysfs_sample_filter *damon_sysfs_sample_filter_alloc(void)
-> > @@ -765,6 +766,19 @@ static struct damon_sysfs_sample_filter *damon_sysfs_sample_filter_alloc(void)
-> >  	return kzalloc(sizeof(struct damon_sysfs_sample_filter), GFP_KERNEL);
-> >  }
+> > -Under ``sample`` directory, a directory, ``primitives`` exists.
+> > +Under ``sample`` directory, two directories, ``primitives`` and ``filters``
+> > +exist.
 > >  
-> > +struct damon_sysfs_sample_filter_type_name {
-> > +	enum damon_sample_filter_type type;
-> > +	char *name;
-> > +};
+> >  contexts/<N>/monitoring_attrs/sample/primitives/
+> >  ------------------------------------------------
+> > @@ -245,6 +248,26 @@ to these files, users can select whether to use the :ref:`page table accessed
+> >  bit <damon_design_pte_accessed_bit_access_check>` and :ref:`page fault events
+> >  <damon_design_page_fault_access_check>`, respectively.
+> >  
+> > +contexts/<N>/monitoring_attrs/sample/filters/
+> > +---------------------------------------------
 > > +
-> > +static const struct damon_sysfs_sample_filter_type_name
-> > +damon_sysfs_sample_filter_type_names[] = {
+> > +This directory is for control of the :ref:`access sampling results filters
+> > +<damon_design_sampling_results_filters>`.  At the beginning, this directory has
+> > +only one file, ``nr_filters``.  Writing a positive integer ``<n>`` to the file
+> > +generates directories of the number, named ``0`` to ``<n - 1>``.  The generated
+> > +directories represent the sampling result filters to install to the DAMON
+> > +context, in the order of the directory names.  Writing ``0`` to ``nr_filters``
+> > +removes the directories.
+> > +
+> > +Under the individual filter directory, five files, ``type``, ``matching``,
 > 
-> Looks like this should be defined in patch #21.
+> nitpick: "four files" in this patch and "five files" in patch #32.
 
-Thank you for your review, Zenghui.  I will nearly entirely rewrite this series
-using probe itnerface, following the DAMON extension roadmap [1].  I will keep
-your review in my mind when writing it.
+Thank you for reviewing, Zenghui!  I will keep this in my mind when I write a
+successor [1] of this.
 
 [1] https://lore.kernel.org/all/20260525225208.1179-1-sj@kernel.org/
 
