@@ -4,86 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5175DC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 00:48:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56FC0C61DC4
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 00:50:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 264126B0088; Thu, 27 Aug 2026 20:48:14 -0400 (EDT)
+	id 3EFB76B0092; Thu, 27 Aug 2026 20:50:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 214466B008A; Thu, 27 Aug 2026 20:48:14 -0400 (EDT)
+	id 3C6F56B0095; Thu, 27 Aug 2026 20:50:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12B1D6B0095; Thu, 27 Aug 2026 20:48:14 -0400 (EDT)
+	id 2DBED6B0098; Thu, 27 Aug 2026 20:50:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCE796B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:48:13 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A2D6A3688
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:48:13 +0000 (UTC)
-X-FDA: 85148841666.12.8C0B276
-Received: from mta0.migadu.com (out-156.mta0.migadu.com [91.218.175.156])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5D80440002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:48:11 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NpBuPJnC;
-	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.156 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787878091;
-	b=0LXEIwvT1fqMutF99HMTwUxWu90hTQvmysug3xhi2bQmpAd6JiALIjGk8wOX12EZoop+bF
-	EYyvfX14kXJcq6d7i4rZuwOlEJ8NUbGbZQtsohQ3ToDKdFyvqs3OO8jh1KXUtk/vmbg9pE
-	DkbJdaRkKmMTlnsqbykATwczyWFk1Bw=
+	by kanga.kvack.org (Postfix) with ESMTP id 099716B0092
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:50:13 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85A8EA2E78
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:50:12 +0000 (UTC)
+X-FDA: 85148846664.07.F1BA6F8
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E983C8000C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 00:50:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fcXHy+eC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3QNuQagoKCJU8I6DJ56IDC5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--jthoughton.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3QNuQagoKCJU8I6DJ56IDC5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--jthoughton.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787878091;
+	s=arc-20220608; t=1787878211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lU+cexe9UXnR+VpkxpTMZ201uPRS3TUE/YmSqR5w2sg=;
-	b=M+VwS7LuAxzf0JpbqCnYYUUV0SNNBBXITf7dT5czArVLOgvnBRkU6jTjkt+0ROUpVwFsnA
-	xDOxhCcxV4WGFVapYT+IfiPigxO910gUYkeaT8aTUKsjBVgjbV56hUeBZ3YsK1Ny/ZL2XK
-	0bn23fn1qQFVmkGfg/hCsEwPPZc1LoQ=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=M+L/jEThU+UMCGGhHnA2GUCWkP7cgtpwQVPowQ/g9e4=;
+	b=Bc226IDZJ80o3CFSAg2bMwTYKw1oT7vKVfaLDlvoXISLp5E30JTtNl5LG3pYwKDS7owJEk
+	IDbN4WoxtqbtNQKWN3+6ya1tNwVlLH/gMHYGOECMDhLKR/DkYnT7v+knHUdEWGATbju1cP
+	0llPeIXZLWkyFn62CSxQspQPPkJxlf0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NpBuPJnC;
-	spf=pass (imf12.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.156 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Kv7SegtkprBpdAtnxRcZRecFg6c76sWZc/YX/HSXqi4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787878089; v=1; x=1788482889;
- b=NpBuPJnCKiroB8N/qNlsW9K8B4fEy1GEaSAhNJFXUQtJ4qDWZH9q7NoyChCwc2lhDZHB3ssP
- 0NDcvSxPOtucqEE14JWtuO65iisYR0ggFPCqjtyPie1ZqDmn5EfW/Ng4iPi8f7+vzfU/YdVYpKJ
- 3SyCAzgqCG8cbm9wEU4h5RTc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4f6263115d5ea613;
-	Fri, 28 Aug 2026 00:47:59 +0000
-X-Mizu-Trace-ID: 4f6263115d5ea613
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 28 Aug 2026 08:47:54 +0800
-From: Hao Li <hao.li@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: hannes@cmpxchg.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	muchun.song@linux.dev, akpm@linux-foundation.org, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: memcontrol: treat disabled memcg as kmem accounting
- disabled
-Message-ID: <apDZV9nKW69ZbIj1@fedora>
-References: <20260827091813.22327-1-hao.li@linux.dev>
- <apAnveXHmeQlKJnU@tiehlicka>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apAnveXHmeQlKJnU@tiehlicka>
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fcXHy+eC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3QNuQagoKCJU8I6DJ56IDC5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--jthoughton.bounces.google.com designates 209.85.215.200 as permitted sender) smtp.mailfrom=3QNuQagoKCJU8I6DJ56IDC5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--jthoughton.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787878211;
+	b=nxGVcbH4xIpIP/J5cMY4Aumh3Ap342p1bdu2euu0pOMJV/Knjf2e1yL2XvmgMCLiAhTEtx
+	Rl+248DcfwTEvFXZq9QRL9dNG5sSGq9veNgYc6SGqNKrZTLRsPDy9CO+e8B9UjEqq6Brpv
+	BWqUhm4JEVlF1sjBMw/0FkziBBmxiQ0=
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1b6f65dacso361551a12.1
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 17:50:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787878209; x=1788483009; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=M+L/jEThU+UMCGGhHnA2GUCWkP7cgtpwQVPowQ/g9e4=;
+        b=fcXHy+eCf5sgHYPztjJGjGNrwav1LbRakAbVuLI2IxIzTMedfrJC39G4JcQK2ZOvmH
+         YJWqdxjnixbU8GlRoHUs4uLLis/WN/qwgZCkAmSAgO9YK9r2F9nCSUTsY55QWQAhX9Vf
+         8TSt/4Eau8GP8tSguv/1ugAZjHSaqFRb9R/b2zZ4lMlg79q2Ff5if9PC9zt0sYsrbbUA
+         6sbn1GYPbfeYHne7ndynbVEWHt84+CqNDgHF93pTrWfc0o2rhufYIxuCMaZzK1gdPjm2
+         YKorC8ygbwsGCR2BQQe5HhQI/xaRvWLh4o/u1N8xB7Kn5366+OqrsmhQYWyNHMplrmBS
+         D+Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787878209; x=1788483009;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=M+L/jEThU+UMCGGhHnA2GUCWkP7cgtpwQVPowQ/g9e4=;
+        b=DDCwt4AkN1rmn2VtyT4vrCuVJTTtn5eXP/GuRqnxVIUEcmbcAaCMCswFWsEq2m62yk
+         b4eAUxpTFUHPaBvI+zxk3o6ivHrhptR6+LoOowwiHnPYnWSIjWQ3z+4yw+pAbgcAEmAs
+         H6BSpxivrvsRvFnJ5AQpSGVX2jvlYag6EIk3469H5LMJzBAC8eAgeeHIdmSSVkgMTKa/
+         8BWqtWQbYw4qi1odrHW5YqLS6lUyISPXIJa+oBon1cwQLzPKg9ahTk4ZUPUOVOQBiuyt
+         uLnmDaWtRU++RJV0MxpYDOC0i+NKFE27aqqPDVNNazkKSfk+3bjg8Jk4RWvsXJqCGkVf
+         vzpg==
+X-Forwarded-Encrypted: i=1; AHgh+RoVEogFWTpX97+MBAnjNVR/fykMSYXNm4RnB6VLF7LJR1vTfO7QpGdLKNBAiNQ1VdvaUvMyCu83wg==@kvack.org
+X-Gm-Message-State: AFuF++nsv5Bcg59CfZNokmX3k4EWX6247tTTo2j6W9cn5RUwb7bI1sma
+	MoC2yk/1PVHS2qJMTAICmEUySCLIakb+yBqGskFGSGrQsN2M/amwvgULse2L1Xrb+7+bDuFdJht
+	Cym5Xe2zYl5QuFe4OEjmDYQ==
+X-Received: from pfaz21.prod.google.com ([2002:aa7:91d5:0:b0:848:7fd6:7dec])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:13a2:b0:82f:2b0:2809 with SMTP id d2e1a72fcca58-8562953e9d8mr4642983b3a.1.1787878208961;
+ Thu, 27 Aug 2026 17:50:08 -0700 (PDT)
+Date: Fri, 28 Aug 2026 00:50:04 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
+Message-ID: <20260828005004.2870750-1-jthoughton@google.com>
+Subject: [PATCH] mm/khugepaged: Don't collapse uffd-minor-registered VMAs
+From: James Houghton <jthoughton@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, liam@infradead.org, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Yang Shi <shy828301@gmail.com>, zokeefe@google.com, 
+	hughd@google.com, Kiryl Shutsemau <kas@kernel.org>, jthoughton@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5D80440002
-X-Stat-Signature: 1w4buog3fymcgwgr9iw48b7mctyax6sw
-X-HE-Tag: 1787878091-421318
-X-HE-Meta: U2FsdGVkX18rTE/OuznqbZsCfYhW40ErlCtN+TkaO7WrphnfF/frbrJNPTad1bDcIMdOEfwWB9d+SZfC5vgX6M41G9p3FipI5/tk4/QuU+3HyTjUmpEXFo+lVoSPBbift6zmF2byZbjlwKcPHQPHP4mV+C3orx/qbTorTzTrCZsHXFAvWLMHg62RDh6SUcBsHb93Ba9tkKSZVbpoSyLNOAoQcEf8U41GbPzJKPCz2mhLRxG1/xrl/2WAk87WhBzgNtcBbxi+q37/Wr7Qn9NA22SdJWqdEd9TIJMgO1Ronx7x4dVqdlOD6W20OS/aIE41jVadJJIW7VvwWfruObwC4BUrS3tXBipYFNmOEmFzvgl5QcEJrc2ogUby7eb+0lcxGBgdUE0ryWNrO8OEGR4+HAxTSjpZf+DYeVXJ7yvdS1CpQ0Wc7yFEXmAaWzFipwNbIP385/kWv71EumbwoQXdqed+CyrgztSfMYjjAG4kSvjMXfkkHh513G1AgVPXUXqSrQenabNq7Mvg+e3NdlzCkuZ7+isi2FFxdhQ2Ki70MT6nYcs+zun7jJGIejSX2G9jjImhA15ON+ZWkGtQtlx9t5Scg6TqBsSh1/eQVrknK0Dn9nMSsgfO4f8VEMS/niGUd6B8IxGZWoz57pKiw0IUde7xCdS8C4SVtqTjjQMTrNzBT/vjlBSSLCnR2fbtgP189SEfU4LOjlJL6mr2qf61U1NUhHqj6SJcWBcxv3BYa1aPz4Um3LUjSjLvCSekTep+KcozyRzJFeWBBPN+p1PYn4EiYi8aK9ExNUX/6qsvI96hzAKAxaCNajE0TNQC4RXKXU2dEMGV4iGEMD3sdwGK/gwInbTkVJeaTUl1gj6iTjOkRkI+5LimOnvxS2lAi97QfOxirL7lSgH1YVWYniCigeGSnyTIhh5usnFdW0r4C44h7XrcB+tGDTxOSSiMT/At4neB5D+O2jzJVQ8/b71
- LYiCY8HZ
- 2wPkxnKJPnYO4K8dXOJu14+GLLA43pxK+0/GHjhj8q7oUKUJTEXnvS5/yeyifqc6RN1utv76ew3wBvuueJgbxFxYD2AxMLMIPaqcp4dnj9GTx1JLMj8cxLQLMmC9neqnY6PI8PjeQkeZ4EKvb9gfkjEhkCE3whFjriJ1sA7XYpj1jTaCSaaRxUTS+8tgojJvViAB1f7ybZ/qfkZZheh+JDaR107Ex8CbcsmvmVE49QwFAY/htWyjiG+YBPdhXUJH0NsE/vL1mlSiRlyQ=
+X-Stat-Signature: 8m8ai1nrmdjeib8x3i7ow1pr8yttt95j
+X-Rspamd-Queue-Id: E983C8000C
+X-HE-Tag: 1787878210-955491
+X-HE-Meta: U2FsdGVkX1/W3aR/W8RCVrZKd1ad1V0FYMKoDgiq53T2XzrvYhj4rfcUNeDghmoM1SSvfvnejiscroNRx8+O74nE0n8aMXxADNpRGbrYWJLQrIu9L2hJUba1w7wScWl+vehptc/nQu4/BVHNE0JiWdyGhpSLB6f0Dg+eMxwtRdncOLfeMeiEm8Ai4uTFpTyCa9xaeI2Je37B0Sj+Itcs+QBXAUJgUiVRYC/pa6OTpIXz+mQsR6cdEQINoDLqB2FKL0BpJCF/XvAl62FznP5UGsqEZ0kjYe1NHi6Et4IN0p1A6sfc3CTNW32mnGU1NknoRRSN8mu8FirUUOcsPLJ3HxfT+xQ0/AiS44uCFuORdRlcVrHwHOd/ELOGv11uBLdLhkQc+Dcbysix6K8Fkw5NSqzqkFKfBtFqncZNObN0ak+w5my/sKSrTXJU0m1yivJI/4TmnUhTEkAIM6MbR5pCIFlLlg/JLDksCGDsguOSFjtTHTihyrFAaBxHvHKtuKmIQsqJVIfdb5ubDQ4K5TqZ7W1eao6FCJCQKmEff2t3UccVjUGlfUwKAJ21oWdyZhDKjviwOCUGFKB/PLxiLi4Z1uJnOOanXrMwETtZUyq4R3kP4d4PtJFssWgVASswTuI5CAMkV+1sd76ZvhpHBZc7T8sM2Bk7bdFSIS3QXOmquPREiN0R72nE+IXcL1ck0t3tXbNNh7y53A3EPrhzpDTZqcVpJMmQA5tehDhD/RhR23CZh4SBd2iF/IWvVBXIsLZBMx+pG0/Mr8jDw2cJwjxzofCWUGCMkq6x0lg4Qy6HVFnHHqhMNmFWFPxwUvBg7EkBy9F//osx5xJvanhiqVzgmarKLChehpE0brxqLtsSo7PAFo48cS35rYfG6ruORIBoGKBHnerSFycjAjY+Op/3Xgo4NfAmvmlVxJAOELpQIhK9qK0z9AU5HpbDte6EEA+dOzM4H3qH1c4eRun09Qw
+ iC83FWeN
+ GhN28RMY6un3+V97nenFEY8DwXQDQPG00WWjviKogKbehpUIm1UFA459I2g8PK3j8U4KjftiiEnk1A6S2JfMlXKsI4ISKSeyXmf9Lgk8dmoKsuHZUkK0ZBdvtlDJQx/dsaDz7Q+hrqsOIh+4fl5Qpg+rusZo0HpEYRWcKVLcMv4RM1iXyoFu9z9vksi/J1if34va+uvXh2SYhaGEbGdvZhMi6FEGJAYrrDNVH1ZO6ClACC4NYZDyWkPgbiLiG8MY0yZp/oNkxbXNSLAppRhsBIsxBJB0IZJPQ48Rw/qnQQvkAcMVUuao7ua6t+H/d5ZNODp5br0hhJa6BgZOY6V8s3ZYv3tTlZkTxHo9kOmnsDObNSdmvUOPm5n+euIVgplR1YwOsXS6gP9zaPH+WnckqNTwZNFF+svi69oiiCn9uxVrAqrOPxK7zAE/MdlEM59n/wdW/RnWLq1xoZ+RQlcOBJlLwytETLv/k4wiuMgnMva65jA8GMUJz78akyKaCw4unmTR8ZDMD9V/NVVVnuIClZTMq2Td7B1aSLIw2ohESOwIdTVPRP92l39GztpL6Vnfden62XGzVpiQJb5iAXbPZGBA2hfDAV2oLa2xbh7jfIctFiIWlEuBk/1HrEe0OjXW/Y3gWX601Z4+guXObDeIXkA18uQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,59 +110,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 27, 2026 at 02:04:13PM +0200, Michal Hocko wrote:
-> On Thu 27-08-26 17:17:50, Hao Li wrote:
-> > mem_cgroup_kmem_disabled() currently only checks whether the
-> > "cgroup.memory=nokmem" option is specified. However, kmem accounting is
-> > also unavailable when memcg itself is disabled.
-> > 
-> > Check both conditions to ensure the function accurately reflects the
-> > kmem accounting state.
-> 
-> It would be really great if you could describe how we could end up with
-> the inconsistent memcg enabled but kmem enabled and what kind of effect
-> does this have.
+Userfaultfd minor faults provides userspace with the ability to manually
+install PTEs with UFFDIO_CONTINUE. Right now, khugepaged collapse can
+map holes in the VMA when a naturally-aligned THP is present without
+explicit action from userspace.
 
-Yes, thanks for point out this.
+This is a problem, as it bypasses userfaultfd minor faults that
+userspace is expecting to handle.
 
-> 
-> AFAICS the inconsistency is possible and it would lead some wastage but
-> no functional problems but the changelog should be more descriptive.
+If userspace implements post-copy live migration using userfaultfd minor
+faults, this situation is currently possible:
+1. The VMA for guest memory is userfaultfd-minor-registered and nothing
+   is mapped in the page tables.
+2. A stale copy of a page is present in a naturally-aligned THP (from
+   pre-copy live migration).
+3. khugepaged collapses the mapping of the THP, installs a PMD.
+4. The VM now has access to the stale contents => VM is broken.
+5. After installing the correct contents, userspace attempts to map the
+   page with UFFDIO_CONTINUE; it gets EEXIST, indicating that something
+   unexpectedly mapped the page.
 
-Exactly! The most direct benefit is that when memcg is disabled,
-new_kmalloc_cache() will not need to create a separate `KMALLOC_CGROUP` slub
-cache, but can simply alias it to `KMALLOC_NORMAL`. This avoids wastage.
+The naturally-aligned THP case is the only case where this is a problem.
+khugepaged otherwise requires all PTEs to be present for
+userfaultfd-registered VMAs (i.e., max none PTEs is 0), which is
+correct. This check is essentially bypassed for naturally-aligned THPs.
 
-If this sounds reasonable, I would be happy to explain it in more detail
-in v2.
+To deal with this issue, completely disallow collapsing in
+userfaultfd-minor-registered VMAs. This is slightly pessimistic; it
+would be nice to allow MADV_COLLAPSE to work if all PTEs are in fact
+present, but that seems more complex than it is worth.
 
-> 
-> > Signed-off-by: Hao Li <hao.li@linux.dev>
-> > ---
-> >  mm/memcontrol.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 1ebceade4021..b28f6165c354 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -132,7 +132,7 @@ static DEFINE_SPINLOCK(objcg_lock);
-> >  
-> >  bool mem_cgroup_kmem_disabled(void)
-> >  {
-> > -	return cgroup_memory_nokmem;
-> > +	return cgroup_memory_nokmem || mem_cgroup_disabled();
-> >  }
-> >  
-> >  static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages);
-> > -- 
-> > 2.54.0
-> 
-> -- 
-> Michal Hocko
-> SUSE Labs
+Fixes: 58ac9a8993a1 ("mm/khugepaged: attempt to map file/shmem-backed pte-mapped THPs by pmds")
+Cc: <stable@vger.kernel.org> # 6.1
+Signed-off-by: James Houghton <jthoughton@google.com>
+---
+This was caught with manual review while diagnosing a related issue
+that came up with in Google's live migration testing.
 
+I've uploaded a mostly-AI-generated reproducer here[1]. As long as
+/sys/kernel/mm/transparent_hugepage/shmem_enabled is not set to 'deny',
+the repro should work.
+
+[1] https://gist.github.com/48ca/d399bf534158e80241fb4937ef1ff664
+---
+ mm/khugepaged.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index b237f6e7662a..66f956d3dd67 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2804,6 +2804,15 @@ static enum scan_result collapse_single_pmd(unsigned long addr,
+ 		goto end;
+ 	}
+ 
++	/*
++	 * Userfaultfd-minor-registered VMAs should not be collapsed, as
++	 * userspace is expecting to explicitly install PTEs.
++	 */
++	if (userfaultfd_minor(vma)) {
++		result = SCAN_PTE_UFFD;
++		goto end;
++	}
++
+ 	file = get_file(vma->vm_file);
+ 	pgoff = linear_page_index(vma, addr);
+ 
+
+base-commit: 26260251022fbc2f248a3d747a9b2b961b18d2d8
 -- 
-Thanks,
-Hao
+2.55.0.897.gb25b4bd76c-goog
+
 
