@@ -4,99 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7373EC61DBD
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 06:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB98EC61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 06:27:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D2786B0092; Fri, 28 Aug 2026 02:11:18 -0400 (EDT)
+	id 7768E6B0088; Fri, 28 Aug 2026 02:27:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 583FA6B009D; Fri, 28 Aug 2026 02:11:18 -0400 (EDT)
+	id 7285B6B008A; Fri, 28 Aug 2026 02:27:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C0B66B009E; Fri, 28 Aug 2026 02:11:18 -0400 (EDT)
+	id 617B36B008C; Fri, 28 Aug 2026 02:27:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A43D6B0092
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:11:18 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B20CDA0271
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:11:17 +0000 (UTC)
-X-FDA: 85149655794.25.E789DDF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D0281A0002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:11:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iDqrsBdB;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EE6366B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 02:27:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAAA816025A
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:27:39 +0000 (UTC)
+X-FDA: 85149697038.21.B893DF4
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5704220005
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:27:37 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=E6R1TV3Z;
+	spf=pass (imf03.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787897475;
-	b=sNTZScXhh6GCpRdEF22u6BCYCP+N3CTQiOAMX7Y6Jh/U3EuNlp6y06047pf9An0aOnIIaJ
-	9ZmOG24pvkU8Uk0vNF+Q1JFFKWoP6GfU0YpaNlxzdFggh2JI3l/a7viAjRIp26lU6+WMqS
-	Irt6GVrURw3jm5bgQvzanhO9Kf68ofg=
+	t=1787898457;
+	b=G3E0qBB435StvZmWnWcJpRiIORLls0m3RhiraOoD62FVLMnzPbr0YCO68FGd5AuEapR6pm
+	aw0r3IT/hn9WaswtShNq7h63TDVRDCimRMMtcOxx+cgyFmWJx5J/zbWFrclHSUldKbpflE
+	p2CwQFDmytAeweK1cn6iTOfutUdLRWg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=E6R1TV3Z;
+	spf=pass (imf03.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787897475;
+	s=arc-20220608; t=1787898457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A9r0VEIfV2PAmfdMx+Y0pF6W4viyfiq1gRGNPOGP+No=;
-	b=JZigP2zX7D6b16LkrCaazAVe+awDTLB5Q7kG18h84Wu5N2JVwPjhU04nra19IMjhxWPsRC
-	qx+smRcvKFTmbJichxbHQWQbkCiUp0RvhMZz5lNPRjpcfIhwl+qY7aeC4+vxrlA5zQhdNT
-	szRYQxXa7XqtugLPb4m9SmRDtOSKSMg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iDqrsBdB;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4C869447F7
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:11:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BD11F0155A
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 06:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787897474;
-	bh=A9r0VEIfV2PAmfdMx+Y0pF6W4viyfiq1gRGNPOGP+No=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=iDqrsBdBXSwIXMwcLsOJzVonEKU+OrI/lCOBtkkH++mi3bPjFXU75WaRb3gInaKns
-	 oEyJSMbIViFWr8lejvSBKLh2x4FP3F+lA1eBq6o9Rgm01wz9X4FkHRdwaVLbqhjpRw
-	 RiE1+L04RK3c8mROFLpfsN2OFFcSV0B8/4i4MQ+jbx/6f6UmnaHksIO4L47Dnp0KQR
-	 y2lkwlGJ4307/gZW/twYsTLFJQyInChGCu3ibWeSyqRA2l6DgfoVhNGAlygZO8Tvcc
-	 bX5UIEdCeMlnmhUbREKFS8myg0lVlmfh1lQScm3HXJzR3sb+PLlnhGYwe4SjV+qwaZ
-	 OMAG/sJGbjt0A==
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-90cd1012479so11743746d6.1
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:11:14 -0700 (PDT)
-X-Gm-Message-State: AFuF++m93TFN6aQ3HYU0r9/HluEKdpHkT6BROo5BXVY7P6czEWpDwGzP
-	4T06616RNQkcSNzdNDGH74oXWy2dgdgEuCyHAAFSEGf2AMZCNBcFGYVVHR954tB0L7e4JzIrGOv
-	W5a8j31pRCFE8QBhnM5I0YoRCUMyqr6w=
-X-Received: by 2002:a05:6214:27ca:b0:90a:5779:d30a with SMTP id
- 6a1803df08f44-90cd43a64cdmr114204226d6.6.1787897473470; Thu, 27 Aug 2026
- 23:11:13 -0700 (PDT)
+	bh=08QJ7WX+Qx2EfeECqXNbEubqtic/1iOmC+2hSxugyAU=;
+	b=Y09fm6OV05a+3OjDFGb/xccnUAB3UWyE98h3C7VMaW0beRTFo3+/c1DHtOHYP10WNwS4KA
+	PJ36ZEosQ0PV0CabNybfp3YaA1LrfWHjn8XqX+4h540gmo+t/p+v6ntAKlHwpHrYu3t8z4
+	IOoLCHgqfaKrv9MAl4zIDY5BM7kIwWs=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67S22EtN2941254;
+	Fri, 28 Aug 2026 06:27:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=08QJ7WX+Qx2EfeECqXNbEubqtic/1i
+	OmC+2hSxugyAU=; b=E6R1TV3Zh8DilQBFnv5jOdww7B7Ge8HPjU3Fuajpb5vM0F
+	FNd7MwSCILkk4PJXbE12AtqfNo4pDQlvekLmv0jnYZHc8KDAjxlJ8PLwSeEbOn9P
+	1Of7lARvcZukwgahmBKggQrRZkgnUZgWbP/VQGf/Ntu+vu2+fQO3L2U6SUqnd9/1
+	JAKVy3oIoe4FyBH8Xxat37hGEpl06E3TIkgA761tjVm/Szzkynx8eu3TlSj6lWkG
+	vspxaObPOqcD0k+4JbDAq5pdyHVp8GZhT0ckxIcdu8N56DLbn31YXbZOX047t75d
+	BjX0s1+VG/N9xHdRZXKjbea5/ch3sFMFmXFbRgAg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73eradh9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Aug 2026 06:27:14 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67S6QWnu011615;
+	Fri, 28 Aug 2026 06:27:13 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7p3qmxmw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Aug 2026 06:27:13 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67S6RB6I44957980
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 28 Aug 2026 06:27:12 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D080620043;
+	Fri, 28 Aug 2026 06:27:11 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1CCB220040;
+	Fri, 28 Aug 2026 06:27:06 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.22.178])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 28 Aug 2026 06:27:05 +0000 (GMT)
+Date: Fri, 28 Aug 2026 11:57:22 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        Carlos Maiolino <cem@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, Zhang Yi <yi.zhang@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Dave Chinner <dchinner@redhat.com>,
+        Daniel Gomez <da.gomez@kernel.org>, Theodore Tso <tytso@mit.edu>,
+        linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Dave Chinner <dgc@kernel.org>
+Subject: Re: [RFC PATCH v3 07/11] iomap: Add DSYNC support to RWF_WRITETHROUGH
+Message-ID: <apEoLNmw9iNYYVqf@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <cover.1785908600.git.ojaswin@linux.ibm.com>
+ <a679d79b676d3a43332aba54ba25660c9ea9e1dd.1785908600.git.ojaswin@linux.ibm.com>
+ <aoMLboIzOmJzn7C0@quentin>
 MIME-Version: 1.0
-References: <20260824073806.629593-1-hebaoquan@kylinos.cn>
-In-Reply-To: <20260824073806.629593-1-hebaoquan@kylinos.cn>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 28 Aug 2026 14:11:02 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yDgCt6C7tS5YR8Je0OEPoYFgXNbG-T5KLmF+EdBHA9=w@mail.gmail.com>
-X-Gm-Features: AcwNN1WE7Bh8_L9t2XAHnqdqt352yaQMUZj2FkQbKJN7Mn9b476cBiHMqCmTyu0
-Message-ID: <CAGsJ_4yDgCt6C7tS5YR8Je0OEPoYFgXNbG-T5KLmF+EdBHA9=w@mail.gmail.com>
-Subject: Re: [PATCH 0/9] mm/mglru: suppress empty page table walks during aging
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org, 
-	rostedt@goodmis.org, mhiramat@kernel.org, kasong@tencent.com, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, baolin.wang@linux.alibaba.com, 
-	hannes@cmpxchg.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aoMLboIzOmJzn7C0@quentin>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: 4lPX-uCG8bHkTopq-KdpTceOIvG01eO4
+X-Proofpoint-ORIG-GUID: 3XAbkb7WmxBnZS8QQwjJ2iRJXK3zB4xx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI4MDA1MCBTYWx0ZWRfX7s3KbLjkSGKs
+ LlZUMi2mYTLjZBHargYG8vOtxILSPzVMu2xhS2M6UwzDkpcnKT7UJKU3dP4jY+wHrmarpofmaoR
+ yfboQKpiHgVX6xB76+mkaMPJokn4QzRrHWmw8unj10hixq3d2hLWlzywoTYF0nttAX3heZB0pH7
+ MQk0XleUqSvnhx7FFAmuQ8Lb7tgNKZVxMe1e05fXGS9/tevoN8J61cZrt0JmEdxQ2Ef8kFMPdvR
+ VWpCPaX+sEjgvNMbF4kR9eHP19/NXyUHCWUHosCnwg5DpwK6g4gNeDQgW1SqY4EdhGkGjeiG9zj
+ mwU+zHKgjsMoc4PGZFXQs9txGuyue3iqrdlxcTyu1phPS9nM6+lLd27+U69o9c6zh2XT45rvOso
+ gBv5f+hngo/DG6ynmMmMi5vDKF15D6CUEapt6YyS5IIti0Z7deTLTFoCPGsIQE1UTDG90RJBrej
+ 9N+2RPd4n8csJ7Wmatg==
+X-Authority-Analysis: v=2.4 cv=QsRuG1yd c=1 sm=1 tr=0 ts=6a912a43 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=o2WM25ACUX-w9Fkcq3gA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI4MDA1MCBTYWx0ZWRfX4YdHHO1JmDlc
+ CYPgWudyF60oGYizpV6sSZ28PuGnIma9ckWfu6yheOVZYusq8dmVbVBh+jSJbSL8q1Mj4//FRoE
+ fiFNpboHbGpy1Aa3DIL9sxatz7c+gys=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-28_01,2026-08-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608280050
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5704220005
+X-Stat-Signature: 1kkrf4ps5h3xxbyf3m7woiig1788kzo8
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D0281A0002
-X-Stat-Signature: qwoq8msw8tjrqsidq1gojqao15xxrzwx
-X-HE-Tag: 1787897475-202656
-X-HE-Meta: U2FsdGVkX1/cRg1TjdXr30TNQfvRIZaRDUisjKsz41FhEIBG2h4Smb3t5HLvWZxjKrkVb78kqdWqHySl1wTb1/AwIVZRQXCFl8iciS5G0bsmK+p15wfAWGqHggmRzp3UJRquFSjxa79yejpfUX8QOoivd+RkjkSCgS4supSKHpewgKvznqAG0fhOsIbUfnFM0Nbx3a7Y7b14hKDytiHif5SCqoUf7n9nDHRxRmbXPvuDu5DPVFf1MQncNhgXJ44kigHvbWzjCi66SpX1eE50FfFYP8NEhsAOZKyCQVEOhxFKgVeu/huihRonVw3PCm5RYI9CsqJfgryXiwVBCD5hvkvi1L19aUAay4zPv0QJwk9q8hbOtNoFnw0Ao31oegdeFwYA7NEGV+V2XjafRaIYdau1MKDhBddM9Kux3NbQufgyaDltAPJmOLDXiiGfv0/93uYymF14lTZUy+lI4r/GiKeufaHNBxO+P+Y1dpzswFXfA4hmi+eLSGLdZB/kQ+uwK8WNAAF+vL9ugDcmp86ZHYFX+dxnQRg3JYtZd7+4P4nOK970hRRWAI4D9rZsY9Z9NEXZSLSXRzJvilv0Pfqyoa9v3aEqLcF5DrUHQlIVzPdUhlRVCyIk/sKHgRxgGYtnMzKWvPEnAl8DUCaRnPLFgFRsYuw03RTcjZ/Fx9SBlOGMUCoGoHWTthLOxKZ7+iB2lglPNlWyzr/7RkhWA6eOzUner3H1DSV3FUGUsaWM3tH0QPcFn7Ji5gg/czXDisnktR/8Y/uBNIus+DKfdTFiSQPrCUMgTSechUadPvo9MKb3gW53x7tqLilzM7tKdGc+70w1E+psvWcMxFCn/LcM2jOgJmqAEodqLDs3yydLUJCfzVP29APs5+vUbVBNt5KH8R57SzzUd5kLMdT5Hqw4x+WyCnoabQeRywUA0OkcG+xWlnKoe/9mhrlBys+/MDzlGg6Gqwc/FDGUaqQOkC0
- bAMuDCs4
- HUu30ry+cJipzQxXWeDVcVQgsesbuOCqZckebH5LXklSo6j6G1f3+nc2hFanUloU9gzL9LKOpcjCFkQXZwHA95Pxtfdrl7AKI2sfwXPMopFDlwRouVDNoxmVrkNWjsPzfyNFx48uZn6X4ME4eZuCS1JZibPLyTz0TafakoQE128mvkVQWGdWkxSa8CIfTa4l2d8eYIP6PDeyLq6lC7O+/jIco9lwDE5Zjyz476gWEJMEbsNtCOaWZbRlEv6VOgHLdlVP8BQNuIHiY/BstOs4QaN6L5F+BBfslYAzJ
+X-HE-Tag: 1787898457-58597
+X-HE-Meta: U2FsdGVkX1/BTbnP3BCUTlFIkZhIj3sHTh66UBAPFx7fHq912PO3NQNHL7C+XEH2RgFSZpQrC4eHiJ8Zs03rahlxUtRbBxE/gDnt3H1VhPRcetlXbPKK4y1FNf7W1Z+G/vxJjO3tfTAUaV9vbbIlF8RNs/Qv48SYZeF8pByJeLfW2C759Zo6/Vlg8V3KFsPWGzbX34nhYdDYKDjiUNPZQ+48VrQvnEdGOI5zNpYDiN4IFvPCnq9i52J3xB5ws6rdbvBwtOAd5IITE4P08Q/Hz1zjzgsTSzMDQteS/XZLFAjSwgDqW0zaVjKcjCSYygsxt509eX42ssdUId3hxbXhKZswrn0Me0o3ncNeFtqydIVZ2O2CmbMLYEPhImkmhA/lkvlFreMn6I+wGowd8GWntNCkSYljvqsfacLw+DEQbUGuD3hlm5z4KOFPGNDntT6JvlOUL+44Vu9512j242sLop7ROBBYihtLqKsYxz8lznA+rTm5BneH0z7B3b0rOth3uxtNYKO4pIILrgFyqktOKbCiF0T//ATjCxz7f7rV2Eqlc8VZHv0aiqvtTQ3BWPQM2zNcCACpruPtqXQsyYP5PYQGxVzNtQb5GD/jkEDBr6vatbYi9qynT3e9lV2U1FuXRVCPxcZbiUHeLL9I714UwwcmjO37Z4hlgbxNnEg/FzACjPAhTkxEv3ty9YZm9wPz39z5XGmyaGmKVF2WoGAP8p/6wQ+yFhXZdFFubQhUBGoGCox4aLo4mnK5VvzyoMKRKY8r+Olv4/xm5UM+znPpHfUYK9eTDTaeCs3TJADBP6la0Lf4LxahJUx8vKOWSbnocLJ+q1Chc3q4wykM+WuxIwEWx/eFvQpoEJJxvGfh2V+ueQNLExGbOPZn2MVYfOFHVwokpzPHPdB7D5wldSLM01iOOddzZho2k0/+Rja7W/LCR5Y2ba7RkBNbTJgFDbJGx8I6yTkHp9LrE2NNHKA
+ +fQU118j
+ 6o2t75wRGkMLUom1wVZImkaWcGXeEIe74gL4ZGIh/MtqWL1VpcV8GC7Ea8W8SGtxHO/znssVaHbR9juio0doE9RBqXCSc76uunXplk171InGnBsfPOLZ/204Tj3W2aqfI6ErzPjwdhHUp3IU84QrfVv9xgFS69Y1hQGQbuG9CUn2g1WDON/XqauwfO5oYIT5a1FZRygd+pLdNwE+irkH/WQdpo9oLjveJZ55LYVh+MbQSHs0kA2nMvI3g0B41ZGIMkBAZpArWDA9NIG+Y0l4rsY4lgBn0GzgVcovG+QhbKzxC45ANO1TKyvnS5LwR4BJs2QLnj+Ub3PgwtCf9ZNOjPHsbO4ZYGll0wX6m+WjDUVQhkwDHOmt+li5hR9P0JxP4178UlKxYlThlOUpb6meckg2gwEu46yceW7ORxC8ymtjTzhNCQauTua9YyuVNDVC1LEn9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,49 +150,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 24, 2026 at 3:38=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn> w=
-rote:
->
-> In the current MGLRU, lru_gen_use_mm() will mark an mm for all nodes at
-> each context switch, so on each node aging will walk into each mm's page
-> table independently. On a multi-NUMA node system, one process launched
-> on one or a subset of nodes, its mm is walked by all other nodes's aging
-> while finds on pages for their lruvec. This is pure waste (100% walks
+On Mon, Aug 17, 2026 at 03:26:18PM +0200, Pankaj Raghav (Samsung) wrote:
+> >  		return -EINVAL;
+> >  
+> > +	/*
+> > +	 * If we realise that cache flush is necessary (eg FUA is not present
+> > +	 * or we need metadata updates) then we turn off the optimization.
+> > +	 */
+> > +	if (wt_ctx->use_fua) {
+> > +		if (iter->iomap.type != IOMAP_MAPPED ||
+> > +		    (iter->iomap.flags &
+> > +		     (IOMAP_F_NEW | IOMAP_F_SHARED | IOMAP_F_DIRTY)) ||
+> 
+> > +		    (bdev_write_cache(iter->iomap.bdev) &&
+> > +		     !bdev_fua(iter->iomap.bdev)))
+> Shouldn't this be similar to DIO code: !bdev_write_cache() || bdev_fua()
+> ?
+> 
+> As long as bdev_fua() is supported, it does not matter if the
+> bdev_write_cache is there or not right?
 
-I assume you mean =E2=80=9Cfinds no pages=E2=80=9D rather than =E2=80=9Cfin=
-d on pages.=E2=80=9D
+Hey Pankaj, sorry i somehow thought i replied to this already :/
 
-> are empty on those other nodes)
->
-> This patch series suppresses these empty page table walks with two
-> complementary mechanisms at different levels:
->
->   - empty_map (cross-node specifc). At mm granularity, one process's mm
->     whose walk found no pages for one node's lruvec is skipped on that
->     node between re-scan passes.
->
->   - PUD-level Bloom filter (general). One level up from the existing PMD
->     filters, it skips any 1GB PUD that had no young entries last
->     generation - namely whose 512 PMDs all failed PMD test. Cross-node
->     empty walks can prove its effect the best, but it also suppresses
->     purely code PUD inside local mms. So it reduces unnecessary walking
->     in any workload with cold areas.
+So yeah we do keep the logic same as dio. In dio we enable FUA if:
 
-I assume you mean =E2=80=9Cpurely cold PUD=E2=80=9D rather than =E2=80=9Cpu=
-rely code PUD=E2=80=9D.
+    (!bdev_write_cache(iomap->bdev) || bdev_fua(iomap->bdev)))
 
->
-> The two complement each other: empty_map reduces the *number* of
-> cross-node walks, the PUD-level filter reduces the *cost* of the walks
-> that remain.
+and here we __disable__ if 
 
-I wonder if the PUD-level filter alone would achieve your goal without
-requiring the more complex `empty_map` code.
+    (bdev_write_cache(iter->iomap.bdev) && !bdev_fua(iter->iomap.bdev)))
 
-PUD is already a fairly large granularity, so even if we still do some
-redundant work, I wonder if the overhead would be small enough to make
-`empty_map` unnecessary?
+So its the exact inverse of the dio check.
 
-Best Regards
-Barry
+Regards,
+ojaswin
+
+> 
+> > +			wt_ctx->use_fua = false;
+> > +	}
+> > +
+> 
+> --
+> Pankaj
 
