@@ -4,103 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C96E4C61DC4
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24198C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:37:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE1296B0088; Thu, 27 Aug 2026 23:29:45 -0400 (EDT)
+	id E9E976B0095; Thu, 27 Aug 2026 23:37:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C92A36B008A; Thu, 27 Aug 2026 23:29:45 -0400 (EDT)
+	id E50676B0096; Thu, 27 Aug 2026 23:37:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B81236B0095; Thu, 27 Aug 2026 23:29:45 -0400 (EDT)
+	id D3EE86B0098; Thu, 27 Aug 2026 23:37:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 926C66B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:29:45 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 12DEB14031B
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:29:45 +0000 (UTC)
-X-FDA: 85149248730.10.6609214
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 366B3140005
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:29:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K33GQRU3;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AA81B6B0095
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:37:48 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E620A037C
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:37:48 +0000 (UTC)
+X-FDA: 85149269016.27.3BC0730
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 77A0AC0005
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:37:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Pn5PVbB2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 3iAKRagcKCC0fONURYNPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--wfelipe.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3iAKRagcKCC0fONURYNPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--wfelipe.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787887783;
+	s=arc-20220608; t=1787888266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7M8X0MBMxt76hH5dRrPPwluwtv1i2byXrFlYLC1LgdM=;
-	b=vBvrMo4avbR57RDJfLjKDqtsjKFnpt+V1Faa/Wi9BgBTaT4ATv6mb44avQTDnCtLLwMq25
-	2/8Kd/TXBn6VneY8Zyn2lF/zVghTSSp2098xRUNvDRPJJ9HxCvSU8OSLgAEqKlhF7OVVCJ
-	hsO/KlUur5JnXJRpudEbkGgLoRk/bGk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787887783;
-	b=j28GTJgi4RHktiD3Gk3SCQ/fr/MFnpGjLFg6mOM/wUnWZCK6Oou1KiqFYuQ92CTqo5rtHh
-	/AO9Ib59KHo2/hr3rZfZwbf3JL2XzoZEdEddJEtFwdir7LlsSBfaxpHKuqB68cVYFg43Kv
-	ZiH2XcTf31zC7DytUJZ66DW/a058VgM=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bBeMGceDtS7wvXAGGzR5dbY5boET7zUUnip9K7sfHCc=;
+	b=JBSvlI4vuauZlD5XF4+oOggZDpsScbra1JVakgzxZYgE+pRVDw9Ug4CG/I9FCC1y1IJgOB
+	PAZfgmUMi11r3qaGWTWy5q2bKD+BvgsB+A6VN5AG81jfBK5ul9sQXezMPSUZSjdU5+bVrl
+	/2aiJG0f4jCjp8NjKkJm2CNzHvmEdac=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K33GQRU3;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0DD0C6022C
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:29:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92D11F00A3D
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:29:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787887781;
-	bh=7M8X0MBMxt76hH5dRrPPwluwtv1i2byXrFlYLC1LgdM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=K33GQRU34x8HB6Y7HBfsB0/e6FwBfNaf7dFW2ibWlwpE92Iw+vDh/+9cJvFraT5rZ
-	 tzOHnRGrO3/+ze9MDzYBkix6oZTPSTnsAeHYWBMuavKzbrtN8+Ld2K7QgNyXJjdAV0
-	 KpvtEaR5sZa2VlaKZBRf3KwUF4ph2IT3rYuv8MH6goK9+AOxIqTVlVXvdPboDYxH5b
-	 b7MBWzEyi6mxzriujenLKGaDwJiWHTvz5YXm4gsIJ86gzSHoaHpllYtEyWoGF0AXd9
-	 PUYu6Y2JTDOc3cK+K2MYEJOA+KQor2GM0/U4Id7Wtbbm1mx7hZbd29QVSMOZmp30kO
-	 rb2WBeY2K5M1w==
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-52d7a3defe8so4334391cf.0
-        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:29:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rpom8ZlAocxD57762BZZTRN+ayGAYj5abuDWojZq1F/bZe5OuK31yp+JHk3ZVBQ+VZXlgsuf1WwyA==@kvack.org
-X-Gm-Message-State: AFuF++lA0C2IgER+gA6fX7YojccanLWOtrgXyzXXrZiZh05MnhZKqZVK
-	U6vqbB0t9fCUIx3PHD00+LpQZpJ2vEQGtc6g49xn9W62YFjYjyQvsvGG1YHnVDxpc1Inhbpljkz
-	X55ZDw5sDfx4ye9efr9VcwrMfjabl/Ek=
-X-Received: by 2002:ac8:5a4e:0:b0:51c:167d:b345 with SMTP id
- d75a77b69052e-52fb96887b4mr44668841cf.24.1787887781134; Thu, 27 Aug 2026
- 20:29:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260827234704.63163-1-baohua@kernel.org> <20260827234704.63163-8-baohua@kernel.org>
-In-Reply-To: <20260827234704.63163-8-baohua@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 28 Aug 2026 11:29:30 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zaROZOgxix5biefMJNkTwf_BZMAwVhxOpYKrbztCLvEQ@mail.gmail.com>
-X-Gm-Features: AcwNN1VwfytFpUBjCQMB-lWULkgmjEGuuHvJzdATBpIW4xDfMhLj8PCOW7Wd_E4
-Message-ID: <CAGsJ_4zaROZOgxix5biefMJNkTwf_BZMAwVhxOpYKrbztCLvEQ@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] mm/mglru: batch move folios to the second-oldest
- gen's LRU
-To: akpm@linux-foundation.org, lianux.mm@gmail.com
-Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com, 
-	baoquan.he@linux.dev, chenridong@xiaomi.com, david@kernel.org, 
-	hannes@cmpxchg.org, kasong@tencent.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, lyugaofei@xiaomi.com, mhocko@kernel.org, 
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, stevensd@chromium.org, 
-	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, 
-	zhangbo56@xiaomi.com, Xueyuan Chen <xueyuan.chen21@gmail.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Pn5PVbB2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of 3iAKRagcKCC0fONURYNPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--wfelipe.bounces.google.com designates 209.85.215.198 as permitted sender) smtp.mailfrom=3iAKRagcKCC0fONURYNPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--wfelipe.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787888266;
+	b=EjVBDh1r6aBuQ/TF8ESsoiy51GuP/yn5VurUiSdb2Xl4yqOcb3X/X9Vrmkz9mppUreiT3h
+	yfwqMUhUqjSp9oqIPkgtOWzpoFAvK9TV03Q/ZKWv3W8luMsEzb8bYv6OUpaKrpzGH6k7MB
+	jEmE9WBKpCmyqsgIqUpBavCXTCMUdwc=
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc1cdfb337eso983556a12.0
+        for <linux-mm@kvack.org>; Thu, 27 Aug 2026 20:37:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787888265; x=1788493065; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=bBeMGceDtS7wvXAGGzR5dbY5boET7zUUnip9K7sfHCc=;
+        b=Pn5PVbB2l0VNqP2Eb4/uwcItYiLSseclUTN4eEf8yok1joFXQ8SlTLTJGY0W22G6z0
+         ZpndiS4zqVpGVJaMQ3ejHLU8QHjsGV61XNVpmothvQ/dlb7W3J7iMDjX0ndYVXmI/xoz
+         T48/rArRBd6+6upgwaLbPvapQM3WQ35HhcmRXeYI7I7xHGDqdT1Z/jzN+tI0DeZu7Vco
+         /3p5ueQORT+iB/l+uk6BZCM0yC1RR54jhFJFdNYUBopzV6y8Vii9Sl3ibQEWrdFDsgp7
+         7yq4N+11wESYbZ4A+vV07vuyjQFGvOzdn01XtBTh1HqWYEBW+ZY7/MDmR6rFy3h8xolK
+         E8TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787888265; x=1788493065;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bBeMGceDtS7wvXAGGzR5dbY5boET7zUUnip9K7sfHCc=;
+        b=X5yvvNNVipj0+neA6goBlze68+8yx4VxmCessC1cBVwN/ShvOQZ8b8fSTZpV5Q74+B
+         f1O1c4TDK6/7V5l+Wkdvfb0Vp0Bm1kPc3Tp3WCranaP/XHtZ3BHcojZurQcyr+SGNCnG
+         +oprYS8sSUNvyND9JvWw3EyifZiKubnBe1SOk/FvlOCiIwTzgc1UeVg7JNbS249RtTO2
+         gRwTJBAzb8sTH98bma0CRyOofhywnjK2SNVjW4Rb04nwZpGmfFRo2/mH1EfFfKK1pTvX
+         HJMAtI6fU7vPje5OhoYzAXnW5aAtKhk9TOdISktxi/sIM9o/bmf24+1hF26+NGLor76M
+         94/Q==
+X-Gm-Message-State: AFuF++nsL+VP2DCWDYc1nZonCdaEJc0Xwsx77CwQnUN3PAECy1brgWDD
+	1mTjTdg7RPzy+0SV0O4X7C9EcqhzcwUgshySoW71cQhNyidKcR7YuDlF7a5UbPArGdh8ZPKmAj/
+	ipdtBmMDdeQ==
+X-Received: from pld16.prod.google.com ([2002:a17:903:3550:b0:2ca:ceab:34a3])
+ (user=wfelipe job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:9cc:b0:2d3:716e:e2ae
+ with SMTP id d9443c01a7336-2d74dc5f3f5mr61909945ad.6.1787888264856; Thu, 27
+ Aug 2026 20:37:44 -0700 (PDT)
+Date: Fri, 28 Aug 2026 03:37:30 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
+Message-ID: <20260828033741.2184560-1-wfelipe@google.com>
+Subject: [PATCH v4 0/2] selftests/cgroup: fixes for test_zswap on single core VM
+From: Wilson Felipe Pereira <wfelipe@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Wilson Felipe Pereira <wfelipe@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: msmxbzcq1n7zpm9hsk68jmd8zju8q15b
-X-Rspamd-Queue-Id: 366B3140005
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1787887783-624273
-X-HE-Meta: U2FsdGVkX1+sAYLhIoj0nESJVo8m9PGTkWG/t37/HJxVY9bQC/XDL197RZLyVurbdtBCuDJmXwsqmkTx5If/7hLYb84ufVTXagmEVaSoe60KW4efJ0t09WBe51/y3hP5h/OMu6UBl3xr7EprfNJ3nVhfgAlJxviF+9FJQzdP7y2IG8rSmwQ8P8355ECg5JlSK0bkreALEUjqvacVC/mA5nHG1uWg5uPjEYn3e51Udf35ftzuQuwE+WitHdbm6v28Ot05YUVy1rNzhpcc7bRLj67puqhx6/TX0c7SLP9zp0RD/w2lG8aiquUzQfHf0LFcLRzkxcB6x/lbz+pavKm21vNPt57NDaNN+Xx04YSXrPSsAlhWQ8mSjOdguKKXvlINM25VIjK3pOQYz1D1gj2hTrVieGRebzoZnHuZcUBADCX+XuWkUEuZfjDHfU/mAKJ2pyKlBoEZXjWEI0cBPWVtGjEPqLd8T+/ZHyaGEHFV4sz1oSwH92zFUkLA1g+GhNLIVo+xiBGiFkbZKYu5r1zrBS1CVu1cGeNp4j/OsHk0lGxh9MLBfuY7bPl5d7B3Fr3bjctCaei1ik9SUtKzwI7vu3Gq17f54u1QPT8gplm5De6gusD7TL9sDrpIYPLZDpqSHQlIpGdzEf4A27wiaZC9Zl8F0tHBcYcDYOScRhSzGq/tjZAIA2v4gpn/IYG4YYnUx4W27Q2qbbis5ATVhuKPM+htW3XlBCbXVs5A57f2nbdJvHfIlVNA3sz0U74y0P/MmCPCaild69WZoDq1jeh2e2+uqv0mc6Stuj32vmN+z3/MkhMwZHluq8j5c1DNo89sT9P0Wy1cqHJ12dgh6BV9+d/Uw/lB0ZZpipfW439qnsjZ1fl1fKRpenSIVVsxhmGWCIU7MwpMGn4k767QdBMpU2SCigiTpETjGxnR2+Ejh2C2Syl0Z9QKnUgDQ8oJuqalrTRUnaFAuHxLTrxx0Ft
- xePzGcst
- p0Z5Q7Dk17czZsnUIXJUsLqFre214a3KVVHaF58UAjCCrPmpli9pfGkvhc2gIKvZS+wu6Oc1Ps2CO5C3NuCLQcTG8MCWOklNUSl05K0b1y1gedaqBsAphbGU61p6ambnbSFdRDv54t4jXVq4fBwvoo74jnnduOSoV1X/zeVim/eypF7TR1cvZTr+7gTmnkPvFZIvf1if8HG0/dejZUv9SiQ/nY6yM6B+9/CUvPSL9iT5ghDISO8D8i4NbDlnlyvLv9Ew7uJtW2LkyWZYZJOdEZ0gDuB1xuzDvVYXlX17lu8dRV08a1h3q6jqN0azp9PPMMjJiRU4qoRsv62Oj4QA+92/TDKN/pto4b97sWczZ6AtQ3CGOne2O3RS/EyFJhwnN0L3HKUPoaVT2XUKjYlAxA2S5zQ==
+X-Stat-Signature: chsnrni6bjesstjr7pzctigcm747ajct
+X-Rspamd-Queue-Id: 77A0AC0005
+X-HE-Tag: 1787888266-996121
+X-HE-Meta: U2FsdGVkX19CKO4Z4fnwoQTQz4zR59xnrNKV8NTfVmmzICTxBTYgZ2IUqtE0KYTVgBQ/34tzYgTZ39IV1rWnAeU2sER4ZV3/Reg8qcncuvlrZhdtrIeYnNl4lz7VT8zim9bGnUDgs39nWjIGaAN1MPuO0g1R27boQd1cRL2jeu2mhjPY2D16p82rlLcDAaWzQ5sUWEWZTHLQWW2+SQG+MbO0mcJKx7i0GVZLsBudMw2Gul/oVqayE6rRLEqhDjVvY6dqae4HHPKbfADP2tg2qiA66u2eitrB+YexJ5gtrrZf/fJXKfSAGe9DjerXD2EMPTLARmGx1Q5ILCcQSDb9QIzCIRpUz9Z+Wk41x3e9ssZEeCX6LFIAk/Q4E6g2UQ9Glrto5ZzCVFuFWUzBnqi8yo98FrMkT/NzYwe6CWKxtCtBtadisqJ9OTtZlqzgk/rQ/vvT3/Q8JApBNctGbxZ1/6t5Km5+RftIjD4tDNEjLx8PBABbGKyV997VLEW1XH7M/lMLHeSyOhgnL+jq03z69dx5Eaieu4n/WcIvDusKol7LeH75EazjZlmH0HVxY0Q8tDRzstgLJHo9TPG/ioRLxe6pJAjCr1YQuniOlNd6XhQEYcmRS458sb+cTklrt1qPezltMUFjaM+GdiJ/7CCjO7ghv235McD8QS28MDyd6ZmSTsqqe7bh1o+tVllloYC/8npPma6tivU8v9idMs5qCvUuJt8YbC6YfvWLwv14j5vvgEfBGnSiWvubwgskpJH9dGOA1/Nl4unkhUBjXX2NZ4pMYt2uK0qOEfcZJxOxAvywUBhDQpckXzO6EI77Cny6Rt3H1NmMzSXM1/h8TOvIaHvftdGNNuUWsZPLOQ3f1cpfmFAfoCQlO5+1K7NgZwn+joKS4/bSJaOegolKuJWnY8GXhuz7MeEPl8RoNUyCBRQE3s4xiaZFF7ymDQd2XxTmr8Ql24fv6t+kae/wwOy
+ PFkA0Co7
+ SfZ9VpfUJ9FG4+IP3QNShtSthsO7Upb+dgHm/Caqe4FhFure61QAhch3bbkJzOPkq3Nu0I8Mn7yayKtYwLxHQfZ5USaGe58S20RqnzKmhfv4esU60iBbjRVHc4rokNSlTB19XAtLeVz5ely8NEUin4G9A7eNNedARoYCxH9X0GJbe7cPMM9e3v5ODU3g87dFzt7jBek32Sh50Dy6P2yA47TQfhYRZRcDbAvOhJfFseslQ8FOkat2dvAy/U2/nXRmOYF+di043TVvjJWPjcQMP503NrMsEdyTj7bveAut7dlJ82ISvbhnGGbGfjxBxYnjF3hYmhi43WkeNNLxdsMH0GUQUCLc2fEyucUrmRhW6ol7iiisfoDBNlNIcdPNfM4f/iwmUkhmfIdV0FPq05qI5nKx93hoJiQfXDjAIueYa3tX2ivECHE6ixaa+benIQ+L8DtsFWs47Z8UX+Ip4zS1dAXn2HhjdV6ZaPLfS3L+/baToGbLPWCCyjzHf0s10XdG7gkKnSdcXWILU/4X1QVSZ8de8G9acY8s3q/9Ogcl3uA04LaOY1abJ1SrFAbG79o4iQEPGWmBrdKxmMKZkkhATkMYyPnUr4IoP+QPiPXxQM02oO+WjPfHaUdwt65F1AyTqz9Oc3NAl/43/D9BcC2cKMu7K1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,90 +111,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 28, 2026 at 7:47=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
-org> wrote:
->
-> Detect folios that need to move from the oldest generation to
-> the second-oldest generation, and batch-move them together.
-> This can significantly reduce the sys time of inc_min_seq(),
-> especially when the other type is significantly behind the
-> preferred type.
->
-> Assisted-by: gemini:gemini-3.6-flash
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> ---
->  mm/vmscan.c | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 17524e96fe64..2b6f3f05ce60 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3931,6 +3931,19 @@ static void clear_mm_walk(void)
->                 kfree(walk);
->  }
->
-[...]
+This series fixes two test failures in test_zswap observed when running on
+a single-core VM (-smp 1) with 4GB of RAM.
 
->                 while (pos !=3D head) {
-> @@ -3974,7 +3989,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int =
-type, int swappiness)
->                         new_gen =3D __folio_inc_gen(folio, old_gen, &gen_=
-increased);
->                         if (gen_increased) {
->                                 delta +=3D nr_pages;
-> -                               list_move_tail(&folio->lru, &lrugen->foli=
-os[new_gen][type][zone]);
-> +                               batch_end =3D &folio->lru;
->
->                                 /* don't count the workingset being lazil=
-y promoted */
->                                 if (refs + workingset !=3D BIT(LRU_REFS_W=
-IDTH) + 1) {
-> @@ -3984,11 +3999,14 @@ static bool inc_min_seq(struct lruvec *lruvec, in=
-t type, int swappiness)
->                                                    lrugen->protected[hist=
-][type][tier] + nr_pages);
->                                 }
->                         } else {
-> +                               flush_lru_batch(head, &batch_end, target_=
-list);
->                                 list_move(&folio->lru, &lrugen->folios[ne=
-w_gen][type][zone]);
+Patch 1 addresses a race condition in test_zswap_writeback() where
+waitpid() returns before the exiting child process is switched away by the
+kernel, causing an immediate write of "+memory" to cgroup.subtree_control
+to fail with -EBUSY. We fix this by waiting for cgroup.events to report
+"populated 0".
 
-Sashiko says
+Patch 2 fixes an implicit unsigned conversion bug in test_no_kmem_bypass()
+where small negative timing differences between debugfs stored_pages and
+cgroup zswapped bytes caused the comparison to falsely fail due to
+unsigned promotion.
 
-"Does this change from list_move_tail() to list_move() unintentionally
-reverse the relative LRU ordering of lazily promoted folios?
-In the baseline code, list_move_tail() was used for all folios, preserving
-their relative order when moving them to the new generation's list.
-Because the loop in inc_min_seq() processes folios sequentially from head
-to tail, inserting them one by one at the head of the new list using
-list_move() will reverse their relative order (for example, folios A, B,
-and C will end up as C, B, A in the new list).
-Could this subtly distort eviction fairness and page replacement optimality
-during MGLRU reclaim under memory pressure?"
+v3 -> v4:
+- Patch 2: Use `long long` for `delta` and `max_delta` to avoid integer
+  overflow on 32-bit platforms (Andrew Morton, Sashiko).
 
+v2 -> v3:
+- Patch 1: Collect Acked-by from Michal Koutn=C3=BD.
+- Patch 2: Explicitly cast stored_pages to (long) in delta calculation and
+  inline the return comparison (Michal Koutn=C3=BD).
 
-I feel this comment is not particularly useful. We are focusing on
-resolving two specific issues:
+v1 -> v2:
+- Patch 1: Replace EBUSY retry loop with cg_read_strcmp_wait() waiting for
+  cgroup.events "populated 0" (Michal Koutn=C3=BD).
+- Patch 1: Clarify task lifecycle in commit description (Yosry Ahmed).
+- Patch 2: Remove abs() and declare delta/zswapped as signed longs with a
+  signed threshold comparison (Michal Koutn=C3=BD).
+- Patch 2: Add Fixes tag (Michal Koutn=C3=BD).
 
-1. Make sure promoted folios are always placed ahead of non-promoted
-   folios. Right now, mainline can place promoted folios after
-   non-promoted folios.
+v3: https://lore.kernel.org/all/20260827034807.2822234-1-wfelipe@google.com=
+/
+v2: https://lore.kernel.org/all/20260824033533.2147900-1-wfelipe@google.com=
+/
+v1: https://lore.kernel.org/all/20260804042053.56940-1-wfelipe@google.com/
 
-2. Preserve the existing order of non-promoted folios instead of
-   reversing them, as mainline currently does.
+Wilson Felipe Pereira (2):
+  selftests/cgroup: test_zswap: wait for cgroup to unpopulate in
+    test_zswap_writeback
+  selftests/cgroup: test_zswap: fix implicit unsigned promotion bug in
+    test_no_kmem_bypass
 
-Sashiko seems to be concerned about the ordering among promoted folios.
-I don't think that ordering is particularly meaningful, because we don't
-know which folio was actually accessed more recently. Accessed bits are
-accumulated over time and handled together. The only way to establish a
-meaningful order among promoted folios would be to make every access
-trigger a page fault, which is obviously not feasible.
+ tools/testing/selftests/cgroup/test_zswap.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-Best Regards
-Barry
+--
 
