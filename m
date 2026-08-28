@@ -4,99 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51090C61DCB
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 13:59:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88485C61DBD
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 13:59:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 634186B0095; Fri, 28 Aug 2026 09:59:03 -0400 (EDT)
+	id A2D2B6B0088; Fri, 28 Aug 2026 09:59:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E4816B0096; Fri, 28 Aug 2026 09:59:03 -0400 (EDT)
+	id A04406B008A; Fri, 28 Aug 2026 09:59:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5215C6B0098; Fri, 28 Aug 2026 09:59:03 -0400 (EDT)
+	id 91A9A6B0098; Fri, 28 Aug 2026 09:59:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A32B6B0095
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:59:03 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACA4F1603A7
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:58:27 +0000 (UTC)
-X-FDA: 85150833054.16.32896CB
-Received: from 7.mo584.mail-out.ovh.net (7.mo584.mail-out.ovh.net [178.33.253.54])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5AF3920003
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:58:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=quelquesmots.fr header.s=ovhmo4049951-selector1 header.b=RLCaeniO;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of l.wandrebeck@quelquesmots.fr designates 178.33.253.54 as permitted sender) smtp.mailfrom=l.wandrebeck@quelquesmots.fr
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 752986B0088
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 09:59:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0659BA3D48
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:59:54 +0000 (UTC)
+X-FDA: 85150836708.14.7D2D30C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 23C9640006
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:59:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lDLgEYHx;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1787925592;
+	b=rIUz6AZ+BbmSATON0newGkaDSMEJKw0F1sB2nhIyTxJGxY/g6ZhgjN39O9RtiaT3QBVmob
+	uUilSzTSdXqB6LlMze668bD8d9Q2FnVPakb72SedlH13CER01N7Nof7fxaW6fBXzmEPBWW
+	3K2l5TW1bRMCA+tauAQjjYyCe0O1iRE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lDLgEYHx;
+	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787925506;
+	s=arc-20220608; t=1787925592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=764ev2N3KwIgGapMuVWioNnBS/1ILv2C77z2qZJCBdE=;
-	b=XhIGSBDcwKGjdgeLQVhSG9+uYXSy0QvXCOoVioZKc+z7Gohb5tpK3iyydUqrK0Xqv04wkG
-	+UTxemXErS0dQBeI2l2UC+NWVBwQwiQbkcSXppfBv7jjS5oyI5I53+8ZiGCAwLfXry+xMs
-	X4ElDUOSdZnYeaz1nxNH3192XeJ0RW0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=quelquesmots.fr header.s=ovhmo4049951-selector1 header.b=RLCaeniO;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of l.wandrebeck@quelquesmots.fr designates 178.33.253.54 as permitted sender) smtp.mailfrom=l.wandrebeck@quelquesmots.fr
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787925506;
-	b=BNzLm+AccKcMGD7hW6lXVNxXdKTxcWvqqNjxh/q+CYoVNAAQskQ/7jzNM8cxQBe4B9DOwx
-	3QLC6d/I2rqbQKYBHaBsACdqgJoTxt2iMDoewNGWkm32izACDkSjAFVCjzXWJS81DCPoPa
-	U/B9eBk+GrGDYj2bvOUK8Hds1lQdirM=
-Received: from director4.ghost.mail-out.ovh.net (unknown [10.110.54.155])
-	by mo584.mail-out.ovh.net (Postfix) with ESMTP id 4hWg2l4Gh1z8Whc
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 13:58:23 +0000 (UTC)
-Received: from ghost-submission-c7b579475-6dj84 (unknown [10.111.174.132])
-	by director4.ghost.mail-out.ovh.net (Postfix) with ESMTPS id D17FCC2A79;
-	Fri, 28 Aug 2026 13:58:21 +0000 (UTC)
-Received: from quelquesmots.fr ([37.59.142.109])
-	by ghost-submission-c7b579475-6dj84 with ESMTPSA
-	id Q4JXJP2TkWrQ9hYAscvRaw
-	(envelope-from <l.wandrebeck@quelquesmots.fr>); Fri, 28 Aug 2026 13:58:21 +0000
-X-OVh-ClientIp:109.190.254.62
-From: Laurent Wandrebeck <l.wandrebeck@quelquesmots.fr>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] x86/mm: don't apply va_align to hugetlb mappings on AMD F15h
-Date: Fri, 28 Aug 2026 15:57:47 +0200
-Message-Id: <20260828135747.724789-1-l.wandrebeck@quelquesmots.fr>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GMsq4s9H5sslOOoHpaDnzK693uMuIdL+zLKvHUgSCOw=;
+	b=aAuxGnky6WUG/V5lyllcPYW9Odb9MGpDpUX/t4Ip3NwwDYD1FodSFn64SJSEjAHZgYKgzl
+	pOsSI9Rmd12lmC6WJLxwAlc5bNKg7RoM9zzABz0JTrIZmNgl76MffUEJ19ABDIHyVsE7ce
+	jZs1qRuindr9lRj3X00oj3/PrGGBka4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A9D5260208;
+	Fri, 28 Aug 2026 13:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122FC1F00A3A;
+	Fri, 28 Aug 2026 13:59:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787925591;
+	bh=GMsq4s9H5sslOOoHpaDnzK693uMuIdL+zLKvHUgSCOw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lDLgEYHxqyMExx7XGHQ1jMOssFVfuXXHoEzbBFpy5flN3Ib4Bd3XgGWIWJMp6arLJ
+	 uQVbfv7J5ZyA4dhS8/bZdYE+uBBMnrDV8e0fo5PloBITeSUDghfkfYw1D9c5wdWYwu
+	 XZQit9lHQy1bSrPTtaQxgXbGCzJ7ybYZKFJ2vKJmyZ3gfcQ9S9Zux7MV4EHTe8WKIF
+	 cQvwZk10zsIwVNSeF02O73cQgZkIW8VKvcKbmR4S3FO1bWytcWw/EKysYqo2DV0DeN
+	 8tK1MPeAD1ya67qILgrYnKWGC/cyVNaPzFTPrj302CK1H26FHwBHo62CzeDmiZRHiZ
+	 FnDhPRSM8Ictw==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 8F1C61980045;
+	Fri, 28 Aug 2026 09:59:45 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Fri, 28 Aug 2026 09:59:48 -0400
+X-ME-Sender: <xms:UZSRapkyHK92xpfCc7gC34L_khXR3QDyMijHbidWAs220sKQ8lkFUg>
+    <xme:UZSRan8Dpwoy1eVqQ6ejwtpK5aDyWpuAHSF3GZvcF9ux2kRifDcfxgdrhN5UbMiT2
+    kcCkZeB7jDWyXr2cnergQkITcqHPmjzoSUgbqYkVaV59rMStIDBniI>
+X-ME-Received: <xmr:UZSRatEolRX4Ox6wFQ1OGkjYzS9-u6dOHl9Sw-ITv6dXf-KAx_Tttsv0TF8>
+X-ME-Proxy-Cause: dmFkZTFllgFcBPPxWyh7H7Ya97cPF2z+CaYPZAeFHJRUEOI7iP7NbK/RD+h7m0XG7mWy16
+    fIZCnkd80l4AcUG6PCl7E90y1FlqRmxxmociQ31S8wZQTE+r/ShOn2X3FGZoq2J0Vdf97p
+    nuFw4AqeM/WomfxoyRgLOaOyXPCImUEPhxoNz4O6fJf9J9swOyN5utIVT2r0XabJbA4HxF
+    oILQMURKy3DfTYUUGeeYdtTqPn4upMBcTfKSGqNc5c6xt9AM949lwP1kFNdph86l+6pYNc
+    RLrozyUVEmo7eSsWX5/dVPnhXM37BJYxN8ROLEVvUcuC0Xxxx2BGLKc00OiMUuXhlN+6X0
+    1vEX6V9DH/wtIWZy7pT2JUHc34pYq9bNE1mhzx6gPcCLaoh6ZOIx6UPo5fsw2jPVelT/oM
+    +RkCwxR1y6cCiBY7aJLTWgDUQPbYSswR7CrwcwhuhPYs7IJmoS7+ghC4sDkXaU/AkAnIJc
+    Gu0NQkXGvpCFrPL0K1sJJ0/HBEE6GTdYLrk1kEZpfjVXn0h1VASbWIyC8kJ92dmWrjl1FK
+    b/EgQHbOIgf+5hE5GMQ3LfKop5IEUj8L2oPdH4UNTLw/ZUAu52OAWj7ERMa3mq8u4Fpfvf
+    n43K7EzhAX+ZsBpBswrS7KKCqwtaiiqzNVHDXonWeXfntyQUnXrftzSFTLNg
+X-ME-Proxy: <xmx:UZSRauKl_CC_sQ4ifO52hn5UJgg2-F_7akOIxsy_CfM2VI_jq2wh2w>
+    <xmx:UZSRamfb0Cvb9NxgQOQKnEarX-NxrqGf7K4MrHcRGhmLSPArbpa-Mg>
+    <xmx:UZSRamXYit9R7Sub6lx6kW99a3nAu5AU_EaeCy2263Rn6OZWl3cyFA>
+    <xmx:UZSRauCS1sl_ngYBSDZMZE-MXPsW_dD3EDJf5Eky0u9G8cqeVWsMZA>
+    <xmx:UZSRat9eai9o-Upb0C9Q7D893HN4Q13Z1LausSAOpkC8N-eK7DnIl2aI>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 28 Aug 2026 09:59:44 -0400 (EDT)
+Date: Fri, 28 Aug 2026 14:59:43 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 2/5] mm/memory-failure: libstub: install the
+ poisoned-memory EFI table
+Message-ID: <apGSy78NoCov0MWr@thinkstation>
+References: <20260826-hwpoison-kho-v3-0-6f79c4b605bc@debian.org>
+ <20260826-hwpoison-kho-v3-2-6f79c4b605bc@debian.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-x-ovh-tracer-id: 10664242445692042523
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEkLbPYNbrxSHojy+RWJ8f4V182xAxBMjKkkHL9k0wwpb33zjs6+hqGEBBil6YU4oF5EiuB3yR1lArnsvLdr7t2c1Undp+KBabI/CsDy0O1uFYgfQI+DcvaALXXKVevP+MwP71PkXEeVfjKK/N35zEm6lTBWreGsF0kVsntRcV4dBcxRBJo2ohvQVSIbl3SXTr9mrgq/BQ/qmCepoMIe+ga9lqDhAdqSXpFkPiNx2ZTGQJwKOutfjqkABscfzXiAvfIRKikKW9QTQ/KQjtZO5UICr1q39vU2695843rnLoi+QjrM9Tj7E4s8zhAXcnz797JXDmjwRk14H4KfZ4rOGzsJK0svnpmxfKsFR6o98mcdwWWZDnM7UHzGOoDz0JEHpynatb53nQboP4eYcZDqFkAQZoL6uyOOmTQt2yiAWMlO0vYwR6syKy3dPTYSL5liQ7jfdEuU5xaXBN8JnlPPP7vcvyNT9YJpGNj8Ux2/Y4rJnBWtd9v3cmW0qThZVfTsKNk3cc9FpGZBll0wja3YN/sAqkP/T6unhr5C3RNs41LY0OjXvxkJ/ex025e7XXefVB6LIo7kNLNgh87Br1yFXRWHg/2yV5xcZN9SbLDUbPED1M4PWlvjIT55PnavVcGVIWXbXKxt1Yu3eS23QuUnmTrGSjoF+FV+DVStV0jqwe6lw
-DKIM-Signature: a=rsa-sha256; bh=764ev2N3KwIgGapMuVWioNnBS/1ILv2C77z2qZJCBdE=;
- c=relaxed/relaxed; d=quelquesmots.fr; h=From; s=ovhmo4049951-selector1;
- t=1787925503; v=1;
- b=RLCaeniOviPMBqhBZH3W5fa3Uo77l7WOsSx4uxRQsc5IzTxoYrbrxZwG1zlOi78OClQ81+yi
- BQ87VEWsrJTF/2xpDxCKYEcTF2lULWUufMBazeZB7GPq5TiWq6kp5CCwIYKYOCU07QC4K1x3vHV
- Yk2krafDhigmY+m+bP+qFjDo4UbpFpbAoD2zmJU8EC4gI+xG/dDGVbsEMxC1tOgRgrwkVKk19Ug
- Mp2vJdIIyHkndFM3oPsd1OLPX8DGZmaogOoeO6hsAdQ8PKxjRh3ms7S1afXoaSpD8C9IHHmoDQn
- tWWhUvnU5puuCbrCZ/JSo6IVC0FOTg+EV1FPGCHLpTmmw==
-X-Stat-Signature: iayb8zhbcu59hrid74cizbopo7s1an1m
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5AF3920003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260826-hwpoison-kho-v3-2-6f79c4b605bc@debian.org>
 X-Rspam-User: 
-X-HE-Tag: 1787925505-456822
-X-HE-Meta: U2FsdGVkX1+GpDfvOgRtQeBMddfhtFDynGvT+jirxbVgrHldxfVBquNq1n9a87R2Vp2geBW0ORhN80+i6VQRHiYSsi1rIDwBNxQq2xJ/1XSJwHVP6NL06QLbFDpKeWBKyjwWIY8Vx2VJbUMsN8bnvCVKF73MNS9xKACYaOBdwXPjiKADx5YLpzL+P2r7968i6TfjuVvNXXwHkb/sNQalXLPf+sbZvV1UYecW8EIWfhutf7nAtHdSErf64XLNULs5zzxZdLHWHapkZJr78kz6s9o/kt3wCscdXN5ybU/jqkVvxMVTZw36oENCyOzCGwAq5lNa8rk38MblQzO4v5tftcKNuCf0QcC4SEGiZsY8KIuZJ3T0H8eVHbDpBTWkKbyRXw6tUQNi0hLP/+euBm29oZuAQ3Ew37MZ9F1gcWRFlF83csxnmAsgY3iwUmwk+pzOLEnBf20qZ8jq2+TmJWzvlWTjT5gohAuSp79mcKvU6qzfGOjE8o4rAMy4oHehs19AAuIfaD9tgKh+TmBTTSDjp8mdvF1SHO1SSnsaYILMT++xWx0WQpCW9Caex9r/cwtyy7BEpHB79LqbDyaWFC0eiXorCXVyXTn7ZX6Y8ibO92yvla5a5r24ZSKSdNbPo+m+X5dLhYNicAx+vP62mERyiBeeXXUBX8CrzIy2q6b1R2Bmuxi4TrwnLGc16kyar0a9EkuxGUJdVcX2kX9U539SFQhFwT+iFSjFOL56v733HKcgZl54KmvzXz2jdc6tbcb3g31QNFKSh30Y6O5sBRyLvleEgTTpeqZV+3/Yq//7Soi7dr0Gs+RhJz81IdpqnkSBxtrkLiiYVH/Mw+eXvcmgVAZImKnuzjLK38MeJWOE6mvXwyk/CUpLj0dgbF0yDMOasdAPQNnic7Kc5ClU6dRHTZ9Co2jVUti0qMlvye8O1JxAtq5v0FaijXudTn1m3AMeaCrpfJrYcKctBFJMUuO
- uAOXPRb4
- XTZ7uOQ17OHJpuHBpw91rgcpVM+JtQ9mXlbTF/naUvKzeLY1gOLlpH0pwaAlrXctUwxXfGmhG3XEXpvaidN3++qIOEnesWBVs5O/OVY4Iokq4PzadCNpN5AB+6dJ1oIPdRhVFCSRNdOXnxFa3o1vsA+ttiWWgt5m5e44yxEfK5+GJjzCyj0Re1Y4S09T3n/sq11zMLDjpd2O+Bc+1EvnlOrXmu9bv71uj2oRcrGVJIXFBrttczroYQbv1H0cUY5qCozZ9/IXFr1raV3R7Qto94rCznVOqZY3CfOBM2oDVejbegSDdzOLybh2hiYSqGecxMtZrFnUAsaUe+P89jVu6tCm/ZrD2y1j4VQDFEIyxb8gqDW2Dx3wXsGaF7gpcA0Umy1L39c+b2IoIPOc=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 23C9640006
+X-Stat-Signature: io1kroo4jn6f8ds4zeuthsdsuoxhd1o6
+X-HE-Tag: 1787925591-816101
+X-HE-Meta: U2FsdGVkX19L1+3+3PKwMnyJH2D46VVFdHcdxyxv5yCdQ2FNFYEfzxQoCil15YC9FkP3JOvScImg7vQdwzibDzTB55sRYOpuPHnrdOHfu75KXmzXchWabguySoNs9egXjGGpYheVkvd3LxLSWz63YamXhfNvV9xOvG8CT4oVIwsHa2Qvveho7yxPZz6t8HusoqC6MuTHntW5jcEvPlnb15JgOKWg7T3/l25f6BZe4ifTR2qMTDVh29I5mffZ2tm0aiSa90NqChS+AAnax7hwfTY15YsxNiahrrRz81Xsn7DKvgoRWRqXeDZ23o8zTHvZnsm5UIbLyG/W3xfxeHkAd8zeBFYl1dKhfiPphTyLBJCjAEE22V686WsNZUmnP0PRlKB5HNGZanLh2uLmxiKxSYfFmks1KjBJr6SU/6kndEMj1MhrYRrWxxmuuHLDYk5WsDtYSnMj6DdxVj/itRNgeM4ix1oo/qpbkPAhR6CSK7CE8dzaxqXVeHJzmw9t3Eof7bQwnNAbaEZXMTIYRixzT/we26lXPkUN3kBXYOeD+vSrMmJN6fLOD5JPyzWR3cEMyYomFBNj6YifCUMc1boRxHah6s7+60pqEUGtXfgt/++ADI+oTLFzDh2byN0T3I2X7PF4IJOL82X4eEY7XZ4CTPvY2gt+efT1rSnWGIpehtR5pFj7iSB+n+bOFlKQ5i57/XxgLNhRZ1Q7PjwmDKkhDFjMDaEgZQB5YSUMOhO1HieHhJTf3+0vu/zIZOVvSDSJ1Hxe+noWG7/zH92aQDQ3Zq0ufEHBUBNyB30H0FxRwQ/uxL0RJJ0nBT2cpIIwmhS2cmKCN+3DK18aZ+8mv4HntHBIOH6HFDgG69/vvx28I5/lKMoyzLbgnPNTH8DhBUiPpOzfKvogNHyfaH8kTWx0/2bX49VEuT8XEUjOgq/9I+SkqjeCzb/DZ8yOYrU6wCVwuyD8sO4wFHOY28M+Ktn
+ /hGJlxZZ
+ IE4WDo62ZPeEaJRsV3IGxY1OwEhzSmF/OYI9YfirALi68lW9cQaPQ97A0UKWVEZfVnp7F2BRnFb+Wb6B9WFDIXNH6PrLhTlwUIkgc/IoDkufU580vbdtaiD3kxfy/gM+SaXxwhB5EGYrucK5MOHrsR3nue8Rm8yrwxB/H5MrE4zfTEcbjonyEej1IiWXOB/cZe0HviZKsKt0TI6cn6FTuuL37XTCD4owSjWe67BSlLeTCnGfwRc6Pt8cLlSY05D9/p7/vZlp9IpPJeqd0JUGaWObXLfNgIVNJkuKBwyLHEVEkOYLT0zuC6zhkOQoeDLv24IMNXBcq1qhEUajVWjZZx8lczLpL3Vtf0cEq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,79 +126,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 1317a5e7f7b1 ("arch/x86: teach arch_get_unmapped_area_vmflags to
-handle hugetlb mappings") taught get_align_mask() to return
-huge_page_mask_align() for a hugetlbfs file, and skipped the pgoff-derived
-align_offset for one. It missed the other write to align_offset:
+On Wed, Aug 26, 2026 at 05:03:53AM -0700, Breno Leitao wrote:
+> A EFI config table can only be installed while boot services are still
+> up, so the stub has to create it; the running kernel can only flip bits
+> in a table that already exists.
+> 
+> Size the bitmap from the top of usable RAM, which efi_get_ram_top()
+> works out by walking the UEFI memory map, since the stub has no max_pfn.
+> Bit N covers unit N counting from address 0, so the table tracks
+> max_pfn. Memory the firmware hot-adds later sits above it and is not
+> carried across a kexec.
+> 
+> One table has to serve every architecture, so efi_get_ram_top() takes
+> the union of the memory types they turn into RAM: what setup_e820() maps
+> to E820_TYPE_RAM on x86, plus the EFI_ACPI_RECLAIM_MEMORY and
+> EFI_PERSISTENT_MEMORY that is_usable_memory() accepts on arm64. Sizing
+> wide only costs bitmap bytes; sizing narrow silently drops the records
+> for every frame above the top.
 
-	if (filp) {
-		info.align_mask = get_align_mask(filp);
-		info.align_offset += get_align_bits();
-	}
+x86 and ARM doesn't seem to agree what RAM is. On x86 it is by ->type
+and on ARM it is by ->attribute (anything WB/WC/WT).
 
-get_align_bits() calls get_align_mask(NULL), so a hugetlbfs file still gets
-the F15h I$ anti-aliasing randomization that its own align_mask already
-excludes it from. vm_unmapped_area() therefore returns an address
-deliberately offset from the huge page boundary, the hugetlb VMA's vm_start
-is only PAGE_SIZE aligned, and tearing it down trips
-BUG_ON(start & ~huge_page_mask(h)) in __unmap_hugepage_range():
+is_usable_memory() only decides nomap. Everything is_memory() lets in
+lands in memblock.memory, and max_pfn is PFN_DOWN(memblock_end_of_DRAM()),
+so the top of RAM there can be a type that is not on your list.
 
-  kernel BUG at mm/hugetlb.c:5161!
-  RIP: 0010:__unmap_hugepage_range+0x64f/0x660
-  RAX: 000000003fffffff  RDX: 00007e9280003000
-  Call Trace:
-   __zap_vma_range+0x523/0x680
-   unmap_vmas+0xa5/0x1a0
-   exit_mmap+0x13b/0x3f0
-   do_exit+0x1e4/0x470
-
-That is a 1 GiB mapping on an A10-8770E (family 0x15, model 0x65) running
-7.2.0, 0x3000 below a 1 GiB boundary, RAX being ~huge_page_mask(h). Both
-hstates crash, and so do both on an FX-8370E (family 0x15, model 0x02)
-running 7.1.8, there 0x5000 low. The offset is va_align.bits, drawn once
-per boot: identical across hstates within a boot, different between boots
-and machines, and a boot that draws zero does not reproduce at any size -
-hence the apparent intermittency. The crash is in the teardown path, so the
-reservation leaks as well, HugePages_Rsvd owned by nobody until reboot.
-
-Reproduced by mmap()ing MAP_HUGETLB and returning. A Ryzen 5 2500U (family
-0x17) on the same 7.2.0 does not reproduce it, as expected since va_align
-is only set up for family 0x15. With the patch both hstates return aligned
-addresses, and PostgreSQL has mapped a 4 GB hugetlbfs segment for 18.8 h on
-2 MiB and 4+ h on 1 GiB pages with no BUG and no leaked reservations.
-
-Fixes: 1317a5e7f7b1 ("arch/x86: teach arch_get_unmapped_area_vmflags to handle hugetlb mappings")
-Cc: stable@vger.kernel.org # 6.13+
-Signed-off-by: Laurent Wandrebeck <l.wandrebeck@quelquesmots.fr>
----
- arch/x86/kernel/sys_x86_64.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/sys_x86_64.c b/arch/x86/kernel/sys_x86_64.c
-index 776ae6fa7f2d..6b2be065304f 100644
---- a/arch/x86/kernel/sys_x86_64.c
-+++ b/arch/x86/kernel/sys_x86_64.c
-@@ -157,7 +157,8 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
- 	}
- 	if (filp) {
- 		info.align_mask = get_align_mask(filp);
--		info.align_offset += get_align_bits();
-+		if (!is_file_hugepages(filp))
-+			info.align_offset += get_align_bits();
- 	}
- 
- 	return vm_unmapped_area(&info);
-@@ -222,7 +223,8 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
- 
- 	if (filp) {
- 		info.align_mask = get_align_mask(filp);
--		info.align_offset += get_align_bits();
-+		if (!is_file_hugepages(filp))
-+			info.align_offset += get_align_bits();
- 	}
- 	addr = vm_unmapped_area(&info);
- 	if (!(addr & ~PAGE_MASK))
 -- 
-2.34.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
