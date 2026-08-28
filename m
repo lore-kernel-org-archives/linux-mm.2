@@ -4,95 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B43BEC61DB9
-	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2E90C61DB9
+	for <linux-mm@archiver.kernel.org>; Fri, 28 Aug 2026 03:10:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A9976B0088; Thu, 27 Aug 2026 23:07:21 -0400 (EDT)
+	id B0F3E6B008A; Thu, 27 Aug 2026 23:10:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95AB26B008A; Thu, 27 Aug 2026 23:07:21 -0400 (EDT)
+	id A991B6B008C; Thu, 27 Aug 2026 23:10:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86FF26B008C; Thu, 27 Aug 2026 23:07:21 -0400 (EDT)
+	id 961E96B0092; Thu, 27 Aug 2026 23:10:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 66EAF6B0088
-	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:07:21 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DFF241402D0
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:07:20 +0000 (UTC)
-X-FDA: 85149192240.06.902A397
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 186E2100002
-	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:07:18 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ogwjESZ5;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 71F996B008A
+	for <linux-mm@kvack.org>; Thu, 27 Aug 2026 23:10:41 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC332A3BD2
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:10:40 +0000 (UTC)
+X-FDA: 85149200640.30.BBDCA61
+Received: from mta1.migadu.com (out-241.mta1.migadu.com [95.215.58.241])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B2B81140004
+	for <linux-mm@kvack.org>; Fri, 28 Aug 2026 03:10:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XGQfXx2w;
+	spf=pass (imf09.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1787886439;
+	s=arc-20220608; t=1787886639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gt76UcTPmzHLWuOwKDbCamUsSovytLsnrvRwSJBIAoo=;
-	b=o/UNl6H4JjcbqxWpT6wpIsG5Lj5LyyJMpmO+zsqMLBzTTA0I+P5xPWqooOEFv+RC+pjLCy
-	Bz5yj/Whai2Vm4u90Cbeklmn+Ks/W/c+m8ovdBKlJENDc4XnOGJRb24UE7d4EmTPbNcp3d
-	x/vCY9b8rIuaSgoUpuADIwTwuw6LPcU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ogwjESZ5;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=0Iqmvg32GGbKP2M3hLGgP+wucBtINQIgJgx2KMERq2k=;
+	b=kQPYNdX3gOFJpW9m2fA/myArXEDLJTKJIiI+r7jPEmpkYSbFKcjfTjw/8M2gGanbcDKfk9
+	FylS47E0TF+26xAPK9drJAEC5QH3wwQwiRwiqtM85D4m6MDQhbR4ltnKAnDCGHOFrhb47q
+	tfKO6poDEc3BFuvFW59tSFQKWnNF2fE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1787886439;
-	b=DYFJhb8onuFOPy3KUlF9zSkcaIwJbHp/UE2OrFk/FA+w8/No6X6MtYV+XWQLkboYt7AyvR
-	TcTgd8PROVRyYeCVcRz13UA1mhyhvkA0v548us0tuspL//AbBBGMM2MJCg1WXRJCj0Ny/z
-	B25yph6+rEs2uIyqN2FnQNAMYCkXN6I=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 217594347E;
-	Fri, 28 Aug 2026 03:07:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8ADF1F000E9;
-	Fri, 28 Aug 2026 03:07:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1787886438;
-	bh=Gt76UcTPmzHLWuOwKDbCamUsSovytLsnrvRwSJBIAoo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ogwjESZ5/FbCSjjrCLy5uiofj6a3BXR3/ZKpajdm5ZCo9aB8+asfXzXiazHR/vJcs
-	 ggzMBp1ivVxgK7aGvpICf/s7db/rIy8wvidccRF4T05SSed7qjdRnmJlI+KxOyFki7
-	 2kC+NR2EW8bFE+6fZhpAnLQZXcj8BYnklmn+9FVA=
-Date: Thu, 27 Aug 2026 20:07:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: chrisl@kernel.org, kasong@tencent.com, hannes@cmpxchg.org,
- mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- yosry@kernel.org, david@kernel.org, muchun.song@linux.dev,
- shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org,
- youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, riel@surriel.com, gourry@gourry.net,
- haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com,
- baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com,
- skhan@linuxfoundation.org, kunwu.chan@linux.dev, kernel-team@meta.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v4 00/11] Virtual Swap Space (Swap Table Edition)
-Message-Id: <20260827200716.97881447f243c4afd275144e@linux-foundation.org>
-In-Reply-To: <20260825153238.2695446-1-nphamcs@gmail.com>
-References: <20260825153238.2695446-1-nphamcs@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	t=1787886639;
+	b=V18SSYu0ka6qsnw5DCCCjuyRS7XhZklvUXOjLClPtLmsVlfY7bDQceNIKGuwxzguhNMtqy
+	3Gj4qfpBj+m2fys6yzs6Nhkl66ANCmvihQa3PJG+9oA1vmiIivhtODgLGVZZxLIh4MAwn8
+	+uV8gasnjHwchg02MDinFrrimSNgLS4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XGQfXx2w;
+	spf=pass (imf09.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=hfXKRYN40nrVu7Eoi6miivu7UIIRPwt+ewg3z4W9IEc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787886636; v=1; x=1788491436;
+ b=XGQfXx2w6iMYceE7NILGEYf9XUYW0HLS8aFsJ2qwMwXNplrTlNtDIId+yLQPWJbirT+e94nY
+ tuVtUwgCKBO8WCYJzmX4tHPXVDflYGVsEAJahyCj8l+M4MFQ9A0LZMTl7RsNcyMn3VUTFh5maDQ
+ Snwp4QS3BiJ3VNJ2Xr2ykzJk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4ac20235960621f5;
+	Fri, 28 Aug 2026 03:10:36 +0000
+X-Mizu-Trace-ID: 4ac20235960621f5
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <afa606df-3d5b-47c2-9972-f3e0c2e13c12@linux.dev>
+Date: Fri, 28 Aug 2026 11:11:19 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] alloc_tag: fix a leak and a deadlock around
+ shutdown_mem_profiling()
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260817062726.106511-1-hao.ge@linux.dev>
+ <20260826203914.347c42aa00081ee9e0eb858a@linux-foundation.org>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <20260826203914.347c42aa00081ee9e0eb858a@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: nyauy6m4yjjsyzza3tgy4y9gue9a9qbm
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 186E2100002
+X-Stat-Signature: mc79qsjds65xw7f3p8g4tgpkc5yhi5zk
+X-Rspamd-Queue-Id: B2B81140004
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1787886438-788237
-X-HE-Meta: U2FsdGVkX198jvOrBatyN+lychrefw5XZoFuZGBBBDuBAkZ3+CMAd9bXt6eaDV/c6gPhaAm/172c5uPKMrj04eBqU7CVhZ6murqprnHGHvJfxas169w+F76di8khiToCfXe+N3goVR03XXnCamdGCpn8CiThJkrzr8uaZQriCXBuam517KGoqCEI46Ua3g2Q2Sk4Vr4gH8DP6+OEHuaqdEdfY9c1ypVuzqvnDNz9KCpmh70znIgpfnVx93cw32yg6xlO8D0zZCF3tIEQMcX+tqh50hIuvW8FfoP4jdXnH1qH7q4eAH2y7dGElS1PMbcSEjCYty/c6CqEv42PCEa1vgPaChJ8sVdYtaFLYLiL9uA3EIP+nKWBeKlKT9eQq1dKa0w8y2mQbsyRybJfBv+GLE8x1m1gGIB0yFbFxh5Q3xAuDSUoeb5tlMOdxsHqw+8KKgzbPiOyGSEkWsV7QiqXcYRKDr3sRAf9GTLuuIXyuWPihRSnG7Gh6Y9/Vl4vDhbCfGo7VW9yTWXV68Ao6oC8VanlnQbqdPSut8H78hFDHIziO/jQgGzVTtT6hdvWoGUGdbsawiCrAXI42wjTU9WF3yKkMj6UOwABCqvd5zFRBwQvQ8hRj8MTgwNiSk1xwE6MbP2Rk8uuTQD4+jNxVsA3xCXYvwNb1tTzUUS55G3CKciJ4i+4BZnb7UewZYgV3hxOdyL/6OEW/VANuSj4g91jD7lgYEpsBnVq98QrIYA1lRvXQGVD6F0MgGMDRwTzisvxldWS0cw7BlUDidU7i5pYA3M3bLkjb0aWsrxYNitMgNzFAfmH8mbnePhKjYeBGqja4nBSwwlGPyzHL1GNPDdX8rLrIF73KYBUdVRdoGwIjU7abqgSzfEa0JpA+yI5b+5kXHtM1jgP/zBIGpwZ+1diVs42pFWdaaAke3/mb1jMtvfTBXPXshrrzmk9IyIqijOyrboYup7JDUmHFNlMb4i
- YxdaRkAo
- XERGmoiGB0PHzd3s+CsDI+FDsYRnH+oCpIhXo++x4porD493CuNte0o6fEW5kQvhXmi3yQCnwhI9IwVtLpBgQswisgplzVQjlsQPh2RB0H//5un9j+tLWaQwZswGQwZzMMc5IcXwsSH/455RG2MSNLybyEJe5weHSdhnhF17B9Z4AAHGArWvAfHMhyrLhpM7NbQhWka7bNWZv5THh7Oeb14P9OBk2VHH9K0jyJpzTjghcmdiRHFg5IOjN7IFJCZM0uOizi5z3a+zZWeioNr4HJCq23CkXqR2nGKISqbiwWmHd5Z1Fg8hs37EnKVb7GkUVjwdjPQDBb+fbyEpHmQIJBOYAuQ==
+X-HE-Tag: 1787886638-442232
+X-HE-Meta: U2FsdGVkX19TEDhNw2AD3WBggqGL0FZhY6e0qqim2gGgjh+MY+N3qEUNh8Rcg7QzZIvNeY12ipj89tspjYmdDKarOS8Z79we6d4Hy6mLxhzBzREjijYaScsybsCnQSgi1XIxE3PQR2Bdw1OaOtFDkHgSZ5ZQeAfUQo4ixENZVVdtyU8nrnbtK2wCB66SjWbN8uEbZZKBgCSfK6AuGcmkPsiV/PJIgv6aoU208eov1W9H4J9oEqN++GinzLlaNaw7Hdy20tYOzl2xusO2wtJqUQpXPyioxyjZGPy5DbHS2keb9YZ2CooaO+SOYGZQ3olq7k2SieoQKNKpcCEO7dzrzA9nM0OyJZwdxvJr1Vf9YpXpZ6tNrFfhhEYyILJziV+3jIFSNyv2ag6OwF+qC26hIZ/UL7SBjMqt00jS/A5uWjDhwS0tgSgDtlj9fiCG5o82fr4Ckfr3MbqSz+IFu773EwAHtiWS9GN7zJACuITu/LbrJ1LgJK6lqRMNJd1GcQH2fZGbP2TvIXXpQlC3a3utMYhjhGzrco8Pj/Xf4Hc1ZOTEOrlk/iQCGI0NMDjOTS46bdlhcjWflSkg/xDNFffqO6RoDFwkYmsbSQR4Jta/X7k7TFLdI7OLs6Bj4waqrjWfiGm/QjsbPOHQ8AkOn+07gw94o6nvlkvMth7QaOz8O3swSPR3AxHfi/xfm7amRgX9Twhc1JY4Gx9lTP0xAyvtNaAYPDR9tMHyquyTWbXuuQF37ox2yRust/zj7tXTMmYDuVhMjrBcgZI/ku0RdewfEkUQY2izGIetYfA5jO/rcN00jy0d8w2PPzV3DA6XogV2JYaU6pdXowI3m21k8h3WKTdHmBiwePorCpyAka8JAZJYZJruUm7R8Z5mhfEO2qGAXV+rP2WtG1d01hX6OUnYaVduu8U31m2TTWOahSOGagbAqD7xm2Jo9lNa/cBBtXXwmfcd4kBCpebjdNJzoP2
+ S+RFNdaW
+ 10pphbPXiMHZDksmzbenz/1IwYL2HbmqPFE3Hfwjbn7BdAf42lzjUWfZA4VS20kS3yBe/+2qKt1T/BVliKa3DMC04wNr9V3W3HcLUstZphJ7wKuUmAUYTX05lLCEmu5sOykOU4X9+0an++Dk3IY8yABy9QQvhTYYjmQdKDwS+NpRD++EYTQ2q78F+raoMOr7SDLIaHbPgh2E3k1KI5xzvmzmI5PO3cTLuOaKMaYYvac0cwNSmxkalc3u6cY3Z4Qd3wxlD4DCj/DEfPwOGMnZuYePmmlDfWBecgMYD/EbTRVyLxNfdgO5IdJ/OjbT8ZWwWHstWJi9Ml6ZR04d8S0QKe8HtpavI2+fHAgTraE0E3kdBXqyB6lYWDROjXWZ4uZvSIEF/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,43 +94,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 25 Aug 2026 08:32:26 -0700 Nhat Pham <nphamcs@gmail.com> wrote:
+Hi Andrew
 
-> Currently, when an anon page is swapped out, a slot in a backing swap
-> device is allocated and stored in the page table entries that refer to
-> the original page. This slot is also used as the "key" to find the
-> swapped out content, as well as the index to swap data structures, such
-> as the swap cache, or the swap cgroup mapping. Tying a swap entry to its
-> backing slot in this way is performant and efficient when swap is purely
-> just disk space, and swapoff is rare.
+On 2026/8/27 11:39, Andrew Morton wrote:
+> On Mon, 17 Aug 2026 14:27:24 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 > 
-> However, the advent of many swap optimizations has exposed major
-> drawbacks of this design. The first problem is that we occupy a physical
-> slot in the swap space, even for pages that are NEVER expected to hit
-> the disk: pages compressed and stored in the zswap pool, zero-filled
-> pages, or pages rejected by both of these optimizations when zswap
-> writeback is disabled. This is arguably the central shortcoming of
-> zswap:
+>> Two fixes for issues reported by sashiko:
+>>
+>>   1. percpu counter leak on modules loaded after profiling is disabled.
+>>   2. AB-BA deadlock between module load and /proc/allocinfo readers.
+>>
+> 
+> Thanks.  AI review asked two questions.  One pertinent to your
+> alterations and one pertinent to Suren ;)
+> 
+> 	https://sashiko.dev/#/patchset/20260817062726.106511-1-hao.ge@linux.dev
+> 
+> I'll queue the patchset for 7.3-rc1, with a note-to-self.
 
-Thanks.
+Thanks for the heads up on the sashiko review questions.
 
-I asked Gemini for a tl;dr and was told
+The question on patch 1 (codetag_load_module() error handling)
+has two parts.
 
-: Introduce Virtual Swap Space (vswap) to decouple swap entry management
-: from physical disk slots by using dynamically allocated virtual
-: clusters that back swap entries on demand via zswap, zero-filled pages,
-: or physical disk.  Eliminate wasted storage space, remove the need for
-: static swapfile provisioning, and enable in-memory swap features on
-: diskless systems without degrading performance.
+The lost error code issue is already fixed; I sent the patch and
+you queued it. (Thanks).
 
-I'll take no action at this time - let's see what the other swap
-developers make of this.
+For the rollback part:
 
-Sashiko was talkative, as usual:
-	https://sashiko.dev/#/patchset/20260825153238.2695446-1-nphamcs@gmail.com
+I've also seen Sashiko flag this same issue on another of my patches.
+At the moment this case can't actually happen, alloc_tag is our only
+registered codetag type, and codetag_module_init() cleans up its cmod
+from the idr on every failure path, so nothing gets left behind.
 
-There are a few pre-existing things in among this, They look legit to
-me, from a quick read.  SWAP_USAGE_OFFLIST_BIT should use
-BITS_PER_TYPE(atomic_long_t)?
+That said, if we ever add a second codetag type down the line, the problem
+Sashiko spotted will become real. I will follow up later to refine this
+logic and make it more robust.
+
+The question on patch 2 (async /proc/allocinfo removal racing with
+alloc_tag_init() failure):
+
+When I first read it, I think the window is unreachable. It requires
+alloc_tag_init() to fail after proc_create() succeeded, and a process
+to open and read /proc/allocinfo in the gap between schedule_work()
+and the work running on system_wq.
+
+But CONFIG_MEM_ALLOC_PROFILING is a bool, so when enabled alloc_tag is
+always built in and it cannot be a loadable module. Its module_init(alloc_tag_init)
+runs inside do_initcalls(), before /init is exec'd. Failures inside
+alloc_tag_init() are already very unlikely to happen. When the failure
+happens, no normal userspace exists yet.
+
+That said, I realised the fix would actually be quite simple, we could just
+move proc_create() to the end of alloc_tag_init().
+I am not entirely sure whether we should do this though.
+
+Suren, what is your opinion?
+
+Thanks
+Best Regards
+Hao
 
 
